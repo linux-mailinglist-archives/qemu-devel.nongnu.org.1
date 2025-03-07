@@ -2,108 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE26A57141
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:15:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7682A571AA
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:27:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqd9v-0004Ez-Sl; Fri, 07 Mar 2025 14:15:00 -0500
+	id 1tqdDV-0002kg-P2; Fri, 07 Mar 2025 14:18:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tqd9p-00044v-C4
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:14:54 -0500
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tqd9n-0007lc-5H
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:14:52 -0500
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2ff087762bbso3451495a91.3
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 11:14:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741374889; x=1741979689; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xS48sSfR/nqvciBSEcVtX4LFE00mJJmnZli1lqwc2I8=;
- b=PR1mFnTOnYf41mMmgbckvvzkM46DyLIC695tjFkmIWhCR4e3PP/75Me8xT55LbLliN
- xJSSVNTJ/6dBpECu2wgINKjtwHFd65dXVA/mxYLdlZVDLGYOJdT3gVqFzDtW/NkxuCs2
- kYTMGrfPHO19F6ihUxpkAGPu6B0b9XnFOCLkGn6YxrFHP+Ik26Tin2oAR+fbPzgD1dCz
- 2wbElI4Tu4WC1NfZnAzEOd/PKKnFSOKs153PEFwA8K54svsm0F6FJNv/MO2o9Nf24fm3
- rT8YgshMdRr/jq9eT9PvqaNPxgplTmmsj95ZdMDF0aOv32X6SJPw8VApxZXL2oiW6lm3
- ljLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741374889; x=1741979689;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xS48sSfR/nqvciBSEcVtX4LFE00mJJmnZli1lqwc2I8=;
- b=gXw/Da5gL4tjJCJ7PSnwN3m0OAhdZF085f+HGj1CD4fD3r9EVf2ibpoqC0BMOsmkwT
- Vtp72VfJLabOnmmk3sf9kS1TzbTWxxjGhMKWKN15yO4NrYMXi1u+HanaDsKOt963hxDu
- Jx9cDg0zpavwaWEc65i0mFkuORB9B4to+RWBw66cVyAUxZUV5Uiz6D7l4I4/ZLb2d6H2
- XYWVrUn1iJfQJjMSj9Exnlo6aTy+A4hn8BUVa0pT00Zz23Jq8Rm2g4whjxBL0jHeSDW2
- FJ2O7AsTvfXvxGbArBttzGrhXacwKb6Fn6LVHwqPYK8A+RpgGOuHFa4iGp8W372aRxxo
- fA0Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWn9YbxK1YOG856nEsaoh5+Gw2UUmbaMYx6OZ/NtjxCL5dYpYRGdEtqDYNHz9jD//UrmEJwYx7NjwaB@nongnu.org
-X-Gm-Message-State: AOJu0YyXjA/BSAwgJwAI+amdnavg7/RKEL+ig8G6yyWrWu7SkrQUO4GQ
- PEu9y7Kpy4K2iEmg9iQ+oSqbV86d4kcnq5yG9MrfP4mOsdF+vSDpo5Xb9i9e74I=
-X-Gm-Gg: ASbGnct0FsPT4JU6lPvzHaGnYTrpKgOawEsX2eaiEAbV/nrY0eSQhHkYTOFGzdYc91u
- 3pkahMrVfy3H1AHkt4HRE9Xpb+uBn8/DoFNVI6I3ITHv9IfZBIUgw8rlU/q3StorJPJMt6fVM5q
- xjeLL5w4peg5gRhd5NrGjUq+k8+Q8gAQomTD2RfqY01n2PrimwoUBiVxjxWYg+xMA7FfZr0wD4r
- jP1a69XyFGqvXU6HhXdJ+TfRnZJgA7jCGj+Z7AH6R5TuGkhQYYShH9LoYVhtCUGJmSqY7fkb0zw
- HseMEsEFOFMbh0o0qRP9IaR4n1dhL3GMpcF6+1QprjEWABusPll1XYhnDA==
-X-Google-Smtp-Source: AGHT+IE73Alk6UcBWkg7YWfas3SGCUdlCaGCInmV4gpMnbflJafpM2h5wcqHKXoJ2T/ROUJtTSsGkg==
-X-Received: by 2002:a17:90b:4b11:b0:2fe:994d:613b with SMTP id
- 98e67ed59e1d1-2ff7cf2b59fmr7212164a91.35.1741374889557; 
- Fri, 07 Mar 2025 11:14:49 -0800 (PST)
-Received: from [192.168.1.67] ([38.39.164.180])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff728a901bsm3014197a91.49.2025.03.07.11.14.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Mar 2025 11:14:49 -0800 (PST)
-Message-ID: <59b3d1a3-541d-47a1-abd0-e649e9007990@linaro.org>
-Date: Fri, 7 Mar 2025 11:14:48 -0800
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tqdA9-00059j-8O; Fri, 07 Mar 2025 14:15:13 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tqdA3-00086l-DA; Fri, 07 Mar 2025 14:15:12 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 2CAAB5C5EE2;
+ Fri,  7 Mar 2025 19:12:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C0BC4CEF9;
+ Fri,  7 Mar 2025 19:14:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1741374898;
+ bh=J/oceRB+tMp1dlwMr5XDGzHWlOY6Ma1Afet+7GnEmTE=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=SwtCCb0Ro0LiZmwFPPWMIpptkzE64sp6hkpc96HCL6G3cRqYOyVR9bs9VqZ9+6drp
+ KeNYivajAc+Z8+/yqeCeQNTjCjhyo55SUBVlAk+CGqjdcnqt4wM6R+GeU6yGFX9CQb
+ mVRwAo/sQMJYk0tKNqB81qdgKQYi5A9gExf9dKQdEUNcp+i9pzl5F7MoQHPRKpjquZ
+ KhSqwfgc47W4aHG3Mkqk8NANzlHvRTIoWkCFrGVjbWFBTQ+IYLJ2Rynkiu132Y4Fp3
+ YsXADhey233FuKH5u3Ra+rJjzyNyMXRgmHZJyrYHL1ylH1vF06Mf1RBghvr1yEDYau
+ NX4VmYdyYArMw==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.1)
+ (envelope-from <mchehab+huawei@kernel.org>)
+ id 1tqd9s-0000000BQnW-0WMr; Fri, 07 Mar 2025 20:14:56 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Gavin Shan" <gshan@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH v8 19/20] docs: hest: add new "etc/acpi_table_hest_addr" and
+ update workflow
+Date: Fri,  7 Mar 2025 20:14:48 +0100
+Message-ID: <1cceb0e97bdddf0eabb8da794fdaaea295faee41.1741374594.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1741374594.git.mchehab+huawei@kernel.org>
+References: <cover.1741374594.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/14] hw/vfio/common: Include missing 'system/tcg.h'
- header
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- kvm@vger.kernel.org, Yi Liu <yi.l.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Peter Xu <peterx@redhat.com>, Daniel Henrique Barboza
- <danielhb413@gmail.com>, Eric Auger <eric.auger@redhat.com>,
- qemu-s390x@nongnu.org, Jason Herne <jjherne@linux.ibm.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- David Hildenbrand <david@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20250307180337.14811-1-philmd@linaro.org>
- <20250307180337.14811-2-philmd@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250307180337.14811-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=139.178.84.217;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,23 +76,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMy83LzI1IDEwOjAzLCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4gQWx3
-YXlzIGluY2x1ZGUgbmVjZXNzYXJ5IGhlYWRlcnMgZXhwbGljaXRseSwgdG8gYXZvaWQNCj4g
-d2hlbiByZWZhY3RvcmluZyB1bnJlbGF0ZWQgb25lczoNCj4gDQo+ICAgIGh3L3ZmaW8vY29t
-bW9uLmM6MTE3Njo0NTogZXJyb3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9u
-IOKAmHRjZ19lbmFibGVk4oCZOw0KPiAgICAgMTE3NiB8ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgdGNnX2VuYWJsZWQoKSA/IERJUlRZX0NMSUVOVFNf
-QUxMIDoNCj4gICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIF5+fn5+fn5+fn5+DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBQaGlsaXBwZSBN
-YXRoaWV1LURhdWTDqSA8cGhpbG1kQGxpbmFyby5vcmc+DQo+IC0tLQ0KPiAgIGh3L3ZmaW8v
-Y29tbW9uLmMgfCAxICsNCj4gICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykNCj4g
-DQo+IGRpZmYgLS1naXQgYS9ody92ZmlvL2NvbW1vbi5jIGIvaHcvdmZpby9jb21tb24uYw0K
-PiBpbmRleCA3YTQwMTBlZjRlZS4uYjE1OTZiNmJmNjQgMTAwNjQ0DQo+IC0tLSBhL2h3L3Zm
-aW8vY29tbW9uLmMNCj4gKysrIGIvaHcvdmZpby9jb21tb24uYw0KPiBAQCAtNDIsNiArNDIs
-NyBAQA0KPiAgICNpbmNsdWRlICJtaWdyYXRpb24vbWlzYy5oIg0KPiAgICNpbmNsdWRlICJt
-aWdyYXRpb24vYmxvY2tlci5oIg0KPiAgICNpbmNsdWRlICJtaWdyYXRpb24vcWVtdS1maWxl
-LmgiDQo+ICsjaW5jbHVkZSAic3lzdGVtL3RjZy5oIg0KPiAgICNpbmNsdWRlICJzeXN0ZW0v
-dHBtLmgiDQo+ICAgDQo+ICAgVkZJT0RldmljZUxpc3QgdmZpb19kZXZpY2VfbGlzdCA9DQoN
-ClJldmlld2VkLWJ5OiBQaWVycmljayBCb3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFy
-by5vcmc+DQoNCg==
+While the HEST layout didn't change, there are some internal
+changes related to how offsets are calculated and how memory error
+events are triggered.
+
+Update specs to reflect such changes.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+---
+ docs/specs/acpi_hest_ghes.rst | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
+
+diff --git a/docs/specs/acpi_hest_ghes.rst b/docs/specs/acpi_hest_ghes.rst
+index c3e9f8d9a702..3d1b85d74b70 100644
+--- a/docs/specs/acpi_hest_ghes.rst
++++ b/docs/specs/acpi_hest_ghes.rst
+@@ -89,12 +89,21 @@ Design Details
+     addresses in the "error_block_address" fields with a pointer to the
+     respective "Error Status Data Block" in the "etc/hardware_errors" blob.
+ 
+-(8) QEMU defines a third and write-only fw_cfg blob which is called
+-    "etc/hardware_errors_addr". Through that blob, the firmware can send back
+-    the guest-side allocation addresses to QEMU. The "etc/hardware_errors_addr"
+-    blob contains a 8-byte entry. QEMU generates a single WRITE_POINTER command
+-    for the firmware. The firmware will write back the start address of
+-    "etc/hardware_errors" blob to the fw_cfg file "etc/hardware_errors_addr".
++(8) QEMU defines a third and write-only fw_cfg blob to store the location
++    where the error block offsets, read ack registers and CPER records are
++    stored.
++
++    Up to QEMU 9.2, the location was at "etc/hardware_errors_addr", and
++    contains a GPA for the beginning of "etc/hardware_errors".
++
++    Newer versions place the location at "etc/acpi_table_hest_addr",
++    pointing to the GPA of the HEST table.
++
++    Using above mentioned 'fw_cfg' files, the firmware can send back the
++    guest-side allocation addresses to QEMU. They contain a 8-byte entry.
++    QEMU generates a single WRITE_POINTER command for the firmware. The
++    firmware will write back the start address of either "etc/hardware_errors"
++    or HEST table at the corresponding fw_cfg file.
+ 
+ (9) When QEMU gets a SIGBUS from the kernel, QEMU writes CPER into corresponding
+     "Error Status Data Block", guest memory, and then injects platform specific
+@@ -105,8 +114,5 @@ Design Details
+      kernel, on receiving notification, guest APEI driver could read the CPER error
+      and take appropriate action.
+ 
+-(11) kvm_arch_on_sigbus_vcpu() uses source_id as index in "etc/hardware_errors" to
+-     find out "Error Status Data Block" entry corresponding to error source. So supported
+-     source_id values should be assigned here and not be changed afterwards to make sure
+-     that guest will write error into expected "Error Status Data Block" even if guest was
+-     migrated to a newer QEMU.
++(11) kvm_arch_on_sigbus_vcpu() report RAS errors via a SEA notifications,
++     when a SIGBUS event is triggered.
+-- 
+2.48.1
+
 
