@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1106EA57228
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:39:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C116A57232
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:40:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqdXe-000367-1C; Fri, 07 Mar 2025 14:39:30 -0500
+	id 1tqdYo-0006wp-8l; Fri, 07 Mar 2025 14:40:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqdXa-0002uA-7q
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:39:26 -0500
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1tqdYL-0006nT-Qx
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:40:17 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqdXY-0007fb-MI
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:39:25 -0500
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2ff64550991so3669360a91.0
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 11:39:24 -0800 (PST)
+ id 1tqdYK-0000NE-2H
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:40:13 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2241053582dso18052795ad.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 11:40:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741376363; x=1741981163; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741376410; x=1741981210; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=n4DBrroX60vSE6MhlD18HAKhG95B2LCnVBL33ZQjaLk=;
- b=Z31G48bsX4QSsKw8RI0rlPRqd/nFVTR/dIXaN//CJROvzUo5cbJUubsf0uyoY5Fqwn
- yYvJQROKad92ZCmuGFlHwSxvdKpUd+X8wyxONvOuMKjZFGyRIlrpthJb/RU/GpgQrG+e
- Uq3CJaiN3A1phOF4QPhaGEVFj7vRQ+mj4hbanWVqezpPerMEMLQXoOPLY9axP5c9Kipo
- gxQ1YvrWOddTLjh7bGPPtsgd8tsVBpU6y+BMhOET8Hf7phf0W8ukj5ICAVlm+XvYiNot
- Dq/c7l+YVM4UaUgcew1KHbB6RYBkRROswULPA4wlTgUnTc8Jxv2bbJnGEftmK1GxxFT/
- PdYg==
+ bh=MNYtVOxV7nL74+jS/Rks3IbYlfM8jUgeMq7y/tTZcBk=;
+ b=Vxm3fCRyGD8o6PljBI01A/lHAo5G/Womfalu/AiW8Uy6s6FYOMm1QOh0aJFJpWQuWH
+ 0Nj/PxXs9M/0IQPPQnwGQKkJ4DPzVeSrVbT9V6WOKKXMrca9UCA+x3b3RTJVZuUdXeGj
+ WuKZ5CbzWWJqQcM9tkBr5KhXn1vYMJivlRRehPBwp94ZRjuNepeF2TQ38Zr9id4JrnRn
+ RfislNWEAHc46dIQO069o6timMpzFjomrH79csEsntIfooORibJk3oismpheW0Vvt4A6
+ Cq3BpyXbDWNmW2xsKaFJkeyEFIcC9Lxs4YTtybXoTNe2koL9qkzarlnR45gNO8Nqkqrj
+ KQhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741376363; x=1741981163;
+ d=1e100.net; s=20230601; t=1741376410; x=1741981210;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n4DBrroX60vSE6MhlD18HAKhG95B2LCnVBL33ZQjaLk=;
- b=HcJpe1nhZX7OvFsv76d4FUTlGheNKB/ctm4diqJ+hB8lTXbUbm10cg3AyetciAcxkY
- 4YVx/c9t04fowRjmYOtsWG7qAO3PvexA2Pth6l7cF8oGYwY6e7psQRjuSUDiA0iEr3F/
- EZIzTe5Mzy3tyvwXV4WV9H9lXhySfNL9gWiPaQgbFRS8UeGGIfDsgPZW85QqguNMszNS
- 7Rf/jgdec4sgzHWkNzLFwB6i/72aWxcd4mDHi8ZrNi4XRfEyyeJ27rt2+XFsShgBTkYV
- S7ma+sdzVEFYd4vHgf1+6nsU8/grdUHHuj6BVprL+mnjTnSW/m81LwhlgtyUmOuhz6h+
- 77tw==
+ bh=MNYtVOxV7nL74+jS/Rks3IbYlfM8jUgeMq7y/tTZcBk=;
+ b=XHTF61EZi0RBBaFWyd2g+jWUHyiwuuVo9YL5jCY+Uf5kQuXGrommDecawqrXiyAbbh
+ dsNgGHqrxe/BT9/S1FcVcL6mtgC1OovRozMBjxGDcYFGUBEFakXPUoToHX2cdHo6Ntcl
+ 4J4zMLGxNE6sq2+bK/RP+Pp2vcP6y3EVswDs+9kavuBmIllBpw5rETNkpc0Wv3VMpdfh
+ 8a7IPpcZzixKYmEsjdjbwPa6ukK+a7+EdeeU+++wQzXx45MP5+saJSze6EwtU63p/+Xj
+ HUmu3rYGdbofeYZY5/QoMDgzL+akeh7UxmNu/JycBCIf+OJC4+U/alNo3E/IrnaLdrbv
+ G1AQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU6j0Ix+1WHLbC6zHg4XeNLJwydYvAUrzKxaq0PB9tmKKr+z/lWt1hqdDdGYJWGkrPS3BFYFnB8hquz@nongnu.org
-X-Gm-Message-State: AOJu0YzE7iBI8H3ktgDLRKHOPJAxdzQIp4ZmSGZXI/Yt2imSchp6mB1t
- awyUEfii3vUbDgRz4iRoZFS0nHy+4PH67Ogp3IcKu6NrXEltec1xiezwj/yDwyc=
-X-Gm-Gg: ASbGncu7XcnluKCQEI2cX0246SzXIT/Jrts/Mva/glx4M76jXWVwTwSBgO1EicYe2E3
- sGh0wuMYi9Ni4HuVRRniCfwZtTin5VYvPz1JMB9jOek7Ds1nWFk2F86ZAYIoI7bgyaqdXJWiDyP
- Xl/rSUBHm6R8RwMNlvQE05aE0yl50gZB7Q/V+s+GO5kiyxaSFV6syWSB6+jB0WkG97hYP7yy77w
- ATdp+XfX5VbAqPnU08mU1u/R7pSRYDV5F5BYq/XIZBW/sspvjTU174ajhullglKsqcKn1yrTSYL
- TOF5q/6lfApw8mVH7bQG/IDBvtL2+tQrkDKwUqmS7U1vqbgbP5fhiwakAOAZqmj266lKbuus2Eu
- 0448Upx2F
-X-Google-Smtp-Source: AGHT+IGo7C4lopTsmVYaYp2pDtxJ7qLrUwS+TRu5FYG4DmRHgRD7p+EkAors857v2+zYqyet2Wt2Qw==
-X-Received: by 2002:a17:90b:4b90:b0:2ff:62f8:9a12 with SMTP id
- 98e67ed59e1d1-2ff7cf0a65cmr5955242a91.23.1741376362987; 
- Fri, 07 Mar 2025 11:39:22 -0800 (PST)
+ AJvYcCVhjrKUtNADvR4nV8a+1xVGeDblmQ3N5Kpi5QmS0oKqvSA7FpEF97Vq7LdqFe/NkzlTewI8TSDDhMVK@nongnu.org
+X-Gm-Message-State: AOJu0YxNM4rki7n9HIMnDSEdLXnBVj0/odQw4s6GfsbTvYGp4Ji9912f
+ /H2CDwdj+vJ4MhvRA7urRHUqq3s5B+ypDxUvSDIe4OfpQ27xvZgjz2ZAHlqFonEUcRQH9bq7hGL
+ A
+X-Gm-Gg: ASbGncvFZ+OuieF7tIJIjpgOOn2TKqjimwoU8WvNh/jQIBcqv5EWosqBMQtXU6/YC1y
+ nVRwaeyhOajb7roWh9vjrMT1hE3oixEThMGdWKsbiKJFNtjF4kU+lmVnoGzyWxjumeySUNgPc4K
+ u/hO8E2GRPCAOhZB+d9moFwjSvF3/eKMXRTNydr1b2EmURCXE+Z6VFn9Ie2BFVi7gpLjM8vq1xp
+ E1eQ6Uqe1jqDCyq3QVXcnRC88aOd+BAwklHZ/zUxtjJG/v2rjJiI4Gj9YtLz4omBNVkJ3Rez9qk
+ ApYOlpCcYZeMQhBp2CWNGXsziEIXNypaezcAbxfZJxBx2y1aezxkD/H8hXzs2BG8eq0iWJWXA80
+ bQgDzIVsJ
+X-Google-Smtp-Source: AGHT+IEySQ1o9l1BcPwsGn6eAQPUUoUPRZroma80r0QpJJ2Nm9q837rUe80uBJHpA2K69LAwRtzxDg==
+X-Received: by 2002:a05:6a00:17a7:b0:736:a638:7f9e with SMTP id
+ d2e1a72fcca58-736aa9de258mr8394867b3a.8.1741376410398; 
+ Fri, 07 Mar 2025 11:40:10 -0800 (PST)
 Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e7ffe18sm5368737a91.31.2025.03.07.11.39.22
+ d2e1a72fcca58-73698514f6esm3751854b3a.142.2025.03.07.11.40.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Mar 2025 11:39:22 -0800 (PST)
-Message-ID: <a5de568e-0171-4352-85e7-312e88d40146@linaro.org>
-Date: Fri, 7 Mar 2025 11:39:21 -0800
+ Fri, 07 Mar 2025 11:40:10 -0800 (PST)
+Message-ID: <d9aad21f-ce9e-4b89-a584-03cadfa18bc9@linaro.org>
+Date: Fri, 7 Mar 2025 11:40:08 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/14] hw/vfio/spapr: Do not include <linux/kvm.h>
+Subject: Re: [PATCH 03/14] hw/vfio: Compile some common objects once
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20250307180337.14811-1-philmd@linaro.org>
- <20250307180337.14811-3-philmd@linaro.org>
+ <20250307180337.14811-4-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250307180337.14811-3-philmd@linaro.org>
+In-Reply-To: <20250307180337.14811-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,12 +104,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/7/25 10:03, Philippe Mathieu-Daudé wrote:
-> <linux/kvm.h> is already include by "system/kvm.h" in the next line.
+> Some files don't rely on any target-specific knowledge
+> and can be compiled once:
+> 
+>   - helpers.c
+>   - container-base.c
+>   - migration.c (removing unnecessary "exec/ram_addr.h")
+>   - migration-multifd.c
+>   - cpr.c
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   hw/vfio/spapr.c | 3 ---
->   1 file changed, 3 deletions(-)
+>   hw/vfio/migration.c |  1 -
+>   hw/vfio/meson.build | 13 ++++++++-----
+>   2 files changed, 8 insertions(+), 6 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
