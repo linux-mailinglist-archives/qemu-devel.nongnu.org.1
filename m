@@ -2,95 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA799A57500
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 23:41:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 764ABA57512
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 23:43:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqgMt-0006Xo-SW; Fri, 07 Mar 2025 17:40:36 -0500
+	id 1tqgPn-0003Sm-41; Fri, 07 Mar 2025 17:43:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqgMn-0006NU-BE
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 17:40:29 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqgMl-0003c5-KH
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 17:40:29 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3912c09bea5so1707614f8f.1
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 14:40:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741387225; x=1741992025; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mnovoaUMqprzKKHYFuoZMJZ/2zGWdVOJkellgnL8PG0=;
- b=czMQKFBYNwLtRP7DsDDarkvweUNXkkfgPiPyqMuqG6BtxfiOHcfehR2bHDv9iYQl+7
- 3Hjdh8XagrlUPVpDWV4YAPdq8O8WTIq911kTDKgEAAqdWipilNHboQ+cSgqzaMML9AMX
- 02vWH4FXm7XaUA+wm1ZlmL2HaTjMuu2GcVVD9NLrQ9s67QKo1LCiFe03+xC+LQQwR4DM
- nErDAh2KMsJpM+cd2oc3eIm7HzHI170z9I0b1G9EpULQxyDE8IVruBsTYJjTmEXqktwH
- vq95f5mgfrduc3vIVWTksT4pFN7xWKIjzXS8IFN1NuB8hny/jiCheQrNI33L9Jat+pP3
- 72Sg==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tqgPk-0003Ri-68
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 17:43:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tqgPi-0004RJ-3P
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 17:43:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741387408;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=oz/XZ0UZs0t/89iAj1+OMLxOHoE+RFXNTb7ZmRrWT3o=;
+ b=aRS731PyTHPC9ardMCstw80R1/COg1x+SsoHOVn29U1TdBWEIpZejZIs17P5Dyn6ILeuEF
+ kklz6ZEIiaXdp4CIvA1SRt5LMg3UudpmW7y9bjqeh3LDyJL5lAml5MYAbxLNYUK/A8iFkt
+ vPOlgPEc93+Ul+JQCKwhz11a8cJGrzM=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-345-tvfN-i14MeajqCJnxoAxig-1; Fri, 07 Mar 2025 17:43:27 -0500
+X-MC-Unique: tvfN-i14MeajqCJnxoAxig-1
+X-Mimecast-MFC-AGG-ID: tvfN-i14MeajqCJnxoAxig_1741387406
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-2ff605a7a43so6917925a91.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 14:43:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741387225; x=1741992025;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mnovoaUMqprzKKHYFuoZMJZ/2zGWdVOJkellgnL8PG0=;
- b=KCT+3+96PCby4ng/nGlyf4zyR6Ngxz5UMIDncJA/2toyyy4VMYEl5o0yZWe5V2iaLE
- Z2/Cx6L/7E43ht3qvaiPgT6ZdJhUFKkILeaMmt6RKto65t2WU4lJpGv6xwKIV0LnaU1o
- jKQwih6orTuw3t36UCf8hjxkmUgyO+oRQixo+2PvZ53+orz0EqGUq5781GZPUeT9CDpQ
- 8QUiFls4PxkNszH176QXmRzMbBadP1pjha7guN7e0M+NqPKLpnVatL7mybXB4W+xsasl
- P9CKeRZKtHI/8FthfgS+p/P1E9MGnYyM9z6kWoYcYcLM1ZcnMrsPNuQPkn+J6BySq2or
- zdtA==
-X-Gm-Message-State: AOJu0YwR8+B/KQ1AHcrP0bYDY4H1WyzWhsXph063DfpCpJiFLoc4yPd2
- qL6+Uygvc0+HpmdhTl6I1QiIRn3900/PNrnnCZKi+VCFwV/GbKeQgJWGDfTa8V1P+QNhxt2+R9N
- MjyY=
-X-Gm-Gg: ASbGncsZLWooeh0Ji1lrRyHFUVrE6Zr9SKWHOee399zb+nHu9c/JzQ4UB2ipZnjaf+3
- MJULglcaDic7g9LElo0CbQY9Xc3ysjIPBcnjb9dFUuXkgY75koZrSsNvs7OVCMKTUB1dUpCsUQe
- tY8WKDjRunGQzyO6uNYkxYaPoUj+xS8mJhO2QFr62oxzZFlMe8SOcS4g8C2hCeQmZaN+GPpSoXC
- uoZHHZeNFBrG62pER9vJMQU2FdK3Cij0YNapBItUvthu3QSoruIfLscNIxXKQx2tXCZOARIPonM
- XjG1qzSI0751G65H08HfG8WMQSLptimJXuv5QpSBXd1JNmvFyDK88ENUU21mwXzpxr0TI1U34MC
- UvwicG/p+mJ42DekqTbk=
-X-Google-Smtp-Source: AGHT+IGY8etv8/dIDm9L/f7Om9gzMsUEqO/hLEAhAxuVK4Ifw6WAs0qqxGNql5lclqfEMFltDpfVAw==
-X-Received: by 2002:a05:6000:471d:b0:391:20ef:6300 with SMTP id
- ffacd0b85a97d-39132d98c7dmr3250867f8f.37.1741387225570; 
- Fri, 07 Mar 2025 14:40:25 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bdd9471b7sm63627185e9.34.2025.03.07.14.40.24
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 07 Mar 2025 14:40:25 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 7/7] hw/virtio: Compile virtio-mem.c once
-Date: Fri,  7 Mar 2025 23:39:49 +0100
-Message-ID: <20250307223949.54040-8-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250307223949.54040-1-philmd@linaro.org>
-References: <20250307223949.54040-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1741387406; x=1741992206;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oz/XZ0UZs0t/89iAj1+OMLxOHoE+RFXNTb7ZmRrWT3o=;
+ b=SqWANE2ZKI82sxKe+nNF9xSP5GsmrkWmmFwVNfvUkn8Yu252BQH8Ri6UGqgTJUt7+F
+ 4fwV6ln12iH/NoWPQydO5TmUFG6zS9fI0qqr7XGuihjHaoyBacFYyitR+JhM8EIDmq4m
+ LSI+fRKcwDUqCf4G9Cg6EK4q0OUossnvBEH/FGmi3YvGiLlboyPzNd5t7uaKgu6Kyrex
+ zitYyThwl3Rz33YcCzLm1x/IZISBxLpqsBc40P95jBHIyq+iiJP8F3F/RVU80H9z1IPu
+ 0o6j863CqsvavtG6Yj3zLyRf9HOu6tMI2eRRA1gsUmJouhzi0m42/kxs+kXSXmHOXny0
+ saWA==
+X-Gm-Message-State: AOJu0YyDgZhQKeriWTuWRhpuqSZJ9HMwJ9RQ65vp6XZ3oIPV38bOqYXr
+ HtRl+qYyN/XhTnW7nDFv6n9XBbSjZxus4rT8WgweKB4AZZKkW/0sOO5JsMipKD9kxfWtXwU3oHt
+ HW9kK5knt4HVJEHawd3+gmUBbTFwiESg23skBOHIOKCRC3/igZ6rqmOyU+kjYDD6lHo9GgGeg61
+ x+tFNusALU3trzy4vUiWTR4JlAwt0=
+X-Gm-Gg: ASbGncve4fLswsad0vnCIM+tnsGBDebEgl05Qu8IHT5OyjV/hRS246w98CwaMGQkk05
+ ksm9XtClefEm4eKjNX+yv6fRcp8PAHV8yfmyvno4URBxElyigVMqmbjSAGm3kgz1PLN3gpg==
+X-Received: by 2002:a17:90a:e7c2:b0:2fe:8a84:e032 with SMTP id
+ 98e67ed59e1d1-2ff7ceab4d6mr8155628a91.20.1741387406084; 
+ Fri, 07 Mar 2025 14:43:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF/SQKtjg/xzSjPTQQC5Ll/5LaU0Ewd4/4LLtlFnR3ylVS/ZQO8ogqifYwqXxe6OzFeYGHYF7A1Rvd/Tf9g7z4=
+X-Received: by 2002:a17:90a:e7c2:b0:2fe:8a84:e032 with SMTP id
+ 98e67ed59e1d1-2ff7ceab4d6mr8155618a91.20.1741387405869; Fri, 07 Mar 2025
+ 14:43:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+References: <20250305034610.960147-1-jsnow@redhat.com>
+ <20250305034610.960147-13-jsnow@redhat.com>
+ <878qphs4v1.fsf@pond.sub.org>
+In-Reply-To: <878qphs4v1.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Fri, 7 Mar 2025 17:43:13 -0500
+X-Gm-Features: AQ5f1JoPfPufgUmfy3n10viSprRccxKRR-1eoP42yK5dMZjYMRWunJE0j3-Xb9Y
+Message-ID: <CAFn=p-bDyj5AQ0TK9Y8BQj-zj9uVg8MOO7NFq5S_A0UTmjpWeg@mail.gmail.com>
+Subject: Re: [PATCH 12/57] docs/qapi-domain: add :since: directive option
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000be5a19062fc859be"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,43 +102,265 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove unused "exec/ram_addr.h" header. This file doesn't
-use any target specific definitions anymore, compile it
-once by moving it to system_virtio_ss[].
+--000000000000be5a19062fc859be
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
----
- hw/virtio/virtio-mem.c | 1 -
- hw/virtio/meson.build  | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+On Fri, Mar 7, 2025 at 1:59=E2=80=AFAM Markus Armbruster <armbru@redhat.com=
+> wrote:
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 5288fe597b3..2e51dcfdf32 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -25,7 +25,6 @@
- #include "hw/virtio/virtio-mem.h"
- #include "qapi/error.h"
- #include "qapi/visitor.h"
--#include "exec/ram_addr.h"
- #include "migration/misc.h"
- #include "hw/boards.h"
- #include "hw/qdev-properties.h"
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index a5f9f7999dd..7c3513315cb 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -55,7 +55,7 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock.c
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-rng.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_NSM', if_true: [files('virtio-nsm.c', 'cbor-helpers.c'), libcbor])
--specific_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi.c'))
- specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_SCMI'], if_true: files('vhost-user-scmi-pci.c'))
- 
--- 
-2.47.1
+> John Snow <jsnow@redhat.com> writes:
+>
+> > Add a little special markup for registering "Since:" information. Addin=
+g
+> > it as an option instead of generic content lets us hoist the informatio=
+n
+> > into the Signature bar, optionally put it in the index, etc.
+> >
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+> > ---
+> >  docs/sphinx/qapi_domain.py | 29 +++++++++++++++++++++++++++--
+> >  1 file changed, 27 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
+> > index 6168c23936f..9919dacd4e6 100644
+> > --- a/docs/sphinx/qapi_domain.py
+> > +++ b/docs/sphinx/qapi_domain.py
+> > @@ -4,6 +4,7 @@
+> >
+> >  from __future__ import annotations
+> >
+> > +import re
+> >  from typing import (
+> >      TYPE_CHECKING,
+> >      AbstractSet,
+> > @@ -104,6 +105,18 @@ def process_link(
+> >          return title, target
+> >
+> >
+> > +def since_validator(param: str) -> str:
+> > +    """
+> > +    Validate the `:since: X.Y` option field.
+> > +    """
+> > +    match =3D re.match(r"[0-9]+\.[0-9]+", param)
+>
+> This accepts arbitrary crap after the version.  Example:
+> "9.2.50v9.2.0-2253-ge8a0110293" is fine.  Intentional?
+>
+
+Nope! O:-) I forgot that match doesn't imply ^...$
+
+
+>
+> > +    if not match:
+> > +        raise ValueError(
+> > +            f":since: requires a version number in X.Y format; not
+> {param!r}"
+> > +        )
+> > +    return param
+>
+> Schema validation is the frontend's job.  Ideally, a backend doesn't
+> report any errors.  The backends generating C don't.  A backend
+> generating docs has to: all the reST processing happens there, and
+> therefore reST errors can only be diagnosed there.  Since "no errors"
+> purity is impossible for this backend, we can be pragmatic about sinning
+> a bit more.
+>
+> Still, I think this one should rather go into the doc comment parser.
+>
+> This is not a demand.  We can always clean it up later.
+>
+
+You *can* technically use this without touching the QAPI parser at all,
+nothing stops you. I.e., you *could* write a QMP reference manual by hand
+into an .rst if you wanted.
+
+That said, I know we probably won't. I can remove the validator.
+
+
+>
+> > +
+> > +
+> >  # Alias for the return of handle_signature(), which is used in several
+> places.
+> >  # (In the Python domain, this is Tuple[str, str] instead.)
+> >  Signature =3D str
+> > @@ -124,6 +137,8 @@ class QAPIObject(ObjectDescription[Signature]):
+> >          {
+> >              # Borrowed from the Python domain:
+> >              "module": directives.unchanged,  # Override contextual
+> module name
+> > +            # These are QAPI originals:
+> > +            "since": since_validator,
+> >          }
+> >      )
+> >
+> > @@ -135,9 +150,19 @@ def get_signature_prefix(self) -> List[nodes.Node]=
+:
+> >              SpaceNode(" "),
+> >          ]
+> >
+> > -    def get_signature_suffix(self) -> list[nodes.Node]:
+> > +    def get_signature_suffix(self) -> List[nodes.Node]:
+> >          """Returns a suffix to put after the object name in the
+> signature."""
+> > -        return []
+> > +        ret: List[nodes.Node] =3D []
+> > +
+> > +        if "since" in self.options:
+> > +            ret +=3D [
+> > +                SpaceNode(" "),
+> > +                addnodes.desc_sig_element(
+> > +                    "", f"(Since: {self.options['since']})"
+> > +                ),
+> > +            ]
+> > +
+> > +        return ret
+> >
+> >      def handle_signature(self, sig: str, signode: desc_signature) ->
+> Signature:
+> >          """
+>
+>
+
+--000000000000be5a19062fc859be
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Mar 7, =
+2025 at 1:59=E2=80=AFAM Markus Armbruster &lt;<a href=3D"mailto:armbru@redh=
+at.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmai=
+l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
+4,204);padding-left:1ex">John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" =
+target=3D"_blank">jsnow@redhat.com</a>&gt; writes:<br>
+<br>
+&gt; Add a little special markup for registering &quot;Since:&quot; informa=
+tion. Adding<br>
+&gt; it as an option instead of generic content lets us hoist the informati=
+on<br>
+&gt; into the Signature bar, optionally put it in the index, etc.<br>
+&gt;<br>
+&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
+t=3D"_blank">jsnow@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 docs/sphinx/qapi_domain.py | 29 +++++++++++++++++++++++++++--<br=
+>
+&gt;=C2=A0 1 file changed, 27 insertions(+), 2 deletions(-)<br>
+&gt;<br>
+&gt; diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py<b=
+r>
+&gt; index 6168c23936f..9919dacd4e6 100644<br>
+&gt; --- a/docs/sphinx/qapi_domain.py<br>
+&gt; +++ b/docs/sphinx/qapi_domain.py<br>
+&gt; @@ -4,6 +4,7 @@<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 from __future__ import annotations<br>
+&gt;=C2=A0 <br>
+&gt; +import re<br>
+&gt;=C2=A0 from typing import (<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 TYPE_CHECKING,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 AbstractSet,<br>
+&gt; @@ -104,6 +105,18 @@ def process_link(<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return title, target<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 <br>
+&gt; +def since_validator(param: str) -&gt; str:<br>
+&gt; +=C2=A0 =C2=A0 &quot;&quot;&quot;<br>
+&gt; +=C2=A0 =C2=A0 Validate the `:since: X.Y` option field.<br>
+&gt; +=C2=A0 =C2=A0 &quot;&quot;&quot;<br>
+&gt; +=C2=A0 =C2=A0 match =3D re.match(r&quot;[0-9]+\.[0-9]+&quot;, param)<=
+br>
+<br>
+This accepts arbitrary crap after the version.=C2=A0 Example:<br>
+&quot;9.2.50v9.2.0-2253-ge8a0110293&quot; is fine.=C2=A0 Intentional?<br></=
+blockquote><div><br></div><div>Nope! O:-) I forgot that match doesn&#39;t i=
+mply ^...$</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex">
+<br>
+&gt; +=C2=A0 =C2=A0 if not match:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 raise ValueError(<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 f&quot;:since: requires a v=
+ersion number in X.Y format; not {param!r}&quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 )<br>
+&gt; +=C2=A0 =C2=A0 return param<br>
+<br>
+Schema validation is the frontend&#39;s job.=C2=A0 Ideally, a backend doesn=
+&#39;t<br>
+report any errors.=C2=A0 The backends generating C don&#39;t.=C2=A0 A backe=
+nd<br>
+generating docs has to: all the reST processing happens there, and<br>
+therefore reST errors can only be diagnosed there.=C2=A0 Since &quot;no err=
+ors&quot;<br>
+purity is impossible for this backend, we can be pragmatic about sinning<br=
+>
+a bit more.<br>
+<br>
+Still, I think this one should rather go into the doc comment parser.<br>
+<br>
+This is not a demand.=C2=A0 We can always clean it up later.<br></blockquot=
+e><div><br></div><div>You *can* technically use this without touching the Q=
+API parser at all, nothing stops you. I.e., you *could* write a QMP referen=
+ce manual by hand into an .rst if you wanted.</div><div><br></div><div>That=
+ said, I know we probably won&#39;t. I can remove the validator.</div><div>=
+=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
+.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; +<br>
+&gt; +<br>
+&gt;=C2=A0 # Alias for the return of handle_signature(), which is used in s=
+everal places.<br>
+&gt;=C2=A0 # (In the Python domain, this is Tuple[str, str] instead.)<br>
+&gt;=C2=A0 Signature =3D str<br>
+&gt; @@ -124,6 +137,8 @@ class QAPIObject(ObjectDescription[Signature]):<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 # Borrowed from the Py=
+thon domain:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;module&quot;: di=
+rectives.unchanged,=C2=A0 # Override contextual module name<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 # These are QAPI originals:=
+<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;since&quot;: since_va=
+lidator,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 )<br>
+&gt;=C2=A0 <br>
+&gt; @@ -135,9 +150,19 @@ def get_signature_prefix(self) -&gt; List[nodes.N=
+ode]:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 SpaceNode(&quot; &quot=
+;),<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ]<br>
+&gt;=C2=A0 <br>
+&gt; -=C2=A0 =C2=A0 def get_signature_suffix(self) -&gt; list[nodes.Node]:<=
+br>
+&gt; +=C2=A0 =C2=A0 def get_signature_suffix(self) -&gt; List[nodes.Node]:<=
+br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;&quot;&quot;Returns a suffix t=
+o put after the object name in the signature.&quot;&quot;&quot;<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 return []<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret: List[nodes.Node] =3D []<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if &quot;since&quot; in self.options:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret +=3D [<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 SpaceNode(&qu=
+ot; &quot;),<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 addnodes.desc=
+_sig_element(<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ &quot;&quot;, f&quot;(Since: {self.options[&#39;since&#39;]})&quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ),<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ]<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return ret<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 def handle_signature(self, sig: str, signode: desc=
+_signature) -&gt; Signature:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;&quot;&quot;<br>
+<br>
+</blockquote></div></div>
+
+--000000000000be5a19062fc859be--
 
 
