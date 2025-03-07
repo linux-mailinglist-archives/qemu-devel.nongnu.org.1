@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43061A57303
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C94A57304
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:41:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqeUY-0004OK-Qo; Fri, 07 Mar 2025 15:40:22 -0500
+	id 1tqeV4-0004Qr-Vm; Fri, 07 Mar 2025 15:40:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1tqeUW-0004Nr-Cc
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:40:20 -0500
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1tqeUf-0004QP-E9
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:40:29 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1tqeUU-0001ug-7w
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:40:20 -0500
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2ff6a98c638so4449769a91.0
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 12:40:17 -0800 (PST)
+ id 1tqeUd-0001w5-7s
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:40:29 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2239c066347so43376225ad.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 12:40:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1741380016; x=1741984816; darn=nongnu.org;
+ d=sifive.com; s=google; t=1741380025; x=1741984825; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2FWXlQU/7CPw40ZorM5xTztxlUlpDOkFuJBD3+uMXoc=;
- b=bCftfwvBFIZxShhYR3QFk+HSrZFHnCL4LZ/Uf2/XPJfK3q7miRmbgOwpepDrEPx19W
- Z05KXDNks8cED2GTvUkUk2FC3heRT6hPg2FaFeOY9efOCvrMUJjXzxwL7hirlmeTgENQ
- Jf9OrzKJCKIyDSR/xz719IhZbfn2mYZUI0nQMQXWuEFGYRPy3AvyQMs6Z8/YAXS+B09B
- rmSGjgW5Ut9uypUj4LBW7Aaq5BxThYs33A/VHJgsVpDJr9aiXwsf0L1YNc/KAStf3uRj
- rhYauNxPmwX8+yGmYOAgdbXnA3eKyXCTUMIXRNlEYhebmkRHRp2S+nBq/aDuoZZmmLTG
- ds/g==
+ bh=iEe0rHIOQ6h9LxkKOZ8XIB5DeqYtbj0ptb/VSdm22+8=;
+ b=kxG4EkqHzhmHO7OPZul21m9dQpQDu1e6uEJQdr0o53cjRZAT3H+sMrLyxHsonLzfJF
+ 8c0jxadHgpstBFnquSfBkiAMNUZ1qbc+maEu4XFzdKHjVHxHE6IB68AEyMf1SiwGQAwE
+ oKzbjl2XwH3fP+7a7QpjVGPjGXJ5iWOk3kj/gZsQWhBYZz29hpDwc0HJxNfdLuk+4cgF
+ R6mkLQySUbxzEzW1Baqueyck8oOFa2QsgKGl9FYGHYvZiqdTMLW/0WokDR9Hnx+Dt8ZV
+ XDRej60c765/MR4VCejCRcbzO9Id4Jlkfsua3yiEP80z3FL1D+Ej3Ij4UTo1NL2Pr0VF
+ L5Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741380016; x=1741984816;
+ d=1e100.net; s=20230601; t=1741380025; x=1741984825;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2FWXlQU/7CPw40ZorM5xTztxlUlpDOkFuJBD3+uMXoc=;
- b=KsEOnXj67zygR+UB99iCV9JL5prS9H2m8YlJ7iTefFJv78T5Xelo1JRfFjj0hIctgC
- fkVMNcTvoDxUtp4GGlOxYv/zfOJikoHrJxUIQSq/It7Fg92Hovzl6Aeua00pBI4SZEi9
- TAIUv//c0m9sCgOPbMcpuAWDmzbfiR1Nh+C7SZOuoZUgtaAFP3E/7l1zdmNXieFQAVvm
- sVpgb7F42uJnnqmZsCPll1KfSHJuK3wHgxVseN0g17439WII/Cnl4VSRaxKelaOQGY7m
- aAQp9DJnT96wq8PemXUA9Rks+lj1n66dscQmDw2WbMjG3U6GB54DJCm71yFaG43bw5ug
- +SHQ==
-X-Gm-Message-State: AOJu0Yzhq2tSlp4Z4fMbGt/6JFk5dkTu77PmukyvFTYz61Cxi7j3KNNj
- z/23CSI9HBzTG9qbz2TZ4ojxmEWkJallim6PCDP7UydSjVsi+ZN+qz5osQ4yGUPGjHsG9nWfC0L
- xXv648OYFhDDNb/fVTta9/z55JeRsdaiuQmdBFVEttufBqbb4pbHCMmlDHiaWW4buxBSKmPWLjB
- qPgngkLpTJXbHtmon+FeQPSWn6p99bhK0kCY7ez5M=
-X-Gm-Gg: ASbGncsMLVK535eGe8WdAkczzjZhUcPn+uQoKUCp3OG0vrmMYpSvB/5PyvsoPzVfCSB
- pAyeS7/r/Qrqw+tq0E3gkAqFhRDVKgS/+QY2PfJQ15V/eEmMckFtzly0CFjjlgwGBSNkZauxA1t
- UMaop3/gxriJ8aKpssCB2eWUu9XMmYllUNsoxZeR/mI07AJ0v3FPF5Paz68hicmb+8FJhMUzBJg
- Ld/mxsgH9lvhPkkZBgNRsVpEqQAnNLxPyu9EQzhJfUyjx8r3xuosDTS+02vgLog2gNllhoHxvgr
- B/eLrF68Yo/V9JRZBn3lb/rUY2RJokFYDgY1xBRwhSEoLKFyMuX7HVyx4LiWBltduRrVdtn4
-X-Google-Smtp-Source: AGHT+IFFJ/V9KxlOpoiEFBw9twFP49rnKXcC+4GGHwI4zIUDhw+tjQ+4B2JBFaLUsizClPzhjcdYkA==
-X-Received: by 2002:a17:90b:3950:b0:2ff:6167:e92d with SMTP id
- 98e67ed59e1d1-2ff7cef761amr6758275a91.32.1741380016319; 
- Fri, 07 Mar 2025 12:40:16 -0800 (PST)
+ bh=iEe0rHIOQ6h9LxkKOZ8XIB5DeqYtbj0ptb/VSdm22+8=;
+ b=b6cwtbF020q93HmBx3+4/RXMXehi0z416Es4rKivRTdnQVSOpgqNipZWvHjvaSISXf
+ Nw0LSTPJP6VBnLdULL6E9M1gvJOlP3ZciqH/FKq6chIq9skZ0NGfbcpTPHkq6MEQ2Odf
+ PzRe/1DVLk6+3m3/AkvFtwAp2JsX7HuGvVnJ5Tz7yzSMKl+ODgEKN3XX0oRQwGWVHbET
+ hT2OZwEVbqAqfukdlm9O7zl5JyGQgpQa2UT8Yl/lAe95JxHGjBQKgpXDGM+OQK2VFPNr
+ 4mEbghBWGclcj2NvNn7fqagoDyZBDofLHXdMpNtxkavWQQuJxtHNUX+q+S38PvbzV583
+ huHw==
+X-Gm-Message-State: AOJu0Yxvbu/Tl9HjTxfU71o9fCvwqqjo9fTbONA/9vZPJk+dCNLvmSBL
+ w38nLD05759gNsPNQRJMJcpV7BsQK9RL9PNz94kSyICJYLif3rDBnKd0XTq7cYJkTdKFBfwY4Pm
+ 4dlnUisZuVfjBIn4MzHDULFKwH4jH4QrcMl43t7XxfLIO16EaUC37N3LqxURfv2TueebQWnIaja
+ MiKxazsW+DY+Et9EVlSz1mfPedHaxYNG9YCk/m9Ow=
+X-Gm-Gg: ASbGncugg9Y4TTAvpEEErhk98camwA9CAcneoHsRsPS/YXOxijBFjIDeO0Tsw7YRiRJ
+ kzFDSv0VKaevUaMHBJqZ53gve42t9dISdkLmP3TlP65TIZ6EeWaBxEe0KZjHOs89al7Oz13NAPM
+ L4kE4aKNEyk38MSpbWeYe1YkNxNZSG1N8vYPb0z3bqpleu1V7fYDKECEdutAPYmh6SzDN8cIbzi
+ xOlQrsmme3+rKOHwAaOISfj6lLJ1nxS1zRguTStx3H3NdAiBqlSvzX/mAEFPOCvpLspf13uXdNc
+ lVNTA/5O5bzxF6AFB0P1x102q/c9nlPLVt36D7JtWZ3WUsGHzj1HC4jwl2snGhs3OLED+FzD
+X-Google-Smtp-Source: AGHT+IG65DhcZ6NOEcgAJVNYS1w8Ue3XFFy1z6qQdUW9LusIsKYog4R+2hqXfrBlL8f1odQoXupXyg==
+X-Received: by 2002:a17:902:e5d2:b0:224:160d:3f5b with SMTP id
+ d9443c01a7336-22428c1169cmr79400585ad.49.1741380025111; 
+ Fri, 07 Mar 2025 12:40:25 -0800 (PST)
 Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff5aa3d3ccsm3270900a91.0.2025.03.07.12.40.13
+ 98e67ed59e1d1-2ff5aa3d3ccsm3270900a91.0.2025.03.07.12.40.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Mar 2025 12:40:15 -0800 (PST)
+ Fri, 07 Mar 2025 12:40:24 -0800 (PST)
 From: Jason Chien <jason.chien@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -77,17 +77,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  qemu-arm@nongnu.org (open list:MCIMX7D SABRE / i...),
  Jason Chien <jason.chien@sifive.com>
-Subject: [PATCH 1/4] include/hw/pci: Introduce a callback to set the
- downstream mr of PCI hosts
-Date: Sat,  8 Mar 2025 04:39:34 +0800
-Message-ID: <20250307203952.13871-2-jason.chien@sifive.com>
+Subject: [PATCH 2/4] hw/pci: Introduce an API to set PCI host downstream mr
+ for IOMMU integration
+Date: Sat,  8 Mar 2025 04:39:35 +0800
+Message-ID: <20250307203952.13871-3-jason.chien@sifive.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20250307203952.13871-1-jason.chien@sifive.com>
 References: <20250307203952.13871-1-jason.chien@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=jason.chien@sifive.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=jason.chien@sifive.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,41 +110,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Many PCI hosts utilize struct PCIIOMMUOps to implement their ATUs, preventing
-coexistence with IOMMUs, which need to register struct PCIIOMMUOps as well.
-
-To resolve this, set_downstream_mr() is introduced, allowing IOMMUs to
-configure the downstream memory region of the PCI host, enabling both to
-coexist.
+When an IOMMU detects that a PCI host has registered struct PCIIOMMUOps,
+it should call pci_setup_iommu_downstream_mr(), which invokes
+PCIIOMMUOps.set_downstream_mr() to configure the PCI host's downstream
+memory region, directing inbound transactions to the IOMMU.
 
 Signed-off-by: Jason Chien <jason.chien@sifive.com>
 ---
- include/hw/pci/pci.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ hw/pci/pci.c         | 8 ++++++++
+ include/hw/pci/pci.h | 9 +++++++++
+ 2 files changed, 17 insertions(+)
 
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 1d42847ef0..983290ef0b 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -2858,6 +2858,14 @@ void pci_device_unset_iommu_device(PCIDevice *dev)
+     }
+ }
+ 
++void pci_setup_iommu_downstream_mr(PCIBus *bus, MemoryRegion *mr)
++{
++    assert(bus->iommu_ops);
++    assert(bus->iommu_ops->set_downstream_mr);
++
++    bus->iommu_ops->set_downstream_mr(bus->iommu_opaque, mr);
++}
++
+ void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
+ {
+     /*
 diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index 4002bbeebd..fcf648da19 100644
+index fcf648da19..1ad5dc7d9d 100644
 --- a/include/hw/pci/pci.h
 +++ b/include/hw/pci/pci.h
-@@ -391,6 +391,18 @@ typedef struct PCIIOMMUOps {
-      * @devfn: device and function number
-      */
-     AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
-+    /**
-+     * @set_downstream_mr: set the downstream memory region for the PCI host.
-+     *
-+     * Optional callback that should be implemented if a PCI host registers
-+     * this PCIIOMMUOps. It allows an IOMMU to designate its memory region as
-+     * the downstream memory region of the PCI host.
-+     *
-+     * @opaque: the data passed to pci_setup_iommu().
-+     *
-+     * @mr: the downstream memory region
-+     */
-+    void (*set_downstream_mr)(void *opaque, MemoryRegion *mr);
-     /**
-      * @set_iommu_device: attach a HostIOMMUDevice to a vIOMMU
-      *
+@@ -442,6 +442,15 @@ bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
+                                  Error **errp);
+ void pci_device_unset_iommu_device(PCIDevice *dev);
+ 
++/**
++ * pci_setup_iommu_downstream_mr: Designate a downstream memory region
++ * for a PCIBus
++ *
++ * @bus: the #PCIBus being updated.
++ * @mr: the designated memory region.
++ */
++void pci_setup_iommu_downstream_mr(PCIBus *bus, MemoryRegion *mr);
++
+ /**
+  * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
+  *
 -- 
 2.43.2
 
