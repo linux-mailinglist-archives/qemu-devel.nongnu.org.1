@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC823A57290
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:57:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7FDA57294
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:57:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqdno-00081W-T9; Fri, 07 Mar 2025 14:56:15 -0500
+	id 1tqdnV-00080Q-D6; Fri, 07 Mar 2025 14:55:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liuwe@linux.microsoft.com>)
- id 1tqdnK-0007yv-Ug
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:43 -0500
+ id 1tqdnK-0007yZ-BB
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:42 -0500
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <liuwe@linux.microsoft.com>) id 1tqdnI-0005hx-Ac
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:42 -0500
+ (envelope-from <liuwe@linux.microsoft.com>) id 1tqdnI-0005i3-AY
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:41 -0500
 Received: by linux.microsoft.com (Postfix, from userid 1031)
- id 063962038F37; Fri,  7 Mar 2025 11:55:36 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 063962038F37
+ id 143082038F3B; Fri,  7 Mar 2025 11:55:36 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 143082038F3B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
  s=default; t=1741377336;
- bh=1lrxVIx5ILPDOZouKUv407Oimopn0BzJtR6nSVKMN8w=;
- h=From:To:Cc:Subject:Date:From;
- b=lmN2qPs9OqALMu107Rw7SWqSOmhZ5JOlxqmIc1VHXKd3NIr/zHmYYMyF1/5Tink/9
- C8uGssJKBWaEH2fxwlj0lRErPEDNi7zvhZlyTm2kBVf9okDDynf3RRTIi5knOkSybA
- z9q6sOkvgYvPp1o362A9VYM+Co03SzOup5PcPw44=
+ bh=AoIGXfPUFqblYJ9qFbRuKP1fGYQu1Y343cDG+VSqedM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=rr+4aolHrO+/Uk5i38QbSEqjUr/1A+fUqCi8JTO1n3i5nba2URiBYMv11N0rJ1Lat
+ qiGe/rUxIgpIG5vPS79PzLMJpOngBUi9UlNchSj+LwrBb5wosTgXHI/UHl21OudgmW
+ /lc61u3orcazzxUZ6XaboTLnrJmxO/x2MDwNOi7M=
 From: Wei Liu <liuwe@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
@@ -35,10 +35,12 @@ Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
  mukeshrathor@microsoft.com, magnuskulke@microsoft.com,
  prapal@microsoft.com, jpiotrowski@microsoft.com, deviv@microsoft.com,
  Wei Liu <liuwe@linux.microsoft.com>
-Subject: [PATCH v2 00/14] Factor out HVF's instruction emulator
-Date: Fri,  7 Mar 2025 11:55:11 -0800
-Message-Id: <1741377325-28175-1-git-send-email-liuwe@linux.microsoft.com>
+Subject: [PATCH v2 01/14] target/i386/hvf: introduce x86_emul_ops
+Date: Fri,  7 Mar 2025 11:55:12 -0800
+Message-Id: <1741377325-28175-2-git-send-email-liuwe@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1741377325-28175-1-git-send-email-liuwe@linux.microsoft.com>
+References: <1741377325-28175-1-git-send-email-liuwe@linux.microsoft.com>
 Received-SPF: pass client-ip=13.77.154.182;
  envelope-from=liuwe@linux.microsoft.com; helo=linux.microsoft.com
 X-Spam_score_int: -19
@@ -63,85 +65,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+This will be used to remove HVF specific code from the instruction emulator.
 
-Microsoft's Linux Systems Group developed a Linux driver for the Microsoft
-Hypervisor (MSHV for short). The driver is being upstreamed. The first
-supported VMM is Cloud Hypervisor. We want to add QEMU as the second supported
-VMM.
+For now we only introduce two hooks for x86_decode.c. More hooks will be added
+when the code is refactored.
 
-The plan is to write an mshv accelerator in QEMU. The accelerator is still in
-the works.
+The emulator initialization function now takes in a pointer to the ops structure.
 
-MSHV doesn't emulate instructions. VMMs are supposed to bring their own
-instruction emulator. The path we've chosen is to reuse what's already in QEMU.
-The instruction emulator in HVF looks good for what we need.
+Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
+---
+ target/i386/hvf/hvf.c     | 20 +++++++++++++++++++-
+ target/i386/hvf/x86_emu.c |  5 ++++-
+ target/i386/hvf/x86_emu.h | 10 +++++++++-
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
-This patch series makes the instruction emulator in HVF a common
-component for the i386 target. It removes HVF specific code by using a
-set of hooks. The new incoming MSHV accelerator will implement the
-hooks, and where necessary, enhance the emulator and / or add new hooks.
-
-The patches have been lightly tested by running a Linux VM on an Intel-based
-Mac. 
-
-Thanks,
-Wei.
-
-Changes in v2:
-1. Address comments from Paolo on variable and directory names.
-2. Rebase and drop the already applied patches.
-3. Add a new entry in MAINTAINERS.
-
-Wei Liu (14):
-  target/i386/hvf: introduce x86_emul_ops
-  target/i386/hvf: remove HVF specific calls from x86_decode.c
-  target/i386/hvf: provide and use handle_io in emul_ops
-  target/i386: rename hvf_mmio_buf to emu_mmio_buf
-  target/i386/hvf: use emul_ops->read_mem in x86_emu.c
-  taret/i386/hvf: provide and use write_mem in emul_ops
-  target/i386/hvf: provide and use simulate_{wrmsr,rdmsr} in emul_ops
-  target/i386: rename lazy flags field and its type
-  target/i386/hvf: drop unused headers
-  target/i386/hvf: rename some include guards
-  target/i386: add a directory for x86 instruction emulator
-  target/i386/emulate: add a panic.h
-  target/i386: move x86 instruction emulator out of hvf
-  MAINTAINERS: add an entry for the x86 instruction emulator
-
- MAINTAINERS                               |  8 +++
- target/i386/cpu.h                         |  8 +--
- target/i386/emulate/meson.build           |  5 ++
- target/i386/emulate/panic.h               | 45 ++++++++++++++++
- target/i386/{hvf => emulate}/x86.h        |  4 +-
- target/i386/{hvf => emulate}/x86_decode.c | 22 +++-----
- target/i386/{hvf => emulate}/x86_decode.h |  4 +-
- target/i386/{hvf => emulate}/x86_emu.c    | 62 +++++++++++------------
- target/i386/{hvf => emulate}/x86_emu.h    | 15 +++++-
- target/i386/{hvf => emulate}/x86_flags.c  | 56 ++++++++++----------
- target/i386/{hvf => emulate}/x86_flags.h  |  6 +--
- target/i386/hvf/hvf-i386.h                |  4 +-
- target/i386/hvf/hvf.c                     | 57 +++++++++++++++------
- target/i386/hvf/meson.build               |  3 --
- target/i386/hvf/vmx.h                     |  2 +-
- target/i386/hvf/x86.c                     |  4 +-
- target/i386/hvf/x86_cpuid.c               |  2 +-
- target/i386/hvf/x86_descr.h               |  2 +-
- target/i386/hvf/x86_mmu.c                 |  2 +-
- target/i386/hvf/x86_task.c                |  6 +--
- target/i386/hvf/x86hvf.c                  |  2 +-
- target/i386/meson.build                   |  1 +
- 22 files changed, 203 insertions(+), 117 deletions(-)
- create mode 100644 target/i386/emulate/meson.build
- create mode 100644 target/i386/emulate/panic.h
- rename target/i386/{hvf => emulate}/x86.h (99%)
- rename target/i386/{hvf => emulate}/x86_decode.c (99%)
- rename target/i386/{hvf => emulate}/x86_decode.h (99%)
- rename target/i386/{hvf => emulate}/x86_emu.c (95%)
- rename target/i386/{hvf => emulate}/x86_emu.h (75%)
- rename target/i386/{hvf => emulate}/x86_flags.c (83%)
- rename target/i386/{hvf => emulate}/x86_flags.h (97%)
-
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 9ba0e04ac756..03456ffbc705 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -229,6 +229,24 @@ hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
+     return hv_vm_create(HV_VM_DEFAULT);
+ }
+ 
++static void hvf_read_segment_descriptor(CPUState *s, struct x86_segment_descriptor *desc,
++                                        X86Seg seg)
++{
++    struct vmx_segment vmx_segment;
++    vmx_read_segment_descriptor(s, &vmx_segment, seg);
++    vmx_segment_to_x86_descriptor(s, &vmx_segment, desc);
++}
++
++static void hvf_read_mem(CPUState *cpu, void *data, target_ulong gva, int bytes)
++{
++    vmx_read_mem(cpu, data, gva, bytes);
++}
++
++static const struct x86_emul_ops hvf_x86_emul_ops = {
++    .read_mem = hvf_read_mem,
++    .read_segment_descriptor = hvf_read_segment_descriptor,
++};
++
+ int hvf_arch_init_vcpu(CPUState *cpu)
+ {
+     X86CPU *x86cpu = X86_CPU(cpu);
+@@ -237,7 +255,7 @@ int hvf_arch_init_vcpu(CPUState *cpu)
+     int r;
+     uint64_t reqCap;
+ 
+-    init_emu();
++    init_emu(&hvf_x86_emul_ops);
+     init_decoder();
+ 
+     if (hvf_state->hvf_caps == NULL) {
+diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
+index ebba80a36b50..c15b5a7ca850 100644
+--- a/target/i386/hvf/x86_emu.c
++++ b/target/i386/hvf/x86_emu.c
+@@ -1231,6 +1231,8 @@ static struct cmd_handler {
+ 
+ static struct cmd_handler _cmd_handler[X86_DECODE_CMD_LAST];
+ 
++const struct x86_emul_ops *emul_ops;
++
+ static void init_cmd_handler(void)
+ {
+     int i;
+@@ -1253,7 +1255,8 @@ bool exec_instruction(CPUX86State *env, struct x86_decode *ins)
+     return true;
+ }
+ 
+-void init_emu(void)
++void init_emu(const struct x86_emul_ops *o)
+ {
++    emul_ops = o;
+     init_cmd_handler();
+ }
+diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
+index bc0fc72c761b..1422d06ea184 100644
+--- a/target/i386/hvf/x86_emu.h
++++ b/target/i386/hvf/x86_emu.h
+@@ -23,7 +23,15 @@
+ #include "x86_decode.h"
+ #include "cpu.h"
+ 
+-void init_emu(void);
++struct x86_emul_ops {
++    void (*read_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
++    void (*read_segment_descriptor)(CPUState *cpu, struct x86_segment_descriptor *desc,
++                                    enum X86Seg seg);
++};
++
++extern const struct x86_emul_ops *emul_ops;
++
++void init_emu(const struct x86_emul_ops *ops);
+ bool exec_instruction(CPUX86State *env, struct x86_decode *ins);
+ void x86_emul_raise_exception(CPUX86State *env, int exception_index, int error_code);
+ 
 -- 
 2.47.2
 
