@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7FDA57294
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:57:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBE5A5729B
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:58:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqdnV-00080Q-D6; Fri, 07 Mar 2025 14:55:53 -0500
+	id 1tqdnW-00080s-Dk; Fri, 07 Mar 2025 14:55:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liuwe@linux.microsoft.com>)
- id 1tqdnK-0007yZ-BB
+ id 1tqdnJ-0007yY-Vh
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:42 -0500
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <liuwe@linux.microsoft.com>) id 1tqdnI-0005i3-AY
+ (envelope-from <liuwe@linux.microsoft.com>) id 1tqdnH-0005hz-3d
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:41 -0500
 Received: by linux.microsoft.com (Postfix, from userid 1031)
- id 143082038F3B; Fri,  7 Mar 2025 11:55:36 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 143082038F3B
+ id 2113E2038F3C; Fri,  7 Mar 2025 11:55:36 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2113E2038F3C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
  s=default; t=1741377336;
- bh=AoIGXfPUFqblYJ9qFbRuKP1fGYQu1Y343cDG+VSqedM=;
+ bh=7gUTKz65BdWqaOVlU2Edtf+4FVAYbqp85kvSHhFlsg0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=rr+4aolHrO+/Uk5i38QbSEqjUr/1A+fUqCi8JTO1n3i5nba2URiBYMv11N0rJ1Lat
- qiGe/rUxIgpIG5vPS79PzLMJpOngBUi9UlNchSj+LwrBb5wosTgXHI/UHl21OudgmW
- /lc61u3orcazzxUZ6XaboTLnrJmxO/x2MDwNOi7M=
+ b=KYXzTIuZgRUgpFKNHyxrCoy927T39uMHNyP5vuv6/f+r26cIEX8HseA8QACZWIvOp
+ VL1fgnSJXKjVYre9cSkHQvfcDFmOiP9u5XJDg1SKCPT/u4Z+6WVwIXZJRGVoi1JekC
+ ga8YzwqbAQqK1DCAc0nY6Q+YWNNBsryqpvxSQt40=
 From: Wei Liu <liuwe@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
@@ -35,9 +35,10 @@ Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
  mukeshrathor@microsoft.com, magnuskulke@microsoft.com,
  prapal@microsoft.com, jpiotrowski@microsoft.com, deviv@microsoft.com,
  Wei Liu <liuwe@linux.microsoft.com>
-Subject: [PATCH v2 01/14] target/i386/hvf: introduce x86_emul_ops
-Date: Fri,  7 Mar 2025 11:55:12 -0800
-Message-Id: <1741377325-28175-2-git-send-email-liuwe@linux.microsoft.com>
+Subject: [PATCH v2 02/14] target/i386/hvf: remove HVF specific calls from
+ x86_decode.c
+Date: Fri,  7 Mar 2025 11:55:13 -0800
+Message-Id: <1741377325-28175-3-git-send-email-liuwe@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1741377325-28175-1-git-send-email-liuwe@linux.microsoft.com>
 References: <1741377325-28175-1-git-send-email-liuwe@linux.microsoft.com>
@@ -65,102 +66,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be used to remove HVF specific code from the instruction emulator.
+Use the newly defined emul_ops. This allows the module to be reused
+by other accelerator in the future.
 
-For now we only introduce two hooks for x86_decode.c. More hooks will be added
-when the code is refactored.
-
-The emulator initialization function now takes in a pointer to the ops structure.
+No functional change intended.
 
 Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
 ---
- target/i386/hvf/hvf.c     | 20 +++++++++++++++++++-
- target/i386/hvf/x86_emu.c |  5 ++++-
- target/i386/hvf/x86_emu.h | 10 +++++++++-
- 3 files changed, 32 insertions(+), 3 deletions(-)
+ target/i386/hvf/x86_decode.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 9ba0e04ac756..03456ffbc705 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -229,6 +229,24 @@ hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
-     return hv_vm_create(HV_VM_DEFAULT);
- }
- 
-+static void hvf_read_segment_descriptor(CPUState *s, struct x86_segment_descriptor *desc,
-+                                        X86Seg seg)
-+{
-+    struct vmx_segment vmx_segment;
-+    vmx_read_segment_descriptor(s, &vmx_segment, seg);
-+    vmx_segment_to_x86_descriptor(s, &vmx_segment, desc);
-+}
-+
-+static void hvf_read_mem(CPUState *cpu, void *data, target_ulong gva, int bytes)
-+{
-+    vmx_read_mem(cpu, data, gva, bytes);
-+}
-+
-+static const struct x86_emul_ops hvf_x86_emul_ops = {
-+    .read_mem = hvf_read_mem,
-+    .read_segment_descriptor = hvf_read_segment_descriptor,
-+};
-+
- int hvf_arch_init_vcpu(CPUState *cpu)
- {
-     X86CPU *x86cpu = X86_CPU(cpu);
-@@ -237,7 +255,7 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-     int r;
-     uint64_t reqCap;
- 
--    init_emu();
-+    init_emu(&hvf_x86_emul_ops);
-     init_decoder();
- 
-     if (hvf_state->hvf_caps == NULL) {
-diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index ebba80a36b50..c15b5a7ca850 100644
---- a/target/i386/hvf/x86_emu.c
-+++ b/target/i386/hvf/x86_emu.c
-@@ -1231,6 +1231,8 @@ static struct cmd_handler {
- 
- static struct cmd_handler _cmd_handler[X86_DECODE_CMD_LAST];
- 
-+const struct x86_emul_ops *emul_ops;
-+
- static void init_cmd_handler(void)
- {
-     int i;
-@@ -1253,7 +1255,8 @@ bool exec_instruction(CPUX86State *env, struct x86_decode *ins)
-     return true;
- }
- 
--void init_emu(void)
-+void init_emu(const struct x86_emul_ops *o)
- {
-+    emul_ops = o;
-     init_cmd_handler();
- }
-diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
-index bc0fc72c761b..1422d06ea184 100644
---- a/target/i386/hvf/x86_emu.h
-+++ b/target/i386/hvf/x86_emu.h
-@@ -23,7 +23,15 @@
+diff --git a/target/i386/hvf/x86_decode.c b/target/i386/hvf/x86_decode.c
+index 5fea2dd3cc03..728e15963817 100644
+--- a/target/i386/hvf/x86_decode.c
++++ b/target/i386/hvf/x86_decode.c
+@@ -21,6 +21,7 @@
+ #include "panic.h"
  #include "x86_decode.h"
- #include "cpu.h"
+ #include "vmx.h"
++#include "x86_emu.h"
+ #include "x86_mmu.h"
+ #include "x86_descr.h"
  
--void init_emu(void);
-+struct x86_emul_ops {
-+    void (*read_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
-+    void (*read_segment_descriptor)(CPUState *cpu, struct x86_segment_descriptor *desc,
-+                                    enum X86Seg seg);
-+};
-+
-+extern const struct x86_emul_ops *emul_ops;
-+
-+void init_emu(const struct x86_emul_ops *ops);
- bool exec_instruction(CPUX86State *env, struct x86_decode *ins);
- void x86_emul_raise_exception(CPUX86State *env, int exception_index, int error_code);
+@@ -74,7 +75,7 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
+         break;
+     }
+     target_ulong va  = linear_rip(env_cpu(env), env->eip) + decode->len;
+-    vmx_read_mem(env_cpu(env), &val, va, size);
++    emul_ops->read_mem(env_cpu(env), &val, va, size);
+     decode->len += size;
+     
+     return val;
+@@ -1893,16 +1894,6 @@ static void decode_prefix(CPUX86State *env, struct x86_decode *decode)
+     }
+ }
  
+-static struct x86_segment_descriptor get_cs_descriptor(CPUState *s)
+-{
+-    struct vmx_segment vmx_cs;
+-    x86_segment_descriptor cs;
+-    vmx_read_segment_descriptor(s, &vmx_cs, R_CS);
+-    vmx_segment_to_x86_descriptor(s, &vmx_cs, &cs);
+-
+-    return cs;
+-}
+-
+ void set_addressing_size(CPUX86State *env, struct x86_decode *decode)
+ {
+     decode->addressing_size = -1;
+@@ -1914,7 +1905,8 @@ void set_addressing_size(CPUX86State *env, struct x86_decode *decode)
+         }
+     } else if (!x86_is_long_mode(env_cpu(env))) {
+         /* protected */
+-        x86_segment_descriptor cs = get_cs_descriptor(env_cpu(env));
++        x86_segment_descriptor cs;
++        emul_ops->read_segment_descriptor(env_cpu(env), &cs, R_CS);
+         /* check db */
+         if (cs.db) {
+             if (decode->addr_size_override) {
+@@ -1950,7 +1942,8 @@ void set_operand_size(CPUX86State *env, struct x86_decode *decode)
+         }
+     } else if (!x86_is_long_mode(env_cpu(env))) {
+         /* protected */
+-        x86_segment_descriptor cs = get_cs_descriptor(env_cpu(env));
++        x86_segment_descriptor cs;
++        emul_ops->read_segment_descriptor(env_cpu(env), &cs, R_CS);
+         /* check db */
+         if (cs.db) {
+             if (decode->op_size_override) {
 -- 
 2.47.2
 
