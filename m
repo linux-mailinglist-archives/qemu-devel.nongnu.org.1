@@ -2,80 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD3CA56834
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 13:51:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBC9A56883
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 14:11:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqX9c-0003Fz-SP; Fri, 07 Mar 2025 07:50:16 -0500
+	id 1tqXSf-0002gt-Cw; Fri, 07 Mar 2025 08:09:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tqX9a-0003Fg-08
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 07:50:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tqXSa-0002gO-Vz; Fri, 07 Mar 2025 08:09:53 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tqX9X-0007oI-Ut
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 07:50:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741351811;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cgV/pvMnRUZe3L0K1px6mUMs3Y2qJX8dFvbLZsIPMG8=;
- b=Pz1O511DDTOjgyj/3EnwFOFhgPRpESYbKpXBYbfXVG5gGXbVlTFZzd4uRBP0RJ1Yk2bikE
- dCgD1oD54G8nEh7h36V+uGoO2pSi4CW83HdUesVHsAi+S/IOYY37n9FWG2vxftHXrPEE+6
- wlobEqKO/BjcZN5N7pxnVBqftu8+RKs=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-rEC5AfvEPDKUn5G-Tvwjew-1; Fri,
- 07 Mar 2025 07:50:07 -0500
-X-MC-Unique: rEC5AfvEPDKUn5G-Tvwjew-1
-X-Mimecast-MFC-AGG-ID: rEC5AfvEPDKUn5G-Tvwjew_1741351806
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CABDB180035E; Fri,  7 Mar 2025 12:50:06 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.49])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EB00718009AE; Fri,  7 Mar 2025 12:50:02 +0000 (UTC)
-Date: Fri, 7 Mar 2025 12:49:59 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>,
- Andrea Bolognani <abologna@redhat.com>
-Subject: Re: New git repository for Go bindings
-Message-ID: <Z8rrd8DoLUVh_Je1@redhat.com>
-References: <xu3qsijvpbguwdnlj6ovomlkd2wggd76x2lvfusmczljhnmx4f@kgw6di2754ta>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1tqXSY-0001Cu-RS; Fri, 07 Mar 2025 08:09:52 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6859C4E600F;
+ Fri, 07 Mar 2025 14:09:46 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id FgsFW1snAfMK; Fri,  7 Mar 2025 14:09:44 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 2C7BD4E6000; Fri, 07 Mar 2025 14:09:44 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 2A60E74577C;
+ Fri, 07 Mar 2025 14:09:44 +0100 (CET)
+Date: Fri, 7 Mar 2025 14:09:44 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+cc: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 0/5] ppc/amigaone patches
+In-Reply-To: <cover.1740673173.git.balaton@eik.bme.hu>
+Message-ID: <dea2992c-a705-e8aa-749d-8b544da7ac80@eik.bme.hu>
+References: <cover.1740673173.git.balaton@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <xu3qsijvpbguwdnlj6ovomlkd2wggd76x2lvfusmczljhnmx4f@kgw6di2754ta>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,56 +57,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 07, 2025 at 01:30:38PM +0100, Victor Toso wrote:
-> Hi,
-> 
-> I've been working on and off in having Go bindings for QEMU's
-> QAPI specification. The last version [0] seems to be accepted so
-> far but we would like not to have that in qemu.git.
-> 
-> In the past [1], Daniel suggested creating a repo per each
-> generated schema: go-qemu.git, go-qga.git, go-qsd.git
+On Thu, 27 Feb 2025, BALATON Zoltan wrote:
+> Hello,
 >
-> While that works well from the point of view of Go applications
-> and is neat organized too, afaict they are all bounded to QEMU's
-> release schedule so it might be enough to create a single repo
-> such as:
-> 
-> qapi-generators.git
-> └── golang
->     ├── module.py # The go generator
->     ├── qemu      # For qapi/qapi-schema.json
->     │   ├── doc.go
->     │   ├── gen_iface_command.go
->     │   ├── gen_iface_event.go
->     │   ├── gen_type_alternate.go
->     │   ├── gen_type_command.go
->     │   ├── gen_type_enum.go
->     │   ├── gen_type_event.go
->     │   ├── gen_type_struct.go
->     │   ├── gen_type_union.go
->     │   ├── go.mod
->     │   ├── protocol.go
->     │   └── utils.go
->     ├── qga # qga/qapi-schema.json
->     └── qsd # storage-daemon/qapi/qapi-schema.json
-> 
-> Or perhaps a per language repo?
+> v2:
+> - change unused read function to g_assert_not_reached()
+> - new patch to add defines to constants
+> - added R-b tags
 
-I'd suggest we keep the repo dedicated just for 'go' language, as mixed
-language repos are more trouble than they are worth when it comes to
-dealing with language specific build tools.
+Ping? Will there be a pull request for soft freeze with this series 
+included or do I need to do anything with this?
 
+Regards,
+BALATON Zoltan
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+> This series adds NVRAM and support for -kernel, -initrd and -append
+> options to the amigaone machine. This makes it easier to boot AmigaOS
+> and avoids a crash in the guest when it tries to access NVRAM.
+>
+> While the -kernel option emulates what U-Boot passes to the kernel,
+> old Linux kernels for amigaone may not work with it because of two
+> reasons: these come in legacy U-Boot Multi-File image format that QEMU
+> cannot read and even after unpacking that and creating a kernel uimage
+> it won't find PCI devices because it does not initialise them
+> correctly. This works when booted from U-Boot because U-Boot inits PCI
+> devices. So does my BBoot loader which can be used to load AmigaOS so
+> I don't intend to emulate that part of U-Boot.
+>
+> I'd like this to be merged for the next release please. When merging
+> please update https://wiki.qemu.org/ChangeLog/10.0 with the following:
+>
+> amigaone
+>
+> Added support for NVRAM and -kernel, -initrd, -append command line
+> options. By default the NVRAM contents are not preserved between
+> sessions. To make it persistent create a backing file with 'qemu-image
+> create -f raw nvram.bin 4k' and add -drive
+> if=mtd,format=raw,file=nvram.bin to keep NVRAM contents in the backing
+> file so settings stored in it will be preserved between sessions.
+>
+> To run AmigaOS with BBoot using the -kernel option at least BBoot
+> version 0.8 is needed. Older BBoot versions only work with -device
+> loader and cannot be used with -kernel on amigaone.
+>
+> Regards,
+>
+> BALATON Zoltan (5):
+>  ppc/amigaone: Simplify replacement dummy_fw
+>  ppc/amigaone: Implement NVRAM emulation
+>  ppc/amigaone: Add default environment
+>  ppc/amigaone: Add kernel and initrd support
+>  ppc/amigaone: Add #defines for memory map constants
+>
+> hw/ppc/amigaone.c | 284 +++++++++++++++++++++++++++++++++++++++++++---
+> 1 file changed, 271 insertions(+), 13 deletions(-)
+>
+>
 
