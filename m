@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40FDA570EB
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 19:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66841A570FD
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 19:59:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqcse-0007XF-Ii; Fri, 07 Mar 2025 13:57:08 -0500
+	id 1tqcsZ-0007UF-8U; Fri, 07 Mar 2025 13:57:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqcsP-0007Rh-Vz
+ id 1tqcsP-0007Rg-Vu
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:56:54 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqcsN-0007lO-0r
+ id 1tqcsN-0007lh-Np
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:56:53 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-22401f4d35aso43049595ad.2
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 10:56:50 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2feb91a2492so4019101a91.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 10:56:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741373809; x=1741978609; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741373810; x=1741978610; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Vo9EUeboH3pwKtes0Z0Mb9EvndFByljrwhTfKec7eDo=;
- b=nhFj/IK3z40Y/5Zd3T6HBeldI4dHNxZ5zTLO8+JBHgoI5X3qWBSkL99mEu45kC5HzC
- jrfw8gB5peqz4IN5eiOm4hx781MsqSm93ejM1Y0vWwT9G4dYcBtVRLhzq4XqPlun6olR
- mRn2mGi947rd8DVsLcP0XvD6kwXFJ1VCSq7T0Ux/0ZE8AjfkqQehTw8fMr4Q/mEMYwhP
- VXA3+NhjbmE9q5OfG2CB3I1sCN5AORcqbqZJk+QCr9B5vuZ4TAIp3XmfMZVsxF0JsM7k
- ald6ePaF5ceL3c3YUU25T7Hl4zRZDiwk0C5134HV7mooGZffu8uynlNvx/KeGpRNz9pi
- cSqA==
+ bh=k6rq6CIIqovi+rqTbWr+nZgRpCqEfphmlSslf2GR3LU=;
+ b=ApNry4HTsE4L5IdCITjCRkk4QHvKn5RWgFtJV+7RXL79FlqWTkPTk88rEVNsGNu2Zw
+ LXcyolFnOJiGJqKBFzpcqsoAR9je1LjjsoRYc9JAHvzCSQBSgP25b2ynf0uafbOaZeJB
+ I9Eh4lSTMmhDovl2mIcdyF4QbnweHAbPPjByXIL/Grv4qbbq9rzlhny2hGxfaPG+Gpz6
+ zfPuWzpo3kccyP5rrxGCneOQwoCXRZ+TpY3g3Q9Ad1Lm+5qG6vgPA5FQknGYrjgPz/Y2
+ v20X7qm2ySO4gAcij5IjxzzUS24KZUyrVW2Frz2kW1ctrK2Xksxw1SJTBuKyAhiPxX3O
+ f+ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741373809; x=1741978609;
+ d=1e100.net; s=20230601; t=1741373810; x=1741978610;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Vo9EUeboH3pwKtes0Z0Mb9EvndFByljrwhTfKec7eDo=;
- b=H0onRnCNrq/Uq8AqtjxGgyzCLpx1V6u7fE1DavMCmJ8Rze4/D6TXCDPqMpQHI70Fex
- bEZBDFbFqjY4CVycPiWhtwH5S3UL1CxdWxAWO2skxIEIpGLFEmx7LKfVJdwgV6WkHkwL
- BY++WPxRzMuASGUxA3YhM7hXZWYr8GRIX0zzFJ1jMpWdGroiCU8lD9Hszj4RTPnNSVGU
- HfSKvxD9g574GJbRw1M1YAYJPufGYXzhiVEtQZXfpfx6MDmIuz419UV/cEEvmaKjVgaz
- Z4DMDpENuqJzKY0JWj4K752cwPWaMpwb2rLaDG7J/KMNzti5dnaqNbxkSmwTWZ4x/Egc
- zWRg==
-X-Gm-Message-State: AOJu0YwD/mKGvAsHvaikPJz4WHfNSi1Euc4YXw82vai0KgZXo9SiHMRt
- yQ/tAqpFmKzvRDX4ttr9a6vunjt9pBpDLx/GJH/OVsKDRU/lVWDWjJ2hBlCwc0ZbIsss4l1Prdc
- f
-X-Gm-Gg: ASbGncszCLlS6va862daGWg3EZA+1CEhJcvq8Cl1WaOadRHFshzkR3MFCL3PLORUU0V
- jxI7Kxi/ACUKB96vFhkhLpRRxAtRhlNWcSGetEklU6pmOVT5Nhya7j20P4xVD5Z5lWbIaLRsuyZ
- ktD2G7cFsWzFePpRJ6ViDKbrwhZIYCRTDhGazD21x489/LAymNKXsx3vH9CtL2WOio/R5D6Q5hX
- dpusXBI3nqP26TGj6Rk+zIHF0OT/eQ06eNXnGStikR13T72BOHme5n6cbBYfgk+HFpkYA9br3mh
- eTxNqV/t9EFXw5NRSDlJeE91SgSMbM9fSUxBXV/8MV823OfV8zHepibXgwBVoWKz6oLTHUKNEdo
- I
-X-Google-Smtp-Source: AGHT+IGz+IGl0p1/KoWRnfRhFVwHK1ZC5+p8HozPLiHkUyNvRY8VHdGXy1/jcUIrhBYmUUHULLtYLA==
-X-Received: by 2002:a17:903:8c6:b0:223:47d9:1964 with SMTP id
- d9443c01a7336-22428ac953fmr78709045ad.34.1741373809531; 
- Fri, 07 Mar 2025 10:56:49 -0800 (PST)
+ bh=k6rq6CIIqovi+rqTbWr+nZgRpCqEfphmlSslf2GR3LU=;
+ b=UMBgtaAMes1YNtZ2h1Ge6uiXLjbD7KcWSb/ElH751nbl98durYsCpOBnQfYTcSx31F
+ 5d4NEXcUKBR2U8cDp07d6pP9E7JQ7ATgJsMEwEsLO3zzcu9VeWg30iFbV6yyYAOLjFiT
+ Z3t8SdT4UP4jeD6JT4R8BXN15bF1RvCjFUsySxcVGR88+xOderTwWChRMyLc/v7acl4y
+ Im3VYaJwNNHuNYKbhcQGyis7mr5LMSld+UAJ7UrXqdyfjuYotF2w65R1IQfcrkfwI7jZ
+ vg7RLHckckVswbN3QHJ7zBmGmNT0mjj/G3nP8UOiRoJtZe/GkaF/B1z0NFeAeRl4bn3c
+ 0Ong==
+X-Gm-Message-State: AOJu0Yx40Mi4E3twn8rdIQE64sJQ4Wyqb18c8CQdRsdYPPjEO1aD3dHY
+ +y5D+7egTny25B6aCZIYsbnUYwAYoV0X3ytmuXE/KNnxbCO0N9VxibtNDA8WKaYuJoqRLxOQKax
+ e
+X-Gm-Gg: ASbGncs6tbIt8WQJim40AkZ43r/xZrhwUeeNcVYnE4KP0k1F0WaBO88QWCiPSaNsfed
+ xD/+LHgMGu5QeTcxL5apW7P76hUDFcHjE0uLeS+/CuTtqX7pBgKhi22wwkS88Hsudylf6h5UhZI
+ Icn1n0O/x11oJ4WPmdpL5cHkKVv28QSjeDoLwBUX1sWiBw18MluLadK4S5pTizSrIPgZAFtbSJF
+ bLKEbnGc/L1e3DuMxmjvFXOU9mSYJEcPx9dxnuG0GdV7YuzNha6Xbk0sHi0uqw7uA4cjWr4w3Ba
+ uLumFKe92LCxwR+goZUdeirx3+IeVCgHXZDc6sdGKKg1yJ9cEkmGC8/7VHi5vvdesdWYMsq2/+k
+ 3
+X-Google-Smtp-Source: AGHT+IHm3ACmK48dcxvecCMc0q8ObbimEvoFT+PEBg5oQDTvsotjyz6ve+I+ZO6Vqa6s1AQ0+tMkVA==
+X-Received: by 2002:a17:90a:e7c2:b0:2ee:c91a:ad05 with SMTP id
+ 98e67ed59e1d1-2ff7ce52479mr6405940a91.3.1741373810325; 
+ Fri, 07 Mar 2025 10:56:50 -0800 (PST)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-2ff693534f8sm3391917a91.17.2025.03.07.10.56.49
@@ -65,17 +65,19 @@ Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  Fri, 07 Mar 2025 10:56:49 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org
-Subject: [PATCH 02/16] accel/tcg: Compile watchpoint.c once
-Date: Fri,  7 Mar 2025 10:56:31 -0800
-Message-ID: <20250307185645.970034-4-richard.henderson@linaro.org>
+Cc: philmd@linaro.org,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 03/16] exec: Declare tlb_reset_dirty*() in 'exec/cputlb.h'
+Date: Fri,  7 Mar 2025 10:56:32 -0800
+Message-ID: <20250307185645.970034-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307185645.970034-1-richard.henderson@linaro.org>
 References: <20250307185645.970034-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,77 +100,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move tb_check_watchpoint declaration from tb-internal.h, which is
-still target-specific, to internal-common.h, which isn't.
-Otherwise, all that is required to build watchpoint.c once is
-to include the new exec/cpu-interrupt.h instead of exec/exec-all.h.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+Move CPU TLB related methods to "exec/cputlb.h".
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-ID: <20241114011310.3615-14-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/internal-common.h | 2 ++
- accel/tcg/tb-internal.h     | 2 --
- accel/tcg/watchpoint.c      | 5 ++---
- accel/tcg/meson.build       | 2 +-
- 4 files changed, 5 insertions(+), 6 deletions(-)
+ include/exec/cputlb.h   | 7 +++++++
+ include/exec/exec-all.h | 3 ---
+ include/exec/ram_addr.h | 1 +
+ system/physmem.c        | 1 +
+ 4 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
-index 7ef620d963..9b6ab3a8cc 100644
---- a/accel/tcg/internal-common.h
-+++ b/accel/tcg/internal-common.h
-@@ -72,4 +72,6 @@ void tcg_exec_unrealizefn(CPUState *cpu);
- /* current cflags for hashing/comparison */
- uint32_t curr_cflags(CPUState *cpu);
+diff --git a/include/exec/cputlb.h b/include/exec/cputlb.h
+index ef18642a32..6cac7d530f 100644
+--- a/include/exec/cputlb.h
++++ b/include/exec/cputlb.h
+@@ -32,4 +32,11 @@ void tlb_unprotect_code(ram_addr_t ram_addr);
  
-+void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
+ #endif /* CONFIG_TCG */
+ 
++#ifndef CONFIG_USER_ONLY
++
++void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
++void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
++
++#endif
 +
  #endif
-diff --git a/accel/tcg/tb-internal.h b/accel/tcg/tb-internal.h
-index abd423fcf5..62a59a5307 100644
---- a/accel/tcg/tb-internal.h
-+++ b/accel/tcg/tb-internal.h
-@@ -75,6 +75,4 @@ void tb_invalidate_phys_range_fast(ram_addr_t ram_addr,
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 8eb0df48f9..f24256fb5e 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -486,9 +486,6 @@ static inline tb_page_addr_t get_page_addr_code(CPUArchState *env,
  
- bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc);
+ #if !defined(CONFIG_USER_ONLY)
  
--void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
+-void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
+-void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
 -
- #endif
-diff --git a/accel/tcg/watchpoint.c b/accel/tcg/watchpoint.c
-index 40112b2b2e..ba8c9859cf 100644
---- a/accel/tcg/watchpoint.c
-+++ b/accel/tcg/watchpoint.c
-@@ -19,11 +19,10 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/main-loop.h"
--#include "qemu/error-report.h"
--#include "exec/exec-all.h"
-+#include "exec/breakpoint.h"
-+#include "exec/cpu-interrupt.h"
- #include "exec/page-protection.h"
- #include "exec/translation-block.h"
--#include "tb-internal.h"
+ MemoryRegionSection *
+ address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr addr,
+                                   hwaddr *xlat, hwaddr *plen,
+diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+index 94bb3ccbe4..3d8df4edf1 100644
+--- a/include/exec/ram_addr.h
++++ b/include/exec/ram_addr.h
+@@ -23,6 +23,7 @@
+ #include "cpu.h"
+ #include "system/xen.h"
  #include "system/tcg.h"
- #include "system/replay.h"
- #include "accel/tcg/cpu-ops.h"
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 69f4808ac4..979ce90eb0 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -20,7 +20,6 @@ specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
++#include "exec/cputlb.h"
+ #include "exec/ramlist.h"
+ #include "exec/ramblock.h"
+ #include "exec/exec-all.h"
+diff --git a/system/physmem.c b/system/physmem.c
+index 8c1736f84e..a6af555f4b 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -32,6 +32,7 @@
+ #endif /* CONFIG_TCG */
  
- specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
-   'cputlb.c',
--  'watchpoint.c',
-   'tcg-accel-ops.c',
-   'tcg-accel-ops-mttcg.c',
-   'tcg-accel-ops-icount.c',
-@@ -30,4 +29,5 @@ specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
- system_ss.add(when: ['CONFIG_TCG'], if_true: files(
-   'icount-common.c',
-   'monitor.c',
-+  'watchpoint.c',
- ))
+ #include "exec/exec-all.h"
++#include "exec/cputlb.h"
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
+ #include "exec/translation-block.h"
 -- 
 2.43.0
 
