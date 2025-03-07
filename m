@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FC5A5672B
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 12:55:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA86EA5672D
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 12:55:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqWH8-0002OT-NO; Fri, 07 Mar 2025 06:53:58 -0500
+	id 1tqWHD-0002PE-DQ; Fri, 07 Mar 2025 06:54:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWH3-0002Nh-Up
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:53 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWHB-0002Op-0P
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:54:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWH2-0000Lk-Fd
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:53:53 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWH8-0000Mj-Ua
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:54:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741348432;
+ s=mimecast20190719; t=1741348438;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=v9KadL5vdr7SKy68eKgZ8dWZa4b1SmWVaaLeb6HSmlQ=;
- b=CD0rVS3hBIW7jwMiUAzoQOYNkl+dAqKI2116h00WOVvgfIvMOqifc2aSLY0BRLLgEk0qBp
- a+WPsZ/89eEUxQXApoGM6iSnbL1ok6P/cfncMS3ehKjkpmsaEAYzwIsjFaJiotRmzy3Hen
- z+5meEu+coDacV0vqgeu86vG6uAQV1U=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=zauGDAHW/VZ8KQXAC0Fs6S1Kmclqu/+eitmfaMVBHpU=;
+ b=Q6VjhsNV/d2Glx/CKTOqDKua3W3cn6xzm+CGJdZ2pkILRTpyj03O496ol5T77+mBq9HwSH
+ IJIWLpmM3/B1teYs1+tMrLyFz1klAV/E1esjQDwsMpdVIju2HARzSP9NNQJ2TSlAxYdI4s
+ ClRyMY8AGDpkdAzDmrDXKbg/02yzaUQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-14-DGRZ1yeiOpeN0orzR77kHg-1; Fri,
- 07 Mar 2025 06:53:50 -0500
-X-MC-Unique: DGRZ1yeiOpeN0orzR77kHg-1
-X-Mimecast-MFC-AGG-ID: DGRZ1yeiOpeN0orzR77kHg_1741348429
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-L0Y6Xg6-OhyyX9I90jUeHQ-1; Fri,
+ 07 Mar 2025 06:53:54 -0500
+X-MC-Unique: L0Y6Xg6-OhyyX9I90jUeHQ-1
+X-Mimecast-MFC-AGG-ID: L0Y6Xg6-OhyyX9I90jUeHQ_1741348433
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D0FA0195609F
- for <qemu-devel@nongnu.org>; Fri,  7 Mar 2025 11:53:49 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2BE001955BC9; Fri,  7 Mar 2025 11:53:53 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.60])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0C5A41944F2E; Fri,  7 Mar 2025 11:53:47 +0000 (UTC)
+ id 93E461944F2E; Fri,  7 Mar 2025 11:53:50 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: [PULL 11/15] tests/functional/test_virtio_balloon: Only use KVM for
- running this test
-Date: Fri,  7 Mar 2025 12:53:10 +0100
-Message-ID: <20250307115314.1096373-12-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Aditya Gupta <adityag@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 12/15] doc: add missing 'Asset' type in function test doc
+Date: Fri,  7 Mar 2025 12:53:11 +0100
+Message-ID: <20250307115314.1096373-13-thuth@redhat.com>
 In-Reply-To: <20250307115314.1096373-1-thuth@redhat.com>
 References: <20250307115314.1096373-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -81,43 +82,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The virtio_balloon test is currently hanging for unknown reasons
-when being run on the shared gitlab CI runners (which don't provide
-KVM, thus it's running in TCG mode there). All other functional tests
-that use the same asset (the Fedora 31 kernel) have already been
-marked to work only with KVM in the past, so those other tests are
-skipped on the shared gitlab CI runners. As long as the problem isn't
-fully understood and fixed, let's do the same with the virtio_balloon
-test to avoid that the CI is failing here.
+From: Aditya Gupta <adityag@linux.ibm.com>
 
-Message-ID: <20250307063904.1081961-1-thuth@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Seems 'Asset' got missed in the documentation by mistake.
+
+Also fix the one spellcheck issue pointed by spellcheck
+
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250306060706.1982992-1-adityag@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/test_virtio_balloon.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ docs/devel/testing/functional.rst | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/test_virtio_balloon.py b/tests/functional/test_virtio_balloon.py
-index 082bf08c4e8..5877b6c408c 100755
---- a/tests/functional/test_virtio_balloon.py
-+++ b/tests/functional/test_virtio_balloon.py
-@@ -110,6 +110,7 @@ def assert_running_stats(self, then):
+diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
+index bcb5509512e..a9fa45eac1f 100644
+--- a/docs/devel/testing/functional.rst
++++ b/docs/devel/testing/functional.rst
+@@ -251,7 +251,7 @@ Many functional tests download assets (e.g. Linux kernels, initrds,
+ firmware images, etc.) from the internet to be able to run tests with
+ them. This imposes additional challenges to the test framework.
  
-     def test_virtio_balloon_stats(self):
-         self.set_machine('q35')
-+        self.require_accelerator("kvm")
-         kernel_path = self.ASSET_KERNEL.fetch()
-         initrd_path = self.ASSET_INITRD.fetch()
-         diskimage_path = self.ASSET_DISKIMAGE.fetch()
-@@ -122,7 +123,7 @@ def test_virtio_balloon_stats(self):
-         # reset, we can reliably catch the clean stats again in BIOS
-         # phase before the guest OS launches
-         self.vm.add_args("-boot", "menu=on")
--        self.vm.add_args("-machine", "q35,accel=kvm:tcg")
-+        self.vm.add_args("-accel", "kvm")
-         self.vm.add_args("-device", "virtio-balloon,id=balloon")
-         self.vm.add_args('-drive',
-                          f'file={diskimage_path},if=none,id=drv0,snapshot=on')
+-First there is the the problem that some people might not have an
++First there is the problem that some people might not have an
+ unconstrained internet connection, so such tests should not be run by
+ default when running ``make check``. To accomplish this situation,
+ the tests that download files should only be added to the "thorough"
+@@ -274,7 +274,9 @@ the tests are run. This pre-caching is done with the qemu_test.Asset
+ class. To use it in your test, declare an asset in your test class with
+ its URL and SHA256 checksum like this::
+ 
+-    ASSET_somename = (
++    from qemu_test import Asset
++
++    ASSET_somename = Asset(
+         ('https://www.qemu.org/assets/images/qemu_head_200.png'),
+         '34b74cad46ea28a2966c1d04e102510daf1fd73e6582b6b74523940d5da029dd')
+ 
 -- 
 2.48.1
 
