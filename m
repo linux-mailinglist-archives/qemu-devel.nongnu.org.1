@@ -2,92 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BCBA572F8
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:36:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 641D8A57302
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 21:41:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqeQ1-0002ei-GE; Fri, 07 Mar 2025 15:35:41 -0500
+	id 1tqeUT-0004MU-K4; Fri, 07 Mar 2025 15:40:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqePz-0002bf-7i
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:35:39 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1tqeUQ-0004KU-QU
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:40:14 -0500
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tqePw-0000VM-W9
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:35:38 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2239c066347so43322915ad.2
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 12:35:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1tqeUN-0001tO-4O
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 15:40:14 -0500
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2ff69365e1dso3540290a91.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 12:40:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741379735; x=1741984535; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=55VOhjWRhDe/7IYo72PG5VcIlizMahQVvsMB9m8Ew0g=;
- b=w69ZLfK5Hdjvh6SgQyTbdZdPPwyi0Pxa2uM8NdgokqzvmMRPIGFUBTa5MU6uynkurL
- LCYfmJZqgW2isJx+8iWT55gwxoGGZLiDXh4bbfduIVpT0kPVEWC3RYqlJ05BA/3BUyPx
- WceUa4DYhhCJ2zYI5Ix6T5bSTCjS3eCnaYVuUQ8YkZtCq+A8GWoLtVGK461YymOQAOMw
- oievNizWHTmFtt2VTkE67YjDCi6HFNCJvutdYZ84XcT9hnIcgQw31yuEkHBc8H6cWcwg
- 7UwU+AoKXnXbCxNkvUXxn1LpMLtpa+8n2Xp/LDyrhSGCEO+8/3hX4GVoZ05UywOa3q+T
- tziA==
+ d=sifive.com; s=google; t=1741380009; x=1741984809; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dppJGFKe0O8FEfkLqUZJx0Vx/phQ/obvZ/lkzgf8YXE=;
+ b=OodR2xMsmzCUPRieRDPRKUb7fuqm0snDPpxT0mWzr1Zu1rud41ebKMaa7jszr7rdTf
+ kDVCvIi1sRbKk7M0XRM1lqPF1fwYSJRKUfdauINUc/HZjIqR7tCP8bb3AS8dpR2iFWgR
+ xW7aAfGpSXdkGZUkfbqqw4lfBxwKqA88DtGR50MpvwFwFi60HJI8UrUKMDfvBeQrPcQp
+ eutJ9dUtBg2dygFD3lxe+QtWtn/DppVpqtCyUSsQa1+oNHOs/SupwLNanXcNGwC/SW+8
+ +eK/nlNOnlvTiGOAtHuypNVIiHVtgErxnj62W+93t8ohsJoMDNuroIQ6Pmuz8yyKZi/1
+ k1gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741379735; x=1741984535;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=55VOhjWRhDe/7IYo72PG5VcIlizMahQVvsMB9m8Ew0g=;
- b=RIsxMtd+KSa7r1vQ2TU4yFLmuZrX4QQ/i9uIitjbkV2RhPkcJ3QTSCWkNpd2amKeCQ
- hTLn7sEiAUviyzmTCJPfNOWJ7JB6EXQSI0jVuQNn/bAgQ9NE9gwcF1EXNrXh2Uyzuw+d
- zxspR4TPqzf7/421hazG6dFEN4IguHzhKz+KKVlWxI9XEoPeQCp2vXJgb0sZF5+YhovS
- zq6M8DU5qL7QQn9DQ1m/PfCZEvkmNZ9C8D/RXfDirkyMh74LvMMHgadO5wiCuBNyZ58u
- TXbKRdIapB01vr3TFbLT3AZh6BJ3/ElfeEYpecOSdo1CpLMKWU92XpsbAvQK6Q7Cuucn
- +T1A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUNxkZTSJD7LFAgxuDOAl3QW+qqZ0bEEcaEBObp85MSm6YKIQW/b9Ba3Os+CXa33BAknGYqsdbCTBdc@nongnu.org
-X-Gm-Message-State: AOJu0Yy69p9y47p85Tn6OB8UpaYdU6k8iLG2C4tLLyRVWQioqkDOa8pr
- jW5MW1xFEkg7O1SgN6JaMQoGiACp7x/nU9KRB3nDvpJXqFzpupVKjTg4aSAL67Y=
-X-Gm-Gg: ASbGncsQrVwjSlTUI+ebKg6aEA3wZ50nE4A+s7U1iLcDRZw3HhUTXrCKLcASAKtFxhn
- rn0cQp118ZWSFZthPTNtFDyCpJi6DZengo9cWAb3SSy7YIeLlUkVVTCXV8B21SX0kEsPQOmX5wN
- SqVpi//EQZeCmEK7iGY6h4bDM7APA3hkwZNYFqV3l2Sp7ho6IYxXsPcVGPoqIeCgvZPrgsYXAU2
- qlpf66sYPR1AIko4yZYjNbzk7CdyuLhaAjbuDZrg43QfTsbgiZI3O5Je6hMFqwaYe17LwaS0pWj
- sjzaSIaJFzd9lFB13WBBgBE4rUly87+dw4CpNPSny0Xn5uyw7aGF+D6gYeau057neuDNG1PIdHO
- Yo24vTQTa
-X-Google-Smtp-Source: AGHT+IFfexELkHA7JPXy6T2DUrULw5Helws9GwQ6ek/j/lv6r4suPV3AiKPhajEcJVC9kGFmoGUFEg==
-X-Received: by 2002:a17:902:e74f:b0:215:9bc2:42ec with SMTP id
- d9443c01a7336-22428c0f643mr72368005ad.47.1741379735459; 
- Fri, 07 Mar 2025 12:35:35 -0800 (PST)
-Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
+ d=1e100.net; s=20230601; t=1741380009; x=1741984809;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dppJGFKe0O8FEfkLqUZJx0Vx/phQ/obvZ/lkzgf8YXE=;
+ b=JpXNBIENblvTmHqiAvA55oeP6rSCNlFQ8a13BTdMvhLu2XPBY+zhJ7iFfuBFcOTwQu
+ ydxLP4Bd9OLSeUzC78w0Xlf+lFPtjguTgK8Jgpi2b0gz8sitLjlJ/NTRLIYoOWapy+g2
+ cNlEgnccZbn7H6gRff/WnBI2jMzDph5xZnF2Jblae2eM3JXz8a03IAPsrKiionNQLxOU
+ 9jDHIRRrHierp/edSUzELxHNnxh1OmxJRrt7A27v0a/AfRAOc1hBrOZ5wpkS2oudrNQi
+ R+2ZFLM9xrXnGZAFtsZbb6nfLFxreHaNvlRQGlsJ9oXnMJEPZM8qEMQtjMmtNFuAE8wv
+ 9VlA==
+X-Gm-Message-State: AOJu0YxxZHfQMzaSON/jdt7j9YayytQQ6SOl+B5Gajpso0rDydrmegll
+ O90HJZlhXFkp2FTwjxnHHfGC5TjbHnosZP28xlXfcXV2A0qS1WVBLEPep0tt9nsbTm4QVv2MTJb
+ IHVmerOMXQXQmAO4RyfPYcCNqqAYArAPN9riCV+WDIaMlEhkbxyxF3U1HbLTfVaDxO+1q2obcV+
+ hpV+bvs9+MlVlPRVGZ1q6BIbRbcQOBsvycTB/xPTg=
+X-Gm-Gg: ASbGncsSv12ksytJclk/R9QAgBDBmtRTjM+biGMuZr+egBxZ+SkxUhD0PUh3aukh32z
+ HjGd0/cXsruGa5ycAsTcHFdKHrtIA/jw67MMcsvuwZ3nLBhHXk492elx12+XHVK4f3sEcOqqhNR
+ /a6Rz2UeIpXiKmCouDEGe1Pd5YXrhkH02AKSc96SGm247zHJekc1R/0Kbr5mqvliyCxJIP5X1ye
+ A2QXx7nZYzRGAmqbGA+UyJO77I0dLlBJ9bufyIvGi+rvVm0x9auewu6k5IvRW0ZG19xz+N5eOys
+ RpANIOcYOvFs2fQ2M8Q9OknwitXVK97noc0VDxVn7UJyR1ZB3m3FZVIfv05Nt8xJ3AX5M8ol
+X-Google-Smtp-Source: AGHT+IG1Y4/xz6hk0YT4x0gmAAUF+JK6ZT9SziZSR1qtLRcv8OhlbExiO8LM/5kenrUZGBovoHmx2Q==
+X-Received: by 2002:a17:90b:1dce:b0:2ff:62f3:5b19 with SMTP id
+ 98e67ed59e1d1-2ff7ce6f0bcmr7494655a91.13.1741380008547; 
+ Fri, 07 Mar 2025 12:40:08 -0800 (PST)
+Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff5aa3d3ccsm3268445a91.0.2025.03.07.12.35.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Mar 2025 12:35:35 -0800 (PST)
-Message-ID: <b2ceaf87-1e1c-414a-abc2-b2b6239ceee0@linaro.org>
-Date: Fri, 7 Mar 2025 12:35:33 -0800
+ 98e67ed59e1d1-2ff5aa3d3ccsm3270900a91.0.2025.03.07.12.40.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 07 Mar 2025 12:40:08 -0800 (PST)
+From: Jason Chien <jason.chien@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-arm@nongnu.org (open list:MCIMX7D SABRE / i...),
+ Jason Chien <jason.chien@sifive.com>
+Subject: [PATCH 0/4] Integrate IOMMUs with PCI hosts that have ATUs
+Date: Sat,  8 Mar 2025 04:39:33 +0800
+Message-ID: <20250307203952.13871-1-jason.chien@sifive.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/14] hw/vfio/pci: Check CONFIG_IOMMUFD at runtime using
- iommufd_builtin()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20250307180337.14811-1-philmd@linaro.org>
- <20250307180337.14811-12-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250307180337.14811-12-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=jason.chien@sifive.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,20 +107,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/25 10:03, Philippe Mathieu-Daudé wrote:
-> Convert the compile time check on the CONFIG_IOMMUFD definition
-> by a runtime one by calling iommufd_builtin().
-> 
-> Since the file doesn't use any target-specific knowledge anymore,
-> move it to system_ss[] to build it once.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   hw/vfio/pci.c       | 38 ++++++++++++++++++--------------------
->   hw/vfio/meson.build |  2 +-
->   2 files changed, 19 insertions(+), 21 deletions(-)
+The struct PCIIOMMUOps is designed for use by an IOMMU, but many PCI hosts
+also utilize it to implement their ATUs, preventing coexistence with IOMMUs.
+Overwriting a PCI host’s PCIIOMMUOps disrupts its translation rules.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+This patch series introduces a mechanism to route inbound transactions from
+PCI hosts to the IOMMU, enabling proper integration.
 
-r~
+The final patch depends on another patch series:
+https://lists.nongnu.org/archive/html/qemu-riscv/2025-03/msg00003.html
+
+Jason Chien (4):
+  include/hw/pci: Introduce a callback to set the downstream mr of PCI
+    hosts
+  hw/pci: Introduce an API to set PCI host downstream mr for IOMMU
+    integration
+  hw/pci-host/designware: Implement PCIIOMMUOps.set_downstream_mr()
+  hw/riscv/riscv-iommu: Connect the IOMMU with PCI hosts that have ATUs
+
+ hw/pci-host/designware.c         | 18 +++++++++++++++---
+ hw/pci/pci.c                     |  8 ++++++++
+ hw/riscv/riscv-iommu.c           | 15 ++++++++++-----
+ include/hw/pci-host/designware.h |  2 ++
+ include/hw/pci/pci.h             | 21 +++++++++++++++++++++
+ 5 files changed, 56 insertions(+), 8 deletions(-)
+
+-- 
+2.43.2
+
 
