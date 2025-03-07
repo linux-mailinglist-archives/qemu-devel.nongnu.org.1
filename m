@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEA4A5728F
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:57:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B9EA5729C
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 20:58:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqdoF-00008U-8k; Fri, 07 Mar 2025 14:56:39 -0500
+	id 1tqdoG-0000CF-Hh; Fri, 07 Mar 2025 14:56:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liuwe@linux.microsoft.com>)
- id 1tqdnX-00082A-TH
+ id 1tqdnX-000824-JU
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:57 -0500
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <liuwe@linux.microsoft.com>) id 1tqdnV-0005jQ-9D
+ (envelope-from <liuwe@linux.microsoft.com>) id 1tqdnU-0005j9-Ud
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 14:55:55 -0500
 Received: by linux.microsoft.com (Postfix, from userid 1031)
- id 8D1C52038F44; Fri,  7 Mar 2025 11:55:36 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8D1C52038F44
+ id 9A56E2038F45; Fri,  7 Mar 2025 11:55:36 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9A56E2038F45
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
  s=default; t=1741377336;
- bh=d2fAZu/PqNY8jlcVhUGXW696gJRHNcwPYg4hhYIubaQ=;
+ bh=wko9NSUtTzxuwrIr0xBH/rqNI4WCU4pJxRtsNFqwGu0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=G+tkSlTqHODBYxoPladG5QPvx6CUKV1qUOA+oaTvrrUlvr22H8aMe7zYNVzSS8Ou2
- j04ZDsWrzylKELx2HFgjxjDm8Z0NShYs2XaRq6Pj6CH3ez7Q+tipAE8JqGfTyjbeFi
- L1FXTzaSwF/sPcn//vE0dft1ky1WFcHnnOdhAxIM=
+ b=A0pAfB2k3dIgIAouvf4rlsiiQA7PpeLI6Gaqq7a5rFVgaq7H6qGI0y4lGE89qYA4G
+ nN2Ev12KkPc/88W9L2lvm7ZhU3EjyvcKfZTKISegKmkOgMxmv27te5LzpETSIFvNJR
+ v+EEGI3G+evHoJZVE3KpwfZ/aMbnxdO33vunu4/s=
 From: Wei Liu <liuwe@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
@@ -35,9 +35,10 @@ Cc: wei.liu@kernel.org, dirty@apple.com, rbolshakov@ddn.com,
  mukeshrathor@microsoft.com, magnuskulke@microsoft.com,
  prapal@microsoft.com, jpiotrowski@microsoft.com, deviv@microsoft.com,
  Wei Liu <liuwe@linux.microsoft.com>
-Subject: [PATCH v2 10/14] target/i386/hvf: rename some include guards
-Date: Fri,  7 Mar 2025 11:55:21 -0800
-Message-Id: <1741377325-28175-11-git-send-email-liuwe@linux.microsoft.com>
+Subject: [PATCH v2 11/14] target/i386: add a directory for x86 instruction
+ emulator
+Date: Fri,  7 Mar 2025 11:55:22 -0800
+Message-Id: <1741377325-28175-12-git-send-email-liuwe@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1741377325-28175-1-git-send-email-liuwe@linux.microsoft.com>
 References: <1741377325-28175-1-git-send-email-liuwe@linux.microsoft.com>
@@ -65,66 +66,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These headers will be moved out to its own component.
-
 Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
 ---
- target/i386/hvf/x86.h        | 4 ++--
- target/i386/hvf/x86_decode.h | 4 ++--
- target/i386/hvf/x86_flags.h  | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+v2: name the directory emulate
+---
+ target/i386/emulate/meson.build | 0
+ target/i386/meson.build         | 1 +
+ 2 files changed, 1 insertion(+)
+ create mode 100644 target/i386/emulate/meson.build
 
-diff --git a/target/i386/hvf/x86.h b/target/i386/hvf/x86.h
-index 063cd0b83ec9..73edccfba006 100644
---- a/target/i386/hvf/x86.h
-+++ b/target/i386/hvf/x86.h
-@@ -16,8 +16,8 @@
-  * License along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
+diff --git a/target/i386/emulate/meson.build b/target/i386/emulate/meson.build
+new file mode 100644
+index 000000000000..e69de29bb2d1
+diff --git a/target/i386/meson.build b/target/i386/meson.build
+index 2e9c472f49d3..c1aacea61356 100644
+--- a/target/i386/meson.build
++++ b/target/i386/meson.build
+@@ -31,6 +31,7 @@ subdir('whpx')
+ subdir('nvmm')
+ subdir('hvf')
+ subdir('tcg')
++subdir('emulate')
  
--#ifndef HVF_X86_H
--#define HVF_X86_H
-+#ifndef X86_EMU_DEFS_H
-+#define X86_EMU_DEFS_H
- 
- typedef struct x86_register {
-     union {
-diff --git a/target/i386/hvf/x86_decode.h b/target/i386/hvf/x86_decode.h
-index a2d7a2a27b68..930d965164a4 100644
---- a/target/i386/hvf/x86_decode.h
-+++ b/target/i386/hvf/x86_decode.h
-@@ -15,8 +15,8 @@
-  * License along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
- 
--#ifndef HVF_X86_DECODE_H
--#define HVF_X86_DECODE_H
-+#ifndef X86_EMU_DECODE_H
-+#define X86_EMU_DECODE_H
- 
- #include "cpu.h"
- #include "x86.h"
-diff --git a/target/i386/hvf/x86_flags.h b/target/i386/hvf/x86_flags.h
-index 75c2a7feab53..6c175007b571 100644
---- a/target/i386/hvf/x86_flags.h
-+++ b/target/i386/hvf/x86_flags.h
-@@ -21,8 +21,8 @@
-  * x86 eflags functions
-  */
- 
--#ifndef X86_FLAGS_H
--#define X86_FLAGS_H
-+#ifndef X86_EMU_FLAGS_H
-+#define X86_EMU_FLAGS_H
- 
- #include "cpu.h"
- void lflags_to_rflags(CPUX86State *env);
-@@ -78,4 +78,4 @@ void SET_FLAGS_OSZAPC_LOGIC16(CPUX86State *env, uint16_t v1, uint16_t v2,
- void SET_FLAGS_OSZAPC_LOGIC8(CPUX86State *env, uint8_t v1, uint8_t v2,
-                              uint8_t diff);
- 
--#endif /* X86_FLAGS_H */
-+#endif /* X86_EMU_FLAGS_H */
+ target_arch += {'i386': i386_ss}
+ target_system_arch += {'i386': i386_system_ss}
 -- 
 2.47.2
 
