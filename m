@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0020EA57016
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 19:06:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B72A5701E
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 19:07:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqc3h-000447-8h; Fri, 07 Mar 2025 13:04:29 -0500
+	id 1tqc3e-0003tz-N8; Fri, 07 Mar 2025 13:04:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqc3Y-0003pC-IG
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqc3a-0003pU-0a
  for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:04:22 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqc3S-0002C5-Vp
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:04:16 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43690d4605dso13550675e9.0
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 10:04:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqc3Y-0002Cw-A3
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 13:04:21 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43bb6b0b898so18299055e9.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 10:04:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741370653; x=1741975453; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741370658; x=1741975458; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MrW4KPeEMsJGAah1rF/LLgEoRbvBGZD/GNv5niDZ+2Y=;
- b=slcup8ATBtXMjaMZKZunoCV9PcZRR83l4OITejKb0GtynPUukaY9c0DaWS/Gpk0fRc
- TAUG2EUSHzRzoij/DCSkBqGyjqwdv31FXaLBGjBXm5nROjrKf3dvVaz4/TcSWBAkVbNo
- lGBuBrzFz2k8dqEZTTMGjlJU93njeprZ9MXDP035DteSHUGD2EAfxUMw5P8ypubEhEic
- hRbvbaMoxUUljSa/HPjNQiOOUFdqyoHhdaINmfNQj+0TLduVJX7SpH6YTfQyK0PVIhqE
- tINgySvpxMXbMlT8Gs4cAFDnJzL36tqIpgkl6QJJvGwsBRFX+q5BECNjDak33UEvBlb5
- TJ5Q==
+ bh=qbL4jYEWkDOTQMFiCDljIBBdBkk1lhILqkIilS+kSdQ=;
+ b=HKVoIiIoAJ1gDmGpff2w+WFjxf+iITnwQ6amPSOGbkNwnCInuvmE8kA+zGQyxTuOOx
+ f9XjHxD/eSoFEliyozU9urdyM8BMxlSJTjsI/eh4cXYPQGcj/S6fI2jDcCXU3UrHJgMy
+ GIepAVnNmOnawNJXawQNLLCywj49zcyJdYipyQVfR63eUvPZs6GTjp1CzxdFINh4RcGa
+ srcQK3+qOaRUEBZLNrFU4syMfJYiRM3eqeShGovwM84QaK0oA96ZlRlQPiYVeHeiqEiF
+ xQP7BY2skNNlfQoC8xETef61Jm7OwCeUgPiqt0lUVkcoQdbO3fVTWNB3t7L8lgRtHfgy
+ TX3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741370653; x=1741975453;
+ d=1e100.net; s=20230601; t=1741370658; x=1741975458;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MrW4KPeEMsJGAah1rF/LLgEoRbvBGZD/GNv5niDZ+2Y=;
- b=nAIvov7HYmuau4gUgEzJKiaXOQQYL1iHyDvw5R30b6J5ItiraSUEXw/FdegC2YWCXA
- UNTuFTezAIJVIPoX6elV2Fn7gUHH3fArBeUXouTRRLkHGuqwfxMVHfmzwd9sQ77IKeDy
- 7Y9CrseiEkQO5dR0hIbKFlYoKQOnuDcFXk4mJlfJNQqc6pa3zAVPXL62Bq7oL3bf6NNs
- hY3QwDADkpb4+LrryUcFX8dbHthz2ep/L2Su7aKpRC65dyfyPP76WPTECFVHffAXwPZW
- 8aeyMfKJiADsCYWPeU4pUQlqbJLSrR3ztUD/qFXGEUsqNcwsH36suzTNlNUBVBUyQp2X
- 2U7w==
-X-Gm-Message-State: AOJu0YyeYjiZ5EtVR+ON+8n+imHcV+RZwwuQOW/KsTFKxFgvQmE3hnEj
- QEjgAtLo4DxdJdeylJAdzYtFLUsm3PVXBj6/VzW3ZfE8y6IdExFETNH4LpIfx4rOVe0515p4FLh
- TDSY=
-X-Gm-Gg: ASbGncvuBsBiJKA/mBX+9I7Ypo+KjwIm4q+eoZv38iRHjQo2NApINwHLq9pbsrHg0J2
- vMK35HsttVwHLdw0sIUAceAY4kUncI642OaThsFuFP0CJf4Xpkfkp/fWzp6fe7xow8XXH6XdLQV
- ErgF3p1gcJuH/vHFvvT1yEMReFOfkTFNtRjQarO/CQkSAF1fKexnkxYWbRB9a843aUMwZRNP/pZ
- rpYAA9RHzFHHaOMpbfOg8tOIW+OxBWKYQO64+665YW3Wg5OTBhwo7c0Pxu9UsVsPUqf5Ei+RUhS
- jhkPkpP4eLBUwjI/s9yY/LBz1+j2zFTxICVqtWNarR+QcPdcgwgkb5oWTcqD2JXNj+gqkrTNlPz
- 5QHUW8cxTz2JURXqY1QY=
-X-Google-Smtp-Source: AGHT+IGFTJtAtCuhG8E9BzVu/Ipl6XSR97mVKepvf/WN8vp2isiEEQxnLWYj7XYHqmF1ObgwOUeF7w==
-X-Received: by 2002:a05:600c:4f87:b0:439:9828:c425 with SMTP id
- 5b1f17b1804b1-43c601d9508mr32710975e9.7.1741370652735; 
- Fri, 07 Mar 2025 10:04:12 -0800 (PST)
+ bh=qbL4jYEWkDOTQMFiCDljIBBdBkk1lhILqkIilS+kSdQ=;
+ b=gEOy3aQRdR7hN2wdbFZUEV0USvHhjva5Ycu6vzSs0sp5Uzvn5W7l83aa4joaAvTbKf
+ K72H97SBJgPqfx8yacc7wcHl6QohF3wMCKvr6dfr7479Ge9B/7tebgom7Hemv3yW2DQX
+ OT2pADo8LANhz+fY7sfBVevvom31oeRNqYF5IW5z98lRoQYi0/DKQkUiS4bnrZhOw67s
+ B6pgJ0UMwJx8SUflym/TeicePtF2jW/RF1GlQcZpHqcw0eGS0/t071dXg6iLzfMB9fpV
+ pBHtLQ8P1WbggB5yyA3MZWPGjDrojh4ZI9FmP+z0i0cDvqKcCLPx0juuUvoA7rP1c643
+ GdFw==
+X-Gm-Message-State: AOJu0Yzi00PW87sb08D9u0JyprutBOFLveb5kito8YDLwfJIUMqdlk+F
+ WzRama4ZJN/vbtKLSXrAXHL7DSYOpthWLf9G7kUoQrb+lNRizZm7DzDpRHfUoPM6ltPf+ZwoUmk
+ TKSs=
+X-Gm-Gg: ASbGncubgERqsF3iRe3H0iaX6dAjloXhJUeaVsc9cV7evMUyiEqK5uwpcgDBCIRqC8p
+ 7Drl70k6Za5898weMtOQjk7Yyzq23KRGr3flaQI4mgG4f/DGpuwmnjnn565F3zzW/R2x24ABlIj
+ Ic4cY2uNspXGli7kg8WFlkvnLnw391xJOzL+fZXzNOfGR3XV6xJM4Ne2Z87m8lpXQT/sp+0MTeV
+ UPvR3hCZvLmUN+7e5eLEP7H4xMIMH+V6td0q7p0jesmTYw9iHgOOobubtJRRQAExvgj+R8/vzFh
+ VT4PlBqZs5GAOf6y7p34melhghTcXYJ7WKr1d0iN5vIMn3KFjHSz/3ulS5UCsdfu9yibA9xW+Ap
+ In0CC02t5a762QnPNTSo=
+X-Google-Smtp-Source: AGHT+IEc0uflM7XSjD6JKBXbS+veYnGpRErIZqn03oBD1gdH1lamqtUvX68sdYGTF8GJTCscI5i4zw==
+X-Received: by 2002:a05:600c:5117:b0:43b:d12a:40e4 with SMTP id
+ 5b1f17b1804b1-43c601cfd31mr33628725e9.17.1741370658139; 
+ Fri, 07 Mar 2025 10:04:18 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bdd8b046dsm58400885e9.5.2025.03.07.10.04.11
+ 5b1f17b1804b1-43ce3d5a0e2sm5945365e9.12.2025.03.07.10.04.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 07 Mar 2025 10:04:12 -0800 (PST)
+ Fri, 07 Mar 2025 10:04:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -85,25 +85,24 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Nicholas Piggin <npiggin@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCH 06/14] system: Declare qemu_[min/max]rampagesize() in
- 'system/hostmem.h'
-Date: Fri,  7 Mar 2025 19:03:29 +0100
-Message-ID: <20250307180337.14811-7-philmd@linaro.org>
+Subject: [PATCH 07/14] hw/vfio: Compile display.c once
+Date: Fri,  7 Mar 2025 19:03:30 +0100
+Message-ID: <20250307180337.14811-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250307180337.14811-1-philmd@linaro.org>
 References: <20250307180337.14811-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,81 +118,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both qemu_minrampagesize() and qemu_maxrampagesize() are
-related to host memory backends. Move their prototype
-declaration to "system/hostmem.h".
+display.c doesn't rely on target specific definitions,
+move it to system_ss[] to build it once.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/ram_addr.h    | 3 ---
- include/system/hostmem.h   | 3 +++
- hw/ppc/spapr_caps.c        | 1 +
- hw/s390x/s390-virtio-ccw.c | 1 +
- hw/vfio/spapr.c            | 1 +
- 5 files changed, 6 insertions(+), 3 deletions(-)
+ hw/vfio/meson.build | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
-index 94bb3ccbe42..ccc8df561af 100644
---- a/include/exec/ram_addr.h
-+++ b/include/exec/ram_addr.h
-@@ -101,9 +101,6 @@ static inline unsigned long int ramblock_recv_bitmap_offset(void *host_addr,
- 
- bool ramblock_is_pmem(RAMBlock *rb);
- 
--long qemu_minrampagesize(void);
--long qemu_maxrampagesize(void);
--
- /**
-  * qemu_ram_alloc_from_file,
-  * qemu_ram_alloc_from_fd:  Allocate a ram block from the specified backing
-diff --git a/include/system/hostmem.h b/include/system/hostmem.h
-index 5c21ca55c01..62642e602ca 100644
---- a/include/system/hostmem.h
-+++ b/include/system/hostmem.h
-@@ -93,4 +93,7 @@ bool host_memory_backend_is_mapped(HostMemoryBackend *backend);
- size_t host_memory_backend_pagesize(HostMemoryBackend *memdev);
- char *host_memory_backend_get_name(HostMemoryBackend *backend);
- 
-+long qemu_minrampagesize(void);
-+long qemu_maxrampagesize(void);
-+
- #endif
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index 904bff87ce1..9e53d0c1fd1 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -34,6 +34,7 @@
- #include "kvm_ppc.h"
- #include "migration/vmstate.h"
- #include "system/tcg.h"
-+#include "system/hostmem.h"
- 
- #include "hw/ppc/spapr.h"
- 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 51ae0c133d8..1261d93b7ce 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -41,6 +41,7 @@
- #include "hw/s390x/tod.h"
- #include "system/system.h"
- #include "system/cpus.h"
-+#include "system/hostmem.h"
- #include "target/s390x/kvm/pv.h"
- #include "migration/blocker.h"
- #include "qapi/visitor.h"
-diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 9b5ad05bb1c..1a5d1611f2c 100644
---- a/hw/vfio/spapr.c
-+++ b/hw/vfio/spapr.c
-@@ -12,6 +12,7 @@
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
- #include "system/kvm.h"
-+#include "system/hostmem.h"
- #include "exec/address-spaces.h"
- 
- #include "hw/vfio/vfio-common.h"
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index fea6dbe88cd..96e342aa8cb 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -5,7 +5,6 @@ vfio_ss.add(files(
+ ))
+ vfio_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr.c'))
+ vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
+-  'display.c',
+   'pci-quirks.c',
+   'pci.c',
+ ))
+@@ -28,3 +27,6 @@ system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+ system_ss.add(when: ['CONFIG_VFIO', 'CONFIG_IOMMUFD'], if_true: files(
+   'iommufd.c',
+ ))
++system_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
++  'display.c',
++))
 -- 
 2.47.1
 
