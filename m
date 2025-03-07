@@ -2,62 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB45A5673C
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 12:57:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 559F3A56762
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 13:01:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqWHI-0002RF-DP; Fri, 07 Mar 2025 06:54:08 -0500
+	id 1tqWNF-0005oH-Fs; Fri, 07 Mar 2025 07:00:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWHG-0002Qa-5N
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:54:06 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tqWN9-0005lT-Qk
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 07:00:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tqWHE-0000No-Mz
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 06:54:05 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tqWN5-0001IF-JE
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 07:00:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741348444;
+ s=mimecast20190719; t=1741348805;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=vP08kGh1gBxCAKNj7Mea7eFddJb1NSFNTaj+GwlfRgc=;
- b=cAbDG6R3DnI8lkF80ug7eTwfZbxbc88xmWerIwE7U4ta8DloVfJw3sBskWVNTSOqKZycYC
- kDE0UfIDhFG/kF9pY1t0hI+t2QBj6IlCJpsYKd0pLGrxqCk5c7UuKIajbfFUifUtu97CNL
- y93N45pCBIRRjeCeXJIQkeGE5xbm9ws=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Uh9jiD6XsvLm8+bLX3gHu8bnjZYy3R6/2R/c8tFf84Q=;
+ b=hsjxp+akRyxnQ5OhG+UWZHxEoZ3wIJJrAifL8w8+LkTnczBRTjS1ZFrpUawcVOvRvRLaFs
+ S5/K2xjJ2LBntOj3/OKV/2h722Rj3q410xPO6wmYqrZvJhpBu7OfkKuwGg8WTP/fdhjTN4
+ /8K2KPjF3LQjRRz46IIWtTkAP+XThoY=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-BDwsAU0sNzqTptpSMzn6-A-1; Fri,
- 07 Mar 2025 06:54:02 -0500
-X-MC-Unique: BDwsAU0sNzqTptpSMzn6-A-1
-X-Mimecast-MFC-AGG-ID: BDwsAU0sNzqTptpSMzn6-A_1741348441
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-316-c5Hu_-LIP2-acy-koFGa9A-1; Fri,
+ 07 Mar 2025 07:00:01 -0500
+X-MC-Unique: c5Hu_-LIP2-acy-koFGa9A-1
+X-Mimecast-MFC-AGG-ID: c5Hu_-LIP2-acy-koFGa9A_1741348800
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6C01B19560BC; Fri,  7 Mar 2025 11:54:01 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.44.32.60])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 21BC91944F2E; Fri,  7 Mar 2025 11:53:58 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Niklas Schnelle <schnelle@linux.ibm.com>
-Subject: [PULL 15/15] s390x/pci: indicate QEMU supports relaxed translation
- for passthrough
-Date: Fri,  7 Mar 2025 12:53:14 +0100
-Message-ID: <20250307115314.1096373-16-thuth@redhat.com>
-In-Reply-To: <20250307115314.1096373-1-thuth@redhat.com>
-References: <20250307115314.1096373-1-thuth@redhat.com>
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6789D1956087; Fri,  7 Mar 2025 12:00:00 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.15])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C680F18001E9; Fri,  7 Mar 2025 11:59:59 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3A0B821E66C2; Fri, 07 Mar 2025 12:59:57 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Alex
+ =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  Philippe =?utf-8?Q?Mat?=
+ =?utf-8?Q?hieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Peter Maydell <peter.maydell@linaro.org>,  Thomas
+ Huth <thuth@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>
+Subject: Re: [PATCH 35/57] docs/qapidoc: Fix static typing on qapidoc.py
+In-Reply-To: <20250305034610.960147-36-jsnow@redhat.com> (John Snow's message
+ of "Tue, 4 Mar 2025 22:45:44 -0500")
+References: <20250305034610.960147-1-jsnow@redhat.com>
+ <20250305034610.960147-36-jsnow@redhat.com>
+Date: Fri, 07 Mar 2025 12:59:57 +0100
+Message-ID: <878qphkq4i.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -65,8 +71,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,52 +88,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Matthew Rosato <mjrosato@linux.ibm.com>
+John Snow <jsnow@redhat.com> writes:
 
-Specifying this bit in the guest CLP response indicates that the guest
-can optionally choose to skip translation and instead use
-identity-mapped operations.
+> Now that the legacy code is factored out, fix up the typing on the
+> remaining code in qapidoc.py. Add a type ignore to qapi_legacy.py to
+> prevent the errors there from bleeding out into qapidoc.py.
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  docs/sphinx/qapidoc.py        | 40 ++++++++++++++++++++++-------------
+>  docs/sphinx/qapidoc_legacy.py |  1 +
+>  2 files changed, 26 insertions(+), 15 deletions(-)
+>
+> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+> index f4abf42e7bf..5246832b68c 100644
+> --- a/docs/sphinx/qapidoc.py
+> +++ b/docs/sphinx/qapidoc.py
+> @@ -24,17 +24,18 @@
+>  https://www.sphinx-doc.org/en/master/development/index.html
+>  """
+>  
+> +from __future__ import annotations
+> +
+>  import os
+>  import sys
+> -from typing import List
+> +from typing import TYPE_CHECKING
+>  
+>  from docutils import nodes
+>  from docutils.parsers.rst import Directive, directives
+>  from qapi.error import QAPIError
+> -from qapi.gen import QAPISchemaVisitor
+> -from qapi.schema import QAPISchema
+> +from qapi.schema import QAPISchema, QAPISchemaVisitor
+>  
+> -from qapidoc_legacy import QAPISchemaGenRSTVisitor
+> +from qapidoc_legacy import QAPISchemaGenRSTVisitor  # type: ignore
+>  from sphinx import addnodes
+>  from sphinx.directives.code import CodeBlock
+>  from sphinx.errors import ExtensionError
+> @@ -42,6 +43,15 @@
+>  from sphinx.util.nodes import nested_parse_with_titles
+>  
+>  
+> +if TYPE_CHECKING:
+> +    from typing import Any, List, Sequence
+> +
+> +    from docutils.statemachine import StringList
+> +
+> +    from sphinx.application import Sphinx
+> +    from sphinx.util.typing import ExtensionMetadata
 
-Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Message-ID: <20250226210013.238349-3-mjrosato@linux.ibm.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- include/hw/s390x/s390-pci-clp.h | 1 +
- hw/s390x/s390-pci-vfio.c        | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+Can you briefly explain why this needs to be conditional?
 
-diff --git a/include/hw/s390x/s390-pci-clp.h b/include/hw/s390x/s390-pci-clp.h
-index 03b7f9ba5f7..6a635d693ba 100644
---- a/include/hw/s390x/s390-pci-clp.h
-+++ b/include/hw/s390x/s390-pci-clp.h
-@@ -158,6 +158,7 @@ typedef struct ClpRspQueryPciGrp {
- #define CLP_RSP_QPCIG_MASK_NOI 0xfff
-     uint16_t i;
-     uint8_t version;
-+#define CLP_RSP_QPCIG_MASK_RTR     0x20
- #define CLP_RSP_QPCIG_MASK_FRAME   0x2
- #define CLP_RSP_QPCIG_MASK_REFRESH 0x1
-     uint8_t fr;
-diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-index 443e2229127..6236ac7f1e6 100644
---- a/hw/s390x/s390-pci-vfio.c
-+++ b/hw/s390x/s390-pci-vfio.c
-@@ -238,8 +238,11 @@ static void s390_pci_read_group(S390PCIBusDevice *pbdev,
-         pbdev->pci_group = s390_group_create(pbdev->zpci_fn.pfgid, start_gid);
- 
-         resgrp = &pbdev->pci_group->zpci_group;
-+        if (pbdev->rtr_avail) {
-+            resgrp->fr |= CLP_RSP_QPCIG_MASK_RTR;
-+        }
-         if (cap->flags & VFIO_DEVICE_INFO_ZPCI_FLAG_REFRESH) {
--            resgrp->fr = 1;
-+            resgrp->fr |= CLP_RSP_QPCIG_MASK_REFRESH;
-         }
-         resgrp->dasm = cap->dasm;
-         resgrp->msia = cap->msi_addr;
--- 
-2.48.1
+> +
+> +
+>  __version__ = "1.0"
+>  
+>  
+> @@ -53,11 +63,11 @@ class QAPISchemaGenDepVisitor(QAPISchemaVisitor):
+>      schema file associated with each module in the QAPI input.
+>      """
+>  
+> -    def __init__(self, env, qapidir):
+> +    def __init__(self, env: Any, qapidir: str) -> None:
+
+@env is QAPIDocDirective.state.document.settings.env, i.e. something
+deep in Sphinx.  I assume Any is the best Sphinx lets you do here.
+
+>          self._env = env
+>          self._qapidir = qapidir
+>  
+> -    def visit_module(self, name):
+> +    def visit_module(self, name: str) -> None:
+>          if name != "./builtin":
+>              qapifile = self._qapidir + "/" + name
+>              self._env.note_dependency(os.path.abspath(qapifile))
+> @@ -65,10 +75,10 @@ def visit_module(self, name):
+>  
+>  
+>  class NestedDirective(Directive):
+> -    def run(self):
+> +    def run(self) -> Sequence[nodes.Node]:
+>          raise NotImplementedError
+>  
+> -    def do_parse(self, rstlist, node):
+> +    def do_parse(self, rstlist: StringList, node: nodes.Node) -> None:
+>          """
+>          Parse rST source lines and add them to the specified node
+>  
+> @@ -93,15 +103,15 @@ class QAPIDocDirective(NestedDirective):
+>      }
+>      has_content = False
+>  
+> -    def new_serialno(self):
+> +    def new_serialno(self) -> str:
+>          """Return a unique new ID string suitable for use as a node's ID"""
+>          env = self.state.document.settings.env
+>          return "qapidoc-%d" % env.new_serialno("qapidoc")
+>  
+> -    def transmogrify(self, schema) -> nodes.Element:
+> +    def transmogrify(self, schema: QAPISchema) -> nodes.Element:
+>          raise NotImplementedError
+>  
+> -    def legacy(self, schema) -> nodes.Element:
+> +    def legacy(self, schema: QAPISchema) -> nodes.Element:
+>          vis = QAPISchemaGenRSTVisitor(self)
+>          vis.visit_begin(schema)
+>          for doc in schema.docs:
+> @@ -109,9 +119,9 @@ def legacy(self, schema) -> nodes.Element:
+>                  vis.symbol(doc, schema.lookup_entity(doc.symbol))
+>              else:
+>                  vis.freeform(doc)
+> -        return vis.get_document_node()
+> +        return vis.get_document_node()  # type: ignore
+
+This is where you call qapidoc_legacy.py, which remains untyped.  Okay.
+
+>  
+> -    def run(self):
+> +    def run(self) -> Sequence[nodes.Node]:
+>          env = self.state.document.settings.env
+>          qapifile = env.config.qapidoc_srctree + "/" + self.arguments[0]
+>          qapidir = os.path.dirname(qapifile)
+> @@ -185,7 +195,7 @@ def _highlightlang(self) -> addnodes.highlightlang:
+>          )
+>          return node
+>  
+> -    def admonition_wrap(self, *content) -> List[nodes.Node]:
+> +    def admonition_wrap(self, *content: nodes.Node) -> List[nodes.Node]:
+>          title = "Example:"
+>          if "title" in self.options:
+>              title = f"{title} {self.options['title']}"
+> @@ -231,7 +241,7 @@ def run(self) -> List[nodes.Node]:
+>          return self.admonition_wrap(*content_nodes)
+>  
+>  
+> -def setup(app):
+> +def setup(app: Sphinx) -> ExtensionMetadata:
+>      """Register qapi-doc directive with Sphinx"""
+>      app.add_config_value("qapidoc_srctree", None, "env")
+>      app.add_directive("qapi-doc", QAPIDocDirective)
+> diff --git a/docs/sphinx/qapidoc_legacy.py b/docs/sphinx/qapidoc_legacy.py
+> index 679f38356b1..13520f4c26b 100644
+> --- a/docs/sphinx/qapidoc_legacy.py
+> +++ b/docs/sphinx/qapidoc_legacy.py
+> @@ -1,4 +1,5 @@
+>  # coding=utf-8
+> +# type: ignore
+>  #
+>  # QEMU qapidoc QAPI file parsing extension
+>  #
+
+Types look good to me.
 
 
