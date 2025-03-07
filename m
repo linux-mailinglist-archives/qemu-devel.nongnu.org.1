@@ -2,48 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEBC9A56883
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 14:11:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B75AA56884
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 14:11:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqXSf-0002gt-Cw; Fri, 07 Mar 2025 08:09:57 -0500
+	id 1tqXSh-0002hd-Jb; Fri, 07 Mar 2025 08:09:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tqXSa-0002gO-Vz; Fri, 07 Mar 2025 08:09:53 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tqXSY-0001Cu-RS; Fri, 07 Mar 2025 08:09:52 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 6859C4E600F;
- Fri, 07 Mar 2025 14:09:46 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id FgsFW1snAfMK; Fri,  7 Mar 2025 14:09:44 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 2C7BD4E6000; Fri, 07 Mar 2025 14:09:44 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 2A60E74577C;
- Fri, 07 Mar 2025 14:09:44 +0100 (CET)
-Date: Fri, 7 Mar 2025 14:09:44 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-cc: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 0/5] ppc/amigaone patches
-In-Reply-To: <cover.1740673173.git.balaton@eik.bme.hu>
-Message-ID: <dea2992c-a705-e8aa-749d-8b544da7ac80@eik.bme.hu>
-References: <cover.1740673173.git.balaton@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqXSf-0002hN-EW
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 08:09:57 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqXSd-0001FO-Q9
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 08:09:57 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43bbb440520so20620755e9.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 05:09:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741352993; x=1741957793; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2pvYNU7MA+h112B0oi56XMWS7ccwT2Ys8CQNpALrEVc=;
+ b=u3Y49qo3TcdgdPeoTI6WKZbybfqJ5A6P/XvyWNmnWAPc8PaRJIojmKfzbxBhJo300P
+ M7Elvs65YMFIxs7rOfPngh+jfLVkw0FFgdY1heVqWayxDhLD717GC+mA7h3x0cQ5Sb6i
+ sYKvHZE+Unr42aNRbev3PF1Ep2ILyddSCMsshaU2teo/Y/EZ+8MT8eECfsRAVf2eHaY6
+ e16Ja0DNRAkfZAYPzgzpLMToGOYgD6ZUtt5BLfp2iDFgAnX6kQ6Knqcf51cykv1rIPEI
+ qc9E5UcK37f7lZJc6q6pxVfFDuyC7pL5R2uleGQ8X/2NGB0yi1jbSVWcv/pqOwSOIOdE
+ fpsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741352993; x=1741957793;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2pvYNU7MA+h112B0oi56XMWS7ccwT2Ys8CQNpALrEVc=;
+ b=bT/dtC7op7aaN6yTkR3pnpXw97Y5BO9lozKxXBNGBR+qLRbjborAtY3JqLPvCOzVUb
+ WTxKUJs1UglmTYO5vxHQWlKgylHM7A3EF/ZdJfbl7ROb35FMu9fgHdCOgZGtxbZ1Bkqz
+ 2kzAVqVJRVP2VknbxjOEXQ4spclVZJcOw7uq2Ofqo1+rQ4sioheq4FGhGYbU6sv3X7Rv
+ 3ugTaTf3Hb6+9Wk3UtvIEOdHdRI5xPrBSMufMUP4rYpg6vPA9Q6v3WhxdXdHvhEprdbA
+ R/Hcy/SzSXvdGHVPSCz3tm86gA+b/1ySO3CPD5TpRMuw+/4wMH66lQrLFzuZGOTWgVTO
+ YvPQ==
+X-Gm-Message-State: AOJu0YyexyPWtNZKB4nrzbSk17ZgUD2tAG7Ese8Ykvr/pjkRThoDiKWm
+ Xo6N4O7sp7JrhfLhoYx+B7nu1RYCVFa2A9hsxL7Genruw7CvZxUtHCiUx0dT9gynbqoDnVGGduO
+ y+2Q=
+X-Gm-Gg: ASbGncuUIM1EBiVcCvXtBn+c7d++8hYF2F5n9c8oShK8U0vnljnmlPhAyH6dFl4ueKM
+ +KZUdFDFXmMm8CHLCrnW0l2ObDzPsKUu4h6wF+IjGdT6Ps1lIEHxcuqJe69tF3Yq2a8jYoG0TrL
+ e0U/qN5jfkRU3p1gi7vtzjuhEicgcFefzc+XW0CblIUhvKmRzXFksry+Hkr70qGmCDZkWplZQJ1
+ AYwV7RCoUesg70H8pJV6EY6dnXZ/En3KNeB83ARRv8I5VrZzuazfNWECTxRy+1WivC6wfzKnUk3
+ WN5ZWTBoFDNqwOjo2WTtqvoKdreHAbHml/gB3rgMZ1+9p3S6aAufNhSSaVHZX6zeczjG6WDdJ53
+ oIzWAsBgvg3VKSmMRngY=
+X-Google-Smtp-Source: AGHT+IEOodRhnqmmNfFgKNYBWMcKGJaEZZQhoZ8OPv1r3j/0y4ZyOmV3inuW8zv9IHq/YtwoxyoRhg==
+X-Received: by 2002:a05:600c:314d:b0:43b:bfb7:e099 with SMTP id
+ 5b1f17b1804b1-43c602222ecmr30102375e9.29.1741352993017; 
+ Fri, 07 Mar 2025 05:09:53 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43bd435c9c7sm79495765e9.38.2025.03.07.05.09.52
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 07 Mar 2025 05:09:52 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>, Riku Voipio <riku.voipio@iki.fi>,
+ Kyle Evans <kevans@freebsd.org>, Warner Losh <imp@bsdimp.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 0/3] user: Extract common MMAP API to 'user/mmap.h'
+Date: Fri,  7 Mar 2025 14:09:48 +0100
+Message-ID: <20250307130951.4816-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,60 +96,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 27 Feb 2025, BALATON Zoltan wrote:
-> Hello,
->
-> v2:
-> - change unused read function to g_assert_not_reached()
-> - new patch to add defines to constants
-> - added R-b tags
+Since v1:
+- Propagate alignment argument to BSD's mmap_find_vma()
 
-Ping? Will there be a pull request for soft freeze with this series 
-included or do I need to do anything with this?
+Philippe Mathieu-Daudé (3):
+  bsd-user: Always use mmap_find_vma_aligned() in target_mmap()
+  bsd-user: Propagate alignment argument to mmap_find_vma()
+  user: Extract common MMAP API to 'user/mmap.h'
 
-Regards,
-BALATON Zoltan
+ bsd-user/bsd-mem.h     |  2 +-
+ bsd-user/qemu.h        | 12 +-----------
+ include/user/mmap.h    | 32 ++++++++++++++++++++++++++++++++
+ linux-user/user-mmap.h | 19 ++-----------------
+ bsd-user/mmap.c        | 19 +++++++------------
+ 5 files changed, 43 insertions(+), 41 deletions(-)
+ create mode 100644 include/user/mmap.h
 
-> This series adds NVRAM and support for -kernel, -initrd and -append
-> options to the amigaone machine. This makes it easier to boot AmigaOS
-> and avoids a crash in the guest when it tries to access NVRAM.
->
-> While the -kernel option emulates what U-Boot passes to the kernel,
-> old Linux kernels for amigaone may not work with it because of two
-> reasons: these come in legacy U-Boot Multi-File image format that QEMU
-> cannot read and even after unpacking that and creating a kernel uimage
-> it won't find PCI devices because it does not initialise them
-> correctly. This works when booted from U-Boot because U-Boot inits PCI
-> devices. So does my BBoot loader which can be used to load AmigaOS so
-> I don't intend to emulate that part of U-Boot.
->
-> I'd like this to be merged for the next release please. When merging
-> please update https://wiki.qemu.org/ChangeLog/10.0 with the following:
->
-> amigaone
->
-> Added support for NVRAM and -kernel, -initrd, -append command line
-> options. By default the NVRAM contents are not preserved between
-> sessions. To make it persistent create a backing file with 'qemu-image
-> create -f raw nvram.bin 4k' and add -drive
-> if=mtd,format=raw,file=nvram.bin to keep NVRAM contents in the backing
-> file so settings stored in it will be preserved between sessions.
->
-> To run AmigaOS with BBoot using the -kernel option at least BBoot
-> version 0.8 is needed. Older BBoot versions only work with -device
-> loader and cannot be used with -kernel on amigaone.
->
-> Regards,
->
-> BALATON Zoltan (5):
->  ppc/amigaone: Simplify replacement dummy_fw
->  ppc/amigaone: Implement NVRAM emulation
->  ppc/amigaone: Add default environment
->  ppc/amigaone: Add kernel and initrd support
->  ppc/amigaone: Add #defines for memory map constants
->
-> hw/ppc/amigaone.c | 284 +++++++++++++++++++++++++++++++++++++++++++---
-> 1 file changed, 271 insertions(+), 13 deletions(-)
->
->
+-- 
+2.47.1
+
 
