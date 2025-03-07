@@ -2,173 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CE6A561D4
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 08:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FEDA561DC
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 08:35:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqS9t-0006iS-BF; Fri, 07 Mar 2025 02:30:13 -0500
+	id 1tqSDu-0000s7-1f; Fri, 07 Mar 2025 02:34:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Sandipan.Das@amd.com>)
- id 1tqS9q-0006hj-BY
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 02:30:10 -0500
-Received: from mail-co1nam11on2045.outbound.protection.outlook.com
- ([40.107.220.45] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <SRS0=3Khh=V2=kaod.org=clg@ozlabs.org>)
+ id 1tqSDG-0000Tq-ME; Fri, 07 Mar 2025 02:33:53 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Sandipan.Das@amd.com>)
- id 1tqS9o-0002wF-1D
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 02:30:10 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZcVS32MKEf7If3DaRuZhJ4Wc5MmJmaeAF7rtG/fk2nIiSEXz64aIVWMow+NbToUQq4dGj01qPmMUihlzDrWiON98WQf469F80b8A/LEv72ST5Tf9XMN1QKHyaTqHBB/w+HtihLcNHP7PHbr/KBEk7VJNN2M/rQx1GsPvVB6yBlxqMBKPCn7jmQNS0Lin9z4yZO15vH90EyzVbl+6d1gzhEwqYdYG03oIU2hQKaW0ayx+r2qnsxeRtBBTiO/rguwuyKuFiFzp0cVE0zWQRCBCeGpIPDiEJkTdXuIvrcgUnBOfsL324TvLeUKBLH496A0i5cFB2iGKy2PknIfxB2kDsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2jKAJty6dq1aJc0uLp00hOaeKjaBRUKQTNxM0fVaeUg=;
- b=a+uUg93tyONQ5L15D2QeNC24+pRHsd7UZMKGVf1fdZptwHlSNVdz9I6IiDZWYL3TQ/xMuqTr3djtAuwTR0S4V+S1BRRYVR/BkW+RV8e5O+3COZx0GFZRYWddvvGLgbN70O8O0lMCNRLAEGKYWNTSHu6jjz81Jq8BcmOJIcZo3imDqJkQ5/0Wb/EZ6qYcgbChKi9FX9TX/ytX4gpVeUES5rX6j3EBPUA/M883ajOILWJOgqYo3pv99SRwJHC+4+U2NgMH3mhIG7NhHf4JGR2XVrgVnuoQqPdNFF4L90ON2KaQs0qDgIipO/yyBAyldNBJxY/onNDcpMrdWyfVlePCjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2jKAJty6dq1aJc0uLp00hOaeKjaBRUKQTNxM0fVaeUg=;
- b=14oDh6e8waiTWn1TIhlBUDQ1tbfPkoK2jE3NP2t2d0+iOa3wHL+D9nzCEZro8VgY9Vkd2Vol09JBRN72ta33Od0Yo/VhD1/NddwOeMVUUAaaWIU2bYamq6xikdvbK+YQ2jSpJuor2P187boSVoicVu08pP+MpgZZLat8ryC8318=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5712.namprd12.prod.outlook.com (2603:10b6:510:1e3::13)
- by SJ2PR12MB9085.namprd12.prod.outlook.com (2603:10b6:a03:564::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.19; Fri, 7 Mar
- 2025 07:24:58 +0000
-Received: from PH7PR12MB5712.namprd12.prod.outlook.com
- ([fe80::2efc:dc9f:3ba8:3291]) by PH7PR12MB5712.namprd12.prod.outlook.com
- ([fe80::2efc:dc9f:3ba8:3291%4]) with mapi id 15.20.8511.017; Fri, 7 Mar 2025
- 07:24:58 +0000
-Message-ID: <9e3124eb-bc08-427a-8ee2-4e81dda899a1@amd.com>
-Date: Fri, 7 Mar 2025 12:54:47 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/10] target/i386: disable PerfMonV2 when PERFCORE
- unavailable
-To: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
- babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
- zhenyuw@linux.intel.com, groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
- <20250302220112.17653-2-dongli.zhang@oracle.com>
-Content-Language: en-US
-From: Sandipan Das <sandipan.das@amd.com>
-In-Reply-To: <20250302220112.17653-2-dongli.zhang@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0211.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:ea::6) To PH7PR12MB5712.namprd12.prod.outlook.com
- (2603:10b6:510:1e3::13)
+ (Exim 4.90_1) (envelope-from <SRS0=3Khh=V2=kaod.org=clg@ozlabs.org>)
+ id 1tqSDB-0004bY-PK; Fri, 07 Mar 2025 02:33:40 -0500
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Z8J1S1S4Qz4x5k;
+ Fri,  7 Mar 2025 18:33:32 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Z8J1N6Hpbz4wy9;
+ Fri,  7 Mar 2025 18:33:28 +1100 (AEDT)
+Message-ID: <3485cd84-2aab-45e7-a72c-ca1d85e007ec@kaod.org>
+Date: Fri, 7 Mar 2025 08:33:26 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5712:EE_|SJ2PR12MB9085:EE_
-X-MS-Office365-Filtering-Correlation-Id: f0ebce80-60fc-452a-1b4a-08dd5d4929ff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|7416014|7053199007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?T1VFSkNWMmpuaFZUazk0aTBNSU9HSFVZTlNLZ1dxRDU5dVNKQ0JlZlRDQndB?=
- =?utf-8?B?WjI5MGVBSlJsNm56N1lVZS9pU1BHcWQycG5NWm40U0FHc0FuNWpoUVZ3MU8r?=
- =?utf-8?B?YjBjdkk1RHJkOUhUNzd3SG5ZMlNSaThHNnpBb2ZGWHBOVXgyN0k0VjBvc3Q3?=
- =?utf-8?B?ZTczT05ERXJyQXBhMFFwdzdxU0UzdzFtWCtXT2k4L20zRmZxRlkyR3E1R3Zj?=
- =?utf-8?B?ckFGMnF3dXdja1FCSnVRY2NhS2RxZjd0dzJCY2ZXSmNJdUVBVEk1b1ZUeEVo?=
- =?utf-8?B?anFOQVpsaXdRNVFHQWt6MG9RdEg5RE5NOE9GUkxGQ1lFRUROSDM0QUpLR1hT?=
- =?utf-8?B?RDFtRjBpVkVqS2dtcWdVMUlpN1JaK05SYmdlYzZObnRUQzZwQUpjRnNoa0dO?=
- =?utf-8?B?Vi92ZW0ycExPKzJEcXM5eVNRY1hpdTZyUUNIak9YOXRnNkNXN3d4cDlySHVV?=
- =?utf-8?B?aWt4QUxjRlpJNzFZQ0ViTWxRZW9mVmVvbGk0eWYyTXlvR2dwVEFYUGxIcFFp?=
- =?utf-8?B?Mlg2VmlubnBxMFFWQUk4dk5pMzlBOUhLQ2N0SWxlbm5zVUNwVkhRakQzcnlr?=
- =?utf-8?B?UzNXY2xGSkFWTUlhL1I3RXB1aDhTNTJjb05yRE03VmpBYWQ1ek0zeTJqSmYw?=
- =?utf-8?B?QjJyZmcrRk9GTjZVQjVTUDlOU1JjRFc1NnQwS3lSTHJqRktFWEhaRGVZMGth?=
- =?utf-8?B?OVMveXhhcVBnTjFabHhQckEvbFg5ZlorNHFnbWt0cFE5M2RyenZWejBOb2xQ?=
- =?utf-8?B?Vm5ZQ3N2eCtNM01jSzRHN0gvTEladm1OR3ZsRDVJWXVIeHRYRWtyU0xod1g0?=
- =?utf-8?B?YnNSWE13cUxKallsYytKTHhpRlFWcWJiTTRpb2hHMHNya0wxQ1Y2OGlNd1Ny?=
- =?utf-8?B?RkxWcU5nSDJVSWtLeW1NT0hqY0I5M1JuYUFxbFFFazJ0b2I0ckkrNkJnb29F?=
- =?utf-8?B?cUpwelk4NVk2ZEV3ZHFTTGVGVXA4dGQvZk5oNSs5TXlpRVQ3T3UzTEsxb3c2?=
- =?utf-8?B?SE1qNVlNdEJSQ2lObU00aUt5ZWNjdzBxSkgrUGZqdUNBWFRWNEt6NktheG8x?=
- =?utf-8?B?QnRDMDZYV3cwRGRlQ0JacHlocEhESk9Db0pOalZ5a003UTJDSWRVU0p3NlZG?=
- =?utf-8?B?MHFGeVZXRU5zM2tjbnNsYVZ1ekFtaDVnbmdGQWlXNHB1WWxDaWQ5ZWhucVNJ?=
- =?utf-8?B?OUNVV3lTMWdvREwyMnppemtNR3M2c1Zya3FLZEhoa0pNT2lldmlnOUt4Skh5?=
- =?utf-8?B?SjhhaEhlRndCd0VXUkZSUHhQemFpenJVSk1tbW1IcXNBUXJUcjdGTVNNOTNq?=
- =?utf-8?B?NzdseHVMSFVUQW1YK0doVHRIRFE0NitaKzNJaEZtM0N4d1ZSQnMvZmhqdFFT?=
- =?utf-8?B?dE1KeGh2Q2h2cDFsMGZtME4yYnhVdlppU1FMN0hIY3JSYnZmdTRTb0luaytC?=
- =?utf-8?B?amNRbk5NeFA5SkhJTHhBT0ZrUFA4d3MrRWtnUFpWQkpsUk0wZEZ0eExVVGFy?=
- =?utf-8?B?dTAvUW9PM3RjUkZBdHJjZEtNYjRKSTMxemZZWldkdk0yQ3ZMK0I4a3BIc1A1?=
- =?utf-8?B?NjI5YVJ5U2JHTnJ1SDExY0lIWC9GUnhNNkhEUG5DeVZidS9wUXdvRlVNN0w2?=
- =?utf-8?B?VXRMWFRvNmZ1dURLWmVSSzRXRlVTdnA5RkQ2VXJLVmZjWGg5cVA3TUNFVS9O?=
- =?utf-8?B?NVhydUQ1RTFldTZRM1hnNGNOOEROc3pSQmcweldqZWtaSkdtZVJYcXZOamJW?=
- =?utf-8?B?TGlvRGUyS0djdTVJbjhUczNubllDbVdxSGw3TThRL052Y0FFdVZ0ZE5nbldk?=
- =?utf-8?B?aTlRMm5oUWNIcVArN0xwN2F0eEJpNFMvQWp5QWxVS0FGVHhXazRNa3NrN0VQ?=
- =?utf-8?Q?jr6cbe2HulayS?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR12MB5712.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007); DIR:OUT;
- SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Ujd5VVNUSWtHYW51SXZVdjFuNzFSWEw0dmNsdGtXdE1YVmdGNisxK1BVSzcy?=
- =?utf-8?B?dTNHRE9ibnp0MXg0SzdjMEQ5L29vRS8vWjBhSVdxLzNPOE5ROG54OW53N0xi?=
- =?utf-8?B?b2ZBa2xJZDJNT2F5LzdnR0MvQUszRks3Um5KbFVIcE5DOVg1Ny91VFlja0hy?=
- =?utf-8?B?Q2JldGI4cDVXcnVBa0w2VERqdzBaYzFWZVgzY08rT3FmdGFxaTBCRUFTODVT?=
- =?utf-8?B?WVhBNDhaM2xGZXlWRnBIWm1Ic2I4VGFVYlpGdTdvei9nZWxiSE1uVUE2dnF3?=
- =?utf-8?B?aDU4VXFmSWV3ZVNWK0JCc1lyVi9pYWFSNW1hNjNjejI5dUw4UG5YYllnMkhQ?=
- =?utf-8?B?WlhDMW5MUnBmNVpaNFVwQjJIWkdDMnlVdXp0UEJmRi9sSVJHMUU0RGQ2Y243?=
- =?utf-8?B?cmczb3J3R1dhRytqSXlkdmlzbndaNmljbVo5ZS80TUpPc0VxWG5TT1REYzZ4?=
- =?utf-8?B?djlOaG1sbzZPR1EzeUcwVjAzdkdnbENrOTdDNXErbmc1SXlUVUpBM2lVenB1?=
- =?utf-8?B?VENJQW45UzZwcEl2dWtLTG9TdzJ4M0k0RzMxR0R4Y2YwcTREQTR3dHJQMlZw?=
- =?utf-8?B?SDkycCtmSkFtNGFuU0xJTXhuc01zaktnWHlXTlRaeXBLbmd2YVcwaWV6NnhY?=
- =?utf-8?B?QkZnWE5oNTgyQVRFNlhxcFNxdFVlNXk0NGN6TnNYTXRlWWpzUHRDZ2hEVFNJ?=
- =?utf-8?B?ZFltNmxSS1pjaTZqc0hpbGpsQU9CUFN6bWRmMnJIQlAwenBrcHB1dkYyZWlG?=
- =?utf-8?B?SEZuU0J2UFZVQXE5ekFaQjMxNjRzR0VCV3N4NjZxT05MVitnR1V4RjRNU1NJ?=
- =?utf-8?B?Uy8yTkdmSStwUUhWZ0RNaUJrSlc1bWpoMjJSd2pJbGVPSWZSVi90VmxqS3ZK?=
- =?utf-8?B?TmZoRDB0eTlFczBodkN6YTZwL0tTZlB2VWljMS9FSkpLa2Q2WWpsSmQwbTI2?=
- =?utf-8?B?dWt6eDJOTGQ4TElUN2d2eUM5d296VFJSTVBzMVdEZ3NCWXNWdGl0bUdBQmJN?=
- =?utf-8?B?dys3WUdVTnRmcDVuZ1o0YWtVTy90SEhiTlNlY2pmWldFNFo3MDI4SDNudlRi?=
- =?utf-8?B?ZThpQjcybGdXcG9nK1MxdVVYREsvOEE1b04rOVZpbjBtWExhVzBkN08weFpH?=
- =?utf-8?B?akRqZ2ZHcXZmN1Frc1h0VzdCcEYvcUpzanBtMlQreWl3YkFJMzMzOU1jL0FE?=
- =?utf-8?B?R2FZSlUvcHJRb0luYjdnRGZEempROFI2MEY1dERISVYzRU1CcFZhajVGTWdP?=
- =?utf-8?B?OE1Ld2JSZlZUcGpNcUNoOW1tK00ybGNhTE03MUtCeDIwQnJmL050QzN2di9B?=
- =?utf-8?B?eG5DSElMUUlXS2l6eUVvUnlac1h3VHhUMkVYaEk2YW4rMHpPQzF6SURiS3Yr?=
- =?utf-8?B?SDZTVG96bFpUMC80Q2dsT0VnTXMyb3ZpQmxJUHRwKy9Cc2FIcDhMck9qRnFw?=
- =?utf-8?B?ZE5KcVpXTlNJdENqTkpBNWZ1RC9qdGtBZmMrOFFOSjBETGltWEtCTUZGdG1T?=
- =?utf-8?B?VzVrcEErT2MveE15N1BJTmxFekRiSzR3MGxwUUlSeWZnZjcvQmZCT0JKTHpB?=
- =?utf-8?B?b3M5WVNLSjFCUkNZYnFUb2JVdFk5eEpSMUZXOUMxYmkwMmlXdUpRTUFNV1ht?=
- =?utf-8?B?VXhUTmhLQlZuZlFuRUlKR2tCK0c1cFRtQ1AvRTRDbERrc0hyaW1zckFmYjlN?=
- =?utf-8?B?YXkwVnVLdTF1R3FKZTFSSEFWakczcEJTVzY0RnBSNmdkVmRMQmIyZUtnZnlh?=
- =?utf-8?B?STA1bjdCZEVCbnErZW93eTJBWmhPeWcwQVZHN0tpM0lobzFVeTB5ZG1QWFJD?=
- =?utf-8?B?MlBRVXcrd3V1L1BYQ2M3ZUJCSHVPZkl5WTFrQzhzWjZDZEtUeldrMlJjYlR3?=
- =?utf-8?B?MXV3TUlVWmVSNDZGZkUwSWFYMmM5NUlkY3BXb1NpSHZ1V1RKRmZlTWVzR2I1?=
- =?utf-8?B?cFdUdncxUmg1TThxaS9MOHRHL3BwUGJYdTF1U25INnhsWXgycnk4Y3JoTGMz?=
- =?utf-8?B?VHpCUHUvL2ttZmF1VjdoL3VvODRFYVRkV01CeFJGeHd1c1hqbXFvRGRWYlJx?=
- =?utf-8?B?bDgxMUpYNExZcU1ORldLQTZITTBIcFRaUHZBc2VCU3oxOVNBMjRQa2xrVHdM?=
- =?utf-8?Q?Y8cneUID63D6GfQeUeq2a9q72?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0ebce80-60fc-452a-1b4a-08dd5d4929ff
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5712.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2025 07:24:57.9484 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Nv5w05tjhTWY2D8Ej1xqZF0TdIcptEsi7AiVcq/ExDWvqxqxm++DTUMVOhe6JAWyHlD/3a79+X+G3PkDOMcjjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9085
-Received-SPF: permerror client-ip=40.107.220.45;
- envelope-from=Sandipan.Das@amd.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 00/29] Support AST2700 A1
+To: Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
+Cc: troy_lee@aspeedtech.com
+References: <20250307035945.3698802-1-jamin_lin@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20250307035945.3698802-1-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=3Khh=V2=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -184,54 +108,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/3/2025 3:30 AM, Dongli Zhang wrote:
-> When the PERFCORE is disabled with "-cpu host,-perfctr-core", it is
-> reflected in in guest dmesg.
+On 3/7/25 04:59, Jamin Lin wrote:
+> v1:
+>   1. Refactor INTC model to support both INTC0 and INTC1.
+>   2. Support AST2700 A1.
+>   3. Create ast2700a0-evb machine.
+>   
+> v2:
+>    To streamline the review process, split the following patch series into
+>    three parts.
+>    https://patchwork.kernel.org/project/qemu-devel/cover/20250121070424.2465942-1-jamin_lin@aspeedtech.com/
+>    This patch series focuses on cleaning up the INTC model to
+>    facilitate future support for the INTC_IO model.
 > 
-> [    0.285136] Performance Events: AMD PMU driver.
+> v3:
+>   1. Update and add functional test for AST2700
+>   2. Add AST2700 INTC design guidance and its block diagram.
+>   3. Retaining the INTC naming and introducing a new INTCIO model to support the AST2700 A1.
+>   4. Create ast2700a1-evb machine and rename ast2700a0-evb machine
+>   5. Fix silicon revision issue and support AST2700 A1.
 > 
-> However, the guest CPUID indicates the PerfMonV2 is still available.
+> v4:
+>   1. rework functional test for AST2700
+>   2. the initial machine "ast2700-evb" is aliased to "ast2700a0-evb.
+>   3. intc: Reduce regs array size by adding a register sub-region
+>   4. intc: split patch for Support setting different register sizes
+>   5. update ast2700a1-evb machine parent to TYPE_ASPEED_MACHINE
 > 
-> CPU:
->    Extended Performance Monitoring and Debugging (0x80000022):
->       AMD performance monitoring V2         = true
->       AMD LBR V2                            = false
->       AMD LBR stack & PMC freezing          = false
->       number of core perf ctrs              = 0x6 (6)
->       number of LBR stack entries           = 0x0 (0)
->       number of avail Northbridge perf ctrs = 0x0 (0)
->       number of available UMC PMCs          = 0x0 (0)
->       active UMCs bitmask                   = 0x0
+> v5:
+>   1. Rename status_addr and addr to status_reg and reg for clarity
+>   2. Introduce dynamic allocation for regs array
+>   3. Sort the memmap table by mapping address
+>   4. ast27x0.c split patch for Support two levels of INTC controllers for AST2700 A1
+>   5. tests/functional/aspped split patch for Introduce start_ast2700_test API
+>   6. keep variable naming for reviewer suggestion.
+>   7. Add reviewer suggestion and split patch to make more readable.
+>   
+> v6:
+>    1. rename reg_size to nr_regs
+>    2. Fix clean regs size
+>    3. replace g_malloc with g_new
 > 
-> Disable PerfMonV2 in CPUID when PERFCORE is disabled.
+> With the patch applied, QEMU now supports two machines for running AST2700 SoCs:
+> ast2700a0-evb: Designed for AST2700 A0
+> ast2700a1-evb: Designed for AST2700 A1
 > 
-> Suggested-by: Zhao Liu <zhao1.liu@intel.com>
-> Fixes: 209b0ac12074 ("target/i386: Add PerfMonV2 feature bit")
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-> ---
-> Changed since v1:
->   - Use feature_dependencies (suggested by Zhao Liu).
+> Test information
+> 1. QEMU version: https://github.com/qemu/qemu/commit/50d38b8921837827ea397d4b20c8bc5efe186e53
+> 2. ASPEED SDK v09.05 pre-built image
+>     https://github.com/AspeedTech-BMC/openbmc/releases/tag/v09.05
+>     ast2700-default-obmc.tar.gz (AST2700 A1)
+>     https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-default-obmc.tar.gz
+>     ast2700-a0-default-obmc.tar.gz (AST2700 A0)
+>     https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-a0-default-obmc.tar.gz
+>     
+> This patch series depends on the following patch series:
+> https://patchwork.kernel.org/project/qemu-devel/cover/20250304064710.2128993-1-jamin_lin@aspeedtech.com/
+> https://patchwork.kernel.org/project/qemu-devel/cover/20250225075622.305515-1-jamin_lin@aspeedtech.com/
 > 
->  target/i386/cpu.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> Jamin Lin (29):
+>    hw/intc/aspeed: Support setting different memory size
+>    hw/intc/aspeed: Rename status_addr and addr to status_reg and reg for
+>      clarity
+>    hw/intc/aspeed: Introduce dynamic allocation for regs array
+>    hw/intc/aspeed: Support setting different register size
+>    hw/intc/aspeed: Reduce regs array size by adding a register sub-region
+>    hw/intc/aspeed: Introduce helper functions for enable and status
+>      registers
+>    hw/intc/aspeed: Add object type name to trace events for better
+>      debugging
+>    hw/arm/aspeed: Rename IRQ table and machine name for AST2700 A0
+>    hw/arm/aspeed_ast27x0: Sort the IRQ table by IRQ number
+>    hw/intc/aspeed: Support different memory region ops
+>    hw/intc/aspeed: Rename num_ints to num_inpins for clarity
+>    hw/intc/aspeed: Add support for multiple output pins in INTC
+>    hw/intc/aspeed: Refactor INTC to support separate input and output pin
+>      indices
+>    hw/intc/aspeed: Introduce AspeedINTCIRQ structure to save the irq
+>      index and register address
+>    hw/intc/aspeed: Introduce IRQ handler function to reduce code
+>      duplication
+>    hw/intc/aspeed: Add Support for Multi-Output IRQ Handling
+>    hw/intc/aspeed: Add Support for AST2700 INTCIO Controller
+>    hw/misc/aspeed_scu: Add Support for AST2700/AST2750 A1 Silicon
+>      Revisions
+>    hw/arm/aspeed_ast27x0.c Support AST2700 A1 GIC Interrupt Mapping
+>    hw/arm/aspeed_ast27x0: Define an Array of AspeedINTCState with Two
+>      Instances
+>    hw/arm/aspeed_ast27x0: Support two levels of INTC controllers for
+>      AST2700 A1
+>    hw/arm/aspeed_ast27x0: Add SoC Support for AST2700 A1
+>    hw/arm/aspeed: Add Machine Support for AST2700 A1
+>    hw/arm/aspeed_ast27x0: Sort the memmap table by mapping address
+>    tests/functional/aspeed: Introduce start_ast2700_test API
+>    tests/functional/aspeed: Update temperature hwmon path
+>    tests/functional/aspeed: Update test ASPEED SDK v09.05
+>    tests/functional/aspeed: Add test case for AST2700 A1
+>    docs/specs: Add aspeed-intc
 > 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 72ab147e85..b6d6167910 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -1805,6 +1805,10 @@ static FeatureDep feature_dependencies[] = {
->          .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
->          .to = { FEAT_24_0_EBX,              ~0ull },
->      },
-> +    {
-> +        .from = { FEAT_8000_0001_ECX,       CPUID_EXT3_PERFCORE },
-> +        .to = { FEAT_8000_0022_EAX,         CPUID_8000_0022_EAX_PERFMON_V2 },
-> +    },
->  };
->  
->  typedef struct X86RegisterInfo32 {
+>   docs/specs/aspeed-intc.rst              | 136 +++++
+>   docs/specs/index.rst                    |   1 +
+>   include/hw/arm/aspeed_soc.h             |   3 +-
+>   include/hw/intc/aspeed_intc.h           |  36 +-
+>   include/hw/misc/aspeed_scu.h            |   2 +
+>   hw/arm/aspeed.c                         |  33 +-
+>   hw/arm/aspeed_ast27x0.c                 | 329 ++++++++----
+>   hw/intc/aspeed_intc.c                   | 667 ++++++++++++++++++------
+>   hw/misc/aspeed_scu.c                    |   2 +
+>   hw/intc/trace-events                    |  25 +-
+>   tests/functional/test_aarch64_aspeed.py |  47 +-
+>   11 files changed, 978 insertions(+), 303 deletions(-)
+>   create mode 100644 docs/specs/aspeed-intc.rst
+> 
 
+Applied to aspeed-next.
 
-Reviewed-by: Sandipan Das <sandipan.das@amd.com>
+Thanks,
+
+C.
+
 
 
