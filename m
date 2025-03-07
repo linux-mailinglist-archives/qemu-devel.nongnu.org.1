@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F156FA56BB4
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:19:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC76A56BBC
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 16:19:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqZTY-0006Xv-Vk; Fri, 07 Mar 2025 10:19:03 -0500
+	id 1tqZU8-0007hq-0D; Fri, 07 Mar 2025 10:19:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqZQx-0005ro-R3
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:16:25 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqZQy-0005s1-R5
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:16:27 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqZQu-00040z-UT
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:16:19 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43bcc04d4fcso12213985e9.2
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:16:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqZQw-00047t-1d
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 10:16:20 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-391342fc0b5so1120644f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 07:16:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741360565; x=1741965365; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741360570; x=1741965370; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PNl8UgOnANk9MlIZCbbjo+hTAONQ4gInW5Qx1vX0kuY=;
- b=y/Ht3ErJQIEPadWhmaSMCXE4IzRQelbF+Kgi0AU/e3jwBiCPWXD4y1b9HFqUJ9mq1t
- GJyGIIVUW4+C2eNrYJ4594gW18vrow6xJDKJ1910nmUFybkowLpVUDIRtiCuQPZ4fexX
- zjKeqWmhRn2xUSmwz1gLQnqEaK+/7dvJdAtOlgdyry+eAM9vBoK7Hnwy1GG3KvFfVkzF
- H/6zyDYwfWWfqTK7mvTdkAK17QKB7fK/dXkF02p22HhzaEN58k1hhgy0BeDDL0tk1dVK
- R+NLhR2zaagSHzLylwSsewJdXkXuqiquGETHy8Q90+2AOy7G1eTwTOQW+Axv17xrrR3m
- n74g==
+ bh=F7c3iP1EwbjahBsBwJBDuZ0vBFhZFt0AdLkeHdIl4iU=;
+ b=I+AqqkYRu7/BYHT85Yd6zARaMRV6QX/mfoN2+rzXjt4TbPKmXN5wYnnlr8HO3tef63
+ xnS8AgudIH3YnVSU4GDI4luyxNFQzT4VOxWzqbkwGW3PZzv1IwlQtBbiGfjQxb98udFy
+ uwwAZB9xvu29+oFn1wbWDvWja9p2elbOFbOKR73P4Ab6+7wO+oDLkaedW1pU0q0I+DLH
+ s/79x3DLtXXpXG2ApNYVitnSS3XEE8mVn+DSbZdV6KjZOPHXN0QAK8+c8lDlqdKWGmjE
+ k5T2H8KVuItbKLfHijW1jI0SQ0QHSc4D01D6yb6fn6Ku7BYNq9n2D/qf8kBA4tv6vBDm
+ RJ+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741360565; x=1741965365;
+ d=1e100.net; s=20230601; t=1741360570; x=1741965370;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PNl8UgOnANk9MlIZCbbjo+hTAONQ4gInW5Qx1vX0kuY=;
- b=t46bI1R5HFbXoAgWIHF8ldcxEjPNHd9WvkvCkbgai7Vukhk/WgTI0omkw5xmDQDcbf
- gP0LBtWvp/x53Jo/HIysuFcISi5Vx8BLbrbtNn1gDH7hdUk6l8Crag3mZTa+mS6NKi1d
- 0TGsJhuTNYcODJAeoRCONEL7TEFwoXBoHvhg/wwCA3gAh/awpiqC2w/+lQtfJDEkrbrY
- QiQFH39WE9LyZZGfTQKz1BRGoRjHf1JINDkY17CUpuA8VgOntdg4RmjzRdsZRFWaxMR/
- oEZr1Tbys0IyxTLvdEYsp7qDNQhW4jXWDLm2pG43nmpqOhHcFWq7spEP4SIBaGKhE38V
- tV3A==
-X-Gm-Message-State: AOJu0YyqWrffYGHERkMm9jEuujAwl6vAAQUmzwe8FxqGtcIG1s8mF0Ax
- w6XtEmI5LTF3UT0sJ0dEIVbGMMeOOjHPkURAzWDmpLb9JE11l3WgCcr0bks+PWbg/ddEzzFmM4W
- 5PWA=
-X-Gm-Gg: ASbGncsih3F701GptxRkunvjcBxdy1QDzCSrggOlqRfS1aAQ/fhp+DVjl2tS9Da8/gP
- rlfrejexYR4QDghfGYu6Ke8JhEjuYzmbFJWlvSNvY8psZmAUyhMhOYQji4M0hWABRCi8OiBViZB
- upc4BQL5vXaTCz9xmp6c3I3Jdt0/BCzS9pW5HTlJ5N0U+Rr4y0f3KeQ5yQdA2RFs8n1PnnhisxC
- vwbJIyf5nMIhsXkk4QEUSX956dfV42RDGRgbUxvosjHkN+hbcuiXrObm7VvzhGFtmC3Yrr/33/0
- lv7a7dReT3MlrsBzOp6EihiebiecOVVVgqpXRcIXZLauyaMldZqURhAs0+dAlsX/bTgsop8nXPS
- uit1Y4zC9b1qaUNVlY4E=
-X-Google-Smtp-Source: AGHT+IHNNMgnVDRwDCiLNtmYODq5h4evUDAvCPa10r6l4Vq5BNgyXNka2sDISKnOd6QFJlRDNO/WMA==
-X-Received: by 2002:a05:600c:444c:b0:43b:c7ad:55f0 with SMTP id
- 5b1f17b1804b1-43c601cfdf5mr33222165e9.5.1741360565544; 
- Fri, 07 Mar 2025 07:16:05 -0800 (PST)
+ bh=F7c3iP1EwbjahBsBwJBDuZ0vBFhZFt0AdLkeHdIl4iU=;
+ b=VOYzrOYuNqVseZgJhH66apPbJWa9yjfBJYZpl8nUYzesr+IJwK2/yn42EV5f8JZdku
+ jK3OqkTW6bPhzdX/0W7BpYW2rdVQmaWN5MmgjDstvpa+Qr8PMjKci3dAwN46ja1gOLwo
+ 1pjj/cWYzkSXUW19UmQ0rtjUdmAbnHrVL7hxljVCpLiN23l51RhEVoIEwprqNkSaba+e
+ AO9hW4UR67R87azpMfvXhCy3Ty2QdfIqLKMwzWKeFo1wWNVds2LecJTN9F38xlIr5bzv
+ 1mbET9aM5zdynmMFywC0YYVtWp7xUV0osI39rGVuwoixRfvYy2jQmo5MvyZ1VF0mWl9/
+ KNOA==
+X-Gm-Message-State: AOJu0YzQkl96L4MK7LSGFGpwOCJbVHKDYD3BXJshyukmai4V7tRSoYUy
+ tk67b4N2Dx6d9AKYl1FlEkDJPOgnbHtc/niGxOyPWTOx59xZFqOdiN/Pjacv4eF5x4N0LBaF39A
+ 3X+M=
+X-Gm-Gg: ASbGncv9eUATy4BYr9VjVd5xKSCQXr7wh49KZfnN4MYcWzWsP1/PP/K2M6QWo3ZHAej
+ fvk+RkOHSP3DbbARNDvyEwIgkuu0i7HUUVZvfQmr+n5R00jW3qW08rguXvQVIpnbf96EqNgBEiP
+ A6o4UPQdGLP50I2WthCJnWjt5Gd5TavemiiyczVlv/PLqa8dlInMpB+j9Tx7f+b4VPiDkqP/ZVp
+ kLInsh4TCkEMtl7XYd2SUQCCcNhaqmxnEDSNvSLGpAnF2SoWaMUtE2SIUuZCcm8Ig6eepBkamaf
+ x0zWfiLES8oHUVt4ANYkXvsdK/ks8Q4j4vUa7W1XrG810brNPAQYdm1ogT4aJIYX3VeDM8fMqvz
+ 37TofKp0j51CKzvYLPSg=
+X-Google-Smtp-Source: AGHT+IEQ9AsODO0s8uUfgeCwXHYIRH2k5VUAdyvIY55SzExhVfTQUW9bIRUNoXYaHt5n+3D/D+y7YA==
+X-Received: by 2002:a05:6000:1564:b0:38d:d666:5457 with SMTP id
+ ffacd0b85a97d-39132da24cfmr3211167f8f.42.1741360570445; 
+ Fri, 07 Mar 2025 07:16:10 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd42c55f2sm84148105e9.20.2025.03.07.07.16.04
+ ffacd0b85a97d-3912bfdff72sm5699359f8f.36.2025.03.07.07.16.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 07 Mar 2025 07:16:05 -0800 (PST)
+ Fri, 07 Mar 2025 07:16:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -73,17 +73,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/7] hw/virtio/virtio-mem: Remove CONFIG_DEVICES include
-Date: Fri,  7 Mar 2025 16:15:40 +0100
-Message-ID: <20250307151543.8156-5-philmd@linaro.org>
+Subject: [PATCH 5/7] hw/virtio/virtio-mem: Convert VIRTIO_MEM_USABLE_EXTENT to
+ runtime
+Date: Fri,  7 Mar 2025 16:15:41 +0100
+Message-ID: <20250307151543.8156-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250307151543.8156-1-philmd@linaro.org>
 References: <20250307151543.8156-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,40 +107,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than checking ACPI availability at compile time by
-checking the CONFIG_ACPI definition from CONFIG_DEVICES,
-check at runtime via acpi_builtin().
+Use qemu_arch_available() to check at runtime if a target
+architecture is built in.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/virtio/virtio-mem.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ hw/virtio/virtio-mem.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
 diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 7b140add765..5f57eccbb66 100644
+index 5f57eccbb66..8c40042108c 100644
 --- a/hw/virtio/virtio-mem.c
 +++ b/hw/virtio/virtio-mem.c
-@@ -28,7 +28,7 @@
- #include "migration/misc.h"
- #include "hw/boards.h"
- #include "hw/qdev-properties.h"
--#include CONFIG_DEVICES
-+#include "hw/acpi/acpi.h"
- #include "trace.h"
- 
- static const VMStateDescription vmstate_virtio_mem_device_early;
-@@ -883,10 +883,8 @@ static uint64_t virtio_mem_get_features(VirtIODevice *vdev, uint64_t features,
-     MachineState *ms = MACHINE(qdev_get_machine());
-     VirtIOMEM *vmem = VIRTIO_MEM(vdev);
- 
--    if (ms->numa_state) {
--#if defined(CONFIG_ACPI)
-+    if (ms->numa_state && acpi_builtin()) {
-         virtio_add_feature(&features, VIRTIO_MEM_F_ACPI_PXM);
+@@ -15,6 +15,7 @@
+ #include "qemu/cutils.h"
+ #include "qemu/error-report.h"
+ #include "qemu/units.h"
++#include "system/arch_init.h"
+ #include "system/numa.h"
+ #include "system/system.h"
+ #include "system/reset.h"
+@@ -170,13 +171,16 @@ static bool virtio_mem_has_shared_zeropage(RAMBlock *rb)
+  * necessary (as the section size can change). But it's more likely that the
+  * section size will rather get smaller and not bigger over time.
+  */
+-#if defined(TARGET_X86_64) || defined(TARGET_I386) || defined(TARGET_S390X)
+-#define VIRTIO_MEM_USABLE_EXTENT (2 * (128 * MiB))
+-#elif defined(TARGET_ARM)
+-#define VIRTIO_MEM_USABLE_EXTENT (2 * (512 * MiB))
+-#else
+-#error VIRTIO_MEM_USABLE_EXTENT not defined
 -#endif
-     }
-     assert(vmem->unplugged_inaccessible != ON_OFF_AUTO_AUTO);
-     if (vmem->unplugged_inaccessible == ON_OFF_AUTO_ON) {
++static uint64_t virtio_mem_usable_extent_size(void)
++{
++    if (qemu_arch_available(QEMU_ARCH_I386 | QEMU_ARCH_S390X)) {
++        return 2 * 128 * MiB;
++    } else if (qemu_arch_available(QEMU_ARCH_ARM)) {
++        return 2 * 512 * MiB;
++    } else {
++        g_assert_not_reached();
++    }
++}
+ 
+ static bool virtio_mem_is_busy(void)
+ {
+@@ -721,7 +725,7 @@ static void virtio_mem_resize_usable_region(VirtIOMEM *vmem,
+                                             bool can_shrink)
+ {
+     uint64_t newsize = MIN(memory_region_size(&vmem->memdev->mr),
+-                           requested_size + VIRTIO_MEM_USABLE_EXTENT);
++                           requested_size + virtio_mem_usable_extent_size());
+ 
+     /* The usable region size always has to be multiples of the block size. */
+     newsize = QEMU_ALIGN_UP(newsize, vmem->block_size);
 -- 
 2.47.1
 
