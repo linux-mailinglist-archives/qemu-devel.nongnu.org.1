@@ -2,78 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728B9A5696F
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 14:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28EAEA56A0F
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 15:11:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqY7X-0003TV-UT; Fri, 07 Mar 2025 08:52:12 -0500
+	id 1tqYPN-0001W2-Ie; Fri, 07 Mar 2025 09:10:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tqY7N-0003Hd-5e
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 08:52:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1tqY7L-0001DU-EB
- for qemu-devel@nongnu.org; Fri, 07 Mar 2025 08:52:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741355516;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2TU5GunQuBlTAPNvY7g2xEzf17JFRYlC5aa6Y+0KKdI=;
- b=GPLVIc2Z3St4tFTti9zBg605Fw4m5dj3azrosrn74ezqzPU9o1QOaAOTdUATy8pFyKDTlj
- PBmDmcv9PQNlcT6B4JAtCUUZJfRl6JgnyZFOc7KtkvdQ0PPZiC6eSvuG155J44u3Ur+icU
- wMAUcWHxQqKKfnZuItw0GB+Jjl/0Pi8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-257-l7hJ5df0OuCvSh3fFXqRtw-1; Fri,
- 07 Mar 2025 08:51:53 -0500
-X-MC-Unique: l7hJ5df0OuCvSh3fFXqRtw-1
-X-Mimecast-MFC-AGG-ID: l7hJ5df0OuCvSh3fFXqRtw_1741355512
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6C9921800258; Fri,  7 Mar 2025 13:51:52 +0000 (UTC)
-Received: from localhost (unknown [10.44.34.26])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 73E381801748; Fri,  7 Mar 2025 13:51:50 +0000 (UTC)
-Date: Fri, 7 Mar 2025 14:51:48 +0100
-From: Victor Toso <victortoso@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, 
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>, 
- Andrea Bolognani <abologna@redhat.com>
-Subject: Re: New git repository for Go bindings
-Message-ID: <cwxf24xijypebuv44uqeiyxdspifcey3447t6iyz2kv5ljwger@fksnjsmro37o>
-References: <xu3qsijvpbguwdnlj6ovomlkd2wggd76x2lvfusmczljhnmx4f@kgw6di2754ta>
- <Z8rrd8DoLUVh_Je1@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqYPF-0001RE-9V
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 09:10:31 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqYPB-0006kw-OS
+ for qemu-devel@nongnu.org; Fri, 07 Mar 2025 09:10:28 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3912d2c89ecso1495653f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 06:10:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741356623; x=1741961423; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lK/YR21uNxnbpA1t6NNGYWPPNM55eBnWH14xjT7Am/0=;
+ b=zUWqFtEbPXDYweIgU+Ly8BNDj1kC7SYXbBGgIAobSp3+51tTnzWupra3pRiNeB59Bd
+ GltHwOW//7mEp3kTykEgI9dykvP3LFZMxLvwrNcbSxTulXSusFY8j4v7dwNOzxDCs8Rd
+ PyLqCfWMMv2jUQKjHPg9LFVkzcCJgeKlVHQiluagCvjTtsuocUTPvHlR+Lff6tpAluBw
+ W/jNPO41tGKOaSJEWZHfyXvAyhy5hzj8TC+g08BLj3PV0CpT3SNtvFCZrBbBLZI4TClu
+ 7CBgEctW7G8JyqNl7o52xM5GX1wEiwSz+Q6SAhBA/Qxlqe+PWk2zBnSrqclTq9upQYUW
+ JUzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741356623; x=1741961423;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lK/YR21uNxnbpA1t6NNGYWPPNM55eBnWH14xjT7Am/0=;
+ b=al1kwMBdHC0kXxkLI04LcmSJmu/guZ930qo2IITIFzxTO6iLIFhbmIJlEBopr4cF/J
+ rGAp3THuos9OUzxTX/XIyBTdqs61mObD7Fb5vZiF6cKkuiL1fmc4r57/iLB7Hbrbo/Iw
+ I06n1gnzV3ipAJ1HDOh3B7Vz7NRKVD4gYaTz7he2HOSTOIAiH4THhnX4UaHFsKHA5ZjF
+ X0e9FFjCBNiU0JwzlDpJaLzf+P5+ss1uZEFsKtJ7ODHpJDT9/QOv7X7mJQVRaSyStNv0
+ NM6OCF04+FDOOLMO4z1HTm5oTPBZw3QIePCPTtjJ1Cp/PI1dDzl/XnxCeQM9WKYls4/8
+ jO6g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX4o/YuQlB99SvcV5hgSuZoglRBSs6u8JTpDK3lH9JD/q6H8FiHpFP8wWI+HBzmlhM52Dhn5/vBOsCJ@nongnu.org
+X-Gm-Message-State: AOJu0YxA+glEaa5aMW06+z7UwLopoEQOexIWxEb7GHPRHbm4W67/1DN/
+ JUo484OVFnTBu+MyaXf3MTpP8qG2Llt5gYXYpmyvdMne4TTKwabISFOH2OfI69I=
+X-Gm-Gg: ASbGncsWB/QWMlzW6kLKF6eQ4CYZLS9AbMXs3R0PZ2UwJ/DxKNHaC/TmsbpR8hVOuuV
+ yEgPXSjBo6rnzZo2lb+Mj6ak+R4SrBMAvgN6MHzR98TSEdwlinsJawZ1h1xXGhLcyhDtYnBGsV3
+ iF3mK4ouUVEj/NNNsJZo8Qs/fhvSevO1Bx0iaD+eIYORkIf6xiL6FmrLyx6+3Wkwx0UfxXm2P5h
+ b+n3fiFsnH8OTt31/F7ffJr5ruJ/8FL362tAdD0r1x5lGzU7RK0zl48VFapy3Wxh+igdYV3Qm5J
+ CMNTFbCqzBqwsNzMihTQrNI9AwogvquCQxTUyXBRCvkI6pZ69Fuc13iP3fzecihOFvZQ8qZbrGC
+ bqV5DDi7THgP3
+X-Google-Smtp-Source: AGHT+IEpJtGg9EqR3JlWbacrlSAJLNFzJcCFn5nHsfTfvnAjusfi8nWo2F72PLolOUVc3gUIgDO8SQ==
+X-Received: by 2002:a5d:6d04:0:b0:391:13ef:1af5 with SMTP id
+ ffacd0b85a97d-39132dc5171mr2431628f8f.48.1741356623313; 
+ Fri, 07 Mar 2025 06:10:23 -0800 (PST)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3912c0e3099sm5584298f8f.69.2025.03.07.06.10.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 07 Mar 2025 06:10:22 -0800 (PST)
+Message-ID: <84151f43-d952-4515-aee5-04f339baa546@linaro.org>
+Date: Fri, 7 Mar 2025 15:10:22 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="zxb543gg6f3sjxpf"
-Content-Disposition: inline
-In-Reply-To: <Z8rrd8DoLUVh_Je1@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] ppc/amigaone: Add default environment
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
+References: <cover.1740673173.git.balaton@eik.bme.hu>
+ <4d63f88191612329e0ca8102c7c0d4fc626dc372.1740673173.git.balaton@eik.bme.hu>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <4d63f88191612329e0ca8102c7c0d4fc626dc372.1740673173.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,84 +101,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Zoltan,
 
---zxb543gg6f3sjxpf
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: New git repository for Go bindings
-MIME-Version: 1.0
+Minor review comments in case you respin (not blocking).
 
-On Fri, Mar 07, 2025 at 12:49:59PM +0000, Daniel P. Berrang=C3=A9 wrote:
-> On Fri, Mar 07, 2025 at 01:30:38PM +0100, Victor Toso wrote:
-> > Hi,
-> >=20
-> > I've been working on and off in having Go bindings for QEMU's
-> > QAPI specification. The last version [0] seems to be accepted so
-> > far but we would like not to have that in qemu.git.
-> >=20
-> > In the past [1], Daniel suggested creating a repo per each
-> > generated schema: go-qemu.git, go-qga.git, go-qsd.git
-> >
-> > While that works well from the point of view of Go applications
-> > and is neat organized too, afaict they are all bounded to QEMU's
-> > release schedule so it might be enough to create a single repo
-> > such as:
-> >=20
-> > qapi-generators.git
-> > =E2=94=94=E2=94=80=E2=94=80 golang
-> >     =E2=94=9C=E2=94=80=E2=94=80 module.py # The go generator
-> >     =E2=94=9C=E2=94=80=E2=94=80 qemu      # For qapi/qapi-schema.json
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 doc.go
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 gen_iface_command=
-=2Ego
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 gen_iface_event.go
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 gen_type_alternat=
-e.go
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 gen_type_command.=
-go
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 gen_type_enum.go
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 gen_type_event.go
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 gen_type_struct.go
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 gen_type_union.go
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 go.mod
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 protocol.go
-> >     =E2=94=82=C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 utils.go
-> >     =E2=94=9C=E2=94=80=E2=94=80 qga # qga/qapi-schema.json
-> >     =E2=94=94=E2=94=80=E2=94=80 qsd # storage-daemon/qapi/qapi-schema.j=
-son
-> >=20
-> > Or perhaps a per language repo?
->=20
-> I'd suggest we keep the repo dedicated just for 'go' language,
-> as mixed language repos are more trouble than they are worth
-> when it comes to dealing with language specific build tools.
+On 27/2/25 17:39, BALATON Zoltan wrote:
+> Initialise empty NVRAM with default values. This also enables IDE UDMA
+> mode in AmigaOS that is faster but has to be enabled in environment
+> due to problems with real hardware but that does not affect emulation
+> so we can use faster defaults here.
+> 
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>   hw/ppc/amigaone.c | 37 ++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 36 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+> index 849c9fc6e0..5c5585d39a 100644
+> --- a/hw/ppc/amigaone.c
+> +++ b/hw/ppc/amigaone.c
+> @@ -52,6 +52,28 @@ static const char dummy_fw[] = {
+>   #define NVRAM_ADDR 0xfd0e0000
+>   #define NVRAM_SIZE (4 * KiB)
+>   
+> +static char default_env[] =
 
-That's fine for me. Should we go with qapi-go or go-qapi or ?
+'const'
 
-Cheers,
-Victor
+> +    "baudrate=115200\0"
+> +    "stdout=vga\0"
+> +    "stdin=ps2kbd\0"
+> +    "bootcmd=boota; menu; run menuboot_cmd\0"
+> +    "boot1=ide\0"
+> +    "boot2=cdrom\0"
+> +    "boota_timeout=3\0"
+> +    "ide_doreset=on\0"
+> +    "pci_irqa=9\0"
+> +    "pci_irqa_select=level\0"
+> +    "pci_irqb=10\0"
+> +    "pci_irqb_select=level\0"
+> +    "pci_irqc=11\0"
+> +    "pci_irqc_select=level\0"
+> +    "pci_irqd=7\0"
+> +    "pci_irqd_select=level\0"
+> +    "a1ide_irq=1111\0"
+> +    "a1ide_xfer=FFFF\0";
+> +#define CRC32_DEFAULT_ENV 0xb5548481
+> +#define CRC32_ALL_ZEROS   0x603b0489
 
---zxb543gg6f3sjxpf
-Content-Type: application/pgp-signature; name="signature.asc"
+> +
+>   #define TYPE_A1_NVRAM "a1-nvram"
+>   OBJECT_DECLARE_SIMPLE_TYPE(A1NVRAMState, A1_NVRAM)
+>   
+> @@ -94,7 +116,7 @@ static void nvram_realize(DeviceState *dev, Error **errp)
+>   {
+>       A1NVRAMState *s = A1_NVRAM(dev);
+>       void *p;
+> -    uint32_t *c;
+> +    uint32_t crc, *c;
+>   
+>       memory_region_init_rom_device(&s->mr, NULL, &nvram_ops, s, "nvram",
+>                                     NVRAM_SIZE, &error_fatal);
+> @@ -113,12 +135,25 @@ static void nvram_realize(DeviceState *dev, Error **errp)
+>               return;
+>           }
+>       }
+> +    crc = crc32(0, p + 4, NVRAM_SIZE - 4);
+> +    if (crc == CRC32_ALL_ZEROS) { /* If env is uninitialized set default */
+> +        *c = cpu_to_be32(CRC32_DEFAULT_ENV);
 
------BEGIN PGP SIGNATURE-----
+Prefer the ld/st API over cpu_to/from:
 
-iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmfK+fQACgkQl9kSPeN6
-SE8hcA//T4jw866HFplQ8eRb4Creie3t44+xLyQkz4TXiolXKYM/KiLz1Kapc8CZ
-jvFC+Xeekso4Mx49E0UTvaGLGhctjxerrBvScoMYslqGdoOcS1leEcOdzgHv5yJf
-4y9C3yIoya7G9zRPQKoYOLLNAsfvCSa/ovhYpILOTIZ9PVzdB5Cu4H+8yuJHD/5Y
-PIYXIKe7cGADgoX5C7n2/B0TPNFmJQCXnK/z0P+EL54eIFd5e9+P1RXpvx5h2s6P
-DcZtDbOx2EO2pffD+IiDg1rsiLF7K7vdVtojCh6j1GuM2GG3Titg8G1I65XoIUqv
-GVVYflnk2Jfe58N6DPEea5bN0VEt9ze5FKCCF/vr+T5pBPFhq4NnzuZrq6Nd4y/F
-9z71+LW7KAlvkUYzRnpnvYTGuLVKO2Ho/hEZkQBh+iaW5MqXQeOF5wyhJtfoypT+
-pSXCCVAdMRh6/2VUwi73+U4ttkelS/vjaLyHZ+ZWkeZB9OJap1AdI7V6TCw3JqYn
-c6kde/kGjsgNRvo8yOtKayBJxhsm9VJohajirv+wzTrKHoXpvTKPRCc13SPy8SGO
-VWC56vdhncN0THC1sUd9DAAzniZZWmr4e5TkOwU2gwNeEyA4cIpDrbEUyKaDXfaC
-rxyMMSCVObfMWEklVtY/jeqy8lOuN2nZKwRNXdKCRuHF3/XSdNQ=
-=wtNs
------END PGP SIGNATURE-----
+            stl_be_p(c, CRC32_DEFAULT_ENV);
 
---zxb543gg6f3sjxpf--
+> +        /* Also copies terminating \0 as env is terminated by \0\0 */
+> +        memcpy(p + 4, default_env, sizeof(default_env));
+> +        if (s->blk) {
+> +            blk_pwrite(s->blk, 0, sizeof(crc) + sizeof(default_env), p, 0);
+> +        }
+> +        return;
+> +    }
+>       if (*c == 0) {
+>           *c = cpu_to_be32(crc32(0, p + 4, NVRAM_SIZE - 4));
+>           if (s->blk) {
+>               blk_pwrite(s->blk, 0, 4, p, 0);
+>           }
+>       }
+> +    if (be32_to_cpu(*c) != crc) {
+
+        if (ldl_be_p(c) != crc) {
+
+> +        warn_report("NVRAM checksum mismatch");
+> +    }
+>   }
 
 
