@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A167A55F29
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 05:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A70FA55F1F
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Mar 2025 05:04:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqOuw-0003gt-P1; Thu, 06 Mar 2025 23:02:34 -0500
+	id 1tqOv4-0004iF-TG; Thu, 06 Mar 2025 23:02:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tqOuT-00035I-7N; Thu, 06 Mar 2025 23:02:09 -0500
+ id 1tqOup-0003lf-NR; Thu, 06 Mar 2025 23:02:31 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tqOuR-00056A-Bp; Thu, 06 Mar 2025 23:02:04 -0500
+ id 1tqOuo-00056A-92; Thu, 06 Mar 2025 23:02:27 -0500
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 7 Mar
- 2025 11:59:55 +0800
+ 2025 11:59:56 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Fri, 7 Mar 2025 11:59:55 +0800
+ Transport; Fri, 7 Mar 2025 11:59:56 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -30,10 +30,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v6 27/29] tests/functional/aspeed: Update test ASPEED SDK
- v09.05
-Date: Fri, 7 Mar 2025 11:59:36 +0800
-Message-ID: <20250307035945.3698802-28-jamin_lin@aspeedtech.com>
+Subject: [PATCH v6 28/29] tests/functional/aspeed: Add test case for AST2700 A1
+Date: Fri, 7 Mar 2025 11:59:37 +0800
+Message-ID: <20250307035945.3698802-29-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307035945.3698802-1-jamin_lin@aspeedtech.com>
 References: <20250307035945.3698802-1-jamin_lin@aspeedtech.com>
@@ -65,48 +64,40 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In ASPEED SDK v09.05, the naming convention for pre-built images has been
-updated. The pre-built image for AST2700 A0 has been renamed to
-ast2700-a0-default, while ast2700-default is now used for AST2700 A1.
-
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/functional/test_aarch64_aspeed.py | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/functional/test_aarch64_aspeed.py | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/tests/functional/test_aarch64_aspeed.py b/tests/functional/test_aarch64_aspeed.py
-index 07b0c7c1fd..8df6a97a28 100755
+index 8df6a97a28..c25c966278 100755
 --- a/tests/functional/test_aarch64_aspeed.py
 +++ b/tests/functional/test_aarch64_aspeed.py
-@@ -27,9 +27,9 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
-         wait_for_console_pattern(self, '## Loading kernel from FIT Image')
-         wait_for_console_pattern(self, 'Starting kernel ...')
+@@ -31,6 +31,10 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
+             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-a0-default-obmc.tar.gz',
+             'cfbbd1cce72f2a3b73b9080c41eecdadebb7077fba4f7806d72ac99f3e84b74a')
  
--    ASSET_SDK_V903_AST2700 = Asset(
--            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.03/ast2700-default-obmc.tar.gz',
--            '91225f50d255e2905ba8d8e0c80b71b9d157c3609770c7a740cd786370d85a77')
-+    ASSET_SDK_V905_AST2700 = Asset(
-+            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-a0-default-obmc.tar.gz',
-+            'cfbbd1cce72f2a3b73b9080c41eecdadebb7077fba4f7806d72ac99f3e84b74a')
- 
++    ASSET_SDK_V905_AST2700A1 = Asset(
++            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-default-obmc.tar.gz',
++            'c1f4496aec06743c812a6e9a1a18d032f34d62f3ddb6956e924fef62aa2046a5')
++
      def start_ast2700_test(self, name):
          num_cpu = 4
-@@ -89,11 +89,11 @@ def start_ast2700_test(self, name):
-         exec_command_and_wait_for_pattern(self,
-             'cat /sys/bus/i2c/devices/1-004d/hwmon/hwmon*/temp1_input', '18000')
+         uboot_size = os.path.getsize(self.scratch_file(name,
+@@ -95,6 +99,12 @@ def test_aarch64_ast2700_evb_sdk_v09_05(self):
+         self.archive_extract(self.ASSET_SDK_V905_AST2700)
+         self.start_ast2700_test('ast2700-a0-default')
  
--    def test_aarch64_ast2700_evb_sdk_v09_03(self):
-+    def test_aarch64_ast2700_evb_sdk_v09_05(self):
-         self.set_machine('ast2700-evb')
- 
--        self.archive_extract(self.ASSET_SDK_V903_AST2700)
--        self.start_ast2700_test('ast2700-default')
-+        self.archive_extract(self.ASSET_SDK_V905_AST2700)
-+        self.start_ast2700_test('ast2700-a0-default')
- 
++    def test_aarch64_ast2700a1_evb_sdk_v09_05(self):
++        self.set_machine('ast2700a1-evb')
++
++        self.archive_extract(self.ASSET_SDK_V905_AST2700A1)
++        self.start_ast2700_test('ast2700-default')
++
  
  if __name__ == '__main__':
+     QemuSystemTest.main()
 -- 
 2.43.0
 
