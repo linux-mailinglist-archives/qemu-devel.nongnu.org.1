@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AC9A57FBF
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF76A57FD2
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:14:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr3JB-0005Ep-9D; Sat, 08 Mar 2025 18:10:17 -0500
+	id 1tr3JK-0005Z0-Hw; Sat, 08 Mar 2025 18:10:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3J8-00058J-2A
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:14 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3JC-0005Rn-R1
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:18 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3J4-0001PP-NG
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:13 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43948021a45so26055065e9.1
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 15:10:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3J9-0001QS-V0
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:18 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43948021a45so26055325e9.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 15:10:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741475409; x=1742080209; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741475414; x=1742080214; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lfxwOIZGSthGrPYmV9+XOb1nB6O0gzLqIcndrzluicE=;
- b=demB/umAMYnLYGxk0+xkQpkajuZQBHlOyuixnX286PgQ3JoelcZV72M7Z23W/K12Zu
- sIlGRBhhk1UoCWJLh0wFZcbcsYkUVc9H4vVDf3NKzf9b5Tt2JvBQOXhlizE/bQTF3BF3
- YieV0cZvGPv7sqlgb0GQ04UBFeDiz/dj//f+H6FG3PuuXihR9rzwggz4mNVRdLb5ysc2
- HQ7N535IUKm3Yye3fqMUE9lvmTG3H3VIjvSPCYYg+eayNbbtqc9VlU5CjBamnWLUAlcM
- HQEf7sV5rQ5KFTRB04nPakR/zkl8aML62MOWGiOB6iX5fpAwe/h9SqDERaBX0nC/t/3p
- so3A==
+ bh=UEvdVMyvXjdezRQS+46yXb37w36/326vMxQlDhu7A50=;
+ b=Bh6xbQk1zoJDHOgVuciI18zYZE3pJ4JkZlC3WxJ8hIKogV6NL21g6BtrWDJbnx+AZj
+ q6P9h6v1R6REMpbIfV5EClsQTc3dTymlVyFr2+rEEZX2UO9GjUIUGqg+uKkdOg0+R4s3
+ 25bMgcNIMO/WjLG8/Vv5FE1/QhCY5yArP6yM9y0+o67kpc/qP/+KWTWb7MrcEoem24Xa
+ EHCbmYFUoZFtyj/ujq/GHamzwYJAWIG0QUMeAWUet9jReD/CCNVFE+ADE0nqElUN4c4G
+ KjSIqB5GZWDsaVRxjaDBodeykohUXFOrr+B5tt935typSxFOLQBBHcqVifKYdY3AkZVE
+ d0dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741475409; x=1742080209;
+ d=1e100.net; s=20230601; t=1741475414; x=1742080214;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lfxwOIZGSthGrPYmV9+XOb1nB6O0gzLqIcndrzluicE=;
- b=UvNOrJCz1P516gYi/LbLR27xBsbF3tauRxCYFm2S6CtjhgTX2pedExOgaQ1bFnmcS2
- gNRXmPoL5i1uM3lyQ0ZA1xpYIjkC6NRdpbzF9t0fwLdAlwcAuhcEhYQ0r3R9OWfzOg4r
- zTVSfhgJ09ABJ3JmCGhmWsQtr1NoWnDCgCcKYj7woUda84zXW2cOx67o56JOQ3qz5Xhp
- +ankHdTEVOjh/jd0FjRTFWRabNCiA1EKXXEAexNIFdoNg86gkuNOFT1wRT4CVAxUfx7b
- dfu+usNGQ/K8BRjOEV3KtOLyr6AFYepqdXwdBlTXpC1UWKfmYbzQhN4vLucqVSpbqBHB
- mBJQ==
-X-Gm-Message-State: AOJu0YzBBj0rMUZP9qwCkJDvOBTkzfO9u7ELN3jijrzIjfo2sm4VLKgl
- /Mf63hPnXYsamu6xCs75ob3/2RVG4nPMN011aid203I6IiM0TXKK+KjuUO4DfYC17/J4UOsF9vE
- BI6I=
-X-Gm-Gg: ASbGncv1gMyoQj/49QPv9EyXhJxUnvzhP4AQ9VSTLDlAlWDzAo7UHLTOyW76gDrCMQP
- jOYvZNU2g/1PvKsLbUAOhb9IbCIUw5X3CtWk2v88FODCvjzW6jz8X3QhoGKaXw962EgpnQOBgne
- vQX5Sqg2QQbAP4iVQ7BB5yKMR9NdSrgBFtVSaeOEGmrSfVOVRGWQHRRbRjN7eezOBzvtxEJO3J8
- noaeH+YIMP4CIKECwC5ykQZF3xNHXIqi3BIm5Fm9Bnf4hiBcoL13aGdOENip1NiI2ibzQF1dXQU
- 0ab1g5sK4CVDIe49XlBhs3e3+CugH5QIOZtTEkw8DYtvm34HfMGpdYveJtvAnZrfkedj7eiN5O8
- BCACTzL9ail2SV8yWAIg=
-X-Google-Smtp-Source: AGHT+IEqYFt3ONWw2rS9Wwh6tBBRqOLce/1aiPLRA7IaFr0DAlK7OI2TQrPavd/72gpTyJnokKbccA==
-X-Received: by 2002:a05:6000:1a8f:b0:390:f552:d295 with SMTP id
- ffacd0b85a97d-39132dd8711mr5569888f8f.53.1741475408786; 
- Sat, 08 Mar 2025 15:10:08 -0800 (PST)
+ bh=UEvdVMyvXjdezRQS+46yXb37w36/326vMxQlDhu7A50=;
+ b=pnu86qXnSbD9Za7BbjStygrP1cg8QsB08Qi0FR7QUKyF54hLQq9NT4WdG+Jm/4fG2k
+ dKtRGd3ndQ+7mcO974IxXbHdBV1sZVA1FSitoQCkjzKAXK2gEba4fpM741v/tmERiypI
+ XSKw3o3YSEGH+RlXzgnHrNPSEwYX8yE5MT0IFjYBrOYp2Kqg5nvPJgZQmub1luOkbjUL
+ sZQbrnryFJFYuuO44VuQWudyfhXZuRK+uaL5c9HW1e6oK1LngwKUFTkWaiwPEmIELRjq
+ SYKUH4EGF//N90fZSjTys/V1QoNY6olbMyFdKoB3PJD1LZkPMa7N4dCE1aXYju93kNtZ
+ NHNA==
+X-Gm-Message-State: AOJu0YzqlC4NPOtKfpFOIv78i8/Y/yqcye4EuZox2mJnywNc+xA6nBK9
+ 0JoTEEopjULCKlcDnN/LXBd26nbCSe4VL1NlHe73pFWGWfobuQsPJ2Aa3IXJTUmAvT52+K9ko/D
+ mN8g=
+X-Gm-Gg: ASbGnctw2ChRskgo9X+rEbVcl5EQout/jBpyKpVZMHNkMd1xKm/uLm43tfP5AKk3tgj
+ s7abEIoGR2d7UDIvBAUY+hcOfsW/OC0uGmEtXKU0s5qdHrXNdqm3G9Z4vKoizNZhFgS78wFLp1H
+ FQIrcibE33pCzN/XNcxlfE3anmrKQb+8xzsfOkzf1gT5LExO0pIPIblkTy+UMfjJu4FElquQ7CI
+ +wYoz3ulxtUAg7yqQe9bAi8gu1+GdJIsWB8VNy6zeW3dFLfQNZYFvexxqyZ8frm/g4b/dL1KMft
+ M4TydyKjqB2fS2Avo8TdNh0UCSB8LaONcltiSBswEFhdtBacKBK5r8tyDhhGWLV8FkRW8ayL5pQ
+ PSBasEYSd8nHRnAagO9w=
+X-Google-Smtp-Source: AGHT+IHU+xQMgt3dsdiNnJgEOhNSs6YqxwcUDocahOsxR/CmDr32kZwcNq5kvICgYKsd1qnYF/NWOQ==
+X-Received: by 2002:a05:600c:35d1:b0:439:967b:46fc with SMTP id
+ 5b1f17b1804b1-43c601d9167mr53509045e9.8.1741475414122; 
+ Sat, 08 Mar 2025 15:10:14 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c0e3250sm10154532f8f.61.2025.03.08.15.10.05
+ 5b1f17b1804b1-43ceef2fb8dsm14915575e9.18.2025.03.08.15.10.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Mar 2025 15:10:07 -0800 (PST)
+ Sat, 08 Mar 2025 15:10:13 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>,
@@ -84,18 +84,17 @@ Cc: Yi Liu <yi.l.liu@intel.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 08/21] system/kvm: Expose kvm_irqchip_[add,
- remove]_change_notifier()
-Date: Sun,  9 Mar 2025 00:09:04 +0100
-Message-ID: <20250308230917.18907-9-philmd@linaro.org>
+Subject: [PATCH v2 09/21] hw/vfio/pci: Convert CONFIG_KVM check to runtime one
+Date: Sun,  9 Mar 2025 00:09:05 +0100
+Message-ID: <20250308230917.18907-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250308230917.18907-1-philmd@linaro.org>
 References: <20250308230917.18907-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,56 +117,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently kvm_irqchip_add_irqfd_notifier() and
-kvm_irqchip_remove_irqfd_notifier() are only declared on
-target specific code. There is not particular reason to,
-as their prototypes don't use anything target related.
+Use the runtime kvm_enabled() helper to check whether
+KVM is available or not.
 
-Move their declaration with common prototypes, otherwise
-the next commit would trigger:
-
-  hw/vfio/pci.c: In function ‘vfio_realize’:
-  hw/vfio/pci.c:3178:9: error: implicit declaration of function ‘kvm_irqchip_add_change_notifier’
-   3178 |         kvm_irqchip_add_change_notifier(&vdev->irqchip_change_notifier);
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |         kvm_irqchip_add_irqfd_notifier
-  hw/vfio/pci.c:3236:9: error: implicit declaration of function ‘kvm_irqchip_remove_change_notifier’
-   3236 |         kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |         kvm_irqchip_remove_irqfd_notifier
-
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/system/kvm.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/vfio/pci.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index ab17c09a551..75673fb794e 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -412,10 +412,6 @@ int kvm_irqchip_send_msi(KVMState *s, MSIMessage msg);
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index fdbc15885d4..9872884ff8a 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -118,8 +118,13 @@ static void vfio_intx_eoi(VFIODevice *vbasedev)
  
- void kvm_irqchip_add_irq_route(KVMState *s, int gsi, int irqchip, int pin);
- 
--void kvm_irqchip_add_change_notifier(Notifier *n);
--void kvm_irqchip_remove_change_notifier(Notifier *n);
--void kvm_irqchip_change_notify(void);
--
- struct kvm_guest_debug;
- struct kvm_debug_exit_arch;
- 
-@@ -517,6 +513,10 @@ void kvm_irqchip_release_virq(KVMState *s, int virq);
- void kvm_add_routing_entry(KVMState *s,
-                            struct kvm_irq_routing_entry *entry);
- 
-+void kvm_irqchip_add_change_notifier(Notifier *n);
-+void kvm_irqchip_remove_change_notifier(Notifier *n);
-+void kvm_irqchip_change_notify(void);
+ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+ {
+-#ifdef CONFIG_KVM
+-    int irq_fd = event_notifier_get_fd(&vdev->intx.interrupt);
++    int irq_fd;
 +
- int kvm_irqchip_add_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
-                                        EventNotifier *rn, int virq);
- int kvm_irqchip_remove_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
++    if (!kvm_enabled()) {
++        return true;
++    }
++
++    irq_fd = event_notifier_get_fd(&vdev->intx.interrupt);
+ 
+     if (vdev->no_kvm_intx || !kvm_irqfds_enabled() ||
+         vdev->intx.route.mode != PCI_INTX_ENABLED ||
+@@ -171,16 +176,13 @@ fail_irqfd:
+ fail:
+     qemu_set_fd_handler(irq_fd, vfio_intx_interrupt, NULL, vdev);
+     vfio_unmask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
++
+     return false;
+-#else
+-    return true;
+-#endif
+ }
+ 
+ static void vfio_intx_disable_kvm(VFIOPCIDevice *vdev)
+ {
+-#ifdef CONFIG_KVM
+-    if (!vdev->intx.kvm_accel) {
++    if (!kvm_enabled() || !vdev->intx.kvm_accel) {
+         return;
+     }
+ 
+@@ -211,7 +213,6 @@ static void vfio_intx_disable_kvm(VFIOPCIDevice *vdev)
+     vfio_unmask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+ 
+     trace_vfio_intx_disable_kvm(vdev->vbasedev.name);
+-#endif
+ }
+ 
+ static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
+@@ -278,7 +279,6 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+     vdev->intx.pin = pin - 1; /* Pin A (1) -> irq[0] */
+     pci_config_set_interrupt_pin(vdev->pdev.config, pin);
+ 
+-#ifdef CONFIG_KVM
+     /*
+      * Only conditional to avoid generating error messages on platforms
+      * where we won't actually use the result anyway.
+@@ -287,7 +287,6 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+         vdev->intx.route = pci_device_route_intx_to_irq(&vdev->pdev,
+                                                         vdev->intx.pin);
+     }
+-#endif
+ 
+     ret = event_notifier_init(&vdev->intx.interrupt, 0);
+     if (ret) {
 -- 
 2.47.1
 
