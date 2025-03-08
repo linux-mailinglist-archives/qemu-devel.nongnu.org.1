@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E01A57FBE
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:11:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E374A57FC9
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:12:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr3JW-0006Bk-8R; Sat, 08 Mar 2025 18:10:38 -0500
+	id 1tr3JZ-0006Pc-Cr; Sat, 08 Mar 2025 18:10:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3JO-000602-7g
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:30 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3JT-0006At-Py
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:35 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3JL-0001Sj-Na
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:29 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43bcc04d4fcso17916415e9.2
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 15:10:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3JQ-0001To-LX
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:35 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43cef0f03cfso1575455e9.3
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 15:10:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741475425; x=1742080225; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741475431; x=1742080231; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OAApOfCWWikXdcBm+45ltUmeOBmLQGFruMZPHaiGOZ8=;
- b=go9XA4N9cnIJfMS5J8CaRdLtM5aG+5Dqo++XFnOk6Lb8HOIuZPMb6NYJazOBVmkH1T
- S0SgpZQ7296suKxguCUmuJruB/2+27SKzdjK83ITlL+pq89aya6KkuZWYmU8b8UjQSRI
- DgwsD9G0BPap6a+Hve2LgBLgac4qg5efkX+Fpsx7uZrhhu8NE4mnMr0kA/zbWNq5Ugmw
- exn+2aa3FlG2pok64Ip1k9MPw07qH8vHh43IWeKTUgLxa0gNCxcRur9AXm5AEFNxiNc1
- QXTVvuOUZzxJQ8h4o4UyzC1dYHlHrTEezjsA/ZIxSo22OrDOssB0qhscTTW+pTPtR8Sl
- CARA==
+ bh=kqJ8O34qNgm7bETvjKnBNqBiS0iJjz9k+q/OCgWJZ8A=;
+ b=WqHo1vIHfSkmov+oBwrKtleKwtsA1oTL7gUL85Abp5pOQsyGjv5DPFMUDQAuHtwY/E
+ d0dak797fPbl7I111olYR2ki6MmXif9i/ZWjbyKAH46Ov3iKkZ+3PHI0GxyXnoGoay/R
+ S+V4pI7Yb/lAegqXVPPtmsNrwNBewdhRCxX4urmVmB488t0dEKr/+se7ZNTYrdSOkRN3
+ SOM8P8S0gdx2Ux3ED1LJT/cKnGG7moxM1DG08z9Ud1NXbg0RnQLuwvh/baO00EZgrGgM
+ zWq6ucaov9xpacY6hz0mk54zdeg3wY8CT1HirYg6P+2k3ThPFgCK//IW2atTxqr2SVWU
+ wQlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741475425; x=1742080225;
+ d=1e100.net; s=20230601; t=1741475431; x=1742080231;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OAApOfCWWikXdcBm+45ltUmeOBmLQGFruMZPHaiGOZ8=;
- b=c7PlWIqjmjayq8ut3vhCJTJ2UJH3YLDbaq3WO5ENhVKfvlpFP4DIHPXu4pPsold5ZU
- 0tszS6dzBPBKaFnCWcphyP5Ym5DeNR1O0EZmNtRqA9+eOU4GpustDSzZUS5yCvaFSTp+
- ntB/IB3e7TE9INGGE+4rLqat03WYfv/Uy85jVn8Nj1M6WYnIZ5HKXQDC5Y8+OXjf7P4g
- iJ0J+GGlaHpsPMXwsokSu0HxWPRPMYYz231/dNKqGtg9yjpk47wG5yNZ20TJv85oM8a2
- 0s/+lRJcXJyqvj94N92D2TBXxbpv382CXfpuCsFvuOvKBFX9MNSgcg5/EJAYfWCYUTsg
- rcqg==
-X-Gm-Message-State: AOJu0YwXe3+pX1cZVdu8DHVtLuCnI2g4LaoimvazPE0+xdWTFtkVDcZ3
- 76F90GeNMFayUvHcuhbqqibazls0NJy5ITVIQoF7102LXpqg4cbjLjlDyi/eQc0u0yCt17YsxCl
- tFbw=
-X-Gm-Gg: ASbGncsFjBCcGCU3QipYMEtCHuff770Cit2SyRWPIM8q7D+9b+aRZFNg7UiMh2PouPG
- UH4Qp8/zJXbhbHITIYwwHRCsI3tGDmKGLWouqXVWLExdFJ61YBRd8EZgiuACQYhPB5H5pVOQ4aV
- 0ezpK5pPJiJs71IHB/l8BSL2VWVFuu2HqJUT759TMezhYrOx643lhAuPAMl2Aj6c+7vphjxsyUH
- 4CYpbeaxlVo/HONn03p6W9IgOb7W6HCdPfNivKltCezm9GPgOVWJuK/8EqOqfTxvCKAUvk9kyTj
- xqPv5Pc0R9KRvMT6W8WctR+C6mDoFUoyOjapYkPXMkn1bgaqgJUQGCsnQufMn53aTomTxfekRVN
- gZ8qviSYIV7Ip67Cwwd8=
-X-Google-Smtp-Source: AGHT+IEsdUpzC3vvzIbC6qsVM93qE5A0/3sv2x9KGYFFRAItc0/EzKZy6rlmtqCICch1ekTW0tHDTg==
-X-Received: by 2002:a05:600c:3b1a:b0:43b:c541:51d3 with SMTP id
- 5b1f17b1804b1-43c601cfe2cmr50795605e9.6.1741475425507; 
- Sat, 08 Mar 2025 15:10:25 -0800 (PST)
+ bh=kqJ8O34qNgm7bETvjKnBNqBiS0iJjz9k+q/OCgWJZ8A=;
+ b=c39iEGua3xhF3S8zp0RSJyES0CHUTHJZgX7uqf+YjM/EBhsdiMgIAB+1rxmYW1hQjl
+ qggvhhbemJ2fp5R2SnOWAAb0cuqFM7GjXI1TSGTB+4k6Aqi5fLfQqLBR2S1dxbqP3KSV
+ Q8l7NC5sJmKYWvcjVZmHXK5yGOVBjmC1uScgN//OwsshgipanK9uWwmQHT1serjoAWPw
+ ouZ0KzhejT7nNwxl5TG86q7RmuV/i17BJvmzWyHhHTLsvzhurdrg2Z8OyNwH0ir8mQM6
+ 42yWNMxqSnLFAb9i20U//Snfs1Qh4ORCKVCjUnITrv9B/tYKNhHLX4fw0SPu6/n2u0gh
+ eiXg==
+X-Gm-Message-State: AOJu0Yz/Y6KH8wL5q47UJ0oDjNOJdgIXi/XJNVmAZlnBPATlnShsmCMO
+ 5r2uuU5/P95DpQ6aRMSSrEgz3RUkjuev/kDdqfrV9D+cOEWfGORYswwYbSd/jq2BpaUVYxBKPGd
+ xg8c=
+X-Gm-Gg: ASbGncv3wmvzFuLgMJpVCK2UOHKOgtYl0LRW57zZ8vOwPb8XnN7dXiw2Z/OEUjSFStJ
+ zNbOWHNvLUvCzp8J+ufKbku3r3CsDcsa49odJ3p1eh2Da6GWSBYhAYm80zJjpYeNxM1HD+b3N7z
+ s1cbMnsFDaA3ipBKeX7ALA5jBNlYvKOL6r8F+9KI1u2KvKbqxN+S4RrkXTY3/Zl2I1K8YLadh5t
+ q4iQqaKDaWVxFwtOTdd2pH3BamQ259EWL0G/I24QvnJUyqrgs50Os1C1DwIr+yvM3QJljMYMmSk
+ KDYMYEucMMhJvpZNBIF+Lb3+6L32r5gSTDhb/HD2CnSStL+hqABhsO0E+hdYy80TApfBgZi1eTN
+ kpNRe4b9C0jxwEqoe5IU=
+X-Google-Smtp-Source: AGHT+IFLHFN9rxCqoijA4uedrenofflj7luyFp9CUDQXWNq5DjV8ZWge9xhKDm/5wVHFLL1LrIgcAA==
+X-Received: by 2002:a05:600c:35ca:b0:43b:ca8c:fca1 with SMTP id
+ 5b1f17b1804b1-43c5a610dc3mr61655845e9.16.1741475430716; 
+ Sat, 08 Mar 2025 15:10:30 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ceaac390bsm30320235e9.35.2025.03.08.15.10.24
+ ffacd0b85a97d-3912c0e2f10sm10124731f8f.65.2025.03.08.15.10.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Mar 2025 15:10:25 -0800 (PST)
+ Sat, 08 Mar 2025 15:10:30 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>,
@@ -84,17 +84,18 @@ Cc: Yi Liu <yi.l.liu@intel.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 11/21] hw/vfio/igd: Define TYPE_VFIO_PCI_IGD_LPC_BRIDGE
-Date: Sun,  9 Mar 2025 00:09:07 +0100
-Message-ID: <20250308230917.18907-12-philmd@linaro.org>
+Subject: [PATCH v2 12/21] hw/vfio/igd: Check CONFIG_VFIO_IGD at runtime using
+ vfio_igd_builtin()
+Date: Sun,  9 Mar 2025 00:09:08 +0100
+Message-ID: <20250308230917.18907-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250308230917.18907-1-philmd@linaro.org>
 References: <20250308230917.18907-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,49 +118,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define TYPE_VFIO_PCI_IGD_LPC_BRIDGE once to help
-following where the QOM type is used in the code.
-We'll use it once more in the next commit.
+Convert the compile time check on the CONFIG_VFIO_IGD definition
+by a runtime one by calling vfio_igd_builtin(), which check
+whether VFIO_IGD is built in a qemu-system binary.
+
+Add stubs to avoid when VFIO_IGD is not built in:
+
+  /usr/bin/ld: libqemu-x86_64-softmmu.a.p/hw_vfio_pci-quirks.c.o: in function `vfio_bar_quirk_setup':
+  /usr/bin/ld: ../hw/vfio/pci-quirks.c:1216: undefined reference to `vfio_probe_igd_bar0_quirk'
+  /usr/bin/ld: ../hw/vfio/pci-quirks.c:1217: undefined reference to `vfio_probe_igd_bar4_quirk'
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/vfio/pci-quirks.h | 2 ++
- hw/vfio/igd.c        | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ hw/vfio/pci-quirks.h |  6 ++++++
+ hw/vfio/igd-stubs.c  | 20 ++++++++++++++++++++
+ hw/vfio/pci-quirks.c |  9 ++++-----
+ hw/vfio/meson.build  |  3 +++
+ 4 files changed, 33 insertions(+), 5 deletions(-)
+ create mode 100644 hw/vfio/igd-stubs.c
 
 diff --git a/hw/vfio/pci-quirks.h b/hw/vfio/pci-quirks.h
-index d1532e379b1..fdaa81f00aa 100644
+index fdaa81f00aa..dcdb1962600 100644
 --- a/hw/vfio/pci-quirks.h
 +++ b/hw/vfio/pci-quirks.h
-@@ -69,4 +69,6 @@ typedef struct VFIOConfigMirrorQuirk {
+@@ -13,6 +13,7 @@
+ #define HW_VFIO_VFIO_PCI_QUIRKS_H
  
- extern const MemoryRegionOps vfio_generic_mirror_quirk;
+ #include "qemu/osdep.h"
++#include "qom/object.h"
+ #include "exec/memop.h"
  
-+#define TYPE_VFIO_PCI_IGD_LPC_BRIDGE "vfio-pci-igd-lpc-bridge"
+ /*
+@@ -71,4 +72,9 @@ extern const MemoryRegionOps vfio_generic_mirror_quirk;
+ 
+ #define TYPE_VFIO_PCI_IGD_LPC_BRIDGE "vfio-pci-igd-lpc-bridge"
+ 
++static inline bool vfio_igd_builtin(void)
++{
++    return type_is_registered(TYPE_VFIO_PCI_IGD_LPC_BRIDGE);
++}
 +
  #endif /* HW_VFIO_VFIO_PCI_QUIRKS_H */
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index b1a237edd66..1fd3c4ef1d0 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -262,7 +262,7 @@ static void vfio_pci_igd_lpc_bridge_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/vfio/igd-stubs.c b/hw/vfio/igd-stubs.c
+new file mode 100644
+index 00000000000..5d4e88aeb1b
+--- /dev/null
++++ b/hw/vfio/igd-stubs.c
+@@ -0,0 +1,20 @@
++/*
++ * IGD device quirk stubs
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Copyright (C) Linaro, Ltd.
++ */
++
++#include "qemu/osdep.h"
++#include "pci.h"
++
++void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
++{
++    g_assert_not_reached();
++}
++
++void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
++{
++    g_assert_not_reached();
++}
+diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+index c53591fe2ba..22cb35af8cc 100644
+--- a/hw/vfio/pci-quirks.c
++++ b/hw/vfio/pci-quirks.c
+@@ -11,7 +11,6 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include CONFIG_DEVICES
+ #include "exec/memop.h"
+ #include "qemu/units.h"
+ #include "qemu/log.h"
+@@ -1213,10 +1212,10 @@ void vfio_bar_quirk_setup(VFIOPCIDevice *vdev, int nr)
+     vfio_probe_nvidia_bar5_quirk(vdev, nr);
+     vfio_probe_nvidia_bar0_quirk(vdev, nr);
+     vfio_probe_rtl8168_bar2_quirk(vdev, nr);
+-#ifdef CONFIG_VFIO_IGD
+-    vfio_probe_igd_bar0_quirk(vdev, nr);
+-    vfio_probe_igd_bar4_quirk(vdev, nr);
+-#endif
++    if (vfio_igd_builtin()) {
++        vfio_probe_igd_bar0_quirk(vdev, nr);
++        vfio_probe_igd_bar4_quirk(vdev, nr);
++    }
  }
  
- static const TypeInfo vfio_pci_igd_lpc_bridge_info = {
--    .name = "vfio-pci-igd-lpc-bridge",
-+    .name = TYPE_VFIO_PCI_IGD_LPC_BRIDGE,
-     .parent = TYPE_PCI_DEVICE,
-     .class_init = vfio_pci_igd_lpc_bridge_class_init,
-     .interfaces = (InterfaceInfo[]) {
-@@ -524,7 +524,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     lpc_bridge = pci_find_device(pci_device_root_bus(&vdev->pdev),
-                                  0, PCI_DEVFN(0x1f, 0));
-     if (lpc_bridge && !object_dynamic_cast(OBJECT(lpc_bridge),
--                                           "vfio-pci-igd-lpc-bridge")) {
-+                                           TYPE_VFIO_PCI_IGD_LPC_BRIDGE)) {
-         error_report("IGD device %s cannot support legacy mode due to existing "
-                      "devices at address 1f.0", vdev->vbasedev.name);
-         return;
+ void vfio_bar_quirk_exit(VFIOPCIDevice *vdev, int nr)
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index a8939c83865..6ab711d0539 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -17,6 +17,9 @@ specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
+ 
+ system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
+ system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
++system_ss.add(when: 'CONFIG_VFIO_IGD', if_false: files(
++  'igd-stubs.c',
++))
+ system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+   'helpers.c',
+   'container-base.c',
 -- 
 2.47.1
 
