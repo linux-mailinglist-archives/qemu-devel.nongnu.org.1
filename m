@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F08A57A28
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 13:30:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A15BAA57A27
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 13:30:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqtIw-0006d2-Ex; Sat, 08 Mar 2025 07:29:22 -0500
+	id 1tqtIv-0006X9-3z; Sat, 08 Mar 2025 07:29:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqtIa-0006T9-K9
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 07:29:13 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqtIi-0006UB-MN
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 07:29:14 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqtIX-0002B6-NE
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 07:28:59 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43cec5cd73bso941115e9.3
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 04:28:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqtIc-0002Bd-Qm
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 07:29:05 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-39140bd6317so68502f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 04:29:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741436935; x=1742041735; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741436941; x=1742041741; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iYxfjuJgdCGSXC8a1k7IDwhqReMpmbHRqmDmJU5MeDM=;
- b=X0FS5IKpyobnJd/O79kHN9BFt8Pc4KVnEcci74kq/xKzR2Of5m7dNJ+T/7yc+AEDYb
- 6AaggwWWED7DU596zpj2mWuICAAZuC+rkxT9Ui38Lxz17FjLCXR3LK1KNMk0U12+NvC/
- OWLWuuX+izOeKywQyCmmBdbG1liTvou+3Y4QAh0i16ENQxiHKOTQB7IPj3/N9ZqINLig
- gY3203hL+3F5F6m25Q4bs2JeuT3VhOtM5Y1yy3VDy8aEQ3FWmP/xoFjfbeoOMGxqkFFL
- 5CMWbkYO8LbWhJInqlyu7Vq3/5xDvw1cA33hwWz91u3yz5SbDdYZtXusp/qaAkmy8TEY
- x6Ng==
+ bh=lNWRd/3bpDqDY9go9fwbBzHVlSOjDlQlmHNSNyWLCFQ=;
+ b=eh+zA946OZtKL44+9K4/NzexQYPy5C3xUiG998OVU2tr84hIWSxFDsEAoSHDanW7gC
+ B2HTmUfhisTa8oVxxlGH12sDwdXnS4yfzF8H92IQqxMI4ai0zix8nvwNiwwnw0WvR/0I
+ PSiqnwEl38+mTpJlshxvQvT75yFkrxhrOHeLuJgIf0OU1GqAXFiAsfBT8xfn5iH46xnO
+ dgZo+oJrVsMHd4MotCUwME7G1m46h2DlrBqf0XwCXBMIlImrnmXu0fyjXEFW97Lx6J9u
+ kHKFlDI+MkvVE4BOPoHlm/PbQ7xWjhlA8SvLpMRyAjP2WnTpbkfGLFvWYhOC3UVTiW5n
+ C9sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741436935; x=1742041735;
+ d=1e100.net; s=20230601; t=1741436941; x=1742041741;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iYxfjuJgdCGSXC8a1k7IDwhqReMpmbHRqmDmJU5MeDM=;
- b=WfE4gfq7theYE6zMeCcBP3yhcmLWEN1q8EUAftIpiuUhsomz37o0b/KKJKHo2sCCjH
- +lucskIRIlEvbZPO33YXPAIC1gdaHW188HA5USwiYtKTPdVm/JKDa6QL+jDwB7x9IQZ/
- 35vlrJcof9SqS+X+5AHLGJMOjSq/l9tEJMNHCFCEDD4otIVDYdR2wOtbpMdVb95ngDV8
- DqurYbbZKIT9YgUS69Mdn4LTYC6oVEj2f3S2DG0KjFYI1Uqj8E3yaO1ceLGXNgNqTR5c
- FW+oCRDrHgtFDN0H6ZqVKLi94sFJ2NCLoLySzAaW/I4EvhrPU54a2VTB6qLt/t+Cb33w
- Mbug==
-X-Gm-Message-State: AOJu0YycmrdnhHS3NLmkZ9VkQFkKGZuUL2rncv/aVG8QIyx0yl0iYsi/
- qB+kZGhfOsxBGcGAhcRa5OK3QQ18QEQqfiBPNlmsA5J/DpkuATwIBgfXK3Vu8tkLnzZI40++cqE
- JAjY=
-X-Gm-Gg: ASbGncsXmCNa9R0iy5O0Qn/KyX3Oqh9NGTsD315Igh3O1xOLPCX/yWsJ/UYhk7zKa4O
- HUX0y0bBrLFIjszV9vfMuAH/Td8p3RXd7Dm9qClf5gjwDqkRft5EzKa3xbVyA+X8ru2EF2EZtTS
- h6/ZDkRWzP5G2UGIVhk48l8RfRpjksCOEceDrFNtvTY66XEMcQyIXGhLsOorc1WOkr6ZViuEQa2
- +UA0R1SRNjVgNhcqV3CXvHQv7F/rpOHvG3tlfMIWvW7NzhJkxgF/DmHfJ4JmrBv5SI4EAGZ9tZh
- ye7J4mnwKGPI1ptMJ9axfXZzEe20stma8zN96V24JsxuFPZd5hAODOx7NTj+rfbQgVrqUsB6nCP
- QM3HsuR6+uFl19ePhNFM=
-X-Google-Smtp-Source: AGHT+IEmFsZw6Qqr4oEJ4X8s3rKTt8RfNHu/+6/qLH6gJFS/eI/U1mj9s1HeLcY4orNJzLhuwkaXnw==
-X-Received: by 2002:a05:6000:156b:b0:38d:e304:7478 with SMTP id
- ffacd0b85a97d-39132dc56f2mr5155066f8f.38.1741436935200; 
- Sat, 08 Mar 2025 04:28:55 -0800 (PST)
+ bh=lNWRd/3bpDqDY9go9fwbBzHVlSOjDlQlmHNSNyWLCFQ=;
+ b=e3161xwGE50dGthjdCT98Lw2qTYTKKil8vJFprChUJcdqdMVhG3b68z0ocjFtf56PJ
+ z5SIpOzIKKLBFb99ZCMIqmIA+WYW/0u5dHn1UgS4nnUDSAiZwWHuAR/1t3jzm3BaqVQA
+ HwEb0yODgFrVF+9BIxri1yrLHKr6HICpf8uJzOfqbo1y1G0JxK0DL7KZsTVSTWFCzQ1g
+ GAz6Y/0jCi+a8WS2BqbndujawrZoGEoTcw/b8UhureT8zO8I+FXFHTSFdj7hke09dadJ
+ W+kPrAF/2npxqRpv1Z8OC5NNl7Mc4kMFmZYNhd8d/pag6psjiGMRSWKP2CzmuFENmGgb
+ 0HPQ==
+X-Gm-Message-State: AOJu0YxmyVVlntw6EJXTW5Dec8BhuQPj+o2BajCc8+EdNZOaKcylS0xA
+ qcsEHe3WS0yvy0RJcJyaZb1A3/RmvU/DeOMlfXhHN1sSbV5EnK356osmo3kecLAnbnU5gDHFQIt
+ Ee2Q=
+X-Gm-Gg: ASbGncvM8wZ3l403xJ1BP6/wTECeo0o2dMeIjtYLff31GlfjvMgMcj+Xo6txg+EJONX
+ u3Ywik21dRaLs1TMJ7pdibpeD4lolXBszck9xgns6tCM0Kz561EQ9pu0FfUgX45cLVrqyxybvA1
+ J9e7Za2nKRqnsFUKGBRnuTaPDB2vbXZGSVij8yc3HUtKHJUYmQfDmJv/oJxTiRof5MJF5ko7OUr
+ I4FSovqTUX34wIGZovOSx4MRGfHE9VpQq8OpNfhOYn/gx+YyGG/R8OAXjgjuU1V0aCuccHH8wzp
+ zrEVdSyva+tx6tHcmXvGG8sr29Iyz8yeIxGRfC35Fth6ORZ0HjKaUE29K/tpYOR5Pt0qGkXFmzZ
+ f/nxMBVgSfZdk/I+t0bw=
+X-Google-Smtp-Source: AGHT+IGMluLQ6WjIStepyGF8R0zu2xurdD0n4VO2r4YxLPlaKmqC91urDhWP+6d2NapoTshUuT3Uzw==
+X-Received: by 2002:adf:a39c:0:b0:391:34ef:ae6f with SMTP id
+ ffacd0b85a97d-39134efaf51mr2877368f8f.29.1741436940882; 
+ Sat, 08 Mar 2025 04:29:00 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c103f41sm8574514f8f.85.2025.03.08.04.28.53
+ ffacd0b85a97d-3912c1031fdsm8434950f8f.89.2025.03.08.04.28.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Mar 2025 04:28:54 -0800 (PST)
+ Sat, 08 Mar 2025 04:28:59 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>,
  Kyle Evans <kevans@freebsd.org>, Warner Losh <imp@bsdimp.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 2/3] bsd-user: Propagate alignment argument to
- mmap_find_vma()
-Date: Sat,  8 Mar 2025 13:28:41 +0100
-Message-ID: <20250308122842.76377-3-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v4 3/3] user: Extract common MMAP API to 'user/mmap.h'
+Date: Sat,  8 Mar 2025 13:28:42 +0100
+Message-ID: <20250308122842.76377-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250308122842.76377-1-philmd@linaro.org>
 References: <20250308122842.76377-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,84 +100,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Propagate the alignment to mmap_find_vma(), effectively
-embedding mmap_find_vma_aligned() within mmap_find_vma().
+Keep common MMAP-related declarations in a single place.
 
-Add a comment in do_bsd_shmat() to clarify alignment above
-page size is not required.
+Note, this disable ThreadSafetyAnalysis on Linux for:
+- mmap_fork_start()
+- mmap_fork_end().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/bsd-mem.h |  4 +++-
- bsd-user/qemu.h    |  2 +-
- bsd-user/mmap.c    | 10 ++--------
- 3 files changed, 6 insertions(+), 10 deletions(-)
+ bsd-user/qemu.h        | 12 +-----------
+ include/user/mmap.h    | 32 ++++++++++++++++++++++++++++++++
+ linux-user/user-mmap.h | 19 ++-----------------
+ 3 files changed, 35 insertions(+), 28 deletions(-)
+ create mode 100644 include/user/mmap.h
 
-diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
-index f5ec0de24ca..90ca0e33775 100644
---- a/bsd-user/bsd-mem.h
-+++ b/bsd-user/bsd-mem.h
-@@ -370,9 +370,11 @@ static inline abi_long do_bsd_shmat(int shmid, abi_ulong shmaddr, int shmflg)
-         if (shmaddr) {
-             host_raddr = shmat(shmid, (void *)g2h_untagged(shmaddr), shmflg);
-         } else {
-+            abi_ulong alignment;
-             abi_ulong mmap_start;
- 
--            mmap_start = mmap_find_vma(0, shm_info.shm_segsz);
-+            alignment = 0; /* alignment above page size not required */
-+            mmap_start = mmap_find_vma(0, shm_info.shm_segsz, alignment);
- 
-             if (mmap_start == -1) {
-                 return -TARGET_ENOMEM;
 diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 4e97c796318..0b3bd65b180 100644
+index 0b3bd65b180..c1c508281a8 100644
 --- a/bsd-user/qemu.h
 +++ b/bsd-user/qemu.h
-@@ -242,7 +242,7 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-                        abi_ulong new_addr);
- int target_msync(abi_ulong start, abi_ulong len, int flags);
- extern abi_ulong mmap_next_start;
--abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size);
-+abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong alignment);
- void mmap_reserve(abi_ulong start, abi_ulong size);
- void TSA_NO_TSA mmap_fork_start(void);
- void TSA_NO_TSA mmap_fork_end(int child);
-diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
-index dfa6e728ab5..3f0df79c375 100644
---- a/bsd-user/mmap.c
-+++ b/bsd-user/mmap.c
-@@ -275,8 +275,7 @@ static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
-  * It must be called with mmap_lock() held.
-  * Return -1 if error.
-  */
--static abi_ulong mmap_find_vma_aligned(abi_ulong start, abi_ulong size,
--                                       abi_ulong alignment)
-+abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong alignment)
- {
-     void *ptr, *prev;
-     abi_ulong addr;
-@@ -395,11 +394,6 @@ static abi_ulong mmap_find_vma_aligned(abi_ulong start, abi_ulong size,
-     }
- }
+@@ -32,6 +32,7 @@
+ extern char **environ;
  
--abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size)
--{
--    return mmap_find_vma_aligned(start, size, 0);
--}
+ #include "user/thunk.h"
++#include "user/mmap.h"
+ #include "target_arch.h"
+ #include "syscall_defs.h"
+ #include "target_syscall.h"
+@@ -233,19 +234,8 @@ void print_taken_signal(int target_signum, const target_siginfo_t *tinfo);
+ extern int do_strace;
+ 
+ /* mmap.c */
+-int target_mprotect(abi_ulong start, abi_ulong len, int prot);
+-abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+-                     int flags, int fd, off_t offset);
+-int target_munmap(abi_ulong start, abi_ulong len);
+-abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+-                       abi_ulong new_size, unsigned long flags,
+-                       abi_ulong new_addr);
+ int target_msync(abi_ulong start, abi_ulong len, int flags);
+-extern abi_ulong mmap_next_start;
+-abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong alignment);
+ void mmap_reserve(abi_ulong start, abi_ulong size);
+-void TSA_NO_TSA mmap_fork_start(void);
+-void TSA_NO_TSA mmap_fork_end(int child);
+ 
+ /* main.c */
+ extern char qemu_proc_pathname[];
+diff --git a/include/user/mmap.h b/include/user/mmap.h
+new file mode 100644
+index 00000000000..4d5e9aac70a
+--- /dev/null
++++ b/include/user/mmap.h
+@@ -0,0 +1,32 @@
++/*
++ * MMAP declarations for QEMU user emulation
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef USER_MMAP_H
++#define USER_MMAP_H
++
++#include "user/abitypes.h"
++
++/*
++ * mmap_next_start: The base address for the next mmap without hint,
++ * increased after each successful map, starting at task_unmapped_base.
++ * This is an optimization within QEMU and not part of ADDR_COMPAT_LAYOUT.
++ */
++extern abi_ulong mmap_next_start;
++
++int target_mprotect(abi_ulong start, abi_ulong len, int prot);
++
++abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
++                     int flags, int fd, off_t offset);
++int target_munmap(abi_ulong start, abi_ulong len);
++abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
++                       abi_ulong new_size, unsigned long flags,
++                       abi_ulong new_addr);
++
++abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong alignment);
++
++void TSA_NO_TSA mmap_fork_start(void);
++void TSA_NO_TSA mmap_fork_end(int child);
++
++#endif
+diff --git a/linux-user/user-mmap.h b/linux-user/user-mmap.h
+index b94bcdcf83c..dfc4477a720 100644
+--- a/linux-user/user-mmap.h
++++ b/linux-user/user-mmap.h
+@@ -18,6 +18,8 @@
+ #ifndef LINUX_USER_USER_MMAP_H
+ #define LINUX_USER_USER_MMAP_H
+ 
++#include "user/mmap.h"
++
+ /*
+  * Guest parameters for the ADDR_COMPAT_LAYOUT personality
+  * (at present this is the only layout supported by QEMU).
+@@ -39,24 +41,7 @@
+ extern abi_ulong task_unmapped_base;
+ extern abi_ulong elf_et_dyn_base;
+ 
+-/*
+- * mmap_next_start: The base address for the next mmap without hint,
+- * increased after each successful map, starting at task_unmapped_base.
+- * This is an optimization within QEMU and not part of ADDR_COMPAT_LAYOUT.
+- */
+-extern abi_ulong mmap_next_start;
 -
- /* NOTE: all the constants are the HOST ones */
- abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
-                      int flags, int fd, off_t offset)
-@@ -494,7 +488,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
-         host_len = len + offset - host_offset;
-         host_len = HOST_PAGE_ALIGN(host_len);
-         alignment = (flags & MAP_ALIGNMENT_MASK) >> MAP_ALIGNMENT_SHIFT;
--        start = mmap_find_vma_aligned(real_start, host_len, alignment);
-+        start = mmap_find_vma(real_start, host_len, alignment);
-         if (start == (abi_ulong)-1) {
-             errno = ENOMEM;
-             goto fail;
+-int target_mprotect(abi_ulong start, abi_ulong len, int prot);
+-abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+-                     int flags, int fd, off_t offset);
+-int target_munmap(abi_ulong start, abi_ulong len);
+-abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+-                       abi_ulong new_size, unsigned long flags,
+-                       abi_ulong new_addr);
+ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice);
+-abi_ulong mmap_find_vma(abi_ulong, abi_ulong, abi_ulong);
+-void mmap_fork_start(void);
+-void mmap_fork_end(int child);
+ 
+ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
+                        abi_ulong shmaddr, int shmflg);
 -- 
 2.47.1
 
