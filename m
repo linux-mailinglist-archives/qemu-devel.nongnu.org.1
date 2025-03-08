@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC50BA578E6
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 08:25:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 135BDA578E8
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 08:26:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqoXe-0001Q4-Ez; Sat, 08 Mar 2025 02:24:14 -0500
+	id 1tqoZh-0003tu-Jg; Sat, 08 Mar 2025 02:26:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqoXb-0001P0-IG
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 02:24:12 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqoZf-0003tf-Vb
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 02:26:20 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqoXZ-0008LR-W7
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 02:24:11 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-390e3b3d3f4so1289436f8f.2
- for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 23:24:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqoZe-0000GO-HP
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 02:26:19 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43bc48ff815so15485435e9.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 23:26:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741418648; x=1742023448; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0ZK0fCYsleMzsa/JHC9c5molUW12aA2YIflz9M8WHro=;
- b=Xs/IWlWaHqMWvfxFhzzL75CcMcuPdm1ktOBD/qw2qJItI4Y1fOsAauHhEXoZ8zHySG
- RwRgjZx+z5NmWeRwxste04EKPbEoIbJ2GqhVoYD0HaWawZUbqKjez6StrJ1/LwuTYsxq
- /Cjm7EcvIpEMnD5XHbSpsSkdc/XLQYb5qp+czMMmA6Z7BVtg1gfWSiisBziU1H5Wf4Kj
- dZvnra/6KDNCETyqjYQz3MkIJ0IpOytgAwtZRMoMNLGRSckKuQl1gXygq7xRdDmXFRMe
- ExIpFXqyyf3iTfp8H1ts200g3p+Vh7OD0UTz/p5BOBAIQG+G5YDk4am5oklmxf/NgyPV
- vQ8w==
+ d=linaro.org; s=google; t=1741418777; x=1742023577; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wZweTxkCcHtM32ZA2wHZ3IcSmhsvikZHNciAcyGtNLA=;
+ b=anjxLax3DvBGRhAj5KZ+st9fTLrUIineDcWEBQ54S4br5C3vqgPk1bPmpN2Ic0j5F9
+ b9sYMwliLJCAlG4Xjq4kujG8rJKxECl8vsd1QurK8xePlGhxg5b2wZhKT4erVXyh6XYC
+ api5SjYJQ6qtEgKr2e033n5YRUPgB1AmDp6FwOQL+MM0pkBy0SYME7gLZPzCy3MOI2r0
+ 38iMoYk3i8bOcMatw6KqNAZSOdolY8gB3ZkR1KP9STL8z8oxb2Ha8hzo1CX3FktGtulM
+ I4pMCPaqzx4ZAJFy1JgJ7KuFjYxVAnIXt1D+dm2uEAY35NYGhpXM4+vvPi68X7SeniJ2
+ w13A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741418648; x=1742023448;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0ZK0fCYsleMzsa/JHC9c5molUW12aA2YIflz9M8WHro=;
- b=IsweabF2Pe2gioPVdbn+0xP68IAzFwDsiQfhLtHIrJ4bJd9OAwEjJVXj3X7D//tZT1
- SwtExux2XJLOLeK902WbYvQbsaP3cpq0C8eQ6vDROuICcGor4liKvqwC7JylV5iHOtXr
- ba1Ku0PEcD5WlC4lBsIRHKUdQ1AibHf46M8oFzAGGIKizT0TuKbg/QJS3EyoHGcKNWBG
- gc/Pj4e6c3nk68vLmqyInaMU8mKCU/s0mfDVLZTCcmzN0TObt9qI2nTnL0eWEzgoZDUy
- P3o7VHlJ2uIY9/Mg+9bXdpDlzVOa8ULqCtIB/cr2BpSEcRTqGkC5z7qwZC3NXOvB+64i
- Eu9A==
-X-Gm-Message-State: AOJu0Yw4iHzax0xOW7rN0kErN5PQAbF2SLOxq9B1zYa6raBR1a2pyl4s
- Y6cKbgbpLX2aKRJowgtBM7iC7rSuBepudzTZkmxaHtEBWzm96uu98mBlNJWEsGBvDnZEH7yEK08
- 0eW4=
-X-Gm-Gg: ASbGncsZ68s4H3dOwQwlGIkH2cTRW/Ui6JiBDO1Bu6FwpVJUKJCkc4TpVBAvMWFC5/u
- aI04jGZtiiz0TiETQHf9g0iZZhKNh7HiEBxKHKyHdiWZ5HTrM+33s1MZULH88eWIywvxDADvV/9
- jcirXE4NNKDd7AxvxwHI75BlY2g17UKfkdsr5WONFwMqgznXO8KXTx/A5viLUQaU1zylYmlcRVD
- gBbOlxfWn7i6AmIiYgBtwIuSh6rumZDeZuSjgql3yg4zC/lFZbBGlkxDsD3VyLpRDY9HfMPz7H6
- 8z7idOxksKYuQRM992M9NEs7s0OLTTLDWuxeU8skLkaepPeB+OMthQOg1uzMbrouL3anAFZLRbz
- auvsPg58Hnf1jRRlyd+qWV57Thblcxw==
-X-Google-Smtp-Source: AGHT+IFU52KZdpIoYDXT+0zoK0soh+D7/NPAxiNhFiljiVjj4NIM6kzs9VvmZqUsKU6YG3M4GIlmtQ==
-X-Received: by 2002:a5d:5889:0:b0:390:f45e:c851 with SMTP id
- ffacd0b85a97d-39132d8de73mr4857587f8f.21.1741418648332; 
- Fri, 07 Mar 2025 23:24:08 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1741418777; x=1742023577;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wZweTxkCcHtM32ZA2wHZ3IcSmhsvikZHNciAcyGtNLA=;
+ b=q8xvdr8rivssnbAJL16Nv4ICtuAk6xi6ZJojIHkbRC3Awst6cFZ5xSt11BB/Zq+Qpj
+ OMQcQpXL6VViDWcTr7ON8FcRLUPwIPHDawYTnNTu0THg1eFJgRuypVj0oPo9mQckkkXw
+ 3epre9zp6bUgD/7EGNukeEmjtR2wSrs/BG29Hox76Cqvf6jX997jQrmTK3mA+Adfqdef
+ 5Jy1LcETd0MFlQIhPXNAjpEMfFgCez4z1VgmVIp073t6ojLEA4IWw0++h60dr9oU8zEH
+ QRILVdt3PssmQTP+KW/KY6fGesTVgdrIp08lS3JrREAQhB3yPRnTXtyMKCHiibbA0Qeu
+ 6DXg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVd52dF586KiDQLH/XtlwoSstMSceLC38LoxBlWcGUDCGqhdxYlSYdMj9Kv3jZOAkaK8XbiOaBFLiyu@nongnu.org
+X-Gm-Message-State: AOJu0YzndhtAz85krWv5wPtR8N+bDrk6b7qY7TEGBtlauEUt3v5aIwCt
+ 7z1PTrNZCsgB/h+R+mkmCb+wxP/ET8LpKPuV4m53Edxibh2lmHLpy9E5ZjW55Xrm2Pvy3iGCYNj
+ bNWE=
+X-Gm-Gg: ASbGncs+Rp60fMauWnrWy9ozE/yFd1f5KIpPvdjTAlhSVssEroSEam0HSa/xYk8AJpH
+ r48/2sqm7uWrKYAiJWpX0dAnrXeEndAit5zgbOA56UpLGD4bSgOKJfrpQ2lvyraVRep6HnIyv/x
+ 7GBJBc+oQC/yznk1BGYNU3kZAjCjOB/yknzIT2eYrI6LnNJQaNEOauo54QlhOu1LJXIRxcR8s8j
+ UT1lrIGt4QmJUplL/UvFyFBUWF2XgbJfY3TVgsKkOf8+DcNVBQ2euJ7OyYUF4cdUEql/nnZAss1
+ JGjUwnInNLleXHlRuyj0bH66XXOFBaAQ5B3kbitRxgugD5bwL0lqRK/SZE5pqMwS798EcqAKSf1
+ 6qN/WyZQoVD/Y
+X-Google-Smtp-Source: AGHT+IEhZeOKqUS5spjOQvUBLfJxeI0E0333Uf8jegHAWFYKms90jGEQskfo/IuRubd3oNL6v6hc5Q==
+X-Received: by 2002:a05:600c:12d5:b0:43b:bb72:1dce with SMTP id
+ 5b1f17b1804b1-43ce4ac0c14mr12095225e9.5.1741418776808; 
+ Fri, 07 Mar 2025 23:26:16 -0800 (PST)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bdd8c3173sm77095155e9.11.2025.03.07.23.24.06
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 07 Mar 2025 23:24:06 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 17/18] accel/tcg: Build tcg-runtime.c once
-Date: Sat,  8 Mar 2025 08:23:48 +0100
-Message-ID: <20250308072348.65723-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250308072348.65723-1-philmd@linaro.org>
-References: <20250308072348.65723-1-philmd@linaro.org>
+ 5b1f17b1804b1-43bdd9470e2sm74961815e9.33.2025.03.07.23.26.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 07 Mar 2025 23:26:16 -0800 (PST)
+Message-ID: <040335ad-eaf9-4d4a-83d7-27822f0c23d0@linaro.org>
+Date: Sat, 8 Mar 2025 08:26:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/functional: Require 'user' netdev for ppc64 e500
+ test
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Bernhard Beschow <shentey@gmail.com>
+References: <20250308071328.193694-1-clg@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250308071328.193694-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,55 +101,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On 8/3/25 08:13, Cédric Le Goater wrote:
+> When commit 72cdd672e18c extended the ppc64 e500 test to add network
+> support, it forgot to require the 'user' netdev backend. Fix that.
+> 
+> Fixes: 72cdd672e18c ("tests/functional: Replace the ppc64 e500 advent calendar test")
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   tests/functional/test_ppc64_e500.py | 1 +
+>   1 file changed, 1 insertion(+)
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- accel/tcg/tcg-runtime.c | 7 +------
- accel/tcg/meson.build   | 2 +-
- 2 files changed, 2 insertions(+), 7 deletions(-)
-
-diff --git a/accel/tcg/tcg-runtime.c b/accel/tcg/tcg-runtime.c
-index 3d4651b4012..fa7ed9739c7 100644
---- a/accel/tcg/tcg-runtime.c
-+++ b/accel/tcg/tcg-runtime.c
-@@ -23,13 +23,8 @@
-  */
- #include "qemu/osdep.h"
- #include "qemu/host-utils.h"
--#include "cpu.h"
-+#include "exec/cpu-common.h"
- #include "exec/helper-proto-common.h"
--#include "exec/cpu_ldst.h"
--#include "exec/exec-all.h"
--#include "disas/disas.h"
--#include "exec/log.h"
--#include "tcg/tcg.h"
- #include "accel/tcg/getpc.h"
- 
- #define HELPER_H  "accel/tcg/tcg-runtime.h"
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 81fb25da5cc..411fe28deac 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -1,5 +1,6 @@
- common_ss.add(when: 'CONFIG_TCG', if_true: files(
-   'cpu-exec-common.c',
-+  'tcg-runtime.c',
- ))
- tcg_specific_ss = ss.source_set()
- tcg_specific_ss.add(files(
-@@ -7,7 +8,6 @@ tcg_specific_ss.add(files(
-   'cpu-exec.c',
-   'tb-maint.c',
-   'tcg-runtime-gvec.c',
--  'tcg-runtime.c',
-   'translate-all.c',
-   'translator.c',
- ))
--- 
-2.47.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
