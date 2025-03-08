@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266D7A57EB4
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 22:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0D9A57EBA
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 22:40:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr1tG-0000PJ-Kh; Sat, 08 Mar 2025 16:39:31 -0500
+	id 1tr1tg-0001DX-IY; Sat, 08 Mar 2025 16:39:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr1rZ-0005i7-AX
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:37:44 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr1re-0005kb-CW
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:37:48 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr1rW-0003yy-72
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:37:41 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43bc638686eso25105915e9.1
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 13:37:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr1rb-00040H-MT
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:37:46 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43cf257158fso97395e9.2
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 13:37:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741469856; x=1742074656; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741469861; x=1742074661; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M76BvQDiEF2f2PItQcUpRY11DWy0Vj4F0agjAvaV/Ks=;
- b=Ci72cBwx9CrTNogSl7s0Ch6ssFrfRmez7YqnXyaSNXgxCraWrVJOUn8GQ9PMBBYfTw
- wJ2/M9Un8rcR9DxgW492FgNVHmQsSlhruXC7lAeNfmbbJujS23WEQ99wThZ5MTMnnoNL
- GhoPG4FkzdEPv41PSPgGeANkLVoQptI2VTMuNSGo2R2qHoUzkQ9rtxzAbS3xDrtgPMvW
- 7i2AJhUa5wmUDNl5IdaTyl5YpNnXuFl+BbMjeNSNyBBtxJWkX09L4OvHTfH9hYd0zyYs
- LYlXIlnZyPlZ3jZeHfzdG1DXBmZLFTYXatK/k7WHqt8ANB/ThijwT/r2VA7Fx64t7jve
- Yc1A==
+ bh=aYlUhb3rggQ40rUgdot+a+VslIzJdQ8NRCCBrVTp1kk=;
+ b=L0Al8F2x6cx4C95akJgk53AnIz0LD3+T/bG9bE7OEe28QVPxK6TYr6BDJG3Ar8Kl5B
+ dwPdnEBPPr2lsVRWQSaopLzBu2wKzIKGMDDwUek86eF9lsfiRPjXb1aJMKWO3Whf5VHF
+ Eos9EXclrIvbCW1OKLwOebUJxa0APoFcfbywbcnq6ZOlblL7kCjBpK3Jd07EIAPIK9Wq
+ m9gESaBX7P6s0pZDqiG+twmUAMV6jFd9mPHesWNUuhc201j/GhqiKHVFU/4OHKV9uuVW
+ S8E7AObwwWmR0kx5saAmFdD8QpPUxXxcDKbFtFrMSH9fak2i4zyF2XG3De+eosVoh4XS
+ J2iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741469856; x=1742074656;
+ d=1e100.net; s=20230601; t=1741469861; x=1742074661;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M76BvQDiEF2f2PItQcUpRY11DWy0Vj4F0agjAvaV/Ks=;
- b=JIV0BaPtRaTr8v7FzqNHjxqJgXRin9tuTItSD+Y3lZ7u+R5HaJCRQEItRhsMJjzauy
- Epx+76p2tj2sGndx125r0I9KZf9AvmBJV8sIzHk1DRN8eeNejGq4SXp/LHdWRuAYF7wt
- z83hA2UaMD3Fb1IXpV3squAsyWkQEBWlzK4AXncVgMXTZEpQBQ3OWYW+n5TMZ3pOIKgu
- WHc+nUKIYfkM30ahSAMsHT27E7pzTB2QBTJ0j7oke6MNra6lFipNKpXhiKGziVaLab/N
- MCBai04nV79GIcaj+kHD72JXlEqyk7l1AGBICf8HxfclngHL9c99WjPlciS3eTrInLfJ
- ccKw==
-X-Gm-Message-State: AOJu0YyjTqDlIgiwx1TGRLDlVwjyfrEMkYW9cglGHQtJDkXOtmHv6gnD
- uLsi10toneZkkogH2NDRtz8jfuBaOF9e5qV6u4FcC0+CsY+TqZHwn/WV10tQANA8rsai7MR84SP
- YL0Y=
-X-Gm-Gg: ASbGncvzVCP9gHIUiHbIwXMcWKUBfDovAon58p9ose9MGT9ornXYEVAM5IKpPh7YkTQ
- hnMVqjp32yPkZogIJ0X7t7NqXQf3eDRse3Cb0MX6tf+PTCYilz2MLRyQpxXBFaYgEyuGxgHeQJi
- PN21715F1w/2aIRi9NslHbMw1t/joez0LfmWHpJx5jc7oq6ClqkkFKvpkWPFkP3Smuk5sgQRiRd
- 4Iw0YJbtIgl6cgDZjJ3TzcxoIZarYCAU6ZJeCD/vDK8LLVoQ0w19Cmf4VYUydxHxdMpsOLsIIKl
- oMJV2oRSAqAXK6ho/Uw0chgE8zMmlpinLNjw6B+wt2lTvObVTdsrCmuq2DvtRIcFn+mmXJd1TOC
- kLnB4NhJDBvDLQjuEEoU=
-X-Google-Smtp-Source: AGHT+IG7/T/yYK0P/Qt6v6nopiQ+iQxqQ74UC0nEv5yTSum3SPI76m0TG4Z8buebRdmL2kbGbjdDlg==
-X-Received: by 2002:a5d:64ab:0:b0:390:f9d0:5e7 with SMTP id
- ffacd0b85a97d-3913af025b1mr2945488f8f.13.1741469855895; 
- Sat, 08 Mar 2025 13:37:35 -0800 (PST)
+ bh=aYlUhb3rggQ40rUgdot+a+VslIzJdQ8NRCCBrVTp1kk=;
+ b=FfmMWh/B3FeaueJGplcZU6U+fXKdIJK10nZvSTxqmvZNRAPHJThWnM0a1jxFRJ0Cm0
+ hsE16PpWljazu9Sv0DScLzpixgCZFmYn7ftIrr2/I0HTKkHK0OwF9KVQ6eU7ZNS8LKXY
+ 5MN2lB9CMU1c0nBg2qz7lBrDlTRZAjizSjoB/wG+HLCW+Si8CwogEo2I0vLxWnjz8IYI
+ ldHwE9H5j6+f3zDbGS+REl9PUlsC8V6MPDG9pAAwyCP3JY2jVzwLXWLBZT0aKsnrn7j8
+ UNKKNr9l0gSow8FXZe2R9hk+OaqV9Fgfk+49rTuvP0U0nuvvOryFYKR0NCOYemILIW81
+ Hi6g==
+X-Gm-Message-State: AOJu0YyVaLNnJsecPbEe+0AM13LNpzy4LV/7KhQwDVJ7blq7inkosQAQ
+ fyiV0XAontHLxUmz+ieWSWsBc7DXFJPGugP30t1JI9k4sTRuvhc9zuSmOUFht7mHGKWMXXB8Cwn
+ VtA0=
+X-Gm-Gg: ASbGncuT/oXdb30j9UMDDBN0RnGPNZvbv9pMjVjYX0jOdgaDe8bcN1hk9EuptINE+/t
+ rC1Og2n8GRdgAAHjTBoFiLa8k78YwBq+4klwbVKJfC/yTn7JptrlyJtjU/IRdGmX0mc19bqwSKL
+ xR39OqXyhcBbcsY0LsRMBXuSTzu5D2AfftzYR3avUfnYP/qwihKbl/chCf11l0OsPkCZTlJ0Pmt
+ 1J+3oONVvcIyfnV1X+PDww21RXyMDHYoSPu6dN7YqZre02jefrXlYNGNj3hyBPZmROBx241z6uG
+ laYvsR8eoi2wnq8PLShf8ZBpZ4HiDks3kqRvgbmwO2EKbPqBEafRJhvth9M82XbbHWW835IuYQM
+ AGrWEIW3LS7V6NJNX3gQ=
+X-Google-Smtp-Source: AGHT+IGnXCukaOQi3q5SQL72YiOr0dPTmXNdw9xarlK4q1o1vF2CN3iHvdI4SqpEOfl6c1ujDIhPPQ==
+X-Received: by 2002:a05:600c:3b1d:b0:439:a5e6:73ff with SMTP id
+ 5b1f17b1804b1-43c601e18b2mr56121515e9.17.1741469860743; 
+ Sat, 08 Mar 2025 13:37:40 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912bee262esm9903118f8f.0.2025.03.08.13.37.34
+ 5b1f17b1804b1-43bd42c6203sm124940935e9.24.2025.03.08.13.37.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Mar 2025 13:37:35 -0800 (PST)
+ Sat, 08 Mar 2025 13:37:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	BALATON Zoltan <balaton@eik.bme.hu>
@@ -74,18 +74,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Jean-Christophe Dubois <jcd@tribudubois.net>,
  Guenter Roeck <linux@roeck-us.net>, qemu-block@nongnu.org,
  Bin Meng <bmeng.cn@gmail.com>, qemu-arm@nongnu.org
-Subject: [PATCH v4 10/14] hw/sd/sdhci: Convert SDHCIState::endianness to
- EndianMode
-Date: Sat,  8 Mar 2025 22:36:36 +0100
-Message-ID: <20250308213640.13138-11-philmd@linaro.org>
+Subject: [PATCH v4 11/14] hw/sd/sdhci: Add SDHCIClass::ro::capareg field
+Date: Sat,  8 Mar 2025 22:36:37 +0100
+Message-ID: <20250308213640.13138-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250308213640.13138-1-philmd@linaro.org>
 References: <20250308213640.13138-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,104 +107,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-EndianMode enum is preferred over DEVICE_BIG/LITTLE_ENDIAN
-values because it is a QAPI type.
+Capability register is read-only.
+
+Since we allow instances to clear/set extra bits, log when
+read-only bits normally set by hardware are cleared at
+board level.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sdhci-internal.h | 3 ++-
- include/hw/sd/sdhci.h  | 3 ++-
- hw/ppc/e500.c          | 2 +-
- hw/sd/sdhci-pci.c      | 2 +-
- hw/sd/sdhci.c          | 7 ++++++-
- 5 files changed, 12 insertions(+), 5 deletions(-)
+ include/hw/sd/sdhci.h | 5 +++++
+ hw/sd/sdhci.c         | 6 ++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/hw/sd/sdhci-internal.h b/hw/sd/sdhci-internal.h
-index 9072b06bdde..c459279f3f3 100644
---- a/hw/sd/sdhci-internal.h
-+++ b/hw/sd/sdhci-internal.h
-@@ -24,6 +24,7 @@
- #ifndef SDHCI_INTERNAL_H
- #define SDHCI_INTERNAL_H
- 
-+#include "hw/qdev-properties-system.h"
- #include "hw/registerfields.h"
- 
- /* R/W SDMA System Address register 0x0 */
-@@ -308,7 +309,7 @@ extern const VMStateDescription sdhci_vmstate;
- #define SDHC_CAPAB_REG_DEFAULT 0x057834b4
- 
- #define DEFINE_SDHCI_COMMON_PROPERTIES(_state) \
--    DEFINE_PROP_UINT8("endianness", _state, endianness, DEVICE_LITTLE_ENDIAN), \
-+    DEFINE_PROP_ENDIAN("endianness", _state, endianness, ENDIAN_MODE_LITTLE), \
-     DEFINE_PROP_UINT8("sd-spec-version", _state, sd_spec_version, 2), \
-     DEFINE_PROP_UINT8("uhs", _state, uhs_mode, UHS_NOT_SUPPORTED), \
-     \
 diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
-index 60a0442c805..a91cda16cbe 100644
+index a91cda16cbe..15ef3a07b54 100644
 --- a/include/hw/sd/sdhci.h
 +++ b/include/hw/sd/sdhci.h
-@@ -25,6 +25,7 @@
- #ifndef SDHCI_H
- #define SDHCI_H
+@@ -116,6 +116,11 @@ typedef struct SDHCIClass {
+     const MemoryRegionOps *io_ops;
+     uint32_t quirks;
+     uint64_t iomem_size;
++
++    /* Read-only registers */
++    struct {
++        uint64_t capareg;
++    } ro;
+ } SDHCIClass;
  
-+#include "qapi/qapi-types-common.h"
- #include "hw/pci/pci_device.h"
- #include "hw/sysbus.h"
- #include "hw/sd/sd.h"
-@@ -95,7 +96,7 @@ struct SDHCIState {
- 
-     /* Configurable properties */
-     bool pending_insert_quirk; /* Quirk for Raspberry Pi card insert int */
--    uint8_t endianness;
-+    EndianMode endianness;
-     uint8_t sd_spec_version;
-     uint8_t uhs_mode;
-     /*
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index fe8b9f79621..e85e000f054 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -1042,7 +1042,7 @@ void ppce500_init(MachineState *machine)
-          */
-         dev = qdev_new(TYPE_SYSBUS_SDHCI);
-         qdev_prop_set_uint8(dev, "sd-spec-version", 2);
--        qdev_prop_set_uint8(dev, "endianness", DEVICE_BIG_ENDIAN);
-+        qdev_prop_set_enum(dev, "endianness", ENDIAN_MODE_BIG);
-         s = SYS_BUS_DEVICE(dev);
-         sysbus_realize_and_unref(s, &error_fatal);
-         sysbus_connect_irq(s, 0, qdev_get_gpio_in(mpicdev, MPC85XX_ESDHC_IRQ));
-diff --git a/hw/sd/sdhci-pci.c b/hw/sd/sdhci-pci.c
-index 5f82178a76f..49c4f0478b4 100644
---- a/hw/sd/sdhci-pci.c
-+++ b/hw/sd/sdhci-pci.c
-@@ -32,7 +32,7 @@ static void sdhci_pci_realize(PCIDevice *dev, Error **errp)
-     SDHCIState *s = PCI_SDHCI(dev);
- 
-     sdhci_initfn(s);
--    qdev_prop_set_uint8(DEVICE(dev), "endianness", DEVICE_LITTLE_ENDIAN);
-+    qdev_prop_set_enum(DEVICE(dev), "endianness", ENDIAN_MODE_LITTLE);
-     sdhci_common_realize(s, errp);
-     if (*errp) {
-         return;
+ /*
 diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 23af3958a1d..f2bb612c665 100644
+index f2bb612c665..9708b52f850 100644
 --- a/hw/sd/sdhci.c
 +++ b/hw/sd/sdhci.c
-@@ -1437,7 +1437,12 @@ void sdhci_common_realize(SDHCIState *s, Error **errp)
-     const char *class_name = object_get_typename(OBJECT(s));
-     unsigned ops_index;
+@@ -73,6 +73,7 @@ static bool sdhci_check_capab_freq_range(SDHCIState *s, const char *desc,
  
--    ops_index = s->endianness == DEVICE_BIG_ENDIAN ? 1 : 0;
-+    if (s->endianness == ENDIAN_MODE_UNSPECIFIED) {
-+        error_setg(errp, "%s property 'endianness'"
-+                         " must be set to 'big' or 'little'", class_name);
-+        return;
+ static void sdhci_check_capareg(SDHCIState *s, Error **errp)
+ {
++    SDHCIClass *sc = SYSBUS_SDHCI_GET_CLASS(s);
+     uint64_t msk = s->capareg;
+     uint32_t val;
+     bool y;
+@@ -208,6 +209,11 @@ static void sdhci_check_capareg(SDHCIState *s, Error **errp)
+         qemu_log_mask(LOG_UNIMP,
+                       "SDHCI: unknown CAPAB mask: 0x%016" PRIx64 "\n", msk);
+     }
++    msk = sc->ro.capareg & ~s->capareg;
++    if (msk) {
++        qemu_log_mask(LOG_UNIMP,
++                      "SDHCI: ignored CAPAB mask: 0x%016" PRIx64 "\n", msk);
 +    }
-+    ops_index = s->endianness == ENDIAN_MODE_BIG ? 1 : 0;
+ }
  
-     s->io_ops = sc->io_ops ?: &sdhci_mmio_ops[ops_index];
-     if (s->io_ops->endianness != sdhci_mmio_ops[ops_index].endianness) {
+ static uint8_t sdhci_slotint(SDHCIState *s)
 -- 
 2.47.1
 
