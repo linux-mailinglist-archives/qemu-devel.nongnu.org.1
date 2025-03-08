@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE30CA57AD0
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 14:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50110A57ACF
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 14:58:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqugS-0004Mk-6g; Sat, 08 Mar 2025 08:57:46 -0500
+	id 1tqugU-0004NI-Fn; Sat, 08 Mar 2025 08:57:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zoudongjie@huawei.com>)
- id 1tqrEv-0006sg-9F; Sat, 08 Mar 2025 05:17:05 -0500
-Received: from szxga08-in.huawei.com ([45.249.212.255])
+ id 1tqrEv-0006sV-2d; Sat, 08 Mar 2025 05:17:05 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zoudongjie@huawei.com>)
- id 1tqrEr-00005s-Br; Sat, 08 Mar 2025 05:17:04 -0500
-Received: from mail.maildlp.com (unknown [172.19.88.194])
- by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Z8zTY5SsZz1cyTb;
- Sat,  8 Mar 2025 18:11:45 +0800 (CST)
+ id 1tqrEq-000061-UK; Sat, 08 Mar 2025 05:17:04 -0500
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+ by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Z8zVN0cKrz1f01S;
+ Sat,  8 Mar 2025 18:12:28 +0800 (CST)
 Received: from kwepemk500007.china.huawei.com (unknown [7.202.194.92])
- by mail.maildlp.com (Postfix) with ESMTPS id C50FA140380;
- Sat,  8 Mar 2025 18:16:43 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 1DC911A0171;
+ Sat,  8 Mar 2025 18:16:45 +0800 (CST)
 Received: from huawei.com (10.246.99.19) by kwepemk500007.china.huawei.com
  (7.202.194.92) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 8 Mar
- 2025 18:16:42 +0800
+ 2025 18:16:43 +0800
 To: <zhuyangyang14@huawei.com>, <qemu-devel@nongnu.org>,
  <stefanha@redhat.com>, <fam@euphon.net>, <hreitz@redhat.com>,
  <qemu-block@nongnu.org>
@@ -34,10 +34,9 @@ CC: <qemu-stable@nongnu.org>, <luolongmin@huawei.com>,
  <wangjian161@huawei.com>, <mujinsheng@huawei.com>, <alex.chen@huawei.com>,
  <eric.fangyi@huawei.com>, <zoudongjie@huawei.com>, <chenjianfei3@huawei.com>, 
  <renxuming@huawei.com>
-Subject: [PATCH 1/2] io/block: Refactoring the bdrv_drained_begin() function
- and implement a timeout mechanism.
-Date: Sat, 8 Mar 2025 18:16:17 +0800
-Message-ID: <20250308101618.721954-2-zoudongjie@huawei.com>
+Subject: [PATCH 2/2] qapi: Fix qmp_block_set_io_throttle blocked for too long
+Date: Sat, 8 Mar 2025 18:16:18 +0800
+Message-ID: <20250308101618.721954-3-zoudongjie@huawei.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20250308101618.721954-1-zoudongjie@huawei.com>
 References: <20250308101618.721954-1-zoudongjie@huawei.com>
@@ -47,8 +46,8 @@ Content-Type: text/plain
 X-Originating-IP: [10.246.99.19]
 X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  kwepemk500007.china.huawei.com (7.202.194.92)
-Received-SPF: pass client-ip=45.249.212.255;
- envelope-from=zoudongjie@huawei.com; helo=szxga08-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.35; envelope-from=zoudongjie@huawei.com;
+ helo=szxga07-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -56,7 +55,7 @@ X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sat, 08 Mar 2025 08:57:19 -0500
+X-Mailman-Approved-At: Sat, 08 Mar 2025 08:57:14 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,271 +74,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhu Yangyang <zhuyangyang14@huawei.com>
 
-The bdrv_drained_begin() function is a blocking function. In scenarios where network storage
-is used and network links fail, it may block for a long time.
-Therefore, we add a timeout parameter to control the duration of the block.
-
-Since bdrv_drained_begin() has been widely adopted, both bdrv_drained_begin()
-and bdrv_drained_begin_timeout() will be retained.
+bdrv_drained_begin() is blocked for a long time when network storage is used
+and the network link has just failed.
+Therefore, the timeout period is set here.
 
 Signed-off-by: Zhu Yangyang <zhuyangyang14@huawei.com>
 ---
- block/io.c               | 55 ++++++++++++++++++++++++++++++-------
- include/block/aio-wait.h | 58 ++++++++++++++++++++++++++++++++++++++++
- include/block/block-io.h |  7 +++++
- util/aio-wait.c          |  7 +++++
- 4 files changed, 117 insertions(+), 10 deletions(-)
+ block/block-backend.c                       | 14 +++++++++++++-
+ block/qapi-system.c                         |  7 ++++++-
+ include/system/block-backend-global-state.h |  1 +
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/block/io.c b/block/io.c
-index d369b994df..03b8b2dca7 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -255,6 +255,8 @@ typedef struct {
-     bool begin;
-     bool poll;
-     BdrvChild *parent;
-+    int ret;
-+    int64_t timeout;
- } BdrvCoDrainData;
- 
- /* Returns true if BDRV_POLL_WHILE() should go into a blocking aio_poll() */
-@@ -283,6 +285,8 @@ static bool bdrv_drain_poll_top_level(BlockDriverState *bs,
-     return bdrv_drain_poll(bs, ignore_parent, false);
+diff --git a/block/block-backend.c b/block/block-backend.c
+index 9288f7e1c6..409d4559c3 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -2691,20 +2691,32 @@ void blk_set_io_limits(BlockBackend *blk, ThrottleConfig *cfg)
  }
  
-+static int bdrv_do_drained_begin_timeout(BlockDriverState *bs,
-+    BdrvChild *parent, bool poll, int64_t timeout);
- static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
-                                   bool poll);
- static void bdrv_do_drained_end(BlockDriverState *bs, BdrvChild *parent);
-@@ -296,7 +300,8 @@ static void bdrv_co_drain_bh_cb(void *opaque)
-     if (bs) {
-         bdrv_dec_in_flight(bs);
-         if (data->begin) {
--            bdrv_do_drained_begin(bs, data->parent, data->poll);
-+            data->ret = bdrv_do_drained_begin_timeout(
-+                bs, data->parent, data->poll, data->timeout);
-         } else {
-             assert(!data->poll);
-             bdrv_do_drained_end(bs, data->parent);
-@@ -310,10 +315,11 @@ static void bdrv_co_drain_bh_cb(void *opaque)
-     aio_co_wake(co);
- }
- 
--static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
--                                                bool begin,
--                                                BdrvChild *parent,
--                                                bool poll)
-+static int coroutine_fn bdrv_co_yield_to_drain_timeout(BlockDriverState *bs,
-+                                                         bool begin,
-+                                                         BdrvChild *parent,
-+                                                         bool poll,
-+                                                         int64_t timeout)
- {
-     BdrvCoDrainData data;
-     Coroutine *self = qemu_coroutine_self();
-@@ -329,6 +335,8 @@ static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
-         .begin = begin,
-         .parent = parent,
-         .poll = poll,
-+        .timeout = timeout,
-+        .ret = 0
-     };
- 
-     if (bs) {
-@@ -342,16 +350,25 @@ static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
-     /* If we are resumed from some other event (such as an aio completion or a
-      * timer callback), it is a bug in the caller that should be fixed. */
-     assert(data.done);
-+    return data.ret;
- }
- 
--static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
--                                  bool poll)
-+static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
-+                                                bool begin,
-+                                                BdrvChild *parent,
-+                                                bool poll)
+ void blk_io_limits_disable(BlockBackend *blk)
 +{
-+    bdrv_co_yield_to_drain_timeout(bs, begin, parent, poll, -1);
++    blk_io_limits_disable_timeout(blk, -1);
 +}
 +
-+static int bdrv_do_drained_begin_timeout(BlockDriverState *bs,
-+    BdrvChild *parent, bool poll, int64_t timeout_ms)
++int blk_io_limits_disable_timeout(BlockBackend *blk, int64_t timeout_ms)
  {
-     IO_OR_GS_CODE();
- 
-     if (qemu_in_coroutine()) {
--        bdrv_co_yield_to_drain(bs, true, parent, poll);
--        return;
-+        return bdrv_co_yield_to_drain_timeout(bs, true, parent, poll,
-+                                              timeout_ms);
-     }
- 
+     BlockDriverState *bs = blk_bs(blk);
+     ThrottleGroupMember *tgm = &blk->public.throttle_group_member;
++    int ret = 0;
++
+     assert(tgm->throttle_state);
      GLOBAL_STATE_CODE();
-@@ -375,8 +392,20 @@ static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
-      * nodes.
-      */
-     if (poll) {
--        BDRV_POLL_WHILE(bs, bdrv_drain_poll_top_level(bs, parent));
-+        if (timeout_ms < 0) {
-+            BDRV_POLL_WHILE(bs, bdrv_drain_poll_top_level(bs, parent));
-+        } else {
-+            return BDRV_POLL_WHILE_TIMEOUT(
-+                bs, bdrv_drain_poll_top_level(bs, parent), timeout_ms);
+     if (bs) {
+         bdrv_ref(bs);
+-        bdrv_drained_begin(bs);
++        ret = bdrv_drained_begin_timeout(bs, timeout_ms);
++        if (ret < 0) {
++            goto out;
 +        }
      }
-+    return 0;
-+}
-+
-+static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
-+                                  bool poll)
-+{
-+    bdrv_do_drained_begin_timeout(bs, parent, poll, -1);
+     throttle_group_unregister_tgm(tgm);
++out:
+     if (bs) {
+         bdrv_drained_end(bs);
+         bdrv_unref(bs);
+     }
++    return ret;
  }
  
- void bdrv_do_drained_begin_quiesce(BlockDriverState *bs, BdrvChild *parent)
-@@ -390,6 +419,12 @@ bdrv_drained_begin(BlockDriverState *bs)
-     IO_OR_GS_CODE();
-     bdrv_do_drained_begin(bs, NULL, true);
- }
-+int coroutine_mixed_fn
-+bdrv_drained_begin_timeout(BlockDriverState *bs, int64_t timeout_ms)
-+{
-+    IO_OR_GS_CODE();
-+    return bdrv_do_drained_begin_timeout(bs, NULL, true, timeout_ms);
-+}
+ /* should be called before blk_set_io_limits if a limit is set */
+diff --git a/block/qapi-system.c b/block/qapi-system.c
+index 54b7409b2b..96fa8e5e51 100644
+--- a/block/qapi-system.c
++++ b/block/qapi-system.c
+@@ -39,6 +39,8 @@
+ #include "system/block-backend.h"
+ #include "system/blockdev.h"
  
- /**
-  * This function does not poll, nor must any of its recursively called
-diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
-index cf5e8bde1c..efbcb9777a 100644
---- a/include/block/aio-wait.h
-+++ b/include/block/aio-wait.h
-@@ -28,6 +28,8 @@
- #include "block/aio.h"
- #include "qemu/main-loop.h"
- 
-+#define AIO_WAIT_INTERVAL 10  /* ms */
++#define QMP_BLOCKING_TIMEOUT 5000 /* ms */
 +
- /**
-  * AioWait:
-  *
-@@ -56,6 +58,11 @@ typedef struct {
-     unsigned num_waiters;
- } AioWait;
- 
-+typedef struct {
-+    struct QEMUTimer *timer;
-+    int64_t interval;
-+} AioWaitTimer;
-+
- extern AioWait global_aio_wait;
- 
- /**
-@@ -99,6 +106,55 @@ extern AioWait global_aio_wait;
-     qatomic_dec(&wait_->num_waiters);                              \
-     waited_; })
- 
-+/**
-+ * AIO_WAIT_WHILE_TIMEOUT:
-+ *
-+ * Refer to the implementation of AIO_WAIT_WHILE_INTERNAL,
-+ * the timeout parameter is added.
-+ */
-+#define AIO_WAIT_WHILE_TIMEOUT(ctx, cond, timeout) ({                    \
-+    int ret_ = 0;                                                        \
-+    AioWait *wait_ = &global_aio_wait;                                   \
-+    AioContext *ctx_ = (ctx);                                            \
-+    int64_t start_ = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);             \
-+    int64_t deadline_ = start_ + (timeout);                              \
-+    /* Ensure that the aio_poll exits periodically to check timeout. */  \
-+    AioWaitTimer *s_ = g_malloc0(sizeof(AioWaitTimer));                  \
-+    s_->interval = AIO_WAIT_INTERVAL;                                    \
-+    /* Increment wait_->num_waiters before evaluating cond. */           \
-+    qatomic_inc(&wait_->num_waiters);                                    \
-+    /* Paired with smp_mb in aio_wait_kick(). */                         \
-+    smp_mb__after_rmw();                                                 \
-+    if (ctx_ && in_aio_context_home_thread(ctx_)) {                      \
-+        s_->timer = aio_timer_new(ctx_, QEMU_CLOCK_REALTIME,             \
-+                        SCALE_MS, aio_wait_timer_retry, s_);             \
-+        aio_wait_timer_retry(s_);                                        \
-+        while ((cond)) {                                                 \
-+            aio_poll(ctx_, true);                                        \
-+            if (qemu_clock_get_ms(QEMU_CLOCK_REALTIME) > deadline_) {    \
-+                ret_ = -ETIMEDOUT;                                       \
-+                break;                                                   \
-+            }                                                            \
-+        }                                                                \
-+    } else {                                                             \
-+        s_->timer = aio_timer_new(qemu_get_aio_context(),                \
-+            QEMU_CLOCK_REALTIME, SCALE_MS, aio_wait_timer_retry, s_);    \
-+        aio_wait_timer_retry(s_);                                        \
-+        while ((cond)) {                                                 \
-+            assert(qemu_get_current_aio_context() ==                     \
-+                   qemu_get_aio_context());                              \
-+            aio_poll(qemu_get_aio_context(), true);                      \
-+            if (qemu_clock_get_ms(QEMU_CLOCK_REALTIME) > deadline_) {    \
-+                ret_ = -ETIMEDOUT;                                       \
-+                break;                                                   \
-+            }                                                            \
-+        }                                                                \
-+    }                                                                    \
-+    qatomic_dec(&wait_->num_waiters);                                    \
-+    timer_free(s_->timer);                                               \
-+    g_free(s_);                                                          \
-+    ret_; })
-+
- #define AIO_WAIT_WHILE(ctx, cond)                                  \
-     AIO_WAIT_WHILE_INTERNAL(ctx, cond)
- 
-@@ -149,4 +205,6 @@ static inline bool in_aio_context_home_thread(AioContext *ctx)
+ static BlockBackend *qmp_get_blk(const char *blk_name, const char *qdev_id,
+                                  Error **errp)
+ {
+@@ -502,7 +504,10 @@ void qmp_block_set_io_throttle(BlockIOThrottle *arg, Error **errp)
+         blk_set_io_limits(blk, &cfg);
+     } else if (blk_get_public(blk)->throttle_group_member.throttle_state) {
+         /* If all throttling settings are set to 0, disable I/O limits */
+-        blk_io_limits_disable(blk);
++        if (blk_io_limits_disable_timeout(blk, QMP_BLOCKING_TIMEOUT) < 0) {
++            error_setg(errp, "Blk io limits disable timeout");
++            return;
++        }
      }
  }
  
-+void aio_wait_timer_retry(void *opaque);
-+
- #endif /* QEMU_AIO_WAIT_H */
-diff --git a/include/block/block-io.h b/include/block/block-io.h
-index b49e0537dd..84f92d2b09 100644
---- a/include/block/block-io.h
-+++ b/include/block/block-io.h
-@@ -354,6 +354,11 @@ bdrv_co_copy_range(BdrvChild *src, int64_t src_offset,
-     AIO_WAIT_WHILE(bdrv_get_aio_context(bs_),              \
-                    cond); })
+diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
+index 9cc9b008ec..e55ea9dc64 100644
+--- a/include/system/block-backend-global-state.h
++++ b/include/system/block-backend-global-state.h
+@@ -111,6 +111,7 @@ int blk_probe_geometry(BlockBackend *blk, HDGeometry *geo);
  
-+#define BDRV_POLL_WHILE_TIMEOUT(bs, cond, timeout) ({      \
-+    BlockDriverState *bs_ = (bs);                          \
-+    AIO_WAIT_WHILE_TIMEOUT(bdrv_get_aio_context(bs_),      \
-+                           cond, timeout); })
-+
- void bdrv_drain(BlockDriverState *bs);
- 
- int co_wrapper_mixed_bdrv_rdlock
-@@ -431,6 +436,8 @@ bdrv_drain_poll(BlockDriverState *bs, BdrvChild *ignore_parent,
-  */
- void bdrv_drained_begin(BlockDriverState *bs);
- 
-+int bdrv_drained_begin_timeout(BlockDriverState *bs, int64_t timeout_ms);
-+
- /**
-  * bdrv_do_drained_begin_quiesce:
-  *
-diff --git a/util/aio-wait.c b/util/aio-wait.c
-index b5336cf5fd..9aed165529 100644
---- a/util/aio-wait.c
-+++ b/util/aio-wait.c
-@@ -84,3 +84,10 @@ void aio_wait_bh_oneshot(AioContext *ctx, QEMUBHFunc *cb, void *opaque)
-     aio_bh_schedule_oneshot(ctx, aio_wait_bh, &data);
-     AIO_WAIT_WHILE_UNLOCKED(NULL, !data.done);
- }
-+
-+void aio_wait_timer_retry(void *opaque)
-+{
-+    AioWaitTimer *s = opaque;
-+
-+    timer_mod(s->timer, qemu_clock_get_ms(QEMU_CLOCK_REALTIME) + s->interval);
-+}
+ void blk_set_io_limits(BlockBackend *blk, ThrottleConfig *cfg);
+ void blk_io_limits_disable(BlockBackend *blk);
++int blk_io_limits_disable_timeout(BlockBackend *blk, int64_t timeout_ms);
+ void blk_io_limits_enable(BlockBackend *blk, const char *group);
+ void blk_io_limits_update_group(BlockBackend *blk, const char *group);
+ void blk_set_force_allow_inactivate(BlockBackend *blk);
 -- 
 2.33.0
 
