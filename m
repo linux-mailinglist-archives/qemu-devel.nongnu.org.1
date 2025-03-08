@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53FDBA57FA1
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:04:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 594CAA57FA3
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:04:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr38x-0004jH-DL; Sat, 08 Mar 2025 17:59:43 -0500
+	id 1tr38n-0004dh-6q; Sat, 08 Mar 2025 17:59:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tr38S-0004YZ-1w
+ id 1tr38S-0004Yv-Du
  for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:12 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tr38Q-0005LT-8B
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:11 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-22401f4d35aso55290105ad.2
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 14:59:09 -0800 (PST)
+ id 1tr38Q-0005Lf-Lh
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:12 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-225477548e1so10272865ad.0
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 14:59:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741474748; x=1742079548; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741474749; x=1742079549; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SzyDViup58ROLXi9a5eLqmvAZgtt4FP4fwTvGjoaRo8=;
- b=EVJKeDS1Ww74kLYbEQRT3RNzv5P6Xn7T+YCqYh1MWvrfsG9nAv0qwX11PU+E9Xqu2s
- gYPikMjIEn6eQFFLRH4MqBI1FltOiLOq7nNw5Vlcu0HPhIubcIXYCYwxGvyseUskjv2J
- 3f6R88vhXliH7UryHVZMKlsICzaV+1AKZ62PJ/k8mPgVH6cmeSGIqNS5Fs0PcEe9S3hi
- k6kNo1XDLxzn2ZNBBQnwGTPDQ311u4IFb+MgACEKTTp8y2aMUv7SPenbW2Gw4y36taAh
- dlFvQHM3kayBm4NfXB58IxoWyzmP1kr7oh6L8bQaF3Ued71lJxAzOuymODEvwmo0RVFk
- qdtg==
+ bh=OZUhu3BnFzDT2DJGeBZFOFqKQQp7EogeXchL7RAMkqI=;
+ b=gxQjwbFGTYLCzHiuRkwTvYMJIBp7mICGJ5b197fSY6uQPIoJMWNPEkHS5bWeXmpYDu
+ qcGfY01ahjFCD5dvxoRgClWK5T0dq0n/V9yXWezO9Ig7Tk9Au4Nj3cm+g7Z8ClVyFo9j
+ Pjj9lu4/9U1URrgO+nstGCLbcstiZ49QdH0RoDXN3Brb1MlXkfep364lRQZWgeU7Gvg/
+ tZeAOE/Fa6xiTwl00nmp5WOYECSKYlNRq4mFayywf6q1Dx/tej8LpB1DXtekMcoiuZhx
+ FBFuFkc/ptplFVysi/ei+vFnTDdQBGnSBJSQFqtTg7JCoS4E0JBnme/wqOOwmeJXp4tY
+ LLFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741474748; x=1742079548;
+ d=1e100.net; s=20230601; t=1741474749; x=1742079549;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SzyDViup58ROLXi9a5eLqmvAZgtt4FP4fwTvGjoaRo8=;
- b=CPpYZnIeJ0xZTiUWLLIHaryR+2Hmd60TZkr7mUI+mnTySJALOxaBBHY+j3DKbBM3xX
- hVPZAxdrN7wWuijCsPvuKgK2fxwJNqCUMy3HPtQKayn30vzsf7jDfWq4Y+Q1GGnS/mcS
- asP4V+/iM8eJwYQFRW9Mwjw1wzMzU5Q7Q0Bw0SoaJDZ9XyYgakx6RuSSV3WckPqAOdW5
- k5+u6l5nDt8+QgOHXkr19s5YRgmBw+CdXy2tJR9mriyrGVeS9/hhvkf58MslQGwn3qSl
- fWwYKxsUflMjc5WsyFEybRi86wxTpx8tUxuzZJjtoarVzKeETN/6WaDN8vpFRcBnAhvK
- vAvA==
-X-Gm-Message-State: AOJu0Yy+1El+UdHW5sKfi30clxpo1/lCnOeNFHcFkO/8cV//1LNYBFBN
- Uix1O6kcm5DRLaCgpw8ZT0qbn2Cjad7M/4JokELKArSHU2vCEOUOOTjDtpF4qiA5T2UTpaT1Q14
- H
-X-Gm-Gg: ASbGncv75FGLEOtoZWj7vYsKZxAaM7gdvjcF9RcXc7RE2oz6IcKujoLSpMc6A6BJCPN
- DSDV8Jgxeos+xJhFq+2aAs/TXbuox/3vf9uTF3Y1dkhEB7h9NVUQe9VochS3ohyCzz53LTujzHf
- /kovAbNTeNloYK3T0LOspFe3Z/SkoFWGgYZfKA9rsCiE6zs6XpguG9Y1mrrSWHPErdUqOf8ciSt
- tH5k0e0O0N3pDy9aakJzVIL8bV11P8CAQ/4tThbUWRPMo0AXWIIebJYfcCuhKfSyDnEXK7rWYOC
- e/15+j0rRSvs3QlxDEZJKu2+YaV0jhjtY6aD3LH2Mod6FY4ospC+4rlce3csyq40s+gsFsid9B9
- c
-X-Google-Smtp-Source: AGHT+IFyJnA1+vdfNfUgsMYdAyxkp/4Lc0qas+OrnJ+irFS+FWN6ufmm4ukreIYxEuOECAoPLeNtgg==
-X-Received: by 2002:a17:903:2445:b0:224:249f:9723 with SMTP id
- d9443c01a7336-22428bd446dmr121049425ad.51.1741474748455; 
- Sat, 08 Mar 2025 14:59:08 -0800 (PST)
+ bh=OZUhu3BnFzDT2DJGeBZFOFqKQQp7EogeXchL7RAMkqI=;
+ b=g50fqURkNgp6MeOs7XJPlC/fTcAJDAwLaOKuOGjy5O89lND/Jd0WyDTEDTmniUJB9X
+ XWQ3ou5tt2b8m8XXfTx2ILP++7OiyaTDrpgWUo+Ppc0Pxt64lqHoHN4sc/Wtoo1rYCOM
+ t/dO/w6aJoLxWHQ0GwApVXe58u4EmSKW+9dc/ExRJLAJvPJQKeEWHkg0m/LNh2dkku8S
+ lEct8+C5RfGor4+AYm3izJckKnWI1ABcFIaL41WlZomgsAZri+KWi5ifgEcDMPTB0T84
+ ++NKeWH07jFV3Atjzaa0CYHlNviiAuSOJyZH6bcu9VupRVFF0kte++OGHOzjoPomUU8x
+ wuYg==
+X-Gm-Message-State: AOJu0YztYefabE3rVDBo+PFWGctIAkaSv8Ag/2rDQH09hRu723g+mOBH
+ nNkxQ046+3nqOBwOy8bZkuxnrzsvqEI4U8jHXWfpzH8kPASahDyY47Yiz3JtWpc66LXjI6Sir1b
+ j
+X-Gm-Gg: ASbGncuR2suN/iVXQAOvUii1G70Qgi3odrhR48Ez2h1N/XhDZIWRToE7Qn4k35yQu07
+ 6iiw+1IZukR2C93TER1Cy6QsADvPcz34o9l0UAitRnGdI2TjsmAoCEhYwUlOzH5i+0FvfJRWZOb
+ xxnIS+iZuOtiPLWJMr/71JaBR0wZnlnC/UiSGv5goB6RJjkp+cPmRINed3h/buRX2Bu8sAbEuoZ
+ sLRRKSXkz4KxCnIXold97bonju1aZT7AVshhI/eIdJ8eTMSNOuKH5N6QMhrwRqboOfs+aN79BLw
+ l6je72QeCGETKEmtCnkLMhHJ5o0FDbITmnUL2Mp/CJq0+guBTXaAyXdDZjP8TSJV1SyVOxxaFwT
+ w
+X-Google-Smtp-Source: AGHT+IE3dT/L3ABJKjRYygN4jGaIS5mHRrX+2jiFHVKGPVfWhzLfKEtochPP4IkpERNbxDBRMo5tLQ==
+X-Received: by 2002:a17:903:40cb:b0:223:44c5:4eb8 with SMTP id
+ d9443c01a7336-22428c0752cmr146209285ad.32.1741474749073; 
+ Sat, 08 Mar 2025 14:59:09 -0800 (PST)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-22410a908a0sm51831175ad.162.2025.03.08.14.59.08
@@ -67,17 +67,18 @@ From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 07/23] exec: Declare tlb_set_page_full() in 'exec/cputlb.h'
-Date: Sat,  8 Mar 2025 14:58:46 -0800
-Message-ID: <20250308225902.1208237-9-richard.henderson@linaro.org>
+Subject: [PULL 08/23] exec: Declare tlb_set_page_with_attrs() in
+ 'exec/cputlb.h'
+Date: Sat,  8 Mar 2025 14:58:47 -0800
+Message-ID: <20250308225902.1208237-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250308225902.1208237-1-richard.henderson@linaro.org>
 References: <20250308225902.1208237-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,98 +108,120 @@ Move CPU TLB related methods to "exec/cputlb.h".
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20241114011310.3615-16-philmd@linaro.org>
+Message-ID: <20241114011310.3615-17-philmd@linaro.org>
 ---
- include/exec/cputlb.h     | 23 +++++++++++++++++++++++
- include/exec/exec-all.h   | 22 ----------------------
- target/sparc/mmu_helper.c |  2 +-
- 3 files changed, 24 insertions(+), 23 deletions(-)
+ include/exec/cputlb.h                | 28 ++++++++++++++++++++++++++++
+ include/exec/exec-all.h              | 25 -------------------------
+ target/i386/tcg/system/excp_helper.c |  2 +-
+ target/microblaze/helper.c           |  2 +-
+ 4 files changed, 30 insertions(+), 27 deletions(-)
 
 diff --git a/include/exec/cputlb.h b/include/exec/cputlb.h
-index 6cac7d530f..733ef012d1 100644
+index 733ef012d1..56dd05a148 100644
 --- a/include/exec/cputlb.h
 +++ b/include/exec/cputlb.h
-@@ -21,6 +21,7 @@
+@@ -21,6 +21,8 @@
  #define CPUTLB_H
  
  #include "exec/cpu-common.h"
-+#include "exec/vaddr.h"
++#include "exec/hwaddr.h"
++#include "exec/memattrs.h"
+ #include "exec/vaddr.h"
  
  #ifdef CONFIG_TCG
- 
-@@ -39,4 +40,26 @@ void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
- 
- #endif
+@@ -62,4 +64,30 @@ void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
+ void tlb_set_page_full(CPUState *cpu, int mmu_idx, vaddr addr,
+                        CPUTLBEntryFull *full);
  
 +/**
-+ * tlb_set_page_full:
-+ * @cpu: CPU context
-+ * @mmu_idx: mmu index of the tlb to modify
-+ * @addr: virtual address of the entry to add
-+ * @full: the details of the tlb entry
++ * tlb_set_page_with_attrs:
++ * @cpu: CPU to add this TLB entry for
++ * @addr: virtual address of page to add entry for
++ * @paddr: physical address of the page
++ * @attrs: memory transaction attributes
++ * @prot: access permissions (PAGE_READ/PAGE_WRITE/PAGE_EXEC bits)
++ * @mmu_idx: MMU index to insert TLB entry for
++ * @size: size of the page in bytes
 + *
-+ * Add an entry to @cpu tlb index @mmu_idx.  All of the fields of
-+ * @full must be filled, except for xlat_section, and constitute
-+ * the complete description of the translated page.
-+ *
-+ * This is generally called by the target tlb_fill function after
-+ * having performed a successful page table walk to find the physical
-+ * address and attributes for the translation.
++ * Add an entry to this CPU's TLB (a mapping from virtual address
++ * @addr to physical address @paddr) with the specified memory
++ * transaction attributes. This is generally called by the target CPU
++ * specific code after it has been called through the tlb_fill()
++ * entry point and performed a successful page table walk to find
++ * the physical address and attributes for the virtual address
++ * which provoked the TLB miss.
 + *
 + * At most one entry for a given virtual address is permitted. Only a
-+ * single TARGET_PAGE_SIZE region is mapped; @full->lg_page_size is only
++ * single TARGET_PAGE_SIZE region is mapped; the supplied @size is only
 + * used by tlb_flush_page.
 + */
-+void tlb_set_page_full(CPUState *cpu, int mmu_idx, vaddr addr,
-+                       CPUTLBEntryFull *full);
++void tlb_set_page_with_attrs(CPUState *cpu, vaddr addr,
++                             hwaddr paddr, MemTxAttrs attrs,
++                             int prot, int mmu_idx, vaddr size);
 +
  #endif
 diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index f24256fb5e..f43c67366b 100644
+index f43c67366b..62d6300752 100644
 --- a/include/exec/exec-all.h
 +++ b/include/exec/exec-all.h
-@@ -156,28 +156,6 @@ void tlb_flush_range_by_mmuidx_all_cpus_synced(CPUState *cpu,
+@@ -156,31 +156,6 @@ void tlb_flush_range_by_mmuidx_all_cpus_synced(CPUState *cpu,
                                                 uint16_t idxmap,
                                                 unsigned bits);
  
 -/**
-- * tlb_set_page_full:
-- * @cpu: CPU context
-- * @mmu_idx: mmu index of the tlb to modify
-- * @addr: virtual address of the entry to add
-- * @full: the details of the tlb entry
+- * tlb_set_page_with_attrs:
+- * @cpu: CPU to add this TLB entry for
+- * @addr: virtual address of page to add entry for
+- * @paddr: physical address of the page
+- * @attrs: memory transaction attributes
+- * @prot: access permissions (PAGE_READ/PAGE_WRITE/PAGE_EXEC bits)
+- * @mmu_idx: MMU index to insert TLB entry for
+- * @size: size of the page in bytes
 - *
-- * Add an entry to @cpu tlb index @mmu_idx.  All of the fields of
-- * @full must be filled, except for xlat_section, and constitute
-- * the complete description of the translated page.
-- *
-- * This is generally called by the target tlb_fill function after
-- * having performed a successful page table walk to find the physical
-- * address and attributes for the translation.
+- * Add an entry to this CPU's TLB (a mapping from virtual address
+- * @addr to physical address @paddr) with the specified memory
+- * transaction attributes. This is generally called by the target CPU
+- * specific code after it has been called through the tlb_fill()
+- * entry point and performed a successful page table walk to find
+- * the physical address and attributes for the virtual address
+- * which provoked the TLB miss.
 - *
 - * At most one entry for a given virtual address is permitted. Only a
-- * single TARGET_PAGE_SIZE region is mapped; @full->lg_page_size is only
+- * single TARGET_PAGE_SIZE region is mapped; the supplied @size is only
 - * used by tlb_flush_page.
 - */
--void tlb_set_page_full(CPUState *cpu, int mmu_idx, vaddr addr,
--                       CPUTLBEntryFull *full);
--
- /**
-  * tlb_set_page_with_attrs:
-  * @cpu: CPU to add this TLB entry for
-diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
-index 9ff06026b8..7548d01777 100644
---- a/target/sparc/mmu_helper.c
-+++ b/target/sparc/mmu_helper.c
+-void tlb_set_page_with_attrs(CPUState *cpu, vaddr addr,
+-                             hwaddr paddr, MemTxAttrs attrs,
+-                             int prot, int mmu_idx, vaddr size);
+ /* tlb_set_page:
+  *
+  * This function is equivalent to calling tlb_set_page_with_attrs()
+diff --git a/target/i386/tcg/system/excp_helper.c b/target/i386/tcg/system/excp_helper.c
+index 864e3140e3..6876329de2 100644
+--- a/target/i386/tcg/system/excp_helper.c
++++ b/target/i386/tcg/system/excp_helper.c
 @@ -20,7 +20,7 @@
  #include "qemu/osdep.h"
- #include "qemu/log.h"
+ #include "cpu.h"
+ #include "exec/cpu_ldst.h"
+-#include "exec/exec-all.h"
++#include "exec/cputlb.h"
+ #include "exec/page-protection.h"
+ #include "tcg/helper-tcg.h"
+ 
+diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
+index 5d3259ce31..27fc929bee 100644
+--- a/target/microblaze/helper.c
++++ b/target/microblaze/helper.c
+@@ -20,7 +20,7 @@
+ 
+ #include "qemu/osdep.h"
  #include "cpu.h"
 -#include "exec/exec-all.h"
 +#include "exec/cputlb.h"
  #include "exec/page-protection.h"
- #include "qemu/qemu-print.h"
- #include "trace.h"
+ #include "qemu/host-utils.h"
+ #include "exec/log.h"
 -- 
 2.43.0
 
