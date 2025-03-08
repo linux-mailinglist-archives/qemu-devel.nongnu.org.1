@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A251A57FB5
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:10:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E69EFA57FCC
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:13:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr3Iz-0004hX-FL; Sat, 08 Mar 2025 18:10:05 -0500
+	id 1tr3J4-0004tK-84; Sat, 08 Mar 2025 18:10:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3Iv-0004eV-Hv
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:01 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3J1-0004ow-2u
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:07 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3Is-0001BC-Qx
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:01 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43bdc607c3fso17911565e9.3
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 15:09:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3Iy-0001DW-0I
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:06 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43690d4605dso17975845e9.0
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 15:10:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741475397; x=1742080197; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741475402; x=1742080202; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QNAZPNsyTlqo2tLPWvhBvh59TFVcvzQjUjnLojvYJaQ=;
- b=mqKI2Knpe9laQpZ9s7MYWyc8Q/lXhcgswgJ1O7fCC9GhbLVGX4dvV2q0Pvwol9gO6s
- oHirfdpAIb6hVbHhIxoT3pDyLddV3P0PpRF5ejSofKs0WRThP9tENywhIbI2nlJB9B4Y
- tjghfHK5BfVyhHfKCzgyWirNXeFraKvKVDGFs3o/m7hIvMHInZOV2RIpc3R3I74r3eQO
- kxr4Tf9SYq0ZVIgvieMJ2tX1Okn1FhYSsachTCjPi5OZ6paua2CYHvmoP2qiu6s4KC5J
- g3LBRQgPAutATRMO2Jov6RfNiGFJmZvO5ZFrCZ5SpF7079W+dKZ875CQEI87g1eu0u9c
- y3sw==
+ bh=+FGFHz50rlwowjsXAPUzEIGbHAi/y/Zg2M+gRe6JQAc=;
+ b=XcbKvm+m277ZCWjkxQ7l8GTPTe6BAjpxbpC2za8Kp+oLcNCPaeqAUAPJIAc3f6P3fb
+ Fd+e+xHtpEyf89KT9pDTSQsI/zf8whlxRuVXphdSsSiGr/7fjkrbN0uqyBGHjtR6rTWP
+ LLxIodAS+VXq2hrPQjkQk3VGuzV73E9YQapEFt3FKzRfZLwVbStestCUOqm8TY6uCO5k
+ mp1kFcfJuH1jboteyEwRVHgn28PEUny2PzKrK4toTgZJIqyTcx1UpWIntLdccu3+tk4U
+ p8+CMI2hMp/HDEDHt/QH4nxZ8bGPkPR6Ak4uF9lUsVRVElh0+uqmZktIu2oqjM2h4giP
+ 4cUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741475397; x=1742080197;
+ d=1e100.net; s=20230601; t=1741475402; x=1742080202;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QNAZPNsyTlqo2tLPWvhBvh59TFVcvzQjUjnLojvYJaQ=;
- b=EsBMblC/Kw0XgvT1pq9yownGe1WksYcjajcZ+v+2AOkH6SOZh3xVxfAUqHj87gH2Bu
- VcsE3nUXyTuDsQ34bCC9iXUY0KL4gAn4rRH0hK63UPQpt8n/t88DAaLNLL0YPLUqIWEm
- XUX5lyUFLs1ITS6YzMe6c+d6+rdsrBlfjexVBQZFZy/fycKXGFTKA98FNwS52JuclXyR
- X098tZgmgiGQN1fcqAfxMW60hnVSpd+J8D/trUC5Ad/c3eB/qSZ4+z0S7OKCX7s97had
- 701zowFBik/ZdYAu60+SVQmqHhsvR78qv5QHJWZUsHtD1Y5KcfTUxGl4llDW4z105C/7
- ultw==
-X-Gm-Message-State: AOJu0YxyEdxJKqURI1aucEl7ZMelmyMBNYF06VJJgVgw4Bwwuo/LsJZO
- 3lND5zHg3cvkVIKtauq075TJ9tEu48HWGsGscDe1SJ7QOopkl4rTMCXYAlwoyxEBBLj1ROIJNRG
- qtTg=
-X-Gm-Gg: ASbGncv1SeMcz2cQAeY4d1blRdeN9xLBDxfy3Eq/eMHijVa6T79Ri2Lu6wdGO+Pg5tf
- i039DKQIxjDBQkM5tbhAcCfrJSYEmtYeibE44Y21Udnr+aqCgwbD9zd8+cClsJ+rHGLIdHy5+U3
- cYcQ3DEApRSP4fnea1Sz90IId/WJf+PCla82GQLpjlGmF5GBkn2ZzUXfAww2Xw+GauMxpGM4Amn
- k+fHZdzukCjVfbTh0bqARvK9Q3py7W+SOwhIfh7kejBGHgM8RbiQsU2mJ2psovaErPp/QvraFy6
- nAXH76UyA84/4cyvhl7yUxhNw+L+GgI9PyMIP3X6ZHAPN3m1PcdjF8I82WJCZGS8Nj3Gc7t3HUF
- 85WXkr9oo6EddtnQvynU=
-X-Google-Smtp-Source: AGHT+IG8MQrKfOJU0WoQHCAOd6Oq6wQcj1JZv9hwm7SxDKuTpUWDCbRgEKRZFOWkkDK4Q+3TnMf+nw==
-X-Received: by 2002:adf:a1c7:0:b0:391:4095:49b7 with SMTP id
- ffacd0b85a97d-39140954a39mr1073805f8f.25.1741475396652; 
- Sat, 08 Mar 2025 15:09:56 -0800 (PST)
+ bh=+FGFHz50rlwowjsXAPUzEIGbHAi/y/Zg2M+gRe6JQAc=;
+ b=Lak/iXpT3uS3nrEARxEq8I/OsOapkzq1HtbDXU9Au+i1phzlxiCWafG1xa8WU2Qxqu
+ FUq4H5fKwvYZhjTqMeI9kC0d+iCNlvIG6CDACqw7aGSyGzsg5wisG1xnu/ODFxQACY5F
+ dDb9J4uMKUSNzlc/QxSL74LT1BjoYiMoYyNi55TYkf4G1Rl92nU6JmAn6LjncUN6qqO9
+ TG24ha+/Oq9FocX/oNIlWQ/QZvMEodcRUXd+ecjRBOShtc13RvHiCIgkJK+E/I04Xpqw
+ Kf0EbKMqOV52HyGV8ZmnsKtUKxF2OC7ViA33G1HMox7vhrjhpltZ/LD2aTmY2lZK3pJW
+ LdaQ==
+X-Gm-Message-State: AOJu0YwWb3DWNBGKZOdnIQX5cIa39kQMDXJ2mUHI/LylydpNJL/S7i0v
+ ILcCc1II5+OIBSmK9Gg+4cyiGWv3bJEF0HROlEUCcsd5N5pfeSdgPSISJMlCmHG1RBya0Oa8wlJ
+ F368=
+X-Gm-Gg: ASbGncu9a/J15vnxh3DinSq0mPP9OjSoAkvWL6v37I3Hq3Tv59+e/ooNGR2Yimo8jT+
+ InqY2jkHDn9tdjrM34mNNijqJTgtU7BJOXhiCU4jwPUWeR0ZsVE1OQB7eaYNhBEJizG7BGk7ls1
+ YYCDA2kmvHBUkWO0heMz2PFxXLIVlbxhg7BeBdpYhci/M7ZhMw8Fw5aoCbUxoRw0F92q20DaWiB
+ OhW3KxzbwzI9mryxbPaTi6b0gFtCCqDuSYAUehwCLbQ2j8cjJ6Tqld0KakFT9qtiv02etP+njpF
+ O3S5BFq3rwQpmqgvR5e9dCbpRCKvp6fXBA/CyTEda4NZL3FcthfagVS8cbbtLTefYW+aQ0hdzgN
+ cSucB7PtOdvUtjR44G2EecwQpaFj9eg==
+X-Google-Smtp-Source: AGHT+IGIv7r4JVSN4fyIj3wYPXDmIoomS2e7/C3qLiVhv6Ql0EEJlV/5Due87/IgHr0O7LUJ20Gsaw==
+X-Received: by 2002:a05:600c:4fce:b0:439:a1ad:6851 with SMTP id
+ 5b1f17b1804b1-43cdc7b6dccmr41459045e9.23.1741475401963; 
+ Sat, 08 Mar 2025 15:10:01 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd426c33asm132242055e9.3.2025.03.08.15.09.55
+ 5b1f17b1804b1-43bdd8de4ffsm97892025e9.24.2025.03.08.15.10.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Mar 2025 15:09:56 -0800 (PST)
+ Sat, 08 Mar 2025 15:10:01 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>,
@@ -84,18 +84,17 @@ Cc: Yi Liu <yi.l.liu@intel.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 06/21] system: Declare qemu_[min/max]rampagesize() in
- 'system/hostmem.h'
-Date: Sun,  9 Mar 2025 00:09:02 +0100
-Message-ID: <20250308230917.18907-7-philmd@linaro.org>
+Subject: [PATCH v2 07/21] hw/vfio: Compile display.c once
+Date: Sun,  9 Mar 2025 00:09:03 +0100
+Message-ID: <20250308230917.18907-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250308230917.18907-1-philmd@linaro.org>
 References: <20250308230917.18907-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,96 +117,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both qemu_minrampagesize() and qemu_maxrampagesize() are
-related to host memory backends, having the following call
-stack:
-
-  qemu_minrampagesize()
-     -> find_min_backend_pagesize()
-         -> object_dynamic_cast(obj, TYPE_MEMORY_BACKEND)
-
-  qemu_maxrampagesize()
-     -> find_max_backend_pagesize()
-        -> object_dynamic_cast(obj, TYPE_MEMORY_BACKEND)
-
-Having TYPE_MEMORY_BACKEND defined in "system/hostmem.h":
-
-  include/system/hostmem.h:23:#define TYPE_MEMORY_BACKEND "memory-backend"
-
-Move their prototype declaration to "system/hostmem.h".
+display.c doesn't rely on target specific definitions,
+move it to system_ss[] to build it once.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/exec/ram_addr.h    | 3 ---
- include/system/hostmem.h   | 3 +++
- hw/ppc/spapr_caps.c        | 1 +
- hw/s390x/s390-virtio-ccw.c | 1 +
- hw/vfio/spapr.c            | 1 +
- 5 files changed, 6 insertions(+), 3 deletions(-)
+ hw/vfio/meson.build | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
-index 94bb3ccbe42..ccc8df561af 100644
---- a/include/exec/ram_addr.h
-+++ b/include/exec/ram_addr.h
-@@ -101,9 +101,6 @@ static inline unsigned long int ramblock_recv_bitmap_offset(void *host_addr,
- 
- bool ramblock_is_pmem(RAMBlock *rb);
- 
--long qemu_minrampagesize(void);
--long qemu_maxrampagesize(void);
--
- /**
-  * qemu_ram_alloc_from_file,
-  * qemu_ram_alloc_from_fd:  Allocate a ram block from the specified backing
-diff --git a/include/system/hostmem.h b/include/system/hostmem.h
-index 5c21ca55c01..62642e602ca 100644
---- a/include/system/hostmem.h
-+++ b/include/system/hostmem.h
-@@ -93,4 +93,7 @@ bool host_memory_backend_is_mapped(HostMemoryBackend *backend);
- size_t host_memory_backend_pagesize(HostMemoryBackend *memdev);
- char *host_memory_backend_get_name(HostMemoryBackend *backend);
- 
-+long qemu_minrampagesize(void);
-+long qemu_maxrampagesize(void);
-+
- #endif
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index 904bff87ce1..9e53d0c1fd1 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -34,6 +34,7 @@
- #include "kvm_ppc.h"
- #include "migration/vmstate.h"
- #include "system/tcg.h"
-+#include "system/hostmem.h"
- 
- #include "hw/ppc/spapr.h"
- 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 51ae0c133d8..1261d93b7ce 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -41,6 +41,7 @@
- #include "hw/s390x/tod.h"
- #include "system/system.h"
- #include "system/cpus.h"
-+#include "system/hostmem.h"
- #include "target/s390x/kvm/pv.h"
- #include "migration/blocker.h"
- #include "qapi/visitor.h"
-diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 9b5ad05bb1c..1a5d1611f2c 100644
---- a/hw/vfio/spapr.c
-+++ b/hw/vfio/spapr.c
-@@ -12,6 +12,7 @@
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
- #include "system/kvm.h"
-+#include "system/hostmem.h"
- #include "exec/address-spaces.h"
- 
- #include "hw/vfio/vfio-common.h"
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index 5c9ec7e8971..a8939c83865 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -5,7 +5,6 @@ vfio_ss.add(files(
+ ))
+ vfio_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr.c'))
+ vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
+-  'display.c',
+   'pci-quirks.c',
+   'pci.c',
+ ))
+@@ -28,3 +27,6 @@ system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+ system_ss.add(when: ['CONFIG_VFIO', 'CONFIG_IOMMUFD'], if_true: files(
+   'iommufd.c',
+ ))
++system_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
++  'display.c',
++))
 -- 
 2.47.1
 
