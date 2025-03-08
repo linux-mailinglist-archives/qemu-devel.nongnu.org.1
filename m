@@ -2,67 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7B6A578DE
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 08:14:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27682A578E3
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 08:25:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tqoNU-0006GT-U7; Sat, 08 Mar 2025 02:13:44 -0500
+	id 1tqoXY-0001NW-Qd; Sat, 08 Mar 2025 02:24:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqoNS-0006Fa-1m
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 02:13:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tqoNQ-0002Kq-F3
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 02:13:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741418018;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=xacoSg9+cmZydMkbDxHCgdtHUhN+sY4grSF8iJQ4Ugk=;
- b=HpWiZX/Zr1jnLPcGcWqIrOU+Lii5x7iod1NXbqsVFLdLpjzV7FZ6bgaGtdJ4kYa8n6SxLJ
- ys2d8+c7hJzssA+KfZQkQWTP6VILdESsWtwbNhgoSupo2owMGyTL+B2gUxuY8btG8gERfN
- E2UGCL1oAMLs+ZWXRoSPTopjiYQKCwQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-261-BWG0AV7sMveY-qjRPg-7gw-1; Sat,
- 08 Mar 2025 02:13:34 -0500
-X-MC-Unique: BWG0AV7sMveY-qjRPg-7gw-1
-X-Mimecast-MFC-AGG-ID: BWG0AV7sMveY-qjRPg-7gw_1741418013
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E8F99180035E; Sat,  8 Mar 2025 07:13:32 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.44.32.48])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1A50618009AE; Sat,  8 Mar 2025 07:13:30 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqoXP-0001Mx-23
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 02:23:59 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tqoXL-0008K2-7o
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 02:23:57 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43bcc85ba13so20064595e9.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Mar 2025 23:23:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741418632; x=1742023432; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8dbzpI2JdNfY9UXOT6YyYMBbVlgCVS6StPo6Zu5kvgg=;
+ b=bRLRuaDWLkxY3pL2usR6BdsYEE2qutaaosaTtuCEmZ7cxFpagTa4MozliHs3WnjQBH
+ 1MEGMT5e0P10jKmcPhJqv8BXKHG9ELXi5M5O9FRj75+qNSEYlLGGaedZy3Nme3msSNjp
+ j80tRTIGZel4WgQd2tYXYA5wpEfp69jHvESDqkTRb9ViBQ/A8eHuVEIwDbzG4Hqj9HjE
+ lQ4QPB23TjwASh0EKYqeABtmunu6iweGwUlo5J8NofR1fBRnsrduJhIL2p4OzTd+bLiT
+ pm0qLDzLhvR+RutdAzFK1d+DxhX2zs4EmlKdNFK79It+Cb/rUPZLnbI1yHYkOuUZxL+n
+ 2GXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741418632; x=1742023432;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8dbzpI2JdNfY9UXOT6YyYMBbVlgCVS6StPo6Zu5kvgg=;
+ b=Iel1hQ4lBNUFl8ufNwN2PfyPDPybiJQEePATzdXXhXF27AcNvgTKgrdPHIrS1bZLFo
+ AmzzH0Jw77s3eewHK92DFcfa22YPeakJwpBaQDmCuQ7YvZgLZgl4ruhjEWAjhceE2NN4
+ 4QOdtawXGP0mvVmBSGPq9m1DefYrs3PuNmq3aYBRpLTMxB4MM47S3zjKsvP6k+Zn+ivA
+ M4dL6xuJSwBMLAP00WEd8xJoit4/5oRIBjrIlLfD2oU31X43Ngt0XVs197d6jcpO5Jk6
+ 96rzBG/R38oAk16n22v5eZ6THug6CPxIdwMs8i8hvy+w/gdYpV70ZtSvbQFV1i0YcrlE
+ w1gg==
+X-Gm-Message-State: AOJu0Yz2x16FTJvKZRt2KDeM/HFVJayo51dzcl1WlIX02d+FEO1nTLjA
+ lGTNBw6cFVW+GUHo31dAP9U9k0KblV5e8JNvNLB7kJWhHXZjUjzBa3xEoOwScRB5U7906H6PJic
+ cmoQ=
+X-Gm-Gg: ASbGncuVPAvakAdxMfsg6x+2ZFYALuJ3O/rwZPdqYG9+7fEayw2yZdsXKZ0hmPA6b+C
+ KvHt8zujVUsxREqGTGJNkrm5IAFKkcrz7sWceqUp66QIPxVltc9wE0B0oDAtTe2Z3zI+wDcBOKe
+ LO5x22Gz+pAPvPR8VNh/p77L//yjxs3yzbvBEWCxfyxfqM7UIds3/TFxJJkT7q9LSqiwP3Vkv/b
+ FvF6ztqRiS3hjGiDfqbGrxp9yOWUAL+GoTSpLn1BCS+0OYVRcpSPSK67THbRpLimgjqmBskG5Fg
+ iCQqsqU86a2gyRY0hwNGUt1GwZA9hICDZJcVVub0C+mfKxNk6F1Qs9bd3nevrAjcxJ9arWKqAoW
+ HlEkDK3qddryfSoKUFxmSUdkaRAGAuQ==
+X-Google-Smtp-Source: AGHT+IGTNCiLQ5612TPc8gFirc9DF3ZU7xSJyzEKNSSE0fF4Qm9PYgvIVq+q6tN47UsNRINqLCoyTw==
+X-Received: by 2002:a05:600c:1c9d:b0:439:643a:c8d5 with SMTP id
+ 5b1f17b1804b1-43c549dcc0amr47769875e9.0.1741418631612; 
+ Fri, 07 Mar 2025 23:23:51 -0800 (PST)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3912c103290sm7720467f8f.87.2025.03.07.23.23.49
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 07 Mar 2025 23:23:50 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH] tests/functional: Require 'user' netdev for ppc64 e500 test
-Date: Sat,  8 Mar 2025 08:13:28 +0100
-Message-ID: <20250308071328.193694-1-clg@redhat.com>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 00/18] accel/tcg: Compile more files once
+Date: Sat,  8 Mar 2025 08:23:45 +0100
+Message-ID: <20250308072348.65723-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,28 +96,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When commit 72cdd672e18c extended the ppc64 e500 test to add network
-support, it forgot to require the 'user' netdev backend. Fix that.
+Since v1:
+- Patches 1-13,16 unmodified
+- Restrict GETPC_ADJ()
+- Rename accel/tcg/getpc.h
+- Guard GETPC() within CONFIG_TCG
 
-Fixes: 72cdd672e18c ("tests/functional: Replace the ppc64 e500 advent calendar test")
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- tests/functional/test_ppc64_e500.py | 1 +
- 1 file changed, 1 insertion(+)
+Take care of some easy cases in accel/tcg/.
+From here it starts getting harder.  🙂
 
-diff --git a/tests/functional/test_ppc64_e500.py b/tests/functional/test_ppc64_e500.py
-index 9ce7ae6c4798..f5fcad9f6b66 100755
---- a/tests/functional/test_ppc64_e500.py
-+++ b/tests/functional/test_ppc64_e500.py
-@@ -20,6 +20,7 @@ class E500Test(LinuxKernelTest):
- 
-     def test_ppc64_e500_buildroot(self):
-         self.set_machine('ppce500')
-+        self.require_netdev('user')
-         self.cpu = 'e5500'
- 
-         uimage_path = self.ASSET_BR2_E5500_UIMAGE.fetch()
+Philippe Mathieu-Daudé (7):
+  exec: Declare tlb_reset_dirty*() in 'exec/cputlb.h'
+  exec: Declare tlb_set_page_full() in 'exec/cputlb.h'
+  exec: Declare tlb_set_page_with_attrs() in 'exec/cputlb.h'
+  exec: Declare tlb_set_page() in 'exec/cputlb.h'
+  exec: Declare tlb_hit*() in 'exec/cputlb.h'
+  exec: Declare tlb_flush*() in 'exec/cputlb.h'
+  accel/tcg: Restrict GETPC_ADJ() to 'tb-internal.h'
+
+Richard Henderson (11):
+  include/exec: Move TARGET_PAGE_{SIZE,MASK,BITS} to target_page.h
+  include/exec: Split out exec/cpu-interrupt.h
+  accel/tcg: Compile watchpoint.c once
+  system: Build watchpoint.c once
+  accel/tcg: Build tcg-accel-ops.c once
+  accel/tcg: Build tcg-accel-ops-icount.c once
+  accel/tcg: Build tcg-accel-ops-rr.c once
+  accel/tcg: Build tcg-accel-ops-mttcg.c once
+  accel/tcg: Split out getpc.h
+  accel/tcg: Build tcg-runtime.c once
+  accel/tcg: Build tcg-runtime-gvec.c once
+
+ accel/tcg/internal-common.h          |   2 +
+ accel/tcg/tb-internal.h              |  13 +-
+ include/accel/tcg/getpc.h            |  24 +++
+ include/exec/cpu-all.h               |  97 +---------
+ include/exec/cpu-interrupt.h         |  70 +++++++
+ include/exec/cputlb.h                | 263 ++++++++++++++++++++++++++-
+ include/exec/exec-all.h              | 263 +--------------------------
+ include/exec/poison.h                |  17 --
+ include/exec/ram_addr.h              |   1 +
+ include/exec/target_page.h           |  58 +++++-
+ accel/tcg/cputlb.c                   |  23 +++
+ accel/tcg/tcg-accel-ops-icount.c     |   2 +-
+ accel/tcg/tcg-accel-ops-mttcg.c      |   1 -
+ accel/tcg/tcg-accel-ops-rr.c         |   2 +-
+ accel/tcg/tcg-accel-ops.c            |   2 +-
+ accel/tcg/tcg-runtime-gvec.c         |   1 -
+ accel/tcg/tcg-runtime.c              |   8 +-
+ accel/tcg/watchpoint.c               |   5 +-
+ cpu-target.c                         |   1 +
+ hw/intc/armv7m_nvic.c                |   2 +-
+ hw/ppc/spapr_nested.c                |   1 +
+ hw/sh4/sh7750.c                      |   1 +
+ page-target.c                        |  18 --
+ page-vary-target.c                   |   2 -
+ system/physmem.c                     |   1 +
+ system/watchpoint.c                  |   3 +-
+ target/alpha/helper.c                |   2 +-
+ target/alpha/sys_helper.c            |   2 +-
+ target/arm/helper.c                  |   1 +
+ target/arm/tcg/tlb-insns.c           |   2 +-
+ target/avr/helper.c                  |   2 +-
+ target/hppa/mem_helper.c             |   1 +
+ target/i386/helper.c                 |   2 +-
+ target/i386/machine.c                |   2 +-
+ target/i386/tcg/fpu_helper.c         |   2 +-
+ target/i386/tcg/misc_helper.c        |   2 +-
+ target/i386/tcg/system/excp_helper.c |   2 +-
+ target/i386/tcg/system/misc_helper.c |   2 +-
+ target/i386/tcg/system/svm_helper.c  |   2 +-
+ target/loongarch/tcg/csr_helper.c    |   2 +-
+ target/loongarch/tcg/tlb_helper.c    |   1 +
+ target/m68k/helper.c                 |   1 +
+ target/microblaze/helper.c           |   2 +-
+ target/microblaze/mmu.c              |   2 +-
+ target/mips/system/cp0.c             |   2 +-
+ target/mips/tcg/system/cp0_helper.c  |   2 +-
+ target/mips/tcg/system/tlb_helper.c  |   1 +
+ target/openrisc/mmu.c                |   2 +-
+ target/openrisc/sys_helper.c         |   1 +
+ target/ppc/helper_regs.c             |   2 +-
+ target/ppc/misc_helper.c             |   1 +
+ target/ppc/mmu_helper.c              |   1 +
+ target/riscv/cpu_helper.c            |   1 +
+ target/riscv/csr.c                   |   1 +
+ target/riscv/op_helper.c             |   1 +
+ target/riscv/pmp.c                   |   2 +-
+ target/rx/cpu.c                      |   2 +-
+ target/s390x/gdbstub.c               |   2 +-
+ target/s390x/sigp.c                  |   1 +
+ target/s390x/tcg/excp_helper.c       |   1 +
+ target/s390x/tcg/mem_helper.c        |   1 +
+ target/s390x/tcg/misc_helper.c       |   1 +
+ target/sh4/helper.c                  |   1 +
+ target/sparc/ldst_helper.c           |   1 +
+ target/sparc/mmu_helper.c            |   2 +-
+ target/tricore/helper.c              |   2 +-
+ target/xtensa/helper.c               |   2 +-
+ target/xtensa/mmu_helper.c           |   1 +
+ accel/tcg/meson.build                |  14 +-
+ system/meson.build                   |   2 +-
+ 70 files changed, 508 insertions(+), 455 deletions(-)
+ create mode 100644 include/accel/tcg/getpc.h
+ create mode 100644 include/exec/cpu-interrupt.h
+
 -- 
-2.48.1
+2.47.1
 
 
