@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF20A57AC2
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 14:51:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0CCAA57BC8
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 17:13:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tquYx-0002Qw-LG; Sat, 08 Mar 2025 08:49:59 -0500
+	id 1tqwm8-0004qK-2g; Sat, 08 Mar 2025 11:11:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tquYk-0002QX-5K
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 08:49:46 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tqwlp-0004nc-Oo
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 11:11:26 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tquYi-0007Ai-1R
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 08:49:45 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43bdc607c3fso16499885e9.3
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 05:49:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tqwlm-0003Yh-NO
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 11:11:25 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-22113560c57so54288455ad.2
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 08:11:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741441780; x=1742046580; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=GKR/odgagJQuc1hFFy3FVHW1+FYszYypBPa/N5O6e5o=;
- b=SUpeYONL8+9CgD9uUvFwCtN85bzxOAYd3h10cZV9rRz3dka64XilB7eoyG5oCesZbn
- nNYcvyP0HQ3Lj+HCwh/m5ppwmy3r4kVPpjbMZBoo52dNOC/fUhX9nFS4lgpuxyzWM5Bf
- uxQhWCVp3bDwl9k2Vc8FSHkmd2vLsU8cB/3CvSH08rtkY1ntOMVjDCegPxZXe7rRKDHr
- YiSOD+nB0//CYnqZtPthFlf9zfo6p/WVeyin/Fh62qb0FwpTMTBRwx5JuU9SSJwEELCq
- qUES/y6M2WYDUdWzpbbIjemjVABC2qs5gDUJA60CMnHF8AKMtnnajpG4u1WaYvvN4lLA
- OEzA==
+ d=linaro.org; s=google; t=1741450280; x=1742055080; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fxUjmsk9NNMuw5a2dswO15JupFUX1TXb2+nK27dchFA=;
+ b=WBzNq2b+8LWpOMFq3IDE4/vcdFHfSQbI/8C73ia/IdKXoOeoQTHZ0sIB5fu3z/3h5I
+ Cuf+J9cu7Ml08/G1ncYyCpfstAjaf++w1Ofui4jBGIJFHbr02/n/Pb6N0jUr4Q3tCKkn
+ Xy61AGSuwvRFclQEaYV8SWpoDZN0qaBou73wa6zkIHjPI4jEWgpNpWE5wUUq+GxDY+NL
+ /b+Mylt0r9EBT+aUPorfbBJsDF04yPnun4kTPXtKCyPzqfh4Q9PElW7Z7HYML05OGnwL
+ ErAq2l76TWjsz+1OSrFGfuWEPjeIIY+68tg7Tfu8J6LJZvuwZG5KjbfeKz/gUwkxOCZV
+ nUpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741441780; x=1742046580;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GKR/odgagJQuc1hFFy3FVHW1+FYszYypBPa/N5O6e5o=;
- b=eiWkajULpOku6wcY3aPrdvt87hEV9zkXBGY9tWpctFH36gdoB2c4xHJmR7bPxa1ME2
- gr66IFwml1ZIg9URtfcoGTtejz2dLw0r5ymaiFzKFFKpmM6Rx375HQIKcnxpsiltRALg
- vjvRwyr/z1oZjeToDwXAR1QmVhe2SGIR6/+KYhT5pGXkZSY0gqOtG+30E68YFhGOfZGN
- AYiv/kjmWHyJ5jjDikxJmNwMkPeE0UUgZmP//UkW3nYBkmbupi7eCGsSVGrLViVENFo3
- 6A30oH1dav4Eg3N121YOfRGJzXrXXVdY9BxCOZ+xPvW0M111TRxrksUhJqhbtk7/Lz4C
- QnFA==
-X-Gm-Message-State: AOJu0YxmmIlz63Z4so4uEGiw9y64UGaki0FsEumEthHVMgGgkT1AJriI
- 034smfGksiK5mLFYdoQi2wS+57vEeaAs4lE8RE6BPieXVnvUPdm1Hz5xv7elX5SLnhlh7VDdi1e
- MiKE=
-X-Gm-Gg: ASbGnctGhbTRp0iw6nfEmBBZXD+YBMrKlPgaj94fLBi/JFPoiULeYo0UQ7y4pZdZcAA
- FydOKcRg9+s9qrhp82fEde5P+YhAUqXmEbNUFO7jiLJkaXdwp4OMbFtVP8X9CkFZyso8bV8YSZr
- GongEAzonk4XKYAvA213HDRE06qx31pe1p5k8pVSrjtda+XsV4L3Xm2WwKGBT7LluirzgWarUyk
- eULgzEziutqJ2PM7hliuTJ9vqcU72flMKQ437d7XJlr1oWnlXX8hWccAoqGcKBFWwRU+d026vjw
- doPHJ8EWqrh2qdSAvPG5wWWAStLDEsbvbuw4bY/wFQNPSCHviEGLtOy/bWiox5Lkcl6uYtP56h+
- G9MmsvfGKs67rGkAbyKM=
-X-Google-Smtp-Source: AGHT+IE9B974xtVH3iUUTzDLE7POblCHQTgvboCEYMZTWoWsR4yRLdYUkvfKRDyBnjDQdX6RtKxc7g==
-X-Received: by 2002:a05:600c:1554:b0:439:91dd:cf9c with SMTP id
- 5b1f17b1804b1-43c601d9492mr53733225e9.10.1741441780466; 
- Sat, 08 Mar 2025 05:49:40 -0800 (PST)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c103f57sm8873762f8f.91.2025.03.08.05.49.39
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Mar 2025 05:49:39 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] MAINTAINERS: Consolidate core exec/vCPU handling section
-Date: Sat,  8 Mar 2025 14:49:38 +0100
-Message-ID: <20250308134938.77267-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
+ d=1e100.net; s=20230601; t=1741450280; x=1742055080;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fxUjmsk9NNMuw5a2dswO15JupFUX1TXb2+nK27dchFA=;
+ b=e1PxKOF2NsnsYcq5vVIrEXaPoFXBaWIe7iV5aRmXGl8GpqOvuSnrp0qJis5VExooq/
+ douJR6qAdnnDi1PJk0pRLh7vjDS8iXrxqUfefiF1/yoJRcLr2mNEcuFXqWVKbg3YfLSc
+ 1tv7Rxj6H4fJO5sli1+fym4vmO7hYVYGrmZTJzirnwMhMSO/hgStiR216QrWfETe2PIb
+ Okg32WQtVYrXlprDbGY+3oVLb6w+rK1fPAnkhazYsAWABfj3YserNjxHM/8XUBT3nspK
+ x/4s4bH73jEF8vvtXALvz/slxy6m6Ifr+whEmPVPJtrnB1xIjP8N/dW5wYbJjzkLvv2k
+ v0EA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUHiqwvY3Ey91c5DHmkdTH3QUKS4eOf4USW54xYqIYQV5a7mWh8dzAQgeCBftovQi/5pUDGbWPaAkDB@nongnu.org
+X-Gm-Message-State: AOJu0YzI1/Dt0WQo/33jRMA3wR3Y/dCp8+nwzirJ9Gly+aGSHspJBju6
+ tPqTJBY9GFCm4BQOW02vTDL0ZlYhN1YTeG/xZTrGdRSKwV/PjFHZwUUGSHY1+oU=
+X-Gm-Gg: ASbGncultdGt9/iuL6PJa/NudZQtClztIIaMvBeQIzXjDwev4r1nxuB0xc5Y9W1iO0e
+ /VzKA9UbV8SYIudwgXTFEmMISy6CqYSl17g0CWHUn/bR59RKuZ1Llk7DvpCpilyfnUAAO3W1/Yn
+ wGaG6mfCaRMgBLJQjU443BB23W0XdixER7LOwToTBKgmAhnD06j7GMJJuaeI4Dwp1hlMrEuqElR
+ VKDwQqpb9Frk2Awywz5pjb3gkisFA1TlYH+CDSfxoJseUgGlqzKzrJ4+bLQ9HbxKr/V5bxgodsO
+ c35yPT3/STF2mVZzms0S+o09BUpCxK4yaFthiVyYeCYkJomrIUBNkLN64NGaj0Dq0HBku0rcntN
+ S5hGpsv6d
+X-Google-Smtp-Source: AGHT+IEzCp10URjLOERY9w42RdnPQWCMo2kZw2GV6KaEkEEOHZ01F8iikrOMK9wylbsgMM0MzNqvFw==
+X-Received: by 2002:a05:6a00:1708:b0:736:43d6:f008 with SMTP id
+ d2e1a72fcca58-736aa9f0b0cmr11878138b3a.12.1741450280404; 
+ Sat, 08 Mar 2025 08:11:20 -0800 (PST)
+Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-736aead3439sm3343256b3a.64.2025.03.08.08.11.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 08 Mar 2025 08:11:19 -0800 (PST)
+Message-ID: <ef66b738-1e90-4471-aa10-f21decde3fc8@linaro.org>
+Date: Sat, 8 Mar 2025 08:11:17 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Consolidate core exec/vCPU handling section
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20250308134938.77267-1-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250308134938.77267-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,67 +102,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some common cpu/exec files are listed under the 'TCG CPUs'
-section. Move them to the generic 'Overall Guest CPU Cores'
-one where they belong.
+On 3/8/25 05:49, Philippe Mathieu-Daudé wrote:
+> Some common cpu/exec files are listed under the 'TCG CPUs'
+> section. Move them to the generic 'Overall Guest CPU Cores'
+> one where they belong.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   MAINTAINERS | 14 +++++++-------
+>   1 file changed, 7 insertions(+), 7 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- MAINTAINERS | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5df6020ed54..783885a84d8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -152,10 +152,7 @@ Overall TCG CPUs
- M: Richard Henderson <richard.henderson@linaro.org>
- R: Paolo Bonzini <pbonzini@redhat.com>
- S: Maintained
--F: system/cpus.c
- F: system/watchpoint.c
--F: cpu-common.c
--F: cpu-target.c
- F: page-vary-target.c
- F: page-vary-common.c
- F: accel/tcg/
-@@ -165,15 +162,11 @@ F: util/cacheflush.c
- F: scripts/decodetree.py
- F: docs/devel/decodetree.rst
- F: docs/devel/tcg*
--F: include/exec/cpu*.h
--F: include/exec/exec-all.h
- F: include/exec/tb-flush.h
--F: include/exec/target_long.h
- F: include/exec/helper*.h
- F: include/exec/helper*.h.inc
- F: include/exec/helper-info.c.inc
- F: include/exec/page-protection.h
--F: include/system/cpus.h
- F: include/system/tcg.h
- F: include/accel/tcg/cpu-ops.h
- F: host/include/*/host/cpuinfo.h
-@@ -497,12 +490,19 @@ Overall
- M: Richard Henderson <richard.henderson@linaro.org>
- R: Paolo Bonzini <pbonzini@redhat.com>
- S: Maintained
-+F: include/exec/cpu*.h
-+F: include/exec/exec-all.h
-+F: include/exec/target_long.h
- F: include/qemu/accel.h
- F: include/system/accel-*.h
-+F: include/system/cpus.h
- F: include/accel/accel-cpu-target.h
- F: accel/accel-*.c
- F: accel/Makefile.objs
- F: accel/stubs/Makefile.objs
-+F: cpu-common.c
-+F: cpu-target.c
-+F: system/cpus.c
- 
- Apple Silicon HVF CPUs
- M: Alexander Graf <agraf@csgraf.de>
--- 
-2.47.1
-
+r~
 
