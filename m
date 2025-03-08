@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F412A57F11
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 22:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DD7A57F0A
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 22:54:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr277-0003LF-1o; Sat, 08 Mar 2025 16:53:45 -0500
+	id 1tr26z-0003FW-N3; Sat, 08 Mar 2025 16:53:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tr26z-0003G3-N9
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:37 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1tr26w-0003Dl-7W
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:34 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tr26x-0000vS-CN
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:37 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-39130ee05b0so1667903f8f.3
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 13:53:34 -0800 (PST)
+ id 1tr26u-0000uR-Bq
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:33 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3912d2c89ecso2447127f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 13:53:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741470814; x=1742075614; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741470811; x=1742075611; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uP5TiKKy+g7zDm1v/BM9VjWiPBsi9a9+GYKmDxVZNDU=;
- b=tQLgd+dRHbreJppvVDOQZVLx+WAqVNL9RWTlcMDKi1BoMyVy2UgBDTRsUkZJ0a38xl
- JRTCUvEpNT9pvBr7hHr8KejcIBh+0FPoGJKtrUIwtbHnbyXBawAYqpJ1WIoCOx4lhzZ4
- 620UQBMdSL1mR5zXrABNN5W4zZlARXNC+zI5MluunL2YlYbgCVtazVComRrLyTZ0l3uO
- fACB7ZpBGIuB9syaoDhc3RZdQgaseLrDqRuRMKDG4cPoCoQ3lEuwljiOZqhvmt/cTE9y
- Lt8J/gTD97u/Vwd0jzCkpSOzzrpSvACI+PuTgn0RThTwkfNuke9x8Sl7lYAapRp1bS8C
- sE9A==
+ bh=OIaKC/SjxFs9P2m9mvZW+W0xEbrgWkgnWx8O8XlDy3g=;
+ b=QLzF8vmU8/OcBX2nE+UF3y5tHz6zPJ4vMnMRVtkvxIQVLuW/5ZXCJI2WznCf5AupfM
+ riM6rB8FRn4AcDBVmTNZaFZXsyWkEN+aKvtD/OijmtCgvM1BZyrK98IUYgLuEETvALi1
+ a04OWTYpXIU8ik2xDHUHoh5HLSjwvwCFn8QEA0ZxNzb9KFuFxenZtkVO5hE+MnVd0GRV
+ snuv+t7pM7zc3XRyOA0HpWnoSaYZZ7cXQunlWjEfM2IOke8fuVqdXwzwEtCXzg1pv8sd
+ 08dFzgE/h/npeo2rEzXM63YzCv0ljFG5C9mjLAa/6Tnu1htZ1zpEjqOtRwyJ6lXoKM28
+ J3dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741470814; x=1742075614;
+ d=1e100.net; s=20230601; t=1741470811; x=1742075611;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uP5TiKKy+g7zDm1v/BM9VjWiPBsi9a9+GYKmDxVZNDU=;
- b=t/VeBNc76fFbvzQzJBszzDEsWaeaJu4JhG4Z2khwZvmTSgvMLJLZ++v8D5jllflV8R
- aqcgH6HJ0FWEIloM5wp0Grvct2a99vKCSVXz3v/YcJqozs6wi+rFI3G+F9ehglwSq0Vj
- xCdAsA33huldvvbwiITXTVLhVRvIMNx4qAnoCNBb18UDiQxl9T0Q7j7lTPQxqWX6oJof
- L+bT0sXUce9Dke31j4qKeXEI6VhEUhHUks4UuutyxrvoxlS42iCSODpjtlo9cJcn2H36
- 2TY0VkeqEPup6SECGDNns08OJFA4mKicWyYdiMogoMpGOuXL9RTzu33oPez14iwu8lRI
- Qu2g==
-X-Gm-Message-State: AOJu0Yxx7YvmeuODO19Kc5tXLdzDZDzDuWOaHxQYtKJOeFrKZzmv1iOp
- jHFFycXK5ROtHhT9aawnRT/gXgrrPCUtY63asaEKtr0+8GZbDba8TUbdhUFglto=
-X-Gm-Gg: ASbGnctdWTIREHuUuzfg+ROl8EJaoXezd117gDCspFzdw0pFLFaAF09gm3F9yJIaur6
- neEKoSx71VHZzyFNcuDU7tH7igj6Y6UmszfgRowMKi1WkMzv7A6hKl4mX7ti2kUe4hKT8kaRDJj
- 7uteWfp6uYT35AXeWf+gMjgCePYnhkfa0SVQ9uUzJ52DcJlVf0iAsA3v+XuBO3VZdbZCvASMtky
- qHZpMfp3xn1/EZfDlPLbeRgH0ydXElxw9Jf49EORm0hKtkTm56oDe78wdcz++NOKu2REQE2d3OV
- XRgmtvDMT13d9I6Jccy42dvhqagaxfr4GFgzG1oCfU1csS5GYazoX0WPew==
-X-Google-Smtp-Source: AGHT+IEirWalxOVjPt/KuG1FsttI+w//qnpxKddMslJgsgbCWleV4w4nhSGhRWl0cmzudVS55qRtoQ==
-X-Received: by 2002:a5d:47cc:0:b0:38f:2766:759f with SMTP id
- ffacd0b85a97d-39132dbb069mr5450159f8f.41.1741470813805; 
- Sat, 08 Mar 2025 13:53:33 -0800 (PST)
+ bh=OIaKC/SjxFs9P2m9mvZW+W0xEbrgWkgnWx8O8XlDy3g=;
+ b=JTAOrVxsh58d4aA+8WeEofpMCOQJtic2FM9xIlvkWTcGevRjHpOk+7Mkd4cfxHHxaO
+ 1qL/ZRXRz7FzI/s6fzEoOGOC7Gkeke48jWTBQhnqlhdB84qK86tcWDASq9/PPNCJmy0m
+ JrjTdcyC/m2IWT7PrWsE/qEzK6b+L31XmLACraEcF6EH/wNMGcBCY/12qjnEvs73PKAi
+ PipXpqp/4gA38ZEYjGxAeJ0+BVQUCSp0E+iQK7rEiDCWcoh4oW/jZZYdrZluaVRwO0WS
+ 7GCxFlYTufT5JWm6rTlTJz9an4Aj+Te8T8/2rw0h2WIxef1n5tNJ4rPlOO+UmWivZbC+
+ S3og==
+X-Gm-Message-State: AOJu0YyA2koGLUTtMvk468FScrSpqpGAlyhv8wyXEeGq46m3C0HGhbVD
+ MV6R6D8Xsl6Zgkueq2WcpQtXufD0SOf24K5yG8CVq/qNDb+byeSfjRBl1qV4FH8=
+X-Gm-Gg: ASbGncvS56mbSuZ0NkEowX2v88W6g9zHOe5Dq0VeLmLDYUzhpOHx1KtfT2t3Lw7E1ja
+ Kg16jI1jva9YJAbLlHiGu6zATpgk2XV7m7L7T5YrJjdDpcaO2aAAqPvz7gAXMO0nGA27OLDsNOV
+ a38Z9C6KthAYHNxzfX8eFlN4S/TXrg5mij4oldTgmGgXkX621OC+77D9PTC1jWfth6jhODY7LMi
+ FsWQ7PZYT8UFVy5uoQnqOGVv3Bs7W71Goc7UXUMSU5guZ/Eo39Fp1mXXEcqKqWV/gq8WLjhz8SI
+ nnRD5ECSdEStLlM8hP/FhJLTsdpCrL4Qk0NERtc2O4z7MlM=
+X-Google-Smtp-Source: AGHT+IGxbVfTYRdbg3IigvV9WeMY2yrQ9q0eqNLlASEuIc5m6lIkrl4swX+7Ypn3JthiCeE1Jqf0VA==
+X-Received: by 2002:a05:6000:2ac:b0:38d:e6b6:508b with SMTP id
+ ffacd0b85a97d-39132d308b8mr4967926f8f.9.1741470810865; 
+ Sat, 08 Mar 2025 13:53:30 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c0e2bacsm9933579f8f.78.2025.03.08.13.53.28
+ ffacd0b85a97d-3912c0e2b6asm10109790f8f.66.2025.03.08.13.53.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sat, 08 Mar 2025 13:53:30 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 01B0760065;
+ by draig.lan (Postfix) with ESMTP id 1725E601A1;
  Sat,  8 Mar 2025 21:53:27 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [PULL 05/31] tests/functional: skip vulkan tests with nVidia
-Date: Sat,  8 Mar 2025 21:53:00 +0000
-Message-Id: <20250308215326.2907828-6-alex.bennee@linaro.org>
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 06/31] tests/functional: expand tests to cover virgl
+Date: Sat,  8 Mar 2025 21:53:01 +0000
+Message-Id: <20250308215326.2907828-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250308215326.2907828-1-alex.bennee@linaro.org>
 References: <20250308215326.2907828-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,81 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While running the new GPU tests it was noted that the proprietary
-nVidia driver barfed when run under the sanitiser:
+Add two more test modes using glmark2-wayland to exercise the OpenGL
+pass-through modes with virgl. Virgl can run with or without the
+hostmem blob support. To avoid repeating ourselves too much we make
+the initial pass a simple --validate pass.
 
-  2025-02-20 11:13:08,226: [11:13:07.782] Output 'headless' attempts
-  EOTF mode SDR and colorimetry mode default.
-  2025-02-20 11:13:08,227: [11:13:07.784] Output 'headless' using color
-  profile: stock sRGB color profile
-
-  and that's the last thing it outputs.
-
-  The sanitizer reports that when the framework sends the SIGTERM
-  because of the timeout we get a write to a NULL pointer (but
-  interesting not this time in an atexit callback):
-
-  UndefinedBehaviorSanitizer:DEADLYSIGNAL
-  ==471863==ERROR: UndefinedBehaviorSanitizer: SEGV on unknown address
-  0x000000000000 (pc 0x7a18ceaafe80 bp 0x000000000000 sp 0x7ffe8e3ff6d0
-  T471863)
-  ==471863==The signal is caused by a WRITE memory access.
-  ==471863==Hint: address points to the zero page.
-      #0 0x7a18ceaafe80
-  (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x16afe80)
-  (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
-      #1 0x7a18ce9e72c0
-  (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x15e72c0)
-  (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
-      #2 0x7a18ce9f11bb
-  (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x15f11bb)
-  (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
-      #3 0x7a18ce6dc9d1
-  (/lib/x86_64-linux-gnu/libnvidia-eglcore.so.535.183.01+0x12dc9d1)
-  (BuildId: 24b0d0b90369112e3de888a93eb8d7e00304a6db)
-      #4 0x7a18e7d15326 in vrend_renderer_create_fence
-  /usr/src/virglrenderer-1.0.0-1ubuntu2/obj-x86_64-linux-gnu/../src/vrend_renderer.c:10883:26
-      #5 0x55bfb6621871 in virtio_gpu_virgl_process_cmd
-
-The #dri-devel channel confirmed:
-
-  <digetx> stsquad: nv driver is known to not work with venus, don't use
-      it for testing
-
-So lets skip running the test to avoid known failures.
+We might want to eventually add more directed tests and individual
+features later on but the glmark/vkmark tests are a good general
+smoke test for accelerated 3D.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250304222439.2035603-6-alex.bennee@linaro.org>
+Message-Id: <20250304222439.2035603-7-alex.bennee@linaro.org>
 
 diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
-index eea1e8c973..32949f6a34 100755
+index 32949f6a34..4a21d8c6cd 100755
 --- a/tests/functional/test_aarch64_virt_gpu.py
 +++ b/tests/functional/test_aarch64_virt_gpu.py
-@@ -17,6 +17,9 @@
+@@ -92,6 +92,28 @@ def _run_virt_weston_test(self, cmd, fail = None):
+         full_cmd = f"weston -B headless --renderer gl --shell kiosk -- {cmd}"
+         ec_and_wait(self, full_cmd, OK_CMD, fail)
  
- from qemu_test.linuxkernel import LinuxKernelTest
- 
-+from re import search
-+from subprocess import check_output
++    @skipIfMissingCommands('zstd')
++    def test_aarch64_virt_with_virgl_gpu(self):
 +
- class Aarch64VirtGPUMachine(LinuxKernelTest):
- 
-     ASSET_VIRT_GPU_KERNEL = Asset(
-@@ -94,6 +97,11 @@ def test_aarch64_virt_with_vulkan_gpu(self):
- 
-         self.require_device('virtio-gpu-gl-pci')
- 
-+        vk_info = check_output(["vulkaninfo", "--summary"], encoding="utf-8")
++        self.require_device('virtio-gpu-gl-pci')
 +
-+        if search(r"driverID\s+=\s+DRIVER_ID_NVIDIA_PROPRIETARY", vk_info):
-+            self.skipTest("Test skipped on NVIDIA proprietary driver")
++        self._launch_virt_gpu("virtio-gpu-gl-pci")
 +
-         self._launch_virt_gpu("virtio-gpu-gl-pci,hostmem=4G,blob=on,venus=on")
-         self._run_virt_weston_test("vkmark -b:duration=1.0",
-                                    "debug: stuck in fence wait with iter at")
++        # subset of the glmark tests
++        tests = " ".join([f"-b {test}" for test in
++                          ["build", "texture", "shading",
++                           "bump", "desktop", "buffer"]])
++
++        self._run_virt_weston_test("glmark2-wayland --validate " + tests)
++
++    @skipIfMissingCommands('zstd')
++    def test_aarch64_virt_with_virgl_blobs_gpu(self):
++
++        self.require_device('virtio-gpu-gl-pci')
++
++        self._launch_virt_gpu("virtio-gpu-gl-pci,hostmem=4G,blob=on")
++        self._run_virt_weston_test("glmark2-wayland -b:duration=1.0")
++
+     @skipIfMissingCommands('zstd')
+     def test_aarch64_virt_with_vulkan_gpu(self):
+ 
 -- 
 2.39.5
 
