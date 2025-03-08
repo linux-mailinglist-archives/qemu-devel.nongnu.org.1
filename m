@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7776BA57F9D
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9C0A57F8F
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:01:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr38x-0004jM-DA; Sat, 08 Mar 2025 17:59:43 -0500
+	id 1tr39i-0005yR-J8; Sat, 08 Mar 2025 18:00:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tr38c-0004fA-In
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:23 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1tr38Z-0004cp-QL
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:20 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tr38X-0005NY-JH
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:22 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-22113560c57so56984475ad.2
+ id 1tr38Y-0005Ni-24
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:19 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2234e4b079cso53775525ad.1
  for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 14:59:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741474756; x=1742079556; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741474757; x=1742079557; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=svzUK2bXhs+AmT8lF2QtHzM82zox0Nlbc/AZRsQwWac=;
- b=KuirUA343UmB2asjx8QJh4Jg3UnIfH0I5ec1HWZeDCfNAnLOmme9KnEe7WGXoO5uqA
- xYXSKVswylvYCNQu4QR6tm4OoFbcNQAAZxonBDHkM59IX2w0bRuzWjsV60AcUuVj/jc6
- DEl6f/6CA8kpRwQAAvayxD0zDYBp6P2iNpV7xw0n4QGmq3BL/VZ8l3DHwaI7hxkDqK94
- tiCyrE8P9w40uUvT+lYKo0P0j9LC2t2GQxs84uNcIb3/v6GkDRYqS8ugRHr2tP1Sj1la
- h7UR3X9mkE+DP3QIwrk2kjoEEHbCdjAxZy/lOU0L5spBgpqrYCyR7+Wcqk1IFlu4b5UZ
- bWTQ==
+ bh=SM3YyEYj7om0b8jrExKW6zZqdC5bOOIBOd/A+S3re7Q=;
+ b=Yl5FVggx56xhOEKI3VTKFitQpbQWcLTcNT7OWtINwINbA0cbyw7B8g0aXfFzlhvJ4I
+ XFLpmwF5lCQ7kOifDfZAj2A6A2CmjNDEebrLbCTJuAHskbGmAmBKWijb/PpwAUnEC38f
+ LViMl+JL4XeGhNb9BpDW06iR+VNXGhkORB5Pye8BOrwRgrTqr0qs7+ZQg3xNWjx/nvSG
+ UY/tgtMd00DBMCsKHoZwctXzC8rvB7tNt7Abtv/8MQ61EYPrx2zr+QmGYzev5k5MhAiS
+ 37U7xlz/4BFE2U2Z0sZcwTnUQzBMpBx2zjz2/ZrprcvJaVhTzezT+06MtQp0aY5q/Mvs
+ s7Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741474756; x=1742079556;
+ d=1e100.net; s=20230601; t=1741474757; x=1742079557;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=svzUK2bXhs+AmT8lF2QtHzM82zox0Nlbc/AZRsQwWac=;
- b=tw9Nym6o/DRIlJhV776uWzBFNYw1kC4mlxwpncYiO4p+Rhdat4apm+sbIAER47OxBG
- D8UK/D3eHPIIfoOZSnDXIX7SE993vTP0HNnoBtAw+aXQAr/CZwEyMlbvTKTtAAFVRr/l
- 59dvPKkxYit+NWmcv4r12G8yWsgJbJJZ2uvZvMNJpF1oPkzt2MloBmd7f2kLdS6AoQYf
- nXYFmtIysCkK/wTmZliHvLzHdlgwHh0bv3Rg0mCd9ARxwiOtBgRPOpzdAu5YtYhnqwM8
- WhTMswd0w6c7HxjTfyyziy8kSyE4rSrHm/egMguZzAOLvZM1+IDuvImrOVyQODYLbDJz
- EE9g==
-X-Gm-Message-State: AOJu0YyY9JENxqi77MHlvCmTYrZhyNO7vktH5i4l7098GkdtdzyoLHNy
- cCvPJQ8zZRMcM7dZCwz6g3macnMS6ouXgqlgCnULA6pCjoiCin2VSetWy21jL202Vi9zHSgZITI
- U
-X-Gm-Gg: ASbGncuxyuVRwNTYHIMKYG/cl51HdjMtSmh/r6gPEZ7k5i6oGFuZpq2S2TMLlC5YJkt
- 0THv29s55aBSOWNpFfL+SVZzZRC0ZqqRnKWdyGJTR2Drf0zTY+duDeOOy8AaiWXxwP7pPWjJin1
- v1rrYWx2D9k4nmkyvGDuy0snuIhIyg6RbeF1CvgwtU6YM3jAkM9Ps0Y++rJ26lZ1JQ87YKzCpHa
- BQElvsNASa61S8+7RwkfDGOrWU2IY2JodZCZ1hF28LAiwDUiqM8VhbEC4wnqICtJO2S5nPOvq/Z
- uimbKRYLDOlt4ccxNd3+tUSYc6KlsSPzz2bd85G97DbQ09mIEOPkTdHxIyt+bA4/taPs9fWgBOj
- o
-X-Google-Smtp-Source: AGHT+IGg0tyL+QhYxEOtKPYKY+ZZEziEW3uRceSjy36AlfbHF1GPcevxGjWdvuJFc9J/7aZ9G9xyKg==
-X-Received: by 2002:a17:903:22c8:b0:224:256e:5e3f with SMTP id
- d9443c01a7336-22428993846mr139577155ad.25.1741474756248; 
+ bh=SM3YyEYj7om0b8jrExKW6zZqdC5bOOIBOd/A+S3re7Q=;
+ b=FqIPHKDs0qCAoHjMWPyrw29M3U60+VcSdUsLNx8ZwkoHBmbWHZ81uHLAdI555utMEX
+ qvEZJmHmm8umyu10XjbkWExedHd4yMlzZ4rQSC/T72SW0IoqpL1cIZ4cWziyb7VboVdS
+ LpUTkeMr+kAR7DVhg5FFT7M2qzxJn0I/gbGqxRqvDtOk0P/G7Am+Lksw/QIMMo+3/iKh
+ Ze4eFuan84r6klba9L9jjk8jFh9Pr03R2gDNwn+dHguJb1ibrbiFrh0BS/TVnxAzi4NU
+ rO1WKisfOiRO9FE+zcpuUcRNhca0QRgUdylm8LfDGd+n0Snt8ryGDlpQY+vO09HI2JI+
+ LrkQ==
+X-Gm-Message-State: AOJu0Yz2daI/3oRF8i3/ZCINcar00I7dnwXmd8hTlKCMimAq9x6LD8yV
+ 0vatznvMdkbkZJn4KAOUUsR3JEznyWbqycCRfV9YHAuyufg1vvmS1pES1zeSQs/jZ1MGPVvRXoS
+ G
+X-Gm-Gg: ASbGncu7/hCnbjE8XoR8vIN41cvMDbBN1R/2pQkXjh5WJYvfKNWUx1j8NwGeZaNqmz4
+ x8d3tCCWiODwHRslR3SrIsmZjKqUHn4uLWy1L6C1oUfJIU4+j4EJfmb1TqR8tY75HoUSMjzQwzJ
+ KcDUDCkxhGVI7P9fEeGnxP9c8Ju7OhbMK6FZf59gtqCEBFiUG0POdDkWO21yJyyZFQKRCDybeg+
+ 7he5fem1s3bCrM9NYdpVuG4yGB85scXk/56YlqxDkIRxa+Vae12hnhfZQurNi0KZKUV2h9txl8S
+ sL7K3Mfr917iKTbqC5Yukv8V2zZW6IjL+no6fwl+QEx8t5qZ/vPxRtxhkX1xzTTf6wfxr8F0YMf
+ 6
+X-Google-Smtp-Source: AGHT+IE4GsQGC7Z/Ax/v4k7mnyQzA0lZjnuAlEKhJj654Muy25kX/JMcDjohwciqQY+VMQItg0uSqw==
+X-Received: by 2002:a17:902:d488:b0:224:e0f:4b5 with SMTP id
+ d9443c01a7336-224288866a4mr113585755ad.7.1741474756842; 
  Sat, 08 Mar 2025 14:59:16 -0800 (PST)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22410a908a0sm51831175ad.162.2025.03.08.14.59.15
+ d9443c01a7336-22410a908a0sm51831175ad.162.2025.03.08.14.59.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Mar 2025 14:59:15 -0800 (PST)
+ Sat, 08 Mar 2025 14:59:16 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/23] accel/tcg: Split out getpc.h
-Date: Sat,  8 Mar 2025 14:58:57 -0800
-Message-ID: <20250308225902.1208237-20-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 19/23] qemu/atomic: Rename atomic128-cas.h headers using .h.inc
+ suffix
+Date: Sat,  8 Mar 2025 14:58:58 -0800
+Message-ID: <20250308225902.1208237-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250308225902.1208237-1-richard.henderson@linaro.org>
 References: <20250308225902.1208237-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,77 +100,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split out GETPC to a target-independent header.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Since commit 139c1837db ("meson: rename included C source files
+to .c.inc"), QEMU standard procedure for included C files is to
+use *.c.inc.
+
+Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+about includes") this is documented in the Coding Style:
+
+  If you do use template header files they should be named with
+  the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+  being included for expansion.
+
+Therefore rename 'atomic128-cas.h' as 'atomic128-cas.h.inc'.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250308072348.65723-3-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20241212141018.59428-2-philmd@linaro.org>
 ---
- include/accel/tcg/getpc.h | 24 ++++++++++++++++++++++++
- include/exec/exec-all.h   | 10 +---------
- 2 files changed, 25 insertions(+), 9 deletions(-)
- create mode 100644 include/accel/tcg/getpc.h
+ host/include/aarch64/host/atomic128-cas.h                       | 2 +-
+ include/qemu/atomic128.h                                        | 2 +-
+ .../generic/host/{atomic128-cas.h => atomic128-cas.h.inc}       | 0
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ rename host/include/generic/host/{atomic128-cas.h => atomic128-cas.h.inc} (100%)
 
-diff --git a/include/accel/tcg/getpc.h b/include/accel/tcg/getpc.h
-new file mode 100644
-index 0000000000..8a97ce34e7
---- /dev/null
-+++ b/include/accel/tcg/getpc.h
-@@ -0,0 +1,24 @@
-+/*
-+ * Get host pc for helper unwinding.
-+ *
-+ * Copyright (c) 2003 Fabrice Bellard
-+ * SPDX-License-Identifier: LGPL-2.1-or-later
-+ */
-+
-+#ifndef ACCEL_TCG_GETPC_H
-+#define ACCEL_TCG_GETPC_H
-+
-+#ifndef CONFIG_TCG
-+#error Can only include this header with TCG
-+#endif
-+
-+/* GETPC is the true target of the return instruction that we'll execute.  */
-+#ifdef CONFIG_TCG_INTERPRETER
-+extern __thread uintptr_t tci_tb_ptr;
-+# define GETPC() tci_tb_ptr
-+#else
-+# define GETPC() \
-+    ((uintptr_t)__builtin_extract_return_addr(__builtin_return_address(0)))
-+#endif
-+
-+#endif /* ACCEL_TCG_GETPC_H */
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 2ac98e56c4..dd5c40f223 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -28,6 +28,7 @@
- #include "exec/translation-block.h"
+diff --git a/host/include/aarch64/host/atomic128-cas.h b/host/include/aarch64/host/atomic128-cas.h
+index 58630107bc..991da4ef54 100644
+--- a/host/include/aarch64/host/atomic128-cas.h
++++ b/host/include/aarch64/host/atomic128-cas.h
+@@ -13,7 +13,7 @@
  
- #if defined(CONFIG_TCG)
-+#include "accel/tcg/getpc.h"
+ /* Through gcc 10, aarch64 has no support for 128-bit atomics.  */
+ #if defined(CONFIG_ATOMIC128) || defined(CONFIG_CMPXCHG128)
+-#include "host/include/generic/host/atomic128-cas.h"
++#include "host/include/generic/host/atomic128-cas.h.inc"
+ #else
+ static inline Int128 atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
+ {
+diff --git a/include/qemu/atomic128.h b/include/qemu/atomic128.h
+index 88af6d4ea3..03c27022f0 100644
+--- a/include/qemu/atomic128.h
++++ b/include/qemu/atomic128.h
+@@ -58,7 +58,7 @@
+  * Therefore, special case each platform.
+  */
  
- /**
-  * probe_access:
-@@ -177,15 +178,6 @@ void tb_phys_invalidate(TranslationBlock *tb, tb_page_addr_t page_addr);
- void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last);
- void tb_set_jmp_target(TranslationBlock *tb, int n, uintptr_t addr);
+-#include "host/atomic128-cas.h"
++#include "host/atomic128-cas.h.inc"
+ #include "host/atomic128-ldst.h"
  
--/* GETPC is the true target of the return instruction that we'll execute.  */
--#if defined(CONFIG_TCG_INTERPRETER)
--extern __thread uintptr_t tci_tb_ptr;
--# define GETPC() tci_tb_ptr
--#else
--# define GETPC() \
--    ((uintptr_t)__builtin_extract_return_addr(__builtin_return_address(0)))
--#endif
--
- #if !defined(CONFIG_USER_ONLY)
- 
- /**
+ #endif /* QEMU_ATOMIC128_H */
+diff --git a/host/include/generic/host/atomic128-cas.h b/host/include/generic/host/atomic128-cas.h.inc
+similarity index 100%
+rename from host/include/generic/host/atomic128-cas.h
+rename to host/include/generic/host/atomic128-cas.h.inc
 -- 
 2.43.0
 
