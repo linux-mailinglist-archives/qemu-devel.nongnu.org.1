@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B2DA57F91
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:01:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4147A57F80
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:00:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr38S-0004WS-91; Sat, 08 Mar 2025 17:59:12 -0500
+	id 1tr38T-0004ZH-Ii; Sat, 08 Mar 2025 17:59:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tr38N-0004TZ-78
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:07 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1tr38O-0004WA-K0
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:08 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tr38L-0005K2-Dr
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:06 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-223fb0f619dso59273975ad.1
+ id 1tr38M-0005K6-9w
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:08 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-22185cddbffso74606635ad.1
  for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 14:59:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1741474744; x=1742079544; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=flAxIFy+Ab6eUm0+9WbxQUDS52odshsIOHS0bGzzjls=;
- b=P56rkARZZdEBEDwzRA2WuJc4phTPiBnx8nNL8R3xom6duamJJNIw/lA4UNRmqC0hWX
- NxT/zwYyVbhFByeHLbAYjqQnxQXviRLEjQSF7UDgfK8Ow3WB2xPBvb7WZ3b6Sk+UxEcC
- sYwfgnSC7uRu6/GzJrVZgSa22lfPjw3ReIJqES6nyYnNhdhJFZo+NIBgLk9TVPsKiL68
- Jdl5UfAf9Kt4Hfp+v/0DuEYVfGm7b5rw1ThIbf6yKfVG0ztJKlfVCKKKIHURa0+wAtJb
- K8VgGIyw3fq1PFINXHr+YKHk3CZ1hamzM//ukdVmV36E5wXlJ8NQOU9OtruBrbKqnPNC
- cdaA==
+ bh=nAl4pf8E8sE2qLvyFwJ/6sczfmHaPGMTc7HMlUw0GYQ=;
+ b=fdEOrYX0MYKLV5FGoNZXuwV5wzSAa1Y66tiHo8WeHruYGj1B8h1twH1JzoncPfVaF7
+ zNKrDaRibmLnvrN8D8dv6LpiESCuWP//FZNC2edvKwtT/DGYFfgnzoXW5dAXSphx9/la
+ DVTBrsvnZFu3dvNsVxeWHwlBKSBpGygGz+rTkNkUxt6A/MAr/EktbthxEifa/Yyv+V9M
+ wklk5a9vwMFWWx/oUbYK4yqP8Hd9bNwLbM+Q5ruvyxpdeeQ/fn8tAgMJ7AeyrJhyql+/
+ AYXz/WMV9gj532LgUPwZsbVXZ+GlBPBHEl+Z7FPbFz0DBpZ6Ay6XMRM4GHGhXhy1c0rc
+ zhgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1741474744; x=1742079544;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=flAxIFy+Ab6eUm0+9WbxQUDS52odshsIOHS0bGzzjls=;
- b=fwEIud0yy4p/jGf7WnYUdL/379rRBoKg2WOy3zCAZM3hMjpQUAIsQP+zEYiHYiVKL/
- tei7K2Z/X6561/xJzpC45qNQ1eEBXEu27u3qMrr3iA8iRIRRopo84xe4XT2AJe+9+ZFt
- C533qBFenIOdGOzamwja0hL85ozx98J6ZlozMuAZhIT+1/dF4uMgX4mnWZvD8fSDoAMI
- gt1CgOJ4ynkHHuFvjTOCiJcn2ggMx64aXjU3uLBtv9GCcY3VUa3yD7vXYhqtjxHo9cyH
- DR9Y9a17/l5V0PqHSgFobZHmyKa9g2gMk6ruuTJjHauOSv1twZ5n2BcZtu1BQcDPb25o
- 4Pog==
-X-Gm-Message-State: AOJu0YzpVBnFTaDUoJirVFADhBoO/T5IdiC34ULonPQ+m9Gl2mlY0HlT
- IblZieXy75NmnegSuAlYJ4xzuw9HQknDXX/q73tc/1k8Ios8B39YPDbKCn1rOCIIOpOUAQ2TWgX
- g
-X-Gm-Gg: ASbGncvyeDBNSGLFaTUfAFUmLYf/ofa0Co1IxHe+lJsoyqgCimR9fZujGP+5C3mH7xE
- Joj2ogPWu4SXt/N7ZxsiChUyLkBEeFxuf1EVHxO1k0YL6bRI7DnrMpLRGr+7ms7Jq4Z1pOq7hc6
- urnD/KKm5MO7c21BhT0p7vsEZAQhBGOFaVXjkHFvcFBecdtH1PlH50WisiIpUbbXnmREA3HyZtB
- yTP6gToJ0vc4lHYEWmq1SaSWDelzMVhknKdW07hok2ift5T0bIJe8ucJTkcGNreyTDs9EQdRzX5
- 1bqkwkTCER8rXSjFe32mmQnrTOPOJjzfUy5xFJ3BLldo8Cg15PXLjBHEh20lFbLf8k+ipoo5Tn+
- O
-X-Google-Smtp-Source: AGHT+IEEatxEcUKp1sk+eEQQ67IOIf6RotYkw8LxaYavtdWhEsYb8Hk8bJITF11MBSJaRuPn3e0akQ==
-X-Received: by 2002:a17:903:40cb:b0:224:24d3:60f4 with SMTP id
- d9443c01a7336-224288940admr133018685ad.15.1741474743967; 
- Sat, 08 Mar 2025 14:59:03 -0800 (PST)
+ bh=nAl4pf8E8sE2qLvyFwJ/6sczfmHaPGMTc7HMlUw0GYQ=;
+ b=A3xlfwyB52ZKMJVA1ajEX9uDfoj5Jclkg6OccDz/fg1gmIhYR7dfcnE/2ujfxB8207
+ N/jLvAOzkunx6O1i1jPjohMWWxKX04J8hPoHuQ92egQwv/6kd1p3FeLaTJO9etkFJ+iM
+ XjD1bLZXsKn948ot+luZWH2VR/u3FNWEXYWYccfbRPMC0tX07v0IYX5vPeiDERAJGtsY
+ dP7pVfLEGQdojAXuLaBkdv9/91DqPhItDCawxGOxVz8HaHUUEMloyvAMiEVWbczQKbY9
+ iRyEUNdJKMI4k8YX5ck2D7/SasbiZT29HBabT1wGaNSVMqJ02glF8FTSBJeGB/kcIMIj
+ jpmg==
+X-Gm-Message-State: AOJu0YzX/V7kApHdH0OaG+xKXLLp57tb43wf/n7j7pMRanCRjjE205kr
+ qa9M+oB9+5FNO0l/h8p1DmIq//BX5JfCpHnDtKnmhH1Pp8ZX4P5wOO9f2DT3q5Pi1uZTy6pTnvU
+ j
+X-Gm-Gg: ASbGncsC+m2+aoanjebb4k/iVfQhbam3OzX/wldD1VdECOjWshJUA/+AznrJjYYGYuf
+ Eldz2gP64O8dIyqOH3Lyp67v1TiZgTbfUHQkdlliAF1lUNnV6lBUPQKc97KPeqKjlxd5EnOxkNa
+ uRG3ksMdDOGSb3oTqaW5QIpLVH4jW6PQMcGakgaHFjIF6xa3c38Ldkk2Dm9STlVa9C287M/yRol
+ Dbs0ZAwANqrZSlxmTyicpjcHpbkRfCOKeYbtNo9uGrqJW4hVzuYey0wb3sqC74Ijp7w9dqadKp4
+ eTE9NIJlgdiXdOR0z95mNGvfF0SrAUtiC1/Sv3nEXbTCr+TYNrOcy9+piVKJTN5I6MjuWqGU7Ub
+ 5
+X-Google-Smtp-Source: AGHT+IGHDGDYT3NF9yTRC8JoEqRr1rOChRHdnPjv3txaRDlpIyKyTQkhIBJ/WJdxE4xorS8TI4fhpg==
+X-Received: by 2002:a17:902:f708:b0:223:4d5e:76a6 with SMTP id
+ d9443c01a7336-2244f057623mr79708035ad.1.1741474744602; 
+ Sat, 08 Mar 2025 14:59:04 -0800 (PST)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22410a908a0sm51831175ad.162.2025.03.08.14.59.03
+ d9443c01a7336-22410a908a0sm51831175ad.162.2025.03.08.14.59.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Mar 2025 14:59:03 -0800 (PST)
+ Sat, 08 Mar 2025 14:59:04 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/23] linux-user/main: Allow setting tb-size
-Date: Sat,  8 Mar 2025 14:58:39 -0800
-Message-ID: <20250308225902.1208237-2-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+	Andreas Schwab <schwab@suse.de>
+Subject: [PATCH v2] linux-user/riscv: Fix handling of cpu mask in
+ riscv_hwprobe syscall
+Date: Sat,  8 Mar 2025 14:58:40 -0800
+Message-ID: <20250308225902.1208237-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250308225902.1208237-1-richard.henderson@linaro.org>
 References: <20250308225902.1208237-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,64 +100,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+The third argument of the syscall contains the size of the
+cpu mask in bytes, not bits.  Nor is the size rounded up to
+a multiple of sizeof(abi_ulong).
 
-While qemu-system can set tb-size using -accel tcg,tb-size=n, there
-is no similar knob for qemu-user. Add one in a way similar to how
-one-insn-per-tb is already handled.
-
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240730215532.1442-1-iii@linux.ibm.com>
+Cc: qemu-stable@nongnu.org
+Reported-by: Andreas Schwab <schwab@suse.de>
+Fixes: 9e1c7d982d7 ("linux-user/riscv: Add syscall riscv_hwprobe")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/main.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ linux-user/syscall.c | 55 +++++++++++++++++++++++---------------------
+ 1 file changed, 29 insertions(+), 26 deletions(-)
 
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 5c74c52cc5..e2ec5970be 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -72,6 +72,7 @@ char *exec_path;
- char real_exec_path[PATH_MAX];
- 
- static bool opt_one_insn_per_tb;
-+static unsigned long opt_tb_size;
- static const char *argv0;
- static const char *gdbstub;
- static envlist_t *envlist;
-@@ -425,6 +426,13 @@ static void handle_arg_one_insn_per_tb(const char *arg)
-     opt_one_insn_per_tb = true;
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 02ea4221c9..fcc77c094d 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -9118,35 +9118,38 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
+     }
  }
  
-+static void handle_arg_tb_size(const char *arg)
-+{
-+    if (qemu_strtoul(arg, NULL, 0, &opt_tb_size)) {
-+        usage(EXIT_FAILURE);
-+    }
-+}
-+
- static void handle_arg_strace(const char *arg)
+-static int cpu_set_valid(abi_long arg3, abi_long arg4)
++/*
++ * If the cpumask_t of (target_cpus, cpusetsize) cannot be read: -EFAULT.
++ * If the cpumast_t has no bits set: -EINVAL.
++ * Otherwise the cpumask_t contains some bit set: 0.
++ * Unlike the kernel, we do not mask cpumask_t by the set of online cpus,
++ * nor bound the search by cpumask_size().
++ */
++static int nonempty_cpu_set(abi_ulong cpusetsize, abi_ptr target_cpus)
  {
-     enable_strace = true;
-@@ -517,6 +525,8 @@ static const struct qemu_argument arg_table[] = {
-     {"one-insn-per-tb",
-                    "QEMU_ONE_INSN_PER_TB",  false, handle_arg_one_insn_per_tb,
-      "",           "run with one guest instruction per emulated TB"},
-+    {"tb-size",    "QEMU_TB_SIZE",     true,  handle_arg_tb_size,
-+     "size",       "TCG translation block cache size"},
-     {"strace",     "QEMU_STRACE",      false, handle_arg_strace,
-      "",           "log system calls"},
-     {"seed",       "QEMU_RAND_SEED",   true,  handle_arg_seed,
-@@ -808,6 +818,8 @@ int main(int argc, char **argv, char **envp)
-         accel_init_interfaces(ac);
-         object_property_set_bool(OBJECT(accel), "one-insn-per-tb",
-                                  opt_one_insn_per_tb, &error_abort);
-+        object_property_set_int(OBJECT(accel), "tb-size",
-+                                opt_tb_size, &error_abort);
-         ac->init_machine(NULL);
-     }
+-    int ret, i, tmp;
+-    size_t host_mask_size, target_mask_size;
+-    unsigned long *host_mask;
++    unsigned char *p = lock_user(VERIFY_READ, target_cpus, cpusetsize, 1);
++    int ret = -TARGET_EFAULT;
  
+-    /*
+-     * cpu_set_t represent CPU masks as bit masks of type unsigned long *.
+-     * arg3 contains the cpu count.
+-     */
+-    tmp = (8 * sizeof(abi_ulong));
+-    target_mask_size = ((arg3 + tmp - 1) / tmp) * sizeof(abi_ulong);
+-    host_mask_size = (target_mask_size + (sizeof(*host_mask) - 1)) &
+-                     ~(sizeof(*host_mask) - 1);
+-
+-    host_mask = alloca(host_mask_size);
+-
+-    ret = target_to_host_cpu_mask(host_mask, host_mask_size,
+-                                  arg4, target_mask_size);
+-    if (ret != 0) {
+-        return ret;
+-    }
+-
+-    for (i = 0 ; i < host_mask_size / sizeof(*host_mask); i++) {
+-        if (host_mask[i] != 0) {
+-            return 0;
++    if (p) {
++        ret = -TARGET_EINVAL;
++        /*
++         * Since we only care about the empty/non-empty state of the cpumask_t
++         * not the individual bits, we do not need to repartition the bits
++         * from target abi_ulong to host unsigned long.
++         *
++         * Note that the kernel does not round up cpusetsize to a multiple of
++         * sizeof(abi_ulong).  After bounding cpusetsize by cpumask_size(),
++         * it copies exactly cpusetsize bytes into a zeroed buffer.
++         */
++        for (abi_ulong i = 0; i < cpusetsize; ++i) {
++            if (p[i]) {
++                ret = 0;
++                break;
++            }
+         }
++        unlock_user(p, target_cpus, 0);
+     }
+-    return -TARGET_EINVAL;
++    return ret;
+ }
+ 
+ static abi_long do_riscv_hwprobe(CPUArchState *cpu_env, abi_long arg1,
+@@ -9163,7 +9166,7 @@ static abi_long do_riscv_hwprobe(CPUArchState *cpu_env, abi_long arg1,
+ 
+     /* check cpu_set */
+     if (arg3 != 0) {
+-        ret = cpu_set_valid(arg3, arg4);
++        ret = nonempty_cpu_set(arg3, arg4);
+         if (ret != 0) {
+             return ret;
+         }
 -- 
 2.43.0
 
