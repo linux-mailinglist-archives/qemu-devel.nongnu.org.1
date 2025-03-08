@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0619A57F22
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 22:58:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882B5A57F1F
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 22:57:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr275-0003K8-SM; Sat, 08 Mar 2025 16:53:43 -0500
+	id 1tr277-0003Lh-Px; Sat, 08 Mar 2025 16:53:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tr271-0003IJ-Ky
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:39 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1tr275-0003KP-BD
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:43 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tr270-0000wS-4Q
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:39 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-38f406e9f80so2265273f8f.2
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 13:53:37 -0800 (PST)
+ id 1tr273-0000xf-D3
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:43 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-39129fc51f8so2554240f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 13:53:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741470816; x=1742075616; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741470820; x=1742075620; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bfHWVPwLX0M3htfvlA6ICcgJ+5w8LQYjiCmFTnr8X+A=;
- b=zSQmffyYijWtaJfGGjc9VtBAsagKTViDvmvlcXqk1NqNHy6Grz8x8aJOMXkLLayNFL
- K6rfdJJvtRdpILEj6aiQws3k34CK/WWj9HhrSPDIn/rV8RiXZ/adBYgGnE3MpnmrlMTT
- bHU5KfPP1xLvYIrJYwoZgWIulrtgRJT6xpM76vDlu+XIY5jBPFzQ5zwg/OevsH+Z3Tri
- 3OQ7SSVQh+viTKj0sExHi94q39X81cp98Ey8qtHwWwDmAoC2CpMDd7DM4SZFATIS3AOo
- sMlSTHKwFF4X6wl8NXJ3/tUiNlTcQVxg9HRpXTgHXpLwksU7L8J9XdPh3FR/VpkgHwRl
- 6hiw==
+ bh=9+USVfbqbvkxo8yt5Lac5ZRGOWAYMoefLOeZ1OEowSg=;
+ b=l5l3baq4ovIEU+hRhKAbKGHUBJaOEZSEx3kXewXLV3TXxn0xN06rz9LJ39kYbKugmy
+ 2vXFO9gwN/D+dq8CnI3+Euc+wtCfGvgnDmSP5lsrdRCdDB95RXmkDcNJxBEUrKcGvGxH
+ WlUkNKclmf2LwK+t9uEiXgv5TbqY9Km7uuRwEeKsdf6ExSMxACKHO6M+k+TKRYFu45Js
+ wH+nWRb1bwL59F01rrA2bFBg9q8aKmIiSTF12MOOhdxK0puhnHVrvOGY1r/fvsJGkNAi
+ Xs20p3WFn1Ava4tD4EXD6ea6GGcGz02OuUbJYv8lVyc7xzWakjq+s3DssfEuDabi/AMx
+ 4N6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741470816; x=1742075616;
+ d=1e100.net; s=20230601; t=1741470820; x=1742075620;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bfHWVPwLX0M3htfvlA6ICcgJ+5w8LQYjiCmFTnr8X+A=;
- b=XRtpaLbHg4ZKnUlNheCeEUYDotq1TTsD/x6zk5aXukBfsXth9mx74ip2+NNmz5Acz6
- cxk48tObwZQu+HuKLl616hpm5R/NmSCzJLaISRdecfUzC4hZ6COBAIbK/PpziG9RJSDb
- mEM8yOjg3LfSnVeS3f8AValq942WbxtjuiSTC8ypmKPwqeg2UAzDraZu1PUD0C0D75W+
- 4CXg7lhy0U5/t1xiz49EX8EOJDGVFqpM7lnxh2fVkDILIi3VBqqZfBYlJ1jCj4F5+e5U
- ywHgTtn/3Pv4467rweQWKy4AedEpIE56PMqgSi/HXySw5zJPzhT0hoAJpLr6petW7+dB
- RzIQ==
-X-Gm-Message-State: AOJu0YyKRvDEA9wz/O3IXcBbsJ5KPQnx5HMHOugjt8FMlhhkgh/v5qnV
- qGx7tcCdxD5SPcFrQNyxMdtQjAG6ozqKP8LqbU5U5zFUNhexTsun0lfeFbODYG8=
-X-Gm-Gg: ASbGncvghDHDz4Kx2BhhF7n4/Vu5d0ehdfinBKjqmvVQ4UKHkGKqJuBjZgrZQFhRKQT
- zY63vQH0OyQ4Q2xgGP+gbha3uKdSdoTdmSLmuI54+vlaAvua5rLzdGlFCNx0OKZ5yl3BvjrWWzk
- ONtjA/I8MyT1dq6G8JTZRieEccEfiQJpngrQbIXFppFLFGUkE4O8WF29wW3j7O+EWV7mS42l30M
- aroGwUOSZoJrHdjmfx2VpEDXnMAClKkQ9UHJ53wPlEpyNZTnOUVTu0qneSatfuCTfIowBBFFhrj
- Oh++QLPBAU5R49hgaFb9JVjiqytFJc3RCM+16FeTZO7mAqc=
-X-Google-Smtp-Source: AGHT+IHBbsBk8/zPJQt1yPcMKKU/lz6KhJrt7yaxyAsZ8x/0kPK2iE8NcRBoTSVVjgGOIRLnECEb7w==
-X-Received: by 2002:a05:6000:18a3:b0:391:ccf:2d17 with SMTP id
- ffacd0b85a97d-39132b75751mr6149456f8f.0.1741470816516; 
- Sat, 08 Mar 2025 13:53:36 -0800 (PST)
+ bh=9+USVfbqbvkxo8yt5Lac5ZRGOWAYMoefLOeZ1OEowSg=;
+ b=wR5IJG45FTFuVBQM3n+Q1/dZMtttSDNPqekI506kTPcFcmZnFjWyYbNWPyTvIS5VDS
+ XSk98/hGljpPVbYPKUGVfCbLBhlVxfEG32CMD41nNG5E6H64CyX7Qiutx51/Bqt9u/in
+ HveMtUu6HTYmCuJUJA2KR6yiML+7CiX37eA2PCsOpomXHhnAzaGfYaCu73ZZRO4pnQZi
+ tANs57NtQXf2CeH1R/nrU4XKJT5qUoaHGC89T6l1JmotgiRjSkNgl/A5Vb6HpJsL/sfd
+ OnbOG4z18E3R1bNoZhwF0rBLORXFy97uvfr7GIruh3YMSrbn5N+LIzVSW4UVMHBJMrfO
+ oWqw==
+X-Gm-Message-State: AOJu0YyTMhVWq2a7LckwO5sFJfM2FIp8a5XHi09FG4m2TRzDR+VwIzRp
+ QnYyM2GKDXtcCTglIO9nYYvIE7uUKyDBeD9q3Y6obYwUXwJ2VfTgsQAjb21qHeW+38KuIBs1FEw
+ 9
+X-Gm-Gg: ASbGnct/OmGFF+CfszC0DbsS9RK1iQeG0JZtMONUIHPcFn0xb3QVX6DZkbxbwTo5PSf
+ ZRGdmG5tUrVgkpQ/BZZrlI0mV+lU2OUr+oNfX8KaaYDqSyocelWs1KXGf7rAJ/i3prSDKCnZfiO
+ O8/uTRNYS5qHCFWWjlxKf0m3SbpND2OObMsA+uuHbQtYa7O+vvB779/jEIqk7ezyoQdwScbQ9A8
+ tM3wqlIoKakT3l5t2YtxFfH8q5L1HPY6nzP6AvoQtj6EJRx/7m013V8rNgTxSet3qUwkpB0gWFe
+ jFls25JlPwVuJU41X92R5sE+cX5mDaOY0GtFJ4R+SPZxVtI=
+X-Google-Smtp-Source: AGHT+IFFmEi2/mv2d0F+zM2LgcBkryGZf/wxb5vRykCsNmntVoKvhdH+gSpWFOrB35NusKOCDAs+tg==
+X-Received: by 2002:a5d:47cc:0:b0:38d:bccf:f342 with SMTP id
+ ffacd0b85a97d-39132db8b3cmr6610895f8f.43.1741470819840; 
+ Sat, 08 Mar 2025 13:53:39 -0800 (PST)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c103aa5sm10055169f8f.94.2025.03.08.13.53.34
+ ffacd0b85a97d-3912c01cb82sm10210678f8f.51.2025.03.08.13.53.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Mar 2025 13:53:34 -0800 (PST)
+ Sat, 08 Mar 2025 13:53:35 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 805A2611EA;
+ by draig.lan (Postfix) with ESMTP id 955E8611FD;
  Sat,  8 Mar 2025 21:53:29 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 30/31] plugins/core: make a single build unit
-Date: Sat,  8 Mar 2025 21:53:25 +0000
-Message-Id: <20250308215326.2907828-31-alex.bennee@linaro.org>
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 31/31] MAINTAINERS: remove widely sanctioned entities
+Date: Sat,  8 Mar 2025 21:53:26 +0000
+Message-Id: <20250308215326.2907828-32-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250308215326.2907828-1-alex.bennee@linaro.org>
 References: <20250308215326.2907828-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,56 +103,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Trim through the includes and remove everything not needed for the
-core. Only include tcg-op-common.h to remove the need to
-TARGET_LONG_BITS and move the build unit into the common set.
+The following organisations appear on the US sanctions list:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+  Yadro: https://sanctionssearch.ofac.treas.gov/Details.aspx?id=41125
+  ISPRAS: https://sanctionssearch.ofac.treas.gov/Details.aspx?id=50890
+
+As a result maintainers interacting with such entities would face
+legal risk in a number of jurisdictions. To reduce the risk of
+inadvertent non-compliance remove entries from these organisations
+from the MAINTAINERS file.
+
+Mark the pcf8574 system as orphaned until someone volunteers to step
+up as a maintainer. Add myself as a second reviewer to record/replay
+so I can help with what odd fixes I can.
+
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250304222439.2035603-31-alex.bennee@linaro.org>
+Message-Id: <20250304222439.2035603-32-alex.bennee@linaro.org>
 
-diff --git a/plugins/core.c b/plugins/core.c
-index bb105e8e68..eb9281fe54 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -12,22 +12,14 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- #include "qemu/osdep.h"
--#include "qemu/error-report.h"
--#include "qemu/config-file.h"
--#include "qapi/error.h"
- #include "qemu/lockable.h"
- #include "qemu/option.h"
- #include "qemu/plugin.h"
- #include "qemu/queue.h"
- #include "qemu/rcu_queue.h"
--#include "qemu/xxhash.h"
- #include "qemu/rcu.h"
--#include "hw/core/cpu.h"
--
--#include "exec/exec-all.h"
- #include "exec/tb-flush.h"
--#include "tcg/tcg.h"
--#include "tcg/tcg-op.h"
-+#include "tcg/tcg-op-common.h"
- #include "plugin.h"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 756432add4..70510a7952 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2546,8 +2546,7 @@ F: hw/i2c/i2c_mux_pca954x.c
+ F: include/hw/i2c/i2c_mux_pca954x.h
  
- struct qemu_plugin_cb {
-diff --git a/plugins/meson.build b/plugins/meson.build
-index d27220d5ff..3be8245a69 100644
---- a/plugins/meson.build
-+++ b/plugins/meson.build
-@@ -61,8 +61,5 @@ endif
- user_ss.add(files('user.c', 'api-user.c'))
- system_ss.add(files('system.c', 'api-system.c'))
+ pcf8574
+-M: Dmitrii Sharikhin <d.sharikhin@yadro.com>
+-S: Maintained
++S: Orphaned
+ F: hw/gpio/pcf8574.c
+ F: include/gpio/pcf8574.h
  
--common_ss.add(files('loader.c', 'api.c'))
-+common_ss.add(files('loader.c', 'api.c', 'core.c'))
+@@ -3659,10 +3658,10 @@ F: net/filter-mirror.c
+ F: tests/qtest/test-filter*
  
--specific_ss.add(files(
--  'core.c',
--))
+ Record/replay
+-M: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+ R: Paolo Bonzini <pbonzini@redhat.com>
++R: Alex Bennée <alex.bennee@linaro.org>
+ W: https://wiki.qemu.org/Features/record-replay
+-S: Supported
++S: Odd Fixes
+ F: replay/*
+ F: block/blkreplay.c
+ F: net/filter-replay.c
 -- 
 2.39.5
 
