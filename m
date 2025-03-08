@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78471A57EB1
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 22:39:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45336A57EB2
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 22:40:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr1sY-000731-5b; Sat, 08 Mar 2025 16:38:42 -0500
+	id 1tr1sY-00074P-6J; Sat, 08 Mar 2025 16:38:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr1rF-0005Yu-1d
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:37:31 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr1rH-0005bO-NM
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:37:39 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr1rA-0003vs-ST
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:37:18 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43cf034d4abso1402075e9.3
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 13:37:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr1rE-0003wZ-R3
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:37:23 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-39140bd6317so246487f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 13:37:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741469834; x=1742074634; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741469839; x=1742074639; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=akRNzOoRRyY/xSKhmyVeI+5UU9kBXMKW6nWI01FbvUE=;
- b=Io2AyQFP+0pG4t9mNFdUsDeQtliT4b9N30kLRMQEQJn6KyOtsTVXXM+QhjO4BJH8AD
- yBua7QK4P/BT1uGx7H2poKbeUICqCRpCe+tU/gwzzoCAQycQmRK/s6i42QUtEv1OMPSd
- gMkMIEiSjtKjJG0P9OZxLQtZogpxQMtCgDZA2d2TLrIbNMLj6sTN8Jasdt1cH+xHghsu
- ddNdR5oyw/QPILobDkoDPkA0YBp4aC2ITC9aBVMXg+3WY1FKklF4n7Fo4w6tT9XDvH+S
- mfcb3iUpEMRKR9fuLcoENDC+Ahy2rVA7yH168LCzLq03EzwBx4+INaeADeRMEnoJdP5m
- wzsw==
+ bh=K6w2s7vpLMt8PGTRM64NH99KcirJjbualG9t0DnJnfI=;
+ b=cyWVjh0z1ZCNvJBY+sgXujX7MvN5vbGkZ6k1fZwzJmzKapkpld6mOoGPYV9owkDRC2
+ yysRDLfW6H7aG3N1YzlSYrMD/qxNTNLyNJkBVwBh8eMyQMFdwxFUCKksRXWPBU+BfH3J
+ 3gEAZGraI5tfpJRtbU7V/jk/mLX/CgO02lY1g7wNNfQs0TVi9/crV+09k7D1GKBka9BK
+ bnwxbJgT2rZC2c15jpZKOiNlbaiuA6mVSgP3VBlFWbzWtQ1nIMbTolHUZKuu3IcQl7sj
+ u8NwQINJaUi80+fLWZXoLZoZL6V0YocwFm4fwQEk3i+cOTcpJ0zdkQvtRFfrvLnhqpIy
+ BrPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741469834; x=1742074634;
+ d=1e100.net; s=20230601; t=1741469839; x=1742074639;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=akRNzOoRRyY/xSKhmyVeI+5UU9kBXMKW6nWI01FbvUE=;
- b=MGInRME9YWkxZI1Bp7FQYGEtdG5Q5Gai1w9mj2H6XVj4VpqNcOeb4j91WNjlvBfc4R
- LsNtXtXXf1w3jldKFwEmkijZ17EKix41tqsV4bz9R+rha+UnITH7o0utr4eYvRFn8VkZ
- rEjWrdK12WumKgrlEvLTN224WvKQszxZydeMXnUSI4qA1unJy3SsJ7P5NLoEOOQDhTAp
- M48wyIihKiWxGySsRGneOoKKqLJ1/Cb/eRprLkBBmxLKY0gm+d8Kqul55huOdJ2bXqlU
- kgmoH/SWBxXBvAniXzkrOJAPdwSusol2boxWmjj2hoXZxuPECfnx42k4Th4d7i8xq67h
- TtRw==
-X-Gm-Message-State: AOJu0YyZCUkl3cr3C/+7YD3UnnN1Ld43Mz8fJzkzEjUQ3qEQbH0fXtKU
- 6fEe2EdNeCaq6O+HanpuZdQTyMJs7iErt8wZy4vK/GfnyMzdxx9J8gFOda3wkex5WRr/5ODmn/e
- bsf4=
-X-Gm-Gg: ASbGncu5U5uWNQlXV0znOe+JDZTNhhnzQ9TNo2tbNYOlWASh9H7QMc7Sw7bUL1bd8Xf
- ikeHauUJ69qMQ9oXiBVPc02PtX6xhBbvSntzMZsBzk1kzEDo66+d4FyQBK/dnRXu2E4iYQyE0vN
- v256p/yElOyvwt7vjwGWk9tKWeDs0sxcvbIsH7J2hDO+f4o235W2h70YGt6g42VIcPsEhp4dGW2
- K0SyXCOcW5zFjzbVwfCeG+zzwm0loIW5U7amuIMVDXSyGJzlDGfOcNMzt8iheIdJKBDDaEN9+YU
- fXroJJk8SvM/Q5/BPMro3DUnmlga6Z64kj+20n2zFMWeRIGnQnUD4N7B55zOX/qjTl58ddviWjP
- NbkoQRh6xeEqMVshLBfE=
-X-Google-Smtp-Source: AGHT+IFleBt6cR4JT4IujkflDeTTtooakD+z+Ef87GAhnmCJ81BWA/eBLG7qhw2k0d6EmYnU7SMm3w==
-X-Received: by 2002:a05:600c:46d0:b0:439:969e:d80f with SMTP id
- 5b1f17b1804b1-43c60231ddamr59791445e9.31.1741469833745; 
- Sat, 08 Mar 2025 13:37:13 -0800 (PST)
+ bh=K6w2s7vpLMt8PGTRM64NH99KcirJjbualG9t0DnJnfI=;
+ b=sGF6TSIEbEPJrxACREyNKc8qhyFifWHqHhhsJU7xZPwCgyCZo8B6UJqp0/L4PLvU5e
+ 1zmH37w+r16bbPn5EeCUFuhVRR//E4MCSAxqEgRvCOxadhA/6+eQdspPvCRyicsSZxTe
+ tClCp64qn7eB4sLhCOB7cs2rAcoJrbGvT2ATdc+IDvU+1CZ1s7oZpSjXbVWDQGRGWF2U
+ UTqvNO9KiPQxD3Cq/sQqLTzvqZF3HQ6J8nmbTSA82mHl9w+eBzDh8zIv11akOBDVKcql
+ X4+sW4e1n9gMLfXYLPoYKCIOOv80o3q93xbl3ArX1Fhk1C/kVrOojFplDINh+17QB/lf
+ SCwQ==
+X-Gm-Message-State: AOJu0Yxt0xMt0fzpoeDnddifkeb7uW035jReE1zW7i2aMsexSi/T/DWS
+ CviFYvRIA2mmWMdYWj7oBLmP3ksYgnOrKyMkMJfT5p3UztA7gTB2916CsLZA9uyjae3Id/kLqXr
+ cTA0=
+X-Gm-Gg: ASbGncta/Lc/UtvYiH9Xbw2aAWk2VDJ3Oukqe1GqPByuLY5xFRFU8aVYW5PGc4u/4Cs
+ w0IYYQ3UJi3Ki5Ur8pZ3E+V1sdf9Vv03PaK34xkL5tzUtPJIlyHHQjtZAaHmT9SHxuMv1ejdNwU
+ GHXHiGYs3YvhngPYy0Waz1kY+L8Fc8OMoasdt4cMrKVmi/ISbXMjaED+d9HaBvB9k2EP0Oe+trb
+ zPSGWvYG8EtJgtpP1Q1Ll0qG+MhPS5PX12fMmX6J8posjuEB9U7G4vU+3/Sh43ow45abCESxGeC
+ 5RQDSZ670pLsL9DGjPVu+TKESDlvI3TzD3k8fpYRTSxWR5pf0JlInJtVaThBWkoFMPDwIb67dUf
+ VgbgOhdEJD7UHgVc6hQE=
+X-Google-Smtp-Source: AGHT+IHd/Cl9BUOitYGQQY6N+ZtglqfA5CZfDE84IrbB5Vxox40pVnN5He/DwpjGmvVlXSE0s7ybNw==
+X-Received: by 2002:a5d:5f45:0:b0:38d:d9bd:18a6 with SMTP id
+ ffacd0b85a97d-39132dc545dmr4796426f8f.42.1741469839210; 
+ Sat, 08 Mar 2025 13:37:19 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912bfbaa94sm9963087f8f.14.2025.03.08.13.37.11
+ ffacd0b85a97d-3912c1031e3sm9748796f8f.82.2025.03.08.13.37.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Mar 2025 13:37:12 -0800 (PST)
+ Sat, 08 Mar 2025 13:37:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	BALATON Zoltan <balaton@eik.bme.hu>
@@ -74,17 +74,18 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Jean-Christophe Dubois <jcd@tribudubois.net>,
  Guenter Roeck <linux@roeck-us.net>, qemu-block@nongnu.org,
  Bin Meng <bmeng.cn@gmail.com>, qemu-arm@nongnu.org
-Subject: [PATCH v4 06/14] hw/sd/sdhci: Enforce little endianness on PCI devices
-Date: Sat,  8 Mar 2025 22:36:32 +0100
-Message-ID: <20250308213640.13138-7-philmd@linaro.org>
+Subject: [PATCH v4 07/14] hw/sd/sdhci: Allow SDHCI classes to register their
+ own MemoryRegionOps
+Date: Sat,  8 Mar 2025 22:36:33 +0100
+Message-ID: <20250308213640.13138-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250308213640.13138-1-philmd@linaro.org>
 References: <20250308213640.13138-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,25 +108,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the default, but better be safe than sorry.
+Add MemoryRegionOps as a class property. For now it is only
+used by TYPE_IMX_USDHC.
+Otherwise the default remains in little endian.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sdhci-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/hw/sd/sdhci.h |  1 +
+ hw/sd/sdhci.c         | 22 ++++++++--------------
+ 2 files changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/hw/sd/sdhci-pci.c b/hw/sd/sdhci-pci.c
-index 5268c0dee50..5f82178a76f 100644
---- a/hw/sd/sdhci-pci.c
-+++ b/hw/sd/sdhci-pci.c
-@@ -32,6 +32,7 @@ static void sdhci_pci_realize(PCIDevice *dev, Error **errp)
-     SDHCIState *s = PCI_SDHCI(dev);
+diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
+index 2709a7a69d5..60a0442c805 100644
+--- a/include/hw/sd/sdhci.h
++++ b/include/hw/sd/sdhci.h
+@@ -112,6 +112,7 @@ typedef struct SDHCIClass {
+         SysBusDeviceClass sbd_parent_class;
+     };
  
-     sdhci_initfn(s);
-+    qdev_prop_set_uint8(DEVICE(dev), "endianness", DEVICE_LITTLE_ENDIAN);
-     sdhci_common_realize(s, errp);
-     if (*errp) {
-         return;
++    const MemoryRegionOps *io_ops;
+     uint32_t quirks;
+     uint64_t iomem_size;
+ } SDHCIClass;
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 637067fef50..ae485f90dfe 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -1427,8 +1427,6 @@ void sdhci_initfn(SDHCIState *s)
+                                    sdhci_raise_insertion_irq, s);
+     s->transfer_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+                                      sdhci_data_transfer, s);
+-
+-    s->io_ops = &sdhci_mmio_le_ops;
+ }
+ 
+ void sdhci_uninitfn(SDHCIState *s)
+@@ -1446,6 +1444,7 @@ void sdhci_common_realize(SDHCIState *s, Error **errp)
+     SDHCIClass *sc = SYSBUS_SDHCI_GET_CLASS(s);
+     const char *class_name = object_get_typename(OBJECT(s));
+ 
++    s->io_ops = sc->io_ops ?: &sdhci_mmio_le_ops;
+     switch (s->endianness) {
+     case DEVICE_LITTLE_ENDIAN:
+         /* s->io_ops is little endian by default */
+@@ -1889,17 +1888,11 @@ static const MemoryRegionOps usdhc_mmio_ops = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
+ 
+-static void imx_usdhc_init(Object *obj)
+-{
+-    SDHCIState *s = SYSBUS_SDHCI(obj);
+-
+-    s->io_ops = &usdhc_mmio_ops;
+-}
+-
+ static void imx_usdhc_class_init(ObjectClass *oc, void *data)
+ {
+     SDHCIClass *sc = SYSBUS_SDHCI_CLASS(oc);
+ 
++    sc->io_ops = &usdhc_mmio_ops;
+     sc->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
+ 
+     sdhci_common_class_init(oc, data);
+@@ -1956,11 +1949,13 @@ static const MemoryRegionOps sdhci_s3c_mmio_ops = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
+ 
+-static void sdhci_s3c_init(Object *obj)
++static void sdhci_s3c_class_init(ObjectClass *oc, void *data)
+ {
+-    SDHCIState *s = SYSBUS_SDHCI(obj);
++    SDHCIClass *sc = SYSBUS_SDHCI_CLASS(oc);
+ 
+-    s->io_ops = &sdhci_s3c_mmio_ops;
++    sc->io_ops = &sdhci_s3c_mmio_ops;
++
++    sdhci_common_class_init(oc, data);
+ }
+ 
+ static const TypeInfo sdhci_types[] = {
+@@ -1982,13 +1977,12 @@ static const TypeInfo sdhci_types[] = {
+     {
+         .name = TYPE_IMX_USDHC,
+         .parent = TYPE_SYSBUS_SDHCI,
+-        .instance_init = imx_usdhc_init,
+         .class_init = imx_usdhc_class_init,
+     },
+     {
+         .name = TYPE_S3C_SDHCI,
+         .parent = TYPE_SYSBUS_SDHCI,
+-        .instance_init = sdhci_s3c_init,
++        .class_init = sdhci_s3c_class_init,
+     },
+ };
+ 
 -- 
 2.47.1
 
