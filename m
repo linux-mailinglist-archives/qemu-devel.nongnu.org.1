@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998FBA57F9B
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:02:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7776BA57F9D
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:02:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr39f-0005oC-FD; Sat, 08 Mar 2025 18:00:27 -0500
+	id 1tr38x-0004jM-DA; Sat, 08 Mar 2025 17:59:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tr38Z-0004cj-At
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:19 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1tr38c-0004fA-In
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:23 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tr38X-0005NP-27
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:19 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-22401f4d35aso55290645ad.2
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 14:59:16 -0800 (PST)
+ id 1tr38X-0005NY-JH
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:59:22 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-22113560c57so56984475ad.2
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 14:59:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741474755; x=1742079555; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741474756; x=1742079556; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pLDUWdvnnBB356eedHeiVggZlsL+ljood1zAHBJkFew=;
- b=Rm3+vDtt63gVMmcgLcp6g1ngRsh2cyRRnHulV8Y0JmlD9prC8hYyELdDCtASrmvdxK
- 2XSHG3DFRbTWVmgHEz727aaSdVpa9lYPLtkIkz1ByQR/it/xUfjuO2j6jOaflVD9yHyv
- eA3wPk99o6hrtfzrz0MB40B9c7jfstgO7Sb3wiOE83ba3nLqr78A/dUi7K+a/wAiu0mB
- AFKvRhQXdhRJfWN0MnoivWCvVv7VSQ61+730UIV/JOtM8l/iq05a1RkcNAjW0DxdVLiN
- 9adH5Wp/rzcEBAuCTufqB575KQxr1sjghZz1Dm6y3UO+gnvUI2tfFmN5UdXB3Y+M3H0b
- f7uA==
+ bh=svzUK2bXhs+AmT8lF2QtHzM82zox0Nlbc/AZRsQwWac=;
+ b=KuirUA343UmB2asjx8QJh4Jg3UnIfH0I5ec1HWZeDCfNAnLOmme9KnEe7WGXoO5uqA
+ xYXSKVswylvYCNQu4QR6tm4OoFbcNQAAZxonBDHkM59IX2w0bRuzWjsV60AcUuVj/jc6
+ DEl6f/6CA8kpRwQAAvayxD0zDYBp6P2iNpV7xw0n4QGmq3BL/VZ8l3DHwaI7hxkDqK94
+ tiCyrE8P9w40uUvT+lYKo0P0j9LC2t2GQxs84uNcIb3/v6GkDRYqS8ugRHr2tP1Sj1la
+ h7UR3X9mkE+DP3QIwrk2kjoEEHbCdjAxZy/lOU0L5spBgpqrYCyR7+Wcqk1IFlu4b5UZ
+ bWTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741474755; x=1742079555;
+ d=1e100.net; s=20230601; t=1741474756; x=1742079556;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pLDUWdvnnBB356eedHeiVggZlsL+ljood1zAHBJkFew=;
- b=Sx9aOt4YmiWxmyD1mhfsLdnkHqZtxw9a/tS3UFRuKyuAGlJjZb2UeGjoXdhCik/RgF
- PZjv7BedGn6WWL9UIERdGbzfLHJkH4uUATFTlcgLApTlPC4jWVxjuN1aOmqPGcTRVQoU
- 9UHh0rzMnDLlsTb8AlMh/IMIPXN2untDIC93LXzHmvTsSY0IOyPgdm10TEpQXTrwUyW7
- Wn3Y6NYqRKpifqe5BTMzXvrgEPQlA0nJfUJMSt7hr3GBjZbtHz5IlYBBUsNDXKTkQ4g7
- M/xHxxtBEC4LxIj80EGOphBeXuvgKpJKF3YFxAjkdv6DYgTUPtmJrnRDza1JvkI5wQ0c
- C/JA==
-X-Gm-Message-State: AOJu0Yy03mifMBc3cEMbduMp7MiURWAGs/Ouhjq6YftusmplMSIRGo4h
- jN0Y3kPqOiIVogjvKmsV6Vtzph8u1RmuWZbyUGEmlfiDDT5rcVbk1vYw4nv01fKXqEs8mCTJxUD
- Q
-X-Gm-Gg: ASbGnctffzElIjVPDq143b8NLxtUQU0tmaS+2ZpOiSHu2argmdw7e41aWz66ufYnkPM
- EWDQhpkCKJ/GpBg7svQKLcUd+S19EvUow9etaoydgg38qvOTzYSOGglC+Un9STrrc3igrVGjjRG
- K1+/rI60amXNV2eHc9otw6aubzTndp6qlh3F4KfMkgnOo0lTS+ZYopbhv/vY36NER4xMocLSn4F
- eD8DBsqYztEKVTDtS3o1MngomC8BXWSOj1ubE0t6nZXsOzHL0370uL6na3xKjLHeGeZhkKk0GG1
- zhnEUo5c2zFcdt0ndCFPbT0jn8y/DWMPoXk0nJCHCW4SMlM/qtusxah5NybnePcDuM2drmmFtTV
- 9
-X-Google-Smtp-Source: AGHT+IHaQPXRYsw+ROqemtdEfbQtJ4SegmYcx6iDbcgH/6HAsUb4SKfHxpYSO2jDqICeqJJWkbDdnw==
-X-Received: by 2002:a17:902:ccc5:b0:223:f408:c3cf with SMTP id
- d9443c01a7336-224288971fcmr144299935ad.21.1741474755261; 
- Sat, 08 Mar 2025 14:59:15 -0800 (PST)
+ bh=svzUK2bXhs+AmT8lF2QtHzM82zox0Nlbc/AZRsQwWac=;
+ b=tw9Nym6o/DRIlJhV776uWzBFNYw1kC4mlxwpncYiO4p+Rhdat4apm+sbIAER47OxBG
+ D8UK/D3eHPIIfoOZSnDXIX7SE993vTP0HNnoBtAw+aXQAr/CZwEyMlbvTKTtAAFVRr/l
+ 59dvPKkxYit+NWmcv4r12G8yWsgJbJJZ2uvZvMNJpF1oPkzt2MloBmd7f2kLdS6AoQYf
+ nXYFmtIysCkK/wTmZliHvLzHdlgwHh0bv3Rg0mCd9ARxwiOtBgRPOpzdAu5YtYhnqwM8
+ WhTMswd0w6c7HxjTfyyziy8kSyE4rSrHm/egMguZzAOLvZM1+IDuvImrOVyQODYLbDJz
+ EE9g==
+X-Gm-Message-State: AOJu0YyY9JENxqi77MHlvCmTYrZhyNO7vktH5i4l7098GkdtdzyoLHNy
+ cCvPJQ8zZRMcM7dZCwz6g3macnMS6ouXgqlgCnULA6pCjoiCin2VSetWy21jL202Vi9zHSgZITI
+ U
+X-Gm-Gg: ASbGncuxyuVRwNTYHIMKYG/cl51HdjMtSmh/r6gPEZ7k5i6oGFuZpq2S2TMLlC5YJkt
+ 0THv29s55aBSOWNpFfL+SVZzZRC0ZqqRnKWdyGJTR2Drf0zTY+duDeOOy8AaiWXxwP7pPWjJin1
+ v1rrYWx2D9k4nmkyvGDuy0snuIhIyg6RbeF1CvgwtU6YM3jAkM9Ps0Y++rJ26lZ1JQ87YKzCpHa
+ BQElvsNASa61S8+7RwkfDGOrWU2IY2JodZCZ1hF28LAiwDUiqM8VhbEC4wnqICtJO2S5nPOvq/Z
+ uimbKRYLDOlt4ccxNd3+tUSYc6KlsSPzz2bd85G97DbQ09mIEOPkTdHxIyt+bA4/taPs9fWgBOj
+ o
+X-Google-Smtp-Source: AGHT+IGg0tyL+QhYxEOtKPYKY+ZZEziEW3uRceSjy36AlfbHF1GPcevxGjWdvuJFc9J/7aZ9G9xyKg==
+X-Received: by 2002:a17:903:22c8:b0:224:256e:5e3f with SMTP id
+ d9443c01a7336-22428993846mr139577155ad.25.1741474756248; 
+ Sat, 08 Mar 2025 14:59:16 -0800 (PST)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22410a908a0sm51831175ad.162.2025.03.08.14.59.14
+ d9443c01a7336-22410a908a0sm51831175ad.162.2025.03.08.14.59.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Mar 2025 14:59:14 -0800 (PST)
+ Sat, 08 Mar 2025 14:59:15 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 17/23] accel/tcg: Restrict GETPC_ADJ to 'tb-internal.h'
-Date: Sat,  8 Mar 2025 14:58:56 -0800
-Message-ID: <20250308225902.1208237-19-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 18/23] accel/tcg: Split out getpc.h
+Date: Sat,  8 Mar 2025 14:58:57 -0800
+Message-ID: <20250308225902.1208237-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250308225902.1208237-1-richard.henderson@linaro.org>
 References: <20250308225902.1208237-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,57 +100,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Split out GETPC to a target-independent header.
 
-GETPC_ADJ is only used within accel/tcg/, no need to
-expose it to all the code base.
-
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250308072348.65723-2-philmd@linaro.org>
+Message-ID: <20250308072348.65723-3-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-internal.h | 11 +++++++++++
- include/exec/exec-all.h |  9 ---------
- 2 files changed, 11 insertions(+), 9 deletions(-)
+ include/accel/tcg/getpc.h | 24 ++++++++++++++++++++++++
+ include/exec/exec-all.h   | 10 +---------
+ 2 files changed, 25 insertions(+), 9 deletions(-)
+ create mode 100644 include/accel/tcg/getpc.h
 
-diff --git a/accel/tcg/tb-internal.h b/accel/tcg/tb-internal.h
-index 62a59a5307..68aa8d17f4 100644
---- a/accel/tcg/tb-internal.h
-+++ b/accel/tcg/tb-internal.h
-@@ -13,6 +13,17 @@
- #include "exec/exec-all.h"
- #include "exec/translation-block.h"
- 
+diff --git a/include/accel/tcg/getpc.h b/include/accel/tcg/getpc.h
+new file mode 100644
+index 0000000000..8a97ce34e7
+--- /dev/null
++++ b/include/accel/tcg/getpc.h
+@@ -0,0 +1,24 @@
 +/*
-+ * The true return address will often point to a host insn that is part of
-+ * the next translated guest insn.  Adjust the address backward to point to
-+ * the middle of the call insn.  Subtracting one would do the job except for
-+ * several compressed mode architectures (arm, mips) which set the low bit
-+ * to indicate the compressed mode; subtracting two works around that.  It
-+ * is also the case that there are no host isas that contain a call insn
-+ * smaller than 4 bytes, so we don't worry about special-casing this.
++ * Get host pc for helper unwinding.
++ *
++ * Copyright (c) 2003 Fabrice Bellard
++ * SPDX-License-Identifier: LGPL-2.1-or-later
 + */
-+#define GETPC_ADJ   2
 +
- #ifdef CONFIG_SOFTMMU
- 
- #define CPU_TLB_DYN_MIN_BITS 6
++#ifndef ACCEL_TCG_GETPC_H
++#define ACCEL_TCG_GETPC_H
++
++#ifndef CONFIG_TCG
++#error Can only include this header with TCG
++#endif
++
++/* GETPC is the true target of the return instruction that we'll execute.  */
++#ifdef CONFIG_TCG_INTERPRETER
++extern __thread uintptr_t tci_tb_ptr;
++# define GETPC() tci_tb_ptr
++#else
++# define GETPC() \
++    ((uintptr_t)__builtin_extract_return_addr(__builtin_return_address(0)))
++#endif
++
++#endif /* ACCEL_TCG_GETPC_H */
 diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index a758b7a843..2ac98e56c4 100644
+index 2ac98e56c4..dd5c40f223 100644
 --- a/include/exec/exec-all.h
 +++ b/include/exec/exec-all.h
-@@ -186,15 +186,6 @@ extern __thread uintptr_t tci_tb_ptr;
-     ((uintptr_t)__builtin_extract_return_addr(__builtin_return_address(0)))
- #endif
+@@ -28,6 +28,7 @@
+ #include "exec/translation-block.h"
  
--/* The true return address will often point to a host insn that is part of
--   the next translated guest insn.  Adjust the address backward to point to
--   the middle of the call insn.  Subtracting one would do the job except for
--   several compressed mode architectures (arm, mips) which set the low bit
--   to indicate the compressed mode; subtracting two works around that.  It
--   is also the case that there are no host isas that contain a call insn
--   smaller than 4 bytes, so we don't worry about special-casing this.  */
--#define GETPC_ADJ   2
+ #if defined(CONFIG_TCG)
++#include "accel/tcg/getpc.h"
+ 
+ /**
+  * probe_access:
+@@ -177,15 +178,6 @@ void tb_phys_invalidate(TranslationBlock *tb, tb_page_addr_t page_addr);
+ void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last);
+ void tb_set_jmp_target(TranslationBlock *tb, int n, uintptr_t addr);
+ 
+-/* GETPC is the true target of the return instruction that we'll execute.  */
+-#if defined(CONFIG_TCG_INTERPRETER)
+-extern __thread uintptr_t tci_tb_ptr;
+-# define GETPC() tci_tb_ptr
+-#else
+-# define GETPC() \
+-    ((uintptr_t)__builtin_extract_return_addr(__builtin_return_address(0)))
+-#endif
 -
  #if !defined(CONFIG_USER_ONLY)
  
