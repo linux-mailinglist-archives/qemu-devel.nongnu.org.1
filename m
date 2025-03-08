@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A96A57FCF
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:13:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 380CAA57FC6
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 00:12:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr3Je-0006lz-CW; Sat, 08 Mar 2025 18:10:46 -0500
+	id 1tr3Jk-0007Nn-VD; Sat, 08 Mar 2025 18:10:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3JY-0006Vs-5b
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:40 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3Jf-00079W-4F
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:47 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3JW-0001Us-Iy
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:39 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4394036c0efso16913765e9.2
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 15:10:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr3Jc-0001WK-0d
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 18:10:46 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-391342fc1f6so2003196f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 15:10:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741475437; x=1742080237; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741475442; x=1742080242; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PCiNgLEiS6OiisxvVuwTtdLprKkJGMzsN7gdfZerLX8=;
- b=ZQJ2a2YryAeB8LeI9Nvd0XvB/s7tCSDx4DGC8oSsYBRPmruil6YxUpDztApeZ2MTon
- rJ+oPR+HWkC+nsGqTsU6A63TFZRG7xFfFbz5tIXzPk8Y6ITmda58dsmWcBcENM2lfMJH
- F8f7ygm6TDMOwUsBeuALIf7VtZwM1AWk/ql3CfMEGQjb9rVXkuBXc4RSyZwq3HxUiytP
- agHVd2ZUB2S+Xm/5uLYOSNHalxH8wK6Y+noocq5ZndIGL36+WlTSvm4v5zH8ILuZx1he
- 2u+79zjFFXCieYlTPko19oj5JRTSAnqVdu+Jx9pZTlwbSqAwXzpN/3O5gjX3YX+1qb9X
- DyNQ==
+ bh=e994k6DJ1GVQfS1v420FHs4KoJEVg7ohUIOs13xGxIQ=;
+ b=ag9/oAZNpmWFIS6hGYEJWYuOf9g1jKLokS4k3ZrNKGwAb+aKNbcH5Sh6OTpQIXsHAK
+ f6axH0rYpWb/m10OBfZlErYG9FqSu8nccpmm4zrgkzE5ebMpNKSkwWGuPk5D3SogIBor
+ VJEBSQxx0I9nHJzFuSnQmMU+fszS2QhNV0+EFjIzOh0sd5lXnOZYCtfjqtIrZ2gP4IWl
+ BH/dZ2xuHftH0xHSmjY0s3CZfTnCKpkM4z4IAzrhhBCdG3osgF6xksc3uWrlQStWP06M
+ Bd8EvtjykslPYkAMi1WyLiaG+YU4He7Q/0JEm5sJWpTeuvm1SbUGFj/mqyYJVowvC/pv
+ ieQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741475437; x=1742080237;
+ d=1e100.net; s=20230601; t=1741475442; x=1742080242;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PCiNgLEiS6OiisxvVuwTtdLprKkJGMzsN7gdfZerLX8=;
- b=VCHUH6mpgQ6dfbkBaHlcxXfQVWLwHnjDzIIuo2wygmbuZChxKrTD98/sVeAOtFGIET
- aqWalb03BiqGRcJ+1CkppHl17r/tILXPPC400b2VJ9GjhTjEoy6ckEW4+mdVtoFIwStS
- 5/X7iyQoqVxJkDpiP9fLEk7uKkNQj2XbyB7vY2+AKmEc4IZP5dvbw+ukq3XIYM6ATlH7
- qSdSSTkzJY4l2pZcHGRPVkrgs0yX5v6hJJmNfoXiXvXmMUzCVXMriGlcFJVY4iBh2Bu+
- 2FS/Hk9fpQ2VocGzvTE42DSOdWFv3ogP6PvakkcE2MD55Ukf7OQ2Dt73dFq6hXH5bamJ
- KfAA==
-X-Gm-Message-State: AOJu0YxJrmHaY/HOAnf6V0mPrwKJQpel6Vgb5FanJsvplj2F/N+mzcrl
- cCmW7c6nZNcHnB0OgL6mMzLzNdcNqGFWZZ5bG9Kd9l7vCitVgF3XM8dZ/hRJzAQTM73L/92LY8C
- n44I=
-X-Gm-Gg: ASbGncucAIetS3Y+a2/y9x34w7ibbtrTSx/j/cvIPEdF5RAa8KLLEKMMo8rqobWdS1w
- mYHTUOcDu4TEFyb37Nk3ySUXHT5tzyNb06ae+M9I8rXG20DrQ4FXziFO/66to7JSJ83IgbC+I6r
- 1EJfvT44v3V+qjrH9lm3PK9g6b3M2c1Gc51M25TwuQSfWuGHUUE5/e5Ez34K+D4efi2d3j1aVYu
- SP3pz361kFl9Jg9HBu0LeQuztKTHD9vtzq0ZARV+PxKVg5IgW3J26YgYhR+AlGhM0mRHdd2WMKi
- VVQJEYITVXrYBV8e0EJr/cVj1h+JmsypA8Mi9c7Al/tuA5tGoTjW5Zl62+nb6/px0gx2872o81y
- gnNbWNhTEActfti/oVP4=
-X-Google-Smtp-Source: AGHT+IENrA47OVsXzaZX4a1bGAgrCx0XL0i2aOlzI6Mq7cL2vI+8HE9sGHrEgItEH0nHk0n3/e8OGA==
-X-Received: by 2002:a05:600c:470c:b0:43c:f050:fed3 with SMTP id
- 5b1f17b1804b1-43cf051022dmr4854905e9.11.1741475436763; 
- Sat, 08 Mar 2025 15:10:36 -0800 (PST)
+ bh=e994k6DJ1GVQfS1v420FHs4KoJEVg7ohUIOs13xGxIQ=;
+ b=ixItOShcil6eeKFIdSQsbBnx1Qlv1nc95dNic39h259Dhp/BVip5jvfO4RFG3RGkdp
+ nPP7txaYJOdwDKcLdTwXwcWuoTtw3qNV8gZ/E+qRm69nl5B/5SONyZ29S9nsoTHNtYV8
+ Vju+yT9ycJp+sIU4XCzaCy4HPTR5NwIbjG2xm1PFNKEG/2OpCj2vQRje1WUVF3lkNVv3
+ 0VlKzMLzpheF/uM62AV2xFzsi4xUK0rRdtez7iLV3TIvOzbUkfHnoNBCTT4ktYmctxKr
+ zaa9Yb/ThGQiIc/x4mE8LTkGPZlqRBAm0AA2zAfGH0xQRuADAmGYeLce0SZBcu6LSott
+ QgyA==
+X-Gm-Message-State: AOJu0Yzlh2eRmSw6niSqMb8YcHBO3wzbDQ4IJvUuZDfk+SAsg1Mcrbvz
+ LJDitpCEXs/VPssHFyUC5ntsvJiIALg5qUCk5uLC521tBVIt3FT3/QHtIwbUSLT9uXnoclRm9cm
+ n2PY=
+X-Gm-Gg: ASbGncvOq0SiWSvLoxKHGaMBnHHZJFcIqCGKJ9RpElzjhUKx1C1j3oWKDDg7SH1Pq3K
+ cbLLGO3HTU6ZZaf5nV1p8gz2sWApIEexKTXy34wy6a3DAdtf8aVZSxg8pLZTmTR6HXOc6Ycs8XP
+ pNNVvYD+hQBuY2sZ0d87FLDv75Ih+WR6PlzdOL3INJAUPUgCSV23J49jkd3iKHA7CRZlNHd2w2F
+ 8Z/wmJu62suSYLZO/wZWu2ejmXO1/DBZe0dk2+i9Jg+ENrjn9rbgqgEA0zsVVEDqAKiZtAtcRo3
+ imI1lzP/sPYvu3xaEiNhdrz7Sp3a9z2LqBwGVJuuut8buVBThow/RRfeWsgnvwJ58krK3lE82Pk
+ 1Ih8xGH2r5lRRgUXjB38=
+X-Google-Smtp-Source: AGHT+IGanFAG++lqDWp4faa7iGXFNwWsx6KoPF+8GUYwA8SvvtEs71rNKQ7140I7e3KcmDtaGGxtiw==
+X-Received: by 2002:a5d:64c3:0:b0:391:2932:e67b with SMTP id
+ ffacd0b85a97d-39132dacfdbmr7249820f8f.35.1741475442093; 
+ Sat, 08 Mar 2025 15:10:42 -0800 (PST)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd42c6203sm126860865e9.24.2025.03.08.15.10.34
+ 5b1f17b1804b1-43cec28e1c4sm12949955e9.1.2025.03.08.15.10.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 08 Mar 2025 15:10:35 -0800 (PST)
+ Sat, 08 Mar 2025 15:10:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>,
@@ -84,17 +84,17 @@ Cc: Yi Liu <yi.l.liu@intel.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 13/21] hw/vfio/igd: Compile once
-Date: Sun,  9 Mar 2025 00:09:09 +0100
-Message-ID: <20250308230917.18907-14-philmd@linaro.org>
+Subject: [PATCH v2 14/21] system/iommufd: Introduce iommufd_builtin() helper
+Date: Sun,  9 Mar 2025 00:09:10 +0100
+Message-ID: <20250308230917.18907-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250308230917.18907-1-philmd@linaro.org>
 References: <20250308230917.18907-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,35 +117,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The file doesn't use any target-specific knowledge anymore,
-move it to system_ss[] to build it once.
+iommufd_builtin() can be used to check at runtime whether
+the IOMMUFD feature is built in a qemu-system binary.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/vfio/meson.build | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ docs/devel/vfio-iommufd.rst | 2 +-
+ include/system/iommufd.h    | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-index 6ab711d0539..21c9cd6d2eb 100644
---- a/hw/vfio/meson.build
-+++ b/hw/vfio/meson.build
-@@ -11,13 +11,14 @@ vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
- vfio_ss.add(when: 'CONFIG_VFIO_CCW', if_true: files('ccw.c'))
- vfio_ss.add(when: 'CONFIG_VFIO_PLATFORM', if_true: files('platform.c'))
- vfio_ss.add(when: 'CONFIG_VFIO_AP', if_true: files('ap.c'))
--vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
+diff --git a/docs/devel/vfio-iommufd.rst b/docs/devel/vfio-iommufd.rst
+index 3d1c11f175e..08882094eee 100644
+--- a/docs/devel/vfio-iommufd.rst
++++ b/docs/devel/vfio-iommufd.rst
+@@ -88,7 +88,7 @@ Step 2: configure QEMU
+ ----------------------
  
- specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
+ Interactions with the ``/dev/iommu`` are abstracted by a new iommufd
+-object (compiled in with the ``CONFIG_IOMMUFD`` option).
++object (which availability can be checked at runtime using ``iommufd_builtin()``).
  
- system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
- system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
--system_ss.add(when: 'CONFIG_VFIO_IGD', if_false: files(
-+system_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files(
-+  'igd.c',
-+), if_false: files(
-   'igd-stubs.c',
- ))
- system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+ Any QEMU device (e.g. VFIO device) wishing to use ``/dev/iommu`` must
+ be linked with an iommufd object. It gets a new optional property
+diff --git a/include/system/iommufd.h b/include/system/iommufd.h
+index cbab75bfbf6..3fedf8cfb63 100644
+--- a/include/system/iommufd.h
++++ b/include/system/iommufd.h
+@@ -63,4 +63,10 @@ bool iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
+                                       Error **errp);
+ 
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
++
++static inline bool iommufd_builtin(void)
++{
++    return type_is_registered(TYPE_IOMMUFD_BACKEND);
++}
++
+ #endif
 -- 
 2.47.1
 
