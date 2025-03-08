@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882B5A57F1F
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 22:57:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B78EA57F4E
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Mar 2025 23:20:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tr277-0003Lh-Px; Sat, 08 Mar 2025 16:53:45 -0500
+	id 1tr2VQ-000440-N3; Sat, 08 Mar 2025 17:18:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tr275-0003KP-BD
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:43 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr2VM-00043J-Ta
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:18:49 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tr273-0000xf-D3
- for qemu-devel@nongnu.org; Sat, 08 Mar 2025 16:53:43 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-39129fc51f8so2554240f8f.0
- for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 13:53:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tr2VL-0001CY-8o
+ for qemu-devel@nongnu.org; Sat, 08 Mar 2025 17:18:48 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3913cf69784so744883f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Mar 2025 14:18:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741470820; x=1742075620; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9+USVfbqbvkxo8yt5Lac5ZRGOWAYMoefLOeZ1OEowSg=;
- b=l5l3baq4ovIEU+hRhKAbKGHUBJaOEZSEx3kXewXLV3TXxn0xN06rz9LJ39kYbKugmy
- 2vXFO9gwN/D+dq8CnI3+Euc+wtCfGvgnDmSP5lsrdRCdDB95RXmkDcNJxBEUrKcGvGxH
- WlUkNKclmf2LwK+t9uEiXgv5TbqY9Km7uuRwEeKsdf6ExSMxACKHO6M+k+TKRYFu45Js
- wH+nWRb1bwL59F01rrA2bFBg9q8aKmIiSTF12MOOhdxK0puhnHVrvOGY1r/fvsJGkNAi
- Xs20p3WFn1Ava4tD4EXD6ea6GGcGz02OuUbJYv8lVyc7xzWakjq+s3DssfEuDabi/AMx
- 4N6Q==
+ d=linaro.org; s=google; t=1741472324; x=1742077124; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=bE4s+uQUTKjE20/T063tTlmuA6cGR6ve4tSjZtezl4I=;
+ b=J6IT2oBBpx3W3d1xCRYDRdBVpYCNvPTTG9VXwwJVCydm7Hd1xGFaPvUUJpYsfHT9U9
+ WZG7V7mj7S40J56SFdeScfJCADGh1f6Uo3X3OCcLvlw93pB7N6p6eDYBXuo7g/T4dUUa
+ H7AoOin6fko0faJs1vtpbQ6RcKg/AnVNGaLvfNdU14BimNw2/9Mrcl9HO9dwE5lhxQ2U
+ lABRzKJffKZGu9P7TNbJvED9jS1ooP8dkq7DZ6ddgocaO7IDDBIzl2jlA3afV9C1t4Py
+ nUmKqAHI6kkfwXPqW9s9faVd93nIH7j2OrR+C8OCIdQ6tCqVlkjL5JGdIP6a0ErppiNj
+ E8Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741470820; x=1742075620;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9+USVfbqbvkxo8yt5Lac5ZRGOWAYMoefLOeZ1OEowSg=;
- b=wR5IJG45FTFuVBQM3n+Q1/dZMtttSDNPqekI506kTPcFcmZnFjWyYbNWPyTvIS5VDS
- XSk98/hGljpPVbYPKUGVfCbLBhlVxfEG32CMD41nNG5E6H64CyX7Qiutx51/Bqt9u/in
- HveMtUu6HTYmCuJUJA2KR6yiML+7CiX37eA2PCsOpomXHhnAzaGfYaCu73ZZRO4pnQZi
- tANs57NtQXf2CeH1R/nrU4XKJT5qUoaHGC89T6l1JmotgiRjSkNgl/A5Vb6HpJsL/sfd
- OnbOG4z18E3R1bNoZhwF0rBLORXFy97uvfr7GIruh3YMSrbn5N+LIzVSW4UVMHBJMrfO
- oWqw==
-X-Gm-Message-State: AOJu0YyTMhVWq2a7LckwO5sFJfM2FIp8a5XHi09FG4m2TRzDR+VwIzRp
- QnYyM2GKDXtcCTglIO9nYYvIE7uUKyDBeD9q3Y6obYwUXwJ2VfTgsQAjb21qHeW+38KuIBs1FEw
- 9
-X-Gm-Gg: ASbGnct/OmGFF+CfszC0DbsS9RK1iQeG0JZtMONUIHPcFn0xb3QVX6DZkbxbwTo5PSf
- ZRGdmG5tUrVgkpQ/BZZrlI0mV+lU2OUr+oNfX8KaaYDqSyocelWs1KXGf7rAJ/i3prSDKCnZfiO
- O8/uTRNYS5qHCFWWjlxKf0m3SbpND2OObMsA+uuHbQtYa7O+vvB779/jEIqk7ezyoQdwScbQ9A8
- tM3wqlIoKakT3l5t2YtxFfH8q5L1HPY6nzP6AvoQtj6EJRx/7m013V8rNgTxSet3qUwkpB0gWFe
- jFls25JlPwVuJU41X92R5sE+cX5mDaOY0GtFJ4R+SPZxVtI=
-X-Google-Smtp-Source: AGHT+IFFmEi2/mv2d0F+zM2LgcBkryGZf/wxb5vRykCsNmntVoKvhdH+gSpWFOrB35NusKOCDAs+tg==
-X-Received: by 2002:a5d:47cc:0:b0:38d:bccf:f342 with SMTP id
- ffacd0b85a97d-39132db8b3cmr6610895f8f.43.1741470819840; 
- Sat, 08 Mar 2025 13:53:39 -0800 (PST)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c01cb82sm10210678f8f.51.2025.03.08.13.53.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Mar 2025 13:53:35 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 955E8611FD;
- Sat,  8 Mar 2025 21:53:29 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 31/31] MAINTAINERS: remove widely sanctioned entities
-Date: Sat,  8 Mar 2025 21:53:26 +0000
-Message-Id: <20250308215326.2907828-32-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250308215326.2907828-1-alex.bennee@linaro.org>
-References: <20250308215326.2907828-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1741472324; x=1742077124;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bE4s+uQUTKjE20/T063tTlmuA6cGR6ve4tSjZtezl4I=;
+ b=m7LOCyNmdhsnq17qdE5ElDkV3QrqMePryLwWkWTqhn79S8rWMtXL+sd4U2WjGgYsNm
+ aUcnbf0wfEF/9v43z8mCEe8EmTgl16yX2GZd6PgQRXrunlL25qY4acL2dd8/ssL2KXKW
+ paXtdZ3bVXV7yb8kd1ZrPxzGjYhxdmCM1UDGcVb2YcgDdDa5XyYq9l5lGHGEJfgSGheY
+ LfTWOTR9hW2eEdAREdUFXwrTds134bklsDhPhp0/LfcpedQuFSiFPPjDjMcKc65pdMhI
+ c3WmkJJMkptBYgThIiPGPtIOyme5D8J4GWOUCeyNsCirZuswSALH22VH76FuC1KcAZhS
+ E+Vg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUw8wseX6ceOCF3/Az/Ls/lGmnsjk4oYMUjWbYanlWRmdOymzy1HvTLuxVt8gUFeXSUHJgqyxuQfkMV@nongnu.org
+X-Gm-Message-State: AOJu0YxU04Ih0wP9DLGK9/skG+sFr9Uu563hqyL94Mm2jxvs0OVZui5J
+ TRqJVEt48EpvH7tYcfNhGiXJfZ3V7p5VyuqqlusiRszv3lODnUIGWLLyfvwJcoTgqwexVrOPepF
+ fUrs=
+X-Gm-Gg: ASbGncuYuT317gXAchTfVxTaTNxTTV4dfJEM3sXKahq3P0ciLYJzcENKUVq7HuMvMYc
+ UpuwVs661yCUjXJkJ1+DjzCJOTjnO1r/Six+lBAC+EDS+b8R4Fv/93nq90NOQ/1LQkqj8aWKVtE
+ 0wWPFLrcb60NCMLP5yI19adAQljgr+afouIeQWRRmTK4Pf14F9gyTa90bDFUU2A6XAYcZwesWI4
+ nginvQ5y8/MZq5GKlrmNwPtOprrk6st4PO+RgHkxdwUKhQLPYynP4vROA4Fn4eUTgVn8j0aENw4
+ kklqOpHXaddvSAVH8aoModG26tHGc5TEOR83F8RGwshREeBz6Ko6NxKE7aGC+CEMvcD+RRzxa1J
+ UjxbGbErcyekm
+X-Google-Smtp-Source: AGHT+IFuKyYSuHlnbKuqHJ0k8vv3APfu0NHZD92t52JUQiHtnmY2CnhpQ1I6VJ06CZt7Hyur3vcGSw==
+X-Received: by 2002:a05:6000:1842:b0:391:2dea:c98d with SMTP id
+ ffacd0b85a97d-39132d095d6mr6311156f8f.8.1741472324157; 
+ Sat, 08 Mar 2025 14:18:44 -0800 (PST)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43bdd8de4ffsm96862715e9.24.2025.03.08.14.18.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 08 Mar 2025 14:18:43 -0800 (PST)
+Message-ID: <aaed2277-8d4c-42f1-8325-db68162b8b82@linaro.org>
+Date: Sat, 8 Mar 2025 23:18:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/14] system/kvm: Expose
+ kvm_irqchip_[add,remove]_change_notifier()
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250307180337.14811-1-philmd@linaro.org>
+ <20250307180337.14811-9-philmd@linaro.org>
+ <6ac48abe-8caf-4897-899e-68af29b2750d@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <6ac48abe-8caf-4897-899e-68af29b2750d@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,54 +102,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following organisations appear on the US sanctions list:
+On 7/3/25 21:09, Richard Henderson wrote:
+> On 3/7/25 10:03, Philippe Mathieu-Daudé wrote:
+>> Currently kvm_irqchip_add_irqfd_notifier() and
+>> kvm_irqchip_remove_irqfd_notifier() are only declared on
+>> target specific code. There is not particular reason to,
+>> as their prototypes don't use anything target related.
+>>
+>> Move their declaration with common prototypes, and
+>> implement their stub.
+> 
+> The description is not accurate, because the new stubs are
+> *not* for the functions whose declaration you move.
+> 
+> This feels like two different changes.
 
-  Yadro: https://sanctionssearch.ofac.treas.gov/Details.aspx?id=41125
-  ISPRAS: https://sanctionssearch.ofac.treas.gov/Details.aspx?id=50890
-
-As a result maintainers interacting with such entities would face
-legal risk in a number of jurisdictions. To reduce the risk of
-inadvertent non-compliance remove entries from these organisations
-from the MAINTAINERS file.
-
-Mark the pcf8574 system as orphaned until someone volunteers to step
-up as a maintainer. Add myself as a second reviewer to record/replay
-so I can help with what odd fixes I can.
-
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250304222439.2035603-32-alex.bennee@linaro.org>
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 756432add4..70510a7952 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2546,8 +2546,7 @@ F: hw/i2c/i2c_mux_pca954x.c
- F: include/hw/i2c/i2c_mux_pca954x.h
- 
- pcf8574
--M: Dmitrii Sharikhin <d.sharikhin@yadro.com>
--S: Maintained
-+S: Orphaned
- F: hw/gpio/pcf8574.c
- F: include/gpio/pcf8574.h
- 
-@@ -3659,10 +3658,10 @@ F: net/filter-mirror.c
- F: tests/qtest/test-filter*
- 
- Record/replay
--M: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
- R: Paolo Bonzini <pbonzini@redhat.com>
-+R: Alex Bennée <alex.bennee@linaro.org>
- W: https://wiki.qemu.org/Features/record-replay
--S: Supported
-+S: Odd Fixes
- F: replay/*
- F: block/blkreplay.c
- F: net/filter-replay.c
--- 
-2.39.5
+Oops. I don't remember why I added the stubs, they are used
+in vfio-ap but I can't reproduce a build failure. I'll just
+remove them.
 
 
