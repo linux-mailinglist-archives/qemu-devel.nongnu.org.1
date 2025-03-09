@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0998CA58686
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 18:55:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79282A58680
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 18:54:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trKpb-0005E1-JR; Sun, 09 Mar 2025 13:52:55 -0400
+	id 1trKpf-0005Ec-AQ; Sun, 09 Mar 2025 13:52:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpS-0005CT-3U
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:47 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpW-0005DH-GT
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:52 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpQ-0004qh-8I
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:45 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43bd5644de8so36427775e9.3
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:52:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpU-0004r3-RS
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:50 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3912d2c89ecso2906360f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:52:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741542762; x=1742147562; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741542767; x=1742147567; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8FG/sgyXr9996vZOdOWbBM0OkWgobia8pq1aZDtIQB4=;
- b=cxzIes2qF03NTDaX3jdun1j0zs+Jzr43OKGBk4V+D7wm9rajRDFevtwDCG/wXDxI6f
- 3h58GGtPEWtXNPWmE9FLuvn8m/S8p7wveSTeuKuTXj/5/kyqUV3i0lpADg7CT+zXgGsr
- 4fRtyJd85RT011LW/DdhshlaTp0vVVpyvVxn0n+iK7fl6r4Fc8CVqEEw/YaopooGl2dU
- m08EBvIkTujkT8vjHhOXNylDqRMgHBA6W4F2KCc6Gebh9YUcnA01GHvRflMhnpDXhGOY
- P08EbEdZBhlBdhTkTcMMGUNJgBSl33y53me+S4jEf7LiNdmkMsJW5ahRE8psOkU/fxxZ
- xd3g==
+ :reply-to; bh=CMUkgiylTgPg6Rg8E626l7jCXafLoryj7tcACx1jVGw=;
+ b=UEcxdfsOuvUkXNvls43CL7XUk4Bn9MJofO7q0ICGW6GlqbqsnssjYrJMfHmOmlamW7
+ YwXIhSGrXZfrUB6ICQKihT7wD+Bv4YqHyByo8DWWI0OyeIV89HV0GznwMuYiV8vaxWB3
+ Z3SqNi7jd/2+oKCJ+WPeH/y8TQJgyXd0/GyFYa/fIkJonPoanSDPjRkf+IOi16j63CJR
+ /42Gt/f6qVjyfbzuoGEW1AjuDn9KvlAlwvwnBis8T6nFhpsdqTm91darWoXLOrDMn9+q
+ MdkLRGvwNJliDRUrCXRjjJ6J0uSro7yhp3TGMZu3Xni65qk27G3SqRMgcvwdbaGZZ92I
+ LOeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741542762; x=1742147562;
+ d=1e100.net; s=20230601; t=1741542767; x=1742147567;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8FG/sgyXr9996vZOdOWbBM0OkWgobia8pq1aZDtIQB4=;
- b=moGG+hqLV4Dl9JRjwGrPRUg/ojoGSX3/Jm+l19rbSB+nSSjXYPxZ5QqsvA8lSiqRzO
- 8fcPPe2hsuq2LrCd9DvI9z8p6gJS8uU2NThrXTR2BBIbNpi2xIlJCh7E8hPSBCZKrlf8
- 1N1suwMTF8gF6WkrLZff07tDCgiMyIzzwl3KoT0o3bNn1n0IT3KiKqIISo22M7ianT9e
- sGbVV5ha5DU2oT8EAaUSaivHoRtC28FMQ2MJpzrre+0t7U9CAHz27cWd8d+3XBnOlVaw
- bzVPAsxx20udQkKYdQ6SwCIIgmCze0mB8SjIobhqaoXH/d99xSwHmEe9AkT6H7NDL3bU
- 5n1w==
-X-Gm-Message-State: AOJu0YwZNBp9j9e+Bdftst0GgSYLmDQKAUA3v520RhDyQL9T3sFgu2Rv
- 8Fg64VqudUbeJUR1/ZyZw/tUtyBlpW1yA96rSuboxX5iy/0fvk3DDwxdilbpADKmqvVje9K6Jp6
- neIg=
-X-Gm-Gg: ASbGnctSS5gS30c/tc6jUzmBAcqDtN8Xf/13pro3ED9lXVLnN6PDIFIE8GvjoSVYOG4
- fuT3yQXpo+F9jWC/QRhQtuan+yOT0PiSBy+nJOHYqdKdOvnXJu44f3/oXW7tdu+BDe5n8rQ/suH
- EO+1UTEAf3ZyHdG1aHtZ/y9yqzG/LUVL8M6XgXfw39iBBAuQW73/KOX+w8EpsdAG8dXgXj2KC3f
- Yv32lko9qnkBkPJqf8VMF0C/FmeJqBiOckyEOKuBL9XE1lDgbqb3H4xILnWZA2VZ9y+AgduRZX7
- 1D0ziRR2ZeGiiPlrmSrA7iy2qhKTILoWcnn+PSzo7hCmB08VHqIn5wC1aQvSw0gP65SAUmirK0D
- 3CmCM9u6dfScHfPUKc0A=
-X-Google-Smtp-Source: AGHT+IHRj8sKj47XZF8Gb6wyUqCSukF/uwDYueuewD1xX78sJ7gUZX1QQRYNkX5OuwysquzWf6CZdw==
-X-Received: by 2002:a05:600c:1d1c:b0:43c:efed:732d with SMTP id
- 5b1f17b1804b1-43cefed7916mr20900435e9.16.1741542762313; 
- Sun, 09 Mar 2025 10:52:42 -0700 (PDT)
+ bh=CMUkgiylTgPg6Rg8E626l7jCXafLoryj7tcACx1jVGw=;
+ b=TmagvIkaT/lbWPuIh4tQbl1Sc1whmLZ+zciPKijxmXIUxnZFRRdV34TOm8AStNe60+
+ VpZjnDlO2ufTkcGXB1weKocLbU/XrAqUHxEinq4PoEbWhpwjk1IM+88Vrrla5merg4ye
+ ePlfSTvf6923cCR3zjWUKq/rToea1ESBKU01Atk72n6KaEeD9reJtDI8OGWGJyy5eXe9
+ XD952VdGVle1bMxPiO9CSihTvdv0RCL2Y3HSKKBIy8Z70YQP7HcH68Vc2vWmDkVgpXoV
+ yByprQ6/gEY4+lQokczlko7KQ8/LE0RmisYV1opEM4qHLZQ/uIUj4ezBcrmclJRXyrBO
+ ovXA==
+X-Gm-Message-State: AOJu0YyK4FF8Zk7KUvzrBXTj0vBt6UZocdw9lYdgW7BB/ytLf7QqwR7F
+ FTN6LYA+iaVYYz/YdMspBQF4jfjmJdxzDPrHtQ4DjdjKREc/mi47AyKd1du6BO6xoNXX3s+UMP6
+ Wfe0=
+X-Gm-Gg: ASbGncte9S9kAyYQstAfQz3Yov+AJoJ0WYiw2iJs18GMpB6iF0o/enhQoo4GevWMTOt
+ RmSOmIEi2iT4FYfrMU0VUrMBwCqq9ErfNuG6gYQAlI/mQTDcGfkHOuC4SpnLBmgFy3Hs9IdHD8c
+ e3V7i6BljA3DvpQZoVyhrxilM29K7Rmg2z1OA2JrvOaX/o/UvlBF8SBI2lLLUX59r1hb76SixzJ
+ wDurzJbkNIZYqAhHNDxwXOI1RSf3dYQxyEN3WtI2LUSxY9X0wCzsXupXDT8VurW0pC1vKXebwL0
+ /wltSh+agQIH8hVlT2p3EEuLb5TQjfBvcXGI//jyu3H80F7eMkFoPV4HzGYfus1f1XJvCGXpZCs
+ hrVvb2NLlInPc+IjRjck=
+X-Google-Smtp-Source: AGHT+IFORJZhDGyKX5RaKKRL6jYxap2Szj0hfI8u0GfJVs6u8Jxk9Mq7BuUfNNUVSniW+w25+e9jKQ==
+X-Received: by 2002:a05:6000:1a86:b0:38f:2a32:abbb with SMTP id
+ ffacd0b85a97d-39132d325c1mr5169237f8f.4.1741542766967; 
+ Sun, 09 Mar 2025 10:52:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bd42c6203sm150211345e9.24.2025.03.09.10.52.41
+ 5b1f17b1804b1-43cf680f4cesm15442585e9.35.2025.03.09.10.52.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Mar 2025 10:52:41 -0700 (PDT)
+ Sun, 09 Mar 2025 10:52:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/38] cpus: Prefer cached CpuClass over CPU_GET_CLASS() macro
-Date: Sun,  9 Mar 2025 18:51:36 +0100
-Message-ID: <20250309175207.43828-8-philmd@linaro.org>
+Subject: [PULL 08/38] accel: Prefer cached CpuClass over CPU_GET_CLASS() macro
+Date: Sun,  9 Mar 2025 18:51:37 +0100
+Message-ID: <20250309175207.43828-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250309175207.43828-1-philmd@linaro.org>
 References: <20250309175207.43828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,256 +102,110 @@ use it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250122093028.52416-5-philmd@linaro.org>
+Message-Id: <20250122093028.52416-6-philmd@linaro.org>
 ---
- include/hw/core/cpu.h | 10 +++----
- cpu-common.c          | 10 +++----
- hw/core/cpu-common.c  | 13 +++------
- hw/core/cpu-system.c  | 61 ++++++++++++++++---------------------------
- 4 files changed, 33 insertions(+), 61 deletions(-)
+ accel/accel-target.c      | 12 +++++-------
+ accel/tcg/tcg-accel-ops.c |  3 +--
+ accel/tcg/translate-all.c |  2 +-
+ accel/tcg/watchpoint.c    |  9 ++++-----
+ 4 files changed, 11 insertions(+), 15 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index bc0c9468344..c6df426c947 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -826,10 +826,8 @@ const char *parse_cpu_option(const char *cpu_option);
-  */
- static inline bool cpu_has_work(CPUState *cpu)
+diff --git a/accel/accel-target.c b/accel/accel-target.c
+index 83587274626..33a539b4cbb 100644
+--- a/accel/accel-target.c
++++ b/accel/accel-target.c
+@@ -113,22 +113,20 @@ void accel_init_interfaces(AccelClass *ac)
+ 
+ void accel_cpu_instance_init(CPUState *cpu)
  {
 -    CPUClass *cc = CPU_GET_CLASS(cpu);
 -
--    g_assert(cc->has_work);
--    return cc->has_work(cpu);
-+    g_assert(cpu->cc->has_work);
-+    return cpu->cc->has_work(cpu);
- }
- 
- /**
-@@ -968,9 +966,7 @@ void cpu_interrupt(CPUState *cpu, int mask);
-  */
- static inline void cpu_set_pc(CPUState *cpu, vaddr addr)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    cc->set_pc(cpu, addr);
-+    cpu->cc->set_pc(cpu, addr);
- }
- 
- /**
-diff --git a/cpu-common.c b/cpu-common.c
-index f5dcc2d136b..ef5757d23bf 100644
---- a/cpu-common.c
-+++ b/cpu-common.c
-@@ -388,11 +388,10 @@ void process_queued_cpu_work(CPUState *cpu)
- int cpu_breakpoint_insert(CPUState *cpu, vaddr pc, int flags,
-                           CPUBreakpoint **breakpoint)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-     CPUBreakpoint *bp;
- 
--    if (cc->gdb_adjust_breakpoint) {
--        pc = cc->gdb_adjust_breakpoint(cpu, pc);
-+    if (cpu->cc->gdb_adjust_breakpoint) {
-+        pc = cpu->cc->gdb_adjust_breakpoint(cpu, pc);
-     }
- 
-     bp = g_malloc(sizeof(*bp));
-@@ -418,11 +417,10 @@ int cpu_breakpoint_insert(CPUState *cpu, vaddr pc, int flags,
- /* Remove a specific breakpoint.  */
- int cpu_breakpoint_remove(CPUState *cpu, vaddr pc, int flags)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-     CPUBreakpoint *bp;
- 
--    if (cc->gdb_adjust_breakpoint) {
--        pc = cc->gdb_adjust_breakpoint(cpu, pc);
-+    if (cpu->cc->gdb_adjust_breakpoint) {
-+        pc = cpu->cc->gdb_adjust_breakpoint(cpu, pc);
-     }
- 
-     QTAILQ_FOREACH(bp, &cpu->breakpoints, entry) {
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 5671d8d4f54..ba0f02e49da 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -40,9 +40,7 @@ CPUState *cpu_by_arch_id(int64_t id)
-     CPUState *cpu;
- 
-     CPU_FOREACH(cpu) {
--        CPUClass *cc = CPU_GET_CLASS(cpu);
--
--        if (cc->get_arch_id(cpu) == id) {
-+        if (cpu->cc->get_arch_id(cpu) == id) {
-             return cpu;
-         }
-     }
-@@ -101,11 +99,9 @@ static int cpu_common_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg)
- 
- void cpu_dump_state(CPUState *cpu, FILE *f, int flags)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (cc->dump_state) {
-+    if (cpu->cc->dump_state) {
-         cpu_synchronize_state(cpu);
--        cc->dump_state(cpu, f, flags);
-+        cpu->cc->dump_state(cpu, f, flags);
+-    if (cc->accel_cpu && cc->accel_cpu->cpu_instance_init) {
+-        cc->accel_cpu->cpu_instance_init(cpu);
++    if (cpu->cc->accel_cpu && cpu->cc->accel_cpu->cpu_instance_init) {
++        cpu->cc->accel_cpu->cpu_instance_init(cpu);
      }
  }
  
-@@ -119,11 +115,10 @@ void cpu_reset(CPUState *cpu)
- static void cpu_common_reset_hold(Object *obj, ResetType type)
- {
-     CPUState *cpu = CPU(obj);
--    CPUClass *cc = CPU_GET_CLASS(cpu);
- 
-     if (qemu_loglevel_mask(CPU_LOG_RESET)) {
-         qemu_log("CPU Reset (CPU %d)\n", cpu->cpu_index);
--        log_cpu_state(cpu, cc->reset_dump_flags);
-+        log_cpu_state(cpu, cpu->cc->reset_dump_flags);
-     }
- 
-     cpu->interrupt_request = 0;
-diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
-index 6c89d76e498..e29664d39bb 100644
---- a/hw/core/cpu-system.c
-+++ b/hw/core/cpu-system.c
-@@ -33,10 +33,8 @@
- 
- bool cpu_paging_enabled(const CPUState *cpu)
+ bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
  {
 -    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (cc->sysemu_ops->get_paging_enabled) {
--        return cc->sysemu_ops->get_paging_enabled(cpu);
-+    if (cpu->cc->sysemu_ops->get_paging_enabled) {
-+        return cpu->cc->sysemu_ops->get_paging_enabled(cpu);
+     AccelState *accel = current_accel();
+     AccelClass *acc = ACCEL_GET_CLASS(accel);
+ 
+     /* target specific realization */
+-    if (cc->accel_cpu && cc->accel_cpu->cpu_target_realize
+-        && !cc->accel_cpu->cpu_target_realize(cpu, errp)) {
++    if (cpu->cc->accel_cpu
++        && cpu->cc->accel_cpu->cpu_target_realize
++        && !cpu->cc->accel_cpu->cpu_target_realize(cpu, errp)) {
+         return false;
      }
  
-     return false;
-@@ -45,10 +43,8 @@ bool cpu_paging_enabled(const CPUState *cpu)
- bool cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
-                             Error **errp)
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 53e580d128b..d9b662efe3b 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -121,10 +121,9 @@ static inline int xlat_gdb_type(CPUState *cpu, int gdbtype)
+         [GDB_WATCHPOINT_ACCESS] = BP_GDB | BP_MEM_ACCESS,
+     };
+ 
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+     int cputype = xlat[gdbtype];
+ 
+-    if (cc->gdb_stop_before_watchpoint) {
++    if (cpu->cc->gdb_stop_before_watchpoint) {
+         cputype |= BP_STOP_BEFORE_ACCESS;
+     }
+     return cputype;
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 0914d6e98b2..82bc16bd535 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -630,7 +630,7 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
+      * to account for the re-execution of the branch.
+      */
+     n = 1;
+-    cc = CPU_GET_CLASS(cpu);
++    cc = cpu->cc;
+     if (cc->tcg_ops->io_recompile_replay_branch &&
+         cc->tcg_ops->io_recompile_replay_branch(cpu, tb)) {
+         cpu->neg.icount_decr.u16.low++;
+diff --git a/accel/tcg/watchpoint.c b/accel/tcg/watchpoint.c
+index ba8c9859cf4..65b21884cec 100644
+--- a/accel/tcg/watchpoint.c
++++ b/accel/tcg/watchpoint.c
+@@ -68,7 +68,6 @@ int cpu_watchpoint_address_matches(CPUState *cpu, vaddr addr, vaddr len)
+ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
+                           MemTxAttrs attrs, int flags, uintptr_t ra)
  {
 -    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (cc->sysemu_ops->get_memory_mapping) {
--        return cc->sysemu_ops->get_memory_mapping(cpu, list, errp);
-+    if (cpu->cc->sysemu_ops->get_memory_mapping) {
-+        return cpu->cc->sysemu_ops->get_memory_mapping(cpu, list, errp);
+     CPUWatchpoint *wp;
+ 
+     assert(tcg_enabled());
+@@ -84,9 +83,9 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
+         return;
      }
  
-     error_setg(errp, "Obtaining memory mappings is unsupported on this CPU.");
-@@ -58,15 +54,15 @@ bool cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
- hwaddr cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
-                                      MemTxAttrs *attrs)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-     hwaddr paddr;
- 
--    if (cc->sysemu_ops->get_phys_page_attrs_debug) {
--        paddr = cc->sysemu_ops->get_phys_page_attrs_debug(cpu, addr, attrs);
-+    if (cpu->cc->sysemu_ops->get_phys_page_attrs_debug) {
-+        paddr = cpu->cc->sysemu_ops->get_phys_page_attrs_debug(cpu, addr,
-+                                                               attrs);
-     } else {
-         /* Fallback for CPUs which don't implement the _attrs_ hook */
-         *attrs = MEMTXATTRS_UNSPECIFIED;
--        paddr = cc->sysemu_ops->get_phys_page_debug(cpu, addr);
-+        paddr = cpu->cc->sysemu_ops->get_phys_page_debug(cpu, addr);
+-    if (cc->tcg_ops->adjust_watchpoint_address) {
++    if (cpu->cc->tcg_ops->adjust_watchpoint_address) {
+         /* this is currently used only by ARM BE32 */
+-        addr = cc->tcg_ops->adjust_watchpoint_address(cpu, addr, len);
++        addr = cpu->cc->tcg_ops->adjust_watchpoint_address(cpu, addr, len);
      }
-     /* Indicate that this is a debug access. */
-     attrs->debug = 1;
-@@ -94,64 +90,53 @@ int cpu_asidx_from_attrs(CPUState *cpu, MemTxAttrs attrs)
- int cpu_write_elf32_qemunote(WriteCoreDumpFunction f, CPUState *cpu,
-                              void *opaque)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (!cc->sysemu_ops->write_elf32_qemunote) {
-+    if (!cpu->cc->sysemu_ops->write_elf32_qemunote) {
-         return 0;
-     }
--    return (*cc->sysemu_ops->write_elf32_qemunote)(f, cpu, opaque);
-+    return (*cpu->cc->sysemu_ops->write_elf32_qemunote)(f, cpu, opaque);
- }
  
- int cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cpu,
-                          int cpuid, void *opaque)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (!cc->sysemu_ops->write_elf32_note) {
-+    if (!cpu->cc->sysemu_ops->write_elf32_note) {
-         return -1;
-     }
--    return (*cc->sysemu_ops->write_elf32_note)(f, cpu, cpuid, opaque);
-+    return (*cpu->cc->sysemu_ops->write_elf32_note)(f, cpu, cpuid, opaque);
- }
+     assert((flags & ~BP_MEM_ACCESS) == 0);
+@@ -118,8 +117,8 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
+             wp->hitattrs = attrs;
  
- int cpu_write_elf64_qemunote(WriteCoreDumpFunction f, CPUState *cpu,
-                              void *opaque)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (!cc->sysemu_ops->write_elf64_qemunote) {
-+    if (!cpu->cc->sysemu_ops->write_elf64_qemunote) {
-         return 0;
-     }
--    return (*cc->sysemu_ops->write_elf64_qemunote)(f, cpu, opaque);
-+    return (*cpu->cc->sysemu_ops->write_elf64_qemunote)(f, cpu, opaque);
- }
- 
- int cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cpu,
-                          int cpuid, void *opaque)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (!cc->sysemu_ops->write_elf64_note) {
-+    if (!cpu->cc->sysemu_ops->write_elf64_note) {
-         return -1;
-     }
--    return (*cc->sysemu_ops->write_elf64_note)(f, cpu, cpuid, opaque);
-+    return (*cpu->cc->sysemu_ops->write_elf64_note)(f, cpu, cpuid, opaque);
- }
- 
- bool cpu_virtio_is_big_endian(CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (cc->sysemu_ops->virtio_is_big_endian) {
--        return cc->sysemu_ops->virtio_is_big_endian(cpu);
-+    if (cpu->cc->sysemu_ops->virtio_is_big_endian) {
-+        return cpu->cc->sysemu_ops->virtio_is_big_endian(cpu);
-     }
-     return target_words_bigendian();
- }
- 
- GuestPanicInformation *cpu_get_crash_info(CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-     GuestPanicInformation *res = NULL;
- 
--    if (cc->sysemu_ops->get_crash_info) {
--        res = cc->sysemu_ops->get_crash_info(cpu);
-+    if (cpu->cc->sysemu_ops->get_crash_info) {
-+        res = cpu->cc->sysemu_ops->get_crash_info(cpu);
-     }
-     return res;
- }
-@@ -300,10 +285,8 @@ void cpu_vmstate_register(CPUState *cpu)
- 
- void cpu_vmstate_unregister(CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (cc->sysemu_ops->legacy_vmsd != NULL) {
--        vmstate_unregister(NULL, cc->sysemu_ops->legacy_vmsd, cpu);
-+    if (cpu->cc->sysemu_ops->legacy_vmsd != NULL) {
-+        vmstate_unregister(NULL, cpu->cc->sysemu_ops->legacy_vmsd, cpu);
-     }
-     if (qdev_get_vmsd(DEVICE(cpu)) == NULL) {
-         vmstate_unregister(NULL, &vmstate_cpu_common, cpu);
+             if (wp->flags & BP_CPU
+-                && cc->tcg_ops->debug_check_watchpoint
+-                && !cc->tcg_ops->debug_check_watchpoint(cpu, wp)) {
++                && cpu->cc->tcg_ops->debug_check_watchpoint
++                && !cpu->cc->tcg_ops->debug_check_watchpoint(cpu, wp)) {
+                 wp->flags &= ~BP_WATCHPOINT_HIT;
+                 continue;
+             }
 -- 
 2.47.1
 
