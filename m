@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9236EA581D9
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:41:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 224CEA58204
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:43:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trCBj-0001Ti-1a; Sun, 09 Mar 2025 04:39:11 -0400
+	id 1trCC4-0002fl-Qi; Sun, 09 Mar 2025 04:39:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCB7-0000mG-U9
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCB9-0000mU-16
  for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCB4-0002gR-Be
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:32 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCB7-0002iI-Fz
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741509509;
+ s=mimecast20190719; t=1741509512;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=95agMskPgnBc4AkyN44TZ2mvq+7CH/4kl3dTXY02EW8=;
- b=LX/PZwB63r3Bk4slv5Gxbxp1arFp0mkQfHO4B0yw/aqTR67rBCzvIquU1PV5G8rzfSPSnZ
- gli+13/O/QvQYwmMR9lyGcoSyKgYnhP5jrpMmxliDmpr/+qkOxtHX/CA0amBGpeOLz2Bow
- kVmgCTji1P+EjaWv6WYvHSycyTV/HNk=
+ bh=wg+vE2XW8XbeutKPbz1Cqy4vPolUw4ouDrgiQ62+Cac=;
+ b=jMVdyCmSs0YMgjDk0qnhzsykFnJ5bAfU7P6rdHwVxc3oQsj0OGhc8ZtqO9tMevooH7/997
+ ouwjlW488kz/TS/QhLYE+nGAFsgHoM2HAMKYAqBOmLYG8/PwPJzpIZ+ouJv87uEOPusNn9
+ iO6haUsJwySf7sHH0v7QTzEO1HC/bbk=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-386-n5k-mw9OOk6LE9edwXA7PA-1; Sun,
- 09 Mar 2025 04:38:26 -0400
-X-MC-Unique: n5k-mw9OOk6LE9edwXA7PA-1
-X-Mimecast-MFC-AGG-ID: n5k-mw9OOk6LE9edwXA7PA_1741509505
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-182-sOy5bzxjOGSd1Zuz_q_XZw-1; Sun,
+ 09 Mar 2025 04:38:28 -0400
+X-MC-Unique: sOy5bzxjOGSd1Zuz_q_XZw-1
+X-Mimecast-MFC-AGG-ID: sOy5bzxjOGSd1Zuz_q_XZw_1741509507
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0CBB21801A12; Sun,  9 Mar 2025 08:38:25 +0000 (UTC)
+ id 7E7D8180AF6A; Sun,  9 Mar 2025 08:38:27 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.4])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1144519560AB; Sun,  9 Mar 2025 08:38:22 +0000 (UTC)
+ id 617E419560AB; Sun,  9 Mar 2025 08:38:25 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,9 +52,10 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 60/62] docs: disambiguate cross-references
-Date: Sun,  9 Mar 2025 04:35:47 -0400
-Message-ID: <20250309083550.5155-61-jsnow@redhat.com>
+Subject: [PATCH v2 61/62] docs: enable qapidoc transmogrifier for QEMU QMP
+ Reference
+Date: Sun,  9 Mar 2025 04:35:48 -0400
+Message-ID: <20250309083550.5155-62-jsnow@redhat.com>
 In-Reply-To: <20250309083550.5155-1-jsnow@redhat.com>
 References: <20250309083550.5155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -85,80 +86,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The next patch will engage the qapidoc transmogrifier, which creates a
-lot of cross-reference targets. Some of the existing targets
-("migration", "qom", "replay") will become ambiguous as a result. Nail
-them down more explicitly to prevent ambiguous cross-reference warnings.
+We are not enabling the transmogrifier for QSD or QGA yet because we
+don't (yet) have a way to create separate indices, and all of the
+definitions will bleed together, which isn't so nice.
+
+For now, QMP is better than nothing at all!
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/devel/codebase.rst |  6 +++---
- docs/glossary.rst       | 10 +++++-----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ docs/interop/qemu-qmp-ref.rst | 1 +
+ qapi/qapi-schema.json         | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
-index 4039875ee04..1b09953197b 100644
---- a/docs/devel/codebase.rst
-+++ b/docs/devel/codebase.rst
-@@ -23,7 +23,7 @@ Some of the main QEMU subsystems are:
- - `Devices<device-emulation>` & Board models
- - `Documentation <documentation-root>`
- - `GDB support<GDB usage>`
--- `Migration<migration>`
-+- :ref:`Migration<migration>`
- - `Monitor<QEMU monitor>`
- - :ref:`QOM (QEMU Object Model)<qom>`
- - `System mode<System emulation>`
-@@ -112,7 +112,7 @@ yet, so sometimes the source code is all you have.
- * `libdecnumber <https://gitlab.com/qemu-project/qemu/-/tree/master/libdecnumber>`_:
-   Import of gcc library, used to implement decimal number arithmetic.
- * `migration <https://gitlab.com/qemu-project/qemu/-/tree/master/migration>`__:
--  `Migration framework <migration>`.
-+  :ref:`Migration framework <migration>`.
- * `monitor <https://gitlab.com/qemu-project/qemu/-/tree/master/monitor>`_:
-   `Monitor <QEMU monitor>` implementation (HMP & QMP).
- * `nbd <https://gitlab.com/qemu-project/qemu/-/tree/master/nbd>`_:
-@@ -193,7 +193,7 @@ yet, so sometimes the source code is all you have.
-   - `lcitool <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/lcitool>`_:
-     Generate dockerfiles for CI containers.
-   - `migration <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/migration>`_:
--    Test scripts and data for `Migration framework <migration>`.
-+    Test scripts and data for :ref:`Migration framework <migration>`.
-   - `multiboot <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/multiboot>`_:
-     Test multiboot functionality for x86_64/i386.
-   - `qapi-schema <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/qapi-schema>`_:
-diff --git a/docs/glossary.rst b/docs/glossary.rst
-index 693d9855dd1..4fa044bfb6e 100644
---- a/docs/glossary.rst
-+++ b/docs/glossary.rst
-@@ -120,7 +120,7 @@ Migration
- ---------
+diff --git a/docs/interop/qemu-qmp-ref.rst b/docs/interop/qemu-qmp-ref.rst
+index f94614a0b2f..e95eeac45e2 100644
+--- a/docs/interop/qemu-qmp-ref.rst
++++ b/docs/interop/qemu-qmp-ref.rst
+@@ -7,3 +7,4 @@ QEMU QMP Reference Manual
+    :depth: 3
  
- QEMU can save and restore the execution of a virtual machine between different
--host systems. This is provided by the `Migration framework<migration>`.
-+host systems. This is provided by the :ref:`Migration framework<migration>`.
- 
- NBD
- ---
-@@ -212,14 +212,14 @@ machine emulator and virtualizer.
- QOM
- ---
- 
--`QEMU Object Model <qom>` is an object oriented API used to define various
--devices and hardware in the QEMU codebase.
-+:ref:`QEMU Object Model <qom>` is an object oriented API used to define
-+various devices and hardware in the QEMU codebase.
- 
- Record/replay
- -------------
- 
--`Record/replay <replay>` is a feature of QEMU allowing to have a deterministic
--and reproducible execution of a virtual machine.
-+:ref:`Record/replay <replay>` is a feature of QEMU allowing to have a
-+deterministic and reproducible execution of a virtual machine.
- 
- Rust
- ----
+ .. qapi-doc:: qapi/qapi-schema.json
++   :transmogrify:
+diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+index 2877aff73d0..4475e81cc3e 100644
+--- a/qapi/qapi-schema.json
++++ b/qapi/qapi-schema.json
+@@ -5,6 +5,8 @@
+ #
+ # This document describes all commands currently supported by QMP.
+ #
++# For locating a particular item, please see the `qapi-index`.
++#
+ # Most of the time their usage is exactly the same as in the user
+ # Monitor, this means that any other document which also describe
+ # commands (the manpage, QEMU's manual, etc) can and should be
 -- 
 2.48.1
 
