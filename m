@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD04A58919
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 00:08:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB804A5891D
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 00:08:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trPkT-0003eV-BV; Sun, 09 Mar 2025 19:07:59 -0400
+	id 1trPkX-0003rN-MY; Sun, 09 Mar 2025 19:08:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1trPkB-0003Xt-HX
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 19:07:40 -0400
+ id 1trPkK-0003l1-2a
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 19:07:48 -0400
 Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1trPk9-0004l4-Pu
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 19:07:39 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1741561645; cv=none; 
+ id 1trPkG-0004ll-7r
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 19:07:46 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1741561651; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=CNL/NCbDzkYzb8syluRzSRw8B/mr9yjr9wc1HDLS6Y2LVCW102H3cX8wqImfPK549fNXFVCuxvBnVvJhUMLUtibspiMmKEvC4Q+vKR3kVy+a36MGAemWWtpQraq3jE2RMveRtSJ8JBHR8aqT66ac5zxjWcEAo9076pPYIAiNgT8=
+ b=fmQ/xGANEm021xtLZOBnfiqfsinHYiiquctbRFZzOEvamGjCNz+RgMn+3UnSF9RqOY1GJ7TO51dRA7ifCC3Q2QYqiEgfOoGqijyEo0hUGKQl+BMvEipigE3h/BMYgE9M1QrjuEFruDNjlFuVrD5jKN9I3THuevRokpzdKk9rRSc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1741561645;
+ s=zohoarc; t=1741561651;
  h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=blb8y7Rz6b3Leso+OAXIELBML0HJvsHKGxqmnHSnGAc=; 
- b=AjY8VZBxQKswRBWkEaMYNpv1gweQKwIsrwVAaJDbYiRG/1zDkKOq1vnJJRfFhiU3k2T4yhNjipX3cGr6KnYiuMDwMW2ji5ZbUrAPffjygHCKz2JdfdNSVB+Myn525xnXq2qR5JeUJCtXQP8ZBB3T74Jau+N4bVZR10+3Ut/hBy0=
+ bh=eJrSLxjqu0HeBH1I3TSIB8+DRFiJIAdZt2l2rGiZd2w=; 
+ b=LuK8Rv6cfn690CaoPRMfOMxAMwywF+8cXnJOWZ99/nqBRca9eCH5yDiIP54kkPyphjdI9oOF0qi3m8WDssEd6uYA60cBZk5zPVD9rMwwAsKN4ImzZxqJYWSKqM85vBsPleLn4WFZEgbaXCIokZ5lSdfwhI/OQpfYHJ3CX1I49Og=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741561645; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741561651; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
  h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=blb8y7Rz6b3Leso+OAXIELBML0HJvsHKGxqmnHSnGAc=;
- b=Z/HpJlkR1N8fKMt5g4w/eJbtHppa3H+eFeOUHxwowQuFbfCh4XGt2CT+zmEuJ2gS
- z4QqQmXw4cmm0NIK9NdlXdzFCrndoZz02Uuq21l5NK2gHhzgo1K8ZyP1nnePz19wVww
- s5WI2T2mXsk0fX2fVbreHXqNPfM62744ZUtvzgnA=
-Received: by mx.zohomail.com with SMTPS id 174156164308414.923882847207551;
- Sun, 9 Mar 2025 16:07:23 -0700 (PDT)
+ bh=eJrSLxjqu0HeBH1I3TSIB8+DRFiJIAdZt2l2rGiZd2w=;
+ b=knWD3f9v4UgrMP/kp42zKHqLKtzWx9/vOBG4rLs5bInNcCgaE0rab2RBL9KST85Q
+ a32V/PAdjwJQ4nHHV5yrGJOPPhVhltkqemnBxxTdqneikh2tdAeiG7BWYIScwPjcqP/
+ hMoVlriWJz+2UVm1kxoRguCTqHa7RXA4ccVjQ5TQ=
+Received: by mx.zohomail.com with SMTPS id 1741561649151726.6289880297523;
+ Sun, 9 Mar 2025 16:07:29 -0700 (PDT)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -57,9 +57,9 @@ Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
  Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
-Subject: [PATCH v9 08/10] docs/system: virtio-gpu: Add link to Mesa VirGL doc
-Date: Mon, 10 Mar 2025 02:05:37 +0300
-Message-ID: <20250309230539.125374-9-dmitry.osipenko@collabora.com>
+Subject: [PATCH v9 09/10] docs/system: virtio-gpu: Update Venus link
+Date: Mon, 10 Mar 2025 02:05:38 +0300
+Message-ID: <20250309230539.125374-10-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250309230539.125374-1-dmitry.osipenko@collabora.com>
 References: <20250309230539.125374-1-dmitry.osipenko@collabora.com>
@@ -91,37 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend virtio-gpu documentation with a link to the Mesa VirGL
-documentation.
+Change virtio-gpu Venus link, pointing it at the Mesa Venus
+documentation instead of the protocol. The Mesa doc provides more
+information and also has a link to the protocol.
 
 Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- docs/system/devices/virtio-gpu.rst | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ docs/system/devices/virtio-gpu.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
-index f20c60016376..f8963c1f13cf 100644
+index f8963c1f13cf..ea3eb052df3c 100644
 --- a/docs/system/devices/virtio-gpu.rst
 +++ b/docs/system/devices/virtio-gpu.rst
-@@ -59,7 +59,7 @@ on typical modern Linux distributions.
- virtio-gpu virglrenderer
- ------------------------
- 
--When using virgl accelerated graphics mode in the guest, OpenGL API calls
-+When using `virgl`_ accelerated graphics mode in the guest, OpenGL API calls
- are translated into an intermediate representation (see `Gallium3D`_). The
- intermediate representation is communicated to the host and the
- `virglrenderer`_ library on the host translates the intermediate
-@@ -68,6 +68,7 @@ representation back to OpenGL API calls.
+@@ -81,7 +81,7 @@ of virtio-gpu host memory window. This is typically between 256M and 8G.
  .. parsed-literal::
-     -device virtio-gpu-gl
+     -device virtio-gpu-gl,hostmem=8G,blob=true,venus=true
  
-+.. _virgl: https://docs.mesa3d.org/drivers/virgl.html
- .. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
- .. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
+-.. _venus: https://gitlab.freedesktop.org/virgl/venus-protocol/
++.. _venus: https://docs.mesa3d.org/drivers/venus.html
  
+ DRM native context is supported since release of `virglrenderer`_ v1.0.0
+ using `drm`_ protocol.  ``DRM`` virtio-gpu capability set ("capset") requires
 -- 
 2.48.1
 
