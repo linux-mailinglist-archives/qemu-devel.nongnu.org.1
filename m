@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B895A58202
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A749A581BF
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:40:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trCB4-0000Hp-VG; Sun, 09 Mar 2025 04:38:31 -0400
+	id 1trCBT-0000fH-AI; Sun, 09 Mar 2025 04:38:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAh-0007WE-Qv
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAj-0007cH-BR
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAf-0002bb-Lz
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:07 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAh-0002c4-Ke
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741509484;
+ s=mimecast20190719; t=1741509486;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vKopI/AWjtj/zsIuyT99Y+aZfaf9wJkOLsCuec/d7F0=;
- b=CNR5rmNt0ptc54Cy9F7rj3gSahQ36mjF2wciBXdsxKpPkll98Vey7t2GtOsBw2cuzt3DSK
- fJ0DvR+S9nYXQEBzgsAFJi4XLs3PHd5Csicy2yKIRCfzwqx2J4M+q2VbJU4uXrwkvlJy/7
- e+aqtBculxlbp3M5z9GyEB8u6h09BWc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=B2nUZ3YC8ci0bO5wol/m6Inqqtl+pWK/j3pj252oFao=;
+ b=E7ZMElYdQugfIDRdu+M/8XxgMvlqthlO54zdFmsPGrOm+ZoiKI1UvAlB8LPMgjH61nQz3L
+ 7xqZNfpHnUO6rZFqb56+Fap/68ZE229XkEhtFWgH0omzsxD9nOV3qgSDD70dKlhf3ROYw7
+ U+wjLLG1c3s5G2myudS+qRfk+dykPa4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-kU43lymBNIC1wRiO68CHPQ-1; Sun,
- 09 Mar 2025 04:38:01 -0400
-X-MC-Unique: kU43lymBNIC1wRiO68CHPQ-1
-X-Mimecast-MFC-AGG-ID: kU43lymBNIC1wRiO68CHPQ_1741509480
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-cF3IMxWnORmSKdP2wx3QRw-1; Sun,
+ 09 Mar 2025 04:38:03 -0400
+X-MC-Unique: cF3IMxWnORmSKdP2wx3QRw-1
+X-Mimecast-MFC-AGG-ID: cF3IMxWnORmSKdP2wx3QRw_1741509482
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1F4DB19560AF; Sun,  9 Mar 2025 08:38:00 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5BE2119560BB; Sun,  9 Mar 2025 08:38:02 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.4])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0145519560AD; Sun,  9 Mar 2025 08:37:57 +0000 (UTC)
+ id 65AA219560AB; Sun,  9 Mar 2025 08:38:00 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,22 +52,22 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 50/62] docs/qapidoc: add visit_returns() method
-Date: Sun,  9 Mar 2025 04:35:37 -0400
-Message-ID: <20250309083550.5155-51-jsnow@redhat.com>
+Subject: [PATCH v2 51/62] docs/qapidoc: add visit_member() method
+Date: Sun,  9 Mar 2025 04:35:38 -0400
+Message-ID: <20250309083550.5155-52-jsnow@redhat.com>
 In-Reply-To: <20250309083550.5155-1-jsnow@redhat.com>
 References: <20250309083550.5155-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,48 +85,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Generates :returns: fields for explicit returns statements. Note that
-this does not presently handle undocumented returns, which is handled in
-a later commit.
+This method is used for generating the "members" of a wide variety of
+things, including structs, unions, enums, alternates, etc. The field
+name it uses to do so is dependent on the type of entity the "member"
+belongs to.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ docs/sphinx/qapidoc.py | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 834f12ba6e9..85e7367ad79 100644
+index 85e7367ad79..db11c2ae933 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -41,6 +41,7 @@
- from qapi.schema import (
-     QAPISchema,
-     QAPISchemaArrayType,
-+    QAPISchemaCommand,
-     QAPISchemaDefinition,
-     QAPISchemaEnumMember,
-     QAPISchemaFeature,
-@@ -210,6 +211,20 @@ def visit_feature(self, section: QAPIDoc.ArgSection) -> None:
+@@ -78,6 +78,16 @@
  
-         self.generate_field("feat", section.member, section.text, section.info)
  
-+    def visit_returns(self, section: QAPIDoc.Section) -> None:
-+        assert isinstance(self.entity, QAPISchemaCommand)
-+        rtype = self.entity.ret_type
-+        # q_empty can produce None, but we won't be documenting anything
-+        # without an explicit return statement in the doc block, and we
-+        # should not have any such explicit statements when there is no
-+        # return value.
-+        assert rtype
+ class Transmogrifier:
++    # Field names used for different entity types:
++    field_types = {
++        "enum": "value",
++        "struct": "memb",
++        "union": "memb",
++        "event": "memb",
++        "command": "arg",
++        "alternate": "alt",
++    }
 +
-+        typ = self.format_type(rtype)
-+        assert typ
-+        assert section.text  # We don't expect empty returns sections.
-+        self.add_field("return", typ, section.text, section.info)
+     def __init__(self) -> None:
+         self._curr_ent: Optional[QAPISchemaDefinition] = None
+         self._result = StringList()
+@@ -88,6 +98,10 @@ def entity(self) -> QAPISchemaDefinition:
+         assert self._curr_ent is not None
+         return self._curr_ent
+ 
++    @property
++    def member_field_type(self) -> str:
++        return self.field_types[self.entity.meta]
 +
-     def visit_errors(self, section: QAPIDoc.Section) -> None:
-         # FIXME: the formatting for errors may be inconsistent and may
-         # or may not require different newline placement to ensure
+     # General-purpose rST generation functions
+ 
+     def get_indent(self) -> str:
+@@ -202,6 +216,19 @@ def visit_paragraph(self, section: QAPIDoc.Section) -> None:
+         self.add_lines(section.text, section.info)
+         self.ensure_blank_line()
+ 
++    def visit_member(self, section: QAPIDoc.ArgSection) -> None:
++        # TODO: ifcond for members
++        # TODO?: features for members (documented at entity-level,
++        # but sometimes defined per-member. Should we add such
++        # information to member descriptions when we can?)
++        assert section.text and section.member
++        self.generate_field(
++            self.member_field_type,
++            section.member,
++            section.text,
++            section.info,
++        )
++
+     def visit_feature(self, section: QAPIDoc.ArgSection) -> None:
+         # FIXME - ifcond for features is not handled at all yet!
+         # Proposal: decorate the right-hand column with some graphical
 -- 
 2.48.1
 
