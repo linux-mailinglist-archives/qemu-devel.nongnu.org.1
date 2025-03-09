@@ -2,47 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD8CBA58A82
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 03:39:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F66FA58AFC
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 04:58:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trT1a-0003eX-Bj; Sun, 09 Mar 2025 22:37:50 -0400
+	id 1trUGK-0001lS-9B; Sun, 09 Mar 2025 23:57:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lc00631@tecorigin.com>)
- id 1trT1W-0003db-5f; Sun, 09 Mar 2025 22:37:46 -0400
-Received: from out28-149.mail.aliyun.com ([115.124.28.149])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1trUGC-0001gV-PR
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 23:57:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lc00631@tecorigin.com>)
- id 1trT1T-0003Qo-FV; Sun, 09 Mar 2025 22:37:45 -0400
-Received: from TC-DZ-03-0020.tc.local(mailfrom:lc00631@tecorigin.com
- fp:SMTPD_---.booCGfo_1741574252 cluster:ay29) by smtp.aliyun-inc.com;
- Mon, 10 Mar 2025 10:37:32 +0800
-From: Chao Liu <lc00631@tecorigin.com>
-To: alistair23@gmail.com
-Cc: alistair.francis@wdc.com, bmeng.cn@gmail.com, dbarboza@ventanamicro.com,
- lc00631@tecorigin.com, liwei1518@gmail.com, palmer@dabbelt.com,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
- zqz00548@tecorigin.com
-Subject: [PATCH v4 2/2] target/riscv: fix handling of nop for vstart >= vl in
- some vector instruction
-Date: Mon, 10 Mar 2025 10:35:25 +0800
-Message-ID: <b2649f14915150be4c602d63cd3ea4adf47e9d75.1741573286.git.lc00631@tecorigin.com>
-X-Mailer: git-send-email 2.47.0.windows.2
-In-Reply-To: <cover.1741573286.git.lc00631@tecorigin.com>
-References: <cover.1741573286.git.lc00631@tecorigin.com>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1trUGB-00042L-1d
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 23:57:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741579017;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=DiLc3V26vSFmPHOdQzpXBXEJ4iSeWGW/VjTZAzC7gEs=;
+ b=hpVdH6CP5TszjIySGhqu5Nwj8DObSZ/d8yLmfAFLzxMiHGjaOLwrrT3k/2RsCsvZeoIpJ3
+ lTyzmK1ECmI8R1lH+3DYSyC5YBNIsx0/9EkeKE5WiA8YiUz73Nj9+Za4o7+jYnhyBojtCS
+ axpBtpSncNH9+Pwbp0VurPyoMzJZpUY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-SDOoJAMiOHi3Te9OwRil5w-1; Sun,
+ 09 Mar 2025 23:56:53 -0400
+X-MC-Unique: SDOoJAMiOHi3Te9OwRil5w-1
+X-Mimecast-MFC-AGG-ID: SDOoJAMiOHi3Te9OwRil5w_1741579012
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CD5B51955D66; Mon, 10 Mar 2025 03:56:51 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.40])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7156F1956094; Mon, 10 Mar 2025 03:56:48 +0000 (UTC)
+Date: Sun, 9 Mar 2025 08:41:17 +0800
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org, stefanha@gmail.com, maobibo@loongson.cn
+Subject: Re: [PULL 0/2] loongarch tcg queue
+Message-ID: <20250309004117.GA50535@fedora>
+References: <20250307021934.1080115-1-gaosong@loongson.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.28.149;
- envelope-from=lc00631@tecorigin.com; helo=out28-149.mail.aliyun.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="pZif3rZp7KhvmLIZ"
+Content-Disposition: inline
+In-Reply-To: <20250307021934.1080115-1-gaosong@loongson.cn>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,116 +82,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Recently, when I was writing a RISCV test, I found that when VL is set to 0, the
-instruction should be nop, but when I tested it, I found that QEMU will treat
-all elements as tail elements, and in the case of VTA=1, write all elements
-to 1.
 
-After troubleshooting, it was found that the vext_vx_rm_1 function was called in
-the vext_vx_rm_2, and then the vext_set_elems_1s function was called to process
-the tail element, but only VSTART >= vl was checked in the vext_vx_rm_1
-function, which caused the tail element to still be processed even if it was
-returned in advance.
+--pZif3rZp7KhvmLIZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-So I've made the following change:
+Applied, thanks.
 
-Put VSTART_CHECK_EARLY_EXIT(env) at the beginning of the vext_vx_rm_2 function,
-so that the VSTART register is checked correctly.
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
 
-Fixes: df4252b2ec ("target/riscv/vector_helpers: do early exit when
-vstart >= vl")
-Signed-off-by: Chao Liu <lc00631@tecorigin.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/vector_helper.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+--pZif3rZp7KhvmLIZ
+Content-Type: application/pgp-signature; name=signature.asc
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 217d2f6..67b3baf 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -2175,8 +2175,6 @@ vext_vv_rm_1(void *vd, void *v0, void *vs1, void *vs2,
-              uint32_t vl, uint32_t vm, int vxrm,
-              opivv2_rm_fn *fn, uint32_t vma, uint32_t esz)
- {
--    VSTART_CHECK_EARLY_EXIT(env, vl);
--
-     for (uint32_t i = env->vstart; i < vl; i++) {
-         if (!vm && !vext_elem_mask(v0, i)) {
-             /* set masked-off elements to 1s */
-@@ -2200,6 +2198,8 @@ vext_vv_rm_2(void *vd, void *v0, void *vs1, void *vs2,
-     uint32_t vta = vext_vta(desc);
-     uint32_t vma = vext_vma(desc);
- 
-+    VSTART_CHECK_EARLY_EXIT(env, vl);
-+
-     switch (env->vxrm) {
-     case 0: /* rnu */
-         vext_vv_rm_1(vd, v0, vs1, vs2,
-@@ -2302,8 +2302,6 @@ vext_vx_rm_1(void *vd, void *v0, target_long s1, void *vs2,
-              uint32_t vl, uint32_t vm, int vxrm,
-              opivx2_rm_fn *fn, uint32_t vma, uint32_t esz)
- {
--    VSTART_CHECK_EARLY_EXIT(env, vl);
--
-     for (uint32_t i = env->vstart; i < vl; i++) {
-         if (!vm && !vext_elem_mask(v0, i)) {
-             /* set masked-off elements to 1s */
-@@ -2327,6 +2325,8 @@ vext_vx_rm_2(void *vd, void *v0, target_long s1, void *vs2,
-     uint32_t vta = vext_vta(desc);
-     uint32_t vma = vext_vma(desc);
- 
-+    VSTART_CHECK_EARLY_EXIT(env, vl);
-+
-     switch (env->vxrm) {
-     case 0: /* rnu */
-         vext_vx_rm_1(vd, v0, s1, vs2,
-@@ -4662,6 +4662,8 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,          \
-     uint32_t i;                                           \
-     TD s1 =  *((TD *)vs1 + HD(0));                        \
-                                                           \
-+    VSTART_CHECK_EARLY_EXIT(env, vl);                     \
-+                                                          \
-     for (i = env->vstart; i < vl; i++) {                  \
-         TS2 s2 = *((TS2 *)vs2 + HS2(i));                  \
-         if (!vm && !vext_elem_mask(v0, i)) {              \
-@@ -4750,6 +4752,8 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,           \
-     uint32_t i;                                            \
-     TD s1 =  *((TD *)vs1 + HD(0));                         \
-                                                            \
-+    VSTART_CHECK_EARLY_EXIT(env, vl);                      \
-+                                                           \
-     for (i = env->vstart; i < vl; i++) {                   \
-         TS2 s2 = *((TS2 *)vs2 + HS2(i));                   \
-         if (!vm && !vext_elem_mask(v0, i)) {               \
-@@ -4914,6 +4918,8 @@ static void vmsetm(void *vd, void *v0, void *vs2, CPURISCVState *env,
-     int i;
-     bool first_mask_bit = false;
- 
-+    VSTART_CHECK_EARLY_EXIT(env, vl);
-+
-     for (i = env->vstart; i < vl; i++) {
-         if (!vm && !vext_elem_mask(v0, i)) {
-             /* set masked-off elements to 1s */
-@@ -4986,6 +4992,8 @@ void HELPER(NAME)(void *vd, void *v0, void *vs2, CPURISCVState *env,      \
-     uint32_t sum = 0;                                                     \
-     int i;                                                                \
-                                                                           \
-+    VSTART_CHECK_EARLY_EXIT(env, vl);                                     \
-+                                                                          \
-     for (i = env->vstart; i < vl; i++) {                                  \
-         if (!vm && !vext_elem_mask(v0, i)) {                              \
-             /* set masked-off elements to 1s */                           \
-@@ -5344,6 +5352,8 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1, void *vs2,               \
-     uint32_t vta = vext_vta(desc);                                        \
-     uint32_t num = 0, i;                                                  \
-                                                                           \
-+    VSTART_CHECK_EARLY_EXIT(env, vl);                                     \
-+                                                                          \
-     for (i = env->vstart; i < vl; i++) {                                  \
-         if (!vext_elem_mask(vs1, i)) {                                    \
-             continue;                                                     \
--- 
-2.48.1
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfM46wACgkQnKSrs4Gr
+c8hpXAf/eHU964c4FiF1SbrdQA+DGSN+MFJC8p4NikjP74wK1FrmwMCPwB41ppKE
+81qoC8VcT1cRNdQFg+bqWMBAug7gLosz0vpTYh+Cfv2tmpTqzjy+T9bFdDaIm3oY
+IthYbT+oO0mzWXDrIdM7Xjoiq/xBO8mgiVjcmC3ryrNIRyz0ZGRt1Wopm6cklHS9
+INQ5BQx7pB0/Gzx76DAeMve1kniksohwszBVrFmWhtMpoGRd9X74VrX5lUxViDiN
+WAXviE3ElUfsAVgb1WkKEUwtccNStAHqcxrs5ZdiuRK/QdRFFIjticHubs8/ps0V
+z8IZUQVg9ZYgtsnujVm4ylIdGZ4O0w==
+=EMko
+-----END PGP SIGNATURE-----
+
+--pZif3rZp7KhvmLIZ--
 
 
