@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E2BA584D3
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6B0A584CB
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:57:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trH4e-0007ju-Na; Sun, 09 Mar 2025 09:52:12 -0400
+	id 1trH4e-0007kG-UK; Sun, 09 Mar 2025 09:52:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4W-0007Y6-BL
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:52:05 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4Y-0007ZF-5m
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:52:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4T-0002Bh-OJ
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:52:03 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4W-0002Dr-Bg
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:52:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741528321;
+ s=mimecast20190719; t=1741528323;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YoI8GuRMpRUHRNia4eBQVQe6sszmgwkcTyrJ8pUstX8=;
- b=LhZLJxZomqDnm5NnEDnP9IrNfdfKSxx9+uzvAFuxuHwfLYcVxHKBzZmQEc3LU5wWrWOT0R
- S43MvfD6Mbp3j393dcP91/4TdDMW2lY62GDkTOWBqXTRSXFpTvLirTc8b0BDRG/dBq+wiW
- KXo9rooKOsBUpbFNmt7h1lY4HOQPwuw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=YLl1bc4YtLJCWH6ozATRA+AxvNEaJw+HB5E7SiCcFyQ=;
+ b=RJCrI0wWI2Z2fYYyGxmbPW29Zabsg8HglXAHXmOzM8WOUd9tHA+hYOyDX1lwSewy9Vo5af
+ A887O4kaZg0mRYFjD/cga4nHhxHvHoay7O9O+hd0boA9yNceQmZ91l1Fg9uMmlafr0LWxo
+ 2Hd8q1w6wWsyvUqcwmkIowbkqR0kh5Q=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-408-SCW38zwcMim0E81zpMf1mw-1; Sun,
- 09 Mar 2025 09:51:57 -0400
-X-MC-Unique: SCW38zwcMim0E81zpMf1mw-1
-X-Mimecast-MFC-AGG-ID: SCW38zwcMim0E81zpMf1mw_1741528316
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-YHj2l2dWOdieWLYaxjFG8Q-1; Sun,
+ 09 Mar 2025 09:51:59 -0400
+X-MC-Unique: YHj2l2dWOdieWLYaxjFG8Q-1
+X-Mimecast-MFC-AGG-ID: YHj2l2dWOdieWLYaxjFG8Q_1741528318
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 26692195608A; Sun,  9 Mar 2025 13:51:56 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AF0F319560B0; Sun,  9 Mar 2025 13:51:58 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.17])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8A0511956094; Sun,  9 Mar 2025 13:51:54 +0000 (UTC)
+ id A181F1956094; Sun,  9 Mar 2025 13:51:56 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 08/46] hw/misc/aspeed_hace: Fix coding style
-Date: Sun,  9 Mar 2025 14:50:52 +0100
-Message-ID: <20250309135130.545764-9-clg@redhat.com>
+Subject: [PULL 09/46] hw/misc/aspeed_hace: Add AST2700 support
+Date: Sun,  9 Mar 2025 14:50:53 +0100
+Message-ID: <20250309135130.545764-10-clg@redhat.com>
 In-Reply-To: <20250309135130.545764-1-clg@redhat.com>
 References: <20250309135130.545764-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -66,7 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,46 +85,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Fix coding style issues from checkpatch.pl.
+Introduce a new ast2700 class to support AST2700.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250225075622.305515-2-jamin_lin@aspeedtech.com
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Link: https://lore.kernel.org/qemu-devel/20250225075622.305515-3-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/misc/aspeed_hace.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ include/hw/misc/aspeed_hace.h |  1 +
+ hw/misc/aspeed_hace.c         | 20 ++++++++++++++++++++
+ 2 files changed, 21 insertions(+)
 
+diff --git a/include/hw/misc/aspeed_hace.h b/include/hw/misc/aspeed_hace.h
+index 4af99191955a..d13fd3da078c 100644
+--- a/include/hw/misc/aspeed_hace.h
++++ b/include/hw/misc/aspeed_hace.h
+@@ -18,6 +18,7 @@
+ #define TYPE_ASPEED_AST2500_HACE TYPE_ASPEED_HACE "-ast2500"
+ #define TYPE_ASPEED_AST2600_HACE TYPE_ASPEED_HACE "-ast2600"
+ #define TYPE_ASPEED_AST1030_HACE TYPE_ASPEED_HACE "-ast1030"
++#define TYPE_ASPEED_AST2700_HACE TYPE_ASPEED_HACE "-ast2700"
+ 
+ OBJECT_DECLARE_TYPE(AspeedHACEState, AspeedHACEClass, ASPEED_HACE)
+ 
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index e3f7df2e862a..18b85081c7c5 100644
+index 18b85081c7c5..86422cb3be70 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -75,9 +75,12 @@ static const struct {
-     { HASH_ALGO_SHA1, QCRYPTO_HASH_ALGO_SHA1 },
-     { HASH_ALGO_SHA224, QCRYPTO_HASH_ALGO_SHA224 },
-     { HASH_ALGO_SHA256, QCRYPTO_HASH_ALGO_SHA256 },
--    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA512, QCRYPTO_HASH_ALGO_SHA512 },
--    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA384, QCRYPTO_HASH_ALGO_SHA384 },
--    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA256, QCRYPTO_HASH_ALGO_SHA256 },
-+    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA512,
-+      QCRYPTO_HASH_ALGO_SHA512 },
-+    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA384,
-+      QCRYPTO_HASH_ALGO_SHA384 },
-+    { HASH_ALGO_SHA512_SERIES | HASH_ALGO_SHA512_SHA256,
-+      QCRYPTO_HASH_ALGO_SHA256 },
+@@ -552,12 +552,32 @@ static const TypeInfo aspeed_ast1030_hace_info = {
+     .class_init = aspeed_ast1030_hace_class_init,
  };
  
- static int hash_algo_lookup(uint32_t reg)
-@@ -201,7 +204,8 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-             haddr = address_space_map(&s->dram_as, addr, &plen, false,
-                                       MEMTXATTRS_UNSPECIFIED);
-             if (haddr == NULL) {
--                qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto failed\n", __func__);
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                              "%s: qcrypto failed\n", __func__);
-                 return;
-             }
-             iov[i].iov_base = haddr;
++static void aspeed_ast2700_hace_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    AspeedHACEClass *ahc = ASPEED_HACE_CLASS(klass);
++
++    dc->desc = "AST2700 Hash and Crypto Engine";
++
++    ahc->src_mask = 0x7FFFFFFF;
++    ahc->dest_mask = 0x7FFFFFF8;
++    ahc->key_mask = 0x7FFFFFF8;
++    ahc->hash_mask = 0x00147FFF;
++}
++
++static const TypeInfo aspeed_ast2700_hace_info = {
++    .name = TYPE_ASPEED_AST2700_HACE,
++    .parent = TYPE_ASPEED_HACE,
++    .class_init = aspeed_ast2700_hace_class_init,
++};
++
+ static void aspeed_hace_register_types(void)
+ {
+     type_register_static(&aspeed_ast2400_hace_info);
+     type_register_static(&aspeed_ast2500_hace_info);
+     type_register_static(&aspeed_ast2600_hace_info);
+     type_register_static(&aspeed_ast1030_hace_info);
++    type_register_static(&aspeed_ast2700_hace_info);
+     type_register_static(&aspeed_hace_info);
+ }
+ 
 -- 
 2.48.1
 
