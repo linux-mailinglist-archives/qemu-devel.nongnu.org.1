@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A42A584C2
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DEFA584D2
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:58:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trH6P-00045J-Bc; Sun, 09 Mar 2025 09:54:01 -0400
+	id 1trH70-0006Qn-F9; Sun, 09 Mar 2025 09:54:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH5u-0002yf-MK
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH5w-00034W-25
  for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:53:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH5s-00040V-IS
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:53:29 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH5u-00040k-CM
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:53:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741528408;
+ s=mimecast20190719; t=1741528409;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b8X7bOh4aHrDvPhY8tiNa0eg/JWB6wkepynH6ur0Q+A=;
- b=Q5nomXttp1ByY46XgGHhjF/KKvhYkj4YY8CCB+6wQsv+1IGKDZr2/9DKOaaWdmJwvFZO+i
- Jk8I5RMyi5PPL+0N289nzcDFKVIPhbXZjSJWXB7rPaLGLK1vOUAcDMmeDryualgFMx4d80
- tpsSSDAkG4Qsnc5ChZAbEcuRyMf3rbk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=olzfJb6+UaL228zLNa34I/aENf2JDKBA8raySJwn7bQ=;
+ b=GexZ74WwiYI81aKJMOyBRgeAFwxzyLcCxDuzKkdYA54Tgqc4GWWOjwZ7wXPY+3D+QDschl
+ xe/LUX96AKd/f46sRdrNYqvhwIfKGlNA4C4P0G49rVkr9Qkr/1W6bV0UBo8WFfTKaaSonI
+ xuFJjbbDH37suwU2t1W64THZDRSbM5c=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-52-y1H9BG9EM_-jK6Xkt3GImQ-1; Sun,
- 09 Mar 2025 09:53:22 -0400
-X-MC-Unique: y1H9BG9EM_-jK6Xkt3GImQ-1
-X-Mimecast-MFC-AGG-ID: y1H9BG9EM_-jK6Xkt3GImQ_1741528401
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-18-i29xKa7KMPCzUf4DO-2_FQ-1; Sun,
+ 09 Mar 2025 09:53:24 -0400
+X-MC-Unique: i29xKa7KMPCzUf4DO-2_FQ-1
+X-Mimecast-MFC-AGG-ID: i29xKa7KMPCzUf4DO-2_FQ_1741528403
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 97FC4180035C; Sun,  9 Mar 2025 13:53:21 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CEA551956048; Sun,  9 Mar 2025 13:53:23 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.17])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 070F91956094; Sun,  9 Mar 2025 13:53:19 +0000 (UTC)
+ id 1ECD31956094; Sun,  9 Mar 2025 13:53:21 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 43/46] tests/functional/aspeed: Update temperature hwmon path
-Date: Sun,  9 Mar 2025 14:51:27 +0100
-Message-ID: <20250309135130.545764-44-clg@redhat.com>
+Subject: [PULL 44/46] tests/functional/aspeed: Update test ASPEED SDK v09.05
+Date: Sun,  9 Mar 2025 14:51:28 +0100
+Message-ID: <20250309135130.545764-45-clg@redhat.com>
 In-Reply-To: <20250309135130.545764-1-clg@redhat.com>
 References: <20250309135130.545764-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,35 +84,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Modified the temperature hwmon path to use a wildcard to handle different SDK
-versions: "cat /sys/bus/i2c/devices/1-004d/hwmon/hwmon*/temp1_input".
+In ASPEED SDK v09.05, the naming convention for pre-built images has been
+updated. The pre-built image for AST2700 A0 has been renamed to
+ast2700-a0-default, while ast2700-default is now used for AST2700 A1.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250307035945.3698802-27-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20250307035945.3698802-28-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/functional/test_aarch64_aspeed.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/functional/test_aarch64_aspeed.py | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/tests/functional/test_aarch64_aspeed.py b/tests/functional/test_aarch64_aspeed.py
-index e1ad7fd4708c..07b0c7c1fd27 100755
+index 07b0c7c1fd27..8df6a97a2852 100755
 --- a/tests/functional/test_aarch64_aspeed.py
 +++ b/tests/functional/test_aarch64_aspeed.py
-@@ -83,11 +83,11 @@ def start_ast2700_test(self, name):
-             'echo lm75 0x4d > /sys/class/i2c-dev/i2c-1/device/new_device ',
-             'i2c i2c-1: new_device: Instantiated device lm75 at 0x4d');
-         exec_command_and_wait_for_pattern(self,
--            'cat /sys/class/hwmon/hwmon20/temp1_input', '0')
-+            'cat /sys/bus/i2c/devices/1-004d/hwmon/hwmon*/temp1_input', '0')
-         self.vm.cmd('qom-set', path='/machine/peripheral/tmp-test',
-                     property='temperature', value=18000)
-         exec_command_and_wait_for_pattern(self,
--            'cat /sys/class/hwmon/hwmon20/temp1_input', '18000')
-+            'cat /sys/bus/i2c/devices/1-004d/hwmon/hwmon*/temp1_input', '18000')
+@@ -27,9 +27,9 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
+         wait_for_console_pattern(self, '## Loading kernel from FIT Image')
+         wait_for_console_pattern(self, 'Starting kernel ...')
  
-     def test_aarch64_ast2700_evb_sdk_v09_03(self):
+-    ASSET_SDK_V903_AST2700 = Asset(
+-            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.03/ast2700-default-obmc.tar.gz',
+-            '91225f50d255e2905ba8d8e0c80b71b9d157c3609770c7a740cd786370d85a77')
++    ASSET_SDK_V905_AST2700 = Asset(
++            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-a0-default-obmc.tar.gz',
++            'cfbbd1cce72f2a3b73b9080c41eecdadebb7077fba4f7806d72ac99f3e84b74a')
+ 
+     def start_ast2700_test(self, name):
+         num_cpu = 4
+@@ -89,11 +89,11 @@ def start_ast2700_test(self, name):
+         exec_command_and_wait_for_pattern(self,
+             'cat /sys/bus/i2c/devices/1-004d/hwmon/hwmon*/temp1_input', '18000')
+ 
+-    def test_aarch64_ast2700_evb_sdk_v09_03(self):
++    def test_aarch64_ast2700_evb_sdk_v09_05(self):
          self.set_machine('ast2700-evb')
+ 
+-        self.archive_extract(self.ASSET_SDK_V903_AST2700)
+-        self.start_ast2700_test('ast2700-default')
++        self.archive_extract(self.ASSET_SDK_V905_AST2700)
++        self.start_ast2700_test('ast2700-a0-default')
+ 
+ 
+ if __name__ == '__main__':
 -- 
 2.48.1
 
