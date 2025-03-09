@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC834A584A7
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5BE9A584B4
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:54:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trH4N-0007UE-6h; Sun, 09 Mar 2025 09:51:55 -0400
+	id 1trH4T-0007Ur-Sx; Sun, 09 Mar 2025 09:52:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4H-0007Sl-3V
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:51:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4I-0007T6-Lt
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:51:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4F-00023d-BX
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:51:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4G-00025J-TP
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:51:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741528306;
+ s=mimecast20190719; t=1741528308;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JwFxSyWTITBoQgA4dZTSfBimbMefFeDdtwL7om0gW0g=;
- b=FWC2Lu8DOpbPmpmvO/9lpp79qrjct3D8MxsHgcraFW3Z6Hng8BehbsT+7QpEiaQG1kfYYS
- oXci3WFEAAvjwJy1EMU2hW9zfgMJUb889QZudDeVW4LJQOkrG+ecO9K/rHo5GE5WhX6gTk
- AET2OUl/0EXTkq0mAcAwsLPc+X5nmkw=
+ bh=2KfI8+iFL+27Va8wugF7Ja64Lc6TjMqYF+YS6aGCqw0=;
+ b=dLmkJ5nX1dfQionGbCxWB8Ox1fAZwNezOcvSFzlMBvGZEcneDR6DlqBwV9jUxDRC3c9CrD
+ PseDd75J0d/xQip4dS1uRMx5AtultRDatTUrfbw6DGvPLhjkihy802SO3NAC1P+/v5ne7q
+ 7IC0v6xMdEouJQdjEdoqPIb7PNbT4PQ=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-1b7nSySPOsWhCirGMJ2GpQ-1; Sun,
- 09 Mar 2025 09:51:43 -0400
-X-MC-Unique: 1b7nSySPOsWhCirGMJ2GpQ-1
-X-Mimecast-MFC-AGG-ID: 1b7nSySPOsWhCirGMJ2GpQ_1741528302
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-569-l0w2qkJWMx6zKFDyxoPBgQ-1; Sun,
+ 09 Mar 2025 09:51:44 -0400
+X-MC-Unique: l0w2qkJWMx6zKFDyxoPBgQ-1
+X-Mimecast-MFC-AGG-ID: l0w2qkJWMx6zKFDyxoPBgQ_1741528304
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B470F1801A07; Sun,  9 Mar 2025 13:51:41 +0000 (UTC)
+ id DD20F180035D; Sun,  9 Mar 2025 13:51:43 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.17])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 14D631956094; Sun,  9 Mar 2025 13:51:39 +0000 (UTC)
+ id 435E81956095; Sun,  9 Mar 2025 13:51:41 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 02/46] tests/functional: Update OpenBMC image of palmetto
- machine
-Date: Sun,  9 Mar 2025 14:50:46 +0100
-Message-ID: <20250309135130.545764-3-clg@redhat.com>
+Subject: [PULL 03/46] tests/functional: Update OpenBMC image of romulus machine
+Date: Sun,  9 Mar 2025 14:50:47 +0100
+Message-ID: <20250309135130.545764-4-clg@redhat.com>
 In-Reply-To: <20250309135130.545764-1-clg@redhat.com>
 References: <20250309135130.545764-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,42 +83,71 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Use the new do_test_arm_aspeed_openbmc() routine to run the latest
-OpenBMC firmware build of the palmetto BMC.
+OpenBMC firmware build of the romulus BMC. Remove the older routine
+which is now unused.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250129071820.1258133-3-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250129071820.1258133-4-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/functional/test_arm_aspeed_palmetto.py | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ tests/functional/aspeed.py                  | 16 ----------------
+ tests/functional/test_arm_aspeed_romulus.py | 13 +++++++------
+ 2 files changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/tests/functional/test_arm_aspeed_palmetto.py b/tests/functional/test_arm_aspeed_palmetto.py
-index 6588c02aad79..35d832bc98ec 100755
---- a/tests/functional/test_arm_aspeed_palmetto.py
-+++ b/tests/functional/test_arm_aspeed_palmetto.py
+diff --git a/tests/functional/aspeed.py b/tests/functional/aspeed.py
+index ea75939e05f9..77dc8930fa41 100644
+--- a/tests/functional/aspeed.py
++++ b/tests/functional/aspeed.py
+@@ -7,22 +7,6 @@
+ 
+ class AspeedTest(LinuxKernelTest):
+ 
+-    def do_test_arm_aspeed(self, machine, image):
+-        self.set_machine(machine)
+-        self.vm.set_console()
+-        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
+-                         '-net', 'nic', '-snapshot')
+-        self.vm.launch()
+-
+-        self.wait_for_console_pattern("U-Boot 2016.07")
+-        self.wait_for_console_pattern("## Loading kernel from FIT Image at 20080000")
+-        self.wait_for_console_pattern("Starting kernel ...")
+-        self.wait_for_console_pattern("Booting Linux on physical CPU 0x0")
+-        self.wait_for_console_pattern(
+-                "aspeed-smc 1e620000.spi: read control register: 203b0641")
+-        self.wait_for_console_pattern("ftgmac100 1e660000.ethernet eth0: irq ")
+-        self.wait_for_console_pattern("systemd[1]: Set hostname to")
+-
+     def do_test_arm_aspeed_openbmc(self, machine, image, uboot='2019.04',
+                                    cpu_id='0x0', soc='AST2500 rev A1'):
+         hostname = machine.removesuffix('-bmc')
+diff --git a/tests/functional/test_arm_aspeed_romulus.py b/tests/functional/test_arm_aspeed_romulus.py
+index 747b616201ce..b97ed951b1f3 100755
+--- a/tests/functional/test_arm_aspeed_romulus.py
++++ b/tests/functional/test_arm_aspeed_romulus.py
 @@ -7,18 +7,19 @@
  from qemu_test import Asset
  from aspeed import AspeedTest
  
 +
- class PalmettoMachine(AspeedTest):
+ class RomulusMachine(AspeedTest):
  
-     ASSET_PALMETTO_FLASH = Asset(
+     ASSET_ROMULUS_FLASH = Asset(
 -        ('https://github.com/openbmc/openbmc/releases/download/2.9.0/'
--         'obmc-phosphor-image-palmetto.static.mtd'),
--        '3e13bbbc28e424865dc42f35ad672b10f2e82cdb11846bb28fa625b48beafd0d');
-+        'https://github.com/legoater/qemu-aspeed-boot/raw/master/images/palmetto-bmc/openbmc-20250128071432/obmc-phosphor-image-palmetto-20250128071432.static.mtd',
-+        'bce7c392eec75c707a91cfc8fad7ca9a69d7e4f10df936930d65c1cb9897ac81');
+-         'obmc-phosphor-image-romulus.static.mtd'),
+-        '820341076803f1955bc31e647a512c79f9add4f5233d0697678bab4604c7bb25')
++        'https://github.com/legoater/qemu-aspeed-boot/raw/master/images/romulus-bmc/openbmc-20250128071340/obmc-phosphor-image-romulus-20250128071340.static.mtd',
++        '6d031376440c82ed9d087d25e9fa76aea75b42f80daa252ec402c0bc3cf6cf5b');
  
--    def test_arm_ast2400_palmetto_openbmc_v2_9_0(self):
-+    def test_arm_ast2400_palmetto_openbmc(self):
-         image_path = self.ASSET_PALMETTO_FLASH.fetch()
+-    def test_arm_ast2500_romulus_openbmc_v2_9_0(self):
++    def test_arm_ast2500_romulus_openbmc(self):
+         image_path = self.ASSET_ROMULUS_FLASH.fetch()
  
--        self.do_test_arm_aspeed('palmetto-bmc', image_path)
+-        self.do_test_arm_aspeed('romulus-bmc', image_path)
 -
-+        self.do_test_arm_aspeed_openbmc('palmetto-bmc', image=image_path,
++        self.do_test_arm_aspeed_openbmc('romulus-bmc', image=image_path,
 +                                        uboot='2019.04', cpu_id='0x0',
-+                                        soc='AST2400 rev A1');
++                                        soc='AST2500 rev A1');
  
  if __name__ == '__main__':
      AspeedTest.main()
