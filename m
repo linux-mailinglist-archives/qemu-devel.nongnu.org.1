@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F45A581AB
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:37:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D62CDA581B2
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:39:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trC9C-0001LT-20; Sun, 09 Mar 2025 04:36:34 -0400
+	id 1trC9D-0001Pk-B2; Sun, 09 Mar 2025 04:36:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC98-0001FA-0t
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:30 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC99-0001JU-H6
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC96-0002GZ-7a
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:29 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC97-0002Gf-Sw
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741509387;
+ s=mimecast20190719; t=1741509388;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MJNbHga1Ej11wBv+ChByVHDJy5gxgQNlZ3MkdWVm7BA=;
- b=AedKXEUoTwfG4iI2sWTvqJERPGpUEa2YcGbtOVMXjObhmG+IktQXAsXA0U/bxyeEJmW2BO
- ZKD3cuHZE+k5KbXxo/g2h4ZnO79NsEkvoFuqm5LzraGUT2Er7LqjQEpewtdZO9S4NQiS9B
- P0T4qApqId4YXMy4UAUY3fkUGZaywR0=
+ bh=rEcgJgX1Tc9fh9KtTKUadgN+QWVciYvUV+p80OxqYOQ=;
+ b=Qb2CcDU+x1T8GFqU/NQViYNtHs9ESQUNriNk1PSx+jFHxStyd+ZSK+xtARPIz8mvsAD8md
+ VwJnHcSNzHUFL0NmXu402Sk+kHusKBjtTketRn0sZQ7G7Nybf0HGkWU86W3hbRlbdeFssC
+ tyx+U3EHWtQeTefScUBKMitG8wnJjTw=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-DNzMSVADNbWaqDOlH9zfKw-1; Sun,
- 09 Mar 2025 04:36:21 -0400
-X-MC-Unique: DNzMSVADNbWaqDOlH9zfKw-1
-X-Mimecast-MFC-AGG-ID: DNzMSVADNbWaqDOlH9zfKw_1741509380
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-_Fh1_yTXMZOAA_OG_xybIw-1; Sun,
+ 09 Mar 2025 04:36:25 -0400
+X-MC-Unique: _Fh1_yTXMZOAA_OG_xybIw-1
+X-Mimecast-MFC-AGG-ID: _Fh1_yTXMZOAA_OG_xybIw_1741509382
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B721A19560A3; Sun,  9 Mar 2025 08:36:20 +0000 (UTC)
+ id A926419560A3; Sun,  9 Mar 2025 08:36:22 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.4])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D482A19560AB; Sun,  9 Mar 2025 08:36:17 +0000 (UTC)
+ id E81DA19560AB; Sun,  9 Mar 2025 08:36:20 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 11/62] docs/qapi-domain: add qapi:module directive
-Date: Sun,  9 Mar 2025 04:34:58 -0400
-Message-ID: <20250309083550.5155-12-jsnow@redhat.com>
+Subject: [PATCH v2 12/62] docs/qapi-domain: add QAPIObject class
+Date: Sun,  9 Mar 2025 04:34:59 -0400
+Message-ID: <20250309083550.5155-13-jsnow@redhat.com>
 In-Reply-To: <20250309083550.5155-1-jsnow@redhat.com>
 References: <20250309083550.5155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -85,136 +85,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds the qapi:module directive, which just notes the current module
-being documented and performs a nested parse of the content block, if
-present.
-
-This code is based pretty heavily on Sphinx's PyModule directive, but
-with unnecessary features excised.
-
-For example:
-
-.. qapi:module:: block-core
-
-   Hello, and welcome to block-core!
-   =================================
-
-   lorem ipsum, dolor sit amet ...
-
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapi_domain.py | 71 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 65 insertions(+), 6 deletions(-)
+ docs/sphinx/qapi_domain.py | 95 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 95 insertions(+)
 
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index 0365891f354..a445150ae59 100644
+index a445150ae59..183d9a2766f 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -19,6 +19,7 @@
+@@ -18,7 +18,9 @@
+ )
  
  from docutils import nodes
++from docutils.parsers.rst import directives
  
-+from sphinx import addnodes
++from compat import KeywordNode, SpaceNode
+ from sphinx import addnodes
  from sphinx.addnodes import desc_signature, pending_xref
  from sphinx.directives import ObjectDescription
- from sphinx.domains import (
-@@ -34,7 +35,7 @@
- 
- 
- if TYPE_CHECKING:
--    from docutils.nodes import Element
-+    from docutils.nodes import Element, Node
- 
+@@ -40,6 +42,7 @@
      from sphinx.application import Sphinx
      from sphinx.builders import Builder
-@@ -157,6 +158,60 @@ def add_target_and_index(
+     from sphinx.environment import BuildEnvironment
++    from sphinx.util.typing import OptionSpec
+ 
+ logger = logging.getLogger(__name__)
+ 
+@@ -99,6 +102,8 @@ def process_link(
+         return title, target
+ 
+ 
++# Alias for the return of handle_signature(), which is used in several places.
++# (In the Python domain, this is Tuple[str, str] instead.)
+ Signature = str
+ 
+ 
+@@ -158,6 +163,96 @@ def add_target_and_index(
                  )
  
  
-+class QAPIModule(QAPIDescription):
++class QAPIObject(QAPIDescription):
 +    """
-+    Directive to mark description of a new module.
++    Description of a generic QAPI object.
 +
-+    This directive doesn't generate any special formatting, and is just
-+    a pass-through for the content body. Named section titles are
-+    allowed in the content body.
-+
-+    Use this directive to create entries for the QAPI module in the
-+    global index and the qapi index; as well as to associate subsequent
-+    definitions with the module they are defined in for purposes of
-+    search and QAPI index organization.
-+
-+    :arg: The name of the module.
-+    :opt no-index: Don't add cross-reference targets or index entries.
-+    :opt no-typesetting: Don't render the content body (but preserve any
-+       cross-reference target IDs in the squelched output.)
-+
-+    Example::
-+
-+       .. qapi:module:: block-core
-+          :no-index:
-+          :no-typesetting:
-+
-+          Lorem ipsum, dolor sit amet ...
++    It's not used directly, but is instead subclassed by specific directives.
 +    """
 +
-+    def run(self) -> List[Node]:
-+        modname = self.arguments[0].strip()
-+        self.env.ref_context["qapi:module"] = modname
-+        ret = super().run()
++    # Inherit some standard options from Sphinx's ObjectDescription
++    option_spec: OptionSpec = (  # type:ignore[misc]
++        ObjectDescription.option_spec.copy()
++    )
++    option_spec.update(
++        {
++            # Borrowed from the Python domain:
++            "module": directives.unchanged,  # Override contextual module name
++        }
++    )
 +
-+        # ObjectDescription always creates a visible signature bar. We
-+        # want module items to be "invisible", however.
++    def get_signature_prefix(self) -> List[nodes.Node]:
++        """Returns a prefix to put before the object name in the signature."""
++        assert self.objtype
++        return [
++            KeywordNode("", self.objtype.title()),
++            SpaceNode(" "),
++        ]
 +
-+        # Extract the content body of the directive:
-+        assert isinstance(ret[-1], addnodes.desc)
-+        desc_node = ret.pop(-1)
-+        assert isinstance(desc_node.children[1], addnodes.desc_content)
-+        ret.extend(desc_node.children[1].children)
++    def get_signature_suffix(self) -> List[nodes.Node]:
++        """Returns a suffix to put after the object name in the signature."""
++        return []
 +
-+        # Re-home node_ids so anchor refs still work:
-+        node_ids: List[str]
-+        if node_ids := [
-+            node_id
-+            for el in desc_node.children[0].traverse(nodes.Element)
-+            for node_id in cast(List[str], el.get("ids", ()))
-+        ]:
-+            target_node = nodes.target(ids=node_ids)
-+            ret.insert(1, target_node)
++    def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
++        """
++        Transform a QAPI definition name into RST nodes.
 +
-+        return ret
++        This method was originally intended for handling function
++        signatures. In the QAPI domain, however, we only pass the
++        definition name as the directive argument and handle everything
++        else in the content body with field lists.
++
++        As such, the only argument here is "sig", which is just the QAPI
++        definition name.
++        """
++        modname = self.options.get(
++            "module", self.env.ref_context.get("qapi:module")
++        )
++
++        signode["fullname"] = sig
++        signode["module"] = modname
++        sig_prefix = self.get_signature_prefix()
++        if sig_prefix:
++            signode += addnodes.desc_annotation(
++                str(sig_prefix), "", *sig_prefix
++            )
++        signode += addnodes.desc_name(sig, sig)
++        signode += self.get_signature_suffix()
++
++        return sig
++
++    def _object_hierarchy_parts(
++        self, sig_node: desc_signature
++    ) -> Tuple[str, ...]:
++        if "fullname" not in sig_node:
++            return ()
++        modname = sig_node.get("module")
++        fullname = sig_node["fullname"]
++
++        if modname:
++            return (modname, *fullname.split("."))
++
++        return tuple(fullname.split("."))
++
++    def _toc_entry_name(self, sig_node: desc_signature) -> str:
++        # This controls the name in the TOC and on the sidebar.
++
++        # This is the return type of _object_hierarchy_parts().
++        toc_parts = cast(Tuple[str, ...], sig_node.get("_toc_parts", ()))
++        if not toc_parts:
++            return ""
++
++        config = self.env.app.config
++        *parents, name = toc_parts
++        if config.toc_object_entries_show_parents == "domain":
++            return sig_node.get("fullname", name)
++        if config.toc_object_entries_show_parents == "hide":
++            return name
++        if config.toc_object_entries_show_parents == "all":
++            return ".".join(parents + [name])
++        return ""
 +
 +
- class QAPIIndex(Index):
+ class QAPIModule(QAPIDescription):
      """
-     Index subclass to provide the QAPI definition index.
-@@ -222,17 +277,21 @@ class QAPIDomain(Domain):
-     # This table associates cross-reference object types (key) with an
-     # ObjType instance, which defines the valid cross-reference roles
-     # for each object type.
-+    object_types: Dict[str, ObjType] = {
-+        "module": ObjType(_("module"), "mod", "any"),
-+    }
- 
--    # Actual table entries for module, command, event, etc will come in
--    # forthcoming commits.
--    object_types: Dict[str, ObjType] = {}
--
--    directives = {}
-+    # Each of these provides a rST directive,
-+    # e.g. .. qapi:module:: block-core
-+    directives = {
-+        "module": QAPIModule,
-+    }
- 
-     # These are all cross-reference roles; e.g.
-     # :qapi:cmd:`query-block`. The keys correlate to the names used in
-     # the object_types table values above.
-     roles = {
-+        "mod": QAPIXRefRole(),
-         "any": QAPIXRefRole(),  # reference *any* type of QAPI object.
-     }
- 
+     Directive to mark description of a new module.
 -- 
 2.48.1
 
