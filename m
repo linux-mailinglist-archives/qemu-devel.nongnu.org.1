@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE80A58323
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:34:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C5CA5831F
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:34:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trDxQ-0000dI-2T; Sun, 09 Mar 2025 06:32:32 -0400
+	id 1trDxW-0000pq-Vy; Sun, 09 Mar 2025 06:32:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDxA-0000BC-8v
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:17 -0400
+ id 1trDxB-0000Bq-F2
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDx8-00045l-Av
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:15 -0400
+ id 1trDx9-00045r-Cb
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741516333;
+ s=mimecast20190719; t=1741516334;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+11c/N4D4n5nsZ2e2p64dlWgYqM6+Rie5jL418qQFDM=;
- b=KTuedrZ1LeyyggNy/1uT0KfGKj2JsOrl2Pq//ZNhrtZzage84GjtVJQPXScuD2fsV5kmgM
- librU7Z9pMXxb6KZnbi0U4laGGr5N0AF5ed70WBmPCXVicJJieAey1abu4QyAa0FOzzn9e
- moFnFgCyNKVyFROS0akSTsjLaJY7Hw0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dMUKogfKyzAz46Y4Z8OW5xUGWyWP2F2XLF8CrapiAvY=;
+ b=S1F9lOjCctdCtdqIPB9Jry2i/riAmjCL79E/orUy3hvaRDIXQIs20yczyrMfDXaox4ETBG
+ jUHpg/vpostIhSgaekFd/+QStsyjv9ZfDng9+5p08sm+mEUrTSCQm3C0dBZXDDtZg7xEsd
+ BxZa3fy/NP5oWgI5fnbWVCZrRBoZQbU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-9Y99PB1INtOf-1lOTGr2lQ-1; Sun, 09 Mar 2025 06:32:11 -0400
-X-MC-Unique: 9Y99PB1INtOf-1lOTGr2lQ-1
-X-Mimecast-MFC-AGG-ID: 9Y99PB1INtOf-1lOTGr2lQ_1741516331
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3912d5f6689so1974612f8f.1
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:32:11 -0700 (PDT)
+ us-mta-364-STkgT4KGN5m1HWmZ2CCzfg-1; Sun, 09 Mar 2025 06:32:13 -0400
+X-MC-Unique: STkgT4KGN5m1HWmZ2CCzfg-1
+X-Mimecast-MFC-AGG-ID: STkgT4KGN5m1HWmZ2CCzfg_1741516332
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43cf3168b87so1391965e9.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:32:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741516330; x=1742121130;
+ d=1e100.net; s=20230601; t=1741516332; x=1742121132;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+11c/N4D4n5nsZ2e2p64dlWgYqM6+Rie5jL418qQFDM=;
- b=O4oUUsSWJwSwVPNMRkb5fXJfT6gc3uK6qt1vdCjMVcbWTDizvNYPjN07B9+9MgF8tD
- sk4iRSOQOx66R/7PLfADe+c5GkkPnRt9YF9LSloehgy+LIQE6GeYPxrXT3rX02zOH3QH
- meJMFggyOv9C/BGkrtOs9Z2lapgg2nOiDJIMK1wHpqnLW4gK6Bmm2Oelzrsv8bD0Sc+8
- w9XbeY/FIK5x+ifw0QJrBiR90Dy6xB2fiNWly5Brf+tjV+sAgrB+l9fOUcQrINwvi2x4
- NrrrNTgNVOEGNh/M84s5+NjWvAAAmaT1qraEk6JZptzVhsF6hA7BwQHvGdK6uurTWRun
- oeWQ==
-X-Gm-Message-State: AOJu0YzGqqFBlvNrDvSqmGua88ASaF/VBrRb6380/1Nc+57G9wFTC85q
- ZAJTPV1ytw8lw/BHbXzTgD9ocHKScoHKiTvGLiDdR8kuG9u7/1pY8O5v5a8fIyCOaTbyeTDDbJs
- 75Mz46XzaB/16+XAao3IfL2ufwTTc5h0oC4j8NFguy1grnS041BIoZkoqh+YlKR/QFC/sdOWjR9
- WSpcmCMC2+hPCcbUjdEPs72NDiQrv+BPNrRiiLR4A=
-X-Gm-Gg: ASbGncujUNNngfsO1uydxnC2+hFh+IeMEWgsJXmJ2GHXEIsfyKSt7zEm5QWzR5L2d7d
- aBWAqVcKRvqiRNXVcqtm0OkNm43VH6H2qNcp5w6/W98cmtWQqdOM8GP/L5JVEQM2LRweZ68J2R9
- gAfPxR5VbXINiHwQkzyog05Xqeuy7JwZBQfwG0U9DU8hsrxz3+VXxEG6AOMUAur2uTgvWJq0Q+U
- qfq30qTkjtKNI+7WP/IvGUlCyzRZOuLV3LREeYLlW+fI03zqaVUqnF3oI3X5R2RDXLURj9kN4ZB
- 17xXdK60YmdAdLV1sk39gg==
-X-Received: by 2002:a5d:6483:0:b0:38f:28cb:4d35 with SMTP id
- ffacd0b85a97d-39132d4e38cmr6390587f8f.13.1741516330206; 
- Sun, 09 Mar 2025 03:32:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyDahsDFJKm03RaFadlSUd4jcH2SDu8CYjbfEAiNNa8zSJjrJr216wdNO99+gnaY5j3TnMxg==
-X-Received: by 2002:a5d:6483:0:b0:38f:28cb:4d35 with SMTP id
- ffacd0b85a97d-39132d4e38cmr6390568f8f.13.1741516329647; 
- Sun, 09 Mar 2025 03:32:09 -0700 (PDT)
+ bh=dMUKogfKyzAz46Y4Z8OW5xUGWyWP2F2XLF8CrapiAvY=;
+ b=xK8wfSgDiv3NZ7d/XSSLzflAJj8ug+f12XWYUmklKtS9q0YB9Mf2E+EWwGXcpeyYQT
+ K3Do665ywQwIIcNOdHS7v+SKQu7tX6Uz8oAw2RLUSPSYRy/tm7zUYiF7MtBhLwF/eQQ1
+ /V6SnW77vs7w7zz/5p/Z3rJgThmpKBQaDjPIPzOQ81pWebILzqXQbN7nliJn1qNL3Ssy
+ 3bIRsAoTo1Vi7IhFzaE9YDXhTWwDmzuRceLpZlXntrDQ1+phxRFt5WLyjSFT1YD3dla0
+ 9hnf381sUUb8YwiqF/F3vQbCOEbzGfvxIys70D57MKMrfKrTIiwwF22EG5oMncjugUyZ
+ Wydw==
+X-Gm-Message-State: AOJu0YzCZLEow6RZDjpO6okyNKkfhw9gNu3LxEP0N/P3MWtzwFXeI5vf
+ 3gfW+sW+4N8kfYH1gCiaJsBABX6fU/1dDpgTOGk3ABr20kjSxBEcRrRRxwQMhnCuGsufS0ImK+q
+ 8+Uktu6GLbsi5aifarpl5u4uFkqX4j8J+nLB0bCpUV4jzYolhKGaMzJ1etnDY3ZZZY1B6A+f8BR
+ cj8vSq4Ehj4iduCe4RrTeO2vCijk91uwDnk+X+pMY=
+X-Gm-Gg: ASbGncvd/doq8C1ME56KJOUrGzy1e+6jK07gg4QejOcEwpHAW1OBdw+rLab0PRPeWB6
+ /6kxgjcOyTIZUX3CGXcMfXuxFU+3hMuPxCKdYhBrvAZEn1Qf4CUUoEcXfXxDEcELZlc6B8ME4Ca
+ Yxx7vZsnecaJa5vwixwEP+VERCGzlsSFIlAQWNT6enFN3BelCkSPBPC+rdc0ust4vkwZ0jB13/N
+ wFR8U/FM1msP5Jyr9Jyj7I5XgQyw2vVHnkx7+kudT41cZwOz20j2MFxjzFTZdB/xjaOgsJnCLvI
+ 1BXt8eNK4IFVHesx4hA+ZA==
+X-Received: by 2002:a05:600c:19cd:b0:43c:f1b8:16ad with SMTP id
+ 5b1f17b1804b1-43cf1b81b78mr9503155e9.30.1741516331920; 
+ Sun, 09 Mar 2025 03:32:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH3i7HQ3BfMVkTqOhiH/ic9cHN5EaI1ROqBFR5mD3dFqHP7nZMruL9PBgJiwzGxWf86YzeFIA==
+X-Received: by 2002:a05:600c:19cd:b0:43c:f1b8:16ad with SMTP id
+ 5b1f17b1804b1-43cf1b81b78mr9503005e9.30.1741516331476; 
+ Sun, 09 Mar 2025 03:32:11 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.122.167])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912bfba8a9sm11511475f8f.9.2025.03.09.03.32.08
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-43ce3d5a0e2sm58130275e9.12.2025.03.09.03.32.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 03:32:08 -0700 (PDT)
+ Sun, 09 Mar 2025 03:32:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/25] rust: qom: remove operations on &mut
-Date: Sun,  9 Mar 2025 11:31:17 +0100
-Message-ID: <20250309103120.1116448-24-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 24/25] meson.build: default to -gsplit-dwarf for debug info
+Date: Sun,  9 Mar 2025 11:31:18 +0100
+Message-ID: <20250309103120.1116448-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250309103120.1116448-1-pbonzini@redhat.com>
 References: <20250309103120.1116448-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -106,194 +108,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The dubious casts of mutable references to objects are not used
-anymore: the wrappers for qdev_init_clock_in and for IRQ and MMIO
-initialization can be called directly on the subclasses, without
-casts, plus they take a shared reference so they can just use
-"upcast()" instead of "upcast_mut()".  Remove them.
+From: Alex Bennée <alex.bennee@linaro.org>
 
+This option is supported by both gcc (since 4.7) and clang (since
+7.0). Not only does this make the linkers job easier by reducing the
+amount of ELF it needs to parse it also reduces the total build size
+quite considerably. In my case a default build went from 5.8G to
+3.9G (vs 1.9G for --disable-debug-info).
+
+The --disable-split-debug option allows distros to keep all the info
+together for ease of packaging.
+
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Link: https://lore.kernel.org/r/20250306161631.2477685-1-alex.bennee@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/memory.rs  |  5 ---
- rust/qemu-api/src/prelude.rs |  1 -
- rust/qemu-api/src/qom.rs     | 83 ------------------------------------
- rust/qemu-api/tests/tests.rs | 34 +--------------
- 4 files changed, 2 insertions(+), 121 deletions(-)
+ meson.build                   | 6 ++++++
+ meson_options.txt             | 2 ++
+ scripts/meson-buildoptions.sh | 2 ++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/rust/qemu-api/src/memory.rs b/rust/qemu-api/src/memory.rs
-index eff9f09fd7f..fdb1ea11fcf 100644
---- a/rust/qemu-api/src/memory.rs
-+++ b/rust/qemu-api/src/memory.rs
-@@ -175,11 +175,6 @@ pub fn init_io<T: IsA<Object>>(
-     ) {
-         unsafe {
-             Self::do_init_io(
--                // self.0.as_mut_ptr() needed because Rust tries to call
--                // ObjectDeref::as_mut_ptr() on "&mut Self", instead of coercing
--                // to "&Self" and then calling MemoryRegion::as_mut_ptr().
--                // Revisit if/when ObjectCastMut is not needed anymore; it is
--                // only used in a couple places for initialization.
-                 self.0.as_mut_ptr(),
-                 owner.cast::<Object>(),
-                 &ops.0,
-diff --git a/rust/qemu-api/src/prelude.rs b/rust/qemu-api/src/prelude.rs
-index 634acf37a85..43bfcd5fcab 100644
---- a/rust/qemu-api/src/prelude.rs
-+++ b/rust/qemu-api/src/prelude.rs
-@@ -17,7 +17,6 @@
- pub use crate::qom::IsA;
- pub use crate::qom::Object;
- pub use crate::qom::ObjectCast;
--pub use crate::qom::ObjectCastMut;
- pub use crate::qom::ObjectDeref;
- pub use crate::qom::ObjectClassMethods;
- pub use crate::qom::ObjectMethods;
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 2defbd23516..34d7bc0ef96 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -463,90 +463,7 @@ unsafe fn unsafe_cast<'a, U: ObjectType>(self) -> &'a U
- impl<T: ObjectType> ObjectDeref for &T {}
- impl<T: ObjectType> ObjectCast for &T {}
+diff --git a/meson.build b/meson.build
+index 6da4eb317c2..4899d896de0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -601,6 +601,10 @@ if get_option('tsan')
+   qemu_ldflags = ['-fsanitize=thread'] + qemu_ldflags
+ endif
  
--/// Trait for mutable type casting operations in the QOM hierarchy.
--///
--/// This trait provides the mutable counterparts to [`ObjectCast`]'s conversion
--/// functions. Unlike `ObjectCast`, this trait returns `Result` for fallible
--/// conversions to preserve the original smart pointer if the cast fails. This
--/// is necessary because mutable references cannot be copied, so a failed cast
--/// must return ownership of the original reference. For example:
--///
--/// ```ignore
--/// let mut dev = get_device();
--/// // If this fails, we need the original `dev` back to try something else
--/// match dev.dynamic_cast_mut::<FooDevice>() {
--///    Ok(foodev) => /* use foodev */,
--///    Err(dev) => /* still have ownership of dev */
--/// }
--/// ```
--pub trait ObjectCastMut: Sized + ObjectDeref + DerefMut
--where
--    Self::Target: ObjectType,
--{
--    /// Safely convert from a derived type to one of its parent types.
--    ///
--    /// This is always safe; the [`IsA`] trait provides static verification
--    /// that `Self` dereferences to `U` or a child of `U`.
--    fn upcast_mut<'a, U: ObjectType>(self) -> &'a mut U
--    where
--        Self::Target: IsA<U>,
--        Self: 'a,
--    {
--        // SAFETY: soundness is declared via IsA<U>, which is an unsafe trait
--        unsafe { self.unsafe_cast_mut::<U>() }
--    }
--
--    /// Attempt to convert to a derived type.
--    ///
--    /// Returns `Ok(..)` if the object is of type `U`, or `Err(self)` if the
--    /// object if the conversion failed. This is verified at runtime by
--    /// checking the object's type information.
--    fn downcast_mut<'a, U: IsA<Self::Target>>(self) -> Result<&'a mut U, Self>
--    where
--        Self: 'a,
--    {
--        self.dynamic_cast_mut::<U>()
--    }
--
--    /// Attempt to convert between any two types in the QOM hierarchy.
--    ///
--    /// Returns `Ok(..)` if the object is of type `U`, or `Err(self)` if the
--    /// object if the conversion failed. This is verified at runtime by
--    /// checking the object's type information.
--    fn dynamic_cast_mut<'a, U: ObjectType>(self) -> Result<&'a mut U, Self>
--    where
--        Self: 'a,
--    {
--        unsafe {
--            // SAFETY: upcasting to Object is always valid, and the
--            // return type is either NULL or the argument itself
--            let result: *mut U =
--                object_dynamic_cast(self.as_object_mut_ptr(), U::TYPE_NAME.as_ptr()).cast();
--
--            result.as_mut().ok_or(self)
--        }
--    }
--
--    /// Convert to any QOM type without verification.
--    ///
--    /// # Safety
--    ///
--    /// What safety? You need to know yourself that the cast is correct; only
--    /// use when performance is paramount.  It is still better than a raw
--    /// pointer `cast()`, which does not even check that you remain in the
--    /// realm of QOM `ObjectType`s.
--    ///
--    /// `unsafe_cast::<Object>()` is always safe.
--    unsafe fn unsafe_cast_mut<'a, U: ObjectType>(self) -> &'a mut U
--    where
--        Self: 'a,
--    {
--        unsafe { &mut *self.as_mut_ptr::<Self::Target>().cast::<U>() }
--    }
--}
--
- impl<T: ObjectType> ObjectDeref for &mut T {}
--impl<T: ObjectType> ObjectCastMut for &mut T {}
- 
- /// Trait a type must implement to be registered with QEMU.
- pub trait ObjectImpl: ObjectType + IsA<Object> {
-diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
-index e3985782a38..269122e7ec1 100644
---- a/rust/qemu-api/tests/tests.rs
-+++ b/rust/qemu-api/tests/tests.rs
-@@ -2,13 +2,10 @@
- // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
--use std::{
--    ffi::{c_void, CStr},
--    ptr::{addr_of, addr_of_mut},
--};
-+use std::{ffi::CStr, ptr::addr_of};
- 
- use qemu_api::{
--    bindings::{module_call_init, module_init_type, object_new, object_unref, qdev_prop_bool},
-+    bindings::{module_call_init, module_init_type, qdev_prop_bool},
-     c_str,
-     cell::{self, BqlCell},
-     declare_properties, define_property,
-@@ -182,30 +179,3 @@ fn test_cast() {
-         assert_eq!(addr_of!(*sbd_ref), p_ptr.cast());
-     }
- }
--
--#[test]
--#[allow(clippy::shadow_unrelated)]
--/// Test casts on mutable references.
--fn test_cast_mut() {
--    init_qom();
--    let p: *mut DummyState = unsafe { object_new(DummyState::TYPE_NAME.as_ptr()).cast() };
--
--    let p_ref: &mut DummyState = unsafe { &mut *p };
--    let obj_ref: &mut Object = p_ref.upcast_mut();
--    assert_eq!(addr_of_mut!(*obj_ref), p.cast());
--
--    let sbd_ref: Result<&mut SysBusDevice, &mut Object> = obj_ref.dynamic_cast_mut();
--    let obj_ref = sbd_ref.unwrap_err();
--
--    let dev_ref: Result<&mut DeviceState, &mut Object> = obj_ref.downcast_mut();
--    let dev_ref = dev_ref.unwrap();
--    assert_eq!(addr_of_mut!(*dev_ref), p.cast());
--
--    // SAFETY: the cast is wrong, but the value is only used for comparison
--    unsafe {
--        let sbd_ref: &mut SysBusDevice = obj_ref.unsafe_cast_mut();
--        assert_eq!(addr_of_mut!(*sbd_ref), p.cast());
--
--        object_unref(p_ref.as_object_mut_ptr().cast::<c_void>());
--    }
--}
++if get_option('debug') and get_option('split_debug')
++  qemu_cflags += '-gsplit-dwarf'
++endif
++
+ # Detect support for PT_GNU_RELRO + DT_BIND_NOW.
+ # The combination is known as "full relro", because .got.plt is read-only too.
+ qemu_ldflags += cc.get_supported_link_arguments('-Wl,-z,relro', '-Wl,-z,now')
+@@ -4583,6 +4587,8 @@ if have_rust
+   summary_info += {'bindgen':         bindgen.full_path()}
+   summary_info += {'bindgen version': bindgen.version()}
+ endif
++# option_cflags is purely for the summary display, meson will pass
++# -g/-O options directly
+ option_cflags = (get_option('debug') ? ['-g'] : [])
+ if get_option('optimization') != 'plain'
+   option_cflags += ['-O' + get_option('optimization')]
+diff --git a/meson_options.txt b/meson_options.txt
+index 59d973bca00..3432123fee2 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -362,6 +362,8 @@ option('debug_mutex', type: 'boolean', value: false,
+        description: 'mutex debugging support')
+ option('debug_stack_usage', type: 'boolean', value: false,
+        description: 'measure coroutine stack usage')
++option('split_debug', type: 'boolean', value: true,
++       description: 'split debug info from object files')
+ option('qom_cast_debug', type: 'boolean', value: true,
+        description: 'cast debugging support')
+ option('slirp_smbd', type : 'feature', value : 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 3e8e00852b2..aca6e688302 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -504,6 +504,8 @@ _meson_option_parse() {
+     --disable-strict-rust-lints) printf "%s" -Dstrict_rust_lints=false ;;
+     --enable-strip) printf "%s" -Dstrip=true ;;
+     --disable-strip) printf "%s" -Dstrip=false ;;
++    --enable-split-debug) printf "%s" -Dsplit_debug=true ;;
++    --disable-split-debug) printf "%s" -Dsplit_debug=false ;;
+     --sysconfdir=*) quote_sh "-Dsysconfdir=$2" ;;
+     --enable-tcg) printf "%s" -Dtcg=enabled ;;
+     --disable-tcg) printf "%s" -Dtcg=disabled ;;
 -- 
 2.48.1
 
