@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73146A581B5
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:39:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BCFA581E3
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:42:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trC9w-00036v-LE; Sun, 09 Mar 2025 04:37:20 -0400
+	id 1trC9x-0003EH-AE; Sun, 09 Mar 2025 04:37:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9j-0002dH-MJ
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:37:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9h-0002SR-Vs
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:37:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9h-0002RE-Qj
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:37:07 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9g-0002Qm-2y
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:37:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741509425;
+ s=mimecast20190719; t=1741509423;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6tjFF/ym8NRe3BTciRbB7rmmWPy+1jhJqybyCgkHB84=;
- b=dDX4PmUFosuDkwD2kx/BUvt5jyUdqjdjKdug7LTk5P6bOaaiUyVZP3XPl4D41VZm17CEv0
- D5oc7z6DqK+0kCRxXOjGVL0rgppBvoIrjNgdwH+F/LoItAEszl3nwqa/YC5PaslYC5wwWl
- V2XS1cmlkrYhYS97vYaT6zqQGGV20qM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=6w7sgxi2AHWWAY9X8xAfZoKkM9ngbzvo3eGlWpM1Ey8=;
+ b=EMTcK0Nf84qgN/U3R2PdjSRxT1hiBguEQ4J2RmE/R40oHVeEmZg4JPiKgQB+6jmm6/7HOy
+ StC1o4Yhe/lgVMEhE+KorLgaHesAYOayqbthOkFh2P5sSpeSFti0BCP0VPN0lt+NCbAmo3
+ Z21hRa0W9TKd1Y8D7I2/Zn2KuMSJOOc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-u0OHiWLEO3yohwG57B7-3Q-1; Sun,
- 09 Mar 2025 04:36:59 -0400
-X-MC-Unique: u0OHiWLEO3yohwG57B7-3Q-1
-X-Mimecast-MFC-AGG-ID: u0OHiWLEO3yohwG57B7-3Q_1741509417
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-576-nsVDEZ0POc6JVm4m5A69ug-1; Sun,
+ 09 Mar 2025 04:37:01 -0400
+X-MC-Unique: nsVDEZ0POc6JVm4m5A69ug-1
+X-Mimecast-MFC-AGG-ID: nsVDEZ0POc6JVm4m5A69ug_1741509419
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AA944195608A; Sun,  9 Mar 2025 08:36:57 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CEDC61956080; Sun,  9 Mar 2025 08:36:59 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.4])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6729119560AB; Sun,  9 Mar 2025 08:36:54 +0000 (UTC)
+ id CDB7119560AB; Sun,  9 Mar 2025 08:36:57 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -51,25 +51,24 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
- Harmonie Snow <harmonie@gmail.com>
-Subject: [PATCH v2 25/62] docs/qapi-domain: add :ifcond: directive option
-Date: Sun,  9 Mar 2025 04:35:12 -0400
-Message-ID: <20250309083550.5155-26-jsnow@redhat.com>
+ Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
+Subject: [PATCH v2 26/62] docs/qapi-domain: add warnings for malformed field
+ lists
+Date: Sun,  9 Mar 2025 04:35:13 -0400
+Message-ID: <20250309083550.5155-27-jsnow@redhat.com>
 In-Reply-To: <20250309083550.5155-1-jsnow@redhat.com>
 References: <20250309083550.5155-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,97 +86,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a special :ifcond: option that allows us to annotate the
-definition-level conditionals.
+Normally, Sphinx will silently fall back to its standard field list
+processing if it doesn't match one of your defined fields. A lot of the
+time, that's not what we want - we want to be warned if we goof
+something up.
 
-The syntax of the argument is currently undefined, but it's possible we
-can apply better formatting in the future. Currently, we just display
-the ifcond string as preformatted text.
+For instance, the canonical argument field list form is:
 
-Signed-off-by: Harmonie Snow <harmonie@gmail.com>
+:arg type name: descr
+
+This form is captured by Sphinx and transformed so that the field label
+will become "Arguments:". It's possible to omit the type name and descr
+and still have it be processed correctly. However, if you omit the type
+name, Sphinx no longer recognizes it:
+
+:arg: this is not recognized.
+
+This will turn into an arbitrary field list entry whose label is "Arg:",
+and it otherwise silently fails. You may also see failures for doing
+things like using :values: instead of :value:, or :errors: instead of
+:error:, and so on. It's also case sensitive, and easy to trip up.
+
+Add a validator that guarantees all field list entries that are the
+direct child of an ObjectDescription use only recognized forms of field
+lists, and emit a warning (treated as error by default in most build
+configurations) whenever we detect one that is goofed up.
+
+However, there's still benefit to allowing arbitrary fields -- they are
+after all not a Sphinx invention, but perfectly normal docutils
+syntax. Create an allow list for known spellings we don't mind letting
+through, but warn against anything else.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx-static/theme_overrides.css | 13 +++++++++++++
- docs/sphinx/qapi_domain.py             | 23 +++++++++++++++++++++--
- 2 files changed, 34 insertions(+), 2 deletions(-)
+ docs/conf.py               |  9 +++++
+ docs/sphinx/qapi_domain.py | 74 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 83 insertions(+)
 
-diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
-index 5f58f1d5246..3fd326613d9 100644
---- a/docs/sphinx-static/theme_overrides.css
-+++ b/docs/sphinx-static/theme_overrides.css
-@@ -237,3 +237,16 @@ div[class^="highlight"] pre {
- .qapi-deprecated::before {
-     content: '⚠️ ';
- }
+diff --git a/docs/conf.py b/docs/conf.py
+index 49d9de894c0..a3f9fa63d94 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -153,6 +153,15 @@
+ with open(os.path.join(qemu_docdir, 'defs.rst.inc')) as f:
+     rst_epilog += f.read()
+ 
 +
-+.qapi-ifcond::before {
-+    /* gaze ye into the crystal ball to determine feature availability */
-+    content: '🔮 ';
++# Normally, the QAPI domain is picky about what field lists you use to
++# describe a QAPI entity. If you'd like to use arbitrary additional
++# fields in source documentation, add them here.
++qapi_allowed_fields = {
++    "see also",
 +}
 +
-+.qapi-ifcond {
-+    background-color: #f9f5ff;
-+    border: solid #dac2ff 6px;
-+    padding: 8px;
-+    border-radius: 15px;
-+    margin: 5px;
-+}
++
+ # -- Options for HTML output ----------------------------------------------
+ 
+ # The theme to use for HTML and HTML Help pages.  See the documentation for
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index 4fc9608e170..6f599495e45 100644
+index 6f599495e45..659b57d1b33 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -14,6 +14,7 @@
-     NamedTuple,
-     Optional,
-     Tuple,
-+    Union,
-     cast,
- )
+@@ -49,6 +49,19 @@
+ logger = logging.getLogger(__name__)
  
-@@ -181,6 +182,7 @@ class QAPIObject(QAPIDescription):
-             "module": directives.unchanged,  # Override contextual module name
-             # These are QAPI originals:
-             "since": directives.unchanged,
-+            "ifcond": directives.unchanged,
-             "deprecated": directives.flag,
-             "unstable": directives.flag,
-         }
-@@ -265,9 +267,14 @@ def _add_infopips(self, contentnode: addnodes.desc_content) -> None:
-         infopips = nodes.container()
-         infopips.attributes["classes"].append("qapi-infopips")
  
--        def _add_pip(source: str, content: str, classname: str) -> None:
-+        def _add_pip(
-+            source: str, content: Union[str, List[nodes.Node]], classname: str
-+        ) -> None:
-             node = nodes.container(source)
--            node.append(nodes.Text(content))
-+            if isinstance(content, str):
-+                node.append(nodes.Text(content))
-+            else:
-+                node.extend(content)
-             node.attributes["classes"].extend(["qapi-infopip", classname])
-             infopips.append(node)
- 
-@@ -285,6 +292,18 @@ def _add_pip(source: str, content: str, classname: str) -> None:
-                 "qapi-unstable",
-             )
- 
-+        if self.options.get("ifcond", ""):
-+            ifcond = self.options["ifcond"]
-+            _add_pip(
-+                f":ifcond: {ifcond}",
-+                [
-+                    nodes.emphasis("", "Availability"),
-+                    nodes.Text(": "),
-+                    nodes.literal(ifcond, ifcond),
-+                ],
-+                "qapi-ifcond",
-+            )
++def _unpack_field(
++    field: nodes.Node,
++) -> Tuple[nodes.field_name, nodes.field_body]:
++    """
++    docutils helper: unpack a field node in a type-safe manner.
++    """
++    assert isinstance(field, nodes.field)
++    assert len(field.children) == 2
++    assert isinstance(field.children[0], nodes.field_name)
++    assert isinstance(field.children[1], nodes.field_body)
++    return (field.children[0], field.children[1])
 +
++
+ class ObjectEntry(NamedTuple):
+     docname: str
+     node_id: str
+@@ -307,9 +320,64 @@ def _add_pip(
          if infopips.children:
              contentnode.insert(0, infopips)
  
++    def _validate_field(self, field: nodes.field) -> None:
++        """Validate field lists in this QAPI Object Description."""
++        name, _ = _unpack_field(field)
++        allowed_fields = set(self.env.app.config.qapi_allowed_fields)
++
++        field_label = name.astext()
++        if field_label in allowed_fields:
++            # Explicitly allowed field list name, OK.
++            return
++
++        try:
++            # split into field type and argument (if provided)
++            # e.g. `:arg type name: descr` is
++            # field_type = "arg", field_arg = "type name".
++            field_type, field_arg = field_label.split(None, 1)
++        except ValueError:
++            # No arguments provided
++            field_type = field_label
++            field_arg = ""
++
++        typemap = self.get_field_type_map()
++        if field_type in typemap:
++            # This is a special docfield, yet-to-be-processed. Catch
++            # correct names, but incorrect arguments. This mismatch WILL
++            # cause Sphinx to render this field incorrectly (without a
++            # warning), which is never what we want.
++            typedesc = typemap[field_type][0]
++            if typedesc.has_arg != bool(field_arg):
++                msg = f"docfield field list type {field_type!r} "
++                if typedesc.has_arg:
++                    msg += "requires an argument."
++                else:
++                    msg += "takes no arguments."
++                logger.warning(msg, location=field)
++        else:
++            # This is unrecognized entirely. It's valid rST to use
++            # arbitrary fields, but let's ensure the documentation
++            # writer has done this intentionally.
++            valid = ", ".join(sorted(set(typemap) | allowed_fields))
++            msg = (
++                f"Unrecognized field list name {field_label!r}.\n"
++                f"Valid fields for qapi:{self.objtype} are: {valid}\n"
++                "\n"
++                "If this usage is intentional, please add it to "
++                "'qapi_allowed_fields' in docs/conf.py."
++            )
++            logger.warning(msg, location=field)
++
+     def transform_content(self, content_node: addnodes.desc_content) -> None:
+         self._add_infopips(content_node)
+ 
++        # Validate field lists.
++        for child in content_node:
++            if isinstance(child, nodes.field_list):
++                for field in child.children:
++                    assert isinstance(field, nodes.field)
++                    self._validate_field(field)
++
+     def _toc_entry_name(self, sig_node: desc_signature) -> str:
+         # This controls the name in the TOC and on the sidebar.
+ 
+@@ -764,6 +832,12 @@ def resolve_any_xref(
+ 
+ def setup(app: Sphinx) -> Dict[str, Any]:
+     app.setup_extension("sphinx.directives")
++    app.add_config_value(
++        "qapi_allowed_fields",
++        set(),
++        "env",  # Setting impacts parsing phase
++        types=set,
++    )
+     app.add_domain(QAPIDomain)
+ 
+     return {
 -- 
 2.48.1
 
