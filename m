@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387BEA58303
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F31AA5830A
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:32:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trDto-0006lb-AR; Sun, 09 Mar 2025 06:28:48 -0400
+	id 1trDwY-0007yW-KT; Sun, 09 Mar 2025 06:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDtm-0006gi-1S
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:28:46 -0400
+ id 1trDwS-0007y2-IB
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDtk-0002rl-8E
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:28:45 -0400
+ id 1trDwO-0003yr-0A
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741516118;
+ s=mimecast20190719; t=1741516287;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Y3/T5P2oAUF10DYW7ZiBW/R86qLT70rCJsxPBXNqRHM=;
- b=cIeCssYCErMWG3Ql8e1LqRyjF+09C3P5OggjoijAYe81tf6P11lyQ18ej4xJ1HAklnnssG
- qvzGUxHblvg1e8DhL2awXDTGcLRFqzT8GblT5upZYSp7pK2K39S8bW8KoyEOb5d++YNgSe
- a34wKhZ2PbSoQOpPZBX/SLcg87dHmXU=
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/3THnVJh1k4LQ9j3TqKulpiNK6DFk5+zZI6dCZ06bvs=;
+ b=fnKaIWb5wNs1LPT4+yH8HpLAckKgfvxdAiW0DsuVf80VN1YomabnXoj7QJ4u8hknIh1JC2
+ 0uqyPyE99T5wGxgnIDWYknq4bgslV9R93E8W1VY2ap8kgsg7EYYRsd32NwAco9JOEFtAbQ
+ 7tObHiO/ommir1wO6vZTKV121wBfzLM=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-426-n1M0LwHgN0GmahCCzxG8kQ-1; Sun, 09 Mar 2025 06:28:36 -0400
-X-MC-Unique: n1M0LwHgN0GmahCCzxG8kQ-1
-X-Mimecast-MFC-AGG-ID: n1M0LwHgN0GmahCCzxG8kQ_1741516115
+ us-mta-384-baK99zCeMrGtL1sIV7JMnQ-1; Sun, 09 Mar 2025 06:31:23 -0400
+X-MC-Unique: baK99zCeMrGtL1sIV7JMnQ-1
+X-Mimecast-MFC-AGG-ID: baK99zCeMrGtL1sIV7JMnQ_1741516282
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43cebfa08ccso5190515e9.2
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:28:36 -0700 (PDT)
+ 5b1f17b1804b1-43cf3168b87so1390235e9.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:31:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741516115; x=1742120915;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Y3/T5P2oAUF10DYW7ZiBW/R86qLT70rCJsxPBXNqRHM=;
- b=C43VxlbC6M3t/FN94sI7QtOa/7pNzKiNpSAnjeE/5K+DbY0wkKgCvLp2Hm5OKNZNTj
- vTNe36TLenPAUrcHctN2/wqOyD9f9G9XNdisP37maGPiFQCiwkqNKY9y13vAUHZjZywF
- +qKZtBGxzt6UBIgYZhP2I46zFpkqEWUyBmZ0HEoxfj+lS/eT49keBHEyag3UEpvpdweJ
- ky8JEmhzoF2knXnL2cL/e5qXGt5+wi+21MlYpokMvX0To3R/B6IeTKHlZ1mhRI0QszBM
- mMuqMGkFt+ibT8OTa2WTr+H+jHVeBJD3nGMlv64Y03kLZ2kgHXHGRVoHgu9HUJw1TIUe
- MRxA==
-X-Gm-Message-State: AOJu0YyULGkgVYF/7YSizvC3uDFR2A+X66+xgx25SCYqWszzGATIFRZI
- TVfUpTP0CMvLG8mkt1TznETUWFpn2ElwzgUwXfZy/ZpfePIsqqotp5eb6PHNsxIe0OO5dJbS01B
- 0y23UwyZPPkDci9MjVmgcHu5AtsYTZ97T8MvHmhsOtfnJSCwYebn+
-X-Gm-Gg: ASbGncu/LUlbde8z2AS/QYU1U9iaWrPKaaOViwAGbpu8Ua1Qu46Uh7cgCIZcyUZ2Xlz
- AVIGhzPF8OM3VslB4WjUiv9Uj4P0Wg2CP3uzWhQUZDwlfxY5MH7ugTh8xCF4iIGRUjCT6w4hxhC
- 53InJPqmEUrrddjsBZLx+5CmTjbpv2vuL5B2qZ23JRFe7mLILUUNKab0rtIwbuPREYSkLZJXpxv
- UDNp6QfEC9slB+mStwgryfBOXkHk7yucHJb8YYerB3S5MVFy5OygwKpnMWD0fLpTT8mxj0pPtmJ
- n2SEkWG+x+/RzEhHpWZw9w==
-X-Received: by 2002:a05:600c:3556:b0:43c:ec27:8de1 with SMTP id
- 5b1f17b1804b1-43cec278ef4mr23694855e9.10.1741516115328; 
- Sun, 09 Mar 2025 03:28:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJfQbufps26AdeJodkGGedO21xdIzJbZQEfykTBPLsX+8CK4YzvQjFZedo8tZ4vubcxQY9DA==
-X-Received: by 2002:a05:600c:3556:b0:43c:ec27:8de1 with SMTP id
- 5b1f17b1804b1-43cec278ef4mr23694725e9.10.1741516115043; 
- Sun, 09 Mar 2025 03:28:35 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1741516282; x=1742121082;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/3THnVJh1k4LQ9j3TqKulpiNK6DFk5+zZI6dCZ06bvs=;
+ b=k/XRtG5+YBHQvqpCawTSoNb54Y7t26XcJO/R7zz6XdZkJOCRuij4Us2g0Cf68D+i3x
+ DjTKIX4MV0shJFkbqVqS9pwA+QP0pf+FObEBMLVQ48ZFT96FsGJRHRfNq3MYs9ggfJiL
+ FR7Xy7RNAjUQrlO2uRW+jAYe+Wa+uqS/9VjGcvGVLUqFaE3c+xStOUiKt/yH3d3F9NWJ
+ OS4cN0B0SBIpvPxU64tVS5iLz0aZ1wjIt26NBzg6nueGApa1ZtEaqaLQNLAf4Tdwak2a
+ DnVrUpe2p2Sw1aQ0bYj72coWJSeEo66g5HDPHVb0aj276xGhrrG1kl6yqTaLHd4CYIRd
+ OPbg==
+X-Gm-Message-State: AOJu0YzfJ4J7L2aGFDRRfLCXddCEZdYBBhhnwyMVPKKHlzIMhSHXLz/p
+ 3VPwrgxvvN0HTdMaREk/UBBxFYA80ivWOKMdO0Oi1NdgDETch7INOlYyaH+4FCw5umQW/be6qbE
+ SDY+3tMmYRITLgAx0dfyXrIT0GU72FEFUC5ydChG5yYwsnu0vh49daj+hPa+LMy7/60p7uxWYWE
+ qLezpShRPcRdAfSZfwImR/X/yNxqAuMjGT8hRj3Xk=
+X-Gm-Gg: ASbGnctd6vBBlRBn4P8cXC3lm1FRdyiUaYPvIW3tPl6hYVOMlT6FqHvVbvHdHcFvkV1
+ AoXAimvxP7OqzDdadBAVy2AZEMh8XVTNFXf4qPkunTlOqsgs24676oiw30mTjoSPUrd3a2nboTQ
+ wrXsywBy4/Rj/3tQC44qvjMo4Q+Gpkp/51Ia+lJ7C425PCuOCed/DOABodE5hK1mI27CfZ4icQj
+ zuD4MFQxa19uAr9kCvyIN9HnTAFq3o1PiFTvezOVxHyzfMIYHwwSzNtu6zgOM2Ykq6PnGc2k/5n
+ 1vpm+ZbnViBeR/1GG4B6EA==
+X-Received: by 2002:a05:600c:19cd:b0:43c:f1b8:16ad with SMTP id
+ 5b1f17b1804b1-43cf1b81b78mr9488595e9.30.1741516282046; 
+ Sun, 09 Mar 2025 03:31:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvq4LE6Qch7VWDVpWTwjuQnMQvdlggydvWDGHTAqJpuFYOXkupoW4UCOUiOQg4oXjiOi5cHw==
+X-Received: by 2002:a05:600c:19cd:b0:43c:f1b8:16ad with SMTP id
+ 5b1f17b1804b1-43cf1b81b78mr9488405e9.30.1741516281480; 
+ Sun, 09 Mar 2025 03:31:21 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.122.167])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43bdd8b0461sm114433225e9.4.2025.03.09.03.28.33
+ 5b1f17b1804b1-43bd42c5b33sm145444665e9.22.2025.03.09.03.31.20
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 03:28:34 -0700 (PDT)
+ Sun, 09 Mar 2025 03:31:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,
-	qemu-rust@nongnu.org
-Subject: Re: [PATCH] rust: pl011: Allow NULL chardev argument to pl011_create()
-Date: Sun,  9 Mar 2025 11:25:19 +0100
-Message-ID: <20250309102518.1115001-2-pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/25] (Mostly) Rust patches for QEMU 10.0 soft freeze
+Date: Sun,  9 Mar 2025 11:30:54 +0100
+Message-ID: <20250309103120.1116448-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250307190051.3274226-1-peter.maydell@linaro.org>
-References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -106,11 +103,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> This is my first Rust related patch for QEMU, so I've
-> probably got something wrong here :-)
+The following changes since commit e8a01102936286e012ed0f00bd7f3b7474d415c9:
 
-No no, that was all good!  Applied, thanks.
+  Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2025-03-05 21:58:23 +0800)
 
-Paolo
+are available in the Git repository at:
+
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 816945364f698ae750aa665fce3d121c98e37a6f:
+
+  rust: pl011: Allow NULL chardev argument to pl011_create() (2025-03-09 11:25:10 +0100)
+
+----------------------------------------------------------------
+* scripts: dump stdin on meson-buildoptions error
+* rust: introduce qemu_api::cell::Opaque<>
+* rust: express pinning requirements for timers
+* rust: hpet: decode HPET registers into enums
+* rust: cell: add full example of declaring a SysBusDevice
+* rust: qom: remove operations on &mut
+
+----------------------------------------------------------------
+Alex Bennée (1):
+      meson.build: default to -gsplit-dwarf for debug info
+
+Nabih Estefan (1):
+      scripts: dump stdin on meson-buildoptions error
+
+Paolo Bonzini (22):
+      chardev: express dependency on io/
+      rust: cell: add wrapper for FFI types
+      rust: qemu_api_macros: add Wrapper derive macro
+      rust: vmstate: add std::pin::Pin as transparent wrapper
+      rust: hpet: embed Timer without the Option and Box indirection
+      rust: timer: wrap QEMUTimer with Opaque<> and express pinning requirements
+      rust: irq: wrap IRQState with Opaque<>
+      rust: qom: wrap Object with Opaque<>
+      rust: qdev: wrap Clock and DeviceState with Opaque<>
+      rust: hpet: do not access fields of SysBusDevice
+      rust: sysbus: wrap SysBusDevice with Opaque<>
+      rust: memory: wrap MemoryRegion with Opaque<>
+      rust: chardev: wrap Chardev with Opaque<>
+      rust: bindings: remove more unnecessary Send/Sync impls
+      rust: chardev: provide basic bindings to character devices
+      rust: pl011: move register definitions out of lib.rs
+      rust: pl011: clean up visibilities of callbacks
+      rust: pl011: switch to safe chardev operation
+      rust: pl011: pass around registers::Data
+      rust: hpet: decode HPET registers into enums
+      rust: cell: add full example of declaring a SysBusDevice
+      rust: qom: remove operations on &mut
+
+Peter Maydell (1):
+      rust: pl011: Allow NULL chardev argument to pl011_create()
+
+ docs/devel/rust.rst                 |  36 ++-
+ meson.build                         |  15 +-
+ meson_options.txt                   |   2 +
+ rust/Cargo.toml                     |   2 +
+ rust/hw/char/pl011/src/device.rs    | 155 ++++-------
+ rust/hw/char/pl011/src/lib.rs       | 511 +-----------------------------------
+ rust/hw/char/pl011/src/registers.rs | 506 +++++++++++++++++++++++++++++++++++
+ rust/hw/timer/hpet/src/hpet.rs      | 291 ++++++++++----------
+ rust/qemu-api-macros/src/lib.rs     |  90 ++++++-
+ rust/qemu-api/meson.build           |  24 +-
+ rust/qemu-api/src/bindings.rs       |  26 +-
+ rust/qemu-api/src/cell.rs           | 277 ++++++++++++++++++-
+ rust/qemu-api/src/chardev.rs        | 248 ++++++++++++++++-
+ rust/qemu-api/src/irq.rs            |  15 +-
+ rust/qemu-api/src/memory.rs         |  32 +--
+ rust/qemu-api/src/prelude.rs        |   1 -
+ rust/qemu-api/src/qdev.rs           |  75 ++++--
+ rust/qemu-api/src/qom.rs            | 118 ++-------
+ rust/qemu-api/src/sysbus.rs         |  40 ++-
+ rust/qemu-api/src/timer.rs          |  47 +++-
+ rust/qemu-api/src/vmstate.rs        |   3 +-
+ rust/qemu-api/src/zeroable.rs       |   1 +
+ rust/qemu-api/tests/tests.rs        |  34 +--
+ scripts/meson-buildoptions.py       |  10 +-
+ scripts/meson-buildoptions.sh       |   2 +
+ 25 files changed, 1551 insertions(+), 1010 deletions(-)
+ create mode 100644 rust/hw/char/pl011/src/registers.rs
+-- 
+2.48.1
 
 
