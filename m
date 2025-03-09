@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224C6A586B2
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 18:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E77A5867B
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 18:53:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trKp7-00059e-27; Sun, 09 Mar 2025 13:52:25 -0400
+	id 1trKpB-0005AQ-QU; Sun, 09 Mar 2025 13:52:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKp5-00059U-Kq
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:23 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKp9-0005AD-FR
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:27 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKp4-0004o7-35
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:23 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43bc30adad5so20000015e9.1
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:52:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKp7-0004oY-Rn
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:27 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43bc48ff815so19917165e9.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:52:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741542739; x=1742147539; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741542744; x=1742147544; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rGVH3ZQmQ46V7zOspwriiKsX0Emdo3m/I01cSo1IH7Y=;
- b=nyzUPbe+BxoaYJP5thJOBYGwokRFQ2YP86uhLSXqNEmokc7cpqpZk8uuUL24CR7IFf
- thymKOvp/kt1EOtjvS7t4zKJOaQruXaMVSgyXQj91inADEz/tmLdLy+P4l+Rm4ANU7cj
- mTWNCJzaT8RCjTv1CvrO/a9r5SnvZI7uJqbaFVpb8ssmAO/2qIZuN0+y0U/dOzSYUTo2
- kDt5uHKLeKOCBqL1+JqDFiPvC/xan8VOU6TabLlVK66McByWoDNtbzz3Ymyo1YLi3f6F
- 4rME4jY4Odqz+tg6rHCqF1LIO9OkT07zrG62/qJhyTBRv7Uv0rN2hocBE6Fr9SgolHst
- xNXg==
+ :reply-to; bh=I3NR+5rxXyS1Unu3/N17nFNE/6t0ATq2jAlqmEXa0yw=;
+ b=PQ465ES6JSXBfszIkQO0eQXhPJ5WlEUy9oClOs3Jrh+sAQlNuX75YQkbGcHULmMThx
+ nCzHiaxQGj9cJVP5IRs1128QMVgic/WpnVEHcuWFtlp5V65WI6ly0eTvc2Rg6hZcJMKe
+ drPoshelWqNluUidD5URnnryrVIn0Sc8govlyiseds41MyXJWvfP2aPNbzPS525CHRvh
+ h1rYwYi/5uzNvOV2bK67ktSh/htsjWfeniUjq6cimA/DfQ6IRoPtInYjQOZWj7Ls94Hy
+ wlGGdwXGeJDYLqicetuBdcw+EcToFA3XjJiFJGg5c661SJnK3zMlput4msGdqgazjKbd
+ EXLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741542739; x=1742147539;
+ d=1e100.net; s=20230601; t=1741542744; x=1742147544;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rGVH3ZQmQ46V7zOspwriiKsX0Emdo3m/I01cSo1IH7Y=;
- b=DuZTg7b+q2zOUYX8noIyVVXObzrlBjUxAkjw6TMWJUg4Pb1NGFYWPLTEjw8j1TNDzF
- 3WdugMrHSXAQunx/IEWorHXB9MIXLNd7KPJuHcbZJKj/ZmRbefaLCheWk8TRRn+IUglN
- xY2lPA1UZMmJ+MIyq8AY6JLfCv9gQgAVHoWzIo12G9eOghP6pOMQ51xpHng3vV9h12rK
- jbt0ONDqBQQZ2uAPE2wrVIL67anB7Ip/m2glYx+8yC7Q9GVCpLCRkVBUaOKptKbDuD9t
- p6dZr+/Xu+PZsvordkPW+x3a+cu1jVcbwLQ7dK5wFFqSpQ7aLT4Nluj1mNDBJeOYdtXH
- QFRA==
-X-Gm-Message-State: AOJu0YzW+ptVqQnYN2a0qOtcMPFwF+YYmAbT3Raf1aGrjVZBwUuLnd9p
- 08Ge8zct3bgYKwr6LVKGJWdGhwyFfXVzk4TFGsF07jJPjyIy+OYqVZuk4ic6dZkItgktPW8RIwI
- zPBs=
-X-Gm-Gg: ASbGncudwCXeoEG0xbsVf0AQ4lk2/umkE3gqnuqcgneni0G2TTR8us/oD2boQEUQsYc
- DEOvC15TXfc5H4x8px0UQKe5dNeQl+gcDMI4b+k6YtkVUwfZRMctxHyorO7x/vePh8PJEG5vJpj
- AR/dUe8g5tyaH+2JBxACNSbgIRoZjkH+QWfiPgNMeuq03e69N64+xB1E+m5ikJFc5VpYUCjYkZt
- loH0/ug0yxPo+rIrd8pr3WtGXJLMBOaZIEXlqsZxzMgF9ZUP3l955v/2jfB8lwYz5HS2PbqUXM6
- gFRizOrdGgmiQe9Imyp4Ux+E+23Nl8Z7WZn8P0Clpqj4YoHF3lLYuRLOzmNXX2HuTNEH+qFo/uk
- DVazsEOXRm/6y15AMAqo=
-X-Google-Smtp-Source: AGHT+IEhpen0OT/wpjIsedM9olTkpqA0r2zexZbUkn3PQErVXSKJU0+PVrkG3oWBI/ZNw5TO5UZs0g==
-X-Received: by 2002:a05:600c:358e:b0:43b:cc42:c54f with SMTP id
- 5b1f17b1804b1-43c5a60eab5mr77702865e9.14.1741542738896; 
- Sun, 09 Mar 2025 10:52:18 -0700 (PDT)
+ bh=I3NR+5rxXyS1Unu3/N17nFNE/6t0ATq2jAlqmEXa0yw=;
+ b=OaJaCfwvfk1jxfmwlt0XQu01bMc8SB53JtXFn7BEOFJE3wLyaJL9dZDmGMo+vaoMdu
+ Lw18SsM0Mvn6la5V60Hlk+sQ9u/pF01//BnKC3Aj6bQzsP9CejS9WkPB1bLhW6k6F/on
+ UVzpq+5xZovCSMYdOx9+WgAlRHDKksEf0GNjPk6doEb763sj9nKPTmOt9Dd9sXqDusTH
+ TCX+easu8nG5Vkm+RLcR7X31eaWO7cNdkys2iSOokJinQ4m0UDFewANq6evJAK0Re2S9
+ mtvmX2x7pegZxa7fn4jk5BWn+ocOQT2kfTWIjqG6K2OJWThJSwH2Jk80J1P53b4yT9Mn
+ F8CQ==
+X-Gm-Message-State: AOJu0YyBV3XxWPqyIsHICYeFBHKJ6aC5AAyI6vwUYGE0bjjfXHo+uWe1
+ m8Bhr2QqvRO+SYBcZw9h1KUCUy2pJoWA1I48DuSYUmIJKDzxRKnS1NBukjojJ2GKCMzy0cKh8He
+ hB10=
+X-Gm-Gg: ASbGncuO8PihviY2QH5EOwxt1sxEH9/gZPiB/r92Ju3pEHUCKdJBDqcGk5xFreZECTG
+ M2l8FKj1v/4coh/n8DgKT3yJcXmNN00vtJktWN9wZX2iSivtEw/GqNvmgvnRNATMl0AAroRXaRs
+ WR7ENlIOJHiI9ohEnEypaYTfeLDcq3+d4HKt1bDIlabdUHDzE9uH2LOCiVkEdzI8mrKKkV4kzxm
+ EU2XLe9Rqd6tSylxqQZHUUY/SboGXSPSFCEIZAll+FG0ZtSvFz8y5/nD/wYUdKzGVfzEH6YBnin
+ i7ZYfpttOzx2QREEL9DfdStTy7+V6NGU05TPl2J85hzGdJw7JjqP92XDSnzdDOprmSlWRXu23nQ
+ Yv39mLsW1k7QimEVcpdPw2CetEiNgbQ==
+X-Google-Smtp-Source: AGHT+IFO1/oUuVaYLKaejKW45XLEgrXqtWD100cEYoy2qq3dChUlbidwJXH/D/Ek//Nzd/t5knxe4A==
+X-Received: by 2002:a05:600c:3054:b0:43b:c270:49ae with SMTP id
+ 5b1f17b1804b1-43ce4a4adf9mr37286325e9.0.1741542743696; 
+ Sun, 09 Mar 2025 10:52:23 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43cf27f8ef3sm25932595e9.11.2025.03.09.10.52.18
+ 5b1f17b1804b1-43cf1b36d14sm27582095e9.37.2025.03.09.10.52.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Mar 2025 10:52:18 -0700 (PDT)
+ Sun, 09 Mar 2025 10:52:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/38] bsd-user: Always use mmap_find_vma_aligned() in
- target_mmap()
-Date: Sun,  9 Mar 2025 18:51:31 +0100
-Message-ID: <20250309175207.43828-3-philmd@linaro.org>
+Subject: [PULL 03/38] bsd-user: Propagate alignment argument to mmap_find_vma()
+Date: Sun,  9 Mar 2025 18:51:32 +0100
+Message-ID: <20250309175207.43828-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250309175207.43828-1-philmd@linaro.org>
 References: <20250309175207.43828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,36 +96,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Massage target_mmap(): calculate alignment once, then
-unconditionally call mmap_find_vma_aligned().
+Propagate the alignment to mmap_find_vma(), effectively
+embedding mmap_find_vma_aligned() within mmap_find_vma().
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Add a comment in do_bsd_shmat() to clarify alignment above
+page size is not required.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
-Message-Id: <20250308122842.76377-2-philmd@linaro.org>
+Message-Id: <20250308122842.76377-3-philmd@linaro.org>
 ---
- bsd-user/mmap.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ bsd-user/bsd-mem.h |  4 +++-
+ bsd-user/qemu.h    |  2 +-
+ bsd-user/mmap.c    | 10 ++--------
+ 3 files changed, 6 insertions(+), 10 deletions(-)
 
+diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
+index f5ec0de24ca..90ca0e33775 100644
+--- a/bsd-user/bsd-mem.h
++++ b/bsd-user/bsd-mem.h
+@@ -370,9 +370,11 @@ static inline abi_long do_bsd_shmat(int shmid, abi_ulong shmaddr, int shmflg)
+         if (shmaddr) {
+             host_raddr = shmat(shmid, (void *)g2h_untagged(shmaddr), shmflg);
+         } else {
++            abi_ulong alignment;
+             abi_ulong mmap_start;
+ 
+-            mmap_start = mmap_find_vma(0, shm_info.shm_segsz);
++            alignment = 0; /* alignment above page size not required */
++            mmap_start = mmap_find_vma(0, shm_info.shm_segsz, alignment);
+ 
+             if (mmap_start == -1) {
+                 return -TARGET_ENOMEM;
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index 4e97c796318..0b3bd65b180 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -242,7 +242,7 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+                        abi_ulong new_addr);
+ int target_msync(abi_ulong start, abi_ulong len, int flags);
+ extern abi_ulong mmap_next_start;
+-abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size);
++abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong alignment);
+ void mmap_reserve(abi_ulong start, abi_ulong size);
+ void TSA_NO_TSA mmap_fork_start(void);
+ void TSA_NO_TSA mmap_fork_end(int child);
 diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
-index 346f2cefd32..dfa6e728ab5 100644
+index dfa6e728ab5..3f0df79c375 100644
 --- a/bsd-user/mmap.c
 +++ b/bsd-user/mmap.c
-@@ -489,13 +489,12 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
-      * before we truncate the length for mapping files below.
-      */
-     if (!(flags & MAP_FIXED)) {
-+        abi_ulong alignment;
-+
+@@ -275,8 +275,7 @@ static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
+  * It must be called with mmap_lock() held.
+  * Return -1 if error.
+  */
+-static abi_ulong mmap_find_vma_aligned(abi_ulong start, abi_ulong size,
+-                                       abi_ulong alignment)
++abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong alignment)
+ {
+     void *ptr, *prev;
+     abi_ulong addr;
+@@ -395,11 +394,6 @@ static abi_ulong mmap_find_vma_aligned(abi_ulong start, abi_ulong size,
+     }
+ }
+ 
+-abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size)
+-{
+-    return mmap_find_vma_aligned(start, size, 0);
+-}
+-
+ /* NOTE: all the constants are the HOST ones */
+ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+                      int flags, int fd, off_t offset)
+@@ -494,7 +488,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
          host_len = len + offset - host_offset;
          host_len = HOST_PAGE_ALIGN(host_len);
--        if ((flags & MAP_ALIGNMENT_MASK) != 0)
--            start = mmap_find_vma_aligned(real_start, host_len,
--                (flags & MAP_ALIGNMENT_MASK) >> MAP_ALIGNMENT_SHIFT);
--        else
--            start = mmap_find_vma(real_start, host_len);
-+        alignment = (flags & MAP_ALIGNMENT_MASK) >> MAP_ALIGNMENT_SHIFT;
-+        start = mmap_find_vma_aligned(real_start, host_len, alignment);
+         alignment = (flags & MAP_ALIGNMENT_MASK) >> MAP_ALIGNMENT_SHIFT;
+-        start = mmap_find_vma_aligned(real_start, host_len, alignment);
++        start = mmap_find_vma(real_start, host_len, alignment);
          if (start == (abi_ulong)-1) {
              errno = ENOMEM;
              goto fail;
