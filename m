@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E04A584AC
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:53:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E89ECA584B3
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:54:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trH5R-00018U-28; Sun, 09 Mar 2025 09:53:01 -0400
+	id 1trH5J-0000i2-Br; Sun, 09 Mar 2025 09:52:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH5E-0000YU-4x
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:52:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH59-0000A6-FC
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:52:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH5A-0003EJ-0n
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:52:47 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH57-00039y-NK
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:52:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741528363;
+ s=mimecast20190719; t=1741528361;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=71gYa93+m7oj7BHFz1te5Iel24DuZsxmP79Je1U5hyk=;
- b=V4/nSQve2Bo9MBD5LMDU0VAkxStewkbw9BXtfkZMi0dZ9XnPbB3IEo/t0Yk6nUB8p3MUu4
- mVNR1WcewFJnzPrJFDdss83//dDHDhs7+Uh98E0IaJrAzwzrB6Lx5ImGT9M5f4qzZAATMt
- ANBrmmczho/KtOxBphh0oUPdlKBgilM=
+ bh=o7KeAOD7K4cxXQg+uGQZFPUMlbbq7QvraDKIXJw/+CU=;
+ b=f2CbiQp84P/n6G+b+2hWhsTJBZY9ZxuiUXI2garp9rdUARWw7TdM8tkaPvI/idZPvfa7Qw
+ BYgPSoFCQ+Ucm/q/M2SGF/H7pAjz+9NYnrPf1jwH6A6cLbXCYRyz2i9pPO3JUOo4QyaerZ
+ ZslHQ9jzarBKo9nCtfSA17PUkw2/JpQ=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-463-g9B5wXuCMpCfbSQi7QrVug-1; Sun,
- 09 Mar 2025 09:52:37 -0400
-X-MC-Unique: g9B5wXuCMpCfbSQi7QrVug-1
-X-Mimecast-MFC-AGG-ID: g9B5wXuCMpCfbSQi7QrVug_1741528356
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-93-XHeNDx_7MTqyqzFhuNsdTg-1; Sun,
+ 09 Mar 2025 09:52:39 -0400
+X-MC-Unique: XHeNDx_7MTqyqzFhuNsdTg-1
+X-Mimecast-MFC-AGG-ID: XHeNDx_7MTqyqzFhuNsdTg_1741528358
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7143E1800349; Sun,  9 Mar 2025 13:52:36 +0000 (UTC)
+ id 86C9F180049D; Sun,  9 Mar 2025 13:52:38 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.17])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D42EC1956094; Sun,  9 Mar 2025 13:52:34 +0000 (UTC)
+ id EB5521956094; Sun,  9 Mar 2025 13:52:36 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 25/46] hw/arm/aspeed: Rename IRQ table and machine name for
- AST2700 A0
-Date: Sun,  9 Mar 2025 14:51:09 +0100
-Message-ID: <20250309135130.545764-26-clg@redhat.com>
+Subject: [PULL 26/46] hw/arm/aspeed_ast27x0: Sort the IRQ table by IRQ number
+Date: Sun,  9 Mar 2025 14:51:10 +0100
+Message-ID: <20250309135130.545764-27-clg@redhat.com>
 In-Reply-To: <20250309135130.545764-1-clg@redhat.com>
 References: <20250309135130.545764-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,92 +84,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Currently, AST2700 SoC only supports A0. To support AST2700 A1, rename its IRQ
-table and machine name.
-
-To follow the machine deprecation rule, the initial machine "ast2700-evb" is
-aliased to "ast2700a0-evb." In the future, we will alias "ast2700-evb" to new
-SoCs, such as "ast2700a1-evb."
+To improve readability, sort the IRQ table by IRQ number.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250307035945.3698802-9-jamin_lin@aspeedtech.com
+Link: https://lore.kernel.org/qemu-devel/20250307035945.3698802-10-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c         | 9 +++++----
- hw/arm/aspeed_ast27x0.c | 8 ++++----
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ hw/arm/aspeed_ast27x0.c | 50 ++++++++++++++++++++---------------------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index c6c18596d62e..18f7c450dadd 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1673,12 +1673,13 @@ static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
-                             TYPE_TMP105, 0x4d);
- }
- 
--static void aspeed_machine_ast2700_evb_class_init(ObjectClass *oc, void *data)
-+static void aspeed_machine_ast2700a0_evb_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
- 
--    mc->desc = "Aspeed AST2700 EVB (Cortex-A35)";
-+    mc->alias = "ast2700-evb";
-+    mc->desc = "Aspeed AST2700 A0 EVB (Cortex-A35)";
-     amc->soc_name  = "ast2700-a0";
-     amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
-     amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
-@@ -1817,9 +1818,9 @@ static const TypeInfo aspeed_machine_types[] = {
-         .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
- #ifdef TARGET_AARCH64
-     }, {
--        .name          = MACHINE_TYPE_NAME("ast2700-evb"),
-+        .name          = MACHINE_TYPE_NAME("ast2700a0-evb"),
-         .parent        = TYPE_ASPEED_MACHINE,
--        .class_init    = aspeed_machine_ast2700_evb_class_init,
-+        .class_init    = aspeed_machine_ast2700a0_evb_class_init,
- #endif
-     }, {
-         .name          = TYPE_ASPEED_MACHINE,
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index f14d2ea1753d..44ddfdd2c6c9 100644
+index 44ddfdd2c6c9..642a8f55212f 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -73,7 +73,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
- #define AST2700_MAX_IRQ 256
+@@ -74,27 +74,13 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
  
  /* Shared Peripheral Interrupt values below are offset by -32 from datasheet */
--static const int aspeed_soc_ast2700_irqmap[] = {
-+static const int aspeed_soc_ast2700a0_irqmap[] = {
-     [ASPEED_DEV_UART0]     = 132,
-     [ASPEED_DEV_UART1]     = 132,
-     [ASPEED_DEV_UART2]     = 132,
-@@ -766,7 +766,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     create_unimplemented_device("ast2700.io", 0x0, 0x4000000);
- }
- 
--static void aspeed_soc_ast2700_class_init(ObjectClass *oc, void *data)
-+static void aspeed_soc_ast2700a0_class_init(ObjectClass *oc, void *data)
- {
-     static const char * const valid_cpu_types[] = {
-         ARM_CPU_TYPE_NAME("cortex-a35"),
-@@ -788,7 +788,7 @@ static void aspeed_soc_ast2700_class_init(ObjectClass *oc, void *data)
-     sc->uarts_num    = 13;
-     sc->num_cpus     = 4;
-     sc->uarts_base   = ASPEED_DEV_UART0;
--    sc->irqmap       = aspeed_soc_ast2700_irqmap;
-+    sc->irqmap       = aspeed_soc_ast2700a0_irqmap;
-     sc->memmap       = aspeed_soc_ast2700_memmap;
-     sc->get_irq      = aspeed_soc_ast2700_get_irq;
- }
-@@ -803,7 +803,7 @@ static const TypeInfo aspeed_soc_ast27x0_types[] = {
-         .name           = "ast2700-a0",
-         .parent         = TYPE_ASPEED27X0_SOC,
-         .instance_init  = aspeed_soc_ast2700_init,
--        .class_init     = aspeed_soc_ast2700_class_init,
-+        .class_init     = aspeed_soc_ast2700a0_class_init,
-     },
+ static const int aspeed_soc_ast2700a0_irqmap[] = {
+-    [ASPEED_DEV_UART0]     = 132,
+-    [ASPEED_DEV_UART1]     = 132,
+-    [ASPEED_DEV_UART2]     = 132,
+-    [ASPEED_DEV_UART3]     = 132,
+-    [ASPEED_DEV_UART4]     = 8,
+-    [ASPEED_DEV_UART5]     = 132,
+-    [ASPEED_DEV_UART6]     = 132,
+-    [ASPEED_DEV_UART7]     = 132,
+-    [ASPEED_DEV_UART8]     = 132,
+-    [ASPEED_DEV_UART9]     = 132,
+-    [ASPEED_DEV_UART10]    = 132,
+-    [ASPEED_DEV_UART11]    = 132,
+-    [ASPEED_DEV_UART12]    = 132,
+-    [ASPEED_DEV_FMC]       = 131,
+     [ASPEED_DEV_SDMC]      = 0,
+-    [ASPEED_DEV_SCU]       = 12,
+-    [ASPEED_DEV_ADC]       = 130,
++    [ASPEED_DEV_HACE]      = 4,
+     [ASPEED_DEV_XDMA]      = 5,
+-    [ASPEED_DEV_EMMC]      = 15,
+-    [ASPEED_DEV_GPIO]      = 130,
++    [ASPEED_DEV_UART4]     = 8,
++    [ASPEED_DEV_SCU]       = 12,
+     [ASPEED_DEV_RTC]       = 13,
++    [ASPEED_DEV_EMMC]      = 15,
+     [ASPEED_DEV_TIMER1]    = 16,
+     [ASPEED_DEV_TIMER2]    = 17,
+     [ASPEED_DEV_TIMER3]    = 18,
+@@ -103,19 +89,33 @@ static const int aspeed_soc_ast2700a0_irqmap[] = {
+     [ASPEED_DEV_TIMER6]    = 21,
+     [ASPEED_DEV_TIMER7]    = 22,
+     [ASPEED_DEV_TIMER8]    = 23,
+-    [ASPEED_DEV_WDT]       = 131,
+-    [ASPEED_DEV_PWM]       = 131,
++    [ASPEED_DEV_DP]        = 28,
+     [ASPEED_DEV_LPC]       = 128,
+     [ASPEED_DEV_IBT]       = 128,
++    [ASPEED_DEV_KCS]       = 128,
++    [ASPEED_DEV_ADC]       = 130,
++    [ASPEED_DEV_GPIO]      = 130,
+     [ASPEED_DEV_I2C]       = 130,
+-    [ASPEED_DEV_PECI]      = 133,
++    [ASPEED_DEV_FMC]       = 131,
++    [ASPEED_DEV_WDT]       = 131,
++    [ASPEED_DEV_PWM]       = 131,
++    [ASPEED_DEV_I3C]       = 131,
++    [ASPEED_DEV_UART0]     = 132,
++    [ASPEED_DEV_UART1]     = 132,
++    [ASPEED_DEV_UART2]     = 132,
++    [ASPEED_DEV_UART3]     = 132,
++    [ASPEED_DEV_UART5]     = 132,
++    [ASPEED_DEV_UART6]     = 132,
++    [ASPEED_DEV_UART7]     = 132,
++    [ASPEED_DEV_UART8]     = 132,
++    [ASPEED_DEV_UART9]     = 132,
++    [ASPEED_DEV_UART10]    = 132,
++    [ASPEED_DEV_UART11]    = 132,
++    [ASPEED_DEV_UART12]    = 132,
+     [ASPEED_DEV_ETH1]      = 132,
+     [ASPEED_DEV_ETH2]      = 132,
+     [ASPEED_DEV_ETH3]      = 132,
+-    [ASPEED_DEV_HACE]      = 4,
+-    [ASPEED_DEV_KCS]       = 128,
+-    [ASPEED_DEV_DP]        = 28,
+-    [ASPEED_DEV_I3C]       = 131,
++    [ASPEED_DEV_PECI]      = 133,
+     [ASPEED_DEV_SDHCI]     = 133,
  };
  
 -- 
