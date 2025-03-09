@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9399BA581FC
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:43:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A16A581F1
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:43:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trC9i-0002E9-Fr; Sun, 09 Mar 2025 04:37:06 -0400
+	id 1trC9i-0002HN-Hx; Sun, 09 Mar 2025 04:37:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9N-0001om-EA
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:46 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9O-0001vP-TQ
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9L-0002OR-Ty
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:45 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9N-0002OZ-9a
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741509403;
+ s=mimecast20190719; t=1741509404;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JQaMftXtykET4jFOV36Ozgve+DMm4+3d3K2TMaKULHc=;
- b=JDD4VPYxvWlmRC1Nw4nx9INfHIWKgAUlPGu3FDz6l7kREH9nQPaCeRnVBjksafEPKmETAL
- V2BTWs2zUPf88c+WCtKMDYvyLB2p5ZfUXn+7IfN2mLim7OnD98ywJdflzbrniiH5AkqMku
- B0x6RBeypdoRsT59oL/QPAx3pUfg2Ek=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=BOM+579xLwYHZYcRqtV2w6KZ3VlqJrRTooRu/GEzhS4=;
+ b=YwsWiD9XfHVda+FqGcgSGOt4a0VbWV/vLhaqre4JA3lQORQXh6vEqAkQF81LOHm5bIsDks
+ vmDnNVJBzJfdwkn8jmP6TBDl0JeHKv3I1zbgJzmdZ/hx6nTkRDdS1t/w8LIUzJfSObJYN+
+ J3/D1L+/cSfEa1GCNcsXgL4oFmTgEvI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-414-KmfPVGVPPSinis_ZyRSMlg-1; Sun,
- 09 Mar 2025 04:36:39 -0400
-X-MC-Unique: KmfPVGVPPSinis_ZyRSMlg-1
-X-Mimecast-MFC-AGG-ID: KmfPVGVPPSinis_ZyRSMlg_1741509398
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-IKbvbeawP6qvKS1Spr27qg-1; Sun,
+ 09 Mar 2025 04:36:43 -0400
+X-MC-Unique: IKbvbeawP6qvKS1Spr27qg-1
+X-Mimecast-MFC-AGG-ID: IKbvbeawP6qvKS1Spr27qg_1741509402
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 61FF619560B0; Sun,  9 Mar 2025 08:36:38 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C1E851956087; Sun,  9 Mar 2025 08:36:41 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.4])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C32B819560AB; Sun,  9 Mar 2025 08:36:35 +0000 (UTC)
+ id E115A19560AD; Sun,  9 Mar 2025 08:36:38 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 18/62] docs/qapi-domain: add "Return:" field lists
-Date: Sun,  9 Mar 2025 04:35:05 -0400
-Message-ID: <20250309083550.5155-19-jsnow@redhat.com>
+Subject: [PATCH v2 19/62] docs/qapi-domain: add qapi:enum directive
+Date: Sun,  9 Mar 2025 04:35:06 -0400
+Message-ID: <20250309083550.5155-20-jsnow@redhat.com>
 In-Reply-To: <20250309083550.5155-1-jsnow@redhat.com>
 References: <20250309083550.5155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -85,43 +85,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add "Return:" field list syntax to QAPI Commands.
+Add the .. qapi:enum:: directive, object, and :qapi:enum:`name`
+cross-reference role.
 
-Like "Arguments:" and "Errors:", the type name isn't currently processed
-for cross-referencing, but this will be addressed in a forthcoming
-commit.
+Add the :value name: field list for documenting Enum values.
 
-This patch adds "Return" as a GroupedField, which means that multiple
-return values can be annotated - this is only done because Sphinx does
-not seemingly (Maybe I missed it?) support mandatory type arguments to
-Ungrouped fields. Because we want to cross-reference this type
-information later, we want to make the type argument mandatory. As a
-result, you can technically add multiple :return: fields, though I'm not
-aware of any circumstance in which you'd need or want
-to. Recommendation: "Don't do that, then."
+Of note, also introduce a new "type" role that is intended to be used by
+other QAPI object directives to cross-reference arbitrary QAPI type
+names, but will exclude commands, events, and modules from
+consideration.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapi_domain.py | 7 +++++++
- 1 file changed, 7 insertions(+)
+ docs/sphinx/qapi_domain.py | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index d018fcd4f7c..8a364ff75ea 100644
+index 8a364ff75ea..0eb8c6fce55 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -296,6 +296,13 @@ class QAPICommand(QAPIObject):
-                 names=("error", "errors"),
-                 has_arg=False,
-             ),
-+            # :returns TypeName: descr
-+            GroupedField(
-+                "returnvalue",
-+                label=_("Return"),
-+                names=("return",),
-+                can_collapse=True,
-+            ),
-         ]
+@@ -307,6 +307,23 @@ class QAPICommand(QAPIObject):
      )
+ 
+ 
++class QAPIEnum(QAPIObject):
++    """Description of a QAPI Enum."""
++
++    doc_field_types = QAPIObject.doc_field_types.copy()
++    doc_field_types.extend(
++        [
++            # :value name: descr
++            GroupedField(
++                "value",
++                label=_("Values"),
++                names=("value",),
++                can_collapse=False,
++            )
++        ]
++    )
++
++
+ class QAPIModule(QAPIDescription):
+     """
+     Directive to mark description of a new module.
+@@ -426,9 +443,14 @@ class QAPIDomain(Domain):
+     # This table associates cross-reference object types (key) with an
+     # ObjType instance, which defines the valid cross-reference roles
+     # for each object type.
++    #
++    # e.g., the :qapi:type: cross-reference role can refer to enum,
++    # struct, union, or alternate objects; but :qapi:obj: can refer to
++    # anything. Each object also gets its own targeted cross-reference role.
+     object_types: Dict[str, ObjType] = {
+         "module": ObjType(_("module"), "mod", "any"),
+         "command": ObjType(_("command"), "cmd", "any"),
++        "enum": ObjType(_("enum"), "enum", "type", "any"),
+     }
+ 
+     # Each of these provides a rST directive,
+@@ -436,6 +458,7 @@ class QAPIDomain(Domain):
+     directives = {
+         "module": QAPIModule,
+         "command": QAPICommand,
++        "enum": QAPIEnum,
+     }
+ 
+     # These are all cross-reference roles; e.g.
+@@ -444,6 +467,9 @@ class QAPIDomain(Domain):
+     roles = {
+         "mod": QAPIXRefRole(),
+         "cmd": QAPIXRefRole(),
++        "enum": QAPIXRefRole(),
++        # reference any data type (excludes modules, commands, events)
++        "type": QAPIXRefRole(),
+         "any": QAPIXRefRole(),  # reference *any* type of QAPI object.
+     }
  
 -- 
 2.48.1
