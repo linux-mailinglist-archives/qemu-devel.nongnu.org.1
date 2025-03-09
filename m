@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651FEA58692
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 18:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFEFA5869F
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 18:58:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trKrc-0001J0-56; Sun, 09 Mar 2025 13:55:00 -0400
+	id 1trKsM-0002eF-B8; Sun, 09 Mar 2025 13:55:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKrR-0000sP-Ns
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:54:49 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKrY-0001M1-By
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:54:56 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKrQ-000571-63
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:54:49 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-391342fc148so1344290f8f.2
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:54:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKrW-00057S-KW
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:54:56 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43cebe06e9eso5233235e9.3
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:54:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741542886; x=1742147686; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741542892; x=1742147692; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=+h0WxWe/CR+AYRisebI04Ld1iS9EZlB98JnRUIatSNE=;
- b=fCP7nFL+iKB7O5bETo7Cq/us3EF81ntFoBhXwZiJ/B+/5+3nT1HT7pH4Wu+d2KUxQc
- SryQBPwDA8jr8zFIWjDNfyHCOAMgLpWqsJ41i5GvR/um58xNDQH6lErr6hQ0Ht/Ovgt6
- Z+TQwCzDO1XoBYE4kfhFBjP/pg1xR26HC2CKE6G5UGrTIdPZECJtRSbnJY8oTeNOY6L2
- oQOPeiL8xLxqE0Fz4B6YZ7w4YqPkLnXm3mhQ/xrooqbVKkcasoNWeKPiIiIOQY0V1v8p
- ldSoteFVw2ppPBI2uJP8sh26Be121USkX1dNir/MAUvQQ3jrEB/0W+xDCWlOGABQ5uGB
- 5M2Q==
+ :reply-to; bh=fBi504GZPv9DdfQ0J0gmyCUJh0vb9oYQT7R5XfexT5o=;
+ b=VVB1N3vSDCcmtHNoEk8uupelDmjzs2Q1yJ1iQENpnB6Rq8ITblU8f0dldX7voOZBVl
+ mEE9JSbXardCKHKWPBYVyYvQX5+DMOIMwDxO6Lv1dx7KGxMexriURpwsOcfmmk+QQUMj
+ XqN18VKwNDeBVIsbrs0xPhCHEgTMTmszUJwj8FChUJbZKXwJyHhMhMHFmkSfOSRid9+P
+ A0g0ePQXBEvJth4pYkgUyGZd0dQfCNA1SGU1bAje5QouT9FX6LbrchGVp+d/SL3QYbF5
+ VmopFxsptgG5MX5sX2hEM+sfnlzXyE0b2uzWRBgGAv9Lmh0rqrTgQSNj6FkkhOQ2dOCD
+ IxgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741542886; x=1742147686;
+ d=1e100.net; s=20230601; t=1741542892; x=1742147692;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+h0WxWe/CR+AYRisebI04Ld1iS9EZlB98JnRUIatSNE=;
- b=HDKWULIObIzm2mGp1kIbwDYIQcBQ+qitynqlXrWIo0yUVuEY13IGNAQq83f0zAggDu
- 9px4eeuvBSy3ch4tzAEOZc6aBk4OcPpXs02tTxnX1wjXFNCcgrb0SixyQvl7h8HCBZ6J
- dKJOrgl1j/GuKHUa59DhqqB1KxxVbiEuuov6MKjI6YueU2wkl5I0zf0JFvPlsVWnOaQ8
- uLt/E4rNzmlXdoPcZ7TImr0minbUpFkJjm3MGiW4ZvO0Osau/i9sLrbL11v0gHr3xke/
- JChtVHtNas1uCDTpBHjj4PSRPJmFTa9D/7gyIWWfJBDFJMrWf+LH690kXlta+xGGXySg
- mxJA==
-X-Gm-Message-State: AOJu0YzsqyntTvmdHbXEzitR21cmh1kFWIKd+pxbB5/wX+UbOdpTt7TG
- tD1rjOYarN5A9+0YPnFBwEAh8ufOsFizJ/0Lqmkii+Lpb8ZL/D+dpysU++k+knXDpF0kXxTHwrw
- 1Q44=
-X-Gm-Gg: ASbGnctqIY06CwDiSchR70//Ifa1ZDEaWJD9zx02y81QNNjD73m4V4wA9qEc7IGcfyQ
- 24KtSn5/r4eC9zsaZNea+GmBuc4Obv7GQdH2eSqVghoupte0elA9iBAXn7QeAgXdp4EbZ+SYaAy
- +Xh+Td8D0rJqCCrovstAjzUKiaE5DfFEb/gFfdPw7ffuvZ9UjWwUJOKw/ZnAYjqZKsWQuK4ziz2
- J05wQfBkN5WO6izeH8/aVy+dR27i/uzemZfJXlUPt4GH097gYIlVlY+AuwMOoWC/c4ygnBcAt7y
- BWWyajAhlwkvjR6rP5VHYhW6yTF6HrkYwHGz87R76q+7WJE3/AtBBVHvXgAgUQkuGlZWVjvV4jl
- KDKQ8cIUGtvWzeemxTGw=
-X-Google-Smtp-Source: AGHT+IFwvQawKC4jslJQKRpckp4hVOwhEniaqC9R4heKt8LwVBiaWaxRct2WJPyGXUz4uePtq9OJoA==
-X-Received: by 2002:a5d:5846:0:b0:390:efe7:20fa with SMTP id
- ffacd0b85a97d-39132de1bd2mr5483565f8f.47.1741542886144; 
- Sun, 09 Mar 2025 10:54:46 -0700 (PDT)
+ bh=fBi504GZPv9DdfQ0J0gmyCUJh0vb9oYQT7R5XfexT5o=;
+ b=UlspeCNGWaYhPmCYWF9hHbeQP+MoFfq/3mepRI/duRDX+RRjJbWmjtwKoT2x+4/eBJ
+ 26cppoexFhoFec3X+bZAhv3hdjsS6YjjSlsGJMHscm1/JbgKm1pQUxrA5+roh/YQVhal
+ xbNoa8blvVcRiXBJsd1jg8uHzadCMUOIFm4bIgG8qQDw2khTR+ZZKGUUpT5vwveKbzCV
+ oZSkP829u/jR+pmmAd4VrCEmfCmdk6tKL00HSjjfJLFrZK8U3HTuSfvwp6W/M7Sh0PxT
+ M7gqV8WG4MIc+VC0QjIto2Gbfwp7VE8LHgRyuD+o/6jzo7PmneFLcV+SOP1c4P6nSanX
+ yp5w==
+X-Gm-Message-State: AOJu0YynOID0JH57LDK/DgW1ryBzSVdv7VJgUNZFvsnnzvrJnFhKEZWb
+ eNInw3iiPxzVLpoH1sY9AThW65TxbD+XhYwWHLkzEWdA45IQEpLm4LU0vpJPGUfWIGpiMzA6fV+
+ Jdao=
+X-Gm-Gg: ASbGnctUBezu7lD+teyreG3nJOKzCAjwc0aDpIICLXUJGHDOYnsLFwnbTtPzk2ssIL7
+ kZSEPy2prbXOrbUnxAVJJYDAzRIou+9qOqmKszYieszA5Ck3awQI2Os3LswekoorWIyG4fVpRxF
+ URjqqqNTVMqnbtOdjoLjfHbumbm4xXtuO22ybcHNjkPuHY7d3XiMnAgfOhAMga/Neax7QUspnVw
+ 9koh8k/iWV6bSgQgjNKlfG+vytIJaewW7aEwRho7Pf22+yHjUV2vzhfGRpQfH32LToeptvGbFlE
+ w68miwvEaCNZ7HhScTAnAauW/TlsA2MsZnIN5ef+iij6hznLRpu/5h6JA9ZDI6ao2sO1zMozMwh
+ ZJBRjf8Rq1/K0p3dYd1Q=
+X-Google-Smtp-Source: AGHT+IE2wcf1Pq8Sb36MdU+Tfu7F1VJDLg70kCQIm2iPQsPsV/G6SOCpjeu4jCOPhzIPqdT0Trn6dw==
+X-Received: by 2002:a5d:64c3:0:b0:391:ccf:2d1b with SMTP id
+ ffacd0b85a97d-39132db1454mr7196724f8f.49.1741542892242; 
+ Sun, 09 Mar 2025 10:54:52 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c015d2bsm12167134f8f.43.2025.03.09.10.54.45
+ ffacd0b85a97d-3912bfba679sm12290297f8f.8.2025.03.09.10.54.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Mar 2025 10:54:45 -0700 (PDT)
+ Sun, 09 Mar 2025 10:54:50 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 33/38] target/sh4: Move has_work() from CPUClass to SysemuCPUOps
-Date: Sun,  9 Mar 2025 18:52:02 +0100
-Message-ID: <20250309175207.43828-34-philmd@linaro.org>
+Subject: [PULL 34/38] target/sparc: Move has_work() from CPUClass to
+ SysemuCPUOps
+Date: Sun,  9 Mar 2025 18:52:03 +0100
+Message-ID: <20250309175207.43828-35-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250309175207.43828-1-philmd@linaro.org>
 References: <20250309175207.43828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,45 +99,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250125170125.32855-21-philmd@linaro.org>
+Message-Id: <20250125170125.32855-22-philmd@linaro.org>
 ---
- target/sh4/cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/sparc/cpu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index c2aaa40a037..ce84bdf539a 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -82,12 +82,12 @@ static bool superh_io_recompile_replay_branch(CPUState *cs,
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index e27b1fa2949..57161201173 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -777,11 +777,13 @@ static void sparc_restore_state_to_opc(CPUState *cs,
      }
-     return false;
  }
--#endif
  
- static bool superh_cpu_has_work(CPUState *cs)
++#ifndef CONFIG_USER_ONLY
+ static bool sparc_cpu_has_work(CPUState *cs)
  {
-     return cs->interrupt_request & CPU_INTERRUPT_HARD;
+     return (cs->interrupt_request & CPU_INTERRUPT_HARD) &&
+            cpu_interrupts_enabled(cpu_env(cs));
  }
 +#endif /* !CONFIG_USER_ONLY */
  
- static int sh4_cpu_mmu_index(CPUState *cs, bool ifetch)
+ static int sparc_cpu_mmu_index(CPUState *cs, bool ifetch)
  {
-@@ -254,6 +254,7 @@ static const VMStateDescription vmstate_sh_cpu = {
+@@ -988,6 +990,7 @@ static const Property sparc_cpu_properties[] = {
  #include "hw/core/sysemu-cpu-ops.h"
  
- static const struct SysemuCPUOps sh4_sysemu_ops = {
-+    .has_work = superh_cpu_has_work,
-     .get_phys_page_debug = superh_cpu_get_phys_page_debug,
+ static const struct SysemuCPUOps sparc_sysemu_ops = {
++    .has_work = sparc_cpu_has_work,
+     .get_phys_page_debug = sparc_cpu_get_phys_page_debug,
+     .legacy_vmsd = &vmstate_sparc_cpu,
  };
- #endif
-@@ -290,7 +291,6 @@ static void superh_cpu_class_init(ObjectClass *oc, void *data)
-                                        &scc->parent_phases);
+@@ -1029,7 +1032,6 @@ static void sparc_cpu_class_init(ObjectClass *oc, void *data)
  
-     cc->class_by_name = superh_cpu_class_by_name;
--    cc->has_work = superh_cpu_has_work;
-     cc->mmu_index = sh4_cpu_mmu_index;
-     cc->dump_state = superh_cpu_dump_state;
-     cc->set_pc = superh_cpu_set_pc;
+     cc->class_by_name = sparc_cpu_class_by_name;
+     cc->parse_features = sparc_cpu_parse_features;
+-    cc->has_work = sparc_cpu_has_work;
+     cc->mmu_index = sparc_cpu_mmu_index;
+     cc->dump_state = sparc_cpu_dump_state;
+ #if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
 -- 
 2.47.1
 
