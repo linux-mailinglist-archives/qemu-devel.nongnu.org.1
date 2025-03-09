@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA06A586BE
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 19:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F42A5867D
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 18:54:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trKpn-0005Ja-MV; Sun, 09 Mar 2025 13:53:07 -0400
+	id 1trKps-0005NO-U3; Sun, 09 Mar 2025 13:53:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpk-0005Iy-H1
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:53:04 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpo-0005K4-SN
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:53:08 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpi-0004sa-NQ
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:53:04 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-391342fc0b5so2663754f8f.3
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:53:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpn-0004sz-Cw
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:53:08 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-38f2f391864so1837001f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:53:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741542781; x=1742147581; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741542785; x=1742147585; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zPyx2ZZAkNbMr4x6s2PTNuf6aA8UZ98dZ1dk69dQsTE=;
- b=MaiPxAJUwRpirsMtDE4UxIQBrUefQvKv1cFGooDyVXwQinSdxbsGFOlvq//Iw+Gag9
- EgRybst2qtfIcUmk5jsVyDsHZf0V/lQx4a4vrpkkeyifKxU+mXv2vfjpssXsbM2wsd+5
- vNZl5H5OnErrv75NOiTZ3YW6I6H0IqO3TH6TGV+vxuaxJvm8WE8CcYL1fGi/sha9pclQ
- h+d2Jk7LYLIukhoYh+Kl3qqRh6x0hJbqjuZGyROOMb7NghBTE0chWfhqji9Jmme4XK+Y
- D1IQjoAJPoqZDuhQVgK3oCO5a/4QjBPeWZuwCiRxtNRvPrNCalvd4v/vVAiraC69uf8p
- gbxg==
+ :reply-to; bh=V4r396+mBV1+T5nOZp09H6dMWvs7dXGZXKliBRuJsUo=;
+ b=ZPIFnL/LnS2xwmz4R5pNKW8brruisqsdv+x1wZhd42zymwqN910HH+EC54JPpIDaZp
+ wZ1f3zELvZsPc8zwpRzdto2eqPvLSrB90Bh2GzivxKno4mwegCeKxAh+o9/+k0Lo5Ssm
+ iUds+tMxXzR7vxvJ6EETXPzVFFr3L/7LjI64Cn6QVYY1JVVIl+7Fsy0SBap5an4jC2S2
+ pYjvW7rd5TQJpFuNHEB4NDrzkaz7ED3jWmQL6FupPOxICzguVCvYjVG6jIso/hx5Kidr
+ n1VlJ7UoLh+QMMQniFW0fsY8Ysv7naC9lKcR3WffRSvIQ/U08xZQVXiLSolzh9kl7q52
+ qOEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741542781; x=1742147581;
+ d=1e100.net; s=20230601; t=1741542785; x=1742147585;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zPyx2ZZAkNbMr4x6s2PTNuf6aA8UZ98dZ1dk69dQsTE=;
- b=UNG3stBebNn+jQGnJX/ZAEnt2Vx7ztfK07ssvmIi4nJgBAAYG/k5+ejoapqTHaTZBJ
- /KhjlUjIrmwmFbKSeM+C3IC1fCKTw0+u04/rm5dUCcPtPlWgCkVxOMZbpzvffP7ZWtwz
- 1/qUXR4L77Bi4FV4O9ceEoxqgfxiNzlEe5VQNMOdc9gX/pZd52rVFUrdFJlwzllgZCu8
- aNrpGirF46hvP6VaGu5Dh/tfiJ9Ag/hJhF0fI7+CpU7ehrLyQTo9N+yI8EnEPK2mYx2D
- 8RluGAbOVXxoipWF34ubsnR2PadDzcLq61kJPpIpO52O5JS7YSgkijLRv2shu0pvmREJ
- tJzQ==
-X-Gm-Message-State: AOJu0YxKnK6XcSiAq9iubm/DcscKfa6pFcmBh3hgOH2gvtP9k+FFp3Ut
- Bnpq3pzbU9/dbq2ocaSu27LJIQVRoAXOUtDoeNVM4cinLdZrM202SEdsGjtPIB8mL+L4Q1C7hEU
- UhlY=
-X-Gm-Gg: ASbGncuaJTsSOkC70J7G7L4JhHKj7wYYZi1Hj7FyG/bDyHGTdvO1JH0twGIqglx+GR/
- I10CM9V22kUEFsgM15Wiy5rMG3TmMrdEpg8FYq01VAMwPGeFMYH2obv/04cOe2QiWQeb2Hm8p5t
- 9muD9kYbiewWedU2vxb5JsTMqe75i+GPKiLgOQWKQygkPGItKAO8PQ5z9OzJ1zoyvHoHiLmnkrj
- Smriq3hHKo8HFmm9W8H0AgF+39hfKMJ/ijRoT0DDCfdW5wTUIrIFiVNAD/H5j5MhbFP+wistWbq
- ct9wqrXfo4sWyyFY3d+BoxvEqtfSQ2YdGzWcK+SrbCSHWRsP0g6ARqBasO88/WOla1xddqostIl
- b48nwTRaT9NqsJzIekno=
-X-Google-Smtp-Source: AGHT+IHmO+bWJSrOEAyN9lLmq1Vflz0VK5BCLNB1EApRjdXsGsfwc5eYwvUi2DRAxNJE9BOaYpf65g==
-X-Received: by 2002:a05:6000:1a88:b0:385:d7f9:f157 with SMTP id
- ffacd0b85a97d-39132da227bmr6965076f8f.36.1741542780765; 
- Sun, 09 Mar 2025 10:53:00 -0700 (PDT)
+ bh=V4r396+mBV1+T5nOZp09H6dMWvs7dXGZXKliBRuJsUo=;
+ b=ivwo6kHjdxAumct22CGUQlR7HSe9pfyZ2DB7GuGWEjO3iR265aLAcn4ybMslhTI0nG
+ mFCzku/HOHtN7O4DgzsSTS8Djl/I0l+dfHUBROuUYBTSufyN1MqU5taKCp1i/j8HgWum
+ J2wlf/3F1ha0p8uTgHj5zVSTLaBcO41gs7soTACdXDEBi9F9uPUsIOEmGJ4wl1sTGazc
+ okKboyFAY7I5SsKQsjU0TLRpKwq3sG9CrUXZdaQYVg7HGpZJRany7fmaMDIxeC9h+IC+
+ BpXcZgpKQrP4kUkNZjInxMJtHLAlLCjVD9h4DQo2OmKme4F3vyKXu4S4DrsFrtvSflHd
+ U4TA==
+X-Gm-Message-State: AOJu0YyuUO+e7g6o08zigM0o7Ifz/roOhPnpD4K7B8uvC6uLSJ7kd/71
+ Q5AT8OKK8/WY1mqEhVvKmpJD6pWh2QzqwIO1Sg3Wr+/FF6Tu7T/K/+Y38Aq+lSH/09CysUeD5HB
+ bya0=
+X-Gm-Gg: ASbGnctovxVXCybDZfQJa5bIbEKdfWR04SMqq/n1txJ/Q1wjCAdL+xl+f8ju+ewvadU
+ Mbwtad4gBG1HbaXO2Q1RprBGGFF6rB+hTvR0YRIohiKLSixpSoFrfFYhCFSRAL/yEdYULlhKoA/
+ IZeA5l2n23dzhEv7ENO/SrYYyJhYDL5DUK8HqmkQteehD1LqjzTcbrCuXGWA9hEHbyorNT19ENT
+ ye/7Z9LvbRxJO1zeUMi4+cLzcNPol9jsw/2R58Ao7iRUyzyDCo42KEujFDe4R1EKebxwolGEB6m
+ Ft2D8lfl5oTNqDbzGZgSYd9Pa07XrA2VW+g9Cf/Cb1KlQxIizNbQBsGQCLZ+HmJ/mOVIhgOFCDo
+ LNgCuIug8RMRRGzhryEk=
+X-Google-Smtp-Source: AGHT+IEWFvjnOk/X3LjFrQMpgZe8Y1B5a5FpXBwK8FmgmwvCNBLbhk/1hO4rxG7ptKqUVwFSEdEbJg==
+X-Received: by 2002:a5d:5f45:0:b0:390:f832:383f with SMTP id
+ ffacd0b85a97d-39132d05b37mr6792404f8f.2.1741542785344; 
+ Sun, 09 Mar 2025 10:53:05 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ceba8d727sm51272085e9.25.2025.03.09.10.53.00
+ ffacd0b85a97d-3912bfba679sm12286927f8f.8.2025.03.09.10.53.04
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Mar 2025 10:53:00 -0700 (PDT)
+ Sun, 09 Mar 2025 10:53:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/38] gdbstub: Prefer cached CpuClass over CPU_GET_CLASS()
+Subject: [PULL 12/38] hw/acpi: Prefer cached CpuClass over CPU_GET_CLASS()
  macro
-Date: Sun,  9 Mar 2025 18:51:40 +0100
-Message-ID: <20250309175207.43828-12-philmd@linaro.org>
+Date: Sun,  9 Mar 2025 18:51:41 +0100
+Message-ID: <20250309175207.43828-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250309175207.43828-1-philmd@linaro.org>
 References: <20250309175207.43828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,169 +103,43 @@ use it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250122093028.52416-9-philmd@linaro.org>
+Message-Id: <20250122093028.52416-10-philmd@linaro.org>
 ---
- gdbstub/gdbstub.c     | 26 +++++++++-----------------
- gdbstub/system.c      |  7 ++-----
- gdbstub/user-target.c |  6 ++----
- gdbstub/user.c        |  7 ++-----
- 4 files changed, 15 insertions(+), 31 deletions(-)
+ hw/acpi/cpu.c         | 4 ++--
+ hw/acpi/cpu_hotplug.c | 3 +--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index e366df12d4a..282e13e163f 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -354,7 +354,6 @@ static const char *get_feature_xml(const char *p, const char **newp,
-                                    GDBProcess *process)
+diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+index f70a2c045e1..6f1ae79edbf 100644
+--- a/hw/acpi/cpu.c
++++ b/hw/acpi/cpu.c
+@@ -235,8 +235,8 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+ 
+ static AcpiCpuStatus *get_cpu_status(CPUHotplugState *cpu_st, DeviceState *dev)
  {
-     CPUState *cpu = gdb_get_first_cpu_in_process(process);
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-     GDBRegisterState *r;
-     size_t len;
+-    CPUClass *k = CPU_GET_CLASS(dev);
+-    uint64_t cpu_arch_id = k->get_arch_id(CPU(dev));
++    CPUState *cpu = CPU(dev);
++    uint64_t cpu_arch_id = cpu->cc->get_arch_id(cpu);
+     int i;
  
-@@ -377,11 +376,11 @@ static const char *get_feature_xml(const char *p, const char **newp,
-                          "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">"
-                          "<target>"));
- 
--            if (cc->gdb_arch_name) {
-+            if (cpu->cc->gdb_arch_name) {
-                 g_ptr_array_add(
-                     xml,
-                     g_markup_printf_escaped("<architecture>%s</architecture>",
--                                            cc->gdb_arch_name(cpu)));
-+                                            cpu->cc->gdb_arch_name(cpu)));
-             }
-             for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-                 r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-@@ -520,11 +519,10 @@ GArray *gdb_get_register_list(CPUState *cpu)
- 
- int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
+     for (i = 0; i < cpu_st->dev_count; i++) {
+diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
+index 83b8bc5deb8..aa0e1e3efa5 100644
+--- a/hw/acpi/cpu_hotplug.c
++++ b/hw/acpi/cpu_hotplug.c
+@@ -62,10 +62,9 @@ static const MemoryRegionOps AcpiCpuHotplug_ops = {
+ static void acpi_set_cpu_present_bit(AcpiCpuHotplug *g, CPUState *cpu,
+                                      bool *swtchd_to_modern)
  {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-     GDBRegisterState *r;
+-    CPUClass *k = CPU_GET_CLASS(cpu);
+     int64_t cpu_id;
  
--    if (reg < cc->gdb_num_core_regs) {
--        return cc->gdb_read_register(cpu, buf, reg);
-+    if (reg < cpu->cc->gdb_num_core_regs) {
-+        return cpu->cc->gdb_read_register(cpu, buf, reg);
-     }
- 
-     for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-@@ -538,11 +536,10 @@ int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
- 
- static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-     GDBRegisterState *r;
- 
--    if (reg < cc->gdb_num_core_regs) {
--        return cc->gdb_write_register(cpu, mem_buf, reg);
-+    if (reg < cpu->cc->gdb_num_core_regs) {
-+        return cpu->cc->gdb_write_register(cpu, mem_buf, reg);
-     }
- 
-     for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-@@ -570,7 +567,7 @@ static void gdb_register_feature(CPUState *cpu, int base_reg,
- 
- void gdb_init_cpu(CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-+    CPUClass *cc = cpu->cc;
-     const GDBFeature *feature;
- 
-     cpu->gdb_regs = g_array_new(false, false, sizeof(GDBRegisterState));
-@@ -1646,11 +1643,8 @@ void gdb_extend_qsupported_features(char *qflags)
- 
- static void handle_query_supported(GArray *params, void *user_ctx)
- {
--    CPUClass *cc;
--
-     g_string_printf(gdbserver_state.str_buf, "PacketSize=%x", MAX_PACKET_LENGTH);
--    cc = CPU_GET_CLASS(first_cpu);
--    if (cc->gdb_core_xml_file) {
-+    if (first_cpu->cc->gdb_core_xml_file) {
-         g_string_append(gdbserver_state.str_buf, ";qXfer:features:read+");
-     }
- 
-@@ -1697,7 +1691,6 @@ static void handle_query_supported(GArray *params, void *user_ctx)
- static void handle_query_xfer_features(GArray *params, void *user_ctx)
- {
-     GDBProcess *process;
--    CPUClass *cc;
-     unsigned long len, total_len, addr;
-     const char *xml;
-     const char *p;
-@@ -1708,8 +1701,7 @@ static void handle_query_xfer_features(GArray *params, void *user_ctx)
-     }
- 
-     process = gdb_get_cpu_process(gdbserver_state.g_cpu);
--    cc = CPU_GET_CLASS(gdbserver_state.g_cpu);
--    if (!cc->gdb_core_xml_file) {
-+    if (!gdbserver_state.g_cpu->cc->gdb_core_xml_file) {
-         gdb_put_packet("");
-         return;
-     }
-diff --git a/gdbstub/system.c b/gdbstub/system.c
-index 416c1dbe1e9..dd22ff0fb3a 100644
---- a/gdbstub/system.c
-+++ b/gdbstub/system.c
-@@ -456,8 +456,6 @@ static int phy_memory_mode;
- int gdb_target_memory_rw_debug(CPUState *cpu, hwaddr addr,
-                                uint8_t *buf, int len, bool is_write)
- {
--    CPUClass *cc;
--
-     if (phy_memory_mode) {
-         if (is_write) {
-             cpu_physical_memory_write(addr, buf, len);
-@@ -467,9 +465,8 @@ int gdb_target_memory_rw_debug(CPUState *cpu, hwaddr addr,
-         return 0;
-     }
- 
--    cc = CPU_GET_CLASS(cpu);
--    if (cc->memory_rw_debug) {
--        return cc->memory_rw_debug(cpu, addr, buf, len, is_write);
-+    if (cpu->cc->memory_rw_debug) {
-+        return cpu->cc->memory_rw_debug(cpu, addr, buf, len, is_write);
-     }
- 
-     return cpu_memory_rw_debug(cpu, addr, buf, len, is_write);
-diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
-index 4bfcf78aaab..43231e695e8 100644
---- a/gdbstub/user-target.c
-+++ b/gdbstub/user-target.c
-@@ -233,10 +233,8 @@ void gdb_handle_query_offsets(GArray *params, void *user_ctx)
- static inline int target_memory_rw_debug(CPUState *cpu, target_ulong addr,
-                                          uint8_t *buf, int len, bool is_write)
- {
--    CPUClass *cc;
--    cc = CPU_GET_CLASS(cpu);
--    if (cc->memory_rw_debug) {
--        return cc->memory_rw_debug(cpu, addr, buf, len, is_write);
-+    if (cpu->cc->memory_rw_debug) {
-+        return cpu->cc->memory_rw_debug(cpu, addr, buf, len, is_write);
-     }
-     return cpu_memory_rw_debug(cpu, addr, buf, len, is_write);
- }
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index 3730f32c415..67403e5a252 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -743,11 +743,8 @@ int gdb_continue_partial(char *newstates)
- int gdb_target_memory_rw_debug(CPUState *cpu, hwaddr addr,
-                                uint8_t *buf, int len, bool is_write)
- {
--    CPUClass *cc;
--
--    cc = CPU_GET_CLASS(cpu);
--    if (cc->memory_rw_debug) {
--        return cc->memory_rw_debug(cpu, addr, buf, len, is_write);
-+    if (cpu->cc->memory_rw_debug) {
-+        return cpu->cc->memory_rw_debug(cpu, addr, buf, len, is_write);
-     }
-     return cpu_memory_rw_debug(cpu, addr, buf, len, is_write);
- }
+-    cpu_id = k->get_arch_id(cpu);
++    cpu_id = cpu->cc->get_arch_id(cpu);
+     if ((cpu_id / 8) >= ACPI_GPE_PROC_LEN) {
+         object_property_set_bool(g->device, "cpu-hotplug-legacy", false,
+                                  &error_abort);
 -- 
 2.47.1
 
