@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BE9A584B4
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:54:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC028A584A8
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 14:53:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trH4T-0007Ur-Sx; Sun, 09 Mar 2025 09:52:03 -0400
+	id 1trH4b-0007Z2-3X; Sun, 09 Mar 2025 09:52:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4I-0007T6-Lt
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:51:52 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4K-0007Tv-SE
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:51:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4G-00025J-TP
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:51:50 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trH4J-00026E-8t
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 09:51:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741528308;
+ s=mimecast20190719; t=1741528310;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2KfI8+iFL+27Va8wugF7Ja64Lc6TjMqYF+YS6aGCqw0=;
- b=dLmkJ5nX1dfQionGbCxWB8Ox1fAZwNezOcvSFzlMBvGZEcneDR6DlqBwV9jUxDRC3c9CrD
- PseDd75J0d/xQip4dS1uRMx5AtultRDatTUrfbw6DGvPLhjkihy802SO3NAC1P+/v5ne7q
- 7IC0v6xMdEouJQdjEdoqPIb7PNbT4PQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=nvLyDh9XMpq4WoDKuMbPEs+JJ7fvZ5DWpq101oaRKgU=;
+ b=ICXaXQXxQ8kjY9tGYwmJKcxdWVemb4sg95PvFVCCVYYrNj3YbofdXJeeeEC8kX76Qzx+s5
+ IcjtoOYSXUJezavlNnDT4YEjlXZV0qsyL+xl86ec/FwBPe/YMG/rPyq6IdF+I7Xb0XQMXf
+ cRoHRTDQFRaEzcECI+qa7vn/HA7btDY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-569-l0w2qkJWMx6zKFDyxoPBgQ-1; Sun,
- 09 Mar 2025 09:51:44 -0400
-X-MC-Unique: l0w2qkJWMx6zKFDyxoPBgQ-1
-X-Mimecast-MFC-AGG-ID: l0w2qkJWMx6zKFDyxoPBgQ_1741528304
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-425-YyO7DmtnNjyzLQai4fsl4Q-1; Sun,
+ 09 Mar 2025 09:51:46 -0400
+X-MC-Unique: YyO7DmtnNjyzLQai4fsl4Q-1
+X-Mimecast-MFC-AGG-ID: YyO7DmtnNjyzLQai4fsl4Q_1741528306
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DD20F180035D; Sun,  9 Mar 2025 13:51:43 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F3233180035C; Sun,  9 Mar 2025 13:51:45 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.17])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 435E81956095; Sun,  9 Mar 2025 13:51:41 +0000 (UTC)
+ id 61F591956095; Sun,  9 Mar 2025 13:51:44 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 03/46] tests/functional: Update OpenBMC image of romulus machine
-Date: Sun,  9 Mar 2025 14:50:47 +0100
-Message-ID: <20250309135130.545764-4-clg@redhat.com>
+Subject: [PULL 04/46] tests/functional: Introduce a witherspoon machine test
+Date: Sun,  9 Mar 2025 14:50:48 +0100
+Message-ID: <20250309135130.545764-5-clg@redhat.com>
 In-Reply-To: <20250309135130.545764-1-clg@redhat.com>
 References: <20250309135130.545764-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,75 +82,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the new do_test_arm_aspeed_openbmc() routine to run the latest
-OpenBMC firmware build of the romulus BMC. Remove the older routine
-which is now unused.
+Use do_test_arm_aspeed_openbmc() routine to run the latest OpenBMC
+firmware build of the witherspoon BMC.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250129071820.1258133-4-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250129071820.1258133-5-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/functional/aspeed.py                  | 16 ----------------
- tests/functional/test_arm_aspeed_romulus.py | 13 +++++++------
- 2 files changed, 7 insertions(+), 22 deletions(-)
+ tests/functional/meson.build                  |  2 ++
+ .../functional/test_arm_aspeed_witherspoon.py | 25 +++++++++++++++++++
+ 2 files changed, 27 insertions(+)
+ create mode 100644 tests/functional/test_arm_aspeed_witherspoon.py
 
-diff --git a/tests/functional/aspeed.py b/tests/functional/aspeed.py
-index ea75939e05f9..77dc8930fa41 100644
---- a/tests/functional/aspeed.py
-+++ b/tests/functional/aspeed.py
-@@ -7,22 +7,6 @@
- 
- class AspeedTest(LinuxKernelTest):
- 
--    def do_test_arm_aspeed(self, machine, image):
--        self.set_machine(machine)
--        self.vm.set_console()
--        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
--                         '-net', 'nic', '-snapshot')
--        self.vm.launch()
--
--        self.wait_for_console_pattern("U-Boot 2016.07")
--        self.wait_for_console_pattern("## Loading kernel from FIT Image at 20080000")
--        self.wait_for_console_pattern("Starting kernel ...")
--        self.wait_for_console_pattern("Booting Linux on physical CPU 0x0")
--        self.wait_for_console_pattern(
--                "aspeed-smc 1e620000.spi: read control register: 203b0641")
--        self.wait_for_console_pattern("ftgmac100 1e660000.ethernet eth0: irq ")
--        self.wait_for_console_pattern("systemd[1]: Set hostname to")
--
-     def do_test_arm_aspeed_openbmc(self, machine, image, uboot='2019.04',
-                                    cpu_id='0x0', soc='AST2500 rev A1'):
-         hostname = machine.removesuffix('-bmc')
-diff --git a/tests/functional/test_arm_aspeed_romulus.py b/tests/functional/test_arm_aspeed_romulus.py
-index 747b616201ce..b97ed951b1f3 100755
---- a/tests/functional/test_arm_aspeed_romulus.py
-+++ b/tests/functional/test_arm_aspeed_romulus.py
-@@ -7,18 +7,19 @@
- from qemu_test import Asset
- from aspeed import AspeedTest
- 
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 97c3f4ad4e98..0573f0091dc7 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -22,6 +22,7 @@ test_timeouts = {
+   'acpi_bits' : 420,
+   'arm_aspeed_palmetto' : 120,
+   'arm_aspeed_romulus' : 120,
++  'arm_aspeed_witherspoon' : 120,
+   'arm_aspeed_ast2500' : 720,
+   'arm_aspeed_ast2600' : 1200,
+   'arm_aspeed_rainier' : 480,
+@@ -104,6 +105,7 @@ tests_arm_system_thorough = [
+   'arm_aspeed_ast1030',
+   'arm_aspeed_palmetto',
+   'arm_aspeed_romulus',
++  'arm_aspeed_witherspoon',
+   'arm_aspeed_ast2500',
+   'arm_aspeed_ast2600',
+   'arm_aspeed_rainier',
+diff --git a/tests/functional/test_arm_aspeed_witherspoon.py b/tests/functional/test_arm_aspeed_witherspoon.py
+new file mode 100644
+index 000000000000..ea1ce89b05cc
+--- /dev/null
++++ b/tests/functional/test_arm_aspeed_witherspoon.py
+@@ -0,0 +1,25 @@
++#!/usr/bin/env python3
++#
++# Functional test that boots the ASPEED machines
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
- class RomulusMachine(AspeedTest):
- 
-     ASSET_ROMULUS_FLASH = Asset(
--        ('https://github.com/openbmc/openbmc/releases/download/2.9.0/'
--         'obmc-phosphor-image-romulus.static.mtd'),
--        '820341076803f1955bc31e647a512c79f9add4f5233d0697678bab4604c7bb25')
-+        'https://github.com/legoater/qemu-aspeed-boot/raw/master/images/romulus-bmc/openbmc-20250128071340/obmc-phosphor-image-romulus-20250128071340.static.mtd',
-+        '6d031376440c82ed9d087d25e9fa76aea75b42f80daa252ec402c0bc3cf6cf5b');
- 
--    def test_arm_ast2500_romulus_openbmc_v2_9_0(self):
-+    def test_arm_ast2500_romulus_openbmc(self):
-         image_path = self.ASSET_ROMULUS_FLASH.fetch()
- 
--        self.do_test_arm_aspeed('romulus-bmc', image_path)
--
-+        self.do_test_arm_aspeed_openbmc('romulus-bmc', image=image_path,
-+                                        uboot='2019.04', cpu_id='0x0',
++from qemu_test import Asset
++from aspeed import AspeedTest
++
++
++class WitherspoonMachine(AspeedTest):
++
++    ASSET_WITHERSPOON_FLASH = Asset(
++        'https://github.com/legoater/qemu-aspeed-boot/raw/master/images/witherspoon-bmc/openbmc-20240618035022/obmc-phosphor-image-witherspoon-20240618035022.ubi.mtd',
++        '937d9ed449ea6c6cbed983519088a42d0cafe276bcfe4fce07772ca6673f9213');
++
++    def test_arm_ast2500_witherspoon_openbmc(self):
++        image_path = self.ASSET_WITHERSPOON_FLASH.fetch()
++
++        self.do_test_arm_aspeed_openbmc('witherspoon-bmc', image=image_path,
++                                        uboot='2016.07', cpu_id='0x0',
 +                                        soc='AST2500 rev A1');
- 
- if __name__ == '__main__':
-     AspeedTest.main()
++
++if __name__ == '__main__':
++    AspeedTest.main()
 -- 
 2.48.1
 
