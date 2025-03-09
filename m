@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F1FA5832A
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:35:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE80A58323
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:34:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trDxN-0000U4-DF; Sun, 09 Mar 2025 06:32:29 -0400
+	id 1trDxQ-0000dI-2T; Sun, 09 Mar 2025 06:32:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDx7-0008Pu-4F
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:13 -0400
+ id 1trDxA-0000BC-8v
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDx5-00045L-Mv
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:12 -0400
+ id 1trDx8-00045l-Av
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741516331;
+ s=mimecast20190719; t=1741516333;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nQpu7Fg7nG7FJGPLBMD8H+r3cpml2kmQYbEDHrDsnBc=;
- b=Zy0ORAhguyXYke04nTbxWUypoqWinlXdM+VhQxhFO3RyRpY0qW768ACWb25rdq8H8VdPlI
- XHquvV0P8UQqb2XWiEg3jkZysSvK2pcdfZ/5p9cIZ01bOdLWCKXrSP6eBOt56QCh54CH4k
- TQOSjJGZsL8c2IQ+8WqRkNhPMYdZTxE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+11c/N4D4n5nsZ2e2p64dlWgYqM6+Rie5jL418qQFDM=;
+ b=KTuedrZ1LeyyggNy/1uT0KfGKj2JsOrl2Pq//ZNhrtZzage84GjtVJQPXScuD2fsV5kmgM
+ librU7Z9pMXxb6KZnbi0U4laGGr5N0AF5ed70WBmPCXVicJJieAey1abu4QyAa0FOzzn9e
+ moFnFgCyNKVyFROS0akSTsjLaJY7Hw0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-502-iK4eyUm4P26WTE-5WeIblA-1; Sun, 09 Mar 2025 06:32:09 -0400
-X-MC-Unique: iK4eyUm4P26WTE-5WeIblA-1
-X-Mimecast-MFC-AGG-ID: iK4eyUm4P26WTE-5WeIblA_1741516328
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43bd0586b86so22431785e9.3
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:32:09 -0700 (PDT)
+ us-mta-110-9Y99PB1INtOf-1lOTGr2lQ-1; Sun, 09 Mar 2025 06:32:11 -0400
+X-MC-Unique: 9Y99PB1INtOf-1lOTGr2lQ-1
+X-Mimecast-MFC-AGG-ID: 9Y99PB1INtOf-1lOTGr2lQ_1741516331
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3912d5f6689so1974612f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:32:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741516328; x=1742121128;
+ d=1e100.net; s=20230601; t=1741516330; x=1742121130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nQpu7Fg7nG7FJGPLBMD8H+r3cpml2kmQYbEDHrDsnBc=;
- b=JwjZdx9OF2l/hmBWI0BYufbdpHSnLWCO9WyuI81EgVEJl9D4y6MtIp6CfiZAgz0GIP
- VHYODTG97RnivhaX5kvNrsTsBaimWvZ6HoL6FH9nT6xZmOzZCwii47miCfu/kdD7xEOP
- td3OFVBH4GktkzUq52x86o6Zl9ChG++w8iAAHAMjmsob3t3g+ogjPdgNKjwBfDrMF3im
- sp9XdoUMHiHDPtWpg7uLusOFQ+khxahcWSrHHOsvVPu+WGlUPN7vnOdMqt+0V9IhTjiH
- D0Nl4d4UjYhsWTyjIN3uaMStHmVgYCshuJAKrE1h25JBPD61tUgpi0v+979QGZzPgyqO
- B7MQ==
-X-Gm-Message-State: AOJu0Yx4IeMgo3y7vaaizRXoCGkxEpgJwUnbrCbZ+024dzlxDdnz8hgt
- ai/PclwYyH+S00sjVwxxDXIkdz787cZ7emHgccGxHDA/Xgi5vybCaZXDabmteojSJP6UPtHGW1h
- TUrAcHs5gIAn5coXiLWlP8GGlgtARZmbDyX5wVgLzBbrEyAjcKOBzwPhgKV1YWBqr3w+jVOeR9x
- CENeukQNni9mCVZZ68vtNxq1zW4J7B8REgFzK8iHY=
-X-Gm-Gg: ASbGncumWpu8j8wb6T1XRxTm14QPu/W24bitGzBfu23uZtObBF9vCubzf1vDf677Rtx
- BvsMnChoH0qJ5/zORKrFUq7BIoP6HlMiUXMnNHwbJ0F2e2WuAvdhD69BD2EuS0gyhfPwW6GmVD5
- fdnxLdnLUBhq4ddY1hNcYIq+Rj1/D4UoBg3J0My5SWGvyZQsXq4SVYB3UXjE7A2eZ/rpl3WHhi/
- 69D2Dtu5Vc7fbPqessS0Tbd1R4U+XScQWJhG/INNxZYtiXH7agJ4Xm0wKHwUrDhoEsA4H1nfG4O
- XrcoB9bpD2T5dPJpJcs2RA==
-X-Received: by 2002:a05:600c:4fcc:b0:439:30bd:7df9 with SMTP id
- 5b1f17b1804b1-43c601d93c7mr55904935e9.9.1741516327658; 
- Sun, 09 Mar 2025 03:32:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBE2IQ1lbtcKJtuXjuuudxHWBkQviq0iYHj/tJwtukJQTQWWbUGArhxys10lEYTpYyPVdP7Q==
-X-Received: by 2002:a05:600c:4fcc:b0:439:30bd:7df9 with SMTP id
- 5b1f17b1804b1-43c601d93c7mr55904845e9.9.1741516327174; 
- Sun, 09 Mar 2025 03:32:07 -0700 (PDT)
+ bh=+11c/N4D4n5nsZ2e2p64dlWgYqM6+Rie5jL418qQFDM=;
+ b=O4oUUsSWJwSwVPNMRkb5fXJfT6gc3uK6qt1vdCjMVcbWTDizvNYPjN07B9+9MgF8tD
+ sk4iRSOQOx66R/7PLfADe+c5GkkPnRt9YF9LSloehgy+LIQE6GeYPxrXT3rX02zOH3QH
+ meJMFggyOv9C/BGkrtOs9Z2lapgg2nOiDJIMK1wHpqnLW4gK6Bmm2Oelzrsv8bD0Sc+8
+ w9XbeY/FIK5x+ifw0QJrBiR90Dy6xB2fiNWly5Brf+tjV+sAgrB+l9fOUcQrINwvi2x4
+ NrrrNTgNVOEGNh/M84s5+NjWvAAAmaT1qraEk6JZptzVhsF6hA7BwQHvGdK6uurTWRun
+ oeWQ==
+X-Gm-Message-State: AOJu0YzGqqFBlvNrDvSqmGua88ASaF/VBrRb6380/1Nc+57G9wFTC85q
+ ZAJTPV1ytw8lw/BHbXzTgD9ocHKScoHKiTvGLiDdR8kuG9u7/1pY8O5v5a8fIyCOaTbyeTDDbJs
+ 75Mz46XzaB/16+XAao3IfL2ufwTTc5h0oC4j8NFguy1grnS041BIoZkoqh+YlKR/QFC/sdOWjR9
+ WSpcmCMC2+hPCcbUjdEPs72NDiQrv+BPNrRiiLR4A=
+X-Gm-Gg: ASbGncujUNNngfsO1uydxnC2+hFh+IeMEWgsJXmJ2GHXEIsfyKSt7zEm5QWzR5L2d7d
+ aBWAqVcKRvqiRNXVcqtm0OkNm43VH6H2qNcp5w6/W98cmtWQqdOM8GP/L5JVEQM2LRweZ68J2R9
+ gAfPxR5VbXINiHwQkzyog05Xqeuy7JwZBQfwG0U9DU8hsrxz3+VXxEG6AOMUAur2uTgvWJq0Q+U
+ qfq30qTkjtKNI+7WP/IvGUlCyzRZOuLV3LREeYLlW+fI03zqaVUqnF3oI3X5R2RDXLURj9kN4ZB
+ 17xXdK60YmdAdLV1sk39gg==
+X-Received: by 2002:a5d:6483:0:b0:38f:28cb:4d35 with SMTP id
+ ffacd0b85a97d-39132d4e38cmr6390587f8f.13.1741516330206; 
+ Sun, 09 Mar 2025 03:32:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHyDahsDFJKm03RaFadlSUd4jcH2SDu8CYjbfEAiNNa8zSJjrJr216wdNO99+gnaY5j3TnMxg==
+X-Received: by 2002:a5d:6483:0:b0:38f:28cb:4d35 with SMTP id
+ ffacd0b85a97d-39132d4e38cmr6390568f8f.13.1741516329647; 
+ Sun, 09 Mar 2025 03:32:09 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.122.167])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ce3d5a0e2sm58128765e9.12.2025.03.09.03.32.06
+ ffacd0b85a97d-3912bfba8a9sm11511475f8f.9.2025.03.09.03.32.08
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 03:32:06 -0700 (PDT)
+ Sun, 09 Mar 2025 03:32:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 22/25] rust: cell: add full example of declaring a SysBusDevice
-Date: Sun,  9 Mar 2025 11:31:16 +0100
-Message-ID: <20250309103120.1116448-23-pbonzini@redhat.com>
+Subject: [PULL 23/25] rust: qom: remove operations on &mut
+Date: Sun,  9 Mar 2025 11:31:17 +0100
+Message-ID: <20250309103120.1116448-24-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250309103120.1116448-1-pbonzini@redhat.com>
 References: <20250309103120.1116448-1-pbonzini@redhat.com>
@@ -106,51 +106,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+The dubious casts of mutable references to objects are not used
+anymore: the wrappers for qdev_init_clock_in and for IRQ and MMIO
+initialization can be called directly on the subclasses, without
+casts, plus they take a shared reference so they can just use
+"upcast()" instead of "upcast_mut()".  Remove them.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/cell.rs | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ rust/qemu-api/src/memory.rs  |  5 ---
+ rust/qemu-api/src/prelude.rs |  1 -
+ rust/qemu-api/src/qom.rs     | 83 ------------------------------------
+ rust/qemu-api/tests/tests.rs | 34 +--------------
+ 4 files changed, 2 insertions(+), 121 deletions(-)
 
-diff --git a/rust/qemu-api/src/cell.rs b/rust/qemu-api/src/cell.rs
-index 448638e8967..ab0785a2692 100644
---- a/rust/qemu-api/src/cell.rs
-+++ b/rust/qemu-api/src/cell.rs
-@@ -73,6 +73,34 @@
- //! QEMU device implementations is usually incorrect and can lead to
- //! thread-safety issues.
- //!
-+//! ### Example
-+//!
-+//! ```
-+//! # use qemu_api::prelude::*;
-+//! # use qemu_api::{c_str, cell::BqlRefCell, irq::InterruptSource, irq::IRQState};
-+//! # use qemu_api::{sysbus::SysBusDevice, qom::Owned, qom::ParentField};
-+//! # const N_GPIOS: usize = 8;
-+//! # struct PL061Registers { /* ... */ }
-+//! # unsafe impl ObjectType for PL061State {
-+//! #     type Class = <SysBusDevice as ObjectType>::Class;
-+//! #     const TYPE_NAME: &'static std::ffi::CStr = c_str!("pl061");
-+//! # }
-+//! struct PL061State {
-+//!     parent_obj: ParentField<SysBusDevice>,
-+//!
-+//!     // Configuration is read-only after initialization
-+//!     pullups: u32,
-+//!     pulldowns: u32,
-+//!
-+//!     // Single values shared with C code use BqlCell, in this case via InterruptSource
-+//!     out: [InterruptSource; N_GPIOS],
-+//!     interrupt: InterruptSource,
-+//!
-+//!     // Larger state accessed by device methods uses BqlRefCell or Mutex
-+//!     registers: BqlRefCell<PL061Registers>,
-+//! }
-+//! ```
-+//!
- //! ### `BqlCell<T>`
- //!
- //! [`BqlCell<T>`] implements interior mutability by moving values in and out of
+diff --git a/rust/qemu-api/src/memory.rs b/rust/qemu-api/src/memory.rs
+index eff9f09fd7f..fdb1ea11fcf 100644
+--- a/rust/qemu-api/src/memory.rs
++++ b/rust/qemu-api/src/memory.rs
+@@ -175,11 +175,6 @@ pub fn init_io<T: IsA<Object>>(
+     ) {
+         unsafe {
+             Self::do_init_io(
+-                // self.0.as_mut_ptr() needed because Rust tries to call
+-                // ObjectDeref::as_mut_ptr() on "&mut Self", instead of coercing
+-                // to "&Self" and then calling MemoryRegion::as_mut_ptr().
+-                // Revisit if/when ObjectCastMut is not needed anymore; it is
+-                // only used in a couple places for initialization.
+                 self.0.as_mut_ptr(),
+                 owner.cast::<Object>(),
+                 &ops.0,
+diff --git a/rust/qemu-api/src/prelude.rs b/rust/qemu-api/src/prelude.rs
+index 634acf37a85..43bfcd5fcab 100644
+--- a/rust/qemu-api/src/prelude.rs
++++ b/rust/qemu-api/src/prelude.rs
+@@ -17,7 +17,6 @@
+ pub use crate::qom::IsA;
+ pub use crate::qom::Object;
+ pub use crate::qom::ObjectCast;
+-pub use crate::qom::ObjectCastMut;
+ pub use crate::qom::ObjectDeref;
+ pub use crate::qom::ObjectClassMethods;
+ pub use crate::qom::ObjectMethods;
+diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
+index 2defbd23516..34d7bc0ef96 100644
+--- a/rust/qemu-api/src/qom.rs
++++ b/rust/qemu-api/src/qom.rs
+@@ -463,90 +463,7 @@ unsafe fn unsafe_cast<'a, U: ObjectType>(self) -> &'a U
+ impl<T: ObjectType> ObjectDeref for &T {}
+ impl<T: ObjectType> ObjectCast for &T {}
+ 
+-/// Trait for mutable type casting operations in the QOM hierarchy.
+-///
+-/// This trait provides the mutable counterparts to [`ObjectCast`]'s conversion
+-/// functions. Unlike `ObjectCast`, this trait returns `Result` for fallible
+-/// conversions to preserve the original smart pointer if the cast fails. This
+-/// is necessary because mutable references cannot be copied, so a failed cast
+-/// must return ownership of the original reference. For example:
+-///
+-/// ```ignore
+-/// let mut dev = get_device();
+-/// // If this fails, we need the original `dev` back to try something else
+-/// match dev.dynamic_cast_mut::<FooDevice>() {
+-///    Ok(foodev) => /* use foodev */,
+-///    Err(dev) => /* still have ownership of dev */
+-/// }
+-/// ```
+-pub trait ObjectCastMut: Sized + ObjectDeref + DerefMut
+-where
+-    Self::Target: ObjectType,
+-{
+-    /// Safely convert from a derived type to one of its parent types.
+-    ///
+-    /// This is always safe; the [`IsA`] trait provides static verification
+-    /// that `Self` dereferences to `U` or a child of `U`.
+-    fn upcast_mut<'a, U: ObjectType>(self) -> &'a mut U
+-    where
+-        Self::Target: IsA<U>,
+-        Self: 'a,
+-    {
+-        // SAFETY: soundness is declared via IsA<U>, which is an unsafe trait
+-        unsafe { self.unsafe_cast_mut::<U>() }
+-    }
+-
+-    /// Attempt to convert to a derived type.
+-    ///
+-    /// Returns `Ok(..)` if the object is of type `U`, or `Err(self)` if the
+-    /// object if the conversion failed. This is verified at runtime by
+-    /// checking the object's type information.
+-    fn downcast_mut<'a, U: IsA<Self::Target>>(self) -> Result<&'a mut U, Self>
+-    where
+-        Self: 'a,
+-    {
+-        self.dynamic_cast_mut::<U>()
+-    }
+-
+-    /// Attempt to convert between any two types in the QOM hierarchy.
+-    ///
+-    /// Returns `Ok(..)` if the object is of type `U`, or `Err(self)` if the
+-    /// object if the conversion failed. This is verified at runtime by
+-    /// checking the object's type information.
+-    fn dynamic_cast_mut<'a, U: ObjectType>(self) -> Result<&'a mut U, Self>
+-    where
+-        Self: 'a,
+-    {
+-        unsafe {
+-            // SAFETY: upcasting to Object is always valid, and the
+-            // return type is either NULL or the argument itself
+-            let result: *mut U =
+-                object_dynamic_cast(self.as_object_mut_ptr(), U::TYPE_NAME.as_ptr()).cast();
+-
+-            result.as_mut().ok_or(self)
+-        }
+-    }
+-
+-    /// Convert to any QOM type without verification.
+-    ///
+-    /// # Safety
+-    ///
+-    /// What safety? You need to know yourself that the cast is correct; only
+-    /// use when performance is paramount.  It is still better than a raw
+-    /// pointer `cast()`, which does not even check that you remain in the
+-    /// realm of QOM `ObjectType`s.
+-    ///
+-    /// `unsafe_cast::<Object>()` is always safe.
+-    unsafe fn unsafe_cast_mut<'a, U: ObjectType>(self) -> &'a mut U
+-    where
+-        Self: 'a,
+-    {
+-        unsafe { &mut *self.as_mut_ptr::<Self::Target>().cast::<U>() }
+-    }
+-}
+-
+ impl<T: ObjectType> ObjectDeref for &mut T {}
+-impl<T: ObjectType> ObjectCastMut for &mut T {}
+ 
+ /// Trait a type must implement to be registered with QEMU.
+ pub trait ObjectImpl: ObjectType + IsA<Object> {
+diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+index e3985782a38..269122e7ec1 100644
+--- a/rust/qemu-api/tests/tests.rs
++++ b/rust/qemu-api/tests/tests.rs
+@@ -2,13 +2,10 @@
+ // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-use std::{
+-    ffi::{c_void, CStr},
+-    ptr::{addr_of, addr_of_mut},
+-};
++use std::{ffi::CStr, ptr::addr_of};
+ 
+ use qemu_api::{
+-    bindings::{module_call_init, module_init_type, object_new, object_unref, qdev_prop_bool},
++    bindings::{module_call_init, module_init_type, qdev_prop_bool},
+     c_str,
+     cell::{self, BqlCell},
+     declare_properties, define_property,
+@@ -182,30 +179,3 @@ fn test_cast() {
+         assert_eq!(addr_of!(*sbd_ref), p_ptr.cast());
+     }
+ }
+-
+-#[test]
+-#[allow(clippy::shadow_unrelated)]
+-/// Test casts on mutable references.
+-fn test_cast_mut() {
+-    init_qom();
+-    let p: *mut DummyState = unsafe { object_new(DummyState::TYPE_NAME.as_ptr()).cast() };
+-
+-    let p_ref: &mut DummyState = unsafe { &mut *p };
+-    let obj_ref: &mut Object = p_ref.upcast_mut();
+-    assert_eq!(addr_of_mut!(*obj_ref), p.cast());
+-
+-    let sbd_ref: Result<&mut SysBusDevice, &mut Object> = obj_ref.dynamic_cast_mut();
+-    let obj_ref = sbd_ref.unwrap_err();
+-
+-    let dev_ref: Result<&mut DeviceState, &mut Object> = obj_ref.downcast_mut();
+-    let dev_ref = dev_ref.unwrap();
+-    assert_eq!(addr_of_mut!(*dev_ref), p.cast());
+-
+-    // SAFETY: the cast is wrong, but the value is only used for comparison
+-    unsafe {
+-        let sbd_ref: &mut SysBusDevice = obj_ref.unsafe_cast_mut();
+-        assert_eq!(addr_of_mut!(*sbd_ref), p.cast());
+-
+-        object_unref(p_ref.as_object_mut_ptr().cast::<c_void>());
+-    }
+-}
 -- 
 2.48.1
 
