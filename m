@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0463EA581B8
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:39:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A868CA581FA
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:43:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trCBh-0001HV-T7; Sun, 09 Mar 2025 04:39:10 -0400
+	id 1trCB4-00008x-Pu; Sun, 09 Mar 2025 04:38:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAr-0007sK-GL
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:20 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAs-0007uV-HI
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAp-0002di-Oh
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:17 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAr-0002dr-3Y
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:38:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741509495;
+ s=mimecast20190719; t=1741509496;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V4s70R+tlsvIqbcve4GWCzOtP+KUyGx5LNp3NIFno9k=;
- b=KJMnk9/vwG1EtCVSIDktxRgI98YPhIiepVLLdYXGBo6eo0S5zLnXRHD3XSlyKfedOSdFiz
- 8luG+R45No/ALK4adn2G+XtzZBq7syc63sg43v0J1p71ans4jJhyQqAucIhUhVrqXlzRUH
- 34t/HtViOU9uGPWPH1R2sgMjg/P4kWY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=0jv8UtrPnKe/zfpohTnAfDHrka+YbskQjCbhZqgLkis=;
+ b=Q6Joo7wrp/3AiXo/VCW4fplt98D4a/ZD60GH6PYRZ1NPdMhSPhvM+1gsUIOOnVpV4ClI6g
+ bbX0nMs1Umc5AOqqGk9jT2A+7vfQ1ApSYgeXHACoQMjluXFAgCEOP/fH3XdXBcAK+uuaKb
+ m+FQZpOHuXuoB8X7Kafgs0w6z3Js8Ok=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-M9dmwdB2PmKjJ6ROkm_cww-1; Sun,
- 09 Mar 2025 04:38:12 -0400
-X-MC-Unique: M9dmwdB2PmKjJ6ROkm_cww-1
-X-Mimecast-MFC-AGG-ID: M9dmwdB2PmKjJ6ROkm_cww_1741509490
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-90-ZtXp4V4dNT6E3HZC4Wkyyg-1; Sun,
+ 09 Mar 2025 04:38:14 -0400
+X-MC-Unique: ZtXp4V4dNT6E3HZC4Wkyyg-1
+X-Mimecast-MFC-AGG-ID: ZtXp4V4dNT6E3HZC4Wkyyg_1741509493
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D551E180049D; Sun,  9 Mar 2025 08:38:10 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 21C12180AB1C; Sun,  9 Mar 2025 08:38:13 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.4])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 02FFD19560AB; Sun,  9 Mar 2025 08:38:07 +0000 (UTC)
+ id 2292819560AB; Sun,  9 Mar 2025 08:38:10 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 54/62] docs/qapidoc: implement transmogrify() method
-Date: Sun,  9 Mar 2025 04:35:41 -0400
-Message-ID: <20250309083550.5155-55-jsnow@redhat.com>
+Subject: [PATCH v2 55/62] docs/qapidoc: process @foo into ``foo``
+Date: Sun,  9 Mar 2025 04:35:42 -0400
+Message-ID: <20250309083550.5155-56-jsnow@redhat.com>
 In-Reply-To: <20250309083550.5155-1-jsnow@redhat.com>
 References: <20250309083550.5155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -85,119 +85,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the true top-level processor for the new transmogrifier;
-responsible both for generating the intermediate rST and then running
-the nested parse on that generated document to produce the final
-docutils tree that is then - very finally - postprocessed by sphinx for
-final rendering to HTML &c.
+Add support for the special QAPI doc syntax to process @references as
+``preformatted text``. At the moment, there are no actual
+cross-references for individual members, so there is nothing to link
+against. For now, process it identically to how we did in the old
+qapidoc system.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 49 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 48 insertions(+), 1 deletion(-)
+ docs/sphinx/qapidoc.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 5fd8a7c1fc1..11b8fca21ec 100644
+index 11b8fca21ec..43091b1fabc 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -2,6 +2,7 @@
- #
- # QEMU qapidoc QAPI file parsing extension
- #
-+# Copyright (c) 2024 Red Hat
- # Copyright (c) 2020 Linaro
- #
- # This work is licensed under the terms of the GNU GPLv2 or later.
-@@ -24,6 +25,8 @@
- https://www.sphinx-doc.org/en/master/development/index.html
- """
+@@ -305,6 +305,9 @@ def visit_sections(self, ent: QAPISchemaDefinition) -> None:
  
-+# pylint: disable=too-many-lines
+         # Add sections *in the order they are documented*:
+         for section in sections:
++            # @var is translated to ``var``:
++            section.text = re.sub(r"@([\w-]+)", r"``\1``", section.text)
 +
- from __future__ import annotations
- 
- from contextlib import contextmanager
-@@ -56,6 +59,7 @@
- from sphinx import addnodes
- from sphinx.directives.code import CodeBlock
- from sphinx.errors import ExtensionError
-+from sphinx.util import logging
- from sphinx.util.docutils import switch_source_input
- from sphinx.util.nodes import nested_parse_with_titles
- 
-@@ -76,6 +80,8 @@
- 
- __version__ = "1.0"
- 
-+logger = logging.getLogger(__name__)
-+
- 
- class Transmogrifier:
-     # pylint: disable=too-many-public-methods
-@@ -95,6 +101,10 @@ def __init__(self) -> None:
-         self._result = StringList()
-         self.indent = 0
- 
-+    @property
-+    def result(self) -> StringList:
-+        return self._result
-+
-     @property
-     def entity(self) -> QAPISchemaDefinition:
-         assert self._curr_ent is not None
-@@ -444,7 +454,43 @@ def new_serialno(self) -> str:
-         return "qapidoc-%d" % env.new_serialno("qapidoc")
- 
-     def transmogrify(self, schema: QAPISchema) -> nodes.Element:
--        raise NotImplementedError
-+        logger.info("Transmogrifying QAPI to rST ...")
-+        vis = Transmogrifier()
-+        modules = set()
-+
-+        for doc in schema.docs:
-+            module_source = doc.info.fname
-+            if module_source not in modules:
-+                vis.visit_module(module_source)
-+                modules.add(module_source)
-+
-+            if doc.symbol:
-+                ent = schema.lookup_entity(doc.symbol)
-+                assert isinstance(ent, QAPISchemaDefinition)
-+                vis.visit_entity(ent)
-+            else:
-+                vis.visit_freeform(doc)
-+
-+        logger.info("Transmogrification complete.")
-+
-+        contentnode = nodes.section()
-+        content = vis.result
-+        titles_allowed = True
-+
-+        logger.info("Transmogrifier running nested parse ...")
-+        with switch_source_input(self.state, content):
-+            if titles_allowed:
-+                node: nodes.Element = nodes.section()
-+                node.document = self.state.document
-+                nested_parse_with_titles(self.state, content, contentnode)
-+            else:
-+                node = nodes.paragraph()
-+                node.document = self.state.document
-+                self.state.nested_parse(content, 0, contentnode)
-+        logger.info("Transmogrifier's nested parse completed.")
-+        sys.stdout.flush()
-+
-+        return contentnode
- 
-     def legacy(self, schema: QAPISchema) -> nodes.Element:
-         vis = QAPISchemaGenRSTVisitor(self)
-@@ -578,6 +624,7 @@ def run(self) -> List[nodes.Node]:
- 
- def setup(app: Sphinx) -> ExtensionMetadata:
-     """Register qapi-doc directive with Sphinx"""
-+    app.setup_extension("qapi_domain")
-     app.add_config_value("qapidoc_srctree", None, "env")
-     app.add_directive("qapi-doc", QAPIDocDirective)
-     app.add_directive("qmp-example", QMPExample)
+             if section.kind == QAPIDoc.Kind.PLAIN:
+                 self.visit_paragraph(section)
+             elif section.kind == QAPIDoc.Kind.MEMBER:
 -- 
 2.48.1
 
