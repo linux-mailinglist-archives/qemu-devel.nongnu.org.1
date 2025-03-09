@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4930AA581D4
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:41:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F29A581B7
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:39:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trCAW-0006Nk-Ih; Sun, 09 Mar 2025 04:37:56 -0400
+	id 1trCAe-0006wm-G5; Sun, 09 Mar 2025 04:38:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAO-00068w-KR
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:37:48 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAS-0006L5-88
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:37:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAM-0002YN-KD
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:37:48 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trCAQ-0002Yz-Aa
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:37:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741509465;
+ s=mimecast20190719; t=1741509469;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Wk9kVkfc4LXryc5ue1ku8Wh0BN0iylKBPCMQqL6iSOQ=;
- b=cZhg/yTa2pGVV4sasssV1mk+gG8YW6RocU2yLLvywwZa73vZy7iAZGjLbftF1AuzNO2XVj
- QcCRiaL0hnO7YT8Y90DsLmIkC5RF1FJAXKc2l9z4N3Qd3fr+ab5yqOD904TbrU2Jml7dJS
- dxV7mEUs0jC03rk8B4r2WqS3slwvVYo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=LhfTvZSOFIKGzjAQ6Ymgn0Jsa6ARUZT0HLCMnY9mMyI=;
+ b=J8XAbZCKX73d+4OxpWlrxjAK4kRGlPmutd9K5j75j4lWFDx/w+X9x1Qbt3LGkcl6X9wEB1
+ RX9Wtmk/cpQOCXFB4kVIVtUFpMKXeARzmrUXDeEaDs57obhUX8ypoteAWjihgOtwI1AX3W
+ qkIuBb/T/TymrXq9xrWvo11txPcYqGk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-374-IZGOYK8KOJa9GguTbyVKaQ-1; Sun,
- 09 Mar 2025 04:37:42 -0400
-X-MC-Unique: IZGOYK8KOJa9GguTbyVKaQ-1
-X-Mimecast-MFC-AGG-ID: IZGOYK8KOJa9GguTbyVKaQ_1741509461
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-338-3cmvuStOMb6PqG_SCbwNiQ-1; Sun,
+ 09 Mar 2025 04:37:44 -0400
+X-MC-Unique: 3cmvuStOMb6PqG_SCbwNiQ-1
+X-Mimecast-MFC-AGG-ID: 3cmvuStOMb6PqG_SCbwNiQ_1741509463
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D5825195609F; Sun,  9 Mar 2025 08:37:40 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5E724180025A; Sun,  9 Mar 2025 08:37:43 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.4])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3ABD219560AB; Sun,  9 Mar 2025 08:37:38 +0000 (UTC)
+ id 29C1119560AB; Sun,  9 Mar 2025 08:37:41 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 42/62] docs/qapidoc: add visit_freeform() method
-Date: Sun,  9 Mar 2025 04:35:29 -0400
-Message-ID: <20250309083550.5155-43-jsnow@redhat.com>
+Subject: [PATCH v2 43/62] docs/qapidoc: add preamble() method
+Date: Sun,  9 Mar 2025 04:35:30 -0400
+Message-ID: <20250309083550.5155-44-jsnow@redhat.com>
 In-Reply-To: <20250309083550.5155-1-jsnow@redhat.com>
 References: <20250309083550.5155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -85,86 +85,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This method adds the options/preamble to each definition block. Notably,
+:since: and :ifcond: are added, as are any "special features" such as
+:deprecated: and :unstable:.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 50 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ docs/sphinx/qapidoc.py | 41 ++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 38 insertions(+), 3 deletions(-)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 6de8c900543..cf5dbb0133d 100644
+index cf5dbb0133d..d8bf0073dfa 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -29,6 +29,7 @@
- from contextlib import contextmanager
- import os
- from pathlib import Path
-+import re
- import sys
- from typing import TYPE_CHECKING
+@@ -37,7 +37,12 @@
+ from docutils.parsers.rst import Directive, directives
+ from docutils.statemachine import StringList
+ from qapi.error import QAPIError
+-from qapi.schema import QAPISchema, QAPISchemaVisitor
++from qapi.parser import QAPIDoc
++from qapi.schema import (
++    QAPISchema,
++    QAPISchemaDefinition,
++    QAPISchemaVisitor,
++)
+ from qapi.source import QAPISourceInfo
  
-@@ -55,6 +56,8 @@
+ from qapidoc_legacy import QAPISchemaGenRSTVisitor  # type: ignore
+@@ -56,8 +61,6 @@
          Sequence,
      )
  
-+    from qapi.parser import QAPIDoc
-+
+-    from qapi.parser import QAPIDoc
+-
      from sphinx.application import Sphinx
      from sphinx.util.typing import ExtensionMetadata
  
-@@ -130,6 +133,53 @@ def visit_module(self, path: str) -> None:
-         self.add_line_raw(f".. qapi:module:: {name}", path, 1)
-         self.ensure_blank_line()
+@@ -125,6 +128,38 @@ def ensure_blank_line(self) -> None:
+             # +2: correct for zero/one index, then increment by one.
+             self.add_line_raw("", fname, line + 2)
  
-+    def visit_freeform(self, doc: QAPIDoc) -> None:
-+        # TODO: Once the old qapidoc transformer is deprecated, freeform
-+        # sections can be updated to pure rST, and this transformed removed.
-+        #
-+        # For now, translate our micro-format into rST. Code adapted
-+        # from Peter Maydell's freeform().
++    # Transmogrification helpers
 +
-+        assert len(doc.all_sections) == 1, doc.all_sections
-+        body = doc.all_sections[0]
-+        text = body.text
-+        info = doc.info
++    def preamble(self, ent: QAPISchemaDefinition) -> None:
++        """
++        Generate option lines for qapi entity directives.
++        """
++        if ent.doc and ent.doc.since:
++            assert ent.doc.since.kind == QAPIDoc.Kind.SINCE
++            # Generated from the entity's docblock; info location is exact.
++            self.add_line(f":since: {ent.doc.since.text}", ent.doc.since.info)
 +
-+        if re.match(r"=+ ", text):
-+            # Section/subsection heading (if present, will always be the
-+            # first line of the block)
-+            (heading, _, text) = text.partition("\n")
-+            (leader, _, heading) = heading.partition(" ")
-+            level = len(leader) + 1  # Implicit +1 for heading in .rST stub
++        if ent.ifcond.is_present():
++            doc = ent.ifcond.docgen()
++            assert ent.info
++            # Generated from entity definition; info location is approximate.
++            self.add_line(f":ifcond: {doc}", ent.info)
 +
-+            # https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#sections
-+            markers = {
-+                1: "#",
-+                2: "*",
-+                3: "=",
-+                4: "-",
-+                5: "^",
-+                6: '"',
-+            }
-+            overline = level <= 2
-+            marker = markers[level]
++        # Hoist special features such as :deprecated: and :unstable:
++        # into the options block for the entity. If, in the future, new
++        # special features are added, qapi-domain will chirp about
++        # unrecognized options and fail until they are handled in
++        # qapi-domain.
++        for feat in ent.features:
++            if feat.is_special():
++                # FIXME: handle ifcond if present. How to display that
++                # information is TBD.
++                # Generated from entity def; info location is approximate.
++                assert feat.info
++                self.add_line(f":{feat.name}:", feat.info)
 +
-+            self.ensure_blank_line()
-+            # This credits all 2 or 3 lines to the single source line.
-+            if overline:
-+                self.add_line(marker * len(heading), info)
-+            self.add_line(heading, info)
-+            self.add_line(marker * len(heading), info)
-+            self.ensure_blank_line()
-+
-+            # Eat blank line(s) and advance info
-+            trimmed = text.lstrip("\n")
-+            text = trimmed
-+            info = info.next_line(len(text) - len(trimmed) + 1)
-+
-+        self.add_lines(text, info)
 +        self.ensure_blank_line()
 +
+     # Transmogrification core methods
  
- class QAPISchemaGenDepVisitor(QAPISchemaVisitor):
-     """A QAPI schema visitor which adds Sphinx dependencies each module
+     def visit_module(self, path: str) -> None:
 -- 
 2.48.1
 
