@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09473A586BD
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 19:01:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0998CA58686
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 18:55:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trKpa-0005Ca-Vs; Sun, 09 Mar 2025 13:52:55 -0400
+	id 1trKpb-0005E1-JR; Sun, 09 Mar 2025 13:52:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpN-0005C9-Nc
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:41 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpS-0005CT-3U
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:47 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpL-0004pz-Nd
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:41 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-391342fc148so1343664f8f.2
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:52:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trKpQ-0004qh-8I
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 13:52:45 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43bd5644de8so36427775e9.3
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 10:52:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741542758; x=1742147558; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741542762; x=1742147562; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=XCeL7qLhCXyawqpFh374doAuSUcQFtoZ56lrH3Aj2ao=;
- b=NTP4Hy/1nypXSu3QMI7r74VNdq3lAzUOIBisCb4teEDBLpcYXtH3GxVngNewcdzeFV
- oXaWjCXhBwI3YJd3oNXXnmrOVdmWjsDnhmGCxVUUaol4dRLh0SHCZP8JPnDgd4CM0MkL
- bVYGIFw3tBtaoyGW+ZrHZCn92/dzYcotJ3NEyD1iuzQ+SKfbPiCd5Fryb4XjI0gEQszd
- jDP6hcV/t/5hzMpkbQZSy7qa717dVbbKdZA42Fktd3N7YLCD6BHJwRUjuxEy1m09Wbiw
- vz9eFyJY/7sWvHmmjMjBZr4qZMWPPHq+2qgtLGknZOeSrUA6fNxr/YH5dXKztK9eGTjH
- v2FQ==
+ :reply-to; bh=8FG/sgyXr9996vZOdOWbBM0OkWgobia8pq1aZDtIQB4=;
+ b=cxzIes2qF03NTDaX3jdun1j0zs+Jzr43OKGBk4V+D7wm9rajRDFevtwDCG/wXDxI6f
+ 3h58GGtPEWtXNPWmE9FLuvn8m/S8p7wveSTeuKuTXj/5/kyqUV3i0lpADg7CT+zXgGsr
+ 4fRtyJd85RT011LW/DdhshlaTp0vVVpyvVxn0n+iK7fl6r4Fc8CVqEEw/YaopooGl2dU
+ m08EBvIkTujkT8vjHhOXNylDqRMgHBA6W4F2KCc6Gebh9YUcnA01GHvRflMhnpDXhGOY
+ P08EbEdZBhlBdhTkTcMMGUNJgBSl33y53me+S4jEf7LiNdmkMsJW5ahRE8psOkU/fxxZ
+ xd3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741542758; x=1742147558;
+ d=1e100.net; s=20230601; t=1741542762; x=1742147562;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XCeL7qLhCXyawqpFh374doAuSUcQFtoZ56lrH3Aj2ao=;
- b=i/lFQhHChF1P3pECIZR/ep+zlFO7q4sva9xnCBdwEv7cR39sHApHnPKYPyVtdkhEmF
- /lL0OTainycnXrZi3I5Xd3XFLn/NwRDu2Mquw6j2e8r63J5E5GXsOUVi0x+bY+TZUSB6
- GkDjeee0Qzn0+kz536n+gEA6OVj7xOWcdvCeQvSqviMPdMbnl5lwX8Xup+FWZVicF76K
- JzNlBYUmWBqzm8h8V4Y583hjHmYYbgWzkf1KN06btlL2zBvsCvj55Nk0YML+NvgjlA3M
- 9vHv2KfWbBh/eAvk9DwN6fU/ry0RZdZlxHwsNMzrIQmG/R/I63ecHvL9RhXXy5vhyNq6
- aA+g==
-X-Gm-Message-State: AOJu0YzZcDWxgFdjSepd0nnnsMkf1O3U2vdToiUIJ+5NIt+kstnjj1VN
- 5pcE22KCtCQcALPW+X+4AuUwj2b0eqW1UIPXQhFztI8QZJHEvmzjiii9I9e/Y6NVBVhdU0srmTF
- UvQ8=
-X-Gm-Gg: ASbGncsXvEMzK3s+M19N2/El352kf2yfsjtDXG/MP7SLbGKySS5aOLLedFYbGUyx9sf
- 7jUn5Mm7zSWD612AgnKDsLykXJqnfqP0d7JK0/tRgMyDnQKfVr/d4nRPFWf+XGmzhFxzQSIp1t0
- YZ7x5oVaCgn0/xTbG4RZUyj9thDykKXsEeuleHGuLL2Y0/pid3M3NkABLl3G/ottVa1qZL3xw8D
- 3zkIOhyKrUPqVlXGGZwTc2Xca6TXXbg9gbflnssQLcbgly2qoNRKj8CdZxtSA5D+298znFqi7O2
- CTwRwAApKF6+iphwl6x2hn2pHuQQ5otKdcXKuE94qObD/wSbnA/6pcBJ1iRncQOxQZd/XBXioSe
- S2YDsFSgVfwgubt3TId0=
-X-Google-Smtp-Source: AGHT+IGS6SH0UrFipcFsIlm1EyzudTT+VD7XHBwkuoasmMLi2DQfY7DqLJMDaQ7n8so3Mh9NUJVOMg==
-X-Received: by 2002:adf:a3cf:0:b0:391:4231:40a with SMTP id
- ffacd0b85a97d-391423105ccmr1503457f8f.33.1741542757730; 
- Sun, 09 Mar 2025 10:52:37 -0700 (PDT)
+ bh=8FG/sgyXr9996vZOdOWbBM0OkWgobia8pq1aZDtIQB4=;
+ b=moGG+hqLV4Dl9JRjwGrPRUg/ojoGSX3/Jm+l19rbSB+nSSjXYPxZ5QqsvA8lSiqRzO
+ 8fcPPe2hsuq2LrCd9DvI9z8p6gJS8uU2NThrXTR2BBIbNpi2xIlJCh7E8hPSBCZKrlf8
+ 1N1suwMTF8gF6WkrLZff07tDCgiMyIzzwl3KoT0o3bNn1n0IT3KiKqIISo22M7ianT9e
+ sGbVV5ha5DU2oT8EAaUSaivHoRtC28FMQ2MJpzrre+0t7U9CAHz27cWd8d+3XBnOlVaw
+ bzVPAsxx20udQkKYdQ6SwCIIgmCze0mB8SjIobhqaoXH/d99xSwHmEe9AkT6H7NDL3bU
+ 5n1w==
+X-Gm-Message-State: AOJu0YwZNBp9j9e+Bdftst0GgSYLmDQKAUA3v520RhDyQL9T3sFgu2Rv
+ 8Fg64VqudUbeJUR1/ZyZw/tUtyBlpW1yA96rSuboxX5iy/0fvk3DDwxdilbpADKmqvVje9K6Jp6
+ neIg=
+X-Gm-Gg: ASbGnctSS5gS30c/tc6jUzmBAcqDtN8Xf/13pro3ED9lXVLnN6PDIFIE8GvjoSVYOG4
+ fuT3yQXpo+F9jWC/QRhQtuan+yOT0PiSBy+nJOHYqdKdOvnXJu44f3/oXW7tdu+BDe5n8rQ/suH
+ EO+1UTEAf3ZyHdG1aHtZ/y9yqzG/LUVL8M6XgXfw39iBBAuQW73/KOX+w8EpsdAG8dXgXj2KC3f
+ Yv32lko9qnkBkPJqf8VMF0C/FmeJqBiOckyEOKuBL9XE1lDgbqb3H4xILnWZA2VZ9y+AgduRZX7
+ 1D0ziRR2ZeGiiPlrmSrA7iy2qhKTILoWcnn+PSzo7hCmB08VHqIn5wC1aQvSw0gP65SAUmirK0D
+ 3CmCM9u6dfScHfPUKc0A=
+X-Google-Smtp-Source: AGHT+IHRj8sKj47XZF8Gb6wyUqCSukF/uwDYueuewD1xX78sJ7gUZX1QQRYNkX5OuwysquzWf6CZdw==
+X-Received: by 2002:a05:600c:1d1c:b0:43c:efed:732d with SMTP id
+ 5b1f17b1804b1-43cefed7916mr20900435e9.16.1741542762313; 
+ Sun, 09 Mar 2025 10:52:42 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ce720f93bsm60298215e9.25.2025.03.09.10.52.36
+ 5b1f17b1804b1-43bd42c6203sm150211345e9.24.2025.03.09.10.52.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Mar 2025 10:52:37 -0700 (PDT)
+ Sun, 09 Mar 2025 10:52:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/38] cpus: Build cpu_exec_[un]realizefn() methods once
-Date: Sun,  9 Mar 2025 18:51:35 +0100
-Message-ID: <20250309175207.43828-7-philmd@linaro.org>
+Subject: [PULL 07/38] cpus: Prefer cached CpuClass over CPU_GET_CLASS() macro
+Date: Sun,  9 Mar 2025 18:51:36 +0100
+Message-ID: <20250309175207.43828-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250309175207.43828-1-philmd@linaro.org>
 References: <20250309175207.43828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,106 +96,262 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that cpu_exec_realizefn() and cpu_exec_unrealizefn()
-methods don't use any target specific definition anymore,
-we can move them to cpu-common.c to be able to build them
-once.
+CpuState caches its CPUClass since commit 6fbdff87062
+("cpu: cache CPUClass in CPUState for hot code paths"),
+use it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250123234415.59850-21-philmd@linaro.org>
+Message-Id: <20250122093028.52416-5-philmd@linaro.org>
 ---
- cpu-target.c         | 29 -----------------------------
- hw/core/cpu-common.c | 26 ++++++++++++++++++++++++++
- 2 files changed, 26 insertions(+), 29 deletions(-)
+ include/hw/core/cpu.h | 10 +++----
+ cpu-common.c          | 10 +++----
+ hw/core/cpu-common.c  | 13 +++------
+ hw/core/cpu-system.c  | 61 ++++++++++++++++---------------------------
+ 4 files changed, 33 insertions(+), 61 deletions(-)
 
-diff --git a/cpu-target.c b/cpu-target.c
-index bc9c537c575..cae77374b38 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -25,38 +25,9 @@
- #include "system/cpus.h"
- #include "exec/tswap.h"
- #include "exec/replay-core.h"
--#include "exec/cpu-common.h"
- #include "exec/log.h"
- #include "accel/accel-cpu-target.h"
- #include "trace/trace-root.h"
--#include "qemu/accel.h"
--#include "hw/core/cpu.h"
--
--bool cpu_exec_realizefn(CPUState *cpu, Error **errp)
--{
--    if (!accel_cpu_common_realize(cpu, errp)) {
--        return false;
--    }
--
--    /* Wait until cpu initialization complete before exposing cpu. */
--    cpu_list_add(cpu);
--
--    cpu_vmstate_register(cpu);
--
--    return true;
--}
--
--void cpu_exec_unrealizefn(CPUState *cpu)
--{
--    cpu_vmstate_unregister(cpu);
--
--    cpu_list_remove(cpu);
--    /*
--     * Now that the vCPU has been removed from the RCU list, we can call
--     * accel_cpu_common_unrealize, which may free fields using call_rcu.
--     */
--    accel_cpu_common_unrealize(cpu);
--}
- 
- char *cpu_model_from_type(const char *typename)
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index bc0c9468344..c6df426c947 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -826,10 +826,8 @@ const char *parse_cpu_option(const char *cpu_option);
+  */
+ static inline bool cpu_has_work(CPUState *cpu)
  {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    g_assert(cc->has_work);
+-    return cc->has_work(cpu);
++    g_assert(cpu->cc->has_work);
++    return cpu->cc->has_work(cpu);
+ }
+ 
+ /**
+@@ -968,9 +966,7 @@ void cpu_interrupt(CPUState *cpu, int mask);
+  */
+ static inline void cpu_set_pc(CPUState *cpu, vaddr addr)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    cc->set_pc(cpu, addr);
++    cpu->cc->set_pc(cpu, addr);
+ }
+ 
+ /**
+diff --git a/cpu-common.c b/cpu-common.c
+index f5dcc2d136b..ef5757d23bf 100644
+--- a/cpu-common.c
++++ b/cpu-common.c
+@@ -388,11 +388,10 @@ void process_queued_cpu_work(CPUState *cpu)
+ int cpu_breakpoint_insert(CPUState *cpu, vaddr pc, int flags,
+                           CPUBreakpoint **breakpoint)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+     CPUBreakpoint *bp;
+ 
+-    if (cc->gdb_adjust_breakpoint) {
+-        pc = cc->gdb_adjust_breakpoint(cpu, pc);
++    if (cpu->cc->gdb_adjust_breakpoint) {
++        pc = cpu->cc->gdb_adjust_breakpoint(cpu, pc);
+     }
+ 
+     bp = g_malloc(sizeof(*bp));
+@@ -418,11 +417,10 @@ int cpu_breakpoint_insert(CPUState *cpu, vaddr pc, int flags,
+ /* Remove a specific breakpoint.  */
+ int cpu_breakpoint_remove(CPUState *cpu, vaddr pc, int flags)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+     CPUBreakpoint *bp;
+ 
+-    if (cc->gdb_adjust_breakpoint) {
+-        pc = cc->gdb_adjust_breakpoint(cpu, pc);
++    if (cpu->cc->gdb_adjust_breakpoint) {
++        pc = cpu->cc->gdb_adjust_breakpoint(cpu, pc);
+     }
+ 
+     QTAILQ_FOREACH(bp, &cpu->breakpoints, entry) {
 diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index d5cd227fe6d..5671d8d4f54 100644
+index 5671d8d4f54..ba0f02e49da 100644
 --- a/hw/core/cpu-common.c
 +++ b/hw/core/cpu-common.c
-@@ -193,6 +193,20 @@ static void cpu_common_parse_features(const char *typename, char *features,
+@@ -40,9 +40,7 @@ CPUState *cpu_by_arch_id(int64_t id)
+     CPUState *cpu;
+ 
+     CPU_FOREACH(cpu) {
+-        CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-        if (cc->get_arch_id(cpu) == id) {
++        if (cpu->cc->get_arch_id(cpu) == id) {
+             return cpu;
+         }
+     }
+@@ -101,11 +99,9 @@ static int cpu_common_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg)
+ 
+ void cpu_dump_state(CPUState *cpu, FILE *f, int flags)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    if (cc->dump_state) {
++    if (cpu->cc->dump_state) {
+         cpu_synchronize_state(cpu);
+-        cc->dump_state(cpu, f, flags);
++        cpu->cc->dump_state(cpu, f, flags);
      }
  }
  
-+bool cpu_exec_realizefn(CPUState *cpu, Error **errp)
-+{
-+    if (!accel_cpu_common_realize(cpu, errp)) {
-+        return false;
-+    }
-+
-+    /* Wait until cpu initialization complete before exposing cpu. */
-+    cpu_list_add(cpu);
-+
-+    cpu_vmstate_register(cpu);
-+
-+    return true;
-+}
-+
- static void cpu_common_realizefn(DeviceState *dev, Error **errp)
- {
-     CPUState *cpu = CPU(dev);
-@@ -234,6 +248,18 @@ static void cpu_common_unrealizefn(DeviceState *dev)
-     cpu_exec_unrealizefn(cpu);
- }
- 
-+void cpu_exec_unrealizefn(CPUState *cpu)
-+{
-+    cpu_vmstate_unregister(cpu);
-+
-+    cpu_list_remove(cpu);
-+    /*
-+     * Now that the vCPU has been removed from the RCU list, we can call
-+     * accel_cpu_common_unrealize, which may free fields using call_rcu.
-+     */
-+    accel_cpu_common_unrealize(cpu);
-+}
-+
- static void cpu_common_initfn(Object *obj)
+@@ -119,11 +115,10 @@ void cpu_reset(CPUState *cpu)
+ static void cpu_common_reset_hold(Object *obj, ResetType type)
  {
      CPUState *cpu = CPU(obj);
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+ 
+     if (qemu_loglevel_mask(CPU_LOG_RESET)) {
+         qemu_log("CPU Reset (CPU %d)\n", cpu->cpu_index);
+-        log_cpu_state(cpu, cc->reset_dump_flags);
++        log_cpu_state(cpu, cpu->cc->reset_dump_flags);
+     }
+ 
+     cpu->interrupt_request = 0;
+diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
+index 6c89d76e498..e29664d39bb 100644
+--- a/hw/core/cpu-system.c
++++ b/hw/core/cpu-system.c
+@@ -33,10 +33,8 @@
+ 
+ bool cpu_paging_enabled(const CPUState *cpu)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    if (cc->sysemu_ops->get_paging_enabled) {
+-        return cc->sysemu_ops->get_paging_enabled(cpu);
++    if (cpu->cc->sysemu_ops->get_paging_enabled) {
++        return cpu->cc->sysemu_ops->get_paging_enabled(cpu);
+     }
+ 
+     return false;
+@@ -45,10 +43,8 @@ bool cpu_paging_enabled(const CPUState *cpu)
+ bool cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
+                             Error **errp)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    if (cc->sysemu_ops->get_memory_mapping) {
+-        return cc->sysemu_ops->get_memory_mapping(cpu, list, errp);
++    if (cpu->cc->sysemu_ops->get_memory_mapping) {
++        return cpu->cc->sysemu_ops->get_memory_mapping(cpu, list, errp);
+     }
+ 
+     error_setg(errp, "Obtaining memory mappings is unsupported on this CPU.");
+@@ -58,15 +54,15 @@ bool cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
+ hwaddr cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
+                                      MemTxAttrs *attrs)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+     hwaddr paddr;
+ 
+-    if (cc->sysemu_ops->get_phys_page_attrs_debug) {
+-        paddr = cc->sysemu_ops->get_phys_page_attrs_debug(cpu, addr, attrs);
++    if (cpu->cc->sysemu_ops->get_phys_page_attrs_debug) {
++        paddr = cpu->cc->sysemu_ops->get_phys_page_attrs_debug(cpu, addr,
++                                                               attrs);
+     } else {
+         /* Fallback for CPUs which don't implement the _attrs_ hook */
+         *attrs = MEMTXATTRS_UNSPECIFIED;
+-        paddr = cc->sysemu_ops->get_phys_page_debug(cpu, addr);
++        paddr = cpu->cc->sysemu_ops->get_phys_page_debug(cpu, addr);
+     }
+     /* Indicate that this is a debug access. */
+     attrs->debug = 1;
+@@ -94,64 +90,53 @@ int cpu_asidx_from_attrs(CPUState *cpu, MemTxAttrs attrs)
+ int cpu_write_elf32_qemunote(WriteCoreDumpFunction f, CPUState *cpu,
+                              void *opaque)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    if (!cc->sysemu_ops->write_elf32_qemunote) {
++    if (!cpu->cc->sysemu_ops->write_elf32_qemunote) {
+         return 0;
+     }
+-    return (*cc->sysemu_ops->write_elf32_qemunote)(f, cpu, opaque);
++    return (*cpu->cc->sysemu_ops->write_elf32_qemunote)(f, cpu, opaque);
+ }
+ 
+ int cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cpu,
+                          int cpuid, void *opaque)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    if (!cc->sysemu_ops->write_elf32_note) {
++    if (!cpu->cc->sysemu_ops->write_elf32_note) {
+         return -1;
+     }
+-    return (*cc->sysemu_ops->write_elf32_note)(f, cpu, cpuid, opaque);
++    return (*cpu->cc->sysemu_ops->write_elf32_note)(f, cpu, cpuid, opaque);
+ }
+ 
+ int cpu_write_elf64_qemunote(WriteCoreDumpFunction f, CPUState *cpu,
+                              void *opaque)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    if (!cc->sysemu_ops->write_elf64_qemunote) {
++    if (!cpu->cc->sysemu_ops->write_elf64_qemunote) {
+         return 0;
+     }
+-    return (*cc->sysemu_ops->write_elf64_qemunote)(f, cpu, opaque);
++    return (*cpu->cc->sysemu_ops->write_elf64_qemunote)(f, cpu, opaque);
+ }
+ 
+ int cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cpu,
+                          int cpuid, void *opaque)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    if (!cc->sysemu_ops->write_elf64_note) {
++    if (!cpu->cc->sysemu_ops->write_elf64_note) {
+         return -1;
+     }
+-    return (*cc->sysemu_ops->write_elf64_note)(f, cpu, cpuid, opaque);
++    return (*cpu->cc->sysemu_ops->write_elf64_note)(f, cpu, cpuid, opaque);
+ }
+ 
+ bool cpu_virtio_is_big_endian(CPUState *cpu)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    if (cc->sysemu_ops->virtio_is_big_endian) {
+-        return cc->sysemu_ops->virtio_is_big_endian(cpu);
++    if (cpu->cc->sysemu_ops->virtio_is_big_endian) {
++        return cpu->cc->sysemu_ops->virtio_is_big_endian(cpu);
+     }
+     return target_words_bigendian();
+ }
+ 
+ GuestPanicInformation *cpu_get_crash_info(CPUState *cpu)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+     GuestPanicInformation *res = NULL;
+ 
+-    if (cc->sysemu_ops->get_crash_info) {
+-        res = cc->sysemu_ops->get_crash_info(cpu);
++    if (cpu->cc->sysemu_ops->get_crash_info) {
++        res = cpu->cc->sysemu_ops->get_crash_info(cpu);
+     }
+     return res;
+ }
+@@ -300,10 +285,8 @@ void cpu_vmstate_register(CPUState *cpu)
+ 
+ void cpu_vmstate_unregister(CPUState *cpu)
+ {
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    if (cc->sysemu_ops->legacy_vmsd != NULL) {
+-        vmstate_unregister(NULL, cc->sysemu_ops->legacy_vmsd, cpu);
++    if (cpu->cc->sysemu_ops->legacy_vmsd != NULL) {
++        vmstate_unregister(NULL, cpu->cc->sysemu_ops->legacy_vmsd, cpu);
+     }
+     if (qdev_get_vmsd(DEVICE(cpu)) == NULL) {
+         vmstate_unregister(NULL, &vmstate_cpu_common, cpu);
 -- 
 2.47.1
 
