@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A103A581CC
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:41:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CAEEA581B0
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:38:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trC9r-0002q8-06; Sun, 09 Mar 2025 04:37:15 -0400
+	id 1trC9n-0002aC-4J; Sun, 09 Mar 2025 04:37:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9Y-00029s-Lo
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:59 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9c-0002EB-7T
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:37:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9W-0002Pe-4p
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:55 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC9a-0002Pw-Pk
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741509413;
+ s=mimecast20190719; t=1741509416;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hNQBJ0Tkoh2j7NT5CDk1J6ydBn4gXcI84mU4Fud32Gc=;
- b=Ul6nN4mWTdqHW0ZSbfg8uqiKVB0+sPbGtUF+GJEhKpcmZXio3Un7DHocaSDOKZW3hLbYyE
- LYTgKwpMXljALeG3xO/e82IJEjR8g9hYSgN2KsYP7Uf7O0zhJWCT0V8PX+2ca2UHcJZdBw
- TOJsOEF0Y629UQg0cWuMxhFGLGbB9R4=
+ bh=AUfEKi5B+8rzq7NctWViXP4FOQxHy6UF6ervu+N0nWE=;
+ b=iS2IXyDNRnJo89ey5ub76m2LiXV665VwwlKoxmTL9LKetHop/DuHLnikafVoCvBdKicTfT
+ 6DuuvimGDp8i+zkHx9GLLUgP95CKYiRKXbXOYVQdA22WChvpEeFXR/8UrX0xv52Km4muQt
+ Ie9BzZeyob4ntXDAAlNxQiyXNddWZds=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-197-FteTOHy_NTiVspvohWr5gw-1; Sun,
- 09 Mar 2025 04:36:48 -0400
-X-MC-Unique: FteTOHy_NTiVspvohWr5gw-1
-X-Mimecast-MFC-AGG-ID: FteTOHy_NTiVspvohWr5gw_1741509407
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-gGwCUUKWMomIs3QLNUOOnw-1; Sun,
+ 09 Mar 2025 04:36:50 -0400
+X-MC-Unique: gGwCUUKWMomIs3QLNUOOnw-1
+X-Mimecast-MFC-AGG-ID: gGwCUUKWMomIs3QLNUOOnw_1741509409
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1334C1809CA5; Sun,  9 Mar 2025 08:36:47 +0000 (UTC)
+ id C6B8C18004A9; Sun,  9 Mar 2025 08:36:49 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.4])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B3E2C19560AB; Sun,  9 Mar 2025 08:36:44 +0000 (UTC)
+ id 5878419560AB; Sun,  9 Mar 2025 08:36:47 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 21/62] docs/qapi-domain: add qapi:event directive
-Date: Sun,  9 Mar 2025 04:35:08 -0400
-Message-ID: <20250309083550.5155-22-jsnow@redhat.com>
+Subject: [PATCH v2 22/62] docs/qapi-domain: add qapi:object directive
+Date: Sun,  9 Mar 2025 04:35:09 -0400
+Message-ID: <20250309083550.5155-23-jsnow@redhat.com>
 In-Reply-To: <20250309083550.5155-1-jsnow@redhat.com>
 References: <20250309083550.5155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -85,78 +85,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds the .. qapi:event:: directive, object, and :qapi:event:`name`
-cross-referencing role.
-
-Adds the :memb type name: field list syntax for documenting event data
-members. As this syntax and phrasing will be shared with Structs and
-Unions as well, add the field list definition to a shared abstract
-class.
+Adds the .. qapi:object:: directive, object, and :qapi:obj:`name`
+cross-referencing role. This directive is meant to document both structs
+and unions.
 
 As per usual, QAPI cross-referencing for types in the member field list
 will be added in a forthcoming commit.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapi_domain.py | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ docs/sphinx/qapi_domain.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index 8b9055c6b5b..e5beae1a528 100644
+index e5beae1a528..e84affaaec2 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -341,6 +341,27 @@ class QAPIAlternate(QAPIObject):
-     )
+@@ -362,6 +362,10 @@ class QAPIEvent(QAPIObjectWithMembers):
+     """Description of a QAPI Event."""
  
  
-+class QAPIObjectWithMembers(QAPIObject):
-+    """Base class for Events/Structs/Unions"""
-+
-+    doc_field_types = QAPIObject.doc_field_types.copy()
-+    doc_field_types.extend(
-+        [
-+            # :member type name: descr
-+            TypedField(
-+                "member",
-+                label=_("Members"),
-+                names=("memb",),
-+                can_collapse=False,
-+            ),
-+        ]
-+    )
-+
-+
-+class QAPIEvent(QAPIObjectWithMembers):
-+    """Description of a QAPI Event."""
++class QAPIJSONObject(QAPIObjectWithMembers):
++    """Description of a QAPI Object: structs and unions."""
 +
 +
  class QAPIModule(QAPIDescription):
      """
      Directive to mark description of a new module.
-@@ -467,6 +488,7 @@ class QAPIDomain(Domain):
-     object_types: Dict[str, ObjType] = {
-         "module": ObjType(_("module"), "mod", "any"),
+@@ -490,6 +494,7 @@ class QAPIDomain(Domain):
          "command": ObjType(_("command"), "cmd", "any"),
-+        "event": ObjType(_("event"), "event", "any"),
+         "event": ObjType(_("event"), "event", "any"),
          "enum": ObjType(_("enum"), "enum", "type", "any"),
++        "object": ObjType(_("object"), "obj", "type", "any"),
          "alternate": ObjType(_("alternate"), "alt", "type", "any"),
      }
-@@ -476,6 +498,7 @@ class QAPIDomain(Domain):
-     directives = {
-         "module": QAPIModule,
+ 
+@@ -500,6 +505,7 @@ class QAPIDomain(Domain):
          "command": QAPICommand,
-+        "event": QAPIEvent,
+         "event": QAPIEvent,
          "enum": QAPIEnum,
++        "object": QAPIJSONObject,
          "alternate": QAPIAlternate,
      }
-@@ -486,6 +509,7 @@ class QAPIDomain(Domain):
-     roles = {
-         "mod": QAPIXRefRole(),
+ 
+@@ -511,6 +517,7 @@ class QAPIDomain(Domain):
          "cmd": QAPIXRefRole(),
-+        "event": QAPIXRefRole(),
+         "event": QAPIXRefRole(),
          "enum": QAPIXRefRole(),
++        "obj": QAPIXRefRole(),  # specifically structs and unions.
          "alt": QAPIXRefRole(),
          # reference any data type (excludes modules, commands, events)
+         "type": QAPIXRefRole(),
 -- 
 2.48.1
 
