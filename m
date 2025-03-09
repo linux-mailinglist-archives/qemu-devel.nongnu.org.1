@@ -2,74 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51EDA58160
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 08:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F2EA581A1
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:33:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trBJz-0006nG-Ru; Sun, 09 Mar 2025 03:43:39 -0400
+	id 1trC5w-0006bk-8s; Sun, 09 Mar 2025 04:33:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trBJu-0006ms-1c
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 03:43:34 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC5a-00067Y-Sa
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:32:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trBJs-0004nN-9e
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 03:43:33 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC5Y-0001Sw-KD
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:32:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741506210;
+ s=mimecast20190719; t=1741509163;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
- references:references; bh=vrNiHLR+7zW6umgSU2SAjHT+wSjRmv2SalXsR3Smytg=;
- b=POvxr0S26GrD8uaWwecUPVNhLBurvOrCuiBceIZwTh/092DHafxWZ+9I1DMLHqYK9mZWp1
- c6/u/iVKaOUYi0mGyJRLL7talzgR7SJHUzJXrRU2Juld/tWnRxfGWCApPsXOTB0qkpU5z0
- LB8xT77eu0RI7VgboQtcU1H0vXZdErU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Ob2J7h+FsclxVphVDcfm98hcmMaDwX2h2bKwFdI0M3c=;
+ b=OIXmk8abUDPAcNDPL955QOJvhMdS3JeoBXkC5CnqYMG4OP7GHOndWeURixTJ+z/TC2V7/D
+ gPTqCsRLCgVFIKKUU98I35wTk2Up2llsxKh6ecQZRTlSHeXJVmegLaxOPWS5M88xWAp7cZ
+ 14VAdcJEDnySG0ooEBfccq11E6FJ0zI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-207-onjy7b1uPjCK8lZWzmnIDA-1; Sun,
- 09 Mar 2025 03:43:27 -0400
-X-MC-Unique: onjy7b1uPjCK8lZWzmnIDA-1
-X-Mimecast-MFC-AGG-ID: onjy7b1uPjCK8lZWzmnIDA_1741506206
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-oxN5HWTaPFa3UWojLp8dHg-1; Sun,
+ 09 Mar 2025 04:32:37 -0400
+X-MC-Unique: oxN5HWTaPFa3UWojLp8dHg-1
+X-Mimecast-MFC-AGG-ID: oxN5HWTaPFa3UWojLp8dHg_1741509156
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1EAB419560B0; Sun,  9 Mar 2025 07:43:25 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.4])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B16B51801747; Sun,  9 Mar 2025 07:43:24 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2C32621E675F; Sun, 09 Mar 2025 08:43:22 +0100 (CET)
-Resent-To: michael.roth@amd.com, alex.bennee@linaro.org,
- peter.maydell@linaro.org, philmd@linaro.org, qemu-devel@nongnu.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Sun, 09 Mar 2025 08:43:22 +0100
-Resent-Message-ID: <87o6ya3azp.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Alex
- =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  Philippe =?utf-8?Q?Mat?=
- =?utf-8?Q?hieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Peter Maydell <peter.maydell@linaro.org>,  Thomas
- Huth <thuth@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>
-Subject: Re: [PATCH 54/57] docs/qapidoc: add transmogrifier test document
-In-Reply-To: <20250305034610.960147-55-jsnow@redhat.com> (John Snow's message
- of "Tue, 4 Mar 2025 22:46:03 -0500")
-References: <20250305034610.960147-1-jsnow@redhat.com>
- <20250305034610.960147-55-jsnow@redhat.com>
-Date: Sun, 09 Mar 2025 08:19:53 +0100
-Message-ID: <87bjua657q.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 71F61180035E; Sun,  9 Mar 2025 08:32:36 +0000 (UTC)
+Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.16])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D42841828A8A; Sun,  9 Mar 2025 08:32:32 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>
+Subject: [PATCH v2 00/62] docs: Add new QAPI transmogrifier
+Date: Sun,  9 Mar 2025 04:31:23 -0400
+Message-ID: <20250309083228.1290253-1-jsnow@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-Lines: 96
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -94,101 +83,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
-
-> This is just a test document that demonstrates the new qapi-domain doc
-> generator. Note that this test document uses a nesting depth of 2 for
-> the TOC unlike the existing QMP's reference nesting depth of 3. It's
-> arbitrary and can be changed to suit taste, it has nothing to do with
-> the new domain itself.
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  docs/index.rst      |  1 +
->  docs/qapi/index.rst | 53 +++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 54 insertions(+)
->  create mode 100644 docs/qapi/index.rst
->
-> diff --git a/docs/index.rst b/docs/index.rst
-> index 5665de85cab..4364f9f1618 100644
-> --- a/docs/index.rst
-> +++ b/docs/index.rst
-> @@ -21,3 +21,4 @@ Welcome to QEMU's documentation!
->     specs/index
->     devel/index
->     glossary
-> +   qapi/index
-> diff --git a/docs/qapi/index.rst b/docs/qapi/index.rst
-> new file mode 100644
-> index 00000000000..e40dce09119
-> --- /dev/null
-> +++ b/docs/qapi/index.rst
-> @@ -0,0 +1,53 @@
-> +########################
-> +QAPI Transmogrifier Test
-> +########################
-> +
-> +This is a test render of the QEMU QMP reference manual using the new
-> +"transmogrifier" generator in qapidoc.py in conjunction with the
-> +qapi-domain.py sphinx extension.
-> +
-> +Some notable features:
-> +
-> + * Every QAPI definition visible below is available to be
-> +   cross-referenced from anywhere else in the Sphinx docs; for example
-> +   ```blockdev-add``` will render to `blockdev-add`.
-> +
-> + * There are type-specific cross-referencing roles available for
-> +   alternates, commands, events, enums, structs, unions and modules. for
-> +   example, ``:qapi:cmd:`block-dirty-bitmap-add``` resolves to
-> +   :qapi:cmd:`block-dirty-bitmap-add`, and only works for commands. The
-> +   roles available are ``cmd``, ``alt``, ``event``, ``enum``,
-> +   ``struct``, ``union``, and ``mod``; with two meta-roles available:
-> +   ``obj`` for absolutely any QAPI definition, and ``type`` for
-> +   everything except commands, events, and modules.
-> +
-> + * There is a new `qapi-index` page which can be linked to with
-> +   ```qapi-index```. There, you can browse a list of all QAPI
-> +   definitions by type or alphabetically.
-
-```qapi-index``` becomes a link in HTML.  The link takes me to an index
-page.  Two observations:
-
-* The index page appears not to be linked from the navigation thingie on
-  the left.  Searching for "QAPI Index" there doesn't find it, either.
-
-* The index is structured into sections titled Alternates, Commands |
-  Enums, Events, Modules, Objects, A, ... Z.  As I scrolled down
-  quickly, the transition from Objects to A confused me briefly: I
-  didn't immediately understand that A, ... Z contains the union of
-  everything above sorted into letter buckets.
-
-> +
-> + * QAPI definitions are also added to the existing `genindex` page.
-> +
-> + * All member/argument/return types are now cross-references to that
-> +   type's definition. `chardev-add` is a good example.
-> +
-> + * This work-in-progress version does not perform any inlining.
-> +
-> + * This work-in-progress version actually also ignores branches entirely
-> +   right now!
-> +
-> + * This version currently does not "prune" unnecessary docs.
-> +
-> + * This version does not add undocumented members or return values.
-> +
-> + * This version does not handle ifcond for anything other than top-level
-> +   entity definitions.
-> +
-> + * This version renders sections in precisely the order they appear in
-> +   source, even if that winds up looking silly.
-> +
-> +
-> +.. contents::
-> +   :depth: 2
-> +
-> +.. qapi-doc:: qapi/qapi-schema.json
-> +   :transmogrify:
+This series is a "minimum viable" version of the new QAPI documentation=0D
+system. It does the bare minimum under the new framework, saving nice=0D
+features for later.=0D
+=0D
+Patches 3-31 implement the qapi_domain extension.=0D
+Patches 32-59 implement the qapidoc "Transmogrifier".=0D
+=0D
+Known shortcomings in this series:=0D
+=0D
+- Some ifcond information is still not displayed.=0D
+- No QAPI namespace support ... yet. So we can't enable it for QMP, QGA=0D
+  and QSD simultaneously just yet. It's nearly complete.=0D
+- Didn't finish addressing all of Markus' feedback, but needed to get=0D
+  another spin out on the list ASAP.=0D
+=0D
+v2:=0D
+=0D
+- Refactored QAPIObject class so that QAPIModule uses more of=0D
+Sphinx's ObjectDescription class, which means less fooling around with=0D
+re-parsing Sphinx standard options.=0D
+- Removed test document, flipped switch on the real QMP manual.=0D
+- Undocumented members have been re-added. I think that's new for this vers=
+ion!=0D
+- Removed some inliner branch code that snuck into the "validate info=0D
+  fields" patch.=0D
+- Lots of Markus' feedback, and misc changes.=0D
+=0D
+"v1":=0D
+=0D
+- @foo is processed into ``foo`=0D
+- "The members of ..." messages have been temporarily re-added until we=0D
+  can smooth over the inliner.=0D
+- This series runs under Sphinx 3.4.3 to Sphinx 8.2.0 inclusive. It=0D
+  truly is a Christmas miracle. (please clap)=0D
+- This series now fully type checks and lint checks under Sphinx 8.2.0,=0D
+  but may not type check under earlier Sphinx versions. Achieving this=0D
+  alone, nevermind in conjunction with the above, was a literal=0D
+  herculean labor.=0D
+=0D
+John Snow (62):=0D
+  do-not-merge=0D
+  qapi: shush pylint up=0D
+  docs/sphinx: create QAPI domain extension stub=0D
+  docs/sphinx: add compat.py module and nested_parse helper=0D
+  docs/qapi-domain: add QAPI domain object registry=0D
+  docs/qapi-domain: add QAPI index=0D
+  docs/qapi-domain: add resolve_any_xref()=0D
+  docs/qapi-domain: add QAPI xref roles=0D
+  docs/qapi-domain: add compatibility node classes=0D
+  docs/qapi-domain: Add ObjectDescription abstract class=0D
+  docs/qapi-domain: add qapi:module directive=0D
+  docs/qapi-domain: add QAPIObject class=0D
+  docs/qapi-domain: add qapi:command directive=0D
+  docs/qapi-domain: add :since: directive option=0D
+  docs/qapi-domain: add "Arguments:" field lists=0D
+  docs/qapi-domain: add "Features:" field lists=0D
+  docs/qapi-domain: add "Errors:" field lists=0D
+  docs/qapi-domain: add "Return:" field lists=0D
+  docs/qapi-domain: add qapi:enum directive=0D
+  docs/qapi-domain: add qapi:alternate directive=0D
+  docs/qapi-domain: add qapi:event directive=0D
+  docs/qapi-domain: add qapi:object directive=0D
+  docs/qapi-domain: add :deprecated: directive option=0D
+  docs/qapi-domain: add :unstable: directive option=0D
+  docs/qapi-domain: add :ifcond: directive option=0D
+  docs/qapi-domain: add warnings for malformed field lists=0D
+  docs/qapi-domain: add type cross-refs to field lists=0D
+  docs/qapi-domain: add CSS styling=0D
+  docs/qapi-domain: add XREF compatibility goop for Sphinx < 4.1=0D
+  docs/qapi-domain: warn when QAPI domain xrefs fail to resolve=0D
+  docs/qapi-domain: Fix error context reporting in Sphinx 5.x and 6.x=0D
+  qapi/parser: adjust info location for doc body section=0D
+  qapi: expand tags to all doc sections=0D
+  qapi/schema: add __repr__ to QAPIDoc.Section=0D
+  docs/qapidoc: add transmogrifier stub=0D
+  docs/qapidoc: split old implementation into qapidoc_legacy.py=0D
+  docs/qapidoc: Fix static typing on qapidoc.py=0D
+  do-not-merge=0D
+  docs/qapidoc: add transmogrifier class stub=0D
+  docs/qapidoc: add visit_module() method=0D
+  qapi/source: allow multi-line QAPISourceInfo advancing=0D
+  docs/qapidoc: add visit_freeform() method=0D
+  docs/qapidoc: add preamble() method=0D
+  docs/qapidoc: add visit_paragraph() method=0D
+  docs/qapidoc: add visit_errors() method=0D
+  docs/qapidoc: add format_type() method=0D
+  docs/qapidoc: add add_field() and generate_field() helper methods=0D
+  docs/qapidoc: add visit_feature() method=0D
+  docs/qapidoc: prepare to record entity being transmogrified=0D
+  docs/qapidoc: add visit_returns() method=0D
+  docs/qapidoc: add visit_member() method=0D
+  docs/qapidoc: add visit_sections() method=0D
+  docs/qapidoc: add visit_entity()=0D
+  docs/qapidoc: implement transmogrify() method=0D
+  docs/qapidoc: process @foo into ``foo``=0D
+  docs/qapidoc: add intermediate output debugger=0D
+  docs/qapidoc: Add "the members of" pointers=0D
+  docs/qapidoc: generate entries for undocumented members=0D
+  qapi/parser: add undocumented stub members to all_sections=0D
+  docs: disambiguate cross-references=0D
+  docs: enable qapidoc transmogrifier for QEMU QMP Reference=0D
+  docs: add qapi-domain syntax documentation=0D
+=0D
+ docs/conf.py                           |  18 +-=0D
+ docs/devel/codebase.rst                |   6 +-=0D
+ docs/devel/index-build.rst             |   1 +=0D
+ docs/devel/qapi-domain.rst             | 670 +++++++++++++++++=0D
+ docs/glossary.rst                      |  10 +-=0D
+ docs/interop/qemu-qmp-ref.rst          |   1 +=0D
+ docs/sphinx-static/theme_overrides.css |  98 ++-=0D
+ docs/sphinx/compat.py                  | 230 ++++++=0D
+ docs/sphinx/qapi_domain.py             | 926 ++++++++++++++++++++++++=0D
+ docs/sphinx/qapidoc.py                 | 948 ++++++++++++++-----------=0D
+ docs/sphinx/qapidoc_legacy.py          | 440 ++++++++++++=0D
+ qapi/qapi-schema.json                  |   2 +=0D
+ scripts/qapi-lint.sh                   |  57 ++=0D
+ scripts/qapi/backend.py                |   2 +=0D
+ scripts/qapi/main.py                   |   8 +-=0D
+ scripts/qapi/parser.py                 | 121 +++-=0D
+ scripts/qapi/source.py                 |   4 +-=0D
+ tests/qapi-schema/doc-good.out         |  10 +-=0D
+ tests/qapi-schema/test-qapi.py         |   2 +-=0D
+ 19 files changed, 3069 insertions(+), 485 deletions(-)=0D
+ create mode 100644 docs/devel/qapi-domain.rst=0D
+ create mode 100644 docs/sphinx/compat.py=0D
+ create mode 100644 docs/sphinx/qapi_domain.py=0D
+ create mode 100644 docs/sphinx/qapidoc_legacy.py=0D
+ create mode 100755 scripts/qapi-lint.sh=0D
+=0D
+-- =0D
+2.48.1=0D
+=0D
 
 
