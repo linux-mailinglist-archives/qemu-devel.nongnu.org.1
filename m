@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26616A58321
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:34:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 622BFA58314
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:33:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trDws-00086N-MG; Sun, 09 Mar 2025 06:31:58 -0400
+	id 1trDx1-00086m-Ac; Sun, 09 Mar 2025 06:32:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDwq-00085g-BZ
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:56 -0400
+ id 1trDwr-00086C-JJ
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDwo-00042x-Ld
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:55 -0400
+ id 1trDwq-00043D-2T
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741516314;
+ s=mimecast20190719; t=1741516315;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S8IXFl1tjzcTpL3RiOm0U3qS7SeRxt+gon+nIrKlE5k=;
- b=et7PYwuTYJOEFOpUlS1MQ6EYEVZy6jEJ02FgVpMA8IlNiBUe1S5NZA1ZpiBD1pdXxrsmot
- pNLLT+ZFVUDhHugHsFhpllBwkemNLFo5h+Xlng9frKgftKWMknGyVhy6122VF5aJvdJdwS
- QCFKtgXZNJC/7s+cNuvUUXNBYNX2RL8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vQFYgL5OvkIroXqJVu4wnMdYvtwWSlXNwP+wGqmQy7o=;
+ b=cEZZK01HQAeUVcF1MIbpY3PXmN5cYC8O0PRinTqpBGHxkirgM8bytihkkhnuaaJSUJu/+3
+ D+G99tJ2Brx6b+lKibgkOG/S97pBVQJWgY/uSouIt/6nlN+UlMLyunlUNgDvFAHC/Vk3sK
+ RfKe2MenTl5n+R+AMhwgq9Q6ClegCUQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-RRRoSOgCPi-aNM--X11fQQ-1; Sun, 09 Mar 2025 06:31:52 -0400
-X-MC-Unique: RRRoSOgCPi-aNM--X11fQQ-1
-X-Mimecast-MFC-AGG-ID: RRRoSOgCPi-aNM--X11fQQ_1741516311
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-391425471ddso276396f8f.0
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:31:51 -0700 (PDT)
+ us-mta-694-sgc4Zv6PM--BMi1USbMh-w-1; Sun, 09 Mar 2025 06:31:53 -0400
+X-MC-Unique: sgc4Zv6PM--BMi1USbMh-w-1
+X-Mimecast-MFC-AGG-ID: sgc4Zv6PM--BMi1USbMh-w_1741516313
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-39131851046so869601f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:31:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741516310; x=1742121110;
+ d=1e100.net; s=20230601; t=1741516312; x=1742121112;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S8IXFl1tjzcTpL3RiOm0U3qS7SeRxt+gon+nIrKlE5k=;
- b=AtBNfrWAJ1F7smSEUbeXXCDDP/gUHgooaq/mqrl0nHT+uRtuFUEsNNuRrdG5E1mGan
- fEB1xeHQLY1XW3bhs8GEbiYnguFylaNyqeUgleT0VnRZcMXuiDOOlRc4eYZp6YBExsbA
- VS/0gDKYZ0hznb+LMJ9D6O/BFRTOXA2sanKhSgAa+q9x+fVXazGbQdsg/saFsA/BfS6g
- W2T8wrUuQ8U0xrRQMzEK7ZNkqWAt4chPn8RyEIA3QfjKfS9qf/1Sgoz8oAsv6noTRuyO
- /YSxTAXJJfbkjaLo8SGG7F62vYsXSnykAljLNOzSIHbQDDTH3qipGwdb6eclNqNPnd12
- u+8A==
-X-Gm-Message-State: AOJu0Yw2Pv2HmDFYgdf47SZ00F5O7ZOlrNWOgHy03vlKjJqhENucxvTl
- XUmD0iY/q39gBllIsIZGtUrXy5aYOVCwrwvGEfZ4GOMZwIIqWC4MRBhdBGNyN919bIYWGtc/5uY
- bgQgKM6EalM9Dmaz9FnYX5eVBzxFQ8CxAThkchixX6W7N6Jl3xHP8Cj5EE7boZM/VW+VSFum26U
- zC2xOxyXIOcWhM3/TEEj665dQDI1egZtHpQ7Ayn/E=
-X-Gm-Gg: ASbGnctMQSVMiU8Rn3kVNRfN3JZ4ZQz+tZdw7vlTDMYZxi+rdaDbGRcT99dzaMzdZrd
- J+G1p460IA2tn7d+FksrVLn6EbaZ5bsYTnuE3RQSmI66fhdIf+ET1rOGVhJLirbZOwRNxp9RASK
- cFCp/J5k+SiaeQ1gK4c3TAOdPxAEw7vgxVHe+YdgAPZI99UrnJOIFAL1kZJhjMZVMD+Op00TwJI
- P5HT6VSn5J7iHVEoSanHSJOM4zvZeEbsl1XHNLPKG1YY+BfEmah7t3CTNgZYmU3QaZv14bshHIV
- CCxEV2ZT7qY4V17siSs6lw==
-X-Received: by 2002:a5d:59a8:0:b0:391:2d76:baaa with SMTP id
- ffacd0b85a97d-39132db1be7mr7390410f8f.46.1741516310313; 
- Sun, 09 Mar 2025 03:31:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHMGDQfpoP1jSEc42gXxru/mIgJyHc3uFrRPXfX8vLnbnBb8beohFmnKEXXVsNoq7Z99WuZqw==
-X-Received: by 2002:a5d:59a8:0:b0:391:2d76:baaa with SMTP id
- ffacd0b85a97d-39132db1be7mr7390392f8f.46.1741516309796; 
- Sun, 09 Mar 2025 03:31:49 -0700 (PDT)
+ bh=vQFYgL5OvkIroXqJVu4wnMdYvtwWSlXNwP+wGqmQy7o=;
+ b=C90L4imPSNubAsmJg0DdPCN/Kc64qWsztAfhE3LelRuZGyk4nCedut3HQJIuulvw8j
+ 0gx8/jMR6ReHNnOvaIBFefvCEITW1CTBH3+sUxvLJ5c7ytrq+kxJrnEt6FLHSBHYj6Rg
+ 9Q2dV593bU4NHfpOV+RMoAHdo7moanpGBq9OP7FWoF15ivPshzlxCf3e77VDL33LSwFd
+ 6pSdupcezclvIZBhTTGjIZ2ICPy66U+VXm14DmSBZ9j3MBw44hR9Cod2+whE4KUoKuCG
+ Qg0CG+0hz/l+aw3sWE+GD/UYubjcNyYieljoS+mZbRQ8r5sfdp1Slb8i4Y8EpvYixGjJ
+ 6Jxg==
+X-Gm-Message-State: AOJu0YwdFmC3vSxalMTtLrN3o8SYx1VTC4zMeVJrhwHgOV6c6bmJS5iM
+ jGioX+UBnel/qGyTJbQEF9Bp/1vyWNDuVVF0ePKo+X3EFkgywnKq6Oj6Ueb4gvGdAR1LgdbvZwe
+ 8EP84uq+Hh1G71vzm84JX1QkTmEuH6mqVvM+UDzjq9WvGBrLUsYJwyLVZ9g530pN/iT/2kwrs1S
+ JhVBXjSnXmrGhpToLi3nyhCuzp6gD6xdMCE5UBAi8=
+X-Gm-Gg: ASbGnculxDF4kBioIXQmjOp2yrvuR/KOfD3RhSHnlqdk/igoXaB/VvbqmtzZFPKWjho
+ dSrfXqtjr92Cjk0y7x08iP8vV1dDTRV9vleoJPUnygBt6LzSvIV4JLAJ3S0Qf7D1se+MuNLOzQA
+ l7F6c20CVSIXSnlxi3HoE92jKq0oC6y1efcMzLaZ0QTUexrZrAoNtQxDKbNVv6tvUFWUxLF/C3w
+ vWRCrIHcdJ6QTZYWUnuvt1oN7qBYL+fYlrXOWZ7pVJVF/VFJserVVfw35lOS4f7dBOwtipmoGDr
+ 6nUAEcfAny+KrxVT9ZX2wA==
+X-Received: by 2002:a5d:64c7:0:b0:38f:2856:7d96 with SMTP id
+ ffacd0b85a97d-39132d05fdcmr5696771f8f.1.1741516311977; 
+ Sun, 09 Mar 2025 03:31:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCO6TT+AKB+eZ9XjXxviPBqg8zAPsrPqdDOO+q5CXmhHGGaBLNxE1LLFkxshKbXCOnraZSUw==
+X-Received: by 2002:a5d:64c7:0:b0:38f:2856:7d96 with SMTP id
+ ffacd0b85a97d-39132d05fdcmr5696759f8f.1.1741516311565; 
+ Sun, 09 Mar 2025 03:31:51 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.122.167])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c0e1476sm11511766f8f.70.2025.03.09.03.31.48
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-3912c01cd62sm11289481f8f.46.2025.03.09.03.31.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 03:31:49 -0700 (PDT)
+ Sun, 09 Mar 2025 03:31:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/25] rust: memory: wrap MemoryRegion with Opaque<>
-Date: Sun,  9 Mar 2025 11:31:07 +0100
-Message-ID: <20250309103120.1116448-14-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 14/25] rust: chardev: wrap Chardev with Opaque<>
+Date: Sun,  9 Mar 2025 11:31:08 +0100
+Message-ID: <20250309103120.1116448-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250309103120.1116448-1-pbonzini@redhat.com>
 References: <20250309103120.1116448-1-pbonzini@redhat.com>
@@ -106,96 +106,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/bindings.rs |  3 ---
- rust/qemu-api/src/memory.rs   | 35 +++++++++++++++++++++--------------
- 2 files changed, 21 insertions(+), 17 deletions(-)
+ rust/qemu-api/src/bindings.rs | 3 ---
+ rust/qemu-api/src/chardev.rs  | 8 ++++++--
+ rust/qemu-api/src/qdev.rs     | 1 +
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
-index b791ca6d87f..26cc8de0cf2 100644
+index 26cc8de0cf2..c3f36108bd5 100644
 --- a/rust/qemu-api/src/bindings.rs
 +++ b/rust/qemu-api/src/bindings.rs
-@@ -34,9 +34,6 @@ unsafe impl Sync for CharBackend {}
- unsafe impl Send for Chardev {}
- unsafe impl Sync for Chardev {}
+@@ -31,9 +31,6 @@ unsafe impl Sync for BusState {}
+ unsafe impl Send for CharBackend {}
+ unsafe impl Sync for CharBackend {}
  
--unsafe impl Send for MemoryRegion {}
--unsafe impl Sync for MemoryRegion {}
+-unsafe impl Send for Chardev {}
+-unsafe impl Sync for Chardev {}
 -
  unsafe impl Send for ObjectClass {}
  unsafe impl Sync for ObjectClass {}
  
-diff --git a/rust/qemu-api/src/memory.rs b/rust/qemu-api/src/memory.rs
-index 713c494ca2e..eff9f09fd7f 100644
---- a/rust/qemu-api/src/memory.rs
-+++ b/rust/qemu-api/src/memory.rs
-@@ -6,9 +6,8 @@
+diff --git a/rust/qemu-api/src/chardev.rs b/rust/qemu-api/src/chardev.rs
+index 74cfb634e5f..a35b9217e90 100644
+--- a/rust/qemu-api/src/chardev.rs
++++ b/rust/qemu-api/src/chardev.rs
+@@ -6,9 +6,13 @@
  
- use std::{
-     ffi::{CStr, CString},
--    marker::{PhantomData, PhantomPinned},
-+    marker::PhantomData,
-     os::raw::{c_uint, c_void},
--    ptr::addr_of,
- };
+ use std::ffi::CStr;
  
- pub use bindings::{hwaddr, MemTxAttrs};
-@@ -16,6 +15,7 @@
- use crate::{
-     bindings::{self, device_endian, memory_region_init_io},
-     callbacks::FnCall,
-+    cell::Opaque,
-     prelude::*,
-     zeroable::Zeroable,
- };
-@@ -132,13 +132,13 @@ fn default() -> Self {
-     }
- }
- 
--/// A safe wrapper around [`bindings::MemoryRegion`].  Compared to the
--/// underlying C struct it is marked as pinned because the QOM tree
--/// contains a pointer to it.
--pub struct MemoryRegion {
--    inner: bindings::MemoryRegion,
--    _pin: PhantomPinned,
--}
-+/// A safe wrapper around [`bindings::MemoryRegion`].
+-use crate::{bindings, prelude::*};
++use crate::{bindings, cell::Opaque, prelude::*};
++
++/// A safe wrapper around [`bindings::Chardev`].
 +#[repr(transparent)]
 +#[derive(qemu_api_macros::Wrapper)]
-+pub struct MemoryRegion(Opaque<bindings::MemoryRegion>);
-+
-+unsafe impl Send for MemoryRegion {}
-+unsafe impl Sync for MemoryRegion {}
++pub struct Chardev(Opaque<bindings::Chardev>);
  
- impl MemoryRegion {
-     // inline to ensure that it is not included in tests, which only
-@@ -174,13 +174,20 @@ pub fn init_io<T: IsA<Object>>(
-         size: u64,
-     ) {
+-pub type Chardev = bindings::Chardev;
+ pub type ChardevClass = bindings::ChardevClass;
+ 
+ unsafe impl ObjectType for Chardev {
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index 1c4a67b5728..18b4a9ba687 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -334,6 +334,7 @@ fn init_clock_out(&self, name: &str) -> Owned<Clock> {
+     fn prop_set_chr(&self, propname: &str, chr: &Owned<Chardev>) {
+         assert!(bql_locked());
+         let c_propname = CString::new(propname).unwrap();
++        let chr: &Chardev = chr;
          unsafe {
--            Self::do_init_io(&mut self.inner, owner.cast::<Object>(), &ops.0, name, size);
-+            Self::do_init_io(
-+                // self.0.as_mut_ptr() needed because Rust tries to call
-+                // ObjectDeref::as_mut_ptr() on "&mut Self", instead of coercing
-+                // to "&Self" and then calling MemoryRegion::as_mut_ptr().
-+                // Revisit if/when ObjectCastMut is not needed anymore; it is
-+                // only used in a couple places for initialization.
-+                self.0.as_mut_ptr(),
-+                owner.cast::<Object>(),
-+                &ops.0,
-+                name,
-+                size,
-+            );
-         }
-     }
--
--    pub(crate) const fn as_mut_ptr(&self) -> *mut bindings::MemoryRegion {
--        addr_of!(self.inner) as *mut _
--    }
- }
- 
- unsafe impl ObjectType for MemoryRegion {
+             bindings::qdev_prop_set_chr(
+                 self.upcast().as_mut_ptr(),
 -- 
 2.48.1
 
