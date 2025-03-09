@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBFEAA58223
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:45:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E04A581AC
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 09:37:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trC8x-0000zO-49; Sun, 09 Mar 2025 04:36:19 -0400
+	id 1trC8n-0000wh-WB; Sun, 09 Mar 2025 04:36:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC8m-0000wg-9o
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:08 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC8k-0000vB-Jv
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC8j-00020Y-Vs
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:07 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trC8i-00020O-V5
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 04:36:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741509365;
+ s=mimecast20190719; t=1741509364;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=A6J7XV2pz9K4lcnoMlwTmYafdmucGU2ELW90WE6iCAw=;
- b=BwfuKJYnRSXFNjt4Pgre6y1Za7g89lMqYXqEcg1px93S10brgMzM7zYpjT3i0eCsKaFGj9
- VJ0q49dNzJCHe4jfF6PY84wpbE4W5so0AeCWgRUyUieuKH1dT/oMWlDx7ctSoGAUzv6Tp2
- mIjebW5IXEEH8+9hzTxCzVilpMCPbMQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=MJ8i3B3IWUv9hwDYZ3ZSUdrZb/ZBpQUf3O+dp/jYjMw=;
+ b=iDxPHKOSPebL/h5Hek+pU+cVvzQIhYDdL7HMIcONqso6y4U2t+Xn1hOODU3cOm1Fj/G3DR
+ sJsJXB9ATuZUt6WWRawJIZLV7D3xQucgnPngxjwsY4leWKBYPsp9eGC8sCyPI3ftRQD130
+ uIoc363bdLZkv/4Zyj6oXNaCFaFko64=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-367-NJZFoBGCN1WKTps1lZjl_Q-1; Sun,
- 09 Mar 2025 04:35:58 -0400
-X-MC-Unique: NJZFoBGCN1WKTps1lZjl_Q-1
-X-Mimecast-MFC-AGG-ID: NJZFoBGCN1WKTps1lZjl_Q_1741509357
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-jYPs6OBvP6C6zFAyLH68hQ-1; Sun,
+ 09 Mar 2025 04:36:01 -0400
+X-MC-Unique: jYPs6OBvP6C6zFAyLH68hQ-1
+X-Mimecast-MFC-AGG-ID: jYPs6OBvP6C6zFAyLH68hQ_1741509360
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 656B61956087; Sun,  9 Mar 2025 08:35:57 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B08DD1955D66; Sun,  9 Mar 2025 08:35:59 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.4])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A706719560AB; Sun,  9 Mar 2025 08:35:55 +0000 (UTC)
+ id A54CB19560AB; Sun,  9 Mar 2025 08:35:57 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 02/62] qapi: shush pylint up
-Date: Sun,  9 Mar 2025 04:34:49 -0400
-Message-ID: <20250309083550.5155-3-jsnow@redhat.com>
+Subject: [PATCH v2 03/62] docs/sphinx: create QAPI domain extension stub
+Date: Sun,  9 Mar 2025 04:34:50 -0400
+Message-ID: <20250309083550.5155-4-jsnow@redhat.com>
 In-Reply-To: <20250309083550.5155-1-jsnow@redhat.com>
 References: <20250309083550.5155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -85,65 +85,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Shhhhh!
+A Sphinx domain is a collection of directive and role extensions meant
+to facilitate the documentation of a specific language. For instance,
+Sphinx ships with "python" and "cpp" domains. This patch introduces a
+stub for the "qapi" language domain.
 
-This patch is RFC quality, I wasn't in the mood to actually solve
-problems so much as I was in the mood to continue working on the Sphinx
-rework. Plus, I don't think the code I am patching has hit origin/master
-yet ...
+Please see https://www.sphinx-doc.org/en/master/usage/domains/index.html
+for more information.
+
+This stub doesn't really do anything yet, we'll get to it brick-by-brick
+in the forthcoming commits to keep the series breezy and the git history
+informative.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/backend.py | 2 ++
- scripts/qapi/main.py    | 8 +++-----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ docs/conf.py               |  9 +++++-
+ docs/sphinx/qapi_domain.py | 56 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+), 1 deletion(-)
+ create mode 100644 docs/sphinx/qapi_domain.py
 
-diff --git a/scripts/qapi/backend.py b/scripts/qapi/backend.py
-index 14e60aa67af..49ae6ecdd33 100644
---- a/scripts/qapi/backend.py
-+++ b/scripts/qapi/backend.py
-@@ -13,6 +13,7 @@
+diff --git a/docs/conf.py b/docs/conf.py
+index 31bb9a37893..49d9de894c0 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -60,7 +60,14 @@
+ # Add any Sphinx extension module names here, as strings. They can be
+ # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
+ # ones.
+-extensions = ['kerneldoc', 'qmp_lexer', 'hxtool', 'depfile', 'qapidoc']
++extensions = [
++    'depfile',
++    'hxtool',
++    'kerneldoc',
++    'qapi_domain',
++    'qapidoc',
++    'qmp_lexer',
++]
  
- 
- class QAPIBackend(ABC):
-+    # pylint: disable=too-few-public-methods
- 
-     @abstractmethod
-     def generate(self,
-@@ -36,6 +37,7 @@ def generate(self,
- 
- 
- class QAPICBackend(QAPIBackend):
-+    # pylint: disable=too-few-public-methods
- 
-     def generate(self,
-                  schema: QAPISchema,
-diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
-index 5b4679abcf1..01155373bd0 100644
---- a/scripts/qapi/main.py
-+++ b/scripts/qapi/main.py
-@@ -38,8 +38,7 @@ def create_backend(path: str) -> QAPIBackend:
-     try:
-         mod = import_module(module_path)
-     except Exception as ex:
--        print(f"unable to import '{module_path}': {ex}", file=sys.stderr)
--        sys.exit(1)
-+        raise QAPIError(f"unable to import '{module_path}': {ex}") from ex
- 
-     try:
-         klass = getattr(mod, class_name)
-@@ -51,9 +50,8 @@ def create_backend(path: str) -> QAPIBackend:
-     try:
-         backend = klass()
-     except Exception as ex:
--        print(f"backend '{path}' cannot be instantiated: {ex}",
--              file=sys.stderr)
--        sys.exit(1)
-+        raise QAPIError(
-+            f"backend '{path}' cannot be instantiated: {ex}") from ex
- 
-     if not isinstance(backend, QAPIBackend):
-         print(f"backend '{path}' must be an instance of QAPIBackend",
+ if sphinx.version_info[:3] > (4, 0, 0):
+     tags.add('sphinx4')
+diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
+new file mode 100644
+index 00000000000..a1983d94440
+--- /dev/null
++++ b/docs/sphinx/qapi_domain.py
+@@ -0,0 +1,56 @@
++"""
++QAPI domain extension.
++"""
++
++from __future__ import annotations
++
++from typing import (
++    TYPE_CHECKING,
++    AbstractSet,
++    Any,
++    Dict,
++    Tuple,
++)
++
++from sphinx.domains import Domain, ObjType
++from sphinx.util import logging
++
++
++if TYPE_CHECKING:
++    from sphinx.application import Sphinx
++
++logger = logging.getLogger(__name__)
++
++
++class QAPIDomain(Domain):
++    """QAPI language domain."""
++
++    name = "qapi"
++    label = "QAPI"
++
++    object_types: Dict[str, ObjType] = {}
++    directives = {}
++    roles = {}
++    initial_data: Dict[str, Dict[str, Tuple[Any]]] = {}
++    indices = []
++
++    def merge_domaindata(
++        self, docnames: AbstractSet[str], otherdata: Dict[str, Any]
++    ) -> None:
++        pass
++
++    def resolve_any_xref(self, *args: Any, **kwargs: Any) -> Any:
++        # pylint: disable=unused-argument
++        return []
++
++
++def setup(app: Sphinx) -> Dict[str, Any]:
++    app.setup_extension("sphinx.directives")
++    app.add_domain(QAPIDomain)
++
++    return {
++        "version": "1.0",
++        "env_version": 1,
++        "parallel_read_safe": True,
++        "parallel_write_safe": True,
++    }
 -- 
 2.48.1
 
