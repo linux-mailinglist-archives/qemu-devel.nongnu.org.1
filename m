@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622BFA58314
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:33:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D50A5830C
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:32:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trDx1-00086m-Ac; Sun, 09 Mar 2025 06:32:09 -0400
+	id 1trDx9-0008RZ-Ob; Sun, 09 Mar 2025 06:32:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDwr-00086C-JJ
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:57 -0400
+ id 1trDwt-00086a-JV
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDwq-00043D-2T
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:57 -0400
+ id 1trDws-00043Q-0I
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:31:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741516315;
+ s=mimecast20190719; t=1741516317;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vQFYgL5OvkIroXqJVu4wnMdYvtwWSlXNwP+wGqmQy7o=;
- b=cEZZK01HQAeUVcF1MIbpY3PXmN5cYC8O0PRinTqpBGHxkirgM8bytihkkhnuaaJSUJu/+3
- D+G99tJ2Brx6b+lKibgkOG/S97pBVQJWgY/uSouIt/6nlN+UlMLyunlUNgDvFAHC/Vk3sK
- RfKe2MenTl5n+R+AMhwgq9Q6ClegCUQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5YnANE3o7k98qiD5yXSXBYpiijAd3VVlrkAgduC094U=;
+ b=dfJTURuOs89YqsVJrFB52UxDLctHezqwIVaQWNDf6x+qIKllj6x2lnXdlBs57UgfTk9bfI
+ jjjxXKwKp40ECltyR+2sKw7gqSuymwtsVj6OMrIuKQP/J/1e7maROVQV0D9kSL7HfS/hcT
+ +aV1cQbqv3XJCSuhs5KUyduHIYMvXCc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-sgc4Zv6PM--BMi1USbMh-w-1; Sun, 09 Mar 2025 06:31:53 -0400
-X-MC-Unique: sgc4Zv6PM--BMi1USbMh-w-1
-X-Mimecast-MFC-AGG-ID: sgc4Zv6PM--BMi1USbMh-w_1741516313
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-39131851046so869601f8f.0
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:31:53 -0700 (PDT)
+ us-mta-696-rn5ZKZZqOAS4u09LVGV24g-1; Sun, 09 Mar 2025 06:31:55 -0400
+X-MC-Unique: rn5ZKZZqOAS4u09LVGV24g-1
+X-Mimecast-MFC-AGG-ID: rn5ZKZZqOAS4u09LVGV24g_1741516315
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43cf3168b87so1391415e9.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:31:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741516312; x=1742121112;
+ d=1e100.net; s=20230601; t=1741516314; x=1742121114;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vQFYgL5OvkIroXqJVu4wnMdYvtwWSlXNwP+wGqmQy7o=;
- b=C90L4imPSNubAsmJg0DdPCN/Kc64qWsztAfhE3LelRuZGyk4nCedut3HQJIuulvw8j
- 0gx8/jMR6ReHNnOvaIBFefvCEITW1CTBH3+sUxvLJ5c7ytrq+kxJrnEt6FLHSBHYj6Rg
- 9Q2dV593bU4NHfpOV+RMoAHdo7moanpGBq9OP7FWoF15ivPshzlxCf3e77VDL33LSwFd
- 6pSdupcezclvIZBhTTGjIZ2ICPy66U+VXm14DmSBZ9j3MBw44hR9Cod2+whE4KUoKuCG
- Qg0CG+0hz/l+aw3sWE+GD/UYubjcNyYieljoS+mZbRQ8r5sfdp1Slb8i4Y8EpvYixGjJ
- 6Jxg==
-X-Gm-Message-State: AOJu0YwdFmC3vSxalMTtLrN3o8SYx1VTC4zMeVJrhwHgOV6c6bmJS5iM
- jGioX+UBnel/qGyTJbQEF9Bp/1vyWNDuVVF0ePKo+X3EFkgywnKq6Oj6Ueb4gvGdAR1LgdbvZwe
- 8EP84uq+Hh1G71vzm84JX1QkTmEuH6mqVvM+UDzjq9WvGBrLUsYJwyLVZ9g530pN/iT/2kwrs1S
- JhVBXjSnXmrGhpToLi3nyhCuzp6gD6xdMCE5UBAi8=
-X-Gm-Gg: ASbGnculxDF4kBioIXQmjOp2yrvuR/KOfD3RhSHnlqdk/igoXaB/VvbqmtzZFPKWjho
- dSrfXqtjr92Cjk0y7x08iP8vV1dDTRV9vleoJPUnygBt6LzSvIV4JLAJ3S0Qf7D1se+MuNLOzQA
- l7F6c20CVSIXSnlxi3HoE92jKq0oC6y1efcMzLaZ0QTUexrZrAoNtQxDKbNVv6tvUFWUxLF/C3w
- vWRCrIHcdJ6QTZYWUnuvt1oN7qBYL+fYlrXOWZ7pVJVF/VFJserVVfw35lOS4f7dBOwtipmoGDr
- 6nUAEcfAny+KrxVT9ZX2wA==
-X-Received: by 2002:a5d:64c7:0:b0:38f:2856:7d96 with SMTP id
- ffacd0b85a97d-39132d05fdcmr5696771f8f.1.1741516311977; 
- Sun, 09 Mar 2025 03:31:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHCO6TT+AKB+eZ9XjXxviPBqg8zAPsrPqdDOO+q5CXmhHGGaBLNxE1LLFkxshKbXCOnraZSUw==
-X-Received: by 2002:a5d:64c7:0:b0:38f:2856:7d96 with SMTP id
- ffacd0b85a97d-39132d05fdcmr5696759f8f.1.1741516311565; 
- Sun, 09 Mar 2025 03:31:51 -0700 (PDT)
+ bh=5YnANE3o7k98qiD5yXSXBYpiijAd3VVlrkAgduC094U=;
+ b=AyC9HJ6nofTy3LWp0modTndsl+vLWAdKms9J11NgA8+9/GKUPA0LzuSCRK2Nkms9u/
+ n68O9VvsTx5cmYh+c5bIrtUFAGdpKRZvzkVncb50YVoEntZrm+fBoWzGPnWu27hOWQFZ
+ ZdvjzYDCyVYYFkymTvS7P9KvcoBFr8Mm8DSF8lE8OjvHH8K/0fYcfzYcUWf6SZ02v13b
+ hi1DgROiPYfUvv+2+xB4XiRfKphf1yvKWuoUEIrAEIw0ht4GwtAJ7kmq9upvI4Xp+AaO
+ PR6i54jzK08x3OCWTWR2AkmtMZKmeS9+K9MTJmslqJlqdBdD9IWrThv8ed5wy3eeQzI7
+ 5OEg==
+X-Gm-Message-State: AOJu0YyO2iZoRaD+orOKcdlHvC/rIDxjSdMo+gvozMe81E6Mo+cPN898
+ 1o6pfJ9nzCbLA3GlXcQKcHS9ViGQRlSpmwitWln3AoY7Opo9z4SPsRJ/SSztmSRnJ5hnUPC7aCB
+ q4uqLl1K86zXFBH/ps7tLHG1uwHej1JOSztNHtlrx2GziAGhFOeyY3uHAjAAp7FLnOquQ54P9NC
+ E1vQoPgNYPy3UpoTTUSfNTUZi17XuGVqardruEbAE=
+X-Gm-Gg: ASbGnctoZmFCAfif5qEhdMNnCi5A9XjPCySMf0LbaRcbqz8slmXpIP0a2KljgMzxvfU
+ uHCi83hiUd20lH3sG7fQwQG4ZVA4715jNJVnIYEUWV1+2mplsYM7wd9HpXo8llJucDmn5c60bDV
+ hVuy1naMVQEq2svT/j6VcaGth0OTnV3XK6nUf8UFiyMe84Fk7vJ9SASlyDfvuMgxKq/vpiOgty1
+ GZxJAlTt2eqjkupDP+lbCFjxjgU2hQ1UUvtQMff3ohXvJN/reyMAMxCf75IYQ+b1UWWP1X+1du6
+ vtlTyJ5SxlBb1uIBkNjsow==
+X-Received: by 2002:a05:600c:6b0a:b0:43c:e9d0:9ee5 with SMTP id
+ 5b1f17b1804b1-43ce9d0a0bfmr25891325e9.18.1741516314299; 
+ Sun, 09 Mar 2025 03:31:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFuhYqMLwd298dkGxipeo3Le4223qTSDe1Lu0xFlNfgDEENkxnCjfhfsI5bwlscAzlO2BdTew==
+X-Received: by 2002:a05:600c:6b0a:b0:43c:e9d0:9ee5 with SMTP id
+ 5b1f17b1804b1-43ce9d0a0bfmr25891175e9.18.1741516313858; 
+ Sun, 09 Mar 2025 03:31:53 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.122.167])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c01cd62sm11289481f8f.46.2025.03.09.03.31.50
+ 5b1f17b1804b1-43cf1b36d14sm17827475e9.37.2025.03.09.03.31.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 03:31:50 -0700 (PDT)
+ Sun, 09 Mar 2025 03:31:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 14/25] rust: chardev: wrap Chardev with Opaque<>
-Date: Sun,  9 Mar 2025 11:31:08 +0100
-Message-ID: <20250309103120.1116448-15-pbonzini@redhat.com>
+Subject: [PULL 15/25] rust: bindings: remove more unnecessary Send/Sync impls
+Date: Sun,  9 Mar 2025 11:31:09 +0100
+Message-ID: <20250309103120.1116448-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250309103120.1116448-1-pbonzini@redhat.com>
 References: <20250309103120.1116448-1-pbonzini@redhat.com>
@@ -106,60 +106,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Send and Sync are now implemented on the opaque wrappers.  Remove them
+from the bindings module, unless the structs are pure data containers
+and/or have no C functions defined on them.
+
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/bindings.rs | 3 ---
- rust/qemu-api/src/chardev.rs  | 8 ++++++--
- rust/qemu-api/src/qdev.rs     | 1 +
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ rust/qemu-api/src/bindings.rs | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
-index 26cc8de0cf2..c3f36108bd5 100644
+index c3f36108bd5..3c1d297581e 100644
 --- a/rust/qemu-api/src/bindings.rs
 +++ b/rust/qemu-api/src/bindings.rs
-@@ -31,9 +31,6 @@ unsafe impl Sync for BusState {}
+@@ -25,15 +25,11 @@
+ 
+ // SAFETY: these are implemented in C; the bindings need to assert that the
+ // BQL is taken, either directly or via `BqlCell` and `BqlRefCell`.
+-unsafe impl Send for BusState {}
+-unsafe impl Sync for BusState {}
+-
++// When bindings for character devices are introduced, this can be
++// moved to the Opaque<> wrapper in src/chardev.rs.
  unsafe impl Send for CharBackend {}
  unsafe impl Sync for CharBackend {}
  
--unsafe impl Send for Chardev {}
--unsafe impl Sync for Chardev {}
+-unsafe impl Send for ObjectClass {}
+-unsafe impl Sync for ObjectClass {}
 -
- unsafe impl Send for ObjectClass {}
- unsafe impl Sync for ObjectClass {}
- 
-diff --git a/rust/qemu-api/src/chardev.rs b/rust/qemu-api/src/chardev.rs
-index 74cfb634e5f..a35b9217e90 100644
---- a/rust/qemu-api/src/chardev.rs
-+++ b/rust/qemu-api/src/chardev.rs
-@@ -6,9 +6,13 @@
- 
- use std::ffi::CStr;
- 
--use crate::{bindings, prelude::*};
-+use crate::{bindings, cell::Opaque, prelude::*};
-+
-+/// A safe wrapper around [`bindings::Chardev`].
-+#[repr(transparent)]
-+#[derive(qemu_api_macros::Wrapper)]
-+pub struct Chardev(Opaque<bindings::Chardev>);
- 
--pub type Chardev = bindings::Chardev;
- pub type ChardevClass = bindings::ChardevClass;
- 
- unsafe impl ObjectType for Chardev {
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 1c4a67b5728..18b4a9ba687 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -334,6 +334,7 @@ fn init_clock_out(&self, name: &str) -> Owned<Clock> {
-     fn prop_set_chr(&self, propname: &str, chr: &Owned<Chardev>) {
-         assert!(bql_locked());
-         let c_propname = CString::new(propname).unwrap();
-+        let chr: &Chardev = chr;
-         unsafe {
-             bindings::qdev_prop_set_chr(
-                 self.upcast().as_mut_ptr(),
+ // SAFETY: this is a pure data struct
+ unsafe impl Send for CoalescedMemoryRange {}
+ unsafe impl Sync for CoalescedMemoryRange {}
 -- 
 2.48.1
 
