@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C5CA5831F
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:34:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4468A5831B
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Mar 2025 11:33:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trDxW-0000pq-Vy; Sun, 09 Mar 2025 06:32:39 -0400
+	id 1trDxO-0000Yx-Fk; Sun, 09 Mar 2025 06:32:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDxB-0000Bq-F2
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:18 -0400
+ id 1trDxD-0000FV-KB
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1trDx9-00045r-Cb
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:17 -0400
+ id 1trDxB-00046B-Vn
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 06:32:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741516334;
+ s=mimecast20190719; t=1741516337;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dMUKogfKyzAz46Y4Z8OW5xUGWyWP2F2XLF8CrapiAvY=;
- b=S1F9lOjCctdCtdqIPB9Jry2i/riAmjCL79E/orUy3hvaRDIXQIs20yczyrMfDXaox4ETBG
- jUHpg/vpostIhSgaekFd/+QStsyjv9ZfDng9+5p08sm+mEUrTSCQm3C0dBZXDDtZg7xEsd
- BxZa3fy/NP5oWgI5fnbWVCZrRBoZQbU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=04PJRmuUiucourfgT/J1T0+xS+Kfg0driBOXjjm6/8k=;
+ b=BWelvljqiE9D3vhlod2js8v/a3OokgjKOY3rbvMpwPJjCk4T/yZEE9axHibkQJ2M2wxFDx
+ XbDU08d/2zEucEwSLWYQ8fd0RH4NJezFquWc6l8yJfQII23hwgSmicFU2BgVGXqsaTFInP
+ p3J3ZXOw6XFp2SaPq3L5mfXcCLozD/A=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-364-STkgT4KGN5m1HWmZ2CCzfg-1; Sun, 09 Mar 2025 06:32:13 -0400
-X-MC-Unique: STkgT4KGN5m1HWmZ2CCzfg-1
-X-Mimecast-MFC-AGG-ID: STkgT4KGN5m1HWmZ2CCzfg_1741516332
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43cf3168b87so1391965e9.2
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:32:13 -0700 (PDT)
+ us-mta-410-eU8B3-oANgWy4P1-lqIYUg-1; Sun, 09 Mar 2025 06:32:16 -0400
+X-MC-Unique: eU8B3-oANgWy4P1-lqIYUg-1
+X-Mimecast-MFC-AGG-ID: eU8B3-oANgWy4P1-lqIYUg_1741516335
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43cf6c03535so373155e9.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 03:32:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741516332; x=1742121132;
+ d=1e100.net; s=20230601; t=1741516334; x=1742121134;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dMUKogfKyzAz46Y4Z8OW5xUGWyWP2F2XLF8CrapiAvY=;
- b=xK8wfSgDiv3NZ7d/XSSLzflAJj8ug+f12XWYUmklKtS9q0YB9Mf2E+EWwGXcpeyYQT
- K3Do665ywQwIIcNOdHS7v+SKQu7tX6Uz8oAw2RLUSPSYRy/tm7zUYiF7MtBhLwF/eQQ1
- /V6SnW77vs7w7zz/5p/Z3rJgThmpKBQaDjPIPzOQ81pWebILzqXQbN7nliJn1qNL3Ssy
- 3bIRsAoTo1Vi7IhFzaE9YDXhTWwDmzuRceLpZlXntrDQ1+phxRFt5WLyjSFT1YD3dla0
- 9hnf381sUUb8YwiqF/F3vQbCOEbzGfvxIys70D57MKMrfKrTIiwwF22EG5oMncjugUyZ
- Wydw==
-X-Gm-Message-State: AOJu0YzCZLEow6RZDjpO6okyNKkfhw9gNu3LxEP0N/P3MWtzwFXeI5vf
- 3gfW+sW+4N8kfYH1gCiaJsBABX6fU/1dDpgTOGk3ABr20kjSxBEcRrRRxwQMhnCuGsufS0ImK+q
- 8+Uktu6GLbsi5aifarpl5u4uFkqX4j8J+nLB0bCpUV4jzYolhKGaMzJ1etnDY3ZZZY1B6A+f8BR
- cj8vSq4Ehj4iduCe4RrTeO2vCijk91uwDnk+X+pMY=
-X-Gm-Gg: ASbGncvd/doq8C1ME56KJOUrGzy1e+6jK07gg4QejOcEwpHAW1OBdw+rLab0PRPeWB6
- /6kxgjcOyTIZUX3CGXcMfXuxFU+3hMuPxCKdYhBrvAZEn1Qf4CUUoEcXfXxDEcELZlc6B8ME4Ca
- Yxx7vZsnecaJa5vwixwEP+VERCGzlsSFIlAQWNT6enFN3BelCkSPBPC+rdc0ust4vkwZ0jB13/N
- wFR8U/FM1msP5Jyr9Jyj7I5XgQyw2vVHnkx7+kudT41cZwOz20j2MFxjzFTZdB/xjaOgsJnCLvI
- 1BXt8eNK4IFVHesx4hA+ZA==
-X-Received: by 2002:a05:600c:19cd:b0:43c:f1b8:16ad with SMTP id
- 5b1f17b1804b1-43cf1b81b78mr9503155e9.30.1741516331920; 
- Sun, 09 Mar 2025 03:32:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3i7HQ3BfMVkTqOhiH/ic9cHN5EaI1ROqBFR5mD3dFqHP7nZMruL9PBgJiwzGxWf86YzeFIA==
-X-Received: by 2002:a05:600c:19cd:b0:43c:f1b8:16ad with SMTP id
- 5b1f17b1804b1-43cf1b81b78mr9503005e9.30.1741516331476; 
- Sun, 09 Mar 2025 03:32:11 -0700 (PDT)
+ bh=04PJRmuUiucourfgT/J1T0+xS+Kfg0driBOXjjm6/8k=;
+ b=faId3iJ5Tiw7USSCs99JUB1wPkTFTmMpHWA1PbIeRMPl1m3IreoLGu6uYkysmlBAz1
+ X+VkE2nbW/IAOabxXcuR8vRmOgEAAldlgne95sfsk5JXrkpMm2FwJ85r3yKOiMc9CBJk
+ 3aQk625iGdj/Ttx1IBmh4zvesYxiwI4O096htUSCEkDyw6AOqK3XWhWP3CvLWBVeswy4
+ /jiEsZcOL6K454BzZhOUbDCo88SAMT+r20mFIQ8EIvIixeF5pH6AvwG5IedJDTS6SsqC
+ reauUiWZf91h2Hjf5r0eDfGbFlJzP3M3B4T+DI9v5GyQq8sgU1OrHvqWG6beCdRVcclb
+ Q2bw==
+X-Gm-Message-State: AOJu0YxzPqodbSzChPhy08w0nCX1o1oi+hpSloKU37ApzWYZdLBEpTon
+ 5eLTyiw4YFEaLIDsu0M5n+cMtYyOrRenmbGKoVzGUBbjZMMvewBapY3P2cpUgfwDBYJZKaH43VX
+ nmLjfRmsTzuYEGKpeYGLtFMoP/p0tJgQpGpoJoNuc7a0dm7zDsf2xJrSYxOKI0RTu/+7oGpLFBG
+ jcV5qGP1oX8LZDGoWKZmYVnQs51kJCLVY+FJp8HyA=
+X-Gm-Gg: ASbGncuBDGQaXRf8KvU6HHHVNOwZItAeFTOFZj58m56FZTqeCXvRNDuZFAcVbREJ4x+
+ GkBGnlQc9vy3Mc/FAjWRFdqjZz98HnnyJmNlm/Eh2S1a9ox1HziXmDM4uQ7DlsIl1StjUiGwhLu
+ ljHJ/ClmHa7ZJIa0KeT1l+Qk2WgK3NqMvMEjnw3+LdSOA8Mhgy1jnnV8vwIrpJDCPBzZPXcw47e
+ GTNav4Io+UByPa/KBZpThfxM1Kyd0J/IBjwvqkbXv/0mp9v/cGwDdKrpxm2emEy2UVCnCj5KgVh
+ MeKgDwtlcZ/+vC0o5Jqlmw==
+X-Received: by 2002:a05:600c:3510:b0:43b:cf12:2ca5 with SMTP id
+ 5b1f17b1804b1-43c601d9145mr57763075e9.8.1741516334382; 
+ Sun, 09 Mar 2025 03:32:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEg58JPD3eO13I8Q7YpVRP4M0Qc8+j/cGJObbGoPvO8WabBqZjwqRAsWCWFheYT/ahYE8QNXQ==
+X-Received: by 2002:a05:600c:3510:b0:43b:cf12:2ca5 with SMTP id
+ 5b1f17b1804b1-43c601d9145mr57762905e9.8.1741516333928; 
+ Sun, 09 Mar 2025 03:32:13 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.122.167])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ce3d5a0e2sm58130275e9.12.2025.03.09.03.32.10
+ 5b1f17b1804b1-43bdd9471b7sm109267005e9.34.2025.03.09.03.32.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 03:32:10 -0700 (PDT)
+ Sun, 09 Mar 2025 03:32:12 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 24/25] meson.build: default to -gsplit-dwarf for debug info
-Date: Sun,  9 Mar 2025 11:31:18 +0100
-Message-ID: <20250309103120.1116448-25-pbonzini@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 25/25] rust: pl011: Allow NULL chardev argument to
+ pl011_create()
+Date: Sun,  9 Mar 2025 11:31:19 +0100
+Message-ID: <20250309103120.1116448-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250309103120.1116448-1-pbonzini@redhat.com>
 References: <20250309103120.1116448-1-pbonzini@redhat.com>
@@ -108,77 +109,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-This option is supported by both gcc (since 4.7) and clang (since
-7.0). Not only does this make the linkers job easier by reducing the
-amount of ELF it needs to parse it also reduces the total build size
-quite considerably. In my case a default build went from 5.8G to
-3.9G (vs 1.9G for --disable-debug-info).
+It's valid for the caller to pass a NULL chardev to pl011_create();
+this means "don't set the chardev property on the device", which
+in turn means "act like there's no chardev". All the chardev
+frontend APIs (in C, at least) accept a NULL pointer to mean
+"do nothing".
 
-The --disable-split-debug option allows distros to keep all the info
-together for ease of packaging.
+This fixes some failures in 'make check-functional' when Rust support
+is enabled.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Link: https://lore.kernel.org/r/20250306161631.2477685-1-alex.bennee@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/r/20250307190051.3274226-1-peter.maydell@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                   | 6 ++++++
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 2 ++
- 3 files changed, 10 insertions(+)
+ rust/hw/char/pl011/src/device.rs | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 6da4eb317c2..4899d896de0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -601,6 +601,10 @@ if get_option('tsan')
-   qemu_ldflags = ['-fsanitize=thread'] + qemu_ldflags
- endif
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index af93ae8bebe..f137b49feaf 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -648,10 +648,12 @@ pub fn post_load(&self, _version_id: u32) -> Result<(), ()> {
+     // SAFETY: The callers promise that they have owned references.
+     // They do not gift them to pl011_create, so use `Owned::from`.
+     let irq = unsafe { Owned::<IRQState>::from(&*irq) };
+-    let chr = unsafe { Owned::<Chardev>::from(&*chr) };
  
-+if get_option('debug') and get_option('split_debug')
-+  qemu_cflags += '-gsplit-dwarf'
-+endif
-+
- # Detect support for PT_GNU_RELRO + DT_BIND_NOW.
- # The combination is known as "full relro", because .got.plt is read-only too.
- qemu_ldflags += cc.get_supported_link_arguments('-Wl,-z,relro', '-Wl,-z,now')
-@@ -4583,6 +4587,8 @@ if have_rust
-   summary_info += {'bindgen':         bindgen.full_path()}
-   summary_info += {'bindgen version': bindgen.version()}
- endif
-+# option_cflags is purely for the summary display, meson will pass
-+# -g/-O options directly
- option_cflags = (get_option('debug') ? ['-g'] : [])
- if get_option('optimization') != 'plain'
-   option_cflags += ['-O' + get_option('optimization')]
-diff --git a/meson_options.txt b/meson_options.txt
-index 59d973bca00..3432123fee2 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -362,6 +362,8 @@ option('debug_mutex', type: 'boolean', value: false,
-        description: 'mutex debugging support')
- option('debug_stack_usage', type: 'boolean', value: false,
-        description: 'measure coroutine stack usage')
-+option('split_debug', type: 'boolean', value: true,
-+       description: 'split debug info from object files')
- option('qom_cast_debug', type: 'boolean', value: true,
-        description: 'cast debugging support')
- option('slirp_smbd', type : 'feature', value : 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 3e8e00852b2..aca6e688302 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -504,6 +504,8 @@ _meson_option_parse() {
-     --disable-strict-rust-lints) printf "%s" -Dstrict_rust_lints=false ;;
-     --enable-strip) printf "%s" -Dstrip=true ;;
-     --disable-strip) printf "%s" -Dstrip=false ;;
-+    --enable-split-debug) printf "%s" -Dsplit_debug=true ;;
-+    --disable-split-debug) printf "%s" -Dsplit_debug=false ;;
-     --sysconfdir=*) quote_sh "-Dsysconfdir=$2" ;;
-     --enable-tcg) printf "%s" -Dtcg=enabled ;;
-     --disable-tcg) printf "%s" -Dtcg=disabled ;;
+     let dev = PL011State::new();
+-    dev.prop_set_chr("chardev", &chr);
++    if !chr.is_null() {
++        let chr = unsafe { Owned::<Chardev>::from(&*chr) };
++        dev.prop_set_chr("chardev", &chr);
++    }
+     dev.sysbus_realize();
+     dev.mmio_map(0, addr);
+     dev.connect_irq(0, &irq);
 -- 
 2.48.1
 
