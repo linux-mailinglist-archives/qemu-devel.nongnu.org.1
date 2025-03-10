@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82928A58B7A
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 06:02:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E803A58B6F
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 06:01:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trVET-00035v-BM; Mon, 10 Mar 2025 00:59:17 -0400
+	id 1trVEQ-0002xB-EA; Mon, 10 Mar 2025 00:59:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trVED-0002iE-Gq
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:01 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ id 1trVEE-0002jV-KJ
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:02 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trVEA-0008C6-L6
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:00 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2feb96064e4so7420520a91.1
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 21:58:58 -0700 (PDT)
+ id 1trVEB-0008Cb-Ic
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:01 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-224100e9a5cso67677985ad.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 21:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741582737; x=1742187537; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741582738; x=1742187538; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ErKU0wbfVZdnsjs5NMSuiTB4KixyX1gD9AraKkIZNBI=;
- b=Wwce749RdHqlRIBZdhrckPzjhjP88AYfjokiqXFaAhgQLoXstreXcOoKtRrqZFr1Q/
- 7GcYLPbDlUIzkM/14W+uly017zKgkxkbl9nLoKSa7Bt7KEb1T+xvZ/s4nCGpD/CPHALl
- 2h6jRWIHOEcdVQXGUY5JZQxLq6JQQJNWbaCSwAdn7owihpXGldkiiJpknoXlaDNG0B+c
- mv1PJubKa68QATrc+S4EF635osuJQB00I2WDI/qrU5HZ+4gfrSL1vDsoNtsiQiJ7uwoh
- z14m92uCqW61mWzZI3GcnLoxmzG5fZU3McNEI7x+lTBQotkjNuUmdPfglZHWM9bZEJ0z
- +XQQ==
+ bh=8s25jeAGTcBk8xCVR99anv09nY4TtNOY1pAkSQYXuE0=;
+ b=FT2AMJmHPXRPAFnTCSUvwxAyd8qigQBdwqs3pQGAweV0AAQUZurWGzj3Q8QReepFfs
+ 0wrE4ZHYegSPjEsl2gLm6ggHjt2CDd8Q8b3HmcOLLRTE56fg/vTxymABUKlabEZNhrVr
+ ippkwC7tzKq9RUF0fDXlDcDYm6mFNbDadxh5bvYImksfRF/eUMS/JIp+cretcZpR/YpI
+ 0XBGpKQ9I5ZLKiYCtcRZuTnyGkL4XK277KSZb4B1LWZdyMK6th3nauVhMSJw0PMYqd+M
+ Xn3vRjxy3ZsrpIiU/YwWwpa8P7gPk4dAfaNWbJC9y6UWiKeYOVkWFoe28EYapIK0mSrF
+ eQGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741582737; x=1742187537;
+ d=1e100.net; s=20230601; t=1741582738; x=1742187538;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ErKU0wbfVZdnsjs5NMSuiTB4KixyX1gD9AraKkIZNBI=;
- b=Ou6g6OHmHRicFhWlK3+gcUDiEvrB6eNvpAvli0FelWMQvygktfLcqBqY9gcYeXXDVS
- jxwM+qbetKmZNEWWNDs+2+1IUGCMwGROXzd8sxkGNerTkq9rblJFETkAI39HCi5Hoy3J
- 5SSYxVJcUNPyhd84KYjXXjilZkilIdh0Ze9cuPo7r82F4YLNVEHxL5x8G/hi/7XNqB3G
- d40tzQLGdGxjSHLE1BmV51Kb5nyf/Z9cwDjD53lgCa7FgfLfTNxUTmW10RS42hT4Y+Pa
- EjuMWqaUYYijf4toD09Kt2ripBbAJB6WY8PTYe4RUfaQWdb6qSK7ppL5wRLqPOoJo0ew
- 9QWg==
-X-Gm-Message-State: AOJu0YysIb7Wo4cicvlGunYY6abmVO9ehdftYr68nVEqjqzOs7Z6quoz
- S3+Zl7e/idqEuYMZgCP1qYjejIzJ6gE/3KrMar+EEI3P4nk5bS9ZNqBqWsWEpCaV/6FJ7YQoSAK
- cXRw=
-X-Gm-Gg: ASbGnctHyWuKqqoUPpGKpJ193RrT6C+Nx4O+yTt8GJnvK5EJ5ELwIKtUZav/Jt+dXLD
- 54MqL1ykGYSa52Nrymk8JyL3BlMhzSoXkgkpG6WIGDoY/XiRACXN89PuFUQkbRoKUN1EPjPfYS6
- uTLkA+IL7cVxj5KTIA1P+5GOgnDmzGt8RHaE4aZbDEctOdWKi8wWP0G3xhXg0yZJeJcdiFFbSPW
- kJ/xwyGvn+m9d+IMiinW879qOvKTYOXRnL4HBV7q6K0Va582sKADyRigwjQQ9nFqIE1FpEA7O5B
- NlxZaDyIYgtk0LyCVt4SniStgUcMVXh8RgTSoFBlt0za
-X-Google-Smtp-Source: AGHT+IHO0adHTKDFbdiZLdbwVjzffyYfi7nVPL6wN+0ieHxoGwNOezFQMlR0NxHpJZQhWhI8f44U4w==
-X-Received: by 2002:a05:6a21:9786:b0:1f5:8506:5039 with SMTP id
- adf61e73a8af0-1f585065599mr1040552637.28.1741582737079; 
- Sun, 09 Mar 2025 21:58:57 -0700 (PDT)
+ bh=8s25jeAGTcBk8xCVR99anv09nY4TtNOY1pAkSQYXuE0=;
+ b=chQOQa8XnZoa0mzv+NjkZJD+k0l5iL04Le1ZDltv+HXGFFJNzvdW0cL9s2qrGwzELz
+ NL/2fhWeokcuyr5XA0eedSGDyYTTvHxzhAc3/B4Y2BHN/BTxqtHYB0idMHlvuMivl54Z
+ D2DEw0U+XVI+IYnpQEFd+amUcCCN3VMt++59D+43Kdz2LzbbI8BeQDTOuX3Vj+dCBYOG
+ kcJfeLmzanT7Lyq5lOsBUHD8ZTQ+3UUwHp9Chx7SGfMj4HY8V33SUviBIQ19fxIrz7mU
+ 6/B9Mn9Zfeir8miomNc9gE64IqbHLI9bdhrgLI2y9TFdKMp/iXAUDvmzM3trRwAZde/J
+ HtnQ==
+X-Gm-Message-State: AOJu0Ywuz0vwieBWgYF/0puuLhPN+OFqbA1V08StXgsQrG/+Q4syATHd
+ 5sFwubmQAxc+I0RLgkvrJTSfVhHcDkvuBQSnUYqt4nqoj9TpbYEVFnITsF2U3avaZ4a83BU956B
+ aOJ0=
+X-Gm-Gg: ASbGncvhPhWdi0cMYwW8HV65eZ/SQgrvh+FM81seakm0IGtV22pYS564/TZMb3XGwie
+ ZDpNKNFOC73O7JF6hWdn+IeoHJpxuvXGag2ek2gbQrDvmcwpQOsXQEFcKrGiQP3CJFMhMXA+577
+ cq4k//TVJj981Rws9dMdSESZhwo+D1nFY7UMjaw0uMo6RmHZXMuMSlqvGrWEgtFOu6Lq743vcuK
+ foF1uSLtF7Rx/5LfjfZFwhZlU2iY+hcoAIno3+i0ep0L87ouZIvSpTzR1O2jsaA2VCo1dcV8Xa5
+ cMp85PFrZZhMYLQlupmjf+hxsxqoSOv12+O0VJ0jqvibNm1ZAPnbhVI=
+X-Google-Smtp-Source: AGHT+IGRoGZ7coEeYo9o9fE7YTKv7YM5Vcb8VYcCl0LtzUFuhPuPAIbAabhl/TEnMhgrans4FlUiUA==
+X-Received: by 2002:a17:902:f648:b0:220:d601:a704 with SMTP id
+ d9443c01a7336-22428a967a4mr181654565ad.18.1741582738292; 
+ Sun, 09 Mar 2025 21:58:58 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736d2ae318csm1708308b3a.53.2025.03.09.21.58.55
+ d2e1a72fcca58-736d2ae318csm1708308b3a.53.2025.03.09.21.58.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 21:58:56 -0700 (PDT)
+ Sun, 09 Mar 2025 21:58:57 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
@@ -80,16 +80,16 @@ Cc: qemu-ppc@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
  Paolo Bonzini <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
  Stefano Stabellini <sstabellini@kernel.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 06/16] exec/cpu-all.h: we can now remove ld/st macros
-Date: Sun,  9 Mar 2025 21:58:32 -0700
-Message-Id: <20250310045842.2650784-7-pierrick.bouvier@linaro.org>
+Subject: [PATCH 07/16] codebase: prepare to remove cpu.h from exec/exec-all.h
+Date: Sun,  9 Mar 2025 21:58:33 -0700
+Message-Id: <20250310045842.2650784-8-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
 References: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,52 +112,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Functions declared in bswap.h will be used instead.
-
-At this point, we finished to extract memory API from cpu-all.h, and it
-can be called from any common or target dependent code.
-
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/exec/cpu-all.h | 25 -------------------------
- 1 file changed, 25 deletions(-)
+ include/tcg/tcg-op.h           | 1 +
+ target/ppc/helper_regs.h       | 2 ++
+ hw/ppc/spapr_nested.c          | 1 +
+ hw/sh4/sh7750.c                | 1 +
+ page-vary-target.c             | 3 ++-
+ target/riscv/bitmanip_helper.c | 1 +
+ 6 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 1c2e18f492b..625b4c51f3c 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -38,31 +38,6 @@
- #define BSWAP_NEEDED
- #endif
+diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
+index a02850583bd..bc46b5570c4 100644
+--- a/include/tcg/tcg-op.h
++++ b/include/tcg/tcg-op.h
+@@ -9,6 +9,7 @@
+ #define TCG_TCG_OP_H
  
--/* Target-endianness CPU memory access functions. These fit into the
-- * {ld,st}{type}{sign}{size}{endian}_p naming scheme described in bswap.h.
-- */
--#if TARGET_BIG_ENDIAN
--#define lduw_p(p) lduw_be_p(p)
--#define ldsw_p(p) ldsw_be_p(p)
--#define ldl_p(p) ldl_be_p(p)
--#define ldq_p(p) ldq_be_p(p)
--#define stw_p(p, v) stw_be_p(p, v)
--#define stl_p(p, v) stl_be_p(p, v)
--#define stq_p(p, v) stq_be_p(p, v)
--#define ldn_p(p, sz) ldn_be_p(p, sz)
--#define stn_p(p, sz, v) stn_be_p(p, sz, v)
--#else
--#define lduw_p(p) lduw_le_p(p)
--#define ldsw_p(p) ldsw_le_p(p)
--#define ldl_p(p) ldl_le_p(p)
--#define ldq_p(p) ldq_le_p(p)
--#define stw_p(p, v) stw_le_p(p, v)
--#define stl_p(p, v) stl_le_p(p, v)
--#define stq_p(p, v) stq_le_p(p, v)
--#define ldn_p(p, sz) ldn_le_p(p, sz)
--#define stn_p(p, sz, v) stn_le_p(p, sz, v)
--#endif
--
- /* MMU memory access macros */
+ #include "tcg/tcg-op-common.h"
++#include "exec/target_long.h"
  
- #if !defined(CONFIG_USER_ONLY)
+ #ifndef TARGET_LONG_BITS
+ #error must include QEMU headers
+diff --git a/target/ppc/helper_regs.h b/target/ppc/helper_regs.h
+index 8196c1346dc..b928c2c452d 100644
+--- a/target/ppc/helper_regs.h
++++ b/target/ppc/helper_regs.h
+@@ -20,6 +20,8 @@
+ #ifndef HELPER_REGS_H
+ #define HELPER_REGS_H
+ 
++#include "target/ppc/cpu.h"
++
+ void hreg_swap_gpr_tgpr(CPUPPCState *env);
+ void hreg_compute_hflags(CPUPPCState *env);
+ void hreg_update_pmu_hflags(CPUPPCState *env);
+diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+index 23958c6383a..18bbb1403c6 100644
+--- a/hw/ppc/spapr_nested.c
++++ b/hw/ppc/spapr_nested.c
+@@ -2,6 +2,7 @@
+ #include "qemu/cutils.h"
+ #include "exec/exec-all.h"
+ #include "exec/cputlb.h"
++#include "exec/target_long.h"
+ #include "helper_regs.h"
+ #include "hw/ppc/ppc.h"
+ #include "hw/ppc/spapr.h"
+diff --git a/hw/sh4/sh7750.c b/hw/sh4/sh7750.c
+index 6faf0e3ca8b..41306fb6008 100644
+--- a/hw/sh4/sh7750.c
++++ b/hw/sh4/sh7750.c
+@@ -29,6 +29,7 @@
+ #include "hw/irq.h"
+ #include "hw/sh4/sh.h"
+ #include "system/system.h"
++#include "target/sh4/cpu.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
+ #include "sh7750_regs.h"
+diff --git a/page-vary-target.c b/page-vary-target.c
+index 3f81144cda8..12fda410bb0 100644
+--- a/page-vary-target.c
++++ b/page-vary-target.c
+@@ -20,8 +20,9 @@
+ #define IN_PAGE_VARY 1
+ 
+ #include "qemu/osdep.h"
+-#include "exec/page-vary.h"
+ #include "exec/exec-all.h"
++#include "exec/page-vary.h"
++#include "exec/target_page.h"
+ 
+ bool set_preferred_target_page_bits(int bits)
+ {
+diff --git a/target/riscv/bitmanip_helper.c b/target/riscv/bitmanip_helper.c
+index b99c4a39a1f..d93312a811c 100644
+--- a/target/riscv/bitmanip_helper.c
++++ b/target/riscv/bitmanip_helper.c
+@@ -21,6 +21,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/host-utils.h"
+ #include "exec/exec-all.h"
++#include "exec/target_long.h"
+ #include "exec/helper-proto.h"
+ #include "tcg/tcg.h"
+ 
 -- 
 2.39.5
 
