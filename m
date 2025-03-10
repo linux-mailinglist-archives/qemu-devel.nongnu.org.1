@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E686A5999D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:17:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F00A599AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:19:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1treqa-0008MW-NX; Mon, 10 Mar 2025 11:15:17 -0400
+	id 1treqf-0000NM-5x; Mon, 10 Mar 2025 11:15:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1treqU-000841-A2
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:15:10 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1treqa-00007d-1w
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:15:16 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1treqQ-000879-6u
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:15:08 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-390effd3e85so3838778f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 08:15:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1treqQ-0008D3-OQ
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:15:15 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43bb6b0b898so37035345e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 08:15:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741619698; x=1742224498; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741619704; x=1742224504; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IjyeW5Nt8o0UjpeWcNjmceOtbUr0M3LV9xv1HVnRIgs=;
- b=mLZ143dBTnh7gSPOcy1JkJ/9Sb+Rvc+HZWxiJcxg9Dhf3tU+viYaiKCSdfHxzjuMnv
- X4JN/VyFqwshP0679Q8sklqGOk2otUF/TsajHYKLeqCP+lLdCfEZ5WhfqPfAc5orhfty
- dndpwkyimf6eo62lIktKJLlZ4WiKjrg81SuyJkXXlEHxJ5bsJlEZQNw1Fi15s5lQqirK
- aIY4RF4Hinv0rTla/5pDNPCgquvD3kZIkcfqboqW6eUewqKcwx7eoVMOE+JmJnq5k6hT
- fE+arY4Mflx9mix1XmWpIGPdtTVzVynBvSdN0bB7xVCxI2QgaVC+5592R0MMvNjHyxhe
- wXfg==
+ bh=z7J8UWUXia4S/l3hOcieA10+PUQa1P2XxB/lqNf2FKU=;
+ b=u2edDDQoQ+k8qevtx2BHo65gs2nyKwVFcmOSVYAV/8/yZVbWOT+cSXlKF9HE/m1Fht
+ gW5dN84HT1V0flxNPaGXfQVO+QzA8rKkMz3Ac1tYadVFlXgmyjwL7V+S8rOrzmUP2IUb
+ RdAryFKHkfjMnmdpk6+VzXDJC1tDRQIhiArzrYTab8JCRZLVCrc+USo/72cic1KOD76O
+ d/jtpoj/nNdWedkb9YgzfjM/l+N9V0yw00KW2Pos+f+cTjIV6RylN6phLHm0FJZhjZPA
+ 5wIW4bSZ9pYqS21l1pS2lE/tojv2akCEZRIPLvfszASMjooXoz+t47/ffBP5Sh9BBE4n
+ j0JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741619698; x=1742224498;
+ d=1e100.net; s=20230601; t=1741619704; x=1742224504;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IjyeW5Nt8o0UjpeWcNjmceOtbUr0M3LV9xv1HVnRIgs=;
- b=OiheI8QD3kzTdf/rWJXCNwh+82hYZW2K2rDid4SeJGz7rPHXFZOMvzZ1YiPU9Od0iu
- RsgGBEAyV53xvp04TKXOsUqYvn+ZpMtJII1NV8txoMevfClzsJjRl89bE1HzjEiAJuyn
- H6+1OMyzTxpFEcsAuGPZ2VbZK2o4C0X4F/1r5MKjCxqv+DdE/QtntImego0EG9IM4f9f
- gskeSLqvRANtR7Dfb+BoGsRX7Uz16Rq9exgaU0IfigKWevLdfrouiTHK3/pxLGD0NJiq
- /7VMPKfJyQ/09sjs4Mc0SZ8GhIdzQuvi9q2wMiQr3P51eYhq6KzX9b5P474YTGWUg1uf
- E4ag==
-X-Gm-Message-State: AOJu0YzAscUeTU6av0wFXD1D+DWHuj5b0UyQOjWgUJVEoG9v26YF4nSc
- 4QLCnn4017jrVJpvg/JxZfO6EnUW/wxyswiExkFqSupzGqGPcKsQnqyHqbbsNZ/xRoUbZOAq2ZM
- 6xt8=
-X-Gm-Gg: ASbGncs7Glw2Lh1ojJAEIbbEb/7Kw+Cf/+b/97Dld0Xeo5C7POc+BPgwKrq1qv9v4jG
- L/MSj0a6wcJPXhJlGQuNRatjDsgNTylI8Ds2dwSg6FZn3IyB5SM9KgvYP0nEggM1OhOSrxeylgU
- 14BT1u3U2FyxxVGaDyWgFeskZGcVc5ZGpqpF6WU1pMwVyi0qPgzQfFPzGf4XrGu0cuE+SRQA1ME
- OTMaYPb/ZEVDk2XoAksjd9qutuYYozOiRaYSkIsi2C5YvdglMo8EgN9ydIAkWQRKGmhGcF4Uh1u
- 37pKjRc/tJhLhm/wXAbx5ezEW4fyjwiCjS3H1QBKSjkU9wJA1pVk17DYgKTyV23wRK/CS/hnmQq
- vcNA4U91h37o+m45OGB4=
-X-Google-Smtp-Source: AGHT+IE1w7dyWCtAPeN1pjwXeUw1lyJH9uz35BpvIAACms6Ibp24qpioddKGgCf87iLeWmMsLxCaSg==
-X-Received: by 2002:a5d:5f4e:0:b0:391:fcc:9ee8 with SMTP id
- ffacd0b85a97d-39132d6bc06mr8314088f8f.23.1741619696600; 
- Mon, 10 Mar 2025 08:14:56 -0700 (PDT)
+ bh=z7J8UWUXia4S/l3hOcieA10+PUQa1P2XxB/lqNf2FKU=;
+ b=LMJ48om12HZaFUUxOOkr2WWUxVWyg2Tcri+vkN8vhqKIwgZUNuKX+x+xuIsIb8H6j4
+ QZEd9/iyAWd3Yc3/1glRaSFkOUx3EIcUYn7c0KxY+vptezWhJXNjWHSKn8vWTAYrDIU/
+ 3B7O3ZkqhopD0AN51YISJHqdZ1dwGQSnjoqb46rtk6RJ/DxrEpAIIcyiSxNJurl9W4PM
+ Jj6gaPAGvqWZxjN0fdn08VhkEbSHShJn2wRpbQ7fmsMy3/O7w/QK/6UQPFj9LEwJWRw8
+ SxlZzwZMVxiyxGtgXmlrrzVYoemthfbZR23zEsQBYyjPCjnVnb4u50kjAAHIoA9C0VEw
+ 5YbQ==
+X-Gm-Message-State: AOJu0Yxo/3Q//R1CI/c5TWZquwelfxtY4kdqeQZtvEfga6aaSAD6z7PS
+ nSKGqXuHUT1eDdBVMVQLZoRydNcmNjU8E+ae0aH03QosdJiAgN6gQS2JHI62yymdF2nkaLnOJgp
+ Dec8=
+X-Gm-Gg: ASbGncvphAjFB4ocA3IpoQ6JiLDUH7aG9ORx1U8pU/DlKFGXxoxOUyOCLJO1rb6CWbA
+ 9w6uTgn7tMiWVvTxmUHhTEgyrhuZXZa5FO0lIzCHMqWv89WnqNFFwiINL/kgO2keuOF7yG6upQE
+ WQwqfxIXLmQuyNFUwD42R7oE/dv2i1EgwGD+/lH565F3mvjsc5ugWtkqOzaJkHuUD27FlIYEi2O
+ PEcqwahnOhI0MqIhGX4EPS26ZEUIDFIMq4Ckjqy5OecstZJtTcbHHjR7MHiArVkU7Ef+yXAvEcS
+ cNgP4sZH6FCQIBOFUzsBnotb1qVffkuX6qpQSfquitfdMUf6eVhDW2cYzMjZeLcCMs4jFgyOBRm
+ Tx4Frmzcl4I6XmLak/uQ=
+X-Google-Smtp-Source: AGHT+IHNn3qDhQ1EQFcHNEdBrWFTofR5+myaotDnj7aa1BD6sSCoZc72fTRPLUuYlXdw43o1f/awkQ==
+X-Received: by 2002:a05:600c:4710:b0:43c:f470:7605 with SMTP id
+ 5b1f17b1804b1-43cf470795dmr34821045e9.12.1741619703758; 
+ Mon, 10 Mar 2025 08:15:03 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c103f41sm15004792f8f.85.2025.03.10.08.14.41
+ 5b1f17b1804b1-43cea7f2afasm42638805e9.3.2025.03.10.08.15.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Mar 2025 08:14:42 -0700 (PDT)
+ Mon, 10 Mar 2025 08:15:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
@@ -79,25 +79,24 @@ Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Halil Pasic <pasic@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH v3 3/4] hw/s390x/ccw: Have CCW machine implement a
- qmp_dump_skeys() callback
-Date: Mon, 10 Mar 2025 16:14:13 +0100
-Message-ID: <20250310151414.11550-4-philmd@linaro.org>
+Subject: [PATCH v3 4/4] qapi/machine: Make @dump-skeys command generic
+Date: Mon, 10 Mar 2025 16:14:14 +0100
+Message-ID: <20250310151414.11550-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250310151414.11550-1-philmd@linaro.org>
 References: <20250310151414.11550-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,82 +112,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation to make @dump-skeys command generic,
-extract s390_qmp_dump_skeys() out of qmp_dump_skeys().
-Register it as CCW qmp_dump_skeys() callback.
+Reduce misc-target.json by one target specific command.
+
+Error message is returned for machines not implementing
+TYPE_DUMP_SKEYS_INTERFACE:
+
+  $ qemu-system-aarch64 -M virt -S -qmp stdio
+  {"QMP": {"version": {"qemu": {"micro": 50, "major": 9}}, "capabilities": ["oob"]}}
+  { "execute": "qmp_capabilities" }
+  {"return": {}}
+  { "execute": "dump-skeys", "arguments": { "filename": "/tmp/foo" }  }
+  {"error": {"class": "GenericError", "desc": "Storage keys information not available for this architecture"}}
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/s390x/storage-keys.h | 1 +
- hw/s390x/s390-skeys.c           | 7 ++++++-
- hw/s390x/s390-virtio-ccw.c      | 3 +++
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ qapi/machine.json          | 18 ++++++++++++++++++
+ qapi/misc-target.json      | 19 -------------------
+ hw/core/machine-qmp-cmds.c | 14 ++++++++++++++
+ hw/s390x/s390-skeys.c      |  6 +-----
+ 4 files changed, 33 insertions(+), 24 deletions(-)
 
-diff --git a/include/hw/s390x/storage-keys.h b/include/hw/s390x/storage-keys.h
-index fb766d4631b..ac303001f57 100644
---- a/include/hw/s390x/storage-keys.h
-+++ b/include/hw/s390x/storage-keys.h
-@@ -122,6 +122,7 @@ int s390_skeys_set(S390SKeysState *ks, uint64_t start_gfn,
+diff --git a/qapi/machine.json b/qapi/machine.json
+index a6b8795b09e..a9ff8076317 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1898,3 +1898,21 @@
+ { 'command': 'x-query-interrupt-controllers',
+   'returns': 'HumanReadableText',
+   'features': [ 'unstable' ]}
++
++##
++# @dump-skeys:
++#
++# Dump the storage keys for an s390x guest
++#
++# @filename: the path to the file to dump to
++#
++# Since: 2.5
++#
++# .. qmp-example::
++#
++#     -> { "execute": "dump-skeys",
++#          "arguments": { "filename": "/tmp/skeys" } }
++#     <- { "return": {} }
++##
++{ 'command': 'dump-skeys',
++  'data': { 'filename': 'str' } }
+diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+index 8d70bd24d8c..42e4a7417dc 100644
+--- a/qapi/misc-target.json
++++ b/qapi/misc-target.json
+@@ -274,25 +274,6 @@
+   'returns': 'SevAttestationReport',
+   'if': 'TARGET_I386' }
  
- S390SKeysState *s390_get_skeys_device(void);
+-##
+-# @dump-skeys:
+-#
+-# Dump guest's storage keys
+-#
+-# @filename: the path to the file to dump to
+-#
+-# Since: 2.5
+-#
+-# .. qmp-example::
+-#
+-#     -> { "execute": "dump-skeys",
+-#          "arguments": { "filename": "/tmp/skeys" } }
+-#     <- { "return": {} }
+-##
+-{ 'command': 'dump-skeys',
+-  'data': { 'filename': 'str' },
+-  'if': 'TARGET_S390X' }
+-
+ ##
+ # @GICCapability:
+ #
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index 3130c5cd456..fd8b4e0b44c 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -25,6 +25,7 @@
+ #include "system/numa.h"
+ #include "system/runstate.h"
+ #include "system/system.h"
++#include "hw/s390x/storage-keys.h"
  
-+void s390_qmp_dump_skeys(const char *filename, Error **errp);
- void hmp_dump_skeys(Monitor *mon, const QDict *qdict);
- void hmp_info_skeys(Monitor *mon, const QDict *qdict);
- 
+ /*
+  * fast means: we NEVER interrupt vCPU threads to retrieve
+@@ -406,3 +407,16 @@ GuidInfo *qmp_query_vm_generation_id(Error **errp)
+     info->guid = qemu_uuid_unparse_strdup(&vms->guid);
+     return info;
+ }
++
++void qmp_dump_skeys(const char *filename, Error **errp)
++{
++    ObjectClass *mc = object_get_class(qdev_get_machine());
++    ObjectClass *oc = object_class_dynamic_cast(mc, TYPE_DUMP_SKEYS_INTERFACE);
++
++    if (!oc) {
++        error_setg(errp, "Storage keys information not available"
++                         " for this architecture");
++        return;
++    }
++    DUMP_SKEYS_INTERFACE_CLASS(oc)->qmp_dump_skeys(filename, errp);
++}
 diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
-index 0d3d4f74b4c..fd1123b0f35 100644
+index fd1123b0f35..067ea037268 100644
 --- a/hw/s390x/s390-skeys.c
 +++ b/hw/s390x/s390-skeys.c
-@@ -142,7 +142,7 @@ void hmp_dump_skeys(Monitor *mon, const QDict *qdict)
-     }
- }
- 
--void qmp_dump_skeys(const char *filename, Error **errp)
-+void s390_qmp_dump_skeys(const char *filename, Error **errp)
- {
-     S390SKeysState *ss = s390_get_skeys_device();
-     S390SKeysClass *skeyclass = S390_SKEYS_GET_CLASS(ss);
-@@ -219,6 +219,11 @@ out:
+@@ -15,6 +15,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/s390x/storage-keys.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-commands-machine.h"
+ #include "qapi/qapi-commands-misc-target.h"
+ #include "qobject/qdict.h"
+ #include "qemu/error-report.h"
+@@ -219,11 +220,6 @@ out:
      fclose(f);
  }
  
-+void qmp_dump_skeys(const char *filename, Error **errp)
-+{
-+    s390_qmp_dump_skeys(filename, errp);
-+}
-+
+-void qmp_dump_skeys(const char *filename, Error **errp)
+-{
+-    s390_qmp_dump_skeys(filename, errp);
+-}
+-
  static bool qemu_s390_skeys_are_enabled(S390SKeysState *ss)
  {
      QEMUS390SKeysState *skeys = QEMU_S390_SKEYS(ss);
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index a9b3db19f63..104cd1c79eb 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -809,6 +809,7 @@ static void ccw_machine_class_init(ObjectClass *oc, void *data)
-     NMIClass *nc = NMI_CLASS(oc);
-     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
-     S390CcwMachineClass *s390mc = S390_CCW_MACHINE_CLASS(mc);
-+    DumpSKeysInterface *dsi = DUMP_SKEYS_INTERFACE_CLASS(oc);
- 
-     s390mc->hpage_1m_allowed = true;
-     s390mc->max_threads = 1;
-@@ -834,6 +835,7 @@ static void ccw_machine_class_init(ObjectClass *oc, void *data)
-     nc->nmi_monitor_handler = s390_nmi;
-     mc->default_ram_id = "s390.ram";
-     mc->default_nic = "virtio-net-ccw";
-+    dsi->qmp_dump_skeys = s390_qmp_dump_skeys;
- 
-     object_class_property_add_bool(oc, "aes-key-wrap",
-                                    machine_get_aes_key_wrap,
-@@ -875,6 +877,7 @@ static const TypeInfo ccw_machine_info = {
-     .interfaces = (InterfaceInfo[]) {
-         { TYPE_NMI },
-         { TYPE_HOTPLUG_HANDLER},
-+        { TYPE_DUMP_SKEYS_INTERFACE},
-         { }
-     },
- };
 -- 
 2.47.1
 
