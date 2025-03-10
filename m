@@ -2,122 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CBCA58E41
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 09:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96096A58F08
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 10:07:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trYbm-0003Yw-S8; Mon, 10 Mar 2025 04:35:34 -0400
+	id 1trZ5Q-0008KI-I2; Mon, 10 Mar 2025 05:06:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1trYbi-0003XG-6Q
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 04:35:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1trYbf-0006zR-3l
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 04:35:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741595723;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=daC4BU5S0mC+i0VzydxElRDB4WtBtTcNIF2KtY/I+mA=;
- b=axTn5mJyTWc13zd74FX4RzasFHDXZ0nk31eRghvnQosI+KEFKPJfi0d3q06n8mvZ203JJg
- EwKN+d3DST1foK7qVsVs1m3m8R7/63vryitR5K3eeDDaxPwUolmkKE+06Z68drqL77Maqh
- pN22g+Rqeu1EdM+urYQq4Haeg7hLkp8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-6wmxGimKOB61qCNVXkqGeA-1; Mon, 10 Mar 2025 04:35:20 -0400
-X-MC-Unique: 6wmxGimKOB61qCNVXkqGeA-1
-X-Mimecast-MFC-AGG-ID: 6wmxGimKOB61qCNVXkqGeA_1741595720
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-39141ffa913so702955f8f.2
- for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 01:35:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <hz1624917200@gmail.com>)
+ id 1trZ5K-0008Gt-9a
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 05:06:06 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hz1624917200@gmail.com>)
+ id 1trZ5I-0003uN-FG
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 05:06:06 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-22548a28d0cso40257075ad.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 02:06:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1741597561; x=1742202361; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:cc:references:to:subject:from
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Hs7+unaKl2CtCEMbcrC+vLxqiUsD7/N7LF09BCQ50TY=;
+ b=HRuJF/cOLobWfPBsfnq31v94/L0s0vlfaImRGkp/+6yBIn5+wV57MJ47mCAH98aad8
+ sB1j7xTBeaeVo9J1XxaoONFLu8nVUPwJKHUNYaI+/xhM2wUnkTHMBmRecyTq3sm7rkLl
+ sp3cwkC30JvFuOraOO7DdWYegpB/VmEBh6izgEafCAPBpnd/YKR1NKYW833q9SLH1HrX
+ hBhzO7gw19Zpt7dirqasphHip5PJL0wHA+f8t47jpkoZydXxDQfN/shBIzHCaQBIbqlg
+ hJLVHfaK8K0RmtVQC6RvpEJmLh9fzcSPDJZwiH6RXPNmh9Sc3LJybpTTsMfCVKJWE2Up
+ 1JlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741595719; x=1742200519;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=daC4BU5S0mC+i0VzydxElRDB4WtBtTcNIF2KtY/I+mA=;
- b=M+NQh5ucVVt/eWmxT7XxuU6lsGG8JONOjXWwgTirSOQvfmdOUi4dekofyfjHqhZv0a
- Czuojt/mFDzr7i0JIiyjvoq86YmXFs6IRHmesASFCQpdlDbMLZwjSr8B/vayBn4K8q3u
- Wxg3+CrvJQo6VCvlnyn1UxjWZMq41RLo2wEAuLMX4tJcH6e6uzE0Ywh/E9rycMTGQBzc
- uVHk7joiXIIzyII4s7s7yPs3lq/H1jYhNqWAMgwllfCQNd/ttn8So+CuVJo+s9raWUVl
- zAg3RENJLzXFWIx0Sh2qdwmdo95Rirt2RxuA933Ix0REW1UnijHKS5hCsH8+sZbM8a09
- zy8w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXixjh49cXIJXjGxAD53WBvsp1+QFM91kKza64VC4V6SngVMT1rrg6sdIdWfMxe2qUQCsZuL7rkk3w+@nongnu.org
-X-Gm-Message-State: AOJu0YyaqN8kkRKoQbh6nkwhYk8a/zrD+DupX/fRsIzIiShYkVBWvzZ5
- vz8LTAL2HtftIPtsBtuxROQcrNPS89wLWzBdAyr5R/+s2n0f7d+NZ+eAzYqYqHZIK5IrzijBvGc
- 9Nmhdp4LB1zIVuYTbpVn8yMyWCeldyqbKgXyBeQ4jowGGsU8Kxjgl
-X-Gm-Gg: ASbGncsgONUcP3RasqbEeiZ+fE8HXVhZwRcjgxlvTfUCUvxauZUJ0v6GnTokb8JebZu
- T7JprzuIdj/A6ux5SqFk5f2XFKhYvp38Yn844TAPSrPCixujnFH4aCXjvw59L82YPXTKf+eUDah
- gTgRex0DG1da1CWkCs625x4YE4lCfrJfjVtp6364bwcfNx8ye0b/kONOvK5oRO/6wQsGsIJU+R7
- Q2/k7Q4257KuiCrLTdzOaruLnB4hGfyo8kPSrsBAZ9dhYMG9mwJnXKgseE4hO+fzFRvvFG6XZxG
- LvzFBmGm7gZqAAZQ48W9wzQqlpDMAa6jAoWPLXEqP1OGBnwBhyakinOOXp5lxnY=
-X-Received: by 2002:adf:8b1d:0:b0:391:1652:f0bf with SMTP id
- ffacd0b85a97d-39132d8dc66mr6182058f8f.33.1741595719555; 
- Mon, 10 Mar 2025 01:35:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZyunp2JiW/VAYGxEAGq3xNyc98fyx68X0URgkyxZeEIJwmAoKmRZHq0cEsAUn2egUeBreWQ==
-X-Received: by 2002:adf:8b1d:0:b0:391:1652:f0bf with SMTP id
- ffacd0b85a97d-39132d8dc66mr6182028f8f.33.1741595719133; 
- Mon, 10 Mar 2025 01:35:19 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ d=1e100.net; s=20230601; t=1741597561; x=1742202361;
+ h=content-transfer-encoding:in-reply-to:cc:references:to:subject:from
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Hs7+unaKl2CtCEMbcrC+vLxqiUsD7/N7LF09BCQ50TY=;
+ b=mOh4emsSm93+8r5iE2sPk0xxTC/Q/XUOj9SOmFua4U9dZpdXWQJbQBZMpqRHg097Ur
+ +Fv4Sl/zVaABaNT0yWW+HVFM5zxCtxK5VvcV4Z+S9zMCnXApp6O9EtunztE5hvBSiCZT
+ AyoWG40uYmjSbiJra7iLa4oUS/dVPO/130EnEwL83vfG0qGGvbGuH2ktG8uD3J6N84GK
+ +cGgl1r7YpQtK9qeJ6oJcWrY/9GUWJsKzAk4vah76caDMCG0grlKXkH++wt/dNx1yBai
+ 8LbbLEi6BTFi4d7yA8EeY6J2H/u128RMUTmVTqUrkc+rG4YYidhlPYETVzon7uuQZIQ0
+ yEAw==
+X-Gm-Message-State: AOJu0YwxMgdx3wgPenji5rDg23DfANTi5k2kuBuRugJELKJhwZm4pvC2
+ o2R/I4qlw8ZP1sif+KwbF1HaRc0Ecb8oxL7ATM/8Lkq9etUZfEqW
+X-Gm-Gg: ASbGncsuYNxP2FMLSYeW4ZkG+wcQsTiE+urQCSgC2by34wiJNefLDVowZZ6I1YLZdwH
+ SZfGXxQdzyeTLDSK96sLCPD3qHbepPS0gCqbT44+rQv7SQoAkxmJR/wZ4Kb/jfz2y10vIprv4de
+ EoifcJ4HMoUvScXVzn+TCheZgk9D5PJCxTjgeVZqDICshlT/oNtmbPA0ZLs/tIz49yWEvG2bkqk
+ DO1xn+wWaBbfGI0ZOKG0ebjkielIlMmbmTKNzynuZPZy20Bm/m3WNboShLEc+Ie7Qx7pjWD+FnX
+ 1gZis2mKY/pnL+QgF575ssmiSi2ug0xpqrcMjHNELsHS7X9BVdgxUEVsBmwn
+X-Google-Smtp-Source: AGHT+IHp0JPjZvz3saCdbYkqFdxbm/QqI8Y2rhGhC6OFU64E5BTeq0jK6HgCDy1kSr2dgcBTAHrZ8Q==
+X-Received: by 2002:a17:903:2f86:b0:223:4b88:780f with SMTP id
+ d9443c01a7336-22428895b52mr163817725ad.17.1741597560956; 
+ Mon, 10 Mar 2025 02:06:00 -0700 (PDT)
+Received: from [101.5.21.253] ([101.5.21.253])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c019557sm14552470f8f.50.2025.03.10.01.35.15
+ d9443c01a7336-224109ddffesm72845795ad.40.2025.03.10.02.05.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Mar 2025 01:35:18 -0700 (PDT)
-Message-ID: <b2e6da22-28a5-4430-8e97-851320b38f0e@redhat.com>
-Date: Mon, 10 Mar 2025 09:35:14 +0100
+ Mon, 10 Mar 2025 02:06:00 -0700 (PDT)
+Message-ID: <ad31f5db-a432-49b9-bb98-0e2315960832@gmail.com>
+Date: Mon, 10 Mar 2025 17:04:49 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/21] system/kvm: Expose
- kvm_irqchip_[add,remove]_change_notifier()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Halil Pasic <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Tomita Moeko
- <tomitamoeko@gmail.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eric Farman <farman@linux.ibm.com>, Eduardo Habkost <eduardo@habkost.net>,
- Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-s390x@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Richard Henderson <richard.henderson@linaro.org>
-References: <20250308230917.18907-1-philmd@linaro.org>
- <20250308230917.18907-9-philmd@linaro.org>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250308230917.18907-9-philmd@linaro.org>
+From: Zheng Huang <hz1624917200@gmail.com>
+Subject: Re: [PATCH] virtio-pci: fix memory leak from device realization
+ failure
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <7702b335-6e92-47c7-baf9-a384f75a0db3@gmail.com>
+ <69cb6f19-d87a-4ddf-9fca-612b30828679@gmail.com>
+ <c6bf97bf-df26-495d-9886-dfda55cc99db@linaro.org>
+Cc: qemu-devel@nongnu.org
+In-Reply-To: <c6bf97bf-df26-495d-9886-dfda55cc99db@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=hz1624917200@gmail.com; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,66 +98,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+Hi Philippe,
 
+On 2025/2/28 17:24, Philippe Mathieu-Daudé wrote:
+> Hi Zheng,
+> 
+> On 28/2/25 06:03, Zheng Huang wrote:
+>> This commit adds failback routine for `virtio_pci_realize` to
+>> fix the memory leak of an address space and the virtio-net device object.
+>> If the realization of the device failed, the address space should be
+>> destroyed too.
+>>
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2845
+>>
+>> Signed-off-by: Zheng Huang <hz1624917200@outlook.com>
+>>
+>> ---
+>>   hw/virtio/virtio-pci.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+>> index c773a9130c..4b0d8cd90a 100644
+>> --- a/hw/virtio/virtio-pci.c
+>> +++ b/hw/virtio/virtio-pci.c
+>> @@ -2266,6 +2266,9 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
+>>       virtio_pci_bus_new(&proxy->bus, sizeof(proxy->bus), proxy);
+>>       if (k->realize) {
+>>           k->realize(proxy, errp);
+>> +        if (*errp) {
+>> +            address_space_destroy(&proxy->modern_cfg_mem_as);
+>> +        }
+>>       }
+>>   }
+>>   
+> 
+> I think instead we want to add an instance_init in virtio_pci_class_init
+> and move the address_space_init call from virtio_pci_realize there.
+> 
+> Regards,
+> 
+> Phil.
 
-On 3/9/25 12:09 AM, Philippe Mathieu-Daudé wrote:
-> Currently kvm_irqchip_add_irqfd_notifier() and
-> kvm_irqchip_remove_irqfd_notifier() are only declared on
-> target specific code. There is not particular reason to,
-> as their prototypes don't use anything target related.
->
-> Move their declaration with common prototypes, otherwise
-> the next commit would trigger:
->
->   hw/vfio/pci.c: In function ‘vfio_realize’:
->   hw/vfio/pci.c:3178:9: error: implicit declaration of function ‘kvm_irqchip_add_change_notifier’
->    3178 |         kvm_irqchip_add_change_notifier(&vdev->irqchip_change_notifier);
->         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->         |         kvm_irqchip_add_irqfd_notifier
->   hw/vfio/pci.c:3236:9: error: implicit declaration of function ‘kvm_irqchip_remove_change_notifier’
->    3236 |         kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
->         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->         |         kvm_irqchip_remove_irqfd_notifier
->
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+I have reviewed the relevant code again and found that if address_space_init
+is moved into instance_init, it will not be able to take follow-up actions
+such as free the AS if device realization failed, thus failing to address the
+issue. Additionally, I referred to the code for AS initialization and
+destruction in other devices and found that they are managed in device
+realize and unrealize handlers. Therefore, I still believe the previous
+approach is a better choice.
 
-Eric
-> ---
->  include/system/kvm.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/include/system/kvm.h b/include/system/kvm.h
-> index ab17c09a551..75673fb794e 100644
-> --- a/include/system/kvm.h
-> +++ b/include/system/kvm.h
-> @@ -412,10 +412,6 @@ int kvm_irqchip_send_msi(KVMState *s, MSIMessage msg);
->  
->  void kvm_irqchip_add_irq_route(KVMState *s, int gsi, int irqchip, int pin);
->  
-> -void kvm_irqchip_add_change_notifier(Notifier *n);
-> -void kvm_irqchip_remove_change_notifier(Notifier *n);
-> -void kvm_irqchip_change_notify(void);
-> -
->  struct kvm_guest_debug;
->  struct kvm_debug_exit_arch;
->  
-> @@ -517,6 +513,10 @@ void kvm_irqchip_release_virq(KVMState *s, int virq);
->  void kvm_add_routing_entry(KVMState *s,
->                             struct kvm_irq_routing_entry *entry);
->  
-> +void kvm_irqchip_add_change_notifier(Notifier *n);
-> +void kvm_irqchip_remove_change_notifier(Notifier *n);
-> +void kvm_irqchip_change_notify(void);
-> +
->  int kvm_irqchip_add_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
->                                         EventNotifier *rn, int virq);
->  int kvm_irqchip_remove_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
+If there are other potential solutions or considerations that I might have
+missed, please let me know. I'm looking forward to hearing your thoughts!
 
+Sorry to bother you again, but I wanted to follow up on my previous email. Apologize
+if this is inconvenient
+
+Best regards,
+
+Zheng.
 
