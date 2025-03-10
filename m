@@ -2,95 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BC3A5894F
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 00:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D6EA5897A
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 01:08:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trQ8y-0005qo-6u; Sun, 09 Mar 2025 19:33:16 -0400
+	id 1trQfC-0001lx-8B; Sun, 09 Mar 2025 20:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trQ8t-0005nJ-Pl
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 19:33:11 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trQf7-0001l2-0d
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 20:06:29 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trQ8r-0001Ub-VR
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 19:33:11 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-224191d92e4so57686515ad.3
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 16:33:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trQf3-0007GG-2r
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 20:06:28 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43cef0f03cfso4785455e9.3
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 17:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741563188; x=1742167988; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4b/UkAzN7ZHYgiU4BKJLTd8rxlg4iR/5B9OEm16oOJU=;
- b=crGZkL2F6rAR6TCu0ZTcpyZ7Uske0u9Eqi8KQBImTS64se6H/XLG7SuIhv59hFR/TZ
- x1FQ80xEYqo/AgbN8ydllWyyihkLYqni8C0ekYy2kxPz6D9rMWMF3VHorWzuG88zq2vr
- MGvsp3+lrH3fz4UYfMTaGS5VMr8ks1Rh2uoJB2cnKfsGUyFzGax5DZU0M16O2Pydeub1
- 3TumxrKBhFx5AzLd7+TellQ6w/c8AKwLpu9/3FV91nH7Suw0gknh3X+G64iW4SZIabH8
- HByNL1sf6ExqVmxlx/S6cPwZmJ/Nfu1FpjPBXoHe7aJkkjZsGGeSnoL9uy9hNjOtNQfP
- D3cQ==
+ d=linaro.org; s=google; t=1741565183; x=1742169983; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vluwFSKp6e7zoU80eebsr7FlbxAE5fBxSqh6kQbHYLQ=;
+ b=KWF8VMPUgkgBl+NQu/36q1Sii3Go+nz/wZzd40CGS4mPelfzqlsW2QWEphCONnnp4d
+ g6X5QuMhVwRxXGOyZIkLSwzEGDXHHZ+4btKl9/ly0i5JjOg9vtzn/JRAoztwg++rCjGk
+ Sy/mtgX3dSvZejhF/dXpfhEdpAJ8fZpuCensZFC2c2Zni3p68XzIlCbJJcLjIOvMcllV
+ ijS42ZDTBONIFwcxmFUK68NdRb8HUupkC/FWeFHOyS24FOsmF1ptXVTG6Pr42Tjnic5K
+ Hd9V2HRdmryDRGkNjgH4iA71wh/gf7zl/wt6nhDnUToy20mPqRkIlS60aaS9qRRFCa1F
+ 5lIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741563188; x=1742167988;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4b/UkAzN7ZHYgiU4BKJLTd8rxlg4iR/5B9OEm16oOJU=;
- b=SuUID0E99E9w5WhdlimFgFz2WM/oGKp3RwCEis71iSSV+fCct+3V3TT2AuwLZAqbOc
- Ld9/N8qW+7/9FEXsTMXUwKZFnp9hynpngfm9uIzgQJH9pwsvyI2EU/jwKBZQM3btGUa3
- om5fTNtoi+3nTq1pxsTpFM10KUSh7Ch2fIKft8I4Yl5hn7CG8dVhG/ThMpAZtlSymZ7Y
- FTkUL7k6R5PwgbmbPFjvKEMVbhmtfs3/3nb8AMsgg6XyUkK1o69Hrt5Md08kODj/KxU7
- xptSmqu+rNbaOrEyeNKFn5sCfYW4rWCa6qf6uMz2s39iYaRsppVQRo41TqaL4TuxznmM
- yEXA==
+ d=1e100.net; s=20230601; t=1741565183; x=1742169983;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vluwFSKp6e7zoU80eebsr7FlbxAE5fBxSqh6kQbHYLQ=;
+ b=ERIG75Qfs8kB6I+fLvzk+yIo4knw5QGtYrMMP3WS6b2H/hQiiLMMW3wJP89U3irdnH
+ 78gFH16LiP4e1ZpTgAY8apTFI+32TUNUmOg2FtLv2nONlV/jiIjZ6YnKXA5AnjCWMaqO
+ rTlhrZ/UdnE2YNFRzgpdmPRl1CnN+owzQiFHNZwvw9tHNwTYMmBRn5U+8BPTd6wOqPTI
+ PqfS7XgMw0Nwl+JZmGFCwLoGD6hH9qFXrvb2D1NxiudYLAGCzQ5hgxUhl/MJNK/8wAOp
+ tcRMzDu8PiwQqS9WYBgNQmMacKSA0964I0QGw0k9chB3FSWo1DEBQ/Hqpf8kGOpvm1o/
+ Wolg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV4PIYFggzk/02cuEF6dsuTpcXBgHe10rPNHkW0/ZPMQ6bn+LQnSGsKV/LcwrpeAtJNBBr0QqSRznIb@nongnu.org
-X-Gm-Message-State: AOJu0YzKqZG+II64iX5m/DzVEQGoxWSkY4D/NKuNYXu/xBiSD3dG83KL
- Kq3v0Y9W7FFvJvLmZuurPTSJv3NxrtUMEb8BoWKpPsDVufeaxdCf4xIYkVjf/wc=
-X-Gm-Gg: ASbGnctzIn8ZqD9gIYl3gNuh5rz+3XrzVfsQqzi4V+jf5epCkRA6hBL7b2gN/kcu7uN
- dAobAqtQrCjy4ecrrYIKtibr0FdKNydmfnlvg4YZzWKZ3r/Ys0H+RATRXtszI1XTPbgCEpthI8j
- 3doRpaIqS7SHS1V9ytEYXcB8B+1vONXSIlduRjQ7A0ZiBWMS+ijLwWSgJxp+j2sruF5gp8MvlYb
- TiJ/QctI2e+WSlnF26jPxsB8ZG4d3xsslgQgig849Y+StTl02oW8oIEmX0Vt4YlTBGz4xL5HuVE
- +kDbKUwajlb7tPZ/VTmDnvgjpgVvtuYJI3B69nASM24AiwOFNlHk4ih63Q==
-X-Google-Smtp-Source: AGHT+IEJJimItTTmgzjc12itv0ixC5PTKLwwNaQJYzRT3y52Qe5O6A4YR8D59kmlSgj77EP8O5qChQ==
-X-Received: by 2002:a05:6a20:43a7:b0:1f5:7ba7:69d8 with SMTP id
- adf61e73a8af0-1f57ba76d96mr2705823637.15.1741563188021; 
- Sun, 09 Mar 2025 16:33:08 -0700 (PDT)
-Received: from [192.168.1.67] ([38.39.164.180])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af28126e2c1sm5379232a12.52.2025.03.09.16.33.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 09 Mar 2025 16:33:07 -0700 (PDT)
-Message-ID: <91ddf98c-3a5d-404b-9e80-ed4580c1c373@linaro.org>
-Date: Sun, 9 Mar 2025 16:33:06 -0700
+ AJvYcCVb29MWFcwSeYaSck8XyPZofgFbKtnNaX1C9zRknJj67LxGBaoNJwnSDB1hLNHxgVuQGrkrFlWdXzbI@nongnu.org
+X-Gm-Message-State: AOJu0Yz+sHK9HeORuEA5eqxWownVuRfDfGTimwgYM7Dd7uak6A0SmU9L
+ o7yrBfZVjAjmPZ5G6dYz3X2f7j7QwBHVjz3C1SZkVzD1Z6VwYlKA4vw37tQT9tM=
+X-Gm-Gg: ASbGncvKw9vV8vzt14LZCTuoxAeTgFoyKT/H+GmNGp9Hei0MmEdflXemmLzR/fkg+1x
+ nNPqNGxY0pmm4dquyoi6PkJeSfGIsKbm/5ZLAHsuKfo7EeUpCqMWE0icmxKtOcHmeRkK0O8QGEt
+ OAePf5BSNvxFF60EEp9BgV4/VjdpSHVwsM9IvwFxfCRbrhDLr/3ydcij3WPOv5D18HpBsfwujBX
+ cwk1K+SQ/QNJ2bE8eJvjmH8OQ+jMDTIwf2fhJgJ9ryCyd1o7LmRytgC+nzAQhFLSoFMiFA/++3X
+ Knpm0JIoOl671AaIiKryo9/2g0C96vOl7YZzzJhRRVMTvGtTNpg+jrBURTfmRZmgflaR5KaiiNS
+ Yy/agg64oH7PfzaL1Ix7CKQE/20lb2A==
+X-Google-Smtp-Source: AGHT+IGXQGVRl/PbnRa8YqPLCqfxr6IXZ2UAWjlgzILsr9g7wtjeJG/FGLjoRfyLER+TiVWgoQeHew==
+X-Received: by 2002:a05:600c:5103:b0:439:685e:d4c8 with SMTP id
+ 5b1f17b1804b1-43c5a60eda3mr70337825e9.15.1741565183204; 
+ Sun, 09 Mar 2025 17:06:23 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43cfbae50aasm4329205e9.8.2025.03.09.17.06.21
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Sun, 09 Mar 2025 17:06:22 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: BALATON Zoltan <balaton@eik.bme.hu>,
+	qemu-devel@nongnu.org
+Cc: Steven Lee <steven_lee@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Guenter Roeck <linux@roeck-us.net>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Troy Lee <leetroy@gmail.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-block@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>
+Subject: [PATCH v5 00/14] hw/sd/sdhci: Set reset value of interrupt registers
+Date: Mon, 10 Mar 2025 01:06:06 +0100
+Message-ID: <20250310000620.70120-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/7] hw/hyperv: remove duplication compilation units
-Content-Language: en-US
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- alex.bennee@linaro.org, qemu-devel@nongnu.org,
- Marcelo Tosatti <mtosatti@redhat.com>, richard.henderson@linaro.org,
- manos.pitsidianakis@linaro.org
-References: <20250307215623.524987-1-pierrick.bouvier@linaro.org>
- <8c511d16-05d6-4852-86fc-a3be993557c7@linaro.org>
- <8d2a19a8-e0a4-4050-8ba5-9baa9b47782f@maciej.szmigiero.name>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <8d2a19a8-e0a4-4050-8ba5-9baa9b47782f@maciej.szmigiero.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62d.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,28 +108,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgTWFjaWVqLA0KDQpPbiAzLzcvMjUgMTQ6MzEsIE1hY2llaiBTLiBTem1pZ2llcm8gd3Jv
-dGU6DQo+IEhpIFBoaWxpcHBlLA0KPiANCj4gT24gNy4wMy4yMDI1IDIzOjI1LCBQaGlsaXBw
-ZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4+IEhpIE1hY2llaiwNCj4+DQo+PiBPbiA3LzMv
-MjUgMjI6NTYsIFBpZXJyaWNrIEJvdXZpZXIgd3JvdGU6DQo+Pj4gV29yayB0b3dhcmRzIGhh
-dmluZyBhIHNpbmdsZSBiaW5hcnksIGJ5IHJlbW92aW5nIGR1cGxpY2F0ZWQgb2JqZWN0IGZp
-bGVzLg0KPj4NCj4+PiBQaWVycmljayBCb3V2aWVyICg3KToNCj4+PiAgwqDCoCBody9oeXBl
-cnYvaHYtYmFsbG9vbi1zdHViOiBjb21tb24gY29tcGlsYXRpb24gdW5pdA0KPj4+ICDCoMKg
-IGh3L2h5cGVydi9oeXBlcnYuaDogaGVhZGVyIGNsZWFudXANCj4+PiAgwqDCoCBody9oeXBl
-cnYvdm1idXM6IGNvbW1vbiBjb21waWxhdGlvbiB1bml0DQo+Pj4gIMKgwqAgaHcvaHlwZXJ2
-L2h5cGVydi1wcm90bzogbW92ZSBTWU5EQkcgZGVmaW5pdGlvbiBmcm9tIHRhcmdldC9pMzg2
-DQo+Pj4gIMKgwqAgaHcvaHlwZXJ2L3N5bmRiZzogY29tbW9uIGNvbXBpbGF0aW9uIHVuaXQN
-Cj4+PiAgwqDCoCBody9oeXBlcnYvYmFsbG9vbjogY29tbW9uIGJhbGxvb24gY29tcGlsYXRp
-b24gdW5pdHMNCj4+PiAgwqDCoCBody9oeXBlcnYvaHlwZXJ2X3Rlc3RkZXY6IGNvbW1vbiBj
-b21waWxhdGlvbiB1bml0DQo+Pg0KPj4gSWYgeW91IGFyZSBoYXBweSB3aXRoIHRoaXMgc2Vy
-aWVzIGFuZCBwcm92aWRlIHlvdXIgQWNrLWJ5IHRhZywNCj4+IEkgY2FuIHRha2UgaXQgaW4g
-bXkgbmV4dCBody1taXNjIHB1bGwgcmVxdWVzdCBpZiB0aGF0IGhlbHBzLg0KPiANCj4gVGhl
-cmUncyBub3RoaW5nIG9idmlvdXNseSB3cm9uZyBpbiB0aGUgcGF0Y2ggc2V0LA0KPiBidXQg
-aWYgd2UgY2FuIGRlZmVyIHRoaXMgdG8gTW9uZGF5IHRoZW4gSSBjb3VsZCBkbw0KPiBhIHJ1
-bnRpbWUgY2hlY2sgd2l0aCBhIFdpbmRvd3MgVk0gdG9vLg0KPiANCg0KdGhpcyBzZXJpZXMg
-bmVlZHMgc29tZSBmaXh1cCBhZnRlciB0aGUgbWVyZ2Ugb2YgNThkMDA1MzogaW5jbHVkZS9l
-eGVjOiANCk1vdmUgVEFSR0VUX1BBR0Vfe1NJWkUsTUFTSyxCSVRTfSB0byB0YXJnZXRfcGFn
-ZS5oLg0KDQpJJ2xsIHJlLXNwaW4gaXQgbGF0ZXIsIHNvIGRvbid0IHdhc3RlIHlvdXIgdGlt
-ZSB0cnlpbmcgaXQuDQoNClRoYW5rcywNClBpZXJyaWNrDQoNCj4+IFJlZ2FyZHMsDQo+Pg0K
-Pj4gUGhpbC4NCj4gDQo+IFRoYW5rcywNCj4gTWFjaWVqDQo+IA0KDQo=
+Since v4:
+- Convert quirks (Zoltan)
+- Cache class to avoid invalid cast with PCI
+- Remove 'endianness' property (Bernhard)
+
+Since v3:
+- Fix "hw/qdev-properties-system.h" (first patch)
+- Convert to EndianMode (patch #10)
+
+Rainy saturday, time for some hobbyist contributions :)
+
+In this series we try to address the issue Zoltan reported
+and try to fix in [*], but using a more generic approach.
+The SDHCI code ends up better consolidated and ready to
+scale for more vendor implementations.
+
+[*] https://lore.kernel.org/qemu-devel/20250210160329.DDA7F4E600E@zero.eik.bme.hu/
+
+Philippe Mathieu-Daudé (14):
+  hw/qdev-properties-system: Include missing 'qapi/qapi-types-common.h'
+  hw/sd/sdhci: Remove need for SDHCIState::vendor field
+  hw/sd/sdhci: Redefine SDHCI_QUIRK_NO_BUSY_IRQ bitmask as bit
+  hw/sd/sdhci: Include 'wp-inverted' property in quirk bitmask
+  hw/sd/sdhci: Include 'pending-insert-quirk' property in quirk bitmask
+  hw/sd/sdhci: Introduce SDHCIClass stub
+  hw/sd/sdhci: Make quirks a class property
+  hw/sd/sdhci: Make I/O region size a class property
+  hw/sd/sdhci: Allow SDHCI classes to register their own MemoryRegionOps
+  hw/sd/sdhci: Allow SDHCI classes to register their own read-only regs
+  hw/sd/sdhci: Allow SDHCI classes to have different register reset
+    values
+  hw/sd/sdhci: Implement Freescale eSDHC as TYPE_FSL_ESDHC
+  hw/ppc/e500: Replace generic SDHCI by Freescale eSDHC
+  hw/sd/sdhci: Remove unnecessary 'endianness' property
+
+ hw/sd/sdhci-internal.h              |  26 ++---
+ include/hw/qdev-properties-system.h |   1 +
+ include/hw/sd/sdhci.h               |  83 ++++++++++----
+ hw/arm/aspeed.c                     |   2 +-
+ hw/arm/fsl-imx25.c                  |   2 -
+ hw/arm/fsl-imx6.c                   |   2 -
+ hw/arm/fsl-imx6ul.c                 |   2 -
+ hw/arm/fsl-imx7.c                   |   2 -
+ hw/arm/fsl-imx8mp.c                 |   2 -
+ hw/ppc/e500.c                       |  12 +-
+ hw/sd/sdhci-pci.c                   |   1 +
+ hw/sd/sdhci.c                       | 166 ++++++++++++++++++----------
+ 12 files changed, 184 insertions(+), 117 deletions(-)
+
+-- 
+2.47.1
+
 
