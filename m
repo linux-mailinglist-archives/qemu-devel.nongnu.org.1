@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E170A5931D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 12:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7CDA592F0
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 12:44:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trb53-0004qn-BA; Mon, 10 Mar 2025 07:13:57 -0400
+	id 1trb58-0004zc-UO; Mon, 10 Mar 2025 07:14:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1trb4o-0004ok-8p
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 07:13:42 -0400
+ id 1trb4t-0004sy-Jw
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 07:13:50 -0400
 Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1trb4k-0001Mf-Tv
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 07:13:41 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1741605202; cv=none; 
+ id 1trb4r-0001N6-Cx
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 07:13:47 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1741605210; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=WhDQf51XOXcoAD+MuzEZWJWx0zEu/9NYOSBT6QuvqTAkpTYvT4tr7SDJB+U0BQY93JqVc74WbafK3QUPI3St2NmB05PvSie8OOob0lH8FAOPpFkoT/bvOcrycpZDuYjcjGE/VRHRRGNn0NoSTqQy58wqzcg1GMApWIM7GdfXOiw=
+ b=GqkNhMCGYvEud45ljyD6W+J1PEArXo84Eqzkvkx0T1EYpkmsENjGWCPx/mAg0YqYl8DFagq013UvTP5v/v1Nbzerb7Tv/uxm2BA4+79ZA5zewqFciguV6B2h5eNuty6jIcBvBD7IypYRoosePliq0imrxDvTo0MeJ9R3zadEqsM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1741605202;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=xHdJf8tDcH7dzPm1eRkOMtvpXuKeYe2JECKXLOfeni0=; 
- b=mojN/RfExDCP5OwWJGu47rfnl6XnqVtITesjYTN68hvma/R1kOy1ou3MAVX5wi62P8om2Wq9tHy5M7/t9hAU5kQw6caVuB3i+ISsldEsMXok6/w//3zvNwEs9d+l+CMbFHLKiIy+IOfetysUpwqxIRzJYGoGTqhGVNs2+EEz78k=
+ s=zohoarc; t=1741605210;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=bEdXZ8XsEweXcVfjNo0aOl3uqxA6h51gazlqnvqGS7w=; 
+ b=TBiR+keQ0IGA9f56+XSEtoxChRucD/CevBMAS3R4wb/YKGmG5ItW+6f9acCBoj/BDZ6wFUFRJP4HrYK+9xkqcNHqFpOU2jjvR9tfLVWjUNuzlMqtswXkqPHqQSlRL0UAYge8PJ6yowQVXsQr70UFXNrf0UFgtYSAy5qnltUa1Uw=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741605202; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741605210; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=xHdJf8tDcH7dzPm1eRkOMtvpXuKeYe2JECKXLOfeni0=;
- b=JjbmExFhYf5sOkA84n6aNImVKcxBd6xjU/ndbu+Gf9u9RKG+AURKqMdvSaWaL8D9
- hJbOIvVKaodENztsi/4F+AGMGqBYfMlCj7jlkhOdg1vRRiKsnX7ab2Tvg4SGCdiWecs
- 39j6U1glS9T3BpKJBhTi1i0SeWCCw1i79lxhHktM=
-Received: by mx.zohomail.com with SMTPS id 1741605200044925.0788129440624;
- Mon, 10 Mar 2025 04:13:20 -0700 (PDT)
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=bEdXZ8XsEweXcVfjNo0aOl3uqxA6h51gazlqnvqGS7w=;
+ b=guv4xvvCJyG5KwnkDN3kXQLAwONquO5u3e6D6sZi8pu3UtQLPYrjV4IWlrOgpR0K
+ ZbZ4Sl2GrVI6bCMVyOPYIeYuglEYnUI9Oe+aeq2cT+p7U2Ixfwhu0ss9hPzFIsb0AZw
+ 5oj3dED5z7GlpA8ve8GNy4Ou0s5j5RLdoKWyckyI=
+Received: by mx.zohomail.com with SMTPS id 1741605205999381.665930788457;
+ Mon, 10 Mar 2025 04:13:25 -0700 (PDT)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -57,10 +57,13 @@ Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
  Yiwei Zhang <zzyiwei@chromium.org>, Sergio Lopez Pascual <slp@redhat.com>
-Subject: [PATCH v10 00/10] Support virtio-gpu DRM native context
-Date: Mon, 10 Mar 2025 14:12:24 +0300
-Message-ID: <20250310111234.145891-1-dmitry.osipenko@collabora.com>
+Subject: [PATCH v10 01/10] ui/sdl2: Restore original context after new context
+ creation
+Date: Mon, 10 Mar 2025 14:12:25 +0300
+Message-ID: <20250310111234.145891-2-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250310111234.145891-1-dmitry.osipenko@collabora.com>
+References: <20250310111234.145891-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -90,201 +93,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset adds DRM native context support to VirtIO-GPU on Qemu.
+SDL API changes GL context to a newly created GL context, which differs
+from other GL providers that don't switch context. Change SDL backend to
+restore the original GL context. This allows Qemu's virtio-gpu to support
+new virglrenderer async-fencing feature for Virgl contexts, otherwise
+virglrenderer's vrend creates a fence-sync context on the Qemu's
+main-loop thread that erroneously stays in-use by the main-loop after
+creation, not allowing vrend's fence-sync thread switch to this new
+context that belongs to it.
 
-Contarary to Virgl and Venus contexts that mediates high level GFX APIs,
-DRM native context [1] mediates lower level kernel driver UAPI, which
-reflects in a less CPU overhead and less/simpler code needed to support it.
-DRM context consists of a host and guest parts that have to be implemented
-for each GPU driver. On a guest side, DRM context presents a virtual GPU as
-a real/native host GPU device for GL/VK applications.
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+---
+ ui/sdl2-gl.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-[1] https://www.youtube.com/watch?v=9sFP_yddLLQ
-
-Today there are four DRM native context drivers existing in a wild:
-
-  - Freedreno (Qualcomm SoC GPUs), completely upstreamed
-  - AMDGPU, completely upstreamed
-  - Intel (i915), merge requests are opened
-  - Asahi (Apple SoC GPUs), partially merged upstream
-
-# How to try out DRM context:
-
-1. DRM context uses host blobs and on host requires latest 6.13 version
-of Linux kernel that contains necessary KVM fixes.
-
-2. Use latest Mesa (both guest and host) and libvirglrenderer versions.
- Use build flags documented in tha patch #10 of this series.
-
-3. On guest, use latest Linux kernel v6.14-rc or newer.
-
-Example Qemu cmdline that enables DRM context:
-
-  qemu-system-x86_64 -device virtio-vga-gl,hostmem=4G,blob=on,drm_native_context=on \
-      -machine q35,accel=kvm,memory-backend=mem1 \
-      -object memory-backend-memfd,id=mem1,size=8G -m 8G
-
-# Note about known performance problem in Qemu:
-
-DRM contexts are mapping host blobs extensively and these mapping
-operations work slowly in Qemu. We will need to optimize hostmem
-unmapping that currently happens in a deffered RCU work, blocking
-GPU for a substantial time [2].
-
-[2] https://lore.kernel.org/qemu-devel/f58d250d-3831-4ff1-a018-f62f9aeb2527@collabora.com/T/#m17ac72336d28a64c793d4e4e0c87fc7dff9aa847
-
-Changelog:
-
-v10:- Added links to Asahi and i915 virglrenderer MRs, link to Asahi host
-      kernel. Suggested by Akihiko Odaki.
-
-    - Renamed gfxstream guest requrements table's colum to match the host
-      requirements table. Suggested by Akihiko Odaki.
-
-v9: - Updated doc patch by addresing review comments from Akihiko Odaki.
-      Made kernel requirements section specific to guest kernel and
-      removed reference to host requirements. Removed examples of
-      external projects' build flags.
-
-    - Added guest kernel minimum versions to the guest requirements table.
-
-v8: - Addressed review comments from Akihiko Odaki on the doc patch.
-
-    - Added r-bs from Akihiko Odaki on the doc patches.
-
-    - Extended vrend doc with info about hostmem requirement for GL 4.6
-
-v7: - Added r-b from Alex Bennée to the async fencing patch.
-
-    - Updated virtio-gpu doc patch with addressed review comments
-      from Akihiko Odaki.
-
-v6: - Fixed compilation warning using older version of virglrenderer,
-      which wasn't fixed properly in v5.
-
-    - Added t-bs from Alex Bennée.
-
-    - Added patches to improve virgl/venus doc by adding links
-      to the Mesa doc as was suggested by Akihiko Odaki.
-
-    - Updated patch that documents guest/host requirements. Added
-      links to Asahi nctx and reworked the doc structure by adding
-      requirements to each context-type section instead of having
-      one big blob or requirements, which was objected by Akihiko Odaki.
-
-v5: - Added r-bs from Akihiko Odaki.
-
-    - Added acks from Michael Tsirkin.
-
-    - Fixed compilation warning using older version of virglrenderer that
-      was reported by Alex Bennée. Noticed that I need to keep old
-      virgl_write_fence() code around for the older virglrenderer in
-      "Support  asynchronous fencing" patch, so added it back and verified
-      that old virglrenderer works properly.
-
-    - Added new patch from Alex Bennée that adds more virtio-gpu 
-      documentation with a couple corrections and additions to it from me.
-
-    - Rebased patches on top of latest staging tree.
-
-v4: - Improved SDL2/dmabuf patch by reusing existing Meson X11 config 
-      option, better handling EGL error and extending comment telling
-      that it's safe to enable SDL2 EGL preference hint. As was suggested
-      by Akihiko Odaki.
-
-    - Replaced another QSLIST_FOREACH_SAFE with QSLIST_EMPTY+FIRST in
-      the async-fencing patch for more consistency of the code. As was
-      suggested by Akihiko Odaki.
-
-    - Added missing braces around if-statement that was spotted by
-      Alex Bennée.
-
-    - Renamed 'drm=on' option of virtio-gpu-gl device to 
-      'drm_native_context=on' for more clarity as was suggested by 
-      Alex Bennée. Haven't added added new context-type option that 
-      was also proposed by Alex, might do it with a separate patch.
-      This context-type option will duplicate and depecate existing
-      options, but in a longer run likely will be worthwhile adding
-      it.
-
-    - Dropped Linux headers-update patch as headers has been updated
-      in the staging tree.
-
-v3: - Improved EGL presence-check code on X11 systems for the SDL2
-      hint that prefers EGL over GLX by using better ifdefs and checking
-      Xlib presence at a build time to avoid build failure if lib SDL2
-      and system are configured with a disabled X11 support. Also added
-      clarifying comment telling that X11 hint doesn't affect Wayland
-      systems. Suggested by Akihiko Odaki.
-
-    - Corrected strerror(err) that used negative error where it should
-      be positive and vice versa that was caught by Akihiko Odaki. Added
-      clarifying comment for the case where we get positive error code
-      from virglrenderer that differs from other virglrenderer API functions.
-
-    - Improved QSLIST usage by dropping mutex protecting the async fence
-      list and using atomic variant of QSLIST helpers instead. Switched away
-      from using FOREACH helper to improve readability of the code, showing
-      that we don't precess list in unoptimal way. Like was suggested by
-      Akihiko Odaki.
-
-    - Updated patchset base to Venus v18.
-
-v2: - Updated SDL2-dmabuf patch by making use of error_report() and
-      checking presense of X11+EGL in the system before making SDL2
-      to prefer EGL backend over GLX, suggested by Akihiko Odaki.
-
-    - Improved SDL2's dmabuf-presence check that wasn't done properly
-      in v1, where EGL was set up only after first console was fully
-      inited, and thus, SDL's display .has_dmabuf callback didn't work
-      for the first console. Now dmabuf support status is pre-checked
-      before console is registered.
-
-    - Updated commit description of the patch that fixes SDL2's context
-      switching logic with a more detailed explanation of the problem.
-      Suggested by Akihiko Odaki.
-
-    - Corrected rebase typo in the async-fencing patch and switched
-      async-fencing to use a sigle-linked list instead of the double,
-      as was suggested by Akihiko Odaki.
-
-    - Replaced "=true" with "=on" in the DRM native context documentation
-      example and made virtio_gpu_virgl_init() to fail with a error message
-      if DRM context can't be initialized instead of giving a warning
-      message, as was suggested by Akihiko Odaki.
-
-    - Added patchew's dependecy tag to the cover letter as was suggested by
-      Akihiko Odaki.
-
-Alex Bennée (1):
-  docs/system: virtio-gpu: Document host/guest requirements
-
-Dmitry Osipenko (8):
-  ui/sdl2: Restore original context after new context creation
-  virtio-gpu: Handle virgl fence creation errors
-  virtio-gpu: Support asynchronous fencing
-  virtio-gpu: Support DRM native context
-  ui/sdl2: Don't disable scanout when display is refreshed
-  ui/gtk: Don't disable scanout when display is refreshed
-  docs/system: virtio-gpu: Add link to Mesa VirGL doc
-  docs/system: virtio-gpu: Update Venus link
-
-Pierre-Eric Pelloux-Prayer (1):
-  ui/sdl2: Implement dpy dmabuf functions
-
- docs/system/devices/virtio-gpu.rst | 110 ++++++++++++++++++-
- hw/display/virtio-gpu-gl.c         |   5 +
- hw/display/virtio-gpu-virgl.c      | 164 ++++++++++++++++++++++++++++-
- hw/display/virtio-gpu.c            |  15 +++
- include/hw/virtio/virtio-gpu.h     |  16 +++
- include/ui/sdl2.h                  |   7 ++
- meson.build                        |   6 +-
- ui/gtk-egl.c                       |   1 -
- ui/gtk-gl-area.c                   |   1 -
- ui/sdl2-gl.c                       |  68 +++++++++++-
- ui/sdl2.c                          |  42 ++++++++
- 11 files changed, 422 insertions(+), 13 deletions(-)
-
+diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
+index e01d9ab0c7bf..b1fe96d6af22 100644
+--- a/ui/sdl2-gl.c
++++ b/ui/sdl2-gl.c
+@@ -168,6 +168,9 @@ QEMUGLContext sdl2_gl_create_context(DisplayGLCtx *dgc,
+                             SDL_GL_CONTEXT_PROFILE_ES);
+         ctx = SDL_GL_CreateContext(scon->real_window);
+     }
++
++    SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
++
+     return (QEMUGLContext)ctx;
+ }
+ 
 -- 
 2.48.1
 
