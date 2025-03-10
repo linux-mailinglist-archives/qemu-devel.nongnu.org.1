@@ -2,89 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27AFA58B46
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 05:47:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A33F5A58B5D
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 05:59:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trV2F-0008UV-Mt; Mon, 10 Mar 2025 00:46:39 -0400
+	id 1trVE8-0002dt-GB; Mon, 10 Mar 2025 00:58:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trV25-0008U5-HK; Mon, 10 Mar 2025 00:46:30 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1trVE5-0002ce-OA
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:58:53 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trV23-0005br-Mh; Mon, 10 Mar 2025 00:46:29 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-22409077c06so47174395ad.1; 
- Sun, 09 Mar 2025 21:46:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1trVE3-000894-Ta
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:58:53 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-223594b3c6dso65469375ad.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 21:58:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741581985; x=1742186785; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QCIYMBkz+ccL9FkKPpToGpSWZo1J05UaIS83SH+turk=;
- b=Yblrue+msHc1+Vl+MCgSDyFAi8c7MmhDeBEJXfAU37Fy9ydRtaFDVmYrMDssc/VxET
- FJuVSmumxGcgfU0Jzz8qe/JVr+fQcJzdq8quZJW8+X/HnS64Gb9KX2ILLwEsI9RuZjui
- NG4Vqr/kXSvgVIoZ5/XgaXGTsqCx2GHA058DXMKI6QMuXG/qm3O2/ANjcuUyWcBLWtIN
- kcoAgPOkj4omgXm1tesgP3KPbQ8L7F0KqBJU5T7YvEb5a/RNdDlTo2SFfdNDmidqVkxr
- 9YfgalLEKKzdGya3+GcVwkRfvXxqF3CLtJjvX/SvfjtjdwSUY4c/TiHypLmuItKhakp+
- 23Ag==
+ d=linaro.org; s=google; t=1741582730; x=1742187530; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CyMnY8DCOyhH4sll8UBWjGQBOdpS4N2V2sRcD5CyECM=;
+ b=hfLiPxvyqxmTjLmZ3nHbM5hovdVZpMl8UjjeM9FOXEt19EmPihv0lDDEUNXHbaz+A2
+ grqQ439HrcAOhn+hbFe8/8kAgY6IEegpzXEqbP+qowOj7j92KbsgpqeNp80JrzHrWNt6
+ agXIGxUsEmhL+VhlqgWKC/JjNNo7Q3g0KcH+K9zBCqTdsE+2iFQBi4UPJFsPI8tFVN7W
+ UQVPyAFxA+dxkYjlRwW99bsNZant7KFzGDvkxkQN4CrMJwZzazXCfz9M2Hw9zy/vJwX8
+ TxCYLJr3iRvzcrioUCmNv0pUuWlUth5YkejF2bofZPs4SBBaug3zm/HJnwHapxPuo/v+
+ 1OeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741581985; x=1742186785;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=QCIYMBkz+ccL9FkKPpToGpSWZo1J05UaIS83SH+turk=;
- b=u2tLLr9ptJTFjxPc1BS6rybrQmpu2WD3lJkH3/lCxRTK633h4wQO96PQtt68KCPv8u
- ytwgAv6AcCMZwCluw6qUhbgqX/Shnb07nDyToPwqF1RscusXtAxJr4/rS3lj5eluNk6m
- 7Pk7ZzMPnwn/TdanCyToXTeU5/QnRKruFzHIZgTylkQngBiaTeU9xLGFIHuV7074znct
- +Aa11Kdb61/Wg1Nqp3ZnIfTHW+l5frANlyLPrf/1pMfESYAIteBzW8lNCxiq9phhVakm
- /3vaWWer0fKTdXzAu0YVR32TRFZIdduketZTkF2Y+rtVbRELdaLRPL2whN1r/Z2tx1kj
- qurw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWv58KNLI07AB6iFdFFbSm4+GL9bbwYKqy+kW4krhnpicaslwv8LFbOQNq6yBzmMZZV2pKw73QfndI3@nongnu.org
-X-Gm-Message-State: AOJu0YzSonkMfES5V2hrEpml09Ql6Qoxxljs4cUaNwQxgbSy0CnEcf0w
- eSt55Kv0TQCNMMPSZYcqdnSyo69g1lS4RxuVQ1NmjI1/imcNCS3z
-X-Gm-Gg: ASbGncu8zrvgXD5JZkHf7jWr+1uNuHJlGi1NffGmsKZR5pnV0ydb/rdk983C+aZBdzR
- +bb/rNaE4k+1ZDVGAUbZwoT/R0zFv6WrwkqUESH9c8zqDRm4Ry3CMndcpta/2SwavF0TkZXSosk
- n3uXB9OGcXfbtYcIEvOTJP5mKieQpYWXUgu3WtYk9XD9Fbyx83+IFGfK3x5jENvzr/yk2LbUIp1
- 9cY4+QwGinxe39xygsWMt5g9i+ps9icErgkzvdxPDZR4XMRDlGbFLSxItpDub3PqfE1qNmVd9ce
- 8Ss+ntmhuF08UstOAU1YiewHcCQgKshY5/xgHlcq
-X-Google-Smtp-Source: AGHT+IGy/6KciON10RiqpDiyzjS0ydpDWIrCmnOdFFA11KTEg1v1fyG0ajfwNdb3sLx+2/lTSqzfEw==
-X-Received: by 2002:a05:6a00:2d90:b0:736:4b85:ee05 with SMTP id
- d2e1a72fcca58-736aaa56dc6mr16710548b3a.11.1741581985061; 
- Sun, 09 Mar 2025 21:46:25 -0700 (PDT)
-Received: from localhost ([118.208.151.101]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736b6305227sm4837194b3a.16.2025.03.09.21.46.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 09 Mar 2025 21:46:24 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 10 Mar 2025 14:46:18 +1000
-Message-Id: <D8CBABU0FRD1.1X7KHNS0GJUAK@gmail.com>
-Cc: <qemu-ppc@nongnu.org>, <fbarrat@linux.ibm.com>, <milesg@linux.ibm.com>,
- <danielhb413@gmail.com>, <david@gibson.dropbear.id.au>,
- <harshpb@linux.ibm.com>, <thuth@redhat.com>, <lvivier@redhat.com>,
- <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 08/14] qtest/xive: Add group-interrupt test
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Michael Kowal" <kowal@linux.ibm.com>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.19.0
-References: <20241210000527.9541-1-kowal@linux.ibm.com>
- <20241210000527.9541-16-kowal@linux.ibm.com>
-In-Reply-To: <20241210000527.9541-16-kowal@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
+ d=1e100.net; s=20230601; t=1741582730; x=1742187530;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CyMnY8DCOyhH4sll8UBWjGQBOdpS4N2V2sRcD5CyECM=;
+ b=TePJt39Tknia7slZkZsyCmMY6J0ZLv8NSxOB9zOZUQa7BM3+ZOzLYuIqnRAy0wMpSO
+ QkypdM0W3PCqOMqxZRpB2QpBsSVTNY2tPvvJe9RDa+kB18/6uIn2nia1W6CIo6OLfMVn
+ CwH5m0tL53zUtIvI+AqWnnE1fu2hXz1MYxO0/NWw+ZwlkmbNR6bpBCIhjXsfBly9k50R
+ x/0kyOoq5t9GJoINJttOY0bmsvNAOoLLHDkwGdlEG6R6OfukzgMP5wKHxcMK2QUyIlwO
+ GRx5j4Eh3OUf0LOQHAqSzTJrjncFDl+TTCaUEP5ia0jErRqkCaow+s6BeiTUOuiPj4iW
+ Om8A==
+X-Gm-Message-State: AOJu0YwszJeg/pbzHBGytBPJblAI4V1YeK3TZvD1+N2Zdh/DHEMMImBf
+ l0p9ZQxscAEYVsDnkfM5boHQNdiXKgWD9OEOrlacaHZzOaXQQMSgr9TAYhuxNl2Xed6MQnP4ood
+ Rpcc=
+X-Gm-Gg: ASbGncuA1telyNQzRbxNlaQNCXX/zTGOAmgeJWANfGbW5O3dh2/cW2ss5CzhSoy/Zsp
+ Kw3PjjhIc3bsFzMaKscDgcndUflGXX20+4cWCBR+1lF1Y15V437TkdL+Ravjv4wE3tKUI071Lkm
+ 09c2VtgwtiufqlF3hcoMEi8EdLJL0oupaNmsbYTgEArRPi3wzh2sDSmqRzL4EHCkSlASjaZJrel
+ sEGl3g95dUsN1bRdwj7kFHQ3NVUwUg5alaa59XaaC7LMMyodJMm9BddKTp+OgCUAdGSs+kZfhlR
+ n0dszxHhj9YlLst76by0r88LObESqRpGMYImaIAfMYul30K+t2nKcJk=
+X-Google-Smtp-Source: AGHT+IFBRE9vcuWy/8QGIVJH+CegCd8ZXFRntWgx7wfqbQL9hdyzkh8MEMl2t2vqfLHGN0wEW9B3Eg==
+X-Received: by 2002:a05:6a00:b4e:b0:736:57cb:f2b6 with SMTP id
+ d2e1a72fcca58-736aaa1acf0mr17943212b3a.12.1741582729877; 
+ Sun, 09 Mar 2025 21:58:49 -0700 (PDT)
+Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-736d2ae318csm1708308b3a.53.2025.03.09.21.58.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 09 Mar 2025 21:58:49 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, alex.bennee@linaro.org,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, kvm@vger.kernel.org,
+ Peter Xu <peterx@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ David Hildenbrand <david@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
+ Paul Durrant <paul@xen.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Anthony PERARD <anthony@xenproject.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ manos.pitsidianakis@linaro.org, qemu-riscv@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 00/16] make system memory API available for common code
+Date: Sun,  9 Mar 2025 21:58:26 -0700
+Message-Id: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,214 +110,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Dec 10, 2024 at 10:05 AM AEST, Michael Kowal wrote:
-> From: Frederic Barrat <fbarrat@linux.ibm.com>
->
-> Add XIVE2 tests for group interrupts and group interrupts that have
-> been backlogged.
->
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+The main goal of this series is to be able to call any memory ld/st function
+from code that is *not* target dependent. As a positive side effect, we can
+turn related system compilation units into common code.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+The first 6 patches remove dependency of memory API to cpu headers and remove
+dependency to target specific code. This could be a series on its own, but it's
+great to be able to turn system memory compilation units into common code to
+make sure it can't regress, and prove it achieves the desired result.
 
-> ---
->  tests/qtest/pnv-xive2-test.c | 160 +++++++++++++++++++++++++++++++++++
->  1 file changed, 160 insertions(+)
->
-> diff --git a/tests/qtest/pnv-xive2-test.c b/tests/qtest/pnv-xive2-test.c
-> index dd19e88861..a4d06550ee 100644
-> --- a/tests/qtest/pnv-xive2-test.c
-> +++ b/tests/qtest/pnv-xive2-test.c
-> @@ -2,6 +2,8 @@
->   * QTest testcase for PowerNV 10 interrupt controller (xive2)
->   *  - Test irq to hardware thread
->   *  - Test 'Pull Thread Context to Odd Thread Reporting Line'
-> + *  - Test irq to hardware group
-> + *  - Test irq to hardware group going through backlog
->   *
->   * Copyright (c) 2024, IBM Corporation.
->   *
-> @@ -315,6 +317,158 @@ static void test_pull_thread_ctx_to_odd_thread_cl(Q=
-TestState *qts)
->      word2 =3D get_tima32(qts, target_pir, TM_QW3_HV_PHYS + TM_WORD2);
->      g_assert_cmphex(xive_get_field32(TM_QW3W2_VT, word2), =3D=3D, 0);
->  }
-> +
-> +static void test_hw_group_irq(QTestState *qts)
-> +{
-> +    uint32_t irq =3D 100;
-> +    uint32_t irq_data =3D 0xdeadbeef;
-> +    uint32_t end_index =3D 23;
-> +    uint32_t chosen_one;
-> +    uint32_t target_nvp =3D 0x81; /* group size =3D 4 */
-> +    uint8_t priority =3D 6;
-> +    uint32_t reg32;
-> +    uint16_t reg16;
-> +    uint8_t pq, nsr, cppr;
-> +
-> +    printf("# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D\n");
-> +    printf("# Testing irq %d to hardware group of size 4\n", irq);
-> +
-> +    /* irq config */
-> +    set_eas(qts, irq, end_index, irq_data);
-> +    set_end(qts, end_index, target_nvp, priority, true /* group */);
-> +
-> +    /* enable and trigger irq */
-> +    get_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_SET_PQ_00);
-> +    set_esb(qts, irq, XIVE_TRIGGER_PAGE, 0, 0);
-> +
-> +    /* check irq is raised on cpu */
-> +    pq =3D get_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_GET);
-> +    g_assert_cmpuint(pq, =3D=3D, XIVE_ESB_PENDING);
-> +
-> +    /* find the targeted vCPU */
-> +    for (chosen_one =3D 0; chosen_one < SMT; chosen_one++) {
-> +        reg32 =3D get_tima32(qts, chosen_one, TM_QW3_HV_PHYS + TM_WORD0)=
-;
-> +        nsr =3D reg32 >> 24;
-> +        if (nsr =3D=3D 0x82) {
-> +            break;
-> +        }
-> +    }
-> +    g_assert_cmphex(chosen_one, <, SMT);
-> +    cppr =3D (reg32 >> 16) & 0xFF;
-> +    g_assert_cmphex(nsr, =3D=3D, 0x82);
-> +    g_assert_cmphex(cppr, =3D=3D, 0xFF);
-> +
-> +    /* ack the irq */
-> +    reg16 =3D get_tima16(qts, chosen_one, TM_SPC_ACK_HV_REG);
-> +    nsr =3D reg16 >> 8;
-> +    cppr =3D reg16 & 0xFF;
-> +    g_assert_cmphex(nsr, =3D=3D, 0x82);
-> +    g_assert_cmphex(cppr, =3D=3D, priority);
-> +
-> +    /* check irq data is what was configured */
-> +    reg32 =3D qtest_readl(qts, xive_get_queue_addr(end_index));
-> +    g_assert_cmphex((reg32 & 0x7fffffff), =3D=3D, (irq_data & 0x7fffffff=
-));
-> +
-> +    /* End Of Interrupt */
-> +    set_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_STORE_EOI, 0);
-> +    pq =3D get_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_GET);
-> +    g_assert_cmpuint(pq, =3D=3D, XIVE_ESB_RESET);
-> +
-> +    /* reset CPPR */
-> +    set_tima8(qts, chosen_one, TM_QW3_HV_PHYS + TM_CPPR, 0xFF);
-> +    reg32 =3D get_tima32(qts, chosen_one, TM_QW3_HV_PHYS + TM_WORD0);
-> +    nsr =3D reg32 >> 24;
-> +    cppr =3D (reg32 >> 16) & 0xFF;
-> +    g_assert_cmphex(nsr, =3D=3D, 0x00);
-> +    g_assert_cmphex(cppr, =3D=3D, 0xFF);
-> +}
-> +
-> +static void test_hw_group_irq_backlog(QTestState *qts)
-> +{
-> +    uint32_t irq =3D 31;
-> +    uint32_t irq_data =3D 0x01234567;
-> +    uint32_t end_index =3D 129;
-> +    uint32_t target_nvp =3D 0x81; /* group size =3D 4 */
-> +    uint32_t chosen_one =3D 3;
-> +    uint8_t blocking_priority, priority =3D 3;
-> +    uint32_t reg32;
-> +    uint16_t reg16;
-> +    uint8_t pq, nsr, cppr, lsmfb, i;
-> +
-> +    printf("# =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D\n");
-> +    printf("# Testing irq %d to hardware group of size 4 going through "=
- \
-> +           "backlog\n",
-> +           irq);
-> +
-> +    /*
-> +     * set current priority of all threads in the group to something
-> +     * higher than what we're about to trigger
-> +     */
-> +    blocking_priority =3D priority - 1;
-> +    for (i =3D 0; i < SMT; i++) {
-> +        set_tima8(qts, i, TM_QW3_HV_PHYS + TM_CPPR, blocking_priority);
-> +    }
-> +
-> +    /* irq config */
-> +    set_eas(qts, irq, end_index, irq_data);
-> +    set_end(qts, end_index, target_nvp, priority, true /* group */);
-> +
-> +    /* enable and trigger irq */
-> +    get_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_SET_PQ_00);
-> +    set_esb(qts, irq, XIVE_TRIGGER_PAGE, 0, 0);
-> +
-> +    /* check irq is raised on cpu */
-> +    pq =3D get_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_GET);
-> +    g_assert_cmpuint(pq, =3D=3D, XIVE_ESB_PENDING);
-> +
-> +    /* check no interrupt is pending on the 2 possible targets */
-> +    for (i =3D 0; i < SMT; i++) {
-> +        reg32 =3D get_tima32(qts, i, TM_QW3_HV_PHYS + TM_WORD0);
-> +        nsr =3D reg32 >> 24;
-> +        cppr =3D (reg32 >> 16) & 0xFF;
-> +        lsmfb =3D reg32 & 0xFF;
-> +        g_assert_cmphex(nsr, =3D=3D, 0x0);
-> +        g_assert_cmphex(cppr, =3D=3D, blocking_priority);
-> +        g_assert_cmphex(lsmfb, =3D=3D, priority);
-> +    }
-> +
-> +    /* lower priority of one thread */
-> +    set_tima8(qts, chosen_one, TM_QW3_HV_PHYS + TM_CPPR, priority + 1);
-> +
-> +    /* check backlogged interrupt is presented */
-> +    reg32 =3D get_tima32(qts, chosen_one, TM_QW3_HV_PHYS + TM_WORD0);
-> +    nsr =3D reg32 >> 24;
-> +    cppr =3D (reg32 >> 16) & 0xFF;
-> +    g_assert_cmphex(nsr, =3D=3D, 0x82);
-> +    g_assert_cmphex(cppr, =3D=3D, priority + 1);
-> +
-> +    /* ack the irq */
-> +    reg16 =3D get_tima16(qts, chosen_one, TM_SPC_ACK_HV_REG);
-> +    nsr =3D reg16 >> 8;
-> +    cppr =3D reg16 & 0xFF;
-> +    g_assert_cmphex(nsr, =3D=3D, 0x82);
-> +    g_assert_cmphex(cppr, =3D=3D, priority);
-> +
-> +    /* check irq data is what was configured */
-> +    reg32 =3D qtest_readl(qts, xive_get_queue_addr(end_index));
-> +    g_assert_cmphex((reg32 & 0x7fffffff), =3D=3D, (irq_data & 0x7fffffff=
-));
-> +
-> +    /* End Of Interrupt */
-> +    set_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_STORE_EOI, 0);
-> +    pq =3D get_esb(qts, irq, XIVE_EOI_PAGE, XIVE_ESB_GET);
-> +    g_assert_cmpuint(pq, =3D=3D, XIVE_ESB_RESET);
-> +
-> +    /* reset CPPR */
-> +    set_tima8(qts, chosen_one, TM_QW3_HV_PHYS + TM_CPPR, 0xFF);
-> +    reg32 =3D get_tima32(qts, chosen_one, TM_QW3_HV_PHYS + TM_WORD0);
-> +    nsr =3D reg32 >> 24;
-> +    cppr =3D (reg32 >> 16) & 0xFF;
-> +    lsmfb =3D reg32 & 0xFF;
-> +    g_assert_cmphex(nsr, =3D=3D, 0x00);
-> +    g_assert_cmphex(cppr, =3D=3D, 0xFF);
-> +    g_assert_cmphex(lsmfb, =3D=3D, 0xFF);
-> +}
-> +
->  static void test_xive(void)
->  {
->      QTestState *qts;
-> @@ -330,6 +484,12 @@ static void test_xive(void)
->      /* omit reset_state here and use settings from test_hw_irq */
->      test_pull_thread_ctx_to_odd_thread_cl(qts);
-> =20
-> +    reset_state(qts);
-> +    test_hw_group_irq(qts);
-> +
-> +    reset_state(qts);
-> +    test_hw_group_irq_backlog(qts);
-> +
->      reset_state(qts);
->      test_flush_sync_inject(qts);
-> =20
+The next patches remove more dependencies on cpu headers (exec-all,
+memory-internal, ram_addr).
+Then, we add access to a needed function from kvm, some xen stubs, and we
+finally can turn our compilation units into common code.
+
+Every commit was tested to build correctly for all targets (on windows, linux,
+macos), and the series was fully tested by running all tests we have (linux,
+x86_64 host).
+
+Pierrick Bouvier (16):
+  exec/memory_ldst: extract memory_ldst declarations from cpu-all.h
+  exec/memory_ldst_phys: extract memory_ldst_phys declarations from
+    cpu-all.h
+  include: move target_words_bigendian() from tswap to bswap
+  exec/memory.h: make devend_memop target agnostic
+  qemu/bswap: implement {ld,st}.*_p as functions
+  exec/cpu-all.h: we can now remove ld/st macros
+  codebase: prepare to remove cpu.h from exec/exec-all.h
+  exec/exec-all: remove dependency on cpu.h
+  exec/memory-internal: remove dependency on cpu.h
+  exec/ram_addr: remove dependency on cpu.h
+  system/kvm: make kvm_flush_coalesced_mmio_buffer() accessible for
+    common code
+  exec/ram_addr: call xen_hvm_modified_memory only if xen is enabled
+  hw/xen: add stubs for various functions
+  system/physmem: compilation unit is now common to all targets
+  system/memory: make compilation unit common
+  system/ioport: make compilation unit common
+
+ include/exec/cpu-all.h              | 52 ------------------
+ include/exec/exec-all.h             |  1 -
+ include/exec/memory-internal.h      |  2 -
+ include/exec/memory.h               | 48 ++++++++++++++---
+ include/exec/ram_addr.h             | 11 ++--
+ include/exec/tswap.h                | 11 ----
+ include/qemu/bswap.h                | 82 +++++++++++++++++++++++++++++
+ include/system/kvm.h                |  6 +--
+ include/tcg/tcg-op.h                |  1 +
+ target/ppc/helper_regs.h            |  2 +
+ include/exec/memory_ldst.h.inc      | 13 ++---
+ include/exec/memory_ldst_phys.h.inc |  5 +-
+ hw/ppc/spapr_nested.c               |  1 +
+ hw/sh4/sh7750.c                     |  1 +
+ hw/xen/xen_stubs.c                  | 56 ++++++++++++++++++++
+ page-vary-target.c                  |  3 +-
+ system/ioport.c                     |  1 -
+ system/memory.c                     | 22 +++++---
+ target/riscv/bitmanip_helper.c      |  1 +
+ hw/xen/meson.build                  |  3 ++
+ system/meson.build                  |  6 +--
+ 21 files changed, 225 insertions(+), 103 deletions(-)
+ create mode 100644 hw/xen/xen_stubs.c
+
+-- 
+2.39.5
 
 
