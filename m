@@ -2,121 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DD4A58DB8
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 09:09:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F292DA58DC7
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 09:16:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trYBh-0002fA-LD; Mon, 10 Mar 2025 04:08:37 -0400
+	id 1trYHM-0005Ft-1M; Mon, 10 Mar 2025 04:14:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1trYBb-0002d2-BB
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 04:08:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1trYBY-0001V1-8Y
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 04:08:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741594106;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2SVqfFpfoDG60gjNZIvZf6TG6Jva8VJJjYnJ5TQlFzU=;
- b=aEMxS7qb0eseW7JRd+bnwtaaC2gxKGjFTc4zgghKAJuSc3/yxk4FPI4s2bV6T5mvPZlMsM
- uwvx6k7c4uMSI7nxsTqPBcf3/So6J7DcD3Mx68pywJ40ss0FmyqZsM462udPt9uqqlfw80
- gBHvrvQs/0DJZd9SfFiA5j+ioBjjFik=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-176-QgPD9UPzN_Ge-pi4rtmNxw-1; Mon, 10 Mar 2025 04:08:23 -0400
-X-MC-Unique: QgPD9UPzN_Ge-pi4rtmNxw-1
-X-Mimecast-MFC-AGG-ID: QgPD9UPzN_Ge-pi4rtmNxw_1741594102
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43cf172ffe1so6991665e9.3
- for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 01:08:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741594102; x=1742198902;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2SVqfFpfoDG60gjNZIvZf6TG6Jva8VJJjYnJ5TQlFzU=;
- b=sBMvtBE9mIfsCVyupQBKCubOJtmkteBzq9VFELsX3EZMDsbwWMYDwPOJvIkpSi6cxQ
- 2B7N8jJbcCFghQwLdYmK9qsDBkHPdMRjr5NkhQMCFzxrAoemA+DldeBh5lZaKxd2CObn
- hpSY/kjq15fw9XcGzUAqTuPwCloy53V55DM9bNDiwIJupUWt4vMxGd8M1zbZFt5blpfe
- ic/+C2krzG2XHrJ+Z7s22tjNCjtJKQa1I9A/Xyy6HndQDKHMlf6Ad5pTGzLIn5wyn0hu
- KdLWLKygV6pr8sOrDOc9TZPgZtp1pr3R1LP7205g7iGEc7aVDvliYH3VDuaAk1PU22bL
- Dffg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUMZlBlPE3UUz2w1EAKOdZE7RNcs8Yxo8WFErrEJpGRvyucDplDmKwJ1gmWsm3XP0mYZjphhB9m9kuF@nongnu.org
-X-Gm-Message-State: AOJu0YyXmimUugy0d/ZZ8qwqCFYxjXf0o+ZJDovY4l+AokG7Dvor3OWU
- aFCBLokxqK1ve/uvHKhH6DOmUXUNSq8QiDwh+mf90+rxyfWg/hDSe1xeb6BbSEW6Jj3d08SK4XK
- KmC4lgjojmychEH0+A0tPuSoGEU7NCdsRTAa5jY8U063UVURZSN38
-X-Gm-Gg: ASbGncuoFkhreD+P4UNPBdi/DxY+vhDBrZLbxHTt73aGAJug1RJKX5mDURRdXeqblPI
- j5vf3rtEHkup5teebkKNVznwWpz9Y0C6ayPTHHqYZFk/jZwHL0x8xFW9N8//xWMdDKnEm3ASf1B
- R1HyiwoHwYYv4Dttf7QbwazUTiW5OYEH3QF6v1kF6IEn1WuiSHwMyzLIXADc9+KSp2gOkT99cuS
- OCS5fuvmi8coR+PEMSMDNR9QhXtAKq4Ageyr0Kvu9ukMnobAlAyCWgUrEzSVhRg/EO6alU+Tzbf
- Hdu0D3BF08npH72NODcNtQTGh8Jy6SSgmrRucGmAtyUaHpQl/krnH3YObplhLr4=
-X-Received: by 2002:a05:600c:1e8c:b0:43c:fc0c:7f33 with SMTP id
- 5b1f17b1804b1-43cfc0c92bcmr7549395e9.2.1741594101968; 
- Mon, 10 Mar 2025 01:08:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHAvJo0H2j6esnE0YJy2idFdRJrPW3F+ziL9sDrU5Yt1vwPcmThEaW3VKBboPQlYFKcfohn+A==
-X-Received: by 2002:a05:600c:1e8c:b0:43c:fc0c:7f33 with SMTP id
- 5b1f17b1804b1-43cfc0c92bcmr7548915e9.2.1741594101489; 
- Mon, 10 Mar 2025 01:08:21 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43cfcbdd0a7sm9338655e9.11.2025.03.10.01.08.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Mar 2025 01:08:20 -0700 (PDT)
-Message-ID: <ff98f698-3f5a-4b08-9e77-3814a74165e4@redhat.com>
-Date: Mon, 10 Mar 2025 09:08:15 +0100
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1trYHH-0005Fe-CX
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 04:14:23 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1trYHB-0002j7-O7
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 04:14:22 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8CxG6xOn85n4HuQAA--.17410S3;
+ Mon, 10 Mar 2025 16:14:07 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMAxj8VKn85nFk9BAA--.47175S3;
+ Mon, 10 Mar 2025 16:14:05 +0800 (CST)
+Subject: Re: [PATCH] tests/qtest/cpu-plug-test: Add cpu hotplug support for
+ LoongArch
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+References: <20250310062456.2453189-1-maobibo@loongson.cn>
+ <ce0f0c13-0e04-444f-b5db-8fdb7af6f945@redhat.com>
+From: bibo mao <maobibo@loongson.cn>
+Message-ID: <ffad81a0-cbc7-9596-77b7-e1a9c38eccf7@loongson.cn>
+Date: Mon, 10 Mar 2025 16:13:25 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/21] hw/vfio/spapr: Do not include <linux/kvm.h>
+In-Reply-To: <ce0f0c13-0e04-444f-b5db-8fdb7af6f945@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Halil Pasic <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Tomita Moeko
- <tomitamoeko@gmail.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eric Farman <farman@linux.ibm.com>, Eduardo Habkost <eduardo@habkost.net>,
- Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-s390x@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Richard Henderson <richard.henderson@linaro.org>
-References: <20250308230917.18907-1-philmd@linaro.org>
- <20250308230917.18907-3-philmd@linaro.org>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250308230917.18907-3-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-CM-TRANSID: qMiowMAxj8VKn85nFk9BAA--.47175S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxCw17uFW3ZF1UKryfCw4kGrX_yoWrWr47pr
+ WkArW5KrW8Arn5J3WxGF1UWFyFvr17G3Z8Jr4IqF1UCrZxGr10gr4jga1qgFnrAw48Zr48
+ Aw1kJrnxu3ZrJFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UE-erU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.702,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,42 +77,105 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
+On 2025/3/10 下午3:04, Thomas Huth wrote:
+> On 10/03/2025 07.24, Bibo Mao wrote:
+>> Add cpu hotplug testcase support for LoongArch system, it passes to
+>> run with command "make check-qtest-loongarch64" as following:
+>>    qemu:qtest+qtest-loongarch64 / qtest-loongarch64/cpu-plug-test OK 
+>> 0.64s 1 subtests passed
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   tests/qtest/cpu-plug-test.c | 28 ++++++++++++++++++++++++++++
+>>   tests/qtest/meson.build     |  2 +-
+>>   2 files changed, 29 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/qtest/cpu-plug-test.c b/tests/qtest/cpu-plug-test.c
+>> index 6633abfc10..790b9693b3 100644
+>> --- a/tests/qtest/cpu-plug-test.c
+>> +++ b/tests/qtest/cpu-plug-test.c
+>> @@ -156,6 +156,32 @@ static void add_s390x_test_case(const char *mname)
+>>       g_free(path);
+>>   }
+>> +static void add_loongarch_test_case(const char *mname)
+>> +{
+>> +    char *path;
+>> +    PlugTestData *data;
+>> +
+>> +    if (!g_str_has_prefix(mname, "virt")) {
+>> +        return;
+>> +    }
+>> +
+>> +    data = g_new(PlugTestData, 1);
+>> +    data->machine = g_strdup(mname);
+>> +    data->cpu_model = "la464";
+>> +    data->device_model = g_strdup("la464-loongarch-cpu");
+>> +    data->sockets = 1;
+>> +    data->cores = 3;
+>> +    data->threads = 1;
+>> +    data->maxcpus = data->sockets * data->cores * data->threads;
+>> +
+>> +    path = g_strdup_printf("cpu-plug/%s/device-add/%ux%ux%u&maxcpus=%u",
+>> +                           mname, data->sockets, data->cores,
+>> +                           data->threads, data->maxcpus);
+>> +    qtest_add_data_func_full(path, data, test_plug_with_device_add,
+>> +                             test_data_free);
+>> +    g_free(path);
+>> +}
+>> +
+>>   int main(int argc, char **argv)
+>>   {
+>>       const char *arch = qtest_get_arch();
+>> @@ -168,6 +194,8 @@ int main(int argc, char **argv)
+>>           qtest_cb_for_every_machine(add_pseries_test_case, 
+>> g_test_quick());
+>>       } else if (g_str_equal(arch, "s390x")) {
+>>           qtest_cb_for_every_machine(add_s390x_test_case, 
+>> g_test_quick());
+>> +    } else if (g_str_equal(arch, "loongarch64")) {
+>> +        qtest_cb_for_every_machine(add_loongarch_test_case, 
+>> g_test_quick());
+> 
+> There seems to be only one unversioned "virt" machine for loongarch, so 
+> using qtest_cb_for_every_machine() and g_str_has_prefix(mname, "virt") 
+> in above function seems unnecessary? I'd suggest to call 
+> add_loongarch_test_case() here directly instead and only add the single 
+> test case for the virt machine there. Or do you plan to introduce other 
+> machines any time soon?
+There is no plan to introduce other machines from my side now, only new 
+cpu type will be added.
 
-On 3/9/25 12:08 AM, Philippe Mathieu-Daudé wrote:
-> <linux/kvm.h> is already include by "system/kvm.h" in the next line.
-included
+Yeap, calling add_loongarch_test_case() here directly is better, will 
+modify it in next patch.
+> 
+>>       }
+>>       return g_test_run();
+>> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+>> index 8a6243382a..60e16614b2 100644
+>> --- a/tests/qtest/meson.build
+>> +++ b/tests/qtest/meson.build
+>> @@ -149,7 +149,7 @@ qtests_hppa = \
+>>   qtests_loongarch64 = qtests_filter + \
+>>     (config_all_devices.has_key('CONFIG_LOONGARCH_VIRT') ? 
+>> ['numa-test'] : []) + \
+>> -  ['boot-serial-test']
+>> +  ['boot-serial-test', 'cpu-plug-test']
+> 
+> I'd like to suggest to put tests on separate lines here (we do it for 
+> most of the other targets already), that will make "git blame" more 
+> useful in the future when the list changed a couple of times.
+Sure, will put tests on separate lines. And thanks for reviewing and the 
+good suggestions.
 
->
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
-> ---
->  hw/vfio/spapr.c | 3 ---
->  1 file changed, 3 deletions(-)
->
-> diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-> index ad4c499eafe..9b5ad05bb1c 100644
-> --- a/hw/vfio/spapr.c
-> +++ b/hw/vfio/spapr.c
-> @@ -11,9 +11,6 @@
->  #include "qemu/osdep.h"
->  #include <sys/ioctl.h>
->  #include <linux/vfio.h>
-> -#ifdef CONFIG_KVM
-> -#include <linux/kvm.h>
-> -#endif
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-
-Eric
->  #include "system/kvm.h"
->  #include "exec/address-spaces.h"
->  
+Regards
+Bibo Mao
+> 
+>   Thomas
+> 
 
 
