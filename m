@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE89A591C5
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 11:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109C8A59205
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 11:56:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1traht-0006cE-H9; Mon, 10 Mar 2025 06:50:03 -0400
+	id 1tran2-00005w-EZ; Mon, 10 Mar 2025 06:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1trahg-0006Ub-Gk
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 06:49:50 -0400
-Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1trahd-0004wM-UW
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 06:49:47 -0400
-Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-6fbaa0582a6so35510827b3.1
- for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 03:49:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741603784; x=1742208584; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=lPdgGObt3I9W5H3oCG0ujbSqzvoCHpdJpv7djxg/VTY=;
- b=mAm6IcypiywWxMzJSct1xCVvVVfSWy+P/kfRDLiMa1tRxjHyQobOjGMKs0UXyddazh
- d7S2gjQ8gyRFiJjR1iooZh50qzA4CBCjnrMAaZApYXHGg+ZUli1oY5TE8sE6LXIjks6M
- QVmlOrz0VK+hDuLveOFHvEKwROATcV4KqSCH3UksW5+c1axuCQ2vrhTQAqXYGFLm38MG
- k9LjgEvh8Kp/bctKTRzdiZ+VnsEDUXjUwNYcWzmcZxDlSNB1AuNHfhVqZjPdPGtArXvJ
- 7QjHnntllOhuNg0uVsBPyZeoEsuBzJJU+v7IPyktwvwyN9Qjcg9o0QUr7+LcLjjSK7Dt
- Lmgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741603784; x=1742208584;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lPdgGObt3I9W5H3oCG0ujbSqzvoCHpdJpv7djxg/VTY=;
- b=bvHOXUctE6gGnBclZvz/TTmXs6LaJaAJQbe/04Nx0g0ApHAUyPyFcSwkm1gwQwxcux
- ZO2YGbEvCZ8eZHVXNqV/obR3149KMuxtT/VjOWND/tXdgqmygHeU99sqBCuxS506OkbF
- 4N85EgLltMsFXAECmQKLj0qDMd9V1+QxVeiEtH6qdHHq9P4+/YqFNMebtq0bUt2wM2TT
- KpBGmXKtsxN/p+HMckKAQQ9sd1x7mEtEAmfABQCAeCx4Rw0Fu0bfpNKqSAkKwMwbgtr/
- A4MgG6LkGnqFjTI1HZQC0BVcGh2VNsOhGrb7Rif5ARGPlaasX7imW6c+lMxwehoD8M+L
- H0wg==
-X-Gm-Message-State: AOJu0Yx6jaB5EJ61oCVVDTlrvleZfIIXiMcN7YY6kUlWcb7enFPv6W6c
- lY6dJHNiPQDBa3gbnxdCHUyBqmyJkIiGvG4gfcr+rwgYnXIQIRuBhRdpuuAiDzIu1U1HcqqZnYx
- X+5b7CVLNyH5y4V7HmF/PrW4zMjefPBAhQ4wBwA==
-X-Gm-Gg: ASbGncuT9WJnLrciES0Hb69qQu8WmLyMtnhpkhZgnHdrjiXQ5pkCwN9W6ElQjk9+3Ae
- S7/Cha0yeHsunJhacNq88PqFHYD3RRMPhFUjiuJT71aOBHSSsA3OPPZSZNjLDA2NaW4w0uX7HV+
- HeThdebus2e/NFL6v0Od7ceD3MKa8=
-X-Google-Smtp-Source: AGHT+IFxOTniQtNa/zwfV4kAdswht7O6AS0MIzFwYlsNnMlGfWu3+gJ6Gp3T8T9nXvsarNKl10dZJR3IRzpejU16EM0=
-X-Received: by 2002:a05:6902:70f:b0:e60:915b:188 with SMTP id
- 3f1490d57ef6-e636f7e9a04mr10189653276.18.1741603784612; Mon, 10 Mar 2025
- 03:49:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tramx-000056-SL
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 06:55:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tramu-0005uu-Ku
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 06:55:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741604110;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=fDcCQ7CuPUGFWVbwfBZZf401C3MuFweFWiev+Lm6a7o=;
+ b=KTsr+vRIw/ZGJZwnUyj668qT897mYxjy9Og5QH3vBYA5yOhLdBTUR0TANZ/080WPoUymoL
+ P6ya9vYQXpADSWZI45DpBtsXZdq7UxAvPtFiwK9UnKPBpborCpHj1Ma2nRS7clS3aul6ZL
+ JWQaERBX6rf4xpEqRUiXNQk9mBiWj68=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-1DGw1vQqMBOhVdG81xWKGg-1; Mon,
+ 10 Mar 2025 06:55:07 -0400
+X-MC-Unique: 1DGw1vQqMBOhVdG81xWKGg-1
+X-Mimecast-MFC-AGG-ID: 1DGw1vQqMBOhVdG81xWKGg_1741604106
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 48185195609E; Mon, 10 Mar 2025 10:55:05 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.19])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8D2903000197; Mon, 10 Mar 2025 10:55:04 +0000 (UTC)
+Date: Mon, 10 Mar 2025 18:55:01 +0800
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, pbonzini@redhat.com, afaria@redhat.com,
+ hreitz@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH 5/5] aio-posix: Separate AioPolledEvent per AioHandler
+Message-ID: <20250310105501.GC359802@fedora>
+References: <20250307221634.71951-1-kwolf@redhat.com>
+ <20250307221634.71951-6-kwolf@redhat.com>
 MIME-Version: 1.0
-References: <3cca4eb3-09d1-4467-81fd-27a5bfe19a3e@csclub.uwaterloo.ca>
- <CAFEAcA9kED+fB1repp2+r-zMfZ_5ZeAkZq2ChyxjSUo1j5gAFQ@mail.gmail.com>
- <aef79501-b99f-4e84-b6fe-14dec1e030e6@csclub.uwaterloo.ca>
- <CAFEAcA9ht=T_XqKaKB-PaNK9joQFYgks37JHjqUO-qkaNe7YUQ@mail.gmail.com>
- <d714a7c2-2291-4a85-abcc-81648da1ef57@csclub.uwaterloo.ca>
- <CAFEAcA-9Nj9KrcPwoBBT88wK=NUPsorT71XbBbyLJYOemmkojQ@mail.gmail.com>
- <3660e47b-0f37-4e6d-8bbd-7d646eb67207@csclub.uwaterloo.ca>
-In-Reply-To: <3660e47b-0f37-4e6d-8bbd-7d646eb67207@csclub.uwaterloo.ca>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 10 Mar 2025 10:49:33 +0000
-X-Gm-Features: AQ5f1JrK2AJr7PnVsjxXkms3FcAS4rRuyNa3gw_NEhUjC6t3NN5Lnc8cXvVU0Sc
-Message-ID: <CAFEAcA87OntUbW+CnebWZirnrHw4ZwFwROeRs4qJd91O6B3U4w@mail.gmail.com>
-Subject: Re: [PATCH] bcm2838: Add GIC-400 timer interupt connections
-To: Sourojeet Adhikari <s23adhik@csclub.uwaterloo.ca>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112d.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="Y1yVTQc4elM+8F+z"
+Content-Disposition: inline
+In-Reply-To: <20250307221634.71951-6-kwolf@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,50 +84,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 10 Mar 2025 at 06:29, Sourojeet Adhikari
-<s23adhik@csclub.uwaterloo.ca> wrote:
->
-> Hello,
->
-> So far I've figured out that I need to add a member called SplitIRQ
-> in the BCMSocPeripheralBaseState struct, which is of size defined
-> by `BCM2835_NUM_SPLITTERS`. Then from what I can tell through
-> reading through the codebase, I should do something similar to
-> what happens in `exynos4210.c` in the `exynos4210_init_board_irqs`
-> function?
 
-QEMU qdev devices have a multiple-stage initialization process:
- (1) 'init', which in this case means calling object_initialize_child().
-     In this case you should do this in raspi_peripherals_base_init(),
-     where we do this for the other child devices of the common
-     peripheral base object.
- (2) set properties (in this case the "num-lines" property, which
-     needs to be set to 2). You do this in the parent object's 'realize'
-     method, in this case bcm_soc_peripherals_common_realize().
-     There are several different equivalent APIs to set a simple
-     integer property; using qdev_prop_set_uint16() like the exynos
-     code does is fine.
- (3) realize the device by calling qdev_realize(); this has to be
-     done after all properties are set.
- (4) wire up the input and output GPIO lines (you want to wire up
-     a GPIO only once the devices on both ends have been realized).
-     For this case, in the bcm_soc_peripherals_common_realize()
-     function we're going to wire up the the device's outbound
-     IRQ to the input of the appropriate splitter, and connect
-     output 0 of that splitter to the BCM2835_IC correct interrupt
-     controller input.
- (5) The last bit of wiring, where we connect splitter output 1 to
-     the correct GIC input, we do in bcm2838.c, and only after
-     we've called 'realize' for both the bcm2835_peripherals object
-     and the GIC object.
+--Y1yVTQc4elM+8F+z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Sorry for taking a while to get back and still having quite a few
-> questions about this. Thank you for helping me out with writting
-> this patch.
+On Fri, Mar 07, 2025 at 11:16:34PM +0100, Kevin Wolf wrote:
+> Adaptive polling has a big problem: It doesn't consider that an event
+> loop can wait for many different events that may have very different
+> typical latencies.
+>=20
+> For example, think of a guest that tends to send a new I/O request soon
+> after the previous I/O request completes, but the storage on the host is
+> rather slow. In this case, getting the new request from guest quickly
+> means that polling is enabled, but the next thing is performing the I/O
+> request on the backend, which is slow and disables polling again for the
+> next guest request. This means that in such a scenario, polling could
+> help for every other event, but is only ever enabled when it can't
+> succeed.
+>=20
+> In order to fix this, keep a separate AioPolledEvent for each
+> AioHandler. We will then know that the backend file descriptor always
+> has a high latency and isn't worth polling for, but we also know that
+> the guest is always fast and we should poll for it. This solves at least
+> half of the problem, we can now keep polling for those cases where it
+> makes sense and get the improved performance from it.
+>=20
+> Since the event loop doesn't know which event will be next, we still do
+> some unnecessary polling while we're waiting for the slow disk. I made
+> some attempts to be more clever than just randomly growing and shrinking
+> the polling time, and even to let callers be explicit about when they
+> expect a new event, but so far this hasn't resulted in improved
+> performance or even caused performance regressions. For now, let's just
+> fix the part that is easy enough to fix, we can revisit the rest later.
+>=20
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  include/block/aio.h |  1 -
+>  util/aio-posix.h    |  1 +
+>  util/aio-posix.c    | 24 +++++++++++++++++++++---
+>  util/async.c        |  2 --
+>  4 files changed, 22 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/include/block/aio.h b/include/block/aio.h
+> index 49f46e01cb..0ef7ce48e3 100644
+> --- a/include/block/aio.h
+> +++ b/include/block/aio.h
+> @@ -233,7 +233,6 @@ struct AioContext {
+>      int poll_disable_cnt;
+> =20
+>      /* Polling mode parameters */
+> -    AioPolledEvent poll;
+>      int64_t poll_max_ns;    /* maximum polling time in nanoseconds */
+>      int64_t poll_grow;      /* polling time growth factor */
+>      int64_t poll_shrink;    /* polling time shrink factor */
+> diff --git a/util/aio-posix.h b/util/aio-posix.h
+> index 4264c518be..82a0201ea4 100644
+> --- a/util/aio-posix.h
+> +++ b/util/aio-posix.h
+> @@ -38,6 +38,7 @@ struct AioHandler {
+>  #endif
+>      int64_t poll_idle_timeout; /* when to stop userspace polling */
+>      bool poll_ready; /* has polling detected an event? */
+> +    AioPolledEvent poll;
+>  };
+> =20
+>  /* Add a handler to a ready list */
+> diff --git a/util/aio-posix.c b/util/aio-posix.c
+> index 259827c7ad..2251871c61 100644
+> --- a/util/aio-posix.c
+> +++ b/util/aio-posix.c
+> @@ -579,13 +579,19 @@ static bool run_poll_handlers(AioContext *ctx, AioH=
+andlerList *ready_list,
+>  static bool try_poll_mode(AioContext *ctx, AioHandlerList *ready_list,
+>                            int64_t *timeout)
+>  {
+> +    AioHandler *node;
+>      int64_t max_ns;
+> =20
+>      if (QLIST_EMPTY_RCU(&ctx->poll_aio_handlers)) {
+>          return false;
+>      }
+> =20
+> -    max_ns =3D qemu_soonest_timeout(*timeout, ctx->poll.ns);
+> +    max_ns =3D 0;
+> +    QLIST_FOREACH(node, &ctx->poll_aio_handlers, node_poll) {
+> +        max_ns =3D MAX(max_ns, node->poll.ns);
+> +    }
+> +    max_ns =3D qemu_soonest_timeout(*timeout, max_ns);
+> +
+>      if (max_ns && !ctx->fdmon_ops->need_wait(ctx)) {
+>          /*
+>           * Enable poll mode. It pairs with the poll_set_started() in
+> @@ -721,8 +727,14 @@ bool aio_poll(AioContext *ctx, bool blocking)
+> =20
+>      /* Adjust polling time */
+>      if (ctx->poll_max_ns) {
+> +        AioHandler *node;
+>          int64_t block_ns =3D qemu_clock_get_ns(QEMU_CLOCK_REALTIME) - st=
+art;
+> -        adjust_polling_time(ctx, &ctx->poll, block_ns);
+> +
+> +        QLIST_FOREACH(node, &ctx->poll_aio_handlers, node_poll) {
+> +            if (QLIST_IS_INSERTED(node, node_ready)) {
+> +                adjust_polling_time(ctx, &node->poll, block_ns);
+> +            }
+> +        }
+>      }
+> =20
+>      progress |=3D aio_bh_poll(ctx);
+> @@ -772,10 +784,16 @@ void aio_context_use_g_source(AioContext *ctx)
+>  void aio_context_set_poll_params(AioContext *ctx, int64_t max_ns,
+>                                   int64_t grow, int64_t shrink, Error **e=
+rrp)
+>  {
+> +    AioHandler *node;
+> +
+>      /* No thread synchronization here, it doesn't matter if an incorrect=
+ value
+>       * is used once.
+>       */
 
-No worries; this stuff is all quite complicated and we don't
-really document it very well.
+If you respin this series:
 
-thanks
--- PMM
+This comment is confusing now that qemu_lockcnt_inc() is being used.
+Lockcnt tells other threads in aio_set_fd_handler() not to remove nodes
+=66rom the aio_handlers list (because we're traversing the list).
+
+The comment is about the poll state though, not about the aio_handlers
+list. Moving it down to where poll_max_ns, etc are assigned would make
+it clearer.
+
+> -    ctx->poll.ns =3D 0;
+> +    qemu_lockcnt_inc(&ctx->list_lock);
+> +    QLIST_FOREACH(node, &ctx->aio_handlers, node) {
+> +        node->poll.ns =3D 0;
+> +    }
+> +    qemu_lockcnt_dec(&ctx->list_lock);
+> =20
+>      ctx->poll_max_ns =3D max_ns;
+>      ctx->poll_grow =3D grow;
+> diff --git a/util/async.c b/util/async.c
+> index 38667ea091..4124a948fd 100644
+> --- a/util/async.c
+> +++ b/util/async.c
+> @@ -609,8 +609,6 @@ AioContext *aio_context_new(Error **errp)
+>      qemu_rec_mutex_init(&ctx->lock);
+>      timerlistgroup_init(&ctx->tlg, aio_timerlist_notify, ctx);
+> =20
+> -    ctx->poll.ns =3D 0;
+> -
+>      ctx->poll_max_ns =3D 0;
+>      ctx->poll_grow =3D 0;
+>      ctx->poll_shrink =3D 0;
+> --=20
+> 2.48.1
+>=20
+
+--Y1yVTQc4elM+8F+z
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfOxQUACgkQnKSrs4Gr
+c8jxZggAte3v8BaJ2N5myWYqM4fNtJ+lrfwH+QsQmcXchD3bVBiP4oCt0ecy7rjo
+wlbbIis0LfCttMDG6BoqUvosonCVMaOWy7hnKFF6o2yQ16LGasI7ndmlIMPdc4Ve
+3aQ2DGBCUU0TX7DbcPpfnhGZUeIxbcG0fprf5FL/EOVz2Z6+H4bZ+McXh3x3p+Tc
+y4GFCNLLyFvgFIjw1pqb3FVDWmBeQ1T4vAakELn/89LVVc7/yVV25jv+xA/cbGwD
+vgMGhqi0TbmE6Es03P7K3yiX9/VS+ZRXGe20hfuINDS1Z44UOEacUv+q8iEtEQRu
+Z1oUll2elg972vc0JXkCg4tyNKVzsA==
+=a0gj
+-----END PGP SIGNATURE-----
+
+--Y1yVTQc4elM+8F+z--
+
 
