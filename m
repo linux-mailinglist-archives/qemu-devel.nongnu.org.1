@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB40A59C77
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 18:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4EEA59C6D
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 18:12:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trgfH-0003U5-Mi; Mon, 10 Mar 2025 13:11:43 -0400
+	id 1trgfO-0003iP-8t; Mon, 10 Mar 2025 13:11:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1trgeq-0003LA-Fg
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 13:11:16 -0400
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1trges-0003MW-Tf
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 13:11:20 -0400
 Received: from us-smtp-delivery-44.mimecast.com ([205.139.111.44])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1trgeo-00016h-Dl
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 13:11:16 -0400
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1trgeq-00017A-Lq
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 13:11:18 -0400
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-12-1RrpHN4ZO22wRJtVb7lT0w-1; Mon,
- 10 Mar 2025 13:11:09 -0400
-X-MC-Unique: 1RrpHN4ZO22wRJtVb7lT0w-1
-X-Mimecast-MFC-AGG-ID: 1RrpHN4ZO22wRJtVb7lT0w_1741626668
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-576-EUluAfaIM4aII6IHLH7jig-1; Mon,
+ 10 Mar 2025 13:11:12 -0400
+X-MC-Unique: EUluAfaIM4aII6IHLH7jig-1
+X-Mimecast-MFC-AGG-ID: EUluAfaIM4aII6IHLH7jig_1741626671
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 59E61180882E; Mon, 10 Mar 2025 17:11:08 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 22A36180025B; Mon, 10 Mar 2025 17:11:10 +0000 (UTC)
 Received: from bahia.redhat.com (unknown [10.22.64.233])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0C5CC18001DE; Mon, 10 Mar 2025 17:11:06 +0000 (UTC)
+ id BF66918001DE; Mon, 10 Mar 2025 17:11:08 +0000 (UTC)
 From: Greg Kurz <groug@kaod.org>
 To: qemu-devel@nongnu.org
 Cc: Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz <groug@kaod.org>
-Subject: [PATCH 2/4] 9pfs: Don't use file descriptors in core code
-Date: Mon, 10 Mar 2025 18:10:59 +0100
-Message-ID: <20250310171101.138380-3-groug@kaod.org>
+Subject: [PATCH 3/4] 9pfs: Introduce ftruncate file op
+Date: Mon, 10 Mar 2025 18:11:00 +0100
+Message-ID: <20250310171101.138380-4-groug@kaod.org>
 In-Reply-To: <20250310171101.138380-1-groug@kaod.org>
 References: <20250310171101.138380-1-groug@kaod.org>
 MIME-Version: 1.0
@@ -46,13 +46,12 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: softfail client-ip=205.139.111.44; envelope-from=groug@kaod.org;
  helo=us-smtp-delivery-44.mimecast.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, PDS_OTHER_BAD_TLD=0.47,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,123 +67,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v9fs_getattr() currently peeks into V9fsFidOpenState to know if a fid
-has a valid file descriptor or directory stream. Even though the fields
-are accessible, this is an implementation detail of the local backend
-that should not be manipulated directly by the server code.
+Add an ftruncate operation to the fs driver and use if when a fid has
+a valid file descriptor. This is required to support more cases where
+the client wants to do an action on an unlinked file which it still
+has an open file decriptor for.
 
-Abstract that with a new has_valid_handle() backend operation.
-
-Make the existing local_fid_fd() helper more robust so that it
-can cope with P9_FID_NONE or a null directory stream and reuse
-it.
+Only 9P2000.L was considered.
 
 Signed-off-by: Greg Kurz <groug@kaod.org>
 ---
- fsdev/file-op-9p.h |  1 +
- hw/9pfs/9p-local.c | 12 +++++++++---
- hw/9pfs/9p-synth.c |  6 ++++++
- hw/9pfs/9p.c       |  9 ++++++---
- 4 files changed, 22 insertions(+), 6 deletions(-)
+ fsdev/file-op-9p.h |  2 ++
+ hw/9pfs/9p-local.c |  9 +++++++++
+ hw/9pfs/9p-synth.c |  8 ++++++++
+ hw/9pfs/9p.c       |  6 +++++-
+ hw/9pfs/cofs.c     | 18 ++++++++++++++++++
+ hw/9pfs/coth.h     |  2 ++
+ 6 files changed, 44 insertions(+), 1 deletion(-)
 
 diff --git a/fsdev/file-op-9p.h b/fsdev/file-op-9p.h
-index 4997677460e8..39fee185f4ce 100644
+index 39fee185f4ce..40a40f7d8af8 100644
 --- a/fsdev/file-op-9p.h
 +++ b/fsdev/file-op-9p.h
-@@ -164,6 +164,7 @@ struct FileOperations {
-     int (*renameat)(FsContext *ctx, V9fsPath *olddir, const char *old_name,
+@@ -165,6 +165,8 @@ struct FileOperations {
                      V9fsPath *newdir, const char *new_name);
      int (*unlinkat)(FsContext *ctx, V9fsPath *dir, const char *name, int flags);
-+    bool (*has_valid_handle)(int fid_type, V9fsFidOpenState *fs);
+     bool (*has_valid_handle)(int fid_type, V9fsFidOpenState *fs);
++    int (*ftruncate)(FsContext *ctx, int fid_type, V9fsFidOpenState *fs,
++                     off_t size);
  };
  
  #endif
 diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
-index c4366c867988..03e5304ef888 100644
+index 03e5304ef888..fa763b0662f5 100644
 --- a/hw/9pfs/9p-local.c
 +++ b/hw/9pfs/9p-local.c
-@@ -768,11 +768,11 @@ out:
- 
- static int local_fid_fd(int fid_type, V9fsFidOpenState *fs)
- {
--    int fd;
-+    int fd = -1;
- 
--    if (fid_type == P9_FID_DIR) {
-+    if (fid_type == P9_FID_DIR && fs->dir.stream != NULL) {
-         fd = dirfd(fs->dir.stream);
--    } else {
-+    } else if (fid_type == P9_FID_FILE) {
-         fd = fs->fd;
-     }
- 
-@@ -1576,6 +1576,11 @@ static int local_parse_opts(QemuOpts *opts, FsDriverEntry *fse, Error **errp)
-     return 0;
+@@ -1046,6 +1046,14 @@ static int local_truncate(FsContext *ctx, V9fsPath *fs_path, off_t size)
+     return ret;
  }
  
-+static bool local_has_valid_handle(int fid_type, V9fsFidOpenState *fs)
++static int local_ftruncate(FsContext *ctx, int fid_type, V9fsFidOpenState *fs,
++                           off_t size)
 +{
-+    return local_fid_fd(fid_type, fs) != -1;
++    int fd = local_fid_fd(fid_type, fs);
++
++    return ftruncate(fd, size);
 +}
 +
- FileOperations local_ops = {
-     .parse_opts = local_parse_opts,
-     .init  = local_init,
-@@ -1613,4 +1618,5 @@ FileOperations local_ops = {
-     .name_to_path = local_name_to_path,
+ static int local_chown(FsContext *fs_ctx, V9fsPath *fs_path, FsCred *credp)
+ {
+     char *dirpath = g_path_get_dirname(fs_path->data);
+@@ -1619,4 +1627,5 @@ FileOperations local_ops = {
      .renameat  = local_renameat,
      .unlinkat = local_unlinkat,
-+    .has_valid_handle = local_has_valid_handle,
+     .has_valid_handle = local_has_valid_handle,
++    .ftruncate = local_ftruncate,
  };
 diff --git a/hw/9pfs/9p-synth.c b/hw/9pfs/9p-synth.c
-index 2abaf3a2918a..fa0b187a1b80 100644
+index fa0b187a1b80..7f0e13f0ddd8 100644
 --- a/hw/9pfs/9p-synth.c
 +++ b/hw/9pfs/9p-synth.c
-@@ -615,6 +615,11 @@ static int synth_init(FsContext *ctx, Error **errp)
-     return 0;
+@@ -356,6 +356,13 @@ static int synth_truncate(FsContext *ctx, V9fsPath *path, off_t offset)
+     return -1;
  }
  
-+static bool synth_has_valid_handle(int fid_type, V9fsFidOpenState *fs)
++static int synth_ftruncate(FsContext *ctx, int fid_type, V9fsFidOpenState *fs,
++                           off_t size)
 +{
-+    return false;
++    errno = ENOSYS;
++    return -1;
 +}
 +
- FileOperations synth_ops = {
-     .init         = synth_init,
-     .lstat        = synth_lstat,
-@@ -650,4 +655,5 @@ FileOperations synth_ops = {
-     .name_to_path = synth_name_to_path,
+ static int synth_chmod(FsContext *fs_ctx, V9fsPath *path, FsCred *credp)
+ {
+     errno = EPERM;
+@@ -656,4 +663,5 @@ FileOperations synth_ops = {
      .renameat     = synth_renameat,
      .unlinkat     = synth_unlinkat,
-+    .has_valid_handle = synth_has_valid_handle,
+     .has_valid_handle = synth_has_valid_handle,
++    .ftruncate    = synth_ftruncate,
  };
 diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 7cad2bce6209..969fb2f8c494 100644
+index 969fb2f8c494..35b2ed900a01 100644
 --- a/hw/9pfs/9p.c
 +++ b/hw/9pfs/9p.c
-@@ -1574,6 +1574,11 @@ out_nofid:
-     pdu_complete(pdu, err);
+@@ -1733,7 +1733,11 @@ static void coroutine_fn v9fs_setattr(void *opaque)
+         }
+     }
+     if (v9iattr.valid & (P9_ATTR_SIZE)) {
+-        err = v9fs_co_truncate(pdu, &fidp->path, v9iattr.size);
++        if (fid_has_valid_handle(pdu->s, fidp)) {
++            err = v9fs_co_ftruncate(pdu, fidp, v9iattr.size);
++        } else {
++            err = v9fs_co_truncate(pdu, &fidp->path, v9iattr.size);
++        }
+         if (err < 0) {
+             goto out;
+         }
+diff --git a/hw/9pfs/cofs.c b/hw/9pfs/cofs.c
+index 67e3ae5c5ccd..893466fb1a44 100644
+--- a/hw/9pfs/cofs.c
++++ b/hw/9pfs/cofs.c
+@@ -184,6 +184,24 @@ int coroutine_fn v9fs_co_truncate(V9fsPDU *pdu, V9fsPath *path, off_t size)
+     return err;
  }
  
-+static bool fid_has_valid_handle(V9fsState *s, V9fsFidState *fidp)
++int coroutine_fn v9fs_co_ftruncate(V9fsPDU *pdu, V9fsFidState *fidp, off_t size)
 +{
-+    return s->ops->has_valid_handle(fidp->fid_type, &fidp->fs);
++    int err;
++    V9fsState *s = pdu->s;
++
++    if (v9fs_request_cancelled(pdu)) {
++        return -EINTR;
++    }
++    v9fs_co_run_in_worker(
++        {
++            err = s->ops->ftruncate(&s->ctx, fidp->fid_type, &fidp->fs, size);
++            if (err < 0) {
++                err = -errno;
++            }
++        });
++    return err;
 +}
 +
- static void coroutine_fn v9fs_getattr(void *opaque)
- {
-     int32_t fid;
-@@ -1596,9 +1601,7 @@ static void coroutine_fn v9fs_getattr(void *opaque)
-         retval = -ENOENT;
-         goto out_nofid;
-     }
--    if ((fidp->fid_type == P9_FID_FILE && fidp->fs.fd != -1) ||
--        (fidp->fid_type == P9_FID_DIR && fidp->fs.dir.stream))
--    {
-+    if (fid_has_valid_handle(pdu->s, fidp)) {
-         retval = v9fs_co_fstat(pdu, fidp, &stbuf);
-     } else {
-         retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
+ int coroutine_fn v9fs_co_mknod(V9fsPDU *pdu, V9fsFidState *fidp,
+                                V9fsString *name, uid_t uid, gid_t gid,
+                                dev_t dev, mode_t mode, struct stat *stbuf)
+diff --git a/hw/9pfs/coth.h b/hw/9pfs/coth.h
+index 2c54249b3577..0b8ee4c56495 100644
+--- a/hw/9pfs/coth.h
++++ b/hw/9pfs/coth.h
+@@ -109,5 +109,7 @@ int coroutine_fn v9fs_co_name_to_path(V9fsPDU *, V9fsPath *,
+                                       const char *, V9fsPath *);
+ int coroutine_fn v9fs_co_st_gen(V9fsPDU *pdu, V9fsPath *path, mode_t,
+                                 V9fsStatDotl *v9stat);
++int coroutine_fn v9fs_co_ftruncate(V9fsPDU *pdu, V9fsFidState *fidp,
++                                   off_t size);
+ 
+ #endif
 -- 
 2.48.1
 
