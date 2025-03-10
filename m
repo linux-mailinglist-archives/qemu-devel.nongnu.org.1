@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6143A58B61
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 06:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF199A58B72
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 06:02:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trVEH-0002jh-D9; Mon, 10 Mar 2025 00:59:05 -0400
+	id 1trVER-0002z5-Cb; Mon, 10 Mar 2025 00:59:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trVEA-0002gh-11
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:58:58 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1trVEA-0002hP-Ut
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:58:59 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trVE8-0008Ap-1O
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:58:57 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-22337bc9ac3so70486805ad.1
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 21:58:55 -0700 (PDT)
+ id 1trVE9-0008BP-4G
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:58:58 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-22398e09e39so65589495ad.3
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 21:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741582734; x=1742187534; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741582736; x=1742187536; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=S8ktbxqhQcYI9crAlIF4CNR4KDCM1LZDZwDTggcCVc4=;
- b=XqfG/WawNVMKLNTOePVoEkkyUACJ8hHblHL3f6oFS5TCmnQOOK0UQ8dIgksKjrSJae
- GIHQPN+TtteVEzDhOBdP6vfBydY4EOo6ANP9a3CNB4ytUy575jU2aLuNu6p4H+Um841m
- ORPmqIiE99kikX6CPCje18WIKuYmv9CPh1t5lYjXFvnF2MAeZ65eYqAMiG4lM7kCNzPl
- bLY2BD7hbnl1MYsr6PAV320UltbfjQcH5UuqMIKrdJ6wEaRRzesn7GJWi5WSJmVsKu02
- vhTRD/RhvsVnTuw6+UzWB7/w6SDPzdxfYvoaaj/FWdTrWkqbUWu6QCj4X/ibcnGp+x/s
- caWQ==
+ bh=gKLFWb+An2Ks9U+R2rK1VtO2Tw0/JUbGbAmdQc7IQwE=;
+ b=JdiFIFNFGaRXaPCm8U5P8FdZpKmDB6O6YwU21ocPjsoaVLe0lq1/R4rxCoDY9Ephfm
+ NJ1tnLk2zDSG592CXIBfXbup8YOL0RRq4zJEMrHzaGChWnaqyI7+0BiMHbDPdQK46bqq
+ ZB7mnF+8WGf3zj0GiU8mC2CVw5NS+50HqrS8G65oFyh5P48K4sNZiRC+4EXVytz/6rrB
+ dtI4cjaPOTgpk1WHHWlepIhydmduKHlzTiqACZ8ZBHvypuaiBejPXSoRdQMFrLSMKwxd
+ pR4zYO95cwV76eW/VA54czC+YQQ0EBlb3ooPWiNJHiA9tABq487eGCEocBBroNVLpWHz
+ p+PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741582734; x=1742187534;
+ d=1e100.net; s=20230601; t=1741582736; x=1742187536;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S8ktbxqhQcYI9crAlIF4CNR4KDCM1LZDZwDTggcCVc4=;
- b=WiFNGvZLOkGBeiZVxVJRXSgvCf5wsq4f2Utm4m8CoIe6nT2yttxtNHfzUO/ThqdCdZ
- XkZvs5lQtKvMDJM+9udJpuUd+gVQTUi0COir3jmx/gvHh0ZWi2PILU8tzqZ7yPghHkTj
- eyPlTmE1agy8JIDkhxoSM/6XNBLVbQuZZiiT4D/pk7SwvGpR1kRukOxM6cSpiUbcO8rt
- SkznELW+0EAP+MP/dDzefvTZGY7t4d96qqewwTu90z2+rE1kqQZnmgnghJPjgboRjYJd
- Ms3XSOuV7Py7ZnHi1U6EJ2nCZ4vByNnSv34suH+AFcdyBSUhGlMpaE8yslHQvthW1hXP
- HmhA==
-X-Gm-Message-State: AOJu0Yz9K5KnPzQmV/SY+csikOAwYgLJ4ybv8x7UYTsjOy+HmSP7bbzI
- 91twC1B6j/s5vJmcMr0W3/OUhGdBJnGpura3Q4DjNrkTygcTSmotPyqu+o9LKfPo5gcIJT9m0su
- 9OFs=
-X-Gm-Gg: ASbGnct7T8/WK0lPwRQa2c9N77hPSJaD+FWeBIIZtBas9soTq3vDFdNG7Ppzq6Svlyd
- /AtLVOc4Us6D0lL8Ewk/T2VcMUJjUnq27WYm9Oalh3RjBAneJHU03BSysMqLH+O5VWp5+xEY5Gv
- Wrj8KYqeXlIUzLTdyDNA0QzaC5d610cjlfSnnLXC8ACKJnDENyH+Ka72G3QrzMkhceXvzgF5gBt
- mIsG1UFQTIUzuzFu3+rm6olpyFJSpnN0UnnNEQJkUtlbKe4eDIJdWkYiJM7Z96WurI3E+QBtn/k
- G7xoPHOpeqd14xmvNNe8CqNybJeMEvLohoNLFuS0w1gD
-X-Google-Smtp-Source: AGHT+IHkXXNzkEnz2BccPlbhHJNUY3LGOIbmL0i4gzfHTIIx3yoWhp8OGUsmgyQKBXK356JOEhoSQw==
-X-Received: by 2002:a05:6a00:2493:b0:736:ab48:5b0 with SMTP id
- d2e1a72fcca58-736ab48061fmr14740098b3a.2.1741582734610; 
- Sun, 09 Mar 2025 21:58:54 -0700 (PDT)
+ bh=gKLFWb+An2Ks9U+R2rK1VtO2Tw0/JUbGbAmdQc7IQwE=;
+ b=SKjm0VeQN/w/25gWJGjmMxo7SaXs8tWu66Hwa/BLPTe3XuupG8bZpcKUbi81CKguIx
+ GGzM9ExYPNYxYC9VFZfguNkYlbPpQ9iHFEmz7PpWuKngA8x1BPfnAnX6GeVMdo9MCzav
+ 8IKEMPCDqOQ/QhldotbmVqeZLYQU10o81hck8zt0z2cOUp5gRvlt9Zf7CymKa3tX49/n
+ kA4WK/0pif27K7gBcpIAWGot3GXup8eN5EXhjCamXCA4Yx8x8V1lUQIg7EcCNjsEO2p0
+ GlsCbs4ZGhxcBOpSC1zpjQ+VWYJ8MmefhwL+pPmESuU4lUn/4RXmAtK96+wVS7Jcrk1L
+ KrcQ==
+X-Gm-Message-State: AOJu0YxU/FnTr1dH3NhP9H403jl54z+gBWFyIuOZ9ivf3xDEJTceRDsr
+ uW28Utraqhybw17IytbR9ILYokSzxhIMMke8n6g9jlP1Fv3x5z6kTZyLm2pxV4HFQhfHxwbfxOa
+ KpuY=
+X-Gm-Gg: ASbGnctAqdD/pbQAl43aVUQMIJnBtpKHsS5Jgx3Qi8g5Ww7BNKukjblOqSi75G39X0U
+ cq2RNDRFaFGSHs+Sv2upbWHxoVWCnGyz12OoXpyrcbPsnmXf2z+yinQSRj89nP5HcAx2QhW5vpe
+ YGjGAdcoVDvMLI2feSoDvIjJIKANsJMPzBL7ZdmvT/djxSV/xcjmfoZ0dX2UscBo3ceraCyBACi
+ MJLssTaPGaojabEYkdcNqOO3TT4oeal5m00tdCnZeUTD1BoNya+2YhXGm+0kgS4XAUuVTEtbJoS
+ totUSqY7xfYFklwhE76ieFnM2nPnvP6IOXBu2hu/GgOP
+X-Google-Smtp-Source: AGHT+IEAovvlOy2ME9s2bcowigrmpQEpYOhHLOJWN1HotCTdKvUP3vKFXajlsE4wLKble7VBohAKKQ==
+X-Received: by 2002:a05:6a00:4fc6:b0:736:32d2:aa82 with SMTP id
+ d2e1a72fcca58-736aab17045mr17832470b3a.23.1741582735793; 
+ Sun, 09 Mar 2025 21:58:55 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736d2ae318csm1708308b3a.53.2025.03.09.21.58.53
+ d2e1a72fcca58-736d2ae318csm1708308b3a.53.2025.03.09.21.58.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 21:58:54 -0700 (PDT)
+ Sun, 09 Mar 2025 21:58:55 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
@@ -80,23 +80,23 @@ Cc: qemu-ppc@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
  Paolo Bonzini <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
  Stefano Stabellini <sstabellini@kernel.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 04/16] exec/memory.h: make devend_memop target agnostic
-Date: Sun,  9 Mar 2025 21:58:30 -0700
-Message-Id: <20250310045842.2650784-5-pierrick.bouvier@linaro.org>
+Subject: [PATCH 05/16] qemu/bswap: implement {ld,st}.*_p as functions
+Date: Sun,  9 Mar 2025 21:58:31 -0700
+Message-Id: <20250310045842.2650784-6-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
 References: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,48 +112,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Will allow to make system/memory.c common later.
+For now, they are duplicate of the same macros in cpu-all.h that we
+eliminate in next commit.
+
+Keep code readable by not defining them with macros, but simply their
+implementation.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/exec/memory.h | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ include/qemu/bswap.h | 70 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 7c20f36a312..698179b26d2 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -3164,25 +3164,23 @@ address_space_write_cached(MemoryRegionCache *cache, hwaddr addr,
- MemTxResult address_space_set(AddressSpace *as, hwaddr addr,
-                               uint8_t c, hwaddr len, MemTxAttrs attrs);
+diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
+index ebf6f9e5f5c..46ec62f716d 100644
+--- a/include/qemu/bswap.h
++++ b/include/qemu/bswap.h
+@@ -442,6 +442,76 @@ DO_STN_LDN_P(be)
  
--#ifdef COMPILING_PER_TARGET
- /* enum device_endian to MemOp.  */
- static inline MemOp devend_memop(enum device_endian end)
- {
-     QEMU_BUILD_BUG_ON(DEVICE_HOST_ENDIAN != DEVICE_LITTLE_ENDIAN &&
-                       DEVICE_HOST_ENDIAN != DEVICE_BIG_ENDIAN);
+ #undef DO_STN_LDN_P
  
--#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
--    /* Swap if non-host endianness or native (target) endianness */
--    return (end == DEVICE_HOST_ENDIAN) ? 0 : MO_BSWAP;
--#else
-+    if (HOST_BIG_ENDIAN != target_words_bigendian()) {
-+        /* Swap if non-host endianness or native (target) endianness */
-+        return (end == DEVICE_HOST_ENDIAN) ? 0 : MO_BSWAP;
-+    }
++/* Return ld{word}_{le,be}_p following target endianness. */
++#define LOAD_IMPL(word, args...)                    \
++do {                                                \
++    if (target_words_bigendian()) {                 \
++        return glue(glue(ld, word), _be_p)(args);   \
++    } else {                                        \
++        return glue(glue(ld, word), _le_p)(args);   \
++    }                                               \
++} while (0)
 +
-     const int non_host_endianness =
-         DEVICE_LITTLE_ENDIAN ^ DEVICE_BIG_ENDIAN ^ DEVICE_HOST_ENDIAN;
- 
-     /* In this case, native (target) endianness needs no swap.  */
-     return (end == non_host_endianness) ? MO_BSWAP : 0;
--#endif
- }
--#endif /* COMPILING_PER_TARGET */
- 
- /*
-  * Inhibit technologies that require discarding of pages in RAM blocks, e.g.,
++static inline int lduw_p(const void *ptr)
++{
++    LOAD_IMPL(uw, ptr);
++}
++
++static inline int ldsw_p(const void *ptr)
++{
++    LOAD_IMPL(sw, ptr);
++}
++
++static inline int ldl_p(const void *ptr)
++{
++    LOAD_IMPL(l, ptr);
++}
++
++static inline uint64_t ldq_p(const void *ptr)
++{
++    LOAD_IMPL(q, ptr);
++}
++
++static inline uint64_t ldn_p(const void *ptr, int sz)
++{
++    LOAD_IMPL(n, ptr, sz);
++}
++
++#undef LOAD_IMPL
++
++/* Call st{word}_{le,be}_p following target endianness. */
++#define STORE_IMPL(word, args...)           \
++do {                                        \
++    if (target_words_bigendian()) {         \
++        glue(glue(st, word), _be_p)(args);  \
++    } else {                                \
++        glue(glue(st, word), _le_p)(args);  \
++    }                                       \
++} while (0)
++
++
++static inline void stw_p(void *ptr, uint16_t v)
++{
++    STORE_IMPL(w, ptr, v);
++}
++
++static inline void stl_p(void *ptr, uint32_t v)
++{
++    STORE_IMPL(l, ptr, v);
++}
++
++static inline void stq_p(void *ptr, uint64_t v)
++{
++    STORE_IMPL(q, ptr, v);
++}
++
++static inline void stn_p(void *ptr, int sz, uint64_t v)
++{
++    STORE_IMPL(n, ptr, sz, v);
++}
++
++#undef STORE_IMPL
++
+ #undef le_bswap
+ #undef be_bswap
+ #undef le_bswaps
 -- 
 2.39.5
 
