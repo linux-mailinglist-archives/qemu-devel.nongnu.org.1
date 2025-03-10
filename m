@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3451A59952
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:13:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEF0A5994C
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:12:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tren3-00022q-4s; Mon, 10 Mar 2025 11:11:37 -0400
+	id 1tren5-00026h-4T; Mon, 10 Mar 2025 11:11:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
- id 1tremz-000220-35
+ id 1tremz-00021y-2v
  for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:11:33 -0400
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
- id 1tremu-0007fU-OE
+ id 1tremu-0007fk-F6
  for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:11:32 -0400
-Received: (qmail 30644 invoked by uid 484); 10 Mar 2025 15:11:09 -0000
+Received: (qmail 30673 invoked by uid 484); 10 Mar 2025 15:11:09 -0000
 X-Qmail-Scanner-Diagnostics: from 10.2.13.100 by smtp1.lauterbach.com
  (envelope-from <mario.fleischmann@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.13.100):. 
- Processed in 0.257821 secs); 10 Mar 2025 15:11:09 -0000
+ Processed in 0.013291 secs); 10 Mar 2025 15:11:09 -0000
 Received: from unknown (HELO mflpc1.LTB.LAN)
  (Authenticated_SSL:mfleischmann@[10.2.13.100])
  (envelope-sender <mario.fleischmann@lauterbach.com>)
@@ -36,13 +36,11 @@ To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, philmd@linaro.org, armbru@redhat.com,
  christian.boenig@lauterbach.com,
  Mario Fleischmann <mario.fleischmann@lauterbach.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Michael Roth <michael.roth@amd.com>
-Subject: [PATCH 02/16] mcd: Introduce MCD server
-Date: Mon, 10 Mar 2025 16:04:56 +0100
-Message-Id: <20250310150510.200607-3-mario.fleischmann@lauterbach.com>
+ Eric Blake <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 03/16] mcd: Implement target initialization API
+Date: Mon, 10 Mar 2025 16:04:57 +0100
+Message-Id: <20250310150510.200607-4-mario.fleischmann@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250310150510.200607-1-mario.fleischmann@lauterbach.com>
 References: <20250310150510.200607-1-mario.fleischmann@lauterbach.com>
@@ -73,517 +71,491 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MCD implementation follows a remote procedure call approach
-and uses QMP as the communication protocol:
+The target initialization API ensures that the requested and provided
+MCD versions are compatible.
 
-* mcdserver implements the MCD API
-* mcd.json and mcdstub_qapi.c declare and implement the server stub
+* implement mcd_initialize_f and mcd_qry_error_info_f in mcdserver
+* implement QMP stub functionality
+* add QTest
 
-Our client stub supporting QMP can be found at:
-https://gitlab.com/lauterbach/mcdrefsrv
+Thanks to the QMP integration in QTest, function arguments and results
+can be (de)serialized automatically.
 
 Signed-off-by: Mario Fleischmann <mario.fleischmann@lauterbach.com>
 ---
- MAINTAINERS           |   1 +
- docs/interop/mcd.rst  |  14 ++
- mcd/mcdserver.c       | 431 ++++++++++++++++++++++++++++++++++++++++++
- mcd/mcdstub_qapi.c    |  13 ++
- mcd/meson.build       |  12 ++
- meson.build           |   1 +
- qapi/mcd.json         |   6 +
- qapi/meson.build      |   1 +
- qapi/qapi-schema.json |   1 +
- 9 files changed, 480 insertions(+)
- create mode 100644 mcd/mcdserver.c
- create mode 100644 mcd/mcdstub_qapi.c
- create mode 100644 mcd/meson.build
- create mode 100644 qapi/mcd.json
+ MAINTAINERS               |   2 +
+ mcd/libmcd_qapi.c         |  66 ++++++++++++++
+ mcd/libmcd_qapi.h         |  26 ++++++
+ mcd/mcdserver.c           |  44 ++++++++-
+ mcd/mcdstub_qapi.c        |  35 ++++++++
+ mcd/meson.build           |   2 +-
+ qapi/mcd.json             | 183 ++++++++++++++++++++++++++++++++++++++
+ tests/qtest/libmcd-test.c |  88 ++++++++++++++++++
+ tests/qtest/libmcd-test.h |  23 +++++
+ tests/qtest/mcd-test.c    |  93 +++++++++++++++++++
+ tests/qtest/meson.build   |   2 +
+ 11 files changed, 562 insertions(+), 2 deletions(-)
+ create mode 100644 mcd/libmcd_qapi.c
+ create mode 100644 mcd/libmcd_qapi.h
+ create mode 100644 tests/qtest/libmcd-test.c
+ create mode 100644 tests/qtest/libmcd-test.h
+ create mode 100644 tests/qtest/mcd-test.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 448fb55a09..58d94b392f 100644
+index 58d94b392f..0687a6baef 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3106,6 +3106,7 @@ M: Mario Fleischmann <mario.fleischmann@lauterbach.com>
- S: Maintained
+@@ -3107,6 +3107,8 @@ S: Maintained
  F: mcd/*
  F: docs/interop/mcd.rst
-+F: qapi/mcd.json
+ F: qapi/mcd.json
++F: tests/qtest/libmcd-test.*
++F: tests/qtest/mcd-test.c
  
  Memory API
  M: Paolo Bonzini <pbonzini@redhat.com>
-diff --git a/docs/interop/mcd.rst b/docs/interop/mcd.rst
-index 9587cfb010..de7b7a8d5c 100644
---- a/docs/interop/mcd.rst
-+++ b/docs/interop/mcd.rst
-@@ -38,6 +38,20 @@ The resulting system can be visualized as follows::
-     | qemu-system-*  |      | -machine |           | -cpu |
-     +----------------+      +----------+           +------+
- 
+diff --git a/mcd/libmcd_qapi.c b/mcd/libmcd_qapi.c
+new file mode 100644
+index 0000000000..bc147072a1
+--- /dev/null
++++ b/mcd/libmcd_qapi.c
+@@ -0,0 +1,66 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * QAPI marshalling helpers for structures of the MCD API
++ *
++ * Copyright (c) 2025 Lauterbach GmbH
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
-+Debugging via QMP
-+-----------------
++#include "qemu/osdep.h"
++#include "libmcd_qapi.h"
 +
-+Since the MCD API does not define a communication protocol, the QEMU Machine
-+Protocol (QMP) is utilized to implement a remote procedure call mechanism.
-+Each function within the API corresponds to one QMP command, ensuring a
-+one-to-one mapping between the API's functions and the QMP commands.
++MCDAPIVersion *marshal_mcd_api_version(const mcd_api_version_st *api_version)
++{
++    MCDAPIVersion *marshal = g_malloc0(sizeof(*marshal));
 +
-+If you are not familiar with QMP, see the :doc:`qmp-spec` for the
-+protocol, and the :doc:`qemu-qmp-ref` for a full reference of all
-+commands.
++    *marshal = (MCDAPIVersion) {
++        .v_api_major = api_version->v_api_major,
++        .v_api_minor = api_version->v_api_minor,
++        .author = g_strdup(api_version->author),
++    };
 +
++    return marshal;
++}
 +
- API Reference
- -------------
- 
++mcd_api_version_st unmarshal_mcd_api_version(MCDAPIVersion *api_version)
++{
++    mcd_api_version_st unmarshal =  {
++        .v_api_major = api_version->v_api_major,
++        .v_api_minor = api_version->v_api_minor,
++    };
++    strncpy(unmarshal.author, api_version->author, MCD_API_IMP_VENDOR_LEN - 1);
++    return unmarshal;
++}
++
++MCDImplVersionInfo *marshal_mcd_impl_version_info(
++    const mcd_impl_version_info_st *impl_info)
++{
++    MCDImplVersionInfo *marshal = g_malloc0(sizeof(*marshal));
++
++    *marshal = (MCDImplVersionInfo) {
++        .v_api = marshal_mcd_api_version(&impl_info->v_api),
++        .v_imp_major = impl_info->v_imp_major,
++        .v_imp_minor = impl_info->v_imp_minor,
++        .v_imp_build = impl_info->v_imp_build,
++        .vendor = g_strdup(impl_info->vendor),
++        .date = g_strdup(impl_info->date),
++    };
++
++    return marshal;
++}
++
++MCDErrorInfo *marshal_mcd_error_info(const mcd_error_info_st *error_info)
++{
++    MCDErrorInfo *marshal = g_malloc0(sizeof(*marshal));
++
++    *marshal = (MCDErrorInfo) {
++        .return_status = error_info->return_status,
++        .error_code = error_info->error_code,
++        .error_events = error_info->error_events,
++        .error_str = g_strdup(error_info->error_str),
++    };
++
++    return marshal;
++}
+diff --git a/mcd/libmcd_qapi.h b/mcd/libmcd_qapi.h
+new file mode 100644
+index 0000000000..fc7436bf65
+--- /dev/null
++++ b/mcd/libmcd_qapi.h
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * QAPI marshalling helpers for structures of the MCD API
++ *
++ * Copyright (c) 2025 Lauterbach GmbH
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#ifndef LIBMCD_QAPI_H
++#define LIBMCD_QAPI_H
++
++#include "mcd_api.h"
++#include "qapi-types-mcd.h"
++
++MCDAPIVersion *marshal_mcd_api_version(const mcd_api_version_st *api_version);
++
++MCDImplVersionInfo *marshal_mcd_impl_version_info(
++    const mcd_impl_version_info_st *impl_info);
++
++MCDErrorInfo *marshal_mcd_error_info(const mcd_error_info_st *error_info);
++
++mcd_api_version_st unmarshal_mcd_api_version(MCDAPIVersion *api_version);
++
++#endif /* LIBMCD_QAPI_H */
 diff --git a/mcd/mcdserver.c b/mcd/mcdserver.c
-new file mode 100644
-index 0000000000..a20708db1b
---- /dev/null
+index a20708db1b..6e941f0531 100644
+--- a/mcd/mcdserver.c
 +++ b/mcd/mcdserver.c
-@@ -0,0 +1,431 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * mcdserver - Multi-Core Debug (MCD) API implementation
-+ *
-+ * Copyright (c) 2025 Lauterbach GmbH
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "mcd_api.h"
-+
-+static const mcd_error_info_st MCD_ERROR_NOT_IMPLEMENTED = {
+@@ -8,6 +8,7 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++#include "qemu/osdep.h"
+ #include "mcd_api.h"
+ 
+ static const mcd_error_info_st MCD_ERROR_NOT_IMPLEMENTED = {
+@@ -17,6 +18,13 @@ static const mcd_error_info_st MCD_ERROR_NOT_IMPLEMENTED = {
+     .error_str = "",
+ };
+ 
++static const mcd_error_info_st MCD_ERROR_INVALID_NULL_PARAM = {
 +    .return_status = MCD_RET_ACT_HANDLE_ERROR,
-+    .error_code = MCD_ERR_FN_UNIMPLEMENTED,
++    .error_code = MCD_ERR_PARAM,
 +    .error_events = MCD_ERR_EVT_NONE,
-+    .error_str = "",
++    .error_str = "null was invalidly passed as a parameter",
 +};
 +
-+static const mcd_error_info_st MCD_ERROR_NONE = {
-+    .return_status = MCD_RET_ACT_NONE,
-+    .error_code = MCD_ERR_NONE,
-+    .error_events = MCD_ERR_EVT_NONE,
-+    .error_str = "",
-+};
+ static const mcd_error_info_st MCD_ERROR_NONE = {
+     .return_status = MCD_RET_ACT_NONE,
+     .error_code = MCD_ERR_NONE,
+@@ -24,6 +32,9 @@ static const mcd_error_info_st MCD_ERROR_NONE = {
+     .error_str = "",
+ };
+ 
++/* reserves memory for custom errors */
++static mcd_error_info_st custom_mcd_error;
 +
-+/**
-+ * struct mcdserver_state - State of the MCD server
-+ *
-+ * @last_error: Error info of most recent executed function.
-+ */
-+typedef struct mcdserver_state {
-+    const mcd_error_info_st *last_error;
-+} mcdserver_state;
-+
-+static mcdserver_state g_server_state = {
-+    .last_error = &MCD_ERROR_NONE,
-+};
-+
-+mcd_return_et mcd_initialize_f(const mcd_api_version_st *version_req,
-+                               mcd_impl_version_info_st *impl_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+void mcd_exit_f(void)
-+{
-+    return;
-+}
-+
-+mcd_return_et mcd_qry_servers_f(const char *host, bool running,
-+                                uint32_t start_index, uint32_t *num_servers,
-+                                mcd_server_info_st *server_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_open_server_f(const char *system_key,
-+                                const char *config_string,
-+                                mcd_server_st **server)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_close_server_f(const mcd_server_st *server)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_set_server_config_f(const mcd_server_st *server,
-+                                      const char *config_string)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_server_config_f(const mcd_server_st *server,
-+                                      uint32_t *max_len,
-+                                      char *config_string)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_systems_f(uint32_t start_index, uint32_t *num_systems,
-+                                mcd_core_con_info_st *system_con_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_devices_f(const mcd_core_con_info_st *system_con_info,
-+                                uint32_t start_index, uint32_t *num_devices,
-+                                mcd_core_con_info_st *device_con_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_cores_f(const mcd_core_con_info_st *connection_info,
-+                              uint32_t start_index, uint32_t *num_cores,
-+                              mcd_core_con_info_st *core_con_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_core_modes_f(const mcd_core_st *core,
-+                                   uint32_t start_index, uint32_t *num_modes,
-+                                   mcd_core_mode_info_st *core_mode_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_open_core_f(const mcd_core_con_info_st *core_con_info,
-+                              mcd_core_st **core)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_close_core_f(const mcd_core_st *core)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+void mcd_qry_error_info_f(const mcd_core_st *core,
-+                          mcd_error_info_st *error_info)
-+{
-+    if (error_info) {
-+        *error_info = *g_server_state.last_error;
+ /**
+  * struct mcdserver_state - State of the MCD server
+  *
+@@ -40,12 +51,43 @@ static mcdserver_state g_server_state = {
+ mcd_return_et mcd_initialize_f(const mcd_api_version_st *version_req,
+                                mcd_impl_version_info_st *impl_info)
+ {
+-    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
++    if (!version_req || !impl_info) {
++        g_server_state.last_error = &MCD_ERROR_INVALID_NULL_PARAM;
++        return g_server_state.last_error->return_status;
 +    }
-+}
 +
-+mcd_return_et mcd_qry_device_description_f(const mcd_core_st *core, char *url,
-+                                           uint32_t *url_length)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
++    *impl_info = (mcd_impl_version_info_st) {
++        .v_api = (mcd_api_version_st) {
++            .v_api_major = MCD_API_VER_MAJOR,
++            .v_api_minor = MCD_API_VER_MINOR,
++            .author = MCD_API_VER_AUTHOR,
++        },
++        .v_imp_major = QEMU_VERSION_MAJOR,
++        .v_imp_minor = QEMU_VERSION_MINOR,
++        .v_imp_build = 0,
++        .vendor = "QEMU",
++        .date = __DATE__,
++    };
 +
-+mcd_return_et mcd_qry_max_payload_size_f(const mcd_core_st *core,
-+                                         uint32_t *max_payload)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
++    if (version_req->v_api_major == MCD_API_VER_MAJOR &&
++        version_req->v_api_minor <= MCD_API_VER_MINOR) {
++        g_server_state.last_error = &MCD_ERROR_NONE;
++    } else {
++        custom_mcd_error = (mcd_error_info_st) {
++            .return_status = MCD_RET_ACT_HANDLE_ERROR,
++            .error_code = MCD_ERR_GENERAL,
++            .error_events = MCD_ERR_EVT_NONE,
++            .error_str = "incompatible versions",
++        };
++        g_server_state.last_error = &custom_mcd_error;
++    }
 +
-+mcd_return_et mcd_qry_input_handle_f(const mcd_core_st *core,
-+                                     uint32_t *input_handle)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_mem_spaces_f(const mcd_core_st *core,
-+                                   uint32_t start_index,
-+                                   uint32_t *num_mem_spaces,
-+                                   mcd_memspace_st *mem_spaces)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_mem_blocks_f(const mcd_core_st *core,
-+                                   uint32_t mem_space_id, uint32_t start_index,
-+                                   uint32_t *num_mem_blocks,
-+                                   mcd_memblock_st *mem_blocks)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_active_overlays_f(const mcd_core_st *core,
-+                                        uint32_t start_index,
-+                                        uint32_t *num_active_overlays,
-+                                        uint32_t *active_overlays)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_reg_groups_f(const mcd_core_st *core,
-+                                   uint32_t start_index,
-+                                   uint32_t *num_reg_groups,
-+                                   mcd_register_group_st *reg_groups)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_reg_map_f(const mcd_core_st *core, uint32_t reg_group_id,
-+                                uint32_t start_index, uint32_t *num_regs,
-+                                mcd_register_info_st *reg_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_reg_compound_f(const mcd_core_st *core,
-+                                     uint32_t compound_reg_id,
-+                                     uint32_t start_index,
-+                                     uint32_t *num_reg_ids,
-+                                     uint32_t *reg_id_array)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_trig_info_f(const mcd_core_st *core,
-+                                  mcd_trig_info_st *trig_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_ctrigs_f(const mcd_core_st *core, uint32_t start_index,
-+                               uint32_t *num_ctrigs,
-+                               mcd_ctrig_info_st *ctrig_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_create_trig_f(const mcd_core_st *core, void *trig,
-+                                uint32_t *trig_id)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_trig_f(const mcd_core_st *core, uint32_t trig_id,
-+                             uint32_t max_trig_size, void *trig)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_remove_trig_f(const mcd_core_st *core, uint32_t trig_id)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_trig_state_f(const mcd_core_st *core, uint32_t trig_id,
-+                                   mcd_trig_state_st *trig_state)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_activate_trig_set_f(const mcd_core_st *core)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_remove_trig_set_f(const mcd_core_st *core)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_trig_set_f(const mcd_core_st *core, uint32_t start_index,
-+                                 uint32_t *num_trigs, uint32_t *trig_ids)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_trig_set_state_f(const mcd_core_st *core,
-+                                       mcd_trig_set_state_st *trig_state)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_execute_txlist_f(const mcd_core_st *core,
-+                                   mcd_txlist_st *txlist)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_run_f(const mcd_core_st *core, bool global)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_stop_f(const mcd_core_st *core, bool global)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_run_until_f(const mcd_core_st *core, bool global,
-+                              bool absolute_time, uint64_t run_until_time)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_current_time_f(const mcd_core_st *core,
-+                                     uint64_t *current_time)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_step_f(const mcd_core_st *core, bool global,
-+                         mcd_core_step_type_et step_type, uint32_t n_steps)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_set_global_f(const mcd_core_st *core, bool enable)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_state_f(const mcd_core_st *core, mcd_core_state_st *state)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_execute_command_f(const mcd_core_st *core,
-+                                    const char *command_string,
-+                                    uint32_t result_string_size,
-+                                    char *result_string)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_rst_classes_f(const mcd_core_st *core,
-+                                    uint32_t *rst_class_vector)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_rst_class_info_f(const mcd_core_st *core,
-+                                       uint8_t rst_class,
-+                                       mcd_rst_info_st *rst_info)
-+{
-+
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_rst_f(const mcd_core_st *core, uint32_t rst_class_vector,
-+                        bool rst_and_halt)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_chl_open_f(const mcd_core_st *core, mcd_chl_st *channel)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_send_msg_f(const mcd_core_st *core, const mcd_chl_st *channel,
-+                             uint32_t msg_len, const uint8_t *msg)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_receive_msg_f(const mcd_core_st *core,
-+                                const mcd_chl_st *channel, uint32_t timeout,
-+                                uint32_t *msg_len, uint8_t *msg)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_chl_reset_f(const mcd_core_st *core,
-+                              const mcd_chl_st *channel)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_chl_close_f(const mcd_core_st *core,
-+                              const mcd_chl_st *channel)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_traces_f(const mcd_core_st *core, uint32_t start_index,
-+                               uint32_t *num_traces,
-+                               mcd_trace_info_st *trace_info)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_qry_trace_state_f(const mcd_core_st *core, uint32_t trace_id,
-+                                    mcd_trace_state_st *state)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_set_trace_state_f(const mcd_core_st *core, uint32_t trace_id,
-+                                    mcd_trace_state_st *state)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
-+
-+mcd_return_et mcd_read_trace_f(const mcd_core_st *core, uint32_t trace_id,
-+                               uint64_t start_index, uint32_t *num_frames,
-+                               uint32_t trace_data_size, void *trace_data)
-+{
-+    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-+    return g_server_state.last_error->return_status;
-+}
+     return g_server_state.last_error->return_status;
+ }
+ 
+ void mcd_exit_f(void)
+ {
++    g_server_state.last_error = &MCD_ERROR_NONE;
+     return;
+ }
+ 
 diff --git a/mcd/mcdstub_qapi.c b/mcd/mcdstub_qapi.c
-new file mode 100644
-index 0000000000..6f79ae38a9
---- /dev/null
+index 6f79ae38a9..a76d2d081f 100644
+--- a/mcd/mcdstub_qapi.c
 +++ b/mcd/mcdstub_qapi.c
-@@ -0,0 +1,13 @@
+@@ -10,4 +10,39 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++#include "qemu/osdep.h"
+ #include "mcd_api.h"
++#include "libmcd_qapi.h"
++#include "qapi/qapi-commands-mcd.h"
++
++MCDInitializeResult *qmp_mcd_initialize(MCDAPIVersion *version_req,
++                                        Error **errp)
++{
++    mcd_impl_version_info_st impl_info;
++    MCDInitializeResult *result = g_malloc0(sizeof(*result));
++    mcd_api_version_st version_req_unmarshalled =
++        unmarshal_mcd_api_version(version_req);
++
++    result->return_status = mcd_initialize_f(&version_req_unmarshalled,
++                                             &impl_info);
++
++    if (result->return_status == MCD_RET_ACT_NONE) {
++        result->impl_info = marshal_mcd_impl_version_info(&impl_info);
++    }
++
++    return result;
++}
++
++void qmp_mcd_exit(Error **errp)
++{
++    mcd_exit_f();
++}
++
++MCDErrorInfo *qmp_mcd_qry_error_info(Error **errp)
++{
++    MCDErrorInfo *result;
++    mcd_error_info_st error_info;
++    mcd_qry_error_info_f(NULL, &error_info);
++    result = marshal_mcd_error_info(&error_info);
++    return result;
++}
+diff --git a/mcd/meson.build b/mcd/meson.build
+index bc783dae54..90d1c6be67 100644
+--- a/mcd/meson.build
++++ b/mcd/meson.build
+@@ -1,7 +1,7 @@
+ # MCD is only supported in system emulation
+ mcd_system_ss = ss.source_set()
+ 
+-mcd_system_ss.add(files('mcdserver.c', 'mcdstub_qapi.c'))
++mcd_system_ss.add(files('mcdserver.c', 'mcdstub_qapi.c', 'libmcd_qapi.c'))
+ mcd_system_ss = mcd_system_ss.apply({})
+ 
+ libmcd_system = static_library('mcd_system',
+diff --git a/qapi/mcd.json b/qapi/mcd.json
+index 701fd03ece..7b42a74036 100644
+--- a/qapi/mcd.json
++++ b/qapi/mcd.json
+@@ -4,3 +4,186 @@
+ ##
+ # = Multi-Core Debug (MCD) API
+ ##
++
++
++##
++# == Definition of Structures
++##
++
++
++##
++# @MCDAPIVersion:
++#
++# Structure type containing the MCD API version information of the tool.
++#
++# @v-api-major: API major version.
++# @v-api-minor: API minor version.
++# @author:      API name of the author of this MCD API version.
++#
++# Since: 9.1
++##
++{ 'struct': 'MCDAPIVersion',
++  'data': {
++    'v-api-major': 'uint16',
++    'v-api-minor': 'uint16',
++    'author':      'str' } }
++
++
++##
++# @MCDImplVersionInfo:
++#
++# Structure type containing the MCD API implementation information.
++#
++# @v-api:       Implemented API version.
++# @v-imp-major: Major version number of this implementation.
++# @v-imp-minor: Minor version number of this implementation.
++# @v-imp-build: Build number of this implementation.
++# @vendor:      Name of vendor of the implementation.
++# @date:        String from __DATE__ macro at compile time.
++#
++# Since: 9.1
++##
++{ 'struct': 'MCDImplVersionInfo',
++  'data': {
++    'v-api'      : 'MCDAPIVersion',
++    'v-imp-major': 'uint16',
++    'v-imp-minor': 'uint16',
++    'v-imp-build': 'uint16',
++    'vendor'     : 'str',
++    'date'       : 'str' } }
++
++
++##
++# @MCDErrorInfo:
++#
++# Structure type containing the error status and error event notification.
++#
++# @return-status: Return status from the last API call.
++# @error-code:    Detailed error code from the last API call.
++# @error-events:  Detailed event code from the last API call.
++# @error-str:     Detailed error text string from the last API call.
++#
++# Since: 9.1
++##
++{ 'struct': 'MCDErrorInfo',
++  'data': {
++    'return-status': 'uint32',
++    'error-code'   : 'uint32',
++    'error-events' : 'uint32',
++    'error-str'    : 'str' }}
++
++
++##
++# == Target Initialization API
++##
++
++
++##
++# @MCDInitializeResult:
++#
++# Return value of @mcd-initialize.
++#
++# @return-status: Return code.
++#
++# @impl-info: Information about the QEMU build, its version and the version of
++#             the implemented MCD API.
++#
++# Since: 9.1
++##
++{ 'struct': 'MCDInitializeResult',
++  'data': {
++    'return-status': 'uint32',
++    '*impl-info'   : 'MCDImplVersionInfo' } }
++
++
++##
++# @mcd-initialize:
++#
++# Function initializing the interaction between a tool-side implementation and
++# target-side implementation.
++#
++# @version-req: MCD API version as requested by an upper layer.
++#
++# Returns: @MCDInitializeResult
++#
++# Since: 9.1
++#
++# .. qmp-example::
++#    :title: Check compatibility with MCD server
++#
++#     -> { "execute": "mcd-initialize",
++#          "arguments": { "version-req": { "v-api-major": 1,
++#                                          "v-api-minor": 1,
++#                                          "author": "" } } }
++#     <- {
++#            "return": {
++#                "impl-info": {
++#                    "v-api": {
++#                        "v-api-minor": 1,
++#                        "v-api-major": 1,
++#                        "author": "QEMU Release"
++#                    },
++#                    "vendor": "QEMU",
++#                    "v-imp-minor": 2,
++#                    "v-imp-major": 9,
++#                    "v-imp-build": 0,
++#                    "date": "Dec 18 2024"
++#                },
++#                "return-status": 0
++#            }
++#        }
++##
++{ 'command': 'mcd-initialize',
++  'data': { 'version-req': 'MCDAPIVersion' },
++  'returns': 'MCDInitializeResult' }
++
++
++##
++# @mcd-exit:
++#
++# Function cleaning up all core and server connections from a tool.
++#
++# Since: 9.1
++##
++{ 'command': 'mcd-exit' }
++
++
++##
++# == Core Connection API
++##
++
++
++##
++# @mcd-qry-error-info:
++#
++# Function allowing the access to detailed error and/or event information after
++# an API call.
++#
++# Returns: @MCDErrorInfo
++#
++# Since: 9.1
++#
++# .. qmp-example::
++#    :title: Incompatible MCD versions
++#
++#     -> { "execute": "mcd-initialize",
++#          "arguments": { "version-req": { "v-api-major": 2,
++#                                          "v-api-minor": 0,
++#                                          "author": "" } } }
++#     <- {
++#            "return": {
++#                "return-status": 3
++#            }
++#        }
++#     -> { "execute": "mcd-qry-error-info" }
++#     <- {
++#            "return": {
++#                "error-str": "incompatible versions",
++#                "error-code": 3840,
++#                "error-events": 0,
++#                "return-status": 3
++#            }
++#        }
++##
++{ 'command': 'mcd-qry-error-info',
++  'returns': 'MCDErrorInfo' }
+diff --git a/tests/qtest/libmcd-test.c b/tests/qtest/libmcd-test.c
+new file mode 100644
+index 0000000000..597ebec9b5
+--- /dev/null
++++ b/tests/qtest/libmcd-test.c
+@@ -0,0 +1,88 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/*
-+ * MCD server stub using QMP
-+ *
-+ * see qapi/mcd.json for the declarations of the (un)marshalling functions
++ * QTest helpers for functions of the MCD API
 + *
 + * Copyright (c) 2025 Lauterbach GmbH
 + *
@@ -591,70 +563,232 @@ index 0000000000..6f79ae38a9
 + * See the COPYING file in the top-level directory.
 + */
 +
-+#include "mcd_api.h"
-diff --git a/mcd/meson.build b/mcd/meson.build
++#include "qemu/osdep.h"
++#include "libmcd-test.h"
++#include "mcd/mcd_api.h"
++#include "mcd/libmcd_qapi.h"
++#include "qobject/qdict.h"
++#include "qobject/qlist.h"
++#include "qobject/qjson.h"
++#include "qapi/qapi-commands-mcd.h"
++#include "qapi/qapi-visit-mcd.h"
++#include "qapi/qobject-input-visitor.h"
++#include "qapi/compat-policy.h"
++
++/*
++ * We can use the %p format specifier of qtest_qmp() to automatically
++ * serialize the arguments into JSON.
++ * The serialization works only after the arguments have been converted into
++ * a QDict.
++ */
++
++ #define MARSHAL_ARGS(type) do {                     \
++    v = qobject_output_visitor_new_qmp(&marshal);    \
++    ok = visit_start_struct(v, NULL, (void **)&args, \
++                            sizeof(type), NULL);     \
++    g_assert(ok);                                    \
++    ok = visit_type_##type##_members(v, args, NULL); \
++    g_assert(ok);                                    \
++    ok = visit_check_struct(v, NULL);                \
++    g_assert(ok);                                    \
++    visit_end_struct(v, (void **)&args);             \
++    visit_complete(v, &marshal);                     \
++    visit_free(v);                                   \
++    arg = qobject_to(QDict, marshal);                \
++} while (0)
++
++#define UNMARSHAL_RESULT(type) do {                    \
++    ret = qdict_get(resp, "return");                   \
++    g_assert(ret);                                     \
++    v = qobject_input_visitor_new(ret);                \
++    ok = visit_type_##type(v, NULL, &unmarshal, NULL); \
++    g_assert(ok);                                      \
++    visit_free(v);                                     \
++    qobject_unref(resp);                               \
++} while (0)
++
++MCDInitializeResult *qtest_mcd_initialize(QTestState *qts,
++                                          q_obj_mcd_initialize_arg *args)
++{
++    Visitor *v;
++    QObject *marshal;
++    QDict *arg, *resp;
++    QObject *ret;
++    bool ok;
++    MCDInitializeResult *unmarshal;
++
++    MARSHAL_ARGS(q_obj_mcd_initialize_arg);
++
++    resp = qtest_qmp(qts, "{'execute': 'mcd-initialize',"
++                          "'arguments': %p}", arg);
++
++    UNMARSHAL_RESULT(MCDInitializeResult);
++
++    return unmarshal;
++}
++
++MCDErrorInfo *qtest_mcd_qry_error_info(QTestState *qts)
++{
++    Visitor *v;
++    QDict *resp;
++    QObject *ret;
++    bool ok;
++    MCDErrorInfo *unmarshal;
++
++    resp = qtest_qmp(qts, "{'execute': 'mcd-qry-error-info'}");
++
++    UNMARSHAL_RESULT(MCDErrorInfo);
++
++    return unmarshal;
++}
+diff --git a/tests/qtest/libmcd-test.h b/tests/qtest/libmcd-test.h
 new file mode 100644
-index 0000000000..bc783dae54
+index 0000000000..1c5da9de62
 --- /dev/null
-+++ b/mcd/meson.build
-@@ -0,0 +1,12 @@
-+# MCD is only supported in system emulation
-+mcd_system_ss = ss.source_set()
++++ b/tests/qtest/libmcd-test.h
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * QTest helpers for functions of the MCD API
++ *
++ * Copyright (c) 2025 Lauterbach GmbH
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
-+mcd_system_ss.add(files('mcdserver.c', 'mcdstub_qapi.c'))
-+mcd_system_ss = mcd_system_ss.apply({})
++#ifndef LIBMCD_TEST_H
++#define LIBMCD_TEST_H
 +
-+libmcd_system = static_library('mcd_system',
-+                                mcd_system_ss.sources() + genh,
-+                                build_by_default: false)
++#include "libqtest.h"
++#include "mcd/mcd_api.h"
++#include "qapi/qapi-visit-mcd.h"
 +
-+mcd_system = declare_dependency(objects: libmcd_system.extract_all_objects(recursive: false))
-+system_ss.add(mcd_system)
-diff --git a/meson.build b/meson.build
-index 4899d896de..5e1b4865f7 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3685,6 +3685,7 @@ subdir('authz')
- subdir('crypto')
- subdir('ui')
- subdir('gdbstub')
-+subdir('mcd')
- if have_system
-   subdir('hw')
- else
-diff --git a/qapi/mcd.json b/qapi/mcd.json
++MCDInitializeResult *qtest_mcd_initialize(QTestState *qts,
++                                          q_obj_mcd_initialize_arg *args);
++
++MCDErrorInfo *qtest_mcd_qry_error_info(QTestState *qts);
++
++#endif /* LIBMCD_TEST_H */
+diff --git a/tests/qtest/mcd-test.c b/tests/qtest/mcd-test.c
 new file mode 100644
-index 0000000000..701fd03ece
+index 0000000000..275fb46aaa
 --- /dev/null
-+++ b/qapi/mcd.json
-@@ -0,0 +1,6 @@
-+# -*- Mode: Python -*-
-+# vim: filetype=python
++++ b/tests/qtest/mcd-test.c
+@@ -0,0 +1,93 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Architecture independent QTests for the MCD server with QAPI stub
++ *
++ * Copyright (c) 2025 Lauterbach GmbH
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
-+##
-+# = Multi-Core Debug (MCD) API
-+##
-diff --git a/qapi/meson.build b/qapi/meson.build
-index eadde4db30..d05f17fe95 100644
---- a/qapi/meson.build
-+++ b/qapi/meson.build
-@@ -40,6 +40,7 @@ qapi_all_modules = [
-   'machine-common',
-   'machine',
-   'machine-target',
-+  'mcd',
-   'migration',
-   'misc',
-   'misc-target',
-diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-index 2877aff73d..07907b0a53 100644
---- a/qapi/qapi-schema.json
-+++ b/qapi/qapi-schema.json
-@@ -82,3 +82,4 @@
- { 'include': 'cryptodev.json' }
- { 'include': 'cxl.json' }
- { 'include': 'uefi.json' }
-+{ 'include': 'mcd.json' }
++#include "qemu/osdep.h"
++#include "libqtest.h"
++#include "mcd/mcd_api.h"
++#include "mcd/libmcd_qapi.h"
++#include "qapi/qapi-visit-mcd.h"
++#include "qapi/qapi-types-mcd.h"
++#include "qapi/qobject-input-visitor.h"
++#include "qapi/compat-policy.h"
++#include "libmcd-test.h"
++
++#define QEMU_EXTRA_ARGS ""
++
++static bool verbose;
++
++static void test_initialize(void)
++{
++    QTestState *qts = qtest_init(QEMU_EXTRA_ARGS);
++    MCDErrorInfo *error_info;
++
++    mcd_api_version_st version_req = {
++        .v_api_major = MCD_API_VER_MAJOR,
++        .v_api_minor = MCD_API_VER_MINOR,
++        .author = "",
++    };
++
++    q_obj_mcd_initialize_arg qapi_args = {
++        .version_req = marshal_mcd_api_version(&version_req),
++    };
++
++    MCDInitializeResult *result = qtest_mcd_initialize(qts, &qapi_args);
++    g_assert(result->return_status == MCD_RET_ACT_NONE);
++
++    if (verbose) {
++        fprintf(stderr, "[INFO]\tAPI v%d.%d (%s)\n",
++                        result->impl_info->v_api->v_api_major,
++                        result->impl_info->v_api->v_api_minor,
++                        result->impl_info->v_api->author);
++        fprintf(stderr, "[INFO]\tImplementation v%d.%d.%d %s (%s)\n",
++                        result->impl_info->v_imp_major,
++                        result->impl_info->v_imp_minor,
++                        result->impl_info->v_imp_build,
++                        result->impl_info->date,
++                        result->impl_info->vendor);
++    }
++
++    qapi_free_MCDAPIVersion(qapi_args.version_req);
++    qapi_free_MCDInitializeResult(result);
++
++    /* Incompatible version */
++    version_req = (mcd_api_version_st) {
++        .v_api_major = MCD_API_VER_MAJOR,
++        .v_api_minor = MCD_API_VER_MINOR + 1,
++        .author = "",
++    };
++
++    qapi_args.version_req = marshal_mcd_api_version(&version_req);
++    result = qtest_mcd_initialize(qts, &qapi_args);
++    g_assert(result->return_status != MCD_RET_ACT_NONE);
++
++    error_info = qtest_mcd_qry_error_info(qts);
++    g_assert(error_info->error_code == MCD_ERR_GENERAL);
++
++    if (verbose) {
++        fprintf(stderr, "[INFO]\tInitialization with newer API failed "
++                        "successfully: %s\n", error_info->error_str);
++    }
++
++    qapi_free_MCDAPIVersion(qapi_args.version_req);
++    qapi_free_MCDInitializeResult(result);
++    qapi_free_MCDErrorInfo(error_info);
++
++    qtest_quit(qts);
++}
++
++int main(int argc, char *argv[])
++{
++    char *v_env = getenv("V");
++    verbose = v_env && atoi(v_env) >= 1;
++    g_test_init(&argc, &argv, NULL);
++
++    qtest_add_func("mcd/initialize", test_initialize);
++    return g_test_run();
++}
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 8a6243382a..1e39a7191b 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -30,6 +30,7 @@ qtests_generic = [
+   'qos-test',
+   'readconfig-test',
+   'netdev-socket',
++  'mcd-test',
+ ]
+ if enable_modules
+   qtests_generic += [ 'modules-test' ]
+@@ -383,6 +384,7 @@ qtests = {
+   'netdev-socket': files('netdev-socket.c', '../unit/socket-helpers.c'),
+   'aspeed_smc-test': files('aspeed-smc-utils.c', 'aspeed_smc-test.c'),
+   'ast2700-smc-test': files('aspeed-smc-utils.c', 'ast2700-smc-test.c'),
++  'mcd-test': files('mcd-test.c', 'libmcd-test.c', '../../mcd/libmcd_qapi.c'),
+ }
+ 
+ if vnc.found()
 -- 
 2.34.1
 
