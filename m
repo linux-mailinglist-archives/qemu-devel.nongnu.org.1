@@ -2,87 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A41B4A59903
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:04:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE25BA599F3
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:27:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tref0-0004Rn-D8; Mon, 10 Mar 2025 11:03:18 -0400
+	id 1trf2R-0008VX-HX; Mon, 10 Mar 2025 11:27:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <bounce-md_30504962.67cefb0f.v1-368be07599fc4a2893c4ac517d073408@bounce.vates.tech>)
- id 1treeq-0004Mf-Gl
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:03:10 -0400
-Received: from mail186-3.suw21.mandrillapp.com ([198.2.186.3])
+ (Exim 4.90_1) (envelope-from <b-chu1@ti.com>) id 1treUw-0004gE-9F
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 10:52:54 -0400
+Received: from lelvem-ot02.ext.ti.com ([198.47.23.235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <bounce-md_30504962.67cefb0f.v1-368be07599fc4a2893c4ac517d073408@bounce.vates.tech>)
- id 1treel-0005LX-VC
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:03:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
- s=mte1; t=1741617935; x=1741887935;
- bh=4yf+U/Cs5iGe0IID9OfkhTo+yjG5clPxWQk9tooGuiU=;
- h=From:Subject:To:Cc:Message-Id:In-Reply-To:References:Feedback-ID:
- Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
- Subject:From;
- b=hpbuo2SlDOg/BCtJw1pDwpvfIeAe4b8Hg1ktvPcf6hA2uCcd6auIrMilhsGorNc3B
- sSmHfhS/9nOUHE/rvLD4l92Q70W7J6bp5UQ/YbkxGNGQGyZPt4fiBlJdOmA6iXUcUX
- 6IHuObUD5WgTtX4tBvAhv85o/QYOYEuD9lwiVuxUGuILRwpzolbrbyZ2speH1EDiXg
- gAYkeEvgNW+vdmzqDJCq7cX0K637BeUwZE0NBmQIfJ48acoZRgb2cuGxhp+dhp8TDc
- zktiw/DmiuvqTQ1MTRoKebgal/FoFqeehKWz3SSais8PT/QUWNMP/7LUarrGHqwd73
- 4wNvSum6mcCog==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
- t=1741617935; x=1741878435; i=anthony.perard@vates.tech;
- bh=4yf+U/Cs5iGe0IID9OfkhTo+yjG5clPxWQk9tooGuiU=;
- h=From:Subject:To:Cc:Message-Id:In-Reply-To:References:Feedback-ID:
- Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
- Subject:From;
- b=Ukr40IJnjc1Wqxzu1vS5gMggtXf8z6WPW/NlJLw/0xBcaLZ30j1CHWCUUaqmEAXqu
- mWuGuxObi9PsCFhpN8DEoj3UbN0DJd9tgjYWf6cCBLgqAGauscD68VqlvcGIF3iEzw
- MJs2j086+yIZBIXBIWYIrg9NZkBp4QaeznfAowo3tutlKmFHueR3nZzQ3xJBsqxHam
- 99abFQRUYKIrPuGeoG32XrjGc0iiffO05aAIdsJKSKDJEs/TVyrRrf8IQ1XofWHfhA
- //ZkVakfjqcXO8jbp1hL1AWiq2/F+8jq0xwUiCJxZ23uLF7gpVJKcbQn+lrt0Z5ruJ
- v7uRp1NaM/wTg==
-Received: from pmta10.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
- by mail186-3.suw21.mandrillapp.com (Mailchimp) with ESMTP id 4ZBKSb182czDRJ18D
- for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 14:45:35 +0000 (GMT)
-From: "Anthony PERARD" <anthony.perard@vates.tech>
-Subject: =?utf-8?Q?[PULL=203/3]=20xen:=20No=20need=20to=20flush=20the=20mapcache=20for=20grants?=
-Received: from [37.26.189.201] by mandrillapp.com id
- 368be07599fc4a2893c4ac517d073408; Mon, 10 Mar 2025 14:45:35 +0000
-X-Mailer: git-send-email 2.39.5
-X-Bm-Disclaimer: Yes
-X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
-X-Bm-Transport-Timestamp: 1741617934091
-To: qemu-devel@nongnu.org
-Cc: "Stefano Stabellini" <stefano.stabellini@amd.com>,
- "Anthony PERARD" <anthony.perard@vates.tech>
-Message-Id: <20250310144516.28828-4-anthony.perard@vates.tech>
-In-Reply-To: <20250310144516.28828-1-anthony.perard@vates.tech>
-References: <20250310144516.28828-1-anthony.perard@vates.tech>
-X-Native-Encoded: 1
-X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,
- =20including=20all=20headers,
- =20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.368be07599fc4a2893c4ac517d073408?=
-X-Mandrill-User: md_30504962
-Feedback-ID: 30504962:30504962.20250310:md
-Date: Mon, 10 Mar 2025 14:45:35 +0000
+ (Exim 4.90_1) (envelope-from <b-chu1@ti.com>) id 1treUt-0003yn-TE
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 10:52:53 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+ by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52AEqmah1001596
+ (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+ for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 09:52:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+ s=ti-com-17Q1; t=1741618368;
+ bh=6isOCP4rL6vg1z2crGFBSuwJ4/guHJS8dUjU9PZ96D4=;
+ h=From:To:Subject:Date;
+ b=OeZIPVdY20cXhyCIDi/I5JXyyzXCTUQNtuiQF31u8pz4BWSrQx8oSnR5Y9WRr/yRB
+ naxrJvnFLXAai1OChmQSbhSai4dV1iH8Y9I4ehv9ZaTXFTWC+Tr0jOdx3n8y5O3Iam
+ mz6977HliPbWMTwGsLYEOaHGJnHHKMF+Pc+oTX8Y=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+ by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52AEqmFN066901
+ for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 09:52:48 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 10
+ Mar 2025 09:52:47 -0500
+Received: from DLEE104.ent.ti.com ([fe80::1b8:1a58:6ede:b6f0]) by
+ DLEE104.ent.ti.com ([fe80::1b8:1a58:6ede:b6f0%17]) with mapi id
+ 15.01.2507.023; Mon, 10 Mar 2025 09:52:47 -0500
+From: "Chu, Benson" <b-chu1@ti.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: [qemu-riscv] Error mapping file: Invalid argument
+Thread-Topic: [qemu-riscv] Error mapping file: Invalid argument
+Thread-Index: AduPfbObvaZEQCeIQHKWYq5QvtJv3w==
+Date: Mon, 10 Mar 2025 14:52:47 +0000
+Message-ID: <f5ee7468950a4c3abbd3b05b7753d15c@ti.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.250.37.7]
+x-c2processedorg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: multipart/alternative;
+ boundary="_000_f5ee7468950a4c3abbd3b05b7753d15cticom_"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.2.186.3;
- envelope-from=bounce-md_30504962.67cefb0f.v1-368be07599fc4a2893c4ac517d073408@bounce.vates.tech;
- helo=mail186-3.suw21.mandrillapp.com
+Received-SPF: pass client-ip=198.47.23.235; envelope-from=b-chu1@ti.com;
+ helo=lelvem-ot02.ext.ti.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 10 Mar 2025 11:26:56 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,45 +79,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Stabellini <stefano.stabellini@amd.com>
+--_000_f5ee7468950a4c3abbd3b05b7753d15cticom_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-On IOREQ_TYPE_INVALIDATE we need to invalidate the mapcache for regular
-mappings. Since recently we started reusing the mapcache also to keep
-track of grants mappings. However, there is no need to remove grant
-mappings on IOREQ_TYPE_INVALIDATE requests, we shouldn't do that. So
-remove the function call.
+Hello all,
 
-Fixes: 9ecdd4bf08 (xen: mapcache: Add support for grant mappings)
-Cc: qemu-stable@nongnu.org
-Reported-by: Olaf Hering <olaf@aepfle.de>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Anthony PERARD <anthony.perard@vates.tech>
-Message-Id: <20250206194915.3357743-2-edgar.iglesias@gmail.com>
-Signed-off-by: Anthony PERARD <anthony.perard@vates.tech>
----
- hw/xen/xen-mapcache.c | 1 -
- 1 file changed, 1 deletion(-)
+I am working on a linker for the RISC-V target, and I was trying to use qem=
+u-riscv32 to test my linker.
 
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index 00bfbcc6fb..698b5c53ed 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -700,7 +700,6 @@ void xen_invalidate_map_cache(void)
-     bdrv_drain_all();
- 
-     xen_invalidate_map_cache_single(mapcache);
--    xen_invalidate_map_cache_single(mapcache_grants);
- }
- 
- static uint8_t *xen_replace_cache_entry_unlocked(MapCache *mc,
--- 
+However, I have noticed that qemu-riscv32 has some restrictions about how t=
+he program can be laid out in memory, and getting my linker to place the pr=
+ogram in a way that qemu-riscv32 will accept is very annoying.
+
+By my understanding, for each segment to be loaded, offset into the ELF fil=
+e must match the offset into a target page, which seems to be 4KiB.
+
+I noticed that GNU ld and LLVM's lld both follow this placement by default.=
+ Is there some ABI that's being conformed to for this? Is there any documen=
+tation describing why placement needs to be done this way?
+
+Thanks!
+Benson
 
 
-Anthony Perard | Vates XCP-ng Developer
+--_000_f5ee7468950a4c3abbd3b05b7753d15cticom_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-XCP-ng & Xen Orchestra - Vates solutions
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri",sans-serif;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-US" link=3D"blue" vlink=3D"purple">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Hello all, <o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">I am working on a linker for the RISC-V target, and =
+I was trying to use qemu-riscv32 to test my linker.
+<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">However, I have noticed that qemu-riscv32 has some r=
+estrictions about how the program can be laid out in memory, and getting my=
+ linker to place the program in a way that qemu-riscv32 will accept is very=
+ annoying.
+<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">By my understanding, for each segment to be loaded, =
+offset into the ELF file must match the offset into a target page, which se=
+ems to be 4KiB.
+<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">I noticed that GNU ld and LLVM&#8217;s lld both foll=
+ow this placement by default. Is there some ABI that&#8217;s being conforme=
+d to for this? Is there any documentation describing why placement needs to=
+ be done this way?
+<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Thanks!<o:p></o:p></p>
+<p class=3D"MsoNormal">Benson<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</div>
+</body>
+</html>
 
-web: https://vates.tech
+--_000_f5ee7468950a4c3abbd3b05b7753d15cticom_--
 
