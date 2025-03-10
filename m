@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A4EEA5902D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 10:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 849E1A5902F
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 10:48:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trZjv-0002Wz-6A; Mon, 10 Mar 2025 05:48:05 -0400
+	id 1trZk5-0002sZ-28; Mon, 10 Mar 2025 05:48:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trZj4-00027H-TY
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 05:47:21 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trZjN-0002G5-Jd
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 05:47:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trZj0-0002Jc-RZ
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 05:47:09 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trZjH-0002Kt-3o
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 05:47:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741600025;
+ s=mimecast20190719; t=1741600040;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=cZQfOfy6+HrqKttJBxI8kyttK8A388Bbnsrgq88HXZQ=;
- b=EgkL+Xd/RTJqjHThwCNAoKKQUM8P5cpXQmxd+Cux/NXIIndaMQjBbSIEH6dcQHB+Vcj0DU
- vPz7cpWGMXsClf53k+YcXtYBIsRY6QkfH6JS61/UDWp/LUwd08QFPT5DGgJtnpDbcC/GiT
- zfJQuszD2Q7wx2R0tzaih6q+dYUrP7M=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=vwid8cmJwzJPJMHnx0+S9nLlm+3HLEBBM0G8MMculGg=;
+ b=dybe8Ixuv/UtKtu4JjVpB0RfYVJll6RD3MNx4OyefCtBbYUFaSUEGZut07qL3fyYH6+fGX
+ v4gbJntejEcSzwHon4F6VctW+Ih2oqKxiOSh6ne615HxZSKPHFmK2qZElQfbi+lmMRYUR2
+ BfuD2QWCkPhdV09EiZ6KJFznbTTQgQM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-149-RWDijdTVPyyXX4oFchfprQ-1; Mon,
- 10 Mar 2025 05:47:01 -0400
-X-MC-Unique: RWDijdTVPyyXX4oFchfprQ-1
-X-Mimecast-MFC-AGG-ID: RWDijdTVPyyXX4oFchfprQ_1741600020
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-MxOP1P-xP7WfZ-MCgby84w-1; Mon,
+ 10 Mar 2025 05:47:16 -0400
+X-MC-Unique: MxOP1P-xP7WfZ-MCgby84w-1
+X-Mimecast-MFC-AGG-ID: MxOP1P-xP7WfZ-MCgby84w_1741600035
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5C89719560A3; Mon, 10 Mar 2025 09:46:59 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6EF8919560BC; Mon, 10 Mar 2025 09:47:14 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.4])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 187931956096; Mon, 10 Mar 2025 09:46:59 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EB9133000197; Mon, 10 Mar 2025 09:47:13 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id BF70821E66C1; Mon, 10 Mar 2025 10:46:56 +0100 (CET)
+ id 8C6CA21E66C4; Mon, 10 Mar 2025 10:47:11 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Michael Roth
- <michael.roth@amd.com>,
- Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Alex =?utf-8?Q?Ben?=
- =?utf-8?Q?n=C3=A9e?=
- <alex.bennee@linaro.org>,  Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2 43/62] docs/qapidoc: add preamble() method
-In-Reply-To: <20250309083550.5155-44-jsnow@redhat.com> (John Snow's message of
- "Sun, 9 Mar 2025 04:35:30 -0400")
+Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell
+ <peter.maydell@linaro.org>,  Harmonie Snow <harmonie@gmail.com>
+Subject: Re: [PATCH v2 28/62] docs/qapi-domain: add CSS styling
+In-Reply-To: <20250309083550.5155-29-jsnow@redhat.com> (John Snow's message of
+ "Sun, 9 Mar 2025 04:35:15 -0400")
 References: <20250309083550.5155-1-jsnow@redhat.com>
- <20250309083550.5155-44-jsnow@redhat.com>
-Date: Mon, 10 Mar 2025 10:46:56 +0100
-Message-ID: <8734flgqun.fsf@pond.sub.org>
+ <20250309083550.5155-29-jsnow@redhat.com>
+Date: Mon, 10 Mar 2025 10:47:11 +0100
+Message-ID: <871pv5gqu8.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -91,55 +91,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 John Snow <jsnow@redhat.com> writes:
 
-> This method adds the options/preamble to each definition block. Notably,
-> :since: and :ifcond: are added, as are any "special features" such as
-> :deprecated: and :unstable:.
+> Improve the general look and feel of generated QAPI docs.
 >
+> Attempt to limit line lengths to offer a more comfortable measure on
+> maximized windows, and improve some margin and spacing for field lists.
+>
+> Signed-off-by: Harmonie Snow <harmonie@gmail.com>
 > Signed-off-by: John Snow <jsnow@redhat.com>
 > ---
->  docs/sphinx/qapidoc.py | 41 ++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 38 insertions(+), 3 deletions(-)
+>  docs/sphinx-static/theme_overrides.css | 56 +++++++++++++++++++++++++-
+>  1 file changed, 54 insertions(+), 2 deletions(-)
 >
-> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-> index cf5dbb0133d..d8bf0073dfa 100644
-> --- a/docs/sphinx/qapidoc.py
-> +++ b/docs/sphinx/qapidoc.py
-> @@ -37,7 +37,12 @@
->  from docutils.parsers.rst import Directive, directives
->  from docutils.statemachine import StringList
->  from qapi.error import QAPIError
-> -from qapi.schema import QAPISchema, QAPISchemaVisitor
-> +from qapi.parser import QAPIDoc
-> +from qapi.schema import (
-> +    QAPISchema,
-> +    QAPISchemaDefinition,
-> +    QAPISchemaVisitor,
-> +)
->  from qapi.source import QAPISourceInfo
+> diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
+> index 3fd326613d9..92f395054a8 100644
+> --- a/docs/sphinx-static/theme_overrides.css
+> +++ b/docs/sphinx-static/theme_overrides.css
+> @@ -18,8 +18,8 @@ h1, h2, .rst-content .toctree-wrapper p.caption, h3, h4, h5, h6, legend {
 >  
->  from qapidoc_legacy import QAPISchemaGenRSTVisitor  # type: ignore
-> @@ -56,8 +61,6 @@
->          Sequence,
->      )
+>  .rst-content dl:not(.docutils) dt {
+>      border-top: none;
+> -    border-left: solid 3px #ccc;
+> -    background-color: #f0f0f0;
+> +    border-left: solid 5px #bcc6d2;
+> +    background-color: #eaedf1;
+>      color: black;
+>  }
 >  
-> -    from qapi.parser import QAPIDoc
-> -
->      from sphinx.application import Sphinx
->      from sphinx.util.typing import ExtensionMetadata
+> @@ -211,6 +211,18 @@ div[class^="highlight"] pre {
 >  
-> @@ -125,6 +128,38 @@ def ensure_blank_line(self) -> None:
->              # +2: correct for zero/one index, then increment by one.
->              self.add_line_raw("", fname, line + 2)
+>  /* QAPI domain theming */
 >  
-> +    # Transmogrification helpers
+> +/* most content in a qapi object definition should not eclipse about
+
+QAPI unless there's a reason for lower case.
+
+> +   80ch, but nested field lists are explicitly exempt due to their
+> +   two-column nature */
+> +.qapi dd *:not(dl) {
+> +    max-width: 80ch;
+> +}
 > +
-> +    def preamble(self, ent: QAPISchemaDefinition) -> None:
-> +        """
-> +        Generate option lines for qapi entity directives.
-
-QAPI index unless there's a reason for lower case.
-
-> +        """
+> +/* but the content column itself should still be less than ~80ch. */
+> +.qapi .field-list dd {
+> +    max-width: 80ch;
+> +}
+> +
+>  .qapi-infopips {
+>      margin-bottom: 1em;
+>  }
 
 [...]
 
