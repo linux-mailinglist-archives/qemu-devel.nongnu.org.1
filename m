@@ -2,79 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BBFA59A6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:56:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3910AA59A7A
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:57:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trfTM-0003hG-Mm; Mon, 10 Mar 2025 11:55:20 -0400
+	id 1trfUb-0004c5-Me; Mon, 10 Mar 2025 11:56:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1trfTK-0003gl-U0
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:55:18 -0400
-Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1trfTJ-0005tO-5C
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:55:18 -0400
-Received: by mail-yb1-xb2e.google.com with SMTP id
- 3f1490d57ef6-e5372a2fbddso3756788276.3
- for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 08:55:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741622116; x=1742226916; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=v/NSY+rUXY0q58M4sDKdo94Ve4cJf7H1/rBbzXCUQAs=;
- b=ImF0ttW68+GXh2YSoJY9FetJk0/QXkXJ5rJ2ELCPF8/+Bu8OZyrx7AMJLR0xt07MmH
- EuESnpX5iH24kgo7niR4U+YiprNZgaG9OD7oox3+NITD562wqvdMXd4baXsWZe61jylA
- Lq5dwt9zQkv0q/YAuh615rL+fJy5jBTOhdCjcowjoSnvgmsgJpwt8ADwxUFbjB0M1zhh
- wuveq4fsR+7xYYkLOc0qwf7FZK5C/uxtT/oKSz7shoXFWDBwF3zldBAtQVtMmgo9ogFC
- 0hSUfD02TYOlhdDlBe0o6A2F+/ksceVILXu+eBebly5Qe1hYLKeuhgHpeutUr+w+dBCH
- Wljw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741622116; x=1742226916;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=v/NSY+rUXY0q58M4sDKdo94Ve4cJf7H1/rBbzXCUQAs=;
- b=adfFuyPqzkzKXbv6SBJ2oh9WJfljWoe49x4D5XAg/CrauaNmn2oZ1FK8VeTo7YUWoq
- +DgKst0M2JvNnAXUc+rIZPZRkqFo7ceXcK5tMKwb+HCH3jAtEtaQXkbkasUAtJtbEyf5
- oNdDIi9RYuZrRI/x8G7IaJO7JfEClZkGRzLLTmt+zgbt4YnQ31t+jB0J8q2799gOQMKP
- YwwFgXfT+4Ds/PVpwd0U+glFvQftBPrALOq1jx7y1V4cAfZUAE7lVODajg1KfALCFLS5
- xcnugjDGDR3fhT3U5Fl3I4d1DBT5RY1Iu1JFI0HWveeFeYB7BgyTeco/3N++C8znXPga
- Z63g==
-X-Gm-Message-State: AOJu0YywIPX8P8/628iCm9eZVeGUDyg9boTHDuTyqmPM5EJNrDS09ASr
- kftTi18u51MMlvY7L5W2ZFdW6iN8s+wEDuPxSUZsBhtvw2wcwEcuGT4MiPucYqpn/kxVqGM6MAy
- A/vF4sxEtdQnnyPE5tSAk8WRPH3Tljtq1cGXOMg==
-X-Gm-Gg: ASbGncu9ZTjlwHvd7DwwRJVrhezLudQijU97HzgLwSTCHOJdd74qNGGdyfRjsNAzdku
- 1SCiX/FIxXkJd6IVwct4alJfp6n1cZQNvmF2VJdzq471wJERrUDXMBhw5Crlx3NxKPZycY1nqb9
- hi91NW6mO9QUTQQepk54QlTDuSgyE=
-X-Google-Smtp-Source: AGHT+IF5J3E6A2IhFuYu+OzhMTpV2560KGpTznQSHAyO1a3MiGFlx4qSAASuYfw3+tpUJVaeLQA6VzGLdjLLvdFiahs=
-X-Received: by 2002:a05:6902:228f:b0:e60:9b80:1f82 with SMTP id
- 3f1490d57ef6-e635c101689mr18641583276.8.1741622115558; Mon, 10 Mar 2025
- 08:55:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1trfUP-0004W4-KD; Mon, 10 Mar 2025 11:56:26 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1trfUM-0005yc-An; Mon, 10 Mar 2025 11:56:24 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52AAliAV003753;
+ Mon, 10 Mar 2025 15:56:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=UzpsBK
+ duoNS23Cf16SVYt9gnVQ7ZvtH5kkV7deKlHIs=; b=HS3iiMeZgkJLRKduDEyUED
+ R9VGduipd8Hk41NAKY2bcI0f8UybVf4ha7hPCW7lGIu2P2WOMi1gz8Wk6LSgcb0r
+ CIq0Ui+4hnUDbKGULKzRb7rWBQ3DVieMR+8P8fMCNUYScxJruyPBmc1zeQ23TDoa
+ tI/+vocNpxyXJBhIsXE+peC3hOk6N5nyof6Tw7NVwEBX4pGG5sktIvQzyFKpZuva
+ v2PxccE5KJ2gGuEPkypKOsyMgVX4SdL7Xy9cbUhxIIPvnJcksk7Ol+GC4hl1WWL2
+ aje66utYXCxTjjLFSq+D8P9SonD6lDBkOMh7F17uwYyRL1cGH+FkWI3x8+ss0vkA
+ ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 459jd4v8q1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Mar 2025 15:56:19 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52ADsdX5023914;
+ Mon, 10 Mar 2025 15:56:18 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4590kyqgud-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Mar 2025 15:56:18 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52AFuGk325625278
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 10 Mar 2025 15:56:16 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 79AC458068;
+ Mon, 10 Mar 2025 15:56:17 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE20058069;
+ Mon, 10 Mar 2025 15:56:16 +0000 (GMT)
+Received: from [9.61.127.211] (unknown [9.61.127.211])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 10 Mar 2025 15:56:16 +0000 (GMT)
+Message-ID: <fef6e0db-f53e-4439-9fe3-83a6085d628b@linux.ibm.com>
+Date: Mon, 10 Mar 2025 11:56:16 -0400
 MIME-Version: 1.0
-References: <f5ee7468950a4c3abbd3b05b7753d15c@ti.com>
-In-Reply-To: <f5ee7468950a4c3abbd3b05b7753d15c@ti.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 10 Mar 2025 15:55:03 +0000
-X-Gm-Features: AQ5f1JrxTBIMLsRTdaTTTt9yEVXJ8kpRXYKOgdm27-Ts1Ii_NM2s-7cQ7HECQas
-Message-ID: <CAFEAcA9taLRqGL+OT5NDMw68T8rJ7iargQsgRQi-=5jbDFBpzw@mail.gmail.com>
-Subject: Re: [qemu-riscv] Error mapping file: Invalid argument
-To: "Chu, Benson" <b-chu1@ti.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 4/5] hw/vfio/ap: Storing event information for an
+ AP configuration change event
+To: Rorie Reyes <rreyes@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com
+References: <20250310153552.32987-1-rreyes@linux.ibm.com>
+ <20250310153552.32987-5-rreyes@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20250310153552.32987-5-rreyes@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ekoFaUeh9WkNk2YYs8C4KihiUgNCmZ_E
+X-Proofpoint-GUID: ekoFaUeh9WkNk2YYs8C4KihiUgNCmZ_E
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-10_06,2025-03-07_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0
+ phishscore=0 mlxlogscore=999 impostorscore=0 priorityscore=1501 mlxscore=0
+ suspectscore=0 malwarescore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503100121
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=akrowiak@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,31 +111,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 10 Mar 2025 at 15:27, Chu, Benson <b-chu1@ti.com> wrote:
-> I am working on a linker for the RISC-V target, and I was trying
-> to use qemu-riscv32 to test my linker.
 
-> However, I have noticed that qemu-riscv32 has some restrictions
-> about how the program can be laid out in memory, and getting my
-> linker to place the program in a way that qemu-riscv32 will
-> accept is very annoying.
+
+
+On 3/10/25 11:35 AM, Rorie Reyes wrote:
+> These functions can be invoked by the function that handles interception
+> of the CHSC SEI instruction for requests indicating the accessibility of
+> one or more adjunct processors has changed.
 >
-> By my understanding, for each segment to be loaded, offset into
-> the ELF file must match the offset into a target page, which
-> seems to be 4KiB.
+> Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
+> ---
+>   hw/vfio/ap.c                 | 38 ++++++++++++++++++++++++++++++++++++
+>   include/hw/s390x/ap-bridge.h | 22 +++++++++++++++++++++
+>   2 files changed, 60 insertions(+)
 >
-> I noticed that GNU ld and LLVM=E2=80=99s lld both follow this placement
-> by default. Is there some ABI that=E2=80=99s being conformed to for this?
-> Is there any documentation describing why placement needs to be
-> done this way?
+> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+> index ddab764ab4..a152a90ca8 100644
+> --- a/hw/vfio/ap.c
+> +++ b/hw/vfio/ap.c
+> @@ -94,6 +94,44 @@ static void vfio_ap_cfg_chg_notifier_handler(void *opaque)
+>   
+>   }
+>   
+> +int ap_chsc_sei_nt0_get_event(void *res)
+> +{
+> +    APConfigChgEvent *cfg_chg_event = QTAILQ_FIRST(&cfg_chg_events);
 
-I think that is part of the standard SysV ELF ABI, usually
-described as the p_offset and p_vaddr having to be
-"congruent modulo the page size". The underlying reason is
-that you want to be able to mmap() the pages of the executable
-file directly into RAM and have them be at the right alignment
-and offset.
+You're assuming that the queue has elements in it. Shouldn't you check
+first?
 
-thanks
--- PMM
+> +    ChscSeiNt0Res *nt0_res  = (ChscSeiNt0Res *)res;
+> +
+> +    memset(nt0_res, 0, sizeof(*nt0_res));
+> +
+> +    if (!cfg_chg_event) {
+
+Okay, so I see you are checking whether the QTAILQ_FIRST() call above
+returned anything. Why not call the ap_chsc_sei_nt0_have_event() 
+function here instead, then follow that with the call to QTAILQ_FIRST() 
+if there are any elements in the queue. Also, maybe forego the memset() 
+call above until you verify that there are elements in the queue; if 
+not, then the memset() call is unnecessary.
+> +        return 1;
+> +    }
+> +
+> +    QTAILQ_REMOVE(&cfg_chg_events, cfg_chg_event, next);
+> +    g_free(cfg_chg_event);
+> +
+> +    /*
+> +     * If there are any AP configuration change events in the queue,
+> +     * indicate to the caller that there is pending event info in
+> +     * the response block
+> +     */
+> +    if (ap_chsc_sei_nt0_have_event()) {
+> +        nt0_res->flags |= PENDING_EVENT_INFO_BITMASK;
+> +    }
+> +
+> +    nt0_res->length = sizeof(ChscSeiNt0Res);
+> +    nt0_res->code = NT0_RES_RESPONSE_CODE;
+> +    nt0_res->nt = NT0_RES_NT_DEFAULT;
+> +    nt0_res->rs = NT0_RES_RS_AP_CHANGE;
+> +    nt0_res->cc = NT0_RES_CC_AP_CHANGE;
+> +
+> +    return 0;
+> +
+> +}
+> +
+> +int ap_chsc_sei_nt0_have_event(void)
+> +{
+> +    return !QTAILQ_EMPTY(&cfg_chg_events);
+> +}
+> +
+>   static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+>                                             unsigned int irq, Error **errp)
+>   {
+> diff --git a/include/hw/s390x/ap-bridge.h b/include/hw/s390x/ap-bridge.h
+> index 470e439a98..f4d838bf99 100644
+> --- a/include/hw/s390x/ap-bridge.h
+> +++ b/include/hw/s390x/ap-bridge.h
+> @@ -16,4 +16,26 @@
+>   
+>   void s390_init_ap(void);
+>   
+> +typedef struct ChscSeiNt0Res {
+> +    uint16_t length;
+> +    uint16_t code;
+> +    uint8_t reserved1;
+> +    uint16_t reserved2;
+> +    uint8_t nt;
+> +#define PENDING_EVENT_INFO_BITMASK 0x80;
+> +    uint8_t flags;
+> +    uint8_t reserved3;
+> +    uint8_t rs;
+> +    uint8_t cc;
+> +} QEMU_PACKED ChscSeiNt0Res;
+> +
+> +#define NT0_RES_RESPONSE_CODE 1;
+> +#define NT0_RES_NT_DEFAULT    0;
+> +#define NT0_RES_RS_AP_CHANGE  5;
+> +#define NT0_RES_CC_AP_CHANGE  3;
+> +
+> +int ap_chsc_sei_nt0_get_event(void *res);
+> +
+> +int ap_chsc_sei_nt0_have_event(void);
+> +
+>   #endif
+
 
