@@ -2,73 +2,147 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDF9A59549
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 13:56:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E003A595E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 14:15:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trcf7-0003PG-S2; Mon, 10 Mar 2025 08:55:17 -0400
+	id 1trcxn-0003sI-9g; Mon, 10 Mar 2025 09:14:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1trcen-000385-8v; Mon, 10 Mar 2025 08:55:00 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trcxh-0003ri-P8
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 09:14:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1trcef-0001WZ-Sk; Mon, 10 Mar 2025 08:54:56 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4A2234E6030;
- Mon, 10 Mar 2025 13:54:42 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id eEgzcnJ1JlRt; Mon, 10 Mar 2025 13:54:40 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 5C90B4E602E; Mon, 10 Mar 2025 13:54:40 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 58FC474577C;
- Mon, 10 Mar 2025 13:54:40 +0100 (CET)
-Date: Mon, 10 Mar 2025 13:54:40 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Eric Auger <eric.auger@redhat.com>
-cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Yi Liu <yi.l.liu@intel.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
- Tony Krowiak <akrowiak@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
- Halil Pasic <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, 
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Matthew Rosato <mjrosato@linux.ibm.com>, 
- Tomita Moeko <tomitamoeko@gmail.com>, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Eric Farman <farman@linux.ibm.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org, 
- Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-s390x@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>, 
- Ilya Leoshkevich <iii@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>, 
- =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH v2 09/21] hw/vfio/pci: Convert CONFIG_KVM check to runtime
- one
-In-Reply-To: <28c102c1-d157-4d22-a351-9fcc8f4260fd@redhat.com>
-Message-ID: <2d44848e-01c1-25c5-dfcb-99f5112fcbd7@eik.bme.hu>
-References: <20250308230917.18907-1-philmd@linaro.org>
- <20250308230917.18907-10-philmd@linaro.org>
- <28c102c1-d157-4d22-a351-9fcc8f4260fd@redhat.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trcxf-0004wj-MQ
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 09:14:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741612466;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=1YSaZOxdBQT0fHnKnAfQMNX+N3+DpnclNdpnsUrk8f8=;
+ b=KiIz+YcAkBwZAEVL2n89AuWSM89eBSkEB4QbJOtrtnyQfZ9yMfY7BrtqkqBkUBIPgMoGmC
+ K1nnwtulFwMkEb0BBTOCNGa68c03twiaA+F6xx0LJMpfZxR29/IKTQAIYIS2W6t/HvaKdl
+ txkJfTAaS6D9gOL3rKc8dfHe2yOK1tw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-608-9y0jEgZFNJukooBmpHEPBA-1; Mon, 10 Mar 2025 09:14:23 -0400
+X-MC-Unique: 9y0jEgZFNJukooBmpHEPBA-1
+X-Mimecast-MFC-AGG-ID: 9y0jEgZFNJukooBmpHEPBA_1741612462
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43cfda30a3cso2897145e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 06:14:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741612462; x=1742217262;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1YSaZOxdBQT0fHnKnAfQMNX+N3+DpnclNdpnsUrk8f8=;
+ b=GLn3x7004kwCscePca6wfEkpOsgij75YPyCyDCWlvX9pRqw2r6qgDC13wkbphdXMni
+ iatvHqE8kxfCV3BaLAcnJ93K1qgHlQfOTwmneNhLKlQK2PB4o4XeS16G6m2clDSXvmkX
+ +CdeI4x/Sg79JtwMHuqNbAO+QcbWKBbGD1rn1jK/pF2oU182zwuL3cm9GggJo5RWU5gE
+ qlWQkJ1XinSof1xRG67JYvz8HSlTdXZAAjbW0F3dqwXG1EZzMCHXORvb9cFZkwPs3Ga2
+ 8RrJq5yfL9oOOtOCG/F2/Y3VLqzqHnHOxHB+bdCHozFofeWW4GprdeGAgQ3aYV+FC4+n
+ ynbw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW2loCobqGrb3oCP4t2Cjq1Sk+VERMkd3Qh6JaeRpAwmR+PaSWo0OvNGmVs5vlDdfGqeAcnC5lZwu36@nongnu.org
+X-Gm-Message-State: AOJu0YwffeGfDkKiMxQPzfIgn96BpPDY6hbyjL7SIN0yBGmsR+0y2wHW
+ 2MAA9EYArpN1Oe1xZnKFqHHjWzdUiK8xIRk+mfKKBvYigi+a0Cej5L8vM5JbcRF5XIiDrfIimGD
+ Xh2GEXqOH4zcp+K2Y34XPV1C2DRv9VTP+aE98sKRfJRI5hZhKGGSe
+X-Gm-Gg: ASbGncs3wgM6yjMgBITuN22ORNrU74FQNs7G8I08QeE3Tf4F0cy2cFeLB7K//Zcrarb
+ YEfXUPUyCtkUWbjY9FvquD2/eDioNlazkLm19OThQp27fm97sl4pt0/T5hpO1QxbzLdbgvORFgU
+ kfV8hoTPyVjpdcG4Ee6xiq6ofPKZINJBepZs4ISG+7uPfTd024XeGAS5SAcrbJMhuQNtFW1HNya
+ MWrFOVbBUDw3DHvhlYMmfW6hgFtOJQqvsanB3+l7bnkz1WhMf544+BnODzNjtbMtha5ttqECfWu
+ 38EUwUeRxYhCbSpFGLBsD1qbqRDXAYcvZMCDUmIRljS5lnZL/wwTZw==
+X-Received: by 2002:a05:600c:35d1:b0:43b:ca39:6c81 with SMTP id
+ 5b1f17b1804b1-43c601d94e5mr73389845e9.9.1741612462413; 
+ Mon, 10 Mar 2025 06:14:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/JHw2maAP0GWQOxdQomoM5AbFuOEGkPhmSoFbZ1KJBY1EeVFjwgkd0TjFdJ14WLUhm2dnrA==
+X-Received: by 2002:a05:600c:35d1:b0:43b:ca39:6c81 with SMTP id
+ 5b1f17b1804b1-43c601d94e5mr73389545e9.9.1741612462038; 
+ Mon, 10 Mar 2025 06:14:22 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43cf892d380sm33578735e9.24.2025.03.10.06.14.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Mar 2025 06:14:21 -0700 (PDT)
+Message-ID: <ed182b44-3dd9-4ddf-9b8f-54882bc0d45f@redhat.com>
+Date: Mon, 10 Mar 2025 14:14:20 +0100
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1686296412-1741611280=:72286"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] vfio/migration: Use BE byte order for device state
+ wire packets
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
+ qemu-devel@nongnu.org
+References: <dcfc04cc1a50655650dbac8398e2742ada84ee39.1741611079.git.maciej.szmigiero@oracle.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <dcfc04cc1a50655650dbac8398e2742ada84ee39.1741611079.git.maciej.szmigiero@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,40 +158,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 3/10/25 13:53, Maciej S. Szmigiero wrote:
+> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+> 
+> Wire data commonly use BE byte order (including in the existing migration
+> protocol), use it also for for VFIO device state packets.
+> 
+> This will allow VFIO multifd device state transfer between hosts with
+> different endianness.
+> Although currently there is no such use case, it's good to have it now
+> for completeness.
+> 
+> Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+> --->   hw/vfio/migration-multifd.c | 15 ++++++++++-----
+>   1 file changed, 10 insertions(+), 5 deletions(-)
 
---3866299591-1686296412-1741611280=:72286
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
 
-On Mon, 10 Mar 2025, Eric Auger wrote:
-> Hi Philippe,
->
-> On 3/9/25 12:09 AM, Philippe Mathieu-Daudé wrote:
->> Use the runtime kvm_enabled() helper to check whether
->> KVM is available or not.
->
-> Miss the "why" of this patch.
->
-> By the way I fail to remember/see where kvm_allowed is set.
 
-It's in include/system/kvm.h
+Applied to vfio-next.
 
-> I am also confused because we still have some code, like in
-> vfio/common.c which does both checks:
-> #ifdef CONFIG_KVM
->         if (kvm_enabled()) {
->             max_memslots = kvm_get_max_memslots();
->         }
-> #endif
+Thanks,
 
-I think this is because if KVM is not available the if cannot be true so 
-it can be left out altogether. This may make sense on platforms like 
-Windows and macOS where QEMU is compiled without KVM so basically 
-everywhere except Linux.
+C.
 
-Regards,
-BALATON Zoltan
---3866299591-1686296412-1741611280=:72286--
+
+
+  
+> diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
+> index a9d41b9f1cb1..e816461e1652 100644
+> --- a/hw/vfio/migration-multifd.c
+> +++ b/hw/vfio/migration-multifd.c
+> @@ -13,6 +13,7 @@
+>   #include "hw/vfio/vfio-common.h"
+>   #include "migration/misc.h"
+>   #include "qapi/error.h"
+> +#include "qemu/bswap.h"
+>   #include "qemu/error-report.h"
+>   #include "qemu/lockable.h"
+>   #include "qemu/main-loop.h"
+> @@ -208,12 +209,16 @@ bool vfio_multifd_load_state_buffer(void *opaque, char *data, size_t data_size,
+>           return false;
+>       }
+>   
+> +    packet->version = be32_to_cpu(packet->version);
+>       if (packet->version != VFIO_DEVICE_STATE_PACKET_VER_CURRENT) {
+>           error_setg(errp, "%s: packet has unknown version %" PRIu32,
+>                      vbasedev->name, packet->version);
+>           return false;
+>       }
+>   
+> +    packet->idx = be32_to_cpu(packet->idx);
+> +    packet->flags = be32_to_cpu(packet->flags);
+> +
+>       if (packet->idx == UINT32_MAX) {
+>           error_setg(errp, "%s: packet index is invalid", vbasedev->name);
+>           return false;
+> @@ -682,9 +687,9 @@ vfio_save_complete_precopy_thread_config_state(VFIODevice *vbasedev,
+>   
+>       packet_len = sizeof(*packet) + bioc->usage;
+>       packet = g_malloc0(packet_len);
+> -    packet->version = VFIO_DEVICE_STATE_PACKET_VER_CURRENT;
+> -    packet->idx = idx;
+> -    packet->flags = VFIO_DEVICE_STATE_CONFIG_STATE;
+> +    packet->version = cpu_to_be32(VFIO_DEVICE_STATE_PACKET_VER_CURRENT);
+> +    packet->idx = cpu_to_be32(idx);
+> +    packet->flags = cpu_to_be32(VFIO_DEVICE_STATE_CONFIG_STATE);
+>       memcpy(&packet->data, bioc->data, bioc->usage);
+>   
+>       if (!multifd_queue_device_state(idstr, instance_id,
+> @@ -734,7 +739,7 @@ vfio_multifd_save_complete_precopy_thread(SaveLiveCompletePrecopyThreadData *d,
+>       }
+>   
+>       packet = g_malloc0(sizeof(*packet) + migration->data_buffer_size);
+> -    packet->version = VFIO_DEVICE_STATE_PACKET_VER_CURRENT;
+> +    packet->version = cpu_to_be32(VFIO_DEVICE_STATE_PACKET_VER_CURRENT);
+>   
+>       for (idx = 0; ; idx++) {
+>           ssize_t data_size;
+> @@ -755,7 +760,7 @@ vfio_multifd_save_complete_precopy_thread(SaveLiveCompletePrecopyThreadData *d,
+>               break;
+>           }
+>   
+> -        packet->idx = idx;
+> +        packet->idx = cpu_to_be32(idx);
+>           packet_size = sizeof(*packet) + data_size;
+>   
+>           if (!multifd_queue_device_state(d->idstr, d->instance_id,
+> 
+
 
