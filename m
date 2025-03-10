@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05070A58B6B
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 06:00:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DF4A58B6C
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 06:00:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trVEY-0003Dc-33; Mon, 10 Mar 2025 00:59:22 -0400
+	id 1trVES-00031c-KH; Mon, 10 Mar 2025 00:59:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trVEI-0002o6-3i
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:06 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1trVEJ-0002pm-Fb
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:08 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trVEG-0008Er-Hz
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:05 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-225477548e1so20296065ad.0
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 21:59:04 -0700 (PDT)
+ id 1trVEH-0008Fm-ME
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:07 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-224171d6826so50463135ad.3
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 21:59:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741582743; x=1742187543; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741582744; x=1742187544; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bTI1e75Far6tkvgIJWf413Q47HXvE/J/3XXxjgsh6yQ=;
- b=kgO0I2Z2i8woKAk8FaddliG1tD2SGpko1sMhM+i5IQXACXbaKOwwihut3SnG2h712+
- glozo+AUSNN1lywt1nNQCH+y2KAxze+SUy45gskM6vzvkm4wj+EPtZdCgsyJm2WJOywL
- uFlcDWpE47jXMBmU3R24hhjYPZdEHl26w+dn2qjBw0kw6ZQsutu0E7bwWcvn5ifMObKC
- MMlTLFHRx7zIasTuHthRWFNdcxlnNbVCyaScT1tgKSAx2evD/uydIIIgH0hoSexFxPEm
- ZKW2hOyvnnT2ZZQ6AmX0EHbQcJyblgN0ip0T4SI1Pl6a/63QNFSAG3TmzITdBct83Yrn
- qCnQ==
+ bh=0+faf/Iypy1sVhFNFInOCPAbXVKj8STEbMMwCdFMyRw=;
+ b=ovCKNP9v024+gM0P/HHOGPI0VD1930U7Ycfp0GAZWknfo+rPit2pJhoyCBq3BP74DN
+ S71l4d0kMgOO1uMJDfrsAg4F26bhaFnFiYrbfiiSex895/4i7iBBAkUySPYL2pDgJwxL
+ B2o+QLclM2OS9yGYqUpBStG0uYc53z+O674YxKd23O21mk7m/kVDhCn7zO3d7nomE36y
+ Z34Sc2K3JkWggtk6JKeYhsdftpMUVHk2ogHdsUNdQ16JTApkeFsqgAQWQPsKIhKm9M0b
+ DQhXIPjeuox7xXH2idOYtoOlalRPiswJyVJPBnTYOk6+2refzcLj2NVRIu7inkkmcfEj
+ C53Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741582743; x=1742187543;
+ d=1e100.net; s=20230601; t=1741582744; x=1742187544;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bTI1e75Far6tkvgIJWf413Q47HXvE/J/3XXxjgsh6yQ=;
- b=KtoxcYFmrg54ExbqB0QanzyTo4lTGFZP/O9Gt8EJ2fBgM0Cwuec4Hd6y7aFFycT2H5
- VqL7cmJCylHrSQZ62I6Gy0yhtHNq39QKg31VRp2ticBpX5y8xhlVpem1KNgCpBn9XYLo
- ojB7G+MtAT6jIJAasOuhthUU3umgVzRsZM/Mm2zG5y/YKxsZ4lAcAVZ8+P3a5A+qw9Sb
- EAkUNBD3i/N9LzJUw6rcfDtak5MmvbfcjZGy/tBrm0xcnVfUkiffAlxH3tBL573ebfOW
- ZsF9nxjBhsEJnFYHmBWVm4AfdVG9VrN1gjjd2IsPLcm4S1XFmdW3s4WxEmD0OVpGdHyf
- Mpvw==
-X-Gm-Message-State: AOJu0YzOlfnxoCpjLZsgAwJeobLHtMm9DPPzjD2sAUnE3kZzgZqpxyVZ
- IemQraBIKjR6h3t4YmDyYM6NT7USC5zqwuajBPT4NvCreOGqLd38AvHXGbVV+2G6955bSpNAMoX
- Ak0U=
-X-Gm-Gg: ASbGnct+unumZJSS3x9/D+rK/zyA496t+2RmTyS+oa2GiB4GVsHF3Z/f+KNScHVUUmB
- IKDzcwtROndrVOypT39Voud3d1Y4H8uqXatxULb+Yp4jPF2/Arqgr8/px4uGHkJk2w5xsIpB019
- FOjLKiQY0fg+DYD7vf3v5RNXmnmCAZY6P2dkCPpxy7ni/7CsBJVkBFzMTPiKb+XnS34LQ0kIvhK
- KzahFQee1LE+FQsBE2dkwYUX2Uk1+tOdVV/u3Wnp3pc/mhPvYmutFvu4/XBZ6P8U7t1/6WehBUh
- gF8D/GBf9l5geVpG/n5LsOsbiCjaiSSBTEYaUmq2WmNv
-X-Google-Smtp-Source: AGHT+IEJmFw/36nK1SG72X+BhxhrmIBbQ3tB+znRJTwS+V3kz822OtyZYcKaYIi+o8+TLN45WlwkAA==
-X-Received: by 2002:a17:903:32c5:b0:224:3c9:19ae with SMTP id
- d9443c01a7336-22428c07361mr200227865ad.34.1741582743213; 
- Sun, 09 Mar 2025 21:59:03 -0700 (PDT)
+ bh=0+faf/Iypy1sVhFNFInOCPAbXVKj8STEbMMwCdFMyRw=;
+ b=N9tJP6G+zH54BrRfj2FwBmN5KpbPjp1inkTZmYI1Ynl5WaF3Ugbo/7ngeeCgCuPfZB
+ mjMD9mXeYKhpj0EVryubgk8E7BzeDIZ48/umXiI5elZ/vU9bp06mKbpQLaiZ6s47at3R
+ rSQqvwwwTOYF86QTBU7t+RUJocPu/VxiFiAfbjcJw5AMSI6eDQnCHrOIr1a6H13Ex9nA
+ PGC0odWKcdadba7XJzVeOJo1bj3a9L0FuZf7KQ6pOy5SII9fG9SmWzUnmJ8rG7+kFeBa
+ kcgDDYSLvxQXeuSdoHzOfXE3N3Nt7G9eUR+oIw9k46VzwS/HdiRY33hJLPPzjG81iT89
+ 6b6Q==
+X-Gm-Message-State: AOJu0Yw15za/aWkVmYriQ5aZbP/JVFprbgAWWVJYkbz2wrb9EM323BUw
+ yQUtmnO64qU6rbfhpA04D/d2lccknBaH+wQxnXeLKpEd84PBCE70iH4kjLiiWKkqDojiZ/8UfYM
+ 6I2c=
+X-Gm-Gg: ASbGncvzDA9BwG66B0hRm7nUNUdLrTtXUFYtIFs4TKBrJa0s4x91Iqhs/3l1Vc4Bubg
+ rbZf0XuJ7NcJfeMdW/cgnnz3kJcjo7qPs0yNYtHzxtRL66da/pDwlCCDfMndcyDRxtdd1X2Dv9F
+ b6QEA81mgNBICJYa1IF8yDqEXUiIoDHJifyinZyS/Lybs1vEC9pJK4/mKnnRyGER4rGlUQI1JeN
+ lwSSIgga73PNu+razxnk+j7WpRQjT4C3LYtZ+MUm0ia6IOPGG8FywecMq71JPul8r6R2HC1hFpu
+ gk9IOGqUEHivvRS1jv7J74C/F0R1LSNHiDHZxZK8pAg6D8lsdxhmcY0=
+X-Google-Smtp-Source: AGHT+IHvC7npbpjr3DTdxoZwzYb1dM7G7lfM3pxuLeNMzVZpdYuqkJ12UM6z/Bptz/oCAInuSIhPSQ==
+X-Received: by 2002:a05:6a20:a11f:b0:1f3:2d62:3151 with SMTP id
+ adf61e73a8af0-1f544acc6camr22843444637.7.1741582744338; 
+ Sun, 09 Mar 2025 21:59:04 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736d2ae318csm1708308b3a.53.2025.03.09.21.59.02
+ d2e1a72fcca58-736d2ae318csm1708308b3a.53.2025.03.09.21.59.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 21:59:02 -0700 (PDT)
+ Sun, 09 Mar 2025 21:59:03 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
@@ -80,24 +80,24 @@ Cc: qemu-ppc@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
  Paolo Bonzini <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
  Stefano Stabellini <sstabellini@kernel.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 11/16] system/kvm: make kvm_flush_coalesced_mmio_buffer()
- accessible for common code
-Date: Sun,  9 Mar 2025 21:58:37 -0700
-Message-Id: <20250310045842.2650784-12-pierrick.bouvier@linaro.org>
+Subject: [PATCH 12/16] exec/ram_addr: call xen_hvm_modified_memory only if xen
+ is enabled
+Date: Sun,  9 Mar 2025 21:58:38 -0700
+Message-Id: <20250310045842.2650784-13-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
 References: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,33 +113,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function is used by system/physmem.c will be turn into common code
-in next commit.
-
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/system/kvm.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/exec/ram_addr.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index ab17c09a551..21da3b8b052 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -210,11 +210,11 @@ bool kvm_arm_supports_user_irq(void);
- int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr);
- int kvm_on_sigbus(int code, void *addr);
+diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+index 7c011fadd11..098fccb5835 100644
+--- a/include/exec/ram_addr.h
++++ b/include/exec/ram_addr.h
+@@ -342,7 +342,9 @@ static inline void cpu_physical_memory_set_dirty_range(ram_addr_t start,
+         }
+     }
  
--#ifdef COMPILING_PER_TARGET
--#include "cpu.h"
--
- void kvm_flush_coalesced_mmio_buffer(void);
+-    xen_hvm_modified_memory(start, length);
++    if (xen_enabled()) {
++        xen_hvm_modified_memory(start, length);
++    }
+ }
  
-+#ifdef COMPILING_PER_TARGET
-+#include "cpu.h"
-+
- /**
-  * kvm_update_guest_debug(): ensure KVM debug structures updated
-  * @cs: the CPUState for this cpu
+ #if !defined(_WIN32)
+@@ -418,7 +420,9 @@ uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+             }
+         }
+ 
+-        xen_hvm_modified_memory(start, pages << TARGET_PAGE_BITS);
++        if (xen_enabled()) {
++            xen_hvm_modified_memory(start, pages << TARGET_PAGE_BITS);
++        }
+     } else {
+         uint8_t clients = tcg_enabled() ? DIRTY_CLIENTS_ALL : DIRTY_CLIENTS_NOCODE;
+ 
 -- 
 2.39.5
 
