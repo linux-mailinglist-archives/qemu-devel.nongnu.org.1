@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04A5A590C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 11:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93651A590F7
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 11:20:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tra3X-00013G-Lq; Mon, 10 Mar 2025 06:08:19 -0400
+	id 1traEX-0004vA-CX; Mon, 10 Mar 2025 06:19:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tra3R-00012k-Kl
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 06:08:13 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1traEU-0004u1-5P
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 06:19:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tra3P-0006HN-QD
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 06:08:13 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1traER-0007tM-Mg
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 06:19:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741601290;
+ s=mimecast20190719; t=1741601973;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gFs5bMKzOC+WVAMUH3Ub5dHheCYtdBYCnq/p3ne39CY=;
- b=DhY7wU0+LfSejbP+d3hPLMvKjHbEzmgOx5ylU1A0EhOlYox0C2P4/T89ykBzP75BDwtRdN
- lpVvVHBPCr86Pz9I2nBCow8Ue8dvQnk+ckdEBveSbOqd1wN0LYpCYkSzE4Fr80El0KNy7S
- R8g9VaoilgRKxyyIVpxWr4xdoP8TLUY=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=1V04zJWSMfxQfLVn2Wfju4G0wq/3yi/bM0+RtBtDDlQ=;
+ b=gFjgIHrmIuKc9DonP+zYCgVqe/Sw2ZNB83i7gsIcZ0A6tI2I6/98autbrgUJ+6MApsTBvl
+ L4fW4RZCX0LhGIJBhZafZrSJsleDGnBettwY+Tjfpm1zRAesn96GPz+aMfAK35OVcZgl8u
+ EG2ZAvqfXPKb34XVptfOzSiSYw3BQ8c=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-519-qBYCFWY3Mcq5PVUp-SkW0w-1; Mon,
- 10 Mar 2025 06:08:07 -0400
-X-MC-Unique: qBYCFWY3Mcq5PVUp-SkW0w-1
-X-Mimecast-MFC-AGG-ID: qBYCFWY3Mcq5PVUp-SkW0w_1741601286
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-615--aVpzHzoPZSbriccvETrOg-1; Mon,
+ 10 Mar 2025 06:19:30 -0400
+X-MC-Unique: -aVpzHzoPZSbriccvETrOg-1
+X-Mimecast-MFC-AGG-ID: -aVpzHzoPZSbriccvETrOg_1741601969
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 855CD19560B0; Mon, 10 Mar 2025 10:08:05 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 71A63180035D; Mon, 10 Mar 2025 10:19:28 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.4])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 12FF418009AE; Mon, 10 Mar 2025 10:08:05 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DBD2E19560AD; Mon, 10 Mar 2025 10:19:27 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AEB9221E66C4; Mon, 10 Mar 2025 11:08:02 +0100 (CET)
+ id 5D17821E66C4; Mon, 10 Mar 2025 11:19:25 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
@@ -52,18 +52,18 @@ Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
  <berrange@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
  <thuth@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2 58/62] docs/qapidoc: generate entries for
- undocumented members
-In-Reply-To: <20250309083550.5155-59-jsnow@redhat.com> (John Snow's message of
- "Sun, 9 Mar 2025 04:35:45 -0400")
+Subject: Re: [PATCH v2 59/62] qapi/parser: add undocumented stub members to
+ all_sections
+In-Reply-To: <20250309083550.5155-60-jsnow@redhat.com> (John Snow's message of
+ "Sun, 9 Mar 2025 04:35:46 -0400")
 References: <20250309083550.5155-1-jsnow@redhat.com>
- <20250309083550.5155-59-jsnow@redhat.com>
-Date: Mon, 10 Mar 2025 11:08:02 +0100
-Message-ID: <87ecz52o71.fsf@pond.sub.org>
+ <20250309083550.5155-60-jsnow@redhat.com>
+Date: Mon, 10 Mar 2025 11:19:25 +0100
+Message-ID: <871pv52no2.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -91,51 +91,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 John Snow <jsnow@redhat.com> writes:
 
-> Presently, we never have any empty text entries for members. The next
-> patch will explicitly generate such sections, so enable support for it
-> in advance.
+> This helps simplify the new doc generator if it doesn't have to check
+> for undocumented members, it can just blindly operate on a sequence of
+> QAPIDoc.Section instances.
 >
-> The parser will generate placeholder sections to indicate undocumented
-> members, but it's the qapidoc generator that's responsible for deciding
-> what to do with that stub section.
+> NB: If there is no existing 'member' section, these undocumented stub
+> members will be inserted directly after the leading section.
 >
 > Signed-off-by: John Snow <jsnow@redhat.com>
 > ---
->  docs/sphinx/qapidoc.py | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  scripts/qapi/parser.py | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
 >
-> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-> index 96ac9f8620e..fec48fd01e1 100644
-> --- a/docs/sphinx/qapidoc.py
-> +++ b/docs/sphinx/qapidoc.py
-> @@ -235,11 +235,11 @@ def visit_member(self, section: QAPIDoc.ArgSection) -> None:
->          # TODO?: features for members (documented at entity-level,
->          # but sometimes defined per-member. Should we add such
->          # information to member descriptions when we can?)
-> -        assert section.text and section.member
-> +        assert section.member
->          self.generate_field(
->              self.member_field_type,
->              section.member,
-> -            section.text,
-> +            section.text if section.text else "(Not Documented.)",
+> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+> index 11c11bb09e5..58cb9f41ae8 100644
+> --- a/scripts/qapi/parser.py
+> +++ b/scripts/qapi/parser.py
+> @@ -789,8 +789,21 @@ def connect_member(self, member: 'QAPISchemaMember') -> None:
+>                  raise QAPISemError(member.info,
+>                                     "%s '%s' lacks documentation"
+>                                     % (member.role, member.name))
+> -            self.args[member.name] = QAPIDoc.ArgSection(
+> +            section = QAPIDoc.ArgSection(
+>                  self.info, QAPIDoc.Kind.MEMBER, member.name)
+> +            self.args[member.name] = section
+> +
+> +            # Insert stub documentation section for missing member docs.
+> +            # Determine where to insert stub doc - it should go at the
+> +            # end of the members section(s), if any. Note that index 0
+> +            # is assumed to be an untagged intro section, even if it is
+> +            # empty.
 
-The old generator uses just "Not documented".  I don't mind the period,
-but the parenthesis looks awkward:
+Please add
 
-   Members:
-      * limits ("ThrottleLimits", optional) -- limits to apply
-        for this throttle group
+               # TODO drop when undocumented members are outlawed
 
-      * x-iops-total ("int", optional) -- (Not Documented.)
-
-The old generator has a comment
-
-            # TODO drop fallbacks when undocumented members are outlawed
-
-Let's have it here as well.
-
->              section.info,
->          )
+> +            index = 1
+> +            if len(self.all_sections) > 1:
+> +                while self.all_sections[index].kind == QAPIDoc.Kind.MEMBER:
+> +                    index += 1
+> +            self.all_sections.insert(index, section)
+> +
+>          self.args[member.name].connect(member)
+>  
+>      def connect_feature(self, feature: 'QAPISchemaFeature') -> None:
 
 
