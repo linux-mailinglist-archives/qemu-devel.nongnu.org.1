@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F24A58E03
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 09:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD3FA58E01
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 09:22:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trYNG-0006UF-RS; Mon, 10 Mar 2025 04:20:36 -0400
+	id 1trYNJ-0006UK-GI; Mon, 10 Mar 2025 04:20:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1trYNB-0006Tm-WA
+ id 1trYNC-0006Ty-H4
  for qemu-devel@nongnu.org; Mon, 10 Mar 2025 04:20:30 -0400
 Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1trYN6-0004Ql-KB
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 04:20:29 -0400
+ id 1trYNA-0004PV-3Z
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 04:20:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741594824; x=1773130824;
+ t=1741594828; x=1773130828;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=SdF5xZxwT1B/fJL7eNhWt5x8go9X0aH01ikKl69PbXM=;
- b=hAWbg2ID24O9+qZsodHHNCyc05IAbQFuNxdZ4U8k+qWPFPTe1OrgpiJi
- 6mmnj/YOauhDru5zNtpURWLvwB3wASi9S9UJts2Sx1X8UTIys8H8yZirn
- zE5Kuir58gufxYCprVoLZDBgJynJlepZqiTkr0nkOhS9+daaDpV83zWmv
- duQCXPY7iv5V3xq82Vf6S0nPMA69tykkKJqPXpg58+cPwpBMh9iKVdh/5
- jOYiiLoQOba8+DikSm7ufX3ODfJzI85b1Gygh5E7EpJJvCIsdfu8Dkahx
- ZQTAZ3CXvzaSllCb+fJNU6fro8+5kS88L528FLkYV3a7JHfVHCXqeQPis w==;
-X-CSE-ConnectionGUID: bq+hC4Q3S7aEiXFMtDBdNQ==
-X-CSE-MsgGUID: L1OlR1l3SxO5r1UXPfV9yw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="42688454"
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="42688454"
+ bh=jc+MM1PaxuEIdOSl04LSzW2Hm+iS2U1LUcyIKZi7jKI=;
+ b=J/Iy8jWbAOTzqK1/D50GHBaa+kgm9DawhCq95Zl5O4q6OiKUt4z8jes+
+ rI7Kk33I2luvTdQ9v1dl8PUm8GJkt9yLs/+qErVCbb2RQ8wE3akJKRL1G
+ h/541Wp4bLvc5Y/CuoLkMSx9bqF7OB5vSSvMQ0lMFpxN2RKU5YHe389ba
+ oJ99vHldIqaEgHf9Wi4Skk6j25LpSOi28HaRzZ71yTY2/Wu41EUaN1jAK
+ y1r1+1L9jXvCqW8kw0FqHj/BmR+zZSB5rlsaMHmbYX3CIhmecZIN0+fDP
+ qCFJqUxV25+BvqljQHQK6ZGRLMBGlHS7ha4jBWrpDLrGP5+e2BDcIcXYr w==;
+X-CSE-ConnectionGUID: w1OwNfL2Q8+MhBgmGmJ88Q==
+X-CSE-MsgGUID: dKu5nZnwTCuTvYVvrjthVw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="42688464"
+X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="42688464"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2025 01:20:23 -0700
-X-CSE-ConnectionGUID: X70SiXx8S1iJooE6XqbCkw==
-X-CSE-MsgGUID: DSf7WM4yQ4qv41AiUP25eg==
+ 10 Mar 2025 01:20:26 -0700
+X-CSE-ConnectionGUID: rFbQ405CSFuduoZ3ISdGHw==
+X-CSE-MsgGUID: obLDyxTXS4uay3UWGzWUvA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="150862796"
+X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="150862807"
 Received: from emr-bkc.sh.intel.com ([10.112.230.82])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2025 01:20:20 -0700
+ 10 Mar 2025 01:20:23 -0700
 From: Chenyi Qiang <chenyi.qiang@intel.com>
 To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
  Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -53,10 +53,10 @@ Cc: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
  Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
  Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: [PATCH v3 2/7] memory: Change memory_region_set_ram_discard_manager()
- to return the result
-Date: Mon, 10 Mar 2025 16:18:30 +0800
-Message-ID: <20250310081837.13123-3-chenyi.qiang@intel.com>
+Subject: [PATCH v3 3/7] memory: Unify the definiton of ReplayRamPopulate() and
+ ReplayRamDiscard()
+Date: Mon, 10 Mar 2025 16:18:31 +0800
+Message-ID: <20250310081837.13123-4-chenyi.qiang@intel.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250310081837.13123-1-chenyi.qiang@intel.com>
 References: <20250310081837.13123-1-chenyi.qiang@intel.com>
@@ -67,8 +67,8 @@ Received-SPF: pass client-ip=198.175.65.16;
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -87,139 +87,221 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Modify memory_region_set_ram_discard_manager() to return false if a
-RamDiscardManager is already set in the MemoryRegion. The caller must
-handle this failure, such as having virtio-mem undo its actions and fail
-the realize() process. Opportunistically move the call earlier to avoid
-complex error handling.
+Update ReplayRamDiscard() function to return the result and unify the
+ReplayRamPopulate() and ReplayRamDiscard() to ReplayRamStateChange() at
+the same time due to their identical definitions. This unification
+simplifies related structures, such as VirtIOMEMReplayData, which makes
+it more cleaner and maintainable. It also paves the way for future
+extension when introducing new ReplayRamDiscard() functions to return
+the results.
 
-This change is beneficial when introducing a new RamDiscardManager
-instance besides virtio-mem. After
-ram_block_coordinated_discard_require(true) unlocks all
-RamDiscardManager instances, only one instance is allowed to be set for
-a MemoryRegion at present.
-
-Suggested-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 ---
 Changes in v3:
-    - Move set_ram_discard_manager() up to avoid a g_free()
-    - Clean up set_ram_discard_manager() definition
-
-Changes in v2:
-    - newly added.
+    - Newly added.
 ---
- hw/virtio/virtio-mem.c | 29 ++++++++++++++++-------------
- include/exec/memory.h  |  6 +++---
- system/memory.c        | 10 +++++++---
- 3 files changed, 26 insertions(+), 19 deletions(-)
+ hw/virtio/virtio-mem.c | 20 ++++++++++----------
+ include/exec/memory.h  | 31 ++++++++++++++++---------------
+ migration/ram.c        |  5 +++--
+ system/memory.c        | 12 ++++++------
+ 4 files changed, 35 insertions(+), 33 deletions(-)
 
 diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 21f16e4912..d0d3a0240f 100644
+index d0d3a0240f..816ae8abdd 100644
 --- a/hw/virtio/virtio-mem.c
 +++ b/hw/virtio/virtio-mem.c
-@@ -1049,6 +1049,17 @@ static void virtio_mem_device_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    /*
-+     * Set ourselves as RamDiscardManager before the plug handler maps the
-+     * memory region and exposes it via an address space.
-+     */
-+    if (memory_region_set_ram_discard_manager(&vmem->memdev->mr,
-+                                              RAM_DISCARD_MANAGER(vmem))) {
-+        error_setg(errp, "Failed to set RamDiscardManager");
-+        ram_block_coordinated_discard_require(false);
-+        return;
-+    }
-+
-     /*
-      * We don't know at this point whether shared RAM is migrated using
-      * QEMU or migrated using the file content. "x-ignore-shared" will be
-@@ -1124,13 +1135,6 @@ static void virtio_mem_device_realize(DeviceState *dev, Error **errp)
-     vmem->system_reset = VIRTIO_MEM_SYSTEM_RESET(obj);
-     vmem->system_reset->vmem = vmem;
-     qemu_register_resettable(obj);
--
--    /*
--     * Set ourselves as RamDiscardManager before the plug handler maps the
--     * memory region and exposes it via an address space.
--     */
--    memory_region_set_ram_discard_manager(&vmem->memdev->mr,
--                                          RAM_DISCARD_MANAGER(vmem));
+@@ -1733,7 +1733,7 @@ static bool virtio_mem_rdm_is_populated(const RamDiscardManager *rdm,
  }
  
- static void virtio_mem_device_unrealize(DeviceState *dev)
-@@ -1138,12 +1142,6 @@ static void virtio_mem_device_unrealize(DeviceState *dev)
-     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-     VirtIOMEM *vmem = VIRTIO_MEM(dev);
+ struct VirtIOMEMReplayData {
+-    void *fn;
++    ReplayRamStateChange fn;
+     void *opaque;
+ };
  
--    /*
--     * The unplug handler unmapped the memory region, it cannot be
--     * found via an address space anymore. Unset ourselves.
--     */
--    memory_region_set_ram_discard_manager(&vmem->memdev->mr, NULL);
--
-     qemu_unregister_resettable(OBJECT(vmem->system_reset));
-     object_unref(OBJECT(vmem->system_reset));
+@@ -1741,12 +1741,12 @@ static int virtio_mem_rdm_replay_populated_cb(MemoryRegionSection *s, void *arg)
+ {
+     struct VirtIOMEMReplayData *data = arg;
  
-@@ -1156,6 +1154,11 @@ static void virtio_mem_device_unrealize(DeviceState *dev)
-     virtio_del_queue(vdev, 0);
-     virtio_cleanup(vdev);
-     g_free(vmem->bitmap);
-+    /*
-+     * The unplug handler unmapped the memory region, it cannot be
-+     * found via an address space anymore. Unset ourselves.
-+     */
-+    memory_region_set_ram_discard_manager(&vmem->memdev->mr, NULL);
-     ram_block_coordinated_discard_require(false);
+-    return ((ReplayRamPopulate)data->fn)(s, data->opaque);
++    return data->fn(s, data->opaque);
  }
  
+ static int virtio_mem_rdm_replay_populated(const RamDiscardManager *rdm,
+                                            MemoryRegionSection *s,
+-                                           ReplayRamPopulate replay_fn,
++                                           ReplayRamStateChange replay_fn,
+                                            void *opaque)
+ {
+     const VirtIOMEM *vmem = VIRTIO_MEM(rdm);
+@@ -1765,14 +1765,14 @@ static int virtio_mem_rdm_replay_discarded_cb(MemoryRegionSection *s,
+ {
+     struct VirtIOMEMReplayData *data = arg;
+ 
+-    ((ReplayRamDiscard)data->fn)(s, data->opaque);
++    data->fn(s, data->opaque);
+     return 0;
+ }
+ 
+-static void virtio_mem_rdm_replay_discarded(const RamDiscardManager *rdm,
+-                                            MemoryRegionSection *s,
+-                                            ReplayRamDiscard replay_fn,
+-                                            void *opaque)
++static int virtio_mem_rdm_replay_discarded(const RamDiscardManager *rdm,
++                                           MemoryRegionSection *s,
++                                           ReplayRamStateChange replay_fn,
++                                           void *opaque)
+ {
+     const VirtIOMEM *vmem = VIRTIO_MEM(rdm);
+     struct VirtIOMEMReplayData data = {
+@@ -1781,8 +1781,8 @@ static void virtio_mem_rdm_replay_discarded(const RamDiscardManager *rdm,
+     };
+ 
+     g_assert(s->mr == &vmem->memdev->mr);
+-    virtio_mem_for_each_unplugged_section(vmem, s, &data,
+-                                          virtio_mem_rdm_replay_discarded_cb);
++    return virtio_mem_for_each_unplugged_section(vmem, s, &data,
++                                                 virtio_mem_rdm_replay_discarded_cb);
+ }
+ 
+ static void virtio_mem_rdm_register_listener(RamDiscardManager *rdm,
 diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 3bebc43d59..390477b588 100644
+index 390477b588..aa67d84329 100644
 --- a/include/exec/memory.h
 +++ b/include/exec/memory.h
-@@ -2487,13 +2487,13 @@ static inline bool memory_region_has_ram_discard_manager(MemoryRegion *mr)
-  *
-  * This function must not be called for a mapped #MemoryRegion, a #MemoryRegion
-  * that does not cover RAM, or a #MemoryRegion that already has a
-- * #RamDiscardManager assigned.
-+ * #RamDiscardManager assigned. Return 0 if the rdm is set successfully.
-  *
-  * @mr: the #MemoryRegion
-  * @rdm: #RamDiscardManager to set
-  */
--void memory_region_set_ram_discard_manager(MemoryRegion *mr,
--                                           RamDiscardManager *rdm);
-+int memory_region_set_ram_discard_manager(MemoryRegion *mr,
-+                                          RamDiscardManager *rdm);
- 
- /**
-  * memory_region_find: translate an address/size relative to a
-diff --git a/system/memory.c b/system/memory.c
-index b17b5538ff..62d6b410f0 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -2115,12 +2115,16 @@ RamDiscardManager *memory_region_get_ram_discard_manager(MemoryRegion *mr)
-     return mr->rdm;
+@@ -566,8 +566,7 @@ static inline void ram_discard_listener_init(RamDiscardListener *rdl,
+     rdl->double_discard_supported = double_discard_supported;
  }
  
--void memory_region_set_ram_discard_manager(MemoryRegion *mr,
--                                           RamDiscardManager *rdm)
-+int memory_region_set_ram_discard_manager(MemoryRegion *mr,
-+                                          RamDiscardManager *rdm)
+-typedef int (*ReplayRamPopulate)(MemoryRegionSection *section, void *opaque);
+-typedef void (*ReplayRamDiscard)(MemoryRegionSection *section, void *opaque);
++typedef int (*ReplayRamStateChange)(MemoryRegionSection *section, void *opaque);
+ 
+ /*
+  * RamDiscardManagerClass:
+@@ -641,36 +640,38 @@ struct RamDiscardManagerClass {
+     /**
+      * @replay_populated:
+      *
+-     * Call the #ReplayRamPopulate callback for all populated parts within the
++     * Call the #ReplayRamStateChange callback for all populated parts within the
+      * #MemoryRegionSection via the #RamDiscardManager.
+      *
+      * In case any call fails, no further calls are made.
+      *
+      * @rdm: the #RamDiscardManager
+      * @section: the #MemoryRegionSection
+-     * @replay_fn: the #ReplayRamPopulate callback
++     * @replay_fn: the #ReplayRamStateChange callback
+      * @opaque: pointer to forward to the callback
+      *
+      * Returns 0 on success, or a negative error if any notification failed.
+      */
+     int (*replay_populated)(const RamDiscardManager *rdm,
+                             MemoryRegionSection *section,
+-                            ReplayRamPopulate replay_fn, void *opaque);
++                            ReplayRamStateChange replay_fn, void *opaque);
+ 
+     /**
+      * @replay_discarded:
+      *
+-     * Call the #ReplayRamDiscard callback for all discarded parts within the
++     * Call the #ReplayRamStateChange callback for all discarded parts within the
+      * #MemoryRegionSection via the #RamDiscardManager.
+      *
+      * @rdm: the #RamDiscardManager
+      * @section: the #MemoryRegionSection
+-     * @replay_fn: the #ReplayRamDiscard callback
++     * @replay_fn: the #ReplayRamStateChange callback
+      * @opaque: pointer to forward to the callback
++     *
++     * Returns 0 on success, or a negative error if any notification failed.
+      */
+-    void (*replay_discarded)(const RamDiscardManager *rdm,
+-                             MemoryRegionSection *section,
+-                             ReplayRamDiscard replay_fn, void *opaque);
++    int (*replay_discarded)(const RamDiscardManager *rdm,
++                            MemoryRegionSection *section,
++                            ReplayRamStateChange replay_fn, void *opaque);
+ 
+     /**
+      * @register_listener:
+@@ -713,13 +714,13 @@ bool ram_discard_manager_is_populated(const RamDiscardManager *rdm,
+ 
+ int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
+                                          MemoryRegionSection *section,
+-                                         ReplayRamPopulate replay_fn,
++                                         ReplayRamStateChange replay_fn,
+                                          void *opaque);
+ 
+-void ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
+-                                          MemoryRegionSection *section,
+-                                          ReplayRamDiscard replay_fn,
+-                                          void *opaque);
++int ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
++                                         MemoryRegionSection *section,
++                                         ReplayRamStateChange replay_fn,
++                                         void *opaque);
+ 
+ void ram_discard_manager_register_listener(RamDiscardManager *rdm,
+                                            RamDiscardListener *rdl,
+diff --git a/migration/ram.c b/migration/ram.c
+index ce28328141..053730367b 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -816,8 +816,8 @@ static inline bool migration_bitmap_clear_dirty(RAMState *rs,
+     return ret;
+ }
+ 
+-static void dirty_bitmap_clear_section(MemoryRegionSection *section,
+-                                       void *opaque)
++static int dirty_bitmap_clear_section(MemoryRegionSection *section,
++                                      void *opaque)
  {
-     g_assert(memory_region_is_ram(mr));
--    g_assert(!rdm || !mr->rdm);
-+    if (mr->rdm && rdm) {
-+        return -EBUSY;
-+    }
-+
-     mr->rdm = rdm;
+     const hwaddr offset = section->offset_within_region;
+     const hwaddr size = int128_get64(section->size);
+@@ -836,6 +836,7 @@ static void dirty_bitmap_clear_section(MemoryRegionSection *section,
+     }
+     *cleared_bits += bitmap_count_one_with_offset(rb->bmap, start, npages);
+     bitmap_clear(rb->bmap, start, npages);
 +    return 0;
  }
  
- uint64_t ram_discard_manager_get_min_granularity(const RamDiscardManager *rdm,
+ /*
+diff --git a/system/memory.c b/system/memory.c
+index 62d6b410f0..8622d17133 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -2147,7 +2147,7 @@ bool ram_discard_manager_is_populated(const RamDiscardManager *rdm,
+ 
+ int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
+                                          MemoryRegionSection *section,
+-                                         ReplayRamPopulate replay_fn,
++                                         ReplayRamStateChange replay_fn,
+                                          void *opaque)
+ {
+     RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_GET_CLASS(rdm);
+@@ -2156,15 +2156,15 @@ int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
+     return rdmc->replay_populated(rdm, section, replay_fn, opaque);
+ }
+ 
+-void ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
+-                                          MemoryRegionSection *section,
+-                                          ReplayRamDiscard replay_fn,
+-                                          void *opaque)
++int ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
++                                         MemoryRegionSection *section,
++                                         ReplayRamStateChange replay_fn,
++                                         void *opaque)
+ {
+     RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_GET_CLASS(rdm);
+ 
+     g_assert(rdmc->replay_discarded);
+-    rdmc->replay_discarded(rdm, section, replay_fn, opaque);
++    return rdmc->replay_discarded(rdm, section, replay_fn, opaque);
+ }
+ 
+ void ram_discard_manager_register_listener(RamDiscardManager *rdm,
 -- 
 2.43.5
 
