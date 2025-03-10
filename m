@@ -2,123 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF501A597E3
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 15:39:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F45A597F9
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 15:44:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1treHh-0002pc-Qx; Mon, 10 Mar 2025 10:39:13 -0400
+	id 1treLZ-0007Wy-KI; Mon, 10 Mar 2025 10:43:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1treHX-0002pJ-O5
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 10:39:03 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1treLX-0007Wc-67
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 10:43:11 -0400
+Received: from mail-yb1-xb2f.google.com ([2607:f8b0:4864:20::b2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1treHU-0001jx-8x
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 10:39:03 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A40691F387;
- Mon, 10 Mar 2025 14:38:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1741617535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yOYvJTSOLjHjh+mIn6KuztMYRAMzzhtNxHr2breor90=;
- b=CIlBh0Sf8XqZzBYwHdp0TTaPZD+RcVFnbzbvg1ppyRI1m56Vg5oUR19phZNI1NdeZKSiSE
- eNXIOB95lQnC5AabaDG2jKy4S24icvRx8yqRo9Si5gW5dxmrnVxVNbQ7U4CFjL+eBlha/f
- NYy9m6a4nacfcPj4piR/KCDWteIkpvA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1741617535;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yOYvJTSOLjHjh+mIn6KuztMYRAMzzhtNxHr2breor90=;
- b=+oT3E3SBosQMqdgP+PZSW8NUFPv1s/kGXXaDBkRcLQod2syH26NwyfZU4LaUVVbGgSk7Kc
- AsCG5WY5CmI9uXDQ==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CIlBh0Sf;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+oT3E3SB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1741617535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yOYvJTSOLjHjh+mIn6KuztMYRAMzzhtNxHr2breor90=;
- b=CIlBh0Sf8XqZzBYwHdp0TTaPZD+RcVFnbzbvg1ppyRI1m56Vg5oUR19phZNI1NdeZKSiSE
- eNXIOB95lQnC5AabaDG2jKy4S24icvRx8yqRo9Si5gW5dxmrnVxVNbQ7U4CFjL+eBlha/f
- NYy9m6a4nacfcPj4piR/KCDWteIkpvA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1741617535;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yOYvJTSOLjHjh+mIn6KuztMYRAMzzhtNxHr2breor90=;
- b=+oT3E3SBosQMqdgP+PZSW8NUFPv1s/kGXXaDBkRcLQod2syH26NwyfZU4LaUVVbGgSk7Kc
- AsCG5WY5CmI9uXDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 18D6A139E7;
- Mon, 10 Mar 2025 14:38:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id n9N+MX75zmeaOwAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 10 Mar 2025 14:38:54 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, Prasad Pandit <ppandit@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, Prasad Pandit
- <pjp@fedoraproject.org>
-Subject: Re: [PATCH v7 5/5] migration: add MULTIFD_RECV_SYNC migration command
-In-Reply-To: <Z8t4YoPEnwJO0sFP@x1.local>
-References: <20250228121749.553184-1-ppandit@redhat.com>
- <20250228121749.553184-6-ppandit@redhat.com> <Z8G9Wj3DWSgdLkNQ@x1.local>
- <CAE8KmOxenqyqOxEFozgP1gBZPtneEqcbop9F_f+VW3ukPfw37A@mail.gmail.com>
- <Z8XBowkG72G-l3L4@x1.local>
- <CAE8KmOyssf_2RYBw2LLpxP2Z5bmtyU==Qs+4HWp=mOVb9o82-g@mail.gmail.com>
- <Z8cPnxqOvp1hFpx8@x1.local>
- <CAE8KmOw1CCQUt0wyELVhy5j-CfwVuA2XNsecW=y6rwJv7dempw@mail.gmail.com>
- <Z8hJeneeuKqD1i8Q@x1.local>
- <CAE8KmOyKiEt9t0vUwVyqD7tx01vkm+NHA1p1tmQnJ9mKY0Za7w@mail.gmail.com>
- <Z8t4YoPEnwJO0sFP@x1.local>
-Date: Mon, 10 Mar 2025 11:38:52 -0300
-Message-ID: <87ldtdt0g3.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1treLV-0002Wp-BJ
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 10:43:10 -0400
+Received: by mail-yb1-xb2f.google.com with SMTP id
+ 3f1490d57ef6-e549b0f8d57so3528733276.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 07:43:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741617788; x=1742222588; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AK4GAtrIkICur9775qYB5WW7gfZBTN0oWrIaeShpZNI=;
+ b=YOAXxdKNa36ntGqWrY5qwuHeaTn9xDT/fypAg2fgTMHttBirHCO9IgJ5EggxhSPTgA
+ D7elpxcA8nwc5ARjPRVzwHjYgSc0I0oLa80LXG+2d5J6N95n7dg+RKRl8KrxRduUvw0u
+ N2J+yUr5HG+8N+ZiDgM9U6W0EPEWp/AZ/QPUF/VKW2RPmsqOMad5G4ISyaXQsBo1vNt6
+ xPTF6wUT8ErEG5/eu4xM8PqEB0xPqnofcRzCSi6dVh/YO8UVQx92fRKvIUxe76dIsoYd
+ VvDJQrmbCgUqImB0fcfoOUlhqjlgxI7uczPdhotSCUNuaC3PahdlU0Lm3PAJDVVLw9yJ
+ +xWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741617788; x=1742222588;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AK4GAtrIkICur9775qYB5WW7gfZBTN0oWrIaeShpZNI=;
+ b=ue5AwUvM+db3MJwBSw8oLu9M6dB8ZmPXD71rcSszvaL5wnJp15JOsagrckkZMSU8N+
+ GSWj2glmdmyXE6WEHI1gQJWSh6ckR8YfSZvInsvFaUJXycRA9M1co516fKpVwUXZOkEu
+ VCz2/yvudBN6WrjQmgS7/dfdYk/+bdANUPEweugN/JNSU7SBco/lqRvWMgp+9R68OvVW
+ XaZ53lPP9GJ4qwX1Yv/IjSInX+pYxe6sTN4EM+OkLI77ffznxfQKAIS2RQKLpOdiVKxK
+ mk1lyp4NLAnTDdIX3WKKY63wTNaJcMq9uMrzhbhoI8dFVQe72uIAILVK/gI9FMMFHMXf
+ MtHg==
+X-Gm-Message-State: AOJu0Ywrnvukg3nVzVA68v6s9q2Tti+6VyOm5Lsllq7+XAdsp+37fE9Y
+ UgZ0gBqZuspgonbNZl41GT12GpKIbKAFAvu9eWnXVRvD3IuVkqZ71YeqkH+VYCf3S2/M6EY9kje
+ 52pvoPe05SnsvztUi6Hrt74jYzchLQmojMKi4aA==
+X-Gm-Gg: ASbGncueirE0+crQ/K1eriCSMjPvx64yukc9R1ceSJGXaO4tkMV3aZVvQQ4hh17WTB7
+ 1m7EHVvD7aoEQHEoa+1M09eZclIGaqjOqa5xGjBnxHm72ygY0sB+mRcBs3dXIA0vtdVSiMJm/0Z
+ gG5cVLYruMm2wBMhixr3mQ86/ZsGo=
+X-Google-Smtp-Source: AGHT+IHY7zT8K9MZdjKo3TYvRYnCH8XHMqyqLke+H1jbGAUdZ4kJg+oNGaEOL2T4GPyc4bE1nhTEn14wyRhxyDMXRNQ=
+X-Received: by 2002:a05:6902:320c:b0:e5a:b05e:4da8 with SMTP id
+ 3f1490d57ef6-e635c1ec1fbmr16504436276.42.1741617787810; Mon, 10 Mar 2025
+ 07:43:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: A40691F387
-X-Spam-Score: -4.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- MISSING_XM_UA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,
- imap1.dmz-prg2.suse.org:helo, suse.de:mid, suse.de:dkim]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20250310012825.79614-1-philmd@linaro.org>
+In-Reply-To: <20250310012825.79614-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 10 Mar 2025 14:42:56 +0000
+X-Gm-Features: AQ5f1Jo09qEstp32yf_C1bFj3a84fYZNtSzWFtDVSb6pKdObc6b5Ugwzd67mpI0
+Message-ID: <CAFEAcA_fRWgntwbiFiDJqAkthR8vBzrkLOLkp5GeHD9O8xTMCA@mail.gmail.com>
+Subject: Re: [PATCH v7 0/7] hw/char/pl011: Implement TX (async) FIFO to avoid
+ blocking the main loop
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-arm@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -135,36 +96,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Mon, 10 Mar 2025 at 01:28, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> Hi,
+>
+> This series add support for (async) FIFO on the transmit path
+> of the PL011 UART.
 
-> On Fri, Mar 07, 2025 at 05:15:03PM +0530, Prasad Pandit wrote:
->> diff --git a/migration/migration.c b/migration/migration.c
->> index 65fc4f5eed..da2c49c303 100644
->> --- a/migration/migration.c
->> +++ b/migration/migration.c
->> @@ -3401,9 +3401,10 @@ static MigIterateState
->> migration_iteration_run(MigrationState *s)
->>      if (!in_postcopy && must_precopy <= s->threshold_size
->>          && can_switchover && qatomic_read(&s->start_postcopy)) {
->>          if (migrate_multifd()) {
->> -            multifd_send_flush();
->> -            multifd_send_sync_main(MULTIFD_SYNC_LOCAL);
->> -            qemu_savevm_send_multifd_recv_sync(s->to_dst_file);
->> +/*          multifd_send_flush();
->> + *          multifd_send_sync_main(MULTIFD_SYNC_ALL);
->> + *          qemu_savevm_send_multifd_recv_sync(s->to_dst_file);
->> + */
->> +            qemu_savevm_state_complete_multifd(s->to_dst_file);
->>              multifd_send_shutdown();
->
-> Forgot to mention one thing:
->
-> If you do flush and sync, IMHO we can keep the threads there and remove
-> this shutdown, as long as we are sure it'll be properly shutdown when
-> cleanup.
->
-> With the assertion in dest threads, I think it should be OK.
+This hasn't made the last pre-softfreeze arm pullreq, but
+I think we can reasonably call "don't do blocking I/O"
+enough of a bugfix for it to be ok to go in early in the
+freeze cycle for rc0.
 
-Good point. Shutdown at random places makes it difficult to protect
-against cleanup races.
+I've applied it to target-arm.next.
+
+thanks
+-- PMM
 
