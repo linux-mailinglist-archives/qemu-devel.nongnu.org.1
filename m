@@ -2,77 +2,161 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8623A58CE7
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 08:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7DFA58D4B
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 08:54:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trXXm-0002hJ-5A; Mon, 10 Mar 2025 03:27:22 -0400
+	id 1trXwe-0000bn-Ut; Mon, 10 Mar 2025 03:53:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1trXXV-0002gL-5g
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 03:27:07 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trXwc-0000am-D2
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 03:53:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1trXXP-0003E9-Qm
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 03:27:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741591620; x=1773127620;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=dtga0v/Ir792RWLzkgeY1Rc/Z50MXyKQb9VMOzOY2JY=;
- b=BfGJZKgN6IktiXJyMmraUKg9yH+jMs6zPARAKGf0OqDo1gm/qfYtKluf
- OvnYRljY7HLiDZjO1bJstQaKBfox5Aamdr3NMGT/1Bfoi66HWqUUMDwxO
- I4u1dCoC7yPU3nqsMLB6IRktQ/LzBwdZhC/r24VrxU63XwXMaU8K07Py2
- xtCxot0RirNDGfr78+uTqnj7IcE8biexFsZFQRpKNBFVpbKnamb8WHdk1
- 9PAgsTw5k1O3mKCwtyzNzDrTFKnBh/uGCMwSy73eXmBto+thGsEqrjxUH
- LoeN6VpyMW7fPtJHidJveK4yfpXAnycIQjovBExASaLGwmQU8XyF4OIGj A==;
-X-CSE-ConnectionGUID: TZlIpGnjTrO1i1qf4C0glA==
-X-CSE-MsgGUID: //iHjYVeTlOvyVuQyMpmwQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="42285208"
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="42285208"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2025 00:26:56 -0700
-X-CSE-ConnectionGUID: UW5bvEmlSIKwTZYALKXqew==
-X-CSE-MsgGUID: mf5ohgmBSwKbuNOWYs58tQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; d="scan'208";a="124508499"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 10 Mar 2025 00:26:50 -0700
-Date: Mon, 10 Mar 2025 15:47:00 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
- mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
- likexu@tencent.com, like.xu.linux@gmail.com,
- zhenyuw@linux.intel.com, groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com
-Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
- VM reset
-Message-ID: <Z86Y9BxV6p25A2Wo@intel.com>
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
- <20250302220112.17653-9-dongli.zhang@oracle.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trXwa-0007j4-EB
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 03:53:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741593179;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=LCjxSf/CAQQKAE+kiZBYb/y7xHYkq/l7yuggrRpRP/A=;
+ b=biQnPTQxJFBCu0Z+SczNJIdAiGD5P28zGc6v54BdD3yLYkG7v7EvMFY1aM+yOceIDTf9R7
+ Jhsum9XLQPRyvs+Zf04oYn6h7hMuXLnti1vUtVudgsKp0hIE/f5VsBU8AtmbeMDKMc2KF1
+ MGZLrdgkChaot65GS0sSq8JLe6zfdMQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-126-mRyht7KCMBe6u_visIvA3A-1; Mon, 10 Mar 2025 03:52:54 -0400
+X-MC-Unique: mRyht7KCMBe6u_visIvA3A-1
+X-Mimecast-MFC-AGG-ID: mRyht7KCMBe6u_visIvA3A_1741593174
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4394040fea1so18214105e9.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 00:52:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741593173; x=1742197973;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LCjxSf/CAQQKAE+kiZBYb/y7xHYkq/l7yuggrRpRP/A=;
+ b=RgHbV91cA71KBk99mksriUTg3kA9g44ok90r8H+kKEI7iYaUBYsj8N6ioLs/dc9pIu
+ aJrwP0nfh6XfjKs7OSCjfQQKtqtEF0aAGt0C56sFAnoaOfP/2gMTBAI/VwunowIEZmLM
+ daPVLLLqYJUSdSuHLIYEAvRhjRvB+dMz408/2Emn52kQScXnjGNFrE15XcEZjyjtdRjO
+ iW/bdePIEm2RpLLsU9Eafo9EMKZ4CLuMS+lQNbE33uFjru/o6tP+EnGbFkdnKhXJmyfj
+ PiUDNlmUxuSMol+Mm6HaBhyCXp/KbuVVx2w4SiNyAHPyHH513LI0/aetx8RGb+1K2rhU
+ A/+Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUoXYd1oywLnSUySljw/9VIUKbdTwPov4/u1Z49cLjFDD8U5PRKJ/+VVylQvwlOahiyr/HvOpQKeLDU@nongnu.org
+X-Gm-Message-State: AOJu0YwBnl7cytxcKkyfd3qoIPnC7pfmY1d0ok2S1XOwvoCKqGFFLvCR
+ YJU49aqXIkuEF+35VpwLLGIfUl5kU6wnwBFQINeMR/d4bnCd62eQmcakLACxnbNe+F0owYVKTvc
+ v9MnD4z5MLbJEx3BVB4ueV+PFMxATRuF9clQwIFuVBRVHhrj4u55F
+X-Gm-Gg: ASbGncu6YEYdTdQ2mq9iPJNt4exFLO7Kz2fRU6sQKELEu4nf2XpMzPhxpJie5lUxF1c
+ IZDoKYsfjkZhYw63UcYXYxovuTQxMKfxVmAZOE08bujPSE1mX2yWEOe4edzyONiF2E3uj0uKC6W
+ J8Lf/Q/HJBGOSUI666jyJwvE5tjkI97Boiljxw6Q5Gp3jmmnApWVyuxjrUisfbJ4j2zF+cd0F5/
+ EivfromtipXw2eoGlS/BOx7hbp0gohi33CEiliYiCX8gUqVxXQESlHEqWbiIFhnhkd2JDX47DDO
+ f5KDpkxAyKKOIpyEkfK/bCmC6WZ70OMnNMi+bQUsb6eoV2XcoakdBg==
+X-Received: by 2002:a05:600c:4ba8:b0:43b:4829:8067 with SMTP id
+ 5b1f17b1804b1-43ce4abb2f5mr46175885e9.6.1741593173644; 
+ Mon, 10 Mar 2025 00:52:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMuk8s/1cjk2yrqDLBYJlHV6lx/ArL5bkfQI7oIMSt0hXgGuVHKHM5VQ44m0/kc60JmcKScA==
+X-Received: by 2002:a05:600c:4ba8:b0:43b:4829:8067 with SMTP id
+ 5b1f17b1804b1-43ce4abb2f5mr46175645e9.6.1741593173275; 
+ Mon, 10 Mar 2025 00:52:53 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3912c0e2f44sm13885940f8f.76.2025.03.10.00.52.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Mar 2025 00:52:52 -0700 (PDT)
+Message-ID: <42e46dfe-4d42-4f16-bd66-733aad7a2af0@redhat.com>
+Date: Mon, 10 Mar 2025 08:52:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250302220112.17653-9-dongli.zhang@oracle.com>
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 13/21] hw/vfio/igd: Compile once
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Yi Liu <yi.l.liu@intel.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Tomita Moeko
+ <tomitamoeko@gmail.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Eric Farman <farman@linux.ibm.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-s390x@nongnu.org,
+ Eric Auger <eric.auger@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20250308230917.18907-1-philmd@linaro.org>
+ <20250308230917.18907-14-philmd@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250308230917.18907-14-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,219 +172,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(+EwanHai for zhaoxin case...)
+On 3/9/25 00:09, Philippe Mathieu-Daudé wrote:
+> The file doesn't use any target-specific knowledge anymore,
+> move it to system_ss[] to build it once.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-...
-
-> -static void kvm_init_pmu_info(CPUX86State *env)
-> +static void kvm_init_pmu_info_intel(CPUX86State *env)
->  {
->      uint32_t eax, edx;
->      uint32_t unused;
-> @@ -2106,6 +2106,94 @@ static void kvm_init_pmu_info(CPUX86State *env)
->      }
->  }
->  
-> +static void kvm_init_pmu_info_amd(CPUX86State *env)
-> +{
-> +    uint32_t unused;
-> +    int64_t family;
-> +    uint32_t ecx;
-> +
-> +    has_pmu_version = 0;
-> +
-> +    /*
-> +     * To determine the CPU family, the following code is derived from
-> +     * x86_cpuid_version_get_family().
-> +     */
-> +    family = (env->cpuid_version >> 8) & 0xf;
-> +    if (family == 0xf) {
-> +        family += (env->cpuid_version >> 20) & 0xff;
-> +    }
-> +
-> +    /*
-> +     * Performance-monitoring supported from K7 and later.
-> +     */
-> +    if (family < 6) {
-> +        return;
-> +    }
-
-I understand we can get family by object_property_get_int() helper:
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4902694129f9..ff08c7bfee6c 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2106,27 +2106,22 @@ static void kvm_init_pmu_info_intel(CPUX86State *env)
-     }
- }
-
--static void kvm_init_pmu_info_amd(CPUX86State *env)
-+static void kvm_init_pmu_info_amd(X86CPU *cpu)
- {
-+    CPUX86State *env = &cpu->env;
-     uint32_t eax, ebx, ecx;
-     uint32_t unused;
-     int64_t family;
-
-     has_pmu_version = 0;
-
--    /*
--     * To determine the CPU family, the following code is derived from
--     * x86_cpuid_version_get_family().
--     */
--    family = (env->cpuid_version >> 8) & 0xf;
--    if (family == 0xf) {
--        family += (env->cpuid_version >> 20) & 0xff;
-+    family = object_property_get_int(OBJECT(cpu), "family", &error_abort);
-+    if (family < 0) {
-+        return;
-     }
-
--    /*
--     * Performance-monitoring supported from K7 and later.
--     */
-     if (family < 6) {
-+        error_report("AMD performance-monitoring is supported from K7 and later")
-         return;
-     }
-
-@@ -2197,7 +2192,7 @@ static void kvm_init_pmu_info(CPUState *cs)
-     if (IS_INTEL_CPU(env)) {
-         kvm_init_pmu_info_intel(env);
-     } else if (IS_AMD_CPU(env)) {
--        kvm_init_pmu_info_amd(env);
-+        kvm_init_pmu_info_amd(cpu);
-     }
- }
-
----
-Then for consistency, kvm_init_pmu_info_intel() could also accept
-"X86CPU *cpu" as the argument.
-
-> +    has_pmu_version = 1;
-> +
-> +    cpu_x86_cpuid(env, 0x80000001, 0, &unused, &unused, &ecx, &unused);
-> +
-> +    if (!(ecx & CPUID_EXT3_PERFCORE)) {
-> +        num_pmu_gp_counters = AMD64_NUM_COUNTERS;
-> +        return;
-> +    }
-> +
-> +    num_pmu_gp_counters = AMD64_NUM_COUNTERS_CORE;
-> +}
-
-...
-
-> +static void kvm_init_pmu_info(CPUState *cs)
-> +{
-> +    X86CPU *cpu = X86_CPU(cs);
-> +    CPUX86State *env = &cpu->env;
-> +
-> +    /*
-> +     * The PMU virtualization is disabled by kvm.enable_pmu=N.
-> +     */
-> +    if (kvm_pmu_disabled) {
-> +        return;
-> +    }
-
-As I said in patch 7, we could return an error instead.
-
-> +    /*
-> +     * It is not supported to virtualize AMD PMU registers on Intel
-> +     * processors, nor to virtualize Intel PMU registers on AMD processors.
-> +     */
-> +    if (!is_same_vendor(env)) {
-
-Here it deserves a warning like:
-
-error_report("host doesn't support requested feature: vPMU\n");
-
-> +        return;
-> +    }
->
-> +    /*
-> +     * If KVM_CAP_PMU_CAPABILITY is not supported, there is no way to
-> +     * disable the AMD pmu virtualization.
-> +     *
-> +     * If KVM_CAP_PMU_CAPABILITY is supported !cpu->enable_pmu
-> +     * indicates the KVM has already disabled the PMU virtualization.
-> +     */
-> +    if (has_pmu_cap && !cpu->enable_pmu) {
-> +        return;
-> +    }
-
-Could we only check "cpu->enable_pmu" at the beginning of this function?
-then if pmu is already disabled, we don't need to initialize the pmu info.
-
-> +    if (IS_INTEL_CPU(env)) {
-
-Zhaoxin also supports architectural PerfMon in 0xa.
-
-I'm not sure if this check should also involve Zhaoxin CPU, so cc
-zhaoxin guys for double check.
-
-> +        kvm_init_pmu_info_intel(env);
-> +    } else if (IS_AMD_CPU(env)) {
-> +        kvm_init_pmu_info_amd(env);
-> +    }
-> +}
-> +
->  int kvm_arch_init_vcpu(CPUState *cs)
->  {
->      struct {
-> @@ -2288,7 +2376,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
->      cpuid_i = kvm_x86_build_cpuid(env, cpuid_data.entries, cpuid_i);
->      cpuid_data.cpuid.nent = cpuid_i;
->  
-> -    kvm_init_pmu_info(env);
-> +    kvm_init_pmu_info(cs);
->  
->      if (((env->cpuid_version >> 8)&0xF) >= 6
->          && (env->features[FEAT_1_EDX] & (CPUID_MCE | CPUID_MCA)) ==
-> @@ -4064,7 +4152,7 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
->              kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, env->poll_control_msr);
->          }
->  
-> -        if (has_pmu_version > 0) {
-> +        if (IS_INTEL_CPU(env) && has_pmu_version > 0) {
-
-ditto.
-
->              if (has_pmu_version > 1) {
->                  /* Stop the counter.  */
->                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
-> @@ -4095,6 +4183,38 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
->                                    env->msr_global_ctrl);
->              }
->          }
-> +
-
-...
-
->          /*
->           * Hyper-V partition-wide MSRs: to avoid clearing them on cpu hot-add,
->           * only sync them to KVM on the first cpu
-> @@ -4542,7 +4662,8 @@ static int kvm_get_msrs(X86CPU *cpu)
->      if (env->features[FEAT_KVM] & CPUID_KVM_POLL_CONTROL) {
->          kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, 1);
->      }
-> -    if (has_pmu_version > 0) {
-> +
-> +    if (IS_INTEL_CPU(env) && has_pmu_version > 0) {
-
-ditto.
-
->          if (has_pmu_version > 1) {
->              kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
->              kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
-> @@ -4558,6 +4679,35 @@ static int kvm_get_msrs(X86CPU *cpu)
->          }
->      }
->
+There are conflicts with series [1] modifying igd. I think it would
+be better to wait after it's merged, unless you have time to rebase
+on top of [1]
 
 Thanks,
-Zhao
 
+C.
+
+[1] https://lore.kernel.org/qemu-devel/20250306180131.32970-1-tomitamoeko@gmail.com/
+
+> ---
+>   hw/vfio/meson.build | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+> index 6ab711d0539..21c9cd6d2eb 100644
+> --- a/hw/vfio/meson.build
+> +++ b/hw/vfio/meson.build
+> @@ -11,13 +11,14 @@ vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
+>   vfio_ss.add(when: 'CONFIG_VFIO_CCW', if_true: files('ccw.c'))
+>   vfio_ss.add(when: 'CONFIG_VFIO_PLATFORM', if_true: files('platform.c'))
+>   vfio_ss.add(when: 'CONFIG_VFIO_AP', if_true: files('ap.c'))
+> -vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
+>   
+>   specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
+>   
+>   system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
+>   system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
+> -system_ss.add(when: 'CONFIG_VFIO_IGD', if_false: files(
+> +system_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files(
+> +  'igd.c',
+> +), if_false: files(
+>     'igd-stubs.c',
+>   ))
+>   system_ss.add(when: 'CONFIG_VFIO', if_true: files(
 
 
