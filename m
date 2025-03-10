@@ -2,69 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE25BA599F3
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:27:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E00DA5995A
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 16:13:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trf2R-0008VX-HX; Mon, 10 Mar 2025 11:27:31 -0400
+	id 1tren1-00022Y-Hn; Mon, 10 Mar 2025 11:11:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <b-chu1@ti.com>) id 1treUw-0004gE-9F
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 10:52:54 -0400
-Received: from lelvem-ot02.ext.ti.com ([198.47.23.235])
+ (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
+ id 1tremy-00020O-5q
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:11:32 -0400
+Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <b-chu1@ti.com>) id 1treUt-0003yn-TE
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 10:52:53 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
- by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52AEqmah1001596
- (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
- for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 09:52:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
- s=ti-com-17Q1; t=1741618368;
- bh=6isOCP4rL6vg1z2crGFBSuwJ4/guHJS8dUjU9PZ96D4=;
- h=From:To:Subject:Date;
- b=OeZIPVdY20cXhyCIDi/I5JXyyzXCTUQNtuiQF31u8pz4BWSrQx8oSnR5Y9WRr/yRB
- naxrJvnFLXAai1OChmQSbhSai4dV1iH8Y9I4ehv9ZaTXFTWC+Tr0jOdx3n8y5O3Iam
- mz6977HliPbWMTwGsLYEOaHGJnHHKMF+Pc+oTX8Y=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
- by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52AEqmFN066901
- for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 09:52:48 -0500
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 10
- Mar 2025 09:52:47 -0500
-Received: from DLEE104.ent.ti.com ([fe80::1b8:1a58:6ede:b6f0]) by
- DLEE104.ent.ti.com ([fe80::1b8:1a58:6ede:b6f0%17]) with mapi id
- 15.01.2507.023; Mon, 10 Mar 2025 09:52:47 -0500
-From: "Chu, Benson" <b-chu1@ti.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: [qemu-riscv] Error mapping file: Invalid argument
-Thread-Topic: [qemu-riscv] Error mapping file: Invalid argument
-Thread-Index: AduPfbObvaZEQCeIQHKWYq5QvtJv3w==
-Date: Mon, 10 Mar 2025 14:52:47 +0000
-Message-ID: <f5ee7468950a4c3abbd3b05b7753d15c@ti.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.250.37.7]
-x-c2processedorg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-Content-Type: multipart/alternative;
- boundary="_000_f5ee7468950a4c3abbd3b05b7753d15cticom_"
+ (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
+ id 1tremu-0007fM-FG
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 11:11:31 -0400
+Received: (qmail 30594 invoked by uid 484); 10 Mar 2025 15:11:08 -0000
+X-Qmail-Scanner-Diagnostics: from 10.2.13.100 by smtp1.lauterbach.com
+ (envelope-from <mario.fleischmann@lauterbach.com>,
+ uid 484) with qmail-scanner-2.11 
+ (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
+ Clear:RC:1(10.2.13.100):. 
+ Processed in 0.262838 secs); 10 Mar 2025 15:11:08 -0000
+Received: from unknown (HELO mflpc1.LTB.LAN)
+ (Authenticated_SSL:mfleischmann@[10.2.13.100])
+ (envelope-sender <mario.fleischmann@lauterbach.com>)
+ by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
+ encrypted SMTP
+ for <qemu-devel@nongnu.org>; 10 Mar 2025 15:11:08 -0000
+From: Mario Fleischmann <mario.fleischmann@lauterbach.com>
+To: qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org, philmd@linaro.org, armbru@redhat.com,
+ christian.boenig@lauterbach.com,
+ Mario Fleischmann <mario.fleischmann@lauterbach.com>
+Subject: [PATCH 00/16] Add Multi-Core Debug (MCD) API support
+Date: Mon, 10 Mar 2025 16:04:54 +0100
+Message-Id: <20250310150510.200607-1-mario.fleischmann@lauterbach.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received-SPF: pass client-ip=198.47.23.235; envelope-from=b-chu1@ti.com;
- helo=lelvem-ot02.ext.ti.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Qmail-Scanner-2.11: added fake Content-Type header
+Content-Type: text/plain
+Received-SPF: pass client-ip=62.154.241.196;
+ envelope-from=mario.fleischmann@lauterbach.com; helo=smtp1.lauterbach.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 10 Mar 2025 11:26:56 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,114 +67,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_f5ee7468950a4c3abbd3b05b7753d15cticom_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+This patch series introduces support for the Multi-Core Debug (MCD) API, a
+commonly used debug interface by emulators. The MCD API, defined through a
+header file, consists of 54 functions for implementing debug and trace.
+However, since it is a header-file-only interface, MCD does not specify a
+communication protocol. We get around this limitation by following a remote
+procedure call approach using QMP. The client stub corresponding to this
+implementation can be found at https://gitlab.com/lauterbach/mcdrefsrv
 
-Hello all,
+This series is the successor to:
+"[PATCH v5 00/18] first version of mcdstub"
+(https://patchew.org/QEMU/20231220162555.19545-1-nicolas.eder@lauterbach.com/)
 
-I am working on a linker for the RISC-V target, and I was trying to use qem=
-u-riscv32 to test my linker.
+* Architecture-independent MCD implementation
+* QMP instead of custom TCP protocol
 
-However, I have noticed that qemu-riscv32 has some restrictions about how t=
-he program can be laid out in memory, and getting my linker to place the pr=
-ogram in a way that qemu-riscv32 will accept is very annoying.
+qemu-system-<arch> [options] -qmp tcp::1235,server=on,wait=off
 
-By my understanding, for each segment to be loaded, offset into the ELF fil=
-e must match the offset into a target page, which seems to be 4KiB.
+* Architecture-independent QTest test suite
 
-I noticed that GNU ld and LLVM's lld both follow this placement by default.=
- Is there some ABI that's being conformed to for this? Is there any documen=
-tation describing why placement needs to be done this way?
+V=1 QTEST_QEMU_BINARY="./qemu-system-<arch> [options]" tests/qtest/mcd-test
 
-Thanks!
-Benson
+* Architecture-specific tests can be found at the client stub
 
+Mario Fleischmann (16):
+  mcd: Introduce Multi-Core Debug (MCD) API
+  mcd: Introduce MCD server
+  mcd: Implement target initialization API
+  mcd: Implement server connection API
+  mcd: Implement target system query
+  mcd: Implement core connection control
+  mcd: Implement memory space query
+  gdbstub: Expose GDBRegisterState
+  mcd: Implement register query
+  mcd: Implement runstate control
+  mcd test: Implement core state query
+  gdbstub: Expose gdb_write_register
+  mcd: Implement register/memory access
+  mcd: Implement single stepping
+  mcd: Implement trigger control
+  mcd: Implement reset control
 
---_000_f5ee7468950a4c3abbd3b05b7753d15cticom_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ MAINTAINERS               |    9 +
+ docs/interop/index.rst    |    1 +
+ docs/interop/mcd.rst      |   58 +
+ gdbstub/gdbstub.c         |   15 +-
+ include/exec/gdbstub.h    |   18 +-
+ mcd/libmcd_qapi.c         |  506 +++++
+ mcd/libmcd_qapi.h         |   81 +
+ mcd/mcd_api.h             | 3963 +++++++++++++++++++++++++++++++++++++
+ mcd/mcdserver.c           | 2242 +++++++++++++++++++++
+ mcd/mcdstub_qapi.c        |  974 +++++++++
+ mcd/meson.build           |   12 +
+ meson.build               |    1 +
+ qapi/mcd.json             | 2366 ++++++++++++++++++++++
+ qapi/meson.build          |    1 +
+ qapi/qapi-schema.json     |    1 +
+ tests/qtest/libmcd-test.c |  379 ++++
+ tests/qtest/libmcd-test.h |   68 +
+ tests/qtest/mcd-test.c    |  644 ++++++
+ tests/qtest/meson.build   |    2 +
+ 19 files changed, 11331 insertions(+), 10 deletions(-)
+ create mode 100644 docs/interop/mcd.rst
+ create mode 100644 mcd/libmcd_qapi.c
+ create mode 100644 mcd/libmcd_qapi.h
+ create mode 100644 mcd/mcd_api.h
+ create mode 100644 mcd/mcdserver.c
+ create mode 100644 mcd/mcdstub_qapi.c
+ create mode 100644 mcd/meson.build
+ create mode 100644 qapi/mcd.json
+ create mode 100644 tests/qtest/libmcd-test.c
+ create mode 100644 tests/qtest/libmcd-test.h
+ create mode 100644 tests/qtest/mcd-test.c
 
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	margin-bottom:.0001pt;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:purple;
-	text-decoration:underline;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri",sans-serif;
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-family:"Calibri",sans-serif;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"EN-US" link=3D"blue" vlink=3D"purple">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal">Hello all, <o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">I am working on a linker for the RISC-V target, and =
-I was trying to use qemu-riscv32 to test my linker.
-<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">However, I have noticed that qemu-riscv32 has some r=
-estrictions about how the program can be laid out in memory, and getting my=
- linker to place the program in a way that qemu-riscv32 will accept is very=
- annoying.
-<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">By my understanding, for each segment to be loaded, =
-offset into the ELF file must match the offset into a target page, which se=
-ems to be 4KiB.
-<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">I noticed that GNU ld and LLVM&#8217;s lld both foll=
-ow this placement by default. Is there some ABI that&#8217;s being conforme=
-d to for this? Is there any documentation describing why placement needs to=
- be done this way?
-<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Thanks!<o:p></o:p></p>
-<p class=3D"MsoNormal">Benson<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-</div>
-</body>
-</html>
+-- 
+2.34.1
 
---_000_f5ee7468950a4c3abbd3b05b7753d15cticom_--
 
