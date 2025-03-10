@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF199A58B72
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 06:02:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82928A58B7A
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 06:02:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trVER-0002z5-Cb; Mon, 10 Mar 2025 00:59:15 -0400
+	id 1trVET-00035v-BM; Mon, 10 Mar 2025 00:59:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trVEA-0002hP-Ut
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:58:59 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1trVED-0002iE-Gq
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:01 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1trVE9-0008BP-4G
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:58:58 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-22398e09e39so65589495ad.3
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 21:58:56 -0700 (PDT)
+ id 1trVEA-0008C6-L6
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 00:59:00 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2feb96064e4so7420520a91.1
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 21:58:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741582736; x=1742187536; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741582737; x=1742187537; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gKLFWb+An2Ks9U+R2rK1VtO2Tw0/JUbGbAmdQc7IQwE=;
- b=JdiFIFNFGaRXaPCm8U5P8FdZpKmDB6O6YwU21ocPjsoaVLe0lq1/R4rxCoDY9Ephfm
- NJ1tnLk2zDSG592CXIBfXbup8YOL0RRq4zJEMrHzaGChWnaqyI7+0BiMHbDPdQK46bqq
- ZB7mnF+8WGf3zj0GiU8mC2CVw5NS+50HqrS8G65oFyh5P48K4sNZiRC+4EXVytz/6rrB
- dtI4cjaPOTgpk1WHHWlepIhydmduKHlzTiqACZ8ZBHvypuaiBejPXSoRdQMFrLSMKwxd
- pR4zYO95cwV76eW/VA54czC+YQQ0EBlb3ooPWiNJHiA9tABq487eGCEocBBroNVLpWHz
- p+PQ==
+ bh=ErKU0wbfVZdnsjs5NMSuiTB4KixyX1gD9AraKkIZNBI=;
+ b=Wwce749RdHqlRIBZdhrckPzjhjP88AYfjokiqXFaAhgQLoXstreXcOoKtRrqZFr1Q/
+ 7GcYLPbDlUIzkM/14W+uly017zKgkxkbl9nLoKSa7Bt7KEb1T+xvZ/s4nCGpD/CPHALl
+ 2h6jRWIHOEcdVQXGUY5JZQxLq6JQQJNWbaCSwAdn7owihpXGldkiiJpknoXlaDNG0B+c
+ mv1PJubKa68QATrc+S4EF635osuJQB00I2WDI/qrU5HZ+4gfrSL1vDsoNtsiQiJ7uwoh
+ z14m92uCqW61mWzZI3GcnLoxmzG5fZU3McNEI7x+lTBQotkjNuUmdPfglZHWM9bZEJ0z
+ +XQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741582736; x=1742187536;
+ d=1e100.net; s=20230601; t=1741582737; x=1742187537;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gKLFWb+An2Ks9U+R2rK1VtO2Tw0/JUbGbAmdQc7IQwE=;
- b=SKjm0VeQN/w/25gWJGjmMxo7SaXs8tWu66Hwa/BLPTe3XuupG8bZpcKUbi81CKguIx
- GGzM9ExYPNYxYC9VFZfguNkYlbPpQ9iHFEmz7PpWuKngA8x1BPfnAnX6GeVMdo9MCzav
- 8IKEMPCDqOQ/QhldotbmVqeZLYQU10o81hck8zt0z2cOUp5gRvlt9Zf7CymKa3tX49/n
- kA4WK/0pif27K7gBcpIAWGot3GXup8eN5EXhjCamXCA4Yx8x8V1lUQIg7EcCNjsEO2p0
- GlsCbs4ZGhxcBOpSC1zpjQ+VWYJ8MmefhwL+pPmESuU4lUn/4RXmAtK96+wVS7Jcrk1L
- KrcQ==
-X-Gm-Message-State: AOJu0YxU/FnTr1dH3NhP9H403jl54z+gBWFyIuOZ9ivf3xDEJTceRDsr
- uW28Utraqhybw17IytbR9ILYokSzxhIMMke8n6g9jlP1Fv3x5z6kTZyLm2pxV4HFQhfHxwbfxOa
- KpuY=
-X-Gm-Gg: ASbGnctAqdD/pbQAl43aVUQMIJnBtpKHsS5Jgx3Qi8g5Ww7BNKukjblOqSi75G39X0U
- cq2RNDRFaFGSHs+Sv2upbWHxoVWCnGyz12OoXpyrcbPsnmXf2z+yinQSRj89nP5HcAx2QhW5vpe
- YGjGAdcoVDvMLI2feSoDvIjJIKANsJMPzBL7ZdmvT/djxSV/xcjmfoZ0dX2UscBo3ceraCyBACi
- MJLssTaPGaojabEYkdcNqOO3TT4oeal5m00tdCnZeUTD1BoNya+2YhXGm+0kgS4XAUuVTEtbJoS
- totUSqY7xfYFklwhE76ieFnM2nPnvP6IOXBu2hu/GgOP
-X-Google-Smtp-Source: AGHT+IEAovvlOy2ME9s2bcowigrmpQEpYOhHLOJWN1HotCTdKvUP3vKFXajlsE4wLKble7VBohAKKQ==
-X-Received: by 2002:a05:6a00:4fc6:b0:736:32d2:aa82 with SMTP id
- d2e1a72fcca58-736aab17045mr17832470b3a.23.1741582735793; 
- Sun, 09 Mar 2025 21:58:55 -0700 (PDT)
+ bh=ErKU0wbfVZdnsjs5NMSuiTB4KixyX1gD9AraKkIZNBI=;
+ b=Ou6g6OHmHRicFhWlK3+gcUDiEvrB6eNvpAvli0FelWMQvygktfLcqBqY9gcYeXXDVS
+ jxwM+qbetKmZNEWWNDs+2+1IUGCMwGROXzd8sxkGNerTkq9rblJFETkAI39HCi5Hoy3J
+ 5SSYxVJcUNPyhd84KYjXXjilZkilIdh0Ze9cuPo7r82F4YLNVEHxL5x8G/hi/7XNqB3G
+ d40tzQLGdGxjSHLE1BmV51Kb5nyf/Z9cwDjD53lgCa7FgfLfTNxUTmW10RS42hT4Y+Pa
+ EjuMWqaUYYijf4toD09Kt2ripBbAJB6WY8PTYe4RUfaQWdb6qSK7ppL5wRLqPOoJo0ew
+ 9QWg==
+X-Gm-Message-State: AOJu0YysIb7Wo4cicvlGunYY6abmVO9ehdftYr68nVEqjqzOs7Z6quoz
+ S3+Zl7e/idqEuYMZgCP1qYjejIzJ6gE/3KrMar+EEI3P4nk5bS9ZNqBqWsWEpCaV/6FJ7YQoSAK
+ cXRw=
+X-Gm-Gg: ASbGnctHyWuKqqoUPpGKpJ193RrT6C+Nx4O+yTt8GJnvK5EJ5ELwIKtUZav/Jt+dXLD
+ 54MqL1ykGYSa52Nrymk8JyL3BlMhzSoXkgkpG6WIGDoY/XiRACXN89PuFUQkbRoKUN1EPjPfYS6
+ uTLkA+IL7cVxj5KTIA1P+5GOgnDmzGt8RHaE4aZbDEctOdWKi8wWP0G3xhXg0yZJeJcdiFFbSPW
+ kJ/xwyGvn+m9d+IMiinW879qOvKTYOXRnL4HBV7q6K0Va582sKADyRigwjQQ9nFqIE1FpEA7O5B
+ NlxZaDyIYgtk0LyCVt4SniStgUcMVXh8RgTSoFBlt0za
+X-Google-Smtp-Source: AGHT+IHO0adHTKDFbdiZLdbwVjzffyYfi7nVPL6wN+0ieHxoGwNOezFQMlR0NxHpJZQhWhI8f44U4w==
+X-Received: by 2002:a05:6a21:9786:b0:1f5:8506:5039 with SMTP id
+ adf61e73a8af0-1f585065599mr1040552637.28.1741582737079; 
+ Sun, 09 Mar 2025 21:58:57 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736d2ae318csm1708308b3a.53.2025.03.09.21.58.54
+ d2e1a72fcca58-736d2ae318csm1708308b3a.53.2025.03.09.21.58.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Mar 2025 21:58:55 -0700 (PDT)
+ Sun, 09 Mar 2025 21:58:56 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
@@ -80,16 +80,16 @@ Cc: qemu-ppc@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
  Paolo Bonzini <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
  Stefano Stabellini <sstabellini@kernel.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 05/16] qemu/bswap: implement {ld,st}.*_p as functions
-Date: Sun,  9 Mar 2025 21:58:31 -0700
-Message-Id: <20250310045842.2650784-6-pierrick.bouvier@linaro.org>
+Subject: [PATCH 06/16] exec/cpu-all.h: we can now remove ld/st macros
+Date: Sun,  9 Mar 2025 21:58:32 -0700
+Message-Id: <20250310045842.2650784-7-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
 References: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,98 +112,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For now, they are duplicate of the same macros in cpu-all.h that we
-eliminate in next commit.
+Functions declared in bswap.h will be used instead.
 
-Keep code readable by not defining them with macros, but simply their
-implementation.
+At this point, we finished to extract memory API from cpu-all.h, and it
+can be called from any common or target dependent code.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/qemu/bswap.h | 70 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
+ include/exec/cpu-all.h | 25 -------------------------
+ 1 file changed, 25 deletions(-)
 
-diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
-index ebf6f9e5f5c..46ec62f716d 100644
---- a/include/qemu/bswap.h
-+++ b/include/qemu/bswap.h
-@@ -442,6 +442,76 @@ DO_STN_LDN_P(be)
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 1c2e18f492b..625b4c51f3c 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -38,31 +38,6 @@
+ #define BSWAP_NEEDED
+ #endif
  
- #undef DO_STN_LDN_P
+-/* Target-endianness CPU memory access functions. These fit into the
+- * {ld,st}{type}{sign}{size}{endian}_p naming scheme described in bswap.h.
+- */
+-#if TARGET_BIG_ENDIAN
+-#define lduw_p(p) lduw_be_p(p)
+-#define ldsw_p(p) ldsw_be_p(p)
+-#define ldl_p(p) ldl_be_p(p)
+-#define ldq_p(p) ldq_be_p(p)
+-#define stw_p(p, v) stw_be_p(p, v)
+-#define stl_p(p, v) stl_be_p(p, v)
+-#define stq_p(p, v) stq_be_p(p, v)
+-#define ldn_p(p, sz) ldn_be_p(p, sz)
+-#define stn_p(p, sz, v) stn_be_p(p, sz, v)
+-#else
+-#define lduw_p(p) lduw_le_p(p)
+-#define ldsw_p(p) ldsw_le_p(p)
+-#define ldl_p(p) ldl_le_p(p)
+-#define ldq_p(p) ldq_le_p(p)
+-#define stw_p(p, v) stw_le_p(p, v)
+-#define stl_p(p, v) stl_le_p(p, v)
+-#define stq_p(p, v) stq_le_p(p, v)
+-#define ldn_p(p, sz) ldn_le_p(p, sz)
+-#define stn_p(p, sz, v) stn_le_p(p, sz, v)
+-#endif
+-
+ /* MMU memory access macros */
  
-+/* Return ld{word}_{le,be}_p following target endianness. */
-+#define LOAD_IMPL(word, args...)                    \
-+do {                                                \
-+    if (target_words_bigendian()) {                 \
-+        return glue(glue(ld, word), _be_p)(args);   \
-+    } else {                                        \
-+        return glue(glue(ld, word), _le_p)(args);   \
-+    }                                               \
-+} while (0)
-+
-+static inline int lduw_p(const void *ptr)
-+{
-+    LOAD_IMPL(uw, ptr);
-+}
-+
-+static inline int ldsw_p(const void *ptr)
-+{
-+    LOAD_IMPL(sw, ptr);
-+}
-+
-+static inline int ldl_p(const void *ptr)
-+{
-+    LOAD_IMPL(l, ptr);
-+}
-+
-+static inline uint64_t ldq_p(const void *ptr)
-+{
-+    LOAD_IMPL(q, ptr);
-+}
-+
-+static inline uint64_t ldn_p(const void *ptr, int sz)
-+{
-+    LOAD_IMPL(n, ptr, sz);
-+}
-+
-+#undef LOAD_IMPL
-+
-+/* Call st{word}_{le,be}_p following target endianness. */
-+#define STORE_IMPL(word, args...)           \
-+do {                                        \
-+    if (target_words_bigendian()) {         \
-+        glue(glue(st, word), _be_p)(args);  \
-+    } else {                                \
-+        glue(glue(st, word), _le_p)(args);  \
-+    }                                       \
-+} while (0)
-+
-+
-+static inline void stw_p(void *ptr, uint16_t v)
-+{
-+    STORE_IMPL(w, ptr, v);
-+}
-+
-+static inline void stl_p(void *ptr, uint32_t v)
-+{
-+    STORE_IMPL(l, ptr, v);
-+}
-+
-+static inline void stq_p(void *ptr, uint64_t v)
-+{
-+    STORE_IMPL(q, ptr, v);
-+}
-+
-+static inline void stn_p(void *ptr, int sz, uint64_t v)
-+{
-+    STORE_IMPL(n, ptr, sz, v);
-+}
-+
-+#undef STORE_IMPL
-+
- #undef le_bswap
- #undef be_bswap
- #undef le_bswaps
+ #if !defined(CONFIG_USER_ONLY)
 -- 
 2.39.5
 
