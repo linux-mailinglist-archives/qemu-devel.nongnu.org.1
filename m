@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14ACA5897C
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 01:09:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB28A5897D
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 01:09:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trQfP-0001sJ-Fe; Sun, 09 Mar 2025 20:06:47 -0400
+	id 1trQfS-0001vK-0F; Sun, 09 Mar 2025 20:06:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trQfK-0001pX-8W
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 20:06:42 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trQfP-0001ud-Uv
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 20:06:47 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trQfI-0007Jz-Km
- for qemu-devel@nongnu.org; Sun, 09 Mar 2025 20:06:42 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-438a39e659cso20374485e9.2
- for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 17:06:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trQfO-0007L6-0m
+ for qemu-devel@nongnu.org; Sun, 09 Mar 2025 20:06:47 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43bcc85ba13so28999095e9.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Mar 2025 17:06:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741565199; x=1742169999; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741565204; x=1742170004; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZzGu8aPFmIQyqFB0ii3ysyS9QgzkXkJa7t9N53ypfFg=;
- b=i/DX3N6WL8h/9E2kkdz4Q9G/ej00XgHf6ri0TLrMHmyghg969iWPK6Ecz7no6ka2wd
- Jvm2Ugj0FYt4lwAFwzcwb7Ab0WTWiKn/fO4BuVnMDqfF/5Rjgy3zq3nIfq1HW0cLeGsQ
- mrYRu54ivMY7Js3HjD9OI/zp6JD+J5nMuEC71sjEhlwZBRlIOrOkRzE+tPMJNx/NojjV
- C/aCCffhgDqWak3ZRs1TtnWwQTlQcy8dW5n1vBh2ViBIlG1vfbLcxI2s/0CZxWE8avO+
- WpDs+JThTNBCmVsAoqfQPTGeVIhPvz5JRc1uPan04/FVzyVSfFvb0uEv+iteh7U/ds21
- KWww==
+ bh=dQS2FpqOs5TSI58lEsf5ODh6U5Cq4SEzmJ94sUa1jSg=;
+ b=hDtuaXB+7emPGfX07HSZgKmQPenHFt1Ikhz69OYJPeMkJobeRLLTq+Ypf6ntonqor/
+ q86+VPYQG0lAKu12tQN4/i9fNN6XWdrslzIszwIj8Pl4WPKCBwUXHDXaRSjfDIn2qkul
+ X67GUpq/VLP8Dp0EzkRIZ3AT6BaH8/2xMXw56cNUvEjs4kYGJPZMAtcbgNdUMs6869Lm
+ z3ZW9MylhPNjOxqTRK+J3/YWJkSZCvuIeKIiTP4ZKAKoNL75Ds0yYdsTG1iUlt7jRwYO
+ 24DK4+xSfuHXr/gCssgbhzYfjjWOUuakbaGkcdzKoUAWwDVnMHfrlQKYZI5MGJLbht0z
+ hFXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741565199; x=1742169999;
+ d=1e100.net; s=20230601; t=1741565204; x=1742170004;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZzGu8aPFmIQyqFB0ii3ysyS9QgzkXkJa7t9N53ypfFg=;
- b=QhWTm4C1PnMklzOfUC7/9sOBt6TNXM1sFsD0+uaIVu9JvuYo5wzIvmoNQ2QoTLeuOb
- sUFVI+50lh6U1Y6kzLKZ/09BauZw3q00KGHkvQyKmlJwwQ9ViyYDJvJeWfQkH2upCsUW
- rk+MycgtvAAY0hgIh3hOEVdFItv2x/sqeP1TYhksKiC8UxIuT8emualpLK3syzoERKlD
- neE6P4aTBugLId3csetVTsifFnSoWEosvgT04Cwdhldex3beN4EPWCD4Qtin0NRaWKV0
- +a4XwURdL+/SkzXeKQk9ObSDVYvfogqBKYBeQW0gaDvj/b66yxWO0UI2yczdBeHNprTm
- lkHw==
+ bh=dQS2FpqOs5TSI58lEsf5ODh6U5Cq4SEzmJ94sUa1jSg=;
+ b=UZz1SMnG1owA2ck+aELL2/eABq6LoaxA3ra2c3DBGlEhM5XXVcpaCh3mK63f0gmkun
+ Kong9JAKqgJISuAA9VhlJ0EZTK092gYEq4zDGbChu7/41Gsxdd+q1O92ZJWE3btsndWD
+ S7S1n7sZ+oU/BWozmdP97/60wy7kdpaKkMmJK+9jLRh7Ca6eVYiC97vmHOwtA4K5oca8
+ v9MPT/5ga3r4okRnSY3nazN8rdFekzhzIOcknZ3wsATrclm8JQWQD7fcQvJBVkyltAu4
+ iEIa4ADJLP7nyFsYSQ9we2vcDMCrBGPx4FiMYHZ2DxoZw+Jb3Z3rGmGcLD6ue4ymVFLh
+ sdSw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWiFzegOgC+xfZ5q5Z5iflleaxNzZaHGEdcTszN2xL6ajbmoyt/aL8rceTW6Cc+FgdWM5QTI/tWY+K5@nongnu.org
-X-Gm-Message-State: AOJu0YxW348fql+kVcJflhXaKg6GWmRdnWuyI03s8Pq02HNlshdJnPfM
- beyxJFkEKJYgepZ3PRE4qgzqPkeVRXKX3/8XcCdzZA6JxqMARRTd9e0e5BunpEI=
-X-Gm-Gg: ASbGncttwXp/oZzBuaanvTkn63lBdSkZ3pOd8s19eZMsAnfAd4c4fZSBOpWptZTKUmx
- HljliUAdRRvi3lIMkN8Q8/Nk1nc35URLiEHHD+T9dkvBT3kJJfPhDdd30XA2p4qxRxFt3sO4M3U
- 9KcKBcTKUQHf5Qf1D5zp0fVbnHCYWu9Zcoyb0mH6H/j3Grta2PynYCEf2Sg1KhgOEoaAVnQJRk5
- OFwc0U3HkKQ2Jj4zxxmwBHLDVjcJohcrymfnsMHRjvgHhsnsqaxQGoyR7+Nu6X2OJmdzx5ZDYoJ
- DdaqsNJNBMSOPTFFyEHk2gn6SNPUUgzglaUmyluoksAYj5P9PPdK9Yf1/EXI6QXHJz/D8AzAZhw
- Y+Jh08bXBfeU0Yl+35cA=
-X-Google-Smtp-Source: AGHT+IE1yKaFaTzWwBS5WdOP1A/BxzJYjVRFPe8g9jS5JjKCDnxottFdLlhcBmwEz9qJjL41s0hqqA==
-X-Received: by 2002:a5d:64e4:0:b0:391:48f7:bd8a with SMTP id
- ffacd0b85a97d-39148f7be31mr1334760f8f.30.1741565199226; 
- Sun, 09 Mar 2025 17:06:39 -0700 (PDT)
+ AJvYcCVwM9WqMp8GhSOUQ5CF0CIsdQ2YYytkt7eiNIVbpton9qwTfIuLC6PhNpG1LpFTvPOaSgG2hyvpXC/6@nongnu.org
+X-Gm-Message-State: AOJu0Yy8Xfro3JzL3V6+8XNcyP29O3vt8Uw1VqejP9jw6S1EsnZHuplP
+ tUjMgUfFufaCWut5Wfhjv9fnvD1+gdOaEWVsRs8+OsFSxdPg7QXImUcJmHug7uA4CwdBbUTOV/5
+ asqQ=
+X-Gm-Gg: ASbGnct7RcJ7Emr90/AC7Ik6L+HXHku7KQlMOn5nnSTpG2cAXBqvqoD7eEYS8QhCaTp
+ Ilja6mPktgsYXbRjXqeqlxcQNGZz16T/gkKSwje1nEiZb3ckfNg6rYL23zizsTlYG017Dw1+W7b
+ Q/mZWjp2sLiMQ7uFXrQr4M5r0au6nL22NfWDO4LgsWHDPoX14CAPZrrCmOEwA7x5Mn0vturEAd7
+ vySGQzRqFpiW57TWLLqGQObf52n4CwSPk4v9EFquZQtKv+0qLLGGstfufebEo9yaFa1I008a16t
+ AZOi42N7j512YPQeAe+RITctpwb5ZlTP2uxW/oPvZoEtPYAixqt3sj2/ywikUy4v1syoHJGouvp
+ mUX1wTgwcVr0frxCHzwcIU2pppEFndw==
+X-Google-Smtp-Source: AGHT+IFr14s6HjqqrWZZrFGpCXSJytRcV6kVf92IRNM60n81pYTKgxi5dkVIFwWd6bTQjQFryczrGw==
+X-Received: by 2002:a05:600c:5129:b0:43c:f689:88ce with SMTP id
+ 5b1f17b1804b1-43cf6898affmr12074285e9.20.1741565204360; 
+ Sun, 09 Mar 2025 17:06:44 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c0e1476sm13191032f8f.70.2025.03.09.17.06.37
+ 5b1f17b1804b1-43bdd8db6c7sm127555375e9.22.2025.03.09.17.06.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Mar 2025 17:06:38 -0700 (PDT)
+ Sun, 09 Mar 2025 17:06:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: BALATON Zoltan <balaton@eik.bme.hu>,
 	qemu-devel@nongnu.org
@@ -78,18 +79,18 @@ Cc: Steven Lee <steven_lee@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
  Jean-Christophe Dubois <jcd@tribudubois.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-block@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>
-Subject: [PATCH v5 03/14] hw/sd/sdhci: Redefine SDHCI_QUIRK_NO_BUSY_IRQ
- bitmask as bit
-Date: Mon, 10 Mar 2025 01:06:09 +0100
-Message-ID: <20250310000620.70120-4-philmd@linaro.org>
+Subject: [PATCH v5 04/14] hw/sd/sdhci: Include 'wp-inverted' property in quirk
+ bitmask
+Date: Mon, 10 Mar 2025 01:06:10 +0100
+Message-ID: <20250310000620.70120-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250310000620.70120-1-philmd@linaro.org>
 References: <20250310000620.70120-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,56 +113,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Import Linux's SDHCI_QUIRK_INVERTED_WRITE_PROTECT quirk definition.
+
+Replace 'wp_inverted' boolean by a bit in quirk bitmask.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/sd/sdhci.h | 8 ++++----
- hw/sd/sdhci.c         | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ include/hw/sd/sdhci.h | 16 ++++++++++------
+ hw/arm/aspeed.c       |  2 +-
+ hw/sd/sdhci.c         |  6 +++---
+ 3 files changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
-index 48247e9a20f..096d607f4b7 100644
+index 096d607f4b7..d2e4f0f0050 100644
 --- a/include/hw/sd/sdhci.h
 +++ b/include/hw/sd/sdhci.h
-@@ -108,13 +108,13 @@ struct SDHCIState {
+@@ -30,7 +30,14 @@
+ #include "hw/sd/sd.h"
+ #include "qom/object.h"
+ 
+-/* SD/MMC host controller state */
++/*
++ * SD/MMC host controller state
++ *
++ * QEMU interface:
++ *  + QOM property "wp-inverted-quirk" inverts the Write Protect pin
++ *    polarity (by default the polarity is active low for detecting SD
++ *    card to be protected).
++ */
+ struct SDHCIState {
+     /*< private >*/
+     union {
+@@ -99,11 +106,6 @@ struct SDHCIState {
+     uint8_t endianness;
+     uint8_t sd_spec_version;
+     uint8_t uhs_mode;
+-    /*
+-     * Write Protect pin default active low for detecting SD card
+-     * to be protected. Set wp_inverted to invert the signal.
+-     */
+-    bool wp_inverted;
+ };
  typedef struct SDHCIState SDHCIState;
  
- /*
-- * Controller does not provide transfer-complete interrupt when not
-- * busy.
-- *
-  * NOTE: This definition is taken out of Linux kernel and so the
-  * original bit number is preserved
-  */
--#define SDHCI_QUIRK_NO_BUSY_IRQ    BIT(14)
-+enum {
-+    /* Controller does not provide transfer-complete interrupt when not busy. */
-+    SDHCI_QUIRK_NO_BUSY_IRQ                     = 14,
-+};
+@@ -114,6 +116,8 @@ typedef struct SDHCIState SDHCIState;
+ enum {
+     /* Controller does not provide transfer-complete interrupt when not busy. */
+     SDHCI_QUIRK_NO_BUSY_IRQ                     = 14,
++    /* Controller reports inverted write-protect state */
++    SDHCI_QUIRK_INVERTED_WRITE_PROTECT          = 16,
+ };
  
  #define TYPE_PCI_SDHCI "sdhci-pci"
- DECLARE_INSTANCE_CHECKER(SDHCIState, PCI_SDHCI,
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 98bf071139b..daee2376d50 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -412,7 +412,7 @@ static void aspeed_machine_init(MachineState *machine)
+     if (amc->sdhci_wp_inverted) {
+         for (i = 0; i < bmc->soc->sdhci.num_slots; i++) {
+             object_property_set_bool(OBJECT(&bmc->soc->sdhci.slots[i]),
+-                                     "wp-inverted", true, &error_abort);
++                                     "wp-inverted-quirk", true, &error_abort);
+         }
+     }
+     if (machine->kernel_filename) {
 diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 149b748cbee..1dc942a0e06 100644
+index 1dc942a0e06..19c600d5bfc 100644
 --- a/hw/sd/sdhci.c
 +++ b/hw/sd/sdhci.c
-@@ -366,7 +366,7 @@ static void sdhci_send_command(SDHCIState *s)
-             }
-         }
+@@ -274,7 +274,7 @@ static void sdhci_set_readonly(DeviceState *dev, bool level)
+ {
+     SDHCIState *s = (SDHCIState *)dev;
  
--        if (!(s->quirks & SDHCI_QUIRK_NO_BUSY_IRQ) &&
-+        if (!(s->quirks & BIT(SDHCI_QUIRK_NO_BUSY_IRQ)) &&
-             (s->norintstsen & SDHC_NISEN_TRSCMP) &&
-             (s->cmdreg & SDHC_CMD_RESPONSE) == SDHC_CMD_RSP_WITH_BUSY) {
-             s->norintsts |= SDHC_NIS_TRSCMP;
-@@ -1886,7 +1886,7 @@ static void imx_usdhc_init(Object *obj)
-     SDHCIState *s = SYSBUS_SDHCI(obj);
+-    if (s->wp_inverted) {
++    if (s->quirks & BIT(SDHCI_QUIRK_INVERTED_WRITE_PROTECT)) {
+         level = !level;
+     }
  
-     s->io_ops = &usdhc_mmio_ops;
--    s->quirks = SDHCI_QUIRK_NO_BUSY_IRQ;
-+    s->quirks = BIT(SDHCI_QUIRK_NO_BUSY_IRQ);
- }
+@@ -1555,12 +1555,12 @@ void sdhci_common_class_init(ObjectClass *klass, const void *data)
  
- /* --- qdev Samsung s3c --- */
+ static const Property sdhci_sysbus_properties[] = {
+     DEFINE_SDHCI_COMMON_PROPERTIES(SDHCIState),
++    DEFINE_PROP_BIT("wp-inverted-quirk", SDHCIState, quirks,
++                    SDHCI_QUIRK_INVERTED_WRITE_PROTECT, false),
+     DEFINE_PROP_BOOL("pending-insert-quirk", SDHCIState, pending_insert_quirk,
+                      false),
+     DEFINE_PROP_LINK("dma", SDHCIState,
+                      dma_mr, TYPE_MEMORY_REGION, MemoryRegion *),
+-    DEFINE_PROP_BOOL("wp-inverted", SDHCIState,
+-                     wp_inverted, false),
+ };
+ 
+ static void sdhci_sysbus_init(Object *obj)
 -- 
 2.47.1
 
