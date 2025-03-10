@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C531A59EF0
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 18:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD85FA59F01
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 18:36:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trh0l-0007QQ-6W; Mon, 10 Mar 2025 13:33:58 -0400
+	id 1trh1W-00086B-3q; Mon, 10 Mar 2025 13:34:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1trgzh-0007CR-KP
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 13:32:52 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trh0v-0007yF-A2
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 13:34:10 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1trgzf-00045K-I7
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 13:32:49 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-223a7065ff8so9403475ad.0
- for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 10:32:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trh0t-0004D0-K8
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 13:34:05 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43cef0f03cfso11040335e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 10:34:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741627966; x=1742232766; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741628042; x=1742232842; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Sac58OW9KVD0JTLog6v88FdMndEx1OKs7undtT6nU1Y=;
- b=KgGLchTGltA5Q83KxsqtEqU6FakTOncSpVymHjOephfgngwekIpIdCfYTuaBJS/hdg
- 7rOIcNlHPmfTCr1Nep7Gbojg/yXpJBHCXC4ucUDN/zuNRoqniTyxGnSiQXm/9wOKaeTg
- BfYN9gHwUckvSaHjKS3qqCa6KzfbTPpRxYUAqrOjHJ3GkeW1u34y/dza0UHxPWRMHm32
- SCCRpl4epsuR7EtUSk+djIKOsHLgElKGux1K6mlQEJQ69vWJMWErmGJupZ+bYr4fCx7d
- HTfM4U/apBsK+NG8JCo6PAg1vWK7uV8FOi6kv09KhXxw3c05jUElwluU4W3Nk/Aa2Pjz
- 0/Yw==
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+jg0zWXYpu2fbphozPL2KSpBpp+HWeAhMu4HpmKl0nQ=;
+ b=dDkLdE1n+d4HeDbCMj0nBMglNq4f+4qomUJQN2NoHMBHn7VhxgfCbBVM6JvtJCgkTw
+ oPHo/sSTC/N/soJ5uDmnbN8viYTMravXPzN6gx+dxUE10r6i9HtYxCAQY8agw9GVBv68
+ InlgzomSraCrg9b1wEe/8Z8LobBjMhURwjoCzqtN4eMiv9zvTMkyFDhCbzRci9k1ts5+
+ GpoyjsgmMV1s6x+Gg98cX7W3OQU1TjJVFA123VHGTEmnO9C255DEixXZOg1HRyWXij2b
+ mYxtviwjVmKgUD6+Xi30VVk4u1iiiMWLMQUBGQqdH6EWPL9ATC9Fu9swT5KrYXOf3uhX
+ NfXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741627966; x=1742232766;
+ d=1e100.net; s=20230601; t=1741628042; x=1742232842;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Sac58OW9KVD0JTLog6v88FdMndEx1OKs7undtT6nU1Y=;
- b=LAbZdQD00GPWYhNVwYwDPFb8sV9KshoFMOIBUXC7KRVJN/N6zXdefdFpNfzwHOIGjn
- mH/IBB4VIJYoIhQGdydaWm0uSzoykZjN0hZclN/HOTemngdXXSGohWcnkq2FxCJNZckW
- m4IbvEOma8CKYrasHRFeWlyybESW75e3G/uwsz5u7So3dg86dKyl0KxQiiB2oLhgh6Rp
- IlW0Sri8iG+He4lggg25hNBS0uGbA4mOc4nxQhpKv+UKEC04Edgl9yZZ5WApTMmveMIK
- LGhGILLvuxUbZ1+u9jwTe7LkG5iUsLSkXuv+f8jiqbWNAfaV/7bqnamVTr2+zphGui/h
- VdYg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVedoTewbNzF58ScD5hSk32cxgDe1onHcpQgy/iTdQYKUR3yVu5fqXScaJZYotbib7IYUm3zI+uylvU@nongnu.org
-X-Gm-Message-State: AOJu0YxA0iJIDeoWnlM43FwFq2cZGcdklW6HFJYUrOJemhcgZ9m5/g5v
- lrnIsuas33EEIT08f8mVaKV+vhXYv42XZH5nlu+rmpXnN2GW1ijXMsz5kBVooMc=
-X-Gm-Gg: ASbGncu4yrK6Zk3Ff6/s7TEZm/k/Rj4vNbZB90wnykN5Pc0q9a54ItxiF0y/xvMxyDp
- kc26qkPSOKlI/AwfFG4rh6xlERkVJFQVsxJUkom8Zlg0BnuB8t60DZ/WCOfz7pHXgxrkih+FSik
- 3wOhAiLFEA70hvUj6HyY1jxTukTH21zHBGX4IPLCjCWhfFULnQh6uQB7Uj2aySCD+Cqa58IC550
- /n+stKJ0CEV/ILkqE714yNBMdkH6Fo4fkaun+eoo5C607AEpL90Bi90wvAfZKtU92vXECxH6iZy
- pgMXyzhvYC0DRq7GpCeaJ7UNqBJvfQj12kXJ8+90dWNjM8fPQ7r38J+1jqXCNni4OQuY6LSgvKx
- FsNjvfLB9
-X-Google-Smtp-Source: AGHT+IEdXhMNYK12E8l65pYeo0hi4c9S2R6A7024I/cK/9c3ID+lqjq3Kl4wY90CrakUxoW5Sj9K2A==
-X-Received: by 2002:a17:902:c94d:b0:223:5c33:56a8 with SMTP id
- d9443c01a7336-22428ab89ccmr255617375ad.35.1741627965915; 
- Mon, 10 Mar 2025 10:32:45 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22410a91db3sm81146525ad.170.2025.03.10.10.32.45
+ bh=+jg0zWXYpu2fbphozPL2KSpBpp+HWeAhMu4HpmKl0nQ=;
+ b=m4eKjMpkqomRdeh6sw8lDOCYrT8WX9CO2zayVaLcHjtUr8bYaOY+GJqsjTkaeaxRAn
+ JXaIGT9tGMx3++HAFHn4YuwfAyv6eTRzY83pmE4Z7F7Ww/3A3E7pV9W6sAfHMUx8Q/aw
+ KFpcBBZkBG8qVjZG+3TKOYXvp8CEyodP6W0pQb6UmHJx/otAL3Xz/+WYapmjjSoa46dw
+ XkT7CTX2NRIv3/utL/KcI+7MyIfSXFvIJdrU9644KDe2ZhBPypZ4hhqvBF1sFw2qg8Jv
+ NJf4bQbtagJkpRLWaInya8lobytjDOGk+DNe7rxJ9FsHp34T0U4JuKcucngvHStBX9fV
+ Dpxw==
+X-Gm-Message-State: AOJu0YxSZOP6mx6EzBhQqCfwDzqvIpvWXWTVEDc8+IpKY+Hk4BxgrbmN
+ fLmIl9wMEq3ftecM6kBuuJ47EYIAXe6qaKyPdoavrhlLfjMhVLYU4xPZMLvfJ2E=
+X-Gm-Gg: ASbGncvgciZ5ilV/hhezSzdASH40oWjRKZIyrf32rt4IXUNjZUwHGgdECldbOgTQrFi
+ p2iQ1Isav0hbH0Bezoe6sY8UpSGX/3y7XVQp8T/h68snNxSZ0H6m9gnGszAAvY7wlcRUZk+/Z9q
+ prnvFUuWZf2G7sSYmWqEWxnMmI5c0QGGAK1Z6y4rWAU3936aRTAVu9sgiV7PGpzjF6TBbix8fSv
+ YVMfv5+ni7pCFBNcMA0ae0zPixRnbPWtfWicfdpNtP8EiY5mKqtXPh2SxgCd58srK914g1mPMWL
+ GQZgtpdgiyQLiMwFJDvVUk3ZGgwWuIo/LItvBg7yxXa3ly1aEgrPGi7eFx4JdxiwnbkHS9r4pRL
+ Oh1BEwj+j14aT
+X-Google-Smtp-Source: AGHT+IEmFT8Q1kNOjOurF3cEQKLW5FiA/279ZKfLLUwzO6ifuFugjfhFilQ+aTHbtJZR9XCO0fcyLQ==
+X-Received: by 2002:a5d:47cc:0:b0:391:10c5:d1ab with SMTP id
+ ffacd0b85a97d-39132d062efmr8377689f8f.5.1741628041579; 
+ Mon, 10 Mar 2025 10:34:01 -0700 (PDT)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3912c106a1asm15550549f8f.100.2025.03.10.10.34.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Mar 2025 10:32:45 -0700 (PDT)
-Message-ID: <8f747909-8b40-4994-b3fa-68d9b9c137af@linaro.org>
-Date: Mon, 10 Mar 2025 10:32:44 -0700
+ Mon, 10 Mar 2025 10:34:01 -0700 (PDT)
+Message-ID: <2619b843-1938-438f-8c48-e8b188777f31@linaro.org>
+Date: Mon, 10 Mar 2025 18:34:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/16] system/physmem: compilation unit is now common to
- all targets
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-References: <20250310045842.2650784-1-pierrick.bouvier@linaro.org>
- <20250310045842.2650784-15-pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH] meson.build: Set RUST_BACKTRACE for all tests
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>
+References: <20250310102950.3752908-1-peter.maydell@linaro.org>
+ <4842ddd6-acae-457d-8310-d2463773ee1b@linaro.org>
+ <CAFEAcA8-AMhHuZXxQHWmkOcWpT0j97Z_s_dtowC-S1f7WzhttA@mail.gmail.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250310045842.2650784-15-pierrick.bouvier@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA8-AMhHuZXxQHWmkOcWpT0j97Z_s_dtowC-S1f7WzhttA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,34 +103,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/9/25 21:58, Pierrick Bouvier wrote:
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   system/meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+On 10/3/25 14:18, Peter Maydell wrote:
+> On Mon, 10 Mar 2025 at 13:15, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> On 10/3/25 11:29, Peter Maydell wrote:
+>>> We want to capture potential Rust backtraces on panics in our test
+>>> logs, which isn't Rust's default behaviour.  Set RUST_BACKTRACE=1 in
+>>> the add_test_setup environments, so that all our tests get run with
+>>> this environment variable set.
+>>>
+>>> This makes the setting of that variable in the gitlab CI template
+>>> redundant, so we can remove it.
+>>>
+>>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>>> ---
+>>>    meson.build                         | 9 ++++++---
+>>>    .gitlab-ci.d/buildtest-template.yml | 1 -
+>>>    2 files changed, 6 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/meson.build b/meson.build
+>>> index 8b9fda4d95e..2f373dc675f 100644
+>>> --- a/meson.build
+>>> +++ b/meson.build
+>>> @@ -5,9 +5,12 @@ project('qemu', ['c'], meson_version: '>=1.5.0',
+>>>
+>>>    meson.add_devenv({ 'MESON_BUILD_ROOT' : meson.project_build_root() })
+>>>
+>>> -add_test_setup('quick', exclude_suites: ['slow', 'thorough'], is_default: true)
+>>> -add_test_setup('slow', exclude_suites: ['thorough'], env: ['G_TEST_SLOW=1', 'SPEED=slow'])
+>>> -add_test_setup('thorough', env: ['G_TEST_SLOW=1', 'SPEED=thorough'])
+>>> +add_test_setup('quick', exclude_suites: ['slow', 'thorough'], is_default: true,
+>>> +              env: ['RUST_BACKTRACE=1'])
+>>> +add_test_setup('slow', exclude_suites: ['thorough'],
+>>> +               env: ['G_TEST_SLOW=1', 'SPEED=slow', 'RUST_BACKTRACE=1'])
+>>> +add_test_setup('thorough',
+>>> +               env: ['G_TEST_SLOW=1', 'SPEED=thorough', 'RUST_BACKTRACE=1'])
+>>
+>> Nitpicking, we can keep sorted:
+>>
+>>            env: ['G_TEST_SLOW=1', 'RUST_BACKTRACE=1', 'SPEED=thorough'])
 > 
-> diff --git a/system/meson.build b/system/meson.build
-> index c83d80fa248..9d0b0122e54 100644
-> --- a/system/meson.build
-> +++ b/system/meson.build
-> @@ -2,7 +2,6 @@ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
->     'arch_init.c',
->     'ioport.c',
->     'memory.c',
-> -  'physmem.c',
->   )])
->   
->   system_ss.add(files(
-> @@ -15,6 +14,7 @@ system_ss.add(files(
->     'dma-helpers.c',
->     'globals.c',
->     'memory_mapping.c',
-> +  'physmem.c',
->     'qdev-monitor.c',
->     'qtest.c',
->     'rtc.c',
+> That splits up the two envariables that are controlling the
+> "run the slow tests" behaviour, though...
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+I meant:
 
-r~
+add_test_setup('slow', exclude_suites: ['thorough'],
+                env: ['G_TEST_SLOW=1', 'RUST_BACKTRACE=1', 'SPEED=slow'])
+add_test_setup('thorough',
+                env: ['G_TEST_SLOW=1', 'RUST_BACKTRACE=1', 
+'SPEED=thorough'])
+
+But just nitpicking, not a big deal ;)
 
