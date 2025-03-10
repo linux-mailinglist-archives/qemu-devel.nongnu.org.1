@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F90A58AD5
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 04:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D41AEA58AE1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Mar 2025 04:45:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trTo9-00050f-0t; Sun, 09 Mar 2025 23:28:01 -0400
+	id 1trU3n-0005Pe-Od; Sun, 09 Mar 2025 23:44:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trTo6-00050P-Cd; Sun, 09 Mar 2025 23:27:58 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1trU3k-0005Ot-3U; Sun, 09 Mar 2025 23:44:08 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trTo4-0006D7-NF; Sun, 09 Mar 2025 23:27:58 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2ff6cf448b8so7269285a91.3; 
- Sun, 09 Mar 2025 20:27:55 -0700 (PDT)
+ id 1trU3h-00017G-Ja; Sun, 09 Mar 2025 23:44:07 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-223a7065ff8so52018065ad.0; 
+ Sun, 09 Mar 2025 20:44:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741577275; x=1742182075; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20230601; t=1741578243; x=1742183043; darn=nongnu.org;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VkC8tP0hctYpo03T8g4388EWChg0670hgTHC/2lQT5I=;
- b=D5Xh7lL6aKTE5xryJpv+oM0oFGB5r/mzOjVynAPP9xDd0mNeinJogdbepK9rApTe/I
- Bpx2HvGoHcZAF6T78QeO2ma/BV2/u80vRAuC2514xSqj30F41l6eYocFH8C+UkuzbwPl
- jNJgl51+YypqPSmhGnrHiXwwAYhHxW3060K78ordUIutdJ3PS61V+PBr34p8Cj/Ru1Fs
- fVL25N2JqjS99sCpyC8Tkz3JtmWwY8EGUx7sJ0bPZv6HO9ElChKi4twb7jyTPluUJggq
- NdA4eRDE0oECgG3bE35GK1wwziJ/YoKDRe3AUGOVaXla/K9xbSRUhytZ0oi/Tjk7J7B9
- ZI6Q==
+ bh=Cd929fU5g3wK32OwmkWHXbxR6sgCaf/WTkW9sgkKymk=;
+ b=VhZvqCRaJkeGUwd52A5YZ0XaLhdvHnbCBwFCb704r8mOZ3W4Sqt9Y0zpcluWkrueER
+ Qg9lM4uxxoRLwKrIwr+UIp8WYSUklsM5pDnPyt8vAgBukXeVZAHvbMR04lCnmi6Z4P6x
+ XZVe2A0C6hvBHktVYqhyIvghKrFnipyxJYhMAKQ50ScqYOdgcJoFZgR3is04ovRFfzNI
+ 9EFhmgzOiDVf5N1F73owVL1XsZDUnncPtXjupJJblzhr/fc9HUBCkkStG2cR9uuJmBiF
+ SmRH7ox3gd8zhZxsiA4qqYE4YRs7kPGQ8lBHUtKdvtlGuKQV/+381HiNXchYjaoIv3Ha
+ /UHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741577275; x=1742182075;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20230601; t=1741578243; x=1742183043;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=VkC8tP0hctYpo03T8g4388EWChg0670hgTHC/2lQT5I=;
- b=wp4r2ZStbWrOV6iqi4IW2velqwarmW9CaT5JzC57VPU3ZjyJL3Wzh+g3vWi1QryZRS
- rjGL/NMCOvyc5VlaPl6M4k39WdSumOKIdH0JTv9lO77nIDPk4ylTtfCDPKsG+Rjn5w9/
- Zkdk0+k/PQ/AejYMpxdFVSESHT9dOc7a7AQGkFuC6L84RHnYqV7CcGQgIRbEGPWopmtz
- hyIc0DsjHG789jFquJzoCeYuMkoZ7nvIBC5TWXKCS7w3pdF9BeMzh4rANjesnawj5X8Q
- pFzS2q597oqv/PAaKSdf7uA1dz/T8QTlb5FISENi1FId2p7wPw8ZJaqaLO2RvbygM3P5
- 2FDQ==
+ bh=Cd929fU5g3wK32OwmkWHXbxR6sgCaf/WTkW9sgkKymk=;
+ b=pVpuB3fa90I5nIeMTBin02yGD/VibK1J3qpc3l2oLJTGKh3ifJ6xUXVYl7QzRlH8Cr
+ IN09wri/MQYzD6Ya0aEX4KPjnnTuJ+nmB+XzEO7OoqBXoPmyUa9EJ3XVAb7KJDmmThB4
+ kRI7bIvWuGpWvyI4/0KZTrGnmnVXl93YcwnLTcXYhNSkPoWwV48mF6uY4oibymB1+UVG
+ Wfd2karbW7oBXEYlA6n2G6N+L6Ovdg8xWvupp7EeBWH0Lv5lpI6TlC87ovnb4cWTKftM
+ 5eglExWVrNN2fBIu8A7/ttli5/2k93BzthQAeLC6XtWE8s1WH7If4xPkSs8blkgdM+Ud
+ nc3A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXYuSTeRw5P1o8FKfv6u13W0cDhYV5/368Z5LzPcU0vYGW6a309JpwZ/1LSef1Uo8RZRUxRu7ACOOt3@nongnu.org
-X-Gm-Message-State: AOJu0Yxk0gr1ZliSGYoEtRtjp4ei9/+XQ3JeKrhqn2q/BWmyCnZl3o3C
- COsQLVMbuWE3l3qqclbeGgjWjtOhq7MQxaxdFR5UtozBKF4jhZpK
-X-Gm-Gg: ASbGncuofKQnKXddP87eGk+56E5EGvH3UFzwlCofjkKIAAK1rs6l8axc6QG1zqhp2DE
- /xs0OaxHfsqKMPMt08ONvAZ1Alxfupyrp1uXThkoeXDMraZvOtwYUcr3cjheF8aClhgcvjHSmyE
- Iakcw4slhDHNqhBEsOuD5xyaSer/Tsay8w/ed1qjmjcKOqOFHAAqH3bVrS3Wkd8nDZrhat5PSPd
- Ehun+0L0XdFIIhk6X4HJ7xujEUddekto0lI5UuI4tqtbsyIh09ZVrrwFmrUo6m4IkATlrpXZR6T
- VA6+XdavYx1BdOfxv/7ntFMXe7XhTdls89OmHN7G
-X-Google-Smtp-Source: AGHT+IGreMQgnR6M/DNR2jaTLkK6bZLPVgxm7EQ6/hPRAliTFJg4WfgSVbiVT5x4CMgm/aIY8MN+FQ==
-X-Received: by 2002:a17:90b:3b48:b0:2ee:c91a:acf7 with SMTP id
- 98e67ed59e1d1-2ff7ce7b5f5mr18421994a91.4.1741577274416; 
- Sun, 09 Mar 2025 20:27:54 -0700 (PDT)
+ AJvYcCX4HoApVi5gaL5JO+f3ZsJ8chE4RhJBmfc8ZT3UdekWZh8cD8bhPMnGHz6P35nK0eID2fV5CHM947rb@nongnu.org
+X-Gm-Message-State: AOJu0YyeHPWk9YkULBpk9qP9wLS3NtCCWQ1cNzaLmvg+rx7VzspE/PNh
+ ZPdihN8fIxMc5GwfUsqXTfYIvCCODxQIrhvQDai3t8XTKpzardRW
+X-Gm-Gg: ASbGncu/iM04OXqVceW/IwP0DGn3hF6uJ5KlNetZjWVcX8FmyQ57MyQCSzFV8AOdUqz
+ v4+aanKccReKsnyycZVBPmmBswbmqpd4Vlusxa1OriBVeLucy3dEKbcVEEbhte7xCHQz8o5zk5f
+ f+oH48/i8hrviwA4gl5GVelH5tbjYJQZS6/TRYyCEs/mTY8/DRvMw3SS7BcS+7csU5S6shiYksE
+ PUiWLraxV3bfal7mPbVGs3rS4JwRMokXFzp4PKLNyx8whUaiChPW+M9NaphTsgwbSiM02kpzlBf
+ R4TcinZh8Oxj40BE1lZp3cQi8S9uIpWFLPK9rUiT2+xemUZQUIg=
+X-Google-Smtp-Source: AGHT+IGUGm6Fe3FjXn1MABknzaXjSWpQ0Z/CpE0bO1/HmVUBA6ddRAR69ldM7MiitgyMSjt8ODKWvg==
+X-Received: by 2002:a05:6a00:4b4a:b0:736:5c8e:baaa with SMTP id
+ d2e1a72fcca58-736aa9bc0e9mr17523057b3a.2.1741578243430; 
+ Sun, 09 Mar 2025 20:44:03 -0700 (PDT)
 Received: from localhost ([118.208.151.101]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22410a91971sm66713145ad.165.2025.03.09.20.27.49
+ d2e1a72fcca58-736c11ba2cfsm3353416b3a.122.2025.03.09.20.43.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 09 Mar 2025 20:27:53 -0700 (PDT)
+ Sun, 09 Mar 2025 20:44:02 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 10 Mar 2025 13:27:47 +1000
-Message-Id: <D8C9M7S4G9O9.2GJZI8XKEC0X9@gmail.com>
+Date: Mon, 10 Mar 2025 13:43:57 +1000
+Message-Id: <D8C9YKZJ15BI.12G2MRXUIPQYS@gmail.com>
+Subject: Re: [PATCH v2 03/14] ppc/xive2: Add grouping level to notification
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Michael Kowal" <kowal@linux.ibm.com>, <qemu-devel@nongnu.org>
 Cc: <qemu-ppc@nongnu.org>, <fbarrat@linux.ibm.com>, <milesg@linux.ibm.com>,
  <danielhb413@gmail.com>, <david@gibson.dropbear.id.au>,
  <harshpb@linux.ibm.com>, <thuth@redhat.com>, <lvivier@redhat.com>,
  <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 02/14] ppc/xive2: Add grouping level to notification
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Michael Kowal" <kowal@linux.ibm.com>, <qemu-devel@nongnu.org>
 X-Mailer: aerc 0.19.0
 References: <20241210000527.9541-1-kowal@linux.ibm.com>
- <20241210000527.9541-3-kowal@linux.ibm.com>
-In-Reply-To: <20241210000527.9541-3-kowal@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
+ <20241210000527.9541-5-kowal@linux.ibm.com>
+In-Reply-To: <20241210000527.9541-5-kowal@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,60 +115,18 @@ On Tue Dec 10, 2024 at 10:05 AM AEST, Michael Kowal wrote:
 >
 > Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 > Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
-> ---
 
-[...]
+BTW. the series went a bit out of whack, I suspect because of an older
+iteration of patches leftover from a previous git format-patch, then
+git send-email *.patch picks up some of the old patches if they were
+renamed or reordered.
 
-> @@ -495,16 +502,20 @@ static void xive_tctx_need_resend(XiveRouter *xrtr,=
- XiveTCTX *tctx,
->          /* Reset the NVT value */
->          nvt.w4 =3D xive_set_field32(NVT_W4_IPB, nvt.w4, 0);
->          xive_router_write_nvt(xrtr, nvt_blk, nvt_idx, &nvt, 4);
-> -    }
-> +
-> +        uint8_t *regs =3D &tctx->regs[TM_QW1_OS];
-> +        regs[TM_IPB] |=3D ipb;
-> +}
+Don't worry this has bitten me before. Would be nice if send-email had
+some heuristic to sanity check metadata in cover letter and subject
+lines to warn about this...
 
-Indentation bug here.
+I think I've been able to untangle it.
 
-> +
->      /*
-> -     * Always call xive_tctx_ipb_update(). Even if there were no
-> +     * Always call xive_tctx_pipr_update(). Even if there were no
->       * escalation triggered, there could be a pending interrupt which
->       * was saved when the context was pulled and that we need to take
->       * into account by recalculating the PIPR (which is not
->       * saved/restored).
->       * It will also raise the External interrupt signal if needed.
->       */
-> -    xive_tctx_ipb_update(tctx, TM_QW1_OS, ipb);
-> +    xive_tctx_pipr_update(tctx, TM_QW1_OS, 0xFF, 0); /* fxb */
->  }
-> =20
->  /*
-
-[...]
-
-> @@ -594,15 +596,15 @@ static void xive2_tctx_need_resend(Xive2Router *xrt=
-r, XiveTCTX *tctx,
->          nvp.w2 =3D xive_set_field32(NVP2_W2_IPB, nvp.w2, 0);
->          xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 2);
->      }
-> +    regs[TM_IPB] =3D ipb;
-> +    backlog_prio =3D xive_ipb_to_pipr(ipb);
-> +    backlog_level =3D 0;
-
-There is also a bug here, ipb should be OR'ed into the IPB
-reg (as xive1 code above does).
-
-We have this fixed up in our internal tree, I have have just
-folded that fix in here (Mike is on vacation so I've been trying
-to help wrangle the xive patches...).
-
-Otherwise I think it looks good.
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-
+Thanks,
+Nick
 
