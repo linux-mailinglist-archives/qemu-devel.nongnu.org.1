@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4645A5C21B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEBEFA5C287
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:25:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzJy-00062S-Nl; Tue, 11 Mar 2025 09:06:59 -0400
+	id 1trzL8-0002qd-1i; Tue, 11 Mar 2025 09:08:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzEp-0005km-Up; Tue, 11 Mar 2025 09:01:42 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1trzEu-0005sq-Gv; Tue, 11 Mar 2025 09:01:45 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzEn-0000JK-JF; Tue, 11 Mar 2025 09:01:39 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2ff784dc055so7177610a91.1; 
- Tue, 11 Mar 2025 06:01:35 -0700 (PDT)
+ id 1trzEp-0000Jv-Bk; Tue, 11 Mar 2025 09:01:44 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2feae794508so8087231a91.0; 
+ Tue, 11 Mar 2025 06:01:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741698094; x=1742302894; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741698097; x=1742302897; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vHowS6P5BYg/rSJVbmvQ3akSwNj1ZtWnh45h27uLxQY=;
- b=DJlEHgGy+IAt8cQ90xUY0eIbcMW/wqlTV1fxtDucSmHEH0G99LpjiBjJyaDszrxutZ
- eNiZJ8pvEEqZZCRS3jOdh3ShuWOAiWI1PxbK5TsG9KegtcXDjJZIEy+Uv+Gg2Bl8+IHo
- jUn4t2GApMD2SIeqky6hRzwBvpbK3yM8p0MPi9YoioiZhhwoHqS3q55N8X7lGvqpybSk
- NraKvyVUaOw2yYe2tmFuUpuc4QMWdjQfuE++8jhRBenzBY/OV55BG0iCiNVNB6Ufnu6S
- k8Wo/ncGbubpWzxaLJGNlBXnWxGlz6nSIezHRcFcj/uVtL87Vv+eRkxVdkIcra35o1xW
- 0FhA==
+ bh=MvevJgZuo4bkG1Sd+5i0dJdPdtOcYaorR/nWe5rVjjE=;
+ b=McXVTU7qOv4feBARpMHt7pyMy1FlVVrBkcA335/q+2nw36DmAKrv4gWz5mHTHWTBsu
+ NruP6/cxhgCGmEmcBllkfRzgguz33bS24hvLXqu6e3vIWXx36iJD8zWMHVtUK3IgNqcs
+ +zFqweuujZw+uv5vU/80w/zJ/OWWwCUYJaO0uSz4+Gx5AdtoeRcM0jqqCcbaI440YfpN
+ oLJQK5gV7Zn5iEU67DjLM+G11POv6+b+ScARDgqfud2jjZh0z12KhNqnIyB6a2QpXGjT
+ sc3Ag32a4DAZZdcQnypDQ5mTOxlFLK1fIA5rH5HJDCe7N1zpfZIUtigPCDwWXEjwFuoT
+ r0dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741698094; x=1742302894;
+ d=1e100.net; s=20230601; t=1741698097; x=1742302897;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vHowS6P5BYg/rSJVbmvQ3akSwNj1ZtWnh45h27uLxQY=;
- b=nILcny2kp2WrKjRu0tUBm4XHTvv3q3+cjVooxT3Gd9hDm8+eH04rJ5+ImCkRflQcvT
- tQ8B3dvFxFw7WTwW17ccCRGkjMlwS4l4NtIlIF8BfDUzGpzA7nbkpF1t6/hbjnFzPPaw
- ns1T8t4YqN1H/TD28mxoCRml9pJBbV0O0PyLNyCP3J+OSNR+nCGa43eP2Bhk8rXnYdWQ
- P5XE0On2RjalXr4j2dxkSVm3YC5WFrlaC8Q2Pd/N5mlCw76vwyF+37lsW9nQ9VNKTok9
- v7r+n8C4qW+oyvxL2pzBgnTU2EeSbvRpyv2ffm1NOPOWc/DN5DdVuT9KPsWNRwU/YtVb
- 6oLw==
+ bh=MvevJgZuo4bkG1Sd+5i0dJdPdtOcYaorR/nWe5rVjjE=;
+ b=MJjDgYHRoiwPpH0DMH+oFmu6gfZ9VtIqaTeygxQQ+z62KWNTL/ahBGvOzqCTQsed5M
+ dQiEcpUQSeRHTsv9iM3VfUr6Qt9t4RafqfoFtQUIxNGJoSCXFMQrElib1MYBtay/XSzx
+ rgPwW1pkqpcYlgk2WW/t5hjf/wMdAYnBVcDayINybwM6TD6yYtJLnuXYmOjCgmb0tAYH
+ Ol3KyxQlgUk+fDX2WLZWP1TD56CvBdwVpUrX+Clzh2nc7LjQDzV/t8xpo/bxecCmBUS7
+ KXdhXTFSqPnGRNYn/wjhVMdj8z/cwmvUYwHXRNVtwwKtmJ4CDEMH8hcd0RG5Wkl07TW2
+ TCug==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV7onlPN5mntk1em+WeCaKZhzaCOdDRAJHv4WKAStKtWaY8MEuG+YDGF8ym1lagMjFN5bBbamnxyw==@nongnu.org
-X-Gm-Message-State: AOJu0YzZOEFf7z/1N2a1w/DTCcafM97GRiZiyS1zbwzHmyWQl6boO0/J
- OA57TXQUGT+FuaAmpycEGcSTnLp/GP59Dnl6w0Cf+JAoZkwk7/tAkHcJvg==
-X-Gm-Gg: ASbGncvfwZsy3CTwqNEMO+TsxOVckna/TEk5SInSkZOSYpNltmK+Kt5aDD4M1mPOM+o
- BgRYMLE31qn6B+2AzxVPAhwVngExw1/y6xFqyVVyzEXLBaE8/VQRqa3XZiMZn6pqyzAfkM4TS37
- 7Ckw5Xv1i9lrC/72lULrSQpJ9+DBv18+YIOGOumzt6mwtlEW09J1/zM4qo0xawo7tfhzkWzDMKF
- 6Hrf03TRRdn48/6F4/6zyHdP8gc+RNnjo3eRDBXUl8T3/V1Its5G1/MnLL3DTdm0h4hbfLJD2Nx
- /OVJaRhzwWdquGrtLFnr733OvGX3mJQaSOHwDXW1+t1WOvg15wI=
-X-Google-Smtp-Source: AGHT+IEjE+5Z6cbs5WrPYTixKQE7tCPH4wzNRS834rYetiR6W7zxy28+Jn33fTdnxmTDagXM7abGuA==
-X-Received: by 2002:a17:90a:e70e:b0:2ee:f076:20fb with SMTP id
- 98e67ed59e1d1-300ff10c978mr5414489a91.17.1741698093784; 
- Tue, 11 Mar 2025 06:01:33 -0700 (PDT)
+ AJvYcCVTEuplVE/+8vumGzWn4Lbq8zKtNRFjzObX2K3hu0R3RjnYYEyNpcbI+NvjFCwAE6k96zzmPBpt2A==@nongnu.org
+X-Gm-Message-State: AOJu0YxjNkkxwLVLb6YVfobzoSqBWP+PpR1Sts+4oG+Y2GSfSQyhacj7
+ WcRsOFC01/VOBS3t5EQiiuZDv5nLN7PDnK3Hd4pb9hIDPLiKYedI0zc8gQ==
+X-Gm-Gg: ASbGncsiKZP1yFRW+1K13cXRcDTxDBPzir5PwT9c21JwdOIkiOufPZct7YMYYDnYhfk
+ mQ/6i0hyoomRt4vicAnqC92gvpC+5RujnWnu9JANB4E21W1tqYw0ON1vJawQn8Apki+rNTDHWe/
+ Z5H1uE8L8LBBsvM92dJgBbmc1mFIEKSYjG1YzOD6PHnuykXZ2SD1AhPCpLI2wnHkefvCej962lx
+ gz9QrYlmrWhpjvYvNl4+/LMEI8zck+kaVavFZzl+b91L5zglxev6x+vtP9XJ1QmaqdHAPd5MO8g
+ xqeM0fwhReFqlAYRtABM2OZephDJ738rSClG29XCfzW9BkOd30E=
+X-Google-Smtp-Source: AGHT+IHGaq0nnS5TDBnbJU9Jr5a7d+IsbyF4+HVbzZAWZR8sNw+QHvH1/Pr5wdo/VLI5qABjqLzgdQ==
+X-Received: by 2002:a17:90a:e7c2:b0:2ff:693a:758d with SMTP id
+ 98e67ed59e1d1-2ff7ceef0famr25706466a91.27.1741698097019; 
+ Tue, 11 Mar 2025 06:01:37 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.01.30
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.01.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 06:01:33 -0700 (PDT)
+ Tue, 11 Mar 2025 06:01:36 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: [PULL 61/72] ppc: spapr: Enable 2nd DAWR on Power10 pSeries machine
-Date: Tue, 11 Mar 2025 22:57:55 +1000
-Message-ID: <20250311125815.903177-62-npiggin@gmail.com>
+ Vaibhav Jain <vaibhav@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PULL 62/72] spapr: nested: Add support for reporting Hostwide state
+ counter
+Date: Tue, 11 Mar 2025 22:57:56 +1000
+Message-ID: <20250311125815.903177-63-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,294 +99,418 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
 
-As per the PAPR, bit 0 of byte 64 in pa-features property
-indicates availability of 2nd DAWR registers. i.e. If this bit is set, 2nd
-DAWR is present, otherwise not. Use KVM_CAP_PPC_DAWR1 capability to find
-whether kvm supports 2nd DAWR or not. If it's supported, allow user to set
-the pa-feature bit in guest DT using cap-dawr1 machine capability.
+Add support for reporting Hostwide state counters for nested KVM pseries
+guests running with 'cap-nested-papr' on Qemu-TCG acting as
+L0-hypervisor. The Hostwide state counters are statistics about state that
+L0-hypervisor maintains for the L2-guests and represent the state of all
+L2-guests, not just a specific one.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+These stats counters are exposed to L1-Hypervisor by the L0-Hypervisor via a
+new bit-flag named 'getHostWideState' for the H_GUEST_GET_STATE hcall which
+is documented at [1]. Once this flag is set the hcall should populate the
+Guest-State-Elements in the requested GSB with the stat counter
+values. Currently following five counters are supported:
+
+* l0_guest_heap_size_inuse
+* l0_guest_heap_size_max
+* l0_guest_pagetable_size_inuse
+* l0_guest_pagetable_size_max
+* l0_guest_pagetable_reclaimed
+
+At the moment '0' is being reported for all these counters as these
+counters doesn't align with how L0-Qemu manages Guest memory.
+
+The patch implements support for these counters by adding new members to
+the 'struct SpaprMachineStateNested'. These new members are then plugged
+into the existing 'guest_state_element_types[]' with the help of a new
+macro 'GSBE_NESTED_MACHINE_DW' together with a new helper
+'get_machine_ptr()'. guest_state_request_check() is updated to ensure
+correctness of the requested GSB and finally h_guest_getset_state() is
+updated to handle the newly introduced flag
+'GUEST_STATE_REQUEST_HOST_WIDE'.
+
+This patch is tested with the proposed linux-kernel implementation to
+expose these stat-counter as perf-events at [2].
+
+[1]
+https://lore.kernel.org/all/20241222140247.174998-2-vaibhav@linux.ibm.com
+
+[2]
+https://lore.kernel.org/all/20241222140247.174998-1-vaibhav@linux.ibm.com
+
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Message-ID: <173708681866.1678.11128625982438367069.stgit@linux.ibm.com>
+Message-ID: <20250221155449.530645-1-vaibhav@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c         |  7 ++++++-
- hw/ppc/spapr_caps.c    | 43 ++++++++++++++++++++++++++++++++++++++++++
- hw/ppc/spapr_hcall.c   | 27 +++++++++++++++++---------
- include/hw/ppc/spapr.h |  6 +++++-
- target/ppc/kvm.c       | 12 ++++++++++++
- target/ppc/kvm_ppc.h   | 12 ++++++++++++
- 6 files changed, 96 insertions(+), 11 deletions(-)
+ hw/ppc/spapr_nested.c         | 119 ++++++++++++++++++++++++----------
+ include/hw/ppc/spapr_nested.h |  67 +++++++++++++++++--
+ 2 files changed, 147 insertions(+), 39 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 0acf3c53dc..fcd2ca515c 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -246,7 +246,7 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
-         0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 48 - 53 */
-         /* 54: DecFP, 56: DecI, 58: SHA */
-         0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 54 - 59 */
--        /* 60: NM atomic, 62: RNG */
-+        /* 60: NM atomic, 62: RNG, 64: DAWR1 (ISA 3.1) */
-         0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 60 - 65 */
-         /* 68: DEXCR[SBHE|IBRTPDUS|SRAPD|NPHIE|PHIE] */
-         0x00, 0x00, 0xce, 0x00, 0x00, 0x00, /* 66 - 71 */
-@@ -295,6 +295,9 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
-          * in pa-features. So hide it from them. */
-         pa_features[40 + 2] &= ~0x80; /* Radix MMU */
-     }
-+    if (spapr_get_cap(spapr, SPAPR_CAP_DAWR1)) {
-+        pa_features[66] |= 0x80;
-+    }
- 
-     _FDT((fdt_setprop(fdt, offset, "ibm,pa-features", pa_features, pa_size)));
- }
-@@ -2163,6 +2166,7 @@ static const VMStateDescription vmstate_spapr = {
-         &vmstate_spapr_cap_rpt_invalidate,
-         &vmstate_spapr_cap_ail_mode_3,
-         &vmstate_spapr_cap_nested_papr,
-+        &vmstate_spapr_cap_dawr1,
-         NULL
-     }
- };
-@@ -4680,6 +4684,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] = SPAPR_CAP_ON;
-     smc->default_caps.caps[SPAPR_CAP_FWNMI] = SPAPR_CAP_ON;
-     smc->default_caps.caps[SPAPR_CAP_RPT_INVALIDATE] = SPAPR_CAP_OFF;
-+    smc->default_caps.caps[SPAPR_CAP_DAWR1] = SPAPR_CAP_ON;
- 
-     /*
-      * This cap specifies whether the AIL 3 mode for
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index 904bff87ce..9f4fd0cb5e 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -696,6 +696,34 @@ static void cap_ail_mode_3_apply(SpaprMachineState *spapr,
-     }
- }
- 
-+static void cap_dawr1_apply(SpaprMachineState *spapr, uint8_t val,
-+                               Error **errp)
-+{
-+    ERRP_GUARD();
-+
-+    if (!val) {
-+        return; /* Disable by default */
-+    }
-+
-+    if (!ppc_type_check_compat(MACHINE(spapr)->cpu_type,
-+                               CPU_POWERPC_LOGICAL_3_10, 0,
-+                               spapr->max_compat_pvr)) {
-+        error_setg(errp, "DAWR1 supported only on POWER10 and later CPUs");
-+        error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
-+        return;
-+    }
-+
-+    if (kvm_enabled()) {
-+        if (!kvmppc_has_cap_dawr1()) {
-+            error_setg(errp, "DAWR1 not supported by KVM.");
-+            error_append_hint(errp, "Try appending -machine cap-dawr1=off");
-+        } else if (kvmppc_set_cap_dawr1(val) < 0) {
-+            error_setg(errp, "Error enabling cap-dawr1 with KVM.");
-+            error_append_hint(errp, "Try appending -machine cap-dawr1=off");
-+        }
-+    }
-+}
-+
- SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
-     [SPAPR_CAP_HTM] = {
-         .name = "htm",
-@@ -831,6 +859,15 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
-         .type = "bool",
-         .apply = cap_ail_mode_3_apply,
-     },
-+    [SPAPR_CAP_DAWR1] = {
-+        .name = "dawr1",
-+        .description = "Allow 2nd Data Address Watchpoint Register (DAWR1)",
-+        .index = SPAPR_CAP_DAWR1,
-+        .get = spapr_cap_get_bool,
-+        .set = spapr_cap_set_bool,
-+        .type = "bool",
-+        .apply = cap_dawr1_apply,
-+    },
- };
- 
- static SpaprCapabilities default_caps_with_cpu(SpaprMachineState *spapr,
-@@ -841,6 +878,11 @@ static SpaprCapabilities default_caps_with_cpu(SpaprMachineState *spapr,
- 
-     caps = smc->default_caps;
- 
-+    if (!ppc_type_check_compat(cputype, CPU_POWERPC_LOGICAL_3_10,
-+                               0, spapr->max_compat_pvr)) {
-+        caps.caps[SPAPR_CAP_DAWR1] = SPAPR_CAP_OFF;
-+    }
-+
-     if (!ppc_type_check_compat(cputype, CPU_POWERPC_LOGICAL_3_00,
-                                0, spapr->max_compat_pvr)) {
-         caps.caps[SPAPR_CAP_LARGE_DECREMENTER] = SPAPR_CAP_OFF;
-@@ -975,6 +1017,7 @@ SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
- SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
- SPAPR_CAP_MIG_STATE(rpt_invalidate, SPAPR_CAP_RPT_INVALIDATE);
- SPAPR_CAP_MIG_STATE(ail_mode_3, SPAPR_CAP_AIL_MODE_3);
-+SPAPR_CAP_MIG_STATE(dawr1, SPAPR_CAP_DAWR1);
- 
- void spapr_caps_init(SpaprMachineState *spapr)
+diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+index 23958c6383..201f629203 100644
+--- a/hw/ppc/spapr_nested.c
++++ b/hw/ppc/spapr_nested.c
+@@ -65,10 +65,9 @@ static
+ SpaprMachineStateNestedGuest *spapr_get_nested_guest(SpaprMachineState *spapr,
+                                                      target_ulong guestid)
  {
-diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-index 4f1933b8da..406aea4ecb 100644
---- a/hw/ppc/spapr_hcall.c
-+++ b/hw/ppc/spapr_hcall.c
-@@ -822,11 +822,12 @@ static target_ulong h_set_mode_resource_set_ciabr(PowerPCCPU *cpu,
-     return H_SUCCESS;
+-    SpaprMachineStateNestedGuest *guest;
+-
+-    guest = g_hash_table_lookup(spapr->nested.guests, GINT_TO_POINTER(guestid));
+-    return guest;
++    return spapr->nested.guests ?
++        g_hash_table_lookup(spapr->nested.guests,
++                            GINT_TO_POINTER(guestid)) : NULL;
  }
  
--static target_ulong h_set_mode_resource_set_dawr0(PowerPCCPU *cpu,
--                                                  SpaprMachineState *spapr,
--                                                  target_ulong mflags,
--                                                  target_ulong value1,
--                                                  target_ulong value2)
-+static target_ulong h_set_mode_resource_set_dawr(PowerPCCPU *cpu,
-+                                                 SpaprMachineState *spapr,
-+                                                 target_ulong mflags,
-+                                                 target_ulong resource,
-+                                                 target_ulong value1,
-+                                                 target_ulong value2)
- {
-     CPUPPCState *env = &cpu->env;
- 
-@@ -839,8 +840,15 @@ static target_ulong h_set_mode_resource_set_dawr0(PowerPCCPU *cpu,
-         return H_P4;
-     }
- 
--    ppc_store_dawr0(env, value1);
--    ppc_store_dawrx0(env, value2);
-+    if (resource == H_SET_MODE_RESOURCE_SET_DAWR0) {
-+        ppc_store_dawr0(env, value1);
-+        ppc_store_dawrx0(env, value2);
-+    } else if (resource == H_SET_MODE_RESOURCE_SET_DAWR1) {
-+        ppc_store_dawr1(env, value1);
-+        ppc_store_dawrx1(env, value2);
-+    } else {
-+        g_assert_not_reached();
-+    }
- 
-     return H_SUCCESS;
- }
-@@ -919,8 +927,9 @@ static target_ulong h_set_mode(PowerPCCPU *cpu, SpaprMachineState *spapr,
-                                             args[3]);
-         break;
-     case H_SET_MODE_RESOURCE_SET_DAWR0:
--        ret = h_set_mode_resource_set_dawr0(cpu, spapr, args[0], args[2],
--                                            args[3]);
-+    case H_SET_MODE_RESOURCE_SET_DAWR1:
-+        ret = h_set_mode_resource_set_dawr(cpu, spapr, args[0], args[1],
-+                                           args[2], args[3]);
-         break;
-     case H_SET_MODE_RESOURCE_LE:
-         ret = h_set_mode_resource_le(cpu, spapr, args[0], args[2], args[3]);
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index a6c0547e31..d227f0b94b 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -83,8 +83,10 @@ typedef enum {
- #define SPAPR_CAP_AIL_MODE_3            0x0C
- /* Nested PAPR */
- #define SPAPR_CAP_NESTED_PAPR           0x0D
-+/* DAWR1 */
-+#define SPAPR_CAP_DAWR1                 0x0E
- /* Num Caps */
--#define SPAPR_CAP_NUM                   (SPAPR_CAP_NESTED_PAPR + 1)
-+#define SPAPR_CAP_NUM                   (SPAPR_CAP_DAWR1 + 1)
- 
- /*
-  * Capability Values
-@@ -406,6 +408,7 @@ struct SpaprMachineState {
- #define H_SET_MODE_RESOURCE_SET_DAWR0           2
- #define H_SET_MODE_RESOURCE_ADDR_TRANS_MODE     3
- #define H_SET_MODE_RESOURCE_LE                  4
-+#define H_SET_MODE_RESOURCE_SET_DAWR1           5
- 
- /* Flags for H_SET_MODE_RESOURCE_LE */
- #define H_SET_MODE_ENDIAN_BIG    0
-@@ -1003,6 +1006,7 @@ extern const VMStateDescription vmstate_spapr_cap_fwnmi;
- extern const VMStateDescription vmstate_spapr_cap_rpt_invalidate;
- extern const VMStateDescription vmstate_spapr_cap_ail_mode_3;
- extern const VMStateDescription vmstate_spapr_wdt;
-+extern const VMStateDescription vmstate_spapr_cap_dawr1;
- 
- static inline uint8_t spapr_get_cap(SpaprMachineState *spapr, int cap)
- {
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index 216638dee4..992356cb75 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -92,6 +92,7 @@ static int cap_large_decr;
- static int cap_fwnmi;
- static int cap_rpt_invalidate;
- static int cap_ail_mode_3;
-+static int cap_dawr1;
- 
- #ifdef CONFIG_PSERIES
- static int cap_papr;
-@@ -152,6 +153,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-     cap_ppc_nested_kvm_hv = kvm_vm_check_extension(s, KVM_CAP_PPC_NESTED_HV);
-     cap_large_decr = kvmppc_get_dec_bits();
-     cap_fwnmi = kvm_vm_check_extension(s, KVM_CAP_PPC_FWNMI);
-+    cap_dawr1 = kvm_vm_check_extension(s, KVM_CAP_PPC_DAWR1);
-     /*
-      * Note: setting it to false because there is not such capability
-      * in KVM at this moment.
-@@ -2114,6 +2116,16 @@ int kvmppc_set_fwnmi(PowerPCCPU *cpu)
-     return kvm_vcpu_enable_cap(cs, KVM_CAP_PPC_FWNMI, 0);
- }
- 
-+bool kvmppc_has_cap_dawr1(void)
-+{
-+    return !!cap_dawr1;
-+}
-+
-+int kvmppc_set_cap_dawr1(int enable)
-+{
-+    return kvm_vm_enable_cap(kvm_state, KVM_CAP_PPC_DAWR1, 0, enable);
-+}
-+
- int kvmppc_smt_threads(void)
- {
-     return cap_ppc_smt ? cap_ppc_smt : 1;
-diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-index 1d8cb76a6b..a8768c1dfd 100644
---- a/target/ppc/kvm_ppc.h
-+++ b/target/ppc/kvm_ppc.h
-@@ -68,6 +68,8 @@ bool kvmppc_has_cap_htm(void);
- bool kvmppc_has_cap_mmu_radix(void);
- bool kvmppc_has_cap_mmu_hash_v3(void);
- bool kvmppc_has_cap_xive(void);
-+bool kvmppc_has_cap_dawr1(void);
-+int kvmppc_set_cap_dawr1(int enable);
- int kvmppc_get_cap_safe_cache(void);
- int kvmppc_get_cap_safe_bounds_check(void);
- int kvmppc_get_cap_safe_indirect_branch(void);
-@@ -377,6 +379,16 @@ static inline bool kvmppc_has_cap_xive(void)
+ bool spapr_get_pate_nested_papr(SpaprMachineState *spapr, PowerPCCPU *cpu,
+@@ -594,26 +593,37 @@ static bool spapr_nested_vcpu_check(SpaprMachineStateNestedGuest *guest,
      return false;
  }
  
-+static inline bool kvmppc_has_cap_dawr1(void)
-+{
-+    return false;
-+}
-+
-+static inline int kvmppc_set_cap_dawr1(int enable)
-+{
-+    abort();
-+}
-+
- static inline int kvmppc_get_cap_safe_cache(void)
+-static void *get_vcpu_state_ptr(SpaprMachineStateNestedGuest *guest,
+-                              target_ulong vcpuid)
++static void *get_vcpu_state_ptr(SpaprMachineState *spapr,
++                                SpaprMachineStateNestedGuest *guest,
++                                target_ulong vcpuid)
  {
-     return 0;
+     assert(spapr_nested_vcpu_check(guest, vcpuid, false));
+     return &guest->vcpus[vcpuid].state;
+ }
+ 
+-static void *get_vcpu_ptr(SpaprMachineStateNestedGuest *guest,
+-                                   target_ulong vcpuid)
++static void *get_vcpu_ptr(SpaprMachineState *spapr,
++                          SpaprMachineStateNestedGuest *guest,
++                          target_ulong vcpuid)
+ {
+     assert(spapr_nested_vcpu_check(guest, vcpuid, false));
+     return &guest->vcpus[vcpuid];
+ }
+ 
+-static void *get_guest_ptr(SpaprMachineStateNestedGuest *guest,
++static void *get_guest_ptr(SpaprMachineState *spapr,
++                           SpaprMachineStateNestedGuest *guest,
+                            target_ulong vcpuid)
+ {
+     return guest; /* for GSBE_NESTED */
+ }
+ 
++static void *get_machine_ptr(SpaprMachineState *spapr,
++                             SpaprMachineStateNestedGuest *guest,
++                             target_ulong vcpuid)
++{
++    /* ignore guest and vcpuid for this */
++    return &spapr->nested;
++}
++
+ /*
+  * set=1 means the L1 is trying to set some state
+  * set=0 means the L1 is trying to get some state
+@@ -1013,7 +1023,15 @@ struct guest_state_element_type guest_state_element_types[] = {
+     GSBE_NESTED_VCPU(GSB_VCPU_OUT_BUFFER, 0x10, runbufout,   copy_state_runbuf),
+     GSBE_NESTED_VCPU(GSB_VCPU_OUT_BUF_MIN_SZ, 0x8, runbufout, out_buf_min_size),
+     GSBE_NESTED_VCPU(GSB_VCPU_HDEC_EXPIRY_TB, 0x8, hdecr_expiry_tb,
+-                     copy_state_hdecr)
++                     copy_state_hdecr),
++    GSBE_NESTED_MACHINE_DW(GSB_L0_GUEST_HEAP_INUSE, l0_guest_heap_inuse),
++    GSBE_NESTED_MACHINE_DW(GSB_L0_GUEST_HEAP_MAX, l0_guest_heap_max),
++    GSBE_NESTED_MACHINE_DW(GSB_L0_GUEST_PGTABLE_SIZE_INUSE,
++                           l0_guest_pgtable_size_inuse),
++    GSBE_NESTED_MACHINE_DW(GSB_L0_GUEST_PGTABLE_SIZE_MAX,
++                           l0_guest_pgtable_size_max),
++    GSBE_NESTED_MACHINE_DW(GSB_L0_GUEST_PGTABLE_RECLAIMED,
++                           l0_guest_pgtable_reclaimed),
+ };
+ 
+ void spapr_nested_gsb_init(void)
+@@ -1031,8 +1049,13 @@ void spapr_nested_gsb_init(void)
+         else if (type->id >= GSB_VCPU_IN_BUFFER)
+             /* 0x0c00 - 0xf000 Thread + RW */
+             type->flags = 0;
++        else if (type->id >= GSB_L0_GUEST_HEAP_INUSE)
++
++            /*0x0800 - 0x0804 Hostwide Counters + RO */
++            type->flags = GUEST_STATE_ELEMENT_TYPE_FLAG_HOST_WIDE |
++                          GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY;
+         else if (type->id >= GSB_VCPU_LPVR)
+-            /* 0x0003 - 0x0bff Guest + RW */
++            /* 0x0003 - 0x07ff Guest + RW */
+             type->flags = GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE;
+         else if (type->id >= GSB_HV_VCPU_STATE_SIZE)
+             /* 0x0001 - 0x0002 Guest + RO */
+@@ -1139,18 +1162,26 @@ static bool guest_state_request_check(struct guest_state_request *gsr)
+             return false;
+         }
+ 
+-        if (type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE) {
++        if (type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_HOST_WIDE) {
++            /* Hostwide elements cant be clubbed with other types */
++            if (!(gsr->flags & GUEST_STATE_REQUEST_HOST_WIDE)) {
++                qemu_log_mask(LOG_GUEST_ERROR, "trying to get/set a host wide "
++                              "Element ID:%04x.\n", id);
++                return false;
++            }
++        } else  if (type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE) {
+             /* guest wide element type */
+             if (!(gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE)) {
+-                qemu_log_mask(LOG_GUEST_ERROR, "trying to set a guest wide "
++                qemu_log_mask(LOG_GUEST_ERROR, "trying to get/set a guest wide "
+                               "Element ID:%04x.\n", id);
+                 return false;
+             }
+         } else {
+             /* thread wide element type */
+-            if (gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE) {
+-                qemu_log_mask(LOG_GUEST_ERROR, "trying to set a thread wide "
+-                              "Element ID:%04x.\n", id);
++            if (gsr->flags & (GUEST_STATE_REQUEST_GUEST_WIDE |
++                              GUEST_STATE_REQUEST_HOST_WIDE)) {
++                qemu_log_mask(LOG_GUEST_ERROR, "trying to get/set a thread wide"
++                            " Element ID:%04x.\n", id);
+                 return false;
+             }
+         }
+@@ -1419,7 +1450,8 @@ static target_ulong h_guest_create_vcpu(PowerPCCPU *cpu,
+     return H_SUCCESS;
+ }
+ 
+-static target_ulong getset_state(SpaprMachineStateNestedGuest *guest,
++static target_ulong getset_state(SpaprMachineState *spapr,
++                                 SpaprMachineStateNestedGuest *guest,
+                                  uint64_t vcpuid,
+                                  struct guest_state_request *gsr)
+ {
+@@ -1452,7 +1484,7 @@ static target_ulong getset_state(SpaprMachineStateNestedGuest *guest,
+ 
+         /* Get pointer to guest data to get/set */
+         if (type->location && type->copy) {
+-            ptr = type->location(guest, vcpuid);
++            ptr = type->location(spapr, guest, vcpuid);
+             assert(ptr);
+             if (!~(type->mask) && is_gsr_invalid(gsr, element, type)) {
+                 return H_INVALID_ELEMENT_VALUE;
+@@ -1469,6 +1501,7 @@ next_element:
+ }
+ 
+ static target_ulong map_and_getset_state(PowerPCCPU *cpu,
++                                         SpaprMachineState *spapr,
+                                          SpaprMachineStateNestedGuest *guest,
+                                          uint64_t vcpuid,
+                                          struct guest_state_request *gsr)
+@@ -1492,7 +1525,7 @@ static target_ulong map_and_getset_state(PowerPCCPU *cpu,
+         goto out1;
+     }
+ 
+-    rc = getset_state(guest, vcpuid, gsr);
++    rc = getset_state(spapr, guest, vcpuid, gsr);
+ 
+ out1:
+     address_space_unmap(CPU(cpu)->as, gsr->gsb, len, is_write, len);
+@@ -1510,27 +1543,46 @@ static target_ulong h_guest_getset_state(PowerPCCPU *cpu,
+     target_ulong buf = args[3];
+     target_ulong buflen = args[4];
+     struct guest_state_request gsr;
+-    SpaprMachineStateNestedGuest *guest;
++    SpaprMachineStateNestedGuest *guest = NULL;
+ 
+-    guest = spapr_get_nested_guest(spapr, lpid);
+-    if (!guest) {
+-        return H_P2;
+-    }
+     gsr.buf = buf;
+     assert(buflen <= GSB_MAX_BUF_SIZE);
+     gsr.len = buflen;
+     gsr.flags = 0;
+-    if (flags & H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
++
++    /* Works for both get/set state */
++    if ((flags & H_GUEST_GET_STATE_FLAGS_GUEST_WIDE) ||
++        (flags & H_GUEST_SET_STATE_FLAGS_GUEST_WIDE)) {
+         gsr.flags |= GUEST_STATE_REQUEST_GUEST_WIDE;
+     }
+-    if (flags & ~H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
+-        return H_PARAMETER; /* flag not supported yet */
+-    }
+ 
+     if (set) {
++        if (flags & ~H_GUEST_SET_STATE_FLAGS_MASK) {
++            return H_PARAMETER;
++        }
+         gsr.flags |= GUEST_STATE_REQUEST_SET;
++    } else {
++        /*
++         * No reserved fields to be set in flags nor both
++         * GUEST/HOST wide bits
++         */
++        if ((flags & ~H_GUEST_GET_STATE_FLAGS_MASK) ||
++            (flags == H_GUEST_GET_STATE_FLAGS_MASK)) {
++            return H_PARAMETER;
++        }
++
++        if (flags & H_GUEST_GET_STATE_FLAGS_HOST_WIDE) {
++            gsr.flags |= GUEST_STATE_REQUEST_HOST_WIDE;
++        }
++    }
++
++    if (!(gsr.flags & GUEST_STATE_REQUEST_HOST_WIDE)) {
++        guest = spapr_get_nested_guest(spapr, lpid);
++        if (!guest) {
++            return H_P2;
++        }
+     }
+-    return map_and_getset_state(cpu, guest, vcpuid, &gsr);
++    return map_and_getset_state(cpu, spapr, guest, vcpuid, &gsr);
+ }
+ 
+ static target_ulong h_guest_set_state(PowerPCCPU *cpu,
+@@ -1641,7 +1693,8 @@ static int get_exit_ids(uint64_t srr0, uint16_t ids[16])
+     return nr;
+ }
+ 
+-static void exit_process_output_buffer(PowerPCCPU *cpu,
++static void exit_process_output_buffer(SpaprMachineState *spapr,
++                                       PowerPCCPU *cpu,
+                                        SpaprMachineStateNestedGuest *guest,
+                                        target_ulong vcpuid,
+                                        target_ulong *r3)
+@@ -1679,7 +1732,7 @@ static void exit_process_output_buffer(PowerPCCPU *cpu,
+     gsr.gsb = gsb;
+     gsr.len = VCPU_OUT_BUF_MIN_SZ;
+     gsr.flags = 0; /* get + never guest wide */
+-    getset_state(guest, vcpuid, &gsr);
++    getset_state(spapr, guest, vcpuid, &gsr);
+ 
+     address_space_unmap(CPU(cpu)->as, gsb, len, true, len);
+     return;
+@@ -1705,7 +1758,7 @@ void spapr_exit_nested_papr(SpaprMachineState *spapr, PowerPCCPU *cpu, int excp)
+ 
+     exit_nested_store_l2(cpu, excp, vcpu);
+     /* do the output buffer for run_vcpu*/
+-    exit_process_output_buffer(cpu, guest, vcpuid, &r3_return);
++    exit_process_output_buffer(spapr, cpu, guest, vcpuid, &r3_return);
+ 
+     assert(env->spr[SPR_LPIDR] != 0);
+     nested_load_state(cpu, spapr_cpu->nested_host_state);
+@@ -1820,7 +1873,7 @@ static target_ulong h_guest_run_vcpu(PowerPCCPU *cpu,
+     gsr.buf = vcpu->runbufin.addr;
+     gsr.len = vcpu->runbufin.size;
+     gsr.flags = GUEST_STATE_REQUEST_SET; /* Thread wide + writing */
+-    rc = map_and_getset_state(cpu, guest, vcpuid, &gsr);
++    rc = map_and_getset_state(cpu, spapr,  guest, vcpuid, &gsr);
+     if (rc == H_SUCCESS) {
+         nested_papr_run_vcpu(cpu, lpid, vcpu);
+     } else {
+diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
+index e420220484..f7be0d5a95 100644
+--- a/include/hw/ppc/spapr_nested.h
++++ b/include/hw/ppc/spapr_nested.h
+@@ -11,7 +11,13 @@
+ #define GSB_TB_OFFSET           0x0004 /* Timebase Offset */
+ #define GSB_PART_SCOPED_PAGETBL 0x0005 /* Partition Scoped Page Table */
+ #define GSB_PROCESS_TBL         0x0006 /* Process Table */
+-                    /* RESERVED 0x0007 - 0x0BFF */
++                    /* RESERVED 0x0007 - 0x07FF */
++#define GSB_L0_GUEST_HEAP_INUSE 0x0800 /* Guest Management Heap Size */
++#define GSB_L0_GUEST_HEAP_MAX   0x0801 /* Guest Management Heap Max Size */
++#define GSB_L0_GUEST_PGTABLE_SIZE_INUSE  0x0802 /* Guest Pagetable Size */
++#define GSB_L0_GUEST_PGTABLE_SIZE_MAX    0x0803 /* Guest Pagetable Max Size */
++#define GSB_L0_GUEST_PGTABLE_RECLAIMED   0x0804 /* Pagetable Reclaim in bytes */
++                    /* RESERVED 0x0805 - 0xBFF */
+ #define GSB_VCPU_IN_BUFFER      0x0C00 /* Run VCPU Input Buffer */
+ #define GSB_VCPU_OUT_BUFFER     0x0C01 /* Run VCPU Out Buffer */
+ #define GSB_VCPU_VPA            0x0C02 /* HRA to Guest VCPU VPA */
+@@ -196,6 +202,38 @@ typedef struct SpaprMachineStateNested {
+ #define NESTED_API_PAPR    2
+     bool capabilities_set;
+     uint32_t pvr_base;
++
++    /**
++     * l0_guest_heap_inuse: The currently used bytes in the Hypervisor's Guest
++     * Management Space associated with the Host Partition.
++     **/
++    uint64_t l0_guest_heap_inuse;
++
++    /**
++     * host_heap_max: The maximum bytes available in the Hypervisor's Guest
++     * Management Space associated with the Host Partition.
++     **/
++    uint64_t l0_guest_heap_max;
++
++    /**
++     * host_pagetable: The currently used bytes in the Hypervisor's Guest
++     * Page Table Management Space associated with the Host Partition.
++     **/
++    uint64_t l0_guest_pgtable_size_inuse;
++
++    /**
++     * host_pagetable_max: The maximum bytes available in the Hypervisor's Guest
++     * Page Table Management Space associated with the Host Partition.
++     **/
++    uint64_t l0_guest_pgtable_size_max;
++
++    /**
++     * host_pagetable_reclaim: The amount of space in bytes that has been
++     * reclaimed due to overcommit in the  Hypervisor's Guest Page Table
++     * Management Space associated with the Host Partition.
++     **/
++    uint64_t l0_guest_pgtable_reclaimed;
++
+     GHashTable *guests;
+ } SpaprMachineStateNested;
+ 
+@@ -229,9 +267,15 @@ typedef struct SpaprMachineStateNestedGuest {
+ #define HVMASK_HDEXCR                 0x00000000FFFFFFFF
+ #define HVMASK_TB_OFFSET              0x000000FFFFFFFFFF
+ #define GSB_MAX_BUF_SIZE              (1024 * 1024)
+-#define H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE 0x8000000000000000
+-#define GUEST_STATE_REQUEST_GUEST_WIDE       0x1
+-#define GUEST_STATE_REQUEST_SET              0x2
++#define H_GUEST_GET_STATE_FLAGS_MASK   0xC000000000000000ULL
++#define H_GUEST_SET_STATE_FLAGS_MASK   0x8000000000000000ULL
++#define H_GUEST_SET_STATE_FLAGS_GUEST_WIDE 0x8000000000000000ULL
++#define H_GUEST_GET_STATE_FLAGS_GUEST_WIDE 0x8000000000000000ULL
++#define H_GUEST_GET_STATE_FLAGS_HOST_WIDE  0x4000000000000000ULL
++
++#define GUEST_STATE_REQUEST_GUEST_WIDE     0x1
++#define GUEST_STATE_REQUEST_HOST_WIDE      0x2
++#define GUEST_STATE_REQUEST_SET            0x4
+ 
+ /*
+  * As per ISA v3.1B, following bits are reserved:
+@@ -251,6 +295,15 @@ typedef struct SpaprMachineStateNestedGuest {
+     .copy = (c)                                    \
+ }
+ 
++#define GSBE_NESTED_MACHINE_DW(i, f)  {                             \
++        .id = (i),                                                  \
++        .size = 8,                                                  \
++        .location = get_machine_ptr,                                \
++        .offset = offsetof(struct SpaprMachineStateNested, f),     \
++        .copy = copy_state_8to8,                                    \
++        .mask = HVMASK_DEFAULT                                      \
++}
++
+ #define GSBE_NESTED(i, sz, f, c) {                             \
+     .id = (i),                                                 \
+     .size = (sz),                                              \
+@@ -509,9 +562,11 @@ struct guest_state_element_type {
+     uint16_t id;
+     int size;
+ #define GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE 0x1
+-#define GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY  0x2
++#define GUEST_STATE_ELEMENT_TYPE_FLAG_HOST_WIDE 0x2
++#define GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY 0x4
+    uint16_t flags;
+-    void *(*location)(SpaprMachineStateNestedGuest *, target_ulong);
++   void *(*location)(struct SpaprMachineState *, SpaprMachineStateNestedGuest *,
++                     target_ulong);
+     size_t offset;
+     void (*copy)(void *, void *, bool);
+     uint64_t mask;
 -- 
 2.47.1
 
