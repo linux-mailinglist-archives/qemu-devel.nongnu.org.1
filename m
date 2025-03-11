@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA651A5C1E9
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70958A5C200
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:09:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzJT-0004Hz-Ap; Tue, 11 Mar 2025 09:06:27 -0400
+	id 1trzIw-00034F-9V; Tue, 11 Mar 2025 09:05:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzEZ-0005Vr-Qf; Tue, 11 Mar 2025 09:01:27 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1trzEe-0005XO-A0; Tue, 11 Mar 2025 09:01:30 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzEV-0000G9-Uv; Tue, 11 Mar 2025 09:01:22 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2feb91a25bdso8350772a91.1; 
- Tue, 11 Mar 2025 06:01:19 -0700 (PDT)
+ id 1trzEa-0000Gv-LY; Tue, 11 Mar 2025 09:01:27 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2f9d3d0f55dso8228505a91.1; 
+ Tue, 11 Mar 2025 06:01:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741698078; x=1742302878; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741698082; x=1742302882; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wiqaFq1CDDEcKauctJ0QrZkvhAfYnv9s43KRAQPzSbk=;
- b=jhN5LRDOEOV3/BwiWc7xG9BytRBVTP0ZlL/jGLUaSF+VH+NjQ2IGBj+MNMIYfJ1eKF
- eMfajtBXpDfTz7oKMFjQDkqw5H1pbDr51u6+A+xkQtGahxcpklq0rokdj4n4MmSFoIRc
- ch33CWZGwLkun6aT+S0EDiMedGFe6KdJRSI7woGBYFG+307+TXrm4FfU9cMAAERobeKs
- L9vZYJL0ZfAquAXSK1lng1WgApIOPCKrFoGX82G1vy5FMz2FYDjlbI0bWApQfFfouwSR
- Y4QEK5Wj8sG1C6zC19u6qhAZNX4eVDD6qtwIQnaDS/FzZm5OvvkxXzX96VtFHHJe60PW
- lHUg==
+ bh=vyXD5UzpUW0YaKhAXXjbHUshaxnE47RC+WIYwrc3gYk=;
+ b=XNEiM5gAK3OsrCtpEp9VMs0G3iu5Tq/2ANyAqtl3CYwKX6ZgfYok9UUxHbl7chuT92
+ uM0bBm8wkPe9KyIfvZKN/21/iSVmB5rJHRlkFd0vA4Ppyhz4Kw4Nn47BRF6YzTkofqbi
+ NVo0zEYLSC/W0f3YkbKD7b7Tfbw25diI71DVQgWbGzFUjHB4p5njY5Ytnohxvc/8GkUU
+ 2dzOTTRLXw0+X0TEq8XcVhYmc8d3Q5yvnPCogkV7AYdroN+4G+b/B9cXBSHnyuLauSPk
+ Y9n11kYeNkaehkLp86eXaQHxYtjer2zy/wj+vu70RXJVKWEMfVNolPW0iPkq8PqVkXy0
+ YpQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741698078; x=1742302878;
+ d=1e100.net; s=20230601; t=1741698082; x=1742302882;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wiqaFq1CDDEcKauctJ0QrZkvhAfYnv9s43KRAQPzSbk=;
- b=Io7S9OMD1Mvf/Rq3JhlQQRxH9RxwbQM+StJ3GeIn10rfJ8jLR8zmST8CoSKDpV7jNG
- p8mzjxM3LbFUVteuSf3TbOICxHci46UeaxOS4RESpafzlr0GVzxre4lI/hypT1V1Ku2I
- y2YGHrkaE72SuS7zI2pZJ1XWSRNOSYBCFPRdln1u5anLyhhMSvF3mGKDuMWZrRpW7g/L
- pFIAu+vOThTJfQbxgTwMSJuOJ8E9Axtokk7fQPFdHyyH6balnnQ+taPvhqDLEyALfOSF
- qoJA7qGBaPDdC2J7A4QujqHCSnM/UN9k6dbfb6O7adXpV3rc840CY2LX8vatmHfFQEqS
- 24Lg==
+ bh=vyXD5UzpUW0YaKhAXXjbHUshaxnE47RC+WIYwrc3gYk=;
+ b=I+fcPISZ4fcYobtykJZY9vkq2qOjluiPbhSvuCbtLohl9DjaeTIkG0ypfy1TnvFMXK
+ 5hv7O+7sflQd92OYEvOX6elIry7d0+5mxeQn9M9oiiMz7kBONf0E/FT+iJY9+onVfAKB
+ Sp/swthvplZYuMSCHJEQXuPZ0i6tjMlUJ5dR3l//51I+FxCJflPzyLngNxtGwB6P5c0p
+ 7frU0mjMdcI+FQEtTjHQZI+oZXYOCen7HBsxLo2CRWDXA9/DTdd/XI/cNUjURXV1wEPl
+ t42UXLGpv7qV/+8kTXanR3ALsGAxvhOywS4OzHCU5ib566SFN5g7M09qDg4R8FznqdHH
+ dIDg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXirWT0qS4NmR21+Ai/yLFBwAIpsQg/SK0rPnihKN3wJrT2xIIm9LrbCkpT/95Mkva9yugfpeJqqg==@nongnu.org
-X-Gm-Message-State: AOJu0YypYlDRJ575Th20UdME2b65WtMVAyE/IVVJCy4OMnl4hyeE//YQ
- Xlev6bf8IZ7PB1RnZnGAQQr5k+WWUOAx7khgTj88ygkk2x9Lu7ME8Bhe2A==
-X-Gm-Gg: ASbGncvvMQn3bwt6Il2wUdrPKYwYbjG0VVF/uCEG/8nW4yBJXjJGLV+jGWQ1pi1b3hl
- 94dOsRjr5eOxqBXODsNxn32iCOAlvM2kKoBZstHGLna1twtA+tECJnWj6zGFfz7rZIeYi/U0xOg
- MAWAt/mPHizPeXUppKbSCln0MSH9mZcg7mWpKy/YdBmhhLDJWMi19H5gmc0D77CLOF3N/Om7O4j
- 15AAZHH7QNwhYrXlLRaZrNffgbjspUkHE+WN1R7vyl9D6Fg0a60hBvurVS9sTbARenNfMEUb7iH
- uvP+x8TeNaOP5tGtCAOrzPDd38mF4Fe7QTYXwopnDttMlx131Ck=
-X-Google-Smtp-Source: AGHT+IFZ4rCUZEjZpe1mFQo3aIobhNdwaD5QnMN0PnEvFwTHHvx+66sIohxoNQUv+G35Fntl0zu/OA==
-X-Received: by 2002:a17:90b:2742:b0:2fe:a8b1:7d8 with SMTP id
- 98e67ed59e1d1-300ff34d643mr4832273a91.25.1741698077824; 
- Tue, 11 Mar 2025 06:01:17 -0700 (PDT)
+ AJvYcCUVV+7Nee8sdnDcyLt5o6eFppOv1YXdl0xtNq5WnVe0GIQm8d3y9YBByKCFT/d9XOzF0CjLjKRDcw==@nongnu.org
+X-Gm-Message-State: AOJu0YwsMqaK3K1WkK5s75n/z6TZCXp/TOcnUbmr9Ei2C00H+CCXkLne
+ 6/YLwJgIQXsc6+0kYFI2PGfnVpuUFTghG/DBTexiR7aBCP9/AWG6/4q8Vg==
+X-Gm-Gg: ASbGncs4W9QeT58sB1W+K6e0ed7kzeYi+dac0/a2Zwdkd7OAVhle873Z5JkRKkzx9lh
+ qio0oenhN2JETzxytcvy4z8bw5Y0NUVZqets6G49QmOFh1+ox0yejO5C9xLAzahd+ni1LXyaPbW
+ ViW34OzKmQ3U7hVr2yD779EMZw4D27PprW3ThX0gRocraJEFwxsxXYGVQ3MGGI9jJur0JPm/uT1
+ hSu6L3oM8etI7zH1i5xaUz5WT7O7JDJTn2WHg6g8Zq+vMzxG6Y3g/8Czu0AZdza65l+0R4tcdYR
+ tqCMQ1lSzp2/fSTmTXLU911t2uhYpd7ipsK5O3iruCNHCvsLakWF9RESTwSv6A==
+X-Google-Smtp-Source: AGHT+IEMJZBUgVnye9Cur+e6qLx66fIs3LKKWKwiYdXdizHq23zqK1Kp7v7WjIVSvGuGTSNK+VlNvw==
+X-Received: by 2002:a17:90b:38cd:b0:2ee:741c:e9f4 with SMTP id
+ 98e67ed59e1d1-2ff7ce8e5dfmr26796090a91.11.1741698080776; 
+ Tue, 11 Mar 2025 06:01:20 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.01.14
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.01.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 06:01:17 -0700 (PDT)
+ Tue, 11 Mar 2025 06:01:20 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 56/72] hw/ppc/spapr: Convert HPTE_DIRTY() macro as
- hpte_is_dirty() method
-Date: Tue, 11 Mar 2025 22:57:50 +1000
-Message-ID: <20250311125815.903177-57-npiggin@gmail.com>
+Subject: [PULL 57/72] hw/ppc/spapr: Convert CLEAN_HPTE() macro as
+ hpte_set_clean() method
+Date: Tue, 11 Mar 2025 22:57:51 +1000
+Message-ID: <20250311125815.903177-58-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,7 +102,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Convert HPTE_DIRTY() macro as hpte_is_dirty() method.
+Convert CLEAN_HPTE() macro as hpte_set_clean() method.
 
 sPAPR data structures including the hash page table are big-endian
 regardless of current CPU endian mode, so use the big-endian LD/ST
@@ -111,56 +111,66 @@ API to access the hash PTEs.
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Message-ID: <20241220213103.6314-4-philmd@linaro.org>
+Message-ID: <20241220213103.6314-5-philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ hw/ppc/spapr.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index daf997cea1..dd81398445 100644
+index dd81398445..3568a97045 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -1414,7 +1414,11 @@ static bool hpte_is_valid(SpaprMachineState *s, unsigned index)
-     return ldq_be_p(hpte_get_ptr(s, index)) & HPTE64_V_VALID;
+@@ -1419,7 +1419,12 @@ static bool hpte_is_dirty(SpaprMachineState *s, unsigned index)
+     return ldq_be_p(hpte_get_ptr(s, index)) & HPTE64_V_HPTE_DIRTY;
  }
  
--#define HPTE_DIRTY(_hpte)  (tswap64(*((uint64_t *)(_hpte))) & HPTE64_V_HPTE_DIRTY)
-+static bool hpte_is_dirty(SpaprMachineState *s, unsigned index)
+-#define CLEAN_HPTE(_hpte)  ((*(uint64_t *)(_hpte)) &= tswap64(~HPTE64_V_HPTE_DIRTY))
++static void hpte_set_clean(SpaprMachineState *s, unsigned index)
 +{
-+    return ldq_be_p(hpte_get_ptr(s, index)) & HPTE64_V_HPTE_DIRTY;
++    stq_be_p(hpte_get_ptr(s, index),
++             ldq_be_p(hpte_get_ptr(s, index)) & ~HPTE64_V_HPTE_DIRTY);
 +}
 +
- #define CLEAN_HPTE(_hpte)  ((*(uint64_t *)(_hpte)) &= tswap64(~HPTE64_V_HPTE_DIRTY))
  #define DIRTY_HPTE(_hpte)  ((*(uint64_t *)(_hpte)) |= tswap64(HPTE64_V_HPTE_DIRTY))
  
-@@ -2259,7 +2263,7 @@ static int htab_save_later_pass(QEMUFile *f, SpaprMachineState *spapr,
- 
-         /* Consume non-dirty HPTEs */
+ /*
+@@ -2215,7 +2220,7 @@ static void htab_save_first_pass(QEMUFile *f, SpaprMachineState *spapr,
+         /* Consume invalid HPTEs */
          while ((index < htabslots)
--               && !HPTE_DIRTY(hpte_get_ptr(spapr, index))) {
-+               && !hpte_is_dirty(spapr, index)) {
+                && !hpte_is_valid(spapr, index)) {
+-            CLEAN_HPTE(hpte_get_ptr(spapr, index));
++            hpte_set_clean(spapr, index);
+             index++;
+         }
+ 
+@@ -2223,7 +2228,7 @@ static void htab_save_first_pass(QEMUFile *f, SpaprMachineState *spapr,
+         chunkstart = index;
+         while ((index < htabslots) && (index - chunkstart < USHRT_MAX)
+                && hpte_is_valid(spapr, index)) {
+-            CLEAN_HPTE(hpte_get_ptr(spapr, index));
++            hpte_set_clean(spapr, index);
+             index++;
+         }
+ 
+@@ -2273,7 +2278,7 @@ static int htab_save_later_pass(QEMUFile *f, SpaprMachineState *spapr,
+         while ((index < htabslots) && (index - chunkstart < USHRT_MAX)
+                && hpte_is_dirty(spapr, index)
+                && hpte_is_valid(spapr, index)) {
+-            CLEAN_HPTE(hpte_get_ptr(spapr, index));
++            hpte_set_clean(spapr, index);
              index++;
              examined++;
          }
-@@ -2267,7 +2271,7 @@ static int htab_save_later_pass(QEMUFile *f, SpaprMachineState *spapr,
-         chunkstart = index;
-         /* Consume valid dirty HPTEs */
-         while ((index < htabslots) && (index - chunkstart < USHRT_MAX)
--               && HPTE_DIRTY(hpte_get_ptr(spapr, index))
-+               && hpte_is_dirty(spapr, index)
-                && hpte_is_valid(spapr, index)) {
-             CLEAN_HPTE(hpte_get_ptr(spapr, index));
-             index++;
-@@ -2277,7 +2281,7 @@ static int htab_save_later_pass(QEMUFile *f, SpaprMachineState *spapr,
-         invalidstart = index;
-         /* Consume invalid dirty HPTEs */
+@@ -2283,7 +2288,7 @@ static int htab_save_later_pass(QEMUFile *f, SpaprMachineState *spapr,
          while ((index < htabslots) && (index - invalidstart < USHRT_MAX)
--               && HPTE_DIRTY(hpte_get_ptr(spapr, index))
-+               && hpte_is_dirty(spapr, index)
+                && hpte_is_dirty(spapr, index)
                 && !hpte_is_valid(spapr, index)) {
-             CLEAN_HPTE(hpte_get_ptr(spapr, index));
+-            CLEAN_HPTE(hpte_get_ptr(spapr, index));
++            hpte_set_clean(spapr, index);
              index++;
+             examined++;
+         }
 -- 
 2.47.1
 
