@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78E2A5C231
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C74DA5C299
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:27:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzKT-0007RK-8e; Tue, 11 Mar 2025 09:07:29 -0400
+	id 1trzKa-0008CH-Po; Tue, 11 Mar 2025 09:07:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzFG-0006Hj-2C; Tue, 11 Mar 2025 09:02:09 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1trzFN-0006MY-TJ; Tue, 11 Mar 2025 09:02:15 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzFD-0000NY-UW; Tue, 11 Mar 2025 09:02:05 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2ff6a98c638so10165510a91.0; 
+ id 1trzFE-0000Nx-MI; Tue, 11 Mar 2025 09:02:10 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2255003f4c6so49959605ad.0; 
  Tue, 11 Mar 2025 06:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741698119; x=1742302919; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741698121; x=1742302921; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Iy9MYT8fdEi9vMpgSjXfvO+etPc3lGZwDZWPx6oNxPs=;
- b=ZgUxvN2GDTbONgbtd5S93LMiXrGOdwobqPLcLN7+1MoCUGQcGtc/FhwLP2ypxMK1Yz
- 50wEN3M04V9aIPdQ0mDt6QXDDgqAi40tSxFQJUnMuq7hqy1tQc3oBsXmBMsIC0OEYVXa
- RY+V0Hy8bjujuec9dnI5vEbqZyGPxcQ/cfzNWUT0TL0MK7lnd61IACmT7jtcmyPVFBGT
- 6CJJHGtEzuv+4NwJ3aVWt6Pgpj+pPUvXEj4rpjqmotQKzLD6r3ESdyMipxCJQApPjIlt
- PpLVZADgnGNPbdrFMFVqiFOqG9DNOvPAzUCblnsRWa4Bgpkjzdpc0RrgpzAjvPMRFJdx
- pRqA==
+ bh=elAFXUjF+R6E0+41mljzNOshBJCWfVTXW/A0lm/eOnM=;
+ b=h0SwqOnbiIrZA3nYF4zqtGvYwIn3rpHrgX2XC9MxhsU45poFy58FFxMwy5fWpy3Hz8
+ qs0fWH26AA5O9AscypFWDLRI1142924qgJC5zHLKqnUzJP07JZpHpcqKnWWrXilSM3eV
+ JmNdhx3ptMxFEaXGEBwAMcx8/fBIzG7V3OfVHgRy9l61dQnr85AsEn3CfQQe1JCIFSpK
+ XCYiS6NSQEd/op0a6XsalPk69YKZz9OqU++rhR2HynxWTVIJmugT4CxwIbLSaN6L9rBJ
+ gbwPx0G+Fn0KiV1nlLufRlJmzX0bxlPVfTEHbQkaqu6vU7p0BGZlQ+U9nkM8SBWwh2A6
+ 4Nww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741698119; x=1742302919;
+ d=1e100.net; s=20230601; t=1741698121; x=1742302921;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Iy9MYT8fdEi9vMpgSjXfvO+etPc3lGZwDZWPx6oNxPs=;
- b=fw7rqkscA0T2kIeFxmEc68PYC0wgJtMnhSsWV5LyDOt7DalTwFhia5N37TZ74z2jLY
- 9J8up8I3NvoImNJ9/T2KtF2czz+JbYdcQTZHmU0K91vkBGC8wGa6RfPABjR64EdRx9ey
- IImgvBYrUTllp4lfvWpu74Ozp13/cKjEOGU27xAI3STYS2Ej8+cuuW49n6oIfovFC7Gq
- 2TJb755HaVdIGZ+godcyQlNberzK9GZHFEedfdDadQkWZhal5bRinElU1JrP4cQJ5LBx
- c1Dx0AeVNXQFxBTdFHHsHpHoWVfjrYD2idEwSTZCQwcLwJZ2C9oKSj1BSRwEkLzjwpcZ
- STNA==
+ bh=elAFXUjF+R6E0+41mljzNOshBJCWfVTXW/A0lm/eOnM=;
+ b=Geypf3Id3a6lYFvK2P2aligOQYz6GwbfhgM5FFMQJK+wRaHi/ofZw85cxgLTeBpwiS
+ rlDJ7fWra84yDftRkxxVVGEYFkMjyo7mqQ4bG0uHwC+/RlYt8IxrmZ98GMvHhsqY/1KJ
+ COp9j+BQlQQrPTxH8sCeo2hs2glu0HUM2IvfZ6QWzgHf7mV/1GamukUobLH6UWnDucUv
+ wVTCQZX3LCkm8XnKwguuswUb8UFTU6pMdhJsr/utTFPE8XTIzGxWPmSgaDbw2l5uVGI+
+ 4fkDLmPi35ZYy1SYfVemh40miQZFd7Ad/OX1IVIHGV4Tcq6mXC+XylsM7XT9eIoRPDoC
+ l90A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXYewsH9Tz2yTo3mHO1SGifXxjICjhJCQFcW5aVGKy+vpp3R+IuR7r02LB6p3Z1o1xWrDCjM8JffA==@nongnu.org
-X-Gm-Message-State: AOJu0YxCPQ78b4JJ0E0pQfG3KwgKuEAvD+zIhRy2OJnCS/FBc95CZQN2
- th2unRDLJNHBl1tyzYJJMUe3YeVaEkT01aiWZLW1MQ6MyuCCHVrI6OLeuQ==
-X-Gm-Gg: ASbGncvOOzCmjlcACO+wafeaS0HME1mTGBDjmN9S3rZZH5J+RtPiXGCOO6/3LwH7XXG
- HKHTKO7C4006jnk+R2hmsbbUdRgEBtdvTQqU0yAiTdFZwyseB6XdU2ETfYbCpg0DpbUBECGoM3n
- 4ouSsgPf2xYToe1jaYo64SPNZxl5RFNhPYG3JEpCos8U/gWAvEzTg+L+jweeQRgrwQwLKVZ2c0X
- P88Ij1vMMqbXiK3VK5KEtMpVj9hspvEZmsjgEKgeQ9gLS6NJKUrg1wb3ak+qJgksZeAOAEq0iyC
- /ZcOZI5TV65w0/1grwL79tQ76alsr6kXwoycIpw+DmCLXEFh/VI=
-X-Google-Smtp-Source: AGHT+IFgqL9bbZ2fICseOPZfQrNrcT0fAz/HZJGis76AwygYFFwD63MWTP2pBrIZ4Xa8Fl8lXeX+CQ==
-X-Received: by 2002:a17:90b:3ec2:b0:2ee:9e06:7db0 with SMTP id
- 98e67ed59e1d1-2ff7ce6349emr28202121a91.11.1741698118226; 
- Tue, 11 Mar 2025 06:01:58 -0700 (PDT)
+ AJvYcCVaD2tT9Tj9fTdrupHGxgysO6exY1AiQfpEMUkhovngq+2u1tf0GYchYr81Q9SIvCgnV+rf3G6djw==@nongnu.org
+X-Gm-Message-State: AOJu0YylgSZ4PEtlS5B+Hvg2bhbsUb1LHUBxDNpZ8W4V1OHLF7sgdw6W
+ 6l0hNr0HuOsd2Q707WM3WfT5XLJ+xgwIaVBI6SjVrA1giLEWhitQ6g+vOw==
+X-Gm-Gg: ASbGncvXxqvrlUmkVY0aZzZvCfKdCJpPeSqO0ciMue7GUzI661dpOp0MEOUi+NBbtej
+ 4rJEiyqSDbrEzjJFBKm2QJsBKmu72d4qJ/V+C4+Fg/Ov3s0K9IWgOavH3V6K613kqIFYeNfnxTk
+ Te36+0380gNEs3QNiSzQt615U7E64obvjR0eaCeDP6OJK3SF4TVXeJ0zZTahnM0PKWBqW3Ok3S2
+ 3L5mJV3ERkutC5AB39gMChCbHnsqH9+4yfWScvuBlsgvs/RRvIpOM6sfWVG6AdxTlPuxsqu+Cl7
+ vYFPhN7Z7h+ghw5pA7M0rMY2SUF0d1SFsDe3AdUA92h7U6UvQzw=
+X-Google-Smtp-Source: AGHT+IEvfuD1NrKWI+2Dv0OL8sLBjxEo6/deJYw1ULxKFwwvAOvUHJYL0oPwf2abozxnkGOzQeBWUA==
+X-Received: by 2002:a17:90b:528a:b0:2ee:d824:b559 with SMTP id
+ 98e67ed59e1d1-300ff34d5c3mr4672098a91.28.1741698121189; 
+ Tue, 11 Mar 2025 06:02:01 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.01.55
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.01.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 06:01:57 -0700 (PDT)
+ Tue, 11 Mar 2025 06:02:00 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 70/72] ppc/amigaone: Add kernel and initrd support
-Date: Tue, 11 Mar 2025 22:58:04 +1000
-Message-ID: <20250311125815.903177-71-npiggin@gmail.com>
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 71/72] ppc/amigaone: Add #defines for memory map constants
+Date: Tue, 11 Mar 2025 22:58:05 +1000
+Message-ID: <20250311125815.903177-72-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,171 +101,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Add support for -kernel, -initrd and -append command line options.
-
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <489b1be5d95d5153e924c95b0691b8b53f9ffb9e.1740673173.git.balaton@eik.bme.hu>
+Message-ID: <3b8e54ad9220d57e7b0a33f3570e880f26677ce8.1740673173.git.balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/amigaone.c | 113 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 112 insertions(+), 1 deletion(-)
+ hw/ppc/amigaone.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
-index 1c6f2a944d..359f5fa125 100644
+index 359f5fa125..483512125f 100644
 --- a/hw/ppc/amigaone.c
 +++ b/hw/ppc/amigaone.c
-@@ -25,11 +25,14 @@
- #include "system/qtest.h"
- #include "system/reset.h"
- #include "kvm_ppc.h"
-+#include "elf.h"
- 
- #include <zlib.h> /* for crc32 */
- 
+@@ -32,6 +32,14 @@
  #define BUS_FREQ_HZ 100000000
  
-+#define INITRD_MIN_ADDR 0x600000
+ #define INITRD_MIN_ADDR 0x600000
++#define INIT_RAM_ADDR 0x40000000
 +
++#define PCI_HIGH_ADDR 0x80000000
++#define PCI_HIGH_SIZE 0x7d000000
++#define PCI_LOW_ADDR  0xfd000000
++#define PCI_LOW_SIZE  0xe0000
++
++#define ARTICIA_ADDR 0xfe000000
+ 
  /*
   * Firmware binary available at
-  * https://www.hyperion-entertainment.com/index.php/downloads?view=files&parent=28
-@@ -178,12 +181,68 @@ static const TypeInfo nvram_types[] = {
- };
- DEFINE_TYPES(nvram_types)
- 
-+struct boot_info {
-+    hwaddr entry;
-+    hwaddr stack;
-+    hwaddr bd_info;
-+    hwaddr initrd_start;
-+    hwaddr initrd_end;
-+    hwaddr cmdline_start;
-+    hwaddr cmdline_end;
-+};
-+
-+/* Board info struct from U-Boot */
-+struct bd_info {
-+    uint32_t bi_memstart;
-+    uint32_t bi_memsize;
-+    uint32_t bi_flashstart;
-+    uint32_t bi_flashsize;
-+    uint32_t bi_flashoffset;
-+    uint32_t bi_sramstart;
-+    uint32_t bi_sramsize;
-+    uint32_t bi_bootflags;
-+    uint32_t bi_ip_addr;
-+    uint8_t  bi_enetaddr[6];
-+    uint16_t bi_ethspeed;
-+    uint32_t bi_intfreq;
-+    uint32_t bi_busfreq;
-+    uint32_t bi_baudrate;
-+} QEMU_PACKED;
-+
-+static void create_bd_info(hwaddr addr, ram_addr_t ram_size)
-+{
-+    struct bd_info *bd = g_new0(struct bd_info, 1);
-+
-+    bd->bi_memsize =    cpu_to_be32(ram_size);
-+    bd->bi_flashstart = cpu_to_be32(PROM_ADDR);
-+    bd->bi_flashsize =  cpu_to_be32(1); /* match what U-Boot detects */
-+    bd->bi_bootflags =  cpu_to_be32(1);
-+    bd->bi_intfreq =    cpu_to_be32(11.5 * BUS_FREQ_HZ);
-+    bd->bi_busfreq =    cpu_to_be32(BUS_FREQ_HZ);
-+    bd->bi_baudrate =   cpu_to_be32(115200);
-+
-+    cpu_physical_memory_write(addr, bd, sizeof(*bd));
-+}
-+
- static void amigaone_cpu_reset(void *opaque)
- {
-     PowerPCCPU *cpu = opaque;
-+    CPUPPCState *env = &cpu->env;
- 
-     cpu_reset(CPU(cpu));
--    cpu_ppc_tb_reset(&cpu->env);
-+    if (env->load_info) {
-+        struct boot_info *bi = env->load_info;
-+
-+        env->gpr[1] = bi->stack;
-+        env->gpr[2] = 1024;
-+        env->gpr[3] = bi->bd_info;
-+        env->gpr[4] = bi->initrd_start;
-+        env->gpr[5] = bi->initrd_end;
-+        env->gpr[6] = bi->cmdline_start;
-+        env->gpr[7] = bi->cmdline_end;
-+        env->nip = bi->entry;
-+    }
-+    cpu_ppc_tb_reset(env);
- }
- 
- static void fix_spd_data(uint8_t *spd)
-@@ -205,6 +264,8 @@ static void amigaone_init(MachineState *machine)
-     I2CBus *i2c_bus;
-     uint8_t *spd_data;
-     DriveInfo *di;
-+    hwaddr loadaddr;
-+    struct boot_info *bi = NULL;
- 
-     /* init CPU */
-     cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
-@@ -301,6 +362,56 @@ static void amigaone_init(MachineState *machine)
+@@ -287,7 +295,7 @@ static void amigaone_init(MachineState *machine)
+         /* Firmware uses this area for startup */
+         mr = g_new(MemoryRegion, 1);
+         memory_region_init_ram(mr, NULL, "init-cache", 32 * KiB, &error_fatal);
+-        memory_region_add_subregion(get_system_memory(), 0x40000000, mr);
++        memory_region_add_subregion(get_system_memory(), INIT_RAM_ADDR, mr);
      }
-     pci_ide_create_devs(PCI_DEVICE(object_resolve_path_component(via, "ide")));
-     pci_vga_init(pci_bus);
-+
-+    if (!machine->kernel_filename) {
-+        return;
-+    }
-+
-+    /* handle -kernel, -initrd, -append options and emulate U-Boot */
-+    bi = g_new0(struct boot_info, 1);
-+    cpu->env.load_info = bi;
-+
-+    loadaddr = MIN(machine->ram_size, 256 * MiB);
-+    bi->bd_info = loadaddr - 8 * MiB;
-+    create_bd_info(bi->bd_info, machine->ram_size);
-+    bi->stack = bi->bd_info - 64 * KiB - 8;
-+
-+    if (machine->kernel_cmdline && machine->kernel_cmdline[0]) {
-+        size_t len = strlen(machine->kernel_cmdline);
-+
-+        loadaddr = bi->bd_info + 1 * MiB;
-+        cpu_physical_memory_write(loadaddr, machine->kernel_cmdline, len + 1);
-+        bi->cmdline_start = loadaddr;
-+        bi->cmdline_end = loadaddr + len + 1; /* including terminating '\0' */
-+    }
-+
-+    sz = load_elf(machine->kernel_filename, NULL, NULL, NULL,
-+                  &bi->entry, &loadaddr, NULL, NULL,
-+                  ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
-+    if (sz <= 0) {
-+        sz = load_uimage(machine->kernel_filename, &bi->entry, &loadaddr,
-+                         NULL, NULL, NULL);
-+    }
-+    if (sz <= 0) {
-+        error_report("Could not load kernel '%s'",
-+                     machine->kernel_filename);
-+        exit(1);
-+    }
-+    loadaddr += sz;
-+
-+    if (machine->initrd_filename) {
-+        loadaddr = ROUND_UP(loadaddr + 4 * MiB, 4 * KiB);
-+        loadaddr = MAX(loadaddr, INITRD_MIN_ADDR);
-+        sz = load_image_targphys(machine->initrd_filename, loadaddr,
-+                                 bi->bd_info - loadaddr);
-+        if (sz <= 0) {
-+            error_report("Could not load initrd '%s'",
-+                         machine->initrd_filename);
-+            exit(1);
-+        }
-+        bi->initrd_start = loadaddr;
-+        bi->initrd_end = loadaddr + sz;
-+    }
- }
  
- static void amigaone_machine_init(MachineClass *mc)
+     /* nvram */
+@@ -322,7 +330,7 @@ static void amigaone_init(MachineState *machine)
+     }
+ 
+     /* Articia S */
+-    dev = sysbus_create_simple(TYPE_ARTICIA, 0xfe000000, NULL);
++    dev = sysbus_create_simple(TYPE_ARTICIA, ARTICIA_ADDR, NULL);
+ 
+     i2c_bus = I2C_BUS(qdev_get_child_bus(dev, "smbus"));
+     if (machine->ram_size > 512 * MiB) {
+@@ -339,12 +347,12 @@ static void amigaone_init(MachineState *machine)
+     pci_mem = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
+     mr = g_new(MemoryRegion, 1);
+     memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", pci_mem,
+-                             0, 0xe0000);
+-    memory_region_add_subregion(get_system_memory(), 0xfd000000, mr);
++                             0, PCI_LOW_SIZE);
++    memory_region_add_subregion(get_system_memory(), PCI_LOW_ADDR, mr);
+     mr = g_new(MemoryRegion, 1);
+     memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", pci_mem,
+-                             0x80000000, 0x7d000000);
+-    memory_region_add_subregion(get_system_memory(), 0x80000000, mr);
++                             PCI_HIGH_ADDR, PCI_HIGH_SIZE);
++    memory_region_add_subregion(get_system_memory(), PCI_HIGH_ADDR, mr);
+     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
+ 
+     /* VIA VT82c686B South Bridge (multifunction PCI device) */
 -- 
 2.47.1
 
