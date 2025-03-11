@@ -2,77 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A501EA5C2BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:32:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B51A1A5C2C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:32:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzen-0004Nw-8p; Tue, 11 Mar 2025 09:28:29 -0400
+	id 1trzek-0004To-QX; Tue, 11 Mar 2025 09:28:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1trzdt-0002s8-7d
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:27:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1trzeR-0003js-A0
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:28:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1trzdp-0005Mk-9D
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:27:31 -0400
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1trzeP-0005Vi-5E
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:28:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741699648;
+ s=mimecast20190719; t=1741699683;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DLBedgRZsFWvjgHM/ekL46tibum9+c7DeNR4LfA+/ng=;
- b=Ci+ojZlVWYIH1bU1LjHsk8Z2dk6DN2DQfbLpwTjnjMyvkXbHsxsNA6DxT2dJwbEt++MdqM
- E5tKHpmQvjNyxFTL5GDZA0dgxqjCZMr1/JxdIhvv8evZyv1JVNd/hu2d+aMapm5ACq05u/
- CWhLBpTpr3QgDLZGEUL7Hsq8LhYxdgc=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=DqcBxlg8Hjpmj4t9dy9ncx+Tsg1pr5JOIrqWaB9khV4=;
+ b=WcAcSFnP171XK0RHV9x9e3V0WLb3XRdQx22B8F82AWhOpfIAHfcHfWyg4MYsaLyP2R7I8Y
+ C4Zx/Uh/0QPYSebuTPX0RbqK7TyfVjtLK8fdfFRShfi0xAZsPoxWqnAmc2AvUeycUBefBH
+ goRfhRZgscg3rpbjPhU8NqqTKToYSFo=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-Iub_z2EcPDCSevDEUinA-g-1; Tue,
- 11 Mar 2025 09:27:24 -0400
-X-MC-Unique: Iub_z2EcPDCSevDEUinA-g-1
-X-Mimecast-MFC-AGG-ID: Iub_z2EcPDCSevDEUinA-g_1741699643
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-91-HcvNo1xsPnObZhwJ6vEUxQ-1; Tue,
+ 11 Mar 2025 09:27:20 -0400
+X-MC-Unique: HcvNo1xsPnObZhwJ6vEUxQ-1
+X-Mimecast-MFC-AGG-ID: HcvNo1xsPnObZhwJ6vEUxQ_1741699640
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EBD73180049D; Tue, 11 Mar 2025 13:27:22 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.118])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2F3E51801747; Tue, 11 Mar 2025 13:27:20 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
+ id 090BF180886A; Tue, 11 Mar 2025 13:27:19 +0000 (UTC)
+Received: from lenovo-t14s.redhat.com (unknown [10.44.32.254])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8608930001A2; Tue, 11 Mar 2025 13:27:15 +0000 (UTC)
+From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- pkrempa@redhat.com, Fam Zheng <fam@euphon.net>, <qemu-block@nongnu.org>,
- David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH v4 13/13] virtio-scsi: only expose cmd vqs via
- iothread-vq-mapping
-Date: Tue, 11 Mar 2025 21:26:16 +0800
-Message-ID: <20250311132616.1049687-14-stefanha@redhat.com>
-In-Reply-To: <20250311132616.1049687-1-stefanha@redhat.com>
-References: <20250311132616.1049687-1-stefanha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Stefano Brivio <sbrivio@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH v2] docs: Explain how to use passt
+Date: Tue, 11 Mar 2025 14:27:14 +0100
+Message-ID: <20250311132714.166189-1-lvivier@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ PDS_OTHER_BAD_TLD=0.413, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,97 +81,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Krempa and Kevin Wolf observed that iothread-vq-mapping is
-confusing to use because the control and event virtqueues have a fixed
-location before the command virtqueues but need to be treated
-differently.
+Add a chapter to explain how to use passt(1) instead of '-net user'.
+passt(1) can be connected to QEMU using UNIX socket or vhost-user.
+With vhost-user, migration of the VM is allowed and internal state of
+passt(1) is transfered from one side to the other
 
-Only expose the command virtqueues via iothread-vq-mapping so that the
-command-line parameter is intuitive: it controls where SCSI requests are
-processed.
-
-The control virtqueue needs to be hardcoded to the main loop thread for
-technical reasons anyway. Kevin also pointed out that it's better to
-place the event virtqueue in the main loop thread since its no poll
-behavior would prevent polling if assigned to an IOThread.
-
-This change is its own commit to avoid squashing the previous commit.
-
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Suggested-by: Peter Krempa <pkrempa@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Bug: https://gitlab.com/qemu-project/qemu/-/issues/2827
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 ---
- hw/scsi/virtio-scsi-dataplane.c | 33 ++++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+ docs/system/devices/net.rst | 100 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
 
-diff --git a/hw/scsi/virtio-scsi-dataplane.c b/hw/scsi/virtio-scsi-dataplane.c
-index 2d37fa6712..95f13fb7c2 100644
---- a/hw/scsi/virtio-scsi-dataplane.c
-+++ b/hw/scsi/virtio-scsi-dataplane.c
-@@ -28,7 +28,6 @@ void virtio_scsi_dataplane_setup(VirtIOSCSI *s, Error **errp)
-     VirtIODevice *vdev = VIRTIO_DEVICE(s);
-     BusState *qbus = qdev_get_parent_bus(DEVICE(vdev));
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
--    uint16_t num_vqs = vs->conf.num_queues + VIRTIO_SCSI_VQ_NUM_FIXED;
+diff --git a/docs/system/devices/net.rst b/docs/system/devices/net.rst
+index 2ab516d4b097..a3efbdcabd1a 100644
+--- a/docs/system/devices/net.rst
++++ b/docs/system/devices/net.rst
+@@ -77,6 +77,106 @@ When using the ``'-netdev user,hostfwd=...'`` option, TCP or UDP
+ connections can be redirected from the host to the guest. It allows for
+ example to redirect X11, telnet or SSH connections.
  
-     if (vs->conf.iothread && vs->conf.iothread_vq_mapping_list) {
-         error_setg(errp,
-@@ -50,35 +49,43 @@ void virtio_scsi_dataplane_setup(VirtIOSCSI *s, Error **errp)
-         }
-     }
- 
--    s->vq_aio_context = g_new(AioContext *, num_vqs);
-+    s->vq_aio_context = g_new(AioContext *, vs->conf.num_queues +
-+                                            VIRTIO_SCSI_VQ_NUM_FIXED);
++Using passt as the user mode network stack
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+    /*
-+     * Handle the ctrl virtqueue in the main loop thread where device resets
-+     * can be performed.
-+     */
-+    s->vq_aio_context[0] = qemu_get_aio_context();
++passt_ can be used as a simple replacement for SLIRP (``-net user``).
++passt doesn't require any capability or privilege. passt has
++better performance than ``-net user``, full IPv6 support and better security
++as it's a daemon that is not executed in QEMU context.
 +
-+    /*
-+     * Handle the event virtqueue in the main loop thread where its no_poll
-+     * behavior won't stop IOThread polling.
-+     */
-+    s->vq_aio_context[1] = qemu_get_aio_context();
++passt can be connected to QEMU either by using a socket
++(``-netdev stream``) or using the vhost-user interface (``-netdev vhost-user``).
++See `passt(1)`_ for more details on passt.
++
++.. _passt: https://passt.top/
++.. _passt(1): https://passt.top/builds/latest/web/passt.1.html
++
++To use socket based passt interface:
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++Start passt as a daemon::
++
++   passt --socket ~/passt.socket
++
++If ``--socket`` is not provided, passt will print the path of the UNIX domain socket QEMU can connect to (``/tmp/passt_1.socket``, ``/tmp/passt_2.socket``,
++...). Then you can connect your QEMU instance to passt:
++
++.. parsed-literal::
++   |qemu_system| [...OPTIONS...] -device virtio-net-pci,netdev=netdev0 -netdev stream,id=netdev0,server=off,addr.type=unix,addr.path=~/passt.socket
++
++Where ``~/passt.socket`` is the UNIX socket created by passt to
++communicate with QEMU.
++
++To use vhost-based interface:
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++Start passt with ``--vhost-user``::
++
++   passt --vhost-user --socket ~/passt.socket
++
++Then to connect QEMU:
++
++.. parsed-literal::
++   |qemu_system| [...OPTIONS...] -m $RAMSIZE -chardev socket,id=chr0,path=~/passt.socket -netdev vhost-user,id=netdev0,chardev=chr0 -device virtio-net,netdev=netdev0 -object memory-backend-memfd,id=memfd0,share=on,size=$RAMSIZE -numa node,memdev=memfd0
++
++Where ``$RAMSIZE`` is the memory size of your VM ``-m`` and ``-object memory-backend-memfd,size=`` must match.
++
++Migration of passt:
++^^^^^^^^^^^^^^^^^^^
++
++When passt is connected to QEMU using the vhost-user interface it can
++be migrated with QEMU and the network connections are not interrupted.
++
++As passt runs with no privileges, it relies on passt-repair to save and
++load the TCP connections state, using the TCP_REPAIR socket option.
++The passt-repair helper needs to have the CAP_NET_ADMIN capability, or run as root. If passt-repair is not available, TCP connections will not be preserved.
++
++Example of migration of a guest on the same host
++________________________________________________
++
++Before being able to run passt-repair, the CAP_NET_ADMIN capability must be set
++on the file, run as root::
++
++   setcap cap_net_admin+eip ./passt-repair
++
++Start passt for the source side::
++
++   passt --vhost-user --socket ~/passt_src.socket --repair-path ~/passt-repair_src.socket
++
++Where ``~/passt-repair_src.socket`` is the UNIX socket created by passt to
++communicate with passt-repair. The default value is the ``--socket`` path
++appended with ``.repair``.
++
++Start passt-repair::
++
++   passt-repair ~/passt-repair_src.socket
++
++Start source side QEMU with a monitor to be able to send the migrate command:
++
++.. parsed-literal::
++   |qemu_system| [...OPTIONS...] [...VHOST USER OPTIONS...] -monitor stdio
++
++Start passt for the destination side::
++
++   passt --vhost-user --socket ~/passt_dst.socket --repair-path ~/passt-repair_dst.socket
++
++Start passt-repair::
++
++   passt-repair ~/passt-repair_dst.socket
++
++Start QEMU with the ``-incoming`` parameter:
++
++.. parsed-literal::
++   |qemu_system| [...OPTIONS...] [...VHOST USER OPTIONS...] -incoming tcp:localhost:4444
++
++Then in the source guest monitor the migration can be started::
++
++   (qemu) migrate tcp:localhost:4444
++
++A separate passt-repair instance must be started for every migration. In the case of a failed migration, passt-repair also needs to be restarted before trying
++again.
++
+ Hubs
+ ~~~~
  
-     if (vs->conf.iothread_vq_mapping_list) {
-         if (!iothread_vq_mapping_apply(vs->conf.iothread_vq_mapping_list,
--                                       s->vq_aio_context, num_vqs, errp)) {
-+                    &s->vq_aio_context[VIRTIO_SCSI_VQ_NUM_FIXED],
-+                    vs->conf.num_queues, errp)) {
-             g_free(s->vq_aio_context);
-             s->vq_aio_context = NULL;
-             return;
-         }
-     } else if (vs->conf.iothread) {
-         AioContext *ctx = iothread_get_aio_context(vs->conf.iothread);
--        for (uint16_t i = 0; i < num_vqs; i++) {
--            s->vq_aio_context[i] = ctx;
-+        for (uint16_t i = 0; i < vs->conf.num_queues; i++) {
-+            s->vq_aio_context[VIRTIO_SCSI_VQ_NUM_FIXED + i] = ctx;
-         }
- 
-         /* Released in virtio_scsi_dataplane_cleanup() */
-         object_ref(OBJECT(vs->conf.iothread));
-     } else {
-         AioContext *ctx = qemu_get_aio_context();
--        for (unsigned i = 0; i < num_vqs; i++) {
--            s->vq_aio_context[i] = ctx;
-+        for (unsigned i = 0; i < vs->conf.num_queues; i++) {
-+            s->vq_aio_context[VIRTIO_SCSI_VQ_NUM_FIXED + i] = ctx;
-         }
-     }
--
--    /*
--     * Always handle the ctrl virtqueue in the main loop thread where device
--     * resets can be performed.
--     */
--    s->vq_aio_context[0] = qemu_get_aio_context();
- }
- 
- /* Context: BQL held */
 -- 
 2.48.1
 
