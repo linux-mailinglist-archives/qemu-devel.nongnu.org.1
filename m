@@ -2,72 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBA3A5CB70
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 17:58:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA61EA5CC31
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 18:30:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts2sf-0003vq-1e; Tue, 11 Mar 2025 12:55:01 -0400
+	id 1ts3P8-000141-UQ; Tue, 11 Mar 2025 13:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ts2sW-0003tx-1t
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:54:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1ts3P6-00013l-4S
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 13:28:32 -0400
+Received: from us-smtp-delivery-44.mimecast.com ([207.211.30.44])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ts2sH-0006gD-HK
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:54:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741712073;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=+qPAmA1OiFRXfTw9+bzT1y8Ui2XP2S7dr4ebYYP1aIU=;
- b=VNQB2UrXPvTHEaTeEnW0rikTYXUwjeaUojkz60EbkKAO8Nl9hnN3A/GnWriGzamZ3ZTK1s
- VjePew67EfOe6ZEXMYLRXFvbzm4OBS0h7khYrfGZxCjqeLz2dFMHFnkq9l6Pg+CZR9Bc+f
- xFtsJGAAXRyHfvOstfl5fODZDbfVqSk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1ts3P1-0004uD-7u
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 13:28:31 -0400
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-GrSd8xpaMxK7nDS8HY80QQ-1; Tue,
- 11 Mar 2025 12:54:29 -0400
-X-MC-Unique: GrSd8xpaMxK7nDS8HY80QQ-1
-X-Mimecast-MFC-AGG-ID: GrSd8xpaMxK7nDS8HY80QQ_1741712069
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-Qg9C9pbnMey9EL7fbK8dmQ-1; Tue,
+ 11 Mar 2025 13:28:16 -0400
+X-MC-Unique: Qg9C9pbnMey9EL7fbK8dmQ-1
+X-Mimecast-MFC-AGG-ID: Qg9C9pbnMey9EL7fbK8dmQ_1741714095
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CE66B180AB16; Tue, 11 Mar 2025 16:54:28 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.44])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E587A18001DE; Tue, 11 Mar 2025 16:54:27 +0000 (UTC)
-Date: Tue, 11 Mar 2025 16:54:24 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Chris Friesen <chris.friesen@windriver.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: Sapphire Rapids missing from "Preferred CPU models for Intel x86
- hosts" ?
-Message-ID: <Z9BqwIIIvMO8Qk4U@redhat.com>
-References: <56d3a918-1768-472d-a0d7-576e4718f33c@windriver.com>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 02AA01956083; Tue, 11 Mar 2025 17:28:15 +0000 (UTC)
+Received: from bahia.redhat.com (unknown [10.44.32.85])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 3CD361944F12; Tue, 11 Mar 2025 17:28:10 +0000 (UTC)
+From: Greg Kurz <groug@kaod.org>
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Greg Kurz <groug@kaod.org>
+Subject: [PATCH v2 0/6] 9pfs: Fix ftruncate-after-unlink
+Date: Tue, 11 Mar 2025 18:28:03 +0100
+Message-ID: <20250311172809.250913-1-groug@kaod.org>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <56d3a918-1768-472d-a0d7-576e4718f33c@windriver.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: softfail client-ip=207.211.30.44; envelope-from=groug@kaod.org;
+ helo=us-smtp-delivery-44.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,29 +66,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 11, 2025 at 10:47:09AM -0600, Chris Friesen via wrote:
-> Hi,
-> 
-> I was looking at the website and noticed that the various Sapphire Rapids
-> variants were missing from the list of "Preferred CPU models for Intel x86
-> hosts" located at
-> 
-> https://qemu-project.gitlab.io/qemu/system/qemu-cpu-models.html#preferred-cpu-models-for-intel-x86-hosts
-> 
-> Is this intentional, or an oversight?
+QEMU 9.2 already fixed the long standing limitation of failing fstat() on
+unlinked files. This series does something similar for ftruncate().
 
-An oversight, patches welcome if you have time.
+The following program can be straced inside the guest with a shared fs in
+passthrough mode over 9p2000.L.
 
+int main(void)
+{
+	struct stat st;
+	int fd = creat("./foo", 0000);
 
-With regards,
-Daniel
+	ftruncate(fd, 100);
+	unlink("./foo");
+	ftruncate(fd, 1000);
+}
+
+Before :
+
+creat("./foo", 000)                     = 3
+ftruncate(3, 100)                       = -1 EACCES (Permission denied)
+unlink("./foo")                         = 0
+ftruncate(3, 1000)                      = -1 ENOENT (No such file or directory)
+
+After :
+
+creat("./foo", 000)                     = 3
+ftruncate(3, 100)                       = 0
+unlink("./foo")                         = 0
+ftruncate(3, 1000)                      = 0
+
+This v2 has a qtest as suggested by Christian Schoenebeck.
+
+Cheers,
+
+--
+Greg
+
+Christian Schoenebeck (1):
+  tests/9p: add 'Tsetattr' request to test client
+
+Greg Kurz (5):
+  9pfs: local : Introduce local_fid_fd() helper
+  9pfs: Don't use file descriptors in core code
+  9pfs: Introduce ftruncate file op
+  9pfs: Introduce futimens file op
+  tests/9p: Test `Tsetattr` can truncate unlinked file
+
+ fsdev/file-op-9p.h                    |  5 +++
+ hw/9pfs/9p-local.c                    | 49 ++++++++++++++++++++-------
+ hw/9pfs/9p-synth.c                    | 22 ++++++++++++
+ hw/9pfs/9p-util.h                     |  1 +
+ hw/9pfs/9p.c                          | 21 +++++++++---
+ hw/9pfs/cofs.c                        | 37 ++++++++++++++++++++
+ hw/9pfs/coth.h                        |  4 +++
+ tests/qtest/libqos/virtio-9p-client.c | 49 +++++++++++++++++++++++++++
+ tests/qtest/libqos/virtio-9p-client.h | 34 +++++++++++++++++++
+ tests/qtest/virtio-9p-test.c          |  9 +++++
+ 10 files changed, 213 insertions(+), 18 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.48.1
 
 
