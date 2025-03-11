@@ -2,208 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42B9A5D00B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 20:56:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF5AA5D015
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 20:58:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts5et-0007tG-Gl; Tue, 11 Mar 2025 15:52:59 -0400
+	id 1ts5ja-0000Zz-BL; Tue, 11 Mar 2025 15:57:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1ts5eQ-0007ZF-5J
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:52:30 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1ts5jX-0000Z7-8j
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:57:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1ts5eN-0007aL-7g
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:52:29 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52BJMld2018166;
- Tue, 11 Mar 2025 19:52:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2023-11-20; bh=A3+gpfKOhJbznHB7yZYnELZXy4xn/VnlmEG3bUnJYiU=; b=
- Yvjd4GqsvwpIZEKviopo+l/zCTtglGHQZMyoZRuaHAtLgBuX1G8lCfeYakH7f5MH
- BbN/reinmjicTJ7GecFTe/JY4Kfs7H0s2qYdZhQQGrvuxWWzn1x4YIdsvjNobPcb
- gkys9lkgf6bX7OdtzElWnSxlDDWLefkb1THjlABBxnO+Ke23jARlQDt4uKSggOPK
- Rhy1hufMrqrsCnYBn0gmPuojC+5DONMp4P3XWC0A02e7DWUoYteHv/nNkA0riXdB
- CDLU0av07p6P08Gx9MQngofRhJ8yvLHQNiFH/r9gwAIVXu46sVf2XeeRvtMOVM64
- rzIb4bjFedszF+5fcpwwZQ==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45au4cr2w4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Mar 2025 19:52:10 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 52BId6sD004179; Tue, 11 Mar 2025 19:52:09 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2176.outbound.protection.outlook.com [104.47.57.176])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 45atmyu34s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Mar 2025 19:52:09 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=shQkmMckCG3l4xNJcJ2agvjvCJqsBmBIWlaVACLI5G3Y3Uex25dejpTExB8KGzov9aSzWVduo/LUr6M+S2JBCsjClP5ruBcEahnh8kmx/v9tnebWKpMtR3bami35SbeolUkK1s7d/pHEj9CTMifc7GIJFVAviGcyOg3O4DEMHpdrgTN0oaxR2sU7ttETeF7bpk8ZfzVKUuzYHBO+jI85aINrLcXseIQrMepnaeWyoMsKRbzZcgQkp0bTzWVOFH8Pqm2huBgVEgU6M7dvISeW4lja9ZQraWj84SfM62r/KzaiyAnpbpS6rmm3aC4AEg/mfeZ/KrdSTGwzK1V0yFK5EA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A3+gpfKOhJbznHB7yZYnELZXy4xn/VnlmEG3bUnJYiU=;
- b=V1SxB+eeoRcY4HIX8KKCaMi3e5CwJlFbzO93pVfHKxYFjz6Fo1mdXGX5Q943jVmQ7XQ5M0OFL/uRvG6Y+u56qDGZSf/U3IcAT9SwmJEhBXD4z2UON425tOBNU2HgcBLJQF23hoMTQ0wr6OjFye+06BJm3lMSgtk2G1s+WSpppyBNjExAEt/GqZJU8r07JxnNJ0uJiVz8JPUCj5McdQMUtY/LEOE4Z5wyQK1Xg0evc+po1ZnXwfIOoUGKt1moNoZ6woYhv6S2jCXqKIEPrOA2VCTtuHSL0Uv3Bynep6CkWz7u+4xr2er9SSM3gHsaDWHMYltXx+s1VKvS4KOz/gzaag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A3+gpfKOhJbznHB7yZYnELZXy4xn/VnlmEG3bUnJYiU=;
- b=0GLxtEsN28US0EeoP14umX30XzerZbHwKgms1Sm71WYwpAHkLv3EK47HLTp584BKSPpeyj2myrhH9VAVoHIfYkP4ZOV/luEF4f/F0IVKYrx7f03fAxU2iXYwO3+XSVfBB69GGMeh5fCbO9KjsGmeyqOBXkyzV5p2+nNoxDmhRFs=
-Received: from BN6PR1001MB2068.namprd10.prod.outlook.com
- (2603:10b6:405:2b::35) by DM3PPFA9583E3CA.namprd10.prod.outlook.com
- (2603:10b6:f:fc00::c40) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.18; Tue, 11 Mar
- 2025 19:52:07 +0000
-Received: from BN6PR1001MB2068.namprd10.prod.outlook.com
- ([fe80::c9b4:7351:3a7d:942f]) by BN6PR1001MB2068.namprd10.prod.outlook.com
- ([fe80::c9b4:7351:3a7d:942f%4]) with mapi id 15.20.8511.026; Tue, 11 Mar 2025
- 19:52:07 +0000
-Message-ID: <976f58aa-5e14-4dda-ae07-f78276b54ff8@oracle.com>
-Date: Tue, 11 Mar 2025 12:52:03 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
- VM reset
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
- mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
- likexu@tencent.com, like.xu.linux@gmail.com, zhenyuw@linux.intel.com,
- groug@kaod.org, khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
- den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
- <20250302220112.17653-9-dongli.zhang@oracle.com> <Z86Y9BxV6p25A2Wo@intel.com>
- <a52ad0b9-4760-4347-ad73-1690eb28a464@oracle.com>
- <Z9A/0RE2Zc7BKDvD@intel.com>
-Content-Language: en-US
-From: Dongli Zhang <dongli.zhang@oracle.com>
-In-Reply-To: <Z9A/0RE2Zc7BKDvD@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR06CA0029.namprd06.prod.outlook.com
- (2603:10b6:a03:d4::42) To BN6PR1001MB2068.namprd10.prod.outlook.com
- (2603:10b6:405:2b::35)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1ts5jV-0008P5-5C
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:57:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741723062;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=U0fWyJKANi9tq6qSwieIQlooH0jgt6Lz2x1eq98tNGs=;
+ b=UL/KblVW4f3bmR5GgcZ9wXikJsN6FXaEJlHAKaOAWXRSJv+OUzA31YKWBZLxmc/2F720dM
+ sZVjiMso5sZS9xD4LMCrT5G0l99TlG9hnfHAu81zNHJJUPZEynkN8fxiIOt6Kk9uEbjr9n
+ BAsFcadWd1yGG25tVviDBwHydsmBcro=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-Lu3K3MQzOWKFwizZusrqEQ-1; Tue, 11 Mar 2025 15:57:40 -0400
+X-MC-Unique: Lu3K3MQzOWKFwizZusrqEQ-1
+X-Mimecast-MFC-AGG-ID: Lu3K3MQzOWKFwizZusrqEQ_1741723060
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6e91ee078aaso46216256d6.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 12:57:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741723060; x=1742327860;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=U0fWyJKANi9tq6qSwieIQlooH0jgt6Lz2x1eq98tNGs=;
+ b=I/5fo8sjRMhKdFYtLH3sb9hums5hqF4R1CFXI+V37AVcyxp3UoZQo4+XGTxW8psjUp
+ NjXt0EoWzeLtt76Wh7KYzwiXeieDhck1wM5tg+xagZcIrsqU0rQTcOITMOcZhshKmkSq
+ w0vOp7HLNjdudCzbAPGi3lAQdFZlT/+Vw/CFNxKrb7XqLtdlHAYrMpN9+gdrTA4M+K8L
+ o989s6Gcsg5UTme4FzpsfiQ2MO33iyXzWF/uklLbaJeaJa5ZuIALmsMFELXUuO0rnpPg
+ 7Cl0dJtnb9xRLROHQHJLTfU6KunQNcxy+kX9iIaT6RM1ow2WbINTgoLOdL2csc5FqPqe
+ U94w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVNyFWxCC5iLVRUTn/EjgiE7KVzv59deMn997PNUW2fbEHpW4RYkYU7/98dOWiq9ma7QEd8zPnUDJuw@nongnu.org
+X-Gm-Message-State: AOJu0Yy+bHfcyba7AcaouQctLtypWD7CHET7y98uBmUnOqjTs+B9jzUP
+ CL7vxDpDJRWUoIBf1ReFZ4Euf768LBTxdpy7NHEsChIcFV8nYPCb0F1B+ekEQw606PMJEfb7dLg
+ WqJxg7JwOU0fS777E/WFOkL80+ADTym+kGmREPYzTvgU17GTF+f1P
+X-Gm-Gg: ASbGncuKSj0fGtAqfS1W1dLcQRhPAU+d8gs+zACc36rYseDX1FWTZZc8VtDVw27F+i7
+ XAJPkRrpAJlPbrCdVLrNgxJLKjzp7i8pr3AHyxHbYdi6EYO1CaqZSkJJzs4eDbcwPzhK6H1HvAK
+ fjSZq4TqroZFqL1ygyJfcr3JmbuieL7/jKLurwigKgwL8fCmr08kdViTLT3ANXKRz42tUMOvJo+
+ 8Aa/yAoPEEA9H+NiOg8FZQ3/hFhQocIphrcAsuNsyCnM2pcTZOKkfjhUuClOLhZV/hFDHCkr283
+ hSZhpEM=
+X-Received: by 2002:ad4:4eed:0:b0:6e6:6bd8:3a86 with SMTP id
+ 6a1803df08f44-6e9005be42bmr245266006d6.6.1741723059891; 
+ Tue, 11 Mar 2025 12:57:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGktBnzMsP3XzHrzPcVjNMwk97RfA6EuguQryRS5a9gJaxkmiaiLPEYFhMPrWjbCdY17rYuuQ==
+X-Received: by 2002:ad4:4eed:0:b0:6e6:6bd8:3a86 with SMTP id
+ 6a1803df08f44-6e9005be42bmr245265676d6.6.1741723059505; 
+ Tue, 11 Mar 2025 12:57:39 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6e8f7182af0sm75255626d6.119.2025.03.11.12.57.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Mar 2025 12:57:38 -0700 (PDT)
+Date: Tue, 11 Mar 2025 15:57:35 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Manish Mishra <manish.mishra@nutanix.com>, qemu-devel@nongnu.org,
+ leobras@redhat.com, farosas@suse.de, Juraj Marcin <jmarcin@redhat.com>
+Subject: Re: [PATCH v2] QIOChannelSocket: Flush zerocopy socket error queue
+ on ENOBUF failure for sendmsg
+Message-ID: <Z9CVr9jbcq810U2i@x1.local>
+References: <20250310011500.240782-1-manish.mishra@nutanix.com>
+ <Z885hS6QmGOZYj7N@x1.local> <Z89CALrwKnHdO4hx@redhat.com>
+ <Z89FjreYuRjEeX1f@x1.local> <Z8_wnLIlfhM7bILZ@redhat.com>
+ <Z9BU0gd3BLPhBss2@x1.local> <Z9BXw6iZfi_UKx-t@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN6PR1001MB2068:EE_|DM3PPFA9583E3CA:EE_
-X-MS-Office365-Filtering-Correlation-Id: 531093c4-3a72-431d-cac9-08dd60d633f5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?a2xwa2hUbDkranB5dTA1bmVVaXBBeWhtT3VJVU9GWUhaRlZCSUkzRkp1V1Ni?=
- =?utf-8?B?Y1ZpMXFxYUZJK1FSbkFFa2MwNDIvTEZyTFV4NW92WjZua3lQUkNVRWx6OGRI?=
- =?utf-8?B?bkR3K3dVc3NIK3pRRzl3NjA2aEJMYnZXcU1ZQlpCYTR2d2pTT2QvY2dlQ2kr?=
- =?utf-8?B?SGtpRHhLaUNCbmVrMk1NeXdWNERQNGw3d0FpOFN0azdPMlVFazlKbTMzZCtx?=
- =?utf-8?B?QkpFYlU2a3I5M1A1WmtsdGE3ZGxpK0E0VDdxNFM4UzVZeW1ibVFUWHdoMURM?=
- =?utf-8?B?cmpRcnk3VXc4bEFvenFWWEc3TTFxRlFWWHA4OEVWVTRBSEU1YW5QbUdaODF6?=
- =?utf-8?B?QUpjOU42WVBQWkdtRzN2c1VXaG5NL0JVTFgzY0NzME9tM0JPNy9ZR1NpcVJT?=
- =?utf-8?B?QktVcFo4RkdDajNTNkZycE8rNG9JWFJqL1NkTGNScXFRWFZ2N2NvTW90VWcr?=
- =?utf-8?B?eElOaDQwZTA2WGlPckp1MkliVlQvMitGQVhNNTFQRVdyalZkT3dXV3pqR3lp?=
- =?utf-8?B?MWpmUlJYa3o2Uk5sZWN0eWh1Z2ZRYm5BR2ZlZGdqdnZZb1dXcVRUdkIzbGZG?=
- =?utf-8?B?a05tbkJMY3J2b3NLRUNQdG9KRnFDNEFvdjVBNkYxOWdVcHFaNHZYM0dGbFBS?=
- =?utf-8?B?cGxRZ2orNEJyUWtZLzQzaklsZjYveXhiZFZVVGMrdm9hVi9YR2cyeENncVcy?=
- =?utf-8?B?MThyNDRIWVZkZ3Njb2pOQ0xudjBaQVE0UlJvQ1gwcWdHTFRUWW5OMVNSMzJO?=
- =?utf-8?B?cjByRG5mNGNkUXpvV2w4RXhMRXE4ZzRENzdxWTI2RFQ4OEVCRkQ1T2lWTDZw?=
- =?utf-8?B?UnpPM29zdHpEOXA1Ynd2M00vdHdRZllJZXpKVmtaSW5lMU82T3QvSzVYWGND?=
- =?utf-8?B?QXdNSlRQTnFQMDRwNTl5RTFyN1Zvak1rbU9lZnBKNDZ4SzB5cnJqYzE3QnJC?=
- =?utf-8?B?Y084KzVWeGtscjhoenRIRlpyMjRpbVNOSnRBZVFsRjJqRFlsNDJpTm1RVkE2?=
- =?utf-8?B?QmdYd1FFdGdBU1lGWkpmSHd1b1NRYmRxc0Q2UDdGU1pRNjB4ckVCODE3NTdn?=
- =?utf-8?B?YmVRdU5CYlU0b0I3MzFEUWkvR2l0WnpISVlLSUc1NndVbmkzbzNVUWRadDlQ?=
- =?utf-8?B?MnpqRjduQ21UMHpSMTlnN2hiNjFEWUNnUmdHTGwrWXoxY0RtWlo0TURrSkdB?=
- =?utf-8?B?d2ZqN0NpOFhrK0pVSGpkMDN5MFgxc3JRaExMeTNOcDlUdkxDTXpCSi83QkEx?=
- =?utf-8?B?WVNKT1NRN1BUaHpla05sVnBSNnZEMzlBaXJaaVhjd3dreFVkZHgvZFEvTnJm?=
- =?utf-8?B?Y21DcXk1RGhSQWpRMHNiRzVDT0MzSG1tYnRPUXJtRU5VVnAwMlJXK1VZNjRH?=
- =?utf-8?B?aS9EbFlSZXRxd2JkWlBTS01xemFYcm5LSmNtU01aUzZhM1NDbjVvaGV1SVd4?=
- =?utf-8?B?bE9MR0wxb2VZd3NEMUhpeE5pR0ZvNWxnQkZSUHVBaEcwUkJPallnWFlvQkhS?=
- =?utf-8?B?RlJUYXRzMWxSQTM2alpUSTlROUFMd3BEUFpFcTBiQzZrTUlneElXN1lVVkZK?=
- =?utf-8?B?eXR0MVNCYXRzRXNMM3F0K0g3KzVJR3Z1WTVwUHBYNXBVZWhPS2U4NFlZZk9j?=
- =?utf-8?B?TnVGR2E3VWIvb21tZkdTdjFDbUtWdnlCUUtSNkhqWkJYajhnTXllVnM4UWpY?=
- =?utf-8?B?alBKQlQ3Y2ZDUkZrZ1NmMnczU3pZWlhQVUhCb2luRm1sVFRGbU13NGZWQmZR?=
- =?utf-8?B?Mk1hTStKQnRyS1N6QzByL0lQU0ttelFTUVJTUDl3NzN6T1VKcTZ4MFpaaldh?=
- =?utf-8?B?clgvMVQwSXcvTkhaNDVFOFpram5pLzFYT3AxQldnMTNLTXJmUk1SMHhhVW13?=
- =?utf-8?Q?7fdc7QDSNXR87?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN6PR1001MB2068.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(7416014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M0dXSTVWWE1rdGNlOTQreXJNN05GbHp5VGZqTVpyOWhNUzFSdlFvZ21RK2gz?=
- =?utf-8?B?NVlaUG8zMWZuSFN5VGJiUjhOVm4vS1V3L24vWnZYMmV3WHRaN2R3ZG9HMkto?=
- =?utf-8?B?UmhYaWJ6WkRkMzBhYnhTblJCRkZPeTFhWjhQQUwzUnROYk9RMnpSak50ZlA4?=
- =?utf-8?B?c0hyU1ZtYm5HMjNHVG9sM2NJcFJGcjE1Z3VNaHNYTSs1SXNjYWgwcHA2OFFN?=
- =?utf-8?B?VER5K3JQeTA1WUE2dG9GR0lCTFNZNGRPNFBKRmZiQWExd0lNYTlIQlBwZldB?=
- =?utf-8?B?T3VyVWNNUzZhaHNOcnM2TVpUOU9BY2JBcTVwVG5QaE8xa2p5dno5YWh2TzdR?=
- =?utf-8?B?ekQxaGhDYngyTiswVTZmOUhMRTFxUEhvUW1nRXZiUlc3OUZIM2JVM210RlQx?=
- =?utf-8?B?Y2VEczd3eERncjV0K1hmdXlYUVVHclB6Wk5hRGtrUzdEeERMT2R5U2o4ckN1?=
- =?utf-8?B?VlplQnQ2emkwSUdJTFRrYzhnTWlqYWplRTBqY2J5VEl5SWprOGkrWDRMNk5C?=
- =?utf-8?B?cEhKVFZqYWMvdHJVc1lqaUMzbDdIVFRaTFE3bkVSd2J2a05EV08xTFJBOHpJ?=
- =?utf-8?B?dDk3TWdXUmx1UmI5YkZ6MkxmbjJ2L3lvZzNGcVEwUFFZWUs2Z0tGUXVFQWlP?=
- =?utf-8?B?bkJ2OGI5UDlEbVo2OS9pbVJpRnFEOTdGOFJHNTdyeXF2MFlmZVZZend5SXhy?=
- =?utf-8?B?amo4bUVUSGtCQzRUU1h0bStMSnY0N3hnQy9ISTQyb1RkbFRtMjV0UTVwQll1?=
- =?utf-8?B?eXJRWFVzMnJxem5wSHZKc0l6T3FhMEh2SFpxSUZxQU8xbS82RXFQTitFZ2JS?=
- =?utf-8?B?NGM5cHRhdXdVdzcxRzVsMk5TWk42WHQrNHJNYXhyK3JEb01tcC85dXZuSzFJ?=
- =?utf-8?B?TzdBRjNvOXdVckFZVndSbnl3VTFWUE42a2xFa1g1bkJsU2JiKzlWeEhDQ0JE?=
- =?utf-8?B?S1NaaWF1WDdBWS9JZzVqZi9MRDc0Z1F1YnFMTUNiYy9aRFpZZEM4dzBjVnNr?=
- =?utf-8?B?SExWb3liQUpJZG56M3dpcUFKUU41UE44OFFrSHhOVExCUXVBUjRrcDljbFEr?=
- =?utf-8?B?MENCUUhzT0VPaHNxdVJKM0pEUXVMYkczTHpGWG9qRHQ5d0gwUFc2bjArMTVD?=
- =?utf-8?B?ZUJJTHh4bWNZMXZ2ak5kak1MM1ArS0NJenVZNG90SmZ0Vk9jQTdUenZ3WHlZ?=
- =?utf-8?B?Y3hxdStxeGVTRnhDbHlZMlVzYzJoQURaSlhlaUZhSThpS3RHeW0wTk1jcjBM?=
- =?utf-8?B?bHlmalhVNVNQelcvdmR6MjVoT2xPZmErQnNaMFMyS1JLWGJ0elhsSlFsNzRN?=
- =?utf-8?B?WFRhQTF2Z2dnSVI1eDAwZm56emJCRFB6U0g3dUdXYlNtZi9UOUpaYVpsTEZQ?=
- =?utf-8?B?ODFoMENKUno4cmxYNGhBOGlSTkZhRUxhTjQvQ2hjdmFyRGFMZlVQS1EreTN3?=
- =?utf-8?B?NjNvYXZSZExUS0ZPYkFJT1htOWxNRzk2ZE1ZYWppNERBSnV0bFNVUlg3aUVH?=
- =?utf-8?B?VDZGd2Z2cTFFMkRoUHl3TE1DbmtVMGR3ekNqeXNRWmk2dEFWU2hUUmhERk1h?=
- =?utf-8?B?UVRCOTZPVjhGenM4aXBPTW00VUwraExsZWJiRmZkeUdSaEl1K1IwZE4zbnNh?=
- =?utf-8?B?czhUbGozdjlQMy9hS1BSNVB6eDhnbEQ1V0toVkhuTTlxRzdTeGRlZ2c0bzNU?=
- =?utf-8?B?MHRrc1ZxOG91VjRpRkd2SDRzUTB6M3ErTzEyYXNwTnNUbzRCV1hrZEZQR1VY?=
- =?utf-8?B?eWw1R01MOExkMEo3d2xyaVlBaDN1MldCVGxQYm9Dem1QbitkNjhzdm5CR2NQ?=
- =?utf-8?B?aERWdmxJNisyWXBHWHEzTUI5L0g0a2hQamtkUmh1NnUzT29LUklhUEdTWCtB?=
- =?utf-8?B?NkhMWFJ3alNUWWVZQlZZTGdabnRvV21MZzZVOFhVTjNqVG9MVXlVaVY1OGtP?=
- =?utf-8?B?Q25oUXltS2k2eVN5d3ErZFREdVF5c0FQeC9DamUyOWs0bGNJeDhKZVNwZEVO?=
- =?utf-8?B?eVdaZ3FFQ2VOaUZsRTRuYVJGZDJTWHY5NVNTTEN2eEIrOCtSSkFIY1RtWFpB?=
- =?utf-8?B?Vi9mNUhQclN1c0VrRUozUU9SMFBTdzJEOUhPU0RKdUZwSmFUZGgzS2pldGp6?=
- =?utf-8?B?YjQ2N1N3ZGM0RDJoSXk1anp4c0VDOHY2cHdpaTd0UkhaWFIveFc1TlZjeS9p?=
- =?utf-8?B?NHc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 4W5eZdi3gXBROrJeA6oPzEsktRx+cO8XmLdwRzW6koCTDH1vFoi2SWhd/yyGdoPX2ly01I7c0IkcDAuaGz1TNQKIP9xoBOzo8Xue7ZV9ELtuTOhYCNpzA4eGcFgo5d0b0EZiJn/8055jFQXYXAiZuGEaMG+cFvEvL4XuJqlDaqyHBiJa9PVzUcpxEc1i+x7Gm0gvd6IkyenDPvXnvcC/Vbw8D+ISMHK/OAXFAjKCM8Sw5RqC/7mSohS5kyI7WCkJWEw3IX73u7pdVrhrdYQ5HZ4NlNFFzxkPQi6Ns/LlvR/Dt9byfePi/Zv+9/ZmkfT9DGQorIuC+wvokHbKflYKLVjnnPNQzlDNNR35U2Tq8Y+PU38IAImdt8WAzcUhSzwe5rPUaNTnkuhH+SBO/0Ssiu35MZ/g6jXcoY4D59WcklCObk6FflWiW3kBLfz5mjKdD/kE5JYleDC5oreuGKv/5D1sVtiZ90u1VBBDEZOHfOLPikAikKLORXUQTnOd+kTaWMovLnki35/jsEYXHbTo0ziEYgCMgVrrMhfGwnWp58QpjJ/R/FQlX42nYxO9fzwftuTFoszIbKeLd1BW7doDqZgh3ZnXS5ueu98P9ZMoKyY=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 531093c4-3a72-431d-cac9-08dd60d633f5
-X-MS-Exchange-CrossTenant-AuthSource: BN6PR1001MB2068.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2025 19:52:07.0384 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wafKOsEwzs226/9gFEQv+OltrWHGBE3aDFxesO0rmIDTYL8QHS630WAcqkU4pViQo89Hmsc58ETs1n9bdwW6mQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPFA9583E3CA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-11_05,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 adultscore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2502280000 definitions=main-2503110127
-X-Proofpoint-ORIG-GUID: zyfySWLy3vsBJKA7oVB0sIJYFL5G_hFI
-X-Proofpoint-GUID: zyfySWLy3vsBJKA7oVB0sIJYFL5G_hFI
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z9BXw6iZfi_UKx-t@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -221,77 +110,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhao,
-
-On 3/11/25 6:51 AM, Zhao Liu wrote:
-> Hi Dongli,
+On Tue, Mar 11, 2025 at 03:33:23PM +0000, Daniel P. Berrangé wrote:
+> On Tue, Mar 11, 2025 at 11:20:50AM -0400, Peter Xu wrote:
+> > On Tue, Mar 11, 2025 at 08:13:16AM +0000, Daniel P. Berrangé wrote:
+> > > On Mon, Mar 10, 2025 at 04:03:26PM -0400, Peter Xu wrote:
+> > > > On Mon, Mar 10, 2025 at 07:48:16PM +0000, Daniel P. Berrangé wrote:
+> > > > > Given this is in public API, the data needs to remain reported accurately
+> > > > > for the whole deprecation period. IOW, the patch to qiochannel needs to
+> > > > > preserve this data too.
+> > > > 
+> > > > :-(
+> > > > 
+> > > > We could potentially mark MigrationStats to be experimental as a whole and
+> > > > declare that in deprecate.rst too, then after two releases, we can randomly
+> > > > add / remove fields as wish without always need to go through the
+> > > > deprecation process, am I right?
+> > > 
+> > > IMHO that would be an abuse of the process and harmful to applications
+> > > and users consuming stats.
+> > 
+> > Ah I just noticed that's the exact same one we included in
+> > query-migrate.. Then yes, the stable ABI is important here.
+> > 
+> > So for this specific case, maybe we shouldn't have exposed it in QMP from
+> > the start.
+> > 
+> > To me, it's a question on whether we could have something experimental and
+> > be exposed to QMP, where we don't need to guarantee a strict stable ABI, or
+> > a very loose ABI (e.g. we can guarantee the command exists, and with
+> > key-value string-integer pairs, nothing else).
 > 
->>>> +    /*
->>>> +     * If KVM_CAP_PMU_CAPABILITY is not supported, there is no way to
->>>> +     * disable the AMD pmu virtualization.
->>>> +     *
->>>> +     * If KVM_CAP_PMU_CAPABILITY is supported !cpu->enable_pmu
->>>> +     * indicates the KVM has already disabled the PMU virtualization.
->>>> +     */
->>>> +    if (has_pmu_cap && !cpu->enable_pmu) {
->>>> +        return;
->>>> +    }
->>>
->>> Could we only check "cpu->enable_pmu" at the beginning of this function?
->>> then if pmu is already disabled, we don't need to initialize the pmu info.
->>
->> I don't think so. There is a case:
->>
->> - cpu->enable_pmu = false. (That is, "-cpu host,-pmu").
->> - But for KVM prior v5.18 that KVM_CAP_PMU_CAPABILITY doesn't exist.
->>
->> There is no way to disable vPMU. To determine based on only
->> "!cpu->enable_pmu" doesn't work.
+> QMP has the ability to tag commands/fields, etc as experimental.
 > 
-> Ah, I didn't get your point here. When QEMU user has already disabled
-> PMU, why we still need to continue initialize PMU info and save/load PMU
-> MSRs? In this case, user won't expect vPMU could work.
+> libvirt will explicitly avoid consuming or exposing anything with
+> an experimental tag on it.
+> 
+> > Maybe what we need is a new MigrationInfoOptional, to be embeded into
+> > MigrationInfo (or not), marked experimental.  Then in the future whenever
+> > we want to add some new statistics, we could decide whether it should be
+> > part of stable ABI or not.
+> 
+> That is not required - individual struct fields can be marked
+> experimental.
 
-Yes, "In this case, user won't expect vPMU could work.".
+Yes that'll work too.  The important bit here is I think we should start to
+seriously evaluate which to expose to QAPI as stable API when we add stats
+into it.  We used to not pay too much attention.
 
-But in reality vPMU is still active, although that doesn't match user's
-expectation.
-
-User doesn't expect PMU to work. However, "perf stat" still works in VM
-(when KVM_CAP_PMU_CAPABILITY isn't available).
-
-Would you suggest we only follow user's expectation? That is, once user
-configure "-pmu", we are going to always assume vPMU is disabled, even it
-is still available (on KVM without KVM_CAP_PMU_CAPABILITY and prior v5.18)?
+With MigrationInfoOptional, we should suggest any new field to be added
+there by default, then whatever needs to be put out of experimental needs
+explicit justifications.  Or we can also document any new migration field
+at least in the stats to be marked as experimental unless justified.
 
 > 
->> It works only when "!cpu->enable_pmu" and KVM_CAP_PMU_CAPABILITY exists.
->>
->>
->> We may still need a static global variable here to indicate where
->> "kvm.enable_pmu=N" (as discussed in PATCH 07).
->>
->>>
->>>> +    if (IS_INTEL_CPU(env)) {
->>>
->>> Zhaoxin also supports architectural PerfMon in 0xa.
->>>
->>> I'm not sure if this check should also involve Zhaoxin CPU, so cc
->>> zhaoxin guys for double check.
->>
->> Sure for both here and below 'ditto'. Thank you very much!
-> 
-> Per the Linux commit 3a4ac121c2cac, Zhaoxin mostly follows Intel
-> Architectural PerfMon-v2. Afterall, before this patch, these PMU things
-> didn't check any vendor, so I suppose vPMU may could work for Zhaoxin as
-> well. Therefore, its' better to consider Zhaoxin when you check Intel
-> CPU, which can help avoid introducing some regressions.
-> 
+> The key question is what the intended usage of the fields/stats/etc
+> is to be. If you want it used by libvirt and mgmt apps it would need
+> to be formally supported. If it is just for adhoc QEMU developer
+> debugging and doesn't need libvirt / app support, then experimental
+> is fine.
 
-Thank you very much!
+To my initial thoughts, I want Libvirt to fetch it.  However I don't want
+Libvirt to parse it.
 
-zhaoxin_pmu_init() looks self explanatory.
+For example, for things like "whether zerocopy send succeeded or not", or
+"how much time we spent on sending non-iterable device states", they're
+almost not consumable for users, but great for debuggings.  It would be
+great if Libvirt could know their existance, fetch it (e.g. once after
+migration completes) then dump it to the logfile to help debugging and
+triaging QEMU issues.  In that case parsing is not needed, the whole result
+can be attached to the log as a JSON blob.  That releases the burden from
+the need to maintain compatibility that we don't really need and nobody
+cared (I bet it's the case here for zerocopy stats, but we got restricted
+by our promises even if it may ultimately benefit nobody..).
 
-Dongli Zhang
+Thanks,
+
+-- 
+Peter Xu
 
 
