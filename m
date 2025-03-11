@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85D5A5BB6B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 09:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAAAA5BB86
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 10:01:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trvRU-00069y-9m; Tue, 11 Mar 2025 04:58:28 -0400
+	id 1trvRa-0006O1-LU; Tue, 11 Mar 2025 04:58:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvRR-00065p-Dt
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:58:25 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvRX-0006HG-71
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:58:31 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvRN-0001LS-6N
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:58:25 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3914aba1ce4so1341032f8f.2
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 01:58:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvRT-0001MY-KH
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:58:30 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43cf848528aso16262535e9.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 01:58:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741683498; x=1742288298; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741683505; x=1742288305; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kZ8adRosDdix3VcOBPGB20W/hMkmp68cBdi+zCji6U4=;
- b=dKgPqLCwwga/7Ov0+A6X6dXcDR17wEKK0DGDadXKQt+f9Awc7ZSauVjCJxA//ORWfn
- Y4LyFXb6DY3s/mRN7CZjHjFB5Pe5KcOpmSXQ2Sdpc+0sU8Qn3ylyu0mr1AlkAmGI256i
- 0C0diAyen8D4bzCv83K2j5uMLVUmfOQ2izu4XCUYQfO1Jh7xedCYxKGR8I7O6rkF+1It
- /GlRAw1zLpnYv1RzrajoT7vGbIbaJJdZnDp2SngLtBjXvU9XdMUhgQM2oADM1O7SR49w
- MB4mHqtNMqXdCzUwinggN5plmpZJQRaY3DcRIsu1nQu1i+jg4aarx+jIwIDKb79ygpYZ
- eB9Q==
+ bh=3wzRgEsGaXRZwRoJYmbO3pLRuFrdPRdwQX8ON5xd3gU=;
+ b=fp9oY7GjGVoKymyCtJUeK/geZIrq2SgOq1F1jY/QTX6TYm8ICdw1bnCJS186mw8dVc
+ VGu5y0tQJGtxEIDRfERN7PnUSUY2KefZbEpKEj8g/MsCRRWtn5hpK7qveHiNvmLBcbZ9
+ g+tOlVjzDDhM3T+qhp1th6jI7XvcfcABdXN8ZeUzRZ8lOGEwPaz+4xCmg8njbP79CniM
+ DkrOY5stEOi/cQwAQU5iFY8I7gLTZZP8pdMJ9zTkOIrPacdyOHpjWVCYhoZQX7DDID1P
+ hOe8Fu3OPlp2IUEMkMDVPmXEgg12qYArkWuXcYSbNQy4CqtobNNpr1QhYuctdoOPht65
+ RYPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741683499; x=1742288299;
+ d=1e100.net; s=20230601; t=1741683505; x=1742288305;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kZ8adRosDdix3VcOBPGB20W/hMkmp68cBdi+zCji6U4=;
- b=OABFu4awHCagNgCtSIHa1lzV/LCq8h+4cOWr8GPsCSrYyErbrwIfYRgdkdZ3DTGEEc
- 0ISM44NxLj4Tsk3x4Pn7FqotikyN9UYUdx3oHHAoxwDxvoPB5B0yY8d8GBytNySIJZ7a
- Bd3MnsWbXrZ1Jl0PmEfIQS3S6t+75QYIsoM0qEJx5ASmUd6S59xvInvR5UCykz4B0D4b
- IPlDvNbnA9M+FrkUxuwyFegSgkjHcD8WO9aiCcqTvpQICUsI1b/I6ggieTE5MSxqdoLn
- K+M5c+v4GhGWpLHAbTPS5vKVfN+SN0tCp1wtEHc+W6WUg80jnmsNdg8BPZlHb/v5tF5H
- QCLg==
-X-Gm-Message-State: AOJu0YyhX6ObmuP1yZfWiZP91E/j9bQuzKfosHq8jnlbxTCCsCYMh/Ax
- eIldWxejg80diKyPApcMXcbMn57PZS7xHKlz7D5WOLw4oru/39+vADWYGo+PQbIYgb8VsjA4E+M
- gVhQ=
-X-Gm-Gg: ASbGnctUQpwByGhW6Bg7pDRh4BSbxWdLSNMLKWkavgVLsSd0jyBN3QHkr/QB6VNstDu
- jG0JDwtLNRq3IjRkJ+oIknkdcsMsiwi78Q8lBnQbAk3dmlBtTNVEIQQgLGPJ9wLOhHT2uibpTAy
- Hetnq6pOHOnU6YRgPU77i1FQbsltr8WTqXUfb8sDnuFcSJ8p7CNkQ7P650RChjRRnjf7sdIsVp6
- JVp0c8iQ/2TBt82NfrHvdg7hMHIJgrl9Eis4FAxvfTax37bE7hmhvnNxRcPkAcxg7i3aR3QS04O
- oXmZ+fs9qaLjtGl7sjKm6++dlNaICbeAtCyRkVRCD8ocSzbihrq70zVm2PAMvDixCmjNFDUfkfU
- BCOODkiWn2q8lfnaO1MQ=
-X-Google-Smtp-Source: AGHT+IEJ1eivaeWrcmtxK0p+xX1SCCCFUJhl1MmKRak+t4kFuxpghmb+PGetm1V6SK2rBa/vnU+uzQ==
-X-Received: by 2002:a05:6000:1867:b0:390:f987:26a1 with SMTP id
- ffacd0b85a97d-39132d885bcmr10640726f8f.29.1741683498453; 
- Tue, 11 Mar 2025 01:58:18 -0700 (PDT)
+ bh=3wzRgEsGaXRZwRoJYmbO3pLRuFrdPRdwQX8ON5xd3gU=;
+ b=EDYH0LPto44J1ifHBd+mQKizUaQqtoF14R+zYow3YO0s0QLhBmXqsf5DQIdBroQZIO
+ qBs+l3Jt4s4tftbZPOzPlmRrq6ja3ogSe9T00HNmKk7StHWwutdIfeJGuA2R5C0q/OJM
+ wnip0CUz9rosJ9bgzUigkqdVFifWjjR7MxTERCcskCRcwlzkyRO/cc4IYRT4ceccG8PQ
+ LTuN7YqGZqhy9Qjc/T8epcm1lwC0Sw9L8AtYe019AF3Es8kfXvA1bJJNmIU6anEPhQDy
+ aoPHQUI20iU34CZY4F2loWYPUdras3GAx8BUEohVDUQPdQzqPUUOiI8GzzpI33EEgPW3
+ yOpQ==
+X-Gm-Message-State: AOJu0YyHNhHT+BiBG0hg7OM4O69Fm+FTG3wzZ5WuRF07rAe2Wm6whwrc
+ O0x2Xm4IzmNLV8P6Xngm0VnfNysNfnMjBDVC0aAyPtehwvP7uYDamB1Of1qStasM7YOFe+Kh+p2
+ t91A=
+X-Gm-Gg: ASbGncvU/Eaq618vnHPnGTsKgl9jsMRK4N1lksokABou2yaL1v2XF6RwaX/AFFM91bz
+ PhsXIHMBpPLjxct9GBncij+bunQq1fNetuuAr+Hb6HNViorjQzoI0yiWborFAYmMtiW680zuWnk
+ Dp+hdMltRs7ra0ws4XV2E9zGHdqnvlhYUu+xVZxmqUdfQ/ygTUDig7JO+NPqqmLcyD8Kw54bwGU
+ JjS4ySNdcFZ1g6odRm6XSkNx3i7/xqvKwVKes2RtpaYsLeDjotwpGTnEDImSr4NcdZJ0KeKYEd4
+ ebM+NxHw+K8YIV9XsNaVq0Ww9sOd5w1FwKA0OwWel1Xcz8brRY9UpAoXYbai7Ypkf73zhIBKQ6X
+ toq/k9zCyxJWLin0DEUs=
+X-Google-Smtp-Source: AGHT+IEEEnVJarcGGjUK/21VA5TSdLNOgqq7tbfGncK0sjNzc+6qaDn022tJvzSrCZfe2Fv7eBB66Q==
+X-Received: by 2002:a05:6000:1885:b0:390:fbdd:994d with SMTP id
+ ffacd0b85a97d-39264694d6bmr3391332f8f.27.1741683505006; 
+ Tue, 11 Mar 2025 01:58:25 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c0e2b6asm17720469f8f.66.2025.03.11.01.58.17
+ 5b1f17b1804b1-43d03dfeef6sm16463615e9.8.2025.03.11.01.58.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Mar 2025 01:58:17 -0700 (PDT)
+ Tue, 11 Mar 2025 01:58:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org,
@@ -79,17 +79,17 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org,
  Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH-for-10.0 v3 6/8] hw/vfio: Compile more objects once
-Date: Tue, 11 Mar 2025 09:57:41 +0100
-Message-ID: <20250311085743.21724-7-philmd@linaro.org>
+Subject: [PATCH-for-10.0 v3 7/8] hw/vfio: Compile iommufd.c once
+Date: Tue, 11 Mar 2025 09:57:42 +0100
+Message-ID: <20250311085743.21724-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311085743.21724-1-philmd@linaro.org>
 References: <20250311085743.21724-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,40 +112,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These files depend on the VFIO symbol in their Kconfig
-definition. They don't rely on target specific definitions,
-move them to system_ss[] to build them once.
+Removing unused "exec/ram_addr.h" header allow to compile
+iommufd.c once for all targets.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-Id: <20250308230917.18907-5-philmd@linaro.org>
+Message-Id: <20250308230917.18907-6-philmd@linaro.org>
 ---
- hw/vfio/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/vfio/iommufd.c   | 1 -
+ hw/vfio/meson.build | 6 +++---
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index df61edffc08..42c8412bbf5 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -25,7 +25,6 @@
+ #include "qemu/cutils.h"
+ #include "qemu/chardev_open.h"
+ #include "pci.h"
+-#include "exec/ram_addr.h"
+ 
+ static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                             ram_addr_t size, void *vaddr, bool readonly)
 diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-index 8e376cfcbf8..784eae4b559 100644
+index 784eae4b559..5c9ec7e8971 100644
 --- a/hw/vfio/meson.build
 +++ b/hw/vfio/meson.build
-@@ -14,13 +14,13 @@ vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
+@@ -4,9 +4,6 @@ vfio_ss.add(files(
+   'container.c',
  ))
- vfio_ss.add(when: 'CONFIG_VFIO_CCW', if_true: files('ccw.c'))
- vfio_ss.add(when: 'CONFIG_VFIO_PLATFORM', if_true: files('platform.c'))
--vfio_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
--vfio_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
- vfio_ss.add(when: 'CONFIG_VFIO_AP', if_true: files('ap.c'))
- vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
- 
- specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
- 
-+system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
-+system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
- system_ss.add(when: 'CONFIG_VFIO', if_true: files(
-   'helpers.c',
-   'container-base.c',
+ vfio_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr.c'))
+-vfio_ss.add(when: 'CONFIG_IOMMUFD', if_true: files(
+-  'iommufd.c',
+-))
+ vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
+   'display.c',
+   'pci-quirks.c',
+@@ -28,3 +25,6 @@ system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+   'migration-multifd.c',
+   'cpr.c',
+ ))
++system_ss.add(when: ['CONFIG_VFIO', 'CONFIG_IOMMUFD'], if_true: files(
++  'iommufd.c',
++))
 -- 
 2.47.1
 
