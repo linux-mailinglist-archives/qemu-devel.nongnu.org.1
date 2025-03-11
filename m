@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4DEA5CA60
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 17:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4483A5CA35
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 17:05:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts255-000758-3Y; Tue, 11 Mar 2025 12:03:47 -0400
+	id 1ts25N-0007dc-LR; Tue, 11 Mar 2025 12:04:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ts21x-0003ql-Ad
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:00:33 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ts21z-0003sB-93
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:00:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ts21v-0005ed-2w
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:00:32 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ts21x-0005fI-Fg
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:00:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741708830;
+ s=mimecast20190719; t=1741708832;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=wi0xvVh+rQwUStbdSh3VZ3ZgEZ3b0S9zrbwo4PpAuFU=;
- b=JESifPnKlJ4LwQ+K9QAcijzBLIu+TzaWuTCqGj2Ysaw0sQDeag8TXtERiQIvMwo8wQWt0m
- HKxMlgKZKMN4bfissGSnoNy/NMVxJEPb5zW09PuBC2Z39oe7i3Wi/klnmtXgBFZ2o5b4Fd
- kEh4MJtD5QFEb566ABiicBc2D+tl6sk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=C4d7rCQo/2zgKQ6hXTlL5Or1bUZEDZQka54b0/Sz75k=;
+ b=ZhXizS8MnnmI9KasVKTwQd0olVPO9M/6Mu83U3R0xqbOL07xOdD4LkxfBsYuEMF83MdTdS
+ uQAq+Jy7jmV/FAV9tEEOSDRW0C5gsK8gq3aA4rJjlYhIuG5DRHrzd7NwWu9+rnIokyI0gD
+ 3Ur73JgXew9tvqvvM1FQROxX9wPkK4o=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-2cl0cTXRMmWPO-pRLXh1CQ-1; Tue,
- 11 Mar 2025 12:00:27 -0400
-X-MC-Unique: 2cl0cTXRMmWPO-pRLXh1CQ-1
-X-Mimecast-MFC-AGG-ID: 2cl0cTXRMmWPO-pRLXh1CQ_1741708826
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-1X7CheqzNceWke4e0pEBlw-1; Tue,
+ 11 Mar 2025 12:00:29 -0400
+X-MC-Unique: 1X7CheqzNceWke4e0pEBlw-1
+X-Mimecast-MFC-AGG-ID: 1X7CheqzNceWke4e0pEBlw_1741708828
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 041231956055; Tue, 11 Mar 2025 16:00:26 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1C2B81801A00; Tue, 11 Mar 2025 16:00:28 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.33.18])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 49040180AF7B; Tue, 11 Mar 2025 16:00:24 +0000 (UTC)
+ id 778301828A95; Tue, 11 Mar 2025 16:00:26 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 00/22] Block layer patches
-Date: Tue, 11 Mar 2025 16:59:59 +0100
-Message-ID: <20250311160021.349761-1-kwolf@redhat.com>
+Subject: [PULL 01/22] block: Remove unused blk_op_is_blocked()
+Date: Tue, 11 Mar 2025 17:00:00 +0100
+Message-ID: <20250311160021.349761-2-kwolf@redhat.com>
+In-Reply-To: <20250311160021.349761-1-kwolf@redhat.com>
+References: <20250311160021.349761-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -79,85 +82,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 825b96dbcee23d134b691fc75618b59c5f53da32:
+Commit fc4e394b28 removed the last caller of blk_op_is_blocked(). Remove
+the now unused function.
 
-  Merge tag 'migration-20250310-pull-request' of https://gitlab.com/farosas/qemu into staging (2025-03-11 09:32:07 +0800)
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20250206165331.379033-1-kwolf@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ include/system/block-backend-global-state.h |  1 -
+ block/block-backend.c                       | 12 ------------
+ 2 files changed, 13 deletions(-)
 
-are available in the Git repository at:
-
-  https://repo.or.cz/qemu/kevin.git tags/for-upstream
-
-for you to fetch changes up to a93c04f3cbe690877b3297a9df4767aa811fcd97:
-
-  virtio-scsi: only expose cmd vqs via iothread-vq-mapping (2025-03-11 15:49:22 +0100)
-
-----------------------------------------------------------------
-Block layer patches
-
-- virtio-scsi: add iothread-vq-mapping parameter
-- Improve writethrough performance
-- Fix missing zero init in bdrv_snapshot_goto()
-- Code cleanup and iotests fixes
-
-----------------------------------------------------------------
-Kevin Wolf (8):
-      block: Remove unused blk_op_is_blocked()
-      block: Zero block driver state before reopening
-      file-posix: Support FUA writes
-      block/io: Ignore FUA with cache.no-flush=on
-      aio: Create AioPolledEvent
-      aio-posix: Factor out adjust_polling_time()
-      aio-posix: Separate AioPolledEvent per AioHandler
-      aio-posix: Adjust polling time also for new handlers
-
-Stefan Hajnoczi (13):
-      scsi-disk: drop unused SCSIDiskState->bh field
-      dma: use current AioContext for dma_blk_io()
-      scsi: track per-SCSIRequest AioContext
-      scsi: introduce requests_lock
-      virtio-scsi: introduce event and ctrl virtqueue locks
-      virtio-scsi: protect events_dropped field
-      virtio-scsi: perform TMFs in appropriate AioContexts
-      virtio-blk: extract cleanup_iothread_vq_mapping() function
-      virtio-blk: tidy up iothread_vq_mapping functions
-      virtio: extract iothread-vq-mapping.h API
-      virtio-scsi: add iothread-vq-mapping parameter
-      virtio-scsi: handle ctrl virtqueue in main loop
-      virtio-scsi: only expose cmd vqs via iothread-vq-mapping
-
-Thomas Huth (1):
-      iotests: Limit qsd-migrate to working formats
-
- include/block/aio.h                         |   5 +-
- include/block/raw-aio.h                     |   8 +-
- include/hw/scsi/scsi.h                      |   8 +-
- include/hw/virtio/iothread-vq-mapping.h     |  45 +++
- include/hw/virtio/virtio-scsi.h             |  15 +-
- include/system/block-backend-global-state.h |   1 -
- include/system/dma.h                        |   3 +-
- util/aio-posix.h                            |   1 +
- block/block-backend.c                       |  12 -
- block/file-posix.c                          |  26 +-
- block/io.c                                  |   4 +
- block/io_uring.c                            |  13 +-
- block/linux-aio.c                           |  24 +-
- block/snapshot.c                            |   1 +
- hw/block/virtio-blk.c                       | 132 +-------
- hw/ide/core.c                               |   3 +-
- hw/ide/macio.c                              |   3 +-
- hw/scsi/scsi-bus.c                          | 121 +++++--
- hw/scsi/scsi-disk.c                         |  24 +-
- hw/scsi/virtio-scsi-dataplane.c             | 103 ++++--
- hw/scsi/virtio-scsi.c                       | 502 ++++++++++++++++------------
- hw/virtio/iothread-vq-mapping.c             | 131 ++++++++
- system/dma-helpers.c                        |   8 +-
- util/aio-posix.c                            | 114 ++++---
- util/async.c                                |   1 -
- hw/virtio/meson.build                       |   1 +
- meson.build                                 |   4 +
- tests/qemu-iotests/tests/qsd-migrate        |   2 +-
- 28 files changed, 803 insertions(+), 512 deletions(-)
- create mode 100644 include/hw/virtio/iothread-vq-mapping.h
- create mode 100644 hw/virtio/iothread-vq-mapping.c
+diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
+index 9cc9b008ec..35b5e8380b 100644
+--- a/include/system/block-backend-global-state.h
++++ b/include/system/block-backend-global-state.h
+@@ -86,7 +86,6 @@ bool blk_supports_write_perm(BlockBackend *blk);
+ bool blk_is_sg(BlockBackend *blk);
+ void blk_set_enable_write_cache(BlockBackend *blk, bool wce);
+ int blk_get_flags(BlockBackend *blk);
+-bool blk_op_is_blocked(BlockBackend *blk, BlockOpType op, Error **errp);
+ int blk_set_aio_context(BlockBackend *blk, AioContext *new_context,
+                         Error **errp);
+ void blk_add_aio_context_notifier(BlockBackend *blk,
+diff --git a/block/block-backend.c b/block/block-backend.c
+index 9288f7e1c6..a402db13f2 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -2357,18 +2357,6 @@ void *blk_blockalign(BlockBackend *blk, size_t size)
+     return qemu_blockalign(blk ? blk_bs(blk) : NULL, size);
+ }
+ 
+-bool blk_op_is_blocked(BlockBackend *blk, BlockOpType op, Error **errp)
+-{
+-    BlockDriverState *bs = blk_bs(blk);
+-    GLOBAL_STATE_CODE();
+-    GRAPH_RDLOCK_GUARD_MAINLOOP();
+-
+-    if (!bs) {
+-        return false;
+-    }
+-
+-    return bdrv_op_is_blocked(bs, op, errp);
+-}
+ 
+ /**
+  * Return BB's current AioContext.  Note that this context may change
+-- 
+2.48.1
 
 
