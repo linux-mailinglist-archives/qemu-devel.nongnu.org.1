@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79631A5C1E1
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2A1A5C225
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:14:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzJE-0003SI-0f; Tue, 11 Mar 2025 09:06:14 -0400
+	id 1trzJO-00045t-1o; Tue, 11 Mar 2025 09:06:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzDw-0004zj-2t; Tue, 11 Mar 2025 09:00:49 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1trzDw-0004zk-O4; Tue, 11 Mar 2025 09:00:49 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzDs-00006w-EF; Tue, 11 Mar 2025 09:00:43 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-223959039f4so107093655ad.3; 
- Tue, 11 Mar 2025 06:00:37 -0700 (PDT)
+ id 1trzDt-00007a-Hp; Tue, 11 Mar 2025 09:00:44 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2ff6e91cff5so7759815a91.2; 
+ Tue, 11 Mar 2025 06:00:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741698036; x=1742302836; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741698039; x=1742302839; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0SOjOhB33VcprDEO41KFUFk52SOqUV2z89oKt7zJj2k=;
- b=KMr1duMRe3iB4aMaisXIuLVJodxxkZWcf1mteaP9BR2aANi8AF84JXqAfCJ3gZYyta
- oLBHKZ8TarBOiS+ld9q75mhNGHj9xf/pEL6BACZHCYHbNMtz1FjDjehd+R7do38xtubG
- BqovjpnSvBZzz54jZytSAY69+PRYSZARsTZxEiVdI/KRzLomG02fLEGV29q/Jot2rBFf
- LsXc1lrdIPoTakZx+L1LObRHUuNCY9MiyU+so/UUgTtmI9LDNEJ4RpMgyfb92cskRcOC
- ii0zOtBHbAKXZoY7WFk3yI9YMpillTbnmTrNtL5aygycA1V30wHHP7FW+/4KQkShB5/o
- LSfg==
+ bh=ef5JtUmQjY3eZoVQLsqqxOztpN+e+XJ12V25TE9Pgi8=;
+ b=R5K31FYExGIIdHSgoQ1uFjhDjRnvBSsRdZWjyWL3RtyBIraPc8a8igtKfRyLo6vxkE
+ R7KURS+/OjPnkYOkfowOuYUJ36gaXbBs0P2R0MDDXFhF807gv/Echi0vm3+dXWa8DXhL
+ CWZ4L1K9OE5SAQ8fA4dHRVIRD2zu6sNWntWIqjWhyeXIA1BxwXGs7HQojM4alYN0sEj7
+ b2+rI/OskHBZ5xIhTz8EOyE1sjju5WWci78Vxm/S2RuSuRQzn3Zv2bY9ui/rB8Snifr3
+ hE5le4TIT/rXpVeROnIN7Zh286GRzuIrWiQv9/p5XyE0dVwkiD/zzNI6PBALjRqpV8nY
+ dliQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741698036; x=1742302836;
+ d=1e100.net; s=20230601; t=1741698039; x=1742302839;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0SOjOhB33VcprDEO41KFUFk52SOqUV2z89oKt7zJj2k=;
- b=WZkxyca8GRCJwRuSfqFfMGUT2B4YkCPrcjWgpIYBp3/odEcOlPRNsrpDkDjuXxCXJD
- zpNU3AB88OqGfgSnWFH8AnihYLW+ZWPRlWPevbnwXfR9b4//azzwKY9pIB1y2Kkt6YoA
- GpHnCNPNbdmoRrTl3Qe3GZVdrXCF9QLc4P2VfK8ynxx4Pcny0596MQfH7Vx/Wcgrd9kw
- AFg6HoM5OzYZ8g4BzIBx+yc+VWX2LIm9RHtRMvP1YrHK3M3avXO2PvUfPnnT/3GANRFe
- Uak16ty4Lh0vcGTtyPg2gT13azzjSdxuBlIJoQfQmIM043Uh7i6WsPR0P94R3zy1oBDv
- BDEw==
+ bh=ef5JtUmQjY3eZoVQLsqqxOztpN+e+XJ12V25TE9Pgi8=;
+ b=snMy09y3gGb36B8cwi4YctyiZTs47mh24e8m/6MGFEsgG+oVmSrah8h0ueT8dBr2Jw
+ TM8DvWo3UuB5uwSNFwBanj1f/D993ONmDoiYXbQL+t4hfLWsqvgOnsxw1lvz6lX2T419
+ boebcCi7OGHkAJme45NqVOzRjcC5QemCKkuLUYflafubD6VK/npdrtBYjqWuW+zwjtH2
+ 9XwkBuHZ5ej+Eocsp2fSnbEEU7nRLYa+ft+1VlKUcS86Xl1sOh03tRmRDMNOfxJA/u/Q
+ y9TXmeHiJaem2l884PQ9tJ1P7nItDqHVJwHqAJ9WlKfV9vBWeFgQjHj/6YmKxiMBb3hE
+ Mi5w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWEruztmpkhvsiWJnToFsbixJ8MFve91/eazdav/2iqG4ZBkAfrrkoNIC6/2BuNAZF386xAIU2u9A==@nongnu.org
-X-Gm-Message-State: AOJu0YwM1J+KnEQa0oFoWvuX5J1M8FIJZ1NyAa9qHELrGit4FUpudQAO
- x8q0SKCWW+jW5zzf4Fx4S7uxsGT/n2BcED8XfaN9whGKLuvVGJHY9Zz10Q==
-X-Gm-Gg: ASbGnctxRGV5KRQ/bmT1W09sLecOlvQ0vMS9tBn9zzprWqGhe5Bv86Q+jMOEM9IeSdj
- kEOWeoaTVBKS5W/EBMiDVqdJXMhK0ujdAWZIHoJ/3HIy9lmTTEIWRbUUxKjWI8j5UPum7ZdFENQ
- W+O6dNjQX3Cm1M4myBvmUYMN4PVorJcpsZYw3Dl3uqRqPw+o3EjWy+vustbMBsvTmIDaCaIx54R
- VvHpwOvwmMIVqaXsB36gblQtzSlsKgTPGdhmiIG7QlHygzFl1JSdQD/VnJvgnu6vWac0v/kFTYx
- G9dGi3uxclcXX1qvCkCPM1fyeGmsfhzxWGui03pKuoHmWQ+v0Ts=
-X-Google-Smtp-Source: AGHT+IHEqSmL9HA6QPp39OII2HSFm1GvK8H36w04DYL7MNdIUNL8CqudgVl32QZt22hc/hIM1yxeNg==
-X-Received: by 2002:a17:902:fc47:b0:223:5a6e:b20 with SMTP id
- d9443c01a7336-2242887eb29mr245014615ad.7.1741698035735; 
- Tue, 11 Mar 2025 06:00:35 -0700 (PDT)
+ AJvYcCURu+umiYqh3qsAl5OugzxgVmvoXRZOS73X55rvPTZadXKCvWwSfs2qDPPam43J79F5dPuQ4sJp9A==@nongnu.org
+X-Gm-Message-State: AOJu0Yw3MCPysFSy7i4CuGvWjkitcGO9XXXfbXZslOe4R+OAO2CALAr1
+ Zh257XgEVy9LrzK5Lu6XpHFSbfCGYp5SI2wpFdjPykVyW90Yzz1DzLRntQ==
+X-Gm-Gg: ASbGncu+TLF7Z1Kw7YJw1p6eNmyeCTe2rr9qDlXpDDM2uHG9n3MBH8bzrym3jZEVK8i
+ OEbPHSv4Hc8qouDd6pUsP12OxCtl4mJJEaq9ywDT4312wWkpNy1KZ7JJV+/X4i51OEs0K1SxSC2
+ +a6DDIr/KjfzyTXjpSeGF+8TZoK0ITSfBreDEzERM2qFFtfKNU/mSK13efEGaQ8X+ajg1BruWru
+ H9RCH0TILPPn8xseXhbenb+bBb5z1QY/xUgGBbbK+0fejUWOUBC+QnHG60ijxTy4S5PZIf5ZBxi
+ RuibenwzPcwanB/DM2w3U3Vfl/BAitxdePuXxWcwk/lB6oe4wZQ=
+X-Google-Smtp-Source: AGHT+IH45hJAsbcuERTowHkzKWunADMl6tTLtwrJOii8wJU6Mh69BxSiogcqltCklb7uCL7iO4fkxw==
+X-Received: by 2002:a17:90a:ec87:b0:2fe:dd2c:f8e7 with SMTP id
+ 98e67ed59e1d1-2ff7ce8fa48mr26297537a91.10.1741698038779; 
+ Tue, 11 Mar 2025 06:00:38 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.00.33
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.00.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 06:00:35 -0700 (PDT)
+ Tue, 11 Mar 2025 06:00:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- dan tan <dantan@linux.ibm.com>
-Subject: [PULL 42/72] ppc/pnv: Add new PowerPC Special Purpose Registers (RWMR)
-Date: Tue, 11 Mar 2025 22:57:36 +1000
-Message-ID: <20250311125815.903177-43-npiggin@gmail.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PULL 43/72] target/ppc: Make ppc_ldl_code() declaration public
+Date: Tue, 11 Mar 2025 22:57:37 +1000
+Message-ID: <20250311125815.903177-44-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,56 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: dan tan <dantan@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Register RWMR - Region Weighted Mode Register
-for privileged access in Power9 and Power10
+We are going to move code calling ppc_ldl_code() out of
+excp_helper.c where it is defined. Expose its declaration
+for few commits, until eventually making it static again
+once everything is moved.
 
-It controls what the SPURR register produces.
-
-Specs:
- - Power10: https://files.openpower.foundation/s/EgCy7C43p2NSRfR
-
-TCG does not model SMT priority, timing, resource controls
-and status so this register has no effect for now.
-
-[npiggin: adjust changelog]
-Signed-off-by: dan tan <dantan@linux.ibm.com>
-Message-ID: <20250116154226.13376-1-dantan@linux.vnet.ibm.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Message-ID: <20250127102620.39159-4-philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h      | 1 +
- target/ppc/cpu_init.c | 5 +++++
- 2 files changed, 6 insertions(+)
+ target/ppc/excp_helper.c | 2 +-
+ target/ppc/internal.h    | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 682583d1d1..25b1e6d6b0 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -2102,6 +2102,7 @@ void ppc_compat_add_property(Object *obj, const char *name,
- #define SPR_PMCR              (0x374)
- #define SPR_440_ITV0          (0x374)
- #define SPR_440_ITV1          (0x375)
-+#define SPR_RWMR              (0x375)
- #define SPR_440_ITV2          (0x376)
- #define SPR_440_ITV3          (0x377)
- #define SPR_440_CCR1          (0x378)
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 54035c7bbb..8d73e11540 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5773,6 +5773,11 @@ static void register_power9_book4_sprs(CPUPPCState *env)
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_generic,
-                      KVM_REG_PPC_WORT, 0);
-+    spr_register_hv(env, SPR_RWMR, "RWMR",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_generic, &spr_write_generic,
-+                 &spr_read_generic, &spr_write_generic,
-+                 0x00000000);
- #endif
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index fde9912230..7ed4bbec03 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -144,7 +144,7 @@ static inline bool insn_need_byteswap(CPUArchState *env)
+     return !!(env->msr & ((target_ulong)1 << MSR_LE));
  }
  
+-static uint32_t ppc_ldl_code(CPUArchState *env, target_ulong addr)
++uint32_t ppc_ldl_code(CPUArchState *env, target_ulong addr)
+ {
+     uint32_t insn = cpu_ldl_code(env, addr);
+ 
+diff --git a/target/ppc/internal.h b/target/ppc/internal.h
+index 20fb2ec593..46db6adfcf 100644
+--- a/target/ppc/internal.h
++++ b/target/ppc/internal.h
+@@ -268,6 +268,8 @@ static inline void pte_invalidate(target_ulong *pte0)
+ #define PTE_PTEM_MASK 0x7FFFFFBF
+ #define PTE_CHECK_MASK (TARGET_PAGE_MASK | 0x7B)
+ 
++uint32_t ppc_ldl_code(CPUArchState *env, target_ulong addr);
++
+ #ifdef CONFIG_USER_ONLY
+ void ppc_cpu_record_sigsegv(CPUState *cs, vaddr addr,
+                             MMUAccessType access_type,
 -- 
 2.47.1
 
