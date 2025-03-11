@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1BC2A5CDB8
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 19:19:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D23DAA5CDA7
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 19:17:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts49Z-0001Oc-Qk; Tue, 11 Mar 2025 14:16:38 -0400
+	id 1ts48g-0008Dp-9U; Tue, 11 Mar 2025 14:15:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ts47S-00079B-Qm
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 14:14:27 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ts47P-000762-MQ
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 14:14:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ts47L-0006kb-Td
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 14:14:22 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ts47L-0006je-Tk
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 14:14:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741716851;
+ s=mimecast20190719; t=1741716846;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4EdyhLjyE37lM3nS4PPAqlr0NpMtz5xMVxfCOm/yWis=;
- b=Qx6NZm8lR7XSV2sXX1Ti/FZPfU3VA4dFWOL+i18/RtaW9IwK/IufxU+UYzM8k0JgDoAa+J
- VwhSQbUWx4jQJkX1VKKAgGKfI4ebP2zcTbwdzYaS7gpaE9ceIMjLDc2Mx8tdtQnwJkIZ1z
- XrgEacUeNqhHR+k9oM8t6/prjX6SUWY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=oz80cud8d/O9AxwXlwq1eflo4nCDY3v+ve3Qqy7+aDg=;
+ b=A3KpYqUWuSodXYQQx5vtELAuG9iqFhxG0P2L1N9SMjGmGpzKE8kYFYTaiZo8jwgV+7Znfo
+ dQXnUEnZ1QwfhGCQaL+S4WFbG9g9Ok7e7KRhN5KMc682wg2xp3N7Gt9PV4Xz+isQZG7pri
+ AFs/wMrQwy5mM/pLGh1QuujkzDAJfkY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-10-WViuDMjTPe6G_ZLc6cMi8Q-1; Tue,
- 11 Mar 2025 14:14:04 -0400
-X-MC-Unique: WViuDMjTPe6G_ZLc6cMi8Q-1
-X-Mimecast-MFC-AGG-ID: WViuDMjTPe6G_ZLc6cMi8Q_1741716841
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-TzCahFhnMH-5SIHMyPQ3Pw-1; Tue,
+ 11 Mar 2025 14:14:05 -0400
+X-MC-Unique: TzCahFhnMH-5SIHMyPQ3Pw-1
+X-Mimecast-MFC-AGG-ID: TzCahFhnMH-5SIHMyPQ3Pw_1741716844
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 248A91955DDF; Tue, 11 Mar 2025 18:14:01 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 62B6519560B2; Tue, 11 Mar 2025 18:14:04 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.116])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 23D4618001E9; Tue, 11 Mar 2025 18:13:58 +0000 (UTC)
+ id A109418001E9; Tue, 11 Mar 2025 18:14:01 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- Avihai Horon <avihaih@nvidia.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>, David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 11/21] vfio/migration: Use BE byte order for device state wire
- packets
-Date: Tue, 11 Mar 2025 19:13:18 +0100
-Message-ID: <20250311181328.1200431-12-clg@redhat.com>
+Subject: [PULL 12/21] system: Declare qemu_[min/max]rampagesize() in
+ 'system/hostmem.h'
+Date: Tue, 11 Mar 2025 19:13:19 +0100
+Message-ID: <20250311181328.1200431-13-clg@redhat.com>
 In-Reply-To: <20250311181328.1200431-1-clg@redhat.com>
 References: <20250311181328.1200431-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,84 +85,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Wire data commonly use BE byte order (including in the existing migration
-protocol), use it also for for VFIO device state packets.
+Both qemu_minrampagesize() and qemu_maxrampagesize() are
+related to host memory backends, having the following call
+stack:
 
-This will allow VFIO multifd device state transfer between hosts with
-different endianness.
-Although currently there is no such use case, it's good to have it now
-for completeness.
+  qemu_minrampagesize()
+     -> find_min_backend_pagesize()
+         -> object_dynamic_cast(obj, TYPE_MEMORY_BACKEND)
 
-Reviewed-by: Avihai Horon <avihaih@nvidia.com>
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Link: https://lore.kernel.org/qemu-devel/dcfc04cc1a50655650dbac8398e2742ada84ee39.1741611079.git.maciej.szmigiero@oracle.com
+  qemu_maxrampagesize()
+     -> find_max_backend_pagesize()
+        -> object_dynamic_cast(obj, TYPE_MEMORY_BACKEND)
+
+Having TYPE_MEMORY_BACKEND defined in "system/hostmem.h":
+
+  include/system/hostmem.h:23:#define TYPE_MEMORY_BACKEND "memory-backend"
+
+Move their prototype declaration to "system/hostmem.h".
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Message-Id: <20250308230917.18907-7-philmd@linaro.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250311085743.21724-2-philmd@linaro.org
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/migration-multifd.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ include/exec/ram_addr.h    | 3 ---
+ include/system/hostmem.h   | 3 +++
+ hw/ppc/spapr_caps.c        | 1 +
+ hw/s390x/s390-virtio-ccw.c | 1 +
+ hw/vfio/spapr.c            | 1 +
+ 5 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
-index 233724710b377afd40aabe5ef5b846f654f9865d..378f6f3bf01f6a4155fb424f8028cb5380f27f02 100644
---- a/hw/vfio/migration-multifd.c
-+++ b/hw/vfio/migration-multifd.c
-@@ -13,6 +13,7 @@
- #include "hw/vfio/vfio-common.h"
- #include "migration/misc.h"
- #include "qapi/error.h"
-+#include "qemu/bswap.h"
- #include "qemu/error-report.h"
- #include "qemu/lockable.h"
- #include "qemu/main-loop.h"
-@@ -155,12 +156,16 @@ bool vfio_multifd_load_state_buffer(void *opaque, char *data, size_t data_size,
-         return false;
-     }
+diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+index 3d8df4edf15cd916d477250444ac6833c76f0286..e4c28fbec9b470f0f64eb07ad5fcba6b43a5fcc4 100644
+--- a/include/exec/ram_addr.h
++++ b/include/exec/ram_addr.h
+@@ -102,9 +102,6 @@ static inline unsigned long int ramblock_recv_bitmap_offset(void *host_addr,
  
-+    packet->version = be32_to_cpu(packet->version);
-     if (packet->version != VFIO_DEVICE_STATE_PACKET_VER_CURRENT) {
-         error_setg(errp, "%s: packet has unknown version %" PRIu32,
-                    vbasedev->name, packet->version);
-         return false;
-     }
+ bool ramblock_is_pmem(RAMBlock *rb);
  
-+    packet->idx = be32_to_cpu(packet->idx);
-+    packet->flags = be32_to_cpu(packet->flags);
+-long qemu_minrampagesize(void);
+-long qemu_maxrampagesize(void);
+-
+ /**
+  * qemu_ram_alloc_from_file,
+  * qemu_ram_alloc_from_fd:  Allocate a ram block from the specified backing
+diff --git a/include/system/hostmem.h b/include/system/hostmem.h
+index 5c21ca55c0176af7356905e1b04358c52fc8a5f8..62642e602ca97dffa4baec29f9b73ccf56c29700 100644
+--- a/include/system/hostmem.h
++++ b/include/system/hostmem.h
+@@ -93,4 +93,7 @@ bool host_memory_backend_is_mapped(HostMemoryBackend *backend);
+ size_t host_memory_backend_pagesize(HostMemoryBackend *memdev);
+ char *host_memory_backend_get_name(HostMemoryBackend *backend);
+ 
++long qemu_minrampagesize(void);
++long qemu_maxrampagesize(void);
 +
-     if (packet->idx == UINT32_MAX) {
-         error_setg(errp, "%s: packet index is invalid", vbasedev->name);
-         return false;
-@@ -558,9 +563,9 @@ vfio_save_complete_precopy_thread_config_state(VFIODevice *vbasedev,
+ #endif
+diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+index 904bff87ce125cd0d69560f2b2ec54ed0a5e94e9..9e53d0c1fd1cccf366f7306a83f8859e22f39da3 100644
+--- a/hw/ppc/spapr_caps.c
++++ b/hw/ppc/spapr_caps.c
+@@ -34,6 +34,7 @@
+ #include "kvm_ppc.h"
+ #include "migration/vmstate.h"
+ #include "system/tcg.h"
++#include "system/hostmem.h"
  
-     packet_len = sizeof(*packet) + bioc->usage;
-     packet = g_malloc0(packet_len);
--    packet->version = VFIO_DEVICE_STATE_PACKET_VER_CURRENT;
--    packet->idx = idx;
--    packet->flags = VFIO_DEVICE_STATE_CONFIG_STATE;
-+    packet->version = cpu_to_be32(VFIO_DEVICE_STATE_PACKET_VER_CURRENT);
-+    packet->idx = cpu_to_be32(idx);
-+    packet->flags = cpu_to_be32(VFIO_DEVICE_STATE_CONFIG_STATE);
-     memcpy(&packet->data, bioc->data, bioc->usage);
+ #include "hw/ppc/spapr.h"
  
-     if (!multifd_queue_device_state(idstr, instance_id,
-@@ -610,7 +615,7 @@ vfio_multifd_save_complete_precopy_thread(SaveLiveCompletePrecopyThreadData *d,
-     }
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index a9b3db19f63d5b50a87ed751d856294f2c0c17d5..75b32182eb01991fdc63fa1d38c838d5dc95d82b 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -41,6 +41,7 @@
+ #include "hw/s390x/tod.h"
+ #include "system/system.h"
+ #include "system/cpus.h"
++#include "system/hostmem.h"
+ #include "target/s390x/kvm/pv.h"
+ #include "migration/blocker.h"
+ #include "qapi/visitor.h"
+diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+index ad4c499eafea27906a028d0674944fbe63e3f03a..237f96dd3fa2b7e1c859471fee014d5a3d31f1f0 100644
+--- a/hw/vfio/spapr.c
++++ b/hw/vfio/spapr.c
+@@ -15,6 +15,7 @@
+ #include <linux/kvm.h>
+ #endif
+ #include "system/kvm.h"
++#include "system/hostmem.h"
+ #include "exec/address-spaces.h"
  
-     packet = g_malloc0(sizeof(*packet) + migration->data_buffer_size);
--    packet->version = VFIO_DEVICE_STATE_PACKET_VER_CURRENT;
-+    packet->version = cpu_to_be32(VFIO_DEVICE_STATE_PACKET_VER_CURRENT);
- 
-     for (idx = 0; ; idx++) {
-         ssize_t data_size;
-@@ -631,7 +636,7 @@ vfio_multifd_save_complete_precopy_thread(SaveLiveCompletePrecopyThreadData *d,
-             break;
-         }
- 
--        packet->idx = idx;
-+        packet->idx = cpu_to_be32(idx);
-         packet_size = sizeof(*packet) + data_size;
- 
-         if (!multifd_queue_device_state(d->idstr, d->instance_id,
+ #include "hw/vfio/vfio-common.h"
 -- 
 2.48.1
 
