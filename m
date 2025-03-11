@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854BEA5C1BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:00:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72348A5C1BD
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:00:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzCr-0002Pi-Tg; Tue, 11 Mar 2025 08:59:38 -0400
+	id 1trzCw-0002iX-UE; Tue, 11 Mar 2025 08:59:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzCL-0001Mh-OX; Tue, 11 Mar 2025 08:59:06 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1trzCV-0001cG-QP; Tue, 11 Mar 2025 08:59:15 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzCJ-0007sK-SE; Tue, 11 Mar 2025 08:59:05 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2fee4d9c2efso9000099a91.3; 
- Tue, 11 Mar 2025 05:59:01 -0700 (PDT)
+ id 1trzCT-0007ud-KF; Tue, 11 Mar 2025 08:59:15 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2fecba90cc3so10436509a91.2; 
+ Tue, 11 Mar 2025 05:59:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741697941; x=1742302741; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741697948; x=1742302748; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wd805KbtUJ3mYr3xoOW61EiyMaIe0guwHYCEOoqrQks=;
- b=GnYCc38CSjKlarRQLV1TNAiTKtvke5qo8gOewPazeRxH34A3GmTNIz+2wcSMGPvWIl
- GzGORteQEAMhfvjMn3axJd/U/I6+3DQ0vRKhOltK6sXSvWnOY009EqdUuIrM+pqEuIVG
- Mh63RXs9V6re68UWMddrXtRj4K7qkmcvTFMB55HIjoSJlVf9eOys7quE92upAvF40UOi
- vNJCJdH+1s3Lcs6j7bziRO0Lvx3AelAtovQqb/mhJ7kfbsE5mbSeE4xL8Qp16RJw4qIP
- LH8jR+vtaT9OKuBDiuRFrXR+QEEwtpkgsrGoMt/OpfM2DbD9qppKGp3DWYDD8Hork9lU
- XUyA==
+ bh=VLC1n3HVZL5UFr7qSjs7PdPNKDKAAkSwrr+MO1MH/MU=;
+ b=MCv8mRME+VlXfNIlUkk+VgeJ8WAR9LtZs8zOrTw61HXN7/obSY2AqgAQuHXuJgOAoN
+ dRhxvyAFH7vmAQCWny3Evy2zZmWrTUA+ICzzG8Nakvd4X9Xia4i97FzNaATsdxIGnTo+
+ 7mt60q1xpUVSjOq4AnaIQVRxk+RChG0lKvVDYtjRlxEwpopr3YuZ2N5EMKdypoaJcmOZ
+ 51tC28k3eKuiEECTmioAFT9RXcyvqaz5c1Mo3O5B/caKpCKRlylBEE93YyEqnBDHhHy1
+ 5a40TU3HHg/TnkNV787saQrsVMOMhUJXliwxF1X+AqAX7XpOBSGQKZvrf60bP6++0nay
+ ZK8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741697941; x=1742302741;
+ d=1e100.net; s=20230601; t=1741697948; x=1742302748;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wd805KbtUJ3mYr3xoOW61EiyMaIe0guwHYCEOoqrQks=;
- b=s30YdnmHh2xnO4iwBOahJVfmLf0YN8RZnGyNqUZUuIqUZCBbkz/iLsG3qQ14L43W4N
- z7RGON3L60elwiL6Eq/0G8Sm8X3KX6b1XALyG6JbweIthmnZF8DRYisA/CRzIcQLhc5I
- /DSjHucdMcKyCqDnrbiYLpTY99iknnt3wNGYGBVfA/Hjk3VES1lTws4PqDtxVY8oC0si
- dq5o4YJIDK72qIet3SpUa/1ZQQvaSU+IgfdVZC5X5pHJBLdnIR3pOgbKLFy4gSM5Q0YD
- 8AdA2zIqmdEGyNJ74w8nU4reO5/feqr5cW3G63TaRH11V92ZDw2SB2nj+x/ohp9vaVZO
- gFJA==
+ bh=VLC1n3HVZL5UFr7qSjs7PdPNKDKAAkSwrr+MO1MH/MU=;
+ b=LvMERcXiphMBumjc/PormHToedyDz9THUkpDBNN5F5RZBQSYyCrfNTu20hRvvwaUo9
+ MS7WcWYD7ow7aMsXmAAWPfFFys6oLZw3VXVwCSKnhc58zwwHZxQGMvWkM6GWsdIvFOSU
+ kAE+J7+0RTsmgb1nC0Cf3s57ABKlfhYZnE9pB8R9USM72KkizpvO/DsWq6kei9Tv1rol
+ AkYLySyxVBPFQ4YwMMx9qPkk5lpNGzLIh1KQPdYu9CuDlOW1Nl3Ad5adMtMaVzOFsEjt
+ Jpus6DF7WtuzJalR1ObqbUvRJc13EWHquP+eg0QQOCOhSqMCPlXbLQeYLa9kZhuhlI91
+ Ft1g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXGcFYwqEel1JPG8OF3TjADk6EXCblhzM5h6RcWNalps141dIi+HFd4ZPaDLOwyJQFMf8fhHg+tpA==@nongnu.org
-X-Gm-Message-State: AOJu0Yyhpggy2qFL+2hwlrW9U8O9HuNn5ikxLgdBHGXZG4ErBWgUM9y2
- qzOf1zBZB3eWF8ieHYfntWp73g/ko4mA0lPOtnevDKn/42kMhmISMAst6A==
-X-Gm-Gg: ASbGncv5AcmUyeZClA3+/M1ud0oAegKGZYCu8/uSCXDOoX3J4KNguW4H+z9QOgDREio
- oSoEtBKgJN9BQn9eoKs2UhS8lZYBBi2KgPt94V9y88BCU0ea26NYU2kzn1gVDiXCpZo+pVK/lQ7
- 2jVuxQnDIzbLxirZ5mE13N9imMNMRDjDe2ss00ylWLitfLCptkV2nN9fYBJMvYTdG134t5ar/KS
- R15DHBunQ16xLbDLiYk4uTntwH3OR/tmxJoT/wbqcRiarCEZNDwspMroDY6OC7a3NeoR9ulqVGJ
- D3fHn3PqsK9h6ILvBRGRgBVNJe4B/KdMYN8ERQsxjt0cGcctntw=
-X-Google-Smtp-Source: AGHT+IEZ87898TFY5TjRDkDsFQrCZwnHYHK+prYoGxg8reddGGRazTKXy94Ck5ywDrp6T5iCmjCilQ==
-X-Received: by 2002:a17:90b:2fc7:b0:2ee:693e:ed7a with SMTP id
- 98e67ed59e1d1-2ff7cf2b591mr26976434a91.35.1741697940643; 
- Tue, 11 Mar 2025 05:59:00 -0700 (PDT)
+ AJvYcCUwpNyk31GEOJMnMZ10uqaHPeo18qPbHmhj9I+WLjcy0Ytvu58yNGeNdzx8Q8uGrRHQSeHbnbmvYA==@nongnu.org
+X-Gm-Message-State: AOJu0YyOD2a7F/pJnxbGXIhHOpG+WwmNkHCUVqMFxDDgfwg8gKuSaaeG
+ 6OUuLeADwJc5BqifuZHTFBBYKCZDttuu20iQMexY/vk8LvcgJskT7elSDA==
+X-Gm-Gg: ASbGncvw+/0YK4HzErRo7nag9CM7Ao2zXskfujfqtiLmBkmRV0T4rzdf11r/i/ZLiCc
+ vs1OsX3MZdByIfcWPqqAnQFhMA/p84wXJfHpLMIDd8uMl4wPgqCDcx+zeJYG4AE0fBA0bMG7NZP
+ vJ+6evQY1vnPE8v1Mm266rVxg5R02B9YfdVNgyiUrV+Th9ae54TOMyZadAmajq+Xc1nFnUGGJsq
+ tAW0ZKmD66xJKpibFK8vGARoqJ05yQatGD86hZ+wUDc4Ax71VU67rIxJAZfEcbKLMT0mcsuz3FA
+ ejvnQyU0gwWlVpolKAp+ihzEKNfTdKRAxfk8SIEWZ02i9VLn6pw=
+X-Google-Smtp-Source: AGHT+IGvY8ozC/uQAizW8zsb53sHUauiNE6F8zgr5Qr3Ie/PuiDWspaTTXP6IdA7QV3HomRrGRzFuw==
+X-Received: by 2002:a17:90b:3887:b0:2f4:4003:f3ea with SMTP id
+ 98e67ed59e1d1-2ff7cef99c2mr31715649a91.33.1741697947928; 
+ Tue, 11 Mar 2025 05:59:07 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.58.58
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.59.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 05:59:00 -0700 (PDT)
+ Tue, 11 Mar 2025 05:59:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
 	qemu-ppc@nongnu.org
-Subject: [PULL 08/72] ppc/pnv/homer: Make dummy reads return 0
-Date: Tue, 11 Mar 2025 22:57:02 +1000
-Message-ID: <20250311125815.903177-9-npiggin@gmail.com>
+Subject: [PULL 11/72] ppc/pnv/occ: Better document OCCMISC bits
+Date: Tue, 11 Mar 2025 22:57:05 +1000
+Message-ID: <20250311125815.903177-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,43 +97,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HOMER memory implements some dummy registers that return a nonsense
-value to satisfy skiboot accesses caused by "SLW" init and register
-save/restore programming that has never worked under QEMU:
-
-[    0.265000943,3] SLW: Failed to set HRMOR for CPU 0,RC=0x1
-[    0.265356988,3] Disabling deep stop states
-
-To simplify a later change to implement HOMER as a RAM area, make
-these return zero, which has the same result.
+Use defines for the OCCMISC register bits, and add a comment about the
+IRQ request bit, which QEMU may not model quite correctly.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv_homer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/ppc/pnv_occ.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/hw/ppc/pnv_homer.c b/hw/ppc/pnv_homer.c
-index acd2f7b3a6..75b0ee7964 100644
---- a/hw/ppc/pnv_homer.c
-+++ b/hw/ppc/pnv_homer.c
-@@ -89,7 +89,7 @@ static uint64_t pnv_power8_homer_read(void *opaque, hwaddr addr,
-     case PNV8_OCC_VCS_VOLTAGE_IDENTIFIER:
-         return 1;
-     case PNV8_OCC_PSTATE_DATA:
--        return 0x1000000000000000;
-+        return 0;
-     /* P8 frequency for 0, 1, and 2 pstates */
-     case PNV8_OCC_PSTATE_ZERO_FREQUENCY:
-     case PNV8_OCC_PSTATE_ONE_FREQUENCY:
-@@ -259,7 +259,7 @@ static uint64_t pnv_power9_homer_read(void *opaque, hwaddr addr,
-         return 0x01;
-     case PNV9_CHIP_HOMER_BASE:
-     case PNV9_CHIP_HOMER_IMAGE_POINTER:
--        return 0x1000000000000000;
-+        return 0;
-     case PNV9_DYNAMIC_DATA_STATE:
-         return 0x03; /* active */
-     }
+diff --git a/hw/ppc/pnv_occ.c b/hw/ppc/pnv_occ.c
+index c6681a035a..5424d87ee9 100644
+--- a/hw/ppc/pnv_occ.c
++++ b/hw/ppc/pnv_occ.c
+@@ -30,6 +30,7 @@
+ #define OCB_OCI_OCCMISC         0x4020
+ #define OCB_OCI_OCCMISC_AND     0x4021
+ #define OCB_OCI_OCCMISC_OR      0x4022
++#define   OCCMISC_PSI_IRQ       PPC_BIT(0)
+ 
+ /* OCC sensors */
+ #define OCC_SENSOR_DATA_BLOCK_OFFSET          0x0000
+@@ -50,13 +51,16 @@
+ 
+ static void pnv_occ_set_misc(PnvOCC *occ, uint64_t val)
+ {
+-    bool irq_state;
+-
+-    val &= 0xffff000000000000ull;
++    val &= PPC_BITMASK(0, 18); /* Mask out unimplemented bits */
+ 
+     occ->occmisc = val;
+-    irq_state = !!(val >> 63);
+-    qemu_set_irq(occ->psi_irq, irq_state);
++
++    /*
++     * OCCMISC IRQ bit triggers the interrupt on a 0->1 edge, but not clear
++     * how that is handled in PSI so it is level-triggered here, which is not
++     * really correct (but skiboot is okay with it).
++     */
++    qemu_set_irq(occ->psi_irq, !!(val & OCCMISC_PSI_IRQ));
+ }
+ 
+ static uint64_t pnv_occ_power8_xscom_read(void *opaque, hwaddr addr,
 -- 
 2.47.1
 
