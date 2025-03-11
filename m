@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB19A5C295
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:26:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85572A5C26C
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:22:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzFt-000704-Ld; Tue, 11 Mar 2025 09:02:49 -0400
+	id 1trzGY-0007yv-16; Tue, 11 Mar 2025 09:03:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzCy-000364-Fu; Tue, 11 Mar 2025 08:59:45 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1trzD0-0003Hr-21; Tue, 11 Mar 2025 08:59:46 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzCw-00080x-3m; Tue, 11 Mar 2025 08:59:44 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2fee4d9c2efso9001086a91.3; 
- Tue, 11 Mar 2025 05:59:40 -0700 (PDT)
+ id 1trzCx-00081L-UP; Tue, 11 Mar 2025 08:59:45 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2ff615a114bso9409631a91.0; 
+ Tue, 11 Mar 2025 05:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741697979; x=1742302779; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741697981; x=1742302781; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YqPpSFq/0fdsjmu5dGyUqROl/b/bn7/APbML/SqYVto=;
- b=kYojWAGgc5DUc8wymJqbAQxpCVfgANWwY8UHbfUXVHeI9sEYo4H1AIkLuyNiq8tA31
- PwR0/HEDKb1ysDov1/fUKt+Kaeofe23Sgd/4I1ou9sktkp8n5CtbNKitf8WUngHUlpN+
- UFS0UZz8BU4bpHRZX2uVqK8oN1D7U+QcjCwAxYkG28X6TFxO5x4+WSSJA62FcVkrl2/N
- +7b3pdZ5LKJNq3P5KYEPIicUe3oBayJ0xEWzkls/KFXjtu2NJKTx5MOkl0BV4JXfW5gf
- VrqDapPDucgvPb/2JHCHFUrbGRHuur462IjdGGHsf6+3otRpAJ1hSlXI4ZHgC9bdBsSX
- xeFA==
+ bh=GRjGMMyN8Fta0GJMwT6WyLidcFv71ZTmFrwphwzXpVk=;
+ b=KBSbvW9mT9ddb5wFaCIzW/+Zb9g1GsHjFds+0t2c5SIH2RWh/0D4B2xZhrp9KSlSVD
+ NfuRJ4Gu0bvWgHnTIQLBlx+kMgFCV3MfuZYdHKdJ+Zv1Q5TicN8giEr4ZrDoWnbySjI5
+ FJKyCKoey6++0Zb9Cp3x0UA4kVamRxXUHHEQwzZR9rqgRPNfGVKcieO9fLC2qRIpw5+S
+ Is6/Aj/rI82CTPynBVtmeOcWkZWjc0FTkgbdViyn/AMRbHRC4XASYnUaRcqwzUyPZf7o
+ g3KUvHl781TFsu6v3TgCFHXF4kQKwsijXFmJ7rZmZGzDIIv/D7Tb7msR5fE7/kIcdZDp
+ XGfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741697979; x=1742302779;
+ d=1e100.net; s=20230601; t=1741697981; x=1742302781;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YqPpSFq/0fdsjmu5dGyUqROl/b/bn7/APbML/SqYVto=;
- b=cnLI6NzE7MKpqmUanOOw15ELF2vROwOQvW+uTBwjAO/6T5WJOwD4BFwoAmVGshm9Bq
- eJ6HpuoNOoH1UCwNYBEdSlx0X5DKisu1zr+J+as89pOR8oK5SJ/ML4z+AJj3gto93dUd
- CBnUNdWSI5PHmFF1GQ66o0eaKkQ7rD05Sj2iPpyHaqmUl7qMEuo0AGQ/XwB8lwkkAR4D
- eDj0ZqCNByNGQNRBZAXstjjsI/iAZBS5yRSDaK/eYdzdi8mu2JFd5o+UH/nASgcdcQz9
- /9GGiLOILvooJutqrKDIN/odG9xoz7nUtZ9SYHd4B8LNePi0edbK9uf1rjPz8TbvehV/
- 39Hg==
+ bh=GRjGMMyN8Fta0GJMwT6WyLidcFv71ZTmFrwphwzXpVk=;
+ b=NgBS38ndc0cKDmdy6q8Wo4vlQBEk8zqKMUlMPk51FzAGPFRsJQ8ols/95zp+PbBjpe
+ 32bQwVOdY9G+3qZFyZI8y/TaUgutq7x2VT7ERme3XpGcke7EU5mYLkjO88x4dSfBoZ5v
+ aWyFePsgDdkrWKgWUrzjU0gScw+4Qy0YVnGY0TDKHU5VWCkGEqw2xsjHoqrvzGP+jDQn
+ om/D8x8BcFAaspb8w0s1meltv/GFHWzEKX3R2TrOzmEMw2KaAFV0Lmyotz9XbqzIjj9D
+ dezy6P2iABSSCeeG807RbqzV33Q3WkCCDrc1VnC0zs9KvUV3gV/NxCPxYVyMg0Nlj9FS
+ N10g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUOYtMj0mcsT5o4QyHkmzyZzMwkvh1NCjjz8/e6cR8NelRX36BKWH8CPn0lOktgGh+FT5lOGE3qpg==@nongnu.org
-X-Gm-Message-State: AOJu0Ywm5Jfl8VYFyVpXGk+zrmFv2RyCbN1Q8THxoFBPhkHTG97X6lx/
- WGTjC5Y2uV6WUw+JrlZKyJjSGvkbPRC8ULz1skX0k/uD+4Due0csXMFjEQ==
-X-Gm-Gg: ASbGncvEYmqQrrwerTHgloAypKsReViBX6RWQNrnktbEwBIf8fAbned1rkyCV5XMYDH
- 80uiWNBOU41miCYogdBlvAnXlTEp0UIAsWzfBicSNQTjpEWszvpRj2gBpBx2Cxn7EVMPKvC7GRO
- /Ritfk5N+zMJkL5XiXTg/08yL0sVeJuZZ2NOJzHOcVR75H2/ltB4Vp9DQiWGw+ARDKbR/LpM/gi
- 6J791SmUvS969SN0yGC544KFVYVyegAYQ9nA5DoV7OZt0yfzoBjPMfOkkl6k0mbTDoGrZvx6Nl9
- sNVSr+T6m5NbnltgkxRv77OvqSo0eQ8EimrhKkazy9bEYD8hRJYDYVTof5fBpg==
-X-Google-Smtp-Source: AGHT+IFCLboP2NEYVER6Ia/nktt0alb7IBxusg86yBWU41313CNd0zQswT6vFclWJ+klo6cKjlNAzw==
-X-Received: by 2002:a17:90b:1a8c:b0:2ee:aa28:79aa with SMTP id
- 98e67ed59e1d1-2ff7ce524ebmr25368424a91.6.1741697978701; 
- Tue, 11 Mar 2025 05:59:38 -0700 (PDT)
+ AJvYcCXOjYk6hxWTBjGMRozhQsfvztFxL6SUgPUIA1K3Fn+LctEONhq9zwdQZoVfsXzwXDpudHYAapLusw==@nongnu.org
+X-Gm-Message-State: AOJu0YxOMt7iAbfiDfSh1EmU6hth9GZHSLti7o4v4auFOx1UzwLAdrFd
+ HvN5aJh5YBtRv9wdBYkKJGx1zlmCXFyUjw4yebnycbEyZHq0rxlKWlVwFQ==
+X-Gm-Gg: ASbGncsZ1FTJ7lQqDYA3C/z/oLoZ9Qiejw3J0hLLIXiRlvAfj4f6Vi02rryQHBsnKGr
+ oTkwWD3BYqF5kEw6xL0PfXsNKGu1BtuE2TMtKeHGWhmkFJscMa+eacIcnv+lAhyVbfvkngbdjs6
+ F6RqoqsBRwcr1J6NLez1YtZfusVdkDr18CB70aecpVBhXwE/GQhMk3yg/G63bVENVIvEJQEmv4o
+ fIAQgR/0Oz3Z7jh7DOEx8UHdwJDRxynZHtIfeEjVxE7NpdLP16Eu32Xa4urEe911EjHyPyhSBas
+ IYUpD6f8n7p969GM7gpyNOcIRztI8FtZgxybh8UGwRnY+bZKi9c=
+X-Google-Smtp-Source: AGHT+IGlDc6s3YJsqfn76XrlHsjEZ1RPr/bFxF9kUztMEsytOBLmIYr82HlGHywm0x4NR18qXrtByA==
+X-Received: by 2002:a17:90b:384a:b0:2ee:9661:eafb with SMTP id
+ 98e67ed59e1d1-30100546828mr4565682a91.12.1741697981420; 
+ Tue, 11 Mar 2025 05:59:41 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.59.36
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.59.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 05:59:38 -0700 (PDT)
+ Tue, 11 Mar 2025 05:59:41 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Frederic Barrat <fbarrat@linux.ibm.com>,
  Michael Kowal <kowal@linux.ibm.com>
-Subject: [PULL 23/72] ppc/xive2: Update NVP save/restore for group attributes
-Date: Tue, 11 Mar 2025 22:57:17 +1000
-Message-ID: <20250311125815.903177-24-npiggin@gmail.com>
+Subject: [PULL 24/72] ppc/xive: Rename ipb_to_pipr() to xive_ipb_to_pipr()
+Date: Tue, 11 Mar 2025 22:57:18 +1000
+Message-ID: <20250311125815.903177-25-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,34 +97,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frederic Barrat <fbarrat@linux.ibm.com>
+From: Michael Kowal <kowal@linux.ibm.com>
 
-If the 'H' attribute is set on the NVP structure, the hardware
-automatically saves and restores some attributes from the TIMA in the
-NVP structure.
+Rename to follow the convention of the other function names.
 
-The group-specific attributes LSMFB, LGS and T have an extra flag to
-individually control what is saved/restored.
-
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/xive2.c             | 23 ++++++++++++++++++-----
- include/hw/ppc/xive2_regs.h | 10 +++++++---
- 2 files changed, 25 insertions(+), 8 deletions(-)
+ hw/intc/xive.c        | 22 ++++++----------------
+ include/hw/ppc/xive.h | 16 ++++++++++++----
+ 2 files changed, 18 insertions(+), 20 deletions(-)
 
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index fc5aed3315..cd075e4db9 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -1,10 +1,9 @@
- /*
-  * QEMU PowerPC XIVE2 interrupt controller model (POWER10)
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 139cfdf9bf..f603d9f1a5 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -3,8 +3,7 @@
   *
-- * Copyright (c) 2019-2022, IBM Corporation..
-+ * Copyright (c) 2019-2024, IBM Corporation..
+  * Copyright (c) 2017-2018, IBM Corporation.
   *
 - * This code is licensed under the GPL version 2 or later. See the
 - * COPYING file in the top-level directory.
@@ -133,74 +123,96 @@ index fc5aed3315..cd075e4db9 100644
   */
  
  #include "qemu/osdep.h"
-@@ -313,7 +312,19 @@ static void xive2_tctx_save_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+@@ -27,15 +26,6 @@
+  * XIVE Thread Interrupt Management context
+  */
  
-     nvp.w2 = xive_set_field32(NVP2_W2_IPB, nvp.w2, regs[TM_IPB]);
-     nvp.w2 = xive_set_field32(NVP2_W2_CPPR, nvp.w2, regs[TM_CPPR]);
--    nvp.w2 = xive_set_field32(NVP2_W2_LSMFB, nvp.w2, regs[TM_LSMFB]);
-+    if (nvp.w0 & NVP2_W0_L) {
-+        /*
-+         * Typically not used. If LSMFB is restored with 0, it will
-+         * force a backlog rescan
-+         */
-+        nvp.w2 = xive_set_field32(NVP2_W2_LSMFB, nvp.w2, regs[TM_LSMFB]);
-+    }
-+    if (nvp.w0 & NVP2_W0_G) {
-+        nvp.w2 = xive_set_field32(NVP2_W2_LGS, nvp.w2, regs[TM_LGS]);
-+    }
-+    if (nvp.w0 & NVP2_W0_T) {
-+        nvp.w2 = xive_set_field32(NVP2_W2_T, nvp.w2, regs[TM_T]);
-+    }
-     xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 2);
+-/*
+- * Convert an Interrupt Pending Buffer (IPB) register to a Pending
+- * Interrupt Priority Register (PIPR), which contains the priority of
+- * the most favored pending notification.
+- */
+-static uint8_t ipb_to_pipr(uint8_t ibp)
+-{
+-    return ibp ? clz32((uint32_t)ibp << 24) : 0xff;
+-}
  
-     nvp.w1 = xive_set_field32(NVP2_W1_CO, nvp.w1, 0);
-@@ -527,7 +538,9 @@ static uint8_t xive2_tctx_restore_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
-     xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, nvp, 2);
+ static uint8_t exception_mask(uint8_t ring)
+ {
+@@ -159,7 +149,7 @@ static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+      * Recompute the PIPR based on local pending interrupts.  The PHYS
+      * ring must take the minimum of both the PHYS and POOL PIPR values.
+      */
+-    pipr_min = ipb_to_pipr(regs[TM_IPB]);
++    pipr_min = xive_ipb_to_pipr(regs[TM_IPB]);
+     ring_min = ring;
  
-     tctx->regs[TM_QW1_OS + TM_CPPR] = cppr;
--    /* we don't model LSMFB */
-+    tctx->regs[TM_QW1_OS + TM_LSMFB] = xive_get_field32(NVP2_W2_LSMFB, nvp->w2);
-+    tctx->regs[TM_QW1_OS + TM_LGS] = xive_get_field32(NVP2_W2_LGS, nvp->w2);
-+    tctx->regs[TM_QW1_OS + TM_T] = xive_get_field32(NVP2_W2_T, nvp->w2);
+     /* PHYS updates also depend on POOL values */
+@@ -169,7 +159,7 @@ static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+         /* POOL values only matter if POOL ctx is valid */
+         if (pool_regs[TM_WORD2] & 0x80) {
  
-     nvp->w1 = xive_set_field32(NVP2_W1_CO, nvp->w1, 1);
-     nvp->w1 = xive_set_field32(NVP2_W1_CO_THRID_VALID, nvp->w1, 1);
-diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
-index 1d00c8df64..e88d6eab1e 100644
---- a/include/hw/ppc/xive2_regs.h
-+++ b/include/hw/ppc/xive2_regs.h
-@@ -1,10 +1,9 @@
- /*
-  * QEMU PowerPC XIVE2 internal structure definitions (POWER10)
+-            uint8_t pool_pipr = ipb_to_pipr(pool_regs[TM_IPB]);
++            uint8_t pool_pipr = xive_ipb_to_pipr(pool_regs[TM_IPB]);
+ 
+             /*
+              * Determine highest priority interrupt and
+@@ -193,7 +183,7 @@ void xive_tctx_ipb_update(XiveTCTX *tctx, uint8_t ring, uint8_t ipb)
+     uint8_t *regs = &tctx->regs[ring];
+ 
+     regs[TM_IPB] |= ipb;
+-    regs[TM_PIPR] = ipb_to_pipr(regs[TM_IPB]);
++    regs[TM_PIPR] = xive_ipb_to_pipr(regs[TM_IPB]);
+     xive_tctx_notify(tctx, ring);
+ }
+ 
+@@ -841,9 +831,9 @@ void xive_tctx_reset(XiveTCTX *tctx)
+      * CPPR is first set.
+      */
+     tctx->regs[TM_QW1_OS + TM_PIPR] =
+-        ipb_to_pipr(tctx->regs[TM_QW1_OS + TM_IPB]);
++        xive_ipb_to_pipr(tctx->regs[TM_QW1_OS + TM_IPB]);
+     tctx->regs[TM_QW3_HV_PHYS + TM_PIPR] =
+-        ipb_to_pipr(tctx->regs[TM_QW3_HV_PHYS + TM_IPB]);
++        xive_ipb_to_pipr(tctx->regs[TM_QW3_HV_PHYS + TM_IPB]);
+ }
+ 
+ static void xive_tctx_realize(DeviceState *dev, Error **errp)
+diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+index ea5d03a346..75276b9ba6 100644
+--- a/include/hw/ppc/xive.h
++++ b/include/hw/ppc/xive.h
+@@ -130,11 +130,9 @@
+  *   TCTX   Thread interrupt Context
   *
-- * Copyright (c) 2019-2022, IBM Corporation.
-+ * Copyright (c) 2019-2024, IBM Corporation.
   *
+- * Copyright (c) 2017-2018, IBM Corporation.
+- *
 - * This code is licensed under the GPL version 2 or later. See the
 - * COPYING file in the top-level directory.
++ * Copyright (c) 2017-2024, IBM Corporation.
+  *
 + * SPDX-License-Identifier: GPL-2.0-or-later
   */
  
- #ifndef PPC_XIVE2_REGS_H
-@@ -152,6 +151,9 @@ typedef struct Xive2Nvp {
-         uint32_t       w0;
- #define NVP2_W0_VALID              PPC_BIT32(0)
- #define NVP2_W0_HW                 PPC_BIT32(7)
-+#define NVP2_W0_L                  PPC_BIT32(8)
-+#define NVP2_W0_G                  PPC_BIT32(9)
-+#define NVP2_W0_T                  PPC_BIT32(10)
- #define NVP2_W0_ESC_END            PPC_BIT32(25) /* 'N' bit 0:ESB  1:END */
- #define NVP2_W0_PGOFIRST           PPC_BITMASK32(26, 31)
-         uint32_t       w1;
-@@ -163,6 +165,8 @@ typedef struct Xive2Nvp {
- #define NVP2_W2_CPPR               PPC_BITMASK32(0, 7)
- #define NVP2_W2_IPB                PPC_BITMASK32(8, 15)
- #define NVP2_W2_LSMFB              PPC_BITMASK32(16, 23)
-+#define NVP2_W2_T                  PPC_BIT32(27)
-+#define NVP2_W2_LGS                PPC_BITMASK32(28, 31)
-         uint32_t       w3;
-         uint32_t       w4;
- #define NVP2_W4_ESC_ESB_BLOCK      PPC_BITMASK32(0, 3)  /* N:0 */
+ #ifndef PPC_XIVE_H
+@@ -510,6 +508,16 @@ static inline uint8_t xive_priority_to_ipb(uint8_t priority)
+         0 : 1 << (XIVE_PRIORITY_MAX - priority);
+ }
+ 
++/*
++ * Convert an Interrupt Pending Buffer (IPB) register to a Pending
++ * Interrupt Priority Register (PIPR), which contains the priority of
++ * the most favored pending notification.
++ */
++static inline uint8_t xive_ipb_to_pipr(uint8_t ibp)
++{
++    return ibp ? clz32((uint32_t)ibp << 24) : 0xff;
++}
++
+ /*
+  * XIVE Thread Interrupt Management Aera (TIMA)
+  *
 -- 
 2.47.1
 
