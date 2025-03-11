@@ -2,84 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5C4A5BA03
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 08:37:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DC0A5BA4C
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 08:56:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1truAl-0008RW-G9; Tue, 11 Mar 2025 03:37:07 -0400
+	id 1truTe-0000BB-R0; Tue, 11 Mar 2025 03:56:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1truAh-0008R3-SR; Tue, 11 Mar 2025 03:37:04 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1truTL-0000AN-C2
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 03:56:20 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1truAf-00014p-02; Tue, 11 Mar 2025 03:37:02 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-22355618fd9so94253235ad.3; 
- Tue, 11 Mar 2025 00:36:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1truTJ-0004Xm-0j
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 03:56:18 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3914bc3e01aso948093f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 00:56:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741678616; x=1742283416; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wugsb/VAdBXqhsNzKeMXikme2YwhS6j+gjGQry/CF2w=;
- b=afRr8K/4T4LxLhKppepirHnKaYJqe6l4oIBNJfzuk9c1IK9gUbbx+4EDztdJ3C7+2x
- VzOiRi5KriIrQd1dvAYy4xlMnSuIfX+6yWMjqvfgqeCCcubRiN3uff1o08UbPDBzHtDz
- WsLwZA+Ht9raj34RIs52r/Rr4f/bQpV046dIvT+yixrxXAXo45wYXYqzMCCgalyz5epA
- 2xwAWifmUQcFqRkbhVl+AgrXdEm+ispTThRyg8UDcXtEIykXgd5S2JJ1WMlRDe8U4nAd
- /UHGQud+nbeWtmWKa/jZE3uqyPDjIddtM3Mk4iztgaX8YhtlmIJvLStyhJzmFxlOC6q5
- 2ssw==
+ d=linaro.org; s=google; t=1741679774; x=1742284574; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=X7Iu1u2dXqtHxA7odZOWuoQYWQu8cNtKWb4foxrTEPs=;
+ b=dEvV5lRxK2NfyobMDnxRipzgmdepgBK2D7PI2Xc+dByw+syB0epWXsskdPVCPlKY+y
+ 1YkcAh1R3KHQAPYZRx4A8arK5NM/U9fSwyQl+HcbvtN8+xZZOpLEPSpu1Johs1FC4HT/
+ W7u1J13MUF/NUuDyrxVeNBsW3wu9xTObdyOO9BbgrPQoowjS/5IViyU++oqb0zLwcusM
+ hezbu2/7TbD36ORpuE0p1EGUO20lVMFdgPUPcGHywnA8J9DrYbUDPo4DLcj0W784O9Lz
+ xtQ99A0XLIdXlGGg7386qXVB5BBIu7iuCAGaxW0IEpUyIcyBHeh91wGXyf04yXuMR+5L
+ zrrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741678616; x=1742283416;
- h=in-reply-to:references:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=wugsb/VAdBXqhsNzKeMXikme2YwhS6j+gjGQry/CF2w=;
- b=KbLiZVvHnhJMuOSG1sp3cC/HIh5VII0FVvcCuJRu7B2ZlWhe7vn1HZEEhqIKiQJyaH
- tDjFwm643uJ+uYcqljeJGJw3J2pGwP1rkWs5qvVMBEorByJ47YjboxDfv7Wt62+nJXxH
- CfliEV2Ytl5kAEgMxqpcpJrT08le02aQb5ofj05brO+x36aIFG9eSt5BFfFwpRlP6NW+
- jB0Mp/3374GmqrECWnzAcYcthVV0nXYzvYBCTc9wWa2gGkWtshZMpqQ2y/zjTO/gCMQH
- +cKIPz1s+Yb69zzVQ7tGRlRqpqCidNqxRbhiv8f8r/DCAMfpuacT/mu3Yz69GUx02TWl
- cnvA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW6D6bf1Cvwq5I8tM0jlcXdE3aiQU4MMtYEeVHr0VEPUmlT4JjDMxH0AqfoA9usGXLG4F0VILY+jXw=@nongnu.org,
- AJvYcCWTZTDgkxKv4VFLWz0m5fWdyOz/og88e8qxKLYL3WXMmg7mBwLPialz18hNpw40ALxjn3w7r/5pJmHq@nongnu.org
-X-Gm-Message-State: AOJu0YzlaPLQNmZwxl1x/DPnT6/ZKagOZBDbZkyZBwILuMJaAZlHF4M2
- 0EXbMqtBdDluOvyrSiadFN6cnzx4H/kO/EPXhTZQLD3BBbteTGD4
-X-Gm-Gg: ASbGncv8ls80a6NrwJiQmJM773XkpOBOqR/0+YIXhNsnyZJ/3wLCvY9Wc6yhuIs1w8h
- sFVc/WZv+PvtY/OA+OsRxPssv1YzWW1pDFo5bJAB5584OuHqRVPcUD0Mc4zzFEA4PcfpoxlW1s6
- 7fjUCpA5QZcvmhVB0pyxRYWfWnp0/q2YckmARjuRLU8kvJhfgvtg5FZ5uWZ9ifztGwN6kI8q0i2
- dTyoQW8o/tXPreM2zGCslLE54Bs2r+VvhjFCB1obZq/o+EVuCUmHwEeXd0dJgzNS+qsepB0LkiH
- vDj8XXPCcBZ5xBtVG2h/4hdWqAUWUpA8dJrEus3z
-X-Google-Smtp-Source: AGHT+IE87BhM4+ws4m6w1LjBbAPkgDjFtyRHfUzUYPtktsSXBSlTZAZWjc9Xd8iprqrByeP+nluIRA==
-X-Received: by 2002:a05:6a00:9a1:b0:736:5504:e8b4 with SMTP id
- d2e1a72fcca58-736eb856dabmr3902645b3a.19.1741678615992; 
- Tue, 11 Mar 2025 00:36:55 -0700 (PDT)
-Received: from localhost ([118.208.151.101]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73699da011asm9530371b3a.84.2025.03.11.00.36.54
+ d=1e100.net; s=20230601; t=1741679774; x=1742284574;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=X7Iu1u2dXqtHxA7odZOWuoQYWQu8cNtKWb4foxrTEPs=;
+ b=pdzCIjLeRNaM8q+jB6GYM42lrxWO9mUjJcy4pLntYk980ZZVXUscf5mxyHi2U1gnhZ
+ khCZ8yWb1GQ5gi84xETGRrP0LbXi1v14nymgqzSyzHyVA1g9SYspCdkyA1iVs4ohYVMj
+ meBMmh0WxeI7p0X3oiVaRx3qAepNBDyZHujTk+eCvct2Ab+bG7UeqNnKizd/1/rvY3Gg
+ br/jW0h8s7sWkBYohG/dOu1hGtLo6zpp6cc5+Y6qJcQWWRjEforaZC/HrVEYtfZk64iU
+ dglzg5IlDknDxrECFjm0FdeCYdzOhK8WAuM5oCyMKanBM+e4zVpJcdK1abi7Li9bZzgb
+ 6/Bg==
+X-Gm-Message-State: AOJu0YxgWKYdGBiiIUQXEzPi2oNi07tROUeD/y7y05sBc3Anf9sTwDZK
+ YMRFj3Dkku22d9bpdSdxIE/ennGYfBIasqUYoQzmyxCQQVFf7kvpK3t2E29yKaiQEuXI9a8y2db
+ Guc0=
+X-Gm-Gg: ASbGncv78yx2bJkERNeJzIAXTJ2nl/Ouw1sYtb4ELBk4m84yke+TN0KsxpZ95Xi1Xp2
+ SYS/u3xL7U3Qrb7Q51XHSRK1QqRjCnV0DLqNXSp2eDDB9CGaHW+73gyUzNOSeiaKEvAOFEtzGnF
+ p0lHmYP9SiUjtlex1IGwtw+goLPvOOQTMLHxUo6hE43WuVyEOLzpMoSN6JvK9YIU4FEhb8Cl/Tk
+ vhVNttlYZbhXKqClkOjtmFZNP+XikWLKukwFuWnclV/5VbKk3SaKIIU++RcJUXveuTLuYYx5nmI
+ L2mUDCfSvTJznk2pmeUXFy2/8CSkj9kivqPs4rD+i6H3fkXqp2FSijLSgpxwi3ITJK9UF9TWKsb
+ Z5bGwoXRX5iYa
+X-Google-Smtp-Source: AGHT+IEtiRF/8Iuorn7Gjtn0HyQeDa/EcflgYbR8utiTJ0JsmB5lzqLJ5M2/N+y0q4woAzCFGdNG9A==
+X-Received: by 2002:a05:6000:1867:b0:391:253b:405d with SMTP id
+ ffacd0b85a97d-39132d98a1emr13213647f8f.41.1741679773775; 
+ Tue, 11 Mar 2025 00:56:13 -0700 (PDT)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3912bfba8a9sm17297839f8f.9.2025.03.11.00.56.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Mar 2025 00:36:55 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 11 Mar 2025 17:36:51 +1000
-Message-Id: <D8D9JGIVY9SU.3C2LLNDBGMQ0J@gmail.com>
-Subject: Re: [PATCH v2 0/5] ppc/amigaone patches
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
- <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.19.0
-References: <cover.1740673173.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1740673173.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
+ Tue, 11 Mar 2025 00:56:12 -0700 (PDT)
+Message-ID: <28c4b011-29e6-479a-9eb5-96c0bac5b8c6@linaro.org>
+Date: Tue, 11 Mar 2025 08:56:10 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH-for-9.1 00/21] qapi: Make @query-cpu-definitions
+ command target-agnostic
+To: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
+ qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Markus Armbruster <armbru@redhat.com>, Claudio Fontana <cfontana@suse.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+References: <20240315130910.15750-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240315130910.15750-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,57 +109,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Feb 28, 2025 at 2:39 AM AEST, BALATON Zoltan wrote:
-> Hello,
->
-> v2:
-> - change unused read function to g_assert_not_reached()
-> - new patch to add defines to constants
-> - added R-b tags
->
-> This series adds NVRAM and support for -kernel, -initrd and -append
-> options to the amigaone machine. This makes it easier to boot AmigaOS
-> and avoids a crash in the guest when it tries to access NVRAM.
->
-> While the -kernel option emulates what U-Boot passes to the kernel,
-> old Linux kernels for amigaone may not work with it because of two
-> reasons: these come in legacy U-Boot Multi-File image format that QEMU
-> cannot read and even after unpacking that and creating a kernel uimage
-> it won't find PCI devices because it does not initialise them
-> correctly. This works when booted from U-Boot because U-Boot inits PCI
-> devices. So does my BBoot loader which can be used to load AmigaOS so
-> I don't intend to emulate that part of U-Boot.
->
-> I'd like this to be merged for the next release please. When merging
-> please update https://wiki.qemu.org/ChangeLog/10.0 with the following:
->
-> amigaone
->
-> Added support for NVRAM and -kernel, -initrd, -append command line
-> options. By default the NVRAM contents are not preserved between
-> sessions. To make it persistent create a backing file with 'qemu-image
-> create -f raw nvram.bin 4k' and add -drive
-> if=3Dmtd,format=3Draw,file=3Dnvram.bin to keep NVRAM contents in the back=
-ing
-> file so settings stored in it will be preserved between sessions.
->
-> To run AmigaOS with BBoot using the -kernel option at least BBoot
-> version 0.8 is needed. Older BBoot versions only work with -device
-> loader and cannot be used with -kernel on amigaone.
+(+Pierrick for historical background)
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
->
+On 15/3/24 14:08, Philippe Mathieu-Daudé wrote:
+> Hi Alex, Markus,
+> 
+> Markus mentioned QAPI problems with the heterogeneous emulation
+> binary. My understanding is, while QAPI can use host-specific
+> conditional (OS, library available, configure option), it
+> shouldn't use target-specific ones.
+> 
+> This series is an example on how to remove target specific
+> bits from the @query-cpu-definitions command. Target specific
+> code is registered as CPUClass handlers, then a generic method
+> is used, iterating over all targets built in.
+> 
+> The first set of patches were already posted / reviewed last
+> year.
+> 
+> The PPC and S390X targets still need work (help welcomed),
+> however the code is useful enough to be tested and see if this
+> is a good approach.
+> 
+> The only drawback is a change in QAPI introspection, because
+> targets not implementing @query-cpu-definitions were returning
+> "CommandNotFound". My view is this was an incomplete
+> implementation, rather than a feature.
+> 
 > Regards,
->
-> BALATON Zoltan (5):
->   ppc/amigaone: Simplify replacement dummy_fw
->   ppc/amigaone: Implement NVRAM emulation
->   ppc/amigaone: Add default environment
->   ppc/amigaone: Add kernel and initrd support
->   ppc/amigaone: Add #defines for memory map constants
->
->  hw/ppc/amigaone.c | 284 +++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 271 insertions(+), 13 deletions(-)
-
+> 
+> Phil.
 
