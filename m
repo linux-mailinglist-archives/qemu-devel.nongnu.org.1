@@ -2,77 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2166A5BC01
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 10:23:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD634A5BC52
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 10:31:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trvoi-0005jg-9M; Tue, 11 Mar 2025 05:22:28 -0400
+	id 1trvvm-00008H-Td; Tue, 11 Mar 2025 05:29:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trvoZ-0005j3-C2
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 05:22:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trvoW-0006AY-9P
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 05:22:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741684933;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tQ9UImSxo73U9qkm3wWb1JjkQhqaIEg+vigXeaQ7y9U=;
- b=QTVNdlQpx/otPS+d9z8h5WiQCHwcJfI28I7kQaZrmsu5pKk0DnzqUI6L8vYsMyisdQZSrb
- D+t08fr6x04cHUDPu4ewYNqgZd3ZGsgqunMx0FJCjDRUtEEwkYzJmS0rkDnAUp5RSIeDif
- eH0YGac654a0ZWPThIR4e9AZM/q/WJE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-LRYaKCqjPE6xQodz2xDS3A-1; Tue,
- 11 Mar 2025 05:22:08 -0400
-X-MC-Unique: LRYaKCqjPE6xQodz2xDS3A-1
-X-Mimecast-MFC-AGG-ID: LRYaKCqjPE6xQodz2xDS3A_1741684927
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A27161801A12; Tue, 11 Mar 2025 09:22:07 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2D88A1801756; Tue, 11 Mar 2025 09:22:07 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 71EE421E66C4; Tue, 11 Mar 2025 10:22:03 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
- Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Michael Roth <michael.roth@amd.com>,  Thomas Huth
- <thuth@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH v3 58/63] docs/qapidoc: generate entries for
- undocumented members
-In-Reply-To: <20250311034303.75779-59-jsnow@redhat.com> (John Snow's message
- of "Mon, 10 Mar 2025 23:42:56 -0400")
-References: <20250311034303.75779-1-jsnow@redhat.com>
- <20250311034303.75779-59-jsnow@redhat.com>
-Date: Tue, 11 Mar 2025 10:22:03 +0100
-Message-ID: <87o6y753d0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvvj-00007a-Vh
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 05:29:44 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvvh-0007Bt-QG
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 05:29:43 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-39127512371so2901879f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 02:29:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741685377; x=1742290177; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QU4h8bnalSBJAoWEEZWV0oi/XrH640XTNAd7zDwjD+0=;
+ b=Iy9gOAYuhaObzxM3FSy29jwHSF56EJ48Cp0C3UDoOMl6z3ttpYFGNeKIv0L/ZnDen9
+ wEiQSh9CG2OTxCQxNjLVbOar9tQpdCmzAfokTrZFc+Q3t41Bo77JtTc1xbIijGRADqFe
+ 6dM902EEvY64Fww02YL4OJKMtAgiycn9WSSzwfW8GIiLT1Q6cjBmf+vC5Ey3TtCYH186
+ s97b5q1sWy/NLah44gCbhg5yvrTTeIjj6ADMTP4Pj0RLg4szM4vNE/dp6UIogvSGnxOm
+ CvsULOvg2hUf4xVws8w017Or4TeIB48d3225jmKUfoMwX4Vb7FuxVg9FWjwdmvE/xEDL
+ PKsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741685377; x=1742290177;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QU4h8bnalSBJAoWEEZWV0oi/XrH640XTNAd7zDwjD+0=;
+ b=ULxJzcIvzpwVAuq9FcuEMlrUCGv6a73EvmaRERibXR+VhBH1+YrqyaXiUdbD1EdCms
+ tCf5Jwo8nJU+FA+9udy4nM9mDBIKId0TxPsyqGIYxBhipAEqbsvc6Td2SqJkqHbwJloj
+ Q7IzL1DC2l65XZfD5uuhJY9L87nz05pD0CEFzDCJE5kRi7qBn0Tu3GBMxvDHGQQKbFCx
+ XmCkfRxJDe2efTgS5QjeKU7jezjkTjaZ0WUykbuc4JKyNqdggctU/8HrYqbGqTOfug7C
+ SNVUs9O0fANZiSZfQuqOKr9DdIwOUzueW+6TUXRsKV1DaBHM4pXyVXVkvFCYBNfRd/un
+ +eBA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUXjTplhGUc3svxz+q79wjC3BS92z3d5O0nW2MxN/VcQF6C7mGhsfB2nAd+yXXSMO2wVt84QSFXI7IP@nongnu.org
+X-Gm-Message-State: AOJu0YxqSW7Vb5s1AFuMY5G2rAPfpg7YHr1UWvYXLV8WnZX5ddrrdE/A
+ I3tIH9L/k3oi6VpRZQTBclVtd6mJ4ceaktivADPoUwdBJBZ0ZoQ3LtCiiPZ4s78=
+X-Gm-Gg: ASbGncu89b00OqD2fhcPBo/RH6x5WR1ef9thRicNFoJ8exRPsl8Lisz6lr/DsSrKQOK
+ JWvLDpNHqNx9Gx3jzwRFZco+VqjCgywKHgIdckv9u7tGmlTpnK05rlRqvqoWTQmRALBIk/cgyoO
+ klT8fAThw0LkoIGimJfnkpYeSe6tk/Sd7VIYCC2barPjJw11hfrZeWJZiBh55sVAHGLq1oplgql
+ pgeckW5e7VnDOsNRv7fLfiI1L8lttXoQslP8Mvghv/Ejr7yp1EIMwp55kj6SD5cjKvVtprTDbxc
+ v9K/hzP/Rvz8/DZXccLoC/yT/4oxGWCnFc2DUnNtzAtrFtYNKsoLZfblJ2cJDE1giJh+U1Br8+t
+ VpqJhCvUjKj0f
+X-Google-Smtp-Source: AGHT+IGPXeK051B+6rSXYGYHzrjQFN47BNtVvZkQZGNmfg659vV0G70cKJeC91vefkATU7bas6becQ==
+X-Received: by 2002:a05:6000:2a5:b0:391:489a:ce12 with SMTP id
+ ffacd0b85a97d-392646936demr3645563f8f.26.1741685376930; 
+ Tue, 11 Mar 2025 02:29:36 -0700 (PDT)
+Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3912bfba8a9sm17525416f8f.9.2025.03.11.02.29.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Mar 2025 02:29:36 -0700 (PDT)
+Message-ID: <82b24b20-91f0-4b2b-9ac6-226cb9704ca1@linaro.org>
+Date: Tue, 11 Mar 2025 10:29:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/12] scsi-disk: drop unused SCSIDiskState->bh field
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Peter Xu <peterx@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>,
+ pkrempa@redhat.com, Hanna Reitz <hreitz@redhat.com>
+References: <20250213180043.713434-1-stefanha@redhat.com>
+ <20250213180043.713434-2-stefanha@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250213180043.713434-2-stefanha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,42 +104,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
-
-> Presently, we never have any empty text entries for members. The next
-> patch will explicitly generate such sections, so enable support for it
-> in advance.
->
-> The parser will generate placeholder sections to indicate undocumented
-> members, but it's the qapidoc generator that's responsible for deciding
-> what to do with that stub section.
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
+On 13/2/25 19:00, Stefan Hajnoczi wrote:
+> Commit 71544d30a6f8 ("scsi: push request restart to SCSIDevice") removed
+> the only user of SCSIDiskState->bh.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 > ---
->  docs/sphinx/qapidoc.py | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-> index 7c5a08958d5..604ab109a19 100644
-> --- a/docs/sphinx/qapidoc.py
-> +++ b/docs/sphinx/qapidoc.py
-> @@ -233,11 +233,12 @@ def visit_member(self, section: QAPIDoc.ArgSection) -> None:
->          # TODO: features for members (documented at entity-level,
->          # but sometimes defined per-member. Should we add such
->          # information to member descriptions when we can?)
-> -        assert section.text and section.member
-> +        assert section.member
->          self.generate_field(
->              self.member_field_type,
->              section.member,
-> -            section.text,
-> +            # TODO drop fallbacks when undocumented members are outlawed
-> +            section.text if section.text else "Not Documented.",
+>   hw/scsi/scsi-disk.c | 1 -
+>   1 file changed, 1 deletion(-)
 
-I'm changing this to "Not documented" to obey English capitalization
-rules.
-
->              section.info,
->          )
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
