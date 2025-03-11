@@ -2,75 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D550AA5B79F
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 04:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FEE3A5B7DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 05:10:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trqbP-0007de-Vi; Mon, 10 Mar 2025 23:48:24 -0400
+	id 1trqvY-0003Lw-Lh; Tue, 11 Mar 2025 00:09:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqZw-00014Z-DP
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:46:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqZu-0002sI-Or
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:46:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741664810;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2ZTdSIVNGXrmZGGCqEvm/Xb0cceAzpmrvR9pc9JeI40=;
- b=gAB6UuAiVhosyE/GD66DTg6TIJgCCgMy93p57+iryNRH5LJFeUXyiGRn9mFgnHkj/bsMyU
- u1cFlMgv3P10phPTLoJwzUcg97RMQxmAyajfTCN9fCLpixqvMZyeuXV3xTr0kEl41jhDlW
- 6UJmsok+jEoHWqfac6LWwnpcg4rqWlg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-q40oOW1UMoqHrgnkAxXb1A-1; Mon,
- 10 Mar 2025 23:46:46 -0400
-X-MC-Unique: q40oOW1UMoqHrgnkAxXb1A-1
-X-Mimecast-MFC-AGG-ID: q40oOW1UMoqHrgnkAxXb1A_1741664805
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B826D1801A1A; Tue, 11 Mar 2025 03:46:45 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.49])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BF8A21828A89; Tue, 11 Mar 2025 03:46:42 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1trqvO-0003Hg-KV
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 00:09:03 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1trqvL-0006NN-1Q
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 00:09:01 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2232aead377so157615ad.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Mar 2025 21:08:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741666137; x=1742270937; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fGerXdOtIw0WsOiLQfJLVuAEuZhGly95KD3uNgEzFEA=;
+ b=PRAhzH2oipMQUyNKCrI46IzNWLTrbiHnkTkxm+kogJiAQcHOw8YvJSopIjOfyZTRwd
+ QPwvuGVM6EWiIVpn1Kuu8WOSHmuaHyLF5HIBKGiu42N8KO1bsM3rdqdvdDJhdKROz5bi
+ PmekD3I10z+QKA5kq8kiaWfk4RBj36KbGAOFEmYgqgpYt4ZjhjHqlw2ViLM84/HSgqUa
+ 9zAJfNdFhpoU/8tDLdnAkt2pfiAnFGsNvn3y2IEp1XKAWyjqrhsfh5llmic6QniGDXas
+ OJwKFzcR4vDM3P4wb0oQXTPMqLkruQgsabkdeOfU9SgbsyEKpgsZ3vrFAvO6s7kDZWMU
+ rZxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741666137; x=1742270937;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fGerXdOtIw0WsOiLQfJLVuAEuZhGly95KD3uNgEzFEA=;
+ b=PzULBq7MMmejhJ2wHz1zlpuUIn8ic8T69v91GimtnujeBP/VpKHdwD8aVYYnsj71yO
+ WsR3KU5UDJ7ZjHRBYW8SL3bdQA++GOrGxXp6oKZErqWQLUTDyk4+pk+/eNipiTrGuS1j
+ VWTD2SIivhj+tbXF/LSZClQIZHGI5lh2dJTc2doO4GyI6uzoyX4TNFywvVm2/vebTKs5
+ M0PBEELpN7s2n8bLV6BNJeAbnrkXw23Pb6kkLCAyownfSUizjQnpTsY3mX4ZXKoSt1lR
+ DVys73EnTnE4j5II5/m1I61V7CtssfsqXvxNB2kinVXVdg2zXjbCRl/E3QouaQQmdRQa
+ ufcQ==
+X-Gm-Message-State: AOJu0YyHj+qpJQA934zigdNND//HkEy9Iq2JRyNoW2Ugwhf8o1K4+fJu
+ 7gZa6wDW+GOjeDytbaZi2TN5WzB3iNok1jdYn4uf6lKm678LSd/STxH7JPsgiqZtcMDmH8s97AZ
+ ljOE=
+X-Gm-Gg: ASbGncuZf7WONt2uEYmFZPqQ/HfR5J77KYhcsFmY32FpkTthmKv5GCQzyBuaxKKptGf
+ szhc4YwTVv1Z//P+H7WtFwiHdRskqxID8YgRL4rK4oFo75Szm2vumnPEoq6UllpBYzNrdAQv/yM
+ Mon48PEYWsISDcMrzIHjBlRVAiXrNLzaZ9+Hx4eIw0Tb/vPsQ+/n9QC4GgzptDn3Djq8WDUpy7b
+ MZvDdRGQ1dTpDCCmLGN4wtXMKo1JRZpY0rNukhj29AwK1PDv7OktgCsWswmF2dmiCbMjsCAJpJv
+ Vc0URokL0DfnTBkBWYhLpzalWS9sBmfLBjwPTz2thF+C
+X-Google-Smtp-Source: AGHT+IGXMO59GO84wcQfdotD1ICTUfqb/mJe9bhBOPtOn//E28HwyLyMnn+hwaJcsHLDf6vigaP+aw==
+X-Received: by 2002:a05:6a21:730e:b0:1f5:64fd:68ea with SMTP id
+ adf61e73a8af0-1f564fd6a98mr15013110637.4.1741666137431; 
+ Mon, 10 Mar 2025 21:08:57 -0700 (PDT)
+Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-af28c0339cesm7324454a12.46.2025.03.10.21.08.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Mar 2025 21:08:57 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Thomas Huth <thuth@redhat.com>,
+Cc: Paul Durrant <paul@xen.org>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ David Hildenbrand <david@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v3 63/63] MAINTAINERS: Add jsnow as maintainer for Sphinx
- documentation
-Date: Mon, 10 Mar 2025 23:43:01 -0400
-Message-ID: <20250311034303.75779-64-jsnow@redhat.com>
-In-Reply-To: <20250311034303.75779-1-jsnow@redhat.com>
-References: <20250311034303.75779-1-jsnow@redhat.com>
+ xen-devel@lists.xenproject.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ kvm@vger.kernel.org, qemu-ppc@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, alex.bennee@linaro.org,
+ qemu-riscv@nongnu.org, manos.pitsidianakis@linaro.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Anthony PERARD <anthony@xenproject.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 00/16] make system memory API available for common code
+Date: Mon, 10 Mar 2025 21:08:22 -0700
+Message-Id: <20250311040838.3937136-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,28 +110,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since I've just about rewritten the entirety of the QAPI documentation
-system, it's probably fair that I be the contact point for if it goes
-awry.
+The main goal of this series is to be able to call any memory ld/st function
+from code that is *not* target dependent. As a positive side effect, we can
+turn related system compilation units into common code.
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+The first 5 patches remove dependency of memory API to cpu headers and remove
+dependency to target specific code. This could be a series on its own, but it's
+great to be able to turn system memory compilation units into common code to
+make sure it can't regress, and prove it achieves the desired result.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7ac04f35201..4b83a436d8f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4325,6 +4325,7 @@ S: Orphan
- F: po/*.po
- 
- Sphinx documentation configuration and build machinery
-+M: John Snow <jsnow@redhat.com>
- M: Peter Maydell <peter.maydell@linaro.org>
- S: Maintained
- F: docs/conf.py
+The next patches remove more dependencies on cpu headers (exec-all,
+memory-internal, ram_addr).
+Then, we add access to a needed function from kvm, some xen stubs, and we
+finally can turn our compilation units into common code.
+
+Every commit was tested to build correctly for all targets (on windows, linux,
+macos), and the series was fully tested by running all tests we have (linux,
+x86_64 host).
+
+v2:
+- reorder first commits (tswap change first, so memory cached functions can use it)
+- move st/ld*_p functions to tswap instead of bswap
+- add define for target_words_bigendian when COMPILING_PER_TARGET, equals to
+  TARGET_BIG_ENDIAN (avoid overhead in target code)
+- rewrite devend_memop
+- remove useless exec-all.h in concerned patch
+- extract devend_big_endian function to reuse in system/memory.c
+- rewrite changes to system/memory.c
+
+Pierrick Bouvier (16):
+  exec/tswap: target code can use TARGET_BIG_ENDIAN instead of
+    target_words_bigendian()
+  exec/tswap: implement {ld,st}.*_p as functions instead of macros
+  exec/memory_ldst: extract memory_ldst declarations from cpu-all.h
+  exec/memory_ldst_phys: extract memory_ldst_phys declarations from
+    cpu-all.h
+  exec/memory.h: make devend_memop "target defines" agnostic
+  codebase: prepare to remove cpu.h from exec/exec-all.h
+  exec/exec-all: remove dependency on cpu.h
+  exec/memory-internal: remove dependency on cpu.h
+  exec/ram_addr: remove dependency on cpu.h
+  system/kvm: make kvm_flush_coalesced_mmio_buffer() accessible for
+    common code
+  exec/ram_addr: call xen_hvm_modified_memory only if xen is enabled
+  hw/xen: add stubs for various functions
+  system/physmem: compilation unit is now common to all targets
+  include/exec/memory: extract devend_big_endian from devend_memop
+  system/memory: make compilation unit common
+  system/ioport: make compilation unit common
+
+ include/exec/cpu-all.h              | 66 -----------------------
+ include/exec/exec-all.h             |  1 -
+ include/exec/memory-internal.h      |  2 -
+ include/exec/memory.h               | 34 +++++++-----
+ include/exec/ram_addr.h             | 11 ++--
+ include/exec/tswap.h                | 81 +++++++++++++++++++++++++++--
+ include/system/kvm.h                |  6 +--
+ include/tcg/tcg-op.h                |  1 +
+ target/ppc/helper_regs.h            |  2 +
+ include/exec/memory_ldst.h.inc      |  4 --
+ include/exec/memory_ldst_phys.h.inc |  5 +-
+ cpu-target.c                        |  1 +
+ hw/ppc/spapr_nested.c               |  1 +
+ hw/sh4/sh7750.c                     |  1 +
+ hw/xen/xen_stubs.c                  | 56 ++++++++++++++++++++
+ page-vary-target.c                  |  2 +-
+ system/ioport.c                     |  1 -
+ system/memory.c                     | 17 ++----
+ target/riscv/bitmanip_helper.c      |  2 +-
+ hw/xen/meson.build                  |  3 ++
+ system/meson.build                  |  6 +--
+ 21 files changed, 184 insertions(+), 119 deletions(-)
+ create mode 100644 hw/xen/xen_stubs.c
+
 -- 
-2.48.1
+2.39.5
 
 
