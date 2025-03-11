@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D109CA5C2D9
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:39:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCBFA5C2C6
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:32:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzog-0004OB-D8; Tue, 11 Mar 2025 09:38:42 -0400
+	id 1trzhl-0004aX-QG; Tue, 11 Mar 2025 09:31:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1trzoD-0004IW-03
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:38:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1trzhV-0004IW-6B
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:31:24 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1trzoA-0007Xs-La
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:38:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741700285;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=CmH4UWqzvKXhz+3B+gkShkU3fk8fM4/nO0mchW+R/Ro=;
- b=gRymaSOqwz+DFkFKcBsJ5hspmxKRiUKkO9AuA4AQeFThMtdgT+evN9K8LeKgtLTtXtEtEf
- NAyIlta6G2j+Y7KjorHK8ZRfjVfqRIz2QVsLr7OVP7fQnijWFRQbKp40IO37JIBh88ZULr
- uNp/tyIY2qvkQM3IoXN98Rtjomd9z8k=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-297-qYhoSKNuP4K3aXJrfOAT9w-1; Tue,
- 11 Mar 2025 09:38:02 -0400
-X-MC-Unique: qYhoSKNuP4K3aXJrfOAT9w-1
-X-Mimecast-MFC-AGG-ID: qYhoSKNuP4K3aXJrfOAT9w_1741700281
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D856E195608A; Tue, 11 Mar 2025 13:38:00 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.44])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 48DE71956094; Tue, 11 Mar 2025 13:37:59 +0000 (UTC)
-Date: Tue, 11 Mar 2025 13:37:55 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Subject: Re: [RFC PATCH] tests/functional: Don't fail any precaching errors
-Message-ID: <Z9A8swNn6zBm57jC@redhat.com>
-References: <20250311131327.903329-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1trzhQ-0006MA-JJ
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:31:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1741699873; x=1773235873;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1KOmzmrSwiEXReJq2LterO9F8yh62frqUd0TRpdbQtI=;
+ b=WoRts0fB2SlGqV7YwpXk8c9l+udqBIHxl0VqOUIVdQXe/McfxTWUF3tv
+ Qo4eVQeysjC+Uzhsx+vQsueNu+I2gAvNEX8gZS+PuqmKaE6dpLDpuNNmP
+ Mvf0De8KpY0kNw4/3ILjoiZ/tSl4zbFkvX7rKN+v1BJ3LWcryiEPMFZlL
+ 91i/pySMHroz/rDtMjP9jA/Ua+N6bLL9EI4h8RfNsgnSaNMyPvcWM9R0G
+ IpbJ6Gfy4lEduXh1e1yBOcaMdAj/+LPbzv4ETK/T+TrLdUdjqJK2o1V7A
+ CCFUI+vj2RLvAylmNe6h8AJax1CX4MHahKjhajxBDHtXyQnywlm//q3/8 g==;
+X-CSE-ConnectionGUID: GqAN2r+DQ/Wph7PdYQGhXA==
+X-CSE-MsgGUID: kFDHqaHmRtuJaAwm006RsQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="42648522"
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="42648522"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2025 06:31:08 -0700
+X-CSE-ConnectionGUID: Pxk/4SkhTnK69gTC0YQDKw==
+X-CSE-MsgGUID: VME4DSeXRry7yMJ+/JsIZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="120814359"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 11 Mar 2025 06:31:03 -0700
+Date: Tue, 11 Mar 2025 21:51:13 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
+ mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
+ likexu@tencent.com, like.xu.linux@gmail.com,
+ zhenyuw@linux.intel.com, groug@kaod.org, khorenko@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com
+Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
+ VM reset
+Message-ID: <Z9A/0RE2Zc7BKDvD@intel.com>
+References: <20250302220112.17653-1-dongli.zhang@oracle.com>
+ <20250302220112.17653-9-dongli.zhang@oracle.com>
+ <Z86Y9BxV6p25A2Wo@intel.com>
+ <a52ad0b9-4760-4347-ad73-1690eb28a464@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250311131327.903329-1-npiggin@gmail.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <a52ad0b9-4760-4347-ad73-1690eb28a464@oracle.com>
+Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,81 +87,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 11, 2025 at 11:13:26PM +1000, Nicholas Piggin wrote:
-> The NetBSD archive is currently failing part-way through downloads,
-> which results in no clean HTTP error but a short transfer and checksum
-> error. This is treated as fatal in the precache download, and it halts
-> an entire set of tests even if some others could run.
-> 
-> I hacked up this patch to get a bunch of CI tests going again for ppc
-> merge testing.
-> 
-> Don't treat any precaching failures as errors.
-> This causes tests to be skipped when they try to fetch their asset.
-> Some CI results before/after patching:
-> 
-> functional-system-fedora
-> https://gitlab.com/npiggin/qemu/-/jobs/9370860490 #bad
-> https://gitlab.com/npiggin/qemu/-/jobs/9373246826 #good
-> 
-> functional-system-debian
-> https://gitlab.com/npiggin/qemu/-/jobs/9370860479 #bda
-> https://gitlab.com/npiggin/qemu/-/jobs/9373246822 #good
-> 
-> This is making the tests skip. Is there a way to make the error more
-> prominent / obvious in the output? Should they fail instead? I think
-> there should be a more obvious indication of failure due to asset so
-> it does not go unnoticed.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  tests/functional/qemu_test/asset.py | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-> index f0730695f09..3134ccb10da 100644
-> --- a/tests/functional/qemu_test/asset.py
-> +++ b/tests/functional/qemu_test/asset.py
-> @@ -174,14 +174,11 @@ def precache_test(test):
->                  try:
->                      asset.fetch()
->                  except HTTPError as e:
-> -                    # Treat 404 as fatal, since it is highly likely to
-> -                    # indicate a broken test rather than a transient
-> -                    # server or networking problem
-> -                    if e.code == 404:
-> -                        raise
-> -
+Hi Dongli,
 
-Why are you removing this ? The commit above does not make any reference
-to the problem being a missing URL (404 code). We want missing URLs to
-be fatal so that we identify when images we rely on are deleted by their
-host, as that is not a transient problem.
+> >> +    /*
+> >> +     * If KVM_CAP_PMU_CAPABILITY is not supported, there is no way to
+> >> +     * disable the AMD pmu virtualization.
+> >> +     *
+> >> +     * If KVM_CAP_PMU_CAPABILITY is supported !cpu->enable_pmu
+> >> +     * indicates the KVM has already disabled the PMU virtualization.
+> >> +     */
+> >> +    if (has_pmu_cap && !cpu->enable_pmu) {
+> >> +        return;
+> >> +    }
+> > 
+> > Could we only check "cpu->enable_pmu" at the beginning of this function?
+> > then if pmu is already disabled, we don't need to initialize the pmu info.
+> 
+> I don't think so. There is a case:
+> 
+> - cpu->enable_pmu = false. (That is, "-cpu host,-pmu").
+> - But for KVM prior v5.18 that KVM_CAP_PMU_CAPABILITY doesn't exist.
+> 
+> There is no way to disable vPMU. To determine based on only
+> "!cpu->enable_pmu" doesn't work.
 
->                      log.debug(f"HTTP error {e.code} from {asset.url} " +
->                                "skipping asset precache")
-> +                except:
-> +                    log.debug(f"Error from {asset.url} " +
-> +                              "skipping asset precache")
+Ah, I didn't get your point here. When QEMU user has already disabled
+PMU, why we still need to continue initialize PMU info and save/load PMU
+MSRs? In this case, user won't expect vPMU could work.
 
-So is the bit that actually deals with the exception you show in the
-jobs above.
+> It works only when "!cpu->enable_pmu" and KVM_CAP_PMU_CAPABILITY exists.
+> 
+> 
+> We may still need a static global variable here to indicate where
+> "kvm.enable_pmu=N" (as discussed in PATCH 07).
+>
+> > 
+> >> +    if (IS_INTEL_CPU(env)) {
+> > 
+> > Zhaoxin also supports architectural PerfMon in 0xa.
+> > 
+> > I'm not sure if this check should also involve Zhaoxin CPU, so cc
+> > zhaoxin guys for double check.
+> 
+> Sure for both here and below 'ditto'. Thank you very much!
 
-Best practice would be for us to define an 'AssetException' and use that
-in assert.py when raising exceptions, or to wrap other exceptions in cases
-where we propagate exceptions. Then this code can be move tailored to
-catch AssetException, instead of Exception.
+Per the Linux commit 3a4ac121c2cac, Zhaoxin mostly follows Intel
+Architectural PerfMon-v2. Afterall, before this patch, these PMU things
+didn't check any vendor, so I suppose vPMU may could work for Zhaoxin as
+well. Therefore, its' better to consider Zhaoxin when you check Intel
+CPU, which can help avoid introducing some regressions.
 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Thanks,
+Zhao
 
 
