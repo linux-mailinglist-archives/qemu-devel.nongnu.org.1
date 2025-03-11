@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E34AA5BF12
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:33:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 726BEA5BF94
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:46:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trxqL-00039X-2k; Tue, 11 Mar 2025 07:32:17 -0400
+	id 1trxqY-0003D2-AE; Tue, 11 Mar 2025 07:32:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxq9-00034s-R5
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:07 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqC-00036i-AK
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxpy-0006TM-0M
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:02 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxpy-0006SO-Tf
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741692712;
+ s=mimecast20190719; t=1741692710;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/CI14kO4UJbWg5wTu3gXivAFZrKjIYx/AgYjSxCmf0E=;
- b=Vvr7AifX7FSExaXCtCewn63AYkRfs/FAMC1J5vbP+Oh+QQbpa5MRDKC16GlkiiHWNAU4ui
- 6if9G7vtZmd6dgJqHFcand1lGwl4FItWwSvL7pFonx4PL4FvFbOp3H2g0g1h8SYM8vOBAX
- 8UPFh/jZYH+AE0X3b308kVlO8IajQoQ=
+ bh=G9XDf3T8UJV4h8z0CKZgSg3IL4y3MtZy/bjJYsVHFe4=;
+ b=UBsa08ZHCEUmfEnLZKi+4XlzmHXgplBcUz9FseM6jOhs4j9w8MpYibJZTxNsMPvmP8YtTQ
+ 26GyGEwPiget6M6DGP1e93PjQchV2YzXjrCebgFeFVj0nEI7ZHFTJAxD/0LAR/CPicfTWO
+ V0hxzoVXbwuEQtIaF2klgoE83hgHs1w=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-549-biO4lXj7MVSTqrWZ5r4o-w-1; Tue,
- 11 Mar 2025 07:31:50 -0400
-X-MC-Unique: biO4lXj7MVSTqrWZ5r4o-w-1
-X-Mimecast-MFC-AGG-ID: biO4lXj7MVSTqrWZ5r4o-w_1741692709
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-l7xWEL8YMwChDPe3CdQy9w-1; Tue,
+ 11 Mar 2025 07:31:49 -0400
+X-MC-Unique: l7xWEL8YMwChDPe3CdQy9w-1
+X-Mimecast-MFC-AGG-ID: l7xWEL8YMwChDPe3CdQy9w_1741692709
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A058718009FC
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:49 +0000 (UTC)
+ id F36AF1800875
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:48 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0E05418001F6
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 758AF3001D13
  for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:48 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E0E6E21E64F2; Tue, 11 Mar 2025 12:31:37 +0100 (CET)
+ id E487B21E64F3; Tue, 11 Mar 2025 12:31:37 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 12/61] docs/qapi-domain: add :since: directive option
-Date: Tue, 11 Mar 2025 12:30:48 +0100
-Message-ID: <20250311113137.1277125-13-armbru@redhat.com>
+Subject: [PULL 13/61] docs/qapi-domain: add "Arguments:" field lists
+Date: Tue, 11 Mar 2025 12:30:49 +0100
+Message-ID: <20250311113137.1277125-14-armbru@redhat.com>
 In-Reply-To: <20250311113137.1277125-1-armbru@redhat.com>
 References: <20250311113137.1277125-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,12 +86,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Add a little special markup for registering "Since:" information. Adding
-it as an option instead of generic content lets us hoist the information
-into the Signature bar, optionally put it in the index, etc.
+This adds special rendering for Sphinx's typed info field lists.
+
+This patch does not add any QAPI-aware markup, rendering, or
+cross-referencing for the type names, yet. That feature requires a
+subclass to TypedField which will happen in its own commit quite a bit
+later in this series; after all the basic fields and objects have been
+established first.
+
+The syntax for this field is:
+
+:arg type name: description
+   description cont'd
+
+You can omit the type or the description. You should not omit the name;
+if you do so, it degenerates into a "normal field list" entry, and
+probably isn't what you want.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250311034303.75779-15-jsnow@redhat.com>
+Message-ID: <20250311034303.75779-16-jsnow@redhat.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
@@ -99,37 +112,37 @@ Signed-off-by: Markus Armbruster <armbru@redhat.com>
  1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index 547040f75a..222b420d2a 100644
+index 222b420d2a..b4289db6d8 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -214,6 +214,8 @@ class QAPIObject(QAPIDescription):
-         {
-             # Borrowed from the Python domain:
-             "module": directives.unchanged,  # Override contextual module name
-+            # These are QAPI originals:
-+            "since": directives.unchanged,
-         }
-     )
+@@ -33,6 +33,7 @@
+ from sphinx.locale import _, __
+ from sphinx.roles import XRefRole
+ from sphinx.util import logging
++from sphinx.util.docfields import TypedField
+ from sphinx.util.nodes import make_id, make_refnode
  
-@@ -227,7 +229,17 @@ def get_signature_prefix(self) -> List[nodes.Node]:
  
-     def get_signature_suffix(self) -> List[nodes.Node]:
-         """Return a suffix to put after the object name in the signature."""
--        return []
-+        ret: List[nodes.Node] = []
-+
-+        if "since" in self.options:
-+            ret += [
-+                SpaceNode(" "),
-+                addnodes.desc_sig_element(
-+                    "", f"(Since: {self.options['since']})"
-+                ),
-+            ]
-+
-+        return ret
+@@ -273,7 +274,18 @@ def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
+ class QAPICommand(QAPIObject):
+     """Description of a QAPI Command."""
  
-     def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
-         """
+-    # Nothing unique for now! Changed in later commits O:-)
++    doc_field_types = QAPIObject.doc_field_types.copy()
++    doc_field_types.extend(
++        [
++            # :arg TypeName ArgName: descr
++            TypedField(
++                "argument",
++                label=_("Arguments"),
++                names=("arg",),
++                can_collapse=False,
++            ),
++        ]
++    )
+ 
+ 
+ class QAPIModule(QAPIDescription):
 -- 
 2.48.1
 
