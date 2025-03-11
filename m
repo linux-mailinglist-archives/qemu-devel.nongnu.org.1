@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0306A5B794
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 04:55:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE4EA5B767
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 04:46:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trqYQ-0006Vp-Ta; Mon, 10 Mar 2025 23:45:20 -0400
+	id 1trqY6-00065y-Tw; Mon, 10 Mar 2025 23:44:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqXn-0004uG-Ff
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:44:43 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqXm-0004ql-UI
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:44:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqXi-0002Jt-W5
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:44:39 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqXl-0002KN-9W
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:44:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741664673;
+ s=mimecast20190719; t=1741664676;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CCMhiTJLiZsmkTkJqefz3GFI0uHIgEy51qfCdy6OIrE=;
- b=MeXrxAH7cIvVsI+/Bl4s+/qqJ5Hmt2LNVIiAKRpc5MtW2Bq1ifE+1F/KNHvVgEN9sIsu1C
- zr4FXkpRKPu5YRx4EWAeur0TbrPHhTyqVZsAARZ2X+8jubXQO1x5rPHl2YkzzPWvErbvAd
- KnT3Z6iBx07BGSrSmQQMNbNUPM6Ih4Y=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=FpG2pQT39ow30jF2z/a6Gu94ThGZE+Q/VZNP8o23r8U=;
+ b=UgHs9vSr82mDP1VCQFd3dtHHwiI8hcYx1DbE2ZIQargwpYQSStxSRagAtotSmoQwVkjaeh
+ DYs/vV1VxMCN8bQMQghiycDwoeVBee6zr/2zjbqIzFw7Z3PsxYxT4wKNerTCm37brEPJK3
+ JP8RwDXAotlNrlj9gd/LIx/hOYvW4eM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-CMNhDWX4NzyrGQXgEbyUYg-1; Mon,
- 10 Mar 2025 23:44:30 -0400
-X-MC-Unique: CMNhDWX4NzyrGQXgEbyUYg-1
-X-Mimecast-MFC-AGG-ID: CMNhDWX4NzyrGQXgEbyUYg_1741664668
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-354-KZqHeEY_Nim_cen5KaAZvw-1; Mon,
+ 10 Mar 2025 23:44:33 -0400
+X-MC-Unique: KZqHeEY_Nim_cen5KaAZvw-1
+X-Mimecast-MFC-AGG-ID: KZqHeEY_Nim_cen5KaAZvw_1741664672
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C48B719560B8; Tue, 11 Mar 2025 03:44:28 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 51E6218007E1; Tue, 11 Mar 2025 03:44:32 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.49])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 56DAC1800366; Tue, 11 Mar 2025 03:44:26 +0000 (UTC)
+ id 1BFB81800366; Tue, 11 Mar 2025 03:44:28 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Harmonie Snow <harmonie@gmail.com>
-Subject: [PATCH v3 23/63] docs/qapi-domain: add :deprecated: directive option
-Date: Mon, 10 Mar 2025 23:42:21 -0400
-Message-ID: <20250311034303.75779-24-jsnow@redhat.com>
+Subject: [PATCH v3 24/63] docs/qapi-domain: add :unstable: directive option
+Date: Mon, 10 Mar 2025 23:42:22 -0400
+Message-ID: <20250311034303.75779-25-jsnow@redhat.com>
 In-Reply-To: <20250311034303.75779-1-jsnow@redhat.com>
 References: <20250311034303.75779-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -86,100 +86,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Although "deprecated" is a feature (and *will* appear in the features
-list), add a special :deprecated: option to generate an eye-catch that
+Although "unstable" is a feature (and *will* appear in the features
+list), add a special :unstable: option to generate an eye-catch that
 makes this information very hard to miss.
 
 The forthcoming Transmogrifier in qapidoc.py will add this option
 whenever it detects that the features list attached to a definition
-contains the "deprecated" entry.
-
-P.S., I outsourced the CSS ;)
+contains the "unstable" entry.
 
 Signed-off-by: Harmonie Snow <harmonie@gmail.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx-static/theme_overrides.css | 25 +++++++++++++++++++++++++
- docs/sphinx/qapi_domain.py             | 26 ++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+)
+ docs/sphinx-static/theme_overrides.css | 6 +++++-
+ docs/sphinx/qapi_domain.py             | 8 ++++++++
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
-index 965ecac54fd..3765cab1b20 100644
+index 3765cab1b20..5f58f1d5246 100644
 --- a/docs/sphinx-static/theme_overrides.css
 +++ b/docs/sphinx-static/theme_overrides.css
-@@ -208,3 +208,28 @@ div[class^="highlight"] pre {
-         color: inherit;
-     }
+@@ -221,7 +221,7 @@ div[class^="highlight"] pre {
+     margin: 0.25em;
  }
-+
-+/* QAPI domain theming */
-+
-+.qapi-infopips {
-+    margin-bottom: 1em;
+ 
+-.qapi-deprecated {
++.qapi-deprecated,.qapi-unstable {
+     background-color: #fffef5;
+     border: solid #fff176 6px;
+     font-weight: bold;
+@@ -230,6 +230,10 @@ div[class^="highlight"] pre {
+     margin: 5px;
+ }
+ 
++.qapi-unstable::before {
++    content: '🚧 ';
 +}
 +
-+.qapi-infopip {
-+    display: inline-block;
-+    padding: 0em 0.5em 0em 0.5em;
-+    margin: 0.25em;
-+}
-+
-+.qapi-deprecated {
-+    background-color: #fffef5;
-+    border: solid #fff176 6px;
-+    font-weight: bold;
-+    padding: 8px;
-+    border-radius: 15px;
-+    margin: 5px;
-+}
-+
-+.qapi-deprecated::before {
-+    content: '⚠️ ';
-+}
+ .qapi-deprecated::before {
+     content: '⚠️ ';
+ }
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index b11300bc85d..b672ae6c504 100644
+index b672ae6c504..00fd11ebf79 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -217,6 +217,7 @@ class QAPIObject(QAPIDescription):
-             "module": directives.unchanged,  # Override contextual module name
+@@ -218,6 +218,7 @@ class QAPIObject(QAPIDescription):
              # These are QAPI originals:
              "since": directives.unchanged,
-+            "deprecated": directives.flag,
+             "deprecated": directives.flag,
++            "unstable": directives.flag,
          }
      )
  
-@@ -280,6 +281,31 @@ def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
+@@ -300,6 +301,13 @@ def _add_pip(source: str, content: str, classname: str) -> None:
+                 "qapi-deprecated",
+             )
  
-         return sig
- 
-+    def _add_infopips(self, contentnode: addnodes.desc_content) -> None:
-+        # Add various eye-catches and things that go below the signature
-+        # bar, but precede the user-defined content.
-+        infopips = nodes.container()
-+        infopips.attributes["classes"].append("qapi-infopips")
-+
-+        def _add_pip(source: str, content: str, classname: str) -> None:
-+            node = nodes.container(source)
-+            node.append(nodes.Text(content))
-+            node.attributes["classes"].extend(["qapi-infopip", classname])
-+            infopips.append(node)
-+
-+        if "deprecated" in self.options:
++        if "unstable" in self.options:
 +            _add_pip(
-+                ":deprecated:",
-+                f"This {self.objtype} is deprecated.",
-+                "qapi-deprecated",
++                ":unstable:",
++                f"This {self.objtype} is unstable/experimental.",
++                "qapi-unstable",
 +            )
 +
-+        if infopips.children:
-+            contentnode.insert(0, infopips)
-+
-+    def transform_content(self, content_node: addnodes.desc_content) -> None:
-+        self._add_infopips(content_node)
-+
+         if infopips.children:
+             contentnode.insert(0, infopips)
  
- class QAPICommand(QAPIObject):
-     """Description of a QAPI Command."""
 -- 
 2.48.1
 
