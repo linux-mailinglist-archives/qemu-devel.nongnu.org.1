@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7491A5BF17
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD59A5BFBE
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:50:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trxqc-0003GR-Bg; Tue, 11 Mar 2025 07:32:35 -0400
+	id 1trxsI-0005rA-Q0; Tue, 11 Mar 2025 07:34:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqL-0003B1-4h
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqN-0003Bm-OC
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxq2-0006Uq-Nv
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:16 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxq4-0006Vf-12
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741692715;
+ s=mimecast20190719; t=1741692717;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zMCCV60TbkWT6eOjqy0/DKgYc2iniJRfLzqDSQLP1mc=;
- b=ghRycBgLxKviz9V1SR6DwOrgP9ZUqlabGS5KiHW7S+OoaB34pa3Nt66YUp5YTWVDH21ma1
- zy2jdvLpUUmowS8j1MkWwAB9tzmCQgR5gLEuAJl6NUK+hZDnLCAGYpSYIYjnFxRB+NYSDT
- 2DOUvW8AcFzeQRvNHYSDVltpqQW95zY=
+ bh=JLZlz2uI650EPNnAM7UdPDCfQjGsEu2vAEr73jJzngE=;
+ b=Z+OsSGmQ5QjLsxzVF3uSDzPkkKFrvS7/PiyYRgHaAVhDYRo8UzfGnv4DG1Z9EkOOGIEyxb
+ 6tREk67FLd3SRgCBgHs48V9nsCWVXt8oJtd2W/+lbewVlwbUIoCdXJKS2+8tfNIqh4vTfe
+ O3kHvJ4+aN5dxYR/TljQuLDY+zmG87Q=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-421-yjjUQTchO6CX3Z0XLG0mzw-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-pZMCyK4yMRenwaK5X38DGA-1; Tue,
  11 Mar 2025 07:31:54 -0400
-X-MC-Unique: yjjUQTchO6CX3Z0XLG0mzw-1
-X-Mimecast-MFC-AGG-ID: yjjUQTchO6CX3Z0XLG0mzw_1741692713
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+X-MC-Unique: pZMCyK4yMRenwaK5X38DGA-1
+X-Mimecast-MFC-AGG-ID: pZMCyK4yMRenwaK5X38DGA_1741692713
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE3F4195608B
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:53 +0000 (UTC)
+ id 84F0C1956080; Tue, 11 Mar 2025 11:31:53 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 595DB1956094
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:53 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2BF331801758; Tue, 11 Mar 2025 11:31:53 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0B36821E64A8; Tue, 11 Mar 2025 12:31:38 +0100 (CET)
+ id 0F21F21E64AA; Tue, 11 Mar 2025 12:31:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
-	John Snow <jsnow@redhat.com>
-Subject: [PULL 20/61] docs/qapi-domain: add qapi:object directive
-Date: Tue, 11 Mar 2025 12:30:56 +0100
-Message-ID: <20250311113137.1277125-21-armbru@redhat.com>
+Cc: stefanha@redhat.com, John Snow <jsnow@redhat.com>,
+ Harmonie Snow <harmonie@gmail.com>
+Subject: [PULL 21/61] docs/qapi-domain: add :deprecated: directive option
+Date: Tue, 11 Mar 2025 12:30:57 +0100
+Message-ID: <20250311113137.1277125-22-armbru@redhat.com>
 In-Reply-To: <20250311113137.1277125-1-armbru@redhat.com>
 References: <20250311113137.1277125-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,60 +85,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Adds the .. qapi:object:: directive, object, and :qapi:obj:`name`
-cross-referencing role. This directive is meant to document both structs
-and unions.
+Although "deprecated" is a feature (and *will* appear in the features
+list), add a special :deprecated: option to generate an eye-catch that
+makes this information very hard to miss.
 
-As per usual, QAPI cross-referencing for types in the member field list
-will be added in a forthcoming commit.
+The forthcoming Transmogrifier in qapidoc.py will add this option
+whenever it detects that the features list attached to a definition
+contains the "deprecated" entry.
 
+P.S., I outsourced the CSS ;)
+
+Signed-off-by: Harmonie Snow <harmonie@gmail.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250311034303.75779-23-jsnow@redhat.com>
+Message-ID: <20250311034303.75779-24-jsnow@redhat.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapi_domain.py | 7 +++++++
- 1 file changed, 7 insertions(+)
+ docs/sphinx-static/theme_overrides.css | 25 +++++++++++++++++++++++++
+ docs/sphinx/qapi_domain.py             | 26 ++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+)
 
+diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
+index 965ecac54f..3765cab1b2 100644
+--- a/docs/sphinx-static/theme_overrides.css
++++ b/docs/sphinx-static/theme_overrides.css
+@@ -208,3 +208,28 @@ div[class^="highlight"] pre {
+         color: inherit;
+     }
+ }
++
++/* QAPI domain theming */
++
++.qapi-infopips {
++    margin-bottom: 1em;
++}
++
++.qapi-infopip {
++    display: inline-block;
++    padding: 0em 0.5em 0em 0.5em;
++    margin: 0.25em;
++}
++
++.qapi-deprecated {
++    background-color: #fffef5;
++    border: solid #fff176 6px;
++    font-weight: bold;
++    padding: 8px;
++    border-radius: 15px;
++    margin: 5px;
++}
++
++.qapi-deprecated::before {
++    content: '⚠️ ';
++}
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index 3ffb3eb72d..b11300bc85 100644
+index b11300bc85..b672ae6c50 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -367,6 +367,10 @@ class QAPIEvent(QAPIObjectWithMembers):
-     """Description of a QAPI Event."""
+@@ -217,6 +217,7 @@ class QAPIObject(QAPIDescription):
+             "module": directives.unchanged,  # Override contextual module name
+             # These are QAPI originals:
+             "since": directives.unchanged,
++            "deprecated": directives.flag,
+         }
+     )
  
+@@ -280,6 +281,31 @@ def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
  
-+class QAPIJSONObject(QAPIObjectWithMembers):
-+    """Description of a QAPI Object: structs and unions."""
+         return sig
+ 
++    def _add_infopips(self, contentnode: addnodes.desc_content) -> None:
++        # Add various eye-catches and things that go below the signature
++        # bar, but precede the user-defined content.
++        infopips = nodes.container()
++        infopips.attributes["classes"].append("qapi-infopips")
 +
++        def _add_pip(source: str, content: str, classname: str) -> None:
++            node = nodes.container(source)
++            node.append(nodes.Text(content))
++            node.attributes["classes"].extend(["qapi-infopip", classname])
++            infopips.append(node)
 +
- class QAPIModule(QAPIDescription):
-     """
-     Directive to mark description of a new module.
-@@ -495,6 +499,7 @@ class QAPIDomain(Domain):
-         "command": ObjType(_("command"), "cmd", "any"),
-         "event": ObjType(_("event"), "event", "any"),
-         "enum": ObjType(_("enum"), "enum", "type", "any"),
-+        "object": ObjType(_("object"), "obj", "type", "any"),
-         "alternate": ObjType(_("alternate"), "alt", "type", "any"),
-     }
++        if "deprecated" in self.options:
++            _add_pip(
++                ":deprecated:",
++                f"This {self.objtype} is deprecated.",
++                "qapi-deprecated",
++            )
++
++        if infopips.children:
++            contentnode.insert(0, infopips)
++
++    def transform_content(self, content_node: addnodes.desc_content) -> None:
++        self._add_infopips(content_node)
++
  
-@@ -505,6 +510,7 @@ class QAPIDomain(Domain):
-         "command": QAPICommand,
-         "event": QAPIEvent,
-         "enum": QAPIEnum,
-+        "object": QAPIJSONObject,
-         "alternate": QAPIAlternate,
-     }
- 
-@@ -516,6 +522,7 @@ class QAPIDomain(Domain):
-         "cmd": QAPIXRefRole(),
-         "event": QAPIXRefRole(),
-         "enum": QAPIXRefRole(),
-+        "obj": QAPIXRefRole(),  # specifically structs and unions.
-         "alt": QAPIXRefRole(),
-         # reference any data type (excludes modules, commands, events)
-         "type": QAPIXRefRole(),
+ class QAPICommand(QAPIObject):
+     """Description of a QAPI Command."""
 -- 
 2.48.1
 
