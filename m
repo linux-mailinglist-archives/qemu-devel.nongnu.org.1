@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FE9A5D056
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 21:05:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FF6A5D03E
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 21:00:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts5la-000487-0N; Tue, 11 Mar 2025 15:59:57 -0400
+	id 1ts5la-000493-0k; Tue, 11 Mar 2025 15:59:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ts5kO-00014I-5U
+ id 1ts5kL-00013V-LH
  for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:58:41 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1ts5kF-0000A5-EF
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:58:36 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-22185cddbffso3407015ad.1
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 12:58:28 -0700 (PDT)
+ id 1ts5kF-0000AJ-E8
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:58:34 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2232aead377so19364765ad.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 12:58:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741723108; x=1742327908; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741723109; x=1742327909; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/B5foK4Qy0OvFQVWNYpVAAsAF+tVTKpBxl4Jl8CdPFE=;
- b=fKUIl7sdE0EUMvdS4qpkgpG/tORRIIDbtwWqSt3ScaCVPUgLkZyIIAIjzoxgbFuY7O
- KFR/r0LpRJPoFYW9S+xTHbYLBkZVQFbio/BzmXej2kylrieUiVactUFgl6Fc7zr074YS
- UaTMSHG3irEUzmtrsCcZqrIlwwWVLPkMCM+dDV04CuYte2Tpz/6r9XmvG3FtGoikCGPR
- Y78g68GXBuQxKdLAVhBn4dIH4W4mZodV7Ap+iGCMlXj/aVJYJE+MKND6isBCv2FbU8ST
- ycb3Q49SIKQEIVCe85DPwiwQ0V5OHBtNZFocp+ALRrMyspsSIORgX27qDhpTgSCKUe6F
- gYKA==
+ bh=Z06CcN5pABW+zUVUk9wuBNFYUJo3O9KfWdv+N0a9H8A=;
+ b=BbUrARlt2IlKJEHDELgitzUJv4RQY7JNGf8AGHO52F+/IXXP32Uy3VZRJaC7ouSMbq
+ U/Gstdp+wakdmygK+kKg8KFYvm+MrrWL2mId52JkBbiEnn6X+jD6WKuv49kK5QVM/n+O
+ NXLwEaztbj11CE3UEkrOk+aLbNlzuiObn5ZCx4VGVvzgyfO7SLydciGeF447/3Ro6EXt
+ 0qR9VTxlH8mnXXqVuDV10rYV3DbfNu6WRGiFFwblyqw58xqHjASbf+KVLnL0O1aCJtYZ
+ V1E3F7ahgj3DKzmQBtk+d/kNU9CjmcxTC+R3rwMeXRSaQ3iYtRVcmiZImcQSbV5K8Td+
+ etDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741723108; x=1742327908;
+ d=1e100.net; s=20230601; t=1741723109; x=1742327909;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/B5foK4Qy0OvFQVWNYpVAAsAF+tVTKpBxl4Jl8CdPFE=;
- b=qkfTcL7BAbxYbDAsxonD/15psOaY+uA1I7sHboxFrkxsaekungdIlLwAsWRBzQvVkU
- dmumj/vWjv4haboxR1fu7BH/IcR8NdPV8u5RWKdn+DpivA92GWPoXkKwUSFWJyJLCge2
- B15TQfeAbA8ZWOiOLEH9/c7/PLZ0XMHTOstDxj5d6Jo4B9m4UppcKuHkZZdVnuLE2RFk
- go725n90a0QX0Jb2RVLV8TzQL77TfH2B57DZG0Xs5IbTw0FE9HgisA8E9PRpZyN/5iyw
- JVC8VC9qOtBUxXDnLXIPRdOyOBDWnK9z0DMullNfSGBWIFaaVHV7A5ehEQTMAGugUcZH
- 4Xig==
-X-Gm-Message-State: AOJu0Yxb7mFvP6XD1byIghoL24z3iAKMXEbTCOWcrOB58u0BIGAcjZcj
- t+XzuFH8fhfQ0C2pBx0QF2tW2+wmmV1mwoBIasenQsqPR3C3jDrItEk6CeJ8+fN/ZtmODP+tSxH
- T/Sc=
-X-Gm-Gg: ASbGnctL5ZULAXS8hB1T9Wc37Ko/8GZcSZHmuolcDzdvgTGsva35EYrmrmoWncFSnyZ
- Z66x2MkhhFlnQfbpK2gqa4uE2sXUYflKUYI3JJi9s3rgQ18tOwLcjazHM1FrOdBKpXsFjeViwml
- h3hnJUM36ehRvMkDKDcwP0Q6H/oe67Q5TKCabLwyoTvsbJMC/41TcxqZGuRyiVqQKxNTs0Wmjmy
- DzlxdZqDs/dJryBCc+J7Hoo9wfTpQysP0XHMWv3BuRMDbf0fRsMNn1ZL66brVjgcZSs1C4Jhf82
- IekF/0nVwEGrIO8s9LW7mTYSHt0yYx6hYx4iilFfZb7Q
-X-Google-Smtp-Source: AGHT+IEFWhkhOunU64h5Vgyk432uXoYWcCQsdf3Qo3RWjfxu/zqVxr3PiSl8C3ffFvP7C/aGeequIA==
-X-Received: by 2002:a05:6a00:638b:b0:732:57d3:f004 with SMTP id
- d2e1a72fcca58-736ec5f1748mr5532672b3a.6.1741723107984; 
- Tue, 11 Mar 2025 12:58:27 -0700 (PDT)
+ bh=Z06CcN5pABW+zUVUk9wuBNFYUJo3O9KfWdv+N0a9H8A=;
+ b=GLyrowR/wkQDHRaoavcPh+2XACJdAFMY6i2BN/JwBFopKtOmDIJnLdQNrdQj9WMP0H
+ 03zFZltzMJIKmfD1ChYExKyaCxI0l1gKBFxnpXUEGpxVdqoX52Sk/vyxhT6WbO1OM6II
+ ZL4272ErFSntF8SXh3EtTpmrzE3ahW+aIcFUrMyabxSrxvzaMXB4Pd1LN+5hK31QvAwJ
+ j33+dBDL5LuD7W4ktt+lc1OA8lTSk4O/9m9j3LYntwsOSdQDtKyWOc0osecQjWxNDQjK
+ 9o0Rax6uwMQ9wepr7oe5SFNaCK34AB9JYfo4+yWUjYXVzHOHOdRHxGxrK5AL5sjwzPi+
+ IUFQ==
+X-Gm-Message-State: AOJu0YyBegvpjutNnhDO07kwXwvn8ioN3to+AATfrx8dwVwTHobriyDL
+ d2BpwyzPan3BVqVA4OtodN3Gk1LfJldN6Is4bBYe7OvqGOBov99qfzpXEM6oCC6l8QD7gdc0tf2
+ tjtI=
+X-Gm-Gg: ASbGnctoH5oDTcX1+zwZ5uKw59URqK6zzQ5Lw3U3rbXUUgErfcrBBJMYft6k7T4ejXv
+ olbhcwVhxK47csyayPlxlQfru641Wo4UdsNvj4NxcUIMrRtT0O2LrkkdoHo9K4neuI2FjPNXCLZ
+ KlrMa596I/wCBSWbCZbjEVAiPFnafBOD19HHDnTdOkifXFHXaGRzBiuulikwguHGE02SHOrCYcw
+ uaCHtTk5aDrD2ZM2U73a2dNSifNRo/BNUYsI1Wf9MV01ga004yBqzFNw+SM9MdyRURARCLP/pst
+ +hdcoqfhsskFwRgih55NSeDz/nOmTaGKxhySfQdb/Z9+
+X-Google-Smtp-Source: AGHT+IFWZfAhxvvEDgAAce92ETlma5STi2t3r8z3LElksShqNyxmTswS//w9tvWqHBQDxaqLnsB1Kg==
+X-Received: by 2002:a05:6a00:2e17:b0:730:95a6:3761 with SMTP id
+ d2e1a72fcca58-736aa9e745amr30276190b3a.3.1741723109168; 
+ Tue, 11 Mar 2025 12:58:29 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736a6e5c13asm9646981b3a.157.2025.03.11.12.58.26
+ d2e1a72fcca58-736a6e5c13asm9646981b3a.157.2025.03.11.12.58.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 12:58:27 -0700 (PDT)
+ Tue, 11 Mar 2025 12:58:28 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -79,24 +79,23 @@ Cc: David Hildenbrand <david@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>, alex.bennee@linaro.org,
  Yoshinori Sato <ysato@users.sourceforge.jp>, qemu-riscv@nongnu.org,
  qemu-ppc@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 15/17] include/exec/memory: move devend functions to
- memory-internal.h
-Date: Tue, 11 Mar 2025 12:58:01 -0700
-Message-Id: <20250311195803.4115788-16-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 16/17] system/memory: make compilation unit common
+Date: Tue, 11 Mar 2025 12:58:02 -0700
+Message-Id: <20250311195803.4115788-17-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250311195803.4115788-1-pierrick.bouvier@linaro.org>
 References: <20250311195803.4115788-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,73 +111,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only system/physmem.c and system/memory.c use those functions, so we can
-move then to internal header.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/exec/memory-internal.h | 19 +++++++++++++++++++
- include/exec/memory.h          | 18 ------------------
- 2 files changed, 19 insertions(+), 18 deletions(-)
+ system/memory.c    | 17 +++++------------
+ system/meson.build |  2 +-
+ 2 files changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/include/exec/memory-internal.h b/include/exec/memory-internal.h
-index b729f3b25ad..c75178a3d6b 100644
---- a/include/exec/memory-internal.h
-+++ b/include/exec/memory-internal.h
-@@ -43,5 +43,24 @@ void address_space_dispatch_free(AddressSpaceDispatch *d);
+diff --git a/system/memory.c b/system/memory.c
+index 4c829793a0a..eddd21a6cdb 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -353,15 +353,6 @@ static void flatview_simplify(FlatView *view)
+     }
+ }
  
- void mtree_print_dispatch(struct AddressSpaceDispatch *d,
-                           MemoryRegion *root);
-+
-+/* returns true if end is big endian. */
-+static inline bool devend_big_endian(enum device_endian end)
-+{
-+    QEMU_BUILD_BUG_ON(DEVICE_HOST_ENDIAN != DEVICE_LITTLE_ENDIAN &&
-+                      DEVICE_HOST_ENDIAN != DEVICE_BIG_ENDIAN);
-+
-+    if (end == DEVICE_NATIVE_ENDIAN) {
-+        return target_words_bigendian();
-+    }
-+    return end == DEVICE_BIG_ENDIAN;
-+}
-+
-+/* enum device_endian to MemOp.  */
-+static inline MemOp devend_memop(enum device_endian end)
-+{
-+    return devend_big_endian(end) ? MO_BE : MO_LE;
-+}
-+
- #endif
- #endif
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 70177304a92..a3bb0542bf6 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -3138,24 +3138,6 @@ address_space_write_cached(MemoryRegionCache *cache, hwaddr addr,
- MemTxResult address_space_set(AddressSpace *as, hwaddr addr,
-                               uint8_t c, hwaddr len, MemTxAttrs attrs);
- 
--/* returns true if end is big endian. */
--static inline bool devend_big_endian(enum device_endian end)
+-static bool memory_region_big_endian(MemoryRegion *mr)
 -{
--    QEMU_BUILD_BUG_ON(DEVICE_HOST_ENDIAN != DEVICE_LITTLE_ENDIAN &&
--                      DEVICE_HOST_ENDIAN != DEVICE_BIG_ENDIAN);
--
--    if (end == DEVICE_NATIVE_ENDIAN) {
--        return target_words_bigendian();
--    }
--    return end == DEVICE_BIG_ENDIAN;
+-#if TARGET_BIG_ENDIAN
+-    return mr->ops->endianness != DEVICE_LITTLE_ENDIAN;
+-#else
+-    return mr->ops->endianness == DEVICE_BIG_ENDIAN;
+-#endif
 -}
 -
--/* enum device_endian to MemOp.  */
--static inline MemOp devend_memop(enum device_endian end)
--{
--    return devend_big_endian(end) ? MO_BE : MO_LE;
--}
--
- /*
-  * Inhibit technologies that require discarding of pages in RAM blocks, e.g.,
-  * to manage the actual amount of memory consumed by the VM (then, the memory
+ static void adjust_endianness(MemoryRegion *mr, uint64_t *data, MemOp op)
+ {
+     if ((op & MO_BSWAP) != devend_memop(mr->ops->endianness)) {
+@@ -563,7 +554,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
+     /* FIXME: support unaligned access? */
+     access_size = MAX(MIN(size, access_size_max), access_size_min);
+     access_mask = MAKE_64BIT_MASK(0, access_size * 8);
+-    if (memory_region_big_endian(mr)) {
++    if (devend_big_endian(mr->ops->endianness)) {
+         for (i = 0; i < size; i += access_size) {
+             r |= access_fn(mr, addr + i, value, access_size,
+                         (size - access_size - i) * 8, access_mask, attrs);
+@@ -2584,7 +2575,8 @@ void memory_region_add_eventfd(MemoryRegion *mr,
+     unsigned i;
+ 
+     if (size) {
+-        adjust_endianness(mr, &mrfd.data, size_memop(size) | MO_TE);
++        MemOp mop = (target_words_bigendian() ? MO_BE : MO_LE) | size_memop(size);
++        adjust_endianness(mr, &mrfd.data, mop);
+     }
+     memory_region_transaction_begin();
+     for (i = 0; i < mr->ioeventfd_nb; ++i) {
+@@ -2619,7 +2611,8 @@ void memory_region_del_eventfd(MemoryRegion *mr,
+     unsigned i;
+ 
+     if (size) {
+-        adjust_endianness(mr, &mrfd.data, size_memop(size) | MO_TE);
++        MemOp mop = (target_words_bigendian() ? MO_BE : MO_LE) | size_memop(size);
++        adjust_endianness(mr, &mrfd.data, mop);
+     }
+     memory_region_transaction_begin();
+     for (i = 0; i < mr->ioeventfd_nb; ++i) {
+diff --git a/system/meson.build b/system/meson.build
+index 9d0b0122e54..881cb2736fe 100644
+--- a/system/meson.build
++++ b/system/meson.build
+@@ -1,7 +1,6 @@
+ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
+   'arch_init.c',
+   'ioport.c',
+-  'memory.c',
+ )])
+ 
+ system_ss.add(files(
+@@ -14,6 +13,7 @@ system_ss.add(files(
+   'dma-helpers.c',
+   'globals.c',
+   'memory_mapping.c',
++  'memory.c',
+   'physmem.c',
+   'qdev-monitor.c',
+   'qtest.c',
 -- 
 2.39.5
 
