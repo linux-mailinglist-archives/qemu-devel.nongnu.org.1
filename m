@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C752A5C1DB
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00059A5C1E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:07:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzC1-0000wk-Ny; Tue, 11 Mar 2025 08:58:45 -0400
+	id 1trzC5-00012y-Q3; Tue, 11 Mar 2025 08:58:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzBs-0000vG-Ql; Tue, 11 Mar 2025 08:58:38 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1trzC1-0000xN-NN; Tue, 11 Mar 2025 08:58:45 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzBo-0007oR-DD; Tue, 11 Mar 2025 08:58:35 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2feae794508so8081948a91.0; 
- Tue, 11 Mar 2025 05:58:31 -0700 (PDT)
+ id 1trzBr-0007ow-KC; Tue, 11 Mar 2025 08:58:45 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2ff04f36fd2so9011346a91.1; 
+ Tue, 11 Mar 2025 05:58:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741697910; x=1742302710; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741697912; x=1742302712; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u7wjPkG/ntlVqsAo3bR2GeOkCsbyPnLbq91ceDRWcvk=;
- b=SIii28Y+MGsgzRfdpDvapK2psDdhlbbzpw1IPdEUbpA6Cz8r8pTTrB19guznzUNH23
- DvNPUM0JaSQ00mNyngm58NCsysj7CIOexRVwSL7oxs2E3GIba2od2R8nd4pqe8Efoq1u
- wFykPqxSznAl+cVdB2Ar8/hYrtLf5D17Mv3zdl9be7GOF3/Kbjk7/fzc5fW4u5YklP6R
- +ALVlMgZEBlF+iZMgxUKzQ7w+I6Tr5VSf9nLhqWQRlbFCX8kqKeqm9/z/yFaOgizkDDn
- 6u5dZRfTJVdwDmlAgrrYgkDFG5QNCrVor3zbnQgEyAq34Tm0qIxMmQvmXFsWAmNPPbOB
- EmUQ==
+ bh=9qziwSp72v5bFf9UwHWA2wgeDsKZUWFBWm7xQttp+nk=;
+ b=Y9rUxcofB1lyDLTVXfX53g+DgMeVhU/QP/yf9K44slef6CWQ3+urbBSo3lByVHwD1j
+ 96LsjpElriziBZpwulhn7hF92Sks283E2VT5jmr8B1ONKDtXDq+Bymce67eLm6KVObuL
+ cRBVk3RinPnCoL3hnaLFHNz6mLRmfIG895MoWEMJGNpbh1r4nmrt5PJVOVdx28n92+e3
+ M8X6KH9jRQLwOhguENJOniDYXW3W7JRi2qj8NXx/4/+DtYjAJjTtyMDOhQXoI1+7bKWB
+ ru0auU6RxQ3oJFRVObzcBhaAAED5TpT0NF7Q+jqEVHHRgIJYS4ZrDbC1f3rza28Hw5MR
+ q3TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741697910; x=1742302710;
+ d=1e100.net; s=20230601; t=1741697912; x=1742302712;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u7wjPkG/ntlVqsAo3bR2GeOkCsbyPnLbq91ceDRWcvk=;
- b=Fi4LQShifCOD3jXogMDZ50JaPPEQGPhI8kxbxLS5Vg5paYhJGlMKClr9qV6nDC3sDz
- Z03u3nVD171K3sSF6+ewT8MX9eptSQGX1qm4Q1LofoOacIjOIxU5beXJqVS3bUsDCLLe
- 2eu/2ZJzP+Qt1KaJA0Oi4ml4Ggh7e92gmBqWypwTBBhWG0MIixBWUEF9RChV9AOxwBcp
- fpyFWT3CVtGCSJfTfDUNZHL/DsSU2bcsD53lH/ip0xbXnDl1hCNai9H9vrDMnyprRyie
- 1fAnzV5jJ8/gHR1hqytOVPuNFqyyNldFVaoL6nDZisac1ZdnT2Xzv7SfK5L3DKHmgPuP
- DJAg==
+ bh=9qziwSp72v5bFf9UwHWA2wgeDsKZUWFBWm7xQttp+nk=;
+ b=kXkqtSKRBzBgcNMKBGRxta0XnDHE5+oE8kY2zntF+4fouzF8X+JNiI9c4s1H7i6Av7
+ JERdcT+yBCECv0SSfic5O+KlZFBmVf8L9SFTqrDc+9TcMAvT9ONtpnHEaKOBWnNJ/HFF
+ ePy9tZ1/1S7Mf1d/YFIZoDc3mP4bNpT4Rg0kMJlsqyTYJLtjD/VZZfAdYuxF7zDqJ3Fg
+ 9I+jhARzf12XTTdXT0kk9LtkFH9IoJg3FoVE1O2ZGEojuntw4ITMLhW6k06qaC9wGuv1
+ TDIl0qt1hnAwJhow6eM2lzaGvz8Q5vhmphOmYIrG70BbiOSteyWgb9oVJvy2W0Huo5xa
+ j1cA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUYS0NIBBX134ptewyiUy8umBUjCRLpMm8P18Le+mgi0B8m6hTlpYOjTevFNwgZxME6zOdytb568Q==@nongnu.org
-X-Gm-Message-State: AOJu0YzL5GbZtw0ZzuTCs/TpCiG3ol4aLiu/x/hZtEbX1vgIKYbcqchm
- om2QqAO+/ph+0msj3VTqoJ9MuHjG470MKDAIp5plmYZbq1qz0z961f9Y0w==
-X-Gm-Gg: ASbGncsCJrj7YsReHKPJazPSTfwSj251Om8+OpjIjwVmV3jmnoqQK7fqmdWGNktKIvu
- 058YGpzOIAuQ964NOMqBTNOxG/PzlGaq3CrSZxYfcniiInZEm4OHK3t/FBbq6F9zw318ESnlmvV
- g6cxqYETZypCTAJqZuf1CjIuF6g64GeWPkr0Ql+xAFD12j5tw03IXlBUiW4M/dQpYNcA0XCjeqR
- V1Sj7a0IFZwNWUYxcJ7dtxQtSFPP/GS/EWz7f67nUJ806Bh3YfuoevoQNC+Qh3RsJKVwmUH7Vc7
- Jvp7N/alQ+udBSqRAqcYU5J04m1YcQ6l2r5BYc9d6LW3NDU5XWI=
-X-Google-Smtp-Source: AGHT+IGIqYa8qeyLfWBVgGoHt+p6wAsY1KCHmJ7RHjz24qW8Etm3dVWkWNWeWdinz2VYptWdxW8HjQ==
-X-Received: by 2002:a17:90b:2d82:b0:2ff:5357:1c7e with SMTP id
- 98e67ed59e1d1-2ff7ce89db6mr26355537a91.20.1741697908460; 
- Tue, 11 Mar 2025 05:58:28 -0700 (PDT)
+ AJvYcCX3jvOA08sY4aUH6TjbL8weBDTDhKIW50YElV1Yb5EAfOky8743eNb0v5NGrSDn+8t4HiPSpqNTpg==@nongnu.org
+X-Gm-Message-State: AOJu0Yzri3WHvzzRcBIi42H+jICu+0Tyqic5k8Bj6A/r24BF7e/WS6KL
+ 9uO/vdm74YhzsrwJAez26Whiqsbjl7Rf5+iDcdl82RISsIMmo6HChT/tzQ==
+X-Gm-Gg: ASbGncugDOT84EbR/QqruSzfr0tpb7/x+ls5BeTvEDOoxfk7y8QEkDT6Ip/FeyMQT5D
+ gECHgBhfSuadNaBn5VF7mNLNR5wT2FszjRr/Kh0rbXfFT+sTnNnYY4kucOA5aqP5qtLwCDUF0pE
+ +9vkdCXoEtwf8m9xjlcHxVldcfqXWHWHhwGEFYmhl/xYP1bgks5qbXm1DeRctSHfLlzfgS/OcpO
+ 2YWUCn44zAkYpDyupVn6D+8w91Ulht+TC5fkLQdJIjIDPYyDnu/i/vI26Odthsy9Xma715IPGxA
+ y1IPj4DeB9rpSlRk4iQf3RkVRm5Hb6Xka4mqxS92tUnUavAECfg=
+X-Google-Smtp-Source: AGHT+IFjo34kHqAtrEJIIQO9nDSHx36UtediFHCmhNt2Sd9pOmgWHHuetKAcotvGwVfBoB67Iq5Org==
+X-Received: by 2002:a17:90b:4ad0:b0:2ff:6fc3:79c4 with SMTP id
+ 98e67ed59e1d1-2ff7cef5cdamr26065740a91.27.1741697911557; 
+ Tue, 11 Mar 2025 05:58:31 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.58.26
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.58.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 05:58:28 -0700 (PDT)
+ Tue, 11 Mar 2025 05:58:31 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 01/72] ppc/ppc405: Remove tests
-Date: Tue, 11 Mar 2025 22:56:55 +1000
-Message-ID: <20250311125815.903177-2-npiggin@gmail.com>
+Subject: [PULL 02/72] ppc/ppc405: Remove boards
+Date: Tue, 11 Mar 2025 22:56:56 +1000
+Message-ID: <20250311125815.903177-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,105 +100,2068 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cédric Le Goater <clg@redhat.com>
 
-Since we are about to remove all support for PPC 405, start by
-removing the tests referring to the ref405ep machine.
+The ref405ep machine is the only PPC 405 machine. Drop all support by
+removing the SoC and associated devices as-well as the machine.
 
-Link: https://lore.kernel.org/qemu-devel/20250110141800.1587589-2-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250110141800.1587589-3-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20250204080649.836155-2-clg@redhat.com>
+Message-ID: <20250204080649.836155-3-clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/functional/meson.build     |  1 -
- tests/functional/test_ppc_405.py | 37 --------------------------------
- tests/qtest/m48t59-test.c        |  5 -----
- tests/qtest/meson.build          |  1 -
- 4 files changed, 44 deletions(-)
- delete mode 100755 tests/functional/test_ppc_405.py
+ MAINTAINERS                     |    6 -
+ docs/about/deprecated.rst       |    8 -
+ docs/about/removed-features.rst |    7 +
+ docs/system/ppc/embedded.rst    |    1 -
+ hw/ppc/Kconfig                  |    9 -
+ hw/ppc/meson.build              |    3 -
+ hw/ppc/ppc405.h                 |  186 -----
+ hw/ppc/ppc405_boards.c          |  520 -------------
+ hw/ppc/ppc405_uc.c              | 1216 -------------------------------
+ 9 files changed, 7 insertions(+), 1949 deletions(-)
+ delete mode 100644 hw/ppc/ppc405.h
+ delete mode 100644 hw/ppc/ppc405_boards.c
+ delete mode 100644 hw/ppc/ppc405_uc.c
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index e78560a901..74f8414a0c 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -207,7 +207,6 @@ tests_ppc_system_quick = [
- ]
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0e5db7a574..e2f538fc16 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1407,12 +1407,6 @@ F: hw/openrisc/openrisc_sim.c
  
- tests_ppc_system_thorough = [
--  'ppc_405',
-   'ppc_40p',
-   'ppc_amiga',
-   'ppc_bamboo',
-diff --git a/tests/functional/test_ppc_405.py b/tests/functional/test_ppc_405.py
-deleted file mode 100755
-index 9851c03ee9..0000000000
---- a/tests/functional/test_ppc_405.py
+ PowerPC Machines
+ ----------------
+-405 (ref405ep)
+-L: qemu-ppc@nongnu.org
+-S: Orphan
+-F: hw/ppc/ppc405*
+-F: tests/functional/test_ppc_405.py
+-
+ Bamboo
+ L: qemu-ppc@nongnu.org
+ S: Orphan
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 589951b136..3d39d2a9da 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -277,14 +277,6 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
+ better reflects the way this property affects all random data within
+ the device tree blob, not just the ``kaslr-seed`` node.
+ 
+-PPC 405 ``ref405ep`` machine (since 9.1)
+-''''''''''''''''''''''''''''''''''''''''
+-
+-The ``ref405ep`` machine and PPC 405 CPU have no known users, firmware
+-images are not available, OpenWRT dropped support in 2019, U-Boot in
+-2017, Linux also is dropping support in 2024. It is time to let go of
+-this ancient hardware and focus on newer CPUs and platforms.
+-
+ Big-Endian variants of MicroBlaze ``petalogix-ml605`` and ``xlnx-zynqmp-pmu`` machines (since 9.2)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 156c0c253c..2527a91795 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -1064,6 +1064,13 @@ for all machine types using the PXA2xx and OMAP2 SoCs. We are also
+ dropping the ``cheetah`` OMAP1 board, because we don't have any
+ test images for it and don't know of anybody who does.
+ 
++ppc ``ref405ep`` machine (removed in 10.0)
++''''''''''''''''''''''''''''''''''''''''''
++
++This machine was removed because PPC 405 CPU have no known users,
++firmware images are not available, OpenWRT dropped support in 2019,
++U-Boot in 2017, and Linux in 2024.
++
+ linux-user mode CPUs
+ --------------------
+ 
+diff --git a/docs/system/ppc/embedded.rst b/docs/system/ppc/embedded.rst
+index af3b3d9fa4..5cb7d98b45 100644
+--- a/docs/system/ppc/embedded.rst
++++ b/docs/system/ppc/embedded.rst
+@@ -4,6 +4,5 @@ Embedded family boards
+ - ``bamboo``               bamboo
+ - ``mpc8544ds``            mpc8544ds
+ - ``ppce500``              generic paravirt e500 platform
+-- ``ref405ep``             ref405ep
+ - ``sam460ex``             aCube Sam460ex
+ - ``virtex-ml507``         Xilinx Virtex ML507 reference design
+diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+index b44d91bebb..ced6bbc740 100644
+--- a/hw/ppc/Kconfig
++++ b/hw/ppc/Kconfig
+@@ -44,15 +44,6 @@ config POWERNV
+     select SSI_M25P80
+     select PNV_SPI
+ 
+-config PPC405
+-    bool
+-    default y
+-    depends on PPC
+-    select M48T59
+-    select PFLASH_CFI02
+-    select PPC4XX
+-    select SERIAL_MM
+-
+ config PPC440
+     bool
+     default y
+diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
+index 7cd9189869..9893f8adeb 100644
+--- a/hw/ppc/meson.build
++++ b/hw/ppc/meson.build
+@@ -57,9 +57,6 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
+   'pnv_n1_chiplet.c',
+ ))
+ # PowerPC 4xx boards
+-ppc_ss.add(when: 'CONFIG_PPC405', if_true: files(
+-  'ppc405_boards.c',
+-  'ppc405_uc.c'))
+ ppc_ss.add(when: 'CONFIG_PPC440', if_true: files(
+   'ppc440_bamboo.c',
+   'ppc440_uc.c'))
+diff --git a/hw/ppc/ppc405.h b/hw/ppc/ppc405.h
+deleted file mode 100644
+index 9a4312691e..0000000000
+--- a/hw/ppc/ppc405.h
 +++ /dev/null
-@@ -1,37 +0,0 @@
--#!/usr/bin/env python3
--#
--# Test that the U-Boot firmware boots on ppc 405 machines and check the console
--#
--# Copyright (c) 2021 Red Hat, Inc.
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later.  See the COPYING file in the top-level directory.
+@@ -1,186 +0,0 @@
+-/*
+- * QEMU PowerPC 405 shared definitions
+- *
+- * Copyright (c) 2007 Jocelyn Mayer
+- *
+- * Permission is hereby granted, free of charge, to any person obtaining a copy
+- * of this software and associated documentation files (the "Software"), to deal
+- * in the Software without restriction, including without limitation the rights
+- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+- * copies of the Software, and to permit persons to whom the Software is
+- * furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice shall be included in
+- * all copies or substantial portions of the Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+- * THE SOFTWARE.
+- */
 -
--from qemu_test import QemuSystemTest, Asset
--from qemu_test import wait_for_console_pattern
--from qemu_test import exec_command_and_wait_for_pattern
+-#ifndef PPC405_H
+-#define PPC405_H
 -
--class Ppc405Machine(QemuSystemTest):
+-#include "qom/object.h"
+-#include "hw/ppc/ppc4xx.h"
+-#include "hw/intc/ppc-uic.h"
+-#include "hw/i2c/ppc4xx_i2c.h"
 -
--    timeout = 90
+-/* PLB to OPB bridge */
+-#define TYPE_PPC405_POB "ppc405-pob"
+-OBJECT_DECLARE_SIMPLE_TYPE(Ppc405PobState, PPC405_POB);
+-struct Ppc405PobState {
+-    Ppc4xxDcrDeviceState parent_obj;
 -
--    ASSET_UBOOT = Asset(
--        ('https://gitlab.com/huth/u-boot/-/raw/taihu-2021-10-09/'
--         'u-boot-taihu.bin'),
--        'a076bb6cdeaafa406330e51e074b66d8878d9036d67d4caa0137be03ee4c112c')
+-    uint32_t bear;
+-    uint32_t besr0;
+-    uint32_t besr1;
+-};
 -
--    def do_test_ppc405(self):
--        file_path = self.ASSET_UBOOT.fetch()
--        self.vm.set_console(console_index=1)
--        self.vm.add_args('-bios', file_path)
--        self.vm.launch()
--        wait_for_console_pattern(self, 'AMCC PPC405EP Evaluation Board')
--        exec_command_and_wait_for_pattern(self, 'reset', 'AMCC PowerPC 405EP')
+-/* OPB arbitrer */
+-#define TYPE_PPC405_OPBA "ppc405-opba"
+-OBJECT_DECLARE_SIMPLE_TYPE(Ppc405OpbaState, PPC405_OPBA);
+-struct Ppc405OpbaState {
+-    SysBusDevice parent_obj;
 -
--    def test_ppc_ref405ep(self):
--        self.require_accelerator("tcg")
--        self.set_machine('ref405ep')
--        self.do_test_ppc405()
+-    MemoryRegion io;
+-    uint8_t cr;
+-    uint8_t pr;
+-};
 -
--if __name__ == '__main__':
--    QemuSystemTest.main()
-diff --git a/tests/qtest/m48t59-test.c b/tests/qtest/m48t59-test.c
-index 605797ab78..1e39a0e8f0 100644
---- a/tests/qtest/m48t59-test.c
-+++ b/tests/qtest/m48t59-test.c
-@@ -247,11 +247,6 @@ static void base_setup(void)
-         base_year = 1968;
-         base_machine = "SS-5";
-         use_mmio = true;
--    } else if (g_str_equal(arch, "ppc") || g_str_equal(arch, "ppc64")) {
--        base = 0xF0000000;
--        base_year = 1968;
--        base_machine = "ref405ep";
--        use_mmio = true;
-     } else {
-         g_assert_not_reached();
-     }
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 8a6243382a..b23fe67db7 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -171,7 +171,6 @@ qtests_mips64el = qtests_mips
- qtests_ppc = \
-   qtests_filter + \
-   (config_all_devices.has_key('CONFIG_ISA_TESTDEV') ? ['endianness-test'] : []) +            \
--  (config_all_devices.has_key('CONFIG_M48T59') ? ['m48t59-test'] : []) +                     \
-   (config_all_accel.has_key('CONFIG_TCG') ? ['prom-env-test'] : []) +                              \
-   (config_all_accel.has_key('CONFIG_TCG') ? ['boot-serial-test'] : []) +                           \
-   ['boot-order-test']
+-/* DMA controller */
+-#define TYPE_PPC405_DMA "ppc405-dma"
+-OBJECT_DECLARE_SIMPLE_TYPE(Ppc405DmaState, PPC405_DMA);
+-struct Ppc405DmaState {
+-    Ppc4xxDcrDeviceState parent_obj;
+-
+-    qemu_irq irqs[4];
+-    uint32_t cr[4];
+-    uint32_t ct[4];
+-    uint32_t da[4];
+-    uint32_t sa[4];
+-    uint32_t sg[4];
+-    uint32_t sr;
+-    uint32_t sgc;
+-    uint32_t slp;
+-    uint32_t pol;
+-};
+-
+-/* GPIO */
+-#define TYPE_PPC405_GPIO "ppc405-gpio"
+-OBJECT_DECLARE_SIMPLE_TYPE(Ppc405GpioState, PPC405_GPIO);
+-struct Ppc405GpioState {
+-    SysBusDevice parent_obj;
+-
+-    MemoryRegion io;
+-    uint32_t or;
+-    uint32_t tcr;
+-    uint32_t osrh;
+-    uint32_t osrl;
+-    uint32_t tsrh;
+-    uint32_t tsrl;
+-    uint32_t odr;
+-    uint32_t ir;
+-    uint32_t rr1;
+-    uint32_t isr1h;
+-    uint32_t isr1l;
+-};
+-
+-/* On Chip Memory */
+-#define TYPE_PPC405_OCM "ppc405-ocm"
+-OBJECT_DECLARE_SIMPLE_TYPE(Ppc405OcmState, PPC405_OCM);
+-struct Ppc405OcmState {
+-    Ppc4xxDcrDeviceState parent_obj;
+-
+-    MemoryRegion ram;
+-    MemoryRegion isarc_ram;
+-    MemoryRegion dsarc_ram;
+-    uint32_t isarc;
+-    uint32_t isacntl;
+-    uint32_t dsarc;
+-    uint32_t dsacntl;
+-};
+-
+-/* General purpose timers */
+-#define TYPE_PPC405_GPT "ppc405-gpt"
+-OBJECT_DECLARE_SIMPLE_TYPE(Ppc405GptState, PPC405_GPT);
+-struct Ppc405GptState {
+-    SysBusDevice parent_obj;
+-
+-    MemoryRegion iomem;
+-
+-    int64_t tb_offset;
+-    uint32_t tb_freq;
+-    QEMUTimer *timer;
+-    qemu_irq irqs[5];
+-    uint32_t oe;
+-    uint32_t ol;
+-    uint32_t im;
+-    uint32_t is;
+-    uint32_t ie;
+-    uint32_t comp[5];
+-    uint32_t mask[5];
+-};
+-
+-#define TYPE_PPC405_CPC "ppc405-cpc"
+-OBJECT_DECLARE_SIMPLE_TYPE(Ppc405CpcState, PPC405_CPC);
+-
+-enum {
+-    PPC405EP_CPU_CLK   = 0,
+-    PPC405EP_PLB_CLK   = 1,
+-    PPC405EP_OPB_CLK   = 2,
+-    PPC405EP_EBC_CLK   = 3,
+-    PPC405EP_MAL_CLK   = 4,
+-    PPC405EP_PCI_CLK   = 5,
+-    PPC405EP_UART0_CLK = 6,
+-    PPC405EP_UART1_CLK = 7,
+-    PPC405EP_CLK_NB    = 8,
+-};
+-
+-struct Ppc405CpcState {
+-    Ppc4xxDcrDeviceState parent_obj;
+-
+-    uint32_t sysclk;
+-    clk_setup_t clk_setup[PPC405EP_CLK_NB];
+-    uint32_t boot;
+-    uint32_t epctl;
+-    uint32_t pllmr[2];
+-    uint32_t ucr;
+-    uint32_t srr;
+-    uint32_t jtagid;
+-    uint32_t pci;
+-    /* Clock and power management */
+-    uint32_t er;
+-    uint32_t fr;
+-    uint32_t sr;
+-};
+-
+-#define TYPE_PPC405_SOC "ppc405-soc"
+-OBJECT_DECLARE_SIMPLE_TYPE(Ppc405SoCState, PPC405_SOC);
+-
+-struct Ppc405SoCState {
+-    /* Private */
+-    DeviceState parent_obj;
+-
+-    /* Public */
+-    PowerPCCPU cpu;
+-    PPCUIC uic;
+-    Ppc405CpcState cpc;
+-    Ppc405GptState gpt;
+-    Ppc405OcmState ocm;
+-    Ppc405GpioState gpio;
+-    Ppc405DmaState dma;
+-    PPC4xxI2CState i2c;
+-    Ppc4xxEbcState ebc;
+-    Ppc405OpbaState opba;
+-    Ppc405PobState pob;
+-    Ppc4xxPlbState plb;
+-    Ppc4xxMalState mal;
+-    Ppc4xxSdramDdrState sdram;
+-};
+-
+-#endif /* PPC405_H */
+diff --git a/hw/ppc/ppc405_boards.c b/hw/ppc/ppc405_boards.c
+deleted file mode 100644
+index 969cac345a..0000000000
+--- a/hw/ppc/ppc405_boards.c
++++ /dev/null
+@@ -1,520 +0,0 @@
+-/*
+- * QEMU PowerPC 405 evaluation boards emulation
+- *
+- * Copyright (c) 2007 Jocelyn Mayer
+- *
+- * Permission is hereby granted, free of charge, to any person obtaining a copy
+- * of this software and associated documentation files (the "Software"), to deal
+- * in the Software without restriction, including without limitation the rights
+- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+- * copies of the Software, and to permit persons to whom the Software is
+- * furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice shall be included in
+- * all copies or substantial portions of the Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+- * THE SOFTWARE.
+- */
+-
+-#include "qemu/osdep.h"
+-#include "qemu/units.h"
+-#include "qapi/error.h"
+-#include "qemu/datadir.h"
+-#include "cpu.h"
+-#include "hw/ppc/ppc.h"
+-#include "hw/qdev-properties.h"
+-#include "hw/sysbus.h"
+-#include "ppc405.h"
+-#include "hw/rtc/m48t59.h"
+-#include "hw/block/flash.h"
+-#include "system/qtest.h"
+-#include "system/reset.h"
+-#include "system/block-backend.h"
+-#include "hw/boards.h"
+-#include "qemu/error-report.h"
+-#include "hw/loader.h"
+-#include "qemu/cutils.h"
+-#include "elf.h"
+-
+-#define BIOS_FILENAME "ppc405_rom.bin"
+-#define BIOS_SIZE (2 * MiB)
+-
+-#define KERNEL_LOAD_ADDR 0x01000000
+-#define INITRD_LOAD_ADDR 0x01800000
+-
+-#define PPC405EP_SDRAM_BASE 0x00000000
+-#define PPC405EP_SRAM_BASE  0xFFF00000
+-#define PPC405EP_SRAM_SIZE  (512 * KiB)
+-
+-#define USE_FLASH_BIOS
+-
+-#define TYPE_PPC405_MACHINE MACHINE_TYPE_NAME("ppc405")
+-OBJECT_DECLARE_SIMPLE_TYPE(Ppc405MachineState, PPC405_MACHINE);
+-
+-struct Ppc405MachineState {
+-    /* Private */
+-    MachineState parent_obj;
+-    /* Public */
+-
+-    Ppc405SoCState soc;
+-};
+-
+-/* CPU reset handler when booting directly from a loaded kernel */
+-static struct boot_info {
+-    uint32_t entry;
+-    uint32_t bdloc;
+-    uint32_t initrd_base;
+-    uint32_t initrd_size;
+-    uint32_t cmdline_base;
+-    uint32_t cmdline_size;
+-} boot_info;
+-
+-static void main_cpu_reset(void *opaque)
+-{
+-    PowerPCCPU *cpu = opaque;
+-    CPUPPCState *env = &cpu->env;
+-    struct boot_info *bi = env->load_info;
+-
+-    cpu_reset(CPU(cpu));
+-
+-    /* stack: top of sram */
+-    env->gpr[1] = PPC405EP_SRAM_BASE + PPC405EP_SRAM_SIZE - 8;
+-
+-    /* Tune our boot state */
+-    env->gpr[3] = bi->bdloc;
+-    env->gpr[4] = bi->initrd_base;
+-    env->gpr[5] = bi->initrd_base + bi->initrd_size;
+-    env->gpr[6] = bi->cmdline_base;
+-    env->gpr[7] = bi->cmdline_size;
+-
+-    env->nip = bi->entry;
+-}
+-
+-/* Bootinfo as set-up by u-boot */
+-typedef struct {
+-    uint32_t bi_memstart;
+-    uint32_t bi_memsize;
+-    uint32_t bi_flashstart;
+-    uint32_t bi_flashsize;
+-    uint32_t bi_flashoffset; /* 0x10 */
+-    uint32_t bi_sramstart;
+-    uint32_t bi_sramsize;
+-    uint32_t bi_bootflags;
+-    uint32_t bi_ipaddr; /* 0x20 */
+-    uint8_t  bi_enetaddr[6];
+-    uint16_t bi_ethspeed;
+-    uint32_t bi_intfreq;
+-    uint32_t bi_busfreq; /* 0x30 */
+-    uint32_t bi_baudrate;
+-    uint8_t  bi_s_version[4];
+-    uint8_t  bi_r_version[32];
+-    uint32_t bi_procfreq;
+-    uint32_t bi_plb_busfreq;
+-    uint32_t bi_pci_busfreq;
+-    uint8_t  bi_pci_enetaddr[6];
+-    uint8_t  bi_pci_enetaddr2[6]; /* PPC405EP specific */
+-    uint32_t bi_opbfreq;
+-    uint32_t bi_iic_fast[2];
+-} ppc4xx_bd_info_t;
+-
+-static void ppc405_set_default_bootinfo(ppc4xx_bd_info_t *bd,
+-                                        ram_addr_t ram_size)
+-{
+-        memset(bd, 0, sizeof(*bd));
+-
+-        bd->bi_memstart = PPC405EP_SDRAM_BASE;
+-        bd->bi_memsize = ram_size;
+-        bd->bi_sramstart = PPC405EP_SRAM_BASE;
+-        bd->bi_sramsize = PPC405EP_SRAM_SIZE;
+-        bd->bi_bootflags = 0;
+-        bd->bi_intfreq = 133333333;
+-        bd->bi_busfreq = 33333333;
+-        bd->bi_baudrate = 115200;
+-        bd->bi_s_version[0] = 'Q';
+-        bd->bi_s_version[1] = 'M';
+-        bd->bi_s_version[2] = 'U';
+-        bd->bi_s_version[3] = '\0';
+-        bd->bi_r_version[0] = 'Q';
+-        bd->bi_r_version[1] = 'E';
+-        bd->bi_r_version[2] = 'M';
+-        bd->bi_r_version[3] = 'U';
+-        bd->bi_r_version[4] = '\0';
+-        bd->bi_procfreq = 133333333;
+-        bd->bi_plb_busfreq = 33333333;
+-        bd->bi_pci_busfreq = 33333333;
+-        bd->bi_opbfreq = 33333333;
+-}
+-
+-static ram_addr_t __ppc405_set_bootinfo(CPUPPCState *env, ppc4xx_bd_info_t *bd)
+-{
+-    CPUState *cs = env_cpu(env);
+-    ram_addr_t bdloc;
+-    int i, n;
+-
+-    /* We put the bd structure at the top of memory */
+-    if (bd->bi_memsize >= 0x01000000UL) {
+-        bdloc = 0x01000000UL - sizeof(ppc4xx_bd_info_t);
+-    } else {
+-        bdloc = bd->bi_memsize - sizeof(ppc4xx_bd_info_t);
+-    }
+-    stl_be_phys(cs->as, bdloc + 0x00, bd->bi_memstart);
+-    stl_be_phys(cs->as, bdloc + 0x04, bd->bi_memsize);
+-    stl_be_phys(cs->as, bdloc + 0x08, bd->bi_flashstart);
+-    stl_be_phys(cs->as, bdloc + 0x0C, bd->bi_flashsize);
+-    stl_be_phys(cs->as, bdloc + 0x10, bd->bi_flashoffset);
+-    stl_be_phys(cs->as, bdloc + 0x14, bd->bi_sramstart);
+-    stl_be_phys(cs->as, bdloc + 0x18, bd->bi_sramsize);
+-    stl_be_phys(cs->as, bdloc + 0x1C, bd->bi_bootflags);
+-    stl_be_phys(cs->as, bdloc + 0x20, bd->bi_ipaddr);
+-    for (i = 0; i < 6; i++) {
+-        stb_phys(cs->as, bdloc + 0x24 + i, bd->bi_enetaddr[i]);
+-    }
+-    stw_be_phys(cs->as, bdloc + 0x2A, bd->bi_ethspeed);
+-    stl_be_phys(cs->as, bdloc + 0x2C, bd->bi_intfreq);
+-    stl_be_phys(cs->as, bdloc + 0x30, bd->bi_busfreq);
+-    stl_be_phys(cs->as, bdloc + 0x34, bd->bi_baudrate);
+-    for (i = 0; i < 4; i++) {
+-        stb_phys(cs->as, bdloc + 0x38 + i, bd->bi_s_version[i]);
+-    }
+-    for (i = 0; i < 32; i++) {
+-        stb_phys(cs->as, bdloc + 0x3C + i, bd->bi_r_version[i]);
+-    }
+-    stl_be_phys(cs->as, bdloc + 0x5C, bd->bi_procfreq);
+-    stl_be_phys(cs->as, bdloc + 0x60, bd->bi_plb_busfreq);
+-    stl_be_phys(cs->as, bdloc + 0x64, bd->bi_pci_busfreq);
+-    for (i = 0; i < 6; i++) {
+-        stb_phys(cs->as, bdloc + 0x68 + i, bd->bi_pci_enetaddr[i]);
+-    }
+-    n = 0x70; /* includes 2 bytes hole */
+-    for (i = 0; i < 6; i++) {
+-        stb_phys(cs->as, bdloc + n++, bd->bi_pci_enetaddr2[i]);
+-    }
+-    stl_be_phys(cs->as, bdloc + n, bd->bi_opbfreq);
+-    n += 4;
+-    for (i = 0; i < 2; i++) {
+-        stl_be_phys(cs->as, bdloc + n, bd->bi_iic_fast[i]);
+-        n += 4;
+-    }
+-
+-    return bdloc;
+-}
+-
+-static ram_addr_t ppc405_set_bootinfo(CPUPPCState *env, ram_addr_t ram_size)
+-{
+-    ppc4xx_bd_info_t bd;
+-
+-    memset(&bd, 0, sizeof(bd));
+-
+-    ppc405_set_default_bootinfo(&bd, ram_size);
+-
+-    return __ppc405_set_bootinfo(env, &bd);
+-}
+-
+-static void boot_from_kernel(MachineState *machine, PowerPCCPU *cpu)
+-{
+-    CPUPPCState *env = &cpu->env;
+-    hwaddr boot_entry;
+-    hwaddr kernel_base;
+-    int kernel_size;
+-    hwaddr initrd_base;
+-    int initrd_size;
+-    ram_addr_t bdloc;
+-    int len;
+-
+-    bdloc = ppc405_set_bootinfo(env, machine->ram_size);
+-    boot_info.bdloc = bdloc;
+-
+-    kernel_size = load_elf(machine->kernel_filename, NULL, NULL, NULL,
+-                           &boot_entry, &kernel_base, NULL, NULL,
+-                           ELFDATA2MSB, PPC_ELF_MACHINE, 0, 0);
+-    if (kernel_size < 0) {
+-        error_report("Could not load kernel '%s' : %s",
+-                     machine->kernel_filename, load_elf_strerror(kernel_size));
+-        exit(1);
+-    }
+-    boot_info.entry = boot_entry;
+-
+-    /* load initrd */
+-    if (machine->initrd_filename) {
+-        initrd_base = INITRD_LOAD_ADDR;
+-        initrd_size = load_image_targphys(machine->initrd_filename, initrd_base,
+-                                          machine->ram_size - initrd_base);
+-        if (initrd_size < 0) {
+-            error_report("could not load initial ram disk '%s'",
+-                         machine->initrd_filename);
+-            exit(1);
+-        }
+-
+-        boot_info.initrd_base = initrd_base;
+-        boot_info.initrd_size = initrd_size;
+-    }
+-
+-    if (machine->kernel_cmdline) {
+-        len = strlen(machine->kernel_cmdline);
+-        bdloc -= ((len + 255) & ~255);
+-        cpu_physical_memory_write(bdloc, machine->kernel_cmdline, len + 1);
+-        boot_info.cmdline_base = bdloc;
+-        boot_info.cmdline_size = bdloc + len;
+-    }
+-
+-    /* Install our custom reset handler to start from Linux */
+-    qemu_register_reset(main_cpu_reset, cpu);
+-    env->load_info = &boot_info;
+-}
+-
+-static void ppc405_init(MachineState *machine)
+-{
+-    Ppc405MachineState *ppc405 = PPC405_MACHINE(machine);
+-    const char *kernel_filename = machine->kernel_filename;
+-    MemoryRegion *sysmem = get_system_memory();
+-
+-    object_initialize_child(OBJECT(machine), "soc", &ppc405->soc,
+-                            TYPE_PPC405_SOC);
+-    object_property_set_link(OBJECT(&ppc405->soc), "dram",
+-                             OBJECT(machine->ram), &error_abort);
+-    object_property_set_uint(OBJECT(&ppc405->soc), "sys-clk", 33333333,
+-                             &error_abort);
+-    qdev_realize(DEVICE(&ppc405->soc), NULL, &error_fatal);
+-
+-    /* allocate and load BIOS */
+-    if (machine->firmware) {
+-        MemoryRegion *bios = g_new(MemoryRegion, 1);
+-        g_autofree char *filename = qemu_find_file(QEMU_FILE_TYPE_BIOS,
+-                                                   machine->firmware);
+-        long bios_size;
+-
+-        memory_region_init_rom(bios, NULL, "ef405ep.bios", BIOS_SIZE,
+-                               &error_fatal);
+-
+-        if (!filename) {
+-            error_report("Could not find firmware '%s'", machine->firmware);
+-            exit(1);
+-        }
+-
+-        bios_size = load_image_size(filename,
+-                                    memory_region_get_ram_ptr(bios),
+-                                    BIOS_SIZE);
+-        if (bios_size < 0) {
+-            error_report("Could not load PowerPC BIOS '%s'", machine->firmware);
+-            exit(1);
+-        }
+-
+-        bios_size = (bios_size + 0xfff) & ~0xfff;
+-        memory_region_add_subregion(sysmem, (uint32_t)(-bios_size), bios);
+-    }
+-
+-    /* Load kernel and initrd using U-Boot images */
+-    if (kernel_filename && machine->firmware) {
+-        target_ulong kernel_base, initrd_base;
+-        long kernel_size, initrd_size;
+-
+-        kernel_base = KERNEL_LOAD_ADDR;
+-        kernel_size = load_image_targphys(kernel_filename, kernel_base,
+-                                          machine->ram_size - kernel_base);
+-        if (kernel_size < 0) {
+-            error_report("could not load kernel '%s'", kernel_filename);
+-            exit(1);
+-        }
+-
+-        /* load initrd */
+-        if (machine->initrd_filename) {
+-            initrd_base = INITRD_LOAD_ADDR;
+-            initrd_size = load_image_targphys(machine->initrd_filename,
+-                                              initrd_base,
+-                                              machine->ram_size - initrd_base);
+-            if (initrd_size < 0) {
+-                error_report("could not load initial ram disk '%s'",
+-                             machine->initrd_filename);
+-                exit(1);
+-            }
+-        }
+-
+-    /* Load ELF kernel and rootfs.cpio */
+-    } else if (kernel_filename && !machine->firmware) {
+-        ppc4xx_sdram_ddr_enable(&ppc405->soc.sdram);
+-        boot_from_kernel(machine, &ppc405->soc.cpu);
+-    }
+-}
+-
+-static void ppc405_machine_class_init(ObjectClass *oc, void *data)
+-{
+-    MachineClass *mc = MACHINE_CLASS(oc);
+-
+-    mc->desc = "PPC405 generic machine";
+-    mc->init = ppc405_init;
+-    mc->default_ram_size = 128 * MiB;
+-    mc->default_ram_id = "ppc405.ram";
+-    mc->deprecation_reason = "machine is old and unmaintained";
+-}
+-
+-static const TypeInfo ppc405_machine_type = {
+-    .name = TYPE_PPC405_MACHINE,
+-    .parent = TYPE_MACHINE,
+-    .instance_size = sizeof(Ppc405MachineState),
+-    .class_init = ppc405_machine_class_init,
+-    .abstract = true,
+-};
+-
+-/*****************************************************************************/
+-/* PPC405EP reference board (IBM) */
+-/*
+- * Standalone board with:
+- * - PowerPC 405EP CPU
+- * - SDRAM (0x00000000)
+- * - Flash (0xFFF80000)
+- * - SRAM  (0xFFF00000)
+- * - NVRAM (0xF0000000)
+- * - FPGA  (0xF0300000)
+- */
+-
+-#define PPC405EP_NVRAM_BASE 0xF0000000
+-#define PPC405EP_FPGA_BASE  0xF0300000
+-#define PPC405EP_FLASH_BASE 0xFFF80000
+-
+-#define TYPE_REF405EP_FPGA "ref405ep-fpga"
+-OBJECT_DECLARE_SIMPLE_TYPE(Ref405epFpgaState, REF405EP_FPGA);
+-struct Ref405epFpgaState {
+-    SysBusDevice parent_obj;
+-
+-    MemoryRegion iomem;
+-
+-    uint8_t reg0;
+-    uint8_t reg1;
+-};
+-
+-static uint64_t ref405ep_fpga_readb(void *opaque, hwaddr addr, unsigned size)
+-{
+-    Ref405epFpgaState *fpga = opaque;
+-    uint32_t ret;
+-
+-    switch (addr) {
+-    case 0x0:
+-        ret = fpga->reg0;
+-        break;
+-    case 0x1:
+-        ret = fpga->reg1;
+-        break;
+-    default:
+-        ret = 0;
+-        break;
+-    }
+-
+-    return ret;
+-}
+-
+-static void ref405ep_fpga_writeb(void *opaque, hwaddr addr, uint64_t value,
+-                                 unsigned size)
+-{
+-    Ref405epFpgaState *fpga = opaque;
+-
+-    switch (addr) {
+-    case 0x0:
+-        /* Read only */
+-        break;
+-    case 0x1:
+-        fpga->reg1 = value;
+-        break;
+-    default:
+-        break;
+-    }
+-}
+-
+-static const MemoryRegionOps ref405ep_fpga_ops = {
+-    .read = ref405ep_fpga_readb,
+-    .write = ref405ep_fpga_writeb,
+-    .impl.min_access_size = 1,
+-    .impl.max_access_size = 1,
+-    .valid.min_access_size = 1,
+-    .valid.max_access_size = 4,
+-    .endianness = DEVICE_BIG_ENDIAN,
+-};
+-
+-static void ref405ep_fpga_reset(DeviceState *dev)
+-{
+-    Ref405epFpgaState *fpga = REF405EP_FPGA(dev);
+-
+-    fpga->reg0 = 0x00;
+-    fpga->reg1 = 0x0F;
+-}
+-
+-static void ref405ep_fpga_realize(DeviceState *dev, Error **errp)
+-{
+-    Ref405epFpgaState *s = REF405EP_FPGA(dev);
+-
+-    memory_region_init_io(&s->iomem, OBJECT(s), &ref405ep_fpga_ops, s,
+-                          "fpga", 0x00000100);
+-    sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->iomem);
+-}
+-
+-static void ref405ep_fpga_class_init(ObjectClass *oc, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    dc->realize = ref405ep_fpga_realize;
+-    device_class_set_legacy_reset(dc, ref405ep_fpga_reset);
+-    /* Reason: only works as part of a ppc405 board */
+-    dc->user_creatable = false;
+-}
+-
+-static const TypeInfo ref405ep_fpga_type = {
+-    .name = TYPE_REF405EP_FPGA,
+-    .parent = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(Ref405epFpgaState),
+-    .class_init = ref405ep_fpga_class_init,
+-};
+-
+-static void ref405ep_init(MachineState *machine)
+-{
+-    DeviceState *dev;
+-    SysBusDevice *s;
+-    MemoryRegion *sram = g_new(MemoryRegion, 1);
+-
+-    ppc405_init(machine);
+-
+-    /* allocate SRAM */
+-    memory_region_init_ram(sram, NULL, "ref405ep.sram", PPC405EP_SRAM_SIZE,
+-                           &error_fatal);
+-    memory_region_add_subregion(get_system_memory(), PPC405EP_SRAM_BASE, sram);
+-
+-    /* Register FPGA */
+-    dev = qdev_new(TYPE_REF405EP_FPGA);
+-    object_property_add_child(OBJECT(machine), "fpga", OBJECT(dev));
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, PPC405EP_FPGA_BASE);
+-
+-    /* Register NVRAM */
+-    dev = qdev_new("sysbus-m48t08");
+-    qdev_prop_set_int32(dev, "base-year", 1968);
+-    s = SYS_BUS_DEVICE(dev);
+-    sysbus_realize_and_unref(s, &error_fatal);
+-    sysbus_mmio_map(s, 0, PPC405EP_NVRAM_BASE);
+-}
+-
+-static void ref405ep_class_init(ObjectClass *oc, void *data)
+-{
+-    MachineClass *mc = MACHINE_CLASS(oc);
+-
+-    mc->desc = "ref405ep";
+-    mc->init = ref405ep_init;
+-}
+-
+-static const TypeInfo ref405ep_type = {
+-    .name = MACHINE_TYPE_NAME("ref405ep"),
+-    .parent = TYPE_PPC405_MACHINE,
+-    .class_init = ref405ep_class_init,
+-};
+-
+-static void ppc405_machine_init(void)
+-{
+-    type_register_static(&ppc405_machine_type);
+-    type_register_static(&ref405ep_type);
+-    type_register_static(&ref405ep_fpga_type);
+-}
+-
+-type_init(ppc405_machine_init)
+diff --git a/hw/ppc/ppc405_uc.c b/hw/ppc/ppc405_uc.c
+deleted file mode 100644
+index 8250824a1a..0000000000
+--- a/hw/ppc/ppc405_uc.c
++++ /dev/null
+@@ -1,1216 +0,0 @@
+-/*
+- * QEMU PowerPC 405 embedded processors emulation
+- *
+- * Copyright (c) 2007 Jocelyn Mayer
+- *
+- * Permission is hereby granted, free of charge, to any person obtaining a copy
+- * of this software and associated documentation files (the "Software"), to deal
+- * in the Software without restriction, including without limitation the rights
+- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+- * copies of the Software, and to permit persons to whom the Software is
+- * furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice shall be included in
+- * all copies or substantial portions of the Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+- * THE SOFTWARE.
+- */
+-
+-#include "qemu/osdep.h"
+-#include "qemu/units.h"
+-#include "qapi/error.h"
+-#include "qemu/log.h"
+-#include "cpu.h"
+-#include "hw/ppc/ppc.h"
+-#include "hw/i2c/ppc4xx_i2c.h"
+-#include "hw/irq.h"
+-#include "hw/qdev-properties.h"
+-#include "ppc405.h"
+-#include "hw/char/serial-mm.h"
+-#include "qemu/timer.h"
+-#include "system/reset.h"
+-#include "system/system.h"
+-#include "exec/address-spaces.h"
+-#include "hw/intc/ppc-uic.h"
+-#include "trace.h"
+-
+-/*****************************************************************************/
+-/* Shared peripherals */
+-
+-/*****************************************************************************/
+-/* PLB to OPB bridge */
+-enum {
+-    POB0_BESR0 = 0x0A0,
+-    POB0_BESR1 = 0x0A2,
+-    POB0_BEAR  = 0x0A4,
+-};
+-
+-static uint32_t dcr_read_pob(void *opaque, int dcrn)
+-{
+-    Ppc405PobState *pob = opaque;
+-    uint32_t ret;
+-
+-    switch (dcrn) {
+-    case POB0_BEAR:
+-        ret = pob->bear;
+-        break;
+-    case POB0_BESR0:
+-        ret = pob->besr0;
+-        break;
+-    case POB0_BESR1:
+-        ret = pob->besr1;
+-        break;
+-    default:
+-        /* Avoid gcc warning */
+-        ret = 0;
+-        break;
+-    }
+-
+-    return ret;
+-}
+-
+-static void dcr_write_pob(void *opaque, int dcrn, uint32_t val)
+-{
+-    Ppc405PobState *pob = opaque;
+-
+-    switch (dcrn) {
+-    case POB0_BEAR:
+-        /* Read only */
+-        break;
+-    case POB0_BESR0:
+-        /* Write-clear */
+-        pob->besr0 &= ~val;
+-        break;
+-    case POB0_BESR1:
+-        /* Write-clear */
+-        pob->besr1 &= ~val;
+-        break;
+-    }
+-}
+-
+-static void ppc405_pob_reset(DeviceState *dev)
+-{
+-    Ppc405PobState *pob = PPC405_POB(dev);
+-
+-    /* No error */
+-    pob->bear = 0x00000000;
+-    pob->besr0 = 0x0000000;
+-    pob->besr1 = 0x0000000;
+-}
+-
+-static void ppc405_pob_realize(DeviceState *dev, Error **errp)
+-{
+-    Ppc405PobState *pob = PPC405_POB(dev);
+-    Ppc4xxDcrDeviceState *dcr = PPC4xx_DCR_DEVICE(dev);
+-
+-    ppc4xx_dcr_register(dcr, POB0_BEAR, pob, &dcr_read_pob, &dcr_write_pob);
+-    ppc4xx_dcr_register(dcr, POB0_BESR0, pob, &dcr_read_pob, &dcr_write_pob);
+-    ppc4xx_dcr_register(dcr, POB0_BESR1, pob, &dcr_read_pob, &dcr_write_pob);
+-}
+-
+-static void ppc405_pob_class_init(ObjectClass *oc, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    dc->realize = ppc405_pob_realize;
+-    device_class_set_legacy_reset(dc, ppc405_pob_reset);
+-    /* Reason: only works as function of a ppc4xx SoC */
+-    dc->user_creatable = false;
+-}
+-
+-/*****************************************************************************/
+-/* OPB arbitrer */
+-static uint64_t opba_readb(void *opaque, hwaddr addr, unsigned size)
+-{
+-    Ppc405OpbaState *opba = opaque;
+-    uint32_t ret;
+-
+-    switch (addr) {
+-    case 0x00:
+-        ret = opba->cr;
+-        break;
+-    case 0x01:
+-        ret = opba->pr;
+-        break;
+-    default:
+-        ret = 0x00;
+-        break;
+-    }
+-
+-    trace_opba_readb(addr, ret);
+-    return ret;
+-}
+-
+-static void opba_writeb(void *opaque, hwaddr addr, uint64_t value,
+-                        unsigned size)
+-{
+-    Ppc405OpbaState *opba = opaque;
+-
+-    trace_opba_writeb(addr, value);
+-
+-    switch (addr) {
+-    case 0x00:
+-        opba->cr = value & 0xF8;
+-        break;
+-    case 0x01:
+-        opba->pr = value & 0xFF;
+-        break;
+-    default:
+-        break;
+-    }
+-}
+-static const MemoryRegionOps opba_ops = {
+-    .read = opba_readb,
+-    .write = opba_writeb,
+-    .impl.min_access_size = 1,
+-    .impl.max_access_size = 1,
+-    .valid.min_access_size = 1,
+-    .valid.max_access_size = 4,
+-    .endianness = DEVICE_BIG_ENDIAN,
+-};
+-
+-static void ppc405_opba_reset(DeviceState *dev)
+-{
+-    Ppc405OpbaState *opba = PPC405_OPBA(dev);
+-
+-    opba->cr = 0x00; /* No dynamic priorities - park disabled */
+-    opba->pr = 0x11;
+-}
+-
+-static void ppc405_opba_realize(DeviceState *dev, Error **errp)
+-{
+-    Ppc405OpbaState *s = PPC405_OPBA(dev);
+-
+-    memory_region_init_io(&s->io, OBJECT(s), &opba_ops, s, "opba", 2);
+-    sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->io);
+-}
+-
+-static void ppc405_opba_class_init(ObjectClass *oc, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    dc->realize = ppc405_opba_realize;
+-    device_class_set_legacy_reset(dc, ppc405_opba_reset);
+-    /* Reason: only works as function of a ppc4xx SoC */
+-    dc->user_creatable = false;
+-}
+-
+-/*****************************************************************************/
+-/* Code decompression controller */
+-/* XXX: TODO */
+-
+-/*****************************************************************************/
+-/* DMA controller */
+-enum {
+-    DMA0_CR0 = 0x100,
+-    DMA0_CT0 = 0x101,
+-    DMA0_DA0 = 0x102,
+-    DMA0_SA0 = 0x103,
+-    DMA0_SG0 = 0x104,
+-    DMA0_CR1 = 0x108,
+-    DMA0_CT1 = 0x109,
+-    DMA0_DA1 = 0x10A,
+-    DMA0_SA1 = 0x10B,
+-    DMA0_SG1 = 0x10C,
+-    DMA0_CR2 = 0x110,
+-    DMA0_CT2 = 0x111,
+-    DMA0_DA2 = 0x112,
+-    DMA0_SA2 = 0x113,
+-    DMA0_SG2 = 0x114,
+-    DMA0_CR3 = 0x118,
+-    DMA0_CT3 = 0x119,
+-    DMA0_DA3 = 0x11A,
+-    DMA0_SA3 = 0x11B,
+-    DMA0_SG3 = 0x11C,
+-    DMA0_SR  = 0x120,
+-    DMA0_SGC = 0x123,
+-    DMA0_SLP = 0x125,
+-    DMA0_POL = 0x126,
+-};
+-
+-static uint32_t dcr_read_dma(void *opaque, int dcrn)
+-{
+-    return 0;
+-}
+-
+-static void dcr_write_dma(void *opaque, int dcrn, uint32_t val)
+-{
+-}
+-
+-static void ppc405_dma_reset(DeviceState *dev)
+-{
+-    Ppc405DmaState *dma = PPC405_DMA(dev);
+-    int i;
+-
+-    for (i = 0; i < 4; i++) {
+-        dma->cr[i] = 0x00000000;
+-        dma->ct[i] = 0x00000000;
+-        dma->da[i] = 0x00000000;
+-        dma->sa[i] = 0x00000000;
+-        dma->sg[i] = 0x00000000;
+-    }
+-    dma->sr = 0x00000000;
+-    dma->sgc = 0x00000000;
+-    dma->slp = 0x7C000000;
+-    dma->pol = 0x00000000;
+-}
+-
+-static void ppc405_dma_realize(DeviceState *dev, Error **errp)
+-{
+-    Ppc405DmaState *dma = PPC405_DMA(dev);
+-    Ppc4xxDcrDeviceState *dcr = PPC4xx_DCR_DEVICE(dev);
+-    int i;
+-
+-    for (i = 0; i < ARRAY_SIZE(dma->irqs); i++) {
+-        sysbus_init_irq(SYS_BUS_DEVICE(dma), &dma->irqs[i]);
+-    }
+-
+-    ppc4xx_dcr_register(dcr, DMA0_CR0, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_CT0, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_DA0, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SA0, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SG0, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_CR1, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_CT1, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_DA1, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SA1, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SG1, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_CR2, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_CT2, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_DA2, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SA2, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SG2, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_CR3, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_CT3, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_DA3, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SA3, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SG3, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SR,  dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SGC, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_SLP, dma, &dcr_read_dma, &dcr_write_dma);
+-    ppc4xx_dcr_register(dcr, DMA0_POL, dma, &dcr_read_dma, &dcr_write_dma);
+-}
+-
+-static void ppc405_dma_class_init(ObjectClass *oc, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    dc->realize = ppc405_dma_realize;
+-    device_class_set_legacy_reset(dc, ppc405_dma_reset);
+-    /* Reason: only works as function of a ppc4xx SoC */
+-    dc->user_creatable = false;
+-}
+-
+-/*****************************************************************************/
+-/* GPIO */
+-static uint64_t ppc405_gpio_read(void *opaque, hwaddr addr, unsigned size)
+-{
+-    trace_ppc405_gpio_read(addr, size);
+-    return 0;
+-}
+-
+-static void ppc405_gpio_write(void *opaque, hwaddr addr, uint64_t value,
+-                              unsigned size)
+-{
+-    trace_ppc405_gpio_write(addr, size, value);
+-}
+-
+-static const MemoryRegionOps ppc405_gpio_ops = {
+-    .read = ppc405_gpio_read,
+-    .write = ppc405_gpio_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
+-};
+-
+-static void ppc405_gpio_realize(DeviceState *dev, Error **errp)
+-{
+-    Ppc405GpioState *s = PPC405_GPIO(dev);
+-
+-    memory_region_init_io(&s->io, OBJECT(s), &ppc405_gpio_ops, s, "gpio",
+-                          0x38);
+-    sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->io);
+-}
+-
+-static void ppc405_gpio_class_init(ObjectClass *oc, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    dc->realize = ppc405_gpio_realize;
+-    /* Reason: only works as function of a ppc4xx SoC */
+-    dc->user_creatable = false;
+-}
+-
+-/*****************************************************************************/
+-/* On Chip Memory */
+-enum {
+-    OCM0_ISARC   = 0x018,
+-    OCM0_ISACNTL = 0x019,
+-    OCM0_DSARC   = 0x01A,
+-    OCM0_DSACNTL = 0x01B,
+-};
+-
+-static void ocm_update_mappings(Ppc405OcmState *ocm,
+-                                uint32_t isarc, uint32_t isacntl,
+-                                uint32_t dsarc, uint32_t dsacntl)
+-{
+-    trace_ocm_update_mappings(isarc, isacntl, dsarc, dsacntl, ocm->isarc,
+-                              ocm->isacntl, ocm->dsarc, ocm->dsacntl);
+-
+-    if (ocm->isarc != isarc ||
+-        (ocm->isacntl & 0x80000000) != (isacntl & 0x80000000)) {
+-        if (ocm->isacntl & 0x80000000) {
+-            /* Unmap previously assigned memory region */
+-            trace_ocm_unmap("ISA", ocm->isarc);
+-            memory_region_del_subregion(get_system_memory(), &ocm->isarc_ram);
+-        }
+-        if (isacntl & 0x80000000) {
+-            /* Map new instruction memory region */
+-            trace_ocm_map("ISA", isarc);
+-            memory_region_add_subregion(get_system_memory(), isarc,
+-                                        &ocm->isarc_ram);
+-        }
+-    }
+-    if (ocm->dsarc != dsarc ||
+-        (ocm->dsacntl & 0x80000000) != (dsacntl & 0x80000000)) {
+-        if (ocm->dsacntl & 0x80000000) {
+-            /* Beware not to unmap the region we just mapped */
+-            if (!(isacntl & 0x80000000) || ocm->dsarc != isarc) {
+-                /* Unmap previously assigned memory region */
+-                trace_ocm_unmap("DSA", ocm->dsarc);
+-                memory_region_del_subregion(get_system_memory(),
+-                                            &ocm->dsarc_ram);
+-            }
+-        }
+-        if (dsacntl & 0x80000000) {
+-            /* Beware not to remap the region we just mapped */
+-            if (!(isacntl & 0x80000000) || dsarc != isarc) {
+-                /* Map new data memory region */
+-                trace_ocm_map("DSA", dsarc);
+-                memory_region_add_subregion(get_system_memory(), dsarc,
+-                                            &ocm->dsarc_ram);
+-            }
+-        }
+-    }
+-}
+-
+-static uint32_t dcr_read_ocm(void *opaque, int dcrn)
+-{
+-    Ppc405OcmState *ocm = opaque;
+-    uint32_t ret;
+-
+-    switch (dcrn) {
+-    case OCM0_ISARC:
+-        ret = ocm->isarc;
+-        break;
+-    case OCM0_ISACNTL:
+-        ret = ocm->isacntl;
+-        break;
+-    case OCM0_DSARC:
+-        ret = ocm->dsarc;
+-        break;
+-    case OCM0_DSACNTL:
+-        ret = ocm->dsacntl;
+-        break;
+-    default:
+-        ret = 0;
+-        break;
+-    }
+-
+-    return ret;
+-}
+-
+-static void dcr_write_ocm(void *opaque, int dcrn, uint32_t val)
+-{
+-    Ppc405OcmState *ocm = opaque;
+-    uint32_t isarc, dsarc, isacntl, dsacntl;
+-
+-    isarc = ocm->isarc;
+-    dsarc = ocm->dsarc;
+-    isacntl = ocm->isacntl;
+-    dsacntl = ocm->dsacntl;
+-    switch (dcrn) {
+-    case OCM0_ISARC:
+-        isarc = val & 0xFC000000;
+-        break;
+-    case OCM0_ISACNTL:
+-        isacntl = val & 0xC0000000;
+-        break;
+-    case OCM0_DSARC:
+-        isarc = val & 0xFC000000;
+-        break;
+-    case OCM0_DSACNTL:
+-        isacntl = val & 0xC0000000;
+-        break;
+-    }
+-    ocm_update_mappings(ocm, isarc, isacntl, dsarc, dsacntl);
+-    ocm->isarc = isarc;
+-    ocm->dsarc = dsarc;
+-    ocm->isacntl = isacntl;
+-    ocm->dsacntl = dsacntl;
+-}
+-
+-static void ppc405_ocm_reset(DeviceState *dev)
+-{
+-    Ppc405OcmState *ocm = PPC405_OCM(dev);
+-    uint32_t isarc, dsarc, isacntl, dsacntl;
+-
+-    isarc = 0x00000000;
+-    isacntl = 0x00000000;
+-    dsarc = 0x00000000;
+-    dsacntl = 0x00000000;
+-    ocm_update_mappings(ocm, isarc, isacntl, dsarc, dsacntl);
+-    ocm->isarc = isarc;
+-    ocm->dsarc = dsarc;
+-    ocm->isacntl = isacntl;
+-    ocm->dsacntl = dsacntl;
+-}
+-
+-static void ppc405_ocm_realize(DeviceState *dev, Error **errp)
+-{
+-    Ppc405OcmState *ocm = PPC405_OCM(dev);
+-    Ppc4xxDcrDeviceState *dcr = PPC4xx_DCR_DEVICE(dev);
+-
+-    /* XXX: Size is 4096 or 0x04000000 */
+-    memory_region_init_ram(&ocm->isarc_ram, OBJECT(ocm), "ppc405.ocm", 4 * KiB,
+-                           &error_fatal);
+-    memory_region_init_alias(&ocm->dsarc_ram, OBJECT(ocm), "ppc405.dsarc",
+-                             &ocm->isarc_ram, 0, 4 * KiB);
+-
+-    ppc4xx_dcr_register(dcr, OCM0_ISARC, ocm, &dcr_read_ocm, &dcr_write_ocm);
+-    ppc4xx_dcr_register(dcr, OCM0_ISACNTL, ocm, &dcr_read_ocm, &dcr_write_ocm);
+-    ppc4xx_dcr_register(dcr, OCM0_DSARC, ocm, &dcr_read_ocm, &dcr_write_ocm);
+-    ppc4xx_dcr_register(dcr, OCM0_DSACNTL, ocm, &dcr_read_ocm, &dcr_write_ocm);
+-}
+-
+-static void ppc405_ocm_class_init(ObjectClass *oc, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    dc->realize = ppc405_ocm_realize;
+-    device_class_set_legacy_reset(dc, ppc405_ocm_reset);
+-    /* Reason: only works as function of a ppc4xx SoC */
+-    dc->user_creatable = false;
+-}
+-
+-/*****************************************************************************/
+-/* General purpose timers */
+-static int ppc4xx_gpt_compare(Ppc405GptState *gpt, int n)
+-{
+-    /* XXX: TODO */
+-    return 0;
+-}
+-
+-static void ppc4xx_gpt_set_output(Ppc405GptState *gpt, int n, int level)
+-{
+-    /* XXX: TODO */
+-}
+-
+-static void ppc4xx_gpt_set_outputs(Ppc405GptState *gpt)
+-{
+-    uint32_t mask;
+-    int i;
+-
+-    mask = 0x80000000;
+-    for (i = 0; i < 5; i++) {
+-        if (gpt->oe & mask) {
+-            /* Output is enabled */
+-            if (ppc4xx_gpt_compare(gpt, i)) {
+-                /* Comparison is OK */
+-                ppc4xx_gpt_set_output(gpt, i, gpt->ol & mask);
+-            } else {
+-                /* Comparison is KO */
+-                ppc4xx_gpt_set_output(gpt, i, gpt->ol & mask ? 0 : 1);
+-            }
+-        }
+-        mask = mask >> 1;
+-    }
+-}
+-
+-static void ppc4xx_gpt_set_irqs(Ppc405GptState *gpt)
+-{
+-    uint32_t mask;
+-    int i;
+-
+-    mask = 0x00008000;
+-    for (i = 0; i < 5; i++) {
+-        if (gpt->is & gpt->im & mask) {
+-            qemu_irq_raise(gpt->irqs[i]);
+-        } else {
+-            qemu_irq_lower(gpt->irqs[i]);
+-        }
+-        mask = mask >> 1;
+-    }
+-}
+-
+-static void ppc4xx_gpt_compute_timer(Ppc405GptState *gpt)
+-{
+-    /* XXX: TODO */
+-}
+-
+-static uint64_t ppc4xx_gpt_read(void *opaque, hwaddr addr, unsigned size)
+-{
+-    Ppc405GptState *gpt = opaque;
+-    uint32_t ret;
+-    int idx;
+-
+-    trace_ppc4xx_gpt_read(addr, size);
+-
+-    switch (addr) {
+-    case 0x00:
+-        /* Time base counter */
+-        ret = muldiv64(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + gpt->tb_offset,
+-                       gpt->tb_freq, NANOSECONDS_PER_SECOND);
+-        break;
+-    case 0x10:
+-        /* Output enable */
+-        ret = gpt->oe;
+-        break;
+-    case 0x14:
+-        /* Output level */
+-        ret = gpt->ol;
+-        break;
+-    case 0x18:
+-        /* Interrupt mask */
+-        ret = gpt->im;
+-        break;
+-    case 0x1C:
+-    case 0x20:
+-        /* Interrupt status */
+-        ret = gpt->is;
+-        break;
+-    case 0x24:
+-        /* Interrupt enable */
+-        ret = gpt->ie;
+-        break;
+-    case 0x80 ... 0x90:
+-        /* Compare timer */
+-        idx = (addr - 0x80) >> 2;
+-        ret = gpt->comp[idx];
+-        break;
+-    case 0xC0 ... 0xD0:
+-        /* Compare mask */
+-        idx = (addr - 0xC0) >> 2;
+-        ret = gpt->mask[idx];
+-        break;
+-    default:
+-        ret = -1;
+-        break;
+-    }
+-
+-    return ret;
+-}
+-
+-static void ppc4xx_gpt_write(void *opaque, hwaddr addr, uint64_t value,
+-                             unsigned size)
+-{
+-    Ppc405GptState *gpt = opaque;
+-    int idx;
+-
+-    trace_ppc4xx_gpt_write(addr, size, value);
+-
+-    switch (addr) {
+-    case 0x00:
+-        /* Time base counter */
+-        gpt->tb_offset = muldiv64(value, NANOSECONDS_PER_SECOND, gpt->tb_freq)
+-            - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-        ppc4xx_gpt_compute_timer(gpt);
+-        break;
+-    case 0x10:
+-        /* Output enable */
+-        gpt->oe = value & 0xF8000000;
+-        ppc4xx_gpt_set_outputs(gpt);
+-        break;
+-    case 0x14:
+-        /* Output level */
+-        gpt->ol = value & 0xF8000000;
+-        ppc4xx_gpt_set_outputs(gpt);
+-        break;
+-    case 0x18:
+-        /* Interrupt mask */
+-        gpt->im = value & 0x0000F800;
+-        break;
+-    case 0x1C:
+-        /* Interrupt status set */
+-        gpt->is |= value & 0x0000F800;
+-        ppc4xx_gpt_set_irqs(gpt);
+-        break;
+-    case 0x20:
+-        /* Interrupt status clear */
+-        gpt->is &= ~(value & 0x0000F800);
+-        ppc4xx_gpt_set_irqs(gpt);
+-        break;
+-    case 0x24:
+-        /* Interrupt enable */
+-        gpt->ie = value & 0x0000F800;
+-        ppc4xx_gpt_set_irqs(gpt);
+-        break;
+-    case 0x80 ... 0x90:
+-        /* Compare timer */
+-        idx = (addr - 0x80) >> 2;
+-        gpt->comp[idx] = value & 0xF8000000;
+-        ppc4xx_gpt_compute_timer(gpt);
+-        break;
+-    case 0xC0 ... 0xD0:
+-        /* Compare mask */
+-        idx = (addr - 0xC0) >> 2;
+-        gpt->mask[idx] = value & 0xF8000000;
+-        ppc4xx_gpt_compute_timer(gpt);
+-        break;
+-    }
+-}
+-
+-static const MemoryRegionOps gpt_ops = {
+-    .read = ppc4xx_gpt_read,
+-    .write = ppc4xx_gpt_write,
+-    .valid.min_access_size = 4,
+-    .valid.max_access_size = 4,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
+-};
+-
+-static void ppc4xx_gpt_cb(void *opaque)
+-{
+-    Ppc405GptState *gpt = opaque;
+-
+-    ppc4xx_gpt_set_irqs(gpt);
+-    ppc4xx_gpt_set_outputs(gpt);
+-    ppc4xx_gpt_compute_timer(gpt);
+-}
+-
+-static void ppc405_gpt_reset(DeviceState *dev)
+-{
+-    Ppc405GptState *gpt = PPC405_GPT(dev);
+-    int i;
+-
+-    timer_del(gpt->timer);
+-    gpt->oe = 0x00000000;
+-    gpt->ol = 0x00000000;
+-    gpt->im = 0x00000000;
+-    gpt->is = 0x00000000;
+-    gpt->ie = 0x00000000;
+-    for (i = 0; i < 5; i++) {
+-        gpt->comp[i] = 0x00000000;
+-        gpt->mask[i] = 0x00000000;
+-    }
+-}
+-
+-static void ppc405_gpt_realize(DeviceState *dev, Error **errp)
+-{
+-    Ppc405GptState *s = PPC405_GPT(dev);
+-    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+-    int i;
+-
+-    s->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, &ppc4xx_gpt_cb, s);
+-    memory_region_init_io(&s->iomem, OBJECT(s), &gpt_ops, s, "gpt", 0xd4);
+-    sysbus_init_mmio(sbd, &s->iomem);
+-
+-    for (i = 0; i < ARRAY_SIZE(s->irqs); i++) {
+-        sysbus_init_irq(sbd, &s->irqs[i]);
+-    }
+-}
+-
+-static void ppc405_gpt_finalize(Object *obj)
+-{
+-    /* timer will be NULL if the GPT wasn't realized */
+-    if (PPC405_GPT(obj)->timer) {
+-        timer_del(PPC405_GPT(obj)->timer);
+-    }
+-}
+-
+-static void ppc405_gpt_class_init(ObjectClass *oc, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    dc->realize = ppc405_gpt_realize;
+-    device_class_set_legacy_reset(dc, ppc405_gpt_reset);
+-    /* Reason: only works as function of a ppc4xx SoC */
+-    dc->user_creatable = false;
+-}
+-
+-/*****************************************************************************/
+-/* PowerPC 405EP */
+-/* CPU control */
+-enum {
+-    PPC405EP_CPC0_PLLMR0 = 0x0F0,
+-    PPC405EP_CPC0_BOOT   = 0x0F1,
+-    PPC405EP_CPC0_EPCTL  = 0x0F3,
+-    PPC405EP_CPC0_PLLMR1 = 0x0F4,
+-    PPC405EP_CPC0_UCR    = 0x0F5,
+-    PPC405EP_CPC0_SRR    = 0x0F6,
+-    PPC405EP_CPC0_JTAGID = 0x0F7,
+-    PPC405EP_CPC0_PCI    = 0x0F9,
+-#if 0
+-    PPC405EP_CPC0_ER     = xxx,
+-    PPC405EP_CPC0_FR     = xxx,
+-    PPC405EP_CPC0_SR     = xxx,
+-#endif
+-};
+-
+-static void ppc405ep_compute_clocks(Ppc405CpcState *cpc)
+-{
+-    uint32_t CPU_clk, PLB_clk, OPB_clk, EBC_clk, MAL_clk, PCI_clk;
+-    uint32_t UART0_clk, UART1_clk;
+-    uint64_t VCO_out, PLL_out;
+-    int M, D;
+-
+-    VCO_out = 0;
+-    if ((cpc->pllmr[1] & 0x80000000) && !(cpc->pllmr[1] & 0x40000000)) {
+-        M = (((cpc->pllmr[1] >> 20) - 1) & 0xF) + 1; /* FBMUL */
+-        trace_ppc405ep_clocks_compute("FBMUL", (cpc->pllmr[1] >> 20) & 0xF, M);
+-        D = 8 - ((cpc->pllmr[1] >> 16) & 0x7); /* FWDA */
+-        trace_ppc405ep_clocks_compute("FWDA", (cpc->pllmr[1] >> 16) & 0x7, D);
+-        VCO_out = (uint64_t)cpc->sysclk * M * D;
+-        if (VCO_out < 500000000UL || VCO_out > 1000000000UL) {
+-            /* Error - unlock the PLL */
+-            qemu_log_mask(LOG_GUEST_ERROR, "VCO out of range %" PRIu64 "\n",
+-                          VCO_out);
+-#if 0
+-            cpc->pllmr[1] &= ~0x80000000;
+-            goto pll_bypass;
+-#endif
+-        }
+-        PLL_out = VCO_out / D;
+-        /* Pretend the PLL is locked */
+-        cpc->boot |= 0x00000001;
+-    } else {
+-#if 0
+-    pll_bypass:
+-#endif
+-        PLL_out = cpc->sysclk;
+-        if (cpc->pllmr[1] & 0x40000000) {
+-            /* Pretend the PLL is not locked */
+-            cpc->boot &= ~0x00000001;
+-        }
+-    }
+-    /* Now, compute all other clocks */
+-    D = ((cpc->pllmr[0] >> 20) & 0x3) + 1; /* CCDV */
+-     trace_ppc405ep_clocks_compute("CCDV", (cpc->pllmr[0] >> 20) & 0x3, D);
+-    CPU_clk = PLL_out / D;
+-    D = ((cpc->pllmr[0] >> 16) & 0x3) + 1; /* CBDV */
+-    trace_ppc405ep_clocks_compute("CBDV", (cpc->pllmr[0] >> 16) & 0x3, D);
+-    PLB_clk = CPU_clk / D;
+-    D = ((cpc->pllmr[0] >> 12) & 0x3) + 1; /* OPDV */
+-    trace_ppc405ep_clocks_compute("OPDV", (cpc->pllmr[0] >> 12) & 0x3, D);
+-    OPB_clk = PLB_clk / D;
+-    D = ((cpc->pllmr[0] >> 8) & 0x3) + 2; /* EPDV */
+-    trace_ppc405ep_clocks_compute("EPDV", (cpc->pllmr[0] >> 8) & 0x3, D);
+-    EBC_clk = PLB_clk / D;
+-    D = ((cpc->pllmr[0] >> 4) & 0x3) + 1; /* MPDV */
+-    trace_ppc405ep_clocks_compute("MPDV", (cpc->pllmr[0] >> 4) & 0x3, D);
+-    MAL_clk = PLB_clk / D;
+-    D = (cpc->pllmr[0] & 0x3) + 1; /* PPDV */
+-    trace_ppc405ep_clocks_compute("PPDV", cpc->pllmr[0] & 0x3, D);
+-    PCI_clk = PLB_clk / D;
+-    D = ((cpc->ucr - 1) & 0x7F) + 1; /* U0DIV */
+-    trace_ppc405ep_clocks_compute("U0DIV", cpc->ucr & 0x7F, D);
+-    UART0_clk = PLL_out / D;
+-    D = (((cpc->ucr >> 8) - 1) & 0x7F) + 1; /* U1DIV */
+-    trace_ppc405ep_clocks_compute("U1DIV", (cpc->ucr >> 8) & 0x7F, D);
+-    UART1_clk = PLL_out / D;
+-
+-    if (trace_event_get_state_backends(TRACE_PPC405EP_CLOCKS_SETUP)) {
+-        g_autofree char *trace = g_strdup_printf(
+-            "Setup PPC405EP clocks - sysclk %" PRIu32 " VCO %" PRIu64
+-            " PLL out %" PRIu64 " Hz\n"
+-            "CPU %" PRIu32 " PLB %" PRIu32 " OPB %" PRIu32 " EBC %" PRIu32
+-            " MAL %" PRIu32 " PCI %" PRIu32 " UART0 %" PRIu32
+-            " UART1 %" PRIu32 "\n",
+-            cpc->sysclk, VCO_out, PLL_out,
+-            CPU_clk, PLB_clk, OPB_clk, EBC_clk, MAL_clk, PCI_clk,
+-            UART0_clk, UART1_clk);
+-        trace_ppc405ep_clocks_setup(trace);
+-    }
+-
+-    /* Setup CPU clocks */
+-    clk_setup(&cpc->clk_setup[PPC405EP_CPU_CLK], CPU_clk);
+-    /* Setup PLB clock */
+-    clk_setup(&cpc->clk_setup[PPC405EP_PLB_CLK], PLB_clk);
+-    /* Setup OPB clock */
+-    clk_setup(&cpc->clk_setup[PPC405EP_OPB_CLK], OPB_clk);
+-    /* Setup external clock */
+-    clk_setup(&cpc->clk_setup[PPC405EP_EBC_CLK], EBC_clk);
+-    /* Setup MAL clock */
+-    clk_setup(&cpc->clk_setup[PPC405EP_MAL_CLK], MAL_clk);
+-    /* Setup PCI clock */
+-    clk_setup(&cpc->clk_setup[PPC405EP_PCI_CLK], PCI_clk);
+-    /* Setup UART0 clock */
+-    clk_setup(&cpc->clk_setup[PPC405EP_UART0_CLK], UART0_clk);
+-    /* Setup UART1 clock */
+-    clk_setup(&cpc->clk_setup[PPC405EP_UART1_CLK], UART1_clk);
+-}
+-
+-static uint32_t dcr_read_epcpc(void *opaque, int dcrn)
+-{
+-    Ppc405CpcState *cpc = opaque;
+-    uint32_t ret;
+-
+-    switch (dcrn) {
+-    case PPC405EP_CPC0_BOOT:
+-        ret = cpc->boot;
+-        break;
+-    case PPC405EP_CPC0_EPCTL:
+-        ret = cpc->epctl;
+-        break;
+-    case PPC405EP_CPC0_PLLMR0:
+-        ret = cpc->pllmr[0];
+-        break;
+-    case PPC405EP_CPC0_PLLMR1:
+-        ret = cpc->pllmr[1];
+-        break;
+-    case PPC405EP_CPC0_UCR:
+-        ret = cpc->ucr;
+-        break;
+-    case PPC405EP_CPC0_SRR:
+-        ret = cpc->srr;
+-        break;
+-    case PPC405EP_CPC0_JTAGID:
+-        ret = cpc->jtagid;
+-        break;
+-    case PPC405EP_CPC0_PCI:
+-        ret = cpc->pci;
+-        break;
+-    default:
+-        /* Avoid gcc warning */
+-        ret = 0;
+-        break;
+-    }
+-
+-    return ret;
+-}
+-
+-static void dcr_write_epcpc(void *opaque, int dcrn, uint32_t val)
+-{
+-    Ppc405CpcState *cpc = opaque;
+-
+-    switch (dcrn) {
+-    case PPC405EP_CPC0_BOOT:
+-        /* Read-only register */
+-        break;
+-    case PPC405EP_CPC0_EPCTL:
+-        /* Don't care for now */
+-        cpc->epctl = val & 0xC00000F3;
+-        break;
+-    case PPC405EP_CPC0_PLLMR0:
+-        cpc->pllmr[0] = val & 0x00633333;
+-        ppc405ep_compute_clocks(cpc);
+-        break;
+-    case PPC405EP_CPC0_PLLMR1:
+-        cpc->pllmr[1] = val & 0xC0F73FFF;
+-        ppc405ep_compute_clocks(cpc);
+-        break;
+-    case PPC405EP_CPC0_UCR:
+-        /* UART control - don't care for now */
+-        cpc->ucr = val & 0x003F7F7F;
+-        break;
+-    case PPC405EP_CPC0_SRR:
+-        cpc->srr = val;
+-        break;
+-    case PPC405EP_CPC0_JTAGID:
+-        /* Read-only */
+-        break;
+-    case PPC405EP_CPC0_PCI:
+-        cpc->pci = val;
+-        break;
+-    }
+-}
+-
+-static void ppc405_cpc_reset(DeviceState *dev)
+-{
+-    Ppc405CpcState *cpc = PPC405_CPC(dev);
+-
+-    cpc->boot = 0x00000010;     /* Boot from PCI - IIC EEPROM disabled */
+-    cpc->epctl = 0x00000000;
+-    cpc->pllmr[0] = 0x00021002;
+-    cpc->pllmr[1] = 0x80a552be;
+-    cpc->ucr = 0x00004646;
+-    cpc->srr = 0x00040000;
+-    cpc->pci = 0x00000000;
+-    cpc->er = 0x00000000;
+-    cpc->fr = 0x00000000;
+-    cpc->sr = 0x00000000;
+-    cpc->jtagid = 0x20267049;
+-    ppc405ep_compute_clocks(cpc);
+-}
+-
+-/* XXX: sysclk should be between 25 and 100 MHz */
+-static void ppc405_cpc_realize(DeviceState *dev, Error **errp)
+-{
+-    Ppc405CpcState *cpc = PPC405_CPC(dev);
+-    Ppc4xxDcrDeviceState *dcr = PPC4xx_DCR_DEVICE(dev);
+-
+-    assert(dcr->cpu);
+-    cpc->clk_setup[PPC405EP_CPU_CLK].cb =
+-        ppc_40x_timers_init(&dcr->cpu->env, cpc->sysclk, PPC_INTERRUPT_PIT);
+-    cpc->clk_setup[PPC405EP_CPU_CLK].opaque = &dcr->cpu->env;
+-
+-    ppc4xx_dcr_register(dcr, PPC405EP_CPC0_BOOT, cpc,
+-                        &dcr_read_epcpc, &dcr_write_epcpc);
+-    ppc4xx_dcr_register(dcr, PPC405EP_CPC0_EPCTL, cpc,
+-                        &dcr_read_epcpc, &dcr_write_epcpc);
+-    ppc4xx_dcr_register(dcr, PPC405EP_CPC0_PLLMR0, cpc,
+-                        &dcr_read_epcpc, &dcr_write_epcpc);
+-    ppc4xx_dcr_register(dcr, PPC405EP_CPC0_PLLMR1, cpc,
+-                        &dcr_read_epcpc, &dcr_write_epcpc);
+-    ppc4xx_dcr_register(dcr, PPC405EP_CPC0_UCR, cpc,
+-                        &dcr_read_epcpc, &dcr_write_epcpc);
+-    ppc4xx_dcr_register(dcr, PPC405EP_CPC0_SRR, cpc,
+-                        &dcr_read_epcpc, &dcr_write_epcpc);
+-    ppc4xx_dcr_register(dcr, PPC405EP_CPC0_JTAGID, cpc,
+-                        &dcr_read_epcpc, &dcr_write_epcpc);
+-    ppc4xx_dcr_register(dcr, PPC405EP_CPC0_PCI, cpc,
+-                        &dcr_read_epcpc, &dcr_write_epcpc);
+-}
+-
+-static const Property ppc405_cpc_properties[] = {
+-    DEFINE_PROP_UINT32("sys-clk", Ppc405CpcState, sysclk, 0),
+-};
+-
+-static void ppc405_cpc_class_init(ObjectClass *oc, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    dc->realize = ppc405_cpc_realize;
+-    device_class_set_legacy_reset(dc, ppc405_cpc_reset);
+-    /* Reason: only works as function of a ppc4xx SoC */
+-    dc->user_creatable = false;
+-    device_class_set_props(dc, ppc405_cpc_properties);
+-}
+-
+-/* PPC405_SOC */
+-
+-static void ppc405_soc_instance_init(Object *obj)
+-{
+-    Ppc405SoCState *s = PPC405_SOC(obj);
+-
+-    object_initialize_child(obj, "cpu", &s->cpu,
+-                            POWERPC_CPU_TYPE_NAME("405ep"));
+-
+-    object_initialize_child(obj, "uic", &s->uic, TYPE_PPC_UIC);
+-
+-    object_initialize_child(obj, "cpc", &s->cpc, TYPE_PPC405_CPC);
+-    object_property_add_alias(obj, "sys-clk", OBJECT(&s->cpc), "sys-clk");
+-
+-    object_initialize_child(obj, "gpt", &s->gpt, TYPE_PPC405_GPT);
+-
+-    object_initialize_child(obj, "ocm", &s->ocm, TYPE_PPC405_OCM);
+-
+-    object_initialize_child(obj, "gpio", &s->gpio, TYPE_PPC405_GPIO);
+-
+-    object_initialize_child(obj, "dma", &s->dma, TYPE_PPC405_DMA);
+-
+-    object_initialize_child(obj, "i2c", &s->i2c, TYPE_PPC4xx_I2C);
+-
+-    object_initialize_child(obj, "ebc", &s->ebc, TYPE_PPC4xx_EBC);
+-
+-    object_initialize_child(obj, "opba", &s->opba, TYPE_PPC405_OPBA);
+-
+-    object_initialize_child(obj, "pob", &s->pob, TYPE_PPC405_POB);
+-
+-    object_initialize_child(obj, "plb", &s->plb, TYPE_PPC4xx_PLB);
+-
+-    object_initialize_child(obj, "mal", &s->mal, TYPE_PPC4xx_MAL);
+-
+-    object_initialize_child(obj, "sdram", &s->sdram, TYPE_PPC4xx_SDRAM_DDR);
+-    object_property_add_alias(obj, "dram", OBJECT(&s->sdram), "dram");
+-}
+-
+-static void ppc405_reset(void *opaque)
+-{
+-    cpu_reset(CPU(opaque));
+-}
+-
+-static void ppc405_soc_realize(DeviceState *dev, Error **errp)
+-{
+-    Ppc405SoCState *s = PPC405_SOC(dev);
+-    CPUPPCState *env;
+-    SysBusDevice *sbd;
+-    int i;
+-
+-    /* init CPUs */
+-    if (!qdev_realize(DEVICE(&s->cpu), NULL, errp)) {
+-        return;
+-    }
+-    qemu_register_reset(ppc405_reset, &s->cpu);
+-
+-    env = &s->cpu.env;
+-
+-    ppc_dcr_init(env, NULL, NULL);
+-
+-    /* CPU control */
+-    if (!ppc4xx_dcr_realize(PPC4xx_DCR_DEVICE(&s->cpc), &s->cpu, errp)) {
+-        return;
+-    }
+-
+-    /* PLB arbitrer */
+-    if (!ppc4xx_dcr_realize(PPC4xx_DCR_DEVICE(&s->plb), &s->cpu, errp)) {
+-        return;
+-    }
+-
+-    /* PLB to OPB bridge */
+-    if (!ppc4xx_dcr_realize(PPC4xx_DCR_DEVICE(&s->pob), &s->cpu, errp)) {
+-        return;
+-    }
+-
+-    /* OBP arbitrer */
+-    sbd = SYS_BUS_DEVICE(&s->opba);
+-    if (!sysbus_realize(sbd, errp)) {
+-        return;
+-    }
+-    sysbus_mmio_map(sbd, 0, 0xef600600);
+-
+-    /* Universal interrupt controller */
+-    if (!ppc4xx_dcr_realize(PPC4xx_DCR_DEVICE(&s->uic), &s->cpu, errp)) {
+-        return;
+-    }
+-    sbd = SYS_BUS_DEVICE(&s->uic);
+-    sysbus_connect_irq(sbd, PPCUIC_OUTPUT_INT,
+-                       qdev_get_gpio_in(DEVICE(&s->cpu), PPC40x_INPUT_INT));
+-    sysbus_connect_irq(sbd, PPCUIC_OUTPUT_CINT,
+-                       qdev_get_gpio_in(DEVICE(&s->cpu), PPC40x_INPUT_CINT));
+-
+-    /* SDRAM controller */
+-    /*
+-     * We use the 440 DDR SDRAM controller which has more regs and features
+-     * but it's compatible enough for now
+-     */
+-    object_property_set_int(OBJECT(&s->sdram), "nbanks", 2, &error_abort);
+-    if (!ppc4xx_dcr_realize(PPC4xx_DCR_DEVICE(&s->sdram), &s->cpu, errp)) {
+-        return;
+-    }
+-    /* XXX 405EP has no ECC interrupt */
+-    sysbus_connect_irq(SYS_BUS_DEVICE(&s->sdram), 0,
+-                       qdev_get_gpio_in(DEVICE(&s->uic), 17));
+-
+-    /* External bus controller */
+-    if (!ppc4xx_dcr_realize(PPC4xx_DCR_DEVICE(&s->ebc), &s->cpu, errp)) {
+-        return;
+-    }
+-
+-    /* DMA controller */
+-    if (!ppc4xx_dcr_realize(PPC4xx_DCR_DEVICE(&s->dma), &s->cpu, errp)) {
+-        return;
+-    }
+-    sbd = SYS_BUS_DEVICE(&s->dma);
+-    for (i = 0; i < ARRAY_SIZE(s->dma.irqs); i++) {
+-        sysbus_connect_irq(sbd, i, qdev_get_gpio_in(DEVICE(&s->uic), 5 + i));
+-    }
+-
+-    /* I2C controller */
+-    sbd = SYS_BUS_DEVICE(&s->i2c);
+-    if (!sysbus_realize(sbd, errp)) {
+-        return;
+-    }
+-    sysbus_mmio_map(sbd, 0, 0xef600500);
+-    sysbus_connect_irq(sbd, 0, qdev_get_gpio_in(DEVICE(&s->uic), 2));
+-
+-    /* GPIO */
+-    sbd = SYS_BUS_DEVICE(&s->gpio);
+-    if (!sysbus_realize(sbd, errp)) {
+-        return;
+-    }
+-    sysbus_mmio_map(sbd, 0, 0xef600700);
+-
+-    /* Serial ports */
+-    if (serial_hd(0) != NULL) {
+-        serial_mm_init(get_system_memory(), 0xef600300, 0,
+-                       qdev_get_gpio_in(DEVICE(&s->uic), 0),
+-                       PPC_SERIAL_MM_BAUDBASE, serial_hd(0),
+-                       DEVICE_BIG_ENDIAN);
+-    }
+-    if (serial_hd(1) != NULL) {
+-        serial_mm_init(get_system_memory(), 0xef600400, 0,
+-                       qdev_get_gpio_in(DEVICE(&s->uic), 1),
+-                       PPC_SERIAL_MM_BAUDBASE, serial_hd(1),
+-                       DEVICE_BIG_ENDIAN);
+-    }
+-
+-    /* OCM */
+-    if (!ppc4xx_dcr_realize(PPC4xx_DCR_DEVICE(&s->ocm), &s->cpu, errp)) {
+-        return;
+-    }
+-
+-    /* GPT */
+-    sbd = SYS_BUS_DEVICE(&s->gpt);
+-    if (!sysbus_realize(sbd, errp)) {
+-        return;
+-    }
+-    sysbus_mmio_map(sbd, 0, 0xef600000);
+-    for (i = 0; i < ARRAY_SIZE(s->gpt.irqs); i++) {
+-        sysbus_connect_irq(sbd, i, qdev_get_gpio_in(DEVICE(&s->uic), 19 + i));
+-    }
+-
+-    /* MAL */
+-    object_property_set_int(OBJECT(&s->mal), "txc-num", 4, &error_abort);
+-    object_property_set_int(OBJECT(&s->mal), "rxc-num", 2, &error_abort);
+-    if (!ppc4xx_dcr_realize(PPC4xx_DCR_DEVICE(&s->mal), &s->cpu, errp)) {
+-        return;
+-    }
+-    sbd = SYS_BUS_DEVICE(&s->mal);
+-    for (i = 0; i < ARRAY_SIZE(s->mal.irqs); i++) {
+-        sysbus_connect_irq(sbd, i, qdev_get_gpio_in(DEVICE(&s->uic), 11 + i));
+-    }
+-
+-    /* Ethernet */
+-    /* Uses UIC IRQs 9, 15, 17 */
+-}
+-
+-static void ppc405_soc_class_init(ObjectClass *oc, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-
+-    dc->realize = ppc405_soc_realize;
+-    /* Reason: only works as part of a ppc405 board/machine */
+-    dc->user_creatable = false;
+-}
+-
+-static const TypeInfo ppc405_types[] = {
+-    {
+-        .name           = TYPE_PPC405_POB,
+-        .parent         = TYPE_PPC4xx_DCR_DEVICE,
+-        .instance_size  = sizeof(Ppc405PobState),
+-        .class_init     = ppc405_pob_class_init,
+-    }, {
+-        .name           = TYPE_PPC405_OPBA,
+-        .parent         = TYPE_SYS_BUS_DEVICE,
+-        .instance_size  = sizeof(Ppc405OpbaState),
+-        .class_init     = ppc405_opba_class_init,
+-    }, {
+-        .name           = TYPE_PPC405_DMA,
+-        .parent         = TYPE_PPC4xx_DCR_DEVICE,
+-        .instance_size  = sizeof(Ppc405DmaState),
+-        .class_init     = ppc405_dma_class_init,
+-    }, {
+-        .name           = TYPE_PPC405_GPIO,
+-        .parent         = TYPE_SYS_BUS_DEVICE,
+-        .instance_size  = sizeof(Ppc405GpioState),
+-        .class_init     = ppc405_gpio_class_init,
+-    }, {
+-        .name           = TYPE_PPC405_OCM,
+-        .parent         = TYPE_PPC4xx_DCR_DEVICE,
+-        .instance_size  = sizeof(Ppc405OcmState),
+-        .class_init     = ppc405_ocm_class_init,
+-    }, {
+-        .name           = TYPE_PPC405_GPT,
+-        .parent         = TYPE_SYS_BUS_DEVICE,
+-        .instance_size  = sizeof(Ppc405GptState),
+-        .instance_finalize = ppc405_gpt_finalize,
+-        .class_init     = ppc405_gpt_class_init,
+-    }, {
+-        .name           = TYPE_PPC405_CPC,
+-        .parent         = TYPE_PPC4xx_DCR_DEVICE,
+-        .instance_size  = sizeof(Ppc405CpcState),
+-        .class_init     = ppc405_cpc_class_init,
+-    }, {
+-        .name           = TYPE_PPC405_SOC,
+-        .parent         = TYPE_DEVICE,
+-        .instance_size  = sizeof(Ppc405SoCState),
+-        .instance_init  = ppc405_soc_instance_init,
+-        .class_init     = ppc405_soc_class_init,
+-    }
+-};
+-
+-DEFINE_TYPES(ppc405_types)
 -- 
 2.47.1
 
