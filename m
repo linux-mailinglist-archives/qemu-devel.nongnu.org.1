@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC0DA5BF3B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:36:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21203A5BF1F
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:35:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trxr8-0003LI-On; Tue, 11 Mar 2025 07:33:06 -0400
+	id 1trxr9-0003Wn-RD; Tue, 11 Mar 2025 07:33:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqI-000397-Er
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:14 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqW-0003Cz-80
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxq3-0006Ve-T9
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:14 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxq7-0006VQ-1C
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1741692717;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8eheLperLewFGseZ6W5oySPfYG0lOZLsIqm9p3HURpg=;
- b=SJk6zCpzR9yQK2aGuNgB+nZmEu63s5XhaY6h2XNIQICu+fsYZ7yFmvSz0nrY3amgEZteKX
- nvv8YsnOaAYi2JcKCqN78rx2SzuYvJ8RewAR9xkzytDiJr8WfLXmCoxqnxMxsMLpNT6v80
- hOnT6b/juwoIouwMTkGxbvxCw9f+73M=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=bdvquLHI6GGmUASUDmeqDMm0k9Ul8PjFY+goxm/FAfM=;
+ b=V8QEclNG+4tbdu1BZ+VAuElbDIwzJJ9vkjqdxpgWS4PYBd309hLbamMiCpSwU23kZDCMG3
+ jaV0GTGHsLd1Y1RwTT1Ya8E8ibdC2/3zIYU5f66d14/VadLn+/aVcih1OaYKALsAFHwriV
+ 1YqwgUjvo+uFpdzLeTcU9eYdA/YJbj8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-361--WB7nZTsPEu591VdmRuz5Q-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-381-3qWP5D5NOxCUrHPdUBpopg-1; Tue,
  11 Mar 2025 07:31:54 -0400
-X-MC-Unique: -WB7nZTsPEu591VdmRuz5Q-1
-X-Mimecast-MFC-AGG-ID: -WB7nZTsPEu591VdmRuz5Q_1741692713
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+X-MC-Unique: 3qWP5D5NOxCUrHPdUBpopg-1
+X-Mimecast-MFC-AGG-ID: 3qWP5D5NOxCUrHPdUBpopg_1741692713
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 77667180AF4C
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AEAFF19560B7
  for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:53 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2BEF11801757
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 565B91955BCB
  for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:53 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id EC50E21E64F7; Tue, 11 Mar 2025 12:31:37 +0100 (CET)
+ id F015121E64FB; Tue, 11 Mar 2025 12:31:37 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 15/61] docs/qapi-domain: add "Errors:" field lists
-Date: Tue, 11 Mar 2025 12:30:51 +0100
-Message-ID: <20250311113137.1277125-16-armbru@redhat.com>
+Subject: [PULL 16/61] docs/qapi-domain: add "Return:" field lists
+Date: Tue, 11 Mar 2025 12:30:52 +0100
+Message-ID: <20250311113137.1277125-17-armbru@redhat.com>
 In-Reply-To: <20250311113137.1277125-1-armbru@redhat.com>
 References: <20250311113137.1277125-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,41 +86,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-``:error: descr`` can now be used to document error conditions. The
-format of the description is not defined here; so the ability to name
-specific types is left to the document writer.
+Add "Return:" field list syntax to QAPI Commands.
+
+Like "Arguments:" and "Errors:", the type name isn't currently processed
+for cross-referencing, but this will be addressed in a forthcoming
+commit.
+
+The syntax of the new field is:
+
+:return TypeName: description
+   description cont'd
+
+This patch adds "Return" as a GroupedField, which means that multiple
+return values can be annotated - this is only done because Sphinx does
+not support mandatory type arguments to Ungrouped fields. Because we
+want to cross-reference this type information later, we want to make the
+type argument mandatory. As a result, you can technically add multiple
+:return: fields, though I'm not aware of any circumstance in which you'd
+need or want to. Recommendation: "Don't do that, then." The forthcoming
+QAPIDoc transmogrifier does not, in fact, ever "do that".
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250311034303.75779-18-jsnow@redhat.com>
+Message-ID: <20250311034303.75779-19-jsnow@redhat.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapi_domain.py | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ docs/sphinx/qapi_domain.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index 8ec4482b29..7535009078 100644
+index 7535009078..45e69689d1 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -33,7 +33,7 @@
- from sphinx.locale import _, __
- from sphinx.roles import XRefRole
- from sphinx.util import logging
--from sphinx.util.docfields import GroupedField, TypedField
-+from sphinx.util.docfields import Field, GroupedField, TypedField
- from sphinx.util.nodes import make_id, make_refnode
- 
- 
-@@ -294,6 +294,13 @@ class QAPICommand(QAPIObject):
-                 names=("arg",),
-                 can_collapse=False,
+@@ -301,6 +301,13 @@ class QAPICommand(QAPIObject):
+                 names=("error", "errors"),
+                 has_arg=False,
              ),
-+            # :error: descr
-+            Field(
-+                "error",
-+                label=_("Errors"),
-+                names=("error", "errors"),
-+                has_arg=False,
++            # :return TypeName: descr
++            GroupedField(
++                "returnvalue",
++                label=_("Return"),
++                names=("return",),
++                can_collapse=True,
 +            ),
          ]
      )
