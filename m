@@ -2,79 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCBFA5C2C6
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:32:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A72A5C317
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:56:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzhl-0004aX-QG; Tue, 11 Mar 2025 09:31:34 -0400
+	id 1ts053-00072U-2R; Tue, 11 Mar 2025 09:55:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1trzhV-0004IW-6B
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:31:24 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ts050-0006yS-G4
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:55:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1trzhQ-0006MA-JJ
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:31:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1741699873; x=1773235873;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1KOmzmrSwiEXReJq2LterO9F8yh62frqUd0TRpdbQtI=;
- b=WoRts0fB2SlGqV7YwpXk8c9l+udqBIHxl0VqOUIVdQXe/McfxTWUF3tv
- Qo4eVQeysjC+Uzhsx+vQsueNu+I2gAvNEX8gZS+PuqmKaE6dpLDpuNNmP
- Mvf0De8KpY0kNw4/3ILjoiZ/tSl4zbFkvX7rKN+v1BJ3LWcryiEPMFZlL
- 91i/pySMHroz/rDtMjP9jA/Ua+N6bLL9EI4h8RfNsgnSaNMyPvcWM9R0G
- IpbJ6Gfy4lEduXh1e1yBOcaMdAj/+LPbzv4ETK/T+TrLdUdjqJK2o1V7A
- CCFUI+vj2RLvAylmNe6h8AJax1CX4MHahKjhajxBDHtXyQnywlm//q3/8 g==;
-X-CSE-ConnectionGUID: GqAN2r+DQ/Wph7PdYQGhXA==
-X-CSE-MsgGUID: kFDHqaHmRtuJaAwm006RsQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="42648522"
-X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="42648522"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2025 06:31:08 -0700
-X-CSE-ConnectionGUID: Pxk/4SkhTnK69gTC0YQDKw==
-X-CSE-MsgGUID: VME4DSeXRry7yMJ+/JsIZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; d="scan'208";a="120814359"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 11 Mar 2025 06:31:03 -0700
-Date: Tue, 11 Mar 2025 21:51:13 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
- mtosatti@redhat.com, sandipan.das@amd.com, babu.moger@amd.com,
- likexu@tencent.com, like.xu.linux@gmail.com,
- zhenyuw@linux.intel.com, groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com
-Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
- VM reset
-Message-ID: <Z9A/0RE2Zc7BKDvD@intel.com>
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
- <20250302220112.17653-9-dongli.zhang@oracle.com>
- <Z86Y9BxV6p25A2Wo@intel.com>
- <a52ad0b9-4760-4347-ad73-1690eb28a464@oracle.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ts04y-0002Sm-K2
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:55:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741701330;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=rfog1uerOa4M3FFMgfh8T5b6eakg39HgP4upqw9KV04=;
+ b=SI3vy2eRqobVEglQYTNtEaou5uNGfO6s1VgY3azFqL4Z0kk72K3St5Rkmfh3/zxPFOmTPE
+ 3i4TFptmEZXcQ1FxqSOci+cWE7npvVhKA36wBwKJWLXhiskPjMo1RtS3xBfL2GBfMse4oV
+ fJikOBFFqQqn2QyKJooJixPVchua//Y=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-448-8tgqv-YDM1qtLzLSWBnpNg-1; Tue, 11 Mar 2025 09:55:29 -0400
+X-MC-Unique: 8tgqv-YDM1qtLzLSWBnpNg-1
+X-Mimecast-MFC-AGG-ID: 8tgqv-YDM1qtLzLSWBnpNg_1741701328
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-39126c3469fso2406530f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 06:55:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741701328; x=1742306128;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rfog1uerOa4M3FFMgfh8T5b6eakg39HgP4upqw9KV04=;
+ b=aDlELqKKLGFESZWsav/Ocj/LhyrcKz3WVRpKOCsg7J+d2MMpmyhrLyU4Y+Oqoer7Ti
+ OGR08x+kOOKWtAUuRUApteQOtAvUKz+LzFwjD+CxSxWWebvn93Q4JILyQAfI3yHBB7f1
+ 5+fx8zPezKKPFU55h6EHs0IeadaM97xTeH7qkzAFrpZbddWruyszpfZq+/iRMkqYZjNT
+ rtMjIma2FZaXwG4CPxB6A58kqkZZH39mtGfdbl6iQ4C13omVLdejSNnHQ3GZt0SMycsE
+ 6roWXxcyyUQTzrlp+48YFGGW+5t0BRtRxozBGxuF97VZEx+0lepu0Qi0hJVBlxFNJzAR
+ XdsA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW0cSQnFOjMQcd+PB/wY2b1G2NbenDAm0l5n0PkbyiC9oZtB1wGz/0k0bruQrgnRCbCqIuXx7qdv13A@nongnu.org
+X-Gm-Message-State: AOJu0YzKKG1DuO8CUk99bbyKsWwBHwkcD1TS+iPm+0jB8IcU7ta1oljo
+ y+vN2NpVxDe8uqJpJS4kt4gk2QCTIUQzvflJBQ7pIKTBaEzaFkNb1xJxZX8HWfqpS9lsD1I3b+q
+ 2rj5fO5bEki4oxb1XF+g2wKrQRPO98Hsxrgb8QbKNBNnva49Z5Ed3
+X-Gm-Gg: ASbGncu7wutMNt5XrEydPmsZuECJGFATNlEpOIpCe0LRB+IevU0dLA8Pat4TG6AY74v
+ lypV5sPkp3Svo/wKjVfUx+mFVgkbMTIC8SbHmCHUt+pF2Xw0VQ2+eNPFSTKs5ofDTsfj7cR2MUk
+ BoVYbBhf565icOzT/XUKK2gJEdOyk+gubd+yb9Tgas5hCrgZVW1O/gZ/mJVizgkrRqRQHCMHqAp
+ v1k4FHZQkzc01VMas5dRu3ez9OLStTa8yRgTDWVmTpaPB267ns6akLJzWVKNz641QEB7pRxJOc8
+ qekmnRjW8zoGvw8OGmNcUSmrAAoX+JeD1KJ9+T7kT2lL1Y4=
+X-Received: by 2002:a5d:5f84:0:b0:391:300f:749e with SMTP id
+ ffacd0b85a97d-39263affb8bmr4592856f8f.11.1741701327965; 
+ Tue, 11 Mar 2025 06:55:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE84wHpgeL4Tgds7SqkukFklCvhIM5guxA/r47DKoq7hpjLnGaIHMFC7U8bpnw6Pz2xkH7RSg==
+X-Received: by 2002:a5d:5f84:0:b0:391:300f:749e with SMTP id
+ ffacd0b85a97d-39263affb8bmr4592828f8f.11.1741701327569; 
+ Tue, 11 Mar 2025 06:55:27 -0700 (PDT)
+Received: from [192.168.0.7] (ip-109-42-51-149.web.vodafone.de.
+ [109.42.51.149]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43ce70d13b4sm120110045e9.38.2025.03.11.06.55.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Mar 2025 06:55:26 -0700 (PDT)
+Message-ID: <e019f7fe-8b36-4a50-89d4-409754c91030@redhat.com>
+Date: Tue, 11 Mar 2025 14:55:25 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a52ad0b9-4760-4347-ad73-1690eb28a464@oracle.com>
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] tests/functional: Don't fail any precaching errors
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20250311131327.903329-1-npiggin@gmail.com>
+ <Z9A8swNn6zBm57jC@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <Z9A8swNn6zBm57jC@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,57 +153,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Dongli,
+On 11/03/2025 14.37, Daniel P. Berrangé wrote:
+> On Tue, Mar 11, 2025 at 11:13:26PM +1000, Nicholas Piggin wrote:
+>> The NetBSD archive is currently failing part-way through downloads,
+>> which results in no clean HTTP error but a short transfer and checksum
+>> error. This is treated as fatal in the precache download, and it halts
+>> an entire set of tests even if some others could run.
+>>
+>> I hacked up this patch to get a bunch of CI tests going again for ppc
+>> merge testing.
+>>
+>> Don't treat any precaching failures as errors.
+>> This causes tests to be skipped when they try to fetch their asset.
+>> Some CI results before/after patching:
+>>
+>> functional-system-fedora
+>> https://gitlab.com/npiggin/qemu/-/jobs/9370860490 #bad
+>> https://gitlab.com/npiggin/qemu/-/jobs/9373246826 #good
+>>
+>> functional-system-debian
+>> https://gitlab.com/npiggin/qemu/-/jobs/9370860479 #bda
+>> https://gitlab.com/npiggin/qemu/-/jobs/9373246822 #good
+>>
+>> This is making the tests skip. Is there a way to make the error more
+>> prominent / obvious in the output? Should they fail instead? I think
+>> there should be a more obvious indication of failure due to asset so
+>> it does not go unnoticed.
+>>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   tests/functional/qemu_test/asset.py | 9 +++------
+>>   1 file changed, 3 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
+>> index f0730695f09..3134ccb10da 100644
+>> --- a/tests/functional/qemu_test/asset.py
+>> +++ b/tests/functional/qemu_test/asset.py
+>> @@ -174,14 +174,11 @@ def precache_test(test):
+>>                   try:
+>>                       asset.fetch()
+>>                   except HTTPError as e:
+>> -                    # Treat 404 as fatal, since it is highly likely to
+>> -                    # indicate a broken test rather than a transient
+>> -                    # server or networking problem
+>> -                    if e.code == 404:
+>> -                        raise
+>> -
+> 
+> Why are you removing this ? The commit above does not make any reference
+> to the problem being a missing URL (404 code). We want missing URLs to
+> be fatal so that we identify when images we rely on are deleted by their
+> host, as that is not a transient problem.
+> 
+>>                       log.debug(f"HTTP error {e.code} from {asset.url} " +
+>>                                 "skipping asset precache")
+>> +                except:
+>> +                    log.debug(f"Error from {asset.url} " +
+>> +                              "skipping asset precache")
+> 
+> So is the bit that actually deals with the exception you show in the
+> jobs above.
+> 
+> Best practice would be for us to define an 'AssetException' and use that
+> in assert.py when raising exceptions, or to wrap other exceptions in cases
+> where we propagate exceptions. Then this code can be move tailored to
+> catch AssetException, instead of Exception.
 
-> >> +    /*
-> >> +     * If KVM_CAP_PMU_CAPABILITY is not supported, there is no way to
-> >> +     * disable the AMD pmu virtualization.
-> >> +     *
-> >> +     * If KVM_CAP_PMU_CAPABILITY is supported !cpu->enable_pmu
-> >> +     * indicates the KVM has already disabled the PMU virtualization.
-> >> +     */
-> >> +    if (has_pmu_cap && !cpu->enable_pmu) {
-> >> +        return;
-> >> +    }
-> > 
-> > Could we only check "cpu->enable_pmu" at the beginning of this function?
-> > then if pmu is already disabled, we don't need to initialize the pmu info.
-> 
-> I don't think so. There is a case:
-> 
-> - cpu->enable_pmu = false. (That is, "-cpu host,-pmu").
-> - But for KVM prior v5.18 that KVM_CAP_PMU_CAPABILITY doesn't exist.
-> 
-> There is no way to disable vPMU. To determine based on only
-> "!cpu->enable_pmu" doesn't work.
+At least we should distinguish between "HTTP server bailed out early" (in 
+which case we should likely skip the test), and "checksum of the asset does 
+not match" in which case we should rather fail the test since this is a hard 
+error that needs to be tackled if the file has been changed on the server 
+(otherwise this would go unnoticed and the test will never be run).
 
-Ah, I didn't get your point here. When QEMU user has already disabled
-PMU, why we still need to continue initialize PMU info and save/load PMU
-MSRs? In this case, user won't expect vPMU could work.
-
-> It works only when "!cpu->enable_pmu" and KVM_CAP_PMU_CAPABILITY exists.
-> 
-> 
-> We may still need a static global variable here to indicate where
-> "kvm.enable_pmu=N" (as discussed in PATCH 07).
->
-> > 
-> >> +    if (IS_INTEL_CPU(env)) {
-> > 
-> > Zhaoxin also supports architectural PerfMon in 0xa.
-> > 
-> > I'm not sure if this check should also involve Zhaoxin CPU, so cc
-> > zhaoxin guys for double check.
-> 
-> Sure for both here and below 'ditto'. Thank you very much!
-
-Per the Linux commit 3a4ac121c2cac, Zhaoxin mostly follows Intel
-Architectural PerfMon-v2. Afterall, before this patch, these PMU things
-didn't check any vendor, so I suppose vPMU may could work for Zhaoxin as
-well. Therefore, its' better to consider Zhaoxin when you check Intel
-CPU, which can help avoid introducing some regressions.
-
-Thanks,
-Zhao
+  Thomas
 
 
