@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D055A5C207
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:10:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B1CA5C2A0
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:28:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzCc-0001hJ-P0; Tue, 11 Mar 2025 08:59:22 -0400
+	id 1trzCs-0002Hj-A8; Tue, 11 Mar 2025 08:59:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzCR-0001Uk-CJ; Tue, 11 Mar 2025 08:59:12 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1trzCf-0001xO-3N; Tue, 11 Mar 2025 08:59:25 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzCO-0007tn-0F; Tue, 11 Mar 2025 08:59:10 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-2fee05829edso10575715a91.3; 
- Tue, 11 Mar 2025 05:59:07 -0700 (PDT)
+ id 1trzCb-0007wb-3v; Tue, 11 Mar 2025 08:59:24 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2ff694d2d4dso7752706a91.0; 
+ Tue, 11 Mar 2025 05:59:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741697946; x=1742302746; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741697958; x=1742302758; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gXU+U1l4Fd7SyqGLYuKX8zb67TDEGdub9abcDAe/vP8=;
- b=QjiRjuqa/W5PvadWA3sC4hvk5+4d9XVbi/eaGhr/2VuH7Zq9eVfl5MUtCg49TVeIcq
- wE1VWcKBAGlt/lIBQzy/K3+qObJJGdCbkrV1YwnIoX9neuiSWLObeN42gikQIy2kYWam
- NRLrJcQmtRiq895kFbDiydnrpWt+bOKQ6DB9WELVHNwP5lG2au6hNvmBlqiZQiOBkznI
- xTpnnjh/p+kh7ODxERFU6vUq3K2fYFwwwrIX9xJJdJ+fTxxUeQek77NDWA4d8rcLJk86
- GQOjLq9wLTG66twik+CtwEBFOPh6Hcw1OulWNBH6YKLBRvgFPfsPTd20g8scPqstq55F
- PNow==
+ bh=UE/0F1oCsxuW6Zn4Oxkfeuhf/dmH1J3omqaeTt273/s=;
+ b=ZOEbIlSBwYIwDAjkGnI+bqaFKpkjzdY4Mpe3ibd4e6N/zll+iFV11FaOXgIzrizC0j
+ MLlSNdUW/yDdciS4XJ4C6gcpDmDWvJvcVqqrVmDUW51qrGvSbLfAPMW8BHbBvswFIqme
+ d1ISZvKHNPmaB9WcfVQRGGhANCr5sv/WcU2P0yyG613xEVAYA6jKHZT0wcaoHA/mp1Zm
+ fEnYgKQ5IaFLNC6cPhXL669Yj9Fe0Oi/W0XQANwYRbeiIb0pPsb5bMUvEV7BJvf7nKL6
+ hV3XZvBHOCkB6KVVhD1e3C7/iEvU8FMrX4K0WTE+BugSWNwpMbp+qqQsKeU2roCgmHKh
+ nOUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741697946; x=1742302746;
+ d=1e100.net; s=20230601; t=1741697958; x=1742302758;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gXU+U1l4Fd7SyqGLYuKX8zb67TDEGdub9abcDAe/vP8=;
- b=fxcxdxKm4zM5zDTkRF9eE26kp2YFC12GQ0KCLjgYlh81e4KM0vmTaIy2o5/sirTmA0
- g0jMZsvR3jqrIN1+WpASQVTZ44mybKxU6ysd1u3KPRmyfnHfyo/6RZsoOSvYBchoG9QM
- dUaAz3hKyC19XAk/AIHVhLXCLAXsELzeoNmmbH4x3xmtF2rJjmW03SNWonVWmS/WAVBy
- V/Iiq4JcfoemqB9wWudfKU5GNss6apNBdq/UlkAe+yn2B1/AECJaNqKhyzgbOHOI6B8R
- TcZ/KYAVbimoujFZ7LQuXT5DYy2YtA4fewLjnrWmz423IIy+CWamgWKpIws4afK8k+R+
- j5YQ==
+ bh=UE/0F1oCsxuW6Zn4Oxkfeuhf/dmH1J3omqaeTt273/s=;
+ b=APUy/yphjyajt1U1wxsfe0YJ72m/loaFD6+K+D5LHo8ahVQfmmaDdN8gko+bMzdGa0
+ rJ1Ow6l4ZLhlwRd1VpB0nX+/VOI4Uhg4gVljoAtjOW6Vw+tWBrK1zt4YACXQ2cDRPEC/
+ HpECOCYZrvwLFZpCZKfK+9pKLLm8VKMWiF5GkR5iy+9yvdGVd/AyOmkV7KPtVX3P0wU6
+ M3lPp0Q+J5yw/2y9O2pzCRLYF+6RTKkCFXNBpEEaLmM7/ZBMaGbegBV8UhThZpIhoo24
+ wmS9XVWDQ7u10j4MKuVdNTg6jE7hPTGWFZYsKE/Ne0Yj/mTGqIVXP8Ihr8JOe+bnqNNj
+ GAgg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXBfeHw9/5VCkMdToD2OIRB/XBQp77NIP9rne8P6gIITtdHH09CYSpY1/d76ra863YGlct75f0fxQ==@nongnu.org
-X-Gm-Message-State: AOJu0YxDQ0L+hn6tO1Xo7xyLVsybRm2B4I6lTP8ezzFSi1IQbC9CIUgY
- kDQg/+gTsg5O11ZFjUIB96tp986SGWu5BDtELEvxjM27YV4pietKMmX3Qw==
-X-Gm-Gg: ASbGnctmliHyU6iAyhW1CIMIK4uV0GoTt8QyAgRN/rpgDisYnuh91BH6QXJYh0juZee
- IWuPHXBg+mVG1nvk0tkH4bWp+hEj00GSbkMM+d9Kle1ZB1n/j2z4aRwbn0fOjWDFiEXFT1wbCCS
- wrxNIewb4O2eRQkAYGYetN/w7MieGxN+ol/bZ89yk/0yIhuyu79MAlbCnXDlktzR1lfmspDKPhv
- Lxq3QN/WlBsGLQueoj4jqsvhZKswiC5YLp04fLhUYWpm+/ei0xwPm9Dmb3/ZMnkfIBUCiWAVBcq
- atIoROxYus+1BHtH3ucBMZFgA7xNgks5M+foaitMklb+7NQ5hms=
-X-Google-Smtp-Source: AGHT+IG3+xr/2h+PWYIuYl/EieLYhOiHlZl8JyOV3SJZdQfC/ZcRMjL0XcvzQu4nL2m4ia/sIHtmug==
-X-Received: by 2002:a17:90b:1648:b0:2f9:9ddd:68b9 with SMTP id
- 98e67ed59e1d1-2ff7cefbc6dmr23162307a91.26.1741697945564; 
- Tue, 11 Mar 2025 05:59:05 -0700 (PDT)
+ AJvYcCUCO/zHWT+7g8jSm/wN9QK+SWAE81womiU5pi7CMUWHQjIjzrIbv8/uB98DM3ARLqdYEmmnwC4xhg==@nongnu.org
+X-Gm-Message-State: AOJu0YzvQ9Qf5XE8NIqc+eyNAmieBWdA78baRbQ1V1r6HN3pBXqw7GiZ
+ kRy6kgdk27xze3zilEDHTZOJyOXudYyzLdTDMRgWRlHq5S90PluQYA42uQ==
+X-Gm-Gg: ASbGncuUlmoRcr1IrkSQ1favtSNMPl5Gebb2jvC2UnJ8mL2cZ1l4ciVeMA+JQsVo6z6
+ /kvnHaitqPjB5StaegMML6yIly0NZCBEUXaydN+/n0dlyGx5+XwSxW4Lj36Fjmctv90dAscZ1tu
+ NWbia+WrfZjbJUlwKoQbLDKeyhEkHj5lm5SypPRt6GppktttbCBemgGRMsEFx4VMcUUfrMMG3d/
+ 6G3eKvHfieZzsF5Pgy0tQW3dtRP/bmnrb6T+kjWfcf9bL7S+bzUY2zkMiFTQM3XowEI4/xIfzP9
+ h/gDiqmN4Wx/luuuzYyFI9ggioL+GuhnS5TBpFgTcypeB0Hw3pU=
+X-Google-Smtp-Source: AGHT+IHiRLIIZjbcAFAK0jHHweWIKArYV/YLTbEn2bwKu3i8Mg4V2J0vjSwg8413tKV8DzxxyzIYNQ==
+X-Received: by 2002:a17:90b:3887:b0:2fe:80cb:ac05 with SMTP id
+ 98e67ed59e1d1-2ff7ce7ac2bmr28535031a91.9.1741697957658; 
+ Tue, 11 Mar 2025 05:59:17 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.59.03
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.59.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 05:59:05 -0700 (PDT)
+ Tue, 11 Mar 2025 05:59:17 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
 	qemu-ppc@nongnu.org
-Subject: [PULL 10/72] ppc/pnv/homer: class-based base and size
-Date: Tue, 11 Mar 2025 22:57:04 +1000
-Message-ID: <20250311125815.903177-11-npiggin@gmail.com>
+Subject: [PULL 15/72] ppc/pnv/occ: Implement a basic dynamic OCC model
+Date: Tue, 11 Mar 2025 22:57:09 +1000
+Message-ID: <20250311125815.903177-16-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,207 +97,239 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Put HOMER memory region base and size into the class, to allow more
-code-reuse between different machines in later changes.
+The OCC is an On Chip Controller that handles various thermal and power
+management. It is a PPC405 microcontroller that runs its own firmware
+which is out of scope of the powernv machine model. Some dynamic
+behaviour and interfaces that are important for host CPU testing can be
+implemented with a much simpler state machine.
+
+This change adds a 100ms timer that ticks through a simple state machine
+that looks for "OCC command requests" coming from host firmware, and
+responds to them.
+
+For now the powercap command is implemented because that is used by
+OPAL and exported to Linux and is easy to test.
+
+  $ F=/sys/firmware/opal/powercap/system-powercap/powercap-current
+  $ cat $F
+  100
+  $ echo 50 | sudo tee $F
+  50
+  $ cat $F
+  50
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv_homer.c         | 46 +++++++++++++++++++++++++++-----------
- include/hw/ppc/pnv.h       |  6 ++---
- include/hw/ppc/pnv_homer.h |  7 +++++-
- 3 files changed, 41 insertions(+), 18 deletions(-)
+ hw/ppc/pnv_occ.c         | 146 +++++++++++++++++++++++++++++++++++++++
+ include/hw/ppc/pnv_occ.h |   3 +
+ 2 files changed, 149 insertions(+)
 
-diff --git a/hw/ppc/pnv_homer.c b/hw/ppc/pnv_homer.c
-index 75b0ee7964..67a1fd77ba 100644
---- a/hw/ppc/pnv_homer.c
-+++ b/hw/ppc/pnv_homer.c
-@@ -138,16 +138,16 @@ static uint64_t pnv_homer_power8_pba_read(void *opaque, hwaddr addr,
-                                           unsigned size)
- {
-     PnvHomer *homer = PNV_HOMER(opaque);
--    PnvChip *chip = homer->chip;
-+    PnvHomerClass *hmrc = PNV_HOMER_GET_CLASS(homer);
-     uint32_t reg = addr >> 3;
-     uint64_t val = 0;
+diff --git a/hw/ppc/pnv_occ.c b/hw/ppc/pnv_occ.c
+index 34decb1700..d9ce35a4d6 100644
+--- a/hw/ppc/pnv_occ.c
++++ b/hw/ppc/pnv_occ.c
+@@ -35,6 +35,7 @@
+ #define OCB_OCI_OCCMISC_AND     0x4021
+ #define OCB_OCI_OCCMISC_OR      0x4022
+ #define   OCCMISC_PSI_IRQ       PPC_BIT(0)
++#define   OCCMISC_IRQ_SHMEM     PPC_BIT(3)
  
-     switch (reg) {
-     case PBA_BAR0:
--        val = PNV_HOMER_BASE(chip);
-+        val = homer->base;
-         break;
-     case PBA_BARMASK0: /* P8 homer region mask */
--        val = (PNV_HOMER_SIZE - 1) & 0x300000;
-+        val = (hmrc->size - 1) & 0x300000;
-         break;
-     case PBA_BAR3: /* P8 occ common area */
-         val = PNV_OCC_COMMON_AREA_BASE;
-@@ -179,13 +179,19 @@ static const MemoryRegionOps pnv_homer_power8_pba_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
+ /* OCC sensors */
+ #define OCC_SENSOR_DATA_BLOCK_OFFSET          0x0000
+@@ -67,6 +68,11 @@ static void pnv_occ_set_misc(PnvOCC *occ, uint64_t val)
+     qemu_set_irq(occ->psi_irq, !!(val & OCCMISC_PSI_IRQ));
+ }
  
-+static hwaddr pnv_homer_power8_get_base(PnvChip *chip)
++static void pnv_occ_raise_msg_irq(PnvOCC *occ)
 +{
-+    return PNV_HOMER_BASE(chip);
++    pnv_occ_set_misc(occ, occ->occmisc | OCCMISC_PSI_IRQ | OCCMISC_IRQ_SHMEM);
 +}
 +
- static void pnv_homer_power8_class_init(ObjectClass *klass, void *data)
- {
-     PnvHomerClass *homer = PNV_HOMER_CLASS(klass);
- 
-+    homer->get_base = pnv_homer_power8_get_base;
-+    homer->size = PNV_HOMER_SIZE;
-     homer->pba_size = PNV_XSCOM_PBA_SIZE;
-     homer->pba_ops = &pnv_homer_power8_pba_ops;
--    homer->homer_size = PNV_HOMER_SIZE;
-     homer->homer_ops = &pnv_power8_homer_ops;
-     homer->core_max_base = PNV8_CORE_MAX_BASE;
- }
-@@ -291,16 +297,16 @@ static uint64_t pnv_homer_power9_pba_read(void *opaque, hwaddr addr,
+ static uint64_t pnv_occ_power8_xscom_read(void *opaque, hwaddr addr,
                                            unsigned size)
  {
-     PnvHomer *homer = PNV_HOMER(opaque);
--    PnvChip *chip = homer->chip;
-+    PnvHomerClass *hmrc = PNV_HOMER_GET_CLASS(homer);
-     uint32_t reg = addr >> 3;
-     uint64_t val = 0;
- 
-     switch (reg) {
-     case PBA_BAR0:
--        val = PNV9_HOMER_BASE(chip);
-+        val = homer->base;
-         break;
-     case PBA_BARMASK0: /* P9 homer region mask */
--        val = (PNV9_HOMER_SIZE - 1) & 0x300000;
-+        val = (hmrc->size - 1) & 0x300000;
-         break;
-     case PBA_BAR2: /* P9 occ common area */
-         val = PNV9_OCC_COMMON_AREA_BASE;
-@@ -332,13 +338,19 @@ static const MemoryRegionOps pnv_homer_power9_pba_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
+@@ -281,6 +287,20 @@ static const TypeInfo pnv_occ_power10_type_info = {
  };
  
-+static hwaddr pnv_homer_power9_get_base(PnvChip *chip)
+ static bool occ_init_homer_memory(PnvOCC *occ, Error **errp);
++static bool occ_model_tick(PnvOCC *occ);
++
++/* Relatively arbitrary */
++#define OCC_POLL_MS 100
++
++static void occ_state_machine_timer(void *opaque)
 +{
-+    return PNV9_HOMER_BASE(chip);
++    PnvOCC *occ = opaque;
++    uint64_t next = qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL) + OCC_POLL_MS;
++
++    if (occ_model_tick(occ)) {
++        timer_mod(&occ->state_machine_timer, next);
++    }
++}
+ 
+ static void pnv_occ_realize(DeviceState *dev, Error **errp)
+ {
+@@ -306,6 +326,10 @@ static void pnv_occ_realize(DeviceState *dev, Error **errp)
+                           PNV_OCC_SENSOR_DATA_BLOCK_SIZE);
+ 
+     qdev_init_gpio_out(dev, &occ->psi_irq, 1);
++
++    timer_init_ms(&occ->state_machine_timer, QEMU_CLOCK_VIRTUAL,
++                  occ_state_machine_timer, occ);
++    timer_mod(&occ->state_machine_timer, OCC_POLL_MS);
+ }
+ 
+ static const Property pnv_occ_properties[] = {
+@@ -647,6 +671,27 @@ static bool occ_write_static_data(PnvOCC *occ,
+     return true;
+ }
+ 
++static bool occ_read_dynamic_data(PnvOCC *occ,
++                                  struct occ_dynamic_data *dynamic_data,
++                                  Error **errp)
++{
++    PnvOCCClass *poc = PNV_OCC_GET_CLASS(occ);
++    PnvHomer *homer = occ->homer;
++    hwaddr static_addr = homer->base + poc->opal_shared_memory_offset;
++    hwaddr dynamic_addr = static_addr + OPAL_DYNAMIC_DATA_OFFSET;
++    MemTxResult ret;
++
++    ret = address_space_read(&address_space_memory, dynamic_addr,
++                             MEMTXATTRS_UNSPECIFIED, dynamic_data,
++                             sizeof(*dynamic_data));
++    if (ret != MEMTX_OK) {
++        error_setg(errp, "OCC: cannot read OCC-OPAL dynamic data");
++        return false;
++    }
++
++    return true;
 +}
 +
- static void pnv_homer_power9_class_init(ObjectClass *klass, void *data)
- {
-     PnvHomerClass *homer = PNV_HOMER_CLASS(klass);
- 
-+    homer->get_base = pnv_homer_power9_get_base;
-+    homer->size = PNV_HOMER_SIZE;
-     homer->pba_size = PNV9_XSCOM_PBA_SIZE;
-     homer->pba_ops = &pnv_homer_power9_pba_ops;
--    homer->homer_size = PNV9_HOMER_SIZE;
-     homer->homer_ops = &pnv_power9_homer_ops;
-     homer->core_max_base = PNV9_CORE_MAX_BASE;
+ static bool occ_write_dynamic_data(PnvOCC *occ,
+                                   struct occ_dynamic_data *dynamic_data,
+                                   Error **errp)
+@@ -668,6 +713,107 @@ static bool occ_write_dynamic_data(PnvOCC *occ,
+     return true;
  }
-@@ -354,16 +366,16 @@ static uint64_t pnv_homer_power10_pba_read(void *opaque, hwaddr addr,
-                                           unsigned size)
- {
-     PnvHomer *homer = PNV_HOMER(opaque);
--    PnvChip *chip = homer->chip;
-+    PnvHomerClass *hmrc = PNV_HOMER_GET_CLASS(homer);
-     uint32_t reg = addr >> 3;
-     uint64_t val = 0;
  
-     switch (reg) {
-     case PBA_BAR0:
--        val = PNV10_HOMER_BASE(chip);
-+        val = homer->base;
-         break;
-     case PBA_BARMASK0: /* P10 homer region mask */
--        val = (PNV10_HOMER_SIZE - 1) & 0x300000;
-+        val = (hmrc->size - 1) & 0x300000;
-         break;
-     case PBA_BAR2: /* P10 occ common area */
-         val = PNV10_OCC_COMMON_AREA_BASE;
-@@ -395,13 +407,19 @@ static const MemoryRegionOps pnv_homer_power10_pba_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
- 
-+static hwaddr pnv_homer_power10_get_base(PnvChip *chip)
++static bool occ_opal_send_response(PnvOCC *occ,
++                                   struct occ_dynamic_data *dynamic_data,
++                                   enum occ_response_status status,
++                                   uint8_t *data, uint16_t datalen)
 +{
-+    return PNV10_HOMER_BASE(chip);
++    struct opal_command_buffer *cmd = &dynamic_data->cmd;
++    struct occ_response_buffer *rsp = &dynamic_data->rsp;
++
++    rsp->request_id = cmd->request_id;
++    rsp->cmd = cmd->cmd;
++    rsp->status = status;
++    rsp->data_size = cpu_to_be16(datalen);
++    if (datalen) {
++        memcpy(rsp->data, data, datalen);
++    }
++    if (!occ_write_dynamic_data(occ, dynamic_data, NULL)) {
++        return false;
++    }
++    /* Would be a memory barrier here */
++    rsp->flag = OCC_FLAG_RSP_READY;
++    cmd->flag = 0;
++    if (!occ_write_dynamic_data(occ, dynamic_data, NULL)) {
++        return false;
++    }
++
++    pnv_occ_raise_msg_irq(occ);
++
++    return true;
 +}
 +
- static void pnv_homer_power10_class_init(ObjectClass *klass, void *data)
++/* Returns error status */
++static bool occ_opal_process_command(PnvOCC *occ,
++                                     struct occ_dynamic_data *dynamic_data)
++{
++    struct opal_command_buffer *cmd = &dynamic_data->cmd;
++    struct occ_response_buffer *rsp = &dynamic_data->rsp;
++
++    if (rsp->flag == 0) {
++        /* Spend one "tick" in the in-progress state */
++        rsp->flag = OCC_FLAG_CMD_IN_PROGRESS;
++        return occ_write_dynamic_data(occ, dynamic_data, NULL);
++    } else if (rsp->flag != OCC_FLAG_CMD_IN_PROGRESS) {
++        return occ_opal_send_response(occ, dynamic_data,
++                                      OCC_RSP_INTERNAL_ERROR,
++                                      NULL, 0);
++    }
++
++    switch (cmd->cmd) {
++    case 0xD1: { /* SET_POWER_CAP */
++        uint16_t data;
++        if (be16_to_cpu(cmd->data_size) != 2) {
++            return occ_opal_send_response(occ, dynamic_data,
++                                          OCC_RSP_INVALID_CMD_DATA_LENGTH,
++                                          (uint8_t *)&dynamic_data->cur_pwr_cap,
++                                          2);
++        }
++        data = be16_to_cpu(*(uint16_t *)cmd->data);
++        if (data == 0) { /* clear power cap */
++            dynamic_data->pwr_cap_type = 0x00; /* none */
++            data = PCAP_MAX_POWER_W;
++        } else {
++            dynamic_data->pwr_cap_type = 0x02; /* user set in-band */
++            if (data < PCAP_HARD_MIN_POWER_W) {
++                data = PCAP_HARD_MIN_POWER_W;
++            } else if (data > PCAP_MAX_POWER_W) {
++                data = PCAP_MAX_POWER_W;
++            }
++        }
++        dynamic_data->cur_pwr_cap = cpu_to_be16(data);
++        return occ_opal_send_response(occ, dynamic_data,
++                                      OCC_RSP_SUCCESS,
++                                      (uint8_t *)&dynamic_data->cur_pwr_cap, 2);
++    }
++
++    default:
++        return occ_opal_send_response(occ, dynamic_data,
++                                      OCC_RSP_INVALID_COMMAND,
++                                      NULL, 0);
++    }
++    g_assert_not_reached();
++}
++
++static bool occ_model_tick(PnvOCC *occ)
++{
++    struct occ_dynamic_data dynamic_data;
++
++    if (!occ_read_dynamic_data(occ, &dynamic_data, NULL)) {
++        /* Can't move OCC state field to safe because we can't map it! */
++        qemu_log("OCC: failed to read HOMER data, shutting down OCC\n");
++        return false;
++    }
++    if (dynamic_data.cmd.flag == OPAL_FLAG_CMD_READY) {
++        if (!occ_opal_process_command(occ, &dynamic_data)) {
++            qemu_log("OCC: failed to write HOMER data, shutting down OCC\n");
++            return false;
++        }
++    }
++
++    return true;
++}
++
+ static bool occ_init_homer_memory(PnvOCC *occ, Error **errp)
  {
-     PnvHomerClass *homer = PNV_HOMER_CLASS(klass);
+     PnvOCCClass *poc = PNV_OCC_GET_CLASS(occ);
+diff --git a/include/hw/ppc/pnv_occ.h b/include/hw/ppc/pnv_occ.h
+index f994860980..3ec42de0ff 100644
+--- a/include/hw/ppc/pnv_occ.h
++++ b/include/hw/ppc/pnv_occ.h
+@@ -41,6 +41,9 @@ DECLARE_INSTANCE_CHECKER(PnvOCC, PNV10_OCC, TYPE_PNV10_OCC)
+ struct PnvOCC {
+     DeviceState xd;
  
-+    homer->get_base = pnv_homer_power10_get_base;
-+    homer->size = PNV_HOMER_SIZE;
-     homer->pba_size = PNV10_XSCOM_PBA_SIZE;
-     homer->pba_ops = &pnv_homer_power10_pba_ops;
--    homer->homer_size = PNV10_HOMER_SIZE;
-     homer->homer_ops = &pnv_power9_homer_ops; /* TODO */
-     homer->core_max_base = PNV9_CORE_MAX_BASE;
- }
-@@ -424,9 +442,11 @@ static void pnv_homer_realize(DeviceState *dev, Error **errp)
-                           homer, "xscom-pba", hmrc->pba_size);
- 
-     /* homer region */
-+    homer->base = hmrc->get_base(homer->chip);
++    /* OCC dynamic model is driven by this timer. */
++    QEMUTimer state_machine_timer;
 +
-     memory_region_init_io(&homer->regs, OBJECT(dev),
-                           hmrc->homer_ops, homer, "homer-main-memory",
--                          hmrc->homer_size);
-+                          hmrc->size);
- }
+     /* OCC Misc interrupt */
+     uint64_t occmisc;
  
- static const Property pnv_homer_properties[] = {
-diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
-index fcb6699150..d8fca079f2 100644
---- a/include/hw/ppc/pnv.h
-+++ b/include/hw/ppc/pnv.h
-@@ -205,9 +205,8 @@ void pnv_bmc_set_pnor(IPMIBmc *bmc, PnvPnor *pnor);
- #define PNV9_OCC_SENSOR_BASE(chip)   (PNV9_OCC_COMMON_AREA_BASE +       \
-     PNV_OCC_SENSOR_DATA_BLOCK_BASE((chip)->chip_id))
- 
--#define PNV9_HOMER_SIZE              0x0000000000400000ull
- #define PNV9_HOMER_BASE(chip)                                           \
--    (0x203ffd800000ull + ((uint64_t)(chip)->chip_id) * PNV9_HOMER_SIZE)
-+    (0x203ffd800000ull + ((uint64_t)(chip)->chip_id) * PNV_HOMER_SIZE)
- 
- /*
-  * POWER10 MMIO base addresses - 16TB stride per chip
-@@ -250,8 +249,7 @@ void pnv_bmc_set_pnor(IPMIBmc *bmc, PnvPnor *pnor);
- #define PNV10_OCC_SENSOR_BASE(chip) (PNV10_OCC_COMMON_AREA_BASE +       \
-     PNV_OCC_SENSOR_DATA_BLOCK_BASE((chip)->chip_id))
- 
--#define PNV10_HOMER_SIZE              0x0000000000400000ull
- #define PNV10_HOMER_BASE(chip)                                           \
--    (0x300ffd800000ll + ((uint64_t)(chip)->chip_id) * PNV10_HOMER_SIZE)
-+    (0x300ffd800000ll + ((uint64_t)(chip)->chip_id) * PNV_HOMER_SIZE)
- 
- #endif /* PPC_PNV_H */
-diff --git a/include/hw/ppc/pnv_homer.h b/include/hw/ppc/pnv_homer.h
-index b1c5d498dc..5ffc0c97af 100644
---- a/include/hw/ppc/pnv_homer.h
-+++ b/include/hw/ppc/pnv_homer.h
-@@ -42,15 +42,20 @@ struct PnvHomer {
-     PnvChip *chip;
-     MemoryRegion pba_regs;
-     MemoryRegion regs;
-+    hwaddr base;
- };
- 
- 
- struct PnvHomerClass {
-     DeviceClass parent_class;
- 
-+    /* Get base address of HOMER memory */
-+    hwaddr (*get_base)(PnvChip *chip);
-+    /* Size of HOMER memory */
-+    int size;
-+
-     int pba_size;
-     const MemoryRegionOps *pba_ops;
--    int homer_size;
-     const MemoryRegionOps *homer_ops;
- 
-     hwaddr core_max_base;
 -- 
 2.47.1
 
