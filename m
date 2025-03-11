@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDF2A5CDC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 19:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDA1A5CDA5
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 19:17:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts4Am-000245-QC; Tue, 11 Mar 2025 14:17:50 -0400
+	id 1ts48M-00081q-QB; Tue, 11 Mar 2025 14:15:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ts47a-0007Bg-Ub
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ts47a-0007Bf-Tn
  for qemu-devel@nongnu.org; Tue, 11 Mar 2025 14:14:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ts47N-0006lC-PP
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 14:14:27 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1ts47U-0006mS-7g
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 14:14:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741716854;
+ s=mimecast20190719; t=1741716858;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=H5rfZS1ab2cIdaT1TSzN/mupwEkTEP1TSyKx5VpLfAA=;
- b=NInL9ny6NuLn0xVJZSXhXkqJ3INCXCnPL3w/b9Gd01OAJ8pkvUt/K/M7YwvSw6HlbseSc0
- C8yqwG0qFG6qVXWRY+nGsO5jeMKGWie4LHBJ84/43eUCGoGy/By0qKYMKKYFNWT9jODa/Y
- 0zCcXXfmVXZFpNN8hJCJDqxeYnLJ1N4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=2blT0fOIRRDERj5gAvJJ4yUQWhSw1qZvTN15oad1qL4=;
+ b=gR/M1abwKRuS4io9tfl68yJuOyzC5STQRMujCUpjHFtCFKNrHQ7zjYVrtRF4NOi70zBKec
+ aXQDM55T/pzWBNU6zePROAUmJHMgQNR5ZwG6qdZbTeFoxHiE8pHwal9NGUIujqxssIqQrs
+ 0eQoxXYBVN7B/eFXv64VfYE0FA/OaAg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-HjOOvlf5Nb2KkLDRXM6i9w-1; Tue,
- 11 Mar 2025 14:14:11 -0400
-X-MC-Unique: HjOOvlf5Nb2KkLDRXM6i9w-1
-X-Mimecast-MFC-AGG-ID: HjOOvlf5Nb2KkLDRXM6i9w_1741716850
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-492-76MOSba4Pda7-zRkWwazLQ-1; Tue,
+ 11 Mar 2025 14:14:15 -0400
+X-MC-Unique: 76MOSba4Pda7-zRkWwazLQ-1
+X-Mimecast-MFC-AGG-ID: 76MOSba4Pda7-zRkWwazLQ_1741716852
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 564A21956080; Tue, 11 Mar 2025 18:14:10 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B16DB1955D5E; Tue, 11 Mar 2025 18:14:12 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.116])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F05A818001E9; Tue, 11 Mar 2025 18:14:07 +0000 (UTC)
+ id CF92218001F6; Tue, 11 Mar 2025 18:14:10 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Eric Auger <eric.auger@redhat.com>
-Subject: [PULL 14/21] hw/vfio/common: Include missing 'system/tcg.h' header
-Date: Tue, 11 Mar 2025 19:13:21 +0100
-Message-ID: <20250311181328.1200431-15-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 15/21] hw/vfio/common: Get target page size using runtime
+ helpers
+Date: Tue, 11 Mar 2025 19:13:22 +0100
+Message-ID: <20250311181328.1200431-16-clg@redhat.com>
 In-Reply-To: <20250311181328.1200431-1-clg@redhat.com>
 References: <20250311181328.1200431-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -87,37 +86,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Always include necessary headers explicitly, to avoid
-when refactoring unrelated ones:
+Prefer runtime helpers to get target page size.
 
-  hw/vfio/common.c:1176:45: error: implicit declaration of function ‘tcg_enabled’;
-   1176 |                                             tcg_enabled() ? DIRTY_CLIENTS_ALL :
-        |                                             ^~~~~~~~~~~
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-Id: <20250307180337.14811-2-philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/20250311085743.21724-4-philmd@linaro.org
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20250305153929.43687-3-philmd@linaro.org>
+Link: https://lore.kernel.org/qemu-devel/20250311085743.21724-5-philmd@linaro.org
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/common.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/vfio/common.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 7a4010ef4ee6a10bc1f9f2f8e1b12c60362a575c..b1596b6bf647e9e3c5f4701e61ddd9323d49e880 100644
+index b1596b6bf647e9e3c5f4701e61ddd9323d49e880..1a0d9290f88c9774a98f65087a36b86922b21a73 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -42,6 +42,7 @@
- #include "migration/misc.h"
- #include "migration/blocker.h"
- #include "migration/qemu-file.h"
-+#include "system/tcg.h"
- #include "system/tpm.h"
+@@ -30,6 +30,7 @@
+ #include "exec/address-spaces.h"
+ #include "exec/memory.h"
+ #include "exec/ram_addr.h"
++#include "exec/target_page.h"
+ #include "hw/hw.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+@@ -393,13 +394,14 @@ static void vfio_register_ram_discard_listener(VFIOContainerBase *bcontainer,
+                                                MemoryRegionSection *section)
+ {
+     RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
++    int target_page_size = qemu_target_page_size();
+     VFIORamDiscardListener *vrdl;
  
- VFIODeviceList vfio_device_list =
+     /* Ignore some corner cases not relevant in practice. */
+-    g_assert(QEMU_IS_ALIGNED(section->offset_within_region, TARGET_PAGE_SIZE));
++    g_assert(QEMU_IS_ALIGNED(section->offset_within_region, target_page_size));
+     g_assert(QEMU_IS_ALIGNED(section->offset_within_address_space,
+-                             TARGET_PAGE_SIZE));
+-    g_assert(QEMU_IS_ALIGNED(int128_get64(section->size), TARGET_PAGE_SIZE));
++                             target_page_size));
++    g_assert(QEMU_IS_ALIGNED(int128_get64(section->size), target_page_size));
+ 
+     vrdl = g_new0(VFIORamDiscardListener, 1);
+     vrdl->bcontainer = bcontainer;
 -- 
 2.48.1
 
