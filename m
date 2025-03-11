@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726BEA5BF94
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EB8A5BF92
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:46:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trxqY-0003D2-AE; Tue, 11 Mar 2025 07:32:30 -0400
+	id 1trxqW-0003B0-KK; Tue, 11 Mar 2025 07:32:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqC-00036i-AK
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:08 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqA-00035M-Sq
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxpy-0006SO-Tf
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:07 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxpy-0006SG-LS
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1741692710;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=G9XDf3T8UJV4h8z0CKZgSg3IL4y3MtZy/bjJYsVHFe4=;
- b=UBsa08ZHCEUmfEnLZKi+4XlzmHXgplBcUz9FseM6jOhs4j9w8MpYibJZTxNsMPvmP8YtTQ
- 26GyGEwPiget6M6DGP1e93PjQchV2YzXjrCebgFeFVj0nEI7ZHFTJAxD/0LAR/CPicfTWO
- V0hxzoVXbwuEQtIaF2klgoE83hgHs1w=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=AYKHergwRLxqUSHDV68n2DzdEXMCgX0/ziC0DrkQABo=;
+ b=HL7Xr/OsPktnvtFuyK5mOB0ggje23m7cRKYbB0i3qRZRiouCA5tymYtJP3QQdk1HOpgxVf
+ 2PC/ZxK5aIj6V70GR8gBiLdt2YknYE+SScifey6CoQE9Au+EKDi0dOjBQ2B9pmmX70rpuB
+ zJBIzp6C4orLM2sKFgYQtCqtGKyND7M=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-l7xWEL8YMwChDPe3CdQy9w-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-U3FUNxZmOb64Y1v-OOOfaQ-1; Tue,
  11 Mar 2025 07:31:49 -0400
-X-MC-Unique: l7xWEL8YMwChDPe3CdQy9w-1
-X-Mimecast-MFC-AGG-ID: l7xWEL8YMwChDPe3CdQy9w_1741692709
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+X-MC-Unique: U3FUNxZmOb64Y1v-OOOfaQ-1
+X-Mimecast-MFC-AGG-ID: U3FUNxZmOb64Y1v-OOOfaQ_1741692708
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F36AF1800875
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9E6A11955DBA
  for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:48 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 758AF3001D13
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1BB67180094A
  for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:48 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E487B21E64F3; Tue, 11 Mar 2025 12:31:37 +0100 (CET)
+ id E877921E64F4; Tue, 11 Mar 2025 12:31:37 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 13/61] docs/qapi-domain: add "Arguments:" field lists
-Date: Tue, 11 Mar 2025 12:30:49 +0100
-Message-ID: <20250311113137.1277125-14-armbru@redhat.com>
+Subject: [PULL 14/61] docs/qapi-domain: add "Features:" field lists
+Date: Tue, 11 Mar 2025 12:30:50 +0100
+Message-ID: <20250311113137.1277125-15-armbru@redhat.com>
 In-Reply-To: <20250311113137.1277125-1-armbru@redhat.com>
 References: <20250311113137.1277125-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,63 +86,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-This adds special rendering for Sphinx's typed info field lists.
+Add support for Features field lists. There is no QAPI-specific
+functionality here, but this could be changed if desired (if we wanted
+the feature names to link somewhere, for instance.)
 
-This patch does not add any QAPI-aware markup, rendering, or
-cross-referencing for the type names, yet. That feature requires a
-subclass to TypedField which will happen in its own commit quite a bit
-later in this series; after all the basic fields and objects have been
-established first.
+This feature list doesn't have any restrictions, so it can be used to
+document object-wide features or per-member features as deemed
+appropriate. It's essentially free-form text.
 
 The syntax for this field is:
 
-:arg type name: description
-   description cont'd
-
-You can omit the type or the description. You should not omit the name;
-if you do so, it degenerates into a "normal field list" entry, and
-probably isn't what you want.
+:feat name: description
+    description cont'd
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250311034303.75779-16-jsnow@redhat.com>
+Message-ID: <20250311034303.75779-17-jsnow@redhat.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapi_domain.py | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ docs/sphinx/qapi_domain.py | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index 222b420d2a..b4289db6d8 100644
+index b4289db6d8..8ec4482b29 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -33,6 +33,7 @@
+@@ -33,7 +33,7 @@
  from sphinx.locale import _, __
  from sphinx.roles import XRefRole
  from sphinx.util import logging
-+from sphinx.util.docfields import TypedField
+-from sphinx.util.docfields import TypedField
++from sphinx.util.docfields import GroupedField, TypedField
  from sphinx.util.nodes import make_id, make_refnode
  
  
-@@ -273,7 +274,18 @@ def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
- class QAPICommand(QAPIObject):
-     """Description of a QAPI Command."""
+@@ -220,6 +220,16 @@ class QAPIObject(QAPIDescription):
+         }
+     )
  
--    # Nothing unique for now! Changed in later commits O:-)
-+    doc_field_types = QAPIObject.doc_field_types.copy()
-+    doc_field_types.extend(
-+        [
-+            # :arg TypeName ArgName: descr
-+            TypedField(
-+                "argument",
-+                label=_("Arguments"),
-+                names=("arg",),
-+                can_collapse=False,
-+            ),
-+        ]
-+    )
- 
- 
- class QAPIModule(QAPIDescription):
++    doc_field_types = [
++        # :feat name: descr
++        GroupedField(
++            "feature",
++            label=_("Features"),
++            names=("feat",),
++            can_collapse=False,
++        ),
++    ]
++
+     def get_signature_prefix(self) -> List[nodes.Node]:
+         """Return a prefix to put before the object name in the signature."""
+         assert self.objtype
 -- 
 2.48.1
 
