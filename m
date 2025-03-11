@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4184A5BB72
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 10:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7504A5BB74
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 10:00:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trvRC-00060a-3j; Tue, 11 Mar 2025 04:58:10 -0400
+	id 1trvRN-00063C-Br; Tue, 11 Mar 2025 04:58:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvR8-0005zp-O3
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:58:06 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvRJ-00062j-5b
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:58:17 -0400
 Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvR7-0001Ic-1b
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:58:06 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvRD-0001JO-55
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:58:16 -0400
 Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43cf06eabdaso24581635e9.2
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 01:58:04 -0700 (PDT)
+ 5b1f17b1804b1-43d0782d787so523775e9.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 01:58:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741683483; x=1742288283; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741683488; x=1742288288; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0vxZRHayu1xEJ1WB6kICe41Fz92U83djkt7AFBjTU44=;
- b=pYvX8vVeTzh7oDUXuE9lFzYwBagCcrvKmMM/gbapeP3F06xUcOdkeoKDckbIWsiFgx
- 5UySapbPXOD3UmCzklohRGr77mMPdobL+ctzYAxmhrGhgz3Pbk4r3zceQ+qNTDtpTWso
- c6dk0Lv1W2EBBrbQ6m5moD+jSLVjAEvex7tODdYJh0Qd6CyQJJ4UfrTDVFedwQl4eaxM
- xAF3PWusueBXDFFjaKo4fUgKNd2ZQ23QEuGRB+wvvAIHmTJ/fjXj9yUe/1Q0QfVXXWgX
- /WHxw7Mv7v8j3Q1rhNqvkUNJGk+xeNJT5Ts9s2xSZY7+5UTUGWCNUHzsOZQydJDfmw2A
- Cx0g==
+ bh=RO6o24MdYTf0l9VfM6m/i5E+H6tG45gEAmSPdGl9VsM=;
+ b=DvqPVPgCwTJ13qtCOJZDoGycaWGgV2im3HUbYCfOaeDg4PtsO6q0rKAbPxevrvH10I
+ lMQdYDY/zpWLXHxlxCvCkZ+GnkJtDfcuOQAcT2IE4A+mHuaLrNQ5OpUUOTFjP8mO4RMO
+ hMxls/Vh5pLu08W8rxZYMOFVOfL7J7PcQ2YZL+fc4MbTElvnaHnt0y8SlgoOAHX63/WO
+ row77ykGG+IUMNYjsQeNMvsmYnwah7nmZeI0ZeunaGtM/ic2USBX2WJF+Ao8+zvx8b7r
+ AkuuzAJvLkfnDQmUq7jl37PmT0A+2D/bD0zJ1oxMvdVoBn2FCZBAfoVWuxsQTofcpAcx
+ juHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741683483; x=1742288283;
+ d=1e100.net; s=20230601; t=1741683488; x=1742288288;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0vxZRHayu1xEJ1WB6kICe41Fz92U83djkt7AFBjTU44=;
- b=agzTe08bUcrbHtj7jcXI9Xc6xlVaQg7vXcnTC7sIf6c0jYJTQ47nxyNoXwM65+9iBG
- WoVKaekPE2NVGDLRvF9Er5pwhxXcPfGNpTd3ltNhEAyBLPDSSeWcgUnqxRvvTTMPqyae
- wqbnVZDkGtMQyznwcujeEtGoYW1EUUr8X1sU5ukJX8aTJNftQC6wVA6GwMSFyMlhFVGX
- aO2vVJA0T/lBqjVSLzmx6D6nZgNVkkrkayJL4FV5QUULwgLF9NoKhP11jJawNjS8p6No
- VqzMF+jlRgqIFgsHRj/7KLWxotGGlmv45cmlH+Uvb/1SeFlnTvodYtvp9yrLRawNea4W
- A1DQ==
-X-Gm-Message-State: AOJu0YyQ+l4rCAVWFpAmvGL+2HbVqYWURbOwO70Z0u61CAh9jZAK7nQD
- wTH1AaUQlPMoT8ItVfO+rTlwx3701cPsJXTUCl6uq93XVZW4+V9cjOA41InyNDhHI2cJuUUqKsg
- mWZA=
-X-Gm-Gg: ASbGncvu6vi9OsPehwfEQLhsmbmoQFUiiaeG9rXCQq0L5dvbLRDAmxH5cYDaP26m3gm
- mcdAW2APQEBqPjkL0464K4J1TxXss4pswYg25BisFBnvM4Fqhe5xCwQjULgNmN7Q/iIUCc99sz9
- tinwS0e8xaP6UYhT+liJqCsiq8OgDfuJB0dKlDlcTbO60fVMmi3BYDUu99GgrxORe0rh2D6ySqU
- C2R1gkSkIkB7UMuE+3SlPnShiSYPo62gTDYMmWhvsakmiCSQj7mtFTHOJqeNtZbne8uo+Txv27j
- 4UBVvFW/sQjbUVT3OiXlGHLbDFiAqpPnaTYMUZuelCrOL/Yzvx3zeOFN0KoN+91ayJCJLxliaIB
- 68maQRNu127yQpBLYeZMZYiSkEX8vVQ==
-X-Google-Smtp-Source: AGHT+IHV2MgBhJ6/1RulXXBlp13Jn3jYWbOwrtuXF6UMbt91IIB9XmCaKcfMow4BiFesWdhVWXWeYw==
-X-Received: by 2002:a05:600c:548f:b0:43c:f87c:24ce with SMTP id
- 5b1f17b1804b1-43cf87c265bmr69463795e9.21.1741683482741; 
- Tue, 11 Mar 2025 01:58:02 -0700 (PDT)
+ bh=RO6o24MdYTf0l9VfM6m/i5E+H6tG45gEAmSPdGl9VsM=;
+ b=hBQ0BXakJ7DGcUOT74DXlWJT8StEKUamGQuNsj16FaUE56WvQEqPUWPz4CxbMD2LSl
+ EhZdKx6Uk+stZNTs8cf2aT9ptC6Jz/4lSbQDkjnSJzWnMrSTunu1UC0zYDKqVASxvCi8
+ mMKR6ptv9W2yatzW+vqUJyAXEC9vMq0DUekgpB92Y9my+4xd0+0bZs/NReypKmCrIMe4
+ XoyYL/JVhuQ5xejUAClhpB6xI1nIapiPWq0BOiGbfd4oFyo/7jxuOjWep+KgWqQUkY62
+ 2BkAJ1+OGmBgclJYOQHu0GhH8Py/EWXEWh+C27L+msnn0VElLpaQH8PrIptt92yeNBbj
+ Goyg==
+X-Gm-Message-State: AOJu0YyEJGFOtEEgJXjfgAnp0C4ClOPXXcTC3Y0d+v2oqcGWEMDPddw4
+ UbrQ8MauwPGr8yY7kCkkOfYNRZiMUd4KNLhU42Q30zPxCI56ILRFHiNVxpcxbqW6i345EMH1iJ9
+ hQ3M=
+X-Gm-Gg: ASbGnctL2B00KFEOKIXIxrWTOTofkur7LIHqawMeJW6mCQLx2tbqNEZD81xKUw+gLfJ
+ 1/SJEfFnBelWAX48T5IkViy6Ok3e1WEJgXfrTc/Zw5E8eHCaKtyQYTaWkQEJ3ZsD4yRJR+r2Otw
+ +9c0AsLWJdT+7A4Duql2dBTct5MOrEy2y26aVoiwoCjf/KGD0biwcCbqkiePYIAFWMtDmjSreR+
+ IaC1cfBtQV1A01VbzbvnyfZB8um95prvDzmyR20Mi+kapmDDiPkjd9/G4ffDFaL+wp0Sf6tJ4D5
+ dKvz+y6069yf1c1CYKwKXzDOCpb7tph6jXd8Z9JTWhPlObTcrXLxKh8Md3DSeJ81fRXiA2FHkun
+ WGTrn6UHxUECBVnWHSeg=
+X-Google-Smtp-Source: AGHT+IHpZNtoo8t9N/bmVEmZsIKA82WhMWzx7hQxhBpoE0NJV+NOQTRIK11Mq+x/kiLk2lAUozBPuQ==
+X-Received: by 2002:a05:6000:144d:b0:391:139f:61af with SMTP id
+ ffacd0b85a97d-39132d8c768mr11324550f8f.32.1741683488031; 
+ Tue, 11 Mar 2025 01:58:08 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43cf85f2359sm63439755e9.27.2025.03.11.01.58.01
+ ffacd0b85a97d-3912c0e2f44sm17278164f8f.76.2025.03.11.01.58.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Mar 2025 01:58:02 -0700 (PDT)
+ Tue, 11 Mar 2025 01:58:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org,
@@ -76,13 +76,11 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Halil Pasic <pasic@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH-for-10.0 v3 3/8] hw/vfio/common: Include missing
- 'system/tcg.h' header
-Date: Tue, 11 Mar 2025 09:57:38 +0100
-Message-ID: <20250311085743.21724-4-philmd@linaro.org>
+ Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>
+Subject: [PATCH-for-10.0 v3 4/8] hw/vfio/common: Get target page size using
+ runtime helpers
+Date: Tue, 11 Mar 2025 09:57:39 +0100
+Message-ID: <20250311085743.21724-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311085743.21724-1-philmd@linaro.org>
 References: <20250311085743.21724-1-philmd@linaro.org>
@@ -91,13 +89,12 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
  envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,35 +110,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Always include necessary headers explicitly, to avoid
-when refactoring unrelated ones:
+Prefer runtime helpers to get target page size.
 
-  hw/vfio/common.c:1176:45: error: implicit declaration of function ‘tcg_enabled’;
-   1176 |                                             tcg_enabled() ? DIRTY_CLIENTS_ALL :
-        |                                             ^~~~~~~~~~~
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-Id: <20250307180337.14811-2-philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20250305153929.43687-3-philmd@linaro.org>
 ---
- hw/vfio/common.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/vfio/common.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 7a4010ef4ee..b1596b6bf64 100644
+index b1596b6bf64..1a0d9290f88 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -42,6 +42,7 @@
- #include "migration/misc.h"
- #include "migration/blocker.h"
- #include "migration/qemu-file.h"
-+#include "system/tcg.h"
- #include "system/tpm.h"
+@@ -30,6 +30,7 @@
+ #include "exec/address-spaces.h"
+ #include "exec/memory.h"
+ #include "exec/ram_addr.h"
++#include "exec/target_page.h"
+ #include "hw/hw.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+@@ -393,13 +394,14 @@ static void vfio_register_ram_discard_listener(VFIOContainerBase *bcontainer,
+                                                MemoryRegionSection *section)
+ {
+     RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
++    int target_page_size = qemu_target_page_size();
+     VFIORamDiscardListener *vrdl;
  
- VFIODeviceList vfio_device_list =
+     /* Ignore some corner cases not relevant in practice. */
+-    g_assert(QEMU_IS_ALIGNED(section->offset_within_region, TARGET_PAGE_SIZE));
++    g_assert(QEMU_IS_ALIGNED(section->offset_within_region, target_page_size));
+     g_assert(QEMU_IS_ALIGNED(section->offset_within_address_space,
+-                             TARGET_PAGE_SIZE));
+-    g_assert(QEMU_IS_ALIGNED(int128_get64(section->size), TARGET_PAGE_SIZE));
++                             target_page_size));
++    g_assert(QEMU_IS_ALIGNED(int128_get64(section->size), target_page_size));
+ 
+     vrdl = g_new0(VFIORamDiscardListener, 1);
+     vrdl->bcontainer = bcontainer;
 -- 
 2.47.1
 
