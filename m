@@ -2,60 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E11A5C29C
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7AFA5C2C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:33:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzUK-0007t3-UA; Tue, 11 Mar 2025 09:17:41 -0400
+	id 1trzcv-00012N-9Q; Tue, 11 Mar 2025 09:26:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trzUD-0007oO-Q9
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:17:34 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1trzcs-0000nO-LT
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:26:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trzUB-0003Ti-Q1
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:17:33 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1trzcq-00057V-0l
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:26:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741699049;
+ s=mimecast20190719; t=1741699586;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=2kiww0yvo5e1hJ6zykfCHYUfWvttW0QdbQwBaLaOwII=;
- b=N3HUfdS3ozvNJFDn6ze7WPG3NUP+zERbx/wAIH8Zc27a6te2DG7AM5Z68igdNRZI8b2+r1
- igICvu/ZIGZKsC7d4VM71Oko7b8SLlj1nKf+zx7Dhrc1EOxkuD2H0IGvG8QjLe97zNPOkf
- czmEKeQabSw7euJqQKEf1Q9zow20p40=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=ufdU5STu+BMmZJlWGmwWQJLsWaOQpc2D8tK+F1fBlCw=;
+ b=GfDl0DOzZ9Y8GXKSfp6FhLzTOyVSK8dB38kBGJrcfYl5pODCn+o2753c+HVXs7eunIg98e
+ 2QoIoYviJwcXB/aVpjwpdBZIzFwDqtQcQFePIkbqBzWgEs5reHlIwOpUPoR54wWL7LkTwp
+ yYZkzKRU4buxIBCS3XVLU1vqcg7SuGI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-52-4HLArxLqMs2ZiLcBV3fbRA-1; Tue,
- 11 Mar 2025 09:17:22 -0400
-X-MC-Unique: 4HLArxLqMs2ZiLcBV3fbRA-1
-X-Mimecast-MFC-AGG-ID: 4HLArxLqMs2ZiLcBV3fbRA_1741699041
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-398-ZAytudF1M4e9hTg25f6AxA-1; Tue,
+ 11 Mar 2025 09:26:23 -0400
+X-MC-Unique: ZAytudF1M4e9hTg25f6AxA-1
+X-Mimecast-MFC-AGG-ID: ZAytudF1M4e9hTg25f6AxA_1741699582
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A24951800265; Tue, 11 Mar 2025 13:17:20 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E893F1800268; Tue, 11 Mar 2025 13:17:18 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1C3BF21E66C1; Tue, 11 Mar 2025 14:17:15 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 10B61195605E; Tue, 11 Mar 2025 13:26:22 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.118])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7240619560AB; Tue, 11 Mar 2025 13:26:20 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: wencongyang2@huawei.com, zhanghailiang@xfusion.com,
- arei.gonglei@huawei.com, xiechanglong.d@gmail.com, hreitz@redhat.com,
- berto@igalia.com, kwolf@redhat.com
-Subject: [PATCH] qapi/block-core: Improve x-blockdev-change documentation
-Date: Tue, 11 Mar 2025 14:17:15 +0100
-Message-ID: <20250311131715.1296101-1-armbru@redhat.com>
+Cc: John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ pkrempa@redhat.com, Fam Zheng <fam@euphon.net>, <qemu-block@nongnu.org>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH v4 00/13] virtio-scsi: add iothread-vq-mapping parameter
+Date: Tue, 11 Mar 2025 21:26:03 +0800
+Message-ID: <20250311132616.1049687-1-stefanha@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,73 +85,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The description of feature @unstable is three paragraphs.  The second
-and third became part of the description by accident in commit
-9fb49daabfb (qapi: Mark unstable QMP parts with feature 'unstable').
+v4:
+- Squash fixup commit properly this time >_< [Peter]
+v3:
+- Use vq_aio_context[VIRTIO_SCSI_VQ_NUM_FIXED] as the AioContext for the Block
+  Backend [Kevin]
+v2:
+- Only expose cmd vqs via iothread-vq-mapping [Kevin, Peter]
 
-The second paragraph describes a defect in terms of the
-implementation.  Fine, but doesn't belong into user-facing
-documentation.  Turn it into a TODO section.
+Implement --device virtio-scsi-pci,iothread-vq-mapping= support so that
+virtqueues can be assigned to different IOThreads. This improves SMP guest
+scalability where I/O-intensive applications can become bottlenecked on a
+single IOThread.
 
-Rewrite everything else for clarity and completeness.
+The following benchmark results show the effect of iothread-vq-mapping. fio
+randread 4k iodepth=64 results from a 4 vCPU guest with an Intel P4800X SSD:
+iothreads IOPS
+------------------------------
+1         189576
+2         312698
+4         346744
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- qapi/block-core.json | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+The virtio-scsi device model and core SCSI emulation currently assume that
+requests are processed in a single AioContext. This patch series goes about
+modifying this as follows:
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index ee6eccc68c..b1937780e1 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -5913,35 +5913,31 @@
- ##
- # @x-blockdev-change:
- #
--# Dynamically reconfigure the block driver state graph.  It can be
--# used to add, remove, insert or replace a graph node.  Currently only
--# the Quorum driver implements this feature to add or remove its
--# child.  This is useful to fix a broken quorum child.
-+# Dynamically reconfigure the block driver state graph.
- #
--# If @node is specified, it will be inserted under @parent.  @child
--# may not be specified in this case.  If both @parent and @child are
--# specified but @node is not, @child will be detached from @parent.
-+# Currently only supports adding and deleting quorum children.  A
-+# child will be added at the end of the list of children.  Its
-+# contents *must* be consistent with the other childrens' contents.
-+# Deleting a child that is not last in the list of children is
-+# problematic, because it "renumbers" the children following it.
- #
- # @parent: the id or name of the parent node.
- #
--# @child: the name of a child under the given parent node.
-+# @child: the name of a child to be deleted.  Mutually exclusive with
-+#     @node.
- #
--# @node: the name of the node that will be added.
-+# @node: the name of the node to be added.  Mutually exclusive with
-+#     @child.
- #
- # Features:
- #
--# @unstable: This command is experimental, and its API is not stable.
--#     It does not support all kinds of operations, all kinds of
--#     children, nor all block drivers.
-+# @unstable: This command is experimental.
- #
--#     FIXME Removing children from a quorum node means introducing
-+# TODO: Removing children from a quorum node means introducing
- #     gaps in the child indices.  This cannot be represented in the
- #     'children' list of BlockdevOptionsQuorum, as returned by
- #     .bdrv_refresh_filename().
- #
--#     Warning: The data in a new quorum child MUST be consistent with
--#     that of the rest of the array.
--#
- # Since: 2.7
- #
- # .. qmp-example::
+scsi-disk: drop unused SCSIDiskState->bh field
+dma: use current AioContext for dma_blk_io()
+
+Make dma-helpers.c support the QEMU multi-queue block layer by using
+qemu_get_current_aio_context().
+
+scsi: track per-SCSIRequest AioContext
+scsi: introduce requests_lock
+
+Make the core SCSI emulation code support processing requests in multiple
+AioContexts by protecting the per-SCSIDevice requests list.
+
+virtio-scsi: introduce event and ctrl virtqueue locks
+virtio-scsi: protect events_dropped field
+virtio-scsi: perform TMFs in appropriate AioContexts
+
+Make the virtio-scsi emulation code support processing requests in multiple
+AioContexts. The event and ctrl virtqueues can interact with multiple
+AioContexts. Especially the SCSI Task Management Functions (TMFs) handled by
+the ctrl virtqueue need to be made thread-safe.
+
+virtio-blk: extract cleanup_iothread_vq_mapping() function
+virtio-blk: tidy up iothread_vq_mapping functions
+virtio: extract iothread-vq-mapping.h API
+virtio-scsi: add iothread-vq-mapping parameter
+
+Port over the iothread-vq-mapping qdev property from virtio-blk to virtio-scsi.
+
+virtio-scsi: handle ctrl virtqueue in main loop
+
+Simplify TMF handling now that there is no longer a single AioContext where all
+requests are processed.
+
+virtio-scsi: only expose cmd vqs via iothread-vq-mapping
+
+Make the user interface more intuitive.
+
+Stefan Hajnoczi (13):
+  scsi-disk: drop unused SCSIDiskState->bh field
+  dma: use current AioContext for dma_blk_io()
+  scsi: track per-SCSIRequest AioContext
+  scsi: introduce requests_lock
+  virtio-scsi: introduce event and ctrl virtqueue locks
+  virtio-scsi: protect events_dropped field
+  virtio-scsi: perform TMFs in appropriate AioContexts
+  virtio-blk: extract cleanup_iothread_vq_mapping() function
+  virtio-blk: tidy up iothread_vq_mapping functions
+  virtio: extract iothread-vq-mapping.h API
+  virtio-scsi: add iothread-vq-mapping parameter
+  virtio-scsi: handle ctrl virtqueue in main loop
+  virtio-scsi: only expose cmd vqs via iothread-vq-mapping
+
+ include/hw/scsi/scsi.h                  |   8 +-
+ include/hw/virtio/iothread-vq-mapping.h |  45 ++
+ include/hw/virtio/virtio-scsi.h         |  15 +-
+ include/system/dma.h                    |   3 +-
+ hw/block/virtio-blk.c                   | 132 +-----
+ hw/ide/core.c                           |   3 +-
+ hw/ide/macio.c                          |   3 +-
+ hw/scsi/scsi-bus.c                      | 121 ++++--
+ hw/scsi/scsi-disk.c                     |  24 +-
+ hw/scsi/virtio-scsi-dataplane.c         | 103 +++--
+ hw/scsi/virtio-scsi.c                   | 542 ++++++++++++++----------
+ hw/virtio/iothread-vq-mapping.c         | 131 ++++++
+ system/dma-helpers.c                    |   8 +-
+ hw/virtio/meson.build                   |   1 +
+ 14 files changed, 683 insertions(+), 456 deletions(-)
+ create mode 100644 include/hw/virtio/iothread-vq-mapping.h
+ create mode 100644 hw/virtio/iothread-vq-mapping.c
+
 -- 
 2.48.1
 
