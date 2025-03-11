@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32629A5CFFD
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 20:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7242EA5CFF9
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 20:54:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts5dd-0006r8-Ux; Tue, 11 Mar 2025 15:51:41 -0400
+	id 1ts5de-0006s0-LU; Tue, 11 Mar 2025 15:51:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ts5dS-0006qS-1I
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:51:31 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ts5dV-0006qr-Rc
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:51:33 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ts5dQ-0007PV-3f
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:51:29 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3912fdddf8fso117141f8f.1
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 12:51:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ts5dU-0007Pn-7d
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:51:33 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3914bc3e01aso1408096f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 12:51:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741722685; x=1742327485; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=H1LNxq97AL9tIfUd5CRs+zIjvQKOEYV6jhbavAz1QA4=;
- b=yMZnY30nvQQ34mo+Nar7UJLItaiXybB2W3AOcxNTkMYcf99YomolHVNW10uT570qz/
- 1hL6CfIPg5figltRE7a/kgms5EhvCx4Qfo+tt5yo2F1SsjH0kreqFW4z6xPZSt1tnSyP
- hL/Ttxn5Tt+EI+xpUdivQd/1QHvKoN06oEJzLliT9gFXFhQ2g3HhuJTElK6YpeoDMyBf
- Y7TRAeMSVdzPQuU2H4fPUa1SGu+DyY108HsaF6Hw8jghQPuEV+BzHtTnWIAABQKEmKA0
- tXdQFD5/KfrwP88w4RRtbRyxdL0ec8Qee4a4E11kJ71QElQ8J3C8J/zkzUOEBXfZx/VJ
- kcxA==
+ d=linaro.org; s=google; t=1741722689; x=1742327489; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oGrs420JsV3u/d0B9Ht+EZ0wlrymz2aBc5SkvyjS3Qc=;
+ b=MjhkmYnnaHtqHxHE1w2RcUr1K4va6gLeflrSL8oZngmbRD0ev8tbTQrrk8/gZdXVtw
+ gd8pW91ooGycl9w+LPWZ6pinSZl3WYwRJATNlr3SO/X4IAEzzI1ifCxXpCKEURF6okbb
+ XMuEOQKzsDdv+RGlaINRY7tWrPZu84+7e/SSRfBqT19n7r9vuedmpYQE2i5o8lvR7Vh2
+ 37ByXitx3crlx3DBDjFlp7JEvRu2/Y/sQz1BFW50Fffw2isNkpm6tUVH+WrzH/EFBtbQ
+ 6OEUZu5vsTmH64wJ7SPQfPJ3TMvux/LCuXxfty39Cw1y1hkat6pDe+kewOxXs+O8lUwm
+ xATA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741722685; x=1742327485;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=H1LNxq97AL9tIfUd5CRs+zIjvQKOEYV6jhbavAz1QA4=;
- b=ceSrA9T9aOElhh19A02QX/s6Heo0CYROfy9+wxcRQiTJyg21lvSFCZlNnJ7Cr2j5Db
- ILYQ3d88ytVB/0KDaQNG7hphXUVZ5cmaQtOLmE50OUQyBAGAXcQTIhKkFbEIyKgbKdWv
- uSwLuHmg/2GomkpkuwOYOZ3tNkyRVlLkVdo+x895Bxv1GVbskm0vHWdReN0mXvb1ClI1
- bzGVmIxC54imrAX60C2Y9UXGP0GWuvaJ9Nl/aBKrHoRgEi6UQWibY2w8051R+o0XUjjM
- ezLjSgvfAcHTVF+6LbbndRCzWHLe5NGPGUYSf1UZNqaVpVFtIYm7rnYqYwjJrrAl4svL
- a28A==
-X-Gm-Message-State: AOJu0Yw+SQ7D29O3udotY8O6nQ/hbZ307BfwnQEzUrYZXd8igSzckaUB
- xVs8mJusCIDw9fmFQed+NDv/GRAAPMZaGszjlDMPD4sjGWA84S3zFMW7kp7Mzyi8mn2KghAA6lI
- 9ZXI=
-X-Gm-Gg: ASbGncvXk7cZgKsx3gu2tjb088TRi9++9NJvytvV+25Ez6HWK0iTtIlXTmK3LhLiflY
- VRRkMkNkFkJf+rERZyr24mI6HpcvwTD0LOXsIU6RQRfsF+E/pQ4Igrw8PGxmk7Iaz7mkh80whz2
- KJvS/HPRQ6eMuy5/ntB2XUgYOXtYW0Yum0+9+Rg95zzptY99HdPBslXWMgaU6q4cECh9v4rafRQ
- HHb48dqWpUmgiX+NTBBB4jo7s1xBqTYpbcxnJCqqnDDIbcs1ONWYEKFMTAz/u+sgVa4YTv8mv/L
- gP4C4np4kAGCQBa2mmvWpdfd9ZB+ARWmgYABfEP1GDHnfOqRIKq6mi8qxxyd4tfQGLUxhUnRDK6
- wOAbLhqa+xAISGmKL1yk=
-X-Google-Smtp-Source: AGHT+IF2S0lrAq49xD2z5psGodoE2nyR/um2kGZ/sDcVUgTeIAkvdYUAlkxCdesguLeIe6Y4p6MmBQ==
-X-Received: by 2002:a5d:47c2:0:b0:38d:d166:d44 with SMTP id
- ffacd0b85a97d-39279e5172emr5953770f8f.23.1741722684987; 
- Tue, 11 Mar 2025 12:51:24 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1741722689; x=1742327489;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oGrs420JsV3u/d0B9Ht+EZ0wlrymz2aBc5SkvyjS3Qc=;
+ b=Ehsox1To0O3KH/pd7EE2id10NC8jzjeapDyAXEjTq7OJqeqtTdSV7YmsemInTrGatI
+ Hj0CwFciegjUszK2Jf56I1TbCAhfCIfZ8dUMxOHZIh9e4Wl9vezQcA1t3pHQINGP9Tp8
+ QetNYFbQPkD//qM8i/ZCMmEvXybld+EqUuvIMFilq0yoe+1LZb6pPseRWH3zWReiDo8E
+ zAeJRQWJJ3CJuLLDZZEbvLND7ixq7jHq8j3nQcJ5DsA/FRKYRrahMRhiXoR7DdJEQnph
+ 3DEBkaXRqbGPDr0FcNfJtFli6apsfVN2xmr/3SYgKku7XlCLiDN/cv75oWYjB+GRo0mV
+ ucug==
+X-Gm-Message-State: AOJu0YyiZbFuss0M/eSTZ1qVghLUaRPFlBHN4DO8Q+AR0c1z+8f8PZeh
+ JZNn8lK7NmZAlL+ZYX/SU9FpIUqNe2jAQJufXrCIHtGCQiGqjRyA5fp29AOKcVHUnEwJc2KgiHn
+ U0yM=
+X-Gm-Gg: ASbGncvj9/E7WaCAhJ4av68wXve49cYLxhr/mchBH1Fb8EiAaqFdjkIF0il/cwhxBM6
+ DFOe3QRChJ0+ow6WuaAb0XUTzKu0Rlan1+o+nnMubJOK6hR8xChUqsvCgsKLNFg57surHa2T5Iy
+ nmcwmqTk1Mai9uo+bK+raLvSTBmcRyVj8yfgOj5vwPH3PN50g5/ae6TxTLwTaJPoLR0Ny0m4fPx
+ FLckaYOji2KF33YJu3eOtH2NNczQ+SMYX3SmvlTRSuZfa+jfiM/mxYgGWCh+7oxLeoL/PGgE8qJ
+ O6/bWZqbMYAxtTkqY2h5FuCCoosXSKZPlHfg7b5UZ0rcgFjsoQ7g2H8skMK/97PIRi4ucycYuRE
+ gNxb5tXSXwWJ+U4wNfvg=
+X-Google-Smtp-Source: AGHT+IGEN20I940F9lhIDfDjuoeZWOG5Jbkm96dy4qMFtMC5/P4BnT5s5o6pXgzXd97uYFsLhyBlpA==
+X-Received: by 2002:a05:6000:144d:b0:391:2e58:f085 with SMTP id
+ ffacd0b85a97d-39132dab192mr14785471f8f.54.1741722689500; 
+ Tue, 11 Mar 2025 12:51:29 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912c0e222dsm19027792f8f.72.2025.03.11.12.51.24
+ ffacd0b85a97d-3912c103290sm18644297f8f.87.2025.03.11.12.51.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Mar 2025 12:51:24 -0700 (PDT)
+ Tue, 11 Mar 2025 12:51:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 00/14] Misc HW patches for 2025-03-11
-Date: Tue, 11 Mar 2025 20:51:09 +0100
-Message-ID: <20250311195123.94212-1-philmd@linaro.org>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/14] hw/sd/sdhci: Set reset value of interrupt registers
+Date: Tue, 11 Mar 2025 20:51:10 +0100
+Message-ID: <20250311195123.94212-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250311195123.94212-1-philmd@linaro.org>
+References: <20250311195123.94212-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,94 +98,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 825b96dbcee23d134b691fc75618b59c5f53da32:
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-  Merge tag 'migration-20250310-pull-request' of https://gitlab.com/farosas/qemu into staging (2025-03-11 09:32:07 +0800)
+The interrupt enable registers are not reset to 0 on Freescale eSDHC
+but some bits are enabled on reset. At least some U-Boot versions seem
+to expect this and not initialise these registers before expecting
+interrupts. Use existing vendor property for Freescale eSDHC and set
+the reset value of the interrupt registers to match Freescale
+documentation.
 
-are available in the Git repository at:
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Message-ID: <20250210160329.DDA7F4E600E@zero.eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/sd/sdhci.h | 1 +
+ hw/ppc/e500.c         | 1 +
+ hw/sd/sdhci.c         | 4 ++++
+ 3 files changed, 6 insertions(+)
 
-  https://github.com/philmd/qemu.git tags/hw-misc-20250311
-
-for you to fetch changes up to a5368f2e00c81c8c2b5dd0318293b11f8ed7c7c8:
-
-  hw/sd/sdhci: Remove need for SDHCI_VENDOR_FSL definition (2025-03-11 20:03:30 +0100)
-
-----------------------------------------------------------------
-Misc HW patches
-
-- Set correct values for MPC8569E's eSDHC (Zoltan)
-- Emulate Ricoh RS5C372 RTC device (Bernhard)
-- Array overflow fixes in SMSC91C111 netdev (Peter)
-- Fix typo in Xen HVM (Philippe)
-- Move graphic height/width/depth globals to their own file (Philippe)
-- Introduce qemu_arch_available() helper (Philippe)
-- Check fw_cfg's ACPI availability at runtime (Philippe)
-- Remove virtio-mem dependency on CONFIG_DEVICES (Philippe)
-- Sort HyperV SYNDBG API definitions (Pierrick)
-- Remove need for SDHCI_VENDOR_FSL definition (Philippe)
-
-----------------------------------------------------------------
-
-BALATON Zoltan (1):
-  hw/sd/sdhci: Set reset value of interrupt registers
-
-Bernhard Beschow (1):
-  hw/rtc: Add Ricoh RS5C372 RTC emulation
-
-Peter Maydell (4):
-  hw/net/smc91c111: Sanitize packet numbers
-  hw/net/smc91c111: Sanitize packet length on tx
-  hw/net/smc91c111: Use MAX_PACKET_SIZE instead of magic numbers
-  hw/net/smc91c111: Don't allow data register access to overrun buffer
-
-Philippe Mathieu-Daudé (7):
-  hw/xen/hvm: Fix Aarch64 typo
-  system: Extract target-specific globals to their own compilation unit
-  system: Replace arch_type global by qemu_arch_available() helper
-  hw/acpi: Introduce acpi_builtin() helper
-  hw/i386/fw_cfg: Check ACPI availability with acpi_builtin()
-  hw/virtio/virtio-mem: Remove CONFIG_DEVICES include
-  hw/sd/sdhci: Remove need for SDHCI_VENDOR_FSL definition
-
-Pierrick Bouvier (1):
-  hw/hyperv/hyperv-proto: Move SYNDBG definitions from target/i386
-
- MAINTAINERS                      |   2 +
- include/hw/acpi/acpi.h           |   3 +
- include/hw/hyperv/hyperv-proto.h |  12 ++
- include/hw/sd/sdhci.h            |   2 +-
- include/hw/xen/arch_hvm.h        |   2 +-
- include/system/arch_init.h       |   2 +-
- target/i386/kvm/hyperv-proto.h   |  12 --
- hw/acpi/acpi-stub.c              |   8 ++
- hw/acpi/core.c                   |   5 +
- hw/arm/fsl-imx25.c               |   2 -
- hw/arm/fsl-imx6.c                |   2 -
- hw/arm/fsl-imx6ul.c              |   2 -
- hw/arm/fsl-imx7.c                |   2 -
- hw/arm/fsl-imx8mp.c              |   2 -
- hw/i386/fw_cfg.c                 |   8 +-
- hw/net/smc91c111.c               | 148 ++++++++++++++++---
- hw/ppc/e500.c                    |   1 +
- hw/rtc/rs5c372.c                 | 236 +++++++++++++++++++++++++++++++
- hw/scsi/scsi-disk.c              |   2 +-
- hw/sd/sdhci.c                    |  18 ++-
- hw/virtio/virtio-mem.c           |   6 +-
- system/arch_init.c               |  19 +--
- system/globals-target.c          |  24 ++++
- system/qdev-monitor.c            |   4 +-
- system/vl.c                      |   6 +-
- tests/qtest/rs5c372-test.c       |  43 ++++++
- hw/rtc/Kconfig                   |   5 +
- hw/rtc/meson.build               |   1 +
- hw/rtc/trace-events              |   4 +
- system/meson.build               |   1 +
- tests/qtest/meson.build          |   1 +
- 31 files changed, 503 insertions(+), 82 deletions(-)
- create mode 100644 hw/rtc/rs5c372.c
- create mode 100644 system/globals-target.c
- create mode 100644 tests/qtest/rs5c372-test.c
-
+diff --git a/include/hw/sd/sdhci.h b/include/hw/sd/sdhci.h
+index 38c08e28598..f722d8eb1cc 100644
+--- a/include/hw/sd/sdhci.h
++++ b/include/hw/sd/sdhci.h
+@@ -110,6 +110,7 @@ typedef struct SDHCIState SDHCIState;
+ 
+ #define SDHCI_VENDOR_NONE       0
+ #define SDHCI_VENDOR_IMX        1
++#define SDHCI_VENDOR_FSL        2
+ 
+ /*
+  * Controller does not provide transfer-complete interrupt when not
+diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+index fe8b9f79621..69269aa24c4 100644
+--- a/hw/ppc/e500.c
++++ b/hw/ppc/e500.c
+@@ -1043,6 +1043,7 @@ void ppce500_init(MachineState *machine)
+         dev = qdev_new(TYPE_SYSBUS_SDHCI);
+         qdev_prop_set_uint8(dev, "sd-spec-version", 2);
+         qdev_prop_set_uint8(dev, "endianness", DEVICE_BIG_ENDIAN);
++        qdev_prop_set_uint8(dev, "vendor", SDHCI_VENDOR_FSL);
+         s = SYS_BUS_DEVICE(dev);
+         sysbus_realize_and_unref(s, &error_fatal);
+         sysbus_connect_irq(s, 0, qdev_get_gpio_in(mpicdev, MPC85XX_ESDHC_IRQ));
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 1f45a77566c..fe87e18d5d2 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -307,6 +307,10 @@ static void sdhci_reset(SDHCIState *s)
+     s->data_count = 0;
+     s->stopped_state = sdhc_not_stopped;
+     s->pending_insert_state = false;
++    if (s->vendor == SDHCI_VENDOR_FSL) {
++        s->norintstsen = 0x013f;
++        s->errintstsen = 0x117f;
++    }
+ }
+ 
+ static void sdhci_poweron_reset(DeviceState *dev)
 -- 
 2.47.1
 
