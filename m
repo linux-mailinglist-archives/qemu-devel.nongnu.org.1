@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42AF7A5BFC3
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B362CA5BF97
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:46:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trxrH-0003bf-0R; Tue, 11 Mar 2025 07:33:15 -0400
+	id 1trxsc-0007UW-Di; Tue, 11 Mar 2025 07:34:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqY-0003ER-SD
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxr0-0003PK-HC
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:33:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxq9-0006WT-Ja
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:30 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqB-0006Wc-Gw
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741692719;
+ s=mimecast20190719; t=1741692720;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LP5sw2f1gov5R484H/AB6Qo7wnA0cFD7EU7BInj2rnE=;
- b=YVUTfA8TwnFqk9QSHxL2J9R9CB/71IGMq0R6+pkqw00659kCu82zj+Z6sB7F0binBQXZLK
- REtJ1b6pXi/ExHYCc810f9UVCDMgAgjXxn7FFkW8BKSDb+9SaXt/yfaxoJhYT8L4iWW3Vl
- z+NsnOklj5lkHKbqtUn7S/G44EY9iuo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GZbL5p1/16UwD56katIHAcwMx1G5loZdXPWmDkfZoAw=;
+ b=WMrRzdZC5wQDtix5QBky2KRB9z8njFK055zI/kNS+WDPFAtspm0IPdcEgMCsHllu0pzpgu
+ 28YgdfqKhG0N+Pk26iKjWj+NyTyat9wWYwP7qxNUMcmHRpQzdbAgngnJ2LNoB1trXBq9UL
+ 9DppIQQCHDUX1o9cVeCAXki9kBQrwAk=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-324-Yh0xqGH3PqWAos6jFn5PFg-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-UcEK4lV2N56bZhO21Fvz0Q-1; Tue,
  11 Mar 2025 07:31:58 -0400
-X-MC-Unique: Yh0xqGH3PqWAos6jFn5PFg-1
-X-Mimecast-MFC-AGG-ID: Yh0xqGH3PqWAos6jFn5PFg_1741692718
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+X-MC-Unique: UcEK4lV2N56bZhO21Fvz0Q-1
+X-Mimecast-MFC-AGG-ID: UcEK4lV2N56bZhO21Fvz0Q_1741692718
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E75E11955BC6
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D8A7219560A3
  for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:57 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8AD6F195608F
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 724323001D14
  for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:57 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 493BD21E61B7; Tue, 11 Mar 2025 12:31:38 +0100 (CET)
+ id 4CFB121E61B8; Tue, 11 Mar 2025 12:31:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 36/61] docs/qapidoc: add transmogrifier class stub
-Date: Tue, 11 Mar 2025 12:31:12 +0100
-Message-ID: <20250311113137.1277125-37-armbru@redhat.com>
+Subject: [PULL 37/61] docs/qapidoc: add visit_module() method
+Date: Tue, 11 Mar 2025 12:31:13 +0100
+Message-ID: <20250311113137.1277125-38-armbru@redhat.com>
 In-Reply-To: <20250311113137.1277125-1-armbru@redhat.com>
 References: <20250311113137.1277125-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,126 +86,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Add the beginnings of the Transmogrifier class by adding the rST
-conversion helpers that will be used to build the virtual rST document.
-
-This version of the class does not actually "do anything" yet; each
-individual feature is added one-at-a-time in the forthcoming commits.
+This method annotates the start of a new module, crediting the source
+location to the first line of the module file.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250311034303.75779-40-jsnow@redhat.com>
+Message-ID: <20250311034303.75779-41-jsnow@redhat.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 73 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 70 insertions(+), 3 deletions(-)
+ docs/sphinx/qapidoc.py | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 5246832b68..c243bb6faa 100644
+index c243bb6faa..6de8c90054 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -26,14 +26,17 @@
+@@ -28,6 +28,7 @@
  
- from __future__ import annotations
- 
-+from contextlib import contextmanager
+ from contextlib import contextmanager
  import os
++from pathlib import Path
  import sys
  from typing import TYPE_CHECKING
  
- from docutils import nodes
- from docutils.parsers.rst import Directive, directives
-+from docutils.statemachine import StringList
- from qapi.error import QAPIError
- from qapi.schema import QAPISchema, QAPISchemaVisitor
-+from qapi.source import QAPISourceInfo
+@@ -121,6 +122,14 @@ def ensure_blank_line(self) -> None:
+             # +2: correct for zero/one index, then increment by one.
+             self.add_line_raw("", fname, line + 2)
  
- from qapidoc_legacy import QAPISchemaGenRSTVisitor  # type: ignore
- from sphinx import addnodes
-@@ -44,9 +47,12 @@
++    # Transmogrification core methods
++
++    def visit_module(self, path: str) -> None:
++        name = Path(path).stem
++        # module directives are credited to the first line of a module file.
++        self.add_line_raw(f".. qapi:module:: {name}", path, 1)
++        self.ensure_blank_line()
++
  
- 
- if TYPE_CHECKING:
--    from typing import Any, List, Sequence
--
--    from docutils.statemachine import StringList
-+    from typing import (
-+        Any,
-+        Generator,
-+        List,
-+        Sequence,
-+    )
- 
-     from sphinx.application import Sphinx
-     from sphinx.util.typing import ExtensionMetadata
-@@ -55,6 +61,67 @@
- __version__ = "1.0"
- 
- 
-+class Transmogrifier:
-+    def __init__(self) -> None:
-+        self._result = StringList()
-+        self.indent = 0
-+
-+    # General-purpose rST generation functions
-+
-+    def get_indent(self) -> str:
-+        return "   " * self.indent
-+
-+    @contextmanager
-+    def indented(self) -> Generator[None]:
-+        self.indent += 1
-+        try:
-+            yield
-+        finally:
-+            self.indent -= 1
-+
-+    def add_line_raw(self, line: str, source: str, *lineno: int) -> None:
-+        """Append one line of generated reST to the output."""
-+
-+        # NB: Sphinx uses zero-indexed lines; subtract one.
-+        lineno = tuple((n - 1 for n in lineno))
-+
-+        if line.strip():
-+            # not a blank line
-+            self._result.append(
-+                self.get_indent() + line.rstrip("\n"), source, *lineno
-+            )
-+        else:
-+            self._result.append("", source, *lineno)
-+
-+    def add_line(self, content: str, info: QAPISourceInfo) -> None:
-+        # NB: We *require* an info object; this works out OK because we
-+        # don't document built-in objects that don't have
-+        # one. Everything else should.
-+        self.add_line_raw(content, info.fname, info.line)
-+
-+    def add_lines(
-+        self,
-+        content: str,
-+        info: QAPISourceInfo,
-+    ) -> None:
-+        lines = content.splitlines(True)
-+        for i, line in enumerate(lines):
-+            self.add_line_raw(line, info.fname, info.line + i)
-+
-+    def ensure_blank_line(self) -> None:
-+        # Empty document -- no blank line required.
-+        if not self._result:
-+            return
-+
-+        # Last line isn't blank, add one.
-+        if self._result[-1].strip():  # pylint: disable=no-member
-+            fname, line = self._result.info(-1)
-+            assert isinstance(line, int)
-+            # New blank line is credited to one-after the current last line.
-+            # +2: correct for zero/one index, then increment by one.
-+            self.add_line_raw("", fname, line + 2)
-+
-+
  class QAPISchemaGenDepVisitor(QAPISchemaVisitor):
      """A QAPI schema visitor which adds Sphinx dependencies each module
- 
 -- 
 2.48.1
 
