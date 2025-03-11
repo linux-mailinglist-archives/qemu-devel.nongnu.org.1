@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0E1A5CFF5
+	by mail.lfdr.de (Postfix) with ESMTPS id 96BE2A5CFF4
 	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 20:53:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts5ek-0007YD-4G; Tue, 11 Mar 2025 15:52:51 -0400
+	id 1ts5ep-0007fs-VO; Tue, 11 Mar 2025 15:52:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ts5eJ-0007OM-BM
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:52:24 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ts5eO-0007YC-7d
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:52:29 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ts5eG-0007XX-W2
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:52:22 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43d0782d787so7196065e9.0
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 12:52:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ts5eM-0007b5-Eo
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 15:52:27 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43cf05f0c3eso19735515e9.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 12:52:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741722739; x=1742327539; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741722744; x=1742327544; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uPwG81CDQDlI7rnw58FUGfF/8AkVAzJZybrmEGNU+RE=;
- b=wpp/gH/OB2EzlFGecczjpGJg925Assl/J4UrOu9kvt45ND8w1Xm4Np5mhaiEEvnzEe
- nnTiRO4ELmu+3imvwPit492xXWiGvi2Jtvitk9xHQhEqLw5P4C/K5NzKhkGtr7TSJqJc
- Muog+REnAVSntNrQ3iXYf++ce1ZGFepyIPo6fGcHdILJmaALZX8cLl23yps8X6WG4ITE
- gaMcJ6KCHrGHglIGKO3X7bF8plK0n9a7BJ7cdNC0Non0GZhW2bxEX8R6tPIjRm6M7XqK
- Om8MVxdkk71c7O73m0aV73tamN4nu+oGw1KITp6MirmNUWXxQAwHiryqeGcMEWSrHLKl
- 7mMg==
+ bh=6pPHUcmotQ2rkbUdZZNWdsu4jVRIsLE/Gfct1AtODJ4=;
+ b=L3DY0cb0218D5TlAvnn41AtNeXkeIQ4Jcwp1XNTq067zEwpj8bu6TGGKRCywE0xelu
+ aI+QHUAoN7ASsVJwtHQSR8x4py3kbFONeJmXqcKWMDrqtP61e5WTeRnt7jFB45QYBsXs
+ dBJIeyyiRFk/9mMxQBqZO08LW933Pb27SY1/390PHsYtwxKAOMnJptKqTu0beMxAh4qp
+ yVriGfmEigKBU4tulNWm8A+O+UpeN6oecTofXJe60yrpIFoRGDdFqURzBe38kGw2hiOA
+ kufkGnxDOdqawZZPH7wrPiHz2Gt905rCRmofVgHBn3TPdRhVJJyM6d4G9/pQ5nfKjSMj
+ laxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741722739; x=1742327539;
+ d=1e100.net; s=20230601; t=1741722744; x=1742327544;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uPwG81CDQDlI7rnw58FUGfF/8AkVAzJZybrmEGNU+RE=;
- b=nsHj4Zad9B8aE3cG/6ghIA+aCxqSsC42ruRKDPpSwcZlmKA7Hf2Xq3Iv26BwLPwVPk
- 820gYPZTFtCzSmMGbJSuvAGeSSUtdZ/Prms4SenG4cxTtYigFcwQR7t0h9Jji6lXG7xL
- cJp+SNfOybyv83OfLPVi4uHlrd3xsCfhlh/gXNL9wuuLlm0Pj1Qp5BbgN2NMD1hYSFPz
- Z+n90r+25kCZSVb5Q2wHG2Rs72TNCTs0kCk6SoxsAUSpEOPtS8HEThpX10jE2755m/cr
- QBJD0PyNdxDsLIPokTxiDvUMiRXcypNHPu3kwdiR9RKk4UGBZKKGnowLVumZ7/XOG4h7
- JhtA==
-X-Gm-Message-State: AOJu0Yz2OGE+SFuLai0oAhOLeHQidjQ5GjZxxVc0K49fZ+NH9AesjM5+
- ouQcG6ohU9ydS3UGDsGBSh4yqfB1gAbcj5+vmFSaAnmjszQ6XAwNmBiP/L4WydsduT7rUZ0JWOT
- GEn0=
-X-Gm-Gg: ASbGncsVRqsSHrtwGQaMIm5EtJ1I+royfX9R966aTC2wHQkvuEyjxFunRjATcUFKzvq
- uVlKNP9y2oDywcj+UxRUrHrvKz/7WpElh25opKVVDvpe3gfBeQgtNW+e7QIDGxKhnY9Q5L1VsrI
- DFVVUUlNnTTgmzSKOaqEeCQuwO0wtRnQ+LoPZSg2ihaqQXABLNCCZo+ZAJppxOt52gb/138Fffi
- Wau768qrltGSNhLyPSUToYcYw6JLRTQMHul1ZzzLGv2fnSaUAMahyrBWndhMHyRxrczuXZ2DVUT
- S8EaE4VEpkpR4NBXpe4rbRATo8j4i9BzK6WP6NNBP1X2DdV5ZbkwtIi1xjuDq76J11lnja3E/1m
- X+ubcaGoI5G95uAteXoA=
-X-Google-Smtp-Source: AGHT+IH4ttBvMP2B6Ovxh4s1geCjYjf4FIIGXb7l0Daqd3JmFfHyF5nMneZC6tFyoNeClWmWUQjwlg==
-X-Received: by 2002:a05:6000:2cb:b0:391:ba6:c069 with SMTP id
- ffacd0b85a97d-39132db8c73mr16630802f8f.44.1741722738814; 
- Tue, 11 Mar 2025 12:52:18 -0700 (PDT)
+ bh=6pPHUcmotQ2rkbUdZZNWdsu4jVRIsLE/Gfct1AtODJ4=;
+ b=tz0etDesKqhbWPl27y/SISsp+z/yCtjW+1sewqam9xlLLFXW/bL8nBIOZUpUuZ41Me
+ VPV9ZodrXCVSHHHjqmHSuhl8kbaqm+MILG/4g+OcP4KuB4HvzyMSyUQhBhR76Q9yg2xO
+ de5BPcJBOn9Zyvwquq8OGFuju4BWOmeAkP+pajGw0QGlWjYvqE8o3uH9zowYAjbyNSKo
+ 4UUQF2x90fk6AjIecosiEZAgBwGtJp5XOj6iLLQ2hdOdw2DHe482UtMnwdHvbZ0uAPAO
+ IFBic28xN5QOTfuCSb1SKZrm4rgtH7F37hvJubPHdd2r9Vg6IevBZSFMcKh6SmFVawGS
+ jdlA==
+X-Gm-Message-State: AOJu0YxF54t84z4Dmh1Ft5vivvZZaJkw8p1J+u1DMrwTradlFUFKZWN5
+ YalP7UlBlsAVyiCSdwOcjshEmIRkk+Y7sqvAMT8Q5O4IV7iYT++ty3gJNOS6Q7XBsnT7FDNjOUm
+ WsAc=
+X-Gm-Gg: ASbGncuJs+ZBiEVPubdQm7CDg82NLlwkqEExM4o8fcbtnqZ31Kt9EnIALygWCth1fnC
+ U/hMpjrZcdZ4kofmY8lp0sIXyR0a6m401sijBe7nOkGLz0fy2JyFSFweRdp0g54+0IqCY+iPgIW
+ YncDe6RRvW6ZRVUsCuplWyLXYH8nczqeI/CLtVwyyVgsy1Lc0naY2r8IY3bRINV8WKJiuKLRBkc
+ NVDtfVZcoCXpykCXNehb+bYbSy94o8EtWoA9JwCf/kYcmtiVLjDwtYrBwaVwXTP2yhs90i7e9Y4
+ j/NZFj8g3QHfJPSBmqpgom0iZ6+p1fI4BhPEt7ALMnB9Suwg3il69WzghwZ7EShoQTKwjOzDV6M
+ 705LurnPqVBOSFUc54HA=
+X-Google-Smtp-Source: AGHT+IFhD7v2RgHUHk8O5vK2kRzYxR9EGbeB4XlBX7XdzarBWH3cONAixUnadWAp2bLhYMAftuhjNQ==
+X-Received: by 2002:a05:600c:3596:b0:43c:f8fc:f697 with SMTP id
+ 5b1f17b1804b1-43cf8fcf8e0mr72805645e9.9.1741722744184; 
+ Tue, 11 Mar 2025 12:52:24 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d073555e5sm20578135e9.4.2025.03.11.12.52.17
+ ffacd0b85a97d-3912bfb7aefsm18716456f8f.20.2025.03.11.12.52.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Mar 2025 12:52:18 -0700 (PDT)
+ Tue, 11 Mar 2025 12:52:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 11/14] hw/i386/fw_cfg: Check ACPI availability with
- acpi_builtin()
-Date: Tue, 11 Mar 2025 20:51:20 +0100
-Message-ID: <20250311195123.94212-12-philmd@linaro.org>
+ David Hildenbrand <david@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 12/14] hw/virtio/virtio-mem: Remove CONFIG_DEVICES include
+Date: Tue, 11 Mar 2025 20:51:21 +0100
+Message-ID: <20250311195123.94212-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311195123.94212-1-philmd@linaro.org>
 References: <20250311195123.94212-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,50 +99,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define acpi_tables / acpi_tables_len stubs, then replace the
-compile-time CONFIG_ACPI check in fw_cfg.c by a runtime one.
+Rather than checking ACPI availability at compile time by
+checking the CONFIG_ACPI definition from CONFIG_DEVICES,
+check at runtime via acpi_builtin().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
-Message-Id: <20250307223949.54040-4-philmd@linaro.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20250307223949.54040-5-philmd@linaro.org>
 ---
- hw/acpi/acpi-stub.c | 3 +++
- hw/i386/fw_cfg.c    | 8 ++++----
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ hw/virtio/virtio-mem.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/acpi/acpi-stub.c b/hw/acpi/acpi-stub.c
-index 790bf509e5d..fd0b62fad9e 100644
---- a/hw/acpi/acpi-stub.c
-+++ b/hw/acpi/acpi-stub.c
-@@ -21,6 +21,9 @@
- #include "qemu/osdep.h"
- #include "hw/acpi/acpi.h"
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index 7b140add765..5f57eccbb66 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -28,7 +28,7 @@
+ #include "migration/misc.h"
+ #include "hw/boards.h"
+ #include "hw/qdev-properties.h"
+-#include CONFIG_DEVICES
++#include "hw/acpi/acpi.h"
+ #include "trace.h"
  
-+char unsigned *acpi_tables;
-+size_t acpi_tables_len;
-+
- void acpi_table_add(const QemuOpts *opts, Error **errp)
- {
-     g_assert_not_reached();
-diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index d08aefa0291..a7f1b60b98c 100644
---- a/hw/i386/fw_cfg.c
-+++ b/hw/i386/fw_cfg.c
-@@ -145,10 +145,10 @@ FWCfgState *fw_cfg_arch_create(MachineState *ms,
-      */
-     fw_cfg_add_i16(fw_cfg, FW_CFG_MAX_CPUS, apic_id_limit);
-     fw_cfg_add_i64(fw_cfg, FW_CFG_RAM_SIZE, ms->ram_size);
--#ifdef CONFIG_ACPI
--    fw_cfg_add_bytes(fw_cfg, FW_CFG_ACPI_TABLES,
--                     acpi_tables, acpi_tables_len);
+ static const VMStateDescription vmstate_virtio_mem_device_early;
+@@ -883,10 +883,8 @@ static uint64_t virtio_mem_get_features(VirtIODevice *vdev, uint64_t features,
+     MachineState *ms = MACHINE(qdev_get_machine());
+     VirtIOMEM *vmem = VIRTIO_MEM(vdev);
+ 
+-    if (ms->numa_state) {
+-#if defined(CONFIG_ACPI)
++    if (ms->numa_state && acpi_builtin()) {
+         virtio_add_feature(&features, VIRTIO_MEM_F_ACPI_PXM);
 -#endif
-+    if (acpi_builtin()) {
-+        fw_cfg_add_bytes(fw_cfg, FW_CFG_ACPI_TABLES,
-+                         acpi_tables, acpi_tables_len);
-+    }
-     fw_cfg_add_i32(fw_cfg, FW_CFG_IRQ0_OVERRIDE, 1);
- 
-     fw_cfg_add_bytes(fw_cfg, FW_CFG_HPET, &hpet_fw_cfg, sizeof(hpet_fw_cfg));
+     }
+     assert(vmem->unplugged_inaccessible != ON_OFF_AUTO_AUTO);
+     if (vmem->unplugged_inaccessible == ON_OFF_AUTO_ON) {
 -- 
 2.47.1
 
