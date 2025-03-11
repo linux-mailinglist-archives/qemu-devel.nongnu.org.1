@@ -2,87 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A664A5C270
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:22:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 529A2A5C216
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:12:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzKp-0001LS-2f; Tue, 11 Mar 2025 09:07:51 -0400
+	id 1trzLA-00031B-47; Tue, 11 Mar 2025 09:08:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzFL-0006LS-Pr; Tue, 11 Mar 2025 09:02:14 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzFI-0000Ok-LQ; Tue, 11 Mar 2025 09:02:10 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2fea47bcb51so11359335a91.2; 
- Tue, 11 Mar 2025 06:02:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741698124; x=1742302924; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tAN+HnepXEYeETm6X7cQEpTvdXTBx3EHSfsdgopHuPI=;
- b=JJZbh2l0Ph+pAKrU4cJQj5kkoQ2p/UBym7ImFEWHMokTBORjMacpx5KSj1cckOxDI9
- gPjPah65MNWgo8B0TkuAjAPWYr8tFTuj/CPkDsnhlnz1bUkBb7LAa3WTxCVkF3677u94
- 3O9f/ZjhVj186sd9u2dPK15H9RTD8rCkWzJan+xBaNtmZymCE5RiEkmoEt2m4wLIkNrD
- zOHoJ23R/KKzfJx2UiQC2GgiPLLOkVBZ5+Dwt5iB5jRcqy7NB6gILSLn/K2rmQuNF7mt
- YYZRUdVCdLUIi2ATqVuvnIbr/5gO3R3qTife0uk575D7hhCTvAPvWGxGfQHhEiaLUBty
- pv6Q==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trzI1-0001fn-Uj
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:05:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1trzHr-0000u5-Vc
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:04:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741698285;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=fXeEQD6GBnI21Y186W0coY+prgMzUnb9BA0BUBq1VIA=;
+ b=AslLgo9OlEeWzcLQSbsXswVOPD8oeJrJzRYz5v4R934tCiu6Q2j+HxoPHSV7KKJPu9X3Aw
+ cnztyVegAH+HxVvtAGhnn086sm7faG7auxOyyzjSbvWaMBr9z6Jn3YRudWh6jPfypwb6dA
+ O+8xeoKVmHGWzjynsEQIc8o6hW5HGD8=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-330-WzyLoR9hNQGbuoq6J8smdQ-1; Tue, 11 Mar 2025 09:04:44 -0400
+X-MC-Unique: WzyLoR9hNQGbuoq6J8smdQ-1
+X-Mimecast-MFC-AGG-ID: WzyLoR9hNQGbuoq6J8smdQ_1741698284
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6e91d8a7165so33608336d6.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 06:04:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741698124; x=1742302924;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tAN+HnepXEYeETm6X7cQEpTvdXTBx3EHSfsdgopHuPI=;
- b=NgwPyKNLEuhZM8xXGdWoJ50ckNvYMKG5VTztR/pvHuHfnXvOTJiujkWUuiF7yDMT0h
- E7C5wq8kSawLCLyTelwve7Q1xtrCqSS/XcsnqgvrQONKaYDdOqu0MsCZmqEdahRodpzT
- dutR785tqpSh/p7BGvWCoOXOAORDUKZV5rou5Qb7Y6fPzrF0f29H9QGKFN8/xIEBL3/K
- CNrTu3IdVNPiOT+SD1GuGaqNDgsha3wR+iJqj43HIfkUJraNVLgxuJX2lpFoAyOqVTQf
- 7iEvO/m4biaMacIKiXsk+2Gr+cgBkSXszIFYZeSDMeyj1PA2ruZgGWMqWgBHA4MPn9X7
- tuFw==
+ d=1e100.net; s=20230601; t=1741698283; x=1742303083;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fXeEQD6GBnI21Y186W0coY+prgMzUnb9BA0BUBq1VIA=;
+ b=LfUsRXa8z64VcUrBcvAN1kIO65K/qJZi5xI0Zp/XdrfTZ/SucGnFhvBXjgCu47aeI0
+ 14wEbpWgesxAVV3oaN8bDIMiL0Rxdl6n65LO05ONFKPBmlxGI4wPWDOdoCHbOVk8/4lU
+ 7zYLH4F8kaKV/2QPae5BRXKniPq2K+x0e+ie2tv8n88YgkScQzWr+rbwbBfBhfr51dyn
+ oCVpYqsDSYLHfuiJDDsiDLivYuE2X6iUCadn9sy3/qKl4wMqL1qTU7KPAJwmCA3QQOrG
+ CjaMV58XyIcngEaNSv14KbwDXgZsmQmOiLhgFNhBf5wI2tqOYi/gncU3a/0J+LqSDn/F
+ uLFQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWyLr06BuYEZIeqJ5U91oO8afNWxpAGWiSdTETwc8x7tDmp5ymYjc5oBOxOLp9dD5tcZxaCUHYumQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yx6h9FCt/7fHHvFiSxPUJZ1lfe+Miml5hwqEtQW1jfSoO2lpiFN
- XAK1WL0i5LdtEANLgohsEbveM2FPkPuKF9JZW/iS5vXjqharcWDSHHtKpA==
-X-Gm-Gg: ASbGncuxvlkwt3AR5OQAFx1taCNqTZtURCgPDMASyen8iD3P1RfQDNXCQoCXR9oAdL8
- JOTYKnDq0HUXYUEYs9W934+jF6A4Kgclvi3m7P5Y7Xmf+EaooUmZrKi0lM4NhMTQR6YW9HjBrG3
- Hu7JXIBLLingwLkcTIAEk+LUj1NMw3t7tjOjHmw9HJi/eYM3gBWYN9pePGY7X64Al/6BKeMD3MC
- SmKPy96t7/CbefBxlTJWlmiFgGw+PC7kYNj4M8iGtJ2KZHlCYTDU0CEn9Du74cH4Bo6q5NARI15
- Vqn41hyp+EtryMEoH+XAnsf4e+WV4cfvTBf6oBeoW4q4FvH/iFs=
-X-Google-Smtp-Source: AGHT+IEhxKc7QK2c+anq0I1mojZLWvDqfhA2vOV9L7tDz2FcGcafQoam3LJNySdsaQeq/PjJ9Lg/jw==
-X-Received: by 2002:a17:90b:2883:b0:2ff:52e1:c4a1 with SMTP id
- 98e67ed59e1d1-2ff7cf128acmr27247430a91.24.1741698123882; 
- Tue, 11 Mar 2025 06:02:03 -0700 (PDT)
-Received: from wheely.local0.net ([118.208.151.101])
+ AJvYcCXkcfXsMJ53wu72xNlY27691d/8VY3x88DkwIboupJHXx7YEL32/8Ob4djPyZtD87XOcS9OyEvu3wBi@nongnu.org
+X-Gm-Message-State: AOJu0YzvKmwOxltFn3guKdgAkpGkSm9KY2IhUZkTlr9xw4ZYqLZ3neY0
+ tDAuz+2RbyRDYBPS5Z4BEOAMkbaKBg3LyWRDjSvJgJpXwA5wNh7Pa+2F6qzmlk+g45t6pBQupC1
+ /4jMxN13zRrxQGK9YI8JoqSWGNFjc392udCmSIYSv3/dtrRRxLolb
+X-Gm-Gg: ASbGnctbP8z2XL4NXuQ6e8CvT26oVMT/Oa/Vlp4B0mRkk+uvhQt9IqECy3CORluBRYi
+ ZW+HTL/0vrtGBcMc9m8vDupXh3PrW9lVq0BOyk+tEI4D8A0qzmcE/AToVzrIYB5ekh7O297wI10
+ bKJt3F6dm82ivBlh4Q2bWcUesKshLmsusHqQf5YoiHpaX8CPGEx6X0cPftEWna0ofxQqTplIY/C
+ CivX3MMS9oM3li1jxaBum7MQFleh5xvJvMCCKG0zMQ4l/iYrXwd2zkWR9bwPKctPINhWugm3stS
+ AxuMpD94u11SjHY2Zi4GzHpgHOanZ8GmtizvPAek29VO5Ga+3ooBRA==
+X-Received: by 2002:a05:6214:2584:b0:6e8:fb7e:d335 with SMTP id
+ 6a1803df08f44-6e9004df813mr274664316d6.0.1741698283471; 
+ Tue, 11 Mar 2025 06:04:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhefdHS+VV5oh1MJ8qBEArtOb9Je6EN3lcgpzFcorwzUViI3ViALxy6/YnKCKOFPCYmcwS8Q==
+X-Received: by 2002:a05:6214:2584:b0:6e8:fb7e:d335 with SMTP id
+ 6a1803df08f44-6e9004df813mr274663656d6.0.1741698282875; 
+ Tue, 11 Mar 2025 06:04:42 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.02.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 06:02:03 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 72/72] docs/system/ppc/amigang.rst: Update for NVRAM emulation
-Date: Tue, 11 Mar 2025 22:58:06 +1000
-Message-ID: <20250311125815.903177-73-npiggin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
-References: <20250311125815.903177-1-npiggin@gmail.com>
+ 6a1803df08f44-6e8f707c721sm72621426d6.21.2025.03.11.06.04.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Mar 2025 06:04:42 -0700 (PDT)
+Message-ID: <fc547687-b313-404c-a6a6-dd599b0a9dbc@redhat.com>
+Date: Tue, 11 Mar 2025 14:04:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] vfio/migration: Add also max in-flight VFIO device
+ state buffers size limit
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
+ qemu-devel@nongnu.org
+References: <cover.1741124640.git.maciej.szmigiero@oracle.com>
+ <2b2469939198c2f31dba33b284576d2df22697b7.1741344976.git.maciej.szmigiero@oracle.com>
+ <abc049f2-3497-4557-89c8-74bcfaea221c@redhat.com>
+ <3826d47f-d79b-4db2-9719-35f48f582bf0@maciej.szmigiero.name>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <3826d47f-d79b-4db2-9719-35f48f582bf0@maciej.szmigiero.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,56 +161,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+On 3/7/25 14:45, Maciej S. Szmigiero wrote:
+> On 7.03.2025 13:03, Cédric Le Goater wrote:
+>> On 3/7/25 11:57, Maciej S. Szmigiero wrote:
+>>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>>
+>>> There's already a max in-flight VFIO device state buffers *count* limit,
+>>
+>> no. there isn't. Do we need both ?
+> 
+> This is on a top of the remaining patches (x-migration-load-config-after-iter
+> and x-migration-max-queued-buffers) - I thought we were supposed to work
+> on these after the main series was merged as they are relatively non-critical.
 
-Add NVRAM and hint on how to make it persistent. Also update Linux
-boot section which should now boot automatically with the new NVRAM
-defaults so manual settings in menu may not be needed normally.
+yes. we don't need both count and size limits though, a size limit is enough.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20250304205926.87E364E6010@zero.eik.bme.hu>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- docs/system/ppc/amigang.rst | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+> I would also give x-migration-load-config-after-iter priority over
+> x-migration-max-queued-buffers{,-size} as the former is correctness fix
+> while the later are just additional functionalities.
 
-diff --git a/docs/system/ppc/amigang.rst b/docs/system/ppc/amigang.rst
-index e2c9cb74b7..21bb14ed09 100644
---- a/docs/system/ppc/amigang.rst
-+++ b/docs/system/ppc/amigang.rst
-@@ -21,6 +21,7 @@ Emulated devices
-  * VIA VT82C686B south bridge
-  * PCI VGA compatible card (guests may need other card instead)
-  * PS/2 keyboard and mouse
-+ * 4 KiB NVRAM (use ``-drive if=mtd,format=raw,file=nvram.bin`` to keep contents persistent)
- 
- Firmware
- --------
-@@ -54,14 +55,14 @@ To boot the system run:
-                     -cdrom "A1 Linux Net Installer.iso" \
-                     -device ati-vga,model=rv100,romfile=VGABIOS-lgpl-latest.bin
- 
--From the firmware menu that appears select ``Boot sequence`` →
--``Amiga Multiboot Options`` and set ``Boot device 1`` to
--``Onboard VIA IDE CDROM``. Then hit escape until the main screen appears again,
--hit escape once more and from the exit menu that appears select either
--``Save settings and exit`` or ``Use settings for this session only``. It may
--take a long time loading the kernel into memory but eventually it boots and the
--installer becomes visible. The ``ati-vga`` RV100 emulation is not
--complete yet so only frame buffer works, DRM and 3D is not available.
-+If a firmware menu appears, select ``Boot sequence`` → ``Amiga Multiboot Options``
-+and set ``Boot device 1`` to ``Onboard VIA IDE CDROM``. Then hit escape until
-+the main screen appears again, hit escape once more and from the exit menu that
-+appears select either ``Save settings and exit`` or ``Use settings for this
-+session only``. It may take a long time loading the kernel into memory but
-+eventually it boots and the installer becomes visible. The ``ati-vga`` RV100
-+emulation is not complete yet so only frame buffer works, DRM and 3D is not
-+available.
- 
- Genesi/bPlan Pegasos II (``pegasos2``)
- ======================================
--- 
-2.47.1
+ok. I have kept both patches in my tree with the doc updates.
+
+> Also, if some setup is truly worried about these buffers consuming too much
+> memory then roughly the same thing could be achieved by (temporarily) putting
+> the target QEMU process in a memory-limited cgroup.
+
+yes.
+
+That said,
+
+since QEMU exchanges 1MB VFIODeviceStatePackets when using multifd and that
+the overall device state is in the order of 100MB :
+
+   /*
+    * This is an arbitrary size based on migration of mlx5 devices, where typically
+    * total device migration size is on the order of 100s of MB. Testing with
+    * larger values, e.g. 128MB and 1GB, did not show a performance improvement.
+    */
+   #define VFIO_MIG_DEFAULT_DATA_BUFFER_SIZE (1 * MiB)
+
+
+Could we define the limit to 1GB ?
+
+Avihai, would that make sense  ?
+
+
+Thanks,
+
+C.
+
+
+
+
+> 
+> On the other hand, the network endianess patch is urgent since it affects
+> the bit stream.
+> 
+>>> add also max queued buffers *size* limit.
+>>>
+>>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>>> ---
+>>>   docs/devel/migration/vfio.rst |  8 +++++---
+>>>   hw/vfio/migration-multifd.c   | 21 +++++++++++++++++++--
+>>>   hw/vfio/pci.c                 |  9 +++++++++
+>>>   include/hw/vfio/vfio-common.h |  1 +
+>>>   4 files changed, 34 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/docs/devel/migration/vfio.rst b/docs/devel/migration/vfio.rst
+>>> index 7c9cb7bdbf87..127a1db35949 100644
+>>> --- a/docs/devel/migration/vfio.rst
+>>> +++ b/docs/devel/migration/vfio.rst
+>>> @@ -254,12 +254,14 @@ This means that a malicious QEMU source could theoretically cause the target
+>>>   QEMU to allocate unlimited amounts of memory for such buffers-in-flight.
+>>>   The "x-migration-max-queued-buffers" property allows capping the maximum count
+>>> -of these VFIO device state buffers queued at the destination.
+>>> +of these VFIO device state buffers queued at the destination while
+>>> +"x-migration-max-queued-buffers-size" property allows capping their total queued
+>>> +size.
+>>>   Because a malicious QEMU source causing OOM on the target is not expected to be
+>>>   a realistic threat in most of VFIO live migration use cases and the right value
+>>> -depends on the particular setup by default this queued buffers limit is
+>>> -disabled by setting it to UINT64_MAX.
+>>> +depends on the particular setup by default these queued buffers limits are
+>>> +disabled by setting them to UINT64_MAX.
+>>>   Some host platforms (like ARM64) require that VFIO device config is loaded only
+>>>   after all iterables were loaded.
+>>> diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
+>>> index dccd763d7c39..a9d41b9f1cb1 100644
+>>> --- a/hw/vfio/migration-multifd.c
+>>> +++ b/hw/vfio/migration-multifd.c
+>>> @@ -83,6 +83,7 @@ typedef struct VFIOMultifd {
+>>>       uint32_t load_buf_idx;
+>>>       uint32_t load_buf_idx_last;
+>>>       uint32_t load_buf_queued_pending_buffers;
+>>
+>> 'load_buf_queued_pending_buffers' is not in mainline. Please rebase.
+>>
+>>
+>> Thanks,
+>>
+>> C.
+> 
+> Thanks,
+> Maciej
+> 
 
 
