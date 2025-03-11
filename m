@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA78A5B785
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 04:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C609A5B7A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 04:59:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trqbK-0006yD-Bm; Mon, 10 Mar 2025 23:48:18 -0400
+	id 1trqZx-0000bW-3Z; Mon, 10 Mar 2025 23:46:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqYe-0007DD-VB
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqYk-0007I5-0L
  for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:45:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqYd-0002fZ-A2
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:45:32 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqYi-0002gL-Ah
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:45:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741664730;
+ s=mimecast20190719; t=1741664735;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7RoKJbqlQB3AZV623n4GqGylO66vrkMFX3kGFcnwnYw=;
- b=hdSetcUy0jl+97Sz92L4HR+GjYHUUuP1dcmt2MSx7Hlga6R8h3zzCvU4PjT9E6CcPwEig1
- Z2GubvLoaV7lK+32r3D839Ih9YzrKCrK38GjXI5aXMK1CL4aM29nBJjJhmZ91IOxLNrAtR
- gjWaPmo465CTYLB2T89Mnm4aSG0pg2I=
+ bh=+Lt0j1xh8yc1AtoQcUgvLUOTTS787jv9IQpqbK71vU4=;
+ b=Fl/HeNkUfRSkybze2PPoexb4xQQnOMGvMk8rI+O45lHP4m7FOeCwmtdksknKKCfvgsROV+
+ 8n8w2cx8puKU1dn1cRyUZplXzhY1LxbnlDbtaDh9+YKJZ03iHDbWoQf5m3BPbp9MKOjdTq
+ vYGZz5bQJSKumCpF9IqX3aLDXSDtwm8=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-79-2V4TPBakPb66FBtS1F1RWg-1; Mon,
- 10 Mar 2025 23:45:29 -0400
-X-MC-Unique: 2V4TPBakPb66FBtS1F1RWg-1
-X-Mimecast-MFC-AGG-ID: 2V4TPBakPb66FBtS1F1RWg_1741664728
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-G-WP9uElMbuY1HtBHt74wQ-1; Mon,
+ 10 Mar 2025 23:45:32 -0400
+X-MC-Unique: G-WP9uElMbuY1HtBHt74wQ-1
+X-Mimecast-MFC-AGG-ID: G-WP9uElMbuY1HtBHt74wQ_1741664731
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2364A19560B7; Tue, 11 Mar 2025 03:45:28 +0000 (UTC)
+ id 1F24219560B0; Tue, 11 Mar 2025 03:45:31 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.49])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 06A801800366; Tue, 11 Mar 2025 03:45:24 +0000 (UTC)
+ id 86C1C1800366; Tue, 11 Mar 2025 03:45:28 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
@@ -52,9 +52,10 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v3 40/63] docs/qapidoc: add visit_module() method
-Date: Mon, 10 Mar 2025 23:42:38 -0400
-Message-ID: <20250311034303.75779-41-jsnow@redhat.com>
+Subject: [PATCH v3 41/63] qapi/source: allow multi-line QAPISourceInfo
+ advancing
+Date: Mon, 10 Mar 2025 23:42:39 -0400
+Message-ID: <20250311034303.75779-42-jsnow@redhat.com>
 In-Reply-To: <20250311034303.75779-1-jsnow@redhat.com>
 References: <20250311034303.75779-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -85,41 +86,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This method annotates the start of a new module, crediting the source
-location to the first line of the module file.
+This is for the sake of the new rST generator (the "transmogrifier") so
+we can advance multiple lines on occasion while keeping the
+generated<-->source mappings accurate.
+
+next_line now simply takes an optional n parameter which chooses the
+number of lines to advance.
+
+The next patch will use this when converting section syntax in free-form
+documentation to more traditional rST section header syntax, which does
+not always line up 1:1 for line counts.
+
+For example:
+
+```
+ ##
+ # = Section     <-- Info is pointing here, "L1"
+ #
+ # Lorem Ipsum
+ ##
+```
+
+would be transformed to rST as:
+
+```
+=======        <-- L1
+Section        <-- L1
+=======        <-- L1
+               <-- L2
+Lorem Ipsum    <-- L3
+```
+
+After consuming the single "Section" line from the source, we want to
+advance the source pointer to the next non-empty line which requires
+jumping by more than one line.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ scripts/qapi/source.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index c243bb6faaa..6de8c900543 100644
---- a/docs/sphinx/qapidoc.py
-+++ b/docs/sphinx/qapidoc.py
-@@ -28,6 +28,7 @@
+diff --git a/scripts/qapi/source.py b/scripts/qapi/source.py
+index 7b379fdc925..ffdc3f482ac 100644
+--- a/scripts/qapi/source.py
++++ b/scripts/qapi/source.py
+@@ -47,9 +47,9 @@ def set_defn(self, meta: str, name: str) -> None:
+         self.defn_meta = meta
+         self.defn_name = name
  
- from contextlib import contextmanager
- import os
-+from pathlib import Path
- import sys
- from typing import TYPE_CHECKING
+-    def next_line(self: T) -> T:
++    def next_line(self: T, n: int = 1) -> T:
+         info = copy.copy(self)
+-        info.line += 1
++        info.line += n
+         return info
  
-@@ -121,6 +122,14 @@ def ensure_blank_line(self) -> None:
-             # +2: correct for zero/one index, then increment by one.
-             self.add_line_raw("", fname, line + 2)
- 
-+    # Transmogrification core methods
-+
-+    def visit_module(self, path: str) -> None:
-+        name = Path(path).stem
-+        # module directives are credited to the first line of a module file.
-+        self.add_line_raw(f".. qapi:module:: {name}", path, 1)
-+        self.ensure_blank_line()
-+
- 
- class QAPISchemaGenDepVisitor(QAPISchemaVisitor):
-     """A QAPI schema visitor which adds Sphinx dependencies each module
+     def loc(self) -> str:
 -- 
 2.48.1
 
