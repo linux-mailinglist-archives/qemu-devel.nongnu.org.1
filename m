@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DFAA5BF1B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2320A5BFAD
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:48:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trxrN-0003fJ-NG; Tue, 11 Mar 2025 07:33:21 -0400
+	id 1trxrE-0003Wt-2a; Tue, 11 Mar 2025 07:33:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqt-0003OK-Bw
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqW-0003Cx-7M
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxqC-0006WS-0R
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:51 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1trxq9-0006Wz-Mp
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:32:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741692719;
+ s=mimecast20190719; t=1741692720;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tIz5D146hfHkf+gYrn3NUb8y77ROWgAaRiF8ghz04Zc=;
- b=JowILy14ev/hRoIb3X5LFg2wq03giG2iY9x4cy3rkuJ4zamoE1szB/gSALLHM0t1CY6hnl
- fd5J0t080VnCvX0rO6p9vNBpJLMo8H9UO0nDc33Vb1dS1t0oBnmiUs0V94ykGKci34f13W
- zKbB0ij+oTZTze4PW5pwJVGRa2i8dVA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=IHpn6RM60iN5008DmLJtF3vc+uN0LyK9v2tygWdAa+s=;
+ b=VWQhv3bggyPMt1qNRDo6TvWm6CDhT8pFUtMXcW05FZxNO7/PsWqL9TmOWfu7OCUozw2IlT
+ 3pW+aT9OTSC/o8m2B3tE04ZVtaHShWPpQ8GF92IAsOeMgsOH6tro06gbCIOgKmJzq3me5i
+ WsukI/oXFGnH4BRqOitZ048/P6AudPw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-202-KVQxNFDrP3Od3N6a27Pzpg-1; Tue,
- 11 Mar 2025 07:31:58 -0400
-X-MC-Unique: KVQxNFDrP3Od3N6a27Pzpg-1
-X-Mimecast-MFC-AGG-ID: KVQxNFDrP3Od3N6a27Pzpg_1741692717
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-459-kofgPJx5OIu94Pf_wR0DWw-1; Tue,
+ 11 Mar 2025 07:31:59 -0400
+X-MC-Unique: kofgPJx5OIu94Pf_wR0DWw-1
+X-Mimecast-MFC-AGG-ID: kofgPJx5OIu94Pf_wR0DWw_1741692718
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 76E4619560B4
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:57 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3FD23180035E
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:58 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2AEF21801752
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B8C183001D15
  for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 11:31:57 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 50A8521E61BB; Tue, 11 Mar 2025 12:31:38 +0100 (CET)
+ id 548AF21E61BD; Tue, 11 Mar 2025 12:31:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 38/61] qapi/source: allow multi-line QAPISourceInfo advancing
-Date: Tue, 11 Mar 2025 12:31:14 +0100
-Message-ID: <20250311113137.1277125-39-armbru@redhat.com>
+Subject: [PULL 39/61] docs/qapidoc: add visit_freeform() method
+Date: Tue, 11 Mar 2025 12:31:15 +0100
+Message-ID: <20250311113137.1277125-40-armbru@redhat.com>
 In-Reply-To: <20250311113137.1277125-1-armbru@redhat.com>
 References: <20250311113137.1277125-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,65 +86,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-This is for the sake of the new rST generator (the "transmogrifier") so
-we can advance multiple lines on occasion while keeping the
-generated<-->source mappings accurate.
-
-next_line now simply takes an optional n parameter which chooses the
-number of lines to advance.
-
-The next patch will use this when converting section syntax in free-form
-documentation to more traditional rST section header syntax, which does
-not always line up 1:1 for line counts.
-
-For example:
-
-```
- ##
- # = Section     <-- Info is pointing here, "L1"
- #
- # Lorem Ipsum
- ##
-```
-
-would be transformed to rST as:
-
-```
-=======        <-- L1
-Section        <-- L1
-=======        <-- L1
-               <-- L2
-Lorem Ipsum    <-- L3
-```
-
-After consuming the single "Section" line from the source, we want to
-advance the source pointer to the next non-empty line which requires
-jumping by more than one line.
+Add the transmogrifier implementation for converting freeform doc blocks
+to rST.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250311034303.75779-42-jsnow@redhat.com>
+Message-ID: <20250311034303.75779-43-jsnow@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/source.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ docs/sphinx/qapidoc.py | 44 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/scripts/qapi/source.py b/scripts/qapi/source.py
-index 7b379fdc92..ffdc3f482a 100644
---- a/scripts/qapi/source.py
-+++ b/scripts/qapi/source.py
-@@ -47,9 +47,9 @@ def set_defn(self, meta: str, name: str) -> None:
-         self.defn_meta = meta
-         self.defn_name = name
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index 6de8c90054..ddad604145 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -29,6 +29,7 @@
+ from contextlib import contextmanager
+ import os
+ from pathlib import Path
++import re
+ import sys
+ from typing import TYPE_CHECKING
  
--    def next_line(self: T) -> T:
-+    def next_line(self: T, n: int = 1) -> T:
-         info = copy.copy(self)
--        info.line += 1
-+        info.line += n
-         return info
+@@ -55,6 +56,8 @@
+         Sequence,
+     )
  
-     def loc(self) -> str:
++    from qapi.parser import QAPIDoc
++
+     from sphinx.application import Sphinx
+     from sphinx.util.typing import ExtensionMetadata
+ 
+@@ -130,6 +133,47 @@ def visit_module(self, path: str) -> None:
+         self.add_line_raw(f".. qapi:module:: {name}", path, 1)
+         self.ensure_blank_line()
+ 
++    def visit_freeform(self, doc: QAPIDoc) -> None:
++        # TODO: Once the old qapidoc transformer is deprecated, freeform
++        # sections can be updated to pure rST, and this transformed removed.
++        #
++        # For now, translate our micro-format into rST. Code adapted
++        # from Peter Maydell's freeform().
++
++        assert len(doc.all_sections) == 1, doc.all_sections
++        body = doc.all_sections[0]
++        text = body.text
++        info = doc.info
++
++        if re.match(r"=+ ", text):
++            # Section/subsection heading (if present, will always be the
++            # first line of the block)
++            (heading, _, text) = text.partition("\n")
++            (leader, _, heading) = heading.partition(" ")
++            # Implicit +1 for heading in the containing .rst doc
++            level = len(leader) + 1
++
++            # https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#sections
++            markers = ' #*=_^"'
++            overline = level <= 2
++            marker = markers[level]
++
++            self.ensure_blank_line()
++            # This credits all 2 or 3 lines to the single source line.
++            if overline:
++                self.add_line(marker * len(heading), info)
++            self.add_line(heading, info)
++            self.add_line(marker * len(heading), info)
++            self.ensure_blank_line()
++
++            # Eat blank line(s) and advance info
++            trimmed = text.lstrip("\n")
++            text = trimmed
++            info = info.next_line(len(text) - len(trimmed) + 1)
++
++        self.add_lines(text, info)
++        self.ensure_blank_line()
++
+ 
+ class QAPISchemaGenDepVisitor(QAPISchemaVisitor):
+     """A QAPI schema visitor which adds Sphinx dependencies each module
 -- 
 2.48.1
 
