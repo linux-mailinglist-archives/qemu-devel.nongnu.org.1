@@ -2,104 +2,208 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBBDA5CAE0
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 17:31:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09542A5CB12
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 17:46:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts2VV-0004k9-6M; Tue, 11 Mar 2025 12:31:07 -0400
+	id 1ts2ir-0002ui-78; Tue, 11 Mar 2025 12:44:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ts2Um-0004JI-Cr
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:30:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1ts2il-0002pb-D1
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:44:47 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ts2Uf-0003AW-Bx
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:30:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741710611;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gvW/5G6Q0o35IFHWkI1ctZoRXpbF5XVgT4Z39z0aScA=;
- b=TMzkQ/P+UPvUeCgb/xh1RB/d8dRTUG85346SXcf8moqx4YOMS4VruBtlbefPu2U12UOfEM
- 9Ztvku4DXUWowLKbTI9PXQRHiqqVgaE1xieHQoOPm0mvbQIdirTMbnQdf16/WMkXl5fzP2
- k1JOMilT8UjekE0BC+a5uzUmg78D+FE=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-3tTvAJ3OOvW-JPvNEWGmNQ-1; Tue, 11 Mar 2025 12:30:10 -0400
-X-MC-Unique: 3tTvAJ3OOvW-JPvNEWGmNQ-1
-X-Mimecast-MFC-AGG-ID: 3tTvAJ3OOvW-JPvNEWGmNQ_1741710610
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7c546efca59so937707685a.1
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 09:30:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741710609; x=1742315409;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gvW/5G6Q0o35IFHWkI1ctZoRXpbF5XVgT4Z39z0aScA=;
- b=MkJqyedbNI8jWicnbkS/MP7ILgQk70KTBzJitRHPexYivQdT3WoDHveF7Jb0bXTHHn
- Tg4FEoUdvb/iyPIhHCDhU82iBKk6HZpIm4iVspEH351CdgUBp3dyZlwgX43gME+4l4zS
- qWGK3bkGyKtsaMRq7Cs1pANqy/ZgjpWojkR/Yen3sxXXjWfVooLxLFkGVybqZgfXu7vE
- a+e1uymcRBlLIDsBpSlqOnvy2N4RmzSuhpD8NdbaG7jGezPUnQ+Nxu8UrPcDKtRp7o6o
- GjhiivRsD0otMqt4Ca0XmRzFOujbCcNJl0sDn/jYK8L6a7t2/2LVLoo2DMCjoGh24eL7
- nR5Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUQTGq35e1GbBW4+A9XJmg+HFP+GOS3IDKpx/7Gc1VbfK2+0loIXRm06II5Sd3OxRP5e0FgBBvl10bu@nongnu.org
-X-Gm-Message-State: AOJu0YwQkAVV6xQe1mepsJz6M3vZfLdSAWV5aKhK+D8rpafSPVV5akJB
- OcPAnQG9v4EXBnf+deumBvvjBjcX2Uia7faV+Glr/uLbAIz4feScDKhGiCSTrJpW+oi6lii45bH
- 4lHYl22GCxg1wGkcFUbRn/V9SB3pXQViCJbCNaAN5iLbpwgRWSGRpO7fV+4nW
-X-Gm-Gg: ASbGncsgwrxJpSviFZO5mAmGho3IIUsDKaikmUsZFT7Y3BcrnAz2aUb2m0vIByT9YBF
- /eLZsijqmhkYlKnWoHjZJ5B0W2hzFvzZTQvj0nFmmtoqSUtCZ65ET7ZbDq7cwl7S6UFLcqfJz0O
- Pw8PNTOA9KrKqClsYOhA0P6EyCY5dnBhTJPxOAr61TYgRn2Ef7/gS404Aq7J5Pl4cWs3Zr07d6p
- n4/Zp0UGILgoFIiKU2zs1+cLi0jcfN383Zk0PD7fVrxhj4xM+wgCQwLZwRJCeBShg2DQHha5Huc
- 5HWezJIECL2khnQkCQNlUdMTDjuCPLjHYYPegTIN+jVYCx177SXuhKV4KIlPV1g=
-X-Received: by 2002:a05:620a:660a:b0:7c5:48bc:8c89 with SMTP id
- af79cd13be357-7c548bc8ecfmr1706848985a.27.1741710609382; 
- Tue, 11 Mar 2025 09:30:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2gY/akrsykujmw9iWKT6de/lWT2q9bCkta8KKQrc8cgX8EJd7VAYq0ezW689h0V7wEwlGlw==
-X-Received: by 2002:a05:620a:660a:b0:7c5:48bc:8c89 with SMTP id
- af79cd13be357-7c548bc8ecfmr1706845385a.27.1741710609067; 
- Tue, 11 Mar 2025 09:30:09 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7c5414c8067sm542616585a.59.2025.03.11.09.30.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Mar 2025 09:30:08 -0700 (PDT)
-Message-ID: <baf96cd3-2434-444a-8a16-87abd6e14bcd@redhat.com>
-Date: Tue, 11 Mar 2025 17:30:06 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-10.1] tests/functional: Convert the SMMU test to the
- functional framework
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1ts2ie-0005A5-Vo
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:44:47 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52BGQrCj030786;
+ Tue, 11 Mar 2025 16:44:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2023-11-20; bh=vFO+RtQ02eu/4OqQJ1ctE7VlOjpU1GGP877p9wzaB7U=; b=
+ hJ5VA1KCgcO0k6UTVW9rdBpebyiqRIJBxbqJthtgv8uyXIWKpOK+33XPt5GAikKn
+ xRCq7fZcny//0MnsqkDzarXB6ivrg4ypuFRPpVwwPXC1KUjV3Ok1xT7xks+dkP8K
+ hkGSudof04MBDf9+AKf0kWDNOfKDSBSYJUf/8Pkx+GUK59GPSf6fWOfgzVTDxYKx
+ NFIXCTQZgjQeOsZ5WrNFxBKxcr2NmawkpqQDoZYhmdgZ6g/9bne+OmqBGkvApWV9
+ uFYv4RynVonPj5qcyneVJf7rLi2KmSKeJiG/ZBf1kQehvrwhJYFPBv4zluWXDI3V
+ AxbS3U/bJRbFJ68R3FI4KQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 458cg0wcae-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Mar 2025 16:44:32 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 52BGVoio020050; Tue, 11 Mar 2025 16:44:31 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2168.outbound.protection.outlook.com [104.47.56.168])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 458cb99s62-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Mar 2025 16:44:31 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W00/IiDvSnnD7SXVf3wO24Rga6gKDo5hsyKEZlV6w/+cSn5KOlLJANwd7Y2p1h+87loP+ut4SZV0eRNFVm6tm9w2rCvY4kmVGb27sYoRPz6X1VYhw6oUYpmWVmeYoP3/IQExUG1UYcJOmv8Cjas6Eg1FvuIMaqowCHzEoEMW62qbORPiJnwYOGhasf8Y+qdrss7CT9X27NttD2U7rZqK/00TfSYgXNWPq5bnxcppTijVxXYIixUoLUz90pa2fCkKxiXUd0syB0bLO96c66+/oMqeuctaRmsR0sUe4TGFOBPNVr0QsvRPisFJJYcaBHAWnVzckbMTXtHXt8zcrZb3hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vFO+RtQ02eu/4OqQJ1ctE7VlOjpU1GGP877p9wzaB7U=;
+ b=mkaANRhhkXAXS6g0gc85b72FHhNkaqEQSUkyjq/OMFfWkx5Q3mNw44Xqev/lMaB9RREjg7VG7YKkrCoS/xvDV7UIcWJ8i0yDMwa9UrBMYUWFCmjC+SFfHnaNeWyaDdCFDa7uGQSSpATZ13m8q5FFqLZPi9pfC1SCl30Ct9s3blgBFGsveujuu7S8Xe8F57gexaQMRiOJmmq2y++nwgEQgtqLqZ7fgrxmTFoSJaQjgEWTamiyA6LDx/HkgledSlZa74+3HrGYN/HpiwW0JxHHa7uu+5fjGAgffap6TXjs79KY8kXbKdNYGtZePypI0AaCvtulGT410ifUau3bhT7qWg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vFO+RtQ02eu/4OqQJ1ctE7VlOjpU1GGP877p9wzaB7U=;
+ b=nkBtySFJlWQvKxNDgxIbM0KMRcCVJOIEKMsGdKT/V/mhGQ0w/8fZe4oB9LFCPsU0XvcwqLk/IHGwO6qUq2EU1r6uQsf7Ml00jh0siWK9nyys0oz+70i0o4w93bMux9W1Tlf5WVdZOD2qbu3y6Iu7DU8kGVesHVa3oqMSkx/X1hY=
+Received: from PH0PR10MB5893.namprd10.prod.outlook.com (2603:10b6:510:149::11)
+ by DS0PR10MB6102.namprd10.prod.outlook.com (2603:10b6:8:c9::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.22; Tue, 11 Mar
+ 2025 16:44:29 +0000
+Received: from PH0PR10MB5893.namprd10.prod.outlook.com
+ ([fe80::79f1:d24f:94ea:2b53]) by PH0PR10MB5893.namprd10.prod.outlook.com
+ ([fe80::79f1:d24f:94ea:2b53%4]) with mapi id 15.20.8511.026; Tue, 11 Mar 2025
+ 16:44:28 +0000
+Message-ID: <0d6e9836-328f-463d-9db4-c7fa57196781@oracle.com>
+Date: Tue, 11 Mar 2025 16:44:24 +0000
+Subject: Re: [PATCH v2] vfio: Add property documentation
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>
+Cc: qemu-devel@nongnu.org, Tony Krowiak <akrowiak@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Eric Auger <eric.auger@redhat.com>,
+ tomitamoeko@gmail.com, corvin.koehne@gmail.com
+References: <20250213135050.1426258-1-clg@redhat.com>
+ <20250213144513.32b3241f.alex.williamson@redhat.com>
+ <995ef2ed-a5e0-469e-b780-6800f26d7b22@redhat.com>
+ <6985a62f-a091-4087-887c-361570170ef6@oracle.com>
+ <8ac4f034-3e68-4c8a-9a63-9eeacc0de113@redhat.com>
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20250311104920.364102-1-thuth@redhat.com>
- <4b7d75f1-12df-44ab-9435-df517beff716@redhat.com>
- <39ad1fef-f5cc-44f6-be4d-84a597b3f9f6@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <39ad1fef-f5cc-44f6-be4d-84a597b3f9f6@redhat.com>
+From: Joao Martins <joao.m.martins@oracle.com>
+In-Reply-To: <8ac4f034-3e68-4c8a-9a63-9eeacc0de113@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-ClientProxiedBy: PAZP264CA0136.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:1f8::6) To PH0PR10MB5893.namprd10.prod.outlook.com
+ (2603:10b6:510:149::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5893:EE_|DS0PR10MB6102:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2918a85b-ed1a-4e30-909d-08dd60bbfd96
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RUtrZkpDL3hKak9DVmh3eDIvK3pyT0ptcWZPMVR3SXplRnFIS0piWW41Zmsz?=
+ =?utf-8?B?T0pzVVlVYTVMYU9ITU14dGRieUEvYUtuSmpPR2VDcjg4b2QraW82akFrT2hx?=
+ =?utf-8?B?K3lJWlphK0g0SUpiM0lIK25uUWVHMWlIQjMvWlNsL25xSlk0eFZtbmNsdGZy?=
+ =?utf-8?B?eEhGaWdBdGNpU0tvVWVaSTBEeGkwR29FdFRJV3pIaTZBTlpnUjYzTVdWZFIr?=
+ =?utf-8?B?Q2xjSVE4L0dETWJ3TTVtOGd6TiticFMrTzVpQ2V0YmdwWm13cjMvaW81UzBN?=
+ =?utf-8?B?ZDh5R2ExamwrVnFCNjJkYWpzam1SakppRUVKWWtnVXJWRU5VVVpBN3hsSGJY?=
+ =?utf-8?B?S2s1K1RiaGt2TU1McDJERzNvd3ZFWWtITlhCclg2VEZIaTBPcHVCVm5LaWo3?=
+ =?utf-8?B?a2E1dmRWWTMyb1htMmNnZjJUaVFwYTczNFgySUUwc1VITnZSRDFzOUxvdWp1?=
+ =?utf-8?B?NWsvcjNlTUFtMkh6cUNEVWpFRkJ0OXQ4Y2g4MEdZSzRqcW1RRjlUQjByak5C?=
+ =?utf-8?B?dzd3dkpOQTRzbXJSMjRsVzhMa0NIRVp1Z1NPMFNLcHBTV2QwdmVpZnNDZjZn?=
+ =?utf-8?B?QWRvSkNtYnlDenc0aWE0bFlyZjdkOXgzSisvZ3Z0MEI4ZnVuYk5YcGdtMi9k?=
+ =?utf-8?B?S29ITG05T3ZPMklTLzIvRXpla1c4UTJWRm1vS0JsME9FanFHV3BtOEk4aG13?=
+ =?utf-8?B?ckFnenlYOEdrNW1tWUJYZENCbTBMaklXc1ByVDlwZVVzdnZGZE1vMko4Z1c5?=
+ =?utf-8?B?MXN2NGc3VDRYWWNzNnhrUzRiaEJ1UHUwSUd4SHl4SUtscXcveXFuSFVHQ2JI?=
+ =?utf-8?B?NGRna1RtU1N0MGxGc0pmcmhZYTFmOVV0aDVST3JWYkZmRWxUcnB3bE1lZHpM?=
+ =?utf-8?B?NmhvTjNWbnhuVmh1WkxYREF5QkNSUEJrWlFhWU1BOXFDaWk0cXMvTE4ybDRs?=
+ =?utf-8?B?bUZmNzQ4N05RL2N4cGdOWUd2dmxERWVTK0pNb3h2VzJhSVJuaFpkMDdLMDF2?=
+ =?utf-8?B?SXdCaWJlN2lvSmlKSzhwRE5lNStRU2E0N3IwRGRjZ004UUowRlBrZDBYS05l?=
+ =?utf-8?B?a1E4WXpHNmtlSzZPZ0FkQWdyMGNMRUtNOVpxWjB4bTJBTWg1U3BJeDFkeS8r?=
+ =?utf-8?B?OHByWUh3MTlKRk1COEMvajJDQlFmanRvWlA2NFRRbGRwVmkzcHZnZm1pckdY?=
+ =?utf-8?B?YStoOVZ2djR2VHkrU1psdmllL2dOcXZOcXFPOHAzSjBTRURoYVVHc2pPZmJo?=
+ =?utf-8?B?RExYcFg4TWNCNk94N3FFZm1xYnFDdmx1alpIVmJPN0JtZkRCU25LYjQ4UU10?=
+ =?utf-8?B?T0dMTUwyTGtwNjJBVmh6THY1T1dhVDFVeEQrZG9Sd3BkY1YwSGM5WWtXSWlN?=
+ =?utf-8?B?elU3UzZ1S3F6cTZPTERuSjFoTjk0UDN3blJzcFRDUnR1WkNZUXF6VTMvS25i?=
+ =?utf-8?B?aWcvMGxUTjdDNCtMcG5XY1JJK2lGdnNwbVhKZjJ4bEFLMzRRQTJmR29TNVNZ?=
+ =?utf-8?B?a1FyV3NqU2tmMjFXTFRUOTFGd0phRkhad3FSY1VVMkN3QTU4ZmsrQ0xyQ050?=
+ =?utf-8?B?dXcvZEx6WXlnZGczZFZjMDRxdVIwdGE4dDFyMHppSThDMHVwY1pYanVNMXdr?=
+ =?utf-8?B?UEVGdG9qOWNqZjdjS0NaODRpaTNtdVBNc3dnKzFHaEhWZjRaOVNiTnc4bHdy?=
+ =?utf-8?B?STVaNzlocmhObTAzNU9kcjQ2SkJQeUh5VG1FcXVSL0tPUHdwSWVJbWlIUDI1?=
+ =?utf-8?B?RTVyN1ZlMmVYM2lTZHFkdXNqMHVUQUdLbWtWRi80bW1XekdqdVdZeWtqM2JC?=
+ =?utf-8?B?Q21ERVVOdlRrMyt0YlljTEZMNGxCWVZaUG1pY2lZYWF2cm1sZlZMQ3NHUHQ0?=
+ =?utf-8?Q?B2QqCXgEgmXKj?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB5893.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UE1EUXJGd0ZhWGIrd2VhS1JqeGk3elNsdnAyZGR5bnlMdW1MWDlWQ2FEM21y?=
+ =?utf-8?B?VVlSYXBrUW1ORnljdnJudWU4Y205L1hYK3paL0lpM09aU3M4K00wb3NUbk1w?=
+ =?utf-8?B?bW5Pc0hXeXJwdzBXVUVPZS9ldXBJeU94VFZjb0R3aVdUTlp4N0VubUZkdnNU?=
+ =?utf-8?B?QVNqUjUySlZWM20xRmh0OU53bkIrQkFHOGJDdnV3Y2pHZ0gyUEtEam5FY2h2?=
+ =?utf-8?B?cFZPaVdsekhWQkxldnVLVTRGdzk5blVJTzFKR2hqMWFkR2hwcTlsYU5QRXd6?=
+ =?utf-8?B?aFhtSkRRNXArL09vamVhNmlpTC9OUitSRk81Mjc4dE5KbWdwRnY3Ym1uVTFw?=
+ =?utf-8?B?cEJJK2VrMmprUU5hZHZLYUhhODFzM3JEaldSNmVnYkVoS0RSSVZRK1N4WDVP?=
+ =?utf-8?B?ejFHTnZKMTdXOWN3Sy9CSSszcEt5RlFkU1hWZldQcmIzNTVyK1JYd0FoU3ZL?=
+ =?utf-8?B?V3h5eVM3WUdkRlBaYXhVeU43VmQyQldKMHpPSWNiNUY1ZUZ6RjZPZHE2TWsv?=
+ =?utf-8?B?RjZQSXkxTnUrZmY0QlB4ZTY1SGVBRDgvNGFUdkpPaVF1Q0t0MlZ3ZjJZZVF4?=
+ =?utf-8?B?N1pGQ2JMcElKYk54eHY3MFptc25ncHhscThCZE5QVDJsdEIxRFgzZ0hYU2VL?=
+ =?utf-8?B?OUUzRlE2SUIySDVKVkNYY3NPcmNVdERHMElJWkJ0N3Z2eUZleXhoQTYwb1Rn?=
+ =?utf-8?B?TUtEaXA5RTRtdTJ4T3JOcmNNNWxpZ3JKVktVa2hkUVhNdWtWSE9XaGhJeTY3?=
+ =?utf-8?B?YU9SZ3dBVk5WMktleU5VS0V3Wk15emNPeWxEalpJY2d5b1RyNzN5L1N3dmpB?=
+ =?utf-8?B?VlZVVUxleUYzREUrSHZRN0d6eW5tTFNLamZqVk1qYmVYc1Q0REdPWTV2VUVW?=
+ =?utf-8?B?SXJuc2U4a2xRYW93SlNqZjg1OGM4c1RudFlRQW5rTUlYVUtwa3pjbHlYcWFB?=
+ =?utf-8?B?MWNYelEyaHUxNmhOWng0cklFVE9EM1dBNUlpWjRGd3lFQmRTSGFzYVY2Wmdr?=
+ =?utf-8?B?cGl0VTNnU3ExT3p0cXlMY1p0N0R1YUE4OGJRUjZkWEdFVHJvL0x2ZGIvb2Vj?=
+ =?utf-8?B?eVA1SzcxNUp6UnV0dTdQSjYwcDN3UmIxNGxnU1ZWU3E0VXdoUEx5YkVJUldj?=
+ =?utf-8?B?eEJGT0VaMzB5RTk1VFNoRnM5ZGRIOEd1S0VaOWxnSk5jaUZjczlIdDVxS0Zh?=
+ =?utf-8?B?Y0lZM204bDd3c09GdXFkUlFXZlRqQTl6cGNtRGM5THVPZHlRTE1YU3dsd0N6?=
+ =?utf-8?B?bTU5cmFvbTBCYW14akkwdnBnaXJmaXdSZ201Uk9TVnd0NlcvR0RXZVNkb2c0?=
+ =?utf-8?B?TmxiUTcreEtiZG1MUlRyaksrMlhabml4QldEWHpscGpxbStNYmt2ck94bVl3?=
+ =?utf-8?B?VFpvbEEyK0R6bTRRS0dvNk9RWTEyckJOYVplU1lReWpnWjhZK05xbjZhdEc3?=
+ =?utf-8?B?eFhXL25mTmhuMVRFSVZQaXQvUlVhdHN5RGQ2UWFiL1IyMmhXdFgvUnNXanlW?=
+ =?utf-8?B?T3hzV3VTOEtiZkVOOSswc3M5aFpabmJGMGVrQlJwZ0pVMzA4VC81QlE2dVlK?=
+ =?utf-8?B?KzdTOHVRZXAwSzlZdldKUnI4MGtoYzJKVlBUa1pKNUFwQURFTk15T0dTSXpo?=
+ =?utf-8?B?MyszUERCeFlYVFJZTHhlTFpJaTIxVWFzalZRc1ZtNHFZbmkzZDk3dUl1d0pQ?=
+ =?utf-8?B?OUIzWXhmUFlrb2E2VDBVUjh3VUNtK1JmekFXbHd3RFZDaHRob2MwMzJ5QVVV?=
+ =?utf-8?B?Zi9uVFl4WWV0NmFXTFNVSlA5M0l3TjJXNVBGZWszdDNCUVlMTDRrblM3RVVk?=
+ =?utf-8?B?OHFLS2ZTOWp6NnBUd2hiM2JMMEEzK29pWTRYUURtZ1Fnc0wrcW5DaytpMXlV?=
+ =?utf-8?B?SVdzeWVSdWNSbnpaVk5lQlhhWnR0UVc3THNOMG8vM3dJZnFPTzhSbnUyNEVU?=
+ =?utf-8?B?cG4rRnBUb2lMdHVjUXEyaERwSDB1MEROSG9nSjgza29zUlBWZytyL1A0ZHNz?=
+ =?utf-8?B?cm52cmkvUUsyOUczSmxxeGpPRTVuWldYTzNhWGxNaVFMcWdGZUh2elVpRFE1?=
+ =?utf-8?B?YjRWM0FPRzNLQ01YQnNraVVuRXNkaVJ1dDl2NG9aLzBzNWtYeEhvRTI1NjNh?=
+ =?utf-8?B?UjdzMXVOU2dEOS8zM0ZCaFJSMHVYS2J0YTN5T1ZYTjlPUENseU5FVjR4ak1J?=
+ =?utf-8?B?UGc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 1Z7pDxam8QhNVKT6WeFYLnKkAL3BwYZlgphZM/vMsj2kaYaLSdbPTmNXJWs+n0+YQLDcaphaTWcuq7Ilwa/1qRmUcKxolrNNM1iA8U8BWlvYdWNNTc45o7W/WiaGZuEVGK6xcrjdG7rBgl8kkF+0Qchr1gPylRSXDVd0ZxoKysecedaDlW9vS2Kk0jHgYn+9pf4PkAhdKr0XHNnGb842mP7DXDl/SKBUPOq3GmtxJffJj/X/cGr7DPGiyQ4nYo6N34w2huS8NDzwNTrgLHMdc6PxRvHoXuyKQbitTJnBG83lrhnRHFNhcqAYk7wP/HZTR1YqdTs7m6iq1ugCw2ermbSpTF82oJGxh1xUs0t4GaIp+DD+XfT4odHrrX+FZSXloMsQgp3/CB/vpQWN7nMcWbVYhayU03i25yEa0TePA7HYyEr6ikX3iSZcRfL/GCgsDlUdSmlCoNM2ppTCjRMABNgCMSuAFkA3SOh8S5n++eSWMwYMJnEpBoi7drQGy1NBkhzRRDdNG0b9CKidKTcIy29ipO+f/RTtxdIokz1QSYJ60H7OE7JQH2egMmhPUlTqgRc9qFmwUbsHcBZqgHVlvta7rTySXlHBVacCQZCUJjc=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2918a85b-ed1a-4e30-909d-08dd60bbfd96
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5893.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2025 16:44:28.8994 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RsLMtga1c0OSlv7COFrqBCNvW6CorIDgoh2skzW8X7L1x0RxWmEuiDdlxvHgp3cRMe1wvGSUQuSpQ90vKS8h2f6N+HYMr0aPMAx5bD1DFOA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6102
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-11_04,2025-03-11_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ mlxlogscore=999
+ suspectscore=0 phishscore=0 adultscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502100000 definitions=main-2503110106
+X-Proofpoint-GUID: DI9C9vglQI-D4EsOfRTcva6GZNo2xaJO
+X-Proofpoint-ORIG-GUID: DI9C9vglQI-D4EsOfRTcva6GZNo2xaJO
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,133 +216,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Thomas,
-
-
-On 3/11/25 4:24 PM, Thomas Huth wrote:
-> On 11/03/2025 15.00, Eric Auger wrote:
->> Hi Thomas,
->>
->>
->> On 3/11/25 11:49 AM, Thomas Huth wrote:
->>> This test was using cloudinit and a "dnf install" command in the guest
->>> to exercise the NIC with SMMU enabled. Since we don't have the
->>> cloudinit
->>> stuff in the functional framework and we should not rely on having
->>> access
->>> to external networks (once our ASSETs have been cached), we rather boot
->>> into the initrd first, manually mount the root disk and then use the
->>> check_http_download() function from the functional framework here
->>> instead
->>> for testing whether the network works as expected.
+On 05/03/2025 13:13, Cédric Le Goater wrote:
+> Joao,
+> 
+> On 3/5/25 12:16, Joao Martins wrote:
+>> On 14/02/2025 13:05, Cédric Le Goater wrote:
+>>> +Kirti
+>>> +Joao
 >>>
->>> Unfortunately, there seems to be a small race when using the files
->>> from Fedora 33: To enter the initrd shell, we have to send a "return"
->>> once. But it does not seem to work if we send it too early. Using a
->>> sleep(0.2) makes it work reliably for me, but to make it even more
->>> unlikely to trigger this situation, let's better limit the Fedora 33
->>> tests to only run with KVM.
+>>> On 2/13/25 22:45, Alex Williamson wrote:
+>>>>> +
+>>>>> +    /*
+>>>>> +     * Migration support
+>>>>> +     */
+>>>>> +    object_class_property_set_description(klass, /* 5.2 */
+>>>>> +                                          "x-pre-copy-dirty-page-tracking",
+>>>>> +                                          "Disable dirty pages tracking
+>>>>> during iterative phase");
+>>>>> +    object_class_property_set_description(klass, /* 9.1 */
+>>>>> +                                          "x-device-dirty-page-tracking",
+>>>>> +                                          "Disable device dirty page
+>>>>> tracking and use container-based dirty page tracking");
+>>>> These are really debug as well, right?  They just happen to be
+>>>> migration related debug.
 >>>
->>> Finally, while we're at it, we also add some lines for testing writes
->>> to the hard disk, as we already do it in the test_intel_iommu test.
+>>> I suppose so. I would rather keep them under the migration topic
+>>> and add 'debug' in the comment.
+>>>
+>>> Changes :
+>>>
+>>>    commit bb0990d1740f ("vfio: Change default dirty pages tracking behavior
+>>> during migration")
+>>>    commit 30b916778517 ("vfio/common: Allow disabling device dirty page
+>>> tracking")
+>>>
+>>> do not explicitly explain why these properties are useful in any way.
+>>>
+>>> Kirti, Joao, could you ?
 >>
->> for your info it does not apply anymore on mainline after latest appied
->> functional test additions.
-> ...
->>> +    ASSET_KERNEL_F31 = Asset(
->>> +       
->>> ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
->>> +         'releases/31/Server/aarch64/os/images/pxeboot/vmlinuz'),
->>> +       
->>> '413c7f95e7f40cfa3e73290ffae855c88fae54cccc46123a4b4ed2db7d5c2120')
->> the hash seems wrong for the vmlinuz. I get
->> Exception: Hash of
->> https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/31/Server/aarch64/os/images/pxeboot/vmlinuz
+>> Sorry for the extreme delay but I was out travelling for the past 3 weeks for
+>> vacation and work.
 >>
->> does not match
->> 413c7f95e7f40cfa3e73290ffae855c88fae54cccc46123a4b4ed2db7d5c2120
->
-> D'oh, I got tricked by "wget". I used wget to download the asset to
-> manually calculate the sha256sum, then manually copied the asset into
-> my cache to avoid a second download.
-> But wget apparently unzips the kernel:
->
-> $ wget
-> https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/31/Server/aarch64/os/images/pxeboot/vmlinuz
-> $ sha256sum vmlinuz
-> 413c7f95e7f40cfa3e73290ffae855c88fae54cccc46123a4b4ed2db7d5c2120  vmlinuz
-> $ ls -l vmlinuz
-> -rw-r--r--. 1 thuth thuth 25885184 Oct 21  2019 vmlinuz
->
-> While curl gives the correct results:
->
-> $ curl -O
-> https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/31/Server/aarch64/os/images/pxeboot/vmlinuz
-> $ sha256sum vmlinuz
-> 3ae07fcafbfc8e4abeb693035a74fe10698faae15e9ccd48882a9167800c1527  vmlinuz
-> $ ls -l vmlinuz
-> -rw-r--r--. 1 thuth thuth  9027813 Mar 11 16:13 vmlinuz
->
-> This should fix the issue:
->
-> diff --git a/tests/functional/test_aarch64_smmu.py
-> b/tests/functional/test_aarch64_smmu.py
-> index bba8599401c..4f0492ca50d 100755
-> --- a/tests/functional/test_aarch64_smmu.py
-> +++ b/tests/functional/test_aarch64_smmu.py
-> @@ -123,7 +123,7 @@ def run_and_check(self, filename, hashsum):
->      ASSET_KERNEL_F31 = Asset(
->          ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
->           'releases/31/Server/aarch64/os/images/pxeboot/vmlinuz'),
-> -       
-> '413c7f95e7f40cfa3e73290ffae855c88fae54cccc46123a4b4ed2db7d5c2120')
-> +       
-> '3ae07fcafbfc8e4abeb693035a74fe10698faae15e9ccd48882a9167800c1527')
->
->      ASSET_INITRD_F31 = Asset(
->          ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-> @@ -165,7 +165,7 @@ def test_smmu_noril_nostrict(self):
->      ASSET_KERNEL_F33 = Asset(
->          ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
->           'releases/33/Server/aarch64/os/images/pxeboot/vmlinuz'),
-> -       
-> '0ef9e34f80b49fa2ac098899b27075e95c11d5b646f6ca4df2e89237a40f9e4f')
-> +       
-> 'd8b1e6f7241f339d8e7609c456cf0461ffa4583ed07e0b55c7d1d8a0c154aa89')
->
->      ASSET_INITRD_F33 = Asset(
->          ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
+>> The property is marked as x- but my intent was both debug/testing and to have
+>> something that allows me to select the dirty tracker between device vs platform
+>> dirty tracker if something is wrong with say VF dirty tracker or if there's some
+>> limitations around it. These days we actually use it a lot as my default to have
+>> IOMMU dirty tracker in use. I wouldn't label it exclusively as '(debug)' just
+>> yet.
+>>
+>> The precopy option might be to avoid dirty tracking at all and it's generally
+>> useful when you don't have dirty tracking at all or say snapshots or 'offline
+>> migration'. But I have never seen real use of it, or need for that matter,
+>> except the early days of VFIO migration during testing.
+> 
+> Could you please send a patch on top of :
+> 
+>   https://lore.kernel.org/qemu-devel/20250217173455.449983-1-clg@redhat.com/
+> 
+> This would be great to keep the information in the git history.
 
-yep it fixes the issue
-
-python3.9 ../tests/functional/test_aarch64_smmu.py
-TAP version 13
-ok 1 test_aarch64_smmu.SMMU.test_smmu_noril
-ok 2 test_aarch64_smmu.SMMU.test_smmu_noril_nostrict
-ok 3 test_aarch64_smmu.SMMU.test_smmu_noril_passthrough
-ok 4 test_aarch64_smmu.SMMU.test_smmu_ril
-ok 5 test_aarch64_smmu.SMMU.test_smmu_ril_nostrict
-ok 6 test_aarch64_smmu.SMMU.test_smmu_ril_passthrough
-1..6
-
-The conversion looks good to me. thank you for doing it!
-
-With above fix and straightforward rebase on top of mainline, feel free
-to add
-
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Tested-by: Eric Auger <eric.auger@redhat.com>
-
-Eric
-
->
-> Sorry for the confusion.
->
->  Thomas
->
-
+I'll send a patch shortly.
 
