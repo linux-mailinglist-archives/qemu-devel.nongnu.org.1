@@ -2,108 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33191A5BB3A
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 09:55:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 074CEA5BB61
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 09:59:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trvO8-0004iR-Gl; Tue, 11 Mar 2025 04:55:00 -0400
+	id 1trvQz-0005vo-6p; Tue, 11 Mar 2025 04:57:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvO6-0004hz-Mq
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:54:58 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvQt-0005vL-B0
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:57:52 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvO0-0000Xb-MP
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:54:58 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43cfebc343dso8697845e9.2
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 01:54:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trvQr-0001Ft-AU
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 04:57:51 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43ce70f9afbso25448165e9.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 01:57:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741683288; x=1742288088; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+NbdoBDIcR1jHweEXbc4Ma4qdVpd3aU6BwDB7n+N8OM=;
- b=EyhT3bEMVtszwvomAWzzt4tqiEAaUXv2412vaA/zYJ4VTKwyH6F4gJOKOo/NiC1ZFU
- 6HZe4h5XglczMiqnL2jLiePgy0GmNFYwxx64WsM3zYyUA9SUTFLgpDp48pk2bJIel9H+
- DRIKPjjliDOKDpxOq8vwetSaZgcWACH8uoPcxi1gfZg+cIBOOGsDPbhd615QADVwhkm/
- s/mIUFujSmTByvJEWqTy8Yyn+L11XLoxtd2odFcoTWeZhwr6/Fxz2KpO5P7N8Nf56ZRt
- EkiXympwIDGWwmN7o8IZ6jwafv4KISC/uhXmLWXx5hTbgNCPFldybpeCXI69GoSmZdYE
- bzTQ==
+ d=linaro.org; s=google; t=1741683467; x=1742288267; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=h6alyYtdLKDsUflUeX8mht8DVdorJ/ZaZDzmwZTDERA=;
+ b=QemytMrDT+GNOQcEkw57rBgvT/ZYjbfPHBYYYJJTIxN9ESOwnBjhrQl8O8iJ7nhu2N
+ T5x0oaE5JQXQt/2TTjbpHqIwXfkBV0DX1tY0Z4UCVYlnu/ZEFCPlkCjXYVFThIVNuDQm
+ V4Nz/BOixenYbTaE2+Cx4mrWNp73oZ2eA01gn8ZU86YD8ZcBdJrDUf+uXwfowwGUYwuA
+ yvMujcOqTI2K9IZiQmATqa0JRzfsbyHcl3FAvGH8EgwwV6lCKNpJ9qGt3NFgt7nGu2C/
+ 1VHPTjHoevRwUE/o0YF0/XP4BeIKjWmE3GHkFe5AjXtJwjoUpTFHoWKQQi3UKvBCD856
+ LUtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741683288; x=1742288088;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+NbdoBDIcR1jHweEXbc4Ma4qdVpd3aU6BwDB7n+N8OM=;
- b=Ojm/mZvcQppGmHdHXoomZbTVCaMigAKeDS8DgsphJ2U65lAXfpIo3UXO1U4xt1eAAG
- zL7JRzEAu4LJL/zthEGaVWij0oVNJM1GFKqRC+r3UkZl2lsTZAPzwQcxZqKB+T9eaWih
- /ieDR5KdjbwsVSdVMIIzejRP5+dyduJ+za98Pkq7CvtinIDVp3u31BRIehhNhlOtioLZ
- wY/2eiJSo+77kKIHbmwrwsloE8gDlz+KSHJJN2jbCqL7RnpXc11MjW8gJlvFuATijAdQ
- L+u3/Vbq543Cwuu/VoKdhpnMpWB/H2cUjAS7kWaxzqu18V25VYUM2PNFliHiIJT2VYHV
- d04Q==
-X-Gm-Message-State: AOJu0YzgclQljZXamCR6REZ397uQAQJXAlJX+QneG7GZ/iJIHkUelNxC
- +gA3vwUuwQr25OINZIbeh8rTeZo516AicoaFXnsUpsId+xhJOqg77taQoqCALEA=
-X-Gm-Gg: ASbGncshh62ZbS/ncqeghkgoSbiB4Knc9KOgpJLxgr+0HSeu8hVdbVcPc7pB5QTtxPm
- FLpWeJAgB3FB4SSwj2T2DNFrRLI+06d5ijS0+W8Ecxl8SRfDdOSq1rKmetgKep8YsuY9N+Sopkb
- Z/GnmAUG8TcBuniyMMim5h9AkT9ani+mnJJ23NRQcN5NzFtH/kcXqpbTBR4aCbuFO04mbzaroDa
- SXN072OjvMDsgGyAR2WvTJ81X8q2R9WKZOrWNZTQfJ8tZGld/JuFoKVx/EgN7pO6PYsXeq+Hu0E
- SQokvSMySyvlKWuYyshTVM6AMJ54nEOYM4JfN+bhQwtU3a5CYVs4Ni2Z4ZJ8PzKEFyf+GgroF9P
- BJjEzV5D6F12Q
-X-Google-Smtp-Source: AGHT+IGkHbj2ZNr/Mfwfq8mUReR/77d7syd2mBxKtkFlkIbijAo/Dl9pEGPS+M5qN+oRcpz9vIFPoQ==
-X-Received: by 2002:a05:600c:1c05:b0:43b:b756:f0a9 with SMTP id
- 5b1f17b1804b1-43d01bdbea9mr42698915e9.11.1741683286740; 
- Tue, 11 Mar 2025 01:54:46 -0700 (PDT)
-Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1741683467; x=1742288267;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h6alyYtdLKDsUflUeX8mht8DVdorJ/ZaZDzmwZTDERA=;
+ b=cC0GCbV9bOJ2RG+7QukN1A713zdnqzBz57fNTpUQeAdQpXdUDHsevIW4MbtOaoRwLX
+ tW/OurcNCZmSeuoatkMxSZyLm9szKSKOA1/C9Wx9JOnRdnq5RaR2ofkXkVp2t/PNqkUa
+ FaqiO0Vky6OsEEnePaBiMenfJkO5h9JPjb+FquvnWJIx2AODKAK7uPTbBSFL49vY00G1
+ Ccqplo9bRuk+Iv6SoB7ok6IyCuGpt5igyChgBvcIEE9ANVU5hfSFLzik34+HS/BYPG6G
+ xCgg6mP4D5cCXjHkQwKeF0w8wWooGdWQQQqiTQegYeEZkTIYefTBJW0lJrlucBJEgZmF
+ r7nw==
+X-Gm-Message-State: AOJu0YygPsoitJ2qucuMfDm04onBcK0Hq4XeqDInQMQTuTWZ02Ifr6yS
+ nnhpkbyHs3YKbdkV+occHfrIn6agmVlteXb9JzvESduWHrnn/7RO/pt6vuWahRz/8ymc8TYXyHw
+ O2mM=
+X-Gm-Gg: ASbGnct/Qav7FRpClxLSuKDsOehPVsAreu8TpqdmUmYFywZ7G4P+SoO+P4s6k0LKyKv
+ NifbrpeckM5vqgbKTqc2LGyBx9N9kq5o+yxQZdL+GRJhvezgyVdOCsB5ibPaBopJP4FtKKnb4Qc
+ JSzRp4ZBztvA2LPVbdhbLmxQTzfsqoIwJAL4OSQWzRwZ3aWnyfEs9ybirEMiQCZmwcM3+jFfit4
+ gIQAf9u3WCuH3EOKAP+58zRNwgqlK1rZCB1PbexANgQDdfp7+YiQl3Rse7djvI/iG1EvpaI671J
+ ukapAOjs2Z/X71AMkY4e0hqVQRt8urqSsGDde7VksZ8oqw5QbdaVn0S0oOXP8NUDRtwGv1DxYky
+ 7sqIjaRhp85HHssuSBv8=
+X-Google-Smtp-Source: AGHT+IH2bhfUFWK9PIFiRJ2qTB3e1C/DifObbFrGDPwTmIjjKwP+CXeTFa/kO/pCKYqX6JCOb7O1vw==
+X-Received: by 2002:a05:6000:1448:b0:391:487f:280b with SMTP id
+ ffacd0b85a97d-391487f29camr7394086f8f.10.1741683466594; 
+ Tue, 11 Mar 2025 01:57:46 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912bfdfe61sm17731252f8f.38.2025.03.11.01.54.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Mar 2025 01:54:46 -0700 (PDT)
-Message-ID: <37026d8c-e892-47cc-b2b1-21d36fe856c2@linaro.org>
-Date: Tue, 11 Mar 2025 09:54:44 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/21] hw/vfio/pci: Convert CONFIG_KVM check to runtime
- one
-To: BALATON Zoltan <balaton@eik.bme.hu>, Eric Auger <eric.auger@redhat.com>
-Cc: qemu-devel@nongnu.org, Yi Liu <yi.l.liu@intel.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Halil Pasic <pasic@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Tomita Moeko
- <tomitamoeko@gmail.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eric Farman <farman@linux.ibm.com>, Eduardo Habkost <eduardo@habkost.net>,
- Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-s390x@nongnu.org,
+ 5b1f17b1804b1-43cf3bf0e48sm74752635e9.20.2025.03.11.01.57.44
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 11 Mar 2025 01:57:46 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Richard Henderson <richard.henderson@linaro.org>
-References: <20250308230917.18907-1-philmd@linaro.org>
- <20250308230917.18907-10-philmd@linaro.org>
- <28c102c1-d157-4d22-a351-9fcc8f4260fd@redhat.com>
- <2d44848e-01c1-25c5-dfcb-99f5112fcbd7@eik.bme.hu>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <2d44848e-01c1-25c5-dfcb-99f5112fcbd7@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Igor Mammedov <imammedo@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>
+Subject: [PATCH-for-10.0 v3 0/8] hw/vfio: Build various objects once
+Date: Tue, 11 Mar 2025 09:57:35 +0100
+Message-ID: <20250311085743.21724-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,48 +107,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/25 13:54, BALATON Zoltan wrote:
-> On Mon, 10 Mar 2025, Eric Auger wrote:
->> Hi Philippe,
->>
->> On 3/9/25 12:09 AM, Philippe Mathieu-Daudé wrote:
->>> Use the runtime kvm_enabled() helper to check whether
->>> KVM is available or not.
->>
->> Miss the "why" of this patch.
->>
->> By the way I fail to remember/see where kvm_allowed is set.
+Hi Cédric,
 
-In accel/accel-system.c:
+Here are the VFIO cleanup patches ready enough for 10.0,
+with Richard and Eric comments from v2 addressed.
 
-     int accel_init_machine(AccelState *accel, MachineState *ms)
-     {
-         AccelClass *acc = ACCEL_GET_CLASS(accel);
-         int ret;
-         ms->accelerator = accel;
-         *(acc->allowed) = true;
-         ret = acc->init_machine(ms);
-         if (ret < 0) {
-             ms->accelerator = NULL;
-             *(acc->allowed) = false;
-             object_unref(OBJECT(accel));
-         } else {
-             object_set_accelerator_compat_props(acc->compat_props);
-         }
-         return ret;
-     }
+I'd prefer the rest (of v2) to wait for 10.1.
 
-> 
-> It's in include/system/kvm.h
-> 
->> I am also confused because we still have some code, like in
->> vfio/common.c which does both checks:
->> #ifdef CONFIG_KVM
->>         if (kvm_enabled()) {
->>             max_memslots = kvm_get_max_memslots();
->>         }
->> #endif
+Thanks,
 
-We should prefer kvm_enabled() over CONFIG_KVM, but for kvm_enabled()
-we need the prototypes declared, which sometimes aren't.
+Phil.
+
+Philippe Mathieu-Daudé (8):
+  system: Declare qemu_[min/max]rampagesize() in 'system/hostmem.h'
+  hw/vfio/spapr: Do not include <linux/kvm.h>
+  hw/vfio/common: Include missing 'system/tcg.h' header
+  hw/vfio/common: Get target page size using runtime helpers
+  hw/vfio: Compile some common objects once
+  hw/vfio: Compile more objects once
+  hw/vfio: Compile iommufd.c once
+  hw/vfio: Compile display.c once
+
+ include/exec/ram_addr.h    |  3 ---
+ include/system/hostmem.h   |  3 +++
+ hw/ppc/spapr_caps.c        |  1 +
+ hw/s390x/s390-virtio-ccw.c |  1 +
+ hw/vfio/common.c           |  9 ++++++---
+ hw/vfio/iommufd.c          |  1 -
+ hw/vfio/migration.c        |  1 -
+ hw/vfio/spapr.c            |  4 +---
+ hw/vfio/meson.build        | 27 ++++++++++++++++-----------
+ 9 files changed, 28 insertions(+), 22 deletions(-)
+
+-- 
+2.47.1
+
 
