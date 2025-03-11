@@ -2,90 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EADA5BFC6
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:52:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 123B8A5BFC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:51:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trxxq-0000xh-Pj; Tue, 11 Mar 2025 07:40:02 -0400
+	id 1try8R-0000PB-11; Tue, 11 Mar 2025 07:50:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trxxn-0000ru-10
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:39:59 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <raman.dzehtsiar@gmail.com>)
+ id 1try7i-0000Bi-4A; Tue, 11 Mar 2025 07:50:15 -0400
+Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1trxxa-0007nT-El
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:39:58 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43690d4605dso32857945e9.0
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 04:39:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <raman.dzehtsiar@gmail.com>)
+ id 1try7b-00019B-51; Tue, 11 Mar 2025 07:50:13 -0400
+Received: by mail-ua1-x936.google.com with SMTP id
+ a1e0cc1a2514c-86d42f08135so1724944241.0; 
+ Tue, 11 Mar 2025 04:50:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741693179; x=1742297979; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=thg6OV1i38O3zO5fYsgxFU2kAPWUsE6O8clbjSSChsE=;
- b=N4/z7cMIvehwqDUz7csnWqubpDC+xMYwGhFcM+U8P2PKBc2iaQWLVgVIb8Fc7hGcBc
- sAHdIhhXwuDEhrgC7HOgGJbtV5W9J8zdB7szxTfpSmRclrNuhFfVn2mCzAhvOjiGnZhT
- 8LR557MhvuXG0MLWLeC4B19Ehoyyv54hYsmZ6wOPVVavnU+KsxOnr33CH2qdKovL0oZZ
- 4WGNauUCXQEdZWfclZP43OpSbeIMZKIlH8E+2uDDiDqFDbyLqyOrF48Z6MVMPM0kzRci
- 2LoWZTL38DNrHziVQcNnY1KT46svW26RvtwUXbxF+zrn7ofDQtOr7oBZfFtydNIpkjrv
- HR2Q==
+ d=gmail.com; s=20230601; t=1741693800; x=1742298600; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xAii/7V9yfv5p8IUjF1QCSi5NSkvZwAdZizeHwxs3LA=;
+ b=Ipd+63mzbgziSUHETsRJQue4jccZbUHzJLwZfeampg7xGWcmpIFdMiDoT1RnJH1McM
+ Q2Cma4zaLuQaERVT/ZE5KB4zaat48gVCZMdpARLVwYOLpLWJx6MOL3nWzxhhamO5OtHz
+ GSe9y60SNE7g4zqSuSZzJzEk4+moNUipmTriPp/3abq9HyoLnX2BKtRPapTvZM9XW/77
+ Wc3wWagmyXML+iNP5nFuTZ+zsXo9sTub2B2imDPHnd+KEtoFqCYDUkJTY/IcOiW29aoi
+ H78XGdbOS8QfLSL8UO+KAcirpib/pQGvkVbZLZ9KPwFe3CZzldp3AyNSEsjOFLCUm986
+ 0o7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741693179; x=1742297979;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=thg6OV1i38O3zO5fYsgxFU2kAPWUsE6O8clbjSSChsE=;
- b=U2wcDv9f0joIHSzaIq+d5uTx5G54A64Yjxprqfsjtu6dtbp8bz+eIUI8WZsF+bTL87
- jc4WJFlYgidESt4M2/xEXsDQ0FDcpvCDnlcqW6KZ/HHZAELb3F8juf1hcAyvL61D0q57
- bshsHbtHUaajtXdpvurXZtT+T0It0aUuqNCcqAcWmX7E/kX5szXXrQpR6JgXBb28h5im
- ZZRGGj+RzbN+c6HJVTokxA+wcDaKlEbO6xAetBc6x9WpywukCf2b10fUDlEduP6dnR0U
- OkU+2vV/FshpGF/UaWJ45/RwPfEIdNOKsmnhAlaDvgKOK6G0ZJ5p0BjA0/MR5AmxlCuU
- erQw==
-X-Gm-Message-State: AOJu0Yyb8VVGM7UdRXOqBttpqa8gGEdCbEi4lS1bRHYAm2GJSsU2PQWb
- MeQrj8Ue189Md9B/ApyIfKV4JvlrwMcz7xrTfptONSSZEWelKQhXHnRXt117rpVKIU7NCs66zR9
- NN6s=
-X-Gm-Gg: ASbGncso9ng7Ymu4j7DAgsW49C/ZC0NzIFFu+QdLbD7av3hUn7XwDw2ufSAwp/HT6dV
- oKyFL4bj30ZSqsRVc/GmQZZhuEu/iusTySVeT/70slK1txCsM9QGXl+F8KeNaE/OXKpbWAmUWp8
- 3AkaSBgd4RG1x845Yebex0nTP1EKYF/PCXxeSGkTdBIervVATHyVfjYVMysVAMQCOLwMh8PT04Y
- IEus5RhLVCvvbj9DtUVyHDytsBjMMqgZZJQh1K2OLq3+DE3BjrVfSeMACmUOhwXTZGDA8X9xbJO
- QJNpyHzda4Yww57xXv1UuTNhcrkW83MLvrJmqqdCP6Wi01P6jIuXdUhWHDtAzVuCDxKXpIbt4fO
- JoHEZbHml/L7+
-X-Google-Smtp-Source: AGHT+IGJO05ghk+Ny/AxAzGp0uVwm7HaKuERP/zrofaDB3PiPCqTOXrU8tPbCNTkk/sNUuxDuoaE3Q==
-X-Received: by 2002:a05:600c:3b21:b0:43c:fe85:e4a0 with SMTP id
- 5b1f17b1804b1-43cfe85e60bmr63940435e9.7.1741693179412; 
- Tue, 11 Mar 2025 04:39:39 -0700 (PDT)
-Received: from [192.168.69.199] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d031d0e41sm16578245e9.0.2025.03.11.04.39.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Mar 2025 04:39:38 -0700 (PDT)
-Message-ID: <98083575-c052-457c-8732-0b3dbe33089f@linaro.org>
-Date: Tue, 11 Mar 2025 12:39:37 +0100
+ d=1e100.net; s=20230601; t=1741693800; x=1742298600;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xAii/7V9yfv5p8IUjF1QCSi5NSkvZwAdZizeHwxs3LA=;
+ b=RwNmU3Dx/fR7I+vJZCel5RHUW8/tIu07sbEJlK4KREUfMbdijWGuX7vgKhOjPu5uaO
+ q0rmk0BPeTUPjEKlc+LaEKQDvbw6t+aMzehRQsBZQZdodfrOvYNBWK+h5wD4p3Lu7z+G
+ oPOcJ+9354muBMYM9octcZaCLoNDXjtAdOyjKaOiVcupycl9ev+6WhucP214Nkh+D1FH
+ 7D9jkTSuokpYZ5t3N4WSb87WlYsBI5+I9CDqnQ7eIX219mjaiIc6GglHdEOj/0yOqd/f
+ 2ZUM7ZL4eZZ5uU6zR5TSU+oz/xKq/GvnbegVxZz1ll9rjrZBBtVcU/xExxu/DcXuIYbN
+ P8kg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXop0q2pW6iTPVZP+rTfAbOfpwGJK8Rjwz22LSS9LKGNZzBuUNt88+iZk8pI+Cg08J1+/YeZQC9fRbs@nongnu.org
+X-Gm-Message-State: AOJu0Yz8blburYFWiz+kjRff+SpnvV5XHIZlEBpjUrfm/aGGD/mF2n5r
+ WVtJoQpAzCqLAwVBb2c6+TppRC5opatGQI+rXJOQHNrsPRCqes1c/hJSVn1sMVzWC+hRs57tveI
+ F85ZjOtiyNX8/SZY3oki7eMidMjFw0FQPlaE=
+X-Gm-Gg: ASbGncvKpFGMSSAXzVnnqcOPluYIO9sR6udGvRL0+MVFMccXr0Ab+25QxWBi9jNp/ZS
+ sENPFiFV7jCRo1pnz7ttTTLVZOjSEqZZysUH9KbwXuVXRYYLWhdgd6e2EXcDsRkKNIDrWcxPh6Q
+ Dx4YYXwj0oaHgnBuP2IAhigEdleYbrIwv7tq3BJs1ng+eijwPA77dc
+X-Google-Smtp-Source: AGHT+IGkq6+7oLg9RJTIOs3wkdAFJhbugAgWXyuQsqlA51aWzg4QVam39/tkgzAhZq6GqKaFlNg7LzKiOKxVzaKm6ao=
+X-Received: by 2002:a05:6102:578f:b0:4c1:90ee:ab2 with SMTP id
+ ada2fe7eead31-4c30a5ecc5cmr10395829137.14.1741693800196; Tue, 11 Mar 2025
+ 04:50:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-9.1? 0/2] hw/intc/arm_gic: Only provide
- query-gic-capabilities when GIC built-in
-To: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-References: <20240806141940.22095-1-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240806141940.22095-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+References: <20250304091703.462342-1-Raman.Dzehtsiar@gmail.com>
+In-Reply-To: <20250304091703.462342-1-Raman.Dzehtsiar@gmail.com>
+From: Raman Dzehtsiar <raman.dzehtsiar@gmail.com>
+Date: Tue, 11 Mar 2025 12:49:49 +0100
+X-Gm-Features: AQ5f1Jq_a8XrU3XTr18dDckDjZVVzypN3-GBt6EytgMlv_grnDi_NIW4Qxu-DLI
+Message-ID: <CA+uc5a09t+55b1hQ_psj2K9=ohPASHB0fxSBNgU80X+fDa+D3A@mail.gmail.com>
+Subject: Re: [PATCH v2] blockdev-backup: Add error handling option for
+ copy-before-write jobs
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ John Snow <jsnow@redhat.com>, 
+ Wen Congyang <wencongyang2@huawei.com>, Markus Armbruster <armbru@redhat.com>, 
+ Xie Changlong <xiechanglong.d@gmail.com>, Eric Blake <eblake@redhat.com>,
+ qemu-block@nongnu.org, Rovshan Pashayev <Rovshan.Pashayev@veeam.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
+ envelope-from=raman.dzehtsiar@gmail.com; helo=mail-ua1-x936.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,23 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-+Pierrick for historical context
+On Tue, Mar 4, 2025 at 10:17=E2=80=AFAM Raman Dzehtsiar
+<raman.dzehtsiar@gmail.com> wrote:
+>
+> This patch extends the blockdev-backup QMP command to allow users to spec=
+ify
+> how to behave when IO errors occur during copy-before-write operations.
+> Previously, the behavior was fixed and could not be controlled by the use=
+r.
+>
+> The new 'on-cbw-error' option can be set to one of two values:
+> - 'break-guest-write': Forwards the IO error to the guest and triggers
+>   the on-source-error policy. This preserves snapshot integrity at the
+>   expense of guest IO operations.
+> - 'break-snapshot': Allows the guest OS to continue running normally,
+>   but invalidates the snapshot and aborts related jobs. This prioritizes
+>   guest operation over backup consistency.
+>
+> This enhancement provides more flexibility for backup operations in diffe=
+rent
+> environments where requirements for guest availability versus backup
+> consistency may vary.
+>
+> The default behavior remains unchanged to maintain backward compatibility=
+.
+>
+> Signed-off-by: Raman Dzehtsiar <Raman.Dzehtsiar@gmail.com>
 
-On 6/8/24 16:19, Philippe Mathieu-Daudé wrote:
-> Attempt to clarify confuse output from the
-> 'query-gic-capabilities' QMP command when
-> no GIC devices are built in.
-> 
-> Philippe Mathieu-Daudé (2):
->    target/arm: Move qmp_query_gic_capabilities() to hw/intc/
->    hw/intc/arm_gic: Only provide query-gic-capabilities when GIC built-in
-> 
->   qapi/misc-target.json     |  4 +--
->   hw/intc/arm_gic_qmp.c     | 61 +++++++++++++++++++++++++++++++++++++++
->   target/arm/arm-qmp-cmds.c | 52 +--------------------------------
->   hw/intc/meson.build       |  1 +
->   4 files changed, 65 insertions(+), 53 deletions(-)
->   create mode 100644 hw/intc/arm_gic_qmp.c
-> 
+Hi team,
 
+Thank you for taking the time to review my changes. I would like to
+clarify if there is
+anything preventing this patch from being merged, as I am eager to
+have it included
+in the next release.
+
+Thanks
 
