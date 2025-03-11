@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C74DA5C299
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:27:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A664A5C270
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:22:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzKa-0008CH-Po; Tue, 11 Mar 2025 09:07:36 -0400
+	id 1trzKp-0001LS-2f; Tue, 11 Mar 2025 09:07:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzFN-0006MY-TJ; Tue, 11 Mar 2025 09:02:15 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1trzFL-0006LS-Pr; Tue, 11 Mar 2025 09:02:14 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzFE-0000Nx-MI; Tue, 11 Mar 2025 09:02:10 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2255003f4c6so49959605ad.0; 
- Tue, 11 Mar 2025 06:02:02 -0700 (PDT)
+ id 1trzFI-0000Ok-LQ; Tue, 11 Mar 2025 09:02:10 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2fea47bcb51so11359335a91.2; 
+ Tue, 11 Mar 2025 06:02:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741698121; x=1742302921; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741698124; x=1742302924; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=elAFXUjF+R6E0+41mljzNOshBJCWfVTXW/A0lm/eOnM=;
- b=h0SwqOnbiIrZA3nYF4zqtGvYwIn3rpHrgX2XC9MxhsU45poFy58FFxMwy5fWpy3Hz8
- qs0fWH26AA5O9AscypFWDLRI1142924qgJC5zHLKqnUzJP07JZpHpcqKnWWrXilSM3eV
- JmNdhx3ptMxFEaXGEBwAMcx8/fBIzG7V3OfVHgRy9l61dQnr85AsEn3CfQQe1JCIFSpK
- XCYiS6NSQEd/op0a6XsalPk69YKZz9OqU++rhR2HynxWTVIJmugT4CxwIbLSaN6L9rBJ
- gbwPx0G+Fn0KiV1nlLufRlJmzX0bxlPVfTEHbQkaqu6vU7p0BGZlQ+U9nkM8SBWwh2A6
- 4Nww==
+ bh=tAN+HnepXEYeETm6X7cQEpTvdXTBx3EHSfsdgopHuPI=;
+ b=JJZbh2l0Ph+pAKrU4cJQj5kkoQ2p/UBym7ImFEWHMokTBORjMacpx5KSj1cckOxDI9
+ gPjPah65MNWgo8B0TkuAjAPWYr8tFTuj/CPkDsnhlnz1bUkBb7LAa3WTxCVkF3677u94
+ 3O9f/ZjhVj186sd9u2dPK15H9RTD8rCkWzJan+xBaNtmZymCE5RiEkmoEt2m4wLIkNrD
+ zOHoJ23R/KKzfJx2UiQC2GgiPLLOkVBZ5+Dwt5iB5jRcqy7NB6gILSLn/K2rmQuNF7mt
+ YYZRUdVCdLUIi2ATqVuvnIbr/5gO3R3qTife0uk575D7hhCTvAPvWGxGfQHhEiaLUBty
+ pv6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741698121; x=1742302921;
+ d=1e100.net; s=20230601; t=1741698124; x=1742302924;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=elAFXUjF+R6E0+41mljzNOshBJCWfVTXW/A0lm/eOnM=;
- b=Geypf3Id3a6lYFvK2P2aligOQYz6GwbfhgM5FFMQJK+wRaHi/ofZw85cxgLTeBpwiS
- rlDJ7fWra84yDftRkxxVVGEYFkMjyo7mqQ4bG0uHwC+/RlYt8IxrmZ98GMvHhsqY/1KJ
- COp9j+BQlQQrPTxH8sCeo2hs2glu0HUM2IvfZ6QWzgHf7mV/1GamukUobLH6UWnDucUv
- wVTCQZX3LCkm8XnKwguuswUb8UFTU6pMdhJsr/utTFPE8XTIzGxWPmSgaDbw2l5uVGI+
- 4fkDLmPi35ZYy1SYfVemh40miQZFd7Ad/OX1IVIHGV4Tcq6mXC+XylsM7XT9eIoRPDoC
- l90A==
+ bh=tAN+HnepXEYeETm6X7cQEpTvdXTBx3EHSfsdgopHuPI=;
+ b=NgwPyKNLEuhZM8xXGdWoJ50ckNvYMKG5VTztR/pvHuHfnXvOTJiujkWUuiF7yDMT0h
+ E7C5wq8kSawLCLyTelwve7Q1xtrCqSS/XcsnqgvrQONKaYDdOqu0MsCZmqEdahRodpzT
+ dutR785tqpSh/p7BGvWCoOXOAORDUKZV5rou5Qb7Y6fPzrF0f29H9QGKFN8/xIEBL3/K
+ CNrTu3IdVNPiOT+SD1GuGaqNDgsha3wR+iJqj43HIfkUJraNVLgxuJX2lpFoAyOqVTQf
+ 7iEvO/m4biaMacIKiXsk+2Gr+cgBkSXszIFYZeSDMeyj1PA2ruZgGWMqWgBHA4MPn9X7
+ tuFw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVaD2tT9Tj9fTdrupHGxgysO6exY1AiQfpEMUkhovngq+2u1tf0GYchYr81Q9SIvCgnV+rf3G6djw==@nongnu.org
-X-Gm-Message-State: AOJu0YylgSZ4PEtlS5B+Hvg2bhbsUb1LHUBxDNpZ8W4V1OHLF7sgdw6W
- 6l0hNr0HuOsd2Q707WM3WfT5XLJ+xgwIaVBI6SjVrA1giLEWhitQ6g+vOw==
-X-Gm-Gg: ASbGncvXxqvrlUmkVY0aZzZvCfKdCJpPeSqO0ciMue7GUzI661dpOp0MEOUi+NBbtej
- 4rJEiyqSDbrEzjJFBKm2QJsBKmu72d4qJ/V+C4+Fg/Ov3s0K9IWgOavH3V6K613kqIFYeNfnxTk
- Te36+0380gNEs3QNiSzQt615U7E64obvjR0eaCeDP6OJK3SF4TVXeJ0zZTahnM0PKWBqW3Ok3S2
- 3L5mJV3ERkutC5AB39gMChCbHnsqH9+4yfWScvuBlsgvs/RRvIpOM6sfWVG6AdxTlPuxsqu+Cl7
- vYFPhN7Z7h+ghw5pA7M0rMY2SUF0d1SFsDe3AdUA92h7U6UvQzw=
-X-Google-Smtp-Source: AGHT+IEvfuD1NrKWI+2Dv0OL8sLBjxEo6/deJYw1ULxKFwwvAOvUHJYL0oPwf2abozxnkGOzQeBWUA==
-X-Received: by 2002:a17:90b:528a:b0:2ee:d824:b559 with SMTP id
- 98e67ed59e1d1-300ff34d5c3mr4672098a91.28.1741698121189; 
- Tue, 11 Mar 2025 06:02:01 -0700 (PDT)
+ AJvYcCWyLr06BuYEZIeqJ5U91oO8afNWxpAGWiSdTETwc8x7tDmp5ymYjc5oBOxOLp9dD5tcZxaCUHYumQ==@nongnu.org
+X-Gm-Message-State: AOJu0Yx6h9FCt/7fHHvFiSxPUJZ1lfe+Miml5hwqEtQW1jfSoO2lpiFN
+ XAK1WL0i5LdtEANLgohsEbveM2FPkPuKF9JZW/iS5vXjqharcWDSHHtKpA==
+X-Gm-Gg: ASbGncuxvlkwt3AR5OQAFx1taCNqTZtURCgPDMASyen8iD3P1RfQDNXCQoCXR9oAdL8
+ JOTYKnDq0HUXYUEYs9W934+jF6A4Kgclvi3m7P5Y7Xmf+EaooUmZrKi0lM4NhMTQR6YW9HjBrG3
+ Hu7JXIBLLingwLkcTIAEk+LUj1NMw3t7tjOjHmw9HJi/eYM3gBWYN9pePGY7X64Al/6BKeMD3MC
+ SmKPy96t7/CbefBxlTJWlmiFgGw+PC7kYNj4M8iGtJ2KZHlCYTDU0CEn9Du74cH4Bo6q5NARI15
+ Vqn41hyp+EtryMEoH+XAnsf4e+WV4cfvTBf6oBeoW4q4FvH/iFs=
+X-Google-Smtp-Source: AGHT+IEhxKc7QK2c+anq0I1mojZLWvDqfhA2vOV9L7tDz2FcGcafQoam3LJNySdsaQeq/PjJ9Lg/jw==
+X-Received: by 2002:a17:90b:2883:b0:2ff:52e1:c4a1 with SMTP id
+ 98e67ed59e1d1-2ff7cf128acmr27247430a91.24.1741698123882; 
+ Tue, 11 Mar 2025 06:02:03 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.01.58
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.02.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 06:02:00 -0700 (PDT)
+ Tue, 11 Mar 2025 06:02:03 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 71/72] ppc/amigaone: Add #defines for memory map constants
-Date: Tue, 11 Mar 2025 22:58:05 +1000
-Message-ID: <20250311125815.903177-72-npiggin@gmail.com>
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 72/72] docs/system/ppc/amigang.rst: Update for NVRAM emulation
+Date: Tue, 11 Mar 2025 22:58:06 +1000
+Message-ID: <20250311125815.903177-73-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,70 +100,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+Add NVRAM and hint on how to make it persistent. Also update Linux
+boot section which should now boot automatically with the new NVRAM
+defaults so manual settings in menu may not be needed normally.
+
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <3b8e54ad9220d57e7b0a33f3570e880f26677ce8.1740673173.git.balaton@eik.bme.hu>
+Message-ID: <20250304205926.87E364E6010@zero.eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/amigaone.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ docs/system/ppc/amigang.rst | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
-index 359f5fa125..483512125f 100644
---- a/hw/ppc/amigaone.c
-+++ b/hw/ppc/amigaone.c
-@@ -32,6 +32,14 @@
- #define BUS_FREQ_HZ 100000000
+diff --git a/docs/system/ppc/amigang.rst b/docs/system/ppc/amigang.rst
+index e2c9cb74b7..21bb14ed09 100644
+--- a/docs/system/ppc/amigang.rst
++++ b/docs/system/ppc/amigang.rst
+@@ -21,6 +21,7 @@ Emulated devices
+  * VIA VT82C686B south bridge
+  * PCI VGA compatible card (guests may need other card instead)
+  * PS/2 keyboard and mouse
++ * 4 KiB NVRAM (use ``-drive if=mtd,format=raw,file=nvram.bin`` to keep contents persistent)
  
- #define INITRD_MIN_ADDR 0x600000
-+#define INIT_RAM_ADDR 0x40000000
-+
-+#define PCI_HIGH_ADDR 0x80000000
-+#define PCI_HIGH_SIZE 0x7d000000
-+#define PCI_LOW_ADDR  0xfd000000
-+#define PCI_LOW_SIZE  0xe0000
-+
-+#define ARTICIA_ADDR 0xfe000000
+ Firmware
+ --------
+@@ -54,14 +55,14 @@ To boot the system run:
+                     -cdrom "A1 Linux Net Installer.iso" \
+                     -device ati-vga,model=rv100,romfile=VGABIOS-lgpl-latest.bin
  
- /*
-  * Firmware binary available at
-@@ -287,7 +295,7 @@ static void amigaone_init(MachineState *machine)
-         /* Firmware uses this area for startup */
-         mr = g_new(MemoryRegion, 1);
-         memory_region_init_ram(mr, NULL, "init-cache", 32 * KiB, &error_fatal);
--        memory_region_add_subregion(get_system_memory(), 0x40000000, mr);
-+        memory_region_add_subregion(get_system_memory(), INIT_RAM_ADDR, mr);
-     }
+-From the firmware menu that appears select ``Boot sequence`` →
+-``Amiga Multiboot Options`` and set ``Boot device 1`` to
+-``Onboard VIA IDE CDROM``. Then hit escape until the main screen appears again,
+-hit escape once more and from the exit menu that appears select either
+-``Save settings and exit`` or ``Use settings for this session only``. It may
+-take a long time loading the kernel into memory but eventually it boots and the
+-installer becomes visible. The ``ati-vga`` RV100 emulation is not
+-complete yet so only frame buffer works, DRM and 3D is not available.
++If a firmware menu appears, select ``Boot sequence`` → ``Amiga Multiboot Options``
++and set ``Boot device 1`` to ``Onboard VIA IDE CDROM``. Then hit escape until
++the main screen appears again, hit escape once more and from the exit menu that
++appears select either ``Save settings and exit`` or ``Use settings for this
++session only``. It may take a long time loading the kernel into memory but
++eventually it boots and the installer becomes visible. The ``ati-vga`` RV100
++emulation is not complete yet so only frame buffer works, DRM and 3D is not
++available.
  
-     /* nvram */
-@@ -322,7 +330,7 @@ static void amigaone_init(MachineState *machine)
-     }
- 
-     /* Articia S */
--    dev = sysbus_create_simple(TYPE_ARTICIA, 0xfe000000, NULL);
-+    dev = sysbus_create_simple(TYPE_ARTICIA, ARTICIA_ADDR, NULL);
- 
-     i2c_bus = I2C_BUS(qdev_get_child_bus(dev, "smbus"));
-     if (machine->ram_size > 512 * MiB) {
-@@ -339,12 +347,12 @@ static void amigaone_init(MachineState *machine)
-     pci_mem = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
-     mr = g_new(MemoryRegion, 1);
-     memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", pci_mem,
--                             0, 0xe0000);
--    memory_region_add_subregion(get_system_memory(), 0xfd000000, mr);
-+                             0, PCI_LOW_SIZE);
-+    memory_region_add_subregion(get_system_memory(), PCI_LOW_ADDR, mr);
-     mr = g_new(MemoryRegion, 1);
-     memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", pci_mem,
--                             0x80000000, 0x7d000000);
--    memory_region_add_subregion(get_system_memory(), 0x80000000, mr);
-+                             PCI_HIGH_ADDR, PCI_HIGH_SIZE);
-+    memory_region_add_subregion(get_system_memory(), PCI_HIGH_ADDR, mr);
-     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
- 
-     /* VIA VT82c686B South Bridge (multifunction PCI device) */
+ Genesi/bPlan Pegasos II (``pegasos2``)
+ ======================================
 -- 
 2.47.1
 
