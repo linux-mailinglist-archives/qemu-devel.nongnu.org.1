@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159E4A5B7A9
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 05:00:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E90EA5B786
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 04:50:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trqaa-00046d-7U; Mon, 10 Mar 2025 23:47:32 -0400
+	id 1trqbG-0006VH-1Z; Mon, 10 Mar 2025 23:48:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqZt-0000cd-Ar
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqZt-0000cq-BS
  for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:46:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqZg-0002qQ-UF
- for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:46:38 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1trqZl-0002qx-Le
+ for qemu-devel@nongnu.org; Mon, 10 Mar 2025 23:46:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741664796;
+ s=mimecast20190719; t=1741664800;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cBpLmKUQirrPfGdXW8U1uOpP/YpbU3tHWQICZnGYKz8=;
- b=OUTDBcoa/D3OljSW9s12Pu7QQUWxd+YiD1GbUyyKC2OC3S9i7PbApqymleCc9FgvtjiElZ
- YskvGsqM4Lt5B1E6XHx4aweWB9oLh6J0vUuSeu/8B6Q61szRb8KjfaDdjwIBLleZ6EjD9K
- DJ0Tewu4Cy5TYxDyezD5EmcsAW/Qi6g=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=95agMskPgnBc4AkyN44TZ2mvq+7CH/4kl3dTXY02EW8=;
+ b=L0jaXlNnFMjlo2UpsphdtvjGhkJAP879trAm7BYccccOhAUTg1gsCik6PYAXsZ8j1yl73F
+ WcQBEpuEsleFFu5l1Hru4zjc4NLwSBcGrqjyg5UUocfvA2uVMSZFBGRfar6Dk6V0Ae4UI6
+ g3ihVVEBN6CFLcQ6Nu3FrTObpk1QFlw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-121-36i838suPf6prbsltxhEWw-1; Mon,
- 10 Mar 2025 23:46:32 -0400
-X-MC-Unique: 36i838suPf6prbsltxhEWw-1
-X-Mimecast-MFC-AGG-ID: 36i838suPf6prbsltxhEWw_1741664791
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-TOA9WdDpNxm0xkae3FGA5A-1; Mon,
+ 10 Mar 2025 23:46:36 -0400
+X-MC-Unique: TOA9WdDpNxm0xkae3FGA5A-1
+X-Mimecast-MFC-AGG-ID: TOA9WdDpNxm0xkae3FGA5A_1741664796
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B237419560BB; Tue, 11 Mar 2025 03:46:31 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D2EB8195608B; Tue, 11 Mar 2025 03:46:35 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.49])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 147AA1800373; Tue, 11 Mar 2025 03:46:28 +0000 (UTC)
+ id 398271800366; Tue, 11 Mar 2025 03:46:31 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
@@ -52,10 +52,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v3 59/63] qapi/parser: add undocumented stub members to
- all_sections
-Date: Mon, 10 Mar 2025 23:42:57 -0400
-Message-ID: <20250311034303.75779-60-jsnow@redhat.com>
+Subject: [PATCH v3 60/63] docs: disambiguate cross-references
+Date: Mon, 10 Mar 2025 23:42:58 -0400
+Message-ID: <20250311034303.75779-61-jsnow@redhat.com>
 In-Reply-To: <20250311034303.75779-1-jsnow@redhat.com>
 References: <20250311034303.75779-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -86,47 +85,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This helps simplify the new doc generator if it doesn't have to check
-for undocumented members, it can just blindly operate on a sequence of
-QAPIDoc.Section instances.
-
-NB: If there is no existing 'member' section, these undocumented stub
-members will be inserted directly after the leading section.
+The next patch will engage the qapidoc transmogrifier, which creates a
+lot of cross-reference targets. Some of the existing targets
+("migration", "qom", "replay") will become ambiguous as a result. Nail
+them down more explicitly to prevent ambiguous cross-reference warnings.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/parser.py | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ docs/devel/codebase.rst |  6 +++---
+ docs/glossary.rst       | 10 +++++-----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index 11c11bb09e5..52bc44facf2 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -789,8 +789,23 @@ def connect_member(self, member: 'QAPISchemaMember') -> None:
-                 raise QAPISemError(member.info,
-                                    "%s '%s' lacks documentation"
-                                    % (member.role, member.name))
--            self.args[member.name] = QAPIDoc.ArgSection(
-+            section = QAPIDoc.ArgSection(
-                 self.info, QAPIDoc.Kind.MEMBER, member.name)
-+            self.args[member.name] = section
-+
-+            # Insert stub documentation section for missing member docs.
-+            # TODO: drop when undocumented members are outlawed
-+
-+            # Determine where to insert stub doc - it should go at the
-+            # end of the members section(s), if any. Note that index 0
-+            # is assumed to be an untagged intro section, even if it is
-+            # empty.
-+            index = 1
-+            if len(self.all_sections) > 1:
-+                while self.all_sections[index].kind == QAPIDoc.Kind.MEMBER:
-+                    index += 1
-+            self.all_sections.insert(index, section)
-+
-         self.args[member.name].connect(member)
+diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
+index 4039875ee04..1b09953197b 100644
+--- a/docs/devel/codebase.rst
++++ b/docs/devel/codebase.rst
+@@ -23,7 +23,7 @@ Some of the main QEMU subsystems are:
+ - `Devices<device-emulation>` & Board models
+ - `Documentation <documentation-root>`
+ - `GDB support<GDB usage>`
+-- `Migration<migration>`
++- :ref:`Migration<migration>`
+ - `Monitor<QEMU monitor>`
+ - :ref:`QOM (QEMU Object Model)<qom>`
+ - `System mode<System emulation>`
+@@ -112,7 +112,7 @@ yet, so sometimes the source code is all you have.
+ * `libdecnumber <https://gitlab.com/qemu-project/qemu/-/tree/master/libdecnumber>`_:
+   Import of gcc library, used to implement decimal number arithmetic.
+ * `migration <https://gitlab.com/qemu-project/qemu/-/tree/master/migration>`__:
+-  `Migration framework <migration>`.
++  :ref:`Migration framework <migration>`.
+ * `monitor <https://gitlab.com/qemu-project/qemu/-/tree/master/monitor>`_:
+   `Monitor <QEMU monitor>` implementation (HMP & QMP).
+ * `nbd <https://gitlab.com/qemu-project/qemu/-/tree/master/nbd>`_:
+@@ -193,7 +193,7 @@ yet, so sometimes the source code is all you have.
+   - `lcitool <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/lcitool>`_:
+     Generate dockerfiles for CI containers.
+   - `migration <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/migration>`_:
+-    Test scripts and data for `Migration framework <migration>`.
++    Test scripts and data for :ref:`Migration framework <migration>`.
+   - `multiboot <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/multiboot>`_:
+     Test multiboot functionality for x86_64/i386.
+   - `qapi-schema <https://gitlab.com/qemu-project/qemu/-/tree/master/tests/qapi-schema>`_:
+diff --git a/docs/glossary.rst b/docs/glossary.rst
+index 693d9855dd1..4fa044bfb6e 100644
+--- a/docs/glossary.rst
++++ b/docs/glossary.rst
+@@ -120,7 +120,7 @@ Migration
+ ---------
  
-     def connect_feature(self, feature: 'QAPISchemaFeature') -> None:
+ QEMU can save and restore the execution of a virtual machine between different
+-host systems. This is provided by the `Migration framework<migration>`.
++host systems. This is provided by the :ref:`Migration framework<migration>`.
+ 
+ NBD
+ ---
+@@ -212,14 +212,14 @@ machine emulator and virtualizer.
+ QOM
+ ---
+ 
+-`QEMU Object Model <qom>` is an object oriented API used to define various
+-devices and hardware in the QEMU codebase.
++:ref:`QEMU Object Model <qom>` is an object oriented API used to define
++various devices and hardware in the QEMU codebase.
+ 
+ Record/replay
+ -------------
+ 
+-`Record/replay <replay>` is a feature of QEMU allowing to have a deterministic
+-and reproducible execution of a virtual machine.
++:ref:`Record/replay <replay>` is a feature of QEMU allowing to have a
++deterministic and reproducible execution of a virtual machine.
+ 
+ Rust
+ ----
 -- 
 2.48.1
 
