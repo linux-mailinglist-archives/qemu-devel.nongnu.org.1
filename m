@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E4AA5C1E6
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD69AA5C213
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:12:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzDD-0003x7-Ji; Tue, 11 Mar 2025 08:59:59 -0400
+	id 1trzDG-00044S-GP; Tue, 11 Mar 2025 09:00:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzCg-00021s-SG; Tue, 11 Mar 2025 08:59:28 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ id 1trzCh-00022J-9H; Tue, 11 Mar 2025 08:59:28 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzCc-0007x4-U9; Tue, 11 Mar 2025 08:59:25 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2ff64550991so8237887a91.0; 
- Tue, 11 Mar 2025 05:59:22 -0700 (PDT)
+ id 1trzCf-0007xX-G6; Tue, 11 Mar 2025 08:59:27 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2ff69365e1dso7926330a91.3; 
+ Tue, 11 Mar 2025 05:59:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741697961; x=1742302761; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741697963; x=1742302763; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=T1uWfwdoT5PuKunpdf5GL7Jo4UcITHEbOpLA5+y74zY=;
- b=S8xLiHhR/AxOxTKHERJwZy0a9kJvrtf+/pptQh5CURjBXXIbK4/u75exJ3hGRfmueg
- G4Pam2AbGMUkdjJ2wFx08v+Q/Tp3QD1w2h3DKdRMs5oNHFAghJOzHvic0mm4C61GypEg
- /bPk5Zijbzo7q5ibkJw0MFHtl3JjX+kQHHM1XNakQDscVXRztbZFdaaK9c82p7oz+L7d
- qr6jHROTwR/i0w9Ax+zkeXWfpE5/mjNuSWt6KxGXUa/0n8NoR1jRAT3kcEQCFR2RW21v
- AukZrFVqxAqZZcXO8RpY1IIzFdGW3FaD8apzKIbor6GEMFkon/nLv4ABPCzNcF+5pv0q
- NceA==
+ bh=fqFuEaShL7QDMXwSHtnl81qUichOoVW19OOsjZgbiVQ=;
+ b=HMCa47uLlBR/MQzcTgvvhVhh+aEhgGxZpok8lelz35/E56gzpLsO5QYKrq3k/06kCG
+ j6vJr8GDF+9zk14HsskZV8Uos75QQ+4m5fgkvvOa5zgVKp4pBS9PFp6BqsQe0J+1LtLG
+ vC8CjhqkEbOSd/3tjKbUGlxMdzzDRi6CZNEzQJoysw17aD38RQFb75ffR398xpDlIp5N
+ xMzkwVW41JDwOs6qjL4MsozOOtXPYGtiFhaz3RrXteKnamLvrqpEhy6NFaBLHJX910PO
+ bIGEB9J4URYWt8yj2i8z7tcaC+270PnxeJuSv7KsSY43HHfg714MSDf8KYeEMO5b6Nxq
+ B2OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741697961; x=1742302761;
+ d=1e100.net; s=20230601; t=1741697963; x=1742302763;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T1uWfwdoT5PuKunpdf5GL7Jo4UcITHEbOpLA5+y74zY=;
- b=bG4z4hB/lyiC5gZzs8hNYnMNHlFbZfa9pkxKRG1VxpvDsjN9NpXChPzB2QCV8bTWcU
- zgk8S6VC1OhU02quN6I7Xhi3eina7CSJ3hImKxrQlAx5dM9H2WxHndX6f2TgJzhj+UhC
- 1oJUeJJwNbCAJD8Sxx7R7rgz6XsSrhasBhi5xTivnfAHMMgkaYRyPc0T73qilCQRU+vl
- HIYGmhFzCfCosWCQ8DfGsaCMVtp/zSyGc/f5+czcrWH1rqjp8JZun0SqGgT//u4CYokA
- rNsCprWCt74W5lL9u7AqRy3TWdkwYwqNDoPjnsG499lsB8E6UZMUlQpB2n3aq9l/DE+u
- K/Hw==
+ bh=fqFuEaShL7QDMXwSHtnl81qUichOoVW19OOsjZgbiVQ=;
+ b=NgyHQbOOKSlnux+/AQZVGfDWn2PHLC2KPKTeTQkFkUinkEtljz8BoE7ypapRB9rHzh
+ INU4AElv+uWnLoaqqNLBJ/4utsCtjp/+b5md6YJRFLm+k1FTCttDisMZ9Q6kUcB/R/ot
+ OO91S/PgmS7dtZlJixMRnjWmBCjvAFpSlLpfJUjvOI80HPlOGuaNfp09KGw6wRToC47w
+ LItT3AsqIVFVzKopA0JVRzvVlwlIH3c/t32+p6j8fFEtkrgJd3QxbDeZW8yh9kI265VT
+ qk6Fifmo8Ni8elLwevrVjXLPcVgqvUya9Pup9SD4ncvUoOPunMw53DSjuAgq+63yny3J
+ tXRg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVlg5UHPVGVLj+KDQ0MtwX5Cb5ZmWbDoceib1Iiyame9mVaHihT+LP0yWWU5ZnaEOIVWbHbhmrq6A==@nongnu.org
-X-Gm-Message-State: AOJu0YwNm2YzJRUfNLo9JSlg9BZOpbOTOhKC5A0+YMiY7D0O3cjdh0U5
- dQfqXCW1k1iBruswKm26CC199DGC5VLvqOMafkdO8A5wtnb8s2FppACRyw==
-X-Gm-Gg: ASbGncuiI6JnxCntQeWIUQsLelU3vyNSxeadKEzB20G8WiLmiODA9KJfSAeCBAKzTgn
- a/mGGAran4iz4mBQd2Fcmvh86oD6xRjKV+A/XJXlFbBNfTM33yVAUIBjCrV0m7fhfdzOiQvFHhK
- qBaLJ7y8pt8sepbLLpg1yykElRJI+OFEKh98E7K6Fbk1jwuMb4Pt/yRJthCwvtIVg/9ZfLtFgsj
- xIC+qVBbF3U1ye12ve2vf3wk1LpIRhMsNtj5xWLA7w+02dCOgyY05/4hkIqosnIRyWWsSQL5hLE
- M+62i8QSnTbBfu0bpWR/qshi+cjCC0exVHKoo8tj6v4JuEHBU/w=
-X-Google-Smtp-Source: AGHT+IHhK3Xq0p0Gsazf9hC06zEq/EpkSQuUyC5j8Ci91L0KHHOssdLEtZOlVMMajo7ZW5PBpz4NGw==
-X-Received: by 2002:a17:90b:3812:b0:2ef:114d:7bf8 with SMTP id
- 98e67ed59e1d1-2ff7ce7277cmr24565728a91.6.1741697960456; 
- Tue, 11 Mar 2025 05:59:20 -0700 (PDT)
+ AJvYcCXnnVCOW45RO17P/Iaw/fn6qxP4IfBCrh+y9BEg1X03h31UDVg2U9THTWF7y8mqroLl6RvVYVlp2g==@nongnu.org
+X-Gm-Message-State: AOJu0YxaTUWo0BA8d9KHU4sNX/S/G2gmnuoeaaTuuWrDYO46TbrrVV1O
+ uLenap25hEoHUCZZ7FAkxzP+QbDCmdYUOs0masZbzKccp0mDEuwzlyaj9Q==
+X-Gm-Gg: ASbGncs0f2NSVDC2l4dq1cSvXXbYW1y9VqzXVq6iq4UiGMnvJ3cv/KwmPk7yTXBjZ2s
+ MA+I9bBFP8fRBlK9RXTIFoPo4nnM91EqHauVV05bT8lAkQOJYqb5B+BHRYRq73Pe4B8pgaQDtTr
+ zD5CGkUaYvqTDQ0n+w/Rf73rgeSj2v545yr6Qig3ho7jJXxdmSoK/cypPOYj0vdmeOawH7nsnLt
+ iP5rofmTEf/GSrpXfpmvMlEHAlww6XkHC092ZnBlrfp0AllpWl9i8izZa4owVj1PC3WVxF9CbOl
+ VEkJ+ntETFjqcgu1rJGP3mbsqFI05Bj1Tq+iUfsuEZw4zuvghro=
+X-Google-Smtp-Source: AGHT+IGI0v+NMdNqMr7la3iNW7GBB4U91RILxWfSpz+dcYrLsD/e79DcHZMqtkXSizdplmdmqa3pmA==
+X-Received: by 2002:a17:90b:164f:b0:2fe:baa3:b8b9 with SMTP id
+ 98e67ed59e1d1-2ff7ce4f306mr25161149a91.4.1741697963258; 
+ Tue, 11 Mar 2025 05:59:23 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.59.18
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.05.59.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 05:59:20 -0700 (PDT)
+ Tue, 11 Mar 2025 05:59:22 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
 	qemu-ppc@nongnu.org
-Subject: [PULL 16/72] target/ppc: Add Power9/10 power management SPRs
-Date: Tue, 11 Mar 2025 22:57:10 +1000
-Message-ID: <20250311125815.903177-17-npiggin@gmail.com>
+Subject: [PULL 17/72] ppc/pnv: Support LPC host controller irqs other than
+ serirqs
+Date: Tue, 11 Mar 2025 22:57:11 +1000
+Message-ID: <20250311125815.903177-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,185 +98,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Linux power management code accesses these registers for pstate
-management. Wire up a very simple implementation.
+The LPC model has only supported serirqs (ISA device IRQs), however
+there are internal sources that can raise other interrupts. Update the
+device to handle these interrupt sources.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-After OCC fixes in QEMU pnv model and skiboot (since they have suffered
-some bitrot), Linux will start performing PM SPR accesses. This is a
-very simple implementation that makes it a bit happier.
+ hw/ppc/pnv_lpc.c | 64 +++++++++++++++++++++++-------------------------
+ 1 file changed, 31 insertions(+), 33 deletions(-)
 
-Thanks,
-Nick
----
- target/ppc/cpu.h         |  2 ++
- target/ppc/cpu_init.c    | 11 +++++++++
- target/ppc/helper.h      |  2 ++
- target/ppc/misc_helper.c | 53 ++++++++++++++++++++++++++++++++++++++++
- target/ppc/spr_common.h  |  2 ++
- target/ppc/translate.c   | 16 ++++++++++++
- 6 files changed, 86 insertions(+)
-
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 0b8b4c0517..682583d1d1 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -2091,6 +2091,7 @@ void ppc_compat_add_property(Object *obj, const char *name,
- #define SPR_VTB               (0x351)
- #define SPR_LDBAR             (0x352)
- #define SPR_MMCRC             (0x353)
-+#define SPR_PMSR              (0x355)
- #define SPR_PSSCR             (0x357)
- #define SPR_440_INV0          (0x370)
- #define SPR_440_INV1          (0x371)
-@@ -2098,6 +2099,7 @@ void ppc_compat_add_property(Object *obj, const char *name,
- #define SPR_440_INV2          (0x372)
- #define SPR_TRIG2             (0x372)
- #define SPR_440_INV3          (0x373)
-+#define SPR_PMCR              (0x374)
- #define SPR_440_ITV0          (0x374)
- #define SPR_440_ITV1          (0x375)
- #define SPR_440_ITV2          (0x376)
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 1780cabfc6..54035c7bbb 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -6451,6 +6451,17 @@ static void register_power9_common_sprs(CPUPPCState *env)
-                         spr_read_generic, spr_write_generic,
-                         KVM_REG_PPC_PSSCR, 0);
+diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
+index 0480a60f3f..d0fccc165d 100644
+--- a/hw/ppc/pnv_lpc.c
++++ b/hw/ppc/pnv_lpc.c
+@@ -456,46 +456,18 @@ static void pnv_lpc_eval_irqs(PnvLpcController *lpc)
+ {
+     uint32_t active_irqs = 0;
  
-+    spr_register_hv(env, SPR_PMSR, "PMSR",
-+                    SPR_NOACCESS, SPR_NOACCESS,
-+                    SPR_NOACCESS, SPR_NOACCESS,
-+                    &spr_read_pmsr, SPR_NOACCESS,
-+                    0);
-+    spr_register_hv(env, SPR_PMCR, "PMCR",
-+                    SPR_NOACCESS, SPR_NOACCESS,
-+                    SPR_NOACCESS, SPR_NOACCESS,
-+                    &spr_read_generic, &spr_write_pmcr,
-+                    PPC_BIT(63)); /* Version 1 (POWER9/10) */
-+
- }
- 
- static void init_proc_POWER9(CPUPPCState *env)
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 5a77e761bd..11b914e640 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -733,6 +733,8 @@ DEF_HELPER_2(store_tfmr, void, env, tl)
- DEF_HELPER_FLAGS_2(store_sprc, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_FLAGS_1(load_sprd, TCG_CALL_NO_RWG_SE, tl, env)
- DEF_HELPER_FLAGS_2(store_sprd, TCG_CALL_NO_RWG, void, env, tl)
-+DEF_HELPER_FLAGS_1(load_pmsr, TCG_CALL_NO_RWG_SE, tl, env)
-+DEF_HELPER_FLAGS_2(store_pmcr, TCG_CALL_NO_RWG, void, env, tl)
- #endif
- DEF_HELPER_2(store_sdr1, void, env, tl)
- DEF_HELPER_2(store_pidr, void, env, tl)
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index e379da6010..190e9091fc 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -377,6 +377,59 @@ void helper_store_sprd(CPUPPCState *env, target_ulong val)
-         break;
+-    if (lpc->lpc_hc_irqstat & PPC_BITMASK32(16, 31)) {
+-        qemu_log_mask(LOG_UNIMP, "LPC HC Unimplemented irqs in IRQSTAT: "
+-                                 "0x%08"PRIx32"\n", lpc->lpc_hc_irqstat);
+-    }
+-
+-    if (lpc->lpc_hc_irqser_ctrl & LPC_HC_IRQSER_EN) {
+-        active_irqs = lpc->lpc_hc_irqstat & lpc->lpc_hc_irqmask;
++    active_irqs = lpc->lpc_hc_irqstat & lpc->lpc_hc_irqmask;
++    if (!(lpc->lpc_hc_irqser_ctrl & LPC_HC_IRQSER_EN)) {
++        active_irqs &= ~LPC_HC_IRQ_SERIRQ_ALL;
      }
- }
-+
-+target_ulong helper_load_pmsr(CPUPPCState *env)
-+{
-+    target_ulong lowerps = extract64(env->spr[SPR_PMCR], PPC_BIT_NR(15), 8);
-+    target_ulong val = 0;
-+
-+    val |= PPC_BIT(63); /* verion 0x1 (POWER9/10) */
-+    /* Pmin = 0 */
-+    /* XXX: POWER9 should be 3 */
-+    val |= 4ULL << PPC_BIT_NR(31); /* Pmax */
-+    val |= lowerps << PPC_BIT_NR(15); /* Local actual Pstate */
-+    val |= lowerps << PPC_BIT_NR(7); /* Global actual Pstate */
-+
-+    return val;
-+}
-+
-+static void ppc_set_pmcr(PowerPCCPU *cpu, target_ulong val)
-+{
-+    cpu->env.spr[SPR_PMCR] = val;
-+}
-+
-+void helper_store_pmcr(CPUPPCState *env, target_ulong val)
-+{
-+    PowerPCCPU *cpu = env_archcpu(env);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+
-+    /* Leave version field unchanged (0x1) */
-+    val &= ~PPC_BITMASK(60, 63);
-+    val |= PPC_BIT(63);
-+
-+    val &= ~PPC_BITMASK(0, 7); /* UpperPS ignored */
-+    if (val & PPC_BITMASK(16, 59)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "Non-zero PMCR reserved bits "
-+                      TARGET_FMT_lx"\n", val);
-+        val &= ~PPC_BITMASK(16, 59);
-+    }
-+
-+    /* DPDES behaves as 1-thread in LPAR-per-thread mode */
-+    if (ppc_cpu_lpar_single_threaded(cs)) {
-+        ppc_set_pmcr(cpu, val);
-+        return;
-+    }
-+
-+    /* Does iothread need to be locked for walking CPU list? */
-+    bql_lock();
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
-+        ppc_set_pmcr(ccpu, val);
-+    }
-+    bql_unlock();
-+}
-+
- #endif /* defined(TARGET_PPC64) */
  
- void helper_store_pidr(CPUPPCState *env, target_ulong val)
-diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
-index 01aff449bc..8e3117b463 100644
---- a/target/ppc/spr_common.h
-+++ b/target/ppc/spr_common.h
-@@ -204,6 +204,8 @@ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn);
- void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn);
- void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn);
- void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn);
-+void spr_read_pmsr(DisasContext *ctx, int gprn, int sprn);
-+void spr_write_pmcr(DisasContext *ctx, int sprn, int gprn);
- void spr_read_dexcr_ureg(DisasContext *ctx, int gprn, int sprn);
- void spr_read_ppr32(DisasContext *ctx, int sprn, int gprn);
- void spr_write_ppr32(DisasContext *ctx, int sprn, int gprn);
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 80638ab535..b0cc8bf283 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -1326,6 +1326,22 @@ void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn)
-     translator_io_start(&ctx->base);
-     gen_helper_store_lpcr(tcg_env, cpu_gpr[gprn]);
- }
+     /* Reflect the interrupt */
+-    if (!lpc->psi_has_serirq) {
+-        /*
+-         * POWER8 ORs all irqs together (also with LPCHC internal interrupt
+-         * sources) and outputs a single line that raises the PSI LPCHC irq
+-         * which then latches an OPB IRQ status register that sends the irq
+-         * to PSI.
+-         *
+-         * We don't honor the polarity register, it's pointless and unused
+-         * anyway
+-         */
+-        if (active_irqs) {
+-            lpc->opb_irq_input |= OPB_MASTER_IRQ_LPC;
+-        } else {
+-            lpc->opb_irq_input &= ~OPB_MASTER_IRQ_LPC;
+-        }
+-
+-        /* Update OPB internal latch */
+-        lpc->opb_irq_stat |= lpc->opb_irq_input & lpc->opb_irq_mask;
+-
+-        qemu_set_irq(lpc->psi_irq_lpchc, lpc->opb_irq_stat != 0);
+-    } else {
++    if (lpc->psi_has_serirq) {
+         /*
+-         * POWER9 and POWER10 have routing fields in OPB master registers that
++         * POWER9 and later have routing fields in OPB master registers that
+          * send LPC irqs to 4 output lines that raise the PSI SERIRQ irqs.
+          * These don't appear to get latched into an OPB register like the
+          * LPCHC irqs.
+-         *
+-         * POWER9 LPC controller internal irqs still go via the OPB
+-         * and LPCHC PSI irqs like P8, but we have no such internal sources
+-         * modelled yet.
+          */
+         bool serirq_out[4] = { false, false, false, false };
+         int irq;
+@@ -510,7 +482,33 @@ static void pnv_lpc_eval_irqs(PnvLpcController *lpc)
+         qemu_set_irq(lpc->psi_irq_serirq[1], serirq_out[1]);
+         qemu_set_irq(lpc->psi_irq_serirq[2], serirq_out[2]);
+         qemu_set_irq(lpc->psi_irq_serirq[3], serirq_out[3]);
 +
-+void spr_read_pmsr(DisasContext *ctx, int gprn, int sprn)
-+{
-+    translator_io_start(&ctx->base);
-+    gen_helper_load_pmsr(cpu_gpr[gprn], tcg_env);
-+}
-+
-+void spr_write_pmcr(DisasContext *ctx, int sprn, int gprn)
-+{
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
++        /*
++         * POWER9 and later LPC controller internal irqs still go via the OPB
++         * and LPCHC PSI irqs like P8, so take the SERIRQs out and continue.
++         */
++        active_irqs &= ~LPC_HC_IRQ_SERIRQ_ALL;
 +    }
-+    translator_io_start(&ctx->base);
-+    gen_helper_store_pmcr(tcg_env, cpu_gpr[gprn]);
-+}
 +
- #endif /* !defined(CONFIG_USER_ONLY) */
++    /*
++     * POWER8 ORs all irqs together (also with LPCHC internal interrupt
++     * sources) and outputs a single line that raises the PSI LPCHC irq
++     * which then latches an OPB IRQ status register that sends the irq
++     * to PSI.
++     *
++     * We don't honor the polarity register, it's pointless and unused
++     * anyway
++     */
++    if (active_irqs) {
++        lpc->opb_irq_input |= OPB_MASTER_IRQ_LPC;
++    } else {
++        lpc->opb_irq_input &= ~OPB_MASTER_IRQ_LPC;
+     }
++
++    /* Update OPB internal latch */
++    lpc->opb_irq_stat |= lpc->opb_irq_input & lpc->opb_irq_mask;
++
++    qemu_set_irq(lpc->psi_irq_lpchc, lpc->opb_irq_stat != 0);
+ }
  
- void spr_read_tar(DisasContext *ctx, int gprn, int sprn)
+ static uint64_t lpc_hc_read(void *opaque, hwaddr addr, unsigned size)
 -- 
 2.47.1
 
