@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B332A5BE5B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 11:59:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7046CA5BEA2
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 12:14:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trxJl-0002GI-9g; Tue, 11 Mar 2025 06:58:37 -0400
+	id 1trxY8-0003Zv-87; Tue, 11 Mar 2025 07:13:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1trxJi-0002Dc-C4
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 06:58:34 -0400
+ id 1trxXv-0003Y1-NN
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:13:16 -0400
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1trxJg-00067M-9m
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 06:58:33 -0400
+ id 1trxXq-00029n-DN
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 07:13:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Content-ID:Content-Description;
- bh=35xgzA2vyZvZXoFcBAnyPSHNqzactHeOfN3+cNnyEzE=; b=XkJVc1o3aKvM1HAPS2FPaElCFO
- iSZCfvBIdpqAA9HvO4cSWB2U9k+EWmtPKi7I4ZI9I61Jx27DU1ScyAIiov0cC/bGomhPHhrA4NdVZ
- GkJTE4ZjTip0DXO4WJi+eZVU88fgPhvZ//cVnck7luRIGjM6/ttx8Q6lY66UdXGcAM5xseYb8wbPc
- DYK5e5vR957IDdjmsZ/oXWt9oT74WmL9LyrY/aUyt6RXGa9aRIb7NhDb53N7VdJ3xoE/T6cKGnq7b
- /BUQHtiKz3NiFVcnJ9OlTU0XmQeQ0TU2keQ62wPN20UAljaIl5500kEW0nmuTEuGBJNzA+0YjC0yq
- gW6rIZjwik53MybMMowKoKc7MuWe0sJUDuhWue1gdzPMpddmysjlnqLKK2FuzkkxeCo3yvjqopWSW
- vGc0JEfhzODUbD2Y4tGyX2yf6/oOzqZxu/BAjcOYKSikVWPGYFjSElqELPI9FLtsIcssad84oC82m
- X/2IqEG0BUABEpj/L2gb3694eYKQMkUIQZZzr1nhLmJDWynX/aKWZ46tLQQ4D8InooiBeXQ5ESwvu
- JEnYGdy/2KkdwqlRHL2C3CmLg7OWKy1YetoVov5NkqHpSulIAlYmEpjLTwUguMMaQjRDwrpYw0nSg
- Ras9YU08gpuHT9/dzYjRZhNZORoLVupyxxOuKMFhA=;
+ bh=aq9FhKYkU2fCBnWgWdTHoBBQOoeJMfhB04bLD6w78jw=; b=lGMNqeg+KZ+D9vxXfrE3uwn6R2
+ KjF+wP9H39lEF/xg586jKoYDSzHplO4MhF+bwu05ndUjJaIy6vTHwRG+74j7oWEy0snmon/Y5NZ6A
+ UelegVsSm5Uk2M6/wxJIb98j/At8Z601aKWb8xIXNLFL/A8NQ2c9Qt9NkOnqjpXGJg4Lv9M0GjL1J
+ eDB6UGMwO9xf6K+rPpz/68LOx/0qT1vxC1cntYtBOp/rNMmOG1Xq17d45nMsnvP+iT6fGKJqy3v1j
+ yUfQFw3m5PJQWdi4K0moJ9o4X0qdhrbl8FobQgsXHwob5H8XaeBCYlxfdisehY7Szs/6ucibeY88U
+ 6W5h60KpKmcdo43mpCPLoh/suYdj0UGTvwDmcl++8mxCZ4aw4D1MX8ikGO+9bJqFS+dZKN6e/8Uhf
+ m4fx0GLGb2s94jVIRY9FoWCdOi2LmaicQiVP/g84xZ5u0i5UHXvxC2EKO4rk64GH8qgmmwj736WDD
+ gY+ZjZt0FUw6Gf9SI2j0XjGlkkVDYz13CqpvjRjUX10SC9aw1tyERAXLmIfoi2infOeS9yvDYV4ko
+ W3xo1WBmagZ6Ec2r00LeSG87458USA7f6z8JEyano4uDGo4qI9udrpjmQpx/GBnkrPobz7thjecc2
+ fMGMtajpi7l6brXPW/F10P0Oat5XUlMbeDwbOyKzA=;
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 To: qemu-devel@nongnu.org
 Cc: Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH 1/4] 9pfs: local : Introduce local_fid_fd() helper
-Date: Tue, 11 Mar 2025 11:58:28 +0100
-Message-ID: <23860256.nhtPhaig3F@silver>
-In-Reply-To: <20250310171101.138380-2-groug@kaod.org>
+Subject: Re: [PATCH 2/4] 9pfs: Don't use file descriptors in core code
+Date: Tue, 11 Mar 2025 12:13:06 +0100
+Message-ID: <5513162.Wvc2JcUQ7O@silver>
+In-Reply-To: <20250310171101.138380-3-groug@kaod.org>
 References: <20250310171101.138380-1-groug@kaod.org>
- <20250310171101.138380-2-groug@kaod.org>
+ <20250310171101.138380-3-groug@kaod.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
 Received-SPF: pass client-ip=5.189.157.229;
  envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ PDS_OTHER_BAD_TLD=0.47, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,82 +69,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Monday, March 10, 2025 6:10:58 PM CET Greg Kurz wrote:
-> Factor out duplicated code to a single helper. More users to come.
+On Monday, March 10, 2025 6:10:59 PM CET Greg Kurz wrote:
+> v9fs_getattr() currently peeks into V9fsFidOpenState to know if a fid
+> has a valid file descriptor or directory stream. Even though the fields
+> are accessible, this is an implementation detail of the local backend
+> that should not be manipulated directly by the server code.
+> 
+> Abstract that with a new has_valid_handle() backend operation.
+> 
+> Make the existing local_fid_fd() helper more robust so that it
+> can cope with P9_FID_NONE or a null directory stream and reuse
+> it.
 > 
 > Signed-off-by: Greg Kurz <groug@kaod.org>
 > ---
->  hw/9pfs/9p-local.c | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
+>  fsdev/file-op-9p.h |  1 +
+>  hw/9pfs/9p-local.c | 12 +++++++++---
+>  hw/9pfs/9p-synth.c |  6 ++++++
+>  hw/9pfs/9p.c       |  9 ++++++---
+>  4 files changed, 22 insertions(+), 6 deletions(-)
 > 
+> diff --git a/fsdev/file-op-9p.h b/fsdev/file-op-9p.h
+> index 4997677460e8..39fee185f4ce 100644
+> --- a/fsdev/file-op-9p.h
+> +++ b/fsdev/file-op-9p.h
+> @@ -164,6 +164,7 @@ struct FileOperations {
+>      int (*renameat)(FsContext *ctx, V9fsPath *olddir, const char *old_name,
+>                      V9fsPath *newdir, const char *new_name);
+>      int (*unlinkat)(FsContext *ctx, V9fsPath *dir, const char *name, int flags);
+> +    bool (*has_valid_handle)(int fid_type, V9fsFidOpenState *fs);
+>  };
+>  
+>  #endif
 > diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
-> index 928523afcc6c..c4366c867988 100644
+> index c4366c867988..03e5304ef888 100644
 > --- a/hw/9pfs/9p-local.c
 > +++ b/hw/9pfs/9p-local.c
-> @@ -766,10 +766,9 @@ out:
->      return err;
->  }
+> @@ -768,11 +768,11 @@ out:
 >  
-> -static int local_fstat(FsContext *fs_ctx, int fid_type,
-> -                       V9fsFidOpenState *fs, struct stat *stbuf)
-> +static int local_fid_fd(int fid_type, V9fsFidOpenState *fs)
->  {
-> -    int err, fd;
-> +    int fd;
->  
->      if (fid_type == P9_FID_DIR) {
->          fd = dirfd(fs->dir.stream);
-> @@ -777,6 +776,14 @@ static int local_fstat(FsContext *fs_ctx, int fid_type,
->          fd = fs->fd;
->      }
->  
-> +    return fd;
-> +}
-
-Maybe simplifying this like:
-
-static int local_fid_fd(int fid_type, V9fsFidOpenState *fs)
-{
-    if (fid_type == P9_FID_DIR) {
-        return dirfd(fs->dir.stream);
-    } else {
-        return fs->fd;
-    }
-}
-
-or even just:
-
-static int local_fid_fd(int fid_type, V9fsFidOpenState *fs)
-{
-    return (fid_type == P9_FID_DIR) ? dirfd(fs->dir.stream) : return fs->fd;
-}
-
-/Christian
-
-> +
-> +static int local_fstat(FsContext *fs_ctx, int fid_type,
-> +                       V9fsFidOpenState *fs, struct stat *stbuf)
-> +{
-> +    int err, fd = local_fid_fd(fid_type, fs);
-> +
->      err = fstat(fd, stbuf);
->      if (err) {
->          return err;
-> @@ -1167,13 +1174,7 @@ out:
->  static int local_fsync(FsContext *ctx, int fid_type,
->                         V9fsFidOpenState *fs, int datasync)
+>  static int local_fid_fd(int fid_type, V9fsFidOpenState *fs)
 >  {
 > -    int fd;
-> -
-> -    if (fid_type == P9_FID_DIR) {
-> -        fd = dirfd(fs->dir.stream);
-> -    } else {
-> -        fd = fs->fd;
-> -    }
-> +    int fd = local_fid_fd(fid_type, fs);
+> +    int fd = -1;
 >  
->      if (datasync) {
->          return qemu_fdatasync(fd);
+> -    if (fid_type == P9_FID_DIR) {
+> +    if (fid_type == P9_FID_DIR && fs->dir.stream != NULL) {
+>          fd = dirfd(fs->dir.stream);
+> -    } else {
+> +    } else if (fid_type == P9_FID_FILE) {
+>          fd = fs->fd;
+>      }
+
+Follow-up on previous patch, this could be reduced to:
+
+static int local_fid_fd(int fid_type, V9fsFidOpenState *fs)
+{
+    if (fid_type == P9_FID_DIR && fs->dir.stream != NULL) {
+        return dirfd(fs->dir.stream);
+    } else if (fid_type == P9_FID_FILE) {
+        return fs->fd;
+    }
+    return -1; /* POSIX invalid file handle */
+}
+
+or even:
+
+static int local_fid_fd(int fid_type, V9fsFidOpenState *fs)
+{
+    return (fid_type == P9_FID_DIR && fs->dir.stream != NULL) ?
+               dirfd(fs->dir.stream) :
+                   (fid_type == P9_FID_FILE) ? fs->fd :
+                       -1; /* POSIX invalid file handle */
+}
+
+>  
+> @@ -1576,6 +1576,11 @@ static int local_parse_opts(QemuOpts *opts, FsDriverEntry *fse, Error **errp)
+>      return 0;
+>  }
+>  
+> +static bool local_has_valid_handle(int fid_type, V9fsFidOpenState *fs)
+> +{
+> +    return local_fid_fd(fid_type, fs) != -1;
+> +}
+
+I would avoid the implied dirfd() call here. It's usually just a libc function
+on user side, so usually no context switch, but who knows if that applies to
+all systems. So adapted to existing code this would be:
+
+static bool local_has_valid_handle(int fid_type, V9fsFidOpenState *fs)
+{
+    return (fidp->fid_type == P9_FID_FILE && fidp->fs.fd != -1) ||
+           (fidp->fid_type == P9_FID_DIR && fidp->fs.dir.stream != NULL);
+}
+
+>  FileOperations local_ops = {
+>      .parse_opts = local_parse_opts,
+>      .init  = local_init,
+> @@ -1613,4 +1618,5 @@ FileOperations local_ops = {
+>      .name_to_path = local_name_to_path,
+>      .renameat  = local_renameat,
+>      .unlinkat = local_unlinkat,
+> +    .has_valid_handle = local_has_valid_handle,
+>  };
+> diff --git a/hw/9pfs/9p-synth.c b/hw/9pfs/9p-synth.c
+> index 2abaf3a2918a..fa0b187a1b80 100644
+> --- a/hw/9pfs/9p-synth.c
+> +++ b/hw/9pfs/9p-synth.c
+> @@ -615,6 +615,11 @@ static int synth_init(FsContext *ctx, Error **errp)
+>      return 0;
+>  }
+>  
+> +static bool synth_has_valid_handle(int fid_type, V9fsFidOpenState *fs)
+> +{
+> +    return false;
+> +}
+> +
+
+I was worried that this would cause the synth tests to fail, but apparently it
+does not break them. So fine.
+
+>  FileOperations synth_ops = {
+>      .init         = synth_init,
+>      .lstat        = synth_lstat,
+> @@ -650,4 +655,5 @@ FileOperations synth_ops = {
+>      .name_to_path = synth_name_to_path,
+>      .renameat     = synth_renameat,
+>      .unlinkat     = synth_unlinkat,
+> +    .has_valid_handle = synth_has_valid_handle,
+
+Mabye rather has_valid_file_handle?
+
+>  };
+> diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+> index 7cad2bce6209..969fb2f8c494 100644
+> --- a/hw/9pfs/9p.c
+> +++ b/hw/9pfs/9p.c
+> @@ -1574,6 +1574,11 @@ out_nofid:
+>      pdu_complete(pdu, err);
+>  }
+>  
+> +static bool fid_has_valid_handle(V9fsState *s, V9fsFidState *fidp)
+> +{
+> +    return s->ops->has_valid_handle(fidp->fid_type, &fidp->fs);
+> +}
+> +
+>  static void coroutine_fn v9fs_getattr(void *opaque)
+>  {
+>      int32_t fid;
+> @@ -1596,9 +1601,7 @@ static void coroutine_fn v9fs_getattr(void *opaque)
+>          retval = -ENOENT;
+>          goto out_nofid;
+>      }
+> -    if ((fidp->fid_type == P9_FID_FILE && fidp->fs.fd != -1) ||
+> -        (fidp->fid_type == P9_FID_DIR && fidp->fs.dir.stream))
+> -    {
+> +    if (fid_has_valid_handle(pdu->s, fidp)) {
+>          retval = v9fs_co_fstat(pdu, fidp, &stbuf);
+>      } else {
+>          retval = v9fs_co_lstat(pdu, &fidp->path, &stbuf);
 > 
 
 
