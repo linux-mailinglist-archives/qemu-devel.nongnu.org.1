@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D24AA5CA95
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 17:17:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D06A5CA90
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 17:16:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ts2D3-000832-3P; Tue, 11 Mar 2025 12:12:01 -0400
+	id 1ts2Ad-0003lX-1N; Tue, 11 Mar 2025 12:09:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ts22V-0004PD-Pn
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ts22b-0004Pf-PI
  for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:01:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ts22P-0005m5-JZ
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:01:05 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ts22S-0005mS-2a
+ for qemu-devel@nongnu.org; Tue, 11 Mar 2025 12:01:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741708860;
+ s=mimecast20190719; t=1741708861;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s4IZO3vwmSLcmgRxaZNwXSzmWEfgubyuOVHXMZ+T5f0=;
- b=RKi+q9A7QeH+pqJFAMaqBWW+vDOoerMw/7R/A5+F3lyJiU6rx105U7WwK8ArrwH3O1MkRE
- KGkqBbtYVpzaHA2vcMzJGwN9JGylN1KpInQXV6Z9ulPkSihJFfT8LYwRFnEU665PXy2yCi
- 25jXTioHtCkEujmNXZHb3NOzBFgoezg=
+ bh=1SvDv+oKK8AEvt8aEvHnDL9caSTSbyYy2fmRvxxoh7g=;
+ b=OSpElQdQWg5m6HWUUYxirQu2gz/nVbOjwzMMNlwbAzrFU/h+rK7TKzIzC5p1PpLEQ6k8jp
+ 3s/9A+XK4/0SVK412FTtRdbBAGdR8F8uXeChtrNneimkBbwBaKH41JES+YEQedlYfBi7gN
+ P/Eyaomk1ncpJPxPLKOF6MhqS1eZFkE=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-LCLZ9DpWPHupbIx4eagXKA-1; Tue,
- 11 Mar 2025 12:00:56 -0400
-X-MC-Unique: LCLZ9DpWPHupbIx4eagXKA-1
-X-Mimecast-MFC-AGG-ID: LCLZ9DpWPHupbIx4eagXKA_1741708855
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-530-XX45UFF2Ouyl_ajfe8s6WA-1; Tue,
+ 11 Mar 2025 12:00:58 -0400
+X-MC-Unique: XX45UFF2Ouyl_ajfe8s6WA-1
+X-Mimecast-MFC-AGG-ID: XX45UFF2Ouyl_ajfe8s6WA_1741708857
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1CDFA180882E; Tue, 11 Mar 2025 16:00:55 +0000 (UTC)
+ id 1FB14180AF5E; Tue, 11 Mar 2025 16:00:57 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.44.33.18])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8A52B1800373; Tue, 11 Mar 2025 16:00:53 +0000 (UTC)
+ id 920FA180AF7C; Tue, 11 Mar 2025 16:00:55 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 14/22] virtio-scsi: introduce event and ctrl virtqueue locks
-Date: Tue, 11 Mar 2025 17:00:13 +0100
-Message-ID: <20250311160021.349761-15-kwolf@redhat.com>
+Subject: [PULL 15/22] virtio-scsi: protect events_dropped field
+Date: Tue, 11 Mar 2025 17:00:14 +0100
+Message-ID: <20250311160021.349761-16-kwolf@redhat.com>
 In-Reply-To: <20250311160021.349761-1-kwolf@redhat.com>
 References: <20250311160021.349761-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,293 +83,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Virtqueues are not thread-safe. Until now this was not a major issue
-since all virtqueue processing happened in the same thread. The ctrl
-queue's Task Management Function (TMF) requests sometimes need the main
-loop, so a BH was used to schedule the virtqueue completion back in the
-thread that has virtqueue access.
-
-When IOThread Virtqueue Mapping is introduced in later commits, event
-and ctrl virtqueue accesses from other threads will become necessary.
-Introduce an optional per-virtqueue lock so the event and ctrl
-virtqueues can be protected in the commits that follow.
-
-The addition of the ctrl virtqueue lock makes
-virtio_scsi_complete_req_from_main_loop() and its BH unnecessary.
-Instead, take the ctrl virtqueue lock from the main loop thread.
-
-The cmd virtqueue does not have a lock because the entirety of SCSI
-command processing happens in one thread. Only one thread accesses the
-cmd virtqueue and a lock is unnecessary.
+The block layer can invoke the resize callback from any AioContext that
+is processing requests. The virtqueue is already protected but the
+events_dropped field also needs to be protected against races. Cover it
+using the event virtqueue lock because it is closely associated with
+accesses to the virtqueue.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20250311132616.1049687-6-stefanha@redhat.com>
+Message-ID: <20250311132616.1049687-7-stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/hw/virtio/virtio-scsi.h |  3 ++
- hw/scsi/virtio-scsi.c           | 84 ++++++++++++++++++---------------
- 2 files changed, 49 insertions(+), 38 deletions(-)
+ include/hw/virtio/virtio-scsi.h |  3 ++-
+ hw/scsi/virtio-scsi.c           | 29 ++++++++++++++++++++---------
+ 2 files changed, 22 insertions(+), 10 deletions(-)
 
 diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio-scsi.h
-index be230cd4bf..4ee98ebf63 100644
+index 4ee98ebf63..7b7e3ced7a 100644
 --- a/include/hw/virtio/virtio-scsi.h
 +++ b/include/hw/virtio/virtio-scsi.h
-@@ -84,6 +84,9 @@ struct VirtIOSCSI {
+@@ -82,10 +82,11 @@ struct VirtIOSCSI {
+ 
+     SCSIBus bus;
      int resetting; /* written from main loop thread, read from any thread */
++
++    QemuMutex event_lock; /* protects event_vq and events_dropped */
      bool events_dropped;
  
-+    QemuMutex ctrl_lock; /* protects ctrl_vq */
-+    QemuMutex event_lock; /* protects event_vq */
-+
+     QemuMutex ctrl_lock; /* protects ctrl_vq */
+-    QemuMutex event_lock; /* protects event_vq */
+ 
      /*
       * TMFs deferred to main loop BH. These fields are protected by
-      * tmf_bh_lock.
 diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 7d094e1881..073ccd3d5b 100644
+index 073ccd3d5b..2d796a861b 100644
 --- a/hw/scsi/virtio-scsi.c
 +++ b/hw/scsi/virtio-scsi.c
-@@ -102,13 +102,18 @@ static void virtio_scsi_free_req(VirtIOSCSIReq *req)
-     g_free(req);
- }
+@@ -948,7 +948,10 @@ static void virtio_scsi_reset(VirtIODevice *vdev)
  
--static void virtio_scsi_complete_req(VirtIOSCSIReq *req)
-+static void virtio_scsi_complete_req(VirtIOSCSIReq *req, QemuMutex *vq_lock)
- {
-     VirtIOSCSI *s = req->dev;
-     VirtQueue *vq = req->vq;
-     VirtIODevice *vdev = VIRTIO_DEVICE(s);
- 
-     qemu_iovec_from_buf(&req->resp_iov, 0, &req->resp, req->resp_size);
+     vs->sense_size = VIRTIO_SCSI_SENSE_DEFAULT_SIZE;
+     vs->cdb_size = VIRTIO_SCSI_CDB_DEFAULT_SIZE;
+-    s->events_dropped = false;
 +
-+    if (vq_lock) {
-+        qemu_mutex_lock(vq_lock);
++    WITH_QEMU_LOCK_GUARD(&s->event_lock) {
++        s->events_dropped = false;
 +    }
-+
-     virtqueue_push(vq, &req->elem, req->qsgl.size + req->resp_iov.size);
-     if (s->dataplane_started && !s->dataplane_fenced) {
-         virtio_notify_irqfd(vdev, vq);
-@@ -116,6 +121,10 @@ static void virtio_scsi_complete_req(VirtIOSCSIReq *req)
-         virtio_notify(vdev, vq);
-     }
- 
-+    if (vq_lock) {
-+        qemu_mutex_unlock(vq_lock);
-+    }
-+
-     if (req->sreq) {
-         req->sreq->hba_private = NULL;
-         scsi_req_unref(req->sreq);
-@@ -123,34 +132,20 @@ static void virtio_scsi_complete_req(VirtIOSCSIReq *req)
-     virtio_scsi_free_req(req);
  }
  
--static void virtio_scsi_complete_req_bh(void *opaque)
-+static void virtio_scsi_bad_req(VirtIOSCSIReq *req, QemuMutex *vq_lock)
- {
--    VirtIOSCSIReq *req = opaque;
-+    virtio_error(VIRTIO_DEVICE(req->dev), "wrong size for virtio-scsi headers");
- 
--    virtio_scsi_complete_req(req);
--}
-+    if (vq_lock) {
-+        qemu_mutex_lock(vq_lock);
-+    }
- 
--/*
-- * Called from virtio_scsi_do_one_tmf_bh() in main loop thread. The main loop
-- * thread cannot touch the virtqueue since that could race with an IOThread.
-- */
--static void virtio_scsi_complete_req_from_main_loop(VirtIOSCSIReq *req)
--{
--    VirtIOSCSI *s = req->dev;
-+    virtqueue_detach_element(req->vq, &req->elem, 0);
- 
--    if (!s->ctx || s->ctx == qemu_get_aio_context()) {
--        /* No need to schedule a BH when there is no IOThread */
--        virtio_scsi_complete_req(req);
--    } else {
--        /* Run request completion in the IOThread */
--        aio_wait_bh_oneshot(s->ctx, virtio_scsi_complete_req_bh, req);
-+    if (vq_lock) {
-+        qemu_mutex_unlock(vq_lock);
-     }
--}
- 
--static void virtio_scsi_bad_req(VirtIOSCSIReq *req)
--{
--    virtio_error(VIRTIO_DEVICE(req->dev), "wrong size for virtio-scsi headers");
--    virtqueue_detach_element(req->vq, &req->elem, 0);
-     virtio_scsi_free_req(req);
- }
- 
-@@ -235,12 +230,21 @@ static int virtio_scsi_parse_req(VirtIOSCSIReq *req,
-     return 0;
- }
- 
--static VirtIOSCSIReq *virtio_scsi_pop_req(VirtIOSCSI *s, VirtQueue *vq)
-+static VirtIOSCSIReq *virtio_scsi_pop_req(VirtIOSCSI *s, VirtQueue *vq, QemuMutex *vq_lock)
- {
-     VirtIOSCSICommon *vs = (VirtIOSCSICommon *)s;
-     VirtIOSCSIReq *req;
- 
-+    if (vq_lock) {
-+        qemu_mutex_lock(vq_lock);
-+    }
-+
-     req = virtqueue_pop(vq, sizeof(VirtIOSCSIReq) + vs->cdb_size);
-+
-+    if (vq_lock) {
-+        qemu_mutex_unlock(vq_lock);
-+    }
-+
-     if (!req) {
-         return NULL;
-     }
-@@ -305,7 +309,7 @@ static void virtio_scsi_cancel_notify(Notifier *notifier, void *data)
- 
-         trace_virtio_scsi_tmf_resp(virtio_scsi_get_lun(req->req.tmf.lun),
-                                    req->req.tmf.tag, req->resp.tmf.response);
--        virtio_scsi_complete_req(req);
-+        virtio_scsi_complete_req(req, &req->dev->ctrl_lock);
-     }
-     g_free(n);
- }
-@@ -361,7 +365,7 @@ static void virtio_scsi_do_one_tmf_bh(VirtIOSCSIReq *req)
- 
- out:
-     object_unref(OBJECT(d));
--    virtio_scsi_complete_req_from_main_loop(req);
-+    virtio_scsi_complete_req(req, &s->ctrl_lock);
- }
- 
- /* Some TMFs must be processed from the main loop thread */
-@@ -408,7 +412,7 @@ static void virtio_scsi_reset_tmf_bh(VirtIOSCSI *s)
- 
-         /* SAM-6 6.3.2 Hard reset */
-         req->resp.tmf.response = VIRTIO_SCSI_S_TARGET_FAILURE;
--        virtio_scsi_complete_req(req);
-+        virtio_scsi_complete_req(req, &req->dev->ctrl_lock);
-     }
- }
- 
-@@ -562,7 +566,7 @@ static void virtio_scsi_handle_ctrl_req(VirtIOSCSI *s, VirtIOSCSIReq *req)
- 
-     if (iov_to_buf(req->elem.out_sg, req->elem.out_num, 0,
-                 &type, sizeof(type)) < sizeof(type)) {
--        virtio_scsi_bad_req(req);
-+        virtio_scsi_bad_req(req, &s->ctrl_lock);
-         return;
+ typedef struct {
+@@ -978,14 +981,16 @@ static void virtio_scsi_push_event(VirtIOSCSI *s,
      }
  
-@@ -570,7 +574,7 @@ static void virtio_scsi_handle_ctrl_req(VirtIOSCSI *s, VirtIOSCSIReq *req)
-     if (type == VIRTIO_SCSI_T_TMF) {
-         if (virtio_scsi_parse_req(req, sizeof(VirtIOSCSICtrlTMFReq),
-                     sizeof(VirtIOSCSICtrlTMFResp)) < 0) {
--            virtio_scsi_bad_req(req);
-+            virtio_scsi_bad_req(req, &s->ctrl_lock);
-             return;
-         } else {
-             r = virtio_scsi_do_tmf(s, req);
-@@ -580,7 +584,7 @@ static void virtio_scsi_handle_ctrl_req(VirtIOSCSI *s, VirtIOSCSIReq *req)
-                type == VIRTIO_SCSI_T_AN_SUBSCRIBE) {
-         if (virtio_scsi_parse_req(req, sizeof(VirtIOSCSICtrlANReq),
-                     sizeof(VirtIOSCSICtrlANResp)) < 0) {
--            virtio_scsi_bad_req(req);
-+            virtio_scsi_bad_req(req, &s->ctrl_lock);
-             return;
-         } else {
-             req->req.an.event_requested =
-@@ -600,7 +604,7 @@ static void virtio_scsi_handle_ctrl_req(VirtIOSCSI *s, VirtIOSCSIReq *req)
-                  type == VIRTIO_SCSI_T_AN_SUBSCRIBE)
-             trace_virtio_scsi_an_resp(virtio_scsi_get_lun(req->req.an.lun),
-                                       req->resp.an.response);
--        virtio_scsi_complete_req(req);
-+        virtio_scsi_complete_req(req, &s->ctrl_lock);
-     } else {
-         assert(r == -EINPROGRESS);
-     }
-@@ -610,7 +614,7 @@ static void virtio_scsi_handle_ctrl_vq(VirtIOSCSI *s, VirtQueue *vq)
- {
-     VirtIOSCSIReq *req;
+     req = virtio_scsi_pop_req(s, vs->event_vq, &s->event_lock);
+-    if (!req) {
+-        s->events_dropped = true;
+-        return;
+-    }
++    WITH_QEMU_LOCK_GUARD(&s->event_lock) {
++        if (!req) {
++            s->events_dropped = true;
++            return;
++        }
  
--    while ((req = virtio_scsi_pop_req(s, vq))) {
-+    while ((req = virtio_scsi_pop_req(s, vq, &s->ctrl_lock))) {
-         virtio_scsi_handle_ctrl_req(s, req);
-     }
- }
-@@ -654,7 +658,7 @@ static void virtio_scsi_complete_cmd_req(VirtIOSCSIReq *req)
-      * in virtio_scsi_command_complete.
-      */
-     req->resp_size = sizeof(VirtIOSCSICmdResp);
--    virtio_scsi_complete_req(req);
-+    virtio_scsi_complete_req(req, NULL);
- }
- 
- static void virtio_scsi_command_failed(SCSIRequest *r)
-@@ -788,7 +792,7 @@ static int virtio_scsi_handle_cmd_req_prepare(VirtIOSCSI *s, VirtIOSCSIReq *req)
-             virtio_scsi_fail_cmd_req(req);
-             return -ENOTSUP;
-         } else {
--            virtio_scsi_bad_req(req);
-+            virtio_scsi_bad_req(req, NULL);
-             return -EINVAL;
-         }
-     }
-@@ -843,7 +847,7 @@ static void virtio_scsi_handle_cmd_vq(VirtIOSCSI *s, VirtQueue *vq)
-             virtio_queue_set_notification(vq, 0);
-         }
- 
--        while ((req = virtio_scsi_pop_req(s, vq))) {
-+        while ((req = virtio_scsi_pop_req(s, vq, NULL))) {
-             ret = virtio_scsi_handle_cmd_req_prepare(s, req);
-             if (!ret) {
-                 QTAILQ_INSERT_TAIL(&reqs, req, next);
-@@ -973,7 +977,7 @@ static void virtio_scsi_push_event(VirtIOSCSI *s,
-         return;
-     }
- 
--    req = virtio_scsi_pop_req(s, vs->event_vq);
-+    req = virtio_scsi_pop_req(s, vs->event_vq, &s->event_lock);
-     if (!req) {
-         s->events_dropped = true;
-         return;
-@@ -985,7 +989,7 @@ static void virtio_scsi_push_event(VirtIOSCSI *s,
+-    if (s->events_dropped) {
+-        event |= VIRTIO_SCSI_T_EVENTS_MISSED;
+-        s->events_dropped = false;
++        if (s->events_dropped) {
++            event |= VIRTIO_SCSI_T_EVENTS_MISSED;
++            s->events_dropped = false;
++        }
      }
  
      if (virtio_scsi_parse_req(req, 0, sizeof(VirtIOSCSIEvent))) {
--        virtio_scsi_bad_req(req);
-+        virtio_scsi_bad_req(req, &s->event_lock);
-         return;
-     }
- 
-@@ -1005,7 +1009,7 @@ static void virtio_scsi_push_event(VirtIOSCSI *s,
-     }
-     trace_virtio_scsi_event(virtio_scsi_get_lun(evt->lun), event, reason);
- 
--    virtio_scsi_complete_req(req);
-+    virtio_scsi_complete_req(req, &s->event_lock);
- }
+@@ -1014,7 +1019,13 @@ static void virtio_scsi_push_event(VirtIOSCSI *s,
  
  static void virtio_scsi_handle_event_vq(VirtIOSCSI *s, VirtQueue *vq)
-@@ -1236,6 +1240,8 @@ static void virtio_scsi_device_realize(DeviceState *dev, Error **errp)
-     Error *err = NULL;
- 
-     QTAILQ_INIT(&s->tmf_bh_list);
-+    qemu_mutex_init(&s->ctrl_lock);
-+    qemu_mutex_init(&s->event_lock);
-     qemu_mutex_init(&s->tmf_bh_lock);
- 
-     virtio_scsi_common_realize(dev,
-@@ -1280,6 +1286,8 @@ static void virtio_scsi_device_unrealize(DeviceState *dev)
-     qbus_set_hotplug_handler(BUS(&s->bus), NULL);
-     virtio_scsi_common_unrealize(dev);
-     qemu_mutex_destroy(&s->tmf_bh_lock);
-+    qemu_mutex_destroy(&s->event_lock);
-+    qemu_mutex_destroy(&s->ctrl_lock);
- }
- 
- static const Property virtio_scsi_properties[] = {
+ {
+-    if (s->events_dropped) {
++    bool events_dropped;
++
++    WITH_QEMU_LOCK_GUARD(&s->event_lock) {
++        events_dropped = s->events_dropped;
++    }
++
++    if (events_dropped) {
+         VirtIOSCSIEventInfo info = {
+             .event = VIRTIO_SCSI_T_NO_EVENT,
+         };
 -- 
 2.48.1
 
