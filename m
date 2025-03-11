@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AD5A5C1DE
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E25C5A5C20E
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:12:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzIx-0003Cz-P4; Tue, 11 Mar 2025 09:05:55 -0400
+	id 1trzKw-00028d-23; Tue, 11 Mar 2025 09:07:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzDp-0004v6-Qh; Tue, 11 Mar 2025 09:00:42 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1trzDx-0004zv-Vd; Tue, 11 Mar 2025 09:00:50 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1trzDl-0008WV-Sd; Tue, 11 Mar 2025 09:00:35 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2ff784dc055so7175187a91.1; 
- Tue, 11 Mar 2025 06:00:32 -0700 (PDT)
+ id 1trzDq-00006S-1t; Tue, 11 Mar 2025 09:00:44 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2fef5c978ccso8070371a91.1; 
+ Tue, 11 Mar 2025 06:00:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741698030; x=1742302830; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1741698033; x=1742302833; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e+hvRNZhyfNMby5k48ebI9t7MyykDhncL1DN8gtvFQA=;
- b=eSywFVXrP4iijlCcvKDl+XqgBov45nb+yLSZgiY/DyUqwFwPPc+tSzdo/f7aNXs1iw
- AeXsPhNDgA5AmIGJGPS8BqMPt+U+MehoQJz/gFkTx874Isknio7ycfFiJPdKgEJ3lBq8
- yyVva2D3QqFAA1aXF6REiogWSSD4mrkbbai34SjClcmbhRs7F7fwnbGqjxSlewQjSZCu
- KTqGaUKSPI6crCFNQ9SU5OdcbBEW9kyN/s2ZyBxDBobn80sJ4O1WSo6T8sOB9R8w0hnR
- 7QwX3eYxnuQn+1mC51fNxENvzYFEAuLN5m9ev/9oqw4hEYw6TaZGSxjxW1k4UtwJajUD
- SKBg==
+ bh=tZ8e0vShkNtIuKOZGNzWODhsrmyTMS8jpNRn157CjZU=;
+ b=VoLqJz/Cm7CDbXqFUPLqUOd7Q23puRPRbYBgZS3bnhPnXGlu17okWYc6sHRpCxf370
+ fAL12m1kg19v3Qb/hiLAHp/UoUNWihxxqVAbDO1Q4c+Ly5zrOaOXX1y3on72g4b2REzF
+ aeo/Zm6Ix6Il8Iu7M7Ml238vRq4UIFDKuWGUUbEUQLu16HV2FYaUiMuZnmf85gIhMina
+ pP8tGYcuB1+0MBpeYiUN2vjr49XkNs/2f4QRmHiHfdYFR8QCdJUUh/paYJ0XeOlcoUeo
+ 6RRHHkX5tcV8GszxeYUKNSo9dp1FkNa283+VGFwE8UQbDTYhd+S03IU0F+x+EuqqhKu9
+ gvlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741698030; x=1742302830;
+ d=1e100.net; s=20230601; t=1741698033; x=1742302833;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e+hvRNZhyfNMby5k48ebI9t7MyykDhncL1DN8gtvFQA=;
- b=DMbtECXifVt4/XitHQOktuQyAfdPLGm7wwukdACrKY1IQiBakOsydZcgk7lTYHscOv
- 7YMTBa6aK30b9nFappL1PW/Gf06Y9YIqCX8XMlW5Ifb3Bx+1/XyKfLWU0d5i3XySmwbP
- bfQvv0zKrc7l0rowQxFFR+tKje2rEPmNjcydy2gsVtvoJvi0pkj9073oEVhXPOB3I40g
- m8lJ0NhsunjvmjZQiPgdThxhbkYwKquPkFhkxXPtx6BPU4eGDjg4P/lnS7iw9606YLGi
- N5H3fXNTyfUKBw/ZTFEsyTiar/jpRMDFH8qsjIzaPzEdWa6IQkFB0OKKcZngrCqZgHhb
- qvbg==
+ bh=tZ8e0vShkNtIuKOZGNzWODhsrmyTMS8jpNRn157CjZU=;
+ b=IGobXPt7zBWFIWjmjd/5Ppc2xWWeG35UoIiqqAPJCNQiplyCAmRyiIrr11rDavEG70
+ wI+DoPOOiFDJUnxz8BdcQe1hqQK5ioce4nB5qPUeZYh3nfwND9lFAiOW5lu/ULodUFgO
+ fSeCzGqJwnsc7Q9lAwOOstAm9cQXdYoJx6Dpm7Cby/gbTJpj3vX38Lf7QUY5fxIgVtIB
+ kDYnwyFj+Xw3g27rp4D+PogV3PK4M+WTlBh3FY3tdTDy+9Nlr/Axi2CHC9dp+eWL+ZrR
+ h2ejGVr+mL4tpdiHjbSJt5996CZvrHxE+nVUzq0yyJlybBbnt/tA6hrQTdU2O6eYLPg+
+ 5Vpg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU9RfPREC1G/uoLEsSAMYyyEwbrSgLMDq2Sf92O7LIKRXTMCG++++YaWyVcG7+nSyZKop2HBInNuQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yz5I05OjwhgJAxowh76v/Kupqt8cReS/G+Z8ep5pypyDREhq5Zh
- G6vo0c9WMwM6VHDKq58GCbO4OUfaJpztZBzcnvsbxZ1RJKlSPUlZsDLHvQ==
-X-Gm-Gg: ASbGncuSaMvKlg2hGuua4Btlo9+CgMt1mHG95zKGvJHt4uLqpwUHT274dkat66LMC2c
- 4zDPKY25fJHF9Gq/2jV2/Axit1hGRw4976zWY0Ju/N7cWjegAak9Mfi6aq1PVTF5hPpBeS+YwnA
- 9YatzKpz2RDRaxyZtApwghYaRWdN8s4NN9sbcG125wnQMyJ8r5M/r4Vato5z1jy+mqtSfCpQKGs
- cORxbgC0qjrjhm0QnRYMKWn5utUJ773ztZL3IXi7ji/KoZSwAQMpzaX7QjGw1QV1E+Ukry2xhNh
- Vj+TWKYbWpVZoV3oaNaORwP3pQL2x+IGSEf+9JWkP4oc6HyOCgW9pHxhSG9Nmg==
-X-Google-Smtp-Source: AGHT+IGu88eBRybEnsZgPcHrjAlxoFTCJ0W9NxLeLN700ULZI4NP7fp5wZAQOeuXJJgQfk5WJy4Ytw==
-X-Received: by 2002:a17:90b:528a:b0:2ff:6e72:b8e2 with SMTP id
- 98e67ed59e1d1-300ff37051bmr4324135a91.31.1741698030344; 
- Tue, 11 Mar 2025 06:00:30 -0700 (PDT)
+ AJvYcCW2UyOnIbtQKHA3pIJ3CuWJXPmCwmqVFQRejh/eOvhz3K4VN73ffKDVZ/KP7lyavP/o6kKDu75+7g==@nongnu.org
+X-Gm-Message-State: AOJu0YwyZUmdJMzOS59G6Vnyiyi/bNj/Kv5OKwmNwo6A+Wfcv2Gywgp8
+ rgtIaefELMtdMHCNkc4TNtd4K0wRw6Hqq2+y+exLYLF8+n4+mE3/3f3ROw==
+X-Gm-Gg: ASbGncsl/9S2vqMu3mqcnmgr6VssuP0wYfuBtsyzd8QfWdfORq9IUERBLuOAsQ9nelv
+ X3d2j6Y5h4nJs/7EzkKzLWi3TNLqyGKcBO1LMf/SJsL3p/LRF5vcEkggElh8iQ/Fm2ZhOLH3XPh
+ +/GCUmx12fWHp/L5fbo0Gqv7CH1xmDggH55WhMyuQvJPoQOX20gmtw12aQxFNHxKOIailqeDfKd
+ xE/xv0pU/PGTqv5RpZvSR07Mm2eRQYiBTRl1d9T7Siu1P6YGhlJiyehOA2aZ/sIKvhFgBlXlNv6
+ J+AmXMMgRdZl3ZrCJwi8pi8z547HbU+g2g6PKryg2JkVTW6+vwY=
+X-Google-Smtp-Source: AGHT+IEqcXWS1kF+UEBbIJscupE6OMlrGspwIhQqxXseanccg+qVgpTrd8f9LikehZQg7pqTgEV6/Q==
+X-Received: by 2002:a17:90a:e7c2:b0:2ff:693a:758d with SMTP id
+ 98e67ed59e1d1-2ff7ceef0famr25700066a91.27.1741698033020; 
+ Tue, 11 Mar 2025 06:00:33 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.151.101])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.00.28
+ 98e67ed59e1d1-2ff4e773dddsm11822318a91.12.2025.03.11.06.00.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 06:00:29 -0700 (PDT)
+ Tue, 11 Mar 2025 06:00:32 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Chalapathi V <chalapathi.v@linux.ibm.com>
-Subject: [PULL 40/72] hw/ssi/pnv_spi: Put a limit to RDR match failures
-Date: Tue, 11 Mar 2025 22:57:34 +1000
-Message-ID: <20250311125815.903177-41-npiggin@gmail.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 41/72] hw/ppc/spapr: Restrict CONFER hypercall to TCG
+Date: Tue, 11 Mar 2025 22:57:35 +1000
+Message-ID: <20250311125815.903177-42-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250311125815.903177-1-npiggin@gmail.com>
 References: <20250311125815.903177-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,72 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-There is a possibility that SPI controller can get into loop due to indefinite
-RDR match failures. Hence put a limit to failures and stop the sequencer.
+KVM handles H_CONFER and does not pass it along to QEMU, so
+only vhyp (as used by TCG spapr) needs to handle it.
 
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20250303141328.23991-5-chalapathi.v@linux.ibm.com>
+[npiggin: Add changelog]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250127102620.39159-2-philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ssi/pnv_spi.c         | 10 ++++++++++
- include/hw/ssi/pnv_spi.h |  1 +
- 2 files changed, 11 insertions(+)
+ hw/ppc/spapr_hcall.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/ssi/pnv_spi.c b/hw/ssi/pnv_spi.c
-index 83221607c9..126070393e 100644
---- a/hw/ssi/pnv_spi.c
-+++ b/hw/ssi/pnv_spi.c
-@@ -20,6 +20,7 @@
- #define PNV_SPI_OPCODE_LO_NIBBLE(x) (x & 0x0F)
- #define PNV_SPI_MASKED_OPCODE(x) (x & 0xF0)
- #define PNV_SPI_FIFO_SIZE 16
-+#define RDR_MATCH_FAILURE_LIMIT 16
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index f987ff323f..4f1933b8da 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -580,6 +580,8 @@ static target_ulong h_confer(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     CPUState *cs = CPU(cpu);
+     SpaprCpuState *spapr_cpu;
  
- /*
-  * Macro from include/hw/ppc/fdt.h
-@@ -872,18 +873,27 @@ static void operation_sequencer(PnvSpi *s)
-                 rdr_matched = does_rdr_match(s);
-                 if (rdr_matched) {
-                     trace_pnv_spi_RDR_match("success");
-+                    s->fail_count = 0;
-                     /* A match occurred, increment the sequencer index. */
-                     seq_index++;
-                     s->status = SETFIELD(SPI_STS_SEQ_FSM, s->status,
-                                     SEQ_STATE_INDEX_INCREMENT);
-                 } else {
-                     trace_pnv_spi_RDR_match("failed");
-+                    s->fail_count++;
-                     /*
-                      * Branch the sequencer to the index coded into the op
-                      * code.
-                      */
-                     seq_index = PNV_SPI_OPCODE_LO_NIBBLE(opcode);
-                 }
-+                if (s->fail_count >= RDR_MATCH_FAILURE_LIMIT) {
-+                    qemu_log_mask(LOG_GUEST_ERROR, "pnv_spi: RDR match failure"
-+                                  " limit crossed %d times hence requesting "
-+                                  "sequencer to stop.\n",
-+                                  RDR_MATCH_FAILURE_LIMIT);
-+                    stop = true;
-+                }
-                 /*
-                  * Regardless of where the branch ended up we want the
-                  * sequencer to continue shifting so we have to clear
-diff --git a/include/hw/ssi/pnv_spi.h b/include/hw/ssi/pnv_spi.h
-index 6adb72dbb2..c591a0663d 100644
---- a/include/hw/ssi/pnv_spi.h
-+++ b/include/hw/ssi/pnv_spi.h
-@@ -40,6 +40,7 @@ typedef struct PnvSpi {
-     MemoryRegion    xscom_spic_regs;
-     Fifo8 tx_fifo;
-     Fifo8 rx_fifo;
-+    uint8_t fail_count; /* RDR Match failure counter */
-     /* SPI object number */
-     uint32_t        spic_num;
-     uint32_t        chip_id;
++    assert(tcg_enabled()); /* KVM will have handled this */
++
+     /*
+      * -1 means confer to all other CPUs without dispatch counter check,
+      *  otherwise it's a targeted confer.
 -- 
 2.47.1
 
