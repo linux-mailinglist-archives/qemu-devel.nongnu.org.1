@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 663EDA5C235
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:16:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 910CDA5C276
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Mar 2025 14:23:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1trzQl-0000tn-6J; Tue, 11 Mar 2025 09:13:59 -0400
+	id 1trzTl-00078W-9N; Tue, 11 Mar 2025 09:17:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1trzQX-0000S0-5X
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:13:47 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1trzTO-0006xu-TN; Tue, 11 Mar 2025 09:16:47 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1trzQU-0002VJ-I2
- for qemu-devel@nongnu.org; Tue, 11 Mar 2025 09:13:44 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-225477548e1so52854995ad.0
- for <qemu-devel@nongnu.org>; Tue, 11 Mar 2025 06:13:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1trzTL-0003Kf-CD; Tue, 11 Mar 2025 09:16:42 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2ff187f027fso9078144a91.1; 
+ Tue, 11 Mar 2025 06:16:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741698819; x=1742303619; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=MQ4XAzp89chAAsvM6R6ygnZUi0Fq1GN2QGo72cNPc2g=;
- b=JLP5SSRw/RnHNkyv8InhOLKffNvh0wnE/r/yBZLp/hA53XW1N+OeKdqs6MBNI7TIeA
- R5J/q7TAHRdZjBvXd/pytqPDLP5/r1dCaQWPyA4musT+jzhJkYzRDBSCCcfGtFL6sivF
- gdIykEU7tPjZxZqhK4khufHm1LZQ1SmyOyk83u8tRIZ/4C48jw38IDC7p4gUv+JclBjN
- 92c5Q8kHsrFcAp5jTHkNq+lLoRsy+f1BsOWSfZAu4PoJ5O1GP0ahYD/W+iAkfios2DNJ
- CDK1mMaKR2FNjiTebpEOah73XaEQJz0QKgUTv/qW+xoRyWD/N+Zi60KxDZlbSRCMb5UA
- ilRA==
+ d=gmail.com; s=20230601; t=1741698997; x=1742303797; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qHSz3gYU7FuYTpcHCulk2CPBRntGpOCB9sgjSWQ75vI=;
+ b=HkTvi4EMurn215yVWE/o98ImAnied1g1nKzHkjMt3S9lo9ATD9KkwBcCw2PTpkceZh
+ aOa/H3mB+51EchIya9V9VQ2jMG4COcsX1nLmFcCA72RbT/DcdktCBzwl09QaC3DzBvLv
+ 7UbeYasQiDpzEsvc6xKmf7jt8JLC0k4B4asTtNJ74jGgBsGg+3ifEyF8ZV3eofk6daLi
+ XhHvwyyfcf9h6+0UXt/UMyR8GDhBx0TwuD0LXAFLVmg+M9RlCNU/ACXcguzbxr2GIJm1
+ KvdAvS+BmVviZY3WJOsYlZ65kw9NiDR992yj1fH0OJo6XHjtV7/n2QrO0L9btL4CjZnk
+ Y9nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741698819; x=1742303619;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MQ4XAzp89chAAsvM6R6ygnZUi0Fq1GN2QGo72cNPc2g=;
- b=MwoiMd2t9oqryci7seA1rVeGhYgM9ZGH5WhUBbfHNaoqVEDuyP0jyNOBjGSCAywcum
- hB7J32m/mxYNSfCZiDwR70d9/M/fA1zthEkL2NUsv5K5uAAFk2Yst5XiiM++pvevpXWs
- 9JRI63GnlV/To4QKJ/P3YIOpz7kBbe8ICGAQk3tVlXEpwFxcBMAHxHb/67JJOQTG8VS4
- PoT01NAtc/0dk+h+NAWzmf+2bga6syo++j5q0S3+LFUGtUCvitCR/hAVg3B7w2IjSeQh
- eoElrnRMKq1nmC4rxza46JoeCxl2/K2CR7FriTiNCxmFlV3Fz9JcDEFPRK/lJb4qQ95p
- b0xQ==
+ d=1e100.net; s=20230601; t=1741698997; x=1742303797;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=qHSz3gYU7FuYTpcHCulk2CPBRntGpOCB9sgjSWQ75vI=;
+ b=ZdE9wcmjOa4OLmu0PYRDzFsPzzpUTp1wj0nMQi8ix5QnnpGDvGRdQPuK/oa30wDMVD
+ 3VxKEnehKBXBoAMmFhEHbGqaMUxueKIex4ICAtndRuaBx7XWwHqgwYKECi80Np5Ti/Cc
+ ZV4lO20O9XVhCJdaezYx567NsI26Dd50dzgcuYAn39yOW0awI7atAmkw+VSoaq+VkE5m
+ eMWSWK7Ig9wdEYLIyWCAD+2xqmdXNLlYSauKd3XGFNaXXi0f3T3WsqqHoPk9tau2KzO+
+ eAzseqgVVCyYjnwqgVirL02hGy0DEMGa43JwOhIX+IgNxiEvWf7Q9MWsFZ361pdZhzRe
+ SONw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVB6n7V6iij3DfG5qA/txXxdzE87DNdEIq17+Ed979HRdLAKlErO4snKnN322wBxo1bxAdLWJLhYKC8@nongnu.org
-X-Gm-Message-State: AOJu0Yy8SH+ZErbAPQ0LAxkv7AGPXMRYVu22GH6DbXJUeuSrWwJ6wWP6
- PXzIhj1HCcwH4THxC5sN3vVj3Kyh45T64/PzAAW9JVW0za6e+oGL
-X-Gm-Gg: ASbGnctfajAuAZ7jmFKyypNe3olflh7oofVNx8erfdK+3ND/t8It/jdX4oxTd3cfzJV
- QVjXAs3d2ykzuM8BihquVJAt4VcOo3erk+VuU6rHl0e7QrqNsvAJGfFnAsvze6PcGTP6V2cCZYd
- seAkoTuZWUIC+M4m0gYX9G0uE0dqPZfmkO3M4gBgteXqxQ8raFCUVSSkBjGtcp56LpuYg13m6Ny
- Z5uE9eUnuhVOTczeUJTrG7ewa2jnQHTrna1FIvsn8xI3LLf66/BhlnUw2dd3S5HG5UwDsth7ePS
- tAJSh6qvWsMlTbwm3vcDeoPd+c7jGPsQUC0XOA7s+dmYoPNzzIE=
-X-Google-Smtp-Source: AGHT+IE84gNN7Uf9mhUPJ1rx//ZOh9I/zE/RWpURjTBRGo0ljD5PKXyMxH/vOBoSb/rgniH8ldsiUQ==
-X-Received: by 2002:a05:6a00:1887:b0:736:450c:fa56 with SMTP id
- d2e1a72fcca58-736aa9e7ac9mr22665695b3a.5.1741698819621; 
- Tue, 11 Mar 2025 06:13:39 -0700 (PDT)
-Received: from wheely.local0.net ([118.208.151.101])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736c05cb6e3sm6516026b3a.45.2025.03.11.06.13.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Mar 2025 06:13:39 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Subject: [RFC PATCH] tests/functional: Don't fail any precaching errors
-Date: Tue, 11 Mar 2025 23:13:26 +1000
-Message-ID: <20250311131327.903329-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+ AJvYcCVAV+tg3sJaG8v9AWTikg/CvcTJ2PNsgkZcAYJ3kRWi65n+LoPvDwEQM34RIlOCTg/MZnDsIkvDPD74@nongnu.org
+X-Gm-Message-State: AOJu0YyzWJj3Lysbtbq4HGI8SrgJEwNOKkDS04b+FtUiA2PnUfS36JX2
+ m0LUeexBwlSWYEVYYZhLs7XSEfh6bFJ4wTStw7+yS8sm3RVUKdqz
+X-Gm-Gg: ASbGncv3CR/G6tO92TxPepCjQfPfwpQvcfixtqVvZ033pi8YNOyunuMRtxRpTp7pZTv
+ uC3DfRHPzkiAeoK2pL/qmPwT1+fL4HYIYiYLbZRojJTSpxZk9wJgD65fbf5GCRrb78CwraJq8/h
+ H+PPEDnjB7INdACijLLSYB/QXXFcmnF2pROMrx+cpUJxs91L3ObTDv35DKzY4w1t8oF9Qv6PYwE
+ uYP7i627Akf6w14/7O6u3WiArX17258vz9O48pR2kyjr/w/gHwOtfy4ZBp1BlYeqCxbwyyWCLmZ
+ WPxk2Qxix2xDdt8rpt22UzADewcX/Rov/mykqhlrX2qT353z3ic=
+X-Google-Smtp-Source: AGHT+IFLz+uucpe0DwgCho/MKBWkQSqGGmeSXoVlto+Kg6yl6fuJnCI4qhoowq+/ckROQMqGIrmOKQ==
+X-Received: by 2002:a17:90b:254b:b0:2ff:6e58:89f5 with SMTP id
+ 98e67ed59e1d1-301005260a7mr4589099a91.6.1741698997315; 
+ Tue, 11 Mar 2025 06:16:37 -0700 (PDT)
+Received: from localhost ([118.208.151.101]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2ff72593715sm9264585a91.44.2025.03.11.06.16.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Mar 2025 06:16:36 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 11 Mar 2025 23:16:30 +1000
+Message-Id: <D8DGRIFZE0F3.XV8TOZX11ELS@gmail.com>
+Cc: <qemu-ppc@nongnu.org>, <fbarrat@linux.ibm.com>, <milesg@linux.ibm.com>,
+ <danielhb413@gmail.com>, <david@gibson.dropbear.id.au>,
+ <harshpb@linux.ibm.com>, <thuth@redhat.com>, <lvivier@redhat.com>,
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 00/14] XIVE2 changes to support Group and Crowd
+ operations
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Michael Kowal" <kowal@linux.ibm.com>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.19.0
+References: <20241210000527.9541-1-kowal@linux.ibm.com>
+In-Reply-To: <20241210000527.9541-1-kowal@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,59 +100,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The NetBSD archive is currently failing part-way through downloads,
-which results in no clean HTTP error but a short transfer and checksum
-error. This is treated as fatal in the precache download, and it halts
-an entire set of tests even if some others could run.
+Thanks, I merged this series with some tweaks, except
+for patch 12 Support ESB Escalation because it has some
+outstanding problems as commented.
 
-I hacked up this patch to get a bunch of CI tests going again for ppc
-merge testing.
+Thanks,
+Nick
 
-Don't treat any precaching failures as errors.
-This causes tests to be skipped when they try to fetch their asset.
-Some CI results before/after patching:
-
-functional-system-fedora
-https://gitlab.com/npiggin/qemu/-/jobs/9370860490 #bad
-https://gitlab.com/npiggin/qemu/-/jobs/9373246826 #good
-
-functional-system-debian
-https://gitlab.com/npiggin/qemu/-/jobs/9370860479 #bad
-https://gitlab.com/npiggin/qemu/-/jobs/9373246822 #good
-
-This is making the tests skip. Is there a way to make the error more
-prominent / obvious in the output? Should they fail instead? I think
-there should be a more obvious indication of failure due to asset so
-it does not go unnoticed.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/functional/qemu_test/asset.py | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index f0730695f09..3134ccb10da 100644
---- a/tests/functional/qemu_test/asset.py
-+++ b/tests/functional/qemu_test/asset.py
-@@ -174,14 +174,11 @@ def precache_test(test):
-                 try:
-                     asset.fetch()
-                 except HTTPError as e:
--                    # Treat 404 as fatal, since it is highly likely to
--                    # indicate a broken test rather than a transient
--                    # server or networking problem
--                    if e.code == 404:
--                        raise
--
-                     log.debug(f"HTTP error {e.code} from {asset.url} " +
-                               "skipping asset precache")
-+                except:
-+                    log.debug(f"Error from {asset.url} " +
-+                              "skipping asset precache")
- 
-         log.removeHandler(handler)
- 
--- 
-2.47.1
+On Tue Dec 10, 2024 at 10:05 AM AEST, Michael Kowal wrote:
+> XIVE2 has the concepts of a Group of interrupts and a Crowd of interrupts
+> (where a crowd is a group of Groups). These patch sets are associated wit=
+h:
+>  - NVGC tables
+>  - Group/Crowd level notification
+>  - Incrementing backlog countets
+>  - Backlog processing
+>  - NVPG and NVC Bar MMIO operations
+>  - Group/Crowd testing
+>  - ESB Escalation
+>  - Pool interrupt testing
+>
+> version 2:
+>  - Removed printfs from test models and replaced with g_test_message()
+>  - Updated XIVE copyrights to use:=20
+>    SPDX-License-Identifier: GPL-2.0-or-later
+>  - Set entire NSR to 0, not just fields
+>  - Moved rename of xive_ipb_to_pipr() into its own patch set 0002
+>  - Rename xive2_presenter_backlog_check() to=20
+>    xive2_presenter_backlog_scan()
+>  - Squash patch set 11 (crowd size restrictions) into=20
+>    patch set 9 (support crowd-matching)
+>  - Made xive2_notify() a static rou
+>
+> Frederic Barrat (10):
+>   ppc/xive2: Update NVP save/restore for group attributes
+>   ppc/xive2: Add grouping level to notification
+>   ppc/xive2: Support group-matching when looking for target
+>   ppc/xive2: Add undelivered group interrupt to backlog
+>   ppc/xive2: Process group backlog when pushing an OS  context
+>   ppc/xive2: Process group backlog when updating the CPPR
+>   qtest/xive: Add group-interrupt test
+>   ppc/xive2: Add support for MMIO operations on the NVPG/NVC BAR
+>   ppc/xive2: Support crowd-matching when looking for target
+>   ppc/xive2: Check crowd backlog when scanning group backlog
+>
+> Glenn Miles (3):
+>   pnv/xive: Support ESB Escalation
+>   pnv/xive: Fix problem with treating NVGC as a NVP
+>   qtest/xive: Add test of pool interrupts
+>
+> Michael Kowal (1):
+>   ppc/xive: Rename ipb_to_pipr() to xive_ipb_to_pipr()
+>
+>  include/hw/ppc/xive.h              |  41 +-
+>  include/hw/ppc/xive2.h             |  25 +-
+>  include/hw/ppc/xive2_regs.h        |  30 +-
+>  include/hw/ppc/xive_regs.h         |  25 +-
+>  tests/qtest/pnv-xive2-common.h     |   1 +
+>  hw/intc/pnv_xive.c                 |  10 +-
+>  hw/intc/pnv_xive2.c                | 166 +++++--
+>  hw/intc/spapr_xive.c               |   8 +-
+>  hw/intc/xive.c                     | 200 +++++---
+>  hw/intc/xive2.c                    | 750 +++++++++++++++++++++++++----
+>  hw/ppc/pnv.c                       |  35 +-
+>  hw/ppc/spapr.c                     |   7 +-
+>  tests/qtest/pnv-xive2-flush-sync.c |   6 +-
+>  tests/qtest/pnv-xive2-nvpg_bar.c   | 153 ++++++
+>  tests/qtest/pnv-xive2-test.c       | 249 +++++++++-
+>  hw/intc/trace-events               |   6 +-
+>  tests/qtest/meson.build            |   3 +-
+>  17 files changed, 1475 insertions(+), 240 deletions(-)
+>  create mode 100644 tests/qtest/pnv-xive2-nvpg_bar.c
 
 
