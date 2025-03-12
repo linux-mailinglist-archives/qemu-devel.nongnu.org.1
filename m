@@ -2,89 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9B3A5D8C9
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 10:02:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1642EA5D94D
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 10:23:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsHyW-0007X1-VB; Wed, 12 Mar 2025 05:02:05 -0400
+	id 1tsIIa-00033W-3z; Wed, 12 Mar 2025 05:22:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1tsHy9-0007RV-1c
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 05:01:42 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1tsHy6-0002lf-GZ
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 05:01:40 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-22113560c57so120079785ad.2
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 02:01:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1741770096; x=1742374896; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Mwqginh0uCEpZFomsXPwiOlQgrggGcyROt7lzoDFie4=;
- b=b/ilCXZpDMdfWOQbA2WepU9SvBnd31zpwJu4dE8kmvf5lXXfD62x/5/1DMCJDM4v1M
- AB1DBSJ/dtFRW9mKQ7JCjPZD06fRxxN86q22hBqtW4ucT2ZkvkXl3M0OdFhPuYSjnpRa
- JVhfwxWzIWcdRI9tZhdhp4uadW5Kc+bTx+IOPGoCivo08Twtxg9KXGpob4d+91YCEpre
- 9tkfElJGPKYQJvF6knqxKwI1Ff7pt829bHG6mUmGOBbREPIKkvacApSNIf4tT7LBU9d0
- Euv6QEzPa4kUossqup6ZKWZ0B+AGnsknLcGuwfXM67i3M6rZzB1PdDNVoN97skcufdg8
- 5mwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741770096; x=1742374896;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Mwqginh0uCEpZFomsXPwiOlQgrggGcyROt7lzoDFie4=;
- b=NiNiMZnIaWHoXJr0r3SxpyqUio1dniDeCoFO0MULiBrcoIitHpsypp4ha/Mf1MVo98
- He0O+ck9Jrlp+G7NuWHz67Gi5iGF3acO/537SePy9vagsGFzEaXdWvsHLo7Ep+GgDnag
- zF2t5e4NcjnKRCBN4F1skeqWX80R0bhJPe/SAk42JOaNf8Ti+RKf+Qx7+fhAOshNBbER
- nF3l0Ye2bVjnlnwjsUINp8SLXzHC/z7jT89W8DhthWyW261lsXVKxsudzFEXLbdfs1na
- 0NW7/UyckQl38mIBQsJkuP+6O0aJBFmbCmrmUpyBz+LHTQxlqxhfqDHsWNIyNkD2rNt8
- snyQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUmXvlP2nbtgupuwJjnYo+7Nce8HZFc4gorY8ChoOg8bUZKJ8WEgV6aQE9q1VeN54ljSXKL4aN3kcT6@nongnu.org
-X-Gm-Message-State: AOJu0Yw/2zuZQVrS3t3Ju4vhQ5yPYx3jS1cIcNml6hDGS713lrILUUo0
- i08iqjSZas0czEffwNoUPi51lPd6KuuVL22MCbLmH+/aTLdq4wbnCfiB1tAiROI=
-X-Gm-Gg: ASbGncvtwPnB1L27IAarNqFdzmQMR18IbZ0WJ/AzTK4uKNikyF/V3Xc3wRziQoEESDk
- r4Eypru0+VU5oIRqeN2rVCf/LOrjz5SIMhjh1wARZ8Ejg/+0illx5rSLyYGDhs7Bi8YA1/TlIwW
- 0P+8d3CFWkwHcY/hPpipKzTQat63ihzxtw3LOOGIqEpW1pY8gDrY8vTSaPv8ix0+MRKh/A4y0zh
- 5es7i0WZ6tEuJR5qN45ch7KlFOZ27pzgXQChXQR22XQeZlgtNoU3Wz6Gzr8x636dRNjFP60JQM7
- JIVHNyZIyF2nv9vfWoC161rHjRYHwwCj5b1TLAkg+w4gVBySZA==
-X-Google-Smtp-Source: AGHT+IE2WfObrdHGEM7mO6Vdv5uGx9rGxc3TSRZAl6I/m/R20rxGYLUD+eF+qYi9W0T950bSPjRVhw==
-X-Received: by 2002:a05:6a00:3d55:b0:736:52d7:daca with SMTP id
- d2e1a72fcca58-736aaadf019mr32406722b3a.18.1741770095707; 
- Wed, 12 Mar 2025 02:01:35 -0700 (PDT)
-Received: from [10.3.43.196] ([61.213.176.7]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-736ded451c1sm5018232b3a.119.2025.03.12.02.01.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Mar 2025 02:01:35 -0700 (PDT)
-Message-ID: <85ed8afb-09d7-47a6-8c67-f9298b11c092@bytedance.com>
-Date: Wed, 12 Mar 2025 17:01:32 +0800
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tsIGz-0002op-ML
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 05:21:14 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tsIGt-0005qb-DD
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 05:21:08 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8CxaWpPUNFnrDSTAA--.55119S3;
+ Wed, 12 Mar 2025 17:13:52 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMBxb8dNUNFnc69FAA--.62463S3;
+ Wed, 12 Mar 2025 17:13:51 +0800 (CST)
+Subject: Re: Bad error handling in loongarch's kvm_arch_init_vcpu(), need
+ advice
+To: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>
+References: <87wmcumylv.fsf@pond.sub.org>
+ <4999e31e-c502-40f2-bf80-3c857aa50da7@redhat.com>
+From: bibo mao <maobibo@loongson.cn>
+Message-ID: <0a1fb6ff-6944-d6fb-bda9-3f166fe8b999@loongson.cn>
+Date: Wed, 12 Mar 2025 17:13:11 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bad error handling in cryptodev_lkcf_execute_task(), need advice
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>
-References: <87cyemoeiw.fsf@pond.sub.org>
+In-Reply-To: <4999e31e-c502-40f2-bf80-3c857aa50da7@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: zhenwei pi <pizhenwei@bytedance.com>
-In-Reply-To: <87cyemoeiw.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pizhenwei@bytedance.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMBxb8dNUNFnc69FAA--.62463S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7AFW3Cr13uF4DtrWrCFWxAFc_yoW8Gw47pr
+ WxGa4DAryDC3WkJwnFvrnrX34jyryDJa4DXw1DJa43GwsIkrnF9rWjqrnFg345urWrtw4r
+ Ja1DX3s8uayUAabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
+ 6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+ CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+ 0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+ AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
+ Ja73UjIFyTuYvjxUzsqWUUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.105,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,110 +84,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 3/12/25 16:10, Markus Armbruster wrote:
-> scripts/coccinelle/error-use-after-free.cocci led me to this function:
+On 2025/3/12 下午4:59, Paolo Bonzini wrote:
+> On 3/12/25 09:39, Markus Armbruster wrote:
+>> scripts/coccinelle/error-use-after-free.cocci led me to
+>> target/loongarch/kvm/kvm.c:
+>>
+>>          ret = kvm_cpu_check_lsx(cs, &local_err);
+>>          if (ret < 0) {
+>>              error_report_err(local_err);
+>>
+>> Reporting an error, but continue anyway.  This is suspicious.
+>>
+>>          }
+>>
+>>          ret = kvm_cpu_check_lasx(cs, &local_err);
+>>
+>> Passing non-null @local_error to kvm_cpu_check_lasx().  This is wrong.
+>> When kvm_cpu_check_lasx() fails and passes &local_error to error_setg(),
+>> error_setv()'s assertion will fail.
+>>
+>> Two possible fixes:
+>>
+>> 1. If continuing after kvm_cpu_check_lasx() failure is correct, we need
+>> to clear @local_error there.  Since it's not actually an error then, we
+>> should almost certainly not use error_report_err() there.  *Maybe*
+>> warn_report_err().
+>>
+>> 2. If continuing is wrong, we probably need to return ret.
 > 
->      static void cryptodev_lkcf_execute_task(CryptoDevLKCFTask *task)
->      {
->          CryptoDevBackendLKCFSession *session = task->sess;
->          CryptoDevBackendAsymOpInfo *asym_op_info;
->          bool kick = false;
->          int ret, status, op_code = task->op_info->op_code;
->          size_t p8info_len;
->          g_autofree uint8_t *p8info = NULL;
->          Error *local_error = NULL;
->          key_serial_t key_id = INVALID_KEY_ID;
->          char op_desc[64];
->          g_autoptr(QCryptoAkCipher) akcipher = NULL;
-> 
->          /**
->           * We only offload private key session:
->           * 1. currently, the Linux kernel can only accept public key wrapped
->           * with X.509 certificates, but unfortunately the cost of making a
->           * ceritificate with public key is too expensive.
->           * 2. generally, public key related compution is fast, just compute it with
->           * thread-pool.
->           */
->          if (session->keytype == QCRYPTO_AK_CIPHER_KEY_TYPE_PRIVATE) {
->              if (qcrypto_akcipher_export_p8info(&session->akcipher_opts,
->                                                 session->key, session->keylen,
->                                                 &p8info, &p8info_len,
->                                                 &local_error) != 0 ||
->                  cryptodev_lkcf_set_op_desc(&session->akcipher_opts, op_desc,
->                                             sizeof(op_desc), &local_error) != 0) {
->                  error_report_err(local_error);
-> 
-> Reporting an error, but continue anyway.  This is suspicious.
-> 
-> Note for later: @local_error is now non-null.
-> 
->              } else {
->                  key_id = add_key(KCTL_KEY_TYPE_PKEY, "lkcf-backend-priv-key",
->                                   p8info, p8info_len, KCTL_KEY_RING);
->              }
->          }
-> 
->          if (key_id < 0) {
->              if (!qcrypto_akcipher_supports(&session->akcipher_opts)) {
->                  status = -VIRTIO_CRYPTO_NOTSUPP;
->                  goto out;
->              }
->              akcipher = qcrypto_akcipher_new(&session->akcipher_opts,
->                                              session->keytype,
->                                              session->key, session->keylen,
->                                              &local_error);
-> 
-> Passing non-null @local_error to qcrypto_akcipher_new().  This is wrong.
-> When qcrypto_akcipher_new() fails and passes &local_error to
-> error_setg(), error_setv()'s assertion will fail.
-> 
-> Two possible fixes:
-> 
-> 1. If continuing after cryptodev_lkcf_set_op_desc() is correct, we need
-> to clear @local_error there.  Since it's not actually an error then, we
-> should almost certainly not use error_report_err() there.  *Maybe*
-> warn_report_err().
-> 
-> 2. If continuing is wrong, we probably need set @status (to what?) and
-> goto out.
-> 
-> What is the correct fix?
-> 
+> Indeed the correct fix is to return ret, since the Error is set whenever 
+> an OnOffAuto property is "on" and KVM does not support a feature.
+yes, it should return ret immediately, if user forces to enable the 
+feature however KVM does not support.
 
-Hi,
+Will submit a patch to fix it, and thanks for reporting.
 
-It's fatal error of a crypto task, so it should not continue. setting 
-status as VIRTIO_CRYPTO_ERR should be fine.
-
-Thanks!
-
-[remove Lei He from cc list, he has already resigned from bytedance]
-
->              if (!akcipher) {
->                  status = -VIRTIO_CRYPTO_ERR;
->                  goto out;
->              }
->          }
+Regards
+Bibo Mao
 > 
->      [...]
+> Same for all those below.
 > 
->      out:
->          if (key_id >= 0) {
->              keyctl_unlink(key_id, KCTL_KEY_RING);
->          }
->          task->status = status;
-> 
->          qemu_mutex_lock(&task->lkcf->rsp_mutex);
->          if (QSIMPLEQ_EMPTY(&task->lkcf->responses)) {
->              kick = true;
->          }
->          QSIMPLEQ_INSERT_TAIL(&task->lkcf->responses, task, queue);
->          qemu_mutex_unlock(&task->lkcf->rsp_mutex);
-> 
->          if (kick) {
->              eventfd_write(task->lkcf->eventfd, 1);
->          }
->      }
+> Paolo
 > 
 
 
