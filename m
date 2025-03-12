@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB3BA5E0F8
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 16:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6AEA5E071
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 16:35:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsO1p-0002oZ-SB; Wed, 12 Mar 2025 11:29:53 -0400
+	id 1tsO1r-0002rd-Lg; Wed, 12 Mar 2025 11:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tsO1l-0002mZ-5z
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 11:29:49 -0400
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tsO1m-0002nm-5E
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 11:29:50 -0400
 Received: from us-smtp-delivery-44.mimecast.com ([207.211.30.44])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tsO1j-0001bp-Eu
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 11:29:48 -0400
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tsO1j-0001br-Et
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 11:29:49 -0400
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-YpO43PuuNnS-y_CrzaTW7g-1; Wed,
- 12 Mar 2025 11:29:39 -0400
-X-MC-Unique: YpO43PuuNnS-y_CrzaTW7g-1
-X-Mimecast-MFC-AGG-ID: YpO43PuuNnS-y_CrzaTW7g_1741793379
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-_ksXfwlYN0mT-VAVPnt0DA-1; Wed,
+ 12 Mar 2025 11:29:42 -0400
+X-MC-Unique: _ksXfwlYN0mT-VAVPnt0DA-1
+X-Mimecast-MFC-AGG-ID: _ksXfwlYN0mT-VAVPnt0DA_1741793381
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6AE6A1809CA5; Wed, 12 Mar 2025 15:29:38 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5A4C319560AB; Wed, 12 Mar 2025 15:29:41 +0000 (UTC)
 Received: from bahia.redhat.com (unknown [10.44.32.39])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AC1A018001E9; Wed, 12 Mar 2025 15:29:34 +0000 (UTC)
+ id E685418001E9; Wed, 12 Mar 2025 15:29:38 +0000 (UTC)
 From: Greg Kurz <groug@kaod.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz <groug@kaod.org>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v3 0/6] 9pfs: Fix ftruncate-after-unlink
-Date: Wed, 12 Mar 2025 16:29:26 +0100
-Message-ID: <20250312152933.383967-1-groug@kaod.org>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v3 1/6] 9pfs: local : Introduce local_fid_fd() helper
+Date: Wed, 12 Mar 2025 16:29:27 +0100
+Message-ID: <20250312152933.383967-2-groug@kaod.org>
+In-Reply-To: <20250312152933.383967-1-groug@kaod.org>
+References: <20250312152933.383967-1-groug@kaod.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
@@ -68,63 +69,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU 9.2 already fixed the long standing limitation of failing fstat() on
-unlinked files. This series does something similar for ftruncate().
+Factor out duplicated code to a single helper. More users to come.
 
-The following program can be straced inside the guest with a shared fs in
-passthrough mode over 9p2000.L.
+Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Signed-off-by: Greg Kurz <groug@kaod.org>
 
-int main(void)
-{
-	struct stat st;
-	int fd = creat("./foo", 0000);
+v2: - simplified local_fid_fd()
+---
+ hw/9pfs/9p-local.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-	ftruncate(fd, 100);
-	unlink("./foo");
-	ftruncate(fd, 1000);
-}
-
-Before :
-
-creat("./foo", 000)                     = 3
-ftruncate(3, 100)                       = -1 EACCES (Permission denied)
-unlink("./foo")                         = 0
-ftruncate(3, 1000)                      = -1 ENOENT (No such file or directory)
-
-After :
-
-creat("./foo", 000)                     = 3
-ftruncate(3, 100)                       = 0
-unlink("./foo")                         = 0
-ftruncate(3, 1000)                      = 0
-
-Cheers,
-
---
-Greg
-
-Christian Schoenebeck (1):
-  tests/9p: add 'Tsetattr' request to test client
-
-Greg Kurz (5):
-  9pfs: local : Introduce local_fid_fd() helper
-  9pfs: Don't use file descriptors in core code
-  9pfs: Introduce ftruncate file op
-  9pfs: Introduce futimens file op
-  tests/9p: Test `Tsetattr` can truncate unlinked file
-
- fsdev/file-op-9p.h                    |  5 +++
- hw/9pfs/9p-local.c                    | 49 ++++++++++++++++++++-------
- hw/9pfs/9p-synth.c                    | 22 ++++++++++++
- hw/9pfs/9p-util.h                     |  1 +
- hw/9pfs/9p.c                          | 21 +++++++++---
- hw/9pfs/cofs.c                        | 37 ++++++++++++++++++++
- hw/9pfs/coth.h                        |  4 +++
- tests/qtest/libqos/virtio-9p-client.c | 49 +++++++++++++++++++++++++++
- tests/qtest/libqos/virtio-9p-client.h | 34 +++++++++++++++++++
- tests/qtest/virtio-9p-test.c          | 15 ++++++++
- 10 files changed, 219 insertions(+), 18 deletions(-)
-
+diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
+index 928523afcc6c..99b9560a528b 100644
+--- a/hw/9pfs/9p-local.c
++++ b/hw/9pfs/9p-local.c
+@@ -766,16 +766,19 @@ out:
+     return err;
+ }
+ 
+-static int local_fstat(FsContext *fs_ctx, int fid_type,
+-                       V9fsFidOpenState *fs, struct stat *stbuf)
++static int local_fid_fd(int fid_type, V9fsFidOpenState *fs)
+ {
+-    int err, fd;
+-
+     if (fid_type == P9_FID_DIR) {
+-        fd = dirfd(fs->dir.stream);
++        return dirfd(fs->dir.stream);
+     } else {
+-        fd = fs->fd;
++        return fs->fd;
+     }
++}
++
++static int local_fstat(FsContext *fs_ctx, int fid_type,
++                       V9fsFidOpenState *fs, struct stat *stbuf)
++{
++    int err, fd = local_fid_fd(fid_type, fs);
+ 
+     err = fstat(fd, stbuf);
+     if (err) {
+@@ -1167,13 +1170,7 @@ out:
+ static int local_fsync(FsContext *ctx, int fid_type,
+                        V9fsFidOpenState *fs, int datasync)
+ {
+-    int fd;
+-
+-    if (fid_type == P9_FID_DIR) {
+-        fd = dirfd(fs->dir.stream);
+-    } else {
+-        fd = fs->fd;
+-    }
++    int fd = local_fid_fd(fid_type, fs);
+ 
+     if (datasync) {
+         return qemu_fdatasync(fd);
 -- 
 2.48.1
 
