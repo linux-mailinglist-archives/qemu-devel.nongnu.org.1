@@ -2,155 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77ECFA5DEF9
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 15:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC852A5DF08
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 15:33:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsN6B-0005sJ-RQ; Wed, 12 Mar 2025 10:30:20 -0400
+	id 1tsN8t-0007zW-TH; Wed, 12 Mar 2025 10:33:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aleksandar.rakic@htecgroup.com>)
- id 1tsN5n-0005qg-TX
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 10:29:57 -0400
-Received: from mail-vi1eur03on2070f.outbound.protection.outlook.com
- ([2a01:111:f403:260c::70f]
- helo=EUR03-VI1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aleksandar.rakic@htecgroup.com>)
- id 1tsN5h-0003TJ-S2
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 10:29:55 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=efU7kbWurdvATqokM3dWvA8OfXQ6grtYg2CRA41fBmLhFyyq/JF0yAs9N4Ig1YnHsGc54WQjP/t6+GWlxldtqnHqq9UpuTCadiO9z8Pd4bn+289IJ923OxiWaEC80Z7JkSAs1meJhnhIJmy4fib+K7NPJgsCJ9XbhM/HSrUcHBZd2+Kwd7SmYoEGetSMo9VIJ/U4yr3p23DKncKDpP3jhRIuuakHeN+bxcV+V65pIhbBcFBMmdqKtrZA/p80QJijbxcNaLUKV6Jwfja1VKmTarNggMkvjr0s3agaz8o1mI+gTDa4z4RlBpWfSW9nb1n4INnLQn6F4ykgaW0+SNhE6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G2w8LWqlZkDcaH8qH9Uq6KlhEeTtunfzZNVMtuKi0VM=;
- b=DyFhItvArbRc6pssyVbg5qactDBlBPu5p3Mw7e7Ys0g3ep4UqNrZtJAbjM2KmoSNQ3VnHGSgSl8ocFQSNfps7Yw/XqitjmOaNQkERi8xidzFpAQlds5S89o3yygmSqlSoUqaQMZBRaqixoglJOfwW/5nyvFh3OaaL5rjxdF1gI6yAKS5SB3wg9XE7jwigEkcJThaWTZSImDP6Hz2IPiaqFgZ3p01riFjrnDpY2e7SnKnOQexI0TpBVUJTFX1PeqixW4EiN+6hcrgO7C8ebDOw6b8E7uZceojXJwbr1r6NCpyvpr0xDN27ToBO1+bP11OO+yWKzDc/2clYITNMUwrTA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=htecgroup.com; dmarc=pass action=none
- header.from=htecgroup.com; dkim=pass header.d=htecgroup.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=htecgroup.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G2w8LWqlZkDcaH8qH9Uq6KlhEeTtunfzZNVMtuKi0VM=;
- b=Ush+ufLsfTkMxPi3Xrv94+f4WDd2fM2CZw2HJ6SahE2hGqF5FV13fJ2vlU/JhmHxK6KwxHJzT9JuDchdEBhC54WghnuDmwf65XBZ7hNv5EORviAh0/5J9daCLH67M1vMZOHDx3IPs4Rr+MoegoLitJ/pSCh+uxtnwboV2bVinNXVCRVwIxmx4qvb3HVvo5AVNmJkMCHGYG51UaxIK+5Y5R7d3n/zh9H/ycA/oipmIj0CG/PuEuyw27CJJTGp4ebO9FFvoz0X4POTl7DFRk5GnMdIU0YjAFabj1mcOQfZDLdBnh0gdk2HGThjToqvJ+qTPf9aX4eWYZsdWAvf/0VDew==
-Received: from PA4PR09MB4864.eurprd09.prod.outlook.com (2603:10a6:102:ed::17)
- by GVXPR09MB7253.eurprd09.prod.outlook.com (2603:10a6:150:1bc::5)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Wed, 12 Mar
- 2025 14:29:43 +0000
-Received: from PA4PR09MB4864.eurprd09.prod.outlook.com
- ([fe80::a02b:9d5c:eca5:e024]) by PA4PR09MB4864.eurprd09.prod.outlook.com
- ([fe80::a02b:9d5c:eca5:e024%4]) with mapi id 15.20.8511.026; Wed, 12 Mar 2025
- 14:29:43 +0000
-From: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
-To: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
-CC: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>, "arikalo@gmail.com"
- <arikalo@gmail.com>, "cfu@mips.com" <cfu@mips.com>,
- "fshahbazker@wavecomp.com" <fshahbazker@wavecomp.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "philmd@linaro.org"
- <philmd@linaro.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v5 2/3] Skip NaN mode check for soft-float
-Thread-Topic: [PATCH v5 2/3] Skip NaN mode check for soft-float
-Thread-Index: AQHbiHBN9WWu61L0jUe8EWyWqAJpArNvpUkA
-Date: Wed, 12 Mar 2025 14:29:43 +0000
-Message-ID: <20250312142854.114061-1-aleksandar.rakic@htecgroup.com>
-References: <20250226170246.1971355-4-aleksandar.rakic@htecgroup.com>
-In-Reply-To: <20250226170246.1971355-4-aleksandar.rakic@htecgroup.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=htecgroup.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR09MB4864:EE_|GVXPR09MB7253:EE_
-x-ms-office365-filtering-correlation-id: c00234a3-d2f7-4985-d124-08dd617254e1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?4FpU0PAyQ0qQK6ISwboL7WqxynSguiQlSpqatizJpFzu1KOnXC2ZNpwFVn?=
- =?iso-8859-1?Q?KiRkrilbaFzwokhz+qn6ixyYFqzpOEkc13919Byocyr4BbtiueCvKwgQcF?=
- =?iso-8859-1?Q?GE4GUfMUy4F+Nha5ZFjKEkz1h4F1KwY0npxYY2VlX5eLzyFguwImoA5gbu?=
- =?iso-8859-1?Q?Xcv9e2TKAUmtJRAt75Rz7OPFwp2C9bywzNVtpTqXft17Zjo6KGCggxZjU/?=
- =?iso-8859-1?Q?lFlaCYdpdjCpv8qyDz+p9O+8h2dukmouyBuxR0o9QbN6xs1FtSyVHjz1QL?=
- =?iso-8859-1?Q?rXig0ySAIjtisdzeI9uHJEwoAw20wnvImltvtcWLBpkspAA5CLga8L4IE/?=
- =?iso-8859-1?Q?dfW9AeeMy8LqklpXKHMfB+Besq/b2h9mY3b/PGD+l21w75ls0atKt3ZfbH?=
- =?iso-8859-1?Q?5fQ/s5ReUtXsMbR2hBZT7mPhplfKo9HDi4jxbEIXcBIAeLuz8J+gQhaDCq?=
- =?iso-8859-1?Q?/EWUDpNWuBT2A3jIwXYoJhzzzJhnXjiR8jkSK2qnXaFI2+f9x3xqOTBger?=
- =?iso-8859-1?Q?v2sNSrshWu6/+e5lQDE+/59Oaj+DytNcdjuoDl2kW8DNEYRn2HRHc5rmva?=
- =?iso-8859-1?Q?jFJg4uBZOKeg60XUKAHJAoC0nW2UspmulkO5jlWPoAZCk3usxdgl9vhzDl?=
- =?iso-8859-1?Q?j8qU+H5gxGhD1UylysbqCLebTHfUnr1M/JbBvmB0EYMNprKCnC7QmIMmKU?=
- =?iso-8859-1?Q?2mZxJGW2TL6kjHmcfXAb39Fk0tei6g15nvBuacgSkuyf+y68z4XH1Xlz8/?=
- =?iso-8859-1?Q?5P2w8kxy3qhWfkDvGlmQGyCMrITL1kEkcrhHw0JHcLlJrS9j8QoQdUtpXV?=
- =?iso-8859-1?Q?icgEN9BNx+FnZmJVnKdg5DQTL48OLttBiLDfRoGN5f7N4k/i0kNRqA1XXb?=
- =?iso-8859-1?Q?Hx+UE/6dbma5RCXcYgSkcICVgfayuha3nGSFeIqfYd1CGgWF0Eb/EPZ+fT?=
- =?iso-8859-1?Q?uY+q1HXnHAPCN7vtPCVUzxPLMFDFi7QEIzJYvviZevKVgC9aIxVQUu+9G5?=
- =?iso-8859-1?Q?uGXfHQIXMcagAf4ZmsrIY+a95grhPLafnQqdcQGtpeMnOWY9wv1Hk3jxzH?=
- =?iso-8859-1?Q?OsnOFz1M5jSozizlp05/ZEE5U5a9ExMwQncVOZbPTDilo7FLOIbYMHaS7d?=
- =?iso-8859-1?Q?Q3IXrAQ1dDSXRwRkDawLqQ0KUm1uCiYnriAHMzQlFVKgw4U/MwR2XCgRdI?=
- =?iso-8859-1?Q?5M4zIRDntTuKgPZF2rOS2UA/kz3IQiHEzxlUg9uHTNo0BxWw5E4rGLeVgq?=
- =?iso-8859-1?Q?WJQDJBDxobEmSfk4YpMmC9ofyrj3GuHCz5+lyZpB9MZbMs8rT3aMyHyoAO?=
- =?iso-8859-1?Q?UBbA9woyeCD2Bm3U4am9YUa5yg9PuFOVhyC9MsUmu3+rLbKoWgTm5L8BuU?=
- =?iso-8859-1?Q?sAmipU6Ayg9uyS5A+CJeJQy6QW4Acjsy9bUqZfB3baXd5aWY0u5Ep82S4M?=
- =?iso-8859-1?Q?h8Q5qwm/fdz5/6NAUECWIFz3jciUPB41l9SNc7cz3Fn9vMbJS7c1ONQYSn?=
- =?iso-8859-1?Q?e4ls+RGYPBM9QoBqXyiAnU?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PA4PR09MB4864.eurprd09.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(38070700018); DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?LcNamfHtjpA8CasaEItZBZdkryyLyF4rQ14CLYSwPWOXi/K9eCHFgQdisO?=
- =?iso-8859-1?Q?93mgPsg0VJISFtlzKnMErD7UACNhc1+IqLU+7cZ5KGUd7kW/DmJE4Gus/e?=
- =?iso-8859-1?Q?yc5ZPz2P4O8dzNe8kPBCiUY5t6s/yZ2oMPhBotj5fj5taltX30lzR6D/qR?=
- =?iso-8859-1?Q?d+wQRWnF7/0RFnq7HXp7agMBi9GDddXETa89Hc+Rzsp64bORLI0KfSYqiW?=
- =?iso-8859-1?Q?pAFd33SFIFTs1LQvhDMnmmJ5/fc6rc9rvM023qwoCiWhOhn2SVOfQRJQxi?=
- =?iso-8859-1?Q?5cawhKcdcBJ+f/Odi+ympH+MKqn9ToUHgQ1QOPtP3IZbBW2YIDxWXNW0sU?=
- =?iso-8859-1?Q?jeiwSKkvEIEvllQmiO4C+b08wmpoMf4e0VdCtAUuSL4JnzRyziqbrU37AR?=
- =?iso-8859-1?Q?PiSzTCJmG7tJXlU5HpxYl44SFO4sKAVC/nrNBj7k7hKaAjY+nR03ypyT7V?=
- =?iso-8859-1?Q?S6qHtNZ7KwIqaYzjAorSxwuJjSzjuIAedwt4yJMZI7upZQXB8C9bLOsETk?=
- =?iso-8859-1?Q?rpfLfUzB27uJNrxar3rFW0BxatzdzQ3JFRfelk+IKJ08IVdzqqrL7p8qEA?=
- =?iso-8859-1?Q?b3qRsTZaOrDuuXnmJ13mVcVLPYnTYlWHhSM8zNZYtoZmcBOU8XO96b+k+D?=
- =?iso-8859-1?Q?Bb6RxEkLrcjxHrYSHKkttsiu2J9m8nWx03APi1KPlCOUW5gFciVXYZRFiY?=
- =?iso-8859-1?Q?TXCz6FBZRNUJShRGPLzfSxh9pfWarOljBc/gmo/vMiCjNANN2LD4G6lY2l?=
- =?iso-8859-1?Q?ZDSXm3a23rwlUGuhcdzUQT/Jhn6tEfPMlj/f/OIGx2K421laouRrf+/Dse?=
- =?iso-8859-1?Q?9c0tkjC+rq/O5sJ5lRdrXS+J0QbCcwN8YgcOsK9O5c/cL6Ab1X/+SOnplx?=
- =?iso-8859-1?Q?sW7sP0S8Hpe48k1mNsTxls3BgMz7rTq4gms2OnNncSfNEXn7s1GZARpC9o?=
- =?iso-8859-1?Q?j8gnpMD2HwGSSkOXNYaGEv4XhhqYVGepUFv49D6/VBjTgzX080U6au/lkd?=
- =?iso-8859-1?Q?9Vpq9jXJ1XhCUYAWbc0NyrPrpa+604UlANUVtLqBMEWzNEFtJpvXcR2ibj?=
- =?iso-8859-1?Q?A256GG9fdQQUdJP0V3MZI/An65RWeYw4bX6NSVKjaEVHXBTzlHzTjaxvsu?=
- =?iso-8859-1?Q?5bgIRfNmzVeQke9avzFA/Ag+7AY3c9Cf688UBhsIbndDvlnIz83ErMQybA?=
- =?iso-8859-1?Q?hmaQ9D2Jly0mom9sBqV2ujm2tAuJL8UKvdDz6iAd47L5aDQRD902Yf8KPo?=
- =?iso-8859-1?Q?uKao3mvDbC1QZm4lIeIg9Q2WqiOItCT3WZGh0xNZ+QnOiglbLPWSzx/S1C?=
- =?iso-8859-1?Q?/rUyzAuM/6rWIQ3MoD1oBKd41ScJt7ad4jBAXyv2pli6PnZR3Pv0iXba42?=
- =?iso-8859-1?Q?fGVphugCt35/Pbf3mFy35qvG8wta3Xx4BTpJLr6S2V7fSxCk0HpNe6XoY3?=
- =?iso-8859-1?Q?juICPb5SZfRtr6XQ2hvaqd65ZYqo2quMj3/Z21dbt8IT6rqAWgub37wPMU?=
- =?iso-8859-1?Q?aKGY5IGJVxamKSOwk+SDYMPfadH2QXOWL+oPhHfRoyH5qKaSCOXaZw+si8?=
- =?iso-8859-1?Q?5jEUCJDI5TzQwBSt47ev4JOnWlLr+bCe5yfmIORoYuVgQDGDkPueySejpD?=
- =?iso-8859-1?Q?utiGjLHz6CKfm+Ybrh7AcbBbY4ddkIo4A2xEZuTjlde/W2hecjvPw/Pl+B?=
- =?iso-8859-1?Q?hYZ5Jxj5ZwpqfMLGVU4=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tsN8e-0007wr-U9
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 10:32:53 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tsN8c-0003sd-3U
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 10:32:52 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2240b4de12bso41555405ad.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 07:32:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1741789968; x=1742394768; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=j2oQtL52km6dMRq4E/9KIo0vhaHcbPuw6RP0qr/x/nI=;
+ b=gkXaFKZFSBF2Knz3IU3yCj8X7nY6Sfdq/H8mL3lUT2qrTDpKPkrlzGnrC5VZepM3Ur
+ t4zRamNvo9UgpXYx1vDvx0QS6faCBmGbrGKt5efiprKGGVjKARhZx9RgyKzw6irlgMQU
+ AVtPYO2bJ9nnnhDW6Sz7OG/rnNI7kNSWk7zlzhOFKDsgBFmaMYSYcKVEllDyPWTq5teH
+ UGUYYYS+cxf2NZnjPMe+TXG+qSsSghQjTlVC+pwIRA8o6Ch4aVvh5x9gjU8fqZjKCafn
+ mZf9nlqtc/h4Kky/uonVeyH9DX2kEm1bKeITjgoLA1ER3EcS7hgHCyTF0gvQaPKrqkuS
+ /hjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741789968; x=1742394768;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=j2oQtL52km6dMRq4E/9KIo0vhaHcbPuw6RP0qr/x/nI=;
+ b=X2+154z8q13T9qNCjDbYm5S25YBjRNsuUCfuSjJW8HqP7O1tIWpm5DWfcXR3SmcYGf
+ Da1D+JUreNkBi8fSY3NYLxJ4KhHFZFn8JealGiWajrn2/WL6IXedOyVteESxmWwaJSFS
+ vX7NAYPOL9dNyrZQrCOfC8BR+ga5NpJf7W0nCsjQHGcLiwuAlnQs1IajMXmciXnScoUQ
+ CfFkS4/XWWf+mavt9oDkVhp3Jf2nWQGDA5FUIWyu9O6Wddj7vIjd3q81ibEPgeiHruiN
+ J5ca9WNcwaBnyNOAuSkq0E5dpQMnmNKByvRGAkLd9ZvqvoVJeWemCb2aar939TLJ+aRk
+ IllA==
+X-Gm-Message-State: AOJu0YyhlANaln4Ho7XU22UB/3sCuXqpA6i9H4Jb66m2iNNUSbx7TPVn
+ FmJstfMeew6TZas1QevdHgD3NRQmrTrCI3Q6oQTJiqhIB0kQPmJ43rVFdq8677E=
+X-Gm-Gg: ASbGnct4dw1EwSBr4rDlMAcdK8e045w2Pule2AGJIT2eGFsdjdeiqhpF+kMAoIzrpLd
+ nTSQE4m8i13SRvGOhPtNEI2J9ni2wRM9E142n2ZkdHMbz5F1Mf+lKsEhydsY3wjt46wE5YYlkWK
+ 5mgBfrJWww44LerEJUdF2tOA/8DRDisBnrCfF49FlBnrKeF1IbZV0jQ7PVQC98BiOwR8McyuAda
+ BPaU2IKuiBQsugq3tRAF5e2lfMStOCikmyGGEgO28k2UslnGIAN94bQ3WK0pXGacGu15a9IuQdp
+ EMk2xwgl9jT1/rvmVhhxDTHdrwva3H/x748+wiTfmXRgp/0pBDru+USAhnJTORRqaWrsAgsxJwV
+ E8FryzwsR
+X-Google-Smtp-Source: AGHT+IHNKmgZQI9Q9XAy44lrtnij/x863QgSlWavnA3uiuM0FxHjkUjcdIfEcsCendqK14eKV+b7fg==
+X-Received: by 2002:a05:6a00:b4d:b0:730:8a0a:9f09 with SMTP id
+ d2e1a72fcca58-736aaaaca0fmr33143789b3a.18.1741789967816; 
+ Wed, 12 Mar 2025 07:32:47 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-736c16c72ddsm8785162b3a.177.2025.03.12.07.32.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Mar 2025 07:32:47 -0700 (PDT)
+Message-ID: <01af330a-d5c0-4d0e-bda2-0a3908dacd6e@linaro.org>
+Date: Wed, 12 Mar 2025 07:32:45 -0700
 MIME-Version: 1.0
-X-OriginatorOrg: htecgroup.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR09MB4864.eurprd09.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c00234a3-d2f7-4985-d124-08dd617254e1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2025 14:29:43.4266 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9f85665b-7efd-4776-9dfe-b6bfda2565ee
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /2l7vy3qZNLx03sUiaF49fOgA6IMcmGUBov2Dqlj2KY4aScv79hPx8Sh42Lpyp9Ng9lgz3k4obcd/bGsU40Gd4soDli0kMVQc0X3RB9cE/8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR09MB7253
-Received-SPF: pass client-ip=2a01:111:f403:260c::70f;
- envelope-from=aleksandar.rakic@htecgroup.com;
- helo=EUR03-VI1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] util/cacheflush: Make first DSB unconditional on
+ aarch64
+To: Peter Maydell <peter.maydell@linaro.org>, Joe Komlodi <komlodi@google.com>
+Cc: qemu-devel@nongnu.org, slongfield@google.com, pbonzini@redhat.com
+References: <20250310203622.1827940-1-komlodi@google.com>
+ <20250310203622.1827940-2-komlodi@google.com>
+ <CAFEAcA8VO4QNU5+9Xk=AiBObXFCRoPF3NUN9m2r1752oi1cShA@mail.gmail.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA8VO4QNU5+9Xk=AiBObXFCRoPF3NUN9m2r1752oi1cShA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,11 +102,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On 3/12/25 07:18, Peter Maydell wrote:
+> On Mon, 10 Mar 2025 at 20:36, Joe Komlodi <komlodi@google.com> wrote:
+>>
+>> On ARM hosts with CTR_EL0.DIC and CTR_EL0.IDC set, this would only cause
+>> an ISB to be executed during cache maintenance, which could lead to QEMU
+>> executing TBs containing garbage instructions.
+>>
+>> This seems to be because the ISB finishes executing instructions and
+>> flushes the pipeline, but the ISB doesn't guarantee that writes from the
+>> executed instructions are committed. If a small enough TB is created, it's
+>> possible that the writes setting up the TB aren't committed by the time the
+>> TB is executed.
+> 
+> Yes; we need the DSB to ensure that the stores have completed
+> and are visible to subsequent icache fills; and then we need
+> the ISB to ensure that any instructions that we execute after
+> this are done with an instruction fetch that happens after the
+> ISB (i.e. the CPU hasn't already speculatively fetched the insn
+> before we forced the store to complete).
+> 
+>> This function is intended to be a port of the gcc implementation
+>> (https://github.com/gcc-mirror/gcc/blob/85b46d0795ac76bc192cb8f88b646a647acf98c1/libgcc/config/aarch64/sync-cache.c#L67)
+>> which makes the first DSB unconditional, so we can fix the synchronization
+>> issue by doing that as well.
+>>
+>> Signed-off-by: Joe Komlodi <komlodi@google.com>
 
-Could you please let us know if you have any comments
-on the latest version of this patch?
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Kind regards,
-Aleksandar Rakic=
+
+> Richard, are you doing a TCG pullreq for rc0? If not, I can
+> put this into target-arm.next.
+
+So far I have nothing queued for tcg.  Please go ahead.
+
+
+r~
 
