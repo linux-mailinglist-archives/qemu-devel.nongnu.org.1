@@ -2,90 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820FEA5DA57
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 11:19:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B0BA5DA62
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 11:22:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsJBH-0004lB-5F; Wed, 12 Mar 2025 06:19:19 -0400
+	id 1tsJD0-0005lm-FR; Wed, 12 Mar 2025 06:21:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tsJB7-0004jG-MX
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 06:19:13 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tsJB4-0007vY-B2
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 06:19:08 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43cfdc2c8c9so17689235e9.2
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 03:19:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741774742; x=1742379542; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pAnkd325psDdD2kO4ozYFP8L3VUqJGQ4D86Zkhxtsgk=;
- b=KHuXP4Xq28JPzM7TnufhpByVCa+OBhqBVeLo4Qob29I7Od9EoJbhvjLhVF9qKKXQBa
- 1FHwZc8+R9QwJb4sZZmWa087WfQi2NZSJv2VMbyC6pK4b3vfEfaNa9RmT5lyfFshcFpE
- YF/vsjxZ3kTC0dUmMBtjwR2EwESXQCgK5qXLuT5DZVkBgMl4FMgcml5LtQ/azw1UehSa
- Jj3hMiTz1CPw2CBzdTHg6YwZuUUTRPfqrhpGMXDxpAFyahZVSNt26Afy8Nh0oBhjBvF2
- 8nB2YvLzZ+TzlZ9uijUSHBSg+KxAUQH9aNyJoc8Kv14aQx3x8F3vVsYfvPtMlo/FB4jJ
- jTkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741774742; x=1742379542;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pAnkd325psDdD2kO4ozYFP8L3VUqJGQ4D86Zkhxtsgk=;
- b=rj1Rqt//oHuZjBzGNT+gddLyzxJd+GL/RRy1jsqQOQpJ5PxLswPPpOH54PNRcrEjCF
- FtRFOQcYQWEhOJMkAhxS9HeZdzPbdClDNkVJkfhOm5VAtHsFGJBG3EcXgTlhKnpA97lR
- R9ZN5giQ7WDqia0cksxMUeE9UOelk98z21gLYyfodvRf8pEQ9wBKqoUqfEYmBG/rU5qO
- eDcG8APUXDLCzLsWDB8A7PLtg+gJy90s6oZac5MI3hQ9Vnu7V/PyV2XJe2JK5CwiHhPm
- 4bX4CROkMdH9nokQ5WRhFb24Uyl9PTl5wQr9XQ7b7awOClmR7FwYb9F/E8pld8do7LWz
- y8sQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVNArJyiCQ3ZWMy3/HAB0JE2ZW+QY7ZnA9ovwwEIZ/VLUzIsNcyGENqZcS6U2tJ7q40mmCC6Bb+zcxP@nongnu.org
-X-Gm-Message-State: AOJu0YzcJrwMHEkuhDfX+PXgyNu0XV4N0q8ubuyZb3vcHrGFIrjHne0P
- 5PACKXyQA9KxThw37Yc3GwqFzq4tlMkBkSWawiwZujD2KDXZx4xhWaPTseRUEkKRF/W9CZKDbKG
- j
-X-Gm-Gg: ASbGncurcuk4UzoMRVcKuLKrhEI3VFoLY/OdNgvOdj6WkX/3nB27EHT0gztQXrHM/I5
- +CmF7kctOmsgITIPhtS3M4YAjjkUudIH7aQ+hXZbH8X08PxQiLm4bRUN7eA1QT9DEOM8Lk2it+i
- SooZZpOUc1nZ8YeHj+Og0LPBxI6kB0JST4o9xSZCTOQZVWcwYygTSUEZmBSzzJwBN/f+B51PIWR
- f8nND4our4/g8im6TO8ohm80VzUOtQEK0CvsfzIrh6R2qHy1DvGCPRYORadEq83SID5Ifx0FoWw
- ewlUWwfxDBW6bxzjWPywseq/tXRrrWjMS0MBRB4DqNd1i3DgEFBlsF/g6863wmFwDTRDJwjr071
- dPAOreQ==
-X-Google-Smtp-Source: AGHT+IHer8vGHufTNnTZdpJYUeye17CAo4Y852/HPJZNG8WYgms42J/bwqhNP56WFLMZPHFUyEKlPw==
-X-Received: by 2002:a05:600c:1990:b0:43d:ac5:11ed with SMTP id
- 5b1f17b1804b1-43d0ac516camr9839935e9.24.1741774741805; 
- Wed, 12 Mar 2025 03:19:01 -0700 (PDT)
-Received: from [10.223.46.213] (99.167.185.81.rev.sfr.net. [81.185.167.99])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3912bfba8a9sm20647421f8f.9.2025.03.12.03.19.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Mar 2025 03:19:01 -0700 (PDT)
-Message-ID: <33ac4559-462a-4623-ae19-517ccf64381e@linaro.org>
-Date: Wed, 12 Mar 2025 11:18:59 +0100
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1tsJCP-0005dI-JJ; Wed, 12 Mar 2025 06:20:30 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1tsJCJ-0008GJ-NS; Wed, 12 Mar 2025 06:20:28 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52C7vGam009001;
+ Wed, 12 Mar 2025 10:20:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=RgVFos
+ jnRHh0diMVGmHIwU5c6zaMrXguLJuLDILrj04=; b=RE2fbDmz3ycJz0S8I5dMgU
+ 9K4Q7ij6nmrj46keurSckSjdOguNRt0/4MC0i+SMHdVTl7FxsT/rObOt4olUaLcx
+ 6W8/FsVUEq3FpycUWBtp4inoAtI1pziuXb6iAetATh/CHL/tbrblLq2ZkmwOhjoO
+ 0EuZ8h9qyDUq/2zTVa2Lm9E3jtwQw/z8vS4aMsVt2iNaLFnv1rzoPn0IrgCCCJYp
+ 01Nb3jOD/7fNWlMLthfjUs+ke/+0RqtoeHVSsM9+kgp8zeBpBIFXtd3QzQ2q51bH
+ muKmwd44WM4DH7kid6HjbAvAZz41UUEkC2JFBhWxzc4aUOCURGUBHbtHO3cUeLng
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45avk4b2ct-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Mar 2025 10:20:19 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52C9ocXU031034;
+ Wed, 12 Mar 2025 10:20:18 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45avk4b2cr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Mar 2025 10:20:18 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52CAJaGN026021;
+ Wed, 12 Mar 2025 10:20:17 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atspbj45-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Mar 2025 10:20:17 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
+ [10.39.53.233])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52CAKHUl20382406
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 12 Mar 2025 10:20:17 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3302058055;
+ Wed, 12 Mar 2025 10:20:17 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 23FA658054;
+ Wed, 12 Mar 2025 10:20:13 +0000 (GMT)
+Received: from [9.39.20.206] (unknown [9.39.20.206])
+ by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 12 Mar 2025 10:20:12 +0000 (GMT)
+Message-ID: <89d61c6e-5a4e-49fc-a285-2215fa476709@linux.ibm.com>
+Date: Wed, 12 Mar 2025 15:50:10 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Giving your own patches your Reviewed-by
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Bibo Mao <maobibo@loongson.cn>, 
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <878qpamvk6.fsf@pond.sub.org>
+Subject: Re: [PATCH] ppc/spapr: fix default cpu for pre-10.0 machines.
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+Cc: npiggin@gmail.com, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+References: <20250312055804.2134569-1-harshpb@linux.ibm.com>
+ <408efa3d-bd73-47bc-8723-08c805df6815@linaro.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <878qpamvk6.fsf@pond.sub.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <408efa3d-bd73-47bc-8723-08c805df6815@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Gyz-lPdW0cxdB38wlE_9pZjmKMqizh3j
+X-Proofpoint-GUID: uAnjqjr5NYIjIeCdf0_U2cHmFf2gPW5h
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-12_03,2025-03-11_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ clxscore=1015 impostorscore=0 phishscore=0 mlxscore=0 mlxlogscore=944
+ lowpriorityscore=0 spamscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503120068
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,27 +116,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/3/25 10:45, Markus Armbruster wrote:
-> I stumbled over commits that carry the author's Reviewed-by.
+
+
+On 3/12/25 15:39, Philippe Mathieu-Daudé wrote:
+> On 12/3/25 06:58, Harsh Prateek Bora wrote:
+>> When POWER10 CPU was made as default, we missed keeping POWER9 as
+>> default for older pseries releases (pre-10.0) at that time.
+>> This caused breakge in default cpu evaluation for older pseries
+>> machines and hence this fix.
+>>
 > 
-> There may be cases where the recorded author isn't the lone author, and
-> the recorded author did some meaningful review of the patch's parts that
-> are not theirs.  Mind that we do need all authors to provide their
-> Signed-off-by.
+> Should we also include:
 > 
-> When the only Signed-off-by is from the recorded author, and there's
-> also their Reviewed-by, the Reviewed-by is almost certainly bogus.
+>    Cc: qemu-stable@nongnu.org
 > 
-> Now, accidents happen, no big deal, etc., etc.  I post this to hopefully
-> help reduce the accident rate :)
-> 
-> Here's my quick & sloppy search for potentially problematic uses of
-> Reviewed-by:
-> 
-> $ git-log --since 'two years ago' | awk -F: '/^commit / { commit=$0 } /^Author: / { guy=$2 } /^    Reviewed-by: / { if ($2 == guy) { print commit; print guy } }'
+> ?
 > 
 
-Since you are looking at this, it reminds me an orthogonal discussion
-we refresh from time to time at the KVM forum conference: is it OK to
-merge unreviewed patches?
+I guess so. Not sure if we need a patch v2 for just that.
+
+>> Fixes: 51113013f3 ("ppc/spapr: change pseries machine default to 
+>> POWER10 CPU")
+>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> ---
+>>   hw/ppc/spapr.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+>> index c15340a58d..b31a91e2e2 100644
+>> --- a/hw/ppc/spapr.c
+>> +++ b/hw/ppc/spapr.c
+>> @@ -4748,6 +4748,7 @@ static void 
+>> spapr_machine_9_2_class_options(MachineClass *mc)
+>>   {
+>>       spapr_machine_10_0_class_options(mc);
+>>       compat_props_add(mc->compat_props, hw_compat_9_2, 
+>> hw_compat_9_2_len);
+>> +    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
+> 
+> This is confusing because v9.2 has already been released with that...
+
+I think it still needs to be fixed for v9.2 (and older) if someone wants 
+to use pseries-9.2 (and older) with future releases.
+
+Thanks
+Harsh
+
+> 
+>>   }
+>>   DEFINE_SPAPR_MACHINE(9, 2);
+> 
+> 
 
