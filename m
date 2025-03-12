@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA1FA5E161
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 17:04:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87227A5E070
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 16:35:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsO1w-0002zz-7T; Wed, 12 Mar 2025 11:30:00 -0400
+	id 1tsO2W-00034w-CC; Wed, 12 Mar 2025 11:30:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tsO1t-0002w5-Fq
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 11:29:57 -0400
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tsO1v-00030Y-ID
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 11:29:59 -0400
 Received: from us-smtp-delivery-44.mimecast.com ([205.139.111.44])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tsO1r-0001cp-Op
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 11:29:57 -0400
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1tsO1t-0001d1-Dt
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 11:29:59 -0400
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-140-GGxdxaUZNguvsdhKAF3-KA-1; Wed,
- 12 Mar 2025 11:29:52 -0400
-X-MC-Unique: GGxdxaUZNguvsdhKAF3-KA-1
-X-Mimecast-MFC-AGG-ID: GGxdxaUZNguvsdhKAF3-KA_1741793391
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-HgMl2L-fPt-EfdMx8YRJ-A-1; Wed,
+ 12 Mar 2025 11:29:55 -0400
+X-MC-Unique: HgMl2L-fPt-EfdMx8YRJ-A-1
+X-Mimecast-MFC-AGG-ID: HgMl2L-fPt-EfdMx8YRJ-A_1741793394
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7667B1955DCC; Wed, 12 Mar 2025 15:29:51 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 382431809CA5; Wed, 12 Mar 2025 15:29:54 +0000 (UTC)
 Received: from bahia.redhat.com (unknown [10.44.32.39])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 45A6E1828A99; Wed, 12 Mar 2025 15:29:48 +0000 (UTC)
+ id 1D45D18001EF; Wed, 12 Mar 2025 15:29:51 +0000 (UTC)
 From: Greg Kurz <groug@kaod.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz <groug@kaod.org>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v3 4/6] 9pfs: Introduce futimens file op
-Date: Wed, 12 Mar 2025 16:29:30 +0100
-Message-ID: <20250312152933.383967-5-groug@kaod.org>
+Subject: [PATCH v3 5/6] tests/9p: add 'Tsetattr' request to test client
+Date: Wed, 12 Mar 2025 16:29:31 +0100
+Message-ID: <20250312152933.383967-6-groug@kaod.org>
 In-Reply-To: <20250312152933.383967-1-groug@kaod.org>
 References: <20250312152933.383967-1-groug@kaod.org>
 MIME-Version: 1.0
@@ -69,164 +69,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an futimens operation to the fs driver and use if when a fid has
-a valid file descriptor. This is required to support more cases where
-the client wants to do an action on an unlinked file which it still
-has an open file decriptor for.
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 
-Only 9P2000.L was considered.
+Add and implement functions to 9pfs test client for sending a 9p2000.L
+'Tsetattr' request and receiving its 'Rsetattr' response counterpart.
 
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Signed-off-by: Greg Kurz <groug@kaod.org>
-
-v2: - moved v9fs_co_futimens() near v9fs_co_utimensat() in coth.h
-    - similar change in file-op-9p.h
-
-v3: - rename to fid_has_valid_file_handle()
 ---
- fsdev/file-op-9p.h |  2 ++
- hw/9pfs/9p-local.c |  9 +++++++++
- hw/9pfs/9p-synth.c |  8 ++++++++
- hw/9pfs/9p-util.h  |  1 +
- hw/9pfs/9p.c       |  6 +++++-
- hw/9pfs/cofs.c     | 19 +++++++++++++++++++
- hw/9pfs/coth.h     |  2 ++
- 7 files changed, 46 insertions(+), 1 deletion(-)
+ tests/qtest/libqos/virtio-9p-client.c | 49 +++++++++++++++++++++++++++
+ tests/qtest/libqos/virtio-9p-client.h | 34 +++++++++++++++++++
+ tests/qtest/virtio-9p-test.c          |  1 +
+ 3 files changed, 84 insertions(+)
 
-diff --git a/fsdev/file-op-9p.h b/fsdev/file-op-9p.h
-index 26ba1438c0ed..b9dae8c84c23 100644
---- a/fsdev/file-op-9p.h
-+++ b/fsdev/file-op-9p.h
-@@ -129,6 +129,8 @@ struct FileOperations {
-     int (*chown)(FsContext *, V9fsPath *, FsCred *);
-     int (*mknod)(FsContext *, V9fsPath *, const char *, FsCred *);
-     int (*utimensat)(FsContext *, V9fsPath *, const struct timespec *);
-+    int (*futimens)(FsContext *ctx, int fid_type, V9fsFidOpenState *fs,
-+                    const struct timespec *times);
-     int (*remove)(FsContext *, const char *);
-     int (*symlink)(FsContext *, const char *, V9fsPath *,
-                    const char *, FsCred *);
-diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
-index 0b33da8d2a46..31e216227cb9 100644
---- a/hw/9pfs/9p-local.c
-+++ b/hw/9pfs/9p-local.c
-@@ -1100,6 +1100,14 @@ out:
-     return ret;
+diff --git a/tests/qtest/libqos/virtio-9p-client.c b/tests/qtest/libqos/virtio-9p-client.c
+index 98b77db51d77..6ab4501c6e1a 100644
+--- a/tests/qtest/libqos/virtio-9p-client.c
++++ b/tests/qtest/libqos/virtio-9p-client.c
+@@ -557,6 +557,55 @@ void v9fs_rgetattr(P9Req *req, v9fs_attr *attr)
+     v9fs_req_free(req);
  }
  
-+static int local_futimens(FsContext *s, int fid_type, V9fsFidOpenState *fs,
-+                          const struct timespec *times)
++/*
++ * size[4] Tsetattr tag[2] fid[4] valid[4] mode[4] uid[4] gid[4] size[8]
++ *                  atime_sec[8] atime_nsec[8] mtime_sec[8] mtime_nsec[8]
++ */
++TSetAttrRes v9fs_tsetattr(TSetAttrOpt opt)
 +{
-+    int fd = local_fid_fd(fid_type, fs);
++    P9Req *req;
++    uint32_t err;
 +
-+    return qemu_futimens(fd, times);
-+}
++    g_assert(opt.client);
 +
- static int local_unlinkat_common(FsContext *ctx, int dirfd, const char *name,
-                                  int flags)
- {
-@@ -1626,4 +1634,5 @@ FileOperations local_ops = {
-     .unlinkat = local_unlinkat,
-     .has_valid_file_handle = local_has_valid_file_handle,
-     .ftruncate = local_ftruncate,
-+    .futimens = local_futimens,
- };
-diff --git a/hw/9pfs/9p-synth.c b/hw/9pfs/9p-synth.c
-index 3d28afc4d03d..9cd188422421 100644
---- a/hw/9pfs/9p-synth.c
-+++ b/hw/9pfs/9p-synth.c
-@@ -424,6 +424,13 @@ static int synth_utimensat(FsContext *fs_ctx, V9fsPath *path,
-     return 0;
- }
- 
-+static int synth_futimens(FsContext *fs_ctx, int fid_type, V9fsFidOpenState *fs,
-+                          const struct timespec *buf)
-+{
-+    errno = ENOSYS;
-+    return -1;
-+}
++    req = v9fs_req_init(
++        opt.client, 4/*fid*/ + 4/*valid*/ + 4/*mode*/ + 4/*uid*/ + 4/*gid*/ +
++        8/*size*/ + 8/*atime_sec*/ + 8/*atime_nsec*/ + 8/*mtime_sec*/ +
++        8/*mtime_nsec*/, P9_TSETATTR, opt.tag
++    );
++    v9fs_uint32_write(req, opt.fid);
++    v9fs_uint32_write(req, (uint32_t) opt.attr.valid);
++    v9fs_uint32_write(req, opt.attr.mode);
++    v9fs_uint32_write(req, opt.attr.uid);
++    v9fs_uint32_write(req, opt.attr.gid);
++    v9fs_uint64_write(req, opt.attr.size);
++    v9fs_uint64_write(req, opt.attr.atime_sec);
++    v9fs_uint64_write(req, opt.attr.atime_nsec);
++    v9fs_uint64_write(req, opt.attr.mtime_sec);
++    v9fs_uint64_write(req, opt.attr.mtime_nsec);
++    v9fs_req_send(req);
 +
- static int synth_remove(FsContext *ctx, const char *path)
- {
-     errno = EPERM;
-@@ -664,4 +671,5 @@ FileOperations synth_ops = {
-     .unlinkat     = synth_unlinkat,
-     .has_valid_file_handle = synth_has_valid_file_handle,
-     .ftruncate    = synth_ftruncate,
-+    .futimens     = synth_futimens,
- };
-diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
-index 7bc4ec8e85cc..a1924fe3f05a 100644
---- a/hw/9pfs/9p-util.h
-+++ b/hw/9pfs/9p-util.h
-@@ -103,6 +103,7 @@ static inline int errno_to_dotl(int err) {
- #define qemu_renameat   renameat
- #define qemu_utimensat  utimensat
- #define qemu_unlinkat   unlinkat
-+#define qemu_futimens   futimens
- 
- static inline void close_preserve_errno(int fd)
- {
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 592477bdc45a..d3b2216f2b71 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -1708,7 +1708,11 @@ static void coroutine_fn v9fs_setattr(void *opaque)
-         } else {
-             times[1].tv_nsec = UTIME_OMIT;
-         }
--        err = v9fs_co_utimensat(pdu, &fidp->path, times);
-+        if (fid_has_valid_file_handle(pdu->s, fidp)) {
-+            err = v9fs_co_futimens(pdu, fidp, times);
++    if (!opt.requestOnly) {
++        v9fs_req_wait_for_reply(req, NULL);
++        if (opt.expectErr) {
++            v9fs_rlerror(req, &err);
++            g_assert_cmpint(err, ==, opt.expectErr);
 +        } else {
-+            err = v9fs_co_utimensat(pdu, &fidp->path, times);
++            v9fs_rsetattr(req);
 +        }
-         if (err < 0) {
-             goto out;
-         }
-diff --git a/hw/9pfs/cofs.c b/hw/9pfs/cofs.c
-index 893466fb1a44..12fa8c9fe9cd 100644
---- a/hw/9pfs/cofs.c
-+++ b/hw/9pfs/cofs.c
-@@ -139,6 +139,25 @@ int coroutine_fn v9fs_co_utimensat(V9fsPDU *pdu, V9fsPath *path,
-     return err;
- }
- 
-+int coroutine_fn v9fs_co_futimens(V9fsPDU *pdu, V9fsFidState *fidp,
-+                                  struct timespec times[2])
-+{
-+    int err;
-+    V9fsState *s = pdu->s;
-+
-+    if (v9fs_request_cancelled(pdu)) {
-+        return -EINTR;
++        req = NULL; /* request was freed */
 +    }
-+    v9fs_co_run_in_worker(
-+        {
-+            err = s->ops->futimens(&s->ctx, fidp->fid_type, &fidp->fs, times);
-+            if (err < 0) {
-+                err = -errno;
-+            }
-+        });
-+    return err;
++
++    return (TSetAttrRes) { .req = req };
 +}
 +
- int coroutine_fn v9fs_co_chown(V9fsPDU *pdu, V9fsPath *path, uid_t uid,
-                                gid_t gid)
++/* size[4] Rsetattr tag[2] */
++void v9fs_rsetattr(P9Req *req)
++{
++    v9fs_req_recv(req, P9_RSETATTR);
++    v9fs_req_free(req);
++}
++
+ /* size[4] Treaddir tag[2] fid[4] offset[8] count[4] */
+ TReadDirRes v9fs_treaddir(TReadDirOpt opt)
  {
-diff --git a/hw/9pfs/coth.h b/hw/9pfs/coth.h
-index 62e922dc12e3..7906fa7782d8 100644
---- a/hw/9pfs/coth.h
-+++ b/hw/9pfs/coth.h
-@@ -71,6 +71,8 @@ int coroutine_fn v9fs_co_statfs(V9fsPDU *, V9fsPath *, struct statfs *);
- int coroutine_fn v9fs_co_lstat(V9fsPDU *, V9fsPath *, struct stat *);
- int coroutine_fn v9fs_co_chmod(V9fsPDU *, V9fsPath *, mode_t);
- int coroutine_fn v9fs_co_utimensat(V9fsPDU *, V9fsPath *, struct timespec [2]);
-+int coroutine_fn v9fs_co_futimens(V9fsPDU *pdu, V9fsFidState *fidp,
-+                                  struct timespec times[2]);
- int coroutine_fn v9fs_co_chown(V9fsPDU *, V9fsPath *, uid_t, gid_t);
- int coroutine_fn v9fs_co_truncate(V9fsPDU *, V9fsPath *, off_t);
- int coroutine_fn v9fs_co_ftruncate(V9fsPDU *pdu, V9fsFidState *fidp,
+diff --git a/tests/qtest/libqos/virtio-9p-client.h b/tests/qtest/libqos/virtio-9p-client.h
+index 78228eb97d9e..e3221a310412 100644
+--- a/tests/qtest/libqos/virtio-9p-client.h
++++ b/tests/qtest/libqos/virtio-9p-client.h
+@@ -65,6 +65,16 @@ typedef struct v9fs_attr {
+ #define P9_GETATTR_BASIC    0x000007ffULL /* Mask for fields up to BLOCKS */
+ #define P9_GETATTR_ALL      0x00003fffULL /* Mask for ALL fields */
+ 
++#define P9_SETATTR_MODE         0x00000001UL
++#define P9_SETATTR_UID          0x00000002UL
++#define P9_SETATTR_GID          0x00000004UL
++#define P9_SETATTR_SIZE         0x00000008UL
++#define P9_SETATTR_ATIME        0x00000010UL
++#define P9_SETATTR_MTIME        0x00000020UL
++#define P9_SETATTR_CTIME        0x00000040UL
++#define P9_SETATTR_ATIME_SET    0x00000080UL
++#define P9_SETATTR_MTIME_SET    0x00000100UL
++
+ struct V9fsDirent {
+     v9fs_qid qid;
+     uint64_t offset;
+@@ -182,6 +192,28 @@ typedef struct TGetAttrRes {
+     P9Req *req;
+ } TGetAttrRes;
+ 
++/* options for 'Tsetattr' 9p request */
++typedef struct TSetAttrOpt {
++    /* 9P client being used (mandatory) */
++    QVirtio9P *client;
++    /* user supplied tag number being returned with response (optional) */
++    uint16_t tag;
++    /* file ID of file/dir whose attributes shall be modified (required) */
++    uint32_t fid;
++    /* new attribute values to be set by 9p server */
++    v9fs_attr attr;
++    /* only send Tsetattr request but not wait for a reply? (optional) */
++    bool requestOnly;
++    /* do we expect an Rlerror response, if yes which error code? (optional) */
++    uint32_t expectErr;
++} TSetAttrOpt;
++
++/* result of 'Tsetattr' 9p request */
++typedef struct TSetAttrRes {
++    /* if requestOnly was set: request object for further processing */
++    P9Req *req;
++} TSetAttrRes;
++
+ /* options for 'Treaddir' 9p request */
+ typedef struct TReadDirOpt {
+     /* 9P client being used (mandatory) */
+@@ -470,6 +502,8 @@ TWalkRes v9fs_twalk(TWalkOpt opt);
+ void v9fs_rwalk(P9Req *req, uint16_t *nwqid, v9fs_qid **wqid);
+ TGetAttrRes v9fs_tgetattr(TGetAttrOpt);
+ void v9fs_rgetattr(P9Req *req, v9fs_attr *attr);
++TSetAttrRes v9fs_tsetattr(TSetAttrOpt opt);
++void v9fs_rsetattr(P9Req *req);
+ TReadDirRes v9fs_treaddir(TReadDirOpt);
+ void v9fs_rreaddir(P9Req *req, uint32_t *count, uint32_t *nentries,
+                    struct V9fsDirent **entries);
+diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
+index ab3a12c816d4..f515a9bb157b 100644
+--- a/tests/qtest/virtio-9p-test.c
++++ b/tests/qtest/virtio-9p-test.c
+@@ -20,6 +20,7 @@
+ #define tversion(...) v9fs_tversion((TVersionOpt) __VA_ARGS__)
+ #define tattach(...) v9fs_tattach((TAttachOpt) __VA_ARGS__)
+ #define tgetattr(...) v9fs_tgetattr((TGetAttrOpt) __VA_ARGS__)
++#define tsetattr(...) v9fs_tsetattr((TSetAttrOpt) __VA_ARGS__)
+ #define treaddir(...) v9fs_treaddir((TReadDirOpt) __VA_ARGS__)
+ #define tlopen(...) v9fs_tlopen((TLOpenOpt) __VA_ARGS__)
+ #define twrite(...) v9fs_twrite((TWriteOpt) __VA_ARGS__)
 -- 
 2.48.1
 
