@@ -2,73 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100B2A5DA61
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 11:22:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E59A5DA69
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 11:28:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsJCz-0005i2-BV; Wed, 12 Mar 2025 06:21:05 -0400
+	id 1tsJJ8-0007XB-7z; Wed, 12 Mar 2025 06:27:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tsJCP-0005dK-J9
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 06:20:30 -0400
-Received: from mail-yb1-xb31.google.com ([2607:f8b0:4864:20::b31])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tsJJ6-0007Wo-LN
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 06:27:24 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tsJCN-0008Hk-0S
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 06:20:29 -0400
-Received: by mail-yb1-xb31.google.com with SMTP id
- 3f1490d57ef6-e46ebe19489so5139352276.2
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 03:20:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tsJJ2-00014m-C7
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 06:27:24 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4394036c0efso38943995e9.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 03:27:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741774824; x=1742379624; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=hSc1FdEuLOzToJ3GVm1p0E+JN04pUwoWYv9Pu5TzqlQ=;
- b=GMQ+//wrDHzxTM7TX+g6jqaHKuo5+qoYzni3OhDFMpgwPwX/9T23NX9ICSdHwEePHG
- gjH6aGKRYPKtqdO7/RRW+/jpNWqUdssBV8JhMYCikNsEiigwumluTcTbLUYnZElfLmnT
- I9Mk72o2rl21JBU/LgkyW8HMN1ZyEsarpaZhbdXlPfXHF/QyhGHxReqORf3EQ6IcPccs
- AirFUvy8VuVMj94yNcC9z5eEczrUHbxAUQtFgYNyUnx2ftIGj2YJeKXTJgtOPkrCeE/X
- PCPhw9L4++8fxA3AY/NjUjuTNrrxH9kYaS8xhjeepfAWghOa4xoicwYq2XOHHiAgNSZi
- hlNw==
+ d=linaro.org; s=google; t=1741775237; x=1742380037; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aZQLc0CCKOsJ1SOkOAKV41SXUFHDx3yVzWR0VtoIHr8=;
+ b=C34e177zc5+OQYr1xuezLUTxZEPKslE3sUkTnlBW4T51TdcXzWZeeetGG6LaN3fFN/
+ RCYQQ27ZmBBYbpYgYNHL+SRcGnIZqOfqeU0vEO65gpr++mpYFPNWmLnbHhOVXEYZMLb1
+ MmCTdb6iW+gKBM66rTvSUScNvLTihVOuI/s2N43qRsWpG+v+dpvpFui1V/wt80H87yN5
+ DX2EMAsMyZwCH/SmxjAVHsfyvjBASBufVVP4DrwFIzejjNHBIqa3ziaiMqLl+1So0BgS
+ VYnskj4MNYiH4MGyfdrvRgHR0zvHlaJMVTjXjl9kp/yGlKaX9aMNiai3VqBUlonMnA76
+ rfeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741774824; x=1742379624;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hSc1FdEuLOzToJ3GVm1p0E+JN04pUwoWYv9Pu5TzqlQ=;
- b=pIdhXk6loxFnMQbpvFbqzgy9/RXsAhzlbiRKW6JYR33NrcjBdnj3lf/SChunFJJ3xe
- rCxPog+TPAcgkqRuE+gVgc8wU0EtMEDjLVZC9VFD4L0pMyqWE6Uyf/yqA8EgnrLi7zH7
- 5VjBiN4SkO6BLrerIFdzFp8+dRJw2/QT10DQXfsEJM+8mPb2zmsJUrocBbq1OeF/RwWw
- aMvx6sY/zQ/kFExfWwto531ntpAb6K1Y/FLmRwT2nZ2/rBTuohiPOm9h07MgYiSqm3Sg
- E5Vri2Bfh0bAg0XSKRSlrHnmE4EJuYCG0/gxIC+73v909x9J+xXkVtVsYNkYzmAS6KBd
- oKZA==
-X-Gm-Message-State: AOJu0Yy1OLcQOfKAkdneS5HHFd0vkywEDFgqcl3vqkKZpPxx6xhUBvlR
- OoYYN7zbBRKLxB2Kv6WWE24bCfoIb0Xf3nmZW1FByU1X5T4BxCzOne3rnAIUbS2u1FTYhuar7gc
- VOeeinx+SnyUY1OqI8B9Unkvk9bcLCXQCIiZpSQ==
-X-Gm-Gg: ASbGncuLZPQvy4AYTuyV8Sk4+7jOWE0pZjU+DOvPIRIAA8AahnRD9ADjjemYOLQo4pK
- Pz+kgk7sgQ47RAYjsIwd6J645GOtlMv0PxT3+4I0f/nTGW+bU9jrUFmfVJH0e8neKkVXqbGJqeE
- Git/O/5ZCQqww2vRqBUBnLmEgx81s=
-X-Google-Smtp-Source: AGHT+IFwH8GLv0PT7otbep8nFf1lgDU4NcKKhJcHtx5OMwkQ+jiML6fFrTfN4OXszhRxDsBOQC+EZjHJiA6cyvBLdNU=
-X-Received: by 2002:a05:6902:2102:b0:e5b:257e:c3b1 with SMTP id
- 3f1490d57ef6-e635c0f926fmr26000502276.8.1741774823899; Wed, 12 Mar 2025
- 03:20:23 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1741775237; x=1742380037;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aZQLc0CCKOsJ1SOkOAKV41SXUFHDx3yVzWR0VtoIHr8=;
+ b=HYOhiLCYEcPpd+42jtH/f8pCgD/Gkhqx0gZAjejmaKaWnH+xRBiai7hrWtzPhbYSIA
+ zWhsOnSNxYGDq7gtQ1q5iu9bOSNBFk/es8SofVNtAz74JhK9mInlhnx9nj4POZx9xQDD
+ 48/lz8kkI+bJfqtvimvt1yy0R5Uir63fqQt/bi0TWrgoIYM3+PByMMlkO7Vf9lMaijpK
+ rph3o3EZn8A9fH9f6Nu0Mkc9VbcuFGkbL45JkqkzAPUg9RAqic8qp5B6QGgzDkV+zOdC
+ oK5+fEkGcA2CxE+hWyiwNEQtY+cYOyyhJJCQWXD6HQXZSG42GJBkEDcWCeibLn6+NunN
+ wU6g==
+X-Gm-Message-State: AOJu0Yw3ZN+SEXl8e/NyCZRjPa44an1oR5JQJgqUYkce5VudSY4OCoUT
+ JI+CmnYIBQu7O4+MuxNaFDy5EHRVhGR7/BMvEeRXp5QubziQy3ZvnrICethDHiA=
+X-Gm-Gg: ASbGncvtHzJhmh3qaUhVxLKe5XTBAxZitam+bHfHE0uzenmTsMzTnpYtA6DGsaSkCPU
+ tipcEx5etnCOUlUAKEOKJH2f1PFkzqksdLoKCt1hED2ECFr5FDgPzZoNLJYibI4Pwt8CZRlPxfJ
+ OX5JQXdFM0vs7yw5B3As3iWiCZakOWPvfAtwLZ6UKcHLJVczboacXNHsHVf9Cebq1eJuUYhy1zc
+ zzm1aXWpn5nyBMc5387ztuTPqca4dUszs+TEOegOivu4+fhlcuHfMJAK++tFAqhsjdm2Jgc4e1h
+ uz4wZlPRrBlxPEPbt3uMmDSESa6JTudhCv96RsijeT9gomGGHr3vM4IXjBxA/LVP41qkwoNTTYv
+ haxZrxg==
+X-Google-Smtp-Source: AGHT+IFU7o9oewKWb7Yy/8/oNqJNMeDLRtTUt8sAsCfJ6WQN/ofV3/UeV4+bKa53gw80S5aiTnAc3Q==
+X-Received: by 2002:a05:600c:470c:b0:43c:f050:fed3 with SMTP id
+ 5b1f17b1804b1-43cf051022dmr137327815e9.11.1741775237266; 
+ Wed, 12 Mar 2025 03:27:17 -0700 (PDT)
+Received: from [10.223.46.213] (99.167.185.81.rev.sfr.net. [81.185.167.99])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d0a74d339sm16582165e9.14.2025.03.12.03.27.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Mar 2025 03:27:16 -0700 (PDT)
+Message-ID: <e7640bea-5bb7-4f4b-8614-ed8d521dd7a5@linaro.org>
+Date: Wed, 12 Mar 2025 11:27:14 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 31/43] hw/arm: Add i.MX 8M Plus EVK board
+To: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: qemu-devel@nongnu.org, Bernhard Beschow <shentey@gmail.com>
 References: <20250225180510.1318207-1-peter.maydell@linaro.org>
  <20250225180510.1318207-32-peter.maydell@linaro.org>
  <1cdb6643-8fcc-4bd8-93fc-fcc93589c9a3@redhat.com>
-In-Reply-To: <1cdb6643-8fcc-4bd8-93fc-fcc93589c9a3@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 12 Mar 2025 10:20:12 +0000
-X-Gm-Features: AQ5f1JpkzhP12lnzOg7jklias089Vc-fMoTGtcuTI87VqBZbVgQXr7TMPwaNS_0
-Message-ID: <CAFEAcA-JgjX2U3wQ47X5JQ2SU1yMpx=0rWkctbj40w0Xjufpmg@mail.gmail.com>
-Subject: Re: [PULL 31/43] hw/arm: Add i.MX 8M Plus EVK board
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Bernhard Beschow <shentey@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b31;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb31.google.com
+ <CAFEAcA-JgjX2U3wQ47X5JQ2SU1yMpx=0rWkctbj40w0Xjufpmg@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA-JgjX2U3wQ47X5JQ2SU1yMpx=0rWkctbj40w0Xjufpmg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,56 +101,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 12 Mar 2025 at 09:40, Thomas Huth <thuth@redhat.com> wrote:
->
-> On 25/02/2025 19.04, Peter Maydell wrote:
-> > From: Bernhard Beschow <shentey@gmail.com>
-> >
-> > As a first step, implement the bare minimum: CPUs, RAM, interrupt controller,
-> > serial. All other devices of the A53 memory map are represented as
-> > TYPE_UNIMPLEMENTED_DEVICE, i.e. the whole memory map is provided. This allows
-> > for running Linux without it crashing due to invalid memory accesses.
-> >
-> > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> > Message-id: 20250223114708.1780-5-shentey@gmail.com
-> > Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> > [PMM: drop 'static const' from serial_table[] definition to avoid
-> >   compile failure on GCC 7.5]
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> > ---
-> ...
-> > +static const TypeInfo fsl_imx8mp_types[] = {
-> > +    {
-> > +        .name = TYPE_FSL_IMX8MP,
-> > +        .parent = TYPE_DEVICE,
-> > +        .instance_size = sizeof(FslImx8mpState),
-> > +        .instance_init = fsl_imx8mp_init,
-> > +        .class_init = fsl_imx8mp_class_init,
-> > +    },
-> > +};
-> > +
-> > +DEFINE_TYPES(fsl_imx8mp_types)
->
->   Hi Bernhard, hi Peter,
->
-> this device can be used to crash QEMU quite easily:
->
-> $ ./qemu-system-aarch64  -M virt -device fsl-imx8mp
-> **
-> ERROR:../../devel/qemu/tcg/tcg.c:1006:tcg_register_thread: assertion failed:
-> (n < tcg_max_ctxs)
-> Bail out! ERROR:../../devel/qemu/tcg/tcg.c:1006:tcg_register_thread:
-> assertion failed: (n < tcg_max_ctxs)
-> Aborted (core dumped)
->
-> Should it maybe be marked with "user_creatable = false" to avoid this?
++ Cédric for Aspeed
 
-The bug is that this is directly inheriting from TYPE_DEVICE,
-not from TYPE_SYSBUS_DEVICE. Doing the former is almost always
-wrong, because it means the device is never reset.
+On 12/3/25 11:20, Peter Maydell wrote:
+> On Wed, 12 Mar 2025 at 09:40, Thomas Huth <thuth@redhat.com> wrote:
+>>
+>> On 25/02/2025 19.04, Peter Maydell wrote:
+>>> From: Bernhard Beschow <shentey@gmail.com>
+>>>
+>>> As a first step, implement the bare minimum: CPUs, RAM, interrupt controller,
+>>> serial. All other devices of the A53 memory map are represented as
+>>> TYPE_UNIMPLEMENTED_DEVICE, i.e. the whole memory map is provided. This allows
+>>> for running Linux without it crashing due to invalid memory accesses.
+>>>
+>>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+>>> Message-id: 20250223114708.1780-5-shentey@gmail.com
+>>> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+>>> [PMM: drop 'static const' from serial_table[] definition to avoid
+>>>    compile failure on GCC 7.5]
+>>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>>> ---
+>> ...
+>>> +static const TypeInfo fsl_imx8mp_types[] = {
+>>> +    {
+>>> +        .name = TYPE_FSL_IMX8MP,
+>>> +        .parent = TYPE_DEVICE,
+>>> +        .instance_size = sizeof(FslImx8mpState),
+>>> +        .instance_init = fsl_imx8mp_init,
+>>> +        .class_init = fsl_imx8mp_class_init,
+>>> +    },
+>>> +};
+>>> +
+>>> +DEFINE_TYPES(fsl_imx8mp_types)
+>>
+>>    Hi Bernhard, hi Peter,
+>>
+>> this device can be used to crash QEMU quite easily:
+>>
+>> $ ./qemu-system-aarch64  -M virt -device fsl-imx8mp
+>> **
+>> ERROR:../../devel/qemu/tcg/tcg.c:1006:tcg_register_thread: assertion failed:
+>> (n < tcg_max_ctxs)
+>> Bail out! ERROR:../../devel/qemu/tcg/tcg.c:1006:tcg_register_thread:
+>> assertion failed: (n < tcg_max_ctxs)
+>> Aborted (core dumped)
+>>
+>> Should it maybe be marked with "user_creatable = false" to avoid this?
+> 
+> The bug is that this is directly inheriting from TYPE_DEVICE,
+> not from TYPE_SYSBUS_DEVICE. Doing the former is almost always
+> wrong, because it means the device is never reset.
+> 
+> (It looks like we do this wrong for other fsl SoCs too,
+> but they're marked user_creatable = false.)
 
-(It looks like we do this wrong for other fsl SoCs too,
-but they're marked user_creatable = false.)
-
--- PMM
+IIRC it is deliberately that way for the Aspeed SoCs, because
+otherwise there were issue when building the multi-SoC fby35 machines
+due to peripherals ending mapped in the same (sys)bus, so developers
+took a lot of care to not base anything on sysbus. But maybe I'm
+mis-remembering correctly, the peripherals parent could be sysbus
+as long as we don't use any sysbus API to map memory regions.
 
