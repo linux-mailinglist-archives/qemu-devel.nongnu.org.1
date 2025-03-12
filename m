@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB89BA5D9B7
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 10:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9049A5D9C1
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 10:42:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsIYm-0003Zf-L9; Wed, 12 Mar 2025 05:39:32 -0400
+	id 1tsIZu-0004Nk-Sr; Wed, 12 Mar 2025 05:40:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1tsIYc-0003Yp-VG; Wed, 12 Mar 2025 05:39:22 -0400
+ id 1tsIZh-00048a-UF; Wed, 12 Mar 2025 05:40:30 -0400
 Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
  helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1tsIYZ-0000mk-WB; Wed, 12 Mar 2025 05:39:22 -0400
+ id 1tsIZb-0001AW-7R; Wed, 12 Mar 2025 05:40:29 -0400
 Received: from mail.andestech.com (ATCPCS31.andestech.com [10.0.1.89])
- by Atcsqr.andestech.com with ESMTPS id 52C9bBkl069432
+ by Atcsqr.andestech.com with ESMTPS id 52C9cS2x070268
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Mar 2025 17:37:12 +0800 (+08)
+ Wed, 12 Mar 2025 17:38:28 +0800 (+08)
  (envelope-from ethan84@andestech.com)
 Received: from atcpcw16.andestech.com (10.0.1.106) by ATCPCS31.andestech.com
  (10.0.1.89) with Microsoft SMTP Server (TLS) id 14.3.498.0; Wed, 12 Mar 2025
- 17:38:43 +0800
+ 17:39:59 +0800
 To: <qemu-devel@nongnu.org>
 CC: <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
  <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
@@ -32,9 +32,10 @@ CC: <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
  <zhiwei_liu@linux.alibaba.com>, <peterx@redhat.com>,
  <david@redhat.com>, <philmd@linaro.org>, <qemu-riscv@nongnu.org>,
  Ethan Chen <ethan84@andestech.com>
-Subject: [PATCH v11 4/8] target/riscv: Add support for IOPMP
-Date: Wed, 12 Mar 2025 17:37:28 +0800
-Message-ID: <20250312093735.1517740-5-ethan84@andestech.com>
+Subject: [PATCH v11 5/8] hw/misc/riscv_iopmp_txn_info: Add struct for
+ transaction infomation
+Date: Wed, 12 Mar 2025 17:37:29 +0800
+Message-ID: <20250312093735.1517740-6-ethan84@andestech.com>
 X-Mailer: git-send-email 2.42.0.345.gaab89be2eb.dirty
 In-Reply-To: <20250312093735.1517740-1-ethan84@andestech.com>
 References: <20250312093735.1517740-1-ethan84@andestech.com>
@@ -45,7 +46,7 @@ X-Originating-IP: [10.0.1.106]
 X-DKIM-Results: atcpcs31.andestech.com; dkim=none;
 X-DNSRBL: 
 X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 52C9bBkl069432
+X-MAIL: Atcsqr.andestech.com 52C9cS2x070268
 Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
  helo=Atcsqr.andestech.com
 X-Spam_score_int: -8
@@ -72,70 +73,61 @@ From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Ethan Chen <ethan84@andestech.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/cpu.c        |  3 +++
- target/riscv/cpu_cfg.h    |  2 ++
- target/riscv/cpu_helper.c | 18 +++++++++++++++---
- 3 files changed, 20 insertions(+), 3 deletions(-)
+The entire valid transaction must fit within a single IOPMP entry.
+However, during IOMMU translation, the transaction size is not
+available. This structure defines the transaction information required
+by the IOPMP.
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 09ded6829a..2d7ff3f37e 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2968,6 +2968,9 @@ static const Property riscv_cpu_properties[] = {
-      * it with -x and default to 'false'.
-      */
-     DEFINE_PROP_BOOL("x-misa-w", RISCVCPU, cfg.misa_w, false),
+Signed-off-by: Ethan Chen <ethan84@andestech.com>
+---
+ include/hw/misc/riscv_iopmp_txn_info.h | 38 ++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 include/hw/misc/riscv_iopmp_txn_info.h
+
+diff --git a/include/hw/misc/riscv_iopmp_txn_info.h b/include/hw/misc/riscv_iopmp_txn_info.h
+new file mode 100644
+index 0000000000..d1d8213867
+--- /dev/null
++++ b/include/hw/misc/riscv_iopmp_txn_info.h
+@@ -0,0 +1,38 @@
++/*
++ * QEMU RISC-V IOPMP transaction information
++ *
++ * The transaction information structure provides the complete transaction
++ * length to the IOPMP device
++ *
++ * Copyright (c) 2023-2025 Andes Tech. Corp.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2 or later, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
 +
-+    DEFINE_PROP_BOOL("iopmp", RISCVCPU, cfg.iopmp, false),
-+    DEFINE_PROP_UINT32("iopmp_rrid", RISCVCPU, cfg.iopmp_rrid, 0),
- };
- 
- #if defined(TARGET_RISCV64)
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 8a843482cc..8dcf38eb0f 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -193,6 +193,8 @@ struct RISCVCPUConfig {
-     bool pmp;
-     bool debug;
-     bool misa_w;
-+    bool iopmp;
-+    uint32_t iopmp_rrid;
- 
-     bool short_isa_string;
- 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 6c4391d96b..a1270f752c 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1966,9 +1966,21 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-     }
- 
-     if (ret == TRANSLATE_SUCCESS) {
--        tlb_set_page(cs, address & ~(tlb_size - 1), pa & ~(tlb_size - 1),
--                     prot, mmu_idx, tlb_size);
--        return true;
-+        if (cpu->cfg.iopmp) {
-+            /*
-+             * Do not align address on early stage because IOPMP needs origin
-+             * address for permission check.
-+             */
-+            tlb_set_page_with_attrs(cs, address, pa,
-+                                    (MemTxAttrs)
-+                                        {
-+                                          .requester_id = cpu->cfg.iopmp_rrid,
-+                                        },
-+                                    prot, mmu_idx, tlb_size);
-+        } else {
-+            tlb_set_page(cs, address & ~(tlb_size - 1), pa & ~(tlb_size - 1),
-+                         prot, mmu_idx, tlb_size);
-+        }
-     } else if (probe) {
-         return false;
-     } else {
++#ifndef RISCV_IOPMP_TXN_INFO_H
++#define RISCV_IOPMP_TXN_INFO_H
++
++typedef struct {
++    /* The id of requestor */
++    uint32_t rrid:16;
++    /* The start address of transaction */
++    uint64_t start_addr;
++    /* The end address of transaction */
++    uint64_t end_addr;
++    /* The stage of cascading IOPMP */
++    uint32_t stage;
++} RISCVIOPMPTxnInfo;
++
++#endif
 -- 
 2.34.1
 
