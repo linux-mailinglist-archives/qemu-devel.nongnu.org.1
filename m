@@ -2,100 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781D7A5E2D5
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 18:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F724A5E2DB
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Mar 2025 18:35:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsPwe-0001cz-4C; Wed, 12 Mar 2025 13:32:40 -0400
+	id 1tsPzH-0002qV-VI; Wed, 12 Mar 2025 13:35:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tsPwT-0001cE-Th
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 13:32:31 -0400
-Received: from mail-qv1-xf2e.google.com ([2607:f8b0:4864:20::f2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tsPwS-0004jk-At
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 13:32:29 -0400
-Received: by mail-qv1-xf2e.google.com with SMTP id
- 6a1803df08f44-6e8fb83e137so1390896d6.0
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 10:32:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1741800746; x=1742405546; darn=nongnu.org;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZcEnJOtJMXJymFhT0PNheZz6JgQLgZuJDDzJ9zNbEN4=;
- b=SXuDHXuylvv2fW3I928C4N0dEjeiieGGLqMg1UqlZZ6Xrp1oDHka3mZfTlKwVYDlcP
- PLQhmyO7qoTjgR6b+qxcbTkRRF2L3mO4nyuCSpQGHqWo/brGAAx2zU8QM0OBQjRNemvC
- JrrERuFvLmjkunSqXPl33R67Elfk3JyTLlEhJ0OtaLXRKz+a3x77b+80REojQK2WSHqp
- yc0dFgbweQ3FXo5V6o/KbODeBF+nLyQJPrrQ8Ik5a6ZMuc1rXmzAOakNkmp9QboxCEBI
- Ge6XJXadA4AtvBerw1aEA78QwoJGoEqrERWMzi13jtGprWwzMb1BBzAIgUbePmVz2IP/
- Upmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741800746; x=1742405546;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZcEnJOtJMXJymFhT0PNheZz6JgQLgZuJDDzJ9zNbEN4=;
- b=hMgG6n4YzaoE4uxTp1ceU3P1jV12Mt0kKLVTzdm49y+SCJFP2fFI+215GBEk1tMQ9M
- QxVSPBjcRfSBagJwayM7N0R0NdN/M2HUWUlmQRixIkidaThcIwrlN+vfoBeWJdvaFAj3
- Ym0yfjaMNe2Z3y1cLe2wzJtZv9JvlzsLh7hQ2ydxcQeN9/gyu7YJkSU76IahU3YQpsrS
- WMIchvoJIldlSyBEd21kVnypq7NQOLW2FxQwr5Bs8iFKZETwOW3I1/ZnyuhX3/pTFZYk
- HSh0Lozd2RI/9zww6E+aLJQXkPgPiuKJKghrO/l0jTOoGdzRNgGwGDgxZ+IUp0g4MYR8
- e+lg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVuBsGm2wa6zBBy+h+nCtCBVEFG+lswMidQYZopRVdJyS0LXi94BIoQiq4w8Qye/fy6ZCgfDWCnP/8w@nongnu.org
-X-Gm-Message-State: AOJu0YztJYySBIzpTQRyOMDdzQaj8W2M+Fh2HwzaPjdrt3Ufb0VdFD+Y
- nPGUZ6u50wTV/BCeh8nRrtI003uDDD4zOZClbI0aIAYKl59r70Fk
-X-Gm-Gg: ASbGnct7s33Cyh8j0I9SGW2lwOG04juPyEOWD8a5MBjILU8oV3T2HnYdc7bTIXkgq3f
- 6AuXacekS+PIG2T7BbTtw5tjrKmSl9LzLmzWv0tpsuXeEi/v0gSe9H4/ZI1RSWIs+mU8v/eLFru
- 540Mg8xVoKWOJpLJtxJMMTgu+uksBV9YcN2VQCfLhM6Qm7bymJSBkl4hRkLKP7NyhSvoUW+vNf9
- gDpR1defdJFiSZ9SSY5fgWr9WJqCQW8MHNYiJqDd1VT3rxaMktnPMpocPGqQJ5KR+n+PkEs8O/q
- GSkDBZR2wBA7AEb3NXNlZ7O1m4vy9ExjJJxnpciB5W5uXeSrMIqdBxeWcv2S6Q4r8O/ph8BmRw=
- =
-X-Google-Smtp-Source: AGHT+IGCOmgdfM/94awCZ7P2V+NB8cVlsetk12Lyw1jd+r3fh/SpUiJXKwnfVcAXBxwc1kr1Ff7XUw==
-X-Received: by 2002:a05:6214:c48:b0:6e8:ea17:8587 with SMTP id
- 6a1803df08f44-6e900682e29mr321603766d6.42.1741800746555; 
- Wed, 12 Mar 2025 10:32:26 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2603:6000:a500:306:9cc3:cdb3:7013:e1db])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6e8f70a446dsm86940276d6.56.2025.03.12.10.32.25
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 12 Mar 2025 10:32:26 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
-	<qemu-devel@nongnu.org>
-Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
- <quic_mathbern@quicinc.com>, <ale@rev.ng>, <anjo@rev.ng>,
- <quic_mliebel@quicinc.com>, <alex.bennee@linaro.org>,
- <quic_mburton@quicinc.com>, <sidneym@quicinc.com>,
- "'Brian Cain'" <bcain@quicinc.com>,
- "'Michael Lambert'" <mlambert@quicinc.com>
-References: <20250301052628.1011210-1-brian.cain@oss.qualcomm.com>
- <20250301052628.1011210-39-brian.cain@oss.qualcomm.com>
-In-Reply-To: <20250301052628.1011210-39-brian.cain@oss.qualcomm.com>
-Subject: RE: [PATCH 38/38] target/hexagon: Add hex_interrupts support
-Date: Wed, 12 Mar 2025 12:32:24 -0500
-Message-ID: <011b01db9374$b8982630$29c87290$@gmail.com>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tsPyI-0002aC-Tg; Wed, 12 Mar 2025 13:34:30 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tsPyG-0004vX-Pp; Wed, 12 Mar 2025 13:34:22 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZCd1916z3z6J6mj;
+ Thu, 13 Mar 2025 01:29:49 +0800 (CST)
+Received: from frapeml100006.china.huawei.com (unknown [7.182.85.201])
+ by mail.maildlp.com (Postfix) with ESMTPS id 5651B140D26;
+ Thu, 13 Mar 2025 01:34:18 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml100006.china.huawei.com (7.182.85.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 12 Mar 2025 18:34:18 +0100
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Wed, 12 Mar 2025 18:34:18 +0100
+To: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>, "berrange@redhat.com"
+ <berrange@redhat.com>, "nathanc@nvidia.com" <nathanc@nvidia.com>,
+ "mochs@nvidia.com" <mochs@nvidia.com>, "smostafa@google.com"
+ <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)"
+ <wangzhou1@hisilicon.com>, jiangkunkun <jiangkunkun@huawei.com>, "Jonathan
+ Cameron" <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>
+Subject: RE: [RFC PATCH v2 04/20] hw/arm/virt: Add support for smmuv3-accel
+Thread-Topic: [RFC PATCH v2 04/20] hw/arm/virt: Add support for smmuv3-accel
+Thread-Index: AQHbko9X7BBFIVL5UECoP8opJSgSfrNvkyYAgAAR74D///hiAIAAEm+A///xm4CAACG5AA==
+Date: Wed, 12 Mar 2025 17:34:17 +0000
+Message-ID: <8490942b9428411e858a62a80ea12530@huawei.com>
+References: <20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com>
+ <20250311141045.66620-5-shameerali.kolothum.thodi@huawei.com>
+ <547f961e-380c-4ffe-8b8b-3e9d543aa702@redhat.com>
+ <58c9c37876c64584b0c7961ec61696a3@huawei.com>
+ <5b29ea01-1b86-4b48-a769-14986751a0f1@redhat.com>
+ <5d894a546d3f4081ac2cfe98bd2ea612@huawei.com>
+ <fb28c228-0c78-4412-ba91-a62cb4351793@redhat.com>
+In-Reply-To: <fb28c228-0c78-4412-ba91-a62cb4351793@redhat.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.156.214]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQERX/uiI+LG127bCFnOJB03IqEGrgIuSTFFtPKxSjA=
-Content-Language: en-us
-X-Antivirus: Norton (VPS 250312-2, 3/12/2025), Outbound message
-X-Antivirus-Status: Clean
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2e;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-qv1-xf2e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,61 +83,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-> -----Original Message-----
-> From: Brian Cain <brian.cain@oss.qualcomm.com>
-> Sent: Friday, February 28, 2025 11:26 PM
-> To: qemu-devel@nongnu.org
-> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
-> philmd@linaro.org; quic_mathbern@quicinc.com; ale@rev.ng; anjo@rev.ng;
-> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
-> alex.bennee@linaro.org; quic_mburton@quicinc.com;
-> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>; Michael Lambert
-> <mlambert@quicinc.com>
-> Subject: [PATCH 38/38] target/hexagon: Add hex_interrupts support
->=20
-> From: Brian Cain <bcain@quicinc.com>
->=20
-> Co-authored-by: Taylor Simpson <ltaylorsimpson@gmail.com>
-> Co-authored-by: Sid Manning <sidneym@quicinc.com>
-> Co-authored-by: Michael Lambert <mlambert@quicinc.com>
-> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
-
-
-> diff --git a/target/hexagon/hex_interrupts.c
-> b/target/hexagon/hex_interrupts.c new file mode 100644 index
-> 0000000000..fd00bcfb9a
-
-
-> +bool hex_check_interrupts(CPUHexagonState *env) {
-> +    CPUState *cs =3D env_cpu(env);
-> +    bool int_handled =3D false;
-> +    bool ssr_ex =3D get_ssr_ex(env);
-> +    int max_ints =3D 32;
-> +    bool schedcfgen;
-> +
-> +    /* Early exit if nothing pending */
-> +    if (get_ipend(env) =3D=3D 0) {
-> +        restore_state(env, false);
-> +        return false;
-> +    }
-> +
-> +    BQL_LOCK_GUARD();
-> +    /* Only check priorities when schedcfgen is set */
-> +    schedcfgen =3D get_schedcfgen(env);
-> +    for (int i =3D 0; i < max_ints; i++) {
-> +        if (!get_iad_bit(env, i) && get_ipend_bit(env, i)) {
-> +            qemu_log_mask(CPU_LOG_INT,
-> +                          "%s: thread[%d] pc =3D 0x%x found int =
-%d\n", __func__,
-> +                          env->threadId, env->gpr[HEX_REG_PC], i);
-
-Don't use %d - use PRI* instead.  Several instances ...
-
-
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRXJpYyBBdWdlciA8ZXJp
+Yy5hdWdlckByZWRoYXQuY29tPg0KPiBTZW50OiBXZWRuZXNkYXksIE1hcmNoIDEyLCAyMDI1IDQ6
+MjggUE0NCj4gVG86IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkNCj4gPHNoYW1lZXJhbGkua29s
+b3RodW0udGhvZGlAaHVhd2VpLmNvbT47IHFlbXUtYXJtQG5vbmdudS5vcmc7DQo+IHFlbXUtZGV2
+ZWxAbm9uZ251Lm9yZw0KPiBDYzogcGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnOyBqZ2dAbnZpZGlh
+LmNvbTsgbmljb2xpbmNAbnZpZGlhLmNvbTsNCj4gZGR1dGlsZUByZWRoYXQuY29tOyBiZXJyYW5n
+ZUByZWRoYXQuY29tOyBuYXRoYW5jQG52aWRpYS5jb207DQo+IG1vY2hzQG52aWRpYS5jb207IHNt
+b3N0YWZhQGdvb2dsZS5jb207IExpbnV4YXJtDQo+IDxsaW51eGFybUBodWF3ZWkuY29tPjsgV2Fu
+Z3pob3UgKEIpIDx3YW5nemhvdTFAaGlzaWxpY29uLmNvbT47DQo+IGppYW5na3Vua3VuIDxqaWFu
+Z2t1bmt1bkBodWF3ZWkuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJv
+bkBodWF3ZWkuY29tPjsgemhhbmdmZWkuZ2FvQGxpbmFyby5vcmcNCj4gU3ViamVjdDogUmU6IFtS
+RkMgUEFUQ0ggdjIgMDQvMjBdIGh3L2FybS92aXJ0OiBBZGQgc3VwcG9ydCBmb3Igc21tdXYzLQ0K
+PiBhY2NlbA0KDQo+ID4+IEhpIFNoYW1lZXIsDQo+ID4+Pj4gSSBrbm93IHRoZXJlIHdlcmUgcXVp
+dGUgYSBsb3Qgb2YgZGljdXNzaW9ucyBvbiB0aGUgMXN0IG11bHRpDQo+ID4+Pj4gaW5zdGFudGlh
+dGlvbiBzZXJpZXMgcmVsYXRlZCB0byB0aGUgd2F5IHdlIGluc3RhbmF0aWF0ZSB0aGF0IGRldmlj
+ZQ0KPiA+Pj4+IGFuZCBtYXliZSBJIG1pc3NlZCBzb21lIGJsb2NrZXJzIGJ1dCB3aHkgd291bGRu
+J3Qgd2UgYWxsb3cgdGhlDQo+ID4+Pj4gaW5zdGFudGlhdGlvbiBvZiB0aGUgbGVnYWN5IHNtbXUg
+ZGV2aWNlIHdpdGggLWRldmljZSB0b28uIEkgdGhpbmsNCj4gPj4+PiB0aGlzIHdvdWxkIGJlIHNp
+bXBsZXIgZm9yIGxpYnZpcnQgYW5kIHdlIHdvdWxkIHNvbWVob3cgZGVwcmVjYXRlDQo+ID4+Pj4g
+dGhlIG1hY2hpbmUgb3B0aW9uIG1ldGhvZD8gd291bGQgdGhhdCBtYWtlIGEgcHJvYmxlbSBpZiB5
+b3Ugd2VyZQ0KPiB0bw0KPiA+Pj4+IHVzZSAtZGV2aWNlIHNtbXUsYWNjZWwgb3Igc29tZXRoaW5n
+IGFsaWtlPw0KPiA+Pj4gVGhhbmtzIGZvciB0YWtpbmcgYSBsb29rLiBJIGFtIGp1c3QganVtcGlu
+ZyBvbiB0aGlzIG9uZSBmb3Igbm93Lg0KPiA+Pj4gWWVzLCB0aGVyZSB3ZXJlIGRpc2N1c3Npb25z
+IGFyb3VuZCB0aGF0LiBCdXQgSSB3YXMgbm90IHN1cmUgd2UNCj4gPj4+IGNvbmNsdWRlZCBvbiBk
+ZXByZWNhdGluZyB0aGUgbWFjaGluZSBvcHRpb24uIFNvIGlmIEkgZ2V0IHlvdQ0KPiA+Pj4gY29y
+cmVjdGx5IHRoZSBpZGVhIGlzLA0KPiA+Pj4NCj4gPj4+IGlmIHdlIGhhdmUsDQo+ID4+PiAtZGV2
+aWNlIHNtbXV2MyBpdCB3aWxsIGluc3RhbnRpYXRlIHRoZSBjdXJyZW50IG1hY2hpbmUgd2lkZSBz
+bW11djMNCj4gPj4+IGFuZCBmb3IgLWRldmljZSBzbW11djMsYWNjZWwgdGhpcyBkZXZpY2U/DQo+
+ID4+IHllcyB0aGF0IHdvdWxkIGJlIG15IHByZWZlcmVuY2UuDQo+ID4gT2suIEkgd2lsbCBsb29r
+IGludG8gdGhhdCBpbiBteSBuZXh0IHJlc3Bpbi4gQSBxdWljayBxdWVzdGlvbi4gRG9lcw0KPiA+
+IHFlbXUgREVWSUNFIG1vZGVsIHN1cHBvcnQgdGhlIGRpZmZlcmVudGlhdGlvbiBsaWtlIGFib3Zl
+IGVhc2lseT8gT3Igd2UNCj4gPiBoYXZlIHRvIG1hbmFnZSBpdCB3aXRoIHByb3BlcnRpZXM/DQo+
+IE5vdCBzdXJlIGlmIEkgdW5kZXJzdGFuZCB5b3UgcXVlc3Rpb24uIEkgbWVhbnQgaXQgY2FuIGJl
+IGEgYm9vbGVhbiBkZXZpY2UNCj4gcHJvcGVydHkgKERFRklORV9QUk9QX0JPT0wpIHNtbXV2Myxh
+Y2NlbD1vbg0KPiANCj4gTm8/DQoNClJpZ2h0LiBNeSBxdWVyeSB3YXMgbW9yZSBhYm91dCBhbnkg
+aGlkZGVuIFFlbXUgbWFnaWMgdG8gaGF2ZSBkZXZpY2UgaW5zdGFudGlhdGlvbg0Kc2ltaWxhciB0
+byB3aGF0IHdlIGhhdmUgYXQgdGhlIG1vbWVudCBldmVuIHRob3VnaCB3ZSBuYW1lIGJvdGggZGV2
+aWNlcyAic21tdXYzIi4NCiANClRoYXQgd2F5IEkgY2FuIGtlZXAgbXVjaCBvZiB0aGUgY29kZSBy
+YXRoZXIgdGhhbiBjaGVja2luZyAiYWNjZWwiIHByb3BlcnR5DQppbiBTTU1VdjMgY29kZSBhbmQg
+cmVkaXJlY3RpbmcgY2FsbHMuIEJ1dCBsb29rcyBsaWtlIG5vdC4gDQoNClRoYW5rcywNClNoYW1l
+ZXINCg0KDQoNCg0K
 
