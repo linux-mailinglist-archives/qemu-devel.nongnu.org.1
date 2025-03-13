@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1105A5ED78
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 09:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC11A5ED7D
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 09:03:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsdVr-00046a-3S; Thu, 13 Mar 2025 04:01:55 -0400
+	id 1tsdVu-00047g-0u; Thu, 13 Mar 2025 04:01:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tsdVp-000460-Hh
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 04:01:53 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tsdVq-00046j-Kw
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 04:01:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tsdVn-0007hn-BT
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 04:01:53 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tsdVo-0007hw-RR
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 04:01:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741852910;
+ s=mimecast20190719; t=1741852912;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xARmfleJLcRs6uJ5Vv0tfYqJrIpQFsHyCPVE/9IPWog=;
- b=HSpK23sB+46bKkNn/N666U9GYOKByu39WK3n+WutGcVF+gHY8zVgpfWvl53IZ5SMukAwuf
- zJSXXzDzAAofopQBQmlCqWHa7G1H3jsGtqCQPfF3LHhdI0xXLwqbVtKLy9gNU8rGhF+VwK
- PK40R46B3ZSr6SoDba7bbvW6MUTiJEY=
+ bh=ATyNnDPsrP4Cvhq799JxC4uMKbimzZ7xGTbdv4QkV4M=;
+ b=UTU3H7bAUSdLP6AhnHvibTgzIZEPJpIYCikC5VpxCq+4flzTMlWsUx6qbvmjxHVjvYTBHF
+ HMpN70z5mkLtKc/Wm4RXDx3YEncKVWw1H7MaM+OTbQmNTcMkolH1SI1LX9NfywusNUh7XG
+ AZjbn5PZTAuHFH5nFW7nJYmDwh9ySAg=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-vkdNJoUsNx-Em20FxUxWAg-1; Thu,
- 13 Mar 2025 04:01:49 -0400
-X-MC-Unique: vkdNJoUsNx-Em20FxUxWAg-1
-X-Mimecast-MFC-AGG-ID: vkdNJoUsNx-Em20FxUxWAg_1741852908
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-nqnHzOu-Moqm4bG-D3lSRA-1; Thu,
+ 13 Mar 2025 04:01:50 -0400
+X-MC-Unique: nqnHzOu-Moqm4bG-D3lSRA-1
+X-Mimecast-MFC-AGG-ID: nqnHzOu-Moqm4bG-D3lSRA_1741852909
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 16F60195609F; Thu, 13 Mar 2025 08:01:47 +0000 (UTC)
+ id 84C1C195609E
+ for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 08:01:49 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.26])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 313761955F2D; Thu, 13 Mar 2025 08:01:44 +0000 (UTC)
+ id AA32E1955D85; Thu, 13 Mar 2025 08:01:47 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 3/8] tests/functional: Bump up arm_replay timeout
-Date: Thu, 13 Mar 2025 09:01:27 +0100
-Message-ID: <20250313080132.1467625-4-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 4/8] docs/system: Fix the information on how to run certain
+ functional tests
+Date: Thu, 13 Mar 2025 09:01:28 +0100
+Message-ID: <20250313080132.1467625-5-thuth@redhat.com>
 In-Reply-To: <20250313080132.1467625-1-thuth@redhat.com>
 References: <20250313080132.1467625-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -80,46 +81,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+The tests have been converted to the functional framework, so
+we should not talk about Avocado here anymore.
 
-On my machine the arm_replay test takes over 2 minutes to run
-in a config with Rust enabled and debug enabled:
-
-$ time (cd build/rust ; PYTHONPATH=../../python:../../tests/functional
-QEMU_TEST_QEMU_BINARY=./qemu-system-arm ./pyvenv/bin/python3
-../../tests/functional/test_arm_replay.py)
-TAP version 13
-ok 1 test_arm_replay.ArmReplay.test_cubieboard
-ok 2 test_arm_replay.ArmReplay.test_vexpressa9
-ok 3 test_arm_replay.ArmReplay.test_virt
-1..3
-
-real    2m16.564s
-user    2m13.461s
-sys     0m3.523s
-
-Bump up the timeout to 4 minutes.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250310102830.3752440-1-peter.maydell@linaro.org>
+Fixes: f7d6b772200 ("tests/functional: Convert BananaPi tests to the functional framework")
+Fixes: 380f7268b7b ("tests/functional: Convert the OrangePi tests to the functional framework")
+Fixes: 4c0a2df81c9 ("tests/functional: Convert some tests that download files via fetch_asset()")
+Message-ID: <20250311160847.388670-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/meson.build | 1 +
- 1 file changed, 1 insertion(+)
+ docs/system/arm/bananapi_m2u.rst | 5 ++---
+ docs/system/arm/orangepi.rst     | 6 +++---
+ docs/system/devices/igb.rst      | 4 ++--
+ 3 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index e78560a9011..e181ed1ea57 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -34,6 +34,7 @@ test_timeouts = {
-   'arm_orangepi' : 540,
-   'arm_quanta_gsj' : 240,
-   'arm_raspi2' : 120,
-+  'arm_replay' : 240,
-   'arm_tuxrun' : 240,
-   'arm_sx1' : 360,
-   'intel_iommu': 300,
+diff --git a/docs/system/arm/bananapi_m2u.rst b/docs/system/arm/bananapi_m2u.rst
+index 587b4886553..d30db8d04c3 100644
+--- a/docs/system/arm/bananapi_m2u.rst
++++ b/docs/system/arm/bananapi_m2u.rst
+@@ -135,6 +135,5 @@ provide the following command:
+ .. code-block:: bash
+ 
+   $ cd qemu-build-dir
+-  $ AVOCADO_ALLOW_LARGE_STORAGE=yes tests/venv/bin/avocado \
+-    --verbose --show=app,console run -t machine:bpim2u \
+-    ../tests/avocado/boot_linux_console.py
++  $ QEMU_TEST_ALLOW_LARGE_STORAGE=1 \
++    meson test --suite thorough func-arm-arm_bpim2u
+diff --git a/docs/system/arm/orangepi.rst b/docs/system/arm/orangepi.rst
+index db87e81fec4..8b9448ca7b0 100644
+--- a/docs/system/arm/orangepi.rst
++++ b/docs/system/arm/orangepi.rst
+@@ -257,9 +257,9 @@ Orange Pi PC integration tests
+ 
+ The Orange Pi PC machine has several integration tests included.
+ To run the whole set of tests, build QEMU from source and simply
+-provide the following command:
++provide the following command from the build directory:
+ 
+ .. code-block:: bash
+ 
+-  $ AVOCADO_ALLOW_LARGE_STORAGE=yes avocado --show=app,console run \
+-     -t machine:orangepi-pc tests/avocado/boot_linux_console.py
++  $ QEMU_TEST_ALLOW_LARGE_STORAGE=1 \
++    meson test --suite thorough func-arm-arm_orangepi
+diff --git a/docs/system/devices/igb.rst b/docs/system/devices/igb.rst
+index 04e79dfe549..9145af5c757 100644
+--- a/docs/system/devices/igb.rst
++++ b/docs/system/devices/igb.rst
+@@ -57,11 +57,11 @@ directory:
+   meson test qtest-x86_64/qos-test
+ 
+ ethtool can test register accesses, interrupts, etc. It is automated as an
+-Avocado test and can be ran with the following command:
++functional test and can be ran with the following command:
+ 
+ .. code:: shell
+ 
+-  make check-avocado AVOCADO_TESTS=tests/avocado/netdev-ethtool.py
++  meson test --suite thorough func-x86_64-netdev_ethtool
+ 
+ References
+ ==========
 -- 
 2.48.1
 
