@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA7AA5FC24
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 17:41:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBD7A5FC33
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 17:41:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tslam-0003R9-4z; Thu, 13 Mar 2025 12:39:32 -0400
+	id 1tslaj-0003Ph-Pt; Thu, 13 Mar 2025 12:39:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tslac-0003Lb-S6
+ id 1tslad-0003Ma-Ui
  for qemu-devel@nongnu.org; Thu, 13 Mar 2025 12:39:23 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tslaZ-0005dI-Uc
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 12:39:22 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2fee05829edso2501504a91.3
- for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 09:39:19 -0700 (PDT)
+ id 1tslab-0005di-14
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 12:39:23 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2ff6ae7667dso2578480a91.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 09:39:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741883958; x=1742488758; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741883959; x=1742488759; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mZcjdDtX1Z7JVvsuWgguTldfqVr7ZBWkV3i9i17ooa8=;
- b=NxR8Vdq+doWrr81XlpFwDxvY2WpP6bS4yCcYlHqEe4nunhIWISQ5Gmtw5TwT92P1sS
- AtjECROxM/lR6nVu3GkKGVfqQzpemgdx7pP/t8ukIf+E8U1ylfdySNVlPst7+huWG2nh
- ZlkdLZvH7l6S+K8hq8bdr06fJF+vSCSXf74QWfDKGmabCiPz5H8T+LztYKm5E8H2egjj
- 9MZCY6++zwVrGKY/LQe/wA7h831Po+VdNJk1S9xX55fePsq5g2Er/G37h7gxUffJTN6x
- Mgot+jy0mgelSEPU2s85jmdkL0t/h2lQfcJlU8tqxa1MAbqllnU2su9iMKL1NMuvoQOD
- a9xw==
+ bh=bYYGOsy+zcSjxVOnigwMonGaAhWbZB7W76ZyOX5Jlgc=;
+ b=aC4VCAoPc7kCgFR9CbYieqTDpfu6vlK6GW4NxpxryYtlJcXnTMxpg83PoNJPkAeHJt
+ +wMOnLTvEmp15jilYmwubF1zElzC5dnpJGFWrHzP8tWwkyip0Ww93tqz5pgzJRraFZG/
+ 5QWsfZXLLgFnKwClEAkqKSIekXv51bZv1tVISZYleQBIy/IaJwwlRRG1zz4BHAzE/JnY
+ 6brS9Vcu4uMEiRrmlksHO5+I7GFO/xJLnchYsOcaMPTJdng63cHp8+sMLnfSw4fpr6hH
+ sAuxzhI5rSMXgNJcj0b9WeGr7nmMeiqiFBnlkPvxI1MitZkgSSMt0hHnw0D534sXX/kR
+ /5lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741883958; x=1742488758;
+ d=1e100.net; s=20230601; t=1741883959; x=1742488759;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mZcjdDtX1Z7JVvsuWgguTldfqVr7ZBWkV3i9i17ooa8=;
- b=cRHZsfQmPrwQ4BQkT/XON40BAyFR4SpWK7pJoIhn6jGoVkAFzU6SgXItj7NGbpBiM7
- WNNWlTrYck3fHDdprQ+Lc06XVgf9sWQG4u40WOFNmtXwy7VIf66DvI9/5KDkg5LtxjOr
- OYKPFacUOdtcbRUiZRdILYNplcKcH9j4NV+0G8rqVGEmBwqmVnI8w74XSJVycjyMDl+a
- cIha/2LP9wK7CzHusY9b1emSf0b2/ng3Elgo5LEZGQSx7N2vaW0bBif+dmdEYJGtoO4U
- TW8QFGFZPSWYJ7TCtGOeFY5iP5Hsq5bdr0/ExL6B0hK7fMYWzo5PrsciYmLn7dfyNjG1
- gTlg==
-X-Gm-Message-State: AOJu0YxuDw8oMuIfQ/1O+mcGbm9xqB0RZvzXhNh8drhECkR442/OC6Qi
- bHl6ykSsLuVxPlJOXIDqxEyKuVrHUE6NJL8QNref8UtHM9tU4RiH4kKGc4ruJ8qDRusLwFgHTib
- FtnY=
-X-Gm-Gg: ASbGncvrC7c+DOL38Lv1l83HxdL0ouK23aDBMDn9iiKHlhqIaSWBMRvMdkIWrShGqan
- 76NlUEKhRvdUqYJ7cnlHF40rtA+gVCkLtYG+yZUvmOfdIoN9DrxT95iAFOooFrJUvJ25hvAyfyN
- gh6aaZnAXafKULpASvkMcfooYZ6uv8AKkmyOpp43uzt+N61xYJgRtud2YOQtDOvVijAthQZlgNL
- 145aHk/mP9+AQkXDxdHPPWj5sn1m/94Gp6vLPsiOySsPvvJnC5LF8/AQ1IV2Wsqp3ajglzNtOTm
- KnAGIbcTIh9RetqxdYg3Xktvu4XW/jMwpG6+En4pvYw+
-X-Google-Smtp-Source: AGHT+IG4zIqLxuyjovKp9g3TAXrCpctV1RL6f3536TGUBfN83HoHfbIXNZa1EoQ+qlG58AlBh7g+Ww==
-X-Received: by 2002:a17:90b:5403:b0:2ee:fa0c:cebc with SMTP id
- 98e67ed59e1d1-3014e861c18mr244498a91.20.1741883958391; 
- Thu, 13 Mar 2025 09:39:18 -0700 (PDT)
+ bh=bYYGOsy+zcSjxVOnigwMonGaAhWbZB7W76ZyOX5Jlgc=;
+ b=jfsKraaM7e39MNH8oYrl2s2MkqJwxeVARnV0nNv3uAb+DgxnMT+W1dZG1F9a7bOHRi
+ jPbZoFLQ6vbcluF3a1J0fUJ2s2dNTTvFTGfB9Akoq/JOFZDyYi1J+jtLvnFWiCtOyU1n
+ GvkOsswLJXIxI+SsHKaDJCfq+kw5TGH30FEWXUOAJNYnOSL7V0DLeTCL1zRqfUIGHA2P
+ 4AA+iXNIRpVoI2Chk56QtTeOodJmZvR6r/uQD/hEVemOqBPU4el5XdImZWM+Cg5oFEjZ
+ aKTVOlaEc4bPP56Tps7qFOLgnkTDNZIM8rv8nAYCYXm6rKatuvU2Ep5KRARNcA6WGgYu
+ Nikg==
+X-Gm-Message-State: AOJu0YycA8/LRpEsC2SOioNs+zYz1uCUOP2kfYeWB1MxmeYY/fwB7lHK
+ IcBs5DSCfG+aKOg88vrDYPH0VRwxllgO58qsKklCA/8+IPDj7tDT5qIxc5DESP1xI4RklQjwTe1
+ g9AI=
+X-Gm-Gg: ASbGncsbINUo5Tsp98XGhAGPr+d+NkNR6pRflwDkWYOo0rbaIyL3s3TXDcCDancM4XW
+ TsrYU8YjHMIOrmEeBvD0GIBySheoY4xygBO7gUKo/zbt69jWQUHod/Ds5eZEfdXsQ/1vJFth5VF
+ CLAs7mCLiaI0SIT70f7vmZsW3spFmFYWAYyiBCKK26IAMpeJZNea3+gGmEed+87keYZyn8WzRYD
+ M+o2mYUjMGg128uOwzR1JHN2+BYYpyO2MM46CHvUeSSVL0N+DOecY143Pnx7XTRnwIGmkp7W4sm
+ eAGyIclNL9E9FlM23P5JrbMZC5s7Hic0qxxHYKVNWX3w
+X-Google-Smtp-Source: AGHT+IGIP+en0Aj0eYAe+7XhNeZ6W7zp31secPtMQkoPMAwiLZjQzktFWA/FDeyZICzvqUiJA1imgg==
+X-Received: by 2002:a17:90b:54c4:b0:2ff:52b8:2767 with SMTP id
+ 98e67ed59e1d1-3014e8619f7mr247106a91.19.1741883959525; 
+ Thu, 13 Mar 2025 09:39:19 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30119265938sm4020084a91.39.2025.03.13.09.39.17
+ 98e67ed59e1d1-30119265938sm4020084a91.39.2025.03.13.09.39.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 09:39:18 -0700 (PDT)
+ Thu, 13 Mar 2025 09:39:19 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paul Durrant <paul@xen.org>,
@@ -81,17 +81,16 @@ Cc: Paul Durrant <paul@xen.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 06/17] codebase: prepare to remove cpu.h from
- exec/exec-all.h
-Date: Thu, 13 Mar 2025 09:38:52 -0700
-Message-Id: <20250313163903.1738581-7-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 07/17] exec/exec-all: remove dependency on cpu.h
+Date: Thu, 13 Mar 2025 09:38:53 -0700
+Message-Id: <20250313163903.1738581-8-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250313163903.1738581-1-pierrick.bouvier@linaro.org>
 References: <20250313163903.1738581-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,105 +113,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Previous commit changed files relying transitively on it.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/tcg/tcg-op.h           | 1 +
- target/ppc/helper_regs.h       | 2 ++
- hw/ppc/spapr_nested.c          | 1 +
- hw/sh4/sh7750.c                | 1 +
- page-vary-target.c             | 2 +-
- target/ppc/tcg-excp_helper.c   | 1 +
- target/riscv/bitmanip_helper.c | 2 +-
- 7 files changed, 8 insertions(+), 2 deletions(-)
+ include/exec/exec-all.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
-index a02850583bd..bc46b5570c4 100644
---- a/include/tcg/tcg-op.h
-+++ b/include/tcg/tcg-op.h
-@@ -9,6 +9,7 @@
- #define TCG_TCG_OP_H
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index dd5c40f2233..19b0eda44a7 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -20,7 +20,6 @@
+ #ifndef EXEC_ALL_H
+ #define EXEC_ALL_H
  
- #include "tcg/tcg-op-common.h"
-+#include "exec/target_long.h"
- 
- #ifndef TARGET_LONG_BITS
- #error must include QEMU headers
-diff --git a/target/ppc/helper_regs.h b/target/ppc/helper_regs.h
-index 8196c1346dc..b928c2c452d 100644
---- a/target/ppc/helper_regs.h
-+++ b/target/ppc/helper_regs.h
-@@ -20,6 +20,8 @@
- #ifndef HELPER_REGS_H
- #define HELPER_REGS_H
- 
-+#include "target/ppc/cpu.h"
-+
- void hreg_swap_gpr_tgpr(CPUPPCState *env);
- void hreg_compute_hflags(CPUPPCState *env);
- void hreg_update_pmu_hflags(CPUPPCState *env);
-diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index 201f6292033..a79e398c132 100644
---- a/hw/ppc/spapr_nested.c
-+++ b/hw/ppc/spapr_nested.c
-@@ -2,6 +2,7 @@
- #include "qemu/cutils.h"
- #include "exec/exec-all.h"
- #include "exec/cputlb.h"
-+#include "exec/target_long.h"
- #include "helper_regs.h"
- #include "hw/ppc/ppc.h"
- #include "hw/ppc/spapr.h"
-diff --git a/hw/sh4/sh7750.c b/hw/sh4/sh7750.c
-index 6faf0e3ca8b..41306fb6008 100644
---- a/hw/sh4/sh7750.c
-+++ b/hw/sh4/sh7750.c
-@@ -29,6 +29,7 @@
- #include "hw/irq.h"
- #include "hw/sh4/sh.h"
- #include "system/system.h"
-+#include "target/sh4/cpu.h"
- #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
- #include "sh7750_regs.h"
-diff --git a/page-vary-target.c b/page-vary-target.c
-index 3f81144cda8..84ddeb7c26a 100644
---- a/page-vary-target.c
-+++ b/page-vary-target.c
-@@ -21,7 +21,7 @@
- 
- #include "qemu/osdep.h"
- #include "exec/page-vary.h"
--#include "exec/exec-all.h"
-+#include "exec/target_page.h"
- 
- bool set_preferred_target_page_bits(int bits)
- {
-diff --git a/target/ppc/tcg-excp_helper.c b/target/ppc/tcg-excp_helper.c
-index 5a189dc3d70..c422648cfdd 100644
---- a/target/ppc/tcg-excp_helper.c
-+++ b/target/ppc/tcg-excp_helper.c
-@@ -19,6 +19,7 @@
- #include "qemu/osdep.h"
- #include "qemu/main-loop.h"
- #include "qemu/log.h"
-+#include "target/ppc/cpu.h"
+-#include "cpu.h"
+ #if defined(CONFIG_USER_ONLY)
  #include "exec/cpu_ldst.h"
- #include "exec/exec-all.h"
- #include "exec/helper-proto.h"
-diff --git a/target/riscv/bitmanip_helper.c b/target/riscv/bitmanip_helper.c
-index b99c4a39a1f..e9c8d7f7780 100644
---- a/target/riscv/bitmanip_helper.c
-+++ b/target/riscv/bitmanip_helper.c
-@@ -20,7 +20,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/host-utils.h"
--#include "exec/exec-all.h"
-+#include "exec/target_long.h"
- #include "exec/helper-proto.h"
- #include "tcg/tcg.h"
- 
+ #endif
 -- 
 2.39.5
 
