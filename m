@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C82A5EBEA
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 07:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACA2A5EBF8
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 07:58:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tscU6-0006QT-Ie; Thu, 13 Mar 2025 02:56:02 -0400
+	id 1tscU8-0006Uv-73; Thu, 13 Mar 2025 02:56:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tscTu-0006MU-NO
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:55:50 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1tscTz-0006OR-2l
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:55:55 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tscTs-00063k-UA
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:55:50 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-224019ad9edso15661825ad.1
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 23:55:48 -0700 (PDT)
+ id 1tscTw-00064d-HW
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:55:54 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-224191d92e4so11390795ad.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 23:55:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741848947; x=1742453747;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741848951; x=1742453751;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=edQrPumtjHJ/3YEvhVZ3l0G0XjyNZI+GIrglFTyNrrU=;
- b=Ad8g2VEku75+KTZ94JLcm8SwBeS3vFxVVHzcli3SjNyIn96vy4QCPpAc0WSgkTB5s6
- iYBGljg91DC43JdJIhRIniuVJnp4reNzcjqI/4hNOxm1RHAj+LG1Gjb+BqjIh+Lt5gOZ
- oQZJXDnS2TUaBZWUBkKwAcQ4NHQkYug5qKkJwlSthorseNngRvPcVPb0KgWz2NDAf+Cs
- MtlvS5x6BVZwJj54CpBZxbmMznMUTHHTfqwp4/MH8anNhs4tjrQmVIkGIbaYWjDnW2kJ
- Fr8nj87CIrmrpdLKVt6lT/gDojNvKoRYZg5jnaMRx1bC+Y7Lif/Iw6Ye8vd9F16xq5Oo
- ZPzw==
+ :reply-to; bh=oIFfPe5cbAFiiWq1pctwdNXgTMQOFzoPIBHYx9JfyDs=;
+ b=E5SoP6x1rX89dXredw3zNgDPW2irhIhoUxian4hiHxU+2DgCFnwlFqj3ncNCkRGGhK
+ 87Miux2bhMe2mhYZdFnXoAFe/gGqgWipizciwLTEPL1iSNlKA8UOzJRQqArPPNroc9tD
+ SsEEIOXpZpk9ZdEOyoTQ2gUBNClekkJcZBarhcuZ1GOm+nzJPdWhajh53IfquPWJRDW/
+ v4oKOvp7gpnLBrUYGNI6TyHYcUjMpKWjUEKL5iDhyegkf1lpbZ4j/6fnbF3HyFXZwy7a
+ 7x4k05pyD9oc0DCUNHy4T7bxsntU3pwVurxw34fDiWmWsWw4Qv/O/qLFTsf6PBxy8gkK
+ ohFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741848947; x=1742453747;
+ d=1e100.net; s=20230601; t=1741848951; x=1742453751;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=edQrPumtjHJ/3YEvhVZ3l0G0XjyNZI+GIrglFTyNrrU=;
- b=ksn68lcL9GR3J99r5dPaX1/GAgdGjgjD/x7me3gQuclgFn1rQDubNW6HlF0gitIKNb
- qQ6qquMEBDbij4hIOYqFd9MwQmV11R7gupVeWuQY9BDsPGA9tUQNUNtiiHTYCMPGPUTL
- rmUv/WyUCQ8Jc7KV50TsGd/Ktu+QFnvwwyx6fu7S8jXetvriE7IDRSHQqfCtgOYniJtc
- i1o/c2BEpde+d1t72D6jSdlb6ec19GCaJk1bc6eTWe9iRtU8zsv+IMtHial27vBlcPa+
- qUpvHA5nYCDL35O1JUUxEvoUfx7cRo7pHpb/899IITyzURGfAE5mpT8hk9Ql1rmE2n8C
- Gh7g==
-X-Gm-Message-State: AOJu0YywJ3qIE4dYK3x7QMFMKpAQ89rnqD6lUmIEeD4cBzB6Z6/auOyA
- AFzh/Y35s7nWF4apgYAdVfCly8r/dQFqPZEMtTYI7+x6RhQ1xX/apxhV9qTy0+qRbxfqBnjttae
- NCGQ=
-X-Gm-Gg: ASbGnct7cs4e7wcRo7UzBljS70OVPIa7TxQW/OjvurBmphmzPrlRimIzcShGqH0felD
- y7vSqcm6lm656qLa8VvSlU7UGSmMtwINJ5j2vu0LZhNxjTpLRhkNIePo7aQBk7620tYdYoN/Jqk
- kdAU4EnnTj/IuLg7aXQ4OMjgeBsvLemWXiCwTPSKiDrm9o7eRws5vaMIZgML1VAxr01HaF/3gvg
- Rl7ZWIFysQ0mkke+jRy5XiDasJDQ0MUHdsWb+C6sxOQOAv0dEtFK/2EPMLP9vjQILhHje8f58j0
- gQJEy9feemAxiPbk/2JoKfPtSgtWbJ3cERxrlPOMH5jpo9c2MHryNk97D/0=
-X-Google-Smtp-Source: AGHT+IGRuGv5QCnatLYEPGLLpRsA7qJ6wbH7a83Xg0XRaDoVG7l1LOd9pZ8+k0LLAuPGowedYkH70w==
-X-Received: by 2002:a17:903:19cf:b0:215:94eb:adb6 with SMTP id
- d9443c01a7336-22428ab75cdmr436416455ad.40.1741848947228; 
- Wed, 12 Mar 2025 23:55:47 -0700 (PDT)
+ bh=oIFfPe5cbAFiiWq1pctwdNXgTMQOFzoPIBHYx9JfyDs=;
+ b=iiIC9nBmSL1xkweY3u7aw3tOjSugp5KjGVzfdS5WcfFtdWJd+w16ALvf+6oIeduNz1
+ EvWa0GnZlTvs+j0rQDS6tWlEHf2G77EgsJ4lIRBEpv/63cyfRYblzwUYYPaGRuOCiXOf
+ xtqC1tiOjtdC7dzPfBur01SMdEpJC1B6VXQbhJSyTX8LYVUes+lJm/0hlIGSQvJEQGWW
+ GO7SP58lc7U8kOuXIbu7i9g+uCkL+vG/9GwWlS2kjhj5hy2jS4d7043R+0N8K5CltWmJ
+ bBjgwXpNErS5BrM6ifnEkrnFIz5CXAO8oT2HgXRAq4Wj7O84b9xD9JJNl2S1nTO7rXrW
+ yv4w==
+X-Gm-Message-State: AOJu0Ywlw3djEM78SRCHtKouB5v2g1dV6KSvNcxVQgGaN8/PlZVxtN4x
+ boMcFquIhQ83S8v6/s5pP+OdWf2hsnCc9FCLyN/ZXOv/HeJXxjii2QmNXyIuX0c=
+X-Gm-Gg: ASbGncu9daPfsXcbAhwcKg0V7AwY07g8lgdzoE+O8PxnOoJ7VmZCF2+3vJPEzQBbAqz
+ crB+XNxBj+Ajw0ZsHo7AH4EhtUb3WFbdOfArCWCHi9k8p2vK/Cw42CE8e5VlfzDTbvh8wS0lM+8
+ 8RYqvp43VgbYqKo07u1Q4hqJZ59eypZT1C3vKpEA2u5SYLivhlc/2UAJOmQEfSqdZyxrWocMoPP
+ nhBcQrBLTAjx+VpvbJT9zW6GmnxGegyMNXDOe2/Ikn8iQeMiBVGXcm9Xg2OKIUp2nVnbvlDwUrq
+ JrssU496p31Jzb4DdVU07+UfqzsZZXWr9yLOUn0urx3NfL/I
+X-Google-Smtp-Source: AGHT+IHM94MPnply1HiTFAMxyPX2aQdw9uOvMucL8T3ozc5n4IMo3Ydsn/+ynx3+wLagBt39kVVhcQ==
+X-Received: by 2002:a17:903:32ce:b0:223:4b8d:32f1 with SMTP id
+ d9443c01a7336-22428882233mr396058055ad.1.1741848951161; 
+ Wed, 12 Mar 2025 23:55:51 -0700 (PDT)
 Received: from localhost ([157.82.205.237])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-3011824b98dsm3078434a91.27.2025.03.12.23.55.45
+ d2e1a72fcca58-73711694e74sm641742b3a.143.2025.03.12.23.55.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Mar 2025 23:55:46 -0700 (PDT)
+ Wed, 12 Mar 2025 23:55:50 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 13 Mar 2025 15:55:27 +0900
-Subject: [PATCH RFC v4 01/11] qdev-properties: Add
- DEFINE_PROP_ON_OFF_AUTO_BIT64()
+Date: Thu, 13 Mar 2025 15:55:28 +0900
+Subject: [PATCH RFC v4 02/11] net/vhost-vdpa: Report hashing capability
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-hash-v4-1-c75c494b495e@daynix.com>
+Message-Id: <20250313-hash-v4-2-c75c494b495e@daynix.com>
 References: <20250313-hash-v4-0-c75c494b495e@daynix.com>
 In-Reply-To: <20250313-hash-v4-0-c75c494b495e@daynix.com>
 To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
@@ -78,8 +76,8 @@ To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  devel@daynix.com
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,150 +99,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DEFINE_PROP_ON_OFF_AUTO_BIT64() corresponds to DEFINE_PROP_ON_OFF_AUTO()
-as DEFINE_PROP_BIT64() corresponds to DEFINE_PROP_BOOL(). The difference
-is that DEFINE_PROP_ON_OFF_AUTO_BIT64() exposes OnOffAuto instead of
-bool.
+Report hashing capability so that virtio-net can deliver the correct
+capability information to the guest.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/qdev-properties.h | 18 ++++++++++++
- hw/core/qdev-properties.c    | 67 +++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 84 insertions(+), 1 deletion(-)
+ include/net/net.h |  3 +++
+ net/net.c         |  9 +++++++++
+ net/vhost-vdpa.c  | 28 ++++++++++++++++++++++++++++
+ 3 files changed, 40 insertions(+)
 
-diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-index 15fcec5260c7..61f13aca6cf4 100644
---- a/include/hw/qdev-properties.h
-+++ b/include/hw/qdev-properties.h
-@@ -43,11 +43,22 @@ struct PropertyInfo {
-     ObjectPropertyRelease *release;
- };
- 
-+/**
-+ * struct OnOffAutoBit64 - OnOffAuto storage with 64 elements.
-+ * @on_bits: Bitmap of elements with "on".
-+ * @auto_bits: Bitmap of elements with "auto".
-+ */
-+typedef struct OnOffAutoBit64 {
-+    uint64_t on_bits;
-+    uint64_t auto_bits;
-+} OnOffAutoBit64;
-+
- 
- /*** qdev-properties.c ***/
- 
- extern const PropertyInfo qdev_prop_bit;
- extern const PropertyInfo qdev_prop_bit64;
-+extern const PropertyInfo qdev_prop_on_off_auto_bit64;
- extern const PropertyInfo qdev_prop_bool;
- extern const PropertyInfo qdev_prop_uint8;
- extern const PropertyInfo qdev_prop_uint16;
-@@ -99,6 +110,13 @@ extern const PropertyInfo qdev_prop_link;
-                 .set_default = true,                              \
-                 .defval.u  = (bool)_defval)
- 
-+#define DEFINE_PROP_ON_OFF_AUTO_BIT64(_name, _state, _field, _bit, _defval) \
-+    DEFINE_PROP(_name, _state, _field, qdev_prop_on_off_auto_bit64,         \
-+                OnOffAutoBit64,                                             \
-+                .bitnr    = (_bit),                                         \
-+                .set_default = true,                                        \
-+                .defval.i = (OnOffAuto)_defval)
-+
- #define DEFINE_PROP_BOOL(_name, _state, _field, _defval)     \
-     DEFINE_PROP(_name, _state, _field, qdev_prop_bool, bool, \
-                 .set_default = true,                         \
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index c04df3b337ae..05a627030141 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -2,6 +2,7 @@
- #include "hw/qdev-properties.h"
- #include "qapi/error.h"
- #include "qapi/qapi-types-misc.h"
-+#include "qapi/qapi-visit-common.h"
- #include "qobject/qlist.h"
- #include "qemu/ctype.h"
- #include "qemu/error-report.h"
-@@ -180,7 +181,8 @@ const PropertyInfo qdev_prop_bit = {
- 
- static uint64_t qdev_get_prop_mask64(const Property *prop)
- {
--    assert(prop->info == &qdev_prop_bit64);
-+    assert(prop->info == &qdev_prop_bit64 ||
-+           prop->info == &qdev_prop_on_off_auto_bit64);
-     return 0x1ull << prop->bitnr;
+diff --git a/include/net/net.h b/include/net/net.h
+index cdd5b109b0d2..545f4339cec8 100644
+--- a/include/net/net.h
++++ b/include/net/net.h
+@@ -60,6 +60,7 @@ typedef bool (HasVnetHdrLen)(NetClientState *, int);
+ typedef void (SetOffload)(NetClientState *, int, int, int, int, int, int, int);
+ typedef int (GetVnetHdrLen)(NetClientState *);
+ typedef void (SetVnetHdrLen)(NetClientState *, int);
++typedef bool (GetVnetHashSupportedTypes)(NetClientState *, uint32_t *);
+ typedef int (SetVnetLE)(NetClientState *, bool);
+ typedef int (SetVnetBE)(NetClientState *, bool);
+ typedef struct SocketReadState SocketReadState;
+@@ -89,6 +90,7 @@ typedef struct NetClientInfo {
+     SetVnetHdrLen *set_vnet_hdr_len;
+     SetVnetLE *set_vnet_le;
+     SetVnetBE *set_vnet_be;
++    GetVnetHashSupportedTypes *get_vnet_hash_supported_types;
+     NetAnnounce *announce;
+     SetSteeringEBPF *set_steering_ebpf;
+     NetCheckPeerType *check_peer_type;
+@@ -189,6 +191,7 @@ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
+                       int ecn, int ufo, int uso4, int uso6);
+ int qemu_get_vnet_hdr_len(NetClientState *nc);
+ void qemu_set_vnet_hdr_len(NetClientState *nc, int len);
++bool qemu_get_vnet_hash_supported_types(NetClientState *nc, uint32_t *types);
+ int qemu_set_vnet_le(NetClientState *nc, bool is_le);
+ int qemu_set_vnet_be(NetClientState *nc, bool is_be);
+ void qemu_macaddr_default_if_unset(MACAddr *macaddr);
+diff --git a/net/net.c b/net/net.c
+index 39d6f28158a3..d0ae3db0d864 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -573,6 +573,15 @@ void qemu_set_vnet_hdr_len(NetClientState *nc, int len)
+     nc->info->set_vnet_hdr_len(nc, len);
  }
  
-@@ -225,6 +227,69 @@ const PropertyInfo qdev_prop_bit64 = {
-     .set_default_value = set_default_value_bool,
- };
- 
-+static void prop_get_on_off_auto_bit64(Object *obj, Visitor *v,
-+                                       const char *name, void *opaque,
-+                                       Error **errp)
++bool qemu_get_vnet_hash_supported_types(NetClientState *nc, uint32_t *types)
 +{
-+    Property *prop = opaque;
-+    OnOffAutoBit64 *p = object_field_prop_ptr(obj, prop);
-+    OnOffAuto value;
-+    uint64_t mask = qdev_get_prop_mask64(prop);
-+
-+    if (p->auto_bits & mask) {
-+        value = ON_OFF_AUTO_AUTO;
-+    } else if (p->on_bits & mask) {
-+        value = ON_OFF_AUTO_ON;
-+    } else {
-+        value = ON_OFF_AUTO_OFF;
++    if (!nc || !nc->info->get_vnet_hash_supported_types) {
++        return false;
 +    }
 +
-+    visit_type_OnOffAuto(v, name, &value, errp);
++    return nc->info->get_vnet_hash_supported_types(nc, types);
 +}
 +
-+static void prop_set_on_off_auto_bit64(Object *obj, Visitor *v,
-+                                       const char *name, void *opaque,
-+                                       Error **errp)
+ int qemu_set_vnet_le(NetClientState *nc, bool is_le)
+ {
+ #if HOST_BIG_ENDIAN
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index f7a54f46aa72..de006f3a2265 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -251,6 +251,32 @@ static bool vhost_vdpa_has_vnet_hdr(NetClientState *nc)
+     return true;
+ }
+ 
++static bool vhost_vdpa_get_vnet_hash_supported_types(NetClientState *nc,
++                                                     uint32_t *types)
 +{
-+    Property *prop = opaque;
-+    OnOffAutoBit64 *p = object_field_prop_ptr(obj, prop);
-+    OnOffAuto value;
-+    uint64_t mask = qdev_get_prop_mask64(prop);
++    assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
++    VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
++    uint64_t features = s->vhost_vdpa.dev->features;
++    int fd = s->vhost_vdpa.shared->device_fd;
++    struct {
++        struct vhost_vdpa_config hdr;
++        uint32_t supported_hash_types;
++    } config;
 +
-+    if (!visit_type_OnOffAuto(v, name, &value, errp)) {
-+        return;
++    if (!virtio_has_feature(features, VIRTIO_NET_F_HASH_REPORT) &&
++        !virtio_has_feature(features, VIRTIO_NET_F_RSS)) {
++        return false;
 +    }
 +
-+    switch (value) {
-+    case ON_OFF_AUTO_AUTO:
-+        p->on_bits &= ~mask;
-+        p->auto_bits |= mask;
-+        break;
++    config.hdr.off = offsetof(struct virtio_net_config, supported_hash_types);
++    config.hdr.len = sizeof(config.supported_hash_types);
 +
-+    case ON_OFF_AUTO_ON:
-+        p->on_bits |= mask;
-+        p->auto_bits &= ~mask;
-+        break;
++    assert(!ioctl(fd, VHOST_VDPA_GET_CONFIG, &config));
++    *types = le32_to_cpu(config.supported_hash_types);
 +
-+    case ON_OFF_AUTO_OFF:
-+        p->on_bits &= ~mask;
-+        p->auto_bits &= ~mask;
-+        break;
-+
-+    case ON_OFF_AUTO__MAX:
-+        g_assert_not_reached();
-+    }
++    return true;
 +}
 +
-+const PropertyInfo qdev_prop_on_off_auto_bit64 = {
-+    .type = "OnOffAuto",
-+    .description = "on/off/auto",
-+    .enum_table = &OnOffAuto_lookup,
-+    .get = prop_get_on_off_auto_bit64,
-+    .set = prop_set_on_off_auto_bit64,
-+    .set_default_value = qdev_propinfo_set_default_value_enum,
-+};
-+
- /* --- bool --- */
- 
- static void get_bool(Object *obj, Visitor *v, const char *name, void *opaque,
+ static bool vhost_vdpa_has_ufo(NetClientState *nc)
+ {
+     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
+@@ -428,6 +454,7 @@ static NetClientInfo net_vhost_vdpa_info = {
+         .stop = vhost_vdpa_net_client_stop,
+         .cleanup = vhost_vdpa_cleanup,
+         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
++        .get_vnet_hash_supported_types = vhost_vdpa_get_vnet_hash_supported_types,
+         .has_ufo = vhost_vdpa_has_ufo,
+         .check_peer_type = vhost_vdpa_check_peer_type,
+         .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
+@@ -1301,6 +1328,7 @@ static NetClientInfo net_vhost_vdpa_cvq_info = {
+     .stop = vhost_vdpa_net_cvq_stop,
+     .cleanup = vhost_vdpa_cleanup,
+     .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
++    .get_vnet_hash_supported_types = vhost_vdpa_get_vnet_hash_supported_types,
+     .has_ufo = vhost_vdpa_has_ufo,
+     .check_peer_type = vhost_vdpa_check_peer_type,
+     .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
 
 -- 
 2.48.1
