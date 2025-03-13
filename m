@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435D8A5EA45
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:53:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27381A5EA4A
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:53:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsZWw-0005Hr-QZ; Wed, 12 Mar 2025 23:46:47 -0400
+	id 1tsZWd-0004pT-MT; Wed, 12 Mar 2025 23:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZWN-0004ia-DG
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:13 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1tsZWJ-0004hv-ES
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:07 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZW9-0007pj-0V
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:09 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-22438c356c8so9205865ad.1
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:52 -0700 (PDT)
+ id 1tsZW5-0007py-NP
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:06 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-2254e0b4b79so13129375ad.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741837551; x=1742442351; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741837552; x=1742442352; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=c0yH4U6h2oXBq+kGt0lALY89FbRQ4QUGXJxA7WeVWJA=;
- b=qYbiNJ79rPb9EPEi9iSMArjdoGO67LwV5NVCJkFiPzm+COj/kvBOIE/jWmAdyQvR8S
- c3woiO41GLGjq8O/qPd20dxt1hkvGyN9KPRBrfqB55SksjaAevbVVUfYGmRmFBW7P6kr
- CatNaLPxOE7vxAwsu+lpnko1EbK8EIsoC3DvbwCVodon7/zIjHuJeRZWvedP3wPFZMmZ
- DBwxpr0PRg8VKTFaj4FDwc+HhU7D8HHoQESLhhbk6zSg2loP63uOTlEVNECVAJWSv5y/
- ulA8GO0/+o2+5tWcnUBncRzAitOgz79DoR34QMmD2TPPwDdRomXVBDl8ig38QhjDdS2Y
- 1CeA==
+ bh=IeHYr04W0m2zNJjTvbQgJtgjfEjOKbLo8D+48jtu/vU=;
+ b=apgGhxNfz8l0nr98joZ5VjTQT3AouuNHfOdPKCGQEQp0PztX87IDlGUDbUrbkGenCe
+ in+XCFdV4bYGkfFnPiplJ9+B2FIx1s5UNQwVhbJMgoGV4AvRIo4oX3gVjufMEPU3v30g
+ 4LUdlmuYaeVFDMIpvKnT9xfPNfaqEG5v4KgCsJMOo+kHCYfgOv+pGO6d7kT/ijAmkrfo
+ G9Ux3vODhWJed2kTMbV5cAA4QU8Ainub+WR1ssWXMdxdXJv9kLr4dmkatJxQlnA+B/NY
+ y+2iDz/+WkeCU+DLr/92jL/iy4JNuyxFDZLyioue+wRVKH+q+ye5HFp9TlIE4U0Rudyg
+ aUTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741837551; x=1742442351;
+ d=1e100.net; s=20230601; t=1741837552; x=1742442352;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c0yH4U6h2oXBq+kGt0lALY89FbRQ4QUGXJxA7WeVWJA=;
- b=rm92ydKCw+ccab8EPwg5uYd0SasN0w5XiaHQy+YSo0Mguxoe/fJYtH4ase/GbQqXWh
- T6Lhs/kEv0qwme36aAatoFN0xKkMmxhW6DlnE125MwDdZ4MBMNes4jAH3hl8yng3svce
- 49i+Je+96uKi/lKkHOCY10mDEfujGm2NdXQcAQYVScW9ezG2bV5O/uoGCINhzuegxtZ0
- R08Kyeo/+FXyy762K3HhAou2Ir46vBRR713Vn4xMfEfaH/e8GjIm9ndd4bA/6o6zGODj
- zIx5fQZfedVvvjyYHwA+gu261aSMtf9ZvQmnmAlI9xWFClvw1XJdknrWAM6jGCyPcMTT
- oUcQ==
-X-Gm-Message-State: AOJu0Yyqqt00LJenWEcTb4G70e1IEQ4z2hW8J/OtoSK4nWo+xEOnz8fy
- WVpEFlYZjk/C0CT2xloAFoWhhqYGS/DPIknw0rpMNPvqNkky6R6IkqSfXdrrp4m7he6n3EVsCee
- N
-X-Gm-Gg: ASbGncvixp0UDiozTdGk6bJl7ocn1wrZKFPHiWqh6nZDEDWXqUk29Fdlqk/86xQ3j63
- Fot63/UL/SmS56zj5Jk/nLyOynhnR34lmyX1xEPSNjQnvACUtTsOp2UqBDqZvSPOmcAoTagBd1+
- GCzPPHhG37A9mQvB8GaA7BGrZc88uhzWJwfkRJdX2Jx2uhJMOckM+p7I3qujxnUOOKZudv060pF
- z4cjc9KgUVJ8CUzd9hyhjcp8TeKL20y7c6YgC1/ZHhq3nsvJGvNbKC8u84BvMnKa6DsEAFBzC/P
- /6uIiAfgElNZnopa5RblWinfdn+A/AFNSS83QsifuJkffjeqaDOvK18oZpyMjjSwKwus2qmjRqX
- d
-X-Google-Smtp-Source: AGHT+IF790jE+Vd/coklpPUQ2vL2HDzDMyV7reDn5GSnY5cyo0ityyRPs8mwzquMCjvhIMa8FuMw6Q==
-X-Received: by 2002:a05:6a21:648f:b0:1f5:70af:a32a with SMTP id
- adf61e73a8af0-1f570afa5a2mr29301983637.32.1741837551518; 
- Wed, 12 Mar 2025 20:45:51 -0700 (PDT)
+ bh=IeHYr04W0m2zNJjTvbQgJtgjfEjOKbLo8D+48jtu/vU=;
+ b=b+T3N/WwFgxc9biiPySWiD6ue8WrvKUdz3GTulWo2h1ysWs3sZwoxGyBEeDYHLet2M
+ EsQQClMF28h7M80z5bfbl5s1ZAgYkJooC8iJAOzDcBlE6JI0e6FDAPtbpt9aFTDCSNJy
+ 8JHNdInHHil1Jy4ppHReM8gk+uaFrXlSzcMWSemJSMGGwOPcuAaAuedBZJBm5LGjuA4h
+ witOEWNssXHUbbQiPVz14u4NsMT9X2WYfRMs8YINQTPos5Nft6zgfBqz0Gwvq1yA5H5w
+ i6vuGTfzd4aWLr3roF/skTGGZLS+5jY/+2trF4vCMdVD/zISaC0TPd4m+H/8UTTUSGZ7
+ aBIQ==
+X-Gm-Message-State: AOJu0YxwvBs8tkME0jzep27EznkKbYzpQhf5OaSkYUrPdigHmUehEp0z
+ lPhyuPP8itwP6drJNtBsLfNbHHpRt3YUDqlxXLuv0/cYsk5fQju+z1TvZnYNSOotjGfIUPu4aLZ
+ y
+X-Gm-Gg: ASbGncusUp9LukTEMoLpRjEkkn++xPV+0lV97Z6IqDDh20u7ak6sRq7AfDa++sBpkB5
+ xHcFmRe4kj2M22jrBagCtYLY6k5lY0Cp6YNmUufH+bfxhCgAw7s+HautK3MOErFylqtj9thtiVM
+ MxQPUyK+bgpJ4YwEJQsIr6xxtmJPtR1BvR5JnfPDVKWeMdFbUwqLLEXkuywIUaBVrCnXcoFe2K2
+ F/n+ZUaG4B2d09ZzBUEqS5X/KGQockS1sEjjMtK4WmW8mBU10fL/1ZfwloZYvS4JgjOcp4QZFHD
+ kvFd0ttmNaJMTavTYfJb610IcjD63W5p+7GJX8RvdEVvUBmSi3ZTw3mg4SnIt4lYX64+CnArui1
+ b
+X-Google-Smtp-Source: AGHT+IH6KzYNJgqrsntWeMdEJX1DYVpdy8lU6buYMBc6gn2XxSDo9sKCkeDP1f2clV0x1CWNQgqcoQ==
+X-Received: by 2002:a05:6a20:160c:b0:1f5:8c86:5e2f with SMTP id
+ adf61e73a8af0-1f58c8660a5mr17897201637.37.1741837552327; 
+ Wed, 12 Mar 2025 20:45:52 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.50
+ d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 12 Mar 2025 20:45:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
@@ -68,16 +68,17 @@ To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	pbonzini@redhat.com,
 	philmd@linaro.org
-Subject: [PATCH 31/37] include/hw/core: Drop ifndef CONFIG_USER_ONLY from cpu.h
-Date: Wed, 12 Mar 2025 20:45:11 -0700
-Message-ID: <20250313034524.3069690-32-richard.henderson@linaro.org>
+Subject: [PATCH 32/37] include/hw/intc: Remove ifndef CONFIG_USER_ONLY from
+ armv7m_nvic.h
+Date: Wed, 12 Mar 2025 20:45:12 -0700
+Message-ID: <20250313034524.3069690-33-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250313034524.3069690-1-richard.henderson@linaro.org>
 References: <20250313034524.3069690-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,69 +102,40 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 We were hiding a number of declarations from user-only,
-although it hurts nothing to allow them.
+although it hurts nothing to allow them.  The inlines
+for user-only are unused.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/hw/intc/armv7m_nvic.h | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 2fdb115b19..59394212fa 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -614,8 +614,6 @@ extern bool mttcg_enabled;
+diff --git a/include/hw/intc/armv7m_nvic.h b/include/hw/intc/armv7m_nvic.h
+index 89fe8aedaa..7b9964fe7e 100644
+--- a/include/hw/intc/armv7m_nvic.h
++++ b/include/hw/intc/armv7m_nvic.h
+@@ -189,21 +189,7 @@ int armv7m_nvic_raw_execution_priority(NVICState *s);
+  * @secure: the security state to test
+  * This corresponds to the pseudocode IsReqExecPriNeg().
   */
- bool cpu_paging_enabled(const CPUState *cpu);
- 
--#if !defined(CONFIG_USER_ONLY)
--
- /**
-  * cpu_get_memory_mapping:
-  * @cpu: The CPU whose memory mappings are to be obtained.
-@@ -676,8 +674,6 @@ int cpu_write_elf32_qemunote(WriteCoreDumpFunction f, CPUState *cpu,
-  */
- GuestPanicInformation *cpu_get_crash_info(CPUState *cpu);
- 
--#endif /* !CONFIG_USER_ONLY */
--
- /**
-  * CPUDumpFlags:
-  * @CPU_DUMP_CODE:
-@@ -701,7 +697,6 @@ enum CPUDumpFlags {
-  */
- void cpu_dump_state(CPUState *cpu, FILE *f, int flags);
- 
 -#ifndef CONFIG_USER_ONLY
- /**
-  * cpu_get_phys_page_attrs_debug:
-  * @cpu: The CPU to obtain the physical page address for.
-@@ -758,8 +753,6 @@ bool cpu_virtio_is_big_endian(CPUState *cpu);
-  */
- bool cpu_has_work(CPUState *cpu);
- 
--#endif /* CONFIG_USER_ONLY */
--
- /**
-  * cpu_list_add:
-  * @cpu: The CPU to be added to the list of CPUs.
-@@ -1143,8 +1136,6 @@ const char *target_name(void);
- 
- #ifdef COMPILING_PER_TARGET
- 
+ bool armv7m_nvic_neg_prio_requested(NVICState *s, bool secure);
+-#else
+-static inline bool armv7m_nvic_neg_prio_requested(NVICState *s, bool secure)
+-{
+-    return false;
+-}
+-#endif
 -#ifndef CONFIG_USER_ONLY
--
- extern const VMStateDescription vmstate_cpu_common;
+ bool armv7m_nvic_can_take_pending_exception(NVICState *s);
+-#else
+-static inline bool armv7m_nvic_can_take_pending_exception(NVICState *s)
+-{
+-    return true;
+-}
+-#endif
  
- #define VMSTATE_CPU() {                                                     \
-@@ -1154,7 +1145,6 @@ extern const VMStateDescription vmstate_cpu_common;
-     .flags = VMS_STRUCT,                                                    \
-     .offset = 0,                                                            \
- }
--#endif /* !CONFIG_USER_ONLY */
- 
- #endif /* COMPILING_PER_TARGET */
- 
+ #endif
 -- 
 2.43.0
 
