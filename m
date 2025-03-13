@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049F4A60106
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D56DA60107
 	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 20:25:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsoA4-0002rG-Cy; Thu, 13 Mar 2025 15:24:08 -0400
+	id 1tsoAL-0002sO-Nf; Thu, 13 Mar 2025 15:24:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tsoA0-0002oV-4a; Thu, 13 Mar 2025 15:24:04 -0400
+ id 1tsoA3-0002rR-B6; Thu, 13 Mar 2025 15:24:07 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tso9y-0000tB-47; Thu, 13 Mar 2025 15:24:03 -0400
+ id 1tsoA1-0000tW-9N; Thu, 13 Mar 2025 15:24:07 -0400
 Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DGo6Ja030511;
- Thu, 13 Mar 2025 19:24:00 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DGo6Jb030511;
+ Thu, 13 Mar 2025 19:24:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=ImNWkpaXEqwbMy5GC
- rrvtrhO9XfnFlcOfSdaOM9TASc=; b=kKs4xzV4py7ag27RZdsf2spyleIQWtuz+
- tJmdRrnJfhmsfDk+mtyK/jrYRuVG1ymD+helLOp4yiDkiz5xN69zPeNnOK222E5D
- M5StLL2lw5bY8eZV8bvlWJl0y/NavPG8vmWvtjOqaci9CH+9yRcYu0uavvGdtB81
- NVw4n9ZlyO4zgZJi1rl6penNFiWLW+2DR6qECgZMhSSlWWQp5fI1DYIDRDMd25l7
- dyxzhDO4DpW5R6uj6XBrJ40OzYhA4I+eTaiGhINPsZbWRsu/9d8sG66a0vEYYoFJ
- s/5C7DdfkQRJvKK52cmKM5YigvY/pVIp2jgqwOqLb3F0sNZl+MGHA==
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=CsRkmO
+ 1Vp4BiSZui1A2a0f6Zu/Hfu1H5lF+KT5SGJQE=; b=VNJTacUoNYkSggcY92Qj4M
+ /OwyDvL9Ma4NmYrvfyyRciPWiDFiM6VtHRoqEo1BN0roSI3tlGzt9EERNd3nCWQX
+ pnP9llpHVLhMKqHBo6pFeuj74j45keCKaGOTgaVw7P3fYbw/LZ1hzhbDK/1IKfXV
+ 7FipiebE74wv0jXWkXHt4s/6Zz9zU+gpurOiyGSBnvfPfpWwMtYcoCDvT5Ii2GBG
+ f4BLh43VF6Ov70ajrKjaPQ1pvx3F2TW31EfmqWi2votJa1dQQ5XvcOVjRve8BnP4
+ 1bOB5iz3tRZXZN/ekIrTnJ8aymJ3fp+8jQGUTENhVEjyliRR2q5fZ6zf+LISkpsw
+ ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bqr94hmr-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bqr94hmw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Mar 2025 19:24:00 +0000 (GMT)
+ Thu, 13 Mar 2025 19:24:02 +0000 (GMT)
 Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52DJLlQ0018299;
- Thu, 13 Mar 2025 19:23:59 GMT
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52DJMtmg019938;
+ Thu, 13 Mar 2025 19:24:02 GMT
 Received: from ppma11.dal12v.mail.ibm.com
  (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bqr94hmn-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bqr94hmu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Mar 2025 19:23:59 +0000 (GMT)
+ Thu, 13 Mar 2025 19:24:02 +0000 (GMT)
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52DJGFX4003131;
- Thu, 13 Mar 2025 19:23:58 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atstufty-1
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52DGDNJG003148;
+ Thu, 13 Mar 2025 19:24:01 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atstufu2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Mar 2025 19:23:58 +0000
+ Thu, 13 Mar 2025 19:24:01 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 52DJNt0O55443762
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52DJNwEQ32440744
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Mar 2025 19:23:55 GMT
+ Thu, 13 Mar 2025 19:23:58 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4609020040;
+ by IMSVA (Postfix) with ESMTP id 093D520043;
+ Thu, 13 Mar 2025 19:23:58 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B23D220040;
  Thu, 13 Mar 2025 19:23:55 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E9B1E20043;
- Thu, 13 Mar 2025 19:23:52 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown
  [9.124.223.53]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 13 Mar 2025 19:23:52 +0000 (GMT)
+ Thu, 13 Mar 2025 19:23:55 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: <qemu-devel@nongnu.org>
 Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
@@ -70,17 +71,18 @@ Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
  Sourabh Jain <sourabhjain@linux.ibm.com>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  Hari Bathini <hbathini@linux.ibm.com>
-Subject: [PATCH v2 2/8] hw/ppc: Implement fadump register command
-Date: Fri, 14 Mar 2025 00:53:35 +0530
-Message-ID: <20250313192341.132171-3-adityag@linux.ibm.com>
+Subject: [PATCH v2 3/8] hw/ppc: Trigger Fadump boot if fadump is registered
+Date: Fri, 14 Mar 2025 00:53:36 +0530
+Message-ID: <20250313192341.132171-4-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250313192341.132171-1-adityag@linux.ibm.com>
 References: <20250313192341.132171-1-adityag@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: L043ooWYTV3w8cMu08fdEk_xOxRu5Zb7
-X-Proofpoint-ORIG-GUID: xPr2PFyp4ne4exwT_ZTURs1ieU8hjQOC
+X-Proofpoint-GUID: QT-zvCRBykocb1jTwYirJ3C8sSjjeCX9
+X-Proofpoint-ORIG-GUID: 1du_ZfjZ52Nff_uh3iUB5WdGSNMfq6zf
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-13_08,2025-03-13_01,2024-11-22_01
@@ -115,184 +117,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the register command of "ibm,configure-kernel-dump" RTAS call.
-The register just verifies the structure of the fadump memory structure
-passed by kernel, and set fadump_registered in spapr state to true.
+According to PAPR:
 
-We also store the passed fadump memory structure, which will later be
-used for preserving memory for fadump boot in case of a crash.
+    R1–7.3.30–3. When the platform receives an ibm,os-term RTAS call, or
+    on a system reset without an ibm,nmi-interlock RTAS call, if the
+    platform has a dump structure registered through the
+    ibm,configure-kernel-dump call, the platform must process each
+    registered kernel dump section as required and, when available,
+    present the dump structure information to the operating system
+    through the “ibm,kernel-dump” property, updated with status for each
+    dump section, until the dump has been invalidated through the
+    ibm,configure-kernel-dump RTAS call.
 
-The fadump memory structure isn't modified (other than .dump_status_flag
-after the fadump is triggered, that is in a later patch).
-So if the structure needs to updated, the kernel should first
-de-register and re-register the structure again.
+If Fadump has been registered, trigger an Fadump boot (memory preserving
+boot), if QEMU recieves a 'ibm,os-term' rtas call.
 
-Relevant section for the register command in PAPR is:
-    Section 7.3.30: "ibm,configure-kernel-dump RTAS call" (PAPR v2.13)
+Implementing the fadump boot as:
+    * pause all vcpus (will need to save registers later)
+    * preserve memory regions specified by fadump (will be implemented
+      in future)
+    * do a memory preserving reboot (GUEST_RESET in QEMU doesn't clear
+      the memory)
 
-Note: The fadump registration is done, but triggering fadump on an
-os-term rtas call is done in later patches. Hence QEMU will just shutdown
-on a kernel crash due to no special handling for fadump in ibm,os-term
+Memory regions registered by fadump will be handled in a later patch.
+
+Note: Preserving memory regions is not implemented yet so on an
+"ibm,os-term" call will just trigger a reboot in QEMU if fadump is
+registered, and the second kernel will boot as a normal boot (not
+fadump boot)
 
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
- hw/ppc/spapr_fadump.c         | 111 ++++++++++++++++++++++++++++++++--
- hw/ppc/spapr_rtas.c           |   2 +-
- include/hw/ppc/spapr_fadump.h |   2 +-
- 3 files changed, 108 insertions(+), 7 deletions(-)
+ hw/ppc/spapr_fadump.c         | 77 +++++++++++++++++++++++++++++++++++
+ hw/ppc/spapr_rtas.c           |  5 +++
+ include/hw/ppc/spapr_fadump.h |  1 +
+ 3 files changed, 83 insertions(+)
 
 diff --git a/hw/ppc/spapr_fadump.c b/hw/ppc/spapr_fadump.c
-index 20b7b804c485..9c7fb9e12b16 100644
+index 9c7fb9e12b16..fedd2cde9a4f 100644
 --- a/hw/ppc/spapr_fadump.c
 +++ b/hw/ppc/spapr_fadump.c
-@@ -5,18 +5,119 @@
-  */
- 
+@@ -7,6 +7,7 @@
  #include "qemu/osdep.h"
-+#include "qemu/log.h"
+ #include "qemu/log.h"
  #include "hw/ppc/spapr.h"
++#include "system/cpus.h"
  
  /*
   * Handle the "FADUMP_CMD_REGISTER" command in 'ibm,configure-kernel-dump'
-  *
-+ * Note: Any changes made by the kernel to the fadump memory struct won't
-+ * reflect in QEMU after the 'ibm,configure-kernel-dump' RTAS call has returned,
-+ * as we store the passed fadump memory structure passed during fadump
-+ * registration.
-+ * Kernel has to invalidate & re-register fadump, if it intends to make any
-+ * changes to the fadump memory structure
-+ *
-  * Returns:
-- *  * RTAS_OUT_HW_ERROR: Not implemented/Misc issue such as memory access
-- *                       failures
-+ *  * RTAS_OUT_SUCCESS: On successful registration
-+ *  * RTAS_OUT_PARAM_ERROR: If parameters are not correct, eg. too many
-+ *                          sections, invalid memory addresses that we are
-+ *                          unable to read, etc
-+ *  * RTAS_OUT_DUMP_ALREADY_REGISTERED: Dump already registered
-+ *  * RTAS_OUT_HW_ERROR: Misc issue such as memory access failures
-  */
--uint32_t do_fadump_register(void)
-+uint32_t do_fadump_register(SpaprMachineState *spapr, target_ulong args)
- {
--    /* WIP: FADUMP_CMD_REGISTER implemented in future patch */
-+    FadumpSectionHeader header;
-+    FadumpSection regions[FADUMP_MAX_SECTIONS] = {0};
-+    target_ulong fdm_addr = rtas_ld(args, 1);
-+    target_ulong fdm_size = rtas_ld(args, 2);
-+    AddressSpace *default_as = &address_space_memory;
-+    MemTxResult io_result;
-+    MemTxAttrs attrs;
-+    uint64_t next_section_addr;
-+    uint16_t dump_num_sections;
-+
-+    /* Mark the memory transaction as privileged memory access */
-+    attrs.user = 0;
-+    attrs.memory = 1;
-+
-+    if (spapr->fadump_registered) {
-+        /* FADump already registered */
-+        return RTAS_OUT_DUMP_ALREADY_REGISTERED;
-+    }
-+
-+    if (spapr->fadump_dump_active == 1) {
-+        return RTAS_OUT_DUMP_ACTIVE;
-+    }
-+
-+    if (fdm_size < sizeof(FadumpSectionHeader)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+            "FADump: Header size is invalid: %lu\n", fdm_size);
-+        return RTAS_OUT_PARAM_ERROR;
-+    }
-+
-+    /* Ensure fdm_addr points to a valid RMR-memory/RMA-memory buffer */
-+    if ((fdm_addr <= 0) || ((fdm_addr + fdm_size) > spapr->rma_size)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+            "FADump: Invalid fdm address: %ld\n", fdm_addr);
-+        return RTAS_OUT_PARAM_ERROR;
-+    }
-+
-+    /* Try to read the passed fadump header */
-+    io_result = address_space_read(default_as, fdm_addr, attrs,
-+            &header, sizeof(header));
-+    if (io_result != MEMTX_OK) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+            "FADump: Unable to read fdm address: %ld\n", fdm_addr);
-+
-+        return RTAS_OUT_HW_ERROR;
-+    }
-+
-+    /* Verify that we understand the fadump header version */
-+    if (header.dump_format_version != cpu_to_be32(FADUMP_VERSION)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+            "FADump: Unknown fadump header version: 0x%x\n",
-+            header.dump_format_version);
-+        return RTAS_OUT_PARAM_ERROR;
-+    }
-+
-+    /* Reset dump status flags */
-+    header.dump_status_flag = 0;
-+
-+    dump_num_sections = be16_to_cpu(header.dump_num_sections);
-+
-+    if (dump_num_sections > FADUMP_MAX_SECTIONS) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+            "FADump: Too many sections: %d sections\n", dump_num_sections);
-+        return RTAS_OUT_PARAM_ERROR;
-+    }
-+
-+    next_section_addr =
-+        fdm_addr +
-+        be32_to_cpu(header.offset_first_dump_section);
-+
-+    for (int i = 0; i < dump_num_sections; ++i) {
-+        /* Read the fadump section from memory */
-+        io_result = address_space_read(default_as, next_section_addr, attrs,
-+                &regions[i], sizeof(regions[i]));
-+        if (io_result != MEMTX_OK) {
-+            qemu_log_mask(LOG_UNIMP,
-+                "FADump: Unable to read fadump %dth section\n", i);
-+            return RTAS_OUT_PARAM_ERROR;
-+        }
-+
-+        next_section_addr += sizeof(regions[i]);
-+    }
-+
-+    spapr->fadump_registered = true;
-+    spapr->fadump_dump_active = false;
-+
-+    /* Store the registered fadump memory struct */
-+    spapr->registered_fdm.header = header;
-+    for (int i = 0; i < dump_num_sections; ++i) {
-+        spapr->registered_fdm.rgn[i] = regions[i];
-+    }
+@@ -121,3 +122,79 @@ uint32_t do_fadump_register(SpaprMachineState *spapr, target_ulong args)
  
--    return RTAS_OUT_HW_ERROR;
-+    return RTAS_OUT_SUCCESS;
+     return RTAS_OUT_SUCCESS;
  }
++
++/* Preserve the memory locations registered for fadump */
++static bool fadump_preserve_mem(void)
++{
++    /*
++     * TODO: Implement preserving memory regions requested during fadump
++     * registration
++     */
++    return false;
++}
++
++/*
++ * Trigger a fadump boot, ie. next boot will be a crashkernel/fadump boot
++ * with fadump dump active.
++ *
++ * This is triggered by ibm,os-term RTAS call, if fadump was registered.
++ *
++ * It preserves the memory and sets 'FADUMP_STATUS_DUMP_TRIGGERED' as
++ * fadump status, which can be used later to add the "ibm,kernel-dump"
++ * device tree node as presence of 'FADUMP_STATUS_DUMP_TRIGGERED' signifies
++ * next boot as fadump boot in our case
++ */
++void trigger_fadump_boot(SpaprMachineState *spapr, target_ulong spapr_retcode)
++{
++    FadumpSectionHeader *header = &spapr->registered_fdm.header;
++
++    pause_all_vcpus();
++
++    /* Preserve the memory locations registered for fadump */
++    if (!fadump_preserve_mem()) {
++        /* Failed to preserve the registered memory regions */
++        rtas_st(spapr_retcode, 0, RTAS_OUT_HW_ERROR);
++
++        /* Cause a reboot */
++        qemu_system_guest_panicked(NULL);
++        return;
++    }
++
++    /*
++     * Mark next boot as fadump boot
++     *
++     * Note: These is some bit of assumption involved here, as PAPR doesn't
++     * specify any use of the dump status flags, nor does the kernel use it
++     *
++     * But from description in Table 136 in PAPR v2.13, it looks like:
++     *   FADUMP_STATUS_DUMP_TRIGGERED
++     *      = Dump was triggered by the previous system boot (PAPR says)
++     *      = Next boot will be a fadump boot (My perception)
++     *
++     *   FADUMP_STATUS_DUMP_PERFORMED
++     *      = Dump performed (Set to 0 by caller of the
++     *        ibm,configure-kernel-dump call) (PAPR says)
++     *      = Firmware has performed the copying/dump of requested regions
++     *        (My perception)
++     *      = Dump is active for the next boot (My perception)
++     */
++    header->dump_status_flag = cpu_to_be16(
++            FADUMP_STATUS_DUMP_TRIGGERED |  /* Next boot will be fadump boot */
++            FADUMP_STATUS_DUMP_PERFORMED    /* Dump is active */
++    );
++
++    /* Reset fadump_registered for next boot */
++    spapr->fadump_registered = false;
++    spapr->fadump_dump_active = true;
++
++    /*
++     * Then do a guest reset
++     *
++     * Requirement:
++     * GUEST_RESET is expected to NOT clear the memory, as is the case when
++     * this is merged
++     */
++    qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
++
++    rtas_st(spapr_retcode, 0, RTAS_OUT_SUCCESS);
++}
 diff --git a/hw/ppc/spapr_rtas.c b/hw/ppc/spapr_rtas.c
-index b8bfa9c33fb5..0454938a01e9 100644
+index 0454938a01e9..14b954a05109 100644
 --- a/hw/ppc/spapr_rtas.c
 +++ b/hw/ppc/spapr_rtas.c
-@@ -366,7 +366,7 @@ static void rtas_configure_kernel_dump(PowerPCCPU *cpu,
+@@ -412,6 +412,11 @@ static void rtas_ibm_os_term(PowerPCCPU *cpu,
+     target_ulong msgaddr = rtas_ld(args, 0);
+     char msg[512];
  
-     switch (cmd) {
-     case FADUMP_CMD_REGISTER:
--        ret_val = do_fadump_register();
-+        ret_val = do_fadump_register(spapr, args);
-         if (ret_val != RTAS_OUT_SUCCESS) {
-             rtas_st(rets, 0, ret_val);
-             return;
++    if (spapr->fadump_registered) {
++        /* If fadump boot works, control won't come back here */
++        return trigger_fadump_boot(spapr, rets);
++    }
++
+     cpu_physical_memory_read(msgaddr, msg, sizeof(msg) - 1);
+     msg[sizeof(msg) - 1] = 0;
+ 
 diff --git a/include/hw/ppc/spapr_fadump.h b/include/hw/ppc/spapr_fadump.h
-index 45109fd9e137..6abbcb44f353 100644
+index 6abbcb44f353..071608cda088 100644
 --- a/include/hw/ppc/spapr_fadump.h
 +++ b/include/hw/ppc/spapr_fadump.h
-@@ -65,5 +65,5 @@ struct FadumpMemStruct {
-     FadumpSection       rgn[FADUMP_MAX_SECTIONS];
+@@ -66,4 +66,5 @@ struct FadumpMemStruct {
  };
  
--uint32_t do_fadump_register(void);
-+uint32_t do_fadump_register(struct SpaprMachineState *, target_ulong);
+ uint32_t do_fadump_register(struct SpaprMachineState *, target_ulong);
++void     trigger_fadump_boot(struct SpaprMachineState *, target_ulong);
  #endif /* PPC_SPAPR_FADUMP_H */
 -- 
 2.48.1
