@@ -2,101 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A01CA5F9B8
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 16:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92EBBA5F9CF
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 16:28:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tskPP-0007Ww-EP; Thu, 13 Mar 2025 11:23:43 -0400
+	id 1tskTF-0000w7-Pa; Thu, 13 Mar 2025 11:27:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
- id 1tskPL-0007Ta-3E
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 11:23:39 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
- id 1tskPI-0001fW-7d
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 11:23:38 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-390f5f48eafso652141f8f.0
- for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 08:23:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=embecosm.com; s=google; t=1741879414; x=1742484214; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JKtNdPa7LTv10WYlPiVYfpqgYoxHOE+GIe+ymVWq8ik=;
- b=FT7oT5zzPg2NkvgyhsTGwH6HW8N6BpAtFQghFgqVWVM4vws+cYWnfpyq20/yutAYxM
- Iae3LSxx4dkLpozXIV0m9aiptx0iwhfG22TaBOLAe7zaWh/aGSMak3iJYWMYXT3EKNRI
- B9SkJYezAh4lX21dHA6puXDI0ozrkKb+Hj8cvg9uL+WbQT+15c6osY/Zf1oz71rv8V5v
- DamotLLHL3ooofF5XM9u3IG9nIz3RIM7q2bKFwEReDlOV1T/1Wi8COjPtJrANxIbAofg
- geSttBlnIa5lGOHq6/fGVd3AJvoylKdf3HJGAZoDsCZdfzPei25HGYEpJE1Bbv1kRAFg
- ZJRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741879414; x=1742484214;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JKtNdPa7LTv10WYlPiVYfpqgYoxHOE+GIe+ymVWq8ik=;
- b=dlPzMXdrk3MaUNSelIvIUN5voV5E2ogiUIOZQnTJEQI+rtki4xNuriSvK4tlW7cXt9
- icAWg5ZI2p6svnkl+K/eyf4A6LLwFzI5rc5OQWhzvavCRaTvbZdQRHBc1lNm2JYKX8HU
- QClVjcWl0Bx78hYzdQU6GLrwfttsQnpMxApCf5XROit/swyQsPghPj+qmD8wK7KiX2vF
- vnIDT/LKUVD8nVpD0uapTYOJ7R9R70VskXMb3eNyGjMTSKDXq1WZ90HUUCRf6QUNLnmH
- 0eSvYuov4/78iO4DqJF1lQthUMIBU+XMMfTlLoXb7FC7Bu42QFkN3opq0wY/DFeZJ3wt
- oPQw==
-X-Gm-Message-State: AOJu0Yxo/qZoo0eTuQcNnUdzeaRVeUNPfc/U+zL7gXpFvm4qRbWoE1Km
- sjejfpN8XOBGCC7jb+9kYlZo+SnJLazDuf5BgDRy8ZWw2OFsVBoHQDNiqqYccZnz/Mm9eQCvgdJ
- gK8P1WQ==
-X-Gm-Gg: ASbGncv1dBA6+UdI7DsDe2DzeFr71gz5Zm+HW/lbtKin0hk12jRjsY//5WJO6oBoE5X
- l4wNsKoaD5i80hkfS1omss8+4wNZL3sWQwtBdIP446LGT5bmqv5ZxfRcleNF6n0ZWOsSeibphie
- OMEuRnBug8aYghyUziMxlin6HTm6aVO3Bv0od5nNCcRwiU8hY31jaUCconM96vld8Vop1dhUioE
- PxakW1+CtpBUgHpccV8xrhpaQ7cxEebpLEH4PohJwn1laW8fOr1rbkiYBGYSKLfx5HzTFIWO6sl
- v0hZysCklNchwAUvzbwJkcx3xYyqi50ZCAhqCUzpbeTzkJyte5jF/sVwH50M6o4N+tdHjC3I6HV
- 0CpDt+Sgq6GvjGUTd07CB
-X-Google-Smtp-Source: AGHT+IFsyDOX/Blc9E5oymCi/EBrqc8obx2uTyb4Wb4BpLsSCqIFSGMyCTUh3DNfx4wi32ATfXSnmQ==
-X-Received: by 2002:a5d:47a2:0:b0:391:31c8:ba6b with SMTP id
- ffacd0b85a97d-39132d77343mr20285183f8f.10.1741879414375; 
- Thu, 13 Mar 2025 08:23:34 -0700 (PDT)
-Received: from paolo-laptop-amd.sou.embecosm-corp.com ([212.69.42.53])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-395cb7ebaedsm2462868f8f.90.2025.03.13.08.23.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 08:23:34 -0700 (PDT)
-From: Paolo Savini <paolo.savini@embecosm.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Paolo Savini <paolo.savini@embecosm.com>,
- Richard Handerson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
- Max Chou <max.chou@sifive.com>,
- Jeremy Bennett <jeremy.bennett@embecosm.com>,
- Craig Blackmore <craig.blackmore@embecosm.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 1/1 v4] target/riscv: use tcg ops generation to emulate whole
- reg rvv loads/stores.
-Date: Thu, 13 Mar 2025 15:23:30 +0000
-Message-ID: <20250313152330.398396-2-paolo.savini@embecosm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250313152330.398396-1-paolo.savini@embecosm.com>
-References: <20250313152330.398396-1-paolo.savini@embecosm.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tskTD-0000vV-3L
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 11:27:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tskTA-0002KF-Gw
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 11:27:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741879655;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+OkcTmdZ2iH379L7yTW7UmBizUVlQYlhzVJpqOoDPL0=;
+ b=CefH41C8A+LsHrw8nLXJNqzWT21xkh6LYRAsj87ZsLV4EqVbjCGHph9vsOzqvlQWYThKaL
+ g/3N0NrFwXEio8dIAzRBaEKLsF/7o/IIG0BYmhYUnQGVCI5cMpfMPphqGtDf9Jlt8CdYlf
+ M3W41ZFBFYAaEVaKao6QF2AManxmVuE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-600--Rj1Pv2ZMmCTgE7gBvRj_A-1; Thu,
+ 13 Mar 2025 11:27:33 -0400
+X-MC-Unique: -Rj1Pv2ZMmCTgE7gBvRj_A-1
+X-Mimecast-MFC-AGG-ID: -Rj1Pv2ZMmCTgE7gBvRj_A_1741879652
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4BF5A195605A; Thu, 13 Mar 2025 15:27:32 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 63C781828A83; Thu, 13 Mar 2025 15:27:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D14CE21E66C4; Thu, 13 Mar 2025 16:27:26 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Konstantin Kostiuk <kkostiuk@redhat.com>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Eric Blake <eblake@redhat.com>,
+ qemu-block@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Kevin Wolf
+ <kwolf@redhat.com>
+Subject: Re: [PATCH 11/11] docs: enable transmogrifier for QSD and QGA
+In-Reply-To: <CAFn=p-YBB-Qvmm4Tw2Kq4gNwLrjgY8-_sw7ZJAYnakQ7MDhc-Q@mail.gmail.com>
+ (John Snow's message of "Thu, 13 Mar 2025 10:02:21 -0400")
+References: <20250313044312.189276-1-jsnow@redhat.com>
+ <20250313044312.189276-12-jsnow@redhat.com>
+ <87y0x9cte4.fsf@pond.sub.org>
+ <CAFn=p-YBB-Qvmm4Tw2Kq4gNwLrjgY8-_sw7ZJAYnakQ7MDhc-Q@mail.gmail.com>
+Date: Thu, 13 Mar 2025 16:27:26 +0100
+Message-ID: <87ldt93q8x.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=paolo.savini@embecosm.com; helo=mail-wr1-x435.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,209 +90,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch replaces the use of a helper function with direct tcg ops generation
-in order to emulate whole register loads and stores. This is done in order to
-improve the performance of QEMU.
-We still use the helper function when vstart is not 0 at the beginning of the
-emulation of the whole register load or store or when we would end up generating
-partial loads or stores of vector elements (e.g. emulating 64 bits element loads
-with pairs of 32 bits loads on hosts with 32 bits registers).
-The latter condition ensures that we are not surprised by a trap in mid-element
-and consecutively that we can update vstart correctly.
-We also use the helper function when it performs better than tcg for specific
-combinations of vector length, number of fields and element size.
+John Snow <jsnow@redhat.com> writes:
 
-Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Richard Handerson <richard.henderson@linaro.org>
-Reviewed-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: "Alex Bennée" <alex.bennee@linaro.org>
----
- target/riscv/insn_trans/trans_rvv.c.inc | 155 +++++++++++++++++-------
- 1 file changed, 108 insertions(+), 47 deletions(-)
+> On Thu, Mar 13, 2025 at 2:54=E2=80=AFAM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>
+>> John Snow <jsnow@redhat.com> writes:
+>>
+>> > This also creates the `qapi-qsd-index` and `qapi-qga-index` QMP indice=
+s.
+>> >
+>> > Signed-off-by: John Snow <jsnow@redhat.com>
+>>
+>> [...]
+>>
+>> > diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+>> > index 995594aaf43..35ec0e7db31 100644
+>> > --- a/qga/qapi-schema.json
+>> > +++ b/qga/qapi-schema.json
+>> > @@ -3,6 +3,9 @@
+>> >
+>> >  ##
+>> >  # =3D QEMU guest agent protocol commands and structs
+>> > +#
+>> > +# For a concise listing of all commands, events, and types in the QEMU
+>> > +# guest agent, please consult the `qapi-qga-index`.
+>> >  ##
+>> >
+>> >  { 'pragma': { 'doc-required': true } }
+>> > diff --git a/storage-daemon/qapi/qapi-schema.json b/storage-daemon/qap=
+i/qapi-schema.json
+>> > index f10c9494906..2a562ee32e5 100644
+>> > --- a/storage-daemon/qapi/qapi-schema.json
+>> > +++ b/storage-daemon/qapi/qapi-schema.json
+>> > @@ -13,6 +13,14 @@
+>> >  # the array type in the main schema, even if it is unused outside of =
+the
+>> >  # storage daemon.
+>> >
+>> > +##
+>> > +# =3D QEMU storage daemon protocol commands and structs
+>> > +#
+>> > +# For a concise listing of all commands, events, and types in the QEMU
+>> > +# storage daemon, please consult the `qapi-qsd-index`.
+>> > +##
+>> > +
+>> > +
+>> >  { 'include': '../../qapi/pragma.json' }
+>> >
+>> >  # Documentation generated with qapi-gen.py is in source order, with
+>>
+>> Compare qapi/qapi-schema.json:
+>>
+>>    # =3D Introduction
+>>    #
+>>    # This document describes all commands currently supported by QMP.
+>>    #
+>>    # For locating a particular item, please see the `qapi-qmp-index`.
+>>    #
+>>
+>> Suggest to pick one phrasing and stick to it, unless there's a reason
+>> for more than one.
+>>
+>
+> Nope, just free-handing it. What's your favorite? ;)
 
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index b9883a5d32..2914efbb2b 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -1100,25 +1100,86 @@ GEN_VEXT_TRANS(vle64ff_v, MO_64, r2nfvm, ldff_op, ld_us_check)
- typedef void gen_helper_ldst_whole(TCGv_ptr, TCGv, TCGv_env, TCGv_i32);
- 
- static bool ldst_whole_trans(uint32_t vd, uint32_t rs1, uint32_t nf,
--                             gen_helper_ldst_whole *fn,
--                             DisasContext *s)
-+                             uint32_t log2_esz, gen_helper_ldst_whole *fn,
-+                             DisasContext *s, bool is_load)
- {
--    TCGv_ptr dest;
--    TCGv base;
--    TCGv_i32 desc;
--
--    uint32_t data = FIELD_DP32(0, VDATA, NF, nf);
--    data = FIELD_DP32(data, VDATA, VM, 1);
--    dest = tcg_temp_new_ptr();
--    desc = tcg_constant_i32(simd_desc(s->cfg_ptr->vlenb,
--                                      s->cfg_ptr->vlenb, data));
--
--    base = get_gpr(s, rs1, EXT_NONE);
--    tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, vd));
--
-     mark_vs_dirty(s);
- 
--    fn(dest, base, tcg_env, desc);
-+    /*
-+     * Load/store multiple bytes per iteration.
-+     * When possible do this atomically.
-+     * Update vstart with the number of processed elements.
-+     * Use the helper function if either:
-+     * - vstart is not 0.
-+     * - the target has 32 bit registers and we are loading/storing 64 bit long
-+     *   elements. This is to ensure that we process every element with a single
-+     *   memory instruction.
-+     */
-+
-+    bool use_helper_fn = !(s->vstart_eq_zero) ||
-+                          (TCG_TARGET_REG_BITS == 32 && log2_esz == 3);
-+
-+    if (!use_helper_fn) {
-+        TCGv addr = tcg_temp_new();
-+        uint32_t size = s->cfg_ptr->vlenb * nf;
-+        TCGv_i64 t8 = tcg_temp_new_i64();
-+        TCGv_i32 t4 = tcg_temp_new_i32();
-+        MemOp atomicity = MO_ATOM_NONE;
-+        if (log2_esz == 0) {
-+            atomicity = MO_ATOM_NONE;
-+        } else {
-+            atomicity = MO_ATOM_IFALIGN_PAIR;
-+        }
-+        if (TCG_TARGET_REG_BITS == 64) {
-+            for (int i = 0; i < size; i += 8) {
-+                addr = get_address(s, rs1, i);
-+                if (is_load) {
-+                    tcg_gen_qemu_ld_i64(t8, addr, s->mem_idx,
-+                            MO_LE | MO_64 | atomicity);
-+                    tcg_gen_st_i64(t8, tcg_env, vreg_ofs(s, vd) + i);
-+                } else {
-+                    tcg_gen_ld_i64(t8, tcg_env, vreg_ofs(s, vd) + i);
-+                    tcg_gen_qemu_st_i64(t8, addr, s->mem_idx,
-+                            MO_LE | MO_64 | atomicity);
-+                }
-+                if (i == size - 8) {
-+                    tcg_gen_movi_tl(cpu_vstart, 0);
-+                } else {
-+                    tcg_gen_addi_tl(cpu_vstart, cpu_vstart, 8 >> log2_esz);
-+                }
-+            }
-+        } else {
-+            for (int i = 0; i < size; i += 4) {
-+                addr = get_address(s, rs1, i);
-+                if (is_load) {
-+                    tcg_gen_qemu_ld_i32(t4, addr, s->mem_idx,
-+                            MO_LE | MO_32 | atomicity);
-+                    tcg_gen_st_i32(t4, tcg_env, vreg_ofs(s, vd) + i);
-+                } else {
-+                    tcg_gen_ld_i32(t4, tcg_env, vreg_ofs(s, vd) + i);
-+                    tcg_gen_qemu_st_i32(t4, addr, s->mem_idx,
-+                            MO_LE | MO_32 | atomicity);
-+                }
-+                if (i == size - 4) {
-+                    tcg_gen_movi_tl(cpu_vstart, 0);
-+                } else {
-+                    tcg_gen_addi_tl(cpu_vstart, cpu_vstart, 4 >> log2_esz);
-+                }
-+            }
-+        }
-+    } else {
-+        TCGv_ptr dest;
-+        TCGv base;
-+        TCGv_i32 desc;
-+        uint32_t data = FIELD_DP32(0, VDATA, NF, nf);
-+        data = FIELD_DP32(data, VDATA, VM, 1);
-+        dest = tcg_temp_new_ptr();
-+        desc = tcg_constant_i32(simd_desc(s->cfg_ptr->vlenb,
-+                        s->cfg_ptr->vlenb, data));
-+        base = get_gpr(s, rs1, EXT_NONE);
-+        tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, vd));
-+        fn(dest, base, tcg_env, desc);
-+    }
- 
-     finalize_rvv_inst(s);
-     return true;
-@@ -1128,42 +1189,42 @@ static bool ldst_whole_trans(uint32_t vd, uint32_t rs1, uint32_t nf,
-  * load and store whole register instructions ignore vtype and vl setting.
-  * Thus, we don't need to check vill bit. (Section 7.9)
-  */
--#define GEN_LDST_WHOLE_TRANS(NAME, ARG_NF)                                \
--static bool trans_##NAME(DisasContext *s, arg_##NAME * a)                 \
--{                                                                         \
--    if (require_rvv(s) &&                                                 \
--        QEMU_IS_ALIGNED(a->rd, ARG_NF)) {                                 \
--        return ldst_whole_trans(a->rd, a->rs1, ARG_NF,                    \
--                                gen_helper_##NAME, s);                    \
--    }                                                                     \
--    return false;                                                         \
--}
--
--GEN_LDST_WHOLE_TRANS(vl1re8_v,  1)
--GEN_LDST_WHOLE_TRANS(vl1re16_v, 1)
--GEN_LDST_WHOLE_TRANS(vl1re32_v, 1)
--GEN_LDST_WHOLE_TRANS(vl1re64_v, 1)
--GEN_LDST_WHOLE_TRANS(vl2re8_v,  2)
--GEN_LDST_WHOLE_TRANS(vl2re16_v, 2)
--GEN_LDST_WHOLE_TRANS(vl2re32_v, 2)
--GEN_LDST_WHOLE_TRANS(vl2re64_v, 2)
--GEN_LDST_WHOLE_TRANS(vl4re8_v,  4)
--GEN_LDST_WHOLE_TRANS(vl4re16_v, 4)
--GEN_LDST_WHOLE_TRANS(vl4re32_v, 4)
--GEN_LDST_WHOLE_TRANS(vl4re64_v, 4)
--GEN_LDST_WHOLE_TRANS(vl8re8_v,  8)
--GEN_LDST_WHOLE_TRANS(vl8re16_v, 8)
--GEN_LDST_WHOLE_TRANS(vl8re32_v, 8)
--GEN_LDST_WHOLE_TRANS(vl8re64_v, 8)
-+#define GEN_LDST_WHOLE_TRANS(NAME, ETYPE, ARG_NF, IS_LOAD)                  \
-+static bool trans_##NAME(DisasContext *s, arg_##NAME * a)                   \
-+{                                                                           \
-+    if (require_rvv(s) &&                                                   \
-+        QEMU_IS_ALIGNED(a->rd, ARG_NF)) {                                   \
-+        return ldst_whole_trans(a->rd, a->rs1, ARG_NF, ctzl(sizeof(ETYPE)), \
-+                                gen_helper_##NAME, s, IS_LOAD);             \
-+    }                                                                       \
-+    return false;                                                           \
-+}
-+
-+GEN_LDST_WHOLE_TRANS(vl1re8_v,  int8_t,  1, true)
-+GEN_LDST_WHOLE_TRANS(vl1re16_v, int16_t, 1, true)
-+GEN_LDST_WHOLE_TRANS(vl1re32_v, int32_t, 1, true)
-+GEN_LDST_WHOLE_TRANS(vl1re64_v, int64_t, 1, true)
-+GEN_LDST_WHOLE_TRANS(vl2re8_v,  int8_t,  2, true)
-+GEN_LDST_WHOLE_TRANS(vl2re16_v, int16_t, 2, true)
-+GEN_LDST_WHOLE_TRANS(vl2re32_v, int32_t, 2, true)
-+GEN_LDST_WHOLE_TRANS(vl2re64_v, int64_t, 2, true)
-+GEN_LDST_WHOLE_TRANS(vl4re8_v,  int8_t,  4, true)
-+GEN_LDST_WHOLE_TRANS(vl4re16_v, int16_t, 4, true)
-+GEN_LDST_WHOLE_TRANS(vl4re32_v, int32_t, 4, true)
-+GEN_LDST_WHOLE_TRANS(vl4re64_v, int64_t, 4, true)
-+GEN_LDST_WHOLE_TRANS(vl8re8_v,  int8_t,  8, true)
-+GEN_LDST_WHOLE_TRANS(vl8re16_v, int16_t, 8, true)
-+GEN_LDST_WHOLE_TRANS(vl8re32_v, int32_t, 8, true)
-+GEN_LDST_WHOLE_TRANS(vl8re64_v, int64_t, 8, true)
- 
- /*
-  * The vector whole register store instructions are encoded similar to
-  * unmasked unit-stride store of elements with EEW=8.
-  */
--GEN_LDST_WHOLE_TRANS(vs1r_v, 1)
--GEN_LDST_WHOLE_TRANS(vs2r_v, 2)
--GEN_LDST_WHOLE_TRANS(vs4r_v, 4)
--GEN_LDST_WHOLE_TRANS(vs8r_v, 8)
-+GEN_LDST_WHOLE_TRANS(vs1r_v, int8_t, 1, false)
-+GEN_LDST_WHOLE_TRANS(vs2r_v, int8_t, 2, false)
-+GEN_LDST_WHOLE_TRANS(vs4r_v, int8_t, 4, false)
-+GEN_LDST_WHOLE_TRANS(vs8r_v, int8_t, 8, false)
- 
- /*
-  *** Vector Integer Arithmetic Instructions
--- 
-2.34.1
+Let me see...
+
+Alright, I saw, and I hate what I saw.  But addressing that should not
+be coupled to this series.  I'm going to take your patch as is, and
+improve on top.
+
+"But what exactly do you hate?" you might ask.  Have a look at how the
+three rendered manuals look like.
+
+1. QMP (docs/manual/interop/qemu-qmp-ref.html)
+
+    QEMU QMP Reference Manual
+    *************************
+
+
+    Contents
+    ^^^^^^^^
+
+    * QEMU QMP Reference Manual
+
+      * Introduction
+
+      * QMP errors
+
+      [More entries at this level, namely all the modules...]
+
+
+    Introduction
+    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+    This document describes all commands currently supported by QMP.
+
+    For locating a particular item, please see the QMP Index.
+
+    Most of the time their usage is exactly the same as in the user
+    Monitor, this means that any other document which also describe
+    commands (the manpage, QEMU's manual, etc) can and should be
+    consulted.
+
+    QMP has two types of commands: regular and query commands.  Regular
+    commands usually change the Virtual Machine's state someway, while
+    query commands just return information.  The sections below are
+    divided accordingly.
+
+    It's important to observe that all communication examples are
+    formatted in a reader-friendly way, so that they're easier to
+    understand.  However, in real protocol usage, they're emitted as a
+    single line.
+
+    Also, the following notation is used to denote data flow:
+
+    Example:
+
+       -> data issued by the Client
+       <- Server data response
+
+    Please refer to the QEMU Machine Protocol Specification for detailed
+    information on the Server command and response formats.
+
+
+    QMP errors
+    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+    [...]
+
+The manual has a single top-level section, named like the manual.  WTF?
+
+The introduction reads fine, except it should be "all commands and
+events".
+
+2. QSD
+
+    QEMU Storage Daemon QMP Reference Manual
+    ****************************************
+
+
+    Contents
+    ^^^^^^^^
+
+    * QEMU Storage Daemon QMP Reference Manual
+
+      * QEMU storage daemon protocol commands and structs
+
+      * Common data types
+
+      [More entries at this level, namely all the modules...]
+
+
+    QEMU storage daemon protocol commands and structs
+    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+
+    For a concise listing of all commands, events, and types in the QEMU
+    storage daemon, please consult the QSD Index.
+
+
+    Common data types
+    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+Same section structure WTF as above.
+
+The introduction section is crap, starting with the title.
+
+3. QGA
+
+    QEMU Guest Agent Protocol Reference
+    ***********************************
+
+
+    Contents
+    ^^^^^^^^
+
+    * QEMU Guest Agent Protocol Reference
+
+      * QEMU guest agent protocol commands and structs
+
+
+    QEMU guest agent protocol commands and structs
+    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+    For a concise listing of all commands, events, and types in the QEMU
+    guest agent, please consult the QGA Index.
+
+    Command guest-sync-delimited (Since: 1.1)
+
+       Echo back a unique integer value, and prepend to response a leading
+       sentinel byte (0xFF) the client can check scan for.
+
+       [...]
+
+    [More definitions...]
+
+The section structure is completely useless.  Why bury the contents two
+levels deep, with meaningless section titles?
+
+Again, the introduction section is crap, starting with the title.
 
 
