@@ -2,122 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EC3A5F9B2
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 16:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A98CA5F9B6
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 16:24:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tskOy-0006up-L6; Thu, 13 Mar 2025 11:23:19 -0400
+	id 1tskPN-0007U4-Kp; Thu, 13 Mar 2025 11:23:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tskOn-0006u8-6f
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 11:23:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1tskOl-0001YL-EK
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 11:23:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741879382;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EZP3EINMiau0DOh25+wD2QEqLTqxWivDHuODrVbyHUE=;
- b=Z6BuiXS7Nl+aYru//T69wn4j3c1bTWYYrSIqdT+ZIITVnEUu6P3kb8hGHn9E2G/0uf83Pq
- ZTwS9UloVOiG/ziltbhdmfzvMOsXqVHRNtt4xAG1SYCTRUwpiYCdmPG1+u0bBxeuq02sBR
- CTfl6miHy8rykg8iLxylJWbPBzKUOWY=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-112-ke4pkn3RMiy0gL36vXHMFA-1; Thu, 13 Mar 2025 11:22:55 -0400
-X-MC-Unique: ke4pkn3RMiy0gL36vXHMFA-1
-X-Mimecast-MFC-AGG-ID: ke4pkn3RMiy0gL36vXHMFA_1741879375
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7c54e9f6e00so383824085a.0
- for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 08:22:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
+ id 1tskPJ-0007Rv-FZ
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 11:23:37 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <paolo.savini@embecosm.com>)
+ id 1tskPH-0001fJ-GE
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 11:23:37 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-390fdaf2897so965975f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 08:23:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=embecosm.com; s=google; t=1741879413; x=1742484213; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9nVjncuiVzGqqYqTlXbnw4WnIwWipltA0nH22oS5ZUs=;
+ b=cRBt0bOZZmP17WXeUnY1fhrnL62vuZHc957vgyONqkbNwMS1IBE5kOy2v4QQuUPuRj
+ /B8tlfTbF9uwTvIKZilhIM9NsZitNM2BVP9Xu07f4N/GujiyhTXI2jIc6tdn9obhXbDF
+ jrH0pzwtmdHMNyCC5goL0jT2LIsZMTMbD4oN2rnvL1r9I98asrfu1XFl+d7sZUt/MoHj
+ avMn5W7BazlJdAvbZbTi1s5JSk7MCLduNqUnlFaXTKAFpbErwIUR3MpaFBdxlAZX4ORT
+ yvPjaJZKA+l9VqU9NejZqqxqPO5ghaWu6lhJSYzwL9R940L4rXpWjmPO1ZGaOku2i+cA
+ 7E8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741879375; x=1742484175;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1741879413; x=1742484213;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=EZP3EINMiau0DOh25+wD2QEqLTqxWivDHuODrVbyHUE=;
- b=NmXnhp+0m41LlWTgu6fT1mN3R3463xBN6rLwM4oHx/ZqRbuy3tcHIXdYXs18Sq+lao
- Q4evBeU2luc9JVTxaiQ4CQM2Uo+bpvJqNGhqFs1ZuUysa1nF9xUI8le0xCQFKFrHLZGj
- WDA/7ijqHqa7EJdNDP1Ue6LlaPbpIyZH43YCIknuK/MNOPSedY0GMPAU2hAjUg1SWs6m
- 2Ujc6tusX4BqTsvWyy5rKcM9W1BDtMfVXMEN/6mJLltkJQZvoiWYBqPaUy+3PwEt/WNs
- 25KfFYRdBqp69R20ssYniwpUklsjd84Ni+wTLPdaB6n3qT+dBn32M1ZjDvnB17A+Zof2
- 4SMw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWBy/uNkOJTzUwltWCTyy5ZBHfWOSzlwhEtTCIo7IJoaMFjuUhTGToq9PyPWauBUXtvGFbUHTZkqpOV@nongnu.org
-X-Gm-Message-State: AOJu0YzKx0eJK+4HFBfKrPQIfd2U73W56mDA43LxANoLDSfwyiTAzyf3
- 03mttB+zH/FYx5A39umiRKox2/Bgg/EocDR5AT3H2g7djucaNDv8u6X7rjT/xdAYsj0p/r8Gl8x
- jxdnPT2dTrYYbrdBcVglTeFhqQJ7Htw4GphhZWPX67sEYPMFGY33t
-X-Gm-Gg: ASbGnctoOfb06KVJ476tjJQ89/PEgJvywsdWa3ortgnmYJAIyqCWTMIlOdcLAk8LZh0
- XZnWWZX5S3vAZYulPjyFexvtvB9s/CZQmzbU5sW5rTsg32YneuXj5Dqg+UtEbAD78GdBc+nqU0C
- CZAWxHEMaeTI3aT9DfMh1xlIftoPiOPVwZvSUNCUQ/Eg7vzUxK9k0OVsce63CURc8S/f3Mvv+L8
- DxTGnKxI+G+a9+pXhYnEr+B8wlWfu0Kvu1GxYycs5hRLkU8vHYAsMFNvE2ul/ho5wogAOS+d62p
- vUa3++kGamglsK3hmolgSWTyb6+yeCxUNhbsTrOlF/lUAFa3G62LG+SPLSMtfHA=
-X-Received: by 2002:a05:620a:608c:b0:7b7:142d:53a8 with SMTP id
- af79cd13be357-7c5737f16c7mr504515285a.19.1741879375194; 
- Thu, 13 Mar 2025 08:22:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHj9tVgQN6tyRft4x1YKcUrO93MlRKB7/+4lThR0JPTAlsMjOUIE+hAwfV2kqwxFaG+3oowjQ==
-X-Received: by 2002:a05:620a:608c:b0:7b7:142d:53a8 with SMTP id
- af79cd13be357-7c5737f16c7mr504511485a.19.1741879374876; 
- Thu, 13 Mar 2025 08:22:54 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ bh=9nVjncuiVzGqqYqTlXbnw4WnIwWipltA0nH22oS5ZUs=;
+ b=XebYA0R+JipV2ubEWAJvSJB1FcFP2coiO9czssxyA7hkEmEWTPwktJIHN5kWqwSTtS
+ V3thLiqL/qa9ShPAIy5XOsOsJehHWfE4CtG/FiCMyrSbuJYaStrdvAOfOT2oPqnz+CpC
+ MpBWgk3Y3V6xbakY1UroLCH2aM9MYkCESkb7jdUMWemJMvgJwFnKzXQji0L98wd6F/xd
+ c1F8dI8gYvZjDRzt7aX+B41jJr58VNmgy4sPYxAT0kA8mCrCC4qEdLhkqKEq7xm0nIln
+ pgYuG3YBAF/gRGLv19PlE6kw/RogGk3eQfm4RD6MC7odH5193OKdq6gIyXLI6S2bhk14
+ 1ZBg==
+X-Gm-Message-State: AOJu0YxRCfP9y+1/uBc+yUKsdbO2ksuB0SyfvvdwjSE4kdcFHNptKR8Y
+ taAxoBTGc9SVk4n1x9MpGpAGV2inlf032C8n/uDthl/4IpAUhWb9j61gwEBJss899j7k0M1S+Tg
+ 4GGlVUA==
+X-Gm-Gg: ASbGncshJROYejAMAgrkKG0NGp2wABHMMKDLa3zJZNCEpFAsleMBR15/JVEJb+ll5fH
+ pIBIJMhcT+RVZ5uoW8aFWhKS58jsM9u5Q1GdqNoKSCCjlgHY/pP0kpJwKO5sicuupynNyDi8Oie
+ 9T+zH7AqZFY8/fXK95/DpPgGkXBkl/LHgpMWVH6QASAmxmTVVSJItngsBlcOxfTeYjwgsSqwe2t
+ ixIBMOQCYN7DHTo0vC9UX4aid3DBI0vpgBsSSGuKxsRlnZy9qey8ZfEsJBRbXWvd8Q4HOOtCkoW
+ LTndX0rC1q5qBBwWUv9l59Glg5SmiybtnwxuDGy1NNvTpjMonC/ZfQXy0eak2t5qcnQgc4eUMe1
+ jmnodpZZ5ZA==
+X-Google-Smtp-Source: AGHT+IEQMV2Zhvynym5jPJEeBEzsOTWLlS4hmQv6E96166TOjIAPpd2etOrK8btyzJHoNfGsTQvKLg==
+X-Received: by 2002:a05:6000:1545:b0:390:fc5a:91c8 with SMTP id
+ ffacd0b85a97d-39132dbd475mr25968294f8f.53.1741879413146; 
+ Thu, 13 Mar 2025 08:23:33 -0700 (PDT)
+Received: from paolo-laptop-amd.sou.embecosm-corp.com ([212.69.42.53])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7c573c71628sm110305885a.32.2025.03.13.08.22.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Mar 2025 08:22:54 -0700 (PDT)
-Message-ID: <dcd67e50-8dea-4793-86a3-0c987f46a0c5@redhat.com>
-Date: Thu, 13 Mar 2025 16:22:49 +0100
+ ffacd0b85a97d-395cb7ebaedsm2462868f8f.90.2025.03.13.08.23.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Mar 2025 08:23:32 -0700 (PDT)
+From: Paolo Savini <paolo.savini@embecosm.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Paolo Savini <paolo.savini@embecosm.com>,
+ Richard Handerson <richard.henderson@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Helene Chelin <helene.chelin@embecosm.com>, Nathan Egge <negge@google.com>,
+ Max Chou <max.chou@sifive.com>,
+ Jeremy Bennett <jeremy.bennett@embecosm.com>,
+ Craig Blackmore <craig.blackmore@embecosm.com>
+Subject: [PATCH 0/1 v4] target/riscv: use tcg ops generation to emulate whole
+ reg rvv loads/stores.
+Date: Thu, 13 Mar 2025 15:23:29 +0000
+Message-ID: <20250313152330.398396-1-paolo.savini@embecosm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 04/20] hw/arm/virt: Add support for smmuv3-accel
-Content-Language: en-US
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
- "berrange@redhat.com" <berrange@redhat.com>,
- "nathanc@nvidia.com" <nathanc@nvidia.com>,
- "mochs@nvidia.com" <mochs@nvidia.com>,
- "smostafa@google.com" <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>,
- "Wangzhou (B)" <wangzhou1@hisilicon.com>,
- jiangkunkun <jiangkunkun@huawei.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-References: <20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com>
- <20250311141045.66620-5-shameerali.kolothum.thodi@huawei.com>
- <547f961e-380c-4ffe-8b8b-3e9d543aa702@redhat.com>
- <58c9c37876c64584b0c7961ec61696a3@huawei.com>
- <5b29ea01-1b86-4b48-a769-14986751a0f1@redhat.com>
- <5d894a546d3f4081ac2cfe98bd2ea612@huawei.com>
- <fb28c228-0c78-4412-ba91-a62cb4351793@redhat.com>
- <8490942b9428411e858a62a80ea12530@huawei.com>
- <df336b78-5a0f-450a-8d3c-95326f5eb9a0@redhat.com>
- <f4381814d71841a185ced57dfc4f4c62@huawei.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <f4381814d71841a185ced57dfc4f4c62@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=paolo.savini@embecosm.com; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,83 +105,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Previous versions:
+
+- RFC v1: https://lore.kernel.org/all/20241218170840.1090473-1-paolo.savini@embecosm.com/
+- RFC v2: https://lore.kernel.org/all/20241220153834.16302-1-paolo.savini@embecosm.com/
+- RFC v3: https://lore.kernel.org/all/20250122164905.13615-1-paolo.savini@embecosm.com/
+
+Version v4 of this patch brings the following changes:
+
+- removed the host specific conditions so that the behaviour of the emulation
+  doesn't depend on the host we are running on.
+  The intruduction of this extra complexity is not worth the very marginal
+  performance improvement, when the overall performance improves anyway
+  considerably without.
+- added reviewers contacts (thanks all for reviewing the work).
+- changed the header from RFC to PATCH.
+
+Cc: Richard Handerson <richard.henderson@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>
+Cc: Bin Meng <bmeng.cn@gmail.com>
+Cc: Weiwei Li <liwei1518@gmail.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: Helene Chelin <helene.chelin@embecosm.com>
+Cc: Nathan Egge <negge@google.com>
+Cc: Max Chou <max.chou@sifive.com>
+Cc: Jeremy Bennett <jeremy.bennett@embecosm.com>
+Cc: Craig Blackmore <craig.blackmore@embecosm.com>
 
 
+Paolo Savini (1):
+  target/riscv: use tcg ops generation to emulate whole reg rvv
+    loads/stores.
 
-On 3/13/25 9:26 AM, Shameerali Kolothum Thodi wrote:
-> Hi Eric,
->
->> -----Original Message-----
->> From: Eric Auger <eric.auger@redhat.com>
->> Sent: Wednesday, March 12, 2025 6:31 PM
->> To: Shameerali Kolothum Thodi
->> <shameerali.kolothum.thodi@huawei.com>; qemu-arm@nongnu.org;
->> qemu-devel@nongnu.org
->> Cc: peter.maydell@linaro.org; jgg@nvidia.com; nicolinc@nvidia.com;
->> ddutile@redhat.com; berrange@redhat.com; nathanc@nvidia.com;
->> mochs@nvidia.com; smostafa@google.com; Linuxarm
->> <linuxarm@huawei.com>; Wangzhou (B) <wangzhou1@hisilicon.com>;
->> jiangkunkun <jiangkunkun@huawei.com>; Jonathan Cameron
->> <jonathan.cameron@huawei.com>; zhangfei.gao@linaro.org
->> Subject: Re: [RFC PATCH v2 04/20] hw/arm/virt: Add support for smmuv3-
->> accel
->>
->> Hi Shameer,
->>
->>
->>>>>>> Thanks for taking a look. I am just jumping on this one for now.
->>>>>>> Yes, there were discussions around that. But I was not sure we
->>>>>>> concluded on deprecating the machine option. So if I get you
->>>>>>> correctly the idea is,
->>>>>>>
->>>>>>> if we have,
->>>>>>> -device smmuv3 it will instantiate the current machine wide smmuv3
->>>>>>> and for -device smmuv3,accel this device?
->>>>>> yes that would be my preference.
->>>>> Ok. I will look into that in my next respin. A quick question. Does
->>>>> qemu DEVICE model support the differentiation like above easily? Or
->> we
->>>>> have to manage it with properties?
->>>> Not sure if I understand you question. I meant it can be a boolean
->> device
->>>> property (DEFINE_PROP_BOOL) smmuv3,accel=on
->>>>
->>>> No?
->>> Right. My query was more about any hidden Qemu magic to have device
->> instantiation
->>> similar to what we have at the moment even though we name both
->> devices "smmuv3".
->>> That way I can keep much of the code rather than checking "accel"
->> property
->>> in SMMUv3 code and redirecting calls. But looks like not.
->> I don't think there is any such a trick.
->>
->> Having the legacy device (without accel) only instantiable with the virt
->> machine option and the new accelerated one only instantiable with a
->> -device option looks strange to me. By the way they model the same
->> device so I think it makes more sense to use the same device with an
->> option.
-> Ok. Will address that in the next respin.
->
->> Also do you see anything that would prevent the acceleration enhanced
->> device from being able to translate emulated devices as well. Ideally
->> the smmu device should react differently depending on the device which
->> is translated. I think it worked with the original implementation as far
->> as I remember.
-> Yes, smmuv3-accel works with emulated devices as well. Currently the only
-> limitation is, we should have at least one vfi-pci dev cold plugged as mentioned
-> in the cover letter. Hopefully we will be able to resolve that restriction soon.
+ target/riscv/insn_trans/trans_rvv.c.inc | 155 +++++++++++++++++-------
+ 1 file changed, 108 insertions(+), 47 deletions(-)
 
-OK thanks
-
-Eric
->
-> Thanks,
-> Shameer
->
-
+-- 
+2.34.1
 
