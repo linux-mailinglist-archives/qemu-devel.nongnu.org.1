@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E99DA5EA48
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 435D8A5EA45
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:53:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsZWt-0004qO-T3; Wed, 12 Mar 2025 23:46:44 -0400
+	id 1tsZWw-0005Hr-QZ; Wed, 12 Mar 2025 23:46:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZWN-0004iW-CR
+ id 1tsZWN-0004ia-DG
  for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:13 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZW5-0007pa-D0
+ id 1tsZW9-0007pj-0V
  for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:09 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-224191d92e4so9431465ad.3
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:51 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-22438c356c8so9205865ad.1
+ for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1741837551; x=1742442351; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZK4y75JMuNqGUqSKX3k26o8Ed83BdJjCreZWjLnQNVk=;
- b=XOwtI0tXtOhyI8FXuJKwMGfan8bmxES2BUiQENq+ZUYLuJcN9UMMLUeGPJnpTDFFuF
- A8Vge1oEMnc//QRTRu5X0WyiVMq/b9j+EiPB9PTLIKJbfIf1XxqiAWIdoKFYYrS8wYk6
- Up2LJAPYpHBxtODNiXe6C2yVaDMU5Tkwo9OJGHkmMDgAqlwfm92TzaDBdLLWHpOjlny8
- fuHCT5+KnhT7yhTX+t2Jjr/e1qCXyS4GER5vYQTfUaPoGJuY1iMw5aDD+NTemM4h8ee7
- sx3+HBBVRC7wgbY98bVPE5YIk/qMhPLQJ8bVuznCJ0oMPfCNPBSullH1V+kRKDNzi/zO
- /Snw==
+ bh=c0yH4U6h2oXBq+kGt0lALY89FbRQ4QUGXJxA7WeVWJA=;
+ b=qYbiNJ79rPb9EPEi9iSMArjdoGO67LwV5NVCJkFiPzm+COj/kvBOIE/jWmAdyQvR8S
+ c3woiO41GLGjq8O/qPd20dxt1hkvGyN9KPRBrfqB55SksjaAevbVVUfYGmRmFBW7P6kr
+ CatNaLPxOE7vxAwsu+lpnko1EbK8EIsoC3DvbwCVodon7/zIjHuJeRZWvedP3wPFZMmZ
+ DBwxpr0PRg8VKTFaj4FDwc+HhU7D8HHoQESLhhbk6zSg2loP63uOTlEVNECVAJWSv5y/
+ ulA8GO0/+o2+5tWcnUBncRzAitOgz79DoR34QMmD2TPPwDdRomXVBDl8ig38QhjDdS2Y
+ 1CeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1741837551; x=1742442351;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZK4y75JMuNqGUqSKX3k26o8Ed83BdJjCreZWjLnQNVk=;
- b=jHc4htBe91OOvHRuHNewKPR5WqkeDKBvVJ6f3eDq2Xu31zRtGxJcN3KBxKUXYu4Nn4
- Os6ZdG+g8bt5QhmFRHFz1+Hq7+a2LLnFr2qbTIBqxNOX8yb2c6hqij4a0IMinAxSZuqn
- 1YBVes1jPVPwuAVcIbnufqZAdQdEC2Y0KKii+oeQvXrLO/OiGm/qyPdVtfwS5sLzp3PV
- aMTWD17+gs4tRZER2O8tCagXnvxyjaRKznEObAtK+TJNS2/zJ0PFf5LQAGYosrLTQ4pj
- lz/COA+/JzdYo6GJXya3cwdTdnWghTON32spfBD3NHeenZRcLRKuIGeU2b1k4Nz2D70Z
- EI6A==
-X-Gm-Message-State: AOJu0Yx+SzTzEyMPNpCJq/6ZrDBUS/rPBjBgBk2Fe9G8ypzQYGcTMNBV
- /WT4hmsAqupCNAb/kJc9KQs7GT/imA+W3l3Z0Bn17v7UQBUyZ/4CFBZSU9tikNUjGBRKybo12Ym
- m
-X-Gm-Gg: ASbGncuTr4GozuFwvat1Euq5ei6SoGOEQiVcWXIm6uJ3JSRrk7qQ8P9gMz+/QrSC4wR
- 1Ar82SxDb/kRGkCSpxidV359Fg1HPZKOn+XiVlNWBaHLwS1co44Pbr6EfWLI4h5zJnSn5JgETP2
- 0YtCWmeuEUidaoupRCic35AXOg16GaFezfxld3h8jmpm/AkKaYJrrFsiHPZesRNL/R1nQXOpgZC
- 4Ja/Y+G+lnOtLaqFOBou8G6pR/AHZjsZsks/458kXcu/35aCfZidScVHAKvMVOPG5+2qPJ3uH6d
- YU8oiGz1Xrz8VG1wLR0SQvN6C1kIHzg8lCOBl7/1k5dGGCWq9ZaPuD5Kc369bI9/ZR6ehlUc4w2
- i
-X-Google-Smtp-Source: AGHT+IFFnx2f3hqYLGmtHM9bfzMj7fSCVl6g+akeRr7jvyqDKt5euCa7yr9Fo9Bonexxxd/yHsvfbg==
-X-Received: by 2002:a17:902:d48c:b0:224:8bd:a482 with SMTP id
- d9443c01a7336-22428a9fcfemr357914165ad.25.1741837550164; 
- Wed, 12 Mar 2025 20:45:50 -0700 (PDT)
+ bh=c0yH4U6h2oXBq+kGt0lALY89FbRQ4QUGXJxA7WeVWJA=;
+ b=rm92ydKCw+ccab8EPwg5uYd0SasN0w5XiaHQy+YSo0Mguxoe/fJYtH4ase/GbQqXWh
+ T6Lhs/kEv0qwme36aAatoFN0xKkMmxhW6DlnE125MwDdZ4MBMNes4jAH3hl8yng3svce
+ 49i+Je+96uKi/lKkHOCY10mDEfujGm2NdXQcAQYVScW9ezG2bV5O/uoGCINhzuegxtZ0
+ R08Kyeo/+FXyy762K3HhAou2Ir46vBRR713Vn4xMfEfaH/e8GjIm9ndd4bA/6o6zGODj
+ zIx5fQZfedVvvjyYHwA+gu261aSMtf9ZvQmnmAlI9xWFClvw1XJdknrWAM6jGCyPcMTT
+ oUcQ==
+X-Gm-Message-State: AOJu0Yyqqt00LJenWEcTb4G70e1IEQ4z2hW8J/OtoSK4nWo+xEOnz8fy
+ WVpEFlYZjk/C0CT2xloAFoWhhqYGS/DPIknw0rpMNPvqNkky6R6IkqSfXdrrp4m7he6n3EVsCee
+ N
+X-Gm-Gg: ASbGncvixp0UDiozTdGk6bJl7ocn1wrZKFPHiWqh6nZDEDWXqUk29Fdlqk/86xQ3j63
+ Fot63/UL/SmS56zj5Jk/nLyOynhnR34lmyX1xEPSNjQnvACUtTsOp2UqBDqZvSPOmcAoTagBd1+
+ GCzPPHhG37A9mQvB8GaA7BGrZc88uhzWJwfkRJdX2Jx2uhJMOckM+p7I3qujxnUOOKZudv060pF
+ z4cjc9KgUVJ8CUzd9hyhjcp8TeKL20y7c6YgC1/ZHhq3nsvJGvNbKC8u84BvMnKa6DsEAFBzC/P
+ /6uIiAfgElNZnopa5RblWinfdn+A/AFNSS83QsifuJkffjeqaDOvK18oZpyMjjSwKwus2qmjRqX
+ d
+X-Google-Smtp-Source: AGHT+IF790jE+Vd/coklpPUQ2vL2HDzDMyV7reDn5GSnY5cyo0ityyRPs8mwzquMCjvhIMa8FuMw6Q==
+X-Received: by 2002:a05:6a21:648f:b0:1f5:70af:a32a with SMTP id
+ adf61e73a8af0-1f570afa5a2mr29301983637.32.1741837551518; 
+ Wed, 12 Mar 2025 20:45:51 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.49
+ d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Mar 2025 20:45:49 -0700 (PDT)
+ Wed, 12 Mar 2025 20:45:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	pbonzini@redhat.com,
 	philmd@linaro.org
-Subject: [PATCH 30/37] include/exec: Drop ifndef CONFIG_USER_ONLY from
- cpu-common.h
-Date: Wed, 12 Mar 2025 20:45:10 -0700
-Message-ID: <20250313034524.3069690-31-richard.henderson@linaro.org>
+Subject: [PATCH 31/37] include/hw/core: Drop ifndef CONFIG_USER_ONLY from cpu.h
+Date: Wed, 12 Mar 2025 20:45:11 -0700
+Message-ID: <20250313034524.3069690-32-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250313034524.3069690-1-richard.henderson@linaro.org>
 References: <20250313034524.3069690-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,41 +105,65 @@ although it hurts nothing to allow them.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-common.h | 6 ------
- 1 file changed, 6 deletions(-)
+ include/hw/core/cpu.h | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index be032e1a49..9b83fd7ac8 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -9,9 +9,7 @@
- #define CPU_COMMON_H
- 
- #include "exec/vaddr.h"
--#ifndef CONFIG_USER_ONLY
- #include "exec/hwaddr.h"
--#endif
- #include "hw/core/cpu.h"
- #include "tcg/debug-assert.h"
- #include "exec/page-protection.h"
-@@ -40,8 +38,6 @@ int cpu_get_free_index(void);
- void tcg_iommu_init_notifier_list(CPUState *cpu);
- void tcg_iommu_free_notifier_list(CPUState *cpu);
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 2fdb115b19..59394212fa 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -614,8 +614,6 @@ extern bool mttcg_enabled;
+  */
+ bool cpu_paging_enabled(const CPUState *cpu);
  
 -#if !defined(CONFIG_USER_ONLY)
 -
- enum device_endian {
-     DEVICE_NATIVE_ENDIAN,
-     DEVICE_BIG_ENDIAN,
-@@ -176,8 +172,6 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
- int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
-                                         size_t length);
+ /**
+  * cpu_get_memory_mapping:
+  * @cpu: The CPU whose memory mappings are to be obtained.
+@@ -676,8 +674,6 @@ int cpu_write_elf32_qemunote(WriteCoreDumpFunction f, CPUState *cpu,
+  */
+ GuestPanicInformation *cpu_get_crash_info(CPUState *cpu);
  
--#endif
+-#endif /* !CONFIG_USER_ONLY */
 -
- /* Returns: 0 on success, -1 on error */
- int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
-                         void *ptr, size_t len, bool is_write);
+ /**
+  * CPUDumpFlags:
+  * @CPU_DUMP_CODE:
+@@ -701,7 +697,6 @@ enum CPUDumpFlags {
+  */
+ void cpu_dump_state(CPUState *cpu, FILE *f, int flags);
+ 
+-#ifndef CONFIG_USER_ONLY
+ /**
+  * cpu_get_phys_page_attrs_debug:
+  * @cpu: The CPU to obtain the physical page address for.
+@@ -758,8 +753,6 @@ bool cpu_virtio_is_big_endian(CPUState *cpu);
+  */
+ bool cpu_has_work(CPUState *cpu);
+ 
+-#endif /* CONFIG_USER_ONLY */
+-
+ /**
+  * cpu_list_add:
+  * @cpu: The CPU to be added to the list of CPUs.
+@@ -1143,8 +1136,6 @@ const char *target_name(void);
+ 
+ #ifdef COMPILING_PER_TARGET
+ 
+-#ifndef CONFIG_USER_ONLY
+-
+ extern const VMStateDescription vmstate_cpu_common;
+ 
+ #define VMSTATE_CPU() {                                                     \
+@@ -1154,7 +1145,6 @@ extern const VMStateDescription vmstate_cpu_common;
+     .flags = VMS_STRUCT,                                                    \
+     .offset = 0,                                                            \
+ }
+-#endif /* !CONFIG_USER_ONLY */
+ 
+ #endif /* COMPILING_PER_TARGET */
+ 
 -- 
 2.43.0
 
