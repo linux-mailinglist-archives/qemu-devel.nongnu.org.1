@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CEEAA5EB51
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 06:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52410A5EB4D
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 06:50:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsbOq-000522-Ss; Thu, 13 Mar 2025 01:46:32 -0400
+	id 1tsbOr-00054e-VD; Thu, 13 Mar 2025 01:46:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1tsbOI-0004pD-4g; Thu, 13 Mar 2025 01:46:02 -0400
+ id 1tsbOM-0004q3-S6; Thu, 13 Mar 2025 01:46:08 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1tsbOG-0005Ve-3n; Thu, 13 Mar 2025 01:45:57 -0400
+ id 1tsbOJ-0005Ve-2m; Thu, 13 Mar 2025 01:46:02 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 13 Mar
@@ -29,9 +29,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Joel Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <yunlin.tang@aspeedtech.com>
-Subject: [PATCH 04/13] hw/intc/aspeed: Add support for AST2700 TSP INTC
-Date: Thu, 13 Mar 2025 13:40:08 +0800
-Message-ID: <20250313054020.2583556-5-steven_lee@aspeedtech.com>
+Subject: [PATCH 05/13] hw/arm/aspeed_ast27x0-ssp: Introduce AST27x0 A0 SSP SoC
+Date: Thu, 13 Mar 2025 13:40:09 +0800
+Message-ID: <20250313054020.2583556-6-steven_lee@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250313054020.2583556-1-steven_lee@aspeedtech.com>
 References: <20250313054020.2583556-1-steven_lee@aspeedtech.com>
@@ -63,311 +63,383 @@ From:  Steven Lee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Define new types for ast2700tsp INTC and INTCIO
-- Add register definitions for TSP INTC and INTCIO
-- Implement write handlers for TSP INTC and INTCIO
-- Register new types in aspeed_intc_register_types
+AST2700 SSP(Secondary Service Processor) is a Cortex-M4 coprocessor
+The patch adds support for SSP with following update:
 
-The design of the TSP INTC and INTCIO controllers is similar to
-AST2700, with the following differences:
-
-- AST2700
-  Support GICINT128 to GICINT136 in INTC
-  The INTCIO GIC_192_201 has 10 output pins, mapped as follows:
-    Bit 0 -> GIC 192
-    Bit 1 -> GIC 193
-    Bit 2 -> GIC 194
-    Bit 3 -> GIC 195
-    Bit 4 -> GIC 196
-
-- AST2700-tsp
-  Support TSPINT128 to TSPINT136 in INTC
-  The INTCIO TSPINT_160_169 has 10 output pins, mapped as follows:
-    Bit 0 -> TSPINT 160
-    Bit 1 -> TSPINT 161
-    Bit 2 -> TSPINT 162
-    Bit 3 -> TSPINT 163
-    Bit 4 -> TSPINT 164
+- Introduce Aspeed27x0SSPSoCState structure in aspeed_soc.h
+- Define memory map and IRQ map for AST27x0 A0 SSP SoC
+- Implement initialization and realization functions
+- Add support for UART, INTC, and SCU devices
+- Map unimplemented devices for IPC and SCUIO
 
 Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
-Change-Id: I9e71a8aac400c0cdbd5b78073d0ada79d12a1350
+Change-Id: If83e752873af393f3b71249176454399de0be40f
 ---
- include/hw/intc/aspeed_intc.h |   2 +
- hw/intc/aspeed_intc.c         | 213 ++++++++++++++++++++++++++++++++++
- 2 files changed, 215 insertions(+)
+ include/hw/arm/aspeed_soc.h |  14 ++
+ hw/arm/aspeed_ast27x0-ssp.c | 309 ++++++++++++++++++++++++++++++++++++
+ hw/arm/meson.build          |   1 +
+ 3 files changed, 324 insertions(+)
+ create mode 100644 hw/arm/aspeed_ast27x0-ssp.c
 
-diff --git a/include/hw/intc/aspeed_intc.h b/include/hw/intc/aspeed_intc.h
-index 746f159bf3..51288384a5 100644
---- a/include/hw/intc/aspeed_intc.h
-+++ b/include/hw/intc/aspeed_intc.h
-@@ -17,6 +17,8 @@
- #define TYPE_ASPEED_2700_INTCIO TYPE_ASPEED_INTC "io-ast2700"
- #define TYPE_ASPEED_2700SSP_INTC TYPE_ASPEED_INTC "-ast2700ssp"
- #define TYPE_ASPEED_2700SSP_INTCIO TYPE_ASPEED_INTC "io-ast2700ssp"
-+#define TYPE_ASPEED_2700TSP_INTC TYPE_ASPEED_INTC "-ast2700tsp"
-+#define TYPE_ASPEED_2700TSP_INTCIO TYPE_ASPEED_INTC "io-ast2700tsp"
- 
- OBJECT_DECLARE_TYPE(AspeedINTCState, AspeedINTCClass, ASPEED_INTC)
- 
-diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-index 1f8b4d4d36..9e3bee993f 100644
---- a/hw/intc/aspeed_intc.c
-+++ b/hw/intc/aspeed_intc.c
-@@ -106,6 +106,51 @@ REG32(SSPINT164_STATUS,     0x1C4)
- REG32(SSPINT165_EN,         0x1D0)
- REG32(SSPINT165_STATUS,     0x1D4)
- 
-+/*
-+ * TSP INTC Registers
-+ */
-+REG32(TSPINT128_EN,             0x3000)
-+REG32(TSPINT128_STATUS,         0x3004)
-+REG32(TSPINT129_EN,             0x3100)
-+REG32(TSPINT129_STATUS,         0x3104)
-+REG32(TSPINT130_EN,             0x3200)
-+REG32(TSPINT130_STATUS,         0x3204)
-+REG32(TSPINT131_EN,             0x3300)
-+REG32(TSPINT131_STATUS,         0x3304)
-+REG32(TSPINT132_EN,             0x3400)
-+REG32(TSPINT132_STATUS,         0x3404)
-+REG32(TSPINT133_EN,             0x3500)
-+REG32(TSPINT133_STATUS,         0x3504)
-+REG32(TSPINT134_EN,             0x3600)
-+REG32(TSPINT134_STATUS,         0x3604)
-+REG32(TSPINT135_EN,             0x3700)
-+REG32(TSPINT135_STATUS,         0x3704)
-+REG32(TSPINT136_EN,             0x3800)
-+REG32(TSPINT136_STATUS,         0x3804)
-+REG32(TSPINT137_EN,             0x3900)
-+REG32(TSPINT137_STATUS,         0x3904)
-+REG32(TSPINT138_EN,             0x3A00)
-+REG32(TSPINT138_STATUS,         0x3A04)
-+REG32(TSPINT160_169_EN,         0x3B00)
-+REG32(TSPINT160_169_STATUS,     0x3B04)
-+
-+/*
-+ * TSP INTCIO Registers
-+ */
-+
-+REG32(TSPINT160_EN,         0x200)
-+REG32(TSPINT160_STATUS,     0x204)
-+REG32(TSPINT161_EN,         0x210)
-+REG32(TSPINT161_STATUS,     0x214)
-+REG32(TSPINT162_EN,         0x220)
-+REG32(TSPINT162_STATUS,     0x224)
-+REG32(TSPINT163_EN,         0x230)
-+REG32(TSPINT163_STATUS,     0x234)
-+REG32(TSPINT164_EN,         0x240)
-+REG32(TSPINT164_STATUS,     0x244)
-+REG32(TSPINT165_EN,         0x250)
-+REG32(TSPINT165_STATUS,     0x254)
-+
- static const AspeedINTCIRQ *aspeed_intc_get_irq(AspeedINTCClass *aic,
-                                                 uint32_t reg)
- {
-@@ -540,6 +585,50 @@ static void aspeed_ssp_intc_write(void *opaque, hwaddr offset, uint64_t data,
-     return;
- }
- 
-+static void aspeed_tsp_intc_write(void *opaque, hwaddr offset, uint64_t data,
-+                                        unsigned size)
-+{
-+    AspeedINTCState *s = ASPEED_INTC(opaque);
-+    const char *name = object_get_typename(OBJECT(s));
-+    uint32_t reg = offset >> 2;
-+
-+    trace_aspeed_intc_write(name, offset, size, data);
-+
-+    switch (reg) {
-+    case R_TSPINT128_EN:
-+    case R_TSPINT129_EN:
-+    case R_TSPINT130_EN:
-+    case R_TSPINT131_EN:
-+    case R_TSPINT132_EN:
-+    case R_TSPINT133_EN:
-+    case R_TSPINT134_EN:
-+    case R_TSPINT135_EN:
-+    case R_TSPINT136_EN:
-+    case R_TSPINT160_169_EN:
-+        aspeed_intc_enable_handler(s, offset, data);
-+        break;
-+    case R_TSPINT128_STATUS:
-+    case R_TSPINT129_STATUS:
-+    case R_TSPINT130_STATUS:
-+    case R_TSPINT131_STATUS:
-+    case R_TSPINT132_STATUS:
-+    case R_TSPINT133_STATUS:
-+    case R_TSPINT134_STATUS:
-+    case R_TSPINT135_STATUS:
-+    case R_TSPINT136_STATUS:
-+        aspeed_intc_status_handler(s, offset, data);
-+        break;
-+    case R_TSPINT160_169_STATUS:
-+        aspeed_intc_status_handler_multi_outpins(s, offset, data);
-+        break;
-+    default:
-+        s->regs[reg] = data;
-+        break;
-+    }
-+
-+    return;
-+}
-+
- static uint64_t aspeed_intcio_read(void *opaque, hwaddr offset,
-                                    unsigned int size)
- {
-@@ -622,6 +711,40 @@ static void aspeed_ssp_intcio_write(void *opaque, hwaddr offset, uint64_t data,
-     return;
- }
- 
-+static void aspeed_tsp_intcio_write(void *opaque, hwaddr offset, uint64_t data,
-+                                unsigned size)
-+{
-+    AspeedINTCState *s = ASPEED_INTC(opaque);
-+    const char *name = object_get_typename(OBJECT(s));
-+    uint32_t reg = offset >> 2;
-+
-+    trace_aspeed_intc_write(name, offset, size, data);
-+
-+    switch (reg) {
-+    case R_TSPINT160_EN:
-+    case R_TSPINT161_EN:
-+    case R_TSPINT162_EN:
-+    case R_TSPINT163_EN:
-+    case R_TSPINT164_EN:
-+    case R_TSPINT165_EN:
-+        aspeed_intc_enable_handler(s, offset, data);
-+        break;
-+    case R_TSPINT160_STATUS:
-+    case R_TSPINT161_STATUS:
-+    case R_TSPINT162_STATUS:
-+    case R_TSPINT163_STATUS:
-+    case R_TSPINT164_STATUS:
-+    case R_TSPINT165_STATUS:
-+        aspeed_intc_status_handler(s, offset, data);
-+        break;
-+    default:
-+        s->regs[reg] = data;
-+        break;
-+    }
-+
-+    return;
-+}
-+
- static const MemoryRegionOps aspeed_intc_ops = {
-     .read = aspeed_intc_read,
-     .write = aspeed_intc_write,
-@@ -662,6 +785,26 @@ static const MemoryRegionOps aspeed_ssp_intcio_ops = {
-     }
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index c46ec6302d..83debb5e14 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -145,6 +145,18 @@ struct Aspeed10x0SoCState {
+     ARMv7MState armv7m;
  };
  
-+static const MemoryRegionOps aspeed_tsp_intc_ops = {
-+    .read = aspeed_intc_read,
-+    .write = aspeed_tsp_intc_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    }
++struct Aspeed27x0SSPSoCState {
++    AspeedSoCState parent;
++    AspeedINTCState intc[2];
++    UnimplementedDeviceState ipc[2];
++    UnimplementedDeviceState scuio;
++
++    ARMv7MState armv7m;
 +};
 +
-+static const MemoryRegionOps aspeed_tsp_intcio_ops = {
-+    .read = aspeed_intcio_read,
-+    .write = aspeed_tsp_intcio_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    }
-+};
++#define TYPE_ASPEED27X0SSP_SOC "aspeed27x0ssp-soc"
++OBJECT_DECLARE_SIMPLE_TYPE(Aspeed27x0SSPSoCState, ASPEED27X0SSP_SOC)
 +
- static void aspeed_intc_instance_init(Object *obj)
- {
-     AspeedINTCState *s = ASPEED_INTC(obj);
-@@ -887,6 +1030,74 @@ static const TypeInfo aspeed_2700ssp_intcio_info = {
-     .class_init = aspeed_2700ssp_intcio_class_init,
+ #define TYPE_ASPEED10X0_SOC "aspeed10x0-soc"
+ OBJECT_DECLARE_SIMPLE_TYPE(Aspeed10x0SoCState, ASPEED10X0_SOC)
+ 
+@@ -255,6 +267,8 @@ enum {
+     ASPEED_DEV_SLIIO,
+     ASPEED_GIC_DIST,
+     ASPEED_GIC_REDIST,
++    ASPEED_DEV_IPC0,
++    ASPEED_DEV_IPC1,
  };
  
-+static AspeedINTCIRQ aspeed_2700tsp_intc_irqs[ASPEED_INTC_MAX_INPINS] = {
-+    {0, 0, 10, R_TSPINT160_169_EN, R_TSPINT160_169_STATUS},
-+    {1, 10, 1, R_TSPINT128_EN, R_TSPINT128_STATUS},
-+    {2, 11, 1, R_TSPINT129_EN, R_TSPINT129_STATUS},
-+    {3, 12, 1, R_TSPINT130_EN, R_TSPINT130_STATUS},
-+    {4, 13, 1, R_TSPINT131_EN, R_TSPINT131_STATUS},
-+    {5, 14, 1, R_TSPINT132_EN, R_TSPINT132_STATUS},
-+    {6, 15, 1, R_TSPINT133_EN, R_TSPINT133_STATUS},
-+    {7, 16, 1, R_TSPINT134_EN, R_TSPINT134_STATUS},
-+    {8, 17, 1, R_TSPINT135_EN, R_TSPINT135_STATUS},
-+    {9, 18, 1, R_TSPINT136_EN, R_TSPINT136_STATUS},
+ qemu_irq aspeed_soc_get_irq(AspeedSoCState *s, int dev);
+diff --git a/hw/arm/aspeed_ast27x0-ssp.c b/hw/arm/aspeed_ast27x0-ssp.c
+new file mode 100644
+index 0000000000..88f27b9459
+--- /dev/null
++++ b/hw/arm/aspeed_ast27x0-ssp.c
+@@ -0,0 +1,309 @@
++/*
++ * ASPEED Ast27x0 SSP SoC
++ *
++ * Copyright (C) 2025 ASPEED Technology Inc.
++ *
++ * This code is licensed under the GPL version 2 or later.  See
++ * the COPYING file in the top-level directory.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "exec/address-spaces.h"
++#include "hw/qdev-clock.h"
++#include "hw/misc/unimp.h"
++#include "hw/arm/aspeed_soc.h"
++
++#define AST2700_SSP_RAM_SIZE (32 * MiB)
++
++static const hwaddr aspeed_soc_ast27x0ssp_memmap[] = {
++    [ASPEED_DEV_SRAM]      =  0x00000000,
++    [ASPEED_DEV_INTC]      =  0x72100000,
++    [ASPEED_DEV_SCU]       =  0x72C02000,
++    [ASPEED_DEV_SCUIO]     =  0x74C02000,
++    [ASPEED_DEV_UART0]     =  0x74C33000,
++    [ASPEED_DEV_UART1]     =  0x74C33100,
++    [ASPEED_DEV_UART2]     =  0x74C33200,
++    [ASPEED_DEV_UART3]     =  0x74C33300,
++    [ASPEED_DEV_UART4]     =  0x72C1A000,
++    [ASPEED_DEV_INTCIO]    =  0x74C18000,
++    [ASPEED_DEV_IPC0]      =  0x72C1C000,
++    [ASPEED_DEV_IPC1]      =  0x74C39000,
++    [ASPEED_DEV_UART5]     =  0x74C33400,
++    [ASPEED_DEV_UART6]     =  0x74C33500,
++    [ASPEED_DEV_UART7]     =  0x74C33600,
++    [ASPEED_DEV_UART8]     =  0x74C33700,
++    [ASPEED_DEV_UART9]     =  0x74C33800,
++    [ASPEED_DEV_UART10]    =  0x74C33900,
++    [ASPEED_DEV_UART11]    =  0x74C33A00,
++    [ASPEED_DEV_UART12]    =  0x74C33B00,
++    [ASPEED_DEV_TIMER1]    =  0x72C10000,
 +};
 +
-+static void aspeed_2700tsp_intc_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedINTCClass *aic = ASPEED_INTC_CLASS(klass);
++static const int aspeed_soc_ast27x0a0ssp_irqmap[] = {
++    [ASPEED_DEV_SCU]       = 12,
++    [ASPEED_DEV_UART0]     = 132,
++    [ASPEED_DEV_UART1]     = 132,
++    [ASPEED_DEV_UART2]     = 132,
++    [ASPEED_DEV_UART3]     = 132,
++    [ASPEED_DEV_UART4]     = 8,
++    [ASPEED_DEV_UART5]     = 132,
++    [ASPEED_DEV_UART6]     = 140,
++    [ASPEED_DEV_UART7]     = 132,
++    [ASPEED_DEV_UART8]     = 132,
++    [ASPEED_DEV_UART9]     = 132,
++    [ASPEED_DEV_UART10]    = 132,
++    [ASPEED_DEV_UART11]    = 132,
++    [ASPEED_DEV_UART12]    = 132,
++    [ASPEED_DEV_TIMER1]    = 16,
++};
 +
-+    dc->desc = "ASPEED 2700 TSP INTC Controller";
-+    aic->num_lines = 32;
-+    aic->num_inpins = 10;
-+    aic->num_outpins = 19;
-+    aic->mem_size = 0x4000;
-+    aic->nr_regs = 0x3B08 >> 2;
-+    aic->reg_offset = 0;
-+    aic->reg_ops = &aspeed_tsp_intc_ops;
-+    aic->irq_table = aspeed_2700tsp_intc_irqs;
-+    aic->irq_table_count = ARRAY_SIZE(aspeed_2700tsp_intc_irqs);
++/* SSPINT 164 */
++static const int ast2700_ssp132_ssp164_intcmap[] = {
++    [ASPEED_DEV_UART0]     = 7,
++    [ASPEED_DEV_UART1]     = 8,
++    [ASPEED_DEV_UART2]     = 9,
++    [ASPEED_DEV_UART3]     = 10,
++    [ASPEED_DEV_UART5]     = 11,
++    [ASPEED_DEV_UART6]     = 12,
++    [ASPEED_DEV_UART7]     = 13,
++    [ASPEED_DEV_UART8]     = 14,
++    [ASPEED_DEV_UART9]     = 15,
++    [ASPEED_DEV_UART10]    = 16,
++    [ASPEED_DEV_UART11]    = 17,
++    [ASPEED_DEV_UART12]    = 18,
++};
++
++struct nvic_intc_irq_info {
++    int irq;
++    int intc_idx;
++    int orgate_idx;
++    const int *ptr;
++};
++
++static struct nvic_intc_irq_info ast2700_ssp_intcmap[] = {
++    {160, 1, 0, NULL},
++    {161, 1, 1, NULL},
++    {162, 1, 2, NULL},
++    {163, 1, 3, NULL},
++    {164, 1, 4, ast2700_ssp132_ssp164_intcmap},
++    {165, 1, 5, NULL},
++    {166, 1, 6, NULL},
++    {167, 1, 7, NULL},
++    {168, 1, 8, NULL},
++    {169, 1, 9, NULL},
++    {128, 0, 1, NULL},
++    {129, 0, 2, NULL},
++    {130, 0, 3, NULL},
++    {131, 0, 4, NULL},
++    {132, 0, 5, ast2700_ssp132_ssp164_intcmap},
++    {133, 0, 6, NULL},
++    {134, 0, 7, NULL},
++    {135, 0, 8, NULL},
++    {136, 0, 9, NULL},
++};
++
++static qemu_irq aspeed_soc_ast27x0ssp_get_irq(AspeedSoCState *s, int dev)
++{
++    Aspeed27x0SSPSoCState *a = ASPEED27X0SSP_SOC(s);
++    AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
++
++    int or_idx;
++    int idx;
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(ast2700_ssp_intcmap); i++) {
++        if (sc->irqmap[dev] == ast2700_ssp_intcmap[i].irq) {
++            assert(ast2700_ssp_intcmap[i].ptr);
++            or_idx = ast2700_ssp_intcmap[i].orgate_idx;
++            idx = ast2700_ssp_intcmap[i].intc_idx;
++            return qdev_get_gpio_in(DEVICE(&a->intc[idx].orgates[or_idx]),
++                                    ast2700_ssp_intcmap[i].ptr[dev]);
++        }
++    }
++
++    return qdev_get_gpio_in(DEVICE(&a->armv7m), sc->irqmap[dev]);
 +}
 +
-+static const TypeInfo aspeed_2700tsp_intc_info = {
-+    .name = TYPE_ASPEED_2700TSP_INTC,
-+    .parent = TYPE_ASPEED_INTC,
-+    .class_init = aspeed_2700tsp_intc_class_init,
-+};
-+
-+static AspeedINTCIRQ aspeed_2700tsp_intcio_irqs[ASPEED_INTC_MAX_INPINS] = {
-+    {0, 0, 1, R_TSPINT160_EN, R_TSPINT160_STATUS},
-+    {1, 1, 1, R_TSPINT161_EN, R_TSPINT161_STATUS},
-+    {2, 2, 1, R_TSPINT162_EN, R_TSPINT162_STATUS},
-+    {3, 3, 1, R_TSPINT163_EN, R_TSPINT163_STATUS},
-+    {4, 4, 1, R_TSPINT164_EN, R_TSPINT164_STATUS},
-+    {5, 5, 1, R_TSPINT165_EN, R_TSPINT165_STATUS},
-+};
-+
-+static void aspeed_2700tsp_intcio_class_init(ObjectClass *klass, void *data)
++static void aspeed_soc_ast27x0a0ssp_init(Object *obj)
 +{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedINTCClass *aic = ASPEED_INTC_CLASS(klass);
++    Aspeed27x0SSPSoCState *a = ASPEED27X0SSP_SOC(obj);
++    AspeedSoCState *s = ASPEED_SOC(obj);
++    AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
++    char socname[8];
++    char typename[64];
++    int i;
 +
-+    dc->desc = "ASPEED 2700 TSP INTC IO Controller";
-+    aic->num_lines = 32;
-+    aic->num_inpins = 6;
-+    aic->num_outpins = 6;
-+    aic->mem_size = 0x400;
-+    aic->nr_regs = 0x258 >> 2;
-+    aic->reg_offset = 0x0;
-+    aic->reg_ops = &aspeed_tsp_intcio_ops;
-+    aic->irq_table = aspeed_2700tsp_intcio_irqs;
-+    aic->irq_table_count = ARRAY_SIZE(aspeed_2700tsp_intcio_irqs);
++    if (sscanf(object_get_typename(obj), "%7s", socname) != 1) {
++        g_assert_not_reached();
++    }
++
++    object_initialize_child(obj, "armv7m", &a->armv7m, TYPE_ARMV7M);
++
++    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
++
++    snprintf(typename, sizeof(typename), "aspeed.scu-%s", socname);
++    object_initialize_child(obj, "scu", &s->scu, typename);
++    qdev_prop_set_uint32(DEVICE(&s->scu), "silicon-rev", sc->silicon_rev);
++
++    for (i = 0; i < sc->uarts_num; i++) {
++        object_initialize_child(obj, "uart[*]", &s->uart[i], TYPE_SERIAL_MM);
++    }
++
++    object_initialize_child(obj, "intc0", &a->intc[0],
++                            TYPE_ASPEED_2700SSP_INTC);
++    object_initialize_child(obj, "intc1", &a->intc[1],
++                            TYPE_ASPEED_2700SSP_INTCIO);
++
++    object_initialize_child(obj, "timerctrl", &s->timerctrl,
++                            TYPE_UNIMPLEMENTED_DEVICE);
++    object_initialize_child(obj, "ipc0", &a->ipc[0],
++                            TYPE_UNIMPLEMENTED_DEVICE);
++    object_initialize_child(obj, "ipc1", &a->ipc[1],
++                            TYPE_UNIMPLEMENTED_DEVICE);
++    object_initialize_child(obj, "scuio", &a->scuio,
++                            TYPE_UNIMPLEMENTED_DEVICE);
 +}
 +
-+static const TypeInfo aspeed_2700tsp_intcio_info = {
-+    .name = TYPE_ASPEED_2700TSP_INTCIO,
-+    .parent = TYPE_ASPEED_INTC,
-+    .class_init = aspeed_2700tsp_intcio_class_init,
++static void aspeed_soc_ast27x0ssp_realize(DeviceState *dev_soc, Error **errp)
++{
++    Aspeed27x0SSPSoCState *a = ASPEED27X0SSP_SOC(dev_soc);
++    AspeedSoCState *s = ASPEED_SOC(dev_soc);
++    AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
++    DeviceState *armv7m;
++    Error *err = NULL;
++    g_autofree char *sram_name = NULL;
++    int i;
++
++    if (!clock_has_source(s->sysclk)) {
++        error_setg(errp, "sysclk clock must be wired up by the board code");
++        return;
++    }
++
++    /* AST27X0 SSP Core */
++    armv7m = DEVICE(&a->armv7m);
++    qdev_prop_set_uint32(armv7m, "num-irq", 256);
++    qdev_prop_set_string(armv7m, "cpu-type", aspeed_soc_cpu_type(sc));
++    qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
++    object_property_set_link(OBJECT(&a->armv7m), "memory",
++                             OBJECT(s->memory), &error_abort);
++    sysbus_realize(SYS_BUS_DEVICE(&a->armv7m), &error_abort);
++
++    sram_name = g_strdup_printf("aspeed.dram.%d",
++                                CPU(a->armv7m.cpu)->cpu_index);
++
++    if (!memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size,
++                                &err)) {
++        return;
++    }
++    memory_region_add_subregion(s->memory,
++                                sc->memmap[ASPEED_DEV_SRAM],
++                                &s->sram);
++
++    /* SCU */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->scu), errp)) {
++        return;
++    }
++    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->scu), 0, sc->memmap[ASPEED_DEV_SCU]);
++
++    /* INTC */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&a->intc[0]), errp)) {
++        return;
++    }
++
++    aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->intc[0]), 0,
++                    sc->memmap[ASPEED_DEV_INTC]);
++
++    /* INTCIO */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&a->intc[1]), errp)) {
++        return;
++    }
++
++    aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->intc[1]), 0,
++                    sc->memmap[ASPEED_DEV_INTCIO]);
++
++    /* irq source orgates -> INTC0 */
++    for (i = 0; i < ASPEED_INTC_GET_CLASS(&a->intc[0])->num_inpins; i++) {
++        qdev_connect_gpio_out(DEVICE(&a->intc[0].orgates[i]), 0,
++                              qdev_get_gpio_in(DEVICE(&a->intc[0]), i));
++    }
++    for (i = 0; i < ASPEED_INTC_GET_CLASS(&a->intc[0])->num_outpins; i++) {
++        assert(i < ARRAY_SIZE(ast2700_ssp_intcmap));
++        sysbus_connect_irq(SYS_BUS_DEVICE(&a->intc[0]), i,
++                           qdev_get_gpio_in(DEVICE(&a->armv7m),
++                                            ast2700_ssp_intcmap[i].irq));
++    }
++    /* irq source orgates -> INTCIO */
++    for (i = 0; i < ASPEED_INTC_GET_CLASS(&a->intc[1])->num_inpins; i++) {
++        qdev_connect_gpio_out(DEVICE(&a->intc[1].orgates[i]), 0,
++                              qdev_get_gpio_in(DEVICE(&a->intc[1]), i));
++    }
++    /* INTCIO -> INTC */
++    for (i = 0; i < ASPEED_INTC_GET_CLASS(&a->intc[1])->num_outpins; i++) {
++        sysbus_connect_irq(SYS_BUS_DEVICE(&a->intc[1]), i,
++                        qdev_get_gpio_in(DEVICE(&a->intc[0].orgates[0]), i));
++    }
++    /* UART */
++    if (!aspeed_soc_uart_realize(s, errp)) {
++        return;
++    }
++
++    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&s->timerctrl),
++                                  "aspeed.timerctrl",
++                                  sc->memmap[ASPEED_DEV_TIMER1], 0x200);
++    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&a->ipc[0]),
++                                  "aspeed.ipc0",
++                                  sc->memmap[ASPEED_DEV_IPC0], 0x1000);
++    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&a->ipc[1]),
++                                  "aspeed.ipc1",
++                                  sc->memmap[ASPEED_DEV_IPC1], 0x1000);
++    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&a->scuio),
++                                  "aspeed.scuio",
++                                  sc->memmap[ASPEED_DEV_SCUIO], 0x1000);
++}
++
++static void aspeed_soc_ast27x0a0ssp_class_init(ObjectClass *klass, void *data)
++{
++    static const char * const valid_cpu_types[] = {
++        ARM_CPU_TYPE_NAME("cortex-m4"), /* TODO: cortex-m4f */
++        NULL
++    };
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    AspeedSoCClass *sc = ASPEED_SOC_CLASS(dc);
++
++    /* Reason: The Aspeed SoC can only be instantiated from a board */
++    dc->user_creatable = false;
++    dc->realize = aspeed_soc_ast27x0ssp_realize;
++
++    sc->valid_cpu_types = valid_cpu_types;
++    sc->silicon_rev = AST2700_A0_SILICON_REV;
++    sc->sram_size = AST2700_SSP_RAM_SIZE;
++    sc->spis_num = 0;
++    sc->ehcis_num = 0;
++    sc->wdts_num = 0;
++    sc->macs_num = 0;
++    sc->uarts_num = 13;
++    sc->uarts_base = ASPEED_DEV_UART0;
++    sc->irqmap = aspeed_soc_ast27x0a0ssp_irqmap;
++    sc->memmap = aspeed_soc_ast27x0ssp_memmap;
++    sc->num_cpus = 1;
++    sc->get_irq = aspeed_soc_ast27x0ssp_get_irq;
++}
++
++static const TypeInfo aspeed_soc_ast27x0ssp_types[] = {
++    {
++        .name           = TYPE_ASPEED27X0SSP_SOC,
++        .parent         = TYPE_ASPEED_SOC,
++        .instance_size  = sizeof(Aspeed27x0SSPSoCState),
++        .abstract       = true,
++    }, {
++        .name           = "ast2700ssp-a0",
++        .parent         = TYPE_ASPEED27X0SSP_SOC,
++        .instance_init  = aspeed_soc_ast27x0a0ssp_init,
++        .class_init     = aspeed_soc_ast27x0a0ssp_class_init,
++    },
 +};
 +
- static void aspeed_intc_register_types(void)
- {
-     type_register_static(&aspeed_intc_info);
-@@ -894,6 +1105,8 @@ static void aspeed_intc_register_types(void)
-     type_register_static(&aspeed_2700_intcio_info);
-     type_register_static(&aspeed_2700ssp_intc_info);
-     type_register_static(&aspeed_2700ssp_intcio_info);
-+    type_register_static(&aspeed_2700tsp_intc_info);
-+    type_register_static(&aspeed_2700tsp_intcio_info);
- }
- 
- type_init(aspeed_intc_register_types);
++DEFINE_TYPES(aspeed_soc_ast27x0ssp_types)
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index ac473ce7cd..aec0a0b98d 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -44,6 +44,7 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
+   'aspeed_soc_common.c',
+   'aspeed_ast2400.c',
+   'aspeed_ast2600.c',
++  'aspeed_ast27x0-ssp.c',
+   'aspeed_ast10x0.c',
+   'aspeed_eeprom.c',
+   'fby35.c'))
 -- 
 2.34.1
 
