@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27381A5EA4A
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0D2A5EA34
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:48:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsZWd-0004pT-MT; Wed, 12 Mar 2025 23:46:27 -0400
+	id 1tsZWU-0004mD-3Y; Wed, 12 Mar 2025 23:46:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZWJ-0004hv-ES
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:07 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1tsZWL-0004iL-Fy
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:13 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZW5-0007py-NP
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:06 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2254e0b4b79so13129375ad.2
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:53 -0700 (PDT)
+ id 1tsZW7-0007qB-0x
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:08 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-219f8263ae0so9608395ad.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741837552; x=1742442352; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741837553; x=1742442353; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IeHYr04W0m2zNJjTvbQgJtgjfEjOKbLo8D+48jtu/vU=;
- b=apgGhxNfz8l0nr98joZ5VjTQT3AouuNHfOdPKCGQEQp0PztX87IDlGUDbUrbkGenCe
- in+XCFdV4bYGkfFnPiplJ9+B2FIx1s5UNQwVhbJMgoGV4AvRIo4oX3gVjufMEPU3v30g
- 4LUdlmuYaeVFDMIpvKnT9xfPNfaqEG5v4KgCsJMOo+kHCYfgOv+pGO6d7kT/ijAmkrfo
- G9Ux3vODhWJed2kTMbV5cAA4QU8Ainub+WR1ssWXMdxdXJv9kLr4dmkatJxQlnA+B/NY
- y+2iDz/+WkeCU+DLr/92jL/iy4JNuyxFDZLyioue+wRVKH+q+ye5HFp9TlIE4U0Rudyg
- aUTw==
+ bh=cK/VzX5+27up7sPHovhu1C3y4s6cAm//kFke6QWtfCA=;
+ b=umdgWDlRG+qrrszkBxR/iUUadNR6oX3XdoojGmN+376NTqf4QhnI1vBrv1nXKSS2Q2
+ uf5ttV+qUiQVrJle82NVvBLz/GKjuuWHbRE2zGMtjC2gdF2P5DuRn0tiavCkJNgi75ps
+ 0eKAKDJWtUedFU2DevfBrJmIqCE+gfU6asxNrh5A2n+uImLXyPWy2nO4B/+S6ajBb15O
+ mnMRDY/ZDHrSA0x8bXYKDVsATcWcL4LVsA5ETInEm+3kIf9dD9l0hNgyvljZ6Tya9hiH
+ M+KBWED2nyZRAtdhPRfAEUzcw3ecIc8qe4Uw9bi8EsMx0V2sk1JiAIDab8Bi0dM5gPy5
+ ooSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741837552; x=1742442352;
+ d=1e100.net; s=20230601; t=1741837553; x=1742442353;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IeHYr04W0m2zNJjTvbQgJtgjfEjOKbLo8D+48jtu/vU=;
- b=b+T3N/WwFgxc9biiPySWiD6ue8WrvKUdz3GTulWo2h1ysWs3sZwoxGyBEeDYHLet2M
- EsQQClMF28h7M80z5bfbl5s1ZAgYkJooC8iJAOzDcBlE6JI0e6FDAPtbpt9aFTDCSNJy
- 8JHNdInHHil1Jy4ppHReM8gk+uaFrXlSzcMWSemJSMGGwOPcuAaAuedBZJBm5LGjuA4h
- witOEWNssXHUbbQiPVz14u4NsMT9X2WYfRMs8YINQTPos5Nft6zgfBqz0Gwvq1yA5H5w
- i6vuGTfzd4aWLr3roF/skTGGZLS+5jY/+2trF4vCMdVD/zISaC0TPd4m+H/8UTTUSGZ7
- aBIQ==
-X-Gm-Message-State: AOJu0YxwvBs8tkME0jzep27EznkKbYzpQhf5OaSkYUrPdigHmUehEp0z
- lPhyuPP8itwP6drJNtBsLfNbHHpRt3YUDqlxXLuv0/cYsk5fQju+z1TvZnYNSOotjGfIUPu4aLZ
- y
-X-Gm-Gg: ASbGncusUp9LukTEMoLpRjEkkn++xPV+0lV97Z6IqDDh20u7ak6sRq7AfDa++sBpkB5
- xHcFmRe4kj2M22jrBagCtYLY6k5lY0Cp6YNmUufH+bfxhCgAw7s+HautK3MOErFylqtj9thtiVM
- MxQPUyK+bgpJ4YwEJQsIr6xxtmJPtR1BvR5JnfPDVKWeMdFbUwqLLEXkuywIUaBVrCnXcoFe2K2
- F/n+ZUaG4B2d09ZzBUEqS5X/KGQockS1sEjjMtK4WmW8mBU10fL/1ZfwloZYvS4JgjOcp4QZFHD
- kvFd0ttmNaJMTavTYfJb610IcjD63W5p+7GJX8RvdEVvUBmSi3ZTw3mg4SnIt4lYX64+CnArui1
- b
-X-Google-Smtp-Source: AGHT+IH6KzYNJgqrsntWeMdEJX1DYVpdy8lU6buYMBc6gn2XxSDo9sKCkeDP1f2clV0x1CWNQgqcoQ==
-X-Received: by 2002:a05:6a20:160c:b0:1f5:8c86:5e2f with SMTP id
- adf61e73a8af0-1f58c8660a5mr17897201637.37.1741837552327; 
+ bh=cK/VzX5+27up7sPHovhu1C3y4s6cAm//kFke6QWtfCA=;
+ b=FIr8J7H8hq5PTvfdKpmV8nvW44Tw96tO9BJz+nKvmnr7v6daEco9k253671lGoTsYx
+ s4N4GC0UNoxDzOlsOSOYLNldB7WzOhKo3lPV3jKEKngKbr85Hd7kt6AW4oDzmSqnt+R5
+ EjjyjilfjaE1SbliH0juesV81DolhWDF/GIyVdaNFXDKaUaY2eWEqOKvgvgfw8Nez81m
+ AhCWVTO2kzFLUmgXp0LLrRJItLysZr6r6aUsx0vl6FenYE9frrHYhU7O++Rsuj8MJdPQ
+ /0rKCNhP005f8mxGlOyNK6mpjMkYD/a0IA3el6Lxw1tooqBN7JRMYuNzo9y1tAZkOmFB
+ 4s9A==
+X-Gm-Message-State: AOJu0Ywwt8zJD4at5O1cdhlg2zqYtVNQlSDIJwiqG1hvdspcbyrhWO+8
+ dp6RdTqv+LGxjERoztQznS3yRKiSWS38CswktmULPP7kskHFj3IkE/41FGsw7zfmjzqSwrLzck8
+ U
+X-Gm-Gg: ASbGncu8G059ZnKgQ3whovfo0B7wKXCBvsbi0gemN3t8REpFxjPKO+BLkoAiO8N8W+Y
+ u/lpXHtU1e4pVH5YRQIPaTFeGSWCHMBh0xm7EY0WePARmEczKHYAGVxKNgF/Ae5caCuBKjyZU6l
+ 4IsuNgq8/Dg4XX6+hFQ3fzjlaAognp6IvPQINEuAiGv3rood5/1wnw5k1WEvACy1GlJlUGe184k
+ RIVnZ3RRuKolNL5tI6BnSEuwzH2XcjJD37pe11ztGONiiA7g0nbMBLR22s/SIvlagZA6dnBY/7H
+ AYvUzoz/XzT91FsTinSq2lILsVybgP4Qn9jRLiHNnqUykF5HjwmUoJD9jIx+Rt5TmpUl6wEldTI
+ FPc8Ii968OsQ=
+X-Google-Smtp-Source: AGHT+IEAQCW3BsFe8Fe/PRPzRrUTmeY5wtBpG7UqN4EVl16KzHyc9gOfWxUG1oJT8L1XeCpIr58V3g==
+X-Received: by 2002:a05:6a20:c6c1:b0:1f5:59e5:8ad2 with SMTP id
+ adf61e73a8af0-1f58cb40fa8mr15841909637.24.1741837552982; 
  Wed, 12 Mar 2025 20:45:52 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.51
+ d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Mar 2025 20:45:51 -0700 (PDT)
+ Wed, 12 Mar 2025 20:45:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	pbonzini@redhat.com,
 	philmd@linaro.org
-Subject: [PATCH 32/37] include/hw/intc: Remove ifndef CONFIG_USER_ONLY from
- armv7m_nvic.h
-Date: Wed, 12 Mar 2025 20:45:12 -0700
-Message-ID: <20250313034524.3069690-33-richard.henderson@linaro.org>
+Subject: [PATCH 33/37] include/hw/s390x: Remove ifndef CONFIG_USER_ONLY in
+ css.h
+Date: Wed, 12 Mar 2025 20:45:13 -0700
+Message-ID: <20250313034524.3069690-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250313034524.3069690-1-richard.henderson@linaro.org>
 References: <20250313034524.3069690-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,40 +102,33 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 We were hiding a number of declarations from user-only,
-although it hurts nothing to allow them.  The inlines
-for user-only are unused.
+although it hurts nothing to allow them.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/intc/armv7m_nvic.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ include/hw/s390x/css.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/hw/intc/armv7m_nvic.h b/include/hw/intc/armv7m_nvic.h
-index 89fe8aedaa..7b9964fe7e 100644
---- a/include/hw/intc/armv7m_nvic.h
-+++ b/include/hw/intc/armv7m_nvic.h
-@@ -189,21 +189,7 @@ int armv7m_nvic_raw_execution_priority(NVICState *s);
-  * @secure: the security state to test
-  * This corresponds to the pseudocode IsReqExecPriNeg().
-  */
+diff --git a/include/hw/s390x/css.h b/include/hw/s390x/css.h
+index cd97e2b707..965545ce73 100644
+--- a/include/hw/s390x/css.h
++++ b/include/hw/s390x/css.h
+@@ -238,7 +238,6 @@ uint32_t css_get_adapter_id(CssIoAdapterType type, uint8_t isc);
+ void css_register_io_adapters(CssIoAdapterType type, bool swap, bool maskable,
+                               uint8_t flags, Error **errp);
+ 
 -#ifndef CONFIG_USER_ONLY
- bool armv7m_nvic_neg_prio_requested(NVICState *s, bool secure);
--#else
--static inline bool armv7m_nvic_neg_prio_requested(NVICState *s, bool secure)
--{
--    return false;
--}
--#endif
--#ifndef CONFIG_USER_ONLY
- bool armv7m_nvic_can_take_pending_exception(NVICState *s);
--#else
--static inline bool armv7m_nvic_can_take_pending_exception(NVICState *s)
--{
--    return true;
--}
+ SubchDev *css_find_subch(uint8_t m, uint8_t cssid, uint8_t ssid,
+                          uint16_t schid);
+ bool css_subch_visible(SubchDev *sch);
+@@ -262,7 +261,6 @@ int css_enable_mss(void);
+ IOInstEnding css_do_rsch(SubchDev *sch);
+ int css_do_rchp(uint8_t cssid, uint8_t chpid);
+ bool css_present(uint8_t cssid);
 -#endif
  
- #endif
+ extern const PropertyInfo css_devid_ro_propinfo;
+ 
 -- 
 2.43.0
 
