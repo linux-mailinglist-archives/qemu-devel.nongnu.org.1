@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E547A5EB4C
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 06:49:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B065A5EB4E
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 06:50:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsbOu-00054p-0Y; Thu, 13 Mar 2025 01:46:36 -0400
+	id 1tsbOr-000547-26; Thu, 13 Mar 2025 01:46:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1tsbOe-0004ul-0n; Thu, 13 Mar 2025 01:46:21 -0400
+ id 1tsbOg-0004wZ-Mc; Thu, 13 Mar 2025 01:46:23 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1tsbOc-0005Ve-4Y; Thu, 13 Mar 2025 01:46:19 -0400
+ id 1tsbOe-0005Ve-Uq; Thu, 13 Mar 2025 01:46:22 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 13 Mar
@@ -29,9 +29,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Joel Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <yunlin.tang@aspeedtech.com>
-Subject: [PATCH 11/13] tests/function/aspeed: Add functional test for AST2700FC
-Date: Thu, 13 Mar 2025 13:40:15 +0800
-Message-ID: <20250313054020.2583556-12-steven_lee@aspeedtech.com>
+Subject: [PATCH 12/13] tests/function/aspeed: Add functional test for
+ AST2700FC A1
+Date: Thu, 13 Mar 2025 13:40:16 +0800
+Message-ID: <20250313054020.2583556-13-steven_lee@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250313054020.2583556-1-steven_lee@aspeedtech.com>
 References: <20250313054020.2583556-1-steven_lee@aspeedtech.com>
@@ -63,164 +64,81 @@ From:  Steven Lee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new functional test for AST2700 multi-SoCs.
-The test includes booting ast2700 with bmc image on
-ca35 cores and booting ssp/tsp firmware on cm4 cores.
-Assets for SDK and SSP/TSP images are downloaded from
-AspeedTech-BMC's OpenBmc release page.
+Add functional test for AST2700a1-fc machine.
 
 Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
-Change-Id: I95807c8a49ee92d3a9978b1a533e10fcdfd64597
+Change-Id: I87584164b2632c58d2e051fd92d9e280347bcf19
 ---
- tests/functional/test_aarch64_ast2700fc.py | 139 +++++++++++++++++++++
- 1 file changed, 139 insertions(+)
- create mode 100755 tests/functional/test_aarch64_ast2700fc.py
+ tests/functional/test_aarch64_ast2700fc.py | 38 +++++++++++++++++-----
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
 diff --git a/tests/functional/test_aarch64_ast2700fc.py b/tests/functional/test_aarch64_ast2700fc.py
-new file mode 100755
-index 0000000000..243b74d77e
---- /dev/null
+index 243b74d77e..b54346a57f 100755
+--- a/tests/functional/test_aarch64_ast2700fc.py
 +++ b/tests/functional/test_aarch64_ast2700fc.py
-@@ -0,0 +1,139 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that boots the AST2700 multi-SoCs with firmware
-+#
-+# Copyright (C) 2025 ASPEED Technology Inc
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import os
-+
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import wait_for_console_pattern
-+from qemu_test import exec_command_and_wait_for_pattern
-+
-+
-+class AST2700fcMachineSDK(QemuSystemTest):
-+    ASSET_SDK_V905_AST2700_A0 = Asset(
-+            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-a0-default-obmc.tar.gz',
-+            'cfbbd1cce72f2a3b73b9080c41eecdadebb7077fba4f7806d72ac99f3e84b74a')
-+    ASSET_SDK_SSP_TSP_AST2700_A0 = Asset(
-+            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-a0-ssp-tsp.tar.gz',
-+            'a3ca348bd1cb39086f9fdc40eab293afead351925a46f9ab0da4dcc3a1157382')
-+
-+    def do_test_aarch64_ast2700fc_ca35_start(self, image):
-+        self.require_netdev('user')
-+        self.vm.set_console()
-+        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
-+                         '-net', 'nic', '-net', 'user', '-snapshot')
-+
-+        self.vm.launch()
-+
-+        wait_for_console_pattern(self, 'U-Boot 2023.10')
-+        wait_for_console_pattern(self, '## Loading kernel from FIT Image')
-+        wait_for_console_pattern(self, 'Starting kernel ...')
-+
-+    def do_test_aarch64_ast2700fc_ssp_start(self):
-+
-+        self.vm.shutdown()
-+        self.vm.set_console(console_index=1)
-+        self.vm.launch()
-+
-+    def do_test_aarch64_ast2700fc_tsp_start(self):
-+        self.vm.shutdown()
-+        self.vm.set_console(console_index=2)
-+        self.vm.launch()
-+
-+    def start_ast2700fc_test(self, name):
-+        ca35_core = 4
-+        uboot_size = os.path.getsize(self.scratch_file(name,
-+                                                       'u-boot-nodtb.bin'))
-+        uboot_dtb_load_addr = hex(0x400000000 + uboot_size)
-+
-+        load_images_list = [
-+            {
-+                'addr': '0x400000000',
-+                'file': self.scratch_file(name,
-+                                          'u-boot-nodtb.bin')
-+            },
-+            {
-+                'addr': str(uboot_dtb_load_addr),
-+                'file': self.scratch_file(name, 'u-boot.dtb')
-+            },
-+            {
-+                'addr': '0x430000000',
-+                'file': self.scratch_file(name, 'bl31.bin')
-+            },
-+            {
-+                'addr': '0x430080000',
-+                'file': self.scratch_file(name, 'optee',
-+                                          'tee-raw.bin')
+@@ -14,6 +14,9 @@
+ 
+ 
+ class AST2700fcMachineSDK(QemuSystemTest):
++    ASSET_SDK_V905_AST2700 = Asset(
++            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-default-obmc.tar.gz',
++            'c1f4496aec06743c812a6e9a1a18d032f34d62f3ddb6956e924fef62aa2046a5')
+     ASSET_SDK_V905_AST2700_A0 = Asset(
+             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.05/ast2700-a0-default-obmc.tar.gz',
+             'cfbbd1cce72f2a3b73b9080c41eecdadebb7077fba4f7806d72ac99f3e84b74a')
+@@ -81,10 +84,16 @@ def start_ast2700fc_test(self, name):
+             self.vm.add_args('-device',
+                              f'loader,addr=0x430000000,cpu-num={i}')
+ 
+-        load_elf_list = {
+-            'ssp': self.scratch_file('ast2700-a0-ssp-tsp', 'ast2700-ssp.elf'),
+-            'tsp': self.scratch_file('ast2700-a0-ssp-tsp', 'ast2700-tsp.elf')
+-        }
++        if name == 'ast2700-a0-default':
++            load_elf_list = {
++                'ssp': self.scratch_file('ast2700-a0-ssp-tsp', 'ast2700-ssp.elf'),
++                'tsp': self.scratch_file('ast2700-a0-ssp-tsp', 'ast2700-tsp.elf')
 +            }
-+        ]
++        else:
++            load_elf_list = {
++                'ssp': self.scratch_file(name, 'ast2700-ssp.elf'),
++                'tsp': self.scratch_file(name, 'ast2700-tsp.elf')
++            }
+ 
+         for cpu_num, key in enumerate(load_elf_list, start=4):
+             file = load_elf_list[key]
+@@ -119,14 +128,27 @@ def start_ast2700fc_test(self, name):
+         exec_command_and_wait_for_pattern(self, '\012', 'ssp:~$')
+         exec_command_and_wait_for_pattern(self, 'version',
+                                           'Zephyr version 3.7.1')
+-        exec_command_and_wait_for_pattern(self, 'md 72c02000 1',
+-                                          '[72c02000] 06000103')
++        if name == 'ast2700-a0-default':
++            exec_command_and_wait_for_pattern(self, 'md 72c02000 1',
++                                              '[72c02000] 06000103')
++        else:
++            exec_command_and_wait_for_pattern(self, 'md 72c02000 1',
++                                              '[72c02000] 06010103')
+         self.do_test_aarch64_ast2700fc_tsp_start()
+         exec_command_and_wait_for_pattern(self, '\012', 'tsp:~$')
+         exec_command_and_wait_for_pattern(self, 'version',
+                                           'Zephyr version 3.7.1')
+-        exec_command_and_wait_for_pattern(self, 'md 72c02000 1',
+-                                          '[72c02000] 06000103')
++        if name == 'ast2700-a0-default':
++            exec_command_and_wait_for_pattern(self, 'md 72c02000 1',
++                                              '[72c02000] 06000103')
++        else:
++            exec_command_and_wait_for_pattern(self, 'md 72c02000 1',
++                                              '[72c02000] 06010103')
 +
-+        for load_image in load_images_list:
-+            addr = load_image['addr']
-+            file = load_image['file']
-+            self.vm.add_args('-device',
-+                             f'loader,force-raw=on,addr={addr},file={file}')
-+
-+        for i in range(ca35_core):
-+            self.vm.add_args('-device',
-+                             f'loader,addr=0x430000000,cpu-num={i}')
-+
-+        load_elf_list = {
-+            'ssp': self.scratch_file('ast2700-a0-ssp-tsp', 'ast2700-ssp.elf'),
-+            'tsp': self.scratch_file('ast2700-a0-ssp-tsp', 'ast2700-tsp.elf')
-+        }
-+
-+        for cpu_num, key in enumerate(load_elf_list, start=4):
-+            file = load_elf_list[key]
-+            self.vm.add_args('-device',
-+                             f'loader,file={file},cpu-num={cpu_num}')
-+
-+        self.vm.add_args('-device',
-+                         'tmp105,bus=aspeed.i2c.bus.1,address=0x4d,id=tmp-test')
-+        self.do_test_aarch64_ast2700fc_ca35_start(
-+            self.scratch_file(name, 'image-bmc'))
-+
-+        wait_for_console_pattern(self, f'{name} login:')
-+
-+        exec_command_and_wait_for_pattern(self, 'root', 'Password:')
-+        exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
-+
-+        exec_command_and_wait_for_pattern(
-+                self,
-+                'echo lm75 0x4d > /sys/class/i2c-dev/i2c-1/device/new_device ',
-+                'i2c i2c-1: new_device: Instantiated device lm75 at 0x4d')
-+        exec_command_and_wait_for_pattern(
-+                self,
-+                'cat /sys/class/hwmon/hwmon*/temp1_input', '0')
-+        self.vm.cmd('qom-set', path='/machine/peripheral/tmp-test',
-+                    property='temperature', value=18000)
-+        exec_command_and_wait_for_pattern(
-+                self,
-+                'cat /sys/class/hwmon/hwmon*/temp1_input', '18000')
-+
-+        self.do_test_aarch64_ast2700fc_ssp_start()
-+
-+        exec_command_and_wait_for_pattern(self, '\012', 'ssp:~$')
-+        exec_command_and_wait_for_pattern(self, 'version',
-+                                          'Zephyr version 3.7.1')
-+        exec_command_and_wait_for_pattern(self, 'md 72c02000 1',
-+                                          '[72c02000] 06000103')
-+        self.do_test_aarch64_ast2700fc_tsp_start()
-+        exec_command_and_wait_for_pattern(self, '\012', 'tsp:~$')
-+        exec_command_and_wait_for_pattern(self, 'version',
-+                                          'Zephyr version 3.7.1')
-+        exec_command_and_wait_for_pattern(self, 'md 72c02000 1',
-+                                          '[72c02000] 06000103')
-+
-+    def test_aarch64_ast2700fc_a0_sdk_v09_05(self):
-+        self.set_machine('ast2700fc-a0')
-+        self.archive_extract(self.ASSET_SDK_V905_AST2700_A0)
-+        self.archive_extract(self.ASSET_SDK_SSP_TSP_AST2700_A0)
-+        self.start_ast2700fc_test('ast2700-a0-default')
-+
-+
-+if __name__ == '__main__':
-+    QemuSystemTest.main()
++    def test_aarch64_ast2700fc_sdk_v09_05(self):
++        self.set_machine('ast2700fc-a1')
++        self.archive_extract(self.ASSET_SDK_V905_AST2700)
++        self.start_ast2700fc_test('ast2700-default')
+ 
+     def test_aarch64_ast2700fc_a0_sdk_v09_05(self):
+         self.set_machine('ast2700fc-a0')
 -- 
 2.34.1
 
