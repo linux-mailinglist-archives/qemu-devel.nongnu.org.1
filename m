@@ -2,72 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA38A5EABC
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 05:45:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D821A5EAC8
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 05:48:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsaQX-0008QO-0o; Thu, 13 Mar 2025 00:44:13 -0400
+	id 1tsaS3-00027D-EF; Thu, 13 Mar 2025 00:45:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tsaQQ-0008N6-8k
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 00:44:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1tsaRU-0001mg-QT; Thu, 13 Mar 2025 00:45:13 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tsaQO-00072E-Mq
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 00:44:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741841043;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KcbFhXDLAUEl+yi8uNwfpLWr5+use9NWad5DOVyM68k=;
- b=WqQUyCWlAf1J3Y21lQNX6/gQHMfovtoL6pXzHnbpi7C1tDrBmmgghnE6PiaxWKOZ2FLnRc
- ifp0ImVqI6EadgPLQIUe6y9Q7yrbwOOb0HXTv1FXZbc3VRSlSjOXAuvMMabKReaAImlogP
- 7rPMmgWtEveGoewMcanuyogfdG4Gejc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-209-oIdFeQhqMSaSV2aTbScFJQ-1; Thu,
- 13 Mar 2025 00:44:01 -0400
-X-MC-Unique: oIdFeQhqMSaSV2aTbScFJQ-1
-X-Mimecast-MFC-AGG-ID: oIdFeQhqMSaSV2aTbScFJQ_1741841040
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 325C3180025B; Thu, 13 Mar 2025 04:44:00 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.62])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 478021955BCB; Thu, 13 Mar 2025 04:43:57 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Konstantin Kostiuk <kkostiuk@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Eric Blake <eblake@redhat.com>,
- qemu-block@nongnu.org, Michael Roth <michael.roth@amd.com>,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- John Snow <jsnow@redhat.com>
-Subject: [PATCH 11/11] docs: enable transmogrifier for QSD and QGA
-Date: Thu, 13 Mar 2025 00:43:12 -0400
-Message-ID: <20250313044312.189276-12-jsnow@redhat.com>
-In-Reply-To: <20250313044312.189276-1-jsnow@redhat.com>
-References: <20250313044312.189276-1-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1tsaRS-0007Gl-DS; Thu, 13 Mar 2025 00:45:12 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52CKpaT2001152;
+ Thu, 13 Mar 2025 04:45:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=ZihVD9
+ +xZjkcRwgSm2fshlaJU0sYYIlRLdXdYsYUwEI=; b=pzvmse4iiksXv9lziVs8+6
+ w09SSUhpYb6y2X/3US0fU5iGkl6OZSzf3FfFUT8A5P5TJ3ldCeRAlnvy0fS3HSf3
+ DqfLnpx4oJsvinWLFJeE+njtRdeRc5pIAskZteyLP/unSabgFCugwz7DYhbGB+ti
+ 7RMorwUo9ZM8YwkfCqw0jhykOp9srvpw/u4FZT4hbCfnlQQimMxhTYisrXomsuMI
+ avVKBF35XUM0Hdj37pk6+ZsSeD5GBeXxFkTaKGhey90LvtL23PoXHGoELOivkMiZ
+ +6IlWr8JI86s/9X+b6tB15pNTjGtZ2TDahd47IU6bH8e+lCTkEyRE+W3MXoxVy2g
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhp59jm3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Mar 2025 04:45:07 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52D4j7Pv009281;
+ Thu, 13 Mar 2025 04:45:07 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhp59jm1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Mar 2025 04:45:07 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52D15fgZ027045;
+ Thu, 13 Mar 2025 04:45:06 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45atsqyvmj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Mar 2025 04:45:06 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52D4j5kj32375478
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 13 Mar 2025 04:45:06 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CF26F58053;
+ Thu, 13 Mar 2025 04:45:05 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0D50E5805D;
+ Thu, 13 Mar 2025 04:45:04 +0000 (GMT)
+Received: from [9.109.242.165] (unknown [9.109.242.165])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Mar 2025 04:45:03 +0000 (GMT)
+Message-ID: <0eefc09a-138d-4b9d-90d8-c1796f4fed52@linux.ibm.com>
+Date: Thu, 13 Mar 2025 10:15:02 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ppc/spapr: fix default cpu for pre-10.0 machines.
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+Cc: npiggin@gmail.com, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+References: <20250312055804.2134569-1-harshpb@linux.ibm.com>
+ <408efa3d-bd73-47bc-8723-08c805df6815@linaro.org>
+ <89d61c6e-5a4e-49fc-a285-2215fa476709@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <89d61c6e-5a4e-49fc-a285-2215fa476709@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: NNCMPuqjhtLwRLQ2EpEo5OMBHBo4R0wI
+X-Proofpoint-ORIG-GUID: Y-OIkF4Jw8Oq1s5Pm6CuLW7XWrGd-E72
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-13_02,2025-03-11_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ impostorscore=0 adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ mlxlogscore=871 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503130032
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,85 +117,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This also creates the `qapi-qsd-index` and `qapi-qga-index` QMP indices.
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- docs/conf.py                                 | 2 ++
- docs/interop/qemu-ga-ref.rst                 | 2 ++
- docs/interop/qemu-storage-daemon-qmp-ref.rst | 2 ++
- qga/qapi-schema.json                         | 3 +++
- storage-daemon/qapi/qapi-schema.json         | 8 ++++++++
- 5 files changed, 17 insertions(+)
 
-diff --git a/docs/conf.py b/docs/conf.py
-index 9a86e84a804..7b5712e122f 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -164,7 +164,9 @@
- # Due to a limitation in Sphinx, we need to know which indices to
- # generate in advance. Adding a namespace here allows that generation.
- qapi_namespaces = {
-+    "QGA",
-     "QMP",
-+    "QSD",
- }
- 
- # -- Options for HTML output ----------------------------------------------
-diff --git a/docs/interop/qemu-ga-ref.rst b/docs/interop/qemu-ga-ref.rst
-index 032d4924552..19b5c7a5498 100644
---- a/docs/interop/qemu-ga-ref.rst
-+++ b/docs/interop/qemu-ga-ref.rst
-@@ -5,3 +5,5 @@ QEMU Guest Agent Protocol Reference
-    :depth: 3
- 
- .. qapi-doc:: qga/qapi-schema.json
-+   :transmogrify:
-+   :namespace: QGA
-diff --git a/docs/interop/qemu-storage-daemon-qmp-ref.rst b/docs/interop/qemu-storage-daemon-qmp-ref.rst
-index 9fed68152f5..d0228d63b8d 100644
---- a/docs/interop/qemu-storage-daemon-qmp-ref.rst
-+++ b/docs/interop/qemu-storage-daemon-qmp-ref.rst
-@@ -5,3 +5,5 @@ QEMU Storage Daemon QMP Reference Manual
-    :depth: 3
- 
- .. qapi-doc:: storage-daemon/qapi/qapi-schema.json
-+   :transmogrify:
-+   :namespace: QSD
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 995594aaf43..35ec0e7db31 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -3,6 +3,9 @@
- 
- ##
- # = QEMU guest agent protocol commands and structs
-+#
-+# For a concise listing of all commands, events, and types in the QEMU
-+# guest agent, please consult the `qapi-qga-index`.
- ##
- 
- { 'pragma': { 'doc-required': true } }
-diff --git a/storage-daemon/qapi/qapi-schema.json b/storage-daemon/qapi/qapi-schema.json
-index f10c9494906..2a562ee32e5 100644
---- a/storage-daemon/qapi/qapi-schema.json
-+++ b/storage-daemon/qapi/qapi-schema.json
-@@ -13,6 +13,14 @@
- # the array type in the main schema, even if it is unused outside of the
- # storage daemon.
- 
-+##
-+# = QEMU storage daemon protocol commands and structs
-+#
-+# For a concise listing of all commands, events, and types in the QEMU
-+# storage daemon, please consult the `qapi-qsd-index`.
-+##
-+
-+
- { 'include': '../../qapi/pragma.json' }
- 
- # Documentation generated with qapi-gen.py is in source order, with
--- 
-2.48.1
+On 3/12/25 15:50, Harsh Prateek Bora wrote:
+> 
+> 
+> On 3/12/25 15:39, Philippe Mathieu-Daudé wrote:
+>> On 12/3/25 06:58, Harsh Prateek Bora wrote:
+>>> When POWER10 CPU was made as default, we missed keeping POWER9 as
+>>> default for older pseries releases (pre-10.0) at that time.
+>>> This caused breakge in default cpu evaluation for older pseries
+>>> machines and hence this fix.
+>>>
+>>
+>> Should we also include:
+>>
+>>    Cc: qemu-stable@nongnu.org
+>>
+>> ?
+>>
+> 
+> I guess so. Not sure if we need a patch v2 for just that.
+> 
+>>> Fixes: 51113013f3 ("ppc/spapr: change pseries machine default to 
+>>> POWER10 CPU")
+>>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>>> ---
+>>>   hw/ppc/spapr.c | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+>>> index c15340a58d..b31a91e2e2 100644
+>>> --- a/hw/ppc/spapr.c
+>>> +++ b/hw/ppc/spapr.c
+>>> @@ -4748,6 +4748,7 @@ static void 
+>>> spapr_machine_9_2_class_options(MachineClass *mc)
+>>>   {
+>>>       spapr_machine_10_0_class_options(mc);
+>>>       compat_props_add(mc->compat_props, hw_compat_9_2, 
+>>> hw_compat_9_2_len);
+>>> +    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
+>>
+>> This is confusing because v9.2 has already been released with that...
+> 
+> I think it still needs to be fixed for v9.2 (and older) if someone wants 
+> to use pseries-9.2 (and older) with future releases.
 
+Gave it another thought. May be moving the default to v9.1 could be
+relatively better. 9.2 stable shall get the fix for pre-9.2 but 9.2
+default need not change.
+
+Nick, Daniel, comments?
+
+Thanks
+Harsh
+> 
+> Thanks
+> Harsh
+> 
+>>
+>>>   }
+>>>   DEFINE_SPAPR_MACHINE(9, 2);
+>>
+>>
+> 
 
