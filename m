@@ -2,106 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D821A5EAC8
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 05:48:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC4CA5EC28
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 08:03:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsaS3-00027D-EF; Thu, 13 Mar 2025 00:45:48 -0400
+	id 1tscZq-0006RQ-0j; Thu, 13 Mar 2025 03:01:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1tsaRU-0001mg-QT; Thu, 13 Mar 2025 00:45:13 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tscZe-0006M2-Mk
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 03:01:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1tsaRS-0007Gl-DS; Thu, 13 Mar 2025 00:45:12 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52CKpaT2001152;
- Thu, 13 Mar 2025 04:45:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=ZihVD9
- +xZjkcRwgSm2fshlaJU0sYYIlRLdXdYsYUwEI=; b=pzvmse4iiksXv9lziVs8+6
- w09SSUhpYb6y2X/3US0fU5iGkl6OZSzf3FfFUT8A5P5TJ3ldCeRAlnvy0fS3HSf3
- DqfLnpx4oJsvinWLFJeE+njtRdeRc5pIAskZteyLP/unSabgFCugwz7DYhbGB+ti
- 7RMorwUo9ZM8YwkfCqw0jhykOp9srvpw/u4FZT4hbCfnlQQimMxhTYisrXomsuMI
- avVKBF35XUM0Hdj37pk6+ZsSeD5GBeXxFkTaKGhey90LvtL23PoXHGoELOivkMiZ
- +6IlWr8JI86s/9X+b6tB15pNTjGtZ2TDahd47IU6bH8e+lCTkEyRE+W3MXoxVy2g
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhp59jm3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Mar 2025 04:45:07 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52D4j7Pv009281;
- Thu, 13 Mar 2025 04:45:07 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhp59jm1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Mar 2025 04:45:07 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52D15fgZ027045;
- Thu, 13 Mar 2025 04:45:06 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45atsqyvmj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Mar 2025 04:45:06 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 52D4j5kj32375478
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Mar 2025 04:45:06 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF26F58053;
- Thu, 13 Mar 2025 04:45:05 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0D50E5805D;
- Thu, 13 Mar 2025 04:45:04 +0000 (GMT)
-Received: from [9.109.242.165] (unknown [9.109.242.165])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 13 Mar 2025 04:45:03 +0000 (GMT)
-Message-ID: <0eefc09a-138d-4b9d-90d8-c1796f4fed52@linux.ibm.com>
-Date: Thu, 13 Mar 2025 10:15:02 +0530
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tscZc-00072N-C8
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 03:01:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741849302;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cJlV9KL5qzc/g9WH9boSNFSx3Scsmd13Te5P9Vs3ttc=;
+ b=FXHcitKhJcwD7UQ6Jp/y5Ut7iIhh7A7XcCSBiYz2/v1ZMtfbMi/G6G7BgnLZEwQmjp9T4f
+ abDx0sAa5dIUKSCVYQRIRGEoSy097JEPMJOe9ZrbWgLS2Nw3b0UakqqvVyHXz5KOvpTFcm
+ Zq3e2sSRXj7xR1fxoiVXn8pj5sp3/Rs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-3YWmW9usPayyqtMKDDOTXg-1; Thu,
+ 13 Mar 2025 03:01:37 -0400
+X-MC-Unique: 3YWmW9usPayyqtMKDDOTXg-1
+X-Mimecast-MFC-AGG-ID: 3YWmW9usPayyqtMKDDOTXg_1741849295
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 20400180AF6E; Thu, 13 Mar 2025 07:01:33 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.45])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8704B18001F6; Thu, 13 Mar 2025 07:01:30 +0000 (UTC)
+Date: Thu, 13 Mar 2025 12:22:52 +0800
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: zoudongjie <zoudongjie@huawei.com>
+Cc: zhuyangyang14@huawei.com, qemu-devel@nongnu.org, fam@euphon.net,
+ hreitz@redhat.com, qemu-block@nongnu.org, qemu-stable@nongnu.org,
+ luolongmin@huawei.com, suxiaodong1@huawei.com,
+ wangyan122@huawei.com, yebiaoxiang@huawei.com,
+ wangjian161@huawei.com, mujinsheng@huawei.com, alex.chen@huawei.com,
+ eric.fangyi@huawei.com, chenjianfei3@huawei.com, renxuming@huawei.com
+Subject: Re: [PATCH 1/2] io/block: Refactoring the bdrv_drained_begin()
+ function and implement a timeout mechanism.
+Message-ID: <20250313042252.GC1074020@fedora>
+References: <20250308101618.721954-1-zoudongjie@huawei.com>
+ <20250308101618.721954-2-zoudongjie@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ppc/spapr: fix default cpu for pre-10.0 machines.
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-Cc: npiggin@gmail.com, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-References: <20250312055804.2134569-1-harshpb@linux.ibm.com>
- <408efa3d-bd73-47bc-8723-08c805df6815@linaro.org>
- <89d61c6e-5a4e-49fc-a285-2215fa476709@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <89d61c6e-5a4e-49fc-a285-2215fa476709@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NNCMPuqjhtLwRLQ2EpEo5OMBHBo4R0wI
-X-Proofpoint-ORIG-GUID: Y-OIkF4Jw8Oq1s5Pm6CuLW7XWrGd-E72
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-13_02,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- impostorscore=0 adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- mlxlogscore=871 suspectscore=0 lowpriorityscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503130032
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="bm+/56xT04SxmdRt"
+Content-Disposition: inline
+In-Reply-To: <20250308101618.721954-2-zoudongjie@huawei.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,67 +90,364 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--bm+/56xT04SxmdRt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 3/12/25 15:50, Harsh Prateek Bora wrote:
-> 
-> 
-> On 3/12/25 15:39, Philippe Mathieu-Daudé wrote:
->> On 12/3/25 06:58, Harsh Prateek Bora wrote:
->>> When POWER10 CPU was made as default, we missed keeping POWER9 as
->>> default for older pseries releases (pre-10.0) at that time.
->>> This caused breakge in default cpu evaluation for older pseries
->>> machines and hence this fix.
->>>
->>
->> Should we also include:
->>
->>    Cc: qemu-stable@nongnu.org
->>
->> ?
->>
-> 
-> I guess so. Not sure if we need a patch v2 for just that.
-> 
->>> Fixes: 51113013f3 ("ppc/spapr: change pseries machine default to 
->>> POWER10 CPU")
->>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
->>> ---
->>>   hw/ppc/spapr.c | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
->>> index c15340a58d..b31a91e2e2 100644
->>> --- a/hw/ppc/spapr.c
->>> +++ b/hw/ppc/spapr.c
->>> @@ -4748,6 +4748,7 @@ static void 
->>> spapr_machine_9_2_class_options(MachineClass *mc)
->>>   {
->>>       spapr_machine_10_0_class_options(mc);
->>>       compat_props_add(mc->compat_props, hw_compat_9_2, 
->>> hw_compat_9_2_len);
->>> +    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
->>
->> This is confusing because v9.2 has already been released with that...
-> 
-> I think it still needs to be fixed for v9.2 (and older) if someone wants 
-> to use pseries-9.2 (and older) with future releases.
+On Sat, Mar 08, 2025 at 06:16:17PM +0800, zoudongjie wrote:
+> From: Zhu Yangyang <zhuyangyang14@huawei.com>
+>=20
+> The bdrv_drained_begin() function is a blocking function. In scenarios wh=
+ere network storage
+> is used and network links fail, it may block for a long time.
+> Therefore, we add a timeout parameter to control the duration of the bloc=
+k.
+>=20
+> Since bdrv_drained_begin() has been widely adopted, both bdrv_drained_beg=
+in()
+> and bdrv_drained_begin_timeout() will be retained.
+>=20
+> Signed-off-by: Zhu Yangyang <zhuyangyang14@huawei.com>
+> ---
+>  block/io.c               | 55 ++++++++++++++++++++++++++++++-------
+>  include/block/aio-wait.h | 58 ++++++++++++++++++++++++++++++++++++++++
+>  include/block/block-io.h |  7 +++++
+>  util/aio-wait.c          |  7 +++++
+>  4 files changed, 117 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/block/io.c b/block/io.c
+> index d369b994df..03b8b2dca7 100644
+> --- a/block/io.c
+> +++ b/block/io.c
+> @@ -255,6 +255,8 @@ typedef struct {
+>      bool begin;
+>      bool poll;
+>      BdrvChild *parent;
+> +    int ret;
+> +    int64_t timeout;
+>  } BdrvCoDrainData;
+> =20
+>  /* Returns true if BDRV_POLL_WHILE() should go into a blocking aio_poll(=
+) */
+> @@ -283,6 +285,8 @@ static bool bdrv_drain_poll_top_level(BlockDriverStat=
+e *bs,
+>      return bdrv_drain_poll(bs, ignore_parent, false);
+>  }
+> =20
+> +static int bdrv_do_drained_begin_timeout(BlockDriverState *bs,
+> +    BdrvChild *parent, bool poll, int64_t timeout);
+>  static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *paren=
+t,
+>                                    bool poll);
+>  static void bdrv_do_drained_end(BlockDriverState *bs, BdrvChild *parent);
+> @@ -296,7 +300,8 @@ static void bdrv_co_drain_bh_cb(void *opaque)
+>      if (bs) {
+>          bdrv_dec_in_flight(bs);
+>          if (data->begin) {
+> -            bdrv_do_drained_begin(bs, data->parent, data->poll);
+> +            data->ret =3D bdrv_do_drained_begin_timeout(
+> +                bs, data->parent, data->poll, data->timeout);
+>          } else {
+>              assert(!data->poll);
+>              bdrv_do_drained_end(bs, data->parent);
+> @@ -310,10 +315,11 @@ static void bdrv_co_drain_bh_cb(void *opaque)
+>      aio_co_wake(co);
+>  }
+> =20
+> -static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+> -                                                bool begin,
+> -                                                BdrvChild *parent,
+> -                                                bool poll)
+> +static int coroutine_fn bdrv_co_yield_to_drain_timeout(BlockDriverState =
+*bs,
+> +                                                         bool begin,
+> +                                                         BdrvChild *pare=
+nt,
+> +                                                         bool poll,
+> +                                                         int64_t timeout)
+>  {
+>      BdrvCoDrainData data;
+>      Coroutine *self =3D qemu_coroutine_self();
+> @@ -329,6 +335,8 @@ static void coroutine_fn bdrv_co_yield_to_drain(Block=
+DriverState *bs,
+>          .begin =3D begin,
+>          .parent =3D parent,
+>          .poll =3D poll,
+> +        .timeout =3D timeout,
+> +        .ret =3D 0
+>      };
+> =20
+>      if (bs) {
+> @@ -342,16 +350,25 @@ static void coroutine_fn bdrv_co_yield_to_drain(Blo=
+ckDriverState *bs,
+>      /* If we are resumed from some other event (such as an aio completio=
+n or a
+>       * timer callback), it is a bug in the caller that should be fixed. =
+*/
+>      assert(data.done);
+> +    return data.ret;
+>  }
+> =20
+> -static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *paren=
+t,
+> -                                  bool poll)
+> +static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+> +                                                bool begin,
+> +                                                BdrvChild *parent,
+> +                                                bool poll)
+> +{
+> +    bdrv_co_yield_to_drain_timeout(bs, begin, parent, poll, -1);
+> +}
+> +
+> +static int bdrv_do_drained_begin_timeout(BlockDriverState *bs,
+> +    BdrvChild *parent, bool poll, int64_t timeout_ms)
+>  {
+>      IO_OR_GS_CODE();
+> =20
+>      if (qemu_in_coroutine()) {
+> -        bdrv_co_yield_to_drain(bs, true, parent, poll);
+> -        return;
+> +        return bdrv_co_yield_to_drain_timeout(bs, true, parent, poll,
+> +                                              timeout_ms);
+>      }
+> =20
+>      GLOBAL_STATE_CODE();
+> @@ -375,8 +392,20 @@ static void bdrv_do_drained_begin(BlockDriverState *=
+bs, BdrvChild *parent,
+>       * nodes.
+>       */
+>      if (poll) {
+> -        BDRV_POLL_WHILE(bs, bdrv_drain_poll_top_level(bs, parent));
+> +        if (timeout_ms < 0) {
+> +            BDRV_POLL_WHILE(bs, bdrv_drain_poll_top_level(bs, parent));
+> +        } else {
+> +            return BDRV_POLL_WHILE_TIMEOUT(
+> +                bs, bdrv_drain_poll_top_level(bs, parent), timeout_ms);
+> +        }
+>      }
+> +    return 0;
+> +}
+> +
+> +static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *paren=
+t,
+> +                                  bool poll)
+> +{
+> +    bdrv_do_drained_begin_timeout(bs, parent, poll, -1);
+>  }
+> =20
+>  void bdrv_do_drained_begin_quiesce(BlockDriverState *bs, BdrvChild *pare=
+nt)
+> @@ -390,6 +419,12 @@ bdrv_drained_begin(BlockDriverState *bs)
+>      IO_OR_GS_CODE();
+>      bdrv_do_drained_begin(bs, NULL, true);
+>  }
+> +int coroutine_mixed_fn
+> +bdrv_drained_begin_timeout(BlockDriverState *bs, int64_t timeout_ms)
+> +{
+> +    IO_OR_GS_CODE();
+> +    return bdrv_do_drained_begin_timeout(bs, NULL, true, timeout_ms);
+> +}
+> =20
+>  /**
+>   * This function does not poll, nor must any of its recursively called
+> diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
+> index cf5e8bde1c..efbcb9777a 100644
+> --- a/include/block/aio-wait.h
+> +++ b/include/block/aio-wait.h
+> @@ -28,6 +28,8 @@
+>  #include "block/aio.h"
+>  #include "qemu/main-loop.h"
+> =20
+> +#define AIO_WAIT_INTERVAL 10  /* ms */
+> +
+>  /**
+>   * AioWait:
+>   *
+> @@ -56,6 +58,11 @@ typedef struct {
+>      unsigned num_waiters;
+>  } AioWait;
+> =20
+> +typedef struct {
+> +    struct QEMUTimer *timer;
+> +    int64_t interval;
+> +} AioWaitTimer;
+> +
+>  extern AioWait global_aio_wait;
+> =20
+>  /**
+> @@ -99,6 +106,55 @@ extern AioWait global_aio_wait;
+>      qatomic_dec(&wait_->num_waiters);                              \
+>      waited_; })
+> =20
+> +/**
+> + * AIO_WAIT_WHILE_TIMEOUT:
+> + *
+> + * Refer to the implementation of AIO_WAIT_WHILE_INTERNAL,
+> + * the timeout parameter is added.
+> + */
+> +#define AIO_WAIT_WHILE_TIMEOUT(ctx, cond, timeout) ({                   =
+ \
+> +    int ret_ =3D 0;                                                     =
+   \
+> +    AioWait *wait_ =3D &global_aio_wait;                                =
+   \
+> +    AioContext *ctx_ =3D (ctx);                                         =
+   \
+> +    int64_t start_ =3D qemu_clock_get_ms(QEMU_CLOCK_REALTIME);          =
+   \
+> +    int64_t deadline_ =3D start_ + (timeout);                           =
+   \
+> +    /* Ensure that the aio_poll exits periodically to check timeout. */ =
+ \
+> +    AioWaitTimer *s_ =3D g_malloc0(sizeof(AioWaitTimer));               =
+   \
+> +    s_->interval =3D AIO_WAIT_INTERVAL;                                 =
+   \
+> +    /* Increment wait_->num_waiters before evaluating cond. */          =
+ \
+> +    qatomic_inc(&wait_->num_waiters);                                   =
+ \
+> +    /* Paired with smp_mb in aio_wait_kick(). */                        =
+ \
+> +    smp_mb__after_rmw();                                                =
+ \
+> +    if (ctx_ && in_aio_context_home_thread(ctx_)) {                     =
+ \
+> +        s_->timer =3D aio_timer_new(ctx_, QEMU_CLOCK_REALTIME,          =
+   \
+> +                        SCALE_MS, aio_wait_timer_retry, s_);            =
+ \
+> +        aio_wait_timer_retry(s_);                                       =
+ \
+> +        while ((cond)) {                                                =
+ \
+> +            aio_poll(ctx_, true);                                       =
+ \
+> +            if (qemu_clock_get_ms(QEMU_CLOCK_REALTIME) > deadline_) {   =
+ \
+> +                ret_ =3D -ETIMEDOUT;                                    =
+   \
+> +                break;                                                  =
+ \
+> +            }                                                           =
+ \
+> +        }                                                               =
+ \
+> +    } else {                                                            =
+ \
+> +        s_->timer =3D aio_timer_new(qemu_get_aio_context(),             =
+   \
+> +            QEMU_CLOCK_REALTIME, SCALE_MS, aio_wait_timer_retry, s_);   =
+ \
+> +        aio_wait_timer_retry(s_);                                       =
+ \
+> +        while ((cond)) {                                                =
+ \
+> +            assert(qemu_get_current_aio_context() =3D=3D                =
+     \
+> +                   qemu_get_aio_context());                             =
+ \
+> +            aio_poll(qemu_get_aio_context(), true);                     =
+ \
+> +            if (qemu_clock_get_ms(QEMU_CLOCK_REALTIME) > deadline_) {   =
+ \
+> +                ret_ =3D -ETIMEDOUT;                                    =
+   \
+> +                break;                                                  =
+ \
+> +            }                                                           =
+ \
+> +        }                                                               =
+ \
+> +    }                                                                   =
+ \
+> +    qatomic_dec(&wait_->num_waiters);                                   =
+ \
+> +    timer_free(s_->timer);                                              =
+ \
+> +    g_free(s_);                                                         =
+ \
+> +    ret_; })
+> +
+>  #define AIO_WAIT_WHILE(ctx, cond)                                  \
+>      AIO_WAIT_WHILE_INTERNAL(ctx, cond)
+> =20
+> @@ -149,4 +205,6 @@ static inline bool in_aio_context_home_thread(AioCont=
+ext *ctx)
+>      }
+>  }
+> =20
+> +void aio_wait_timer_retry(void *opaque);
+> +
+>  #endif /* QEMU_AIO_WAIT_H */
+> diff --git a/include/block/block-io.h b/include/block/block-io.h
+> index b49e0537dd..84f92d2b09 100644
+> --- a/include/block/block-io.h
+> +++ b/include/block/block-io.h
+> @@ -354,6 +354,11 @@ bdrv_co_copy_range(BdrvChild *src, int64_t src_offse=
+t,
+>      AIO_WAIT_WHILE(bdrv_get_aio_context(bs_),              \
+>                     cond); })
+> =20
+> +#define BDRV_POLL_WHILE_TIMEOUT(bs, cond, timeout) ({      \
+> +    BlockDriverState *bs_ =3D (bs);                          \
+> +    AIO_WAIT_WHILE_TIMEOUT(bdrv_get_aio_context(bs_),      \
+> +                           cond, timeout); })
+> +
+>  void bdrv_drain(BlockDriverState *bs);
+> =20
+>  int co_wrapper_mixed_bdrv_rdlock
+> @@ -431,6 +436,8 @@ bdrv_drain_poll(BlockDriverState *bs, BdrvChild *igno=
+re_parent,
+>   */
+>  void bdrv_drained_begin(BlockDriverState *bs);
+> =20
+> +int bdrv_drained_begin_timeout(BlockDriverState *bs, int64_t timeout_ms);
 
-Gave it another thought. May be moving the default to v9.1 could be
-relatively better. 9.2 stable shall get the fix for pre-9.2 but 9.2
-default need not change.
+Missing documentation, especially that bdrv_drained_end() must be called
+when -ETIMEDOUT is returned.
 
-Nick, Daniel, comments?
+> +
+>  /**
+>   * bdrv_do_drained_begin_quiesce:
+>   *
+> diff --git a/util/aio-wait.c b/util/aio-wait.c
+> index b5336cf5fd..9aed165529 100644
+> --- a/util/aio-wait.c
+> +++ b/util/aio-wait.c
+> @@ -84,3 +84,10 @@ void aio_wait_bh_oneshot(AioContext *ctx, QEMUBHFunc *=
+cb, void *opaque)
+>      aio_bh_schedule_oneshot(ctx, aio_wait_bh, &data);
+>      AIO_WAIT_WHILE_UNLOCKED(NULL, !data.done);
+>  }
+> +
+> +void aio_wait_timer_retry(void *opaque)
+> +{
+> +    AioWaitTimer *s =3D opaque;
+> +
+> +    timer_mod(s->timer, qemu_clock_get_ms(QEMU_CLOCK_REALTIME) + s->inte=
+rval);
+> +}
+> --=20
+> 2.33.0
+>=20
 
-Thanks
-Harsh
-> 
-> Thanks
-> Harsh
-> 
->>
->>>   }
->>>   DEFINE_SPAPR_MACHINE(9, 2);
->>
->>
-> 
+--bm+/56xT04SxmdRt
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfSXZwACgkQnKSrs4Gr
+c8hPTQf/Xw65Fxh30CFyMwUjNtnIYRh1oq3vrujHRLr3WTO0Og53pAAMxAxqeCgT
+97reQs5Flyfo6d97KiKPjodhKTrDSZXm2oA5KvEJXmA6ZJ9CPleIVaDxoFGrtilD
+LGeIAlFThPXbDA5vX5VklHyKZIgrVT4X7A+SO4EUD1AaBx5D6ofktCfl55XXWMhg
+BhtFOs5Iss5sQtnimORVAF70c7fUUFLKqmP8fLAnfL8uTnWH2HcCg9in1Dd3RDv6
+OQTvbq+ufvNT+9rIJ2pFi93hwKBLSAob7qA4J42T4FDGK/Vpxli3Q2hy9ygrRhkd
+rcX9SGnccyHbURaEZOW880Ed9qTrcA==
+=0Yk1
+-----END PGP SIGNATURE-----
+
+--bm+/56xT04SxmdRt--
+
 
