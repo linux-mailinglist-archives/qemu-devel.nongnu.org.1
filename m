@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B32A5EAC2
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 05:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF852A5EABE
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 05:45:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsaQU-0008PJ-Oz; Thu, 13 Mar 2025 00:44:10 -0400
+	id 1tsaQM-0008JI-Ok; Thu, 13 Mar 2025 00:44:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tsaQD-0008GJ-5C
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 00:43:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tsaQF-0008I2-73
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 00:43:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tsaQ7-0006zb-UY
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 00:43:51 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tsaQC-000706-T3
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 00:43:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741841026;
+ s=mimecast20190719; t=1741841030;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Q9CcfAvxH9Y2TQpYx/J0P0+QWQLVMjR0hwHTx79G2AI=;
- b=AeXjUv2RkRfbU6VYqNPcKNeRzh8vT/fLpiqc7P45J3I+V5q7xpMXPrX6Pdrcu8ohVlFFmY
- h6TknAzWsFCOmWSFvgEdf2xr6YrsQgqnOJmU+O1aF856Qnsi2paTOZT3YYjsqCawWrl4Ds
- rGcoBhVk/8Mh/fmEJHgYB+jhjP97OIY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=JJF81P3sS7VNs7EOEp1xqNZSIqLT2s2Jdum8U2/tUt8=;
+ b=WGjM8cE2/i7cM8i8Q1y346ZwwBrEGjGK6+4wtro/mDCa9eBe0pUL/4ZA1i4RncwqT+HJtw
+ UW359S8/lTR+4Cqr94Xx4QnzX/2q5h/Lrcc446Dm3AG/WeGzKt2F467TT9vmTBJJkpvXBC
+ hARIUC1dTFg7lHAn4gBrncjr68sqBas=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-KEvP_zx5PQqPF68fDC5iCw-1; Thu,
- 13 Mar 2025 00:43:44 -0400
-X-MC-Unique: KEvP_zx5PQqPF68fDC5iCw-1
-X-Mimecast-MFC-AGG-ID: KEvP_zx5PQqPF68fDC5iCw_1741841023
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-167--ox0CbCRMteLQ1VD_BIDDA-1; Thu,
+ 13 Mar 2025 00:43:46 -0400
+X-MC-Unique: -ox0CbCRMteLQ1VD_BIDDA-1
+X-Mimecast-MFC-AGG-ID: -ox0CbCRMteLQ1VD_BIDDA_1741841025
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4A92C18007E1; Thu, 13 Mar 2025 04:43:43 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BCF631800257; Thu, 13 Mar 2025 04:43:45 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.62])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 989201955BCB; Thu, 13 Mar 2025 04:43:40 +0000 (UTC)
+ id A287F1955BCB; Thu, 13 Mar 2025 04:43:43 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Konstantin Kostiuk <kkostiuk@redhat.com>,
@@ -50,22 +50,23 @@ Cc: Konstantin Kostiuk <kkostiuk@redhat.com>,
  qemu-block@nongnu.org, Michael Roth <michael.roth@amd.com>,
  Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 05/11] docs/qapi-domain: add qapi:namespace directive
-Date: Thu, 13 Mar 2025 00:43:06 -0400
-Message-ID: <20250313044312.189276-6-jsnow@redhat.com>
+Subject: [PATCH 06/11] docs/qapidoc: add :namespace: option to qapi-doc
+ directive
+Date: Thu, 13 Mar 2025 00:43:07 -0400
+Message-ID: <20250313044312.189276-7-jsnow@redhat.com>
 In-Reply-To: <20250313044312.189276-1-jsnow@redhat.com>
 References: <20250313044312.189276-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,98 +84,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new directive that marks the beginning of a QAPI "namespace", for
-example; "QMP", "QGA" or "QSD". This directive will associate all
-subsequent QAPI directives in a document with the specified
-namespace. This does not change the visual display of any of the
-definitions or index entries, but does change the "Fully Qualified Name"
-inside the QAPI domain's object table. This allows for two different
-"namespaces" to define entities with otherwise identical names -- which
-will come in handy for documenting both QEMU QMP and the QEMU Storage
-Daemon.
+Add a :namespace: option to the qapi-doc directive, which inserts a
+qapi:namespace directive into the start of the generated document. This,
+in turn, associates all auto-generated definitions by this directive
+with the specified namespace.
+
+The source info for these generated lines are credited to the start of
+the qapi-doc directive, which isn't precisely correct, but I wasn't sure
+how to get it more accurate without some re-parsing shenanigans.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/devel/qapi-domain.rst | 20 +++++++++++++++++++-
- docs/sphinx/qapi_domain.py | 13 +++++++++++++
- 2 files changed, 32 insertions(+), 1 deletion(-)
+ docs/sphinx/qapidoc.py | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/docs/devel/qapi-domain.rst b/docs/devel/qapi-domain.rst
-index 51b283277e1..73e13ab45ca 100644
---- a/docs/devel/qapi-domain.rst
-+++ b/docs/devel/qapi-domain.rst
-@@ -464,7 +464,8 @@ removed in a future version.
- QAPI standard options
- ---------------------
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index 604ab109a19..cc7d9c1df9c 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -451,6 +451,12 @@ def visit_entity(self, ent: QAPISchemaDefinition) -> None:
+         finally:
+             self._curr_ent = None
  
--All QAPI directives -- *except* for module -- support these common options.
-+All QAPI directives -- *except* for namespace and module -- support
-+these common options.
++    def set_namespace(self, namespace: str, source: str, lineno: int) -> None:
++        self.add_line_raw(
++            f".. qapi:namespace:: {namespace}", source, lineno + 1
++        )
++        self.ensure_blank_line()
++
  
- * ``:namespace: name`` -- This option allows you to override the
-   namespace association of a given definition.
-@@ -482,6 +483,23 @@ All QAPI directives -- *except* for module -- support these common options.
-   production code.
+ class QAPISchemaGenDepVisitor(QAPISchemaVisitor):
+     """A QAPI schema visitor which adds Sphinx dependencies each module
+@@ -496,6 +502,7 @@ class QAPIDocDirective(NestedDirective):
+     optional_arguments = 1
+     option_spec = {
+         "qapifile": directives.unchanged_required,
++        "namespace": directives.unchanged,
+         "transmogrify": directives.flag,
+     }
+     has_content = False
+@@ -510,6 +517,11 @@ def transmogrify(self, schema: QAPISchema) -> nodes.Element:
+         vis = Transmogrifier()
+         modules = set()
  
- 
-+qapi:namespace
-+--------------
++        if "namespace" in self.options:
++            vis.set_namespace(
++                self.options["namespace"], *self.get_source_info()
++            )
 +
-+The ``qapi:namespace`` directive marks the start of a QAPI namespace. It
-+does not take a content body, nor any options. All subsequent QAPI
-+directives are associated with the most recent namespace. This affects
-+the definition's "fully qualified name", allowing two different
-+namespaces to create an otherwise identically named definition.
-+
-+Example::
-+
-+   .. qapi:namespace:: QMP
-+
-+
-+This directive has no visible effect.
-+
-+
- qapi:module
- -----------
- 
-diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index 6485c432063..a204af9b062 100644
---- a/docs/sphinx/qapi_domain.py
-+++ b/docs/sphinx/qapi_domain.py
-@@ -38,6 +38,7 @@
- from sphinx.locale import _, __
- from sphinx.roles import XRefRole
- from sphinx.util import logging
-+from sphinx.util.docutils import SphinxDirective
- from sphinx.util.nodes import make_id, make_refnode
- 
- 
-@@ -645,6 +646,17 @@ def run(self) -> List[Node]:
-         return ret
- 
- 
-+class QAPINamespace(SphinxDirective):
-+    has_content = False
-+    required_arguments = 1
-+
-+    def run(self) -> List[Node]:
-+        namespace = self.arguments[0].strip()
-+        self.env.ref_context["qapi:namespace"] = namespace
-+
-+        return []
-+
-+
- class QAPIIndex(Index):
-     """
-     Index subclass to provide the QAPI definition index.
-@@ -726,6 +738,7 @@ class QAPIDomain(Domain):
-     # Each of these provides a rST directive,
-     # e.g. .. qapi:module:: block-core
-     directives = {
-+        "namespace": QAPINamespace,
-         "module": QAPIModule,
-         "command": QAPICommand,
-         "event": QAPIEvent,
+         for doc in schema.docs:
+             module_source = doc.info.fname
+             if module_source not in modules:
 -- 
 2.48.1
 
