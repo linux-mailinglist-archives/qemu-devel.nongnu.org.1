@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914C9A5EBEB
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 07:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B61F7A5EBFB
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 07:58:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tscUB-0006Vx-8r; Thu, 13 Mar 2025 02:56:07 -0400
+	id 1tscUE-0006X5-Q0; Thu, 13 Mar 2025 02:56:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tscU2-0006S7-Hn
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:55:59 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1tscU7-0006VK-QV
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:56:03 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tscU0-00065J-Fb
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:55:58 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-22580c9ee0aso10608735ad.2
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 23:55:56 -0700 (PDT)
+ id 1tscU5-00065z-GJ
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:56:03 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-22548a28d0cso17021255ad.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 23:55:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741848955; x=1742453755;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741848958; x=1742453758;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SlV6ybuLU7WKrkJz3b71+OaSRrTTr9sSud3VMxid9GQ=;
- b=LxHwaX3uaAHy7BtWCaeOQ6MW4rQKHF5bO2sUDQ43mB9JnXf8J7zOtWqFdpJt4/N3p5
- tdgkHcMttltKM9MD4Gw67VBkkk5R0ZHimnZq4I/KlxkezgBIo2Mv7PHRFyJw8dNr3cn6
- NWCKbIO13jWC7fOk0d7Y5MrO2fVLVxP47oZJAk25ShcL5Aj+QiVQwtDeJy6Hcwra/DTd
- zXl7lORn5zREdEoMwc/9hnl7akVmVaW6c30e5w+/O0Taf6RfzCqLogQPg5bOcHkyOL5K
- P6qEMhgpVLJWVMfKc6csDsfc3QVyQrkND2eDR6Nn2AX8ZvctABhZ9/lMeOQHdA8mecq/
- mC7A==
+ :reply-to; bh=qeez6nQnPC+h3f/6T7AEax1CgK0z5iWn6bN3521NMLM=;
+ b=imeOaQgCa5h6bVULUE1OZHvbPjJq4R2Hz4MmNYtgWQqjgdJ3BsQz/VAdC6BBDN/3n5
+ 1gg1FceEjN1dWyKfHb7Xq+MQ0pypyVsuUPrF6Ht1QvCfVUhpiBeOlyorAYX/k1rgQ0uF
+ c8NKiGvU683JLttSEmMmDMG0WbXAp81fXNqtD9FLm91b1Gplqi+eMfOgo7Gs88sulYOI
+ hO5KMiBtbvfcxG6+ejZ4FUITETNVw20/7ZDZVk/VwSXh2kTEzGaT40dYAfJJgXWPJJ6M
+ aRcyMz3XZJW91rvHf+RYHoN4F/SXaRqBuqd8uHe6hzSUVTdhWlefgI5YSu7Oludr841r
+ 6JBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741848955; x=1742453755;
+ d=1e100.net; s=20230601; t=1741848958; x=1742453758;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SlV6ybuLU7WKrkJz3b71+OaSRrTTr9sSud3VMxid9GQ=;
- b=CdDCZY2z1OhEx/iycN/FBPdrw0TsZKpEg80FPWM0JeR0BcM27ikBaaSVHvnzvACkwu
- nsIKtWDA1TkCI6N5I4mALI/0Hj59vGOuiDnMPYky818Daz1jQI8QJBNIzKbryVY9726Z
- /YJu6pmhQLQUgIk3HTVt1SplcKNBbdjECJmVv6ICVPjEzH9XYtqYj0+Bg9lUsXQ0/Yem
- yDykNaBVVmBkj8R+9MXq4jYdjG7uHzwWWfpydAbWqCbu/538EW6MYofZMMY1xJQa4krd
- S/hdkwFzOAQ0ucdvz1xJK0t2uRBam+UI5dt0vOAiqj9PfG+54qzPdC1LK+QRaeU3XCyU
- 59Rw==
-X-Gm-Message-State: AOJu0YxvQdrZk9UtSRv0Vcsd+wzTZIPdKfV5VKc8MTnYsl6PdvvPOH4X
- dAIKQ9DbVaSmibkelEL+GkZyQMCkqZ7cmdLu+HI4hBV0zcmnnNd69Qjgth5EZg4=
-X-Gm-Gg: ASbGncuUoVjonFrLB1Z+zbrI1GaiwV5HH0iLKv/Y790XW3b3ai+wWFHJXuDrBDnrhoq
- 0N8oztuNIprLZVndR6fc2dZIqVnry/uulSIxOkNAn1AsgKsyXO5Rf9qytdv6eovbjILnehBkS82
- VmGzGP2DjZ9JanOgocgeTbBg2f70lLzw6U4f1Mazj8ps+2QHTBSQaiJ2oRhKEleyLoPgLgI4Btr
- uq9vEjfiT34U0YRySt8KWEoL3d7jOnCSTzCh52xArW6IdyvVWCC/CnHGx4H7GZcAMeLUODBUVFp
- iQ8gPmdthnX0vLZ4I9BfCC7NbbHUe2u98zHD0MdE4gd+T5kH
-X-Google-Smtp-Source: AGHT+IHTJdGNRh296jYk+pFzNVcSbXHroum/UKlqkUuc/KIx7yAvPrWTuf+VYCcjP2WXf9ibjg2VGg==
-X-Received: by 2002:a17:902:ce0a:b0:220:e338:8d2 with SMTP id
- d9443c01a7336-2242899474amr356581515ad.21.1741848955130; 
- Wed, 12 Mar 2025 23:55:55 -0700 (PDT)
+ bh=qeez6nQnPC+h3f/6T7AEax1CgK0z5iWn6bN3521NMLM=;
+ b=WEiiEJl/TnmHBILL+T421h3rkBEob/qOcNk40gWSeuXfCXI4jzSHX9Ocuq+89mOHPw
+ x4UfvhrUlsZxWaaQrnB5/cEBOTIFUPxcJ0vWan1Nr/TSJb87l0Tc17IB+Bn1ObHLu1WI
+ ZMeaAKK4pDfz3V6DPO9ocsJ0eGkCTuw5GAkMKSSRHCEH2MTYuSubQ9Ws64SSFvx5Xfr6
+ OnSHvVSgbjow3UTeSmH2OO/8uGt8/M98hszgEf3lLECSfr/8LqMsyfwoN0mmMsR8altK
+ BIGJiv+NBrupaKicsPGUNdM2TZ/Qx98V6E+m2COuJHchA0NFWApRhVQU9iMSGEipDeOX
+ uaGA==
+X-Gm-Message-State: AOJu0Yyefc1sR57I2hiTXUfpYSZLvtfo2EqkYs6QWrPSI59plQgMMgxv
+ WwlJjAefS462nCZ8d0aU4F959W6KGzC/kJPL4vy35JaH6H6dGTeCEXOfBCgN5/g=
+X-Gm-Gg: ASbGncvbVuaD6s4oq5PcbpTLmWvVFZr8kccv5W0SSUdnruI5BBQ/B00gVXU17hCKggy
+ AFxrkUeZsZYSwfV6mbsAOkPPkmkWdXxEt3PyiMX66v++ipw+w69tnTbmgV7nl3RzUI30+vAryX1
+ I34YLDgzGmgYzrTbVFFVUqMR1GBI0gCUR3UCFxpicgDEyKvJ506uSBHHGZr2OcXlVw4hleDKDiP
+ CnM7WakAk2PTthHYPWIzV51QB7BTqR0CIQKMDBg9yN63cU7DJK3P/lzByxP+Tt622y+CC7R9+lr
+ aQG3r16/4fOqt+e34NaWYh2DsdKXck849llMhpmHDwdptF7C
+X-Google-Smtp-Source: AGHT+IFxn00awTee98uXE3tJTj0eyWUbb3a45gfzBS7sXxKQ/QZjlck0VCIHo+LYoDKdvBsssZdUZg==
+X-Received: by 2002:a05:6a00:3d55:b0:736:5b85:a911 with SMTP id
+ d2e1a72fcca58-736aaa1cf54mr41753854b3a.8.1741848958415; 
+ Wed, 12 Mar 2025 23:55:58 -0700 (PDT)
 Received: from localhost ([157.82.205.237])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-225c6bbcba7sm6396075ad.173.2025.03.12.23.55.53
+ d2e1a72fcca58-737115293a8sm649349b3a.10.2025.03.12.23.55.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Mar 2025 23:55:54 -0700 (PDT)
+ Wed, 12 Mar 2025 23:55:58 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 13 Mar 2025 15:55:29 +0900
-Subject: [PATCH RFC v4 03/11] virtio-net: Move virtio_net_get_features() down
+Date: Thu, 13 Mar 2025 15:55:30 +0900
+Subject: [PATCH RFC v4 04/11] virtio-net: Retrieve peer hashing capability
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-hash-v4-3-c75c494b495e@daynix.com>
+Message-Id: <20250313-hash-v4-4-c75c494b495e@daynix.com>
 References: <20250313-hash-v4-0-c75c494b495e@daynix.com>
 In-Reply-To: <20250313-hash-v4-0-c75c494b495e@daynix.com>
 To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
@@ -76,8 +76,8 @@ To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  devel@daynix.com
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,178 +99,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move virtio_net_get_features() to the later part of the file so that
-it can call other functions.
+Retrieve peer hashing capability instead of hardcoding.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/virtio-net.c | 146 ++++++++++++++++++++++++++--------------------------
- 1 file changed, 73 insertions(+), 73 deletions(-)
+ include/hw/virtio/virtio-net.h |  5 ++-
+ hw/net/virtio-net.c            | 71 ++++++++++++++++++++++++++++++++++--------
+ net/vhost-vdpa.c               |  4 +--
+ 3 files changed, 64 insertions(+), 16 deletions(-)
 
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index b9ea9e824e3c..c4957c44c06e 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -144,7 +144,10 @@ typedef struct VirtioNetRssData {
+     bool    enabled_software_rss;
+     bool    redirect;
+     bool    populate_hash;
+-    uint32_t hash_types;
++    bool    peer_hash_available;
++    uint32_t runtime_hash_types;
++    uint32_t supported_hash_types;
++    uint32_t peer_hash_types;
+     uint8_t key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
+     uint16_t indirections_len;
+     uint16_t *indirections_table;
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index de87cfadffe1..df8de1148ba4 100644
+index df8de1148ba4..133317d8c358 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -751,79 +751,6 @@ static void virtio_net_set_queue_pairs(VirtIONet *n)
+@@ -158,7 +158,7 @@ static void virtio_net_get_config(VirtIODevice *vdev, uint8_t *config)
+                  virtio_host_has_feature(vdev, VIRTIO_NET_F_RSS) ?
+                  VIRTIO_NET_RSS_MAX_TABLE_LEN : 1);
+     virtio_stl_p(vdev, &netcfg.supported_hash_types,
+-                 VIRTIO_NET_RSS_SUPPORTED_HASHES);
++                 n->rss_data.supported_hash_types);
+     memcpy(config, &netcfg, n->config_size);
  
- static void virtio_net_set_multiqueue(VirtIONet *n, int multiqueue);
+     /*
+@@ -1177,7 +1177,7 @@ static void rss_data_to_rss_config(struct VirtioNetRssData *data,
+ {
+     config->redirect = data->redirect;
+     config->populate_hash = data->populate_hash;
+-    config->hash_types = data->hash_types;
++    config->hash_types = data->runtime_hash_types;
+     config->indirections_len = data->indirections_len;
+     config->default_queue = data->default_queue;
+ }
+@@ -1212,6 +1212,10 @@ static void virtio_net_detach_ebpf_rss(VirtIONet *n)
  
--static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
--                                        Error **errp)
--{
--    VirtIONet *n = VIRTIO_NET(vdev);
--    NetClientState *nc = qemu_get_queue(n->nic);
--
--    /* Firstly sync all virtio-net possible supported features */
--    features |= n->host_features;
--
--    virtio_add_feature(&features, VIRTIO_NET_F_MAC);
--
--    if (!peer_has_vnet_hdr(n)) {
--        virtio_clear_feature(&features, VIRTIO_NET_F_CSUM);
--        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_TSO4);
--        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_TSO6);
--        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_ECN);
--
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_CSUM);
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_TSO4);
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_TSO6);
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_ECN);
--
--        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
--
--        virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
--    }
--
--    if (!peer_has_vnet_hdr(n) || !peer_has_ufo(n)) {
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_UFO);
--        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_UFO);
--    }
--
--    if (!peer_has_uso(n)) {
--        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
--    }
--
--    if (!get_vhost_net(nc->peer)) {
--        return features;
--    }
--
+ static void virtio_net_commit_rss_config(VirtIONet *n)
+ {
++    if (n->rss_data.peer_hash_available) {
++        return;
++    }
++
+     if (n->rss_data.enabled) {
+         n->rss_data.enabled_software_rss = n->rss_data.populate_hash;
+         if (n->rss_data.populate_hash) {
+@@ -1226,7 +1230,7 @@ static void virtio_net_commit_rss_config(VirtIONet *n)
+         }
+ 
+         trace_virtio_net_rss_enable(n,
+-                                    n->rss_data.hash_types,
++                                    n->rss_data.runtime_hash_types,
+                                     n->rss_data.indirections_len,
+                                     sizeof(n->rss_data.key));
+     } else {
+@@ -1337,7 +1341,7 @@ static uint16_t virtio_net_handle_rss(VirtIONet *n,
+         err_value = (uint32_t)s;
+         goto error;
+     }
+-    n->rss_data.hash_types = virtio_ldl_p(vdev, &cfg.hash_types);
++    n->rss_data.runtime_hash_types = virtio_ldl_p(vdev, &cfg.hash_types);
+     n->rss_data.indirections_len =
+         virtio_lduw_p(vdev, &cfg.indirection_table_mask);
+     if (!do_rss) {
+@@ -1400,12 +1404,12 @@ static uint16_t virtio_net_handle_rss(VirtIONet *n,
+         err_value = temp.b;
+         goto error;
+     }
+-    if (!temp.b && n->rss_data.hash_types) {
++    if (!temp.b && n->rss_data.runtime_hash_types) {
+         err_msg = "No key provided";
+         err_value = 0;
+         goto error;
+     }
+-    if (!temp.b && !n->rss_data.hash_types) {
++    if (!temp.b && !n->rss_data.runtime_hash_types) {
+         virtio_net_disable_rss(n);
+         return queue_pairs;
+     }
+@@ -1810,7 +1814,7 @@ static int virtio_net_process_rss(NetClientState *nc, const uint8_t *buf,
+     net_rx_pkt_set_protocols(pkt, &iov, 1, n->host_hdr_len);
+     net_rx_pkt_get_protocols(pkt, &hasip4, &hasip6, &l4hdr_proto);
+     net_hash_type = virtio_net_get_hash_type(hasip4, hasip6, l4hdr_proto,
+-                                             n->rss_data.hash_types);
++                                             n->rss_data.runtime_hash_types);
+     if (net_hash_type > NetPktRssIpV6UdpEx) {
+         if (n->rss_data.populate_hash) {
+             hdr->hash_value = VIRTIO_NET_HASH_REPORT_NONE;
+@@ -3012,6 +3016,14 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
+ {
+     VirtIONet *n = VIRTIO_NET(vdev);
+     NetClientState *nc = qemu_get_queue(n->nic);
++    uint32_t supported_hash_types = n->rss_data.supported_hash_types;
++    uint32_t peer_hash_types = n->rss_data.peer_hash_types;
++    bool use_own_hash =
++        (supported_hash_types & VIRTIO_NET_RSS_SUPPORTED_HASHES) ==
++        supported_hash_types;
++    bool use_peer_hash =
++        n->rss_data.peer_hash_available &&
++        (supported_hash_types & peer_hash_types) == supported_hash_types;
+ 
+     /* Firstly sync all virtio-net possible supported features */
+     features |= n->host_features;
+@@ -3048,12 +3060,28 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
+     }
+ 
+     if (!get_vhost_net(nc->peer)) {
++        if (!use_own_hash) {
++            virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
++            virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
++        } else if (virtio_has_feature(features, VIRTIO_NET_F_RSS)) {
++            virtio_net_load_ebpf(n, errp);
++        }
++
+         return features;
+     }
+ 
 -    if (!ebpf_rss_is_loaded(&n->ebpf_rss)) {
 -        virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
--    }
--    features = vhost_net_get_features(get_vhost_net(nc->peer), features);
--    vdev->backend_features = features;
--
--    if (n->mtu_bypass_backend &&
--            (n->host_features & 1ULL << VIRTIO_NET_F_MTU)) {
--        features |= (1ULL << VIRTIO_NET_F_MTU);
--    }
--
--    /*
--     * Since GUEST_ANNOUNCE is emulated the feature bit could be set without
--     * enabled. This happens in the vDPA case.
--     *
--     * Make sure the feature set is not incoherent, as the driver could refuse
--     * to start.
--     *
--     * TODO: QEMU is able to emulate a CVQ just for guest_announce purposes,
--     * helping guest to notify the new location with vDPA devices that does not
--     * support it.
--     */
--    if (!virtio_has_feature(vdev->backend_features, VIRTIO_NET_F_CTRL_VQ)) {
--        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_ANNOUNCE);
--    }
--
--    return features;
--}
--
- static uint64_t virtio_net_bad_features(VirtIODevice *vdev)
- {
-     uint64_t features = 0;
-@@ -3080,6 +3007,79 @@ static int virtio_net_pre_load_queues(VirtIODevice *vdev)
-     return 0;
- }
- 
-+static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
-+                                        Error **errp)
-+{
-+    VirtIONet *n = VIRTIO_NET(vdev);
-+    NetClientState *nc = qemu_get_queue(n->nic);
-+
-+    /* Firstly sync all virtio-net possible supported features */
-+    features |= n->host_features;
-+
-+    virtio_add_feature(&features, VIRTIO_NET_F_MAC);
-+
-+    if (!peer_has_vnet_hdr(n)) {
-+        virtio_clear_feature(&features, VIRTIO_NET_F_CSUM);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_TSO4);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_TSO6);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_ECN);
-+
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_CSUM);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_TSO4);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_TSO6);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_ECN);
-+
-+        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
-+
++    if (!use_peer_hash) {
 +        virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
++
++        if (!use_own_hash || !virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
++            if (!virtio_net_load_ebpf(n, errp)) {
++                return features;
++            }
++
++            virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
++        }
+     }
++
+     features = vhost_net_get_features(get_vhost_net(nc->peer), features);
+     vdev->backend_features = features;
+ 
+@@ -3318,6 +3346,17 @@ static const VMStateDescription vmstate_virtio_net_has_vnet = {
+     },
+ };
+ 
++static int virtio_net_rss_post_load(void *opaque, int version_id)
++{
++    VirtIONet *n = VIRTIO_NET(opaque);
++
++    if (version_id == 1) {
++        n->rss_data.supported_hash_types = VIRTIO_NET_RSS_SUPPORTED_HASHES;
 +    }
 +
-+    if (!peer_has_vnet_hdr(n) || !peer_has_ufo(n)) {
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_UFO);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_UFO);
-+    }
-+
-+    if (!peer_has_uso(n)) {
-+        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
-+    }
-+
-+    if (!get_vhost_net(nc->peer)) {
-+        return features;
-+    }
-+
-+    if (!ebpf_rss_is_loaded(&n->ebpf_rss)) {
-+        virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
-+    }
-+    features = vhost_net_get_features(get_vhost_net(nc->peer), features);
-+    vdev->backend_features = features;
-+
-+    if (n->mtu_bypass_backend &&
-+            (n->host_features & 1ULL << VIRTIO_NET_F_MTU)) {
-+        features |= (1ULL << VIRTIO_NET_F_MTU);
-+    }
-+
-+    /*
-+     * Since GUEST_ANNOUNCE is emulated the feature bit could be set without
-+     * enabled. This happens in the vDPA case.
-+     *
-+     * Make sure the feature set is not incoherent, as the driver could refuse
-+     * to start.
-+     *
-+     * TODO: QEMU is able to emulate a CVQ just for guest_announce purposes,
-+     * helping guest to notify the new location with vDPA devices that does not
-+     * support it.
-+     */
-+    if (!virtio_has_feature(vdev->backend_features, VIRTIO_NET_F_CTRL_VQ)) {
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_ANNOUNCE);
-+    }
-+
-+    return features;
++    return 0;
 +}
 +
- static int virtio_net_post_load_device(void *opaque, int version_id)
+ static bool virtio_net_rss_needed(void *opaque)
  {
-     VirtIONet *n = opaque;
+     return VIRTIO_NET(opaque)->rss_data.enabled;
+@@ -3325,14 +3364,16 @@ static bool virtio_net_rss_needed(void *opaque)
+ 
+ static const VMStateDescription vmstate_virtio_net_rss = {
+     .name      = "virtio-net-device/rss",
+-    .version_id = 1,
++    .version_id = 2,
+     .minimum_version_id = 1,
++    .post_load = virtio_net_rss_post_load,
+     .needed = virtio_net_rss_needed,
+     .fields = (const VMStateField[]) {
+         VMSTATE_BOOL(rss_data.enabled, VirtIONet),
+         VMSTATE_BOOL(rss_data.redirect, VirtIONet),
+         VMSTATE_BOOL(rss_data.populate_hash, VirtIONet),
+-        VMSTATE_UINT32(rss_data.hash_types, VirtIONet),
++        VMSTATE_UINT32(rss_data.runtime_hash_types, VirtIONet),
++        VMSTATE_UINT32_V(rss_data.supported_hash_types, VirtIONet, 2),
+         VMSTATE_UINT16(rss_data.indirections_len, VirtIONet),
+         VMSTATE_UINT16(rss_data.default_queue, VirtIONet),
+         VMSTATE_UINT8_ARRAY(rss_data.key, VirtIONet,
+@@ -3919,8 +3960,12 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+ 
+     net_rx_pkt_init(&n->rx_pkt);
+ 
+-    if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
+-        virtio_net_load_ebpf(n, errp);
++    if (qemu_get_vnet_hash_supported_types(qemu_get_queue(n->nic)->peer,
++                                           &n->rss_data.peer_hash_types)) {
++        n->rss_data.peer_hash_available = true;
++        n->rss_data.supported_hash_types = n->rss_data.peer_hash_types;
++    } else {
++        n->rss_data.supported_hash_types = VIRTIO_NET_RSS_SUPPORTED_HASHES;
+     }
+ }
+ 
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index de006f3a2265..0e9f4482ce7a 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -882,13 +882,13 @@ static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
+      * configuration only at live migration.
+      */
+     if (!n->rss_data.enabled ||
+-        n->rss_data.hash_types == VIRTIO_NET_HASH_REPORT_NONE) {
++        n->rss_data.runtime_hash_types == VIRTIO_NET_HASH_REPORT_NONE) {
+         return 0;
+     }
+ 
+     table = g_malloc_n(n->rss_data.indirections_len,
+                        sizeof(n->rss_data.indirections_table[0]));
+-    cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
++    cfg.hash_types = cpu_to_le32(n->rss_data.runtime_hash_types);
+ 
+     if (do_rss) {
+         /*
 
 -- 
 2.48.1
