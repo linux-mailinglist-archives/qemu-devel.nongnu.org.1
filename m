@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34BBBA5FC68
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 17:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D647EA5FC6D
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 17:45:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tslcN-0005ap-Dp; Thu, 13 Mar 2025 12:41:12 -0400
+	id 1tslcp-0006FG-Jt; Thu, 13 Mar 2025 12:41:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tslam-0003TU-8Y
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 12:39:32 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1tslan-0003Ui-LU
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 12:39:34 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tslaj-0005iC-6d
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 12:39:31 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2ff615a114bso4342517a91.0
- for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 09:39:27 -0700 (PDT)
+ id 1tslaj-0005if-Bq
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 12:39:33 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-223594b3c6dso24047575ad.2
+ for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 09:39:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741883966; x=1742488766; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741883968; x=1742488768; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cOa15ppvF5kxsldjPkSIJYe5T0c824L9GaUvR3via0Q=;
- b=D2GOKrmSClC8JXIjKEplR8HBkvlhtxDJWx2tbMOYRX4Z+UN+7S+56lRidKKWkqc9JX
- oklBMCcKrTwe/qTWooEdKmRoIgQHbCps7B5t3xmh/BKn19I66CfYG9fUB9Qztiz5achm
- ii3MrXV2ntm77ra/h9r5eyVmeUtj5m/My3Iu+5kHL0Us7c3FpOXvwYHMBDj5p8EI9FFd
- NhBFFEKpaDrhQUPuS/Uc1JiOJvQ/YDuK3FVJglwewN9QJT8JUgvfo0+ZQAthKFNnbSvH
- ETxsiws9SHiWtQAec3VXPhpixnWrPcxMC/WSl4mwj/pOyDboYbFw2p21kxCDbKerGb0D
- Q/2w==
+ bh=0vI16NHb2tKWbIxjnq/SoVUTdY/Lep770BkCc47k0Rc=;
+ b=sl7Se8qEtHnJxO6BXvWyT0EFhbLbROmKN3DCbaJFeXuwRZq2cCi56KQsvp4Jiusd10
+ v+oaH4ogRkseAbRryvtc5J4zzchnr6L47xSNxUKvHXy3NjgtYW0TN2O5ForCtwYkqcNl
+ VqCkHqku7M0E+feOofL9hR1WPCUvEzhwV70Sg/Av9tR+CQLOIhnOPl7L1Fse/7hK6Op8
+ gXc9Qk3sXhsJKRw/gwG/MDesRehQ0Yu/BVQ5Q9P7vr0BSEV+1iv2bOSySbjzW0rE1lp0
+ KQ4/TECYr1DRMPm+VeIhLUxsSq1qBKQ/4KCG3a03cJG9bZPoUh9UglTve4IHNxHJfItu
+ 9Uug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741883966; x=1742488766;
+ d=1e100.net; s=20230601; t=1741883968; x=1742488768;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cOa15ppvF5kxsldjPkSIJYe5T0c824L9GaUvR3via0Q=;
- b=PAtc81G3Ixh9mXiKSpPvqLwSXHGHEejl8iHmxuzMpBb3CYBuhKUHzjcI7LkxKjK6tq
- AINng9Ox3EtD7iVU7VNkZTLeT6N7vs7HcvT2+HVgqPQaHmX7KhhNzkyVnFk6DUo/ip9r
- 2KvxaxE0nNZ9IukcMHTglu/a5v6ofv7V79EmuD+ycy1uYgPVVrlfdx7B90sQy8ffp565
- 2ejXjNRAUYNUF+Tzyoiy4Yi2TX7XzJGmnOUtRJLTUVN/ZHf42S/SKeQoXgBcJbwNhfaW
- s9Cy/PdND0caQl32L7Of+FmNyHzvP+/0krnoZakrQgw4etnM8sXohD6dRFWqWYhLIWpW
- IUtg==
-X-Gm-Message-State: AOJu0Yy2SF8x3rg0BiWCIXIA4ph/gMbwvfwLtW+LcGaxbjzR6/N4e2U2
- VFkQRmQAJnvFcAfcaI7uOMUblf+yaqwp2imFWITZ2LFnTeVRZlk2WzbX1mhP8oBZJi+0TiCYzJi
- aDZQ=
-X-Gm-Gg: ASbGncstY5h6OA7ogKT7BiT8CYOL+D+vTkgz/yTtd0mxMfMNbHW3sNOPXLo5XEBb/vR
- A4paIxc0Q0qOKQ2ZqNva/VkHCyLGsHNF2XmIDP2qH7J0y0p7BRKIDQnQC8rVdRkn4G2JFY5usi9
- Bf8gpbfyliOTpt+rip2Q0apButGISUtgnKO8Szu4uf6UI4Y0v+RTPMe05b1F8jdLs4wufNgBduH
- ene1CF9T2doHoclB/1xyiO/JvujLVonV9XWjNnj82vRgigCo3l4NLn2i0UGxZ5Bh+pc6GWIgdff
- 2XxyTnLff2AE+GktJge3yNinqY04OyCrXrJ1Fc3DotJk
-X-Google-Smtp-Source: AGHT+IF4AzvOcFWztZZ2bxlYvUCRcZgJhJkixRgg9I+5NbaWKKn606UlzAb4zSHX4i3sVnz0TZr9yg==
-X-Received: by 2002:a17:90b:574c:b0:2fa:30e9:2051 with SMTP id
- 98e67ed59e1d1-30135eab105mr4295980a91.5.1741883966469; 
- Thu, 13 Mar 2025 09:39:26 -0700 (PDT)
+ bh=0vI16NHb2tKWbIxjnq/SoVUTdY/Lep770BkCc47k0Rc=;
+ b=okkcxPI0hjQykwiaHfNJ5bnxHuQsM0iwB6O9OmOHvBL//sJaKB05gfyY2MVeiVjpSc
+ rOhvu9f31YiKh5SK0ZU20+7jr/kbBIDOPvtTzG6rJfFC5svezg7fZokdUa2zYQoeckqn
+ UbV35JM/AneGe94jttb4mFbd1ccaNflbDZc5RrSw4mv2+2uW7iSTaBJAIV25PFTsoztG
+ b9caPY12516vmTR+9AxXyq6LbvLeFmsdrCA8IT0ligus/aoJNaHnR4mwVkGwk86IhIfX
+ 913/b9nJ5mlUaQEPB+PhFBbdYBjrLo/PbdRJI8aWNn2+yQjv9eRCsxJiOmHuJeftWR8E
+ Tkiw==
+X-Gm-Message-State: AOJu0YypEzn+hwsmG/7wV3rwGdW6bOKH3rNaU8Bn25H+CXFeTPXAWn6Y
+ BypYc+0SmND7g7VTZiUw7YcDJQDIPsU9JYfefZFqssqByjY5XKi4t5upBIL0m9ncE1OJK+CrXkf
+ oGXo=
+X-Gm-Gg: ASbGncsSALqgEPN1WJrCAYWlY+gDhw7K5ivME3FuRDYuT73kOioJI14j0ie/SG3oj9n
+ T00e3+W+ypJcbkHNS6eITBkuYjpPnzgby0Er3IS1hWwMSIrt9yxyAqJnqj6JezLV5PxsQbZ/Okq
+ CLAPYjYpoTdIRGyGmhYP5P5WBzN7TcqGb5CS6ryREBEaaxKFCx5nAd17tN0a/gGXWtG4gfPADkW
+ PvC/t/hjxlQZw6eKWhAd2r4rly4m0jr7btg1bKQZaVMjlr/fTGBjIwuEZ6ftYqH3KqFSLpOwjq+
+ nQsFpiUkZo4KQ0wrDBwdcLzmyhxObecfiqKemq1zr176pKhugf09H3I=
+X-Google-Smtp-Source: AGHT+IFcq5bUjsmA5zzk8huR+izs7UMfjfhsI/1Y2larg5eumFEccAwXse4tJs4zAbzQaGCcQS+wlQ==
+X-Received: by 2002:a17:902:cecd:b0:220:e924:99dd with SMTP id
+ d9443c01a7336-225dd8b9922mr2731115ad.34.1741883967572; 
+ Thu, 13 Mar 2025 09:39:27 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30119265938sm4020084a91.39.2025.03.13.09.39.25
+ 98e67ed59e1d1-30119265938sm4020084a91.39.2025.03.13.09.39.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 09:39:26 -0700 (PDT)
+ Thu, 13 Mar 2025 09:39:27 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paul Durrant <paul@xen.org>,
@@ -81,24 +81,24 @@ Cc: Paul Durrant <paul@xen.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 13/17] system/physmem: compilation unit is now common to
- all targets
-Date: Thu, 13 Mar 2025 09:38:59 -0700
-Message-Id: <20250313163903.1738581-14-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 14/17] include/exec/memory: extract devend_big_endian from
+ devend_memop
+Date: Thu, 13 Mar 2025 09:39:00 -0700
+Message-Id: <20250313163903.1738581-15-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250313163903.1738581-1-pierrick.bouvier@linaro.org>
 References: <20250313163903.1738581-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,32 +114,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+we'll use it in system/memory.c.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- system/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/exec/memory.h | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/system/meson.build b/system/meson.build
-index eec07a94513..bd82ef132e7 100644
---- a/system/meson.build
-+++ b/system/meson.build
-@@ -3,7 +3,6 @@ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
-   'ioport.c',
-   'globals-target.c',
-   'memory.c',
--  'physmem.c',
- )])
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 069021ac3ff..70177304a92 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -3138,16 +3138,22 @@ address_space_write_cached(MemoryRegionCache *cache, hwaddr addr,
+ MemTxResult address_space_set(AddressSpace *as, hwaddr addr,
+                               uint8_t c, hwaddr len, MemTxAttrs attrs);
  
- system_ss.add(files(
-@@ -16,6 +15,7 @@ system_ss.add(files(
-   'dma-helpers.c',
-   'globals.c',
-   'memory_mapping.c',
-+  'physmem.c',
-   'qdev-monitor.c',
-   'qtest.c',
-   'rtc.c',
+-/* enum device_endian to MemOp.  */
+-static inline MemOp devend_memop(enum device_endian end)
++/* returns true if end is big endian. */
++static inline bool devend_big_endian(enum device_endian end)
+ {
+     QEMU_BUILD_BUG_ON(DEVICE_HOST_ENDIAN != DEVICE_LITTLE_ENDIAN &&
+                       DEVICE_HOST_ENDIAN != DEVICE_BIG_ENDIAN);
+ 
+-    bool big_endian = (end == DEVICE_NATIVE_ENDIAN
+-                       ? target_words_bigendian()
+-                       : end == DEVICE_BIG_ENDIAN);
+-    return big_endian ? MO_BE : MO_LE;
++    if (end == DEVICE_NATIVE_ENDIAN) {
++        return target_words_bigendian();
++    }
++    return end == DEVICE_BIG_ENDIAN;
++}
++
++/* enum device_endian to MemOp.  */
++static inline MemOp devend_memop(enum device_endian end)
++{
++    return devend_big_endian(end) ? MO_BE : MO_LE;
+ }
+ 
+ /*
 -- 
 2.39.5
 
