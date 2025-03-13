@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335C2A5EA35
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:48:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A40A5EA36
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:48:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsZWz-0005RK-Vx; Wed, 12 Mar 2025 23:46:50 -0400
+	id 1tsZWx-0005Jo-83; Wed, 12 Mar 2025 23:46:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZWR-0004lX-IW
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:15 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1tsZWP-0004jm-Dl
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:13 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZW9-0007qZ-4z
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:15 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-22337bc9ac3so9041265ad.1
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:56 -0700 (PDT)
+ id 1tsZW9-0007ql-O3
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:12 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-224191d92e4so9432275ad.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741837555; x=1742442355; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741837556; x=1742442356; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lvUlsYrMynQ2g+Bt+yO0Pn1F4tS1wPQ/SJ1FqTEbcVc=;
- b=pb8CpaJiT+9ovFWBzxM+5BctyWNkz+5DsecF3NzCXc7bZ5xNMrbnLbK6N0S+2RP1N5
- XWVYCoSj4TB0O3YyIdBNM14yFLBnB85LlcQdFMrrcUqJSeQju6Ncykv7k7iCHBdBjqSN
- 7GQ4y+sEhcnpzTjg4CjAZn83dPk6Myqs2Bilsu/9KZCvJnaDsn8Dodb2xOES7w623uJc
- mvcoOwgeJS7sYVL0HNmPcuA7hqcBY1nwymU/CmXM+9NsinpNnIn9h826C8Z00EBDPopa
- Kz3v6qAHwo7NCcOcdmoA1opOm6EYM0MtajfoCeuTH4WVtZtw4WfDncjAZ/K00ZORWAZI
- IAEQ==
+ bh=n/DByL3ihQv9gjcrJmCBUjllouYG+4z7Wwry9cL7B6M=;
+ b=WQDNwQpHRI9sTXEFtaNNjDkVLrh+QechPMCZT+CK+Tj14QuKoDejAUo3g/lfOuzyD+
+ Zm7zAzkIhPhZk7zF2+4wZiuxB4KgL1mB+YIlj+nbZPbUSzBKMGo5mBqlS6/+L+qAKakM
+ vFiVlALHJXnt2H5DEtjez623NaLz8hwjCuQ8auOPfllz5a2LEOzacajCNiKDtHlvilgW
+ /A0pliikRnEAYgD4YYX4wo6jcARWb1MzYHMzc4gY8bQ18WgIom3gg2ieC5R9h/zaBfGM
+ RTZwjq5VqUW36S/yCtjD3qLpgEP8VXC3Ar3O4aCErvRQMeKx0TmzJ8dbRT7E0eMt1RnH
+ TMUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741837555; x=1742442355;
+ d=1e100.net; s=20230601; t=1741837556; x=1742442356;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lvUlsYrMynQ2g+Bt+yO0Pn1F4tS1wPQ/SJ1FqTEbcVc=;
- b=eRG4aHDiK8EZa8FOC6BguQ9QMNaxNTnX6orgG0QCT9YSDXPbfuYbfAEQHf/SI7eBqj
- hF7vEQRAcGR82QpMslH6gX4eQcO8VOUos0PAi2ktdQeuvBD20N8SIVTC3pC7b55RV+2/
- YB/gY8oAoyafZ8boTwBNPcQoG2NmLFN16qaw43WycMlfi2dpUvixDDD6PrXv4Q2mUsHU
- lp2GUzDuoA0fOKmu20Q/5M3ns0Ifc5GTjXkbHZ1ShCkPGSkvekgCVEO0X+PWUvNMTs6B
- TcAo/IAlKw033AiHIJObgX/nZ3+4cazDXNRoDz8iSlhYPEUcolarmpc7d8o5iCGt6fXD
- i5UA==
-X-Gm-Message-State: AOJu0Yyun2OOM2kCeEp1mbJEL/XLuPp02iCjj9QNQVSw/tdS3Pvsaka9
- RnUnQ9AyR8PkPQcH6mqaXLoBMm6WetVWJeHeRlKnKDrFchLFPHkZrJnMeITcXtQyIO8gFa+X+N9
- f
-X-Gm-Gg: ASbGncsHZQW6MPeIpvgMwVzm/Z/puyN7jn1rIReqGXaF0429uTe+KYtBqufPlC1+2cz
- aNYd4e+coWvJAp6OjYa3Ym3AkhgqlbpVvQXfFU+1Tbnk5PmIy5t93lCdTscDbvI4yPJs1J3n5tn
- Ua3q+1OykNAIZG7q+n0bzpCxq23HQ6xqOd0UJMr7cWkk0xycG5qpSQHHLpa7soS5dhPUGQOWLeY
- EBLU4lu/MxdiJdR9RTgxRX06Wh8EBISigJ6q7VKqC9GHKHKjakbRzA6V8Ywo2jO/U4fKgjBSkKQ
- LnIo9a6iASyVcrNtXtoDclUTNS0+Om8Y3P/GcNAbXqWZhreHVBa5f19YyAn1DGGIQCl3Svsss7r
- t
-X-Google-Smtp-Source: AGHT+IEUOr7lE/liiSBrqlLH/HFTj+SnLFmDbzwg7rIq6W7N5fjzpc7345QM1rW6z8uMmsszJBiBpw==
-X-Received: by 2002:a05:6a00:244e:b0:730:9801:d3e2 with SMTP id
- d2e1a72fcca58-736eb7d87f5mr16179174b3a.8.1741837555218; 
+ bh=n/DByL3ihQv9gjcrJmCBUjllouYG+4z7Wwry9cL7B6M=;
+ b=OKaQNwl4J4Mk77+vd5ANXVVryYUZj7hIz/qn3i0evY/1KMjIlMXCJ3d5ovcSgxXxj4
+ 3pLKo+rZkTK49ldIZGIxuLxnTt9os19UOnPwexcsu0Jk75aCtx7bJVh1JWnHc76llJFk
+ QUJFigerxTrgEAgtjGAt4UcoHs9fJdXkPhcPK4mMHOEAaXjqxlQ7Tw2dBJ15kOWh8ZgZ
+ T0iGBHcyE212p4vOXfHK4lMMgFesbMDKDkBzpd+8WfSRBIEDLRrGdYf4apdPa6U14ic2
+ T/4WtGKS8vQuhFNZlT/FfJVzJKI5sAI+VXQZfUXBDzeADCw/Wf8oX5ryibSWcRsFGmK4
+ AYmw==
+X-Gm-Message-State: AOJu0YxgxOVXEioahY7/iO55iRZywCMlbSpgK8qEPg7pC6zWyv1TtoJn
+ Bk4uZn4bYITKcqp67E0iZMbVDMdIZvkkJekCzNPQeSalPAcHDONpIQnHilWIfa1LYzmMY2wmSfe
+ /
+X-Gm-Gg: ASbGncuLfhsb5eW9cCj0HxI7LoqOo0cu2U6JrpFZL+MSU+G22ebnCVeaneDh4Fi5sh5
+ S21qbGy5QWF+ujAWVN8/Q6RDtRbgPoHItI77MxMTL8IF6yQblVZXIwBwcuNvnALt52qYiomZj6P
+ fyqyc0uKtTtj81iZB7S3mJl+WENZTJGyfp55LJ9rIzzwfQITzxDdVz4cWi4L5UoCJCa96RKTfo2
+ tXmMQQCRFkRClaCn7Jlo8Yk/mSDhRGiCBTw+A8BaEXmYzI1cItEGfmlOQWLRBeVmIlVmwCoiNe+
+ oNA9RBa7E2x7HQv1pSrhmaim+xurcfNfDckOmcDsnFsy/F2VDvf4zgguqVRcyQ+FWVU82xr7QAN
+ jcH4097hFXEE=
+X-Google-Smtp-Source: AGHT+IEfjjSwrun/5xLo73iDjccbJHCnuP8zqUkAUmr6QUiUCT9xf2eB2F7zMUOpB+uqa4Vgfc+N6A==
+X-Received: by 2002:a05:6a00:2351:b0:736:4fe0:2661 with SMTP id
+ d2e1a72fcca58-736aaa079e4mr30934995b3a.11.1741837555969; 
  Wed, 12 Mar 2025 20:45:55 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.54
+ d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Mar 2025 20:45:54 -0700 (PDT)
+ Wed, 12 Mar 2025 20:45:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	pbonzini@redhat.com,
 	philmd@linaro.org
-Subject: [PATCH 36/37] target/riscv: Remove ifndef CONFIG_USER_ONLY from
- cpu_cfg.h
-Date: Wed, 12 Mar 2025 20:45:16 -0700
-Message-ID: <20250313034524.3069690-37-richard.henderson@linaro.org>
+Subject: [PATCH 37/37] meson: Only allow CONFIG_USER_ONLY from certain source
+ sets
+Date: Wed, 12 Mar 2025 20:45:17 -0700
+Message-ID: <20250313034524.3069690-38-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250313034524.3069690-1-richard.henderson@linaro.org>
 References: <20250313034524.3069690-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,29 +101,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While RISCVCPUConfig.satp_mode is unused for user-only,
-this header is used from disas/riscv.h, whose users are
-only built once.  The savings of 4 bytes isn't worth it.
+Poison CONFIG_USER_ONLY and CONFIG_SOFTMMU unless
+the compilation unit is in specific_ss, libuser_ss,
+or libsystem_ss.  This is intended to prevent files
+being incorrectly added to common_ss.
+
+Remove #ifndef CONFIG_USER_ONLY / #error / #endif blocks.
+All they do is trigger the poison error.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/cpu_cfg.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/exec/poison.h                       | 5 +++++
+ include/hw/hw.h                             | 4 ----
+ include/system/confidential-guest-support.h | 4 ----
+ include/system/replay.h                     | 4 ----
+ include/system/xen.h                        | 4 ----
+ meson.build                                 | 6 ++++--
+ 6 files changed, 9 insertions(+), 18 deletions(-)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 8a843482cc..cfe371b829 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -196,9 +196,7 @@ struct RISCVCPUConfig {
+diff --git a/include/exec/poison.h b/include/exec/poison.h
+index 8ed04b3108..a6ffe4577f 100644
+--- a/include/exec/poison.h
++++ b/include/exec/poison.h
+@@ -67,4 +67,9 @@
+ #pragma GCC poison CONFIG_WHPX
+ #pragma GCC poison CONFIG_XEN
  
-     bool short_isa_string;
++#ifndef COMPILING_SYSTEM_VS_USER
++#pragma GCC poison CONFIG_USER_ONLY
++#pragma GCC poison CONFIG_SOFTMMU
++#endif
++
+ #endif
+diff --git a/include/hw/hw.h b/include/hw/hw.h
+index 045c1c8b09..1b33d12b7f 100644
+--- a/include/hw/hw.h
++++ b/include/hw/hw.h
+@@ -1,10 +1,6 @@
+ #ifndef QEMU_HW_H
+ #define QEMU_HW_H
  
--#ifndef CONFIG_USER_ONLY
-     RISCVSATPMap satp_mode;
+-#ifdef CONFIG_USER_ONLY
+-#error Cannot include hw/hw.h from user emulation
 -#endif
- };
+-
+ G_NORETURN void hw_error(const char *fmt, ...) G_GNUC_PRINTF(1, 2);
  
- typedef struct RISCVCPUConfig RISCVCPUConfig;
+ #endif
+diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
+index b68c4bebbc..ea46b50c56 100644
+--- a/include/system/confidential-guest-support.h
++++ b/include/system/confidential-guest-support.h
+@@ -18,10 +18,6 @@
+ #ifndef QEMU_CONFIDENTIAL_GUEST_SUPPORT_H
+ #define QEMU_CONFIDENTIAL_GUEST_SUPPORT_H
+ 
+-#ifdef CONFIG_USER_ONLY
+-#error Cannot include system/confidential-guest-support.h from user emulation
+-#endif
+-
+ #include "qom/object.h"
+ 
+ #define TYPE_CONFIDENTIAL_GUEST_SUPPORT "confidential-guest-support"
+diff --git a/include/system/replay.h b/include/system/replay.h
+index 8926d8cf4b..1c87c97fdd 100644
+--- a/include/system/replay.h
++++ b/include/system/replay.h
+@@ -11,10 +11,6 @@
+ #ifndef SYSTEM_REPLAY_H
+ #define SYSTEM_REPLAY_H
+ 
+-#ifdef CONFIG_USER_ONLY
+-#error Cannot include this header from user emulation
+-#endif
+-
+ #include "exec/replay-core.h"
+ #include "qapi/qapi-types-misc.h"
+ #include "qapi/qapi-types-run-state.h"
+diff --git a/include/system/xen.h b/include/system/xen.h
+index 990c19a8ef..4ca384c409 100644
+--- a/include/system/xen.h
++++ b/include/system/xen.h
+@@ -10,10 +10,6 @@
+ #ifndef SYSTEM_XEN_H
+ #define SYSTEM_XEN_H
+ 
+-#ifdef CONFIG_USER_ONLY
+-#error Cannot include system/xen.h from user emulation
+-#endif
+-
+ #include "exec/cpu-common.h"
+ 
+ #ifdef COMPILING_PER_TARGET
+diff --git a/meson.build b/meson.build
+index 3869e5bfbc..c2c71b6f8a 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4043,7 +4043,8 @@ common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
+ libuser_ss = libuser_ss.apply({})
+ libuser = static_library('user',
+                          libuser_ss.sources() + genh,
+-                         c_args: '-DCONFIG_USER_ONLY',
++                         c_args: ['-DCONFIG_USER_ONLY',
++                                  '-DCOMPILING_SYSTEM_VS_USER'],
+                          dependencies: libuser_ss.dependencies(),
+                          build_by_default: false)
+ libuser = declare_dependency(objects: libuser.extract_all_objects(recursive: false),
+@@ -4053,7 +4054,8 @@ common_ss.add(when: 'CONFIG_USER_ONLY', if_true: libuser)
+ libsystem_ss = libsystem_ss.apply({})
+ libsystem = static_library('system',
+                            libsystem_ss.sources() + genh,
+-                           c_args: '-DCONFIG_SOFTMMU',
++                           c_args: ['-DCONFIG_SOFTMMU',
++                                    '-DCOMPILING_SYSTEM_VS_USER'],
+                            dependencies: libsystem_ss.dependencies(),
+                            build_by_default: false)
+ libsystem = declare_dependency(objects: libsystem.extract_all_objects(recursive: false),
 -- 
 2.43.0
 
