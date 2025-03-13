@@ -2,90 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A40A5EA36
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2167A5EA6F
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 05:12:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsZWx-0005Jo-83; Wed, 12 Mar 2025 23:46:47 -0400
+	id 1tsZtw-0007og-IO; Thu, 13 Mar 2025 00:10:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZWP-0004jm-Dl
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:13 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZW9-0007ql-O3
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:46:12 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-224191d92e4so9432275ad.3
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741837556; x=1742442356; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=n/DByL3ihQv9gjcrJmCBUjllouYG+4z7Wwry9cL7B6M=;
- b=WQDNwQpHRI9sTXEFtaNNjDkVLrh+QechPMCZT+CK+Tj14QuKoDejAUo3g/lfOuzyD+
- Zm7zAzkIhPhZk7zF2+4wZiuxB4KgL1mB+YIlj+nbZPbUSzBKMGo5mBqlS6/+L+qAKakM
- vFiVlALHJXnt2H5DEtjez623NaLz8hwjCuQ8auOPfllz5a2LEOzacajCNiKDtHlvilgW
- /A0pliikRnEAYgD4YYX4wo6jcARWb1MzYHMzc4gY8bQ18WgIom3gg2ieC5R9h/zaBfGM
- RTZwjq5VqUW36S/yCtjD3qLpgEP8VXC3Ar3O4aCErvRQMeKx0TmzJ8dbRT7E0eMt1RnH
- TMUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741837556; x=1742442356;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=n/DByL3ihQv9gjcrJmCBUjllouYG+4z7Wwry9cL7B6M=;
- b=OKaQNwl4J4Mk77+vd5ANXVVryYUZj7hIz/qn3i0evY/1KMjIlMXCJ3d5ovcSgxXxj4
- 3pLKo+rZkTK49ldIZGIxuLxnTt9os19UOnPwexcsu0Jk75aCtx7bJVh1JWnHc76llJFk
- QUJFigerxTrgEAgtjGAt4UcoHs9fJdXkPhcPK4mMHOEAaXjqxlQ7Tw2dBJ15kOWh8ZgZ
- T0iGBHcyE212p4vOXfHK4lMMgFesbMDKDkBzpd+8WfSRBIEDLRrGdYf4apdPa6U14ic2
- T/4WtGKS8vQuhFNZlT/FfJVzJKI5sAI+VXQZfUXBDzeADCw/Wf8oX5ryibSWcRsFGmK4
- AYmw==
-X-Gm-Message-State: AOJu0YxgxOVXEioahY7/iO55iRZywCMlbSpgK8qEPg7pC6zWyv1TtoJn
- Bk4uZn4bYITKcqp67E0iZMbVDMdIZvkkJekCzNPQeSalPAcHDONpIQnHilWIfa1LYzmMY2wmSfe
- /
-X-Gm-Gg: ASbGncuLfhsb5eW9cCj0HxI7LoqOo0cu2U6JrpFZL+MSU+G22ebnCVeaneDh4Fi5sh5
- S21qbGy5QWF+ujAWVN8/Q6RDtRbgPoHItI77MxMTL8IF6yQblVZXIwBwcuNvnALt52qYiomZj6P
- fyqyc0uKtTtj81iZB7S3mJl+WENZTJGyfp55LJ9rIzzwfQITzxDdVz4cWi4L5UoCJCa96RKTfo2
- tXmMQQCRFkRClaCn7Jlo8Yk/mSDhRGiCBTw+A8BaEXmYzI1cItEGfmlOQWLRBeVmIlVmwCoiNe+
- oNA9RBa7E2x7HQv1pSrhmaim+xurcfNfDckOmcDsnFsy/F2VDvf4zgguqVRcyQ+FWVU82xr7QAN
- jcH4097hFXEE=
-X-Google-Smtp-Source: AGHT+IEfjjSwrun/5xLo73iDjccbJHCnuP8zqUkAUmr6QUiUCT9xf2eB2F7zMUOpB+uqa4Vgfc+N6A==
-X-Received: by 2002:a05:6a00:2351:b0:736:4fe0:2661 with SMTP id
- d2e1a72fcca58-736aaa079e4mr30934995b3a.11.1741837555969; 
- Wed, 12 Mar 2025 20:45:55 -0700 (PDT)
-Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Mar 2025 20:45:55 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org,
-	pbonzini@redhat.com,
-	philmd@linaro.org
-Subject: [PATCH 37/37] meson: Only allow CONFIG_USER_ONLY from certain source
- sets
-Date: Wed, 12 Mar 2025 20:45:17 -0700
-Message-ID: <20250313034524.3069690-38-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250313034524.3069690-1-richard.henderson@linaro.org>
-References: <20250313034524.3069690-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tsZtZ-0007hA-07
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 00:10:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tsZtT-0002fJ-N1
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 00:10:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741838999;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Hhhdx1zyX+E32efkIEVX6cQGxvz4sPP7o75nQGsRpQQ=;
+ b=KSTPn4jZcUeaTKQLGyzR0DXXAY2XgRWtgz4n1j5n83LO1Qt1Ta6P+AlXLOtykCqMr6oaKk
+ hgvyAbBF4f2UguaCpbRAWqgLeOkeMHu1kCjyktC300KDIQbYkxdcxOEBiXBoBP/fw1RWLo
+ SxoGPu9c7vdPZU+CM6DbL/jgoS8TFfE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-rzMIqUFeNhqjh50azKyEww-1; Thu,
+ 13 Mar 2025 00:09:55 -0400
+X-MC-Unique: rzMIqUFeNhqjh50azKyEww-1
+X-Mimecast-MFC-AGG-ID: rzMIqUFeNhqjh50azKyEww_1741838992
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 500EA18004A9; Thu, 13 Mar 2025 04:09:52 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.35])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 910261828A83; Thu, 13 Mar 2025 04:09:48 +0000 (UTC)
+Date: Thu, 13 Mar 2025 12:09:45 +0800
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: zoudongjie <zoudongjie@huawei.com>
+Cc: zhuyangyang14@huawei.com, qemu-devel@nongnu.org, fam@euphon.net,
+ hreitz@redhat.com, qemu-block@nongnu.org, qemu-stable@nongnu.org,
+ luolongmin@huawei.com, suxiaodong1@huawei.com,
+ wangyan122@huawei.com, yebiaoxiang@huawei.com,
+ wangjian161@huawei.com, mujinsheng@huawei.com, alex.chen@huawei.com,
+ eric.fangyi@huawei.com, chenjianfei3@huawei.com, renxuming@huawei.com
+Subject: Re: [PATCH 1/2] io/block: Refactoring the bdrv_drained_begin()
+ function and implement a timeout mechanism.
+Message-ID: <20250313040945.GB1074020@fedora>
+References: <20250308101618.721954-1-zoudongjie@huawei.com>
+ <20250308101618.721954-2-zoudongjie@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="K1uzikBlAkL1qFRt"
+Content-Disposition: inline
+In-Reply-To: <20250308101618.721954-2-zoudongjie@huawei.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,123 +89,399 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Poison CONFIG_USER_ONLY and CONFIG_SOFTMMU unless
-the compilation unit is in specific_ss, libuser_ss,
-or libsystem_ss.  This is intended to prevent files
-being incorrectly added to common_ss.
 
-Remove #ifndef CONFIG_USER_ONLY / #error / #endif blocks.
-All they do is trigger the poison error.
+--K1uzikBlAkL1qFRt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- include/exec/poison.h                       | 5 +++++
- include/hw/hw.h                             | 4 ----
- include/system/confidential-guest-support.h | 4 ----
- include/system/replay.h                     | 4 ----
- include/system/xen.h                        | 4 ----
- meson.build                                 | 6 ++++--
- 6 files changed, 9 insertions(+), 18 deletions(-)
+On Sat, Mar 08, 2025 at 06:16:17PM +0800, zoudongjie wrote:
+> From: Zhu Yangyang <zhuyangyang14@huawei.com>
+>=20
+> The bdrv_drained_begin() function is a blocking function. In scenarios wh=
+ere network storage
+> is used and network links fail, it may block for a long time.
+> Therefore, we add a timeout parameter to control the duration of the bloc=
+k.
+>=20
+> Since bdrv_drained_begin() has been widely adopted, both bdrv_drained_beg=
+in()
+> and bdrv_drained_begin_timeout() will be retained.
+>=20
+> Signed-off-by: Zhu Yangyang <zhuyangyang14@huawei.com>
+> ---
+>  block/io.c               | 55 ++++++++++++++++++++++++++++++-------
+>  include/block/aio-wait.h | 58 ++++++++++++++++++++++++++++++++++++++++
+>  include/block/block-io.h |  7 +++++
+>  util/aio-wait.c          |  7 +++++
+>  4 files changed, 117 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/block/io.c b/block/io.c
+> index d369b994df..03b8b2dca7 100644
+> --- a/block/io.c
+> +++ b/block/io.c
+> @@ -255,6 +255,8 @@ typedef struct {
+>      bool begin;
+>      bool poll;
+>      BdrvChild *parent;
+> +    int ret;
+> +    int64_t timeout;
 
-diff --git a/include/exec/poison.h b/include/exec/poison.h
-index 8ed04b3108..a6ffe4577f 100644
---- a/include/exec/poison.h
-+++ b/include/exec/poison.h
-@@ -67,4 +67,9 @@
- #pragma GCC poison CONFIG_WHPX
- #pragma GCC poison CONFIG_XEN
- 
-+#ifndef COMPILING_SYSTEM_VS_USER
-+#pragma GCC poison CONFIG_USER_ONLY
-+#pragma GCC poison CONFIG_SOFTMMU
-+#endif
-+
- #endif
-diff --git a/include/hw/hw.h b/include/hw/hw.h
-index 045c1c8b09..1b33d12b7f 100644
---- a/include/hw/hw.h
-+++ b/include/hw/hw.h
-@@ -1,10 +1,6 @@
- #ifndef QEMU_HW_H
- #define QEMU_HW_H
- 
--#ifdef CONFIG_USER_ONLY
--#error Cannot include hw/hw.h from user emulation
--#endif
--
- G_NORETURN void hw_error(const char *fmt, ...) G_GNUC_PRINTF(1, 2);
- 
- #endif
-diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
-index b68c4bebbc..ea46b50c56 100644
---- a/include/system/confidential-guest-support.h
-+++ b/include/system/confidential-guest-support.h
-@@ -18,10 +18,6 @@
- #ifndef QEMU_CONFIDENTIAL_GUEST_SUPPORT_H
- #define QEMU_CONFIDENTIAL_GUEST_SUPPORT_H
- 
--#ifdef CONFIG_USER_ONLY
--#error Cannot include system/confidential-guest-support.h from user emulation
--#endif
--
- #include "qom/object.h"
- 
- #define TYPE_CONFIDENTIAL_GUEST_SUPPORT "confidential-guest-support"
-diff --git a/include/system/replay.h b/include/system/replay.h
-index 8926d8cf4b..1c87c97fdd 100644
---- a/include/system/replay.h
-+++ b/include/system/replay.h
-@@ -11,10 +11,6 @@
- #ifndef SYSTEM_REPLAY_H
- #define SYSTEM_REPLAY_H
- 
--#ifdef CONFIG_USER_ONLY
--#error Cannot include this header from user emulation
--#endif
--
- #include "exec/replay-core.h"
- #include "qapi/qapi-types-misc.h"
- #include "qapi/qapi-types-run-state.h"
-diff --git a/include/system/xen.h b/include/system/xen.h
-index 990c19a8ef..4ca384c409 100644
---- a/include/system/xen.h
-+++ b/include/system/xen.h
-@@ -10,10 +10,6 @@
- #ifndef SYSTEM_XEN_H
- #define SYSTEM_XEN_H
- 
--#ifdef CONFIG_USER_ONLY
--#error Cannot include system/xen.h from user emulation
--#endif
--
- #include "exec/cpu-common.h"
- 
- #ifdef COMPILING_PER_TARGET
-diff --git a/meson.build b/meson.build
-index 3869e5bfbc..c2c71b6f8a 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4043,7 +4043,8 @@ common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
- libuser_ss = libuser_ss.apply({})
- libuser = static_library('user',
-                          libuser_ss.sources() + genh,
--                         c_args: '-DCONFIG_USER_ONLY',
-+                         c_args: ['-DCONFIG_USER_ONLY',
-+                                  '-DCOMPILING_SYSTEM_VS_USER'],
-                          dependencies: libuser_ss.dependencies(),
-                          build_by_default: false)
- libuser = declare_dependency(objects: libuser.extract_all_objects(recursive: false),
-@@ -4053,7 +4054,8 @@ common_ss.add(when: 'CONFIG_USER_ONLY', if_true: libuser)
- libsystem_ss = libsystem_ss.apply({})
- libsystem = static_library('system',
-                            libsystem_ss.sources() + genh,
--                           c_args: '-DCONFIG_SOFTMMU',
-+                           c_args: ['-DCONFIG_SOFTMMU',
-+                                    '-DCOMPILING_SYSTEM_VS_USER'],
-                            dependencies: libsystem_ss.dependencies(),
-                            build_by_default: false)
- libsystem = declare_dependency(objects: libsystem.extract_all_objects(recursive: false),
--- 
-2.43.0
+Please put the units (milliseconds) into the variable name here and
+everywhere else in the patch to avoid confusion about units:
+
+  int64_t timeout_ms;
+
+>  } BdrvCoDrainData;
+> =20
+>  /* Returns true if BDRV_POLL_WHILE() should go into a blocking aio_poll(=
+) */
+> @@ -283,6 +285,8 @@ static bool bdrv_drain_poll_top_level(BlockDriverStat=
+e *bs,
+>      return bdrv_drain_poll(bs, ignore_parent, false);
+>  }
+> =20
+> +static int bdrv_do_drained_begin_timeout(BlockDriverState *bs,
+> +    BdrvChild *parent, bool poll, int64_t timeout);
+>  static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *paren=
+t,
+>                                    bool poll);
+>  static void bdrv_do_drained_end(BlockDriverState *bs, BdrvChild *parent);
+> @@ -296,7 +300,8 @@ static void bdrv_co_drain_bh_cb(void *opaque)
+>      if (bs) {
+>          bdrv_dec_in_flight(bs);
+>          if (data->begin) {
+> -            bdrv_do_drained_begin(bs, data->parent, data->poll);
+> +            data->ret =3D bdrv_do_drained_begin_timeout(
+> +                bs, data->parent, data->poll, data->timeout);
+>          } else {
+>              assert(!data->poll);
+>              bdrv_do_drained_end(bs, data->parent);
+> @@ -310,10 +315,11 @@ static void bdrv_co_drain_bh_cb(void *opaque)
+>      aio_co_wake(co);
+>  }
+> =20
+> -static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+> -                                                bool begin,
+> -                                                BdrvChild *parent,
+> -                                                bool poll)
+> +static int coroutine_fn bdrv_co_yield_to_drain_timeout(BlockDriverState =
+*bs,
+> +                                                         bool begin,
+> +                                                         BdrvChild *pare=
+nt,
+> +                                                         bool poll,
+> +                                                         int64_t timeout)
+>  {
+>      BdrvCoDrainData data;
+>      Coroutine *self =3D qemu_coroutine_self();
+> @@ -329,6 +335,8 @@ static void coroutine_fn bdrv_co_yield_to_drain(Block=
+DriverState *bs,
+>          .begin =3D begin,
+>          .parent =3D parent,
+>          .poll =3D poll,
+> +        .timeout =3D timeout,
+> +        .ret =3D 0
+>      };
+> =20
+>      if (bs) {
+> @@ -342,16 +350,25 @@ static void coroutine_fn bdrv_co_yield_to_drain(Blo=
+ckDriverState *bs,
+>      /* If we are resumed from some other event (such as an aio completio=
+n or a
+>       * timer callback), it is a bug in the caller that should be fixed. =
+*/
+>      assert(data.done);
+> +    return data.ret;
+>  }
+> =20
+> -static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *paren=
+t,
+> -                                  bool poll)
+> +static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+> +                                                bool begin,
+> +                                                BdrvChild *parent,
+> +                                                bool poll)
+> +{
+> +    bdrv_co_yield_to_drain_timeout(bs, begin, parent, poll, -1);
+
+Is this safe on 32-bit platforms?
+
+> +}
+> +
+> +static int bdrv_do_drained_begin_timeout(BlockDriverState *bs,
+> +    BdrvChild *parent, bool poll, int64_t timeout_ms)
+>  {
+>      IO_OR_GS_CODE();
+> =20
+>      if (qemu_in_coroutine()) {
+> -        bdrv_co_yield_to_drain(bs, true, parent, poll);
+> -        return;
+> +        return bdrv_co_yield_to_drain_timeout(bs, true, parent, poll,
+> +                                              timeout_ms);
+>      }
+> =20
+>      GLOBAL_STATE_CODE();
+> @@ -375,8 +392,20 @@ static void bdrv_do_drained_begin(BlockDriverState *=
+bs, BdrvChild *parent,
+>       * nodes.
+>       */
+>      if (poll) {
+> -        BDRV_POLL_WHILE(bs, bdrv_drain_poll_top_level(bs, parent));
+> +        if (timeout_ms < 0) {
+> +            BDRV_POLL_WHILE(bs, bdrv_drain_poll_top_level(bs, parent));
+> +        } else {
+> +            return BDRV_POLL_WHILE_TIMEOUT(
+> +                bs, bdrv_drain_poll_top_level(bs, parent), timeout_ms);
+> +        }
+
+Any reason to handle timeout_ms < 0 here instead of in
+BDRV_POLL_WHILE_TIMEOUT()? It would be more consistent to support -1 in
+BDRV_POLL_WHILE_TIMEOUT() so that you don't need to remember which
+functions/macros support timeout_ms=3D-1 and which dont.
+
+>      }
+> +    return 0;
+> +}
+> +
+> +static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *paren=
+t,
+> +                                  bool poll)
+> +{
+> +    bdrv_do_drained_begin_timeout(bs, parent, poll, -1);
+>  }
+> =20
+>  void bdrv_do_drained_begin_quiesce(BlockDriverState *bs, BdrvChild *pare=
+nt)
+> @@ -390,6 +419,12 @@ bdrv_drained_begin(BlockDriverState *bs)
+>      IO_OR_GS_CODE();
+>      bdrv_do_drained_begin(bs, NULL, true);
+>  }
+> +int coroutine_mixed_fn
+> +bdrv_drained_begin_timeout(BlockDriverState *bs, int64_t timeout_ms)
+> +{
+> +    IO_OR_GS_CODE();
+> +    return bdrv_do_drained_begin_timeout(bs, NULL, true, timeout_ms);
+> +}
+> =20
+>  /**
+>   * This function does not poll, nor must any of its recursively called
+> diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
+> index cf5e8bde1c..efbcb9777a 100644
+> --- a/include/block/aio-wait.h
+> +++ b/include/block/aio-wait.h
+> @@ -28,6 +28,8 @@
+>  #include "block/aio.h"
+>  #include "qemu/main-loop.h"
+> =20
+> +#define AIO_WAIT_INTERVAL 10  /* ms */
+> +
+>  /**
+>   * AioWait:
+>   *
+> @@ -56,6 +58,11 @@ typedef struct {
+>      unsigned num_waiters;
+>  } AioWait;
+> =20
+> +typedef struct {
+> +    struct QEMUTimer *timer;
+
+struct is not necessary since QEMUTimer is a typedef:
+
+  QEMUTimer *timer;
+
+Also, can this be a struct field instead of a pointer by using
+aio_timer_init_ms() instead of aio_timer_new()?
+
+> +    int64_t interval;
+> +} AioWaitTimer;
+> +
+>  extern AioWait global_aio_wait;
+> =20
+>  /**
+> @@ -99,6 +106,55 @@ extern AioWait global_aio_wait;
+>      qatomic_dec(&wait_->num_waiters);                              \
+>      waited_; })
+> =20
+> +/**
+> + * AIO_WAIT_WHILE_TIMEOUT:
+> + *
+> + * Refer to the implementation of AIO_WAIT_WHILE_INTERNAL,
+> + * the timeout parameter is added.
+> + */
+> +#define AIO_WAIT_WHILE_TIMEOUT(ctx, cond, timeout) ({                   =
+ \
+> +    int ret_ =3D 0;                                                     =
+   \
+> +    AioWait *wait_ =3D &global_aio_wait;                                =
+   \
+> +    AioContext *ctx_ =3D (ctx);                                         =
+   \
+> +    int64_t start_ =3D qemu_clock_get_ms(QEMU_CLOCK_REALTIME);          =
+   \
+> +    int64_t deadline_ =3D start_ + (timeout);                           =
+   \
+> +    /* Ensure that the aio_poll exits periodically to check timeout. */ =
+ \
+> +    AioWaitTimer *s_ =3D g_malloc0(sizeof(AioWaitTimer));               =
+   \
+
+Can this be allocated on the stack instead of the heap?
+
+> +    s_->interval =3D AIO_WAIT_INTERVAL;                                 =
+   \
+> +    /* Increment wait_->num_waiters before evaluating cond. */          =
+ \
+> +    qatomic_inc(&wait_->num_waiters);                                   =
+ \
+> +    /* Paired with smp_mb in aio_wait_kick(). */                        =
+ \
+> +    smp_mb__after_rmw();                                                =
+ \
+> +    if (ctx_ && in_aio_context_home_thread(ctx_)) {                     =
+ \
+> +        s_->timer =3D aio_timer_new(ctx_, QEMU_CLOCK_REALTIME,          =
+   \
+> +                        SCALE_MS, aio_wait_timer_retry, s_);            =
+ \
+> +        aio_wait_timer_retry(s_);                                       =
+ \
+> +        while ((cond)) {                                                =
+ \
+> +            aio_poll(ctx_, true);                                       =
+ \
+> +            if (qemu_clock_get_ms(QEMU_CLOCK_REALTIME) > deadline_) {   =
+ \
+> +                ret_ =3D -ETIMEDOUT;                                    =
+   \
+> +                break;                                                  =
+ \
+> +            }                                                           =
+ \
+> +        }                                                               =
+ \
+
+What is the purpose of interval?
+
+I expected the timer's callback function to be an empty function that is
+called when the deadline expires. The while loop here would use
+timer_pending() to check for expiry instead of explicitly checking
+against the deadline.
+
+> +    } else {                                                            =
+ \
+> +        s_->timer =3D aio_timer_new(qemu_get_aio_context(),             =
+   \
+> +            QEMU_CLOCK_REALTIME, SCALE_MS, aio_wait_timer_retry, s_);   =
+ \
+> +        aio_wait_timer_retry(s_);                                       =
+ \
+> +        while ((cond)) {                                                =
+ \
+> +            assert(qemu_get_current_aio_context() =3D=3D                =
+     \
+> +                   qemu_get_aio_context());                             =
+ \
+> +            aio_poll(qemu_get_aio_context(), true);                     =
+ \
+> +            if (qemu_clock_get_ms(QEMU_CLOCK_REALTIME) > deadline_) {   =
+ \
+> +                ret_ =3D -ETIMEDOUT;                                    =
+   \
+> +                break;                                                  =
+ \
+> +            }                                                           =
+ \
+> +        }                                                               =
+ \
+> +    }                                                                   =
+ \
+> +    qatomic_dec(&wait_->num_waiters);                                   =
+ \
+> +    timer_free(s_->timer);                                              =
+ \
+
+This will need to be timer_del() when the QEMUTimer is moved onto the
+stack.
+
+> +    g_free(s_);                                                         =
+ \
+> +    ret_; })
+> +
+>  #define AIO_WAIT_WHILE(ctx, cond)                                  \
+>      AIO_WAIT_WHILE_INTERNAL(ctx, cond)
+> =20
+> @@ -149,4 +205,6 @@ static inline bool in_aio_context_home_thread(AioCont=
+ext *ctx)
+>      }
+>  }
+> =20
+> +void aio_wait_timer_retry(void *opaque);
+> +
+>  #endif /* QEMU_AIO_WAIT_H */
+> diff --git a/include/block/block-io.h b/include/block/block-io.h
+> index b49e0537dd..84f92d2b09 100644
+> --- a/include/block/block-io.h
+> +++ b/include/block/block-io.h
+> @@ -354,6 +354,11 @@ bdrv_co_copy_range(BdrvChild *src, int64_t src_offse=
+t,
+>      AIO_WAIT_WHILE(bdrv_get_aio_context(bs_),              \
+>                     cond); })
+> =20
+> +#define BDRV_POLL_WHILE_TIMEOUT(bs, cond, timeout) ({      \
+> +    BlockDriverState *bs_ =3D (bs);                          \
+> +    AIO_WAIT_WHILE_TIMEOUT(bdrv_get_aio_context(bs_),      \
+> +                           cond, timeout); })
+> +
+>  void bdrv_drain(BlockDriverState *bs);
+> =20
+>  int co_wrapper_mixed_bdrv_rdlock
+> @@ -431,6 +436,8 @@ bdrv_drain_poll(BlockDriverState *bs, BdrvChild *igno=
+re_parent,
+>   */
+>  void bdrv_drained_begin(BlockDriverState *bs);
+> =20
+> +int bdrv_drained_begin_timeout(BlockDriverState *bs, int64_t timeout_ms);
+> +
+>  /**
+>   * bdrv_do_drained_begin_quiesce:
+>   *
+> diff --git a/util/aio-wait.c b/util/aio-wait.c
+> index b5336cf5fd..9aed165529 100644
+> --- a/util/aio-wait.c
+> +++ b/util/aio-wait.c
+> @@ -84,3 +84,10 @@ void aio_wait_bh_oneshot(AioContext *ctx, QEMUBHFunc *=
+cb, void *opaque)
+>      aio_bh_schedule_oneshot(ctx, aio_wait_bh, &data);
+>      AIO_WAIT_WHILE_UNLOCKED(NULL, !data.done);
+>  }
+> +
+> +void aio_wait_timer_retry(void *opaque)
+> +{
+> +    AioWaitTimer *s =3D opaque;
+> +
+> +    timer_mod(s->timer, qemu_clock_get_ms(QEMU_CLOCK_REALTIME) + s->inte=
+rval);
+> +}
+> --=20
+> 2.33.0
+>=20
+
+--K1uzikBlAkL1qFRt
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfSWogACgkQnKSrs4Gr
+c8i6xwf8C5+OJkDLkOsZtdkfAnzd991Hfb5lnKkxgFp9ctvMumhlExcS+dBY0JKU
+CuIAasbZIkbtNTiEnmik2M3janheKuBiZaecRLwRY/+ysV0cLl94UcOYM3PHoWzT
+ulsax8OMCqBLc7S6sdYeIA0IVLcZKwS5b5V0H8VmulbzlDIS8u83QVdW64+FbWfH
+IyyiVy8EAcRQ3r5j1y9L9+fUWLYMmbg+mRE0rvPNd0GZm7H5UgrURJCaQwoudrYf
+DTxDrO1+mR5H62kOnqObUscx+vG/O+SuakxE3z8056K8CoiD/dO+rQ6H6lnCSLpA
+SOtroxqFH7yr348M9wduNHuJyGj50w==
+=aAYi
+-----END PGP SIGNATURE-----
+
+--K1uzikBlAkL1qFRt--
 
 
