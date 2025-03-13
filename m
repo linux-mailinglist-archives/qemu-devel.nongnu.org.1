@@ -2,98 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D67DA600A2
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 20:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 988C8A60104
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 20:25:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsntd-0006m4-Ns; Thu, 13 Mar 2025 15:07:09 -0400
+	id 1tso9z-0002nF-Ub; Thu, 13 Mar 2025 15:24:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsntF-0006lr-Q1
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 15:06:46 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsntC-00071i-PI
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 15:06:44 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-224019ad9edso36279825ad.1
- for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 12:06:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741892800; x=1742497600; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2lCqlsM5gY+6rfzYzWKfFpeMTG5edwRquGqECgvsrFw=;
- b=gYxLo1Z10sB+1k/XOl5lDZw2r0ziShzVDghSsoJD9HB+hlATjKOKNZOpF13IKAjKN6
- H8OIpVYtZ81dBIq0mjP+W5ROYiHYrzUNZsx2jfZtb+XdjGo+MA7C2l1ph/en8+brnwAN
- gx9vbBWn2NXMC4uMXPrMXBtwXDUNgmncTMRho1fgT/Ik64HIwRWV5N46B0LxaPK/HHnB
- ZOU6VgRsKaqfuD+xCNG4jeLltP48aG+Kh/55Navvpp9bJMzGNnB5/GJ5PfYwckZx3PKg
- 5TLq37Zq3vya0+RnyZboFzmcHPPmfWbmIdxvMgW0m/JS4nj6WSHeRbmjy3sP1U40FZyQ
- 3X7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741892800; x=1742497600;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2lCqlsM5gY+6rfzYzWKfFpeMTG5edwRquGqECgvsrFw=;
- b=X6l4ExrkWSoIqAD2APzp0XkflW7OADbsGhYUTIiOXfPvnuI7kiAiSMAnJJ5C0l6qd5
- itcrhNyseDp9U8j2JV1DplrTHq3Xy+BdsVQ9SssFaSBgez/qkywJnkfEJ4sJLcad6tr2
- sCX97ZyIFbp3ky7/29OQxMNwrj6bKDeiLt9XZ8JYyhQ/71eH9hxyv6kMx3Z7Z/hz6mdt
- QfzKFc2CVi2WsrllZJSmciGoY0ZvsAI8of/d4IBOEJN9LDwmRpBFTrgZtIP05K65Js3U
- WX+BI9n0EAzvxzC/gIhSOlF+mMFk4HvPNEWS4AzNasdLq3VlPGpVA31vE2++v23hXtcF
- +b7Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVfKkgkyKAE5NjfxtbgJnm29fUJ1dt8KWgQ7AGD0a7NGTMpLqzYQp+DCXXtTGEk3qc0JqLSXW5/05OZ@nongnu.org
-X-Gm-Message-State: AOJu0Yzy3mbiWTAblgjIkasujtB/WXZ3GZelimX3XTsGkkqLYHrgqIs0
- cboZUnqBZXLMD4EjYWJkTL1g8u6nhuGfgobtFA9vWnb4WILTy1w28JwnY05bnNo=
-X-Gm-Gg: ASbGncuxP+znRJup3FVU+ScPPYezzPQcbIptjNJrwWOJuQ5TQ2c3CgvCgs2OCxwaTS3
- mrSoHs2hBGynx7foWj9aiZmqzrKuTdjRjxlLqnq0/CiQT2/Yb66y+sdF2C2WnCXiigwhtyVUnD3
- sjvbVKxEIShMumLo+tZ6z1ontTIrJwmKV+vCCNaWRBG8EjTM9m762VWt2/YGUEcCuv8LpU6W1bW
- ifq544LLfFLFtQs9rt1Q1YSI1bSH13ST7vv3W9DcBNmafUCjI4d4jiBLFBnOidlUqlv+E/pqxKF
- nw5BbPgQ6tRMkwqvV0JgUjyJw3B98J2zXFv4jTVovTk0D8vezWXIBdMSpDZ+mewummNCNU7wNjW
- GzwxdRYvX
-X-Google-Smtp-Source: AGHT+IFjSlxpvB+luzALZdp/EKxXLDUCIy2lLB/laJ7XyuwoN7UEPjz2VIRHElkMGM4FJGYZMtkwow==
-X-Received: by 2002:a17:903:1a10:b0:224:1609:a747 with SMTP id
- d9443c01a7336-225dd86d12emr9502585ad.31.1741892800733; 
- Thu, 13 Mar 2025 12:06:40 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-225c68883e6sm17062105ad.8.2025.03.13.12.06.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Mar 2025 12:06:40 -0700 (PDT)
-Message-ID: <e1216ec5-c542-4a7d-a3d7-880e7e57130e@linaro.org>
-Date: Thu, 13 Mar 2025 12:06:38 -0700
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1tso9u-0002mN-Is; Thu, 13 Mar 2025 15:23:59 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1tso9s-0000sY-IB; Thu, 13 Mar 2025 15:23:58 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DGo4CD014085;
+ Thu, 13 Mar 2025 19:23:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=y1kX6VQJVWYuIJ0xxxrSTkMZ/55l
+ df8TZ1IX5tGHtfc=; b=IJe7xQa1ZrRSLBeNaVllk/eWv70wsRWloNA1WIKfQ9XT
+ g7clBwaWP1glaiSkWftow3LETpcP2oAkCg+gZfH0+dBqOlwT2KzPFh8FvYlZ6x33
+ DbvAUFKCrOosSCGvBzeIEHFMHiNe+oACjPw225VfKcuSxr738DdYS+YDDAU34/1e
+ gT4ceE2mb5pi64K9g5Ku4IpsO02V/VRFxHsZXWPXAEahdP4Y3TZMw+cMU/sNEBCT
+ cFFAxRkKWZC17mRW6oAc+vhh4n35iXNfuIdKNSp2ZghYrSTCSRRkMt88iMaSFolC
+ PXMAMLN7FNtDGzj2XlajdbK89rOV4CaIyAgGhfxOMw==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhg0dwkj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Mar 2025 19:23:54 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52DJNsvs012717;
+ Thu, 13 Mar 2025 19:23:54 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhg0dwkf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Mar 2025 19:23:54 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52DGBwId015361;
+ Thu, 13 Mar 2025 19:23:53 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atspkfn6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Mar 2025 19:23:53 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52DJNnZi22872554
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 13 Mar 2025 19:23:50 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C47D620043;
+ Thu, 13 Mar 2025 19:23:49 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 81B3820040;
+ Thu, 13 Mar 2025 19:23:47 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown
+ [9.124.223.53]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Mar 2025 19:23:47 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: <qemu-devel@nongnu.org>
+Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
+Subject: [PATCH v2 0/8] Implement Firmware Assisted Dump for PSeries
+Date: Fri, 14 Mar 2025 00:53:33 +0530
+Message-ID: <20250313192341.132171-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 28/38] target/hexagon: Initialize htid, modectl regs
-To: ltaylorsimpson@gmail.com, =?UTF-8?Q?=27Philippe_Mathieu-Daud=C3=A9=27?=
- <philmd@linaro.org>, 'Brian Cain' <brian.cain@oss.qualcomm.com>,
- qemu-devel@nongnu.org
-Cc: quic_mathbern@quicinc.com, ale@rev.ng, anjo@rev.ng,
- quic_mliebel@quicinc.com, alex.bennee@linaro.org, quic_mburton@quicinc.com,
- sidneym@quicinc.com, 'Brian Cain' <bcain@quicinc.com>
-References: <20250301052628.1011210-1-brian.cain@oss.qualcomm.com>
- <20250301052628.1011210-29-brian.cain@oss.qualcomm.com>
- <44e23197-a2ec-4477-a4b8-a526f83e47c2@linaro.org>
- <b84bcd2d-9974-41f0-b9f5-2d416ed16d0d@oss.qualcomm.com>
- <67b33d51-b8c8-421c-8aba-efa9a0b46bf5@linaro.org>
- <008601db9448$601bc370$20534a50$@gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <008601db9448$601bc370$20534a50$@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: neVnzWxS-X61dQVwlXY13yr-dlEqQ5re
+X-Proofpoint-ORIG-GUID: BnZQvVqSRx_iNFJcgbM674x_fTyaCEue
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-13_08,2025-03-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ mlxlogscore=999 lowpriorityscore=0 spamscore=0 impostorscore=0 bulkscore=0
+ clxscore=1015 mlxscore=0 phishscore=0 adultscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503130145
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,16 +114,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/13/25 11:47, ltaylorsimpson@gmail.com wrote:
-> What we are trying to model is an instance of a Hexagon that has a number of threads and some resources that are shared.  The shared resources include the TLB and global S registers.  The initial thought was to tie the shared resources to the thread with cpu_index == 0.  If we were to model a Qualcomm SoC, there would be multiple ARM cores and multiple Hexagon instances.  Each Hexagon instance would have distinct shared resources.  So, you are correct that using cpu_index is not going to scale.
-> 
-> What is the recommended way to model this?  I see a "nr_threads" field in CPUCore but no clear way to find the threads.  PPC has some cores that add a "threads" field.  Should we follow this approach?
+Overview
+=========
 
-I recommend that the shared resources be modeled as a separate Object,
-which is linked via object_property_add_link to all of the cpus that use it.
+Implemented Firmware Assisted Dump (fadump) on PSeries machine in QEMU.
 
-The linking would be under the control of the board model and/or the SoC model.
+Fadump is an alternative dump mechanism to kdump, in which we the firmware
+does a memory preserving boot, and the second/crashkernel is booted fresh
+like a normal system reset, instead of the crashed kernel loading the
+second/crashkernel in case of kdump.
+
+This requires implementing the "ibm,configure-kernel-dump" RTAS call in
+QEMU.
+
+While booting with fadump=on, Linux will register fadump memory regions.
+
+Some memory regions like Real Mode Memory regions, and custom memory
+regions declared by OS basically require copying the requested memory
+range to a destination
+
+While other memory regions are populated by the firmware/platform (QEMU in
+this case), such as CPU State Data and HPTE.
+We pass the sizes for these data segment to the kernel as it needs to know
+how much memory to reserve (ibm,configure-kernel-dump-sizes).
+
+Then after a crash, once Linux does a OS terminate call, we trigger fadump
+if fadump was registered.
+
+Implementing the fadump boot as:
+    * pause all vcpus (will save registers later)
+    * preserve memory regions specified by fadump
+    * do a memory preserving reboot (using GUEST_RESET as it doesn't clear
+      the memory)
+
+And then we pass a metadata (firmware memory structure) as
+"ibm,kernel-dump" in the device tree, containing all details of the
+preserved memory regions to the kernel.
+
+Refer the Patch #7/8: "hw/ppc: Enable fadump for PSeries" for logs of a
+succesfful fadump crash
+
+Note: HPTE region has not been implemented. It's not planned as of now.
+
+Testing
+=======
+
+Has been tested with following QEMU options:
+
+* firmware: x-vof and SLOF
+* tcg & kvm
+* l1 guest and l2 guest
+* with/without smp
+* cma/nocma
+* default crashkernel values (can fail with big initrd) and crashkernel=1G
+
+Git Tree for Testing
+====================
+
+https://github.com/adi-g15-ibm/qemu/tree/fadump-pseries-v2
+
+Note: You will need a way to get the /proc/vmcore out of the VM for testing
+with crash-utility
+
+I use the following command line which sets up networking:
+    "-net user,hostfwd=tcp::10022-:22 -net nic"
+
+And a rootfs with ssh support, then copy the /proc/vmcore with networking
+(can do compression using gzip before ssh, but compression might take lot
+of time if done inside the VM)
+
+Test vmcore for Testing with crash-utility
+==========================================
+
+Can use vmlinux and vmcore available at https://github.com/adi-g15-ibm/qemu/releases/tag/test-images-fadump-pseries-v2
+Above vmcore was generated with upstream qemu with these fadump patches
+applied, and in a KVM VM
+A limitation with above vmcore is it was a single CPU VM
+
+Changelog
+=========
+v2:
+  + rearrange code so that no unused functions get introduced in any patch
+  + add functional test for pseries as suggested by nick
+  + fix multiple issues pointed by harsh and nick
+  + fix bug in cpu register saving where it was being stored in
+    little-endian
+  - removed 'is_next_boot_fadump' and used fadump header's status flag to
+    store it
+  + fixed multiple style issues (naming, unneeded diffs etc)
 
 
-r~
+Aditya Gupta (8):
+  hw/ppc: Implement skeleton code for fadump in PSeries
+  hw/ppc: Implement fadump register command
+  hw/ppc: Trigger Fadump boot if fadump is registered
+  hw/ppc: Preserve memory regions registered for fadump
+  hw/ppc: Implement saving CPU state in Fadump
+  hw/ppc: Pass dump-sizes property for fadump in device tree
+  hw/ppc: Enable fadump for PSeries
+  tests/functional: Add test for fadump in PSeries
+
+ hw/ppc/meson.build                        |   1 +
+ hw/ppc/spapr.c                            |  72 +++
+ hw/ppc/spapr_fadump.c                     | 679 ++++++++++++++++++++++
+ hw/ppc/spapr_rtas.c                       |  71 +++
+ include/hw/ppc/spapr.h                    |  11 +-
+ include/hw/ppc/spapr_fadump.h             | 121 ++++
+ tests/functional/meson.build              |   2 +
+ tests/functional/qemu_test/linuxkernel.py |  59 ++
+ tests/functional/test_ppc64_fadump.py     | 185 ++++++
+ 9 files changed, 1200 insertions(+), 1 deletion(-)
+ create mode 100644 hw/ppc/spapr_fadump.c
+ create mode 100644 include/hw/ppc/spapr_fadump.h
+ create mode 100755 tests/functional/test_ppc64_fadump.py
+
+-- 
+2.48.1
+
 
