@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327B1A5EA4D
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:53:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9850A5EA3E
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:49:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsZW8-0004f5-Rv; Wed, 12 Mar 2025 23:45:56 -0400
+	id 1tsZVz-0004bK-Kn; Wed, 12 Mar 2025 23:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZW0-0004d4-Sq
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:45:48 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tsZVx-0004av-QL
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:45:45 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZVu-0007lT-0w
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:45:48 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-223594b3c6dso9040325ad.2
+ id 1tsZVp-0007lc-21
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:45:45 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-2fecba90cc3so1172659a91.2
  for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741837532; x=1742442332; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741837533; x=1742442333; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nHXu13DFdrh271auqhCP0lApklGf8VDvaV4uG/D/Dqg=;
- b=VTokaCVAIFFL35OXkr/TufbJQ7W5L35y8wKPaNBdD7VAkcOZ8Z8qSacuuZDA5xCCvC
- EYEF+Zsx+3LUUm/vc+lTkqV19QVRgsV+o0QdVbyvUQ+q9Sj0i5SQdbXpaOT03rJfO/ST
- vDJ/oPSNbYOXNXVlynqNI3OZ7bFNwzrGHrF/hxOuxBSyi6jQUeal+0lWtr9pKy7BfDCf
- NHVeXi1LK1MEcqm8TU/adiyFPfT4XN/0woQ2czHEtywiicWOPLju3N/A0fyZqfD2XxKQ
- 0l9sYZlAQBLPFRmziMAiXerwE7LcFsVp12NcriwY3b8CTJwi3uPT384aLEmX/sek9ca2
- /mUA==
+ bh=KTz0opqvxfbqwvltJvZBi8g6Tk2gJy+3YsapeLlujac=;
+ b=j2zfo2qQCArmW5qUnQSmYKqoN+A0HDguUp5A4xcXSWi64Z3uXOrCpacGhBYzc+YXa6
+ Tic1/UGnqYAIwAvAwdwYUvmmDJ7Hp+rP7TU1G8IpGhVWgDtqdE0hS5RiMEKYjM8JrLBm
+ f5urjq5OOi9wEhASlpnU27T53VNFwCXgMyPdBlpiQg3gQgaF2f6EjE0t/nz4zFHNVLVN
+ 0E2pu7sQZ/pNoWfJUE6pm+EXADAhsSFbilgW0qM2v6TPZrPBX1kRopYb8U75h+ULvyiw
+ HE7ILPXebVAvVpV15BKf9r0R708YdUQzc2R3vX8bG7WWKQtrj4moxcgeKczfLvs7bMru
+ 9fTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741837532; x=1742442332;
+ d=1e100.net; s=20230601; t=1741837533; x=1742442333;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nHXu13DFdrh271auqhCP0lApklGf8VDvaV4uG/D/Dqg=;
- b=bhTVZ1DonTMHD0pKETPJoAxkWkGeY2lj0WKXeoGutoILgNwvlts5VNXc98f2UlKMKV
- SRvrrrwoG4H8/tUj1OUv+f27v/V6nBKCz/bUMZxcA6oYVZuF6SiHTE8WSGwGvApc1Cef
- /q1HF51/FzJaIiSI1VgfKXFys3go5JYZPbml2K6IIqCTjZEKl/OIBdM2vrcPS4Ze/CK0
- b/E3x29nBUsc7WklsX4nleEcw1BP0xNaW4DN13b2A+12gHvI0GDJSgMKbkQlVmv4bJO0
- MsCL0J8/ldptMQBk/qi13uVBv0ksEt9MgKeRl24XwcmyIi5VWlF1fojEl2NG6QbNsPvb
- HOfw==
-X-Gm-Message-State: AOJu0YzauWShLCb3Dt5nsiawxfzF87O6yv8bSVqOpe+fyeKOupr4cibw
- KfEAjI3CBQuFLJhYqW16LRTkkECJxtpupvgUV4owlfw4rLV8iTLXd43xs9RO9BSe2LKj26T9NPw
- O
-X-Gm-Gg: ASbGncuLPVSmOcc8qJ9nkggwMnHUWOPtdnwIzRI33j77njnM5HlXp5AXq78b2hfkTqG
- 3E4jLj18TOKzvvRn0eKEyym74eniCZwjSL2tgESWrakHOIXLNVEHNDph5MfJ7ssezRkkcUnc6p/
- HudgjfxtdjZIAsBJirkziEUX1rZErtFL4CXmHa6Qt+pxoO3ko5YuUN+b4ECc67699LjD1Gy1W4b
- kzgueyaQQ6AaTSreBwTUNrqf+PSReO1837OBZEQP0AuaEI2akBJeZrlmPeaaKwr6uYA0WVlPl7W
- fLHj/pmIwzKCFdkOBKo6uoX6CLvh51qRbOoSKlA7t0U/5+ATgrOEl4Y9LZA/TjNcQyjH+1Lmvcv
- s
-X-Google-Smtp-Source: AGHT+IGEioouCc81/LA0yZXuzlWvAgDQ8iibvhZb59pWBFnDBhAmwa+kPd5qnvENOJ6I56HDwaf0fw==
-X-Received: by 2002:a05:6a00:3d55:b0:736:5753:12fd with SMTP id
- d2e1a72fcca58-736aa9c1de8mr33694809b3a.4.1741837532630; 
- Wed, 12 Mar 2025 20:45:32 -0700 (PDT)
+ bh=KTz0opqvxfbqwvltJvZBi8g6Tk2gJy+3YsapeLlujac=;
+ b=Fl4OS4P9lPy2Aw08FEH7QjTJQjwCjYCI9RoifteCoyjsr81OZVymoKyQwrmZyVW2sv
+ DEXcM1yLYa8eXNvzQwyVvpwb0PeWnHhAT2m+y6IOuzyYxbOF6tq0EahrNhvnwh/XhDtQ
+ izsEkMbgHv+9XHBzk5tBXPX1z2VuLF69kyKtiSLB9V3RuEXH/+Jr5S/c5BoZdN2vi2EW
+ LPAVIfjdQ6iHVXawuWvxizYmvuIqql/F8aSxuCgw89qhWV064HKgiDiF7slcjJI4rTwq
+ 8ZRJuwW2Xg3heYLSRPsMvlwnMGQZ5aZVsgu4W/t5fDqHkWpIGnXF8e1SY9SKr2nlRZuX
+ 0+IA==
+X-Gm-Message-State: AOJu0Yz7yWRAQ9AHBYV9cD50r/8r0x0xTxGZTs80utWaw/Ns0TDnxcNi
+ 3z/ElELzBtSFM+NKX6e/45uHryddsLdioJ5M27hUkZFVM2pSRN28agjn2K/Me5bpIHZ7pO1N0DF
+ S
+X-Gm-Gg: ASbGncszkGHmvSk3UQ0oOKQRt5zeSAvdrjqom4pyXJCdT2osV5BxmYNYHwtypk/zkYZ
+ t1HkW0Y3BYd84o9UN+C0vHZ328ZIk6m2Y8u7ADfrFEmr9pSXuuxFNxk/Gk3G9gUJ9yZpD2sbPQR
+ YGitgNPEYAqlI1lqrPXH8uLp/r9fYSYXe60Dc6xIk2Y8rLN1gtSZ4JAlT2ix6tnBxiF71oqEiJG
+ BcKVk4ZRFF133i46tZTCJcCs4JakKm/5goeuW1dsdtJlHmsAYZq5/FNk/eHYXz4WKPZHWOzWRaq
+ Wev275V4kKBF1cLX4Zrq3fiXJht7B9HBZmpZddhhoSEfhCmx5HwLUxsy9hzOUYZ/AANFIWoW4tO
+ X
+X-Google-Smtp-Source: AGHT+IG/2nHTL2ulvhNi6w6c2ylL2+m4IfJPtPwj/c3lDR+LGYUFuJVtrPdbt/37xjfKWzbymtcEkA==
+X-Received: by 2002:a05:6a21:158c:b0:1f5:837b:1868 with SMTP id
+ adf61e73a8af0-1f5837b1902mr21097964637.29.1741837533461; 
+ Wed, 12 Mar 2025 20:45:33 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Mar 2025 20:45:32 -0700 (PDT)
+ Wed, 12 Mar 2025 20:45:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	pbonzini@redhat.com,
 	philmd@linaro.org
-Subject: [PATCH 08/37] include/exec: Inline *_code memory operations
-Date: Wed, 12 Mar 2025 20:44:48 -0700
-Message-ID: <20250313034524.3069690-9-richard.henderson@linaro.org>
+Subject: [PATCH 09/37] accel/tcg: Perform aligned atomic reads in translator_ld
+Date: Wed, 12 Mar 2025 20:44:49 -0700
+Message-ID: <20250313034524.3069690-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250313034524.3069690-1-richard.henderson@linaro.org>
 References: <20250313034524.3069690-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,148 +100,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These expand inline to the *_mmu api with a lookup of
-the target's cpu_mmu_index() and ra == 0.
+Perform aligned atomic reads in translator_ld, if possible.
+According to
+
+https://lore.kernel.org/qemu-devel/20240607101403.1109-1-jim.shu@sifive.com/
+
+this is required for RISC-V Ziccif.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu_ldst.h | 31 +++++++++++++++++++++++++++----
- accel/tcg/cputlb.c      | 28 ----------------------------
- accel/tcg/user-exec.c   | 40 ----------------------------------------
- 3 files changed, 27 insertions(+), 72 deletions(-)
+ accel/tcg/translator.c | 42 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 38 insertions(+), 4 deletions(-)
 
-diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index 70e98ebc52..92b4cf20fd 100644
---- a/include/exec/cpu_ldst.h
-+++ b/include/exec/cpu_ldst.h
-@@ -472,10 +472,33 @@ cpu_stq_le_data(CPUArchState *env, abi_ptr addr, uint64_t val)
- # define cpu_stq_mmuidx_ra    cpu_stq_le_mmuidx_ra
- #endif
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index ef1538b4fc..0260fb1915 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -265,12 +265,14 @@ static bool translator_ld(CPUArchState *env, DisasContextBase *db,
  
--uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr);
--uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr);
--uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr);
--uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr);
-+static inline uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr)
-+{
-+    CPUState *cs = env_cpu(env);
-+    MemOpIdx oi = make_memop_idx(MO_UB, cpu_mmu_index(cs, true));
-+    return cpu_ldb_code_mmu(env, addr, oi, 0);
-+}
-+
-+static inline uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr)
-+{
-+    CPUState *cs = env_cpu(env);
-+    MemOpIdx oi = make_memop_idx(MO_TEUW, cpu_mmu_index(cs, true));
-+    return cpu_ldw_code_mmu(env, addr, oi, 0);
-+}
-+
-+static inline uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr)
-+{
-+    CPUState *cs = env_cpu(env);
-+    MemOpIdx oi = make_memop_idx(MO_TEUL, cpu_mmu_index(cs, true));
-+    return cpu_ldl_code_mmu(env, addr, oi, 0);
-+}
-+
-+static inline uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr)
-+{
-+    CPUState *cs = env_cpu(env);
-+    MemOpIdx oi = make_memop_idx(MO_TEUQ, cpu_mmu_index(cs, true));
-+    return cpu_ldq_code_mmu(env, addr, oi, 0);
-+}
+     if (likely(((base ^ last) & TARGET_PAGE_MASK) == 0)) {
+         /* Entire read is from the first page. */
+-        memcpy(dest, host + (pc - base), len);
+-        return true;
++        goto do_read;
+     }
  
- /**
-  * tlb_vaddr_to_host:
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index b03998f926..2817c9dbdd 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2897,34 +2897,6 @@ static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
+     if (unlikely(((base ^ pc) & TARGET_PAGE_MASK) == 0)) {
+-        /* Read begins on the first page and extends to the second. */
++        /*
++         * Read begins on the first page and extends to the second.
++         * The unaligned read is never atomic.
++         */
+         size_t len0 = -(pc | TARGET_PAGE_MASK);
+         memcpy(dest, host + (pc - base), len0);
+         pc += len0;
+@@ -329,7 +331,39 @@ static bool translator_ld(CPUArchState *env, DisasContextBase *db,
+         host = db->host_addr[1];
+     }
  
- /* Code access functions.  */
- 
--uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr)
--{
--    CPUState *cs = env_cpu(env);
--    MemOpIdx oi = make_memop_idx(MO_UB, cpu_mmu_index(cs, true));
--    return do_ld1_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
--}
--
--uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr)
--{
--    CPUState *cs = env_cpu(env);
--    MemOpIdx oi = make_memop_idx(MO_TEUW, cpu_mmu_index(cs, true));
--    return do_ld2_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
--}
--
--uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr)
--{
--    CPUState *cs = env_cpu(env);
--    MemOpIdx oi = make_memop_idx(MO_TEUL, cpu_mmu_index(cs, true));
--    return do_ld4_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
--}
--
--uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr)
--{
--    CPUState *cs = env_cpu(env);
--    MemOpIdx oi = make_memop_idx(MO_TEUQ, cpu_mmu_index(cs, true));
--    return do_ld8_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
--}
--
- uint8_t cpu_ldb_code_mmu(CPUArchState *env, vaddr addr,
-                          MemOpIdx oi, uintptr_t retaddr)
- {
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 3f63b194bb..5bdbb6f968 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -1214,46 +1214,6 @@ static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
-     clear_helper_retaddr();
+-    memcpy(dest, host + (pc - base), len);
++ do_read:
++    /*
++     * Assume aligned reads should be atomic, if possible.
++     * We're not in a position to jump out with EXCP_ATOMIC.
++     */
++    host += pc - base;
++    switch (len) {
++    case 2:
++        if (QEMU_IS_ALIGNED(pc, 2)) {
++            uint16_t t = qatomic_read((uint16_t *)host);
++            stw_he_p(dest, t);
++            return true;
++        }
++        break;
++    case 4:
++        if (QEMU_IS_ALIGNED(pc, 4)) {
++            uint32_t t = qatomic_read((uint32_t *)host);
++            stl_he_p(dest, t);
++            return true;
++        }
++        break;
++#ifdef CONFIG_ATOMIC64
++    case 8:
++        if (QEMU_IS_ALIGNED(pc, 8)) {
++            uint64_t t = qatomic_read__nocheck((uint64_t *)host);
++            stl_he_p(dest, t);
++            return true;
++        }
++        break;
++#endif
++    }
++    /* Unaligned or partial read from the second page is not atomic. */
++    memcpy(dest, host, len);
+     return true;
  }
  
--uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr ptr)
--{
--    uint32_t ret;
--
--    set_helper_retaddr(1);
--    ret = ldub_p(g2h_untagged(ptr));
--    clear_helper_retaddr();
--    return ret;
--}
--
--uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr ptr)
--{
--    uint32_t ret;
--
--    set_helper_retaddr(1);
--    ret = lduw_p(g2h_untagged(ptr));
--    clear_helper_retaddr();
--    return ret;
--}
--
--uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr ptr)
--{
--    uint32_t ret;
--
--    set_helper_retaddr(1);
--    ret = ldl_p(g2h_untagged(ptr));
--    clear_helper_retaddr();
--    return ret;
--}
--
--uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr ptr)
--{
--    uint64_t ret;
--
--    set_helper_retaddr(1);
--    ret = ldq_p(g2h_untagged(ptr));
--    clear_helper_retaddr();
--    return ret;
--}
--
- uint8_t cpu_ldb_code_mmu(CPUArchState *env, vaddr addr,
-                          MemOpIdx oi, uintptr_t ra)
- {
 -- 
 2.43.0
 
