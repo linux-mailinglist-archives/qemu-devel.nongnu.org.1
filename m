@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C425A5EA49
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:53:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23649A5EA51
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 04:54:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsZVv-0004ZA-SV; Wed, 12 Mar 2025 23:45:43 -0400
+	id 1tsZVv-0004Z1-HK; Wed, 12 Mar 2025 23:45:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZVt-0004YM-Bc
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:45:42 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1tsZVp-0004Y8-2z
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:45:37 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tsZVh-0007Zj-9x
- for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:45:36 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-2241053582dso12845105ad.1
+ id 1tsZVh-0007a5-97
+ for qemu-devel@nongnu.org; Wed, 12 Mar 2025 23:45:34 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2feb91a2492so967871a91.2
  for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 20:45:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741837527; x=1742442327; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741837528; x=1742442328; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rBQxmR44l3wcTYT3oEMIjdMUBd+/xO2J5+TsC/x2ZxA=;
- b=Oj39lZI/0YncivTOeT+HmoOUMeBA0QPOrRyXo+F5AZIUfHak+fS5cjzniRp36JX6RG
- MegWgb9td/+nqs8Q5cmzvdU2toHe49yW8gTudST98VWKCLpI4C09FRT5P2/K4ftqPb9n
- Ysbj4EFI8sYPbpxuRho/XJ8PjrEWXDiOhRblCmXiwJtBkXCpgnQfN+7ZuZC/n/cMpap/
- LAMqP69cFdJXx9bpuYvIjql2X86uA6rne5TKFMJ8UUegjXZTspu+X62g2D6XWlirH0qV
- QYZNDRtIS7bPuq+xHXrEQufD1EfS5icZdw3df2p6bJuTgCYzMZoPhboXYLYq1xF1l3Vz
- oXFQ==
+ bh=KHsIgh54rCX5/hydGwZuN61eydlk+oWTosomBsdyD50=;
+ b=qHXtAHrv/1o9DXbJx3G6CqXyhidymj20nh7B1eu5oxbGO0n6+LUpBhHu6biaPjKy//
+ SOs/tumImdeHrr+wPpMK6SDZyYE0Xxf/NuESCNkeed1Ohakcex1zZHqRzjj7+Y1C35hL
+ 3FRpOEOOaxIFaX7gNJYPOidgT8Jy/hmQ1Jols0Tor/gPg2O2IndOTzTiBb2i9ZUO3Ybv
+ iB00p4fAcd2onz4i5SZZWVKbvKxehz3yDCbbw3OEcf8P258VuTw+X5ky/LpF4kQweEc2
+ 1CWhahHukjL4HmB94DeJ+NmDlKsNvmeXAKkhTSopXFUAa9jhPjGSHdiDsJBlmMEVl8Bu
+ Co9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741837527; x=1742442327;
+ d=1e100.net; s=20230601; t=1741837528; x=1742442328;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rBQxmR44l3wcTYT3oEMIjdMUBd+/xO2J5+TsC/x2ZxA=;
- b=Tp9senwdXjPyu+XVfPuxMT/D/Y1ALaXbNSVhzphpwOAk1e4ecZNg32Ude47uA9G/6L
- MQzxQ0zkahf63VMGJYM0RHxSXgM0LUr6xcHap2ST+Frr78cG9hazy4XB444zDP/jfI2X
- /66JhPFjblCMliag9oUJhZS+D4iR5t7AIA1OkHo3J8X4dtJ19eaLtoIkaIxwIf/Wob3m
- TiHlyoakSFxHML5/C5thdA7vSfIMt2R3yPMZNuWU83IXB38GS9JpHj/jNK5iNi7E+vS8
- 6z3AqCNuerqZQAsFDoRBcklK5WIUktl7eKejCMbCmeNioSrtlhbgGbK0yXo37oxkrXmr
- gD5g==
-X-Gm-Message-State: AOJu0YyZ1DX2e3mveRD0T+Iez6pCUpdfKHSAojsxSjJgXHTr/yQhZm8o
- Q2tiFx1SHrppOT3auXg867gLgtpO4lNsHMxs1NU22wBg/Wu2EFu2MCoal9YWMRaiI6ZT7TkOqEp
- 5
-X-Gm-Gg: ASbGncvtLnASEKIJAGQh4PcJQpKpEibAv9AfVrlVYY3sM4yUHc0jB7OgG9f/CvSTjnF
- 0Q8C6MZ4Suem1iOVH4W6fcfqiv39AbzU/JOLK7W2fgRuaeiK2pscf6jHOBabZ6vNqdFqOYcb1xT
- VS/VXxHG2tfsLPn2GohuB+SeSqqKK9DHP8ojaNE1fDzrgvJZdz3T3+cf8dtdqctC6p9026Ly/x0
- ACoE/za834ul7sq8rY+8wJMEEim7/EbJIorjBvTnCF6YdrbaYu+iD41ryCzSJhtOGD6r8x++vdG
- LgAz4XrTXTmW9YXCuKIgMemW8lzyS/Ybs9trnvDOyXGkGR7j0gzpTS0AhGHMFPw3A1Qlv3BI8CR
- D
-X-Google-Smtp-Source: AGHT+IEaAZy0IYkXI33o+3dAp/nX35VY7pdPU8aKnqA54qi3Yp/slABPqqGttmcZKZNHXO5lvCORQw==
-X-Received: by 2002:a05:6a00:843:b0:736:a973:748 with SMTP id
- d2e1a72fcca58-736aaad3d00mr35952286b3a.22.1741837526882; 
- Wed, 12 Mar 2025 20:45:26 -0700 (PDT)
+ bh=KHsIgh54rCX5/hydGwZuN61eydlk+oWTosomBsdyD50=;
+ b=Pv+8gV1jC94NExl9VqXx7G4FugKkiIU2o/oAwQCYaIPREHbGCe0EfEtLDNkMJmt3GR
+ p0B47le56Axf0TGaMq6eie9pYM8UbjB4WIOl3BSENdHWWcG5v13hKtJiys1GznrSJTpE
+ OAAol+3G9PevRuvRe1oXXBl7wcnJk1NqrTZpAwWx6F5PuoO7nqn1+qPWxfb4qRF+GBoy
+ xL30+LZP2eEFh2L9VZnC1VZcdb7QBx28sfHwVVwG7qwbimtHccXVSsUXjHVF0ZBL4t4A
+ 7xumo3o61MXhL5+MQmIlgldf4Hmg+thQFDIAkrKVohOXZ6DEwQVWVFykMyidDcNUnwwW
+ 7+4Q==
+X-Gm-Message-State: AOJu0YwZY+tCWozMdvtBcNB1Os73gfcnXgLSyMWbaod3EARIXVBcwWmY
+ XkdbbgAMp7tPNetZuOh99NGlPh2rzQ0KVciObepZirVRIqqYPjSjBVC6viPuFKoyYla2mhmZcFC
+ n
+X-Gm-Gg: ASbGncsTiJZQO30LLjXMYYJdfFkuCFfj7HRaAXSocwWcYs9QzsTUlRESh8WqxnZ9FAY
+ tBtkquWw8KMrTYT62Pc7V5tiM5WJLMrbv32Mh2S82Rk1KMtFn5fKBU1Vy32Cuk5FkQTzSeFOiov
+ 7DsI3DNNTAws1iSv2XBBE4EdcGepb5FLaAhsjMgJ+j9DYArMnvWn+LVx+Qn/ak9Ss3wTbF9oIzO
+ gJYtw2pV0zi5w8wxVB+rTOcd9ajYFymZWhxND7k5lccxrNJDzsFUaCiW0VFg5dlL/SQhJROwvU+
+ Q1F09T5+RcCAPX5KY9C/XXsgKOKGrmJYWAV4wYoKHYSEYgr1QtaNs3PyqnxL2hCIINM9SNOZF3r
+ a
+X-Google-Smtp-Source: AGHT+IH7E8axiazUVf+6HTre592lFDR8WCTOzfAYscQzlK40/ChajYaxsoYLuD+inFQ0C4tkYPJbvQ==
+X-Received: by 2002:a05:6a20:6f90:b0:1f1:432:f4a3 with SMTP id
+ adf61e73a8af0-1f544b19bd8mr38915686637.23.1741837527740; 
+ Wed, 12 Mar 2025 20:45:27 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.26
+ d2e1a72fcca58-7371167def8sm316781b3a.90.2025.03.12.20.45.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Mar 2025 20:45:26 -0700 (PDT)
+ Wed, 12 Mar 2025 20:45:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	pbonzini@redhat.com,
 	philmd@linaro.org
-Subject: [PATCH 01/37] accel/tcg: Build user-exec-stub.c once
-Date: Wed, 12 Mar 2025 20:44:41 -0700
-Message-ID: <20250313034524.3069690-2-richard.henderson@linaro.org>
+Subject: [PATCH 02/37] accel/tcg: Build plugin-gen.c once
+Date: Wed, 12 Mar 2025 20:44:42 -0700
+Message-ID: <20250313034524.3069690-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250313034524.3069690-1-richard.henderson@linaro.org>
 References: <20250313034524.3069690-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,37 +100,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CONFIG_USER_ONLY == !CONFIG_SYSTEM_ONLY.
-Therefore it's cleaner to just add to user_ss.
+We assert that env immediately follows CPUState in cpu-all.h.
+Change the offsetof expressions to be based on CPUState instead
+of ArchCPU.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/meson.build | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ accel/tcg/plugin-gen.c | 13 +++++--------
+ accel/tcg/meson.build  |  7 ++++---
+ 2 files changed, 9 insertions(+), 11 deletions(-)
 
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index 7e5f040bf7..c1da753894 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -22,13 +22,12 @@
+ #include "qemu/osdep.h"
+ #include "qemu/plugin.h"
+ #include "qemu/log.h"
+-#include "cpu.h"
+ #include "tcg/tcg.h"
+ #include "tcg/tcg-temp-internal.h"
+-#include "tcg/tcg-op.h"
+-#include "exec/exec-all.h"
++#include "tcg/tcg-op-common.h"
+ #include "exec/plugin-gen.h"
+ #include "exec/translator.h"
++#include "exec/translation-block.h"
+ 
+ enum plugin_gen_from {
+     PLUGIN_GEN_FROM_TB,
+@@ -89,15 +88,13 @@ static void gen_enable_mem_helper(struct qemu_plugin_tb *ptb,
+     qemu_plugin_add_dyn_cb_arr(arr);
+ 
+     tcg_gen_st_ptr(tcg_constant_ptr((intptr_t)arr), tcg_env,
+-                   offsetof(CPUState, neg.plugin_mem_cbs) -
+-                   offsetof(ArchCPU, env));
++                   offsetof(CPUState, neg.plugin_mem_cbs) - sizeof(CPUState));
+ }
+ 
+ static void gen_disable_mem_helper(void)
+ {
+     tcg_gen_st_ptr(tcg_constant_ptr(0), tcg_env,
+-                   offsetof(CPUState, neg.plugin_mem_cbs) -
+-                   offsetof(ArchCPU, env));
++                   offsetof(CPUState, neg.plugin_mem_cbs) - sizeof(CPUState));
+ }
+ 
+ static TCGv_i32 gen_cpu_index(void)
+@@ -113,7 +110,7 @@ static TCGv_i32 gen_cpu_index(void)
+     }
+     TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
+     tcg_gen_ld_i32(cpu_index, tcg_env,
+-                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
++                   offsetof(CPUState, cpu_index) - sizeof(CPUState));
+     return cpu_index;
+ }
+ 
 diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 38ff227eb0..14bf797fda 100644
+index 14bf797fda..185830d0f5 100644
 --- a/accel/tcg/meson.build
 +++ b/accel/tcg/meson.build
-@@ -12,7 +12,6 @@ tcg_specific_ss.add(files(
+@@ -3,6 +3,10 @@ common_ss.add(when: 'CONFIG_TCG', if_true: files(
+   'tcg-runtime.c',
+   'tcg-runtime-gvec.c',
+ ))
++if get_option('plugins')
++  common_ss.add(when: 'CONFIG_TCG', if_true: files('plugin-gen.c'))
++endif
++
+ tcg_specific_ss = ss.source_set()
+ tcg_specific_ss.add(files(
+   'tcg-all.c',
+@@ -12,9 +16,6 @@ tcg_specific_ss.add(files(
    'translator.c',
  ))
  tcg_specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
--tcg_specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
- if get_option('plugins')
-   tcg_specific_ss.add(files('plugin-gen.c'))
- endif
-@@ -22,6 +21,10 @@ specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
-   'cputlb.c',
- ))
+-if get_option('plugins')
+-  tcg_specific_ss.add(files('plugin-gen.c'))
+-endif
+ specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
  
-+user_ss.add(when: ['CONFIG_TCG'], if_true: files(
-+  'user-exec-stub.c',
-+))
-+
- system_ss.add(when: ['CONFIG_TCG'], if_true: files(
-   'icount-common.c',
-   'monitor.c',
+ specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
 -- 
 2.43.0
 
