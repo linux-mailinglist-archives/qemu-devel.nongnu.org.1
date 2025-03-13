@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D477A60105
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 20:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3221A60116
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 20:26:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsoAS-0002yT-Gf; Thu, 13 Mar 2025 15:24:32 -0400
+	id 1tsoAU-00030Q-7B; Thu, 13 Mar 2025 15:24:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tsoAC-0002uJ-AG; Thu, 13 Mar 2025 15:24:20 -0400
+ id 1tsoAD-0002uL-0H; Thu, 13 Mar 2025 15:24:21 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1tsoA9-0000uF-3O; Thu, 13 Mar 2025 15:24:14 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DGo4rp003361;
- Thu, 13 Mar 2025 19:24:11 GMT
+ id 1tsoAB-0000uS-9T; Thu, 13 Mar 2025 15:24:16 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DGo5TK021764;
+ Thu, 13 Mar 2025 19:24:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=ejNpIrZXudvJ/RDzR
- YoZF3epKTAm/W/xoHHPZJvePiQ=; b=eIUZtyMXKMltj+O1K8UgZ4W8JdW/ykfI2
- 7qQb2kvt5bM1yeaG9cMi0TxfC64kmIvXAZn2xNpp3utSw980SsKdhqceT7fDNsFb
- ntXZUB/vj6EQSPFaooV/trpRWEToHkrgTNO6y6nTonANaXo/XBprdT8daQZhW0Hc
- 3isZZCtsbJXka3T5CBYthjDz+G5+kiHa9q2zH8Tl4YOju/i/hD5CPqcPCrHRbOuF
- 6fpaC8lKJ7ZdQ4i+5EPpogJ748I4W+cDMtxOxfSIvkgt45w2EXW7pZpvA6OR5/1C
- ECElNFwVWcccwD3hiKz2PglQjHB6gNtKbS957ylgtMuhUYK/DrZGg==
+ :mime-version:references:subject:to; s=pp1; bh=zMbubV+AFg/iyDz3C
+ 1gVdjVYZ1rRLZ3u3aY3HiOZSNY=; b=sr/UqrM6cRFsSxHP0hzCAUnJC/599R7E6
+ fEcpv3yG9HHtWOTMOBhviu4QdrZbFlm+PrO5SlK2ap4sL2WqXy+LYIZrX+zR/HBN
+ SSacgTNPjMzsBj3dRQv0aSNGd2i1uEPlXOaX1rqr+rragrdjFDc76x9cQig/5XLz
+ EQywL4ZPA2acpnXQVtxHoKKwW52hwvkWnqDRGCtUMfArklwo4y6ZT7A47wFhgCvD
+ Z+6za2BMtbeUMAVTqQg0Y6/05Pz//ZE5PzLOFub7qzOLrcpGu3A8hAqz6CrPeXIy
+ Lkvv9ybgQtFxWQjFU/rTsgcFSBJzWHftQDn5zIV0PuHJO4Adq0UzA==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhepnw73-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhp5dvwu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Mar 2025 19:24:11 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52DJM3tu029392;
- Thu, 13 Mar 2025 19:24:10 GMT
+ Thu, 13 Mar 2025 19:24:13 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52DJNsnc013378;
+ Thu, 13 Mar 2025 19:24:13 GMT
 Received: from ppma13.dal12v.mail.ibm.com
  (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhepnw6x-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bhp5dvws-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Mar 2025 19:24:10 +0000 (GMT)
+ Thu, 13 Mar 2025 19:24:13 +0000 (GMT)
 Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52DIoInt026010;
- Thu, 13 Mar 2025 19:24:10 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atspkg2e-1
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52DIpU9F026029;
+ Thu, 13 Mar 2025 19:24:12 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atspkg2m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Mar 2025 19:24:10 +0000
+ Thu, 13 Mar 2025 19:24:12 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 52DJO6XL49414654
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52DJO8nG26346198
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Mar 2025 19:24:06 GMT
+ Thu, 13 Mar 2025 19:24:08 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 10C9220043;
+ by IMSVA (Postfix) with ESMTP id B852C20043;
+ Thu, 13 Mar 2025 19:24:08 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F9AF20040;
  Thu, 13 Mar 2025 19:24:06 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A25C120040;
- Thu, 13 Mar 2025 19:24:03 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown
  [9.124.223.53]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 13 Mar 2025 19:24:03 +0000 (GMT)
+ Thu, 13 Mar 2025 19:24:06 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: <qemu-devel@nongnu.org>
 Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
@@ -70,26 +70,25 @@ Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
  Sourabh Jain <sourabhjain@linux.ibm.com>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  Hari Bathini <hbathini@linux.ibm.com>
-Subject: [PATCH v2 6/8] hw/ppc: Pass dump-sizes property for fadump in device
- tree
-Date: Fri, 14 Mar 2025 00:53:39 +0530
-Message-ID: <20250313192341.132171-7-adityag@linux.ibm.com>
+Subject: [PATCH v2 7/8] hw/ppc: Enable fadump for PSeries
+Date: Fri, 14 Mar 2025 00:53:40 +0530
+Message-ID: <20250313192341.132171-8-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250313192341.132171-1-adityag@linux.ibm.com>
 References: <20250313192341.132171-1-adityag@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: YwoGyIVvTaOaKuqn2Eduz22GaLX1FxkD
-X-Proofpoint-ORIG-GUID: H_6nwwzvtRwjSKdmIxIERN8bJZn5yPhl
+X-Proofpoint-GUID: PmgcIzXVHug428Mk0o8zVo0lJLwVgrSr
+X-Proofpoint-ORIG-GUID: hkWUTBu7gztzD6vo6J10FxjZyek6b0aB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-13_08,2025-03-13_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0 spamscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 clxscore=1015 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ spamscore=0 mlxscore=0
+ impostorscore=0 adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ mlxlogscore=999 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2502280000 definitions=main-2503130145
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -116,103 +115,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Platform (ie. QEMU) is expected to pass few device tree properties for
-details for fadump:
+With all support in place for preserving memory regions, enable fadump by
+exporting the "ibm,kernel-dump" property in the device tree, representing
+the fadump dump information, in case of a crash.
 
-  * "ibm,configure-kernel-dump-sizes": Space required to store dump data
-    for firmware provided dump sections (ie. CPU & HPTE regions)
-  * "ibm,configure-kernel-dump-version": Versions of fadump supported
+Currently "ibm,configure-kernel-dump" RTAS call is already registered,
+which tells the kernel that the platform (QEMU) supports fadump.
 
-Pass the above device tree nodes so that kernel can reserve sufficient
-space for preserving the CPU state data
+Now, in case of a crash, if fadump was registered, we also pass
+"ibm,kernel-dump" in device tree, which tells the kernel that the fadump
+dump is active.
 
-Note: As of this patch, the "kernel-dump" device tree entry is still not
-added for the second boot, so after crash, the second kernel will boot
-assuming fadump dump is "NOT" active, and try to register for fadump,
-but since we already have fadump registered in QEMU internal state, the
-register rtas call will fail with: "DUMP ACTIVE"
+Pass "fadump=on" to enable Linux to use firmware assisted dump.
+
+Logs of a linux boot with firmware assisted dump:
+
+    $ ./build/qemu-system-ppc64 -M pseries,x-vof=on --cpu power10 --smp 4 -m 4G -kernel some-vmlinux -initrd some-initrd -append "debug fadump=on crashkernel=1G" -nographic
+
+    [    0.000000] fadump: Reserved 1024MB of memory at 0x00000040000000 (System RAM: 4096MB)
+    [    0.000000] fadump: Initialized 0x40000000 bytes cma area at 1024MB from 0x400102a8 bytes of memory reserved for firmware-assisted dump
+    ...
+    [    1.084686] rtas fadump: Registration is successful!
+    ...
+    # cat /sys/kernel/debug/powerpc/fadump_region
+    CPU :[0x00000040000000-0x000000400013df] 0x13e0 bytes, Dumped: 0x0
+    HPTE:[0x000000400013e0-0x000000400013df] 0x0 bytes, Dumped: 0x0
+    DUMP: Src: 0x00000000000000, Dest: 0x00000040010000, Size: 0x40000000, Dumped: 0x0 bytes
+
+    [0x0000000921a000-0x0000000921a7ff]: cmdline append: ''
+    # echo c > /proc/sysrq-trigger
+
+The fadump boot after crash:
+
+    [    0.000000] rtas fadump: Firmware-assisted dump is active.
+    [    0.000000] fadump: Updated cmdline: debug fadump=on crashkernel=1G
+    [    0.000000] fadump: Firmware-assisted dump is active.
+    [    0.000000] fadump: Reserving 3072MB of memory at 0x00000040000000 for preserving crash data
+    ....
+    # file /proc/vmcore
+    /proc/vmcore: ELF 64-bit LSB core file, 64-bit PowerPC or cisco 7500, OpenPOWER ELF V2 ABI, version 1 (SYSV), SVR4-style
+
+Analysing the vmcore with crash-utility:
+
+          KERNEL: vmlinux-6.14-rc2
+        DUMPFILE: vmcore-fc92fb373aa0
+            CPUS: 4
+            DATE: Wed Mar 12 23:39:23 CDT 2025
+          UPTIME: 00:00:22
+    LOAD AVERAGE: 0.13, 0.03, 0.01
+           TASKS: 95
+        NODENAME: buildroot
+         RELEASE: 6.12.0-rc4+
+         VERSION: #1 SMP Fri Jan  3 00:15:17 IST 2025
+         MACHINE: ppc64le  (1000 Mhz)
+          MEMORY: 4 GB
+           PANIC: "Kernel panic - not syncing: sysrq triggered crash"
+             PID: 269
+         COMMAND: "sh"
+            TASK: c00000000a050b00  [THREAD_INFO: c00000000a050b00]
+             CPU: 0
+           STATE: TASK_RUNNING (PANIC)
 
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
- hw/ppc/spapr.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+ hw/ppc/spapr.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index a415e51d077a..dac9e4b3edaa 100644
+index dac9e4b3edaa..f6e666ad4344 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -900,6 +900,62 @@ static int spapr_dt_rng(void *fdt)
-     return ret ? -1 : 0;
- }
- 
-+static void spapr_dt_rtas_fadump(SpaprMachineState *spapr, void *fdt, int rtas)
-+{
-+    MachineState *ms = MACHINE(spapr);
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
-+    FadumpMemStruct *fdm = &spapr->registered_fdm;
-+
-+    uint32_t max_possible_cpus = mc->possible_cpu_arch_ids(ms)->len;
-+    uint64_t fadump_cpu_state_size = 0;
-+    uint16_t fadump_versions[2] = {
-+        FADUMP_VERSION /* min supported version */,
-+        FADUMP_VERSION /* max supported version */
-+    };
-+    uint32_t fadump_rgn_sizes[2][3] = {
-+        {
-+            cpu_to_be32(FADUMP_CPU_STATE_DATA),
-+            0, 0 /* Calculated later */
-+        },
-+        {
-+            cpu_to_be32(FADUMP_HPTE_REGION),
-+            0, 0 /* HPTE region not implemented */
-+        }
-+    };
-+
-+    /*
-+     * CPU State Data contains multiple fields such as header, num_cpus and
-+     * register entries
-+     *
-+     * Calculate the maximum CPU State Data size, according to maximum
-+     * possible CPUs the QEMU VM can have
-+     *
-+     * This calculation must match the 'cpu_state_len' calculation done in
-+     * 'populate_cpu_state_data' in spapr_fadump.c
-+     */
-+    fadump_cpu_state_size += sizeof(struct FadumpRegSaveAreaHeader);
-+    fadump_cpu_state_size += 0xc;                      /* padding as in PAPR */
-+    fadump_cpu_state_size += sizeof(__be32);           /* num_cpus */
-+    fadump_cpu_state_size += max_possible_cpus   *     /* reg entries */
-+                             FADUMP_NUM_PER_CPU_REGS *
-+                             sizeof(struct FadumpRegEntry);
-+
-+    /* Set maximum size for CPU state data region */
-+    assert(fadump_rgn_sizes[0][0] == cpu_to_be32(FADUMP_CPU_STATE_DATA));
-+
-+    /* Upper 32 bits of size, usually 0 */
-+    fadump_rgn_sizes[0][1] = cpu_to_be32(fadump_cpu_state_size >> 32);
-+
-+    /* Lower 32 bits of size */
-+    fadump_rgn_sizes[0][2] = cpu_to_be32(fadump_cpu_state_size & 0xffffffff);
-+
-+    /* Add device tree properties required from platform for fadump */
-+    _FDT((fdt_setprop(fdt, rtas, "ibm,configure-kernel-dump-version",
-+                    fadump_versions, sizeof(fadump_versions))));
-+    _FDT((fdt_setprop(fdt, rtas, "ibm,configure-kernel-dump-sizes",
-+                    fadump_rgn_sizes, sizeof(fadump_rgn_sizes))));
-+}
-+
- static void spapr_dt_rtas(SpaprMachineState *spapr, void *fdt)
- {
+@@ -905,6 +905,8 @@ static void spapr_dt_rtas_fadump(SpaprMachineState *spapr, void *fdt, int rtas)
      MachineState *ms = MACHINE(spapr);
-@@ -1012,6 +1068,8 @@ static void spapr_dt_rtas(SpaprMachineState *spapr, void *fdt)
-     _FDT(fdt_setprop(fdt, rtas, "ibm,lrdr-capacity",
-                      lrdr_capacity, sizeof(lrdr_capacity)));
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
+     FadumpMemStruct *fdm = &spapr->registered_fdm;
++    uint16_t dump_status_flag;
++    bool     is_next_boot_fadump;
  
-+    spapr_dt_rtas_fadump(spapr, fdt, rtas);
+     uint32_t max_possible_cpus = mc->possible_cpu_arch_ids(ms)->len;
+     uint64_t fadump_cpu_state_size = 0;
+@@ -954,6 +956,18 @@ static void spapr_dt_rtas_fadump(SpaprMachineState *spapr, void *fdt, int rtas)
+                     fadump_versions, sizeof(fadump_versions))));
+     _FDT((fdt_setprop(fdt, rtas, "ibm,configure-kernel-dump-sizes",
+                     fadump_rgn_sizes, sizeof(fadump_rgn_sizes))));
 +
-     spapr_dt_rtas_tokens(fdt, rtas);
++    dump_status_flag = be16_to_cpu(fdm->header.dump_status_flag);
++    is_next_boot_fadump =
++        (dump_status_flag & FADUMP_STATUS_DUMP_TRIGGERED) != 0;
++    if (is_next_boot_fadump) {
++        uint64_t fdm_size =
++            sizeof(struct FadumpSectionHeader) +
++            (be16_to_cpu(fdm->header.dump_num_sections) *
++            sizeof(struct FadumpSection));
++
++        _FDT((fdt_setprop(fdt, rtas, "ibm,kernel-dump", fdm, fdm_size)));
++    }
  }
  
+ static void spapr_dt_rtas(SpaprMachineState *spapr, void *fdt)
 -- 
 2.48.1
 
