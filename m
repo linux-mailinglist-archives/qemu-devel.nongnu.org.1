@@ -2,75 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988FCA5EBEC
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 07:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FC1A5EBED
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 07:57:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tscTS-0005PQ-VH; Thu, 13 Mar 2025 02:55:23 -0400
+	id 1tscU1-0006NJ-UX; Thu, 13 Mar 2025 02:55:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tscT1-0005Cg-Ip
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:54:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tscSz-0005ed-SO
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:54:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741848892;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5/p+AcFG+nzj5Ok7M2TaUyDpKZTxhAJHi6p2eOtfisg=;
- b=VFKs+tg8mxi/lN7XF509UrMGECxmQq8BgcLRQvPhQfuO8REKCVdtuzqHh/3xHC/SSGHaDV
- uWSDC24lZ93gL0WTpkaToosPNPVfqhjoiAvAicwtCJkRtgoe4gj3fnnsTYugS1dXp/nFl0
- P621Fwe7yaQeKCkBkNq0ZpOoQeXuXZM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-621-6lkSrfTbPXa2_rlT56zDzw-1; Thu,
- 13 Mar 2025 02:54:48 -0400
-X-MC-Unique: 6lkSrfTbPXa2_rlT56zDzw-1
-X-Mimecast-MFC-AGG-ID: 6lkSrfTbPXa2_rlT56zDzw_1741848887
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B8C59180049D; Thu, 13 Mar 2025 06:54:47 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 38E251978F5D; Thu, 13 Mar 2025 06:54:47 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 746CE21E66C1; Thu, 13 Mar 2025 07:54:43 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Konstantin Kostiuk <kkostiuk@redhat.com>,  Peter
- Maydell <peter.maydell@linaro.org>,  Eric Blake <eblake@redhat.com>,
- qemu-block@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Kevin Wolf
- <kwolf@redhat.com>
-Subject: Re: [PATCH 11/11] docs: enable transmogrifier for QSD and QGA
-In-Reply-To: <20250313044312.189276-12-jsnow@redhat.com> (John Snow's message
- of "Thu, 13 Mar 2025 00:43:12 -0400")
-References: <20250313044312.189276-1-jsnow@redhat.com>
- <20250313044312.189276-12-jsnow@redhat.com>
-Date: Thu, 13 Mar 2025 07:54:43 +0100
-Message-ID: <87y0x9cte4.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tscTu-0006KG-1A
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:55:50 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1tscTq-00062G-Io
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:55:49 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2fef5c978ccso1090189a91.1
+ for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 23:55:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741848944; x=1742453744;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QZZQhH6ivk3JyijidPGyvWcmUVWmHyz0FvYly6OOQJE=;
+ b=AC7SVrXqalhrbPURZawvSVNrXvOEV6C/oow9o3MEo5/qT7jrPztCxPycDW3yNZEYjk
+ ngsOf6lMu9MV/ffnwhX4RHnrbtj3UpPjI6J0t47R2I2x569Yl3P58BfOkf6w8oXrFp96
+ K8LsRKxZchenZWF1GaMmdsqQ44bbK0QiqRTJErSg0GNousdLtw2cTYHQVCCeIyYC8eMs
+ GTwimr7FrpuBt9dV7dpRBACRf+OFJRsnDgIUm8/gFgTz9uysClyPg+k374mfBRJNAAMa
+ 1XaELysf/4+5U5ew6d32AOjh/0iFg6cuumMDWuLe+7U4a18p6U3U6RPGBg3mHIRPQcsA
+ mtQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1741848944; x=1742453744;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QZZQhH6ivk3JyijidPGyvWcmUVWmHyz0FvYly6OOQJE=;
+ b=D2pHCPTNG1Eh3vXFVflVk3eYWAZeinr3jp4ThQicUVtoyvRaHvb8wjBXzZ9bU+s4NE
+ O+oeh77seqPQTRIR/euP7igcld99HMUScyB+dOaTxrYRGVizDDcOyzguIO9+wSsS8Wew
+ VDLAV8d4E2BwT5de/Uq2iP4ym1ph2UYx2lmlA4IO410NN/cv+u/zrEx4mb+bVV4Pi/nG
+ uiDcu8lRHKDeKst1zVm6/KeXDd4j5m8l2dfNyBjCpNbdcsEmd5QODp9Do9hsdb35Ns8P
+ cv2RbbiDI+9Q1sVZhdhQdJu/HP/x7r6lC6zw4S2VlvLkQS/C226eb9bRzV2p2FV8fqLJ
+ nkjA==
+X-Gm-Message-State: AOJu0YzNiDFEHRrIvePmD7QF6wKgJRhCjXQRQcs0+YJS+TZFX0ycuVQ+
+ a0H4EvwJsoHqtIi/4fHSawQ93YYQDASn08f9DsLq52xTLGgLCCzjx5F30xx6ZKg=
+X-Gm-Gg: ASbGncsMmSBzVlSur4m5MT7ix/BwmZm6BsJpmiPi4G2hRKfqFgET1OIqdFjqfhItCKt
+ pGOi1ct5TW8bsUN9A8mqj4el5LVCa3TMJcliYbr8FCOzGk6FBqG/D34I2K71cJA+XSE1XmSgaZ0
+ V8BswGGU/48EhCwWGRqyzI+oL+d63kMtBOA1FUxEIvQt+Xe47m4aftL7GN98CTfIhRF5evGfw+q
+ ur6gn0MvIYhfz7lbR7GiKZhLVl6R/Mp6cahjOyb426JRj4jEinRRCOrAQSOfMawwhPyfyNWqhbT
+ BSEGNJr0lXU+TDSfr+h6pfi3Ybw+r6grR5MgFnKHzWyLqkNv
+X-Google-Smtp-Source: AGHT+IGSzpGAQjmdpgpVGLgF+dX9jHAAGvGhejcbXzPoHEcwzweVkQTtaMjggj5/dzpL2mhP6Z8aCg==
+X-Received: by 2002:a17:90b:224a:b0:2ff:79ca:24b7 with SMTP id
+ 98e67ed59e1d1-2ff7ce89d64mr31828486a91.21.1741848943997; 
+ Wed, 12 Mar 2025 23:55:43 -0700 (PDT)
+Received: from localhost ([157.82.205.237])
+ by smtp.gmail.com with UTF8SMTPSA id
+ 98e67ed59e1d1-30118235051sm3081980a91.11.2025.03.12.23.55.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Mar 2025 23:55:43 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH RFC v4 00/11] virtio-net: Offload hashing without eBPF
+Date: Thu, 13 Mar 2025 15:55:26 +0900
+Message-Id: <20250313-hash-v4-0-c75c494b495e@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF+B0mcC/yXMuw7CIBQG4FdpziwGgbbUycTEB3A1HRBQzlAwY
+ EibhneX4Phf8u2QbESb4NztEG3GhMHXIA4daKf82xI0NQOjTFDJJHEqOTIwydmkRG+EgXr9RPv
+ CtTEPuN+uMNfSYfqGuDU68zY1ZTr1fyVzQsk46SeVhslBjBejNo/rUYcF5lLKD4E8lG+eAAAA
+X-Change-ID: 20240828-hash-628329a45d4d
+To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ devel@daynix.com
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.15-dev-edae6
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,58 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+I'm proposing to add a feature to offload virtio-net RSS/hash report to
+Linux. This series contain patches to utilize the proposed Linux feature.
+The patches for Linux are available at:
+https://lore.kernel.org/r/20250307-rss-v9-0-df76624025eb@daynix.com/
 
-> This also creates the `qapi-qsd-index` and `qapi-qga-index` QMP indices.
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
+This work was presented at LPC 2024:
+https://lpc.events/event/18/contributions/1963/
 
-[...]
+Patch "docs/devel/ebpf_rss.rst: Update for peer RSS" provides comparion
+of existing RSS mechanism and the new one (called "peer RSS") and
+explains how QEMU selects one.
 
-> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-> index 995594aaf43..35ec0e7db31 100644
-> --- a/qga/qapi-schema.json
-> +++ b/qga/qapi-schema.json
-> @@ -3,6 +3,9 @@
->  
->  ##
->  # = QEMU guest agent protocol commands and structs
-> +#
-> +# For a concise listing of all commands, events, and types in the QEMU
-> +# guest agent, please consult the `qapi-qga-index`.
->  ##
->  
->  { 'pragma': { 'doc-required': true } }
-> diff --git a/storage-daemon/qapi/qapi-schema.json b/storage-daemon/qapi/qapi-schema.json
-> index f10c9494906..2a562ee32e5 100644
-> --- a/storage-daemon/qapi/qapi-schema.json
-> +++ b/storage-daemon/qapi/qapi-schema.json
-> @@ -13,6 +13,14 @@
->  # the array type in the main schema, even if it is unused outside of the
->  # storage daemon.
->  
-> +##
-> +# = QEMU storage daemon protocol commands and structs
-> +#
-> +# For a concise listing of all commands, events, and types in the QEMU
-> +# storage daemon, please consult the `qapi-qsd-index`.
-> +##
-> +
-> +
->  { 'include': '../../qapi/pragma.json' }
->  
->  # Documentation generated with qapi-gen.py is in source order, with
+---
+Changes in v4:
+- Rebased.
+- Added a reference to the documentation to the cover letter.
+- Link to v3: https://lore.kernel.org/r/20240915-hash-v3-0-79cb08d28647@daynix.com
 
-Compare qapi/qapi-schema.json:
+---
+Akihiko Odaki (11):
+      qdev-properties: Add DEFINE_PROP_ON_OFF_AUTO_BIT64()
+      net/vhost-vdpa: Report hashing capability
+      virtio-net: Move virtio_net_get_features() down
+      virtio-net: Retrieve peer hashing capability
+      net/vhost-vdpa: Remove dummy SetSteeringEBPF
+      virtio-net: Add hash type options
+      net: Allow configuring virtio hashing
+      virtio-net: Use qemu_set_vnet_hash()
+      virtio-net: Offload hashing without vhost
+      tap: Report virtio-net hashing support on Linux
+      docs/devel/ebpf_rss.rst: Update for peer RSS
 
-   # = Introduction
-   #
-   # This document describes all commands currently supported by QMP.
-   #
-   # For locating a particular item, please see the `qapi-qmp-index`.
-   #
+ docs/devel/ebpf_rss.rst        |  23 ++-
+ include/hw/qdev-properties.h   |  18 +++
+ include/hw/virtio/virtio-net.h |   6 +-
+ include/net/net.h              |  20 +++
+ net/tap-linux.h                |   2 +
+ net/tap_int.h                  |   3 +
+ hw/core/qdev-properties.c      |  67 ++++++++-
+ hw/net/virtio-net.c            | 331 +++++++++++++++++++++++++++++------------
+ net/net.c                      |  14 ++
+ net/tap-bsd.c                  |  10 ++
+ net/tap-linux.c                |  18 +++
+ net/tap-solaris.c              |  10 ++
+ net/tap-stub.c                 |  10 ++
+ net/tap.c                      |  15 ++
+ net/vhost-vdpa.c               |  41 ++++-
+ 15 files changed, 478 insertions(+), 110 deletions(-)
+---
+base-commit: 825b96dbcee23d134b691fc75618b59c5f53da32
+change-id: 20240828-hash-628329a45d4d
 
-Suggest to pick one phrasing and stick to it, unless there's a reason
-for more than one.
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
