@@ -2,89 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64CFA5EBFA
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 07:58:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A4BA5EC3D
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Mar 2025 08:04:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tscVg-0007p1-B0; Thu, 13 Mar 2025 02:57:45 -0400
+	id 1tscc4-0001MB-Kc; Thu, 13 Mar 2025 03:04:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tscUU-00074I-7i
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:56:28 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tscUS-0006Az-Cs
- for qemu-devel@nongnu.org; Thu, 13 Mar 2025 02:56:25 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2ff64550991so1155115a91.0
- for <qemu-devel@nongnu.org>; Wed, 12 Mar 2025 23:56:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741848983; x=1742453783;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FMIoIr6/4bz4Br49nK8n48Lj1al7ccgCjDAUACVxZ3k=;
- b=irmfMljIyLw2DTqs4xxgBqb7w2wFWHsnjaoXRYAkduxfKiyDPx2iTQuq+wLLOW+sik
- PB55zZh0UgC7RiVQGJERcQK6zKXVv8sti6PHC442jXvP6Rqhzlh/ooCz+2pXf3Ybzlhq
- 9pwzJCQP3I1ReDpKOAzFeEX6HMI3zeUyzrF5FELj6O65ob9jO5Y80EfNUr00vA2t69Hs
- eIQ59Y4BBV09j2+luUhJfrH0uK3Mfn9vT8tDKeJLnMcqAzdDE8MFWFbiyVhlYAInvMxi
- 4oQVS2oAIkQQzN9hh/a2yfpRNrMnq8l2X2mCSVlNi4y96gAGC1oXWjtWf4dr4imlsreg
- oNeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741848983; x=1742453783;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FMIoIr6/4bz4Br49nK8n48Lj1al7ccgCjDAUACVxZ3k=;
- b=qO0ZxwGZsByR52N5Z/u3t9cJncozs0ic+jNZv3I1hoSTVJ9ZFrs6IatklDdE4JtwIA
- EpZXo3HTPU5xojaNhdZd4z0wEhXTazejMRa2XkkR3I/bzyGdW/diPnG87xc8zADoXmuQ
- rMSaUnaM/ZMjupLSOe7wjc72hna652+c6YZ63Mn8kLtnDhR8P+v4CyM+ysuiTDuS4UCN
- DwUNNCcjTTftrIiZR7em/YuM4Fm/7IhCgl/omCM2t81gXMZz1tntUQWvPvcpK6yR2k6A
- S/GkrFrTw/mOZ/OcNeMJY4nhX5k8ApEnwnf7xeFfmnXzFqF7rzR9cgHg+k7dn3hTj0fO
- yEXQ==
-X-Gm-Message-State: AOJu0Yxv2uH7R42+SKb1zcdMcT3EF4UY0eT5A/Wl0m3z9aU2+X9fZEeW
- 485oUtWM3/iM7Poi5180cbDrmBPbov8e9g04o2Kg2F8BW/vPNCaube5w6C70rmYK9GrSkoR1rBb
- iWvs=
-X-Gm-Gg: ASbGnctDJ3yewnNjn/lkH7F/0rzvvjvh5H6PwG7tQd0btrdKW8va4vnDalc7x225dfK
- rh5xwqgtm6UNloz8tEYXurgcmzVbRbiW5t+qmspG6QEFBe2FjSbNlXsXN8QP/r+BBDiImsLI00r
- k3U+d2bCNwsBPAdCv/q8uCm8icYXmMXmvJKW2WGfa4eluHEsfaX66ONRhQMLRbpArnPgRpui2WY
- yGIQhvLvbgXIKzHoZkJxeaQ5AxjR/UlxUYgucTjVIJhWwMeZjD2U4zU0+ymAU/4v0strS8FMYYe
- rvLqpgehU9lnEV1eOlSwLViOHfTot2OG6Uw7/Wt8GU5FYOl1topJgM/0EAo=
-X-Google-Smtp-Source: AGHT+IHTIevd5a5psY4w5trpr7wr2G/IPwvA1BcpwguiEM1U9FOPuZDRlLJgYPGaQxP8aEEWGEXZ3A==
-X-Received: by 2002:a17:90b:3ecb:b0:2fe:6942:370e with SMTP id
- 98e67ed59e1d1-2ff7ce70a09mr36244314a91.7.1741848982934; 
- Wed, 12 Mar 2025 23:56:22 -0700 (PDT)
-Received: from localhost ([157.82.205.237])
- by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-3011821840dsm3078987a91.4.2025.03.12.23.56.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Mar 2025 23:56:22 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 13 Mar 2025 15:55:37 +0900
-Subject: [PATCH RFC v4 11/11] docs/devel/ebpf_rss.rst: Update for peer RSS
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tscbz-0001Gb-JZ
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 03:04:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tscby-0007P5-1x
+ for qemu-devel@nongnu.org; Thu, 13 Mar 2025 03:04:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741849449;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9R4nUderFA4XiVxLyzRn1p5PJpmOh+t2TcuFBW+FFNI=;
+ b=X3+vxs5BcDcl989FArmPIXYtd1bxJl5kgV3yA6G8YUwzewN3rzVfi+Py/0XqoRYf39ol5k
+ /ppEKHgm+7Go6Xb1fXFzyZeiYaAr5Hka4g1Fp0yXeRL8bBCQE2WWbiqiwQV5TZDTtOYe6r
+ 0Pb3QUp7IQKyTYyPp9ku5MAnVSVzMk0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-q5PPGlKZPB-I-UF18t8hBQ-1; Thu,
+ 13 Mar 2025 03:04:07 -0400
+X-MC-Unique: q5PPGlKZPB-I-UF18t8hBQ-1
+X-Mimecast-MFC-AGG-ID: q5PPGlKZPB-I-UF18t8hBQ_1741849446
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6A2DD1956055; Thu, 13 Mar 2025 07:04:06 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.45])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 995A91828AA4; Thu, 13 Mar 2025 07:04:05 +0000 (UTC)
+Date: Thu, 13 Mar 2025 15:04:02 +0800
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>
+Subject: Re: [PULL 0/1] Tracing patches
+Message-ID: <20250313070402.GA1086043@fedora>
+References: <20250311025331.598234-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-hash-v4-11-c75c494b495e@daynix.com>
-References: <20250313-hash-v4-0-c75c494b495e@daynix.com>
-In-Reply-To: <20250313-hash-v4-0-c75c494b495e@daynix.com>
-To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
- Andrew Melnychenko <andrew@daynix.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- devel@daynix.com
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="R55fAn3brsu20Dzc"
+Content-Disposition: inline
+In-Reply-To: <20250311025331.598234-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,65 +83,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-eBPF RSS virtio-net support was written in assumption that there is only
-one alternative RSS implementation: 'in-qemu' RSS. It is no longer true,
-and we now have yet another implementation; namely the peer RSS.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- docs/devel/ebpf_rss.rst | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+--R55fAn3brsu20Dzc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/docs/devel/ebpf_rss.rst b/docs/devel/ebpf_rss.rst
-index ed5d33767bd5..f128f0990905 100644
---- a/docs/devel/ebpf_rss.rst
-+++ b/docs/devel/ebpf_rss.rst
-@@ -7,9 +7,22 @@ eBPF RSS virtio-net support
- RSS(Receive Side Scaling) is used to distribute network packets to guest virtqueues
- by calculating packet hash. Usually every queue is processed then by a specific guest CPU core.
- 
--For now there are 2 RSS implementations in qemu:
--- 'in-qemu' RSS (functions if qemu receives network packets, i.e. vhost=off)
--- eBPF RSS (can function with also with vhost=on)
-+For now there are 3 RSS implementations in qemu:
-+1. Peer RSS
-+2. eBPF RSS
-+3. 'In-QEMU' RSS
-+
-+'In-QEMU' RSS is incompatible with vhost since the packets are not routed to
-+QEMU. eBPF RSS requires Linux 5.8+. Peer RSS requires the peer to implement RSS.
-+Currently QEMU can use the RSS implementation of vDPA and Linux's TUN module
-+with the following patch applied:
-+https://lore.kernel.org/r/20240915-rss-v3-0-c630015db082@daynix.com/
-+
-+eBPF RSS does not support hash reporting. Peer RSS may support limited hash
-+types.
-+
-+virtio-net automatically chooses the RSS implementation to use. Peer RSS is
-+the most preferred, and 'in-QEMU' RSS is the least.
- 
- eBPF support (CONFIG_EBPF) is enabled by 'configure' script.
- To enable eBPF RSS support use './configure --enable-bpf'.
-@@ -49,9 +62,6 @@ eBPF RSS turned on by different combinations of vhost-net, vitrio-net and tap co
- 
-         tap,vhost=on & virtio-net-pci,rss=on,hash=on
- 
--If CONFIG_EBPF is not set then only 'in-qemu' RSS is supported.
--Also 'in-qemu' RSS, as a fallback, is used if the eBPF program failed to load or set to TUN.
--
- RSS eBPF program
- ----------------
- 
-@@ -67,7 +77,6 @@ Prerequisites to recompile the eBPF program (regenerate ebpf/rss.bpf.skeleton.h)
-         $ make -f Makefile.ebpf
- 
- Current eBPF RSS implementation uses 'bounded loops' with 'backward jump instructions' which present in the last kernels.
--Overall eBPF RSS works on kernels 5.8+.
- 
- eBPF RSS implementation
- -----------------------
+Applied, thanks.
 
--- 
-2.48.1
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
+
+--R55fAn3brsu20Dzc
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfSg2IACgkQnKSrs4Gr
+c8i7OQf9HGQ5OqtGI/DgcRDdnipftdbtxbjIgDUiQJHGsssm5YHqYuPyQkC/JISf
+tQmFpFy1nLVW4xFTOXiuXzJnpqAfu5YWkcXMq6rP5/VTyB9TPegedvPX/qkfh207
+q+RAlwe+SlSk7pMnlgpZRqXdRsh05xNDO9akZs9cU+L6J2iSNB05Jfg/dm70DB/D
+ZW+MPq124CfIDV9PsXH4SxkSrIDGGVUQaHUpP3BH/R2UbxwuJ4IeUFp8s3O+ilQG
+WZkQze/lAYEeUFaMlRhZktZCsVo4xTa03O3jOgj7lp7OjzzkIBOY2JkN1p0isJFM
+FIZ+JHX5/w+FdxSlKnCbRuys9zPR9g==
+=JPaG
+-----END PGP SIGNATURE-----
+
+--R55fAn3brsu20Dzc--
 
 
