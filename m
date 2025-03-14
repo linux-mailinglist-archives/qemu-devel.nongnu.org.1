@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61578A6083E
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F194A6083C
 	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 06:17:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsxOa-0005hs-6t; Fri, 14 Mar 2025 01:15:44 -0400
+	id 1tsxOb-0005iV-Oc; Fri, 14 Mar 2025 01:15:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1tsxOU-0005h1-0y
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 01:15:41 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1tsxOY-0005hr-Tn
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 01:15:43 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1tsxOS-0006t9-HH
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 01:15:37 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-224171d6826so42722115ad.3
- for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 22:15:35 -0700 (PDT)
+ id 1tsxOX-0006tb-70
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 01:15:42 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-223f4c06e9fso32529955ad.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 22:15:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1741929335; x=1742534135; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cRaJn/P+x+6WN/SFVe2m4RS+pjGn4ofoWNcOqY5FHzM=;
- b=Qf+ojujV4bRovx7QdD4C0nIAuro8HKyRiCqW7FW3gNz3uUJRH8xSGFSEIEYltyxjaH
- WCJZeZ48k/o0VfZ+40bPj9OMcToRAg9we4Wz8bRGi3KKJMlbgu56k6/SDGqQVQc9f+cx
- FOm6czHjPgQobvm45KIrG+GjsT9pD1nQO3FKMy6TuwNwSo4nUQ6bueLk04HSna2VKXwn
- b4H2/NOyN2IYzqbbQpty97H8Zmcup7WukYzwAHGKNXD3Mk+g1h+sppItRsyVkuIyRx6D
- StDtLvImfsjJzdC0gexTjYp+IWCxznAHv9IuUozjjZtD2FqW+7Y1tTKO1i0kPLPZlHbt
- D9eA==
+ d=ventanamicro.com; s=google; t=1741929338; x=1742534138; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PRmwwscyRwEDqCnI3abF+NUYE7gKd59kQM35HmG7LFE=;
+ b=OO1nldY2o+UNsUNcw3GqmNQ/Fnyq7pyvK9nIOud1dHVlcsNQA1DjTxwxanuNEnbh08
+ bVt/Vz6yS1F1YuegBtXyUdlEbaPpW+jatScsv/12ZBbnTMAh9F64OB0YyI7rvl3ckssD
+ yecT26Cj6kO1Q37cV9kggx+8zs8MgLDthmc1Zt2xuW1gH3emCRJe+bqbxMymzv2oYJyW
+ 3m1EV7MvXBsiFht8Hl5VTyraL1mzXZevpIGN1PSl//JbUngAJjdrCHIH7dqvcCrw4hMr
+ L8zj8B5sU5W8LovmtVu4f+9IYeJDORLKY1tGCCLBbhvCaQzXuu36KFnQk76wcEcwVwqb
+ xl8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741929335; x=1742534135;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cRaJn/P+x+6WN/SFVe2m4RS+pjGn4ofoWNcOqY5FHzM=;
- b=vzIz8chqStIEI8KXBv/ISQV9E00SHBqWGSGheF2s9RKfohP8eVp/Ctc7rjQUy1mNhj
- zQ9AwsbiL6ZNAoHp2EwTnhb71YuCbGhHtn4g+iY5whzd0YMV/VtKU0qMhsNGB59C9KwR
- XkfQQ2EWL4N7wDnF9b80D/7Or3hiHc73byTwg8ZRps4uIILWPbR3adVeSJJ8S5ksFMWK
- ETzHi7SyNsjf2Vhq8ihG6xMAJccNgXT9pa8keRxSNLsu8zE3tigwUjzR4HBP8JBGJZp0
- 5QCM3QBvUd30JP2Myoz2aza5GSHtG68r3L5w4g5HM1V1Gp09cgCNE7+KlWwJ5cVtuq6z
- Lxlw==
+ d=1e100.net; s=20230601; t=1741929338; x=1742534138;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=PRmwwscyRwEDqCnI3abF+NUYE7gKd59kQM35HmG7LFE=;
+ b=gcDQLWQTxOaXgs1QPmLZRE1JtxJpePHtP3rioyOWZxRVyGfSDomKXGfoq8sGNtL2vz
+ Gn6PzRiP9yqI92NAHCtCYeZGKU8IsRVudNFMT1AHWVVftT5QYCTIxVtFqJkupBM6S0fh
+ 7Hp57RMSYWw5L4jUYhAJaAsRg+MOZHI1pmnK03PljjYFJ3U3Y8pNhbng9nsRpf5lzCKa
+ AwrgT+lPjEF+raJ1t+pCkHUBjoSwhZQCdlN6qG+h0wxZB4oiJX6l/PLv21nu6ha/5a+W
+ 1eSwtYBvVmbzAb8uKtZsQZKPVb2EOY59a5FQu93FKaxSJh5761Sq47u2ZkhX6q17P+UZ
+ cpQg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX5KZ4PylG+9jTeY50DSM+BBw072jjKslazkZiWhK357ZHSPqC2+pZNYuWeyEC42vNT/Ug7fQwG8DFM@nongnu.org
-X-Gm-Message-State: AOJu0YwmH9j5Fj0BS4e8lKap7v5EqRcTNbmegSgFypqUss5VhETyz36S
- ypVarNPXRk8aFUE0rx24dTpMRFwd0lkEYNM49hxvOoFNvQR4cjYVrk6JKiLYK84=
-X-Gm-Gg: ASbGncsT15pbVB14hQmnEGTdEzU0Z3p28SqMOiqU95+IkL3sPGRJO9+O1VYCmEzOi+e
- dDFxeqRwxS8prA72j9x5TwqIQ52qd+8kkZ1SK5jLxoHyKjTsiWdy5v2Cxcu45/dQrGZ7uL5w0Pj
- 0AfjHXK5/TQUQkFNabqrbDUfYspZ8oZR8CJ0PWy0Cz/kWI+gpOBms5bjd8ddDiwH8NNzuMR6HJ/
- JOJq3fNFGbtHKVSLNTkfmyMR1xZ+I0v9Q5CX1gT7FQbzrmeW89g5gUDEiO4oH5drzFJLfehHeHh
- Ifl9Av/0a8nWLfd9DAaLYrR6tL4oOG9u6T08oeYd9s4Mthxg24olXYs=
-X-Google-Smtp-Source: AGHT+IHL3/s1OGomVkiP0UOA6VoDm23gGxk3h1gP2xwWhR/UqusTH5CcSOXaNOeu6s/6AnISrfJitQ==
-X-Received: by 2002:a17:902:e5cb:b0:224:1001:677c with SMTP id
- d9443c01a7336-225e0a62fcfmr17249915ad.9.1741929334649; 
- Thu, 13 Mar 2025 22:15:34 -0700 (PDT)
+ AJvYcCVZJHClVTttiq+Un161Xd99zWw2rOOkaFYnWuxfpiJIiInCHpPNtDLDCF569yXJ4zQVPFimv8wxRWjy@nongnu.org
+X-Gm-Message-State: AOJu0Ywo+QqRJwNU2HU8FZLQEiklmDn988UtCPIB2kXsyj03+kuUcyiY
+ lcdkqQ6vqMZp/to1LXnmRQmAVIydGS3putvDcypi7A/Bk4DdbU6UnUo9MygQX1g=
+X-Gm-Gg: ASbGncvBrK5ddfDNfd1Aq/NfcYpZRKgeSQPS7+riAFDZmLHyzewTV3MdDA7Iz96r9Wv
+ 1ufiygnotNQHQYAAudAmNtHPT01o72B+4VqL6vf2mXco/88ZMVSaVTbnQJ0tZFEez4o8/Y9XoHg
+ Cz+XlCaTcqVynQPHv4t/vemQ7cjZJwVgcrfbKkL0kpUNw78uRiUI7TQ41/txDiYA5/jYyC4iNS3
+ jx/V5kgPBKh1V+PG2SLJo0davLDYyutaVoorwYLjzrrLYOaCIaiGQn3PAB68sbfbE4xrXJDsw6b
+ iodf6Aoum6sraNYErB8OFD3opgKuMcTkgryuqAYlf1i2GAFIbQQZrWE=
+X-Google-Smtp-Source: AGHT+IGIQfF6a57pV1C3XgDWL4bJFohqoWYOoIiBoPXgfA6s++2BoFcKnL/BsufqQJtkR6GxzeJfkg==
+X-Received: by 2002:a17:902:e750:b0:223:607c:1d99 with SMTP id
+ d9443c01a7336-225e1594eacmr18767765ad.0.1741929338230; 
+ Thu, 13 Mar 2025 22:15:38 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.199.215])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-225c6bbeb94sm22278225ad.199.2025.03.13.22.15.31
+ d9443c01a7336-225c6bbeb94sm22278225ad.199.2025.03.13.22.15.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 22:15:34 -0700 (PDT)
+ Thu, 13 Mar 2025 22:15:37 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -72,14 +73,17 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Anup Patel <apatel@ventanamicro.com>, Atish Patra <atishp@rivosinc.com>,
  Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH 0/2] RISC-V: ACPI: Add support for RIMT
-Date: Fri, 14 Mar 2025 10:45:25 +0530
-Message-ID: <20250314051527.1892488-1-sunilvl@ventanamicro.com>
+Subject: [PATCH 1/2] hw/riscv/virt: Add the BDF of IOMMU to RISCVVirtState
+ structure
+Date: Fri, 14 Mar 2025 10:45:26 +0530
+Message-ID: <20250314051527.1892488-2-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250314051527.1892488-1-sunilvl@ventanamicro.com>
+References: <20250314051527.1892488-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,22 +106,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RISC-V IO Mapping Table (RIMT) is a new static ACPI table used to
-communicate IOMMU and topology information to the OS. Add support for
-creating this table when the IOMMU is present. The specification is
-frozen and available at [1].
+When the IOMMU is implemented as a PCI device, its BDF is created
+locally in virt.c. However, the same BDF is also required in
+virt-acpi-build.c to support ACPI. Therefore, make this information part
+of the global RISCVVirtState structure so that it can be accessed
+outside of virt.c as well.
 
-[1] - https://github.com/riscv-non-isa/riscv-acpi-rimt/releases/download/v0.99/rimt-spec.pdf
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+---
+ hw/riscv/virt.c         | 1 +
+ include/hw/riscv/virt.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-Sunil V L (2):
-  hw/riscv/virt: Add the BDF of IOMMU to RISCVVirtState structure
-  hw/riscv/virt-acpi-build: Add support for RIMT
-
- hw/riscv/virt-acpi-build.c | 215 +++++++++++++++++++++++++++++++++++++
- hw/riscv/virt.c            |   1 +
- include/hw/riscv/virt.h    |   1 +
- 3 files changed, 217 insertions(+)
-
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index dae46f4733..ce256fb3b3 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1116,6 +1116,7 @@ static void create_fdt_iommu(RISCVVirtState *s, uint16_t bdf)
+     qemu_fdt_setprop_cells(fdt, pci_node, "iommu-map",
+                            0, iommu_phandle, 0, bdf,
+                            bdf + 1, iommu_phandle, bdf + 1, 0xffff - bdf);
++    s->pci_iommu_bdf = bdf;
+ }
+ 
+ static void finalize_fdt(RISCVVirtState *s)
+diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
+index 48a14bea2e..7b4c2c8b7d 100644
+--- a/include/hw/riscv/virt.h
++++ b/include/hw/riscv/virt.h
+@@ -63,6 +63,7 @@ struct RISCVVirtState {
+     const MemMapEntry *memmap;
+     struct GPEXHost *gpex_host;
+     OnOffAuto iommu_sys;
++    uint16_t pci_iommu_bdf;
+ };
+ 
+ enum {
 -- 
 2.43.0
 
