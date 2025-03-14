@@ -2,63 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D544A61706
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 18:05:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D2CA61771
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 18:21:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt8SH-00044x-5h; Fri, 14 Mar 2025 13:04:17 -0400
+	id 1tt8i6-0000dD-MI; Fri, 14 Mar 2025 13:20:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tt8SB-00040E-Mh
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 13:04:11 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1tt8S9-0004Qp-4F
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 13:04:11 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZDrHK6F6Xz6JB7X;
- Sat, 15 Mar 2025 01:01:17 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 340CE140D26;
- Sat, 15 Mar 2025 01:03:59 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 14 Mar
- 2025 18:03:58 +0100
-Date: Fri, 14 Mar 2025 17:03:57 +0000
-To: Dan Williams <dan.j.williams@intel.com>
-CC: Yuquan Wang <wangyuquan1236@phytium.com.cn>, <qemu-devel@nongnu.org>,
- <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH] docs/cxl: Add serial number for persistent-memdev
-Message-ID: <20250314170357.00000de3@huawei.com>
-In-Reply-To: <67d44ec5a79c1_12e31294ea@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20250217112039.138650-1-wangyuquan1236@phytium.com.cn>
- <20250220161213.000049a9@huawei.com>
- <20250221065509-mutt-send-email-mst@kernel.org>
- <17b91a9f.2847.1955fd23d78.Coremail.wangyuquan1236@phytium.com.cn>
- <20250305141359.00001288@huawei.com>
- <4752672.2b5f.19565e01b65.Coremail.wangyuquan1236@phytium.com.cn>
- <20250312181035.00006e32@huawei.com>
- <67d44ec5a79c1_12e31294ea@dwillia2-xfh.jf.intel.com.notmuch>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <ziyao@disroot.org>) id 1tt8hs-0000bX-4y
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 13:20:24 -0400
+Received: from layka.disroot.org ([178.21.23.139])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ziyao@disroot.org>) id 1tt8hp-0006gn-LQ
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 13:20:23 -0400
+Received: from mail01.disroot.lan (localhost [127.0.0.1])
+ by disroot.org (Postfix) with ESMTP id DB6B625B10;
+ Fri, 14 Mar 2025 18:20:18 +0100 (CET)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id gOxpLexbdJLV; Fri, 14 Mar 2025 18:20:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+ t=1741972807; bh=DaYB282l8x27jK7ew6fSh8TRqoEKMY+1sNzdY0pNHNQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=VCtV8WXbHwic3R8dqkIUncc2AixFylyEF5Y3DA24BFY/nn4CuXjKQ1fCBjMwwJVzq
+ qy4jSodVvRYGi5Bdg4ZN8XdqZOHwf1OTIU/ykazSAqKjTTScgFvi6UvkxxzxejoIRO
+ 8rR9qCcw4UHrVKbJf8LTsfFWBHueIC391mT81HF1OZiO4xYACU7wow3V4MJqvO1CCv
+ 78KJ3IFzqyII/rXH+vutzqyce1wKTlzNqRBB0UzqAKD2kuco+rdDTqAANUYX+zELMF
+ sepRCMtmKUbsth0KhDigrnzquG3DKZDNWO0+d88/Y1d+O3AoKbsPcKr9bioJqaKlHm
+ CFrc/bwsd0aHg==
+Date: Fri, 14 Mar 2025 17:19:57 +0000
+From: Yao Zi <ziyao@disroot.org>
+To: Bibo Mao <maobibo@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] util/loongarch64: Add clang compiler support
+Message-ID: <Z9RlPak0A9rjci0X@pie.lan>
+References: <20250307011339.2246600-1-maobibo@loongson.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- frapeml500008.china.huawei.com (7.182.85.71)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307011339.2246600-1-maobibo@loongson.cn>
+Received-SPF: pass client-ip=178.21.23.139; envelope-from=ziyao@disroot.org;
+ helo=layka.disroot.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,100 +65,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 14 Mar 2025 08:44:05 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
+On Fri, Mar 07, 2025 at 09:13:39AM +0800, Bibo Mao wrote:
+> Float register name f0 - f31 is not recognized with clang compiler
+> with LoongArch64 target, its name should be $f0 - $f31. It is ok
+> for both gcc and clang compiler.
 
-> Jonathan Cameron wrote:
-> > On Wed, 5 Mar 2025 18:35:40 +0800
-> > Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
-> >  =20
-> > > >=20
-> > > > On Tue, 4 Mar 2025 14:22:48 +0800
-> > > > Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
-> > > >    =20
-> > > > > >=20
-> > > > > > On Thu, Feb 20, 2025 at 04:12:13PM +0000, Jonathan Cameron wrot=
-e:     =20
-> > > > > > > On Mon, 17 Feb 2025 19:20:39 +0800
-> > > > > > > Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
-> > > > > > >      =20
-> > > > > > > > Add serial number parameter in the cxl persistent examples.
-> > > > > > > >=20
-> > > > > > > > Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn> =
-    =20
-> > > > > > > Looks good.  I've queued it up on my gitlab staging tree, but
-> > > > > > > Michael if you want to pick this one directly that's fine as =
-well.     =20
-> > > > > >=20
-> > > > > > See no reason to, I was not even CC'd.     =20
-> > > > >=20
-> > > > > Hi, Michael
-> > > > >=20
-> > > > > I'm sorry, this is my fault. I used "get_maintainer.pl" to check =
-this
-> > > > > patch's maintainers but it shows "No maintainers found, printing =
-recent
-> > > > > contributors".=20
-> > > > >    =20
-> > > > I usually stage up multiple series together and send on to Michael.
-> > > > So it was be being lazy for a minor change rather than anything much
-> > > > that you did wrong.
-> > > >=20
-> > > > If I get time I'll post a series with this a few other patches
-> > > > later today. =20
-> > > >=20
-> > > > Jonathan
-> > > >    =20
-> > > Thank you!
-> > >=20
-> > > BTW, I found a corner case in CXL numa node creation.
-> > >=20
-> > > Condition:=20
-> > > 1) A UMA/NUMA system without SRAT, but with CEDT.CFMWS
-> > > 2=EF=BC=89Enable CONFIG_ACPI_NUMA
-> > >=20
-> > > Results:
-> > > 1) acpi_numa_init: the fake_pxm will be 0 and send to acpi_parse_cfmw=
-s()
-> > > 2=EF=BC=89If dynamically create cxl ram region, the cxl memory would =
-be assigned
-> > > to node0 rather than a new node
-> > >=20
-> > > Confusions:
-> > > 1) Is a numa system a requirement for CXL memory usage? =20
-> >=20
-> > Obviously discussion has gone on elsewhere, but I'd say in general it
-> > would be a bad idea to not have an SRAT because the moment we add CXL
-> > it is definitely a NUMA system and we want the Generic Port entry to
-> > allow us to get perf information.
-> >=20
-> > So I wouldn't mind if we fail CXL init in this case, but maybe
-> > it is worth papering over things. =20
->=20
-> I think that is too severe. If a driver has a path to advertise
-> resources, even in a less than ideal way, it should make every effort to
-> do that. There are plenty of ways for the NUMA information to fail, that
-> does not mean the memory needs to be prevented from coming online. Let
-> the end user decide if lack of performance information is fatal.
+Sorry I didn't search the list carefully and sent a similar patch[1].
 
-You are too nice to those firmware folk ;)  How will they learn!
+Apart from preventing the disk tools to be built, this issue affects
+several headers used by linux-user emulators as well. IMHO this should
+be fixed, too, or my patch could be taken.
 
-Everything in default node is fine.  I don't much like the having
-broken normal numa setup combined with CXL trying to carry on with
-its node. I suspect that will be fragile in the long run.
+Sorry for the inconvenience,
+Yao Zi
 
-numa_off and other things set in that path tend to spread there wings
-into surprising places and broken / missing SRAT + CXL is something
-that isn't likely to get much testing.
+[1]: https://lore.kernel.org/all/20250314033150.53268-3-ziyao@disroot.org/
 
-Jonathan
-
-
->=20
-
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>  host/include/loongarch64/host/bufferiszero.c.inc | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/host/include/loongarch64/host/bufferiszero.c.inc b/host/include/loongarch64/host/bufferiszero.c.inc
+> index 69891eac80..bb2598fdc3 100644
+> --- a/host/include/loongarch64/host/bufferiszero.c.inc
+> +++ b/host/include/loongarch64/host/bufferiszero.c.inc
+> @@ -61,7 +61,8 @@ static bool buffer_is_zero_lsx(const void *buf, size_t len)
+>      "2:"
+>          : "=&r"(ret), "+r"(p)
+>          : "r"(buf), "r"(e), "r"(l)
+> -        : "f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "fcc0");
+> +        : "$f0", "$f1", "$f2", "$f3", "$f4", "$f5", "$f6", "$f7", "$f8",
+> +          "$fcc0");
+>  
+>      return ret;
+>  }
+> @@ -119,7 +120,8 @@ static bool buffer_is_zero_lasx(const void *buf, size_t len)
+>      "3:"
+>          : "=&r"(ret), "+r"(p)
+>          : "r"(buf), "r"(e), "r"(l)
+> -        : "f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "fcc0");
+> +        : "$f0", "$f1", "$f2", "$f3", "$f4", "$f5", "$f6", "$f7", "$f8",
+> +          "$fcc0");
+>  
+>      return ret;
+>  }
+> 
+> base-commit: 661c2e1ab29cd9c4d268ae3f44712e8d421c0e56
+> -- 
+> 2.39.3
 
