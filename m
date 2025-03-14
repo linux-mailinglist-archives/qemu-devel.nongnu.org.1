@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F89A60E7D
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:13:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 305C1A60E5A
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:11:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt20M-0006KM-Df; Fri, 14 Mar 2025 06:11:02 -0400
+	id 1tt20L-0006Ie-9S; Fri, 14 Mar 2025 06:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt20G-0006Iv-1F
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt20A-0006Hj-MZ
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt20C-00023R-SH
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:55 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt208-00021l-0U
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741947051;
+ s=mimecast20190719; t=1741947046;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BJOvE7bX3CbiaJXP+Wn72i13qtqWhY5+bX0nNEwCku8=;
- b=Z0DcZ6gO0g0YtkaqCZ25zLBJ2ApKS26yGLFGB5usSPtGNIcEJimXW47iS9Buluo0JX2k2b
- npUztyyq9mqskFxZFrJLfjFSaYz/xTS3vgIruCVE/zkIFEEheNxV5Mr7w2uuv+7xzoO67J
- IzYjEOlU/Drun0rnusflIMxnRPZeh90=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=L6K58Cl2kQo8RwkeszDmBOm0EdqS+sV+IffyEcy9VvA=;
+ b=I80qXmiQOjO0zvkw7txnWNHwqJFv0rKqPNWmXKtPDU8w7tG9ErVd5/Rl+MudXyTlQY405j
+ sp+tjnvYqh9Pw0Auqi4MWsT5YtjH+l6bGZJ78zTnK7Ygq4hbS/1mp3NmVBju/cpr5daRWq
+ fPcAeb6FgI16iIgRYqw+fij9n1/yN7s=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-219-Gi5cm--mNlmrsg8fDDYeLA-1; Fri,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-gRnyYzAQMcqJTk9iHuRRcw-1; Fri,
  14 Mar 2025 06:10:45 -0400
-X-MC-Unique: Gi5cm--mNlmrsg8fDDYeLA-1
-X-Mimecast-MFC-AGG-ID: Gi5cm--mNlmrsg8fDDYeLA_1741947045
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+X-MC-Unique: gRnyYzAQMcqJTk9iHuRRcw-1
+X-Mimecast-MFC-AGG-ID: gRnyYzAQMcqJTk9iHuRRcw_1741947044
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E935B19560B8
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4277C180025A
  for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:10:44 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E0EF2300376F
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B236B1955BCB
  for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:10:43 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C257B21E66A3; Fri, 14 Mar 2025 11:10:38 +0100 (CET)
+ id C676F21E66A4; Fri, 14 Mar 2025 11:10:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 03/12] docs/qapi-domain: always store fully qualified name in
- signode
-Date: Fri, 14 Mar 2025 11:10:29 +0100
-Message-ID: <20250314101038.2408751-4-armbru@redhat.com>
+Subject: [PULL 04/12] docs/qapi_domain: add namespace support to FQN
+Date: Fri, 14 Mar 2025 11:10:30 +0100
+Message-ID: <20250314101038.2408751-5-armbru@redhat.com>
 In-Reply-To: <20250314101038.2408751-1-armbru@redhat.com>
 References: <20250314101038.2408751-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,136 +86,112 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Currently, only the definition name is stored in the tree metadata; but
-the node property is confusingly called "fullname". Rectify this by
-always storing the FQN in the tree metadata.
-
-... While we're here, re-organize the code in preparation for namespace
-support to make it a bit easier to add additional components of the
-FQN. With this change, there is now extremely little code left that's
-taken directly from the Python domain :)
+This patch adds a namespace component to the "Fully Qualified Name", in
+the form of "domain:module.name". As there are no namespace directives
+or options yet, this component will simply be empty as of this patch.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250313044312.189276-3-jsnow@redhat.com>
+Message-ID: <20250313044312.189276-4-jsnow@redhat.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapi_domain.py | 64 +++++++++++++++++++++++++-------------
- 1 file changed, 42 insertions(+), 22 deletions(-)
+ docs/sphinx/qapi_domain.py | 35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index d52e7df7bc..6b23fc73ef 100644
+index 6b23fc73ef..48a082d489 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -178,6 +178,25 @@ def get_index_text(self, name: Signature) -> Tuple[str, str]:
+@@ -178,15 +178,18 @@ def get_index_text(self, name: Signature) -> Tuple[str, str]:
          # NB: this is used for the global index, not the QAPI index.
          return ("single", f"{name} (QMP {self.objtype})")
  
-+    def _get_context(self) -> str:
-+        modname = self.options.get(
-+            "module", self.env.ref_context.get("qapi:module", "")
+-    def _get_context(self) -> str:
++    def _get_context(self) -> Tuple[str, str]:
++        namespace = self.options.get(
++            "namespace", self.env.ref_context.get("qapi:namespace", "")
 +        )
-+        assert isinstance(modname, str)
-+        return modname
+         modname = self.options.get(
+             "module", self.env.ref_context.get("qapi:module", "")
+         )
+-        assert isinstance(modname, str)
+-        return modname
 +
-+    def _get_fqn(self, name: Signature) -> str:
-+        modname = self._get_context()
-+
-+        # If we're documenting a module, don't include the module as
-+        # part of the FQN; we ARE the module!
-+        if self.objtype == "module":
-+            modname = ""
-+
-+        if modname:
-+            name = f"{modname}.{name}"
-+        return name
-+
++        return namespace, modname
+ 
+     def _get_fqn(self, name: Signature) -> str:
+-        modname = self._get_context()
++        namespace, modname = self._get_context()
+ 
+         # If we're documenting a module, don't include the module as
+         # part of the FQN; we ARE the module!
+@@ -195,6 +198,8 @@ def _get_fqn(self, name: Signature) -> str:
+ 
+         if modname:
+             name = f"{modname}.{name}"
++        if namespace:
++            name = f"{namespace}:{name}"
+         return name
+ 
      def add_target_and_index(
-         self, name: Signature, sig: str, signode: desc_signature
-     ) -> None:
-@@ -187,14 +206,8 @@ def add_target_and_index(
- 
-         assert self.objtype
- 
--        # If we're documenting a module, don't include the module as
--        # part of the FQN.
--        modname = ""
--        if self.objtype != "module":
--            modname = self.options.get(
--                "module", self.env.ref_context.get("qapi:module")
--            )
--        fullname = (modname + "." if modname else "") + name
-+        if not (fullname := signode.get("fullname", "")):
-+            fullname = self._get_fqn(name)
- 
-         node_id = make_id(
-             self.env, self.state.document, self.objtype, fullname
-@@ -213,18 +226,21 @@ def add_target_and_index(
-                     (arity, indextext, node_id, "", None)
+@@ -227,13 +232,18 @@ def add_target_and_index(
                  )
  
-+    @staticmethod
-+    def split_fqn(name: str) -> Tuple[str, str]:
-+        if "." in name:
-+            module, name = name.split(".")
+     @staticmethod
+-    def split_fqn(name: str) -> Tuple[str, str]:
++    def split_fqn(name: str) -> Tuple[str, str, str]:
++        if ":" in name:
++            ns, name = name.split(":")
 +        else:
-+            module = ""
++            ns = ""
 +
-+        return (module, name)
-+
+         if "." in name:
+             module, name = name.split(".")
+         else:
+             module = ""
+ 
+-        return (module, name)
++        return (ns, module, name)
+ 
      def _object_hierarchy_parts(
          self, sig_node: desc_signature
-     ) -> Tuple[str, ...]:
-         if "fullname" not in sig_node:
-             return ()
--        modname = sig_node.get("module")
--        fullname = sig_node["fullname"]
--
--        if modname:
--            return (modname, *fullname.split("."))
--
--        return tuple(fullname.split("."))
-+        return self.split_fqn(sig_node["fullname"])
- 
-     def _toc_entry_name(self, sig_node: desc_signature) -> str:
-         # This controls the name in the TOC and on the sidebar.
-@@ -235,13 +251,19 @@ def _toc_entry_name(self, sig_node: desc_signature) -> str:
+@@ -251,7 +261,7 @@ def _toc_entry_name(self, sig_node: desc_signature) -> str:
              return ""
  
          config = self.env.app.config
--        *parents, name = toc_parts
-+        modname, name = toc_parts
-+
+-        modname, name = toc_parts
++        namespace, modname, name = toc_parts
+ 
          if config.toc_object_entries_show_parents == "domain":
--            return sig_node.get("fullname", name)
-+            ret = name
-+            if modname and modname != self.env.ref_context.get(
-+                "qapi:module", ""
+             ret = name
+@@ -259,6 +269,10 @@ def _toc_entry_name(self, sig_node: desc_signature) -> str:
+                 "qapi:module", ""
+             ):
+                 ret = f"{modname}.{name}"
++            if namespace and namespace != self.env.ref_context.get(
++                "qapi:namespace", ""
 +            ):
-+                ret = f"{modname}.{name}"
-+            return ret
++                ret = f"{namespace}:{ret}"
+             return ret
          if config.toc_object_entries_show_parents == "hide":
              return name
-         if config.toc_object_entries_show_parents == "all":
--            return ".".join(parents + [name])
-+            return sig_node.get("fullname", name)
-         return ""
- 
- 
-@@ -312,11 +334,9 @@ def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
+@@ -334,10 +348,15 @@ def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
          As such, the only argument here is "sig", which is just the QAPI
          definition name.
          """
--        modname = self.options.get(
--            "module", self.env.ref_context.get("qapi:module")
--        )
-+        modname = self._get_context()
+-        modname = self._get_context()
++        # No module or domain info allowed in the signature!
++        assert ":" not in sig
++        assert "." not in sig
  
--        signode["fullname"] = sig
-+        signode["fullname"] = self._get_fqn(sig)
++        namespace, modname = self._get_context()
+         signode["fullname"] = self._get_fqn(sig)
++        signode["namespace"] = namespace
          signode["module"] = modname
++
          sig_prefix = self.get_signature_prefix()
          if sig_prefix:
+             signode += addnodes.desc_annotation(
 -- 
 2.48.1
 
