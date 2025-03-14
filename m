@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76FCA60E5C
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:11:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61AA9A60E77
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:13:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt20G-0006IX-Cg; Fri, 14 Mar 2025 06:10:58 -0400
+	id 1tt20M-0006KI-5X; Fri, 14 Mar 2025 06:11:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt20A-0006Hk-Ms
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:50 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt20B-0006I5-Mt
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt208-00021f-0K
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:49 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt208-00021v-C4
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741947045;
+ s=mimecast20190719; t=1741947047;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=boUm2Mks8QkQ897Jh1jsnRUHeuiVY3tcnMKEEJ7liuY=;
- b=EPugdb+rJKntEFVyuSw4RT0CPxOtisMa4EDfmE+j4QKjnTN5sxIxx357UjcUxeXtG5rOzr
- ymwr8uSBbNFFMAdPL2ndtMkX1bD4SKWxVaf8QEriylFJlxYlbzp1/c7GT3yyoaLWC03mxt
- W6OEw2z+tlJsDhToz4it8r33jy7Xak0=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9DM5gO/mHUWf4r2tQdDbJnbbTizjhichNpsmghIv8zE=;
+ b=T9eJ4SIQHP6zu2DYbD+aeaVRTH7BwPoC9eHeXvPCM1z0LmJAPQYRw7ZuAqzuk8Tl/SjEwS
+ 3HPb3TQsXjod8tV7j4inBxaxoUPz36//HNyRqR7NnIOSfUlihNq9awx51soxzAvFhk8KZ3
+ KdDjZsQ95gmOZ1/Yv10KOFeqTQdPSCA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-117-QQnXkkzbPwepRnLF-on4JA-1; Fri,
- 14 Mar 2025 06:10:44 -0400
-X-MC-Unique: QQnXkkzbPwepRnLF-on4JA-1
-X-Mimecast-MFC-AGG-ID: QQnXkkzbPwepRnLF-on4JA_1741947043
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-WKNsrGDkMpKaTVJU0JLGFA-1; Fri,
+ 14 Mar 2025 06:10:46 -0400
+X-MC-Unique: WKNsrGDkMpKaTVJU0JLGFA-1
+X-Mimecast-MFC-AGG-ID: WKNsrGDkMpKaTVJU0JLGFA_1741947045
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BA3CF1955E92
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:10:43 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 21F1419560B6; Fri, 14 Mar 2025 10:10:44 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1FBD21954B32
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:10:43 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8BE7918001DE; Fri, 14 Mar 2025 10:10:43 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B799421E675F; Fri, 14 Mar 2025 11:10:38 +0100 (CET)
+ id B9A0521E669B; Fri, 14 Mar 2025 11:10:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com
-Subject: [PULL 00/12] QAPI patches patches for 2025-03-14
-Date: Fri, 14 Mar 2025 11:10:26 +0100
-Message-ID: <20250314101038.2408751-1-armbru@redhat.com>
+Cc: stefanha@redhat.com,
+	Alberto Garcia <berto@igalia.com>
+Subject: [PULL 01/12] qapi/block-core: Improve x-blockdev-change documentation
+Date: Fri, 14 Mar 2025 11:10:27 +0100
+Message-ID: <20250314101038.2408751-2-armbru@redhat.com>
+In-Reply-To: <20250314101038.2408751-1-armbru@redhat.com>
+References: <20250314101038.2408751-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,51 +82,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 0462a32b4f63b2448b4a196381138afd50719dc4:
+The description of feature @unstable is three paragraphs.  The second
+and third became part of the description by accident in commit
+9fb49daabfb (qapi: Mark unstable QMP parts with feature 'unstable').
 
-  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2025-03-14 09:31:13 +0800)
+The second paragraph describes a defect in terms of the
+implementation.  Fine, but doesn't belong into user-facing
+documentation.  Turn it into a TODO section.
 
-are available in the Git repository at:
+Rewrite everything else for clarity and completeness.
 
-  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2025-03-14
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20250311131715.1296101-1-armbru@redhat.com>
+Acked-by: Alberto Garcia <berto@igalia.com>
+---
+ qapi/block-core.json | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-for you to fetch changes up to a6af54434400099b8afd59ba036cf9a662006d1e:
-
-  docs: enable transmogrifier for QSD and QGA (2025-03-14 07:32:41 +0100)
-
-----------------------------------------------------------------
-QAPI patches patches for 2025-03-14
-
-----------------------------------------------------------------
-John Snow (11):
-      docs/qapi_domain: isolate TYPE_CHECKING imports
-      docs/qapi-domain: always store fully qualified name in signode
-      docs/qapi_domain: add namespace support to FQN
-      docs/qapi-domain: add :namespace: override option
-      docs/qapi-domain: add qapi:namespace directive
-      docs/qapidoc: add :namespace: option to qapi-doc directive
-      docs/qapi_domain: add namespace support to cross-references
-      docs/qapi-domain: add namespaced index support
-      docs: add QAPI namespace "QMP" to qemu-qmp-ref
-      docs: disambiguate references in qapi-domain.rst
-      docs: enable transmogrifier for QSD and QGA
-
-Markus Armbruster (1):
-      qapi/block-core: Improve x-blockdev-change documentation
-
- docs/conf.py                                 |   7 +
- docs/devel/qapi-domain.rst                   |  70 +++++--
- docs/interop/qemu-ga-ref.rst                 |   2 +
- docs/interop/qemu-qmp-ref.rst                |   1 +
- docs/interop/qemu-storage-daemon-qmp-ref.rst |   2 +
- docs/sphinx/qapi_domain.py                   | 297 +++++++++++++++++++--------
- docs/sphinx/qapidoc.py                       |  12 ++
- qapi/block-core.json                         |  28 ++-
- qapi/qapi-schema.json                        |   2 +-
- qga/qapi-schema.json                         |   3 +
- storage-daemon/qapi/qapi-schema.json         |   8 +
- 11 files changed, 315 insertions(+), 117 deletions(-)
-
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index ee6eccc68c..b1937780e1 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -5913,35 +5913,31 @@
+ ##
+ # @x-blockdev-change:
+ #
+-# Dynamically reconfigure the block driver state graph.  It can be
+-# used to add, remove, insert or replace a graph node.  Currently only
+-# the Quorum driver implements this feature to add or remove its
+-# child.  This is useful to fix a broken quorum child.
++# Dynamically reconfigure the block driver state graph.
+ #
+-# If @node is specified, it will be inserted under @parent.  @child
+-# may not be specified in this case.  If both @parent and @child are
+-# specified but @node is not, @child will be detached from @parent.
++# Currently only supports adding and deleting quorum children.  A
++# child will be added at the end of the list of children.  Its
++# contents *must* be consistent with the other childrens' contents.
++# Deleting a child that is not last in the list of children is
++# problematic, because it "renumbers" the children following it.
+ #
+ # @parent: the id or name of the parent node.
+ #
+-# @child: the name of a child under the given parent node.
++# @child: the name of a child to be deleted.  Mutually exclusive with
++#     @node.
+ #
+-# @node: the name of the node that will be added.
++# @node: the name of the node to be added.  Mutually exclusive with
++#     @child.
+ #
+ # Features:
+ #
+-# @unstable: This command is experimental, and its API is not stable.
+-#     It does not support all kinds of operations, all kinds of
+-#     children, nor all block drivers.
++# @unstable: This command is experimental.
+ #
+-#     FIXME Removing children from a quorum node means introducing
++# TODO: Removing children from a quorum node means introducing
+ #     gaps in the child indices.  This cannot be represented in the
+ #     'children' list of BlockdevOptionsQuorum, as returned by
+ #     .bdrv_refresh_filename().
+ #
+-#     Warning: The data in a new quorum child MUST be consistent with
+-#     that of the rest of the array.
+-#
+ # Since: 2.7
+ #
+ # .. qmp-example::
 -- 
 2.48.1
 
