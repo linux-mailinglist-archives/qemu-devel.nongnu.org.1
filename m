@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7A1A611F2
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:04:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A52E5A611EE
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:04:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt4gU-0005iC-Uv; Fri, 14 Mar 2025 09:02:43 -0400
+	id 1tt4gS-0005gG-PS; Fri, 14 Mar 2025 09:02:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tt4g9-0005cb-Bo
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:02:21 -0400
+ id 1tt4gB-0005dp-Kb
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:02:23 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1tt4g5-0005w0-V8
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:02:20 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52EBlrrp017187;
- Fri, 14 Mar 2025 13:02:13 GMT
+ id 1tt4g7-0005w6-9P
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:02:22 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52EBloP7009747;
+ Fri, 14 Mar 2025 13:02:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- corp-2023-11-20; bh=ublP1djrFks7Z6rsiOBVk+yhxjiYcY6fr2Ecz+OIuyk=; b=
- PoPO0HJWSUa0ALpv0R82VaD9HF5QnFx5WoEqHJrUD/VCrk4Y+9++dMRRtqle7ZT0
- K593bJkaPuYUdIATYvzI1UzeQmOaIlw4ibZUqpUbBuBhX4PTDHXLIy5RCMvaqEvW
- 2JmuR/qozuk429XyKYtyCwZOgqFUiVj/Dt7aR4GqzKB1X0BRlQ9OiDm4Vu4MxyX2
- LvTE10eMOSfejWxauG9o4I1kr+8xVnR0OqtKTE08kURKYk9qucS8eYB3VhxMMU6J
- 8RGPABUbXAMj8p5yZWpEz2UT83HjvAGdOp+7lofLhFkHCJAwPvSGq9Q+xmuInSUr
- WrvKEPsQdf8ZjAL7ZxSxVA==
+ corp-2023-11-20; bh=rpWaMipMYDlKwtXl+4qKcREqCJEd9xxu4Vacys2P/jc=; b=
+ PhLvJz3Vni6TIpLHf21FWRR2nYog1AJ1N14z7Rcs5aNpf4jlfGVCd67yeNZo6fuE
+ LYO7xDrm0fg2YibkagVFjjEt+v7+pnO7XHe/1OqXd/on1O9OXirHj2dcEdpgvmGp
+ t6iEm33fxVKuQbo71dM5ZK4DqqrSHCK6XhDrcaw65tDzCy0mT7QmZJhyKlimeIns
+ 076E/3rMFfUk0MVW/YPKmWqv2ldSn3VKR4DPR+DgXjbvD7nqhONKPjXeMfhDWngb
+ E6E8jkdmzJWEoZpV6fJtMynsbls4qBE/BSp/R8z6SmyCjpb8OIdpE87s11O5sCxq
+ fr0Er+B5X5UAnGyKsSDJPg==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45au4dpesu-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45au4dxcar-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Mar 2025 13:02:13 +0000 (GMT)
+ Fri, 14 Mar 2025 13:02:14 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 52ECm6Qp012272; Fri, 14 Mar 2025 13:02:11 GMT
+ with ESMTP id 52EBA6Mp012293; Fri, 14 Mar 2025 13:02:12 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 45atn41d40-1
+ 45atn41d4y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Mar 2025 13:02:11 +0000
+ Fri, 14 Mar 2025 13:02:12 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 52ED27RD015104;
- Fri, 14 Mar 2025 13:02:11 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 52ED27RF015104;
+ Fri, 14 Mar 2025 13:02:12 GMT
 Received: from jonah-ol8.us.oracle.com
  (dhcp-10-43-73-135.usdhcp.oraclecorp.com [10.43.73.135])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 45atn41d05-4; Fri, 14 Mar 2025 13:02:10 +0000
+ 45atn41d05-5; Fri, 14 Mar 2025 13:02:11 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: eperezma@redhat.com, peterx@redhat.com, mst@redhat.com,
@@ -60,9 +60,9 @@ Cc: eperezma@redhat.com, peterx@redhat.com, mst@redhat.com,
  leiyan@redhat.com, parav@mellanox.com, sgarzare@redhat.com,
  si-wei.liu@oracle.com, lingshan.zhu@intel.com,
  boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [PATCH v3 3/7] vdpa: set backend capabilities at vhost_vdpa_init
-Date: Fri, 14 Mar 2025 09:01:50 -0400
-Message-ID: <20250314130204.11380-4-jonah.palmer@oracle.com>
+Subject: [PATCH v3 4/7] vdpa: add listener_registered
+Date: Fri, 14 Mar 2025 09:01:51 -0400
+Message-ID: <20250314130204.11380-5-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250314130204.11380-1-jonah.palmer@oracle.com>
 References: <20250314130204.11380-1-jonah.palmer@oracle.com>
@@ -77,8 +77,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  mlxscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
  definitions=main-2503140103
-X-Proofpoint-GUID: QB74eKSIpJzYUNYNnyUumcoGDSD3YiH6
-X-Proofpoint-ORIG-GUID: QB74eKSIpJzYUNYNnyUumcoGDSD3YiH6
+X-Proofpoint-GUID: 3ybyFl4B062erae94xcyz1TOW4RUNqux
+X-Proofpoint-ORIG-GUID: 3ybyFl4B062erae94xcyz1TOW4RUNqux
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -106,43 +106,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eugenio Pérez <eperezma@redhat.com>
 
-The backend does not reset them until the vdpa file descriptor is closed
-so there is no harm in doing it only once.
-
-This allows the destination of a live migration to premap memory in
-batches, using VHOST_BACKEND_F_IOTLB_BATCH.
+Check if the listener has been registered or not, so it needs to be
+registered again at start.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
- hw/virtio/vhost-vdpa.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ hw/virtio/vhost-vdpa.c         | 7 ++++++-
+ include/hw/virtio/vhost-vdpa.h | 6 ++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 79224d18d8..939a5a28a1 100644
+index 939a5a28a1..61a0e8fdbd 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -636,6 +636,12 @@ static int vhost_vdpa_init(struct vhost_dev *dev, void *opaque, Error **errp)
-     v->dev = dev;
-     dev->opaque =  opaque ;
-     v->shared->listener = vhost_vdpa_memory_listener;
-+
-+    ret = vhost_vdpa_set_backend_cap(dev);
-+    if (unlikely(ret != 0)) {
-+        return ret;
-+    }
-+
-     vhost_vdpa_init_svq(dev, v);
+@@ -1381,7 +1381,10 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
+                          "IOMMU and try again");
+             return -1;
+         }
+-        memory_listener_register(&v->shared->listener, dev->vdev->dma_as);
++        if (!v->shared->listener_registered) {
++            memory_listener_register(&v->shared->listener, dev->vdev->dma_as);
++            v->shared->listener_registered = true;
++        }
  
-     error_propagate(&dev->migration_blocker, v->migration_blocker);
-@@ -1565,7 +1571,6 @@ const VhostOps vdpa_ops = {
-         .vhost_set_vring_kick = vhost_vdpa_set_vring_kick,
-         .vhost_set_vring_call = vhost_vdpa_set_vring_call,
-         .vhost_get_features = vhost_vdpa_get_features,
--        .vhost_set_backend_cap = vhost_vdpa_set_backend_cap,
-         .vhost_set_owner = vhost_vdpa_set_owner,
-         .vhost_set_vring_endian = NULL,
-         .vhost_backend_memslots_limit = vhost_vdpa_memslots_limit,
+         return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_DRIVER_OK);
+     }
+@@ -1401,6 +1404,8 @@ static void vhost_vdpa_reset_status(struct vhost_dev *dev)
+     vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
+                                VIRTIO_CONFIG_S_DRIVER);
+     memory_listener_unregister(&v->shared->listener);
++    v->shared->listener_registered = false;
++
+ }
+ 
+ static int vhost_vdpa_set_log_base(struct vhost_dev *dev, uint64_t base,
+diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
+index 0a9575b469..221840987e 100644
+--- a/include/hw/virtio/vhost-vdpa.h
++++ b/include/hw/virtio/vhost-vdpa.h
+@@ -51,6 +51,12 @@ typedef struct vhost_vdpa_shared {
+ 
+     bool iotlb_batch_begin_sent;
+ 
++    /*
++     * The memory listener has been registered, so DMA maps have been sent to
++     * the device.
++     */
++    bool listener_registered;
++
+     /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
+     bool shadow_data;
+ 
 -- 
 2.43.5
 
