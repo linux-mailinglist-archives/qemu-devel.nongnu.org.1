@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE33DA6126B
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:18:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1AB0A612B4
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:32:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt4uL-0005DJ-Vd; Fri, 14 Mar 2025 09:17:02 -0400
+	id 1tt58P-0004TL-Ox; Fri, 14 Mar 2025 09:31:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4uJ-0005CX-T8
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:59 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <alexghiti@rivosinc.com>)
+ id 1tt58M-0004St-G8
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:31:30 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4uI-00019g-5e
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:59 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-38dcac27bcbso2094571f8f.0
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:16:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alexghiti@rivosinc.com>)
+ id 1tt58E-00052I-Kn
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:31:30 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5e61d91a087so3213181a12.0
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:31:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741958217; x=1742563017; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/05C1vvU/DoLYE8zWXHa7Rwl5AjnIHXhCOg3oKo2xKA=;
- b=Fn5iP6ehHqQbIUeKrcX4cYUjtSAKu3Vu5jLh60kCuMRpqxVURGY2T9+mFvvlEa5Y4r
- Ew4RpH3tc3Oq9yMn7kuAxsGDOb/gAXj9tEdk/FVPa51ZgdItCYx1KKMc/oLqbqUo6KsO
- U4rzFsoYtqhTqmlthtIXg2BPXudIPhur8egBiBCbQMf/lG8rvJzNe5PXsAPePuFUamm0
- UWM2cQpxFwqZwNgMa+s+gbAmgFJyRnypnrALwUsp6TISGadhjv0X+NR+GmOW0jiI8IOu
- ncpMgHXJ5wEFqj2/36PoNixUNoz5azy+mxD0/bFuhh4nuuO/xDYX24cc1KkEsWNxj7m4
- jm5Q==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1741959077; x=1742563877;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Z7dvQKGuKXLM1+01riVexho59nGYEOYjS7U+HLC0zzo=;
+ b=g/wAXLS7dFPwC+J3OS9Ns5GVEs4dhK9C30h6Va+cocgeKIBdioOG1/LqXbJX7dzMQ2
+ 07LsnP7bVdCy2itTxxdyrEB/SnOIg4TZEqi/2R8DAgNf3toaVaGWOEXW1jhkPA79fNwK
+ hlkg679UNFt3PHMNHVWEhLmCuTiCp9bFl8zaqkwVM/KdFP3/EFiQzKoldJ8mi6GQITcF
+ lQGlkJShkvTxeibDG1o9Q6CPB91W5+e7V3HX8XkiVa4Lu9V4A5cg6gzs2vl3fa5a32qv
+ HpWdVloyFcg4/4l0QQOlFaMEiE2S0ykGkvy6eud1DdTVfJyhWwTnLQuTLuiUUbCVvOQd
+ g21Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741958217; x=1742563017;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1741959077; x=1742563877;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/05C1vvU/DoLYE8zWXHa7Rwl5AjnIHXhCOg3oKo2xKA=;
- b=TnTms4slGaa7LVo1AgZE20C7gIxaVUazoWnSlxZ0dcwnr8azuFL7aSxKInt179op6d
- Iatg5VlisyYcEKRqcQDNMAGm5t13o6EG9v+vP4HFazq4BLzY6uXvPARDOlbL3FyoJomf
- znHX4QUtsii9sa+9yud/d750CUjvql0PVq1J7hGmEk+J0gbs3M8iTEEpwUpOIx/9b3Dz
- BKUFCjeA0U8lZbGOwGyJom/dzDZnwNmmXkHVffDpptUThuevQOLnPInHot74BpzloE2K
- uFUKLLh/JYqrj3JcEIAFw3ZL8DoG4ZVX4iG9TkmlhQ8qHIOMvTKT9ASuxyAD7bBqLoAO
- jUHA==
-X-Gm-Message-State: AOJu0YxQEvV8vYKxPVi1fszRQD6M3rRMu0yaoBK7s1PRE+jDUG2K8agF
- 7LRSwqevlrbz8ewK/9fpKPMLOfXLtLboEL9/2dbDjx9J2waTRTCMoq36pca6lD6H1VqWVQ0A22+
- +
-X-Gm-Gg: ASbGnctYc67pd6/DZTQTjosbJM74sK0hy3fOPu0J6600mS7I9KcmYiWutI6r1u03/Aq
- zoUzYC44aLBCHB5Q6NVwZcFwnXC/MziME1v8dMpJCfppCkkMpj2GaO6oAcfkVWtRMkBHxhI39iT
- J7UQ43hJDyx7AZRPfM8pCKaZ3X+WCff4MK+AHb2qa0q5QIQ3b2rl2VOgPR25T5SyKlFf5UoIniw
- LiQVMcqV+sGhqA1bHSTDOdz/OJ47/fckClbl3N2giBL7H/CBhnKQMkeAYGVojvoIRXKQRC2M53m
- iNKo+6IOIcw9n1WXBxmVZMJzLiRTRchI+F7t8+rfjyuiwYwoB0m1yM/+vhaVEg==
-X-Google-Smtp-Source: AGHT+IHTjGzNVfksiRLcPDDbILfdE84iU+WTabXG5d/HM7QUbUozKX86KpDRd0iGQBnOd8jkv83g8g==
-X-Received: by 2002:a5d:6c62:0:b0:391:952:c74a with SMTP id
- ffacd0b85a97d-395b758f7d1mr6653490f8f.8.1741958216681; 
- Fri, 14 Mar 2025 06:16:56 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-395cb7eb93csm5437923f8f.86.2025.03.14.06.16.55
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Mar 2025 06:16:56 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 17/17] meson.build: Set RUST_BACKTRACE for all tests
-Date: Fri, 14 Mar 2025 13:16:37 +0000
-Message-ID: <20250314131637.371866-18-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250314131637.371866-1-peter.maydell@linaro.org>
-References: <20250314131637.371866-1-peter.maydell@linaro.org>
+ bh=Z7dvQKGuKXLM1+01riVexho59nGYEOYjS7U+HLC0zzo=;
+ b=dabQ+3OXQTh2Tiua3fpkN1WdgFEx5wKEgoFI1gh88SaWStcaMjhZ7wTCQOQv+ze7vu
+ 1GR/Z6b8BJhMKqgP22K8211j4B761/UFPDk8qyTxq8XaeecRD81Qu2JhZtU9Rua66I9B
+ t8gvm8Khd908N4Oueu2Thhpdlb1biNxY69137HdwvJSTJhI21AF3vQpTW9CKAo+O6XwW
+ KALMTyI0TbduUs2+wC46xWcQe/Kis74wjYyPQXhFRwN/8Ja50PSMItIE2Rvccm4wzmcn
+ TUrfUF808Ki25cANMqJvy+G8DBvadt+adGPfzBOo6yBxp4bQi3ajKAtnmrj391qYD/a2
+ oqiA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX24JHGOWgafjloQpe5okF98Ml8f99C+eoI46XPuFlO3F2btBWXH66C3Xxi9d2JhLJiiUzlpHjglykU@nongnu.org
+X-Gm-Message-State: AOJu0YzdbM54LnMLseak4z9lNvy5XUjTtw7pvig3J+QwYhHhvq08brgy
+ vLCyWkM+pX5WZ0uMRC0tPZuT1j8yfL+Kz6RLSTbVc9Hy1lIFcBk7zE6JFQXic3NFHoyVjQ7i71y
+ RpRAn15M22SdTOoPqJzluaS/5rBCTg7c2ROX1UA==
+X-Gm-Gg: ASbGncvWSA1742wCsE/of4L3OLH/C+Th9H6iVb6mSaSG7LsStPcMeFrfBpMqgQPfftR
+ 4NYrpCRrZ0tHRCCTLWxO0ekkFdAhARe9/CeazAOUGYf1Nsrvl6HTLk7FkvoYYNhbyM96WjFH1/x
+ Nqg2ZTcJUWJRL7CdVpir8+BUb8rT+ODNAiVPplwyltBl4QO0ZJQKexYzgPW0U=
+X-Google-Smtp-Source: AGHT+IEUSCNPYnV1iivyO5qvJuCKo5ik820TXmoqguPmGjCP+1wOVRPGtDU2GP+qv8y7NqQZ0OiaGg1Ju46cb+CSQGk=
+X-Received: by 2002:a05:6402:5186:b0:5e5:b572:a6d7 with SMTP id
+ 4fb4d7f45d1cf-5e89e6b0648mr3347328a12.6.1741959077396; Fri, 14 Mar 2025
+ 06:31:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250314104833.369365-1-alexghiti@rivosinc.com>
+ <CAHVXubjJ_oCKqjYBFRjn-BM-cB4JUsFJ-dX3Dqs6j=6vTh+yHA@mail.gmail.com>
+ <d6295353-33d8-4816-b815-49958634d263@ventanamicro.com>
+In-Reply-To: <d6295353-33d8-4816-b815-49958634d263@ventanamicro.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
+Date: Fri, 14 Mar 2025 14:31:06 +0100
+X-Gm-Features: AQ5f1Jr3SKKEMtY76TLoi5BU3xbsFQ0I0RTivgcGqdqUs_aYmwumvu-Ztp7_h_I
+Message-ID: <CAHVXubh8bE6OGX3M6Gm7GiMXyuQf1GPK2nf50cnJXPwBH0Rc_g@mail.gmail.com>
+Subject: Re: [PATCH RFC] target: riscv: Add Svrsw60b59b extension support
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alexghiti@rivosinc.com; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,56 +99,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to capture potential Rust backtraces on panics in our test
-logs, which isn't Rust's default behaviour.  Set RUST_BACKTRACE=1 in
-the add_test_setup environments, so that all our tests get run with
-this environment variable set.
+On Fri, Mar 14, 2025 at 1:38=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+>
+>
+> On 3/14/25 9:11 AM, Alexandre Ghiti wrote:
+> > On Fri, Mar 14, 2025 at 11:48=E2=80=AFAM Alexandre Ghiti <alexghiti@riv=
+osinc.com> wrote:
+> >>
+> >> The Svrsw60b59b extension allows to free the PTE reserved bits 60 and =
+59
+> >> for software to use.
+> >
+> > I missed that the extension had been renamed to Svrsw60*t*59b, I'll
+> > fix that in v2 later after I collect some feedback.
+>
+> Just to be clear: the extension is going to be named Svrsw60t59b, not
+> "Svrsw60*t*59b". Correct?
 
-This makes the setting of that variable in the gitlab CI template
-redundant, so we can remove it.
+Yes, I added the '*' to emphasize the subtle change :)
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250310102950.3752908-1-peter.maydell@linaro.org
----
- meson.build                         | 9 ++++++---
- .gitlab-ci.d/buildtest-template.yml | 1 -
- 2 files changed, 6 insertions(+), 4 deletions(-)
+>
+>
+> Aside from that code LGTM. Thanks,
 
-diff --git a/meson.build b/meson.build
-index 2f43fd81bf4..7f75256acf9 100644
---- a/meson.build
-+++ b/meson.build
-@@ -5,9 +5,12 @@ project('qemu', ['c'], meson_version: '>=1.5.0',
- 
- meson.add_devenv({ 'MESON_BUILD_ROOT' : meson.project_build_root() })
- 
--add_test_setup('quick', exclude_suites: ['slow', 'thorough'], is_default: true)
--add_test_setup('slow', exclude_suites: ['thorough'], env: ['G_TEST_SLOW=1', 'SPEED=slow'])
--add_test_setup('thorough', env: ['G_TEST_SLOW=1', 'SPEED=thorough'])
-+add_test_setup('quick', exclude_suites: ['slow', 'thorough'], is_default: true,
-+               env: ['RUST_BACKTRACE=1'])
-+add_test_setup('slow', exclude_suites: ['thorough'],
-+               env: ['G_TEST_SLOW=1', 'SPEED=slow', 'RUST_BACKTRACE=1'])
-+add_test_setup('thorough',
-+               env: ['G_TEST_SLOW=1', 'SPEED=thorough', 'RUST_BACKTRACE=1'])
- 
- meson.add_postconf_script(find_program('scripts/symlink-install-tree.py'))
- 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 4cc19239319..39da7698b09 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -63,7 +63,6 @@
-   stage: test
-   image: $CI_REGISTRY_IMAGE/qemu/$IMAGE:$QEMU_CI_CONTAINER_TAG
-   script:
--    - export RUST_BACKTRACE=1
-     - source scripts/ci/gitlab-ci-section
-     - section_start buildenv "Setting up to run tests"
-     - scripts/git-submodule.sh update roms/SLOF
--- 
-2.43.0
+Thanks!
 
+Alex
+
+>
+> Daniel
+>
+>
+> >
+> > Thanks,
+> >
+> > Alex
+> >
+> >>
+> >> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> >> ---
+> >>
+> >> I tested it by always setting the bits 60 and 59 in Linux which booted
+> >> fine.
+> >>
+> >>   target/riscv/cpu.c        | 2 ++
+> >>   target/riscv/cpu_bits.h   | 3 ++-
+> >>   target/riscv/cpu_cfg.h    | 1 +
+> >>   target/riscv/cpu_helper.c | 3 ++-
+> >>   4 files changed, 7 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> >> index 3d4bd157d2..ee89cdef46 100644
+> >> --- a/target/riscv/cpu.c
+> >> +++ b/target/riscv/cpu.c
+> >> @@ -219,6 +219,7 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
+> >>       ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+> >>       ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
+> >>       ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
+> >> +    ISA_EXT_DATA_ENTRY(svrsw60b59b, PRIV_VERSION_1_13_0, ext_svrsw60b=
+59b),
+> >>       ISA_EXT_DATA_ENTRY(svukte, PRIV_VERSION_1_13_0, ext_svukte),
+> >>       ISA_EXT_DATA_ENTRY(svvptc, PRIV_VERSION_1_13_0, ext_svvptc),
+> >>       ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+> >> @@ -1644,6 +1645,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extension=
+s[] =3D {
+> >>       MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
+> >>       MULTI_EXT_CFG_BOOL("svnapot", ext_svnapot, false),
+> >>       MULTI_EXT_CFG_BOOL("svpbmt", ext_svpbmt, false),
+> >> +    MULTI_EXT_CFG_BOOL("svrsw60b59b", ext_svrsw60b59b, false),
+> >>       MULTI_EXT_CFG_BOOL("svvptc", ext_svvptc, true),
+> >>
+> >>       MULTI_EXT_CFG_BOOL("zicntr", ext_zicntr, true),
+> >> diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+> >> index f97c48a394..71f9e603c5 100644
+> >> --- a/target/riscv/cpu_bits.h
+> >> +++ b/target/riscv/cpu_bits.h
+> >> @@ -663,7 +663,8 @@ typedef enum {
+> >>   #define PTE_SOFT            0x300 /* Reserved for Software */
+> >>   #define PTE_PBMT            0x6000000000000000ULL /* Page-based memo=
+ry types */
+> >>   #define PTE_N               0x8000000000000000ULL /* NAPOT translati=
+on */
+> >> -#define PTE_RESERVED        0x1FC0000000000000ULL /* Reserved bits */
+> >> +#define PTE_RESERVED(svrsw60b59b)              \
+> >> +               (svrsw60b59b ? 0x07C0000000000000ULL : 0x1FC0000000000=
+000ULL) /* Reserved bits */
+> >>   #define PTE_ATTR            (PTE_N | PTE_PBMT) /* All attributes bit=
+s */
+> >>
+> >>   /* Page table PPN shift amount */
+> >> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> >> index b410b1e603..f6e4b0068a 100644
+> >> --- a/target/riscv/cpu_cfg.h
+> >> +++ b/target/riscv/cpu_cfg.h
+> >> @@ -89,6 +89,7 @@ struct RISCVCPUConfig {
+> >>       bool ext_svinval;
+> >>       bool ext_svnapot;
+> >>       bool ext_svpbmt;
+> >> +    bool ext_svrsw60b59b;
+> >>       bool ext_svvptc;
+> >>       bool ext_svukte;
+> >>       bool ext_zdinx;
+> >> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> >> index e1dfc4ecbf..6546cea403 100644
+> >> --- a/target/riscv/cpu_helper.c
+> >> +++ b/target/riscv/cpu_helper.c
+> >> @@ -1156,6 +1156,7 @@ static int get_physical_address(CPURISCVState *e=
+nv, hwaddr *physical,
+> >>       bool svade =3D riscv_cpu_cfg(env)->ext_svade;
+> >>       bool svadu =3D riscv_cpu_cfg(env)->ext_svadu;
+> >>       bool adue =3D svadu ? env->menvcfg & MENVCFG_ADUE : !svade;
+> >> +    bool svrsw60b59b =3D riscv_cpu_cfg(env)->ext_svrsw60b59b;
+> >>
+> >>       if (first_stage && two_stage && env->virt_enabled) {
+> >>           pbmte =3D pbmte && (env->henvcfg & HENVCFG_PBMTE);
+> >> @@ -1225,7 +1226,7 @@ restart:
+> >>           if (riscv_cpu_sxl(env) =3D=3D MXL_RV32) {
+> >>               ppn =3D pte >> PTE_PPN_SHIFT;
+> >>           } else {
+> >> -            if (pte & PTE_RESERVED) {
+> >> +            if (pte & PTE_RESERVED(svrsw60b59b)) {
+> >>                   return TRANSLATE_FAIL;
+> >>               }
+> >>
+> >> --
+> >> 2.39.2
+> >>
+>
 
