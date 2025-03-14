@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C451A61259
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:17:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9750A6125E
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:18:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt4u6-00056D-CU; Fri, 14 Mar 2025 09:16:46 -0400
+	id 1tt4u9-00057b-Op; Fri, 14 Mar 2025 09:16:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4u4-00054m-2E
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:44 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1tt4u5-00056Q-Mm
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:45 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4u2-00011w-8B
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:43 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-38dcac27bcbso2094327f8f.0
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:16:41 -0700 (PDT)
+ id 1tt4u3-00012O-TF
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:45 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-388cae9eb9fso1172125f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:16:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741958200; x=1742563000; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741958202; x=1742563002; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4ToRpJuRoPb7o2I7g2P2qw74Vo1+7N2AXe+vV531Ojk=;
- b=yEeJYN7+0reXXcI0DYVBqTuYsmJ4jkTjFl6p2KscntmZT91Tq/7st/N3Rpmhzwp+Rj
- KUt3UypdJBwvv/6dCs6OjRjgXYNWEb2P/AkD4Zo1CFsAMYr+R/pY5xZlDCRlDBY/HzFz
- MuEe0gCzIbnAbaRqzleapvVMGUB/d5O85dh3rOI8okgYrKPe4BF+Mvxs8LZdlcDBvzvk
- yFyQeaa/nRlgVZayH5u/mrcmYwaJFv1lV8BARuyBH+/z9RjxXvfaK8PUedSSaOH6h3bo
- CprlTgtQQcjrfElKkosMu0naWREUl6qkxye4J3XP1/8ouq48yJkYcXFHafHsbowqah9b
- ZEwQ==
+ :reply-to; bh=fHuKfDxA2I3IuqcU9csI6nL0wPvBFIcds8Iwt3qt8Yw=;
+ b=rQAzfUs2cahyizvg7F6shx28kr3tGO2z8YxGII8xMwfNpHQEyaeBRBx/eVJVJMWt7I
+ dxju8zTSw0s01wXc4IYE8Ty6opTvIHkD4jYOjgNMIJl7ifQrIvCjs2WxnzeWujqhkjRJ
+ WByWQB7bayWTE7eaV7Crl6B9ZjyqX+gO8glkOYCV400rBC+src12W6fEWgmPA1K2os3b
+ 0ExWOuSgUqlvaZwdKU8wMU2I6dOAlE01Uq4+k7SKSWh3m2dlrUag3K3ONl89Mxb7+ySD
+ cJDvSSxOct9KIgMdzcL53bQIOUSKxKKVKE1H85z4eK5ia4C3Sm5IFXooXKaZeFm5+Pcz
+ lVww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741958200; x=1742563000;
+ d=1e100.net; s=20230601; t=1741958202; x=1742563002;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4ToRpJuRoPb7o2I7g2P2qw74Vo1+7N2AXe+vV531Ojk=;
- b=Pe1Bf3UZkxSSo4HQqd5zH8L1Z72TFDrnilO4uVweGPdqZMhEPO36m26ZaCz2p3ucKV
- zn48qHoQGVtKaIt0qCJ+pGJx8qftPXfN1PX8qMHtlZp3fKClwrXbHLIANm+Pt/T1Q/QX
- Tmdu4i+PzPkN/z0192wY4gGVlTcXxqpz8eHWSmqDRGcuIvoBWepHxQyWzf4QwLK65vrr
- 3hjYrA4rkKSE18kR2Pj8QTsujTYLFlzoFxjBEzmU3AoZ3ogTuKnj1mpCzXNwmCAqF0IF
- kzs7V5KhIZO5dC4EkYgC1g3RIAkqheo+sLkHY2VR9k4MWVBjnaAgZZg++A3HC44AMPEx
- 3HOg==
-X-Gm-Message-State: AOJu0YyYOKe9lsnjD3QCyAnF4WY4emd20Txc9YtlWZbZQvQ6N69GanhW
- Cvla74Eml7bp83xa4ORdIvwfHanoobqf8K8Pl1Its5JnRTO6lqWB4InSJ0vT5gyynA3+QLC7q7I
- d
-X-Gm-Gg: ASbGncuyBM52/5rCeHLT66ECHwCuNND2W0uLXq6BkXSaYEGovRk38pNNJ8JdYPuXO2n
- AdbSfin3k7N7qoSgffbPZ7Cx1oLq9V+AIlNre8Y2RH4vCK+ZD+AXiywE1wwb6LHM9fr0dXCC4HC
- IgWUXCi7F6h0T7wQfJ1OFR1rzU3Lj7k/yjVH+SRbfMXS4JO/cLMEtGkxU1l/MIE9EqVFx8yFpOP
- 7cXVLB6cL2eZLm5xisL1GA+G/ljkPQ5kroieZOOEaxv3729yXzxwpZ/zeqszXDCuyEsmD37QDlv
- doy9sfTyGDv1SeI1i2GhGp80mYsJ47dEfBy73XCMCgPlkwDbuck=
-X-Google-Smtp-Source: AGHT+IFwFbzFvM3scj21QfBYKz/g2ZyNo+jSL2SW/wsXajh8KdOTnuk8kkJJEb8l6+GpZiBBEulUew==
-X-Received: by 2002:a5d:47a1:0:b0:38d:e3da:8b4f with SMTP id
- ffacd0b85a97d-39719032633mr3280337f8f.0.1741958200501; 
- Fri, 14 Mar 2025 06:16:40 -0700 (PDT)
+ bh=fHuKfDxA2I3IuqcU9csI6nL0wPvBFIcds8Iwt3qt8Yw=;
+ b=nAGyEXcfRCgH4idGZwFh6Ik7AcYgOIPDn3BtaItlfp06ELvAC0xsD87QNGGoPh6a50
+ ziTJ8x4ivAzc5yo3KqIPoj0anNwDET7Z0dp3bu8xOZ4ebNJQ53IesY3DuJvZoY75rpGf
+ xVCxwvRqnyfU9cW8azIprAiFUK27m5i4qHmir68ol9l9JMQiva1ko6yoDIVTbCsnzCLa
+ alxuSaUt0bMUEw1l4Roz3pFFMpasps30CRELkLZpXDFItSpzdu9QMTVDxsFLKCt3wR7t
+ QWkBNUs8Xv9U0tHvUhN8Fh+sMFrRqk8/7+1gJsJ8Ofg0hNxalDR5cjXDloCm5gEh15NL
+ 6r7w==
+X-Gm-Message-State: AOJu0Yy+BlsPsc+foARCW7/842pSP92kXyvLBSdeukEFjk+cHmAytqEN
+ C+8ocDG9WcizYAZycnKSbsWNxXD1LjPFWWa7aazmwr8K3IU3PAQzKcRueFyvL24r/TwEkvIczwi
+ S
+X-Gm-Gg: ASbGncvZtgqJ6cbTbZmX6GPfXE7azEDjmKz12X+ftcdCY7J2j6psyIL7xseiZolKbfi
+ ckTYk53/X0nB7CtG0i1tS2PjoOSPHLg3lFZr+3n4Q91GOW1VaGgd1E2VqmTeiMDEdOmLkih54Qy
+ HKvGGQq67jSm0eArGjxXZZLPjRJBckGncOT5hzNCZAdkNTH44EZJI7yq90z4AVjF+6lcL1MoM87
+ 60rdH6ZQdpmZBvDa7+U4tRrMJxqth2Ed+WdZ3y+gzm7/P7eVFwnmk3uIQW/L2I26Aa6OJi4Ovxt
+ EUN307Mk6IozICatV+M9mIIwiXWL0oag8ZuupwjtRX6qHR0/tYs=
+X-Google-Smtp-Source: AGHT+IF19bRrakaQAXt+EtN/2G3jfmNnfJUo5GSSDvCVFZ6KjW/OpwprXQdP8jVdpzQlqnFMNs/NHg==
+X-Received: by 2002:a5d:64ac:0:b0:390:f45e:c84a with SMTP id
+ ffacd0b85a97d-39720e3c861mr3390466f8f.48.1741958201681; 
+ Fri, 14 Mar 2025 06:16:41 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-395cb7eb93csm5437923f8f.86.2025.03.14.06.16.39
+ ffacd0b85a97d-395cb7eb93csm5437923f8f.86.2025.03.14.06.16.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Mar 2025 06:16:39 -0700 (PDT)
+ Fri, 14 Mar 2025 06:16:40 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/17] target/arm: Move A32_BANKED_REG_{GET,
- SET} macros to cpregs.h
-Date: Fri, 14 Mar 2025 13:16:21 +0000
-Message-ID: <20250314131637.371866-2-peter.maydell@linaro.org>
+Subject: [PULL 02/17] target/arm: Un-inline access_secure_reg()
+Date: Fri, 14 Mar 2025 13:16:22 +0000
+Message-ID: <20250314131637.371866-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250314131637.371866-1-peter.maydell@linaro.org>
 References: <20250314131637.371866-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,92 +96,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The A32_BANKED_REG_{GET,SET} macros are only used inside target/arm;
-move their definitions to cpregs.h. There's no need to have them
-defined in all the code that includes cpu.h.
+We would like to move arm_el_is_aa64() to internals.h; however, it is
+used by access_secure_reg().  Make that function not be inline, so
+that it can stay in cpu.h.
+
+access_secure_reg() is used only in two places:
+ * in hflags.c
+ * in the user-mode arm emulators, to decide whether to store
+   the TLS value in the secure or non-secure banked field
+
+The second of these is not on a super-hot path that would care about
+the inlining (and incidentally will always use the NS banked field
+because our user-mode CPUs never set ARM_FEATURE_EL3); put the
+definition of access_secure_reg() in hflags.c, near its only use
+inside target/arm.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpregs.h | 28 ++++++++++++++++++++++++++++
- target/arm/cpu.h    | 27 ---------------------------
- 2 files changed, 28 insertions(+), 27 deletions(-)
+ target/arm/cpu.h        | 12 +++---------
+ target/arm/tcg/hflags.c |  9 +++++++++
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index 52377c6eb50..2183de8eda6 100644
---- a/target/arm/cpregs.h
-+++ b/target/arm/cpregs.h
-@@ -1157,4 +1157,32 @@ static inline bool arm_cpreg_traps_in_nv(const ARMCPRegInfo *ri)
-     return ri->opc1 == 4 || ri->opc1 == 5;
- }
- 
-+/* Macros for accessing a specified CP register bank */
-+#define A32_BANKED_REG_GET(_env, _regname, _secure)                     \
-+    ((_secure) ? (_env)->cp15._regname##_s : (_env)->cp15._regname##_ns)
-+
-+#define A32_BANKED_REG_SET(_env, _regname, _secure, _val)       \
-+    do {                                                        \
-+        if (_secure) {                                          \
-+            (_env)->cp15._regname##_s = (_val);                 \
-+        } else {                                                \
-+            (_env)->cp15._regname##_ns = (_val);                \
-+        }                                                       \
-+    } while (0)
-+
-+/*
-+ * Macros for automatically accessing a specific CP register bank depending on
-+ * the current secure state of the system.  These macros are not intended for
-+ * supporting instruction translation reads/writes as these are dependent
-+ * solely on the SCR.NS bit and not the mode.
-+ */
-+#define A32_BANKED_CURRENT_REG_GET(_env, _regname)                          \
-+    A32_BANKED_REG_GET((_env), _regname,                                    \
-+                       (arm_is_secure(_env) && !arm_el_is_aa64((_env), 3)))
-+
-+#define A32_BANKED_CURRENT_REG_SET(_env, _regname, _val)                    \
-+    A32_BANKED_REG_SET((_env), _regname,                                    \
-+                       (arm_is_secure(_env) && !arm_el_is_aa64((_env), 3)), \
-+                       (_val))
-+
- #endif /* TARGET_ARM_CPREGS_H */
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 8f52380c88c..15d3a79b0af 100644
+index 15d3a79b0af..12d2706f2b5 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -2684,33 +2684,6 @@ static inline bool access_secure_reg(CPUARMState *env)
-     return ret;
+@@ -2668,21 +2668,15 @@ static inline bool arm_el_is_aa64(CPUARMState *env, int el)
+     return aa64;
  }
  
--/* Macros for accessing a specified CP register bank */
--#define A32_BANKED_REG_GET(_env, _regname, _secure)    \
--    ((_secure) ? (_env)->cp15._regname##_s : (_env)->cp15._regname##_ns)
+-/* Function for determining whether guest cp register reads and writes should
++/*
++ * Function for determining whether guest cp register reads and writes should
+  * access the secure or non-secure bank of a cp register.  When EL3 is
+  * operating in AArch32 state, the NS-bit determines whether the secure
+  * instance of a cp register should be used. When EL3 is AArch64 (or if
+  * it doesn't exist at all) then there is no register banking, and all
+  * accesses are to the non-secure version.
+  */
+-static inline bool access_secure_reg(CPUARMState *env)
+-{
+-    bool ret = (arm_feature(env, ARM_FEATURE_EL3) &&
+-                !arm_el_is_aa64(env, 3) &&
+-                !(env->cp15.scr_el3 & SCR_NS));
 -
--#define A32_BANKED_REG_SET(_env, _regname, _secure, _val)   \
--    do {                                                \
--        if (_secure) {                                   \
--            (_env)->cp15._regname##_s = (_val);            \
--        } else {                                        \
--            (_env)->cp15._regname##_ns = (_val);           \
--        }                                               \
--    } while (0)
--
--/* Macros for automatically accessing a specific CP register bank depending on
-- * the current secure state of the system.  These macros are not intended for
-- * supporting instruction translation reads/writes as these are dependent
-- * solely on the SCR.NS bit and not the mode.
-- */
--#define A32_BANKED_CURRENT_REG_GET(_env, _regname)        \
--    A32_BANKED_REG_GET((_env), _regname,                \
--                       (arm_is_secure(_env) && !arm_el_is_aa64((_env), 3)))
--
--#define A32_BANKED_CURRENT_REG_SET(_env, _regname, _val)                       \
--    A32_BANKED_REG_SET((_env), _regname,                                    \
--                       (arm_is_secure(_env) && !arm_el_is_aa64((_env), 3)), \
--                       (_val))
--
+-    return ret;
+-}
++bool access_secure_reg(CPUARMState *env);
+ 
  uint32_t arm_phys_excp_target_el(CPUState *cs, uint32_t excp_idx,
                                   uint32_t cur_el, bool secure);
+diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+index 9e6a1869f94..8d79b8b7ae1 100644
+--- a/target/arm/tcg/hflags.c
++++ b/target/arm/tcg/hflags.c
+@@ -63,6 +63,15 @@ static bool aprofile_require_alignment(CPUARMState *env, int el, uint64_t sctlr)
+ #endif
+ }
  
++bool access_secure_reg(CPUARMState *env)
++{
++    bool ret = (arm_feature(env, ARM_FEATURE_EL3) &&
++                !arm_el_is_aa64(env, 3) &&
++                !(env->cp15.scr_el3 & SCR_NS));
++
++    return ret;
++}
++
+ static CPUARMTBFlags rebuild_hflags_common(CPUARMState *env, int fp_el,
+                                            ARMMMUIdx mmu_idx,
+                                            CPUARMTBFlags flags)
 -- 
 2.43.0
 
