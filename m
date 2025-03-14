@@ -2,93 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4236A613EC
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 15:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD776A6140B
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 15:49:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt6HS-0002Sk-29; Fri, 14 Mar 2025 10:44:58 -0400
+	id 1tt6L8-0003uw-Eh; Fri, 14 Mar 2025 10:48:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tt6HN-0002JK-ST
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 10:44:54 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tt6L1-0003tK-Po
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 10:48:41 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1tt6HJ-00011u-Jo
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 10:44:53 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-ac2bb7ca40bso408473366b.3
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 07:44:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1741963487; x=1742568287; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=E+mmioR0JlNqITuU0MHSCr02tRyusfA2SU12RVinQJE=;
- b=MW1GjXharW03i3aEo9Bt5sQhmPWC8SvUCWGwOugsN9OYG1Y11IzemkgAC2QJp66jkP
- Vtte3ivdmoQlLLHBXm3lZOL+iLShtrTNbcR82hAvfpoUWfGMP8M4ah6rdVjE544yc4kb
- cdAwIEMqfc8+dNc0V6/WkJED6PirCIwI+o4UQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741963487; x=1742568287;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=E+mmioR0JlNqITuU0MHSCr02tRyusfA2SU12RVinQJE=;
- b=R2ruV6Ey82SjoRSJetjR4QEPfZ92fTHm+MDgyNA+XRcwtDFnzMxjbiPsRsZ0sBLmId
- BWyNrqNwqBCGB+hKaycrr0RXYzjqSictREI2yGbPPlAZLncU4zPKbr2br6Ylsx/g4nzR
- isMxgjd/UTGr37HAAtpFmDbYQFulPpbDZDN9LcaWO55milYjGGFpisoAbWCdcwciCDQ2
- f5RXmXaKSTp2prMK34mpLb6mpCo9hnditKULYidcUvlovGsnBV+z+kSKlnjsVqnU07zB
- 0INKa30qaJkuVQVNWUKo/JjGzzWUCE62ah7VOB+EIVnFI4juSIOXArb2rK2C0op3rg8a
- 3sXA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUoALfApH704Lv5dspAg8z3q7chTAWGRBatsiCy1idzcgnOliNSWH3HtGdKyOyqBQkvidB1yGKI3QBn@nongnu.org
-X-Gm-Message-State: AOJu0YwWnYvZjl1RpyJAEDFbzHEi5SsUTOrVOFpLtkDLfgoan/fBuin8
- erzOtvi1YaCApqDfVgX0Zc16S9KE9XPo5sFnmYBOsSkCZJULDzGSBGGcnZmhnatFUSM2AlM2hqw
- JGk3VcKdEhJFKry0ZTc6WhAot9I3f1eGDNHtM
-X-Gm-Gg: ASbGncvZcLmrYMRJVuobxAc6cYoF9mU0gEwkkiYaHMbz6zOPd+8Viw6tg0HFKwD1bQF
- xIo9gZNdC1HeXSdj6r1BprSc7jLElh/Zw0lQ22f3A0SHl3WDJBEk821TJy2eMI6XK343hO7ca+b
- XNj6E3SC0cFzgbJdRpyV6j0Oe6j3M0
-X-Google-Smtp-Source: AGHT+IFcB66P3WuSLfFUXPdWeMVuD9xRdhZhOB0EEFFUlsycmCKgx2K6QI/lGiEFiUOetV4myECiUCKqshSPlQSkoqs=
-X-Received: by 2002:a17:907:d92:b0:ac2:d5e6:dea7 with SMTP id
- a640c23a62f3a-ac33017710cmr345011666b.13.1741963486995; Fri, 14 Mar 2025
- 07:44:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tt6Kx-0001iM-Q2
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 10:48:39 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 60B661F74B;
+ Fri, 14 Mar 2025 14:48:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1741963710; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=a+u+b1bhCZRc+clpsnOLU6RsTE8EAt9fb4DDXLy/dqo=;
+ b=PKu0Uz3EGzk7+wd24c18KEGLJj8/VRxfFRE+OBN4h+3An9yzJQAsWfVgAy2GhD7YsMjvV/
+ PUkk4yHVJKyyexhr4/hQbMSqkgNz4YChYCq61oqsXikBVHt+kWV94z18wnaXftap8cbwjh
+ fLzsvNWpeJigLyHiv1wDNNgK8WrAP6Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1741963710;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=a+u+b1bhCZRc+clpsnOLU6RsTE8EAt9fb4DDXLy/dqo=;
+ b=chVVRgIASh+pl6ypNmxRmI+8mBfU5rfGFg4tTN5TA4yYXO+/KyJUqmT1s//R6dGdLqpzX3
+ ikOWm4vYt/bqxjDQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PKu0Uz3E;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=chVVRgIA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1741963710; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=a+u+b1bhCZRc+clpsnOLU6RsTE8EAt9fb4DDXLy/dqo=;
+ b=PKu0Uz3EGzk7+wd24c18KEGLJj8/VRxfFRE+OBN4h+3An9yzJQAsWfVgAy2GhD7YsMjvV/
+ PUkk4yHVJKyyexhr4/hQbMSqkgNz4YChYCq61oqsXikBVHt+kWV94z18wnaXftap8cbwjh
+ fLzsvNWpeJigLyHiv1wDNNgK8WrAP6Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1741963710;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=a+u+b1bhCZRc+clpsnOLU6RsTE8EAt9fb4DDXLy/dqo=;
+ b=chVVRgIASh+pl6ypNmxRmI+8mBfU5rfGFg4tTN5TA4yYXO+/KyJUqmT1s//R6dGdLqpzX3
+ ikOWm4vYt/bqxjDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A2D0132DD;
+ Fri, 14 Mar 2025 14:48:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id RPrjB71B1GeVPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Mar 2025 14:48:29 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>
+Subject: [PULL 0/4] Migration patches for 2025-03-14
+Date: Fri, 14 Mar 2025 11:48:20 -0300
+Message-Id: <20250314144824.1707-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-References: <20250306160428.3041057-1-sjg@chromium.org>
- <20250307142255.GL2640854@bill-the-cat>
-In-Reply-To: <20250307142255.GL2640854@bill-the-cat>
-From: Simon Glass <sjg@chromium.org>
-Date: Fri, 14 Mar 2025 14:44:35 +0000
-X-Gm-Features: AQ5f1Jp-MmYnjUxHsnfWVgj9hifY91XGM0HctUYfs31ZVaqYpc5_gyTiGM0EclQ
-Message-ID: <CAFLszTgtYsVQW-kETzUAdvJvAT6fN_53TeoN7o8wu52Ze3u56Q@mail.gmail.com>
-Subject: Re: [PATCH v4 00/47] x86: Improve operation under QEMU
-To: Tom Rini <trini@konsulko.com>
-Cc: U-Boot Mailing List <u-boot@lists.denx.de>, Bin Meng <bmeng.cn@gmail.com>, 
- Andrew Goodbody <andrew.goodbody@linaro.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Angelo Dureghello <angelo@kernel-space.org>,
- Guillaume La Roque <glaroque@baylibre.com>, 
- Heinrich Schuchardt <xypron.glpk@gmx.de>, Igor Opaniuk <igor.opaniuk@gmail.com>,
- Jerome Forissier <jerome.forissier@linaro.org>,
- Julien Masson <jmasson@baylibre.com>, 
- Julius Lehmann <lehmanju@devpi.de>, Love Kumar <love.kumar@amd.com>, 
- Marek Vasut <marek.vasut+renesas@mailbox.org>,
- Martyn Welch <martyn.welch@collabora.com>, 
- Mattijs Korpershoek <mkorpershoek@baylibre.com>, 
- Maximilian Brune <maximilian.brune@9elements.com>,
- Moritz Fischer <moritzf@google.com>, 
- Patrick Rudolph <patrick.rudolph@9elements.com>,
- Philip Oberfichtner <pro@denx.de>, 
- Quentin Schulz <quentin.schulz@cherry.de>, Richard Weinberger <richard@nod.at>,
- Stephen Warren <swarren@nvidia.com>, Stephen Warren <swarren@wwwdotorg.org>, 
- Sughosh Ganu <sughosh.ganu@linaro.org>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=sjg@chromium.org; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 60B661F74B
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; ARC_NA(0.00)[]; RCPT_COUNT_TWO(0.00)[2];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MIME_TRACE(0.00)[0:+]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ TO_DN_SOME(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ FROM_EQ_ENVFROM(0.00)[];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,
+ imap1.dmz-prg2.suse.org:helo, suse.de:mid, suse.de:dkim]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,51 +119,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Tom,
+The following changes since commit 0462a32b4f63b2448b4a196381138afd50719dc4:
 
-On Fri, 7 Mar 2025 at 14:23, Tom Rini <trini@konsulko.com> wrote:
->
-> On Thu, Mar 06, 2025 at 09:03:27AM -0700, Simon Glass wrote:
->
-> > U-Boot can start and boot an OS in both qemu-x86 and qemu-x86_64 but it
-> > is not perfect.
-> >
-> > With both builds, executing the VESA ROM causes an intermittent hang, at
-> > least on some AMD CPUs.
-> >
-> > With qemu-x86_64 kvm cannot be used since the move to long mode (64-bit)
-> > is done in a way that works on real hardware but not with QEMU. This
-> > means that performance is 4-5x slower than it could be, at least on my
-> > CPU.
-> >
-> > We can work around the first problem by using Bochs, which is anyway a
-> > better choice than VESA for QEMU. The second can be addressed by using
-> > the same descriptor across the jump to long mode.
-> >
-> > With an MTRR fix this allows booting into Ubuntu on qemu-x86_64
-> >
-> > In v3 some e820 patches are included to make booting reliable and avoid
-> > ACPI tables being dropped. Also, several MTTR problems are addressed, to
-> > support memory sizes above 4GB reliably.
->
-> Do you plan to rebase the prerequisite series' this requires so that it
-> can be merged?
+  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2025-03-14 09:31:13 +0800)
 
-Here's my understanding of where things are:
+are available in the Git repository at:
 
-1. You rejected the membuf series and my replies to try to resolve
-that haven't gone anywhere yet. So your tree doesn't have any tests
-for that code and still has the old naming.
+  https://gitlab.com/farosas/qemu.git tags/migration-20250314-pull-request
 
-2. I sent the first part of the PXE series so you could apply that.
+for you to fetch changes up to 8ffe0623a1f40803feb4280fce13549baa4b0b47:
 
-3. You rejected the second part of this series because it didn't
-include support for lwip without cmdline. I offered to handle that
-case later but I'm pretty sure you rejected that too.
+  hw/qxl: fix cpr (2025-03-14 09:29:20 -0300)
 
-4. This series is now marked 'changes requested' but the only feedback
-I see is in the RFC patch.
+----------------------------------------------------------------
+Migration pull request
 
-Regards,
-Simon
+Fixes for cpr-transfer (live update functionality).
+
+----------------------------------------------------------------
+
+Steve Sistare (4):
+  migration: cpr_is_incoming
+  pflash: fix cpr
+  hw/loader: fix roms during cpr
+  hw/qxl: fix cpr
+
+ hw/block/block.c        |  5 +++++
+ hw/core/loader.c        |  5 ++++-
+ hw/display/qxl.c        | 27 ++++++++++++++++++++++++---
+ include/migration/cpr.h |  1 +
+ migration/cpr.c         |  5 +++++
+ 5 files changed, 39 insertions(+), 4 deletions(-)
+
+-- 
+2.35.3
+
 
