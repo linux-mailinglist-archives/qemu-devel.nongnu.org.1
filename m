@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25616A6126A
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:18:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2005AA61276
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:22:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt4uE-00058K-4S; Fri, 14 Mar 2025 09:16:54 -0400
+	id 1tt4uI-0005An-5r; Fri, 14 Mar 2025 09:16:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4u8-00057Z-El
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:48 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tt4uA-00058I-Dr
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:52 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4u6-00013w-D0
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:48 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43cf06eabdaso19898575e9.2
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:16:45 -0700 (PDT)
+ id 1tt4u8-00014V-2e
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:50 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43d0359b1fcso14096575e9.0
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:16:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741958205; x=1742563005; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741958206; x=1742563006; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MFEetzhpy67fb1rZmq/TyHXKzbhpMLPrqzm1/ZE2RQA=;
- b=zxp4wtDsLPqWqwTHnv9eVb6qltpMmSKsHTQLh2QFSDchat4NSyY1RZ98UIEnDm3RI0
- sd5y7Vdcc/tqP/rQKwv5Xr9f0Q6kZkIYaLcjxY6ZzQTf0YUgNF1ma0daPBqnlqkIaIqF
- OSYSYtYuOP/69DV+K/IWOV3iJB2p47vVxDPtmPx8ct8KEghVaX9lQRSUJj96oT/KUykL
- MdfkSjebAMUwYuDfFCGfUoqMQEsF95onPgNdAn1RXzOmjFdwLYbHOlAKYK5iLCGUu2aG
- NxRz8RcZ0tQ8ummwExdph48+wbbwA2hugCFLe75HZ4qx/2UUPQUMDI38l5YQb8U8ITNY
- Jv2g==
+ :reply-to; bh=JoCJlJB7bw5C9PTN/h6RLrq6shwMf+RftAhK7d1SWBw=;
+ b=tDIob5J2cEmZqaKlmai01Y58CfCMjoFTrOEZh8Jt0wuc0H0ubb2xXOtkTLFr0+WMIu
+ DCrgqvmpJmEeBDZWaQf6fRRvsYX0cBxQBFgXBe3emEdUoZ4leEqn2nXK/fy79S3AElI5
+ eowaQ6mhvAY+ORP+EOkadDzxlJAkFpmtM3clSSbkATWeO0PZXG1yP3chLPIrXI0qO4QI
+ LZjes8V3QGAcmrU/LrNYR1och1BQSNSQyhPkTNeeT/vWZQ6h7G1z9ept8y73zX/+z0RB
+ y0kA+KjiJeDMWePNscigGQZAvjchU/JBEpaLTaCDgX55icP0gtAPRCBhy3oSLVOiWzaI
+ 3o/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741958205; x=1742563005;
+ d=1e100.net; s=20230601; t=1741958206; x=1742563006;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MFEetzhpy67fb1rZmq/TyHXKzbhpMLPrqzm1/ZE2RQA=;
- b=NqUfITtcNOA5hfD2P+5WU7gB9Am57M0jIEwGKlMnnBHSM+3CDLJT22Ucvg4VG0AWhs
- crJPPaUJPYe9OjgM2Q47vt/U/hTlECAqEM5zDls2y3N070mF2Q0OrT+ay5VQkxYu2MEI
- 6H459st9ve7tSgDnGMMwkEHBZMVAy7oDJHGRy8F73jMZ+GUd8c5/7vAygxcGSNYhGojo
- m0SNckd5CgAqxIs4JF6OmpOOFvEzcZLI2USWWnRMQJWcgJRkKl5iVokG0LbunLzfB0Ek
- nXLuyIx2A/oDOHAnFdJy/5BrJ+xgTvd/tzq05iE0HjfB7gqNxX/5aO/O2Cp3AJKkrmCD
- KVVw==
-X-Gm-Message-State: AOJu0Ywp33k9jIabePQwp90v+rh59/JqP4WRAk0Uih72q0COwCEX3QkQ
- uCGHRpxSv+XtL6rLsn/70LpKJQ4RbMxX+4q4h6qVKVJmiUtzhkE86JKSXHDnm+6e1N2laUqaFiL
- C
-X-Gm-Gg: ASbGnct/2w9f3OjaG3ILZJ93oze4A4FPne+rbNav1ONtKqYuiitJGS0T4bckKz7gDhJ
- kBQ3MGn6IB16C1XtZsgq9eNuODddxPOYJ/LX4/rl2AVefBfL+lm3TyNPXQcHd+/3E87BuIeMaRI
- UcM53X25DCWcbchT6f1My2Q3ZGZNVjQCCmDj4lCSjia8FsxYuEXmYpMISYyPuezP/jnbbg4ZGRu
- nNepo0NiDkSoiUUzV7NHr9i6FrAcdpmNCERZh9LNtc1UsS0lsl+/QIMu6R+eQTMdChbKwxDTuLx
- KGMSzdZmE/e8r8T61of5ZVJbC4u0yQ6k2lxR5bi7B+DXV+3kaqc=
-X-Google-Smtp-Source: AGHT+IEPlQtZnrUYrcipvFZM7x3kZiRYxT7K78w3QC4eSxRrZW5yfp83tSUq6VQn7lUOd478syUCAw==
-X-Received: by 2002:a05:600c:a21b:b0:43c:fcbc:968c with SMTP id
- 5b1f17b1804b1-43d1ef4b09amr33168435e9.7.1741958204826; 
- Fri, 14 Mar 2025 06:16:44 -0700 (PDT)
+ bh=JoCJlJB7bw5C9PTN/h6RLrq6shwMf+RftAhK7d1SWBw=;
+ b=VQO6KWRIhqs3EsgKkqbPjIdrGfKlzaK34k4B8kF5FJbAAsyK4kzknXFSYLhn2SwACS
+ bCyQYP9ZAaVQbLu947kq/o8zoCjogBPxUPftQJoccK0a9bk5Fc7LvVHZf3lMTA+mI58s
+ /BPWiy0XXGk5F1ektKH85Tkadg/N2rYT6an3yzY4o6yqmOc+BAvvEQ4U6kwGBrYbS8WC
+ VnR4b5LAWDrU6V7mmsQoytSF80v9tx2HkwYOfXT25hJSSzsNNZyp0tUbfJJBRQmXv6Hd
+ 8u6dAMtrRCE9MyrU7v3/wbiSLxbnKxDDrh2Dqu/BfLhfpsjSQcRV+Zhb6K/dnSxZnGHK
+ JfLA==
+X-Gm-Message-State: AOJu0YwTmYDjra1nP1LWNh60cFe3DJuoG5WCYDxM0x6dUyMutVjI6GWr
+ FAfh/q8RTVLgrkqokADt8EWhepRezSDMaw7WREs2Q11UBM6RF7L7Hw5QCJnVEXQ10W4n/63obek
+ m
+X-Gm-Gg: ASbGnctmUezLybNRNGu0yiXXskvM3+J3EqX0TNlzAHWr5+XXjjfqNClP6sSVvS01kQp
+ prYaPqI8CdMpknkFnkm+CXKJUhZbIh8CLHZDdOIlE2Lr2ELEh11lt5Ly0xkdTbcO4mNlDcCvZzW
+ I2+dVr0RhW7m/2dNSC3RBNvPYmgg6tsPxjM2tkYAlTiQ+pCXh8wb8FyT9vlkUXM7UOdNsNAddsL
+ A0LFUL4fFkC8kr0qdAt7bPts4/jsQM1nejpH6YJjNtd/PM1bpkbNSZGwKEVCKzbvmD26he6oZPP
+ g2SdBCgbrRmSm9+GMEFTrQCvQ0j3IkZZBS2qRQf/WBmAuK6k5kQ=
+X-Google-Smtp-Source: AGHT+IELznoKUBojZluoVq4XJHF4HnNUIfteTWanih2v1ez84lg40owCsmnHO192g4B2wuMuCpJoXg==
+X-Received: by 2002:a05:600c:1c9d:b0:43d:186d:a4bf with SMTP id
+ 5b1f17b1804b1-43d1f120201mr29791515e9.0.1741958205913; 
+ Fri, 14 Mar 2025 06:16:45 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-395cb7eb93csm5437923f8f.86.2025.03.14.06.16.43
+ ffacd0b85a97d-395cb7eb93csm5437923f8f.86.2025.03.14.06.16.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Mar 2025 06:16:44 -0700 (PDT)
+ Fri, 14 Mar 2025 06:16:45 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/17] target/arm: Move arm_cpu_data_is_big_endian() etc to
- internals.h
-Date: Fri, 14 Mar 2025 13:16:25 +0000
-Message-ID: <20250314131637.371866-6-peter.maydell@linaro.org>
+Subject: [PULL 06/17] target/arm: Move arm_current_el() and arm_el_is_aa64()
+ to internals.h
+Date: Fri, 14 Mar 2025 13:16:26 +0000
+Message-ID: <20250314131637.371866-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250314131637.371866-1-peter.maydell@linaro.org>
 References: <20250314131637.371866-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,144 +97,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The arm_cpu_data_is_big_endian() and related functions are now used
-only in target/arm; they can be moved to internals.h.
+The functions arm_current_el() and arm_el_is_aa64() are used only in
+target/arm and in hw/intc/arm_gicv3_cpuif.c.  They're functions that
+query internal state of the CPU.  Move them out of cpu.h and into
+internals.h.
 
-The motivation here is that we would like to move arm_current_el()
-to internals.h.
+This means we need to include internals.h in arm_gicv3_cpuif.c, but
+this is justifiable because that file is implementing the GICv3 CPU
+interface, which really is part of the CPU proper; we just ended up
+implementing it in code in hw/intc/ for historical reasons.
+
+The motivation for this move is that we'd like to change
+arm_el_is_aa64() to add a condition that uses cpu_isar_feature();
+but we don't want to include cpu-features.h in cpu.h.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h       | 48 ------------------------------------------
- target/arm/internals.h | 48 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+), 48 deletions(-)
+ target/arm/cpu.h          | 66 --------------------------------------
+ target/arm/internals.h    | 67 +++++++++++++++++++++++++++++++++++++++
+ hw/intc/arm_gicv3_cpuif.c |  1 +
+ target/arm/arch_dump.c    |  1 +
+ 4 files changed, 69 insertions(+), 66 deletions(-)
 
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 12d2706f2b5..8a59f705167 100644
+index 8a59f705167..a8177c6c2e8 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -3032,47 +3032,6 @@ static inline bool arm_sctlr_b(CPUARMState *env)
+@@ -2635,39 +2635,6 @@ uint64_t arm_hcr_el2_eff_secstate(CPUARMState *env, ARMSecuritySpace space);
+ uint64_t arm_hcr_el2_eff(CPUARMState *env);
+ uint64_t arm_hcrx_el2_eff(CPUARMState *env);
  
- uint64_t arm_sctlr(CPUARMState *env, int el);
- 
--static inline bool arm_cpu_data_is_big_endian_a32(CPUARMState *env,
--                                                  bool sctlr_b)
+-/* Return true if the specified exception level is running in AArch64 state. */
+-static inline bool arm_el_is_aa64(CPUARMState *env, int el)
 -{
--#ifdef CONFIG_USER_ONLY
--    /*
--     * In system mode, BE32 is modelled in line with the
--     * architecture (as word-invariant big-endianness), where loads
--     * and stores are done little endian but from addresses which
--     * are adjusted by XORing with the appropriate constant. So the
--     * endianness to use for the raw data access is not affected by
--     * SCTLR.B.
--     * In user mode, however, we model BE32 as byte-invariant
--     * big-endianness (because user-only code cannot tell the
--     * difference), and so we need to use a data access endianness
--     * that depends on SCTLR.B.
+-    /* This isn't valid for EL0 (if we're in EL0, is_a64() is what you want,
+-     * and if we're not in EL0 then the state of EL0 isn't well defined.)
 -     */
--    if (sctlr_b) {
--        return true;
+-    assert(el >= 1 && el <= 3);
+-    bool aa64 = arm_feature(env, ARM_FEATURE_AARCH64);
+-
+-    /* The highest exception level is always at the maximum supported
+-     * register width, and then lower levels have a register width controlled
+-     * by bits in the SCR or HCR registers.
+-     */
+-    if (el == 3) {
+-        return aa64;
 -    }
--#endif
--    /* In 32bit endianness is determined by looking at CPSR's E bit */
--    return env->uncached_cpsr & CPSR_E;
--}
 -
--static inline bool arm_cpu_data_is_big_endian_a64(int el, uint64_t sctlr)
--{
--    return sctlr & (el ? SCTLR_EE : SCTLR_E0E);
--}
--
--/* Return true if the processor is in big-endian mode. */
--static inline bool arm_cpu_data_is_big_endian(CPUARMState *env)
--{
--    if (!is_a64(env)) {
--        return arm_cpu_data_is_big_endian_a32(env, arm_sctlr_b(env));
--    } else {
--        int cur_el = arm_current_el(env);
--        uint64_t sctlr = arm_sctlr(env, cur_el);
--        return arm_cpu_data_is_big_endian_a64(cur_el, sctlr);
+-    if (arm_feature(env, ARM_FEATURE_EL3) &&
+-        ((env->cp15.scr_el3 & SCR_NS) || !(env->cp15.scr_el3 & SCR_EEL2))) {
+-        aa64 = aa64 && (env->cp15.scr_el3 & SCR_RW);
 -    }
+-
+-    if (el == 2) {
+-        return aa64;
+-    }
+-
+-    if (arm_is_el2_enabled(env)) {
+-        aa64 = aa64 && (env->cp15.hcr_el2 & HCR_RW);
+-    }
+-
+-    return aa64;
 -}
 -
- #include "exec/cpu-all.h"
- 
  /*
-@@ -3258,13 +3217,6 @@ static inline bool bswap_code(bool sctlr_b)
- #endif
+  * Function for determining whether guest cp register reads and writes should
+  * access the secure or non-secure bank of a cp register.  When EL3 is
+@@ -2699,39 +2666,6 @@ static inline bool arm_v7m_is_handler_mode(CPUARMState *env)
+     return env->v7m.exception != 0;
  }
  
--#ifdef CONFIG_USER_ONLY
--static inline bool arm_cpu_bswap_data(CPUARMState *env)
+-/* Return the current Exception Level (as per ARMv8; note that this differs
+- * from the ARMv7 Privilege Level).
+- */
+-static inline int arm_current_el(CPUARMState *env)
 -{
--    return TARGET_BIG_ENDIAN ^ arm_cpu_data_is_big_endian(env);
--}
--#endif
+-    if (arm_feature(env, ARM_FEATURE_M)) {
+-        return arm_v7m_is_handler_mode(env) ||
+-            !(env->v7m.control[env->v7m.secure] & 1);
+-    }
 -
- void cpu_get_tb_cpu_state(CPUARMState *env, vaddr *pc,
-                           uint64_t *cs_base, uint32_t *flags);
- 
+-    if (is_a64(env)) {
+-        return extract32(env->pstate, 2, 2);
+-    }
+-
+-    switch (env->uncached_cpsr & 0x1f) {
+-    case ARM_CPU_MODE_USR:
+-        return 0;
+-    case ARM_CPU_MODE_HYP:
+-        return 2;
+-    case ARM_CPU_MODE_MON:
+-        return 3;
+-    default:
+-        if (arm_is_secure(env) && !arm_el_is_aa64(env, 3)) {
+-            /* If EL3 is 32-bit then all secure privileged modes run in
+-             * EL3
+-             */
+-            return 3;
+-        }
+-
+-        return 1;
+-    }
+-}
+-
+ /**
+  * write_list_to_cpustate
+  * @cpu: ARMCPU
 diff --git a/target/arm/internals.h b/target/arm/internals.h
-index bb962389192..c2c59e60309 100644
+index c2c59e60309..d161a3e396b 100644
 --- a/target/arm/internals.h
 +++ b/target/arm/internals.h
-@@ -392,6 +392,54 @@ static inline FloatRoundMode arm_rmode_to_sf(ARMFPRounding rmode)
+@@ -392,6 +392,73 @@ static inline FloatRoundMode arm_rmode_to_sf(ARMFPRounding rmode)
      return arm_rmode_to_sf_map[rmode];
  }
  
-+static inline bool arm_cpu_data_is_big_endian_a32(CPUARMState *env,
-+                                                  bool sctlr_b)
++/* Return true if the specified exception level is running in AArch64 state. */
++static inline bool arm_el_is_aa64(CPUARMState *env, int el)
 +{
-+#ifdef CONFIG_USER_ONLY
 +    /*
-+     * In system mode, BE32 is modelled in line with the
-+     * architecture (as word-invariant big-endianness), where loads
-+     * and stores are done little endian but from addresses which
-+     * are adjusted by XORing with the appropriate constant. So the
-+     * endianness to use for the raw data access is not affected by
-+     * SCTLR.B.
-+     * In user mode, however, we model BE32 as byte-invariant
-+     * big-endianness (because user-only code cannot tell the
-+     * difference), and so we need to use a data access endianness
-+     * that depends on SCTLR.B.
++     * This isn't valid for EL0 (if we're in EL0, is_a64() is what you want,
++     * and if we're not in EL0 then the state of EL0 isn't well defined.)
 +     */
-+    if (sctlr_b) {
-+        return true;
++    assert(el >= 1 && el <= 3);
++    bool aa64 = arm_feature(env, ARM_FEATURE_AARCH64);
++
++    /*
++     * The highest exception level is always at the maximum supported
++     * register width, and then lower levels have a register width controlled
++     * by bits in the SCR or HCR registers.
++     */
++    if (el == 3) {
++        return aa64;
 +    }
-+#endif
-+    /* In 32bit endianness is determined by looking at CPSR's E bit */
-+    return env->uncached_cpsr & CPSR_E;
++
++    if (arm_feature(env, ARM_FEATURE_EL3) &&
++        ((env->cp15.scr_el3 & SCR_NS) || !(env->cp15.scr_el3 & SCR_EEL2))) {
++        aa64 = aa64 && (env->cp15.scr_el3 & SCR_RW);
++    }
++
++    if (el == 2) {
++        return aa64;
++    }
++
++    if (arm_is_el2_enabled(env)) {
++        aa64 = aa64 && (env->cp15.hcr_el2 & HCR_RW);
++    }
++
++    return aa64;
 +}
 +
-+static inline bool arm_cpu_data_is_big_endian_a64(int el, uint64_t sctlr)
++/*
++ * Return the current Exception Level (as per ARMv8; note that this differs
++ * from the ARMv7 Privilege Level).
++ */
++static inline int arm_current_el(CPUARMState *env)
 +{
-+    return sctlr & (el ? SCTLR_EE : SCTLR_E0E);
-+}
++    if (arm_feature(env, ARM_FEATURE_M)) {
++        return arm_v7m_is_handler_mode(env) ||
++            !(env->v7m.control[env->v7m.secure] & 1);
++    }
 +
-+/* Return true if the processor is in big-endian mode. */
-+static inline bool arm_cpu_data_is_big_endian(CPUARMState *env)
-+{
-+    if (!is_a64(env)) {
-+        return arm_cpu_data_is_big_endian_a32(env, arm_sctlr_b(env));
-+    } else {
-+        int cur_el = arm_current_el(env);
-+        uint64_t sctlr = arm_sctlr(env, cur_el);
-+        return arm_cpu_data_is_big_endian_a64(cur_el, sctlr);
++    if (is_a64(env)) {
++        return extract32(env->pstate, 2, 2);
++    }
++
++    switch (env->uncached_cpsr & 0x1f) {
++    case ARM_CPU_MODE_USR:
++        return 0;
++    case ARM_CPU_MODE_HYP:
++        return 2;
++    case ARM_CPU_MODE_MON:
++        return 3;
++    default:
++        if (arm_is_secure(env) && !arm_el_is_aa64(env, 3)) {
++            /* If EL3 is 32-bit then all secure privileged modes run in EL3 */
++            return 3;
++        }
++
++        return 1;
 +    }
 +}
 +
-+#ifdef CONFIG_USER_ONLY
-+static inline bool arm_cpu_bswap_data(CPUARMState *env)
-+{
-+    return TARGET_BIG_ENDIAN ^ arm_cpu_data_is_big_endian(env);
-+}
-+#endif
-+
- static inline void aarch64_save_sp(CPUARMState *env, int el)
+ static inline bool arm_cpu_data_is_big_endian_a32(CPUARMState *env,
+                                                   bool sctlr_b)
  {
-     if (env->pstate & PSTATE_SP) {
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index 7f1d071c198..de37465bc87 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -22,6 +22,7 @@
+ #include "cpu.h"
+ #include "target/arm/cpregs.h"
+ #include "target/arm/cpu-features.h"
++#include "target/arm/internals.h"
+ #include "system/tcg.h"
+ #include "system/qtest.h"
+ 
+diff --git a/target/arm/arch_dump.c b/target/arm/arch_dump.c
+index 5c943dc27b5..c40df4e7fd7 100644
+--- a/target/arm/arch_dump.c
++++ b/target/arm/arch_dump.c
+@@ -23,6 +23,7 @@
+ #include "elf.h"
+ #include "system/dump.h"
+ #include "cpu-features.h"
++#include "internals.h"
+ 
+ /* struct user_pt_regs from arch/arm64/include/uapi/asm/ptrace.h */
+ struct aarch64_user_regs {
 -- 
 2.43.0
 
