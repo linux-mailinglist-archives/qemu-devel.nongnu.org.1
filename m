@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF981A617D0
+	by mail.lfdr.de (Postfix) with ESMTPS id D2611A617D1
 	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 18:33:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt8tS-0005io-7N; Fri, 14 Mar 2025 13:32:23 -0400
+	id 1tt8tW-0005iu-Bu; Fri, 14 Mar 2025 13:32:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tt8sy-0005TH-Tl
+ id 1tt8sy-0005TL-Uc
  for qemu-devel@nongnu.org; Fri, 14 Mar 2025 13:31:54 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tt8st-0008CT-56
+ id 1tt8sv-0008Ck-SU
  for qemu-devel@nongnu.org; Fri, 14 Mar 2025 13:31:52 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-223959039f4so52137995ad.3
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:31:46 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-223fb0f619dso42963625ad.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:31:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741973505; x=1742578305; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mbx4XaRe0fsea/1JxsaLA7ueH0t1s6VZZ5QhNdIFgD0=;
- b=N8NxHi+NkzUr4mMPM4Zf3372GtSSwqMHiRRcLAO/kbj7XZNLZ27fCkNDXCrUJJHV4I
- 0NmQRtIIkYWnMRiNCq4a7MPxrU8CUnnkWlild7Llr4X+Vvw63tEIjGos3AlZ7sxS6JhD
- nNo0S7kr53wknrWwmr9HxSt1U/KiPWQtuNsroyrZZxWP7zDYHJHg85AWxf9+QEJP0/Df
- 64NJbiNJiUVADKsQ4icZ3REBUmP+qB0EiCxAVJ/ziXvM/JBy8ZQRoCKmL7S6BXBxJNiI
- bTmHf4HPsPYSPzfcHPWnPLivmWm9QrpmBXjf7tKoBh5FuYw81xa8cpZCDxR4LFTnsZbf
- q8jQ==
+ d=linaro.org; s=google; t=1741973506; x=1742578306; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=949DeBQijWmgHqYCdDdupcSTn3rDdND8nLqwkILEwEI=;
+ b=k9eUbFeTBmoGVOYPQ8Up09RXUz88bSnaKb1unT+uGaXDBfosFE+KdXqBvELADa7TcW
+ Por1y54iS+hH+QIi+5XZo6TDb35jDRQTRZJdow6iQ82GDDZqrv1liOJ7mBBdzC/nlj8P
+ nnK/ikP+cOf/tPBJ7LI6MKDzqvswBXQLz6rk84bI9uBz4yHDx/2jFdCeXQRes1cGAgJu
+ VO0FCmzKj6DJcZWFfm+R2vN7DLvpR9t/CHPVBXw3XRXlpCEHZgwOOFotGJ/FbdesYxhw
+ m/cdm4jnfqSAZecp+S4rXzuYjbBu5Z1kic2Hrwi+SeVHobDYVPExTJRSvhaLEifx9ZBb
+ kPNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741973505; x=1742578305;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mbx4XaRe0fsea/1JxsaLA7ueH0t1s6VZZ5QhNdIFgD0=;
- b=OxKoZaUxFThecC/Gxqk3bYTIcDta9LVN+eFCZUBjju4b7fODBTjlQoBJ40SaYvaHzm
- pwvrXWwx1qQjNtU0ENh+WvNoDwBxmkxHlmHmH79Gg6Js7qGZPL+S17wmbakiTl5H/YPP
- N+djLNM/vUhoTnAlxoKurG+FZmuF2KjgOA/mEJ07ay7tUH3yrC+Mk5o3ctgJpt8mS0h0
- eTGPoRdlFYMnRzpOBKSaYiLPAwNVD+mfXByvff5H4jebFrE56Lul2sztTITUnYg6dUxE
- Pvuwcil4xjDT4OMOVMvEAccKTLK8gdsSCqlPBe2cVve+TDdE4QLL6yYZHaJ7J436aaoj
- PeQg==
-X-Gm-Message-State: AOJu0YymjOUX7hGtRdbIqEOEy0sFQqDS9d283X13wz1UMxEXxSQqDbwB
- cEPy0ycoaJGp8WYKjxGaMv/qIJ3fyMunMg5qrt9zycJ8c8xQQlsqLYP9OXaMN9YNiHqmZ8S+5ol
- vDlA=
-X-Gm-Gg: ASbGnctUzNtfP3X27qSLHwr561yEn4AZiFUl1n16J4NHLQVAAOrYKGf+iot12Y4wb/5
- dnRQJ7ubtj/uf2onx6Rz27mTQI+s0Lgv32jE7gIiVvzslBbRYvW966PSqTPwlVTc6qjicAhrTju
- w7pmpTlAyBUWBoHaq5/dY6GjTDE+o3S8ng2PK97XOat0DEEnJw3nki9INTqdP6gLJ1XohI8GClg
- 0P20Hk7CDziB4oqHWUwvVCsTf7KfCTXflvH/dUJNLm8o/6lFpEDJ7uw45XkZ2HMx6lXXF2FVWxT
- jfWVSsA9/W1nPZBRDfl2CldlVgk7VtCym8+tz1+GFlDt
-X-Google-Smtp-Source: AGHT+IG45qOt2dgsJDV7nujhL0kdPo+5GKsExuYeufblXdBnsz6vqmVVLVscbpfExXfMyu2MvPKFvA==
-X-Received: by 2002:a05:6a00:a1f:b0:732:5164:3cc with SMTP id
- d2e1a72fcca58-737223e7399mr3832223b3a.19.1741973504748; 
- Fri, 14 Mar 2025 10:31:44 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1741973506; x=1742578306;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=949DeBQijWmgHqYCdDdupcSTn3rDdND8nLqwkILEwEI=;
+ b=v11VXt3uHxMTYS7ELYGmO1L3Sz/ipI+m/nAcpnURAl0Z86Gj1zzT4pt3s9BAZ1X0Jo
+ eWmGnUSDi+zox1xkWH9XttERd+q2c/9uHhftFx05HFIVM9Lih8D/4CBSPLOmVgF6svdZ
+ c6X1XluLtEvJAuXxT2tFap8w7ned2wM/1F0YsMxCDbI3KIdgpDP4RietCwsXURUBpzG8
+ F9wQPXZ2JaqAToSSarMpaxs75JnqSXK3BxPFAb/dm1HLoj4a0zMUklpTFuYWt79MHtko
+ Z25KofSUfb7pleygYoyW2g+liZP3fWXEGiVEx7xGVgYPtLqU1zhU24/4ZpKc5LC4ivGq
+ rpfA==
+X-Gm-Message-State: AOJu0YyXolYeLPtF47NBGauvBZ+geaFZ/KZy7JPnOj2HqcTNBozt1rgf
+ po6pn1wB0dVEulfn1t3EN3+qQObMDT22dta+AD1B8/8QVBncOmyWPspi09uEw8Y61l2fmHJVMPq
+ hOQE=
+X-Gm-Gg: ASbGncsHG2X/tg7ljTHObkrj0GKTDgGFL3Tu+xCQx1OaIP8o3aH+RZYibKYuTY+HSRh
+ ZllyAL6mi7UK1VUCodvzzjsjG8eWP3lEFGKqLZ4MekwPob7z6tPtIbvZf0VwP/R0kvLQG48ec++
+ 2AP2u+AR2hbD3Qvxx12qRpOqUWuHMploPMc5+4IlhcxXeI0cZ2jh5wszwuaf13TnvRcA8lsgOQS
+ GOO+E7iiEmZ6f8uy0FTJMDzUAI2/dacp85WrXg3aG+NFlAI6/6vAGDxR4qkCU42ZUC7bPttVESS
+ j5qqeaO7UKzHaS4YTuwiZ1eQt38JoCFnV6TLyPsjC4v5
+X-Google-Smtp-Source: AGHT+IEjELEcHkUSgYSyUpOQLSDQBfR3q2soKgt+mWzeI9X+HyRoUAOICNrXniu51BG9jWIge0MJZQ==
+X-Received: by 2002:a05:6a21:168e:b0:1f5:7f2e:5c3c with SMTP id
+ adf61e73a8af0-1f5c113795cmr4514154637.1.1741973505987; 
+ Fri, 14 Mar 2025 10:31:45 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af56e9cd03bsm2990529a12.8.2025.03.14.10.31.43
+ 41be03b00d2f7-af56e9cd03bsm2990529a12.8.2025.03.14.10.31.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Mar 2025 10:31:44 -0700 (PDT)
+ Fri, 14 Mar 2025 10:31:45 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -79,15 +80,17 @@ Cc: qemu-ppc@nongnu.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
  Stefano Stabellini <sstabellini@kernel.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v5 00/17] make system memory API available for common code
-Date: Fri, 14 Mar 2025 10:31:22 -0700
-Message-Id: <20250314173139.2122904-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v5 01/17] exec/tswap: target code can use TARGET_BIG_ENDIAN
+ instead of target_words_bigendian()
+Date: Fri, 14 Mar 2025 10:31:23 -0700
+Message-Id: <20250314173139.2122904-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250314173139.2122904-1-pierrick.bouvier@linaro.org>
+References: <20250314173139.2122904-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,94 +113,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The main goal of this series is to be able to call any memory ld/st function
-from code that is *not* target dependent. As a positive side effect, we can
-turn related system compilation units into common code.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ include/exec/tswap.h | 11 ++++++-----
+ cpu-target.c         |  1 +
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-The first 5 patches remove dependency of memory API to cpu headers and remove
-dependency to target specific code. This could be a series on its own, but it's
-great to be able to turn system memory compilation units into common code to
-make sure it can't regress, and prove it achieves the desired result.
-
-The next patches remove more dependencies on cpu headers (exec-all,
-memory-internal, ram_addr).
-Then, we add access to a needed function from kvm, some xen stubs, and we
-finally can turn our compilation units into common code.
-
-Every commit was tested to build correctly for all targets (on windows, linux,
-macos), and the series was fully tested by running all tests we have (linux,
-x86_64 host).
-
-v2:
-- reorder first commits (tswap change first, so memory cached functions can use it)
-- move st/ld*_p functions to tswap instead of bswap
-- add define for target_words_bigendian when COMPILING_PER_TARGET, equals to
-  TARGET_BIG_ENDIAN (avoid overhead in target code)
-- rewrite devend_memop
-- remove useless exec-all.h in concerned patch
-- extract devend_big_endian function to reuse in system/memory.c
-- rewrite changes to system/memory.c
-
-v3:
-- move devend functions to memory_internal.h
-- completed description for commits removing cpu.h dependency
-
-v4:
-- rebase on top of master
-  * missing include in 'codebase: prepare to remove cpu.h from exec/exec-all.h'
-  * meson build conflict
-
-v5:
-- remove extra xen stub xen_invalidate_map_cache()
-- edit xen stubs commit message
-
-Pierrick Bouvier (17):
-  exec/tswap: target code can use TARGET_BIG_ENDIAN instead of
-    target_words_bigendian()
-  exec/tswap: implement {ld,st}.*_p as functions instead of macros
-  exec/memory_ldst: extract memory_ldst declarations from cpu-all.h
-  exec/memory_ldst_phys: extract memory_ldst_phys declarations from
-    cpu-all.h
-  exec/memory.h: make devend_memop "target defines" agnostic
-  codebase: prepare to remove cpu.h from exec/exec-all.h
-  exec/exec-all: remove dependency on cpu.h
-  exec/memory-internal: remove dependency on cpu.h
-  exec/ram_addr: remove dependency on cpu.h
-  system/kvm: make kvm_flush_coalesced_mmio_buffer() accessible for
-    common code
-  exec/ram_addr: call xen_hvm_modified_memory only if xen is enabled
-  hw/xen: add stubs for various functions
-  system/physmem: compilation unit is now common to all targets
-  include/exec/memory: extract devend_big_endian from devend_memop
-  include/exec/memory: move devend functions to memory-internal.h
-  system/memory: make compilation unit common
-  system/ioport: make compilation unit common
-
- include/exec/cpu-all.h              | 66 -----------------------
- include/exec/exec-all.h             |  1 -
- include/exec/memory-internal.h      | 21 +++++++-
- include/exec/memory.h               | 30 ++++-------
- include/exec/ram_addr.h             | 11 ++--
- include/exec/tswap.h                | 81 +++++++++++++++++++++++++++--
- include/system/kvm.h                |  6 +--
- include/tcg/tcg-op.h                |  1 +
- target/ppc/helper_regs.h            |  2 +
- include/exec/memory_ldst.h.inc      |  4 --
- include/exec/memory_ldst_phys.h.inc |  5 +-
- cpu-target.c                        |  1 +
- hw/ppc/spapr_nested.c               |  1 +
- hw/sh4/sh7750.c                     |  1 +
- hw/xen/xen_stubs.c                  | 51 ++++++++++++++++++
- page-vary-target.c                  |  2 +-
- system/ioport.c                     |  1 -
- system/memory.c                     | 17 ++----
- target/ppc/tcg-excp_helper.c        |  1 +
- target/riscv/bitmanip_helper.c      |  2 +-
- hw/xen/meson.build                  |  3 ++
- system/meson.build                  |  6 +--
- 22 files changed, 188 insertions(+), 126 deletions(-)
- create mode 100644 hw/xen/xen_stubs.c
-
+diff --git a/include/exec/tswap.h b/include/exec/tswap.h
+index ecd4faef015..2683da0adb7 100644
+--- a/include/exec/tswap.h
++++ b/include/exec/tswap.h
+@@ -13,13 +13,14 @@
+ /**
+  * target_words_bigendian:
+  * Returns true if the (default) endianness of the target is big endian,
+- * false otherwise. Note that in target-specific code, you can use
+- * TARGET_BIG_ENDIAN directly instead. On the other hand, common
+- * code should normally never need to know about the endianness of the
+- * target, so please do *not* use this function unless you know very well
+- * what you are doing!
++ * false otherwise. Common code should normally never need to know about the
++ * endianness of the target, so please do *not* use this function unless you
++ * know very well what you are doing!
+  */
+ bool target_words_bigendian(void);
++#ifdef COMPILING_PER_TARGET
++#define target_words_bigendian()  TARGET_BIG_ENDIAN
++#endif
+ 
+ /*
+  * If we're in target-specific code, we can hard-code the swapping
+diff --git a/cpu-target.c b/cpu-target.c
+index cae77374b38..519b0f89005 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -155,6 +155,7 @@ void cpu_abort(CPUState *cpu, const char *fmt, ...)
+     abort();
+ }
+ 
++#undef target_words_bigendian
+ bool target_words_bigendian(void)
+ {
+     return TARGET_BIG_ENDIAN;
 -- 
 2.39.5
 
