@@ -2,89 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99EDEA60E8C
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:16:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0CDA60E93
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:17:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt25e-0005o0-Qi; Fri, 14 Mar 2025 06:16:32 -0400
+	id 1tt25i-00063t-T8; Fri, 14 Mar 2025 06:16:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <haoqian.he@smartx.com>)
- id 1tt258-0005nI-Iq
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:16:00 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1tt25E-0005oe-PB
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:16:06 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <haoqian.he@smartx.com>)
- id 1tt254-00032R-53
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:15:56 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-22435603572so32695115ad.1
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 03:15:53 -0700 (PDT)
+ id 1tt25A-000356-9L
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:16:03 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2239aa5da08so37674415ad.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 03:15:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1741947351; x=1742552151;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1741947357; x=1742552157;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4KdS/98hGZswd1uYVRRtaOB5eJ4bk9Cy+EJDEqdJonE=;
- b=tRrUbHHJ4MMGOWbso/irG6LNYzr410M6aMlPh2WnxcR6daQ2ACQRZ309DYiixsxow9
- UlNMk3VXjZFcCYwZab+qSm3iaRzTxjsEvZwW0LWcnHjXrbholc0GqyRLYHanGPgSwie4
- zzpZ0F0W2Zvyw7QYJJZ2mWS69iCjhvu9eJg8Ych2+Zyp3kcB3/qBfj821SJ+hKb6l6tB
- MSIkSKvJ8BsnONR0oz5iyLZL0fZqXHYkhdvL7pd3tuLpSDu7HMbeVNdp41rdww+INYrG
- EnUkxYm9Iy5cJQyy6XXMf6z8IvusW/f0McdrLMnwmFbA8WbBQeErkd2XkzBymFb3iq1c
- N8cQ==
+ bh=Eh6xZmod1XJzdJDqa+dorzqnDF3twPcYJbdIGQ8yqlo=;
+ b=kZYZGZBzqVujGHqanFRetPGum5+sGR+1Grh5XCqARcGGYKlRkjSAs7ff+lEovnnSJ/
+ nWlkleYQb2W+kAG1QaZtWQLHQERfyEpZ1+6yTPgBx/nRkwxBexEKHRh8ouXaVfmGoNRy
+ nuosdtQ9CJmCFyF9ZwQ/gFk2GSCWZ22Y3MOaMbInAshvNkVIoZxIMDm21NZpsOUHwfnO
+ 5GZRGAVw/iIRZtmJOEnmD7IzkKlRizZjKz+yuRt5LxW1JBDbGbl05juUXOnvPMIxjzSU
+ u3d9PJvotFBjp5e95DxFvDZoTyclfGDJAcem5eAG4SlFIgkRR1r+x60bMBoF8Rh87wRi
+ +Exg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741947351; x=1742552151;
+ d=1e100.net; s=20230601; t=1741947357; x=1742552157;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4KdS/98hGZswd1uYVRRtaOB5eJ4bk9Cy+EJDEqdJonE=;
- b=YgTqJYjpIIenA3Dmn3XEWLb2iAZSs17CNf53njqe2SYwDLNXrtaL543tiQcXWCreO/
- mXt6y5ou0dSaNmJ5AEo5pIvCaHBo1rY/SWVCDksrMG1OjvA+6hQqj7HEzw7G7Uo+gMqi
- 1YgeLWrBnp/WoBnsyYkn2qrBXbJWm6aScWuZZP+9OdCpM8M+zY8wHfguU4tK3zO+9Pvh
- NoGY4o+Sso1aUkknYciyRHg96YBZeWHuuA8dv7R8CuNvAS2JfWmWC50ejpd1X0/Y+dlQ
- AgwiczvAcz6RksWYVVpLZ8kSph9PX1ogolsYXbwW4sSx9m8YNx9bVcBvJeKv187DR0XR
- SbFw==
-X-Gm-Message-State: AOJu0YxuAIClRBam7JNFt7HVQ9n4Rul3Akg0+yrQXop0n0VvcUy9GtVw
- AbTI6JVZxVfxKkC4ysX5Xm3caYiW0W2SpcNI60VMr7ufve1dl4mTZOQxl9rs0qF6jfcVTZe/tg+
- m5fHr9Fzumgc=
-X-Gm-Gg: ASbGnct7KRXnmlr4WtbVPCFMVgNYGUYrds/v5GowEG7gYBuomMDLxDpRWMUTbQ+TnnS
- ORZ3Dr7AEGLKDyvVuL+/KV5Y3Buvsjq65Zmm/ucZ5J+xyOW/OaV0lqCcY8Fyxq2V2EUmqNUOKjo
- gLPxO+ZH+zW58UCzfUuVRHRXYeyAveGvLznqkkIswDpH7VIWmhDtJuOigLSjo9d8T7MaSqpW/0Q
- c37nZ/6dKjIRj5sSUvP4+RGWmODhpl6ck3DZNU/kaHT1etbr1Eky7HR8/Ix5yZ4oKBwWKmZDgpS
- iKKFo1Ap2aIHCoF7DgM9EGXK8WaPgq59zUf32wqk4bjBae+yQQTw
-X-Google-Smtp-Source: AGHT+IGmepXfcZ4nBrBOjmHvRGh4wMau5kDJjK76XFCNPlfuW73sOOjOxqX0EGcS3QnIOEar2NyQvA==
-X-Received: by 2002:a05:6a00:3cc3:b0:736:ab21:6f37 with SMTP id
- d2e1a72fcca58-7372223f0bcmr2534560b3a.0.1741947351362; 
- Fri, 14 Mar 2025 03:15:51 -0700 (PDT)
+ bh=Eh6xZmod1XJzdJDqa+dorzqnDF3twPcYJbdIGQ8yqlo=;
+ b=TWm//psX1TM1lxUrXLBZS8yFybPNKUrP1Bkf2vLFfRv/dtGLVd1xo+uOSLyrLEtXHA
+ e3UrHInrI03K+QS+41U5d1AzSrkxuDJNiCuAIONWmXrsHwHKB/qhIDEHCFOdw0abVt74
+ SXuDRl8Sb14M2bjpM7MLpYCXXBVzArxHRKoYaDvnA/kN0rbpPCkzl7D4hZI4MgXT6T1N
+ If96GhZXkpOgVcoZbV6saM2q3tzpgS0V8sDbVfSsewQhEV99lg8p3lxerVUuvNen1s9R
+ FjFAt4VysRpPmw00lGDkMeuF4eDGMjPrvLSvTvT6WM4Qxa3HNchSt9jTMeWjgBabKUht
+ YZPA==
+X-Gm-Message-State: AOJu0Yw4D0ro3gpJjPJm0QxeNdTQXu/xDzm4M/w5HoFSHbHoom/rYSYZ
+ hd8UJjfLBR9rlKXj4iFnBScoaZ5qLKupWvuw0iwBsI+ZPcxIOrH2gAq53WtOukvDWVNnLbquXwx
+ V4YNwIn4Xymo=
+X-Gm-Gg: ASbGncvpi4ymkPB+BpGOaXRAC2QxtuqC2EoJrUQwYt2gq6U7xknTFKHVVvsmxYXl8T9
+ XW8Rlpmhwg1bW0ZFRGo12o9HgjjEfyjAiP94DljwuyLmZIoVy0tev5ldFxOUN2mo0Rlk9jbXoA8
+ j4sOsb4lYctPWVncCnpNSQoxOyAwItCc29FEQCHRKt5/Z757SSpo3y4FkxOP03GUYQLAsCtBGAY
+ YzT3mSz0liWUxWLqsU7/nzjprFinypN4lmawQXah0pOfKSscSUnGnGCpf6g1dQ86gFrAGKFHnPf
+ DqjI0ziBWqrhyFlDFQxojRMGLJ1Xf0IP2tVCVXfbiFZQJ95wPJoM
+X-Google-Smtp-Source: AGHT+IELjadHM3CDZrgwr1snAkeKV/1wkKjaE7JoNZxBM7Ewnps9JWQB+8uU43QbznIX0azeh46AuA==
+X-Received: by 2002:a05:6a00:2e85:b0:736:7960:981f with SMTP id
+ d2e1a72fcca58-73722354755mr3047213b3a.8.1741947357100; 
+ Fri, 14 Mar 2025 03:15:57 -0700 (PDT)
 Received: from fedora.smartx.com ([103.85.74.92])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7371169549fsm2698898b3a.131.2025.03.14.03.15.47
+ d2e1a72fcca58-7371169549fsm2698898b3a.131.2025.03.14.03.15.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Mar 2025 03:15:51 -0700 (PDT)
+ Fri, 14 Mar 2025 03:15:56 -0700 (PDT)
 From: Haoqian He <haoqian.he@smartx.com>
 To: qemu-devel@nongnu.org
-Cc: fengli@smartx.com, yuhua@smartx.com, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Raphael Norwitz <raphael@enfabrica.net>, Kevin Wolf <kwolf@redhat.com>,
+Cc: fengli@smartx.com, yuhua@smartx.com,
+ Raphael Norwitz <raphael@enfabrica.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  qemu-block@nongnu.org (open list:Block layer core)
-Subject: [PATCH v2 1/3] virtio: add VM state change cb with return value
-Date: Fri, 14 Mar 2025 06:15:32 -0400
-Message-ID: <20250314101535.1059308-2-haoqian.he@smartx.com>
+Subject: [PATCH v2 2/3] vhost: return failure if stop virtqueue failed in
+ vhost_dev_stop
+Date: Fri, 14 Mar 2025 06:15:33 -0400
+Message-ID: <20250314101535.1059308-3-haoqian.he@smartx.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20250314101535.1059308-1-haoqian.he@smartx.com>
 References: <20250309090708.3928953-1-haoqian.he@smartx.com>
  <20250314101535.1059308-1-haoqian.he@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=haoqian.he@smartx.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=haoqian.he@smartx.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: 14
 X-Spam_score: 1.4
 X-Spam_bar: +
@@ -106,286 +108,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch contains two changes:
-
-1. Add VM state change cb type VMChangeStateHandlerExt which has return
-value for virtio devices VMChangeStateEntry. When VM state changes,
-virtio device will call the _Ext version.
-
-2. Add return value for vm_state_notify().
+The backend maybe crash when vhost_dev_stop and GET_VRING_BASE
+would fail, we can return failure to indicate the connection
+with the backend is broken.
 
 Signed-off-by: Haoqian He <haoqian.he@smartx.com>
 ---
- hw/block/virtio-blk.c             |  2 +-
- hw/core/vm-change-state-handler.c | 14 ++++++++------
- hw/scsi/scsi-bus.c                |  2 +-
- hw/vfio/migration.c               |  2 +-
- hw/virtio/virtio.c                |  5 +++--
- include/system/runstate.h         | 11 ++++++++---
- system/cpus.c                     |  4 ++--
- system/runstate.c                 | 25 ++++++++++++++++++++-----
- 8 files changed, 44 insertions(+), 21 deletions(-)
+ hw/virtio/vhost.c         | 27 +++++++++++++++------------
+ include/hw/virtio/vhost.h |  8 +++++---
+ 2 files changed, 20 insertions(+), 15 deletions(-)
 
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 5135b4d8f1..4a48a16790 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -1928,7 +1928,7 @@ static void virtio_blk_device_realize(DeviceState *dev, Error **errp)
-      * called after ->start_ioeventfd() has already set blk's AioContext.
-      */
-     s->change =
--        qdev_add_vm_change_state_handler(dev, virtio_blk_dma_restart_cb, s);
-+        qdev_add_vm_change_state_handler(dev, virtio_blk_dma_restart_cb, NULL, s);
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 6aa72fd434..c82bbbe4cc 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1368,23 +1368,23 @@ fail_alloc_desc:
+     return r;
+ }
  
-     blk_ram_registrar_init(&s->blk_ram_registrar, s->blk);
-     blk_set_dev_ops(s->blk, &virtio_block_ops, s);
-diff --git a/hw/core/vm-change-state-handler.c b/hw/core/vm-change-state-handler.c
-index 7064995578..d5045b17c1 100644
---- a/hw/core/vm-change-state-handler.c
-+++ b/hw/core/vm-change-state-handler.c
-@@ -40,6 +40,7 @@ static int qdev_get_dev_tree_depth(DeviceState *dev)
-  * qdev_add_vm_change_state_handler:
-  * @dev: the device that owns this handler
-  * @cb: the callback function to be invoked
-+ * @cb_ext: the callback function with return value to be invoked
-  * @opaque: user data passed to the callback function
-  *
-  * This function works like qemu_add_vm_change_state_handler() except callbacks
-@@ -54,21 +55,22 @@ static int qdev_get_dev_tree_depth(DeviceState *dev)
-  */
- VMChangeStateEntry *qdev_add_vm_change_state_handler(DeviceState *dev,
-                                                      VMChangeStateHandler *cb,
-+                                                     VMChangeStateHandlerExt *cb_ext,
-                                                      void *opaque)
+-void vhost_virtqueue_stop(struct vhost_dev *dev,
+-                          struct VirtIODevice *vdev,
+-                          struct vhost_virtqueue *vq,
+-                          unsigned idx)
++int vhost_virtqueue_stop(struct vhost_dev *dev,
++                         struct VirtIODevice *vdev,
++                         struct vhost_virtqueue *vq,
++                         unsigned idx)
  {
--    return qdev_add_vm_change_state_handler_full(dev, cb, NULL, opaque);
-+    return qdev_add_vm_change_state_handler_full(dev, cb, NULL, cb_ext, opaque);
+     int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, idx);
+     struct vhost_vring_state state = {
+         .index = vhost_vq_index,
+     };
+-    int r;
++    int r = 0;
+ 
+     if (virtio_queue_get_desc_addr(vdev, idx) == 0) {
+         /* Don't stop the virtqueue which might have not been started */
+-        return;
++        return 0;
+     }
+ 
+-    r = dev->vhost_ops->vhost_get_vring_base(dev, &state);
++    r |= dev->vhost_ops->vhost_get_vring_base(dev, &state);
+     if (r < 0) {
+         VHOST_OPS_DEBUG(r, "vhost VQ %u ring restore failed: %d", idx, r);
+         /* Connection to the backend is broken, so let's sync internal
+@@ -1412,6 +1412,7 @@ void vhost_virtqueue_stop(struct vhost_dev *dev,
+                        0, virtio_queue_get_avail_size(vdev, idx));
+     vhost_memory_unmap(dev, vq->desc, virtio_queue_get_desc_size(vdev, idx),
+                        0, virtio_queue_get_desc_size(vdev, idx));
++    return r;
  }
  
- /*
-  * Exactly like qdev_add_vm_change_state_handler() but passes a prepare_cb
-- * argument too.
-+ * and the cb_ext arguments too.
-  */
- VMChangeStateEntry *qdev_add_vm_change_state_handler_full(
--    DeviceState *dev, VMChangeStateHandler *cb,
--    VMChangeStateHandler *prepare_cb, void *opaque)
-+    DeviceState *dev, VMChangeStateHandler *cb, VMChangeStateHandler *prepare_cb,
-+    VMChangeStateHandlerExt *cb_ext, void *opaque)
+ static int vhost_virtqueue_set_busyloop_timeout(struct vhost_dev *dev,
+@@ -2136,9 +2137,10 @@ fail_features:
+ }
+ 
+ /* Host notifiers must be enabled at this point. */
+-void vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
++int vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
  {
-     int depth = qdev_get_dev_tree_depth(dev);
+     int i;
++    int rc = 0;
  
--    return qemu_add_vm_change_state_handler_prio_full(cb, prepare_cb, opaque,
--                                                      depth);
-+    return qemu_add_vm_change_state_handler_prio_full(cb, prepare_cb, cb_ext,
-+                                                      opaque, depth);
- }
-diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-index 7d4546800f..ec098f5f0a 100644
---- a/hw/scsi/scsi-bus.c
-+++ b/hw/scsi/scsi-bus.c
-@@ -356,7 +356,7 @@ static void scsi_qdev_realize(DeviceState *qdev, Error **errp)
-         return;
+     /* should only be called after backend is connected */
+     assert(hdev->vhost_ops);
+@@ -2157,10 +2159,10 @@ void vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+         vhost_dev_set_vring_enable(hdev, false);
      }
-     dev->vmsentry = qdev_add_vm_change_state_handler(DEVICE(dev),
--            scsi_dma_restart_cb, dev);
-+            scsi_dma_restart_cb, NULL, dev);
- }
- 
- static void scsi_qdev_unrealize(DeviceState *qdev)
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 416643ddd6..f531db83ea 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1015,7 +1015,7 @@ static int vfio_migration_init(VFIODevice *vbasedev)
-                      vfio_vmstate_change_prepare :
-                      NULL;
-     migration->vm_state = qdev_add_vm_change_state_handler_full(
--        vbasedev->dev, vfio_vmstate_change, prepare_cb, vbasedev);
-+        vbasedev->dev, vfio_vmstate_change, prepare_cb, NULL, vbasedev);
-     migration_add_notifier(&migration->migration_state,
-                            vfio_migration_state_notifier);
- 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 85110bce37..5e8d4cab53 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3419,7 +3419,7 @@ void virtio_cleanup(VirtIODevice *vdev)
-     qemu_del_vm_change_state_handler(vdev->vmstate);
- }
- 
--static void virtio_vmstate_change(void *opaque, bool running, RunState state)
-+static int virtio_vmstate_change(void *opaque, bool running, RunState state)
- {
-     VirtIODevice *vdev = opaque;
-     BusState *qbus = qdev_get_parent_bus(DEVICE(vdev));
-@@ -3438,6 +3438,7 @@ static void virtio_vmstate_change(void *opaque, bool running, RunState state)
-     if (!backend_run) {
-         virtio_set_status(vdev, vdev->status);
+     for (i = 0; i < hdev->nvqs; ++i) {
+-        vhost_virtqueue_stop(hdev,
+-                             vdev,
+-                             hdev->vqs + i,
+-                             hdev->vq_index + i);
++        rc |= vhost_virtqueue_stop(hdev,
++                                   vdev,
++                                   hdev->vqs + i,
++                                   hdev->vq_index + i);
      }
-+    return 0;
+     if (hdev->vhost_ops->vhost_reset_status) {
+         hdev->vhost_ops->vhost_reset_status(hdev);
+@@ -2177,6 +2179,7 @@ void vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+     hdev->started = false;
+     vdev->vhost_started = false;
+     hdev->vdev = NULL;
++    return rc;
  }
  
- void virtio_instance_init_common(Object *proxy_obj, void *data,
-@@ -3489,7 +3490,7 @@ void virtio_init(VirtIODevice *vdev, uint16_t device_id, size_t config_size)
-         vdev->config = NULL;
-     }
-     vdev->vmstate = qdev_add_vm_change_state_handler(DEVICE(vdev),
--            virtio_vmstate_change, vdev);
-+            NULL, virtio_vmstate_change, vdev);
-     vdev->device_endian = virtio_default_endian();
-     vdev->use_guest_notifier_mask = true;
- }
-diff --git a/include/system/runstate.h b/include/system/runstate.h
-index bffc3719d4..af33ea92b6 100644
---- a/include/system/runstate.h
-+++ b/include/system/runstate.h
-@@ -12,6 +12,7 @@ bool runstate_needs_reset(void);
- void runstate_replay_enable(void);
- 
- typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
-+typedef int VMChangeStateHandlerExt(void *opaque, bool running, RunState state);
- 
- VMChangeStateEntry *qemu_add_vm_change_state_handler(VMChangeStateHandler *cb,
-                                                      void *opaque);
-@@ -20,21 +21,25 @@ VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
- VMChangeStateEntry *
- qemu_add_vm_change_state_handler_prio_full(VMChangeStateHandler *cb,
-                                            VMChangeStateHandler *prepare_cb,
-+                                           VMChangeStateHandlerExt *cb_ext,
-                                            void *opaque, int priority);
- VMChangeStateEntry *qdev_add_vm_change_state_handler(DeviceState *dev,
-                                                      VMChangeStateHandler *cb,
-+                                                     VMChangeStateHandlerExt *cb_ext,
-                                                      void *opaque);
- VMChangeStateEntry *qdev_add_vm_change_state_handler_full(
--    DeviceState *dev, VMChangeStateHandler *cb,
--    VMChangeStateHandler *prepare_cb, void *opaque);
-+    DeviceState *dev, VMChangeStateHandler *cb, VMChangeStateHandler *prepare_cb,
-+    VMChangeStateHandlerExt *cb_ext, void *opaque);
- void qemu_del_vm_change_state_handler(VMChangeStateEntry *e);
- /**
-  * vm_state_notify: Notify the state of the VM
-  *
-  * @running: whether the VM is running or not.
-  * @state: the #RunState of the VM.
+ int vhost_net_set_backend(struct vhost_dev *hdev,
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index a9469d50bc..fd96ec9c39 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -232,8 +232,10 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings);
+  * Stop the vhost device. After the device is stopped the notifiers
+  * can be disabled (@vhost_dev_disable_notifiers) and the device can
+  * be torn down (@vhost_dev_cleanup).
 + *
-+ * Return the result of the callback which has return value.
++ * Return: 0 on success, != 0 on error when stopping dev.
   */
--void vm_state_notify(bool running, RunState state);
-+int vm_state_notify(bool running, RunState state);
- 
- static inline bool shutdown_caused_by_guest(ShutdownCause cause)
- {
-diff --git a/system/cpus.c b/system/cpus.c
-index 2cc5f887ab..6e1cf5720f 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -299,14 +299,14 @@ static int do_vm_stop(RunState state, bool send_stop)
-         if (oldstate == RUN_STATE_RUNNING) {
-             pause_all_vcpus();
-         }
--        vm_state_notify(0, state);
-+        ret = vm_state_notify(0, state);
-         if (send_stop) {
-             qapi_event_send_stop();
-         }
-     }
- 
-     bdrv_drain_all();
--    ret = bdrv_flush_all();
-+    ret |= bdrv_flush_all();
-     trace_vm_stop_flush_all(ret);
- 
-     return ret;
-diff --git a/system/runstate.c b/system/runstate.c
-index 272801d307..2219cec409 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -297,6 +297,7 @@ void qemu_system_vmstop_request(RunState state)
- struct VMChangeStateEntry {
-     VMChangeStateHandler *cb;
-     VMChangeStateHandler *prepare_cb;
-+    VMChangeStateHandlerExt *cb_ext;
-     void *opaque;
-     QTAILQ_ENTRY(VMChangeStateEntry) entries;
-     int priority;
-@@ -320,14 +321,15 @@ static QTAILQ_HEAD(, VMChangeStateEntry) vm_change_state_head =
- VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
-         VMChangeStateHandler *cb, void *opaque, int priority)
- {
--    return qemu_add_vm_change_state_handler_prio_full(cb, NULL, opaque,
--                                                      priority);
-+    return qemu_add_vm_change_state_handler_prio_full(cb, NULL, NULL,
-+                                                      opaque, priority);
- }
+-void vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings);
++int vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings);
  
  /**
-  * qemu_add_vm_change_state_handler_prio_full:
-  * @cb: the main callback to invoke
-  * @prepare_cb: a callback to invoke before the main callback
-+ * @cb_ext: the main callback to invoke with return value
-  * @opaque: user data passed to the callbacks
-  * @priority: low priorities execute first when the vm runs and the reverse is
-  *            true when the vm stops
-@@ -344,6 +346,7 @@ VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
- VMChangeStateEntry *
- qemu_add_vm_change_state_handler_prio_full(VMChangeStateHandler *cb,
-                                            VMChangeStateHandler *prepare_cb,
-+                                           VMChangeStateHandlerExt *cb_ext,
-                                            void *opaque, int priority)
- {
-     VMChangeStateEntry *e;
-@@ -352,6 +355,7 @@ qemu_add_vm_change_state_handler_prio_full(VMChangeStateHandler *cb,
-     e = g_malloc0(sizeof(*e));
-     e->cb = cb;
-     e->prepare_cb = prepare_cb;
-+    e->cb_ext = cb_ext;
-     e->opaque = opaque;
-     e->priority = priority;
+  * DOC: vhost device configuration handling
+@@ -333,8 +335,8 @@ int vhost_device_iotlb_miss(struct vhost_dev *dev, uint64_t iova, int write);
  
-@@ -379,9 +383,10 @@ void qemu_del_vm_change_state_handler(VMChangeStateEntry *e)
-     g_free(e);
- }
+ int vhost_virtqueue_start(struct vhost_dev *dev, struct VirtIODevice *vdev,
+                           struct vhost_virtqueue *vq, unsigned idx);
+-void vhost_virtqueue_stop(struct vhost_dev *dev, struct VirtIODevice *vdev,
+-                          struct vhost_virtqueue *vq, unsigned idx);
++int vhost_virtqueue_stop(struct vhost_dev *dev, struct VirtIODevice *vdev,
++                         struct vhost_virtqueue *vq, unsigned idx);
  
--void vm_state_notify(bool running, RunState state)
-+int vm_state_notify(bool running, RunState state)
- {
-     VMChangeStateEntry *e, *next;
-+    int ret = 0;
- 
-     trace_vm_state_notify(running, state, RunState_str(state));
- 
-@@ -393,7 +398,12 @@ void vm_state_notify(bool running, RunState state)
-         }
- 
-         QTAILQ_FOREACH_SAFE(e, &vm_change_state_head, entries, next) {
--            e->cb(e->opaque, running, state);
-+            if (e->cb) {
-+                e->cb(e->opaque, running, state);
-+            } else if (e->cb_ext) {
-+                // no need to process the result when starting VM
-+                e->cb_ext(e->opaque, running, state);
-+            }
-         }
-     } else {
-         QTAILQ_FOREACH_REVERSE_SAFE(e, &vm_change_state_head, entries, next) {
-@@ -403,9 +413,14 @@ void vm_state_notify(bool running, RunState state)
-         }
- 
-         QTAILQ_FOREACH_REVERSE_SAFE(e, &vm_change_state_head, entries, next) {
--            e->cb(e->opaque, running, state);
-+            if (e->cb) {
-+                e->cb(e->opaque, running, state);
-+            } else if (e->cb_ext) {
-+                ret |= e->cb_ext(e->opaque, running, state);
-+            }
-         }
-     }
-+    return ret;
- }
- 
- static ShutdownCause reset_requested;
+ void vhost_dev_reset_inflight(struct vhost_inflight *inflight);
+ void vhost_dev_free_inflight(struct vhost_inflight *inflight);
 -- 
 2.48.1
 
