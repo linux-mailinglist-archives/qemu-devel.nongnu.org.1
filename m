@@ -2,94 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B6BA6083D
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 06:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C883AA6085D
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 06:39:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tsxOg-0005jg-Ig; Fri, 14 Mar 2025 01:15:53 -0400
+	id 1tsxkf-00062S-6b; Fri, 14 Mar 2025 01:38:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1tsxOb-0005j7-SY
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 01:15:46 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1tsxOZ-0006ty-Hm
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 01:15:45 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-224019ad9edso45358445ad.1
- for <qemu-devel@nongnu.org>; Thu, 13 Mar 2025 22:15:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1741929342; x=1742534142; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2E0dnYKeRh1g1+Y3dQBPNoRAPjsrCqT4yndA0KPJfp8=;
- b=I2K3eYvlsn++kXt9eE7QRuoKkVFYH5r7xyUspIVQZMcANsNZ9MHvCx9UASksiq4Hvi
- 3xC3aE7gb4IcoQ3j8sU5kVrkZqQZ7hCbp1ZM5GPwCilBTfd3V7wNlSGGd4WKmHJtfJ1I
- 3pYNW7nvtuu/JtjjYiH/rBcd2l0quYoStJ2JDH7JIHo8u8XetorFGRY6FUzTD1cet794
- 7HZ+vntQZ+ZpPWa/MaSipHdETsHbg4pRnZ2MRjuu3i1hQHHweQilXRCGTFVze7OsD+/Q
- RVgQX7HdMW+ynVSr4Z/iCoN4hIGO55U2eoCSGpfuen9e8bYP9y9R2yv/D+IC+qHNe1Dp
- ktdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741929342; x=1742534142;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2E0dnYKeRh1g1+Y3dQBPNoRAPjsrCqT4yndA0KPJfp8=;
- b=SYxknCW+8kodxyC9xNRMxY0KheaBElYpG8QHjLFwGs6xVtPdNNMMXdTpP8FcMbuIB5
- A5wI7kUNvtq9RH3Xrnd0eq+RNrjW/ynaTVMNFczTanC/W+5w8dQst3SwOoJWff1euiJw
- m1RsYJ26EVWi6gLecb7xo984hmNWPbLKrsaniaA8iTq5Mcs9ffGTH2L5TrHI0Hiew5r4
- K5R4KOiqH37dHoDskpgdOqPr8w9H6xezJUZeYqp+UOqoVxr0V5V8jdrvJ4NUl2bDqxXD
- 6lAFoaZL7Km4NobiZI12iw78dsbOParV3mmzm8UhItwX9p/wMzNMs75rAeqfdU7l+8J/
- zf+w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX2fTF3N9Bq8XkXXnrW460FzE0+1FM+LBujAfllw2zLSX6Bp3rnyzGg5bFTfz7Q8RH3yXL0+GrtfwhC@nongnu.org
-X-Gm-Message-State: AOJu0Yy2Zqm6NSkNxBb8nP4QBTi2RCNcDOO8ApyUrSYXCldNNcI0PmgK
- fsvdftIMp70b7wU5t3Xaib1WKjkczbFv8kXatWX9i+2dQmwtDwcTo92jL2pTyfw=
-X-Gm-Gg: ASbGnctop+EG2BpAmjfbhBkmkaXeQLct1fsOpsYU0i4s+vlSuT2tgAKtLKSF9t2QVyV
- 26OkxZQtoXGpZexixGoeXAPJWVzkM3gR+Bh993f8wuH9GSnYCsJ/NHVmU8KDKV8LMYXhEj/+RYK
- UORvs4TkPl9I072g4WpuzXdEwBoce0LXx7EHt6NUpmi9yWHWeTr+fi+xzcBwvFQBTCKWrYrkL6v
- czgJqyFWlKCCf2IJ8tcwOpVBjAz1mffu33HhjARXvUVzV3Yc/+v48S/lI9390+V2z43t5nL2Asp
- neHkexBn0mEbxjJUCb+MPQarQN6okIu54K9xqgc1A6akUZb9ZpIblSM=
-X-Google-Smtp-Source: AGHT+IEZk6ua0GNujqYO7E6qclAplSfPRVa8l0iXXLqlEm3Wh6ePD27EMWn07BXgyPlre2ok0VhoMQ==
-X-Received: by 2002:a17:902:fc47:b0:224:76f:9e44 with SMTP id
- d9443c01a7336-225e0a193f8mr12034425ad.8.1741929341892; 
- Thu, 13 Mar 2025 22:15:41 -0700 (PDT)
-Received: from sunil-pc.Dlink ([106.51.199.215])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-225c6bbeb94sm22278225ad.199.2025.03.13.22.15.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Mar 2025 22:15:41 -0700 (PDT)
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Anup Patel <apatel@ventanamicro.com>, Atish Patra <atishp@rivosinc.com>,
- Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH 2/2] hw/riscv/virt-acpi-build: Add support for RIMT
-Date: Fri, 14 Mar 2025 10:45:27 +0530
-Message-ID: <20250314051527.1892488-3-sunilvl@ventanamicro.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250314051527.1892488-1-sunilvl@ventanamicro.com>
-References: <20250314051527.1892488-1-sunilvl@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tsxkY-00060O-6c
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 01:38:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tsxkW-0001B3-9S
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 01:38:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1741930702;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=r9Z2Rtg4ACrAEKd+XksEAetapjE5uBGfuAYUBunNPpY=;
+ b=cRFcQ2rU95AsG4ZCvzqVw/Ylc/hoXlNdhpPWh1AjLqtaGc8U3CiZOvRxjSv6iaBdVnI/6r
+ d6/tsDMl3erX+8o3bKskuvQTAUT9dPdLxKr72QEbert1Xw2Y+LNGU86btdQTwLRoeuYMYg
+ iNd33r0MSzeqqF0NEsUHg5jaX41Ct9Y=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-CX7r5WTIOhKCrLB3IX1dkA-1; Fri,
+ 14 Mar 2025 01:38:15 -0400
+X-MC-Unique: CX7r5WTIOhKCrLB3IX1dkA-1
+X-Mimecast-MFC-AGG-ID: CX7r5WTIOhKCrLB3IX1dkA_1741930694
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C8C4E19560B8; Fri, 14 Mar 2025 05:38:13 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E37B31828A98; Fri, 14 Mar 2025 05:38:12 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 57D6421E675F; Fri, 14 Mar 2025 06:38:09 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: bibo mao <maobibo@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>,  Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 2/3] hw/loongarch/virt: Remove unnecessary NULL pointer
+ checking
+In-Reply-To: <10c55e3e-22f5-285d-7e38-3a6a08089302@loongson.cn> (bibo mao's
+ message of "Fri, 14 Mar 2025 10:27:04 +0800")
+References: <20250313091350.3770394-1-maobibo@loongson.cn>
+ <20250313091350.3770394-3-maobibo@loongson.cn>
+ <875xkdb4q5.fsf@pond.sub.org>
+ <10c55e3e-22f5-285d-7e38-3a6a08089302@loongson.cn>
+Date: Fri, 14 Mar 2025 06:38:09 +0100
+Message-ID: <87v7scw4se.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x62b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,266 +89,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RISC-V IO Mapping Table (RIMT) is a new static ACPI table used to
-communicate IOMMU information to the OS. Add support for creating this
-table when the IOMMU is present. The specification is frozen and
-available at [1].
+bibo mao <maobibo@loongson.cn> writes:
 
-[1] - https://github.com/riscv-non-isa/riscv-acpi-rimt/releases/download/v0.99/rimt-spec.pdf
+On 2025/3/13 =E4=B8=8B=E5=8D=886:32, Markus Armbruster wrote:
 
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
----
- hw/riscv/virt-acpi-build.c | 215 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 215 insertions(+)
+[...]
 
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 1ad6800508..2b4f5b2cea 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -198,6 +198,32 @@ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
-     aml_append(scope, dev);
- }
- 
-+/*
-+ * Add DSDT entry for the IOMMU platform device.
-+ * ACPI ID for IOMMU is defined in the section 6.2 of RISC-V BRS spec.
-+ * https://github.com/riscv-non-isa/riscv-brs/releases/download/v0.8/riscv-brs-spec.pdf
-+ */
-+static void acpi_dsdt_add_iommu_sys(Aml *scope, const MemMapEntry *iommu_memmap,
-+                                    uint32_t iommu_irq)
-+{
-+    uint32_t i;
-+
-+    Aml *dev = aml_device("IMU0");
-+    aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0004")));
-+    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
-+
-+    Aml *crs = aml_resource_template();
-+    aml_append(crs, aml_memory32_fixed(iommu_memmap->base,
-+                                       iommu_memmap->size, AML_READ_WRITE));
-+    for (i = iommu_irq; i < iommu_irq + 4; i++) {
-+        aml_append(crs, aml_interrupt(AML_CONSUMER, AML_EDGE, AML_ACTIVE_LOW,
-+                                      AML_EXCLUSIVE, &i, 1));
-+    }
-+
-+    aml_append(dev, aml_name_decl("_CRS", crs));
-+    aml_append(scope, dev);
-+}
-+
- /*
-  * Serial Port Console Redirection Table (SPCR)
-  * Rev: 1.10
-@@ -450,6 +476,9 @@ static void build_dsdt(GArray *table_data,
-     }
- 
-     acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
-+    if (virt_is_iommu_sys_enabled(s)) {
-+        acpi_dsdt_add_iommu_sys(scope, &memmap[VIRT_IOMMU_SYS], IOMMU_SYS_IRQ);
-+    }
- 
-     if (socket_count == 1) {
-         virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
-@@ -602,6 +631,187 @@ static void build_madt(GArray *table_data,
-     acpi_table_end(linker, &table);
- }
- 
-+#define ID_MAPPING_ENTRY_SIZE        20
-+#define IOMMU_ENTRY_SIZE             40
-+#define RISCV_INTERRUPT_WIRE_OFFSSET 40
-+#define ROOT_COMPLEX_ENTRY_SIZE      20
-+#define RIMT_NODE_OFFSET             48
-+
-+/*
-+ * ID Mapping Structure
-+ */
-+static void build_rimt_id_mapping(GArray *table_data, uint32_t source_id_base,
-+                                  uint32_t num_ids, uint32_t dest_id_base)
-+{
-+    /* Source ID Base */
-+    build_append_int_noprefix(table_data, source_id_base, 4);
-+    /* Number of IDs */
-+    build_append_int_noprefix(table_data, num_ids, 4);
-+    /* Destination Device ID Base */
-+    build_append_int_noprefix(table_data, source_id_base, 4);
-+    /* Destination IOMMU Offset */
-+    build_append_int_noprefix(table_data, dest_id_base, 4);
-+    /* Flags */
-+    build_append_int_noprefix(table_data, 0, 4);
-+}
-+
-+struct AcpiRimtIdMapping {
-+    uint32_t source_id_base;
-+    uint32_t num_ids;
-+};
-+typedef struct AcpiRimtIdMapping AcpiRimtIdMapping;
-+
-+/* Build the rimt ID mapping to IOMMU for a given PCI host bridge */
-+static int rimt_host_bridges(Object *obj, void *opaque)
-+{
-+    GArray *idmap_blob = opaque;
-+
-+    if (object_dynamic_cast(obj, TYPE_PCI_HOST_BRIDGE)) {
-+        PCIBus *bus = PCI_HOST_BRIDGE(obj)->bus;
-+
-+        if (bus && !pci_bus_bypass_iommu(bus)) {
-+            int min_bus, max_bus;
-+
-+            pci_bus_range(bus, &min_bus, &max_bus);
-+
-+            AcpiRimtIdMapping idmap = {
-+                .source_id_base = min_bus << 8,
-+                .num_ids = (max_bus - min_bus + 1) << 8,
-+            };
-+            g_array_append_val(idmap_blob, idmap);
-+        }
-+    }
-+
-+    return 0;
-+}
-+
-+static int rimt_idmap_compare(gconstpointer a, gconstpointer b)
-+{
-+    AcpiRimtIdMapping *idmap_a = (AcpiRimtIdMapping *)a;
-+    AcpiRimtIdMapping *idmap_b = (AcpiRimtIdMapping *)b;
-+
-+    return idmap_a->source_id_base - idmap_b->source_id_base;
-+}
-+
-+/*
-+ * RISC-V IO Mapping Table (RIMT)
-+ * https://github.com/riscv-non-isa/riscv-acpi-rimt/releases/download/v0.99/rimt-spec.pdf
-+ */
-+static void build_rimt(GArray *table_data, BIOSLinker *linker,
-+                       RISCVVirtState *s)
-+{
-+    int i, nb_nodes, rc_mapping_count;
-+    size_t node_size, iommu_offset = 0;
-+    uint32_t id = 0;
-+    GArray *iommu_idmaps = g_array_new(false, true, sizeof(AcpiRimtIdMapping));
-+
-+    AcpiTable table = { .sig = "RIMT", .rev = 1, .oem_id = s->oem_id,
-+                        .oem_table_id = s->oem_table_id };
-+
-+    acpi_table_begin(&table, table_data);
-+
-+    object_child_foreach_recursive(object_get_root(),
-+                                   rimt_host_bridges, iommu_idmaps);
-+
-+    /* Sort the ID mapping  by Source ID Base*/
-+    g_array_sort(iommu_idmaps, rimt_idmap_compare);
-+
-+    nb_nodes = 2; /* RC, IOMMU */
-+    rc_mapping_count = iommu_idmaps->len;
-+    /* Number of RIMT Nodes */
-+    build_append_int_noprefix(table_data, nb_nodes, 4);
-+
-+    /* Offset to Array of RIMT Nodes */
-+    build_append_int_noprefix(table_data, RIMT_NODE_OFFSET, 4);
-+    build_append_int_noprefix(table_data, 0, 4); /* Reserved */
-+
-+    iommu_offset = table_data->len - table.table_offset;
-+    /*  IOMMU Device Structure */
-+    build_append_int_noprefix(table_data, 0, 1);         /* Type - IOMMU*/
-+    build_append_int_noprefix(table_data, 1, 1);         /* Revision */
-+    node_size =  IOMMU_ENTRY_SIZE;
-+    build_append_int_noprefix(table_data, node_size, 2); /* Length */
-+    build_append_int_noprefix(table_data, 0, 2);         /* Reserved */
-+    build_append_int_noprefix(table_data, id++, 2);      /* ID */
-+    if (virt_is_iommu_sys_enabled(s)) {
-+        /* Hardware ID */
-+        build_append_int_noprefix(table_data, 'R', 1);
-+        build_append_int_noprefix(table_data, 'S', 1);
-+        build_append_int_noprefix(table_data, 'C', 1);
-+        build_append_int_noprefix(table_data, 'V', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '4', 1);
-+        /* Base Address */
-+        build_append_int_noprefix(table_data,
-+                                  s->memmap[VIRT_IOMMU_SYS].base, 8);
-+        build_append_int_noprefix(table_data, 0, 4);   /* Flags */
-+    } else {
-+        /* Hardware ID */
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '1', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '1', 1);
-+        build_append_int_noprefix(table_data, '4', 1);
-+
-+        build_append_int_noprefix(table_data, 0, 8);   /* Base Address */
-+        build_append_int_noprefix(table_data, 1, 4);   /* Flags */
-+    }
-+
-+    build_append_int_noprefix(table_data, 0, 4);       /* Proximity Domain */
-+    build_append_int_noprefix(table_data, 0, 2);       /* PCI Segment number */
-+    /* PCIe B/D/F */
-+    if (virt_is_iommu_sys_enabled(s)) {
-+        build_append_int_noprefix(table_data, 0, 2);
-+    } else {
-+        build_append_int_noprefix(table_data, s->pci_iommu_bdf, 2);
-+    }
-+    /* Number of interrupt wires */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* Interrupt wire array offset */
-+    build_append_int_noprefix(table_data, RISCV_INTERRUPT_WIRE_OFFSSET, 2);
-+
-+    /*  PCIe Root Complex Node */
-+    build_append_int_noprefix(table_data, 1, 1);           /* Type */
-+    build_append_int_noprefix(table_data, 1, 1);           /* Revision */
-+    node_size =  ROOT_COMPLEX_ENTRY_SIZE +
-+                 ID_MAPPING_ENTRY_SIZE * rc_mapping_count;
-+    build_append_int_noprefix(table_data, node_size, 2);   /* Length */
-+    build_append_int_noprefix(table_data, 0, 2);           /* Reserved */
-+    build_append_int_noprefix(table_data, id++, 2);        /* ID */
-+    build_append_int_noprefix(table_data, 0, 4);           /* Flags */
-+    build_append_int_noprefix(table_data, 0, 2);           /* Reserved */
-+    /* PCI Segment number */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* ID mapping array offset */
-+    build_append_int_noprefix(table_data, ROOT_COMPLEX_ENTRY_SIZE, 2);
-+    /* Number of ID mappings */
-+    build_append_int_noprefix(table_data, rc_mapping_count, 2);
-+
-+    /* Output Reference */
-+    AcpiRimtIdMapping *range;
-+
-+    /* ID mapping array */
-+    for (i = 0; i < iommu_idmaps->len; i++) {
-+        range = &g_array_index(iommu_idmaps, AcpiRimtIdMapping, i);
-+        if (virt_is_iommu_sys_enabled(s)) {
-+            range->source_id_base = 0;
-+        } else {
-+            range->source_id_base = s->pci_iommu_bdf + 1;
-+        }
-+        range->num_ids = 0xffff - s->pci_iommu_bdf;
-+        build_rimt_id_mapping(table_data, range->source_id_base,
-+                              range->num_ids, iommu_offset);
-+    }
-+
-+    acpi_table_end(linker, &table);
-+    g_array_free(iommu_idmaps, true);
-+}
-+
- /*
-  * ACPI spec, Revision 6.5+
-  * 5.2.16 System Resource Affinity Table (SRAT)
-@@ -679,6 +889,11 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
-     acpi_add_table(table_offsets, tables_blob);
-     build_rhct(tables_blob, tables->linker, s);
- 
-+    if (virt_is_iommu_sys_enabled(s) || s->pci_iommu_bdf) {
-+        acpi_add_table(table_offsets, tables_blob);
-+        build_rimt(tables_blob, tables->linker, s);
-+    }
-+
-     acpi_add_table(table_offsets, tables_blob);
-     spcr_setup(tables_blob, tables->linker, s);
- 
--- 
-2.43.0
+>> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+>> index a5840ff968..4674bd9163 100644
+>> --- a/hw/loongarch/virt.c
+>> +++ b/hw/loongarch/virt.c
+>> @@ -859,30 +859,29 @@ static void virt_cpu_pre_plug(HotplugHandler *hotp=
+lug_dev,
+>>      LoongArchCPU *cpu =3D LOONGARCH_CPU(dev);
+>>      CPUState *cs =3D CPU(dev);
+>>      CPUArchId *cpu_slot;
+>> -    Error *err =3D NULL;
+>>      LoongArchCPUTopo topo;
+>>      int arch_id;
+>>=20=20=20
+>>      if (lvms->acpi_ged) {
+>>          if ((cpu->thread_id < 0) || (cpu->thread_id >=3D ms->smp.thread=
+s)) {
+>> -            error_setg(&err,
+>> +            error_setg(errp,
+>>                         "Invalid thread-id %u specified, must be in rang=
+e 1:%u",
+>>                         cpu->thread_id, ms->smp.threads - 1);
+>> -            goto out;
+>> +            return;
+>
+> Hi Markus,
+>
+>  From APIs, it seems that function error_propagate() do much more than=20
+> error appending, such as comparing dest_err with error_abort etc. Though=
+=20
+> caller function is local variable rather than error_abort/fatal/warn,=20
+> error_propagate() seems useful. How about do propagate error and return=20
+> directly as following:
+>
+> @@ -868,7 +868,8 @@ static void virt_cpu_pre_plug(HotplugHandler=20
+> *hotplug_dev,
+>              error_setg(&err,
+>                         "Invalid thread-id %u specified, must be in=20
+> range 1:%u",
+>                         cpu->thread_id, ms->smp.threads - 1);
+> -            goto out;
+> +            error_propagate(errp, err);
+> +            return;
+>          }
+
+This is strictly worse.  One, it's more verbose.  Two, the stack
+backtrace on failure is less useful, which matters when @errp is
+&error_abort, and when you set a breakpoint on error_handle(), abort(),
+or exit().  Three, it doesn't actually add useful functionality.
+
+To help you see the latter, let's compare the two versions, i.e.
+
+   direct: error_setg(errp, ...)
+
+and
+
+   propagate: two steps, first error_setg(&err, ...), and then
+   error_propagate(errp, err);
+
+Cases: @errp can be NULL, &error_abort, &error_fatal, &error_warn, or a
+non-null pointer to variable containing NULL.
+
+1. @errp is NULL
+
+   Direct does nothing.
+
+   Propagate step 1 creates an error object, and stores it in @err.
+   Step 2 frees the error object.  Roundabout way to do nothing.
+
+2. @errp is &error_abort
+
+   Direct creates an error object, reports it to stderr, and abort()s.
+   Note that the stack backtrace shows where the error is created.
+
+   Propagate step 1 creates an error object, and stores it in @err.
+   Step 2 reports it to stderr, and abort()s.  No difference, except the
+   stack backtrace shows where the error is propagated, which is less
+   useful.
+
+3. @errp is &error_fatal
+
+   Direct creates an error object, reports it to stderr, frees it, and
+   exit(1)s.
+
+   Propagate step 1 creates an error object, and stores it in @err.
+   Step 2 reports it to stderr, frees it, and exit(1)s.  No difference.
+
+4. @errp is &error_warn
+
+   Direct creates an error object, reports it to stderr, and frees it.
+
+   Propagate step 1 creates an error object, and stores it in @err.
+   Step 2 reports it to stderr, and frees it.  No difference.
+
+5. @errp points to variable containing NULL
+
+   Direct creates an error object, and stores it in the variable.
+
+   Propagate step 1 creates an error object, and stores it in @err.
+   Step 2 copies it to the variable.  No difference.
+
+Questions?
+
+[...]
 
 
