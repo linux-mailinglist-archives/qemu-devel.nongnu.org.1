@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8475EA61261
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:18:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F69A61258
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:17:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt4uD-00058G-8o; Fri, 14 Mar 2025 09:16:53 -0400
+	id 1tt4u9-00057Y-ET; Fri, 14 Mar 2025 09:16:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4u6-00056c-9K
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:46 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1tt4u7-000574-4x
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:47 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4u4-00012l-EY
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:45 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43cfecdd8b2so18766555e9.2
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:16:43 -0700 (PDT)
+ id 1tt4u5-00013Z-Ds
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:46 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43cfebc343dso13290185e9.2
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:16:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1741958203; x=1742563003; darn=nongnu.org;
+ d=linaro.org; s=google; t=1741958204; x=1742563004; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=6J/9ANglDaXRI5YIXs5GXgTFWRT7etnt/oN9SrKqW4s=;
- b=NaBsHhaAEMQneUKIbHgj5o2V1iY2VfGA0S+D1oQMsGxgVPiMKtDkWq+U+nZt0F0KMP
- BxwanrXme4NrIN8R1Yr20soPbwE2LIn2zu1KMdPpbVRj5LeUiz9IUr5wefDrGKA6EvjB
- x5nhkZDLByo6isA+oo4/m2gOq/Foq5HmjhbNtJAzAYbP0ZN1TtKOfmCxsSqEO9VbYeSA
- 40+NTkJWbpA5NHxfsdWQ4tpyG3167fTiAIJhLLunByhRGZmOaP9mzb59uzf9tahUz4e6
- 6Wy2tGUItjOX6kSzDDfW0kPKUVhm9LS983EHtUZFyeueuXMUNH4AyCNkH6y/JwVdDUQb
- aXyw==
+ :reply-to; bh=5P8dI0LglzsFCzU+xe5Ql8suIL1Ju80i0bFOQatlqoo=;
+ b=CQrpiDW8ySkM8T7K4el0Rh0kasmyLBTefy+py52VN09NqLUguHvN+L3GT1VHztSKhP
+ HN3vO/kOY368PkJ+4Ni//02ItkBQ9GPmDZl0s1Z6EGj/c6QMhiJTcKafTjZEaqhIu5sw
+ lu/KaDOpAir6MOIYHqqFB7fjWYB6gOjFkqrTvaOjSOipBqXOo7KLAKgES6qB0fCT6Jy5
+ ARFn6vsJgtGCfXCNZZkxmGijzljYY5Iyw2OoDDsF4gCs98yH0y0OVnMPRdb77tadCnnt
+ JRvrWK/7Cf1PBMw9O9pUwYrdAxPbKLpxxGeaKFh+btq2oCQKgi7fnrkLSPC9c2iW1cEK
+ kk4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741958203; x=1742563003;
+ d=1e100.net; s=20230601; t=1741958204; x=1742563004;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6J/9ANglDaXRI5YIXs5GXgTFWRT7etnt/oN9SrKqW4s=;
- b=GnXQuO9ASjUBe+R7P9EBkS/XRH8qKTTK69MXCp3SDC0a599ZAcGRTdvXHtPyBzcV9N
- ueAiK5sw6BYrZ2LjhgyL11REjruN0beRioCPp8iq2ebdzm1LlmawItXsd8ZQJrfO4ulV
- LaHr1Lu9pg5xXr2/FtI4xSua3bLF3/xDfKP2P2If7jpZSDYB3VUNzPnbJCPbgcnx+VH6
- 74x72LnNoMoeiaPtwFEa+kFxV1LJURyLNMqWZdtI64DogsmfjIl3ADcIwDwsFOyORSVL
- 9VkRpiPNshyJwFbYRD/5YWymx3BorSOKsCq7XZuiI+5W3KPYwB2RzhdoUQ/+MZdA7ZPi
- IUhQ==
-X-Gm-Message-State: AOJu0YyeYBE3/TTSd+6mGqLdMypln+qWV0xlTTaqpsgohJnBFZNxbD2O
- 11i18T1crI1tROkUmB6To8vhWaUEhIGJwH8/+W0IX5yLSZJT3TPoePMo+liknH2B0Sm+mbJQAPq
- 5
-X-Gm-Gg: ASbGncsjaIWyYVXT5p/mStNTzJO+HLF7GcD+aUyjx5Ib7T3mHdqp4y08CQo4aXcSeOS
- 25Ub22U3bDxPJ6dQp+wFTh9P6BWiqNbP+a2jQp1vC8/Vf48gFNSzajz3WBeF/3BTMPFz63TjMMF
- KZLqvzcY3vnvnRSrkraRMJ3fnxE2W8zelmu0yHx8QOCjqg17PygVS+kO5smwqNY24UOlA0poc2i
- RArazKruHrCzI1H01V2/uqtSgep66WQwycRqYnHXINyo8+vdIRx0IwabiYLxU5Iivu0N3Dr3GxA
- FA3lSQqTPi2WXqsd9E5aVzBd+RZ5yXKAl2kuseqLBjlIMVkV0aE=
-X-Google-Smtp-Source: AGHT+IGsZulyPT6HoYAsv7K9Rw7mGi9IZDElMny09ouenrmd0aFjZMUBSLSp0Y7bdVHyPayIL7EuEw==
-X-Received: by 2002:a05:600c:1c85:b0:43c:fb5b:84d8 with SMTP id
- 5b1f17b1804b1-43d1ec81231mr35125045e9.16.1741958202677; 
- Fri, 14 Mar 2025 06:16:42 -0700 (PDT)
+ bh=5P8dI0LglzsFCzU+xe5Ql8suIL1Ju80i0bFOQatlqoo=;
+ b=CKi0BfjdsBYQc1hmY3xA4FEMUJrYMOtc52UhhnpDFBNFyKI9ND+udOuoc/0UkSiNHQ
+ /xrJm+d6+EqKQFu+hzSe5jb5xGxCxV4nbI6llcZOfcSyWH9/TxSJX/MH8p0NtCJMt5AG
+ VR1bfadrdWHyf7XDLTdNfBW+YU0ryfQoMaCHggp9/EW6u1xskCz5tFQjcHuYRGUeHaUG
+ GuFVe87giJTVu0FWWOYmXIp6IcFs67i4jqDRWVxP4w5xstAfSZd9qcMobwOJ1VqxrU5h
+ uSie5WQx08OopZDDmuq76N0PohNqAHBZi0w2usxZ42zmSdDQYXkV/eEiqGw7mzNLKpoF
+ tZgQ==
+X-Gm-Message-State: AOJu0YyQI+szSfFdfHFjY/74UmvSd7xL5ztBycqnZkHdB12FwYzYEo6D
+ RKpfPhdfbFbI3elUbG3L/yfo9RW3V6dZ+Zk+lcvHwO8txhh1EmnZPeB+QW9UXzQlPbu3YNxX07V
+ L
+X-Gm-Gg: ASbGnctssegS5LvwenaXSZ/042Gm8cEzYBJUXSzx7v+2x0o54gKGpvwl245Xwd+eQB9
+ KJiLRBgwB+Ed8CEONWC1D+AXoE9pwYC/bwPrHZdTN1SC2JFax2b6c+TKAdk4vLTMA0yDOCYElvE
+ NYpyfpPWKE6bQogpXwkCUGYKTLuUwaEkPXuqMKjhTHdpwf18czj/J+CxKuWwCutAuzhZTrUiWte
+ 5sE+U/uOV5w06A1ki2C/tjzCphzakvwpNisEMGmtvx5V1PJ5d8HV/kTqri4t5obN/gA5I7Urw0+
+ W1xKpFko+wuROAtv1zIqGRNGfTe+12JBCCerrXRTDw0SBssjye4=
+X-Google-Smtp-Source: AGHT+IE7loksS9ITNgf0pQMVyo3Ny7NbPm8wrL0+sBkxvMRCVXFFNLVyYMCRmGEcJJyzANPUxdBBew==
+X-Received: by 2002:a5d:588c:0:b0:391:47d8:de3a with SMTP id
+ ffacd0b85a97d-3971f7f6c9cmr2880347f8f.53.1741958203799; 
+ Fri, 14 Mar 2025 06:16:43 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-395cb7eb93csm5437923f8f.86.2025.03.14.06.16.41
+ ffacd0b85a97d-395cb7eb93csm5437923f8f.86.2025.03.14.06.16.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Mar 2025 06:16:42 -0700 (PDT)
+ Fri, 14 Mar 2025 06:16:43 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/17] linux-user/aarch64: Remove unused get/put_user macros
-Date: Fri, 14 Mar 2025 13:16:23 +0000
-Message-ID: <20250314131637.371866-4-peter.maydell@linaro.org>
+Subject: [PULL 04/17] linux-user/arm: Remove unused get_put_user macros
+Date: Fri, 14 Mar 2025 13:16:24 +0000
+Message-ID: <20250314131637.371866-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250314131637.371866-1-peter.maydell@linaro.org>
 References: <20250314131637.371866-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,32 +96,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-At the top of linux-user/aarch64/cpu_loop.c we define a set of
-macros for reading and writing data and code words, but we never
-use these macros. Delete them.
+In linux-user/arm/cpu_loop.c we define a full set of get/put
+macros for both code and data (since the endianness handling
+is different between the two). However the only one we actually
+use is get_user_code_u32(). Remove the rest.
+
+We leave a comment noting how data-side accesses should be handled
+for big-endian, because that's a subtle point and we just removed the
+macros that were effectively documenting it.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/cpu_loop.c | 48 -----------------------------------
- 1 file changed, 48 deletions(-)
+ linux-user/arm/cpu_loop.c | 43 ++++-----------------------------------
+ 1 file changed, 4 insertions(+), 39 deletions(-)
 
-diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
-index c5d8a483a3f..fea43cefa6b 100644
---- a/linux-user/aarch64/cpu_loop.c
-+++ b/linux-user/aarch64/cpu_loop.c
-@@ -27,54 +27,6 @@
- #include "target/arm/syndrome.h"
- #include "target/arm/cpu-features.h"
+diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
+index 10d8561f9b9..7416e3216ea 100644
+--- a/linux-user/arm/cpu_loop.c
++++ b/linux-user/arm/cpu_loop.c
+@@ -36,45 +36,10 @@
+         __r;                                            \
+     })
  
--#define get_user_code_u32(x, gaddr, env)                \
--    ({ abi_long __r = get_user_u32((x), (gaddr));       \
--        if (!__r && bswap_code(arm_sctlr_b(env))) {     \
--            (x) = bswap32(x);                           \
--        }                                               \
--        __r;                                            \
--    })
--
 -#define get_user_code_u16(x, gaddr, env)                \
 -    ({ abi_long __r = get_user_u16((x), (gaddr));       \
 -        if (!__r && bswap_code(arm_sctlr_b(env))) {     \
@@ -161,10 +158,13 @@ index c5d8a483a3f..fea43cefa6b 100644
 -        }                                               \
 -        put_user_u16(__x, (gaddr));                     \
 -    })
--
- /* AArch64 main loop */
- void cpu_loop(CPUARMState *env)
- {
++/*
++ * Note that if we need to do data accesses here, they should do a
++ * bswap if arm_cpu_bswap_data() returns true.
++ */
+ 
+ /*
+  * Similar to code in accel/tcg/user-exec.c, but outside the execution loop.
 -- 
 2.43.0
 
