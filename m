@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E56A61260
+	by mail.lfdr.de (Postfix) with ESMTPS id 8590CA61262
 	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:18:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt4uP-0005Ev-7z; Fri, 14 Mar 2025 09:17:05 -0400
+	id 1tt4uN-0005EB-Ur; Fri, 14 Mar 2025 09:17:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4uK-0005DG-Ve
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:17:01 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1tt4uI-0005C5-1K
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:58 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tt4uF-00018M-69
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:17:00 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43d04dc73b7so18745705e9.3
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:16:54 -0700 (PDT)
+ id 1tt4uG-00018l-5i
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:16:57 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43cf034d4abso19816495e9.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 06:16:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1741958214; x=1742563014; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IOqXwb1Gpfc1XLtrVTEu1MEyCUJmn6mHT6hEbN78jvs=;
- b=pmzhFSEAih5g/xczqCIpzxG1nKrhbN1uc3iFOEIzEtm8LZKF0fJViIdMFymYyfwZkj
- pEhB0OIJi2UVuLJf0SGMJFhXiNTl46JIzTGAUVIVTcb/ssDP8c8OZeLpnoUGK9A8RM4+
- z8Kmu1UCSMY7PNJm5BYfmqd5W7FF2V2wcE1NqGbSSoNYgOSWyakPsGEO5xRmm4LReVAg
- 9vceQYVqk7rHSv+t9qjvw8kIAdaab18EJXZOxh5x/bHN/R2j32lHabEwWxtw1WW1BspE
- nePMbmY+6BJesXFFLgOzJ0KjqxbMgmj424A92QvX0Wi1t0/ObbluHuv9rnvUqt8UnkgL
- 6CVw==
+ :reply-to; bh=0Xz+WIgazwmvy1y8Au0XPaRBReXruvnZWxhGag+Sxe8=;
+ b=xwi+PJXk/D9dYcdmjv5cRa/fs0gfAYPU5i92eF69CZGUWaglId/fo5eaqw9LitMxcW
+ mmXO5w448jAkQw698Jj0T3JEblGXmfWsSbqW6fFMSUWFqvGOaBie2I2aJQXdIM0xOW8Y
+ 6h6fGYDHWmMI2Ava1onEWo+hT9x0/5G0LwdiLLHS39RBr0LdW2BF/kGnqftHF6YoP0EY
+ UlSXx4216OYFuxAYkgdaSFC/PA+dFxPmkoWnJuMrIQdU6Q1WfPf/5VqVuvWMBEKkxKwQ
+ xu0cL9GgyhV3w3VU5WiuAEbCDaEHjn4Au/SPu9XPAm2hDVXDkhnX29WXA36x/y3tXgtg
+ FDnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1741958214; x=1742563014;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IOqXwb1Gpfc1XLtrVTEu1MEyCUJmn6mHT6hEbN78jvs=;
- b=ATU2zxe7Pht9/EoODUFdOQP6eKEB097ymc6SOC1e6wU6siBD4pL7HBIfODatcbTPvD
- S69+5K5dUDh/dd5W8lrGabF5tN9Nn4TqLdYe4niiN1MvqRJPs3aAgbb7WMbkoL7DovSi
- PtXDTd5S60efnCW9sDz4ap6tQ+K5u5cp+GgNUtZoUdVqB7gpV8EUkUEb33g/RE2G6bUJ
- TWU563JhS+JEEhzAFquPxp23u25QsH5zuSjUakBXBDW/66cxywUFvytDFVgcNoede1aV
- 3+kMVqKJcGkis9SfNZbd6NGaiNeAWyoQ8e6XeOkuy+riL2yEHNXSBqqYn8i1tGIXJSiL
- ZBfg==
-X-Gm-Message-State: AOJu0YxRNIlP6JL1RkUhVgntC2dXfiLT4YN7Uu8PxDdNwyt3Gi37Rnc7
- EBQhbIMapZ2MVymL8Oc3y1jwK69Z7oxhV5od9rFcksTRgkCAe+Nz7oulehf00Kq1uoyzzUMorgR
- i
-X-Gm-Gg: ASbGncv3ztbfeFeH6JV5RztyEwUYMUvElnW7zvkzXeoCZw4/hjeX357sYyBl1MLU8En
- hjhDO9kzk91n7dK2x0FQQutcEDOXBRHg0NIMOy27V9Hkg6VodHCz8He7BngRsgbeG4dXAjK+0ts
- bLmbrde4T8owaT2xRHhRJE9d1jI6//LHYxxf98zKYhQw3orEn7/Is14I502Yw7L2np5DxM57KDV
- TdbiOE2WrErAgjPHpsgBlhbn+WHz7lOpEjJ/K+p5JRpFlMazrmmqcYHAlxV7oMN2x5aW/jQBkiE
- fs4NU77H3zo98XYXptOJdV0FKKVeD3PB7Z0JkxtQxOrSZ9ASUz4=
-X-Google-Smtp-Source: AGHT+IHu5kHtE2GshdUhLH2hJccDSGLw/KJ/14Wo7Jvtt2ATF8YWTQmjsAxQRrdHN1UcXJ4LErDGlQ==
-X-Received: by 2002:a05:600c:470e:b0:43c:f4df:4870 with SMTP id
- 5b1f17b1804b1-43d1ecd0eb5mr27301665e9.25.1741958213600; 
- Fri, 14 Mar 2025 06:16:53 -0700 (PDT)
+ bh=0Xz+WIgazwmvy1y8Au0XPaRBReXruvnZWxhGag+Sxe8=;
+ b=dIIoTBe3eIZVCDrTcCh8VoDVgMh4KTQYHKDDQs08tBDYhppDQY7unFl/QdhA+gP+rT
+ 1GU8uuBlKfiNo4wDT3QfNkjmGiiUkS4ri9zJxkUC5Ww1WyM4/zjf+04vSLTdjH96X481
+ wSBDY4vcEBRIWlB9i0E4ry3C5hAT6UcoVTyi3F2K5RR3ksMxNyRbRctqfaBe93KF7M3E
+ D0wKJKoQBsm4E7H/XNhvX1Q6LFYNblFmbFNUuakGhYzn58ZjWlEiCKF3SWvPvRolx3oA
+ bIBLqYblH0m+AHYEbCiB4g3TrrhrVz4/bVIqVExN0RgZze9iBzKf5daRBYACEw45APOE
+ 9ydQ==
+X-Gm-Message-State: AOJu0Yw5FoB3JYic+cyWlt1+0mPRUbzl6dnY4qvGAEQm0lRSEjHZp4w6
+ heezoDnbLzXn0IhnJDVnm9eDfDbto8KGHCmrpjijKKVkgURbHu+Hj6kd41C5yETFGkdxFuf00kz
+ Q
+X-Gm-Gg: ASbGncsQBxeh+e4EO5eYamM1+JGIWg8//3pHbqH8dJV5rQT6QfSSwbsuOmSFDSoz9qJ
+ 1a7N7cwBT9DEW9MmOEqvCQf94rGqDi0JXgygxRg4do5wU9ARwg1fhiPmOC3NuoTEN4YjiNHlhep
+ O5McKiFNHf3o0Sg4dX6ShtUJsb2LmQ1l1pUQDGUPvqap1uLIUitpihZtSPiCXmKs8ocQVZBYcI7
+ 1HDE7M0xF9IaNVoiB3FSnAlNUP4pn7rxIH73jtHgNizFoH3griBQ6bx11GB8k3EZ2qatiPDavQK
+ nyosSKVo+3ukPyeIAVhWhI5rSW5VNSDVrKVZ3Lx/U3OCHpRGcgE=
+X-Google-Smtp-Source: AGHT+IGAfqG4TvXBlNanHC31pZQrVcAjKu/fvtAOZiO6oHkLIyKp84hnGCVfziBuyVc7aIHa8hCHyQ==
+X-Received: by 2002:a05:600c:350b:b0:43c:e305:6d50 with SMTP id
+ 5b1f17b1804b1-43d1ecd10c7mr29063705e9.24.1741958214575; 
+ Fri, 14 Mar 2025 06:16:54 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-395cb7eb93csm5437923f8f.86.2025.03.14.06.16.52
+ ffacd0b85a97d-395cb7eb93csm5437923f8f.86.2025.03.14.06.16.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Mar 2025 06:16:52 -0700 (PDT)
+ Fri, 14 Mar 2025 06:16:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/17] util/cacheflush: Make first DSB unconditional on aarch64
-Date: Fri, 14 Mar 2025 13:16:34 +0000
-Message-ID: <20250314131637.371866-15-peter.maydell@linaro.org>
+Subject: [PULL 15/17] target/arm: Make DisasContext.{fp,
+ sve}_access_checked tristate
+Date: Fri, 14 Mar 2025 13:16:35 +0000
+Message-ID: <20250314131637.371866-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250314131637.371866-1-peter.maydell@linaro.org>
 References: <20250314131637.371866-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,51 +97,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joe Komlodi <komlodi@google.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-On ARM hosts with CTR_EL0.DIC and CTR_EL0.IDC set, this would only cause
-an ISB to be executed during cache maintenance, which could lead to QEMU
-executing TBs containing garbage instructions.
+The check for fp_excp_el in assert_fp_access_checked is
+incorrect.  For SME, with StreamingMode enabled, the access
+is really against the streaming mode vectors, and access
+to the normal fp registers is allowed to be disabled.
+C.f. sme_enabled_check.
 
-This seems to be because the ISB finishes executing instructions and
-flushes the pipeline, but the ISB doesn't guarantee that writes from the
-executed instructions are committed. If a small enough TB is created, it's
-possible that the writes setting up the TB aren't committed by the time the
-TB is executed.
-
-This function is intended to be a port of the gcc implementation
-(https://github.com/gcc-mirror/gcc/blob/85b46d0795ac76bc192cb8f88b646a647acf98c1/libgcc/config/aarch64/sync-cache.c#L67)
-which makes the first DSB unconditional, so we can fix the synchronization
-issue by doing that as well.
+Convert sve_access_checked to match, even though we don't
+currently check the exception state.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 664a79735e4deb1 ("util: Specialize flush_idcache_range for aarch64")
-Signed-off-by: Joe Komlodi <komlodi@google.com>
-Message-id: 20250310203622.1827940-2-komlodi@google.com
+Fixes: 3d74825f4d6 ("target/arm: Add SME enablement checks")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250307190415.982049-2-richard.henderson@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- util/cacheflush.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/arm/tcg/translate-a64.h |  2 +-
+ target/arm/tcg/translate.h     | 10 +++++++---
+ target/arm/tcg/translate-a64.c | 17 +++++++++--------
+ 3 files changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/util/cacheflush.c b/util/cacheflush.c
-index a08906155a9..1d12899a392 100644
---- a/util/cacheflush.c
-+++ b/util/cacheflush.c
-@@ -279,9 +279,11 @@ void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
-         for (p = rw & -dcache_lsize; p < rw + len; p += dcache_lsize) {
-             asm volatile("dc\tcvau, %0" : : "r" (p) : "memory");
-         }
--        asm volatile("dsb\tish" : : : "memory");
-     }
+diff --git a/target/arm/tcg/translate-a64.h b/target/arm/tcg/translate-a64.h
+index 7d3b59ccd96..b2420f59ebe 100644
+--- a/target/arm/tcg/translate-a64.h
++++ b/target/arm/tcg/translate-a64.h
+@@ -65,7 +65,7 @@ TCGv_i64 gen_mte_checkN(DisasContext *s, TCGv_i64 addr, bool is_write,
+ static inline void assert_fp_access_checked(DisasContext *s)
+ {
+ #ifdef CONFIG_DEBUG_TCG
+-    if (unlikely(!s->fp_access_checked || s->fp_excp_el)) {
++    if (unlikely(s->fp_access_checked <= 0)) {
+         fprintf(stderr, "target-arm: FP access check missing for "
+                 "instruction 0x%08x\n", s->insn);
+         abort();
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index f8dc2f0d4bb..53e485d28ac 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -92,15 +92,19 @@ typedef struct DisasContext {
+     bool aarch64;
+     bool thumb;
+     bool lse2;
+-    /* Because unallocated encodings generate different exception syndrome
++    /*
++     * Because unallocated encodings generate different exception syndrome
+      * information from traps due to FP being disabled, we can't do a single
+      * "is fp access disabled" check at a high level in the decode tree.
+      * To help in catching bugs where the access check was forgotten in some
+      * code path, we set this flag when the access check is done, and assert
+      * that it is set at the point where we actually touch the FP regs.
++     *   0: not checked,
++     *   1: checked, access ok
++     *  -1: checked, access denied
+      */
+-    bool fp_access_checked;
+-    bool sve_access_checked;
++    int8_t fp_access_checked;
++    int8_t sve_access_checked;
+     /* ARMv8 single-step state (this is distinct from the QEMU gdbstub
+      * single-step support).
+      */
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 8bef391bb03..48e0ac75b11 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -1381,14 +1381,14 @@ static bool fp_access_check_only(DisasContext *s)
+ {
+     if (s->fp_excp_el) {
+         assert(!s->fp_access_checked);
+-        s->fp_access_checked = true;
++        s->fp_access_checked = -1;
  
-+    /* DSB unconditionally to ensure any outstanding writes are committed. */
-+    asm volatile("dsb\tish" : : : "memory");
-+
-     /*
-      * If CTR_EL0.DIC is enabled, Instruction cache cleaning to the Point
-      * of Unification is not required for instruction to data coherence.
+         gen_exception_insn_el(s, 0, EXCP_UDEF,
+                               syn_fp_access_trap(1, 0xe, false, 0),
+                               s->fp_excp_el);
+         return false;
+     }
+-    s->fp_access_checked = true;
++    s->fp_access_checked = 1;
+     return true;
+ }
+ 
+@@ -1465,13 +1465,13 @@ bool sve_access_check(DisasContext *s)
+                               syn_sve_access_trap(), s->sve_excp_el);
+         goto fail_exit;
+     }
+-    s->sve_access_checked = true;
++    s->sve_access_checked = 1;
+     return fp_access_check(s);
+ 
+  fail_exit:
+     /* Assert that we only raise one exception per instruction. */
+     assert(!s->sve_access_checked);
+-    s->sve_access_checked = true;
++    s->sve_access_checked = -1;
+     return false;
+ }
+ 
+@@ -1500,8 +1500,9 @@ bool sme_enabled_check(DisasContext *s)
+      * sme_excp_el by itself for cpregs access checks.
+      */
+     if (!s->fp_excp_el || s->sme_excp_el < s->fp_excp_el) {
+-        s->fp_access_checked = true;
+-        return sme_access_check(s);
++        bool ret = sme_access_check(s);
++        s->fp_access_checked = (ret ? 1 : -1);
++        return ret;
+     }
+     return fp_access_check_only(s);
+ }
+@@ -10257,8 +10258,8 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+     s->insn = insn;
+     s->base.pc_next = pc + 4;
+ 
+-    s->fp_access_checked = false;
+-    s->sve_access_checked = false;
++    s->fp_access_checked = 0;
++    s->sve_access_checked = 0;
+ 
+     if (s->pstate_il) {
+         /*
 -- 
 2.43.0
 
