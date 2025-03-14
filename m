@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305C1A60E5A
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:11:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 532F5A60E67
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:12:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt20L-0006Ie-9S; Fri, 14 Mar 2025 06:11:01 -0400
+	id 1tt20N-0006KZ-0H; Fri, 14 Mar 2025 06:11:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt20A-0006Hj-MZ
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:50 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt20E-0006If-CP
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt208-00021l-0U
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:50 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tt20C-00022q-Lw
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:10:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1741947046;
+ s=mimecast20190719; t=1741947050;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L6K58Cl2kQo8RwkeszDmBOm0EdqS+sV+IffyEcy9VvA=;
- b=I80qXmiQOjO0zvkw7txnWNHwqJFv0rKqPNWmXKtPDU8w7tG9ErVd5/Rl+MudXyTlQY405j
- sp+tjnvYqh9Pw0Auqi4MWsT5YtjH+l6bGZJ78zTnK7Ygq4hbS/1mp3NmVBju/cpr5daRWq
- fPcAeb6FgI16iIgRYqw+fij9n1/yN7s=
+ bh=6aqwbTO8KT37DTKD835oXBUCkA/jttLd966RrPuvFV0=;
+ b=MRW9gt8ZFb0P3ZHFe4/Lb2lhnMZfeTCpnojiGjJJe5CKwyKks2k9MT6AmD9pSNPQEewmnh
+ pWbUM6fN7W/+ho7HtwDOfx6wE/IFy6wLYm01t41C6X/JM3HchdgOUx+j6yhTZgURph1Qzu
+ I2r9k37NdJnrnIOhK8rZY3a+bl62+n0=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-gRnyYzAQMcqJTk9iHuRRcw-1; Fri,
- 14 Mar 2025 06:10:45 -0400
-X-MC-Unique: gRnyYzAQMcqJTk9iHuRRcw-1
-X-Mimecast-MFC-AGG-ID: gRnyYzAQMcqJTk9iHuRRcw_1741947044
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-246-q0MjlDDFOOOgn01-psRswA-1; Fri,
+ 14 Mar 2025 06:10:49 -0400
+X-MC-Unique: q0MjlDDFOOOgn01-psRswA-1
+X-Mimecast-MFC-AGG-ID: q0MjlDDFOOOgn01-psRswA_1741947049
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4277C180025A
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:10:44 +0000 (UTC)
+ id DF8BE180035C
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:10:48 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B236B1955BCB
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:10:43 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 88CAF1828A98
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 10:10:48 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C676F21E66A4; Fri, 14 Mar 2025 11:10:38 +0100 (CET)
+ id CA94A21E66A7; Fri, 14 Mar 2025 11:10:38 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 04/12] docs/qapi_domain: add namespace support to FQN
-Date: Fri, 14 Mar 2025 11:10:30 +0100
-Message-ID: <20250314101038.2408751-5-armbru@redhat.com>
+Subject: [PULL 05/12] docs/qapi-domain: add :namespace: override option
+Date: Fri, 14 Mar 2025 11:10:31 +0100
+Message-ID: <20250314101038.2408751-6-armbru@redhat.com>
 In-Reply-To: <20250314101038.2408751-1-armbru@redhat.com>
 References: <20250314101038.2408751-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,112 +86,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-This patch adds a namespace component to the "Fully Qualified Name", in
-the form of "domain:module.name". As there are no namespace directives
-or options yet, this component will simply be empty as of this patch.
+Akin to the :module: override option, the :namespace: options allows you
+to forcibly override the contextual namespace associatied with a
+definition.
+
+We don't necessarily actually need this, but I felt compelled to stick
+close to how the Python domain works that offers context overrides.
+
+As of this commit, it is possible to add e.g. ":namespace: QMP" to any
+QAPI directive to forcibly associate that definition with a given
+namespace.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250313044312.189276-4-jsnow@redhat.com>
+Message-ID: <20250313044312.189276-5-jsnow@redhat.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapi_domain.py | 35 +++++++++++++++++++++++++++--------
- 1 file changed, 27 insertions(+), 8 deletions(-)
+ docs/devel/qapi-domain.rst | 2 ++
+ docs/sphinx/qapi_domain.py | 5 +++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/docs/devel/qapi-domain.rst b/docs/devel/qapi-domain.rst
+index 1475870ca6..51b283277e 100644
+--- a/docs/devel/qapi-domain.rst
++++ b/docs/devel/qapi-domain.rst
+@@ -466,6 +466,8 @@ QAPI standard options
+ 
+ All QAPI directives -- *except* for module -- support these common options.
+ 
++* ``:namespace: name`` -- This option allows you to override the
++  namespace association of a given definition.
+ * ``:module: modname`` -- Borrowed from the Python domain, this option allows
+   you to override the module association of a given definition.
+ * ``:since: x.y`` -- Allows the documenting of "Since" information, which is
 diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index 6b23fc73ef..48a082d489 100644
+index 48a082d489..6485c43206 100644
 --- a/docs/sphinx/qapi_domain.py
 +++ b/docs/sphinx/qapi_domain.py
-@@ -178,15 +178,18 @@ def get_index_text(self, name: Signature) -> Tuple[str, str]:
-         # NB: this is used for the global index, not the QAPI index.
-         return ("single", f"{name} (QMP {self.objtype})")
- 
--    def _get_context(self) -> str:
-+    def _get_context(self) -> Tuple[str, str]:
-+        namespace = self.options.get(
-+            "namespace", self.env.ref_context.get("qapi:namespace", "")
-+        )
-         modname = self.options.get(
-             "module", self.env.ref_context.get("qapi:module", "")
-         )
--        assert isinstance(modname, str)
--        return modname
-+
-+        return namespace, modname
- 
-     def _get_fqn(self, name: Signature) -> str:
--        modname = self._get_context()
-+        namespace, modname = self._get_context()
- 
-         # If we're documenting a module, don't include the module as
-         # part of the FQN; we ARE the module!
-@@ -195,6 +198,8 @@ def _get_fqn(self, name: Signature) -> str:
- 
-         if modname:
-             name = f"{modname}.{name}"
-+        if namespace:
-+            name = f"{namespace}:{name}"
-         return name
- 
-     def add_target_and_index(
-@@ -227,13 +232,18 @@ def add_target_and_index(
-                 )
- 
-     @staticmethod
--    def split_fqn(name: str) -> Tuple[str, str]:
-+    def split_fqn(name: str) -> Tuple[str, str, str]:
-+        if ":" in name:
-+            ns, name = name.split(":")
-+        else:
-+            ns = ""
-+
-         if "." in name:
-             module, name = name.split(".")
-         else:
-             module = ""
- 
--        return (module, name)
-+        return (ns, module, name)
- 
-     def _object_hierarchy_parts(
-         self, sig_node: desc_signature
-@@ -251,7 +261,7 @@ def _toc_entry_name(self, sig_node: desc_signature) -> str:
-             return ""
- 
-         config = self.env.app.config
--        modname, name = toc_parts
-+        namespace, modname, name = toc_parts
- 
-         if config.toc_object_entries_show_parents == "domain":
-             ret = name
-@@ -259,6 +269,10 @@ def _toc_entry_name(self, sig_node: desc_signature) -> str:
-                 "qapi:module", ""
-             ):
-                 ret = f"{modname}.{name}"
-+            if namespace and namespace != self.env.ref_context.get(
-+                "qapi:namespace", ""
-+            ):
-+                ret = f"{namespace}:{ret}"
-             return ret
-         if config.toc_object_entries_show_parents == "hide":
-             return name
-@@ -334,10 +348,15 @@ def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
-         As such, the only argument here is "sig", which is just the QAPI
-         definition name.
-         """
--        modname = self._get_context()
-+        # No module or domain info allowed in the signature!
-+        assert ":" not in sig
-+        assert "." not in sig
- 
-+        namespace, modname = self._get_context()
-         signode["fullname"] = self._get_fqn(sig)
-+        signode["namespace"] = namespace
-         signode["module"] = modname
-+
-         sig_prefix = self.get_signature_prefix()
-         if sig_prefix:
-             signode += addnodes.desc_annotation(
+@@ -294,8 +294,9 @@ class QAPIObject(QAPIDescription):
+     )
+     option_spec.update(
+         {
+-            # Borrowed from the Python domain:
+-            "module": directives.unchanged,  # Override contextual module name
++            # Context overrides:
++            "namespace": directives.unchanged,
++            "module": directives.unchanged,
+             # These are QAPI originals:
+             "since": directives.unchanged,
+             "ifcond": directives.unchanged,
 -- 
 2.48.1
 
