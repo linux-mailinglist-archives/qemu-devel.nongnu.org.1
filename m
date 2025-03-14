@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6627DA611B5
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 13:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CEC4A611EF
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 14:04:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt4Rh-0002h1-Mc; Fri, 14 Mar 2025 08:47:25 -0400
+	id 1tt4gT-0005hV-9t; Fri, 14 Mar 2025 09:02:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=161315f38=graf@amazon.de>)
- id 1tt4Re-0002gW-Ue
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 08:47:23 -0400
-Received: from smtp-fw-80006.amazon.com ([99.78.197.217])
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1tt4g7-0005cK-Ee
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:02:21 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=161315f38=graf@amazon.de>)
- id 1tt4Rc-0002tC-2g
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 08:47:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1741956441; x=1773492441;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=5/2CO48dv3c/OYXVyiefmSEQ+x6J0RMkR+uHb6q1KYU=;
- b=eaUN+9lo/p7KsLRiqCSgoKIPDwrRZ9rxAWiMFmV5JjDo/ghHqMD6KoPe
- jF1R17tEpzLfh+HfvEbdyyvYUsslzgEP4lMyuzCD6vkJi1HFew12n0JEf
- toDnqEXzSvpoSa+l8rtJ1D38/aY9nzVvKWpo2R8HSHc85+ylC2T0LL0UM U=;
-X-IronPort-AV: E=Sophos;i="6.14,246,1736812800"; d="scan'208";a="31915641"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO
- smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
- by smtp-border-fw-80006.pdx80.corp.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2025 12:47:13 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:15647]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.52.235:2525]
- with esmtp (Farcaster)
- id ec14503d-2591-4755-98cb-2c0e255fa616; Fri, 14 Mar 2025 12:47:12 +0000 (UTC)
-X-Farcaster-Flow-ID: ec14503d-2591-4755-98cb-2c0e255fa616
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 14 Mar 2025 12:47:09 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Fri, 14 Mar 2025
- 12:47:05 +0000
-Message-ID: <85a9745d-e3b3-4e0e-90ad-066e6dcc25c1@amazon.com>
-Date: Fri, 14 Mar 2025 13:47:03 +0100
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1tt4g4-0005vB-MH
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 09:02:19 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52EBlrNM017176;
+ Fri, 14 Mar 2025 13:02:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2023-11-20; bh=s4vIHzDK9Ck2Y2EC
+ zx/zRacJza8+4VhU0cSTCT5SaQY=; b=Xhy4J0ekrxl2341qt892O0rqJUjG/E3I
+ nnI3bUc4JUvfZlclSO4M3fFtmo9YGn8oeO3z5PARgQ6gjApg8hQ3V39kmOASMK6a
+ FX+/MCOOpdfDQAU3dGlWjacnDzLSHuxc9yxiXhaW1NmppsMhQEZNVq0s71Ga96iJ
+ nUpN3xwScXK2WR5AIqbQhk9VSsLYt3vZNQpYACHF+txx0/0wdeE7qtJ7x0YBGhwU
+ YAm7/mnl4UOZCMPMbkot9kY3HfL25kdxsO2v3U8arsHvfuZrEdk8JmTW7BOUMhoG
+ 3aec7RPIaPodSLKRAv5YBwQGnzZlXKj6Sea4PyFLyozAUMdc/2ZqRw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45au4dpesk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Mar 2025 13:02:09 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 52EAoYlT012355; Fri, 14 Mar 2025 13:02:07 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 45atn41d14-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Mar 2025 13:02:07 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 52ED27R7015104;
+ Fri, 14 Mar 2025 13:02:07 GMT
+Received: from jonah-ol8.us.oracle.com
+ (dhcp-10-43-73-135.usdhcp.oraclecorp.com [10.43.73.135])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 45atn41d05-1; Fri, 14 Mar 2025 13:02:07 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: eperezma@redhat.com, peterx@redhat.com, mst@redhat.com,
+ jasowant@redhat.com, lvivier@redhat.com, dtatulea@nvidia.com,
+ leiyan@redhat.com, parav@mellanox.com, sgarzare@redhat.com,
+ si-wei.liu@oracle.com, lingshan.zhu@intel.com,
+ boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [PATCH v3 0/7] Move memory listener register to vhost_vdpa_init
+Date: Fri, 14 Mar 2025 09:01:47 -0400
+Message-ID: <20250314130204.11380-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-To: Gerd Hoffman <kraxel@redhat.com>, Ani Sinha <anisinha@redhat.com>
-CC: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, "Marcel
- Apfelbaum" <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Yanan Wang
- <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, Richard Henderson
- <richard.henderson@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>, "Igor
- Mammedov" <imammedo@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- <qemu-devel@nongnu.org>
-References: <sxavsa2i4drnei4kmy6pd4uekk3xaa43njd47jtogar7ui7qm7@n73chaex5ms2>
- <Z9LeILiEU5GfEHrl@8bytes.org>
- <CAK3XEhNS10gKLh6SKeSc9cKi+_qwu3+Yu5rAkni5h7tYS59D5g@mail.gmail.com>
- <aet7vo4qwexxrw5khiwvhelvhwya3w7wuk72w77jlq7idn3me5@2ojjjdw43u7q>
-Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <aet7vo4qwexxrw5khiwvhelvhwya3w7wuk72w77jlq7idn3me5@2ojjjdw43u7q>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.253.83.51]
-X-ClientProxiedBy: EX19D045UWA001.ant.amazon.com (10.13.139.83) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Received-SPF: pass client-ip=99.78.197.217;
- envelope-from=prvs=161315f38=graf@amazon.de; helo=smtp-fw-80006.amazon.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-14_05,2025-03-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ phishscore=0 spamscore=0
+ mlxscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
+ definitions=main-2503140103
+X-Proofpoint-GUID: Ti8yOvOFDvb46XlLIjjJVTq-d5w4CQqr
+X-Proofpoint-ORIG-GUID: Ti8yOvOFDvb46XlLIjjJVTq-d5w4CQqr
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,45 +101,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Current memory operations like pinning may take a lot of time at the
+destination.  Currently they are done after the source of the migration is
+stopped, and before the workload is resumed at the destination.  This is a
+period where neigher traffic can flow, nor the VM workload can continue
+(downtime).
 
-On 14.03.25 12:27, Gerd Hoffman wrote:
->    Hi,
->
->>>> Open question is what we do about IGVM.
->>>>
->>>> One option would be the guest vmfwupdate tool loading and parsing igvm,
->>>> preparing the region list, then invoke the update.  Problem is that some
->>>> igvm feaures such as initial register state can not be easily supported
->>>> that way.
->>>>
->>>> We could also expect the hypervisor support igvm, so the guest can
->>>> simply load the file into memory and pass address and size to the
->>>> hypervisor.  Either as option, say via VMFWUPDATE_REGION_FLAG_IGVM, or
->>>> mandatory, i.e. scratch the region list and use IGVM exclusively.
->>> This is of course up to the QEMU maintainers to decide, but I want to
->>> highlight that IGVM already solves all the problems mentioned above,
->>> including setting multiple memory regions of different type, special
->>> data pages (cpuid, secrets, id-blob, vmsa) and more. It defines the
->>> order of setup calls the VMM has to invoke for the new context and also
->>> works for multiple platforms like TDX, SNP, non-coco, and in the future
->>> ARM as well.
->> My take on this is that instead of making the interface more complex,
->> let's empower the guest to use IGVM if they think they need more
->> guarantees around those things that IGVM solves very well today. QEMU
->> already has IGVM backend support.
-> Ok, assuming we allow the guest submit a IGVM image (which makes sense
-> indeed, otherwise we'll probably end up re-inventing IGVM).  How will
-> the kernel hashes be handled then?  I assume they will not be part of
-> the igvm image, but they must be part of the launch measurement ...
+We can do better as we know the memory layout of the guest RAM at the
+destination from the moment that all devices are initializaed.  So
+moving that operation allows QEMU to communicate the kernel the maps
+while the workload is still running in the source, so Linux can start
+mapping them.
 
+As a small drawback, there is a time in the initialization where QEMU
+cannot respond to QMP etc.  By some testing, this time is about
+0.2seconds.  This may be further reduced (or increased) depending on the
+vdpa driver and the platform hardware, and it is dominated by the cost
+of memory pinning.
 
-The kernel hashes must be embedded in the IGVM image by the time you 
-invoke vmfwupdate. That means when you generate the FUKI, you take 4 
-inputs: Generic firmware image, kernel, initramfs, cmdline. Out of 
-those, you generate and embed an IGVM image that consists of the 
-firmware image as well as the kernel hash page.
+This matches the time that we move out of the called downtime window.
+The downtime is measured as checking the trace timestamp from the moment
+the source suspend the device to the moment the destination starts the
+eight and last virtqueue pair.  For a 39G guest, it goes from ~2.2526
+secs to 2.0949.
 
+Future directions on top of this series may include to move more things ahead
+of the migration time, like set DRIVER_OK or perform actual iterative migration
+of virtio-net devices.
 
-Alex
+Comments are welcome.
+
+This series is a different approach of series [1]. As the title does not
+reflect the changes anymore, please refer to the previous one to know the
+series history.
+
+This series is based on [2], it must be applied after it.
+
+[Jonah Palmer]
+This series was rebased after [3] was pulled in, as [3] was a prerequisite
+fix for this series.
+
+v3:
+---
+* Rebase
+
+v2:
+---
+* Move the memory listener registration to vhost_vdpa_set_owner function.
+* Move the iova_tree allocation to net_vhost_vdpa_init.
+
+v1 at https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02136.html.
+
+[1] https://patchwork.kernel.org/project/qemu-devel/cover/20231215172830.2540987-1-eperezma@redhat.com/
+[2] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg05910.html
+[3] https://lore.kernel.org/qemu-devel/20250217144936.3589907-1-jonah.palmer@oracle.com/
+
+Eugenio Pérez (7):
+  vdpa: check for iova tree initialized at net_client_start
+  vdpa: reorder vhost_vdpa_set_backend_cap
+  vdpa: set backend capabilities at vhost_vdpa_init
+  vdpa: add listener_registered
+  vdpa: reorder listener assignment
+  vdpa: move iova_tree allocation to net_vhost_vdpa_init
+  vdpa: move memory listener register to vhost_vdpa_init
+
+ hw/virtio/vhost-vdpa.c         | 98 ++++++++++++++++++++++------------
+ include/hw/virtio/vhost-vdpa.h | 22 +++++++-
+ net/vhost-vdpa.c               | 34 ++----------
+ 3 files changed, 88 insertions(+), 66 deletions(-)
+
+-- 
+2.43.5
 
 
