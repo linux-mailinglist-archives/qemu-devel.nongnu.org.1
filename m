@@ -2,96 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82837A60E8B
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:16:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F0AA60E9C
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Mar 2025 11:18:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tt25i-00064F-TM; Fri, 14 Mar 2025 06:16:34 -0400
+	id 1tt27d-00006x-0A; Fri, 14 Mar 2025 06:18:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <haoqian.he@smartx.com>)
- id 1tt25L-0005p5-3g
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:16:13 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tt27Z-00006I-Pm
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:18:30 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <haoqian.he@smartx.com>)
- id 1tt25F-000372-IE
- for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:16:10 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-22403cbb47fso36657705ad.0
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 03:16:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1tt27X-0003cq-I2
+ for qemu-devel@nongnu.org; Fri, 14 Mar 2025 06:18:29 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-ac28e66c0e1so290300266b.0
+ for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 03:18:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1741947363; x=1742552163;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1741947505; x=1742552305; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xsdw8pAjBTeMk/gQWIVoL0cHkZcubeblaIvJp2xm1+I=;
- b=JKXi9AWj/ft8Ps0hdiGeHE93CdxEyzZ8W5tzZE2lBOCZ6A99F8QekWz+z3Ygt6UBG0
- J+g7TBJr7Eiv41b/3oNPx90DXfJcsAd7YjB2cDJRt2IrtWB2xsnAaRSWZ1OqR+shseeX
- v+L2EKjqwylYEHC9IcfUXAhTVrTbvtniA1D2Lu/ldRXjmAhsmfsEbwRQuHkMZ7LBk1Us
- JOx1I/l49mh1wt4b31owRBSWGraHQvbSH8umQ0wwT2grOryDv6LOiaeakB0Rs0+UyTdj
- C6gXIMOJgbtvzX76AFKbzywtgXHhlFTYSFOGbZUHzoUage1mrQmuUF3B4Vu9gfvtfU8Z
- yj1w==
+ bh=kOPbLmcxiIatQY7sHe7b02oenu+TvYv2qO+PIG5C0Gw=;
+ b=f2PHZ2a+ClbJmxzhK+E23o7fWrMKffeIAxe+CWDGEttj4dTofDiy/wAW3m09UssdtM
+ ceiUo8Cg6s/mI/EXV3Ve9cX07pTcbrSK8YRDsxaQS5QVNkNGEz26AM+jhP6DlToPRR47
+ Gnt2JEmJr3/Uz0BB+W3N9XkHtEjbMt6dAiTArhNgiEDsvPqXdhcdMBqfOG0FId5dTbKi
+ ftqBLT2yY/Q7v1zEEGypWdbMpL2nbPVbHXKZ5KSJ8i58RayokgqaiPXhhxvdvqUNq65D
+ pNcO1acWRkUAWZtG+opQDlUDiI+h7l0ON+ffRYTEZvEurMMlftMPzhPtw/4RcHH4VwYM
+ u1fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1741947363; x=1742552163;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xsdw8pAjBTeMk/gQWIVoL0cHkZcubeblaIvJp2xm1+I=;
- b=tGyvC6qCp8Avqike/cA0C+kI2EWLXGOTXfsWmQGJPNaquQ6076+UypQHvLlPWgO+Pu
- rRkaCGJe3YqhsKp9xHxFcPmJUd44XoiaSO3/8fd0bgc3fPzm7mhqPKq+X5jyRn+G9Ykm
- SFQbXX3l+833MBBvYMGWMFE8NjZccLZDkmXncQfEEAeLSV199v6iZc47px9gQDjmyG3g
- Xr3qNhKVJvhyfxJGo3ina7P5uuNnCyrSg8+hG26R37yDcYBo7LX9a2ES6AspVjXwxlDA
- zdsEICPibWx98M2V9R9oYjGNCKr2erk8Y9LEwbDV4aUFXgYnSu8z7G/fq1mMKOw3/ZX7
- 3W8w==
-X-Gm-Message-State: AOJu0Ywrnm21R3RJSnykOCYv6GfNkNcpigAyUml08yCLleV4N4+lt8dc
- RERfPaGYEF+xunGwDxa5P6nf/qCkbRXTcQL3eFsNP8ub6RyI+fmWM2QXqy42tbqVQk9LuuuF5MR
- f4QUPpiwUC/Q=
-X-Gm-Gg: ASbGncvbZoEgPiiL3N/tp08j1ryz0EkQfm0JCgvs8u0bH/iqWxQqsth95jrmRRWeA6u
- 8dImpDvMDXrGmg4E00L1Ru9gbN+XW3eK6z9BkhpmzZrOGOMFILHO65I1TC0MTMHfaTjCKW75vRj
- jDET/StJ9L+eD+X1pPnpnFX0sviDi+kciUvujukaalsmYE0bmFCJ8oErqyE9vmjeoIxJ9pAtkDi
- yfrTmV9hYJuDWWjndAQTujQbnfrmaBFVjaxcLC7j9iKM5t/8sSWZeI1dHYn0DpBMea6RAWNvUub
- Q+nF3nMiGbGq3R5CdkhxQEYdeLZe5W3jLtKYdRhg7GHPMH79oK+nohA/TeLGDM8=
-X-Google-Smtp-Source: AGHT+IEmFiqPKYkLM2urxD6vyggJ0nEowwzKUU0S7nrQ+r1BQZfHB2kks+ASZ91x6n7uxYpbWhs6ug==
-X-Received: by 2002:a05:6a00:b95:b0:736:3d7c:2368 with SMTP id
- d2e1a72fcca58-73722353269mr2864981b3a.7.1741947363469; 
- Fri, 14 Mar 2025 03:16:03 -0700 (PDT)
-Received: from fedora.smartx.com ([103.85.74.92])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7371169549fsm2698898b3a.131.2025.03.14.03.15.59
+ d=1e100.net; s=20230601; t=1741947505; x=1742552305;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=kOPbLmcxiIatQY7sHe7b02oenu+TvYv2qO+PIG5C0Gw=;
+ b=m3x4+9gXuW+jyQzW3oOsylxIyTRO6iLuvvhmesrVbUEjpEz4DOOsBdZH+uEPUzC1tl
+ t7CxO1mn11jE3jFx2JPFhQvHclqwG+CGbd6zouP0LobksontOkPNh2OovXg2xZzBVMmf
+ Wxe9FLyKj//L4FEveXEyljOiroNCSFdtj0kkjVXHvcqNJZxwH8QkapFyXCDkHEoqitIh
+ YQeXlhPirBdwefjY1d8ZhxraqD7mmxR/2fe+AA+rrvWEIhiZCiWSygqerbNv8J7J1g1j
+ yoLNRcmvgj+MyslR/wF11GF9i744AJi7ScfLrsnWA2c7iwf8iCmf553ZUmrPsD9gcIs5
+ XqSw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXCWVKMUePANCYkMVQawJBufh/2d7EmknhXF+X313nTiBY4yVCi5gRf+kkYIiRQC2ObgBYdKO777ise@nongnu.org
+X-Gm-Message-State: AOJu0YzR2uanOGHDFxGJipUrpIg8keU3o8smPD2RVSdbO6LrBXj/lU2C
+ eKq10/wCVgiHSANMimsctPBEgeTS7jtDxmg3IDhx0GEPPDW6ux8t4b2R98XQnTFrfHXTWV0Ix9o
+ 2
+X-Gm-Gg: ASbGncvcd4CuyAlKeS5tAT0J2axc7B9Qn4p+Y4kvTxkzf5sqLtJEAgEhvydBqJITEub
+ 9j0m5a2apLHsQxsyLUpEqzB7xfyNhim4sp7l4xtfaXUOSH3igqWe6pHzMmpLLsGYRP3s6i4yUae
+ xSmruh9+EKn/xLSsrMtoAZPvkaHbrnQjjL04JrUY/5Zlnjut3ijfDfi6OSxOdffV9dAo9fz+K4r
+ drjmRLw/TdVKrl2djP6Ac/dgAievPSnFUcJBvF+bC0TTuGHARUO/mqfTS1WQFL2edE6uMNqygae
+ 5Qt3axh10xg3YgAocz+zm8osfXV2HGns3itVkCq2XBATODA=
+X-Google-Smtp-Source: AGHT+IG9fMSUJrx8RbpWyIvtvV6undzA/hz5NJKTBRjncNwQxTvLo8ICI7hIVTbrnfRFzwTCE/GYag==
+X-Received: by 2002:a17:907:a089:b0:ac2:972c:f732 with SMTP id
+ a640c23a62f3a-ac330324808mr232122966b.33.1741947504843; 
+ Fri, 14 Mar 2025 03:18:24 -0700 (PDT)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ac3146aea93sm204446766b.30.2025.03.14.03.18.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Mar 2025 03:16:02 -0700 (PDT)
-From: Haoqian He <haoqian.he@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: fengli@smartx.com, yuhua@smartx.com, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Raphael Norwitz <raphael@enfabrica.net>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-block@nongnu.org (open list:Block layer core)
-Subject: [PATCH v2 3/3] vhost-user: return failure if backend crash when live
- migration
-Date: Fri, 14 Mar 2025 06:15:34 -0400
-Message-ID: <20250314101535.1059308-4-haoqian.he@smartx.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20250314101535.1059308-1-haoqian.he@smartx.com>
-References: <20250309090708.3928953-1-haoqian.he@smartx.com>
- <20250314101535.1059308-1-haoqian.he@smartx.com>
+ Fri, 14 Mar 2025 03:18:24 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 495255F92C;
+ Fri, 14 Mar 2025 10:18:23 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Konstantin Kostiuk <kkostiuk@redhat.com>
+Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  QEMU
+ <qemu-devel@nongnu.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Yan Vugenfirer <yvugenfi@redhat.com>
+Subject: Re: Cross-compilation artifact is broken
+In-Reply-To: <CAPMcbCrsvWJu6NsE8P6OYCLtKYG89zSviCoW9_YF+BTUB45HeQ@mail.gmail.com>
+ (Konstantin Kostiuk's message of "Fri, 14 Mar 2025 10:21:58 +0200")
+References: <CAPMcbCquaBmWhx3jWBKMC1oLrMZBUVhfWFcW=_5uhVqOep4NWw@mail.gmail.com>
+ <Z9GUldol1IQT1uiY@redhat.com> <Z9GY3l2pTkbpMV8L@redhat.com>
+ <871pv25iar.fsf@draig.linaro.org>
+ <CAPMcbCrsvWJu6NsE8P6OYCLtKYG89zSviCoW9_YF+BTUB45HeQ@mail.gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Fri, 14 Mar 2025 10:18:23 +0000
+Message-ID: <87tt7v3ogg.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=haoqian.he@smartx.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: 14
-X-Spam_score: 1.4
-X-Spam_bar: +
-X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,302 +108,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Live migration should be terminated if the backend crashes before
-the migration completes.
+Konstantin Kostiuk <kkostiuk@redhat.com> writes:
 
-Since the vhost device will be stopped when VM is stopped before
-the end of the live migration, current implementation if vhost
-backend died, vhost device's set_status() will not return failure,
-live migration won't perceive the disconnection between qemu and
-vhost backend, inflight io would be submitted in migration target
-host, leading to IO error.
+> On Wed, Mar 12, 2025 at 6:24=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@lin=
+aro.org> wrote:
+>
+>  Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>
+>  > On Wed, Mar 12, 2025 at 02:05:09PM +0000, Daniel P. Berrang=C3=A9 wrot=
+e:
+>  >> On Wed, Mar 12, 2025 at 03:52:45PM +0200, Konstantin Kostiuk wrote:
+>  >> > Hi All,
+>  >> >=20
+>  >> > I cross-compiled qemu-ga from current master branch
+>  >> > (825b96dbcee23d134b691fc75618b59c5f53da32) and found strange behavi=
+or.
+>  >> >=20
+<snip>
+>  >> > My question is, is this expected behavior or is this a bug?
+>  >>=20
+>  >> Your configure args don't include "--enable-debug", so I would
+>  >> not have expected -gsplit-dwarf to have been enabled, so I'm
+>  >> surprised that commit casued a problem.
+>  >
+>  > Hmm it appears that the meson  "get_option('debug')" is entirely
+>  > unconnected to QEMU's --enable-debug configure flag, which I did
+>  > not realize.
+>  >
+>  > IOW, we've got -gsplit-dwarf enabled by default for everyone
+>  > building QEMU, which feels dubious. IMHO only an explicit
+>  > --enable-debug configure arg should have triggered it.
+>
+>  --enable-debug is more than debug info, --enable-debug-info is enabled
+>  by default. If you build with --disable-debug-info then -gsplit-dwarf
+>  won't be applied.
+>
+> But as this broke the Windows build, maybe we should disable this for Win=
+dows
+> until resolve this problem
 
-To fix this issue:
-1. Add set_status_ext() which has return value for
-VirtioDeviceClass and vhost-user-blk/scsi use the _ext version.
+Something like:
 
-2. In set_status_ext(), return failure if the flag `connected`
-is false or vhost_dev_stop return failure, which means qemu lost
-connection with backend.
+if host_os !=3D 'windows'
+  if get_option('debug') and get_option('split_debug')
+    qemu_cflags +=3D '-gsplit-dwarf'
+  endif
+endif
 
-Hence migration_completion() will process failure, terminate
-migration and restore VM.
+>=20=20
+>  >
+>  > In addition since its breaking Windows builds, it appears we
+>  > need to block its usage on Windows.
+>  >
+>  >
+>  > With regards,
+>  > Daniel
+>
+>  --=20
+>  Alex Benn=C3=A9e
+>  Virtualisation Tech Lead @ Linaro
 
-Signed-off-by: Haoqian He <haoqian.he@smartx.com>
----
- hw/block/vhost-user-blk.c             | 29 +++++++++++++++------------
- hw/scsi/vhost-scsi-common.c           | 13 ++++++------
- hw/scsi/vhost-user-scsi.c             | 20 ++++++++++--------
- hw/virtio/virtio.c                    | 20 +++++++++++++-----
- include/hw/virtio/vhost-scsi-common.h |  2 +-
- include/hw/virtio/virtio.h            |  1 +
- 6 files changed, 52 insertions(+), 33 deletions(-)
-
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index ae42327cf8..4865786c54 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -204,7 +204,7 @@ err_host_notifiers:
-     return ret;
- }
- 
--static void vhost_user_blk_stop(VirtIODevice *vdev)
-+static int vhost_user_blk_stop(VirtIODevice *vdev)
- {
-     VHostUserBlk *s = VHOST_USER_BLK(vdev);
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-@@ -212,26 +212,26 @@ static void vhost_user_blk_stop(VirtIODevice *vdev)
-     int ret;
- 
-     if (!s->started_vu) {
--        return;
-+        return 0;
-     }
-     s->started_vu = false;
- 
-     if (!k->set_guest_notifiers) {
--        return;
-+        return 0;
-     }
- 
--    vhost_dev_stop(&s->dev, vdev, true);
-+    ret = vhost_dev_stop(&s->dev, vdev, true);
- 
--    ret = k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false);
--    if (ret < 0) {
-+    if (k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false) < 0) {
-         error_report("vhost guest notifier cleanup failed: %d", ret);
--        return;
-+        return -1;
-     }
- 
-     vhost_dev_disable_notifiers(&s->dev, vdev);
-+    return ret;
- }
- 
--static void vhost_user_blk_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vhost_user_blk_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserBlk *s = VHOST_USER_BLK(vdev);
-     bool should_start = virtio_device_should_start(vdev, status);
-@@ -239,11 +239,11 @@ static void vhost_user_blk_set_status(VirtIODevice *vdev, uint8_t status)
-     int ret;
- 
-     if (!s->connected) {
--        return;
-+        return -1;
-     }
- 
-     if (vhost_dev_is_started(&s->dev) == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
-@@ -253,9 +253,12 @@ static void vhost_user_blk_set_status(VirtIODevice *vdev, uint8_t status)
-             qemu_chr_fe_disconnect(&s->chardev);
-         }
-     } else {
--        vhost_user_blk_stop(vdev);
-+        ret = vhost_user_blk_stop(vdev);
-+        if (ret < 0) {
-+            return ret;
-+        }
-     }
--
-+    return 0;
- }
- 
- static uint64_t vhost_user_blk_get_features(VirtIODevice *vdev,
-@@ -597,7 +600,7 @@ static void vhost_user_blk_class_init(ObjectClass *klass, void *data)
-     vdc->get_config = vhost_user_blk_update_config;
-     vdc->set_config = vhost_user_blk_set_config;
-     vdc->get_features = vhost_user_blk_get_features;
--    vdc->set_status = vhost_user_blk_set_status;
-+    vdc->set_status_ext = vhost_user_blk_set_status;
-     vdc->reset = vhost_user_blk_reset;
-     vdc->get_vhost = vhost_user_blk_get_vhost;
- }
-diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
-index 4c8637045d..43525ba46d 100644
---- a/hw/scsi/vhost-scsi-common.c
-+++ b/hw/scsi/vhost-scsi-common.c
-@@ -101,24 +101,25 @@ err_host_notifiers:
-     return ret;
- }
- 
--void vhost_scsi_common_stop(VHostSCSICommon *vsc)
-+int vhost_scsi_common_stop(VHostSCSICommon *vsc)
- {
-     VirtIODevice *vdev = VIRTIO_DEVICE(vsc);
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
-     int ret = 0;
- 
--    vhost_dev_stop(&vsc->dev, vdev, true);
-+    ret = vhost_dev_stop(&vsc->dev, vdev, true);
- 
-     if (k->set_guest_notifiers) {
--        ret = k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
--        if (ret < 0) {
--                error_report("vhost guest notifier cleanup failed: %d", ret);
-+        int r = k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
-+        if (r < 0) {
-+            error_report("vhost guest notifier cleanup failed: %d", ret);
-+            return r;
-         }
-     }
--    assert(ret >= 0);
- 
-     vhost_dev_disable_notifiers(&vsc->dev, vdev);
-+    return ret;
- }
- 
- uint64_t vhost_scsi_common_get_features(VirtIODevice *vdev, uint64_t features,
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index adb41b9816..8e7efc38f2 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -52,19 +52,19 @@ static int vhost_user_scsi_start(VHostUserSCSI *s, Error **errp)
-     return ret;
- }
- 
--static void vhost_user_scsi_stop(VHostUserSCSI *s)
-+static int vhost_user_scsi_stop(VHostUserSCSI *s)
- {
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
- 
-     if (!s->started_vu) {
--        return;
-+        return 0;
-     }
-     s->started_vu = false;
- 
--    vhost_scsi_common_stop(vsc);
-+    return vhost_scsi_common_stop(vsc);
- }
- 
--static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserSCSI *s = (VHostUserSCSI *)vdev;
-     DeviceState *dev = DEVICE(vdev);
-@@ -75,11 +75,11 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-     int ret;
- 
-     if (!s->connected) {
--        return;
-+        return -1;
-     }
- 
-     if (vhost_dev_is_started(&vsc->dev) == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
-@@ -91,8 +91,12 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-             qemu_chr_fe_disconnect(&vs->conf.chardev);
-         }
-     } else {
--        vhost_user_scsi_stop(s);
-+        ret = vhost_user_scsi_stop(s);
-+        if (ret) {
-+            return ret;
-+        }
-     }
-+    return 0;
- }
- 
- static void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-@@ -399,7 +403,7 @@ static void vhost_user_scsi_class_init(ObjectClass *klass, void *data)
-     vdc->unrealize = vhost_user_scsi_unrealize;
-     vdc->get_features = vhost_scsi_common_get_features;
-     vdc->set_config = vhost_scsi_common_set_config;
--    vdc->set_status = vhost_user_scsi_set_status;
-+    vdc->set_status_ext = vhost_user_scsi_set_status;
-     fwc->get_dev_path = vhost_scsi_common_get_fw_dev_path;
-     vdc->reset = vhost_user_scsi_reset;
-     vdc->get_vhost = vhost_user_scsi_get_vhost;
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 5e8d4cab53..fff7cdb35d 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2221,12 +2221,12 @@ int virtio_set_status(VirtIODevice *vdev, uint8_t val)
- {
-     VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
-     trace_virtio_set_status(vdev, val);
-+    int ret = 0;
- 
-     if (virtio_vdev_has_feature(vdev, VIRTIO_F_VERSION_1)) {
-         if (!(vdev->status & VIRTIO_CONFIG_S_FEATURES_OK) &&
-             val & VIRTIO_CONFIG_S_FEATURES_OK) {
--            int ret = virtio_validate_features(vdev);
--
-+            ret = virtio_validate_features(vdev);
-             if (ret) {
-                 return ret;
-             }
-@@ -2238,12 +2238,18 @@ int virtio_set_status(VirtIODevice *vdev, uint8_t val)
-         virtio_set_started(vdev, val & VIRTIO_CONFIG_S_DRIVER_OK);
-     }
- 
--    if (k->set_status) {
-+    if (k->set_status_ext) {
-+        ret = k->set_status_ext(vdev, val);
-+        if (ret) {
-+            qemu_log("set %s status to %d failed, old status: %d\n",
-+                     vdev->name, val, vdev->status);
-+        }
-+    } else if (k->set_status) {
-         k->set_status(vdev, val);
-     }
-     vdev->status = val;
- 
--    return 0;
-+    return ret;
- }
- 
- static enum virtio_device_endian virtio_default_endian(void)
-@@ -3436,7 +3442,11 @@ static int virtio_vmstate_change(void *opaque, bool running, RunState state)
-     }
- 
-     if (!backend_run) {
--        virtio_set_status(vdev, vdev->status);
-+        // the return value was used for stopping VM during migration
-+        int ret = virtio_set_status(vdev, vdev->status);
-+        if (ret) {
-+            return ret;
-+        }
-     }
-     return 0;
- }
-diff --git a/include/hw/virtio/vhost-scsi-common.h b/include/hw/virtio/vhost-scsi-common.h
-index c5d2c09455..d54d9c916f 100644
---- a/include/hw/virtio/vhost-scsi-common.h
-+++ b/include/hw/virtio/vhost-scsi-common.h
-@@ -40,7 +40,7 @@ struct VHostSCSICommon {
- };
- 
- int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp);
--void vhost_scsi_common_stop(VHostSCSICommon *vsc);
-+int vhost_scsi_common_stop(VHostSCSICommon *vsc);
- char *vhost_scsi_common_get_fw_dev_path(FWPathProvider *p, BusState *bus,
-                                         DeviceState *dev);
- void vhost_scsi_common_set_config(VirtIODevice *vdev, const uint8_t *config);
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 6386910280..c99d56f519 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -187,6 +187,7 @@ struct VirtioDeviceClass {
-     void (*set_config)(VirtIODevice *vdev, const uint8_t *config);
-     void (*reset)(VirtIODevice *vdev);
-     void (*set_status)(VirtIODevice *vdev, uint8_t val);
-+    int (*set_status_ext)(VirtIODevice *vdev, uint8_t val);
-     /* Device must validate queue_index.  */
-     void (*queue_reset)(VirtIODevice *vdev, uint32_t queue_index);
-     /* Device must validate queue_index.  */
--- 
-2.48.1
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
