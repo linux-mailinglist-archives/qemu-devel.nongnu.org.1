@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE88A6285C
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:46:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A371EA62864
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:47:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttMBH-0002Tt-Be; Sat, 15 Mar 2025 03:43:39 -0400
+	id 1ttMBK-0002eR-Dg; Sat, 15 Mar 2025 03:43:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMBC-0002TB-Mf; Sat, 15 Mar 2025 03:43:34 -0400
+ id 1ttMBF-0002YR-9E; Sat, 15 Mar 2025 03:43:37 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMBB-0004pS-2I; Sat, 15 Mar 2025 03:43:34 -0400
+ id 1ttMBD-0004qI-6Q; Sat, 15 Mar 2025 03:43:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AA6B4FFAFF;
+ by isrv.corpit.ru (Postfix) with ESMTP id AE2A9FFB00;
  Sat, 15 Mar 2025 10:41:55 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 993771CACC9;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9CF141CACCA;
  Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 7255B559EA; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
+ id 74B75559EC; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 11/42] target/arm: Report correct syndrome for
- UNDEFINED S1E2 AT ops at EL3
-Date: Sat, 15 Mar 2025 10:42:13 +0300
-Message-Id: <20250315074249.634718-11-mjt@tls.msk.ru>
+Subject: [Stable-8.2.10 12/42] target/arm: Report correct syndrome for
+ UNDEFINED LOR sysregs when NS=0
+Date: Sat, 15 Mar 2025 10:42:14 +0300
+Message-Id: <20250315074249.634718-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 References: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,31 +65,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-The pseudocode for AT S1E2R and AT S1E2W says that they should be
-UNDEFINED if executed at EL3 when EL2 is not enabled. We were
-incorrectly using CP_ACCESS_TRAP and reporting the wrong exception
-syndrome as a result. Use CP_ACCESS_TRAP_UNCATEGORIZED.
+The pseudocode for the accessors for the LOR sysregs says they
+are UNDEFINED if SCR_EL3.NS is 0. We were reporting the wrong
+syndrome value here; use CP_ACCESS_TRAP_UNCATEGORIZED.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 2a47df953202e1 ("target-arm: Wire up AArch64 EL2 and EL3 address translation ops")
+Fixes: 2d7137c10faf ("target/arm: Implement the ARMv8.1-LOR extension")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250130182309.717346-4-peter.maydell@linaro.org
-(cherry picked from commit ccda792945d650bce4609c8dbce8814a220df1bb)
+Message-id: 20250130182309.717346-5-peter.maydell@linaro.org
+(cherry picked from commit 707d478ed8f2da6f2327e5af780890c1fd9c371a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 5d7ab46c09..fa56cb5f92 100644
+index fa56cb5f92..aec02c14ed 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -3690,7 +3690,7 @@ static CPAccessResult at_s1e2_access(CPUARMState *env, const ARMCPRegInfo *ri,
+@@ -7300,8 +7300,8 @@ static CPAccessResult access_lor_other(CPUARMState *env,
+                                        const ARMCPRegInfo *ri, bool isread)
  {
-     if (arm_current_el(env) == 3 &&
-         !(env->cp15.scr_el3 & (SCR_NS | SCR_EEL2))) {
+     if (arm_is_secure_below_el3(env)) {
+-        /* Access denied in secure mode.  */
 -        return CP_ACCESS_TRAP;
++        /* UNDEF if SCR_EL3.NS == 0 */
 +        return CP_ACCESS_TRAP_UNCATEGORIZED;
      }
-     return at_e012_access(env, ri, isread);
+     return access_lor_ns(env, ri, isread);
  }
 -- 
 2.39.5
