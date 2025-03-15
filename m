@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D62A629C2
+	by mail.lfdr.de (Postfix) with ESMTPS id 98039A629C3
 	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:16:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttNbf-0002c2-Ut; Sat, 15 Mar 2025 05:15:00 -0400
+	id 1ttNbl-0002es-FS; Sat, 15 Mar 2025 05:15:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNbU-0002b2-Bm; Sat, 15 Mar 2025 05:14:49 -0400
+ id 1ttNbU-0002b1-Bl; Sat, 15 Mar 2025 05:14:49 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNbR-0007j8-J5; Sat, 15 Mar 2025 05:14:47 -0400
+ id 1ttNbR-0007j0-IC; Sat, 15 Mar 2025 05:14:47 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9E0DEFFBB1;
+ by isrv.corpit.ru (Postfix) with ESMTP id A28B3FFBB2;
  Sat, 15 Mar 2025 12:13:45 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A3D541CAD4A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id AAF1F1CAD4B;
  Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 92D3255A2A; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
+ id 9520B55A2C; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 00/27] Patch Round-up for stable 7.2.17,
- freeze on 2025-03-24
-Date: Sat, 15 Mar 2025 12:14:11 +0300
-Message-Id: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Khem Raj <raj.khem@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 01/27] linux-user: Do not define struct sched_attr if
+ libc headers do
+Date: Sat, 15 Mar 2025 12:14:12 +0300
+Message-Id: <20250315091439.657371-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
+References: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,79 +60,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.17:
+From: Khem Raj <raj.khem@gmail.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+glibc 2.41+ has added [1] definitions for sched_setattr and
+sched_getattr functions and struct sched_attr.  Therefore, it needs
+to be checked for here as well before defining sched_attr, to avoid
+a compilation failure.
 
-Patch freeze is 2025-03-24, and the release is planned for 2025-03-26:
+Define sched_attr conditionally only when SCHED_ATTR_SIZE_VER0 is
+not defined.
 
-  https://wiki.qemu.org/Planning/7.2
+[1] https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=21571ca0d70302909cf72707b2a7736cf12190a0;hp=298bc488fdc047da37482f4003023cb9adef78f8
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2799
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 27a8d899c7a100fd5aa040a8b993bb257687c393)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 236076e647..737065c28c 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -352,7 +352,8 @@ _syscall3(int, sys_sched_getaffinity, pid_t, pid, unsigned int, len,
+ #define __NR_sys_sched_setaffinity __NR_sched_setaffinity
+ _syscall3(int, sys_sched_setaffinity, pid_t, pid, unsigned int, len,
+           unsigned long *, user_mask_ptr);
+-/* sched_attr is not defined in glibc */
++/* sched_attr is not defined in glibc < 2.41 */
++#ifndef SCHED_ATTR_SIZE_VER0
+ struct sched_attr {
+     uint32_t size;
+     uint32_t sched_policy;
+@@ -365,6 +366,7 @@ struct sched_attr {
+     uint32_t sched_util_min;
+     uint32_t sched_util_max;
+ };
++#endif
+ #define __NR_sys_sched_getattr __NR_sched_getattr
+ _syscall4(int, sys_sched_getattr, pid_t, pid, struct sched_attr *, attr,
+           unsigned int, size, unsigned int, flags);
+-- 
+2.39.5
 
-Thanks!
-
-/mjt
-
---------------------------------------
-01 27a8d899c7a1 Khem Raj:
-   linux-user: Do not define struct sched_attr if libc headers do
-02 4dafba778aa3 Volker Rümelin:
-   ui/sdl2: reenable the SDL2 Windows keyboard hook procedure
-03 937df81af675 Peter Maydell:
-   hw/net/smc91c111: Ignore attempt to pop from empty RX fifo
-04 7a74e468089a Mikael Szreder:
-   target/sparc: Fix gdbstub incorrectly handling registers f32-f62
-05 b819fd699424 Peter Maydell:
-   target/arm: Report correct syndrome for UNDEFINED CNTPS_*_EL1 from EL2 
-   and NS EL1
-06 ccda792945d6 Peter Maydell:
-   target/arm: Report correct syndrome for UNDEFINED S1E2 AT ops at EL3
-07 707d478ed8f2 Peter Maydell:
-   target/arm: Report correct syndrome for UNDEFINED LOR sysregs when NS=0
-08 4cf494865161 Peter Maydell:
-   target/arm: Make CP_ACCESS_TRAPs to AArch32 EL3 be Monitor traps
-09 d04c6c3c000a Peter Maydell:
-   hw/intc/arm_gicv3_cpuif: Don't downgrade monitor traps for AArch32 EL3
-10 464ce71a963b Bernhard Beschow:
-   Kconfig: Extract CONFIG_USB_CHIPIDEA from CONFIG_IMX
-11 63dc0b864739 Sairaj Kodilkar:
-   amd_iommu: Use correct DTE field for interrupt passthrough
-12 6291a28645a0 Philippe Mathieu-Daudé:
-   hw/i386/amd_iommu: Explicit use of AMDVI_BASE_ADDR in amdvi_init
-13 3684717b7407 Sairaj Kodilkar:
-   amd_iommu: Use correct bitmask to set capability BAR
-14 83cb18ac4500 Stefano Garzarella:
-   cryptodev/vhost: allocate CryptoDevBackendVhost using g_mem0()
-15 50e975414906 Konstantin Shkolnyy:
-   vdpa: Fix endian bugs in shadow virtqueue
-16 ffd455963f23 Max Chou:
-   target/riscv: rvv: Fix unexpected behavior of vector reduction 
-   instructions when vl is 0
-17 3fba76e61caa Daniel Henrique Barboza:
-   target/riscv/debug.c: use wp size = 4 for 32-bit CPUs
-18 c86edc547692 Daniel Henrique Barboza:
-   target/riscv: throw debug exception before page fault
-19 3521f9cadc29 Rodrigo Dias Correa:
-   goldfish_rtc: Fix tick_offset migration
-20 2ad638a3d160 Denis Rastyogin:
-   block/qed: fix use-after-free by nullifying timer pointer after free
-21 3b2e22c0bbe2 Patrick Venture:
-   hw/gpio: npcm7xx: fixup out-of-bounds access
-22 29c041ca7f8d Nicholas Piggin:
-   ppc/pnv/occ: Fix common area sensor offsets
-23 2fa3a5b94696 Peter Maydell:
-   hw/net/smc91c111: Sanitize packet numbers
-24 aad6f264add3 Peter Maydell:
-   hw/net/smc91c111: Sanitize packet length on tx
-25 700d3d6dd41d Peter Maydell:
-   hw/net/smc91c111: Don't allow data register access to overrun buffer
-26 b75c5f987916 Kevin Wolf:
-   block: Zero block driver state before reopening
-27 48170c2d865a Greg Kurz:
-   docs: Rename default-configs to configs
 
