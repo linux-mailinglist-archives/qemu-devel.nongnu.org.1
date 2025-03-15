@@ -2,106 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95E0A626FD
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C9BA62762
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:30:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKht-0007ql-U2; Sat, 15 Mar 2025 02:09:13 -0400
+	id 1ttL0a-0006EZ-P5; Sat, 15 Mar 2025 02:28:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1ttKhr-0007qb-Dr
- for qemu-devel@nongnu.org; Sat, 15 Mar 2025 02:09:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1ttL05-0005ZR-UT
+ for qemu-devel@nongnu.org; Sat, 15 Mar 2025 02:28:07 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1ttKhp-00027B-9i
- for qemu-devel@nongnu.org; Sat, 15 Mar 2025 02:09:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742018946;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=58WnGVzNfvl7rhxPJmCWerojBGye0IKaLgzTOxHLN0g=;
- b=fWLV7XGKjcld3a1DEAZDilpjb+umT3LVf3aJ1G6Fgt38ktLw2vSTYh2xz2UC/A94bV5HER
- vfRTCxqOsHtA6SreUb45L6OQ3yGiuQXKUEK9qOCpP2raZ4jMJgBoOCqONp9813XlBE/zdj
- iSjO8IgIhvjcoDBGHWB5bmWhGTCMWMk=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-ud11UAlqPyeHVhhPNTXwXA-1; Sat, 15 Mar 2025 02:09:04 -0400
-X-MC-Unique: ud11UAlqPyeHVhhPNTXwXA-1
-X-Mimecast-MFC-AGG-ID: ud11UAlqPyeHVhhPNTXwXA_1742018943
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ac316d639d2so231463466b.3
- for <qemu-devel@nongnu.org>; Fri, 14 Mar 2025 23:09:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742018943; x=1742623743;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=58WnGVzNfvl7rhxPJmCWerojBGye0IKaLgzTOxHLN0g=;
- b=pyke7iWKfzfIvQ378lr/r8bq5qbI0uF81o15ZytT9U/CT3JY0G9zbgzhO7lXBOdwu6
- j2cr7CXN14EemYmLXwANGZt4l3Y/qEwgMNkj1/diq9uur+tbJ7kbFmEygg1BEPD+yXLt
- 37YUkifN/Fj1XJ6fyIGTyyYORWpfvia555Xkzdf6L0lXywVMGSJdg1ZQYcXGCyNNbkQg
- IiunOfFWR71QL58kSevHvZnHFZaqKGdpPQYIOmqKomvASSwD+OZtaGFW6HpoMkqv7yqC
- it6T66WfnboUgdkzVmKPpfS0JpTY4VVeQudF3xk9krYyFZF+7ci5LFY8Grf42MIRZ1OQ
- rOsg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUWxWWcwsMqk54Gvltq7c28Ixu+WKWtl1OTBWmmf4UqQL3Glnnv2fwYT050b9ztGZ0FJCgC2UTUuJbj@nongnu.org
-X-Gm-Message-State: AOJu0Yw5eE5UVAisEq4+iqfavktVAdIK22F/uCE3u0yN5tmqVzlFVuV/
- y8aSgtDhdWUldvVXFnXlVOlVA7DlofhwPpbqEsUoHSMv31J9wwME4XS9wSJeIfsczYRKTG6gE0j
- w4O2VkkN5ZvEJb4mleCefNdd4b5B7EjOUzpIrefn9ktyJv9EhhKk6CUMt8/jUUo1cTAWrj7stV9
- 9D/5JQRhkVJ+/qjS3YNj8+dX3YTiw=
-X-Gm-Gg: ASbGncsmmWuBzP/Hz8Q6aS9fVE2oNpoV9xz+5G9YrhJmmb7z+w9XnONkz1f4sdDZJ2b
- FC5ddgUYpVRq1u88vNIIQp6H1tsQafXBF2VJBEO7GjQnFr0KlTwjkZPN3wh+/nIWZQ7FSAlQW
-X-Received: by 2002:a17:907:9687:b0:ac2:b086:88d5 with SMTP id
- a640c23a62f3a-ac3301d26a2mr549496866b.18.1742018943303; 
- Fri, 14 Mar 2025 23:09:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGKSClLNw35zzaS68iuUtVIlfSBKwtHltn4zMG+5CdrLvxd3eB2spXDrCnTr5MEMM+M1GHfPBYZz5A7kETVagQ=
-X-Received: by 2002:a17:907:9687:b0:ac2:b086:88d5 with SMTP id
- a640c23a62f3a-ac3301d26a2mr549495866b.18.1742018943010; Fri, 14 Mar 2025
- 23:09:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1ttL03-0004d3-Kl
+ for qemu-devel@nongnu.org; Sat, 15 Mar 2025 02:28:01 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 660DBFF9CC;
+ Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
+Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3903E1CAC35;
+ Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
+ id 2AD47558AF; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 00/51] Patch Round-up for stable 9.2.3,
+ freeze on 2025-03-24
+Date: Sat, 15 Mar 2025 09:17:06 +0300
+Message-Id: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <sxavsa2i4drnei4kmy6pd4uekk3xaa43njd47jtogar7ui7qm7@n73chaex5ms2>
- <Z9LeILiEU5GfEHrl@8bytes.org>
- <CAK3XEhNS10gKLh6SKeSc9cKi+_qwu3+Yu5rAkni5h7tYS59D5g@mail.gmail.com>
- <aet7vo4qwexxrw5khiwvhelvhwya3w7wuk72w77jlq7idn3me5@2ojjjdw43u7q>
- <85a9745d-e3b3-4e0e-90ad-066e6dcc25c1@amazon.com>
- <ahtt7arm3pi7rlv6x4qepktrczgnsgaukftyee75ofn5duviho@v4wp6v7wlxbg>
- <Z9RIaPTxn7tTX9c9@8bytes.org>
-In-Reply-To: <Z9RIaPTxn7tTX9c9@8bytes.org>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Sat, 15 Mar 2025 11:38:51 +0530
-X-Gm-Features: AQ5f1JpLSa0kh11zrqcUgFWt0i18Zwcjt36KN7w-KA6ebjwQltXy_U6TSeE1moQ
-Message-ID: <CAK3XEhPt22mcXEvXdy8C0Wa5kdg2g8RUSmMN6Av7haw3FkqZ7Q@mail.gmail.com>
-Subject: Re: [PATCH v6] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Cc: Gerd Hoffman <kraxel@redhat.com>, Alexander Graf <graf@amazon.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,25 +59,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 14, 2025 at 8:47=E2=80=AFPM J=C3=B6rg R=C3=B6del <joro@8bytes.o=
-rg> wrote:
->
-> On Fri, Mar 14, 2025 at 03:08:43PM +0100, Gerd Hoffman wrote:
-> > If your input firmware image already is an IGVM (say coconut), what is
-> > supposed to happen?
->
-> The COCONUT igvmbuilder has the ability to take another IGVM file as
-> input and add its directive and contents to the output file. This is
-> needed for the Hyper-V firmware, which is also provided as an IGVM file.
-> I think it can also make changes when processing an input IGVM, like
-> changing the VMPL of a VMSA.
->
-> This can be extended to cover more use-cases, e.g. like direct-boot of a
-> linux kernel with initrd and command-line.
+The following patches are queued for QEMU stable v9.2.3:
 
-Have we considered how IGVM will be deployed in the FUKI case? I have
-always assumed that UKI would be the right means for this. For edk2
-for example, we are implementing support in UKI. Hopefully the same
-can apply for IGVM.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.2
 
+Patch freeze is 2025-03-24, and the release is planned for 2025-03-26:
+
+  https://wiki.qemu.org/Planning/9.2
+
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 b819fd699424 Peter Maydell:
+   target/arm: Report correct syndrome for UNDEFINED CNTPS_*_EL1 from EL2 
+   and NS EL1
+02 1960d9701ef7 Peter Maydell:
+   target/arm: Report correct syndrome for UNDEFINED AT ops with wrong NSE, 
+   NS
+03 ccda792945d6 Peter Maydell:
+   target/arm: Report correct syndrome for UNDEFINED S1E2 AT ops at EL3
+04 707d478ed8f2 Peter Maydell:
+   target/arm: Report correct syndrome for UNDEFINED LOR sysregs when NS=0
+05 4cf494865161 Peter Maydell:
+   target/arm: Make CP_ACCESS_TRAPs to AArch32 EL3 be Monitor traps
+06 d04c6c3c000a Peter Maydell:
+   hw/intc/arm_gicv3_cpuif: Don't downgrade monitor traps for AArch32 EL3
+07 4d436fb05c2a Peter Maydell:
+   target/arm: Honour SDCR.TDCC and SCR.TERR in AArch32 EL3 non-Monitor modes
+08 2b95a2d01b04 Peter Maydell:
+   target/arm: Correct errors in WFI/WFE trapping
+09 464ce71a963b Bernhard Beschow:
+   Kconfig: Extract CONFIG_USB_CHIPIDEA from CONFIG_IMX
+10 bc82af6b0dcb Akihiko Odaki:
+   hw/net: Fix NULL dereference with software RSS
+11 de538288e4da Thomas Huth:
+   hw/i386/pc: Fix crash that occurs when introspecting TYPE_PC_MACHINE 
+   machines
+12 38ef383073b8 Thomas Huth:
+   hw/i386/microvm: Fix crash that occurs when introspecting the microvm 
+   machine
+13 63dc0b864739 Sairaj Kodilkar:
+   amd_iommu: Use correct DTE field for interrupt passthrough
+14 3684717b7407 Sairaj Kodilkar:
+   amd_iommu: Use correct bitmask to set capability BAR
+15 83cb18ac4500 Stefano Garzarella:
+   cryptodev/vhost: allocate CryptoDevBackendVhost using g_mem0()
+16 50e975414906 Konstantin Shkolnyy:
+   vdpa: Fix endian bugs in shadow virtqueue
+17 131fe64e63c8 Alexander Graf:
+   hw/virtio/virtio-nsm: Respond with correct length
+18 e87b6efb11be Matias Ezequiel Vara Larsen:
+   vhost-user-snd: correct the calculation of config_size
+19 7bd4eaa847fc Bibo Mao:
+   target/loongarch/gdbstub: Fix gdbstub incorrectly handling some registers
+20 6debfb2cb179 Paolo Bonzini:
+   physmem: replace assertion with error
+21 fd207677a830 Joelle van Dyne:
+   target/arm/hvf: Disable SME feature
+22 12c365315ab2 Joelle van Dyne:
+   target/arm/hvf: sign extend the data for a load operation when SSE=1
+23 ffd455963f23 Max Chou:
+   target/riscv: rvv: Fix unexpected behavior of vector reduction 
+   instructions when vl is 0
+24 bf3adf93f167 Max Chou:
+   target/riscv: rvv: Fix incorrect vlen comparison in prop_vlen_set
+25 3fba76e61caa Daniel Henrique Barboza:
+   target/riscv/debug.c: use wp size = 4 for 32-bit CPUs
+26 c86edc547692 Daniel Henrique Barboza:
+   target/riscv: throw debug exception before page fault
+27 3521f9cadc29 Rodrigo Dias Correa:
+   goldfish_rtc: Fix tick_offset migration
+28 2ad638a3d160 Denis Rastyogin:
+   block/qed: fix use-after-free by nullifying timer pointer after free
+29 87c8b4fc3c1c Markus Armbruster:
+   docs/about/build-platforms: Correct minimum supported Python version
+30 3b2e22c0bbe2 Patrick Venture:
+   hw/gpio: npcm7xx: fixup out-of-bounds access
+31 db6c2192839e Peter Maydell:
+   target/arm: Apply correct timer offset when calculating deadlines
+32 5709038aa8b4 Peter Maydell:
+   target/arm: Don't apply CNTVOFF_EL2 for EL2_VIRT timer
+33 bdd641541fbe Peter Maydell:
+   target/arm: Make CNTPS_* UNDEF from Secure EL1 when Secure EL2 is enabled
+34 4aecd4b442d7 Peter Maydell:
+   target/arm: Always apply CNTVOFF_EL2 for CNTV_TVAL_EL02 accesses
+35 02c648a0a103 Peter Maydell:
+   target/arm: Refactor handling of timer offset for direct register accesses
+36 f9f99d7ca522 Alex Bennée:
+   target/arm: Implement SEL2 physical and virtual timers
+37 5dcaea8bcd82 Alex Bennée:
+   hw/arm: enable secure EL2 timers for virt machine
+38 9a9d9e82093e Alex Bennée:
+   hw/arm: enable secure EL2 timers for sbsa machine
+39 cde3247651dc Peter Maydell:
+   target/arm: Correct LDRD atomicity and fault behaviour
+40 ee786ca11504 Peter Maydell:
+   target/arm: Correct STRD atomicity
+41 02ae315467ce Peter Maydell:
+   util/qemu-timer.c: Don't warp timer from timerlist_rearm()
+42 db0d4017f9b9 Eugenio Pérez:
+   net: parameterize the removing client from nc list
+43 e7891c575fb2 Eugenio Pérez:
+   net: move backend cleanup to NIC cleanup
+44 68adcc784bad Stefano Stabellini:
+   xen: No need to flush the mapcache for grants
+45 29c041ca7f8d Nicholas Piggin:
+   ppc/pnv/occ: Fix common area sensor offsets
+46 2fa3a5b94696 Peter Maydell:
+   hw/net/smc91c111: Sanitize packet numbers
+47 aad6f264add3 Peter Maydell:
+   hw/net/smc91c111: Sanitize packet length on tx
+48 700d3d6dd41d Peter Maydell:
+   hw/net/smc91c111: Don't allow data register access to overrun buffer
+49 3a11b653a63f Philippe Mathieu-Daudé:
+   hw/xen/hvm: Fix Aarch64 typo
+50 b75c5f987916 Kevin Wolf:
+   block: Zero block driver state before reopening
+51 48170c2d865a Greg Kurz:
+   docs: Rename default-configs to configs
 
