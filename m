@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28528A629E1
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3525AA629F0
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:22:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttNf1-0005s5-PL; Sat, 15 Mar 2025 05:18:31 -0400
+	id 1ttNfc-0007vr-A8; Sat, 15 Mar 2025 05:19:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNcp-0003ZH-ES; Sat, 15 Mar 2025 05:16:15 -0400
+ id 1ttNd8-000458-3K; Sat, 15 Mar 2025 05:16:34 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNcm-00085A-6m; Sat, 15 Mar 2025 05:16:10 -0400
+ id 1ttNd6-00085G-Jw; Sat, 15 Mar 2025 05:16:29 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F26A5FFBC5;
- Sat, 15 Mar 2025 12:13:45 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0027DFFBC6;
+ Sat, 15 Mar 2025 12:13:46 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 02E2C1CAD5E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 06E6E1CAD5F;
  Sat, 15 Mar 2025 12:14:40 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id C31F655A52; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
+ id C595155A54; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Denis Rastyogin <gerben@altlinux.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 20/27] block/qed: fix use-after-free by nullifying
- timer pointer after free
-Date: Sat, 15 Mar 2025 12:14:31 +0300
-Message-Id: <20250315091439.657371-20-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Patrick Venture <venture@google.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 21/27] hw/gpio: npcm7xx: fixup out-of-bounds access
+Date: Sat, 15 Mar 2025 12:14:32 +0300
+Message-Id: <20250315091439.657371-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 References: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,37 +61,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Denis Rastyogin <gerben@altlinux.org>
+From: Patrick Venture <venture@google.com>
 
-This error was discovered by fuzzing qemu-img.
+The reg isn't validated to be a possible register before
+it's dereferenced for one case.  The mmio space registered
+for the gpio device is 4KiB but there aren't that many
+registers in the struct.
 
-In the QED block driver, the need_check_timer timer is freed in
-bdrv_qed_detach_aio_context, but the pointer to the timer is not
-set to NULL. This can lead to a use-after-free scenario
-in bdrv_qed_drain_begin().
-
-The need_check_timer pointer is set to NULL after freeing the timer.
-Which helps catch this condition when checking in bdrv_qed_drain_begin().
-
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2852
-Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
-Message-ID: <20250304083927.37681-1-gerben@altlinux.org>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit 2ad638a3d160923ef3dbf87c73944e6e44bdc724)
+Cc: qemu-stable@nongnu.org
+Fixes: 526dbbe0874 ("hw/gpio: Add GPIO model for Nuvoton NPCM7xx")
+Signed-off-by: Patrick Venture <venture@google.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20250226024603.493148-1-venture@google.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 3b2e22c0bbe2ce07123d93961d52f17644562cd7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/qed.c b/block/qed.c
-index 2f36ad342c..1ebb00fe04 100644
---- a/block/qed.c
-+++ b/block/qed.c
-@@ -340,6 +340,7 @@ static void bdrv_qed_detach_aio_context(BlockDriverState *bs)
+diff --git a/hw/gpio/npcm7xx_gpio.c b/hw/gpio/npcm7xx_gpio.c
+index 3376901ab1..c75f9e073d 100644
+--- a/hw/gpio/npcm7xx_gpio.c
++++ b/hw/gpio/npcm7xx_gpio.c
+@@ -220,8 +220,6 @@ static void npcm7xx_gpio_regs_write(void *opaque, hwaddr addr, uint64_t v,
+         return;
+     }
  
-     qed_cancel_need_check_timer(s);
-     timer_free(s->need_check_timer);
-+    s->need_check_timer = NULL;
- }
- 
- static void bdrv_qed_attach_aio_context(BlockDriverState *bs,
+-    diff = s->regs[reg] ^ value;
+-
+     switch (reg) {
+     case NPCM7XX_GPIO_TLOCK1:
+     case NPCM7XX_GPIO_TLOCK2:
+@@ -242,6 +240,7 @@ static void npcm7xx_gpio_regs_write(void *opaque, hwaddr addr, uint64_t v,
+     case NPCM7XX_GPIO_PU:
+     case NPCM7XX_GPIO_PD:
+     case NPCM7XX_GPIO_IEM:
++        diff = s->regs[reg] ^ value;
+         s->regs[reg] = value;
+         npcm7xx_gpio_update_pins(s, diff);
+         break;
 -- 
 2.39.5
 
