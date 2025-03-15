@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62C6A62844
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:45:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E07C3A6285D
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:46:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttMBp-0003ai-32; Sat, 15 Mar 2025 03:44:13 -0400
+	id 1ttMBu-0003ko-Jp; Sat, 15 Mar 2025 03:44:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMBh-0003Sp-Hj; Sat, 15 Mar 2025 03:44:07 -0400
+ id 1ttMBk-0003VC-0X; Sat, 15 Mar 2025 03:44:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMBf-0004yW-TT; Sat, 15 Mar 2025 03:44:05 -0400
+ id 1ttMBi-0004zl-7A; Sat, 15 Mar 2025 03:44:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C3C32FFB05;
+ by isrv.corpit.ru (Postfix) with ESMTP id C798BFFB06;
  Sat, 15 Mar 2025 10:41:55 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id B27C81CACCF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B66351CACD0;
  Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 80B8A559F6; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
+ id 830D3559F8; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
  Vasant Hegde <vasant.hegde@amd.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 17/42] amd_iommu: Use correct DTE field for interrupt
- passthrough
-Date: Sat, 15 Mar 2025 10:42:19 +0300
-Message-Id: <20250315074249.634718-17-mjt@tls.msk.ru>
+Subject: [Stable-8.2.10 18/42] amd_iommu: Use correct bitmask to set
+ capability BAR
+Date: Sat, 15 Mar 2025 10:42:20 +0300
+Message-Id: <20250315074249.634718-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 References: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
@@ -63,42 +63,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sairaj Kodilkar <sarunkod@amd.com>
 
-Interrupt passthrough is determine by the bits 191,190,187-184.
-These bits are part of the 3rd quad word (i.e. index 2) in DTE. Hence
-replace dte[3] by dte[2].
+AMD IOMMU provides the base address of control registers through
+IVRS table and PCI capability. Since this base address is of 64 bit,
+use 32 bits mask (instead of 16 bits) to set BAR low and high.
 
-Fixes: b44159fe0 ("x86_iommu/amd: Add interrupt remap support when VAPIC is not enabled")
+Fixes: d29a09ca68 ("hw/i386: Introduce AMD IOMMU")
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250207045354.27329-2-sarunkod@amd.com>
+Message-Id: <20250207045354.27329-3-sarunkod@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 63dc0b8647391b372f3bb38ff1066f6b4a5e6ea1)
+(cherry picked from commit 3684717b7407cc395dc9bf522e193dbc85293dee)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 12742b1433..4697864123 100644
+index 4697864123..ac612813be 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -1279,15 +1279,15 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
-         ret = -AMDVI_IR_ERR;
-         break;
-     case AMDVI_IOAPIC_INT_TYPE_NMI:
--        pass = dte[3] & AMDVI_DEV_NMI_PASS_MASK;
-+        pass = dte[2] & AMDVI_DEV_NMI_PASS_MASK;
-         trace_amdvi_ir_delivery_mode("nmi");
-         break;
-     case AMDVI_IOAPIC_INT_TYPE_INIT:
--        pass = dte[3] & AMDVI_DEV_INT_PASS_MASK;
-+        pass = dte[2] & AMDVI_DEV_INT_PASS_MASK;
-         trace_amdvi_ir_delivery_mode("init");
-         break;
-     case AMDVI_IOAPIC_INT_TYPE_EINT:
--        pass = dte[3] & AMDVI_DEV_EINT_PASS_MASK;
-+        pass = dte[2] & AMDVI_DEV_EINT_PASS_MASK;
-         trace_amdvi_ir_delivery_mode("eint");
-         break;
-     default:
+@@ -1543,9 +1543,9 @@ static void amdvi_pci_realize(PCIDevice *pdev, Error **errp)
+     /* reset AMDVI specific capabilities, all r/o */
+     pci_set_long(pdev->config + s->capab_offset, AMDVI_CAPAB_FEATURES);
+     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_BAR_LOW,
+-                 AMDVI_BASE_ADDR & ~(0xffff0000));
++                 AMDVI_BASE_ADDR & MAKE_64BIT_MASK(14, 18));
+     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_BAR_HIGH,
+-                (AMDVI_BASE_ADDR & ~(0xffff)) >> 16);
++                AMDVI_BASE_ADDR >> 32);
+     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_RANGE,
+                  0xff000000);
+     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_MISC, 0);
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index c5065a3e27..555a7a5162 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -185,7 +185,7 @@
+         AMDVI_CAPAB_FLAG_HTTUNNEL |  AMDVI_CAPAB_EFR_SUP)
+ 
+ /* AMDVI default address */
+-#define AMDVI_BASE_ADDR 0xfed80000
++#define AMDVI_BASE_ADDR 0xfed80000ULL
+ 
+ /* page management constants */
+ #define AMDVI_PAGE_SHIFT 12
 -- 
 2.39.5
 
