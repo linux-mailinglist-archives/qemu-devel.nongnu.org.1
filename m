@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC082A62726
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B113CA62756
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:27:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKsX-0004EE-Cb; Sat, 15 Mar 2025 02:20:14 -0400
+	id 1ttKtI-0005uA-7G; Sat, 15 Mar 2025 02:21:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKrQ-0003JP-Nb; Sat, 15 Mar 2025 02:19:09 -0400
+ id 1ttKrV-0003Kt-99; Sat, 15 Mar 2025 02:19:11 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKrN-0003Hg-AB; Sat, 15 Mar 2025 02:19:03 -0400
+ id 1ttKrR-0003IF-A4; Sat, 15 Mar 2025 02:19:08 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 93CFCFF9D8;
+ by isrv.corpit.ru (Postfix) with ESMTP id 97C38FF9D9;
  Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6B2B31CAC41;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6F40B1CAC42;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 4804F558C7; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 4A43A558C9; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Sergio Lopez <slp@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
+Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
+ Vasant Hegde <vasant.hegde@amd.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 12/51] hw/i386/microvm: Fix crash that occurs when
- introspecting the microvm machine
-Date: Sat, 15 Mar 2025 09:17:18 +0300
-Message-Id: <20250315061801.622606-12-mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 13/51] amd_iommu: Use correct DTE field for interrupt
+ passthrough
+Date: Sat, 15 Mar 2025 09:17:19 +0300
+Message-Id: <20250315061801.622606-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
@@ -61,148 +61,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Sairaj Kodilkar <sarunkod@amd.com>
 
-QEMU currently crashes when you try to inspect the properties of the
-microvm machine:
+Interrupt passthrough is determine by the bits 191,190,187-184.
+These bits are part of the 3rd quad word (i.e. index 2) in DTE. Hence
+replace dte[3] by dte[2].
 
- $ echo '{ "execute": "qmp_capabilities" }
-         { "execute": "qom-list-properties","arguments":
-           { "typename": "microvm-machine"}}' | \
-   ./qemu-system-x86_64 -qmp stdio
- {"QMP": {"version": {"qemu": {"micro": 50, "minor": 2, "major": 9},
-  "package": "v9.2.0-1072-g60af367187-dirty"}, "capabilities": ["oob"]}}
- {"return": {}}
- qemu-system-x86_64: ../qemu/hw/i386/acpi-microvm.c:250:
-  void acpi_setup_microvm(MicrovmMachineState *):
-   Assertion `x86ms->fw_cfg' failed.
- Aborted (core dumped)
-
-This happens because the microvm machine adds a machine_done (and a
-powerdown_req) notifier in their instance_init function - however, the
-instance_init of machines are not only called for machines that are
-realized, but also for machines that are introspected, so in this case
-the listener is added for a microvm machine that is never realized. And
-since there is already a running machine, the listener function is
-triggered immediately, causing a crash since it was not for the right
-machine it was meant for.
-
-Such listener functions must never be installed from an instance_init
-function. Let's do it from microvm_machine_state_init() instead - this
-function is the MachineClass->init() function instead, i.e. guaranteed
-to be only called once in the lifetime of a QEMU process.
-
-Since the microvm_machine_done() and microvm_powerdown_req() were
-defined quite late in the microvm.c file, we have to move them now
-also earlier, so that we can get their function pointers from
-microvm_machine_state_init() without having to introduce a separate
-prototype for those functions earlier.
-
-Reviewed-by: Sergio Lopez <slp@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20250123204708.1560305-1-thuth@redhat.com>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Fixes: b44159fe0 ("x86_iommu/amd: Add interrupt remap support when VAPIC is not enabled")
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Message-Id: <20250207045354.27329-2-sarunkod@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 38ef383073b8ee59d598643160f206a19a46237f)
+(cherry picked from commit 63dc0b8647391b372f3bb38ff1066f6b4a5e6ea1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index 86637afa0f..a024466ad8 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -451,11 +451,44 @@ static HotplugHandler *microvm_get_hotplug_handler(MachineState *machine,
-     return NULL;
- }
- 
-+static void microvm_machine_done(Notifier *notifier, void *data)
-+{
-+    MicrovmMachineState *mms = container_of(notifier, MicrovmMachineState,
-+                                            machine_done);
-+    X86MachineState *x86ms = X86_MACHINE(mms);
-+
-+    acpi_setup_microvm(mms);
-+    dt_setup_microvm(mms);
-+    fw_cfg_add_e820(x86ms->fw_cfg);
-+}
-+
-+static void microvm_powerdown_req(Notifier *notifier, void *data)
-+{
-+    MicrovmMachineState *mms = container_of(notifier, MicrovmMachineState,
-+                                            powerdown_req);
-+    X86MachineState *x86ms = X86_MACHINE(mms);
-+
-+    if (x86ms->acpi_dev) {
-+        Object *obj = OBJECT(x86ms->acpi_dev);
-+        AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_GET_CLASS(obj);
-+        adevc->send_event(ACPI_DEVICE_IF(x86ms->acpi_dev),
-+                          ACPI_POWER_DOWN_STATUS);
-+    }
-+}
-+
- static void microvm_machine_state_init(MachineState *machine)
- {
-     MicrovmMachineState *mms = MICROVM_MACHINE(machine);
-     X86MachineState *x86ms = X86_MACHINE(machine);
- 
-+    /* State */
-+    mms->kernel_cmdline_fixed = false;
-+
-+    mms->machine_done.notify = microvm_machine_done;
-+    qemu_add_machine_init_done_notifier(&mms->machine_done);
-+    mms->powerdown_req.notify = microvm_powerdown_req;
-+    qemu_register_powerdown_notifier(&mms->powerdown_req);
-+
-     microvm_memory_init(mms);
- 
-     x86_cpus_init(x86ms, CPU_VERSION_LATEST);
-@@ -581,31 +614,6 @@ static void microvm_machine_set_auto_kernel_cmdline(Object *obj, bool value,
-     mms->auto_kernel_cmdline = value;
- }
- 
--static void microvm_machine_done(Notifier *notifier, void *data)
--{
--    MicrovmMachineState *mms = container_of(notifier, MicrovmMachineState,
--                                            machine_done);
--    X86MachineState *x86ms = X86_MACHINE(mms);
--
--    acpi_setup_microvm(mms);
--    dt_setup_microvm(mms);
--    fw_cfg_add_e820(x86ms->fw_cfg);
--}
--
--static void microvm_powerdown_req(Notifier *notifier, void *data)
--{
--    MicrovmMachineState *mms = container_of(notifier, MicrovmMachineState,
--                                            powerdown_req);
--    X86MachineState *x86ms = X86_MACHINE(mms);
--
--    if (x86ms->acpi_dev) {
--        Object *obj = OBJECT(x86ms->acpi_dev);
--        AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_GET_CLASS(obj);
--        adevc->send_event(ACPI_DEVICE_IF(x86ms->acpi_dev),
--                          ACPI_POWER_DOWN_STATUS);
--    }
--}
--
- static void microvm_machine_initfn(Object *obj)
- {
-     MicrovmMachineState *mms = MICROVM_MACHINE(obj);
-@@ -617,14 +625,6 @@ static void microvm_machine_initfn(Object *obj)
-     mms->isa_serial = true;
-     mms->option_roms = true;
-     mms->auto_kernel_cmdline = true;
--
--    /* State */
--    mms->kernel_cmdline_fixed = false;
--
--    mms->machine_done.notify = microvm_machine_done;
--    qemu_add_machine_init_done_notifier(&mms->machine_done);
--    mms->powerdown_req.notify = microvm_powerdown_req;
--    qemu_register_powerdown_notifier(&mms->powerdown_req);
- }
- 
- GlobalProperty microvm_properties[] = {
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index af0f4da1f6..9cf5b40200 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1309,15 +1309,15 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
+         ret = -AMDVI_IR_ERR;
+         break;
+     case AMDVI_IOAPIC_INT_TYPE_NMI:
+-        pass = dte[3] & AMDVI_DEV_NMI_PASS_MASK;
++        pass = dte[2] & AMDVI_DEV_NMI_PASS_MASK;
+         trace_amdvi_ir_delivery_mode("nmi");
+         break;
+     case AMDVI_IOAPIC_INT_TYPE_INIT:
+-        pass = dte[3] & AMDVI_DEV_INT_PASS_MASK;
++        pass = dte[2] & AMDVI_DEV_INT_PASS_MASK;
+         trace_amdvi_ir_delivery_mode("init");
+         break;
+     case AMDVI_IOAPIC_INT_TYPE_EINT:
+-        pass = dte[3] & AMDVI_DEV_EINT_PASS_MASK;
++        pass = dte[2] & AMDVI_DEV_EINT_PASS_MASK;
+         trace_amdvi_ir_delivery_mode("eint");
+         break;
+     default:
 -- 
 2.39.5
 
