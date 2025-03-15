@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15577A6271B
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F6BA6271D
 	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:20:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKrB-000330-Q5; Sat, 15 Mar 2025 02:18:49 -0400
+	id 1ttKrE-00033U-Ie; Sat, 15 Mar 2025 02:18:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKqu-0002va-Rn; Sat, 15 Mar 2025 02:18:39 -0400
+ id 1ttKr1-0002ya-DT; Sat, 15 Mar 2025 02:18:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKqr-0003Bb-CQ; Sat, 15 Mar 2025 02:18:31 -0400
+ id 1ttKqu-0003CE-F6; Sat, 15 Mar 2025 02:18:38 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6CCBBFF9CE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 70805FF9CF;
  Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 444B81CAC37;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4806A1CAC38;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 2FCF3558B3; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 3219B558B5; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 02/51] target/arm: Report correct syndrome for
- UNDEFINED AT ops with wrong NSE, NS
-Date: Sat, 15 Mar 2025 09:17:08 +0300
-Message-Id: <20250315061801.622606-2-mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 03/51] target/arm: Report correct syndrome for
+ UNDEFINED S1E2 AT ops at EL3
+Date: Sat, 15 Mar 2025 09:17:09 +0300
+Message-Id: <20250315061801.622606-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
@@ -63,32 +63,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-R_NYXTL says that these AT insns should be UNDEFINED if they
-would operate on an EL lower than EL3 and SCR_EL3.{NSE,NS} is
-set to the Reserved {1, 0}. We were incorrectly reporting
-them with the wrong syndrome; use CP_ACCESS_TRAP_UNCATEGORIZED
-so they are reported as UNDEFINED.
+The pseudocode for AT S1E2R and AT S1E2W says that they should be
+UNDEFINED if executed at EL3 when EL2 is not enabled. We were
+incorrectly using CP_ACCESS_TRAP and reporting the wrong exception
+syndrome as a result. Use CP_ACCESS_TRAP_UNCATEGORIZED.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 1acd00ef1410 ("target/arm/helper: Check SCR_EL3.{NSE, NS} encoding for AT instructions")
+Fixes: 2a47df953202e1 ("target-arm: Wire up AArch64 EL2 and EL3 address translation ops")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250130182309.717346-3-peter.maydell@linaro.org
-(cherry picked from commit 1960d9701ef7ed8d24e98def767bbf05d63e6992)
+Message-id: 20250130182309.717346-4-peter.maydell@linaro.org
+(cherry picked from commit ccda792945d650bce4609c8dbce8814a220df1bb)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 8a0065ef60..32cf6039e3 100644
+index 32cf6039e3..63cdb29510 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -3868,7 +3868,7 @@ static CPAccessResult at_e012_access(CPUARMState *env, const ARMCPRegInfo *ri,
-      * scr_write() ensures that the NSE bit is not set otherwise.
-      */
-     if ((env->cp15.scr_el3 & (SCR_NSE | SCR_NS)) == SCR_NSE) {
+@@ -3878,7 +3878,7 @@ static CPAccessResult at_s1e2_access(CPUARMState *env, const ARMCPRegInfo *ri,
+ {
+     if (arm_current_el(env) == 3 &&
+         !(env->cp15.scr_el3 & (SCR_NS | SCR_EEL2))) {
 -        return CP_ACCESS_TRAP;
 +        return CP_ACCESS_TRAP_UNCATEGORIZED;
      }
-     return CP_ACCESS_OK;
+     return at_e012_access(env, ri, isread);
  }
 -- 
 2.39.5
