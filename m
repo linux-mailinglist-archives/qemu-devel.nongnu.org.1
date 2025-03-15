@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4048A6272D
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:22:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 266F0A6272B
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:22:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKtq-0007hk-B2; Sat, 15 Mar 2025 02:21:34 -0400
+	id 1ttKu0-0000BA-RO; Sat, 15 Mar 2025 02:21:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKrx-0003va-19; Sat, 15 Mar 2025 02:19:39 -0400
+ id 1ttKs0-0003zi-Ll; Sat, 15 Mar 2025 02:19:40 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKru-0003LD-MY; Sat, 15 Mar 2025 02:19:36 -0400
+ id 1ttKrw-0003LT-Ty; Sat, 15 Mar 2025 02:19:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A3503FF9DC;
+ by isrv.corpit.ru (Postfix) with ESMTP id A7431FF9DD;
  Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7AB021CAC45;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7E9BD1CAC46;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 517F1558CF; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 540D7558D1; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>,
- =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
- Lei Yang <leiyang@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 16/51] vdpa: Fix endian bugs in shadow virtqueue
-Date: Sat, 15 Mar 2025 09:17:22 +0300
-Message-Id: <20250315061801.622606-16-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alexander Graf <graf@amazon.com>,
+ Vikrant Garg <vikrant1garg@gmail.com>,
+ Dorjoy Chowdhury <dorjoychy111@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 17/51] hw/virtio/virtio-nsm: Respond with correct length
+Date: Sat, 15 Mar 2025 09:17:23 +0300
+Message-Id: <20250315061801.622606-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
@@ -62,88 +63,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Konstantin Shkolnyy <kshk@linux.ibm.com>
+From: Alexander Graf <graf@amazon.com>
 
-VDPA didn't work on a big-endian machine due to missing/incorrect
-CPU<->LE data format conversions.
+When we return a response packet from NSM, we need to indicate its
+length according to the content of the response. Prior to this patch, we
+returned the length of the source buffer, which may confuse guest code
+that relies on the response size.
 
-Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Message-Id: <20250212164923.1971538-1-kshk@linux.ibm.com>
-Fixes: 10857ec0ad ("vhost: Add VhostShadowVirtqueue")
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
+Fix it by returning the response payload size instead.
+
+Fixes: bb154e3e0cc715 ("device/virtio-nsm: Support for Nitro Secure Module device")
+Reported-by: Vikrant Garg <vikrant1garg@gmail.com>
+Signed-off-by: Alexander Graf <graf@amazon.com>
+Message-Id: <20250213114541.67515-1-graf@amazon.com>
+Reviewed-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Fixes: bb154e3e0cc715 (&quot;device/virtio-nsm: Support for Nitro Secure Module device&quot;)<br>
+Reported-by: Vikrant Garg <vikrant1garg@gmail.com>
+Signed-off-by: Alexander Graf <graf@amazon.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Vikrant Garg <vikrant1garg@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 50e9754149066dc91f58405d3378b589098cb408)
+(cherry picked from commit 131fe64e63c88ec52c45a5946a478c0edeb31b78)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
-index 37aca8b431..4af0d7c669 100644
---- a/hw/virtio/vhost-shadow-virtqueue.c
-+++ b/hw/virtio/vhost-shadow-virtqueue.c
-@@ -165,10 +165,10 @@ static bool vhost_svq_vring_write_descs(VhostShadowVirtqueue *svq, hwaddr *sg,
-         descs[i].len = cpu_to_le32(iovec[n].iov_len);
- 
-         last = i;
--        i = cpu_to_le16(svq->desc_next[i]);
-+        i = svq->desc_next[i];
-     }
- 
--    svq->free_head = le16_to_cpu(svq->desc_next[last]);
-+    svq->free_head = svq->desc_next[last];
-     return true;
- }
- 
-@@ -228,10 +228,12 @@ static void vhost_svq_kick(VhostShadowVirtqueue *svq)
-     smp_mb();
- 
-     if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
--        uint16_t avail_event = *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]);
-+        uint16_t avail_event = le16_to_cpu(
-+                *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]));
-         needs_kick = vring_need_event(avail_event, svq->shadow_avail_idx, svq->shadow_avail_idx - 1);
-     } else {
--        needs_kick = !(svq->vring.used->flags & VRING_USED_F_NO_NOTIFY);
-+        needs_kick =
-+                !(svq->vring.used->flags & cpu_to_le16(VRING_USED_F_NO_NOTIFY));
-     }
- 
-     if (!needs_kick) {
-@@ -365,7 +367,7 @@ static bool vhost_svq_more_used(VhostShadowVirtqueue *svq)
-         return true;
-     }
- 
--    svq->shadow_used_idx = cpu_to_le16(*(volatile uint16_t *)used_idx);
-+    svq->shadow_used_idx = le16_to_cpu(*(volatile uint16_t *)used_idx);
- 
-     return svq->last_used_idx != svq->shadow_used_idx;
- }
-@@ -383,7 +385,7 @@ static bool vhost_svq_enable_notification(VhostShadowVirtqueue *svq)
- {
-     if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
-         uint16_t *used_event = (uint16_t *)&svq->vring.avail->ring[svq->vring.num];
--        *used_event = svq->shadow_used_idx;
-+        *used_event = cpu_to_le16(svq->shadow_used_idx);
-     } else {
-         svq->vring.avail->flags &= ~cpu_to_le16(VRING_AVAIL_F_NO_INTERRUPT);
-     }
-@@ -408,7 +410,7 @@ static uint16_t vhost_svq_last_desc_of_chain(const VhostShadowVirtqueue *svq,
-                                              uint16_t num, uint16_t i)
- {
-     for (uint16_t j = 0; j < (num - 1); ++j) {
--        i = le16_to_cpu(svq->desc_next[i]);
-+        i = svq->desc_next[i];
-     }
- 
-     return i;
-@@ -683,7 +685,7 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
-     svq->desc_state = g_new0(SVQDescState, svq->vring.num);
-     svq->desc_next = g_new0(uint16_t, svq->vring.num);
-     for (unsigned i = 0; i < svq->vring.num - 1; i++) {
--        svq->desc_next[i] = cpu_to_le16(i + 1);
-+        svq->desc_next[i] = i + 1;
-     }
- }
+diff --git a/hw/virtio/virtio-nsm.c b/hw/virtio/virtio-nsm.c
+index a3db8eef3e..5dd56cf274 100644
+--- a/hw/virtio/virtio-nsm.c
++++ b/hw/virtio/virtio-nsm.c
+@@ -1589,7 +1589,7 @@ static void handle_input(VirtIODevice *vdev, VirtQueue *vq)
+     g_free(req.iov_base);
+     g_free(res.iov_base);
+     virtqueue_push(vq, out_elem, 0);
+-    virtqueue_push(vq, in_elem, in_elem->in_sg->iov_len);
++    virtqueue_push(vq, in_elem, sz);
+     virtio_notify(vdev, vq);
+     return;
  
 -- 
 2.39.5
