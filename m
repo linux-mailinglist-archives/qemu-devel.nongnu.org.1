@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98106A629D8
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:18:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20924A629DA
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:18:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttNcM-00031Z-0S; Sat, 15 Mar 2025 05:15:42 -0400
+	id 1ttNcP-00035O-1D; Sat, 15 Mar 2025 05:15:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNcG-0002wb-5W; Sat, 15 Mar 2025 05:15:38 -0400
+ id 1ttNcG-0002we-6s; Sat, 15 Mar 2025 05:15:38 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNcD-0007yQ-UE; Sat, 15 Mar 2025 05:15:35 -0400
+ id 1ttNcD-0007yP-RQ; Sat, 15 Mar 2025 05:15:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CE557FFBBD;
+ by isrv.corpit.ru (Postfix) with ESMTP id D228BFFBBE;
  Sat, 15 Mar 2025 12:13:45 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D6D4A1CAD56;
+ by tsrv.corpit.ru (Postfix) with ESMTP id DAAA21CAD57;
  Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id AF7B355A42; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
+ id B1F8E55A44; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
+ Vasant Hegde <vasant.hegde@amd.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 12/27] hw/i386/amd_iommu: Explicit use of
- AMDVI_BASE_ADDR in amdvi_init
-Date: Sat, 15 Mar 2025 12:14:23 +0300
-Message-Id: <20250315091439.657371-12-mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 13/27] amd_iommu: Use correct bitmask to set
+ capability BAR
+Date: Sat, 15 Mar 2025 12:14:24 +0300
+Message-Id: <20250315091439.657371-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 References: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,38 +61,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Sairaj Kodilkar <sarunkod@amd.com>
 
-By accessing MemoryRegion internals, amdvi_init() gives the false
-idea that the PCI BAR can be modified. However this isn't true
-(at least the model isn't ready for that): the device is explicitly
-maps at the BAR at the fixed AMDVI_BASE_ADDR address in
-amdvi_sysbus_realize(). Since the SysBus API isn't designed to
-remap regions, directly use the fixed address in amdvi_init().
+AMD IOMMU provides the base address of control registers through
+IVRS table and PCI capability. Since this base address is of 64 bit,
+use 32 bits mask (instead of 16 bits) to set BAR low and high.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230313153031.86107-3-philmd@linaro.org>
+Fixes: d29a09ca68 ("hw/i386: Introduce AMD IOMMU")
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Message-Id: <20250207045354.27329-3-sarunkod@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 6291a28645a0656477bc5962a81b181e6a99487c)
+(cherry picked from commit 3684717b7407cc395dc9bf522e193dbc85293dee)
+(Mjt: adjust for 7.2.x)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index d94c0f9bfb..e6da60fc15 100644
+index e6da60fc15..d68e85b606 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
 @@ -1514,9 +1514,9 @@ static void amdvi_init(AMDVIState *s)
      /* reset AMDVI specific capabilities, all r/o */
      pci_set_long(s->pci.dev.config + s->capab_offset, AMDVI_CAPAB_FEATURES);
      pci_set_long(s->pci.dev.config + s->capab_offset + AMDVI_CAPAB_BAR_LOW,
--                 s->mmio.addr & ~(0xffff0000));
-+                 AMDVI_BASE_ADDR & ~(0xffff0000));
+-                 AMDVI_BASE_ADDR & ~(0xffff0000));
++                 AMDVI_BASE_ADDR & MAKE_64BIT_MASK(14, 18));
      pci_set_long(s->pci.dev.config + s->capab_offset + AMDVI_CAPAB_BAR_HIGH,
--                (s->mmio.addr & ~(0xffff)) >> 16);
-+                (AMDVI_BASE_ADDR & ~(0xffff)) >> 16);
+-                (AMDVI_BASE_ADDR & ~(0xffff)) >> 16);
++                AMDVI_BASE_ADDR >> 32);
      pci_set_long(s->pci.dev.config + s->capab_offset + AMDVI_CAPAB_RANGE,
                   0xff000000);
      pci_set_long(s->pci.dev.config + s->capab_offset + AMDVI_CAPAB_MISC, 0);
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 210a37dfb1..1899e9aee1 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -185,7 +185,7 @@
+         AMDVI_CAPAB_FLAG_HTTUNNEL |  AMDVI_CAPAB_EFR_SUP)
+ 
+ /* AMDVI default address */
+-#define AMDVI_BASE_ADDR 0xfed80000
++#define AMDVI_BASE_ADDR 0xfed80000ULL
+ 
+ /* page management constants */
+ #define AMDVI_PAGE_SHIFT 12
 -- 
 2.39.5
 
