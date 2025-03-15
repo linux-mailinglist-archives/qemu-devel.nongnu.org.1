@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26884A62727
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:21:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4048A6272D
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:22:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKsw-0005Fx-Hw; Sat, 15 Mar 2025 02:20:38 -0400
+	id 1ttKtq-0007hk-B2; Sat, 15 Mar 2025 02:21:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKru-0003os-Ex; Sat, 15 Mar 2025 02:19:38 -0400
+ id 1ttKrx-0003va-19; Sat, 15 Mar 2025 02:19:39 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKrr-0003J8-Bf; Sat, 15 Mar 2025 02:19:34 -0400
+ id 1ttKru-0003LD-MY; Sat, 15 Mar 2025 02:19:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9F5F5FF9DB;
+ by isrv.corpit.ru (Postfix) with ESMTP id A3503FF9DC;
  Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 76CCA1CAC44;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7AB021CAC45;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 4F00C558CD; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 517F1558CF; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>,
- myluo24@m.fudan.edu.cn, "Michael S . Tsirkin" <mst@redhat.com>,
+Cc: qemu-stable@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ Lei Yang <leiyang@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 15/51] cryptodev/vhost: allocate CryptoDevBackendVhost
- using g_mem0()
-Date: Sat, 15 Mar 2025 09:17:21 +0300
-Message-Id: <20250315061801.622606-15-mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 16/51] vdpa: Fix endian bugs in shadow virtqueue
+Date: Sat, 15 Mar 2025 09:17:22 +0300
+Message-Id: <20250315061801.622606-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
@@ -62,42 +62,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Konstantin Shkolnyy <kshk@linux.ibm.com>
 
-The function `vhost_dev_init()` expects the `struct vhost_dev`
-(passed as a parameter) to be fully initialized. This is important
-because some parts of the code check whether `vhost_dev->config_ops`
-is NULL to determine if it has been set (e.g. later via
-`vhost_dev_set_config_notifier`).
+VDPA didn't work on a big-endian machine due to missing/incorrect
+CPU<->LE data format conversions.
 
-To ensure this initialization, it’s better to allocate the entire
-`CryptoDevBackendVhost` structure (which includes `vhost_dev`) using
-`g_mem0()`, following the same approach used for other vhost devices,
-such as in `vhost_net_init()`.
-
-Fixes: 042cea274c ("cryptodev: add vhost-user as a new cryptodev backend")
-Cc: qemu-stable@nongnu.org
-Reported-by: myluo24@m.fudan.edu.cn
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20250211135523.101203-1-sgarzare@redhat.com>
+Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Message-Id: <20250212164923.1971538-1-kshk@linux.ibm.com>
+Fixes: 10857ec0ad ("vhost: Add VhostShadowVirtqueue")
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 83cb18ac4500f3a14067b19408705068647cb0c5)
+(cherry picked from commit 50e9754149066dc91f58405d3378b589098cb408)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/backends/cryptodev-vhost.c b/backends/cryptodev-vhost.c
-index 93523732f3..5901b3ec4c 100644
---- a/backends/cryptodev-vhost.c
-+++ b/backends/cryptodev-vhost.c
-@@ -53,7 +53,7 @@ cryptodev_vhost_init(
-     CryptoDevBackendVhost *crypto;
-     Error *local_err = NULL;
+diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+index 37aca8b431..4af0d7c669 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.c
++++ b/hw/virtio/vhost-shadow-virtqueue.c
+@@ -165,10 +165,10 @@ static bool vhost_svq_vring_write_descs(VhostShadowVirtqueue *svq, hwaddr *sg,
+         descs[i].len = cpu_to_le32(iovec[n].iov_len);
  
--    crypto = g_new(CryptoDevBackendVhost, 1);
-+    crypto = g_new0(CryptoDevBackendVhost, 1);
-     crypto->dev.max_queues = 1;
-     crypto->dev.nvqs = 1;
-     crypto->dev.vqs = crypto->vqs;
+         last = i;
+-        i = cpu_to_le16(svq->desc_next[i]);
++        i = svq->desc_next[i];
+     }
+ 
+-    svq->free_head = le16_to_cpu(svq->desc_next[last]);
++    svq->free_head = svq->desc_next[last];
+     return true;
+ }
+ 
+@@ -228,10 +228,12 @@ static void vhost_svq_kick(VhostShadowVirtqueue *svq)
+     smp_mb();
+ 
+     if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
+-        uint16_t avail_event = *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]);
++        uint16_t avail_event = le16_to_cpu(
++                *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]));
+         needs_kick = vring_need_event(avail_event, svq->shadow_avail_idx, svq->shadow_avail_idx - 1);
+     } else {
+-        needs_kick = !(svq->vring.used->flags & VRING_USED_F_NO_NOTIFY);
++        needs_kick =
++                !(svq->vring.used->flags & cpu_to_le16(VRING_USED_F_NO_NOTIFY));
+     }
+ 
+     if (!needs_kick) {
+@@ -365,7 +367,7 @@ static bool vhost_svq_more_used(VhostShadowVirtqueue *svq)
+         return true;
+     }
+ 
+-    svq->shadow_used_idx = cpu_to_le16(*(volatile uint16_t *)used_idx);
++    svq->shadow_used_idx = le16_to_cpu(*(volatile uint16_t *)used_idx);
+ 
+     return svq->last_used_idx != svq->shadow_used_idx;
+ }
+@@ -383,7 +385,7 @@ static bool vhost_svq_enable_notification(VhostShadowVirtqueue *svq)
+ {
+     if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
+         uint16_t *used_event = (uint16_t *)&svq->vring.avail->ring[svq->vring.num];
+-        *used_event = svq->shadow_used_idx;
++        *used_event = cpu_to_le16(svq->shadow_used_idx);
+     } else {
+         svq->vring.avail->flags &= ~cpu_to_le16(VRING_AVAIL_F_NO_INTERRUPT);
+     }
+@@ -408,7 +410,7 @@ static uint16_t vhost_svq_last_desc_of_chain(const VhostShadowVirtqueue *svq,
+                                              uint16_t num, uint16_t i)
+ {
+     for (uint16_t j = 0; j < (num - 1); ++j) {
+-        i = le16_to_cpu(svq->desc_next[i]);
++        i = svq->desc_next[i];
+     }
+ 
+     return i;
+@@ -683,7 +685,7 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
+     svq->desc_state = g_new0(SVQDescState, svq->vring.num);
+     svq->desc_next = g_new0(uint16_t, svq->vring.num);
+     for (unsigned i = 0; i < svq->vring.num - 1; i++) {
+-        svq->desc_next[i] = cpu_to_le16(i + 1);
++        svq->desc_next[i] = i + 1;
+     }
+ }
+ 
 -- 
 2.39.5
 
