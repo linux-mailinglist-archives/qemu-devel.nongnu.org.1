@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0083A6287A
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:50:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2EAEA6285B
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:46:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttMCL-0004vl-IX; Sat, 15 Mar 2025 03:44:46 -0400
+	id 1ttMCO-0005DU-Py; Sat, 15 Mar 2025 03:44:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMC9-0004eO-2n; Sat, 15 Mar 2025 03:44:33 -0400
+ id 1ttMCC-0004ve-Gr; Sat, 15 Mar 2025 03:44:38 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMC6-00050Q-4C; Sat, 15 Mar 2025 03:44:31 -0400
+ id 1ttMCA-00051s-LM; Sat, 15 Mar 2025 03:44:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D3452FFB09;
+ by isrv.corpit.ru (Postfix) with ESMTP id D7436FFB0A;
  Sat, 15 Mar 2025 10:41:55 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C20791CACD3;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C60C11CACD4;
  Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 8A43F559FE; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
+ id 8CA6155A00; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 21/42] target/loongarch/gdbstub: Fix gdbstub
- incorrectly handling some registers
-Date: Sat, 15 Mar 2025 10:42:23 +0300
-Message-Id: <20250315074249.634718-21-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Joelle van Dyne <j@getutm.app>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.10 22/42] target/arm/hvf: sign extend the data for a load
+ operation when SSE=1
+Date: Sat, 15 Mar 2025 10:42:24 +0300
+Message-Id: <20250315074249.634718-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 References: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
@@ -60,56 +60,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Joelle van Dyne <j@getutm.app>
 
-Write operation with R32 (orig_a0) and R34 (CSR_BADV) is discarded on
-gdbstub implementation for LoongArch system. And return value should
-be register size rather than 0, since it is used to calculate offset of
-next register such as R33 (PC) in function handle_write_all_regs().
+In the syndrome value for a data abort, bit 21 is SSE, which is
+set to indicate that the abort was on a sign-extending load. When
+we handle the data abort from the guest via address_space_read(),
+we forgot to handle this and so would return the wrong value if
+the guest did a sign-extending load to an MMIO region. Add the
+sign-extension of the returned data.
 
 Cc: qemu-stable@nongnu.org
-Fixes: ca61e75071c6 ("target/loongarch: Add gdb support.")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-(cherry picked from commit 7bd4eaa847fcdbc4505d9ab95dafa21791d8302a)
-(Mjt: context fix due to missing v9.1.0-913-g2a99b2af2c
- "target/loongarch: Use explicit little-endian LD/ST API")
+Signed-off-by: Joelle van Dyne <j@getutm.app>
+Message-id: 20250224184123.50780-1-j@getutm.app
+[PMM: Drop an unnecessary check on 'len'; expand commit message]
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 12c365315ab25d364cff24dfeea8d7ff1e752b9f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
-index 5fc2f19e96..320a6f2fcc 100644
---- a/target/loongarch/gdbstub.c
-+++ b/target/loongarch/gdbstub.c
-@@ -63,23 +63,24 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-     CPULoongArchState *env = &cpu->env;
-     target_ulong tmp;
--    int read_length;
-     int length = 0;
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index d7cc00a084..b5d5dab02c 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -1897,6 +1897,7 @@ int hvf_vcpu_exec(CPUState *cpu)
+         bool isv = syndrome & ARM_EL_ISV;
+         bool iswrite = (syndrome >> 6) & 1;
+         bool s1ptw = (syndrome >> 7) & 1;
++        bool sse = (syndrome >> 21) & 1;
+         uint32_t sas = (syndrome >> 22) & 3;
+         uint32_t len = 1 << sas;
+         uint32_t srt = (syndrome >> 16) & 0x1f;
+@@ -1924,6 +1925,9 @@ int hvf_vcpu_exec(CPUState *cpu)
+             address_space_read(&address_space_memory,
+                                hvf_exit->exception.physical_address,
+                                MEMTXATTRS_UNSPECIFIED, &val, len);
++            if (sse) {
++                val = sextract64(val, 0, len * 8);
++            }
+             hvf_set_reg(cpu, srt, val);
+         }
  
-+    if (n < 0 || n > 34) {
-+        return 0;
-+    }
-+
-     if (is_la64(env)) {
-         tmp = ldq_p(mem_buf);
--        read_length = 8;
-+        length = 8;
-     } else {
-         tmp = ldl_p(mem_buf);
--        read_length = 4;
-+        length = 4;
-     }
- 
-     if (0 <= n && n < 32) {
-         env->gpr[n] = tmp;
--        length = read_length;
-     } else if (n == 33) {
-         set_pc(env, tmp);
--        length = read_length;
-     }
-     return length;
- }
 -- 
 2.39.5
 
