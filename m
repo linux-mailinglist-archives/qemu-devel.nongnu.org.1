@@ -2,42 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC23A629F9
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86737A629D3
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:18:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttNcV-0003Ed-Ky; Sat, 15 Mar 2025 05:15:51 -0400
+	id 1ttNeI-00042t-9c; Sat, 15 Mar 2025 05:17:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNcN-00039P-Lb; Sat, 15 Mar 2025 05:15:43 -0400
+ id 1ttNcg-0003Nn-VJ; Sat, 15 Mar 2025 05:16:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNcL-00080x-By; Sat, 15 Mar 2025 05:15:42 -0400
+ id 1ttNcf-00080z-9v; Sat, 15 Mar 2025 05:16:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DE11CFFBC1;
+ by isrv.corpit.ru (Postfix) with ESMTP id E22B9FFBC2;
  Sat, 15 Mar 2025 12:13:45 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E67761CAD5A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EA9CF1CAD5B;
  Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id B96B655A4A; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
+ id BBD1055A4C; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
+Cc: qemu-stable@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 16/27] target/riscv: rvv: Fix unexpected behavior of
- vector reduction instructions when vl is 0
-Date: Sat, 15 Mar 2025 12:14:27 +0300
-Message-Id: <20250315091439.657371-16-mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 17/27] target/riscv/debug.c: use wp size = 4 for
+ 32-bit CPUs
+Date: Sat, 15 Mar 2025 12:14:28 +0300
+Message-Id: <20250315091439.657371-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 References: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,50 +64,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-According to the Vector Reduction Operations section in the RISC-V "V"
-Vector Extension spec,
-"If vl=0, no operation is performed and the destination register is not
-updated."
+The mcontrol select bit (19) is always zero, meaning our triggers will
+always match virtual addresses. In this condition, if the user does not
+specify a size for the trigger, the access size defaults to XLEN.
 
-The vd should be updated when vl is larger than 0.
+At this moment we're using def_size = 8 regardless of CPU XLEN. Use
+def_size = 4 in case we're running 32 bits.
 
-Fixes: fe5c9ab1fc ("target/riscv: vector single-width integer reduction instructions")
-Fixes: f714361ed7 ("target/riscv: rvv-1.0: implement vstart CSR")
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20250124101452.2519171-1-max.chou@sifive.com>
+Fixes: 95799e36c1 ("target/riscv: Add initial support for the Sdtrig extension")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250121170626.1992570-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit ffd455963f230c7dc04965609d6675da687a5a78)
+(cherry picked from commit 3fba76e61caa46329afc399b3ecaaba70c8b0a4e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index a6ac61c724..d2fe96e5c8 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -4621,7 +4621,9 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,          \
-         }                                                 \
-         s1 = OP(s1, (TD)s2);                              \
-     }                                                     \
--    *((TD *)vd + HD(0)) = s1;                             \
-+    if (vl > 0) {                                         \
-+        *((TD *)vd + HD(0)) = s1;                         \
-+    }                                                     \
-     env->vstart = 0;                                      \
-     /* set tail elements to 1s */                         \
-     vext_set_elems_1s(vd, vta, esz, vlenb);               \
-@@ -4707,7 +4709,9 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,           \
-         }                                                  \
-         s1 = OP(s1, (TD)s2, &env->fp_status);              \
-     }                                                      \
--    *((TD *)vd + HD(0)) = s1;                              \
-+    if (vl > 0) {                                          \
-+        *((TD *)vd + HD(0)) = s1;                          \
-+    }                                                      \
-     env->vstart = 0;                                       \
-     /* set tail elements to 1s */                          \
-     vext_set_elems_1s(vd, vta, esz, vlenb);                \
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 26ea764407..cf71b52899 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -305,7 +305,7 @@ static void type2_breakpoint_insert(CPURISCVState *env, target_ulong index)
+     bool enabled = type2_breakpoint_enabled(ctrl);
+     CPUState *cs = env_cpu(env);
+     int flags = BP_CPU | BP_STOP_BEFORE_ACCESS;
+-    uint32_t size;
++    uint32_t size, def_size;
+ 
+     if (!enabled) {
+         return;
+@@ -328,7 +328,9 @@ static void type2_breakpoint_insert(CPURISCVState *env, target_ulong index)
+             cpu_watchpoint_insert(cs, addr, size, flags,
+                                   &env->cpu_watchpoint[index]);
+         } else {
+-            cpu_watchpoint_insert(cs, addr, 8, flags,
++            def_size = riscv_cpu_mxl(env) == MXL_RV64 ? 8 : 4;
++
++            cpu_watchpoint_insert(cs, addr, def_size, flags,
+                                   &env->cpu_watchpoint[index]);
+         }
+     }
 -- 
 2.39.5
 
