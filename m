@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1F4A62884
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:52:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE59BA6283D
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:44:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttMAn-0001yO-7o; Sat, 15 Mar 2025 03:43:09 -0400
+	id 1ttMAp-00022V-0L; Sat, 15 Mar 2025 03:43:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMAi-0001ws-Cf; Sat, 15 Mar 2025 03:43:04 -0400
+ id 1ttMAl-0001yN-HA; Sat, 15 Mar 2025 03:43:07 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMAg-0004mD-JJ; Sat, 15 Mar 2025 03:43:04 -0400
+ id 1ttMAj-0004n5-M9; Sat, 15 Mar 2025 03:43:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 92CB3FFAF9;
+ by isrv.corpit.ru (Postfix) with ESMTP id 96CB2FFAFA;
  Sat, 15 Mar 2025 10:41:55 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 816AB1CACC3;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 857151CACC4;
  Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 649B1559DE; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
+ id 66EE9559E0; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Mikael Szreder <git@miszr.win>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 05/42] hw/net/smc91c111: Ignore attempt to pop from
- empty RX fifo
-Date: Sat, 15 Mar 2025 10:42:07 +0300
-Message-Id: <20250315074249.634718-5-mjt@tls.msk.ru>
+Subject: [Stable-8.2.10 06/42] target/sparc: Fix gdbstub incorrectly handling
+ registers f32-f62
+Date: Sat, 15 Mar 2025 10:42:08 +0300
+Message-Id: <20250315074249.634718-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 References: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,52 +61,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Mikael Szreder <git@miszr.win>
 
-The SMC91C111 includes an MMU Command register which permits
-the guest to remove entries from the RX FIFO. The datasheet
-does not specify what happens if the guest tries to do this
-when the FIFO is already empty; there are no status registers
-containing error bits which might be applicable.
+The gdbstub implementation for the Sparc architecture would
+incorrectly calculate the the floating point register offset.
+This resulted in, for example, registers f32 and f34 to point to
+the same value.
 
-Currently we don't guard at all against pop of an empty
-RX FIFO, with the result that we allow the guest to drive
-the rx_fifo_len index to negative values, which will cause
-smc91c111_receive() to write to the rx_fifo[] array out of
-bounds when we receive the next packet.
-
-Instead ignore attempts to pop an empty RX FIFO.
+The issue was caused by the confusion between even register numbers
+and even register indexes. For example, the register index of f32 is 64
+and f34 is 65.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 80337b66a8e7 ("NIC emulation for qemu arm-softmmu")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2780
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250207151157.3151776-1-peter.maydell@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 937df81af6757638a7f1908747560dd342947213)
+Fixes: 30038fd81808 ("target-sparc: Change fpr representation to doubles.")
+Signed-off-by: Mikael Szreder <git@miszr.win>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250214070343.11501-1-git@miszr.win>
+(cherry picked from commit 7a74e468089a58756b438d31a2a9a97f183780d7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/smc91c111.c b/hw/net/smc91c111.c
-index 876a78456a..dcf6e5117f 100644
---- a/hw/net/smc91c111.c
-+++ b/hw/net/smc91c111.c
-@@ -183,6 +183,15 @@ static void smc91c111_pop_rx_fifo(smc91c111_state *s)
- {
-     int i;
- 
-+    if (s->rx_fifo_len == 0) {
-+        /*
-+         * The datasheet doesn't document what the behaviour is if the
-+         * guest tries to pop an empty RX FIFO, and there's no obvious
-+         * error status register to report it. Just ignore the attempt.
+diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
+index a1c8fdc4d5..109b7237e0 100644
+--- a/target/sparc/gdbstub.c
++++ b/target/sparc/gdbstub.c
+@@ -80,8 +80,13 @@ int sparc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+         }
+     }
+     if (n < 80) {
+-        /* f32-f62 (double width, even numbers only) */
+-        return gdb_get_reg64(mem_buf, env->fpr[(n - 32) / 2].ll);
++        /* f32-f62 (16 double width registers, even register numbers only)
++         * n == 64: f32 : env->fpr[16]
++         * n == 65: f34 : env->fpr[17]
++         * etc...
++         * n == 79: f62 : env->fpr[31]
 +         */
-+        return;
-+    }
-+
-     s->rx_fifo_len--;
-     if (s->rx_fifo_len) {
-         for (i = 0; i < s->rx_fifo_len; i++)
++        return gdb_get_reg64(mem_buf, env->fpr[(n - 64) + 16].ll);
+     }
+     switch (n) {
+     case 80:
+@@ -174,8 +179,13 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+         }
+         return 4;
+     } else if (n < 80) {
+-        /* f32-f62 (double width, even numbers only) */
+-        env->fpr[(n - 32) / 2].ll = tmp;
++        /* f32-f62 (16 double width registers, even register numbers only)
++         * n == 64: f32 : env->fpr[16]
++         * n == 65: f34 : env->fpr[17]
++         * etc...
++         * n == 79: f62 : env->fpr[31]
++         */
++        env->fpr[(n - 64) + 16].ll = tmp;
+     } else {
+         switch (n) {
+         case 80:
 -- 
 2.39.5
 
