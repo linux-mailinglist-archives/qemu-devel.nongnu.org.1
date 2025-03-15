@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6032CA6272C
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3786A62747
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:26:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKu0-00009W-8V; Sat, 15 Mar 2025 02:21:44 -0400
+	id 1ttKtn-0007NO-Lm; Sat, 15 Mar 2025 02:21:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKsW-0004nE-L6; Sat, 15 Mar 2025 02:20:13 -0400
+ id 1ttKsZ-0004vh-48; Sat, 15 Mar 2025 02:20:15 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKsU-0003bV-8b; Sat, 15 Mar 2025 02:20:12 -0400
+ id 1ttKsW-0003c3-NF; Sat, 15 Mar 2025 02:20:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BF048FF9E3;
+ by isrv.corpit.ru (Postfix) with ESMTP id C2CBBFF9E4;
  Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 961EB1CAC4C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9A4B11CAC4D;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 62927558DD; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 64FF0558DF; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 23/51] target/riscv: rvv: Fix unexpected behavior of
- vector reduction instructions when vl is 0
-Date: Sat, 15 Mar 2025 09:17:29 +0300
-Message-Id: <20250315061801.622606-23-mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 24/51] target/riscv: rvv: Fix incorrect vlen comparison
+ in prop_vlen_set
+Date: Sat, 15 Mar 2025 09:17:30 +0300
+Message-Id: <20250315061801.622606-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
@@ -64,48 +64,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Max Chou <max.chou@sifive.com>
 
-According to the Vector Reduction Operations section in the RISC-V "V"
-Vector Extension spec,
-"If vl=0, no operation is performed and the destination register is not
-updated."
+In prop_vlen_set function, there is an incorrect comparison between
+vlen(bit) and vlenb(byte).
+This will cause unexpected error when user applies the `vlen=1024` cpu
+option with a vendor predefined cpu type that the default vlen is
+1024(vlenb=128).
 
-The vd should be updated when vl is larger than 0.
-
-Fixes: fe5c9ab1fc ("target/riscv: vector single-width integer reduction instructions")
-Fixes: f714361ed7 ("target/riscv: rvv-1.0: implement vstart CSR")
+Fixes: 4f6d036ccc ("target/riscv/cpu.c: remove cpu->cfg.vlen")
 Signed-off-by: Max Chou <max.chou@sifive.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20250124101452.2519171-1-max.chou@sifive.com>
+Message-ID: <20250124090539.2506448-1-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit ffd455963f230c7dc04965609d6675da687a5a78)
+(cherry picked from commit bf3adf93f16730ca5aaa6c26cf969e64eeff6e7b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index a85dd1d200..3731500717 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -4648,7 +4648,9 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,          \
-         }                                                 \
-         s1 = OP(s1, (TD)s2);                              \
-     }                                                     \
--    *((TD *)vd + HD(0)) = s1;                             \
-+    if (vl > 0) {                                         \
-+        *((TD *)vd + HD(0)) = s1;                         \
-+    }                                                     \
-     env->vstart = 0;                                      \
-     /* set tail elements to 1s */                         \
-     vext_set_elems_1s(vd, vta, esz, vlenb);               \
-@@ -4734,7 +4736,9 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,           \
-         }                                                  \
-         s1 = OP(s1, (TD)s2, &env->fp_status);              \
-     }                                                      \
--    *((TD *)vd + HD(0)) = s1;                              \
-+    if (vl > 0) {                                          \
-+        *((TD *)vd + HD(0)) = s1;                          \
-+    }                                                      \
-     env->vstart = 0;                                       \
-     /* set tail elements to 1s */                          \
-     vext_set_elems_1s(vd, vta, esz, vlenb);                \
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index f219f0c3b5..261db879a2 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1897,6 +1897,7 @@ static void prop_vlen_set(Object *obj, Visitor *v, const char *name,
+                          void *opaque, Error **errp)
+ {
+     RISCVCPU *cpu = RISCV_CPU(obj);
++    uint16_t cpu_vlen = cpu->cfg.vlenb << 3;
+     uint16_t value;
+ 
+     if (!visit_type_uint16(v, name, &value, errp)) {
+@@ -1908,10 +1909,10 @@ static void prop_vlen_set(Object *obj, Visitor *v, const char *name,
+         return;
+     }
+ 
+-    if (value != cpu->cfg.vlenb && riscv_cpu_is_vendor(obj)) {
++    if (value != cpu_vlen && riscv_cpu_is_vendor(obj)) {
+         cpu_set_prop_err(cpu, name, errp);
+         error_append_hint(errp, "Current '%s' val: %u\n",
+-                          name, cpu->cfg.vlenb << 3);
++                          name, cpu_vlen);
+         return;
+     }
+ 
 -- 
 2.39.5
 
