@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE68A629C5
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:16:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98106A629D8
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:18:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttNc6-0002uz-3r; Sat, 15 Mar 2025 05:15:26 -0400
+	id 1ttNcM-00031Z-0S; Sat, 15 Mar 2025 05:15:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNbs-0002n4-Aa; Sat, 15 Mar 2025 05:15:13 -0400
+ id 1ttNcG-0002wb-5W; Sat, 15 Mar 2025 05:15:38 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNbo-0007xq-Ls; Sat, 15 Mar 2025 05:15:10 -0400
+ id 1ttNcD-0007yQ-UE; Sat, 15 Mar 2025 05:15:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CA7A8FFBBC;
+ by isrv.corpit.ru (Postfix) with ESMTP id CE557FFBBD;
  Sat, 15 Mar 2025 12:13:45 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D2EBC1CAD55;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D6D4A1CAD56;
  Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id AD0E055A40; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
+ id AF7B355A42; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
- Vasant Hegde <vasant.hegde@amd.com>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 11/27] amd_iommu: Use correct DTE field for interrupt
- passthrough
-Date: Sat, 15 Mar 2025 12:14:22 +0300
-Message-Id: <20250315091439.657371-11-mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 12/27] hw/i386/amd_iommu: Explicit use of
+ AMDVI_BASE_ADDR in amdvi_init
+Date: Sat, 15 Mar 2025 12:14:23 +0300
+Message-Id: <20250315091439.657371-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 References: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,44 +62,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sairaj Kodilkar <sarunkod@amd.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Interrupt passthrough is determine by the bits 191,190,187-184.
-These bits are part of the 3rd quad word (i.e. index 2) in DTE. Hence
-replace dte[3] by dte[2].
+By accessing MemoryRegion internals, amdvi_init() gives the false
+idea that the PCI BAR can be modified. However this isn't true
+(at least the model isn't ready for that): the device is explicitly
+maps at the BAR at the fixed AMDVI_BASE_ADDR address in
+amdvi_sysbus_realize(). Since the SysBus API isn't designed to
+remap regions, directly use the fixed address in amdvi_init().
 
-Fixes: b44159fe0 ("x86_iommu/amd: Add interrupt remap support when VAPIC is not enabled")
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250207045354.27329-2-sarunkod@amd.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230313153031.86107-3-philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 63dc0b8647391b372f3bb38ff1066f6b4a5e6ea1)
+(cherry picked from commit 6291a28645a0656477bc5962a81b181e6a99487c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 02597db1e1..d94c0f9bfb 100644
+index d94c0f9bfb..e6da60fc15 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -1279,15 +1279,15 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
-         ret = -AMDVI_IR_ERR;
-         break;
-     case AMDVI_IOAPIC_INT_TYPE_NMI:
--        pass = dte[3] & AMDVI_DEV_NMI_PASS_MASK;
-+        pass = dte[2] & AMDVI_DEV_NMI_PASS_MASK;
-         trace_amdvi_ir_delivery_mode("nmi");
-         break;
-     case AMDVI_IOAPIC_INT_TYPE_INIT:
--        pass = dte[3] & AMDVI_DEV_INT_PASS_MASK;
-+        pass = dte[2] & AMDVI_DEV_INT_PASS_MASK;
-         trace_amdvi_ir_delivery_mode("init");
-         break;
-     case AMDVI_IOAPIC_INT_TYPE_EINT:
--        pass = dte[3] & AMDVI_DEV_EINT_PASS_MASK;
-+        pass = dte[2] & AMDVI_DEV_EINT_PASS_MASK;
-         trace_amdvi_ir_delivery_mode("eint");
-         break;
-     default:
+@@ -1514,9 +1514,9 @@ static void amdvi_init(AMDVIState *s)
+     /* reset AMDVI specific capabilities, all r/o */
+     pci_set_long(s->pci.dev.config + s->capab_offset, AMDVI_CAPAB_FEATURES);
+     pci_set_long(s->pci.dev.config + s->capab_offset + AMDVI_CAPAB_BAR_LOW,
+-                 s->mmio.addr & ~(0xffff0000));
++                 AMDVI_BASE_ADDR & ~(0xffff0000));
+     pci_set_long(s->pci.dev.config + s->capab_offset + AMDVI_CAPAB_BAR_HIGH,
+-                (s->mmio.addr & ~(0xffff)) >> 16);
++                (AMDVI_BASE_ADDR & ~(0xffff)) >> 16);
+     pci_set_long(s->pci.dev.config + s->capab_offset + AMDVI_CAPAB_RANGE,
+                  0xff000000);
+     pci_set_long(s->pci.dev.config + s->capab_offset + AMDVI_CAPAB_MISC, 0);
 -- 
 2.39.5
 
