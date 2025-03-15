@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C76A62757
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:27:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B08CA6272A
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:21:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKuR-0000hd-Cs; Sat, 15 Mar 2025 02:22:11 -0400
+	id 1ttKtt-000825-UQ; Sat, 15 Mar 2025 02:21:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKsS-0004hS-KF; Sat, 15 Mar 2025 02:20:10 -0400
+ id 1ttKsU-0004kH-W1; Sat, 15 Mar 2025 02:20:13 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKsQ-0003My-4S; Sat, 15 Mar 2025 02:20:07 -0400
+ id 1ttKsS-0003Xn-MF; Sat, 15 Mar 2025 02:20:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B6EECFF9E1;
+ by isrv.corpit.ru (Postfix) with ESMTP id BAD65FF9E2;
  Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8E6A21CAC4A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 925421CAC4B;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 5DF2E558D9; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 6035E558DB; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Joelle van Dyne <j@getutm.app>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 21/51] target/arm/hvf: Disable SME feature
-Date: Sat, 15 Mar 2025 09:17:27 +0300
-Message-Id: <20250315061801.622606-21-mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 22/51] target/arm/hvf: sign extend the data for a load
+ operation when SSE=1
+Date: Sat, 15 Mar 2025 09:17:28 +0300
+Message-Id: <20250315061801.622606-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
@@ -61,52 +62,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Joelle van Dyne <j@getutm.app>
 
-macOS 15.2's Hypervisor.framework exposes SME feature on M4 Macs.
-However, QEMU's hvf accelerator code does not properly support it
-yet, causing QEMU to fail to start when hvf accelerator is used on
-these systems, with the error message:
-
-  qemu-aarch64-softmmu: cannot disable sme4224
-  All SME vector lengths are disabled.
-  With SME enabled, at least one vector length must be enabled.
-
-Ideally we would have SME support on these hosts; however, until that
-point, we must suppress the SME feature in the ID registers, so that
-users can at least run non-SME guests.
+In the syndrome value for a data abort, bit 21 is SSE, which is
+set to indicate that the abort was on a sign-extending load. When
+we handle the data abort from the guest via address_space_read(),
+we forgot to handle this and so would return the wrong value if
+the guest did a sign-extending load to an MMIO region. Add the
+sign-extension of the returned data.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2665
 Signed-off-by: Joelle van Dyne <j@getutm.app>
-Message-id: 20250224165735.36792-1-j@getutm.app
+Message-id: 20250224184123.50780-1-j@getutm.app
+[PMM: Drop an unnecessary check on 'len'; expand commit message]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: expanded commit message, comment]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit fd207677a83087454b8afef31651985a1df0d2dd)
+(cherry picked from commit 12c365315ab25d364cff24dfeea8d7ff1e752b9f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index ca7ea92774..0089174b36 100644
+index 0089174b36..d1cf47ca6a 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -897,6 +897,18 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+@@ -1974,6 +1974,7 @@ int hvf_vcpu_exec(CPUState *cpu)
+         bool isv = syndrome & ARM_EL_ISV;
+         bool iswrite = (syndrome >> 6) & 1;
+         bool s1ptw = (syndrome >> 7) & 1;
++        bool sse = (syndrome >> 21) & 1;
+         uint32_t sas = (syndrome >> 22) & 3;
+         uint32_t len = 1 << sas;
+         uint32_t srt = (syndrome >> 16) & 0x1f;
+@@ -2001,6 +2002,9 @@ int hvf_vcpu_exec(CPUState *cpu)
+             address_space_read(&address_space_memory,
+                                hvf_exit->exception.physical_address,
+                                MEMTXATTRS_UNSPECIFIED, &val, len);
++            if (sse) {
++                val = sextract64(val, 0, len * 8);
++            }
+             hvf_set_reg(cpu, srt, val);
+         }
  
-     clamp_id_aa64mmfr0_parange_to_ipa_size(&host_isar.id_aa64mmfr0);
- 
-+    /*
-+     * Disable SME, which is not properly handled by QEMU hvf yet.
-+     * To allow this through we would need to:
-+     * - make sure that the SME state is correctly handled in the
-+     *   get_registers/put_registers functions
-+     * - get the SME-specific CPU properties to work with accelerators
-+     *   other than TCG
-+     * - fix any assumptions we made that SME implies SVE (since
-+     *   on the M4 there is SME but not SVE)
-+     */
-+    host_isar.id_aa64pfr1 &= ~R_ID_AA64PFR1_SME_MASK;
-+
-     ahcf->isar = host_isar;
- 
-     /*
 -- 
 2.39.5
 
