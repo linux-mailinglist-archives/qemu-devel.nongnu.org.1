@@ -2,65 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF482A630ED
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 18:44:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD3DA63289
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 22:04:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttVXh-00087b-FX; Sat, 15 Mar 2025 13:43:26 -0400
+	id 1ttYde-0005wO-6N; Sat, 15 Mar 2025 17:01:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sa.z@qq.com>)
- id 1ttVXL-0007yK-TR; Sat, 15 Mar 2025 13:43:07 -0400
-Received: from xmbghk7.mail.qq.com ([43.163.128.54])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sa.z@qq.com>)
- id 1ttVXG-00021n-FK; Sat, 15 Mar 2025 13:43:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
- t=1742060568; bh=zcrxujq8oAr4C4FYOrWGAxou0NszWeHnYrryhZrzvGk=;
- h=From:To:Cc:Subject:Date;
- b=rRHZFSLTyjZl39xX2mS+swkFcS6YphWhQcVQbb2pUM5alLvoTgIKK37eF+fBlRwAD
- GGC7/ankQlWz0aH3wBf11KfPBGPOAc6Ig1GoJKc5TWzKv35heK3weeVVxffBP9PDH3
- RAWTZDgNS5ROBaL2kwYLimfxDxm8ODMpQvDLKR/Y=
-Received: from localhost.localdomain ([120.46.176.49])
- by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
- id 799AC488; Sun, 16 Mar 2025 01:30:25 +0800
-X-QQ-mid: xmsmtpt1742059825til0gwr29
-Message-ID: <tencent_C6F198B4EA3ABA591C57084BA7125D04B306@qq.com>
-X-QQ-XMAILINFO: NhJmSc9h8ndd8ukIdUi1fCOcmz27QYj9qtVMSPLvPeYC6fX6Aosj0defr9LV6w
- bIpWp4cWvTcNQRuao3bDVedjCSuUxr+xs3ZIf7CIc9LnuMGiR+V4pmW04JwktJmKoz6I42nBN4D9
- Q2xjfjw6UKd9zNQsTFowI7+YvBbEWc24Pa02MP5Rka6JtKq7IiYEOSifYx39dhNA2Y7IqDw1wOrO
- mQDMAL5D1XM20qt7wTTTkRT1+wDKwkuEc+7J8vojsUOyL1kSxoEJmnZbGqL0YYkXC/Ln0fXFLN2G
- ewCMJq2VaXo91eBKxQQebOBBxrmVieJ50LnNKXoy/Ux28m2pYpiBYbwFavGBeRAp4NoqPjZzW2CU
- 9ZXXIh0lsKkmINdFf1Ul8gnRPVu/ICcE3GdMvE9/esakNFLTnw9JTrzCV+kDwtzYrhsx2+Njdsyn
- ZzTLHY9sexatbfZekgQLfV/30YU0fqfSZg5ruLxfEcjjhIxfEm9RCBaCMngNZPnc/EgFKC3SRRa+
- WFLTnHFHHrPGpuHzdhq0qGYtz82G1gfLbslWzCoA3ic2XwPU/YPvyHs6tJI/xYEVnh2qtVAEefQY
- dPdW8lS0lZfZ2gXkgIQUGG/GIyq2DZBDDeDHUcUaKqxKgqyiJU3/zGpPYiuAjGd7I5VgME4Q+XBz
- BmcXbiw/7RyNFHN5XE1P8pGQve9Wyldk/2WBH+cfML3ZKancB8hw3opPQdlvRy1h0qleioGwv/Ju
- XBhLAPFAJBYGPySREJg7WYb4vthrYmzBCik3T1dQdS49wvD+oTwQgDj8FKE5LyJZUqhT13FD2SuK
- ianIiAXiYfqZ0xy2uWpy4jk5TpvQvMj7RK+WzzSZqY19XPoE4wUtR9oWmWTJiad1RhE4MOGG0qo6
- EbbXL3E+M1y3D4nYoAbeh+Xj6NBTvxtHvrk8MMLI3ZOodWglbEIm/RDnUCmOMAz8Q3/Wuc6IYpN0
- yzpwkhbfM/9t+Q8qmXsg==
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-From: saz97 <sa.z@qq.com>
-To: qemu-devel@nongnu.org
-Cc: hreitz@redhat.com, kwolf@redhat.com, stefanha@redhat.com,
- qemu-block@nongnu.org, saz97 <sa.z@qq.com>
-Subject: [PATCH RFC v2] Integration coroutines into fuse export
-Date: Sun, 16 Mar 2025 01:30:20 +0800
-X-OQ-MSGID: <20250315173020.52011-1-sa.z@qq.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <nieklinnenbank@gmail.com>)
+ id 1ttYdY-0005w7-1Q
+ for qemu-devel@nongnu.org; Sat, 15 Mar 2025 17:01:40 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nieklinnenbank@gmail.com>)
+ id 1ttYdS-0007Td-7m
+ for qemu-devel@nongnu.org; Sat, 15 Mar 2025 17:01:38 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-727388e8f6cso1926835a34.0
+ for <qemu-devel@nongnu.org>; Sat, 15 Mar 2025 14:01:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1742072487; x=1742677287; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=k/sZB5clN3G1COnf7er11pj81o09OrCXF+Y4pIH+/To=;
+ b=JMFmdEj/ONJQ6Zbz+Fi/wrJNG7bCp4xozOC8SBFES+GfFIVluQGv3kG6JlW5XDy5gb
+ WCHZveDrZjUk7z7aZOmyAv97HngfFlZZjrh5bC5eB87/pv7UueybFgCf68HsizCNCUdL
+ j88IKz9ZCzD9UHS6/Er+7qgb5n/7T1eUYXjPeFSM7vh5juJrMvsmIqHo/fP8UZjxXZ0L
+ UK1ju3BxEOqDYuwNA1DOceQc6mYQwEtN8NuhiSREKE4Vqes2elIeiKrlAVqo/gWbbYAF
+ y5mA/iOkNWqwjncGfwQKzABzlXVJE/NSpRR7Q9PvraLZtzsjvIP970rvWOBzuQEOQMig
+ TSXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742072487; x=1742677287;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=k/sZB5clN3G1COnf7er11pj81o09OrCXF+Y4pIH+/To=;
+ b=CSQIl1Y+14dLP1787Oqt6RvB1BCN5j+cYFv7BNOlrPmnt0gQnGrppoN68fBYGKe68K
+ v6P+0HJtjZHtIueAKS22Uv83+zQ2w4TnDWEZnMW8phsg66jzQkXefvmZ2S+OK8CsVkNw
+ WE9gNO/uQ92f2xbl4VNycCTMk+fuLXsrFPTxL8Cp7/RJ+esax44U3ytvntGneTi3MUZJ
+ XZ3UPI+FTj8IM7DPm/QXwKQZ9FgX3nYeCcvsqCoJYFQ4Es/72eSXyKDOdaE/q6j6qj1p
+ f9yulyWEFunsY9vNG9LPlvmsQTDwcI7Wpzj4dfzdWzuD01wLMWXCvZuktnXrOQkEAT34
+ gg3Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWLcQIPNuXGXHPmF3J0WDWbLaelUCgdFQj2AAo8H2hG+CbvaqoQ/gQR0/ofBfYWq2QjYM4EtBySZbnb@nongnu.org
+X-Gm-Message-State: AOJu0YwHSwO/D9TKgr7ty8y78dwdN+ac39QV+eOv3jmtAAyfl+hS0UN+
+ c6ffcRYHCTjw07nbVQdCJg45gs03PaIBjIdH2PqaBVOqXwJ4Qwr5jBOrwpjlM++xNOZt1z3qWwI
+ KxWfLGRaQ322U8dI0upX5FZMNDuI=
+X-Gm-Gg: ASbGncunSWXypwSjeC6h9FYQnTyp2UsvCWChIkUUeXiHT12OKqVK3l8rVOlxzwDSFZ7
+ TdskHUkt9SDw67yZ/pl0zQE+2zjV1J6TSitl3wW4kdr6TqCEsgUnmV76NS4Ch+VfmOFlIEVRY8T
+ K6Ujt7T2noUynp0X6nTy+oMSJ4KNlkNUOQmgF/oVTuPwkEIdQS9yg2Siii
+X-Google-Smtp-Source: AGHT+IE7qQx7DL0UOyD7cRXWJzpxYrMvKaoV/S8gfVYnqLEyBYZ6JhKmCg7MD0hY08+yzJQU0HeoZS94L2/8DXFsjkI=
+X-Received: by 2002:a05:6808:158e:b0:3f8:91d1:d950 with SMTP id
+ 5614622812f47-3fdf073dc59mr3546154b6e.38.1742072487263; Sat, 15 Mar 2025
+ 14:01:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=43.163.128.54; envelope-from=sa.z@qq.com;
- helo=xmbghk7.mail.qq.com
+References: <CAJSP0QWKnLDsVUbqO_kNB7GiZPU0-YpOU8T4BNCgyNBi54dtDQ@mail.gmail.com>
+ <12d09c42-e6b2-49d1-9b06-e5a26acc2c5b@redhat.com>
+ <CAJSP0QUWkeaSsVmdfrXNAaSqB_uMUxqAD+GR7Xm4FHEgwYArNg@mail.gmail.com>
+ <CAPan3Wozs=BX2pYxgBR3R_TtV75Pk8T=TNXZjgRHajzYw47Y-A@mail.gmail.com>
+In-Reply-To: <CAPan3Wozs=BX2pYxgBR3R_TtV75Pk8T=TNXZjgRHajzYw47Y-A@mail.gmail.com>
+From: Niek Linnenbank <nieklinnenbank@gmail.com>
+Date: Sat, 15 Mar 2025 22:01:15 +0100
+X-Gm-Features: AQ5f1Jp8Ttff7YWnm4JU2zRpWwkXT-D3p6KRcvLvwZVqTkjfJYugQvHaFIDawJc
+Message-ID: <CAPan3WqR_UmrJMtYEe02K6vKy4joNE5frGDMW1KWFH-so24nbw@mail.gmail.com>
+Subject: Re: Broken NetBSD Orange Pi image URL in QEMU tests
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Nicholas Piggin <npiggin@gmail.com>, qemu-devel <qemu-devel@nongnu.org>, 
+ Reinoud Zandijk <reinoud@netbsd.org>, Ryo ONODERA <ryoon@netbsd.org>
+Content-Type: multipart/alternative; boundary="000000000000c6c7be063067db06"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=nieklinnenbank@gmail.com; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,317 +97,190 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Changzhi Xie <sa.z@qq.com>
+--000000000000c6c7be063067db06
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This commit refactors the FUSE export to process read and write operations
-using coroutines, improving concurrency and avoiding blocking the main loop.
+Hello Stefan,
 
-The main changes include:
-1.  Introduce FuseIORequest structure to encapsulate I/O parameters and state
-2.  Move read/write processing into coroutine fuse_read_coroutine and fuse_write_coroutine
-3.  Use blk_co_pread/pwrite for async block layer access
----
- block/export/fuse.c | 189 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 132 insertions(+), 57 deletions(-)
+As of today, it seems the URL is working properly again. I've done a few
+downloads without any error.
+What I did notice is that NetBSD provides a 'cdn.netbsd.org' also, but I
+can't see any noticable difference yet.
 
-diff --git a/block/export/fuse.c b/block/export/fuse.c
-index 465cc9891d..3314f64706 100644
---- a/block/export/fuse.c
-+++ b/block/export/fuse.c
-@@ -39,6 +39,7 @@
- 
- #ifdef __linux__
- #include <linux/fs.h>
-+#include <linux/fuse.h>
- #endif
- 
- /* Prevent overly long bounce buffer allocations */
-@@ -49,7 +50,6 @@ typedef struct FuseExport {
-     BlockExport common;
- 
-     struct fuse_session *fuse_session;
--    struct fuse_buf fuse_buf;
-     unsigned int in_flight; /* atomic */
-     bool mounted, fd_handler_set_up;
- 
-@@ -64,6 +64,14 @@ typedef struct FuseExport {
-     gid_t st_gid;
- } FuseExport;
- 
-+typedef struct FuseIORequest {
-+    fuse_req_t req;
-+    size_t size;
-+    off_t offset;
-+    FuseExport *exp;
-+    char *write_buf;
-+} FuseIORequest;
-+
- static GHashTable *exports;
- static const struct fuse_lowlevel_ops fuse_ops;
- 
-@@ -288,6 +296,7 @@ fail:
- static void read_from_fuse_export(void *opaque)
- {
-     FuseExport *exp = opaque;
-+    struct fuse_buf buf = {};
-     int ret;
- 
-     blk_exp_ref(&exp->common);
-@@ -295,20 +304,30 @@ static void read_from_fuse_export(void *opaque)
-     qatomic_inc(&exp->in_flight);
- 
-     do {
--        ret = fuse_session_receive_buf(exp->fuse_session, &exp->fuse_buf);
-+        ret = fuse_session_receive_buf(exp->fuse_session, &buf);
-     } while (ret == -EINTR);
-     if (ret < 0) {
-         goto out;
-     }
- 
--    fuse_session_process_buf(exp->fuse_session, &exp->fuse_buf);
-+    fuse_session_process_buf(exp->fuse_session, &buf);
- 
- out:
-+    struct fuse_in_header *in = (struct fuse_in_header *)buf.mem;
-+
-+    if (in->opcode == FUSE_WRITE || in->opcode == FUSE_READ) {
-+        g_free(buf.mem);
-+        return;
-+    }
-+
-     if (qatomic_fetch_dec(&exp->in_flight) == 1) {
-         aio_wait_kick(); /* wake AIO_WAIT_WHILE() */
-     }
- 
-     blk_exp_unref(&exp->common);
-+
-+    g_free(buf.mem);
-+
- }
- 
- static void fuse_export_shutdown(BlockExport *blk_exp)
-@@ -347,7 +366,6 @@ static void fuse_export_delete(BlockExport *blk_exp)
-         fuse_session_destroy(exp->fuse_session);
-     }
- 
--    free(exp->fuse_buf.mem);
-     g_free(exp->mountpoint);
- }
- 
-@@ -570,102 +588,159 @@ static void fuse_open(fuse_req_t req, fuse_ino_t inode,
-     fuse_reply_open(req, fi);
- }
- 
--/**
-- * Handle client reads from the exported image.
-- */
--static void fuse_read(fuse_req_t req, fuse_ino_t inode,
--                      size_t size, off_t offset, struct fuse_file_info *fi)
-+static void coroutine_fn fuse_read_coroutine(void *opaque)
- {
--    FuseExport *exp = fuse_req_userdata(req);
-+    FuseIORequest *io_req = opaque;
-+    FuseExport *exp = io_req->exp;
-     int64_t length;
--    void *buf;
-+    void *buffer;
-     int ret;
- 
--    /* Limited by max_read, should not happen */
--    if (size > FUSE_MAX_BOUNCE_BYTES) {
--        fuse_reply_err(req, EINVAL);
--        return;
-+    if (io_req->size > FUSE_MAX_BOUNCE_BYTES) {
-+        fuse_reply_err(io_req->req, EINVAL);
-+        goto cleanup;
-     }
- 
--    /**
--     * Clients will expect short reads at EOF, so we have to limit
--     * offset+size to the image length.
--     */
-     length = blk_getlength(exp->common.blk);
-     if (length < 0) {
--        fuse_reply_err(req, -length);
--        return;
-+        fuse_reply_err(io_req->req, -length);
-+        goto cleanup;
-     }
- 
--    if (offset + size > length) {
--        size = length - offset;
-+    if (io_req->offset + io_req->size > length) {
-+        io_req->size = length - io_req->offset;
-     }
- 
--    buf = qemu_try_blockalign(blk_bs(exp->common.blk), size);
--    if (!buf) {
--        fuse_reply_err(req, ENOMEM);
--        return;
-+    if (io_req->size == 0) {
-+        fuse_reply_buf(io_req->req, NULL, 0);
-+        goto cleanup;
-     }
- 
--    ret = blk_pread(exp->common.blk, offset, size, buf, 0);
-+    buffer = qemu_try_blockalign(blk_bs(exp->common.blk), io_req->size);
-+    if (!buffer) {
-+        fuse_reply_err(io_req->req, ENOMEM);
-+        goto cleanup;
-+    }
-+
-+    ret = blk_co_pread(exp->common.blk, io_req->offset,
-+                       io_req->size, buffer, 0);
-     if (ret >= 0) {
--        fuse_reply_buf(req, buf, size);
-+        fuse_reply_buf(io_req->req, buffer, io_req->size);
-     } else {
--        fuse_reply_err(req, -ret);
-+        fuse_reply_err(io_req->req, -ret);
-+    }
-+
-+    qemu_vfree(buffer);
-+
-+cleanup:
-+    if (qatomic_fetch_dec(&exp->in_flight) == 1) {
-+        aio_wait_kick(); /* wake AIO_WAIT_WHILE() */
-     }
- 
--    qemu_vfree(buf);
-+    blk_exp_unref(&exp->common);
-+
-+    g_free(io_req);
- }
- 
--/**
-- * Handle client writes to the exported image.
-- */
--static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
--                       size_t size, off_t offset, struct fuse_file_info *fi)
-+static void coroutine_fn fuse_write_coroutine(void *opaque)
- {
--    FuseExport *exp = fuse_req_userdata(req);
-+    FuseIORequest *io_req = opaque;
-+    FuseExport *exp = io_req->exp;
-     int64_t length;
-     int ret;
- 
--    /* Limited by max_write, should not happen */
--    if (size > BDRV_REQUEST_MAX_BYTES) {
--        fuse_reply_err(req, EINVAL);
--        return;
-+    if (io_req->size > BDRV_REQUEST_MAX_BYTES) {
-+        fuse_reply_err(io_req->req, EINVAL);
-+        goto cleanup;
-     }
- 
-     if (!exp->writable) {
--        fuse_reply_err(req, EACCES);
--        return;
-+        fuse_reply_err(io_req->req, EACCES);
-+        goto cleanup;
-     }
- 
--    /**
--     * Clients will expect short writes at EOF, so we have to limit
--     * offset+size to the image length.
--     */
-     length = blk_getlength(exp->common.blk);
-     if (length < 0) {
--        fuse_reply_err(req, -length);
--        return;
-+        fuse_reply_err(io_req->req, -length);
-+        goto cleanup;
-     }
- 
--    if (offset + size > length) {
-+    if (io_req->offset + io_req->size > length) {
-         if (exp->growable) {
--            ret = fuse_do_truncate(exp, offset + size, true, PREALLOC_MODE_OFF);
-+            ret = fuse_do_truncate(exp, io_req->offset + io_req->size,
-+                                   true, PREALLOC_MODE_OFF);
-             if (ret < 0) {
--                fuse_reply_err(req, -ret);
--                return;
-+                fuse_reply_err(io_req->req, -ret);
-+                goto cleanup;
-             }
-         } else {
--            size = length - offset;
-+            io_req->size = MAX(0, length - io_req->offset);
-+            if (io_req->size == 0) {
-+                fuse_reply_write(io_req->req, 0);
-+                goto cleanup;
-+            }
-         }
-     }
- 
--    ret = blk_pwrite(exp->common.blk, offset, size, buf, 0);
-+    ret = blk_co_pwrite(exp->common.blk, io_req->offset, io_req->size,
-+                        io_req->write_buf, 0);
-     if (ret >= 0) {
--        fuse_reply_write(req, size);
-+        fuse_reply_write(io_req->req, io_req->size);
-     } else {
--        fuse_reply_err(req, -ret);
-+        fuse_reply_err(io_req->req, -ret);
-+    }
-+
-+cleanup:
-+    if (qatomic_fetch_dec(&exp->in_flight) == 1) {
-+        aio_wait_kick(); /* wake AIO_WAIT_WHILE() */
-     }
-+
-+    blk_exp_unref(&exp->common);
-+
-+    g_free(io_req->write_buf);
-+    g_free(io_req);
-+}
-+
-+/**
-+ * Handle client reads from the exported image.
-+ */
-+static void fuse_read(fuse_req_t req, fuse_ino_t inode,
-+                      size_t size, off_t offset, struct fuse_file_info *fi)
-+{
-+    FuseExport *exp = fuse_req_userdata(req);
-+    FuseIORequest *io_req = g_new(FuseIORequest, 1);
-+
-+    *io_req = (FuseIORequest) {
-+        .req = req,
-+        .size = size,
-+        .offset = offset,
-+        .exp = exp,
-+    };
-+
-+    Coroutine *co = qemu_coroutine_create(fuse_read_coroutine, io_req);
-+    qemu_coroutine_enter(co);
-+}
-+
-+
-+/**
-+ * Handle client writes to the exported image.
-+ */
-+static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
-+                       size_t size, off_t offset, struct fuse_file_info *fi)
-+{
-+    FuseExport *exp = fuse_req_userdata(req);
-+    FuseIORequest *io_req = g_new(FuseIORequest, 1);
-+
-+    *io_req = (FuseIORequest) {
-+        .req = req,
-+        .size = size,
-+        .offset = offset,
-+        .exp = exp,
-+        .write_buf = g_memdup2_qemu(buf, size),
-+    };
-+
-+    Coroutine *co = qemu_coroutine_create(fuse_write_coroutine, io_req);
-+    qemu_coroutine_enter(co);
- }
- 
- /**
--- 
-2.34.1
+Tests are also running OK now, at least on my local system:
 
+$ QEMU_TEST_ALLOW_LARGE_STORAGE=3D1 pyvenv/bin/python3
+../tests/functional/test_arm_orangepi.py
+TAP version 13
+ok 1 test_arm_orangepi.BananaPiMachine.test_arm_orangepi
+ok 2 test_arm_orangepi.BananaPiMachine.test_arm_orangepi_armbian
+ok 3 test_arm_orangepi.BananaPiMachine.test_arm_orangepi_initrd
+ok 4 test_arm_orangepi.BananaPiMachine.test_arm_orangepi_sd
+ok 5 test_arm_orangepi.BananaPiMachine.test_arm_orangepi_uboot_netbsd9
+1..5
+
+Can you confirm the URL is working again properly on CI also?
+
+Regards
+Niek
+
+On Thu, Mar 13, 2025 at 10:22=E2=80=AFPM Niek Linnenbank <nieklinnenbank@gm=
+ail.com>
+wrote:
+
+> Hello Stefan, Thomas,
+>
+> Thanks for reporting this. I'll try to spend some time to figure out the
+> issue and perhaps propose a new image for this test, if needed.
+>
+> Regards,
+> Niek
+>
+> On Thu, Mar 13, 2025 at 8:39=E2=80=AFAM Stefan Hajnoczi <stefanha@gmail.c=
+om>
+> wrote:
+>
+>> On Thu, Mar 13, 2025 at 1:48=E2=80=AFPM Thomas Huth <thuth@redhat.com> w=
+rote:
+>> >
+>> > On 13/03/2025 03.22, Stefan Hajnoczi wrote:
+>> > > Hi,
+>> > > CI jobs that run test_arm_orangepi.py are failing:
+>> > > https://gitlab.com/qemu-project/qemu/-/jobs/9390048284#L1138
+>> > >
+>> > > Please consider how to resolve this so the CI job passes again. If y=
+ou
+>> > > are in contact with the archive.netbsd.org administrators, maybe
+>> > > contacting them will lead to a fix. Otherwise please update the QEMU
+>> > > test to use a URL that works or remove the test.
+>> > >
+>> > > The NetBSD Orange Pi image fails to download cleanly:
+>> > >
+>> > > $ curl -O '
+>> https://archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf=
+/binary/gzimg/armv7.img.gz
+>> '
+>> > >    % Total    % Received % Xferd  Average Speed   Time    Time
+>>  Time  Current
+>> > >                                   Dload  Upload   Total   Spent
+>> Left  Speed
+>> > >    0  303M    0 2048k    0     0  1098k      0  0:04:42  0:00:01
+>> 0:04:41 1098k
+>> > > curl: (18) end of response with 315646186 bytes missing
+>> >
+>> > FYI, Nicholas already provided a nice patch series to skip the test in
+>> case
+>> > of such incomplete downloads:
+>> >
+>> >
+>> https://lore.kernel.org/qemu-devel/20250312130002.945508-1-npiggin@gmail=
+.com/
+>> >
+>> > I'll try to assemble a pull request with these patches today.
+>>
+>> Thank you!
+>>
+>> Stefan
+>>
+>
+>
+> --
+> Niek Linnenbank
+>
+>
+
+--=20
+Niek Linnenbank
+
+--000000000000c6c7be063067db06
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hello Stefan,</div><div><br></div><div>As of today, i=
+t seems the URL is working properly again. I&#39;ve done a few downloads wi=
+thout any error.</div><div>What I did notice is that NetBSD provides a &#39=
+;<a href=3D"http://cdn.netbsd.org">cdn.netbsd.org</a>&#39; also, but I can&=
+#39;t see any noticable difference yet.</div><div><br></div><div>Tests are =
+also running OK now, at least on my local system:</div><div><br></div><div>=
+$ QEMU_TEST_ALLOW_LARGE_STORAGE=3D1 pyvenv/bin/python3 ../tests/functional/=
+test_arm_orangepi.py <br>TAP version 13<br>ok 1 test_arm_orangepi.BananaPiM=
+achine.test_arm_orangepi<br>ok 2 test_arm_orangepi.BananaPiMachine.test_arm=
+_orangepi_armbian<br>ok 3 test_arm_orangepi.BananaPiMachine.test_arm_orange=
+pi_initrd<br>ok 4 test_arm_orangepi.BananaPiMachine.test_arm_orangepi_sd<br=
+>ok 5 test_arm_orangepi.BananaPiMachine.test_arm_orangepi_uboot_netbsd9<br>=
+1..5</div><div><br></div><div>Can you confirm the URL is working again prop=
+erly on CI also?</div><div><br></div><div>Regards</div><div>Niek</div></div=
+><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" clas=
+s=3D"gmail_attr">On Thu, Mar 13, 2025 at 10:22=E2=80=AFPM Niek Linnenbank &=
+lt;<a href=3D"mailto:nieklinnenbank@gmail.com">nieklinnenbank@gmail.com</a>=
+&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
+0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div=
+ dir=3D"ltr"><div>Hello Stefan, Thomas,</div><div><br></div><div>Thanks for=
+ reporting this. I&#39;ll try to spend some time to figure out the issue an=
+d perhaps propose a new image for this test, if needed.</div><div><br></div=
+><div>Regards,</div><div>Niek</div></div><br><div class=3D"gmail_quote"><di=
+v dir=3D"ltr" class=3D"gmail_attr">On Thu, Mar 13, 2025 at 8:39=E2=80=AFAM =
+Stefan Hajnoczi &lt;<a href=3D"mailto:stefanha@gmail.com" target=3D"_blank"=
+>stefanha@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
+;padding-left:1ex">On Thu, Mar 13, 2025 at 1:48=E2=80=AFPM Thomas Huth &lt;=
+<a href=3D"mailto:thuth@redhat.com" target=3D"_blank">thuth@redhat.com</a>&=
+gt; wrote:<br>
+&gt;<br>
+&gt; On 13/03/2025 03.22, Stefan Hajnoczi wrote:<br>
+&gt; &gt; Hi,<br>
+&gt; &gt; CI jobs that run test_arm_orangepi.py are failing:<br>
+&gt; &gt; <a href=3D"https://gitlab.com/qemu-project/qemu/-/jobs/9390048284=
+#L1138" rel=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-projec=
+t/qemu/-/jobs/9390048284#L1138</a><br>
+&gt; &gt;<br>
+&gt; &gt; Please consider how to resolve this so the CI job passes again. I=
+f you<br>
+&gt; &gt; are in contact with the <a href=3D"http://archive.netbsd.org" rel=
+=3D"noreferrer" target=3D"_blank">archive.netbsd.org</a> administrators, ma=
+ybe<br>
+&gt; &gt; contacting them will lead to a fix. Otherwise please update the Q=
+EMU<br>
+&gt; &gt; test to use a URL that works or remove the test.<br>
+&gt; &gt;<br>
+&gt; &gt; The NetBSD Orange Pi image fails to download cleanly:<br>
+&gt; &gt;<br>
+&gt; &gt; $ curl -O &#39;<a href=3D"https://archive.netbsd.org/pub/NetBSD-a=
+rchive/NetBSD-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz" rel=3D"norefer=
+rer" target=3D"_blank">https://archive.netbsd.org/pub/NetBSD-archive/NetBSD=
+-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz</a>&#39;<br>
+&gt; &gt;=C2=A0 =C2=A0 % Total=C2=A0 =C2=A0 % Received % Xferd=C2=A0 Averag=
+e Speed=C2=A0 =C2=A0Time=C2=A0 =C2=A0 Time=C2=A0 =C2=A0 =C2=A0Time=C2=A0 Cu=
+rrent<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Dload=C2=A0 Uplo=
+ad=C2=A0 =C2=A0Total=C2=A0 =C2=A0Spent=C2=A0 =C2=A0 Left=C2=A0 Speed<br>
+&gt; &gt;=C2=A0 =C2=A0 0=C2=A0 303M=C2=A0 =C2=A0 0 2048k=C2=A0 =C2=A0 0=C2=
+=A0 =C2=A0 =C2=A00=C2=A0 1098k=C2=A0 =C2=A0 =C2=A0 0=C2=A0 0:04:42=C2=A0 0:=
+00:01=C2=A0 0:04:41 1098k<br>
+&gt; &gt; curl: (18) end of response with 315646186 bytes missing<br>
+&gt;<br>
+&gt; FYI, Nicholas already provided a nice patch series to skip the test in=
+ case<br>
+&gt; of such incomplete downloads:<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0<a href=3D"https://lore.kernel.org/qemu-devel/202503121300=
+02.945508-1-npiggin@gmail.com/" rel=3D"noreferrer" target=3D"_blank">https:=
+//lore.kernel.org/qemu-devel/20250312130002.945508-1-npiggin@gmail.com/</a>=
+<br>
+&gt;<br>
+&gt; I&#39;ll try to assemble a pull request with these patches today.<br>
+<br>
+Thank you!<br>
+<br>
+Stefan<br>
+</blockquote></div><div><br clear=3D"all"></div><br><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><div>Niek Linnenbank<br><br></div></div></div>
+</blockquote></div><div><br clear=3D"all"></div><br><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><div>Niek Linnenbank<br><br></div></div></div>
+
+--000000000000c6c7be063067db06--
 
