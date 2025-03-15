@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE0DA6283C
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:44:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D82A6285A
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:46:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttMAr-000252-LV; Sat, 15 Mar 2025 03:43:14 -0400
+	id 1ttMAu-00026c-2Q; Sat, 15 Mar 2025 03:43:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMAo-00022r-Oe; Sat, 15 Mar 2025 03:43:10 -0400
+ id 1ttMAp-00023E-Fd; Sat, 15 Mar 2025 03:43:11 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMAn-0004o9-1b; Sat, 15 Mar 2025 03:43:10 -0400
+ id 1ttMAn-0004oJ-Cf; Sat, 15 Mar 2025 03:43:11 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9E8BEFFAFC;
+ by isrv.corpit.ru (Postfix) with ESMTP id A29B6FFAFD;
  Sat, 15 Mar 2025 10:41:55 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8D4591CACC6;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 914661CACC7;
  Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 6B5BA559E4; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
+ id 6DBD7559E6; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 08/42] elfload: Fix alignment when unmapping excess
- reservation
-Date: Sat, 15 Mar 2025 10:42:10 +0300
-Message-Id: <20250315074249.634718-8-mjt@tls.msk.ru>
+Subject: [Stable-8.2.10 09/42] target/arm: Report correct syndrome for
+ UNDEFINED CNTPS_*_EL1 from EL2 and NS EL1
+Date: Sat, 15 Mar 2025 10:42:11 +0300
+Message-Id: <20250315074249.634718-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 References: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,39 +63,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-When complying with the alignment requested in the ELF and unmapping
-the excess reservation, having align_end not aligned to the guest page
-causes the unmap to be rejected by the alignment check at
-target_munmap and later brk adjustments hit an EEXIST.
+The access pseudocode for the CNTPS_TVAL_EL1, CNTPS_CTL_EL1 and
+CNTPS_CVAL_EL1 secure timer registers says that they are UNDEFINED
+from EL2 or NS EL1.  We incorrectly return CP_ACCESS_TRAP from the
+access function in these cases, which means that we report the wrong
+syndrome value to the target EL.
 
-Fix by aligning the start of region to be unmapped.
+Use CP_ACCESS_TRAP_UNCATEGORIZED, which reports the correct syndrome
+value for an UNDEFINED instruction.
 
-Fixes: c81d1fafa6 ("linux-user: Honor elf alignment when placing images")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1913
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-[rth: Align load_end as well.]
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250213143558.10504-1-farosas@suse.de>
-(cherry picked from commit 4b7b20a3b72c5000ea71bef505c16e6e628268b6)
+Cc: qemu-stable@nongnu.org
+Fixes: b4d3978c2fd ("target-arm: Add the AArch64 view of the Secure physical timer")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250130182309.717346-2-peter.maydell@linaro.org
+(cherry picked from commit b819fd6994243aee6f9613edbbacedce4f511c32)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index e1a8b102d4..84b640c1bf 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3432,8 +3432,8 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
- 
-     if (align_size != reserve_size) {
-         abi_ulong align_addr = ROUND_UP(load_addr, align);
--        abi_ulong align_end = align_addr + reserve_size;
--        abi_ulong load_end = load_addr + align_size;
-+        abi_ulong align_end = TARGET_PAGE_ALIGN(align_addr + reserve_size);
-+        abi_ulong load_end = TARGET_PAGE_ALIGN(load_addr + align_size);
- 
-         if (align_addr != load_addr) {
-             target_munmap(load_addr, align_addr - load_addr);
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 7bef2c6675..92d5ee95e6 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -2579,7 +2579,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
+     switch (arm_current_el(env)) {
+     case 1:
+         if (!arm_is_secure(env)) {
+-            return CP_ACCESS_TRAP;
++            return CP_ACCESS_TRAP_UNCATEGORIZED;
+         }
+         if (!(env->cp15.scr_el3 & SCR_ST)) {
+             return CP_ACCESS_TRAP_EL3;
+@@ -2587,7 +2587,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
+         return CP_ACCESS_OK;
+     case 0:
+     case 2:
+-        return CP_ACCESS_TRAP;
++        return CP_ACCESS_TRAP_UNCATEGORIZED;
+     case 3:
+         return CP_ACCESS_OK;
+     default:
 -- 
 2.39.5
 
