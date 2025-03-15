@@ -2,43 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39064A6275A
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:28:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD2AA6274A
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:26:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKy0-0007jt-Hv; Sat, 15 Mar 2025 02:25:53 -0400
+	id 1ttKy7-0008Gu-Ny; Sat, 15 Mar 2025 02:26:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKvA-0003fZ-6G; Sat, 15 Mar 2025 02:22:56 -0400
+ id 1ttKvA-0003jo-Sy; Sat, 15 Mar 2025 02:22:57 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKv8-0003t8-8Q; Sat, 15 Mar 2025 02:22:55 -0400
+ id 1ttKv8-0003tI-ML; Sat, 15 Mar 2025 02:22:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3590CFF9FD;
+ by isrv.corpit.ru (Postfix) with ESMTP id 38ADDFF9FE;
  Sat, 15 Mar 2025 09:17:08 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0C12A1CAC66;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 100E31CAC67;
  Sat, 15 Mar 2025 09:18:02 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id A100F55911; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id A34C555913; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 49/51] hw/xen/hvm: Fix Aarch64 typo
-Date: Sat, 15 Mar 2025 09:17:55 +0300
-Message-Id: <20250315061801.622606-49-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Denis Rastyogin <gerben@altlinux.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 50/51] block: Zero block driver state before reopening
+Date: Sat, 15 Mar 2025 09:17:56 +0300
+Message-Id: <20250315061801.622606-50-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,30 +59,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Kevin Wolf <kwolf@redhat.com>
 
-There is no TARGET_ARM_64 definition. Luckily enough,
-when TARGET_AARCH64 is defined, TARGET_ARM also is.
+Block drivers assume in their .bdrv_open() implementation that their
+state in bs->opaque has been zeroed; it is initially allocated with
+g_malloc0() in bdrv_open_driver().
 
-Fixes: 733766cd373 ("hw/arm: introduce xenpvh machine")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250305153929.43687-2-philmd@linaro.org>
-(cherry picked from commit 3a11b653a63fee0e43f4ab84b93f068b961d8fe7)
+bdrv_snapshot_goto() needs to make sure that it is zeroed again before
+calling drv->bdrv_open() to avoid that block drivers use stale values.
+
+One symptom of this bug is VMDK running into a double free when the user
+tries to apply an internal snapshot like 'qemu-img snapshot -a test
+test.vmdk'. This should be a graceful error because VMDK doesn't support
+internal snapshots.
+
+==25507== Invalid free() / delete / delete[] / realloc()
+==25507==    at 0x484B347: realloc (vg_replace_malloc.c:1801)
+==25507==    by 0x54B592A: g_realloc (gmem.c:171)
+==25507==    by 0x1B221D: vmdk_add_extent (../block/vmdk.c:570)
+==25507==    by 0x1B1084: vmdk_open_sparse (../block/vmdk.c:1059)
+==25507==    by 0x1AF3D8: vmdk_open (../block/vmdk.c:1371)
+==25507==    by 0x1A2AE0: bdrv_snapshot_goto (../block/snapshot.c:299)
+==25507==    by 0x205C77: img_snapshot (../qemu-img.c:3500)
+==25507==    by 0x58FA087: (below main) (libc_start_call_main.h:58)
+==25507==  Address 0x832f3e0 is 0 bytes inside a block of size 272 free'd
+==25507==    at 0x4846B83: free (vg_replace_malloc.c:989)
+==25507==    by 0x54AEAC4: g_free (gmem.c:208)
+==25507==    by 0x1AF629: vmdk_close (../block/vmdk.c:2889)
+==25507==    by 0x1A2A9C: bdrv_snapshot_goto (../block/snapshot.c:290)
+==25507==    by 0x205C77: img_snapshot (../qemu-img.c:3500)
+==25507==    by 0x58FA087: (below main) (libc_start_call_main.h:58)
+
+This error was discovered by fuzzing qemu-img.
+
+Cc: qemu-stable@nongnu.org
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2853
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2851
+Reported-by: Denis Rastyogin <gerben@altlinux.org>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20250310104858.28221-1-kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit b75c5f9879166b86ed7c48b772fdcd0693e8a9a3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/hw/xen/arch_hvm.h b/include/hw/xen/arch_hvm.h
-index c7c515220d..df39c819c8 100644
---- a/include/hw/xen/arch_hvm.h
-+++ b/include/hw/xen/arch_hvm.h
-@@ -1,5 +1,5 @@
- #if defined(TARGET_I386) || defined(TARGET_X86_64)
- #include "hw/i386/xen_arch_hvm.h"
--#elif defined(TARGET_ARM) || defined(TARGET_ARM_64)
-+#elif defined(TARGET_ARM) || defined(TARGET_AARCH64)
- #include "hw/arm/xen_arch_hvm.h"
- #endif
+diff --git a/block/snapshot.c b/block/snapshot.c
+index 8fd1756777..357c1469ab 100644
+--- a/block/snapshot.c
++++ b/block/snapshot.c
+@@ -296,6 +296,7 @@ int bdrv_snapshot_goto(BlockDriverState *bs,
+         bdrv_graph_wrunlock();
+ 
+         ret = bdrv_snapshot_goto(fallback_bs, snapshot_id, errp);
++        memset(bs->opaque, 0, drv->instance_size);
+         open_ret = drv->bdrv_open(bs, options, bs->open_flags, &local_err);
+         qobject_unref(options);
+         if (open_ret < 0) {
 -- 
 2.39.5
 
