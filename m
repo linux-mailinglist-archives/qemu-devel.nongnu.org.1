@@ -2,50 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD44A629F3
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:23:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4238A62D0B
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 13:56:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttNfc-0007xT-9c; Sat, 15 Mar 2025 05:19:04 -0400
+	id 1ttR2e-000816-GJ; Sat, 15 Mar 2025 08:55:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNdl-0004XN-8J; Sat, 15 Mar 2025 05:17:14 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNdg-00088q-3L; Sat, 15 Mar 2025 05:17:06 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 16637FFBCC;
- Sat, 15 Mar 2025 12:13:46 +0300 (MSK)
-Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1ECA41CAD65;
- Sat, 15 Mar 2025 12:14:40 +0300 (MSK)
-Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id D421255A60; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Greg Kurz <groug@kaod.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 27/27] docs: Rename default-configs to configs
-Date: Sat, 15 Mar 2025 12:14:38 +0300
-Message-Id: <20250315091439.657371-27-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
-References: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1ttR2H-000805-M2
+ for qemu-devel@nongnu.org; Sat, 15 Mar 2025 08:54:43 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1ttR2F-00023Q-2j
+ for qemu-devel@nongnu.org; Sat, 15 Mar 2025 08:54:41 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5e6c18e2c7dso5219630a12.3
+ for <qemu-devel@nongnu.org>; Sat, 15 Mar 2025 05:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1742043277; x=1742648077; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=pnvnH8wVO5qHVr2rZFQVhxu42KjZs1lkGcg4CXpA0S8=;
+ b=A6ETj7asFi8dh8lr7MndhDqcKK90GzDrWFR221mK/WadW3a+YMXZc4tbrXqJzl32s3
+ ixyS1o7eSaU5x1f2Na04Ya1JAdw06FTz8k2StnORsSS+hSF6v4UgI/cyCfnCb+laCvyG
+ riJcx6a9D4/GLb1AaDJcCcWa/Q6kijaPNLPMc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742043277; x=1742648077;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pnvnH8wVO5qHVr2rZFQVhxu42KjZs1lkGcg4CXpA0S8=;
+ b=c/M+ywNc5DteveCeaE1ok0XnYD/Wv3x1ePIfBc4k3Wjr/w+f3Ccu9Mg+Z+0Dv4RRcT
+ LzfnHYGMTzVvHe7vR2RahUXeWxKTYpFoXEtfQ1EdSPMv/4k1oVIVzeOPpNQthsTcqvrX
+ Clqfx4O8ZcahXjQ3fdNKMSOOGhWDkUMBctPvm0XzdGvEeiiJo85Rr4V6NrPv7uWppLtb
+ fJlfCm4Dc5T+Gb84+j0AK4a6DCIApD8I/7DnLRX6mUEpw+faIoEeYmXFDALYcWQ8sGCZ
+ yKGJpuPe3sYLAmjB1TWpr3mRBMwxHCqAZUCZCEpOhHEY4FV+8HKv735Lsc/cjZ9cfo8L
+ bw0A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV+vVXd5UEb0INQHMDNFTiwk0BURFi2lC8KqG4QREeh/ItiGq9IVXXnjIrGZHXnIsG2Who8RXaWL4wZ@nongnu.org
+X-Gm-Message-State: AOJu0Ywrb6Vu6qhETXahTAfizbZKB8mXai2XxnU04P5QKOZporEdIA6b
+ a/vaDLMMcqVBlBjnzqgrDIe4Z3dApMtm0eWem3n0fFnwKeOzzSEke1eFotWGh5yLnMeGnqcaJoY
+ vQcsA7FS1C31Th6b3DSP/UIdn+zW2W5NWMHQd
+X-Gm-Gg: ASbGnct2PfA1DuedrO4+Klu/JIJ1mR+kkFIRcGqqOujyhmQ0JzzeJcrjMXqDPL15ZTy
+ 0FTHdh1CcjZhtNDje+ruAQbFFMFX9gOaEA0ynOU4ND9wX9n7o74IV40Tq5A/T81ZJaYhrR58N8V
+ m2LAlKRcJEGKxIUsH5fa3c7Tp0rSU=
+X-Google-Smtp-Source: AGHT+IGHtf/RIdoLdPwNDeUFMCRzB2uZlLj6Fl+EBeeS/Dq58EqE3BXSNRTnmEwdzYxqbtin/vSy0XdXkTatKYRh1Pc=
+X-Received: by 2002:a17:907:94c7:b0:ac2:1c64:b0a with SMTP id
+ a640c23a62f3a-ac3301940d2mr573914966b.14.1742043276881; Sat, 15 Mar 2025
+ 05:54:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250306160428.3041057-1-sjg@chromium.org>
+ <20250307142255.GL2640854@bill-the-cat>
+ <CAFLszTgtYsVQW-kETzUAdvJvAT6fN_53TeoN7o8wu52Ze3u56Q@mail.gmail.com>
+ <20250314160652.GS2640854@bill-the-cat>
+In-Reply-To: <20250314160652.GS2640854@bill-the-cat>
+From: Simon Glass <sjg@chromium.org>
+Date: Sat, 15 Mar 2025 12:54:25 +0000
+X-Gm-Features: AQ5f1JqMTvq23AjX0FBIPqJObIJ2yxF3ERff3cPnP9UqG8sdu7lJiadJYaX85z0
+Message-ID: <CAFLszTjGV==WftDU6C=S8VB28QJLvFJGS0H3=PKwTCjkZvNibQ@mail.gmail.com>
+Subject: Re: [PATCH v4 00/47] x86: Improve operation under QEMU
+To: Tom Rini <trini@konsulko.com>
+Cc: U-Boot Mailing List <u-boot@lists.denx.de>, Bin Meng <bmeng.cn@gmail.com>, 
+ Andrew Goodbody <andrew.goodbody@linaro.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Angelo Dureghello <angelo@kernel-space.org>,
+ Guillaume La Roque <glaroque@baylibre.com>, 
+ Heinrich Schuchardt <xypron.glpk@gmx.de>, Igor Opaniuk <igor.opaniuk@gmail.com>,
+ Jerome Forissier <jerome.forissier@linaro.org>,
+ Julien Masson <jmasson@baylibre.com>, 
+ Julius Lehmann <lehmanju@devpi.de>, Love Kumar <love.kumar@amd.com>, 
+ Marek Vasut <marek.vasut+renesas@mailbox.org>,
+ Martyn Welch <martyn.welch@collabora.com>, 
+ Mattijs Korpershoek <mkorpershoek@baylibre.com>, 
+ Maximilian Brune <maximilian.brune@9elements.com>,
+ Moritz Fischer <moritzf@google.com>, 
+ Patrick Rudolph <patrick.rudolph@9elements.com>,
+ Philip Oberfichtner <pro@denx.de>, 
+ Quentin Schulz <quentin.schulz@cherry.de>, Richard Weinberger <richard@nod.at>,
+ Stephen Warren <swarren@nvidia.com>, Stephen Warren <swarren@wwwdotorg.org>, 
+ Sughosh Ganu <sughosh.ganu@linaro.org>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=sjg@chromium.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,129 +107,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Greg Kurz <groug@kaod.org>
+Hi Tom,
 
-This was missed at the time.
+On Fri, 14 Mar 2025 at 16:06, Tom Rini <trini@konsulko.com> wrote:
+>
+> On Fri, Mar 14, 2025 at 02:44:35PM +0000, Simon Glass wrote:
+> > Hi Tom,
+> >
+> > On Fri, 7 Mar 2025 at 14:23, Tom Rini <trini@konsulko.com> wrote:
+> > >
+> > > On Thu, Mar 06, 2025 at 09:03:27AM -0700, Simon Glass wrote:
+> > >
+> > > > U-Boot can start and boot an OS in both qemu-x86 and qemu-x86_64 but it
+> > > > is not perfect.
+> > > >
+> > > > With both builds, executing the VESA ROM causes an intermittent hang, at
+> > > > least on some AMD CPUs.
+> > > >
+> > > > With qemu-x86_64 kvm cannot be used since the move to long mode (64-bit)
+> > > > is done in a way that works on real hardware but not with QEMU. This
+> > > > means that performance is 4-5x slower than it could be, at least on my
+> > > > CPU.
+> > > >
+> > > > We can work around the first problem by using Bochs, which is anyway a
+> > > > better choice than VESA for QEMU. The second can be addressed by using
+> > > > the same descriptor across the jump to long mode.
+> > > >
+> > > > With an MTRR fix this allows booting into Ubuntu on qemu-x86_64
+> > > >
+> > > > In v3 some e820 patches are included to make booting reliable and avoid
+> > > > ACPI tables being dropped. Also, several MTTR problems are addressed, to
+> > > > support memory sizes above 4GB reliably.
+> > >
+> > > Do you plan to rebase the prerequisite series' this requires so that it
+> > > can be merged?
+> >
+> > Here's my understanding of where things are:
+> >
+> > 1. You rejected the membuf series and my replies to try to resolve
+> > that haven't gone anywhere yet. So your tree doesn't have any tests
+> > for that code and still has the old naming.
+>
+> https://patchwork.ozlabs.org/comment/3473898/ is a well thought out not
+> gratuitous summary of why the series as it stands is a step in the wrong
+> direction. Tests are good. They're not a reason to pull an otherwise bad
+> series. This series should be rebased to not depend on that series. The
+> tests from the other series should be split out.
 
-Fixes: 812b31d3f91 ("configs: rename default-configs to configs and reorganise")
-Signed-off-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250306174113.427116-1-groug@kaod.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 48170c2d865a5937092b1384421b01cd38113042)
-(Mjt: context fix in docs/devel/kconfig.rst)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+It's not a bad series, unfortunately. I replied with my own comments
+and I stand by them.
 
-diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-index 1894721743..21fff65d28 100644
---- a/docs/devel/build-system.rst
-+++ b/docs/devel/build-system.rst
-@@ -193,7 +193,7 @@ Target-dependent emulator sourcesets:
-   Each emulator also includes sources for files in the ``hw/`` and ``target/``
-   subdirectories.  The subdirectory used for each emulator comes
-   from the target's definition of ``TARGET_BASE_ARCH`` or (if missing)
--  ``TARGET_ARCH``, as found in ``default-configs/targets/*.mak``.
-+  ``TARGET_ARCH``, as found in ``configs/targets/*.mak``.
- 
-   Each subdirectory in ``hw/`` adds one sourceset to the ``hw_arch`` dictionary,
-   for example::
-@@ -250,8 +250,8 @@ Utility sourcesets:
- The following files concur in the definition of which files are linked
- into each emulator:
- 
--``default-configs/devices/*.mak``
--  The files under ``default-configs/devices/`` control the boards and devices
-+``configs/devices/*.mak``
-+  The files under ``configs/devices/`` control the boards and devices
-   that are built into each QEMU system emulation targets. They merely contain
-   a list of config variable definitions such as::
- 
-@@ -260,11 +260,11 @@ into each emulator:
-     CONFIG_XLNX_VERSAL=y
- 
- ``*/Kconfig``
--  These files are processed together with ``default-configs/devices/*.mak`` and
-+  These files are processed together with ``configs/devices/*.mak`` and
-   describe the dependencies between various features, subsystems and
-   device models.  They are described in :ref:`kconfig`
- 
--``default-configs/targets/*.mak``
-+``configs/targets/*.mak``
-   These files mostly define symbols that appear in the ``*-config-target.h``
-   file for each emulator [#cfgtarget]_.  However, the ``TARGET_ARCH``
-   and ``TARGET_BASE_ARCH`` will also be used to select the ``hw/`` and
-diff --git a/docs/devel/kconfig.rst b/docs/devel/kconfig.rst
-index 69674d008a..ba5e1f399a 100644
---- a/docs/devel/kconfig.rst
-+++ b/docs/devel/kconfig.rst
-@@ -38,7 +38,7 @@ originated in the Linux kernel, though it was heavily simplified and
- the handling of dependencies is stricter in QEMU.
- 
- Unlike Linux, there is no user interface to edit the configuration, which
--is instead specified in per-target files under the ``default-configs/``
-+is instead specified in per-target files under the ``configs/``
- directory of the QEMU source tree.  This is because, unlike Linux,
- configuration and dependencies can be treated as a black box when building
- QEMU; the default configuration that QEMU ships with should be okay in
-@@ -103,7 +103,7 @@ directives can be included:
- **default value**: ``default <value> [if <expr>]``
- 
-   Default values are assigned to the config symbol if no other value was
--  set by the user via ``default-configs/*.mak`` files, and only if
-+  set by the user via ``configs/*.mak`` files, and only if
-   ``select`` or ``depends on`` directives do not force the value to true
-   or false respectively.  ``<value>`` can be ``y`` or ``n``; it cannot
-   be an arbitrary Boolean expression.  However, a condition for applying
-@@ -119,7 +119,7 @@ directives can be included:
-   This is similar to ``select`` as it applies a lower limit of ``y``
-   to another symbol.  However, the lower limit is only a default
-   and the "implied" symbol's value may still be set to ``n`` from a
--  ``default-configs/*.mak`` files.  The following two examples are
-+  ``configs/*.mak`` files.  The following two examples are
-   equivalent::
- 
-     config FOO
-@@ -146,7 +146,7 @@ declares its dependencies in different ways:
-       bool
- 
-   Subsystems always default to false (they have no ``default`` directive)
--  and are never visible in ``default-configs/*.mak`` files.  It's
-+  and are never visible in ``configs/*.mak`` files.  It's
-   up to other symbols to ``select`` whatever subsystems they require.
- 
-   They sometimes have ``select`` directives to bring in other required
-@@ -229,7 +229,7 @@ declares its dependencies in different ways:
-   cannot be started at all without it.  It should be listed under
-   ``imply`` if (depending on the QEMU command line) the board may or
-   may not be started without it.  Boards also default to false; they are
--  enabled by the ``default-configs/*.mak`` for the target they apply to.
-+  enabled by the ``configs/*.mak`` for the target they apply to.
- 
- **internal elements**
- 
-@@ -241,18 +241,18 @@ declares its dependencies in different ways:
- 
-   Internal elements group code that is useful in several boards or
-   devices.  They are usually enabled with ``select`` and in turn select
--  other elements; they are never visible in ``default-configs/*.mak``
-+  other elements; they are never visible in ``configs/*.mak``
-   files, and often not even in the Makefile.
- 
- Writing and modifying default configurations
- --------------------------------------------
- 
- In addition to the Kconfig files under hw/, each target also includes
--a file called ``default-configs/TARGETNAME-softmmu.mak``.  These files
-+a file called ``configs/TARGETNAME-softmmu.mak``.  These files
- initialize some Kconfig variables to non-default values and provide the
- starting point to turn on devices and subsystems.
- 
--A file in ``default-configs/`` looks like the following example::
-+A file in ``configs/`` looks like the following example::
- 
-     # Default configuration for alpha-softmmu
- 
--- 
-2.39.5
+I don't mind if you want to drop the #ifdef (which shows how a flag
+could be used and the code-size impact). But other than that, I am
+firm on this for now. I've already applied it to my tree and a membuf
+implementation with tests and without a power-of-two limitation is
+important for my current work on distros and expo.
 
+>
+> > 2. I sent the first part of the PXE series so you could apply that.
+>
+> Yes, I should be applying that next week.
+>
+> > 3. You rejected the second part of this series because it didn't
+> > include support for lwip without cmdline. I offered to handle that
+> > case later but I'm pretty sure you rejected that too.
+>
+> That's not how I would characterize it, no. I said you should probably
+> focus on sandbox + lwip, since you're the sandbox guru and ask Jerome to
+> do the net_loop-alike thing, since he's one of the network custodians
+> and the lwip person. I was trying to direct you to where your efforts
+> might be most useful but if you insist on instead doing the
+> net_loop-alike part and Jerome ack's it, that's fine.
+
+As you know there have been many arguments from the EFI guys about
+sandbox and you have already rejected my sandbox-focussed EFI-memory
+series for your tree. If I were actually a guru, that wouldn't have
+happened.
+
+I see that Jerome has created some tests, which is good.
+
+So really, you should consider applying the full PXE series so that
+Jerome can build on that and add support for non-CMDLINE PXE in lwip
+in a way that you would like.
+
+>
+> > 4. This series is now marked 'changes requested' but the only feedback
+> > I see is in the RFC patch.
+>
+> Yes, rebase to something that can be applied is a change I've requested.
+> Because my feedback was "Do you plan to rebase the prerequisite series'
+> this requires so that it can be merged?". I would have otherwise merged
+> it by now.
+
+OK I sent a PR.
+
+>
+> Patchwork reflects mainline status.
+
+OK. I am finding it more and more slow and painful. Since we are
+talking about Patchwork, I noticed some patches assigned to me in
+there, so I've assigned them to you. I'll try to look there more
+often.
+
+Regards,
+Simon
 
