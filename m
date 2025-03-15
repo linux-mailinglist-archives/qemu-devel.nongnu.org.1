@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE59BA6283D
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A841A6283B
 	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:44:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttMAp-00022V-0L; Sat, 15 Mar 2025 03:43:11 -0400
+	id 1ttMAp-00022b-EF; Sat, 15 Mar 2025 03:43:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMAl-0001yN-HA; Sat, 15 Mar 2025 03:43:07 -0400
+ id 1ttMAl-0001zA-Sa; Sat, 15 Mar 2025 03:43:08 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMAj-0004n5-M9; Sat, 15 Mar 2025 03:43:07 -0400
+ id 1ttMAj-0004nC-PM; Sat, 15 Mar 2025 03:43:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 96CB2FFAFA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9A9DEFFAFB;
  Sat, 15 Mar 2025 10:41:55 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 857151CACC4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 895E31CACC5;
  Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 66EE9559E0; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
+ id 6930F559E2; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mikael Szreder <git@miszr.win>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 06/42] target/sparc: Fix gdbstub incorrectly handling
- registers f32-f62
-Date: Sat, 15 Mar 2025 10:42:08 +0300
-Message-Id: <20250315074249.634718-6-mjt@tls.msk.ru>
+Subject: [Stable-8.2.10 07/42] linux-user: Honor elf alignment when placing
+ images
+Date: Sat, 15 Mar 2025 10:42:09 +0300
+Message-Id: <20250315074249.634718-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 References: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
@@ -61,62 +60,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mikael Szreder <git@miszr.win>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The gdbstub implementation for the Sparc architecture would
-incorrectly calculate the the floating point register offset.
-This resulted in, for example, registers f32 and f34 to point to
-the same value.
+Most binaries don't actually depend on more than page alignment,
+but any binary can request it.  Not honoring this was a bug.
 
-The issue was caused by the confusion between even register numbers
-and even register indexes. For example, the register index of f32 is 64
-and f34 is 65.
+This became obvious when gdb reported
 
-Cc: qemu-stable@nongnu.org
-Fixes: 30038fd81808 ("target-sparc: Change fpr representation to doubles.")
-Signed-off-by: Mikael Szreder <git@miszr.win>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+    Failed to read a valid object file image from memory
+
+when examining some vdso which are marked as needing more
+than page alignment.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250214070343.11501-1-git@miszr.win>
-(cherry picked from commit 7a74e468089a58756b438d31a2a9a97f183780d7)
+(cherry picked from commit c81d1fafa6233448bcc2d8fcd2ba63a4ae834f3a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
-index a1c8fdc4d5..109b7237e0 100644
---- a/target/sparc/gdbstub.c
-+++ b/target/sparc/gdbstub.c
-@@ -80,8 +80,13 @@ int sparc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-         }
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 17cd547c0c..e1a8b102d4 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3278,7 +3278,8 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+                            char **pinterp_name)
+ {
+     g_autofree struct elf_phdr *phdr = NULL;
+-    abi_ulong load_addr, load_bias, loaddr, hiaddr, error;
++    abi_ulong load_addr, load_bias, loaddr, hiaddr, error, align;
++    size_t reserve_size, align_size;
+     int i, prot_exec;
+     Error *err = NULL;
+ 
+@@ -3362,6 +3363,9 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+ 
+     load_addr = loaddr;
+ 
++    align = pow2ceil(info->alignment);
++    info->alignment = align;
++
+     if (pinterp_name != NULL) {
+         if (ehdr->e_type == ET_EXEC) {
+             /*
+@@ -3370,8 +3374,6 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+              */
+             probe_guest_base(image_name, loaddr, hiaddr);
+         } else {
+-            abi_ulong align;
+-
+             /*
+              * The binary is dynamic, but we still need to
+              * select guest_base.  In this case we pass a size.
+@@ -3389,10 +3391,7 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+              * Since we do not have complete control over the guest
+              * address space, we prefer the kernel to choose some address
+              * rather than force the use of LOAD_ADDR via MAP_FIXED.
+-             * But without MAP_FIXED we cannot guarantee alignment,
+-             * only suggest it.
+              */
+-            align = pow2ceil(info->alignment);
+             if (align) {
+                 load_addr &= -align;
+             }
+@@ -3416,13 +3415,35 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+      * In both cases, we will overwrite pages in this range with mappings
+      * from the executable.
+      */
+-    load_addr = target_mmap(load_addr, (size_t)hiaddr - loaddr + 1, PROT_NONE,
++    reserve_size = (size_t)hiaddr - loaddr + 1;
++    align_size = reserve_size;
++
++    if (ehdr->e_type != ET_EXEC && align > qemu_real_host_page_size()) {
++        align_size += align - 1;
++    }
++
++    load_addr = target_mmap(load_addr, align_size, PROT_NONE,
+                             MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
+                             (ehdr->e_type == ET_EXEC ? MAP_FIXED_NOREPLACE : 0),
+                             -1, 0);
+     if (load_addr == -1) {
+         goto exit_mmap;
      }
-     if (n < 80) {
--        /* f32-f62 (double width, even numbers only) */
--        return gdb_get_reg64(mem_buf, env->fpr[(n - 32) / 2].ll);
-+        /* f32-f62 (16 double width registers, even register numbers only)
-+         * n == 64: f32 : env->fpr[16]
-+         * n == 65: f34 : env->fpr[17]
-+         * etc...
-+         * n == 79: f62 : env->fpr[31]
-+         */
-+        return gdb_get_reg64(mem_buf, env->fpr[(n - 64) + 16].ll);
-     }
-     switch (n) {
-     case 80:
-@@ -174,8 +179,13 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-         }
-         return 4;
-     } else if (n < 80) {
--        /* f32-f62 (double width, even numbers only) */
--        env->fpr[(n - 32) / 2].ll = tmp;
-+        /* f32-f62 (16 double width registers, even register numbers only)
-+         * n == 64: f32 : env->fpr[16]
-+         * n == 65: f34 : env->fpr[17]
-+         * etc...
-+         * n == 79: f62 : env->fpr[31]
-+         */
-+        env->fpr[(n - 64) + 16].ll = tmp;
-     } else {
-         switch (n) {
-         case 80:
++
++    if (align_size != reserve_size) {
++        abi_ulong align_addr = ROUND_UP(load_addr, align);
++        abi_ulong align_end = align_addr + reserve_size;
++        abi_ulong load_end = load_addr + align_size;
++
++        if (align_addr != load_addr) {
++            target_munmap(load_addr, align_addr - load_addr);
++        }
++        if (align_end != load_end) {
++            target_munmap(align_end, load_end - align_end);
++        }
++        load_addr = align_addr;
++    }
++
+     load_bias = load_addr - loaddr;
+ 
+     if (elf_is_fdpic(ehdr)) {
 -- 
 2.39.5
 
