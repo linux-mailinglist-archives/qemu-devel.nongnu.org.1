@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D05A62741
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:25:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EFAA62763
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:30:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKv6-00030f-Jp; Sat, 15 Mar 2025 02:22:53 -0400
+	id 1ttKuR-0000dM-0F; Sat, 15 Mar 2025 02:22:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKtS-0007G4-Hs; Sat, 15 Mar 2025 02:21:10 -0400
+ id 1ttKtS-0007I3-Sn; Sat, 15 Mar 2025 02:21:11 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKtM-0003gq-Po; Sat, 15 Mar 2025 02:21:09 -0400
+ id 1ttKtQ-0003hE-GK; Sat, 15 Mar 2025 02:21:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DBC76FF9EA;
+ by isrv.corpit.ru (Postfix) with ESMTP id DFC29FF9EB;
  Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id B2C611CAC53;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B73811CAC54;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 73046558EB; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 75523558ED; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Patrick Venture <venture@google.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 30/51] hw/gpio: npcm7xx: fixup out-of-bounds access
-Date: Sat, 15 Mar 2025 09:17:36 +0300
-Message-Id: <20250315061801.622606-30-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 31/51] target/arm: Apply correct timer offset when
+ calculating deadlines
+Date: Sat, 15 Mar 2025 09:17:37 +0300
+Message-Id: <20250315061801.622606-31-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
@@ -61,43 +62,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Patrick Venture <venture@google.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-The reg isn't validated to be a possible register before
-it's dereferenced for one case.  The mmio space registered
-for the gpio device is 4KiB but there aren't that many
-registers in the struct.
+When we are calculating timer deadlines, the correct definition of
+whether or not to apply an offset to the physical count is described
+in the Arm ARM DDI4087 rev L.a section D12.2.4.1.  This is different
+from when the offset should be applied for a direct read of the
+counter sysreg.
+
+We got this right for the EL1 physical timer and for the EL1 virtual
+timer, but got all the rest wrong: they should be using a zero offset
+always.
+
+Factor the offset calculation out into a function that has a comment
+documenting exactly which offset it is calculating and which gets the
+HYP, SEC, and HYPVIRT cases right.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 526dbbe0874 ("hw/gpio: Add GPIO model for Nuvoton NPCM7xx")
-Signed-off-by: Patrick Venture <venture@google.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250226024603.493148-1-venture@google.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 3b2e22c0bbe2ce07123d93961d52f17644562cd7)
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20250204125009.2281315-2-peter.maydell@linaro.org
+(cherry picked from commit db6c2192839ee0282d38f6f6666a87e0629fcd13)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/gpio/npcm7xx_gpio.c b/hw/gpio/npcm7xx_gpio.c
-index ba19b9ebad..00ffd413ba 100644
---- a/hw/gpio/npcm7xx_gpio.c
-+++ b/hw/gpio/npcm7xx_gpio.c
-@@ -220,8 +220,6 @@ static void npcm7xx_gpio_regs_write(void *opaque, hwaddr addr, uint64_t v,
-         return;
-     }
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 8df38a30a1..417801d9c3 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -2727,6 +2727,32 @@ static uint64_t gt_phys_cnt_offset(CPUARMState *env)
+     return gt_phys_raw_cnt_offset(env);
+ }
  
--    diff = s->regs[reg] ^ value;
--
-     switch (reg) {
-     case NPCM7XX_GPIO_TLOCK1:
-     case NPCM7XX_GPIO_TLOCK2:
-@@ -242,6 +240,7 @@ static void npcm7xx_gpio_regs_write(void *opaque, hwaddr addr, uint64_t v,
-     case NPCM7XX_GPIO_PU:
-     case NPCM7XX_GPIO_PD:
-     case NPCM7XX_GPIO_IEM:
-+        diff = s->regs[reg] ^ value;
-         s->regs[reg] = value;
-         npcm7xx_gpio_update_pins(s, diff);
-         break;
++static uint64_t gt_indirect_access_timer_offset(CPUARMState *env, int timeridx)
++{
++    /*
++     * Return the timer offset to use for indirect accesses to the timer.
++     * This is the Offset value as defined in D12.2.4.1 "Operation of the
++     * CompareValue views of the timers".
++     *
++     * The condition here is not always the same as the condition for
++     * whether to apply an offset register when doing a direct read of
++     * the counter sysreg; those conditions are described in the
++     * access pseudocode for each counter register.
++     */
++    switch (timeridx) {
++    case GTIMER_PHYS:
++        return gt_phys_raw_cnt_offset(env);
++    case GTIMER_VIRT:
++        return env->cp15.cntvoff_el2;
++    case GTIMER_HYP:
++    case GTIMER_SEC:
++    case GTIMER_HYPVIRT:
++        return 0;
++    default:
++        g_assert_not_reached();
++    }
++}
++
+ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
+ {
+     ARMGenericTimer *gt = &cpu->env.cp15.c14_timer[timeridx];
+@@ -2736,8 +2762,7 @@ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
+          * Timer enabled: calculate and set current ISTATUS, irq, and
+          * reset timer to when ISTATUS next has to change
+          */
+-        uint64_t offset = timeridx == GTIMER_VIRT ?
+-            cpu->env.cp15.cntvoff_el2 : gt_phys_raw_cnt_offset(&cpu->env);
++        uint64_t offset = gt_indirect_access_timer_offset(&cpu->env, timeridx);
+         uint64_t count = gt_get_countervalue(&cpu->env);
+         /* Note that this must be unsigned 64 bit arithmetic: */
+         int istatus = count - offset >= gt->cval;
 -- 
 2.39.5
 
