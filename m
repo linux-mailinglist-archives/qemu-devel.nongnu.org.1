@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24DEA6287C
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:50:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0083A6287A
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:50:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttMCM-0004xP-Mf; Sat, 15 Mar 2025 03:44:47 -0400
+	id 1ttMCL-0004vl-IX; Sat, 15 Mar 2025 03:44:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMC9-0004eP-3E; Sat, 15 Mar 2025 03:44:33 -0400
+ id 1ttMC9-0004eO-2n; Sat, 15 Mar 2025 03:44:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMC5-00050K-HU; Sat, 15 Mar 2025 03:44:31 -0400
+ id 1ttMC6-00050Q-4C; Sat, 15 Mar 2025 03:44:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CF80BFFB08;
+ by isrv.corpit.ru (Postfix) with ESMTP id D3452FFB09;
  Sat, 15 Mar 2025 10:41:55 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id BE2C21CACD2;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C20791CACD3;
  Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 87EA7559FC; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
+ id 8A43F559FE; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>,
- =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
- Lei Yang <leiyang@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+Cc: qemu-stable@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 20/42] vdpa: Fix endian bugs in shadow virtqueue
-Date: Sat, 15 Mar 2025 10:42:22 +0300
-Message-Id: <20250315074249.634718-20-mjt@tls.msk.ru>
+Subject: [Stable-8.2.10 21/42] target/loongarch/gdbstub: Fix gdbstub
+ incorrectly handling some registers
+Date: Sat, 15 Mar 2025 10:42:23 +0300
+Message-Id: <20250315074249.634718-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 References: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,89 +60,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Konstantin Shkolnyy <kshk@linux.ibm.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-VDPA didn't work on a big-endian machine due to missing/incorrect
-CPU<->LE data format conversions.
+Write operation with R32 (orig_a0) and R34 (CSR_BADV) is discarded on
+gdbstub implementation for LoongArch system. And return value should
+be register size rather than 0, since it is used to calculate offset of
+next register such as R33 (PC) in function handle_write_all_regs().
 
-Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Message-Id: <20250212164923.1971538-1-kshk@linux.ibm.com>
-Fixes: 10857ec0ad ("vhost: Add VhostShadowVirtqueue")
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 50e9754149066dc91f58405d3378b589098cb408)
+Cc: qemu-stable@nongnu.org
+Fixes: ca61e75071c6 ("target/loongarch: Add gdb support.")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+(cherry picked from commit 7bd4eaa847fcdbc4505d9ab95dafa21791d8302a)
+(Mjt: context fix due to missing v9.1.0-913-g2a99b2af2c
+ "target/loongarch: Use explicit little-endian LD/ST API")
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
-index fc5f408f77..ca60167b08 100644
---- a/hw/virtio/vhost-shadow-virtqueue.c
-+++ b/hw/virtio/vhost-shadow-virtqueue.c
-@@ -165,10 +165,10 @@ static bool vhost_svq_vring_write_descs(VhostShadowVirtqueue *svq, hwaddr *sg,
-         descs[i].len = cpu_to_le32(iovec[n].iov_len);
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index 5fc2f19e96..320a6f2fcc 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -63,23 +63,24 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     CPULoongArchState *env = &cpu->env;
+     target_ulong tmp;
+-    int read_length;
+     int length = 0;
  
-         last = i;
--        i = cpu_to_le16(svq->desc_next[i]);
-+        i = svq->desc_next[i];
-     }
- 
--    svq->free_head = le16_to_cpu(svq->desc_next[last]);
-+    svq->free_head = svq->desc_next[last];
-     return true;
- }
- 
-@@ -228,10 +228,12 @@ static void vhost_svq_kick(VhostShadowVirtqueue *svq)
-     smp_mb();
- 
-     if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
--        uint16_t avail_event = *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]);
-+        uint16_t avail_event = le16_to_cpu(
-+                *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]));
-         needs_kick = vring_need_event(avail_event, svq->shadow_avail_idx, svq->shadow_avail_idx - 1);
++    if (n < 0 || n > 34) {
++        return 0;
++    }
++
+     if (is_la64(env)) {
+         tmp = ldq_p(mem_buf);
+-        read_length = 8;
++        length = 8;
      } else {
--        needs_kick = !(svq->vring.used->flags & VRING_USED_F_NO_NOTIFY);
-+        needs_kick =
-+                !(svq->vring.used->flags & cpu_to_le16(VRING_USED_F_NO_NOTIFY));
+         tmp = ldl_p(mem_buf);
+-        read_length = 4;
++        length = 4;
      }
  
-     if (!needs_kick) {
-@@ -365,7 +367,7 @@ static bool vhost_svq_more_used(VhostShadowVirtqueue *svq)
-         return true;
+     if (0 <= n && n < 32) {
+         env->gpr[n] = tmp;
+-        length = read_length;
+     } else if (n == 33) {
+         set_pc(env, tmp);
+-        length = read_length;
      }
- 
--    svq->shadow_used_idx = cpu_to_le16(*(volatile uint16_t *)used_idx);
-+    svq->shadow_used_idx = le16_to_cpu(*(volatile uint16_t *)used_idx);
- 
-     return svq->last_used_idx != svq->shadow_used_idx;
+     return length;
  }
-@@ -383,7 +385,7 @@ static bool vhost_svq_enable_notification(VhostShadowVirtqueue *svq)
- {
-     if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
-         uint16_t *used_event = (uint16_t *)&svq->vring.avail->ring[svq->vring.num];
--        *used_event = svq->shadow_used_idx;
-+        *used_event = cpu_to_le16(svq->shadow_used_idx);
-     } else {
-         svq->vring.avail->flags &= ~cpu_to_le16(VRING_AVAIL_F_NO_INTERRUPT);
-     }
-@@ -408,7 +410,7 @@ static uint16_t vhost_svq_last_desc_of_chain(const VhostShadowVirtqueue *svq,
-                                              uint16_t num, uint16_t i)
- {
-     for (uint16_t j = 0; j < (num - 1); ++j) {
--        i = le16_to_cpu(svq->desc_next[i]);
-+        i = svq->desc_next[i];
-     }
- 
-     return i;
-@@ -681,7 +683,7 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
-     svq->desc_state = g_new0(SVQDescState, svq->vring.num);
-     svq->desc_next = g_new0(uint16_t, svq->vring.num);
-     for (unsigned i = 0; i < svq->vring.num - 1; i++) {
--        svq->desc_next[i] = cpu_to_le16(i + 1);
-+        svq->desc_next[i] = i + 1;
-     }
- }
- 
 -- 
 2.39.5
 
