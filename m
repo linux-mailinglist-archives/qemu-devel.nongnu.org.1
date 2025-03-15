@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228D3A62749
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:26:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26884A62727
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:21:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKtW-00072a-J7; Sat, 15 Mar 2025 02:21:16 -0400
+	id 1ttKsw-0005Fx-Hw; Sat, 15 Mar 2025 02:20:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKrt-0003lG-1o; Sat, 15 Mar 2025 02:19:33 -0400
+ id 1ttKru-0003os-Ex; Sat, 15 Mar 2025 02:19:38 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKro-0003Id-6d; Sat, 15 Mar 2025 02:19:30 -0400
+ id 1ttKrr-0003J8-Bf; Sat, 15 Mar 2025 02:19:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9B6F8FF9DA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9F5F5FF9DB;
  Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 72E7F1CAC43;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 76CCA1CAC44;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 4C98C558CB; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 4F00C558CD; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
- Vasant Hegde <vasant.hegde@amd.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 14/51] amd_iommu: Use correct bitmask to set capability
- BAR
-Date: Sat, 15 Mar 2025 09:17:20 +0300
-Message-Id: <20250315061801.622606-14-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>,
+ myluo24@m.fudan.edu.cn, "Michael S . Tsirkin" <mst@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 15/51] cryptodev/vhost: allocate CryptoDevBackendVhost
+ using g_mem0()
+Date: Sat, 15 Mar 2025 09:17:21 +0300
+Message-Id: <20250315061801.622606-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,50 +62,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sairaj Kodilkar <sarunkod@amd.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-AMD IOMMU provides the base address of control registers through
-IVRS table and PCI capability. Since this base address is of 64 bit,
-use 32 bits mask (instead of 16 bits) to set BAR low and high.
+The function `vhost_dev_init()` expects the `struct vhost_dev`
+(passed as a parameter) to be fully initialized. This is important
+because some parts of the code check whether `vhost_dev->config_ops`
+is NULL to determine if it has been set (e.g. later via
+`vhost_dev_set_config_notifier`).
 
-Fixes: d29a09ca68 ("hw/i386: Introduce AMD IOMMU")
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250207045354.27329-3-sarunkod@amd.com>
+To ensure this initialization, it’s better to allocate the entire
+`CryptoDevBackendVhost` structure (which includes `vhost_dev`) using
+`g_mem0()`, following the same approach used for other vhost devices,
+such as in `vhost_net_init()`.
+
+Fixes: 042cea274c ("cryptodev: add vhost-user as a new cryptodev backend")
+Cc: qemu-stable@nongnu.org
+Reported-by: myluo24@m.fudan.edu.cn
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20250211135523.101203-1-sgarzare@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 3684717b7407cc395dc9bf522e193dbc85293dee)
+(cherry picked from commit 83cb18ac4500f3a14067b19408705068647cb0c5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 9cf5b40200..ffb234fb5c 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1593,9 +1593,9 @@ static void amdvi_pci_realize(PCIDevice *pdev, Error **errp)
-     /* reset AMDVI specific capabilities, all r/o */
-     pci_set_long(pdev->config + s->capab_offset, AMDVI_CAPAB_FEATURES);
-     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_BAR_LOW,
--                 AMDVI_BASE_ADDR & ~(0xffff0000));
-+                 AMDVI_BASE_ADDR & MAKE_64BIT_MASK(14, 18));
-     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_BAR_HIGH,
--                (AMDVI_BASE_ADDR & ~(0xffff)) >> 16);
-+                AMDVI_BASE_ADDR >> 32);
-     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_RANGE,
-                  0xff000000);
-     pci_set_long(pdev->config + s->capab_offset + AMDVI_CAPAB_MISC, 0);
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index e0dac4d9a9..28125130c6 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -187,7 +187,7 @@
-         AMDVI_CAPAB_FLAG_HTTUNNEL |  AMDVI_CAPAB_EFR_SUP)
+diff --git a/backends/cryptodev-vhost.c b/backends/cryptodev-vhost.c
+index 93523732f3..5901b3ec4c 100644
+--- a/backends/cryptodev-vhost.c
++++ b/backends/cryptodev-vhost.c
+@@ -53,7 +53,7 @@ cryptodev_vhost_init(
+     CryptoDevBackendVhost *crypto;
+     Error *local_err = NULL;
  
- /* AMDVI default address */
--#define AMDVI_BASE_ADDR 0xfed80000
-+#define AMDVI_BASE_ADDR 0xfed80000ULL
- 
- /* page management constants */
- #define AMDVI_PAGE_SHIFT 12
+-    crypto = g_new(CryptoDevBackendVhost, 1);
++    crypto = g_new0(CryptoDevBackendVhost, 1);
+     crypto->dev.max_queues = 1;
+     crypto->dev.nvqs = 1;
+     crypto->dev.vqs = crypto->vqs;
 -- 
 2.39.5
 
