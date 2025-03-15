@@ -2,44 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86737A629D3
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 222FAA629DB
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:19:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttNeI-00042t-9c; Sat, 15 Mar 2025 05:17:43 -0400
+	id 1ttNeY-0005ES-CR; Sat, 15 Mar 2025 05:17:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNcg-0003Nn-VJ; Sat, 15 Mar 2025 05:16:09 -0400
+ id 1ttNcl-0003VW-73; Sat, 15 Mar 2025 05:16:13 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNcf-00080z-9v; Sat, 15 Mar 2025 05:16:02 -0400
+ id 1ttNcj-00081I-4e; Sat, 15 Mar 2025 05:16:06 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E22B9FFBC2;
+ by isrv.corpit.ru (Postfix) with ESMTP id E651FFFBC3;
  Sat, 15 Mar 2025 12:13:45 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EA9CF1CAD5B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EE9891CAD5C;
  Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id BBD1055A4C; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
+ id BE4EE55A4E; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 17/27] target/riscv/debug.c: use wp size = 4 for
- 32-bit CPUs
-Date: Sat, 15 Mar 2025 12:14:28 +0300
-Message-Id: <20250315091439.657371-17-mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 18/27] target/riscv: throw debug exception before page
+ fault
+Date: Sat, 15 Mar 2025 12:14:29 +0300
+Message-Id: <20250315091439.657371-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 References: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -66,46 +65,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-The mcontrol select bit (19) is always zero, meaning our triggers will
-always match virtual addresses. In this condition, if the user does not
-specify a size for the trigger, the access size defaults to XLEN.
+In the RISC-V privileged ISA section 3.1.15 table 15, it is determined
+that a debug exception that is triggered from a load/store has a higher
+priority than a possible fault that this access might trigger.
 
-At this moment we're using def_size = 8 regardless of CPU XLEN. Use
-def_size = 4 in case we're running 32 bits.
+This is not the case ATM as shown in [1]. Adding a breakpoint in an
+address that deliberately will fault is causing a load page fault
+instead of a debug exception. The reason is that we're throwing in the
+page fault as soon as the fault occurs (end of riscv_cpu_tlb_fill(),
+raise_mmu_exception()), not allowing the installed watchpoints to
+trigger.
 
-Fixes: 95799e36c1 ("target/riscv: Add initial support for the Sdtrig extension")
+Call cpu_check_watchpoint() in the page fault path to search and execute
+any watchpoints that might exist for the address, never returning back
+to the fault path. If no watchpoints are found cpu_check_watchpoint()
+will return and we'll fall-through the regular path to
+raise_mmu_exception().
+
+[1] https://gitlab.com/qemu-project/qemu/-/issues/2627
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2627
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250121170626.1992570-2-dbarboza@ventanamicro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250121170626.1992570-3-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 3fba76e61caa46329afc399b3ecaaba70c8b0a4e)
+(cherry picked from commit c86edc547692d812d1dcc04220c38310be2c00c3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index 26ea764407..cf71b52899 100644
---- a/target/riscv/debug.c
-+++ b/target/riscv/debug.c
-@@ -305,7 +305,7 @@ static void type2_breakpoint_insert(CPURISCVState *env, target_ulong index)
-     bool enabled = type2_breakpoint_enabled(ctrl);
-     CPUState *cs = env_cpu(env);
-     int flags = BP_CPU | BP_STOP_BEFORE_ACCESS;
--    uint32_t size;
-+    uint32_t size, def_size;
- 
-     if (!enabled) {
-         return;
-@@ -328,7 +328,9 @@ static void type2_breakpoint_insert(CPURISCVState *env, target_ulong index)
-             cpu_watchpoint_insert(cs, addr, size, flags,
-                                   &env->cpu_watchpoint[index]);
-         } else {
--            cpu_watchpoint_insert(cs, addr, 8, flags,
-+            def_size = riscv_cpu_mxl(env) == MXL_RV64 ? 8 : 4;
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 278d163803..b68327e13f 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -25,6 +25,7 @@
+ #include "exec/exec-all.h"
+ #include "instmap.h"
+ #include "tcg/tcg-op.h"
++#include "hw/core/tcg-cpu-ops.h"
+ #include "trace.h"
+ #include "semihosting/common-semi.h"
+ #include "cpu_bits.h"
+@@ -1345,6 +1346,23 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     } else if (probe) {
+         return false;
+     } else {
++        int wp_access = 0;
 +
-+            cpu_watchpoint_insert(cs, addr, def_size, flags,
-                                   &env->cpu_watchpoint[index]);
-         }
-     }
++        if (access_type == MMU_DATA_LOAD) {
++            wp_access |= BP_MEM_READ;
++        } else if (access_type == MMU_DATA_STORE) {
++            wp_access |= BP_MEM_WRITE;
++        }
++
++        /*
++         * If a watchpoint isn't found for 'addr' this will
++         * be a no-op and we'll resume the mmu_exception path.
++         * Otherwise we'll throw a debug exception and execution
++         * will continue elsewhere.
++         */
++        cpu_check_watchpoint(cs, address, size, MEMTXATTRS_UNSPECIFIED,
++                             wp_access, retaddr);
++
+         raise_mmu_exception(env, address, access_type, pmp_violation,
+                             first_stage_error,
+                             riscv_cpu_virt_enabled(env) ||
 -- 
 2.39.5
 
