@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840FAA629DF
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:19:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE68A629C5
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 10:16:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttNby-0002sW-LD; Sat, 15 Mar 2025 05:15:18 -0400
+	id 1ttNc6-0002uz-3r; Sat, 15 Mar 2025 05:15:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNbs-0002n3-AF; Sat, 15 Mar 2025 05:15:13 -0400
+ id 1ttNbs-0002n4-Aa; Sat, 15 Mar 2025 05:15:13 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttNbo-0007xk-GI; Sat, 15 Mar 2025 05:15:10 -0400
+ id 1ttNbo-0007xq-Ls; Sat, 15 Mar 2025 05:15:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C67A9FFBBB;
+ by isrv.corpit.ru (Postfix) with ESMTP id CA7A8FFBBC;
  Sat, 15 Mar 2025 12:13:45 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id CEE9D1CAD54;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D2EBC1CAD55;
  Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id AAA3255A3E; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
+ id AD0E055A40; Sat, 15 Mar 2025 12:14:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 10/27] Kconfig: Extract CONFIG_USB_CHIPIDEA from
- CONFIG_IMX
-Date: Sat, 15 Mar 2025 12:14:21 +0300
-Message-Id: <20250315091439.657371-10-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
+ Vasant Hegde <vasant.hegde@amd.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 11/27] amd_iommu: Use correct DTE field for interrupt
+ passthrough
+Date: Sat, 15 Mar 2025 12:14:22 +0300
+Message-Id: <20250315091439.657371-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
 References: <qemu-stable-7.2.17-20250315101625@cover.tls.msk.ru>
@@ -60,98 +61,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Sairaj Kodilkar <sarunkod@amd.com>
 
-TYPE_CHIPIDEA models an IP block which is also used in TYPE_ZYNQ_MACHINE which
-itself is not an IMX device. CONFIG_ZYNQ selects CONFIG_USB_EHCI_SYSBUS while
-TYPE_CHIPIDEA is a separate compilation unit, so only works by accident if
-CONFIG_IMX is given. Fix that by extracting CONFIG_USB_CHIPIDEA from CONFIG_IMX.
+Interrupt passthrough is determine by the bits 191,190,187-184.
+These bits are part of the 3rd quad word (i.e. index 2) in DTE. Hence
+replace dte[3] by dte[2].
 
-cc: qemu-stable@nongnu.org
-Fixes: 616ec12d0fcc "hw/arm/xilinx_zynq: Fix USB port instantiation"
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20250209103604.29545-1-shentey@gmail.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 464ce71a963b3dfc290cd59c3d1bfedf11c004df)
-(Mjt: context fixup due to missing
- v8.0.0-1939-gde6cd7599b51 "meson: Replace softmmu_ss -> system_ss",
- v9.1.0-609-ge02491903d50 "hw/usb: Remove tusb6010 USB controller",
- v9.2.0-1303-g1b326f278d05 "hw/pci-host/designware: Expose MSI IRQ")
+Fixes: b44159fe0 ("x86_iommu/amd: Add interrupt remap support when VAPIC is not enabled")
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Message-Id: <20250207045354.27329-2-sarunkod@amd.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 63dc0b8647391b372f3bb38ff1066f6b4a5e6ea1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 17fcde8e1c..837d0c5d41 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -300,7 +300,7 @@ config ZYNQ
-     select PL330
-     select SDHCI
-     select SSI_M25P80
--    select USB_EHCI_SYSBUS
-+    select USB_CHIPIDEA
-     select XILINX # UART
-     select XILINX_AXI
-     select XILINX_SPI
-@@ -416,6 +416,7 @@ config FSL_IMX25
-     select IMX
-     select IMX_FEC
-     select IMX_I2C
-+    select USB_CHIPIDEA
-     select WDT_IMX2
-     select SDHCI
- 
-@@ -438,6 +439,7 @@ config FSL_IMX6
-     select IMX_USBPHY
-     select WDT_IMX2
-     select SDHCI
-+    select USB_CHIPIDEA
- 
- config ASPEED_SOC
-     bool
-@@ -488,6 +490,7 @@ config FSL_IMX7
-     select PCI_EXPRESS_DESIGNWARE
-     select SDHCI
-     select UNIMP
-+    select USB_CHIPIDEA
- 
- config ARM_SMMUV3
-     bool
-@@ -501,6 +504,7 @@ config FSL_IMX6UL
-     select IMX_I2C
-     select WDT_IMX2
-     select SDHCI
-+    select USB_CHIPIDEA
-     select UNIMP
- 
- config MICROBIT
-diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index ce4f433976..db17750a64 100644
---- a/hw/usb/Kconfig
-+++ b/hw/usb/Kconfig
-@@ -138,3 +138,7 @@ config XLNX_USB_SUBSYS
-     bool
-     default y if XLNX_VERSAL
-     select USB_DWC3
-+
-+config USB_CHIPIDEA
-+    bool
-+    select USB_EHCI_SYSBUS
-diff --git a/hw/usb/meson.build b/hw/usb/meson.build
-index 793df42e21..ed5d0ad7e5 100644
---- a/hw/usb/meson.build
-+++ b/hw/usb/meson.build
-@@ -25,9 +25,9 @@ softmmu_ss.add(when: 'CONFIG_USB_XHCI_NEC', if_true: files('hcd-xhci-nec.c'))
- softmmu_ss.add(when: 'CONFIG_USB_MUSB', if_true: files('hcd-musb.c'))
- softmmu_ss.add(when: 'CONFIG_USB_DWC2', if_true: files('hcd-dwc2.c'))
- softmmu_ss.add(when: 'CONFIG_USB_DWC3', if_true: files('hcd-dwc3.c'))
-+softmmu_ss.add(when: 'CONFIG_USB_CHIPIDEA', if_true: files('chipidea.c'))
- 
- softmmu_ss.add(when: 'CONFIG_TUSB6010', if_true: files('tusb6010.c'))
--softmmu_ss.add(when: 'CONFIG_IMX', if_true: files('chipidea.c'))
- softmmu_ss.add(when: 'CONFIG_IMX_USBPHY', if_true: files('imx-usb-phy.c'))
- softmmu_ss.add(when: 'CONFIG_VT82C686', if_true: files('vt82c686-uhci-pci.c'))
- specific_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal-usb2-ctrl-regs.c'))
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 02597db1e1..d94c0f9bfb 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1279,15 +1279,15 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
+         ret = -AMDVI_IR_ERR;
+         break;
+     case AMDVI_IOAPIC_INT_TYPE_NMI:
+-        pass = dte[3] & AMDVI_DEV_NMI_PASS_MASK;
++        pass = dte[2] & AMDVI_DEV_NMI_PASS_MASK;
+         trace_amdvi_ir_delivery_mode("nmi");
+         break;
+     case AMDVI_IOAPIC_INT_TYPE_INIT:
+-        pass = dte[3] & AMDVI_DEV_INT_PASS_MASK;
++        pass = dte[2] & AMDVI_DEV_INT_PASS_MASK;
+         trace_amdvi_ir_delivery_mode("init");
+         break;
+     case AMDVI_IOAPIC_INT_TYPE_EINT:
+-        pass = dte[3] & AMDVI_DEV_EINT_PASS_MASK;
++        pass = dte[2] & AMDVI_DEV_EINT_PASS_MASK;
+         trace_amdvi_ir_delivery_mode("eint");
+         break;
+     default:
 -- 
 2.39.5
 
