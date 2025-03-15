@@ -2,43 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71FD8A62745
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C76A62757
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:27:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKtW-00073j-7M; Sat, 15 Mar 2025 02:21:15 -0400
+	id 1ttKuR-0000hd-Cs; Sat, 15 Mar 2025 02:22:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKsQ-0004fk-Lx; Sat, 15 Mar 2025 02:20:09 -0400
+ id 1ttKsS-0004hS-KF; Sat, 15 Mar 2025 02:20:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKsM-0003MY-S1; Sat, 15 Mar 2025 02:20:06 -0400
+ id 1ttKsQ-0003My-4S; Sat, 15 Mar 2025 02:20:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B310AFF9E0;
+ by isrv.corpit.ru (Postfix) with ESMTP id B6EECFF9E1;
  Sat, 15 Mar 2025 09:17:07 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8A7671CAC49;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8E6A21CAC4A;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 5B9DC558D7; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 5DF2E558D9; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- David Hildenbrand <david@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 20/51] physmem: replace assertion with error
-Date: Sat, 15 Mar 2025 09:17:26 +0300
-Message-Id: <20250315061801.622606-20-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Joelle van Dyne <j@getutm.app>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 21/51] target/arm/hvf: Disable SME feature
+Date: Sat, 15 Mar 2025 09:17:27 +0300
+Message-Id: <20250315061801.622606-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,58 +59,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Joelle van Dyne <j@getutm.app>
 
-It is possible to start QEMU with a confidential-guest-support object
-even in TCG mode.  While there is already a check in qemu_machine_creation_done:
+macOS 15.2's Hypervisor.framework exposes SME feature on M4 Macs.
+However, QEMU's hvf accelerator code does not properly support it
+yet, causing QEMU to fail to start when hvf accelerator is used on
+these systems, with the error message:
 
-    if (machine->cgs && !machine->cgs->ready) {
-        error_setg(errp, "accelerator does not support confidential guest %s",
-                   object_get_typename(OBJECT(machine->cgs)));
-        exit(1);
-    }
+  qemu-aarch64-softmmu: cannot disable sme4224
+  All SME vector lengths are disabled.
+  With SME enabled, at least one vector length must be enabled.
 
-the creation of RAMBlocks happens earlier, in qemu_init_board(), if
-the command line does not override the default memory backend with
--M memdev.  Then the RAMBlock will try to use guest_memfd (because
-machine_require_guest_memfd correctly returns true; at least correctly
-according to the current implementation) and trigger the assertion
-failure for kvm_enabled().  This happend with a command line as
-simple as the following:
+Ideally we would have SME support on these hosts; however, until that
+point, we must suppress the SME feature in the ID registers, so that
+users can at least run non-SME guests.
 
-    qemu-system-x86_64 -m 512 -nographic -object sev-snp-guest,reduced-phys-bits=48,id=sev0 \
-       -M q35,kernel-irqchip=split,confidential-guest-support=sev0
-    qemu-system-x86_64: ../system/physmem.c:1871: ram_block_add: Assertion `kvm_enabled()' failed.
-
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250217120812.396522-1-pbonzini@redhat.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 6debfb2cb1795427d2dc6a741c7430a233c76695)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2665
+Signed-off-by: Joelle van Dyne <j@getutm.app>
+Message-id: 20250224165735.36792-1-j@getutm.app
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: expanded commit message, comment]
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit fd207677a83087454b8afef31651985a1df0d2dd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 75389064a8..83013b59f7 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1868,7 +1868,11 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-     if (new_block->flags & RAM_GUEST_MEMFD) {
-         int ret;
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index ca7ea92774..0089174b36 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -897,6 +897,18 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
  
--        assert(kvm_enabled());
-+        if (!kvm_enabled()) {
-+            error_setg(errp, "cannot set up private guest memory for %s: KVM required",
-+                       object_get_typename(OBJECT(current_machine->cgs)));
-+            goto out_free;
-+        }
-         assert(new_block->guest_memfd < 0);
+     clamp_id_aa64mmfr0_parange_to_ipa_size(&host_isar.id_aa64mmfr0);
  
-         ret = ram_block_discard_require(true);
++    /*
++     * Disable SME, which is not properly handled by QEMU hvf yet.
++     * To allow this through we would need to:
++     * - make sure that the SME state is correctly handled in the
++     *   get_registers/put_registers functions
++     * - get the SME-specific CPU properties to work with accelerators
++     *   other than TCG
++     * - fix any assumptions we made that SME implies SVE (since
++     *   on the M4 there is SME but not SVE)
++     */
++    host_isar.id_aa64pfr1 &= ~R_ID_AA64PFR1_SME_MASK;
++
+     ahcf->isar = host_isar;
+ 
+     /*
 -- 
 2.39.5
 
