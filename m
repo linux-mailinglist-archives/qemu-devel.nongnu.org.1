@@ -2,38 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2139BA6276E
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:31:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52793A62759
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:27:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKyq-0000sN-Q1; Sat, 15 Mar 2025 02:26:46 -0400
+	id 1ttKzL-0002Ge-DS; Sat, 15 Mar 2025 02:27:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKuY-0001rd-Ou; Sat, 15 Mar 2025 02:22:19 -0400
+ id 1ttKv2-00034g-K4; Sat, 15 Mar 2025 02:22:48 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKuW-0003p2-Et; Sat, 15 Mar 2025 02:22:18 -0400
+ id 1ttKus-0003pM-E1; Sat, 15 Mar 2025 02:22:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 203C4FF9F8;
+ by isrv.corpit.ru (Postfix) with ESMTP id 24CFAFF9F9;
  Sat, 15 Mar 2025 09:17:08 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EB5E91CAC61;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EFB601CAC62;
  Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 951F455907; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 9755455909; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Stefano Stabellini <stefano.stabellini@amd.com>,
- Olaf Hering <olaf@aepfle.de>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
- Anthony PERARD <anthony.perard@vates.tech>,
+Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 44/51] xen: No need to flush the mapcache for grants
-Date: Sat, 15 Mar 2025 09:17:50 +0300
-Message-Id: <20250315061801.622606-44-mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 45/51] ppc/pnv/occ: Fix common area sensor offsets
+Date: Sat, 15 Mar 2025 09:17:51 +0300
+Message-Id: <20250315061801.622606-45-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
@@ -62,38 +59,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Stabellini <stefano.stabellini@amd.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-On IOREQ_TYPE_INVALIDATE we need to invalidate the mapcache for regular
-mappings. Since recently we started reusing the mapcache also to keep
-track of grants mappings. However, there is no need to remove grant
-mappings on IOREQ_TYPE_INVALIDATE requests, we shouldn't do that. So
-remove the function call.
+The commit to fix the OCC common area sensor mappings didn't update the
+register offsets to match.
 
-Fixes: 9ecdd4bf08 (xen: mapcache: Add support for grant mappings)
-Cc: qemu-stable@nongnu.org
-Reported-by: Olaf Hering <olaf@aepfle.de>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Anthony PERARD <anthony.perard@vates.tech>
-Message-Id: <20250206194915.3357743-2-edgar.iglesias@gmail.com>
-Signed-off-by: Anthony PERARD <anthony.perard@vates.tech>
-(cherry picked from commit 68adcc784bad13421ac7211c316a751fb99fcb94)
+Before this change, skiboot reports:
+
+[    0.347100086,3] OCC: Chip 0 sensor data invalid
+
+Afterward, there is no error and the sensor_groups directory appears
+under /sys/firmware/opal/.
+
+The SLW_IMAGE_BASE address looks like a workaround to intercept firmware
+memory accesses, but that does not seem to be required now (and would
+have been broken by the OCC common area region mapping change anyway).
+So it can be removed.
+
+Fixes: 3a1b70b66b5cb4 ("ppc/pnv: Fix OCC common area region mapping")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+(cherry picked from commit 29c041ca7f8d6910c894788482efff892789dcd2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index 18ba7b1d8f..cd412493ea 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -700,7 +700,6 @@ void xen_invalidate_map_cache(void)
-     bdrv_drain_all();
+diff --git a/hw/ppc/pnv_occ.c b/hw/ppc/pnv_occ.c
+index 48123ceae1..c6681a035a 100644
+--- a/hw/ppc/pnv_occ.c
++++ b/hw/ppc/pnv_occ.c
+@@ -32,22 +32,21 @@
+ #define OCB_OCI_OCCMISC_OR      0x4022
  
-     xen_invalidate_map_cache_single(mapcache);
--    xen_invalidate_map_cache_single(mapcache_grants);
+ /* OCC sensors */
+-#define OCC_SENSOR_DATA_BLOCK_OFFSET          0x580000
+-#define OCC_SENSOR_DATA_VALID                 0x580001
+-#define OCC_SENSOR_DATA_VERSION               0x580002
+-#define OCC_SENSOR_DATA_READING_VERSION       0x580004
+-#define OCC_SENSOR_DATA_NR_SENSORS            0x580008
+-#define OCC_SENSOR_DATA_NAMES_OFFSET          0x580010
+-#define OCC_SENSOR_DATA_READING_PING_OFFSET   0x580014
+-#define OCC_SENSOR_DATA_READING_PONG_OFFSET   0x58000c
+-#define OCC_SENSOR_DATA_NAME_LENGTH           0x58000d
+-#define OCC_SENSOR_NAME_STRUCTURE_TYPE        0x580023
+-#define OCC_SENSOR_LOC_CORE                   0x580022
+-#define OCC_SENSOR_LOC_GPU                    0x580020
+-#define OCC_SENSOR_TYPE_POWER                 0x580003
+-#define OCC_SENSOR_NAME                       0x580005
+-#define HWMON_SENSORS_MASK                    0x58001e
+-#define SLW_IMAGE_BASE                        0x0
++#define OCC_SENSOR_DATA_BLOCK_OFFSET          0x0000
++#define OCC_SENSOR_DATA_VALID                 0x0001
++#define OCC_SENSOR_DATA_VERSION               0x0002
++#define OCC_SENSOR_DATA_READING_VERSION       0x0004
++#define OCC_SENSOR_DATA_NR_SENSORS            0x0008
++#define OCC_SENSOR_DATA_NAMES_OFFSET          0x0010
++#define OCC_SENSOR_DATA_READING_PING_OFFSET   0x0014
++#define OCC_SENSOR_DATA_READING_PONG_OFFSET   0x000c
++#define OCC_SENSOR_DATA_NAME_LENGTH           0x000d
++#define OCC_SENSOR_NAME_STRUCTURE_TYPE        0x0023
++#define OCC_SENSOR_LOC_CORE                   0x0022
++#define OCC_SENSOR_LOC_GPU                    0x0020
++#define OCC_SENSOR_TYPE_POWER                 0x0003
++#define OCC_SENSOR_NAME                       0x0005
++#define HWMON_SENSORS_MASK                    0x001e
+ 
+ static void pnv_occ_set_misc(PnvOCC *occ, uint64_t val)
+ {
+@@ -129,8 +128,6 @@ static uint64_t pnv_occ_common_area_read(void *opaque, hwaddr addr,
+     case HWMON_SENSORS_MASK:
+     case OCC_SENSOR_LOC_GPU:
+         return 0x8e00;
+-    case SLW_IMAGE_BASE:
+-        return 0x1000000000000000;
+     }
+     return 0;
  }
- 
- static uint8_t *xen_replace_cache_entry_unlocked(MapCache *mc,
 -- 
 2.39.5
 
