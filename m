@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80812A62748
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:26:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03285A62751
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:27:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKx1-0006hc-TJ; Sat, 15 Mar 2025 02:24:54 -0400
+	id 1ttKxY-00079X-Au; Sat, 15 Mar 2025 02:25:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKv6-0003Rm-O9; Sat, 15 Mar 2025 02:22:53 -0400
+ id 1ttKv7-0003T0-2u; Sat, 15 Mar 2025 02:22:53 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKv4-0003ro-Bh; Sat, 15 Mar 2025 02:22:52 -0400
+ id 1ttKv4-0003s0-Mq; Sat, 15 Mar 2025 02:22:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2FDA8FF9FB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 339BEFF9FC;
  Sat, 15 Mar 2025 09:17:08 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 02FCC1CAC64;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 079D81CAC65;
  Sat, 15 Mar 2025 09:18:02 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 9C3E35590D; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
+ id 9EB7E5590F; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 47/51] hw/net/smc91c111: Sanitize packet length on tx
-Date: Sat, 15 Mar 2025 09:17:53 +0300
-Message-Id: <20250315061801.622606-47-mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 48/51] hw/net/smc91c111: Don't allow data register
+ access to overrun buffer
+Date: Sat, 15 Mar 2025 09:17:54 +0300
+Message-Id: <20250315061801.622606-48-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
@@ -63,97 +64,145 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-When the smc91c111 transmits a packet, it must read a control byte
-which is at the end of the data area and CRC.  However, we don't
-sanitize the length field in the packet buffer, so if the guest sets
-the length field to something large we will try to read past the end
-of the packet data buffer when we access the control byte.
+For accesses to the 91c111 data register, the address within the
+packet's data frame is determined by a combination of the pointer
+register and the offset used to access the data register, so that you
+can access data at effectively wider than byte width.  The pointer
+register's pointer field is 11 bits wide, which is exactly the size
+to index a 2048-byte data frame.
 
-As usual, the datasheet says nothing about the behaviour of the
-hardware if the guest misprograms it in this way.  It says only that
-the maximum valid length is 2048 bytes.  We choose to log the guest
-error and silently drop the packet.
+We weren't quite getting the logic right for ensuring that we end up
+with a pointer value to use in the s->data[][] array that isn't out
+of bounds:
 
-This requires us to factor out the "mark the tx packet as complete"
-logic, so we can call it for this "drop packet" case as well as at
-the end of the loop when we send a valid packet.
+ * we correctly mask when getting the initial pointer value
+ * for the "autoincrement the pointer register" case, we
+   correctly mask after adding 1 so that the pointer register
+   wraps back around at the 2048 byte mark
+ * but for the non-autoincrement case where we have to add the
+   low 2 bits of the data register offset, we don't account
+   for the possibility that the pointer register is 0x7ff
+   and the addition should wrap
+
+Fix this bug by factoring out the "get the p value to use as an array
+index" into a function, making it use FIELD macro names rather than
+hard-coded constants, and having a utility function that does "add a
+value and wrap it" that we can use both for the "autoincrement" and
+"add the offset bits" codepaths.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2742
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2758
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250228174802.1945417-3-peter.maydell@linaro.org>
-[PMD: Update smc91c111_do_tx() as len > MAX_PACKET_SIZE]
+Message-ID: <20250228191652.1957208-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit aad6f264add3f2be72acb660816588fe09110069)
+(cherry picked from commit 700d3d6dd41de3bd3f1153e3cfe00b93f99b1441)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/net/smc91c111.c b/hw/net/smc91c111.c
-index 48a6b3fb0d..aef5477d03 100644
+index aef5477d03..60a252d01a 100644
 --- a/hw/net/smc91c111.c
 +++ b/hw/net/smc91c111.c
-@@ -22,6 +22,13 @@
+@@ -13,6 +13,7 @@
+ #include "net/net.h"
+ #include "hw/irq.h"
+ #include "hw/net/smc91c111.h"
++#include "hw/registerfields.h"
+ #include "hw/qdev-properties.h"
+ #include "qapi/error.h"
+ #include "qemu/log.h"
+@@ -125,6 +126,13 @@ static const VMStateDescription vmstate_smc91c111 = {
+ #define RS_TOOSHORT     0x0400
+ #define RS_MULTICAST    0x0001
  
- /* Number of 2k memory pages available.  */
- #define NUM_PACKETS 4
++FIELD(PTR, PTR, 0, 11)
++FIELD(PTR, NOT_EMPTY, 11, 1)
++FIELD(PTR, RESERVED, 12, 1)
++FIELD(PTR, READ, 13, 1)
++FIELD(PTR, AUTOINCR, 14, 1)
++FIELD(PTR, RCV, 15, 1)
++
+ static inline bool packetnum_valid(int packet_num)
+ {
+     return packet_num >= 0 && packet_num < NUM_PACKETS;
+@@ -371,6 +379,49 @@ static void smc91c111_reset(DeviceState *dev)
+ #define SET_LOW(name, val) s->name = (s->name & 0xff00) | val
+ #define SET_HIGH(name, val) s->name = (s->name & 0xff) | (val << 8)
+ 
 +/*
-+ * Maximum size of a data frame, including the leading status word
-+ * and byte count fields and the trailing CRC, last data byte
-+ * and control byte (per figure 8-1 in the Microchip Technology
-+ * LAN91C111 datasheet).
++ * The pointer register's pointer is an 11 bit value (so it exactly
++ * indexes a 2048-byte data frame). Add the specified offset to it,
++ * wrapping around at the 2048 byte mark, and return the resulting
++ * wrapped value. There are flag bits in the top part of the register,
++ * but we can ignore them here as the mask will mask them out.
 + */
-+#define MAX_PACKET_SIZE 2048
- 
- #define TYPE_SMC91C111 "smc91c111"
- OBJECT_DECLARE_SIMPLE_TYPE(smc91c111_state, SMC91C111)
-@@ -240,6 +247,16 @@ static void smc91c111_release_packet(smc91c111_state *s, int packet)
-     smc91c111_flush_queued_packets(s);
- }
- 
-+static void smc91c111_complete_tx_packet(smc91c111_state *s, int packetnum)
++static int ptr_reg_add(smc91c111_state *s, int offset)
 +{
-+    if (s->ctr & CTR_AUTO_RELEASE) {
-+        /* Race?  */
-+        smc91c111_release_packet(s, packetnum);
-+    } else if (s->tx_fifo_done_len < NUM_PACKETS) {
-+        s->tx_fifo_done[s->tx_fifo_done_len++] = packetnum;
-+    }
++    return (s->ptr + offset) & R_PTR_PTR_MASK;
 +}
 +
- /* Flush the TX FIFO.  */
- static void smc91c111_do_tx(smc91c111_state *s)
++/*
++ * For an access to the Data Register at @offset, return the
++ * required offset into the packet's data frame. This will
++ * perform the pointer register autoincrement if required, and
++ * guarantees to return an in-bounds offset.
++ */
++static int data_reg_ptr(smc91c111_state *s, int offset)
++{
++    int p;
++
++    if (s->ptr & R_PTR_AUTOINCR_MASK) {
++        /*
++         * Autoincrement: use the current pointer value, and
++         * increment the pointer register's pointer field.
++         */
++        p = FIELD_EX32(s->ptr, PTR, PTR);
++        s->ptr = FIELD_DP32(s->ptr, PTR, PTR, ptr_reg_add(s, 1));
++    } else {
++        /*
++         * No autoincrement: register offset determines which
++         * byte we're addressing. Setting the pointer to the top
++         * of the data buffer and then using the pointer wrapping
++         * to read the bottom byte of the buffer is not something
++         * sensible guest software will do, but the datasheet
++         * doesn't say what the behaviour is, so we don't forbid it.
++         */
++        p = ptr_reg_add(s, offset & 3);
++    }
++    return p;
++}
++
+ static void smc91c111_writeb(void *opaque, hwaddr offset,
+                              uint32_t value)
  {
-@@ -263,6 +280,17 @@ static void smc91c111_do_tx(smc91c111_state *s)
-         *(p++) = 0x40;
-         len = *(p++);
-         len |= ((int)*(p++)) << 8;
-+        if (len > MAX_PACKET_SIZE) {
-+            /*
-+             * Datasheet doesn't say what to do here, and there is no
-+             * relevant tx error condition listed. Log, and drop the packet.
-+             */
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "smc91c111: tx packet with bad length %d, dropping\n",
-+                          len);
-+            smc91c111_complete_tx_packet(s, packetnum);
-+            continue;
-+        }
-         len -= 6;
-         control = p[len + 1];
-         if (control & 0x20)
-@@ -291,11 +319,7 @@ static void smc91c111_do_tx(smc91c111_state *s)
+@@ -517,12 +568,7 @@ static void smc91c111_writeb(void *opaque, hwaddr offset,
+                                   n);
+                     return;
+                 }
+-                p = s->ptr & 0x07ff;
+-                if (s->ptr & 0x4000) {
+-                    s->ptr = (s->ptr & 0xf800) | ((s->ptr + 1) & 0x7ff);
+-                } else {
+-                    p += (offset & 3);
+-                }
++                p = data_reg_ptr(s, offset);
+                 s->data[n][p] = value;
              }
-         }
- #endif
--        if (s->ctr & CTR_AUTO_RELEASE)
--            /* Race?  */
--            smc91c111_release_packet(s, packetnum);
--        else if (s->tx_fifo_done_len < NUM_PACKETS)
--            s->tx_fifo_done[s->tx_fifo_done_len++] = packetnum;
-+        smc91c111_complete_tx_packet(s, packetnum);
-         qemu_send_packet(qemu_get_queue(s->nic), p, len);
-     }
-     s->tx_fifo_len = 0;
+             return;
+@@ -672,12 +718,7 @@ static uint32_t smc91c111_readb(void *opaque, hwaddr offset)
+                                   n);
+                     return 0;
+                 }
+-                p = s->ptr & 0x07ff;
+-                if (s->ptr & 0x4000) {
+-                    s->ptr = (s->ptr & 0xf800) | ((s->ptr + 1) & 0x07ff);
+-                } else {
+-                    p += (offset & 3);
+-                }
++                p = data_reg_ptr(s, offset);
+                 return s->data[n][p];
+             }
+         case 12: /* Interrupt status.  */
 -- 
 2.39.5
 
