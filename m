@@ -2,50 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FA6A6275B
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CFFA62798
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 07:49:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttKzk-0003wF-PK; Sat, 15 Mar 2025 02:27:41 -0400
+	id 1ttLIp-0007rF-SJ; Sat, 15 Mar 2025 02:47:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKvY-0004ZH-UZ; Sat, 15 Mar 2025 02:23:21 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1ttLIK-0007ox-RP; Sat, 15 Mar 2025 02:46:54 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttKvV-0003uS-MK; Sat, 15 Mar 2025 02:23:20 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3E1F8FF9FF;
- Sat, 15 Mar 2025 09:17:08 +0300 (MSK)
-Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 13F901CAC68;
- Sat, 15 Mar 2025 09:18:02 +0300 (MSK)
-Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id A5BD055915; Sat, 15 Mar 2025 09:18:01 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Greg Kurz <groug@kaod.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 51/51] docs: Rename default-configs to configs
-Date: Sat, 15 Mar 2025 09:17:57 +0300
-Message-Id: <20250315061801.622606-51-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
-References: <qemu-stable-9.2.3-20250315091645@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1ttLII-00071r-Jj; Sat, 15 Mar 2025 02:46:52 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52F3hinB004192;
+ Sat, 15 Mar 2025 06:46:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=Wpqmmli5CNdgTOsAcMrsHK9XzdSq
+ GPcMoCvJfYxyDnE=; b=Ly6HbN5c2H50lwdSkFrGPFg/QKdiX6L+VwWqFIki53h4
+ 5nySYdJQ6bXY3uPWKYyqTaEsxyFOCwctF/kZo18rcQFiausCwfIKIYl7kLrWF9JB
+ 0Dxie5EnseNYI7fA3TnbmPp+C7RtWbMn9XzfVrimjDkchJ0ZwWEsojqLdkJaTAFi
+ lyPgLdXss5oma0kfVWyOMC93fIIb0wImuoxZN5iZdHVzsrJubJfs6DLDJVDrJSkn
+ Vzdq28YBQu99jbs9j32rmetVse0YmC9kcKLb8ozX/m1QqJvJzFCAH9IYq2kKuDTd
+ Y/pgxnfwQ4Lis69xaJ8CyWoXrhe/SzeKiylZEmo/nw==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45d1vwgemr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 15 Mar 2025 06:46:46 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52F6kki9014463;
+ Sat, 15 Mar 2025 06:46:46 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45d1vwgemm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 15 Mar 2025 06:46:45 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52F3aIFY026548;
+ Sat, 15 Mar 2025 06:46:44 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45d1ssgj5v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 15 Mar 2025 06:46:44 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52F6keGS19792154
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 15 Mar 2025 06:46:41 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DEFAF20040;
+ Sat, 15 Mar 2025 06:46:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C4F6B20043;
+ Sat, 15 Mar 2025 06:46:38 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown
+ [9.124.208.229])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Sat, 15 Mar 2025 06:46:38 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: <qemu-devel@nongnu.org>
+Cc: <qemu-ppc@nongnu.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
+Subject: [PATCH v3 0/8] Implement Firmware Assisted Dump for PSeries
+Date: Sat, 15 Mar 2025 12:16:28 +0530
+Message-ID: <20250315064636.611714-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: g2OhaE5AFtqXMEd--jTI87_qEiLUg_zv
+X-Proofpoint-ORIG-GUID: c818QM1KHrckWm7o8KzaKndfXZ-sQqFu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-15_02,2025-03-14_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0
+ mlxscore=0 phishscore=0 clxscore=1015 priorityscore=1501 bulkscore=0
+ spamscore=0 impostorscore=0 mlxlogscore=999 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503150041
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,128 +115,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Greg Kurz <groug@kaod.org>
+Overview
+=========
 
-This was missed at the time.
+Implemented Firmware Assisted Dump (fadump) on PSeries machine in QEMU.
 
-Fixes: 812b31d3f91 ("configs: rename default-configs to configs and reorganise")
-Signed-off-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250306174113.427116-1-groug@kaod.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 48170c2d865a5937092b1384421b01cd38113042)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Fadump is an alternative dump mechanism to kdump, in which we the firmware
+does a memory preserving boot, and the second/crashkernel is booted fresh
+like a normal system reset, instead of the crashed kernel loading the
+second/crashkernel in case of kdump.
 
-diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-index d42045a232..a759982f45 100644
---- a/docs/devel/build-system.rst
-+++ b/docs/devel/build-system.rst
-@@ -260,7 +260,7 @@ Target-dependent emulator sourcesets:
-   Each emulator also includes sources for files in the ``hw/`` and ``target/``
-   subdirectories.  The subdirectory used for each emulator comes
-   from the target's definition of ``TARGET_BASE_ARCH`` or (if missing)
--  ``TARGET_ARCH``, as found in ``default-configs/targets/*.mak``.
-+  ``TARGET_ARCH``, as found in ``configs/targets/*.mak``.
- 
-   Each subdirectory in ``hw/`` adds one sourceset to the ``hw_arch`` dictionary,
-   for example::
-@@ -317,8 +317,8 @@ Utility sourcesets:
- The following files concur in the definition of which files are linked
- into each emulator:
- 
--``default-configs/devices/*.mak``
--  The files under ``default-configs/devices/`` control the boards and devices
-+``configs/devices/*.mak``
-+  The files under ``configs/devices/`` control the boards and devices
-   that are built into each QEMU system emulation targets. They merely contain
-   a list of config variable definitions such as::
- 
-@@ -327,11 +327,11 @@ into each emulator:
-     CONFIG_XLNX_VERSAL=y
- 
- ``*/Kconfig``
--  These files are processed together with ``default-configs/devices/*.mak`` and
-+  These files are processed together with ``configs/devices/*.mak`` and
-   describe the dependencies between various features, subsystems and
-   device models.  They are described in :ref:`kconfig`
- 
--``default-configs/targets/*.mak``
-+``configs/targets/*.mak``
-   These files mostly define symbols that appear in the ``*-config-target.h``
-   file for each emulator\ [#cfgtarget]_.  However, the ``TARGET_ARCH``
-   and ``TARGET_BASE_ARCH`` will also be used to select the ``hw/`` and
-diff --git a/docs/devel/kconfig.rst b/docs/devel/kconfig.rst
-index 52d4b905f6..493b76c4fb 100644
---- a/docs/devel/kconfig.rst
-+++ b/docs/devel/kconfig.rst
-@@ -38,7 +38,7 @@ originated in the Linux kernel, though it was heavily simplified and
- the handling of dependencies is stricter in QEMU.
- 
- Unlike Linux, there is no user interface to edit the configuration, which
--is instead specified in per-target files under the ``default-configs/``
-+is instead specified in per-target files under the ``configs/``
- directory of the QEMU source tree.  This is because, unlike Linux,
- configuration and dependencies can be treated as a black box when building
- QEMU; the default configuration that QEMU ships with should be okay in
-@@ -103,7 +103,7 @@ directives can be included:
- **default value**: ``default <value> [if <expr>]``
- 
-   Default values are assigned to the config symbol if no other value was
--  set by the user via ``default-configs/*.mak`` files, and only if
-+  set by the user via ``configs/*.mak`` files, and only if
-   ``select`` or ``depends on`` directives do not force the value to true
-   or false respectively.  ``<value>`` can be ``y`` or ``n``; it cannot
-   be an arbitrary Boolean expression.  However, a condition for applying
-@@ -119,7 +119,7 @@ directives can be included:
-   This is similar to ``select`` as it applies a lower limit of ``y``
-   to another symbol.  However, the lower limit is only a default
-   and the "implied" symbol's value may still be set to ``n`` from a
--  ``default-configs/*.mak`` files.  The following two examples are
-+  ``configs/*.mak`` files.  The following two examples are
-   equivalent::
- 
-     config FOO
-@@ -146,7 +146,7 @@ declares its dependencies in different ways:
-       bool
- 
-   Subsystems always default to false (they have no ``default`` directive)
--  and are never visible in ``default-configs/*.mak`` files.  It's
-+  and are never visible in ``configs/*.mak`` files.  It's
-   up to other symbols to ``select`` whatever subsystems they require.
- 
-   They sometimes have ``select`` directives to bring in other required
-@@ -238,7 +238,7 @@ declares its dependencies in different ways:
-   include libraries (such as ``FDT``) or ``TARGET_BIG_ENDIAN``
-   (possibly negated).
- 
--  Boards are listed for convenience in the ``default-configs/*.mak``
-+  Boards are listed for convenience in the ``configs/*.mak``
-   for the target they apply to.
- 
- **internal elements**
-@@ -251,18 +251,18 @@ declares its dependencies in different ways:
- 
-   Internal elements group code that is useful in several boards or
-   devices.  They are usually enabled with ``select`` and in turn select
--  other elements; they are never visible in ``default-configs/*.mak``
-+  other elements; they are never visible in ``configs/*.mak``
-   files, and often not even in the Makefile.
- 
- Writing and modifying default configurations
- --------------------------------------------
- 
- In addition to the Kconfig files under hw/, each target also includes
--a file called ``default-configs/TARGETNAME-softmmu.mak``.  These files
-+a file called ``configs/TARGETNAME-softmmu.mak``.  These files
- initialize some Kconfig variables to non-default values and provide the
- starting point to turn on devices and subsystems.
- 
--A file in ``default-configs/`` looks like the following example::
-+A file in ``configs/`` looks like the following example::
- 
-     # Default configuration for alpha-softmmu
- 
+This requires implementing the "ibm,configure-kernel-dump" RTAS call in
+QEMU.
+
+While booting with fadump=on, Linux will register fadump memory regions.
+
+Some memory regions like Real Mode Memory regions, and custom memory
+regions declared by OS basically require copying the requested memory
+range to a destination
+
+While other memory regions are populated by the firmware/platform (QEMU in
+this case), such as CPU State Data and HPTE.
+We pass the sizes for these data segment to the kernel as it needs to know
+how much memory to reserve (ibm,configure-kernel-dump-sizes).
+
+Then after a crash, once Linux does a OS terminate call, we trigger fadump
+if fadump was registered.
+
+Implementing the fadump boot as:
+    * pause all vcpus (will save registers later)
+    * preserve memory regions specified by fadump
+    * do a memory preserving reboot (using GUEST_RESET as it doesn't clear
+      the memory)
+
+And then we pass a metadata (firmware memory structure) as
+"ibm,kernel-dump" in the device tree, containing all details of the
+preserved memory regions to the kernel.
+
+Refer the Patch #7/8: "hw/ppc: Enable fadump for PSeries" for logs of a
+succesfful fadump crash
+
+Note: HPTE region has not been implemented. It's not planned as of now.
+
+Testing
+=======
+
+Has been tested with following QEMU options:
+
+* firmware: x-vof and SLOF
+* tcg & kvm
+* l1 guest and l2 guest
+* with/without smp
+* cma/nocma
+* default crashkernel values (can fail with big initrd) and crashkernel=1G
+
+Git Tree for Testing
+====================
+
+https://github.com/adi-g15-ibm/qemu/tree/fadump-pseries-v3
+
+Note: You will need a way to get the /proc/vmcore out of the VM for testing
+with crash-utility
+
+I use the following command line which sets up networking:
+    "-net user,hostfwd=tcp::10022-:22 -net nic"
+
+And a rootfs with ssh support, then copy the /proc/vmcore with networking
+(can do compression using gzip before ssh, but compression might take lot
+of time if done inside the VM)
+
+Test vmcore for Testing with crash-utility
+==========================================
+
+Can use vmlinux and vmcore available at https://github.com/adi-g15-ibm/qemu/releases/tag/test-images-fadump-pseries-v2
+Above vmcore was generated with upstream qemu with these fadump patches
+applied, and in a KVM VM
+A limitation with above vmcore is it was a single CPU VM
+
+Changelog
+=========
+v3: 
+  + [patch #3,7]: fix compile errors (#define declared in a later patch
+                  but used in this patch, unused var)
+  + [patch #4/8]: use 'g_autofree' for cpu buffer, and replace g_malloc with
+                  g_try_malloc
+  + [patch #5/8]: use 'g_new' instead of 'malloc', add null check for cpu
+                  region
+  - nothing in other patches has been changed compared to v2
+
+v2:
+  + rearrange code so that no unused functions get introduced in any patch
+  + add functional test for pseries as suggested by nick
+  + fix multiple issues pointed by harsh and nick
+  + fix bug in cpu register saving where it was being stored in
+    little-endian
+  - removed 'is_next_boot_fadump' and used fadump header's status flag to
+    store it
+  + fixed multiple style issues (naming, unneeded diffs etc)
+
+
+Aditya Gupta (8):
+  hw/ppc: Implement skeleton code for fadump in PSeries
+  hw/ppc: Implement fadump register command
+  hw/ppc: Trigger Fadump boot if fadump is registered
+  hw/ppc: Preserve memory regions registered for fadump
+  hw/ppc: Implement saving CPU state in Fadump
+  hw/ppc: Pass dump-sizes property for fadump in device tree
+  hw/ppc: Enable fadump for PSeries
+  tests/functional: Add test for fadump in PSeries
+
+ hw/ppc/meson.build                        |   1 +
+ hw/ppc/spapr.c                            |  72 +++
+ hw/ppc/spapr_fadump.c                     | 685 ++++++++++++++++++++++
+ hw/ppc/spapr_rtas.c                       |  71 +++
+ include/hw/ppc/spapr.h                    |  11 +-
+ include/hw/ppc/spapr_fadump.h             | 121 ++++
+ tests/functional/meson.build              |   2 +
+ tests/functional/qemu_test/linuxkernel.py |  59 ++
+ tests/functional/test_ppc64_fadump.py     | 185 ++++++
+ 9 files changed, 1206 insertions(+), 1 deletion(-)
+ create mode 100644 hw/ppc/spapr_fadump.c
+ create mode 100644 include/hw/ppc/spapr_fadump.h
+ create mode 100755 tests/functional/test_ppc64_fadump.py
+
 -- 
-2.39.5
+2.48.1
 
 
