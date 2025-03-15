@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC88EA62854
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:45:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FA5A62867
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Mar 2025 08:48:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ttMCz-0007cD-FS; Sat, 15 Mar 2025 03:45:26 -0400
+	id 1ttMDK-00006J-Oi; Sat, 15 Mar 2025 03:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMCe-00075q-UR; Sat, 15 Mar 2025 03:45:06 -0400
+ id 1ttMCi-0007FV-6k; Sat, 15 Mar 2025 03:45:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ttMCc-00054m-AO; Sat, 15 Mar 2025 03:45:03 -0400
+ id 1ttMCg-00055M-2f; Sat, 15 Mar 2025 03:45:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EB7E1FFB0F;
+ by isrv.corpit.ru (Postfix) with ESMTP id EF60FFFB10;
  Sat, 15 Mar 2025 10:41:55 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DA3B01CACD9;
+ by tsrv.corpit.ru (Postfix) with ESMTP id DE2F01CACDA;
  Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 98E2A55A0A; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
+ id 9B38555A0C; Sat, 15 Mar 2025 10:42:49 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Denis Rastyogin <gerben@altlinux.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 27/42] block/qed: fix use-after-free by nullifying
- timer pointer after free
-Date: Sat, 15 Mar 2025 10:42:29 +0300
-Message-Id: <20250315074249.634718-27-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.10 28/42] docs/about/build-platforms: Correct minimum
+ supported Python version
+Date: Sat, 15 Mar 2025 10:42:30 +0300
+Message-Id: <20250315074249.634718-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 References: <qemu-stable-8.2.10-20250315104136@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,37 +62,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Denis Rastyogin <gerben@altlinux.org>
+From: Markus Armbruster <armbru@redhat.com>
 
-This error was discovered by fuzzing qemu-img.
-
-In the QED block driver, the need_check_timer timer is freed in
-bdrv_qed_detach_aio_context, but the pointer to the timer is not
-set to NULL. This can lead to a use-after-free scenario
-in bdrv_qed_drain_begin().
-
-The need_check_timer pointer is set to NULL after freeing the timer.
-Which helps catch this condition when checking in bdrv_qed_drain_begin().
-
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2852
-Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
-Message-ID: <20250304083927.37681-1-gerben@altlinux.org>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit 2ad638a3d160923ef3dbf87c73944e6e44bdc724)
+Fixes: ca056f4499c2 (Python: Drop support for Python 3.7)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20250227080757.3978333-2-armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+(cherry picked from commit 87c8b4fc3c1c89ec52540bfb74f9b0518f247323)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/qed.c b/block/qed.c
-index bc2f0a61c0..b986353979 100644
---- a/block/qed.c
-+++ b/block/qed.c
-@@ -353,6 +353,7 @@ static void bdrv_qed_detach_aio_context(BlockDriverState *bs)
+diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
+index f2a7aec56f..d3e26c8aa2 100644
+--- a/docs/about/build-platforms.rst
++++ b/docs/about/build-platforms.rst
+@@ -98,7 +98,7 @@ Python runtime
+   option of the ``configure`` script to point QEMU to a supported
+   version of the Python runtime.
  
-     qed_cancel_need_check_timer(s);
-     timer_free(s->need_check_timer);
-+    s->need_check_timer = NULL;
- }
+-  As of QEMU |version|, the minimum supported version of Python is 3.7.
++  As of QEMU |version|, the minimum supported version of Python is 3.8.
  
- static void bdrv_qed_attach_aio_context(BlockDriverState *bs,
+ Python build dependencies
+   Some of QEMU's build dependencies are written in Python.  Usually these
 -- 
 2.39.5
 
