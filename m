@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A209A63FA2
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 06:26:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5B4A63F97
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 06:25:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tu2xE-0006eX-L9; Mon, 17 Mar 2025 01:24:00 -0400
+	id 1tu2xL-0006gn-6d; Mon, 17 Mar 2025 01:24:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tu2xC-0006eK-M0; Mon, 17 Mar 2025 01:23:58 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1tu2xF-0006fB-KI; Mon, 17 Mar 2025 01:24:02 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tu2xB-0007nW-2d; Mon, 17 Mar 2025 01:23:58 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-223594b3c6dso76633905ad.2; 
- Sun, 16 Mar 2025 22:23:56 -0700 (PDT)
+ id 1tu2xE-0007no-68; Mon, 17 Mar 2025 01:24:01 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2232aead377so86267215ad.0; 
+ Sun, 16 Mar 2025 22:23:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742189035; x=1742793835; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742189038; x=1742793838; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gKory0aORXHwx2AW1UJ2qnqZAC9gkLCaJS83bjYZRC0=;
- b=GLZDdHe0eCEQrQ2rknTkySm2w0P5nXbxwp9uxHo374Iw7yc8bCMo9p2hJkNJZW6QYy
- Yph/twuhWRrEOk9An0e9A8dEZ3EuphBiMU/kjizf7pwVqtBhcxGe63C7f1LegpLJ8Dbf
- 8RLxE5XXFjz62IcrmpNNjGkkOMwTeS6dJ9lTzMm/TitHg1Hs3XOgFCpAFAYqiSQYpeCG
- oVqCPb1oLdKLG6/FpjxpX0hNAylQ1Q/7RiPmuLmBtGQRNn0yDYQv0Jilp6lkYtAfJ0t3
- lWXo7Fow3QD4fyDhvLG8mpojfDUnwXihN/myfdxbN4iPdZRfXtv0DBsh9CurpeWrIHOU
- pzsQ==
+ bh=rCQzO/RWV9mKGsPnnGRAGAxs7AhCxziXIi4niuyH6/o=;
+ b=Mr9rRtd3EYa61+L8n01pdFg0rbBl9cYGPePNLYa7lJOpT+yVG58B4Ho5EySGmjgLbN
+ OA2CLqc8bOur8TLn9v+88dpe8eIk9u+2pBPmURD7Z+ZO1o4o7bktae2dX8qXp887r9DF
+ mZaYpY8+Oeoz4S3eOjOU6QrspiTUy5OvMgVMz6UcCCS8PDjBI1kA+mFz/MKgohSrXRWD
+ Ying49Vg7ix7IjPE4BQIOsJNifQcnimg9gT6Fhq2dix6Oqarz2/LXO9MbPB5A9V8+PTN
+ eZpcKzWUk5f/9PlZ4wIEUyPTL9xDfEs3aPV+TfK1vy+Rz4mo8PCf1+1AIp46KGz4fWmI
+ B0tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742189035; x=1742793835;
+ d=1e100.net; s=20230601; t=1742189038; x=1742793838;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gKory0aORXHwx2AW1UJ2qnqZAC9gkLCaJS83bjYZRC0=;
- b=YMRp5N0KzLHIbzKZJ3IeC5GuxtbELB6XMx/suODE/mNmzMd5pvxJWTXlWIKay9wKmh
- 70xsaHMbv6oKIHx9+gJzp8ry2I0M6rUqwyjxQ2zazsr8utixaPbAsilN00Spn7OtHHhw
- Sv2P5nKgbicD2At/IMnwr/V7fU9kh2t98eBANtiaKFAIcdRXBYoosmfPDgvYc7OEbh9K
- A3izPvI/7XGTesbpTXgpgIiBtT7nzoSWeVp0Su8lLm/1Uc59LgAaN7jMkeCa0rRKu7Cq
- cK9CypFa3E0vlblip5dPz4k6EtCw9j4cM1XeiDyOhaYkrFFXWUxDRCKChARGlv/Hti80
- 7DKg==
+ bh=rCQzO/RWV9mKGsPnnGRAGAxs7AhCxziXIi4niuyH6/o=;
+ b=Bw6LAJ/p+o0IcI/ySLQ5Gatkq8jjYqQQJ3Db7uo5J0TaMWQqiEtKIKHdL7GzhD3cB0
+ cZwc3cR4BMDuor4sO5IjuNc+FjMFWA9zog1Hh0IAvrOGnvALLtkdTzuchw7mx2tX4v4e
+ ++ok+lUQy3jEvsUQmCAQ6pgpICLCjxuCs198J2TPUB3WlaVNOt85kaC+LODsCBMcvqot
+ XkOMF0pHSXDC0ejjQ7cnoD2KN5NCqTnV/X1KKnuq0oL1kIxbxYym9rThr2mslhos9FdV
+ 8Nldb8F/lrg8qd/2jylRUrLMUdD71TverPePqbfrTN7/XzPgSCTkAgsgSgfce2IPSR/v
+ 0LzA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX2MzYBY3P397Gyd+iYVy6mY/TAb3tVmTAMFmon6fkJTILnbYAycNBea0YXOhDCtgwKpu6pMUeBNw==@nongnu.org
-X-Gm-Message-State: AOJu0Yyz/hlTo8k4f5sIpRp8T0hGYa+CZtEHZVSqgxEkIQFoqElbj92X
- AarIpozpOdpnB4GH6uZCEtwR9EmrkIl1hjeMXmGinBQ1jgX09xNG5VzWQQ==
-X-Gm-Gg: ASbGncu44QLtjJQnvkZY7pCVPHbTBu6qU/rgFFqDwZF/HxLiCFojzXuqcppK9gwO1UK
- vqplGUw5Ogm3CjWvZ1v18OkvbAs+CACB8Y3AstPYZ3IkSN5+Yx+PFQxx4OAP1ovn5vVpQcKmLZw
- aciMVJayTdRdBxNU1f3LloRLrMnBxbTQ9RpXTNQVN/6OrmmdRtsE3bzVM4mX/7fLFlPUvV9afKE
- jUQVhg4YBA/ujaCvCkiS1qITtGShq6TQoXqGk/BRIMx0ZDls4BFYKQhK3oeeynW2lLOrfq3c1dU
- yKqbUb2mT4LmzOcBjf2VMnzheflPhLGGZtrvYSkK3BuGgdh3pA==
-X-Google-Smtp-Source: AGHT+IFop+lMLtmUwqVSFMRq8l5cGwGRY2WDfGXMe7wtrRaCCwffHD4+Sad+KDzkiBxQ9m+AvrZvkQ==
-X-Received: by 2002:a05:6a00:808:b0:730:9502:d564 with SMTP id
- d2e1a72fcca58-7372238490dmr14020131b3a.14.1742189034947; 
- Sun, 16 Mar 2025 22:23:54 -0700 (PDT)
+ AJvYcCW6VE9WdTp0/2T+chFK5kSRozL/U9hTzRcD3zQDmFB9MfLbv46nJCEpdu9/TdYE4xnn3tWs7ZfyIg==@nongnu.org
+X-Gm-Message-State: AOJu0YzrjwcA6Rb8P2r2kD7CKpFUt5yQO/jVvi7pu2lh/s5GpIVwLEb/
+ lOPfclosd1GqxFpTCeMnzVXROLHNnWptcStEL1f3VrbuTxfXRQc6NbwBsA==
+X-Gm-Gg: ASbGnctTj0nTP37IKPUObEdUBEM4TrGI/mRtSNzLtCO1iVv7MOvACxQf5BqEWMjOA67
+ HbU7UT5dBa6/PgqFhKOJayrkEl/SERYBEl135t0TUfYaMYVAQJq1t/Zxqa81rmEYvKceDbLuotB
+ HY67ErqOJHgJr0eCdye4oui/MaoIOu0AkONZfCqcXL7cQrZdlNGJ+LnNQl3ZohSXoxvJHbLAg7e
+ JDuoOA/mME/EyoZUoQIOelM1vWtTzI9lOL6f9Dei9zcCtYK2UjpuzuX/RvGi25917qJBcXe0afK
+ shHRP4dLiat3HHJwiwcYTPDO3OoRmfAB/7smjK8BgEuyxvAZVn20HH3MNZBu
+X-Google-Smtp-Source: AGHT+IF5qNYq1eMrY99ebl6tU0UfyeHKpZgx3juxDS6gerqVLJCtDB4d2kkvMa7Y9q3ZDxyjt8FSPw==
+X-Received: by 2002:a05:6a20:d74d:b0:1f5:8eb1:d5d2 with SMTP id
+ adf61e73a8af0-1f5c114b9a0mr14828867637.13.1742189038499; 
+ Sun, 16 Mar 2025 22:23:58 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.135.36])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73711695b6bsm6879495b3a.148.2025.03.16.22.23.51
+ d2e1a72fcca58-73711695b6bsm6879495b3a.148.2025.03.16.22.23.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Mar 2025 22:23:54 -0700 (PDT)
+ Sun, 16 Mar 2025 22:23:58 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -68,18 +68,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Michael Kowal <kowal@linux.ibm.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 2/6] pnv/xive: Fix possible undefined shift error in group
- size calculation
-Date: Mon, 17 Mar 2025 15:23:34 +1000
-Message-ID: <20250317052339.1108322-3-npiggin@gmail.com>
+Subject: [PATCH 3/6] ppc/xive2: Fix logical / bitwise comparison typo
+Date: Mon, 17 Mar 2025 15:23:35 +1000
+Message-ID: <20250317052339.1108322-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250317052339.1108322-1-npiggin@gmail.com>
 References: <20250317052339.1108322-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,116 +101,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity discovered a potential shift overflow in group size calculation
-in the case of a guest error. Add checks and logs to ensure a issues are
-caught.
+The comparison as written is always false (perhaps confusingly, because
+the functions/macros are not really booleans but return 0 or the tested
+bit value). Change to use logical-and.
 
-Make the group and crowd error checking code more similar to one another
-while here.
-
-Resolves: Coverity CID 1593724
-Fixes: 9cb7f6ebed60 ("ppc/xive2: Support group-matching when looking for target")
+Resolves: Coverity CID 1593721
 Cc: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/xive.c  | 27 ++++++++++++++++++++++++---
- hw/intc/xive2.c | 19 ++++++++++++++-----
- 2 files changed, 38 insertions(+), 8 deletions(-)
+ hw/intc/xive2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index e86f2749328..3eb28c2265d 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -1662,12 +1662,20 @@ uint32_t xive_get_vpgroup_size(uint32_t nvp_index)
-      * (starting with the least significant bits) in the NVP index
-      * gives the size of the group.
-      */
--    return 1 << (ctz32(~nvp_index) + 1);
-+    int first_zero = cto32(nvp_index);
-+    if (first_zero >= 31) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid group index 0x%08x",
-+                                       nvp_index);
-+        return 0;
-+    }
-+
-+    return 1U << (first_zero + 1);
- }
- 
- static uint8_t xive_get_group_level(bool crowd, bool ignore,
-                                     uint32_t nvp_blk, uint32_t nvp_index)
- {
-+    int first_zero;
-     uint8_t level;
- 
-     if (!ignore) {
-@@ -1675,12 +1683,25 @@ static uint8_t xive_get_group_level(bool crowd, bool ignore,
-         return 0;
-     }
- 
--    level = (ctz32(~nvp_index) + 1) & 0b1111;
-+    first_zero = cto32(nvp_index);
-+    if (first_zero >= 31) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid group index 0x%08x",
-+                                       nvp_index);
-+        return 0;
-+    }
-+
-+    level = (first_zero + 1) & 0b1111;
-     if (crowd) {
-         uint32_t blk;
- 
-         /* crowd level is bit position of first 0 from the right in nvp_blk */
--        blk = ctz32(~nvp_blk) + 1;
-+        first_zero = cto32(nvp_blk);
-+        if (first_zero >= 31) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid crowd block 0x%08x",
-+                                           nvp_blk);
-+            return 0;
-+        }
-+        blk = first_zero + 1;
- 
-         /*
-          * Supported crowd sizes are 2^1, 2^2, and 2^4. 2^3 is not supported.
 diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index f8ef6154878..311b42e15d3 100644
+index 311b42e15d3..7d584dfafaf 100644
 --- a/hw/intc/xive2.c
 +++ b/hw/intc/xive2.c
-@@ -1153,13 +1153,15 @@ static bool xive2_vp_match_mask(uint32_t cam1, uint32_t cam2,
- 
- static uint8_t xive2_get_vp_block_mask(uint32_t nvt_blk, bool crowd)
- {
--    uint8_t size, block_mask = 0b1111;
-+    uint8_t block_mask = 0b1111;
- 
-     /* 3 supported crowd sizes: 2, 4, 16 */
-     if (crowd) {
--        size = xive_get_vpgroup_size(nvt_blk);
--        if (size == 8) {
--            qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid crowd size of 8n");
-+        uint32_t size = xive_get_vpgroup_size(nvt_blk);
-+
-+        if (size != 2 && size != 4 && size != 16) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid crowd size of %d",
-+                                           size);
-             return block_mask;
-         }
-         block_mask &= ~(size - 1);
-@@ -1172,7 +1174,14 @@ static uint32_t xive2_get_vp_index_mask(uint32_t nvt_index, bool cam_ignore)
-     uint32_t index_mask = 0xFFFFFF; /* 24 bits */
- 
-     if (cam_ignore) {
--        index_mask &= ~(xive_get_vpgroup_size(nvt_index) - 1);
-+        uint32_t size = xive_get_vpgroup_size(nvt_index);
-+
-+        if (size < 2) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "XIVE: Invalid group size of %d",
-+                                           size);
-+            return index_mask;
-+        }
-+        index_mask &= ~(size - 1);
+@@ -1344,7 +1344,7 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
+         return;
      }
-     return index_mask;
- }
+ 
+-    if (xive2_end_is_crowd(&end) & !xive2_end_is_ignore(&end)) {
++    if (xive2_end_is_crowd(&end) && !xive2_end_is_ignore(&end)) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "XIVE: invalid END, 'crowd' bit requires 'ignore' bit\n");
+         return;
 -- 
 2.47.1
 
