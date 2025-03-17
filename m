@@ -2,97 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84781A6578E
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 17:10:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01528A657A7
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 17:14:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuD2x-0000xw-0l; Mon, 17 Mar 2025 12:10:39 -0400
+	id 1tuD68-0003Ua-9i; Mon, 17 Mar 2025 12:13:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tuD21-0000On-Ri
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:09:43 -0400
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tuD5s-0003TC-Bk
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:13:41 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tuD1y-0002uj-70
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:09:36 -0400
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-7be6fdeee35so823637585a.1
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 09:09:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tuD5q-0003g3-15
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:13:35 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43cf06eabdaso23033285e9.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 09:13:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742227769; x=1742832569; darn=nongnu.org;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=RjZ9cgbEqjD6FBG4KHuHgodfx5fllrheU0SjlXI8SQY=;
- b=FrbXjDhQKWczz3b5QXftHUVc9iJSGH9Hc9Mv8BZ+XT0LQRgb8w52U5Sg4+tmpgfZRQ
- ZuFHRRhVyj3Ovmwec0bF6ik+QN6RX3DaRLuMeGzzaI/IyiJ4O7PX/6sW6eDf5hGAtrye
- bItJCohfv1MM0/C98/gtw/dvOZzK/lilEJoaqgRViD51KpaNj2BLW3y/Vz4Vzcl9WgxP
- vn50sk+leTJXI+uv3v9ZZRcK81HTuUZGXUOwDGAuYT/fdlS/W/7ziFhITU4lXIA6yTSX
- XVoZFKS9lqpjRg/sdP88k+w/0m36HumrHU7CsNFPz4V8fj8eMmTEdqwn1/x62vXoq7Kv
- YyvQ==
+ d=linaro.org; s=google; t=1742228011; x=1742832811; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Rb3LS0vNPhnknUl9Yi62tIxsFcdNc1tr/8ma9EHvQ3I=;
+ b=huKSqmZKlXs6B74KC9QMzmNbsgHvQSgk/odIDpeZ41qp1gaXO+O2OaIoMEBeU8nY4X
+ f6g2AY8O6YSSbMYEAtgbIO8eToLaF6dxUqQhysaW8Ocq15rVfwkRgn//QbdduntdGbFn
+ NnxoBEWU4qVkvotB+uuQ3eSmE284VNvPac//jYBEbkanHn99HvuB/R2DLxSjwazCGT3U
+ UycvjJ9lWWBFjtSApOg2avwzQ4fZGBnbvy/J79Jad9UUUzLN7EaLQAbTPtTJI0A+g9Pb
+ 3eBWszZND3NWHTcmD3rTXTDY7U1cdCpD5wpYrDClMXT5kbFQVxM1mwH1tHa1tYMxaOCx
+ RTTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742227769; x=1742832569;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RjZ9cgbEqjD6FBG4KHuHgodfx5fllrheU0SjlXI8SQY=;
- b=NbhG5edZdRiNaD7lDDWFKcSkasyeEP/80SThDpmAoQ4ztVtuAwSgGCV7OD82QvCQpw
- vBXrPVsU7VcfNMb9xh7BgUP2j9ZPbb+/QDcX7ItPuhDs+2QFuskPbvFOWsgR/E5arTSq
- fJKh1Wodjo5uzycitOvKn/oM62BqS+2ek44fK+fgFs3rPmHCufemICLdkQGkyhIUXoht
- KC48PVXybG5/ZcqjB31N295VYFwyF25aRxvSUMFGjnpDN8XKdtlRpM1onvaKTlHbW+KN
- 8BYWmaKjk9YA4FSu9IUMmyaIo9ZmDGV5tt3FGbR+QtdJqPoecoFMzcI/4ja+5al7FHYJ
- WXTw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX73JCQIVLp+iP7EGokhW2/3dgRIMbPQlxEhNYSHOghnWQlXRpAocUdDwzY/hWMBlvitpETD/X3uzOf@nongnu.org
-X-Gm-Message-State: AOJu0YwxFh5qAjj2hMz3Moa0hVvVeeebv24u6K0Jhd5v9YAAbNjpZNB6
- T1aHKxiUgMM1QAfNJC6c5NjHNJ7KuUgK03vmFnldC1mLoX+6DjHa
-X-Gm-Gg: ASbGncsmX7vhtZwpKZn/ea8o6ATkq2wpwcnTtPX08K603SzuTG+KUc+8elcVVwyr+31
- +SCryl2KkOzyEXsINv4TgotXSvuipy+GrC2ftpkYh/2syKSthbi8bDMobx18qH0xQY1j0LpDAXX
- GGCiLoy7AFdbdZyIZ9Y1gsvk5Pa68pzAqASnoexk6EQ0fGc9V2eO4du5LcPbCHK24AgyFZymbSH
- casDBHI3LN9iyVCxpTim7F0SvVhLAPyBsVtv1wtFoNt+z13e1H6veM262iHk69U3qzBLKK9/2E1
- 1v7FrJDutmQkY2lvqImjJipobkLJcpiDwJgAvQ7KnQ8u+4BAbX7LdSDlclS2EhU=
-X-Google-Smtp-Source: AGHT+IFRhT2YJQ4ReX6haAC2qGgW3wFnIYiVEui+RCKB2D/C7HZ8NHa7plNK2I268yeDKVx5RD7zIA==
-X-Received: by 2002:a05:620a:400e:b0:7c5:6c02:4c25 with SMTP id
- af79cd13be357-7c57c80e2bfmr2194745285a.25.1742227768855; 
- Mon, 17 Mar 2025 09:09:28 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2603:6000:a500:306:3131:60d1:4874:e2c7])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7c573c4e8b9sm606149585a.2.2025.03.17.09.09.27
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 17 Mar 2025 09:09:27 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
-	<qemu-devel@nongnu.org>
-Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
- <quic_mathbern@quicinc.com>, <ale@rev.ng>, <anjo@rev.ng>,
- <quic_mliebel@quicinc.com>, <alex.bennee@linaro.org>,
- <quic_mburton@quicinc.com>, <sidneym@quicinc.com>,
- "'Brian Cain'" <bcain@quicinc.com>
-References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
- <20250301052845.1012069-3-brian.cain@oss.qualcomm.com>
-In-Reply-To: <20250301052845.1012069-3-brian.cain@oss.qualcomm.com>
-Subject: RE: [PATCH 02/39] target/hexagon: Implement {c,}swi helpers
-Date: Mon, 17 Mar 2025 11:09:27 -0500
-Message-ID: <016301db9756$f5c7df60$e1579e20$@gmail.com>
+ d=1e100.net; s=20230601; t=1742228011; x=1742832811;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Rb3LS0vNPhnknUl9Yi62tIxsFcdNc1tr/8ma9EHvQ3I=;
+ b=PiXdmH80VVb6+phq2Dr9utac2cxoHa5IzQiONoF8y47389Z1q/nhsG4M9I5lNRqLuX
+ AKCkqIqj4BWNQutv+s9GMcvh7ftpH6cu5naWvIPPoaYm0GN0z6ZWYHcX1xlFgY4oydSG
+ rmVW8iZCOkpsKiT/WhqcT/tLQGXV7Vg3wwu5hNIwx9Gn3YWpez/t5C4hmC0etmtiIuLR
+ /NB7qFqRRGG96ytOfxJC613eU51Bj2RgQEx43o4fvVqImbXoX9UNOS6iiVyllXTTuVNe
+ kAgdh7c6lBnuI/ZLn8c95FpTOPZmcuL+QZZepiuZohKgWLcrxa7npmdEElCh9nv0zunN
+ pWMQ==
+X-Gm-Message-State: AOJu0YyATFN+Uiz/5Rs1I41N9+JbxDdckU++v1g8VytGpHrACXqXC5WB
+ kMinzENgojXqBMR+S/NH14UZDD+sPzXe6sIKdSgHSiGOHf82k6tcvMVXGMJDVFczUnchomLMGX9
+ R
+X-Gm-Gg: ASbGncvyWI/DFoPu8WDzFoiS+6FOomyZT7EgwEK/s5FPHEgwbmNrcc+eNui6Rl/oRWD
+ Vou/bdkifGj+ObHYGn5O0jQpimLRRnzLkKlP7LMZp9tqAKJ6GzWBT9YylhxOuN32K48eJLchj7D
+ jKD7wXl4A7LJfoh6/AWTrn9RcucBk/VUELFSr0o2H20kbGYGIGkwwQw+g217Ete9gJzbbyonupY
+ 7XcUuma8niozwTNkI5V1Rt3UJLBh1zMgty91zZo9wFWb8wrcSV5tJXpsxW8/8rd2Lqk/FLq0MnD
+ 8HLYCNV0Rf9Fj5HQUpeyL46hTkqw6OIZgV5XbEBrakGQAmy+lW6y3IO0i8x/NppH047mVTjhk1w
+ i74a7S3g1MxKtWiwXv/c=
+X-Google-Smtp-Source: AGHT+IEp94Iit9UOvxjGsdLbkpAxIV3w2OsjsSQBDGC1Te7+SAoNykoO+bbm885p9kpf9o6KO7iKXw==
+X-Received: by 2002:a5d:6da7:0:b0:391:2e31:c7e5 with SMTP id
+ ffacd0b85a97d-3971dce07d6mr11729466f8f.6.1742228010978; 
+ Mon, 17 Mar 2025 09:13:30 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-395cb7ea16csm15273358f8f.82.2025.03.17.09.13.29
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 17 Mar 2025 09:13:30 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/2] exec: Restrict memory-internal.h to system/
+Date: Mon, 17 Mar 2025 17:13:27 +0100
+Message-ID: <20250317161329.40300-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQIWUu77rEigiK0ljjjo9ZdCZqs5mQJSr3yRsu9ySmA=
-Content-Language: en-us
-X-Antivirus: Norton (VPS 250317-2, 3/17/2025), Outbound message
-X-Antivirus-Status: Clean
-Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-qk1-x731.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -110,26 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Only file units within the system/ directory need access to
+"memory-internal.h". Move it to system/ to restrict its scope.
 
+Based-on: <20250314173139.2122904-1-pierrick.bouvier@linaro.org>
 
-> -----Original Message-----
-> From: Brian Cain <brian.cain@oss.qualcomm.com>
-> Sent: Friday, February 28, 2025 11:28 PM
-> To: qemu-devel@nongnu.org
-> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
-> philmd@linaro.org; quic_mathbern@quicinc.com; ale@rev.ng; anjo@rev.ng;
-> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
-> alex.bennee@linaro.org; quic_mburton@quicinc.com;
-> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>
-> Subject: [PATCH 02/39] target/hexagon: Implement {c,}swi helpers
->=20
-> From: Brian Cain <bcain@quicinc.com>
->=20
-> {c,}swi are the "software interrupt"/"Cancel pending interrupts" =
-instructions.
->=20
-> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+Philippe Mathieu-Daudé (2):
+  accel/tcg: Remove unnecesary inclusion of memory-internal.h in
+    cputlb.c
+  exec: Restrict memory-internal.h to system/
 
-Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+ MAINTAINERS                                | 2 +-
+ {include/exec => system}/memory-internal.h | 6 ------
+ accel/tcg/cputlb.c                         | 1 -
+ system/memory.c                            | 3 ++-
+ system/physmem.c                           | 3 ++-
+ 5 files changed, 5 insertions(+), 10 deletions(-)
+ rename {include/exec => system}/memory-internal.h (88%)
+
+-- 
+2.47.1
 
 
