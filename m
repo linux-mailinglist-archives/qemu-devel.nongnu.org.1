@@ -2,51 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDBBDA65467
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 15:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C038A65493
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 15:57:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuBqW-00057z-Od; Mon, 17 Mar 2025 10:53:40 -0400
+	id 1tuBqX-000586-RS; Mon, 17 Mar 2025 10:53:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuBpk-0004ue-3o; Mon, 17 Mar 2025 10:52:54 -0400
+ id 1tuBpv-0004y4-AG; Mon, 17 Mar 2025 10:53:10 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuBpd-00061x-JM; Mon, 17 Mar 2025 10:52:51 -0400
+ id 1tuBpm-00061r-VT; Mon, 17 Mar 2025 10:53:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742223166; x=1773759166;
+ t=1742223175; x=1773759175;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MCx0zDycZpOMc1w/byljIhWhqUJGEtnpHBLsQvLLbRU=;
- b=Tac3UTLsQJEogNcDb4mYiEx0ln19MK6HAYfslqd5TsQZYsBmUyx+/cHN
- M2gs4Vp7HibokjiM/V/BBU+eCTdYQvEVddQULM3T89KtvbqCv8cliFwPo
- vMIOgDLJcYCXZxtNR7i9NoFd/W+CCCMwBcxZc5/StmbvgPuOrjDVVMXA9
- lRvqgAmnwjex0QOX26cgzq4Da5AlTkrBfjy0+T8mAnRs6g/YM7hL4LmlS
- 4P88sycAR1tvPpIUWu/ty8e7nF0scRn5enqTFiN5u3cxOmukJTgEEyS1A
- 42tyoyJj977jvYOh+UMWC+fbx66vrZAK88hjLTPMXuGj+FAf4BXkx1ytD Q==;
-X-CSE-ConnectionGUID: LSckWGriSoCpuyyCzVLE3A==
-X-CSE-MsgGUID: P4U7CmS2QJm8Mg3SvE9NdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="54694599"
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="54694599"
+ bh=w7POmeU7VP6eIrAcsdWPqJZKF2jRdbcjZRS+bIqVuS8=;
+ b=nZsAZnyk674/TcTHrAjNpvcaNM47GiZROv9kNj/FqJUtmSYX6IUMcKNJ
+ /sa8yb77mjAN4VPhaXuiO5Vshh6Fv09V+HHnlfFGq5t1K07OcY87hI8ym
+ RRKyPxnTk2hWa2+XdNXqMqkqcbSYDI7YahFdJoFI92FPE5Wlb/XAEoQaw
+ fCHrVnXJjTl+Mk8l8TCIVoh6kkMms9G+ucUEd5cmbDyL397zvO5do75IB
+ DBjBcaCYDziUbPjh9zLDEd7Qm5Sn3r4TM7MqDz1UiorbAZH8xDMEuliCf
+ UZS/rT8axzGzjUaOD6IFRmPjwWC80yM5WJ6sEk7ENf8UC15J59YD2g+kx g==;
+X-CSE-ConnectionGUID: MIxTDT6TRHOPE2lyeruqUQ==
+X-CSE-MsgGUID: W89MJnHHRWWV/kHJijofxg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="54694602"
+X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="54694602"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2025 07:52:33 -0700
-X-CSE-ConnectionGUID: 3S69gOMgQ8eLaVj5SxAD6A==
-X-CSE-MsgGUID: jOPVS7RITdydBcgB8SYVjw==
+ 17 Mar 2025 07:52:35 -0700
+X-CSE-ConnectionGUID: m4cpMr+JSICYRJyoyWXW0g==
+X-CSE-MsgGUID: RQ7T7ea1R4eoFvJLdnoJxQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="126988507"
+X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="126988512"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 17 Mar 2025 07:52:32 -0700
+ by orviesa004.jf.intel.com with ESMTP; 17 Mar 2025 07:52:34 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 05/17] rust/vmstate: Fix num field when varray flags are set
-Date: Mon, 17 Mar 2025 23:12:24 +0800
-Message-Id: <20250317151236.536673-6-zhao1.liu@intel.com>
+Subject: [PATCH 06/17] rust/vmstate: Fix size field of VMStateField with
+ VMS_ARRAY_OF_POINTER flag
+Date: Mon, 17 Mar 2025 23:12:25 +0800
+Message-Id: <20250317151236.536673-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250317151236.536673-1-zhao1.liu@intel.com>
 References: <20250317151236.536673-1-zhao1.liu@intel.com>
@@ -61,7 +62,7 @@ X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.335,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,29 +78,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Array type vmstate has the VMStateField with `num` equals its length.
+The `size` field of the VMStateField with VMS_ARRAY_OF_POINTER flag
+should stores the size of pointer, which depends on platform.
 
-When the varray vmstate is built based a array type, the `num` field
-should be cleaned to 0, because varray uses `num_offset` instead of
-`num` to store elements number information.
+Currently, `*const`, `*mut`, `NonNull`, `Box<>` and their wrapper are
+supported, and they have the same size as `usize`.
+
+Store the size (of `usize`) when VMS_ARRAY_OF_POINTER flag is set.
+
+The size may be changed when more smart pointers are supported, but now
+the size of "usize" is enough.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/src/vmstate.rs | 1 +
- 1 file changed, 1 insertion(+)
+ rust/qemu-api/src/vmstate.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 3f95d4825149..e877ee5e391d 100644
+index e877ee5e391d..5af75b4777e9 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -275,6 +275,7 @@ pub const fn with_varray_flag<T: VMState>(mut self, flag: VMStateFlags) -> VMSta
-         assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) != 0);
-         self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_ARRAY.0);
-         self.flags = VMStateFlags(self.flags.0 | flag.0);
-+        self.num = 0; // varray uses num_offset instead of num.
-         self
-     }
- 
+@@ -256,6 +256,10 @@ pub const fn with_array_flag(mut self, num: usize) -> Self {
+         if (self.flags.0 & VMStateFlags::VMS_POINTER.0) != 0 {
+             self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_POINTER.0);
+             self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_ARRAY_OF_POINTER.0);
++            // VMS_ARRAY_OF_POINTER flag stores the size of pointer.
++            // FIXME: *const, *mut, NonNull and Box<> have the same size as usize.
++            //        Resize if more smart pointers are supported.
++            self.size = std::mem::size_of::<usize>();
+         }
+         self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_SINGLE.0);
+         self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_ARRAY.0);
 -- 
 2.34.1
 
