@@ -2,78 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84E5A64D67
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 12:55:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BC0A64E7A
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 13:19:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tu92x-0005EN-03; Mon, 17 Mar 2025 07:54:19 -0400
+	id 1tu9RF-0004cX-H6; Mon, 17 Mar 2025 08:19:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tu92d-0005DT-47
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 07:53:59 -0400
-Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tu92a-0007yT-Vw
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 07:53:58 -0400
-Received: by mail-yb1-xb32.google.com with SMTP id
- 3f1490d57ef6-e63504bedd0so2827672276.0
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 04:53:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742212434; x=1742817234; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pPe/7/yUQFRB8Elsl01jkfv7Oja5Bi+E+6DbLmo998k=;
- b=bwZjc2wBo1X7q6keHAQ+1KDi7RLK+x8o0KG5SEZzKdXwdG/ScKRanUoCICYj4K49Go
- xbFLeyKxJEHDWjsUqQ/AA1RGwuy0A1ASpLTjwXxYOwq433p/OcLdgo7QJ3bGAqqfgo7F
- UmkGltjjF2KOhpGoGa3CS15SIPlv48T98b97nEgV+IPSnZmdALs/ELZiCnSUKmdbHv0/
- YXJ6qn/JWNiOtGTHbSkatlTxgv5S2tsZ6V/9o1C/3/qsfdOJ4i+tg0ihj3Qc3CJzv6EF
- TeWN3C8m1LvrTijGHyX76p/I2mGTEPjJJqk9SvPB5ZHdxEqtzZPBImBBZBcnrTEczuiq
- ecTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742212434; x=1742817234;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pPe/7/yUQFRB8Elsl01jkfv7Oja5Bi+E+6DbLmo998k=;
- b=Ejwu0hbS6qmAecxl4NObcXWAFpcMz61mZMDIJhV3pkohSzlTcYEXg1VhjGJ0S1VrE8
- 0VPHwMqxyEKN+/FsaRCjLPHfwOBjdgqIgUUAVAFMpnDpX7cmgq++Eyric9tKOr3rObMB
- eTT7n9D+GVmAPNpsaO70H6kaHL7NX7WLmvqTWWmH6SC7/vKDR1BjuI6V8IQbRAwTcDbu
- aODC3Sz4ZU668J7IjJjjSgOn/mTiUK6Vcd8mQFAw59PdowyTaOGiG3kilRq+E4h15neD
- uO1GD2Oe71i71zgwQUY2uNfoB90GLbFsE4JSEH18QcmzoTxhof1M1e9lxNFpL7Q8EWHG
- 2Q0A==
-X-Gm-Message-State: AOJu0YzHLjfXH9JziLC+TnER917RdwAXjUSqjxV9qk9qdqY862+pYbzn
- fkP+knT3dJQ1+dcFya9UXozMQm+g3szhSVijwiWImKtfgLi44N1jDDFdinQh9Zhqy6V5qzcP54P
- hnNdDDM7abSb7mYH4X32jz2Z6sLpgveQK8cyadg==
-X-Gm-Gg: ASbGncuimUbQaNzdJ8AqPN9xDFtIratEw+DMC1IdEEk65at9UFBwXX9zWq8XGKZvHxS
- fFzeOz837AWDhztjmix6Ux20tFKliXT9xcl2EboKUHhRVQZkbG+wA7L0ZOT5hcZ527cIZxckxsy
- 9TE40X5RL2i+Ek+Y444ywjYRVXN8E=
-X-Google-Smtp-Source: AGHT+IGkM90m6MNtELPBPZZPgdMV9jm4BAePYqZW8a3P7L9zfRD+b4O53LjfmATaxhaFbu5RqMseaChuWkMTqJrjCmE=
-X-Received: by 2002:a05:6902:2807:b0:e5d:aeb7:6e62 with SMTP id
- 3f1490d57ef6-e63f64d236emr14202391276.7.1742212432444; Mon, 17 Mar 2025
- 04:53:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zoudongjie@huawei.com>)
+ id 1tu9RC-0004bK-6t; Mon, 17 Mar 2025 08:19:22 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zoudongjie@huawei.com>)
+ id 1tu9R8-0003js-27; Mon, 17 Mar 2025 08:19:21 -0400
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ZGYn60P1gz2RTyG;
+ Mon, 17 Mar 2025 20:14:34 +0800 (CST)
+Received: from kwepemk500007.china.huawei.com (unknown [7.202.194.92])
+ by mail.maildlp.com (Postfix) with ESMTPS id 1A1B1180214;
+ Mon, 17 Mar 2025 20:19:02 +0800 (CST)
+Received: from huawei.com (10.246.99.19) by kwepemk500007.china.huawei.com
+ (7.202.194.92) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 17 Mar
+ 2025 20:19:00 +0800
+To: <stefanha@redhat.com>
+CC: <fam@euphon.net>, <hreitz@redhat.com>, <kwolf@redhat.com>,
+ <qemu-block@nongnu.org>, <qemu-devel@nongnu.org>, <qemu-stable@nongnu.org>,
+ <zhuyangyang14@huawei.com>, <luolongmin@huawei.com>,
+ <suxiaodong1@huawei.com>, <wangyan122@huawei.com>, <yebiaoxiang@huawei.com>,
+ <wangjian161@huawei.com>, <mujinsheng@huawei.com>, <alex.chen@huawei.com>,
+ <eric.fangyi@huawei.com>, <zoudongjie@huawei.com>, <chenjianfei3@huawei.com>, 
+ <renxuming@huawei.com>
+Subject: Re: [PATCH 1/2] io/block: Refactoring the bdrv_drained_begin()
+ function and implement a timeout mechanism.
+Date: Mon, 17 Mar 2025 20:18:28 +0800
+Message-ID: <20250317121828.4069621-1-zoudongjie@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20250313040945.GB1074020@fedora>
+References: <20250313040945.GB1074020@fedora>
 MIME-Version: 1.0
-References: <20250317-raw-v1-0-09e2dfff0e90@daynix.com>
-In-Reply-To: <20250317-raw-v1-0-09e2dfff0e90@daynix.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 17 Mar 2025 11:53:40 +0000
-X-Gm-Features: AQ5f1Jo5nBE7BSVUIahWWqdqD8IY585B7lrGv5MupP0LJ7p1lUOZobD71SQzxls
-Message-ID: <CAFEAcA9Cy_870gxNmPFykzTjXOfi0raotmA1NRpZEQKfFfB=0g@mail.gmail.com>
-Subject: Re: [PATCH 0/4] target/arm: Flag PMCNTENCLR with ARM_CP_NO_RAW
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, devel@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb32.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.246.99.19]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemk500007.china.huawei.com (7.202.194.92)
+Received-SPF: pass client-ip=45.249.212.190;
+ envelope-from=zoudongjie@huawei.com; helo=szxga04-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,51 +68,340 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  zoudongjie <zoudongjie@huawei.com>
+From:  zoudongjie via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 17 Mar 2025 at 11:16, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->
-> Supersedes: <20250314-clr-v2-1-7c7220c177c9@daynix.com>
-> ("[PATCH v2] target/arm: Define raw write for PMU CLR registers")
->
-> A normal write to PMCNTENCLR clears written bits so it is not
-> appropriate for writing a raw value. This kind of situation is usually
-> handled by setting a raw write function, but flag the register with
-> ARM_CP_NO_RAW instead to workaround a problem with KVM.
+On Thu, 13 Mar, 2025 at 12:09:45 +0800, Stefan Hajnoczi wrote:
+> On Sat, Mar 08, 2025 at 06:16:17PM +0800, zoudongjie wrote:
+> > From: Zhu Yangyang <zhuyangyang14@huawei.com>
+> > 
+> > The bdrv_drained_begin() function is a blocking function. In scenarios where network storage
+> > is used and network links fail, it may block for a long time.
+> > Therefore, we add a timeout parameter to control the duration of the block.
+> > 
+> > Since bdrv_drained_begin() has been widely adopted, both bdrv_drained_begin()
+> > and bdrv_drained_begin_timeout() will be retained.
+> > 
+> > Signed-off-by: Zhu Yangyang <zhuyangyang14@huawei.com>
+> > ---
+> >  block/io.c               | 55 ++++++++++++++++++++++++++++++-------
+> >  include/block/aio-wait.h | 58 ++++++++++++++++++++++++++++++++++++++++
+> >  include/block/block-io.h |  7 +++++
+> >  util/aio-wait.c          |  7 +++++
+> >  4 files changed, 117 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/block/io.c b/block/io.c
+> > index d369b994df..03b8b2dca7 100644
+> > --- a/block/io.c
+> > +++ b/block/io.c
+> > @@ -255,6 +255,8 @@ typedef struct {
+> >      bool begin;
+> >      bool poll;
+> >      BdrvChild *parent;
+> > +    int ret;
+> > +    int64_t timeout;
+> 
+> Please put the units (milliseconds) into the variable name here and
+> everywhere else in the patch to avoid confusion about units:
+> 
+>   int64_t timeout_ms;
 
-I'm not sure there's a "problem with KVM" here -- it implements the
-write to PMCNTENCLR to have the semantics the architecture specifies.
+Ok, I'm going to modify it in patch V2.
 
-> KVM also has the same problem with PMINTENSET so add a comment to
-> note that. This register is already flagged with ARM_CP_NO_RAW.
+> 
+> >  } BdrvCoDrainData;
+> >  
+> >  /* Returns true if BDRV_POLL_WHILE() should go into a blocking aio_poll() */
+> > @@ -283,6 +285,8 @@ static bool bdrv_drain_poll_top_level(BlockDriverState *bs,
+> >      return bdrv_drain_poll(bs, ignore_parent, false);
+> >  }
+> >  
+> > +static int bdrv_do_drained_begin_timeout(BlockDriverState *bs,
+> > +    BdrvChild *parent, bool poll, int64_t timeout);
+> >  static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
+> >                                    bool poll);
+> >  static void bdrv_do_drained_end(BlockDriverState *bs, BdrvChild *parent);
+> > @@ -296,7 +300,8 @@ static void bdrv_co_drain_bh_cb(void *opaque)
+> >      if (bs) {
+> >          bdrv_dec_in_flight(bs);
+> >          if (data->begin) {
+> > -            bdrv_do_drained_begin(bs, data->parent, data->poll);
+> > +            data->ret = bdrv_do_drained_begin_timeout(
+> > +                bs, data->parent, data->poll, data->timeout);
+> >          } else {
+> >              assert(!data->poll);
+> >              bdrv_do_drained_end(bs, data->parent);
+> > @@ -310,10 +315,11 @@ static void bdrv_co_drain_bh_cb(void *opaque)
+> >      aio_co_wake(co);
+> >  }
+> >  
+> > -static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+> > -                                                bool begin,
+> > -                                                BdrvChild *parent,
+> > -                                                bool poll)
+> > +static int coroutine_fn bdrv_co_yield_to_drain_timeout(BlockDriverState *bs,
+> > +                                                         bool begin,
+> > +                                                         BdrvChild *parent,
+> > +                                                         bool poll,
+> > +                                                         int64_t timeout)
+> >  {
+> >      BdrvCoDrainData data;
+> >      Coroutine *self = qemu_coroutine_self();
+> > @@ -329,6 +335,8 @@ static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+> >          .begin = begin,
+> >          .parent = parent,
+> >          .poll = poll,
+> > +        .timeout = timeout,
+> > +        .ret = 0
+> >      };
+> >  
+> >      if (bs) {
+> > @@ -342,16 +350,25 @@ static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+> >      /* If we are resumed from some other event (such as an aio completion or a
+> >       * timer callback), it is a bug in the caller that should be fixed. */
+> >      assert(data.done);
+> > +    return data.ret;
+> >  }
+> >  
+> > -static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
+> > -                                  bool poll)
+> > +static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+> > +                                                bool begin,
+> > +                                                BdrvChild *parent,
+> > +                                                bool poll)
+> > +{
+> > +    bdrv_co_yield_to_drain_timeout(bs, begin, parent, poll, -1);
+> 
+> Is this safe on 32-bit platforms?
 
-What are we trying to achieve with this patchset?
-You can't write to registers from gdb, and reading PMCNTENCLR
-just gives you the same value as PMCNTENSET, so you might as
-well read that, which we already expose.
+I'm sorry, can it be more specific here, I didn't get it.
 
-More generally, the gdb-stub access to system registers is
-something we put in on a "this is a minimal amount of code
-to provide something that more or less works" basis. If we
-want it to work better (i.e. more comprehensively, possibly
-with write support) then we should address that by looking at
-the design of doing that more holistically, not by making
-tweaks to address individual registers.
+> 
+> > +}
+> > +
+> > +static int bdrv_do_drained_begin_timeout(BlockDriverState *bs,
+> > +    BdrvChild *parent, bool poll, int64_t timeout_ms)
+> >  {
+> >      IO_OR_GS_CODE();
+> >  
+> >      if (qemu_in_coroutine()) {
+> > -        bdrv_co_yield_to_drain(bs, true, parent, poll);
+> > -        return;
+> > +        return bdrv_co_yield_to_drain_timeout(bs, true, parent, poll,
+> > +                                              timeout_ms);
+> >      }
+> >  
+> >      GLOBAL_STATE_CODE();
+> > @@ -375,8 +392,20 @@ static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
+> >       * nodes.
+> >       */
+> >      if (poll) {
+> > -        BDRV_POLL_WHILE(bs, bdrv_drain_poll_top_level(bs, parent));
+> > +        if (timeout_ms < 0) {
+> > +            BDRV_POLL_WHILE(bs, bdrv_drain_poll_top_level(bs, parent));
+> > +        } else {
+> > +            return BDRV_POLL_WHILE_TIMEOUT(
+> > +                bs, bdrv_drain_poll_top_level(bs, parent), timeout_ms);
+> > +        }
+> 
+> Any reason to handle timeout_ms < 0 here instead of in
+> BDRV_POLL_WHILE_TIMEOUT()? It would be more consistent to support -1 in
+> BDRV_POLL_WHILE_TIMEOUT() so that you don't need to remember which
+> functions/macros support timeout_ms=-1 and which dont.
 
-Specifically, I'm not really happy with adding explicit
-ARM_CP_NO_GDB flags to everything we currently mark as
-ARM_CP_NO_RAW. Either we stick with our existing
-"minimal changes to produce something that works" approach,
-in which case we deny gdb access to NO_RAW registers because
-that's easy and most of them it won't work or doesn't make
-sense. Or else we do the actual design work. That might turn
-out to mean "we explicitly mark no-gdb registers rather than
-overloading NO_RAW for this", or it might mean something else.
-But we won't know until we actually do that design work.
+Previously, BDRV_POLL_WHILE_TIMEOUT() was not done very well, aio_poll() exits
+frequently because interval is used in the timer. but now I will support -1 in
+BDRV_POLL_WHILE_TIMEOUT().
 
-(see also https://gitlab.com/qemu-project/qemu/-/issues/2760 )
+> 
+> >      }
+> > +    return 0;
+> > +}
+> > +
+> > +static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
+> > +                                  bool poll)
+> > +{
+> > +    bdrv_do_drained_begin_timeout(bs, parent, poll, -1);
+> >  }
+> >  
+> >  void bdrv_do_drained_begin_quiesce(BlockDriverState *bs, BdrvChild *parent)
+> > @@ -390,6 +419,12 @@ bdrv_drained_begin(BlockDriverState *bs)
+> >      IO_OR_GS_CODE();
+> >      bdrv_do_drained_begin(bs, NULL, true);
+> >  }
+> > +int coroutine_mixed_fn
+> > +bdrv_drained_begin_timeout(BlockDriverState *bs, int64_t timeout_ms)
+> > +{
+> > +    IO_OR_GS_CODE();
+> > +    return bdrv_do_drained_begin_timeout(bs, NULL, true, timeout_ms);
+> > +}
+> >  
+> >  /**
+> >   * This function does not poll, nor must any of its recursively called
+> > diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
+> > index cf5e8bde1c..efbcb9777a 100644
+> > --- a/include/block/aio-wait.h
+> > +++ b/include/block/aio-wait.h
+> > @@ -28,6 +28,8 @@
+> >  #include "block/aio.h"
+> >  #include "qemu/main-loop.h"
+> >  
+> > +#define AIO_WAIT_INTERVAL 10  /* ms */
+> > +
+> >  /**
+> >   * AioWait:
+> >   *
+> > @@ -56,6 +58,11 @@ typedef struct {
+> >      unsigned num_waiters;
+> >  } AioWait;
+> >  
+> > +typedef struct {
+> > +    struct QEMUTimer *timer;
+> 
+> struct is not necessary since QEMUTimer is a typedef:
+> 
+>   QEMUTimer *timer;
+> 
+> Also, can this be a struct field instead of a pointer by using
+> aio_timer_init_ms() instead of aio_timer_new()?
 
-thanks
--- PMM
+Ok, I'm going to modify it in patch V2.
+
+> 
+> > +    int64_t interval;
+> > +} AioWaitTimer;
+> > +
+> >  extern AioWait global_aio_wait;
+> >  
+> >  /**
+> > @@ -99,6 +106,55 @@ extern AioWait global_aio_wait;
+> >      qatomic_dec(&wait_->num_waiters);                              \
+> >      waited_; })
+> >  
+> > +/**
+> > + * AIO_WAIT_WHILE_TIMEOUT:
+> > + *
+> > + * Refer to the implementation of AIO_WAIT_WHILE_INTERNAL,
+> > + * the timeout parameter is added.
+> > + */
+> > +#define AIO_WAIT_WHILE_TIMEOUT(ctx, cond, timeout) ({                    \
+> > +    int ret_ = 0;                                                        \
+> > +    AioWait *wait_ = &global_aio_wait;                                   \
+> > +    AioContext *ctx_ = (ctx);                                            \
+> > +    int64_t start_ = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);             \
+> > +    int64_t deadline_ = start_ + (timeout);                              \
+> > +    /* Ensure that the aio_poll exits periodically to check timeout. */  \
+> > +    AioWaitTimer *s_ = g_malloc0(sizeof(AioWaitTimer));                  \
+> 
+> Can this be allocated on the stack instead of the heap?
+
+Yes, it's certainly better.
+
+> 
+> > +    s_->interval = AIO_WAIT_INTERVAL;                                    \
+> > +    /* Increment wait_->num_waiters before evaluating cond. */           \
+> > +    qatomic_inc(&wait_->num_waiters);                                    \
+> > +    /* Paired with smp_mb in aio_wait_kick(). */                         \
+> > +    smp_mb__after_rmw();                                                 \
+> > +    if (ctx_ && in_aio_context_home_thread(ctx_)) {                      \
+> > +        s_->timer = aio_timer_new(ctx_, QEMU_CLOCK_REALTIME,             \
+> > +                        SCALE_MS, aio_wait_timer_retry, s_);             \
+> > +        aio_wait_timer_retry(s_);                                        \
+> > +        while ((cond)) {                                                 \
+> > +            aio_poll(ctx_, true);                                        \
+> > +            if (qemu_clock_get_ms(QEMU_CLOCK_REALTIME) > deadline_) {    \
+> > +                ret_ = -ETIMEDOUT;                                       \
+> > +                break;                                                   \
+> > +            }                                                            \
+> > +        }                                                                \
+> 
+> What is the purpose of interval?
+> 
+> I expected the timer's callback function to be an empty function that is
+> called when the deadline expires. The while loop here would use
+> timer_pending() to check for expiry instead of explicitly checking
+> against the deadline.
+
+This was really a good idea; it resolved some of my doubts and made everything
+look better.
+
+> 
+> > +    } else {                                                             \
+> > +        s_->timer = aio_timer_new(qemu_get_aio_context(),                \
+> > +            QEMU_CLOCK_REALTIME, SCALE_MS, aio_wait_timer_retry, s_);    \
+> > +        aio_wait_timer_retry(s_);                                        \
+> > +        while ((cond)) {                                                 \
+> > +            assert(qemu_get_current_aio_context() ==                     \
+> > +                   qemu_get_aio_context());                              \
+> > +            aio_poll(qemu_get_aio_context(), true);                      \
+> > +            if (qemu_clock_get_ms(QEMU_CLOCK_REALTIME) > deadline_) {    \
+> > +                ret_ = -ETIMEDOUT;                                       \
+> > +                break;                                                   \
+> > +            }                                                            \
+> > +        }                                                                \
+> > +    }                                                                    \
+> > +    qatomic_dec(&wait_->num_waiters);                                    \
+> > +    timer_free(s_->timer);                                               \
+> 
+> This will need to be timer_del() when the QEMUTimer is moved onto the
+> stack.
+> 
+> > +    g_free(s_);                                                          \
+> > +    ret_; })
+> > +
+> >  #define AIO_WAIT_WHILE(ctx, cond)                                  \
+> >      AIO_WAIT_WHILE_INTERNAL(ctx, cond)
+> >  
+> > @@ -149,4 +205,6 @@ static inline bool in_aio_context_home_thread(AioContext *ctx)
+> >      }
+> >  }
+> >  
+> > +void aio_wait_timer_retry(void *opaque);
+> > +
+> >  #endif /* QEMU_AIO_WAIT_H */
+> > diff --git a/include/block/block-io.h b/include/block/block-io.h
+> > index b49e0537dd..84f92d2b09 100644
+> > --- a/include/block/block-io.h
+> > +++ b/include/block/block-io.h
+> > @@ -354,6 +354,11 @@ bdrv_co_copy_range(BdrvChild *src, int64_t src_offset,
+> >      AIO_WAIT_WHILE(bdrv_get_aio_context(bs_),              \
+> >                     cond); })
+> >  
+> > +#define BDRV_POLL_WHILE_TIMEOUT(bs, cond, timeout) ({      \
+> > +    BlockDriverState *bs_ = (bs);                          \
+> > +    AIO_WAIT_WHILE_TIMEOUT(bdrv_get_aio_context(bs_),      \
+> > +                           cond, timeout); })
+> > +
+> >  void bdrv_drain(BlockDriverState *bs);
+> >  
+> >  int co_wrapper_mixed_bdrv_rdlock
+> > @@ -431,6 +436,8 @@ bdrv_drain_poll(BlockDriverState *bs, BdrvChild *ignore_parent,
+> >   */
+> >  void bdrv_drained_begin(BlockDriverState *bs);
+> >  
+> > +int bdrv_drained_begin_timeout(BlockDriverState *bs, int64_t timeout_ms);
+> > +
+> >  /**
+> >   * bdrv_do_drained_begin_quiesce:
+> >   *
+> > diff --git a/util/aio-wait.c b/util/aio-wait.c
+> > index b5336cf5fd..9aed165529 100644
+> > --- a/util/aio-wait.c
+> > +++ b/util/aio-wait.c
+> > @@ -84,3 +84,10 @@ void aio_wait_bh_oneshot(AioContext *ctx, QEMUBHFunc *cb, void *opaque)
+> >      aio_bh_schedule_oneshot(ctx, aio_wait_bh, &data);
+> >      AIO_WAIT_WHILE_UNLOCKED(NULL, !data.done);
+> >  }
+> > +
+> > +void aio_wait_timer_retry(void *opaque)
+> > +{
+> > +    AioWaitTimer *s = opaque;
+> > +
+> > +    timer_mod(s->timer, qemu_clock_get_ms(QEMU_CLOCK_REALTIME) + s->interval);
+> > +}
+> > -- 
+> > 2.33.0
+> > 
 
