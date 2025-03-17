@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0908A657A9
+	by mail.lfdr.de (Postfix) with ESMTPS id 9406EA657A8
 	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 17:14:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuD6F-0003Ug-Rl; Mon, 17 Mar 2025 12:13:59 -0400
+	id 1tuD6N-0003Xl-Ve; Mon, 17 Mar 2025 12:14:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tuD5w-0003Th-Eg
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:13:43 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tuD61-0003UY-7Q
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:13:45 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tuD5u-0003gW-Jj
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:13:40 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43cfecdd8b2so16807135e9.2
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 09:13:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tuD5y-0003h8-Ni
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:13:44 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-38f2f391864so2649082f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 09:13:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742228015; x=1742832815; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742228021; x=1742832821; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xsdpMpMS34EmIhyJZOTed6/XyRgEKCvDdFOmkB0e2ww=;
- b=ejYmrOAxdbloSgGM//2AuI6/qoCCux120VF+yt4rkc4++n0hnVu9klBVulb8OjVAOm
- 4EBHFlFDR2vH/irHk8xBXtbQkIzkiG8tTkK5Hp3EqVjgHjQRqVVuG1jvWIXpSyXzDicm
- EAXQQyRd6PnVL31Zvc8opkvYxbfhhr7Lt7zJvXljrCvHCEldJ6yKeds1DiSQNxXATjBe
- KxnV84cjd45/nq90C1QIbLimUVUmewb4hN1Y9P8gYxaK0P9f5bxZRIRqSMqx4aNYWIeR
- fmwUYF32f0MFhhFV6JzcepgyHyfAMpcMsUSFnY44yzZpAcRsTcBJyn/IVqvAq/YjP1t3
- zNDQ==
+ bh=9NJx4AwvlUnmR3t10jY6mrzdFJXWIigMof79SEafyw0=;
+ b=WH7gs6MXPT7bIK5cwM+7jpCegc0vSzJCHw8KB9u5LsSVo3/nt7ZYyTzb14u8yX8btG
+ RnkaNBsci7UoL4nM8tCSC9Y8nliQcYpTRmFdis5/RqsWbUScCNZB2gAEuQatPuCztTFH
+ 55Zwhvhj7E8y40TaakKtQDkgcqTqttL1d3nAjMAZ5A/U9zPQvew0VXZP2/Qyd4+j7ODn
+ d6VV5keoU2jlEPOjAik1O063YcqWfUWLNYhBAASep5DcdqW+gedbZ3El8CmyCB/iAB8X
+ tw/jsqFFlSu4OnFCaB+sZ9MjUqpa+un9Pq7EB86Z3n/HioqYk7dtQc7SzNyJGwukx+Pt
+ r9Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742228015; x=1742832815;
+ d=1e100.net; s=20230601; t=1742228021; x=1742832821;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xsdpMpMS34EmIhyJZOTed6/XyRgEKCvDdFOmkB0e2ww=;
- b=AcFhiJOdOAN8Ot+MpASfxdwnM6lczx45uHPbKoatO2rC7KxlOZ6Pj7ZQyeaqCkTKCb
- iLP1DTiWA6btUKclFKduuJjztTO9W3ZcZT1LL3CA+n+97i5urkmH8ByTusFXzQ694En5
- ETChSAObUFdWfZxOIuREWEKB2VVbNxgMQDQafxnVc8Eq64xFqCnePM9IliTU8ZV/G9uh
- CxcOQtfOH46jdGg47rcquqAG7IpCQaz/FBk+0U08Cm93p/rRDdwDu/v3IHQ6BmlvruZC
- KprpWBrM93ktzG8qdYnNEZ9NaAQGQ57RqalcFmvtc6qMreFdaKRRUcABAei7+inIGiyJ
- ySvQ==
-X-Gm-Message-State: AOJu0Yz9T4Qff4dsVL44QBHcTJxh5eldd7GbCPg3Xt0kDZhI/qMGpoaI
- 8pf9oJd44a7a2jzNZrVGQuAr2ViiKHcH+zVSR7W6rX1d4qiKimj9xrv+mrlgQwk/5tQ14aSi3FC
- W
-X-Gm-Gg: ASbGncuUivUXs9zEcozV0ayd2J9XDIgJqcR4YiRdWHUZNpNv2KmJKX5IiSdeb91j/nr
- V9mq0SntNKnDHtqMbZLIOlMYBy/JZ4LrdH/6SYHN78QmlH1sxqTITQ89sXFo9toBXXJHg2ECOzK
- rstOX6+rEdQ1w3101p+oXkanmmXu9jhvjicTlKYvN5b5jZLROniE63nalFG1tEPUsz/67y2tGmR
- NTwPNjPWCqf3mltYElMOVuLtBAzhhIoK/03HQ9oFdfoPxMoxy2/VwvPs2QPEcWsCQPlpiaajeS3
- dZIytEaPW/9Cch8C6ILMl87V55W2NDiBOGCdyPO4kiVhcJbzxI5b4XS2H3BzQVVYUF3w8k8Vht+
- jYA0RGcAajnEAyGkckq8=
-X-Google-Smtp-Source: AGHT+IHtypLZDpZCDmfaAyfR+NbndNj+3bddaHxd30R+pVvhoHdNk1VmiSCNLkfhckmisW9ERPS9Wg==
-X-Received: by 2002:a05:600c:46c8:b0:43c:ebc4:36a5 with SMTP id
- 5b1f17b1804b1-43d1ec6946cmr141158345e9.7.1742228015525; 
- Mon, 17 Mar 2025 09:13:35 -0700 (PDT)
+ bh=9NJx4AwvlUnmR3t10jY6mrzdFJXWIigMof79SEafyw0=;
+ b=VwGJHVRnhPvOFStGOFCV8Hjv1zOiCET3URuY3Cct/tQPvKBz04yMXJ39wSMxCfYXsT
+ 3rwTacxyqHwFOHyDWIAW5/ThQYwyVW4E3cn6SWD41VCacnppc809/gVCznik6A9e9jbU
+ WCXc1kqigwmBLcwShyQZouw8vvKDcPGJ8jspTmf6avuMz46Zy0pU9cFQekTYmQMYhc5b
+ G/Bmk6iU0Z0HGhHjr3adtwRFvaQVu00w8zNfBX1YseYs9+pBz3eS/Vhz4rqIUyypINKT
+ l4UuWvmD+eId/rnMnTA32D/oB1bJFaQRDNxOGut8YNLStayYmjqL49WxBF/s3+T/55yQ
+ cx5Q==
+X-Gm-Message-State: AOJu0Yz76xEaKP2Zdnn+sjHGFB7TF/VCoBRnDWOV0d4GbZKBTwgbOFru
+ rHMFmtoyqPJUyvrzFr6RMZO/Pi2dZBjKxzEThYaJiFY1OGupo9NNvTrU8e7lFvG/7KwAMiArPKn
+ i
+X-Gm-Gg: ASbGnctXKC9bo/sSYCos0iidhsWg+BWd6OM0GeUbiEYMgQyxV/3pYPOuPyD9ISR260S
+ WyhVUbr/oyO00oPTyuDCEdz2K5Udqx6jUY+Bi/YO1o8dixfLXkWPtMLUH9ChQ7SziuG0Xj0454A
+ YyKFYP6r6+HsjGuIphY8QtMKEPuKADzt9a5BouExTmuQTF05bOVBFkCn9jwnPlcogLcom15braS
+ yUXshazqmjF4onNgWiB2S9Evms0uMWy2vH+vRKUlJYvsLXqsAXBVoJfgOXOZMsLw07fJCxu2tsC
+ oqoxtxmrGmPpFYoRIl1DpAoQXqM1PTa6+XeWR1riw3HNvkZSB7FTYAa1TWl2F9Mm079dQ/hexOQ
+ BUWmlsKU+ms2t0yCnkcY=
+X-Google-Smtp-Source: AGHT+IGMARGdAzQpNp58cXY1dngIJmhTLCMEg3BLT1P9WDXA6C6eXAaFnr7iSz+G11LN9Sk7ep37rw==
+X-Received: by 2002:a05:6000:1789:b0:391:29f:4f87 with SMTP id
+ ffacd0b85a97d-3971fadef12mr13442481f8f.49.1742228020705; 
+ Mon, 17 Mar 2025 09:13:40 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d1ffbcf1dsm108324135e9.13.2025.03.17.09.13.34
+ ffacd0b85a97d-395c83b6a32sm15681861f8f.33.2025.03.17.09.13.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 17 Mar 2025 09:13:35 -0700 (PDT)
+ Mon, 17 Mar 2025 09:13:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
@@ -68,18 +68,17 @@ Cc: Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/2] accel/tcg: Remove unnecesary inclusion of
- memory-internal.h in cputlb.c
-Date: Mon, 17 Mar 2025 17:13:28 +0100
-Message-ID: <20250317161329.40300-2-philmd@linaro.org>
+Subject: [PATCH 2/2] exec: Restrict memory-internal.h to system/
+Date: Mon, 17 Mar 2025 17:13:29 +0100
+Message-ID: <20250317161329.40300-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250317161329.40300-1-philmd@linaro.org>
 References: <20250317161329.40300-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,26 +101,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-At some point cputlb.c stopped depending on the
-"exec/memory-internal.h" header. Clean that now.
+Only file units within the system/ directory need access to
+"memory-internal.h". Restrict its scope by moving it there.
+
+The comment from commit 9d70618c684 ("memory-internal.h:
+Remove obsolete claim that header is obsolete") is now obsolete,
+remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/cputlb.c | 1 -
- 1 file changed, 1 deletion(-)
+ MAINTAINERS                                | 2 +-
+ {include/exec => system}/memory-internal.h | 6 ------
+ system/memory.c                            | 3 ++-
+ system/physmem.c                           | 3 ++-
+ 4 files changed, 5 insertions(+), 9 deletions(-)
+ rename {include/exec => system}/memory-internal.h (88%)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index fb22048876e..5007bdbcd75 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -26,7 +26,6 @@
- #include "exec/cpu_ldst.h"
- #include "exec/cputlb.h"
- #include "exec/tb-flush.h"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8f470a1c9b7..b9f6c3cf15c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3115,7 +3115,7 @@ F: system/ioport.c
+ F: system/memory.c
+ F: system/memory_mapping.c
+ F: system/physmem.c
+-F: include/exec/memory-internal.h
++F: system/memory-internal.h
+ F: scripts/coccinelle/memory-region-housekeeping.cocci
+ 
+ Memory devices
+diff --git a/include/exec/memory-internal.h b/system/memory-internal.h
+similarity index 88%
+rename from include/exec/memory-internal.h
+rename to system/memory-internal.h
+index c75178a3d6b..085e81a9fe4 100644
+--- a/include/exec/memory-internal.h
++++ b/system/memory-internal.h
+@@ -11,12 +11,6 @@
+  *
+  */
+ 
+-/*
+- * This header is for use by exec.c, memory.c and accel/tcg/cputlb.c ONLY,
+- * for declarations which are shared between the memory subsystem's
+- * internals and the TCG TLB code. Do not include it from elsewhere.
+- */
+-
+ #ifndef MEMORY_INTERNAL_H
+ #define MEMORY_INTERNAL_H
+ 
+diff --git a/system/memory.c b/system/memory.c
+index eddd21a6cdb..f9b34cf4254 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -25,7 +25,6 @@
+ #include "qom/object.h"
+ #include "trace.h"
+ 
 -#include "exec/memory-internal.h"
  #include "exec/ram_addr.h"
- #include "exec/mmu-access-type.h"
- #include "exec/tlb-common.h"
+ #include "system/kvm.h"
+ #include "system/runstate.h"
+@@ -35,6 +34,8 @@
+ #include "migration/vmstate.h"
+ #include "exec/address-spaces.h"
+ 
++#include "memory-internal.h"
++
+ //#define DEBUG_UNASSIGNED
+ 
+ static unsigned memory_region_transaction_depth;
+diff --git a/system/physmem.c b/system/physmem.c
+index e97de3ef65c..d4fbda9310d 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -66,7 +66,6 @@
+ #include "qemu/main-loop.h"
+ #include "system/replay.h"
+ 
+-#include "exec/memory-internal.h"
+ #include "exec/ram_addr.h"
+ 
+ #include "qemu/pmem.h"
+@@ -88,6 +87,8 @@
+ #include <daxctl/libdaxctl.h>
+ #endif
+ 
++#include "memory-internal.h"
++
+ //#define DEBUG_SUBPAGE
+ 
+ /* ram_list is read under rcu_read_lock()/rcu_read_unlock().  Writes
 -- 
 2.47.1
 
