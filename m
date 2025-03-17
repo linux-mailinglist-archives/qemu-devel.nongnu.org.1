@@ -2,92 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F141A66029
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 22:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4EBA66215
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 23:51:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuHhy-0005p3-9v; Mon, 17 Mar 2025 17:09:14 -0400
+	id 1tuJHd-00029n-Ut; Mon, 17 Mar 2025 18:50:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <misanjum@linux.ibm.com>)
- id 1tuHhv-0005oC-0v; Mon, 17 Mar 2025 17:09:11 -0400
+ id 1tuHCV-0004D2-Bk; Mon, 17 Mar 2025 16:36:47 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <misanjum@linux.ibm.com>)
- id 1tuHhs-0004oC-QZ; Mon, 17 Mar 2025 17:09:10 -0400
+ id 1tuHCS-0006Hd-FB; Mon, 17 Mar 2025 16:36:42 -0400
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52HKZnIT028011;
- Mon, 17 Mar 2025 21:09:07 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52HKZgTc027943;
+ Mon, 17 Mar 2025 20:36:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=pp1; bh=WjbMBwh0kqxd9IkNl7g8n0YNnuDa
- XhFiiD1Hxw39Oko=; b=rPlE4sUhi5p6dxq/6dxy/KI2g98ABTT2BdXltJWamUGT
- SgS8WRudAgxLaoY/REchoJ/zMjPp9iqhYI0xZ40Vm+pg1Tyf05KwoDV0fk/865+g
- Llj6/G9u6FrqCKRBHx8ZfQ2+3o2KovIGCsfepkzu+kZDXDK4kHCtxCfzs97HVT6P
- Ol5PYGb7Vk5ow+abGVBuQxpF3GaNWv6ZCaFKqDn9b0cEBbWsbtuhhHxM5mCfgmK8
- z+KLP9d78ucQxQ6SrTpuqYGu62l1WKwipyghkG+rJQ0qYN94jWwn/rT1HTOcho8r
- giZ+n78YPGF1Ve+iQKPV0L1W07NFf3go0Rz6qrkXFg==
+ :mime-version:subject:to; s=pp1; bh=OpmjceqB1D4VUFrCFoMn/Vn079rP
+ 1CQKXGez7l/jBKs=; b=EpiZPbLf1CEfadVwk64Q1WhORz+yW1xBiasbhADkks+G
+ h35wj5+xjoBkRIcnmR1mTIO/SgFrrO9h6vVNU0nyIENv5K8m5rvwtcXR3qx42WZa
+ IjQkLXDzOD2KWJNFTOFQF1buzFAqiDxqhhHLM5xjN5rdvWC6id0CQcx8/ElY7f1L
+ +80u3n1NJDofbmvAcqxVJc/4691kpgHgT1imLuSYb5DVcU6RjNCMGk8d68r32sP5
+ WUw/FXLX8A3PYPkznI+6MXZaY09RLAqFcCzMpZcVB5DFXu+tt77ylXqAVL8DNZwy
+ ZriKQtbbXCoIrHeCAi6rLey4v9TkR+xTqSPLZSMjQQ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45etwq83kq-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45etwq8020-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Mar 2025 21:09:06 +0000 (GMT)
+ Mon, 17 Mar 2025 20:36:37 +0000 (GMT)
 Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52HL96xb030289;
- Mon, 17 Mar 2025 21:09:06 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45etwq83kp-1
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52HKaaGo029507;
+ Mon, 17 Mar 2025 20:36:36 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45etwq801y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Mar 2025 21:09:06 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52HISafJ009157;
- Mon, 17 Mar 2025 21:09:05 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45dm8yrf3m-1
+ Mon, 17 Mar 2025 20:36:36 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52HGkt6p005741;
+ Mon, 17 Mar 2025 20:36:36 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45dpk27tru-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Mar 2025 21:09:05 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 52HL94qD32965256
+ Mon, 17 Mar 2025 20:36:35 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52HKaZuK28836360
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Mar 2025 21:09:05 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D503D58059;
- Mon, 17 Mar 2025 21:09:04 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9FC4F58055;
- Mon, 17 Mar 2025 21:09:04 +0000 (GMT)
+ Mon, 17 Mar 2025 20:36:35 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8999A5805A;
+ Mon, 17 Mar 2025 20:36:35 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5CFEB58051;
+ Mon, 17 Mar 2025 20:36:35 +0000 (GMT)
 Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 17 Mar 2025 21:09:04 +0000 (GMT)
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 17 Mar 2025 20:36:35 +0000 (GMT)
 MIME-Version: 1.0
-Date: Tue, 18 Mar 2025 02:39:04 +0530
+Date: Tue, 18 Mar 2025 02:06:35 +0530
 From: misanjum <misanjum@linux.ibm.com>
 To: qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, npiggin@gmail.com
-Subject: =?UTF-8?Q?=5BBUG=5D=5Bpowerpc=5D_KVM_Guest_Boot_Failure_?=
- =?UTF-8?Q?=E2=80=93_Hangs_at_=22Booting_Linux_via_=5F=5Fstart=28=29?=
- =?UTF-8?Q?=E2=80=9D?=
-Message-ID: <fbb76ecc616d4065de7ab56d1311f876@linux.ibm.com>
+Subject: [BUG][powerpc] KVM Guest Boot Failure and Hang at "Booting Linux via
+ __start()"
+Message-ID: <7820ffeff34ce93a3ee1f6157a1f44d9@imap.linux.ibm.com>
 X-Sender: misanjum@linux.ibm.com
 Organization: IBM
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yUWCgDohyChJ0ZkVdplHLOFl_TWMWO0P
-X-Proofpoint-ORIG-GUID: pUS-E0z2YRyblPpP006DOYK1mKgczQvB
+X-Proofpoint-GUID: khMgWQfzbKH7sv_huYVjp8kSTK1BWKfQ
+X-Proofpoint-ORIG-GUID: yUna8Wm9gkNlHT7wlQPMkNVZCK1FQmAv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-17_09,2025-03-17_03,2024-11-22_01
+ definitions=2025-03-17_08,2025-03-17_03,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- spamscore=0 clxscore=1015 impostorscore=0 mlxscore=0 malwarescore=0
+ spamscore=0 clxscore=1011 impostorscore=0 mlxscore=0 malwarescore=0
  phishscore=0 adultscore=0 mlxlogscore=999 suspectscore=0
  lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502280000 definitions=main-2503170151
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2503170148
 Received-SPF: pass client-ip=148.163.158.5;
  envelope-from=misanjum@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -99,6 +98,7 @@ X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 17 Mar 2025 18:50:06 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,7 +115,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Bug Description:
 Encountering a boot failure when launching a KVM guest with 
-qemu-system-ppc64. The guest hangs at boot, and the QEMU monitor 
+'qemu-system-ppc64'. The guest hangs at boot, and the QEMU monitor 
 crashes.
 
 
