@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0ADEA63F5F
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 06:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99582A63F8C
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 06:24:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tu2q1-0004Ro-S6; Mon, 17 Mar 2025 01:16:33 -0400
+	id 1tu2xB-0006dc-Ek; Mon, 17 Mar 2025 01:23:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tu2pu-0004RM-1I
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 01:16:26 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tu2x6-0006dG-54; Mon, 17 Mar 2025 01:23:52 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tu2ps-0007Gd-6K
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 01:16:25 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2ff784dc055so2155403a91.1
- for <qemu-devel@nongnu.org>; Sun, 16 Mar 2025 22:16:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tu2x4-0007n0-H5; Mon, 17 Mar 2025 01:23:51 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-22349bb8605so80465065ad.0; 
+ Sun, 16 Mar 2025 22:23:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742188582; x=1742793382; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Mdm1TFTjCSrFPt9xCmwN5Gf1cvoenzJnQeIBQnWfFyU=;
- b=hyznmYhMUlDzAvVOtQSbYvB/8bArqjWo5TmbiaYjbisurSHNfl+/NnR2fwjVJvEEFd
- B/lXf3ejN/s/JtQTkSFt5LQPhaXo9dy5QSV8dnX6qHsDL4EjahsNfWKLX21kMFdrE2z7
- xrDQB+krlI39IVjAuILMX5J/SIFh4OAmPCng9RzX8/rvfhGRlpo88cTCAXK73FbOUa8m
- iwvR8NimH/Yo0fskOD2OHAqWr0QSahct8X23MyNA4IQhoMKsT6sxHC9SDYbGSA5O921i
- tX/HBlWRwyBbsv395C6uuVnAxozIqCPRrvrF959qDw1Q5+8fubZ0ZE43/Ei8mJhuy0Yk
- mcdQ==
+ d=gmail.com; s=20230601; t=1742189028; x=1742793828; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Zwfk/klmzmPGpfHaFqqk2IGyHBeZO9L6L1vDs8m/L58=;
+ b=KRI5WTvOHEUSKFcJvB6z41PTB/pH+7gGJlarbFOJnqCa08noYfZ99ctMcfFVG+RT/u
+ pZGwR51B+Dp0SpEXRvLNnsP9J3wBWf8/C59BZyc1IFcw/lj0T0xAH7UJAq7cV3QdGOtt
+ RpWnUv4rbFq5hwD+wKizkWb1eF4W1kTC74OrHoyrHYOgy60OOA+TNi3nMCKDVPb7vX1z
+ FLqggUVSKt88meRdWbojvqa3x/3GTAD5ZP25/KqW97PkdgGe6dKR4COOig1CaXhg7VU1
+ DgGPGLIUjGquM1EqVS54weM2B3ccHZ46N2bs8Gw74p3LLZZemwcrdtV6P+Oa0YUi3j53
+ yoig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742188582; x=1742793382;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Mdm1TFTjCSrFPt9xCmwN5Gf1cvoenzJnQeIBQnWfFyU=;
- b=mb9vGDpQnuc+Lmc6bWJFlSRYyRzueTs5pHn20tRd2D0tg1SMesTGtV6b9BUu1rrZn3
- RfLYJT+n72CESWAjHZtHVQ4aXNeQmmIY9QKjsSXKHj9oTpU5Kk8Q9zSR4NZiEzM4A9Sd
- s7qhWQ/c3WCuKuL1jgnjX5tZ86w4VJR4bcZOWkf3Vjr3PypFJCNZVrNB/wmkLxNs3Wlo
- ZkFshdhsnPMPYReT6mCRyIFxqzxnBa+4lupaAM2YqycDSizfyZ6UglqihSZTVjVQz7gn
- JGHhraWLLcV64h7xq/df0oNII0PgvdWhfRkzEKaqB/cgFz39Nyx2zuud6dbNh+iZHan8
- ml3g==
-X-Gm-Message-State: AOJu0Yxwq9eJA8V1xe67GL1Y6G9itXnOf9A49ackWazrdqd/cq0QWVQJ
- OCofiOb5s+BRO2A3HQ+a3t5/jM+qiIQM1L6eOi/5mQ22/Q4DOvRVpJb3Jw==
-X-Gm-Gg: ASbGncsTKMdN+UPzzLFn30MAKWJwwVf4Md0OUtkHFYwCdQPVz16tqqW2rgpipKbJQrT
- LCywyZAIqYFKkvwoiqv+SFajIEcE6mR5Q4R7SwE3cXRKhx3B4R04LMi3eqSpvX0fq6bqPAw9UsB
- VkezkjSZrOos6931LX9YhRr+ue75wKQqAJk4Ksj/UuwzPz3XnXEXuDi9sF2BZCiXnUiVE8v2AKt
- NfI/pH7Gr29hkcq6vL9ruZvoTb4lY7RkEQvY/TcYb+5xzD9Zj+beie/tCezq6MomQe6kJkqXWMt
- uz9ZpQufzQ9es2GmVEiRiiRMfDbSWJggWweDuMEtPdL9xVrYhPPIVW/fB5yf
-X-Google-Smtp-Source: AGHT+IHb/eN3OjV+UfukHKGl8jgr1Lqg6p1gxw37pnc/2+ix/MFTvCYew/jZy5T3gRzsTfa30zNyqQ==
-X-Received: by 2002:a05:6a21:62c8:b0:1ee:e96a:d9ed with SMTP id
- adf61e73a8af0-1f5c11242ffmr18461220637.7.1742188582391; 
- Sun, 16 Mar 2025 22:16:22 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1742189028; x=1742793828;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Zwfk/klmzmPGpfHaFqqk2IGyHBeZO9L6L1vDs8m/L58=;
+ b=gzR4a5ruSV1Zn45KAG7fPz1xAe1aWEMcRw2xZlEQpfU2nCDdMo8nL8LV+dfvssDhIT
+ yiF0RB2XCuH7OYf5CAjRzjkghgjE3iduPOB36ZxlyEGL4wkG4ICk1GU2iYFXq8Mp4Zvb
+ qouDeYm+lFLr23oc1o1+2TX7mTLKF6VaCEMKmz7s0X4Ahx9F4Q8gE+aqiUiNzOzLghCL
+ Wk7AzTLQE4tACI7x+D4YVNZK5wdC2TqpYKtjqiOk/O7JFVjOGwYdVYFnwOxD5xl0NMuX
+ 51P0kPZrKNlHXkZoQrNrE4YE16F8vAOyBJpnQ2MOcxqB9sEHyQmXjMmH4100zeZOj3RW
+ jOTA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVK0o3Wnlj8MENwIaX1gzcIHQRkzrvpIHqc6nv1cAiGLOOdEXhCDyYR/65dW7pmAjSQmg3a9dazFQ==@nongnu.org
+X-Gm-Message-State: AOJu0YzDjwYCjzW14doO6l1rPcN4jw8McPDqxIcnj8sMUnrtC2HxA01Q
+ FWlPqNmBn7Zq0WS/cKUtm04OFZ6qK7vU9x7um1Ceu9PJLGYgAqBYWi2zow==
+X-Gm-Gg: ASbGncuBkFP4dDDKMKTsGX+fFWsoXi7dZwJx2X25oabOFXIniizdUWPNItVu5Kn1DYX
+ sUUL7KM4hp2polhmCCMppJYzdDM9ME6xgW4jMLU09p+QUbyQ0J9azyX291XAIXOHS0H6CPD3dFg
+ o0cNwEPxxE1EyUgKC2UvgffZsGa826ohlg0cIVofDTtgJ52eApB0TL9M9MAGDwKhLCg4YhLfBYP
+ cJrjc6sEBMGb45XIkID/2yPwuMeyM4VxofY85D/coVZSsyuDi7FniFGeNaVRy+dKn9mQRHuCXUf
+ XDBx7WqHxMgUQexaRjt04jcQbPzn8zOWXIBs41MqaJMtOpBCcQ==
+X-Google-Smtp-Source: AGHT+IHP5RWNBMWgGk/AYJePMYutq0HoI5J2toPN6zRufcoR2biEDIWUtmhqxeleK2zr3YeqlBO43g==
+X-Received: by 2002:a05:6a00:1256:b0:736:5c8e:bab8 with SMTP id
+ d2e1a72fcca58-7372236c795mr12060532b3a.3.1742189028108; 
+ Sun, 16 Mar 2025 22:23:48 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.135.36])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73711564cf1sm6544163b3a.72.2025.03.16.22.16.18
+ d2e1a72fcca58-73711695b6bsm6879495b3a.148.2025.03.16.22.23.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Mar 2025 22:16:22 -0700 (PDT)
+ Sun, 16 Mar 2025 22:23:47 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 2/2] memory: suppress INVALID_MEM logs caused by debug
- access
-Date: Mon, 17 Mar 2025 15:16:04 +1000
-Message-ID: <20250317051605.1108128-3-npiggin@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ Glenn Miles <milesg@linux.vnet.ibm.com>,
+ Michael Kowal <kowal@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PATCH 0/6] ppc small fixes for 10.0
+Date: Mon, 17 Mar 2025 15:23:32 +1000
+Message-ID: <20250317052339.1108322-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250317051605.1108128-1-npiggin@gmail.com>
-References: <20250317051605.1108128-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,80 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Debugger-driven invalid memory accesses are not guest errors, so should
-not cause these error logs.
+Coverity reported a bunch of issues with the last ppc PR
+(thanks Cedric), and a couple of other things that were
+noticed too. With Zoltan's amigaone patches this should
+fix all Coverity bugs I hope.
 
-Debuggers can access memory wildly, including access to addresses not
-specified by the user (e.g., gdb it might try to walk the stack or load
-target addresses to display disassembly). Failure is reported
-synchronously by the GDB protcol so the user can be notified via the
-debugger client.
+Thanks,
+Nick
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- system/memory.c | 37 ++++++++++++++++++++++---------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+Nicholas Piggin (6):
+  ppc/xive: Fix typo in crowd block level calculation
+  pnv/xive: Fix possible undefined shift error in group size calculation
+  ppc/xive2: Fix logical / bitwise comparison typo
+  ppc/spapr: Fix possible pa_features memory overflow
+  ppc/pnv: Move the PNOR LPC address into struct PnvPnor
+  ppc/pnv: Fix system symbols in HOMER structure definitions
 
-diff --git a/system/memory.c b/system/memory.c
-index 4c829793a0a..960f66e8d7e 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -1412,18 +1412,23 @@ bool memory_region_access_valid(MemoryRegion *mr,
- {
-     if (mr->ops->valid.accepts
-         && !mr->ops->valid.accepts(mr->opaque, addr, size, is_write, attrs)) {
--        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
--                      ", size %u, region '%s', reason: rejected\n",
--                      is_write ? "write" : "read",
--                      addr, size, memory_region_name(mr));
-+        if (attrs.debug) {
-+            /* Don't log memory errors due to debugger accesses */
-+            qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
-+                          ", size %u, region '%s', reason: rejected\n",
-+                          is_write ? "write" : "read",
-+                          addr, size, memory_region_name(mr));
-+        }
-         return false;
-     }
- 
-     if (!mr->ops->valid.unaligned && (addr & (size - 1))) {
--        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
--                      ", size %u, region '%s', reason: unaligned\n",
--                      is_write ? "write" : "read",
--                      addr, size, memory_region_name(mr));
-+        if (attrs.debug) {
-+            qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
-+                          ", size %u, region '%s', reason: unaligned\n",
-+                          is_write ? "write" : "read",
-+                          addr, size, memory_region_name(mr));
-+        }
-         return false;
-     }
- 
-@@ -1434,13 +1439,15 @@ bool memory_region_access_valid(MemoryRegion *mr,
- 
-     if (size > mr->ops->valid.max_access_size
-         || size < mr->ops->valid.min_access_size) {
--        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
--                      ", size %u, region '%s', reason: invalid size "
--                      "(min:%u max:%u)\n",
--                      is_write ? "write" : "read",
--                      addr, size, memory_region_name(mr),
--                      mr->ops->valid.min_access_size,
--                      mr->ops->valid.max_access_size);
-+        if (attrs.debug) {
-+            qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
-+                          ", size %u, region '%s', reason: invalid size "
-+                          "(min:%u max:%u)\n",
-+                          is_write ? "write" : "read",
-+                          addr, size, memory_region_name(mr),
-+                          mr->ops->valid.min_access_size,
-+                          mr->ops->valid.max_access_size);
-+        }
-         return false;
-     }
-     return true;
+ include/hw/ppc/pnv_pnor.h |   1 +
+ hw/intc/xive.c            |  29 +++++-
+ hw/intc/xive2.c           |  21 ++--
+ hw/ppc/pnv.c              |   2 +-
+ hw/ppc/pnv_bmc.c          |   4 +-
+ hw/ppc/pnv_occ.c          | 201 ++++++++++++++++++--------------------
+ hw/ppc/pnv_pnor.c         |   2 +
+ hw/ppc/spapr.c            |   1 +
+ 8 files changed, 143 insertions(+), 118 deletions(-)
+
 -- 
 2.47.1
 
