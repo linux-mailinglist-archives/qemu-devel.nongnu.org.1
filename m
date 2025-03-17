@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9B8A65464
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 15:54:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C8AA65466
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 15:54:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuBqM-00053x-PT; Mon, 17 Mar 2025 10:53:31 -0400
+	id 1tuBqq-0005Mw-VL; Mon, 17 Mar 2025 10:54:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuBpk-0004uf-69; Mon, 17 Mar 2025 10:52:54 -0400
+ id 1tuBpq-0004wo-ND; Mon, 17 Mar 2025 10:53:09 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuBpc-00061r-TM; Mon, 17 Mar 2025 10:52:50 -0400
+ id 1tuBpd-00061l-5T; Mon, 17 Mar 2025 10:52:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1742223165; x=1773759165;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VJljKNmjPdcPw2FYw9qRNJPbq/zXEvkClaRKs0KyTKs=;
- b=GxyNWaWURLRITaU+a7Je6ty8a3/MouWCg5kZAhdTExZIYp5PDysHgH27
- YO6kU++1pyQjaE76N41ZQRIQ783u9/1jYKpLVxdDXMKLye7BHZT3r/b++
- yYn8J/pVlN71rwcFeQ3brRTUubcwih+cZZ6xy38srRCTp2Z89xWCGfTAt
- cG3XIoEsXBG6ofOuxxqSNSsTrLayKgpx+CnPMJWL7aUZBGVNJ409PZmuV
- Mu6tDCmTj16xyoVY+WYflUSJ0q7KJi4nEkfk4c2ElhybTLcjAicM7c9qG
- eBUAIe60xz3QvFkl7ttWkZFxL9nfx+6IYgzPAKx++2sOZToHPK7DMHM5G w==;
-X-CSE-ConnectionGUID: lEZI2fZoQW2gEQogiVSJ/Q==
-X-CSE-MsgGUID: EhCXD2UJQcGiC4Zr61Q/Eg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="54694593"
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="54694593"
+ bh=4TIyXTGeVfXPKVICs8tufgXSV/mNTG13yPnR3wwuCn8=;
+ b=TWoUuZ7TQz9P7HSybMMgT/xPa3aaTPh370U3zYcusWGEIEGmxS/s0ZoF
+ GWqQ4CBm7ZZXziy7qomp8RhsfVEe3RD5t0LdeMTs2dmwWblEhoGkToG8B
+ v/qA665DbM/nabi+fdbdvDI+nId8hphyuCBmPD5G0dyj+XL8ebMJ1+8M/
+ Sf8WTh+jLI7yXLPTlE2a+snOPVjvwbAsufbwlvHlYBM5yaYa328co3xLM
+ 6bMytoaygWwPK4gWHLhnIy7J6UcKyDaPbM/EJH6wY3aVQq9PN8hP3hSN1
+ 9CkN3nq8k2eeMgQZszUq3g9AVAM0fZZRAEuNwhK7Lsnmjd/8djNUJ7LHU A==;
+X-CSE-ConnectionGUID: NFOrYWv4RF+eoEFNNyQ4YA==
+X-CSE-MsgGUID: fHONNYVfRkqIoMA5NbaAkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="54694596"
+X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="54694596"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2025 07:52:31 -0700
-X-CSE-ConnectionGUID: dt74G+7CQzqd2f396YJjdQ==
-X-CSE-MsgGUID: p4VLoG94Rs2X0h895iR0iw==
+ 17 Mar 2025 07:52:32 -0700
+X-CSE-ConnectionGUID: zxRuR8LMQzudoOrcMmYy/g==
+X-CSE-MsgGUID: lKB02fK7Q22/VpzaZw2Uvg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="126988499"
+X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="126988504"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 17 Mar 2025 07:52:30 -0700
+ by orviesa004.jf.intel.com with ESMTP; 17 Mar 2025 07:52:31 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 03/17] rust/vmstate: Add a prefix separator ",
- " for the array field in vmstate macros
-Date: Mon, 17 Mar 2025 23:12:22 +0800
-Message-Id: <20250317151236.536673-4-zhao1.liu@intel.com>
+Subject: [PATCH 04/17] rust/vmstate: Use ident instead of expr to parse vmsd
+ in vmstate_struct macro
+Date: Mon, 17 Mar 2025 23:12:23 +0800
+Message-Id: <20250317151236.536673-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250317151236.536673-1-zhao1.liu@intel.com>
 References: <20250317151236.536673-1-zhao1.liu@intel.com>
@@ -78,36 +78,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The fields are separated by ",", so it's necessary to add ", " in array
-field to avoid matching failure.
+When specify an array field in vmstate_struct macro, there will be an
+error:
+
+> local ambiguity when calling macro `vmstate_struct`: multiple parsing
+> options: built-in NTs expr ('vmsd') or 1 other option.
+
+This is because "expr" can't recognize the "vmsd" field correctly, so
+that it gets confused with the previous array field.
+
+To fix the above issue, use "ident" for "vmsd" field, and explicitly
+refer to it in the macro.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/src/vmstate.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/hw/char/pl011/src/device_class.rs | 2 +-
+ rust/qemu-api/src/vmstate.rs           | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+index 0b2076ddaa0f..e43a5d6cd063 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -72,7 +72,7 @@ extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
+     post_load: Some(pl011_post_load),
+     fields: vmstate_fields! {
+         vmstate_unused!(core::mem::size_of::<u32>()),
+-        vmstate_struct!(PL011State, regs, &VMSTATE_PL011_REGS, BqlRefCell<PL011Registers>),
++        vmstate_struct!(PL011State, regs, VMSTATE_PL011_REGS, BqlRefCell<PL011Registers>),
+     },
+     subsections: vmstate_subsections! {
+         VMSTATE_PL011_CLOCK
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 9533b1250fa5..94efbd8bb735 100644
+index 94efbd8bb735..3f95d4825149 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -202,7 +202,7 @@ pub const fn vmstate_varray_flag<T: VMState>(_: PhantomData<T>) -> VMStateFlags
- /// and [`impl_vmstate_forward!`](crate::impl_vmstate_forward) help with this.
- #[macro_export]
- macro_rules! vmstate_of {
--    ($struct_name:ty, $field_name:ident $([0 .. $num:ident $(* $factor:expr)?])? $(,)?) => {
-+    ($struct_name:ty, $field_name:ident $(, [0 .. $num:ident $(* $factor:expr)?])? $(,)?) => {
-         $crate::bindings::VMStateField {
-             name: ::core::concat!(::core::stringify!($field_name), "\0")
-                 .as_bytes()
 @@ -435,7 +435,7 @@ macro_rules! vmstate_unused {
  #[doc(alias = "VMSTATE_STRUCT")]
  #[macro_export]
  macro_rules! vmstate_struct {
--    ($struct_name:ty, $field_name:ident $([0 .. $num:ident $(* $factor:expr)?])?, $vmsd:expr, $type:ty $(,)?) => {
-+    ($struct_name:ty, $field_name:ident $(, [0 .. $num:ident $(* $factor:expr)?])?, $vmsd:expr, $type:ty $(,)?) => {
+-    ($struct_name:ty, $field_name:ident $(, [0 .. $num:ident $(* $factor:expr)?])?, $vmsd:expr, $type:ty $(,)?) => {
++    ($struct_name:ty, $field_name:ident $(, [0 .. $num:ident $(* $factor:expr)?])?, $vmsd:ident, $type:ty $(,)?) => {
          $crate::bindings::VMStateField {
              name: ::core::concat!(::core::stringify!($field_name), "\0")
                  .as_bytes()
+@@ -447,7 +447,7 @@ macro_rules! vmstate_struct {
+             },
+             size: ::core::mem::size_of::<$type>(),
+             flags: $crate::bindings::VMStateFlags::VMS_STRUCT,
+-            vmsd: $vmsd,
++            vmsd: &$vmsd,
+             ..$crate::zeroable::Zeroable::ZERO $(
+                 .with_varray_flag($crate::call_func_with_field!(
+                     $crate::vmstate::vmstate_varray_flag,
 -- 
 2.34.1
 
