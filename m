@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5B8A65CD5
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 19:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF38A65CDA
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 19:38:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuFJP-0004vP-VN; Mon, 17 Mar 2025 14:35:44 -0400
+	id 1tuFJS-0004yO-PE; Mon, 17 Mar 2025 14:35:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuFIn-0004V4-Fh
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 14:35:09 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1tuFIl-0004US-R6
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 14:35:08 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuFIU-0006Ah-3b
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 14:35:01 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-22359001f1aso41894355ad.3
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 11:34:33 -0700 (PDT)
+ id 1tuFIO-0006B6-Lj
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 14:34:58 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-225b5448519so88590945ad.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 11:34:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742236473; x=1742841273; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742236474; x=1742841274; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bYYGOsy+zcSjxVOnigwMonGaAhWbZB7W76ZyOX5Jlgc=;
- b=loTKUbk6UnZS9c0hxYPRqlmFC9nK3iJVBgX5D0URgS3aaImozZPomkhvITgw3A3p98
- gR0iqj2ISl1fH0wuL6ak6JSOpKJ0U8YFPW3Ul8KxDEdugJmf5H/x3KyJoLP26T3CGa1X
- qQ5oriPcK7xvVbu9Vt5Mw9BQ7DMRvcp/IFHJe/Qie1BpMRMI60mmWqJBfsr5/ZmoJuYS
- 8ovhzcxHG/tyK2/ILWtGBobr3DbamKUzRlIz0eI9WjuBYB+B/a7XD4/3pufY4rqIEP80
- pHUu9dFtb7fFX8nsARN770uS0rOuCkJJEhIynXCN/1GyYVUzZqBJRobZ+FYiiq0bMVIs
- xzXA==
+ bh=Rp8GQC6vA5rTxSSazblnkjuLZPjrJAYUOFg9uGM493s=;
+ b=lJ3Jk9jgB2vzvglhUh5wIQVJsbOiyjAei3e4E50N9JZJI28cwku5hpR3qtYtpBqJGE
+ MH3Tl7qgjJ0ZvtxAP2dnMmNCgFgi/yGaAV2/QkFELTcIrk92Ezlu2VOHA2XwOodUkOQL
+ pzTsvFLxo1t7CNfvzrVB2u00NdB/Ivc6PVB4K5YJFn9JWUX85QSAqiIADODX12CrkwGx
+ vpYgf6A/pyxgQSDnWi6ZEK0XLAfWE/yIZP2V3nqq8RozXIqSeOkrhhvcJsScIjOo2kON
+ 6PRlPaFxBqcc29/EABtQUCPZ7wnsXKiEzZupbNPnn4BvMabPxVGUK5Z6E9joHx63sqqK
+ 3uMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742236473; x=1742841273;
+ d=1e100.net; s=20230601; t=1742236474; x=1742841274;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bYYGOsy+zcSjxVOnigwMonGaAhWbZB7W76ZyOX5Jlgc=;
- b=wSb/oGaiFcXnbmBnXTSkmN6038aILJkQNHGtFTiLS8h6gec4gFnHnZGEqBeR1omZ9W
- lrj8U9dknRd1ahv7osMYcnmyUO9TQRHTjADIQ/GS1c1koemYMMBKUhcJ9hHsB7YLc2Uf
- 8VkjmEhxEY/s1fi84hMeKwyGhtweI+r0+Y3COmDburLPhnihrrGpwFcrYunzYLNBWOGF
- zyVppTU87bqnHBNKtEgTSMgXDVju1wI9Rkvvw4c/TR+2e6wxMBdFPp8JgpdQgZ7ZjH6j
- 4B++qzNAxYbO1mh1VJUsSUQJa/7OJHUNPIgp3kcmnYnxVD5anpb1i1FDQSnTt7IjuRPQ
- Gigg==
-X-Gm-Message-State: AOJu0YxpTf2ss7orTUkyUCSC6odp9aGtTP9M14yJ6U0qPt5l4qG6xnVY
- 8qEL0iQeagnFhijEoWKruKc7l+4TjTKnFVmvlf8saSD6I3ZpzbqqIlCmGGXKAR5lp22NDOjjnqh
- r
-X-Gm-Gg: ASbGncuyxKAsw9c/A0uXQXn0jofiJx8/k6kPjez85XX6c1/JUSaIt+SoFLP7h9BnND8
- ebnP+B5GwVy6+2rZC0jYhhcwsnldnqJBIrgaQP6+PvYAsefnvWhB6yr4ecjrATL5t/3NnOej14s
- z8SrkhUDCxwpChfOrbB7o2Z2VkLTszVeJZJAXwdGtpCLUIskuM9+QcHs7mCCSg+rn+93igAiUdL
- hEBV2DPHW7broTFqaYrq67fJniTtcXcXb3fKFKWISN/MjA2KfXrzZ1dMbXZ9r6pDpHqGKDdc56e
- m0JS+/tkqXpzi9MF7dK8B6x/ix8xQzPCRpOpMreoMA12
-X-Google-Smtp-Source: AGHT+IFV6DhukzDJTQhxKL2T76dlm4rDEmTDcVzAIQ6vxy9qm1/fBJU2mGtWaSFzbonBb3tr3G7FIw==
-X-Received: by 2002:a05:6a20:a11b:b0:1ee:efa5:6573 with SMTP id
- adf61e73a8af0-1fa43cbf794mr1071010637.8.1742236472852; 
- Mon, 17 Mar 2025 11:34:32 -0700 (PDT)
+ bh=Rp8GQC6vA5rTxSSazblnkjuLZPjrJAYUOFg9uGM493s=;
+ b=H7RnuR4Dr0x06AXna17DAYsMLefxK0qy5I4AYPfDf7rX7V2pRwT8DdB9Mf64UaQYSz
+ z12qL07Q7FaGAsKY8V/6ZCpXonbfkfcKWO1cghFiexL4mu+dgrGbDRh+he9eiVK/wnlF
+ ezE9Ya73RUUp+Fsboghm1kAlFSH4PH7zE092cOtuHdSSD7ynKRNHzh+K3haHpbgkNAvw
+ qTrKtVpIxkFCAUF6CBd5AS8JRB5f6qahBa5XGh61hHW/45j0viuYjdG2UI8V1dI1JG/b
+ fiSLf01CJbpeyNDsKMA6hNCiKjv2atJFvKa5gH2Ex3AJVqG8v9UViNWENAZwhlTRybAw
+ n6tQ==
+X-Gm-Message-State: AOJu0Yz3u9A9QlNrcyNcP5I7hnKdZSxgWh5hFkQZrq4/34K1wrg1t3ev
+ stxfJloUZPy6+GV7eIVpOWEOc8Uc8mUrSy90zWRih2L5VAa3rhFaLYRZL6ucHZjeUyK1EhF9iDG
+ m
+X-Gm-Gg: ASbGncv/EqQhh+R8SEa2Y0P1zG/7thMQQ1TcVkH5d0vEDEBmez3dHJ5r5y0AdzlbsEB
+ KPcEEA9cTUcOyydvQtlZb1fhhGF0hq1D8jdVa5LOLcrweZuH1I3OvIe8ByMM6b9DSl9ckHa9Wb+
+ +xHXmkFar5f98jgOTzZbe2nwyboHUH1Ijp0J7UMjV1V//XpIvALH+CMdlcstgsjS6MkSb5+Jnra
+ JoZ1iHtOvaVSSQlwMg8YOrQuxvFnJKGHNxA2q+Zqx7NK5vlPPCcqDY31OIN1LY3SkpA3+QjUlQw
+ m8Br0j9XKI1NkTB6yYa0SDTPgmZZupZAtaBK5/Ub+nrZ
+X-Google-Smtp-Source: AGHT+IHGRjUHfsZhtfemIo+dlcyT/9a20csro4vrsnSjWHRpRL87+9vnxPcq6naL2TxBdu+3gDVtPg==
+X-Received: by 2002:a05:6a00:9a7:b0:736:6ac4:d204 with SMTP id
+ d2e1a72fcca58-73722375218mr14371340b3a.11.1742236473962; 
+ Mon, 17 Mar 2025 11:34:33 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73711695a2esm8188770b3a.144.2025.03.17.11.34.31
+ d2e1a72fcca58-73711695a2esm8188770b3a.144.2025.03.17.11.34.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Mar 2025 11:34:32 -0700 (PDT)
+ Mon, 17 Mar 2025 11:34:33 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org,
@@ -81,23 +81,23 @@ Cc: Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org,
  Stefano Stabellini <sstabellini@kernel.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 07/18] exec/exec-all: remove dependency on cpu.h
-Date: Mon, 17 Mar 2025 11:34:06 -0700
-Message-Id: <20250317183417.285700-8-pierrick.bouvier@linaro.org>
+Subject: [PATCH v6 08/18] exec/memory-internal: remove dependency on cpu.h
+Date: Mon, 17 Mar 2025 11:34:07 -0700
+Message-Id: <20250317183417.285700-9-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250317183417.285700-1-pierrick.bouvier@linaro.org>
 References: <20250317183417.285700-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,26 +113,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previous commit changed files relying transitively on it.
+Needed so compilation units including it can be common.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/exec/exec-all.h | 1 -
- 1 file changed, 1 deletion(-)
+ include/exec/memory-internal.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index dd5c40f2233..19b0eda44a7 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -20,7 +20,6 @@
- #ifndef EXEC_ALL_H
- #define EXEC_ALL_H
+diff --git a/include/exec/memory-internal.h b/include/exec/memory-internal.h
+index 100c1237ac2..b729f3b25ad 100644
+--- a/include/exec/memory-internal.h
++++ b/include/exec/memory-internal.h
+@@ -20,8 +20,6 @@
+ #ifndef MEMORY_INTERNAL_H
+ #define MEMORY_INTERNAL_H
  
 -#include "cpu.h"
- #if defined(CONFIG_USER_ONLY)
- #include "exec/cpu_ldst.h"
- #endif
+-
+ #ifndef CONFIG_USER_ONLY
+ static inline AddressSpaceDispatch *flatview_to_dispatch(FlatView *fv)
+ {
 -- 
 2.39.5
 
