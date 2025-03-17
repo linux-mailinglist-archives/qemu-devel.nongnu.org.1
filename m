@@ -2,87 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D867FA65372
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 15:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC0FA6549D
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 15:58:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuBSP-0000o0-KK; Mon, 17 Mar 2025 10:28:45 -0400
+	id 1tuBuY-0005he-KF; Mon, 17 Mar 2025 10:57:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tuBSG-0000fs-GB
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 10:28:37 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tuBSC-0001DX-DB
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 10:28:35 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43d2d952eb1so10336575e9.1
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 07:28:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742221710; x=1742826510; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IGKVMeg4aDxvbEQfJftU83jMmdBHS/KLNHZo9WpIB6Q=;
- b=KgPl5X+vBGiWG4s0QK/MBma0/dJNievroG8yTAHVEzk3Zt5NYmkFyX1i9H20fgGTa3
- 2DCPfEN3tMKbQofs3wuuM2z7HUEOuld0l0JNs+xzL2u3s2XXgXEOUA9OEqK5TBV16mTZ
- dn4maArEOH2BcVQO9T0ywJAiL9K77e5gRGzkp9xiyeLKMXFbAHb7JuwO/mPUvxea3doB
- MInur6daRYUBA7axJm2mzUjd+WpbX5nJI38dXvS4s7cpZOwB6KxqmjZc8vfAhGzBgkgF
- TO6zzCj0pC3/GS4cca1FM/dP7/DjHGa+mKx3IJbAF8Dp8Ps1liUK2o4f9FWYJXqHxoeY
- BnLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742221710; x=1742826510;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IGKVMeg4aDxvbEQfJftU83jMmdBHS/KLNHZo9WpIB6Q=;
- b=EgZRMA0d8bg/VrZeDCfO+Ttms5VehwLfAtlqEreO6Wv7Uty5j29oPx7QnVWkOPazSN
- Dsn07cvJPnbaSNpK5dWtI6luvcLhro23FkF/O+X04I2Bf1F1Df42KBZJWdfQ8eRq1+bz
- i157JVaGTgv12IzVAzUhE9JS5LUIyHVL2MiPYDJ85/pYdGK7FHoCNUbImcl28ocVfQDX
- 9jaDzxLxeFtTC77XLuVMf3vN++GYutSMjpBFs0S/h3iYcwB9x7PCjcCa5lXCXRSdzxRq
- v4THRDlB9i9PWoel8YKSw/I/zNZE52lr2g+ReGss4SK2wmvZL+1+j9+URGmbids/y9Vb
- RyHw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW9zBg6MIZZ0F4mq3cqKq42GxbFvxRxQVDOOGt5dBf3+LY+wKEMKgkj4wnQB/dsi13Wmc6bbHVOW/3F@nongnu.org
-X-Gm-Message-State: AOJu0Yx0ehbhQoseVqqkdhdYiPs/bDMOOsio3XCnj7ZBXNXebGDgRN28
- CUEVme3XPnDo69B9kCHZ+pall4mWgbwDgwjfXM+VU1jqdjZ1FY1BiyaF50Mk/EnPWYugAfP4JeG
- 1
-X-Gm-Gg: ASbGncu91MbLvMD5wmbbkVwdAt6l5cFzeZ7K7SIdv/A21H/Nhxl4EkCAtvSr9aD4eLh
- 7cWwRXijdM7ghQAyammZQYxgVfcy4csdx7XTQQVJ4OybVCb/DfWCICJjos80/ZgcWFKUl2sb5Vm
- 8FUEAnQSg5fbMkja+MosvafQrapc6NUvtvF+uX0vlKatEXkuXhKu8q8Rjhlrz2iBhZAVe/YQxBa
- alXgpnqvJnDfVi/11Npn5ISgG4XyPRnURmJlsmBo5vsKYc68SleODs5Z1gozJ5IuMS+A/ieQ4bH
- pbZn9b+FzR0UYbQZskOdvbIaGFLm83AvMZH/zpjRJqVnnQYuhJG2LOYj1eTaSQ==
-X-Google-Smtp-Source: AGHT+IHjQSceXaoTiB7jwNXtux+dMPc0ELOg/8WD+nn1wAZVcN96rMvzmT0XM0yTabxYV+MCitMQYg==
-X-Received: by 2002:a05:600c:3c99:b0:43c:f597:d565 with SMTP id
- 5b1f17b1804b1-43d3897499bmr577705e9.12.1742221710402; 
- Mon, 17 Mar 2025 07:28:30 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d1fe60ad4sm107914985e9.29.2025.03.17.07.28.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Mar 2025 07:28:29 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH for-10.1 9/9] target/arm: Remove TYPE_AARCH64_CPU
-Date: Mon, 17 Mar 2025 14:28:19 +0000
-Message-ID: <20250317142819.900029-10-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250317142819.900029-1-peter.maydell@linaro.org>
-References: <20250317142819.900029-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tuBuJ-0005Rs-1O
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 10:57:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tuBuG-0006km-Bs
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 10:57:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742223449;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/nD93kytmUtclb8CtECsJyy15Tldpz7/R9y6QM7Tpdk=;
+ b=JlCJgVPeFe1mfu39/QzAaw4UtexxIHCrYwJSZy0+T2dELc7rAGUd46N41DEFzxLTlfoHGc
+ UHKCc2ovRpZ2ZqhcqAG7+aVXa9jZxvP2+tCTV8ye215CyT10ssvw8H4iQPhbvVygdFs7h9
+ r9xrdA2J/ykoRIbx2Bb0KNed/enVKRU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-508-xcSaigh4PLCbz4hknYWMsQ-1; Mon,
+ 17 Mar 2025 10:57:26 -0400
+X-MC-Unique: xcSaigh4PLCbz4hknYWMsQ-1
+X-Mimecast-MFC-AGG-ID: xcSaigh4PLCbz4hknYWMsQ_1742223443
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 242291800875; Mon, 17 Mar 2025 14:57:22 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.82])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 94E4A30001A2; Mon, 17 Mar 2025 14:57:19 +0000 (UTC)
+Date: Mon, 17 Mar 2025 10:57:18 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: zoudongjie <zoudongjie@huawei.com>
+Cc: fam@euphon.net, hreitz@redhat.com, kwolf@redhat.com,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ qemu-stable@nongnu.org, zhuyangyang14@huawei.com,
+ luolongmin@huawei.com, suxiaodong1@huawei.com,
+ wangyan122@huawei.com, yebiaoxiang@huawei.com,
+ wangjian161@huawei.com, mujinsheng@huawei.com, alex.chen@huawei.com,
+ eric.fangyi@huawei.com, chenjianfei3@huawei.com, renxuming@huawei.com
+Subject: Re: [PATCH 1/2] io/block: Refactoring the bdrv_drained_begin()
+ function and implement a timeout mechanism.
+Message-ID: <20250317145718.GA1214048@fedora>
+References: <20250313040945.GB1074020@fedora>
+ <20250317121828.4069621-1-zoudongjie@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="ThUvEGk/WdWkNDgA"
+Content-Disposition: inline
+In-Reply-To: <20250317121828.4069621-1-zoudongjie@huawei.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.335,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,142 +90,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TYPE_AARCH64_CPU class is an abstract type that is the parent of
-all the AArch64 CPUs.  It now has no special behaviour of its own, so
-we can eliminate it and make the AArch64 CPUs directly inherit from
-TYPE_ARM_CPU.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/cpu-qom.h   |  5 -----
- target/arm/cpu.h       |  4 ----
- target/arm/internals.h |  1 -
- target/arm/cpu64.c     | 49 +-----------------------------------------
- target/arm/tcg/cpu64.c |  2 +-
- 5 files changed, 2 insertions(+), 59 deletions(-)
+--ThUvEGk/WdWkNDgA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
-index b497667d61e..2fcb0e12525 100644
---- a/target/arm/cpu-qom.h
-+++ b/target/arm/cpu-qom.h
-@@ -28,11 +28,6 @@ OBJECT_DECLARE_CPU_TYPE(ARMCPU, ARMCPUClass, ARM_CPU)
- 
- #define TYPE_ARM_MAX_CPU "max-" TYPE_ARM_CPU
- 
--#define TYPE_AARCH64_CPU "aarch64-cpu"
--typedef struct AArch64CPUClass AArch64CPUClass;
--DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
--                       TYPE_AARCH64_CPU)
--
- #define ARM_CPU_TYPE_SUFFIX "-" TYPE_ARM_CPU
- #define ARM_CPU_TYPE_NAME(name) (name ARM_CPU_TYPE_SUFFIX)
- 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 8f52380c88c..c9c53a6294b 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1161,10 +1161,6 @@ struct ARMCPUClass {
-     ResettablePhases parent_phases;
- };
- 
--struct AArch64CPUClass {
--    ARMCPUClass parent_class;
--};
--
- /* Callback functions for the generic timer's timers. */
- void arm_gt_ptimer_cb(void *opaque);
- void arm_gt_vtimer_cb(void *opaque);
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index a18d87fa28b..0c24208f183 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -350,7 +350,6 @@ static inline int r14_bank_number(int mode)
- }
- 
- void arm_cpu_register(const ARMCPUInfo *info);
--void aarch64_cpu_register(const ARMCPUInfo *info);
- 
- void register_cp_regs_for_features(ARMCPU *cpu);
- void init_cpreg_list(ARMCPU *cpu);
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 49cf06a7bdc..200da1c489b 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -781,59 +781,12 @@ static const ARMCPUInfo aarch64_cpus[] = {
- #endif
- };
- 
--static void aarch64_cpu_finalizefn(Object *obj)
--{
--}
--
--static void aarch64_cpu_class_init(ObjectClass *oc, void *data)
--{
--}
--
--static void aarch64_cpu_instance_init(Object *obj)
--{
--    ARMCPUClass *acc = ARM_CPU_GET_CLASS(obj);
--
--    acc->info->initfn(obj);
--    arm_cpu_post_init(obj);
--}
--
--static void cpu_register_class_init(ObjectClass *oc, void *data)
--{
--    ARMCPUClass *acc = ARM_CPU_CLASS(oc);
--
--    acc->info = data;
--}
--
--void aarch64_cpu_register(const ARMCPUInfo *info)
--{
--    TypeInfo type_info = {
--        .parent = TYPE_AARCH64_CPU,
--        .instance_init = aarch64_cpu_instance_init,
--        .class_init = info->class_init ?: cpu_register_class_init,
--        .class_data = (void *)info,
--    };
--
--    type_info.name = g_strdup_printf("%s-" TYPE_ARM_CPU, info->name);
--    type_register_static(&type_info);
--    g_free((void *)type_info.name);
--}
--
--static const TypeInfo aarch64_cpu_type_info = {
--    .name = TYPE_AARCH64_CPU,
--    .parent = TYPE_ARM_CPU,
--    .instance_finalize = aarch64_cpu_finalizefn,
--    .abstract = true,
--    .class_init = aarch64_cpu_class_init,
--};
--
- static void aarch64_cpu_register_types(void)
- {
-     size_t i;
- 
--    type_register_static(&aarch64_cpu_type_info);
--
-     for (i = 0; i < ARRAY_SIZE(aarch64_cpus); ++i) {
--        aarch64_cpu_register(&aarch64_cpus[i]);
-+        arm_cpu_register(&aarch64_cpus[i]);
-     }
- }
- 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 29ab0ac79da..5d8ed2794d3 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1316,7 +1316,7 @@ static void aarch64_cpu_register_types(void)
-     size_t i;
- 
-     for (i = 0; i < ARRAY_SIZE(aarch64_cpus); ++i) {
--        aarch64_cpu_register(&aarch64_cpus[i]);
-+        arm_cpu_register(&aarch64_cpus[i]);
-     }
- }
- 
--- 
-2.43.0
+On Mon, Mar 17, 2025 at 08:18:28PM +0800, zoudongjie wrote:
+> On Thu, 13 Mar, 2025 at 12:09:45 +0800, Stefan Hajnoczi wrote:
+> > On Sat, Mar 08, 2025 at 06:16:17PM +0800, zoudongjie wrote:
+> > > @@ -342,16 +350,25 @@ static void coroutine_fn bdrv_co_yield_to_drain=
+(BlockDriverState *bs,
+> > >      /* If we are resumed from some other event (such as an aio compl=
+etion or a
+> > >       * timer callback), it is a bug in the caller that should be fix=
+ed. */
+> > >      assert(data.done);
+> > > +    return data.ret;
+> > >  }
+> > > =20
+> > > -static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *p=
+arent,
+> > > -                                  bool poll)
+> > > +static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+> > > +                                                bool begin,
+> > > +                                                BdrvChild *parent,
+> > > +                                                bool poll)
+> > > +{
+> > > +    bdrv_co_yield_to_drain_timeout(bs, begin, parent, poll, -1);
+> >=20
+> > Is this safe on 32-bit platforms?
+>=20
+> I'm sorry, can it be more specific here, I didn't get it.
+
+I was thinking about -1 vs -1ull integer literals, but it's not a
+problem for int64_t so everything is fine here.
+
+Stefan
+
+--ThUvEGk/WdWkNDgA
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfYOE4ACgkQnKSrs4Gr
+c8gnBwf+Lckp9wEyI9rRx2FaLlCKiwoxXy39NHWWYsIAVJ990vHDK7lAzjLp2jw4
+iWjgzti2vlNwTpAaOhiQfrxPkTGiM8u2gW3RH8npS60Wvp2v20+LJdZ9xii6xuRn
++m3iTXlp0+QCVzibB3Rnp/oPrH9HMm3Cs/iGVo6JEaKjTyWgAhGnVht54LAYIAHf
+3UcyWhHfetbDZ/8BQ3l7tuLWFyrXc0sy795WjGCpWisSOQ4m/Ocp4tFfo7n+TVZZ
+SuvvGHc3tWxvwQ+A+NzLtsHS8gF1NhB/fxmslu1LbNcxhlFEwLFmPtKL2sQsus9R
+qUJ8d1nMVrlKdyUcBVmAZg8Qu7gaqQ==
+=JIjD
+-----END PGP SIGNATURE-----
+
+--ThUvEGk/WdWkNDgA--
 
 
