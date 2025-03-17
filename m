@@ -2,91 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16230A63F95
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 06:25:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D75B3A6409E
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 07:05:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tu2xU-0006jD-MM; Mon, 17 Mar 2025 01:24:16 -0400
+	id 1tu3Zz-0007zc-Jh; Mon, 17 Mar 2025 02:04:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tu2xS-0006ig-19; Mon, 17 Mar 2025 01:24:14 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tu2xQ-0007op-2T; Mon, 17 Mar 2025 01:24:13 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-2239c066347so77731905ad.2; 
- Sun, 16 Mar 2025 22:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742189050; x=1742793850; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qHPO8QJN6uV1YuZzM8KiBcANdL4KZSwmj3dkmnjbsok=;
- b=X+E/B1FOCDIqh+WF/yB6QRwMvWOt/+VTw33w0hnlkWbsuCAsEYn+oimUyTlcUU7Vwx
- 0DSOmLFUO4DmS4o6OlpGlIa7XJSVghsAX5U0KXq6HMsCRr6ypJZoyqmvFI+TsArFyTyH
- GYAAk+cYtOsb25+w07xlJaLUKNiM3CqI2v21jPmU0SN9IkdYeUCFK4zI3sgn5nxR3NoT
- 1m1JwfyIoQXQp4poh4/iOFWcU+cxxuBhrC1V9+w+KP2HrG4hBImoAHzKthFQa8RXGRHb
- ywvAVIw5yfRB7e2a/BPRPNviITAWL363UPAprhO4Q94PNqHiRP/KW5djBDIAxVhDyQrz
- HyvA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tu3ZO-0007wd-F8
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 02:03:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tu3ZM-00046g-Sm
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 02:03:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742191402;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=ZdFajaLTZczCh5Xi/1eTDUxNYxUBo2oJ1/PS5Agr430=;
+ b=HVCYpAuWybiWQZw6nJVaI/KAOM9H+VI8hjbV6rqSSHdfcZOi5PdQEougD2GE/bx4UOJnqT
+ pVTQxrQYEhcjpqm7t5g4BZQBimHtof8gAD67DDfsjSxaZSxdS7MIQI1Sh59XnO4lNYsUb5
+ q8HnafIPYA5V51CNhbze+lWPxTT28zU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-SDlnesg_PdKrBV9qBJ2csQ-1; Mon, 17 Mar 2025 02:03:20 -0400
+X-MC-Unique: SDlnesg_PdKrBV9qBJ2csQ-1
+X-Mimecast-MFC-AGG-ID: SDlnesg_PdKrBV9qBJ2csQ_1742191399
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-39130f02631so1900018f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 16 Mar 2025 23:03:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742189050; x=1742793850;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qHPO8QJN6uV1YuZzM8KiBcANdL4KZSwmj3dkmnjbsok=;
- b=lSDyOImRR7r5jtrX+h0EWHi3RjDCUOvVp7f4dB54z8In8slE2vJBZebHJY0yeTjEA3
- 6P8CMxpBUekPP/c4wNSvSwz828mq+uATs2AEG1pIUogto2oKCVPpEMaLVkVtoCtlXgQz
- L3LrreOPT2ZnVI+3enq0eLckAS8ezh7meetcKUxQaGgtAGQkUCmoKMJjED+7KcRQR77o
- hW+kxRPP0cB1aKKPxh7Zn5IWPQZqukjWEPUlf1+074aB8hNAe3Li4ewTu+SIfTNYwkuI
- N7G6JRMvBFBK+NhWIiCvTaXpKuXCR/secQFwnVE4PE42eDA0el9DGIsWEvNSZVPUCqwr
- f4Ww==
+ d=1e100.net; s=20230601; t=1742191399; x=1742796199;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZdFajaLTZczCh5Xi/1eTDUxNYxUBo2oJ1/PS5Agr430=;
+ b=JTpj7xKdAZXSKQr089Z/IYeeH6d0f0XiGxCJe8hGvSYpvLr94SpajXr0FQW6G/m1Se
+ xY43Dj0JEJvjiz969AEi4Vha3yQFq5dk5KRb3yqr3S0Fxu5I0yd6a721UgvU1JsLf5B+
+ +kOc+7jjTd4Dh2Uc0hjBpwkCzF8OOMUoTTsNuUgOqRhQ/myWeBb2gC5j5VnGAot7zEa2
+ dQ6EsaExrM+UHpmYM/BAEyx6C99WFOSyfUcC5xSs4pQW+g8IwEA+mUnqwaVkR5sqUVb1
+ Yg4802OPKOHPIeP1Swvf1AtytrJsWR1akfpY9L9/eBeE96U68qP2p9PMnKdHOCTKTwMt
+ KSig==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUsdyvpc0FoAr1CjBU/lAhmZBwRkrORDsUoJf0ItqqAxtProouzXwYA2PTt/cjIJwPtc/6auYL/gA==@nongnu.org
-X-Gm-Message-State: AOJu0Yyb7D9GgIHPCW6QZ8L9/ujQjvNaW7RalA+qmPRshhtsbZYFJ6TB
- 34ZNyMOJsUnbd2JqahCpUuWdIxw2uYCzF1O35TiU5uRYrhUBbB1REhxkwg==
-X-Gm-Gg: ASbGncuSHCElxCtEdcMfwwwZWlN1IVB6QjcUzbXXDAYjJG5kMXDlJg5m9AZjTy4nWR+
- CmBtTSd2za7MFu8/rmvSFRZIuCGOIzxbZHbVB5Kkv49MzDtR0VIGem23Ac16UUFt+yQKjEmvjRL
- kX7VGxDcFjQ/bGUhQsBEXhRaTFy5a9GAmJOw5GXBq0bf3xHadU8qgrVa+vmkHDw3ePlYUaipXzp
- t3SGb+XYBZLq4tN5L4YM4GFnKVBu9zT8+ihsBxmSDELdKJwGEZ20i1/lCjthkHqN9w5rDgDdopX
- +sd/1DkY7/YPZFrB5anNiztVkgvL11zvzHlJK1GSd9X6qNcrgQ==
-X-Google-Smtp-Source: AGHT+IFX0vYJLxJhOzWGShIZU9ko5C/MWk9RcE/Q6dsEO0bnuGrTCvH6v2ML8WM3Cvw8Zi44xX8kZQ==
-X-Received: by 2002:a05:6a20:2d08:b0:1f5:8714:8147 with SMTP id
- adf61e73a8af0-1f5c11c3c61mr16592957637.23.1742189050123; 
- Sun, 16 Mar 2025 22:24:10 -0700 (PDT)
-Received: from wheely.local0.net ([118.208.135.36])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73711695b6bsm6879495b3a.148.2025.03.16.22.24.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Mar 2025 22:24:09 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Glenn Miles <milesg@linux.vnet.ibm.com>,
- Michael Kowal <kowal@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Stefan Hajnoczi" <stefanha@gmail.com>
-Subject: [PATCH 6/6] ppc/pnv: Fix system symbols in HOMER structure definitions
-Date: Mon, 17 Mar 2025 15:23:38 +1000
-Message-ID: <20250317052339.1108322-7-npiggin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250317052339.1108322-1-npiggin@gmail.com>
-References: <20250317052339.1108322-1-npiggin@gmail.com>
+ AJvYcCWD+2m6CpjoXnZC3exIzTNKtm4EwrR8/yldFv6AFBH1aucnF6ywkYVyvR9M5p49I8Js8AfDZ+VbarR9@nongnu.org
+X-Gm-Message-State: AOJu0YwyZ4k1J0/0OJ0X38Tc9vLVYrGAQlNsjmzJzS+K95Gk+DiMWuzV
+ EqHr94mEZJFOmwrs4JX7uTRCE01Cj2mGHsZhtUTqmSWKW9NdN52bdgX+ep1RRuz/ZQdKTZQ/BJK
+ brS5b4KFmWaHsiPIA7E4pu+Eqkmw8NFTjmtDnLUIP31URpTpJiKVn
+X-Gm-Gg: ASbGncs48B+7wcJejlNksejOLioLUCAv/AxexZXIQPbY9vflgmffn7gsX/ReQhryR1t
+ nK9nW68aw5u4GLwYC4pYeIy9OiLxVxw5Dt4X5hxjz2xTQk7/eqStgsuNebMRiZ9bBqCoO+aoFiO
+ u9Ssa/+3YSM+YwFpPstGdWV5i3gjgSP5jer8gp2h/BoMqGUiOIJnhYIy346qIDHlyGIp9DhPUdB
+ T1uzMH8+iqtP33DLfcidJh4AETPio/vTwA9vnL+QOE2Kge0XWsqSNfL3BLNqU70MBmevzxvJsuQ
+ GG270gmCoJKTx9OAI6Gcxf+p1b2qztoUGVIy/3UORLZ1VMM=
+X-Received: by 2002:a5d:6d8f:0:b0:391:48d4:bcf2 with SMTP id
+ ffacd0b85a97d-3971d5227d9mr11302158f8f.12.1742191399064; 
+ Sun, 16 Mar 2025 23:03:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2ltEpRJB3Zp9UKWT4XUnZFJ45Ah03h/gLW4EvfnFLJT3UZtbMoVvwjbmvcvFd7LlsraBAcg==
+X-Received: by 2002:a5d:6d8f:0:b0:391:48d4:bcf2 with SMTP id
+ ffacd0b85a97d-3971d5227d9mr11301947f8f.12.1742191392486; 
+ Sun, 16 Mar 2025 23:03:12 -0700 (PDT)
+Received: from [192.168.0.7] (ip-109-42-51-207.web.vodafone.de.
+ [109.42.51.207]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-395cb7ea16csm13771756f8f.82.2025.03.16.23.03.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 16 Mar 2025 23:03:12 -0700 (PDT)
+Message-ID: <a1991d55-95f9-4c1b-9977-cd40e566acec@redhat.com>
+Date: Mon, 17 Mar 2025 07:03:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: Broken NetBSD Orange Pi image URL in QEMU tests
+To: Niek Linnenbank <nieklinnenbank@gmail.com>,
+ Stefan Hajnoczi <stefanha@gmail.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-devel <qemu-devel@nongnu.org>,
+ Reinoud Zandijk <reinoud@netbsd.org>, Ryo ONODERA <ryoon@netbsd.org>
+References: <CAJSP0QWKnLDsVUbqO_kNB7GiZPU0-YpOU8T4BNCgyNBi54dtDQ@mail.gmail.com>
+ <12d09c42-e6b2-49d1-9b06-e5a26acc2c5b@redhat.com>
+ <CAJSP0QUWkeaSsVmdfrXNAaSqB_uMUxqAD+GR7Xm4FHEgwYArNg@mail.gmail.com>
+ <CAPan3Wozs=BX2pYxgBR3R_TtV75Pk8T=TNXZjgRHajzYw47Y-A@mail.gmail.com>
+ <CAPan3WqR_UmrJMtYEe02K6vKy4joNE5frGDMW1KWFH-so24nbw@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <CAPan3WqR_UmrJMtYEe02K6vKy4joNE5frGDMW1KWFH-so24nbw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.333,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,280 +157,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These definitions were taken from skiboot firmware. I naively thought it
-would be nicer to keep the code similar by using the preprocessor, but
-it was pointed out that system headers might still use those symbols and
-cause something unexpected. Also just nicer to keep the QEMU tree clean.
+On 15/03/2025 22.01, Niek Linnenbank wrote:
+> Hello Stefan,
+> 
+> As of today, it seems the URL is working properly again. I've done a few 
+> downloads without any error.
+> What I did notice is that NetBSD provides a 'cdn.netbsd.org <http:// 
+> cdn.netbsd.org>' also, but I can't see any noticable difference yet.
 
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-Cc: "Stefan Hajnoczi" <stefanha@gmail.com>
-Fixes: 70bc5c2498f46 ("ppc/pnv: Make HOMER memory a RAM region")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- hw/ppc/pnv_occ.c | 201 ++++++++++++++++++++++-------------------------
- 1 file changed, 96 insertions(+), 105 deletions(-)
+Oh, weird, in commit 380f7268b7ba4a6 I had to switch the URL from the cdn to 
+the archive one since the file was not available on the cdn server 
+anymore... but now it seems to be back! Certainly something to keep in mind 
+in case we face problems with this asset again.
 
-diff --git a/hw/ppc/pnv_occ.c b/hw/ppc/pnv_occ.c
-index bda6b23ad3c..177c5e514b7 100644
---- a/hw/ppc/pnv_occ.c
-+++ b/hw/ppc/pnv_occ.c
-@@ -364,7 +364,12 @@ static void pnv_occ_register_types(void)
- 
- type_init(pnv_occ_register_types);
- 
--/* From skiboot/hw/occ.c with tab to space conversion */
-+/*
-+ * From skiboot/hw/occ.c with following changes:
-+ * - tab to space conversion
-+ * - Type conversions u8->uint8_t s8->int8_t __be16->uint16_t etc
-+ * - __packed -> QEMU_PACKED
-+ */
- /* OCC Communication Area for PStates */
- 
- #define OPAL_DYNAMIC_DATA_OFFSET        0x0B80
-@@ -384,20 +389,6 @@ type_init(pnv_occ_register_types);
- #define FREQ_MAX_IN_DOMAIN              0
- #define FREQ_MOST_RECENTLY_SET          1
- 
--#define u8 uint8_t
--#define s8 int8_t
--#define u16 uint16_t
--#define s16 int16_t
--#define u32 uint32_t
--#define s32 int32_t
--#define u64 uint64_t
--#define s64 int64_t
--#define __be16 uint16_t
--#define __be32 uint32_t
--#ifndef __packed
--#define __packed QEMU_PACKED
--#endif /* !__packed */
--
- /**
-  * OCC-OPAL Shared Memory Region
-  *
-@@ -434,69 +425,69 @@ type_init(pnv_occ_register_types);
-  * @spare/reserved/pad:         Unused data
-  */
- struct occ_pstate_table {
--    u8 valid;
--    u8 version;
--    union __packed {
--        struct __packed { /* Version 0x01 and 0x02 */
--            u8 throttle;
--            s8 pstate_min;
--            s8 pstate_nom;
--            s8 pstate_turbo;
--            s8 pstate_ultra_turbo;
--            u8 spare;
--            u64 reserved;
--            struct __packed {
--                s8 id;
--                u8 flags;
--                u8 vdd;
--                u8 vcs;
--                __be32 freq_khz;
-+    uint8_t valid;
-+    uint8_t version;
-+    union QEMU_PACKED {
-+        struct QEMU_PACKED { /* Version 0x01 and 0x02 */
-+            uint8_t throttle;
-+            int8_t pstate_min;
-+            int8_t pstate_nom;
-+            int8_t pstate_turbo;
-+            int8_t pstate_ultra_turbo;
-+            uint8_t spare;
-+            uint64_t reserved;
-+            struct QEMU_PACKED {
-+                int8_t id;
-+                uint8_t flags;
-+                uint8_t vdd;
-+                uint8_t vcs;
-+                uint32_t freq_khz;
-             } pstates[MAX_PSTATES];
--            s8 core_max[MAX_P8_CORES];
--            u8 pad[100];
-+            int8_t core_max[MAX_P8_CORES];
-+            uint8_t pad[100];
-         } v2;
--        struct __packed { /* Version 0x90 */
--            u8 occ_role;
--            u8 pstate_min;
--            u8 pstate_nom;
--            u8 pstate_turbo;
--            u8 pstate_ultra_turbo;
--            u8 spare;
--            u64 reserved1;
--            u64 reserved2;
--            struct __packed {
--                u8 id;
--                u8 flags;
--                u16 reserved;
--                __be32 freq_khz;
-+        struct QEMU_PACKED { /* Version 0x90 */
-+            uint8_t occ_role;
-+            uint8_t pstate_min;
-+            uint8_t pstate_nom;
-+            uint8_t pstate_turbo;
-+            uint8_t pstate_ultra_turbo;
-+            uint8_t spare;
-+            uint64_t reserved1;
-+            uint64_t reserved2;
-+            struct QEMU_PACKED {
-+                uint8_t id;
-+                uint8_t flags;
-+                uint16_t reserved;
-+                uint32_t freq_khz;
-             } pstates[MAX_PSTATES];
--            u8 core_max[MAX_P9_CORES];
--            u8 pad[56];
-+            uint8_t core_max[MAX_P9_CORES];
-+            uint8_t pad[56];
-         } v9;
--        struct __packed { /* Version 0xA0 */
--            u8 occ_role;
--            u8 pstate_min;
--            u8 pstate_fixed_freq;
--            u8 pstate_base;
--            u8 pstate_ultra_turbo;
--            u8 pstate_fmax;
--            u8 minor;
--            u8 pstate_bottom_throttle;
--            u8 spare;
--            u8 spare1;
--            u32 reserved_32;
--            u64 reserved_64;
--            struct __packed {
--                u8 id;
--                u8 valid;
--                u16 reserved;
--                __be32 freq_khz;
-+        struct QEMU_PACKED { /* Version 0xA0 */
-+            uint8_t occ_role;
-+            uint8_t pstate_min;
-+            uint8_t pstate_fixed_freq;
-+            uint8_t pstate_base;
-+            uint8_t pstate_ultra_turbo;
-+            uint8_t pstate_fmax;
-+            uint8_t minor;
-+            uint8_t pstate_bottom_throttle;
-+            uint8_t spare;
-+            uint8_t spare1;
-+            uint32_t reserved_32;
-+            uint64_t reserved_64;
-+            struct QEMU_PACKED {
-+                uint8_t id;
-+                uint8_t valid;
-+                uint16_t reserved;
-+                uint32_t freq_khz;
-             } pstates[MAX_PSTATES];
--            u8 core_max[MAX_P10_CORES];
--            u8 pad[48];
-+            uint8_t core_max[MAX_P10_CORES];
-+            uint8_t pad[48];
-         } v10;
-     };
--} __packed;
-+} QEMU_PACKED;
- 
- /**
-  * OPAL-OCC Command Response Interface
-@@ -531,13 +522,13 @@ struct occ_pstate_table {
-  * @spare:                      Unused byte
-  */
- struct opal_command_buffer {
--    u8 flag;
--    u8 request_id;
--    u8 cmd;
--    u8 spare;
--    __be16 data_size;
--    u8 data[MAX_OPAL_CMD_DATA_LENGTH];
--} __packed;
-+    uint8_t flag;
-+    uint8_t request_id;
-+    uint8_t cmd;
-+    uint8_t spare;
-+    uint16_t data_size;
-+    uint8_t data[MAX_OPAL_CMD_DATA_LENGTH];
-+} QEMU_PACKED;
- 
- /**
-  * OPAL-OCC Response Buffer
-@@ -571,13 +562,13 @@ struct opal_command_buffer {
-  * @data:                       Response specific data
-  */
- struct occ_response_buffer {
--    u8 flag;
--    u8 request_id;
--    u8 cmd;
--    u8 status;
--    __be16 data_size;
--    u8 data[MAX_OCC_RSP_DATA_LENGTH];
--} __packed;
-+    uint8_t flag;
-+    uint8_t request_id;
-+    uint8_t cmd;
-+    uint8_t status;
-+    uint16_t data_size;
-+    uint8_t data[MAX_OCC_RSP_DATA_LENGTH];
-+} QEMU_PACKED;
- 
- /**
-  * OCC-OPAL Shared Memory Interface Dynamic Data Vx90
-@@ -608,31 +599,31 @@ struct occ_response_buffer {
-  * @rsp:                        OCC Response Buffer
-  */
- struct occ_dynamic_data {
--    u8 occ_state;
--    u8 major_version;
--    u8 minor_version;
--    u8 gpus_present;
--    union __packed {
--        struct __packed { /* Version 0x90 */
--            u8 spare1;
-+    uint8_t occ_state;
-+    uint8_t major_version;
-+    uint8_t minor_version;
-+    uint8_t gpus_present;
-+    union QEMU_PACKED {
-+        struct QEMU_PACKED { /* Version 0x90 */
-+            uint8_t spare1;
-         } v9;
--        struct __packed { /* Version 0xA0 */
--            u8 wof_enabled;
-+        struct QEMU_PACKED { /* Version 0xA0 */
-+            uint8_t wof_enabled;
-         } v10;
-     };
--    u8 cpu_throttle;
--    u8 mem_throttle;
--    u8 quick_pwr_drop;
--    u8 pwr_shifting_ratio;
--    u8 pwr_cap_type;
--    __be16 hard_min_pwr_cap;
--    __be16 max_pwr_cap;
--    __be16 cur_pwr_cap;
--    __be16 soft_min_pwr_cap;
--    u8 pad[110];
-+    uint8_t cpu_throttle;
-+    uint8_t mem_throttle;
-+    uint8_t quick_pwr_drop;
-+    uint8_t pwr_shifting_ratio;
-+    uint8_t pwr_cap_type;
-+    uint16_t hard_min_pwr_cap;
-+    uint16_t max_pwr_cap;
-+    uint16_t cur_pwr_cap;
-+    uint16_t soft_min_pwr_cap;
-+    uint8_t pad[110];
-     struct opal_command_buffer cmd;
-     struct occ_response_buffer rsp;
--} __packed;
-+} QEMU_PACKED;
- 
- enum occ_response_status {
-     OCC_RSP_SUCCESS                 = 0x00,
--- 
-2.47.1
+  Thomas
 
 
