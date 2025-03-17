@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AC8A64C2C
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 12:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C84E5A64D67
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 12:55:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tu8Sm-0003IJ-Ph; Mon, 17 Mar 2025 07:16:56 -0400
+	id 1tu92x-0005EN-03; Mon, 17 Mar 2025 07:54:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tu8Sf-0003Fu-Sx
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 07:16:49 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tu92d-0005DT-47
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 07:53:59 -0400
+Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1tu8Sd-0003me-K8
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 07:16:49 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-225e3002dffso36793855ad.1
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 04:16:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tu92a-0007yT-Vw
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 07:53:58 -0400
+Received: by mail-yb1-xb32.google.com with SMTP id
+ 3f1490d57ef6-e63504bedd0so2827672276.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 04:53:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1742210204; x=1742815004;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=6CHlSa6FesbaE//XoscZHu5Gz170/KWdbmIiQDcVlS8=;
- b=tPuzlP2XHWLjIcg+F2raYgEejs0fSOWQF2FLYdymcQA0TskIq73A4JNo6SxEIR0R3k
- UiX4jUyQOdd3bOkBHlK5b5QkGqT2vpt3fU3LnBtCQRfKnZVXPpOZ3wo0lha3eHA8Gm9s
- 1cFMdky/DQ0S0dghkuc2WypSLLABr9XbYjFd4Ab1Eju4YON7rv2QF4AXC4yQNt3I4BHq
- bE4lzu8qshl2vM/Qnrhfs06tU7S9hYNcgJBpDCkThDPwgdFOuJhc5LplTbhu0SNLsf+u
- pselVTz56BWvsnqcP6/UlegEEy2D1E9pg91xN5p+r6NF+SQmT6qDOgBSAtmpuW+FlYXx
- gqFQ==
+ d=linaro.org; s=google; t=1742212434; x=1742817234; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=pPe/7/yUQFRB8Elsl01jkfv7Oja5Bi+E+6DbLmo998k=;
+ b=bwZjc2wBo1X7q6keHAQ+1KDi7RLK+x8o0KG5SEZzKdXwdG/ScKRanUoCICYj4K49Go
+ xbFLeyKxJEHDWjsUqQ/AA1RGwuy0A1ASpLTjwXxYOwq433p/OcLdgo7QJ3bGAqqfgo7F
+ UmkGltjjF2KOhpGoGa3CS15SIPlv48T98b97nEgV+IPSnZmdALs/ELZiCnSUKmdbHv0/
+ YXJ6qn/JWNiOtGTHbSkatlTxgv5S2tsZ6V/9o1C/3/qsfdOJ4i+tg0ihj3Qc3CJzv6EF
+ TeWN3C8m1LvrTijGHyX76p/I2mGTEPjJJqk9SvPB5ZHdxEqtzZPBImBBZBcnrTEczuiq
+ ecTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742210204; x=1742815004;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6CHlSa6FesbaE//XoscZHu5Gz170/KWdbmIiQDcVlS8=;
- b=I8RBMEjcAwcNUGLdASFkPk5cEeyCnHg6X5bcYRNWMjX7kcjx0XJJds2rfhjvd/Yei2
- W6R9Ih9kst7sLkC9rG9SJTdgkHsR6QZ8A9RxJ1ZCOVSI044asXK044Y1pUsMURvTuwU8
- pY4GzfIR2T2YmvI44JVrn9DQEgM40BVW8QzTWnETlOEBmGggQ2RC/F882TOVE3A3sb5e
- Cq/S5u4WLQrjS3okeLkD9lzIrnJzlNjVEhDZwdbUE2dm8x1Fncllxv1mAKjkEg5C4qTw
- +E3tk8cxXwyS4gBP231k12VMIcVpq4woLzQ8x6ZvewczR4OWQzWiF1QG8Km5CY24qUJa
- 0RwA==
-X-Gm-Message-State: AOJu0Yyd9AUMccCWKGRHnM5Ltnh88FwePrhwPaMFwUUK3WwWfRryWrn+
- J79seANefi898XIzCzJtZwLFyZquyQn0danGW8nIrhn7pf6geiDchbhQds0x00k=
-X-Gm-Gg: ASbGncsOWATaDrzcCADhDzHjBb9GVxEvWwi6O/EGnKgqyL+1CS3/7f4r/lrG13SZzCJ
- ntjrALBkvKpiV31FrdQc4jYbZ1XMbh4dK7sFtlEQghnybVHt2E2ecp2ZfKhrsC2MDseC2vXMixc
- JrhjJHZc2XiKAPR+nibpIAPdGtaWWAw0TyBzZZxJw4IgxH1Ic5sfk23Ys+PiZzxr1cIDfKNX5f2
- gNWg+hgltpU+GW+iK33uLhiJtzkNo0WzpHAcsYEsRMiNYg+X7RhkdNQ0C8zv2S45w3ixp2JPZwh
- jS4n2LDAfjDU7bPeoiVxKbUTSNJWkcIcbDnZFwGnka+yUD58NlKaiGJ3+TQ=
-X-Google-Smtp-Source: AGHT+IGPbCrjEnD4bLL+I84IN2slw0WD1tr12zA9gmKelzScq0fwZo5lKGnn/4mv5BSlopaEnZDWKQ==
-X-Received: by 2002:a17:902:ce8f:b0:224:1074:63a7 with SMTP id
- d9443c01a7336-225e0b0998emr139821925ad.47.1742210204486; 
- Mon, 17 Mar 2025 04:16:44 -0700 (PDT)
-Received: from localhost ([157.82.207.107])
- by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-225c6bd4d6csm72288065ad.238.2025.03.17.04.16.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Mar 2025 04:16:44 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 17 Mar 2025 20:16:25 +0900
-Subject: [PATCH 4/4] target/arm: Flag PMCNTENCLR with ARM_CP_NO_RAW
+ d=1e100.net; s=20230601; t=1742212434; x=1742817234;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pPe/7/yUQFRB8Elsl01jkfv7Oja5Bi+E+6DbLmo998k=;
+ b=Ejwu0hbS6qmAecxl4NObcXWAFpcMz61mZMDIJhV3pkohSzlTcYEXg1VhjGJ0S1VrE8
+ 0VPHwMqxyEKN+/FsaRCjLPHfwOBjdgqIgUUAVAFMpnDpX7cmgq++Eyric9tKOr3rObMB
+ eTT7n9D+GVmAPNpsaO70H6kaHL7NX7WLmvqTWWmH6SC7/vKDR1BjuI6V8IQbRAwTcDbu
+ aODC3Sz4ZU668J7IjJjjSgOn/mTiUK6Vcd8mQFAw59PdowyTaOGiG3kilRq+E4h15neD
+ uO1GD2Oe71i71zgwQUY2uNfoB90GLbFsE4JSEH18QcmzoTxhof1M1e9lxNFpL7Q8EWHG
+ 2Q0A==
+X-Gm-Message-State: AOJu0YzHLjfXH9JziLC+TnER917RdwAXjUSqjxV9qk9qdqY862+pYbzn
+ fkP+knT3dJQ1+dcFya9UXozMQm+g3szhSVijwiWImKtfgLi44N1jDDFdinQh9Zhqy6V5qzcP54P
+ hnNdDDM7abSb7mYH4X32jz2Z6sLpgveQK8cyadg==
+X-Gm-Gg: ASbGncuimUbQaNzdJ8AqPN9xDFtIratEw+DMC1IdEEk65at9UFBwXX9zWq8XGKZvHxS
+ fFzeOz837AWDhztjmix6Ux20tFKliXT9xcl2EboKUHhRVQZkbG+wA7L0ZOT5hcZ527cIZxckxsy
+ 9TE40X5RL2i+Ek+Y444ywjYRVXN8E=
+X-Google-Smtp-Source: AGHT+IGkM90m6MNtELPBPZZPgdMV9jm4BAePYqZW8a3P7L9zfRD+b4O53LjfmATaxhaFbu5RqMseaChuWkMTqJrjCmE=
+X-Received: by 2002:a05:6902:2807:b0:e5d:aeb7:6e62 with SMTP id
+ 3f1490d57ef6-e63f64d236emr14202391276.7.1742212432444; Mon, 17 Mar 2025
+ 04:53:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250317-raw-v1-4-09e2dfff0e90@daynix.com>
 References: <20250317-raw-v1-0-09e2dfff0e90@daynix.com>
 In-Reply-To: <20250317-raw-v1-0-09e2dfff0e90@daynix.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
- devel@daynix.com, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 17 Mar 2025 11:53:40 +0000
+X-Gm-Features: AQ5f1Jo5nBE7BSVUIahWWqdqD8IY585B7lrGv5MupP0LJ7p1lUOZobD71SQzxls
+Message-ID: <CAFEAcA9Cy_870gxNmPFykzTjXOfi0raotmA1NRpZEQKfFfB=0g@mail.gmail.com>
+Subject: Re: [PATCH 0/4] target/arm: Flag PMCNTENCLR with ARM_CP_NO_RAW
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, devel@daynix.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,57 +89,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A normal write to PMCNTENCLR clears written bits so it is not
-appropriate for writing a raw value. This kind of situation is usually
-handled by setting a raw write function, but flag the register with
-ARM_CP_NO_RAW instead to workaround a problem with KVM.
+On Mon, 17 Mar 2025 at 11:16, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>
+> Supersedes: <20250314-clr-v2-1-7c7220c177c9@daynix.com>
+> ("[PATCH v2] target/arm: Define raw write for PMU CLR registers")
+>
+> A normal write to PMCNTENCLR clears written bits so it is not
+> appropriate for writing a raw value. This kind of situation is usually
+> handled by setting a raw write function, but flag the register with
+> ARM_CP_NO_RAW instead to workaround a problem with KVM.
 
-KVM also has the same problem with PMINTENSET so add a comment to
-note that. This register is already flagged with ARM_CP_NO_RAW.
+I'm not sure there's a "problem with KVM" here -- it implements the
+write to PMCNTENCLR to have the semantics the architecture specifies.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- target/arm/helper.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+> KVM also has the same problem with PMINTENSET so add a comment to
+> note that. This register is already flagged with ARM_CP_NO_RAW.
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 2dd8f4d56a1e..ee15132aadea 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -1901,12 +1901,21 @@ static const ARMCPRegInfo v7_cp_reginfo[] = {
-       .accessfn = pmreg_access,
-       .fgt = FGT_PMCNTEN,
-       .writefn = pmcntenclr_write,
--      .type = ARM_CP_ALIAS | ARM_CP_IO },
-+      /*
-+       * Flag PMCNTENCLR with ARM_CP_NO_RAW instead of implementing raw
-+       * access to workaround a problem with KVM; KVM applies bit operations
-+       * that prevents writing back raw values since Linux 6.7:
-+       * https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a45f41d754e0b37de4b7dc1fb3c6b7a1285882fc
-+       *
-+       * It is fine to lack raw access with PMCNTENCLR because KVM still
-+       * exposes PMCNTENSET, which shares the underlying state.
-+       */
-+      .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_NO_RAW },
-     { .name = "PMCNTENCLR_EL0", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 3, .crn = 9, .crm = 12, .opc2 = 2,
-       .access = PL0_RW, .accessfn = pmreg_access,
-       .fgt = FGT_PMCNTEN,
--      .type = ARM_CP_ALIAS | ARM_CP_IO,
-+      .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_NO_RAW,
-       .fieldoffset = offsetof(CPUARMState, cp15.c9_pmcnten),
-       .writefn = pmcntenclr_write },
-     { .name = "PMOVSR", .cp = 15, .crn = 9, .crm = 12, .opc1 = 0, .opc2 = 3,
-@@ -2025,6 +2034,7 @@ static const ARMCPRegInfo v7_cp_reginfo[] = {
-     { .name = "PMINTENCLR", .cp = 15, .crn = 9, .crm = 14, .opc1 = 0, .opc2 = 2,
-       .access = PL1_RW, .accessfn = access_tpm,
-       .fgt = FGT_PMINTEN,
-+      /* Flag PMINTENCLR with ARM_CP_NO_RAW, as with PMCNTENCLR. */
-       .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_NO_RAW,
-       .fieldoffset = offsetof(CPUARMState, cp15.c9_pminten),
-       .writefn = pmintenclr_write, },
+What are we trying to achieve with this patchset?
+You can't write to registers from gdb, and reading PMCNTENCLR
+just gives you the same value as PMCNTENSET, so you might as
+well read that, which we already expose.
 
--- 
-2.48.1
+More generally, the gdb-stub access to system registers is
+something we put in on a "this is a minimal amount of code
+to provide something that more or less works" basis. If we
+want it to work better (i.e. more comprehensively, possibly
+with write support) then we should address that by looking at
+the design of doing that more holistically, not by making
+tweaks to address individual registers.
 
+Specifically, I'm not really happy with adding explicit
+ARM_CP_NO_GDB flags to everything we currently mark as
+ARM_CP_NO_RAW. Either we stick with our existing
+"minimal changes to produce something that works" approach,
+in which case we deny gdb access to NO_RAW registers because
+that's easy and most of them it won't work or doesn't make
+sense. Or else we do the actual design work. That might turn
+out to mean "we explicitly mark no-gdb registers rather than
+overloading NO_RAW for this", or it might mean something else.
+But we won't know until we actually do that design work.
+
+(see also https://gitlab.com/qemu-project/qemu/-/issues/2760 )
+
+thanks
+-- PMM
 
