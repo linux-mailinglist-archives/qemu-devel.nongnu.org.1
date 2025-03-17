@@ -2,106 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D396A65773
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 17:09:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FD6A65772
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 17:09:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuD14-0007nW-Uh; Mon, 17 Mar 2025 12:08:40 -0400
+	id 1tuD1i-000889-Cy; Mon, 17 Mar 2025 12:09:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuD00-0007Yp-EA
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:07:34 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1tuD0v-0007xG-7S
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:08:31 -0400
+Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuCzs-0002ho-5O
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:07:26 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2ff64550991so2717211a91.0
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 09:07:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1tuD0s-0002oL-OE
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 12:08:28 -0400
+Received: by mail-qv1-xf30.google.com with SMTP id
+ 6a1803df08f44-6ddcff5a823so32562146d6.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 09:08:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742227642; x=1742832442; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zBROt8Wvg39oI6RJKUKBStbr1ifb9ytbzgO6Y+lRt3Q=;
- b=n2iajuZ9Q9fyjzHSbg58R66YRMzKdQhRw4V5luxxFanQnfVZKIcwbsEEEg2+XwbNPH
- KXIfWxgsrnaomFmHf4MoSQ8sF8yaQ8Gg2HfYsP//DUWzO1eVT/WwdqlWHiqavIDJbxf/
- H8QpSg1JtIy39b+2yL8ZA0NQtEgAlyc3mG+sfu2D8fa/To/zyMtC4aHIWGULsJACAckh
- BrTxVkYu6mrm9lD4iPKYK9rqi9CaXVr6WdVL6XLvFRVlxvvywu0r5GskNZZiOwhGGhKt
- S1OuxLbcbZ5NXdur+prUrUPylKD5lVUVsGxxH1/GRWyYK19lD+O3IiRoFco7AngTRhUS
- ps4A==
+ d=gmail.com; s=20230601; t=1742227703; x=1742832503; darn=nongnu.org;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IgdEPjlewsmW+2amy1A1G3R6y5MEZyL8GrPsazu3OYE=;
+ b=LvrS+e7TvTuke7bh4bA1Sgkem/rAtAaX/zM1y00FkP6c8dOZcdvvF53i0JfxOVyCfj
+ lC8uC26HZ1Fz1E/S8TqKQta9YdUsJM7MJ/Lrhdsd9ViX73Op2dj4J96A2aNrf9V268L8
+ LQFBqK82FR3WsIbpVviPXLCsIa0pBYFc9yTcdJcEFPjL1Kd0M8Ex49FOKYdT3D8G/HOC
+ 4yRKvzOK2E6+/cFHZ/LcSEFNxnHFRybTzF221UrjmWYiNAAVLz9V73fNIT8qyCl/Bgfp
+ HswkKpI6OGnNdj62FtT1uJM3KRtRNG+jdTgKVaJHkr6DlLrM9ea6WLTk4iwXkOTPiLY0
+ 9Tfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742227642; x=1742832442;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zBROt8Wvg39oI6RJKUKBStbr1ifb9ytbzgO6Y+lRt3Q=;
- b=haISP34Z9jR9rlImh9d2zabdIpmxF3r1CBtRfWBwOILNSaeqPww1VzTt6d6QcTINif
- FYL9HIxAEhTH9tguwYGBGkuDlzVnJzHc4WMLIqcA+iLOWbSqDxfPVRMExTxHC6Q4bDhs
- JYVmudlkNrXvY1kxtKZ8dCkReynJPpGYglUo81r1byzWwClguQCX0ZybHX/6UZ+zemq/
- 3GaVxuLkMBErH2yiej7abPvH57adi13A/AbrqbbJ1Xdp7VjE/g8uU1bxjHkH7RCpvhDY
- lTbov/5O61Tw3kdlXeqvbkVZWGmxXXgRyzyCYp0IF/1pnlvgm+38P9iicRFWT3M015FH
- X0rw==
+ d=1e100.net; s=20230601; t=1742227703; x=1742832503;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IgdEPjlewsmW+2amy1A1G3R6y5MEZyL8GrPsazu3OYE=;
+ b=ZCjGptMn/WHH5lbvbS6fuoisNCCf9AOkxv6F6fveDlMAYD9C5+Pr88vlw1Q42TRDaf
+ xXaQ1U0ECsDG+1g+p6G0vN15yBGL021rrQWwmrpHEobS1UZx6f7mvb5855WRon5WExev
+ I7WrwUWaNuMAxQfebmz2SPFJQSuGB1oLx4BTnRvrOOlb3z5BHDByCjD1Va4j94aPFhiL
+ NdMlAtP13Ngl4me1SR3100kTQFeJhGezGzxRvAO5Q/P9ugutZoRgkeIjY/qBLYhlIbdW
+ KM8wP9vWM8p5yeho74u31k51Y9ZShhTx6NKdrwL9Q4yMNjMrIjuLGIk6OU7IMu8GTIXT
+ 07bg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXg4KSvxpK+hpQs574fPE4XgDEgsZ2Hdn9tJYnvAgHm+iw8URdFwj7sUh5LmJkrRrpoAPm+lpEpiASW@nongnu.org
-X-Gm-Message-State: AOJu0Yydm7QPJ34aUhx4QsZoRpARKehsCVHQhaYrezhK4YddoeTcw05W
- GgeCEcZQbe/d4gsEav/l6rE5Yh8+wGtek74wE2mILKNhErORKQKYAkf1qLf8OvA=
-X-Gm-Gg: ASbGncvKJnSzqHt5RwR9gp47SnMfXvZMKiXUCHw3Oit46HfSwZipnbpcBePMxqe9Lsv
- 1yw7jfm2gE4JP6JBoWlHOe7qaKCWQush0hgPELL+H1mfvAmbmqaE9Z0N80GsvRVbsVphtWAdMtJ
- ePKGK00BNvui0rFeigZBjKrlhaGlccGvW212wNNcesB6zAbCu0LixY771nx26sF8aVwg7SmH+aJ
- 2yJah5XEeyD7ETeUoFcJdgPkGmoWDjgU8BLYTWRMIh6FifD9T48kbj38dNtVl4ybFSSMXkO2W/o
- 3vYp6cwo+23f7UczbTH2aEh0cF971nhAlgJrwOBef4Jx0rwVNmsDq5k6fg==
-X-Google-Smtp-Source: AGHT+IGu7JBcnuWnMPBuU7hiTo93qu/WDWnwnWY6VP9EN/eE9EF8eTD0WKyIrv4I/zgNLAfNvjqk7A==
-X-Received: by 2002:a17:90a:fc43:b0:2ee:c2b5:97a0 with SMTP id
- 98e67ed59e1d1-30151d3e018mr16040542a91.25.1742227641697; 
- Mon, 17 Mar 2025 09:07:21 -0700 (PDT)
-Received: from [192.168.1.67] ([38.39.164.180])
+ AJvYcCVU/OF+x4O8LqWq6O96fB5XgOsgFpdFDQ/LKbb7Kj9vhwHO/0TTVkQFHoZiRN7LvP6C/nTKPm6CYr7K@nongnu.org
+X-Gm-Message-State: AOJu0YzcZf1+ic6V5Y4zRwKarpzrsLSmKyfrIxUXpG11PRhu+4XZ/eUk
+ sC04mkQ2ZRhkg7291hv+uau/wH200y+XwRlaD0K4I2r33MP6Im+v
+X-Gm-Gg: ASbGncuO8kyU9BccjYNwbH9NV5CIRHMP4dUQ4AyoyTgBR0FmEFwvdaFcfAK7GFN6M5A
+ dXg4Yij/SoEq283BRXP+Vt/BCAFO0WvOxQQm+z4frlVgFB322DulZ0AV3BRZ1XBAQPcSkLVHlTE
+ zQUm2c2XACkNQKrjSiozPi9jmeit0k3j/awzdgtjanW12iwzEfEIDDZrtwjYpAGqNbfxlhRcvez
+ EvAloTCxU3xeuNwESZg/Hbo9rfAipnh6iZn3/1heJizQnz6sbkpCqdF13c/wpsxTKNyRvK0zSTY
+ JwIk25hw1IRVizLWTUptx/LZjPd/L50DP40z4qzVugp3RpZ99KdVk11k2VtWUPs=
+X-Google-Smtp-Source: AGHT+IHF9Xb1jPcLradIx+Ry8ouCds6/t1csBkOWpdPNbNuDeOZqylT5kMSYaRJU8rqJb2dPYmxLGg==
+X-Received: by 2002:a05:6214:cc7:b0:6e8:9cd3:80d5 with SMTP id
+ 6a1803df08f44-6eaea9f6459mr185043366d6.13.1742227703037; 
+ Mon, 17 Mar 2025 09:08:23 -0700 (PDT)
+Received: from DESKTOPUU50BPD ([2603:6000:a500:306:3131:60d1:4874:e2c7])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30153519fefsm6256238a91.12.2025.03.17.09.07.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Mar 2025 09:07:21 -0700 (PDT)
-Message-ID: <edc3bc03-b34f-4bed-be0d-b0fb776a115b@linaro.org>
-Date: Mon, 17 Mar 2025 09:07:20 -0700
+ 6a1803df08f44-6eade330c73sm56050876d6.89.2025.03.17.09.08.21
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 17 Mar 2025 09:08:22 -0700 (PDT)
+From: <ltaylorsimpson@gmail.com>
+To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
+	<qemu-devel@nongnu.org>
+Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
+ <quic_mathbern@quicinc.com>, <ale@rev.ng>, <anjo@rev.ng>,
+ <quic_mliebel@quicinc.com>, <alex.bennee@linaro.org>,
+ <quic_mburton@quicinc.com>, <sidneym@quicinc.com>,
+ "'Brian Cain'" <bcain@quicinc.com>
+References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
+ <20250301052845.1012069-2-brian.cain@oss.qualcomm.com>
+In-Reply-To: <20250301052845.1012069-2-brian.cain@oss.qualcomm.com>
+Subject: RE: [PATCH 01/39] target/hexagon: Implement ciad helper
+Date: Mon, 17 Mar 2025 11:08:21 -0500
+Message-ID: <016201db9756$cee11240$6ca336c0$@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/17] exec/ram_addr: call xen_hvm_modified_memory only
- if xen is enabled
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Paul Durrant <paul@xen.org>, Peter Xu <peterx@redhat.com>,
- alex.bennee@linaro.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-riscv@nongnu.org,
- manos.pitsidianakis@linaro.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Anthony PERARD <anthony@xenproject.org>, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, Stefano Stabellini <sstabellini@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liwei1518@gmail.com>
-References: <20250314173139.2122904-1-pierrick.bouvier@linaro.org>
- <20250314173139.2122904-12-pierrick.bouvier@linaro.org>
- <ad7cdcaf-46d6-460f-8593-a9b74c600784@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <ad7cdcaf-46d6-460f-8593-a9b74c600784@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102f.google.com
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQIWUu77rEigiK0ljjjo9ZdCZqs5mQIUXHWhsvFjLiA=
+Content-Language: en-us
+X-Antivirus: Norton (VPS 250317-2, 3/17/2025), Outbound message
+X-Antivirus-Status: Clean
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-qv1-xf30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,24 +110,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMy8xNy8yNSAwODo1MCwgUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgd3JvdGU6DQo+IE9u
-IDE0LzMvMjUgMTg6MzEsIFBpZXJyaWNrIEJvdXZpZXIgd3JvdGU6DQo+PiBSZXZpZXdlZC1i
-eTogUmljaGFyZCBIZW5kZXJzb24gPHJpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmc+DQo+
-PiBTaWduZWQtb2ZmLWJ5OiBQaWVycmljayBCb3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxp
-bmFyby5vcmc+DQo+PiAtLS0NCj4+ICAgIGluY2x1ZGUvZXhlYy9yYW1fYWRkci5oIHwgOCAr
-KysrKystLQ0KPj4gICAgMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgMiBkZWxl
-dGlvbnMoLSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9leGVjL3JhbV9hZGRyLmgg
-Yi9pbmNsdWRlL2V4ZWMvcmFtX2FkZHIuaA0KPj4gaW5kZXggZjVkNTc0MjYxYTMuLjkyZTg3
-MDhhZjc2IDEwMDY0NA0KPj4gLS0tIGEvaW5jbHVkZS9leGVjL3JhbV9hZGRyLmgNCj4+ICsr
-KyBiL2luY2x1ZGUvZXhlYy9yYW1fYWRkci5oDQo+PiBAQCAtMzM5LDcgKzMzOSw5IEBAIHN0
-YXRpYyBpbmxpbmUgdm9pZCBjcHVfcGh5c2ljYWxfbWVtb3J5X3NldF9kaXJ0eV9yYW5nZShy
-YW1fYWRkcl90IHN0YXJ0LA0KPj4gICAgICAgICAgICB9DQo+PiAgICAgICAgfQ0KPj4gICAg
-DQo+PiAtICAgIHhlbl9odm1fbW9kaWZpZWRfbWVtb3J5KHN0YXJ0LCBsZW5ndGgpOw0KPj4g
-KyAgICBpZiAoeGVuX2VuYWJsZWQoKSkgew0KPj4gKyAgICAgICAgeGVuX2h2bV9tb2RpZmll
-ZF9tZW1vcnkoc3RhcnQsIGxlbmd0aCk7DQo+IA0KPiBQbGVhc2UgcmVtb3ZlIHRoZSBzdHVi
-IGFsdG9nZXRoZXIuDQo+DQoNCldlIGNhbiBldmVudHVhbGx5IGlmZGVmIHRoaXMgY29kZSB1
-bmRlciBDT05GSUdfWEVOLCBidXQgaXQgbWF5IHN0aWxsIGJlIA0KYXZhaWxhYmxlIG9yIG5v
-dC4gVGhlIG1hdGNoaW5nIHN0dWIgZm9yIHhlbl9odm1fbW9kaWZpZWRfbWVtb3J5KCkgd2ls
-bCANCmFzc2VydCBpbiBjYXNlIGl0IGlzIHJlYWNoZWQuDQoNCldoaWNoIGNoYW5nZSB3b3Vs
-ZCB5b3UgZXhwZWN0IHByZWNpc2VseT8NCg0KPj4gKyAgICB9DQo+PiAgICB9DQoNCg==
+
+
+> -----Original Message-----
+> From: Brian Cain <brian.cain@oss.qualcomm.com>
+> Sent: Friday, February 28, 2025 11:28 PM
+> To: qemu-devel@nongnu.org
+> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
+> philmd@linaro.org; quic_mathbern@quicinc.com; ale@rev.ng; anjo@rev.ng;
+> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
+> alex.bennee@linaro.org; quic_mburton@quicinc.com;
+> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>
+> Subject: [PATCH 01/39] target/hexagon: Implement ciad helper
+>=20
+> From: Brian Cain <bcain@quicinc.com>
+>=20
+> ciad is the clear interrupt auto disable instruction.
+>=20
+> This instruction is defined in the Qualcomm Hexagon V71 Programmer's
+> Reference Manual - https://docs.qualcomm.com/bundle/publicresource/80-
+> N2040-51_REV_AB_Hexagon_V71_ProgrammerS_Reference_Manual.pdf
+> See =C2=A711.9.2 SYSTEM MONITOR.
+
+Put this reference in somewhere easier to find.  See prior discussion on =
+this.
+
+If it's only in the commit comment, it will be lost quickly.
+
+>=20
+> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+> ---
+>  target/hexagon/op_helper.c | 39 ++++++++++++++++++++++++++++++++-
+> -----
+>  1 file changed, 33 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+> index fd9caafefc..b28a18adf6 100644
+> --- a/target/hexagon/op_helper.c
+> +++ b/target/hexagon/op_helper.c
+> @@ -34,6 +34,11 @@
+>  #include "op_helper.h"
+>  #include "cpu_helper.h"
+>  #include "translate.h"
+> +#ifndef CONFIG_USER_ONLY
+> +#include "hex_mmu.h"
+> +#include "hw/intc/l2vic.h"
+> +#include "hex_interrupts.h"
+> +#endif
+>=20
+>  #define SF_BIAS        127
+>  #define SF_MANTBITS    23
+> @@ -1338,9 +1343,36 @@ void HELPER(vwhist128qm)(CPUHexagonState
+> *env, int32_t uiV)  }
+>=20
+>  #ifndef CONFIG_USER_ONLY
+> +static void hexagon_set_vid(CPUHexagonState *env, uint32_t offset, =
+int
+> +val) {
+> +    g_assert((offset =3D=3D L2VIC_VID_0) || (offset =3D=3D =
+L2VIC_VID_1));
+> +    CPUState *cs =3D env_cpu(env);
+> +    HexagonCPU *cpu =3D HEXAGON_CPU(cs);
+> +    const hwaddr pend_mem =3D cpu->l2vic_base_addr + offset;
+> +    cpu_physical_memory_write(pend_mem, &val, sizeof(val)); }
+
+Careful here - an int is different sizes on 32-bit and 64-bit hosts.  =
+Change the type to int32_t or int64_t.
+
+> +
+> +static void hexagon_clear_last_irq(CPUHexagonState *env, uint32_t
+> +offset) {
+> +    /*
+> +     * currently only l2vic is the only attached it uses vid0, remove
+> +     * the assert below if anther is added
+
+What assert?
+
+> +     */
+> +    hexagon_set_vid(env, offset, L2VIC_CIAD_INSTRUCTION); }
+> +
+>  void HELPER(ciad)(CPUHexagonState *env, uint32_t mask)  {
+> -    g_assert_not_reached();
+> +    uint32_t ipendad;
+> +    uint32_t iad;
+> +
+> +    BQL_LOCK_GUARD();
+> +    ipendad =3D READ_SREG(HEX_SREG_IPENDAD);
+> +    iad =3D fGET_FIELD(ipendad, IPENDAD_IAD);
+> +    fSET_FIELD(ipendad, IPENDAD_IAD, iad & ~(mask));
+> +    arch_set_system_reg(env, HEX_SREG_IPENDAD, ipendad);
+> +    hexagon_clear_last_irq(env, L2VIC_VID_0);
+> +    hex_interrupt_update(env);
+>  }
+>=20
+>  void HELPER(siad)(CPUHexagonState *env, uint32_t mask) @@ -1416,11
+> +1448,6 @@ static void modify_syscfg(CPUHexagonState *env, uint32_t =
+val)
+>      g_assert_not_reached();
+>  }
+>=20
+> -static void hexagon_set_vid(CPUHexagonState *env, uint32_t offset, =
+int
+> val) -{
+> -    g_assert_not_reached();
+> -}
+> -
+>  static uint32_t hexagon_find_last_irq(CPUHexagonState *env, uint32_t =
+vid)
+> {
+>      g_assert_not_reached();
+> --
+> 2.34.1
+
+
 
