@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D791A63E68
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 05:33:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73888A63ED8
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 05:59:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tu2AE-0002YL-CX; Mon, 17 Mar 2025 00:33:22 -0400
+	id 1tu2YK-0007q4-Nc; Mon, 17 Mar 2025 00:58:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tu21g-0000Iw-0t; Mon, 17 Mar 2025 00:24:32 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tu2YC-0007ph-Hc
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 00:58:09 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tu21d-0000oT-Dj; Mon, 17 Mar 2025 00:24:30 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-2232aead377so85623405ad.0; 
- Sun, 16 Mar 2025 21:24:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tu2Y7-0004qT-MM
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 00:58:08 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-225df540edcso42804815ad.0
+ for <qemu-devel@nongnu.org>; Sun, 16 Mar 2025 21:57:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742185466; x=1742790266; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:message-id:date
+ d=gmail.com; s=20230601; t=1742187471; x=1742792271; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=huoqUTp7ZtbwawFX3uJ5a51YaBtU9ooDniZbVgpzX2Y=;
- b=LF/ERNuMAaBHtTGZRay9HZs9Rpmmt4a1V538VDojTjlO4Vn8zXng/297nkXGeE6mIZ
- WhlUZEwm3NxwFVoCthWASiaI7HosZSToYsSW5LRaQyLyJMUQOuQDNOvb6tA/UD6Asjab
- O7JNFLNAudy0IbyB0UrpZW627ni1IQvdbVecEN5ldvLYRIHIb6v1h0r/yY1LoaP3uri7
- RRwde+YWDkY7ar5gTgwjZhudmZNBGV3e/b/R077fvpXGkNg+BsFZ5afjIXzQ4p5j9RAs
- RAHmfah7WwdAVoj8ko72SAdITQxgSZ8muSB8yiBHV82+KtVU8LRgFRpkLLAZU474eZGI
- 07Lg==
+ bh=RSSgzp31OncDNetHQhTx58zuRO5iZqorPzdIFZUKZwc=;
+ b=WxcHAUS8h0GgINCRpdiu8t2vjzISa8MXw68zcunHTyNLnje4m1wbfO3ErzYtSTcfxE
+ jOhhmiPPWmO7sXIrRQ6t7JyBggp/oSTNCqPyglz4bUrkrRvrP8M/BIM1rQgSaqmRqC8/
+ EVG+5XuXwyQnsb8q6hu8zOaObe2eGpn0K/hZ+RU5v/Lk706aRG47aBRjLmesAVSOnbg+
+ rRqpfHgc65Ebm/n4HYgo/1b6/lAXHGeJcrj8tPfV0sWV9I4+AZavq7PV5TbZSG7B6D5d
+ f3MkgUKYYZPzvk4co7dvqclXtvHrfF+Ph69d5v2B3GLnUL8R7IcHyuIGIuaMQE9vzolO
+ m40w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742185466; x=1742790266;
- h=in-reply-to:references:to:from:subject:message-id:date
+ d=1e100.net; s=20230601; t=1742187471; x=1742792271;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=huoqUTp7ZtbwawFX3uJ5a51YaBtU9ooDniZbVgpzX2Y=;
- b=hSYU2QGCeHLETTBA7ZcZf7my8GGLhDlCowx9sVeeuh0LatvHospqGMM9qWVHtcm04g
- SKqZNqxcmx7L/ChhvNQ20EGf6EorwGGqIL9KyRUuvOaB4TyBbMvlcv8pRdXVvZWwQ6p+
- Aq/n0V0otbc9UBXrwIKR2/ph3tSPnwVs/sWMQ+6jQ7HG66FYRNcUp6k4mnAIrnjFODUU
- rKrrgYv7zA4oyQ05gs5Z6hSlq4LEjKbjT3fGMoKJ5vLWM/96fvfmv+Gi1l/Ho8kwnp8+
- 1aTVRvxqwGvmDUwQAt53Z2eZ4obBUxzOksgkRRSYKTKW1yqBUYTEJyZ0zjlLyBZwWEqa
- 88mQ==
+ bh=RSSgzp31OncDNetHQhTx58zuRO5iZqorPzdIFZUKZwc=;
+ b=pyBkszPVlu/0v8pNuIv5wwGjmszTFvQywUXr9ZeMgcc4OxKovBAoeAGgSBvwczOHJA
+ AILGujEqy7NiixYR1CFBhSbV8erCG2hHmHxoC7BSiFP7uaB+pfiClKwnikEM2jo5fNpC
+ uE/hhwSx6ytYHPSM7LGLROZ3+RQ5w9PQeWMAwYkPzdGfsPfgfBO7yJHfho4HDeTSYhnm
+ vaNWZRvZ6D1iCkBBbiPvd6KOxL+ExzcK7pLYvDkXPIZL/Z4x0IqUni0FmAl1tHwZ16cc
+ 16cUmpzMzIAYBUlDwEP7lpmfCcju0ZcwjHHG8eTyd6DAwIAIQNq9NEnDv618zr4qJyGM
+ Ul3A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU4Girvv+aer8Omv66bDfAfauG7rqlf6pXd6BnFInJRA6/M509F8o+tmRbGtBqjsLzoT3s95oQsxGQ=@nongnu.org,
- AJvYcCWHcxhmSXokya1NIQiy5nNl8OtEXjVNOX7qktBYdfzl7H4aPmlCBWpIrZe4G6yjeIvW7UxsG/R4Rqbj@nongnu.org
-X-Gm-Message-State: AOJu0YyNHyavLDyIwUmG4nl+LxYF775NCYuiQ9EynI26F9h5GQs3DgF9
- Lc7uv8M1+PXYz1T5676zOVY0nt2LXxWFn+Xscf7zhUHu0U8AG1HBG/0bXA==
-X-Gm-Gg: ASbGncu9Ip0noXlC6eLqG6lyaAZy30XTX4fbQitboJXZMU2Cq19+9+Xsbdx/UKmk7zu
- aTG9HMA2LZo+RecpY/IPgN7GlXbmyk+fNfhJvw1ueBsSHFYwflK1q6zUhj1I7gnSsPqV9ZP8VAg
- oAGIACr/b3STvC8p+CL2CsFoyo4OotID4TITwj7Y9KYmXLvzY2TcDI53V0tdDksNExscrKHB3fF
- GYDb4dn5RDiWl/v33KaOVqi0g9E8xzLCGScBKsnD08YzRBtS2gO0s0vzJJ9Y23puycGltYNci7v
- NMiK/xXssoDQua4tQSO17i8O5P+RyDhDeSDIMOI=
-X-Google-Smtp-Source: AGHT+IGJGL6G83MYc76m0+kXLG8QevetYL3SzRX8i0D7m8payplS7OmIUvKN0eHnAtUB7j6IgoVY5A==
-X-Received: by 2002:a17:903:40ce:b0:224:2717:7993 with SMTP id
- d9443c01a7336-225e0b0ed1dmr143828325ad.45.1742185466367; 
- Sun, 16 Mar 2025 21:24:26 -0700 (PDT)
+ AJvYcCWJcxnbs8Qx2Vm5pO5ipwcVCx2l7xRG4Ozx9WM4z8em8LvueD9huBecVZs1erfqoS53m+FgdK5LoU49@nongnu.org
+X-Gm-Message-State: AOJu0YxJ9MNX+4O5uOPhDiZdH19JHI4Rvc/SQPCwOPv+fUy4XI38SgaK
+ hwDe4/k3s8h3TDIPvl6MCK4uwA0sZuqLwD0wmFbTxM/zZ0mXExHX
+X-Gm-Gg: ASbGncv5HTo0BmdhMo948UDoM6ESK6sp4gSEqbfUTbstq/tX3bWoD7XH1+AZdaVWP9i
+ 5QAO8E12M63r3f9wGMeQNJs6cqBAexyDItBQpaTkKy3/J3u99xIWAufEwt54uLrYtCUgTvIAbjw
+ UrFJzgr6S/jmEyrsiC6N+XHAUwkW3/ZAr/VF8X7keQHpSyaOCZkW0mydS0zhTGtF6w1rormuNUd
+ PmiyrWXPSsbBCZtpSHec1eh5HGjtjGeyG0tTxOqHzmioG/pJOdt5kVNUFP4/ufWwu42YVuMdS1T
+ Ad3BtXIo/2RcIElYq6ZObF0vxnmLhnqvmbWDe+dVPpi4mgocwg==
+X-Google-Smtp-Source: AGHT+IGghGve2nimx30hIetCzPnuUj3WdPjA8qtX1+c+1fbNFpCbGXGyoKtjrbqtzppgN6ku/6hB4g==
+X-Received: by 2002:a05:6a00:8c5:b0:736:5969:2b6f with SMTP id
+ d2e1a72fcca58-73722d653fdmr12653682b3a.6.1742187470641; 
+ Sun, 16 Mar 2025 21:57:50 -0700 (PDT)
 Received: from localhost ([118.208.135.36]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-225c6bbeb94sm65061435ad.199.2025.03.16.21.24.24
+ d2e1a72fcca58-737116b3de4sm6818746b3a.179.2025.03.16.21.57.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 16 Mar 2025 21:24:25 -0700 (PDT)
+ Sun, 16 Mar 2025 21:57:50 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 17 Mar 2025 14:24:22 +1000
-Message-Id: <D8I97CI501PM.29Q1AWDR7ZM09@gmail.com>
-Subject: Re: [PATCH] target/ppc: Add PIR to ppc_cpu_dump_state() for debug
- print out
+Date: Mon, 17 Mar 2025 14:57:45 +1000
+Message-Id: <D8I9WWLAWDSI.3I9IU38CIU567@gmail.com>
+Cc: =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, "Peter Xu" <peterx@redhat.com>, "David
+ Hildenbrand" <david@redhat.com>
+Subject: Re: [PATCH 1/2] gdbstub: Add phys_memory_rw_debug for physical
+ memory access
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
- <qemu-ppc@nongnu.org>
+To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
 X-Mailer: aerc 0.19.0
-References: <20250316144341.39E6F4E6014@zero.eik.bme.hu>
-In-Reply-To: <20250316144341.39E6F4E6014@zero.eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+References: <20250314074107.992163-1-npiggin@gmail.com>
+ <20250314074107.992163-2-npiggin@gmail.com>
+ <dfb1025c-830b-4c7e-8d77-b1948fa2c4a3@linaro.org>
+In-Reply-To: <dfb1025c-830b-4c7e-8d77-b1948fa2c4a3@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +102,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon Mar 17, 2025 at 12:43 AM AEST, BALATON Zoltan wrote:
-> Some CPU variants have a Processor Identification Register which was
-> not printed in register dump. Add it to ppc_cpu_dump_state() which is
-> used by debug options to print CPU register values.
+On Sat Mar 15, 2025 at 7:19 AM AEST, Richard Henderson wrote:
+> On 3/14/25 00:41, Nicholas Piggin wrote:
+>> Add an accessor for gdb physical memory access mode which sets the
+>> the .debug attribute for the MemTxAttribute, and also returns success
+>> to the caller.
+>>=20
+>> GDB with PhyMemMode will now report failure from memory accesses outside
+>> valid system memory addresses, and it is also able to write to ROMs as
+>> GDB virtual memory access can.
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   docs/devel/loads-stores.rst | 11 +++++++++++
+>>   include/exec/cpu-common.h   |  3 +++
+>>   gdbstub/system.c            |  7 +------
+>>   system/physmem.c            | 16 ++++++++++++++++
+>>   4 files changed, 31 insertions(+), 6 deletions(-)
+>>=20
 >
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> I think you might as well put this function in gdbstub/system.c
+> and not export (or document) it.
 
-Looks okay. I suppose it's not worth a ppc_cpu_get_pir() type function
-to get it...
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+A possible advantage this way is gdbstub not knowing precise
+details of the memory transaction (i.e., .debug =3D 1), but I
+can do that. Will submit a v2.
 
 Thanks,
 Nick
-
-> ---
->  target/ppc/cpu_init.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index 8b590e7f17..b1f32662ed 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -7606,9 +7606,14 @@ void ppc_cpu_dump_state(CPUState *cs, FILE *f, int=
- flags)
->      int i;
-> =20
->      qemu_fprintf(f, "NIP " TARGET_FMT_lx "   LR " TARGET_FMT_lx " CTR "
-> -                 TARGET_FMT_lx " XER " TARGET_FMT_lx " CPU#%d\n",
-> -                 env->nip, env->lr, env->ctr, cpu_read_xer(env),
-> -                 cs->cpu_index);
-> +                 TARGET_FMT_lx " XER " TARGET_FMT_lx,
-> +                 env->nip, env->lr, env->ctr, cpu_read_xer(env));
-> +    if (env->spr_cb[SPR_PIR].name) {
-> +        qemu_fprintf(f, " PIR " TARGET_FMT_lx, env->spr[SPR_PIR]);
-> +    } else if (env->spr_cb[SPR_BOOKE_PIR].name) {
-> +        qemu_fprintf(f, " PIR " TARGET_FMT_lx, env->spr[SPR_BOOKE_PIR]);
-> +    }
-> +    qemu_fprintf(f, " CPU#%d\n", cs->cpu_index);
->      qemu_fprintf(f, "MSR " TARGET_FMT_lx " HID0 " TARGET_FMT_lx "  HF "
->                   "%08x iidx %d didx %d\n",
->                   env->msr, env->spr[SPR_HID0], env->hflags,
-
 
