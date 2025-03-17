@@ -2,66 +2,166 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E06EA65482
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 15:56:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17438A65518
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 16:09:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuBqr-0005Xv-NK; Mon, 17 Mar 2025 10:54:01 -0400
+	id 1tuC4O-0005B2-DD; Mon, 17 Mar 2025 11:08:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuBqe-0005Fj-7H; Mon, 17 Mar 2025 10:53:51 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
+ id 1tuC4J-0005AY-K5
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 11:07:55 -0400
+Received: from mail-bn8nam11on2061b.outbound.protection.outlook.com
+ ([2a01:111:f403:2414::61b]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuBqY-00061x-QK; Mon, 17 Mar 2025 10:53:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742223223; x=1773759223;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=BOyzweld7qKvF11RnRDBGAq2KZU7zdOCfadzYxmbETI=;
- b=atgX2EKC8UmfEyKemKvSfwCTgBzri3SGe9Siz5ByeHeZu6290/dH9tCj
- R4dPLyrHwZF2kThdwgSv6eEw13MINpRiIApvg72/CYlh8p4yxZ5zesWhZ
- FxXiEJpxS63c9L3czbYP4L5+PtAbjfPleAHYaBu0jhNo8lAzikuXrg6ig
- SqxQZcUIzu+yoSI2y6lzITDSkk3IeOCb2DJiKbKoka225zW5qhHeUHuwA
- 1vRmt/7/HRiI7ptmySHQ6hz4euiq2tRDqGDv0ZNa0NXkmXc4Te7xXDBjs
- 6m4CnFQ7G552KikL3JtOQIWW6SBTqGXH+0SKNsSVbWwCP/2U+Og+/0R+n g==;
-X-CSE-ConnectionGUID: 69H+VQS9TXGdmhXkfduncA==
-X-CSE-MsgGUID: le1LMVSnQpicnhGvZAgchQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="54694641"
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="54694641"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2025 07:52:51 -0700
-X-CSE-ConnectionGUID: sXzEP//9QxShK6RLPse3uQ==
-X-CSE-MsgGUID: IVEJBiLOQGm1ceiIQz4G3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="126988571"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 17 Mar 2025 07:52:50 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 17/17] rust/vmstate: Add unit test for vmstate_validate
-Date: Mon, 17 Mar 2025 23:12:36 +0800
-Message-Id: <20250317151236.536673-18-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250317151236.536673-1-zhao1.liu@intel.com>
-References: <20250317151236.536673-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
+ id 1tuC4H-0008KR-4h
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 11:07:55 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jlLRQjkZlqQgNRwtPoNlBsRSgPg8SjgjApmXBfj7fJ8W4etszZnmOFCjfXrw4GlDnYS1vDVHyZCB/lBvu+1xHmUFexX+ULWkGn/KYTYVXi3gM4zJCrQY+LQ5/q3i0IL6HuXXTIoQA3N1FXU1mWhbB2lmrGbaBQSovrxNudeKKsVfVfXmakN8+cMeuJFUz4FmMIWV4gdQ6P3RlYxyqLOKJwrDwt8GsuJotsVShcAxVJFqVv1z5bGfLryFB9KqXNaxG7q7x4m6Wimmcqu5Fd7xqksmjjDGcNTJUKF611sjVdozLLi1S2ZMAFn0nE655ct1bcYH8tQwc/WyjdMwCnbcPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kVc6q5iFU3G3crbVzvC1DrLqjNbp4QPKghoqSfyAn2k=;
+ b=isiMvgxFgZCdp+MJKhGMp7jr1T3WhkbTEcsJHw8WjhBIo3VMD6QRS3U/NK3W61POZayhKIHu1hTY0i6m8KA9s+GgEj+QUiggLhq+UZJHLsh30/DOweyg2wlDJKa0tANmLWg+pkLY/1ErKJtjKFDue6kDtBLddL2pjPHnwz8a+NQLN7ERI81t+WT6TQhaWsvF5xq8dhDSLcsTm4aa7nfTjlmKTBMRlFv8x1LqmYrPdPSzmfWZ7n67uaEKH1A82AHoViPdpxj0J8IyL6JHbLt7P2v3xSC087HUMWd5Xhhd179MSw/sgL7EIHs99S4TfKXe892SBnh3ZTFyEnXt755A2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kVc6q5iFU3G3crbVzvC1DrLqjNbp4QPKghoqSfyAn2k=;
+ b=S76z2cuUduYsqgxC9hQpfEFePkDUOw9BZB8gQadCh6yvLLyqK7yM3VAt64piWEah4fLsqvtSr+lDIMKB8X/Ii6o7nhc17axpKMJab7D9QpM3GUfF23sCWR/fSotPn3i/bRSsPmMu2IuZ+biO3oT/ki+lfd0rIbfnKNS1lzlPRtI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
+ IA0PR12MB8906.namprd12.prod.outlook.com (2603:10b6:208:481::9) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8534.33; Mon, 17 Mar 2025 15:07:46 +0000
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5]) by DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5%4]) with mapi id 15.20.8534.031; Mon, 17 Mar 2025
+ 15:07:46 +0000
+Message-ID: <af8b9954-3ca7-4b78-a9ec-e1826bd306b3@amd.com>
+Date: Mon, 17 Mar 2025 20:37:37 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/6] amd_iommu: Fix masks for Device Table Address Register
+To: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mst@redhat.com, mjt@tls.msk.ru,
+ marcel.apfelbaum@gmail.com, suravee.suthikulpanit@amd.com,
+ santosh.shukla@amd.com, sarunkod@amd.com, Wei.Huang2@amd.com,
+ joao.m.martins@oracle.com, boris.ostrovsky@oracle.com
+References: <20250311152446.45086-1-alejandro.j.jimenez@oracle.com>
+ <20250311152446.45086-5-alejandro.j.jimenez@oracle.com>
+Content-Language: en-US
+From: Vasant Hegde <vasant.hegde@amd.com>
+In-Reply-To: <20250311152446.45086-5-alejandro.j.jimenez@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2PR01CA0089.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:23::34) To DS7PR12MB6048.namprd12.prod.outlook.com
+ (2603:10b6:8:9f::5)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.335,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|IA0PR12MB8906:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7477e69-f042-4dbd-b348-08dd65657990
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Wi9ZU1J6S0ViLzRUZ1FCOThjTS9TY3Vyb1pyeVBxQWpyRTZ0R2UxbCtYNFp6?=
+ =?utf-8?B?OXlOZEZCUTJja3B3dVpmSzRPU21LOFYwNXljV0ZUay9nZlg3NUxFdkt1MEFt?=
+ =?utf-8?B?VUZFYXFnUXQ3MHRNa3V5c2ZUUENMdjZEdVd3ZzRKZVRuTnlxek1YdkZDTGxj?=
+ =?utf-8?B?dzJXc0NQTlgxTkFIYU0wdUZRb1IyQ2lLRjFIZS9UVWtIdTQ4d2ZUZ2dCcTVS?=
+ =?utf-8?B?R0sycXIvRC9HSUJleTdJaXJtYjlvVWduMkNxK05wY1ZrekZsUHM1bUYvdUhT?=
+ =?utf-8?B?dkl4aTRrekg2M2NiWWl3czJCbnFtemorZTNrRW1CVzlYVGM5Z1BRZVZRRGdh?=
+ =?utf-8?B?SjR5bEMrdjM3V0Z1d1VaZnIyaWVaOE9IbWlNSUVESlV3UHV1cllFWldTZEFo?=
+ =?utf-8?B?S1lWUVcxcFBBSkVYZlg1SEZlckh1OEJuRWlyU2pHRWM2RUhRSHp3Y3ltYzZ4?=
+ =?utf-8?B?cU5Vd2hDVGozVERnYkNkOS9peEllbCtyL29NeElob3NTeFV0OWYxWFlHYThv?=
+ =?utf-8?B?V0Yrcjc3VTBkcHNQSERJOTZnOFFubmdiWC9mRDkra1ArdWg2WlBQZko4YUlk?=
+ =?utf-8?B?TVNxY1lweklwRURvcWFCT0JxVW0zNmhrRFZ5eTdBckpkNUF5alI4d1dlZERV?=
+ =?utf-8?B?dzRVK1d0VUY4b1RsMlNHWkkxNi9rT1dPdkNZSXBlV2FsaTBJdTArNm9Ob0Iv?=
+ =?utf-8?B?aUZ2YjREaUNhWFE5eC9UVGRicUtRbFhGOVlGd0dCS1dlTkhNOHNMU0RPejNr?=
+ =?utf-8?B?Z0l2WVdJc0JCckJwUzhrOEczUmd1cDl2bTlhN21rYWhMNUlWRkRmNndLRWcz?=
+ =?utf-8?B?WWM5ZFlrOHNlMzBBN055NTJpNEFmU0dyd3AwMXJNOUNZRkRwM3Q2R2N0NFMy?=
+ =?utf-8?B?VWNFVEhLMEU5QlFQNkJmZExPdGVrUkl1WEp3bXAxRXR3eG1lS3JYc0YwYjc1?=
+ =?utf-8?B?dG82R3lPZVlhL3hxemxYdVZTMXMwV25UVnB1dWJTQ3BNTHova2pHajZTT01w?=
+ =?utf-8?B?MXdGNFJNVlF5SURRaE5jeU81bS9YMXlmQUswSW9FSERLcjdPc1dEUmErRkZX?=
+ =?utf-8?B?QjQ4SElCSmcvdlhJcGhXMGdJOFcvS2JHRkNpZ2N5cG5YMEdqcWtlMS9DZGVT?=
+ =?utf-8?B?VUVCSTlHUU9tZjZOeVc1c0tmUzJ6UWVGOFJnVnpXYXp6TjhVTWF0Z1d1YXlP?=
+ =?utf-8?B?VjRiemNWOWJBaGJUdFdjTElqYUN3WVp3aVZjK3ZZbDdPdHJudVBpaU1nTzZE?=
+ =?utf-8?B?a2ZVYWN1QU15aEgzYzBORk5FaytmbnZORTFoR01oRDdFZW5tS29yRTBGTXpa?=
+ =?utf-8?B?WW56N29jbno3aUtUcksxUGUyTm1qajZkRXhySkpBK2syb0ViZnhWUCttUllD?=
+ =?utf-8?B?RDVHMUZkczlRVFBiY0ZXQmxkMnVKeXlyZjRlZHhGWWNFVlZTVThFOVl1UDd5?=
+ =?utf-8?B?VlB5QVhQZ2Y1dnl0OXIzbFM4NDdXZlZLZS9uenN4Y2k0WDBucWtUUWxQL1Fo?=
+ =?utf-8?B?ZDhIV2J2K0dwOFZ4VXVnUWtwa05FY0dHNVJJYVlKbnZ6V2FtZEJtVU1teDhl?=
+ =?utf-8?B?WmhTanhvMTQvdGtUa3BBVUE4a21yTzdBOHJlVHQrbjJHVXc5ZTdDWnExWngz?=
+ =?utf-8?B?M0cvajRQaktvZ051VkxlUlE0T2NZMWM3a1VBTFh3RmpPdXVRbllVejc2MkJF?=
+ =?utf-8?B?b1FhbmFjMVdCM0lLU2szZEpFOGhac05LSzdSNVI0bHRiOStxajFRczRWSjRp?=
+ =?utf-8?B?WDhVSVFWNldVODRDUXYyc1A5N3BYcmdJTy96UnhGZXV1bktDMnJQTG9sYXpR?=
+ =?utf-8?B?VDBob0J5alVOS2JZRThyN1JBZ3N3czV6U0tSRk5oNmRBalNYTlE4S2ttNGlE?=
+ =?utf-8?Q?rqgnw7QWj2Tf4?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS7PR12MB6048.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TVNlTktqSEJqYisrWFE3SHVWUU9BZ21QVFFxZ2hWdW41QVF1WnpPUkVldEQ5?=
+ =?utf-8?B?ZlFEcEI4Z1JCUzhNSFBwOTF2eS9pekVjZm5TMnErZWlCMityb3RrS1NIdTZs?=
+ =?utf-8?B?QTZwRnFJNkU1UGViRWdlTy90UVhpUUV6ckE0eE5ydFV1SWVNVFBpRlpIb1Vm?=
+ =?utf-8?B?Q3ZRUEx1bUhnNzlIcTVoN0lSL2pXbjBUV21vUHBHVHhqcVg1a3FMM0RTM2Vx?=
+ =?utf-8?B?c2IwU1hZZGdSSTdyNEdKZEgrZmZ5aXlBVHlmdkxoYXhYb1pWcnNOazRxeFJU?=
+ =?utf-8?B?bFVueWdjS3gvVmVMQ2tRQ05lV3lPN0RPbmZxRk95Z2FaVjdoNDk2di9Tbnkr?=
+ =?utf-8?B?ZGZjT2syRFMvazc4UHhMMFpISjJLWjhBQnlZM3NROWdJRUNnZ2FCYmo2QVZx?=
+ =?utf-8?B?Z2hXZXJGQ0pkamoyZ2JQcUc1OTI0OTNhKzVDUE9xT0hPVnlwaHd5T0RJcGt1?=
+ =?utf-8?B?WnUvdVY3ZktPbmU3T3AyOGdQTTI0UVJwcnpxVDZhMEhyWDdPL3gvdisyeUoy?=
+ =?utf-8?B?Z1lETFFUdnRHeUtva2tBeGtkNkovTnFYUHRCa2N5STlRL25pWnNOM2N5WXUz?=
+ =?utf-8?B?TlV4TThqcHhkRDd5Y2NqT2FDemlyekUwSFYrbFNmUkJISEExdWh4eGpnZDlq?=
+ =?utf-8?B?cTE4Z05KTjNJWjZhM09NZlhXWmhUejlHbGVZMWtFdEUvdlA1Y3lpU1BGUzI3?=
+ =?utf-8?B?N0ZBN0RZMzFlS3lDMmJnVEliY1IySEFqTHhtQmQxZkhPSHpkL1dLclZKYXlp?=
+ =?utf-8?B?UjVGbXY4VmtKN3dtOU1yS1FMLzdYazhjT3FWMDhPcGwxaE85djQvOFRJTTkr?=
+ =?utf-8?B?dktjQXg0Y3JoaU8vLy9nZFlZdU42bHZMRUhZbWVJbUY3U1lZWGh2bXVFRWZ5?=
+ =?utf-8?B?WmxPdSsweTVMYk0xYTUveEpBUW44U0Vpd2libTN3ZzlBcVk0U01uS1YrVGdn?=
+ =?utf-8?B?V2tJNnZBRXlDbE4rSW0vVlBHQ2VuS2FHbEcwZHdnZG42cXg4aTFuZXJtUWRa?=
+ =?utf-8?B?aUJJUFNtMUxwRTdSYjFnWlMrU1g2L2VYSmVZVVVFb3hzQUowWkY1WExtVHNy?=
+ =?utf-8?B?TjJkQnpvTlRYWmNFZFNSWWZ2U2JFUFRsUXJjWVVFYnZmN2xsNlAzczdmc2Y0?=
+ =?utf-8?B?ZlREV0ZyU3p0Q25rVURtVzY4VFd0VTdZeUhJaG1NOHBxczhNcUEyaXpXNFNM?=
+ =?utf-8?B?bzFVelZCNFBQa0syalpWRVZ4aUNwaThLaFh1a21WQTNTMlBBaWlkUFdRUita?=
+ =?utf-8?B?MEdSNW1SVE9OTGtYdVhpS0hiZmhoMXBGRVhzTURIZHlzTmd2dXc5U1FxK0JH?=
+ =?utf-8?B?dDMwZUNFNEdCdm5ydEoyRFNRN2xMdUd2OWZZaGVxN3RKZWRTVU1JWWs3ejBL?=
+ =?utf-8?B?UFpWM0ZFMEhYWlh5N2VNUWhQTE93NVpEUjRnSGpHV2hpeGNNSlRtL1Vka1lh?=
+ =?utf-8?B?MjF4VkIzWnFvQ1BRV1NWVGQrOEk3cWZoM21OSndkRU5KWnFXRDlzTkdpVmtP?=
+ =?utf-8?B?UGVjdHBJMXlVMjBEWk4yV2UyQnNCUTVFN3lwdklxNlNjMkN0YUx3a1lXMEFu?=
+ =?utf-8?B?cWltOExQSjl4SHdHbExLM1IvQktib2NOSy9rMTc1U1NuQW5mZUlDZ1Nja2xI?=
+ =?utf-8?B?VGpoeW9Mdm9lT0laa05VNTRYN3BZb21vRGJMZUdCL0U2UEdpRE9jSUsvb2NP?=
+ =?utf-8?B?K0p2RGZTVno1STRJQmlMTGNLcFcwYmlIY3BVSEovRjdmT3o0YVE1V3EwOTV3?=
+ =?utf-8?B?MCt3ejN2a3hmQkhZbjkxUDR5Rk9wbDR2NnlabkZzUENjUXl2U05KS0s3OU1s?=
+ =?utf-8?B?MldnSEhMTVNXTElZMFZDMFB6UHRhNFRqTzV5NTlEV0U3VUlrVHRLUXZrSWtZ?=
+ =?utf-8?B?OTVGaXFiNVpZZUpwWWJwY091Nkw3bzk2cVY4QnBIdlpmTWhOUHpHd3dVK2U1?=
+ =?utf-8?B?WjY3eHFwaG92V2p5TExvS1piVkRzRkdPSkEvb21YLy9hK1FrN1ZoWjVUOUEy?=
+ =?utf-8?B?TDFNbGM2UmJUOUpnVG9WQ0M1ODVEaFRCd0xNY0VHc29teDJMeTRKcVpsS1B6?=
+ =?utf-8?B?OUk0Y0F4cTI2Z2tRS1B4NVBwQXpXekxtZ2l3QmxnUi90TzZ3RWhsdnFYWFQ0?=
+ =?utf-8?Q?fL5QLw3pmLLLCjPq7evd1NYSU?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7477e69-f042-4dbd-b348-08dd65657990
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2025 15:07:46.6075 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: in+LmgccdeMs16kxSTbtYpsfhArlTqMwYFifJXJH/jcoWil3I1qowPQhUbsHamdWYhBwm2d8CjnkPCUv4ZF5Pg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8906
+Received-SPF: permerror client-ip=2a01:111:f403:2414::61b;
+ envelope-from=Vasant.Hegde@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.335,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,128 +177,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a unit test for vmstate_validate, which corresponds to the C version
-macro: VMSTATE_VALIDATE.
+Hi Alejandro,
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- rust/qemu-api/tests/vmstate_tests.rs | 91 +++++++++++++++++++++++++++-
- 1 file changed, 89 insertions(+), 2 deletions(-)
 
-diff --git a/rust/qemu-api/tests/vmstate_tests.rs b/rust/qemu-api/tests/vmstate_tests.rs
-index a8bc00a56494..bb615fd7bdee 100644
---- a/rust/qemu-api/tests/vmstate_tests.rs
-+++ b/rust/qemu-api/tests/vmstate_tests.rs
-@@ -2,7 +2,7 @@
- // Author(s): Zhao Liu <zhai1.liu@intel.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
--use std::{ffi::CStr, mem::size_of, ptr::NonNull, slice};
-+use std::{ffi::CStr, mem::size_of, os::raw::c_void, ptr::NonNull, slice};
- 
- use qemu_api::{
-     bindings::{
-@@ -13,7 +13,7 @@
-     cell::{BqlCell, Opaque},
-     impl_vmstate_forward,
-     vmstate::{VMStateDescription, VMStateField, VMStateFlags},
--    vmstate_fields, vmstate_of, vmstate_struct, vmstate_unused,
-+    vmstate_fields, vmstate_of, vmstate_struct, vmstate_unused, vmstate_validate,
-     zeroable::Zeroable,
- };
- 
-@@ -378,3 +378,90 @@ fn test_vmstate_macro_fooc() {
-     // The last VMStateField in VMSTATE_FOOC.
-     assert_eq!(foo_fields[4].flags, VMStateFlags::VMS_END);
- }
-+
-+// =========================== Test VMSTATE_FOOD ===========================
-+// Test the use cases of the vmstate macro, corresponding to the following C
-+// macro variants:
-+//   * VMSTATE_FOOD:
-+//     - VMSTATE_VALIDATE
-+
-+// Add more member fields when vmstate_of/vmstate_struct support "test"
-+// parameter.
-+struct FooD;
-+
-+impl FooD {
-+    fn validate_food_0(&self, _version_id: u8) -> bool {
-+        true
-+    }
-+
-+    fn validate_food_1(_state: &FooD, _version_id: u8) -> bool {
-+        false
-+    }
-+}
-+
-+fn validate_food_2(_state: &FooD, _version_id: u8) -> bool {
-+    true
-+}
-+
-+static VMSTATE_FOOD: VMStateDescription = VMStateDescription {
-+    name: c_str!("foo_d").as_ptr(),
-+    version_id: 3,
-+    minimum_version_id: 1,
-+    fields: vmstate_fields! {
-+        vmstate_validate!(FooD, c_str!("foo_d_0"), FooD::validate_food_0),
-+        vmstate_validate!(FooD, c_str!("foo_d_1"), FooD::validate_food_1),
-+        vmstate_validate!(FooD, c_str!("foo_d_2"), validate_food_2),
-+    },
-+    ..Zeroable::ZERO
-+};
-+
-+#[test]
-+fn test_vmstate_macro_food() {
-+    let foo_fields: &[VMStateField] = unsafe { slice::from_raw_parts(VMSTATE_FOOD.fields, 4) };
-+    let mut foo_d = FooD;
-+    let foo_d_p = &mut foo_d as *mut _ as *mut c_void;
-+
-+    // 1st VMStateField in VMSTATE_FOOD
-+    assert_eq!(
-+        unsafe { CStr::from_ptr(foo_fields[0].name) }.to_bytes_with_nul(),
-+        b"foo_d_0\0"
-+    );
-+    assert_eq!(foo_fields[0].offset, 0);
-+    assert_eq!(foo_fields[0].num_offset, 0);
-+    assert_eq!(foo_fields[0].info.is_null(), true);
-+    assert_eq!(foo_fields[0].version_id, 0);
-+    assert_eq!(foo_fields[0].size, 0);
-+    assert_eq!(foo_fields[0].num, 0);
-+    assert_eq!(
-+        foo_fields[0].flags.0,
-+        VMStateFlags::VMS_ARRAY.0 | VMStateFlags::VMS_MUST_EXIST.0
-+    );
-+    assert_eq!(foo_fields[0].vmsd.is_null(), true);
-+    assert_eq!(
-+        unsafe { foo_fields[0].field_exists.unwrap()(foo_d_p, 0) },
-+        true
-+    );
-+
-+    // 2nd VMStateField in VMSTATE_FOOD
-+    assert_eq!(
-+        unsafe { CStr::from_ptr(foo_fields[1].name) }.to_bytes_with_nul(),
-+        b"foo_d_1\0"
-+    );
-+    assert_eq!(
-+        unsafe { foo_fields[1].field_exists.unwrap()(foo_d_p, 1) },
-+        false
-+    );
-+
-+    // 3rd VMStateField in VMSTATE_FOOD
-+    assert_eq!(
-+        unsafe { CStr::from_ptr(foo_fields[2].name) }.to_bytes_with_nul(),
-+        b"foo_d_2\0"
-+    );
-+    assert_eq!(
-+        unsafe { foo_fields[2].field_exists.unwrap()(foo_d_p, 2) },
-+        true
-+    );
-+
-+    // The last VMStateField in VMSTATE_FOOD.
-+    assert_eq!(foo_fields[3].flags, VMStateFlags::VMS_END);
-+}
--- 
-2.34.1
+On 3/11/2025 8:54 PM, Alejandro Jimenez wrote:
+> The size mask currently encompasses reserved bits [11:9]. Extract only the
+> corrects bits encoding size (i.e. [8:0]).
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
+> Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+> ---
+>  hw/i386/amd_iommu.h | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+> index 8d5d882a06..2c5c8c70f1 100644
+> --- a/hw/i386/amd_iommu.h
+> +++ b/hw/i386/amd_iommu.h
+> @@ -68,16 +68,16 @@
+>  
+>  #define AMDVI_MMIO_SIZE               0x4000
+>  
+> -#define AMDVI_MMIO_DEVTAB_SIZE_MASK   ((1ULL << 12) - 1)
+> -#define AMDVI_MMIO_DEVTAB_BASE_MASK   (((1ULL << 52) - 1) & ~ \
+> -                                       AMDVI_MMIO_DEVTAB_SIZE_MASK)
+> +#define AMDVI_MMIO_DEVTAB_SIZE_MASK     GENMASK64(8, 0)
+> +#define AMDVI_MMIO_DEVTAB_BASE_MASK     GENMASK64(51, 12)
+> +
+>  #define AMDVI_MMIO_DEVTAB_ENTRY_SIZE  32
+>  #define AMDVI_MMIO_DEVTAB_SIZE_UNIT   4096
+>  
+>  /* some of this are similar but just for readability */
+>  #define AMDVI_MMIO_CMDBUF_SIZE_BYTE       (AMDVI_MMIO_COMMAND_BASE + 7)
+>  #define AMDVI_MMIO_CMDBUF_SIZE_MASK       0x0f
+> -#define AMDVI_MMIO_CMDBUF_BASE_MASK       AMDVI_MMIO_DEVTAB_BASE_MASK
+> +#define AMDVI_MMIO_CMDBUF_BASE_MASK       GENMASK64(51, 12)
+
+May be update AMDVI_MMIO_EVTLOG_BASE_MASK / AMDVI_MMIO_PPRLOG_BASE_MASK as well?
+(I mean use GENMASK64 for these macros instead of they referring to some other
+macros).
+
+
+
+-Vasant
 
 
