@@ -2,71 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64125A64E5A
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 13:15:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE00AA64BCA
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 12:08:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tu9NA-00023p-A5; Mon, 17 Mar 2025 08:15:12 -0400
+	id 1tu8Ju-0001DG-Qn; Mon, 17 Mar 2025 07:07:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tu9Kw-0001VT-G3
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 08:13:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <tony.lindgren@linux.intel.com>)
+ id 1tu8Jb-0001Bp-IE
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 07:07:29 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tu9Kh-0002kd-C7
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 08:12:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742213541;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dU1acf18OSGQM+e9rDjUVGCH70OnbBWHsQTyX2q6gKc=;
- b=fwKaSRx5WKyvBEiHVL3uVFUZDdZsfxSg70IxRpgALBzyNgDO/EQAN2cSLQuI1D1ua2DkwE
- rlnDW451CIgXHxEfWb1Ae+k9srJ6mtUi4DZR44tSDW+dOtBUIauXk9U3etEng8QcLXDoNU
- nSc0DZuXBae9WecAU7iYp+ZHgmJBRR8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-4lZvivMBNBecxr0VEdfP6w-1; Mon,
- 17 Mar 2025 08:12:20 -0400
-X-MC-Unique: 4lZvivMBNBecxr0VEdfP6w-1
-X-Mimecast-MFC-AGG-ID: 4lZvivMBNBecxr0VEdfP6w_1742213539
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CB93D19560BB; Mon, 17 Mar 2025 12:12:17 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.82])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 006CD180175C; Mon, 17 Mar 2025 12:12:16 +0000 (UTC)
-Date: Sun, 16 Mar 2025 06:10:15 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
-Subject: Re: [PULL 0/4] Migration patches for 2025-03-14
-Message-ID: <20250316101015.GA1182101@fedora>
-References: <20250314144824.1707-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <tony.lindgren@linux.intel.com>)
+ id 1tu8JZ-00021k-5r
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 07:07:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1742209645; x=1773745645;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=k5W7aJHoyc9RtxT/s/LlELHVqJxMJ6x+kzqirpBGnKw=;
+ b=e44tqmRD+1OtmULorgtTpD+e3ZSfZucMDFDRebdphGYKUc0aQuoDPoHk
+ qyrfwphWPLH3x95kyUCSmFuv1267O889CMlpdGJpMaiYk1aKhZLpX4XuH
+ Kht6rlLt+TnoPytDPtgkRj0zDrEY8MyEtfvdh1RFtISfbi43qTw1Ma/sQ
+ 8mVHaPtnXVjpwVJ3kICeuxmiS8ZW8sy+WqukM2QXE1QwyJDEuDFTdCrd8
+ xz6jZ9KN0vZ7a5S6QuwYY8NMZUkLPYfmX+6LhgW77tLTry76x4BcDQ4h/
+ IrYQnjcucdogTUglPoy/3RrGGCeNNI6LzFUjT+JCgu8vdX0VGpeZm5GHA g==;
+X-CSE-ConnectionGUID: LKCBD8X7StCKMaiZRYIR4g==
+X-CSE-MsgGUID: hDM7ssaER6mxXTiTiFxuKA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11375"; a="53506227"
+X-IronPort-AV: E=Sophos;i="6.14,253,1736841600"; d="scan'208";a="53506227"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2025 04:07:21 -0700
+X-CSE-ConnectionGUID: Et/mW7WVSZOPEjjd1Rwh2A==
+X-CSE-MsgGUID: JJvGKHbUQXq/o17sPaI4Lw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,253,1736841600"; d="scan'208";a="121710785"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.8])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2025 04:07:15 -0700
+Date: Mon, 17 Mar 2025 13:07:10 +0200
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Chenyi Qiang <chenyi.qiang@intel.com>
+Cc: David Hildenbrand <david@redhat.com>,
+ Alexey Kardashevskiy <aik@amd.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>,
+ "Maloor, Kishen" <kishen.maloor@intel.com>
+Subject: Re: [PATCH v3 6/7] memory: Attach MemoryAttributeManager to
+ guest_memfd-backed RAMBlocks
+Message-ID: <Z9gCXoWhTxzurXvb@tlindgre-MOBL1>
+References: <20250310081837.13123-1-chenyi.qiang@intel.com>
+ <20250310081837.13123-7-chenyi.qiang@intel.com>
+ <Z9e-0OcFoKpaG796@tlindgre-MOBL1>
+ <b158a3ef-b115-4961-a9c3-6e90b49e3366@intel.com>
+ <Z9fvNU4EvnI6ScWv@tlindgre-MOBL1>
+ <ebc6f8ed-3525-4bd8-8be0-143b1c7e75ee@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="XQUSjMsZR9/AHCgk"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250314144824.1707-1-farosas@suse.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
- DKIMWL_WL_HIGH=-0.335, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+In-Reply-To: <ebc6f8ed-3525-4bd8-8be0-143b1c7e75ee@intel.com>
+Received-SPF: none client-ip=198.175.65.11;
+ envelope-from=tony.lindgren@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.335,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,30 +94,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Mar 17, 2025 at 06:21:13PM +0800, Chenyi Qiang wrote:
+> 
+> 
+> On 3/17/2025 5:45 PM, Tony Lindgren wrote:
+> > On Mon, Mar 17, 2025 at 03:32:16PM +0800, Chenyi Qiang wrote:
+> >>
+> >>
+> >> On 3/17/2025 2:18 PM, Tony Lindgren wrote:
+> >>> Hi,
+> >>>
+> >>> On Mon, Mar 10, 2025 at 04:18:34PM +0800, Chenyi Qiang wrote:
+> >>>> --- a/system/physmem.c
+> >>>> +++ b/system/physmem.c
+> >>>> @@ -1885,6 +1886,16 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+> >>>>              qemu_mutex_unlock_ramlist();
+> >>>>              goto out_free;
+> >>>>          }
+> >>>> +
+> >>>> +        new_block->memory_attribute_manager = MEMORY_ATTRIBUTE_MANAGER(object_new(TYPE_MEMORY_ATTRIBUTE_MANAGER));
+> >>>> +        if (memory_attribute_manager_realize(new_block->memory_attribute_manager, new_block->mr)) {
+> >>>> +            error_setg(errp, "Failed to realize memory attribute manager");
+> >>>> +            object_unref(OBJECT(new_block->memory_attribute_manager));
+> >>>> +            close(new_block->guest_memfd);
+> >>>> +            ram_block_discard_require(false);
+> >>>> +            qemu_mutex_unlock_ramlist();
+> >>>> +            goto out_free;
+> >>>> +        }
+> >>>>      }
+> >>>>  
+> >>>>      ram_size = (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS;
+> >>>
+> >>> Might as well put the above into a separate memory manager init function
+> >>> to start with. It keeps the goto out_free error path unified, and makes
+> >>> things more future proof if the rest of ram_block_add() ever develops a
+> >>> need to check for errors.
+> >>
+> >> Which part to be defined in a separate function? The init function of
+> >> object_new() + realize(), or the error handling operation
+> >> (object_unref() + close() + ram_block_discard_require(false))?
+> > 
+> > I was thinking the whole thing, including freeing :) But maybe there's
+> > something more to consider to keep calls paired.
+> 
+> If putting the whole thing separately, I think the rest part to do error
+> handling still needs to add the same operation. Or I misunderstand
+> something?
 
---XQUSjMsZR9/AHCgk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+So maybe you suggestion of just a separate clean-up function would work:
 
-Applied, thanks.
+new_block->memory_attribute_manager =
+    MEMORY_ATTRIBUTE_MANAGER(object_new(TYPE_MEMORY_ATTRIBUTE_MANAGER));
+if (memory_attribute_manager_realize(new_block->memory_attribute_manager,
+    new_block->mr)) {
+    memory_attribute_manager_cleanup(...);
+    goto out_free;
+}
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
+> >> If need to check for errors in the rest of ram_block_add() in future,
+> >> how about adding a new label before out_free and move the error handling
+> >> there?
+> > 
+> > Yeah that would work too.
+> 
+> I'm not sure if we should add such change directly, or we can wait for
+> the real error check introduced in future.
 
---XQUSjMsZR9/AHCgk
-Content-Type: application/pgp-signature; name=signature.asc
+Right, not sure either.
 
------BEGIN PGP SIGNATURE-----
+Regards,
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfWo4cACgkQnKSrs4Gr
-c8ijIAf/RdNCzoqlEFuVroviuWxDRnv5jpPWaSpCboC2tnvncOTLU+2Du5PkreGv
-iDH4cuNhcKWWJ1ZNYo22YlpXsDcFXrqvntGJGkx3dLuszeuI/jprKwnHCaJsuKPu
-P8y8u8wDjieomMuRrShZ58qSnORjEDiFrqztB1+A20eSWs860YpVN+jd9YiDkiGm
-TJHM8k/3rZt9S0Mzzvv70RyEVHN65Vk5vbIoybaFdRRVm3EaDqWBQVw2kmFhM7hF
-tMlyibN3bCUVPcu38lLbG7EgURlvT705SRmUiRbq8pGfy5xKCyCGsrRjjQ2njfKL
-9tYE89THGvNouSACcc+I8w6wlQfdBw==
-=wgli
------END PGP SIGNATURE-----
-
---XQUSjMsZR9/AHCgk--
-
+Tony
 
