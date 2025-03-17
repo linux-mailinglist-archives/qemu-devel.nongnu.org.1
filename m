@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB60A63F90
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 06:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16230A63F95
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 06:25:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tu2xR-0006iG-W8; Mon, 17 Mar 2025 01:24:14 -0400
+	id 1tu2xU-0006jD-MM; Mon, 17 Mar 2025 01:24:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tu2xN-0006hd-Oz; Mon, 17 Mar 2025 01:24:10 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1tu2xS-0006ig-19; Mon, 17 Mar 2025 01:24:14 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tu2xM-0007oP-2h; Mon, 17 Mar 2025 01:24:09 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-223f4c06e9fso65832775ad.1; 
- Sun, 16 Mar 2025 22:24:07 -0700 (PDT)
+ id 1tu2xQ-0007op-2T; Mon, 17 Mar 2025 01:24:13 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-2239c066347so77731905ad.2; 
+ Sun, 16 Mar 2025 22:24:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742189046; x=1742793846; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742189050; x=1742793850; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pxaRFbncyxlnm7heC5LP05GgEcrs1GqHGHGwWOssd1s=;
- b=ZFElg1t6nvAbLXh0fYvRPqfjHA4U/Oey4sGAcdIXqkjSPjEnYhvjEsLm7EUsTYlzkl
- UHihm0S9zcVemkI+IR7NcNLaLEPUyjQ6+b9sDQpOeJl2Dsrxw3KgKOAtO8KEem9A2k7s
- lguEW8Rqzuh9OpiKgSDwTBYYqzYoihwER8m3NHXtTvlRSatrhz2Mig2N1+I2vU5U5iFW
- sRcGcKAQq3dXt3LVKGvKGl1vADz52BHFZLecW51/X1UqhSedxzas4q0tgLC7GheI471Z
- nYF836R+fNTcv06lnD1riDRrBGsNag18FgHP7K5zNHeog7nsDgcOs0/ZUPPwuLubIHZX
- eSsQ==
+ bh=qHPO8QJN6uV1YuZzM8KiBcANdL4KZSwmj3dkmnjbsok=;
+ b=X+E/B1FOCDIqh+WF/yB6QRwMvWOt/+VTw33w0hnlkWbsuCAsEYn+oimUyTlcUU7Vwx
+ 0DSOmLFUO4DmS4o6OlpGlIa7XJSVghsAX5U0KXq6HMsCRr6ypJZoyqmvFI+TsArFyTyH
+ GYAAk+cYtOsb25+w07xlJaLUKNiM3CqI2v21jPmU0SN9IkdYeUCFK4zI3sgn5nxR3NoT
+ 1m1JwfyIoQXQp4poh4/iOFWcU+cxxuBhrC1V9+w+KP2HrG4hBImoAHzKthFQa8RXGRHb
+ ywvAVIw5yfRB7e2a/BPRPNviITAWL363UPAprhO4Q94PNqHiRP/KW5djBDIAxVhDyQrz
+ HyvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742189046; x=1742793846;
+ d=1e100.net; s=20230601; t=1742189050; x=1742793850;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pxaRFbncyxlnm7heC5LP05GgEcrs1GqHGHGwWOssd1s=;
- b=iSg2W+dWmxexKEZuYzjyUMDWU7fo9doZASQ8QGa+SKfz59GXA2X1f3H8c/GUNa38zE
- mp4t4J6MoxnafjHLfUmnoVqj9QqC7tXdgkjusa3qziOtKHAQYAIoOjb1KVXurjXeVZDA
- fClHqSjbKZD8tmt8O1EJU+HwtJ4kJNS9UJ+X8gAHEZz4VDS9XhaqWLz3KY563EhqdHFo
- TRcGHaNyA8mqCgVTeeUP44J7wb/rkrJCVhsBKfY4pNbkMVK3HjwHra5G3b7pTkOzdOJ3
- zJyCAN6eqZk6v0FbueK/yL034/7a78hhyIjFjNj2EYySgK9R4ZN4SuaQdL3Y9oys94rd
- t37g==
+ bh=qHPO8QJN6uV1YuZzM8KiBcANdL4KZSwmj3dkmnjbsok=;
+ b=lSDyOImRR7r5jtrX+h0EWHi3RjDCUOvVp7f4dB54z8In8slE2vJBZebHJY0yeTjEA3
+ 6P8CMxpBUekPP/c4wNSvSwz828mq+uATs2AEG1pIUogto2oKCVPpEMaLVkVtoCtlXgQz
+ L3LrreOPT2ZnVI+3enq0eLckAS8ezh7meetcKUxQaGgtAGQkUCmoKMJjED+7KcRQR77o
+ hW+kxRPP0cB1aKKPxh7Zn5IWPQZqukjWEPUlf1+074aB8hNAe3Li4ewTu+SIfTNYwkuI
+ N7G6JRMvBFBK+NhWIiCvTaXpKuXCR/secQFwnVE4PE42eDA0el9DGIsWEvNSZVPUCqwr
+ f4Ww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWEn58Rv9Z0g5UknyvpEDIvXyili1sDbBQ6N3FDLmQ+Q2JYwC5bS5ILlJaGOKxkFTSMob8N+Ge9OQ==@nongnu.org
-X-Gm-Message-State: AOJu0YwUvqg9en2i5OYELDvoLwPCj5v2wRUB+femavlzTY4TcXiv/+Kb
- RoGSHctXssnJJq7OJ7KtGCTBewnSzcAIKSwk2MA20PD0gQadDbs48tUYfg==
-X-Gm-Gg: ASbGncsbdog4EIZ/W+x2ZVI4U7GuwRn9LdGdnIzx/QIWvlQgTHchl0T9RYU1s3CSF7E
- VRbbCYgNVf4YcqU9D0q8Ix2lQzVsXeSMvTQB+lL6k9R6+2SPtfV5qUDdMBhrAFWAADh/3JPg2in
- q+ZF+DeNS0o9y2C841/86YsKCIG/gKs9i9WCh4uK+qJoFCMXI+1G0kLbw0Fw8vQEzXfD8URdn9J
- jgxijyHndat41VU3ZAQRfeEqMTfz5xqn1VfLNCOgNxApE/SWwCB8NAUBzRYTKiFp1cdhAP+3/B3
- CRGFNQyiokitqBxJJYz8vRDvIRIQ7h7kx5+9Ki4pK1w95ih4UA==
-X-Google-Smtp-Source: AGHT+IH7FV73JLG0d04jqf3cEQMjr+Qd8mpByhshKLKE8F2vd4hDYYbHMXejcL5yXBJuR8s/02P87g==
-X-Received: by 2002:a17:902:dac1:b0:21f:6d63:6f4f with SMTP id
- d9443c01a7336-225c64f42bdmr181878175ad.2.1742189045903; 
- Sun, 16 Mar 2025 22:24:05 -0700 (PDT)
+ AJvYcCUsdyvpc0FoAr1CjBU/lAhmZBwRkrORDsUoJf0ItqqAxtProouzXwYA2PTt/cjIJwPtc/6auYL/gA==@nongnu.org
+X-Gm-Message-State: AOJu0Yyb7D9GgIHPCW6QZ8L9/ujQjvNaW7RalA+qmPRshhtsbZYFJ6TB
+ 34ZNyMOJsUnbd2JqahCpUuWdIxw2uYCzF1O35TiU5uRYrhUBbB1REhxkwg==
+X-Gm-Gg: ASbGncuSHCElxCtEdcMfwwwZWlN1IVB6QjcUzbXXDAYjJG5kMXDlJg5m9AZjTy4nWR+
+ CmBtTSd2za7MFu8/rmvSFRZIuCGOIzxbZHbVB5Kkv49MzDtR0VIGem23Ac16UUFt+yQKjEmvjRL
+ kX7VGxDcFjQ/bGUhQsBEXhRaTFy5a9GAmJOw5GXBq0bf3xHadU8qgrVa+vmkHDw3ePlYUaipXzp
+ t3SGb+XYBZLq4tN5L4YM4GFnKVBu9zT8+ihsBxmSDELdKJwGEZ20i1/lCjthkHqN9w5rDgDdopX
+ +sd/1DkY7/YPZFrB5anNiztVkgvL11zvzHlJK1GSd9X6qNcrgQ==
+X-Google-Smtp-Source: AGHT+IFX0vYJLxJhOzWGShIZU9ko5C/MWk9RcE/Q6dsEO0bnuGrTCvH6v2ML8WM3Cvw8Zi44xX8kZQ==
+X-Received: by 2002:a05:6a20:2d08:b0:1f5:8714:8147 with SMTP id
+ adf61e73a8af0-1f5c11c3c61mr16592957637.23.1742189050123; 
+ Sun, 16 Mar 2025 22:24:10 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.135.36])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73711695b6bsm6879495b3a.148.2025.03.16.22.24.02
+ d2e1a72fcca58-73711695b6bsm6879495b3a.148.2025.03.16.22.24.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Mar 2025 22:24:05 -0700 (PDT)
+ Sun, 16 Mar 2025 22:24:09 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Glenn Miles <milesg@linux.vnet.ibm.com>,
  Michael Kowal <kowal@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 5/6] ppc/pnv: Move the PNOR LPC address into struct PnvPnor
-Date: Mon, 17 Mar 2025 15:23:37 +1000
-Message-ID: <20250317052339.1108322-6-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Stefan Hajnoczi" <stefanha@gmail.com>
+Subject: [PATCH 6/6] ppc/pnv: Fix system symbols in HOMER structure definitions
+Date: Mon, 17 Mar 2025 15:23:38 +1000
+Message-ID: <20250317052339.1108322-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250317052339.1108322-1-npiggin@gmail.com>
 References: <20250317052339.1108322-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,88 +102,279 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than use the hardcoded define throughout the tree for the
-PNOR LPC address, keep it within the PnvPnor object.
+These definitions were taken from skiboot firmware. I naively thought it
+would be nicer to keep the code similar by using the preprocessor, but
+it was pointed out that system headers might still use those symbols and
+cause something unexpected. Also just nicer to keep the QEMU tree clean.
 
-This should solve a dead code issue in the BMC HIOMAP checks where
-Coverity (correctly) reported that the sanity checks are dead code.
-We would like to keep the sanity checks without turning them into a
-compile time assert in case we would like to make them configurable
-in future.
-
-Fixes: 4c84a0a4a6e5 ("ppc/pnv: Add a PNOR address and size sanity checks")
-Resolves: Coverity CID 1593723
-Cc: Cédric Le Goater <clg@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+Cc: "Stefan Hajnoczi" <stefanha@gmail.com>
+Fixes: 70bc5c2498f46 ("ppc/pnv: Make HOMER memory a RAM region")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/pnv_pnor.h | 1 +
- hw/ppc/pnv.c              | 2 +-
- hw/ppc/pnv_bmc.c          | 4 ++--
- hw/ppc/pnv_pnor.c         | 2 ++
- 4 files changed, 6 insertions(+), 3 deletions(-)
+ hw/ppc/pnv_occ.c | 201 ++++++++++++++++++++++-------------------------
+ 1 file changed, 96 insertions(+), 105 deletions(-)
 
-diff --git a/include/hw/ppc/pnv_pnor.h b/include/hw/ppc/pnv_pnor.h
-index 19c2d642e82..b44cafe918d 100644
---- a/include/hw/ppc/pnv_pnor.h
-+++ b/include/hw/ppc/pnv_pnor.h
-@@ -28,6 +28,7 @@ struct PnvPnor {
-     BlockBackend   *blk;
+diff --git a/hw/ppc/pnv_occ.c b/hw/ppc/pnv_occ.c
+index bda6b23ad3c..177c5e514b7 100644
+--- a/hw/ppc/pnv_occ.c
++++ b/hw/ppc/pnv_occ.c
+@@ -364,7 +364,12 @@ static void pnv_occ_register_types(void)
  
-     uint8_t        *storage;
-+    uint32_t       lpc_address; /* Offset within LPC FW space */
-     int64_t        size;
-     MemoryRegion   mmio;
- };
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 59365370c37..63f2232f32f 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1191,7 +1191,7 @@ static void pnv_init(MachineState *machine)
-      * Since we can not reach the remote BMC machine with LPC memops,
-      * map it always for now.
-      */
--    memory_region_add_subregion(pnv->chips[0]->fw_mr, PNOR_SPI_OFFSET,
-+    memory_region_add_subregion(pnv->chips[0]->fw_mr, pnv->pnor->lpc_address,
-                                 &pnv->pnor->mmio);
+ type_init(pnv_occ_register_types);
  
-     /*
-diff --git a/hw/ppc/pnv_bmc.c b/hw/ppc/pnv_bmc.c
-index 811ba3d7a49..fb70a8c1f22 100644
---- a/hw/ppc/pnv_bmc.c
-+++ b/hw/ppc/pnv_bmc.c
-@@ -174,8 +174,8 @@ static void hiomap_cmd(IPMIBmcSim *ibs, uint8_t *cmd, unsigned int cmd_len,
- {
-     PnvPnor *pnor = PNV_PNOR(object_property_get_link(OBJECT(ibs), "pnor",
-                                                       &error_abort));
-+    uint32_t pnor_addr = pnor->lpc_address;
-     uint32_t pnor_size = pnor->size;
--    uint32_t pnor_addr = PNOR_SPI_OFFSET;
-     bool readonly = false;
+-/* From skiboot/hw/occ.c with tab to space conversion */
++/*
++ * From skiboot/hw/occ.c with following changes:
++ * - tab to space conversion
++ * - Type conversions u8->uint8_t s8->int8_t __be16->uint16_t etc
++ * - __packed -> QEMU_PACKED
++ */
+ /* OCC Communication Area for PStates */
  
-     rsp_buffer_push(rsp, cmd[2]);
-@@ -251,8 +251,8 @@ static const IPMINetfn hiomap_netfn = {
+ #define OPAL_DYNAMIC_DATA_OFFSET        0x0B80
+@@ -384,20 +389,6 @@ type_init(pnv_occ_register_types);
+ #define FREQ_MAX_IN_DOMAIN              0
+ #define FREQ_MOST_RECENTLY_SET          1
  
- void pnv_bmc_set_pnor(IPMIBmc *bmc, PnvPnor *pnor)
- {
-+    uint32_t pnor_addr = pnor->lpc_address;
-     uint32_t pnor_size = pnor->size;
--    uint32_t pnor_addr = PNOR_SPI_OFFSET;
+-#define u8 uint8_t
+-#define s8 int8_t
+-#define u16 uint16_t
+-#define s16 int16_t
+-#define u32 uint32_t
+-#define s32 int32_t
+-#define u64 uint64_t
+-#define s64 int64_t
+-#define __be16 uint16_t
+-#define __be32 uint32_t
+-#ifndef __packed
+-#define __packed QEMU_PACKED
+-#endif /* !__packed */
+-
+ /**
+  * OCC-OPAL Shared Memory Region
+  *
+@@ -434,69 +425,69 @@ type_init(pnv_occ_register_types);
+  * @spare/reserved/pad:         Unused data
+  */
+ struct occ_pstate_table {
+-    u8 valid;
+-    u8 version;
+-    union __packed {
+-        struct __packed { /* Version 0x01 and 0x02 */
+-            u8 throttle;
+-            s8 pstate_min;
+-            s8 pstate_nom;
+-            s8 pstate_turbo;
+-            s8 pstate_ultra_turbo;
+-            u8 spare;
+-            u64 reserved;
+-            struct __packed {
+-                s8 id;
+-                u8 flags;
+-                u8 vdd;
+-                u8 vcs;
+-                __be32 freq_khz;
++    uint8_t valid;
++    uint8_t version;
++    union QEMU_PACKED {
++        struct QEMU_PACKED { /* Version 0x01 and 0x02 */
++            uint8_t throttle;
++            int8_t pstate_min;
++            int8_t pstate_nom;
++            int8_t pstate_turbo;
++            int8_t pstate_ultra_turbo;
++            uint8_t spare;
++            uint64_t reserved;
++            struct QEMU_PACKED {
++                int8_t id;
++                uint8_t flags;
++                uint8_t vdd;
++                uint8_t vcs;
++                uint32_t freq_khz;
+             } pstates[MAX_PSTATES];
+-            s8 core_max[MAX_P8_CORES];
+-            u8 pad[100];
++            int8_t core_max[MAX_P8_CORES];
++            uint8_t pad[100];
+         } v2;
+-        struct __packed { /* Version 0x90 */
+-            u8 occ_role;
+-            u8 pstate_min;
+-            u8 pstate_nom;
+-            u8 pstate_turbo;
+-            u8 pstate_ultra_turbo;
+-            u8 spare;
+-            u64 reserved1;
+-            u64 reserved2;
+-            struct __packed {
+-                u8 id;
+-                u8 flags;
+-                u16 reserved;
+-                __be32 freq_khz;
++        struct QEMU_PACKED { /* Version 0x90 */
++            uint8_t occ_role;
++            uint8_t pstate_min;
++            uint8_t pstate_nom;
++            uint8_t pstate_turbo;
++            uint8_t pstate_ultra_turbo;
++            uint8_t spare;
++            uint64_t reserved1;
++            uint64_t reserved2;
++            struct QEMU_PACKED {
++                uint8_t id;
++                uint8_t flags;
++                uint16_t reserved;
++                uint32_t freq_khz;
+             } pstates[MAX_PSTATES];
+-            u8 core_max[MAX_P9_CORES];
+-            u8 pad[56];
++            uint8_t core_max[MAX_P9_CORES];
++            uint8_t pad[56];
+         } v9;
+-        struct __packed { /* Version 0xA0 */
+-            u8 occ_role;
+-            u8 pstate_min;
+-            u8 pstate_fixed_freq;
+-            u8 pstate_base;
+-            u8 pstate_ultra_turbo;
+-            u8 pstate_fmax;
+-            u8 minor;
+-            u8 pstate_bottom_throttle;
+-            u8 spare;
+-            u8 spare1;
+-            u32 reserved_32;
+-            u64 reserved_64;
+-            struct __packed {
+-                u8 id;
+-                u8 valid;
+-                u16 reserved;
+-                __be32 freq_khz;
++        struct QEMU_PACKED { /* Version 0xA0 */
++            uint8_t occ_role;
++            uint8_t pstate_min;
++            uint8_t pstate_fixed_freq;
++            uint8_t pstate_base;
++            uint8_t pstate_ultra_turbo;
++            uint8_t pstate_fmax;
++            uint8_t minor;
++            uint8_t pstate_bottom_throttle;
++            uint8_t spare;
++            uint8_t spare1;
++            uint32_t reserved_32;
++            uint64_t reserved_64;
++            struct QEMU_PACKED {
++                uint8_t id;
++                uint8_t valid;
++                uint16_t reserved;
++                uint32_t freq_khz;
+             } pstates[MAX_PSTATES];
+-            u8 core_max[MAX_P10_CORES];
+-            u8 pad[48];
++            uint8_t core_max[MAX_P10_CORES];
++            uint8_t pad[48];
+         } v10;
+     };
+-} __packed;
++} QEMU_PACKED;
  
-     if (!pnv_bmc_is_simulator(bmc)) {
-         return;
-diff --git a/hw/ppc/pnv_pnor.c b/hw/ppc/pnv_pnor.c
-index 863e2e70aca..9db44ca21d8 100644
---- a/hw/ppc/pnv_pnor.c
-+++ b/hw/ppc/pnv_pnor.c
-@@ -108,6 +108,8 @@ static void pnv_pnor_realize(DeviceState *dev, Error **errp)
-         memset(s->storage, 0xFF, s->size);
-     }
+ /**
+  * OPAL-OCC Command Response Interface
+@@ -531,13 +522,13 @@ struct occ_pstate_table {
+  * @spare:                      Unused byte
+  */
+ struct opal_command_buffer {
+-    u8 flag;
+-    u8 request_id;
+-    u8 cmd;
+-    u8 spare;
+-    __be16 data_size;
+-    u8 data[MAX_OPAL_CMD_DATA_LENGTH];
+-} __packed;
++    uint8_t flag;
++    uint8_t request_id;
++    uint8_t cmd;
++    uint8_t spare;
++    uint16_t data_size;
++    uint8_t data[MAX_OPAL_CMD_DATA_LENGTH];
++} QEMU_PACKED;
  
-+    s->lpc_address = PNOR_SPI_OFFSET;
-+
-     memory_region_init_io(&s->mmio, OBJECT(s), &pnv_pnor_ops, s,
-                           TYPE_PNV_PNOR, s->size);
- }
+ /**
+  * OPAL-OCC Response Buffer
+@@ -571,13 +562,13 @@ struct opal_command_buffer {
+  * @data:                       Response specific data
+  */
+ struct occ_response_buffer {
+-    u8 flag;
+-    u8 request_id;
+-    u8 cmd;
+-    u8 status;
+-    __be16 data_size;
+-    u8 data[MAX_OCC_RSP_DATA_LENGTH];
+-} __packed;
++    uint8_t flag;
++    uint8_t request_id;
++    uint8_t cmd;
++    uint8_t status;
++    uint16_t data_size;
++    uint8_t data[MAX_OCC_RSP_DATA_LENGTH];
++} QEMU_PACKED;
+ 
+ /**
+  * OCC-OPAL Shared Memory Interface Dynamic Data Vx90
+@@ -608,31 +599,31 @@ struct occ_response_buffer {
+  * @rsp:                        OCC Response Buffer
+  */
+ struct occ_dynamic_data {
+-    u8 occ_state;
+-    u8 major_version;
+-    u8 minor_version;
+-    u8 gpus_present;
+-    union __packed {
+-        struct __packed { /* Version 0x90 */
+-            u8 spare1;
++    uint8_t occ_state;
++    uint8_t major_version;
++    uint8_t minor_version;
++    uint8_t gpus_present;
++    union QEMU_PACKED {
++        struct QEMU_PACKED { /* Version 0x90 */
++            uint8_t spare1;
+         } v9;
+-        struct __packed { /* Version 0xA0 */
+-            u8 wof_enabled;
++        struct QEMU_PACKED { /* Version 0xA0 */
++            uint8_t wof_enabled;
+         } v10;
+     };
+-    u8 cpu_throttle;
+-    u8 mem_throttle;
+-    u8 quick_pwr_drop;
+-    u8 pwr_shifting_ratio;
+-    u8 pwr_cap_type;
+-    __be16 hard_min_pwr_cap;
+-    __be16 max_pwr_cap;
+-    __be16 cur_pwr_cap;
+-    __be16 soft_min_pwr_cap;
+-    u8 pad[110];
++    uint8_t cpu_throttle;
++    uint8_t mem_throttle;
++    uint8_t quick_pwr_drop;
++    uint8_t pwr_shifting_ratio;
++    uint8_t pwr_cap_type;
++    uint16_t hard_min_pwr_cap;
++    uint16_t max_pwr_cap;
++    uint16_t cur_pwr_cap;
++    uint16_t soft_min_pwr_cap;
++    uint8_t pad[110];
+     struct opal_command_buffer cmd;
+     struct occ_response_buffer rsp;
+-} __packed;
++} QEMU_PACKED;
+ 
+ enum occ_response_status {
+     OCC_RSP_SUCCESS                 = 0x00,
 -- 
 2.47.1
 
