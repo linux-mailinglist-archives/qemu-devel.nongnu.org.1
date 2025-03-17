@@ -2,99 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E269A65F08
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 21:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26AE6A65FD3
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 21:59:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuGwc-0007D0-Rh; Mon, 17 Mar 2025 16:20:18 -0400
+	id 1tuHW8-0001F9-1S; Mon, 17 Mar 2025 16:57:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tuGwW-0007CU-FK
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 16:20:12 -0400
-Received: from mail-qv1-xf2c.google.com ([2607:f8b0:4864:20::f2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tuGwU-0002To-Lx
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 16:20:12 -0400
-Received: by mail-qv1-xf2c.google.com with SMTP id
- 6a1803df08f44-6e91d323346so51570986d6.1
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 13:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742242809; x=1742847609; darn=nongnu.org;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=42SBUni0O8QVuSi0HjH/MKJsRrSTSy5sUknyLA4sC50=;
- b=RKZEascJh1pDXmYtsTPnjsZd6kY7lDVGAlTZCZwDZdAHblC57KDDkpF+b13/R1LjoJ
- 2Wc7k2IUnI5DV9gzn/oCESycKd0NdLUCr3Rr3HDjfnkwZY4Y32tSZxsOD+x30qHdOTCN
- AmqSWYIFULbedsNYZG6YLXLvPsgy/RJhbxOW+DipueTal+3uzhqkhcBoyUM0XYT2bsu2
- f/7CzgpNbIJNjS/8RqhI9Kz3rAAOe2T49OLWHmmwWCfDgQSaGGRdkMLdCoxgaQgrwY25
- 01kwH/V8r8hWKZDtWJiuSR0Z/bjFlTpp2BALFQiaStCDlcj1gzWVWaIW8BbVdtDZ8lZm
- kngQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742242809; x=1742847609;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=42SBUni0O8QVuSi0HjH/MKJsRrSTSy5sUknyLA4sC50=;
- b=Aygaba/H8/eQDsO2SR9PAvDZCap0pvFTndOxUIfTLmg5scGY6VnKTxgl5xn8VOp+RG
- d7un1kVrGNEi503fcS0iA2sK4qkgwPkbzWziJffWZX50SDZRtAmjGy/Gpwh6Y+ZJATl8
- I4RPvvmu6TWaYSsGn244wYG4NgpdprTVX9f6T++AEJadGZldw21So9MZekP49wu1rKcA
- B3PvMdIixEmnBxwniSX/kpEcYF0fA817La8HFphwhN8o+bR6WpbwVYhaTX9vFdHny27X
- Y37/XNG2U5pirpyl/r83B3XbpLAd6TXWK7XpUMZXqSexUlsRafP2C9FQVybankfCYgcc
- jMdg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUztRVIVnfpvvaHI8SauEynrMA2NbBtxZm28cN6G8L2VfCH5fboee76WN0bnjxN3kOi2X8XuQbg7hbY@nongnu.org
-X-Gm-Message-State: AOJu0YxCqZ+8bUUrxtjTRzbQAXjynIswIeOnh4dHonm/OVD4R3XDTOQ3
- khsQMalizx8XY0kCxoIRZwkenNkmESWAxqIhzlNgUDb6hVq6rcMp
-X-Gm-Gg: ASbGncsCJoDxF9W1xj1ik59k1yQxiuUPVw+3utcH3dai8PedFfdiGKF7mcIfZ4VikZL
- KAGUE3JQ4MfG/zsFQQuy+OA+vg2vDU8D3Gt7YFylU1HlZuRkOPtLj8A3hAZ+a4Mye45JRCVZi1v
- vg3he4zYK/LmCw4wQZLdwnP9mSY+IIFNodQx+s67ZJaJUVb2pvgSBcLjYpygkRoZUwWpVeuA4I2
- 02bQBlVD6WdYrfAa35HxN/X8lxAQRswkPQ2HvZwIgxuBpGPLnbhOTgkurVyecOZU5o9PRuoclS5
- 6K3HutjbIGhWZuhblDNwMFhbPvVWETL23Z4D6AkyIboWQpe2WUg5vzumuKkY4HA=
-X-Google-Smtp-Source: AGHT+IEO8bTArR2pGgNf0z0sTjXgk08+iTNSJQ9AvwsOJUhFdzF5QKtjAvP3Fp2yIFQb7h2nk0lnJQ==
-X-Received: by 2002:a05:6214:e4e:b0:6e4:4012:b6f1 with SMTP id
- 6a1803df08f44-6eb1bbbea02mr11926606d6.3.1742242809530; 
- Mon, 17 Mar 2025 13:20:09 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2603:6000:a500:306:6d71:de10:2e5e:506a])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6eade234b92sm58814756d6.43.2025.03.17.13.20.08
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 17 Mar 2025 13:20:09 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
-	<qemu-devel@nongnu.org>
-Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
- <quic_mathbern@quicinc.com>, <ale@rev.ng>, <anjo@rev.ng>,
- <quic_mliebel@quicinc.com>, <alex.bennee@linaro.org>,
- <quic_mburton@quicinc.com>, <sidneym@quicinc.com>,
- "'Brian Cain'" <bcain@quicinc.com>
-References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
- <20250301052845.1012069-30-brian.cain@oss.qualcomm.com>
-In-Reply-To: <20250301052845.1012069-30-brian.cain@oss.qualcomm.com>
-Subject: RE: [PATCH 29/39] target/hexagon: Add pkt_ends_tb to translation
-Date: Mon, 17 Mar 2025 15:20:07 -0500
-Message-ID: <018b01db9779$fa969090$efc3b1b0$@gmail.com>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tuHW5-0001EQ-Bj
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 16:56:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tuHW3-0001VL-8e
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 16:56:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742245013;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mAXaF/B+yEL20OEDYR7ujt6zDeyDYLil+/6J4BvH8Gc=;
+ b=Fb5vpfHhTFd/ptqOLznHTdS4mWX4Pa1vn/sGWoJ5gZFpQEVjIMybmrpzy5OgAkHlLsa95Z
+ +J+lf9daz5+IQqsoPP88dCVvwL3Nx///08ETPalqQz2HkYrl7nFlTg22JjKAx4REuDyqRh
+ Rgm3kBeEcLjKIX6ibbycPpADmirvyTs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-K_0lkqF9PvmJ8MxJAZ4eTQ-1; Mon,
+ 17 Mar 2025 16:56:48 -0400
+X-MC-Unique: K_0lkqF9PvmJ8MxJAZ4eTQ-1
+X-Mimecast-MFC-AGG-ID: K_0lkqF9PvmJ8MxJAZ4eTQ_1742245007
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0B8801955DC5; Mon, 17 Mar 2025 20:56:47 +0000 (UTC)
+Received: from localhost (unknown [10.2.17.27])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 2ADE01828A80; Mon, 17 Mar 2025 20:56:45 +0000 (UTC)
+Date: Mon, 17 Mar 2025 16:56:44 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: saz97 <sa.z@qq.com>
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH 0/1 RFC] FUSE Export Coroutine Integration Cover Letter
+Message-ID: <20250317205644.GE1214048@fedora>
+References: <tencent_768F19A8DEA12BC51D868074DAD0E933DF0A@qq.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQIWUu77rEigiK0ljjjo9ZdCZqs5mQOKXza3suX6J/A=
-Content-Language: en-us
-X-Antivirus: Norton (VPS 250317-4, 3/17/2025), Outbound message
-X-Antivirus-Status: Clean
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2c;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-qv1-xf2c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="VgHPRCzCjzwHF5kg"
+Content-Disposition: inline
+In-Reply-To: <tencent_768F19A8DEA12BC51D868074DAD0E933DF0A@qq.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.335,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,77 +84,116 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--VgHPRCzCjzwHF5kg
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> -----Original Message-----
-> From: Brian Cain <brian.cain@oss.qualcomm.com>
-> Sent: Friday, February 28, 2025 11:29 PM
-> To: qemu-devel@nongnu.org
-> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
-> philmd@linaro.org; quic_mathbern@quicinc.com; ale@rev.ng; anjo@rev.ng;
-> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
-> alex.bennee@linaro.org; quic_mburton@quicinc.com;
-> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>
-> Subject: [PATCH 29/39] target/hexagon: Add pkt_ends_tb to translation
+On Sun, Mar 16, 2025 at 01:30:06AM +0800, saz97 wrote:
+> Signed-off-by: Changzhi Xie <sa.z@qq.com>
 >=20
-> From: Brian Cain <bcain@quicinc.com>
+> FUSE Export Coroutine Integration Cover Letter
 >=20
-> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
-> ---
->  target/hexagon/translate.h |  1 +
->  target/hexagon/translate.c | 99
-> +++++++++++++++++++++++++++++++++++++-
->  2 files changed, 99 insertions(+), 1 deletion(-)
+> This patch series refactors QEMU's FUSE export module to leverage corouti=
+nes for read/write operations,=20
+> addressing concurrency limitations and aligning with QEMU's asynchronous =
+I/O model. The changes=20
+> demonstrate measurable performance improvements while simplifying resourc=
+e management.
+>=20
+> 1. Technical Implementation
+> Key modifications address prior review feedback (Stefan Hajnoczi) and opt=
+imize execution flow:
+>=20
+> =E2=80=8B1.1 Coroutine Integration
+> Convert fuse_read()/fuse_write() to launch coroutines (fuse_*_coroutine)
+> Utilize non-blocking blk_co_pread()/blk_co_pwrite() for block layer access
+> Eliminate main loop blocking during heavy I/O workloads
+>=20
+> 1.2 =E2=80=8BBuffer Management
+> Removed explicit buffer pre-allocation in read_from_fuse_export()
+> Replaced fuse_buf_free() with g_free() due to libfuse3 API constraints
+>=20
+> =E2=80=8B1.3 Resource Lifecycle
+> Moved in_flight decrement and blk_exp_unref() into coroutines
+> Added FUSE opcode checks (FUSE_READ/FUSE_WRITE) to prevent premature clea=
+nup
+>=20
+> 1.4 =E2=80=8BStructural Improvements
+> Simplified FuseIORequest structure:
+> Removed redundant fuse_ino_t and fuse_file_info fields
+> Retained minimal parameter passing requirements
+>=20
+> 2. Performance Validation
+> Tested using fio with 4K random RW pattern, and the result is the average=
+ of 5 runs:
+> fio --ioengine=3Dio_uring --numjobs=3D1 --runtime=3D30 --ramp_time=3D5 --=
+rw=3Drandrw --bs=3D4k --time_based=3D1
+>=20
+> Key Results
+>=20
+> Metric	       iodepth=3D1	           iodepth=3D64
+> =E2=80=8BRead Latency	  =E2=96=BC 2.7% (3.8k=E2=86=923kns)	  =E2=96=BC 1.=
+3% (4.7M=E2=86=924.6M ns)
+> =E2=80=8BWrite Latency	=E2=96=BC 3.6% (112k=E2=86=92108kns)	=E2=96=BC 2.8=
+% (5.2M=E2=86=925.0M ns)
+> =E2=80=8BRead IOPS	    4740 =E2=86=92 4729 (=C2=B10.2%)	  =E2=96=B2 2.1% =
+(6391=E2=86=926529)
+> =E2=80=8BWrite IOPS	    4738 =E2=86=92 4727 (=C2=B10.2%)	  =E2=96=B2 2.2%=
+ (6390=E2=86=926529)
+> =E2=80=8BThroughput	    ~18.9 GB/s (stable)	  =E2=96=B2 2.1% (25.6=E2=86=
+=9226.1 GB/s)
+
+Are you sure throughput is GB/s instead of MB/s?
+
+iodepth=3D1 read 4729 IOPS * bs=3D4k =3D 18 MB/s
+
+Also, fio was configured with --rw=3Drandrw, so the total throughput
+should be read throughput + write throughput. Based on the read and
+write IOPS numbers, the total throughput should be ~36 MB/s. Which
+throughput number are you showing?
+
+>=20
+> Analysis
+>=20
+> =E2=80=8BHigh Concurrency (iodepth=3D64):
+> Sustained throughput gains (+2.1-2.2%) demonstrate improved scalability
+> Latency reductions confirm reduced contention in concurrent operations
+
+This is surprising. Before this patch series the FUSE export code only
+submits 1 request at a time, so the iodepth=3D64 results should be only a
+little better than the iodepth=3D1 results. After this patch series the
+FUSE export code should be submitting all 64 requests concurrently and
+improving performance by more than 2%.
+
+Why was the improvement only 2%?
+
+>=20
+> saz97 (1):
+>   Integration coroutines into fuse export
+>=20
+>  block/export/fuse.c | 189 +++++++++++++++++++++++++++++++-------------
+>  1 file changed, 132 insertions(+), 57 deletions(-)
+>=20
+> --=20
+> 2.34.1
 >=20
 
+--VgHPRCzCjzwHF5kg
+Content-Type: application/pgp-signature; name=signature.asc
 
-> diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c =
-index
-> 060df6e5eb..475726388a 100644
-> --- a/target/hexagon/translate.c
-> +++ b/target/hexagon/translate.c
-> @@ -259,6 +259,18 @@ static bool check_for_attrib(Packet *pkt, int =
-attrib)
->      return false;
->  }
->=20
-> +#ifndef CONFIG_USER_ONLY
-> +static bool check_for_opcode(Packet *pkt, uint16_t opcode) {
-> +    for (int i =3D 0; i < pkt->num_insns; i++) {
-> +        if (pkt->insn[i].opcode =3D=3D opcode) {
-> +            return true;
-> +        }
-> +    }
-> +    return false;
-> +}
-> +#endif
-> +
->  static bool need_slot_cancelled(Packet *pkt)  {
->      /* We only need slot_cancelled for conditional store instructions =
-*/ @@ -
-> 272,6 +284,90 @@ static bool need_slot_cancelled(Packet *pkt)
->      return false;
->  }
->=20
-> +#ifndef CONFIG_USER_ONLY
-> +static bool sreg_write_to_global(int reg_num) {
-> +    return reg_num =3D=3D HEX_SREG_SSR ||
-> +           reg_num =3D=3D HEX_SREG_STID ||
-> +           reg_num =3D=3D HEX_SREG_IMASK ||
+-----BEGIN PGP SIGNATURE-----
 
-The name of this function is misleading since SSR, STID, and IMASK are =
-not global.
-A better name would be sreg_write_ends_tb
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfYjIwACgkQnKSrs4Gr
+c8hnAwf9HMfFhjvY1grxydun/2OS7WMSzKknpkiBwWJswPa79a+Oa64biQortcSp
+oCGkDqE5uh3upZaXUNpy/svepg4E80k3Fc8k2/aXHVrY84y1vyKZEWPRqCJkmtPQ
+eyFSraYmz81X6yH1EuJ+rBM0fngKQLDpb5KgAvUB46ttXzBeGu8EqjElx8pNnOTw
+BQ6KdpG5HDUBKZLXB0aMC0qRyZSMhgStSeKBMwi3yBFcAFMTruInZOpgo8eSLrW4
+85WVkduPsUlMF0blyjyGNjeZHBLkvUtLIvzhUMSUGkIns0NJbfy+1l2h2HKMkySP
+6iRR/pMU61JV+xX+tKMlO3rler7JPw==
+=vjvm
+-----END PGP SIGNATURE-----
 
-> +           reg_num =3D=3D HEX_SREG_IPENDAD ||
-> +           reg_num =3D=3D HEX_SREG_BESTWAIT ||
-> +           reg_num =3D=3D HEX_SREG_SCHEDCFG; }
-> +
-> +static bool has_sreg_write_to_global(Packet const *pkt) {
-
-Ditto
-
-Otherwise
-Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
-
+--VgHPRCzCjzwHF5kg--
 
 
