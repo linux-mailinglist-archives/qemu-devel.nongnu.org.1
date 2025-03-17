@@ -2,99 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3DC8A654CE
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 16:00:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE2CA65462
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 15:54:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuBxO-0001n4-MD; Mon, 17 Mar 2025 11:00:46 -0400
+	id 1tuBq9-0004wC-UL; Mon, 17 Mar 2025 10:53:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tuBx6-0001cb-Nr
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 11:00:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tuBpZ-0004t3-Ly; Mon, 17 Mar 2025 10:52:42 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1tuBx0-0007Jt-1j
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 11:00:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742223618;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OTIOhd61LOxkaZXTItSVq9gn3qbDZ7fjgPiPKgRQI0A=;
- b=KQ2GOyisI+TzvBcN6hVCO4cT218i8DWl22iMNWjN6dpqaf6yDpZ0Rtt0TvL/0j5Zuexkqd
- t7LoGMmciXpGy9trKpCD7RKqop8W3LV0Eo55cRYn6KZv7xhq6sBuyWKzP1oxZU2mhOlKYE
- U6Jxz+qqwLj6sI3J69RNRRq3sgvO1XA=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-d61eIX6RObOH0-Z2WLKmEQ-1; Mon, 17 Mar 2025 11:00:17 -0400
-X-MC-Unique: d61eIX6RObOH0-Z2WLKmEQ-1
-X-Mimecast-MFC-AGG-ID: d61eIX6RObOH0-Z2WLKmEQ_1742223616
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6e8fae3e448so111904136d6.2
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 08:00:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742223616; x=1742828416;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OTIOhd61LOxkaZXTItSVq9gn3qbDZ7fjgPiPKgRQI0A=;
- b=j+d8mdF53U/Tms5jZhArQFAFln0VZ5JAa0+8nFRt+ohsbDiNkOv2acXukPlbr29u79
- Wyx5L6X7bCn6fUhRvh+TJv7iBtiG5aNjQkxIS8cS5gRy0wyuYiOZD3YvIbKMG5l/rU8T
- vpX4RvivHsL8DwAki3d7U+dEAqcHoieZON7SRZLbGmH9+LLNgBn75s7L+3B1nlxPdJSl
- 7/IxmoSk8SykXelpig40Om6hAqPNPJOKtKs3GAv9hwrv8XFaHzQKXd1HrxAVE5vh3Jdo
- RG4KuC7N5Dts3lA1w8RrpXPNBt8KfBFFHLmPSqMK/vFqNWRw8OBr0OIvmGWueowEKwqh
- KFlA==
-X-Gm-Message-State: AOJu0YyCTUKQf8svKAr+7a97vrlE09QU3g8kCdSXI9J+Ny3TDkVfIwDB
- 38/jFcCCFh5igLeVt8JWn7nKBCGwMAGZn11wdxj+8sGpMdcQvDC/YfZfn74yJ5SHtVyEDHLeK/0
- KjIfOB+ZS24r9DF+vSxcHuVo1/4wtdoNlTw4R4buxJq2ASmgkAATO
-X-Gm-Gg: ASbGncuBUPSAmHMBp7cbTejxhKODn/co7VseiUcg+C/hB4TRDLMBQHMQHMajtcx4gHC
- 7o2wnZ2m+7Ks3lJkH4XSuoN89CNMO33/eZ7ZS3kYFu6twSlWgO0eqeZ2lmmpe3EhPvZF2CUzp9e
- e6k3hAw41/OhEs0H6f/pNKrSieZzqtabnS4JnNPZevkH3Xb5O1O5qTq2kLP4xVf8SOq55L8Pyfg
- q6zkwvYuknQTU0xr32wl8o7a+NTgsvXUSONcp+7FIyl0zldtZX+x4VZlFyacDd0MotQibt52k9O
- f47Ngo8=
-X-Received: by 2002:ad4:5ecb:0:b0:6ea:d629:f48b with SMTP id
- 6a1803df08f44-6eaeaa5d9f3mr182689416d6.19.1742223615961; 
- Mon, 17 Mar 2025 08:00:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRvqiJuM9ohbHscD3aOb7IdrsGEiVeOGg74kOJOwkdTWvHz1nD+LTt7UXWq8aA5c7Onalxlw==
-X-Received: by 2002:ad4:5ecb:0:b0:6ea:d629:f48b with SMTP id
- 6a1803df08f44-6eaeaa5d9f3mr182688706d6.19.1742223615465; 
- Mon, 17 Mar 2025 08:00:15 -0700 (PDT)
-Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6eade35c8d2sm55486326d6.124.2025.03.17.08.00.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Mar 2025 08:00:14 -0700 (PDT)
-Date: Mon, 17 Mar 2025 11:00:11 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: qemu-devel@nongnu.org, farosas@suse.de, berrange@redhat.com,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH v7 5/5] migration: add MULTIFD_RECV_SYNC migration command
-Message-ID: <Z9g4-8BDmOwYpxgp@x1.local>
-References: <Z8XBowkG72G-l3L4@x1.local>
- <CAE8KmOyssf_2RYBw2LLpxP2Z5bmtyU==Qs+4HWp=mOVb9o82-g@mail.gmail.com>
- <Z8cPnxqOvp1hFpx8@x1.local>
- <CAE8KmOw1CCQUt0wyELVhy5j-CfwVuA2XNsecW=y6rwJv7dempw@mail.gmail.com>
- <Z8hJeneeuKqD1i8Q@x1.local>
- <CAE8KmOyKiEt9t0vUwVyqD7tx01vkm+NHA1p1tmQnJ9mKY0Za7w@mail.gmail.com>
- <Z8t3uKo54T_Xls_O@x1.local>
- <CAE8KmOwdLk4oZg8TAt0z6rd27f0MpbSS54TWNDshZFU7WPxk-Q@mail.gmail.com>
- <Z9M7MYUPqHFIQPuV@x1.local>
- <CAE8KmOwcgvZekToHbznDWAidXM2L_4Aoszz6j19bSC4U8f4oRg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tuBpT-00061l-7L; Mon, 17 Mar 2025 10:52:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1742223155; x=1773759155;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tr9KXqWXTFbi+fhP6Oqcqc/5/iFNVmNQtrnI2XO+0QE=;
+ b=WfreJ6JTxWNKWDFD/dVjNuWIjowUS9NRsPuhKWSnPOcEO0k5735vYGmr
+ mnYrvMOdNPGO9NAyECzCZiFwzA6PFknjSrMJi7DKbGNXh9aLhInsfCnoj
+ rcBQMuFvhLJWTt35zCL2e514yN1D+Xu4qiAqP92RU7AiVQJQk2awS6MBt
+ 9f3WuszC9kzI8Ajz8usiEK4Vetef89ZhkAMSfBX6SsfF3Sv6Tsr4vZ2BI
+ sFx0dSsdcJkNOzd4hAoeII9xKpjha+Gna0uLaId9xkGpP5+dIAnyuFVUq
+ dd/Xo+dedo4amRBghtdR+Azm3Z6M/JB6jTWUBhUr12DPyE6MHmlo66qd/ g==;
+X-CSE-ConnectionGUID: xubZBg+yT0C03h+kayCp+w==
+X-CSE-MsgGUID: KpKk+xdwQHuct3ArwJSoRQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="54694583"
+X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="54694583"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2025 07:52:27 -0700
+X-CSE-ConnectionGUID: bh1SWcCnR++hngrhq54BFA==
+X-CSE-MsgGUID: paUMgtstT8KPwKrHNYLabA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; d="scan'208";a="126988480"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 17 Mar 2025 07:52:25 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 00/17] rust/vmstate: Clean up, fix, enhance & test
+Date: Mon, 17 Mar 2025 23:12:19 +0800
+Message-Id: <20250317151236.536673-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAE8KmOwcgvZekToHbznDWAidXM2L_4Aoszz6j19bSC4U8f4oRg@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.335,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,32 +75,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 17, 2025 at 06:00:14PM +0530, Prasad Pandit wrote:
-> Hi,
-> 
-> On Fri, 14 Mar 2025 at 01:40, Peter Xu <peterx@redhat.com> wrote:
-> >+        save_section_header(f, se, QEMU_VM_SECTION_PART);
-> > +        ram_save_zero_page(f, se->opaque);
-> >I'll stop requesting a why here...
-> 
-> * Earlier in this thread you mentioned 'We need a header'. I took it
-> as a 'RAM page' header, not save_section_header(). Section type
+Hi,
 
-The question is not about the header, it's about the zero page, and why we
-send this zero page out of blue.
+This series is in preparation for HPET migration support (in particular,
+to support varray and vmstate_validate), and it also cleans up and fixes
+the current vmstate! However, there is still the gap from being a ‘stable’
+vmstate.
 
-IIIUC it can corrupt a page if it uses whatever cached in the previous
-round in the pss, and if it used to be a non-zero.
 
-> (QEMU_VM_COMMAND) was sent by qemu_savevm_command_send() as well.
+Patch Summary
+=============
 
-But it should be for generic VM operations.  We have a few outliers but
-they're too special.  For this case we'd better not add more outliers,
-because neither it is special, nor necessary.
+Patch 1-11: Clean up & fix for vmstate_of & vmstate_struct, where the
+            issues are catched by unit tests.
 
-Thanks,
+Patch 12,13: Add versioned vmstate and vmstate_validate support, and
+             vmstate_validate can accept safe "test" callback.
+
+Patch 13-17: Add unit test to cover as much as possible cases to be
+             compatible with C version macros.
+
+             * Note while in principle Rust's vmstate pattern doesn't
+               have to match the C version, the C vmstate macros are
+               rich enough to cover as much logic as possible. So
+               checking against the C version is the most effective way
+               to detect the error.
+
+With unit tests, the 2 vmstate gaps that come to mind right now are:
+
+ * `test` parameter in vmstate_of/vmstate_struct. I think there's not
+   too much difficulty, since referring to vmstate_validate makes it
+   straightforward...
+
+ * pointer to `struct`. assert_field_type() can't aware a inner type of
+   the pointer. We may need another trait (different from
+   impl_vmstate_pointer). Or, we may need to use the new
+   vmstate_struct_ptr macro. But I haven't tried it in details yet.
+
+
+Thoughts about 'stable' vmstate
+===============================
+
+To make vmstate 'stable', I think one key point is to make vmstate
+related things accept "safe" callbacks.
+
+vmstate_validate (and future `test` parameters) has achieved this. But
+VMStateDescription hasn't and it has the following callbacks:
+    int (*pre_load)(void *opaque);
+    int (*post_load)(void *opaque, int version_id);
+    int (*pre_save)(void *opaque);
+    int (*post_save)(void *opaque);
+    bool (*needed)(void *opaque);
+    bool (*dev_unplug_pending)(void *opaque);
+
+I find there would be 2 options to address this:
+
+1. introduce macros (like vmstate_validate) to accept "safe" callback.
+   For example,
+
+static VMSTATE_HPET: VMStateDescription = VMStateDescription {
+    name: c_str!("hpet").as_ptr(),
+    version_id: 2,
+    minimum_version_id: 1,
+    pre_save: pre_save!(hpet_pre_save), // the pre_save macro will convert "safe" hpet_pre_save() to C style callback.
+    post_load: post_load!(hpet_post_load), // ditto
+    fields: vmstate_fields! {
+        vmstate_of!(HPETState, config),
+        vmstate_of!(HPETState, int_status),
+        vmstate_of!(HPETState, counter),
+        vmstate_of!(HPETState, num_timers, version = 2),
+        vmstate_validate!(HPETState, VALIDATE_TIMERS_NAME, HPETState::validate_num_timers),
+        vmstate_struct!(HPETState, timers, [0 .. num_timers], VMSTATE_HPET_TIMER, BqlRefCell<HPETTimer>, version = 0),
+    },
+    subsections: vmstate_subsections! {
+        VMSTATE_HPET_RTC_IRQ_LEVEL,
+        VMSTATE_HPET_OFFSET,
+    },
+    ..Zeroable::ZERO
+};
+
+2. introduce VMStateDescriptionBuilder (like MemoryRegionOpsBuilder) and
+   use the call chain to accept callbacks and initialize VMStateField.
+
+
+About these 2 options, which one do you like?
+
+
+Best Regards,
+Zhao
+---
+Zhao Liu (17):
+  rust/vmstate: Remove unnecessary unsafe
+  rust/vmstate: Fix num_offset in vmstate macros
+  rust/vmstate: Add a prefix separator ", " for the array field in
+    vmstate macros
+  rust/vmstate: Use ident instead of expr to parse vmsd in
+    vmstate_struct macro
+  rust/vmstate: Fix num field when varray flags are set
+  rust/vmstate: Fix size field of VMStateField with VMS_ARRAY_OF_POINTER
+    flag
+  rust/vmstate: Fix type check for varray in vmstate_struct
+  rust/vmstate: Fix "cannot infer type" error in vmstate_struct
+  rust/vmstate: Fix unnecessary VMState bound of with_varray_flag()
+  rust/vmstate: Relax array check when build varray in vmstate_struct
+  rust/vmstate: Re-implement VMState trait for timer binding
+  rust/vmstate: Support version field in vmstate macros
+  rust/vmstate: Support vmstate_validate
+  rust/vmstate: Add unit test for vmstate_of macro
+  rust/vmstate: Add unit test for vmstate_{of|struct} macro
+  rust/vmstate: Add unit test for pointer case
+  rust/vmstate: Add unit test for vmstate_validate
+
+ rust/hw/char/pl011/src/device_class.rs |   2 +-
+ rust/qemu-api/meson.build              |   5 +-
+ rust/qemu-api/src/assertions.rs        |  15 +
+ rust/qemu-api/src/vmstate.rs           | 110 ++++--
+ rust/qemu-api/tests/tests.rs           |   2 +
+ rust/qemu-api/tests/vmstate_tests.rs   | 467 +++++++++++++++++++++++++
+ 6 files changed, 575 insertions(+), 26 deletions(-)
+ create mode 100644 rust/qemu-api/tests/vmstate_tests.rs
 
 -- 
-Peter Xu
+2.34.1
 
 
