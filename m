@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3079A65E46
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 20:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C698A65E8A
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Mar 2025 20:56:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuGMT-0005HZ-G8; Mon, 17 Mar 2025 15:42:57 -0400
+	id 1tuGYm-0006Ly-9o; Mon, 17 Mar 2025 15:55:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tuGMR-0005GH-5m
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 15:42:55 -0400
-Received: from mail-qk1-x735.google.com ([2607:f8b0:4864:20::735])
+ id 1tuGYj-0006LT-Cg
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 15:55:37 -0400
+Received: from mail-qv1-xf35.google.com ([2607:f8b0:4864:20::f35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tuGMO-0003HR-Hg
- for qemu-devel@nongnu.org; Mon, 17 Mar 2025 15:42:53 -0400
-Received: by mail-qk1-x735.google.com with SMTP id
- af79cd13be357-7c2303a56d6so554471185a.3
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 12:42:52 -0700 (PDT)
+ id 1tuGYg-0005Zw-QG
+ for qemu-devel@nongnu.org; Mon, 17 Mar 2025 15:55:36 -0400
+Received: by mail-qv1-xf35.google.com with SMTP id
+ 6a1803df08f44-6e6c082eac0so44748926d6.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 12:55:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742240571; x=1742845371; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742241333; x=1742846133; darn=nongnu.org;
  h=content-language:thread-index:content-transfer-encoding
  :mime-version:message-id:date:subject:in-reply-to:references:cc:to
  :from:from:to:cc:subject:date:message-id:reply-to;
- bh=eR0d/ermdizUsHANfiRqMS8GwHFKkrdUbpJ8UYqTX54=;
- b=PC82GIVLrQz/GF4UET4CfVov7HwItKrFrBDdZ5TlCPZWomIT5L3wy5aMRQH1pxGhWm
- LqVbZ/fjjFHNrvBHvCf+S2pGHDgZYDZL8J1zEmCnb4HJdO8EKBkAr8aJ4BhI1i7L0EE0
- zJKib+TgkRW+aTadKS8sw7j+LwLF2jXhaJtnAfUAPSrntU+tlumu0Iav2+EMp+YaqE9v
- AAURGBZz1DUomovm2wrgKancLxPHY7iRPt1daFr4ALvIRvD5KSWewVen/Xyl7BV6+O01
- sXf2HZDAVc7zizzW1nDhpBe7e056gX/TiNK77Q9RbobaA0PzSompROtxj2voaHO7Bz6g
- qIEA==
+ bh=+sDUSUrerDwewjtcp0ahQVvGpH4HxEOFVa2zW+VNp24=;
+ b=X5TsjcX6iBPMYVTED4A+VO8NFrYxgbyGK7VsGoUFP2JhjKWedJ9qdAYpMAQYUtgP7w
+ FkWEinVwFICJkd9YclpxwJeoW7OX6Aj9TikvuJCMOYmCEhYuZuNgErTToqNdryc3DtzN
+ LL3xp373I+Oygph2e0yK0a5K2fTpJsdng39gWwbTA9IJQ502lLL8strNlmbSKJ826owO
+ EuF8dbOD8Q5NNSGQIAip3XAl7HlWh4oA7sglc00nFl6A643xca6g0Rq59EDMphNwdKt3
+ 9R4QbIkuXTEpRDtedimEK0iklGxq8rtAbdJ1Pi9tl1cHByhc67vP4mvggnM2BGDEPckE
+ VqRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742240571; x=1742845371;
+ d=1e100.net; s=20230601; t=1742241333; x=1742846133;
  h=content-language:thread-index:content-transfer-encoding
  :mime-version:message-id:date:subject:in-reply-to:references:cc:to
  :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eR0d/ermdizUsHANfiRqMS8GwHFKkrdUbpJ8UYqTX54=;
- b=FSpTLIvmz+NHNLPFsO5ItznKzhx6H7ShK4CZKf6AMWd+wtAAvdl2JWtoDY5dGQWIu1
- AI6Big641EAFLrktxsdR7z3T6p2eMF03teLMs17A5n+MXx1Q73dEupSoPSzqU8e4VzTL
- Q0403IN+Y+NeJUL3vFyT82ceG0H9wKvBMFrS+EvOnSRgbopz7GuhBDJrOd9O2FUIYge+
- N1VhjniEF76VHYfm85f3SpQEXk3vYDwMnpBaFyJJb1Dt+WlrAVzPNtf0p3FAX236+mZC
- 0i0rBpPpb8mxhYwQghTi2WlUn/k0SiAUkgsvc9yT/x6Tr18GLMaKHLWJzmGrCS8XCtgw
- yquA==
+ bh=+sDUSUrerDwewjtcp0ahQVvGpH4HxEOFVa2zW+VNp24=;
+ b=uicaUURlENsv7t9d9x1O7mAZ2yhiDYD06iJrzIQqnPuD2hpseonnIS5uEExHbmQRHq
+ +tMuocxCfGKtrfQK1aSvtcV5NHrJI6f0ADqPgRVUkWs1APPJyRjuECPBjgys4c6eOYwC
+ S8wommsrhtuqDsD413CO/e52hiq4fSe/b/5Zs0b0P/Ydly4Pxd+JPqsitDc7U9Ta5mvE
+ 6jqkdnlHiTtZV7nWo0RFtuRI0wKLPzKataOl1BbLCpD4pTKe2oYx8Zt/jrpnvG8quMQr
+ fUOjJYkCjRHuhdiIa0XlOHlomnvOuijvhpUEXVQhgI/5o6FHw+R+DNzVT1B2JLoufwmm
+ xOPQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUvvM7aGNRYk7gknYkQtpQekpuxL7phe9gJUR+o2tzDHjkDwmBBbNbeYUFAdhPdHkruObJ95RGifJv1@nongnu.org
-X-Gm-Message-State: AOJu0Ywh/C8iNzrewN4TBuUgFQXB3cXnM/EPuOADcxtsZkZjt8y16QkG
- 3F5veyTqDZyhr2usm2KIEUJLVJ4loIzm9f3VNTGEX+zmenwshCR2
-X-Gm-Gg: ASbGnctTX74PFHkviGyWMYD25jVjsENz0HdmrrKX6O5u7OU0aToSMBTGimswmKoBKiu
- T3WwltGo4VZkNlqtK5V0F+7noi4yD77Ki1xcPzc00VbvO707Od0oqKjg48wH3rPx2Y8EA4UuljQ
- 6MMVbvtWprQqcHjN//Hne4lEXUAIbHTe1nR8Ie95h/QBwbSzYraI6YwlMGyV7Pti0J3tW2nWmYy
- mQKJeifNJnIfHf46SaGGVnAVMRkXcQdHezgAssEQFDAOJMB+2kI/hzkOgeN43PVtBbACw/WUlSg
- YH9gKpJ7QemdLsu9y+P9axuqzK5jrm1wWBkeg9RTZNXlszVI9smyhNBLnMzRwFweRKkzxriMHg=
- =
-X-Google-Smtp-Source: AGHT+IFt8qE5E2c+3nMFLkELUlTVBk/QSYF9dgA7cRy2SQgi4A6nd/UStQ5bzwuHpN+3FMlS73rcQA==
-X-Received: by 2002:a05:620a:4042:b0:7c5:4c49:76a9 with SMTP id
- af79cd13be357-7c59b17ad32mr124752685a.4.1742240571351; 
- Mon, 17 Mar 2025 12:42:51 -0700 (PDT)
+ AJvYcCXYFlAuvl5WJHw+O5Sw0b31p6K7wWZU0YxOEm24YnAnoAJ5E2BXWCyemfeGVcBbNuzmjb2Ekl5iHbbH@nongnu.org
+X-Gm-Message-State: AOJu0YxEnIKi5SGPSD3CWTpCgYxvxVOV5cFXjTiVAEXAUIMuxvTRtJao
+ R+5hnJQEe3mZahrE6skIh1f1NAA1h+c9ZK9PW74MD/B4efgoSOKxgt7B5c5kG+8=
+X-Gm-Gg: ASbGnct1Pb7LnL2PdNi0ZzFPX4QD1wksa+AODIDy2a6wPlJYuWfHLQX8+dSiVM+KADG
+ 197DDwYd7pyBfqELehV0mGHgaChp7Y75fc1HBkSkou1oqmkx4QVQULGc7BN/7HtYh7CALYBg9T8
+ Py6U7bDTD5kbqC2pJYChBAfA2vJeOQuJkArhirEcOVMKHj2dcvg0Q1vk3Cp4j6dVWHRRO4gbPU9
+ 2l/nVMYNK5bn4LZEd8znGT/ldV6TMLWkr77z7iA3f+OTN3wwEO7Ubz62USKu9KgW/ZbrFx/dWDr
+ NiUmd4k5uN6bVDcSSwl1efu3ETvkKOrGH9cX9W5CREtIGeBbKYGwhWMDHD7U89M=
+X-Google-Smtp-Source: AGHT+IF4sO+PsENGxAXrUXbCNrhDHgSWK/f0v963fIEfL38J0zPl4fit42sqNbL+lxpgS1gw6wr9Mw==
+X-Received: by 2002:a05:6214:2426:b0:6e8:fb7e:d33b with SMTP id
+ 6a1803df08f44-6eaeaae68dfmr174192736d6.33.1742241333709; 
+ Mon, 17 Mar 2025 12:55:33 -0700 (PDT)
 Received: from DESKTOPUU50BPD ([2603:6000:a500:306:3131:60d1:4874:e2c7])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7c573d6fc6dsm621103085a.88.2025.03.17.12.42.49
+ 6a1803df08f44-6eade2092e6sm58700006d6.21.2025.03.17.12.55.32
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 17 Mar 2025 12:42:50 -0700 (PDT)
+ Mon, 17 Mar 2025 12:55:33 -0700 (PDT)
 From: <ltaylorsimpson@gmail.com>
 To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
 	<qemu-devel@nongnu.org>
@@ -73,22 +72,22 @@ Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
  <quic_mburton@quicinc.com>, <sidneym@quicinc.com>,
  "'Brian Cain'" <bcain@quicinc.com>
 References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
- <20250301052845.1012069-17-brian.cain@oss.qualcomm.com>
-In-Reply-To: <20250301052845.1012069-17-brian.cain@oss.qualcomm.com>
-Subject: RE: [PATCH 16/39] target/hexagon: Implement hex_tlb_lookup_by_asid()
-Date: Mon, 17 Mar 2025 14:42:48 -0500
-Message-ID: <018101db9774$c49485b0$4dbd9110$@gmail.com>
+ <20250301052845.1012069-20-brian.cain@oss.qualcomm.com>
+In-Reply-To: <20250301052845.1012069-20-brian.cain@oss.qualcomm.com>
+Subject: RE: [PATCH 19/39] target/hexagon: Implement hexagon_tlb_fill()
+Date: Mon, 17 Mar 2025 14:55:31 -0500
+Message-ID: <018401db9776$8af811d0$a0e83570$@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQIWUu77rEigiK0ljjjo9ZdCZqs5mQEEksPRsvoeeYA=
+Thread-Index: AQIWUu77rEigiK0ljjjo9ZdCZqs5mQLnzw5AsusFrNA=
 Content-Language: en-us
 X-Antivirus: Norton (VPS 250317-4, 3/17/2025), Outbound message
 X-Antivirus-Status: Clean
-Received-SPF: pass client-ip=2607:f8b0:4864:20::735;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-qk1-x735.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f35;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-qv1-xf35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -122,8 +121,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 > quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
 > alex.bennee@linaro.org; quic_mburton@quicinc.com;
 > sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>
-> Subject: [PATCH 16/39] target/hexagon: Implement
-> hex_tlb_lookup_by_asid()
+> Subject: [PATCH 19/39] target/hexagon: Implement hexagon_tlb_fill()
 > 
 > From: Brian Cain <bcain@quicinc.com>
 > 
