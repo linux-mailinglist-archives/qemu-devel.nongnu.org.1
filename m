@@ -2,100 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCFAA6740D
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:40:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 786B1A67411
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:40:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWDa-0002EW-Iu; Tue, 18 Mar 2025 08:38:50 -0400
+	id 1tuWEW-0002vH-2e; Tue, 18 Mar 2025 08:39:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=7qUH=WF=kaod.org=clg@ozlabs.org>)
- id 1tuWDX-0002Dd-JQ; Tue, 18 Mar 2025 08:38:47 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1tuWDr-0002Ko-W5
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:39:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=7qUH=WF=kaod.org=clg@ozlabs.org>)
- id 1tuWDU-0006UO-R7; Tue, 18 Mar 2025 08:38:47 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZHBGQ2Z7nz4xM3;
- Tue, 18 Mar 2025 23:38:38 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1tuWDo-0006j5-MV
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:39:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742301541;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Cz9lkf23hUIR07q4QFCbbJ/0/AXbaPGeRehimtLZT9U=;
+ b=AJNuL2gDPV5V5CbydTZWrxpdUweejdI/8OIPiLH9I0q1G3CDfZk8WtGgbqm4FEd0QF4Rk9
+ iAgK17b92A9G7NcdWGvNTTZ54LddnghMSUTkHpjQisI7jSPKcInhAJuHVwMA/l4MhC/XO4
+ T/ip8nIgRAKnf82CTYIxycpZQVMZEIY=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-k2zzH-vNP--FvemnQovKBw-1; Tue,
+ 18 Mar 2025 08:38:59 -0400
+X-MC-Unique: k2zzH-vNP--FvemnQovKBw-1
+X-Mimecast-MFC-AGG-ID: k2zzH-vNP--FvemnQovKBw_1742301538
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZHBGL4FZrz4x8p;
- Tue, 18 Mar 2025 23:38:34 +1100 (AEDT)
-Message-ID: <fdd14fbe-57c9-4c8a-be90-4492dfe1ab02@kaod.org>
-Date: Tue, 18 Mar 2025 13:38:32 +0100
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 534DE1955EA4; Tue, 18 Mar 2025 12:38:57 +0000 (UTC)
+Received: from kaapi.redhat.com (unknown [10.74.16.234])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BE7BE180175A; Tue, 18 Mar 2025 12:38:52 +0000 (UTC)
+From: Prasad Pandit <ppandit@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PATCH v8 0/7] Allow to enable multifd and postcopy migration together
+Date: Tue, 18 Mar 2025 18:08:39 +0530
+Message-ID: <20250318123846.1370312-1-ppandit@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] hw/arm: ast27x0: Wire up EHCI controllers
-To: Troy Lee <troy_lee@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: yunlin.tang@aspeedtech.com
-References: <20250317065938.1902272-1-troy_lee@aspeedtech.com>
- <20250317065938.1902272-2-troy_lee@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20250317065938.1902272-2-troy_lee@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=7qUH=WF=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,167 +79,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/17/25 07:59, Troy Lee wrote:
-> AST27x0 has 4 EHCI controllers, where each CPU and I/O die has 2
-> instances. This patch use existing TYPE_PLATFORM_EHCI. After wiring up
-> the EHCI controller, the ast2700a1-evb can find up to 4 USB EHCI
-> interfaces.
-> 
-> ehci-platform 12061000.usb: EHCI Host Controller
-> ehci-platform 12061000.usb: new USB bus registered, assigned bus number 2
-> ehci-platform 12063000.usb: EHCI Host Controller
-> ehci-platform 12063000.usb: new USB bus registered, assigned bus number 3
-> ehci-platform 12061000.usb: irq 88, io mem 0x12061000
-> ehci-platform 12063000.usb: irq 90, io mem 0x12063000
-> ehci-platform 14121000.usb: EHCI Host Controller
-> ehci-platform 14123000.usb: EHCI Host Controller
-> ehci-platform 12061000.usb: USB 2.0 started, EHCI 1.00
-> ehci-platform 14121000.usb: new USB bus registered, assigned bus number 5
-> ehci-platform 14123000.usb: new USB bus registered, assigned bus number 6
-> ehci-platform 14121000.usb: irq 91, io mem 0x14121000
-> ehci-platform 14123000.usb: irq 92, io mem 0x14123000
-> ehci-platform 12063000.usb: USB 2.0 started, EHCI 1.00
-> usb usb2: Manufacturer: Linux 6.6.78-dirty-bafd2830c17c-gbafd2830c17c-dirty ehci_hcd
-> usb usb3: Manufacturer: Linux 6.6.78-dirty-bafd2830c17c-gbafd2830c17c-dirty ehci_hcd
-> ehci-platform 14121000.usb: USB 2.0 started, EHCI 1.00
-> usb usb5: Manufacturer: Linux 6.6.78-dirty-bafd2830c17c-gbafd2830c17c-dirty ehci_hcd
-> ehci-platform 14123000.usb: USB 2.0 started, EHCI 1.00
-> usb usb6: Manufacturer: Linux 6.6.78-dirty-bafd2830c17c-gbafd2830c17c-dirty ehci_hcd
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-This is a custom image ? and not the SDK v09.05.
-  
-> Note that, AST27x0A0 only has 2 EHCI controllers due to hw issue.
->
-> Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
+Hello,
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+* This series (v8) splits earlier patch-2 which enabled multifd and
+  postcopy options together into two separate patches. One modifies
+  the channel discovery in migration_ioc_process_incoming() function,
+  and second one enables the multifd and postcopy migration together.
 
-Thanks,
-
-C.
+  It also adds the 'save_postcopy_prepare' savevm_state handler to
+  enable different sections to take an action just before the Postcopy
+  phase starts. Thank you Peter for these patches.
+===
+67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             152.66s   81 subtests passed
+===
 
 
-> ---
->   hw/arm/aspeed_ast27x0.c     | 28 ++++++++++++++++++++++++++++
->   include/hw/arm/aspeed_soc.h |  4 +++-
->   2 files changed, 31 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-> index dce7255a2c..4ff4462ec1 100644
-> --- a/hw/arm/aspeed_ast27x0.c
-> +++ b/hw/arm/aspeed_ast27x0.c
-> @@ -25,6 +25,8 @@
->   
->   static const hwaddr aspeed_soc_ast2700_memmap[] = {
->       [ASPEED_DEV_SRAM]      =  0x10000000,
-> +    [ASPEED_DEV_EHCI1]     =  0x12061000,
-> +    [ASPEED_DEV_EHCI2]     =  0x12063000,
->       [ASPEED_DEV_HACE]      =  0x12070000,
->       [ASPEED_DEV_EMMC]      =  0x12090000,
->       [ASPEED_DEV_INTC]      =  0x12100000,
-> @@ -47,6 +49,8 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
->       [ASPEED_DEV_ETH2]      =  0x14060000,
->       [ASPEED_DEV_ETH3]      =  0x14070000,
->       [ASPEED_DEV_SDHCI]     =  0x14080000,
-> +    [ASPEED_DEV_EHCI3]     =  0x14121000,
-> +    [ASPEED_DEV_EHCI4]     =  0x14123000,
->       [ASPEED_DEV_ADC]       =  0x14C00000,
->       [ASPEED_DEV_SCUIO]     =  0x14C02000,
->       [ASPEED_DEV_GPIO]      =  0x14C0B000,
-> @@ -91,6 +95,8 @@ static const int aspeed_soc_ast2700a0_irqmap[] = {
->       [ASPEED_DEV_TIMER7]    = 22,
->       [ASPEED_DEV_TIMER8]    = 23,
->       [ASPEED_DEV_DP]        = 28,
-> +    [ASPEED_DEV_EHCI1]     = 33,
-> +    [ASPEED_DEV_EHCI2]     = 37,
->       [ASPEED_DEV_LPC]       = 128,
->       [ASPEED_DEV_IBT]       = 128,
->       [ASPEED_DEV_KCS]       = 128,
-> @@ -137,6 +143,8 @@ static const int aspeed_soc_ast2700a1_irqmap[] = {
->       [ASPEED_DEV_TIMER7]    = 22,
->       [ASPEED_DEV_TIMER8]    = 23,
->       [ASPEED_DEV_DP]        = 28,
-> +    [ASPEED_DEV_EHCI1]     = 33,
-> +    [ASPEED_DEV_EHCI2]     = 37,
->       [ASPEED_DEV_LPC]       = 192,
->       [ASPEED_DEV_IBT]       = 192,
->       [ASPEED_DEV_KCS]       = 192,
-> @@ -212,6 +220,8 @@ static const int ast2700_gic132_gic196_intcmap[] = {
->       [ASPEED_DEV_UART10]    = 16,
->       [ASPEED_DEV_UART11]    = 17,
->       [ASPEED_DEV_UART12]    = 18,
-> +    [ASPEED_DEV_EHCI3]     = 28,
-> +    [ASPEED_DEV_EHCI4]     = 29,
->   };
->   
->   /* GICINT 133 */
-> @@ -434,6 +444,11 @@ static void aspeed_soc_ast2700_init(Object *obj)
->           object_initialize_child(obj, "spi[*]", &s->spi[i], typename);
->       }
->   
-> +    for (i = 0; i < sc->ehcis_num; i++) {
-> +        object_initialize_child(obj, "ehci[*]", &s->ehci[i],
-> +                                TYPE_PLATFORM_EHCI);
-> +    }
-> +
->       snprintf(typename, sizeof(typename), "aspeed.sdmc-%s", socname);
->       object_initialize_child(obj, "sdmc", &s->sdmc, typename);
->       object_property_add_alias(obj, "ram-size", OBJECT(&s->sdmc),
-> @@ -709,6 +724,17 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
->                           ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
->       }
->   
-> +    /* EHCI */
-> +    for (i = 0; i < sc->ehcis_num; i++) {
-> +        if (!sysbus_realize(SYS_BUS_DEVICE(&s->ehci[i]), errp)) {
-> +            return;
-> +        }
-> +        aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->ehci[i]), 0,
-> +                        sc->memmap[ASPEED_DEV_EHCI1 + i]);
-> +        sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
-> +                           aspeed_soc_get_irq(s, ASPEED_DEV_EHCI1 + i));
-> +    }
-> +
->       /*
->        * SDMC - SDRAM Memory Controller
->        * The SDMC controller is unlocked at SPL stage.
-> @@ -900,6 +926,7 @@ static void aspeed_soc_ast2700a0_class_init(ObjectClass *oc, void *data)
->       sc->silicon_rev  = AST2700_A0_SILICON_REV;
->       sc->sram_size    = 0x20000;
->       sc->spis_num     = 3;
-> +    sc->ehcis_num    = 2;
->       sc->wdts_num     = 8;
->       sc->macs_num     = 1;
->       sc->uarts_num    = 13;
-> @@ -927,6 +954,7 @@ static void aspeed_soc_ast2700a1_class_init(ObjectClass *oc, void *data)
->       sc->silicon_rev  = AST2700_A1_SILICON_REV;
->       sc->sram_size    = 0x20000;
->       sc->spis_num     = 3;
-> +    sc->ehcis_num    = 4;
->       sc->wdts_num     = 8;
->       sc->macs_num     = 3;
->       sc->uarts_num    = 13;
-> diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-> index f069d17d16..c1e80c8908 100644
-> --- a/include/hw/arm/aspeed_soc.h
-> +++ b/include/hw/arm/aspeed_soc.h
-> @@ -43,7 +43,7 @@
->   #include "hw/intc/arm_gicv3.h"
->   
->   #define ASPEED_SPIS_NUM  3
-> -#define ASPEED_EHCIS_NUM 2
-> +#define ASPEED_EHCIS_NUM 4
->   #define ASPEED_WDTS_NUM  8
->   #define ASPEED_CPUS_NUM  4
->   #define ASPEED_MACS_NUM  4
-> @@ -192,6 +192,8 @@ enum {
->       ASPEED_DEV_SPI2,
->       ASPEED_DEV_EHCI1,
->       ASPEED_DEV_EHCI2,
-> +    ASPEED_DEV_EHCI3,
-> +    ASPEED_DEV_EHCI4,
->       ASPEED_DEV_VIC,
->       ASPEED_DEV_INTC,
->       ASPEED_DEV_INTCIO,
+v7: https://lore.kernel.org/qemu-devel/20250228121749.553184-1-ppandit@redhat.com/T/#t
+* This series (v7) adds 'MULTIFD_RECV_SYNC' migration command. It is used
+  to notify the destination migration thread to synchronise with the Multifd
+  threads. This allows Multifd ('mig/dst/recv_x') threads on the destination
+  to receive all their data, before they are shutdown.
+
+  This series also updates the channel discovery function and qtests as
+  suggested in the previous review comments.
+===
+67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             147.84s   81 subtests passed
+===
+
+
+v6: https://lore.kernel.org/qemu-devel/20250215123119.814345-1-ppandit@redhat.com/T/#t
+* This series (v6) shuts down Multifd threads before starting Postcopy
+  migration. It helps to avoid an issue of multifd pages arriving late
+  at the destination during Postcopy phase and corrupting the vCPU
+  state. It also reorders the qtest patches and does some refactoring
+  changes as suggested in previous review.
+===
+67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             161.35s   73 subtests passed
+===
+
+
+v5: https://lore.kernel.org/qemu-devel/20250205122712.229151-1-ppandit@redhat.com/T/#t
+* This series (v5) consolidates migration capabilities setting in one
+  'set_migration_capabilities()' function, thus simplifying test sources.
+  It passes all migration tests.
+===
+66/66 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             143.66s   71 subtests passed
+===
+
+
+v4: https://lore.kernel.org/qemu-devel/20250127120823.144949-1-ppandit@redhat.com/T/#t
+* This series (v4) adds more 'multifd+postcopy' qtests which test
+  Precopy migration with 'postcopy-ram' attribute set. And run
+  Postcopy migrations with 'multifd' channels enabled.
+===
+$ ../qtest/migration-test --tap -k -r '/x86_64/migration/multifd+postcopy' | grep -i 'slow test'
+# slow test /x86_64/migration/multifd+postcopy/plain executed in 1.29 secs
+# slow test /x86_64/migration/multifd+postcopy/recovery/tls/psk executed in 2.48 secs
+# slow test /x86_64/migration/multifd+postcopy/preempt/plain executed in 1.49 secs
+# slow test /x86_64/migration/multifd+postcopy/preempt/recovery/tls/psk executed in 2.52 secs
+# slow test /x86_64/migration/multifd+postcopy/tcp/tls/psk/match executed in 3.62 secs
+# slow test /x86_64/migration/multifd+postcopy/tcp/plain/zstd executed in 1.34 secs
+# slow test /x86_64/migration/multifd+postcopy/tcp/plain/cancel executed in 2.24 secs
+...
+66/66 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             148.41s   71 subtests passed
+===
+
+
+v3: https://lore.kernel.org/qemu-devel/20250121131032.1611245-1-ppandit@redhat.com/T/#t
+* This series (v3) passes all existing 'tests/qtest/migration/*' tests
+  and adds a new one to enable multifd channels with postcopy migration.
+
+
+v2: https://lore.kernel.org/qemu-devel/20241129122256.96778-1-ppandit@redhat.com/T/#u
+* This series (v2) further refactors the 'ram_save_target_page'
+  function to make it independent of the multifd & postcopy change.
+
+
+v1: https://lore.kernel.org/qemu-devel/20241126115748.118683-1-ppandit@redhat.com/T/#u
+* This series removes magic value (4-bytes) introduced in the
+  previous series for the Postcopy channel.
+
+
+v0: https://lore.kernel.org/qemu-devel/20241029150908.1136894-1-ppandit@redhat.com/T/#u
+* Currently Multifd and Postcopy migration can not be used together.
+  QEMU shows "Postcopy is not yet compatible with multifd" message.
+
+  When migrating guests with large (100's GB) RAM, Multifd threads
+  help to accelerate migration, but inability to use it with the
+  Postcopy mode delays guest start up on the destination side.
+
+* This patch series allows to enable both Multifd and Postcopy
+  migration together. Precopy and Multifd threads work during
+  the initial guest (RAM) transfer. When migration moves to the
+  Postcopy phase, Multifd threads are restrained and the Postcopy
+  threads start to request pages from the source side.
+
+* This series introduces magic value (4-bytes) to be sent on the
+  Postcopy channel. It helps to differentiate channels and properly
+  setup incoming connections on the destination side.
+
+
+Thank you.
+---
+Peter Xu (2):
+  migration: Add save_postcopy_prepare() savevm handler
+  migration/ram: Implement save_postcopy_prepare()
+
+Prasad Pandit (5):
+  migration/multifd: move macros to multifd header
+  migration: Refactor channel discovery mechanism
+  migration: enable multifd and postcopy together
+  tests/qtest/migration: consolidate set capabilities
+  tests/qtest/migration: add postcopy tests with multifd
+
+ include/migration/register.h              |  15 +++
+ migration/migration.c                     | 128 ++++++++++++----------
+ migration/multifd-nocomp.c                |   3 +-
+ migration/multifd.c                       |  12 +-
+ migration/multifd.h                       |   5 +
+ migration/options.c                       |   5 -
+ migration/ram.c                           |  44 +++++++-
+ migration/savevm.c                        |  33 ++++++
+ migration/savevm.h                        |   1 +
+ tests/qtest/migration/compression-tests.c |  38 ++++++-
+ tests/qtest/migration/cpr-tests.c         |   6 +-
+ tests/qtest/migration/file-tests.c        |  58 +++++-----
+ tests/qtest/migration/framework.c         |  76 +++++++++----
+ tests/qtest/migration/framework.h         |   9 +-
+ tests/qtest/migration/misc-tests.c        |   4 +-
+ tests/qtest/migration/postcopy-tests.c    |  35 +++++-
+ tests/qtest/migration/precopy-tests.c     |  48 +++++---
+ tests/qtest/migration/tls-tests.c         |  70 +++++++++++-
+ 18 files changed, 436 insertions(+), 154 deletions(-)
+
+-- 
+2.48.1
 
 
