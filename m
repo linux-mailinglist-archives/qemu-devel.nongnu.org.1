@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47079A66DCB
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 09:16:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8574A66DBD
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 09:15:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuS5A-0002u2-G1; Tue, 18 Mar 2025 04:13:52 -0400
+	id 1tuS58-0002th-Qu; Tue, 18 Mar 2025 04:13:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4M-0002jp-Hp; Tue, 18 Mar 2025 04:13:06 -0400
+ id 1tuS4N-0002k0-RN; Tue, 18 Mar 2025 04:13:06 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4J-0001Jr-6o; Tue, 18 Mar 2025 04:13:01 -0400
+ id 1tuS4L-0001KN-53; Tue, 18 Mar 2025 04:13:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742285579; x=1773821579;
+ t=1742285581; x=1773821581;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=usEhCMOmGCifjwNKm0zeYfxP5suOQmKgiIpvC4cOCps=;
- b=UorvicjYguEO/jZaotibT6CsIyy9HkzX4jc3OZZCRUN8htaWheDoYTlJ
- U5VcNPo3V+LMXTPTQlyOH6lyFwrM9oh99lKutrB5wsgQPThjY69mewMrt
- znEFOGL8+9JuKwRh3smtl5aSap7rphD0EyW6XMwyZl8dhdwAGdiETJWkz
- u6raUXojIvYyy0DkUcz1+5eVMQ8YgAJdV269zc1gzZEu/KufCXV4JazuF
- y4A27+p9F7Bm+yNO0q2Tzu37mNApCOK8eHcfkl6kTIB90UxXRq032l0uh
- kJVn1YwseH+dKCEez+IMyvIm3XrET4kDmAwutIazc6v1owJF9t/oZTxsm A==;
-X-CSE-ConnectionGUID: G1vmXEDfRdSlrErdNlMQPQ==
-X-CSE-MsgGUID: whLVyZn2Rp+RzPjOqy2Dqg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621583"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621583"
+ bh=ZPd9V5wMjDbpVJyLc2i9uB1eqHqQJo3XlnU3/4VFDfo=;
+ b=Rh00BszQ0M/7vMHMzNtsSzMMpIn/M/wpzUOqbNOjHIQ5ClXM3losa8hI
+ VGegRPrLWQr8wfXcjYqnZdFnsz5AET2XGjG8C5qDUWWzw2Trh2ErtdA6N
+ D0GKakKF/nT2DoOeLB5MlfHpD1uwh6dE39SVePcJG56olK8R5PlrKfggY
+ 8j8VOzV05xIPjFUpA7VPiOwyo6N/9+aJaQFxCpxfNIxdJkRUSpYXyLLiu
+ SN4V5Co0QhBYLvwBhfQ2ytmDVdW74OvmDmXy7zo/Wvmw2fjLDqkP/fSlw
+ UddBEyYFlRLKZbNByZoW8GpzQoaInMQv/iBjGhaJiTRysJWoF1Y7TLGbd Q==;
+X-CSE-ConnectionGUID: qc0pQ1mjTsu67ktQxnJdDQ==
+X-CSE-MsgGUID: 85t3VKl7QBWURuX/dnv2xQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621586"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621586"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 01:12:55 -0700
-X-CSE-ConnectionGUID: pyl9JkQpQTOgmCYeRt/FfQ==
-X-CSE-MsgGUID: g6y8gLOPQsGu5+W3bPagvA==
+ 18 Mar 2025 01:12:57 -0700
+X-CSE-ConnectionGUID: 6rPGYD7JSlC/uPaGXgNr7g==
+X-CSE-MsgGUID: yOz8rGWOT6ehRrSkwdfvog==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363234"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363246"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:54 -0700
+ by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:55 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 08/14] rust/vmstate: Relax array check when build varray in
- vmstate_struct
-Date: Tue, 18 Mar 2025 16:32:42 +0800
-Message-Id: <20250318083248.1402990-9-zhao1.liu@intel.com>
+Subject: [PATCH v2 09/14] rust/vmstate: Re-implement VMState trait for timer
+ binding
+Date: Tue, 18 Mar 2025 16:32:43 +0800
+Message-Id: <20250318083248.1402990-10-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250318083248.1402990-1-zhao1.liu@intel.com>
 References: <20250318083248.1402990-1-zhao1.liu@intel.com>
@@ -78,55 +78,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The varry of structure created by vmstate_struct is different with
-vmstate_of. This is because vmstate_struct uses the `vmsd` to traverse
-the vmstates of structure's fields, rather than treating the structure
-directly as a well-defined vmstate.
+At present, Rust side has a timer binding "timer::Timer", so the vmstate
+for timer should base on that binding instead of the raw
+"binding::QEMUTimer".
 
-Therefore, there's no need to check array flag when building varray by
-vmstate_struct.
+It's possible to apply impl_vmstate_transparent for cell::Opaque and
+then impl_vmstate_forward for timer::Timer. But binding::QEMUTimer
+shouldn't be used directly, so that vmstate for such raw timer type is
+useless.
+
+Thus, apply impl_vmstate_scalar for timer::Timer. And since Opaque<> is
+useful, apply impl_vmstate_transparent for cell::Opaque as well.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/src/vmstate.rs | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ rust/qemu-api/src/vmstate.rs | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 792a74fdfc08..0b5af1c90b11 100644
+index 0b5af1c90b11..01f06ed7379e 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -275,14 +275,20 @@ pub const fn with_pointer_flag(mut self) -> Self {
-     }
+@@ -27,12 +27,7 @@
+ use core::{marker::PhantomData, mem, ptr::NonNull};
  
-     #[must_use]
--    pub const fn with_varray_flag(mut self, flag: VMStateFlags) -> VMStateField {
--        assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) != 0);
-+    pub const fn with_varray_flag_unchecked(mut self, flag: VMStateFlags) -> VMStateField {
-         self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_ARRAY.0);
-         self.flags = VMStateFlags(self.flags.0 | flag.0);
-         self.num = 0; // varray uses num_offset instead of num.
-         self
-     }
+ pub use crate::bindings::{VMStateDescription, VMStateField};
+-use crate::{
+-    bindings::{self, VMStateFlags},
+-    prelude::*,
+-    qom::Owned,
+-    zeroable::Zeroable,
+-};
++use crate::{bindings::VMStateFlags, prelude::*, qom::Owned, zeroable::Zeroable};
  
-+    #[must_use]
-+    #[allow(unused_mut)]
-+    pub const fn with_varray_flag(mut self, flag: VMStateFlags) -> VMStateField {
-+        assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) != 0);
-+        self.with_varray_flag_unchecked(flag)
-+    }
-+
-     #[must_use]
-     pub const fn with_varray_multiply(mut self, num: u32) -> VMStateField {
-         assert!(num <= 0x7FFF_FFFFu32);
-@@ -454,7 +460,7 @@ macro_rules! vmstate_struct {
-             flags: $crate::bindings::VMStateFlags::VMS_STRUCT,
-             vmsd: $vmsd,
-             ..$crate::zeroable::Zeroable::ZERO
--         } $(.with_varray_flag(
-+         } $(.with_varray_flag_unchecked(
-                   $crate::call_func_with_field!(
-                       $crate::vmstate::vmstate_varray_flag,
-                       $struct_name,
+ /// This macro is used to call a function with a generic argument bound
+ /// to the type of a field.  The function must take a
+@@ -344,6 +339,7 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
+ impl_vmstate_transparent!(std::pin::Pin<T> where T: VMState);
+ impl_vmstate_transparent!(crate::cell::BqlCell<T> where T: VMState);
+ impl_vmstate_transparent!(crate::cell::BqlRefCell<T> where T: VMState);
++impl_vmstate_transparent!(crate::cell::Opaque<T> where T: VMState);
+ 
+ #[macro_export]
+ macro_rules! impl_vmstate_bitsized {
+@@ -390,7 +386,7 @@ unsafe impl VMState for $type {
+ impl_vmstate_scalar!(vmstate_info_uint16, u16, VMS_VARRAY_UINT16);
+ impl_vmstate_scalar!(vmstate_info_uint32, u32, VMS_VARRAY_UINT32);
+ impl_vmstate_scalar!(vmstate_info_uint64, u64);
+-impl_vmstate_scalar!(vmstate_info_timer, bindings::QEMUTimer);
++impl_vmstate_scalar!(vmstate_info_timer, crate::timer::Timer);
+ 
+ // Pointer types using the underlying type's VMState plus VMS_POINTER
+ // Note that references are not supported, though references to cells
 -- 
 2.34.1
 
