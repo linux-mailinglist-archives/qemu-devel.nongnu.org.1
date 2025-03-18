@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96AAA66DC3
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 09:15:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C42CFA66DB6
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 09:15:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuS58-0002tc-K0; Tue, 18 Mar 2025 04:13:50 -0400
+	id 1tuS57-0002sH-BI; Tue, 18 Mar 2025 04:13:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4D-0002i1-87; Tue, 18 Mar 2025 04:12:53 -0400
+ id 1tuS4C-0002hs-Tp; Tue, 18 Mar 2025 04:12:53 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4A-0001Jr-Mn; Tue, 18 Mar 2025 04:12:52 -0400
+ id 1tuS4A-0001KN-Mp; Tue, 18 Mar 2025 04:12:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1742285571; x=1773821571;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4u5ylYM12of4QFCbfERzBFIVepVdhFlIVpqn5oTA2eM=;
- b=mIX+B/VB+Uar+w0AmdMSq8hEwkm0lXg+toKKSI+ZdDXQP4ZOK2tJFJ9c
- sXNT5OcaQxaEFX0Bwjr49u/tUHnt26S+0sK8PTxVPmx4v9aaSIzY91WvL
- WpLJpR2/MoTLiT/GKN5AFxriMcRuLbfA6rTpB7p9pc4f1Z98PiJfTn3cr
- n7JWyZXUq+4ZyNRrVEJo4bWy8KCkT5AmT5EH5HljQ1qFo300L7Ko6DiFH
- VPfKFieWyYCB5VpxkBrocFujgbLZaqqvOCoFpKl1bDjkmX9S22VIJ31bu
- oa4dO0UGRxxTdwwEQf83Rr1mmbSUmD3zuyRKJl8E+AmBZT7O4ABLlfQOi g==;
-X-CSE-ConnectionGUID: D+HxdAflTA656de/t18wnQ==
-X-CSE-MsgGUID: yZXBdsDKQ16noB0Y2IQzQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621547"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621547"
+ bh=ZBH+gd9fwHUKnch2bJzVxP0eRmX4fWcxXMkXBj21ULs=;
+ b=bE1IV8MWdpFBO4zdOfkuqKAFw9F8+Fz7Eun4F2Xv5uxUZfoI8zrHNff0
+ 8CrOlkW0qZYNsDjON0CZ8OkGDhfrDiqfVtbVjSupQPv3K6js3+sukQ6HH
+ +dZvMxSlXv1Dr+7wSk6omSmavD5jAh3WPeZup/E42ybz4VJsO6KRirNEV
+ DzcjxW1176BIkFVes9SiwrGlCA5JikJ1ryme+/FS7a56NTUECTmgV4Cn/
+ Paa4hUdnK79lI1tB+ZXlH5TwNxeAi0RSRGt6PfJ/jAp8Xx9TEK7WCp9Ou
+ 9U7lXxV6S6/ZkjM/7vUFNHUDLk62Zb5mRZIJSMX/zr1iIE8X68wi7darl Q==;
+X-CSE-ConnectionGUID: eoaGOtxXTZGC5hQLGVEruA==
+X-CSE-MsgGUID: pyg1/323Szuv60n7t8NbPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621554"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621554"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 01:12:45 -0700
-X-CSE-ConnectionGUID: YKaiy+d0RTe2OKzRKvhTHQ==
-X-CSE-MsgGUID: 0fipWQGWTyuTOxW20DUOCA==
+ 18 Mar 2025 01:12:47 -0700
+X-CSE-ConnectionGUID: u1jEhanAT6Kd7WGwfFEzjA==
+X-CSE-MsgGUID: 5LNX0gjZQROFmjLQIeTqHg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363184"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363190"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:44 -0700
+ by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:45 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 01/14] rust/vmstate: Remove unnecessary unsafe
-Date: Tue, 18 Mar 2025 16:32:35 +0800
-Message-Id: <20250318083248.1402990-2-zhao1.liu@intel.com>
+Subject: [PATCH v2 02/14] rust/vmstate: Fix num_offset in vmstate macros
+Date: Tue, 18 Mar 2025 16:32:36 +0800
+Message-Id: <20250318083248.1402990-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250318083248.1402990-1-zhao1.liu@intel.com>
 References: <20250318083248.1402990-1-zhao1.liu@intel.com>
@@ -77,28 +77,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the `unsafe` block of vmsd, because vmsd (passed to
-vmstate_struct) is defined in Rust side now, and it doesn't need
-`unsafe`.
+`num_offset` is a member of `VMStateField`, and there's no need to use
+"." to access this field in a `VMStateField` instance.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/src/vmstate.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/qemu-api/src/vmstate.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index f0510ae769d1..6698dfe7aeb8 100644
+index 6698dfe7aeb8..9533b1250fa5 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -447,7 +447,7 @@ macro_rules! vmstate_struct {
-             },
-             size: ::core::mem::size_of::<$type>(),
-             flags: $crate::bindings::VMStateFlags::VMS_STRUCT,
--            vmsd: unsafe { $vmsd },
-+            vmsd: $vmsd,
-             ..$crate::zeroable::Zeroable::ZERO $(
-                 .with_varray_flag($crate::call_func_with_field!(
-                     $crate::vmstate::vmstate_varray_flag,
+@@ -208,7 +208,7 @@ macro_rules! vmstate_of {
+                 .as_bytes()
+                 .as_ptr() as *const ::std::os::raw::c_char,
+             offset: $crate::offset_of!($struct_name, $field_name),
+-            $(.num_offset: $crate::offset_of!($struct_name, $num),)?
++            $(num_offset: $crate::offset_of!($struct_name, $num),)?
+             // The calls to `call_func_with_field!` are the magic that
+             // computes most of the VMStateField from the type of the field.
+             info: $crate::info_enum_to_ref!($crate::call_func_with_field!(
+@@ -440,7 +440,7 @@ macro_rules! vmstate_struct {
+             name: ::core::concat!(::core::stringify!($field_name), "\0")
+                 .as_bytes()
+                 .as_ptr() as *const ::std::os::raw::c_char,
+-            $(.num_offset: $crate::offset_of!($struct_name, $num),)?
++            $(num_offset: $crate::offset_of!($struct_name, $num),)?
+             offset: {
+                 $crate::assert_field_type!($struct_name, $field_name, $type);
+                 $crate::offset_of!($struct_name, $field_name)
 -- 
 2.34.1
 
