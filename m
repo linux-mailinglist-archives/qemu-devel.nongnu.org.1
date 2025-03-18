@@ -2,97 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9410A67EF9
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:41:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4EDBA67F02
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:42:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuegw-00080U-0t; Tue, 18 Mar 2025 17:41:42 -0400
+	id 1tueht-0001pJ-EO; Tue, 18 Mar 2025 17:42:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tuegq-0007xf-9d
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:41:36 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tuego-0002Qb-0c
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:41:35 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-225e3002dffso69046385ad.1
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:41:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742334092; x=1742938892; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=STjGlaJoL8peYNcrAd1LJeFiqwC5QN4avED5wEwNQ90=;
- b=gF680vBH6Cb3qzaZgt59iEOmcnAyf0A0zbKIgG1Q//yta0yxd+R3s7O3F8I0pgDEsV
- 0Fe2fGK6weo7c8GzRsPkzo30yNYkw2GO2ZtCs1t9cHqWG+9oDnOUhqL09JTuQ70oUH2z
- tFKyp9DhgE2/4zbiTM6l7Yl+rSvw6nZzkRB+nNr4zChF4WKIh6BF4W7yRqLmFayu8hpP
- njnAK8BIPDU6RsccBruRUydpcYA8Up1TDAiD/Cshgq5MyKpWqZEZ48DIkIHV5gX/it6w
- CqKjx2vFYl6rGJkaHzUFT9L8vs6Rw2RFW7woytY+OwGrnborwtpjXl/H7zHhk6pYiXT0
- tZUA==
+ (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
+ id 1tuehr-0001ot-75
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:42:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
+ id 1tueho-00037V-Vx
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:42:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742334155;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kbIPN7AS6G9xolEmuC8tYbLVdteMxhoPrmydpSaGuQs=;
+ b=WHu9x+wSWbMI8dAU5RFwl3rQoXavA+GwWzyET+davfdauLztA9pV/yOBmXPHZxXc97o/zu
+ yPuFRzF/BMf9DNcSNT4QqfvPEJtb6aeQG+s3CxmUPhLfTMmoYpPfCdYSKMgrkIujBPzyxZ
+ 4ZkTQSk9t/kmkFUag8B4Mu6alMorP64=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-66-fDiWvw7sPhK4zn0bfieXww-1; Tue, 18 Mar 2025 17:42:32 -0400
+X-MC-Unique: fDiWvw7sPhK4zn0bfieXww-1
+X-Mimecast-MFC-AGG-ID: fDiWvw7sPhK4zn0bfieXww_1742334151
+Received: by mail-io1-f72.google.com with SMTP id
+ ca18e2360f4ac-85b402f6a1bso1724168639f.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:42:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742334092; x=1742938892;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1742334151; x=1742938951;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=STjGlaJoL8peYNcrAd1LJeFiqwC5QN4avED5wEwNQ90=;
- b=AIsBPOP/O8cxqnQon+3viIClzfamfauVaHlZ3D7tb9Wj40Kk0HgK+eVrz7ZsL/TNwr
- F0Oxlb4LmKBgE6iOi2V6els6ib5dqJkZF1FkEYkLJdMQe6M+IyCZ4Kdf+jKj98UMSA3T
- mTdagEHf58hWOlRxlntIij8a01YXC5WUJMOEdNxf1KXh+Np8g0IXTY2kNat3oHG5fND/
- z+yLAdQJw5urjE7m+ofnfpcsZunfA5CccHVvt5ocEzvtR6xtvfzHNUOgt+bqdJEAvPdn
- 0vvdQOApqgiEuXfr8lAfUtTY/I9slDxbCOHTwz85xRgwozU/OUUFUzNkUXq8aqMzjCo9
- U5/Q==
+ bh=kbIPN7AS6G9xolEmuC8tYbLVdteMxhoPrmydpSaGuQs=;
+ b=gy+/rhLrLEt47uohC9ZqPJ6enQzrbTEsK6UNBHcystRh73vGIbuNllGm2L/r9Alcq4
+ cojGdIHVKGlrwXlJrd95293ifl57RJFm77lQlJmfn2BhirbunzT5bPvMVPn9uobnjn05
+ uOxBkK0Rdwgya3k/jmBkl/kTBd7HPbdbDOm+FQdnWKfh6SbQ8gvjnYlQklw5AcBMVrW5
+ hAIvn8RuVBLeNF+XLS55RJ/YutDoAqHSUvJf+RiXsfBLZxdkSr2uZeY1pBVDdZSo00GL
+ s96CrgSnOdHxSmk4dvM4teXHPYa9Pf30UR30Z3tZtwqOyoRR2qR8MZ6v7VSk4QQPIwHm
+ Z7aQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW8hxf4g+kX5U0H1KCHW6Uw0K8dQAKQ0GNHi9wujhWuDeOtufO2t+NvwsETK1NmpS72ioDGuYQv9OcX@nongnu.org
-X-Gm-Message-State: AOJu0YznLzVx9zmN4PelGdarn0XZez87pzOPzFoRe+FiG0ohWnZ02fvz
- vaKQiTpbH+O90fXvrcpg4CZWy4Vj+IwulEpiBmeFaD1kY/8dJozjvOUW0GWfwYw=
-X-Gm-Gg: ASbGncuRkHTgZZ4y+7Q5izz8wqjfkjxa/DMSXTkWM+nNO9hnpovd+ahtRs5xb0hOdHo
- h97nzjRpFBwIpugQFYGcyBf0dbbqRmSlBW0iVo5JCGLYb0ei1pQL71rcii8x8daJTlKOaVRQz96
- SA8UasitwT5Q+CyCU0JXt+c6aOwR2aIlgtQL6DIHA+YuK480lqAQ5KAzKm8yKEU0gCKeAPJnFQs
- tdNPh0lUDD2Q9foktRScG+VMHaFYqeKhkLxgPk2eIRZd9m48CYZDDFoA3aGUAQ6RnfnZOW1+Ifo
- mag5DTfMCPLAcXEd/XYmDVXEe1RtgcyESfvJvLXc/JErwl3288zExxkcae2uIqq9XQDPAzAS0po
- JgZl8T8V2
-X-Google-Smtp-Source: AGHT+IEvjE74CFsm4MscUePIeChNuRGSVzaxg4KMJo3HjCDFURh6xUnSaRyz1CmLeVtwy7Y/lOF0tw==
-X-Received: by 2002:a05:6a21:6d85:b0:1f5:64a4:aeac with SMTP id
- adf61e73a8af0-1fbed313382mr312364637.33.1742334092205; 
- Tue, 18 Mar 2025 14:41:32 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
+ AJvYcCWI3Uor0ujSkSC9GTS1c/EFh5ClTW39NNjSzBG0He5nfaM30QW5mJ+EneIhoQVwt7l2yGcFeDZRCG6D@nongnu.org
+X-Gm-Message-State: AOJu0YwO9qx8C+RMXnpKydn8rrZ5FGZyuG2RmfQM+jeEHr4hs4JZkxGb
+ Lvglce8NDSsNei+jrO7dLIs+CUa1ZdbrfFrhz1lnHG3wKW6C62JKUVDD7u5gcuVKBrGbG9y+Q7h
+ Rd8d+o1F3AWJEXsQtQ3yZYpPsAYVXdsfHvz2aoZcQvOljta/be67w
+X-Gm-Gg: ASbGncvCqJQWbWgekLU1JJMH7xf0G5jYKks9UEbRqYVGxEV2EW4HV3vZ2sJgsfMtFyV
+ Bal0rn/x+G8JxlJxc5JguHtip9dPPxuFfmrSmC68YIvRfS3XS/9KFvNRAEaVFM5Gir2t6sFz511
+ aC2xT1059StubIxnoInzxYceUlDf44VjK2u0ES3sw2ytBYlsz9dInL+UvBg3jsoOvDrLzKGlmQB
+ krtUSpQ7xOQx4VjIIfn/2z4wOxIKrn5rSmBnDEFa3Owninquk50ANhuYbUglbyxHQr2f15kuqf6
+ Y5G/Abve30QQek3v
+X-Received: by 2002:a05:6e02:1564:b0:3d0:1fc4:edf0 with SMTP id
+ e9e14a558f8ab-3d586b9eb76mr4569965ab.15.1742334151293; 
+ Tue, 18 Mar 2025 14:42:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUfDdUNsU6RaJBinXDzrnfg5izfiWYHksP5vcR8AwQto4nQfxxUe7k9UhIzcu+QLuS/tHf9g==
+X-Received: by 2002:a05:6e02:1564:b0:3d0:1fc4:edf0 with SMTP id
+ e9e14a558f8ab-3d586b9eb76mr4569695ab.15.1742334150949; 
+ Tue, 18 Mar 2025 14:42:30 -0700 (PDT)
+Received: from [192.168.40.164] ([70.105.235.240])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-737116944easm10408525b3a.134.2025.03.18.14.41.31
+ 8926c6da1cb9f-4f263824f30sm2911865173.116.2025.03.18.14.42.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Mar 2025 14:41:31 -0700 (PDT)
-Message-ID: <2766725c-9287-4ba6-9e14-e84616d5fd17@linaro.org>
-Date: Tue, 18 Mar 2025 14:41:30 -0700
+ Tue, 18 Mar 2025 14:42:30 -0700 (PDT)
+Message-ID: <953783f3-923b-4afb-886e-9be5f81e26ad@redhat.com>
+Date: Tue, 18 Mar 2025 17:42:28 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/13] exec/cpu-all: restrict BSWAP_NEEDED to target
- specific code
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, alex.bennee@linaro.org,
- Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20250318045125.759259-1-pierrick.bouvier@linaro.org>
- <20250318045125.759259-2-pierrick.bouvier@linaro.org>
+Subject: Re: [RFC PATCH v2 03/20] hw/arm/smmuv3-accel: Add initial
+ infrastructure for smmuv3-accel device
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250318045125.759259-2-pierrick.bouvier@linaro.org>
+To: Jason Gunthorpe <jgg@nvidia.com>, Nicolin Chen <nicolinc@nvidia.com>
+Cc: Eric Auger <eric.auger@redhat.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org, peter.maydell@linaro.org,
+ berrange@redhat.com, nathanc@nvidia.com, mochs@nvidia.com,
+ smostafa@google.com, linuxarm@huawei.com, wangzhou1@hisilicon.com,
+ jiangkunkun@huawei.com, jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
+References: <20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com>
+ <20250311141045.66620-4-shameerali.kolothum.thodi@huawei.com>
+ <d75feb00-72d3-4d79-a7ac-2548eadb6a77@redhat.com>
+ <Z9hh8MIAQNQcvNlG@Asurada-Nvidia>
+ <71b73212-3d8f-4c9d-93a4-bf07c0f169e3@redhat.com>
+ <Z9hzmzHfWw18OyGO@Asurada-Nvidia> <20250317192453.GR9311@nvidia.com>
+From: Donald Dutile <ddutile@redhat.com>
+In-Reply-To: <20250317192453.GR9311@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=ddutile@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,23 +120,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/17/25 21:51, Pierrick Bouvier wrote:
-> This identifier is already poisoned, so it can't be used from common
-> code anyway.
+
+
+On 3/17/25 3:24 PM, Jason Gunthorpe wrote:
+> On Mon, Mar 17, 2025 at 12:10:19PM -0700, Nicolin Chen wrote:
+>> Another question: how does an emulated device work with a vSMMUv3?
+>> I could imagine that all the accel steps would be bypassed since
+>> !sdev->idev. Yet, the emulated iotlb should cache its translation
+>> so we will need to flush the iotlb, which will increase complexity
+>> as the TLBI command dispatching function will need to be aware what
+>> ASID is for emulated device and what is for vfio device..
 > 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   include/exec/cpu-all.h | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
+> I think you should block it. We already expect different vSMMU's
+... and when you say 'block', you mean qemu prints out a helpful message
+like "Mixing emulate/virtual devices and physical devices on a single SMMUv3 is not allowed.
+       Specify separate smmuv3 objects for each type of device; multiple smmuv3 objects may
+       be required for each physical device if they are attached to different smmuv3's in the host system."
 
-I'll give you a
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Or would that be an allowed qemu machine definition, but the 'block' would be a warning like:
+  "Mixing emulated/virtual devices and physical devices on a single SMMUv3 is not recommended for
+   performance reasons.  To yield optimal performance, place physical devices on separate SMMUv3 objects
+   than emulated/virtual device SMMUv3 objects."
+... and in this case, the physical devices would not use the accel features of an smmuv3, but still be 'functional'.
+This may be desired for a machine definition that wants to be used on different hosts that may not have the
+(same) accel feature(s).
 
-because it's quick and correct.  However, there are only 8 actual uses within the entire 
-tree (discounting comments), and all could be replaced by
-
-> +# if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
 
 
-r~
+> depending on the physical SMMU under the PCI device, it makes sense
+> that a SW VFIO device would have it's own, non-accelerated, vSMMU
+> model in the guest.
+> 
+> Jason
+> 
+
 
