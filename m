@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA230A674BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:16:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4866A674B3
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:16:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWko-00034y-RG; Tue, 18 Mar 2025 09:13:11 -0400
+	id 1tuWly-0005ux-K6; Tue, 18 Mar 2025 09:14:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWji-0002Rw-NZ; Tue, 18 Mar 2025 09:12:04 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ id 1tuWjl-0002VA-B0; Tue, 18 Mar 2025 09:12:05 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWje-0003wE-SC; Tue, 18 Mar 2025 09:12:00 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-ac2b10bea16so488193166b.0; 
- Tue, 18 Mar 2025 06:11:57 -0700 (PDT)
+ id 1tuWjh-0003x0-PO; Tue, 18 Mar 2025 09:12:03 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-ac29fd22163so988631466b.3; 
+ Tue, 18 Mar 2025 06:12:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742303516; x=1742908316; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742303519; x=1742908319; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=j23N8vOYcpKi67Cqo7/zZHv4kG2whHLTAlH6+ZbQMt4=;
- b=OHyI+t1Z1z6qmjTOVhElGWF1DdNhKsWTYn55QGpZ8wWCnXr+0i8wfKdrdJo5uPPBHW
- eowWM2MgP3l0fiLEDS91cI0Bo1F7spSdyGUCnRv4z53S3TE3/yTTOYGdX9/IMoLJQYCT
- mcn+GROXhSka3NVc4+W15adFcSmJLu8MdPmSPSS+OvN0VfeN6PqEI9RXDBkRXUtUYRqO
- QQIon+2kmOI3h7+JgeeDVN+RltcTIseNL+97ji1PpXkZS/AuZjvvbvOUEdvgqL0ypatB
- pqxs0ASFcc8t3wPtGVSwMeEzdVFo8Kqpt1N4S8dY+HYzFI/AZ5y03Esl7UXNn+rmoBMY
- nktA==
+ bh=ufr+Ojap1d/6dhqxl/dlT+APPSOlWATmZs8iR5dzTzY=;
+ b=OzWRk/7/O2o781aCa9rj0eDHeghw1PRDR/wEbv4YwG2X3NqrHTEV634qJwZgi6J6KF
+ 8Uo0UKZqgZ4JFLZIEwnBNc8Mk3WaxyEWxSoGdC0S71YUueu786kaxlXBUccrcBoTtlGG
+ 50PcQtqG8rIgqcyw1oPwMLFe9ZtHovp1BCEPQiy1KlIYD5LHk09ZQ6ZFJaSm6iSSmZ6r
+ rPW87bwSu3ndTGjAvzQa1VCsTkkN29ud6+THSEUl15Jc7lrES69q/0B643mOJAkHGnyb
+ nSCTsZ5Us+pBJH/DIK+UQYhxcRk6Ly3CeTiVvcFtDIzNJfyTCnLKKLrdG52fmN/qb7uP
+ iUZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742303516; x=1742908316;
+ d=1e100.net; s=20230601; t=1742303519; x=1742908319;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j23N8vOYcpKi67Cqo7/zZHv4kG2whHLTAlH6+ZbQMt4=;
- b=hOsTXYOOG1N4tWU0oyZ8728Qg/XsVEvWgp7fuqBR302GTvcwr9mlWuKvQxYMTGGU4G
- qWcjPGzIHTSrtRc/cn2FDQl9GOb8p4Xio06h4yNzHFdcZBF+uzAatfHyC/UVF1CMeRtm
- vqaUzuC5P1SYH0pzMnjHGTaKZFI5c2GsSv+gBdjTB168rFnbVMTB76WyHmN7N70z5W0k
- 4j1wPrLZfGjLEFzNP1pJbAh3Sk69dbkKUG6nCvNCa258KEoTfDmYr/FdFpmdcmKOivCL
- qk0WVXJT0CzpCQSl64bFfjpu74Ii13OvBVYOcYmRUqjh7p4C/EWRVOw/zFE1VZYF9Psj
- dyEw==
+ bh=ufr+Ojap1d/6dhqxl/dlT+APPSOlWATmZs8iR5dzTzY=;
+ b=aA0+h8/vhkiPnqF+d44Ii4jjyCl5J+JjMRJ6T9p3hCGN4R+kMjALMsP9BU8xzM6+gc
+ /yGUvvVtb6NOJ8k2xmGFSQ1jWKyUbHEvhWJ94FCpA3nQUdZ7s0PZLrf2D0ukWjPGWH21
+ pu4B1ZlHTy0drhutSomyUYzJ9E08v5DJWp+iEQdroXkz0QUPeHHH3tR/DkHtWo8MZc4j
+ 9Enhf6Fgsoil7f/RCAJ35MIeeSsOR3GL6m7aJlRvCpuhZQXM1qxHycQaubmTdC5JDzoN
+ p9AX4wPy8ROhd2HMytMCTlW46jaOtNVfgG+zcM7bv4rSuZT76DKXv5ng7DRgNVxk8HT+
+ dswA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU2Yt/c7a8r0nk+9McJgx0Bp2AjJz2vA92xnsKXYN5j6i35cI7JBIFYJ1gp7OtZolm0eppct2Efgg==@nongnu.org
-X-Gm-Message-State: AOJu0Yw/nlYkAU1l6dTglQtKgIhY0TIQStUHpBABbBF2zYtbQMuLzFXw
- 8x7cD+4fSjr4sMCRe9cu7oCKL/S+zoCrt0zYTJbU/JQGcHbd1daRj0/7qKDT
-X-Gm-Gg: ASbGncv6dfX0icDAfTanyr05/T8tWaYLj4hp2iNJ59s4BQP7hfyJfghkYYuw/D/PHCS
- QxJAjlpW0GDQr0DZ6bnZHKeQwddeZyvqE8Og9EE2qmOBD9ynAqrbKEifahNHcBmI4Q4gTgc7AuX
- t9zB6frdV01W3G76v/H68VK0DIy/VCIWjSX0bCIaLAUIFORVBpNFErgJXG/tCbhzufPE1m6lStQ
- t7DO+TmVkZFc/lTNQiUYUT4XsabOJXZotBWnPjTZibu3Vbck9lsQ3dtBCtBFkALzU2zk4TgDLCS
- f1Bhn9gTgGEXh5Y6YDLj3arwnHKOxVIg38Pd93lHAj6mEq1UBO3XAuSp4QUOFQxpZxQ=
-X-Google-Smtp-Source: AGHT+IGGPWxnh0QlL4IU2qsLSPRZbfU8RQ7chA6yMQvIMv4KyCTLXafg6SP2b5xW3TltQ86sf0DFLg==
-X-Received: by 2002:a17:906:d554:b0:ac1:def4:ce20 with SMTP id
- a640c23a62f3a-ac330188c47mr1531992666b.18.1742303505310; 
- Tue, 18 Mar 2025 06:11:45 -0700 (PDT)
+ AJvYcCUJhVC7bkhxuIu2eJCxfMK/aaBU/nZucpcR1wArzotpincOwG0qHCBggh0bTGGYdfaBjPlFucuFUg==@nongnu.org
+X-Gm-Message-State: AOJu0YxBlW3bOgnBd6upNmwgcFVz3jQsYxOCMV0Aj6ZkaPuNwDhfo3wf
+ EqsLKSOvLv0aQ4BjDiqF9URdehnFJhYEWVetEtJHvcOCQFJnw7qINTwcOh35
+X-Gm-Gg: ASbGncuvRsYPwvsQ9fKWnHdCTfGBqGXrdM6Ejp1wZSvwPub31wl7RuQXHIz13zDBM6H
+ HBoFdfVj4yEvjoY/IGKXTrksn5L9S5SmjZYQvXpLHOFZC1Yu6bYEfVXRxDmp1xexDIR3ookA4nl
+ xoHgbIqz0ZZi5Tv4xhjlXO6d1v0meSUTC6mYi4eN4ijZvx9OVbMgitU+j4KZuLqrxNwreLd1Rz2
+ vQObtXfwFGajv523LwZct8jgtWLUf3ZcfSlpscdrqegYUmpw4gGSokj++o0copYdSVS8O5ql+rs
+ 9dkBmkIcGu+Vn2XU6eBwYvoIz/Stb6VF2blRO6BSovREpQ+foh+S1rAT/+A++bnrb9U=
+X-Google-Smtp-Source: AGHT+IELz1TJGTUEpUm+D0f9KQFhnwz6W7BK3gJ9L8xaGrpyZ/JSL1mZK1kpWzpgJef+yrdyULmUQg==
+X-Received: by 2002:a17:906:6a0a:b0:ac1:ed96:56d9 with SMTP id
+ a640c23a62f3a-ac330445091mr1695805166b.40.1742303517481; 
+ Tue, 18 Mar 2025 06:11:57 -0700 (PDT)
 Received: from corvink-nb.beckhoff.com ([195.226.174.194])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3147f3101sm850678066b.69.2025.03.18.06.11.44
+ a640c23a62f3a-ac3147f3101sm850678066b.69.2025.03.18.06.11.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Mar 2025 06:11:44 -0700 (PDT)
+ Tue, 18 Mar 2025 06:11:56 -0700 (PDT)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
@@ -70,17 +70,17 @@ Cc: =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Alistair Francis <alistair@alistair23.me>,
  Paolo Bonzini <pbonzini@redhat.com>, YannickV <Y.Vossen@beckhoff.com>
-Subject: [PATCH 16/21] hw/arm/beckhoff_CX7200: Remove usb interfaces
-Date: Tue, 18 Mar 2025 14:08:07 +0100
-Message-ID: <20250318130817.119636-17-corvin.koehne@gmail.com>
+Subject: [PATCH 17/21] hw/arm/beckhoff_CX7200: Remove unimplemented devices
+Date: Tue, 18 Mar 2025 14:08:08 +0100
+Message-ID: <20250318130817.119636-18-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250318130817.119636-1-corvin.koehne@gmail.com>
 References: <20250318130817.119636-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,49 +105,95 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: YannickV <Y.Vossen@beckhoff.com>
 
-The CX7200 does not support usb interfaces. That is why they
-are removed.
+Some unimplemented devices do not exist for the CX7200. All
+unimplemented devices have been removed for better overview
+and the fact that they are not necessary for a CX7200 emulation.
 
 Signed-off-by: Yannick Voßen <y.vossen@beckhoff.com>
 ---
- hw/arm/Kconfig           | 1 -
- hw/arm/beckhoff_CX7200.c | 4 ----
- 2 files changed, 5 deletions(-)
+ hw/arm/beckhoff_CX7200.c | 69 ----------------------------------------
+ 1 file changed, 69 deletions(-)
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 8727b3e837..a8648b9edf 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -322,7 +322,6 @@ config BECK_CX7200
-     select PL330
-     select SDHCI
-     select SSI_M25P80
--    select USB_EHCI_SYSBUS
-     select XILINX # UART
-     select XILINX_AXI
-     select XILINX_SPI
 diff --git a/hw/arm/beckhoff_CX7200.c b/hw/arm/beckhoff_CX7200.c
-index 1e7152e871..efce3be395 100644
+index efce3be395..a3f4045560 100644
 --- a/hw/arm/beckhoff_CX7200.c
 +++ b/hw/arm/beckhoff_CX7200.c
-@@ -28,7 +28,6 @@
- #include "hw/loader.h"
- #include "hw/adc/zynq-xadc.h"
- #include "hw/ssi/ssi.h"
--#include "hw/usb/chipidea.h"
- #include "qemu/error-report.h"
- #include "hw/sd/sdhci.h"
- #include "hw/char/cadence_uart.h"
-@@ -280,9 +279,6 @@ static void beckhoff_cx7200_init(MachineState *machine)
-     n = beckhoff_cx7200_init_spi_flashes(0xE000D000, pic[51 - IRQ_OFFSET],
-                                          true, n);
+@@ -357,75 +357,6 @@ static void beckhoff_cx7200_init(MachineState *machine)
+     sysbus_connect_irq(busdev, 0, pic[40 - IRQ_OFFSET]);
+     sysbus_mmio_map(busdev, 0, 0xF8007000);
  
--    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0002000, pic[53 - IRQ_OFFSET]);
--    sysbus_create_simple(TYPE_CHIPIDEA, 0xE0003000, pic[76 - IRQ_OFFSET]);
+-    /*
+-     * Refer to the ug585-Zynq-7000-TRM manual B.3 (Module Summary) and
+-     * the zynq-7000.dtsi. Add placeholders for unimplemented devices.
+-     */
+-    create_unimplemented_device("zynq.i2c0", 0xE0004000, 4 * KiB);
+-    create_unimplemented_device("zynq.i2c1", 0xE0005000, 4 * KiB);
+-    create_unimplemented_device("zynq.can0", 0xE0008000, 4 * KiB);
+-    create_unimplemented_device("zynq.can1", 0xE0009000, 4 * KiB);
+-    create_unimplemented_device("zynq.gpio", 0xE000A000, 4 * KiB);
+-    create_unimplemented_device("zynq.smcc", 0xE000E000, 4 * KiB);
 -
-     dev = qdev_new(TYPE_CADENCE_UART);
-     busdev = SYS_BUS_DEVICE(dev);
-     qdev_prop_set_chr(dev, "chardev", serial_hd(0));
+-    /* Direct Memory Access Controller, PL330, Non-Secure Mode */
+-    create_unimplemented_device("zynq.dma_ns", 0xF8004000, 4 * KiB);
+-
+-    /* System Watchdog Timer Registers */
+-    create_unimplemented_device("zynq.swdt", 0xF8005000, 4 * KiB);
+-
+-    /* DDR memory controller */
+-    create_unimplemented_device("zynq.ddrc", 0xF8006000, 4 * KiB);
+-
+-    /* AXI_HP Interface (AFI) */
+-    create_unimplemented_device("zynq.axi_hp0", 0xF8008000, 0x28);
+-    create_unimplemented_device("zynq.axi_hp1", 0xF8009000, 0x28);
+-    create_unimplemented_device("zynq.axi_hp2", 0xF800A000, 0x28);
+-    create_unimplemented_device("zynq.axi_hp3", 0xF800B000, 0x28);
+-
+-    create_unimplemented_device("zynq.efuse", 0xF800d000, 0x20);
+-
+-    /* Embedded Trace Buffer */
+-    create_unimplemented_device("zynq.etb", 0xF8801000, 4 * KiB);
+-
+-    /* Cross Trigger Interface, ETB and TPIU */
+-    create_unimplemented_device("zynq.cti_etb_tpiu", 0xF8802000, 4 * KiB);
+-
+-    /* Trace Port Interface Unit */
+-    create_unimplemented_device("zynq.tpiu", 0xF8803000, 4 * KiB);
+-
+-    /* CoreSight Trace Funnel */
+-    create_unimplemented_device("zynq.funnel", 0xF8804000, 4 * KiB);
+-
+-    /* Instrumentation Trace Macrocell */
+-    create_unimplemented_device("zynq.itm", 0xF8805000, 4 * KiB);
+-
+-    /* Cross Trigger Interface, FTM */
+-    create_unimplemented_device("zynq.cti_ftm", 0xF8809000, 4 * KiB);
+-
+-    /* Fabric Trace Macrocell */
+-    create_unimplemented_device("zynq.ftm", 0xF880B000, 4 * KiB);
+-
+-    /* Cortex A9 Performance Monitoring Unit, CPU */
+-    create_unimplemented_device("cortex-a9.pmu0", 0xF8891000, 4 * KiB);
+-    create_unimplemented_device("cortex-a9.pmu1", 0xF8893000, 4 * KiB);
+-
+-    /* Cross Trigger Interface, CPU */
+-    create_unimplemented_device("zynq.cpu_cti0", 0xF8898000, 4 * KiB);
+-    create_unimplemented_device("zynq.cpu_cti1", 0xF8899000, 4 * KiB);
+-
+-    /* CoreSight PTM-A9, CPU */
+-    create_unimplemented_device("cortex-a9.ptm0", 0xF889c000, 4 * KiB);
+-    create_unimplemented_device("cortex-a9.ptm1", 0xF889d000, 4 * KiB);
+-
+-    /* AMBA NIC301 TrustZone */
+-    create_unimplemented_device("zynq.trustZone", 0xF8900000, 0x20);
+-
+-    /* AMBA Network Interconnect Advanced Quality of Service (QoS-301) */
+-    create_unimplemented_device("zynq.qos301_cpu", 0xF8946000, 0x130);
+-    create_unimplemented_device("zynq.qos301_dmac", 0xF8947000, 0x130);
+-    create_unimplemented_device("zynq.qos301_iou", 0xF8948000, 0x130);
+-
+     beckhoff_cx7200_binfo.ram_size = machine->ram_size;
+     beckhoff_cx7200_binfo.board_id = 0xd32;
+     beckhoff_cx7200_binfo.loader_start = 0;
 -- 
 2.49.0
 
