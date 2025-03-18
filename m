@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16CBDA67EBF
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:34:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6FBA67ED0
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:36:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tueZJ-0002Ou-AT; Tue, 18 Mar 2025 17:33:49 -0400
+	id 1tuea1-0004OD-VM; Tue, 18 Mar 2025 17:34:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY4-0001KE-I7
+ id 1tueY4-0001KP-U9
  for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:33 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY2-0000nd-3w
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:31 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2255003f4c6so110623335ad.0
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:29 -0700 (PDT)
+ id 1tueY2-0000nv-TO
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:32 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-2255003f4c6so110623475ad.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742333548; x=1742938348; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742333549; x=1742938349; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5QmVx49VUNvE0VebpWYF9vpR8W6QUfLccSgTbYDwMAs=;
- b=Ug9fZVCU9vAKmyL4VhCcn2zGXK5szRjo54OJnmp5vr4Ztrg24rA/E+BhMg7WUSxVQF
- lSTcOYYrLA4pScOqViZdaeZq/2RYYv+UGGrQV2B1hgSJZ4GbXU462WYnJ8sZw4UwFqTi
- yzEhvATHchPJ/+MU5O54TyQQN+TT2zftBpS/ReL8m5dS0ldlKa9ApKN1uyK8bOloJh+g
- +NDpYLNSkw2oLgp4dIr1HUn0LQ5bIeDTnk+90ZUi37OLZ7bNKgSKugomR8laUc5BDvbn
- wHsAWBh5SL5nejLzKPLXL+biyNnWFEW19plZVD/mALj7/04rWtqAUGJJd7DREENFOkOh
- Lr+A==
+ bh=ggA+NUCTfLjXVXevEP+BP9AcTpKIsc/HWrtDpZAfGPk=;
+ b=i9+G+XcieQMojHKfgz/du8WSsnxTFD17ucyC6jktM60tlnxaSNvN1RoPk2xDzOiXRL
+ 08ojcFeymfTFYCOm0kgk9EbJjOquFzlPzvXTrRPc/YfBFekCkNDqagxYqHg4i1ltBzsI
+ xCyujkYeLK43evv2ek5eaTb8f+ptywFfNR2a1RmQiBtD3kckXrBOjrFDgXMQP0EDaIYA
+ FNUAuZE5A8neE1M9JiNV08rlgIQhCAcuO8eWqqJ9p4xfahf24t6WgEJngt6Ju677YYpE
+ r4HtceIsUnKc9Oataj6w0QaKpwAUwhz2seXcu9wnJf6ahfZDy7YIHSr1FWkTebBnEYrZ
+ 2uiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742333548; x=1742938348;
+ d=1e100.net; s=20230601; t=1742333549; x=1742938349;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5QmVx49VUNvE0VebpWYF9vpR8W6QUfLccSgTbYDwMAs=;
- b=CbiJvs1Ti3SKjNJiOp9iK/MbW+x6W6F/jfVujGSmIYJLmO8YwDGxMBdLEu8jKdRt0Q
- 9Zod4wenyaNQSCXuygD/4tIBtWiWYb1uVyqPwN0HLtQF9K5jYwA9bqsPC4uWrd8I1BeD
- Kl9eYxSxMISGd6DyD/NrgJgwqpDfbINn0cTmXxHHyMZpx4O3JKdQIkWhNO51JNFQtC7Y
- abzitQgJBCEhpWAORRR4+or/U5e/oG42HxaEBkrA+Xh+96yaM4NxA/ttDILDAo6C6jp4
- jUgrGzyrkpytaeGDWiKtM1bgmGzp1I+lSOzpD1YxkXY7sgSEXJdVT5TFbDXyrbTYlIcd
- HzYw==
-X-Gm-Message-State: AOJu0YzDxFjhkWDN3R+dvSUU/y/yhqAKkRm0jFq+jTXMzcXKJFs09Tup
- QWezr9vq2WMk8rpNB7qJmI0/Id4qsaqq4RpncWEhMQPSQbhoquiEndmg39xLPyIWV0VZKeHuc7V
- W
-X-Gm-Gg: ASbGnctZH6G6gT83b5ZGicWqjSRP2C/oMXi/O/C6wvBpjUa/HYgJXIM7TvC9rR3wWXz
- ZN3Ui+F4MVolwFAGC/9S3eksZ7A2886VO3IGFjuT9re9Mqqz202nPYZ1n4GAxLSvi81KSuxbXMd
- lWMuszmUOlHTeAOmESByLrOxfhsIZKGXT+uTKEFINoh1uM2FDBrUPzDQY7DBm/YlAGy1YfuSbJG
- 3l67qjSByMCR87Loq7yT5Mifhx5UxhQz7q7BZGS8cK4fvIK0SzfKhOXXr038JGLSXeWnMvG4NJy
- j6Ot0KlXDBUk2RWuJawT1g+nVM5ts1gaQLya7l7+l7LPXrbpQwzoZyEBZoxE5ifa8JNQ+yAJNo2
- E
-X-Google-Smtp-Source: AGHT+IHEd94KTdA0pkgWVhu0jlVJRUgCNmZYrr5glF4pGl2ECArhuTTUjby1rWYJDajgztQVhV1IvA==
-X-Received: by 2002:a05:6a20:2d23:b0:1f5:8a03:ea22 with SMTP id
- adf61e73a8af0-1fbece408e9mr272333637.33.1742333548526; 
- Tue, 18 Mar 2025 14:32:28 -0700 (PDT)
+ bh=ggA+NUCTfLjXVXevEP+BP9AcTpKIsc/HWrtDpZAfGPk=;
+ b=vIE5Ow/d9WeoeyAkxde1u8SKWbNk42TmDFiSPsVAEtCQlNHVSKJ2xmaFPMng4FprY8
+ XHlpFTAEqdt155rTtdZc9a3UXEvlvZPUDFRgVLGGQbyCEShDr9POEom8P/aMRXOY6SYh
+ V3rb3u1tZ3K/9rSnCXFgWocB4wHFQORCsSidhaJg1sDS/e4gHdvnY//179yxsQkwah7H
+ 9grCjYPFMGYaiyIMH40RHX0QO82mBTxPvaEjax8enodAtg7gKmWaKglhzPa4wedvHBgg
+ Z1e0IfRur3n1InjnXXEsJyA6LJ+j7nnSVMJ91sRoasAFe235e54PN3KTr3WtnmLZD5wO
+ 9MEQ==
+X-Gm-Message-State: AOJu0YzYZt4YyrKkWZvXbtBidsfOT+c3WxyCsr0xQcKneLAx8AvSc7L7
+ MGjj9bfVndFaIQXSoP51S2/7cWGDBWLkEIt8QAWAG6OvjGpo5jXXyXa865YEBfNhvFTi8EDcPjJ
+ D
+X-Gm-Gg: ASbGncvI1lG2ErdzlB4fUcCESqCIeu+eGqiKl93vDx/GATI+Ax4OhudFk4dpz6ZKJRp
+ 1JkoPFAQs8mXsPzYL6/gYYTLbw0NcKfRZ750hWbqD3wHUDcUTNaZIfKpo3jfofVwVudM185TBUq
+ ucyfGNVoeL19eXD4+PYMegZ67p4HLTJfyCuiAXRN/hkSuo4qAfCjyhmeJfcMR7kHjRawcJZ5Dkw
+ /H3T7Ly5rgqSMbVBplx8w+Y/jCtd+VyKnpOYuH9iQzb0++maHYtuq/t6q6Z0ST/x+cIdb80H9xW
+ l+u51hEMm1y0l89L9y6N1jJ+DL42Gq90PJonmF6MW+gSUJ/G7ZMKs1sIZoccaroOvvGITniwc1U
+ g
+X-Google-Smtp-Source: AGHT+IHX43KV4Qy86mkEgJ3MbC/4FcVXPfvLtRC5+5oYf5U51w83RLZIer4Zfzpa5wCxdxZHCsqWkw==
+X-Received: by 2002:a05:6a21:68f:b0:1f3:48d5:7303 with SMTP id
+ adf61e73a8af0-1fbece41f10mr336813637.31.1742333549169; 
+ Tue, 18 Mar 2025 14:32:29 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
  41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.28
@@ -67,16 +67,17 @@ From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH v2 25/42] accel/tcg: Use libuser_ss and libsystem_ss
-Date: Tue, 18 Mar 2025 14:31:50 -0700
-Message-ID: <20250318213209.2579218-26-richard.henderson@linaro.org>
+Subject: [PATCH v2 26/42] semihosting: Move user-only implementation
+ out-of-line
+Date: Tue, 18 Mar 2025 14:31:51 -0700
+Message-ID: <20250318213209.2579218-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250318213209.2579218-1-richard.henderson@linaro.org>
 References: <20250318213209.2579218-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,59 +100,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While some of these files are built exactly once, due
-to being in only libuser_ss or libsystem_ss, some of
-the includes that they depend on require CONFIG_USER_ONLY.
-So make use of the common infrastructure to allow that.
+Avoid testing CONFIG_USER_ONLY in semihost.h.
+The only function that's required is semihosting_enabled.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/meson.build | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ include/semihosting/semihost.h | 29 ++---------------------------
+ semihosting/user.c             | 15 +++++++++++++++
+ semihosting/meson.build        |  2 ++
+ 3 files changed, 19 insertions(+), 27 deletions(-)
+ create mode 100644 semihosting/user.c
 
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 185830d0f5..72d4acfe5e 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -1,12 +1,21 @@
--common_ss.add(when: 'CONFIG_TCG', if_true: files(
-+if not get_option('tcg').allowed()
-+   subdir_done()
-+endif
-+
-+tcg_ss = ss.source_set()
-+
-+tcg_ss.add(files(
-   'cpu-exec-common.c',
-   'tcg-runtime.c',
-   'tcg-runtime-gvec.c',
- ))
- if get_option('plugins')
--  common_ss.add(when: 'CONFIG_TCG', if_true: files('plugin-gen.c'))
-+  tcg_ss.add(files('plugin-gen.c'))
- endif
+diff --git a/include/semihosting/semihost.h b/include/semihosting/semihost.h
+index 97d2a2ba99..b03e637578 100644
+--- a/include/semihosting/semihost.h
++++ b/include/semihosting/semihost.h
+@@ -26,32 +26,6 @@ typedef enum SemihostingTarget {
+     SEMIHOSTING_TARGET_GDB
+ } SemihostingTarget;
  
-+libuser_ss.add_all(tcg_ss)
-+libsystem_ss.add_all(tcg_ss)
+-#ifdef CONFIG_USER_ONLY
+-static inline bool semihosting_enabled(bool is_user)
+-{
+-    return true;
+-}
+-
+-static inline SemihostingTarget semihosting_get_target(void)
+-{
+-    return SEMIHOSTING_TARGET_AUTO;
+-}
+-
+-static inline const char *semihosting_get_arg(int i)
+-{
+-    return NULL;
+-}
+-
+-static inline int semihosting_get_argc(void)
+-{
+-    return 0;
+-}
+-
+-static inline const char *semihosting_get_cmdline(void)
+-{
+-    return NULL;
+-}
+-#else /* !CONFIG_USER_ONLY */
+ /**
+  * semihosting_enabled:
+  * @is_user: true if guest code is in usermode (i.e. not privileged)
+@@ -59,17 +33,18 @@ static inline const char *semihosting_get_cmdline(void)
+  * Return true if guest code is allowed to make semihosting calls.
+  */
+ bool semihosting_enabled(bool is_user);
 +
- tcg_specific_ss = ss.source_set()
- tcg_specific_ss.add(files(
-   'tcg-all.c',
-@@ -22,11 +31,11 @@ specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
-   'cputlb.c',
+ SemihostingTarget semihosting_get_target(void);
+ const char *semihosting_get_arg(int i);
+ int semihosting_get_argc(void);
+ const char *semihosting_get_cmdline(void);
+ void semihosting_arg_fallback(const char *file, const char *cmd);
++
+ /* for vl.c hooks */
+ void qemu_semihosting_enable(void);
+ int qemu_semihosting_config_options(const char *optstr);
+ void qemu_semihosting_chardev_init(void);
+ void qemu_semihosting_console_init(Chardev *);
+-#endif /* CONFIG_USER_ONLY */
+ void qemu_semihosting_guestfd_init(void);
+ 
+ #endif /* SEMIHOST_H */
+diff --git a/semihosting/user.c b/semihosting/user.c
+new file mode 100644
+index 0000000000..9473729beb
+--- /dev/null
++++ b/semihosting/user.c
+@@ -0,0 +1,15 @@
++/*
++ * Semihosting for user emulation
++ *
++ * Copyright (c) 2019 Linaro Ltd
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "semihosting/semihost.h"
++
++bool semihosting_enabled(bool is_user)
++{
++    return true;
++}
+diff --git a/semihosting/meson.build b/semihosting/meson.build
+index 86f5004bed..ab67f87e4f 100644
+--- a/semihosting/meson.build
++++ b/semihosting/meson.build
+@@ -15,5 +15,7 @@ system_ss.add(when: ['CONFIG_SEMIHOSTING'], if_true: files(
+   'stubs-system.c',
  ))
  
--user_ss.add(when: ['CONFIG_TCG'], if_true: files(
-+libuser_ss.add(files(
-   'user-exec-stub.c',
- ))
- 
--system_ss.add(when: ['CONFIG_TCG'], if_true: files(
-+libsystem_ss.add(files(
-   'icount-common.c',
-   'monitor.c',
-   'tcg-accel-ops.c',
++user_ss.add(when: 'CONFIG_SEMIHOSTING', if_true: files('user.c'))
++
+ specific_ss.add(when: ['CONFIG_ARM_COMPATIBLE_SEMIHOSTING'],
+ 		if_true: files('arm-compat-semi.c'))
 -- 
 2.43.0
 
