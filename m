@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C2AA67EE4
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:39:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 337F0A67EE1
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:38:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tueZb-0003MC-6V; Tue, 18 Mar 2025 17:34:07 -0400
+	id 1tueZf-0003d6-VL; Tue, 18 Mar 2025 17:34:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY3-0001JH-CC
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:31 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tueY3-0001Jn-PC
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:32 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY0-0000mj-6R
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:30 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-22438c356c8so107499075ad.1
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:27 -0700 (PDT)
+ id 1tueY0-0000mz-Js
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:31 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-22401f4d35aso116911585ad.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1742333547; x=1742938347; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HrnLnr+uuMo0u5RlpGRH5yvm9z5ZGh78Msw1Ubctmpo=;
- b=I9LnFM0sN4SwFyIeLFHtCMQGT9vkDtwsoSwcCV4grF7WyXGV1YAzhxscIHD/H5ayo4
- ah6w1NAmx4HfS8GpsQLJElKJRfiE+FG8HgQWQOt8h30rqxlVEa9xd57NpS++GIw1m3iZ
- HCtxYIFODAe+JmqesOS5ng3XywErzJglnkzeVGIgJKrbzskj9g23maQNvMMvbADtRpBa
- x6TAVISUhLuj24nQNDeW4YVDu+WsrBd5Rc17A26RPyRajMeXqBNkcdkNHYfkwS2OLFtS
- k4VlomGVkGH+xIEDe2D05v2LZ5jXd8sWsIsIQ5TSN6L3H4bkWsFCCvnzTcdfO4KPe/5u
- T/tw==
+ bh=7jrgt/XCMOgJKy403kS5/j6/fnymT1kJMQRDGV0b46U=;
+ b=wTyaD2XFOMb3hiJ0XA4QcttjQogVcmZGxstSVc9Ps5eUC4nmRgwmdUl5C3vA7EhooP
+ C2eaE1zWMdqNpME4u1JJeKs1RXIMpIXKzK6xQ+E0OAw9dYrtOT9J3qUQKI9s1egIm13l
+ iSNAkYQuf5vS6AhT6n9dQM8Uql3DykPHPN4INjLZzcta5L4Hdobk70fkDOBFhIb0RE9w
+ jD74LofdyDNNOOLPyc1nXiITGLXePCgCtEwR9O4BGHYVNnX2iQFgKZ8SsmN2kSvpVS+i
+ fU7CvYH7UBvT7qVHiEvZNBy8ZsVoMqYcUVp5O6eFe9VWZUD1GJzZ45bqJrIoz2YXDmNz
+ 1SuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1742333547; x=1742938347;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HrnLnr+uuMo0u5RlpGRH5yvm9z5ZGh78Msw1Ubctmpo=;
- b=pxriGkhF0svYkapwTLeqHQJS7yb+9ga0SH1oSZMowD87O3HJFOp5UeeJbFk00Y6Fpo
- 2HuwmDYPaWt5RoDem7+HRWq3Q8piJ8Qd2UCWBWlm8vZeR6g87tbIhoAHFTWwmrWibTPF
- UwyY5+B+rgKyhrPg7a/z4HqsgmxGCVmd5SCSKhHtPnZlKDScZh6Zd2qMMyjoxkzVFcvX
- iZ36qhEhjDv+XAnmvW/t1hnpo6+7CgQQrtppS10V9zSEYk+MIsdtH8q5gAfboLXarDI3
- mjgvJzt4vp1g8mATGNZ/EIKDGFce/ZPM706mNDzTY0Rg7cxuHL9H8ytdgv1MtsHTzOeF
- ih6A==
-X-Gm-Message-State: AOJu0YwCyeAHFNS1clNWrkxmCoAckj6UmUjxEny2M0Ze8+V+nBI87b4b
- T7vsB3eOZeK+TMg9ZXPhLN/zMftMxXSf8viokPndw+/ZwumvVZAd7anNZvwxH7+6iVTwgUBJo8l
- h
-X-Gm-Gg: ASbGncuE5JdaB1cl+jE4GoEEIf+YZWgkHlyh0/xnPdet8ppylOcBLZnnOK07BzUCXg+
- tbLLfQfAE2NFjY3mSG14Uf8VR0DidihAfwXEgAyZafXPl8e8YPlP94fFjyGnDKNWcg8SgZQXeYc
- A8jBso1HabYyegmZgaSfw/Px9bU86Zjfx4W7fbqf5bT5D2d46gnmBGc6y+wB4aoo5zu+bAd5uTy
- ufl+Oe8hcM6D9HRLxHXr3iRx5pHjYVdWk8Aczjny2K153USGiP73QocDZP2f8fLYGxCaE2vL3ig
- N7HnXKnG26JA2twC+rK4OmwOXRyJuO83d1MfrmLg91lXyrDXAxhA8yE09O3CIlYV5lZcJ6ACVPv
- y
-X-Google-Smtp-Source: AGHT+IEH7rndf1iJLJ2xP0p6NzqyweY+Bx03PTv75VP+xh+bMaxHMJ0O9Hrzn6zqoGauJafDF9u4fg==
-X-Received: by 2002:a05:6a20:9f43:b0:1f3:2a83:7548 with SMTP id
- adf61e73a8af0-1fbed40d0bamr269209637.38.1742333546657; 
- Tue, 18 Mar 2025 14:32:26 -0700 (PDT)
+ bh=7jrgt/XCMOgJKy403kS5/j6/fnymT1kJMQRDGV0b46U=;
+ b=SmEPO2aqqTqlP376hp1Q6vH4MzDT6ZNoqpO9U4BTmhsM9n4OZ/aqKvwNxpX7HsF7vK
+ zaShCvPXyrwbAmmhKZGFMfDMidhOCT6xew/Ij/HNKLcQvu5W/kEcZP3XTNfCmamCKzg1
+ 3dIQLImI/sRjtk0BwyBb3WbpNEOG0aMAwc1PSa5ktYTTG12I0tUUAe8kxXgZFwLsoFMh
+ iUZz1lSvD06/LobeEjcEuX3MNN6xIhDX3FB9Fq9XM5GOgVGI+0dDVmFweFOUP6CqrxkE
+ SvsJF3j8woK3Ilgxabpntf0Nbmxvv2tGVT2zx25UX8HPjoXqsimFQbFP6BaOWAjehFRt
+ 6c4w==
+X-Gm-Message-State: AOJu0YzOYp4PY1uPrgoB8SAC8OVq27U8lXnBZl1IEGsC/vEaZSmtNJKk
+ K+SFg9QsbCotfC3YKCI7uRbSBmGo2X4umMcvpzQAZZBGb0aiRIYGPy78Kubx7OTD3t11uc/BhX5
+ k
+X-Gm-Gg: ASbGncuNVU6pLaAydBxp4Ck4Qn9ypBwZyWUWnIssa8sP6hJ/WuPUI5TsjZWT/+1dT8W
+ BanSt14wgAS0Shq2Zxi4g3h4L5NVUmRVQL9OzBN4bhKJmIHWqIQWN4bzJP14wnCZBPFnTkNeBRH
+ FpNConxfW8VjzRt/jTM/OpXICXltoGJZEG/vlhKppIG0zaC08jb0Arhdam9mjexf9KK7dpI+10i
+ mE2KLiq94slmF+n/xHvw4pH7voweAJkGVWUPe74rjZ0FfV6m5c+KLXXshS7ZZ/J5/eLJbEyARkV
+ xe8rUQ9290b9hpK9D3B7xiWLK1hZ2Xl0UxjIhpiZkpWIQlDVZFKRPZCUVyr3EI04+O4vfE09tsa
+ s
+X-Google-Smtp-Source: AGHT+IHl/pBFPgJf6mYRTHGi/fnDcd19LWwmdOT8agijoHfQRgSHdqSLZY3mik4aOxH2tL6+ZXPkZQ==
+X-Received: by 2002:a05:6a21:62c6:b0:1f5:75a9:5257 with SMTP id
+ adf61e73a8af0-1fbeb4a330amr354168637.13.1742333547296; 
+ Tue, 18 Mar 2025 14:32:27 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
  41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.26
@@ -65,19 +65,19 @@ Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  Tue, 18 Mar 2025 14:32:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org, philmd@linaro.org,
- David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 22/42] exec: Restrict memory-internal.h to system/
-Date: Tue, 18 Mar 2025 14:31:47 -0700
-Message-ID: <20250318213209.2579218-23-richard.henderson@linaro.org>
+Cc: pierrick.bouvier@linaro.org,
+	philmd@linaro.org
+Subject: [PATCH v2 23/42] meson: Introduce top-level libuser_ss and
+ libsystem_ss
+Date: Tue, 18 Mar 2025 14:31:48 -0700
+Message-ID: <20250318213209.2579218-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250318213209.2579218-1-richard.henderson@linaro.org>
 References: <20250318213209.2579218-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,103 +100,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+We already have two subdirectories for which we need
+to build files twice, for user vs system modes.
+Move this handling to the top level.
 
-Only file units within the system/ directory need access to
-"memory-internal.h". Restrict its scope by moving it there.
+This cannot be combined with user_ss or system_ss,
+because the formulation has not been extended to support
+configuration symbols.
 
-The comment from commit 9d70618c684 ("memory-internal.h:
-Remove obsolete claim that header is obsolete") is now obsolete,
-remove it.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250317161329.40300-3-philmd@linaro.org>
 ---
- {include/exec => system}/memory-internal.h | 6 ------
- system/memory.c                            | 4 ++--
- system/physmem.c                           | 3 ++-
- MAINTAINERS                                | 2 +-
- 4 files changed, 5 insertions(+), 10 deletions(-)
- rename {include/exec => system}/memory-internal.h (88%)
+ gdbstub/meson.build | 32 ++++++++------------------------
+ meson.build         | 22 ++++++++++++++++++++++
+ tcg/meson.build     | 23 ++---------------------
+ 3 files changed, 32 insertions(+), 45 deletions(-)
 
-diff --git a/include/exec/memory-internal.h b/system/memory-internal.h
-similarity index 88%
-rename from include/exec/memory-internal.h
-rename to system/memory-internal.h
-index c75178a3d6..085e81a9fe 100644
---- a/include/exec/memory-internal.h
-+++ b/system/memory-internal.h
-@@ -11,12 +11,6 @@
-  *
-  */
+diff --git a/gdbstub/meson.build b/gdbstub/meson.build
+index dff741ddd4..0e8099ae9c 100644
+--- a/gdbstub/meson.build
++++ b/gdbstub/meson.build
+@@ -4,32 +4,16 @@
+ # types such as hwaddr.
+ #
  
--/*
-- * This header is for use by exec.c, memory.c and accel/tcg/cputlb.c ONLY,
-- * for declarations which are shared between the memory subsystem's
-- * internals and the TCG TLB code. Do not include it from elsewhere.
-- */
+-# We need to build the core gdb code via a library to be able to tweak
+-# cflags so:
 -
- #ifndef MEMORY_INTERNAL_H
- #define MEMORY_INTERNAL_H
- 
-diff --git a/system/memory.c b/system/memory.c
-index 6a5d853071..7e2f16f4e9 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -24,8 +24,6 @@
- #include "qemu/qemu-print.h"
- #include "qom/object.h"
- #include "trace.h"
+-gdb_user_ss = ss.source_set()
+-gdb_system_ss = ss.source_set()
 -
--#include "exec/memory-internal.h"
- #include "system/ram_addr.h"
- #include "system/kvm.h"
- #include "system/runstate.h"
-@@ -35,6 +33,8 @@
- #include "migration/vmstate.h"
- #include "system/address-spaces.h"
+ # We build two versions of gdbstub, one for each mode
+-gdb_user_ss.add(files('gdbstub.c', 'user.c'))
+-gdb_system_ss.add(files('gdbstub.c', 'system.c'))
++libuser_ss.add(files(
++  'gdbstub.c',
++  'user.c'
++))
  
-+#include "memory-internal.h"
+-gdb_user_ss = gdb_user_ss.apply({})
+-gdb_system_ss = gdb_system_ss.apply({})
+-
+-libgdb_user = static_library('gdb_user',
+-                             gdb_user_ss.sources() + genh,
+-                             c_args: '-DCONFIG_USER_ONLY',
+-                             build_by_default: false)
+-
+-libgdb_system = static_library('gdb_system',
+-                                gdb_system_ss.sources() + genh,
+-                                build_by_default: false)
+-
+-gdb_user = declare_dependency(objects: libgdb_user.extract_all_objects(recursive: false))
+-user_ss.add(gdb_user)
+-gdb_system = declare_dependency(objects: libgdb_system.extract_all_objects(recursive: false))
+-system_ss.add(gdb_system)
++libsystem_ss.add(files(
++  'gdbstub.c',
++  'system.c'
++))
+ 
+ common_ss.add(files('syscalls.c'))
+ 
+diff --git a/meson.build b/meson.build
+index 7f75256acf..329e7f056a 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3666,12 +3666,14 @@ io_ss = ss.source_set()
+ qmp_ss = ss.source_set()
+ qom_ss = ss.source_set()
+ system_ss = ss.source_set()
++libsystem_ss = ss.source_set()
+ specific_fuzz_ss = ss.source_set()
+ specific_ss = ss.source_set()
+ rust_devices_ss = ss.source_set()
+ stub_ss = ss.source_set()
+ trace_ss = ss.source_set()
+ user_ss = ss.source_set()
++libuser_ss = ss.source_set()
+ util_ss = ss.source_set()
+ 
+ # accel modules
+@@ -4049,6 +4051,26 @@ common_ss.add(qom, qemuutil)
+ common_ss.add_all(when: 'CONFIG_SYSTEM_ONLY', if_true: [system_ss])
+ common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
+ 
++libuser_ss = libuser_ss.apply({})
++libuser = static_library('user',
++                         libuser_ss.sources() + genh,
++                         c_args: '-DCONFIG_USER_ONLY',
++                         dependencies: libuser_ss.dependencies(),
++                         build_by_default: false)
++libuser = declare_dependency(objects: libuser.extract_all_objects(recursive: false),
++                             dependencies: libuser_ss.dependencies())
++common_ss.add(when: 'CONFIG_USER_ONLY', if_true: libuser)
 +
- //#define DEBUG_UNASSIGNED
- 
- static unsigned memory_region_transaction_depth;
-diff --git a/system/physmem.c b/system/physmem.c
-index 765d195cb0..1bf97a5704 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -66,7 +66,6 @@
- #include "qemu/main-loop.h"
- #include "system/replay.h"
- 
--#include "exec/memory-internal.h"
- #include "system/ram_addr.h"
- 
- #include "qemu/pmem.h"
-@@ -88,6 +87,8 @@
- #include <daxctl/libdaxctl.h>
- #endif
- 
-+#include "memory-internal.h"
++libsystem_ss = libsystem_ss.apply({})
++libsystem = static_library('system',
++                           libsystem_ss.sources() + genh,
++                           c_args: '-DCONFIG_SOFTMMU',
++                           dependencies: libsystem_ss.dependencies(),
++                           build_by_default: false)
++libsystem = declare_dependency(objects: libsystem.extract_all_objects(recursive: false),
++                               dependencies: libsystem_ss.dependencies())
++common_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: libsystem)
 +
- //#define DEBUG_SUBPAGE
+ # Note that this library is never used directly (only through extract_objects)
+ # and is not built by default; therefore, source files not used by the build
+ # configuration will be in build.ninja, but are never built by default.
+diff --git a/tcg/meson.build b/tcg/meson.build
+index 69ebb4908a..7df378d773 100644
+--- a/tcg/meson.build
++++ b/tcg/meson.build
+@@ -27,24 +27,5 @@ if host_os == 'linux'
+   tcg_ss.add(files('perf.c'))
+ endif
  
- /* ram_list is read under rcu_read_lock()/rcu_read_unlock().  Writes
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 18a5381afd..51267f1c78 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3115,7 +3115,7 @@ F: system/ioport.c
- F: system/memory.c
- F: system/memory_mapping.c
- F: system/physmem.c
--F: include/exec/memory-internal.h
-+F: system/memory-internal.h
- F: scripts/coccinelle/memory-region-housekeeping.cocci
- 
- Memory devices
+-tcg_ss = tcg_ss.apply({})
+-
+-libtcg_user = static_library('tcg_user',
+-                             tcg_ss.sources() + genh,
+-                             dependencies: tcg_ss.dependencies(),
+-                             c_args: '-DCONFIG_USER_ONLY',
+-                             build_by_default: false)
+-
+-tcg_user = declare_dependency(objects: libtcg_user.extract_all_objects(recursive: false),
+-                              dependencies: tcg_ss.dependencies())
+-user_ss.add(tcg_user)
+-
+-libtcg_system = static_library('tcg_system',
+-                                tcg_ss.sources() + genh,
+-                                dependencies: tcg_ss.dependencies(),
+-                                c_args: '-DCONFIG_SOFTMMU',
+-                                build_by_default: false)
+-
+-tcg_system = declare_dependency(objects: libtcg_system.extract_all_objects(recursive: false),
+-                                dependencies: tcg_ss.dependencies())
+-system_ss.add(tcg_system)
++libuser_ss.add_all(tcg_ss)
++libsystem_ss.add_all(tcg_ss)
 -- 
 2.43.0
 
