@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42CFA66DB6
+	by mail.lfdr.de (Postfix) with ESMTPS id 982B9A66DB4
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 09:15:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuS57-0002sH-BI; Tue, 18 Mar 2025 04:13:49 -0400
+	id 1tuS5F-00032S-No; Tue, 18 Mar 2025 04:13:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4C-0002hs-Tp; Tue, 18 Mar 2025 04:12:53 -0400
+ id 1tuS4G-0002ir-EU; Tue, 18 Mar 2025 04:13:00 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4A-0001KN-Mp; Tue, 18 Mar 2025 04:12:52 -0400
+ id 1tuS4D-0001KN-Jz; Tue, 18 Mar 2025 04:12:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742285571; x=1773821571;
+ t=1742285574; x=1773821574;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ZBH+gd9fwHUKnch2bJzVxP0eRmX4fWcxXMkXBj21ULs=;
- b=bE1IV8MWdpFBO4zdOfkuqKAFw9F8+Fz7Eun4F2Xv5uxUZfoI8zrHNff0
- 8CrOlkW0qZYNsDjON0CZ8OkGDhfrDiqfVtbVjSupQPv3K6js3+sukQ6HH
- +dZvMxSlXv1Dr+7wSk6omSmavD5jAh3WPeZup/E42ybz4VJsO6KRirNEV
- DzcjxW1176BIkFVes9SiwrGlCA5JikJ1ryme+/FS7a56NTUECTmgV4Cn/
- Paa4hUdnK79lI1tB+ZXlH5TwNxeAi0RSRGt6PfJ/jAp8Xx9TEK7WCp9Ou
- 9U7lXxV6S6/ZkjM/7vUFNHUDLk62Zb5mRZIJSMX/zr1iIE8X68wi7darl Q==;
-X-CSE-ConnectionGUID: eoaGOtxXTZGC5hQLGVEruA==
-X-CSE-MsgGUID: pyg1/323Szuv60n7t8NbPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621554"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621554"
+ bh=LUL+hn75ZGvSzjYEjym7VQ6h20MqReeykwX/s9i5ZaA=;
+ b=gT5ZDByGw3JceMvKjqoW/Q3STg4GCUkHdPNTDCI/Sv+dlPLPZiW+5OUO
+ t5X36tzifEWqGj7+Lnu7HYzmRxto1uNSGOMrslnhceBNpilF/MP3SbnC+
+ 9tj6NKfXh2jrbJXAram599OkfQo47byKSqG9tWpm4Wf/J04FwMQ1cDxYF
+ NF7OzueoZWjQ1FYHgTHNey1hjSSY/XqMyBjz4cb79nvUL3r0DohDlkJb+
+ t5Qs89HKJtaeOy654xGsC4IBmYigLt7qFJFvcdFttA41Jg2mFcRUO/AP4
+ 7dgrCiSS6IN0enoNyeGJvKvjTPPhq2zIftHCtjxSGv+Ybqf/N2Glf6Yoy Q==;
+X-CSE-ConnectionGUID: FmcYFJGpTI28gF29uHXh0Q==
+X-CSE-MsgGUID: Jw2lUip2RMeNQaAfk2qsLA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621557"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621557"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 01:12:47 -0700
-X-CSE-ConnectionGUID: u1jEhanAT6Kd7WGwfFEzjA==
-X-CSE-MsgGUID: 5LNX0gjZQROFmjLQIeTqHg==
+ 18 Mar 2025 01:12:48 -0700
+X-CSE-ConnectionGUID: Qd/0SpgdRJq+10apz68iBQ==
+X-CSE-MsgGUID: 0NjZrmBsSdWsOPG6x9p6Pg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363190"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363196"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:45 -0700
+ by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:47 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 02/14] rust/vmstate: Fix num_offset in vmstate macros
-Date: Tue, 18 Mar 2025 16:32:36 +0800
-Message-Id: <20250318083248.1402990-3-zhao1.liu@intel.com>
+Subject: [PATCH v2 03/14] rust/vmstate: Fix num field when varray flags are set
+Date: Tue, 18 Mar 2025 16:32:37 +0800
+Message-Id: <20250318083248.1402990-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250318083248.1402990-1-zhao1.liu@intel.com>
 References: <20250318083248.1402990-1-zhao1.liu@intel.com>
@@ -77,36 +77,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-`num_offset` is a member of `VMStateField`, and there's no need to use
-"." to access this field in a `VMStateField` instance.
+Array type vmstate has the VMStateField with `num` equals its length.
+
+When the varray vmstate is built based a array type, the `num` field
+should be cleaned to 0, because varray uses `num_offset` instead of
+`num` to store elements number information.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/src/vmstate.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/qemu-api/src/vmstate.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 6698dfe7aeb8..9533b1250fa5 100644
+index 9533b1250fa5..e3233303f204 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -208,7 +208,7 @@ macro_rules! vmstate_of {
-                 .as_bytes()
-                 .as_ptr() as *const ::std::os::raw::c_char,
-             offset: $crate::offset_of!($struct_name, $field_name),
--            $(.num_offset: $crate::offset_of!($struct_name, $num),)?
-+            $(num_offset: $crate::offset_of!($struct_name, $num),)?
-             // The calls to `call_func_with_field!` are the magic that
-             // computes most of the VMStateField from the type of the field.
-             info: $crate::info_enum_to_ref!($crate::call_func_with_field!(
-@@ -440,7 +440,7 @@ macro_rules! vmstate_struct {
-             name: ::core::concat!(::core::stringify!($field_name), "\0")
-                 .as_bytes()
-                 .as_ptr() as *const ::std::os::raw::c_char,
--            $(.num_offset: $crate::offset_of!($struct_name, $num),)?
-+            $(num_offset: $crate::offset_of!($struct_name, $num),)?
-             offset: {
-                 $crate::assert_field_type!($struct_name, $field_name, $type);
-                 $crate::offset_of!($struct_name, $field_name)
+@@ -275,6 +275,7 @@ pub const fn with_varray_flag<T: VMState>(mut self, flag: VMStateFlags) -> VMSta
+         assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) != 0);
+         self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_ARRAY.0);
+         self.flags = VMStateFlags(self.flags.0 | flag.0);
++        self.num = 0; // varray uses num_offset instead of num.
+         self
+     }
+ 
 -- 
 2.34.1
 
