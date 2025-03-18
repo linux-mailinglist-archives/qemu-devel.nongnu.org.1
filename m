@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B03A67082
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 10:57:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C91FDA6709F
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 10:59:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuTgd-0007Fd-G6; Tue, 18 Mar 2025 05:56:39 -0400
+	id 1tuTgc-0007AS-MR; Tue, 18 Mar 2025 05:56:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTgX-0006xt-DJ
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTgT-0006hk-NO
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTgR-0002Wj-0K
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:32 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTgR-0002We-OG
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742291786;
+ s=mimecast20190719; t=1742291785;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Jn7Wpxp3egWv8e1XApzRVujIa5ZY3w6CO8Lc0pPukPc=;
- b=arwPpyvaIj9HfXXFpYwMPMFZNO5mFoKlD3FRSRQAVZNHRk0fLT7CbY2UobKYD5IBBdHypj
- Rk7mPZCldJPHbHsPD0F7zU/673AwuIWLG12/d3ZWs+Hr6Apt9DlRyVxNLvZRDXXcod8dwk
- pLq5pa0ZnSfaBVYEqO5vZi2zKvTZTlM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=KEQhZwlgK6wK/8TIiK7ky3mHyYC6ovFIcut2aASS15A=;
+ b=La6PplZF+pFriGItYVPxnAoSnr7ItWBR+pztkLjGzrIJAGgq8/TdINpWJoSAV8cSfyJsJD
+ 3X8rlB23At+DKGbnjh9QOx/tI1zmyhIZXVXdgry6h8zpWgX79zRsok0YQenkltyylWPEox
+ mhl00AI9Qn2dhBcWGZ97sxj3vbtzZy0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-225-Z0J4ViMBOhC9yNdCrMXH_g-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-0Oi1f59MOeO_q_6XtI698w-1; Tue,
  18 Mar 2025 05:56:22 -0400
-X-MC-Unique: Z0J4ViMBOhC9yNdCrMXH_g-1
-X-Mimecast-MFC-AGG-ID: Z0J4ViMBOhC9yNdCrMXH_g_1742291781
+X-MC-Unique: 0Oi1f59MOeO_q_6XtI698w-1
+X-Mimecast-MFC-AGG-ID: 0Oi1f59MOeO_q_6XtI698w_1742291781
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9FF56180AF6A; Tue, 18 Mar 2025 09:56:18 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 49FCF1828AA4; Tue, 18 Mar 2025 09:56:21 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.25])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 809FE18001EF; Tue, 18 Mar 2025 09:56:16 +0000 (UTC)
+ id 28C4018001EF; Tue, 18 Mar 2025 09:56:18 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	Alex Williamson <alex.williamson@redhat.com>
 Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH for-10.1 31/32] vfio: Introduce
- vfio_dirty_tracking_un/register() routines
-Date: Tue, 18 Mar 2025 10:54:14 +0100
-Message-ID: <20250318095415.670319-32-clg@redhat.com>
+Subject: [PATCH for-10.1 32/32] vfio: Rename RAM discard related services
+Date: Tue, 18 Mar 2025 10:54:15 +0100
+Message-ID: <20250318095415.670319-33-clg@redhat.com>
 In-Reply-To: <20250318095415.670319-1-clg@redhat.com>
 References: <20250318095415.670319-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,133 +83,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This hides the MemoryListener implementation and makes the code common
-to both IOMMU backends, legacy and IOMMUFD.
+Rename some routines to better reflect the namespace they belong to.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/dirty-tracking.h |  4 ++--
- hw/vfio/container.c      | 11 +++--------
- hw/vfio/dirty-tracking.c | 21 ++++++++++++++++++++-
- hw/vfio/iommufd.c        |  9 ++-------
- 4 files changed, 27 insertions(+), 18 deletions(-)
+ hw/vfio/dirty-tracking.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/vfio/dirty-tracking.h b/hw/vfio/dirty-tracking.h
-index db9494202a780108ce78b642950bfed78ba3f253..6d717f0e918e47e341114c82ffc2cf520fc7b079 100644
---- a/hw/vfio/dirty-tracking.h
-+++ b/hw/vfio/dirty-tracking.h
-@@ -9,11 +9,11 @@
- #ifndef HW_VFIO_DIRTY_TRACKING_H
- #define HW_VFIO_DIRTY_TRACKING_H
- 
--extern const MemoryListener vfio_memory_listener;
--
- bool vfio_dirty_tracking_devices_is_started(const VFIOContainerBase *bcontainer);
- bool vfio_dirty_tracking_devices_is_supported(const VFIOContainerBase *bcontainer);
- int vfio_dirty_tracking_query_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
-                           uint64_t size, ram_addr_t ram_addr, Error **errp);
-+bool vfio_dirty_tracking_register(VFIOContainerBase *bcontainer, Error **errp);
-+void vfio_dirty_tracking_unregister(VFIOContainerBase *bcontainer);
- 
- #endif /* HW_VFIO_DIRTY_TRACKING_H */
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 7b3ec798a77052b8cb0b47d3dceaca1428cb50bd..1fcca75caba19353ad3063ae97b20c15f61564e9 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -616,12 +616,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
-     group->container = container;
-     QLIST_INSERT_HEAD(&container->group_list, group, container_next);
- 
--    bcontainer->listener = vfio_memory_listener;
--    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
--
--    if (bcontainer->error) {
--        error_propagate_prepend(errp, bcontainer->error,
--            "memory listener initialization failed: ");
-+    if (!vfio_dirty_tracking_register(bcontainer, errp)) {
-         goto listener_release_exit;
-     }
- 
-@@ -631,7 +626,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
- listener_release_exit:
-     QLIST_REMOVE(group, container_next);
-     vfio_group_del_kvm_device(group);
--    memory_listener_unregister(&bcontainer->listener);
-+    vfio_dirty_tracking_unregister(bcontainer);
-     if (vioc->release) {
-         vioc->release(bcontainer);
-     }
-@@ -669,7 +664,7 @@ static void vfio_container_disconnect(VFIOGroup *group)
-      * group.
-      */
-     if (QLIST_EMPTY(&container->group_list)) {
--        memory_listener_unregister(&bcontainer->listener);
-+        vfio_dirty_tracking_unregister(bcontainer);
-         if (vioc->release) {
-             vioc->release(bcontainer);
-         }
 diff --git a/hw/vfio/dirty-tracking.c b/hw/vfio/dirty-tracking.c
-index 8e47ccbb9aea748e57271508ddcd10e394abf16c..d7827f7b64adf3e2b41fafd59aab71e0b28c1567 100644
+index d7827f7b64adf3e2b41fafd59aab71e0b28c1567..50699a411de3ecd7424a48c7bb583ce39370a296 100644
 --- a/hw/vfio/dirty-tracking.c
 +++ b/hw/vfio/dirty-tracking.c
-@@ -1267,7 +1267,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
+@@ -262,7 +262,7 @@ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
+     return 0;
+ }
+ 
+-static void vfio_register_ram_discard_listener(VFIOContainerBase *bcontainer,
++static void  vfio_ram_discard_register_listener(VFIOContainerBase *bcontainer,
+                                                MemoryRegionSection *section)
+ {
+     RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
+@@ -337,7 +337,7 @@ static void vfio_register_ram_discard_listener(VFIOContainerBase *bcontainer,
      }
  }
  
--const MemoryListener vfio_memory_listener = {
-+static const MemoryListener vfio_memory_listener = {
-     .name = "vfio",
-     .region_add = vfio_listener_region_add,
-     .region_del = vfio_listener_region_del,
-@@ -1275,3 +1275,22 @@ const MemoryListener vfio_memory_listener = {
-     .log_global_stop = vfio_listener_log_global_stop,
-     .log_sync = vfio_listener_log_sync,
- };
-+
-+bool vfio_dirty_tracking_register(VFIOContainerBase *bcontainer, Error **errp)
-+{
-+    bcontainer->listener = vfio_memory_listener;
-+    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
-+
-+    if (bcontainer->error) {
-+        error_propagate_prepend(errp, bcontainer->error,
-+                                "memory listener initialization failed: ");
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+void vfio_dirty_tracking_unregister(VFIOContainerBase *bcontainer)
-+{
-+    memory_listener_unregister(&bcontainer->listener);
-+}
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 7f354d86cd14270a70dc990860ad5b69f0310719..7737d552f310c54ae2e035198a1a83da8c3199dd 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -411,7 +411,7 @@ static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer *container)
-     if (!QLIST_EMPTY(&bcontainer->device_list)) {
+-static void vfio_unregister_ram_discard_listener(VFIOContainerBase *bcontainer,
++static void  vfio_ram_discard_unregister_listener(VFIOContainerBase *bcontainer,
+                                                  MemoryRegionSection *section)
+ {
+     RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
+@@ -524,7 +524,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
+      * about changes.
+      */
+     if (memory_region_has_ram_discard_manager(section->mr)) {
+-        vfio_register_ram_discard_listener(bcontainer, section);
++        vfio_ram_discard_register_listener(bcontainer, section);
          return;
      }
--    memory_listener_unregister(&bcontainer->listener);
-+    vfio_dirty_tracking_unregister(bcontainer);
-     iommufd_backend_free_id(container->be, container->ioas_id);
-     object_unref(container);
- }
-@@ -563,12 +563,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
-         bcontainer->pgsizes = qemu_real_host_page_size();
-     }
  
--    bcontainer->listener = vfio_memory_listener;
--    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
--
--    if (bcontainer->error) {
--        error_propagate_prepend(errp, bcontainer->error,
--                                "memory listener initialization failed: ");
-+    if (!vfio_dirty_tracking_register(bcontainer, errp)) {
-         goto err_listener_register;
+@@ -647,7 +647,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
+         pgmask = (1ULL << ctz64(bcontainer->pgsizes)) - 1;
+         try_unmap = !((iova & pgmask) || (int128_get64(llsize) & pgmask));
+     } else if (memory_region_has_ram_discard_manager(section->mr)) {
+-        vfio_unregister_ram_discard_listener(bcontainer, section);
++        vfio_ram_discard_unregister_listener(bcontainer, section);
+         /* Unregistering will trigger an unmap. */
+         try_unmap = false;
      }
+@@ -1132,7 +1132,7 @@ out:
+     }
+ }
+ 
+-static int vfio_ram_discard_get_dirty_bitmap(MemoryRegionSection *section,
++static int vfio_ram_discard_query_dirty_bitmap(MemoryRegionSection *section,
+                                              void *opaque)
+ {
+     const hwaddr size = int128_get64(section->size);
+@@ -1179,7 +1179,7 @@ vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainerBase *bcontainer,
+      * which correspond to populated parts. Replay all populated parts.
+      */
+     return ram_discard_manager_replay_populated(rdm, section,
+-                                              vfio_ram_discard_get_dirty_bitmap,
++                                                vfio_ram_discard_query_dirty_bitmap,
+                                                 &vrdl);
+ }
  
 -- 
 2.48.1
