@@ -2,52 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDEDA66DB8
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 09:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E96AAA66DC3
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 09:15:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuS51-0002jJ-P5; Tue, 18 Mar 2025 04:13:45 -0400
+	id 1tuS58-0002tc-K0; Tue, 18 Mar 2025 04:13:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4C-0002ht-VF; Tue, 18 Mar 2025 04:12:53 -0400
+ id 1tuS4D-0002i1-87; Tue, 18 Mar 2025 04:12:53 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4A-0001JW-1Z; Tue, 18 Mar 2025 04:12:52 -0400
+ id 1tuS4A-0001Jr-Mn; Tue, 18 Mar 2025 04:12:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742285570; x=1773821570;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=vQ22IbeqGqgEuiOA8Ibr+hZ1zuP30vfgWZrjHFcXJGI=;
- b=AswWfbKRiVmhtVJIBR1TOssrnGYek81sfVWpAa0kTAsPyy1O9jGHmHc4
- gr5gU6cTbzS0g/nB7ilec2xmWKel8TP2ThZGlajR4U3AvND0MsZIOt+21
- gArEw3tJzEw8kTdHu8enwlDm7TtMEVLrElpf+E+7Bmu9EUCaKL83tX25Y
- +aYTKQqJ2j3UGgKws8I2lXYnDeBhdO47Kpmz3KgCQynSTDd2fkTupoSyi
- X7Xqii0HML04aaxDQiCTGg8CuODk/1UEOmou/g06wA3zeDHQIEx3mJ9/A
- apqIQya3M9m/TvVrnGk3A/rdaGwrqZJGIkk3ZTqo5/Z27yikcNouW7Wwd g==;
-X-CSE-ConnectionGUID: KQ+enW0XShGZnEEYqqCf/A==
-X-CSE-MsgGUID: rQdVXS6gRv6HQz4n4nOYdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621535"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621535"
+ t=1742285571; x=1773821571;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=4u5ylYM12of4QFCbfERzBFIVepVdhFlIVpqn5oTA2eM=;
+ b=mIX+B/VB+Uar+w0AmdMSq8hEwkm0lXg+toKKSI+ZdDXQP4ZOK2tJFJ9c
+ sXNT5OcaQxaEFX0Bwjr49u/tUHnt26S+0sK8PTxVPmx4v9aaSIzY91WvL
+ WpLJpR2/MoTLiT/GKN5AFxriMcRuLbfA6rTpB7p9pc4f1Z98PiJfTn3cr
+ n7JWyZXUq+4ZyNRrVEJo4bWy8KCkT5AmT5EH5HljQ1qFo300L7Ko6DiFH
+ VPfKFieWyYCB5VpxkBrocFujgbLZaqqvOCoFpKl1bDjkmX9S22VIJ31bu
+ oa4dO0UGRxxTdwwEQf83Rr1mmbSUmD3zuyRKJl8E+AmBZT7O4ABLlfQOi g==;
+X-CSE-ConnectionGUID: D+HxdAflTA656de/t18wnQ==
+X-CSE-MsgGUID: yZXBdsDKQ16noB0Y2IQzQg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621547"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621547"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 01:12:44 -0700
-X-CSE-ConnectionGUID: 4AqzYwhuQ1+TuPquUja+Ow==
-X-CSE-MsgGUID: Jcr6P0bYR7OJaqoKWta5uQ==
+ 18 Mar 2025 01:12:45 -0700
+X-CSE-ConnectionGUID: YKaiy+d0RTe2OKzRKvhTHQ==
+X-CSE-MsgGUID: 0fipWQGWTyuTOxW20DUOCA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363181"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363184"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:42 -0700
+ by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:44 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 00/14] rust/vmstate: Clean up, fix, enhance & test
-Date: Tue, 18 Mar 2025 16:32:34 +0800
-Message-Id: <20250318083248.1402990-1-zhao1.liu@intel.com>
+Subject: [PATCH v2 01/14] rust/vmstate: Remove unnecessary unsafe
+Date: Tue, 18 Mar 2025 16:32:35 +0800
+Message-Id: <20250318083248.1402990-2-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250318083248.1402990-1-zhao1.liu@intel.com>
+References: <20250318083248.1402990-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
@@ -75,72 +77,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Remove the `unsafe` block of vmsd, because vmsd (passed to
+vmstate_struct) is defined in Rust side now, and it doesn't need
+`unsafe`.
 
-This series is in preparation for HPET migration support (in particular,
-to support varray and vmstate_validate), and it also cleans up and fixes
-the current vmstate. 
-
-
-Patch Summary
-=============
-
-Patch 1-9: Clean up & fix for vmstate_of & vmstate_struct, where the
-           issues are catched by unit tests.
-
-Patch 10: Add vmstate_validate support, and vmstate_validate can accept
-          safe "test" callback.
-
-Patch 11-14: Add unit test to cover as much as possible cases to be
-             compatible with C version macros.
-
-             * Note while in principle Rust's vmstate pattern doesn't
-               have to match the C version, the C vmstate macros are
-               rich enough to cover as much logic as possible. So
-               checking against the C version is the most effective way
-               to detect the error.
-
-
-Change Log
-==========
-
-Changes since v1:
- * Drop the patch about prefix separator ", " before [0 .. num] in
-   vmstate macros.
- * Drop the pacth which changed "vmsd" to "ident" type in macros.
- * Drop the pacth about adding "version" argument.
- * Add a `with_exist_check()` method to help add callback in future.
- * Drop addr_of & public VMStateFlags API in unit test.
- * Clean up TODO comment.
-
-Best Regards,
-Zhao
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (14):
-  rust/vmstate: Remove unnecessary unsafe
-  rust/vmstate: Fix num_offset in vmstate macros
-  rust/vmstate: Fix num field when varray flags are set
-  rust/vmstate: Fix size field of VMStateField with VMS_ARRAY_OF_POINTER
-    flag
-  rust/vmstate: Fix type check for varray in vmstate_struct
-  rust/vmstate: Fix "cannot infer type" error in vmstate_struct
-  rust/vmstate: Fix unnecessary VMState bound of with_varray_flag()
-  rust/vmstate: Relax array check when build varray in vmstate_struct
-  rust/vmstate: Re-implement VMState trait for timer binding
-  rust/vmstate: Support vmstate_validate
-  rust/vmstate: Add unit test for vmstate_of macro
-  rust/vmstate: Add unit test for vmstate_{of|struct} macro
-  rust/vmstate: Add unit test for pointer case
-  rust/vmstate: Add unit test for vmstate_validate
+ rust/qemu-api/src/vmstate.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- rust/qemu-api/meson.build            |   5 +-
- rust/qemu-api/src/assertions.rs      |  15 +
- rust/qemu-api/src/vmstate.rs         | 115 +++++--
- rust/qemu-api/tests/tests.rs         |   2 +
- rust/qemu-api/tests/vmstate_tests.rs | 447 +++++++++++++++++++++++++++
- 5 files changed, 564 insertions(+), 20 deletions(-)
- create mode 100644 rust/qemu-api/tests/vmstate_tests.rs
-
+diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+index f0510ae769d1..6698dfe7aeb8 100644
+--- a/rust/qemu-api/src/vmstate.rs
++++ b/rust/qemu-api/src/vmstate.rs
+@@ -447,7 +447,7 @@ macro_rules! vmstate_struct {
+             },
+             size: ::core::mem::size_of::<$type>(),
+             flags: $crate::bindings::VMStateFlags::VMS_STRUCT,
+-            vmsd: unsafe { $vmsd },
++            vmsd: $vmsd,
+             ..$crate::zeroable::Zeroable::ZERO $(
+                 .with_varray_flag($crate::call_func_with_field!(
+                     $crate::vmstate::vmstate_varray_flag,
 -- 
 2.34.1
 
