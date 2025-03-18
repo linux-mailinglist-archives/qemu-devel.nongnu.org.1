@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CF2A67EB8
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:33:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16AC9A67ECC
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:35:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tueY9-0001LQ-7c; Tue, 18 Mar 2025 17:32:37 -0400
+	id 1tueYJ-0001Q5-7h; Tue, 18 Mar 2025 17:32:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueXt-0001F1-22
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:21 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1tueXu-0001FQ-1x
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:23 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueXq-0000kH-FZ
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:20 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-224341bbc1dso118071315ad.3
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:17 -0700 (PDT)
+ id 1tueXr-0000kQ-EG
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:21 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2260c91576aso49622005ad.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742333537; x=1742938337; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742333538; x=1742938338; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=auoZ5sagChoUoImtq+fRnexF2VfkXuVWg9ycaR6Q+kM=;
- b=zVP+cfuY6ib4ilho+327OYcV6Wi7X51rcxoRgqm8fFxKLEgS5C50SBNa/zkeNwH/d2
- D8PUX0wz71rBrT4atyQw3qYOIwxBeBlaFkAC/wBF6zdGcB19rORPrFXSxzuKF+JVom23
- j4rE5A7d4u0g1yy7YScbdXE7AmZ4Uc9Xbznakrgp67z53CoueEQZ7wwP9sBsPo65/1vT
- 3IS18t81dwBboJBvATmcoad2j55CtcGsRGXHHdCzaAsWw3taZVIhC8QaT4f46ATHGXAD
- D2/igHcZGat9GBdmlMzqcWvbimeT+lHM6PZ6vmlV9ENuGbnWISycmKtqpZoXt7r7xDpB
- IM3Q==
+ bh=JU8wqJZNcN7ysbw8CBh8AnFHtEMmgB8RIMM8bAnUnEQ=;
+ b=Bj3fnud7yzZ9F+6Qdycvg2xnbzeg8rXCkYQHBbp4EGZxGGxHVQobZyaSq00aIdOEse
+ K1GSTC1t6xf96wJzuC/M2XENHe//9AO2+wLucAnx8rPacH4bTrsVRJYhI26zefIMOm7o
+ xOin25jANW9Dz1DaWtvON3J0jzPbDxDunQhdl8zRjhBGRt7cBxFuKYD/VeOySG6FrMCK
+ ubU6ymdNM1eMNy3BSkgtUZMQnxW/eF35TBsBVJChelh++gmMboyx+OztNK4UmaRX+llO
+ oNXKYaMcChWm8WYRbPEqq89YiFhYck43JS49VyCTfgVLGDYhYBqWcsJ0sIJspu3UnZ1z
+ 0Uug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742333537; x=1742938337;
+ d=1e100.net; s=20230601; t=1742333538; x=1742938338;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=auoZ5sagChoUoImtq+fRnexF2VfkXuVWg9ycaR6Q+kM=;
- b=qBh+CLg8Rrq3cUKn7tpruChlFt3LWvjhBcgzVPfTv07RNOqx+dGpuWx8I3FBvurMLO
- H+P9a4SMIcEefEiou+GtTJpgCcYDIwYpgEck1rydz/PPD4f354/LV8Rqw52Jrs6Ep+VP
- UUzqeukS3KCjaWcpBGhqg8fuIA6g6wFU5TICVkqOzG0DAAa/WYpWwgcjFw7HaZZeyHPz
- 4Ez1dbBql+8dyAs57AV7d5hS9SJofdLpEc3mp9l+WMtyreWYjdC6hH9GMGw/IdlCmomB
- YZRgkd46O8T5cnoy/RGxjL7RkVdOAtaBkWa77qQWBfvovqa+NNew82+qsDEnD4aqRE89
- yVDQ==
-X-Gm-Message-State: AOJu0YwZUTNCjYWnIVOQFCwo8BdeLbvJg+y24uOkD1tT87QcoTF1FJT6
- 2+Lwk3cuKIzApotC4oXsp9M48keqS7EcIb5vnxEHumumsqhaOnb/eXd2l8huwcAUrRBk7g8OkJn
- d
-X-Gm-Gg: ASbGncsJwVnuaZNTbiqaCGh780w4EET4oS6Tye877l92oecVHyZuJ/FPwtZPqt83akI
- 6soLp7J1kHn2YB2MqC20/Xx1nI9MebljS/vZjNCOjprcARzmxsuwHVrkbOv9JC/4SqTybx7g0yl
- 91cL3UZVKP5s1d31zDkyob39V2ih19XL2OSvY3YMZYzporTYNKaxbCJ6U6hSUz4xCyZhnHdGb3T
- oZvGJBo4CgPSmvOWC67aJLSLbKNO0lBeeiU5QxBx32d+mqg/kDQQv9MnNlaEzZhjEhdN04CAllO
- ThiVSDXyPA5IkRyw4xoFP5iKp1iyd43SFsu4r2dI/17OGMmc6IrRmjHDzOZ5CW9hBSFVXW7iHkD
- 40FMwmnZ3L74=
-X-Google-Smtp-Source: AGHT+IGMtZRVoVgOFxujexGkt53o7+nugoNMnbm+d0TiNNIY8bAWDNjgmfAIcrhMcgAkbsng8mR3ZA==
-X-Received: by 2002:a05:6a20:9f0a:b0:1f5:56fe:b437 with SMTP id
- adf61e73a8af0-1fbed31338dmr303264637.32.1742333537084; 
+ bh=JU8wqJZNcN7ysbw8CBh8AnFHtEMmgB8RIMM8bAnUnEQ=;
+ b=jStKBVjViPetr7TUphnfPeWMpEM1rzaMuOiPDR+Tc3UTfiwzOZBLYiDUAqmO9a0+0r
+ gFeDwd4kgc5c5WQIvLmgYw7VhILyVOz3LZcoKjCN87oaiiQJgxWzxOz1NYI0JRymaDz/
+ CanA4lHwgcVl5KVQZyqWrBJCCuh47a05R6UcjiGiL6PGJaxITJw6I9zBY1eOuS1jmMRB
+ ljcWSpOY0Mp0LOFciEBJCOVH4TK7co6VKXxOVmZ0cE/mlLGnU3czyAHK0H0VdBWQlloh
+ 84iUlPjsMgMpR4OdrVL/9jojzk61eOH5g3USEr0aaikRpPZQyF47B+rmfoCqJQP4WPS6
+ F5bw==
+X-Gm-Message-State: AOJu0YxGnffN2oHq73w2bAe60MawhexwGFhCsxuEKxEi22QU4CEQnavI
+ 4r6a3fmCKpXTpWO3uYuvpPTavViIoMUQ+nl4904ecDiaim84hUEPALUgqkjjfGKePJwfH8zKxdc
+ 4
+X-Gm-Gg: ASbGncvstdPVTCyLdyQ4eEGiJCI1EDgofbgAsb1kCoNYzXtxIDQqYcUp0WWGeb0a8DP
+ 37nLSmGdDPbatuk1SVPWbn9HJWoSNhLURbNP6n1bacvBUuw8MEx1u6nEXOkReSZkfakA0AO8/rV
+ BGADV+lNN7EEUxY/ezi4sbGAWaaMvcCdk3lcGZ/MTVlnLzFMmcX93VqM+JPosoTS903bGkbxLq7
+ ePCArTAjfv9y4OsqlxO/UivZgq341/+Y7CP7037rNDBY3kgMAzlnnYkk3b8n4SPwVH5u+L/nsOm
+ sxdDw03pF8zX8TlYJWX3Y6GlqaKDajY2VjxRe/gHDYZe7rxrNhL+WKq2Eyf1jMlR4SjVIWyZF5B
+ I
+X-Google-Smtp-Source: AGHT+IG/V4TNaw9AVPo4+MblDce2L5/6JcQ98eeo7jyZAMPvgUgbuHjMPc+yQhdSBdGrlOWRs19iEg==
+X-Received: by 2002:a05:6a20:1590:b0:1f1:432:f4a3 with SMTP id
+ adf61e73a8af0-1fbebc870a8mr274860637.23.1742333537669; 
  Tue, 18 Mar 2025 14:32:17 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.16
+ 41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Mar 2025 14:32:16 -0700 (PDT)
+ Tue, 18 Mar 2025 14:32:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH v2 09/42] include/exec: Inline *_data memory operations
-Date: Tue, 18 Mar 2025 14:31:34 -0700
-Message-ID: <20250318213209.2579218-10-richard.henderson@linaro.org>
+Subject: [PATCH v2 10/42] include/exec: Inline *_code memory operations
+Date: Tue, 18 Mar 2025 14:31:35 -0700
+Message-ID: <20250318213209.2579218-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250318213209.2579218-1-richard.henderson@linaro.org>
 References: <20250318213209.2579218-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,254 +99,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These need to be per-target for 'abi_ptr'.  Expand inline to
-the *_data_ra api with ra == 0.
+These need to be per-target for 'abi_ptr' and endianness.
+These expand inline to the *_mmu api with a lookup of the
+target's cpu_mmu_index() and ra == 0.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu_ldst.h     | 123 ++++++++++++++++++++++++++++++------
- accel/tcg/ldst_common.c.inc |  89 --------------------------
- 2 files changed, 104 insertions(+), 108 deletions(-)
+ include/exec/cpu_ldst.h | 31 +++++++++++++++++++++++++++----
+ accel/tcg/cputlb.c      | 28 ----------------------------
+ accel/tcg/user-exec.c   | 40 ----------------------------------------
+ 3 files changed, 27 insertions(+), 72 deletions(-)
 
 diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index a2a90c7554..d084da0b5f 100644
+index d084da0b5f..82e67eff68 100644
 --- a/include/exec/cpu_ldst.h
 +++ b/include/exec/cpu_ldst.h
-@@ -74,25 +74,6 @@
- #include "user/guest-host.h"
- #endif /* CONFIG_USER_ONLY */
+@@ -473,10 +473,33 @@ cpu_stq_le_data(CPUArchState *env, abi_ptr addr, uint64_t val)
+ # define cpu_stq_mmuidx_ra    cpu_stq_le_mmuidx_ra
+ #endif
  
--uint32_t cpu_ldub_data(CPUArchState *env, abi_ptr ptr);
--int cpu_ldsb_data(CPUArchState *env, abi_ptr ptr);
--uint32_t cpu_lduw_be_data(CPUArchState *env, abi_ptr ptr);
--int cpu_ldsw_be_data(CPUArchState *env, abi_ptr ptr);
--uint32_t cpu_ldl_be_data(CPUArchState *env, abi_ptr ptr);
--uint64_t cpu_ldq_be_data(CPUArchState *env, abi_ptr ptr);
--uint32_t cpu_lduw_le_data(CPUArchState *env, abi_ptr ptr);
--int cpu_ldsw_le_data(CPUArchState *env, abi_ptr ptr);
--uint32_t cpu_ldl_le_data(CPUArchState *env, abi_ptr ptr);
--uint64_t cpu_ldq_le_data(CPUArchState *env, abi_ptr ptr);
+-uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr);
+-uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr);
+-uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr);
+-uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr);
++static inline uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr)
++{
++    CPUState *cs = env_cpu(env);
++    MemOpIdx oi = make_memop_idx(MO_UB, cpu_mmu_index(cs, true));
++    return cpu_ldb_code_mmu(env, addr, oi, 0);
++}
++
++static inline uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr)
++{
++    CPUState *cs = env_cpu(env);
++    MemOpIdx oi = make_memop_idx(MO_TEUW, cpu_mmu_index(cs, true));
++    return cpu_ldw_code_mmu(env, addr, oi, 0);
++}
++
++static inline uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr)
++{
++    CPUState *cs = env_cpu(env);
++    MemOpIdx oi = make_memop_idx(MO_TEUL, cpu_mmu_index(cs, true));
++    return cpu_ldl_code_mmu(env, addr, oi, 0);
++}
++
++static inline uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr)
++{
++    CPUState *cs = env_cpu(env);
++    MemOpIdx oi = make_memop_idx(MO_TEUQ, cpu_mmu_index(cs, true));
++    return cpu_ldq_code_mmu(env, addr, oi, 0);
++}
+ 
+ /**
+  * tlb_vaddr_to_host:
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index b03998f926..2817c9dbdd 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -2897,34 +2897,6 @@ static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
+ 
+ /* Code access functions.  */
+ 
+-uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr)
+-{
+-    CPUState *cs = env_cpu(env);
+-    MemOpIdx oi = make_memop_idx(MO_UB, cpu_mmu_index(cs, true));
+-    return do_ld1_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
+-}
 -
--void cpu_stb_data(CPUArchState *env, abi_ptr ptr, uint32_t val);
--void cpu_stw_be_data(CPUArchState *env, abi_ptr ptr, uint32_t val);
--void cpu_stl_be_data(CPUArchState *env, abi_ptr ptr, uint32_t val);
--void cpu_stq_be_data(CPUArchState *env, abi_ptr ptr, uint64_t val);
--void cpu_stw_le_data(CPUArchState *env, abi_ptr ptr, uint32_t val);
--void cpu_stl_le_data(CPUArchState *env, abi_ptr ptr, uint32_t val);
--void cpu_stq_le_data(CPUArchState *env, abi_ptr ptr, uint64_t val);
+-uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr)
+-{
+-    CPUState *cs = env_cpu(env);
+-    MemOpIdx oi = make_memop_idx(MO_TEUW, cpu_mmu_index(cs, true));
+-    return do_ld2_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
+-}
 -
- static inline uint32_t
- cpu_ldub_mmuidx_ra(CPUArchState *env, abi_ptr addr, int mmu_idx, uintptr_t ra)
+-uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr)
+-{
+-    CPUState *cs = env_cpu(env);
+-    MemOpIdx oi = make_memop_idx(MO_TEUL, cpu_mmu_index(cs, true));
+-    return do_ld4_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
+-}
+-
+-uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr)
+-{
+-    CPUState *cs = env_cpu(env);
+-    MemOpIdx oi = make_memop_idx(MO_TEUQ, cpu_mmu_index(cs, true));
+-    return do_ld8_mmu(cs, addr, oi, 0, MMU_INST_FETCH);
+-}
+-
+ uint8_t cpu_ldb_code_mmu(CPUArchState *env, vaddr addr,
+                          MemOpIdx oi, uintptr_t retaddr)
  {
-@@ -342,6 +323,110 @@ cpu_stq_le_data_ra(CPUArchState *env, abi_ptr addr, uint64_t val, uintptr_t ra)
-     cpu_stq_le_mmuidx_ra(env, addr, val, mmu_index, ra);
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index dec17435c5..ebc7c3ecf5 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -1214,46 +1214,6 @@ static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
+     clear_helper_retaddr();
  }
  
-+/*--------------------------*/
-+
-+static inline uint32_t
-+cpu_ldub_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return cpu_ldub_data_ra(env, addr, 0);
-+}
-+
-+static inline int
-+cpu_ldsb_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return (int8_t)cpu_ldub_data(env, addr);
-+}
-+
-+static inline uint32_t
-+cpu_lduw_be_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return cpu_lduw_be_data_ra(env, addr, 0);
-+}
-+
-+static inline int
-+cpu_ldsw_be_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return (int16_t)cpu_lduw_be_data(env, addr);
-+}
-+
-+static inline uint32_t
-+cpu_ldl_be_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return cpu_ldl_be_data_ra(env, addr, 0);
-+}
-+
-+static inline uint64_t
-+cpu_ldq_be_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return cpu_ldq_be_data_ra(env, addr, 0);
-+}
-+
-+static inline uint32_t
-+cpu_lduw_le_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return cpu_lduw_le_data_ra(env, addr, 0);
-+}
-+
-+static inline int
-+cpu_ldsw_le_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return (int16_t)cpu_lduw_le_data(env, addr);
-+}
-+
-+static inline uint32_t
-+cpu_ldl_le_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return cpu_ldl_le_data_ra(env, addr, 0);
-+}
-+
-+static inline uint64_t
-+cpu_ldq_le_data(CPUArchState *env, abi_ptr addr)
-+{
-+    return cpu_ldq_le_data_ra(env, addr, 0);
-+}
-+
-+static inline void
-+cpu_stb_data(CPUArchState *env, abi_ptr addr, uint32_t val)
-+{
-+    cpu_stb_data_ra(env, addr, val, 0);
-+}
-+
-+static inline void
-+cpu_stw_be_data(CPUArchState *env, abi_ptr addr, uint32_t val)
-+{
-+    cpu_stw_be_data_ra(env, addr, val, 0);
-+}
-+
-+static inline void
-+cpu_stl_be_data(CPUArchState *env, abi_ptr addr, uint32_t val)
-+{
-+    cpu_stl_be_data_ra(env, addr, val, 0);
-+}
-+
-+static inline void
-+cpu_stq_be_data(CPUArchState *env, abi_ptr addr, uint64_t val)
-+{
-+    cpu_stq_be_data_ra(env, addr, val, 0);
-+}
-+
-+static inline void
-+cpu_stw_le_data(CPUArchState *env, abi_ptr addr, uint32_t val)
-+{
-+    cpu_stw_le_data_ra(env, addr, val, 0);
-+}
-+
-+static inline void
-+cpu_stl_le_data(CPUArchState *env, abi_ptr addr, uint32_t val)
-+{
-+    cpu_stl_le_data_ra(env, addr, val, 0);
-+}
-+
-+static inline void
-+cpu_stq_le_data(CPUArchState *env, abi_ptr addr, uint64_t val)
-+{
-+    cpu_stq_le_data_ra(env, addr, val, 0);
-+}
-+
- #if TARGET_BIG_ENDIAN
- # define cpu_lduw_data        cpu_lduw_be_data
- # define cpu_ldsw_data        cpu_ldsw_be_data
-diff --git a/accel/tcg/ldst_common.c.inc b/accel/tcg/ldst_common.c.inc
-index 2f203290db..9791a4e9ef 100644
---- a/accel/tcg/ldst_common.c.inc
-+++ b/accel/tcg/ldst_common.c.inc
-@@ -243,92 +243,3 @@ void cpu_st16_mmu(CPUArchState *env, vaddr addr, Int128 val,
-     do_st16_mmu(env_cpu(env), addr, val, oi, retaddr);
-     plugin_store_cb(env, addr, int128_getlo(val), int128_gethi(val), oi);
- }
--
--/*
-- * Wrappers of the above
-- */
--
--uint32_t cpu_ldub_data(CPUArchState *env, abi_ptr addr)
+-uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr ptr)
 -{
--    return cpu_ldub_data_ra(env, addr, 0);
+-    uint32_t ret;
+-
+-    set_helper_retaddr(1);
+-    ret = ldub_p(g2h_untagged(ptr));
+-    clear_helper_retaddr();
+-    return ret;
 -}
 -
--int cpu_ldsb_data(CPUArchState *env, abi_ptr addr)
+-uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr ptr)
 -{
--    return (int8_t)cpu_ldub_data(env, addr);
+-    uint32_t ret;
+-
+-    set_helper_retaddr(1);
+-    ret = lduw_p(g2h_untagged(ptr));
+-    clear_helper_retaddr();
+-    return ret;
 -}
 -
--uint32_t cpu_lduw_be_data(CPUArchState *env, abi_ptr addr)
+-uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr ptr)
 -{
--    return cpu_lduw_be_data_ra(env, addr, 0);
+-    uint32_t ret;
+-
+-    set_helper_retaddr(1);
+-    ret = ldl_p(g2h_untagged(ptr));
+-    clear_helper_retaddr();
+-    return ret;
 -}
 -
--int cpu_ldsw_be_data(CPUArchState *env, abi_ptr addr)
+-uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr ptr)
 -{
--    return (int16_t)cpu_lduw_be_data(env, addr);
+-    uint64_t ret;
+-
+-    set_helper_retaddr(1);
+-    ret = ldq_p(g2h_untagged(ptr));
+-    clear_helper_retaddr();
+-    return ret;
 -}
 -
--uint32_t cpu_ldl_be_data(CPUArchState *env, abi_ptr addr)
--{
--    return cpu_ldl_be_data_ra(env, addr, 0);
--}
--
--uint64_t cpu_ldq_be_data(CPUArchState *env, abi_ptr addr)
--{
--    return cpu_ldq_be_data_ra(env, addr, 0);
--}
--
--uint32_t cpu_lduw_le_data(CPUArchState *env, abi_ptr addr)
--{
--    return cpu_lduw_le_data_ra(env, addr, 0);
--}
--
--int cpu_ldsw_le_data(CPUArchState *env, abi_ptr addr)
--{
--    return (int16_t)cpu_lduw_le_data(env, addr);
--}
--
--uint32_t cpu_ldl_le_data(CPUArchState *env, abi_ptr addr)
--{
--    return cpu_ldl_le_data_ra(env, addr, 0);
--}
--
--uint64_t cpu_ldq_le_data(CPUArchState *env, abi_ptr addr)
--{
--    return cpu_ldq_le_data_ra(env, addr, 0);
--}
--
--void cpu_stb_data(CPUArchState *env, abi_ptr addr, uint32_t val)
--{
--    cpu_stb_data_ra(env, addr, val, 0);
--}
--
--void cpu_stw_be_data(CPUArchState *env, abi_ptr addr, uint32_t val)
--{
--    cpu_stw_be_data_ra(env, addr, val, 0);
--}
--
--void cpu_stl_be_data(CPUArchState *env, abi_ptr addr, uint32_t val)
--{
--    cpu_stl_be_data_ra(env, addr, val, 0);
--}
--
--void cpu_stq_be_data(CPUArchState *env, abi_ptr addr, uint64_t val)
--{
--    cpu_stq_be_data_ra(env, addr, val, 0);
--}
--
--void cpu_stw_le_data(CPUArchState *env, abi_ptr addr, uint32_t val)
--{
--    cpu_stw_le_data_ra(env, addr, val, 0);
--}
--
--void cpu_stl_le_data(CPUArchState *env, abi_ptr addr, uint32_t val)
--{
--    cpu_stl_le_data_ra(env, addr, val, 0);
--}
--
--void cpu_stq_le_data(CPUArchState *env, abi_ptr addr, uint64_t val)
--{
--    cpu_stq_le_data_ra(env, addr, val, 0);
--}
+ uint8_t cpu_ldb_code_mmu(CPUArchState *env, vaddr addr,
+                          MemOpIdx oi, uintptr_t ra)
+ {
 -- 
 2.43.0
 
