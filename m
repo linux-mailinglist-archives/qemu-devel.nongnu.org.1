@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C38A67EC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:34:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB6DA67EDC
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:37:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tueZR-0002ii-0N; Tue, 18 Mar 2025 17:33:57 -0400
+	id 1tueag-0005wo-Py; Tue, 18 Mar 2025 17:35:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY6-0001LB-06
+ id 1tueY6-0001LR-SD
  for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:34 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY4-0000p6-7x
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:33 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-22403cbb47fso116514275ad.0
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:31 -0700 (PDT)
+ id 1tueY4-0000pX-Lv
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:34 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2239c066347so131666765ad.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742333550; x=1742938350; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742333551; x=1742938351; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bcMlC8YA6iYsSudLw9pQkFBFmlvqHQzrCYvrc7Y0wec=;
- b=svJGE8bmdnWGUHctXYnW7T014qBCIIbBcgeiQTg/O+mCEYnndE5oAxQCp2S5K7wD85
- TEtuGtLLGyR6DCiVfZ9GWRiRkw+xoQdgQyN1F/kEKhVqW6nWeEirpjkwdrolA4dJj6DU
- EbBdLbHVmm6dE/QkDGyMYjGmfkjBgE2Zr7cIdgqOlMZjxdZA6NzOicEuIqBCF7ZuQvxQ
- lwxWxlImFxIdIPZ4XSRCKKNjF93s/L+nEQ1xPCv0qaj0qWDxHAcLXHXtIoj/fMjdZwdx
- 9za+cjkNx9WbMDmf3mVx4u/UE7Wryrv2UgvmoMF0pNCUCWsDQoNpmPFFOndKHZhwgRLl
- s/rg==
+ bh=yofLWPTggw1m56wNAEDmDc3pTTmVmJjgPYgELkea3zE=;
+ b=v5CLXKZF9uPoNcVLE3t4+P3ctxdJtwIw0t1bqFNRFSFSVpddTWHUmjnk7zrsczjzw1
+ 314UPmNtz8p4Wh10J9XaYKMKD105vTlmI/VI5vQ3AbX9BZQGWEGopjImyevyv/tPprlg
+ PAa6XX9PMAgOFFDNytVZwGIOfOI8eI7ZbRe9LsAiBJdayTxXenY1UuDzXXNe0tk0Ia/i
+ RHQ9lsL4VhH+Eq+7b8OoZYVMHGGaf3qx2KfDMLNL1XwYWGok2XeIcuwVRh7RI+hVp+BE
+ Pu9HgPPQa6VdWV7fArVNtVi26lVKkCgzVfJRslXESfyUa3jMx91iM9ZDFtFyd2vWP4nW
+ sCdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742333550; x=1742938350;
+ d=1e100.net; s=20230601; t=1742333551; x=1742938351;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bcMlC8YA6iYsSudLw9pQkFBFmlvqHQzrCYvrc7Y0wec=;
- b=NDJrPJaWe0501P7StwqxM+nNqIKS7jWs26cBi4ueoKdVy3P2vrIRNoFb79dA/43BLQ
- a/BWHdfgH6Dz7IcECWy9rLRGZnh8F/FkzWdfXhhAo9PJK9pUuQbQV2JG00yLID+jszBl
- wkDp4l8ZZk53H1Kl54aXgcNjQ88/jZWmdYBEw/pvuByoYPKFt6C/TTSrHYrEZUa7Vojv
- fmHkgmNWKaU+whokbvOFY7pR0rimby407zXsYmA9/GibjT0oECsiem64dMtIlZFTPLdQ
- CgpuJDdsqhBTLhLKL3eNCnpz4+N9/BZia6gviLp7NvDRyhqedMe+2EnZJcYPtCWJRZsx
- h4uQ==
-X-Gm-Message-State: AOJu0YwHIWBpc444M0J5voFY2Ubn6+jnQkjbiDFb3mnSB7rtymRSwqAh
- fPSNp6UuFHIbFJNwxF2W/a2VwhScpgVWth2asO9MozNAXa4in+XxUfCmQsZr1xtfxKK3JfF0vAQ
- a
-X-Gm-Gg: ASbGncsq9GcZcuXbKoWoOPBPg6mLiGD6Pf2iWRMvYlazgPdwTV+Mq114Tye0pvyzwP6
- XFOTQepFQEcFW9E+jxYasCyNoc7ISNykqR0ZqrA+U4gApK2UuLlAjGXTh1jlOZnMYoDGSElYxqY
- OkKiOauJ7WLOybYNQVIAfG437RVN0aXNKd8BqQtXmC3y45geaYIi/8ZCuUst4x2M5S63oi+4hT9
- bwdAvq8P1gUunRvbR+nBhctFdW5Y/8inZTwfXLI58JoG19o6WaJg7wNP3AiN1k5VFav08aV9KGV
- KLwQNRKZ3qMyb0lbW6jGhNSkGI5MaNcYecWb+Zg0KJSkuGUoXfvYmqoO0HheLWIrHZXWAizu1+l
- VGmXVs/Fr6Fg=
-X-Google-Smtp-Source: AGHT+IGGiZ3l00xu2Sjl97BvYp5imG0ES47q4shwsvMdwY+09w0DDEbLT3JHV86O7zvC5q4MZP3g0w==
-X-Received: by 2002:a05:6a20:9151:b0:1f5:8e96:e75f with SMTP id
- adf61e73a8af0-1fbeba91ffamr305861637.18.1742333550465; 
- Tue, 18 Mar 2025 14:32:30 -0700 (PDT)
+ bh=yofLWPTggw1m56wNAEDmDc3pTTmVmJjgPYgELkea3zE=;
+ b=NzSqE8b8ODngJu6TMJH8LCzf1yc/b7b48anZPCZZlYzXXZ6piPbK3vcbdNRVjatZS/
+ nOcU9Suokgg9L0QngQT4Vqo+hCWQ3+/Tv+FLktQtunb3NM/YjoomxdK7zdolh8q0McSQ
+ hYztY49DtUMsi1gunn1h74kZg4bZxnfXhcdsclVcmKr2UKiaGJyVKyVVn/nz19ZpsMYE
+ FvwdfZywonqnehZX7vGiFp3RvYUNJmuxOLEnkHE26klJT/ohw73+wwYhmcUTuawdAB0l
+ WcZ4HtzR5aA6utW/Jg3O4jkdDETGxm6ajd9eTMJyxQtAQeVoAEQOcBUJTk8SYfPK3zi7
+ 0kCQ==
+X-Gm-Message-State: AOJu0YwOsUYMuta3G3AfEs++yu8Wp+PmbKGGVaCtkFkcGHqYYVbrTjup
+ faaslQSwD6fzwprLbPQOqnInf9qPP9MAoSnot0BelSvUFD0ss994ZIDvjRVinuP5Pkk+u2lMd+r
+ x
+X-Gm-Gg: ASbGncsg4dii6zR76zU22ii2q93CL6iEktUaaWg67FlIeOba+wnO4OneW7XvpXCov6q
+ b+p2fv2JILoaGMlU7V6Nl+Sz6RR8gVRPx7GgHUlk/H78EFk6DoyViEI39Wz0RgNDj8tyNBQTWRZ
+ GSAlzwl2AyYogH8HDS18ITS65EkRkjjaAABhO2ts/aTQVAoTSoPMOltVMo7TTjOZHUWGykVDZPc
+ WGviFqOqBDVQALCycenENvwwJoFE1Zi0RhqwwS+4y+8Zux74raL6b8dj0sr7gsjNAtbnACgOO3t
+ JcQjWQTQ4/JUOLBGooE/YCia6NaR5BmdcPgKhJwBurgECWaHdxk6419SdWf1B3q/u+eh2sd7HDe
+ d
+X-Google-Smtp-Source: AGHT+IHxxbsksVh4sS6YMTp34mqJRVJCqbhe4mdbhHpKzo/SdNcPE59xOkHKs+WJOTSfUW7WaMOibw==
+X-Received: by 2002:a05:6a21:3981:b0:1ee:d06c:cddc with SMTP id
+ adf61e73a8af0-1fbecd46967mr363052637.30.1742333551198; 
+ Tue, 18 Mar 2025 14:32:31 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
  41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.30
@@ -67,17 +67,16 @@ From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH v2 28/42] target/xtensa: Restrict semihosting tests to system
- mode
-Date: Tue, 18 Mar 2025 14:31:53 -0700
-Message-ID: <20250318213209.2579218-29-richard.henderson@linaro.org>
+Subject: [PATCH v2 29/42] include/exec: Split out watchpoint.h
+Date: Tue, 18 Mar 2025 14:31:54 -0700
+Message-ID: <20250318213209.2579218-30-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250318213209.2579218-1-richard.henderson@linaro.org>
 References: <20250318213209.2579218-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,64 +99,263 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We do not set CONFIG_SEMIHOSTING in
-configs/targets/xtensa*-linux-user.mak.
-
-Do not raise SIGILL for user-only unconditionally.
+Relatively few objects in qemu care about watchpoints, so split
+out to a new header.  Removes an instance of CONFIG_USER_ONLY
+from hw/core/cpu.h.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/xtensa/translate.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ include/exec/watchpoint.h           | 41 +++++++++++++++++++++++++++++
+ include/hw/core/cpu.h               | 30 ---------------------
+ accel/tcg/tcg-accel-ops.c           |  1 +
+ system/watchpoint.c                 |  1 +
+ target/arm/debug_helper.c           |  1 +
+ target/i386/cpu.c                   |  1 +
+ target/i386/machine.c               |  2 +-
+ target/i386/tcg/system/bpt_helper.c |  1 +
+ target/ppc/cpu.c                    |  1 +
+ target/ppc/cpu_init.c               |  2 +-
+ target/riscv/debug.c                |  1 +
+ target/s390x/helper.c               |  1 +
+ target/s390x/tcg/excp_helper.c      |  1 +
+ target/xtensa/dbg_helper.c          |  1 +
+ 14 files changed, 53 insertions(+), 32 deletions(-)
+ create mode 100644 include/exec/watchpoint.h
 
-diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
-index 4f02cefde3..cb817b3119 100644
---- a/target/xtensa/translate.c
-+++ b/target/xtensa/translate.c
-@@ -35,14 +35,14 @@
- #include "tcg/tcg-op.h"
- #include "qemu/log.h"
- #include "qemu/qemu-print.h"
--#include "semihosting/semihost.h"
- #include "exec/translator.h"
- #include "exec/translation-block.h"
--
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
--
- #include "exec/log.h"
-+#ifndef CONFIG_USER_ONLY
-+#include "semihosting/semihost.h"
-+#endif
- 
- #define HELPER_H "helper.h"
- #include "exec/helper-info.c.inc"
-@@ -2241,17 +2241,15 @@ static uint32_t test_exceptions_simcall(DisasContext *dc,
-                                         const OpcodeArg arg[],
-                                         const uint32_t par[])
- {
--    bool is_semi = semihosting_enabled(dc->cring != 0);
--#ifdef CONFIG_USER_ONLY
--    bool ill = true;
--#else
--    /* Between RE.2 and RE.3 simcall opcode's become nop for the hardware. */
--    bool ill = dc->config->hw_version <= 250002 && !is_semi;
--#endif
--    if (ill || !is_semi) {
--        qemu_log_mask(LOG_GUEST_ERROR, "SIMCALL but semihosting is disabled\n");
-+#ifndef CONFIG_USER_ONLY
-+    if (semihosting_enabled(dc->cring != 0)) {
-+        return 0;
-     }
--    return ill ? XTENSA_OP_ILL : 0;
-+#endif
-+    qemu_log_mask(LOG_GUEST_ERROR, "SIMCALL but semihosting is disabled\n");
+diff --git a/include/exec/watchpoint.h b/include/exec/watchpoint.h
+new file mode 100644
+index 0000000000..4b6668826c
+--- /dev/null
++++ b/include/exec/watchpoint.h
+@@ -0,0 +1,41 @@
++/*
++ * CPU watchpoints
++ *
++ * Copyright (c) 2012 SUSE LINUX Products GmbH
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
 +
-+    /* Between RE.2 and RE.3 simcall opcode's become nop for the hardware. */
-+    return dc->config->hw_version <= 250002 ? XTENSA_OP_ILL : 0;
++#ifndef EXEC_WATCHPOINT_H
++#define EXEC_WATCHPOINT_H
++
++#if defined(CONFIG_USER_ONLY)
++static inline int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
++                                        int flags, CPUWatchpoint **watchpoint)
++{
++    return -ENOSYS;
++}
++
++static inline int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
++                                        vaddr len, int flags)
++{
++    return -ENOSYS;
++}
++
++static inline void cpu_watchpoint_remove_by_ref(CPUState *cpu,
++                                                CPUWatchpoint *wp)
++{
++}
++
++static inline void cpu_watchpoint_remove_all(CPUState *cpu, int mask)
++{
++}
++#else
++int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
++                          int flags, CPUWatchpoint **watchpoint);
++int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
++                          vaddr len, int flags);
++void cpu_watchpoint_remove_by_ref(CPUState *cpu, CPUWatchpoint *watchpoint);
++void cpu_watchpoint_remove_all(CPUState *cpu, int mask);
++#endif
++
++#endif /* EXEC_WATCHPOINT_H */
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 5d11d26556..d1c1fefea3 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1109,36 +1109,6 @@ static inline bool cpu_breakpoint_test(CPUState *cpu, vaddr pc, int mask)
+     return false;
  }
  
- static void translate_simcall(DisasContext *dc, const OpcodeArg arg[],
+-#if defined(CONFIG_USER_ONLY)
+-static inline int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
+-                                        int flags, CPUWatchpoint **watchpoint)
+-{
+-    return -ENOSYS;
+-}
+-
+-static inline int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
+-                                        vaddr len, int flags)
+-{
+-    return -ENOSYS;
+-}
+-
+-static inline void cpu_watchpoint_remove_by_ref(CPUState *cpu,
+-                                                CPUWatchpoint *wp)
+-{
+-}
+-
+-static inline void cpu_watchpoint_remove_all(CPUState *cpu, int mask)
+-{
+-}
+-#else
+-int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
+-                          int flags, CPUWatchpoint **watchpoint);
+-int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
+-                          vaddr len, int flags);
+-void cpu_watchpoint_remove_by_ref(CPUState *cpu, CPUWatchpoint *watchpoint);
+-void cpu_watchpoint_remove_all(CPUState *cpu, int mask);
+-#endif
+-
+ /**
+  * cpu_get_address_space:
+  * @cpu: CPU to get address space from
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index d9b662efe3..5c88056157 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -37,6 +37,7 @@
+ #include "exec/hwaddr.h"
+ #include "exec/tb-flush.h"
+ #include "exec/translation-block.h"
++#include "exec/watchpoint.h"
+ #include "gdbstub/enums.h"
+ 
+ #include "hw/core/cpu.h"
+diff --git a/system/watchpoint.c b/system/watchpoint.c
+index 08dbd8483d..21d0bb36ca 100644
+--- a/system/watchpoint.c
++++ b/system/watchpoint.c
+@@ -21,6 +21,7 @@
+ #include "qemu/error-report.h"
+ #include "exec/cputlb.h"
+ #include "exec/target_page.h"
++#include "exec/watchpoint.h"
+ #include "hw/core/cpu.h"
+ 
+ /* Add a watchpoint.  */
+diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
+index a9a619ba6b..473ee2af38 100644
+--- a/target/arm/debug_helper.c
++++ b/target/arm/debug_helper.c
+@@ -13,6 +13,7 @@
+ #include "cpregs.h"
+ #include "exec/exec-all.h"
+ #include "exec/helper-proto.h"
++#include "exec/watchpoint.h"
+ #include "system/tcg.h"
+ 
+ #ifdef CONFIG_TCG
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index dba1b3ffef..af46c7a392 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -35,6 +35,7 @@
+ #include "standard-headers/asm-x86/kvm_para.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/i386/topology.h"
++#include "exec/watchpoint.h"
+ #ifndef CONFIG_USER_ONLY
+ #include "system/reset.h"
+ #include "qapi/qapi-commands-machine-target.h"
+diff --git a/target/i386/machine.c b/target/i386/machine.c
+index 70f632a36f..6cb561c632 100644
+--- a/target/i386/machine.c
++++ b/target/i386/machine.c
+@@ -7,7 +7,7 @@
+ #include "hw/i386/x86.h"
+ #include "kvm/kvm_i386.h"
+ #include "hw/xen/xen.h"
+-
++#include "exec/watchpoint.h"
+ #include "system/kvm.h"
+ #include "system/kvm_xen.h"
+ #include "system/tcg.h"
+diff --git a/target/i386/tcg/system/bpt_helper.c b/target/i386/tcg/system/bpt_helper.c
+index be232c1ca9..08ccd3f5e6 100644
+--- a/target/i386/tcg/system/bpt_helper.c
++++ b/target/i386/tcg/system/bpt_helper.c
+@@ -21,6 +21,7 @@
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "exec/helper-proto.h"
++#include "exec/watchpoint.h"
+ #include "tcg/helper-tcg.h"
+ 
+ 
+diff --git a/target/ppc/cpu.c b/target/ppc/cpu.c
+index bfcc695de7..4d8faaddee 100644
+--- a/target/ppc/cpu.c
++++ b/target/ppc/cpu.c
+@@ -22,6 +22,7 @@
+ #include "cpu-models.h"
+ #include "cpu-qom.h"
+ #include "exec/log.h"
++#include "exec/watchpoint.h"
+ #include "fpu/softfloat-helpers.h"
+ #include "mmu-hash64.h"
+ #include "helper_regs.h"
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 8b590e7f17..7394ffc557 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -40,7 +40,7 @@
+ #include "qemu/cutils.h"
+ #include "disas/capstone.h"
+ #include "fpu/softfloat.h"
+-
++#include "exec/watchpoint.h"
+ #include "helper_regs.h"
+ #include "internal.h"
+ #include "spr_common.h"
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 9db4048523..fea989afe9 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -30,6 +30,7 @@
+ #include "trace.h"
+ #include "exec/exec-all.h"
+ #include "exec/helper-proto.h"
++#include "exec/watchpoint.h"
+ #include "system/cpu-timers.h"
+ 
+ /*
+diff --git a/target/s390x/helper.c b/target/s390x/helper.c
+index c689e11b46..e660c69f60 100644
+--- a/target/s390x/helper.c
++++ b/target/s390x/helper.c
+@@ -27,6 +27,7 @@
+ #include "target/s390x/kvm/pv.h"
+ #include "system/hw_accel.h"
+ #include "system/runstate.h"
++#include "exec/watchpoint.h"
+ 
+ void s390x_tod_timer(void *opaque)
+ {
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index ac733f407f..1d51043e88 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -24,6 +24,7 @@
+ #include "exec/helper-proto.h"
+ #include "exec/cputlb.h"
+ #include "exec/exec-all.h"
++#include "exec/watchpoint.h"
+ #include "s390x-internal.h"
+ #include "tcg_s390x.h"
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/xtensa/dbg_helper.c b/target/xtensa/dbg_helper.c
+index 163a1ffc7b..c4f4298a50 100644
+--- a/target/xtensa/dbg_helper.c
++++ b/target/xtensa/dbg_helper.c
+@@ -31,6 +31,7 @@
+ #include "exec/helper-proto.h"
+ #include "qemu/host-utils.h"
+ #include "exec/exec-all.h"
++#include "exec/watchpoint.h"
+ #include "system/address-spaces.h"
+ 
+ void HELPER(wsr_ibreakenable)(CPUXtensaState *env, uint32_t v)
 -- 
 2.43.0
 
