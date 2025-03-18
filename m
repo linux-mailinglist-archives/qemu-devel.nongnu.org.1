@@ -2,98 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2558FA67B63
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 18:51:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAF4A67B69
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 18:54:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tub5w-000815-Bg; Tue, 18 Mar 2025 13:51:16 -0400
+	id 1tub86-0001J6-Sx; Tue, 18 Mar 2025 13:53:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tub5Q-0007rj-5Z
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 13:50:56 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tub54-000246-G1
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 13:50:24 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-30155bbbeaeso5039751a91.2
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 10:50:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742320214; x=1742925014; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=b1xKnKy4CGJ/XdKVe9sQQOXwvKQLk6WAfJQbJ8AYkec=;
- b=QJTPpDvv8aB5RrpI/x7Bmg94vGXqN5cgbAhf97JDK0AnLAGe/TS8/bBgZqsbM0zZqB
- NKV7Yu2jZHn4yvUyx09WtcPaOoBP6ZUvXdzTcyhFqFX/Kklz/AlLnwxd98s+s+fOIgVf
- sb3QVEFIjF7PIwo8Q9l3DcRiqK4p3TG17LvPpRRlGI9mJmYdDU8/feLNmTz5KveWbXc3
- 1/AHtr1jMlOFh3OCN5Vsay15Mfv1RmGd17eQnSQECNKhEJCpLu213D5jMrwGXOw12qhs
- 0jdZTmLiX8nyBti1IQbcgDP1nbZXbQI7td5xDvNFOgKIZ468M9RfmPfYTU4rbe2Q6iGL
- 5bYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742320214; x=1742925014;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b1xKnKy4CGJ/XdKVe9sQQOXwvKQLk6WAfJQbJ8AYkec=;
- b=UtP2AhLZQdoArFaxVGgMcYrZEPE1AR5sXyxxq8terNpLNpDo8WUh2fZZLdoiz/09gg
- nG7y+B6yK79im5Fl46Bi29fhwAgT2iiefLhy4Hg1OWQhUoZMTJCH25I9vwwlkukQ1pV/
- aLwUbu1QpaQhXqNBADRkp0vMjTu9Kz3sDatwCM9QGqlsNu3DtPX9BPcM7VRX3k98RVJ6
- BcMZtzrOF7tTIhQyy8RXm1px21EqmbdHr6WlJpV1VBi3zNrODxKBPFq9HBnoARlA8qRB
- 6AWif2evYUKpDYuufxzySaphwvq6Di9ocADY/f6Y+6Eno0+y+gTy1gOO9DJL9SaH2HKO
- GpFQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXnYbAT9KB8Rul+v+DTjRZHc8IS3Nct+QOJJvd2wdc/Kgl6w8KcCiXybc+8Tmld9JcHOyMtXtSc7wD5@nongnu.org
-X-Gm-Message-State: AOJu0Yw9sFJbuNFgoVx9kobFd8E7dlF+ITl8keBz7NSEZIYIdjJ3BipZ
- QKyTrZR/3AHrkqFmk/p7c03+kIxH1a/Jh9fkV52+k1fUNd/da38SnppCqZlYmD8=
-X-Gm-Gg: ASbGncsNlMi0z81ZgKS77zXDbI2sPSt+R5meWp6o+AKEGFBHBU6dCH/IFayCwrXf//g
- DYFu9w7ucAkUU8Qmd0efwNiV4dPb+W8Qg4TI4ilU3YbBFjQw9eoFLWMkYwHEKUxiICGXWoB8pk9
- yQfs6fck9i4qgcow3Kd7EARX4MOx984y35Xm5Rhs1jfrAZHVLxx01Br4e80vQKHLHQ13xhVYZyq
- Hfk3RmUQbxRIQjUzpQFcdoc8VCw3ZekFUI2csXVWfbX6Hrbfex+G9g/zX8OdBWpzCUAGQu8uVdl
- J+sC3QvzaKGU4KVdttkcZzoRhIIuNXAyQDwKkRMdSQ6XR9TTwpYxdD67Nw==
-X-Google-Smtp-Source: AGHT+IH78tif7R6gzXurAW0XZxtmFJkJ2vsvt+xbpOCzQtnizanOa49k0QkDmETa9oq+SboQl1/F7w==
-X-Received: by 2002:a17:90b:3142:b0:301:1d03:93b3 with SMTP id
- 98e67ed59e1d1-301ba143043mr108818a91.22.1742320214477; 
- Tue, 18 Mar 2025 10:50:14 -0700 (PDT)
-Received: from [192.168.1.67] ([38.39.164.180])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3015351961csm8531313a91.14.2025.03.18.10.50.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Mar 2025 10:50:14 -0700 (PDT)
-Message-ID: <dba359a9-0e9a-471c-a34c-d4aefbf21ccb@linaro.org>
-Date: Tue, 18 Mar 2025 10:50:13 -0700
+ (Exim 4.90_1) (envelope-from <sbhat@linux.ibm.com>)
+ id 1tub7j-0000mu-8m; Tue, 18 Mar 2025 13:53:13 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sbhat@linux.ibm.com>)
+ id 1tub7g-0002jF-Fc; Tue, 18 Mar 2025 13:53:06 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52IA0HXB002930;
+ Tue, 18 Mar 2025 17:53:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=wItEEi84KMkGoT+vB8YHYceoCvnh
+ fqkCoy8CSpCk8vE=; b=mo6PWgpI1geRUKMcs6XqC2CE7xMoMcfBM4DqUWmo7gfm
+ WI8cHdqZVfZbkH7qRZKMqnoxdUPfp7v5h1U2bGS582gJAsDQSGCNuy5P8PPccL3+
+ aLTQv/Igj+M4Ac+BnzINv0O46LwBEvCbcmPfMdWWZZp5GPT90fv9YLkcCKBkLqIR
+ 9JwOjVsit3UF3GV0FTx6iJ3b+mXGvALHMR86RCyr10sXNMxIr3p3JOFMiv6X0P2l
+ vW236NaRuVC7vYxHwcyaBwJeMkqRT7e8qshMg0BaJ0SDCSFmuM1EnvCS4WMflzz5
+ eub/Ro2jhf1XeICAIBtESwuRMwfHKjaFEo5XMkr16Q==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45ety0nd3v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Mar 2025 17:53:00 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52IHqf5g013554;
+ Tue, 18 Mar 2025 17:53:00 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45ety0nd3s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Mar 2025 17:53:00 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52IGdhYG005659;
+ Tue, 18 Mar 2025 17:52:59 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45dm8ywc0t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Mar 2025 17:52:59 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52IHqtWY34210384
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Mar 2025 17:52:55 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BBFC720049;
+ Tue, 18 Mar 2025 17:52:55 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8B61A20040;
+ Tue, 18 Mar 2025 17:52:54 +0000 (GMT)
+Received: from [172.17.0.2] (unknown [9.3.101.137])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 18 Mar 2025 17:52:54 +0000 (GMT)
+Subject: [PATCH v2] vfio: pci: Check INTx availability before enabling them
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+To: alex.williamson@redhat.com, clg@redhat.com
+Cc: qemu-devel@nongnu.org, sbhat@linux.ibm.com, harshpb@linux.ibm.com,
+ vaibhav@linux.ibm.com, npiggin@gmail.com, qemu-ppc@nongnu.org
+Date: Tue, 18 Mar 2025 17:52:53 +0000
+Message-ID: <174232032506.3739.465958546360660842.stgit@linux.ibm.com>
+User-Agent: StGit/1.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/13] target/arm/cpu: remove inline stubs for aarch32
- emulation
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, alex.bennee@linaro.org,
- Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20250318045125.759259-1-pierrick.bouvier@linaro.org>
- <20250318045125.759259-12-pierrick.bouvier@linaro.org>
- <8a24a29c-9d2a-47c9-a183-c92242c82bd9@linaro.org>
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <8a24a29c-9d2a-47c9-a183-c92242c82bd9@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1035.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ob_24bIfuqc0cbGj888KG0SlDY-_r50Y
+X-Proofpoint-ORIG-GUID: asZtxcqNJRbVGDPwYEz9N24geVOgNeTN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-18_08,2025-03-17_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ lowpriorityscore=0 impostorscore=0 suspectscore=0 mlxlogscore=999
+ priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503180127
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=sbhat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,51 +110,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMy8xOC8yNSAxMDo0MiwgUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgd3JvdGU6DQo+IE9u
-IDE4LzMvMjUgMDU6NTEsIFBpZXJyaWNrIEJvdXZpZXIgd3JvdGU6DQo+PiBEaXJlY3RseSBj
-b25kaXRpb24gYXNzb2NpYXRlZCBjYWxscyBpbiB0YXJnZXQvYXJtL2hlbHBlci5jIGZvciBu
-b3cuDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogUGllcnJpY2sgQm91dmllciA8cGllcnJpY2su
-Ym91dmllckBsaW5hcm8ub3JnPg0KPj4gLS0tDQo+PiAgICB0YXJnZXQvYXJtL2NwdS5oICAg
-IHwgOCAtLS0tLS0tLQ0KPj4gICAgdGFyZ2V0L2FybS9oZWxwZXIuYyB8IDYgKysrKysrDQo+
-PiAgICAyIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkN
-Cj4+DQo+PiBkaWZmIC0tZ2l0IGEvdGFyZ2V0L2FybS9jcHUuaCBiL3RhcmdldC9hcm0vY3B1
-LmgNCj4+IGluZGV4IDUxYjY0MjhjZmVjLi45MjA1Y2JkZWM0MyAxMDA2NDQNCj4+IC0tLSBh
-L3RhcmdldC9hcm0vY3B1LmgNCj4+ICsrKyBiL3RhcmdldC9hcm0vY3B1LmgNCj4+IEBAIC0x
-MjIyLDcgKzEyMjIsNiBAQCBpbnQgYXJtX2NwdV93cml0ZV9lbGYzMl9ub3RlKFdyaXRlQ29y
-ZUR1bXBGdW5jdGlvbiBmLCBDUFVTdGF0ZSAqY3MsDQo+PiAgICAgKi8NCj4+ICAgIHZvaWQg
-YXJtX2VtdWxhdGVfZmlybXdhcmVfcmVzZXQoQ1BVU3RhdGUgKmNwdXN0YXRlLCBpbnQgdGFy
-Z2V0X2VsKTsNCj4+ICAgIA0KPj4gLSNpZmRlZiBUQVJHRVRfQUFSQ0g2NA0KPj4gICAgaW50
-IGFhcmNoNjRfY3B1X2dkYl9yZWFkX3JlZ2lzdGVyKENQVVN0YXRlICpjcHUsIEdCeXRlQXJy
-YXkgKmJ1ZiwgaW50IHJlZyk7DQo+PiAgICBpbnQgYWFyY2g2NF9jcHVfZ2RiX3dyaXRlX3Jl
-Z2lzdGVyKENQVVN0YXRlICpjcHUsIHVpbnQ4X3QgKmJ1ZiwgaW50IHJlZyk7DQo+PiAgICB2
-b2lkIGFhcmNoNjRfc3ZlX25hcnJvd192cShDUFVBUk1TdGF0ZSAqZW52LCB1bnNpZ25lZCB2
-cSk7DQo+PiBAQCAtMTI1NCwxMyArMTI1Myw2IEBAIHN0YXRpYyBpbmxpbmUgdWludDY0X3Qg
-KnN2ZV9ic3dhcDY0KHVpbnQ2NF90ICpkc3QsIHVpbnQ2NF90ICpzcmMsIGludCBucikNCj4+
-ICAgICNlbmRpZg0KPj4gICAgfQ0KPj4gICAgDQo+PiAtI2Vsc2UNCj4+IC1zdGF0aWMgaW5s
-aW5lIHZvaWQgYWFyY2g2NF9zdmVfbmFycm93X3ZxKENQVUFSTVN0YXRlICplbnYsIHVuc2ln
-bmVkIHZxKSB7IH0NCj4+IC1zdGF0aWMgaW5saW5lIHZvaWQgYWFyY2g2NF9zdmVfY2hhbmdl
-X2VsKENQVUFSTVN0YXRlICplbnYsIGludCBvLA0KPj4gLSAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgaW50IG4sIGJvb2wgYSkNCj4+IC17IH0NCj4+IC0jZW5k
-aWYNCj4+IC0NCj4+ICAgIHZvaWQgYWFyY2g2NF9zeW5jXzMyX3RvXzY0KENQVUFSTVN0YXRl
-ICplbnYpOw0KPj4gICAgdm9pZCBhYXJjaDY0X3N5bmNfNjRfdG9fMzIoQ1BVQVJNU3RhdGUg
-KmVudik7DQo+PiAgICANCj4+IGRpZmYgLS1naXQgYS90YXJnZXQvYXJtL2hlbHBlci5jIGIv
-dGFyZ2V0L2FybS9oZWxwZXIuYw0KPj4gaW5kZXggYjQ2YjJiZmZjZjMuLjc3NGUxZWUwMjQ1
-IDEwMDY0NA0KPj4gLS0tIGEvdGFyZ2V0L2FybS9oZWxwZXIuYw0KPj4gKysrIGIvdGFyZ2V0
-L2FybS9oZWxwZXIuYw0KPj4gQEAgLTY1NjIsNyArNjU2Miw5IEBAIHN0YXRpYyB2b2lkIHpj
-cl93cml0ZShDUFVBUk1TdGF0ZSAqZW52LCBjb25zdCBBUk1DUFJlZ0luZm8gKnJpLA0KPj4g
-ICAgICAgICAqLw0KPj4gICAgICAgIG5ld19sZW4gPSBzdmVfdnFtMV9mb3JfZWwoZW52LCBj
-dXJfZWwpOw0KPj4gICAgICAgIGlmIChuZXdfbGVuIDwgb2xkX2xlbikgew0KPj4gKyNpZmRl
-ZiBUQVJHRVRfQUFSQ0g2NA0KPiANCj4gV2hhdCBhYm91dCB1c2luZyBydW50aW1lIGNoZWNr
-IGluc3RlYWQ/DQo+IA0KPiAgICBpZiAoYXJtX2ZlYXR1cmUoJmNwdS0+ZW52LCBBUk1fRkVB
-VFVSRV9BQVJDSDY0KSAmJiBuZXdfbGVuIDwgb2xkX2xlbikgew0KPiANCg0KVGhpcyBpcyB0
-aGUgcmlnaHQgd2F5IHRvIGRlYWwgd2l0aCBpdCwgYnV0IEkgd291bGQgcHJlZmVyIHRvIGRv
-IGl0IHdoZW4gDQp0aGUgY29uY2VybmVkIGZpbGUgKHRhcmdldC9hcm0vaGVscGVyLmMpIHdp
-bGwgYmUgbW9kaWZpZWQsIGluIGEgZnV0dXJlIA0Kc2VyaWVzLg0KDQpUaGUgY3VycmVudCBv
-bmUgZm9jdXNlcyBvbiBody9hcm0gYW5kICJwdXNoZXMgYmFjayIgZGVwZW5kZW5jaWVzIGlu
-IA0Kb3RoZXIgcGxhY2VzLCB0aGF0IHdlIGNhbiBkZWFsIHdpdGggbGF0ZXIuDQoNCk5vdGhp
-bmcgd3Jvbmcgd2l0aCB0aGUgY2hhbmdlIHByb3Bvc2VkLCBqdXN0IHRyeWluZyB0byBmb2N1
-cyBvbiB0aGUgDQptaW5pbWFsIHNldCBuZWVkZWQgdG8gcmVhY2ggdGhlIGdvYWwsIHdpdGhv
-dXQgYW55IGRldG91ci4NCg0KPj4gICAgICAgICAgICBhYXJjaDY0X3N2ZV9uYXJyb3dfdnEo
-ZW52LCBuZXdfbGVuICsgMSk7DQo+PiArI2VuZGlmDQo+PiAgICAgICAgfQ0KPj4gICAgfQ0K
-PiANCg0K
+Currently, the PCI_INTERRUPT_PIN alone is checked before enabling
+the INTx. It is also necessary to have the IRQ Lines assigned for
+the INTx to work.
+
+The problem was observed on Power10 systems which primarily use
+MSI-X, and LSI lines are not connected on all devices under a
+PCIe switch. In this configuration where the PIN is non-zero
+but the LINE was 0xff, the VFIO_DEVICE_SET_IRQS was failing as
+it was trying to map the irqfd for the LSI of the device.
+
+So the patch queries the INTx availability with
+VFIO_DEVICE_GET_IRQ_INFO ioctl, and enables only if available.
+
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+---
+Changelog:
+v1: https://lore.kernel.org/qemu-devel/173834353589.1880.3587671276264097972.stgit@linux.ibm.com/
+- Split the fix into two parts as suggested. Kernel part posted here [1]
+- Changed to use the irq_info for checking the intx availability.
+
+[1]: https://lore.kernel.org/all/174231895238.2295.12586708771396482526.stgit@linux.ibm.com/
+
+ hw/vfio/pci.c |   24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 7f1532fbed..54de6e72f8 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -261,6 +261,25 @@ static void vfio_irqchip_change(Notifier *notify, void *data)
+     vfio_intx_update(vdev, &vdev->intx.route);
+ }
+
++static bool vfio_check_intx_available(VFIOPCIDevice *vdev)
++{
++    uint8_t pin = vfio_pci_read_config(&vdev->pdev, PCI_INTERRUPT_PIN, 1);
++    struct vfio_irq_info irq_info = { .argsz = sizeof(irq_info),
++                                      .index = VFIO_PCI_INTX_IRQ_INDEX};
++
++    if (!pin) {
++        return false;
++    }
++
++    if (ioctl(vdev->vbasedev.fd,
++              VFIO_DEVICE_GET_IRQ_INFO, &irq_info) < 0) {
++        warn_report("VFIO_DEVICE_GET_IRQ_INFO failed to query INTx");
++        return false;
++    }
++
++    return (irq_info.count != 0);
++}
++
+ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+ {
+     uint8_t pin = vfio_pci_read_config(&vdev->pdev, PCI_INTERRUPT_PIN, 1);
+@@ -268,8 +287,7 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+     int32_t fd;
+     int ret;
+
+-
+-    if (!pin) {
++    if (!vfio_check_intx_available(vdev)) {
+         return true;
+     }
+
+@@ -3151,7 +3169,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+                vdev->msi_cap_size);
+     }
+
+-    if (vfio_pci_read_config(&vdev->pdev, PCI_INTERRUPT_PIN, 1)) {
++    if (vfio_check_intx_available(vdev)) {
+         vdev->intx.mmap_timer = timer_new_ms(QEMU_CLOCK_VIRTUAL,
+                                                   vfio_intx_mmap_enable, vdev);
+         pci_device_set_intx_routing_notifier(&vdev->pdev,
+
+
 
