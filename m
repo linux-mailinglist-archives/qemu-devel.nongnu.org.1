@@ -2,109 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CF7A66FF0
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 10:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE5DA67034
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 10:48:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuTNB-0006jo-3o; Tue, 18 Mar 2025 05:36:34 -0400
+	id 1tuTXq-0000hf-Ga; Tue, 18 Mar 2025 05:47:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tuTMs-0006iF-29
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:36:17 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tuTMn-0002eM-23
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:36:11 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-ac2aeada833so1053717066b.0
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 02:36:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742290567; x=1742895367; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=anKFw/IFwVdsVTszjeub1+CW4znEXI5rG4T3pZXAyDc=;
- b=nQ8RT5w8bEdZZZEF8SPv7vEvQ9+I+v+VOBQKh8Kk45gHAKLKHZSJfapIZh3rYNcQqc
- 6VPbCMgh1iWvFaZngXQswRGEu7yyORmkj+Pun60EwtqF4PvPgFYfD2xVnMrifUEVQJ+4
- 2NrdlVkOvKjO4CVTXGgASZakWAGIV/y893IrFhEAE+RnEajHtKq4EwIoSHiFJzV38Sb8
- cHIuSy19lSp8tSrpFv51CQkBM2BRFuPygMZN0sCmiWeL8yg/yA2FzYtrV1KnF4u/J7fh
- YZs6hasTQ5wrTs5bq+mLnYAlrv9MC/hWGPqbg+afDxi9cmtttAhIwr8FW0dUgxbX9DX7
- a8LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742290567; x=1742895367;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=anKFw/IFwVdsVTszjeub1+CW4znEXI5rG4T3pZXAyDc=;
- b=VUaQTBkB2wz+DLHQiySQ2kw6AL4s2+HMusKcNn8GhwwyT8iV0tkdFTbGfCBceCc9DO
- RFY9wEltScNW+OP1XI0eZXmYzSeqvEkcAeSlbXUXRyOkYL3wu4D8svwAHjUskYGx+Fx/
- 53IIZp4Uy1YA4XldcOP/VuOgETdgX/fy+hkBNZaWV0DbfZNPMaZfXbr66R8xO1LXr0Jd
- bRtdxq9QmnYHVE2poUwN+H7bwrScho1VqXdOuHHp6T21XEneDPgplWqU0DKXos2+3TOJ
- P9FgRS5CX0N7H2lk4IDUPETY0inL40ii1TVmviWL9MwOB4PgKN79nlKd8XurBfj6W7Be
- VVdQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVOHemBgNV2qpabT4DreIYhW/cbsgrIHd49XN74PiEHHxwPoW8JRzS7aZ+iBwzSF4ZC0WSpeTM+SruL@nongnu.org
-X-Gm-Message-State: AOJu0YyBHm8Zm4/5IXkRJfgk5qa5bGhQBbWDxXAn+DJe9RLdrxtnwtYV
- HXvrkmEO4vhbF9aP/xRRS4YBCO3o1GIVZCTL3AcSme4uoFul1RW9DayX2D7WY/E=
-X-Gm-Gg: ASbGncsY8jpRo5T7qnquKyrGQnapym5nDSj9I+0l4FNHMkiHYbAeOL+c+IsaNH3/8Qh
- FcXlOvBCP1iV8PPtxJlQx1EX8mpK9qIxfIKHkFiGWFFUqgEMeJNXYNLSm+8ffZswmuQu3q5Cdqs
- DETPWy94wSJfgj0OYkn91lOx4DpTgLEdlCERjxlMEOtc0BuwzzObWaZToFz+Wqang78wPqiKb+Z
- 3EaNDWJFHasOOQsyf+4o3xIGyZEHAnn4/QZ4dFYkE7FTCMpKvxcSGcyo1KRvoGxJyX5TdBThkAx
- iJeN5NnTgEdI16U8f/hAQRDn87m0p3z673e/0snTwZw/YSk=
-X-Google-Smtp-Source: AGHT+IHgYey1UQG5iJbunKNucGRC6IqE2epStME68BWzgcOLy1ZBjXTZ4vvuxxD7CkMOym2QxC3GWw==
-X-Received: by 2002:a17:906:c116:b0:ac2:d773:f5f3 with SMTP id
- a640c23a62f3a-ac38fac79f6mr220388466b.29.1742290566629; 
- Tue, 18 Mar 2025 02:36:06 -0700 (PDT)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac314a4a2b3sm821624066b.139.2025.03.18.02.36.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Mar 2025 02:36:06 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2CAD35F7A2;
- Tue, 18 Mar 2025 09:36:05 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Saanjh Sengupta <saanjhsengupta@outlook.com>
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,  Philippe =?utf-8?Q?Ma?=
- =?utf-8?Q?thieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,  =?utf-8?Q?Mar?=
- =?utf-8?Q?c-Andr=C3=A9?=
- Lureau <marcandre.lureau@redhat.com>,  "amir.gonnen@neuroblade.ai"
- <amir.gonnen@neuroblade.ai>,  "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-Subject: Re: Building QEMU as a Shared Library
-In-Reply-To: <SE1SPRMB001537F4FF38F57E8D1CA6AECCDE2@SE1SPRMB0015.KORP216.PROD.OUTLOOK.COM>
- (Saanjh Sengupta's message of "Tue, 18 Mar 2025 08:45:59 +0000")
-References: <PS2P216MB1388380FEF72AF5916FD9B59CCC62@PS2P216MB1388.KORP216.PROD.OUTLOOK.COM>
- <befaccff-5885-4e8d-a397-29df6cdaa7d9@linaro.org>
- <30a35e73-2f72-4e1c-b38f-c744b6884706@linaro.org>
- <SE1SPRMB0015BDAF043E9103B24B9973CCC82@SE1SPRMB0015.KORP216.PROD.OUTLOOK.COM>
- <67a10cba-5bb8-4dda-a7c7-c7a3637bb1b3@linaro.org>
- <SL2P216MB138053F139E1B688D2BBA201CCD12@SL2P216MB1380.KORP216.PROD.OUTLOOK.COM>
- <2f1078d7-31bf-4940-aa43-30a45f7a07a0@linaro.org>
- <SL2P216MB1380316B32539524D1CCD831CCD02@SL2P216MB1380.KORP216.PROD.OUTLOOK.COM>
- <ab0a0e8d-9c26-4225-942b-9d6996abfb8f@linaro.org>
- <SL2P216MB13806B5994D2A1F4DC5E5685CCD32@SL2P216MB1380.KORP216.PROD.OUTLOOK.COM>
- <87bju44vun.fsf@draig.linaro.org>
- <ACDE2106-E0BB-4BEE-8BD5-51898274ED99@outlook.com>
- <87v7s6n45i.fsf@draig.linaro.org>
- <SE1SPRMB001537F4FF38F57E8D1CA6AECCDE2@SE1SPRMB0015.KORP216.PROD.OUTLOOK.COM>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 18 Mar 2025 09:36:05 +0000
-Message-ID: <87plien0je.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tuTXh-0000hJ-3v; Tue, 18 Mar 2025 05:47:25 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tuTXe-0007Sg-IB; Tue, 18 Mar 2025 05:47:24 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZH6Nl3XvBz6LD9m;
+ Tue, 18 Mar 2025 17:43:51 +0800 (CST)
+Received: from frapeml100006.china.huawei.com (unknown [7.182.85.201])
+ by mail.maildlp.com (Postfix) with ESMTPS id 55728140137;
+ Tue, 18 Mar 2025 17:47:08 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml100006.china.huawei.com (7.182.85.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 18 Mar 2025 10:47:08 +0100
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Tue, 18 Mar 2025 10:47:08 +0100
+To: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>, "berrange@redhat.com"
+ <berrange@redhat.com>, "nathanc@nvidia.com" <nathanc@nvidia.com>,
+ "mochs@nvidia.com" <mochs@nvidia.com>, "smostafa@google.com"
+ <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)"
+ <wangzhou1@hisilicon.com>, jiangkunkun <jiangkunkun@huawei.com>, "Jonathan
+ Cameron" <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>
+Subject: RE: [RFC PATCH v2 07/20] hw/arm/smmu-common: Introduce callbacks for
+ PCIIOMMUOps
+Thread-Topic: [RFC PATCH v2 07/20] hw/arm/smmu-common: Introduce callbacks for
+ PCIIOMMUOps
+Thread-Index: AQHbkqnXk2A5Q1HeeUCFKLsnwwQVo7NvoCEAgAEVsnCABs4CAIABK+jQ
+Date: Tue, 18 Mar 2025 09:47:07 +0000
+Message-ID: <4603b8d654be45288f949a40c26d6ef3@huawei.com>
+References: <20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com>
+ <20250311141045.66620-8-shameerali.kolothum.thodi@huawei.com>
+ <fe047856-b564-4776-8651-daa65c02133b@redhat.com>
+ <2606bc1d06f24495a8f382b3d1af3fc6@huawei.com>
+ <1105d100-dd1e-4aca-b518-50f903967416@redhat.com>
+In-Reply-To: <1105d100-dd1e-4aca-b518-50f903967416@redhat.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,378 +83,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Saanjh Sengupta <saanjhsengupta@outlook.com> writes:
-
-> Hi,
->
-> Unable to view this. Any GitHub repository diff page I could view for
-> the same?
-
-It was part of this series:
-
-  https://patchew.org/QEMU/20241022105614.839199-1-alex.bennee@linaro.org/
-
-Specifically this patch:
-
-  https://patchew.org/QEMU/20241022105614.839199-1-alex.bennee@linaro.org/2=
-0241022105614.839199-18-alex.bennee@linaro.org/
-
->
-> Regards
-> Saanjh Sengupta=20
-> -------------------------------------------------------------------------=
-------------------------------------------------
-> From: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Sent: Tuesday, March 18, 2025 1:48:01 PM
-> To: Saanjh Sengupta <saanjhsengupta@outlook.com>
-> Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>; Philippe Mathieu-Daud=
-=C3=A9 <philmd@linaro.org>; Paolo Bonzini
-> <pbonzini@redhat.com>; Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.co=
-m>; amir.gonnen@neuroblade.ai
-> <amir.gonnen@neuroblade.ai>; qemu-devel@nongnu.org <qemu-devel@nongnu.org>
-> Subject: Re: Building QEMU as a Shared Library=20
->=20=20
-> Saanjh Sengupta <saanjhsengupta@outlook.com> writes:
->
->> Hi Alex,=20=20
->>
->> You mentioned about a patch series; do you have it handy with you?
->
->   Message-Id: <20241022105614.839199-18-alex.bennee@linaro.org>
->   Date: Tue, 22 Oct 2024 11:56:11 +0100
->   Subject: [PATCH v2 17/20] plugins: add ability to register a GDB trigge=
-red callback
->   From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.org>
->
->>
->> If so, could you please direct me to the same ?
->>
->>  On 14 Mar 2025, at 12:11=E2=80=AFAM, Alex Benn=C3=A9e <alex.bennee@lina=
-ro.org> wrote:
->>
->>  Saanjh Sengupta <saanjhsengupta@outlook.com> writes:
->>
->>  Hi,
->>
->>  What we are trying to achieve is that the QEMU should run for a particu=
-lar number of instructions, let's say for
->>  example
->>  10000 instructions and then pause it's emulation. After a resume trigge=
-r is received to the QEMU it must resume it's
->>  emulation and start the instruction count from 10001 (which basically
->>  means that the context should be saved).
->>
->>  I think you want to run under icount and you will need to modify the
->>  trigger plugin. Under icount we run each vCPU in turn, so if the plugin
->>  pauses the vCPU will de-facto be paused.
->>
->>  You would have to implement some sort of control interface in the
->>  plugin. Or you could add an API to trigger the gdbstub. I think I had
->>  that on a patch series at one point.
->>
->>  In the previous mail when you mentioned g_usleep, I believe this shall =
-not work (as per our use-case) since it will
->>  reset the
->>  instruction count to 0 (as per what you mentioned).=20
->>
->>  To achieve the use-case, do you have any leads/suggestions ?=20
->>
->>  Regards
->>  Saanjh Sengupta=20
->>
->>  -----------------------------------------------------------------------=
---------------------------------------------------
->>  From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>  Sent: Wednesday, March 12, 2025 11:50:23 am
->>  To: Saanjh Sengupta <saanjhsengupta@outlook.com>; Philippe Mathieu-Daud=
-=C3=A9 <philmd@linaro.org>; Paolo Bonzini
->>  <pbonzini@redhat.com>; Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.=
-com>
->>  Cc: amir.gonnen@neuroblade.ai <amir.gonnen@neuroblade.ai>; qemu-devel@n=
-ongnu.org
->>  <qemu-devel@nongnu.org>; Alex
->>  Benn=C3=A9e <alex.bennee@linaro.org>
->>  Subject: Re: Building QEMU as a Shared Library
->>
->>  On 3/11/25 21:31, Saanjh Sengupta wrote:
->>
->>  Hi,
->>
->>  Thank you for the clarification. Regarding the last time
->>  /"Stoptrigger might be a better fit for what you want to do, and instea=
-d=20
->>  of exiting, you want to resume emulation after N insn. The function=20
->>  qemu_clock_advance_virtual_time() can only be used to move the time=20
->>  forward, and you can not stop the "virtual time" by design."/
->>  /
->>  /
->>  I did not quite understand this. Even if I have to modify the=20
->>  stopTrigger plugin, I would want it to pause rather than exiting.
->>  For example: It gets 10000 instructions executed after that it should=20
->>  pause and after some time it should then resume again execute till 2000=
-0=20
->>  instructions (because previously it executed till 10000 and then it mus=
-t=20
->>  execute till 20000). How do I do this? How do I state the code to pause=
-=20
->>  the qemu's emulation after 10000 instructions?
->>
->>  By using g_usleep to pause the current cpu.
->>  As well, it's needed to reset insn_count to 0 to count instructions aga=
-in.
->>
->>  With this command line:
->>  ./build/qemu-system-x86_64 -plugin=20
->>  ./build/contrib/plugins/libstoptrigger.so,icount=3D1000 -d plugin
->>
->>  And with those changes to stoptrigger:
->>
->>  diff --git a/contrib/plugins/stoptrigger.c b/contrib/plugins/stoptrigge=
-r.c
->>  index b3a6ed66a7b..77fd413cef1 100644
->>  --- a/contrib/plugins/stoptrigger.c
->>  +++ b/contrib/plugins/stoptrigger.c
->>  @@ -41,11 +41,12 @@ typedef struct {
->>       int exit_code;
->>   } ExitInfo;
->>
->>  -static void exit_emulation(int return_code, char *message)
->>  +static void pause_emulation(int return_code, char *message)
->>   {
->>       qemu_plugin_outs(message);
->>       g_free(message);
->>  -    exit(return_code);
->>  +    /* exit(return_code); */
->>  +    g_usleep(1 * G_USEC_PER_SEC);
->>   }
->>
->>   static void exit_icount_reached(unsigned int cpu_index, void *udata)
->>  @@ -53,7 +54,9 @@ static void exit_icount_reached(unsigned int=20
->>  cpu_index, void *udata)
->>       uint64_t insn_vaddr =3D qemu_plugin_u64_get(current_pc, cpu_index);
->>       char *msg =3D g_strdup_printf("icount reached at 0x%" PRIx64 ",=20
->>  exiting\n",
->>                                   insn_vaddr);
->>  -    exit_emulation(icount_exit_code, msg);
->>  +    pause_emulation(icount_exit_code, msg);
->>  +    /* reset instruction counter */
->>  +    qemu_plugin_u64_set(insn_count, cpu_index, 0);
->>   }
->>
->>   static void exit_address_reached(unsigned int cpu_index, void *udata)
->>  @@ -61,7 +64,7 @@ static void exit_address_reached(unsigned int=20
->>  cpu_index, void *udata)
->>       ExitInfo *ei =3D udata;
->>       g_assert(ei);
->>       char *msg =3D g_strdup_printf("0x%" PRIx64 " reached, exiting\n",=
-=20
->>  ei->exit_addr);
->>  -    exit_emulation(ei->exit_code, msg);
->>  +    pause_emulation(ei->exit_code, msg);
->>   }
->>
->>  Moreover, I tried an activity where I was utilising the QMP protocol to=
-=20
->>  control the virtual time (with respect to the IPS plugin). In that=20
->>  context when the QMP stop is triggered, my virtual time does got freeze=
-d=20
->>  until the resume is triggered. Does this mean I am able to manipulate=20
->>  the virtual time of the QEMU?
->>
->>  I am not sure of how it works, but the plugin interface only allows to=
-=20
->>  move time forward.
->>
->>  Regards
->>  Saanjh Sengupta
->>  ------------------------------------------------------------------------
->>  *From:* Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>  *Sent:* Wednesday, March 12, 2025 2:14:47 AM
->>  *To:* Saanjh Sengupta <saanjhsengupta@outlook.com>; Philippe Mathieu-=20
->>  Daud=C3=A9 <philmd@linaro.org>; Paolo Bonzini <pbonzini@redhat.com>; Ma=
-rc-=20
->>  Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->>  *Cc:* amir.gonnen@neuroblade.ai <amir.gonnen@neuroblade.ai>; qemu-=20
->>  devel@nongnu.org <qemu-devel@nongnu.org>; Alex Benn=C3=A9e=20
->>  <alex.bennee@linaro.org>
->>  *Subject:* Re: Building QEMU as a Shared Library
->>  On 3/11/25 02:50, Saanjh Sengupta wrote:
->>
->>  Hi,
->>
->>  I have a couple of questions:
->>
->>  1.
->>     When I use the libstoptrigger.so: in that case the QEMU 's emulation
->>     stops after executing the defined number of instructions. Post this,
->>     the whole QEMU terminates. And while using the libips.so I am
->>     assuming that the QEMU doesn't execute no more than the defined
->>     instructions. Please correct me if I am wrong.
->>
->>  That's correct for both plugins, with the additional note that libips
->>  does this per second only.
->>
->>  2.
->>     In my case, I want the QEMU to start emulation for some time and
->>     PAUSE it's emulation for some time; after it is Paused (it's virtual
->>     time is also to be paused) and then let's say for after 'x' time
->>     period it should resume it's virtual time.
->>
->>  The virtual time variable in ips plugin is only related to this plugin,
->>  and based on how many instructions have been executed, which is
->>  different from what you want to achieve.
->>
->>  Stoptrigger might be a better fit for what you want to do, and instead
->>  of exiting, you want to resume emulation after N insn.
->>  The function qemu_clock_advance_virtual_time() can only be used to move
->>  the time forward, and you can not stop the "virtual time" by design.
->>
->>  image
->>
->>  I have added this segment inside the update_system_time function inside=
-=20
->>  the ipsPlugin.c. but once the instructions reach to the defined limit=20
->>  the virtual time does not seem to stop.
->>  Do you have any suggestions on that front?
->>
->>  Regards
->>  Saanjh Sengupta
->>  ------------------------------------------------------------------------
->>  *From:* Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>  *Sent:* Wednesday, March 5, 2025 5:20:38 AM
->>  *To:* Saanjh Sengupta <saanjhsengupta@outlook.com>; Philippe Mathieu-=20
->>  Daud=C3=A9 <philmd@linaro.org>; Paolo Bonzini <pbonzini@redhat.com>; Ma=
-rc-=20
->>  Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->>  *Cc:* amir.gonnen@neuroblade.ai <amir.gonnen@neuroblade.ai>; qemu-=20
->>  devel@nongnu.org <qemu-devel@nongnu.org>; Alex Benn=C3=A9e=20
->>  <alex.bennee@linaro.org>
->>  *Subject:* Re: Building QEMU as a Shared Library
->>  Hi Saanjh,
->>
->>  depending what you are trying to achieve exactly, plugins can provide a
->>  solution. It's convenient and you can stay on top of QEMU upstream,
->>  without having to create a downstream fork.
->>
->>  We already have plugins for stopping after a given number of
->>  instructions, or slow down execution of a VM:
->>
->>  # stop after executing 1'000'000 instructions:
->>  $ ./build/qemu-system-x86_64 -plugin
->>  ./build/contrib/plugins/libstoptrigger,icount=3D1000000 -d plugin
->>
->>  # execute no more than 1'000'000 instructions per second:
->>  $ ./build/qemu-system-x86_64 -plugin
->>  ./build/contrib/plugins/libips.so,ips=3D1000000 -d plugin
->>
->>  You can see source code associated (./contrib/plugins/stoptrigger.c and
->>  ./contrib/plugins/ips.c), to implement something similar to what you
->>  want, but based on time.
->>  Would that satisfy your need?
->>
->>  Regards,
->>  Pierrick
->>
->>  On 3/3/25 21:53, Saanjh Sengupta wrote:
->>
->>  Hi,
->>
->>  Thank you so much for your inputs. I was able to create the .so file of=
-=20
->>  QEMU.
->>
->>  Actually, what we are trying is to understand and explore possibilities=
-=20
->>  of Virtual Time Control in QEMU. In short, what I mean to say is an=20
->>  approach via which I can tell QEMU to emulate for XYZ time when the I=20
->>  give a trigger and then pause the emulation by itself after the XYZ tim=
-e=20
->>  is completed.
->>
->>  On that front itself, do you have any inputs/ideas regarding the same?
->>
->>  Regards
->>  Saanjh Sengupta
->>  ------------------------------------------------------------------------
->>  *From:* Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>  *Sent:* Tuesday, February 25, 2025 6:29:44 AM
->>  *To:* Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>; Paolo Bonzini=20
->>  <pbonzini@redhat.com>; Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.=
-com>
->>  *Cc:* amir.gonnen@neuroblade.ai <amir.gonnen@neuroblade.ai>; qemu-=20
->>  devel@nongnu.org <qemu-devel@nongnu.org>; Saanjh Sengupta=20
->>  <saanjhsengupta@outlook.com>
->>  *Subject:* Re: Building QEMU as a Shared Library
->>  Hi Saanjh,
->>
->>  here is a minimal patch that builds one shared library per target (arch,
->>  mode) where arch is cpu arch, and mode is system or user, and launch
->>  system-aarch64 through a simple driver:
->>
->>  https://github.com/pbo-linaro/qemu/commit/ <https://github.com/pbo-=20
->>
->>  linaro/qemu/commit/> <https://github.com/pbo-
->>
->>  linaro/qemu/commit/>
->>
->>  fbb39cc64f77d4bf1e5e50795c75b62735bf5c5f <https://github.com/pbo-linaro/
->>  qemu/commit/fbb39cc64f77d4bf1e5e50795c75b62735bf5c5f>
->>
->>  With this, it could be possible to create a driver that can execute any
->>  existing target. It's a sort of single binary for QEMU, but shared
->>  objects are mandatory, and duplicates all the QEMU state. So there is no
->>  real benefit compared to having different processes.
->>
->>  In more, to be able to do concurrent emulations, there are much more
->>  problems to be solved. QEMU state is correctly kept per target, but all
->>  other libraries states are shared. There are various issues if you
->>  launch two emulations at the same time in two threads:
->>  - glib global context
->>  - qemu calls exit in many places, which stops the whole process
->>  - probably other things I didn't explore
->>
->>  At this point, even though qemu targets can be built as shared objects,
->>  I would recommend to use different processes, and implement some form on
->>  IPC to synchronize all this.
->>  Another possibility is to try to build machines without using the
->>  existing main, but I'm not sure it's worth all the hassle.
->>
->>  What are you trying to achieve?
->>
->>  Regards,
->>  Pierrick
->>
->>  On 2/24/25 01:10, Philippe Mathieu-Daud=C3=A9 wrote:
->>
->>  Cc'ing our meson experts
->>
->>  On 22/2/25 14:36, Saanjh Sengupta wrote:
->>
->>  Hi,
->>
->>  I referred to your mailing chains on suggesting QEMU to be built as a
->>  shared library.
->>
->>  *Change meson.build to build QEMU as a shared library (with PIC enabled
->>  for static libraries)*
->>  *
->>  *
->>  Could you please suggest what exactly has to be enabled in the meson.bu=
-ild?
->>
->>  I am confused on that front.
->>
->>  Regards
->>  Saanjh Sengupta
->>
->>  --=20
->>  Alex Benn=C3=A9e
->>  Virtualisation Tech Lead @ Linaro
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRXJpYyBBdWdlciA8ZXJp
+Yy5hdWdlckByZWRoYXQuY29tPg0KPiBTZW50OiBNb25kYXksIE1hcmNoIDE3LCAyMDI1IDQ6NTIg
+UE0NCj4gVG86IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkNCj4gPHNoYW1lZXJhbGkua29sb3Ro
+dW0udGhvZGlAaHVhd2VpLmNvbT47IHFlbXUtYXJtQG5vbmdudS5vcmc7DQo+IHFlbXUtZGV2ZWxA
+bm9uZ251Lm9yZw0KPiBDYzogcGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnOyBqZ2dAbnZpZGlhLmNv
+bTsgbmljb2xpbmNAbnZpZGlhLmNvbTsNCj4gZGR1dGlsZUByZWRoYXQuY29tOyBiZXJyYW5nZUBy
+ZWRoYXQuY29tOyBuYXRoYW5jQG52aWRpYS5jb207DQo+IG1vY2hzQG52aWRpYS5jb207IHNtb3N0
+YWZhQGdvb2dsZS5jb207IExpbnV4YXJtDQo+IDxsaW51eGFybUBodWF3ZWkuY29tPjsgV2FuZ3po
+b3UgKEIpIDx3YW5nemhvdTFAaGlzaWxpY29uLmNvbT47DQo+IGppYW5na3Vua3VuIDxqaWFuZ2t1
+bmt1bkBodWF3ZWkuY29tPjsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJvbkBo
+dWF3ZWkuY29tPjsgemhhbmdmZWkuZ2FvQGxpbmFyby5vcmcNCj4gU3ViamVjdDogUmU6IFtSRkMg
+UEFUQ0ggdjIgMDcvMjBdIGh3L2FybS9zbW11LWNvbW1vbjogSW50cm9kdWNlDQo+IGNhbGxiYWNr
+cyBmb3IgUENJSU9NTVVPcHMNCg0KDQo+IEhpIFNoYW1lZXIsDQo+IA0KPiBPbiAzLzEzLzI1IDk6
+MDkgQU0sIFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkgd3JvdGU6DQo+ID4gSGkgRXJpYywNCj4g
+Pg0KPiA+Pj4gICAgICBib29sIGFjY2VsOw0KPiA+Pj4gKw0KPiA+Pj4gKyAgICBBZGRyZXNzU3Bh
+Y2UgKiAoKmdldF9hZGRyZXNzX3NwYWNlKShQQ0lCdXMgKmJ1cywgdm9pZCAqb3BhcXVlLA0KPiBp
+bnQNCj4gPj4gZGV2Zm4pOw0KPiA+Pj4gKyAgICBib29sICgqc2V0X2lvbW11X2RldmljZSkoUENJ
+QnVzICpidXMsIHZvaWQgKm9wYXF1ZSwgaW50IGRldmZuLA0KPiA+Pj4gKyAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgSG9zdElPTU1VRGV2aWNlICpkZXYsIEVycm9yICoqZXJycCk7DQo+ID4+
+PiArICAgIHZvaWQgKCp1bnNldF9pb21tdV9kZXZpY2UpKFBDSUJ1cyAqYnVzLCB2b2lkICpvcGFx
+dWUsIGludCBkZXZmbik7DQo+ID4+IEkgdGhpbmsgdGhpcyBzaG91bGQgYmUgZXhwb3NlZCBieSBh
+IGNsYXNzIGFuZCBvbmx5IGltcGxlbWVudGVkIGluIHRoZQ0KPiA+PiBzbW11djMgYWNjZWwgZGV2
+aWNlLiBBZGRpbmcgdGhvc2UgY2JzIGRpcmVjdGx5IGluIHRoZSBTdGF0ZSBsb29rcyBub3QgdGhl
+DQo+ID4+IHN0ZCB3YXkuDQo+ID4gT2suIFlvdSBtZWFuIHdlIGNhbiBkaXJlY3RseSBwbGFjZSAg
+UENJSU9NTVVPcHMgKm9wcyBoZXJlIHRoZW4/DQo+IFdoZW4gSSBmaXJzdCBza2ltbWVkIHRocm91
+Z2ggdGhlIHNlcmllcyBJIGFzc3VtZWQgeW91IHdvdWxkIHVzZSAyDQo+IHNlcGVyYXRlIGRldmlj
+ZXMsIGluIHdoaWNoIGNhc2UgdGhhdCB3b3VsZCB1c2UgMiBkaWZmZXJlbnQNCj4gaW1wbGVtZW50
+YXRpb25zIG9mIHRoZSBzYW1lIGNsYXNzLiBZb3UgbWF5IGhhdmUgYSBsb29rIGF0DQo+IGRvY3Mv
+ZGV2ZWwvcW9tLnJzdCBhbmQgTWV0aG9kcyBhbmQgY2xhc3MgdGhlcmUuDQo+IA0KPiBOb3cgYXMg
+SSBjb21tZW50ZWQgZWFybGllciBJIHRoaW5rIHRoZSBlbmQgdXNlciBzaGFsbCBpbnN0YW50aWF0
+ZSB0aGUNCj4gc2FtZSBkZXZpY2UgZm9yIG5vbiBhY2NlbCBhbmQgYWNjZWwuIEkgd291bGQgYWR2
+b2NhdGUgZm9yIHBhc3NpbmcgYW4NCj4gb3B0aW9uIHRlbGxpbmcgd2hldGhlciB3ZSB3YW50IGFj
+Y2VsIG1vZGFsaXR5LiBUaGVuIGl0IHJhdGhlciBsb29rcyBsaWtlDQo+IHdoYXQgd2FzIGRvbmUg
+Zm9yIHZmaW8gZGV2aWNlIHdpdGggZWl0aGVyIGxlZ2FjeSBvciBpb21tdWZkIGJhY2tlbmQuDQo+
+IA0KPiBkZXBlbmRpbmcgb24gd2hldGhlciB0aGUgaW9tbXVmZCBvcHRpb24gaXMgcGFzc2VkIHlv
+dSBzZWxlY3QgdGhlIHJpZ2h0DQo+IGNsYXNzIGltcGxlbWVudGF0aW9uOg0KPiBzZWUgaHcvdmZp
+by9jb21tb24uYyBhbmQgdmZpb19hdHRhY2hfZGV2aWNlDQo+IA0KPiANCj4gwqDCoMKgIGNvbnN0
+IFZGSU9JT01NVUNsYXNzICpvcHMgPQ0KPiDCoMKgwqDCoMKgwqDCoCBWRklPX0lPTU1VX0NMQVNT
+KG9iamVjdF9jbGFzc19ieV9uYW1lKFRZUEVfVkZJT19JT01NVV9MRUdBDQo+IENZKSk7DQo+IA0K
+PiDCoMKgwqAgaWYgKHZiYXNlZGV2LT5pb21tdWZkKSB7DQo+IMKgwqDCoMKgwqDCoMKgIG9wcyA9
+DQo+IFZGSU9fSU9NTVVfQ0xBU1Mob2JqZWN0X2NsYXNzX2J5X25hbWUoVFlQRV9WRklPX0lPTU1V
+X0lPTU1VRkQpDQo+ICk7DQo+IMKgwqDCoCB9DQo+IA0KPiBJIHdvdWxkIGRvaW5nIHNvbWV0aGlu
+ZyBzaW1pbGFyIGZvciBzZWxlY3RpbmcgdGhlIHJpZ2h0IG9wcyBkZXBlbmRpbmcgb24NCj4gdGhl
+IHBhc3NlZCBvcHRpb24uDQo+IA0KPiBJIGhvcGUgdGhpcyBoZWxwcw0KDQpUaGFua3MgRXJpYy4g
+SSB3aWxsIHRha2UgYSBsb29rLg0KDQpTaGFtZWVyDQo=
 
