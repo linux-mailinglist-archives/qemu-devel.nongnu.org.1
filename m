@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB03A6707C
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 10:57:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5EE7A67075
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 10:56:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuTgV-0006ZF-GX; Tue, 18 Mar 2025 05:56:31 -0400
+	id 1tuTgY-0006sH-6j; Tue, 18 Mar 2025 05:56:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTgI-0005lz-2p
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:18 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTgO-0006Ck-As
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTgF-0002TP-B2
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:17 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTgJ-0002UV-9Y
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742291774;
+ s=mimecast20190719; t=1742291778;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aE10HwSaLKMrzeIsw/wUOQ0AxS2Fg8FfE9RKbfoPRHk=;
- b=TcX0bY3C8pkLeHBdojT39tgq+V6FQMVVEJC8khgaGR604S4Zp1NgT9kuU7gCdR88pOkp8Y
- 0NN40HZIkC2QS5GirrxfvXN9Twt6bpEYIuD6mqaPxcpm1TrK4InLWSJ1iPLTYYH+7ibLd9
- 4ep1DrXipyt1AXONXZX8EWAtksb5DF4=
+ bh=1H/pzbeQfFAZ9jiCx2collqGrL+hfzBD/kzzm9jjG0E=;
+ b=AjVKCqJHvPh3Ezdb9EP6h9DsrKDZP2CSEpByS6Skbq//2XlhSZR92JQuaxowzO9cPcEsBP
+ JVWW22Wbxuqp1B1i9G8Z7IWfzdsnknQT6v5vxewSagPHO1epxtKokPgqESf2JVsbyqpbhg
+ 1tumXmMVEZ5m0k/SX0s6PszkPrqbkcA=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-523-rcfOprt6PKGmlVvUFAwvoA-1; Tue,
- 18 Mar 2025 05:56:10 -0400
-X-MC-Unique: rcfOprt6PKGmlVvUFAwvoA-1
-X-Mimecast-MFC-AGG-ID: rcfOprt6PKGmlVvUFAwvoA_1742291769
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-2YOBKKc6OGKlELkj7qH65A-1; Tue,
+ 18 Mar 2025 05:56:15 -0400
+X-MC-Unique: 2YOBKKc6OGKlELkj7qH65A-1
+X-Mimecast-MFC-AGG-ID: 2YOBKKc6OGKlELkj7qH65A_1742291774
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 04A0C188EA49; Tue, 18 Mar 2025 09:56:05 +0000 (UTC)
+ id 911C218C0FB6; Tue, 18 Mar 2025 09:56:07 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.25])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4C2AA1828AAE; Tue, 18 Mar 2025 09:56:00 +0000 (UTC)
+ id 76BCD1828AA7; Tue, 18 Mar 2025 09:56:04 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	Alex Williamson <alex.williamson@redhat.com>
 Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH for-10.1 26/32] vfio: Rename vfio-common.h to vfio-device.h
-Date: Tue, 18 Mar 2025 10:54:09 +0100
-Message-ID: <20250318095415.670319-27-clg@redhat.com>
+Subject: [PATCH for-10.1 27/32] vfio: Rename VFIODevice related services
+Date: Tue, 18 Mar 2025 10:54:10 +0100
+Message-ID: <20250318095415.670319-28-clg@redhat.com>
 In-Reply-To: <20250318095415.670319-1-clg@redhat.com>
 References: <20250318095415.670319-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,261 +83,698 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"hw/vfio/vfio-common.h" has been emptied of most of its declarations
-by the previous changes and the only declarations left are related to
-VFIODevice. Rename it to "hw/vfio/vfio-device.h" and make the
-necessary adjustments.
+Rename these routines :
+
+  vfio_disable_irqindex       -> vfio_device_irq_disable
+  vfio_unmask_single_irqindex -> vfio_device_irq_unmask
+  vfio_mask_single_irqindex   -> vfio_device_irq_mask
+  vfio_set_irq_signaling      -> vfio_device_irq_set_signaling
+  vfio_attach_device          -> vfio_device_attach
+  vfio_detach_device          -> vfio_device_detach
+  vfio_get_region_info        -> vfio_device_get_region_info
+  vfio_get_dev_region_info    -> vfio_device_get_region_info_type
+  vfio_has_region_cap         -> vfio_device_has_region_cap
+
+to better reflect the namespace they belong to.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/migration-multifd.h                      | 2 +-
- hw/vfio/pci.h                                    | 2 +-
- include/hw/s390x/vfio-ccw.h                      | 2 +-
- include/hw/vfio/{vfio-common.h => vfio-device.h} | 0
- include/hw/vfio/vfio-platform.h                  | 2 +-
- backends/iommufd.c                               | 2 +-
- hw/vfio/ap.c                                     | 2 +-
- hw/vfio/ccw.c                                    | 2 +-
- hw/vfio/container-base.c                         | 2 +-
- hw/vfio/container.c                              | 2 +-
- hw/vfio/cpr.c                                    | 2 +-
- hw/vfio/device.c                                 | 2 +-
- hw/vfio/dirty-tracking.c                         | 2 +-
- hw/vfio/helpers.c                                | 2 +-
- hw/vfio/iommufd.c                                | 2 +-
- hw/vfio/migration-multifd.c                      | 2 +-
- hw/vfio/migration.c                              | 2 +-
- hw/vfio/region.c                                 | 4 ++--
- 18 files changed, 18 insertions(+), 18 deletions(-)
- rename include/hw/vfio/{vfio-common.h => vfio-device.h} (100%)
+ include/hw/vfio/vfio-device.h | 18 ++++++-------
+ hw/vfio/ap.c                  |  8 +++---
+ hw/vfio/ccw.c                 | 18 ++++++-------
+ hw/vfio/container.c           |  6 ++---
+ hw/vfio/device.c              | 24 +++++++++---------
+ hw/vfio/display.c             |  2 +-
+ hw/vfio/igd.c                 |  8 +++---
+ hw/vfio/pci.c                 | 48 +++++++++++++++++------------------
+ hw/vfio/platform.c            | 10 ++++----
+ hw/vfio/region.c              |  2 +-
+ hw/vfio/trace-events          |  6 ++---
+ 11 files changed, 75 insertions(+), 75 deletions(-)
 
-diff --git a/hw/vfio/migration-multifd.h b/hw/vfio/migration-multifd.h
-index a664051eb8ae03bc41cb7f9362ace840f41066ff..0bab63211d30cef04c50e50b3ea57840915ffc2a 100644
---- a/hw/vfio/migration-multifd.h
-+++ b/hw/vfio/migration-multifd.h
-@@ -12,7 +12,7 @@
- #ifndef HW_VFIO_MIGRATION_MULTIFD_H
- #define HW_VFIO_MIGRATION_MULTIFD_H
+diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+index cc20110d9de8ac173b67e6e878d4d61818497426..9566b42f335ca683db668ec9167b94a187eb67fc 100644
+--- a/include/hw/vfio/vfio-device.h
++++ b/include/hw/vfio/vfio-device.h
+@@ -115,28 +115,28 @@ struct VFIODeviceOps {
+     int (*vfio_load_config)(VFIODevice *vdev, QEMUFile *f);
+ };
  
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
+-void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
+-void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
+-void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index);
+-bool vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
++void vfio_device_irq_disable(VFIODevice *vbasedev, int index);
++void vfio_device_irq_unmask(VFIODevice *vbasedev, int index);
++void vfio_device_irq_mask(VFIODevice *vbasedev, int index);
++bool vfio_device_irq_set_signaling(VFIODevice *vbasedev, int index, int subindex,
+                             int action, int fd, Error **errp);
  
- bool vfio_multifd_setup(VFIODevice *vbasedev, bool alloc_multifd, Error **errp);
- void vfio_multifd_cleanup(VFIODevice *vbasedev);
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index c84bba81487136d205ca30049c812d00e832c377..d33237c275551897164878705d44e7881c372ab0 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -14,7 +14,7 @@
+ bool vfio_device_is_mdev(VFIODevice *vbasedev);
+ bool vfio_device_hiod_realize(VFIODevice *vbasedev, Error **errp);
+-bool vfio_attach_device(char *name, VFIODevice *vbasedev,
++bool vfio_device_attach(char *name, VFIODevice *vbasedev,
+                         AddressSpace *as, Error **errp);
+-void vfio_detach_device(VFIODevice *vbasedev);
++void vfio_device_detach(VFIODevice *vbasedev);
+ VFIODevice *vfio_get_vfio_device(Object *obj);
  
- #include "exec/memory.h"
- #include "hw/pci/pci_device.h"
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "qemu/event_notifier.h"
- #include "qemu/queue.h"
- #include "qemu/timer.h"
-diff --git a/include/hw/s390x/vfio-ccw.h b/include/hw/s390x/vfio-ccw.h
-index 4209d27657c1fbde44c160445396bcab3f3fd2b0..1e0922dca11e6caada08c2aae82bd3462ace35f5 100644
---- a/include/hw/s390x/vfio-ccw.h
-+++ b/include/hw/s390x/vfio-ccw.h
-@@ -14,7 +14,7 @@
- #ifndef HW_VFIO_CCW_H
- #define HW_VFIO_CCW_H
+ typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
+ extern VFIODeviceList vfio_device_list;
  
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "hw/s390x/s390-ccw.h"
- #include "hw/s390x/ccw-device.h"
- #include "qom/object.h"
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-device.h
-similarity index 100%
-rename from include/hw/vfio/vfio-common.h
-rename to include/hw/vfio/vfio-device.h
-diff --git a/include/hw/vfio/vfio-platform.h b/include/hw/vfio/vfio-platform.h
-index 3191545717da51abc41d10cd3646cd047b4a676c..256d8500b70a2e985e975b0895e3cfca435ed8ed 100644
---- a/include/hw/vfio/vfio-platform.h
-+++ b/include/hw/vfio/vfio-platform.h
-@@ -17,7 +17,7 @@
- #define HW_VFIO_VFIO_PLATFORM_H
+ #ifdef CONFIG_LINUX
+-int vfio_get_region_info(VFIODevice *vbasedev, int index,
++int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
+                          struct vfio_region_info **info);
+-int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
++int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
+                              uint32_t subtype, struct vfio_region_info **info);
+-bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type);
++bool vfio_device_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type);
+ #endif
  
- #include "hw/sysbus.h"
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "qemu/event_notifier.h"
- #include "qemu/queue.h"
- #include "qom/object.h"
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index d57da44755be3d7fdba74f7dbecfe6d1c89921ba..9587e4d99b131e88674326a5196cfd2079560430 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -18,7 +18,7 @@
- #include "qemu/error-report.h"
- #include "monitor/monitor.h"
- #include "trace.h"
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include <sys/ioctl.h>
- #include <linux/iommufd.h>
- 
+ /* Returns 0 on success, or a negative errno. */
 diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index c7ab4ff57ada0ed0e5a76f52b5a05c86ca4fe0b4..4fdb74e33c427595a9b0a4d28b2b5a70df951e4e 100644
+index 4fdb74e33c427595a9b0a4d28b2b5a70df951e4e..9000702aed960ccb69ca67ec052f1ebe11ee1919 100644
 --- a/hw/vfio/ap.c
 +++ b/hw/vfio/ap.c
-@@ -15,7 +15,7 @@
- #include <linux/vfio.h>
- #include <sys/ioctl.h>
- #include "qapi/error.h"
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "system/iommufd.h"
- #include "hw/s390x/ap-device.h"
- #include "qemu/error-report.h"
+@@ -117,7 +117,7 @@ static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+     fd = event_notifier_get_fd(notifier);
+     qemu_set_fd_handler(fd, fd_read, NULL, vapdev);
+ 
+-    if (!vfio_set_irq_signaling(vdev, irq, 0, VFIO_IRQ_SET_ACTION_TRIGGER, fd,
++    if (!vfio_device_irq_set_signaling(vdev, irq, 0, VFIO_IRQ_SET_ACTION_TRIGGER, fd,
+                                 errp)) {
+         qemu_set_fd_handler(fd, NULL, NULL, vapdev);
+         event_notifier_cleanup(notifier);
+@@ -141,7 +141,7 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
+         return;
+     }
+ 
+-    if (!vfio_set_irq_signaling(&vapdev->vdev, irq, 0,
++    if (!vfio_device_irq_set_signaling(&vapdev->vdev, irq, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, -1, &err)) {
+         warn_reportf_err(err, VFIO_MSG_PREFIX, vapdev->vdev.name);
+     }
+@@ -162,7 +162,7 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    if (!vfio_attach_device(vbasedev->name, vbasedev,
++    if (!vfio_device_attach(vbasedev->name, vbasedev,
+                             &address_space_memory, errp)) {
+         goto error;
+     }
+@@ -187,7 +187,7 @@ static void vfio_ap_unrealize(DeviceState *dev)
+     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
+ 
+     vfio_ap_unregister_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX);
+-    vfio_detach_device(&vapdev->vdev);
++    vfio_device_detach(&vapdev->vdev);
+     g_free(vapdev->vdev.name);
+ }
+ 
 diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index e5e0d9e3e7ed124f242b3eda345bc973e418a64c..a40169bc85e51406822247f5b3ef6da1f7f92881 100644
+index a40169bc85e51406822247f5b3ef6da1f7f92881..490871c075f8db6c8a4a706b22eba966d84f2945 100644
 --- a/hw/vfio/ccw.c
 +++ b/hw/vfio/ccw.c
-@@ -21,7 +21,7 @@
- #include <sys/ioctl.h>
+@@ -426,7 +426,7 @@ static bool vfio_ccw_register_irq_notifier(VFIOCCWDevice *vcdev,
+     fd = event_notifier_get_fd(notifier);
+     qemu_set_fd_handler(fd, fd_read, NULL, vcdev);
  
- #include "qapi/error.h"
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "system/iommufd.h"
- #include "hw/s390x/s390-ccw.h"
- #include "hw/s390x/vfio-ccw.h"
-diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index 83e83ab9e67de8b004dfaf0067e4c466a6c88451..ace9de18103e8c1ed9f7a51adbf16c36be01bd7c 100644
---- a/hw/vfio/container-base.c
-+++ b/hw/vfio/container-base.c
-@@ -15,7 +15,7 @@
- #include "qemu/error-report.h"
- #include "system/reset.h"
- #include "hw/vfio/vfio-container-base.h"
--#include "hw/vfio/vfio-common.h" /* for vfio_device_list */
-+#include "hw/vfio/vfio-device.h" /* for vfio_device_list */
- #include "trace.h"
+-    if (!vfio_set_irq_signaling(vdev, irq, 0,
++    if (!vfio_device_irq_set_signaling(vdev, irq, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, fd, errp)) {
+         qemu_set_fd_handler(fd, NULL, NULL, vcdev);
+         event_notifier_cleanup(notifier);
+@@ -456,7 +456,7 @@ static void vfio_ccw_unregister_irq_notifier(VFIOCCWDevice *vcdev,
+         return;
+     }
  
- static QLIST_HEAD(, VFIOAddressSpace) vfio_address_spaces =
+-    if (!vfio_set_irq_signaling(&vcdev->vdev, irq, 0,
++    if (!vfio_device_irq_set_signaling(&vcdev->vdev, irq, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, -1, &err)) {
+         warn_reportf_err(err, VFIO_MSG_PREFIX, vcdev->vdev.name);
+     }
+@@ -488,7 +488,7 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+         return false;
+     }
+ 
+-    ret = vfio_get_region_info(vdev, VFIO_CCW_CONFIG_REGION_INDEX, &info);
++    ret = vfio_device_get_region_info(vdev, VFIO_CCW_CONFIG_REGION_INDEX, &info);
+     if (ret) {
+         error_setg_errno(errp, -ret, "vfio: Error getting config info");
+         return false;
+@@ -505,7 +505,7 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+     g_free(info);
+ 
+     /* check for the optional async command region */
+-    ret = vfio_get_dev_region_info(vdev, VFIO_REGION_TYPE_CCW,
++    ret = vfio_device_get_region_info_type(vdev, VFIO_REGION_TYPE_CCW,
+                                    VFIO_REGION_SUBTYPE_CCW_ASYNC_CMD, &info);
+     if (!ret) {
+         vcdev->async_cmd_region_size = info->size;
+@@ -518,7 +518,7 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+         g_free(info);
+     }
+ 
+-    ret = vfio_get_dev_region_info(vdev, VFIO_REGION_TYPE_CCW,
++    ret = vfio_device_get_region_info_type(vdev, VFIO_REGION_TYPE_CCW,
+                                    VFIO_REGION_SUBTYPE_CCW_SCHIB, &info);
+     if (!ret) {
+         vcdev->schib_region_size = info->size;
+@@ -531,7 +531,7 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+         g_free(info);
+     }
+ 
+-    ret = vfio_get_dev_region_info(vdev, VFIO_REGION_TYPE_CCW,
++    ret = vfio_device_get_region_info_type(vdev, VFIO_REGION_TYPE_CCW,
+                                    VFIO_REGION_SUBTYPE_CCW_CRW, &info);
+ 
+     if (!ret) {
+@@ -583,7 +583,7 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
+         goto out_unrealize;
+     }
+ 
+-    if (!vfio_attach_device(cdev->mdevid, vbasedev,
++    if (!vfio_device_attach(cdev->mdevid, vbasedev,
+                             &address_space_memory, errp)) {
+         goto out_attach_dev_err;
+     }
+@@ -620,7 +620,7 @@ out_irq_notifier_err:
+ out_io_notifier_err:
+     vfio_ccw_put_region(vcdev);
+ out_region_err:
+-    vfio_detach_device(vbasedev);
++    vfio_device_detach(vbasedev);
+ out_attach_dev_err:
+     g_free(vbasedev->name);
+ out_unrealize:
+@@ -639,7 +639,7 @@ static void vfio_ccw_unrealize(DeviceState *dev)
+     vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_CRW_IRQ_INDEX);
+     vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_IO_IRQ_INDEX);
+     vfio_ccw_put_region(vcdev);
+-    vfio_detach_device(&vcdev->vdev);
++    vfio_device_detach(&vcdev->vdev);
+     g_free(vcdev->vdev.name);
+ 
+     if (cdc->unrealize) {
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index e88dfe12edd6dee469c06ee2e46ab9c8b5019ae7..e300d2d90f2fbde329609b7c63245c523766fb60 100644
+index e300d2d90f2fbde329609b7c63245c523766fb60..77e2934511a2917f6f7cf13f60c8f3ce4a493035 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -22,7 +22,7 @@
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
+@@ -870,7 +870,7 @@ static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+ }
  
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "exec/address-spaces.h"
- #include "exec/memory.h"
- #include "exec/ram_addr.h"
-diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-index e1bba1726402f41ee394f25b6e613d27f44b2a2c..43b99680f6d7db27c4d7e518520aef5ade2ebcf4 100644
---- a/hw/vfio/cpr.c
-+++ b/hw/vfio/cpr.c
-@@ -6,7 +6,7 @@
+ /*
+- * vfio_attach_device: attach a device to a security context
++ * vfio_device_attach: attach a device to a security context
+  * @name and @vbasedev->name are likely to be different depending
+  * on the type of the device, hence the need for passing @name
   */
+@@ -886,7 +886,7 @@ static bool vfio_legacy_attach_device(const char *name, VFIODevice *vbasedev,
+         return false;
+     }
  
- #include "qemu/osdep.h"
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "migration/misc.h"
- #include "qapi/error.h"
- #include "system/runstate.h"
+-    trace_vfio_attach_device(vbasedev->name, groupid);
++    trace_vfio_device_attach(vbasedev->name, groupid);
+ 
+     if (!vfio_device_hiod_realize(vbasedev, errp)) {
+         return false;
+@@ -924,7 +924,7 @@ static void vfio_legacy_detach_device(VFIODevice *vbasedev)
+     QLIST_REMOVE(vbasedev, global_next);
+     QLIST_REMOVE(vbasedev, container_next);
+     vbasedev->bcontainer = NULL;
+-    trace_vfio_detach_device(vbasedev->name, group->groupid);
++    trace_vfio_device_detach(vbasedev->name, group->groupid);
+     vfio_put_base_device(vbasedev);
+     vfio_put_group(group);
+ }
 diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index e6a1bbcda2297f9e6272fff9b1c228b6772457ce..0d443b53d23d392729cef84e419d3e089fe64298 100644
+index 0d443b53d23d392729cef84e419d3e089fe64298..22b4310b76a7df4864096be188a4b611bac10645 100644
 --- a/hw/vfio/device.c
 +++ b/hw/vfio/device.c
-@@ -22,7 +22,7 @@
- #include "qemu/osdep.h"
- #include <sys/ioctl.h>
- 
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "hw/vfio/pci.h"
- #include "hw/hw.h"
- #include "trace.h"
-diff --git a/hw/vfio/dirty-tracking.c b/hw/vfio/dirty-tracking.c
-index 447e09ed84993e3fbe1ed9b27a8269a9f0f46339..143cc5cf62b0165565e91f8a2ca166026f16b1eb 100644
---- a/hw/vfio/dirty-tracking.c
-+++ b/hw/vfio/dirty-tracking.c
-@@ -22,7 +22,7 @@
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
- 
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "hw/vfio/pci.h"
- #include "exec/memory.h"
- #include "exec/ram_addr.h"
-diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-index e99d312a9f5c7462644ea3d0de2e9de38979f851..b7907aab80f8adb308ebae60baa20c911d9393d7 100644
---- a/hw/vfio/helpers.c
-+++ b/hw/vfio/helpers.c
-@@ -23,7 +23,7 @@
- #include <sys/ioctl.h>
- 
- #include "system/kvm.h"
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "hw/hw.h"
- #include "qapi/error.h"
- #include "helpers.h"
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 9335a17920b32dc2bf9cb4eeb2b8f57382f14ac8..7f354d86cd14270a70dc990860ad5b69f0310719 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -15,7 +15,7 @@
- #include <linux/vfio.h>
- #include <linux/iommufd.h>
- 
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "qemu/error-report.h"
- #include "trace.h"
- #include "qapi/error.h"
-diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
-index 285f9a9a18dd8f0847ac5ac3fdaa304779a2d0db..1ba703e595db99f3786bfc1a2edeb0e061f9e01b 100644
---- a/hw/vfio/migration-multifd.c
-+++ b/hw/vfio/migration-multifd.c
-@@ -10,7 +10,7 @@
+@@ -38,7 +38,7 @@ VFIODeviceList vfio_device_list =
+ /*
+  * Common VFIO interrupt disable
   */
+-void vfio_disable_irqindex(VFIODevice *vbasedev, int index)
++void vfio_device_irq_disable(VFIODevice *vbasedev, int index)
+ {
+     struct vfio_irq_set irq_set = {
+         .argsz = sizeof(irq_set),
+@@ -51,7 +51,7 @@ void vfio_disable_irqindex(VFIODevice *vbasedev, int index)
+     ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, &irq_set);
+ }
  
- #include "qemu/osdep.h"
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "hw/vfio/vfio-migration.h"
- #include "migration/misc.h"
- #include "qapi/error.h"
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 6fd825e435bde96d1008ec03dfaba25db3b616fc..338fafb83f41460e0c244dcc27524198322eec67 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -16,7 +16,7 @@
- #include <sys/ioctl.h>
+-void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index)
++void vfio_device_irq_unmask(VFIODevice *vbasedev, int index)
+ {
+     struct vfio_irq_set irq_set = {
+         .argsz = sizeof(irq_set),
+@@ -64,7 +64,7 @@ void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index)
+     ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, &irq_set);
+ }
  
- #include "system/runstate.h"
--#include "hw/vfio/vfio-common.h"
-+#include "hw/vfio/vfio-device.h"
- #include "hw/vfio/vfio-migration.h"
- #include "migration/misc.h"
- #include "migration/savevm.h"
+-void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index)
++void vfio_device_irq_mask(VFIODevice *vbasedev, int index)
+ {
+     struct vfio_irq_set irq_set = {
+         .argsz = sizeof(irq_set),
+@@ -113,7 +113,7 @@ static const char *index_to_str(VFIODevice *vbasedev, int index)
+     }
+ }
+ 
+-bool vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
++bool vfio_device_irq_set_signaling(VFIODevice *vbasedev, int index, int subindex,
+                             int action, int fd, Error **errp)
+ {
+     ERRP_GUARD();
+@@ -151,7 +151,7 @@ bool vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+     return false;
+ }
+ 
+-int vfio_get_region_info(VFIODevice *vbasedev, int index,
++int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
+                          struct vfio_region_info **info)
+ {
+     size_t argsz = sizeof(struct vfio_region_info);
+@@ -178,7 +178,7 @@ retry:
+     return 0;
+ }
+ 
+-int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
++int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
+                              uint32_t subtype, struct vfio_region_info **info)
+ {
+     int i;
+@@ -187,7 +187,7 @@ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
+         struct vfio_info_cap_header *hdr;
+         struct vfio_region_info_cap_type *cap_type;
+ 
+-        if (vfio_get_region_info(vbasedev, i, info)) {
++        if (vfio_device_get_region_info(vbasedev, i, info)) {
+             continue;
+         }
+ 
+@@ -199,7 +199,7 @@ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
+ 
+         cap_type = container_of(hdr, struct vfio_region_info_cap_type, header);
+ 
+-        trace_vfio_get_dev_region(vbasedev->name, i,
++        trace_vfio_device_get_region_info_type(vbasedev->name, i,
+                                   cap_type->type, cap_type->subtype);
+ 
+         if (cap_type->type == type && cap_type->subtype == subtype) {
+@@ -213,12 +213,12 @@ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
+     return -ENODEV;
+ }
+ 
+-bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
++bool vfio_device_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
+ {
+     g_autofree struct vfio_region_info *info = NULL;
+     bool ret = false;
+ 
+-    if (!vfio_get_region_info(vbasedev, region, &info)) {
++    if (!vfio_device_get_region_info(vbasedev, region, &info)) {
+         if (vfio_get_region_info_cap(info, cap_type)) {
+             ret = true;
+         }
+@@ -333,7 +333,7 @@ VFIODevice *vfio_get_vfio_device(Object *obj)
+     }
+ }
+ 
+-bool vfio_attach_device(char *name, VFIODevice *vbasedev,
++bool vfio_device_attach(char *name, VFIODevice *vbasedev,
+                         AddressSpace *as, Error **errp)
+ {
+     const VFIOIOMMUClass *ops =
+@@ -361,7 +361,7 @@ bool vfio_attach_device(char *name, VFIODevice *vbasedev,
+     return true;
+ }
+ 
+-void vfio_detach_device(VFIODevice *vbasedev)
++void vfio_device_detach(VFIODevice *vbasedev)
+ {
+     if (!vbasedev->bcontainer) {
+         return;
+diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+index 2c06361c67cb074b88f2649b3b9fd21b7bacf07c..dd12c2aa6042a5ad3a1610b83bbde1d58b732a8c 100644
+--- a/hw/vfio/display.c
++++ b/hw/vfio/display.c
+@@ -130,7 +130,7 @@ static bool vfio_display_edid_init(VFIOPCIDevice *vdev, Error **errp)
+     int fd = vdev->vbasedev.fd;
+     int ret;
+ 
+-    ret = vfio_get_dev_region_info(&vdev->vbasedev,
++    ret = vfio_device_get_region_info_type(&vdev->vbasedev,
+                                    VFIO_REGION_TYPE_GFX,
+                                    VFIO_REGION_SUBTYPE_GFX_EDID,
+                                    &dpy->edid_info);
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index 265fffc2aa52d032ba619b1c3759ecebad438033..7ecbb0e672879987c9603a44b3380519b84bdc0e 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -200,7 +200,7 @@ static bool vfio_pci_igd_setup_opregion(VFIOPCIDevice *vdev, Error **errp)
+         return false;
+     }
+ 
+-    ret = vfio_get_dev_region_info(&vdev->vbasedev,
++    ret = vfio_device_get_region_info_type(&vdev->vbasedev,
+                     VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
+                     VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION, &opregion);
+     if (ret) {
+@@ -385,7 +385,7 @@ static bool vfio_pci_igd_setup_lpc_bridge(VFIOPCIDevice *vdev, Error **errp)
+      * Check whether we have all the vfio device specific regions to
+      * support LPC quirk (added in Linux v4.6).
+      */
+-    ret = vfio_get_dev_region_info(&vdev->vbasedev,
++    ret = vfio_device_get_region_info_type(&vdev->vbasedev,
+                         VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
+                         VFIO_REGION_SUBTYPE_INTEL_IGD_LPC_CFG, &lpc);
+     if (ret) {
+@@ -393,7 +393,7 @@ static bool vfio_pci_igd_setup_lpc_bridge(VFIOPCIDevice *vdev, Error **errp)
+         return false;
+     }
+ 
+-    ret = vfio_get_dev_region_info(&vdev->vbasedev,
++    ret = vfio_device_get_region_info_type(&vdev->vbasedev,
+                         VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
+                         VFIO_REGION_SUBTYPE_INTEL_IGD_HOST_CFG, &host);
+     if (ret) {
+@@ -542,7 +542,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+          * there's no ROM, there's no point in setting up this quirk.
+          * NB. We only seem to get BIOS ROMs, so UEFI VM would need CSM support.
+          */
+-        ret = vfio_get_region_info(&vdev->vbasedev,
++        ret = vfio_device_get_region_info(&vdev->vbasedev,
+                                    VFIO_PCI_ROM_REGION_INDEX, &rom);
+         if ((ret || !rom->size) && !vdev->pdev.romfile) {
+             error_setg(&err, "Device has no ROM");
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index c0d314265836759beaf65afd85153b465179ecce..e6abc25413c5be66afc25f8b882236696b3f834d 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -116,7 +116,7 @@ static void vfio_intx_eoi(VFIODevice *vbasedev)
+ 
+     vdev->intx.pending = false;
+     pci_irq_deassert(&vdev->pdev);
+-    vfio_unmask_single_irqindex(vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
++    vfio_device_irq_unmask(vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+ }
+ 
+ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+@@ -132,7 +132,7 @@ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+ 
+     /* Get to a known interrupt state */
+     qemu_set_fd_handler(irq_fd, NULL, NULL, vdev);
+-    vfio_mask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
++    vfio_device_irq_mask(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+     vdev->intx.pending = false;
+     pci_irq_deassert(&vdev->pdev);
+ 
+@@ -150,7 +150,7 @@ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+         goto fail_irqfd;
+     }
+ 
+-    if (!vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX, 0,
++    if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX, 0,
+                                 VFIO_IRQ_SET_ACTION_UNMASK,
+                                 event_notifier_get_fd(&vdev->intx.unmask),
+                                 errp)) {
+@@ -158,7 +158,7 @@ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+     }
+ 
+     /* Let'em rip */
+-    vfio_unmask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
++    vfio_device_irq_unmask(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+ 
+     vdev->intx.kvm_accel = true;
+ 
+@@ -173,7 +173,7 @@ fail_irqfd:
+     event_notifier_cleanup(&vdev->intx.unmask);
+ fail:
+     qemu_set_fd_handler(irq_fd, vfio_intx_interrupt, NULL, vdev);
+-    vfio_unmask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
++    vfio_device_irq_unmask(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+     return false;
+ #else
+     return true;
+@@ -191,7 +191,7 @@ static void vfio_intx_disable_kvm(VFIOPCIDevice *vdev)
+      * Get to a known state, hardware masked, QEMU ready to accept new
+      * interrupts, QEMU IRQ de-asserted.
+      */
+-    vfio_mask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
++    vfio_device_irq_mask(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+     vdev->intx.pending = false;
+     pci_irq_deassert(&vdev->pdev);
+ 
+@@ -211,7 +211,7 @@ static void vfio_intx_disable_kvm(VFIOPCIDevice *vdev)
+     vdev->intx.kvm_accel = false;
+ 
+     /* If we've missed an event, let it re-fire through QEMU */
+-    vfio_unmask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
++    vfio_device_irq_unmask(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+ 
+     trace_vfio_intx_disable_kvm(vdev->vbasedev.name);
+ #endif
+@@ -300,7 +300,7 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+     fd = event_notifier_get_fd(&vdev->intx.interrupt);
+     qemu_set_fd_handler(fd, vfio_intx_interrupt, NULL, vdev);
+ 
+-    if (!vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX, 0,
++    if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, fd, errp)) {
+         qemu_set_fd_handler(fd, NULL, NULL, vdev);
+         event_notifier_cleanup(&vdev->intx.interrupt);
+@@ -323,7 +323,7 @@ static void vfio_intx_disable(VFIOPCIDevice *vdev)
+ 
+     timer_del(vdev->intx.mmap_timer);
+     vfio_intx_disable_kvm(vdev);
+-    vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
++    vfio_device_irq_disable(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+     vdev->intx.pending = false;
+     pci_irq_deassert(&vdev->pdev);
+     vfio_mmap_set_enabled(vdev, true);
+@@ -579,7 +579,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+ 
+     if (!vdev->defer_kvm_irq_routing) {
+         if (vdev->msix->noresize && resizing) {
+-            vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
++            vfio_device_irq_disable(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
+             ret = vfio_enable_vectors(vdev, true);
+             if (ret) {
+                 error_report("vfio: failed to enable vectors, %d", ret);
+@@ -594,7 +594,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                 fd = event_notifier_get_fd(&vector->interrupt);
+             }
+ 
+-            if (!vfio_set_irq_signaling(&vdev->vbasedev,
++            if (!vfio_device_irq_set_signaling(&vdev->vbasedev,
+                                         VFIO_PCI_MSIX_IRQ_INDEX, nr,
+                                         VFIO_IRQ_SET_ACTION_TRIGGER, fd,
+                                         &err)) {
+@@ -639,7 +639,7 @@ static void vfio_msix_vector_release(PCIDevice *pdev, unsigned int nr)
+         int32_t fd = event_notifier_get_fd(&vector->interrupt);
+         Error *err = NULL;
+ 
+-        if (!vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX,
++        if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX,
+                                     nr, VFIO_IRQ_SET_ACTION_TRIGGER, fd,
+                                     &err)) {
+             error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+@@ -836,7 +836,7 @@ static void vfio_msix_disable(VFIOPCIDevice *vdev)
+      * Always clear MSI-X IRQ index. A PF device could have enabled
+      * MSI-X with no vectors. See vfio_msix_enable().
+      */
+-    vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
++    vfio_device_irq_disable(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
+ 
+     vfio_msi_disable_common(vdev);
+     if (!vfio_intx_enable(vdev, &err)) {
+@@ -853,7 +853,7 @@ static void vfio_msi_disable(VFIOPCIDevice *vdev)
+ {
+     Error *err = NULL;
+ 
+-    vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSI_IRQ_INDEX);
++    vfio_device_irq_disable(&vdev->vbasedev, VFIO_PCI_MSI_IRQ_INDEX);
+     vfio_msi_disable_common(vdev);
+     vfio_intx_enable(vdev, &err);
+     if (err) {
+@@ -887,7 +887,7 @@ static void vfio_pci_load_rom(VFIOPCIDevice *vdev)
+     off_t off = 0;
+     ssize_t bytes;
+ 
+-    if (vfio_get_region_info(&vdev->vbasedev,
++    if (vfio_device_get_region_info(&vdev->vbasedev,
+                              VFIO_PCI_ROM_REGION_INDEX, &reg_info)) {
+         error_report("vfio: Error getting ROM info: %m");
+         return;
+@@ -1381,7 +1381,7 @@ static void vfio_pci_fixup_msix_region(VFIOPCIDevice *vdev)
+      * If the host driver allows mapping of a MSIX data, we are going to
+      * do map the entire BAR and emulate MSIX table on top of that.
+      */
+-    if (vfio_has_region_cap(&vdev->vbasedev, region->nr,
++    if (vfio_device_has_region_cap(&vdev->vbasedev, region->nr,
+                             VFIO_REGION_INFO_CAP_MSIX_MAPPABLE)) {
+         return;
+     }
+@@ -2675,7 +2675,7 @@ bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
+     g_autofree struct vfio_region_info *reg_info = NULL;
+     int ret;
+ 
+-    ret = vfio_get_region_info(vbasedev, VFIO_PCI_VGA_REGION_INDEX, &reg_info);
++    ret = vfio_device_get_region_info(vbasedev, VFIO_PCI_VGA_REGION_INDEX, &reg_info);
+     if (ret) {
+         error_setg_errno(errp, -ret,
+                          "failed getting region info for VGA region index %d",
+@@ -2773,7 +2773,7 @@ static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+         QLIST_INIT(&vdev->bars[i].quirks);
+     }
+ 
+-    ret = vfio_get_region_info(vbasedev,
++    ret = vfio_device_get_region_info(vbasedev,
+                                VFIO_PCI_CONFIG_REGION_INDEX, &reg_info);
+     if (ret) {
+         error_setg_errno(errp, -ret, "failed to get config info");
+@@ -2818,7 +2818,7 @@ static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+ 
+ static void vfio_pci_put_device(VFIOPCIDevice *vdev)
+ {
+-    vfio_detach_device(&vdev->vbasedev);
++    vfio_device_detach(&vdev->vbasedev);
+ 
+     g_free(vdev->vbasedev.name);
+     g_free(vdev->msix);
+@@ -2870,7 +2870,7 @@ static void vfio_register_err_notifier(VFIOPCIDevice *vdev)
+     fd = event_notifier_get_fd(&vdev->err_notifier);
+     qemu_set_fd_handler(fd, vfio_err_notifier_handler, NULL, vdev);
+ 
+-    if (!vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_ERR_IRQ_INDEX, 0,
++    if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_ERR_IRQ_INDEX, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+         qemu_set_fd_handler(fd, NULL, NULL, vdev);
+@@ -2887,7 +2887,7 @@ static void vfio_unregister_err_notifier(VFIOPCIDevice *vdev)
+         return;
+     }
+ 
+-    if (!vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_ERR_IRQ_INDEX, 0,
++    if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_ERR_IRQ_INDEX, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, -1, &err)) {
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+     }
+@@ -2935,7 +2935,7 @@ static void vfio_register_req_notifier(VFIOPCIDevice *vdev)
+     fd = event_notifier_get_fd(&vdev->req_notifier);
+     qemu_set_fd_handler(fd, vfio_req_notifier_handler, NULL, vdev);
+ 
+-    if (!vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_REQ_IRQ_INDEX, 0,
++    if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_REQ_IRQ_INDEX, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+         qemu_set_fd_handler(fd, NULL, NULL, vdev);
+@@ -2953,7 +2953,7 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
+         return;
+     }
+ 
+-    if (!vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_REQ_IRQ_INDEX, 0,
++    if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_REQ_IRQ_INDEX, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, -1, &err)) {
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+     }
+@@ -3017,7 +3017,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+         name = g_strdup(vbasedev->name);
+     }
+ 
+-    if (!vfio_attach_device(name, vbasedev,
++    if (!vfio_device_attach(name, vbasedev,
+                             pci_device_iommu_address_space(pdev), errp)) {
+         goto error;
+     }
+diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+index 83b53d57149a343a00eb6d6f78c1cbea004dbaa2..4217e870063593a5be840047adf2870e9b2b89e4 100644
+--- a/hw/vfio/platform.c
++++ b/hw/vfio/platform.c
+@@ -119,7 +119,7 @@ static int vfio_set_trigger_eventfd(VFIOINTp *intp,
+ 
+     qemu_set_fd_handler(fd, (IOHandler *)handler, NULL, intp);
+ 
+-    if (!vfio_set_irq_signaling(vbasedev, intp->pin, 0,
++    if (!vfio_device_irq_set_signaling(vbasedev, intp->pin, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
+         error_reportf_err(err, VFIO_MSG_PREFIX, vbasedev->name);
+         qemu_set_fd_handler(fd, NULL, NULL, NULL);
+@@ -301,7 +301,7 @@ static void vfio_platform_eoi(VFIODevice *vbasedev)
+ 
+             if (vfio_irq_is_automasked(intp)) {
+                 /* unmasks the physical level-sensitive IRQ */
+-                vfio_unmask_single_irqindex(vbasedev, intp->pin);
++                vfio_device_irq_unmask(vbasedev, intp->pin);
+             }
+ 
+             /* a single IRQ can be active at a time */
+@@ -357,7 +357,7 @@ static int vfio_set_resample_eventfd(VFIOINTp *intp)
+     Error *err = NULL;
+ 
+     qemu_set_fd_handler(fd, NULL, NULL, NULL);
+-    if (!vfio_set_irq_signaling(vbasedev, intp->pin, 0,
++    if (!vfio_device_irq_set_signaling(vbasedev, intp->pin, 0,
+                                 VFIO_IRQ_SET_ACTION_UNMASK, fd, &err)) {
+         error_reportf_err(err, VFIO_MSG_PREFIX, vbasedev->name);
+         return -EINVAL;
+@@ -547,7 +547,7 @@ static bool vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
+         return false;
+     }
+ 
+-    if (!vfio_attach_device(vbasedev->name, vbasedev,
++    if (!vfio_device_attach(vbasedev->name, vbasedev,
+                             &address_space_memory, errp)) {
+         return false;
+     }
+@@ -556,7 +556,7 @@ static bool vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
+         return true;
+     }
+ 
+-    vfio_detach_device(vbasedev);
++    vfio_device_detach(vbasedev);
+     return false;
+ }
+ 
 diff --git a/hw/vfio/region.c b/hw/vfio/region.c
-index 87bf5e046a432dfedf3be3c1c7e8f33e006da004..ade4466eb622248b5aa50f9df7e5c683bfa78a11 100644
+index ade4466eb622248b5aa50f9df7e5c683bfa78a11..669dc098357050932b9e74ad213ff56b62a0b88e 100644
 --- a/hw/vfio/region.c
 +++ b/hw/vfio/region.c
-@@ -22,8 +22,8 @@
- #include "qemu/osdep.h"
- #include <sys/ioctl.h>
+@@ -186,7 +186,7 @@ int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
+     g_autofree struct vfio_region_info *info = NULL;
+     int ret;
  
--#include "hw/vfio/vfio-common.h"
--#include "hw/vfio/pci.h"
-+#include "hw/vfio/vfio-region.h"
-+#include "hw/vfio/vfio-device.h"
- #include "hw/hw.h"
- #include "trace.h"
- #include "qapi/error.h"
+-    ret = vfio_get_region_info(vbasedev, index, &info);
++    ret = vfio_device_get_region_info(vbasedev, index, &info);
+     if (ret) {
+         return ret;
+     }
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index f3bdcebe938dcca77b913ef81a74644c622b5d8a..39d4947f94dc61e4cff06fe1a6181066e7fc4dc3 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -37,8 +37,6 @@ vfio_pci_hot_reset_dep_devices(int domain, int bus, int slot, int function, int
+ vfio_pci_hot_reset_result(const char *name, const char *result) "%s hot reset: %s"
+ vfio_populate_device_config(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device '%s' config: size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
+ vfio_populate_device_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
+-vfio_attach_device(const char *name, int group_id) " (%s) group %d"
+-vfio_detach_device(const char *name, int group_id) " (%s) group %d"
+ vfio_mdev(const char *name, bool is_mdev) " (%s) is_mdev %d"
+ vfio_add_ext_cap_dropped(const char *name, uint16_t cap, uint16_t offset) "%s 0x%x@0x%x"
+ vfio_pci_reset(const char *name) " (%s)"
+@@ -197,4 +195,6 @@ iommufd_cdev_pci_hot_reset_dep_devices(int domain, int bus, int slot, int functi
+ vfio_reset_handler(void) ""
+ 
+ # device.c
+-vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
++vfio_device_get_region_info_type(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
++vfio_device_attach(const char *name, int group_id) " (%s) group %d"
++vfio_device_detach(const char *name, int group_id) " (%s) group %d"
 -- 
 2.48.1
 
