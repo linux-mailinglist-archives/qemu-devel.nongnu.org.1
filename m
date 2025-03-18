@@ -2,70 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3B6A67448
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:50:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F98A6748C
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:09:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWNs-0007oN-63; Tue, 18 Mar 2025 08:49:36 -0400
+	id 1tuWfq-0004Mp-TM; Tue, 18 Mar 2025 09:08:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuWLe-0003ON-MZ; Tue, 18 Mar 2025 08:47:15 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuWLb-0003e8-Rt; Tue, 18 Mar 2025 08:47:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742302028; x=1773838028;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=0FgR/Vp3UYan5AdfRXukE+t2i1xm+NIn8NwYnqUDtzo=;
- b=Ma/A3mZl6GUrSLkIoC2524f1xk+7W1sFmvZVYbzTwfmPYtsYgE4gKvK+
- yP1eDlkyl4B9PNGA6/0qhS7nRc4VRS0iAfFFDSpzn1Jvag+ZXMDHNFjoL
- 0nZYQ0CvGFzaNwpRY1NOyO4Hwd7UdfDDwhq/KmwdZS4aDpoUAMgyvSmSu
- cwki18IPmAjumP/F4cOdj5YhR4J7z5FF2WIjjkfCKM1y123/zFWBTy2ZL
- vPXMh/yZtCPTsJ3+5BAC0SeYX2X0hWsIbNu8Z7g0J7TPikHxByIfbaeWR
- b6Vs+vT8D2JEAU5/djujl2Q/Dj/DA1jU7iHMMubu243Dc/R10R5FTEq32 A==;
-X-CSE-ConnectionGUID: WLgK/50PSBKi3OydpJKK3g==
-X-CSE-MsgGUID: DvibxuerSC2AWHRwfSak1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54825031"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="54825031"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 05:46:59 -0700
-X-CSE-ConnectionGUID: hmbep/OJQ8KLOXnOGbav4A==
-X-CSE-MsgGUID: +hevjObvTMS3T9UHa7pRWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="123188662"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa008.jf.intel.com with ESMTP; 18 Mar 2025 05:46:57 -0700
-Date: Tue, 18 Mar 2025 21:07:11 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org
-Subject: Re: [PATCH v2 10/14] rust/vmstate: Support vmstate_validate
-Message-ID: <Z9lv/5mj9mp7M9Lx@intel.com>
-References: <20250318083248.1402990-1-zhao1.liu@intel.com>
- <20250318083248.1402990-11-zhao1.liu@intel.com>
- <9e8743b8-99b2-4aab-84de-7630edcc7e10@redhat.com>
- <Z9llqtHLLTJIju/j@intel.com>
- <CABgObfY1x1s_NOmjeNUjNCz5WggARCH_AUzxC81d+smq=jBf=g@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
+ id 1tuWdy-0003os-Oj; Tue, 18 Mar 2025 09:06:12 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
+ id 1tuWdw-0002hh-KF; Tue, 18 Mar 2025 09:06:06 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-ac345bd8e13so505780566b.0; 
+ Tue, 18 Mar 2025 06:06:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1742303161; x=1742907961; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=g0yzrsHOZw8jJRUdrnkye8+q3BRXaAEp0577L+ULu0o=;
+ b=alU9cK6Z3VMAM+ep0n7QHpZvXQt4FK9gzNXvvZKdMytodjVth9QDeK3gF0cvzRbbJN
+ dw1L3JB50jNeGW+WePkerSOxwW3k0o6JxPmo+P2lauymFutQIegXvhEqAKD6hTk/qJ/t
+ nW78My0CVFAGDZEjS8915PbKmCkxPazBNcYNIHtEkpWwFs6IRzkFs70H2GfLNjjTf6U7
+ Qu2tWLIMdNaTvK1Em5lqeYgl1tFa8cpYHLJmai0NHIiUYXfqrs9kFrn8iQhNTMQIq4rE
+ 4dXWtVsO8da8uQ45p1a55KG7AVf1+4VTiZg8VGqXQJZTyrIALwWKk4qnN4YptRb3+UMQ
+ fFOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742303161; x=1742907961;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=g0yzrsHOZw8jJRUdrnkye8+q3BRXaAEp0577L+ULu0o=;
+ b=YATC5JLo7XEgId58B+iTKyZWsTQebc8WPmN0qDoB6f72JKFhHm5xy2qxh2CnKBv1OZ
+ CZWg+sPyXUYTD2wV85TJ5+1CN9X0rtI1Sf6kvSKN+zg2SQB+XHZWZ6NAnJVOpfhtIq5U
+ qLIps1zFbvi4i2eUWf52UM0rnX7SJt/JwBOwjeBkzVO/o8t/EqSJ5uZ6EmaiRlWTaV8G
+ f4XGpdvH9Zw1InP9FgH38ciHqPUC7wiA29mLQszh+8H13xv1hJo7waqwSLmi6vn0Fagn
+ aVqXSXGAtFNfAmQTG4gPVpUQKfBLsjP8xVmpwouokS7A09kFobJWsg9ASub0CB3vmkDX
+ Ha0A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWxd2GBDLeBNriSILR8WJ30GGFxW9Xsx2TfgprNG5singN0RdP1jDROHHTCaXyQSA8+IxYdYoQaAQ==@nongnu.org
+X-Gm-Message-State: AOJu0YyoA/RFmWOPbTYis8ldXDNxz85a/1GnfnVA7kOB+zn95Zqbrd4N
+ LNAuPumyztoDRYTvo1tWcyDiWhE0AjQXhwdvo7ntk5XljMh9cGdf9Vq5WCoz
+X-Gm-Gg: ASbGncuHclwjpDySNtpqtWwDXY+K9lK0Hms5wvnKb1sbQAPS1BpHpe35K+vaO6SplCh
+ TkmkfDu/qziItk/ahKsVHjmbIf/tOwOzjas1qEhsQ9uFN1fnSWusN17sgGB5xjCWGczYbl5jBZ/
+ W6keJgjlCSZmuNfgLrT0qmFK0eDg6i/L3iG672fc61sNaVQCJS03vTEKtUyPaUlIVA7xr/4GWKP
+ G6IrkiD0fXOvNd/DLIooulTg1dOeE3apNBdcW/AnxvsAP4OC2YB5s8EHkyNvDP0tjUi2ZjkdLmS
+ 3ZNerPasVLyMzzwSp0xqHuEA4NFBbaTlio2w8r7oN97PM2NrYL57yzgIobNDK2+jYK0=
+X-Google-Smtp-Source: AGHT+IFtfs5HIDedcu9USdaNt2xbz0ODpqrJy81rM4gGCMUlbs1Z8XLtbg23AP8M4kYPLur//6H5aw==
+X-Received: by 2002:a17:907:748:b0:ac2:a1fd:551e with SMTP id
+ a640c23a62f3a-ac38d8d2e1dmr356340466b.55.1742303149478; 
+ Tue, 18 Mar 2025 06:05:49 -0700 (PDT)
+Received: from corvink-nb.beckhoff.com ([195.226.174.194])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ac3149cfbbesm846984266b.100.2025.03.18.06.05.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Mar 2025 06:05:28 -0700 (PDT)
+From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
+To: qemu-devel@nongnu.org,
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
+ qemu-arm@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>
+Subject: [PATCH 00/21] Hi,
+Date: Tue, 18 Mar 2025 14:05:00 +0100
+Message-ID: <20250318130526.116026-1-corvin.koehne@gmail.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfY1x1s_NOmjeNUjNCz5WggARCH_AUzxC81d+smq=jBf=g@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,38 +99,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 18, 2025 at 01:32:03PM +0100, Paolo Bonzini wrote:
-> Date: Tue, 18 Mar 2025 13:32:03 +0100
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [PATCH v2 10/14] rust/vmstate: Support vmstate_validate
-> 
-> Il mar 18 mar 2025, 13:03 Zhao Liu <zhao1.liu@intel.com> ha scritto:
-> 
-> > >  /// This macro can be used (by just passing it a type) to forward the
-> > `VMState`
-> > > @@ -572,9 +548,9 @@ const fn phantom__<T>(_: &T) ->
-> > ::core::marker::PhantomData<T> {
-> > >                  }
-> > >                  Some(test_cb_builder__::<$struct_name,
-> > _>(phantom__(&$test_fn)))
-> > >              },
-> >
-> > I want to keep the comment here as C version did, because there's an array
-> > flag
-> >
-> 
-> Ok, let's add it. No need to send v3 since it's just a single patch and
-> with no changes further down.
-> 
+From: Corvin Köhne <c.koehne@beckhoff.com>
 
-Thanks and sorry, I missed your notification because I didn't actively
-pull my mutt just now... but, v3 might also be worthwhile.
+Beckhoff has build a board, called CX7200, based on the Xilinx Zynq A9
+platform. This commit series adds the Beckhoff CX7200 as new board variant to
+QEMU.
 
-While setting flags for vmstate_validate, I also took the opportunity to
-do a little cleanup on vmstate_clock. I hope it didn't cause any extra
-burden. :-)
+The emulation is able to successfully boot an CX7200 image. The image includes
+some self tests executed on every boot. Only the cache self test fails due to
+QEMU emulating the cache as always being coherent. The self tests include f.e.:
 
-Regards,
-Zhao
+* Network
+* Flash
+* CCAT DMA + EEPROM [1]
+* TwinCAT (Beckhoff's automation control software [2])
+
+[1] https://github.com/beckhoff/ccat
+[2] https://www.beckhoff.com/en-us/products/automation/
+
+Corvin Köhne (1):
+  MAINTAINERS: add myself as reviewer for Beckhoff devices
+
+YannickV (20):
+  hw/timer: Make frequency configurable
+  hw/timer: Make PERIPHCLK period configurable
+  hw/dma/zynq-devcfg: Handle bitstream loading via DMA to 0xffffffff
+  hw/arm/zynq-devcfg: Prevent unintended unlock during initialization
+  hw/dma/zynq: Notify devcfg on FPGA reset via SLCR control
+  hw/dma/zynq-devcfg: Simulate dummy PL reset
+  hw/dma/zynq-devcfg: Indicate power-up status of PL
+  hw/dma/zynq-devcfg: Fix register memory
+  hw/misc: Add dummy ZYNQ DDR controller
+  hw/misc/zynq_slcr: Add logic for DCI configuration
+  hw/misc: Add Beckhoff CCAT device
+  hw/arm: Add new machine based on xilinx-zynq-a9 for Beckhoff CX7200
+  hw/arm/beckhoff_CX7200: Remove second SD controller
+  hw/arm/beckhoff_CX7200: Remove second GEM
+  hw/arm/beckhoff_CX7200: Adjust Flashes and Busses
+  hw/arm/beckhoff_CX7200: Remove usb interfaces
+  hw/arm/beckhoff_CX7200: Remove unimplemented devices
+  hw/arm/beckhoff_CX7200: Set CPU frequency and PERIPHCLK period
+  hw/arm/beckhoff_CX7200: Add CCAT to CX7200
+  hw/arm/beckhoff_CX7200: Add dummy DDR CTRL to CX7200
+
+ MAINTAINERS                       |   7 +
+ hw/arm/Kconfig                    |  18 ++
+ hw/arm/beckhoff_CX7200.c          | 440 ++++++++++++++++++++++++++++++
+ hw/arm/meson.build                |   1 +
+ hw/dma/xlnx-zynq-devcfg.c         |  36 ++-
+ hw/misc/Kconfig                   |   6 +
+ hw/misc/beckhoff_ccat.c           | 365 +++++++++++++++++++++++++
+ hw/misc/meson.build               |   2 +
+ hw/misc/zynq_ddr-ctrl.c           | 331 ++++++++++++++++++++++
+ hw/misc/zynq_slcr.c               |  47 ++++
+ hw/timer/a9gtimer.c               |  25 +-
+ hw/timer/arm_mptimer.c            |  33 ++-
+ include/hw/dma/xlnx-zynq-devcfg.h |   3 +
+ include/hw/timer/a9gtimer.h       |   2 +
+ include/hw/timer/arm_mptimer.h    |   4 +
+ 15 files changed, 1309 insertions(+), 11 deletions(-)
+ create mode 100644 hw/arm/beckhoff_CX7200.c
+ create mode 100644 hw/misc/beckhoff_ccat.c
+ create mode 100644 hw/misc/zynq_ddr-ctrl.c
+
+-- 
+2.49.0
 
 
