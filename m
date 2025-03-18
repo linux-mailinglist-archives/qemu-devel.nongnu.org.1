@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4178A66DC5
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 09:16:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47079A66DCB
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 09:16:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuS5H-00033e-2J; Tue, 18 Mar 2025 04:13:59 -0400
+	id 1tuS5A-0002u2-G1; Tue, 18 Mar 2025 04:13:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4K-0002jS-BW; Tue, 18 Mar 2025 04:13:03 -0400
+ id 1tuS4M-0002jp-Hp; Tue, 18 Mar 2025 04:13:06 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuS4I-0001JW-3e; Tue, 18 Mar 2025 04:12:59 -0400
+ id 1tuS4J-0001Jr-6o; Tue, 18 Mar 2025 04:13:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742285578; x=1773821578;
+ t=1742285579; x=1773821579;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oNTyY42WX481d5bX9cw8tiiWl2PH6jRFnI6SscTNaEc=;
- b=KOZsO38gU2psifA5Po+RfYLvduLZUocaOXq5uOhPfXIbA/NbH8RuYldX
- MdbO3UGx6bpHJxlF2QjuxRi2mEu52J7k3X3wSOWuBjA3glKoPCPiSMDaD
- 5RKBt2sOo3wC05/u+XU9fuVYlVChUVWZDtT4L441ptk41iXmZBZoUgQ8+
- 0BAUo5eNVuLhQgtGkidkauHw283ger+isf3U0ZkeNSIEZg/01utEz9EEL
- 7Ep223TpQK1GwRGCKxxHW0XEb4mt3JB7hEpvgCaj+PJSq4z9iCJSqwsaL
- M6OsUP2RY0MaRCKIDHWzutsL+ji6HV6JYGYrNe2QLKVW/2dZRVoXfC0+T g==;
-X-CSE-ConnectionGUID: +H1dYXGyRvO+ft+NT7YETA==
-X-CSE-MsgGUID: 8ldR9YbqR2OWcmB6KUIMeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621579"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621579"
+ bh=usEhCMOmGCifjwNKm0zeYfxP5suOQmKgiIpvC4cOCps=;
+ b=UorvicjYguEO/jZaotibT6CsIyy9HkzX4jc3OZZCRUN8htaWheDoYTlJ
+ U5VcNPo3V+LMXTPTQlyOH6lyFwrM9oh99lKutrB5wsgQPThjY69mewMrt
+ znEFOGL8+9JuKwRh3smtl5aSap7rphD0EyW6XMwyZl8dhdwAGdiETJWkz
+ u6raUXojIvYyy0DkUcz1+5eVMQ8YgAJdV269zc1gzZEu/KufCXV4JazuF
+ y4A27+p9F7Bm+yNO0q2Tzu37mNApCOK8eHcfkl6kTIB90UxXRq032l0uh
+ kJVn1YwseH+dKCEez+IMyvIm3XrET4kDmAwutIazc6v1owJF9t/oZTxsm A==;
+X-CSE-ConnectionGUID: G1vmXEDfRdSlrErdNlMQPQ==
+X-CSE-MsgGUID: whLVyZn2Rp+RzPjOqy2Dqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="53621583"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="53621583"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 01:12:54 -0700
-X-CSE-ConnectionGUID: gsj8Hd5YSDuIVWmwK62PLw==
-X-CSE-MsgGUID: GNF1P+x/RQ2+R3yw0i34dw==
+ 18 Mar 2025 01:12:55 -0700
+X-CSE-ConnectionGUID: pyl9JkQpQTOgmCYeRt/FfQ==
+X-CSE-MsgGUID: g6y8gLOPQsGu5+W3bPagvA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363228"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="127363234"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:52 -0700
+ by orviesa005.jf.intel.com with ESMTP; 18 Mar 2025 01:12:54 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 07/14] rust/vmstate: Fix unnecessary VMState bound of
- with_varray_flag()
-Date: Tue, 18 Mar 2025 16:32:41 +0800
-Message-Id: <20250318083248.1402990-8-zhao1.liu@intel.com>
+Subject: [PATCH v2 08/14] rust/vmstate: Relax array check when build varray in
+ vmstate_struct
+Date: Tue, 18 Mar 2025 16:32:42 +0800
+Message-Id: <20250318083248.1402990-9-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250318083248.1402990-1-zhao1.liu@intel.com>
 References: <20250318083248.1402990-1-zhao1.liu@intel.com>
@@ -78,40 +78,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VMState type bound is not used in with_varray_flag().
+The varry of structure created by vmstate_struct is different with
+vmstate_of. This is because vmstate_struct uses the `vmsd` to traverse
+the vmstates of structure's fields, rather than treating the structure
+directly as a well-defined vmstate.
 
-And for vmstate_struct, Rust cannot infer the type of `num` from the
-call_func_with_field(), so this causes the compiling error because it
-complains "cannot satisfy `_: VMState`" in with_varray_flag().
-
-Note Rust can infer the type in vmstate_of macro so that
-with_varray_flag() can work at there. It is possible that the different
-initialization ways in the two macros cause differences in Rust's
-type inference.
-
-But in fact, the VMState type bound is not used in with_varray_flag()
-and vmstate_varray_flag() has already checked the VMState type, it's
-safe to drop VMState bound of with_varray_flag(), which can fix the
-above compiling error.
+Therefore, there's no need to check array flag when building varray by
+vmstate_struct.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/src/vmstate.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/qemu-api/src/vmstate.rs | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 3be3a7260fe9..792a74fdfc08 100644
+index 792a74fdfc08..0b5af1c90b11 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -275,7 +275,7 @@ pub const fn with_pointer_flag(mut self) -> Self {
+@@ -275,14 +275,20 @@ pub const fn with_pointer_flag(mut self) -> Self {
      }
  
      #[must_use]
--    pub const fn with_varray_flag<T: VMState>(mut self, flag: VMStateFlags) -> VMStateField {
-+    pub const fn with_varray_flag(mut self, flag: VMStateFlags) -> VMStateField {
-         assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) != 0);
+-    pub const fn with_varray_flag(mut self, flag: VMStateFlags) -> VMStateField {
+-        assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) != 0);
++    pub const fn with_varray_flag_unchecked(mut self, flag: VMStateFlags) -> VMStateField {
          self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_ARRAY.0);
          self.flags = VMStateFlags(self.flags.0 | flag.0);
+         self.num = 0; // varray uses num_offset instead of num.
+         self
+     }
+ 
++    #[must_use]
++    #[allow(unused_mut)]
++    pub const fn with_varray_flag(mut self, flag: VMStateFlags) -> VMStateField {
++        assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) != 0);
++        self.with_varray_flag_unchecked(flag)
++    }
++
+     #[must_use]
+     pub const fn with_varray_multiply(mut self, num: u32) -> VMStateField {
+         assert!(num <= 0x7FFF_FFFFu32);
+@@ -454,7 +460,7 @@ macro_rules! vmstate_struct {
+             flags: $crate::bindings::VMStateFlags::VMS_STRUCT,
+             vmsd: $vmsd,
+             ..$crate::zeroable::Zeroable::ZERO
+-         } $(.with_varray_flag(
++         } $(.with_varray_flag_unchecked(
+                   $crate::call_func_with_field!(
+                       $crate::vmstate::vmstate_varray_flag,
+                       $struct_name,
 -- 
 2.34.1
 
