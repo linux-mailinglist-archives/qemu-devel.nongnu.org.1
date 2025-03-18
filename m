@@ -2,74 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1BAFA67E35
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 21:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BCCA67E69
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 21:59:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tudrN-0005Cg-NT; Tue, 18 Mar 2025 16:48:25 -0400
+	id 1tue0W-0007Ks-OO; Tue, 18 Mar 2025 16:57:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <phrdina@redhat.com>)
- id 1tudrE-0005C9-HR
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 16:48:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <phrdina@redhat.com>)
- id 1tudrC-00031q-Ge
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 16:48:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742330892;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=zuT64oIogBWQIExy1yR68qY6PND7dClun7k2YmE+5O0=;
- b=JZ7ky6ttvw35YWa0Stj0KDq2zaHMFO1sE0mRb9il1JkvAlV72+w34saOZ8nYe4alS5tVCN
- xRIegwn+J+pEmWiYlnzrvFJYVt/l7jYB4ZUMt0ylXaBhcVzI54aDmTPzQ5GAB0BPQ5oKRG
- 5YHRFsycyXYjz28qnxL+qADSkcRjBvM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-rDfyS_Z2MBiOi0GzAtZN8A-1; Tue,
- 18 Mar 2025 16:47:03 -0400
-X-MC-Unique: rDfyS_Z2MBiOi0GzAtZN8A-1
-X-Mimecast-MFC-AGG-ID: rDfyS_Z2MBiOi0GzAtZN8A_1742330822
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 67345180025C; Tue, 18 Mar 2025 20:47:02 +0000 (UTC)
-Received: from antique-laptop (unknown [10.45.225.218])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 950B91828A83; Tue, 18 Mar 2025 20:46:59 +0000 (UTC)
-Date: Tue, 18 Mar 2025 21:46:56 +0100
-From: Pavel Hrdina <phrdina@redhat.com>
-To: Peter Krempa <pkrempa@redhat.com>
-Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, qemu-block@nongnu.org
-Subject: Re: [PATCH 2/3] scripts: render_block_graph: Implement proper
- argument parser
-Message-ID: <Z9nbwHwod6KgEmHg@antique-laptop>
-References: <cover.1742315602.git.pkrempa@redhat.com>
- <00eab2a417ecdb7f0ea7eaf3880806f3309133dc.1742315602.git.pkrempa@redhat.com>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tue02-0007Hv-9P; Tue, 18 Mar 2025 16:57:23 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1tudzz-0005lH-SQ; Tue, 18 Mar 2025 16:57:21 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5e5e63162a0so9057461a12.3; 
+ Tue, 18 Mar 2025 13:57:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1742331436; x=1742936236; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=W+m/MM6yhH7CW9/u/Bw86g2b2P0pk0zVcocYDACn2/8=;
+ b=jDvGjTy3yO01g4DZ/o3p9fgK2/a4P43TPiDMN+G6s2mS9oMu5T7iWr9J+mPEL0jwEM
+ stSeQCpdO8Ca1WZ6yzmBpfv5HJ90T8RPkTQPj567tDcpE7/rHwAy/1wIViUc7PeRvvvK
+ V9Tlx4XZ0/rOPRBCeYGjd0FE5LHx3KRK0gFNl1uY0OnL7y21EJymzkDdcI5kX8WhVUqf
+ PitTx/kV/Fe7/+7dUSs+Knzu5sY9ixhloo6LOpY7ACcyUW+2ZRKCjNRgtVpzrCa5OO5m
+ Aqq4L21DoI5EbyQuXLJ1rGn8Dku/4yrLf2Z1/89xHXUz6jmUUAtseA3NBy0gKwdZaihA
+ 11Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742331436; x=1742936236;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=W+m/MM6yhH7CW9/u/Bw86g2b2P0pk0zVcocYDACn2/8=;
+ b=kFLmIAb2yisCGr/MiTN+GBI/pJxAlO7npivf8AJ9O8hgV8tNdbqdlhdM6ahC8wMK1f
+ qwLEb1UVPcAZvqlgblYOpbTQs/aeSqrjhuHdkzAHpAzkHy5r/cpO2hAUx3jM/f63LvO3
+ DDX4kddxreER2BFydWPny789GHUXWN1LjMxdOPONCUpICe+s6QbYDx8dC9NWUUvzphFE
+ rFgMW3ETmflDW+H2xTIHt4Wg5zcJcW0dL8SGZEiiG4bJ0qyB2gfoHRrECG5/qFqiSvV7
+ /HiR6qPQSIpD0He27ihhmkDQWhz0RgPUQpmh4XEwjPKK2fR/zykDZJks4EWFNxBNDJ4m
+ 3zGg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX6m7KcLKzIKXJ9wsGt9VWTYpxiRiXwcYrDzuzGpgJ/+ev4EGRZ7RRhp7F22y4hMJdGcurYAqWmBw==@nongnu.org
+X-Gm-Message-State: AOJu0YwgopnCM5V+2K+9TSz9BYG2n+zz/lfDUAUHs4ymmKmS3msPiH5I
+ uR65K1icuN9Hw9q4Ef3c75n3HFqOYa2SHCu8ohWRRk/x+fvvzVRnAMRdqw==
+X-Gm-Gg: ASbGncuFfPenodequIfbnf2X+7edGtn3EX+uEcSUCAno3OpENsWiHOo+UgZv3oFNEO+
+ CKKJsCSL0TaqLLgngqzfM52w6+8NEAbXfOvDER1xNjGHLmXgZL0xoje4Ynju4hwBxeihUizNzAC
+ 6OibouarjsuaFbPEHU4tb6RbFn0OUcNfJLn2UNY6NOeqJZDzaQQINRhbC73qH8V01ajUclm1C0S
+ v8jD9cV6kqi5Ek7tnZu4qKztKkAYLOk0a4ZnQGYGQmIGHcHkfoOgqUHv9qbMY8Qj4zSslps4dA2
+ cEJwtxlqnI+cB0fEExLsqNC9iXU1BU3Ky/qbuU1dk5mRNNbO2cc75LC/+XfkNsaK1rGsgJy4cVl
+ yyMPkpozld57nTdWnX1h4+PfWXS1L3eLxyPHe0+14Mv90TTCH3FnhFzemEABLKgc=
+X-Google-Smtp-Source: AGHT+IE1+ec8gZyduLXL8F4mfccqpzpb02+czuBqT5kJK6XTyivjv2aARRfbspBY+qp9MP6CqLGxCg==
+X-Received: by 2002:a17:907:2d0e:b0:ac3:3e43:3b2b with SMTP id
+ a640c23a62f3a-ac3b7d9469bmr8124866b.18.1742331436377; 
+ Tue, 18 Mar 2025 13:57:16 -0700 (PDT)
+Received: from Provence.localdomain
+ (dynamic-2a02-3100-19c6-0d00-0219-99ff-feb2-2458.310.pool.telefonica.de.
+ [2a02:3100:19c6:d00:219:99ff:feb2:2458])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ac3146aed4fsm895944266b.26.2025.03.18.13.57.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Mar 2025 13:57:15 -0700 (PDT)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 0/3] i.MX 8M Plus EVK Fixes
+Date: Tue, 18 Mar 2025 21:57:06 +0100
+Message-ID: <20250318205709.28862-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="HNTWtEKrh3M/Z1EW"
-Content-Disposition: inline
-In-Reply-To: <00eab2a417ecdb7f0ea7eaf3880806f3309133dc.1742315602.git.pkrempa@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=phrdina@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,190 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---HNTWtEKrh3M/Z1EW
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Mar 18, 2025 at 05:36:03PM +0100, Peter Krempa wrote:
-> From: Peter Krempa <pkrempa@redhat.com>
->=20
-> As no argument parsing is employed the script is hard to use and when
-> running without arguments it blurbs:
->=20
->  $ ./scripts/render_block_graph.py
->  Traceback (most recent call last):
->    File "/home/pipo/git/qemu.git/./scripts/render_block_graph.py", line 1=
-35, in <module>
->      obj =3D sys.argv[1]
->           ~~~~~~~~^^^
->  IndexError: list index out of range
->=20
-> instead of an actionable error. The user then usually needs to read the
-> script to understand arguments.
->=20
-> Implement proper argument parsing via 'argparse'. The following
-> arguments will be supported:
->=20
->  $ ./scripts/render_block_graph.py --help
->  usage: render_block_graph.py [-h] [--socket SOCKET] [--vm VM] [--uri URI=
-] [--output OUTPUT]
->=20
->  Tool that renders the qemu block graph into a image.
->=20
->  options:
->    -h, --help       show this help message and exit
->    --socket SOCKET  direct mode - path to qemu monitor socket
->    --vm VM          libvirt mode - name of libvirt VM
->    --uri URI        libvirt URI to connect to
->    --output OUTPUT  path to output image; .png suffix will be added; in l=
-ibvirt mode default is the name of the VM
->=20
-> Usage then requires one of '--vm' or '--socket'. In libvirt mode the
-> output file is by default populated from the VM name and the '--uri'
-> parameter allows overriding the libvirt connection uri.
->=20
-> Signed-off-by: Peter Krempa <pkrempa@redhat.com>
-> ---
->  scripts/render_block_graph.py | 53 ++++++++++++++++++++++++++++-------
->  1 file changed, 43 insertions(+), 10 deletions(-)
->=20
-> diff --git a/scripts/render_block_graph.py b/scripts/render_block_graph.py
-> index 14b2d02ec2..7a6738410c 100755
-> --- a/scripts/render_block_graph.py
-> +++ b/scripts/render_block_graph.py
-> @@ -23,6 +23,7 @@
->  import subprocess
->  import json
->  from graphviz import Digraph
-> +import argparse
->=20
->  sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'python'))
->  from qemu.qmp import QMPError
-> @@ -91,13 +92,19 @@ def render_block_graph(qmp, filename, format=3D'png'):
->=20
->=20
->  class LibvirtGuest():
-> -    def __init__(self, name):
-> +    def __init__(self, name, uri=3DNone):
->          self.name =3D name
-> +        self.uri =3D uri
->=20
->      def cmd(self, cmd):
->          # only supports qmp commands without parameters
->          m =3D {'execute': cmd}
-> -        ar =3D ['virsh', 'qemu-monitor-command', self.name, json.dumps(m=
-)]
-> +        ar =3D ['virsh']
-> +
-> +        if self.uri:
-> +            ar +=3D ['-c', self.uri]
-> +
-> +        ar +=3D ['qemu-monitor-command', self.name, json.dumps(m)]
->=20
->          reply =3D json.loads(subprocess.check_output(ar))
->=20
-> @@ -108,15 +115,41 @@ def cmd(self, cmd):
->=20
->=20
->  if __name__ =3D=3D '__main__':
-> -    obj =3D sys.argv[1]
-> -    out =3D sys.argv[2]
-> +    parser =3D argparse.ArgumentParser(
-> +            description=3D'Tool that renders the qemu block graph into a=
- image.')
-> +
-> +    parser.add_argument('--socket',
-> +                        help=3D'direct mode - path to qemu monitor socke=
-t')
-> +
-> +    parser.add_argument('--vm', help=3D'libvirt mode - name of libvirt V=
-M')
-> +    parser.add_argument('--uri', help=3D'libvirt URI to connect to')
-> +
-> +    parser.add_argument('--output',
-> +                        help=3D'path to output image (.png suffix added)=
-;'
-> +                             'in libvirt mode default is the name of the=
- VM')
-> +
-> +    args =3D parser.parse_args()
->=20
-> -    if os.path.exists(obj):
-> -        # assume unix socket
-> -        qmp =3D QEMUMonitorProtocol(obj)
-> +    if (args.socket and args.vm) or (not args.socket and not args.vm):
-> +        print("One of --socket or --vm is required.", file=3Dsys.stderr)
-> +        parser.print_help()
-> +        sys.exit(1)
-
-It's possible to do with argparse as well:
-
-modegroup =3D parser.add_mutually_exclusive_group(required=3DTrue)
-modegroup.add_argument('--socket',
-                       help=3D'direct mode - path to qemu monitor socket')
-modegroup.add_argument('--vm', help=3D'libvirt mode - name of libvirt VM')
-
-The only difference is that it will print usage `parser.print_usage()`.
-
-> +
-> +    if args.socket:
-> +        qmp =3D QEMUMonitorProtocol(args.socket)
->          qmp.connect()
-> -    else:
-> -        # assume libvirt guest name
-> -        qmp =3D LibvirtGuest(obj)
-> +
-> +    if args.vm:
-> +        qmp =3D LibvirtGuest(args.vm, args.uri)
-> +
-> +        if args.output:
-> +            out =3D args.output
-> +        else:
-> +            out =3D args.vm
-> +
-> +    if not out:
-
-This needs to use args.output otherwise python will complain that it
-doesn't know `out` variable.
-
-> +        print("--output required", file=3Dsys.stderr)
-> +        parser.print_help()
-
-Probably use `parser.print_usage()` if you decide to use the
-add_mutually_exclusive_group().
-
-Pavel
-
-> +        sys.exit(1)
->=20
->      render_block_graph(qmp, out)
-> --=20
-> 2.48.1
->=20
->=20
-
---HNTWtEKrh3M/Z1EW
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEcbzs91ho/coWWY7aUi1kczAH4YwFAmfZ28AACgkQUi1kczAH
-4Yzk+w//TXlJavBoRdvOwh5L7NqUgqiUegFq8H9f3knlY/3hL99qGtsrZXNyL+iV
-MKBDa0LiFW0gtBkrdyCLchDc529HvdtO2ycEbb7N1EesGnu+Snmow+VahYDuTjWV
-BZ9Jeo/39CBTKEAXnZb12aOJ3ELl7MYuhY/G5VkTNxx+6OmI8FXlgFPWVbQXyodR
-V5/L4p0EIulu69Z6Vq9GQMfzU+4EBZa5RJ70UsCUozdEPenhPAnq76+WvwMbXMXm
-GZVZbsVcddq5S4cg84/DxKun7RFp59rJ5IJg0nWeFom0uwmlb0ZJdVWVDWVf74Ql
-lt9IdEAqxkhjvNMcuiDRYZ5Pvj+0cuEkH5XIXvNEf3Alq2Nq3C8lAVmJnWw7g3PK
-O1Clz9xqHJSG7Mxe0+pAZ6IN68g8KCKPPPhvoh3MNjppmuMiRbcOdVYQeFcT6KZj
-GKo54w+/mNkD1L4FwCxfRJkoWUKX2rk87zrWQKvnWbuWc8ja3AR73z8x9llWPbnj
-+d+7bRfMv31eR/YTmE5EJ+eNGBrHFw+D/i9ZgCGh+Lqe+ObMVjybWSC0+cAfWQOM
-hAyOi8ZJBUH6rm3sMLmiJNGl1llw7l2QKzvHWIOuaLUF6T7TvJj4eRZKmGubuOG1
-RPEtzHzvtyRjYcIoqsImtY2x6UEOIeKw3qGsVHDeiQc65qR7KUo=
-=PGHM
------END PGP SIGNATURE-----
-
---HNTWtEKrh3M/Z1EW--
-
+As discussed in [1], this series modifies the SoC class be derived from=0D
+TYPE_SYS_BUS_DEVICE to fix the reset mechanism and to prevent it from being=
+=0D
+user-creatable. It also removes an unused define.=0D
+=0D
+v3:=0D
+* Fix reference counting in separate commit (Peter)=0D
+=0D
+v2:=0D
+* Do not set user_creatable =3D false; (Zoltan, Peter)=0D
+=0D
+[1] https://lore.kernel.org/qemu-devel/1cdb6643-8fcc-4bd8-93fc-fcc93589c9a3=
+@redhat.com/=0D
+=0D
+Bernhard Beschow (3):=0D
+  hw/arm/imx8mp-evk: Fix reference count of SoC object=0D
+  hw/arm/fsl-imx8mp: Derive struct FslImx8mpState from=0D
+    TYPE_SYS_BUS_DEVICE=0D
+  hw/arm/fsl-imx8mp: Remove unused define=0D
+=0D
+ include/hw/arm/fsl-imx8mp.h | 4 ++--=0D
+ hw/arm/fsl-imx8mp.c         | 2 +-=0D
+ hw/arm/imx8mp-evk.c         | 2 +-=0D
+ 3 files changed, 4 insertions(+), 4 deletions(-)=0D
+=0D
+-- =0D
+2.49.0=0D
+=0D
 
