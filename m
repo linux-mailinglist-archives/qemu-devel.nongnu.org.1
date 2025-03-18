@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4EA7A6748B
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:09:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF273A6748E
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:09:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWgj-000529-BQ; Tue, 18 Mar 2025 09:08:57 -0400
+	id 1tuWgw-00062v-GR; Tue, 18 Mar 2025 09:09:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWfi-0004eS-6O; Tue, 18 Mar 2025 09:07:56 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ id 1tuWgf-0005G9-3r; Tue, 18 Mar 2025 09:08:53 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWfQ-0002wD-Va; Tue, 18 Mar 2025 09:07:39 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-aaee2c5ee6eso864495366b.1; 
- Tue, 18 Mar 2025 06:07:36 -0700 (PDT)
+ id 1tuWga-00035O-7Y; Tue, 18 Mar 2025 09:08:52 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-ac25d2b2354so956050166b.1; 
+ Tue, 18 Mar 2025 06:08:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742303255; x=1742908055; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742303326; x=1742908126; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
  bh=g0yzrsHOZw8jJRUdrnkye8+q3BRXaAEp0577L+ULu0o=;
- b=YEOjWpSoxd17swkc32xPAY0tH/FjW9A7P4Wb81Vx0pyT3gCAoobycsyCcxszjBuDTR
- nq0y0joXcmRG8PCPxRr/3YNQiIVSg5vKvuhKiaIVZP132m9SZktcA1PnTKAc2d3oHxL1
- zjFRxKBDp9uSKJxB60y3Mc5syVb1sixO9nnuBNRC4BIYvGxdLkeicj7avcPgvRnAetAp
- s4AaNhZ/+J2X6ApnXN9UxoiXeiVA3J8NjM3C2OCASWYmTFIgv3r0hdHWBXcesZG4VBrG
- JjSUeldLWQl38NGIOZs2X4l39rLOxSzRM6Lx+sv9bjnVTy0KRaIBly7kGFvw5JaAaiLO
- fmSg==
+ b=etxcsJ0wkjdpdP4CGOV1M2DBxaJiXv9kmShaSDX7YS+5+2L4DIERZqxzkYSVoOButk
+ P5eQpH+bbs3ysW5x6myAEBPq9dAZhKDl3++rlZVcCyhywZIqxjx4uRUu3a6noXP/vCX2
+ CHMVuCnMOzUmnrBKbOwY1y8o80IaoK92fTkDgJk9AlzQzm18DkorfpwtTJ+9Ex8nKOOX
+ njJLYaj65wK7QjLxqOyqHlXR+lGj77bPn5KTml6o7Gaot2Wmnb0d/ytDH9LfkyzqGrK0
+ 54MadNceBhZj5mOdahNCBRYOywZnuY4OjgrmkLrqmfEnwBSAnXy48umj/aiMZDG5hy+n
+ fcGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742303255; x=1742908055;
+ d=1e100.net; s=20230601; t=1742303326; x=1742908126;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
  bh=g0yzrsHOZw8jJRUdrnkye8+q3BRXaAEp0577L+ULu0o=;
- b=Nte0YQzQVNCfQhlWnyKgJjroyq40cGgH8jedbuKFKr3OKcNlW1+nWfaaxZa5k22PwU
- SsahRhAiI2/VDltHrzIeMe4IMYkDZkKWOdjETI4Wn4TO5AchUaUpdoktWuwtUwxFpZ4z
- RxGRMkUIoYZEGwWdofddb2V02P4b/Vp57hnNxxexxCpdoopRAsUMbgv6mw3ctGP8ASH3
- kgtEbqgGiSaTJ3gPIpjyUkEFjvTKbHjbkduII6qT+enwvZ9dSLH3ODHRzuWfW9IXbAo4
- cj8UgH5OUw2qmqPDJJLKG37KZ1otVIaJ5nOScLXFlAL6HeFCce90ZStAfo9V/Cd4J3qo
- Yq0A==
+ b=ozeyW+iub/DTvYxAKzQkBuFVZgJAngND6x+eUG78cB6mK5mRPAwISPCGZUBQaipE7N
+ SMkqCs55R5Ape+9ThBYOpI0U5mh6nZYYyEvRvcI9zZGZkylLim9cDOgNqq0S86mdYC/Y
+ ogZwIVSJD74VbOLWxQ9duyZaPE311ewvEOMI8xc+J5tBzE+XnJik4Q+AwCmH6ZGTR30S
+ chvaJrYs1oJDgGJI9lWgza0o7y5KGHowWsCMalGPg6sG5Upw/zPA+7sbXw6EIih9ru29
+ FKe72BfYSSlpJijMBGheMJCR4wEqmV1tkvh6xp8iuHrXEo9R8E8NeNHn9cjr84Aejh0Y
+ 7onA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUhmdOS3xcd+GKSrb2eY9iIqflHCKUyiJyjFOm5Y8L5PURkIDypcEp832aCJjVguBoMsZOJ1YOU/A==@nongnu.org
-X-Gm-Message-State: AOJu0Yzrng1bDw6GKokFAcdWEQME6IPJejo43pRZm+ePqQn1skU5htYT
- YfejOD74/ujCLVOVI4qgQnayuywaMAoKlxtHBtMZmG3syM5KbJ6NFwuNIphr
-X-Gm-Gg: ASbGncspPHj2sYaCVllZFnBPMHiWlKL1dYcIjGrgh50DxySgeh3xbm78rgb6au7tFDI
- pg+OrWLmrBLJMIYo+ek7epKtAa1YMc5D8KoQHX68E50bf7uPvCgXkCVaednJUWlEqpVIUBBJGAB
- fkKisE8nNI9fC9G+sTwdd3fsScV2izc4a0OWy19Aa/GkmkxVWaWwM+lLAoZzIkfquszPZqM7Mlc
- x/ErOx420xxSQOe90tV3VBbkkwBVpBYfcin4vl55EhDSDGyDnuRDBlKRwcEN9xRLurDhzyew3/U
- IGDb09KMxgbt8Rmt9Bf+S5FBUwJ9NoICTyvw0v00e3e+q8Z4PIvOBPWISGaP8ukUNsM=
-X-Google-Smtp-Source: AGHT+IGaKY5Q62clDaNn+MG3xQE6S3IXTgUkCPdGEWwcC6I+XU5DHRmt0VcC/i0ADbW9lxSMhzkNrQ==
-X-Received: by 2002:a17:907:96a1:b0:ac1:effd:f2ea with SMTP id
- a640c23a62f3a-ac3302d1dc1mr1791269566b.24.1742303231356; 
- Tue, 18 Mar 2025 06:07:11 -0700 (PDT)
+ AJvYcCUP/ZnHeHFBM0YMR/qlBEaqCLODruVICwKMZiRA8peC6mw8J7xgBrof2thgeGYPvOyJveU2hXtRAg==@nongnu.org
+X-Gm-Message-State: AOJu0YztzpQ2cdHD8Re/JV2LLGUdRw6Le2+CuWQIsuUnmcYuiEkZ1J/9
+ SKXAMlZjVH6oVWCH5Y/mq2qyQUBCfvWF3hVyY6JORt3VdsjoBTFsdhYrUxJa
+X-Gm-Gg: ASbGncuyU8VA5UyGCt3E6KGbP4OD9kkIY3INclJy2390NjnEhM7I2cN/7htG/KBi9er
+ UUNE18kWlxo/dATpqCdMJCN0QDq8hsoN17woy1Lq8rm2VzxCGlhmtFBbxtpRXdf9ntzUlLpiPQU
+ OuojY+afXLUw0d/g1gWh0AMPc/7BIaqfIHtEt8xZ6ccb8lc8DmV7upbc4OFyrXlAT8mGaSCo+dY
+ U5x/0cRrg5gXMUAgxBBFn1dZIU/BxoSmzHYwyGCdvtctYXS6qpxjZk0LvS3722WGZgMOKiOdR3L
+ 4qRepdpu8bzruJQLfm33f2eqw33ReZhvW5OkSfm3uyPA15gfGpxxmxiybCCsgxN6GDc=
+X-Google-Smtp-Source: AGHT+IEqpYvK6pS6BJKs4Q4TTHaqumiLkAnZaVFL/Nd8HsVYIEtKwoBRRn7hTlQ40IBqQ8dzrVV9cw==
+X-Received: by 2002:a17:907:928c:b0:ac3:154e:1386 with SMTP id
+ a640c23a62f3a-ac3301df978mr1864173666b.6.1742303303815; 
+ Tue, 18 Mar 2025 06:08:23 -0700 (PDT)
 Received: from corvink-nb.beckhoff.com ([195.226.174.194])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3147f0ca7sm860607466b.60.2025.03.18.06.07.10
+ a640c23a62f3a-ac3147f3101sm850678066b.69.2025.03.18.06.08.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Mar 2025 06:07:10 -0700 (PDT)
+ Tue, 18 Mar 2025 06:08:18 -0700 (PDT)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  qemu-arm@nongnu.org
-Cc: Alistair Francis <alistair@alistair23.me>,
- =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+Cc: =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alistair Francis <alistair@alistair23.me>,
+ Paolo Bonzini <pbonzini@redhat.com>
 Subject: [PATCH 00/21] Hi,
-Date: Tue, 18 Mar 2025 14:06:42 +0100
-Message-ID: <20250318130708.117888-1-corvin.koehne@gmail.com>
+Date: Tue, 18 Mar 2025 14:07:51 +0100
+Message-ID: <20250318130817.119636-1-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
