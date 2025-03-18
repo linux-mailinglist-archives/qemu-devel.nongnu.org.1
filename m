@@ -2,92 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21EC2A668BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 05:55:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB80A6691E
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 06:15:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuOw5-0001MS-5e; Tue, 18 Mar 2025 00:52:17 -0400
+	id 1tuPHS-0005LJ-HX; Tue, 18 Mar 2025 01:14:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuOve-0001FI-2m
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 00:51:50 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuOvb-0008W5-IT
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 00:51:49 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2ff615a114bso3824872a91.0
- for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 21:51:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742273505; x=1742878305; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TJs8jpuU5VHY7crNqDB8k9WdWD2PL+VSpwoAKAzM9C8=;
- b=ZNiH/HBFwJqkyPHZh4epSoAHEC2nRCCp/F2xdUwthnIh2NmK/a7vxwoVwy3KAOvPjA
- s9MBHmwuTYobOKzeFY/142oZbVnN35QQmuJ9u3CPBHj2w9JnEM7XpXdpj8kUZNyCzXYS
- U8YkinifZfC8siaUWnw2/Q2yGpxhiE63S+IPSqzOXPuoPiqUJAJQstJHpDuhKS3BDlZa
- Xlg9n8xaA4MU5Qoa1wLfAVpyGsiZEog6dX/WOj6ZXymT1xpJdXbEHkRTD4DwgaqrAorP
- IOQdjzw1IQiumzEoLT2Moh3GXesJ05BA/0gg+nKFYNMsg+1qoJ6LVQyQ0pWyJ+1XJlin
- xkeg==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tuPHP-0005L1-Vp
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 01:14:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1tuPHO-000745-4J
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 01:14:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742274854;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ixK7rD3KwzZFHvG4onnglx79KE7J7zWrFe5lhDOLO+o=;
+ b=aGP+AMNz3fYiqtF1nyPbMwVZ1x78sqJvE6XXoyNmjXheKKOZNk5t1DDIlG4D5nK8B/ofcY
+ lYgrw+vA6AyvpEfMc71ZxbRabuAIiYaA1NAW4NClSMkM7eATMFViPktZKnFyjTfzMWMWBz
+ WoC6tYb6P20jBTLb7B3gr7yOG9Wje4M=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-670-kjv37jx8Pbqse4ANuUdZwA-1; Tue, 18 Mar 2025 01:14:12 -0400
+X-MC-Unique: kjv37jx8Pbqse4ANuUdZwA-1
+X-Mimecast-MFC-AGG-ID: kjv37jx8Pbqse4ANuUdZwA_1742274851
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ab39f65dc10so579157766b.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 22:14:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742273505; x=1742878305;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1742274851; x=1742879651;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TJs8jpuU5VHY7crNqDB8k9WdWD2PL+VSpwoAKAzM9C8=;
- b=dRZEEkTeU3BhEgRjnRj+B/XfxRW9OAmjXkxn/rmn9uK0/jmmofHU1d3H9pbS+Msdv6
- odiFApbzg13tvRzQy+pmUC7Glw2Yn/zj/6EKU40KnOqaMhUDb77xU57g8YJJtEzdcUCx
- Wb3v9D0BBcR/nDAMzRDQEwNScYzSvjqjszopXbZEARHyaL+jfSr5lLJHaG0c5RJXL1Ni
- 3ZfgsqzmbJRNjSfiog/8aVTvJxn+n0UdMZK5QzkAFMcLSwlBMNLvmbyJLonuH4nscvna
- aBu08bmb9urddQv9Jxgt8jbzT0KOEdPQrNnfZpWw3sl/s4nM/FHzfV3wH82/Xyvmq/Hp
- 0BTQ==
-X-Gm-Message-State: AOJu0YwERrK+C6LDchIStZur4zcU3m0u6uAjJDdv8fduZy2E+DN2n9Bk
- u/AG0cIs7hPrTt/Ww9AuRlrPeonGiv1vdo3ficBW2Nv80EfP1NOlktCqoNYwkTwP3EzuceqCpJv
- w
-X-Gm-Gg: ASbGncsv9DbHyy3vM6QQIreAh2rkZ3cVAXWNrRKYx4znf07KJQOnvRbPavhhf+SdVt+
- Nzo4zQEXdpjt6NPmN3yluQSsU8Rtvw7nNdZXL5V2/3nLJ7dt9/Sc/NnJj3iIipR12bQaI9EPgDf
- j3KgTpQtMoDbiprIPE0ps30sHw+g868hfummFj4UVbKeinJ8iM5LVNArRi+fqvoA3AC/uKXzVvK
- kKsO12ulbWX//PrpRu2MF6q0uhL8Q7HwgD78S8CqEw0MtfyW1+b4dj2cWGDGjSxH55aOLKKeGWU
- C/gX23gBA7HwfF9GZDH1VQ7t/uNn4FdejXa9eqHosSanWF7hdANDet0=
-X-Google-Smtp-Source: AGHT+IHEmBiDYdH8DpN4X2712XG3vEXoAh58XN6VBOwchF+ihZ4rs3b8Wb2Qrcz+iN/AtHC1fq47cw==
-X-Received: by 2002:a05:6a21:1fc1:b0:1ee:a410:4aa5 with SMTP id
- adf61e73a8af0-1fa50bd891emr2581469637.17.1742273505380; 
- Mon, 17 Mar 2025 21:51:45 -0700 (PDT)
-Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73711694b2csm8519195b3a.129.2025.03.17.21.51.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Mar 2025 21:51:44 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, alex.bennee@linaro.org,
- Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 13/13] hw/arm/boot: make compilation unit hw common
-Date: Mon, 17 Mar 2025 21:51:25 -0700
-Message-Id: <20250318045125.759259-14-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250318045125.759259-1-pierrick.bouvier@linaro.org>
-References: <20250318045125.759259-1-pierrick.bouvier@linaro.org>
+ bh=ixK7rD3KwzZFHvG4onnglx79KE7J7zWrFe5lhDOLO+o=;
+ b=Bt6DgOMStfDbpnWq+DzzIJDcY3OSXp9QhzkDHxuWp1+Hsvn6iuIAwJvfjiOu56PpHn
+ 6Yarzrp0oad4woRGzQBfU+BXgu8p1lLS1M4/21CY5PCO3TXNBOQj+Yga6rZM09+rsLRa
+ HxjA2WsN5ionW2/h4XExqtMrCRpnPSLGlx9DEx20WgcdPKXMyjF3C9AUt1CZF+BKjJwb
+ V6BaayQPo2REg/xnUBByDA7Til/QYtNaXNszb4N4En+4cKNES6dgh1mUdxanbGQqQkRi
+ iqKO6517ADt6UXdv/qHCcaByNmOl28Nykwe1ExmZGocvpG3KZi7Dz5Y/X4ikCtA3DIm5
+ P3aQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXrDvsvsMLL8oZPlcFXwXzZid6dnVKu6IuFIUY6wo4+2HOq1sfaqAcMkfYaRvPfv9LmQDE4pK+7OmDc@nongnu.org
+X-Gm-Message-State: AOJu0Yx2rEurdocujKTPC9AinQdQKa7qJAbjs3jILUkrjDKqY+uPlGek
+ LXlyYJs93zyvaea3myTBCRgpwrNZC6LC+Q4l7lNR2GbE3WSHwrDeogowui1MKeUy0pu6YHtJomP
+ wKK1Guo+Z+W2OIHnREIcyIIctoDImn1mwvS4LxX1Hn3yj3RroC/cGgyIjDsMT33wVYKfXb1iBIe
+ e0n5KuKBaCS7IUoHVEcN6Iu1RkBWk=
+X-Gm-Gg: ASbGncvmP46wh7+Aq/wVhv83QzVDcB3sSty/XlV+cbOxOoPB4dqX1Hrz98+wHOyP1Vo
+ F1bCDTQp+szZUXtStulvzPGePsYXfR//SiX6vxfAOfXNDI+/zIpS738ZnaUCCy1QbvOmMFkdcXg
+ ==
+X-Received: by 2002:a17:906:7316:b0:ac1:fcda:78c1 with SMTP id
+ a640c23a62f3a-ac330263c7amr1704778766b.34.1742274851245; 
+ Mon, 17 Mar 2025 22:14:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7/W6xZ0zZzUhl+xQnsdqRbxP1HTCZknIiyX6CQnOLnRNTl02ij4qeVtFkBI1ZbJH6Igp3/qemGFkUZ90Bdug=
+X-Received: by 2002:a17:906:7316:b0:ac1:fcda:78c1 with SMTP id
+ a640c23a62f3a-ac330263c7amr1704776066b.34.1742274850809; Mon, 17 Mar 2025
+ 22:14:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1029.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20250220065326.312596-1-anisinha@redhat.com>
+ <Z7bZBsqO6MxhFKVp@intel.com>
+ <CAK3XEhM505AFFND17_SOOJnTPB+u2+hKXDdo01oyza9T1=H2ww@mail.gmail.com>
+ <CAK3XEhMbLHKt8-kV=BzKgZpdbtmRDC+qM3bfqz9BYfupR13t2w@mail.gmail.com>
+ <20250305134225.GA256646@fedora>
+ <CAK3XEhOD2WcEGSRB1LgwX+qN9qPX7HmAk3whddfkD_N-Zwi33g@mail.gmail.com>
+In-Reply-To: <CAK3XEhOD2WcEGSRB1LgwX+qN9qPX7HmAk3whddfkD_N-Zwi33g@mail.gmail.com>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Tue, 18 Mar 2025 10:43:59 +0530
+X-Gm-Features: AQ5f1Jo_radpa9UCOGzLuR1dZCyPx1ZAmPCmCOKB4M-d3sOvZvT0VbNtxy7iu90
+Message-ID: <CAK3XEhOG+y_WMHOOOR+wYT1YSQBbZL1WYL7U6YEP8ZkZu-Sbag@mail.gmail.com>
+Subject: Re: [PATCH v2] microvm: do not use the lastest cpu version
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Sergio Lopez <slp@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, imammedo@redhat.com,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.335,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,47 +111,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we eliminated poisoned identifiers from headers, this file can now
-be compiled once for all arm targets.
+On Wed, Mar 5, 2025 at 7:56=E2=80=AFPM Ani Sinha <anisinha@redhat.com> wrot=
+e:
+>
+> On Wed, Mar 5, 2025 at 7:12=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.co=
+m> wrote:
+> >
+> > On Wed, Mar 05, 2025 at 01:24:25PM +0530, Ani Sinha wrote:
+> > > On Sat, Mar 1, 2025 at 9:04=E2=80=AFPM Ani Sinha <anisinha@redhat.com=
+> wrote:
+> > > >
+> > > > On Thu, Feb 20, 2025 at 12:36=E2=80=AFPM Zhao Liu <zhao1.liu@intel.=
+com> wrote:
+> > > > >
+> > > > > On Thu, Feb 20, 2025 at 12:23:26PM +0530, Ani Sinha wrote:
+> > > > > > Date: Thu, 20 Feb 2025 12:23:26 +0530
+> > > > > > From: Ani Sinha <anisinha@redhat.com>
+> > > > > > Subject: [PATCH v2] microvm: do not use the lastest cpu version
+> > > > > > X-Mailer: git-send-email 2.45.2
+> > > > > >
+> > > > > > commit 0788a56bd1ae3 ("i386: Make unversioned CPU models be ali=
+ases")
+> > > > > > introduced 'default_cpu_version' for PCMachineClass. This creat=
+ed three
+> > > > > > categories of CPU models:
+> > > > > >  - Most unversioned CPU models would use version 1 by default.
+> > > > > >  - For machines 4.0.1 and older that do not support cpu model a=
+liases, a
+> > > > > >    special default_cpu_version value of CPU_VERSION_LEGACY is u=
+sed.
+> > > > > >  - It was thought that future machines would use the latest val=
+ue of cpu
+> > > > > >    versions corresponding to default_cpu_version value of
+> > > > > >    CPU_VERSION_LATEST [1].
+> > > > > >
+> > > > > > All pc machines still use the default cpu version of 1 for
+> > > > > > unversioned cpu models. CPU_VERSION_LATEST is a moving target a=
+nd
+> > > > > > changes with time. Therefore, if machines use CPU_VERSION_LATES=
+T, it would
+> > > > > > mean that over a period of time, for the same versioned machine=
+ type,
+> > > > > > the cpu version would be different depending on what the latest=
+ was at that
+> > > > > > time. This would break guests even when they use a constant spe=
+cific
+> > > > > > versioned machine type.
+> > > > > > Additionally, microvm machines are not versioned anyway and the=
+refore
+> > > > > > there is no requirement to use the latest cpu model by default.
+> > > > > > Let microvms use the non-versioned cpu model and remove all ref=
+erences
+> > > > > > to CPU_VERSION_LATEST as there are no other users (nor we antic=
+ipate
+> > > > > > future consumers of CPU_VERSION_LATEST).
+> > > > > >
+> > > > > > Those users who need spefific cpu versions can use explicit ver=
+sion in
+> > > > > > the QEMU command line to select the specific cpu version desire=
+d.
+> > > > > >
+> > > > > > CI pipline does not break with this change.
+> > > > > >
+> > > > > > 1) See commit dcafd1ef0af227 ("i386: Register versioned CPU mod=
+els")
+> > > > > >
+> > > > > > CC: imammedo@redhat.com
+> > > > > > CC: zhao1.liu@intel.com
+> > > > > > Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+> > > > > > Reviewed-by: Sergio Lopez <slp@redhat.com>
+> > > > > > Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> > > > > > ---
+> > > > > >  hw/i386/microvm.c |  2 +-
+> > > > > >  target/i386/cpu.c | 15 ---------------
+> > > > > >  target/i386/cpu.h |  4 ----
+> > > > > >  3 files changed, 1 insertion(+), 20 deletions(-)
+> > > > > >
+> > > > > > changelog:
+> > > > > > v2: tags added, more explanation in the commit log.
+> > > > >
+> > > > > Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> > > > >
+> > > >
+> > > > Who is picking this up?
+> > >
+> > > I sent a pull request for this and a couple other reviewed patches
+> > > myself. Two reasons:
+> > > - wanted to see this in the upstream sooner as some other bits of the
+> > > work is pending on it.
+> > > - I never sent a pull request before and wanted to go through the
+> > > process to learn how to do it in case I needed it in the future.
+> > >
+> > > i hope the PR is ok. If not, I can resend after corrections. I used
+> > > Peter's script https://git.linaro.org/people/peter.maydell/misc-scrip=
+ts.git/plain/make-pullreq
+> >
+> > This should go via Paolo's tree. I have pinged him to remind him of you=
+r
+> > patches.
+> >
+> > Please only send pull requests for subsystems where you are listed as
+> > the maintainer in the MAINTAINERS file.
+> >
+> > It doesn't scale when people send me PRs directly because I need to do =
+a
+> > bunch of extra sanity checking and helping people get their one-off PRs
+> > properly signed and formatted. I also don't like to bypass
+> > sub-maintainers because I'm less qualified to do the final review than
+> > the sub-maintainers themselves.
+>
+> Fair enough! I hope the three patches get merged soon.
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- hw/arm/boot.c      | 1 +
- hw/arm/meson.build | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index e296b62fa12..639f737aefe 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -23,6 +23,7 @@
- #include "hw/loader.h"
- #include "elf.h"
- #include "system/device_tree.h"
-+#include "target/arm/cpu.h"
- #include "qemu/config-file.h"
- #include "qemu/option.h"
- #include "qemu/units.h"
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index ac473ce7cda..9e8c96059eb 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -1,5 +1,5 @@
- arm_ss = ss.source_set()
--arm_ss.add(files('boot.c'))
-+arm_common_ss = ss.source_set()
- arm_ss.add(when: 'CONFIG_ARM_VIRT', if_true: files('virt.c'))
- arm_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
- arm_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic_boards.c'))
-@@ -75,4 +75,7 @@ system_ss.add(when: 'CONFIG_SX1', if_true: files('omap_sx1.c'))
- system_ss.add(when: 'CONFIG_VERSATILE', if_true: files('versatilepb.c'))
- system_ss.add(when: 'CONFIG_VEXPRESS', if_true: files('vexpress.c'))
- 
-+arm_common_ss.add(fdt, files('boot.c'))
-+
- hw_arch += {'arm': arm_ss}
-+hw_common_arch += {'arm': arm_common_ss}
--- 
-2.39.5
+This has still not merged! Unfortunate.
 
 
