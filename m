@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8537CA6744F
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 469F6A6744C
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:50:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWNM-0006gP-SG; Tue, 18 Mar 2025 08:48:57 -0400
+	id 1tuWNG-0006As-8F; Tue, 18 Mar 2025 08:48:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tuWIZ-0001Qi-SM
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:44:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tuWIK-00037a-3K
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:43:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742301821;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=S6poyYNCz1bPRG6g5zrEOecDNsc6uknFCDXXprtzlkw=;
- b=f9ShL4Ow9TrdLAA1dp7y5dqDlwSlb/4XRLqJR98BsWDUSSAlPHn+Dy/Z1CH00ZmWlV/qUb
- WJB+la2O923wyEwliLhw/mn3LdMwQU7fktkUfFJPXf3Vi5Jmgd65YlA4ZdFTlG8tExKlRq
- Xg2L6WJfn8GP80bFiyrImaanxmh/WOI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-ixmgCToBPk6Cdf5OrAjlDw-1; Tue,
- 18 Mar 2025 08:43:36 -0400
-X-MC-Unique: ixmgCToBPk6Cdf5OrAjlDw-1
-X-Mimecast-MFC-AGG-ID: ixmgCToBPk6Cdf5OrAjlDw_1742301815
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EE5D619560B6; Tue, 18 Mar 2025 12:43:34 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.167])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6606D19560AD; Tue, 18 Mar 2025 12:43:33 +0000 (UTC)
-Date: Tue, 18 Mar 2025 12:43:29 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Andreas Schwab <schwab@suse.de>
-Cc: Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>,
- qemu-devel@nongnu.org
-Subject: Re: Generic way to detect qemu linux-user emulation
-Message-ID: <Z9lqcQGdIsjUHeVJ@redhat.com>
-References: <mvm1puuiqvu.fsf@suse.de>
- <ff0cde0c-67d7-4fc3-8996-ad0e8645deed@gmx.de>
- <CAFEAcA_-fODgkxLLCNf3XHBU=EvGgKx4qcE_PqNt8-4jwqnqVw@mail.gmail.com>
- <Z9lf7lniMWzoy6uS@redhat.com> <mvmmsdih5zi.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tuWMZ-0005J3-7r
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:48:07 -0400
+Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tuWMV-0003jH-Jj
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:48:06 -0400
+Received: by mail-yb1-xb2d.google.com with SMTP id
+ 3f1490d57ef6-e643f235a34so1000089276.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 05:48:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1742302081; x=1742906881; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=8slg3rOHyYBzQ/7Yb912beQ4u4EfQcKUFPIw0EirfLs=;
+ b=zlrMrKsmoQnySdkHLVyFswf/VFTBFoT6Jx7saQjFNUP2l2Yves/BOXhepQbJ1+g1ur
+ 21XXRaPSyD90MUWs4aDTiSMF9XvN14E69sSV7GrsycXb1eAyaJuHwecqvZdTRaX/d0J/
+ b/42LfN7Jp7Qqa9RYHgxwSXY1CfQbSciG+neqp3Yp9F1yju3dgbRVHzgbKPa8ilE2wS9
+ NpMlgPw/GoacxeIp6vn08NOR4A+aipoCqTWekrCstDRy+DdOY7Y7DXMx1zdBcOCLanZq
+ i2TqAUEXdu5mp+delLLMps+iksQVt3QUlEV/MkyEsAKkvhavPZg+sJjgtud59qvgaMzr
+ zjzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742302081; x=1742906881;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8slg3rOHyYBzQ/7Yb912beQ4u4EfQcKUFPIw0EirfLs=;
+ b=sbo0R2bkWNeOZ76fZXuW6MsmAezMQuNzGikXg+U2gOZFDuAeMbGHY1yde1Wvtyby8e
+ fOHRrclTefP7QCz17u50Au3U9zPukrkwrxkXl1THnQcALh0+S0a+Taw7WYadYcylX/b+
+ Lc4obr8/lapSISFkBWenidzyU43Q50nrZrVuc9xJMyueC+ZAFqTDTLsAof+hP3si+UGz
+ oJmBOaqtd9ZxQ+/C7dgo5YH45aOgibRla9u2Nsxyjfzo5tr3q5NEd0osfTjBXw+tuBrx
+ mmMWWlhVRcHDC+/DzMyTe5m6g6apvQ9c4ZsFBm4ka//dlneGRWVKSCCgWTi61P5iMb2c
+ 34fA==
+X-Gm-Message-State: AOJu0YzToyOh0kGTEiEpB54jOtvHzGD5LzlXvkLWO85MKvdhFuEnn0os
+ 52z5lv7XZ5IE+uHbPvf1viGN8xI3mE466it6NJcN3IDmqSMc1ylxbbzH2qcCbN5k9D/e35mm2vP
+ KEnVt3F7EatyAXKsA1mz4EmX6tro1FaJnn7cptg==
+X-Gm-Gg: ASbGncvswx5ewMSnCaPsSd481k00sns+u06oEsahafTzJi07ugM9GdyrgH2vyEy3V+2
+ 2c8qMimht8RYkvmFbDfWT4HdB57Q5Mk9bRyQb3zkWzvQoGgudZIxpRRfsMW3oM5X6tOVVLG8tbg
+ M9qgA+sHUkdjj8mMOJg4zeoRXnfuA=
+X-Google-Smtp-Source: AGHT+IEQwuhuln8+CACHXRg23nE9E4Ir3EzobpQ+E8vKgc3O8ZXsfqoDMfvU4WLRzflGkyV5v0UK1wwFgXnbwrFjNqI=
+X-Received: by 2002:a05:6902:2d41:b0:e64:60c:54ce with SMTP id
+ 3f1490d57ef6-e64060c55fcmr11870366276.2.1742302081114; Tue, 18 Mar 2025
+ 05:48:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <mvmmsdih5zi.fsf@suse.de>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+References: <20250317-raw-v1-0-09e2dfff0e90@daynix.com>
+ <CAFEAcA9Cy_870gxNmPFykzTjXOfi0raotmA1NRpZEQKfFfB=0g@mail.gmail.com>
+In-Reply-To: <CAFEAcA9Cy_870gxNmPFykzTjXOfi0raotmA1NRpZEQKfFfB=0g@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 18 Mar 2025 12:47:49 +0000
+X-Gm-Features: AQ5f1JotXtyRSF-yg8G2NNirSk_YOR4QVWN85v7N2eTx2d23zF47r3yjGjF1iRw
+Message-ID: <CAFEAcA_DzikGAsKC=zMc7OVcinTj3PnO+3WACGOQxwpTHKzSCg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] target/arm: Flag PMCNTENCLR with ARM_CP_NO_RAW
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, devel@daynix.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,38 +87,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 18, 2025 at 01:34:57PM +0100, Andreas Schwab wrote:
-> On Mär 18 2025, Daniel P. Berrangé wrote:
-> 
-> > Whereever practical, it is preferrable to check a discrete feature
-> > or behaviour in a functional way, rather than matching on "is it QEMU"
-> 
-> Do you know a way to detect support for CLONE_VFORK that isn't too
-> expensive?
+On Mon, 17 Mar 2025 at 11:53, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Mon, 17 Mar 2025 at 11:16, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> >
+> > Supersedes: <20250314-clr-v2-1-7c7220c177c9@daynix.com>
+> > ("[PATCH v2] target/arm: Define raw write for PMU CLR registers")
+> >
+> > A normal write to PMCNTENCLR clears written bits so it is not
+> > appropriate for writing a raw value. This kind of situation is usually
+> > handled by setting a raw write function, but flag the register with
+> > ARM_CP_NO_RAW instead to workaround a problem with KVM.
+>
+> I'm not sure there's a "problem with KVM" here -- it implements the
+> write to PMCNTENCLR to have the semantics the architecture specifies.
 
-No, but I feel like the right thing in this particular case is to look
-at improving our vfork impl. The current impl is incredibly crude and
-acknowledged by the original author
+I checked with the KVM developers on this one, and you are correct
+that this is a KVM issue, so I was wrong here; sorry about that.
+There is a fix queued:
 
-  commit 436d124b7d538b1fd9cf72edf17770664c309856
-  Author: Andrzej Zaborowski <balrogg@gmail.com>
-  Date:   Sun Sep 21 02:39:45 2008 +0000
+https://web.git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git/commit/?h=next&id=f2aeb7bbd5745fbcf7f0769e29a184e24924b9a9
 
-    Band-aid vfork() emulation (Kirill Shutemov).
+which will restore the "just writes the value" semantics. This
+is apparently the intended semantics for KVM_SET_ONE_REG for
+all cases: the write is supposed to do "sets register to the
+specified value", not "behaves as if the guest vCPU had done
+the register write insn, with attendant side effects".
 
-I can see why they did it that way, but I'm feeling like it ought to
-be possible to do a better special case vfork impl ni QEMU instead of
-overloading the fork() impl.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+thanks
+-- PMM
 
