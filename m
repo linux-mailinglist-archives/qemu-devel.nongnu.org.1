@@ -2,70 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA416A67414
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8537CA6744F
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:51:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWEa-0003Cz-DV; Tue, 18 Mar 2025 08:39:52 -0400
+	id 1tuWNM-0006gP-SG; Tue, 18 Mar 2025 08:48:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tuWEN-0002gG-Hu
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:39:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tuWIZ-0001Qi-SM
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:44:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tuWEJ-0007gm-LF
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:39:38 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tuWIK-00037a-3K
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 08:43:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742301574;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ s=mimecast20190719; t=1742301821;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=06iM+9P55Mj7StAkwOGZYdkiRCeTKmpFEP5kkBTrn2A=;
- b=Z5vwlpNeeVa7xxnFPsmR/gvU3huLAjjK3eTBxpTJtqZvNMS1tc4UnFlpofSZcumgzNyqF0
- WYqrSRNMIVGrzY5XO0ZBzsSYjf3//6oKx4+34uPi+XNakShhVxxk6S/DSKM2UjvamP3nSk
- gmqMOgInk/PiIGn7Iyyy0m/e/1zSwrM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=S6poyYNCz1bPRG6g5zrEOecDNsc6uknFCDXXprtzlkw=;
+ b=f9ShL4Ow9TrdLAA1dp7y5dqDlwSlb/4XRLqJR98BsWDUSSAlPHn+Dy/Z1CH00ZmWlV/qUb
+ WJB+la2O923wyEwliLhw/mn3LdMwQU7fktkUfFJPXf3Vi5Jmgd65YlA4ZdFTlG8tExKlRq
+ Xg2L6WJfn8GP80bFiyrImaanxmh/WOI=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-LcobzCDHNPClf9YLS81t8A-1; Tue,
- 18 Mar 2025 08:39:31 -0400
-X-MC-Unique: LcobzCDHNPClf9YLS81t8A-1
-X-Mimecast-MFC-AGG-ID: LcobzCDHNPClf9YLS81t8A_1742301570
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-ixmgCToBPk6Cdf5OrAjlDw-1; Tue,
+ 18 Mar 2025 08:43:36 -0400
+X-MC-Unique: ixmgCToBPk6Cdf5OrAjlDw-1
+X-Mimecast-MFC-AGG-ID: ixmgCToBPk6Cdf5OrAjlDw_1742301815
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 82F621801A07; Tue, 18 Mar 2025 12:39:30 +0000 (UTC)
-Received: from kaapi.redhat.com (unknown [10.74.16.234])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 82A481800946; Tue, 18 Mar 2025 12:39:27 +0000 (UTC)
-From: Prasad Pandit <ppandit@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com,
-	farosas@suse.de,
-	berrange@redhat.com
-Subject: [PATCH v8 7/7] migration/ram: Implement save_postcopy_prepare()
-Date: Tue, 18 Mar 2025 18:08:46 +0530
-Message-ID: <20250318123846.1370312-8-ppandit@redhat.com>
-In-Reply-To: <20250318123846.1370312-1-ppandit@redhat.com>
-References: <20250318123846.1370312-1-ppandit@redhat.com>
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EE5D619560B6; Tue, 18 Mar 2025 12:43:34 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.167])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6606D19560AD; Tue, 18 Mar 2025 12:43:33 +0000 (UTC)
+Date: Tue, 18 Mar 2025 12:43:29 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Andreas Schwab <schwab@suse.de>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>,
+ qemu-devel@nongnu.org
+Subject: Re: Generic way to detect qemu linux-user emulation
+Message-ID: <Z9lqcQGdIsjUHeVJ@redhat.com>
+References: <mvm1puuiqvu.fsf@suse.de>
+ <ff0cde0c-67d7-4fc3-8996-ad0e8645deed@gmx.de>
+ <CAFEAcA_-fODgkxLLCNf3XHBU=EvGgKx4qcE_PqNt8-4jwqnqVw@mail.gmail.com>
+ <Z9lf7lniMWzoy6uS@redhat.com> <mvmmsdih5zi.fsf@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+In-Reply-To: <mvmmsdih5zi.fsf@suse.de>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,84 +86,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+On Tue, Mar 18, 2025 at 01:34:57PM +0100, Andreas Schwab wrote:
+> On Mär 18 2025, Daniel P. Berrangé wrote:
+> 
+> > Whereever practical, it is preferrable to check a discrete feature
+> > or behaviour in a functional way, rather than matching on "is it QEMU"
+> 
+> Do you know a way to detect support for CLONE_VFORK that isn't too
+> expensive?
 
-Implement save_postcopy_prepare(), preparing for the enablement of both
-multifd and postcopy.
+No, but I feel like the right thing in this particular case is to look
+at improving our vfork impl. The current impl is incredibly crude and
+acknowledged by the original author
 
-Please see the rich comment for the rationals.
+  commit 436d124b7d538b1fd9cf72edf17770664c309856
+  Author: Andrzej Zaborowski <balrogg@gmail.com>
+  Date:   Sun Sep 21 02:39:45 2008 +0000
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
----
- migration/ram.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+    Band-aid vfork() emulation (Kirill Shutemov).
 
-v8:
-- New patch
+I can see why they did it that way, but I'm feeling like it ought to
+be possible to do a better special case vfork impl ni QEMU instead of
+overloading the fork() impl.
 
-v7:
-- https://lore.kernel.org/qemu-devel/20250228121749.553184-1-ppandit@redhat.com/T/#t
-
-diff --git a/migration/ram.c b/migration/ram.c
-index 6fd88cbf2a..04fde7ba6b 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -4419,6 +4419,42 @@ static int ram_resume_prepare(MigrationState *s, void *opaque)
-     return 0;
- }
- 
-+static bool ram_save_postcopy_prepare(QEMUFile *f, void *opaque, Error **errp)
-+{
-+    int ret;
-+
-+    if (migrate_multifd()) {
-+        /*
-+         * When multifd is enabled, source QEMU needs to make sure all the
-+         * pages queued before postcopy starts to be flushed.
-+         *
-+         * Meanwhile, the load of these pages must happen before switching
-+         * to postcopy.  It's because loading of guest pages (so far) in
-+         * multifd recv threads is still non-atomic, so the load cannot
-+         * happen with vCPUs running on destination side.
-+         *
-+         * This flush and sync will guarantee those pages loaded _before_
-+         * postcopy starts on destination. The rational is, this happens
-+         * before VM stops (and before source QEMU sends all the rest of
-+         * the postcopy messages).  So when the destination QEMU received
-+         * the postcopy messages, it must have received the sync message on
-+         * the main channel (either RAM_SAVE_FLAG_MULTIFD_FLUSH, or
-+         * RAM_SAVE_FLAG_EOS), and such message should have guaranteed all
-+         * previous guest pages queued in the multifd channels to be
-+         * completely loaded.
-+         */
-+        ret = multifd_ram_flush_and_sync(f);
-+        if (ret < 0) {
-+            error_setg(errp, "%s: multifd flush and sync failed", __func__);
-+            return false;
-+        }
-+    }
-+
-+    qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
-+
-+    return true;
-+}
-+
- void postcopy_preempt_shutdown_file(MigrationState *s)
- {
-     qemu_put_be64(s->postcopy_qemufile_src, RAM_SAVE_FLAG_EOS);
-@@ -4438,6 +4474,7 @@ static SaveVMHandlers savevm_ram_handlers = {
-     .load_setup = ram_load_setup,
-     .load_cleanup = ram_load_cleanup,
-     .resume_prepare = ram_resume_prepare,
-+    .save_postcopy_prepare = ram_save_postcopy_prepare,
- };
- 
- static void ram_mig_ram_block_resized(RAMBlockNotifier *n, void *host,
+With regards,
+Daniel
 -- 
-2.48.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
