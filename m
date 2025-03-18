@@ -2,51 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10405A6744D
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:51:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 226F2A6744B
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:50:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWIx-0001EJ-5h; Tue, 18 Mar 2025 08:44:23 -0400
+	id 1tuWNC-0005pi-Qh; Tue, 18 Mar 2025 08:48:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuWHa-0008Rh-EN; Tue, 18 Mar 2025 08:42:59 -0400
+ id 1tuWHg-000082-6e; Tue, 18 Mar 2025 08:43:10 -0400
 Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuWHY-0002we-6I; Tue, 18 Mar 2025 08:42:57 -0400
+ id 1tuWHY-0002wy-Mt; Tue, 18 Mar 2025 08:43:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1742301777; x=1773837777;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=LUXWJuyyc6fHNfaVCBSggoXhRDzrtT3wzS+QLB2WhFg=;
- b=URDaO0yE0zYwFlg1wDc3cEEwY0yogldUv9AwAbg8E8cTKwhFX+9AoEYw
- 9ktLSuj9YDszyEGAAM3WwdGdqMi5y47FQd00jQR4UfPY57IFTzOZ0JBIC
- rc2Tub550S0kscuKJhb8n+kAz1nMhjVi2dO7ZHELB3wCx3TucqMHCcxiW
- EI1RLv72T2TGFU+4tkIOGvPwzBpFcpOtAffu2DNqDNyiAc0PgkyphY9n3
- 2T1BxDufNm7ke2Qmy8+AjYdX6P1l6NO49aSCpCjQypjaT2RDT1vt/kIWB
- PuYwNVFnjuf9N8PTjaIoTeDTjRWAwsnXC1zJ8a1ram/5FSI9ivbPjmFCG w==;
-X-CSE-ConnectionGUID: SvrrKiDxSwePmIQ1vDOA5w==
-X-CSE-MsgGUID: h0l+OxONRdODYjrC47sJmw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54824645"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="54824645"
+ bh=uOPuDQ/8Du8aSBzG3kAr7LjmXnlBH4ohlB+36Ri7rWI=;
+ b=g4sH/x0j2GJ5NfLk4BPMG6IrV6xoCkHXnwPc3esr3pMUWwUrMxdv3wfy
+ KoGHRJytuQHudlToxxvDHN+PAgx7PV6NYA6LcsNPE45fjYbbGAMzGwkpL
+ 43hmNYmEOC4m5FedptUvc+1hLLxWUB5nfcR7eObOadiNBk8qvi0qtG8oI
+ kyLl4PWQI/jmbaMXINdfkqL5Pv1A02/mQNPKD/PW+K/1UMO6LpfSdBm7c
+ /tSUcLfLmetxtO0/rFfW2E4/ux9c+ubvxABww9BuRnCjqzNt64KpVZaHZ
+ LqWQ4iasEy76LRoH5o/EDm4KfzArNOZT70OvLMIZPG0cWDyT1vZszrf3N A==;
+X-CSE-ConnectionGUID: Uas8xyp+RZ+DKtBiMcZqtw==
+X-CSE-MsgGUID: +d7owt9HSZiQU54rfRfK3A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54824651"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="54824651"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 05:42:29 -0700
-X-CSE-ConnectionGUID: Et3taQeRQDKjSu3HkHY5PQ==
-X-CSE-MsgGUID: +sRWdBtmQPqmrIig3lciZA==
+ 18 Mar 2025 05:42:30 -0700
+X-CSE-ConnectionGUID: 9WPdF0G/Q6GSeeL7ajUCpw==
+X-CSE-MsgGUID: Bu8Gf5DcQJGIzaJrKFA9+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="121980499"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="121980506"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 18 Mar 2025 05:42:27 -0700
+ by orviesa009.jf.intel.com with ESMTP; 18 Mar 2025 05:42:29 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v3 14/15] rust/vmstate: Add unit test for vmstate_validate
-Date: Tue, 18 Mar 2025 21:02:18 +0800
-Message-Id: <20250318130219.1799170-15-zhao1.liu@intel.com>
+Subject: [PATCH v3 15/15] rust/vmstate: Include complete crate path of
+ VMStateFlags in vmstate_clock
+Date: Tue, 18 Mar 2025 21:02:19 +0800
+Message-Id: <20250318130219.1799170-16-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250318130219.1799170-1-zhao1.liu@intel.com>
 References: <20250318130219.1799170-1-zhao1.liu@intel.com>
@@ -77,127 +78,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a unit test for vmstate_validate, which corresponds to the C version
-macro: VMSTATE_VALIDATE.
+The use of "bindings::*" masks incomplete path of VMStateFlags.
+
+Include complete crate path of VMStateFlags in vmstate_clock, and clean
+up "bindings::*" in device_class.rs of pl011.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/tests/vmstate_tests.rs | 91 +++++++++++++++++++++++++++-
- 1 file changed, 89 insertions(+), 2 deletions(-)
+Changes since v2:
+ * A new commit.
+---
+ rust/hw/char/pl011/src/device_class.rs | 8 ++++++--
+ rust/qemu-api/src/vmstate.rs           | 5 ++++-
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/rust/qemu-api/tests/vmstate_tests.rs b/rust/qemu-api/tests/vmstate_tests.rs
-index 9fcaad6a01ac..aa6bd18ef784 100644
---- a/rust/qemu-api/tests/vmstate_tests.rs
-+++ b/rust/qemu-api/tests/vmstate_tests.rs
-@@ -2,7 +2,7 @@
- // Author(s): Zhao Liu <zhai1.liu@intel.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
--use std::{ffi::CStr, mem::size_of, ptr::NonNull, slice};
-+use std::{ffi::CStr, mem::size_of, os::raw::c_void, ptr::NonNull, slice};
- 
- use qemu_api::{
-     bindings::{
-@@ -13,7 +13,7 @@
-     cell::{BqlCell, Opaque},
-     impl_vmstate_forward,
-     vmstate::{VMStateDescription, VMStateField},
--    vmstate_fields, vmstate_of, vmstate_struct, vmstate_unused,
-+    vmstate_fields, vmstate_of, vmstate_struct, vmstate_unused, vmstate_validate,
-     zeroable::Zeroable,
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+index 0b2076ddaa0f..b4d4a7eb432d 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -8,8 +8,12 @@
  };
  
-@@ -358,3 +358,90 @@ fn test_vmstate_macro_fooc() {
-     // The last VMStateField in VMSTATE_FOOC.
-     assert_eq!(foo_fields[4].flags, VMStateFlags::VMS_END);
- }
-+
-+// =========================== Test VMSTATE_FOOD ===========================
-+// Test the use cases of the vmstate macro, corresponding to the following C
-+// macro variants:
-+//   * VMSTATE_FOOD:
-+//     - VMSTATE_VALIDATE
-+
-+// Add more member fields when vmstate_of/vmstate_struct support "test"
-+// parameter.
-+struct FooD;
-+
-+impl FooD {
-+    fn validate_food_0(&self, _version_id: u8) -> bool {
-+        true
-+    }
-+
-+    fn validate_food_1(_state: &FooD, _version_id: u8) -> bool {
-+        false
-+    }
-+}
-+
-+fn validate_food_2(_state: &FooD, _version_id: u8) -> bool {
-+    true
-+}
-+
-+static VMSTATE_FOOD: VMStateDescription = VMStateDescription {
-+    name: c_str!("foo_d").as_ptr(),
-+    version_id: 3,
-+    minimum_version_id: 1,
-+    fields: vmstate_fields! {
-+        vmstate_validate!(FooD, c_str!("foo_d_0"), FooD::validate_food_0),
-+        vmstate_validate!(FooD, c_str!("foo_d_1"), FooD::validate_food_1),
-+        vmstate_validate!(FooD, c_str!("foo_d_2"), validate_food_2),
-+    },
-+    ..Zeroable::ZERO
-+};
-+
-+#[test]
-+fn test_vmstate_macro_food() {
-+    let foo_fields: &[VMStateField] = unsafe { slice::from_raw_parts(VMSTATE_FOOD.fields, 4) };
-+    let mut foo_d = FooD;
-+    let foo_d_p = &mut foo_d as *mut _ as *mut c_void;
-+
-+    // 1st VMStateField in VMSTATE_FOOD
-+    assert_eq!(
-+        unsafe { CStr::from_ptr(foo_fields[0].name) }.to_bytes_with_nul(),
-+        b"foo_d_0\0"
-+    );
-+    assert_eq!(foo_fields[0].offset, 0);
-+    assert_eq!(foo_fields[0].num_offset, 0);
-+    assert_eq!(foo_fields[0].info.is_null(), true);
-+    assert_eq!(foo_fields[0].version_id, 0);
-+    assert_eq!(foo_fields[0].size, 0);
-+    assert_eq!(foo_fields[0].num, 0);
-+    assert_eq!(
-+        foo_fields[0].flags.0,
-+        VMStateFlags::VMS_ARRAY.0 | VMStateFlags::VMS_MUST_EXIST.0
-+    );
-+    assert_eq!(foo_fields[0].vmsd.is_null(), true);
-+    assert_eq!(
-+        unsafe { foo_fields[0].field_exists.unwrap()(foo_d_p, 0) },
-+        true
-+    );
-+
-+    // 2nd VMStateField in VMSTATE_FOOD
-+    assert_eq!(
-+        unsafe { CStr::from_ptr(foo_fields[1].name) }.to_bytes_with_nul(),
-+        b"foo_d_1\0"
-+    );
-+    assert_eq!(
-+        unsafe { foo_fields[1].field_exists.unwrap()(foo_d_p, 1) },
-+        false
-+    );
-+
-+    // 3rd VMStateField in VMSTATE_FOOD
-+    assert_eq!(
-+        unsafe { CStr::from_ptr(foo_fields[2].name) }.to_bytes_with_nul(),
-+        b"foo_d_2\0"
-+    );
-+    assert_eq!(
-+        unsafe { foo_fields[2].field_exists.unwrap()(foo_d_p, 2) },
-+        true
-+    );
-+
-+    // The last VMStateField in VMSTATE_FOOD.
-+    assert_eq!(foo_fields[3].flags, VMStateFlags::VMS_END);
-+}
+ use qemu_api::{
+-    bindings::*, c_str, prelude::*, vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct,
+-    vmstate_subsections, vmstate_unused, zeroable::Zeroable,
++    bindings::{qdev_prop_bool, qdev_prop_chr},
++    c_str,
++    prelude::*,
++    vmstate::VMStateDescription,
++    vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct, vmstate_subsections, vmstate_unused,
++    zeroable::Zeroable,
+ };
+ 
+ use crate::device::{PL011Registers, PL011State};
+diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+index 9740931fb16a..1b2b12eadd6e 100644
+--- a/rust/qemu-api/src/vmstate.rs
++++ b/rust/qemu-api/src/vmstate.rs
+@@ -487,7 +487,10 @@ macro_rules! vmstate_clock {
+                 $crate::offset_of!($struct_name, $field_name)
+             },
+             size: ::core::mem::size_of::<*const $crate::qdev::Clock>(),
+-            flags: VMStateFlags(VMStateFlags::VMS_STRUCT.0 | VMStateFlags::VMS_POINTER.0),
++            flags: $crate::bindings::VMStateFlags(
++                $crate::bindings::VMStateFlags::VMS_STRUCT.0
++                    | $crate::bindings::VMStateFlags::VMS_POINTER.0,
++            ),
+             vmsd: unsafe { ::core::ptr::addr_of!($crate::bindings::vmstate_clock) },
+             ..$crate::zeroable::Zeroable::ZERO
+         }
 -- 
 2.34.1
 
