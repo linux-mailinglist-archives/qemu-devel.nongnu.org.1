@@ -2,167 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CE4A67475
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7642A67434
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:46:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWZ1-0000Pj-RE; Tue, 18 Mar 2025 09:01:00 -0400
+	id 1tuWHW-00088b-2k; Tue, 18 Mar 2025 08:42:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aleksandar.rakic@htecgroup.com>)
- id 1tuWYS-00008f-RW
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 09:00:26 -0400
-Received: from mail-northeuropeazlp170110001.outbound.protection.outlook.com
- ([2a01:111:f403:c200::1] helo=DB3PR0202CU003.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tuWGz-0007oT-JB; Tue, 18 Mar 2025 08:42:27 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aleksandar.rakic@htecgroup.com>)
- id 1tuWYN-0007nu-ST
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 09:00:24 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Oba2ya5ioiT5QsiMZMOQQnhnY0lCLegK80saR4toqu4gkz8IwFGqsM2l7LjrPJ2KLvQg6+rOffnOYolYQSLLIQCx9la8FpFAHUZDfyIUTJxLx2kTU2LQgjVq6KT32FY8PRm4RWH0pXeH6AOtIa5d/9GXgzDyek4ceFDgv25eB6QcdOiHZYonLN7GWMw2IJT8HFb0uDWloEdtQSdGFygs+vCgHlRGRDzUHVBM4fj/NYcI3jgxhP2nw1uO/Pzc7DHkITvoFuScUvyQdIoMjFdY9Hyn9Z5gBDZPg9pFBwagugzwg2ZLSNLJExSBvsq+38UKuhz8vlQ5xhb0TUnYACN/CA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S7imSeYUZS3VkbYBoGzMK8h95cKagAvAN1oozd3jNso=;
- b=D+6mZ/ut4czh2/WM7zwLSadv1ncKJJwOF628ig7u5bhCNG58b0Jp0l9+tiah8K48Ws1a21h5wXh6oKVAgEPJC2q4A+C+9fhrpaU+RnUgI5nXgofPys96G4Lk4oJ4EmeuXaaOQCQnRJSzB8bw9rBDbgGX//40QXspuo9LkQGXgM86/8CUN8bCHTReRwOXJW3YIB8YBe9Y9l0tab/zar6Ue7hrvmSJNu4Lg3o61msQKgvQljppKpZxWoNAay6ignaB3LGVFgzWYqh1YEnufKXLlr37IhUDneeav7YaVFuJN0cEPgq1epUi33POgPQyNuLnio+3CRAVPkXWjx7ENnZrow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=htecgroup.com; dmarc=pass action=none
- header.from=htecgroup.com; dkim=pass header.d=htecgroup.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=htecgroup.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S7imSeYUZS3VkbYBoGzMK8h95cKagAvAN1oozd3jNso=;
- b=gW8FPl12VOXpICrn3AlsyO0QX0MVrT1vrOt7E71tY6PycycW6Q4nr5AUpUifm5KmmgFjUHXQWZi/IVVQDFKsbEYsYeu+qpd6qPcAfjyZiQxiobLqIVZhpk9hOr0NGVw6DdJ1l2hbjelW0SxYGrWVujKF9bzjRBFs20dzVxPmYzdm3I9FEnBYKO8qFSEYqbYr5JC8t67+ExlAutPcXVU6lIeN+C/6GU4Hxep3nRhYX+BiMR+xOVrfUXlQzKRPe1lbUWswrmgXn6pLi2x1epeYG0Zx1WD6VwIyyrzwQO7UHRzfXWyLP3RgqAEgnK2juQiONoO+ZeJKuL6oGlKjjGVCeQ==
-Received: from PA4PR09MB4864.eurprd09.prod.outlook.com (2603:10a6:102:ed::17)
- by DB3PR09MB6601.eurprd09.prod.outlook.com (2603:10a6:10:43b::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
- 2025 13:00:14 +0000
-Received: from PA4PR09MB4864.eurprd09.prod.outlook.com
- ([fe80::a02b:9d5c:eca5:e024]) by PA4PR09MB4864.eurprd09.prod.outlook.com
- ([fe80::a02b:9d5c:eca5:e024%4]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
- 13:00:14 +0000
-From: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
-To: "peter.maydell@linaro.org" <peter.maydell@linaro.org>
-CC: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>, Aleksandar Rakic
- <aleksandar.rakic@htecgroup.com>, "arikalo@gmail.com" <arikalo@gmail.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v5 2/3] Skip NaN mode check for soft-float
-Thread-Topic: [PATCH v5 2/3] Skip NaN mode check for soft-float
-Thread-Index: AQHbiHBN9WWu61L0jUe8EWyWqAJpArNvr5MAgAlK0wA=
-Date: Tue, 18 Mar 2025 13:00:14 +0000
-Message-ID: <20250318125952.583908-1-aleksandar.rakic@htecgroup.com>
-References: <CAFEAcA8RjNTZsuhShFwFUHa+YP5VKBUw2RneUPwAJ9eOVAL5Vw@mail.gmail.com>
-In-Reply-To: <CAFEAcA8RjNTZsuhShFwFUHa+YP5VKBUw2RneUPwAJ9eOVAL5Vw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=htecgroup.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR09MB4864:EE_|DB3PR09MB6601:EE_
-x-ms-office365-filtering-correlation-id: fe0292b4-71a7-45cd-e274-08dd661cd2fb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?RFZFNzdiSXFqTjIveDVoRlMwdTFxY3cxb2Q1cXdhbmVJVnh0QStoTDUxMTJk?=
- =?utf-8?B?cGNXWXk2YWZ3YnpyTzlyME9UV014eXRob2hHbUhuN2l3UE1YZ21tOXFGOENB?=
- =?utf-8?B?NGErZTlPUzFmT0RiTnRTOXloeVNDNzhXVjFacUt6Z2NKTmpKYVNQbFBQU1V1?=
- =?utf-8?B?dS94elpFN1JwdkcrWG1YQ05SaERhODNrSFpjdUNJTjBITFdScEVkeEE1bHhZ?=
- =?utf-8?B?WktqYlJhNkpOT0wvYXpMcjZPYlBoaXI4MkVPaTBXVWRFLzRJR0FMdG9haG9S?=
- =?utf-8?B?aWhoeHVqNkN5ZEVKOGZ6eExBeitHN3RUYjF1cGlHS3R5Z3JXajdQUU5MdG9Q?=
- =?utf-8?B?N2s3b1ZxREVJMXVPanZkUlhCV2s5c3JqMjJKcHdQTy9wWEdROWdqVFJQcTZt?=
- =?utf-8?B?bkdVdzlSQ1JVZDVvbkQzenNOa1JiVFlIV1JaaStnTU9HRHRJRXovdFd5TXV4?=
- =?utf-8?B?aEdGZVowQm1Zd05RbjVoTTk0Q1BDYWlCamNNYXMvaGVldktnRmxZc09iSzAx?=
- =?utf-8?B?QXZvR3daQ2ZZTlpxQTFZUCthUGFuQjhId280dGlzUlMvUmoyRVZaOVVvUWlw?=
- =?utf-8?B?QkFrUlVLVWpWNHR3T3pWSEpWMTdKamFWRHRSYzJvYjVSWUo5RkhZdWtnNW5z?=
- =?utf-8?B?anZIQzZET0lNem1CZzBJMUpLZU5GeG05RzRmS2p3ZURmS1JIMVAwMzNCenhT?=
- =?utf-8?B?U1gxSlRUNWszT0R0TGNFbWNqdzVaMDViUzdBcnh4cFdoY3dBTTJGOHlrTURJ?=
- =?utf-8?B?cExWSW5lSVFtMHNFemdrNmpQaHNBTW82YmI5eGVPMnd5c1JqZmlCTlZTdUx5?=
- =?utf-8?B?L2FDUzhMRklTb0kvSUlCVllqRWVtdVRENEUwNnh2Tzkva2cxcjBxWWdhcTAv?=
- =?utf-8?B?d0U4SjBXeXhyY3d2d0NpM2JWcnhmb3h1YU1QcDI1a1k1YXZ0c3ZQSWltZWpx?=
- =?utf-8?B?eEJYVW92Y0ptV3ltU25TbFFWQzNrWmZMdlZYVG1nSzBwb0RmQzlKU1RQajhP?=
- =?utf-8?B?SmNKWWI5RjJGZXF1T2d4bHBPaEdId3VweEhLMkJWZ3pFTEZGSzZ1K01ERDAw?=
- =?utf-8?B?WGU1dEo2SDkvOFI3RDdNU0pUWmFKVUpCNFl3SEZrMDBwMkJ6Vm9aeTFjZXd5?=
- =?utf-8?B?WkhDTi9VRTM2N3RSZ1N4THFZa1d6NHB2cXkzNzQ1NjIrYk1sSjZBOXNWYTll?=
- =?utf-8?B?eEpDcUwrcTBUNGFEQzJBRkxtNXJ1aGI0QVhHZXA5YWNvUG1VeWdHcUR4SDJs?=
- =?utf-8?B?SGlkL0hOWmNBMk4zRUNxeWpxcnY3TEdjQVR0YUh3S2FKTkY0RG95d0hISUFE?=
- =?utf-8?B?YnpQd2JxNVlsRm1Ba1NvOENWL0dMdzR3UU9BMXpGQUxYODJXRi9TQlFCYVpW?=
- =?utf-8?B?UU9WMzBsNXNkb2JzSkw5Q1o4WUFIRDg2SHk1MHBHanhlbTlTTk5WcXpyNzVw?=
- =?utf-8?B?VEM4WHBYVzJhZ0J2L3BqQkorTmFhWGlNZXhSMnNJcnlkbzJFT2NOWk9GS01t?=
- =?utf-8?B?S1Y0NHpMOWNsWndsZVRvaHJiRXZHZlhyazVoaXpsVkYyMmlkM1FJdU9TTnNS?=
- =?utf-8?B?RE9FWkZJa29ML2dRYmJsRzBxQWNaUU0wSUlXa3dnZWlmczJFY3NQejNTWGo5?=
- =?utf-8?B?Vi9ndktGZXFKMVlSNUZWb0FYZ1RsUXluUEZpR0hEcHdFOVFaak5GekRXaVV0?=
- =?utf-8?B?TDlNMHhFcGU4Y1RUNWZYOWVmTUMzbDNXNytlRjV4MkFtYjB3U3BQRHJTVTc3?=
- =?utf-8?B?cnMvazdUY3J6QXJWUHRDWjhUZmFiQ2R0K1dVNjBObW8xM2UydnRmU0RVazN6?=
- =?utf-8?B?NjRkdVBFYkVoVUdTUnBZOEUrWWdhdmdVMFhFZUREdHdoVG9nOXo3Y3ArMG9Q?=
- =?utf-8?B?TElYSUdaY0NVQ0FFb3Q4THVvSHRYZjBkY2RSSUd5TkU1QUE9PQ==?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PA4PR09MB4864.eurprd09.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(38070700018); DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UFcwQitDTEIzN3IyYi90UTNCaGxLTFgwQjl2Qmp6c3BBV3VERXQzbUMxNEli?=
- =?utf-8?B?cDRoalVhaVZTQ3ljaXNQMUEzVlpSRXFneVphYkx4WUU3RVA4Z25lTWZFWUZ1?=
- =?utf-8?B?M3VBV0o4RkxIMDhiWlhqNlI2WnJaQjllRTk1dVRXR1hLYmlRRjY4RGE4QlFp?=
- =?utf-8?B?U2FSd1RDcWphRWtEdURQdDl6WUJ5MytQWjZVbjU5bFBWNWl4VmJvdnQydE9P?=
- =?utf-8?B?d3orS2NRSFVKL2ZXNmVFZmVhWFR3dUlKSFN3YnB5eGJ3SmtHd0ZFT21jek1N?=
- =?utf-8?B?WUh4VCtWVTN1UlVpeTFwRldxNmhuS01MbnBmRFJzRjZURkFENVE0RlNCTlE2?=
- =?utf-8?B?emhxZ0FFbUVGekNFTWQva2lrUHpoRUhUb2RkOEZFQlRpVXlRUHVwY1gva3k5?=
- =?utf-8?B?U0FNckFRbis4OFFIQW1tN2hGQmw2TnFXNTk4UkgyajliTmd6emtlczVPRW5K?=
- =?utf-8?B?SGppaGU5Z0RjdHBuOFNJeEtOSlhLbUtLL3plWVh2ejJLaVlGM2x5U296UUR3?=
- =?utf-8?B?WUJjRGdOY25KalBVcFhraHVhelVmWlVkaUZGRFBVVnpXUkNUUGt4MmNmWVBs?=
- =?utf-8?B?U3Z0WXBuWk10K0pPMlQxd09ZdXlQVXlEZGRwdTduMFJWeXlQekQzZjVRY1kr?=
- =?utf-8?B?M3lubXdvRVlDazZSTitXN3VuYzBCeEc5bGd6NElwSndHTDNyU2Zyb0d3Uk0v?=
- =?utf-8?B?VTZqY0JjOWtadXpuTS9wNWpDYWs5Y1M1MHMzTzJ5VXVvVUIybVJqM1F2ZFQ4?=
- =?utf-8?B?TkI4dzVXMmFPNitPdjhzVjZzQk1HZHpHd3dFM1J4TkZxcUxGK3N3Nk1Qcjd3?=
- =?utf-8?B?NXlQYm1YNGpmLzhJMk1obGZLZktiUW14VC9jR3F5NW1FcFpRd2JOTFptMjdk?=
- =?utf-8?B?M0xkMm41TWpZZENNWTZDaWpvOEs1SXV0Z3I0RUh3VDY5RU5rMXFsV0pQZTJK?=
- =?utf-8?B?ODB2S3N1ODJUN3c1dmtWdkphbDgwcmZ3VmRNckswMFRIOGpwOEg0WGxWb2g5?=
- =?utf-8?B?R3BaaXpRRmQ3MzM2ZnVRUGFSckY4RktBTWhPK1RTQ2hwbUo1OTA0b2FZUzJi?=
- =?utf-8?B?OFlNeTZZeE1YSVZKcTQ1QTBLVlJSbE5xYzVWZHBMN0poZ2xZZG9oUUFVUlp5?=
- =?utf-8?B?WmZIY1hZWWRYc3Q1YnhIL0sraGMzYXFvMTgyS1lUK3oxc21mc0g2NzVTMTNQ?=
- =?utf-8?B?WVJ5bVF3QldWbDJuYmpKaEFkZEhOUXR5VUE0TWwwTDR4aGpoRlpjd2lUUnJF?=
- =?utf-8?B?YUhiMG1HeEVONWNscGJNQXFmYmtiUXF5N3NHR3cwN0cwTjdYbGdjcVV5RVNi?=
- =?utf-8?B?RUFCbjczOFJRQ2RWci9BbFZVb0kvalBwMUxTMW9za0ZkSHRxd1NleDVmcnN3?=
- =?utf-8?B?bnhjZHRmMUNGWW1JWFlYZUxyM0xJbC80VUNkRk9JM1F5M3VMUUswckkzdUdY?=
- =?utf-8?B?TGtKWi8wY2x5Z2NNVWRoT1VtWk1CTkErTkdjTURvdU5wWjNnL0xmNmN6bFZ0?=
- =?utf-8?B?NWcxQVlBNmV4TERNU3FFajRCRW9PR2NVZmRzcWY0MkY4L3dNenBHdUlxYVZr?=
- =?utf-8?B?MDJkbFFwUjU4YmM5NDFOS1E3amRhNG1VN0NnN001L0YrRXNHYlY2WkZXU050?=
- =?utf-8?B?ODNBK1M0ZTI5WS9WUk53dnlwM2lCOFBNSUtNNElVWlRyR3ZKc3pRUTlqYlNQ?=
- =?utf-8?B?M1AzQVVabzNkMU1odFpjTWdrRnRKdnVESWdHL0tmSTZ6U1ZCQ1JSd3dUd1ph?=
- =?utf-8?B?Tzk5NktCTHEyOE40ZW9TN3JTei95aVA1UFFvS2RSOWxtWjhvMXdnVmwzNkFh?=
- =?utf-8?B?UHh0TDJoWDljd0UxbjlZMlE0RHlveklqbWUzN0V0RUQ4SEFBZWYra2hFdDVV?=
- =?utf-8?B?bXF5WGRyZlNiOXpDOVNuQXlWd1FUeCtDQWk4TkFKRTFBUklLRlFtZzJjaFdR?=
- =?utf-8?B?aTU0SzF4dkZ0bnpsTzk1ajF6dS9oOEZ6VlRhNDFFSmN5NkhITHFhQW16L2ZV?=
- =?utf-8?B?bW40dzdCQmtGejZPS0F4Z3EwSEFQUmo4eXFxaTFQWWkzYThoKzdHemw1TFJr?=
- =?utf-8?B?QnQ0U3oxWTR4Q0dCYVRwT2xWMFFMUUpFQlJ6RENYWHVhZFI2NkZWRFFVSTZQ?=
- =?utf-8?B?NHFmbzg5cUFHeURua3JwVWluckZ0S1NEaEtQTEgydnVreUxBL3NwRkw5TFJY?=
- =?utf-8?Q?jkiCDbCuA3W+vLRwvlc2J7A=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AB278E37215AC444BCE0437978BA56D1@eurprd09.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tuWGr-0002wP-RZ; Tue, 18 Mar 2025 08:42:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1742301734; x=1773837734;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4d9ubvjBKtJnXxx5Pf4CLDwpYdsXtVVs3mHKgRh7YZM=;
+ b=WY5v5xh1mk6znm1Y3sP3ofG/qgihLX6LedjM070eHCCjUVK2elr0TX2G
+ 1RNqLh0mNJPRMeX6XEv94ki7zzs9P3nNc8tg5wQvU0Mz/zXtPOtvLu7zN
+ s2HXWeqxj2Nmee0s46g5/9ILvLywQdf97bhH52Fk9+j2b29OAt/9+OI07
+ K2OrhkhhApP4HvTbsLoyCRkrc16vNopU6OUessHcnNandRypI+Tfrfx0u
+ /DB7W0rsfEFTfdT1nyS4ei2luq1f1+Js0F40ddLOhBmqnwV1TedDKZNed
+ NRDMqf2MOFQOQUWPeYHzijArxHk1VqmySV8t5YyuGUiwt82PjdjEqFvyC w==;
+X-CSE-ConnectionGUID: Seo4XURyQfa7FMKjYfvsoQ==
+X-CSE-MsgGUID: VFf2fGTLSICx7mi5ttme9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54824549"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="54824549"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2025 05:42:08 -0700
+X-CSE-ConnectionGUID: ULLgGLqeTJqaA5DVEHdX1w==
+X-CSE-MsgGUID: GRs/FqpVS3Gu5VroIvBvUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="121980396"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa009.jf.intel.com with ESMTP; 18 Mar 2025 05:42:06 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v3 00/15] rust/vmstate: Clean up, fix, enhance & test
+Date: Tue, 18 Mar 2025 21:02:04 +0800
+Message-Id: <20250318130219.1799170-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-OriginatorOrg: htecgroup.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR09MB4864.eurprd09.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe0292b4-71a7-45cd-e274-08dd661cd2fb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2025 13:00:14.0702 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9f85665b-7efd-4776-9dfe-b6bfda2565ee
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: B5s86LcvIhS2xzeXOAMuPHqygF3lbGA3CuRyoYIFK3zBYUWfJKtWHQgOXolBgDE7shNd7HBNXZ/1mu9qEgw6wwj68uu6xpP+Wfu5IWzJ0vg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR09MB6601
-Received-SPF: pass client-ip=2a01:111:f403:c200::1;
- envelope-from=aleksandar.rakic@htecgroup.com;
- helo=DB3PR0202CU003.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -179,25 +75,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGksDQoNClRoZSBzb2Z0KC1mbG9hdCkgcmVxdWlyZW1lbnQgbWVhbnMgdGhhdCB0aGUgcHJvZ3Jh
-bSBiZWluZyBsb2FkZWQgaGFzIG5vDQpGUFUgZGVwZW5kZW5jeSBhdCBhbGwgKGkuZS4gaXQgaGFz
-IG5vIEZQVSBpbnN0cnVjdGlvbnMpLg0KaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGludXgv
-djYuMTMuNi9zb3VyY2UvYXJjaC9taXBzL2tlcm5lbC9lbGYuYyNMMzQNCg0KV2hlbiAtbXNvZnQt
-ZmxvYXQgaXMgdXNlZCwgdGhlIHByb2Nlc3NvciBkb2VzIG5vdCB1c2UgaGFyZHdhcmUNCmZsb2F0
-aW5nLXBvaW50IGluc3RydWN0aW9ucyBidXQgcmVsaWVzIG9uIHNvZnR3YXJlIGVtdWxhdGlvbiBm
-b3INCmZsb2F0aW5nLXBvaW50IGFyaXRobWV0aWMuIEluIHRoYXQgY2FzZSwgYSBOYU4gbW9kZSAo
-c3VjaCBhcyBOYU4yMDA4KQ0KaW4gdGhlIGhhcmR3YXJlIEZQVSBoYXMgbm8gZWZmZWN0IGJlY2F1
-c2UgdGhlIGhhcmR3YXJlIEZQVSBpcyBub3QNCmFjdGl2ZSBhbmQgYWxsIGZsb2F0aW5nLXBvaW50
-IGV4cHJlc3Npb25zIGFuZCBvcGVyYXRpb25zIGFyZSBoYW5kbGVkIGJ5DQpmdW5jdGlvbnMgZnJv
-bSBzb2Z0d2FyZSBsaWJyYXJpZXMsIHN1Y2ggYXMgdGhvc2Ugd2l0aGluIGdsaWJjIG9yIG90aGVy
-DQplbXVsYXRpb24gbGlicmFyaWVzLiBIb3cgTmFOIHZhbHVlcyDigIvigIthcmUgaGFuZGxlZCBp
-biBzb2Z0d2FyZSBlbXVsYXRpb24NCmRlcGVuZHMgb24gdGhlIGltcGxlbWVudGF0aW9uIG9mIHRo
-b3NlIGxpYnJhcmllcyBhbmQgaXMgbm90IHJlbGF0ZWQgdG8NCkZQVSByZWdpc3RlcnMuDQoNCklm
-IHRoZSBwcm9jZXNzb3IgdXNlcyAtbXNpbmdsZS1mbG9hdCwgTmFOMjAwOCBtb2RlIGNhbiBhZmZl
-Y3QgdGhlIHdheQ0KTmFOIHZhbHVlcyDigIvigIthcmUgZW5jb2RlZCBhbmQgaW50ZXJwcmV0ZWQu
-IFdoZW4gLW1zb2Z0LWZsb2F0IGlzIGFjdGl2ZSwNCnRoZSBlbXVsYXRpb24gaWdub3JlcyB0aGUg
-aGFyZHdhcmUgRlBVIGFuZCB0aGUgTmFOIG1vZGUgaXMgbm90IHJlbGV2YW50DQpiZWNhdXNlIGZs
-b2F0aW5nLXBvaW50IHByb2Nlc3NpbmcgaXMgbGVmdCB0byB0aGUgc29mdHdhcmUNCmltcGxlbWVu
-dGF0aW9uLCBub3QgdGhlIGhhcmR3YXJlLg0KDQpLaW5kIHJlZ2FyZHMsDQpBbGVrc2FuZGFyIFJh
-a2lj
+Hi,
+
+This is my v3, based on aa90f1161bb17 ("Merge tag 'migration-20250314-pull
+-request' of https://gitlab.com/farosas/qemu into staging") at master
+branch.
+
+Compared with v2:
+ * the patch 10 drops `with_exist_check()` and `with_validate_flag()`.
+ * patch 15 is newly added to clen up VMStateFlags in vmstate_clock
+   (which is inspired by setting flags in vmstate_validate).
+
+
+Patch Summary
+=============
+
+Patch 1-9: Clean up & fix for vmstate_of & vmstate_struct, where the
+           issues are catched by unit tests.
+
+Patch 10: Add vmstate_validate support, and vmstate_validate can accept
+          safe "test" callback.
+
+Patch 11-14: Add unit test to cover as much as possible cases to be
+             compatible with C version macros.
+
+             * Note while in principle Rust's vmstate pattern doesn't
+               have to match the C version, the C vmstate macros are
+               rich enough to cover as much logic as possible. So
+               checking against the C version is the most effective way
+               to detect the error.
+
+
+Change Log
+==========
+
+Changes since v2:
+ * Drop `with_exist_check()` and `with_validate_flag()`.
+ * Clean up incomplete crate path of VMStateFlags in vmstate_clock.
+
+Changes since v1:
+ * Drop the patch about prefix separator ", " before [0 .. num] in
+   vmstate macros.
+ * Drop the pacth which changed "vmsd" to "ident" type in macros.
+ * Drop the pacth about adding "version" argument.
+ * Add a `with_exist_check()` method to help add callback in future.
+ * Drop addr_of & public VMStateFlags API in unit test.
+ * Clean up TODO comment.
+
+Best Regards,
+Zhao
+---
+Zhao Liu (15):
+  rust/vmstate: Remove unnecessary unsafe
+  rust/vmstate: Fix num_offset in vmstate macros
+  rust/vmstate: Fix num field when varray flags are set
+  rust/vmstate: Fix size field of VMStateField with VMS_ARRAY_OF_POINTER
+    flag
+  rust/vmstate: Fix type check for varray in vmstate_struct
+  rust/vmstate: Fix "cannot infer type" error in vmstate_struct
+  rust/vmstate: Fix unnecessary VMState bound of with_varray_flag()
+  rust/vmstate: Relax array check when build varray in vmstate_struct
+  rust/vmstate: Re-implement VMState trait for timer binding
+  rust/vmstate: Support vmstate_validate
+  rust/vmstate: Add unit test for vmstate_of macro
+  rust/vmstate: Add unit test for vmstate_{of|struct} macro
+  rust/vmstate: Add unit test for pointer case
+  rust/vmstate: Add unit test for vmstate_validate
+  rust/vmstate: Include complete crate path of VMStateFlags in
+    vmstate_clock
+
+ rust/hw/char/pl011/src/device_class.rs |   8 +-
+ rust/qemu-api/meson.build              |   5 +-
+ rust/qemu-api/src/assertions.rs        |  15 +
+ rust/qemu-api/src/vmstate.rs           | 100 ++++--
+ rust/qemu-api/tests/tests.rs           |   2 +
+ rust/qemu-api/tests/vmstate_tests.rs   | 447 +++++++++++++++++++++++++
+ 6 files changed, 554 insertions(+), 23 deletions(-)
+ create mode 100644 rust/qemu-api/tests/vmstate_tests.rs
+
+-- 
+2.34.1
+
 
