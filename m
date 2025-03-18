@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D6FA672DA
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 12:37:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAE4A672E8
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 12:43:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuVFF-0006or-HQ; Tue, 18 Mar 2025 07:36:29 -0400
+	id 1tuVL7-0000r5-GP; Tue, 18 Mar 2025 07:42:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tuVEy-0006na-Og
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 07:36:13 -0400
-Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
+ id 1tuVL2-0000q4-KV
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 07:42:28 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tuVEw-00070s-Uj
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 07:36:12 -0400
-Received: by mail-yb1-xb30.google.com with SMTP id
- 3f1490d57ef6-e60aef2711fso4017309276.2
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 04:36:10 -0700 (PDT)
+ id 1tuVL0-0001G4-Jv
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 07:42:28 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-39104c1cbbdso3139913f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 04:42:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742297769; x=1742902569; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pwqCGFnK7/S7tx2iHXLyhZnit+YTNBb9Ye/At1RT/ks=;
- b=GbL9OS/k2vbLDiWGINLSLsHH8oKJlLaFNDoLNVOb4UHnDLATMedN+oLq2f96T75J1O
- h+DS3uV7TSin/ggtl/z2DNRwX8nsDlKDMKdoef3OqFjbtsabd9xWqDZBHjvxlpV5+AIR
- Qh/0V5asug+tg73HDixBctBlrr8IYpbj6nfygx/Xljdtw2F+XHxhsHvtThJbvLmhy9tw
- kNzGCx1KHFEs4ek2xFrb0f5QNim5L+CktQxtVeyhiweOAusz4SGWzIOBU/s2/RttSTlx
- G17HxWQEaLFL4444nLVAGfSCA2y8Q5tkcjIkQpv0JAt+vFGFN3/+wUEX2cgsRZ0PBWCp
- XPUQ==
+ d=linaro.org; s=google; t=1742298144; x=1742902944; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ny5Q8iZtuoRdzdW7TydI30as0SJ5q+BAUtft5Hm6rtM=;
+ b=eXdOiGI/8XELtjNn4e4j7ABElaryhzYXjIf7idukmH4cY7SJ4Q5lDx+wjL3uUY1jKU
+ PIv1yrwl3u/Jy7r021W5IfVYFZhy24xZDwprXzWg0vdWxtJuRLJkXn5UsWS4vxosOShT
+ 1ZgHRT1+cL7QNAio1d2mlOMLlV+QNIfRhgvoeqtp4Ft19NKHP0AbqGSKMLZQnqyu6P1I
+ LKK3xrWFYAVUqW4BRE6uElf/hV/r2X/zglE43sBfSglqyvNbpWLxqAGfciEzahH92cE7
+ BhhDDP5SeHILlQ0idIAtJMSRWdeFBulz3n2PsmnyZSf7LmFzph5mpC1TQigTgWKABzqc
+ YFsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742297769; x=1742902569;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1742298144; x=1742902944;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=pwqCGFnK7/S7tx2iHXLyhZnit+YTNBb9Ye/At1RT/ks=;
- b=LsMhukCnXjdb/jDw36UBVV6woRbOb6Xi3yE4v5fNkxhRwt0slEyBesrsRViz8wPHLo
- xRQYUp0ROWAdS/3V/Wdvis1rMTtRDS0XS+saW394hvG4G7R/KCR63Ya5R9GJm6/yivPC
- pAiAIi/g7vck0P8uyBOGJ9BPgPRM0b3mn+3bTNpnEfnIs6g0eb/8aj6Kk4H4sSvbxCS9
- WBZ34eV7jg1zt8mbQuPEzKh66Wiri2xeaNF4o5IR22s1DM74SpXRKHiK+lLJu0DuLlYa
- JbfqH8WjxfswK2tdL0T63F2Gx2j8Ucn8ydfxe5Xja604wtf0W3dYWl+7nW4V6uXvWzub
- 6U9Q==
+ bh=Ny5Q8iZtuoRdzdW7TydI30as0SJ5q+BAUtft5Hm6rtM=;
+ b=l8ZOImrmSP2Zm3KKN1nC+gz0VaVl9i2ON9ukgN3okDIJeBpYQ/mgzn80HDyWvsyD0u
+ Xi/KYZZmZEWZGqzNSjalxxUUBEYQj2Jh6vTiPh+E6rDd+S1y/w+ZIHC8AtMFovzcw8eN
+ zA42UZwyhoUwXPQvItaAf/Y+C9Amfsxr1VkNGMIA74IMIHUI9EXeuHoRfOQugCxIj9Cs
+ Z3Xm9tzICMr9o0uoC90A/qi6O87IkZmOjNSPUbKmt+lVlPl1rDcbxmsFv9hAYRM8MoAM
+ jtBlSsyhhAkYn9aG74URHCuesvCVDu4S7Ts3UMs7E9NONagFkP0PTAZTBKak4Wph7KgM
+ u51A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUnbkKoirdScjR4DsX44YxQ1WrBMCc52m2Pk92mdD8EoEnwBreo6yIEXl6d6a+NMMe0lSSftXlfk9PP@nongnu.org
-X-Gm-Message-State: AOJu0YyYIySpAWejVMwivNOaxvk9xLUZxIQtN+uPibrQfI9n6UFeeCmf
- iCarV/u01GjFEMCdxVqoqkcjGRxoVnKi4qGW89sx/w8GzYodGymxs/BU2ZBvMXwb2CTNlYf58p5
- /NLMszVWqIB9oIeh2YcIu//tWZKjsmt7S7ocnQA==
-X-Gm-Gg: ASbGnctH85iSob1wxKaQ9a32XM+H7wtMl4kph0dCoHZPQ+9xPV9z+rGFMKJVHx2FIzw
- NFrTfo1GPpzGpkGZszhSBN9MtlWn2qwengVHxEubaEQXuieKLGNYNCEi+vVwghB7V8707qVHc09
- Ho91Ep7dp7gkD0Gm+tbLWrR+iMIpu/RFxCYPMFRw==
-X-Google-Smtp-Source: AGHT+IFcZ1/Ij+TVt8JjRY29oA9MQ4CENiRmO/G720qg7wKLllzEcXbzknxRbfwbRRvNG4aCLEbLNFFb8ly3ATsudZU=
-X-Received: by 2002:a05:6902:2586:b0:e64:6988:fdd2 with SMTP id
- 3f1490d57ef6-e646989019cmr4818848276.23.1742297769400; Tue, 18 Mar 2025
- 04:36:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAFEAcA8RjNTZsuhShFwFUHa+YP5VKBUw2RneUPwAJ9eOVAL5Vw@mail.gmail.com>
- <20250318113013.578865-1-aleksandar.rakic@htecgroup.com>
-In-Reply-To: <20250318113013.578865-1-aleksandar.rakic@htecgroup.com>
+ AJvYcCUEcMykepcAJamGP6LIVaIu8aSxZw5s++lZ9zrQ+nWLi91F09dC/+ubUf78C3mt+Qo5pAa5IdbhKAPp@nongnu.org
+X-Gm-Message-State: AOJu0YzHV2OcE1ZOB8qhUdJ+Hqaolnd/FaG/aVxzRRjnAGg1mwJB7VeL
+ HyJu/rMY42PJyOK6+ocCxSf/tSIdaQypZ/4q3aPFcaqSwXRJAJmrKbdqA9CDGpw=
+X-Gm-Gg: ASbGncuzEiWvK6y98wjf2dfNGDyV90N7G8Mjugjj9jNlOlCmccM4YOxv1bIRBN44ORR
+ e6YDVwRDvd3yfJE9aF4xHT9azslZx5eSCDfMmsYhb5U4uctah2xKgSnyGkb10TK9rMXQqhAfoK+
+ V8SYEFe3nJxZ1oKktrZ0kuYFOsw1OqX3YS6ZGRbpVQcV+n8KfzGVv8UM1iNnp+O6eDfothm7ouY
+ jyrzDLmtb6MAO2FkvSbBRlztDAVPJXtjHtQ6UrTnTqJmc/xNo9RRkrYjH+qCMw82jQziel/T+oH
+ LHT6UUuwrYYc5qwIYkKnyDGebjqpucG4GrkwJpTO4QFRJYnu96c=
+X-Google-Smtp-Source: AGHT+IFW1ZlPDUM28YipJdnncd8jgiecZNBOxXVSkSFwOi/Vq3l5jtM7uy1ySbFJKWtEefW4MDPYWA==
+X-Received: by 2002:a05:6000:400d:b0:394:d0c3:da5e with SMTP id
+ ffacd0b85a97d-3971f5114b2mr15155734f8f.47.1742298144374; 
+ Tue, 18 Mar 2025 04:42:24 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-39965410600sm5895203f8f.50.2025.03.18.04.42.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Mar 2025 04:42:23 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 18 Mar 2025 11:35:57 +0000
-X-Gm-Features: AQ5f1Jo9k_D0b7UtTBIdDE1_VZ3rYLbcAzgJDatPyI6_9VqbT_enHuEg2ppNxpc
-Message-ID: <CAFEAcA84kcMBKzs+5r4Th8jZ+UJf96B+QVW-J=emZw-tpSC75w@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] Skip NaN mode check for soft-float
-To: Aleksandar Rakic <aleksandar.rakic@htecgroup.com>
-Cc: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>, 
- "arikalo@gmail.com" <arikalo@gmail.com>, "cfu@mips.com" <cfu@mips.com>, 
- "fshahbazker@wavecomp.com" <fshahbazker@wavecomp.com>,
- "philmd@linaro.org" <philmd@linaro.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb30.google.com
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH for-10.1] target/arm/kvm: Drop support for kernels without
+ KVM_ARM_PREFERRED_TARGET
+Date: Tue, 18 Mar 2025 11:42:22 +0000
+Message-ID: <20250318114222.1018200-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,27 +97,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 18 Mar 2025 at 11:31, Aleksandar Rakic
-<aleksandar.rakic@htecgroup.com> wrote:
->
-> Hi,
->
-> If ieee754 equals EMULATED, then the variables mips_use_nan_2008 and
-> mips_use_nan_legacy are set to true
-> ( https://elixir.bootlin.com/linux/v6.13.6/source/arch/mips/kernel/fpu-probe.c#L208 )
-> and any binaries are accepted regardless of whether supported by the FPU
-> ( https://elixir.bootlin.com/linux/v6.13.6/source/arch/mips/kernel/elf.c#L154 )
+Our KVM code includes backwards compatibility support for ancient
+kernels which don't support the KVM_ARM_PREFERRED_TARGET ioctl.  This
+ioctl was introduced in kernel commit 42c4e0c77ac91 in September
+2013 and is in v3.12, so it's reasonable to assume it's present.
 
-I presume from the name of that setting that in that case a
-real kernel is doing trap-and-emulate for binaries of the
-wrong FPU type (which must perform appallingly badly...)  ?
+(We already dropped support for kernels without KVM_CAP_DEVICE_CTRL,
+a feature added to the kernel in April 2013, in our commit
+84f298ea3e; so there are only about six months' worth of kernels,
+from v3.9 to v3.11, that we don't already fail to run on and that
+this commit is dropping handling for.)
 
-Does QEMU set up the CPU for linux-user mode so that it
-effectively does emulation as-if both NaN modes were supported?
-I can't see that happening from a quick grep.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/kvm_arm.h      |  7 +----
+ target/arm/arm-qmp-cmds.c |  2 +-
+ target/arm/kvm.c          | 55 ++++++---------------------------------
+ 3 files changed, 10 insertions(+), 54 deletions(-)
 
-Also, this doesn't seem to be related to the ABI_FP_SOFT setting.
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 05c3de8cd46..5f17fc2f3d5 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -97,10 +97,6 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu);
+ #ifdef CONFIG_KVM
+ /**
+  * kvm_arm_create_scratch_host_vcpu:
+- * @cpus_to_try: array of QEMU_KVM_ARM_TARGET_* values (terminated with
+- * QEMU_KVM_ARM_TARGET_NONE) to try as fallback if the kernel does not
+- * know the PREFERRED_TARGET ioctl. Passing NULL is the same as passing
+- * an empty array.
+  * @fdarray: filled in with kvmfd, vmfd, cpufd file descriptors in that order
+  * @init: filled in with the necessary values for creating a host
+  * vcpu. If NULL is provided, will not init the vCPU (though the cpufd
+@@ -113,8 +109,7 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu);
+  * Returns: true on success (and fdarray and init are filled in),
+  * false on failure (and fdarray and init are not valid).
+  */
+-bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
+-                                      int *fdarray,
++bool kvm_arm_create_scratch_host_vcpu(int *fdarray,
+                                       struct kvm_vcpu_init *init);
+ 
+ /**
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index 883c0a0e8cc..a1a944adb43 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -46,7 +46,7 @@ static inline void gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3)
+ #ifdef CONFIG_KVM
+     int fdarray[3];
+ 
+-    if (!kvm_arm_create_scratch_host_vcpu(NULL, fdarray, NULL)) {
++    if (!kvm_arm_create_scratch_host_vcpu(fdarray, NULL)) {
+         return;
+     }
+ 
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index da30bdbb234..568561c6d54 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -100,8 +100,7 @@ static int kvm_arm_vcpu_finalize(ARMCPU *cpu, int feature)
+     return kvm_vcpu_ioctl(CPU(cpu), KVM_ARM_VCPU_FINALIZE, &feature);
+ }
+ 
+-bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
+-                                      int *fdarray,
++bool kvm_arm_create_scratch_host_vcpu(int *fdarray,
+                                       struct kvm_vcpu_init *init)
+ {
+     int ret = 0, kvmfd = -1, vmfd = -1, cpufd = -1;
+@@ -150,40 +149,13 @@ bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
+         struct kvm_vcpu_init preferred;
+ 
+         ret = ioctl(vmfd, KVM_ARM_PREFERRED_TARGET, &preferred);
+-        if (!ret) {
+-            init->target = preferred.target;
++        if (ret < 0) {
++            goto err;
+         }
++        init->target = preferred.target;
+     }
+-    if (ret >= 0) {
+-        ret = ioctl(cpufd, KVM_ARM_VCPU_INIT, init);
+-        if (ret < 0) {
+-            goto err;
+-        }
+-    } else if (cpus_to_try) {
+-        /* Old kernel which doesn't know about the
+-         * PREFERRED_TARGET ioctl: we know it will only support
+-         * creating one kind of guest CPU which is its preferred
+-         * CPU type.
+-         */
+-        struct kvm_vcpu_init try;
+-
+-        while (*cpus_to_try != QEMU_KVM_ARM_TARGET_NONE) {
+-            try.target = *cpus_to_try++;
+-            memcpy(try.features, init->features, sizeof(init->features));
+-            ret = ioctl(cpufd, KVM_ARM_VCPU_INIT, &try);
+-            if (ret >= 0) {
+-                break;
+-            }
+-        }
+-        if (ret < 0) {
+-            goto err;
+-        }
+-        init->target = try.target;
+-    } else {
+-        /* Treat a NULL cpus_to_try argument the same as an empty
+-         * list, which means we will fail the call since this must
+-         * be an old kernel which doesn't support PREFERRED_TARGET.
+-         */
++    ret = ioctl(cpufd, KVM_ARM_VCPU_INIT, init);
++    if (ret < 0) {
+         goto err;
+     }
+ 
+@@ -259,17 +231,6 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     uint64_t features = 0;
+     int err;
+ 
+-    /* Old kernels may not know about the PREFERRED_TARGET ioctl: however
+-     * we know these will only support creating one kind of guest CPU,
+-     * which is its preferred CPU type. Fortunately these old kernels
+-     * support only a very limited number of CPUs.
+-     */
+-    static const uint32_t cpus_to_try[] = {
+-        KVM_ARM_TARGET_AEM_V8,
+-        KVM_ARM_TARGET_FOUNDATION_V8,
+-        KVM_ARM_TARGET_CORTEX_A57,
+-        QEMU_KVM_ARM_TARGET_NONE
+-    };
+     /*
+      * target = -1 informs kvm_arm_create_scratch_host_vcpu()
+      * to use the preferred target
+@@ -300,7 +261,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+         features |= 1ULL << ARM_FEATURE_PMU;
+     }
+ 
+-    if (!kvm_arm_create_scratch_host_vcpu(cpus_to_try, fdarray, &init)) {
++    if (!kvm_arm_create_scratch_host_vcpu(fdarray, &init)) {
+         return false;
+     }
+ 
+@@ -1835,7 +1796,7 @@ uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
+ 
+         probed = true;
+ 
+-        if (!kvm_arm_create_scratch_host_vcpu(NULL, fdarray, &init)) {
++        if (!kvm_arm_create_scratch_host_vcpu(fdarray, &init)) {
+             error_report("failed to create scratch VCPU with SVE enabled");
+             abort();
+         }
+-- 
+2.43.0
 
-thanks
--- PMM
 
