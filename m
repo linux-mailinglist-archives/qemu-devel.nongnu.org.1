@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEC4A674B4
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:16:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 728E6A674AA
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:15:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWl8-0003b0-AR; Tue, 18 Mar 2025 09:13:44 -0400
+	id 1tuWlr-0005KU-AQ; Tue, 18 Mar 2025 09:14:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWjR-0002Q6-U5; Tue, 18 Mar 2025 09:11:52 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1tuWjY-0002Qp-Bw; Tue, 18 Mar 2025 09:12:02 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWjI-0003rf-4S; Tue, 18 Mar 2025 09:11:41 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5dccaaca646so9911224a12.0; 
- Tue, 18 Mar 2025 06:11:34 -0700 (PDT)
+ id 1tuWjT-0003tr-4D; Tue, 18 Mar 2025 09:11:48 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-ac2dfdf3c38so1037392666b.3; 
+ Tue, 18 Mar 2025 06:11:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742303493; x=1742908293; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742303504; x=1742908304; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dLy6aE/EeuI5uid3VlN7jU07cW6eNahLR7Xv7H+Vk24=;
- b=FDzFZywHonNvFweKH/Fv/YuaLT1ujiZlttpSjAFtLf6hHc2QxgosbjYKimjUGl4wzf
- FH49JA5mCZkjR+3L4JRfG/uWU+1ehLdxVlgGH3me+8jKrYaD2Qoc0dE6nErFcwODuR49
- PCE91EkcUBXYdSq38RFPiZ4URd3TeYipo9h6i/1RvqPcBUL5plbM+B2/CBrA9N688cK+
- jKmu3HJ76017dbsSM04Uz4c5DWOLxmtq1MMrGHzOD9LpNFQMxleKN4buC65LMKjmSrJD
- uWyzhL1HOmDkaMHtNmHRjV9D4w4bzzjzZLNMdTrIe0uv2Z44j3z4JvQctsmKQAGRLU6C
- Zkaw==
+ bh=+EVxpnQ8AEBa+S4Znun5esfO9UMpfrf7hVR1yYjzFCA=;
+ b=ZaNYSc/Gs4+gIVGoF/QVMsJ+AKUH0kyDaJcU5w1tyCixvto78znvhWZUIxJG+hFGRm
+ Y+5FavMRFTjT1SRqfcvVMatUzu1YDiT2HqStIBCuXFcfcHH6e6rzNUv6hmOs3gQ1wiyy
+ DBAyzuqcioP/brsR5W0+94B3ivZlBTakktQmyy0OBkr3Dsvcq9hasMdBoBAy+WHLGr3+
+ YxvLy9m6kg7fnGHSJsD6snCSiXB2Yz/VakTfYO9bF5yHEicE5vYGFEG8ilxtk8ry8wsK
+ Xim/V9Vcw7uei0uAc2iRAis1XaXRmCKnP/705j/IMuhatTVYhNd4l6xcRchhyi3GvSaw
+ m/AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742303493; x=1742908293;
+ d=1e100.net; s=20230601; t=1742303504; x=1742908304;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dLy6aE/EeuI5uid3VlN7jU07cW6eNahLR7Xv7H+Vk24=;
- b=Aoa4HI7gG/HZcb2SChgTJdwGE3lLOuLtMwMtbHM6WguaJVOtGFkqPdYfRFB/zdY1Of
- /umucnBA9HCB6mwpn0OtpTuRIBdlNRHN/ugzccRlHfQDxcQ5kwkvU0KKeNLUeOInMhD8
- rJwfHUF8gt2ZU0+Lwm0moS1/hNjAO9cJ+7yLy2OdqRdErny8Trh/UH+yaerY9LyaczhH
- 3YK11VexfAZsb4DLMMX3YCyie5y7+W6sdkyjAggIfD2d5ELX8hNROn1uHXrPisTfnM4Y
- nV7j9ht4wCWSBefgMVIcBC3fi6mnvSNLZMNaDB3jgZQqbe4wfEoF5vJi/eZwovelNQu2
- 7utg==
+ bh=+EVxpnQ8AEBa+S4Znun5esfO9UMpfrf7hVR1yYjzFCA=;
+ b=qw1Y7KqobI94kDPaa+kk9DZEJ3Bstzpwny9igvJd6mG1zzXRxZ+wfALwpbkrHXZgX5
+ 3zClFQSVTTx4wjWqSlnpZzb9foyh7+rzXe61jqa0Edgf/2/gJzgYhu6BsfHe52atSmRp
+ CqR7VN3DSfjFkTfvauXzeauKr3yRd19SP82vCxW9g5Jdbfjd6TZArmLWUZ3TYJiMB5SU
+ V9zGgeGGs8YnuLvDgNZKQM8nTf3ABIBa5zE+bHjSI/rlvlBtTQOkOnegU+m0rsX5Sd3p
+ T4vkJWE/c7VFi0ns535XaP8o1dDOushRl3ue70PpAuGxwII7ADAJraPIQFYZrTktnK1P
+ NQwA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXLOb3R+d/pE8NzDRoUJSxe8SFJ38glJl0LkD3qx2bSWM0APJSJ6saNBLtmVNphMCYXVUDUMKX0xw==@nongnu.org
-X-Gm-Message-State: AOJu0YyRJCfXKxOtRLi25XOcyjh2jZBK2iKRkuN+76371cbK+DKsB/br
- FZiQ1Y9IYTDKTSWTXcmNawGz7bF2wY0mw/tf0mxg/QFPWiF3qMoFZejrIU0w
-X-Gm-Gg: ASbGncu7fn7Z1gEq1/O/j9gKwIBTyKv5edQIAQFDSaSp1rxQSSUP95KkEYgYbifrtUU
- d7eBhZrjwb/UGtHdfJaWGbP9C20c0aKlNETQqZRdEDD1jojfK2VIiZY86KiFjOKD0Vp8/ypL6wE
- qnLTwezcTEqjVUx4/0kOVcbMRZOrquac0KQQ8Jr5v7PoDtiMmX5Arb7C8eqAyx5xdW6drCZh++3
- JD9kesWgfbpzSlXOHpJCjigKgxyS7JfrP0XK1Czk79YFmlC4E4IyJlNNhT+Tahh5lp1fB/30YRN
- z3eMug2up/C9BjvjaXuUBBXnOwnprhnvE7413TzVz7fGghgDDkP21VNJ2oN8o5bUyX8=
-X-Google-Smtp-Source: AGHT+IHihL/Cq7L9zV5OfwuOJhib7AxVnNMS6ebIe+UaM5k0LsmMuiZJaCfpgQKR2TAzlqzZ/1zlvQ==
-X-Received: by 2002:a05:6402:3491:b0:5e6:102a:c30 with SMTP id
- 4fb4d7f45d1cf-5eb1efcbee0mr3955471a12.2.1742303482100; 
- Tue, 18 Mar 2025 06:11:22 -0700 (PDT)
+ AJvYcCVnqs/eVlKZZdVj3zYEJ/11HpuenpGjLTu8d+5FVxJmAnzFdXcyPt5EHyWhqdFKEgTkx5qdGyBLWQ==@nongnu.org
+X-Gm-Message-State: AOJu0Yz5EDnSA4ZvqUh0iC8j7m3nGrSwjm6ultlr5MeIzPl+khpbOKbh
+ sCVKNYb06UMJxE1GXSufHK00/m6XFTt+G2U/Y9Z9ZZ6U9BwP0GiiH5isJDhf
+X-Gm-Gg: ASbGncs6XPEHEXjIisRrceLrcRQ+wlsDV/zpBYwQJlEwiVUPTs5IKop+2yaZXvggUsb
+ VIF4x5Tw8OAMRTcDB2sq9IAgbDcHFOCVT860XECrcHe4HAlzWqcHnJiNvAsCF/pm+o6ZJdsXQik
+ B3uSIRjS5fqd7QJEHo9bBLiFbCEyEB4qXJjtDK/QKjiXfzBL57C6taZAlLdDKPLKRey/bqG69Wi
+ zREXlzHnCsuyc61d8GOp8MoMY5NJD5BoIPigY898LXGXylGloGnnYk+VfMfgma+qVl8SwVAyNZ1
+ rv4cuGtM00J1oMaGVNzSBXKt8QoCQglcdC0348caXDVWpWXKFWmJGLpokAcsPLUc3ZU=
+X-Google-Smtp-Source: AGHT+IGFhtkm/+/tOjIpZakKVZobpqBEwhKeG6Z3oV3g9BYhBDX9dQQpDK42p0TrasQIF6j69a1y2g==
+X-Received: by 2002:a17:906:1117:b0:ac3:3f11:b49d with SMTP id
+ a640c23a62f3a-ac33f1203dbmr1302062666b.0.1742303493022; 
+ Tue, 18 Mar 2025 06:11:33 -0700 (PDT)
 Received: from corvink-nb.beckhoff.com ([195.226.174.194])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3147f3101sm850678066b.69.2025.03.18.06.11.12
+ a640c23a62f3a-ac3147f3101sm850678066b.69.2025.03.18.06.11.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Mar 2025 06:11:12 -0700 (PDT)
+ Tue, 18 Mar 2025 06:11:32 -0700 (PDT)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
@@ -70,17 +70,17 @@ Cc: =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Alistair Francis <alistair@alistair23.me>,
  Paolo Bonzini <pbonzini@redhat.com>, YannickV <Y.Vossen@beckhoff.com>
-Subject: [PATCH 14/21] hw/arm/beckhoff_CX7200: Remove second GEM
-Date: Tue, 18 Mar 2025 14:08:05 +0100
-Message-ID: <20250318130817.119636-15-corvin.koehne@gmail.com>
+Subject: [PATCH 15/21] hw/arm/beckhoff_CX7200: Adjust Flashes and Busses
+Date: Tue, 18 Mar 2025 14:08:06 +0100
+Message-ID: <20250318130817.119636-16-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250318130817.119636-1-corvin.koehne@gmail.com>
 References: <20250318130817.119636-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,27 +105,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: YannickV <Y.Vossen@beckhoff.com>
 
-The CX7200 has one Gigabit Ethernet MAC connected to address
-0xE000C000. The one connected to address 0xE000B000 can be
-removed.
+The CX7200 has one QSPI flash connected to the QSPI bus. The
+defines are adjusted accordingly. The QSPI flash is a is25lp016d.
+There is no parallel flash.
 
 Signed-off-by: Yannick Voßen <y.vossen@beckhoff.com>
 ---
- hw/arm/beckhoff_CX7200.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/arm/beckhoff_CX7200.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
 diff --git a/hw/arm/beckhoff_CX7200.c b/hw/arm/beckhoff_CX7200.c
-index bf3c66e5a4..3ceccaa9e6 100644
+index 3ceccaa9e6..1e7152e871 100644
 --- a/hw/arm/beckhoff_CX7200.c
 +++ b/hw/arm/beckhoff_CX7200.c
-@@ -317,7 +317,6 @@ static void beckhoff_cx7200_init(MachineState *machine)
-     sysbus_create_varargs("cadence_ttc", 0xF8002000, pic[69 - IRQ_OFFSET],
-                           pic[70 - IRQ_OFFSET], pic[71 - IRQ_OFFSET], NULL);
+@@ -48,12 +48,9 @@ OBJECT_DECLARE_SIMPLE_TYPE(CX7200MachineState, CX7200_MACHINE)
+ /* board base frequency: 33.333333 MHz */
+ #define PS_CLK_FREQUENCY (100 * 1000 * 1000 / 3)
  
--    gem_init(0xE000B000, pic[54 - IRQ_OFFSET]);
-     gem_init(0xE000C000, pic[77 - IRQ_OFFSET]);
+-#define NUM_SPI_FLASHES 4
+-#define NUM_QSPI_FLASHES 2
+-#define NUM_QSPI_BUSSES 2
+-
+-#define FLASH_SIZE (64 * 1024 * 1024)
+-#define FLASH_SECTOR_SIZE (128 * 1024)
++#define NUM_SPI_FLASHES 0
++#define NUM_QSPI_FLASHES 1
++#define NUM_QSPI_BUSSES 1
  
-     /*
+ #define IRQ_OFFSET 32 /* pic interrupts start from index 32 */
+ 
+@@ -164,7 +161,7 @@ static inline int beckhoff_cx7200_init_spi_flashes(uint32_t base_addr,
+ 
+         for (j = 0; j < num_ss; ++j) {
+             DriveInfo *dinfo = drive_get(IF_MTD, 0, unit++);
+-            flash_dev = qdev_new("n25q128");
++            flash_dev = qdev_new("is25lp016d");
+             if (dinfo) {
+                 qdev_prop_set_drive_err(flash_dev, "drive",
+                                         blk_by_legacy_dinfo(dinfo),
+@@ -242,15 +239,6 @@ static void beckhoff_cx7200_init(MachineState *machine)
+                            &error_fatal);
+     memory_region_add_subregion(address_space_mem, 0xFFFC0000, ocm_ram);
+ 
+-    DriveInfo *dinfo = drive_get(IF_PFLASH, 0, 0);
+-
+-    /* AMD */
+-    pflash_cfi02_register(0xe2000000, "zynq.pflash", FLASH_SIZE,
+-                          dinfo ? blk_by_legacy_dinfo(dinfo) : NULL,
+-                          FLASH_SECTOR_SIZE, 1,
+-                          1, 0x0066, 0x0022, 0x0000, 0x0000, 0x0555, 0x2aa,
+-                          0);
+-
+     /* Create the main clock source, and feed slcr with it */
+     cx7200_machine->ps_clk = CLOCK(object_new(TYPE_CLOCK));
+     object_property_add_child(OBJECT(cx7200_machine), "ps_clk",
 -- 
 2.49.0
 
