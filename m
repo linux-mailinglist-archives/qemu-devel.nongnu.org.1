@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41631A67095
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 10:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47252A670A2
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 11:00:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuTgH-0005cQ-O2; Tue, 18 Mar 2025 05:56:17 -0400
+	id 1tuTgO-00061M-JN; Tue, 18 Mar 2025 05:56:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTg0-00052D-6u
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:02 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTg8-0005Dy-8E
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTfy-0002P0-H3
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:55:59 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tuTg2-0002Q0-1q
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:56:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742291757;
+ s=mimecast20190719; t=1742291761;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KcjNSdYrsX2unMbrTpIjPfJUfBjPQbzf6Ack58NSSIs=;
- b=egGVMcrxsIrXbyo0EWWUV85if9qOdkbIqBOUFaioO23/OFoZi5daBS1Sec/rBZR9jCfEx0
- jrBI915xoWyjXN9iujO6lLYy+uEIm+QhmJ4X0YX3JLonykXCLLcq4RmUy4+/kqbXxEcjrN
- BRRVCH2syuDjXi8hXSVeMjANNXgiV5k=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=VEUGgV3wY/Dy5IyTAhePWZilw36mrAFjIhmsA57AOtA=;
+ b=N91bghofAYcLbUf8UxodaoJAq3/PwahhtgP6xcWn29eyNmG4DlPbTpUhDe+7nprW4kzdsO
+ 507dvPqWW8w31D71NSLiqgEoa+prcK1REXKDARs0Eb2Ng9xi/7D0HsL1ydjrpW384b70+H
+ 6nb9/uMz7V2oKZ2g6Fm4ZbIXrvxUX9Y=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-440-lfwt9TXkOcedLKCaomP54A-1; Tue,
- 18 Mar 2025 05:55:54 -0400
-X-MC-Unique: lfwt9TXkOcedLKCaomP54A-1
-X-Mimecast-MFC-AGG-ID: lfwt9TXkOcedLKCaomP54A_1742291753
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-lP4son0NN6edbRnZZy6g0A-1; Tue,
+ 18 Mar 2025 05:55:57 -0400
+X-MC-Unique: lP4son0NN6edbRnZZy6g0A-1
+X-Mimecast-MFC-AGG-ID: lP4son0NN6edbRnZZy6g0A_1742291756
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B6BFB19560BB; Tue, 18 Mar 2025 09:55:53 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BE94E1955E98; Tue, 18 Mar 2025 09:55:56 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.25])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 97FA51828A80; Tue, 18 Mar 2025 09:55:51 +0000 (UTC)
+ id 3F5CB1828A83; Tue, 18 Mar 2025 09:55:53 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	Alex Williamson <alex.williamson@redhat.com>
 Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH for-10.1 23/32] vfio: Move vfio_de/attach_device() into
- device.c
-Date: Tue, 18 Mar 2025 10:54:06 +0100
-Message-ID: <20250318095415.670319-24-clg@redhat.com>
+Subject: [PATCH for-10.1 24/32] vfio: Introduce new files for dirty tracking
+ definitions and declarations
+Date: Tue, 18 Mar 2025 10:54:07 +0100
+Message-ID: <20250318095415.670319-25-clg@redhat.com>
 In-Reply-To: <20250318095415.670319-1-clg@redhat.com>
 References: <20250318095415.670319-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,105 +84,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These routines are VFIODevice related. Move their definitions into
-"device.c".
+File "common.c" has been emptied of most of its definitions by the
+previous changes and the only definitions left are related to dirty
+tracking. Rename it to "dirty-tracking.c" and introduce its associated
+"dirty-tracking.h" header file for the declarations.
+
+Cleanup a little the includes while at it.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/common.c | 37 -------------------------------------
- hw/vfio/device.c | 37 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+), 37 deletions(-)
+ hw/vfio/dirty-tracking.h               | 22 ++++++++++++++++++++++
+ include/hw/vfio/vfio-common.h          | 10 ----------
+ hw/vfio/container.c                    |  1 +
+ hw/vfio/{common.c => dirty-tracking.c} |  5 +----
+ hw/vfio/iommufd.c                      |  1 +
+ hw/vfio/meson.build                    |  2 +-
+ hw/vfio/trace-events                   |  2 +-
+ 7 files changed, 27 insertions(+), 16 deletions(-)
+ create mode 100644 hw/vfio/dirty-tracking.h
+ rename hw/vfio/{common.c => dirty-tracking.c} (99%)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index df9585d1a471f893da072068f6056bbc6731d448..ed2f2ed8839caaf40fabb0cbbcaa1df2c5b70d67 100644
+diff --git a/hw/vfio/dirty-tracking.h b/hw/vfio/dirty-tracking.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..4b83dc54ab50dabfff040d7cc3db27b80bfe2d3a
+--- /dev/null
++++ b/hw/vfio/dirty-tracking.h
+@@ -0,0 +1,22 @@
++/*
++ * VFIO dirty page tracking routines
++ *
++ * Copyright Red Hat, Inc. 2025
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_VFIO_DIRTY_TRACKING_H
++#define HW_VFIO_DIRTY_TRACKING_H
++
++extern const MemoryListener vfio_memory_listener;
++
++bool vfio_devices_all_dirty_tracking_started(const VFIOContainerBase *bcontainer);
++bool vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer);
++int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
++                                    VFIOBitmap *vbmap, hwaddr iova, hwaddr size,
++                                    Error **errp);
++int vfio_get_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
++                          uint64_t size, ram_addr_t ram_addr, Error **errp);
++
++#endif /* HW_VFIO_DIRTY_TRACKING_H */
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 184a422916f62259158e8759efc473a5efb2b2f7..cc20110d9de8ac173b67e6e878d4d61818497426 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -130,7 +130,6 @@ VFIODevice *vfio_get_vfio_device(Object *obj);
+ 
+ typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
+ extern VFIODeviceList vfio_device_list;
+-extern const MemoryListener vfio_memory_listener;
+ 
+ #ifdef CONFIG_LINUX
+ int vfio_get_region_info(VFIODevice *vbasedev, int index,
+@@ -140,15 +139,6 @@ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
+ bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type);
+ #endif
+ 
+-bool vfio_devices_all_dirty_tracking_started(
+-    const VFIOContainerBase *bcontainer);
+-bool
+-vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer);
+-int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+-                VFIOBitmap *vbmap, hwaddr iova, hwaddr size, Error **errp);
+-int vfio_get_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
+-                          uint64_t size, ram_addr_t ram_addr, Error **errp);
+-
+ /* Returns 0 on success, or a negative errno. */
+ bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp);
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 4e41a7476549a0c5e464e499d059db5aca6e3470..e88dfe12edd6dee469c06ee2e46ab9c8b5019ae7 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -35,6 +35,7 @@
+ #include "hw/vfio/vfio-container.h"
+ #include "helpers.h"
+ #include "cpr.h"
++#include "dirty-tracking.h"
+ 
+ #define TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO TYPE_HOST_IOMMU_DEVICE "-legacy-vfio"
+ 
+diff --git a/hw/vfio/common.c b/hw/vfio/dirty-tracking.c
+similarity index 99%
+rename from hw/vfio/common.c
+rename to hw/vfio/dirty-tracking.c
+index ed2f2ed8839caaf40fabb0cbbcaa1df2c5b70d67..441f9d9a08c06a88dda44ef143dcee5f0a89a900 100644
 --- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1287,40 +1287,3 @@ const MemoryListener vfio_memory_listener = {
-     .log_global_stop = vfio_listener_log_global_stop,
-     .log_sync = vfio_listener_log_sync,
- };
--
--bool vfio_attach_device(char *name, VFIODevice *vbasedev,
--                        AddressSpace *as, Error **errp)
--{
--    const VFIOIOMMUClass *ops =
--        VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_LEGACY));
--    HostIOMMUDevice *hiod = NULL;
--
--    if (vbasedev->iommufd) {
--        ops = VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
--    }
--
--    assert(ops);
--
--
--    if (!vbasedev->mdev) {
--        hiod = HOST_IOMMU_DEVICE(object_new(ops->hiod_typename));
--        vbasedev->hiod = hiod;
--    }
--
--    if (!ops->attach_device(name, vbasedev, as, errp)) {
--        object_unref(hiod);
--        vbasedev->hiod = NULL;
--        return false;
--    }
--
--    return true;
--}
--
--void vfio_detach_device(VFIODevice *vbasedev)
--{
--    if (!vbasedev->bcontainer) {
--        return;
--    }
--    object_unref(vbasedev->hiod);
--    VFIO_IOMMU_GET_CLASS(vbasedev->bcontainer)->detach_device(vbasedev);
--}
-diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 2e0ddec942690514e692b2380a909f15ece430f5..e6a1bbcda2297f9e6272fff9b1c228b6772457ce 100644
---- a/hw/vfio/device.c
-+++ b/hw/vfio/device.c
-@@ -332,3 +332,40 @@ VFIODevice *vfio_get_vfio_device(Object *obj)
-         return NULL;
-     }
- }
-+
-+bool vfio_attach_device(char *name, VFIODevice *vbasedev,
-+                        AddressSpace *as, Error **errp)
-+{
-+    const VFIOIOMMUClass *ops =
-+        VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_LEGACY));
-+    HostIOMMUDevice *hiod = NULL;
-+
-+    if (vbasedev->iommufd) {
-+        ops = VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
-+    }
-+
-+    assert(ops);
-+
-+
-+    if (!vbasedev->mdev) {
-+        hiod = HOST_IOMMU_DEVICE(object_new(ops->hiod_typename));
-+        vbasedev->hiod = hiod;
-+    }
-+
-+    if (!ops->attach_device(name, vbasedev, as, errp)) {
-+        object_unref(hiod);
-+        vbasedev->hiod = NULL;
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+void vfio_detach_device(VFIODevice *vbasedev)
-+{
-+    if (!vbasedev->bcontainer) {
-+        return;
-+    }
-+    object_unref(vbasedev->hiod);
-+    VFIO_IOMMU_GET_CLASS(vbasedev->bcontainer)->detach_device(vbasedev);
-+}
++++ b/hw/vfio/dirty-tracking.c
+@@ -20,14 +20,10 @@
+ 
+ #include "qemu/osdep.h"
+ #include <sys/ioctl.h>
+-#ifdef CONFIG_KVM
+-#include <linux/kvm.h>
+-#endif
+ #include <linux/vfio.h>
+ 
+ #include "hw/vfio/vfio-common.h"
+ #include "hw/vfio/pci.h"
+-#include "exec/address-spaces.h"
+ #include "exec/memory.h"
+ #include "exec/ram_addr.h"
+ #include "exec/target_page.h"
+@@ -45,6 +41,7 @@
+ #include "system/tpm.h"
+ #include "migration.h"
+ #include "helpers.h"
++#include "dirty-tracking.h"
+ 
+ /*
+  * Device state interfaces
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index b25f3b4086d7b7fc6fcd519a9b8b2904513a655f..9335a17920b32dc2bf9cb4eeb2b8f57382f14ac8 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -29,6 +29,7 @@
+ #include "iommufd.h"
+ #include "helpers.h"
+ #include "cpr.h"
++#include "dirty-tracking.h"
+ 
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO             \
+             TYPE_HOST_IOMMU_DEVICE_IOMMUFD "-vfio"
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index 1f89bd28c13dea55bcfff476ce99d51b453d8533..b6f5a7eeeda035b5872c2a19f8086384e000f420 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -1,6 +1,6 @@
+ vfio_ss = ss.source_set()
+ vfio_ss.add(files(
+-  'common.c',
++  'dirty-tracking.c',
+   'container.c',
+   'helpers.c',
+ ))
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index a1d01e9dde6ec52964d4804e9cbce5a6a32b7879..f3bdcebe938dcca77b913ef81a74644c622b5d8a 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -89,7 +89,7 @@ vfio_pci_igd_bdsm_enabled(const char *name, int size) "%s %dMB"
+ vfio_pci_igd_host_bridge_enabled(const char *name) "%s"
+ vfio_pci_igd_lpc_bridge_enabled(const char *name) "%s"
+ 
+-# common.c
++# dirty-tracking.c
+ vfio_iommu_map_notify(const char *op, uint64_t iova_start, uint64_t iova_end) "iommu %s @ 0x%"PRIx64" - 0x%"PRIx64
+ vfio_listener_region_skip(const char *name, uint64_t start, uint64_t end) "SKIPPING %s 0x%"PRIx64" - 0x%"PRIx64
+ vfio_spapr_group_attach(int groupfd, int tablefd) "Attached groupfd %d to liobn fd %d"
 -- 
 2.48.1
 
