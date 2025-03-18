@@ -2,67 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2166EA67035
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 10:48:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABA2A67047
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 10:51:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuTXT-0000fA-Hv; Tue, 18 Mar 2025 05:47:11 -0400
+	id 1tuTb7-0002sA-Lm; Tue, 18 Mar 2025 05:50:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1tuTXP-0000ew-QK
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:47:07 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1tuTXM-0007QB-U1
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 05:47:07 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8DxdWkOQdln53ObAA--.1214S3;
- Tue, 18 Mar 2025 17:46:55 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowMDxH+ULQdln_oZRAA--.37968S3;
- Tue, 18 Mar 2025 17:46:53 +0800 (CST)
-Subject: Re: [PATCH] docs/system: Add entry for LoongArch system
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-References: <20250312062620.3360498-1-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <e5cb1467-b44c-ab20-909a-fcdd8bf34c0c@loongson.cn>
-Date: Tue, 18 Mar 2025 17:49:16 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <20250312062620.3360498-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tuTap-0002pH-Fq; Tue, 18 Mar 2025 05:50:40 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1tuTan-00086H-JM; Tue, 18 Mar 2025 05:50:39 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZH6T958vMz6K9SG;
+ Tue, 18 Mar 2025 17:47:41 +0800 (CST)
+Received: from frapeml100006.china.huawei.com (unknown [7.182.85.201])
+ by mail.maildlp.com (Postfix) with ESMTPS id 960411406AF;
+ Tue, 18 Mar 2025 17:50:33 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml100006.china.huawei.com (7.182.85.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 18 Mar 2025 10:50:33 +0100
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Tue, 18 Mar 2025 10:50:33 +0100
+To: Nicolin Chen <nicolinc@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>
+CC: Eric Auger <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ddutile@redhat.com"
+ <ddutile@redhat.com>, "berrange@redhat.com" <berrange@redhat.com>,
+ "nathanc@nvidia.com" <nathanc@nvidia.com>, "mochs@nvidia.com"
+ <mochs@nvidia.com>, "smostafa@google.com" <smostafa@google.com>, Linuxarm
+ <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
+ <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
+Subject: RE: [RFC PATCH v2 03/20] hw/arm/smmuv3-accel: Add initial
+ infrastructure for smmuv3-accel device
+Thread-Topic: [RFC PATCH v2 03/20] hw/arm/smmuv3-accel: Add initial
+ infrastructure for smmuv3-accel device
+Thread-Index: AQHbkpt/2E04sj23iE6hCb84oIWO4LNvjRwAgAgITACAAAOdAIAAEXKAgAAEEoCAAA8zgIAA8qWA
+Date: Tue, 18 Mar 2025 09:50:33 +0000
+Message-ID: <674203f67b8a4fc49b529c9adba62f1f@huawei.com>
+References: <20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com>
+ <20250311141045.66620-4-shameerali.kolothum.thodi@huawei.com>
+ <d75feb00-72d3-4d79-a7ac-2548eadb6a77@redhat.com>
+ <Z9hh8MIAQNQcvNlG@Asurada-Nvidia>
+ <71b73212-3d8f-4c9d-93a4-bf07c0f169e3@redhat.com>
+ <Z9hzmzHfWw18OyGO@Asurada-Nvidia> <20250317192453.GR9311@nvidia.com>
+ <Z9iDxSvZVsgtasGj@Asurada-Nvidia>
+In-Reply-To: <Z9iDxSvZVsgtasGj@Asurada-Nvidia>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-X-CM-TRANSID: qMiowMDxH+ULQdln_oZRAA--.37968S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxuF47JFWfCr1DAF4DKr13ZFc_yoWrWF18pF
- n3ZFWfKr47JrykCrnrWa4agr4DAr1Ikw17uFyIyw18G398Ary7Wr1rt34fXFW7J3ykCF1j
- vry8Gry5W3W8XrXCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUrNtxDUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.664, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -77,130 +84,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2025/3/12 ÏÂÎç2:26, Bibo Mao Ð´µÀ:
-> Add index entry for LoongArch system and do some small modification
-> with  LoongArch document with rst syntax.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   docs/system/loongarch/virt.rst   | 31 ++++++++++---------------------
->   docs/system/target-loongarch.rst | 19 +++++++++++++++++++
->   docs/system/targets.rst          |  1 +
->   3 files changed, 30 insertions(+), 21 deletions(-)
->   create mode 100644 docs/system/target-loongarch.rst
-Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-thanks.
-Song Gao
->
-> diff --git a/docs/system/loongarch/virt.rst b/docs/system/loongarch/virt.rst
-> index 172fba079e..7845878469 100644
-> --- a/docs/system/loongarch/virt.rst
-> +++ b/docs/system/loongarch/virt.rst
-> @@ -12,14 +12,15 @@ Supported devices
->   -----------------
->   
->   The ``virt`` machine supports:
-> -- Gpex host bridge
-> -- Ls7a RTC device
-> -- Ls7a IOAPIC device
-> -- ACPI GED device
-> -- Fw_cfg device
-> -- PCI/PCIe devices
-> -- Memory device
-> -- CPU device. Type: la464.
-> +
-> +* Gpex host bridge
-> +* Ls7a RTC device
-> +* Ls7a IOAPIC device
-> +* ACPI GED device
-> +* Fw_cfg device
-> +* PCI/PCIe devices
-> +* Memory device
-> +* CPU device. Type: la464.
->   
->   CPU and machine Type
->   --------------------
-> @@ -39,13 +40,7 @@ can be accessed by following steps.
->   
->   .. code-block:: bash
->   
-> -  ./configure --disable-rdma --prefix=/usr \
-> -              --target-list="loongarch64-softmmu" \
-> -              --disable-libiscsi --disable-libnfs --disable-libpmem \
-> -              --disable-glusterfs --enable-libusb --enable-usb-redir \
-> -              --disable-opengl --disable-xen --enable-spice \
-> -              --enable-debug --disable-capstone --disable-kvm \
-> -              --enable-profiler
-> +  ./configure --target-list="loongarch64-softmmu"
->     make -j8
->   
->   (2) Set cross tools:
-> @@ -53,9 +48,7 @@ can be accessed by following steps.
->   .. code-block:: bash
->   
->     wget https://github.com/loongson/build-tools/releases/download/2022.09.06/loongarch64-clfs-6.3-cross-tools-gcc-glibc.tar.xz
-> -
->     tar -vxf loongarch64-clfs-6.3-cross-tools-gcc-glibc.tar.xz  -C /opt
-> -
->     export PATH=/opt/cross-tools/bin:$PATH
->     export LD_LIBRARY_PATH=/opt/cross-tools/lib:$LD_LIBRARY_PATH
->     export LD_LIBRARY_PATH=/opt/cross-tools/loongarch64-unknown-linux-gnu/lib/:$LD_LIBRARY_PATH
-> @@ -74,13 +67,9 @@ Note: To build the release version of the bios,  set --buildtarget=RELEASE,
->   .. code-block:: bash
->   
->     git clone https://github.com/loongson/linux.git
-> -
->     cd linux
-> -
->     git checkout loongarch-next
-> -
->     make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu- loongson3_defconfig
-> -
->     make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu- -j32
->   
->   Note: The branch of linux source code is loongarch-next.
-> diff --git a/docs/system/target-loongarch.rst b/docs/system/target-loongarch.rst
-> new file mode 100644
-> index 0000000000..316c604b91
-> --- /dev/null
-> +++ b/docs/system/target-loongarch.rst
-> @@ -0,0 +1,19 @@
-> +.. _LoongArch-System-emulator:
-> +
-> +LoongArch System emulator
-> +-------------------------
-> +
-> +QEMU can emulate loongArch 64 bit systems via the
-> +``qemu-system-loongarch64`` binary. Only one machine type ``virt`` is
-> +supported.
-> +
-> +When using KVM as accelerator, QEMU can emulate la464 cpu model. And when
-> +using the default cpu model with TCG as accelerator, QEMU will emulate a
-> +subset of la464 cpu features that should be enough to run distributions
-> +built for the la464.
-> +
-> +Board-specific documentation
-> +============================
-> +
-> +.. toctree::
-> +   loongarch/virt
-> diff --git a/docs/system/targets.rst b/docs/system/targets.rst
-> index 224fadae71..38e2418801 100644
-> --- a/docs/system/targets.rst
-> +++ b/docs/system/targets.rst
-> @@ -18,6 +18,7 @@ Contents:
->   
->      target-arm
->      target-avr
-> +   target-loongarch
->      target-m68k
->      target-mips
->      target-ppc
->
-> base-commit: 825b96dbcee23d134b691fc75618b59c5f53da32
 
+> -----Original Message-----
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> Sent: Monday, March 17, 2025 8:19 PM
+> To: Jason Gunthorpe <jgg@nvidia.com>
+> Cc: Eric Auger <eric.auger@redhat.com>; Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; qemu-arm@nongnu.org;
+> qemu-devel@nongnu.org; peter.maydell@linaro.org; ddutile@redhat.com;
+> berrange@redhat.com; nathanc@nvidia.com; mochs@nvidia.com;
+> smostafa@google.com; Linuxarm <linuxarm@huawei.com>; Wangzhou (B)
+> <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
+> Jonathan Cameron <jonathan.cameron@huawei.com>;
+> zhangfei.gao@linaro.org
+> Subject: Re: [RFC PATCH v2 03/20] hw/arm/smmuv3-accel: Add initial
+> infrastructure for smmuv3-accel device
+>=20
+> On Mon, Mar 17, 2025 at 04:24:53PM -0300, Jason Gunthorpe wrote:
+> > On Mon, Mar 17, 2025 at 12:10:19PM -0700, Nicolin Chen wrote:
+> > > Another question: how does an emulated device work with a
+> vSMMUv3?
+> > > I could imagine that all the accel steps would be bypassed since
+> > > !sdev->idev. Yet, the emulated iotlb should cache its translation
+> > > so we will need to flush the iotlb, which will increase complexity
+> > > as the TLBI command dispatching function will need to be aware what
+> > > ASID is for emulated device and what is for vfio device..
+> >
+> > I think you should block it. We already expect different vSMMU's
+> > depending on the physical SMMU under the PCI device, it makes sense
+> > that a SW VFIO device would have it's own, non-accelerated, vSMMU
+> > model in the guest.
+>=20
+> Yea, I agree and it'd be cleaner for an implementation separating
+> them.
+>=20
+> In my mind, the general idea of "accel=3Don" is also to keep things
+> in a more efficient way: passthrough devices go to HW-accelerated
+> vSMMUs (separated PCIE buses), while emulated ones go to a vSMMU-
+> bypassed (PCIE0).
+>=20
+> Though I do see the point from QEMU prospective that user may want
+> to start a VM with HW-accelerated vSMMU for one passthrough device
+> using a simple setup without caring about the routing via command.
+
+For now we don't use iotlb for accel cases with emulated devices. So probab=
+ly
+can document/warn the user about possible performance degradation if they
+attach such a device rather than blocking.
+
+Thanks,
+Shameer
+=20
 
