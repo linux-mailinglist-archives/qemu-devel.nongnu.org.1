@@ -2,73 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F35A679B9
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 17:38:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FDAA679CB
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 17:39:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuZvv-0006X8-Bf; Tue, 18 Mar 2025 12:36:51 -0400
+	id 1tuZyZ-0000zq-J4; Tue, 18 Mar 2025 12:39:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1tuZvT-0006SF-Nu
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 12:36:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1tuZvR-0004W2-Ul
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 12:36:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742315780;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aD3XptiGY0q8bTfzzfMt/ed3Ps/Cu6ykYAwObd+Bvlg=;
- b=TWVVoKv1qTqok2vGNC/602BxM2xZaxDZig5TLy0yJ9UCMW9QtWAE9a3xldB6XgULuz41As
- HX4v6qlfiNRfdZZ0DEX3mNH+8BtldZ0wufPojoOrepOFkFqxvB4eD0cu+tsGkA72QCHW7q
- 7A3Mkuw49cYxw9SzekLnEShIBURKwns=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-oUK13ubXPp6UNrzVDEwBaQ-1; Tue,
- 18 Mar 2025 12:36:18 -0400
-X-MC-Unique: oUK13ubXPp6UNrzVDEwBaQ-1
-X-Mimecast-MFC-AGG-ID: oUK13ubXPp6UNrzVDEwBaQ_1742315777
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 805F6180AF55; Tue, 18 Mar 2025 16:36:17 +0000 (UTC)
-Received: from speedmetal.redhat.com (unknown [10.45.242.6])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D7C901955BEF; Tue, 18 Mar 2025 16:36:15 +0000 (UTC)
-From: Peter Krempa <pkrempa@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PATCH 3/3] scripts: render_block_graph: Avoid backtrace on error
- from virsh
-Date: Tue, 18 Mar 2025 17:36:04 +0100
-Message-ID: <8926805f0283b8aca7d709ae06b1103db857cbde.1742315602.git.pkrempa@redhat.com>
-In-Reply-To: <cover.1742315602.git.pkrempa@redhat.com>
-References: <cover.1742315602.git.pkrempa@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tuZyX-0000yc-Eu
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 12:39:33 -0400
+Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tuZyV-0005U0-Ic
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 12:39:33 -0400
+Received: by mail-yb1-xb32.google.com with SMTP id
+ 3f1490d57ef6-e637edaa652so4447430276.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 09:39:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1742315970; x=1742920770; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=rbNQxrWPKgNC03cG8BVFNXAwV21VUReGzLMEZsXe10g=;
+ b=FA2WFSpJ/D7qnqW8foSl8bqXmYcAvGyBZtKcFfpLWGcSGTZd1u+Vo5A6KosF870Pvm
+ uyTzpSgZp1o2u5kRnY5z6g/V2U37wCPmKc9N1B8nJyx4c8ESWmT1/sTiPhZdP5VjszZg
+ EW96f+6FGweGdh7ssNNOUa4wUcbWj5PlZ1LJqu19HmwJcU0xNcgawHAeCOXufYNXW/nn
+ SFRqxPN+Yzvpo5ahD+XeFulvZegL7QY6t12tQX6EsX6EnWoXSXsKS11KtXHu5gv5aTqR
+ 6xt1VjlVSVynebWACG3tx91332CkTYjYS8oTSI9bRRd0yYVAzPNlAEx7YvFc8b3vRxxc
+ v5zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742315970; x=1742920770;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rbNQxrWPKgNC03cG8BVFNXAwV21VUReGzLMEZsXe10g=;
+ b=qI4HSx6vben+llNvkfZAQr+sEE18UzVkuW0w/nMCh4XQnNdMmNpvUAKkO3RDgS1sBw
+ NVdLNAOZSqqzQ8RZmWnez1lwdwu0niGD217XXqaKxkSK5zN8MiqupzFq/GwIw3CGgrnl
+ 9wYgsDuvvRLmWU93OEwUUGLCmSaEsUjRz5co7CUrFxAWXiGY83xppV3mV8z2QOsSQxU8
+ BH7jcBdwm9Lr2NgMSGJ0w0C28llTKE56qYxuNg2lWNs13dyVoOgp2dTXcrGf2aZFcDgu
+ NJWHyawH3tnFgsYs5vrPrzWtNVCxqK8qxMlqNmTllGO2QtLYeUhFISQRw15vpdH6BwRx
+ HGgw==
+X-Gm-Message-State: AOJu0YyIFvKPAH+/pz4Omh0C8y1nqaZfUATORR6Xwe0bFYdePX2B/bRU
+ d3cUaP5mIIXzq2smNmseDfjyQNdrxZ0crf08PvV84Xdszb6AxEMnw3+jVutg6tFADB19oTJAMws
+ sDCQoqACy7evGpwA9+skqHIl6MstcC7QMWTnVBQ==
+X-Gm-Gg: ASbGncuWva5gCMaQUFgi6rzaMJHokAshaBYO7BdTNasSwSjJLjpl1jljKR80Wp9Rre9
+ 3uiK+ftREFUimGJso4vRZpfAe499OMTDvhU8fyF2u533nAny4bsqg2cEBwnJuGyWtCTPXxgJ7vL
+ 2Hao9YT5JqA61NJOfI9qVjpNcYZDrFcvGtgdyeAQ==
+X-Google-Smtp-Source: AGHT+IHrKloikrCHywPESFaPaQZKHGVmGY6cTQ+uE9cw1DS1D6jzP8lp48gv02MCCtp9mQZ4+oxpTqIlPLWJsv1xsVg=
+X-Received: by 2002:a05:6902:2701:b0:e60:85ed:8ceb with SMTP id
+ 3f1490d57ef6-e63f6512b33mr22050871276.22.1742315970334; Tue, 18 Mar 2025
+ 09:39:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+References: <20250304124815.591749-1-kraxel@redhat.com>
+ <20250304124815.591749-15-kraxel@redhat.com>
+In-Reply-To: <20250304124815.591749-15-kraxel@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 18 Mar 2025 16:39:18 +0000
+X-Gm-Features: AQ5f1Jruzr4RzXaG_o4fgU4CuCcLtIcR63x8pV0RKxi79gIv6eTCbFbGDSqECr8
+Message-ID: <CAFEAcA9_rb321OBOfv9v84ZLO7aw_8t8pTDMUYxj2SNnSBfRmg@mail.gmail.com>
+Subject: Re: [PULL 14/24] hw/uefi: add var-service-json.c + qapi for NV vars.
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, 
+ Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,49 +99,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Krempa <pkrempa@redhat.com>
+On Tue, 4 Mar 2025 at 12:49, Gerd Hoffmann <kraxel@redhat.com> wrote:
+>
+> Define qapi schema for the uefi variable store state.
+>
+> Use it and the generated visitor helper functions to store persistent
+> (EFI_VARIABLE_NON_VOLATILE) variables in JSON format on disk.
+>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> Message-ID: <20250225163031.1409078-15-kraxel@redhat.com>
+> [ incremental fix squashed in ]
+> Message-ID: <pji24p6oag7cn2rovus7rquo7q2c6tokuquobfro2sqorky7vu@tk7cxud6jw7f>
 
-An error from virsh spews also backtrace:
+Hi; Coverity points out some problems in this code
+(CID 1593154, 1593157):
 
-  $ ./scripts/render_block_graph.py --vm doesnotexist
-  error: failed to get domain 'doesnotexist'
-  Traceback (most recent call last):
-    File "/home/pipo/git/qemu.git/./scripts/render_block_graph.py", line 152, in <module>
-      render_block_graph(qmp, out)
-      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
-    File "/home/pipo/git/qemu.git/./scripts/render_block_graph.py", line 47, in render_block_graph
 
- [snipped]
+> +void uefi_vars_json_load(uefi_vars_state *uv, Error **errp)
+> +{
+> +    UefiVarStore *vs;
+> +    QObject *qobj;
+> +    Visitor *v;
+> +    char *str;
+> +    size_t len;
+> +    int rc;
+> +
+> +    if (uv->jsonfd == -1) {
+> +        return;
+> +    }
+> +
+> +    len = lseek(uv->jsonfd, 0, SEEK_END);
 
-instead of just the important bits:
+lseek() can return -1 on error, but we don't check that
+here, so we can proceed forward with a negative length...
 
-  $ ./scripts/render_block_graph.py --vm doesnotexist
-  error: failed to get domain 'doesnotexist'
+> +    if (len == 0) {
+> +        return;
+> +    }
+> +
+> +    str = g_malloc(len + 1);
 
-Catch the exception and exit. 'virsh' already printed the error.
+...so we might try to malloc(0) here...
 
-Signed-off-by: Peter Krempa <pkrempa@redhat.com>
----
- scripts/render_block_graph.py | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> +    lseek(uv->jsonfd, 0, SEEK_SET);
+> +    rc = read(uv->jsonfd, str, len);
 
-diff --git a/scripts/render_block_graph.py b/scripts/render_block_graph.py
-index 7a6738410c..e2bb83b60e 100755
---- a/scripts/render_block_graph.py
-+++ b/scripts/render_block_graph.py
-@@ -106,7 +106,10 @@ def cmd(self, cmd):
+...and read() will treat -1 as a very large positive
+value, overrunning the buffer.
 
-         ar += ['qemu-monitor-command', self.name, json.dumps(m)]
+> +    if (rc != len) {
+> +        warn_report("%s: read error", __func__);
 
--        reply = json.loads(subprocess.check_output(ar))
-+        try:
-+            reply = json.loads(subprocess.check_output(ar))
-+        except subprocess.CalledProcessError:
-+            sys.exit(1)
+If the read failed to read all the data, we need to
+bail out now, not proceed to pass the uninitialized
+buffer to qobject_from_json().
 
-         if 'error' in reply:
-             raise QMPError(reply)
--- 
-2.48.1
+Coverity doesn't notice it, but the code in
+uefi_vars_json_save() is also not handling errors
+from lseek() etc correctly.
 
+Do we absolutely need to be operating on a continuously open
+filedescriptor here rather than a filename? If we could make
+these functions use uv->jsonfile each time then we could use
+the glib functions g_file_get_contents() and
+g_file_set_contents(), which get all the pesky details of the
+error handling right for you.
+
+thanks
+-- PMM
 
