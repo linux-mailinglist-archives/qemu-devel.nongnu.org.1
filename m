@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E7EA67EC8
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:35:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA26CA67EDB
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:37:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tueZQ-0002fh-04; Tue, 18 Mar 2025 17:33:56 -0400
+	id 1tueZX-00030F-VT; Tue, 18 Mar 2025 17:34:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY9-0001ME-Bi
+ id 1tueY9-0001MP-SH
  for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:38 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY7-0000qg-Jz
+ id 1tueY8-0000qx-AR
  for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:37 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-225b5448519so118460635ad.0
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2241053582dso22093805ad.1
  for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742333554; x=1742938354; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742333555; x=1742938355; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ty/7yi7XDMuhRymJcueNnjTkMJ6TF1/wh379eWbHVlc=;
- b=j7S0ZtDYcxeAFgtUtx38K6142eQn0NQR2ZWl5PNIlkpUL3r2XULD3aaD1uvHHy+0AZ
- 0ZFRvRe25kty4EusmG3/Jar5vqPVJm8YDB4d0dtrd+nSTUQ9bBpSgyPPMI350IjP6Mot
- Cg2cWgignWL290gqu1FppH6wLUfmHhTlg1kcUSbQmZfEXlOkrK3wFQ+GWD5aayoGALky
- Wj/2dt1Zmu+LuNtgXEM5RHummtOO0D/BADBbkxGR0pZafBuLk8wMbU8kfvutR0Ktdogu
- 2307sEpV/61bguqBg4+u1DJCPkxUQvqbRKUKxaTRA3rdfW1GzX/wqjxi8frePBDbFxFk
- JonA==
+ bh=IeHYr04W0m2zNJjTvbQgJtgjfEjOKbLo8D+48jtu/vU=;
+ b=Thjj7smfIybFRLhDcJUVzvjGF1VhHJyNtuT1AjeilrFEYw4dZceuQt2uycqo7S455A
+ 1vGIX+g4a4uqsUVCxoowzPrXGwT+Y0wC5wBsAoDKthVcJZUjF4js+HjnAJWtaBapoFTj
+ gOAPzwgwnJC26tsKyn3pRuPrH6Zg4q9mtBSbKKhhf/VCFDxrYiP8pkhEjBF0mVK31UQu
+ cqMvxfiRwt1ff+JFDJUdE3kaA6Ztz4M6zDh0byGWzmlnVRkTwT7VS5Kld484XWWrKx2p
+ 61GHew1FbTDmo+axMvFaxbEv12/2QvSJmX5GnR4MDWwo4qegzg1SCdgTBPRUML2dnYZN
+ O9tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742333554; x=1742938354;
+ d=1e100.net; s=20230601; t=1742333555; x=1742938355;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ty/7yi7XDMuhRymJcueNnjTkMJ6TF1/wh379eWbHVlc=;
- b=cZV6dA5kKALZGlRW7OS/gPyLOW/V8VmxujWyF4vFb4hK1OEk5c3ukic56SNILuG+BQ
- Ya/lA75fbkwMj8omcxUfeh5wtVLlspJUmUBvFCfUpW5c7EmkI86UsjA0/CqHYMeaB3sY
- 3uQFxi53BoG1OnDRbmPHMOrj1jkqMCO4YN1fG6EXwZpWrvmg8VFRIM79q1HDSmW04LYC
- YDdr2AEXZ3KTrWtFOUKuXvu1S8tIVdHiKztMbzdyo8eQ8wl0145oeNLXLzP2Gdw3csAA
- PDf1KilJq0cm4KsWNombDzciFVhdgvszS/BMIAyhYLDCtnIsxwdNiaE0BOemlRzCCF07
- lmEQ==
-X-Gm-Message-State: AOJu0YyGWaooDqdj2O8h+iAkbaFE5JJObZsrMuZ5C8O3wtLK/ML2l7RV
- y+GAtXe199C/BnQwnXMwpfQ79yTGT8DGWPQyp8cZ3oDiIUMJbem55r5cSNjwgWvC8+qFSn2hFf1
- s
-X-Gm-Gg: ASbGncuvO+eV+WPxjkgRIBjUfmb+CA+FxmYUsb6Zh9Gpyh3N8XJMxHmFEPxwmp+Hqjn
- vA9oPQsg+UCwRz93twcJTDEJWcZJTWDOU2x9mrTUfk1auC2tHeBK47kiH8+ts4oIiu9k0H56XSs
- uqFRjR+WHrK8AFJiZ5HpJLltKcOocgltp+pdaGiodtuox3DkVVM5xx0kYVuHfNGOkkD6rOz2Eaf
- heNGQEr5RuAqaTB4hhZvRcRb53usx/L3iwNsUEpOlOlwyx3OHzq41kaDia0mBeeWJm6mL/8I+at
- qcNodzsMzLK9LSkXeXpzugi9kQnYR6Zw/sT+vJRsGMYKrzbEVEpQIcrQUdwVWOT4Irb59H0wIR5
- ILteBC2WLb0w=
-X-Google-Smtp-Source: AGHT+IFXJU/b16gn0YZ5CraD/IN3QOnnN5+/JWrCWIQ5c/ILnOV7EEke0GX7vV7ZSr394B2aDKj7iQ==
-X-Received: by 2002:a17:90b:3e88:b0:2ff:4f04:4266 with SMTP id
- 98e67ed59e1d1-301be201d87mr240404a91.23.1742333554351; 
- Tue, 18 Mar 2025 14:32:34 -0700 (PDT)
+ bh=IeHYr04W0m2zNJjTvbQgJtgjfEjOKbLo8D+48jtu/vU=;
+ b=fKNTcC0BSoILifVZ33t/rmj/+8EYGB7zR1bnO1Bs9MwEYUIMcp10Go2rX7rrYeC3/a
+ /pO5m4XYAolgxvWoytrGq1MDLA6ddWND9IhR8WqrdevWKCs3kindakv0++atU3mT+d/8
+ cj0hNY+1iBXDwb5W82OQ1s9Mxl2W2o25Jny0JLKkFXTD9Mh3TYiw3TQ1jTtIRbYXAlVU
+ c5dTmm14haoXfbWVrRDQFQaOe0NzF+YA6xnwgE1t3MTBdwt75rm+7Aiv7lc4pDwgFnyH
+ 6QhBsgb5jCPwE0ep+etkDdzJukL3wvFGBb53khL6GUfuU2B4h+XXWaSJnvOnibhtwpuu
+ 3uGw==
+X-Gm-Message-State: AOJu0Yx5LJIuBk9l7XlTDYX/g0tHVRjs1TPWROIIk9uSYQch4gX6JH/R
+ btGoDpNvUVZchApMTWGNW1pkfjwCnRHSdv+So6c+MncSJICiFKm9uDEDHT2PBk5qdI86OZ74HEl
+ 0
+X-Gm-Gg: ASbGncs+tBbuTPZXY3jlTQD2ZlzjB37LuAvDRPMXMmDWCWZxQbgYiozx+KcmMmVIgOT
+ Z6H5z1j454Zm6URwwjRFuQ8WPy7GnJx1ZOf+CFAu80ftTRyViP9wAaubJ9NV45kLrwBsK+cQvHD
+ l4GlUw+Be1H+72Xafh79cGVVRz/9F9hfK3IfbYpXzLgmw5OXhSiatyNShiFUAFZG74TIyCaZJur
+ XTQeUUMtwRekzhsRPhwz7U1I9Vy1zxvxAR9tviaeELFNKxUc7qs8e5Wq0s+wDOlARnHYQR7PxYP
+ VWsV+LWZd4sO8O7RL/URsHv38CXs7X/qLKyuTpetZ8sS4J/s0DhD28mZBjdrphffmTV01i4RwQU
+ W
+X-Google-Smtp-Source: AGHT+IEU5X6Hp9CxAqBbUK/LRBm59SVQ1RBZtj1MoDWdySuzw+MfgdnorCm3O5mQhTMfZQlsO6nexA==
+X-Received: by 2002:a05:6a20:9c89:b0:1f5:8e54:9f10 with SMTP id
+ adf61e73a8af0-1fbecd48b02mr364618637.34.1742333555077; 
+ Tue, 18 Mar 2025 14:32:35 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.33
+ 41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 18 Mar 2025 14:32:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH v2 34/42] include/hw/core: Drop ifndef CONFIG_USER_ONLY from
- cpu.h
-Date: Tue, 18 Mar 2025 14:31:59 -0700
-Message-ID: <20250318213209.2579218-35-richard.henderson@linaro.org>
+Subject: [PATCH v2 35/42] include/hw/intc: Remove ifndef CONFIG_USER_ONLY from
+ armv7m_nvic.h
+Date: Tue, 18 Mar 2025 14:32:00 -0700
+Message-ID: <20250318213209.2579218-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250318213209.2579218-1-richard.henderson@linaro.org>
 References: <20250318213209.2579218-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,70 +101,40 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 We were hiding a number of declarations from user-only,
-although it hurts nothing to allow them.
+although it hurts nothing to allow them.  The inlines
+for user-only are unused.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/hw/intc/armv7m_nvic.h | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index d1c1fefea3..1c63266f07 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -614,8 +614,6 @@ extern bool mttcg_enabled;
+diff --git a/include/hw/intc/armv7m_nvic.h b/include/hw/intc/armv7m_nvic.h
+index 89fe8aedaa..7b9964fe7e 100644
+--- a/include/hw/intc/armv7m_nvic.h
++++ b/include/hw/intc/armv7m_nvic.h
+@@ -189,21 +189,7 @@ int armv7m_nvic_raw_execution_priority(NVICState *s);
+  * @secure: the security state to test
+  * This corresponds to the pseudocode IsReqExecPriNeg().
   */
- bool cpu_paging_enabled(const CPUState *cpu);
- 
--#if !defined(CONFIG_USER_ONLY)
--
- /**
-  * cpu_get_memory_mapping:
-  * @cpu: The CPU whose memory mappings are to be obtained.
-@@ -676,8 +674,6 @@ int cpu_write_elf32_qemunote(WriteCoreDumpFunction f, CPUState *cpu,
-  */
- GuestPanicInformation *cpu_get_crash_info(CPUState *cpu);
- 
--#endif /* !CONFIG_USER_ONLY */
--
- /**
-  * CPUDumpFlags:
-  * @CPU_DUMP_CODE:
-@@ -701,7 +697,6 @@ enum CPUDumpFlags {
-  */
- void cpu_dump_state(CPUState *cpu, FILE *f, int flags);
- 
 -#ifndef CONFIG_USER_ONLY
- /**
-  * cpu_get_phys_page_attrs_debug:
-  * @cpu: The CPU to obtain the physical page address for.
-@@ -758,8 +753,6 @@ bool cpu_virtio_is_big_endian(CPUState *cpu);
-  */
- bool cpu_has_work(CPUState *cpu);
- 
--#endif /* CONFIG_USER_ONLY */
--
- /**
-  * cpu_list_add:
-  * @cpu: The CPU to be added to the list of CPUs.
-@@ -1136,8 +1129,6 @@ const char *target_name(void);
- 
- #ifdef COMPILING_PER_TARGET
- 
+ bool armv7m_nvic_neg_prio_requested(NVICState *s, bool secure);
+-#else
+-static inline bool armv7m_nvic_neg_prio_requested(NVICState *s, bool secure)
+-{
+-    return false;
+-}
+-#endif
 -#ifndef CONFIG_USER_ONLY
--
- extern const VMStateDescription vmstate_cpu_common;
+ bool armv7m_nvic_can_take_pending_exception(NVICState *s);
+-#else
+-static inline bool armv7m_nvic_can_take_pending_exception(NVICState *s)
+-{
+-    return true;
+-}
+-#endif
  
- #define VMSTATE_CPU() {                                                     \
-@@ -1147,7 +1138,6 @@ extern const VMStateDescription vmstate_cpu_common;
-     .flags = VMS_STRUCT,                                                    \
-     .offset = 0,                                                            \
- }
--#endif /* !CONFIG_USER_ONLY */
- 
- #endif /* COMPILING_PER_TARGET */
- 
+ #endif
 -- 
 2.43.0
 
