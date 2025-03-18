@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67818A67425
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:43:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C89BEA67424
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 13:43:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWHY-0008Dw-NJ; Tue, 18 Mar 2025 08:42:58 -0400
+	id 1tuWHP-0007vM-O1; Tue, 18 Mar 2025 08:42:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuWH3-0007pX-Hh; Tue, 18 Mar 2025 08:42:26 -0400
+ id 1tuWH2-0007pK-OB; Tue, 18 Mar 2025 08:42:27 -0400
 Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tuWH1-0002wP-8a; Tue, 18 Mar 2025 08:42:25 -0400
+ id 1tuWH0-0002wy-RJ; Tue, 18 Mar 2025 08:42:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742301744; x=1773837744;
+ t=1742301743; x=1773837743;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qhOop17qvvDdvVOFBqEwZ6YZDR32LRhdetUWxZsO20Y=;
- b=c7f8zoBWOPc3nuiBhF9F9CJQTa7bY5omquDpXgMLlPl1ngS9QLARkY6s
- Ga2mA+egca3aDQ0mFl3NLHJ8Ht00jqN5Tgd4M3oyL70YUVLrLfDbRdYLR
- XR9dhQZGafQbNUf8BRZpJ/c/bWI19j03rz3cmjuMp0xca2TtRNnG4W9nf
- 5/zJ8BdiAoAhK3f64MRmu0U0SYv2UwLaOaQ8H9SFLBqqxPBITwEbMiYas
- GOZSeXqXqMBHgetqfs03wv/Hbwl1HmPEuDfg+5eszpDFI1HKl/I5qSjnJ
- oBfk1D/zAwuM1TONRftGBaZQZbxuvPyrWICQ80RhlK45i0n1M0kY2X/jA w==;
-X-CSE-ConnectionGUID: rX+hcEGyQGiY+VJQ5in0dg==
-X-CSE-MsgGUID: y9gbd896Rk2ugqMBBgP7Ew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54824567"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="54824567"
+ bh=sxgX16JKNTG+AY3C+How4ZUdjbZC9zSiCisbiIfnClo=;
+ b=QbwP7DZcTKeIPrszzHj0Vd1+Gs5n2BW2oZ2D9OHOgTfv3itt04XgAFjY
+ 6MVPhefbvcvfvo2meVvhEqi3BFvJijjtHcgDXHEl9776hbcPZs/S/cGM5
+ WLyjfgy+Dd6F1p51O5/zJrpHhNkcP9kTPDGQdYlf9jgo2ch2YRMYqRFTB
+ uW1tUH14MuxC+Zb6YVAepnilGEFawkzHrcxreF5BB63HzD4M5/7BjHbPJ
+ 6x0b5eJwmNMEIPOXpHrkj2i9kdWOrq9xnT02PXiQCeFmOB1dBms1axdC4
+ 2VY0Ov9AkcG/jrr1H1cpYxHQcsYiht/bz1UgQKlUNWeqZRdNXX84Av+ie w==;
+X-CSE-ConnectionGUID: auwceXN8R06Gz3jELn1NIw==
+X-CSE-MsgGUID: UpFtt8/VTkqUur+cxsop/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="54824570"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="54824570"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2025 05:42:14 -0700
-X-CSE-ConnectionGUID: axMfs3gbQPKTQu7sXBbZ5Q==
-X-CSE-MsgGUID: w11beLlZQ6CrTKzq/H1JPQ==
+ 18 Mar 2025 05:42:16 -0700
+X-CSE-ConnectionGUID: D5k2mmKBTD+IsPgN09dfpQ==
+X-CSE-MsgGUID: KgOkQz0NQEyvs7j7XDzTMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="121980434"
+X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; d="scan'208";a="121980441"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa009.jf.intel.com with ESMTP; 18 Mar 2025 05:42:13 -0700
+ by orviesa009.jf.intel.com with ESMTP; 18 Mar 2025 05:42:14 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v3 04/15] rust/vmstate: Fix size field of VMStateField with
- VMS_ARRAY_OF_POINTER flag
-Date: Tue, 18 Mar 2025 21:02:08 +0800
-Message-Id: <20250318130219.1799170-5-zhao1.liu@intel.com>
+Subject: [PATCH v3 05/15] rust/vmstate: Fix type check for varray in
+ vmstate_struct
+Date: Tue, 18 Mar 2025 21:02:09 +0800
+Message-Id: <20250318130219.1799170-6-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250318130219.1799170-1-zhao1.liu@intel.com>
 References: <20250318130219.1799170-1-zhao1.liu@intel.com>
@@ -78,37 +78,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The `size` field of the VMStateField with VMS_ARRAY_OF_POINTER flag
-should stores the size of pointer, which depends on platform.
+When pass a varray to vmstate_struct, the `type` parameter should be the
+type of the element in the varray, for example:
 
-Currently, `*const`, `*mut`, `NonNull`, `Box<>` and their wrapper are
-supported, and they have the same size as `usize`.
+vmstate_struct!(HPETState, timers, [0 .. num_timers], VMSTATE_HPET_TIMER,
+		BqlRefCell<HPETTimer>).with_version_id(0)
 
-Store the size (of `usize`) when VMS_ARRAY_OF_POINTER flag is set.
+But this breaks current type check, because it checks the type of
+`field`, which is an array type (for the above example, type of timers
+is [BqlRefCell<HPETTimer>; 32], not BqlRefCell<HPETTimer>).
 
-The size may be changed when more smart pointers are supported, but now
-the size of "usize" is enough.
+But the current assert_field_type() can no longer be extended to include
+new arguments, so a variant of it (a second macro containing the
+`num = $num:ident` parameter) had to be added to handle array cases.
+
+In this new macro, it not only checks the type of element, but also
+checks whether the `num` (number of elements in varray) is out of range.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/src/vmstate.rs | 4 ++++
- 1 file changed, 4 insertions(+)
+ rust/qemu-api/src/assertions.rs | 15 +++++++++++++++
+ rust/qemu-api/src/vmstate.rs    |  2 +-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
+diff --git a/rust/qemu-api/src/assertions.rs b/rust/qemu-api/src/assertions.rs
+index 104dec39774e..176060e32acd 100644
+--- a/rust/qemu-api/src/assertions.rs
++++ b/rust/qemu-api/src/assertions.rs
+@@ -91,6 +91,21 @@ fn types_must_be_equal<T, U>(_: T)
+             }
+         };
+     };
++
++    ($t:ty, $i:tt, $ti:ty, num = $num:ident) => {
++        const _: () = {
++            #[allow(unused)]
++            fn assert_field_type(v: $t) {
++                fn types_must_be_equal<T, U>(_: T)
++                where
++                    T: $crate::assertions::EqType<Itself = U>,
++                {
++                }
++                let index: usize = v.$num.try_into().unwrap();
++                types_must_be_equal::<_, &$ti>(&v.$i[index]);
++            }
++        };
++    };
+ }
+ 
+ /// Assert that an expression matches a pattern.  This can also be
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index e3233303f204..e2a1f7a97aae 100644
+index e2a1f7a97aae..9d9cdda993ce 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -256,6 +256,10 @@ pub const fn with_array_flag(mut self, num: usize) -> Self {
-         if (self.flags.0 & VMStateFlags::VMS_POINTER.0) != 0 {
-             self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_POINTER.0);
-             self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_ARRAY_OF_POINTER.0);
-+            // VMS_ARRAY_OF_POINTER flag stores the size of pointer.
-+            // FIXME: *const, *mut, NonNull and Box<> have the same size as usize.
-+            //        Resize if more smart pointers are supported.
-+            self.size = std::mem::size_of::<usize>();
-         }
-         self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_SINGLE.0);
-         self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_ARRAY.0);
+@@ -447,7 +447,7 @@ macro_rules! vmstate_struct {
+                 .as_ptr() as *const ::std::os::raw::c_char,
+             $(num_offset: $crate::offset_of!($struct_name, $num),)?
+             offset: {
+-                $crate::assert_field_type!($struct_name, $field_name, $type);
++                $crate::assert_field_type!($struct_name, $field_name, $type $(, num = $num)?);
+                 $crate::offset_of!($struct_name, $field_name)
+             },
+             size: ::core::mem::size_of::<$type>(),
 -- 
 2.34.1
 
