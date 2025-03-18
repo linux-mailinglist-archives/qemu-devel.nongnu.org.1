@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72004A668C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 05:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8D3A668B5
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 05:53:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuOvx-0001LZ-PC; Tue, 18 Mar 2025 00:52:11 -0400
+	id 1tuOwt-0001XO-Oq; Tue, 18 Mar 2025 00:53:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuOvX-0001EM-Fb
+ id 1tuOvY-0001EX-Qt
  for qemu-devel@nongnu.org; Tue, 18 Mar 2025 00:51:50 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuOvS-0008Sj-EC
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 00:51:41 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-22423adf751so86808835ad.2
+ id 1tuOvV-0008T9-8y
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 00:51:44 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-22359001f1aso50939575ad.3
  for <qemu-devel@nongnu.org>; Mon, 17 Mar 2025 21:51:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742273497; x=1742878297; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742273498; x=1742878298; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vWIezDEnsVaTp50avzaVFN+/54kZx3DW446tGxF6xYk=;
- b=bURNFUCFanUVdGsPAdZtuPijDBHLWkSZIaA/GDC04doZz+tfv+QLBKMXPpMNn6ELij
- kBvDEa42DyXc1fAY2zsIH5zYS8tCcbqseeQm8rch0Gb1XIYUciLiaSKPeoCc/i76uqIW
- wCNIZobD5j9dc30kvsL92662NGolcYRykOB1pdq3PLj2+YK99zhuv7uwUrSDvDJ2nS7w
- VPw9yiu9TVKRQfjiw6PN7xOb529dudC+G1ExbOZ4nM7Mjoo+fgBHHpO9h6ukocYh2nMI
- OT63y9sDQKyhpbouKRyqDYSfesejsyOIQYgwirnmegUdt3le6LZk55HKKXakXm44hxcX
- WfHQ==
+ bh=OcGAZaWPVIysHTdBCRYBHO7NUCxy0k+KHYN46Zgiu4k=;
+ b=svl+vludRYMhf6J+uegtqj6L20Ass6bCQXR0fCmRQS6PU+lZnx3CKXEiYoaK4WC9i9
+ vxeaUPMZjkMSArQb3+QAidL1D6NRvGJXOSHN7goKYMUmnkfh8ULP1RB/n0kGUwh2Oljo
+ bToRhLwqc59ajv5CtMDQApN12Azhb7eM4woSygzrIR0eehHeumKxJGffKW4RmSlDQpIE
+ yH5iUt5EBy3lfLUO0q48Lb/CdMrDfAc4Q6f3UJPGvsl2WOHsUaDTZlE390871686qVUV
+ ByXVNdceScwa6kn/9gIJWk1BEPuL7hYdFqYfAK7r68z1em3qezQuQT3vcpKJoIk9X09O
+ IMsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742273497; x=1742878297;
+ d=1e100.net; s=20230601; t=1742273498; x=1742878298;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vWIezDEnsVaTp50avzaVFN+/54kZx3DW446tGxF6xYk=;
- b=ZPFVoD/G0y7UM4FIFAdxysqplsIYmd2gmbygY00yHSa4GplSvBKUuHjcwJqBoa7pWX
- GH8f9yR5r2pf6sDT9BsMaDkaYDtjh1FwencYZWKU7Kw1fK32fZ10nWuAOjzDWbArEV/7
- 9nc3RjdSM1AiCklD6Qd/aoyPPo7RkltX0iG9tR4Ck5UFPEg7Uc31g40PtkNQgm4fwon5
- ysEWsrqbvmyXH/qQEm4AQ3rZyPuthIKkgy5X3H43Z1XzxqmsT8gjbhxDQpAqCg7kDU7d
- RhYjrZCp9Oh8Lo7IKb1Q3QRv+aCX7dIcC9ur9kdotfktzW8CbRhVQVA9fRIVQ8UEJHAu
- x9vA==
-X-Gm-Message-State: AOJu0Yy5Sib0Xzcim6o1YPmdT+IR1ldUvNfNp8wjnsMGH3KbZCtHWtX/
- JZFGZC5d1iE+rwwooAI3CetE1i6TEC026TU3yA9X/qtSvWMcWtUAObjQuznyU7smYPWM2ZpkwPk
- /
-X-Gm-Gg: ASbGncv+UVKeXBj3PwxCmgja5nOC6IMRbf4ANSkEtYOONzwwSaH/MWmpQ9aONaLggFh
- yxzf84WWroFOcxtBrUYTS03TCYsLdM2a0wWzGqZO1LU5EGf/dEZ3Xg5ruB/DvDoZaE6+91GSHO1
- XKuSxRolneas6vAAto4V6hAQXYQxW3LrJy96nEgihriaBgTbrGZiBsBLh84deIKch/ldEOSFWID
- uZ0CBuBMl6+NguH/68KC5JoUQSOG4hNkmdEtsmk/ezYlHcOxAkUy/Ycn0moNiSMLdnG0q+c32vj
- IvNGrEGriW0xoKNdRSJVjM8BJaSV86QRYTCer4vw8bYj
-X-Google-Smtp-Source: AGHT+IGfVS9r67mKi+C/QhYaIcplE7qOFrPBNlW784RCUzNr+6ZfRfHv2pwT7sOIOfbETdELQgrdAg==
-X-Received: by 2002:a05:6a00:3cc1:b0:736:ab1d:83c4 with SMTP id
- d2e1a72fcca58-737222535c1mr17970185b3a.0.1742273496888; 
- Mon, 17 Mar 2025 21:51:36 -0700 (PDT)
+ bh=OcGAZaWPVIysHTdBCRYBHO7NUCxy0k+KHYN46Zgiu4k=;
+ b=YnuHAWQuYl1Dp5RSX4swMvFiDeVvwqdJdxi2+NlMLFN2dTzBy4FiXdKCwXygRkOXDr
+ 5diy1CFWn4Nxm1F5yavXftIWfL5nC9H1pfEGv6P7QU2zctc819fq4Sokeo1OAS3rmQhC
+ oO4T/Pdp4cawWL/eSrArt8HBO4FznEXO2L/EGCHGB08Glz1eeGIJu1Q7Dmw82BAhKrtN
+ qi1t/qupm7xSffjqykTDG5sYzZqU399DjNrnboqTo+S0Zge6E8mTR+4FAI7ACeCK4/oM
+ cKPWlW6G5E2xMkUgWPFaTuiFsIbdfGLG755H2BHhzq4z3Amwsaw2CIcjBh02/MJvuoAj
+ JDOQ==
+X-Gm-Message-State: AOJu0YyY6tScicFMEVrgsIZ22E1b1GEqsYbp6wxAlOcaRI+laz5JQP5p
+ i254ZdBnRFbpcVQ1/qk+RNdFl2oTRzkWgCRRXoHnnSGbEpGibf7o8hnThVRdhwhPDgltwVyLER/
+ e
+X-Gm-Gg: ASbGncsixLXxz1Q+9j4+J8e+fDJh3dDKGcEnwUEm1RJABfvHMtkh0LHR6hwUIlvgswc
+ xRV2GMG/eoHJIFWh/FAasuQflVKlZHtLIUOxqtToR8piNc5b0LqcZc92y8n9gYJkyadufufTmNE
+ DHtVr18oWaPrUfhJBL1gybT2thpoLXrWm40iJb/ZjycqOlSx3RQRGM8BswqZJMfvE/vMbrqPwds
+ 4qTHawv5AzDynQ5csWhJvYMlycHAfwvTST/vspRi6hvPAOxJ6r/7jZVPlpFUG+0FX0NJBACaUNG
+ 4EVDOWx67sLdES5mvRSSRB4Y95O8h3bUyuB13ihgrp2j
+X-Google-Smtp-Source: AGHT+IGd5D4o5uKL9Q2v7Y3e6Bm9G+stqVZhHdXsULQqp3gKY9DtvnzsLjdYrwnF2yMZJulAsCZvKw==
+X-Received: by 2002:a05:6a00:1954:b0:736:fff2:99b with SMTP id
+ d2e1a72fcca58-737572df1b9mr2862896b3a.23.1742273497827; 
+ Mon, 17 Mar 2025 21:51:37 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73711694b2csm8519195b3a.129.2025.03.17.21.51.36
+ d2e1a72fcca58-73711694b2csm8519195b3a.129.2025.03.17.21.51.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Mar 2025 21:51:36 -0700 (PDT)
+ Mon, 17 Mar 2025 21:51:37 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -71,16 +71,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 04/13] exec/cpu-all: allow to include specific cpu
-Date: Mon, 17 Mar 2025 21:51:16 -0700
-Message-Id: <20250318045125.759259-5-pierrick.bouvier@linaro.org>
+Subject: [PATCH 05/13] target/arm/cpu: move KVM_HAVE_MCE_INJECTION to
+ kvm-all.c file directly
+Date: Mon, 17 Mar 2025 21:51:17 -0700
+Message-Id: <20250318045125.759259-6-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250318045125.759259-1-pierrick.bouvier@linaro.org>
 References: <20250318045125.759259-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,49 +104,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Including "cpu.h" from code that is not compiled per target is ambiguous
-by definition. Thus we introduce a conditional include, to allow every
-architecture to set this, to point to the correct definition.
+This define is used only in accel/kvm/kvm-all.c, so we push directly the
+definition there. Add more visibility to kvm_arch_on_sigbus_vcpu() to
+allow removing this define from any header.
 
-hw/X or target/X will now include directly "target/X/cpu.h", and
-"target/X/cpu.h" will define CPU_INCLUDE to itself.
-We already do this change for arm cpu as part of this commit.
+The only other architecture defining KVM_HAVE_MCE_INJECTION is i386,
+which we can cleanup later.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/exec/cpu-all.h | 4 ++++
- target/arm/cpu.h       | 2 ++
- 2 files changed, 6 insertions(+)
+ include/system/kvm.h | 2 --
+ target/arm/cpu.h     | 4 ----
+ accel/kvm/kvm-all.c  | 4 ++++
+ 3 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 7c6c47c43ed..1a756c0cfb3 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -46,7 +46,11 @@
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index 716c7dcdf6b..b690dda1370 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -392,9 +392,7 @@ bool kvm_vcpu_id_is_valid(int vcpu_id);
+ /* Returns VCPU ID to be used on KVM_CREATE_VCPU ioctl() */
+ unsigned long kvm_arch_vcpu_id(CPUState *cpu);
  
- CPUArchState *cpu_copy(CPUArchState *env);
+-#ifdef KVM_HAVE_MCE_INJECTION
+ void kvm_arch_on_sigbus_vcpu(CPUState *cpu, int code, void *addr);
+-#endif
  
-+#ifdef CPU_INCLUDE
-+#include CPU_INCLUDE
-+#else
- #include "cpu.h"
-+#endif
- 
- #ifdef CONFIG_USER_ONLY
+ void kvm_arch_init_irq_routing(KVMState *s);
  
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index a8177c6c2e8..7aeb012428c 100644
+index 7aeb012428c..23c2293f7d1 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -31,6 +31,8 @@
- #include "target/arm/multiprocessing.h"
- #include "target/arm/gtimer.h"
+@@ -33,10 +33,6 @@
  
-+#define CPU_INCLUDE "target/arm/cpu.h"
+ #define CPU_INCLUDE "target/arm/cpu.h"
+ 
+-#ifdef TARGET_AARCH64
+-#define KVM_HAVE_MCE_INJECTION 1
+-#endif
+-
+ #define EXCP_UDEF            1   /* undefined instruction */
+ #define EXCP_SWI             2   /* software interrupt */
+ #define EXCP_PREFETCH_ABORT  3
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index f89568bfa39..28de3990699 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -13,6 +13,10 @@
+  *
+  */
+ 
++#ifdef TARGET_AARCH64
++#define KVM_HAVE_MCE_INJECTION 1
++#endif
 +
- #ifdef TARGET_AARCH64
- #define KVM_HAVE_MCE_INJECTION 1
- #endif
+ #include "qemu/osdep.h"
+ #include <sys/ioctl.h>
+ #include <poll.h>
 -- 
 2.39.5
 
