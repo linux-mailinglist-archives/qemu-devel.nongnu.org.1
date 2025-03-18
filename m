@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E43A674C3
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:17:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C53A674BA
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:16:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWid-0000Kj-Mt; Tue, 18 Mar 2025 09:10:55 -0400
+	id 1tuWid-0000Oy-S6; Tue, 18 Mar 2025 09:10:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWi7-00081M-2B; Tue, 18 Mar 2025 09:10:30 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1tuWiJ-00084M-Nh; Tue, 18 Mar 2025 09:10:42 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWi4-0003e1-Iz; Tue, 18 Mar 2025 09:10:22 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-ac25d2b2354so956510866b.1; 
- Tue, 18 Mar 2025 06:10:19 -0700 (PDT)
+ id 1tuWiH-0003g0-Pg; Tue, 18 Mar 2025 09:10:35 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-ac298c8fa50so1046306866b.1; 
+ Tue, 18 Mar 2025 06:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742303418; x=1742908218; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742303430; x=1742908230; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SozXszkG31YRNwyf2TrQDfv+7hb5ByzoAPkFEtmPEVA=;
- b=Ki3i7akrX7Os+sHwPf7hIrZvBjXarg+dYvowIMkpdG866zLCfQhFqzJtk85PE3Zt3q
- v4bXHGBh7qilquy8K7bgYiXZSq31zWLvrmg3BRlVFzKuOXlHVCHzMR4KtP9iY0nePzZU
- nDbM3/Bfnyg7wG1cPDLSwN/votqsFkcTmYc+h6mZAuZoRuRt3FIyYf6yTMtFSJg7C0PU
- R0D5KzNuoOToSEMIsy6ZJPGz1Y65thwwY28fnZqwtIQvxXh17U9RlqxHDuqh7GY+0iv5
- HR1H/vGn0ChGpivsI48sFVSaU8MibESlFvja2Vxk49FenhMILTzITpxR/8x16n/Cu0Zr
- rhjg==
+ bh=1G7hSFteNb8Ei9umQoeYx+vzWa3qyKqrpQiR8QrHJCs=;
+ b=duHA4i6Jn/MaNjF/a6zZNKSTcXYcQ8vIGTPIxkrNkXvt54FixtUyKxF9LgVmNSRet/
+ TVZ4ln6PmdJG2IKLP7WcSIhZeKpqIl3Y7d/xiHMG3XiqNmvk3u52uVBZz7UcaPQUSHEs
+ aZ21BviM+98+Y3JpXrqV9wihsIvbw75TYrOUh+vRQAZkpW9GUmJCmAlE4hNBFZ9hTZSn
+ +xV/C551WRJKg2NhSBuSvNM9VQqg6EMDm0yzq0tDFFEqR25EiRhws7Q2fLwJFdbIl+HB
+ WO9te9O2tr9mraLg8y9wE0RROQyg1gYQGoXYGbwEs61F3wL+P0mf8nwkI49H0DARrnF6
+ tjNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742303418; x=1742908218;
+ d=1e100.net; s=20230601; t=1742303430; x=1742908230;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SozXszkG31YRNwyf2TrQDfv+7hb5ByzoAPkFEtmPEVA=;
- b=ibS6fictacpLKXf9ANoRbzUl8mAr0nw7a1CdhBB3DzGmA5zeUYQOYbC6IHC1xmHk4B
- gnoeBS5eqNp8K5/dNNWlBq5VwWDA3W4z3hrXPApD3QgfbpXkVMiZvXhT1T+sxlDLHdsK
- xTJJtWD3+cboOnhdVERwcQjCwtVymGoDlHgfsQbrIHaP/yGyfvM11ju7TQaDYk2nGvrg
- 1Ulhg+wT+KXaJCqU3Bb9pr2e1JHM3I0GN0yuBK5Nj58ftNiUcL+tAs2TMm2VbY2IRaJm
- K5Q5nZYpaHAjT9VGKIv35TbkqcYcMXQ+z5GM1Q2hPfm3g6MUnD7KJtJ6UkyC2gI1My8f
- JkdA==
+ bh=1G7hSFteNb8Ei9umQoeYx+vzWa3qyKqrpQiR8QrHJCs=;
+ b=FlyyNAkSHufQfwcTRd+jYMeYT2yz7J0+vUsd+vLuOgGWASm46n+H9+8Y8v09P1aR+a
+ i2vrAhwBYCQq6G2RV0I7levX/irgTosYveY9SoTgJXHDn1jF/c3EzPrUz5EcLCmkkyqt
+ jcJBs44/woP+1XvXmqXgaI2RfR22lYAEJbJAyBZLLyGuivHBmoLVIUlnHyKnffjIFdjn
+ ftKxB8OJeGsVRLnco1VrGFENDvlneubgmlSyekNrisWFB/yR08RIh+Ey1XQO6+7vP7cp
+ iLn2tp9Xyhbt9DIsXV7BrlpB9laZHV+nEH9SSBNQDuvrGCPiklSbldrQFhHPUsvJgMeX
+ udyQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU284TvZorRllxx/gfk0KfjHdocxNOy9LjRz9WIHuYQ+fm1bfw2l4CFD0JPZggfZ1T/pZznIx/NxA==@nongnu.org
-X-Gm-Message-State: AOJu0Yxp08slqXq0Rn1AiBz0fU9IKwRfb4di9rA0+iLzBlMHcyLbEzA0
- EZO4C+NDmekfU1GCHkrgxX1syiXZCgxDJZCgzUC1+4LFhpNBsdsQuc119tDI
-X-Gm-Gg: ASbGncslFs081OuhQN5jvRlV3Np+OSAcOAfRXI/x7sWNMfXblyiHGGOjm8YApZDeLg9
- dIZOBlQInoFb+33aeHRDo4Pd6oQafgAAStKqsEOP8oMvwAD9yFGONVM1RJ9EqYx6QCzbwQ8n9nb
- NcLgmJGxU1nP5jenZLTu4e22nZI2ZF9PlqGnjxkDbbFrceEhcfm+sEN7kXgfL9ZGHqCuerOkoG7
- CupWFRG2icK2aBe81AQE78ra4aAEx9k60aREgmtZqyhAUDHh9rte7luCVM8wfu7hG6hmU+Z1CDl
- qEWXR0jQiTlZbT3lnteOTeR5yvr35i3JoVsb6uRam4bLTBouGWzN1X1winBCtOGiQYo=
-X-Google-Smtp-Source: AGHT+IGmZzSU37v1cJSEPDwzraMCy7qKeCYt1s/NiEPp4sykw39xgGCTQyycokvd6NKvByWJ6zNJgA==
-X-Received: by 2002:a17:907:d9f:b0:ac3:8d37:b33b with SMTP id
- a640c23a62f3a-ac38d37b37emr358706766b.13.1742303411992; 
- Tue, 18 Mar 2025 06:10:11 -0700 (PDT)
+ AJvYcCWFT80MLp6MegScCrTA9QcfVdR8lZs8EOXzX94sJOT6txODUcchrirDtzvzPatCNsAVPxFwy5TT9Q==@nongnu.org
+X-Gm-Message-State: AOJu0YzcUTgA3L4+BPYb9zbmAFnDuemwNRambKIw4Yhp9Kf6I14g5Cy6
+ jNlQhFKe55O3eVlBdQc9byz98T/8NrtiMUVlhnawdEB6mu10W0oC+jv/syog
+X-Gm-Gg: ASbGncvb2UDAts3GiJIOj8B5qHenSjXT/bDaZP4HyhGIBgG/X8CSYALGFa25Gw2O2OQ
+ S/BZHSaMfPD5bRTw21bHPWbTmR7HOX8aPLRpBBqXw08OHd1X6O9e3EM9kv+pWV9rJhXW0rBiE8W
+ z/7Zx7ZKXgSvbw6sCevuYKQ8rYYnou/W9X88KOTFSKAPxkmaYfVs2feywkESdj1Smh6HR1BECmf
+ Es8N0hX5e3G74xmCzl6U+FcMicXJzrgxZAYgRweuwLUYeFjKRiLRsAiFWf74vJaNyxGyT02SK4b
+ /WjFffAHPLEr0YYezaSLPOBkZtO6dvFTB1bw20gUSXStQR1AylMoZ+WffyzvYfm/Aoo=
+X-Google-Smtp-Source: AGHT+IHfFobVjvuuug6M3ImzyoJ7UeMyS3NRx2uUbsMvRum4kfiIaMbCen3uCkRrcGqJCw88XHPG7w==
+X-Received: by 2002:a17:906:6a0a:b0:ac2:9c7d:e144 with SMTP id
+ a640c23a62f3a-ac3303f770amr1898767966b.40.1742303419230; 
+ Tue, 18 Mar 2025 06:10:19 -0700 (PDT)
 Received: from corvink-nb.beckhoff.com ([195.226.174.194])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3147f3101sm850678066b.69.2025.03.18.06.10.06
+ a640c23a62f3a-ac3147f3101sm850678066b.69.2025.03.18.06.10.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Mar 2025 06:10:06 -0700 (PDT)
+ Tue, 18 Mar 2025 06:10:18 -0700 (PDT)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org
@@ -70,18 +70,17 @@ Cc: =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
  Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  Paolo Bonzini <pbonzini@redhat.com>, YannickV <Y.Vossen@beckhoff.com>
-Subject: [PATCH 05/21] hw/dma/zynq: Notify devcfg on FPGA reset via SLCR
- control
-Date: Tue, 18 Mar 2025 14:07:56 +0100
-Message-ID: <20250318130817.119636-6-corvin.koehne@gmail.com>
+Subject: [PATCH 06/21] hw/dma/zynq-devcfg: Simulate dummy PL reset
+Date: Tue, 18 Mar 2025 14:07:57 +0100
+Message-ID: <20250318130817.119636-7-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250318130817.119636-1-corvin.koehne@gmail.com>
 References: <20250318130817.119636-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,99 +105,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: YannickV <Y.Vossen@beckhoff.com>
 
-When the FPGA_RST_CTRL register in the SLCR (System Level Control
-Register) is written to, the devcfg (Device Configuration) should
-indicate the finished reset.
+Setting PCFG_PROG_B should reset the PL. After a reset PCFG_INIT
+should indicate that the reset is finished successfully.
 
-Problems occure when Loaders trigger a reset via SLCR and poll for
-the done flag in devcfg. Since the flag will never be set, this can
-result in an endless loop.
-
-A callback function `slcr_reset_handler` is added to the
-`XlnxZynqDevcfg` structure. The `slcr_reset` function sets the
-`PCFG_DONE` flag when triggered by an FPGA reset in the SLCR.
-The SLCR write handler calls the `slcr_reset` function when the
-FPGA reset control register (`R_FPGA_RST_CTRL`) is written with
-the reset value.
+In order to add a MMIO-Device as part of the PL in the Zynq, the
+reset logic must succeed. The PCFG_INIT flag is now set when the
+PL reset is triggered by PCFG_PROG_B. Indicating the reset was
+successful.
 
 Signed-off-by: Yannick Voßen <y.vossen@beckhoff.com>
 ---
- hw/dma/xlnx-zynq-devcfg.c         |  7 +++++++
- hw/misc/zynq_slcr.c               | 16 ++++++++++++++++
- include/hw/dma/xlnx-zynq-devcfg.h |  1 +
- 3 files changed, 24 insertions(+)
+ hw/dma/xlnx-zynq-devcfg.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/dma/xlnx-zynq-devcfg.c b/hw/dma/xlnx-zynq-devcfg.c
-index 03b5280228..611a57b4d4 100644
+index 611a57b4d4..c44b802b22 100644
 --- a/hw/dma/xlnx-zynq-devcfg.c
 +++ b/hw/dma/xlnx-zynq-devcfg.c
-@@ -138,6 +138,11 @@ static void xlnx_zynq_devcfg_update_ixr(XlnxZynqDevcfg *s)
-     qemu_set_irq(s->irq, ~s->regs[R_INT_MASK] & s->regs[R_INT_STS]);
- }
+@@ -49,6 +49,7 @@
  
-+static void slcr_reset (DeviceState *dev) {
-+    XlnxZynqDevcfg *s = XLNX_ZYNQ_DEVCFG(dev);
-+    s->regs[R_INT_STS] |= R_INT_STS_PCFG_DONE_MASK;
-+}
-+
- static void xlnx_zynq_devcfg_reset(DeviceState *dev)
- {
-     XlnxZynqDevcfg *s = XLNX_ZYNQ_DEVCFG(dev);
-@@ -374,6 +379,8 @@ static void xlnx_zynq_devcfg_init(Object *obj)
-     XlnxZynqDevcfg *s = XLNX_ZYNQ_DEVCFG(obj);
-     RegisterInfoArray *reg_array;
+ REG32(CTRL, 0x00)
+     FIELD(CTRL,     FORCE_RST,          31,  1) /* Not supported, wr ignored */
++    FIELD(CTRL,     PCFG_PROG_B,        30,  1)
+     FIELD(CTRL,     PCAP_PR,            27,  1) /* Forced to 0 on bad unlock */
+     FIELD(CTRL,     PCAP_MODE,          26,  1)
+     FIELD(CTRL,     MULTIBOOT_EN,       24,  1)
+@@ -116,6 +117,7 @@ REG32(STATUS, 0x14)
+     FIELD(STATUS,   PSS_GTS_USR_B,      11,  1)
+     FIELD(STATUS,   PSS_FST_CFG_B,      10,  1)
+     FIELD(STATUS,   PSS_CFG_RESET_B,     5,  1)
++    FIELD(STATUS,   PCFG_INIT,           4,  1)
  
-+    s->slcr_reset_handler = slcr_reset;
-+
-     sysbus_init_irq(sbd, &s->irq);
- 
-     memory_region_init(&s->iomem, obj, "devcfg", XLNX_ZYNQ_DEVCFG_R_MAX * 4);
-diff --git a/hw/misc/zynq_slcr.c b/hw/misc/zynq_slcr.c
-index a766bab182..9b3220f354 100644
---- a/hw/misc/zynq_slcr.c
-+++ b/hw/misc/zynq_slcr.c
-@@ -26,6 +26,7 @@
- #include "qom/object.h"
- #include "hw/qdev-properties.h"
- #include "qapi/error.h"
-+#include "hw/dma/xlnx-zynq-devcfg.h"
- 
- #ifndef ZYNQ_SLCR_ERR_DEBUG
- #define ZYNQ_SLCR_ERR_DEBUG 0
-@@ -576,6 +577,21 @@ static void zynq_slcr_write(void *opaque, hwaddr offset,
-         zynq_slcr_compute_clocks(s);
-         zynq_slcr_propagate_clocks(s);
-         break;
-+    case R_FPGA_RST_CTRL:
-+        if (val == 0) {
-+            Object *devcfgObject =
-+                    object_resolve_type_unambiguous("xlnx.ps7-dev-cfg", NULL);
-+            if (!devcfgObject) {
-+                break;
-+            }
-+            DeviceState *devcfg = OBJECT_CHECK(DeviceState, devcfgObject,
-+                                               "xlnx.ps7-dev-cfg");
-+            XlnxZynqDevcfg *zynqdevcfg = XLNX_ZYNQ_DEVCFG(devcfg);
-+            if (zynqdevcfg) {
-+                zynqdevcfg->slcr_reset_handler(devcfg);
-+            }
-+        }
-+        break;
+ REG32(DMA_SRC_ADDR, 0x18)
+ REG32(DMA_DST_ADDR, 0x1C)
+@@ -209,6 +211,14 @@ static uint64_t r_ctrl_pre_write(RegisterInfo *reg, uint64_t val)
+             val |= lock_ctrl_map[i] & s->regs[R_CTRL];
+         }
      }
++
++    uint32_t pcfg_prog_b = FIELD_EX32(val, CTRL, PCFG_PROG_B);
++    if (pcfg_prog_b) {
++        s->regs[R_STATUS] |= R_STATUS_PCFG_INIT_MASK;
++    } else {
++        s->regs[R_STATUS] &= ~R_STATUS_PCFG_INIT_MASK;
++    }
++
+     return val;
  }
  
-diff --git a/include/hw/dma/xlnx-zynq-devcfg.h b/include/hw/dma/xlnx-zynq-devcfg.h
-index 2ab054e598..f48a630c5a 100644
---- a/include/hw/dma/xlnx-zynq-devcfg.h
-+++ b/include/hw/dma/xlnx-zynq-devcfg.h
-@@ -56,6 +56,7 @@ struct XlnxZynqDevcfg {
-     uint8_t dma_cmd_fifo_num;
- 
-     bool is_initialized;
-+    void (*slcr_reset_handler) (DeviceState *dev);
- 
-     uint32_t regs[XLNX_ZYNQ_DEVCFG_R_MAX];
-     RegisterInfo regs_info[XLNX_ZYNQ_DEVCFG_R_MAX];
 -- 
 2.49.0
 
