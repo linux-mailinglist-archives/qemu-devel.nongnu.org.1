@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C7BA674B8
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:16:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6784A674BB
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 14:16:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuWm3-0006Mz-Pq; Tue, 18 Mar 2025 09:14:28 -0400
+	id 1tuWlr-0005M9-Vr; Tue, 18 Mar 2025 09:14:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWkK-0002oi-Hz; Tue, 18 Mar 2025 09:12:41 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1tuWkL-0002qF-LU; Tue, 18 Mar 2025 09:12:42 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1tuWjv-00041B-Dl; Tue, 18 Mar 2025 09:12:17 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-ac25d2b2354so956880666b.1; 
- Tue, 18 Mar 2025 06:12:14 -0700 (PDT)
+ id 1tuWjw-00041J-Ur; Tue, 18 Mar 2025 09:12:18 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-ac2aeada833so1094994766b.0; 
+ Tue, 18 Mar 2025 06:12:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742303533; x=1742908333; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742303534; x=1742908334; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uSRHLk0R9GXiHfoVjL1DK6CsPsvWkZBDEdWUC+o27+M=;
- b=NtjiIbl4iLRZX6MDXeOSSTL6M5YuU5iKaWd4n7eqjfbAQct2LsXWRV9LAVtdfEq0LV
- pEZ7YWfLYdV++8OK+XV3S3m1vF1TmH1WFxubZ0NlIN5QvoHVt/uHShyuVommoduHNp9l
- E8vQP6puVMH978ju2QAV6uIwwi6IPLZ8W/v6FJLhaaMYQ56VFOD9vMlzKLtYyVbGmRo1
- DDm871QUOCNt60PiJdbUsLXXO2kOzxjK7Ac2KcYYF1u5Wme3HOFuol4egw0lvSI415Ps
- LxNDl4YBc8skMXVhERGHnWebY8vWz1egioGzIm+iQUm5+SJwZBGQOBXWq96ls1xNNCgJ
- 9ESA==
+ bh=thjTRy17yqeXC7hJLQ3q6JhWsNnlTRLfGO55CMsgDr8=;
+ b=c16QddkDenQayHHAkLf4oa/Ls3DNBZ5JfApZeHj/V2E0Y2J8eD9sGFdq1Z3OTi8pDI
+ gfO8mv0Q1bEm940+KnuoJqFUa+CNnsEyi7V7zj5CDJBLdlWBM2p64ppTlAS9KQG9+P77
+ Y9Opm82OFHCCTcxOyOhWdLg+5WWG/diU6TI6IXj7iAZHehYE2/KW5+VmNlQUodxjtmPt
+ ttMzliMelk9ToqoFzD0H2eQ0qul/d8yD92oRcYGZcSxnASe0a0YOj5EhOl6VQhWniWwI
+ zu2Ku3+cnfWUFaceoIqvywl3DYcZ3OzSnG2lS1/rFs0Iz4A7MiImlyWBqdTFIRhHzctL
+ 4C4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742303533; x=1742908333;
+ d=1e100.net; s=20230601; t=1742303534; x=1742908334;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uSRHLk0R9GXiHfoVjL1DK6CsPsvWkZBDEdWUC+o27+M=;
- b=dcCKpUw+lAnHVUWPESzB4VhhnPjsI8w2L19kE97Rj3H15s5TTE4lqMl9xY7JBzjYDr
- ac4j8SNI+4EVEnOATxSpyR8VSMabQ83/DgkOWW1JSAMkEhZHIqUbV1/uHeK6SPKnxSwN
- Y+P5Kkqa4c3t4loMx5zSL2YzDyYXDsUzcvvvwGKnY8o0Sa2/RSP4pU/Xq3DsCUOrg3t2
- 83gx9wWsQKgCZNpg2LbktaDc0M2cg1HgRV60BnMaQi5xroZQ/eKe1kYzEnjYm7ec8Epe
- Yoi88ibOceGc5J9ENVJFeAuvheXQ5IT7WcA0A0Ry0fuqrdS2KG7sPfnf5MuJ9jh40Ac+
- Frag==
+ bh=thjTRy17yqeXC7hJLQ3q6JhWsNnlTRLfGO55CMsgDr8=;
+ b=ihZGBnKh0RY+FlkcP/jWabFC+tRTxv9vX+m03OcY7AfbvO/7MVHXECvbYEsZDNkifr
+ MQXOomyp6fGIx3DNyOSCUXL5rX3dx4URMR3IjRa7JkMrlv8jlXoiHzChnySUPlm8yYTW
+ X0uBUL0g9GgXN6Jg67OiUIQgrqlmRgHAURNx79HM7ewrm+iV2G2R93l0878Z3zO2FTP0
+ xSbuScajiN+KnXrLgSmWi+0ClAQp+syc8TrILyX1kxoS0wTGtFWY46byWxh8tDeioDTe
+ nWJkg7ewtyLmXmwDMvuvO23fuV8Vs84kCiG1Cqz7/6M4CPRxLpVA3SRQKl5dmev7wIhK
+ +JPQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWjH9DiN9bneY2iVoPJqmirKyJS6fxVDXjisul6yF6k17+Zn/P0amkBPkY2yc5FEm15s5nUB8PN/g==@nongnu.org
-X-Gm-Message-State: AOJu0YymqBChaQnHupqNb39Ok0jlHSdbLeAn67kOyCjz8UF3fFaONkZY
- 3x7oLOBsR1SgP2DikA4LbawTub2FDAjdJZaafw9rgJyjfLv0TBinl70K6R1y
-X-Gm-Gg: ASbGncursttJHPm127FIywWsT2hAmRLCNpFwqtNR0qj+psNFKu6V0fWtiW/hW9M8uk9
- 74H2rAUo1RN05GYe6yV1hYXPIpcA0b0Nc/YK5CJC0HxBNhcih6JHQ5Ci/fsWhZEB2x9xLOC6x3H
- PZulzrgwJlAYLkFpjiBqAG936TX6D7xeybE0tO7DJHlXs42XxHKj2qt2F7OzmwIMyih8xiO0fYm
- v9H3989Sz6dzHHumqFnTPTh6rZ1w1iS2R1bcs5tYvj0EddxRX7cmum0+Xx/YwbMLe9s6U3w/X6q
- ibfQWFdISLJQFcd+eZ1Xqgw7Zf721P+CX5qHhOz0V0NjVOxZenmQW5fTYZc95JGlI1s=
-X-Google-Smtp-Source: AGHT+IHbHSM9/eDTy6KTx6nQhcN7grYEwNg5n62I7IDr9T4nnse0jfwO6SAZqcZhCE6HiSIJRsqqNg==
-X-Received: by 2002:a17:907:6d0f:b0:abf:457e:cef1 with SMTP id
- a640c23a62f3a-ac330442e09mr1846487266b.40.1742303523249; 
- Tue, 18 Mar 2025 06:12:03 -0700 (PDT)
+ AJvYcCXCcFoDcauZwi0PMZs+9gNH+H3FlZFTEZGwfnxa96IJ4UBUwTFkSi91rsq4qhqnUygM20rjmuqu+g==@nongnu.org
+X-Gm-Message-State: AOJu0Yw81DENe321HmPsbfiwijq4kth0S7Nas+NtY0+XHNl3P2vx5tt4
+ vFIA01ACxtljrvpyccrbu3GxpMw+TcNYjTdgC9EDz1cR8YMsgz6ddE1fvlgN
+X-Gm-Gg: ASbGncu7SrXm9MgM27VWX5Xol04E0yNqO6bKAZD3wodMU47ULqBYANYzFWpO+/MRrW1
+ 7Zw/3F0txkPdO+2HHjuN7sgvdnF96MgslTBdsbYRz6mVZwmRMX3VDoLlQKu0lE68coyvzF9h9w4
+ PNkD8iuXlYj2VVSLD+PezzZwRk1tcf6HpWHSVoqmUJJCjaeXptlam2a3OY/oJUJ+2bABgN2H3sc
+ xuR4PonFAvzZE0e4BAGxNCvemuiTlxPl63mLVxM71DO7THOziWHH5RS3OsSEi3KSMMB1vRoN4o5
+ 6UzacxHc8BOT/W90k0gN4SpI4lWkZREAzsFbyyUK3T6Y5zXY47nw1weuOE6z10QB9/OCwK2m65D
+ Ibg==
+X-Google-Smtp-Source: AGHT+IFWh7K6FTJ9EfxAuzqL9izAfxIeFOjUOlr/N83G9SMhg8w+wNRbH0z8Y/VRza/Mx24k2k00ZA==
+X-Received: by 2002:a17:907:2da6:b0:ac1:e45f:9c71 with SMTP id
+ a640c23a62f3a-ac38f709234mr314946466b.1.1742303533896; 
+ Tue, 18 Mar 2025 06:12:13 -0700 (PDT)
 Received: from corvink-nb.beckhoff.com ([195.226.174.194])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3147f3101sm850678066b.69.2025.03.18.06.12.02
+ a640c23a62f3a-ac3147f3101sm850678066b.69.2025.03.18.06.12.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Mar 2025 06:12:02 -0700 (PDT)
+ Tue, 18 Mar 2025 06:12:13 -0700 (PDT)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
- qemu-arm@nongnu.org
+To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  Alistair Francis <alistair@alistair23.me>,
- Paolo Bonzini <pbonzini@redhat.com>, YannickV <Y.Vossen@beckhoff.com>
-Subject: [PATCH 20/21] hw/arm/beckhoff_CX7200: Add dummy DDR CTRL to CX7200
-Date: Tue, 18 Mar 2025 14:08:11 +0100
-Message-ID: <20250318130817.119636-21-corvin.koehne@gmail.com>
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 21/21] MAINTAINERS: add myself as reviewer for Beckhoff devices
+Date: Tue, 18 Mar 2025 14:08:12 +0100
+Message-ID: <20250318130817.119636-22-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250318130817.119636-1-corvin.koehne@gmail.com>
 References: <20250318130817.119636-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,48 +103,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: YannickV <Y.Vossen@beckhoff.com>
+From: Corvin Köhne <c.koehne@beckhoff.com>
 
-The CX7200 polls for statusregisters in the DDR Controller.
-To avaid endless polling loops, a dummy DDR Controller is
-added.
+I don't have commit privileges, so I can't merge any changes. However, someone
+from Beckhoff should review changes made to their board emulations.
 
-Signed-off-by: Yannick Voßen <y.vossen@beckhoff.com>
+Signed-off-by: Corvin Köhne <c.koehne@beckhoff.com>
 ---
- hw/arm/beckhoff_CX7200.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/hw/arm/beckhoff_CX7200.c b/hw/arm/beckhoff_CX7200.c
-index 0fe03f570f..8c1379aab4 100644
---- a/hw/arm/beckhoff_CX7200.c
-+++ b/hw/arm/beckhoff_CX7200.c
-@@ -141,6 +141,17 @@ static void ccat_init(uint32_t base)
-     sysbus_mmio_map(busdev, 0, base);
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8f470a1c9b..88d1d51e2a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -720,6 +720,13 @@ F: hw/arm/b-l475e-iot01a.c
+ F: hw/display/dm163.c
+ F: tests/qtest/dm163-test.c
  
-+static void ddr_ctrl_init(uint32_t base)
-+{
-+    DeviceState *dev;
-+    SysBusDevice *busdev;
++Beckhoff CX7200
++R: Corvin Köhne <c.koehne@beckhoff.com>
++L: qemu-arm@nongnu.org
++S: Supported
++F: hw/arm/beckhoff_CX7200.c
++F: hw/misc/beckhoff_ccat.c
 +
-+    dev = qdev_new("zynq.ddr-ctlr");
-+    busdev = SYS_BUS_DEVICE(dev);
-+    sysbus_realize_and_unref(busdev, &error_fatal);
-+    sysbus_mmio_map(busdev, 0, base);
-+}
-+
- static inline int beckhoff_cx7200_init_spi_flashes(uint32_t base_addr,
-                                         qemu_irq irq, bool is_qspi, int unit0)
- {
-@@ -326,6 +337,8 @@ static void beckhoff_cx7200_init(MachineState *machine)
- 
-     ccat_init(0x40000000);
- 
-+    ddr_ctrl_init(0xF8006000);
-+
-     /*
-      * Compatible with:
-      * - SD Host Controller Specification Version 2.0 Part A2
+ Exynos
+ M: Igor Mitsyanko <i.mitsyanko@gmail.com>
+ M: Peter Maydell <peter.maydell@linaro.org>
 -- 
 2.49.0
 
