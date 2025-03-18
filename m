@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E98BA67B5F
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 18:50:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF22A67B64
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 18:52:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tub4D-0007Ex-K2; Tue, 18 Mar 2025 13:49:29 -0400
+	id 1tub61-00086E-Ha; Tue, 18 Mar 2025 13:51:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tub3o-00076t-T0
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 13:49:18 -0400
-Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
+ id 1tub5Z-0007sd-Hc
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 13:51:07 -0400
+Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tub3m-0001gY-8L
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 13:49:04 -0400
-Received: by mail-yb1-xb2a.google.com with SMTP id
- 3f1490d57ef6-e5372a2fbddso4712696276.3
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 10:48:28 -0700 (PDT)
+ id 1tub5X-00024s-Ms
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 13:50:53 -0400
+Received: by mail-yb1-xb33.google.com with SMTP id
+ 3f1490d57ef6-e5372a2fbddso4714631276.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 10:50:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742320107; x=1742924907; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742320224; x=1742925024; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GEl+rBbulfCvdsYq0HFcMiL7cJUjiyQsWfYOMDRHzFE=;
- b=Tmdq5a/PAfKwYCXZTP6ui8e27kQDkyHAOcHs7U4f4a6iA5w+KLsio86M97c6md/Zmf
- JsPj9INqF0ugu/rH1NIp6n2v+wlbtF/9JHvbUvTLLbxjTBGUVJgCjCVRHn7W4KkH1mH4
- o0+k01mYnuuJPhZQavrqOD0kcCloSDocLo6is850/u5caf6LqlB0PFToWqowtkt1oEAr
- dh3fQLI/FF50ldUFn5nFQoM7e1sDRHHQY433JFpNQwSqSbl9wVTYacus2wQOnB1ElidF
- 6jwaYrgPaeVOW085Lvy0VR0ZrjIG7wW04Rmve2Wm8MJILKVtQkvSwKX8U9+G4PJIO6Wk
- vmSg==
+ bh=OvJ1Chpj2jYmxujQHwHr5y5q3DIlYijmy0IxxUrM06M=;
+ b=lJQCebEnfbtY4uoCQ8S2u4jcYHTuPseRAnQnP9i/Q6aMZ6vjtqQCWL6ROnzQl2QXaE
+ Jcvj1GCBPuyubWzvYKvjuQOxpSK2D5bk27vYhcZHjfUc5ZdNICmwJzxz4nDoPMIAsQpy
+ PZWI0DQPSsWO2obr4/biV90YrUtIZSDq6Qe21THZRhXjJFU4dljkqFomppURtYZB3UY8
+ TpOtsktLLiDa41Y6T4b4kP7AJ47AItB7eTyzoai3kh9tmgDT4+q5NKoGUrrWkJt99NoK
+ yzX4Pf1/PqcoQe4Gyi3bO8CVAN+UzJI8WyjFe6+t5+5+98TwDS81/OX2K8kFz60GEll4
+ DhwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742320107; x=1742924907;
+ d=1e100.net; s=20230601; t=1742320224; x=1742925024;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GEl+rBbulfCvdsYq0HFcMiL7cJUjiyQsWfYOMDRHzFE=;
- b=gD+T0l0mcOSPCOMju8Otd4m1U0XeBrq2JzFwx7bTVUg+6x7uEgMRRk1C7U8wrSqR6G
- O2gDqFizsLa9+CEU7x6qm4NsJ728o39l2Yl4ZMqylKI8Soy0syenCgYqTYj8TTzMjGLy
- ZuW9Kc2WwsVOd0dF2oFCoD5/Mo6boY9e1mRXRCLZ/xxAl0omzorY5ySmwGBkW3kN8IjB
- D2G7HFofvydZ2t3gUNDdIBQPRTpDOnMIbf1TWs/DEt4MytxJ7ic7gLAxQPGwBAxsKzHT
- iBGaPvtQs0KoJP84e7njXXMF8H4p6Qr2QC+vR9FRLXct9h/Wew9bihDMF+ubROad0RNH
- t8Mw==
+ bh=OvJ1Chpj2jYmxujQHwHr5y5q3DIlYijmy0IxxUrM06M=;
+ b=IK88NYf79VRBnNVsKR5tUkBS0RzzkFhzV8H9H94JoRTwb5TQujKQxTTpcfsTO1lrdS
+ mPKtboWKODJrLaIwLzXT932YiVU2bMrdqVYwt4SKhgqplA96IzTd8HUyT0cE9MReohPl
+ jSCJWnSd4dqryk6tSGcIWnT1sjA4fnaaNgbSAlo8WAUAneStU9pdXKDZbF+9xyRBXiE8
+ V8Vy3JxFKwCpWILvkhBHeLZtrfry5ei3/ojaSdgX3jSo2AionEILxQuYscDqN3Dx4ZJX
+ 64gMjcgoex5J7GwWT95kiStRm1/aBVXqW3tXIsobODd2t0MumvCX6HtyNesst2OSswnX
+ 3RDA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXuNpXETM+Hhn5vaG51Glm97HECrZ0ERb4PFE4DtNF8mfFLqC7CGv+uIJfM5O6P2qb4UwIerrScxtYA@nongnu.org
-X-Gm-Message-State: AOJu0Yz+mhTqsl7rttFOJE3Sx198WkrdnztlzltUcl403peCthBwbBaI
- nbVTkTnuTkJy2uZ8MeOaVO4eE3n9+EVMUIlzFYuqn5Txe6W8z7pBZ2IoZhEyO8J+oFiuM2HFdMd
- hfXfylKDDblGQb9BE4GnYE5ybjXTuTrK4Gm1meQ==
-X-Gm-Gg: ASbGnct5sw2R1tBbWdXbPl4TEPKt91XZrZFGXS9n3YZ2EowDcOC+nrGB1x31rZIFO4O
- ROd0ivKxqNvZHZCPzR9jYpZGK3zwiO2291ak/20W7lGRBW/K/i6Lbg/cpX6j/hqGeEiwdM+eyho
- Kb2tq6q49pNcS/o+z/wCSrwK9kQSA=
-X-Google-Smtp-Source: AGHT+IFNQ7+zX9lCeGAbyD0+/uukSBmf3ZQqQ4nTELErgpVG5xbjxtprlqALWNuWBtsNuZS4/50OQfrD4PeUiLRKN1A=
-X-Received: by 2002:a05:6902:2502:b0:e5d:c6e8:2e32 with SMTP id
- 3f1490d57ef6-e6679026961mr293254276.24.1742320107372; Tue, 18 Mar 2025
- 10:48:27 -0700 (PDT)
+ AJvYcCUvqX1JG1USF+L146HPOsySxVlxJOCPJlXEHND0wW8K+0Mjn5Ri/tVjdMjXYorHI1vThsdgOpseFMHG@nongnu.org
+X-Gm-Message-State: AOJu0YxtuZnCswGxDbafYShhsHx6S8vpU3bBdSjM687iYsOLnuVDSHkN
+ YZBi4dmSCeJUa3pxP7/dcuIAEygmRz/1qn5QTiked9id8AQm8UBmkFgE5bdyYzmiQGEE865DZmJ
+ rVPrWSoCSPe9C5Lq9Ag94B1sZpnv9SFw4YsnSFw==
+X-Gm-Gg: ASbGncuNN1jiNdrKaoNHWL52b43hxHn6LhfohvMG9HyEZPyEN9IACh/QNEEDcbsKvy0
+ zeIu7+QFquj4sU0x1pA/k4NUflDTTnttOLGewSxyS3YGkLZn7+FYMvGmVVsjYFcN0z53bBZ/CMe
+ xYVHAh/ZQPdKeHuH4SsRHn49RdK6E=
+X-Google-Smtp-Source: AGHT+IGorLR4vpvSPH7Y1YAxXeFqCzaxkKZMA/+kwGP1IAahctRspftJyPmwcr0ynAjnueUx7zlU29wbFehiSxJqtI8=
+X-Received: by 2002:a05:6902:4812:b0:e65:c4be:6fb9 with SMTP id
+ 3f1490d57ef6-e6679026c82mr264264276.25.1742320223682; Tue, 18 Mar 2025
+ 10:50:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <mvm1puuiqvu.fsf@suse.de>
- <ff0cde0c-67d7-4fc3-8996-ad0e8645deed@gmx.de>
- <CAFEAcA_-fODgkxLLCNf3XHBU=EvGgKx4qcE_PqNt8-4jwqnqVw@mail.gmail.com>
- <Z9lf7lniMWzoy6uS@redhat.com> <mvmmsdih5zi.fsf@suse.de>
- <Z9lqcQGdIsjUHeVJ@redhat.com>
- <CAFEAcA9r0GKWG2_w20HxbXz+MhdsraxCa=RvzaVYO+gd2DEY4Q@mail.gmail.com>
- <Z9l7J0oZ8GAEqaMP@redhat.com>
- <CAFEAcA_ZBz3yvUYo5WhqmKRqCm+Jy1R01pshtU0NPRzzbP4hYQ@mail.gmail.com>
- <CAFEAcA-=FaNSQOSG3iFua30baATRvjBQPd5TfG6fBqJrFBFuYA@mail.gmail.com>
- <Z9mq6BtHD4YMGlE3@redhat.com>
-In-Reply-To: <Z9mq6BtHD4YMGlE3@redhat.com>
+References: <20250318045125.759259-1-pierrick.bouvier@linaro.org>
+ <20250318045125.759259-12-pierrick.bouvier@linaro.org>
+ <8a24a29c-9d2a-47c9-a183-c92242c82bd9@linaro.org>
+In-Reply-To: <8a24a29c-9d2a-47c9-a183-c92242c82bd9@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 18 Mar 2025 17:48:14 +0000
-X-Gm-Features: AQ5f1JohsrGYwOaxHvKrloFzKwZz3bGITzRwk0DT85VBweeaWfF_7zaFN1t-zO0
-Message-ID: <CAFEAcA9gRT1z2yokut9hLAQjF4cuG4Woy7D2f=ZF=-3HoW6p=A@mail.gmail.com>
-Subject: Re: Generic way to detect qemu linux-user emulation
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Andreas Schwab <schwab@suse.de>, Helge Deller <deller@gmx.de>,
- qemu-devel@nongnu.org
+Date: Tue, 18 Mar 2025 17:50:11 +0000
+X-Gm-Features: AQ5f1Jq64ZMc3wNHD96Q-O52LvCc-sDu2DSilR-8cUO11vSS_VSAPQPzax2vqWI
+Message-ID: <CAFEAcA--jw3GmS70NTwviAEhdWeJ1UXE+ucNSkR60BXk6G8B6g@mail.gmail.com>
+Subject: Re: [PATCH 11/13] target/arm/cpu: remove inline stubs for aarch32
+ emulation
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-arm@nongnu.org, alex.bennee@linaro.org, kvm@vger.kernel.org, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b33;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,64 +101,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 18 Mar 2025 at 17:18, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
+On Tue, 18 Mar 2025 at 17:42, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
 >
-> On Tue, Mar 18, 2025 at 05:08:52PM +0000, Peter Maydell wrote:
-> > On Tue, 18 Mar 2025 at 15:04, Peter Maydell <peter.maydell@linaro.org> =
-wrote:
-> > > More generally, AIUI glibc expects that it has control over what's
-> > > happening with threads, so it can set up its own data structures
-> > > for the new thread (e.g. for TLS variables). This email from the
-> > > glibc mailing list is admittedly now two decades old
-> > > https://public-inbox.org/libc-alpha/200408042007.i74K7ZOr025380@magil=
-la.sf.frob.com/
-> > > but it says:
-> > >
-> > > # Basically, if you want to call libc functions you should do it from=
- a
-> > > # thread that was set up by libc or libpthread.  i.e., if you make yo=
-ur own
-> > > # threads with clone, only call libc functions from the initial threa=
-d.
+> On 18/3/25 05:51, Pierrick Bouvier wrote:
+> > Directly condition associated calls in target/arm/helper.c for now.
 > >
-> > I spoke to some glibc devs on IRC and they confirmed that this
-> > remains true for modern glibc: because glibc needs to set up
-> > things like TLS on new threads, you can't mix your own direct
-> > calls to clone() with calls to glibc functions.
+> > Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> > ---
+> >   target/arm/cpu.h    | 8 --------
+> >   target/arm/helper.c | 6 ++++++
+> >   2 files changed, 6 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> > index 51b6428cfec..9205cbdec43 100644
+> > --- a/target/arm/cpu.h
+> > +++ b/target/arm/cpu.h
+> > @@ -1222,7 +1222,6 @@ int arm_cpu_write_elf32_note(WriteCoreDumpFunctio=
+n f, CPUState *cs,
+> >    */
+> >   void arm_emulate_firmware_reset(CPUState *cpustate, int target_el);
+> >
+> > -#ifdef TARGET_AARCH64
+> >   int aarch64_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int=
+ reg);
+> >   int aarch64_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int r=
+eg);
+> >   void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq);
+> > @@ -1254,13 +1253,6 @@ static inline uint64_t *sve_bswap64(uint64_t *ds=
+t, uint64_t *src, int nr)
+> >   #endif
+> >   }
+> >
+> > -#else
+> > -static inline void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq=
+) { }
+> > -static inline void aarch64_sve_change_el(CPUARMState *env, int o,
+> > -                                         int n, bool a)
+> > -{ }
+> > -#endif
+> > -
+> >   void aarch64_sync_32_to_64(CPUARMState *env);
+> >   void aarch64_sync_64_to_32(CPUARMState *env);
+> >
+> > diff --git a/target/arm/helper.c b/target/arm/helper.c
+> > index b46b2bffcf3..774e1ee0245 100644
+> > --- a/target/arm/helper.c
+> > +++ b/target/arm/helper.c
+> > @@ -6562,7 +6562,9 @@ static void zcr_write(CPUARMState *env, const ARM=
+CPRegInfo *ri,
+> >        */
+> >       new_len =3D sve_vqm1_for_el(env, cur_el);
+> >       if (new_len < old_len) {
+> > +#ifdef TARGET_AARCH64
 >
-> Using clone() directly is done by a number of projects (systemd, libvirt,
-> podman/docker/runc, etc) that want to create containers, while freely usi=
-ng
-> arbitrary glibc calls in the program. You do need to be careful what glib=
-c
-> functions you run in the child after clone, but before execve though.
+> What about using runtime check instead?
+>
+>   if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64) && new_len < old_len) {
+>
 
-Yes, if you don't call glibc functions in the child that's fine.
-If those other projects are calling some glibc functions post
-clone() in the child then I think they're relying on undocumented
-behaviour that might break on them in future...
+That would be a dead check: it is not possible to get here
+unless ARM_FEATURE_AARCH64 is set.
 
-> For the projects I mention, avoiding the danger areas is probably easier
-> than for QEMU, since QEMU has to theoretically cope with whatever madness
-> the guest program chooses to do, while those programs know exactly what
-> they will run between clone & execve.
-
-QEMU's structure also is that we assume we can freely call
-glibc functions as a result of TCG operations. So even if the
-child in the guest is very carefully doing absolutely no
-other library calls between clone and execve, QEMU itself
-will be doing them.
-
-> Wonder if its worth enquiring if glibc would be interested
-> in following musl's approach to make it more emulation friendly for
-> QEMU ?
-
-That would essentially be asking "please can you revert glibc
-commit 4b4d4056bb154603f36 ?", so probably not:
-
-https://sourceware.org/git/?p=3Dglibc.git;a=3Dcommit;h=3D4b4d4056bb154603f3=
-6
-
+thanks
 -- PMM
 
