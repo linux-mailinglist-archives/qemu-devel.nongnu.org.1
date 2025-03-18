@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337F0A67EE1
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90002A67EDE
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:37:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tueZf-0003d6-VL; Tue, 18 Mar 2025 17:34:12 -0400
+	id 1tueZb-0003OS-WB; Tue, 18 Mar 2025 17:34:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY3-0001Jn-PC
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:32 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1tueY3-0001JY-JC
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:31 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueY0-0000mz-Js
+ id 1tueY1-0000nB-If
  for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:31 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-22401f4d35aso116911585ad.2
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-223fd89d036so123813175ad.1
  for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742333547; x=1742938347; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742333548; x=1742938348; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7jrgt/XCMOgJKy403kS5/j6/fnymT1kJMQRDGV0b46U=;
- b=wTyaD2XFOMb3hiJ0XA4QcttjQogVcmZGxstSVc9Ps5eUC4nmRgwmdUl5C3vA7EhooP
- C2eaE1zWMdqNpME4u1JJeKs1RXIMpIXKzK6xQ+E0OAw9dYrtOT9J3qUQKI9s1egIm13l
- iSNAkYQuf5vS6AhT6n9dQM8Uql3DykPHPN4INjLZzcta5L4Hdobk70fkDOBFhIb0RE9w
- jD74LofdyDNNOOLPyc1nXiITGLXePCgCtEwR9O4BGHYVNnX2iQFgKZ8SsmN2kSvpVS+i
- fU7CvYH7UBvT7qVHiEvZNBy8ZsVoMqYcUVp5O6eFe9VWZUD1GJzZ45bqJrIoz2YXDmNz
- 1SuQ==
+ bh=ijlmz6/bRJsdkPdqsV+cz0ErI9CNddyOzeS8owSZGCU=;
+ b=mEGl4lUubWV+UkXvoxvF+isLcKd3fBOr0OOHmlbzcNVhsehjMGX2eoYSLw+ozgiLPA
+ WBSFbdV8pMF6OGMWIdH7Qx6RAT1vSbVs3B8E7EoNcgAu2wexoKnBmWtMJXx2ZHI177S9
+ 7jc5+ZNzckxp+9B+otiJVBGSnblBdLNRT4P+7k+gqTtawUCbsN560Z0Fk88a0J9c0ZnY
+ loT4A2ZeMFdKVaJM3cY9h9m/+Wa2bO3bnobejEySJswwgYWM/5Kr6tkkxio76uu7fDva
+ Nl9VM8MLs1grxlpC0ZYcx5jnvxAcJ6ZTQMlX7yK1aS4/JvRYgd1shJwosI56GHMwmCDv
+ JwSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742333547; x=1742938347;
+ d=1e100.net; s=20230601; t=1742333548; x=1742938348;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7jrgt/XCMOgJKy403kS5/j6/fnymT1kJMQRDGV0b46U=;
- b=SmEPO2aqqTqlP376hp1Q6vH4MzDT6ZNoqpO9U4BTmhsM9n4OZ/aqKvwNxpX7HsF7vK
- zaShCvPXyrwbAmmhKZGFMfDMidhOCT6xew/Ij/HNKLcQvu5W/kEcZP3XTNfCmamCKzg1
- 3dIQLImI/sRjtk0BwyBb3WbpNEOG0aMAwc1PSa5ktYTTG12I0tUUAe8kxXgZFwLsoFMh
- iUZz1lSvD06/LobeEjcEuX3MNN6xIhDX3FB9Fq9XM5GOgVGI+0dDVmFweFOUP6CqrxkE
- SvsJF3j8woK3Ilgxabpntf0Nbmxvv2tGVT2zx25UX8HPjoXqsimFQbFP6BaOWAjehFRt
- 6c4w==
-X-Gm-Message-State: AOJu0YzOYp4PY1uPrgoB8SAC8OVq27U8lXnBZl1IEGsC/vEaZSmtNJKk
- K+SFg9QsbCotfC3YKCI7uRbSBmGo2X4umMcvpzQAZZBGb0aiRIYGPy78Kubx7OTD3t11uc/BhX5
- k
-X-Gm-Gg: ASbGncuNVU6pLaAydBxp4Ck4Qn9ypBwZyWUWnIssa8sP6hJ/WuPUI5TsjZWT/+1dT8W
- BanSt14wgAS0Shq2Zxi4g3h4L5NVUmRVQL9OzBN4bhKJmIHWqIQWN4bzJP14wnCZBPFnTkNeBRH
- FpNConxfW8VjzRt/jTM/OpXICXltoGJZEG/vlhKppIG0zaC08jb0Arhdam9mjexf9KK7dpI+10i
- mE2KLiq94slmF+n/xHvw4pH7voweAJkGVWUPe74rjZ0FfV6m5c+KLXXshS7ZZ/J5/eLJbEyARkV
- xe8rUQ9290b9hpK9D3B7xiWLK1hZ2Xl0UxjIhpiZkpWIQlDVZFKRPZCUVyr3EI04+O4vfE09tsa
- s
-X-Google-Smtp-Source: AGHT+IHl/pBFPgJf6mYRTHGi/fnDcd19LWwmdOT8agijoHfQRgSHdqSLZY3mik4aOxH2tL6+ZXPkZQ==
-X-Received: by 2002:a05:6a21:62c6:b0:1f5:75a9:5257 with SMTP id
- adf61e73a8af0-1fbeb4a330amr354168637.13.1742333547296; 
+ bh=ijlmz6/bRJsdkPdqsV+cz0ErI9CNddyOzeS8owSZGCU=;
+ b=P+qkNOOD9K6xLhYOiOYLiFE3TVJMQWWpHyePIevml+U2HXWJHEKlNFe5hxTRo0LlHW
+ HV8yBkrClbaeGlxsdkJVcBSf3F8rR8f+D2QCeOa935AnGZsXoH5hQzVVJFnJ9CQTeaMC
+ mlNS150ihMGvLGsCVFkGR0qEQZeH+n5nO7GGG4ZMQFZpif/DDz/9Dvz+b/ZQnUERb2EV
+ pl7aBCeicHqv4T6x9NHVyrD/dvXJ3Temkhbnq0xPj0lGGOD2reaIqkHsKGj4K4Bwfwtx
+ dI22B8u1WNkP7laA6QcprHue2cjqh5NUxAgyPRirwB0fmTFYm5Jkw3Y//Ivm2S7LRypf
+ BheA==
+X-Gm-Message-State: AOJu0YyVCOKTc1Uzl6hzeWlINYczPqzOt6hm00iyNCg8VILbXXDIppXb
+ SJdoZCa3GRj8u5rNEfcFyVvCdGrX0vKi15WJlyo0odwPVftuLvBpOYcpog/yoALQLAIU2PE4May
+ /
+X-Gm-Gg: ASbGncs/v8GouhyvtLoMybARNQCmi21bOX2tFFP7yotCkcExwMYiFAxa5jjRAnnoVKT
+ 9JQ6hBRHpxe4FPnih83GW8TE/9x/J2RIUfdnUhyODjI4EFjT5lquk4ET5lPe76LSjRPfQhJ7Lp4
+ bFsh4wUnK1nKakI1cuqILnMVKrA0Zm9t7nSgI4pHFBK+9I3qA7rUwcUcGBwUihrj3r8TtAHMcSq
+ sR4xL7vpTLt+ePoouqcVkgn1hMyuh23bHUaO/ygmIRKYSxTYYUOoq7HiImO7KYN2ZPnBPLNO6uk
+ AteqK1c1PdF6QOAuJPMmbB50S803pyefUH00yMQX5vj+qFr/UQSpqAtaxK49jWp99adB05F0cry
+ W
+X-Google-Smtp-Source: AGHT+IFcBUWFL2YUfR5SZa8Gvy1HKBNjPn4LzA/nkJRXKcdG0X5o1CtaErCyV3+c+yOMxcthUSK6Og==
+X-Received: by 2002:a05:6a20:12d5:b0:1f5:a3e8:64dd with SMTP id
+ adf61e73a8af0-1fbe852bd0bmr445597637.0.1742333547926; 
  Tue, 18 Mar 2025 14:32:27 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.26
+ 41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Mar 2025 14:32:26 -0700 (PDT)
+ Tue, 18 Mar 2025 14:32:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH v2 23/42] meson: Introduce top-level libuser_ss and
- libsystem_ss
-Date: Tue, 18 Mar 2025 14:31:48 -0700
-Message-ID: <20250318213209.2579218-24-richard.henderson@linaro.org>
+Subject: [PATCH v2 24/42] gdbstub: Move syscalls.c out of common_ss
+Date: Tue, 18 Mar 2025 14:31:49 -0700
+Message-ID: <20250318213209.2579218-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250318213209.2579218-1-richard.henderson@linaro.org>
 References: <20250318213209.2579218-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,144 +99,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We already have two subdirectories for which we need
-to build files twice, for user vs system modes.
-Move this handling to the top level.
-
-This cannot be combined with user_ss or system_ss,
-because the formulation has not been extended to support
-configuration symbols.
+Copy to libuser_ss and libsystem_ss.
+This file uses semihosting/semihost.h, which has separate
+implementations with and without CONFIG_USER_ONLY.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- gdbstub/meson.build | 32 ++++++++------------------------
- meson.build         | 22 ++++++++++++++++++++++
- tcg/meson.build     | 23 ++---------------------
- 3 files changed, 32 insertions(+), 45 deletions(-)
+ gdbstub/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/gdbstub/meson.build b/gdbstub/meson.build
-index dff741ddd4..0e8099ae9c 100644
+index 0e8099ae9c..b25db86767 100644
 --- a/gdbstub/meson.build
 +++ b/gdbstub/meson.build
-@@ -4,32 +4,16 @@
- # types such as hwaddr.
- #
- 
--# We need to build the core gdb code via a library to be able to tweak
--# cflags so:
--
--gdb_user_ss = ss.source_set()
--gdb_system_ss = ss.source_set()
--
+@@ -7,15 +7,15 @@
  # We build two versions of gdbstub, one for each mode
--gdb_user_ss.add(files('gdbstub.c', 'user.c'))
--gdb_system_ss.add(files('gdbstub.c', 'system.c'))
-+libuser_ss.add(files(
-+  'gdbstub.c',
-+  'user.c'
-+))
+ libuser_ss.add(files(
+   'gdbstub.c',
++  'syscalls.c',
+   'user.c'
+ ))
  
--gdb_user_ss = gdb_user_ss.apply({})
--gdb_system_ss = gdb_system_ss.apply({})
--
--libgdb_user = static_library('gdb_user',
--                             gdb_user_ss.sources() + genh,
--                             c_args: '-DCONFIG_USER_ONLY',
--                             build_by_default: false)
--
--libgdb_system = static_library('gdb_system',
--                                gdb_system_ss.sources() + genh,
--                                build_by_default: false)
--
--gdb_user = declare_dependency(objects: libgdb_user.extract_all_objects(recursive: false))
--user_ss.add(gdb_user)
--gdb_system = declare_dependency(objects: libgdb_system.extract_all_objects(recursive: false))
--system_ss.add(gdb_system)
-+libsystem_ss.add(files(
-+  'gdbstub.c',
-+  'system.c'
-+))
+ libsystem_ss.add(files(
+   'gdbstub.c',
++  'syscalls.c',
+   'system.c'
+ ))
  
- common_ss.add(files('syscalls.c'))
- 
-diff --git a/meson.build b/meson.build
-index 7f75256acf..329e7f056a 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3666,12 +3666,14 @@ io_ss = ss.source_set()
- qmp_ss = ss.source_set()
- qom_ss = ss.source_set()
- system_ss = ss.source_set()
-+libsystem_ss = ss.source_set()
- specific_fuzz_ss = ss.source_set()
- specific_ss = ss.source_set()
- rust_devices_ss = ss.source_set()
- stub_ss = ss.source_set()
- trace_ss = ss.source_set()
- user_ss = ss.source_set()
-+libuser_ss = ss.source_set()
- util_ss = ss.source_set()
- 
- # accel modules
-@@ -4049,6 +4051,26 @@ common_ss.add(qom, qemuutil)
- common_ss.add_all(when: 'CONFIG_SYSTEM_ONLY', if_true: [system_ss])
- common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
- 
-+libuser_ss = libuser_ss.apply({})
-+libuser = static_library('user',
-+                         libuser_ss.sources() + genh,
-+                         c_args: '-DCONFIG_USER_ONLY',
-+                         dependencies: libuser_ss.dependencies(),
-+                         build_by_default: false)
-+libuser = declare_dependency(objects: libuser.extract_all_objects(recursive: false),
-+                             dependencies: libuser_ss.dependencies())
-+common_ss.add(when: 'CONFIG_USER_ONLY', if_true: libuser)
-+
-+libsystem_ss = libsystem_ss.apply({})
-+libsystem = static_library('system',
-+                           libsystem_ss.sources() + genh,
-+                           c_args: '-DCONFIG_SOFTMMU',
-+                           dependencies: libsystem_ss.dependencies(),
-+                           build_by_default: false)
-+libsystem = declare_dependency(objects: libsystem.extract_all_objects(recursive: false),
-+                               dependencies: libsystem_ss.dependencies())
-+common_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: libsystem)
-+
- # Note that this library is never used directly (only through extract_objects)
- # and is not built by default; therefore, source files not used by the build
- # configuration will be in build.ninja, but are never built by default.
-diff --git a/tcg/meson.build b/tcg/meson.build
-index 69ebb4908a..7df378d773 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -27,24 +27,5 @@ if host_os == 'linux'
-   tcg_ss.add(files('perf.c'))
- endif
- 
--tcg_ss = tcg_ss.apply({})
+-common_ss.add(files('syscalls.c'))
 -
--libtcg_user = static_library('tcg_user',
--                             tcg_ss.sources() + genh,
--                             dependencies: tcg_ss.dependencies(),
--                             c_args: '-DCONFIG_USER_ONLY',
--                             build_by_default: false)
--
--tcg_user = declare_dependency(objects: libtcg_user.extract_all_objects(recursive: false),
--                              dependencies: tcg_ss.dependencies())
--user_ss.add(tcg_user)
--
--libtcg_system = static_library('tcg_system',
--                                tcg_ss.sources() + genh,
--                                dependencies: tcg_ss.dependencies(),
--                                c_args: '-DCONFIG_SOFTMMU',
--                                build_by_default: false)
--
--tcg_system = declare_dependency(objects: libtcg_system.extract_all_objects(recursive: false),
--                                dependencies: tcg_ss.dependencies())
--system_ss.add(tcg_system)
-+libuser_ss.add_all(tcg_ss)
-+libsystem_ss.add_all(tcg_ss)
+ # The user-target is specialised by the guest
+ specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-target.c'))
 -- 
 2.43.0
 
