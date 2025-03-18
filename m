@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23932A67EC7
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:35:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F998A67ED9
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Mar 2025 22:37:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tueYJ-0001Q0-5k; Tue, 18 Mar 2025 17:32:48 -0400
+	id 1tueY8-0001KV-CS; Tue, 18 Mar 2025 17:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueXr-0001Eo-6z
+ id 1tueXr-0001Eu-QX
  for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:20 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tueXo-0000jF-FC
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:18 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-22349bb8605so137297715ad.0
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:15 -0700 (PDT)
+ id 1tueXo-0000jU-Vb
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 17:32:19 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-224171d6826so23860765ad.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 14:32:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1742333535; x=1742938335; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ed/f0ps4N0zqTL5jgBMLusXY9jc4rfpD8cqPEiyV4Ok=;
- b=FPEPPNDR0hhfETTnZu8IbJRR3AxGYLa0KnSS1kXE8Hz5N80cegoH1GgWQMdbn6nLbo
- 4bITSZeN+TMehyzmhK9opZqqscDtGU4ePnZ266G1v5aJrPNtWu+PuD/ARpxw3d83jZNB
- 4MUCwX1Qybo1i6Mv4LaX65M5H76fB2t1sNQDU6I/kA/n8SSGiXo6lDUkoHZb99Nfksjv
- 2ysJiXoYliW2MzRCoe5/TGLUP3TslTMfrhgoTfYRJxI19pA5EQcj7PNqMtJyldJQIOCt
- fK5HT+pqqL/dqPEeDvbTvsb05Y/Mb5kFOPXdC8rYEqK4V1M89YyzvoKY1fhlZsexrhta
- 1nGQ==
+ bh=vm0/nE2CjM27q+FxSsNB0we+deYSuG4Jg/ZtoddLVow=;
+ b=UFn4eWldOVVjy/fCfVSTLg8ZPFuDA2q7ErnhQWTrelz3WVD3eG04XVp7kNlAT63B83
+ EneyL2SecKANbvIa1LKbViR+BQOHS9lIcHgUtI76huXg+4Wh9Vi80sc8HDleCcihLLlq
+ 5qP58FbaH71XjzgLJ5f+FzlyFHRG04meGaf7wqIMKbi2c5SOqu24/EoJFqG3/aXHOmeC
+ wmu1Ah8TF61v+pMDG7aG7cREnKQnjpMTVLFXeCCMQuC9X3zfdIYBG70Wg1VQUOjL1OCf
+ WEbp9cZI99xA8J9q2RTwO7fAzaLnTWtb64EZp02toniy0VoQ/ZBUQBWB+h/EZ+fBsg3q
+ /Q2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1742333535; x=1742938335;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ed/f0ps4N0zqTL5jgBMLusXY9jc4rfpD8cqPEiyV4Ok=;
- b=iltWiBLovKGJjLtCJDmwM1TEyfVjr5I60deyDwTlqeXx/HvShmW3Ws0EgHcum+iaDW
- XQjTxM2Ku9LeevynBW8HDTIDpKDE0852bsgO8Ph3QXul174B6H3HW15+LY4A1ZmKPkXv
- exrUvI0lqDcbyKbn9qFflqz+lfjs9/8hA84C2loVjLuM0Ame4mtirLjEcqMVh52/AOTn
- gSjPa7l0Ukqaxq4j7Zxj0QmQxtF5HGC+LpM0Ro4W2ER3APDbuw0WaHdrYV8noPFNIEWk
- 3pcUW5FwZ0tuTNS41iWhgotH/dcfJlVVrY2qX7h1KjJnaJg4wpHbuzoI3CtC5Tk2dmiI
- Dbdg==
-X-Gm-Message-State: AOJu0YziXFYZOE+/Ia7FLLUHpNceiAAkfUykMpm3EcvTfWf1sRRZCf3J
- LK6h4o+x0rfqCHfdeTEggSacyLJMnhYQdG4GAwOf/PEqomGg9bTQ8MTEDjfJHGXeNQAjllKn6tv
- X
-X-Gm-Gg: ASbGncv5+lI2H7vM1+MuMfxx/hFFZfPJIXsibdG5Rapl3ZbMPBbuQvSb1hroLd25cty
- 0jxLpeokX7Pt9GBktivBF766D9dM1sJaht1gSzRYwnj6UU5VNX1iVwkC2txvgbR8bqOL91+tZk1
- LOczRHYWex+fMB+9pVYy0+Sv//nH4ejrGhybAcLwr+eyitXuCWNbPrsLQptrLCL3EBOfPjDtKzb
- DE3bW8Sn+9HtDzwu4bN6rG6WJjCDUu/lduj1TAHlFSED42NzcZzL7TImIs4bfElIGypoTfxl3Cm
- reJz5GRKbUNlP/nU8xsogNNOY0SzIOZl6btsR1pNroGlNQ9VnQs8y87SRNL/rI8RnNMJSnn7K//
- 6
-X-Google-Smtp-Source: AGHT+IHXtN1UPT58yNyHUnR64daUQ6hkKFL3I4goA93NC47Dl3iVWQcWufyIqPueuIp8IuZ5I3WocA==
-X-Received: by 2002:a05:6a20:1605:b0:1f5:8e33:c417 with SMTP id
- adf61e73a8af0-1fbeb18508emr366826637.2.1742333534774; 
- Tue, 18 Mar 2025 14:32:14 -0700 (PDT)
+ bh=vm0/nE2CjM27q+FxSsNB0we+deYSuG4Jg/ZtoddLVow=;
+ b=gnm9QZIv5/WNTgcW849CbHyPscF4njz4bGWKdfAk/kgCYm2SCCmEPvd4XXiHF73Xj3
+ Ah2Ak6yGOsh/o9cOFKtWNG0zWdgtXX0U/4hxcnjCSX7zocs0VBeODhuq3t6luK6qcBGO
+ mfALfeT87SJ62itdfwRkdlZ7AjMRErxbQTo8c6tbRMWPKOvq66lw9UTak5V9PU6Rf9lE
+ AUr4MoVljKB0gdkdTkx4Hn+kymx4PlO0b3GE+6xC7/FmAvVj5vhYpb6wW8lhmTXQTnGq
+ H/M4DJdZsQog1cZg1uunt682PgmytH6dyap2hW50uZnKBU58UEV5BqdZ75RyGa8AJpGG
+ IEmA==
+X-Gm-Message-State: AOJu0YzHKTInXeZCGivrtyl/TAOkttsDQhkAyu+D7cV42wJK4Q7ja/wP
+ 3B71yD41LC0+AwL9i/vxj9oJ9Bi7i0l6aEyAr0EmPNbAjkaFTCVxqhBJn4xU1AZFjLjBcNLPW4S
+ F
+X-Gm-Gg: ASbGncsdD0Z4WLPn+kKHZbECVdNrjNnWXVrJDP+ibuGXSd0Nm1mHdbZ1yt280ssYhe0
+ NLg3HT7ZAQKuMsX1o7Z5zE+zWPjKR0X1aKlyyFDid6BS1L+IqGicVOWk5uioUSMtlqiJGw7RoZN
+ hMYeHaHT64drhkx2ynFMln4G4lZLPHzMQuhSzAHwvnwa2pWNXfns7UtUxcGhBhFIKqzZpsxHLJx
+ amwF1xFvzK4otWcgtlmuJVhlrPvERHmoxYz4bnBhaBFUQqLf9RaL+DET0HeaASJlcH3T1yWdNwA
+ i80ocxe6lL4hZ3YTqbhWHxpHedwrbp+GyPFi3f6cGLWq89R9ad2JhEIvjqkWljy6pPy3dU6n+7b
+ J
+X-Google-Smtp-Source: AGHT+IFjt/KiMf/9EJQ5M7Yce2UGcqJ5URlBCC0UMpVFr9p04rrUwV/Unc4s1ABhJ88UCifJtkKsfg==
+X-Received: by 2002:a05:6a21:3947:b0:1ee:d418:f764 with SMTP id
+ adf61e73a8af0-1fbed40d102mr305000637.38.1742333535449; 
+ Tue, 18 Mar 2025 14:32:15 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
  41be03b00d2f7-af56e9ddf4fsm9473854a12.21.2025.03.18.14.32.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Mar 2025 14:32:14 -0700 (PDT)
+ Tue, 18 Mar 2025 14:32:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH v2 06/42] include/exec: Split out cpu-mmu-index.h
-Date: Tue, 18 Mar 2025 14:31:31 -0700
-Message-ID: <20250318213209.2579218-7-richard.henderson@linaro.org>
+Subject: [PATCH v2 07/42] include/exec: Inline *_mmuidx_ra memory operations
+Date: Tue, 18 Mar 2025 14:31:32 -0700
+Message-ID: <20250318213209.2579218-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250318213209.2579218-1-richard.henderson@linaro.org>
 References: <20250318213209.2579218-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,291 +99,320 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The implementation of cpu_mmu_index was split between cpu-common.h
-and cpu-all.h, depending on CONFIG_USER_ONLY.  We already have the
-plumbing common to user and system mode.  Using MMU_USER_IDX
-requires the cpu.h for a specific target, and so is restricted to
-when we're compiling per-target.
+These need to be per-target for 'abi_ptr'.  Expand inline to
+the *_mmu api with trivial massaging of the arguments.
 
-Include the new header only where needed.
-
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-all.h        |  6 ------
- include/exec/cpu-common.h     | 20 ------------------
- include/exec/cpu-mmu-index.h  | 39 +++++++++++++++++++++++++++++++++++
- include/exec/cpu_ldst.h       |  1 +
- semihosting/uaccess.c         |  1 +
- target/arm/gdbstub64.c        |  3 +++
- target/hppa/mem_helper.c      |  1 +
- target/i386/tcg/translate.c   |  1 +
- target/loongarch/cpu_helper.c |  1 +
- target/microblaze/helper.c    |  1 +
- target/microblaze/mmu.c       |  1 +
- target/openrisc/translate.c   |  1 +
- target/sparc/cpu.c            |  1 +
- target/sparc/mmu_helper.c     |  1 +
- target/tricore/helper.c       |  1 +
- target/xtensa/mmu_helper.c    |  1 +
- 16 files changed, 54 insertions(+), 26 deletions(-)
- create mode 100644 include/exec/cpu-mmu-index.h
+ include/exec/cpu_ldst.h     | 163 ++++++++++++++++++++++++++++--------
+ accel/tcg/ldst_common.c.inc | 118 --------------------------
+ 2 files changed, 129 insertions(+), 152 deletions(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 902ca1f3c7..6108351f58 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -48,8 +48,6 @@ CPUArchState *cpu_copy(CPUArchState *env);
- 
- #ifdef CONFIG_USER_ONLY
- 
--static inline int cpu_mmu_index(CPUState *cs, bool ifetch);
--
- /*
-  * Allow some level of source compatibility with softmmu.  We do not
-  * support any of the more exotic features, so only invalid pages may
-@@ -59,10 +57,6 @@ static inline int cpu_mmu_index(CPUState *cs, bool ifetch);
- #define TLB_MMIO            (1 << (TARGET_PAGE_BITS_MIN - 2))
- #define TLB_WATCHPOINT      0
- 
--static inline int cpu_mmu_index(CPUState *cs, bool ifetch)
--{
--    return MMU_USER_IDX;
--}
- #else
- 
- /*
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 3771b2130c..be032e1a49 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -272,24 +272,4 @@ static inline CPUState *env_cpu(CPUArchState *env)
-     return (CPUState *)env_cpu_const(env);
- }
- 
--#ifndef CONFIG_USER_ONLY
--/**
-- * cpu_mmu_index:
-- * @env: The cpu environment
-- * @ifetch: True for code access, false for data access.
-- *
-- * Return the core mmu index for the current translation regime.
-- * This function is used by generic TCG code paths.
-- *
-- * The user-only version of this function is inline in cpu-all.h,
-- * where it always returns MMU_USER_IDX.
-- */
--static inline int cpu_mmu_index(CPUState *cs, bool ifetch)
--{
--    int ret = cs->cc->mmu_index(cs, ifetch);
--    tcg_debug_assert(ret >= 0 && ret < NB_MMU_MODES);
--    return ret;
--}
--#endif /* !CONFIG_USER_ONLY */
--
- #endif /* CPU_COMMON_H */
-diff --git a/include/exec/cpu-mmu-index.h b/include/exec/cpu-mmu-index.h
-new file mode 100644
-index 0000000000..b46e622048
---- /dev/null
-+++ b/include/exec/cpu-mmu-index.h
-@@ -0,0 +1,39 @@
-+/*
-+ * cpu_mmu_index()
-+ *
-+ *  Copyright (c) 2003 Fabrice Bellard
-+ *
-+ * SPDX-License-Identifier: LGPL-2.1+
-+ */
-+
-+#ifndef EXEC_CPU_MMU_INDEX_H
-+#define EXEC_CPU_MMU_INDEX_H
-+
-+#include "hw/core/cpu.h"
-+#include "tcg/debug-assert.h"
-+#ifdef COMPILING_PER_TARGET
-+#include "cpu.h"
-+#endif
-+
-+/**
-+ * cpu_mmu_index:
-+ * @env: The cpu environment
-+ * @ifetch: True for code access, false for data access.
-+ *
-+ * Return the core mmu index for the current translation regime.
-+ * This function is used by generic TCG code paths.
-+ */
-+static inline int cpu_mmu_index(CPUState *cs, bool ifetch)
-+{
-+#ifdef COMPILING_PER_TARGET
-+# ifdef CONFIG_USER_ONLY
-+    return MMU_USER_IDX;
-+# endif
-+#endif
-+
-+    int ret = cs->cc->mmu_index(cs, ifetch);
-+    tcg_debug_assert(ret >= 0 && ret < NB_MMU_MODES);
-+    return ret;
-+}
-+
-+#endif /* EXEC_CPU_MMU_INDEX_H */
 diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index 1fbdbe59ae..0b10d840fe 100644
+index 0b10d840fe..4149f04368 100644
 --- a/include/exec/cpu_ldst.h
 +++ b/include/exec/cpu_ldst.h
-@@ -67,6 +67,7 @@
- #endif
+@@ -119,41 +119,136 @@ void cpu_stl_le_data_ra(CPUArchState *env, abi_ptr ptr,
+ void cpu_stq_le_data_ra(CPUArchState *env, abi_ptr ptr,
+                         uint64_t val, uintptr_t ra);
  
- #include "exec/cpu-ldst-common.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/abi_ptr.h"
+-uint32_t cpu_ldub_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                            int mmu_idx, uintptr_t ra);
+-int cpu_ldsb_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                       int mmu_idx, uintptr_t ra);
+-uint32_t cpu_lduw_be_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                               int mmu_idx, uintptr_t ra);
+-int cpu_ldsw_be_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                          int mmu_idx, uintptr_t ra);
+-uint32_t cpu_ldl_be_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                              int mmu_idx, uintptr_t ra);
+-uint64_t cpu_ldq_be_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                              int mmu_idx, uintptr_t ra);
+-uint32_t cpu_lduw_le_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                               int mmu_idx, uintptr_t ra);
+-int cpu_ldsw_le_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                          int mmu_idx, uintptr_t ra);
+-uint32_t cpu_ldl_le_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                              int mmu_idx, uintptr_t ra);
+-uint64_t cpu_ldq_le_mmuidx_ra(CPUArchState *env, abi_ptr ptr,
+-                              int mmu_idx, uintptr_t ra);
++static inline uint32_t
++cpu_ldub_mmuidx_ra(CPUArchState *env, abi_ptr addr, int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_UB, mmu_idx);
++    return cpu_ldb_mmu(env, addr, oi, ra);
++}
  
- #if defined(CONFIG_USER_ONLY)
-diff --git a/semihosting/uaccess.c b/semihosting/uaccess.c
-index 382a366ce3..a957891166 100644
---- a/semihosting/uaccess.c
-+++ b/semihosting/uaccess.c
-@@ -9,6 +9,7 @@
+-void cpu_stb_mmuidx_ra(CPUArchState *env, abi_ptr ptr, uint32_t val,
+-                       int mmu_idx, uintptr_t ra);
+-void cpu_stw_be_mmuidx_ra(CPUArchState *env, abi_ptr ptr, uint32_t val,
+-                          int mmu_idx, uintptr_t ra);
+-void cpu_stl_be_mmuidx_ra(CPUArchState *env, abi_ptr ptr, uint32_t val,
+-                          int mmu_idx, uintptr_t ra);
+-void cpu_stq_be_mmuidx_ra(CPUArchState *env, abi_ptr ptr, uint64_t val,
+-                          int mmu_idx, uintptr_t ra);
+-void cpu_stw_le_mmuidx_ra(CPUArchState *env, abi_ptr ptr, uint32_t val,
+-                          int mmu_idx, uintptr_t ra);
+-void cpu_stl_le_mmuidx_ra(CPUArchState *env, abi_ptr ptr, uint32_t val,
+-                          int mmu_idx, uintptr_t ra);
+-void cpu_stq_le_mmuidx_ra(CPUArchState *env, abi_ptr ptr, uint64_t val,
+-                          int mmu_idx, uintptr_t ra);
++static inline int
++cpu_ldsb_mmuidx_ra(CPUArchState *env, abi_ptr addr, int mmu_idx, uintptr_t ra)
++{
++    return (int8_t)cpu_ldub_mmuidx_ra(env, addr, mmu_idx, ra);
++}
++
++static inline uint32_t
++cpu_lduw_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
++                      int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_BEUW | MO_UNALN, mmu_idx);
++    return cpu_ldw_mmu(env, addr, oi, ra);
++}
++
++static inline int
++cpu_ldsw_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
++                      int mmu_idx, uintptr_t ra)
++{
++    return (int16_t)cpu_lduw_be_mmuidx_ra(env, addr, mmu_idx, ra);
++}
++
++static inline uint32_t
++cpu_ldl_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_BEUL | MO_UNALN, mmu_idx);
++    return cpu_ldl_mmu(env, addr, oi, ra);
++}
++
++static inline uint64_t
++cpu_ldq_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_BEUQ | MO_UNALN, mmu_idx);
++    return cpu_ldq_mmu(env, addr, oi, ra);
++}
++
++static inline uint32_t
++cpu_lduw_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
++                      int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_LEUW | MO_UNALN, mmu_idx);
++    return cpu_ldw_mmu(env, addr, oi, ra);
++}
++
++static inline int
++cpu_ldsw_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
++                      int mmu_idx, uintptr_t ra)
++{
++    return (int16_t)cpu_lduw_le_mmuidx_ra(env, addr, mmu_idx, ra);
++}
++
++static inline uint32_t
++cpu_ldl_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_LEUL | MO_UNALN, mmu_idx);
++    return cpu_ldl_mmu(env, addr, oi, ra);
++}
++
++static inline uint64_t
++cpu_ldq_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_LEUQ | MO_UNALN, mmu_idx);
++    return cpu_ldq_mmu(env, addr, oi, ra);
++}
++
++static inline void
++cpu_stb_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
++                  int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_UB, mmu_idx);
++    cpu_stb_mmu(env, addr, val, oi, ra);
++}
++
++static inline void
++cpu_stw_be_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_BEUW | MO_UNALN, mmu_idx);
++    cpu_stw_mmu(env, addr, val, oi, ra);
++}
++
++static inline void
++cpu_stl_be_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_BEUL | MO_UNALN, mmu_idx);
++    cpu_stl_mmu(env, addr, val, oi, ra);
++}
++
++static inline void
++cpu_stq_be_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint64_t val,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_BEUQ | MO_UNALN, mmu_idx);
++    cpu_stq_mmu(env, addr, val, oi, ra);
++}
++
++static inline void
++cpu_stw_le_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_LEUW | MO_UNALN, mmu_idx);
++    cpu_stw_mmu(env, addr, val, oi, ra);
++}
++
++static inline void
++cpu_stl_le_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_LEUL | MO_UNALN, mmu_idx);
++    cpu_stl_mmu(env, addr, val, oi, ra);
++}
++
++static inline void
++cpu_stq_le_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint64_t val,
++                     int mmu_idx, uintptr_t ra)
++{
++    MemOpIdx oi = make_memop_idx(MO_LEUQ | MO_UNALN, mmu_idx);
++    cpu_stq_mmu(env, addr, val, oi, ra);
++}
  
- #include "qemu/osdep.h"
- #include "exec/cpu-all.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/exec-all.h"
- #include "semihosting/uaccess.h"
+ #if TARGET_BIG_ENDIAN
+ # define cpu_lduw_data        cpu_lduw_be_data
+diff --git a/accel/tcg/ldst_common.c.inc b/accel/tcg/ldst_common.c.inc
+index 0447c0bb92..99a56df3fb 100644
+--- a/accel/tcg/ldst_common.c.inc
++++ b/accel/tcg/ldst_common.c.inc
+@@ -248,124 +248,6 @@ void cpu_st16_mmu(CPUArchState *env, vaddr addr, Int128 val,
+  * Wrappers of the above
+  */
  
-diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-index 1a4dbec567..a9d8352b76 100644
---- a/target/arm/gdbstub64.c
-+++ b/target/arm/gdbstub64.c
-@@ -27,6 +27,9 @@
- #include <sys/prctl.h>
- #include "mte_user_helper.h"
- #endif
-+#ifdef CONFIG_TCG
-+#include "exec/cpu-mmu-index.h"
-+#endif
- 
- int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+-uint32_t cpu_ldub_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                            int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_UB, mmu_idx);
+-    return cpu_ldb_mmu(env, addr, oi, ra);
+-}
+-
+-int cpu_ldsb_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                       int mmu_idx, uintptr_t ra)
+-{
+-    return (int8_t)cpu_ldub_mmuidx_ra(env, addr, mmu_idx, ra);
+-}
+-
+-uint32_t cpu_lduw_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                               int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_BEUW | MO_UNALN, mmu_idx);
+-    return cpu_ldw_mmu(env, addr, oi, ra);
+-}
+-
+-int cpu_ldsw_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                          int mmu_idx, uintptr_t ra)
+-{
+-    return (int16_t)cpu_lduw_be_mmuidx_ra(env, addr, mmu_idx, ra);
+-}
+-
+-uint32_t cpu_ldl_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                              int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_BEUL | MO_UNALN, mmu_idx);
+-    return cpu_ldl_mmu(env, addr, oi, ra);
+-}
+-
+-uint64_t cpu_ldq_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                              int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_BEUQ | MO_UNALN, mmu_idx);
+-    return cpu_ldq_mmu(env, addr, oi, ra);
+-}
+-
+-uint32_t cpu_lduw_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                               int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_LEUW | MO_UNALN, mmu_idx);
+-    return cpu_ldw_mmu(env, addr, oi, ra);
+-}
+-
+-int cpu_ldsw_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                          int mmu_idx, uintptr_t ra)
+-{
+-    return (int16_t)cpu_lduw_le_mmuidx_ra(env, addr, mmu_idx, ra);
+-}
+-
+-uint32_t cpu_ldl_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                              int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_LEUL | MO_UNALN, mmu_idx);
+-    return cpu_ldl_mmu(env, addr, oi, ra);
+-}
+-
+-uint64_t cpu_ldq_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
+-                              int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_LEUQ | MO_UNALN, mmu_idx);
+-    return cpu_ldq_mmu(env, addr, oi, ra);
+-}
+-
+-void cpu_stb_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
+-                       int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_UB, mmu_idx);
+-    cpu_stb_mmu(env, addr, val, oi, ra);
+-}
+-
+-void cpu_stw_be_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
+-                          int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_BEUW | MO_UNALN, mmu_idx);
+-    cpu_stw_mmu(env, addr, val, oi, ra);
+-}
+-
+-void cpu_stl_be_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
+-                          int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_BEUL | MO_UNALN, mmu_idx);
+-    cpu_stl_mmu(env, addr, val, oi, ra);
+-}
+-
+-void cpu_stq_be_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint64_t val,
+-                          int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_BEUQ | MO_UNALN, mmu_idx);
+-    cpu_stq_mmu(env, addr, val, oi, ra);
+-}
+-
+-void cpu_stw_le_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
+-                          int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_LEUW | MO_UNALN, mmu_idx);
+-    cpu_stw_mmu(env, addr, val, oi, ra);
+-}
+-
+-void cpu_stl_le_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
+-                          int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_LEUL | MO_UNALN, mmu_idx);
+-    cpu_stl_mmu(env, addr, val, oi, ra);
+-}
+-
+-void cpu_stq_le_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint64_t val,
+-                          int mmu_idx, uintptr_t ra)
+-{
+-    MemOpIdx oi = make_memop_idx(MO_LEUQ | MO_UNALN, mmu_idx);
+-    cpu_stq_mmu(env, addr, val, oi, ra);
+-}
+-
+-/*--------------------------*/
+-
+ uint32_t cpu_ldub_data_ra(CPUArchState *env, abi_ptr addr, uintptr_t ra)
  {
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index fb1d93ef1f..510786518d 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -22,6 +22,7 @@
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "exec/cputlb.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/page-protection.h"
- #include "exec/helper-proto.h"
- #include "hw/core/cpu.h"
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index a8935f487a..20a5c69795 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -20,6 +20,7 @@
- 
- #include "qemu/host-utils.h"
- #include "cpu.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/exec-all.h"
- #include "exec/translation-block.h"
- #include "tcg/tcg-op.h"
-diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
-index 930466ca48..8662fb36ed 100644
---- a/target/loongarch/cpu_helper.c
-+++ b/target/loongarch/cpu_helper.c
-@@ -8,6 +8,7 @@
- 
- #include "qemu/osdep.h"
- #include "cpu.h"
-+#include "exec/cpu-mmu-index.h"
- #include "internals.h"
- #include "cpu-csr.h"
- 
-diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
-index 27fc929bee..996514ffe8 100644
---- a/target/microblaze/helper.c
-+++ b/target/microblaze/helper.c
-@@ -21,6 +21,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "exec/cputlb.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/page-protection.h"
- #include "qemu/host-utils.h"
- #include "exec/log.h"
-diff --git a/target/microblaze/mmu.c b/target/microblaze/mmu.c
-index f8587d5ac4..987ac9e3a7 100644
---- a/target/microblaze/mmu.c
-+++ b/target/microblaze/mmu.c
-@@ -22,6 +22,7 @@
- #include "qemu/log.h"
- #include "cpu.h"
- #include "exec/cputlb.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/page-protection.h"
- 
- static unsigned int tlb_decode_size(unsigned int f)
-diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index 7a6af183ae..5b437959ac 100644
---- a/target/openrisc/translate.c
-+++ b/target/openrisc/translate.c
-@@ -20,6 +20,7 @@
- 
- #include "qemu/osdep.h"
- #include "cpu.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/exec-all.h"
- #include "tcg/tcg-op.h"
- #include "qemu/log.h"
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 5716120117..1bf00407af 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -22,6 +22,7 @@
- #include "cpu.h"
- #include "qemu/module.h"
- #include "qemu/qemu-print.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/exec-all.h"
- #include "exec/translation-block.h"
- #include "hw/qdev-properties.h"
-diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
-index 7548d01777..4a0cedd9e2 100644
---- a/target/sparc/mmu_helper.c
-+++ b/target/sparc/mmu_helper.c
-@@ -21,6 +21,7 @@
- #include "qemu/log.h"
- #include "cpu.h"
- #include "exec/cputlb.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/page-protection.h"
- #include "qemu/qemu-print.h"
- #include "trace.h"
-diff --git a/target/tricore/helper.c b/target/tricore/helper.c
-index a64412e6bd..be3d97af78 100644
---- a/target/tricore/helper.c
-+++ b/target/tricore/helper.c
-@@ -20,6 +20,7 @@
- #include "hw/registerfields.h"
- #include "cpu.h"
- #include "exec/cputlb.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/page-protection.h"
- #include "fpu/softfloat-helpers.h"
- #include "qemu/qemu-print.h"
-diff --git a/target/xtensa/mmu_helper.c b/target/xtensa/mmu_helper.c
-index 63be741a42..96140c89c7 100644
---- a/target/xtensa/mmu_helper.c
-+++ b/target/xtensa/mmu_helper.c
-@@ -33,6 +33,7 @@
- #include "exec/helper-proto.h"
- #include "qemu/host-utils.h"
- #include "exec/cputlb.h"
-+#include "exec/cpu-mmu-index.h"
- #include "exec/exec-all.h"
- #include "exec/page-protection.h"
- 
+     int mmu_index = cpu_mmu_index(env_cpu(env), false);
 -- 
 2.43.0
 
