@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0684CA68E1B
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:46:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0533A68E1A
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:46:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tutj5-0002MB-Fq; Wed, 19 Mar 2025 09:44:55 -0400
+	id 1tutjZ-0002a1-NL; Wed, 19 Mar 2025 09:45:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tutis-0002Ld-0h
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:44:42 -0400
-Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutjM-0002VR-VG
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:45:15 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tutiq-0002u6-03
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:44:41 -0400
-Received: by mail-yb1-xb35.google.com with SMTP id
- 3f1490d57ef6-e637669ef11so5470975276.1
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:44:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutjL-0003sS-3N
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:45:12 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4393dc02b78so30598785e9.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:45:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742391877; x=1742996677; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=eOQfMwq9eZCI7+fp7IPvh7To5zK8nbunI7gu1PMB/mQ=;
- b=saR7rXKo5SlqmeEAZlQlIEsMUEvNgnIaCklCfJPP7guBoU/gTQUu92jNvdbeqN+0iJ
- hITgb8hdwfDx2kScTYOCaompDR04JN3IPEK85HXFEj+y4yppKGBgFDhhkpfrLXVWQf4h
- 9OLUkX8heETUaK27+6SZ8esPlPV2hI00VKonZB2NG6fH87Sv4AhospIzqmMcXK+GguUP
- R61VXDQZOhhL/oKBUmW5mP+3g2EJ0mwSIcsP4Dyl7XUpp86xBW9gRqUGRA+s1S0++AfD
- ZbQF6A2DF+qTZ/B8OQb8gObI7S3MQvaXKSsITTaFBZfo73Fw4MjG5P7ET5EDaeZyJhU5
- qrIw==
+ d=linaro.org; s=google; t=1742391909; x=1742996709; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZyQkdaxvYZkbr3ISbB/6D4Tnum5jD+nCQ6mZa/A8PFM=;
+ b=wV4lEDltXB7y/0IFIKlPQhz6YFf+a2PV9SRpn8IqTULDGm1KPmCho3CHrVVSbzYD7k
+ PAqSB/u/UzNy6V3zBFiuwWKS5eyhQO9kzeL9ap0ERl8hSCusBixg4C7u1Ep2MU08tgD+
+ 6i46I8LivjzT011P7yiHWti/HYgkN8JPSWbbg2zI9Sxrb3mkNW96ACKPET5v1BwX95NR
+ VJvw3JOvWMSBv0qEEcWNrMiVjrj+uM1Mr8SC3IXtzh0hdJAIct7Vxj4hOKb+Kfmrj9+T
+ zxSJed1MIg2QhVEJehDmN973sydTgF0itReireNo3pmeJ+5mK5vdrI1DZDdFs8kOV44r
+ W/Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742391877; x=1742996677;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1742391909; x=1742996709;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=eOQfMwq9eZCI7+fp7IPvh7To5zK8nbunI7gu1PMB/mQ=;
- b=HhIqiDaASoWLc+EiTQW/IzlWAHcJAmEfPv2vUaRPCrXNUwsABz/JWtqe90SpJ3Xzp7
- nxyi2Xo+y4qdUYUAAINOiiYHB1NDRfEKChhwr+QhVxksD2ZudULNw1Q+pBa+JAzyVX6C
- Ty0WbpuZvzyPJEgXdi6FDBmES2KVuocvTOXnvEeoSvHWjZiC24nSPrB61OqIsNSFFQmF
- IetFq6auDSLO2qGRxBII5KuxVzBoSDwTz3n/uxkjdgBuwFR/w6tJsVZSOzaAZSKs6Fed
- yzRZzQk9hDNvLMLO7W2xo/N6WuhdptnRMYWZ8WNHl4cM44zj8YJVy4HGdxsOaxXFEf3O
- rKhg==
-X-Gm-Message-State: AOJu0YzVGaXVQfnkZ2K9wdRgH3GWyenR0W9TgImQICLESn7qA5kRGjpU
- CmF6e2FWzPxaQhx3Lwd3s04WQex1BiNcVEA3swxlFjwI4E3WAJyXI1TXBbm/ucKdmV651FPRMyU
- Zg0Bjp15awKBMOH3YD10+N2+vhcD89nFp8X0ZOw==
-X-Gm-Gg: ASbGncvtHvsk6D5XtQ1MmNRouX9UILy+yvcUm1p9BKeYsbgX2HFX/ga6e/2U3rSnCNJ
- fPFBXv5Q/3n+oC1SQn9kaeF4dTQXQJPDbZxzrHRKphEtlH47cavj6rjZudJWokDIPvWldSMllHZ
- xlwr7obtntrWHkOSmQNWPo1j/Bmp0=
-X-Google-Smtp-Source: AGHT+IGxYDq9e8EFZMAd+Kc6lfIBnnmeKrw0XrPTbML65Zw7b7aPQJB1SV18jMVWqfZrmSzU4xtJQNdDSa1CFLpEuSk=
-X-Received: by 2002:a05:6902:240c:b0:e63:69d7:4e05 with SMTP id
- 3f1490d57ef6-e667b3f9186mr3214008276.25.1742391876162; Wed, 19 Mar 2025
- 06:44:36 -0700 (PDT)
+ bh=ZyQkdaxvYZkbr3ISbB/6D4Tnum5jD+nCQ6mZa/A8PFM=;
+ b=Enz1IAHv9cDlIXty3DalB/ferJgoZ+9CgFvAT1COXBuDe1MYzxu4hOThutYNm0+4Ff
+ F3OJxx3mxB+eERTduapaQuesJOsBcb1du8HnpjZx+CWo7D4ef5rU8ZPlpSSIoQGENGfz
+ twYHxxCJgUTFNV4RkJsTvqgOPrp/4Y9IIzPUxJSldkg0JePoX0/8JrNMkgrYNoI3jGNX
+ KS33fhwoAPGPI0X3rru1vII5W3xJDYKjpwgrr6y4mspQrTOEliGqvOx412tI+p6xqvlc
+ 3BCSJ3Vv6p+UT/2Q4dvEDUC8BXTe4c1BSrgAEawQRXvF1w3wCbnfcJ6sfA9mbNHUkRQ2
+ Imlg==
+X-Gm-Message-State: AOJu0Yy7L9aCYdl1C2oO4/8eNGzg03tOUFpkPCqMndG/EZf1KBYeFGO6
+ TZSVyN7h+LTI+7FBdOqQvigj0g5Cw2M+8kHvrQpN3wjEl6H1jRsS2XRyEAZC6G/4CZN8zGguNJm
+ P
+X-Gm-Gg: ASbGncspqzroUJE+U4yTsMh6OI7Y18UtfmuRcYZl4bacKwLiimpD5jksAJ21s6QxFhN
+ K+sRduWqP5jMz2bCfE7C8s9S/funHv23+0aPYH7zjtldLorxt/zsRGYzZ8VOfWgSRL5J/UX8s5k
+ wQWzjY0yDcHkeMLThvcUjwzyuEs7Drng0/p03M/YA2aUbfHHbCaGw+EwkIg3oj2NMt+e4SM6PYD
+ 0FQ2kJQ5+sdGth49HdxHPCTf0ztvYTrP6oT5PizTkGQFjodEoVHYNe6IH6NK/JsVDgc02UZmSiG
+ 94r1j8/xIHtTrXxS+k5iJcqs3zS06euLWYXX5Sgpy09lhfwzQjBtF3sOGLC9kjf8ytJLLFxCYoG
+ 9ALrDg36aKZ0NrTEPBTI=
+X-Google-Smtp-Source: AGHT+IFBw+cLu2V0/RfWUFrL+LgLhzkclG1snH+orPgyinmpJ+Xqj9orGYc8tIj8yZzQEL0M9ZXYWw==
+X-Received: by 2002:a05:6000:18a9:b0:391:489a:ce12 with SMTP id
+ ffacd0b85a97d-399739c8d52mr2161740f8f.26.1742391908927; 
+ Wed, 19 Mar 2025 06:45:08 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d43d803f6sm19935515e9.0.2025.03.19.06.45.07
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 19 Mar 2025 06:45:08 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.1 00/12] tcg: Make tcg_gen_insn_start() target-agnostic
+Date: Wed, 19 Mar 2025 14:44:54 +0100
+Message-ID: <20250319134507.45045-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-References: <20250319023036.71493-1-tanishdesai37@gmail.com>
-In-Reply-To: <20250319023036.71493-1-tanishdesai37@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 19 Mar 2025 13:44:24 +0000
-X-Gm-Features: AQ5f1JqsLyVsniH8XhvGb5mF6-p2nvi61RtEQaVUgV4W8m6YfC0zxyi3kbXktFk
-Message-ID: <CAFEAcA80b54NZUxPv_QoXQXakTwEuRvK-hxy==c=-PEB2dB3sg@mail.gmail.com>
-Subject: Re: [PATCH] Fix duplicate symbol error on MacOS build
-To: Tanish Desai <tanishdesai37@gmail.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb35.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,66 +97,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 19 Mar 2025 at 12:53, Tanish Desai <tanishdesai37@gmail.com> wrote:
->
-> The issue started after commit https://github.com/qemu/qemu/commit/59f4d65584bd3372070e2484876436c8d02505e4
->
-> Reproduction:
->   1. In the build directory on MacOS (haven't tried on other OS), run:
->        ../configure --enable-rust --target-list=aarch64-softmmu
->   2. Then run either:
->        ninja -C .
->        OR
->        make
->   3. At the end, you will encounter the error:
->        duplicate symbol '_pl011_create' in:
->            /Users/tanishdesai37/Downloads/qemu-master/build/libcommon.a.p/hw_char_pl011.c.o
->            librust_aarch64_softmmu.a[5](pl011.pl011.390d424367e209af-cgu.1.rcgu.o)
->        ld: 1 duplicate symbols
->
-> Root cause:
->   Both CONFIG_PL011 and X_PL011_RUST are selected, causing C++ and Rust to produce the same object.
->   This is due to the commit above where 'select PL011' forces a true condition instead of checking if HAVE_RUST is true.
->   If HAVE_RUST is true, X_PL011_RUST should be selected instead of CONFIG_PL011.
->
-> Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
-> ---
->  hw/vmapple/Kconfig | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/vmapple/Kconfig b/hw/vmapple/Kconfig
-> index 2382b297672..01bcbf40e00 100644
-> --- a/hw/vmapple/Kconfig
-> +++ b/hw/vmapple/Kconfig
-> @@ -22,7 +22,8 @@ config VMAPPLE
->      select PLATFORM_BUS
->      select PCI_EXPRESS
->      select PCI_EXPRESS_GENERIC_BRIDGE
-> -    select PL011 # UART
-> +    select PL011 if !HAVE_RUST # UART
-> +    select X_PL011_RUST if HAVE_RUST # UART
->      select PL031 # RTC
->      select PL061 # GPIO
->      select GPIO_PWR
+Instead of TARGET_INSN_START_EXTRA_WORDS, use
+TCGContext::insn_start_words().
+Define TARGET_INSN_START_WORDS_MAX and reduce
+TARGET_INSN_START_EXTRA_WORDS scope.
+Unify tcg_gen_insn_start() prototypes.
 
-Paolo: we seem to have quite a lot of this
+(preparatory for heterogeneous emulation)
 
-    select PL011 if !HAVE_RUST # UART
-    select X_PL011_RUST if HAVE_RUST # UART
+Philippe Mathieu-Daudé (12):
+  tcg: Declare TARGET_INSN_START_EXTRA_WORDS in 'cpu-param.h'
+  tcg: Always define TARGET_INSN_START_EXTRA_WORDS
+  tcg: Have tcg_gen_insn_start() take uint64_t arguments
+  tcg: Declare local 'insn_start_words' variable in tcg_gen_insn_start()
+  tcg: Use TCGContext::insn_start_words in tcg_gen_insn_start()
+  tcg: Use TCGContext::insn_start_words in translate-all.c methods
+  tcg: Check TARGET_INSN_START_EXTRA_WORDS range at runtime
+  tcg: Declare arrays using TARGET_INSN_START_WORDS_MAX
+  tcg: Restrict TARGET_INSN_START_WORDS definition to translate-all.c
+  tcg: Unify tcg_gen_insn_start() to handle 1 or 2 arguments
+  tcg: Unify tcg_gen_insn_start() to handle 0 or 2 arguments
+  tcg: Uninline tcg_gen_insn_start()
 
-duplicated for every PL011-using machine. Can we factor this out
-in Kconfig? e.g.
+ include/tcg/insn-start-words.h   | 17 -----------------
+ include/tcg/tcg-op.h             | 26 --------------------------
+ include/tcg/tcg.h                |  4 ++++
+ target/alpha/cpu-param.h         |  2 ++
+ target/arm/cpu-param.h           | 14 ++++++++++++++
+ target/arm/cpu.h                 | 14 --------------
+ target/avr/cpu-param.h           |  2 ++
+ target/hexagon/cpu-param.h       |  2 ++
+ target/hppa/cpu-param.h          |  2 ++
+ target/hppa/cpu.h                |  2 --
+ target/i386/cpu-param.h          |  2 ++
+ target/i386/cpu.h                |  2 --
+ target/loongarch/cpu-param.h     |  2 ++
+ target/m68k/cpu-param.h          |  2 ++
+ target/m68k/cpu.h                |  2 --
+ target/microblaze/cpu-param.h    |  2 ++
+ target/microblaze/cpu.h          |  2 --
+ target/mips/cpu-param.h          |  2 ++
+ target/mips/cpu.h                |  2 --
+ target/openrisc/cpu-param.h      |  2 ++
+ target/openrisc/cpu.h            |  2 --
+ target/ppc/cpu-param.h           |  2 ++
+ target/riscv/cpu-param.h         |  8 ++++++++
+ target/riscv/cpu.h               |  6 ------
+ target/rx/cpu-param.h            |  2 ++
+ target/s390x/cpu-param.h         |  2 ++
+ target/s390x/cpu.h               |  2 --
+ target/sh4/cpu-param.h           |  2 ++
+ target/sh4/cpu.h                 |  2 --
+ target/sparc/cpu-param.h         |  2 ++
+ target/sparc/cpu.h               |  1 -
+ target/tricore/cpu-param.h       |  2 ++
+ target/xtensa/cpu-param.h        |  2 ++
+ accel/tcg/translate-all.c        | 26 ++++++++++++++++----------
+ target/alpha/translate.c         |  4 ++--
+ target/avr/translate.c           |  2 +-
+ target/i386/helper.c             |  4 ++--
+ target/i386/tcg/translate.c      |  2 +-
+ target/loongarch/tcg/translate.c |  2 +-
+ target/m68k/translate.c          |  2 +-
+ target/microblaze/translate.c    |  2 +-
+ target/openrisc/sys_helper.c     |  4 ++--
+ target/openrisc/translate.c      |  2 +-
+ target/ppc/translate.c           |  2 +-
+ target/rx/translate.c            |  2 +-
+ target/sh4/translate.c           |  2 +-
+ target/sparc/translate.c         |  2 +-
+ target/tricore/translate.c       |  2 +-
+ target/xtensa/translate.c        |  2 +-
+ tcg/tcg.c                        | 15 +++++++++++++++
+ 50 files changed, 109 insertions(+), 108 deletions(-)
+ delete mode 100644 include/tcg/insn-start-words.h
 
-config PL011
-    select X_PL011_RUST if HAVE_RUST
-    select PL011_C if !HAVE_RUST
+-- 
+2.47.1
 
-(and update hw/char/meson.build to use CONFIG_PL011_C for pl011.c).
-Then all the machines can go back to plain "select PL011" and
-don't need to care whether it's the Rust or C version.
-
-Or does that not work?
-
-thanks
--- PMM
 
