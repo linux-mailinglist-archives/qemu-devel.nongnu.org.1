@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186C3A69464
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E31CA69463
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 17:10:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuvyu-0003vR-1B; Wed, 19 Mar 2025 12:09:25 -0400
+	id 1tuvyu-00042S-69; Wed, 19 Mar 2025 12:09:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tuvyE-0003cY-1k
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:08:43 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1tuvym-0003v2-2S
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:09:16 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tuvyA-0004cD-4W
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:08:41 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-223594b3c6dso157264165ad.2
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 09:08:34 -0700 (PDT)
+ id 1tuvyk-0004fd-7f
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:09:15 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-2260c915749so54736645ad.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 09:09:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742400513; x=1743005313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742400552; x=1743005352; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9ggNZfnQdXNYbUp1B/xCgKD+zHGOqcTA/82gv/CfJCM=;
- b=wHDh22no9q8w0nn3xCa1B5+pD7w/4gHFMST/2SEi1adjJTaKbQY30MGJxh7HrGpCo1
- see6za0kVM44vIsUWMUBNPnqSFNUatyEXMmDhyqb9y3gn4j/95Bhql0+JG/aOQjfv16/
- sL0xM1amBAvIGiSDEFB3Fose1Yr+HaNhXhIqrFI2VyFR64XB6pJO9Rai8fj9gZzUmlcE
- 7yMJMvnrUaK8qGmCNZhhf0ENDhClLwarTwXgSSAFf6jPsyM6PQ6Y+WgQcp+szxywPFZs
- 29izW9Nnxly42Bjr/WBnCs994BC0SNoF2yN49pq2+kV9us4Eyn1uzD08vMBkcKsW1/TG
- xttA==
+ bh=Bd/SyEh4Vk6oOCuQyumvrcHtqRyBq0sWObDi4KQdyMw=;
+ b=DDR1vL2Fpga4+iycAjIYLcmq+ZdHFuORxGLCluqeG3UzMlHYJTiVkuXNa1fLeJopRE
+ ZGJ63ueJDYBt8vJIj/ebt6iDGyKzRvTMuzI6JodwV0Oemo5fD3x+bQPBQwy8OA0jBN6M
+ /bmDsSgIcHE1akwaTvSysslqyK/plCDqRWYS0z6/62bVZrNkMWSgr/1ev/+28XZB6bKH
+ 7Chys4juEYSxGD+8MPXhdLqC08Oit2PCN76dQf/iMsCoQYqQTMBkbvZ8DEC4sH5FJrnc
+ 3o9CM9cjm1k4CEkTgFZdG4OyuJ0lejGpiWcRaSTDMXuphRbSS7qoa375q4QTeKpu0Fpa
+ bI+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742400513; x=1743005313;
+ d=1e100.net; s=20230601; t=1742400552; x=1743005352;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9ggNZfnQdXNYbUp1B/xCgKD+zHGOqcTA/82gv/CfJCM=;
- b=CpfutWdWYiyPthKVauFJK06atgbGwaXZu6Di+oMmCBYoKWP3S4TzLJbs1u6jAeChDl
- eDiOpwju97m+d4nGau2fnvFXt84w8t/C3S2JOE36D6Cq54igMN7t6vZTEg/ZBaNuFZ0W
- bdiUaMAQK1ZKIQQLOICS8YU6syLP0wckD2+d9GOn0lXRTeHnewSijsTm65pykZmbeafy
- n0ZQW6Kh9vH2S01uho1V/nS5/682376jLhArjdR8VhCFhFlO4BelH0tTWRAJb/2c8+fM
- IcNVmtd8vHF6M9WJJgwyK4DvZSBsp171tOLwNmwxb5fjcA8IAvSKdVel6H3fAFrMtcvF
- z4sg==
+ bh=Bd/SyEh4Vk6oOCuQyumvrcHtqRyBq0sWObDi4KQdyMw=;
+ b=iyWtTpSomV/9UsSnljrCmVCmuEVrjJex3hC5hwdl73iCUTSk5oq7e0Xjc5cSrw7TgU
+ OVCA4FHM/ZEXSpwvkeJ1sUFEGBYm2N8S/de4rNH21MqfWjudz3glSQcexpp9RSJU+q4c
+ UgWb0U1jkUQCWI2sh6dmceuGo5w4BeCzu2FTA6pPPBN/BuQJtNfFKQnn8Z+ogEup9JYh
+ ZLwwh4A+0waX2ib9erHC5yCPBKl7V2jbu7qluwAcxc/mh4DWlw8QmZKYFVzeQIWfKbP0
+ KIi8yEQsBn+CKLfnSgcRxF+FMELzDkK/nkoeeSnRn3mzSsVyNJHDIwPdOEfW6tVpDD0N
+ D8CQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVGTrPonI7tljE0VPQLXPzhOxoPSxqOAnTyalRFlf//psb935XFZ3J+wxQCurs3qxZ2KplZEIW/3+Oh@nongnu.org
-X-Gm-Message-State: AOJu0YzrWF3Y8zi0oypGgFMVigWIZJAotiOiZSkmsOuYqku/A931JnFV
- 8TmYk3Gh0iNv/c+rHCTdgK9VLnJVMnzNQrtNolAAvwfN20yQm/G9AIwna0upBdU=
-X-Gm-Gg: ASbGnctZr66CuQYnRFjxemFvDACEJFamQE1iNABD20bsqXlu8qV2ykB3S+B408OM4Vy
- WjGSqSrVkvKukmRWy6iuJkXbGfcPW4Piozxx2S4SvMkG+wdN7TSzomHYZXTmUzN87uol+Xca2nD
- q5xZBf3Qynx7ddSoLXVA9khpnSZwryL8yYeXx2Qxe2racht5iGUFy+TZIz1vBTIGiNKqRA9N0PX
- o4cYsaVzErMnmypeElvy4xrLw4LaoEeXnCkDsH/liwSKZhN5xmMd3PbD2Axf7DUTxs29ptBqhLP
- EB7HBW+dZCJNPOATF6VqifkVQkmBv2QgSOwVS4rdfgY3GEF6Bg7s4+suWLlrkVIpcquKX0pz2Ml
- Or90inCZt
-X-Google-Smtp-Source: AGHT+IE0XHLlJ8P7cf0gdsJa0UdG6xhxpPzq/dVCsvoUbFdHQClhaFmgDnjJtMUYistPnl6dVOmClw==
-X-Received: by 2002:a17:902:cf0c:b0:223:54e5:bf4b with SMTP id
- d9443c01a7336-22649a387e1mr53215715ad.25.1742400513167; 
- Wed, 19 Mar 2025 09:08:33 -0700 (PDT)
+ AJvYcCURihn2YgC9TKXqxAMnnk7HZ5smuVdPSgdIBKgIJS0QuGmKmnYpFNzVro6F1wl9jtHtYn1I2KXQXVJr@nongnu.org
+X-Gm-Message-State: AOJu0YznK2UKZHSc7yF18KPrtod7CuNAAJLd1BL0Fcnj8HXBtuOLArR3
+ W5JaDk/4Q6wNc0ZvoZyeCWJdfoCqaPlHb/+S68is/qgXWU7yK6ZGvOkdkskY4Ic=
+X-Gm-Gg: ASbGncuyeCw75/QLtakeEuNbN07qvdbcOZBPCLSQ7UIji3M9EE1Rz4/H5g4nPCEtrh7
+ A3aLAf1oQbbv14RKBg4wwVff2zkvFfv2ftPM2wEagB88S1igMSBxdoj4fjc2b4u6+FQ8qENmut/
+ YhM9TUsl3W9du5q8z0LW5t1hY9SrrY4/kPntSWjxtdL/dMD4fTEgFVuigbCi0Z5yYgva5P4/oeE
+ VqS6Ii+tsLKvUviiYYdb2xjUslAMNGMpHqFBdxSIEv/AZTxZJM1xYrWDmaFq/1nN420Tbg5Cyij
+ DnvKi0svC0I2Eq/8YqEYTSxn2ISzshrzP2V7tuIMhTBAEvzPaVx329Ch1E3MxhNIVb5g6PMnR8O
+ GoWbEhONK
+X-Google-Smtp-Source: AGHT+IEkgqMI+tssRyA0kqBo6xInRSkQ+lPfiLbFlLxCZe1Wlfnmf8F0yU1+TrGjhlqA8ZoIqF64cQ==
+X-Received: by 2002:a17:903:41ce:b0:224:10a2:cad9 with SMTP id
+ d9443c01a7336-22649caaabcmr49897005ad.41.1742400551732; 
+ Wed, 19 Mar 2025 09:09:11 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-225c6bbe5a2sm116503485ad.196.2025.03.19.09.08.32
+ d9443c01a7336-22647996ca6sm18426935ad.106.2025.03.19.09.09.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Mar 2025 09:08:32 -0700 (PDT)
-Message-ID: <d077759f-f3a8-47b2-9e6a-34360042a1de@linaro.org>
-Date: Wed, 19 Mar 2025 09:08:31 -0700
+ Wed, 19 Mar 2025 09:09:11 -0700 (PDT)
+Message-ID: <7114e08e-4eac-422f-8d49-c2eda3822a96@linaro.org>
+Date: Wed, 19 Mar 2025 09:09:09 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 01/12] tcg: Declare TARGET_INSN_START_EXTRA_WORDS
- in 'cpu-param.h'
+Subject: Re: [PATCH-for-10.1 02/12] tcg: Always define
+ TARGET_INSN_START_EXTRA_WORDS
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
 References: <20250319134507.45045-1-philmd@linaro.org>
- <20250319134507.45045-2-philmd@linaro.org>
+ <20250319134507.45045-3-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250319134507.45045-2-philmd@linaro.org>
+In-Reply-To: <20250319134507.45045-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,63 +106,24 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/19/25 06:44, Philippe Mathieu-Daudé wrote:
-> To avoid including the huge "cpu.h" for a simple definition,
-> move TARGET_INSN_START_EXTRA_WORDS to "cpu-param.h".
+> Do not define TARGET_INSN_START_EXTRA_WORDS under the
+> hood, have each target explicitly define it.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   target/arm/cpu-param.h        | 14 ++++++++++++++
->   target/arm/cpu.h              | 14 --------------
->   target/hppa/cpu-param.h       |  2 ++
->   target/hppa/cpu.h             |  2 --
->   target/i386/cpu-param.h       |  2 ++
->   target/i386/cpu.h             |  2 --
->   target/m68k/cpu-param.h       |  2 ++
->   target/m68k/cpu.h             |  2 --
->   target/microblaze/cpu-param.h |  2 ++
->   target/microblaze/cpu.h       |  2 --
->   target/mips/cpu-param.h       |  2 ++
->   target/mips/cpu.h             |  2 --
->   target/openrisc/cpu-param.h   |  2 ++
->   target/openrisc/cpu.h         |  2 --
->   target/riscv/cpu-param.h      |  8 ++++++++
->   target/riscv/cpu.h            |  6 ------
->   target/s390x/cpu-param.h      |  2 ++
->   target/s390x/cpu.h            |  2 --
->   target/sh4/cpu-param.h        |  2 ++
->   target/sh4/cpu.h              |  2 --
->   target/sparc/cpu-param.h      |  2 ++
->   target/sparc/cpu.h            |  1 -
->   22 files changed, 40 insertions(+), 37 deletions(-)
-> 
-> diff --git a/target/arm/cpu-param.h b/target/arm/cpu-param.h
-> index 896b35bd6d5..ed1f0b16e51 100644
-> --- a/target/arm/cpu-param.h
-> +++ b/target/arm/cpu-param.h
-> @@ -38,6 +38,20 @@
->   # define TARGET_PAGE_BITS_MIN  10
->   #endif /* !CONFIG_USER_ONLY */
->   
-> +/* ARM-specific extra insn start words:
-> + * 1: Conditional execution bits
-> + * 2: Partial exception syndrome for data aborts
-> + */
-> +#define TARGET_INSN_START_EXTRA_WORDS 2
-> +
-> +/* The 2nd extra word holding syndrome info for data aborts does not use
-> + * the upper 6 bits nor the lower 13 bits. We mask and shift it down to
-> + * help the sleb128 encoder do a better job.
-> + * When restoring the CPU state, we shift it back up.
-> + */
-> +#define ARM_INSN_START_WORD2_MASK ((1 << 26) - 1)
-> +#define ARM_INSN_START_WORD2_SHIFT 13
+>   include/tcg/insn-start-words.h | 4 ----
+>   include/tcg/tcg-op.h           | 2 +-
+>   target/alpha/cpu-param.h       | 2 ++
+>   target/avr/cpu-param.h         | 2 ++
+>   target/hexagon/cpu-param.h     | 2 ++
+>   target/loongarch/cpu-param.h   | 2 ++
+>   target/ppc/cpu-param.h         | 2 ++
+>   target/rx/cpu-param.h          | 2 ++
+>   target/tricore/cpu-param.h     | 2 ++
+>   target/xtensa/cpu-param.h      | 2 ++
+>   10 files changed, 17 insertions(+), 5 deletions(-)
 
-This does not belong in cpu-param.h.  This is private to target/arm/, and should probably 
-be moved to internals.h or translate.h or some such.
-
-Otherwise,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
