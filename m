@@ -2,71 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79EEBA68646
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 09:01:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CFDA68658
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 09:05:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuoKy-0006iO-V5; Wed, 19 Mar 2025 03:59:40 -0400
+	id 1tuoP2-000819-LJ; Wed, 19 Mar 2025 04:03:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tuoKq-0006hq-JE
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 03:59:33 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tuoKl-0003oV-Nr
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 03:59:32 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8AxaeBXedpng86cAA--.4429S3;
- Wed, 19 Mar 2025 15:59:19 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowMBxHcVUedpn90dTAA--.42143S3;
- Wed, 19 Mar 2025 15:59:18 +0800 (CST)
-Subject: Re: [PATCH v4 4/4] target/loongarch: Set dest error with error_abort
- in virt_cpu_irq_init
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-References: <20250319020847.1511759-1-maobibo@loongson.cn>
- <20250319020847.1511759-5-maobibo@loongson.cn> <877c4l4km1.fsf@pond.sub.org>
-From: bibo mao <maobibo@loongson.cn>
-Message-ID: <3d9c1bff-c1a5-5e87-e912-7246c2c8f512@loongson.cn>
-Date: Wed, 19 Mar 2025 15:58:37 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tuoOZ-0007yV-2e
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:03:26 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1tuoOW-0004Nw-HQ
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:03:22 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-225477548e1so115047185ad.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 01:03:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1742371397; x=1742976197; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=d97oawvz8CwDMw6pfcxqX05lgcbKJXMjocbN9tIklM8=;
+ b=JGkHbzfYM/rgM3secDpzIeSkHKM499F6uZYk6/89ouCTac007vtuJl3eU3j6sCpD5l
+ XMX6LheqIV7usNiEGgao0MCWhGe7JDpfSDjoShkycGNiUZFzQbTikZzMUgmR53is1Azg
+ zCSGmDnik5eT8OLq0KuCcAHbX1H7f8X+9e0nfujg1JNkI6ImwQTkZ6sdTwGAhQUc8Rsu
+ 7Nddiiy7UC3KaPIdux+K8QQdjCi2qs++GmQx1/FXVc3GtG8x3z2VTkCOGpmo6Q7dGweF
+ 2Gs0HTTsDrn8VY6NTt+zyrBYmpLxi6Ca/D/1z58aT2YBr6R2Lw9c9x8qSBnyJOs2vDEK
+ i/Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742371397; x=1742976197;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=d97oawvz8CwDMw6pfcxqX05lgcbKJXMjocbN9tIklM8=;
+ b=Xln1lp/LOZa01kThQoGKxuxoCqw/oj7n+E2eQTPS0Z06xUMGIsecE7RmDJVLCe9OHp
+ 5NMYtInB8NbOuZw5uGQSPMhPhC5/cUFTKDvJohROJtWFBto4nAbbAxdzbDrofgpJPvmI
+ /kMA0D6KbZWYsBthd47YsEvXqYnOUn7Zh9eORMKWLnuIqmXuuIgjEV6i+n+zzLXqYEA+
+ +lPAi4fBKynmbIUKXQJ8GKC1KCMT2Q+LEHF5HSmTSmtlL7OCHfxeNYUpqnI/ygUUbt+F
+ BjOVyNja5jaOSXbnYQAtP9RHd5ucWubvWedRLUair/2rbvvahlMw9LPNqrMKXlNkJ/AH
+ 5QKw==
+X-Gm-Message-State: AOJu0YyNIn5bfqhncFxnb5CHLFkIWWIkT0LdM+K5zfNg7joN4vDihmWa
+ zufkB4Jc2KeMEwB+YLRTgpHJU0I2QrseeQT1I6nobVmU7RU/owVbGsycJg==
+X-Gm-Gg: ASbGncu5hkXv82oZn88ggYdlKJk56mfZStk5L/nFso/MkVH+y7bsxyUZhvvwMaG7JZg
+ SUsuPH8T9FBhI8Ydi4AzdOWIj01AtPMmZNpzgstBWwRJsXoaYg3CXn25FYnmoDQSzWgqhnS7/hh
+ 7A4+ZWq3PXg/brqqejLfR1Odv11FGJyxSNJtvVoMr5b9L0mXexq2dbyUuKKiSXrzRloeZoCdgqh
+ K5BZiL7Wx7YKboWmb8ANGPjocd9H5/NN8Errs/Tr38sE8HsZ7acxLu8Gp/ZGvPXomNmHJyaSkgY
+ 9Mf7ZvUx0dRtbLmZ5VpA5z5RttwVPdJipdvtN6jlns2EbATzg2v8w8LM0A5urH3aW4nGiqrIuL5
+ +pejsIeiJf1xei3O66Z8YZMqNc9qWGkmX2SCzw+XCebi94012
+X-Google-Smtp-Source: AGHT+IEAV8fFfRpyJBGZ3hXjffYhIQ6BSkYoeqeyvus7oYLrOOFvD61SiP0a6fmT9V77zcmHq9AzDA==
+X-Received: by 2002:a17:902:f68e:b0:224:2a6d:55ae with SMTP id
+ d9443c01a7336-22649a6a8f8mr31076955ad.48.1742371396651; 
+ Wed, 19 Mar 2025 01:03:16 -0700 (PDT)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-225c6ba6c8dsm107725255ad.156.2025.03.19.01.03.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 Mar 2025 01:03:15 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/10] riscv-to-apply queue
+Date: Wed, 19 Mar 2025 18:02:58 +1000
+Message-ID: <20250319080308.609520-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-In-Reply-To: <877c4l4km1.fsf@pond.sub.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxHcVUedpn90dTAA--.42143S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7KryrXw1kGw1xCw45Gw4rJFc_yoW5JFyrpr
- Waya1v9F1DAa4Duws2gryUXF1jyrs3Kry7Xa9Ykr4Ykwn8Xr1FqFW7Cwn09FW8Cw4rXa95
- Xrs5GFs3WFn8AagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25EfUUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.526,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,73 +99,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit 1dae461a913f9da88df05de6e2020d3134356f2e:
 
+  Update version for v10.0.0-rc0 release (2025-03-18 10:18:14 -0400)
 
-On 2025/3/19 下午2:09, Markus Armbruster wrote:
-> Bibo Mao <maobibo@loongson.cn> writes:
-> 
->> In function virt_cpu_irq_init(), there is notification with ipi and extioi
->> interrupt controller for cpu creation. Local variable with error type is
->> used, however there is no check with its return value.
-> 
-> Good catch.
-> 
-> When the first call fails, we pass non-null @err to the second call,
-> which is wrong.  If that one also fails, it'll likely trip
-> error_setv()'s assertion.
-> 
->> Here set dest error object with error_abort, rather than local variable, so
->> application will abort to run if there is error.
-> 
-> Why is failure impossible there?
-In plug hanlder of extioi/ipi, there is only warn_report() if object is 
-not TYPE_LOONGARCH_CPU, parameter errp is not changed.
+are available in the Git repository at:
 
-With caller funciton virt_cpu_irq_init(), DEVICE(cs) is object with type 
-TYPE_LOONGARCH_CPU always, so failure is impossible here.
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20250319
 
-> 
-> If failure is impossible, the code before the patch is harmlessly wrong.
-yes, it is harmlessly wrong.
+for you to fetch changes up to ffe4db11f8aed79c7ec7d3ebd92674a1cfab4fe7:
 
-Regards
-Bibo Mao
-> 
-> If failure is possible, the code before the patch has a crash bug, and
-> the patch makes it crash harder, i.e. when either call fails instead of
-> when both fail.
-> 
->> Fixes: 50ebc3fc47fe (hw/intc/loongarch_ipi: Notify ipi object when cpu is plugged)
->> Fixes: 087a23a87c57 (hw/intc/loongarch_extioi: Use cpu plug notification)
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   hw/loongarch/virt.c | 7 ++++---
->>   1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
->> index a9fab39dd8..f10a4704ab 100644
->> --- a/hw/loongarch/virt.c
->> +++ b/hw/loongarch/virt.c
->> @@ -327,7 +327,6 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
->>       MachineClass *mc = MACHINE_GET_CLASS(ms);
->>       const CPUArchIdList *possible_cpus;
->>       CPUState *cs;
->> -    Error *err = NULL;
->>   
->>       /* cpu nodes */
->>       possible_cpus = mc->possible_cpu_arch_ids(ms);
->> @@ -337,8 +336,10 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
->>               continue;
->>           }
->>   
->> -        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->ipi), DEVICE(cs), &err);
->> -        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), DEVICE(cs), &err);
->> +        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->ipi), DEVICE(cs),
->> +                             &error_abort);
->> +        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), DEVICE(cs),
->> +                             &error_abort);
->>       }
->>   }
-> 
+  target/riscv: Add check for 16-bit aligned PC for different priv versions. (2025-03-19 17:11:46 +1000)
 
+----------------------------------------------------------------
+Fourth RISC-V PR for 10.0
+
+* Fix broken emulation link
+* Optimize the memory probing for vector fault-only-first loads
+* Fix access permission checks for CSR_SSP
+* Fixes a bug against `ssamoswap` behavior in M-mode
+* Fix IOMMU process directory table walk
+* Fix OVERFLOW_BEFORE_WIDEN in rmw_sctrdepth()
+* Enhance VSTART and VL checks for vector instructions
+* Fix handling of cpu mask in riscv_hwprobe syscall
+* Add check for 16-bit aligned PC for different priv versions
+
+----------------------------------------------------------------
+Chao Liu (2):
+      target/riscv: refactor VSTART_CHECK_EARLY_EXIT() to accept vl as a parameter
+      target/riscv: fix handling of nop for vstart >= vl in some vector instruction
+
+Daniel Henrique Barboza (1):
+      target/riscv/csr.c: fix OVERFLOW_BEFORE_WIDEN in rmw_sctrdepth()
+
+Deepak Gupta (2):
+      target/riscv: fix access permission checks for CSR_SSP
+      target/riscv: fixes a bug against `ssamoswap` behavior in M-mode
+
+Jason Chien (1):
+      hw/riscv/riscv-iommu: Fix process directory table walk
+
+Paolo Savini (1):
+      optimize the memory probing for vector fault-only-first loads.
+
+Richard Henderson (1):
+      linux-user/riscv: Fix handling of cpu mask in riscv_hwprobe syscall
+
+Santiago Monserrat Campanello (1):
+      docs/about/emulation: Fix broken link
+
+Yu-Ming Chang (1):
+      target/riscv: Add check for 16-bit aligned PC for different priv versions.
+
+ docs/about/emulation.rst                      |   2 +-
+ hw/riscv/riscv-iommu-bits.h                   |   6 +-
+ target/riscv/cpu.h                            |  12 ++
+ target/riscv/vector_internals.h               |  12 +-
+ hw/riscv/riscv-iommu.c                        |   4 +-
+ linux-user/syscall.c                          |  55 ++++----
+ target/riscv/csr.c                            |   7 +-
+ target/riscv/op_helper.c                      |   8 +-
+ target/riscv/translate.c                      |   4 +-
+ target/riscv/vcrypto_helper.c                 |  32 ++---
+ target/riscv/vector_helper.c                  | 186 ++++++++++++++------------
+ target/riscv/vector_internals.c               |   4 +-
+ target/riscv/insn_trans/trans_rvi.c.inc       |   8 +-
+ target/riscv/insn_trans/trans_rvzicfiss.c.inc |  17 +++
+ 14 files changed, 214 insertions(+), 143 deletions(-)
 
