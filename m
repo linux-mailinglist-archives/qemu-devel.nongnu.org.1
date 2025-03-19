@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC9AA684F8
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 07:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38684A684E9
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 07:15:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tumgq-0006oH-F1; Wed, 19 Mar 2025 02:14:08 -0400
+	id 1tumgo-0006kB-TR; Wed, 19 Mar 2025 02:14:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tumgh-0006Z8-42; Wed, 19 Mar 2025 02:13:59 -0400
+ id 1tumgh-0006ZA-44; Wed, 19 Mar 2025 02:13:59 -0400
 Received: from dedi548.your-server.de ([85.10.215.148])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tumge-0001RL-Cl; Wed, 19 Mar 2025 02:13:58 -0400
+ id 1tumge-0001RV-UG; Wed, 19 Mar 2025 02:13:58 -0400
 Received: from sslproxy08.your-server.de ([78.47.166.52])
  by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tumga-000ACs-15; Wed, 19 Mar 2025 07:13:52 +0100
+ id 1tumgb-000ACz-2p; Wed, 19 Mar 2025 07:13:53 +0100
 Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
  by sslproxy08.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1tumga-000HuS-0e; Wed, 19 Mar 2025 07:13:52 +0100
+ id 1tumgb-000I0q-2J; Wed, 19 Mar 2025 07:13:53 +0100
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id C7F044800A3;
- Wed, 19 Mar 2025 07:13:51 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTP id 517CA4800A8;
+ Wed, 19 Mar 2025 07:13:53 +0100 (CET)
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id 7lDdw5zps6Pn; Wed, 19 Mar 2025 07:13:51 +0100 (CET)
+ with ESMTP id DMNaN57FwgMT; Wed, 19 Mar 2025 07:13:53 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 910C14800A8;
- Wed, 19 Mar 2025 07:13:51 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTP id 14B834800A3;
+ Wed, 19 Mar 2025 07:13:53 +0100 (CET)
 X-Virus-Scanned: amavis at zimbra.eb.localhost
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id j_Khbb_zqYOg; Wed, 19 Mar 2025 07:13:51 +0100 (CET)
+ with ESMTP id CRTKYmoZRDYs; Wed, 19 Mar 2025 07:13:53 +0100 (CET)
 Received: from zimbra.eb.localhost (unknown [10.10.171.10])
- by mail.embedded-brains.de (Postfix) with ESMTPSA id 61A204800A3;
- Wed, 19 Mar 2025 07:13:50 +0100 (CET)
+ by mail.embedded-brains.de (Postfix) with ESMTPSA id D80674800A8;
+ Wed, 19 Mar 2025 07:13:51 +0100 (CET)
 From: Sebastian Huber <sebastian.huber@embedded-brains.de>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, "Alistair Francis" <alistair23@gmail.com>,
  "Daniel Henrique Barboza" <dbarboza@ventanamicro.com>
-Subject: [PATCH v3 1/6] hw/misc: Add MPFS system reset support
-Date: Wed, 19 Mar 2025 07:13:33 +0100
-Message-ID: <20250319061342.26435-2-sebastian.huber@embedded-brains.de>
+Subject: [PATCH v3 2/6] hw/riscv: More flexible FDT placement for MPFS
+Date: Wed, 19 Mar 2025 07:13:34 +0100
+Message-ID: <20250319061342.26435-3-sebastian.huber@embedded-brains.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250319061342.26435-1-sebastian.huber@embedded-brains.de>
 References: <20250319061342.26435-1-sebastian.huber@embedded-brains.de>
@@ -77,38 +77,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
----
- hw/misc/mchp_pfsoc_sysreg.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+If the kernel entry is in the high DRAM area, place the FDT into this
+area.
 
-diff --git a/hw/misc/mchp_pfsoc_sysreg.c b/hw/misc/mchp_pfsoc_sysreg.c
-index 7876fe0c5b..08196525aa 100644
---- a/hw/misc/mchp_pfsoc_sysreg.c
-+++ b/hw/misc/mchp_pfsoc_sysreg.c
-@@ -27,7 +27,9 @@
- #include "hw/irq.h"
- #include "hw/sysbus.h"
- #include "hw/misc/mchp_pfsoc_sysreg.h"
-+#include "system/runstate.h"
+Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ hw/riscv/microchip_pfsoc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+index 9c846f9b5b..f477d2791e 100644
+--- a/hw/riscv/microchip_pfsoc.c
++++ b/hw/riscv/microchip_pfsoc.c
+@@ -626,8 +626,15 @@ static void microchip_icicle_kit_machine_init(Machin=
+eState *machine)
+         kernel_entry =3D boot_info.image_low_addr;
 =20
-+#define MSS_RESET_CR    0x18
- #define ENVM_CR         0xb8
- #define MESSAGE_INT     0x118c
-=20
-@@ -56,6 +58,11 @@ static void mchp_pfsoc_sysreg_write(void *opaque, hwad=
-dr offset,
- {
-     MchpPfSoCSysregState *s =3D opaque;
-     switch (offset) {
-+    case MSS_RESET_CR:
-+        if (value =3D=3D 0xdead) {
-+            qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+         /* Compute the fdt load address in dram */
+-        fdt_load_addr =3D riscv_compute_fdt_addr(memmap[MICROCHIP_PFSOC_=
+DRAM_LO].base,
+-                                               memmap[MICROCHIP_PFSOC_DR=
+AM_LO].size,
++        hwaddr kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_LO].base;
++        hwaddr kernel_ram_size =3D memmap[MICROCHIP_PFSOC_DRAM_LO].size;
++
++        if (kernel_entry - kernel_ram_base >=3D kernel_ram_size) {
++            kernel_ram_base =3D memmap[MICROCHIP_PFSOC_DRAM_HI].base;
++            kernel_ram_size =3D mem_high_size;
 +        }
-+        break;
-     case MESSAGE_INT:
-         qemu_irq_lower(s->irq);
-         break;
++
++        fdt_load_addr =3D riscv_compute_fdt_addr(kernel_ram_base, kernel=
+_ram_size,
+                                                machine, &boot_info);
+         riscv_load_fdt(fdt_load_addr, machine->fdt);
+=20
 --=20
 2.43.0
 
