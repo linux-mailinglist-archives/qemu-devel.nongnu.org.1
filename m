@@ -2,70 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F741A69971
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 20:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B8DA699A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 20:43:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuzBL-0006r6-2o; Wed, 19 Mar 2025 15:34:29 -0400
+	id 1tuzJK-0000iG-Jm; Wed, 19 Mar 2025 15:42:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tuzAz-0006q5-8l
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:34:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tuzAx-0006So-8I
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:34:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742412842;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PnOSaBwmTwh8vZR0PUXGEXmK/pnR4DZEjshuFF/1Rmw=;
- b=E8CoPCbTWquP1OyS0dOQFw8JNSNG6Mb91QiMCiOtf1bTbecoWnSV+zuL9k+VP3Pvl6ZTTd
- QIwUqMbkYdtUnjta2CZNkRmCplSVjZs8KXJ/FIQgPWjyLxaahAPA99Vd7BgncyacIlRtUL
- nGuMo6Ra6KALqm7C0JQNFpvSn9XYTJ8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-K3LCYd3aMxyWVKA-ggRkwQ-1; Wed,
- 19 Mar 2025 15:33:57 -0400
-X-MC-Unique: K3LCYd3aMxyWVKA-ggRkwQ-1
-X-Mimecast-MFC-AGG-ID: K3LCYd3aMxyWVKA-ggRkwQ_1742412836
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C30A1180AF68; Wed, 19 Mar 2025 19:33:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.17.1])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 61A7C1956094; Wed, 19 Mar 2025 19:33:53 +0000 (UTC)
-Date: Wed, 19 Mar 2025 14:33:50 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, gerben@altlinux.org, qemu-stable@nongnu.org, 
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] block: Zero block driver state before reopening
-Message-ID: <nn5b6oyyuaxguho6ex7bal3y67olzrvwsgpa4wvjbrutsrehhl@g4h5kll24uvt>
-References: <20250310104858.28221-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1tuzJB-0000ha-Na
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:42:34 -0400
+Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1tuzJ8-0001nS-Ls
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:42:32 -0400
+Received: by mail-oi1-x22f.google.com with SMTP id
+ 5614622812f47-3fea67e64caso403b6e.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 12:42:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1742413349; x=1743018149;
+ darn=nongnu.org; 
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vMLAFjMhZ4JY7cw6US5xBTrT3XyKZJJMx+r+cPzoszg=;
+ b=aXvga1aJxkG9dnO9WvKfumjyu41p6/yg9N1UL7/DY6+ks8YSLvC0Qebd/kh0dIravS
+ tnTHOba1p4S9kPJp207BRBDgyQOCdCREKes6xdz8/VK9wyzmM7ow/1uZQfUr3xVWjYjQ
+ McH6Xt1AP2WxMj+5+B7sYXgAUjz0QSMZZN8BI6h9WFftek6b18+cgNPyAEkUHYKwI9/E
+ 3rQ4BhOEyivwVxECKI4G+XF9wjYfMFer/Mior9SzSx+y6XS1e6v9olm/xSfgpjYmBpT/
+ Ejndnj2YxvYykZmcN5+1cN1ywoZwej674gQFKkvRHTs/X4OHL+uPwVtf6oIwTphJe+jx
+ mpmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742413349; x=1743018149;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vMLAFjMhZ4JY7cw6US5xBTrT3XyKZJJMx+r+cPzoszg=;
+ b=WMCw2jqtDl0R9TLxZN1ea+CAPfxPHviksET+wgkHzSvbrq06kqYben5kolwM/uTANO
+ sWmuw6Px/iOBxrRsomkyxMiWXoJytvFg8FPa7nR0iIHlYExBGVPcBMZ6W7aF5p3XAOZs
+ ESsbxaEe6i0RVIoXhxxVpxp0u0N28wy9VBsxgfrJiGoOYzXlfWSlBDA3l7Ba2UAe9Peu
+ H1eWkQtrPrZSyCnE/HaFWBWlPUkPchINVYS/23cXfJLAo3QHAVcmQWKMbZm/XsN5YS/g
+ /YmTa28EgE5Y51xrlr/WlJcLFh239UAR/Mm7aTjxFkWF3qtyY7hA6beb3R8Og8NJR2mn
+ KEMw==
+X-Gm-Message-State: AOJu0Yx7y71c3+klOlD6zZtF/lzZ38GMPHCDWB2EbVf3c0PxrZn2txTZ
+ 5oJ2gGn/kgsYpG4ZdRbmUm/lwYvYdCDLp7P6Taytv3b3XC03GHzbYNDFdkxRDIs=
+X-Gm-Gg: ASbGnctVEc+xy2axnxJJlSjLNY3TjVoMjcxfLsvL6XI6NjS5Y8HhpkG0tLOtSZtAGDe
+ TUaKVrLQOqmXtbHx1MTiALlTsDq5JXutbLYLgBtq7Upn/U+jAKkKe7LfKwz7jYZGpdLA72Bc/QK
+ M9PfF8hPuHe7JvIxQWD5eoAR1nEK27d4thld5uvV7XtGWyrvitbX7SXGvQZ5CUsrwsRrrE5omaO
+ h1fNcBD/jecN4dDYaXgS9utH6+9jJQt+8P1dK8moyuHevsD/J/U0NoThTxoEHtC19M9aZ8fdqaI
+ BMd77+aV8UTqUXyEY9jXmqxeHvdUSR2Py36NGwFXAyouY3W1
+X-Google-Smtp-Source: AGHT+IEWuDf3QXDqMWM83lzTFGPh9LARhmOrmxdzcjsVvgS6kr5Y+t/n+6YbYuqC50VWZx6mXYmG1w==
+X-Received: by 2002:a05:6808:1822:b0:3f7:d16c:e293 with SMTP id
+ 5614622812f47-3feb4844a81mr471739b6e.2.1742413348952; 
+ Wed, 19 Mar 2025 12:42:28 -0700 (PDT)
+Received: from mail.minyard.net ([2001:470:b8f6:1b:1864:2d48:765f:cbbc])
+ by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-3fcd60e743esm2750339b6e.46.2025.03.19.12.42.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 Mar 2025 12:42:27 -0700 (PDT)
+Date: Wed, 19 Mar 2025 14:42:21 -0500
+From: Corey Minyard <corey@minyard.net>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 3/3] cleanup: Drop pointless label at end of function
+Message-ID: <Z9seHbw1IepwkppI@mail.minyard.net>
+References: <20250319152126.3472290-1-armbru@redhat.com>
+ <20250319152126.3472290-4-armbru@redhat.com>
+ <CAB9gMfrxe7NWk_1GkudEeWby-ZHaH1xTWD5n7WfK7iz4qKsL6g@mail.gmail.com>
+ <87o6xwkerz.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250310104858.28221-1-kwolf@redhat.com>
-User-Agent: NeoMutt/20250113
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.337,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+In-Reply-To: <87o6xwkerz.fsf@pond.sub.org>
+Received-SPF: none client-ip=2607:f8b0:4864:20::22f;
+ envelope-from=corey@minyard.net; helo=mail-oi1-x22f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,53 +94,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: corey@minyard.net
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 10, 2025 at 11:48:58AM +0100, Kevin Wolf wrote:
-> Block drivers assume in their .bdrv_open() implementation that their
-> state in bs->opaque has been zeroed; it is initially allocated with
-> g_malloc0() in bdrv_open_driver().
+On Wed, Mar 19, 2025 at 08:21:20PM +0100, Markus Armbruster wrote:
+> Corey Minyard <corey@minyard.net> writes:
 > 
-> bdrv_snapshot_goto() needs to make sure that it is zeroed again before
-> calling drv->bdrv_open() to avoid that block drivers use stale values.
+> > Is this official coding style?  I'm not a big fan of having return
+> > statements in the middle of functions, I generally only put them at
+> > the beginning or the end.
 > 
-> One symptom of this bug is VMDK running into a double free when the user
-> tries to apply an internal snapshot like 'qemu-img snapshot -a test
-> test.vmdk'. This should be a graceful error because VMDK doesn't support
-> internal snapshots.
+> There's nothing in docs/devel/style.rst.
 > 
-> ==25507== Invalid free() / delete / delete[] / realloc()
-> ==25507==    at 0x484B347: realloc (vg_replace_malloc.c:1801)
-> ==25507==    by 0x54B592A: g_realloc (gmem.c:171)
-> ==25507==    by 0x1B221D: vmdk_add_extent (../block/vmdk.c:570)
-> ==25507==    by 0x1B1084: vmdk_open_sparse (../block/vmdk.c:1059)
-> ==25507==    by 0x1AF3D8: vmdk_open (../block/vmdk.c:1371)
-> ==25507==    by 0x1A2AE0: bdrv_snapshot_goto (../block/snapshot.c:299)
-> ==25507==    by 0x205C77: img_snapshot (../qemu-img.c:3500)
-> ==25507==    by 0x58FA087: (below main) (libc_start_call_main.h:58)
-> ==25507==  Address 0x832f3e0 is 0 bytes inside a block of size 272 free'd
-> ==25507==    at 0x4846B83: free (vg_replace_malloc.c:989)
-> ==25507==    by 0x54AEAC4: g_free (gmem.c:208)
-> ==25507==    by 0x1AF629: vmdk_close (../block/vmdk.c:2889)
-> ==25507==    by 0x1A2A9C: bdrv_snapshot_goto (../block/snapshot.c:290)
-> ==25507==    by 0x205C77: img_snapshot (../qemu-img.c:3500)
-> ==25507==    by 0x58FA087: (below main) (libc_start_call_main.h:58)
+> I count more than 42,000 return statements with indentation > 4.  These
+> are either within some block, or incorrectly indented.  I'd bet my own
+> money that it's the former for pretty much all of them.
 > 
-> This error was discovered by fuzzing qemu-img.
+> I count less than 130 labels right before a return statement at end of a
+> function.
 > 
-> Cc: qemu-stable@nongnu.org
-> Reported-by: Denis Rastyogin <gerben@altlinux.org>
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->  block/snapshot.c | 1 +
->  1 file changed, 1 insertion(+)
+> Based on that, I'd say return in the middle of function is
+> overwhelmingly common in our code.
+> 
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Ok.  It's not a huge deal to me.  I think it's more dangerous to
+have returns in the middle; they are easy to miss and an "out:" at the
+end make it more clear there are returns in the middle.  But that's
+just my opinion.  To make wholesale changes like this I would prefer
+it be in the style guide.  But, I don't want to start a holy war,
+either.  Sigh.
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+I mean, just a "return;" at the end of a function, yes, that's a
+no-brainer, get rid of it.  But that's not what the ones in the IPMI
+device are.
 
+Thanks,
+
+-corey
 
