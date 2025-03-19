@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B695CA697F3
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 19:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6708A697EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 19:24:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuy4S-0000O7-PS; Wed, 19 Mar 2025 14:23:16 -0400
+	id 1tuy4R-0000JQ-C7; Wed, 19 Mar 2025 14:23:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tuy4G-000084-Fo
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 14:23:05 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1tuy4I-00009v-I9
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 14:23:06 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1tuy4B-0006Mc-Hx
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 14:23:04 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43cebe06e9eso35678285e9.3
+ id 1tuy4C-0006N0-26
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 14:23:06 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43cf680d351so6823315e9.0
  for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 11:22:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742408577; x=1743013377; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742408578; x=1743013378; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8cJ0n2MLq0D1KATXMYewHUR1inYzbGMB0GndiKaR2hw=;
- b=khprakExbS8SXKI34/bXH/3axN1yKvJH2FAYWnvaTEa91Tn9vObavxuH1BwNcp7QUH
- 4/ktB2nX9mf0G529PFOIkDdCMPYBCcGnCvyzeZzzSAZQ+OMsVk3+IRif+42q5T+fU3T1
- yG9Q+egWsik4m2kqXxCbmXvUpTkjN5YBYiHda/HEin/dXFqfgL+aqdwoCaMyjcC60NXW
- SoOz3lMmmelw3XhecWcqX/UAXturisqeDJO7uxKetAMAQmXXibMz+nW/j8LAX0ZEo/km
- kWXzMrt0YKYI7+gXwuEnDAFaEqhSSFVC5BYO6maZeZ4kVPWaWIpVy1MGqZGNq3TVqouN
- YZOg==
+ bh=3IgWp4WCaXbcrtv8Yoastsvt3hmlgscQMXb34UR5gEk=;
+ b=bkNHF12uX7+66nWTN+Vy4utk31odQ9g7IboA5KsO75ntncqsQD4vI68Ygm/qLJj+Uz
+ hl8vGfa7usXp0+lC2qCyLqFLb9SDIOrpz91ECaPntM4wdziFGu+TSEVd1UP6g/Fdfosn
+ 29DCwzSGasm2HekaMmqShQGhJKSaiN/AoIzJi2U/dt3WWFPYQtiWyOraQ7aLi3w/kUsK
+ CyT0Ol8g+jpriGH24FcJjsf7gBI8BT4pUTeu/pxkjp3Vd1sBujPkc7ZTH18CmkdJu0DK
+ 9HmIzN2+i+9ag3jajBxe3sPXzaHWoDaZbpDwCz9KrTlw8kh8Y5HtXCzGTHLuigYvpWtk
+ +png==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742408577; x=1743013377;
+ d=1e100.net; s=20230601; t=1742408578; x=1743013378;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8cJ0n2MLq0D1KATXMYewHUR1inYzbGMB0GndiKaR2hw=;
- b=oghYtOJfizYvhIi2Kx+LSi3bvlRbVZyoxIGVIV6hznJJwVFu3/hhGdRNO92DqoIkwQ
- Q7QRnGWh8d6DNZ4LyOtDYUbq9743BF7gJeFcoyRzTmNLn9PW7aDa9cqhKqFXQp9OXpv7
- I3W8CxirPq7x8SSbIzefsgMLyjymzUI+6lDmxdFe1EDZ1su7/uRTljV0oVsELE2incFc
- A5q4lMW8sZX+iKWjrAC2XYXWbGi2jEVd69zKu45oVvCYEHzUkVgntpFgC+/flOuSzXHQ
- 4OM+wJWHkQwVuIcf/GpHiEERE9M9kLbRfwIqrWvp4iCgWI3ntFfK+wXsc/CrT17K93yt
- aKNw==
-X-Gm-Message-State: AOJu0YySpdMcCNrDksSFNHia2pdGXg3+oyRZxwXsJCTk3yvhzRXBSB7Y
- SpSr+uwPg5bpiR5p7wUWjqXoN360HK9jkTZamdqOTV+xSjVp2wyfGLi0P/j+2lY=
-X-Gm-Gg: ASbGnctZHlB3Mdto1aUIj7mR49V8rfkgtKIwVHYExCF+TYxmAfwZ9/Zify19jO6Zf92
- 02eqdsHxfOXzekxw2g72EQDe7s5NvN7MZfOxHkSf/VhKznz5X3oI/xwJlVPAE1Fx7L+UODlk/pM
- CWWWgaCFBSkr6RvOf4SjYnzatS8fnZ5bUXj2LEmrYPUuQCDulb3+nEF8+v2+4vYttSTLqx33wV7
- JO4sMKdcfbJqiGriks6vFKIDT+giJyWHTLR234V4SnC6TFtFMJ2ef9PcBf3omklLatdVOdCkggE
- BqTulOPPdNXDB6ExNztsZ3YI6tTX1tkADA9IA7FhTxQHXi4=
-X-Google-Smtp-Source: AGHT+IFADQT79Ns8ByjAii8aVa4W9/RS096Ut1etVHHbqn8c/WBDbGY+JTgtbCFltpJdE1I+PHeetA==
-X-Received: by 2002:a05:6000:1a8e:b0:391:3b11:d604 with SMTP id
- ffacd0b85a97d-39973b360afmr2727868f8f.54.1742408577117; 
- Wed, 19 Mar 2025 11:22:57 -0700 (PDT)
+ bh=3IgWp4WCaXbcrtv8Yoastsvt3hmlgscQMXb34UR5gEk=;
+ b=fG/APSxypBbe3UTcHfkd1SQ1Tc48/XyditvLpTUeG6eb+ZpuoASCMJgsB0tPQ1P0oz
+ xy0UtjRKRR4wyrYzH6RGNBUClA0iwxmENwXiFqgyaXG2NRRXRmUl6gzYDxxjbCkYB3Fx
+ yQaTbxNU+/CQdPdu1xUgCRnd7ti84Sf9V+moEAUYGNWsaYcokEo7HhXZVIwRbum6FhYs
+ 3ZvB172uJRlYMMwhP6jHq0qTJ1dt/A70JMdj0w+8ig52DLCBS1/u3g49PQ6ZyzccIMfV
+ vNKXZNx4i2QI3BQCUkcEMy55nQqGyhiBJp2c3IhasTvBUAJhRAlqU7h7j9x5qCmkgfAj
+ 10Kw==
+X-Gm-Message-State: AOJu0YxYo4+k5ycD2Lq9GhWpdAYUsGsDmAMrCypvS5DeKTur04JS4fhM
+ Hr9ydsH/xP6RfCxh/r/NnQLfOLLVFChuyiXDqkS2x9tlxhRyjKOFHzQdcA6yjZ8=
+X-Gm-Gg: ASbGncuYytOT/Xo8tQFysipjpdf6ALGgvAaypek+SqEzCEaKeb6lE4jYqCKcEGw89F0
+ fZmlBrFW48/rWFi+55djbC9Cj9YEQJYsvDEYJhmf7U0Q+D6Mn1HvsDnUQJPDjc9EN47K2MV4wLG
+ HeESoRgE2vbRZ03XgxrulcLvCvsivZe5CsAMWSgPZDYBmDr7jYcPKV9O6PLL+9MKuoik3ukUuPr
+ XSv9jqMc0cGNrBvHIJN5Dfsc3Oenz09fP01PrDRbDVzDKx0pG69J5jUSQgS/c1qPXqc75P32cGB
+ hDYFoWwfN3Id8i55LVq7L5/DaB+MX/Qcurzl888rfGDMoZ8=
+X-Google-Smtp-Source: AGHT+IHInZiHFKhcsVP4Td6oIgZNdEkttHm93MlPVGH9No0cSuMWiwNAfQA6b8KETHcZLP9ag/cEfQ==
+X-Received: by 2002:a5d:5f4c:0:b0:391:b93:c971 with SMTP id
+ ffacd0b85a97d-39979586d6fmr572712f8f.20.1742408578086; 
+ Wed, 19 Mar 2025 11:22:58 -0700 (PDT)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39972df9b9esm3027838f8f.18.2025.03.19.11.22.55
+ 5b1f17b1804b1-43d43f376d3sm26330865e9.4.2025.03.19.11.22.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 19 Mar 2025 11:22:56 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7B7E45FAA0;
+ by draig.lan (Postfix) with ESMTP id 908D45FAC7;
  Wed, 19 Mar 2025 18:22:55 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,17 +82,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH 03/10] target/arm: convert 32 bit gdbstub to new helper
-Date: Wed, 19 Mar 2025 18:22:48 +0000
-Message-Id: <20250319182255.3096731-4-alex.bennee@linaro.org>
+Subject: [PATCH 04/10] target/arm: convert 64 bit gdbstub to new helper
+Date: Wed, 19 Mar 2025 18:22:49 +0000
+Message-Id: <20250319182255.3096731-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250319182255.3096731-1-alex.bennee@linaro.org>
 References: <20250319182255.3096731-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,155 +121,153 @@ those cases if we wanted to.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/gdbstub.c | 57 ++++++++++++++++++++++++++++----------------
- 1 file changed, 36 insertions(+), 21 deletions(-)
+ target/arm/gdbstub64.c | 53 ++++++++++++++++++++++++++----------------
+ 1 file changed, 33 insertions(+), 20 deletions(-)
 
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index 30068c2262..14d931b0bf 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index 1a4dbec567..793332af31 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
 @@ -20,7 +20,7 @@
- #include "qemu/osdep.h"
+ #include "qemu/log.h"
  #include "cpu.h"
- #include "exec/gdbstub.h"
+ #include "internals.h"
 -#include "gdbstub/helpers.h"
 +#include "gdbstub/registers.h"
  #include "gdbstub/commands.h"
- #include "system/tcg.h"
- #include "internals.h"
-@@ -33,12 +33,16 @@ typedef struct RegisterSysregFeatureParam {
-     int n;
- } RegisterSysregFeatureParam;
+ #include "tcg/mte_helper.h"
+ #if defined(CONFIG_USER_ONLY) && defined(CONFIG_LINUX)
+@@ -35,15 +35,16 @@ int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
  
--/* Old gdb always expect FPA registers.  Newer (xml-aware) gdb only expect
--   whatever the target description contains.  Due to a historical mishap
--   the FPA registers appear in between core integer regs and the CPSR.
--   We hack round this by giving the FPA regs zero size when talking to a
--   newer gdb.  */
--
-+/*
-+ * Old gdb always expect FPA registers. Newer (xml-aware) gdb only
-+ * expect whatever the target description contains. Due to a
-+ * historical mishap the FPA registers appear in between core integer
-+ * regs and the CPSR. We hack round this by giving the FPA regs zero
-+ * size when talking to a newer gdb.
-+ *
-+ * While gdb cares about the memory endianess of the target all
-+ * registers are passed in little-endian mode.
-+ */
- int arm_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
-@@ -46,15 +50,17 @@ int arm_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- 
-     if (n < 16) {
+     if (n < 31) {
          /* Core integer register.  */
--        return gdb_get_reg32(mem_buf, env->regs[n]);
-+        return gdb_get_register_value(MO_TEUL, mem_buf, (uint8_t *) &env->regs[n]);
+-        return gdb_get_reg64(mem_buf, env->xregs[n]);
++        return gdb_get_register_value(MO_TEUO, mem_buf, (uint8_t *) &env->xregs[n]);
      }
-     if (n == 25) {
-         /* CPSR, or XPSR for M-profile */
-+        uint32_t reg;
-         if (arm_feature(env, ARM_FEATURE_M)) {
--            return gdb_get_reg32(mem_buf, xpsr_read(env));
-+            reg = xpsr_read(env);
-         } else {
--            return gdb_get_reg32(mem_buf, cpsr_read(env));
-+            reg = cpsr_read(env);
-         }
-+        return gdb_get_register_value(MO_TEUL, mem_buf, (uint8_t *) &reg);
+     switch (n) {
+     case 31:
+-        return gdb_get_reg64(mem_buf, env->xregs[31]);
++        return gdb_get_register_value(MO_TEUO, mem_buf, (uint8_t *) &env->xregs[31]);
+     case 32:
+-        return gdb_get_reg64(mem_buf, env->pc);
++        return gdb_get_register_value(MO_TEUO, mem_buf, (uint8_t *) &env->pc);
+     case 33:
+-        return gdb_get_reg32(mem_buf, pstate_read(env));
++        uint32_t pstate = pstate_read(env);
++        return gdb_get_register_value(MO_TEUL, mem_buf, (uint8_t *) &pstate);
      }
      /* Unknown register.  */
      return 0;
-@@ -115,19 +121,22 @@ static int vfp_gdb_get_reg(CPUState *cs, GByteArray *buf, int reg)
- 
-     /* VFP data registers are always little-endian.  */
-     if (reg < nregs) {
--        return gdb_get_reg64(buf, *aa32_vfp_dreg(env, reg));
-+        return gdb_get_register_value(MO_TEUQ, buf,
-+                                      (uint8_t *) aa32_vfp_dreg(env, reg));
-     }
-     if (arm_feature(env, ARM_FEATURE_NEON)) {
-         /* Aliases for Q regs.  */
-         nregs += 16;
-         if (reg < nregs) {
-             uint64_t *q = aa32_vfp_qreg(env, reg - 32);
--            return gdb_get_reg128(buf, q[0], q[1]);
-+            return gdb_get_register_value(MO_TEUO, buf, (uint8_t *) q);
-         }
-     }
-     switch (reg - nregs) {
-+        uint32_t fpcr;
-     case 0:
--        return gdb_get_reg32(buf, vfp_get_fpscr(env));
-+        fpcr = vfp_get_fpscr(env);
-+        return gdb_get_register_value(MO_TEUL, buf, (uint8_t *) &fpcr);
-     }
-     return 0;
- }
-@@ -166,9 +175,11 @@ static int vfp_gdb_get_sysreg(CPUState *cs, GByteArray *buf, int reg)
+@@ -82,23 +83,27 @@ int aarch64_gdb_get_fpu_reg(CPUState *cs, GByteArray *buf, int reg)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
++    uint32_t fpr;
  
      switch (reg) {
-     case 0:
--        return gdb_get_reg32(buf, env->vfp.xregs[ARM_VFP_FPSID]);
-+        return gdb_get_register_value(MO_TEUL, buf,
-+                                      (uint8_t *) &env->vfp.xregs[ARM_VFP_FPSID]);
-     case 1:
--        return gdb_get_reg32(buf, env->vfp.xregs[ARM_VFP_FPEXC]);
-+        return gdb_get_register_value(MO_TEUL, buf,
-+                                      (uint8_t *) &env->vfp.xregs[ARM_VFP_FPEXC]);
+     case 0 ... 31:
+     {
+         /* 128 bit FP register - quads are in LE order */
+         uint64_t *q = aa64_vfp_qreg(env, reg);
+-        return gdb_get_reg128(buf, q[1], q[0]);
++        return gdb_get_register_value(MO_TEUO, buf, (uint8_t *) q);
      }
-     return 0;
- }
-@@ -196,7 +207,8 @@ static int mve_gdb_get_reg(CPUState *cs, GByteArray *buf, int reg)
- 
-     switch (reg) {
-     case 0:
--        return gdb_get_reg32(buf, env->v7m.vpr);
-+        return gdb_get_register_value(MO_TEUL, buf,
-+                                      (uint8_t *) &env->v7m.vpr);
+     case 32:
+         /* FPSR */
+-        return gdb_get_reg32(buf, vfp_get_fpsr(env));
++        fpr = vfp_get_fpsr(env);
++        break;
+     case 33:
+         /* FPCR */
+-        return gdb_get_reg32(buf, vfp_get_fpcr(env));
++        fpr = vfp_get_fpcr(env);
++        break;
      default:
          return 0;
      }
-@@ -236,9 +248,11 @@ static int arm_gdb_get_sysreg(CPUState *cs, GByteArray *buf, int reg)
-     ri = get_arm_cp_reginfo(cpu->cp_regs, key);
-     if (ri) {
-         if (cpreg_field_is_64bit(ri)) {
--            return gdb_get_reg64(buf, (uint64_t)read_raw_cp_reg(env, ri));
-+            uint64_t cpreg = read_raw_cp_reg(env, ri);
-+            return gdb_get_register_value(MO_TEUQ, buf, (uint8_t *) &cpreg);
-         } else {
--            return gdb_get_reg32(buf, (uint32_t)read_raw_cp_reg(env, ri));
-+            uint32_t cpreg = (uint32_t) read_raw_cp_reg(env, ri);
-+            return gdb_get_register_value(MO_TEUL, buf, (uint8_t *) &cpreg);
-         }
-     }
-     return 0;
-@@ -375,12 +389,12 @@ static uint32_t *m_sysreg_ptr(CPUARMState *env, MProfileSysreg reg, bool sec)
- static int m_sysreg_get(CPUARMState *env, GByteArray *buf,
-                         MProfileSysreg reg, bool secure)
++    return gdb_get_register_value(MO_TEUL, buf, (uint8_t *) &fpr);
+ }
+ 
+ int aarch64_gdb_set_fpu_reg(CPUState *cs, uint8_t *buf, int reg)
+@@ -132,30 +137,37 @@ int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg)
  {
--    uint32_t *ptr = m_sysreg_ptr(env, reg, secure);
-+    uint8_t *ptr = (uint8_t *) m_sysreg_ptr(env, reg, secure);
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
++    uint32_t fpr;
  
-     if (ptr == NULL) {
+     switch (reg) {
+     /* The first 32 registers are the zregs */
+     case 0 ... 31:
+     {
+         int vq, len = 0;
++        ARMVectorReg *zreg = &env->vfp.zregs[reg];
++
+         for (vq = 0; vq < cpu->sve_max_vq; vq++) {
+-            len += gdb_get_reg128(buf,
+-                                  env->vfp.zregs[reg].d[vq * 2 + 1],
+-                                  env->vfp.zregs[reg].d[vq * 2]);
++            len += gdb_get_register_value(MO_TEUQ, buf,
++                                          (uint8_t *) &zreg->d[vq * 2 + 1]);
++            len += gdb_get_register_value(MO_TEUQ, buf,
++                                          (uint8_t *) &zreg->d[vq * 2]);
+         }
+         return len;
+     }
+     case 32:
+-        return gdb_get_reg32(buf, vfp_get_fpsr(env));
++        fpr = vfp_get_fpsr(env);
++        return gdb_get_register_value(MO_TEUL, buf, (uint8_t *) &fpr);
+     case 33:
+-        return gdb_get_reg32(buf, vfp_get_fpcr(env));
++        fpr = vfp_get_fpcr(env);
++        return gdb_get_register_value(MO_TEUL, buf, (uint8_t *) &fpr);
+     /* then 16 predicates and the ffr */
+     case 34 ... 50:
+     {
+         int preg = reg - 34;
+         int vq, len = 0;
+         for (vq = 0; vq < cpu->sve_max_vq; vq = vq + 4) {
+-            len += gdb_get_reg64(buf, env->vfp.pregs[preg].p[vq / 4]);
++            len += gdb_get_register_value(MO_TEUQ, buf,
++                                          (uint8_t *) &env->vfp.pregs[preg].p[vq / 4]);
+         }
+         return len;
+     }
+@@ -165,8 +177,8 @@ int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg)
+          * We report in Vector Granules (VG) which is 64bit in a Z reg
+          * while the ZCR works in Vector Quads (VQ) which is 128bit chunks.
+          */
+-        int vq = sve_vqm1_for_el(env, arm_current_el(env)) + 1;
+-        return gdb_get_reg64(buf, vq * 2);
++        uint64_t vq = (sve_vqm1_for_el(env, arm_current_el(env)) + 1) * 2;
++        return gdb_get_register_value(MO_TEUL, buf, (uint8_t *) &vq);
+     }
+     default:
+         /* gdbstub asked for something out our range */
+@@ -248,10 +260,11 @@ int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg)
+             bool is_data = !(reg & 1);
+             bool is_high = reg & 2;
+             ARMMMUIdx mmu_idx = arm_stage1_mmu_idx(env);
+-            ARMVAParameters param;
++            ARMVAParameters param = aa64_va_parameters(env, -is_high, mmu_idx,
++                                                       is_data, false);
++            uint64_t pauth_mask = pauth_ptr_mask(param);
+ 
+-            param = aa64_va_parameters(env, -is_high, mmu_idx, is_data, false);
+-            return gdb_get_reg64(buf, pauth_ptr_mask(param));
++            return gdb_get_register_value(MO_TEUQ, buf, (uint8_t *) &pauth_mask);
+         }
+     default:
          return 0;
-     }
--    return gdb_get_reg32(buf, *ptr);
-+    return gdb_get_register_value(MO_TEUL, buf, ptr);
+@@ -399,7 +412,7 @@ int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg)
+ 
+     tcf0 = extract64(env->cp15.sctlr_el[1], 38, 2);
+ 
+-    return gdb_get_reg64(buf, tcf0);
++    return gdb_get_register_value(MO_TEUQ, buf, (uint8_t *) &tcf0);
  }
  
- static int arm_gdb_get_m_systemreg(CPUState *cs, GByteArray *buf, int reg)
-@@ -393,7 +407,8 @@ static int arm_gdb_get_m_systemreg(CPUState *cs, GByteArray *buf, int reg)
-      * banked and non-banked bits.
-      */
-     if (reg == M_SYSREG_CONTROL) {
--        return gdb_get_reg32(buf, arm_v7m_mrs_control(env, env->v7m.secure));
-+        uint32_t reg32 = arm_v7m_mrs_control(env, env->v7m.secure);
-+        return gdb_get_register_value(MO_TEUL, buf, (uint8_t *) &reg32);
-     }
-     return m_sysreg_get(env, buf, reg, env->v7m.secure);
- }
+ int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg)
 -- 
 2.39.5
 
