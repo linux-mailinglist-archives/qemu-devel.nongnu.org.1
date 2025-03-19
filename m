@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CFDA68658
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 09:05:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B90A6864F
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 09:04:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuoP2-000819-LJ; Wed, 19 Mar 2025 04:03:54 -0400
+	id 1tuoP6-00081J-Qf; Wed, 19 Mar 2025 04:04:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tuoOZ-0007yV-2e
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:03:26 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1tuoOd-0007zR-JJ
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:03:28 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tuoOW-0004Nw-HQ
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:03:22 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-225477548e1so115047185ad.0
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 01:03:19 -0700 (PDT)
+ id 1tuoOY-0004OG-5m
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:03:27 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-300f92661fcso6881304a91.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 01:03:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742371397; x=1742976197; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=d97oawvz8CwDMw6pfcxqX05lgcbKJXMjocbN9tIklM8=;
- b=JGkHbzfYM/rgM3secDpzIeSkHKM499F6uZYk6/89ouCTac007vtuJl3eU3j6sCpD5l
- XMX6LheqIV7usNiEGgao0MCWhGe7JDpfSDjoShkycGNiUZFzQbTikZzMUgmR53is1Azg
- zCSGmDnik5eT8OLq0KuCcAHbX1H7f8X+9e0nfujg1JNkI6ImwQTkZ6sdTwGAhQUc8Rsu
- 7Nddiiy7UC3KaPIdux+K8QQdjCi2qs++GmQx1/FXVc3GtG8x3z2VTkCOGpmo6Q7dGweF
- 2Gs0HTTsDrn8VY6NTt+zyrBYmpLxi6Ca/D/1z58aT2YBr6R2Lw9c9x8qSBnyJOs2vDEK
- i/Mg==
+ d=gmail.com; s=20230601; t=1742371400; x=1742976200; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dry9IOvdEb4K5cPkJgeCnD2yv/gA9ubaGhE0+QsIwXs=;
+ b=lAK23FisE2Y7HeOtHgqOGgR+NVAtnmonXrkSeMGil9M1Xi2L/MBaPl5dZl+ebrh6k5
+ qQlC2fGnsMoENoyVmXOrz1O8/v13ZF3kYFjafm8Dim91gqgG2PvZj3lFD2wpttOUndR+
+ XcAy0FJNNrMjwUGBZxyu7qsmOM7+pZL+qqvbRJHXxl/cAN9frvdEdqo0Xns+8qh9i27h
+ a3ygqGufbBJqpgKyOrRM8DPfi0omutF2yNu1g7A5DiPdPzLz3xlQeQ0R8JoocVp+qyYU
+ K8DAl2vyBQ4acJIZWcLLpdyhobh9u/MirmKK5BhBnPkXUgjKKlxHwkefqOVlD+twQrEs
+ Xyag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742371397; x=1742976197;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=d97oawvz8CwDMw6pfcxqX05lgcbKJXMjocbN9tIklM8=;
- b=Xln1lp/LOZa01kThQoGKxuxoCqw/oj7n+E2eQTPS0Z06xUMGIsecE7RmDJVLCe9OHp
- 5NMYtInB8NbOuZw5uGQSPMhPhC5/cUFTKDvJohROJtWFBto4nAbbAxdzbDrofgpJPvmI
- /kMA0D6KbZWYsBthd47YsEvXqYnOUn7Zh9eORMKWLnuIqmXuuIgjEV6i+n+zzLXqYEA+
- +lPAi4fBKynmbIUKXQJ8GKC1KCMT2Q+LEHF5HSmTSmtlL7OCHfxeNYUpqnI/ygUUbt+F
- BjOVyNja5jaOSXbnYQAtP9RHd5ucWubvWedRLUair/2rbvvahlMw9LPNqrMKXlNkJ/AH
- 5QKw==
-X-Gm-Message-State: AOJu0YyNIn5bfqhncFxnb5CHLFkIWWIkT0LdM+K5zfNg7joN4vDihmWa
- zufkB4Jc2KeMEwB+YLRTgpHJU0I2QrseeQT1I6nobVmU7RU/owVbGsycJg==
-X-Gm-Gg: ASbGncu5hkXv82oZn88ggYdlKJk56mfZStk5L/nFso/MkVH+y7bsxyUZhvvwMaG7JZg
- SUsuPH8T9FBhI8Ydi4AzdOWIj01AtPMmZNpzgstBWwRJsXoaYg3CXn25FYnmoDQSzWgqhnS7/hh
- 7A4+ZWq3PXg/brqqejLfR1Odv11FGJyxSNJtvVoMr5b9L0mXexq2dbyUuKKiSXrzRloeZoCdgqh
- K5BZiL7Wx7YKboWmb8ANGPjocd9H5/NN8Errs/Tr38sE8HsZ7acxLu8Gp/ZGvPXomNmHJyaSkgY
- 9Mf7ZvUx0dRtbLmZ5VpA5z5RttwVPdJipdvtN6jlns2EbATzg2v8w8LM0A5urH3aW4nGiqrIuL5
- +pejsIeiJf1xei3O66Z8YZMqNc9qWGkmX2SCzw+XCebi94012
-X-Google-Smtp-Source: AGHT+IEAV8fFfRpyJBGZ3hXjffYhIQ6BSkYoeqeyvus7oYLrOOFvD61SiP0a6fmT9V77zcmHq9AzDA==
-X-Received: by 2002:a17:902:f68e:b0:224:2a6d:55ae with SMTP id
- d9443c01a7336-22649a6a8f8mr31076955ad.48.1742371396651; 
- Wed, 19 Mar 2025 01:03:16 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1742371400; x=1742976200;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dry9IOvdEb4K5cPkJgeCnD2yv/gA9ubaGhE0+QsIwXs=;
+ b=eyY2lihf6IooDbr6b0lpCw23G39qMxu+f3SybGRf1ER77VyuKxjuU5MVCav+xFf5eX
+ 9w3ugD7uB4UEGnMgtP/M8GSTbbzJPzKFFUzHttgtRFbCRYfITPH3phTOkCzePVnL3Pp+
+ iSnDohe/4KiWzjCTXUsK+hx9O3KI5ktyHBMrSDs7yjp5xZd3isArldYlu0B+aZJcGMMO
+ 4wbwkrbzd68HsaUsq46C5pNniBcvooQ3O9a37Z3LJj/RG49xn5PebGzakI+2M8l0pLNh
+ a0rCumWZyIN27otPNi0fndNecRBjHO3SeCgm0Xu/l7RQFCo6nGx+cSHMbRDLkqkpJxTC
+ 2xVw==
+X-Gm-Message-State: AOJu0YzMt+hjrwAakx+B9ATLoM9sQLo1U+K8Ez7y8XcvuiSgIdd7x9fT
+ D8CtgWXyEA3Gp2x0AvMWz1EwjSIorUCbzkWdVyh6MWOcI4r3kaULA7iFqA==
+X-Gm-Gg: ASbGncsPeCmdL4+J3YsSUyarvvL9Yl421W43n0H+ciYbmCt2pz79BtRoXlG1mts0WhS
+ 99ZWKlBuD3okSLAcg3gh1t7wRxkmx184tH5HQ+IRcvZf0rjIhWURlJ9GgJeeKYkr/6ZCcIMPkCx
+ /w1EgoBHcH5xsXeY+fjdcxPBK7xL2ip8BOAJbGgtNga3OKxdmaQJ2pcQfYmJSfLGrIK0kvap9X4
+ jC+oAvT939ff54HFPC8eiCDu3oJzHZIajgETa0CzRLhBbEJKHZ48N8yBgvBTHUmnkS8TequQEhp
+ vIzdnSRXdd/b3k/qoRbtXdrrGfg66CJftrNRS0JyYPXOgH0a3tDhlAkLYY3+9jnhJVVP495kBZB
+ QD+tqJBBwCTxGWPhhZOMWC0OlnurlMdvcH+gTe27bspBY6rjYLrju02lQvdI=
+X-Google-Smtp-Source: AGHT+IEVEe/tidaXnTInfC24/j4+6jGOqUddwCz0+EZzxjw2cYORkRfjH7m06ny4Ik//kHswkPyyKQ==
+X-Received: by 2002:a17:90b:55cc:b0:2ff:698d:ef74 with SMTP id
+ 98e67ed59e1d1-301be205905mr2563738a91.26.1742371399887; 
+ Wed, 19 Mar 2025 01:03:19 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-225c6ba6c8dsm107725255ad.156.2025.03.19.01.03.13
+ d9443c01a7336-225c6ba6c8dsm107725255ad.156.2025.03.19.01.03.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Mar 2025 01:03:15 -0700 (PDT)
+ Wed, 19 Mar 2025 01:03:19 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 00/10] riscv-to-apply queue
-Date: Wed, 19 Mar 2025 18:02:58 +1000
-Message-ID: <20250319080308.609520-1-alistair.francis@wdc.com>
+ Santiago Monserrat Campanello <santimonserr@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Thomas Huth <thuth@redhat.com>
+Subject: [PULL 01/10] docs/about/emulation: Fix broken link
+Date: Wed, 19 Mar 2025 18:02:59 +1000
+Message-ID: <20250319080308.609520-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250319080308.609520-1-alistair.francis@wdc.com>
+References: <20250319080308.609520-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,71 +103,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 1dae461a913f9da88df05de6e2020d3134356f2e:
+From: Santiago Monserrat Campanello <santimonserr@gmail.com>
 
-  Update version for v10.0.0-rc0 release (2025-03-18 10:18:14 -0400)
+semihosting link to risc-v changed
 
-are available in the Git repository at:
+Signed-off-by: Santiago Monserrat Campanello <santimonserr@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2717
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250305102632.91376-1-santimonserr@gmail.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ docs/about/emulation.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20250319
+diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
+index 3bc3579434..a72591ee4d 100644
+--- a/docs/about/emulation.rst
++++ b/docs/about/emulation.rst
+@@ -171,7 +171,7 @@ for that architecture.
+     - Unified Hosting Interface (MD01069)
+   * - RISC-V
+     - System and User-mode
+-    - https://github.com/riscv/riscv-semihosting-spec/blob/main/riscv-semihosting-spec.adoc
++    - https://github.com/riscv-non-isa/riscv-semihosting/blob/main/riscv-semihosting.adoc
+   * - Xtensa
+     - System
+     - Tensilica ISS SIMCALL
+-- 
+2.48.1
 
-for you to fetch changes up to ffe4db11f8aed79c7ec7d3ebd92674a1cfab4fe7:
-
-  target/riscv: Add check for 16-bit aligned PC for different priv versions. (2025-03-19 17:11:46 +1000)
-
-----------------------------------------------------------------
-Fourth RISC-V PR for 10.0
-
-* Fix broken emulation link
-* Optimize the memory probing for vector fault-only-first loads
-* Fix access permission checks for CSR_SSP
-* Fixes a bug against `ssamoswap` behavior in M-mode
-* Fix IOMMU process directory table walk
-* Fix OVERFLOW_BEFORE_WIDEN in rmw_sctrdepth()
-* Enhance VSTART and VL checks for vector instructions
-* Fix handling of cpu mask in riscv_hwprobe syscall
-* Add check for 16-bit aligned PC for different priv versions
-
-----------------------------------------------------------------
-Chao Liu (2):
-      target/riscv: refactor VSTART_CHECK_EARLY_EXIT() to accept vl as a parameter
-      target/riscv: fix handling of nop for vstart >= vl in some vector instruction
-
-Daniel Henrique Barboza (1):
-      target/riscv/csr.c: fix OVERFLOW_BEFORE_WIDEN in rmw_sctrdepth()
-
-Deepak Gupta (2):
-      target/riscv: fix access permission checks for CSR_SSP
-      target/riscv: fixes a bug against `ssamoswap` behavior in M-mode
-
-Jason Chien (1):
-      hw/riscv/riscv-iommu: Fix process directory table walk
-
-Paolo Savini (1):
-      optimize the memory probing for vector fault-only-first loads.
-
-Richard Henderson (1):
-      linux-user/riscv: Fix handling of cpu mask in riscv_hwprobe syscall
-
-Santiago Monserrat Campanello (1):
-      docs/about/emulation: Fix broken link
-
-Yu-Ming Chang (1):
-      target/riscv: Add check for 16-bit aligned PC for different priv versions.
-
- docs/about/emulation.rst                      |   2 +-
- hw/riscv/riscv-iommu-bits.h                   |   6 +-
- target/riscv/cpu.h                            |  12 ++
- target/riscv/vector_internals.h               |  12 +-
- hw/riscv/riscv-iommu.c                        |   4 +-
- linux-user/syscall.c                          |  55 ++++----
- target/riscv/csr.c                            |   7 +-
- target/riscv/op_helper.c                      |   8 +-
- target/riscv/translate.c                      |   4 +-
- target/riscv/vcrypto_helper.c                 |  32 ++---
- target/riscv/vector_helper.c                  | 186 ++++++++++++++------------
- target/riscv/vector_internals.c               |   4 +-
- target/riscv/insn_trans/trans_rvi.c.inc       |   8 +-
- target/riscv/insn_trans/trans_rvzicfiss.c.inc |  17 +++
- 14 files changed, 214 insertions(+), 143 deletions(-)
 
