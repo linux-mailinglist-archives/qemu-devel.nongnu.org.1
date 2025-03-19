@@ -2,99 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DB4A69582
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 17:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F57BA69586
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 17:54:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuwfh-0004Q9-Et; Wed, 19 Mar 2025 12:53:37 -0400
+	id 1tuwgI-0005Uy-B3; Wed, 19 Mar 2025 12:54:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tuwfe-0004PG-Kb
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:53:34 -0400
-Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tuwfd-00053Q-2E
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:53:34 -0400
-Received: by mail-qt1-x835.google.com with SMTP id
- d75a77b69052e-476a57a9379so51668871cf.1
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 09:53:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742403211; x=1743008011; darn=nongnu.org;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=waSsS/j5VDDN8ocva8IGqDPUr4RAn4apsQ06isLSx/I=;
- b=ibqAzTRILcFbG1OlI3TqQ+2j5OwT7rGFJCcL3a2IIcIrebVBlDQaJhdWebqI7vXuaM
- dKlz1U5us+HOLXpUBHi8wWEXLiuUQ6P96sbVgHpbY/f5QJKJI2+XbWTjlFfx+X+rKYoQ
- tZfUzaXt8/aqYjjH0j5RNssFFqDDcRtXw3VFc2lae1Pqko/fhF8NrW0qxUcjpssqHGb6
- K9NF+vW7Pb/edMQ9TU3avT0fuLsHUqk2guXxQ4tnTfomBD+ywgwxU/iJTrY77BLkgyvb
- ZQRqvsAtV3r5LSSI+4+6Y/7YaTSXvP9P01+HMc9pYYN6qIo1tnHSi57dGr63/APTwI9Z
- oNNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742403211; x=1743008011;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=waSsS/j5VDDN8ocva8IGqDPUr4RAn4apsQ06isLSx/I=;
- b=VSILC8Qsj9zT89IwuRMd+yvoFxHo4NGS7DUnkRPv6gWTqUl3RxFMP43cQT0mZwfoVY
- UOEMftt0Ap0fvIlnbxkBCFAKlGwmikB0yjvSoP+Vw6azLz1DBCIIoHZMYifdVjQnXjC8
- hDlanWi8ZEG7z9xobrrzzVa6QaeKDR64tPcjeqgu4r/eRwW24uR2sePsyX6+akYzjNbn
- 5BgX+gyWuEMAwYWF4qyD6wWCpzLgSD6PjI/tv2qv1cAqpRSsOF8ilqk63QTOKw1uJVCx
- OpG8eUYnG/j7xVfOH6Y2OCjrPYmIAWALsjitOAdt19ICb2CrTTZ0kFQEe6z2vvUBVEd5
- NGQg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWH9HbiVHzBZUZJAwVLqymLFU46vacQsEZ2htsCb2SnABt1W6oorZLGCHl+JunDOqWsQfun9CJzbQHG@nongnu.org
-X-Gm-Message-State: AOJu0YxOXw7X2FSdtsOHs9xa1vptsABn5FBDoDXdkkZoyFAXFcX58ZXI
- NuPup50dJrPvrKBvCiia31yfP5b+2PHSPgSK/aIOPYCGdxA717SQ
-X-Gm-Gg: ASbGncvngt5MQ6XKafEqlnZWPgHC+lp227mfhlwB3BQo4WZs/Fi9hhkErS0H9uu7Ry3
- MFUqyMYlZ1hYfEVfUy8enkLiXcAvcVI6g5NIFqPF1ZhXxnox3NWh9ZGljXxx5ga2LN80vaF4Fh2
- f5jHYTt+bWF1a1/fxn3emhM7wnF3Q+2o9i5NyEi92C6/uHSZJNIdFYaCdjRFuaGnP6qHG0ON6ys
- gkuz2HzwFaDmnU3bx9XCFJRWcL8VBQpwJ38FWu2gHqVsOSXPOqUuS1wXVALxFK1MzbI52lA5AAN
- 3w2j65LxwX6YCj+ZLSv8Spdi7lw4C2ZnLdgR9KpZTmr7Pky2rU88WqJimlZ9KA==
-X-Google-Smtp-Source: AGHT+IHATgaGdpYK8FGYXYh5VCLaB2tglNj090FXyWeQ0HC6rHlG3op8ceAyYLbSso0VPKtYeYP7pg==
-X-Received: by 2002:a05:622a:5145:b0:476:838c:b0d6 with SMTP id
- d75a77b69052e-477082e21f2mr55031831cf.2.1742403211500; 
- Wed, 19 Mar 2025 09:53:31 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2603:6000:a500:306:992d:4509:eca7:6f8])
- by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-47705dab421sm14333821cf.36.2025.03.19.09.53.30
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 19 Mar 2025 09:53:31 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
-	<qemu-devel@nongnu.org>
-Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
- <quic_mathbern@quicinc.com>, <ale@rev.ng>, <anjo@rev.ng>,
- <quic_mliebel@quicinc.com>, <alex.bennee@linaro.org>,
- <quic_mburton@quicinc.com>, <sidneym@quicinc.com>,
- "'Brian Cain'" <bcain@quicinc.com>
-References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
- <20250301052845.1012069-34-brian.cain@oss.qualcomm.com>
-In-Reply-To: <20250301052845.1012069-34-brian.cain@oss.qualcomm.com>
-Subject: RE: [PATCH 33/39] target/hexagon: initialize sys/guest reg TCGvs
-Date: Wed, 19 Mar 2025 11:53:28 -0500
-Message-ID: <02bf01db98ef$71ab2990$55017cb0$@gmail.com>
+ (Exim 4.90_1) (envelope-from <phrdina@redhat.com>)
+ id 1tuwg9-0005Hw-P6
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:54:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <phrdina@redhat.com>)
+ id 1tuwg8-00054p-0o
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:54:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742403235;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eL/kTS6eKS5K7z/X/En8m3Rg8f6+pSA4O7ncB7ZDoJc=;
+ b=Vy3T1AA3M8uKxNh3beLQFJnVtZlyKDTise4WQhLO3/6bgvS4b9aHBerNeaZmusqVrKPLJH
+ SYy95MP+qHApqyag6Z+jIm/ZwAweNY7Tmz4UJDDy+H6oV/sIOOZh15XVBLx3MBBnv0berz
+ OeRR/6LjkUvyz2Qhz50wKdFfeKAUfBU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-35-Cb9Y8w6gO-GUBzcysbcl2A-1; Wed,
+ 19 Mar 2025 12:53:50 -0400
+X-MC-Unique: Cb9Y8w6gO-GUBzcysbcl2A-1
+X-Mimecast-MFC-AGG-ID: Cb9Y8w6gO-GUBzcysbcl2A_1742403229
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 805F71800361; Wed, 19 Mar 2025 16:53:49 +0000 (UTC)
+Received: from antique-laptop (unknown [10.44.33.169])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BF130180094A; Wed, 19 Mar 2025 16:53:47 +0000 (UTC)
+Date: Wed, 19 Mar 2025 17:53:44 +0100
+From: Pavel Hrdina <phrdina@redhat.com>
+To: Peter Krempa <pkrempa@redhat.com>
+Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, qemu-block@nongnu.org
+Subject: Re: [PATCH v2 0/3] scripts: render_block_graph: Fix with new python
+ and improve argument parsing
+Message-ID: <Z9r2mK4gMNSVK7yy@antique-laptop>
+References: <cover.1742401551.git.pkrempa@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQIWUu77rEigiK0ljjjo9ZdCZqs5mQIRWHkNsvSuBzA=
-Content-Language: en-us
-X-Antivirus: Norton (VPS 250319-0, 3/18/2025), Outbound message
-X-Antivirus-Status: Clean
-Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-qt1-x835.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="O0Dz5VLQ7l18KV1t"
+Content-Disposition: inline
+In-Reply-To: <cover.1742401551.git.pkrempa@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=phrdina@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.337,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,61 +85,48 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--O0Dz5VLQ7l18KV1t
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> -----Original Message-----
-> From: Brian Cain <brian.cain@oss.qualcomm.com>
-> Sent: Friday, February 28, 2025 11:29 PM
-> To: qemu-devel@nongnu.org
-> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
-> philmd@linaro.org; quic_mathbern@quicinc.com; ale@rev.ng; anjo@rev.ng;
-> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
-> alex.bennee@linaro.org; quic_mburton@quicinc.com;
-> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>
-> Subject: [PATCH 33/39] target/hexagon: initialize sys/guest reg TCGvs
-> 
-> From: Brian Cain <bcain@quicinc.com>
-> 
-> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
-> ---
->  target/hexagon/translate.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
-> diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c index
-> ff881d1060..248ed60f29 100644
-> --- a/target/hexagon/translate.c
-> +++ b/target/hexagon/translate.c
-> @@ -1295,6 +1295,26 @@ void hexagon_translate_init(void)
-> 
->      opcode_init();
-> 
-> +#ifndef CONFIG_USER_ONLY
-> +    for (i = 0; i < NUM_GREGS; i++) {
-> +            hex_greg[i] = tcg_global_mem_new(tcg_env,
-> +                offsetof(CPUHexagonState, greg[i]),
-> +                hexagon_gregnames[i]);
-> +    }
-> +    hex_g_sreg_ptr = tcg_global_mem_new_ptr(tcg_env,
-> +            offsetof(CPUHexagonState, g_sreg), "hex_g_sreg_ptr");
-> +    for (i = 0; i < NUM_SREGS; i++) {
-> +        if (i < HEX_SREG_GLB_START) {
-> +            hex_t_sreg[i] = tcg_global_mem_new(tcg_env,
-> +                offsetof(CPUHexagonState, t_sreg[i]),
-> +                hexagon_sregnames[i]);
-> +        } else {
-> +            hex_g_sreg[i] = tcg_global_mem_new(hex_g_sreg_ptr,
-> +                i * sizeof(target_ulong),
-> +                hexagon_sregnames[i]);
+On Wed, Mar 19, 2025 at 05:28:06PM +0100, Peter Krempa wrote:
+> New python doesn't like '\l' escapes from the 'dot' language.
+>=20
+> While at it improve usability of the script by employing proper argument
+> parsing.
+>=20
+> v2:
+>  - use mutually exclusive group instead of hardcoding it (Pavel)
+>=20
+> Peter Krempa (3):
+>   scripts: render_block_graph: Fix invalid escape sequence warning with
+>     python 3.12
+>   scripts: render_block_graph: Implement proper argument parser
+>   scripts: render_block_graph: Avoid backtrace on error from virsh
 
-I assume this will be changed with the redo of global resource handling
+Reviewed-by: Pavel Hrdina <phrdina@redhat.com>
 
-> +        }
-> +    }
-> +#endif
->      for (i = 0; i < TOTAL_PER_THREAD_REGS; i++) {
->          hex_gpr[i] = tcg_global_mem_new(tcg_env,
->              offsetof(CPUHexagonState, gpr[i]),
-> --
-> 2.34.1
+--O0Dz5VLQ7l18KV1t
+Content-Type: application/pgp-signature; name=signature.asc
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEcbzs91ho/coWWY7aUi1kczAH4YwFAmfa9pgACgkQUi1kczAH
+4YyN2xAAzWHEK8Q0l0MriFZbd72lbRiNZPDsny7uRtC4DlB6tVlHoLLe44C5DRA3
+rtu+PPL40HGb31ZIekd6MwPuUNJgfHqMqceZf2wp9OerrWU0DQdYuic/zWwQk1Ti
+gi/ulfJbNUNJbSrz6TLu1NSKkxH+VX2PCIRsEt4EWO/vTFRWRgYbaw9IPqIAl2rU
+zE1JMGyRbcFYEed2oGj2H+kRneC7UP2zGgz8C8JjwGR6/V6gAWMqss8IR0WxYA0w
+kGNz0DUT4WnncsXVsd0UzpPJGOkT+DpCuNNoq0G+YdsSvgmbepsqHDydP4EmH7Ta
+0TevbfRYY/o3DEzg/jYWgzm1qFcPhfUPbq4FHJBkdu9+XLoEpoTq3qYO3fMYTLie
++3Uvq2d7IYj0Pf404CCYPqJdNgBmZQhjKUQioGvPK2EhQQrKtpoZlGwknBaCrebG
+gSe93iCNrYuqp+BtD249Yscqd2a6WcqTYzUPk8Xe5ILEPRNMtTZCB1ck0JMbO5dy
+bITvwpbx3bu/Qr1QPGyyICtZpmNtE4N2/iL33pIVNMD1shpYwmN8SyUiuyOO9ccC
+KpSBuE3n97/FEgzvgMb5JnkWKXIX12wkbn7npTwFW1+MsbTc3u4zchYlGx1mDBaD
+n+t80QV2Ba7NK3yfU4yLoxf9eBE3Af3bFzzW27TShwV0KhvTMUI=
+=yCFW
+-----END PGP SIGNATURE-----
+
+--O0Dz5VLQ7l18KV1t--
 
 
