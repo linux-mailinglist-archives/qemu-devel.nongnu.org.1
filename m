@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09CCA68194
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 01:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3826FA68196
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 01:34:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuhMz-0003EP-I6; Tue, 18 Mar 2025 20:33:17 -0400
+	id 1tuhN7-0003Sn-MI; Tue, 18 Mar 2025 20:33:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuhMM-0002yw-Fe
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 20:32:39 -0400
+ id 1tuhMg-0003BV-Gd
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 20:33:04 -0400
 Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tuhMK-0003kJ-SC
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 20:32:38 -0400
+ id 1tuhMe-0003mJ-Og
+ for qemu-devel@nongnu.org; Tue, 18 Mar 2025 20:32:58 -0400
 Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-225df540edcso3810265ad.0
- for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 17:32:35 -0700 (PDT)
+ d9443c01a7336-22349bb8605so139858275ad.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Mar 2025 17:32:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742344355; x=1742949155; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742344375; x=1742949175; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=YPqPhrAGna/QcfSiy0bsy//jAIF/XYtY5p4CVdzRrP8=;
- b=R6rwEUC8Hgy4xniL6SM5tk9mZ7KNS1tWCY9/xOyNPSUqHyKjdAyyLkNOu4slAqZrnD
- l1t9vcD+1I0VMzXyQW31qVNxepfWH/dPCQNtMaN8ULGrGxAvxkQYKKMxvds5DMvnuFH7
- E4JcJWMY+ayFDhQYFjgWYaWUVzpNHqBPN64HujlXSS/Z2FnJQpeQwQ4Q5+Yv6VHyWcWt
- CijHdDt4jjHf0FygyLMv4ARJY9hFYibkzamB3LHIC5xlBEH8SIQisjcvlIER7GImAO+Y
- qt4eCvRF2d854berlDgAr8KJzsBic4SQV0BZ3coRBMEKBXNJXmf7OcY2CRPGSg0Q4yBz
- 8u2w==
+ bh=HFS51koD2mHTvDb51LXYMlYbu6dRr7StWkhvsQrPRQQ=;
+ b=x6QuOejAGO5RhpZ2b355fmowY45r6XgQ+VfPCoh9LPDOEB78V+DCeE6KFp8fXFgAvk
+ GGXdEQCnrD36gIEBzG5UJcywojCq+IUTS/MLenGvxpmrmmorsKHGhrQ48/m0sw1pxxrU
+ zUddOQPczr0b9ys1AeXm84eZu7x/8RFAmLWORH8YKS7Q6MY7u3U41wUstCsrdVlx4lpy
+ LQzgbgJ2Hik+RdZ6TZ/CSK493UwPmiBs+IcOD4ggqhcWCtJfeG+CsNmD/Q27smR7Ll4k
+ l12aySKzA3TBaIkfVJQP/aseLLjQiQUHB0xCRU6PPpOkNoSDOc4mf2Lcgrt5kANOS52R
+ U7JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742344355; x=1742949155;
+ d=1e100.net; s=20230601; t=1742344375; x=1742949175;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YPqPhrAGna/QcfSiy0bsy//jAIF/XYtY5p4CVdzRrP8=;
- b=RtNemgsKa8b0PXcs8xE2zd5qxRTPdGz2LVznIpgzTU21BkqPMveCoHxC8EDC+61tuw
- u4l/Yu1Iko9jVxsoA2ev6ZAJOp6lca5N6k3r5pN8j0MGDjRVL6fHQXFz7RQqQjqsr6Sn
- kXelAyBQyK1CFKQQWyzspS4AWi7XxEUeSa9kB/cQDgnfvXffkxg9r08yRWok7Xc6y7NI
- q8h/sf41+4H97wE72lCJ/07ThIC+3rGL7u6XR/IuOFORp16zkyf2mAX5niwq8cppgp/Y
- 8jRCCyrOtlrbfZUyRnUVwSQP+k35Vt2YB+BwrAl5twf0oSRKCWmWKGzSy0HTG/IREjMr
- 5qFg==
+ bh=HFS51koD2mHTvDb51LXYMlYbu6dRr7StWkhvsQrPRQQ=;
+ b=RyhfTKouSM/ZmapEYJJgTIsOKc7Zf4ZqnZtL/Y+pKw3/JGoLfxbhutHPs/uTdBCrnI
+ Q3N8q6mMZ7FrH3HWNZ7f3jHRPqs5drUf+MjSrSfP9D6sCRQKMPOnmmvSDfdeRXBJ7WqA
+ rug5dt+r1JiuETlZZXPwLj6rI7b+2wH279PeH2sFOdyCsHNTB99U4Ks38Eiv49wTm1/a
+ gJfLwi7U4lK4FhI36Qx/ZodQTpJFrdA729Gry0EkeKRdsTejfRGDCOF9hFdxfbsgy7+A
+ AtRpYEYORGDCV8tjlvoXj+sa4ae9bWpRwGj4s7piihjsmnvwik4HTTcC7AbPxwtyKDrU
+ W5PA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrLz3y2e8hxvTZK3Do6Ax7eaJewPlGEUL39ZgpA7QNeq3gyNPuzIzFlPV5m5TFpWu0qDIGE14vjIiG@nongnu.org
-X-Gm-Message-State: AOJu0YzH+CfRi0ecu5R1JZhnnKvL7MOilCwPDdVwcdL9Beb2Ug99HpLW
- 13UIuROiMqZQ+XJFjCbBEY1rfqxPx6Hz/IPZWUm56ZF3Tp0F/vVsnIh5WIbs0Mc=
-X-Gm-Gg: ASbGnctbhNOET09qJVOBjyBU3xjNtU67TREjDvViBH9+iZrFy5IDbMaJCtsx/qnTeKZ
- rwwA6b1IsnTxjNpGWxg6mZuXXp6MB4tJInQR2anlnh+Y2zGvkhqo0509Jdx8WnX8i+FYie1jHAA
- 5C+akHlKWIz4vCdTCSrzSxDXv5bT1LszWO93P8CCT7rVGUVAOF2OQWEym3jqzXwr8MyiHlaBlbe
- DxtlMHj8fG1IkoXmV8e/bIf8rBr82XZ4x3OayIiByFoDZcfwXZmi5h9vqzciNxpuYZEf8HPjViQ
- PcSBUlKsO7y/C7eZczCwA+sc9prtbP3MVASjIzaDb/YXmcFnHRCr1ZfZEA==
-X-Google-Smtp-Source: AGHT+IE4YrzIA5m2tOL6JrjfeKj31kxq1IAOcfjpwYf8BF2s3mpuq8lazqh+/v1Fv489EimpuCZdUg==
-X-Received: by 2002:a05:6a21:3417:b0:1f5:9cdc:54bb with SMTP id
- adf61e73a8af0-1fa4ff2fc05mr7218589637.11.1742344354901; 
- Tue, 18 Mar 2025 17:32:34 -0700 (PDT)
+ AJvYcCWJH2PZEeru8wkitaQFn8slD1MPe5z9TDWFbCNINEoOGQjJldiS8utzTggkGDwZnjm05PWbTm3p8q/D@nongnu.org
+X-Gm-Message-State: AOJu0YyTMlomiWAkieUMZajV0YTp9wv0Xkci+8viq/GnuoOP+N0KAQMI
+ /9MjBVOZZq7huzlar37o08gL+SuwImO2iBddUpr3QHKLG6XljdmG23AJoZkqxI8=
+X-Gm-Gg: ASbGnctq891udK3669H2GjHOlm1vFsM6GimuC9AapMXgXjPCBjEonCOXRSNzl0q2z6x
+ JIsrf+5/Nd3qweJv+WKVxkpyaa3Kh0vtbVljGIYeHcvNFU2eWXDbVMajXrCm5EMW0+RXB60HcKc
+ C5kJWWOeWWNLhraV+b2hd9EZOPvNFFQU7NPSVa2fJznYu3dp4QZpFPfofd1jhdZcOqv6YTrzc7C
+ TdleqznuZbPM6iuziFHffP7oxoR7Vq2fUnGgPVRJqCOvIOJuJTX5aGMTAjLfPZ/l0Xek0jNRdVL
+ ux5FPtvM7E5V7bxI59lM7N5EqhtYT2UUx1VfZPvS06s1SxyPs0fGuvoY6+VgE9tke/LG
+X-Google-Smtp-Source: AGHT+IHTHe44AvXzw11mCmLziPibTsxi5wlrn82Dpq8yiLgsot6n2JDqA3/liRF9tYtriaqBqtSwmA==
+X-Received: by 2002:a05:6a00:4b56:b0:736:7a00:e522 with SMTP id
+ d2e1a72fcca58-7376d5f182emr1025326b3a.2.1742344375148; 
+ Tue, 18 Mar 2025 17:32:55 -0700 (PDT)
 Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af56e9ddf44sm9667222a12.18.2025.03.18.17.32.34
+ d2e1a72fcca58-7371167dfa2sm10632279b3a.107.2025.03.18.17.32.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Mar 2025 17:32:34 -0700 (PDT)
-Message-ID: <e36c4b17-cac0-4e53-a88a-d6238492443c@linaro.org>
-Date: Tue, 18 Mar 2025 17:32:33 -0700
+ Tue, 18 Mar 2025 17:32:54 -0700 (PDT)
+Message-ID: <4ba2e1c1-b4ed-4e24-9a5a-a881b24c3078@linaro.org>
+Date: Tue, 18 Mar 2025 17:32:53 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 31/42] system: Move most files to libsystem_ss
+Subject: Re: [PATCH v2 32/42] plugins: Move api.c, core.c to libuser_ss,
+ libsystem_ss
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: philmd@linaro.org
 References: <20250318213209.2579218-1-richard.henderson@linaro.org>
- <20250318213209.2579218-32-richard.henderson@linaro.org>
+ <20250318213209.2579218-33-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250318213209.2579218-32-richard.henderson@linaro.org>
+In-Reply-To: <20250318213209.2579218-33-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
@@ -102,41 +103,28 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/18/25 14:31, Richard Henderson wrote:
-> Some of the headers used require CONFIG_USER_ONLY.
-> Do not move vl.c, because it has other include dependencies
-> that are present in system_ss.
+> Headers used by these files require CONFIG_USER_ONLY.
 > 
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   system/meson.build | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
+>   plugins/meson.build | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/system/meson.build b/system/meson.build
-> index 063301c3ad..c2f0082766 100644
-> --- a/system/meson.build
-> +++ b/system/meson.build
-> @@ -4,6 +4,10 @@ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
->   )])
+> diff --git a/plugins/meson.build b/plugins/meson.build
+> index 3be8245a69..5383c7b88b 100644
+> --- a/plugins/meson.build
+> +++ b/plugins/meson.build
+> @@ -61,5 +61,8 @@ endif
+>   user_ss.add(files('user.c', 'api-user.c'))
+>   system_ss.add(files('system.c', 'api-system.c'))
 >   
->   system_ss.add(files(
-> +  'vl.c',
-> +), sdl, libpmem, libdaxctl)
+> -common_ss.add(files('loader.c', 'api.c', 'core.c'))
+> +libuser_ss.add(files('api.c', 'core.c'))
+> +libsystem_ss.add(files('api.c', 'core.c'))
 > +
-> +libsystem_ss.add(files(
->     'balloon.c',
->     'bootdevice.c',
->     'cpus.c',
-> @@ -23,9 +27,8 @@ system_ss.add(files(
->     'runstate-hmp-cmds.c',
->     'runstate.c',
->     'tpm-hmp-cmds.c',
-> -  'vl.c',
->     'watchpoint.c',
-> -), sdl, libpmem, libdaxctl)
-> +))
+> +common_ss.add(files('loader.c'))
 >   
->   if have_tpm
->     system_ss.add(files('tpm.c'))
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
