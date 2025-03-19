@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9161A68E37
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D397CA68E38
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:50:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tutl2-0004EB-KQ; Wed, 19 Mar 2025 09:46:56 -0400
+	id 1tutl7-0004cU-HC; Wed, 19 Mar 2025 09:47:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutk0-0003N3-Pm
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:45:54 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutk7-0003ZO-Fb
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:46:02 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutjy-00044L-T9
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:45:52 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43cf034d4abso48336815e9.3
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:45:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutk3-00044x-Bj
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:45:57 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43cf58eea0fso24294485e9.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:45:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742391949; x=1742996749; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742391953; x=1742996753; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SPrx/qQq0qEoYxnErEWIYikr7yzsC+mHkGeoZcaDE8c=;
- b=PsPKZDPFcKqX9hO8xoDauVoZ4E8+IuRJSbDoiFdflhJ/FUlwYPp8iTmqkYUDP/9xGH
- 1LXQboeBOeNZZSUd19ZGPUp1tQ/PiXcuyz52bpiNdgvTaPi537w9jDMRCk3wwzwGNVyK
- cYXpfbxSP2LuqLjK36MD6ApF1abt9OFbnQlJza19MkrXL2y63bAAbW2fqLXndZWSnuex
- w6zdyBvPuW0ddcgjgsTl5pVYvTL+qzvkClFYNSld5qCA7gletaL9blrbIWC1cgWHXuVr
- k7dJq0hReAjBIMeiE8GE4EXoY5JnOhDjneBCri6Hkw5QPUPy8FSRlQ5Ghne9zl7kIYDD
- YVXw==
+ bh=0iduta05yw16WNoxlZ2Qk6hI45690lcV/AnGwn0ABIE=;
+ b=BVsuNliAPBphT3Dl8o7GtdtkP4UfN3kV3qStr/lg/so4InV3/mp5M8gM3/MHYWdCO2
+ 9RAIHsOWkVHpRiMZChzrdI58hAbmMtd222Shh74uaCcbmlXuNkkYytVs4nz6yjdgok9K
+ ozn+bIXSzIady2ULbhCT1FAvP+TgqoqK9zDIFnbSDEDlvPWMrLXR3lOI+obmGCkzUR+b
+ vDj1sDwnEgEoWDfC0WWwi5u9aX4Fibv4cwyMkKsb7Ja5eZhkVfstIAOF67rRsuGyfvkd
+ FU0OC5WWnX9QtGnETaFbUBoFGJRo/NoYRTLyMFNQK3i695JjIBVNDFfWcE3TuQiM+G1Z
+ FOFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742391949; x=1742996749;
+ d=1e100.net; s=20230601; t=1742391953; x=1742996753;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SPrx/qQq0qEoYxnErEWIYikr7yzsC+mHkGeoZcaDE8c=;
- b=pVySWzoKYN/APZRW0v/dl8jqtORb63+Nm/VwG9Y/ioPzYu1qcJ93ayRJFX0r/BDctE
- yyRvvx7n+Bs0nn/V7JnHGcuwBCZNS2uLxJi2PxfHrthvCayEGBygD2Efva1gS1LK8fyC
- KmA5HeZsaICu+EiarAKR+r25an8xLp8/GQSk2ZpOh3OzSsuMkvZiIdpmX3lmvsFm42to
- AERIFrHkPHDqj+JJQOE9N5O0Q31P+8qyUIDNBcUehwbKIRLUAahcQmOTsitLBMxo8drR
- ES7HUYxmElWpauENsGzjl2a0D0jiUNtFvxL5Lc44OSlKNf9MYU2X90S+36TXVR6B3ejG
- Pl+Q==
-X-Gm-Message-State: AOJu0YzD9r70jvyJAJNsHkxA6A8pUEOmEKYsb0rmVqQpjHCLIr78yG3M
- ILolJ78xPrS9AHxFFZfBn52w6QU/yz95wIAN2viWbzzhadV28VGrT9XUqYVJiulHgu8AEdHDXWc
- o
-X-Gm-Gg: ASbGncshxdDsihO5ZTDY9YUz3j5O3Xa6rJczdzkysDnWrBQsDEQLTfgHo4oykHl6VzZ
- 2su8/it1I/aaGm1msoB6zKDX9BUSYfWqUn4IUZX8OJAkWIvkukNd091U3RKta5yfc5ANgAyP6vU
- BwaXfiy+aT1FStbdy+ahmuI99Ma+IiIyeHHmtGPbmE/JEW1geRetRQSBlNFLdL78kErKMeoL67n
- XgyFUf3ESP2uSd4XdiKxH9/36R+n0Mij4lgN5yjwhU5tqSnn6oEHNJ6aNlqL/vp2XOzxrt2s/t5
- WAqUUW+C4bMq9GGsvxsrY/GYf7q9jW9UvQQgSvsGFehUyHjR/gi61LQFjIkFr+dzgpnHEMiDaLK
- 8U/i/nqQ6UsY/T24fWXo=
-X-Google-Smtp-Source: AGHT+IHdjs7aQ50tjKQlQC0Vj2JE6chXiS8iHMl/1H/jv8dgqA7RU+H5Ct0xNT3xYIarlJ8IRNph5A==
-X-Received: by 2002:a05:600c:b8f:b0:43c:f470:7605 with SMTP id
- 5b1f17b1804b1-43d4379505amr29533475e9.12.1742391948777; 
- Wed, 19 Mar 2025 06:45:48 -0700 (PDT)
+ bh=0iduta05yw16WNoxlZ2Qk6hI45690lcV/AnGwn0ABIE=;
+ b=UR96pmzKsDv1Amw5QOBxbzVoOZbpNMm1FMGRzol00GVqbdijjuVKkiUSj39SWzGIqs
+ 9Ht3pPU76peCEh0d4qKziVZhITcpiodmguCdkorOVA7CdxeA4cwuds6Yd1qa81HU1sRo
+ aq4u8+B5hPhsI2Gv9rtMNG16NEzh29W9wtCrD9ziSQ19MKLlKiYUrFUMpISxLjeLdaBG
+ /Wf6s27lG3kXpnhOU4WVc5lNfoHqI0ePaNVVq5sNKHloqEHKt7rVxhjgWvcZZrGstWhx
+ pNXgEtTbmHKXSaIqFZdTMfbJAExmKJX3ajnXlXRnYg+2jTwvkcNSQNIMJr6F2kogHgHy
+ 3jwQ==
+X-Gm-Message-State: AOJu0YxJtvqaWnTi8fC13ZQDRXoNDgoFvbmRDfohQB7rEVXtxrRAye6I
+ /iR3ijqeWEdTmouwnQjJ4g7G0ATyKq0LtFTm0vK69fTrqCwSPU3EjyQnjUJT3vqMfKu4oJFVk5U
+ i
+X-Gm-Gg: ASbGnctIu0nWCmcnuAf+2H6tFcN7V5e5CKTMhcYsNRqCDu0O0MQSczPMBmzlwH7rTDe
+ 1CLW1xCPFgxWx3S/r5vsphVjoacCP8AS1UM756vYzMUT/69Lwx//Oy5UXR2gJhsypqeYxO4863w
+ +oXbcUbLAEWWBZheIk4jebMlhyxM14JpOiknysCTlsRiLgUf/2FqYYMP8EdzNgbi1RGs1d7IF2o
+ hOcF9P+KIoNzBvgMriUUdyMJDSv8dAOF6OuZBCQ9znqEaSRFIhHbr/Q98IuEM6LKGFPQcTTOpWR
+ GXLMkK7SxDsppYWmbAWAey1fZVwdWPxbvGItqL8RteKVe/HMz+3X0oGb3YkvN2S8KfBPAluSHDG
+ g71dF2ZP+7O8NxGLv7Pw=
+X-Google-Smtp-Source: AGHT+IEIVkvNjZTSUIhxld65N34wtP4O1yV6EMcKBSQsg6hWbOD77YnM3I07e40v7q9onP2gPDDs1g==
+X-Received: by 2002:a05:600c:1da9:b0:43b:ca39:6c75 with SMTP id
+ 5b1f17b1804b1-43d43793160mr29149685e9.16.1742391953364; 
+ Wed, 19 Mar 2025 06:45:53 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43f37665sm19623035e9.2.2025.03.19.06.45.47
+ 5b1f17b1804b1-43d43f864d4sm19661645e9.37.2025.03.19.06.45.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 19 Mar 2025 06:45:48 -0700 (PDT)
+ Wed, 19 Mar 2025 06:45:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 08/12] tcg: Declare arrays using
- TARGET_INSN_START_WORDS_MAX
-Date: Wed, 19 Mar 2025 14:45:02 +0100
-Message-ID: <20250319134507.45045-9-philmd@linaro.org>
+Subject: [PATCH-for-10.1 09/12] tcg: Restrict TARGET_INSN_START_WORDS
+ definition to translate-all.c
+Date: Wed, 19 Mar 2025 14:45:03 +0100
+Message-ID: <20250319134507.45045-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250319134507.45045-1-philmd@linaro.org>
 References: <20250319134507.45045-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,72 +101,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer the target-agnostic TARGET_INSN_START_WORDS_MAX definition
-over the target-specific TARGET_INSN_START_WORDS. The former is
-guaranty to hold the latter.
+TARGET_INSN_START_WORDS is now only used within translate-all.c,
+move its declaration there.
+"tcg/insn-start-words.h" header being now empty, remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/translate-all.c    | 2 +-
- target/i386/helper.c         | 3 ++-
- target/openrisc/sys_helper.c | 3 ++-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ include/tcg/insn-start-words.h | 13 -------------
+ accel/tcg/translate-all.c      |  3 ++-
+ target/i386/helper.c           |  1 -
+ target/openrisc/sys_helper.c   |  1 -
+ 4 files changed, 2 insertions(+), 16 deletions(-)
+ delete mode 100644 include/tcg/insn-start-words.h
 
+diff --git a/include/tcg/insn-start-words.h b/include/tcg/insn-start-words.h
+deleted file mode 100644
+index 394c191da8d..00000000000
+--- a/include/tcg/insn-start-words.h
++++ /dev/null
+@@ -1,13 +0,0 @@
+-/* SPDX-License-Identifier: MIT */
+-/*
+- * Define TARGET_INSN_START_WORDS
+- * Copyright (c) 2008 Fabrice Bellard
+- */
+-
+-#ifndef TARGET_INSN_START_WORDS
+-
+-#include "cpu.h"
+-
+-# define TARGET_INSN_START_WORDS (1 + TARGET_INSN_START_EXTRA_WORDS)
+-
+-#endif /* TARGET_INSN_START_WORDS */
 diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 5e2a89dc474..2f8cf6db144 100644
+index 2f8cf6db144..fc55a75a3cf 100644
 --- a/accel/tcg/translate-all.c
 +++ b/accel/tcg/translate-all.c
-@@ -206,7 +206,7 @@ static int cpu_unwind_data_from_tb(TranslationBlock *tb, uintptr_t host_pc,
- void cpu_restore_state_from_tb(CPUState *cpu, TranslationBlock *tb,
-                                uintptr_t host_pc)
- {
--    uint64_t data[TARGET_INSN_START_WORDS];
-+    uint64_t data[TARGET_INSN_START_WORDS_MAX];
-     int insns_left = cpu_unwind_data_from_tb(tb, host_pc, data);
+@@ -65,11 +65,12 @@
+ #include "internal-common.h"
+ #include "internal-target.h"
+ #include "tcg/perf.h"
+-#include "tcg/insn-start-words.h"
+ #include "tcg/tcg-op.h"
  
-     if (insns_left < 0) {
+ TBContext tb_ctx;
+ 
++#define TARGET_INSN_START_WORDS     (1 + TARGET_INSN_START_EXTRA_WORDS)
++
+ /*
+  * Encode VAL as a signed leb128 sequence at P.
+  * Return P incremented past the encoded value.
 diff --git a/target/i386/helper.c b/target/i386/helper.c
-index c07b1b16ea1..90e113c8b5a 100644
+index 90e113c8b5a..1f819fbff65 100644
 --- a/target/i386/helper.c
 +++ b/target/i386/helper.c
-@@ -31,6 +31,7 @@
+@@ -30,7 +30,6 @@
+ #endif
  #include "qemu/log.h"
  #ifdef CONFIG_TCG
- #include "tcg/insn-start-words.h"
-+#include "tcg/tcg.h"
+-#include "tcg/insn-start-words.h"
+ #include "tcg/tcg.h"
  #endif
  
- void cpu_sync_avx_hflag(CPUX86State *env)
-@@ -524,7 +525,7 @@ void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
- static inline target_ulong get_memio_eip(CPUX86State *env)
- {
- #ifdef CONFIG_TCG
--    uint64_t data[TARGET_INSN_START_WORDS];
-+    uint64_t data[TARGET_INSN_START_WORDS_MAX];
-     CPUState *cs = env_cpu(env);
- 
-     if (!cpu_unwind_state_data(cs, cs->mem_io_pc, data)) {
 diff --git a/target/openrisc/sys_helper.c b/target/openrisc/sys_helper.c
-index 21bc137ccca..cf521461954 100644
+index cf521461954..9da2bebbd5b 100644
 --- a/target/openrisc/sys_helper.c
 +++ b/target/openrisc/sys_helper.c
-@@ -28,6 +28,7 @@
+@@ -27,7 +27,6 @@
+ #ifndef CONFIG_USER_ONLY
  #include "hw/boards.h"
  #endif
- #include "tcg/insn-start-words.h"
-+#include "tcg/tcg.h"
+-#include "tcg/insn-start-words.h"
+ #include "tcg/tcg.h"
  
  #define TO_SPR(group, number) (((group) << 11) + (number))
- 
-@@ -218,7 +219,7 @@ target_ulong HELPER(mfspr)(CPUOpenRISCState *env, target_ulong rd,
- {
-     OpenRISCCPU *cpu = env_archcpu(env);
- #ifndef CONFIG_USER_ONLY
--    uint64_t data[TARGET_INSN_START_WORDS];
-+    uint64_t data[TARGET_INSN_START_WORDS_MAX];
-     MachineState *ms = MACHINE(qdev_get_machine());
-     CPUState *cs = env_cpu(env);
-     int idx;
 -- 
 2.47.1
 
