@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDF1A68D98
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2C4A68D9C
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:20:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tutKa-0000Gp-5F; Wed, 19 Mar 2025 09:19:36 -0400
+	id 1tutKj-0000ec-55; Wed, 19 Mar 2025 09:19:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tutKW-0000A1-PY
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:19:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tutKe-0000TY-0U
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:19:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tutKU-0007eg-W5
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:19:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1tutKX-0007et-Ik
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:19:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742390370;
+ s=mimecast20190719; t=1742390372;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=50BIJkpGtU8kh5NKqRzybyXSHxadiu3JT6r7K12A1H8=;
- b=AMXoNuTeExkEcS3+diBOJ+H39eGg5L7hmEGSqj2xpSMSLrYTVRDv6PazZJUfE43PTjoe48
- op2qyra59OMWiYJsXoex+Gi1Hc8lhtThYofCxvF+3Oi1p5PsjxogKK4FZlwOkVyx4IaKCo
- 1zcZ0WeJ+TvdYEWO4peYyRUcosZXO0k=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=tu0RlvcrYsmz8VD7rcIi1MCC0IqxBh9nmPXdBXLXDp8=;
+ b=Kwqaf+hOg6g4pwfstyQX//+1x9oaBApQpiVTYLeQUZc021ls+xdv+GEhkFfpu0rJPPLpXt
+ 10lv4d4jHTRBDoxoKxjY96cgqhFf3f7IJ5VzVtgAlyehlBpirotbXBohw0UsUvll+Jd5RP
+ eC6Q+7wlyc1MkWfWIl/LNvwngVS9RFg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-117-CVERmk6jNbGGLYDYUQei2w-1; Wed,
- 19 Mar 2025 09:19:27 -0400
-X-MC-Unique: CVERmk6jNbGGLYDYUQei2w-1
-X-Mimecast-MFC-AGG-ID: CVERmk6jNbGGLYDYUQei2w_1742390366
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-323-QxiciL_JP9uchsZ4Fde-WA-1; Wed,
+ 19 Mar 2025 09:19:30 -0400
+X-MC-Unique: QxiciL_JP9uchsZ4Fde-WA-1
+X-Mimecast-MFC-AGG-ID: QxiciL_JP9uchsZ4Fde-WA_1742390369
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2676A180AF6B; Wed, 19 Mar 2025 13:19:26 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9EEA71955DC5
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 13:19:29 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.212])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 657563001D0E; Wed, 19 Mar 2025 13:19:22 +0000 (UTC)
+ id 418003001D0E; Wed, 19 Mar 2025 13:19:26 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Aditya Gupta <adityag@linux.ibm.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 6/8] docs/devel/testing/functional: Add a section about logging
-Date: Wed, 19 Mar 2025 14:18:49 +0100
-Message-ID: <20250319131851.148817-7-thuth@redhat.com>
+Subject: [PULL 7/8] tests/functional/test_x86_64_kvm_xen: Remove avocado tags
+Date: Wed, 19 Mar 2025 14:18:50 +0100
+Message-ID: <20250319131851.148817-8-thuth@redhat.com>
 In-Reply-To: <20250319131851.148817-1-thuth@redhat.com>
 References: <20250319131851.148817-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,51 +84,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-We should tell the users where to find the log file.
-While we're at it, also rename the "Overview" heading to a
-more accurate "Introduction to writing tests" instead.
+They have been forgotten to be removed when converting the
+test to the functional framework. Since they are of no use
+anymore, let's remove them now.
 
-Reported-by: Aditya Gupta <adityag@linux.ibm.com>
-Message-ID: <20250318092021.53719-1-thuth@redhat.com>
+Message-ID: <20250318171530.94966-1-thuth@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/devel/testing/functional.rst | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ tests/functional/test_x86_64_kvm_xen.py | 28 -------------------------
+ 1 file changed, 28 deletions(-)
 
-diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
-index a9fa45eac1f..9bc973392aa 100644
---- a/docs/devel/testing/functional.rst
-+++ b/docs/devel/testing/functional.rst
-@@ -72,8 +72,26 @@ files around on disk by setting ```QEMU_TEST_KEEP_SCRATCH=1``` as an env
- variable.  Any preserved files will be deleted the next time the test is run
- without this variable set.
+diff --git a/tests/functional/test_x86_64_kvm_xen.py b/tests/functional/test_x86_64_kvm_xen.py
+index 0298c96c2eb..3bedef6c98c 100755
+--- a/tests/functional/test_x86_64_kvm_xen.py
++++ b/tests/functional/test_x86_64_kvm_xen.py
+@@ -80,10 +80,6 @@ def run_and_check(self):
+         wait_for_console_pattern(self, '#', 'Oops')
  
--Overview
----------
-+Logging
-+-------
-+
-+The framework collects log files for each test in the build directory
-+in the following subfolder::
-+
-+ <builddir>/tests/functional/<arch>/<fileid>.<classid>.<testname>/
-+
-+There are usually three log files:
-+
-+* ``base.log`` contains the generic logging information that is written
-+  by the calls to the logging functions in the test code (e.g. by calling
-+  the ``self.log.info()`` or ``self.log.debug()`` functions).
-+* ``console.log`` contains the output of the serial console of the guest.
-+* ``default.log`` contains the output of QEMU. This file could be named
-+  differently if the test chooses to use a different identifier for
-+  the guest VM (e.g. when the test spins up multiple VMs).
-+
-+Introduction to writing tests
-+-----------------------------
+     def test_kvm_xen_guest(self):
+-        """
+-        :avocado: tags=kvm_xen_guest
+-        """
+-
+         self.common_vm_setup()
  
- The ``tests/functional/qemu_test`` directory provides the ``qemu_test``
- Python module, containing the ``qemu_test.QemuSystemTest`` class.
+         self.kernel_params = (self.KERNEL_DEFAULT +
+@@ -94,10 +90,6 @@ def test_kvm_xen_guest(self):
+                                 'virtio0-output')
+ 
+     def test_kvm_xen_guest_nomsi(self):
+-        """
+-        :avocado: tags=kvm_xen_guest_nomsi
+-        """
+-
+         self.common_vm_setup()
+ 
+         self.kernel_params = (self.KERNEL_DEFAULT +
+@@ -108,10 +100,6 @@ def test_kvm_xen_guest_nomsi(self):
+                                 'virtio0')
+ 
+     def test_kvm_xen_guest_noapic_nomsi(self):
+-        """
+-        :avocado: tags=kvm_xen_guest_noapic_nomsi
+-        """
+-
+         self.common_vm_setup()
+ 
+         self.kernel_params = (self.KERNEL_DEFAULT +
+@@ -122,10 +110,6 @@ def test_kvm_xen_guest_noapic_nomsi(self):
+                                 'virtio0')
+ 
+     def test_kvm_xen_guest_vapic(self):
+-        """
+-        :avocado: tags=kvm_xen_guest_vapic
+-        """
+-
+         self.common_vm_setup()
+         self.vm.add_args('-cpu', 'host,+xen-vapic')
+         self.kernel_params = (self.KERNEL_DEFAULT +
+@@ -140,10 +124,6 @@ def test_kvm_xen_guest_vapic(self):
+                                 'virtio0-output')
+ 
+     def test_kvm_xen_guest_novector(self):
+-        """
+-        :avocado: tags=kvm_xen_guest_novector
+-        """
+-
+         self.common_vm_setup()
+         self.kernel_params = (self.KERNEL_DEFAULT +
+                               ' xen_emul_unplug=ide-disks' +
+@@ -154,10 +134,6 @@ def test_kvm_xen_guest_novector(self):
+                                 'fasteoi')
+ 
+     def test_kvm_xen_guest_novector_nomsi(self):
+-        """
+-        :avocado: tags=kvm_xen_guest_novector_nomsi
+-        """
+-
+         self.common_vm_setup()
+ 
+         self.kernel_params = (self.KERNEL_DEFAULT +
+@@ -169,10 +145,6 @@ def test_kvm_xen_guest_novector_nomsi(self):
+                                 'IO-APIC')
+ 
+     def test_kvm_xen_guest_novector_noapic(self):
+-        """
+-        :avocado: tags=kvm_xen_guest_novector_noapic
+-        """
+-
+         self.common_vm_setup()
+         self.kernel_params = (self.KERNEL_DEFAULT +
+                               ' xen_emul_unplug=ide-disks' +
 -- 
 2.48.1
 
