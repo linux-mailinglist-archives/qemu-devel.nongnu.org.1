@@ -2,73 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE82A69521
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 17:38:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E52A6951E
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 17:38:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuwQA-0003MB-6c; Wed, 19 Mar 2025 12:37:34 -0400
+	id 1tuwQG-0003Nq-Kw; Wed, 19 Mar 2025 12:37:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1tuwQ4-0003Lj-4t
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:37:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1tuwQ2-00074z-0j
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:37:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742402244;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=X2sunzIviv4HaQQb3X0yTUOV4nmX52tcxBKEXC5RH8E=;
- b=VfOUl6h8fVc+Z5oKWXsCi/6QmM0+Cr228ZqWG2zkAVUIb6rH2/sxrlBRS9WRI92YWCJfuT
- Fkipvmt6vqHRWzCPWQN1Kud7aR+bHxCGmPP4B2kgQ8nBjazFZ1L7V7nLnyCUS60viskCS7
- uY8MEIBSIFI58IO3wMEYINNNgztXUE8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-ATKPov9GN6qD4rdFZRr3vQ-1; Wed,
- 19 Mar 2025 12:37:23 -0400
-X-MC-Unique: ATKPov9GN6qD4rdFZRr3vQ-1
-X-Mimecast-MFC-AGG-ID: ATKPov9GN6qD4rdFZRr3vQ_1742402242
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5C671180AF53; Wed, 19 Mar 2025 16:37:22 +0000 (UTC)
-Received: from rh-jmarcin.redhat.com (unknown [10.45.225.145])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4D9781955BEE; Wed, 19 Mar 2025 16:37:19 +0000 (UTC)
-From: Juraj Marcin <jmarcin@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Juraj Marcin <jmarcin@redhat.com>, vsementsov@yandex-team.ru,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 2/2] utils/qemu-sockets: Introduce keep-alive-idle-period
- inet socket option
-Date: Wed, 19 Mar 2025 17:36:20 +0100
-Message-ID: <20250319163638.456417-3-jmarcin@redhat.com>
-In-Reply-To: <20250319163638.456417-1-jmarcin@redhat.com>
-References: <20250319163638.456417-1-jmarcin@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tuwQC-0003N3-0d
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:37:36 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tuwQ8-00075W-7y
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 12:37:34 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-225e3002dffso84466235ad.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 09:37:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1742402250; x=1743007050; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FBQ4RbacdNlIWVlAWfxFdZUCRxHPOx6BatCtIsFEyNM=;
+ b=ICCFqhvxmOzCsHuqlwwpt/xoWrfCPrCqZN+HpP61Nb5ySNPWOedoNpNtqt297rTDdL
+ WFEHubQBZycRNPYkzcntqzBtJBphs5fYeAoTTBmA8JwsMoGH+ByTi1Q4E/wQxzsSi6CW
+ kS1pDgeJkYc+VLhoBQks1jZYBveVtzsv/tsiqFpPIq0gBZ8RVXPTi/+Ab+GYfdm+fsn6
+ Zug+S7Ozay2s7Q/NteZ17H8WysDfo2J+Jy6tvdNagf2t04z2TCEdC+cKqxnm9jxBdGE0
+ d3F0FJ8E6bWio+++nYVYqw/CNTdR06auZWkcLjc7DsypolDrqXOkIRHoBpPql/r0Dc8m
+ xPjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742402250; x=1743007050;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FBQ4RbacdNlIWVlAWfxFdZUCRxHPOx6BatCtIsFEyNM=;
+ b=PcfoU7a+Z8Mxx8WJUBmW+9fMbjDHFAvLc+ACYko2EqD6z1GVMZPxjOyxjPViS3rLsS
+ jLgADeh1AIptcePnWpNEkSSULYuuZXumMoaQYlAKFqt4Y4h3BryCK9jKJxULhNwTqNZK
+ gpsm3PU9SK3/bLUyda3yGiU2bps9PE7zuw17LDRw50BF6dm22dISaBXAsXCaC1/AN2e8
+ ckXXhnUeKQAIi1M50WqmNmygBi8O2TIbBzQDBC1Vsc+vf2mVPjOu6YwiKd4OfKDxkGeg
+ 9oIP1XWHGMcCJ7s/VMaFUjndKXOI8j9tdq8+xOf/BDwEKXss/iJjWGtkrg5F5HrD2+uV
+ H7Zw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXI/KOWB12kqnJ/itCms/b5azqS0Efi7AIJh+LsRcivmgnvdGWzpeuzBSW28vAVf6TTXc6y5PFFZ3nO@nongnu.org
+X-Gm-Message-State: AOJu0YzAvmiQCMzOCFac9ZQoQSaew4A+9UxbBwZhHjWdIlX25y/5APU/
+ vZeRKCCuDsxit13atF68I+u/60Jj2EkrPtOUSudDf82wLhUXJ654AZUUbYrXlP8=
+X-Gm-Gg: ASbGncuDGccxdEUmoQQPwXqbJRFetQWkfX4p9avP1n4OFkPrkdaHY05+61G0Jnp4S9h
+ t9p+XroiE6s6qawgqXlgNWpjO8FRND6ergxZGha5LPG1sDA2iG1F2EYCoGZalTjHz+jSx6X9SM+
+ vgCgcUYRSgsusTuroe1R4HzH9bXWik4fP5tDIxhdnUYNpAKjwX14vH9EXfDrhcVOd3y0N9S9pPz
+ zf+700BpaQ0AwTGOtY0VGbaZDTP7eCGqrHUXtFp+FQgvbXUbgzBFA5si7wBapDyCEuXc8hwV+jZ
+ F4rWGbpEhU91+0uBbYVW5HEByK/werwQaWk41MK1aMWCxgw4r6wt+CWMG71GngSK5PMnHV7SZMG
+ UCueFm5Sp
+X-Google-Smtp-Source: AGHT+IEGDOlPx8t49e49zKBojmqH/b0jKa+Av41VFyt8fDS5Txihz+2drltcmixmlnJHYd+pzDX7GA==
+X-Received: by 2002:a05:6a00:228a:b0:736:4e67:d631 with SMTP id
+ d2e1a72fcca58-7376d6ff97dmr4831230b3a.23.1742402249600; 
+ Wed, 19 Mar 2025 09:37:29 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7371167da28sm11882337b3a.89.2025.03.19.09.37.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 19 Mar 2025 09:37:29 -0700 (PDT)
+Message-ID: <a96a4e89-3cb4-4dbf-9b3f-c53480606e73@linaro.org>
+Date: Wed, 19 Mar 2025 09:37:27 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-10.1 10/12] tcg: Unify tcg_gen_insn_start() to handle
+ 1 or 2 arguments
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+References: <20250319134507.45045-1-philmd@linaro.org>
+ <20250319134507.45045-11-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250319134507.45045-11-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.337,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,136 +105,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Juraj Marcin <jmarcin@redhat.com>
+On 3/19/25 06:45, Philippe Mathieu-Daudé wrote:
+> Merge the tcg_gen_insn_start() definition using 1 extra word
+> with the definition using 2, using a2=0 in callers.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/tcg/tcg-op.h          | 16 ++++------------
+>   target/i386/tcg/translate.c   |  2 +-
+>   target/m68k/translate.c       |  2 +-
+>   target/microblaze/translate.c |  2 +-
+>   target/openrisc/translate.c   |  2 +-
+>   target/sh4/translate.c        |  2 +-
+>   target/sparc/translate.c      |  2 +-
+>   7 files changed, 10 insertions(+), 18 deletions(-)
 
-The default idle period for TCP connection could be even 2 hours.
-However, in some cases, the application needs to be aware of a
-connection issue much sooner.
+Nack.
 
-This is the case, for example, for postcopy live migration. If there is
-no traffic from the migration destination guest (server-side) to the
-migration source guest (client-side), the destination keeps waiting for
-pages indefinitely and does not switch to the postcopy-paused state.
-This can happen, for example, if the destination QEMU instance is
-started with '-S' command line option and the machine is not started yet
-or if the machine is idle and produces no new page faults for
-not-yet-migrated pages.
+> @@ -50,7 +40,9 @@ static inline void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2)
+>   
+>       tcg_set_insn_start_param(op, 0, pc);
+>       tcg_set_insn_start_param(op, 1, a1);
+> -    tcg_set_insn_start_param(op, 2, a2);
+> +    if (insn_start_words > 2) {
+> +        tcg_set_insn_start_param(op, 2, a2);
+> +    }
 
-This patch introduces a new inet socket parameter on platforms where
-TCP_KEEPIDLE is defined and passes the configured value to the
-TCP_KEEPIDLE socket option when a client-side or server-side socket is
-created.
+Not this, where you're passing unused arguments but for some reason are not storing them.
 
-The default value is 0, which means system configuration is used, and no
-custom value is set.
+If you want to unify all callers on 3 arguments, that's one thing.
+But conditionally not storing them?  That's just weird.
 
-Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
----
- io/dns-resolver.c   |  4 ++++
- meson.build         |  2 ++
- qapi/sockets.json   |  5 +++++
- util/qemu-sockets.c | 29 +++++++++++++++++++++++++++++
- 4 files changed, 40 insertions(+)
+If you *do* want to unify all callers on 3 arguments, then you can dispense with 
+TARGET_INSN_START_EXTRA_WORDS entirely.  Just define TCG_INSN_START_WORDS == 3 generically 
+and drop everything else.
 
-diff --git a/io/dns-resolver.c b/io/dns-resolver.c
-index ee7403b65b..03c59673f0 100644
---- a/io/dns-resolver.c
-+++ b/io/dns-resolver.c
-@@ -128,6 +128,10 @@ static int qio_dns_resolver_lookup_sync_inet(QIODNSResolver *resolver,
- #endif
-             .has_keep_alive = iaddr->has_keep_alive,
-             .keep_alive = iaddr->keep_alive,
-+#ifdef HAVE_TCP_KEEPIDLE
-+            .has_keep_alive_idle_period = iaddr->has_keep_alive_idle_period,
-+            .keep_alive_idle_period = iaddr->keep_alive_idle_period,
-+#endif
-         };
- 
-         (*addrs)[i] = newaddr;
-diff --git a/meson.build b/meson.build
-index 41f68d3806..e3440b09c8 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2734,6 +2734,8 @@ if linux_io_uring.found()
-   config_host_data.set('HAVE_IO_URING_PREP_WRITEV2',
-                        cc.has_header_symbol('liburing.h', 'io_uring_prep_writev2'))
- endif
-+config_host_data.set('HAVE_TCP_KEEPIDLE',
-+                     cc.has_header_symbol('netinet/tcp.h', 'TCP_KEEPIDLE'))
- 
- # has_member
- config_host_data.set('HAVE_SIGEV_NOTIFY_THREAD_ID',
-diff --git a/qapi/sockets.json b/qapi/sockets.json
-index eb50f64e3a..ddd82b1e66 100644
---- a/qapi/sockets.json
-+++ b/qapi/sockets.json
-@@ -59,6 +59,10 @@
- # @keep-alive: enable keep-alive when connecting to/listening on this socket.
- #     (Since 4.2, not supported for listening sockets until 10.0)
- #
-+# @keep-alive-idle-period: time in seconds the connection needs to be idle
-+#     before sending a keepalive packet.  Only supported for TCP sockets on
-+#     systems where TCP_KEEPIDLE socket option is defined.  (Since 10.0)
-+#
- # @mptcp: enable multi-path TCP.  (Since 6.1)
- #
- # Since: 1.3
-@@ -71,6 +75,7 @@
-     '*ipv4': 'bool',
-     '*ipv6': 'bool',
-     '*keep-alive': 'bool',
-+    '*keep-alive-idle-period': { 'type': 'uint32', 'if': 'HAVE_TCP_KEEPIDLE' },
-     '*mptcp': { 'type': 'bool', 'if': 'HAVE_IPPROTO_MPTCP' } } }
- 
- ##
-diff --git a/util/qemu-sockets.c b/util/qemu-sockets.c
-index 99357a4435..23c8a6cc2b 100644
---- a/util/qemu-sockets.c
-+++ b/util/qemu-sockets.c
-@@ -217,6 +217,19 @@ static int inet_set_sockopts(int sock, InetSocketAddress *saddr, Error **errp)
-                              "Unable to set keep-alive option on socket");
-             return -1;
-         }
-+#ifdef HAVE_TCP_KEEPIDLE
-+        if (saddr->has_keep_alive_idle_period &&
-+            saddr->keep_alive_idle_period) {
-+            int keep_idle = saddr->has_keep_alive_idle_period;
-+            ret = setsockopt(sock, IPPROTO_TCP, TCP_KEEPIDLE, &keep_idle,
-+                             sizeof(keep_idle));
-+            if (ret < 0) {
-+                error_setg_errno(errp, errno,
-+                                 "Unable to set TCP keep-alive idle option on socket");
-+                return -1;
-+            }
-+        }
-+#endif
-     }
-     return 0;
- }
-@@ -697,6 +710,22 @@ int inet_parse(InetSocketAddress *addr, const char *str, Error **errp)
-         }
-         addr->has_keep_alive = true;
-     }
-+#ifdef HAVE_TCP_KEEPIDLE
-+    begin = strstr(optstr, ",keep-alive-idle-period=");
-+    if (begin) {
-+        begin += strlen(",keep-alive-idle-period=");
-+        if (sscanf(begin, "%" PRIu32 "%n", &addr->keep_alive_idle_period, &pos) != 1 ||
-+            (begin[pos] != '\0' && begin[pos] != ',')) {
-+            error_setg(errp, "error parsing keep-alive-idle-period argument");
-+            return -1;
-+        }
-+        if (addr->keep_alive_idle_period > INT_MAX) {
-+            error_setg(errp, "keep-alive-idle-period value is too large");
-+            return -1;
-+        }
-+        addr->has_keep_alive_idle_period = true;
-+    }
-+#endif
- #ifdef HAVE_IPPROTO_MPTCP
-     begin = strstr(optstr, ",mptcp");
-     if (begin) {
--- 
-2.48.1
 
+r~
 
