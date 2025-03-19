@@ -2,156 +2,168 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A1FA68499
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 06:29:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB115A684D9
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 07:14:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tulyX-0007Yt-0w; Wed, 19 Mar 2025 01:28:21 -0400
+	id 1tumgP-0005if-Qz; Wed, 19 Mar 2025 02:13:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1tulyN-0007Wc-CD; Wed, 19 Mar 2025 01:28:11 -0400
-Received: from mail-bn7nam10on20609.outbound.protection.outlook.com
- ([2a01:111:f403:2009::609]
- helo=NAM10-BN7-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
+ id 1tumeq-0005WM-SZ
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 02:12:07 -0400
+Received: from mail-bn8nam12on2082.outbound.protection.outlook.com
+ ([40.107.237.82] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1tulyH-0006io-Li; Wed, 19 Mar 2025 01:28:10 -0400
+ (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
+ id 1tumeo-0001By-Fr
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 02:12:04 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xY5GC4ZhPqeLBbissqL72KjGuYpm52FDg925g792phbTym9k2Y8goV8SSJ5st1EBj2qeLY40x1pdZZT+wldGwPygjTeVtBGNSAmbAmv/tdZ54Rp7FYMDfPfA/bsp7Os6oftV9Uwa12KXMZM2tdiVh8nfgfr5HaJTObpq6LNOLDuG+vvVMfwZ8jmbh+KcX+Oj/s69YnBsQheMJdRY7nBLvJ4SoRput/DijnFqe6luEwpPGqw0Qv3mMb1cyTBH17tZYiMVzqAOXyGF94OZF7Ztcq1AW6XbuGUSMw+XtzbYsHsWkA14nH4ymTImhnBCKARzgQS5E0rFCAdA4UqTfKmfgA==
+ b=F9BppmhIH4gpsboifY3a5IMKdK78U7Gq6X0Lk501EtO2JqTFswh0P/fHGDvoauHpgrVuUHLSidf8TphiXgtgz81zDF870U7k7IIO5MeA3xg2fVd3Qn1ZN5dmUz1yQsvZ0aEyIUVmqGjbcyN6WX5oHZq6psIrpmJlHlcqpGZiklXnqN3EmrzbO6t6Mu8Zd2FnS85jylDvs7qX70BSfFhhTV4OlTriUEY9YgrONWT0heSfSlQx4KK3PO4lCNlQVbz5cnwMn6TKsbLFa2OqudzJ/lqmY8fm3yeVHjy8Erw6mcqC0XDbhyv3VEC/UammuLCcun7K5W81s/zCr8rokFcosg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hhe/ELCiIGavjTO0QEgtlgzGsjV8+J2S6JI5rHdMmIQ=;
- b=A0hMeMlnHLF6mwh+MPPhEarqGdDjGCooW6Aa7KUSLfpKoXvvAAISv0yqzgkePoHMX2Eake6ttCoiABEFu2jndT1zxZXTwRYgymmuOlpxfaGvQazoi8k7gERZRIH/sPotjAb6SnE2CKZhNusnVv6q7OnB+D+Wd6Ru+F0N8A2etwpndZDCtjH1QXgzJP6kVCgNBF37qf76XtFjaoLRZbDeAIXp/1Z1z6FkP35mz1jl9Dd57cGcMA9xYFXGhb2R0C1nThp4Oq1+JaNC0F9PESjPtjCjvu2Y7ZKgK92CBIqpu7sVqty1CKhstIl9hCwyjPKNJg8t3HSJe1L+EBs9JVMd6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=Ym4+B1k5T2QQGd2xHgb34GQVYOTB8iwlLyzTTV2/2J8=;
+ b=uDe9H/EV+9xd4MmAswoEMlqQt8+P4uSMs8TF88cfa8Iq2+9wYw1Bv2fpccQzNmhgS34X4ucgKsoMhviXia9M1/0BispuMAzm8VKg8bZWvxMe/ZJh9FJT5Vw24cRPNpnKrkhXT3zHWP/3LdTRDiY+ivxT5Ccei55PUXyakpz/WJGF7SxqcogRFcw78gghQU7EydMMPorRd0rNYQyNWqLbUJv4glCSqze7wXbaHAzfx3dIr0btXAJ7ccZRLg67CGb5ToCXJh8VXmw+5rpKNp5hOxgLSBy8DA0+1nPwyhlHiLuiPz8H/K/qB4b76ovVlCNnXPZE90Tqo839bJ8Y/1EuGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hhe/ELCiIGavjTO0QEgtlgzGsjV8+J2S6JI5rHdMmIQ=;
- b=ekvWJ5UpePYWWwafnjYc/d0OZL3cGFUhoe6l8cZcb0rvm/3TadXylttame/PSjCFbLTnzk7snK31Xk6g+aszhmiBGEeSfVHYvX1HytvO1kYIhV6Vxc3IPoswKYHegWHRjAoB9hJXoaJz2cTRUto5RXTvXyLBkyeq5/2tOPefilfz6fQSR9Ibdv8p/er1oMQDVL2rBJpcLsdv+wIRTtO2svZAN9YyAMwkVmzstKo8H0Fr9Qliso9WMRLiK0FghyKTEEDWHvpYrxT2proHg8MaHFdFe9mtnmMtk+oiH2dcRu6BtBgIdxPfZp59FYdr5qbqMoQwh2PL8OlDeiz5fF4Jhg==
-Received: from CH2PR18CA0053.namprd18.prod.outlook.com (2603:10b6:610:55::33)
- by BL3PR12MB6450.namprd12.prod.outlook.com (2603:10b6:208:3b9::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Wed, 19 Mar
- 2025 05:27:56 +0000
-Received: from CH1PEPF0000AD7D.namprd04.prod.outlook.com
- (2603:10b6:610:55:cafe::82) by CH2PR18CA0053.outlook.office365.com
- (2603:10b6:610:55::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.34 via Frontend Transport; Wed,
- 19 Mar 2025 05:27:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CH1PEPF0000AD7D.mail.protection.outlook.com (10.167.244.86) with Microsoft
+ bh=Ym4+B1k5T2QQGd2xHgb34GQVYOTB8iwlLyzTTV2/2J8=;
+ b=jWPbaRu2h9hhcKzNz0UOEwTklGXOuJzXXOiKDUZNYNUv9fs9vYF3K0IcaS+jVF+TnvI7X+qYPUTFDSyWroKCZJ1c/gBqp82rZ72q3PPb4+z4HqqKBonVh/EAZSk8A0XLkracFsw4BcLpW4erPOw3x8R3/Beu4S8I6rmAQv7GqFE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
+ MN0PR12MB6176.namprd12.prod.outlook.com (2603:10b6:208:3c3::9) with
+ Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8534.20 via Frontend Transport; Wed, 19 Mar 2025 05:27:56 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 18 Mar
- 2025 22:27:43 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 18 Mar 2025 22:27:42 -0700
-Received: from Asurada-Nvidia (10.127.8.13) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Tue, 18 Mar 2025 22:27:41 -0700
-Date: Tue, 18 Mar 2025 22:27:40 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: Eric Auger <eric.auger@redhat.com>, Shameer Kolothum
- <shameerali.kolothum.thodi@huawei.com>, <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>, <peter.maydell@linaro.org>, <ddutile@redhat.com>,
- <berrange@redhat.com>, <nathanc@nvidia.com>, <mochs@nvidia.com>,
- <smostafa@google.com>, <linuxarm@huawei.com>, <wangzhou1@hisilicon.com>,
- <jiangkunkun@huawei.com>, <jonathan.cameron@huawei.com>,
- <zhangfei.gao@linaro.org>
-Subject: Re: [RFC PATCH v2 03/20] hw/arm/smmuv3-accel: Add initial
- infrastructure for smmuv3-accel device
-Message-ID: <Z9pVzF+kOSbd9reD@Asurada-Nvidia>
-References: <20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com>
- <20250311141045.66620-4-shameerali.kolothum.thodi@huawei.com>
- <d75feb00-72d3-4d79-a7ac-2548eadb6a77@redhat.com>
- <Z9hh8MIAQNQcvNlG@Asurada-Nvidia>
- <71b73212-3d8f-4c9d-93a4-bf07c0f169e3@redhat.com>
- <Z9hzmzHfWw18OyGO@Asurada-Nvidia>
- <20250317192453.GR9311@nvidia.com>
- <Z9iDxSvZVsgtasGj@Asurada-Nvidia>
- <6cb391a4-d150-4692-b62e-a509448a1034@redhat.com>
- <20250319003135.GH9311@nvidia.com>
+ 15.20.8534.34; Wed, 19 Mar 2025 06:06:54 +0000
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5]) by DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5%4]) with mapi id 15.20.8534.031; Wed, 19 Mar 2025
+ 06:06:54 +0000
+Message-ID: <1c69c44f-6e94-4c44-8fae-8216c66f0a4d@amd.com>
+Date: Wed, 19 Mar 2025 11:36:45 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/6] amd_iommu: Do not assume passthrough translation for
+ devices with DTE[TV]=0
+To: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mst@redhat.com, mjt@tls.msk.ru,
+ marcel.apfelbaum@gmail.com, suravee.suthikulpanit@amd.com,
+ santosh.shukla@amd.com, sarunkod@amd.com, Wei.Huang2@amd.com,
+ joao.m.martins@oracle.com, boris.ostrovsky@oracle.com
+References: <20250311152446.45086-1-alejandro.j.jimenez@oracle.com>
+ <20250311152446.45086-7-alejandro.j.jimenez@oracle.com>
+Content-Language: en-US
+From: Vasant Hegde <vasant.hegde@amd.com>
+In-Reply-To: <20250311152446.45086-7-alejandro.j.jimenez@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2PR01CA0239.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:eb::18) To DS7PR12MB6048.namprd12.prod.outlook.com
+ (2603:10b6:8:9f::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250319003135.GH9311@nvidia.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7D:EE_|BL3PR12MB6450:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd433334-65c5-480c-0b9f-08dd66a6cde8
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|MN0PR12MB6176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a426e0a-673a-45dd-70cf-08dd66ac3f6c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|7416014|82310400026|376014|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Y5WqT8ApVdjqukRxSzOCqS2tnsvPl054u3nsqY2By8XKtdb6Bglt2cPlIFH9?=
- =?us-ascii?Q?dMesfSm8jIoH5uwBbTYuNjtBkCHJ/7KG/Z2Eqbh8CiHrrGccGNB67tabfrol?=
- =?us-ascii?Q?8NDyfcTMN15YTNc2AerI2vhPmKHitWLUFChCpLS3LdO1X6EtLxUON7lOfZFV?=
- =?us-ascii?Q?tgSIAiW/5rhEVJ4upkIyctfSOVRz8fZ+4cOXmkqQq/8ond2Qlq8+DP5GnZ6j?=
- =?us-ascii?Q?mk9tEQ853VZsNxo4qr0XG+T4Si9vQsaAfVxsRPTNUVX+IO3ToGCM2NPXH8Gm?=
- =?us-ascii?Q?kOIuJ7sIG3vB/cMRgEWdRE+HQS+sdASPEgjzWvSedq51jIM8cnhIQkL1w4Ci?=
- =?us-ascii?Q?KYWG4mfl0+1YUPcAihmHvvrkvXECX9uw5JJogCJWsyt3oXUmC0HjhdyMrZCZ?=
- =?us-ascii?Q?raVOBnXMc+NDv4s1ykVNh2VoqCOhL4O2zevg03rQrwkZwjB8Kfq0pHJOaIvS?=
- =?us-ascii?Q?SIA3SRyASu0C77d2XfgDu5Fy1o7aKE87w9OYCu8v9/ldYJ//Akn0BMLaPpUf?=
- =?us-ascii?Q?5Hl12vOK8skHaDam/vbitXLQvX5x2U1RW0hWXfYLrxB/fPP1A7aMaZ7/RVCk?=
- =?us-ascii?Q?qiaGw1yTyhg2W0nB5y/NrqcAWfD5OqF8iayGP2X+EP+Qj3qiLTY+Ngb7PBDN?=
- =?us-ascii?Q?4jTYznld+8dSGictv43250e3fcaQ+Eg+zvM5YCFcSmld8fPClP2c5KjCs7bd?=
- =?us-ascii?Q?GIr4EUdPUd0QvnG8rjrrHu7VHaf6zYrE1G2Jc9hxywYLz3I+X+kJ0fjrNKSf?=
- =?us-ascii?Q?UM5EVhhEgeR8lXNvt1LWS2cZ0qwX42CkMX+4vUCQhGUzYFCcy0tkNxpX4uh6?=
- =?us-ascii?Q?sHlKFQolruEwejGmsYxYbVdLosZpXtpDokl8geCCLMd7YdkjP7+W6bnZv//A?=
- =?us-ascii?Q?ocKFzlbwCLZT7efvgoVe5iLmnYhZOKZokO2GAbQQLUiJ6wlj2SpHk/oYQ16E?=
- =?us-ascii?Q?T4h5sXqAjnuVr1kzaJd7VYVgTd7CU8FKUXznYU0QYyo8aJWaaUAVmmg++ulR?=
- =?us-ascii?Q?n1SIx8gAERg5/yV6nnhCPR2zv7/d+AxblBleTNwHaE0RCiA/uy4CdxGSodn0?=
- =?us-ascii?Q?r2H7ypr9tKOu5Dt/8ZJ4lqAg9xng46acjhZ6PINvpebhPA0ukVAbkP9l04Tv?=
- =?us-ascii?Q?tSm/KhRv+7hHGU3OcRSJLlzuW+2kH0alfBGxahpLZCbXIbDbxzZGZO69z/Uz?=
- =?us-ascii?Q?Gtl1OgStsyvFhAP7BejMsrD4Lvm41tWokWF0GlW72by2phSoSRtl0q+CEwKP?=
- =?us-ascii?Q?dctKr71S3rH7g8av+EB+XMtKpYPcGdYF7k9NM7PVGJcUUakiq0T1Bg9LQN9M?=
- =?us-ascii?Q?1U+rpJ3eQGewekkjp5KNmWdOZTNsJiClGMkWjlyZx12TAJQVPr/JjkcDHIpm?=
- =?us-ascii?Q?maEGqZTuHBgZkTCQhzjUoNJlfiz54enT/r58s4K4pzq9swRuJFKKqkFGeNPf?=
- =?us-ascii?Q?lNb8cTgKfRDtecyHgw+UgxiegU8bdZVjCQ9B4mhfelYvPwDu9OyJLD1GuECW?=
- =?us-ascii?Q?WpPhUQBR+2PgvHg=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
- SFS:(13230040)(7416014)(82310400026)(376014)(36860700013)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2025 05:27:56.0056 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd433334-65c5-480c-0b9f-08dd66a6cde8
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD7D.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6450
-Received-SPF: permerror client-ip=2a01:111:f403:2009::609;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM10-BN7-obe.outbound.protection.outlook.com
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WmE3NnpjNERuaHhJZVJ6OFBCV3pyMVQvTUVaVGo0Lytwa3BYVVVicGVzdFQw?=
+ =?utf-8?B?N2JDdHovR2JweGlFRkFVUGFtRTY0bG42L2RaRi9vV2I1ZkJGa1R6ajBEcS8x?=
+ =?utf-8?B?ZC9ENWQweUhuaVdlY25jVlg2YzYwenBkejJnV2JEQkdTdzhuaEtwY1JybDBj?=
+ =?utf-8?B?aFZtcVEyQnhZTUdCZFhoVDlQRmFoSVpDU1I2ZWtaR0RvRDNwMnE1a3FwT3Ri?=
+ =?utf-8?B?WkRGTW5XZVNuUXkwMEFJWVZVNHlnY090ZHpBUDdiZWxqQlZsVnlISTZPZlhv?=
+ =?utf-8?B?ZkxuTkdGYUhZSHU1UzJRVzdjRFJ0eWNGejJWSDdiajRXcDdQTSs2amkvQUkr?=
+ =?utf-8?B?U1hBWHRqZW92Q0NxbVFBUzZYL2h5bTBpYTJqZWxzMElZeGdRcUR2N0tnZHRU?=
+ =?utf-8?B?bTlHdDEreVpQOWVqazlucm1zUGFBYTFkT3dyUG9GdUJVbzdZTis3S2pyRTBJ?=
+ =?utf-8?B?RWdFZGVLSG9DTFZWcTQ2QzVvNVhNTENMODRWUFZVUENMZVFNR2ptZUYyYzdW?=
+ =?utf-8?B?M3RFblRVTFJnTFFMQXpVR0s4WVhObnB0N3FBN1BFcUdjcVFlTnlzaWRUK2Fw?=
+ =?utf-8?B?WWwyVGJ1ZzlFR1k1MmhjOUVHUTQybjQya3BBVExLdUNUeXMvdm0wUE5JaWRC?=
+ =?utf-8?B?T2xwME9FWmFPeVlxZzhPZXcvV0tWSkVkR1loVHA2ajh3MXJIb2YzQ2F0aTM1?=
+ =?utf-8?B?ZVJZUjhLMnJDbmJ6UUtjcmVMdWY4N1ZDN0R6Y0c0d3h3UkZaTGhzMjJFTDBE?=
+ =?utf-8?B?RFhjTUZuOWp4VTFjTExhNXpQeU1vVnNWWmRJdDZWOXFWLzdSMnZBNllob0RJ?=
+ =?utf-8?B?QW1DZEJvZGF2RHN3M2VJVWdiakR5UXNpUyt4dnpDV1Rwd0NiQ2lyanNiNWNa?=
+ =?utf-8?B?U0lIaXowK3RqNHQvTGh1c0lJZGMzTWVRUHIrK2ZjbWdqZER6aVNCMURMSkxt?=
+ =?utf-8?B?bDN3dlRTeG95b1ptT0NqK3MrSExGNGFtM2dLc1hzZ2FxazhZbWJTUVBQdzd2?=
+ =?utf-8?B?RmRWOEhlblJRL0xTUHlmbkQxNUlvNUkxRm0xSDVvYXdnVXUrNUo2Qy95clRR?=
+ =?utf-8?B?NEJKNjlwRi8ycTdxSVJLUVVvSS84VkV1S0F0cUNoeXJqd2dwdkRDdEFHbTQv?=
+ =?utf-8?B?ZFByM0dLaFhhWE9wSitwd0NDNklSOVVpUFpZa0dGbkVWOGZWN2d4RTgydlc4?=
+ =?utf-8?B?cjRnNm9UWUoyVUZHNUhpd1BMSVBLS0pxRnNzMUdnZThLamVwekYzRUsyaXZN?=
+ =?utf-8?B?dkJTZUo5Y0xocWNOOVliL3RoTmNUdFNYbmN0bUhpemhXNkNPTVdYbHJhNGtr?=
+ =?utf-8?B?c3JjZXJtajdxdktZTkRjaUNxNDNraTFNZjJpWlV1SnFUN3NOK1dHS2wwZHRs?=
+ =?utf-8?B?ZjU0S1pjNGpUQTVQZ3J1c0FNQ29jVkRlaEErbGZSNndLZ2hMVmE3Q3NtWmox?=
+ =?utf-8?B?NU05VFpvQTUxcjN5dU9GZmdaTk9zdng3cS94czd2bGI5SXA5QkFVSnNIRldx?=
+ =?utf-8?B?OC9tZ1VXMjM5VkpGcmFTejNZLzQ3c014SkZiSHAxQlRiSzh5emlmbXhOMUhi?=
+ =?utf-8?B?ZTg4V1JCeHQ0U240UTJFb0IxVWkxd05sNU9nTWFTVGxNTzBJY0h1NGJKSXhF?=
+ =?utf-8?B?OE42T095ZzU4anBSR3ExVlVnSktvS0Q3aURWS3NtT2pqeUc0dnowbU16SGVK?=
+ =?utf-8?B?Y2VYTFcwbFVwNDlKRmh6TW85azMvVGFpT203d1lKNlgyckFBU01rWHc0M08r?=
+ =?utf-8?B?cGNab2diSWxGNkd2S1ZyUzhaRWZYWFFuTHpQQkhIdFhHVHloTkd0MEZEVHFB?=
+ =?utf-8?B?cGFoZjlPQm9GZzdESWxLY3ZqQ3JEY1E1Ulc5MVhmUjl3SUZ3RUtSVm9DU250?=
+ =?utf-8?Q?K0kEMXI8GOl3s?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS7PR12MB6048.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dk4wRHVNc1FERUhIa3RPNFAxUTg5NVVkU3I4SUxVR01CMGhhL1BWR2N4SGlN?=
+ =?utf-8?B?dUNLKzhKWHNWQ3Y4VGs4ckhUWEVVZmhBcVp0MUZUWVZlYldYT3dGVWU1eVRU?=
+ =?utf-8?B?WlFicDVXWUxNVU5iQjNkd0Rwa3dZNWZZNDAxZjg4OXZaM1BOV2pZTC9pTmxI?=
+ =?utf-8?B?ejhNS2xvdUI3VWM5L3hzdmFoM3NzWHJ4Tm5ycDZ4ZTBqdGZuQVNRNVAyZm9q?=
+ =?utf-8?B?K09xenJKWFJKYTBpK0JYRW0wYng3V1c3RDdvWTZyWnJ2K0orQUd5a2t1MWt2?=
+ =?utf-8?B?Z2pVc0FCRk5HUWs2THlXdmRobE5kRzdveHo5VEtBUEVTL096V0taZ25yMW1w?=
+ =?utf-8?B?WHQxY1p4SzhvR0p2OFFjQ1hRVy9oTmlwQkdaZTNqUllqd2dNZ1NMNzhodFpp?=
+ =?utf-8?B?RUtxenhzOFVMa2U3SitDRXBZTFN1ZWZhUlp5Sk9paUxFMHNVa0pQeGxaQ2Ux?=
+ =?utf-8?B?SHlGMzJrRlZEd29pU3duaG9PN0R4NXNoWUZTV3pTeEY4MDRmVmFDN09rWTRC?=
+ =?utf-8?B?aU9ZNjl0VVNFL0F6NHg2elZ6M1hmSDhJMVNtZm52TkQ3L2dlVllXbjZ4bWI5?=
+ =?utf-8?B?ZTU4aGhxVW9ja0U4RklHc3NFcDkvQnpXU2MrZlFBYTJYajZ1UlNGalJ5TFBI?=
+ =?utf-8?B?dis1R2hpVHVKOVk4cEpVSUtqZkdsOWdJUHA3ZUsvSDMya3paWVdmZmFMbTBO?=
+ =?utf-8?B?emhVVW55TEpPaUkyQkhMM1RXL254Umw0TjZUdjJhZHMrQ3ZHcDBwYzB5QmJW?=
+ =?utf-8?B?MkNSaGd4eDEzenloRjRYbFVWbHJzeS9pOStwWS9ZTDQ3cXdaelB5RGVmU1Ey?=
+ =?utf-8?B?dG52dHIrNFU5OExxZzhsRXlFalE4cmdUQVp5VnQydGlWU2YyYVNXQWxZN2xz?=
+ =?utf-8?B?aWV5ZlJDbm1malVGa3plc0VFM2dkYlN1Q1BaWElhOWZLK2Q5dWE4NExxYlh0?=
+ =?utf-8?B?L0lZUVFCV2ppd1o3TkRhMWpKc1M5NDNLYlJEbzJ2WitieHUwZUM0Y09iSTBK?=
+ =?utf-8?B?RUxVRmk5UCtZU3E3cTR4bElmeWZCTEhKRkdjWHR6ZHFRWGlUMUwzK1ZiWnVN?=
+ =?utf-8?B?M2xFWEdsMzVFaG1BOHhuMndTOWlNQzN1SEJGTmtUQTVFekJqQ21rQ00rRGtH?=
+ =?utf-8?B?M0pDSXJCVDFpRHdLZHlzQkViYi9RRHNibWNWWWlYZUkrTldkU2NZc0tYbVIv?=
+ =?utf-8?B?SzRYVkFVNUxkSlpPV0QrRElWNk16QVhneEYxcHMxV1d2dGx4WUJGZ2VXUVhV?=
+ =?utf-8?B?dVVJRzdoVlhqdEVxTEt3YnE1UFFzRGdiM21ocGgrTnVzVlJBZ2h4Z0hwUENY?=
+ =?utf-8?B?Zi96bUZjdU9YNysydTVGL1NDbkxFbmRsdzA3aHlIZHNuU2FHTGR3YktwcWg4?=
+ =?utf-8?B?UTlsdE4xeFR2VmlOZ1BmUlpnbktaRlVLU1BiNnYxT05QM0tSOThQVEp6WkN0?=
+ =?utf-8?B?Uy9tSks0VmwvV0VQa3NMUWVadjFRUTkvdUdoU1FiNWpob2FILytxRlZRREl6?=
+ =?utf-8?B?NUtBWmpINE1manV0WVpjOE80WUxaL0hxS3p5aVRxaW1NMWxXZVJtWEpJNlBY?=
+ =?utf-8?B?UjFuajZVRytkQVdyNjlQK29XUitCa212aFU0M2ltSndBTUtHaExxa0dWRnE4?=
+ =?utf-8?B?cFp6bXQ0RkQwSjJtTElHTUNUakRRdE1Uem13MXlJMGZ1bm1adklwa0RtWHpH?=
+ =?utf-8?B?Z0hOMGVPMm1WUDE0RGhpTWw0Vy93clZKVGp3N05QeWVrbFBkU1ZwWGU1bU84?=
+ =?utf-8?B?S0ZXZ2JzTHMrTUJtQllKUmlmNFJ6VGRtZ3l2UkNQNmFvenFzbWxCVzNOMmd1?=
+ =?utf-8?B?WmJWTC9UOWpoUFl5TWJoNi91QUx6M0FoQVBvT3pLWXptdUQrTVFIZUJKdDh1?=
+ =?utf-8?B?VHozVlJ6K1JyVDd2M1JBQkNBbzJjaTRveXB2dUFhbU1jcFpDTzhENzF0b3Rj?=
+ =?utf-8?B?M2xUaEtvTnkwZ1VHajZHWnl2MHNmRlFET1FmNWlBdHA2SUpoUE9HS0FjWG56?=
+ =?utf-8?B?VS9oNTZkdDA4K3dKVzlaZlpxb3pIWk96ZytxY2xvSE1JUTA5YVExdFNtU204?=
+ =?utf-8?B?SHI0TTMyU25USEVQM2JGMnR6ZU8zZVh5VDVueXdmd3VPRkIxTFAzc2dtbHhJ?=
+ =?utf-8?Q?n4ZYXffR6Ct+BWl6fM/fINZHs?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a426e0a-673a-45dd-70cf-08dd66ac3f6c
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2025 06:06:54.4637 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: q1pA2KNpk935iQanO5sGmyTRT7K9a83lXVYhp3+l1ZPh5Hc13iVzdmYh3lfg438UXAIX8eajxTq36ceiy4wPBw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6176
+Received-SPF: permerror client-ip=40.107.237.82;
+ envelope-from=Vasant.Hegde@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -167,20 +179,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 18, 2025 at 09:31:35PM -0300, Jason Gunthorpe wrote:
-> On Tue, Mar 18, 2025 at 07:31:36PM +0100, Eric Auger wrote:
-> > Nevertheless I don't think anything prevents the acceleration granted
-> > device from also working with virtio/vhost devices for instance unless
-> > you unplug the existing infra.
+Alejandro,
+
+
+On 3/11/2025 8:54 PM, Alejandro Jimenez wrote:
+> The AMD I/O Virtualization Technology (IOMMU) Specification (see Table 8: V,
+> TV, and GV Fields in Device Table Entry), specifies that a DTE with V=0,
+> TV=1 does not contain a valid address translation information.  If a request
+> requires a table walk, the walk is terminated when this condition is
+> encountered.
 > 
-> If the accel mode is using something like vcmdq then it is not
-> possible to work since the invalidations won't even be trapped.
+> Do not assume that addresses for a device with DTE[TV]=0 are passed through
+> (i.e. not remapped) and instead terminate the page table walk early.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
+> Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-Yea, I totally forgot that.. All the invalidation commands that
-belong to emulated devices would be issued to VCMDQ (HW), while
-those vSIDs wouldn't be supported by the HW for CFGI_CD/ATC_INV,
-which will trigger errors/timeouts.
+I did double check and I think this patch matches HW behaviour. I did run few
+tests w/ this series. It seems to work fine for me.
 
-Thanks
-Nicolin
+
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+
+
+
+> ---
+>  hw/i386/amd_iommu.c | 88 +++++++++++++++++++++++++--------------------
+>  1 file changed, 49 insertions(+), 39 deletions(-)
+> 
+> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+> index cf00450ebe..31d5522a62 100644
+> --- a/hw/i386/amd_iommu.c
+> +++ b/hw/i386/amd_iommu.c
+> @@ -932,51 +932,61 @@ static void amdvi_page_walk(AMDVIAddressSpace *as, uint64_t *dte,
+>      uint64_t pte = dte[0], pte_addr, page_mask;
+>  
+>      /* make sure the DTE has TV = 1 */
+> -    if (pte & AMDVI_DEV_TRANSLATION_VALID) {
+> -        level = get_pte_translation_mode(pte);
+> -        if (level >= 7) {
+> -            trace_amdvi_mode_invalid(level, addr);
+> +    if (!(pte & AMDVI_DEV_TRANSLATION_VALID)) {
+> +        /*
+> +         * A DTE with V=1, TV=0 does not have a valid Page Table Root Pointer.
+> +         * An IOMMU processing a request that requires a table walk terminates
+> +         * the walk when it encounters this condition. Do the same and return
+> +         * instead of assuming that the address is forwarded without translation
+> +         * i.e. the passthrough case, as it is done for the case where DTE[V]=0.
+> +         */
+> +        return;
+> +    }
+> +
+> +    level = get_pte_translation_mode(pte);
+> +    if (level >= 7) {
+> +        trace_amdvi_mode_invalid(level, addr);
+> +        return;
+> +    }
+> +    if (level == 0) {
+> +        goto no_remap;
+> +    }
+> +
+> +    /* we are at the leaf page table or page table encodes a huge page */
+> +    do {
+> +        pte_perms = amdvi_get_perms(pte);
+> +        present = pte & 1;
+> +        if (!present || perms != (perms & pte_perms)) {
+> +            amdvi_page_fault(as->iommu_state, as->devfn, addr, perms);
+> +            trace_amdvi_page_fault(addr);
+>              return;
+>          }
+> -        if (level == 0) {
+> -            goto no_remap;
+> -        }
+>  
+> -        /* we are at the leaf page table or page table encodes a huge page */
+> -        do {
+> -            pte_perms = amdvi_get_perms(pte);
+> -            present = pte & 1;
+> -            if (!present || perms != (perms & pte_perms)) {
+> -                amdvi_page_fault(as->iommu_state, as->devfn, addr, perms);
+> -                trace_amdvi_page_fault(addr);
+> -                return;
+> -            }
+> -
+> -            /* go to the next lower level */
+> -            pte_addr = pte & AMDVI_DEV_PT_ROOT_MASK;
+> -            /* add offset and load pte */
+> -            pte_addr += ((addr >> (3 + 9 * level)) & 0x1FF) << 3;
+> -            pte = amdvi_get_pte_entry(as->iommu_state, pte_addr, as->devfn);
+> -            if (!pte) {
+> -                return;
+> -            }
+> -            oldlevel = level;
+> -            level = get_pte_translation_mode(pte);
+> -        } while (level > 0 && level < 7);
+> -
+> -        if (level == 0x7) {
+> -            page_mask = pte_override_page_mask(pte);
+> -        } else {
+> -            page_mask = pte_get_page_mask(oldlevel);
+> +        /* go to the next lower level */
+> +        pte_addr = pte & AMDVI_DEV_PT_ROOT_MASK;
+> +        /* add offset and load pte */
+> +        pte_addr += ((addr >> (3 + 9 * level)) & 0x1FF) << 3;
+> +        pte = amdvi_get_pte_entry(as->iommu_state, pte_addr, as->devfn);
+> +        if (!pte) {
+> +            return;
+>          }
+> +        oldlevel = level;
+> +        level = get_pte_translation_mode(pte);
+
+Unrelated to this patch.. We may want to add check to make sure level is
+decreasing. Something like
+	if (oldlevel <= level)
+		error out
+
+Otherwise bad page table can cause the issue.
+
+-Vasant
+
+
+> +    } while (level > 0 && level < 7);
+>  
+> -        /* get access permissions from pte */
+> -        ret->iova = addr & page_mask;
+> -        ret->translated_addr = (pte & AMDVI_DEV_PT_ROOT_MASK) & page_mask;
+> -        ret->addr_mask = ~page_mask;
+> -        ret->perm = amdvi_get_perms(pte);
+> -        return;
+> +    if (level == 0x7) {
+> +        page_mask = pte_override_page_mask(pte);
+> +    } else {
+> +        page_mask = pte_get_page_mask(oldlevel);
+>      }
+> +
+> +    /* get access permissions from pte */
+> +    ret->iova = addr & page_mask;
+> +    ret->translated_addr = (pte & AMDVI_DEV_PT_ROOT_MASK) & page_mask;
+> +    ret->addr_mask = ~page_mask;
+> +    ret->perm = amdvi_get_perms(pte);
+> +    return;
+> +
+>  no_remap:
+>      ret->iova = addr & AMDVI_PAGE_MASK_4K;
+>      ret->translated_addr = addr & AMDVI_PAGE_MASK_4K;
+
 
