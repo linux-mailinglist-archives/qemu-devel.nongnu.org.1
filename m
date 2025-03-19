@@ -2,89 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27227A69920
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 20:24:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D20A69926
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 20:25:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuyzn-0007U6-Ix; Wed, 19 Mar 2025 15:22:31 -0400
+	id 1tuz2W-000307-UD; Wed, 19 Mar 2025 15:25:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1tuyzk-0007P7-Cb
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:22:28 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tuz2S-0002yB-To
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:25:17 -0400
+Received: from mail-yb1-xb2b.google.com ([2607:f8b0:4864:20::b2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1tuyzd-0002D8-AM
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:22:28 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-22548a28d0cso46825095ad.3
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 12:22:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tuz2Q-0002pj-AM
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:25:16 -0400
+Received: by mail-yb1-xb2b.google.com with SMTP id
+ 3f1490d57ef6-e3c8ae3a3b2so5805070276.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 12:25:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1742412139; x=1743016939; darn=nongnu.org;
- h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
- :cc:subject:date:message-id:reply-to;
- bh=kKVHcadJ/wQJ8iIOiIdf/pZi6zcVqYjt3QxMjbunVFA=;
- b=ezAgp1hCqfrYJ0wMBB/9kg4fBSToBXNaM4NSWRw4iR2J8Lx00Aqkpxr29MPuVZ+Top
- fELM/Ojr5euyNxmmm0shNmPBItnkpIpUSMltPTrI8kd5IhmeNprDo4mE5ozbn5qIPl6W
- xPQgPTtG5aKqJwCWrHknIZy0pCw74capAXcq+90arKh2BAXLek4YCQ6AYCYJGvNDqg53
- P6MCVFp1sq7z+ohcbwR5HfDZSqSejbglvLApc1TEEnzFrUrv3RObrf3X+jzmry53ieoz
- eToWLvt3/JqcVTaBFJOvCav0eqfsbxNgsqhCbSO3siakW6dQBB/Saq/tMiZ+kKxc/PXb
- frAQ==
+ d=linaro.org; s=google; t=1742412313; x=1743017113; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=r8Hlo3CmmHLMyn/BaPz47LNT2GKXhvSKNr1gsTzk/lU=;
+ b=xps0E4n4woAWfPxPRnG2/rDuxemd1VYxFtQigoKLDM0CAy0rs1P9uhEQ7TUuYeVIFu
+ 6zSskD1wAw6ip01BHAJGVK3SLcROIGP9ecwqCet7q/ql+qsIkcUJmNRZ6/rMuTgpDlU1
+ GN7Hahnqfqeb7jZtQcXh1fyTLD7UHoPUD1/LIdJ1X6Yt5qpgpdl0joN5sTmUrAUM/K8m
+ emVT0lWap50WhE6hEXYktqNm7iinwQRdsD37kOk0ukWCTPAZSc4PG20ZHv/wYxkXa6hG
+ 41J0LkV1kpydKjhU8OtjUmcNunlYisbiFEZ4TMFlZpz8zU61swMD1fupX7h/WpUbWg7R
+ ez9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742412139; x=1743016939;
- h=references:in-reply-to:message-id:date:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kKVHcadJ/wQJ8iIOiIdf/pZi6zcVqYjt3QxMjbunVFA=;
- b=aiAFMyeVPPM/+d0zX1BanjLJkqFOeImWOW+iIHVTreO0ng0MSQn4Y7Y1PGwALk1XVi
- 95Ifd0lX5OHYZ9Bs5g8oEoVPyOuo9wDRjW0JUq/0Pn7dlPj16O4X7bJoWX6fd4Hcpl6l
- eP2rkwZk1BTKiDBkzkRiV/tQRyGzwn45uXY2qKyDbFbDCp1opP3/USU7FDnFhJu+hbSC
- /PAclSryq0L5IA6mjrnGEThcIZ8AS1caiuSMpygfwhlRA1/U0evLPMJOHDYbEdhEqTYM
- ww5KxvmjhE0uBvCvVxrpPfeBuZPaqOAD1ey9+tRsqYnGDkvjIW6GKZs/Jwo5NDr949j+
- YMeg==
-X-Gm-Message-State: AOJu0Ywf3lVhWQ8r4Lsl7aZXAnZDQnCdEEXme+l4JWdJ9Ejd8ERd3CtX
- gCbHBWIc9u1AuKvo4tEDF2OVZUrY6nn2p6WvN1FjdFPz4QRApJAV4bPF7diEUWLXCLDOvOExTPS
- LOb6JhR//3TJg90Zar6iYb2paljUQmRJKd56inhY8+fYojHKizlnP1A/RV7s7qzOaC9JEHvZAz+
- WRq3fQwKM27qbZwxdT/qQ1EhTrxS1zM3/FlQ==
-X-Gm-Gg: ASbGnctTZm4GQDWcaxEXIFaSeu6BReQ2kiQShJkTxWebI4+0y9snPCVE3L5cfF3O2fr
- mlGNCMv3hurE4gnPOhTSj5ZTNS1Lu4NoYr69uhiBdAD/Fqczyys0iot1s6W/XxnTV07dnMUKKBj
- vN/ulllwUUS9iEUKG0lDBy763TZIPn5IQ5nt8l/Zz9NfgcfH1KJZD/J8ls2OpVaCwP7CbEqhfat
- bnQGdGjDDQmuzWabt8OACF94+wN6l0lXQC++cx6vdYwiVa71DrlKh/PfmdMxM/Lhps/vshmN5qt
- MXXhykGhUlCJmUG2nZpFniSkBhmlnj7oVPSv2U/dDjXIgGiq7j4hkdsnOCSK4Z80vwk=
-X-Google-Smtp-Source: AGHT+IE+s0ns02b5SoF9eHzgQxIiDo+b24T8XSNbzWahmXzOfeu8JrjHz1xg7U2xiPkEYxI63QKe7g==
-X-Received: by 2002:a05:6300:614a:b0:1f5:7d57:830f with SMTP id
- adf61e73a8af0-1fd133f00cemr839571637.33.1742412138660; 
- Wed, 19 Mar 2025 12:22:18 -0700 (PDT)
-Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af56ea947a4sm11432175a12.70.2025.03.19.12.22.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Mar 2025 12:22:18 -0700 (PDT)
-From: Jim Shu <jim.shu@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH 4/4] target/riscv: Enable/Disable S/VS-mode Timer when STCE
- bit is changed
-Date: Thu, 20 Mar 2025 03:21:53 +0800
-Message-Id: <20250319192153.28549-5-jim.shu@sifive.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250319192153.28549-1-jim.shu@sifive.com>
-References: <20250319192153.28549-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=jim.shu@sifive.com; helo=mail-pl1-x632.google.com
+ d=1e100.net; s=20230601; t=1742412313; x=1743017113;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=r8Hlo3CmmHLMyn/BaPz47LNT2GKXhvSKNr1gsTzk/lU=;
+ b=DbyPGr5TvZcsAXxQHyUH6tIeTmHMbF2HeawgIx/u4uQfqy82CbO/hOA3cPotnMWPnp
+ 5Om/UHUEJQSrMKf2XNBSYZ4W/cgpiduWGUy++tNsUV/SpeDo5t6QpVZzWceoBQnZ0vxf
+ Ntm5Vdhx6xe/SE/U+9inzRBtzfv8rwAMOePwyB/gwnwIlw4yMx5dK/UPFQJqN0gnn3KE
+ osWCW0+7CU96mZggBYLI+erg2hRKbTiPqAZVYFJbqzzYHg+JwJKQxSPPsFRsOVVu+Mm/
+ OnSSn9RNpJ8o8lVJOsbwMvrM7oONODpIYxyIRsnGmA2CNn2X1+jHTQBFFAYqbNlbSKcW
+ o+sA==
+X-Gm-Message-State: AOJu0YxETcqbKw8xRbYlihpGuIn+6mR9bF4FzFmus2cvQ+eZ4/iZUQ3b
+ RKhbtRCmpVc+0SKOMgKAe7DBfSXAnjUetafLgtM6zjzHZ6M4LjMm9mjVw14BMmHkn/TQ6EdPzUk
+ q6vc0ixMnq7JB3mKbInfyKp7+b9GR+zVSoQLDlw==
+X-Gm-Gg: ASbGncvKqNavLrsMJNe6Zpw8l+jBUjasyiwx2oxVzUjLp92MqR0orzG4x7J04iikgqV
+ 2ncTS0uutrqSO7qITjGiNjJzWvqzzZbIjNBZw2xMoR+ksq6AdxBCnoWnyO0+XcfyiQBQfkk1Pdu
+ dF21wfo8LBsu1YhStzgqYQJ/EFthc=
+X-Google-Smtp-Source: AGHT+IEhHpwUYvPrnb7q1BlCo0wFO1Xn5lGuhYhySkJF/NyIHB86Wkfeiw9UGndw84Y21cE0SN5HCifvrzq0i4xuBJQ=
+X-Received: by 2002:a05:6902:2304:b0:e63:f191:e8a7 with SMTP id
+ 3f1490d57ef6-e667b440c6bmr5114858276.31.1742412312707; Wed, 19 Mar 2025
+ 12:25:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250309103120.1116448-1-pbonzini@redhat.com>
+ <20250309103120.1116448-20-pbonzini@redhat.com>
+In-Reply-To: <20250309103120.1116448-20-pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 19 Mar 2025 19:25:00 +0000
+X-Gm-Features: AQ5f1JrXXAIDXSH0DyCw3CRtfuCsqzynJe1Cs7s1QYbOHWnnFwp5dqzRgnxMzVw
+Message-ID: <CAFEAcA_orQ2Na9+MWnbyScNjQsDQBKB=s3c8D86FUE=q_1Mkaw@mail.gmail.com>
+Subject: Re: [PULL 19/25] rust: pl011: switch to safe chardev operation
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,214 +90,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Updating STCE will enable/disable SSTC in S-mode or/and VS-mode, so we
-also need to update S/VS-mode Timer and S/VSTIP bits in $mip CSR.
+On Sun, 9 Mar 2025 at 10:33, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> Switch bindings::CharBackend with chardev::CharBackend.  This removes
+> occurrences of "unsafe" due to FFI and switches the wrappers for receive,
+> can_receive and event callbacks to the common ones implemented by
+> chardev::CharBackend.
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Signed-off-by: Jim Shu <jim.shu@sifive.com>
----
- target/riscv/csr.c         | 44 ++++++++++++++++++++++++++++++++
- target/riscv/time_helper.c | 51 ++++++++++++++++++++++++++++++++++++++
- target/riscv/time_helper.h |  1 +
- 3 files changed, 96 insertions(+)
+Hi -- this commit seems to have broken use of the PL011 in
+boards/SoCs that directly embed it in their state structs, so
+"qemu-system-arm -M raspi2b -display none" now asserts on startup.
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index ba026dfc8e..c954e49cae 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -3156,6 +3156,7 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
-     const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
-     uint64_t mask = MENVCFG_FIOM | MENVCFG_CBIE | MENVCFG_CBCFE |
-                     MENVCFG_CBZE | MENVCFG_CDE;
-+    bool stce_changed = false;
- 
-     if (riscv_cpu_mxl(env) == MXL_RV64) {
-         mask |= (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
-@@ -3181,10 +3182,19 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
-         if ((val & MENVCFG_DTE) == 0) {
-             env->mstatus &= ~MSTATUS_SDT;
-         }
-+
-+        if (cfg->ext_sstc &&
-+            ((env->menvcfg & MENVCFG_STCE) != (val & MENVCFG_STCE))) {
-+            stce_changed = true;
-+        }
-     }
-     env->menvcfg = (env->menvcfg & ~mask) | (val & mask);
-     write_henvcfg(env, CSR_HENVCFG, env->henvcfg);
- 
-+    if (stce_changed) {
-+        riscv_timer_stce_changed(env, true, !!(val & MENVCFG_STCE));
-+    }
-+
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -3207,6 +3217,12 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
-                     (cfg->ext_smcdeleg ? MENVCFG_CDE : 0) |
-                     (cfg->ext_ssdbltrp ? MENVCFG_DTE : 0);
-     uint64_t valh = (uint64_t)val << 32;
-+    bool stce_changed = false;
-+
-+    if (cfg->ext_sstc &&
-+        ((env->menvcfg & MENVCFG_STCE) != (valh & MENVCFG_STCE))) {
-+        stce_changed = true;
-+    }
- 
-     if ((valh & MENVCFG_DTE) == 0) {
-         env->mstatus &= ~MSTATUS_SDT;
-@@ -3215,6 +3231,10 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
-     env->menvcfg = (env->menvcfg & ~mask) | (valh & mask);
-     write_henvcfgh(env, CSR_HENVCFGH, env->henvcfg >> 32);
- 
-+    if (stce_changed) {
-+        riscv_timer_stce_changed(env, true, !!(valh & MENVCFG_STCE));
-+    }
-+
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -3292,8 +3312,10 @@ static RISCVException read_henvcfg(CPURISCVState *env, int csrno,
- static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
-                                     target_ulong val)
- {
-+    const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
-     uint64_t mask = HENVCFG_FIOM | HENVCFG_CBIE | HENVCFG_CBCFE | HENVCFG_CBZE;
-     RISCVException ret;
-+    bool stce_changed = false;
- 
-     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
-     if (ret != RISCV_EXCP_NONE) {
-@@ -3319,6 +3341,11 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
-             get_field(val, HENVCFG_PMM) != PMM_FIELD_RESERVED) {
-             mask |= HENVCFG_PMM;
-         }
-+
-+        if (cfg->ext_sstc &&
-+            ((env->henvcfg & HENVCFG_STCE) != (val & HENVCFG_STCE))) {
-+            stce_changed = true;
-+        }
-     }
- 
-     env->henvcfg = val & mask;
-@@ -3326,6 +3353,10 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
-         env->vsstatus &= ~MSTATUS_SDT;
-     }
- 
-+    if (stce_changed) {
-+        riscv_timer_stce_changed(env, false, !!(val & HENVCFG_STCE));
-+    }
-+
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -3347,19 +3378,32 @@ static RISCVException read_henvcfgh(CPURISCVState *env, int csrno,
- static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
-                                      target_ulong val)
- {
-+    const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
-     uint64_t mask = env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE |
-                                     HENVCFG_ADUE | HENVCFG_DTE);
-     uint64_t valh = (uint64_t)val << 32;
-     RISCVException ret;
-+    bool stce_changed = false;
- 
-     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-     }
-+
-+    if (cfg->ext_sstc &&
-+        ((env->henvcfg & HENVCFG_STCE) != (valh & HENVCFG_STCE))) {
-+        stce_changed = true;
-+    }
-+
-     env->henvcfg = (env->henvcfg & 0xFFFFFFFF) | (valh & mask);
-     if ((env->henvcfg & HENVCFG_DTE) == 0) {
-         env->vsstatus &= ~MSTATUS_SDT;
-     }
-+
-+    if (stce_changed) {
-+        riscv_timer_stce_changed(env, false, !!(val & HENVCFG_STCE));
-+    }
-+
-     return RISCV_EXCP_NONE;
- }
- 
-diff --git a/target/riscv/time_helper.c b/target/riscv/time_helper.c
-index aebf0798d0..c648c9fac7 100644
---- a/target/riscv/time_helper.c
-+++ b/target/riscv/time_helper.c
-@@ -140,6 +140,57 @@ void riscv_timer_write_timecmp(CPURISCVState *env, QEMUTimer *timer,
-     timer_mod(timer, next);
- }
- 
-+/*
-+ * When disabling xenvcfg.STCE, the S/VS Timer may be disabled at the same time.
-+ * It is safe to call this function regardless of whether the timer has been
-+ * deleted or not. timer_del() will do nothing if the timer has already
-+ * been deleted.
-+ */
-+static void riscv_timer_disable_timecmp(CPURISCVState *env, QEMUTimer *timer,
-+                                 uint32_t timer_irq)
-+{
-+    /* Disable S-mode Timer IRQ and HW-based STIP */
-+    if ((timer_irq == MIP_STIP) && !get_field(env->menvcfg, MENVCFG_STCE)) {
-+        riscv_cpu_update_mip(env, timer_irq, BOOL_TO_MASK(0));
-+        timer_del(timer);
-+        return;
-+    }
-+
-+    /* Disable VS-mode Timer IRQ and HW-based VSTIP */
-+    if ((timer_irq == MIP_VSTIP) &&
-+        (!get_field(env->menvcfg, MENVCFG_STCE) ||
-+         !get_field(env->henvcfg, HENVCFG_STCE))) {
-+        env->vstime_irq = 0;
-+        riscv_cpu_update_mip(env, 0, BOOL_TO_MASK(0));
-+        timer_del(timer);
-+        return;
-+    }
-+}
-+
-+/* Enable or disable S/VS-mode Timer when xenvcfg.STCE is changed */
-+void riscv_timer_stce_changed(CPURISCVState *env, bool is_m_mode, bool enable)
-+{
-+    if (is_m_mode) {
-+        /* menvcfg.STCE changes */
-+        if (enable) {
-+            riscv_timer_write_timecmp(env, env->stimer, env->stimecmp, 0, MIP_STIP);
-+            riscv_timer_write_timecmp(env, env->vstimer, env->vstimecmp,
-+                                      env->htimedelta, MIP_VSTIP);
-+        } else {
-+            riscv_timer_disable_timecmp(env, env->stimer, MIP_STIP);
-+            riscv_timer_disable_timecmp(env, env->vstimer, MIP_VSTIP);
-+        }
-+    } else {
-+        /* henvcfg.STCE changes */
-+        if (enable) {
-+            riscv_timer_write_timecmp(env, env->vstimer, env->vstimecmp,
-+                                      env->htimedelta, MIP_VSTIP);
-+        } else {
-+            riscv_timer_disable_timecmp(env, env->vstimer, MIP_VSTIP);
-+        }
-+    }
-+}
-+
- void riscv_timer_init(RISCVCPU *cpu)
- {
-     CPURISCVState *env;
-diff --git a/target/riscv/time_helper.h b/target/riscv/time_helper.h
-index cacd79b80c..af1f634f89 100644
---- a/target/riscv/time_helper.h
-+++ b/target/riscv/time_helper.h
-@@ -25,6 +25,7 @@
- void riscv_timer_write_timecmp(CPURISCVState *env, QEMUTimer *timer,
-                                uint64_t timecmp, uint64_t delta,
-                                uint32_t timer_irq);
-+void riscv_timer_stce_changed(CPURISCVState *env, bool is_m_mode, bool enable);
- void riscv_timer_init(RISCVCPU *cpu);
- 
- #endif
--- 
-2.17.1
+The Rust PL011's state struct size is now larger than the
+C state struct size, so it trips the assert in the QOM code
+that we didn't try to initialize a type into less memory than
+it needs. (I don't understand *why* the type size has changed,
+because this commit doesn't at first glance seem to be adding
+anything to the state struct...but it definitely goes up from
+0x540 to 0x550.)
 
+(It would be good if we had a compile time check that the state
+struct sizes matched between Rust and C, rather than having it
+only be caught in runtime asserts. This does cause failures in
+check-functional, at least, so it's not completely untested.)
+
+Here's the repro and gdb backtrace:
+
+$ gdb --args ./build/rust/qemu-system-arm -M raspi2b -display none
+[...]
+**
+ERROR:../../qom/object.c:562:object_initialize_with_type: assertion
+failed: (size >= type->instance_size)
+Bail out! ERROR:../../qom/object.c:562:object_initialize_with_type:
+assertion failed: (size >= type->instance_size)
+
+Thread 1 "qemu-system-arm" received signal SIGABRT, Aborted.
+Download failed: Invalid argument.  Continuing without source file
+./nptl/./nptl/pthread_kill.c.
+__pthread_kill_implementation (no_tid=0, signo=6, threadid=<optimised
+out>) at ./nptl/pthread_kill.c:44
+warning: 44     ./nptl/pthread_kill.c: No such file or directory
+(gdb) bt
+#0  __pthread_kill_implementation (no_tid=0, signo=6,
+threadid=<optimised out>) at ./nptl/pthread_kill.c:44
+#1  __pthread_kill_internal (signo=6, threadid=<optimised out>) at
+./nptl/pthread_kill.c:78
+#2  __GI___pthread_kill (threadid=<optimised out>,
+signo=signo@entry=6) at ./nptl/pthread_kill.c:89
+#3  0x00007ffff4a4527e in __GI_raise (sig=sig@entry=6) at
+../sysdeps/posix/raise.c:26
+#4  0x00007ffff4a288ff in __GI_abort () at ./stdlib/abort.c:79
+#5  0x00007ffff6e58f5b in g_assertion_message
+    (domain=domain@entry=0x0, file=file@entry=0x55555678fdeb
+"../../qom/object.c", line=line@entry=562,
+func=func@entry=0x5555567906d0 <__func__.33>
+"object_initialize_with_type", message=message@entry=0x555557f7f400
+"assertion failed: (size >= type->instance_size)") at
+../../../glib/gtestutils.c:3331
+#6  0x00007ffff6ec1a97 in g_assertion_message_expr
+    (domain=0x0, file=0x55555678fdeb "../../qom/object.c", line=562,
+func=0x5555567906d0 <__func__.33> "object_initialize_with_type",
+expr=<optimised out>) at ../../../glib/gtestutils.c:3357
+#7  0x0000555556188bc6 in object_initialize_with_type
+(obj=0x555557d4e190, size=1344, type=0x555557a0bd40) at
+../../qom/object.c:562
+#8  0x0000555556188cb5 in object_initialize (data=0x555557d4e190,
+size=1344, typename=0x5555566d9142 "pl011")
+    at ../../qom/object.c:578
+#9  0x0000555556188e3d in object_initialize_child_with_propsv
+    (parentobj=0x555557d45710, propname=0x5555566d9148 "uart0",
+childobj=0x555557d4e190, size=1344, type=0x5555566d9142 "pl011",
+errp=0x5555578636f8 <error_abort>, vargs=0x7fffffffd360) at
+../../qom/object.c:608
+#10 0x0000555556188db6 in object_initialize_child_with_props
+    (parentobj=0x555557d45710, propname=0x5555566d9148 "uart0",
+childobj=0x555557d4e190, size=1344, type=0x5555566d9142 "pl011",
+errp=0x5555578636f8 <error_abort>) at ../../qom/object.c:591
+#11 0x0000555556188f3b in object_initialize_child_internal
+    (parent=0x555557d45710, propname=0x5555566d9148 "uart0",
+child=0x555557d4e190, size=1344, type=0x5555566d9142 "pl011")
+    at ../../qom/object.c:645
+#12 0x0000555555d446ea in raspi_peripherals_base_init
+(obj=0x555557d45710) at ../../hw/arm/bcm2835_peripherals.c:100
+#13 0x0000555556188639 in object_init_with_type (obj=0x555557d45710,
+ti=0x5555579d4af0) at ../../qom/object.c:428
+#14 0x000055555618861b in object_init_with_type (obj=0x555557d45710,
+ti=0x5555579d4950) at ../../qom/object.c:424
+#15 0x0000555556188c49 in object_initialize_with_type
+(obj=0x555557d45710, size=597040, type=0x5555579d4950)
+    at ../../qom/object.c:570
+#16 0x0000555556188cb5 in object_initialize (data=0x555557d45710,
+size=597040, typename=0x555556738ca5 "bcm2835-peripherals")
+    at ../../qom/object.c:578
+#17 0x0000555556188e3d in object_initialize_child_with_propsv
+    (parentobj=0x555557d34760, propname=0x555556738cb9 "peripherals",
+childobj=0x555557d45710, size=597040, type=0x555556738ca5
+"bcm2835-peripherals", errp=0x5555578636f8 <error_abort>,
+vargs=0x7fffffffd630) at ../../qom/object.c:608
+#18 0x0000555556188db6 in object_initialize_child_with_props
+    (parentobj=0x555557d34760, propname=0x555556738cb9 "peripherals",
+childobj=0x555557d45710, size=597040, type=0x555556738ca5
+"bcm2835-peripherals", errp=0x5555578636f8 <error_abort>) at
+../../qom/object.c:591
+#19 0x0000555556188f3b in object_initialize_child_internal
+    (parent=0x555557d34760, propname=0x555556738cb9 "peripherals",
+child=0x555557d45710, size=597040, type=0x555556738ca5
+"bcm2835-peripherals") at ../../qom/object.c:645
+#20 0x0000555555f07080 in bcm283x_init (obj=0x555557d34760) at
+../../hw/arm/bcm2836.c:49
+#21 0x0000555556188639 in object_init_with_type (obj=0x555557d34760,
+ti=0x5555579af8a0) at ../../qom/object.c:428
+#22 0x000055555618861b in object_init_with_type (obj=0x555557d34760,
+ti=0x5555579af6e0) at ../../qom/object.c:424
+#23 0x0000555556188c49 in object_initialize_with_type
+(obj=0x555557d34760, size=666592, type=0x5555579af6e0)
+    at ../../qom/object.c:570
+#24 0x0000555556188cb5 in object_initialize (data=0x555557d34760,
+size=666592, typename=0x555556739030 "bcm2836")
+    at ../../qom/object.c:578
+#25 0x0000555556188e3d in object_initialize_child_with_propsv
+    (parentobj=0x555557d34500, propname=0x55555673917b "soc",
+childobj=0x555557d34760, size=666592, type=0x555556739030 "bcm2836",
+errp=0x5555578636f8 <error_abort>, vargs=0x7fffffffd8f0) at
+../../qom/object.c:608
+#26 0x0000555556188db6 in object_initialize_child_with_props
+    (parentobj=0x555557d34500, propname=0x55555673917b "soc",
+childobj=0x555557d34760, size=666592, type=0x555556739030 "bcm2836",
+errp=0x5555578636f8 <error_abort>) at ../../qom/object.c:591
+#27 0x0000555556188f3b in object_initialize_child_internal
+    (parent=0x555557d34500, propname=0x55555673917b "soc",
+child=0x555557d34760, size=666592, type=0x555556739030 "bcm2836")
+    at ../../qom/object.c:645
+#28 0x0000555555f0859b in raspi_machine_init (machine=0x555557d34500)
+at ../../hw/arm/raspi.c:313
+#29 0x00005555559d4674 in machine_run_board_init
+(machine=0x555557d34500, mem_path=0x0, errp=0x7fffffffda90)
+    at ../../hw/core/machine.c:1680
+#30 0x0000555555d8615b in qemu_init_board () at ../../system/vl.c:2709
+#31 0x0000555555d8650c in qmp_x_exit_preconfig (errp=0x555557863700
+<error_fatal>) at ../../system/vl.c:2805
+#32 0x0000555555d891bf in qemu_init (argc=5, argv=0x7fffffffde48) at
+../../system/vl.c:3838
+#33 0x000055555634c832 in main (argc=5, argv=0x7fffffffde48) at
+../../system/main.c:68
+(gdb) frame 7
+#7  0x0000555556188bc6 in object_initialize_with_type
+(obj=0x555557d4e190, size=1344, type=0x555557a0bd40) at
+../../qom/object.c:562
+562         g_assert(size >= type->instance_size);
+(gdb) print *type
+$2 = {name = 0x555557a0bec0 "pl011", class_size = 208, instance_size =
+1360, instance_align = 16,
+  class_init = 0x55555634ede0
+<qemu_api::qom::rust_class_init<pl011::device::PL011State>>,
+class_base_init = 0x0, class_data = 0x0,
+  instance_init = 0x55555634f0f0
+<qemu_api::qom::rust_instance_init<pl011::device::PL011State>>,
+  instance_post_init = 0x55555634f1e0
+<qemu_api::qom::rust_instance_post_init<pl011::device::PL011State>>,
+  instance_finalize = 0x55555634eb40
+<qemu_api::qom::drop_object<pl011::device::PL011State>>, abstract =
+false,
+  parent = 0x555557a0bee0 "sys-bus-device", parent_type =
+0x55555798c650, class = 0x555557a72370, num_interfaces = 0, interfaces
+= {
+    {typename = 0x0} <repeats 32 times>}}
+(gdb) print /x type->instance_size
+$3 = 0x550
+(gdb) print /x size
+$4 = 0x540
+
+thanks
+-- PMM
 
