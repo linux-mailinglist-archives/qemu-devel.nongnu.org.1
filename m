@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9440A68A7C
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 12:04:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 757F9A68A78
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 12:03:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1turBc-0003QP-AK; Wed, 19 Mar 2025 07:02:15 -0400
+	id 1turBq-0003QX-L1; Wed, 19 Mar 2025 07:02:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1turBU-0003Pm-JZ
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 07:02:05 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1turBW-0003Q6-DM
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 07:02:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1turBS-0000Nd-FI
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 07:02:04 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1turBU-0000OE-QU
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 07:02:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742382120;
+ s=mimecast20190719; t=1742382124;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2Af3ED/mowFZ0kteHFPKJ10OXKrPoZEzuDihqE++sc8=;
- b=RqrCe+7xwOROIhYewGbhZyAbMjeOck5KGVNjLx0khGJRbRBkVqaI8gEAqrPizpush+KrJr
- vYgbBeNQOTtN5HE6IKmJSA95l/OGYTqpIl6r1r2t8KQklg7H6IjIaMr6HRGlt9OmX4fo6k
- odrgE/UPDhHT1KYp9ovFAFbjv/fYCiE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=RgGmdY3pdQ4iHue54QhT4T0VWrg+j55ls0Xc/B8kk68=;
+ b=RBsM98IPz/K1ZEnuwpit4eyatqQxTmHR5lGQUS/5fiMjo6opoih7AvxBJ8s1J5DwzwNqz0
+ AC4z+tm402UEcTPtIslWwhaOq4ICF5qdr97DZsAvFkRkQau1V5qtGqGtuxjJTS6CUx3Pj4
+ c//ZASVy4lqSEM0hskIzFYVH+HtPebE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-U_-t_hR6MjWRBPzGm3Nxbw-1; Wed,
- 19 Mar 2025 07:01:56 -0400
-X-MC-Unique: U_-t_hR6MjWRBPzGm3Nxbw-1
-X-Mimecast-MFC-AGG-ID: U_-t_hR6MjWRBPzGm3Nxbw_1742382115
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-u2HIB3KvNyymyngyB5qGtQ-1; Wed,
+ 19 Mar 2025 07:01:59 -0400
+X-MC-Unique: u2HIB3KvNyymyngyB5qGtQ-1
+X-Mimecast-MFC-AGG-ID: u2HIB3KvNyymyngyB5qGtQ_1742382119
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9AE971828A87; Wed, 19 Mar 2025 11:01:55 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 28B7E1956080; Wed, 19 Mar 2025 11:01:58 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.45.224.38])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A896B19560AD; Wed, 19 Mar 2025 11:01:54 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9DCD51956094; Wed, 19 Mar 2025 11:01:57 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 38CAE1800391; Wed, 19 Mar 2025 12:01:52 +0100 (CET)
+ id 4818218003AD; Wed, 19 Mar 2025 12:01:52 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Kashyap Chamarthy <kchamart@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Krempa <pkrempa@redhat.com>
-Subject: [PATCH v2 1/4] hw/uefi: flush variable store to disk in post load
-Date: Wed, 19 Mar 2025 12:01:48 +0100
-Message-ID: <20250319110152.1309969-2-kraxel@redhat.com>
+ Kashyap Chamarthy <kchamart@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH v2 2/4] hw/uefi: fix error handling in uefi_vars_json_save
+Date: Wed, 19 Mar 2025 12:01:49 +0100
+Message-ID: <20250319110152.1309969-3-kraxel@redhat.com>
 In-Reply-To: <20250319110152.1309969-1-kraxel@redhat.com>
 References: <20250319110152.1309969-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -84,28 +83,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Makes live migration more robust.  Commit 4c0cfc72b31a ("pflash_cfi01:
-write flash contents to bdrv on incoming migration") elaborates in
-detail on the motivation.
+Catch lseek errors.  Return on errors.
+Use autoptr for the GString to simplify cleanup.
 
-Cc: Peter Krempa <pkrempa@redhat.com>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- hw/uefi/var-service-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/uefi/var-service-json.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
-index 8ed8378ab991..4836a0cb8116 100644
---- a/hw/uefi/var-service-core.c
-+++ b/hw/uefi/var-service-core.c
-@@ -29,6 +29,7 @@ static int uefi_vars_post_load(void *opaque, int version_id)
-     uefi_vars_state *uv = opaque;
+diff --git a/hw/uefi/var-service-json.c b/hw/uefi/var-service-json.c
+index 761082c11fc1..f1c20a6b8c1e 100644
+--- a/hw/uefi/var-service-json.c
++++ b/hw/uefi/var-service-json.c
+@@ -178,7 +178,7 @@ void uefi_vars_json_init(uefi_vars_state *uv, Error **errp)
  
-     uefi_vars_update_storage(uv);
-+    uefi_vars_json_save(uv);
-     uv->buffer = g_malloc(uv->buf_size);
-     return 0;
+ void uefi_vars_json_save(uefi_vars_state *uv)
+ {
+-    GString *gstr;
++    g_autoptr(GString) gstr = NULL;
+     int rc;
+ 
+     if (uv->jsonfd == -1) {
+@@ -187,18 +187,25 @@ void uefi_vars_json_save(uefi_vars_state *uv)
+ 
+     gstr = uefi_vars_to_json(uv);
+ 
+-    lseek(uv->jsonfd, 0, SEEK_SET);
++    rc = lseek(uv->jsonfd, 0, SEEK_SET);
++    if (rc < 0) {
++        warn_report("%s: lseek error", __func__);
++        return;
++    }
++
+     rc = ftruncate(uv->jsonfd, 0);
+     if (rc != 0) {
+         warn_report("%s: ftruncate error", __func__);
++        return;
+     }
++
+     rc = write(uv->jsonfd, gstr->str, gstr->len);
+     if (rc != gstr->len) {
+         warn_report("%s: write error", __func__);
++        return;
+     }
++
+     fsync(uv->jsonfd);
+-
+-    g_string_free(gstr, true);
  }
+ 
+ void uefi_vars_json_load(uefi_vars_state *uv, Error **errp)
 -- 
 2.48.1
 
