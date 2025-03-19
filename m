@@ -2,72 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB48A684D3
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 07:12:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE57DA684E4
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 07:15:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tumdb-00055Y-M3; Wed, 19 Mar 2025 02:10:47 -0400
+	id 1tumgr-0006rA-Bw; Wed, 19 Mar 2025 02:14:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tumcp-0004sY-5x
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 02:10:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
+ id 1tumgh-0006Z5-3c; Wed, 19 Mar 2025 02:13:59 -0400
+Received: from dedi548.your-server.de ([85.10.215.148])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tumcn-0000j9-EX
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 02:09:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742364595;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CXEdEbumAbHfS8TWZj+a3mb09MkRGnYctUYwhUthSvY=;
- b=FpnZoJ5aSG11B3uQjJ4cdJtTAwzJQJTmaggZlzOUE9jEzoBa4I94M18LZalWC+MGryBQ2H
- jQIAbXkpBL+QRvSwbrNvDR0yvYWVQJ4RcJ2HHkK5/xHkQNR47oDJwpK9h7ikGwga+7VnKl
- +Sz6dC4H1ASa6ClzXf+lHT/DvfSVsqQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-5I_qgUMFP_SVARk4cXgcoA-1; Wed,
- 19 Mar 2025 02:09:51 -0400
-X-MC-Unique: 5I_qgUMFP_SVARk4cXgcoA-1
-X-Mimecast-MFC-AGG-ID: 5I_qgUMFP_SVARk4cXgcoA_1742364590
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B6A1518007E1; Wed, 19 Mar 2025 06:09:48 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7D254180175E; Wed, 19 Mar 2025 06:09:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6C48F21E66C5; Wed, 19 Mar 2025 07:09:42 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Song Gao <gaosong@loongson.cn>,  Jiaxun Yang <jiaxun.yang@flygoat.com>,
- qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 4/4] target/loongarch: Set dest error with
- error_abort in virt_cpu_irq_init
-In-Reply-To: <20250319020847.1511759-5-maobibo@loongson.cn> (Bibo Mao's
- message of "Wed, 19 Mar 2025 10:08:47 +0800")
-References: <20250319020847.1511759-1-maobibo@loongson.cn>
- <20250319020847.1511759-5-maobibo@loongson.cn>
-Date: Wed, 19 Mar 2025 07:09:42 +0100
-Message-ID: <877c4l4km1.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
+ id 1tumge-0001R5-CO; Wed, 19 Mar 2025 02:13:57 -0400
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+ by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
+ id 1tumgZ-000ACk-0U; Wed, 19 Mar 2025 07:13:51 +0100
+Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
+ by sslproxy08.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
+ id 1tumgZ-000Hof-00; Wed, 19 Mar 2025 07:13:51 +0100
+Received: from localhost (localhost [127.0.0.1])
+ by mail.embedded-brains.de (Postfix) with ESMTP id 905C5480106;
+ Wed, 19 Mar 2025 07:13:50 +0100 (CET)
+Received: from mail.embedded-brains.de ([127.0.0.1])
+ by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id nUe4hvZkMEO5; Wed, 19 Mar 2025 07:13:50 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.embedded-brains.de (Postfix) with ESMTP id 2764D4800A8;
+ Wed, 19 Mar 2025 07:13:50 +0100 (CET)
+X-Virus-Scanned: amavis at zimbra.eb.localhost
+Received: from mail.embedded-brains.de ([127.0.0.1])
+ by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id fmC0TZUdYPyu; Wed, 19 Mar 2025 07:13:50 +0100 (CET)
+Received: from zimbra.eb.localhost (unknown [10.10.171.10])
+ by mail.embedded-brains.de (Postfix) with ESMTPSA id DD0DB4800A3;
+ Wed, 19 Mar 2025 07:13:48 +0100 (CET)
+From: Sebastian Huber <sebastian.huber@embedded-brains.de>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, "Alistair Francis" <alistair23@gmail.com>,
+ "Daniel Henrique Barboza" <dbarboza@ventanamicro.com>
+Subject: [PATCH v3 0/6] Improve Microchip Polarfire SoC customization
+Date: Wed, 19 Mar 2025 07:13:32 +0100
+Message-ID: <20250319061342.26435-1-sebastian.huber@embedded-brains.de>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Authenticated-Sender: smtp-embedded@poldi-networks.de
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27581/Tue Mar 18 14:04:32 2025)
+Received-SPF: pass client-ip=85.10.215.148;
+ envelope-from=sebastian.huber@embedded-brains.de; helo=dedi548.your-server.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,59 +76,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bibo Mao <maobibo@loongson.cn> writes:
+Booting the microchip-icicle-kit machine using the latest PolarFire SoC
+Hart Software Services (HSS) no longer works since Qemu lacks support
+for several registers (clocks, DRAM controller). Also reading from the
+SDCard does not work currently.
 
-> In function virt_cpu_irq_init(), there is notification with ipi and extioi
-> interrupt controller for cpu creation. Local variable with error type is
-> used, however there is no check with its return value.
+In order to allow tests runs for real-time kernels such as RTEMS and
+Zephyr, improve the boot customization. This patch set enables a direct
+run of kernel executables, for example:
 
-Good catch.
+qemu-system-riscv64 -no-reboot -nographic \
+  -serial null -serial mon:stdio \
+  -smp 2 \
+  -bios none \
+  -machine microchip-icicle-kit,clint-timebase-frequency=3D10000000 \
+  -kernel rtos.elf
 
-When the first call fails, we pass non-null @err to the second call,
-which is wrong.  If that one also fails, it'll likely trip
-error_setv()'s assertion.
+v2:
 
-> Here set dest error object with error_abort, rather than local variable, so
-> application will abort to run if there is error.
+* Add documentation update.
 
-Why is failure impossible there?
+* In patch 3, warn if no device tree is specified.
 
-If failure is impossible, the code before the patch is harmlessly wrong.
+* In patch 4, use riscv_find_firmware() to locate the firmware shipped wi=
+th Qemu.
 
-If failure is possible, the code before the patch has a crash bug, and
-the patch makes it crash harder, i.e. when either call fails instead of
-when both fail.
+v3:
 
-> Fixes: 50ebc3fc47fe (hw/intc/loongarch_ipi: Notify ipi object when cpu is plugged)
-> Fixes: 087a23a87c57 (hw/intc/loongarch_extioi: Use cpu plug notification)
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->  hw/loongarch/virt.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index a9fab39dd8..f10a4704ab 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -327,7 +327,6 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
->      MachineClass *mc = MACHINE_GET_CLASS(ms);
->      const CPUArchIdList *possible_cpus;
->      CPUState *cs;
-> -    Error *err = NULL;
->  
->      /* cpu nodes */
->      possible_cpus = mc->possible_cpu_arch_ids(ms);
-> @@ -337,8 +336,10 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
->              continue;
->          }
->  
-> -        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->ipi), DEVICE(cs), &err);
-> -        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), DEVICE(cs), &err);
-> +        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->ipi), DEVICE(cs),
-> +                             &error_abort);
-> +        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), DEVICE(cs),
-> +                             &error_abort);
->      }
->  }
+* In patch 4, add support for Qemu test runs.
+
+Sebastian Huber (6):
+  hw/misc: Add MPFS system reset support
+  hw/riscv: More flexible FDT placement for MPFS
+  hw/riscv: Make FDT optional for MPFS
+  hw/riscv: Allow direct start of kernel for MPFS
+  hw/riscv: Configurable MPFS CLINT timebase freq
+  hw/riscv: microchip_pfsoc: Rework documentation
+
+ docs/system/riscv/microchip-icicle-kit.rst | 124 ++++++-----------
+ hw/misc/mchp_pfsoc_sysreg.c                |   7 +
+ hw/riscv/microchip_pfsoc.c                 | 153 +++++++++++++++------
+ include/hw/riscv/microchip_pfsoc.h         |   1 +
+ 4 files changed, 164 insertions(+), 121 deletions(-)
+
+--=20
+2.43.0
 
 
