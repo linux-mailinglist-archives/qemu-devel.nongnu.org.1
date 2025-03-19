@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589C6A68E2F
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:47:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F2EA68E3C
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:51:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tutlO-00058z-Ce; Wed, 19 Mar 2025 09:47:20 -0400
+	id 1tutp2-0001BV-Kh; Wed, 19 Mar 2025 09:51:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutkM-0003ob-Ux
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:46:19 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutnj-0000fx-Qj
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:49:50 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutkL-0004Jw-1C
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:46:14 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43cef035a3bso32780645e9.1
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:46:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutnd-0005Jx-SR
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:49:43 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43cf034d4abso48401405e9.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:49:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742391971; x=1742996771; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=32mireliZ/dTP04oYHZ+DYdxeMqjsmJC3DhlT1EPop4=;
- b=D5uOYWQbgSLrxu6lXueZbRnA646xpJtAWS6eWmrEG54ZyC/SvkQ03o6gpD/kWFIYD9
- IwX8Dq7ZD5NQHmY0Q2uLVyqPEuJ/JWPIFRifhQiMeQZSb4+Zqp7M8ZjekyXW1umoGL4G
- cVKgSIj6ZRRnBvYXp7fAy2dNuOoZtaGeDlC9+4PqpH/6Ssdwh7ualAQPGaTxLw939jKM
- z3lnzapAsVHxp3KHQQaCXhIfZIpmh2NWvYvSrpikBB/++ytS0QoxYjTBeJ4PBNPlyYge
- ZCrAxnG6ho2IDB0lTzHq2EsUdxaHIz7uGQ2O9oerTav57m+ZM1JDoVdMBTX4NZos8EbR
- JqZg==
+ d=linaro.org; s=google; t=1742392173; x=1742996973; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4ZHqWVoZXtsPUKynhm/kD6lDlmtQ/4W/3xVBEqB7IqI=;
+ b=cFvZDI++k9NGRRwswJmqCXsLJ7vW1iwNyLSlnjjU7+3qKF4w1RBnt2vms/LbHvF518
+ yl/wJ0DjHk4sR5U3mYdSVl4k7qrIonVqbWnBiQ+rJJ7xTVxOJbb+WzgWAfYs5yLqAbPZ
+ dEyqLELe0oNYhsFCfP36R1qRlrN2GSGR5bIZifBjUWUggvQotJfBiTmB1fp72RiywsT8
+ 4WNkofS5z+96/lZI2MwM/K/HNXuMSwvh31yDPaWQxfak72AnHTy2qo4UoIsOX3TFipdJ
+ E2gaG/fFAQXYc2Oqr4ozBA1T7zI0C6kLB78mz+Yi8AIqkFUUrr/tyRZpSYtskU5/tegg
+ WG6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742391971; x=1742996771;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=32mireliZ/dTP04oYHZ+DYdxeMqjsmJC3DhlT1EPop4=;
- b=xB+ADuw92M4sTCCUHhGkWoKeCS9WbrFXoJkGWT1ZCkQ5b6zMeVr4bgFw5SAS5DM4BH
- 9wXzBt7kSc9KfoA+XvvG05IXnGada9xkcg0FQFhyTd+dfv3Sok8HPXXxYajr6YFOxHac
- tYkpK7Pz37JOXcr+sOQ2YRJtWcN2qfZ3X5buBIw1S68RB7oDlwN4ubjh9Bch+1/3jsoE
- 9ybM1dqsu/C+r5ds7VaaoyFkRl8GZVdM4uuGbSlyrvqDQsb8a6H0cKFNASsibu8nIGkX
- /UFF6Et49CQ2Jj5WGcsbVxB7zy62UZ3zPboUGebKezJZDDBTpf+dueHcPqcGJoAwFimm
- WY2A==
-X-Gm-Message-State: AOJu0Yxj+pzsuZoJ8JCGInKNf9TK3VLi3PrOrpI55s9NmiWmU5LOXwyb
- mFz240Z16bP+M9Gb46sKdUX6kjv05ljdQF3uA8DNJKyVWUDNrTHw5teOIPxaPC710XLs5r8JoQB
- f
-X-Gm-Gg: ASbGncvSuo5XixZ6F8v2mCCVdCg9Wb90DicBpf6G/ciAlruzfXXSv3bMRiZyubX7h9d
- KphVQJqscYZIG9bG4fly04iAtDcfVSNgl9OfgYHdkV4KaWeNhk2AlA0vZEC/xy3q6WzkAKgNyNa
- QJ67W3k0Tk2eiUF5CpLqTljBZaZhER+WD4+ceq9OsbI3NnLqIADDYGYfo2rJ0iWM2RAnXIEQ7Ui
- CIoBmVJAQYQOAlQQs+d/T64aYRRf/ShBl/rbIvz005rE2GWLXsk3voFGaTX/Lqi98RNGRpRnHWY
- 8ENkq9XEfprH8u+ZAcfeM+PHfVPK02pEBD0g7P4PccUXFDie1+LHt2SJg5D+oBYFaRkwyggHpcN
- thSCKRPUBuP+/7yYmtK8=
-X-Google-Smtp-Source: AGHT+IFzEqWCZZWPfFgIotp1OH3ucYkN3WVuP9zfofN+Mllp38MhkvTyRe8Phny4sWd19e4RX8yNbA==
-X-Received: by 2002:a05:600c:3594:b0:43c:fb36:d296 with SMTP id
- 5b1f17b1804b1-43d4383d0e7mr20984915e9.25.1742391971041; 
- Wed, 19 Mar 2025 06:46:11 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1742392173; x=1742996973;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4ZHqWVoZXtsPUKynhm/kD6lDlmtQ/4W/3xVBEqB7IqI=;
+ b=kpMDDerk4v+1WXMgJJqKZWxV7Dt76faSXYkk/E4BtkjUKjo6Wdej8rPT+7QSDtunk3
+ haimx2MkANcXlv6XMT+i+SQ7LoUvpQBMCLDEqGjm2kkOzvd/nK2/UqyCVFefWlxS8oEL
+ QxWnrySNt5KiIemqQJwt67mtm2EjNn8pxLT8ThsSgEdK+G0lmekTqM22OzkEU2fYrprs
+ 5u4QTdnnWboMAgG5IACg8U5fCqRzZ4g5IlcMegcKCzNRc+/EL/WTvffCDFiPO409Nod2
+ TSgQvQyldzt2c80KTT6O8aa3WlFnYHv0COndEEbDXpmGejxjiBSJfYlWepxMBP821KiJ
+ dZbA==
+X-Gm-Message-State: AOJu0YxlbCds7XWliuIX7arOQe4zi0C3CQwBMwyHCdJuhmR2PZCUalIe
+ hKapi7HZG0WCTrhp85PEAjy1YsAg5tOMzsYsyM7dRyf++SYUN3XYCeWiyJER0UM=
+X-Gm-Gg: ASbGncvzWaV663hBcFX55AvxguLPa8Yt7Z7TcZ+TZRntmNTWel5hg4vt+CDeIhTu77q
+ bmtvGTmnM7fbPDwWYerAiOixEgs9CWruazod6ycIzPQMvKV/3NZyW0O86tlPGM2OGv5SMAMdCfF
+ dLeZNBRQ711Jt0xEm7m3N6NEvQDOtaX0/v79AUj/O8apnKT/LDTqFTcaRLT3G2BQpI6I+THyCWi
+ 0kXEvd8jlLpMalg0S23LaJ8ESZxemNlhKi7gHOvhbM0VPTo3r+/3AWD/AADuYCySQgp3qpP4i5g
+ fDel6Y13igpel9w1T4aJMklNi3/34WPGXX+v3lA2qKLonJG3WZ8lVqkZTf4Pk5yFmjZPchUYSWf
+ qofOS39ITYBJ7
+X-Google-Smtp-Source: AGHT+IGe3UMSdAD0WJPcxTo5iV0SE0JZI0vyruSbsjmR67BrA0nbgbNzrCf4RkDdqAPCyriqggUUlA==
+X-Received: by 2002:a05:600c:1d04:b0:43c:e7a7:aea0 with SMTP id
+ 5b1f17b1804b1-43d43875471mr16853505e9.26.1742392173395; 
+ Wed, 19 Mar 2025 06:49:33 -0700 (PDT)
+Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d4863b4a7sm3162555e9.8.2025.03.19.06.46.10
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 19 Mar 2025 06:46:10 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 12/12] tcg: Uninline tcg_gen_insn_start()
-Date: Wed, 19 Mar 2025 14:45:06 +0100
-Message-ID: <20250319134507.45045-13-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250319134507.45045-1-philmd@linaro.org>
-References: <20250319134507.45045-1-philmd@linaro.org>
+ 5b1f17b1804b1-43d43d803f6sm20041565e9.0.2025.03.19.06.49.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 19 Mar 2025 06:49:32 -0700 (PDT)
+Message-ID: <954c3f61-f338-45e3-9f23-b45cef5c81e2@linaro.org>
+Date: Wed, 19 Mar 2025 14:49:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Fix duplicate symbol error on MacOS build
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Tanish Desai <tanishdesai37@gmail.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+References: <20250319023036.71493-1-tanishdesai37@gmail.com>
+ <CAFEAcA80b54NZUxPv_QoXQXakTwEuRvK-hxy==c=-PEB2dB3sg@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA80b54NZUxPv_QoXQXakTwEuRvK-hxy==c=-PEB2dB3sg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,82 +99,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tcg_gen_insn_start() is now common to all TCG frontends.
-We don't need to keep it inlined, move it to tcg.c.
+On 19/3/25 14:44, Peter Maydell wrote:
+> On Wed, 19 Mar 2025 at 12:53, Tanish Desai <tanishdesai37@gmail.com> wrote:
+>>
+>> The issue started after commit https://github.com/qemu/qemu/commit/59f4d65584bd3372070e2484876436c8d02505e4
+>>
+>> Reproduction:
+>>    1. In the build directory on MacOS (haven't tried on other OS), run:
+>>         ../configure --enable-rust --target-list=aarch64-softmmu
+>>    2. Then run either:
+>>         ninja -C .
+>>         OR
+>>         make
+>>    3. At the end, you will encounter the error:
+>>         duplicate symbol '_pl011_create' in:
+>>             /Users/tanishdesai37/Downloads/qemu-master/build/libcommon.a.p/hw_char_pl011.c.o
+>>             librust_aarch64_softmmu.a[5](pl011.pl011.390d424367e209af-cgu.1.rcgu.o)
+>>         ld: 1 duplicate symbols
+>>
+>> Root cause:
+>>    Both CONFIG_PL011 and X_PL011_RUST are selected, causing C++ and Rust to produce the same object.
+>>    This is due to the commit above where 'select PL011' forces a true condition instead of checking if HAVE_RUST is true.
+>>    If HAVE_RUST is true, X_PL011_RUST should be selected instead of CONFIG_PL011.
+>>
+>> Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
+>> ---
+>>   hw/vmapple/Kconfig | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/vmapple/Kconfig b/hw/vmapple/Kconfig
+>> index 2382b297672..01bcbf40e00 100644
+>> --- a/hw/vmapple/Kconfig
+>> +++ b/hw/vmapple/Kconfig
+>> @@ -22,7 +22,8 @@ config VMAPPLE
+>>       select PLATFORM_BUS
+>>       select PCI_EXPRESS
+>>       select PCI_EXPRESS_GENERIC_BRIDGE
+>> -    select PL011 # UART
+>> +    select PL011 if !HAVE_RUST # UART
+>> +    select X_PL011_RUST if HAVE_RUST # UART
+>>       select PL031 # RTC
+>>       select PL061 # GPIO
+>>       select GPIO_PWR
+> 
+> Paolo: we seem to have quite a lot of this
+> 
+>      select PL011 if !HAVE_RUST # UART
+>      select X_PL011_RUST if HAVE_RUST # UART
+> 
+> duplicated for every PL011-using machine. Can we factor this out
+> in Kconfig? e.g.
+> 
+> config PL011
+>      select X_PL011_RUST if HAVE_RUST
+>      select PL011_C if !HAVE_RUST
+> 
+> (and update hw/char/meson.build to use CONFIG_PL011_C for pl011.c).
+> Then all the machines can go back to plain "select PL011" and
+> don't need to care whether it's the Rust or C version.
+> 
+> Or does that not work?
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/tcg/tcg-op.h | 15 ---------------
- include/tcg/tcg.h    |  2 ++
- tcg/tcg.c            | 15 +++++++++++++++
- 3 files changed, 17 insertions(+), 15 deletions(-)
-
-diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
-index cf177a1fd3b..470cb46225e 100644
---- a/include/tcg/tcg-op.h
-+++ b/include/tcg/tcg-op.h
-@@ -22,21 +22,6 @@
- # error
- #endif
- 
--static inline void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2)
--{
--    unsigned insn_start_words = tcg_ctx->insn_start_words;
--    TCGOp *op = tcg_emit_op(INDEX_op_insn_start,
--                            insn_start_words * 64 / TCG_TARGET_REG_BITS);
--
--    tcg_set_insn_start_param(op, 0, pc);
--    if (insn_start_words > 1) {
--        tcg_set_insn_start_param(op, 1, a1);
--    }
--    if (insn_start_words > 2) {
--        tcg_set_insn_start_param(op, 2, a2);
--    }
--}
--
- #if TARGET_LONG_BITS == 32
- typedef TCGv_i32 TCGv;
- #define tcg_temp_new() tcg_temp_new_i32()
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 92a23e10218..d87d900bf81 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -609,6 +609,8 @@ static inline void tcg_set_insn_start_param(TCGOp *op, int arg, uint64_t v)
-     }
- }
- 
-+void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2);
-+
- /* The last op that was emitted.  */
- static inline TCGOp *tcg_last_op(void)
- {
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index e8950df2ad3..904f858e4dc 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -3468,6 +3468,21 @@ TCGOp *tcg_op_insert_after(TCGContext *s, TCGOp *old_op,
-     return new_op;
- }
- 
-+void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2)
-+{
-+    unsigned insn_start_words = tcg_ctx->insn_start_words;
-+    TCGOp *op = tcg_emit_op(INDEX_op_insn_start,
-+                            insn_start_words * 64 / TCG_TARGET_REG_BITS);
-+
-+    tcg_set_insn_start_param(op, 0, pc);
-+    if (insn_start_words > 1) {
-+        tcg_set_insn_start_param(op, 1, a1);
-+    }
-+    if (insn_start_words > 2) {
-+        tcg_set_insn_start_param(op, 2, a2);
-+    }
-+}
-+
- static void move_label_uses(TCGLabel *to, TCGLabel *from)
- {
-     TCGLabelUse *u;
--- 
-2.47.1
+This should work.
 
 
