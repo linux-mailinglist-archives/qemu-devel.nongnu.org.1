@@ -2,92 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852D0A6865D
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 09:05:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 502E7A68684
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 09:17:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuoPk-0000Mt-Rg; Wed, 19 Mar 2025 04:04:37 -0400
+	id 1tuoaq-0008Ni-DK; Wed, 19 Mar 2025 04:16:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tuoP4-00085m-Jr
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:03:56 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1tuoP2-0004Uc-Jz
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:03:54 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-300f92661fcso6882062a91.3
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 01:03:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742371431; x=1742976231; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IRFeyxnlx7B6/bhH6tCMKsSu+jXikzi9UZmWl9GXpsY=;
- b=HR/WPBNJfx1oxTLrvnOK8BxBnNt+rSA8JkHYVw3Y/AkxBJ6KJ56yW1dTehdvUaPpS6
- iE6NE7fxGEh8jTsJE2NPQzfmvO/mNfIA0ZedDv4RYKIr4jyhbVc2trKE9KUTd5C6ITnV
- IULT5izP/wNzFZwDPmzCi5RNAF+WYjCziQ24Hg1IKr7Q3EHa3AVM/cxQ5P4/Xbrw+UbX
- PxJxn9IKqApXRVu4SptTByXcxYRSZJz/vfFUVCuJARjh5qHRDSmeocEFXQiT029CoLhj
- zKBwktIQgd1+yrBEiER+RI1sC54FBol2pufNBVnNJ9mon9QeURG5DHwlla8ylwwOkMqz
- riCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742371431; x=1742976231;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IRFeyxnlx7B6/bhH6tCMKsSu+jXikzi9UZmWl9GXpsY=;
- b=bLlPqZ7IlV0URyP1CYU7aqPkN0UlD6Vtjbn9Hf6Xdsz71sPQ3IejZ9UhPWn7HGSPq4
- flc41P8fyz/7jtuLFLBmWjklhK8aTN9KxIU5ME36P65LaaQJCYSbhjoK6apRyx7UXTGF
- D4Yt6T8MI3Qz0lJT3b+eFStZXOATg3GrpGOu1hs4cZ3DJPV7bY8/BwCofLE/HbTtNedM
- XK9zl8KIb3PnBrAURYldMVEX6fCZ3U7gopH74gmCMT58UXYmfyarg83EC28DwXCT0+kh
- aGaU7l4qrMxgcAafNTJP8Mahj6V34mfpmzMRpouW8AOBDLT4/LEZ+s4yDBB8rXZbQqry
- RqtA==
-X-Gm-Message-State: AOJu0YxKxoDFtVvCrl5rMMwWQNfqzjKQlixmCFDdK/Z52wd7llnqJeav
- hoa0zYJdpl/kiJvgX6bZxjnfepByTi3vOyGJDXE5QJC3pbCxPfFnsTcVKg==
-X-Gm-Gg: ASbGncvl5CWoCCBV3c6kvccDuLYpjJ2vuxQXnXTzazFO9VDELWhgTMzdGxbVAr1Y04/
- CzSyOm6WaX2xDr4n58ddF5GBzmd2TZxxgyNVpUVOXzoWN7DL6oDMxxVWof4Xy+tL1i09sbML9C/
- mzpOhCBQamLOgcDiPmw+P2tCmhjYVtA9915m34OIJNZpGEuWc+VGFWa/O6enl7juB7RC7gZBzMK
- O3nBufQpZNCNhdmiwgKlv17z+k8qpMo6EMaO05RElH6CVarqjMkFspL85tnd7QebHCvpa4ZprQ0
- URk6uvY9EXBI3vCfKP53i+9bpz4NKJjSz5Lcn6SNgeWwLiPBFiLMrrPRHfWQ1bJw5PV9rdMKhew
- KcCBR6OL5SOMHiev9vx2Or5mIh+tWCDYTTcBt/bqCFS2seHnQ
-X-Google-Smtp-Source: AGHT+IHzBLNjgxLLSvuWhv1/uuaTros0JCIJbc2zJOzc5842bJYU8qY2h58gEhbs3pC6xVx9UpCVlQ==
-X-Received: by 2002:a17:90b:4fc4:b0:301:1c29:a1d9 with SMTP id
- 98e67ed59e1d1-301be0925b9mr2790860a91.21.1742371430658; 
- Wed, 19 Mar 2025 01:03:50 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
- [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-225c6ba6c8dsm107725255ad.156.2025.03.19.01.03.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Mar 2025 01:03:50 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Yu-Ming Chang <yumin686@andestech.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 10/10] target/riscv: Add check for 16-bit aligned PC for
- different priv versions.
-Date: Wed, 19 Mar 2025 18:03:08 +1000
-Message-ID: <20250319080308.609520-11-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250319080308.609520-1-alistair.francis@wdc.com>
-References: <20250319080308.609520-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tuoaZ-0008Ml-10
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:15:50 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tuoaS-0001Dc-UF
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 04:15:46 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8Bxjawlfdpn2NGcAA--.35661S3;
+ Wed, 19 Mar 2025 16:15:34 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMCxbsUhfdpnJk1TAA--.45760S3;
+ Wed, 19 Mar 2025 16:15:31 +0800 (CST)
+Subject: Re: [PATCH v4 2/4] hw/loongarch/virt: Remove unnecessary NULL pointer
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+References: <20250319020847.1511759-1-maobibo@loongson.cn>
+ <20250319020847.1511759-3-maobibo@loongson.cn> <87v7s5345y.fsf@pond.sub.org>
+From: bibo mao <maobibo@loongson.cn>
+Message-ID: <6b6b0792-04af-220d-8375-cef4b09b3ea9@loongson.cn>
+Date: Wed, 19 Mar 2025 16:14:50 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <87v7s5345y.fsf@pond.sub.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1035.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowMCxbsUhfdpnJk1TAA--.45760S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Jr15Cr13trWxGFyxZw13trc_yoW7ZFyDpr
+ 47J3Wq9ryDAF12v3yIvFyFgFy0yr1xta1xW393t3W3ZF1DGryDtF47Kw1F9rW3urWvga1S
+ qa13CFn8uF1SqFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+ 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7XTmDUUU
+ U
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.526,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,114 +81,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yu-Ming Chang <yumin686@andestech.com>
 
-For privilege version 1.12 or newer, C always implies Zca. We can only
-check ext_zca to allow 16-bit aligned PC addresses. For older privilege
-versions, we only check C.
 
-Signed-off-by: Yu-Ming Chang <yumin686@andestech.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <174184718265.10540.10120024221661781046-0@git.sr.ht>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/cpu.h                      | 12 ++++++++++++
- target/riscv/op_helper.c                |  8 ++++++--
- target/riscv/translate.c                |  4 +++-
- target/riscv/insn_trans/trans_rvi.c.inc |  8 ++++++--
- 4 files changed, 27 insertions(+), 5 deletions(-)
+On 2025/3/19 下午2:50, Markus Armbruster wrote:
+> Bibo Mao <maobibo@loongson.cn> writes:
+> 
+>> There is NULL pointer checking function error_propagate() already,
+>> it is not necessary to add checking for function parameter. Here remove
+>> NULL pointer checking with function parameter.
+> 
+> I believe the title "Remove unnecessary NULL pointer" and this paragraph
+> are remnants of your initial version, which transformed
+> 
+>      if (err) {
+>          error_propagate(errp, err);
+>      }
+> 
+> to just
+> 
+>      error_propagate(errp, err);
+> 
+> However, the patch doesn't do that anymore.
+> 
+> I think you should drop the paragraph, and replace the title.
+yes, the title is misleading. Originally the problem is found with 
+script scripts/coccinelle/remove_local_err.cocci, so here is the title.
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 7de19b4183..51e49e03de 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -765,6 +765,18 @@ static inline RISCVMXL riscv_cpu_sxl(CPURISCVState *env)
- }
- #endif
- 
-+static inline bool riscv_cpu_allow_16bit_insn(const RISCVCPUConfig *cfg,
-+                                              target_long priv_ver,
-+                                              uint32_t misa_ext)
-+{
-+    /* In priv spec version 1.12 or newer, C always implies Zca */
-+    if (priv_ver >= PRIV_VERSION_1_12_0) {
-+        return cfg->ext_zca;
-+    } else {
-+        return misa_ext & RVC;
-+    }
-+}
-+
- /*
-  * Encode LMUL to lmul as follows:
-  *     LMUL    vlmul    lmul
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index 0d4220ba93..72dc48e58d 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -279,7 +279,9 @@ target_ulong helper_sret(CPURISCVState *env)
-     }
- 
-     target_ulong retpc = env->sepc;
--    if (!riscv_has_ext(env, RVC) && (retpc & 0x3)) {
-+    if (!riscv_cpu_allow_16bit_insn(&env_archcpu(env)->cfg,
-+                                    env->priv_ver,
-+                                    env->misa_ext) && (retpc & 0x3)) {
-         riscv_raise_exception(env, RISCV_EXCP_INST_ADDR_MIS, GETPC());
-     }
- 
-@@ -357,7 +359,9 @@ static void check_ret_from_m_mode(CPURISCVState *env, target_ulong retpc,
-         riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
-     }
- 
--    if (!riscv_has_ext(env, RVC) && (retpc & 0x3)) {
-+    if (!riscv_cpu_allow_16bit_insn(&env_archcpu(env)->cfg,
-+                                    env->priv_ver,
-+                                    env->misa_ext) && (retpc & 0x3)) {
-         riscv_raise_exception(env, RISCV_EXCP_INST_ADDR_MIS, GETPC());
-     }
- 
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index eaa5d86eae..d6651f244f 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -606,7 +606,9 @@ static void gen_jal(DisasContext *ctx, int rd, target_ulong imm)
-     TCGv succ_pc = dest_gpr(ctx, rd);
- 
-     /* check misaligned: */
--    if (!has_ext(ctx, RVC) && !ctx->cfg_ptr->ext_zca) {
-+    if (!riscv_cpu_allow_16bit_insn(ctx->cfg_ptr,
-+                                    ctx->priv_ver,
-+                                    ctx->misa_ext)) {
-         if ((imm & 0x3) != 0) {
-             TCGv target_pc = tcg_temp_new();
-             gen_pc_plus_diff(target_pc, ctx, imm);
-diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
-index b55f56a5eb..b9c7160468 100644
---- a/target/riscv/insn_trans/trans_rvi.c.inc
-+++ b/target/riscv/insn_trans/trans_rvi.c.inc
-@@ -151,7 +151,9 @@ static bool trans_jalr(DisasContext *ctx, arg_jalr *a)
-         tcg_gen_ext32s_tl(target_pc, target_pc);
-     }
- 
--    if (!has_ext(ctx, RVC) && !ctx->cfg_ptr->ext_zca) {
-+    if (!riscv_cpu_allow_16bit_insn(ctx->cfg_ptr,
-+                                    ctx->priv_ver,
-+                                    ctx->misa_ext)) {
-         TCGv t0 = tcg_temp_new();
- 
-         misaligned = gen_new_label();
-@@ -300,7 +302,9 @@ static bool gen_branch(DisasContext *ctx, arg_b *a, TCGCond cond)
- 
-     gen_set_label(l); /* branch taken */
- 
--    if (!has_ext(ctx, RVC) && !ctx->cfg_ptr->ext_zca &&
-+    if (!riscv_cpu_allow_16bit_insn(ctx->cfg_ptr,
-+                                    ctx->priv_ver,
-+                                    ctx->misa_ext) &&
-         (a->imm & 0x3)) {
-         /* misaligned */
-         TCGv target_pc = tcg_temp_new();
--- 
-2.48.1
+How about "Remove local error object" or something else. Could you 
+please provide some suggestions since English is your mother language?
+
+> 
+> I apologize for not noticing this earlier.
+It is not necessary for the apologize. I appreciate your review 
+comments. With effective communication, the quality of code is better.
+> 
+>> Since function will return directly when there is error report, this
+>> patch removes combination about error_setg() and error_propagate(),
+>> error_setg() with dest error object is used directly such as:
+>>
+>>    error_setg(err);                 -------->      error_setg(errp);
+>>    error_propagate(errp, err);                     return;
+>>    return;
+> 
+> Yes, much of the patch does this or equivalent transformations.
+> However, there's more; see [*] below.
+> 
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   hw/loongarch/virt.c | 33 ++++++++++++---------------------
+>>   1 file changed, 12 insertions(+), 21 deletions(-)
+>>
+>> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+>> index a5840ff968..a9fab39dd8 100644
+>> --- a/hw/loongarch/virt.c
+>> +++ b/hw/loongarch/virt.c
+>> @@ -859,30 +859,29 @@ static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>>       LoongArchCPU *cpu = LOONGARCH_CPU(dev);
+>>       CPUState *cs = CPU(dev);
+>>       CPUArchId *cpu_slot;
+>> -    Error *err = NULL;
+>>       LoongArchCPUTopo topo;
+>>       int arch_id;
+>>   
+>>       if (lvms->acpi_ged) {
+>>           if ((cpu->thread_id < 0) || (cpu->thread_id >= ms->smp.threads)) {
+>> -            error_setg(&err,
+>> +            error_setg(errp,
+>>                          "Invalid thread-id %u specified, must be in range 1:%u",
+>>                          cpu->thread_id, ms->smp.threads - 1);
+>> -            goto out;
+>> +            return;
+>>           }
+>>   
+>>           if ((cpu->core_id < 0) || (cpu->core_id >= ms->smp.cores)) {
+>> -            error_setg(&err,
+>> +            error_setg(errp,
+>>                          "Invalid core-id %u specified, must be in range 1:%u",
+>>                          cpu->core_id, ms->smp.cores - 1);
+>> -            goto out;
+>> +            return;
+>>           }
+>>   
+>>           if ((cpu->socket_id < 0) || (cpu->socket_id >= ms->smp.sockets)) {
+>> -            error_setg(&err,
+>> +            error_setg(errp,
+>>                          "Invalid socket-id %u specified, must be in range 1:%u",
+>>                          cpu->socket_id, ms->smp.sockets - 1);
+>> -            goto out;
+>> +            return;
+>>           }
+>>   
+>>           topo.socket_id = cpu->socket_id;
+>> @@ -891,11 +890,11 @@ static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>>           arch_id =  virt_get_arch_id_from_topo(ms, &topo);
+>>           cpu_slot = virt_find_cpu_slot(ms, arch_id);
+>>           if (CPU(cpu_slot->cpu)) {
+>> -            error_setg(&err,
+>> +            error_setg(errp,
+>>                          "cpu(id%d=%d:%d:%d) with arch-id %" PRIu64 " exists",
+>>                          cs->cpu_index, cpu->socket_id, cpu->core_id,
+>>                          cpu->thread_id, cpu_slot->arch_id);
+>> -            goto out;
+>> +            return;
+>>           }
+>>       } else {
+>>           /* For cold-add cpu, find empty cpu slot */
+>> @@ -911,33 +910,24 @@ static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>>       cpu->env.address_space_iocsr = &lvms->as_iocsr;
+>>       cpu->phy_id = cpu_slot->arch_id;
+>>       cs->cpu_index = cpu_slot - ms->possible_cpus->cpus;
+>> -    numa_cpu_pre_plug(cpu_slot, dev, &err);
+>> -out:
+>> -    if (err) {
+>> -        error_propagate(errp, err);
+>> -    }
+>> +    numa_cpu_pre_plug(cpu_slot, dev, errp);
+>>   }
+>>   
+>>   static void virt_cpu_unplug_request(HotplugHandler *hotplug_dev,
+>>                                       DeviceState *dev, Error **errp)
+>>   {
+>>       LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(hotplug_dev);
+>> -    Error *err = NULL;
+>>       LoongArchCPU *cpu = LOONGARCH_CPU(dev);
+>>       CPUState *cs = CPU(dev);
+>>   
+>>       if (cs->cpu_index == 0) {
+>> -        error_setg(&err, "hot-unplug of boot cpu(id%d=%d:%d:%d) not supported",
+>> +        error_setg(errp, "hot-unplug of boot cpu(id%d=%d:%d:%d) not supported",
+>>                      cs->cpu_index, cpu->socket_id,
+>>                      cpu->core_id, cpu->thread_id);
+>> -        error_propagate(errp, err);
+>>           return;
+>>       }
+>>   
+>> -    hotplug_handler_unplug_request(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &err);
+>> -    if (err) {
+>> -        error_propagate(errp, err);
+>> -    }
+>> +    hotplug_handler_unplug_request(HOTPLUG_HANDLER(lvms->acpi_ged), dev, errp);
+>>   }
+>>   
+>>   static void virt_cpu_unplug(HotplugHandler *hotplug_dev,
+>> @@ -1003,6 +993,7 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
+>>           hotplug_handler_plug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &err);
+>>           if (err) {
+>>               error_propagate(errp, err);
+>> +            return;
+>>           }
+>>       }
+> 
+>         cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
+>         cpu_slot->cpu = NULL;
+>         return;
+>     }
+> 
+> [*] This is something else.  Before the patch, we clear cpu_slot->cpu
+> evem when the last hotplug_handler() fails.  Afterwards, we don't.
+> Looks like a bug fix to me.  Either mention the fix in the commit
+> message, or split it off into a separate patch.  I'd do the latter.
+> 
+yes, will split it into two patches. The latter is bugfix, when cpu 
+fails to unplug and it should return immediately, so that system can 
+continue to run , and cpu_slot->cpu should not be cleared.
+
+Regards
+Bibo Mao
 
 
