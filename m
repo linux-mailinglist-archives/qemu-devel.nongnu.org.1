@@ -2,56 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B1EA68C94
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 13:15:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4B1A68CB1
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 13:23:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tusJz-0003uF-4B; Wed, 19 Mar 2025 08:14:57 -0400
+	id 1tusQi-00068o-Sy; Wed, 19 Mar 2025 08:21:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tusJe-0003sg-Fg
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 08:14:38 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tusQ1-00065x-B7
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 08:21:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tusJa-0007ip-Pb
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 08:14:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=8UJZGYRinVl9Mybxrh+cIh5fNWy6Qyf9rQkxjpSCXVg=; b=LHVom49qUZ/skOOkuRpRxNQoPo
- m1L3Pw9GpvRYJte4vuZWC+wH99uPtQ6cPDNUkEiGQ4KGYco4W7E34Tp9lMH5Bom66rWYRMCcudigM
- XjgIIFv3+Q2M0f6K18VPQ+ekCZI9hqfhw5qmKxdbteY74oWgf8ZgdmB64CZbDEFyldFkDXnMIKsJB
- 3CVSRkBAgQvWO2APFLYrEdfNtWaqAR/EQBPCvuchEvaq35n8ecYMNIc8n2mvq6VsTL1p9Yta54eD3
- sjIpyrIkbbIyvDktl0HNI1ejdls0vX0EQWD706qSnMYXAE+SUFd4jmjmTx4skxRRKMDxa+tvKUnAV
- NoniFuww3mwRsFjQan0jIrt/8p8+RePmmUoIle/QE5KF91NyWCFCb2jCt2LR9nruljn00dBVyYCEY
- NCeVpc7Ma5b8n48Whyg3+zHNgLtPGRiiGXcnjoauhlzM7+YIiaWbt3GkbuRgE9HNL216rTHSTWeAb
- yWfXd2ErVtLv3cN6V3NtJ8sW4ddh/wcU7oqj02/X1/FLvJ1Yme+qw6XCet2Ii8lcECJf+1GWSjhXy
- UlG4HfMh8Wx0iQRrRqUjERUWt9k04Yi3NpI1j7WMBOtQrUnu3kJ1Xe30b8OaZE4mv90KKviePnMJB
- Sw8FO9qL9/OVwIBMTyWYHQur5YHO/AuTzeZo3Hdp8=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Christian Schoenebeck <qemu_oss@crudebyte.com>
-Subject: Re: [PATCH] 9pfs: fix 'total_open_fd' decrementation
-Date: Wed, 19 Mar 2025 13:14:27 +0100
-Message-ID: <1820249.RkjqyYWvsj@silver>
-In-Reply-To: <E1tuqQb-004R61-AZ@kylie.crudebyte.com>
-References: <E1tuqQb-004R61-AZ@kylie.crudebyte.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1tusPz-0003Ef-1C
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 08:21:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742386863;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zWkcSmJJjrpvlLQDeKOoXBqNCpSRqrAjjYDVA3kPWeQ=;
+ b=fEY7mEVwerA9CRwCqGdaWpCYvXbh+R5t/YHRkz1PkYDN1JZV57ymZm8VVxFluf8laQZWB0
+ H3J9gW0ylvTrW8cexrBt2Oz1EyAwYjjs8FlsBvUd2fuT5zsOwvlzGCAwhR+hzSU2qrrjH8
+ tsEuIjZz3eCWxDuOgMZ6MT/leEVi018=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-511-yVzpJK-dMMalTqEkxvErFw-1; Wed,
+ 19 Mar 2025 08:21:00 -0400
+X-MC-Unique: yVzpJK-dMMalTqEkxvErFw-1
+X-Mimecast-MFC-AGG-ID: yVzpJK-dMMalTqEkxvErFw_1742386859
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3D7D01801A07; Wed, 19 Mar 2025 12:20:59 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.112])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BC3F81955BC2; Wed, 19 Mar 2025 12:20:57 +0000 (UTC)
+Date: Wed, 19 Mar 2025 12:20:54 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Kashyap Chamarthy <kchamart@redhat.com>
+Subject: Re: [PATCH v2 4/4] docs/firmware: add feature flag for qemu variable
+ store
+Message-ID: <Z9q2pjalGZM4laWJ@redhat.com>
+References: <20250319110152.1309969-1-kraxel@redhat.com>
+ <20250319110152.1309969-5-kraxel@redhat.com>
+ <Z9qlWV_TsnndwIM4@redhat.com>
+ <qimb4oxprocd2yz6chamb4a2z3oyuofm2gqwutz3l7jz4me7gi@ze5q2caadazj>
+ <Z9qshApFGwvNAD5F@redhat.com>
+ <46ersbz6ema7tj6eei7d6rmr5nyaz4zultzdhhlc6ncaqtucn2@tcmnl6gb3jfz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <46ersbz6ema7tj6eei7d6rmr5nyaz4zultzdhhlc6ncaqtucn2@tcmnl6gb3jfz>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.337,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,107 +90,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wednesday, March 19, 2025 11:08:58 AM CET Christian Schoenebeck wrote:
-> According to 'man 2 close' errors returned by close() should only be used
-> for either diagnostic purposes or for catching data loss due to a previous
-> write error, as an error result of close() usually indicates a deferred
-> error of a previous write operation.
+On Wed, Mar 19, 2025 at 12:51:16PM +0100, Gerd Hoffmann wrote:
+> On Wed, Mar 19, 2025 at 11:37:40AM +0000, Daniel P. Berrangé wrote:
 > 
-> Therefore not decrementing 'total_open_fd' on a close() error is wrong
-> and would yield in a higher open file descriptor count than actually the
-> case, leading to 9p server reclaiming open file descriptors too soon.
+> > > > > +# @qemu-vars: The firmware expects qemu to provide an efi variable
+> > > > > +#             store, via "uefi-vars-sysbus" or "uefi-vars-x64" device.
+> > 
+> > I wonder if 'qemu-vars' is the right name here ? It feels like the specification
+> > for such device is effectively defined by UEFI, with any hypervisor providing a
+> > impl. Perhaps just call it 'uefi-vars-dev' or some name that's relevant for
+> > what EDK2 calls it ?
 > 
-> Based-on: <20250312152933.383967-7-groug@kaod.org>
-> Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> ---
->  hw/9pfs/9p.c     | 14 ++++++++------
->  hw/9pfs/codir.c  |  3 ++-
->  hw/9pfs/cofile.c |  3 ++-
->  3 files changed, 12 insertions(+), 8 deletions(-)
+> 'host-uefi-vars' maybe?  Or 'vmm-uefi-vars'?
 > 
-> diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-> index b22df3aa2b..f4ca8e4db5 100644
-> --- a/hw/9pfs/9p.c
-> +++ b/hw/9pfs/9p.c
-> @@ -434,7 +434,6 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
->      V9fsFidState *f;
->      GHashTableIter iter;
->      gpointer fid;
-> -    int err;
->      int nclosed = 0;
->  
->      /* prevent multiple coroutines running this function simultaniously */
-> @@ -507,13 +506,16 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
->       */
->      v9fs_co_run_in_worker({
->          QSLIST_FOREACH(f, &reclaim_list, reclaim_next) {
-> -            err = (f->fid_type == P9_FID_DIR) ?
-> +            /*
-> +             * 'man 2 close' suggests to ignore close() errors except of EBADF,
-> +             * not checking for EBADF here either as FIDs were picked above by
-> +             * having a valid file descriptor
-> +             */
-> +            (f->fid_type == P9_FID_DIR) ?
->                  s->ops->closedir(&s->ctx, &f->fs_reclaim) :
->                  s->ops->close(&s->ctx, &f->fs_reclaim);
-> -            if (!err) {
-> -                /* total_open_fd must only be mutated on main thread */
-> -                nclosed++;
-> -            }
-> +            /* total_open_fd must only be mutated on main thread */
-> +            nclosed++;
->          }
->      });
->      total_open_fd -= nclosed;
-> diff --git a/hw/9pfs/codir.c b/hw/9pfs/codir.c
-> index 2068a4779d..f1fd97c8a7 100644
-> --- a/hw/9pfs/codir.c
-> +++ b/hw/9pfs/codir.c
-> @@ -353,7 +353,8 @@ int coroutine_fn v9fs_co_closedir(V9fsPDU *pdu, V9fsFidOpenState *fs)
->                  err = -errno;
->              }
->          });
-> -    if (!err) {
-> +    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
-> +    if (!err || errno != EBADF) {
->          total_open_fd--;
->      }
->      return err;
+> > > There is 'stateless' already for 'firmware image in r/o flash'.
+> > 
+> > What's the behaviour of UEFI if build with JSON vars support, but without
+> > QEMU providing any JSON vars backend ?
+> 
+> It will panic.
 
-Or, as EBADF is somewhat unexpected here (assuming v9fs_co_closedir() was
-called by checking for a valid file handle), maybe it would make sense to log
-this?
+In that case, we must not reuse 'stateless' with such builds, as that's
+quite different semantics & incompatible with current usage.
 
-    if (unlikely(err && errno == EBADF)) {
-        error_report("v9fs_co_closedir() failed with EBADF");  
-    } else {
-        total_open_fd--;
-    }
+We would need a new 'uefi-vars' mode, or just declare that we must
+always use 'memory'  not 'flash' for such builds.
 
-In the sense, if EBADF happens here, it's an indication for a bug in 9p
-server.
+> 
+> > We would want to expand the 'stateless' docs to mention that this feature
+> > flag indicates optional support for persistence in that case.
+> 
+> Optional is not possible do due to the way variable store support is
+> organized in edk2.  Firmware can't switch between smm and non-smm
+> configuration at runtime for similar reasons.
+> 
+> take care,
+>   Gerd
+> 
 
-> diff --git a/hw/9pfs/cofile.c b/hw/9pfs/cofile.c
-> index 71174c3e4a..1e9f6da42a 100644
-> --- a/hw/9pfs/cofile.c
-> +++ b/hw/9pfs/cofile.c
-> @@ -197,7 +197,8 @@ int coroutine_fn v9fs_co_close(V9fsPDU *pdu, V9fsFidOpenState *fs)
->                  err = -errno;
->              }
->          });
-> -    if (!err) {
-> +    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
-> +    if (!err || errno != EBADF) {
->          total_open_fd--;
->      }
->      return err;
-
-Same here then.
-
-/Christian
-
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
