@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CF2A68E3B
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:51:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 589C6A68E2F
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:47:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tutl7-0004df-I0; Wed, 19 Mar 2025 09:47:03 -0400
+	id 1tutlO-00058z-Ce; Wed, 19 Mar 2025 09:47:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutkI-0003n9-F2
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:46:13 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutkM-0003ob-Ux
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:46:19 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutkG-00048f-9n
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:46:10 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3913fdd003bso414940f8f.1
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:46:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutkL-0004Jw-1C
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:46:14 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43cef035a3bso32780645e9.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:46:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742391966; x=1742996766; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742391971; x=1742996771; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=giq5jVWaUOn7Cy+Hw51AnglHBMySE1InchxU7/kS33s=;
- b=O1R/6uBH+i2igYFfMo5PK8/wZF6/mVztD37pLm48XHaRsmX20ZnbNkwgPP7nBzCUfO
- fP3V7nxcbgYDTYnsBGjXlYHD73MF0d/l0zpaoRJYSqDKZT6kKcwFz5E1gauCEyA9h4OW
- KrKZtEHotvdnw/h+YoQ76gMZvh0RpPjUApMinaI8IPMoyvqG1vCJeOhkm8GocBxMoqzT
- VwPozpRGwvH3nwnGxH1qft48pT/kqcAkS/c8veJAPaq7PUPI63COPQUTZqlO+TpsrWDF
- lhVpqvPyVb11JWpyrB9Gri4sPqGfWwnTOGL1XqmFFQLUIfQz9xx8O39ta8F2F9YQsmza
- Z7uA==
+ bh=32mireliZ/dTP04oYHZ+DYdxeMqjsmJC3DhlT1EPop4=;
+ b=D5uOYWQbgSLrxu6lXueZbRnA646xpJtAWS6eWmrEG54ZyC/SvkQ03o6gpD/kWFIYD9
+ IwX8Dq7ZD5NQHmY0Q2uLVyqPEuJ/JWPIFRifhQiMeQZSb4+Zqp7M8ZjekyXW1umoGL4G
+ cVKgSIj6ZRRnBvYXp7fAy2dNuOoZtaGeDlC9+4PqpH/6Ssdwh7ualAQPGaTxLw939jKM
+ z3lnzapAsVHxp3KHQQaCXhIfZIpmh2NWvYvSrpikBB/++ytS0QoxYjTBeJ4PBNPlyYge
+ ZCrAxnG6ho2IDB0lTzHq2EsUdxaHIz7uGQ2O9oerTav57m+ZM1JDoVdMBTX4NZos8EbR
+ JqZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742391966; x=1742996766;
+ d=1e100.net; s=20230601; t=1742391971; x=1742996771;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=giq5jVWaUOn7Cy+Hw51AnglHBMySE1InchxU7/kS33s=;
- b=YSosoWVHVFsgA+5lkSRFgWnz5lD6gHodqrZcmMOc3a3MbcNl81TrgAQhbzpgsG3rco
- 49YHlkb+f1+inWUYJwWMhNi/n9aK7J24T+NOicHqo7cYD5diWmuKFl/Yt51FboGpemTX
- wMp9+qr7YGP2dbUL993ecZ6UotyA9uXqB+x67Y3oyX9xi77Nn6rRYbMmgFUdab50coe5
- 3Y7AZNHRqQandmlchzv412QotSQykyGDM1ermPd67yt38gZfaYvkxqAEiDY+M0n2p8Ea
- RGWQipqPIhEhaY23wnFBv19paJzTXRCiVcWaaXTYznKSTOiR+UZGfEKwfEqi/7t6BST6
- PATg==
-X-Gm-Message-State: AOJu0YzYacPP5eRX7n9hYsg+BqtXewntwygaszaCXfAYr98av6dOTQ57
- R4hgKuzyaMlN6P2/wnvNxoXDfsEJp16OqMlMKkZ6bJI+yEsgfTDNf3dQWLdBIZDrrqC3H2a5YNN
- 3
-X-Gm-Gg: ASbGncsJfOcmnVyWKflwEaijrYJGpA52xo6eRTbvm4NfnL9S08bO7qFXTE1snLPCzSd
- IX4mLwXhtNOeiBdT4W9eu6c83fH+urj/G+WhIGZDgjFGOT413Vcw8q+b7pF1Ssq9pmQyPibCJYs
- Jx+X8EUcmb48kKdLZz2vdhQh5Jdw4UQZ4dGckoonjfVkYOJWbbWDtjvGByGybIiR1zSELdnTiMs
- 1Gmmk+I9fgurr9HpaVksVf1N3GISujpCGgLX0AQQw4Bv60iX/i0YJgU+mr3gSCJvRgJEbK2Lrdb
- ONQjtHetAKWQAFNHkqbzsyA327+zlrsQC98x/hjfX0kqMapz8pAMuUzxfBnNqApuLV92WI2gKX8
- JXBqfYujpaxhbv3FCrG8=
-X-Google-Smtp-Source: AGHT+IFE2eR3qjdmLyouXQp4PcOAXlZIAbBD/kRc4fLt4hHhKuBEB/NtxA27zukszUAReDELudsMPg==
-X-Received: by 2002:a5d:47c1:0:b0:391:39fb:a4d3 with SMTP id
- ffacd0b85a97d-39973bf74a7mr2064119f8f.4.1742391966240; 
- Wed, 19 Mar 2025 06:46:06 -0700 (PDT)
+ bh=32mireliZ/dTP04oYHZ+DYdxeMqjsmJC3DhlT1EPop4=;
+ b=xB+ADuw92M4sTCCUHhGkWoKeCS9WbrFXoJkGWT1ZCkQ5b6zMeVr4bgFw5SAS5DM4BH
+ 9wXzBt7kSc9KfoA+XvvG05IXnGada9xkcg0FQFhyTd+dfv3Sok8HPXXxYajr6YFOxHac
+ tYkpK7Pz37JOXcr+sOQ2YRJtWcN2qfZ3X5buBIw1S68RB7oDlwN4ubjh9Bch+1/3jsoE
+ 9ybM1dqsu/C+r5ds7VaaoyFkRl8GZVdM4uuGbSlyrvqDQsb8a6H0cKFNASsibu8nIGkX
+ /UFF6Et49CQ2Jj5WGcsbVxB7zy62UZ3zPboUGebKezJZDDBTpf+dueHcPqcGJoAwFimm
+ WY2A==
+X-Gm-Message-State: AOJu0Yxj+pzsuZoJ8JCGInKNf9TK3VLi3PrOrpI55s9NmiWmU5LOXwyb
+ mFz240Z16bP+M9Gb46sKdUX6kjv05ljdQF3uA8DNJKyVWUDNrTHw5teOIPxaPC710XLs5r8JoQB
+ f
+X-Gm-Gg: ASbGncvSuo5XixZ6F8v2mCCVdCg9Wb90DicBpf6G/ciAlruzfXXSv3bMRiZyubX7h9d
+ KphVQJqscYZIG9bG4fly04iAtDcfVSNgl9OfgYHdkV4KaWeNhk2AlA0vZEC/xy3q6WzkAKgNyNa
+ QJ67W3k0Tk2eiUF5CpLqTljBZaZhER+WD4+ceq9OsbI3NnLqIADDYGYfo2rJ0iWM2RAnXIEQ7Ui
+ CIoBmVJAQYQOAlQQs+d/T64aYRRf/ShBl/rbIvz005rE2GWLXsk3voFGaTX/Lqi98RNGRpRnHWY
+ 8ENkq9XEfprH8u+ZAcfeM+PHfVPK02pEBD0g7P4PccUXFDie1+LHt2SJg5D+oBYFaRkwyggHpcN
+ thSCKRPUBuP+/7yYmtK8=
+X-Google-Smtp-Source: AGHT+IFzEqWCZZWPfFgIotp1OH3ucYkN3WVuP9zfofN+Mllp38MhkvTyRe8Phny4sWd19e4RX8yNbA==
+X-Received: by 2002:a05:600c:3594:b0:43c:fb36:d296 with SMTP id
+ 5b1f17b1804b1-43d4383d0e7mr20984915e9.25.1742391971041; 
+ Wed, 19 Mar 2025 06:46:11 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-395cb40cdd0sm21104325f8f.77.2025.03.19.06.46.05
+ 5b1f17b1804b1-43d4863b4a7sm3162555e9.8.2025.03.19.06.46.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 19 Mar 2025 06:46:05 -0700 (PDT)
+ Wed, 19 Mar 2025 06:46:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 11/12] tcg: Unify tcg_gen_insn_start() to handle 0 or
- 2 arguments
-Date: Wed, 19 Mar 2025 14:45:05 +0100
-Message-ID: <20250319134507.45045-12-philmd@linaro.org>
+Subject: [PATCH-for-10.1 12/12] tcg: Uninline tcg_gen_insn_start()
+Date: Wed, 19 Mar 2025 14:45:06 +0100
+Message-ID: <20250319134507.45045-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250319134507.45045-1-philmd@linaro.org>
 References: <20250319134507.45045-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,152 +100,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Merge the tcg_gen_insn_start() definition using no extra word
-with the definition using 2, using a1=0 and a2=0 in callers.
+tcg_gen_insn_start() is now common to all TCG frontends.
+We don't need to keep it inlined, move it to tcg.c.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/tcg/tcg-op.h             | 15 +++------------
- target/alpha/translate.c         |  4 ++--
- target/avr/translate.c           |  2 +-
- target/loongarch/tcg/translate.c |  2 +-
- target/ppc/translate.c           |  2 +-
- target/rx/translate.c            |  2 +-
- target/tricore/translate.c       |  2 +-
- target/xtensa/translate.c        |  2 +-
- 8 files changed, 11 insertions(+), 20 deletions(-)
+ include/tcg/tcg-op.h | 15 ---------------
+ include/tcg/tcg.h    |  2 ++
+ tcg/tcg.c            | 15 +++++++++++++++
+ 3 files changed, 17 insertions(+), 15 deletions(-)
 
 diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
-index df234d4e1e0..cf177a1fd3b 100644
+index cf177a1fd3b..470cb46225e 100644
 --- a/include/tcg/tcg-op.h
 +++ b/include/tcg/tcg-op.h
-@@ -22,16 +22,6 @@
+@@ -22,21 +22,6 @@
  # error
  #endif
  
--#if TARGET_INSN_START_EXTRA_WORDS == 0
--static inline void tcg_gen_insn_start(uint64_t pc)
+-static inline void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2)
 -{
 -    unsigned insn_start_words = tcg_ctx->insn_start_words;
 -    TCGOp *op = tcg_emit_op(INDEX_op_insn_start,
 -                            insn_start_words * 64 / TCG_TARGET_REG_BITS);
 -
 -    tcg_set_insn_start_param(op, 0, pc);
+-    if (insn_start_words > 1) {
+-        tcg_set_insn_start_param(op, 1, a1);
+-    }
+-    if (insn_start_words > 2) {
+-        tcg_set_insn_start_param(op, 2, a2);
+-    }
 -}
--#elif TARGET_INSN_START_EXTRA_WORDS >= 1
- static inline void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2)
- {
-     unsigned insn_start_words = tcg_ctx->insn_start_words;
-@@ -39,12 +29,13 @@ static inline void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2)
-                             insn_start_words * 64 / TCG_TARGET_REG_BITS);
+-
+ #if TARGET_LONG_BITS == 32
+ typedef TCGv_i32 TCGv;
+ #define tcg_temp_new() tcg_temp_new_i32()
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 92a23e10218..d87d900bf81 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -609,6 +609,8 @@ static inline void tcg_set_insn_start_param(TCGOp *op, int arg, uint64_t v)
+     }
+ }
  
-     tcg_set_insn_start_param(op, 0, pc);
--    tcg_set_insn_start_param(op, 1, a1);
++void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2);
++
+ /* The last op that was emitted.  */
+ static inline TCGOp *tcg_last_op(void)
+ {
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index e8950df2ad3..904f858e4dc 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -3468,6 +3468,21 @@ TCGOp *tcg_op_insert_after(TCGContext *s, TCGOp *old_op,
+     return new_op;
+ }
+ 
++void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2)
++{
++    unsigned insn_start_words = tcg_ctx->insn_start_words;
++    TCGOp *op = tcg_emit_op(INDEX_op_insn_start,
++                            insn_start_words * 64 / TCG_TARGET_REG_BITS);
++
++    tcg_set_insn_start_param(op, 0, pc);
 +    if (insn_start_words > 1) {
 +        tcg_set_insn_start_param(op, 1, a1);
 +    }
-     if (insn_start_words > 2) {
-         tcg_set_insn_start_param(op, 2, a2);
-     }
- }
--#endif
- 
- #if TARGET_LONG_BITS == 32
- typedef TCGv_i32 TCGv;
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index 2156c022146..6586ad0a69a 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -2905,9 +2905,9 @@ static void alpha_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
- 
-     if (ctx->pcrel) {
--        tcg_gen_insn_start(dcbase->pc_next & ~TARGET_PAGE_MASK);
-+        tcg_gen_insn_start(dcbase->pc_next & ~TARGET_PAGE_MASK, 0, 0);
-     } else {
--        tcg_gen_insn_start(dcbase->pc_next);
-+        tcg_gen_insn_start(dcbase->pc_next, 0, 0);
-     }
- }
- 
-diff --git a/target/avr/translate.c b/target/avr/translate.c
-index 4ab71d8138b..c4f1a446467 100644
---- a/target/avr/translate.c
-+++ b/target/avr/translate.c
-@@ -2686,7 +2686,7 @@ static void avr_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
++    if (insn_start_words > 2) {
++        tcg_set_insn_start_param(op, 2, a2);
++    }
++}
++
+ static void move_label_uses(TCGLabel *to, TCGLabel *from)
  {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
- 
--    tcg_gen_insn_start(ctx->npc);
-+    tcg_gen_insn_start(ctx->npc, 0, 0);
- }
- 
- static void avr_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-diff --git a/target/loongarch/tcg/translate.c b/target/loongarch/tcg/translate.c
-index e59e4ed25b1..ee359e804af 100644
---- a/target/loongarch/tcg/translate.c
-+++ b/target/loongarch/tcg/translate.c
-@@ -158,7 +158,7 @@ static void loongarch_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
- 
--    tcg_gen_insn_start(ctx->base.pc_next);
-+    tcg_gen_insn_start(ctx->base.pc_next, 0, 0);
- }
- 
- /*
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index a52cbc869ae..70458526282 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -6558,7 +6558,7 @@ static void ppc_tr_tb_start(DisasContextBase *db, CPUState *cs)
- 
- static void ppc_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- {
--    tcg_gen_insn_start(dcbase->pc_next);
-+    tcg_gen_insn_start(dcbase->pc_next, 0, 0);
- }
- 
- static bool is_prefix_insn(DisasContext *ctx, uint32_t insn)
-diff --git a/target/rx/translate.c b/target/rx/translate.c
-index bbda703be86..16a865bd40f 100644
---- a/target/rx/translate.c
-+++ b/target/rx/translate.c
-@@ -2210,7 +2210,7 @@ static void rx_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
- 
--    tcg_gen_insn_start(ctx->base.pc_next);
-+    tcg_gen_insn_start(ctx->base.pc_next, 0, 0);
- }
- 
- static void rx_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 6819b776686..636137a5f73 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -8376,7 +8376,7 @@ static void tricore_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
- 
--    tcg_gen_insn_start(ctx->base.pc_next);
-+    tcg_gen_insn_start(ctx->base.pc_next, 0, 0);
- }
- 
- static bool insn_crosses_page(CPUTriCoreState *env, DisasContext *ctx)
-diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
-index 4f02cefde34..888752f2279 100644
---- a/target/xtensa/translate.c
-+++ b/target/xtensa/translate.c
-@@ -1159,7 +1159,7 @@ static void xtensa_tr_tb_start(DisasContextBase *dcbase, CPUState *cpu)
- 
- static void xtensa_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- {
--    tcg_gen_insn_start(dcbase->pc_next);
-+    tcg_gen_insn_start(dcbase->pc_next, 0, 0);
- }
- 
- static void xtensa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+     TCGLabelUse *u;
 -- 
 2.47.1
 
