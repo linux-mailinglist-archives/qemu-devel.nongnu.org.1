@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5715A68E18
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:46:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 146EDA68E19
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 14:46:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tutjc-0002gD-4C; Wed, 19 Mar 2025 09:45:28 -0400
+	id 1tutjh-0002nt-OB; Wed, 19 Mar 2025 09:45:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutjW-0002dO-Fq
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:45:22 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutjd-0002kU-Ll
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:45:29 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutjU-00040u-Cj
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:45:22 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43cf034d4abso48326985e9.3
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:45:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tutjb-00042D-Hh
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 09:45:29 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43cf628cb14so5189585e9.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 06:45:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742391918; x=1742996718; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742391926; x=1742996726; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=krg3MvTmntonI2/Wohd27AtoieJZs7YNIWzT3yjluvQ=;
- b=DZKgoF/ax2orvua7FtAsBoeA55vkfc4eSQsz3MBkFUtqR32GE7NLZtEv4sJl43cCGk
- OFVIQ1OOP3I06N4Id7fr4EQCs7cB34uE5D71oE5DLzIfbtJpS+OqcGU6IO1zySQ4gDCC
- 80S6NUMOpvoq5RWlxVYk3RHfUbl2A4M4+DLGmIIvMKU7I61mtvIjrG8j19UFCS1oWfjg
- w3j7ptJ9Kj0Er5NEWJROU/V+mlnXI1p/XYke8y2oqUNwju6TtVawtLTrwI61/EQ5V8VW
- WH1j3Ea4giPIDwwY87qb9SScjAn4URNQHvPcGmgMDOg7Gic2SoOzp/Z9m3Y7ObPnHy6m
- L8pg==
+ bh=eS9IoYBKjFns/3rxGigGeIdEfqxRX4ylTtuMFHv8VkA=;
+ b=g1aCG5LCBlTHchn35XKeE5zfr4h5tbNPdWKRPdx9K0easlZcKGEtfu87eRj4xurFli
+ ZDCVywiI5Hjg/IQ3gVA1J+9eZdJ1FI5ZFtOP3qtrG+zMoNldn71HhLNmx0oKWEJzrLih
+ md4Y0BoTYCkjDNrxEe0tp1e3F0Bh2S0XDC27qnhVGI04n9CfAgTESd5+n1PDoTbjI77Y
+ rZ9t268EGNojVraYuifyfA9Ku6TR+fK8KVkEWC1ip5GzfHCSKtn5F8wNA2q9SLS5g8Hz
+ 4wAm91QZRLcHndNI0Jf/nJXFWQMsmH4I/B0gBmAkfni0mXB4lPFjM7xvYlmfl8xMK0j0
+ 1KXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742391918; x=1742996718;
+ d=1e100.net; s=20230601; t=1742391926; x=1742996726;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=krg3MvTmntonI2/Wohd27AtoieJZs7YNIWzT3yjluvQ=;
- b=DYlQwh95tvaNGeJUnhPxJRRo73ulEgVB8FMmeooRvKSIEW3QnPsCGBdIfy4MWW4+Wm
- M7v3OB1dbANXafwPfV0+JIA2vwZB1vcozyClehgnvTBZ8xGLq5d404YSwX4GWUa5NCVb
- 8ZhYwxLXVZYHthgkunz4/vEe9jPW2hJDSirZIamlUPCcGgrsedIsaQ4+kQTUmVvzIUEL
- MXTfOdm+KWKUaGVE6tB5bdJdLljFeSWZXKjDVUd9zg6CNv0SIEPa76G4z2p9RVW2p41j
- TourEXlocbCcgF7qHXlXwvA7/54cXL4i+fNqzsl6VoUI523JkORWahJKx/vQslwEjmee
- LNCw==
-X-Gm-Message-State: AOJu0Yx430pICWY5UWS7TpjLoRCoKxoitAY/Poe3a3rTAS4C8j1U7wXE
- tzHl01x+tZIqZDO76TqLmAwa2ecLD1YDmzBrGQnEhXQiqZK0fb80qa8PgxdrQeLtpogn2QCnta9
- 8
-X-Gm-Gg: ASbGncu3mER6zVVJWEUPkT3qlfwIMxFmALdwsBz3qHCpdzDsSrYWlKrQmxp5mcUt97P
- AbJ5C/ztDxButloAzQT2S0WY9U7+KLJmEPB42ybNESm3A/auGfxUbTn5tVBZIWsC+Tficgolikz
- CtYaZK8ou7NmOEf+o2xa6bZjgpXKh59gc70NAWBN4NApP9jLsv81O8jui7DKuh/qO4OHpJsde8c
- ag7SwvIBrmMis6nchxNrrwEyzGJMGgp4kerr0TCJ3fgkI95EnOMjbFvP6L4yuYzx0VBhFJatkMu
- 9IODyqp03EQVg2hZhOQoMtCmVjqQ5ILWpfzKhtb8N2rG6wPNweDg6GZScdS8c/cntw41Ejek41Z
- 6rFEAs8HQs8oDnujNBt3iq4VtADiH8Q==
-X-Google-Smtp-Source: AGHT+IEEWhtcouxAMK0MvY9ZiFkx8BkuYfGTfgKvugT+6MmZSc4KnEBn6SUkdmMVP+pnTXlhA6WFnA==
-X-Received: by 2002:a05:6000:1847:b0:391:268:64a1 with SMTP id
- ffacd0b85a97d-39973b06e56mr2916073f8f.48.1742391918091; 
- Wed, 19 Mar 2025 06:45:18 -0700 (PDT)
+ bh=eS9IoYBKjFns/3rxGigGeIdEfqxRX4ylTtuMFHv8VkA=;
+ b=d1d5tIN/ORlTxRIDOuAGI77sP7yoYs5pPHrtCxjrZ4qWnfrwXHr2f4lCYsxHIBNxRI
+ xCaBnIRcZ4x6OKWxu4vjciFGpPg+5/qF/3fUonZ2OSF3lO5zSQWEojEAC32HdeIveUHg
+ oYsPe/qAouYnwGAqwgU8HDKpKmHEyPLf96zxrl0sKM+9RQFEutNUCM1rEdHFRDw6Pta4
+ KgbCWGaR2mOK7AYv/eI5aO3BEszBAXDVwlVEOkkBVqg0Iur4ejvI2cNXX4vFs2yImNzp
+ OujwFNa9ftS6Kl+0LPp/TtoHlE8oEKl5c0BxjKkyvU7blTCr8RL7HviSsaS9rqClfrx4
+ tqeQ==
+X-Gm-Message-State: AOJu0YyrkwqSP08z+6Lj6NVG0ZxXOrVOGrNijtYk6LQQqk7dl8/ot/Kb
+ va6QVu/5WKd0bhSiAAp5vnKZEBd/kbiS9pYWcbw/us8CWaNdVJCJRwIHLrL3veZskxpjO0tn4pe
+ /
+X-Gm-Gg: ASbGncvKvE2b0PxNfEYIAOPQ4sKDO0M6YqxjpmFdv+tyKOCwGCSdG2L4QR0WMurGjB8
+ VO/sxTD/R/KpXJL6n5wpvXG3x4zB+5wQnVK+gkQ9LnEZ/1HSNhAepIqDnH5hGwBWsITxiT12Zf2
+ /68slNWRdJsSRR7LLuF/tWwl85CxIbfymsieObLAadWQD38h6euz6obA+8JigaYcw8CeuKSD6zJ
+ XvDBiqQ+uz+yul1cOsEYaS9t/v/myrc+HZo8iNjDXZ6jEVlWsFHMVExI2RjrP7kYzHsVN2OzVDH
+ lObcm0u79zkCViu4qG0TZ6oHRveFURQ37nBrMlXH9tGll9BTcjdYWD4ER0s0QXB3hrfWCE6/jXH
+ jqlK1irdnfr6BTydi7vc60Pqc+nLPCQ==
+X-Google-Smtp-Source: AGHT+IFo6NpJdBeZUDB3xWWKSKpQ241+3IK2UYxLJqpO9ARXH5OVU+S9YmdMKyxR8qWtjJD+V8vYIA==
+X-Received: by 2002:a05:600c:44d3:b0:43b:baf7:76e4 with SMTP id
+ 5b1f17b1804b1-43d3b95f719mr55577325e9.1.1742391922725; 
+ Wed, 19 Mar 2025 06:45:22 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-395c8975b83sm21695849f8f.52.2025.03.19.06.45.17
+ 5b1f17b1804b1-43d43f43cbasm19134775e9.9.2025.03.19.06.45.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 19 Mar 2025 06:45:17 -0700 (PDT)
+ Wed, 19 Mar 2025 06:45:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 02/12] tcg: Always define
- TARGET_INSN_START_EXTRA_WORDS
-Date: Wed, 19 Mar 2025 14:44:56 +0100
-Message-ID: <20250319134507.45045-3-philmd@linaro.org>
+Subject: [PATCH-for-10.1 03/12] tcg: Have tcg_gen_insn_start() take uint64_t
+ arguments
+Date: Wed, 19 Mar 2025 14:44:57 +0100
+Message-ID: <20250319134507.45045-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250319134507.45045-1-philmd@linaro.org>
 References: <20250319134507.45045-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,148 +101,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not define TARGET_INSN_START_EXTRA_WORDS under the
-hood, have each target explicitly define it.
+Since restore_state_to_opc()'s rework in commits d29256896..04f105758
+and TCGContext::gen_insn_data[] widened in commit c9ad8d27caa ("tcg:
+Widen gen_insn_data to uint64_t"), tcg_set_insn_start_param()'s 3rd
+argument is uint64_t, not target_ulong. Use the same type signature
+for tcg_gen_insn_start().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/tcg/insn-start-words.h | 4 ----
- include/tcg/tcg-op.h           | 2 +-
- target/alpha/cpu-param.h       | 2 ++
- target/avr/cpu-param.h         | 2 ++
- target/hexagon/cpu-param.h     | 2 ++
- target/loongarch/cpu-param.h   | 2 ++
- target/ppc/cpu-param.h         | 2 ++
- target/rx/cpu-param.h          | 2 ++
- target/tricore/cpu-param.h     | 2 ++
- target/xtensa/cpu-param.h      | 2 ++
- 10 files changed, 17 insertions(+), 5 deletions(-)
+ include/tcg/tcg-op.h      | 7 +++----
+ accel/tcg/translate-all.c | 2 +-
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/include/tcg/insn-start-words.h b/include/tcg/insn-start-words.h
-index 50c18bd326d..394c191da8d 100644
---- a/include/tcg/insn-start-words.h
-+++ b/include/tcg/insn-start-words.h
-@@ -8,10 +8,6 @@
- 
- #include "cpu.h"
- 
--#ifndef TARGET_INSN_START_EXTRA_WORDS
--# define TARGET_INSN_START_WORDS 1
--#else
- # define TARGET_INSN_START_WORDS (1 + TARGET_INSN_START_EXTRA_WORDS)
--#endif
- 
- #endif /* TARGET_INSN_START_WORDS */
 diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
-index a02850583bd..5dfddf995d6 100644
+index 5dfddf995d6..8938f386599 100644
 --- a/include/tcg/tcg-op.h
 +++ b/include/tcg/tcg-op.h
-@@ -22,7 +22,7 @@
- # error
+@@ -23,21 +23,20 @@
  #endif
  
--#ifndef TARGET_INSN_START_EXTRA_WORDS
-+#if TARGET_INSN_START_EXTRA_WORDS == 0
- static inline void tcg_gen_insn_start(target_ulong pc)
+ #if TARGET_INSN_START_EXTRA_WORDS == 0
+-static inline void tcg_gen_insn_start(target_ulong pc)
++static inline void tcg_gen_insn_start(uint64_t pc)
  {
      TCGOp *op = tcg_emit_op(INDEX_op_insn_start, 64 / TCG_TARGET_REG_BITS);
-diff --git a/target/alpha/cpu-param.h b/target/alpha/cpu-param.h
-index ff06e41497a..c89d3ad52b6 100644
---- a/target/alpha/cpu-param.h
-+++ b/target/alpha/cpu-param.h
-@@ -25,6 +25,8 @@
- # define TARGET_VIRT_ADDR_SPACE_BITS  (30 + TARGET_PAGE_BITS)
- #endif
+     tcg_set_insn_start_param(op, 0, pc);
+ }
+ #elif TARGET_INSN_START_EXTRA_WORDS == 1
+-static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1)
++static inline void tcg_gen_insn_start(uint64_t pc, uint64_t a1)
+ {
+     TCGOp *op = tcg_emit_op(INDEX_op_insn_start, 2 * 64 / TCG_TARGET_REG_BITS);
+     tcg_set_insn_start_param(op, 0, pc);
+     tcg_set_insn_start_param(op, 1, a1);
+ }
+ #elif TARGET_INSN_START_EXTRA_WORDS == 2
+-static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1,
+-                                      target_ulong a2)
++static inline void tcg_gen_insn_start(uint64_t pc, uint64_t a1, uint64_t a2)
+ {
+     TCGOp *op = tcg_emit_op(INDEX_op_insn_start, 3 * 64 / TCG_TARGET_REG_BITS);
+     tcg_set_insn_start_param(op, 0, pc);
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 82bc16bd535..a857aefd756 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -117,7 +117,7 @@ static int64_t decode_sleb128(const uint8_t **pp)
+ /* Encode the data collected about the instructions while compiling TB.
+    Place the data at BLOCK, and return the number of bytes consumed.
  
-+#define TARGET_INSN_START_EXTRA_WORDS 0
-+
- /* Alpha processors have a weak memory model */
- #define TCG_GUEST_DEFAULT_MO      (0)
- 
-diff --git a/target/avr/cpu-param.h b/target/avr/cpu-param.h
-index 81f3f49ee1f..0417f8dcccb 100644
---- a/target/avr/cpu-param.h
-+++ b/target/avr/cpu-param.h
-@@ -31,6 +31,8 @@
- #define TARGET_PHYS_ADDR_SPACE_BITS 24
- #define TARGET_VIRT_ADDR_SPACE_BITS 24
- 
-+#define TARGET_INSN_START_EXTRA_WORDS 0
-+
- #define TCG_GUEST_DEFAULT_MO 0
- 
- #endif
-diff --git a/target/hexagon/cpu-param.h b/target/hexagon/cpu-param.h
-index 45ee7b46409..635d509e743 100644
---- a/target/hexagon/cpu-param.h
-+++ b/target/hexagon/cpu-param.h
-@@ -23,4 +23,6 @@
- #define TARGET_PHYS_ADDR_SPACE_BITS 36
- #define TARGET_VIRT_ADDR_SPACE_BITS 32
- 
-+#define TARGET_INSN_START_EXTRA_WORDS 0
-+
- #endif
-diff --git a/target/loongarch/cpu-param.h b/target/loongarch/cpu-param.h
-index 52437946e56..dbe414bb35a 100644
---- a/target/loongarch/cpu-param.h
-+++ b/target/loongarch/cpu-param.h
-@@ -13,6 +13,8 @@
- 
- #define TARGET_PAGE_BITS 12
- 
-+#define TARGET_INSN_START_EXTRA_WORDS 0
-+
- #define TCG_GUEST_DEFAULT_MO (0)
- 
- #endif
-diff --git a/target/ppc/cpu-param.h b/target/ppc/cpu-param.h
-index 6c4525fdf3c..9cb26cefd5d 100644
---- a/target/ppc/cpu-param.h
-+++ b/target/ppc/cpu-param.h
-@@ -38,6 +38,8 @@
- # define TARGET_PAGE_BITS 12
- #endif
- 
-+#define TARGET_INSN_START_EXTRA_WORDS 0
-+
- #define TCG_GUEST_DEFAULT_MO 0
- 
- #endif
-diff --git a/target/rx/cpu-param.h b/target/rx/cpu-param.h
-index ef1970a09e9..84934f3bcaf 100644
---- a/target/rx/cpu-param.h
-+++ b/target/rx/cpu-param.h
-@@ -24,4 +24,6 @@
- #define TARGET_PHYS_ADDR_SPACE_BITS 32
- #define TARGET_VIRT_ADDR_SPACE_BITS 32
- 
-+#define TARGET_INSN_START_EXTRA_WORDS 0
-+
- #endif
-diff --git a/target/tricore/cpu-param.h b/target/tricore/cpu-param.h
-index 790242ef3d2..eb33a67c419 100644
---- a/target/tricore/cpu-param.h
-+++ b/target/tricore/cpu-param.h
-@@ -12,4 +12,6 @@
- #define TARGET_PHYS_ADDR_SPACE_BITS 32
- #define TARGET_VIRT_ADDR_SPACE_BITS 32
- 
-+#define TARGET_INSN_START_EXTRA_WORDS 0
-+
- #endif
-diff --git a/target/xtensa/cpu-param.h b/target/xtensa/cpu-param.h
-index 5e4848ad059..e7cb747aaae 100644
---- a/target/xtensa/cpu-param.h
-+++ b/target/xtensa/cpu-param.h
-@@ -16,6 +16,8 @@
- #define TARGET_VIRT_ADDR_SPACE_BITS 32
- #endif
- 
-+#define TARGET_INSN_START_EXTRA_WORDS 0
-+
- /* Xtensa processors have a weak memory model */
- #define TCG_GUEST_DEFAULT_MO      (0)
+-   The logical table consists of TARGET_INSN_START_WORDS target_ulong's,
++   The logical table consists of TARGET_INSN_START_WORDS uint64_t's,
+    which come from the target's insn_start data, followed by a uintptr_t
+    which comes from the host pc of the end of the code implementing the insn.
  
 -- 
 2.47.1
