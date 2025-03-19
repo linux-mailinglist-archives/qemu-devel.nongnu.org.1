@@ -2,87 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A992A69963
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 20:32:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F741A69971
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 20:34:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuz8q-0004X4-9x; Wed, 19 Mar 2025 15:31:53 -0400
+	id 1tuzBL-0006r6-2o; Wed, 19 Mar 2025 15:34:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tuz8O-0004Ve-5v
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:31:24 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tuz8J-0005PS-MU
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:31:23 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43d0782d787so58125e9.0
- for <qemu-devel@nongnu.org>; Wed, 19 Mar 2025 12:31:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742412677; x=1743017477; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/ndD5zb6eNRPpAj+IA6PiNhhpA+CeGvhn+/G8C5LC0k=;
- b=va0NnyJSJ+sUY0cdcSrAXmFNhRLYoyOubQ4QR56ndx/NpAaBZ4pMhdvopPHCD7wmaa
- efs6Et11g6aEp7pqDkKo4tkRxH9FlAHgdqoRUrICGWeZrxqyUSb95UXx2tNcdk0HO/gT
- yHl906HG7WEwJtA7O0XA9aj+uTDRQi6X9GEgERbRRi/sqHonhtEuSuFgov4VW1yaOP8X
- IEhKpyF8ifVKKe4ba6h8fe66fYcRM7ymZxb7qiVD/evWFcFNkMQAQa+DElnvPUbwvQkM
- nsDtqOG38/RIfLBVoVC3FibJ/V+5ZMFJSSv+cLRqimn+hWS5adMpq80/vSkc5dAh4zln
- Qq+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742412677; x=1743017477;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/ndD5zb6eNRPpAj+IA6PiNhhpA+CeGvhn+/G8C5LC0k=;
- b=f9EGLlUZo/QIycpapakl28CwXdrnnNEb+aP4T1eRaOF14cno5IN1DdOhnAR8Z7gSIM
- zivI0iFwQphmrvVKlOQ+HdKN7/S47AKuyOwZsC6SrmDc3+ArBYva8HhZm7vqjTJRVMIP
- H9TDOdKAVP224OU5kJIj6epjGemqf9oGY09n/QEp4snIOuvxqhIvdj0ZMiYaMSKOJJGT
- slWpfL2CXGtk2YNj8Y8SsZyegLfcFD47pPAA+bIAV/TJJBdJH8SBR0m/0eYShHMgTKwd
- D473qq96+5RDODhN7JPf1P2g67vPkTR0Ux/8+KcA7fVC7ErTkIOrW4CtgrG5RBrwQt02
- 9qwg==
-X-Gm-Message-State: AOJu0YzvwUmsEi4jDTu7l3vfpQE6dZqxRtezZJijHI1vAN0fR65Ams/Z
- xKdBK5rQbfQZgAl6+YdyGXYcmaNPno3Gbi6uKa/g03zf6dOedaAIPrPP8suReeCfZEk2WMj8OvD
- 6
-X-Gm-Gg: ASbGncsan/1jsW2DSN7EnjeGVCE96vRH1a8tefEIk0Gh0pqP+h3K31YN/5klxsAA8ZG
- 96Q5Qu0rsaImaPtRGtS67NdHLBxRyHR9KjN7Zg9uc6z7tXxpigOQEH6ou/FQqMJsEWzf8rGmM9V
- G6kMco4lQDQWLIouya0SyquQt/fLE8kiZtSBPKbyM4Ur2JzyB8y60gjlYldkUoaEkd8rRn07+fH
- YKOegN5LS6c5p/f4UEZrTLkI4i2r9R5mueKj6r+DsdHebvkxz7ddNs4y+ocNivJc98JSDefArVX
- MKO0eAPxI3fMsgFGuCtILqXHsLFcAdj6BivZlA9ZNceVtQL8qio=
-X-Google-Smtp-Source: AGHT+IE+IZNF+/opYmJfXUWxZFeK40VmrUXT92c68AzxLCSjPXrFXwEuIDbbg25AbYDzTNQCPcRbtA==
-X-Received: by 2002:a05:600c:a4d:b0:43d:83a:417d with SMTP id
- 5b1f17b1804b1-43d495442b9mr3942705e9.12.1742412676763; 
- Wed, 19 Mar 2025 12:31:16 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43f47196sm26790495e9.16.2025.03.19.12.31.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Mar 2025 12:31:15 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Tanish Desai <tanishdesai37@gmail.com>
-Subject: [PATCH 2/2] rust: Kconfig: Factor out whether HPET is Rust or C
-Date: Wed, 19 Mar 2025 19:31:10 +0000
-Message-ID: <20250319193110.1565578-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250319193110.1565578-1-peter.maydell@linaro.org>
-References: <20250319193110.1565578-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tuzAz-0006q5-8l
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:34:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tuzAx-0006So-8I
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 15:34:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742412842;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PnOSaBwmTwh8vZR0PUXGEXmK/pnR4DZEjshuFF/1Rmw=;
+ b=E8CoPCbTWquP1OyS0dOQFw8JNSNG6Mb91QiMCiOtf1bTbecoWnSV+zuL9k+VP3Pvl6ZTTd
+ QIwUqMbkYdtUnjta2CZNkRmCplSVjZs8KXJ/FIQgPWjyLxaahAPA99Vd7BgncyacIlRtUL
+ nGuMo6Ra6KALqm7C0JQNFpvSn9XYTJ8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-K3LCYd3aMxyWVKA-ggRkwQ-1; Wed,
+ 19 Mar 2025 15:33:57 -0400
+X-MC-Unique: K3LCYd3aMxyWVKA-ggRkwQ-1
+X-Mimecast-MFC-AGG-ID: K3LCYd3aMxyWVKA-ggRkwQ_1742412836
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C30A1180AF68; Wed, 19 Mar 2025 19:33:55 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.17.1])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 61A7C1956094; Wed, 19 Mar 2025 19:33:53 +0000 (UTC)
+Date: Wed, 19 Mar 2025 14:33:50 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, gerben@altlinux.org, qemu-stable@nongnu.org, 
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] block: Zero block driver state before reopening
+Message-ID: <nn5b6oyyuaxguho6ex7bal3y67olzrvwsgpa4wvjbrutsrehhl@g4h5kll24uvt>
+References: <20250310104858.28221-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250310104858.28221-1-kwolf@redhat.com>
+User-Agent: NeoMutt/20250113
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.337,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,117 +81,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we require everywhere that wants to know if there
-is an HPET device to check for "CONFIG_HPET || CONFIG_X_HPET_RUST".
-Factor out whether the HPET device is Rust or C into a separate
-Kconfig stanza, so that CONFIG_HPET means "there is an HPET",
-and whether this has pulled in CONFIG_X_HPET_RUST or CONFIG_HPET_C
-is something the rest of QEMU can ignore.
+On Mon, Mar 10, 2025 at 11:48:58AM +0100, Kevin Wolf wrote:
+> Block drivers assume in their .bdrv_open() implementation that their
+> state in bs->opaque has been zeroed; it is initially allocated with
+> g_malloc0() in bdrv_open_driver().
+> 
+> bdrv_snapshot_goto() needs to make sure that it is zeroed again before
+> calling drv->bdrv_open() to avoid that block drivers use stale values.
+> 
+> One symptom of this bug is VMDK running into a double free when the user
+> tries to apply an internal snapshot like 'qemu-img snapshot -a test
+> test.vmdk'. This should be a graceful error because VMDK doesn't support
+> internal snapshots.
+> 
+> ==25507== Invalid free() / delete / delete[] / realloc()
+> ==25507==    at 0x484B347: realloc (vg_replace_malloc.c:1801)
+> ==25507==    by 0x54B592A: g_realloc (gmem.c:171)
+> ==25507==    by 0x1B221D: vmdk_add_extent (../block/vmdk.c:570)
+> ==25507==    by 0x1B1084: vmdk_open_sparse (../block/vmdk.c:1059)
+> ==25507==    by 0x1AF3D8: vmdk_open (../block/vmdk.c:1371)
+> ==25507==    by 0x1A2AE0: bdrv_snapshot_goto (../block/snapshot.c:299)
+> ==25507==    by 0x205C77: img_snapshot (../qemu-img.c:3500)
+> ==25507==    by 0x58FA087: (below main) (libc_start_call_main.h:58)
+> ==25507==  Address 0x832f3e0 is 0 bytes inside a block of size 272 free'd
+> ==25507==    at 0x4846B83: free (vg_replace_malloc.c:989)
+> ==25507==    by 0x54AEAC4: g_free (gmem.c:208)
+> ==25507==    by 0x1AF629: vmdk_close (../block/vmdk.c:2889)
+> ==25507==    by 0x1A2A9C: bdrv_snapshot_goto (../block/snapshot.c:290)
+> ==25507==    by 0x205C77: img_snapshot (../qemu-img.c:3500)
+> ==25507==    by 0x58FA087: (below main) (libc_start_call_main.h:58)
+> 
+> This error was discovered by fuzzing qemu-img.
+> 
+> Cc: qemu-stable@nongnu.org
+> Reported-by: Denis Rastyogin <gerben@altlinux.org>
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  block/snapshot.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- configs/devices/i386-softmmu/default.mak | 1 -
- hw/i386/fw_cfg.c                         | 2 +-
- hw/i386/pc.c                             | 2 +-
- hw/timer/Kconfig                         | 8 +++++++-
- hw/timer/meson.build                     | 2 +-
- rust/hw/timer/Kconfig                    | 1 -
- tests/qtest/meson.build                  | 3 +--
- 7 files changed, 11 insertions(+), 8 deletions(-)
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-diff --git a/configs/devices/i386-softmmu/default.mak b/configs/devices/i386-softmmu/default.mak
-index 9ef343cace0..4faf2f0315e 100644
---- a/configs/devices/i386-softmmu/default.mak
-+++ b/configs/devices/i386-softmmu/default.mak
-@@ -6,7 +6,6 @@
- #CONFIG_APPLESMC=n
- #CONFIG_FDC=n
- #CONFIG_HPET=n
--#CONFIG_X_HPET_RUST=n
- #CONFIG_HYPERV=n
- #CONFIG_ISA_DEBUG=n
- #CONFIG_ISA_IPMI_BT=n
-diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index a7f1b60b98c..5c0bcd5f8a9 100644
---- a/hw/i386/fw_cfg.c
-+++ b/hw/i386/fw_cfg.c
-@@ -26,7 +26,7 @@
- #include CONFIG_DEVICES
- #include "target/i386/cpu.h"
- 
--#if !defined(CONFIG_HPET) && !defined(CONFIG_X_HPET_RUST)
-+#if !defined(CONFIG_HPET)
- struct hpet_fw_config hpet_fw_cfg = {.count = UINT8_MAX};
- #endif
- 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 63a96cd23f8..01d0581f62a 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1704,7 +1704,7 @@ static void pc_machine_initfn(Object *obj)
-     pcms->sata_enabled = true;
-     pcms->i8042_enabled = true;
-     pcms->max_fw_size = 8 * MiB;
--#if defined(CONFIG_HPET) || defined(CONFIG_X_HPET_RUST)
-+#if defined(CONFIG_HPET)
-     pcms->hpet_enabled = true;
- #endif
-     pcms->fd_bootchk = true;
-diff --git a/hw/timer/Kconfig b/hw/timer/Kconfig
-index 9ac00845340..b3d823ce2c3 100644
---- a/hw/timer/Kconfig
-+++ b/hw/timer/Kconfig
-@@ -11,7 +11,13 @@ config A9_GTIMER
- 
- config HPET
-     bool
--    default y if PC && !HAVE_RUST
-+    default y if PC
-+    # The HPET has both a Rust and a C implementation
-+    select HPET_C if !HAVE_RUST
-+    select X_HPET_RUST if HAVE_RUST
-+
-+config HPET_C
-+    bool
- 
- config I8254
-     bool
-diff --git a/hw/timer/meson.build b/hw/timer/meson.build
-index f5f9eed2d0a..178321c029c 100644
---- a/hw/timer/meson.build
-+++ b/hw/timer/meson.build
-@@ -13,7 +13,7 @@ system_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic-timer.c'))
- system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4210_mct.c'))
- system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4210_pwm.c'))
- system_ss.add(when: 'CONFIG_GRLIB', if_true: files('grlib_gptimer.c'))
--system_ss.add(when: 'CONFIG_HPET', if_true: files('hpet.c'))
-+system_ss.add(when: 'CONFIG_HPET_C', if_true: files('hpet.c'))
- system_ss.add(when: 'CONFIG_I8254', if_true: files('i8254_common.c', 'i8254.c'))
- system_ss.add(when: 'CONFIG_IMX', if_true: files('imx_epit.c'))
- system_ss.add(when: 'CONFIG_IMX', if_true: files('imx_gpt.c'))
-diff --git a/rust/hw/timer/Kconfig b/rust/hw/timer/Kconfig
-index 42e421317a5..afd98033503 100644
---- a/rust/hw/timer/Kconfig
-+++ b/rust/hw/timer/Kconfig
-@@ -1,3 +1,2 @@
- config X_HPET_RUST
-     bool
--    default y if PC && HAVE_RUST
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 5a8c1f102c2..3136d15e0f8 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -103,8 +103,7 @@ qtests_i386 = \
-    config_all_devices.has_key('CONFIG_VIRTIO_PCI') and                                      \
-    slirp.found() ? ['virtio-net-failover'] : []) +                                          \
-   (unpack_edk2_blobs and                                                                    \
--   (config_all_devices.has_key('CONFIG_HPET') or                                            \
--    config_all_devices.has_key('CONFIG_X_HPET_RUST')) and                                   \
-+   config_all_devices.has_key('CONFIG_HPET') and                                            \
-    config_all_devices.has_key('CONFIG_PARALLEL') ? ['bios-tables-test'] : []) +             \
-   qtests_pci +                                                                              \
-   qtests_cxl +                                                                              \
 -- 
-2.43.0
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
