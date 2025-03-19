@@ -2,54 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F517A6830D
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 03:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F41E2A6831A
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Mar 2025 03:18:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tuit1-0001wE-2M; Tue, 18 Mar 2025 22:10:28 -0400
+	id 1tuj0M-00063a-Mu; Tue, 18 Mar 2025 22:18:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tuirq-0001rh-1k
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 22:09:14 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tuirh-0002F4-UP
- for qemu-devel@nongnu.org; Tue, 18 Mar 2025 22:09:13 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxlnAzJ9pnfoKcAA--.2107S3;
- Wed, 19 Mar 2025 10:08:51 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMBxb8cwJ9pn2NpSAA--.42124S6;
- Wed, 19 Mar 2025 10:08:51 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>,
-	Markus Armbruster <armbru@redhat.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 4/4] target/loongarch: Set dest error with error_abort in
- virt_cpu_irq_init
-Date: Wed, 19 Mar 2025 10:08:47 +0800
-Message-Id: <20250319020847.1511759-5-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250319020847.1511759-1-maobibo@loongson.cn>
-References: <20250319020847.1511759-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <huangborong@bosc.ac.cn>)
+ id 1tuj06-00062m-Ik; Tue, 18 Mar 2025 22:17:55 -0400
+Received: from out28-77.mail.aliyun.com ([115.124.28.77])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <huangborong@bosc.ac.cn>)
+ id 1tuj02-0005uF-FV; Tue, 18 Mar 2025 22:17:46 -0400
+Received: from DESKTOP-MLVKPO8.(mailfrom:huangborong@bosc.ac.cn
+ fp:SMTPD_---.bxnZ.c0_1742350334 cluster:ay29) by smtp.aliyun-inc.com;
+ Wed, 19 Mar 2025 10:12:21 +0800
+From: Huang Borong <huangborong@bosc.ac.cn>
+To: qemu-riscv@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ qemu-devel@nongnu.org, Huang Borong <huangborong@bosc.ac.cn>
+Subject: [PATCH v1 1/2] target/riscv: add BOSC's Xiangshan Kunminghu CPU
+Date: Wed, 19 Mar 2025 10:11:50 +0800
+Message-Id: <20250319021150.10630-1-huangborong@bosc.ac.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxb8cwJ9pn2NpSAA--.42124S6
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
+Received-SPF: pass client-ip=115.124.28.77;
+ envelope-from=huangborong@bosc.ac.cn; helo=out28-77.mail.aliyun.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,46 +55,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In function virt_cpu_irq_init(), there is notification with ipi and extioi
-interrupt controller for cpu creation. Local variable with error type is
-used, however there is no check with its return value.
+Add a CPU entry for the Xiangshan Kunminghu CPU, an open-source
+high-performance RISC-V processor. More details can be found at
+https://github.com/OpenXiangShan/XiangShan
 
-Here set dest error object with error_abort, rather than local variable, so
-application will abort to run if there is error.
+Note:
+The ISA extensions supported by the Xiangshan Kunminghu CPU are categorized
+based on four RISC-V specifications: Volume I: Unprivileged Architecture,
+Volume II: Privileged Architecture, AIA, and RVA23. The extensions within
+each category are organized according to the chapter order in the specifications.
 
-Fixes: 50ebc3fc47fe (hw/intc/loongarch_ipi: Notify ipi object when cpu is plugged)
-Fixes: 087a23a87c57 (hw/intc/loongarch_extioi: Use cpu plug notification)
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Yu Hu <huyu@bosc.ac.cn>
+Signed-off-by: Ran Wang <wangran@bosc.ac.cn>
+Signed-off-by: Borong Huang <huangborong@bosc.ac.cn>
 ---
- hw/loongarch/virt.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ target/riscv/cpu-qom.h |  1 +
+ target/riscv/cpu.c     | 72 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 73 insertions(+)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index a9fab39dd8..f10a4704ab 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -327,7 +327,6 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
-     MachineClass *mc = MACHINE_GET_CLASS(ms);
-     const CPUArchIdList *possible_cpus;
-     CPUState *cs;
--    Error *err = NULL;
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index 4cfdb74891..f2908939e7 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -53,6 +53,7 @@
+ #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
+ #define TYPE_RISCV_CPU_TT_ASCALON       RISCV_CPU_TYPE_NAME("tt-ascalon")
+ #define TYPE_RISCV_CPU_XIANGSHAN_NANHU  RISCV_CPU_TYPE_NAME("xiangshan-nanhu")
++#define TYPE_RISCV_CPU_XIANGSHAN_KMH    RISCV_CPU_TYPE_NAME("xiangshan-kunminghu")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
  
-     /* cpu nodes */
-     possible_cpus = mc->possible_cpu_arch_ids(ms);
-@@ -337,8 +336,10 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
-             continue;
-         }
- 
--        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->ipi), DEVICE(cs), &err);
--        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), DEVICE(cs), &err);
-+        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->ipi), DEVICE(cs),
-+                             &error_abort);
-+        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), DEVICE(cs),
-+                             &error_abort);
-     }
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 09ded6829a..a076d9dc0c 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -697,6 +697,76 @@ static void rv64_xiangshan_nanhu_cpu_init(Object *obj)
+ #endif
  }
  
++static void rv64_xiangshan_kmh_cpu_init(Object *obj)
++{
++    CPURISCVState *env = &RISCV_CPU(obj)->env;
++    RISCVCPU *cpu = RISCV_CPU(obj);
++
++    riscv_cpu_set_misa_ext(env, RVG | RVC | RVB | RVS | RVU | RVH | RVV);
++    env->priv_ver = PRIV_VERSION_1_13_0;
++
++    /* Enable ISA extensions */
++    cpu->cfg.mmu = true;
++    cpu->cfg.pmp = true;
++
++    /*
++     * The RISC-V Instruction Set Manual: Volume I
++     * Unprivileged Architecture
++     */
++    cpu->cfg.ext_zicntr = true;
++    cpu->cfg.ext_zihpm = true;
++    cpu->cfg.ext_zihintntl = true;
++    cpu->cfg.ext_zihintpause = true;
++    cpu->cfg.ext_zimop = true;
++    cpu->cfg.ext_zcmop = true;
++    cpu->cfg.ext_zicond = true;
++    cpu->cfg.ext_zawrs = true;
++    cpu->cfg.ext_zacas = true;
++    cpu->cfg.ext_zfh = true;
++    cpu->cfg.ext_zfa = true;
++    cpu->cfg.ext_zcb = true;
++    cpu->cfg.ext_zbc = true;
++    cpu->cfg.ext_zvfh = true;
++    cpu->cfg.ext_zkn = true;
++    cpu->cfg.ext_zks = true;
++    cpu->cfg.ext_zkt = true;
++    cpu->cfg.ext_zvbb = true;
++    cpu->cfg.ext_zvkt = true;
++
++    /*
++     * The RISC-V Instruction Set Manual: Volume II
++     * Privileged Architecture
++     */
++    cpu->cfg.ext_smstateen = true;
++    cpu->cfg.ext_smcsrind = true;
++    cpu->cfg.ext_sscsrind = true;
++    cpu->cfg.ext_svnapot = true;
++    cpu->cfg.ext_svpbmt = true;
++    cpu->cfg.ext_svinval = true;
++    cpu->cfg.ext_sstc = true;
++    cpu->cfg.ext_sscofpmf = true;
++    cpu->cfg.ext_ssdbltrp = true;
++    cpu->cfg.ext_ssnpm = true;
++    cpu->cfg.ext_smnpm = true;
++    cpu->cfg.ext_smmpm = true;
++    cpu->cfg.ext_sspm = true;
++    cpu->cfg.ext_supm = true;
++
++    /* The RISC-V Advanced Interrupt Architecture */
++    cpu->cfg.ext_smaia = true;
++    cpu->cfg.ext_ssaia = true;
++
++    /* RVA23 Profiles */
++    cpu->cfg.ext_zicbom = true;
++    cpu->cfg.ext_zicbop = true;
++    cpu->cfg.ext_zicboz = true;
++    cpu->cfg.ext_svade = true;
++
++#ifndef CONFIG_USER_ONLY
++    set_satp_mode_max_supported(cpu, VM_1_10_SV48);
++#endif
++}
++
+ #ifdef CONFIG_TCG
+ static void rv128_base_cpu_init(Object *obj)
+ {
+@@ -3261,6 +3331,8 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,  MXL_RV64,  rv64_veyron_v1_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU,
+                                                  MXL_RV64, rv64_xiangshan_nanhu_cpu_init),
++    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_KMH,
++                                                 MXL_RV64,  rv64_xiangshan_kmh_cpu_init),
+ #ifdef CONFIG_TCG
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,   MXL_RV128, rv128_base_cpu_init),
+ #endif /* CONFIG_TCG */
 -- 
-2.39.3
+2.34.1
 
 
