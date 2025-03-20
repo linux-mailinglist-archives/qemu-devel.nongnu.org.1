@@ -2,41 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB59FA69EB1
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 04:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8692DA69EAD
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 04:23:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tv6VB-0001Kl-PR; Wed, 19 Mar 2025 23:23:32 -0400
+	id 1tv6Ub-0001Hv-EI; Wed, 19 Mar 2025 23:22:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tv6U2-0001G0-JP
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 23:22:16 -0400
+ id 1tv6U3-0001G3-69
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 23:22:17 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tv6Tz-0004wZ-9b
- for qemu-devel@nongnu.org; Wed, 19 Mar 2025 23:22:13 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1tv6U0-0004wf-1S
+ for qemu-devel@nongnu.org; Wed, 19 Mar 2025 23:22:14 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8CxaWrXidtnGe+dAA--.5924S3;
- Thu, 20 Mar 2025 11:21:59 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxnmvdidtnI++dAA--.4477S3;
+ Thu, 20 Mar 2025 11:22:05 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMDx_MTWidtnEfVUAA--.47322S2;
- Thu, 20 Mar 2025 11:21:59 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMDx_MTWidtnEfVUAA--.47322S3;
+ Thu, 20 Mar 2025 11:22:05 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>,
 	Markus Armbruster <armbru@redhat.com>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v5 0/6] target/loongarch: Fix some issues reported from
- coccinelle
-Date: Thu, 20 Mar 2025 11:21:52 +0800
-Message-Id: <20250320032158.1762751-1-maobibo@loongson.cn>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 1/6] target/loongarch: Fix error handling of KVM feature
+ checks
+Date: Thu, 20 Mar 2025 11:21:53 +0800
+Message-Id: <20250320032158.1762751-2-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250320032158.1762751-1-maobibo@loongson.cn>
+References: <20250320032158.1762751-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMDx_MTWidtnEfVUAA--.47322S2
+X-CM-TRANSID: qMiowMDx_MTWidtnEfVUAA--.47322S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,58 +67,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch set solves errors reported by coccinelle tool with commands:
-  spatch --sp-file scripts/coccinelle/*.cocci --dir target/loongarch/
-  spatch --sp-file scripts/coccinelle/*.cocci --dir hw/loongarch/
+For some paravirt KVM features, if user forces to enable it however
+KVM does not support, qemu should fail to run and exit immediately,
+rather than continue to run. Here set error message and return directly
+in function kvm_arch_init_vcpu().
 
-The main problem is that qemu should fail to run when feature is forced
-to enabled however KVM does not support it, rather than report error and
-continue to run.
-
-Also there is fixup for cpu plug and unplug. If there is error when cpu
-is plug/unplug at runtime,  system should restore to previous state and
-continue to run.
-
+Fixes: 6edd2a9bec90 (target/loongarch/kvm: Implement LoongArch PMU extension)
+Fixes: 936c3f4d7916 (target/loongarch: Use auto method with LSX feature)
+Fixes: 5e360dabedb1 (target/loongarch: Use auto method with LASX feature)
+Fixes: 620d9bd0022e (target/loongarch: Add paravirt ipi feature detection)
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-  v4 ... v5:
-    1. Split patch2 in v4 into three small patches, two are fixup for error
-       handing when cpu plug/unplug fails so that system can continue to
-       run, one is to remove error_propagate() and refresh title.
-    2. Refresh changelog in last patch and remove fixes information
-       since it is impossible to happen.
+ target/loongarch/kvm/kvm.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-  v3 ... v4:
-    1. Add missed this cleanup with error and remove some local error
-       object.
-    2. Replace local error object with error_abort object in
-       virt_cpu_irq_init(), since its return value is not checked.
-
-  v2 ... v3:
-    1. Add missing modification replacing error_propagate() + error_setg()
-      with error_setg().
-    2. Some enhancement about error handling, handling error
-       symmetrically in many places
-
-  v1 ... v2:
-    1. Add fixes tag and change title with fix prefix in patch 1.
-    2. Replace error_propagate() with error_setg(), and return directly
-       for any error.
----
-Bibo Mao (6):
-  target/loongarch: Fix error handling of KVM feature checks
-  hw/loongarch/virt: Fix error handling in cpu plug
-  hw/loongarch/virt: Fix error handling in cpu unplug
-  hw/loongarch/virt: Eliminate error_propagate()
-  target/loongarch: Remove unnecessary temporary variable assignment
-  target/loongarch: Clean up virt_cpu_irq_init() error handling
-
- hw/loongarch/virt.c               | 60 +++++++++++++++++--------------
- target/loongarch/kvm/kvm.c        |  8 +++--
- target/loongarch/tcg/tlb_helper.c |  5 ++-
- 3 files changed, 42 insertions(+), 31 deletions(-)
-
-
-base-commit: 1dae461a913f9da88df05de6e2020d3134356f2e
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index 28735c80be..7f63e7c8fe 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -1081,7 +1081,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     int ret;
+     Error *local_err = NULL;
+ 
+-    ret = 0;
+     qemu_add_vm_change_state_handler(kvm_loongarch_vm_stage_change, cs);
+ 
+     if (!kvm_get_one_reg(cs, KVM_REG_LOONGARCH_DEBUG_INST, &val)) {
+@@ -1091,29 +1090,34 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     ret = kvm_cpu_check_lsx(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+     ret = kvm_cpu_check_lasx(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+     ret = kvm_cpu_check_lbt(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+     ret = kvm_cpu_check_pmu(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+     ret = kvm_cpu_check_pv_features(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+-    return ret;
++    return 0;
+ }
+ 
+ static bool loongarch_get_lbt(Object *obj, Error **errp)
 -- 
 2.39.3
 
