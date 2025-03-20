@@ -2,56 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD682A6A5AC
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 13:01:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94004A6A5D3
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 13:08:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvEZA-0004eB-Dp; Thu, 20 Mar 2025 08:00:04 -0400
+	id 1tvEfu-0007Rq-SJ; Thu, 20 Mar 2025 08:07:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tvEZ8-0004d4-0e
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:00:02 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1tvEfO-0007Kc-EL
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:06:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1tvEZ5-0000k1-TS
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:00:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Cc:
- Content-ID:Content-Description;
- bh=iTUgOih1W+j9jE44Mynov22ckBL2acr73g3M924Lyzc=; b=skuJZD9+m6y2UvXFG7DAeaJwMt
- CZmtB/JhhfGw5RuxGeLzshShl9ZLw4TXssvKibk73VcfZAnaffcyW1XIUKtVQ+F+4R4mMKgeKJmN6
- qFDnxvaQue9huorErnMS+R+vKUVosvdCJCNvXyiffvCq+E1AIjIQqwd8T0yXrFUAJCrV8jzsoXZto
- bJTWTqxM12J7QD+V2e19REYmNL8ZmwW4lYKtzRxQPHn/VNLhGFMA2qg34v71kO7CESLDOwpSlbkQ2
- oFSsCqXor2uhvfpgetnvz/sSOcE40bP7Wu9XdnaRBK7KaAfaM0i7ZvWTxD2ERUuAoBRxmyTUKGSEt
- DwWDwvNDkxq6byLQqlp/edBSBxw/0BHwr1PQ6RfX+/sD9xb2ixTcRbPNUyCK/Rdib3ETueS8bYbdx
- cD4+GS+/ieDPjPyFRhpPsJJ80RhxaAa354WgWNPlhfwacBaXG9tedogfJJcqIN5DEf+6rAaOCk9A0
- pD4LExVzEksaxKwtHqhx3838QrPZcn6YGUxlotdkQS1383cgZjDpT41VUinBIm7+W3G1pi+lTsV12
- J1TgV03Fds+PmHZxhI63JIqsleCnI5BSkdQf5r5zUxrUpqMhD+17RSRVWbbkWYcWyXR6fcV8xM4bW
- 0YFlPhq3gNVRz7MJv+IAfeWaHH7I8kimBbLHNKch0=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org, Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH] 9pfs: fix 'total_open_fd' decrementation
-Date: Thu, 20 Mar 2025 12:59:57 +0100
-Message-ID: <3118604.ePisdfWcQb@silver>
-In-Reply-To: <20250320115938.7a93f3fe@bahia>
-References: <E1tuqQb-004R61-AZ@kylie.crudebyte.com> <2166032.rzx9qK8laY@silver>
- <20250320115938.7a93f3fe@bahia>
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1tvEfK-0002Pd-06
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:06:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742472383;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uThQc2E8ragqKw6JjO9nyh1Qqr/jhvaLXLndjVDzmtU=;
+ b=a/KEs3XlBvwgFdVPZ37J29khqvcgYxyGUaVdVkid/uxKqIgFUJ+isSAJ2U160zMqo3UP5R
+ GJm+ZdB21EsW7/mnPCnxby78PoMwX/Ma+DZsiH8h8vKxpyVFsa2ZsQMti5+YHVI8jNVa/b
+ 6CyCH8MqMqeFrrYnOdnGTK4sQybArn4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-370-dkgkRUDNOLa-iKVGhphRLg-1; Thu, 20 Mar 2025 08:06:21 -0400
+X-MC-Unique: dkgkRUDNOLa-iKVGhphRLg-1
+X-Mimecast-MFC-AGG-ID: dkgkRUDNOLa-iKVGhphRLg_1742472380
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4394c747c72so4032515e9.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 05:06:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742472380; x=1743077180;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uThQc2E8ragqKw6JjO9nyh1Qqr/jhvaLXLndjVDzmtU=;
+ b=fwnAIimmdexV2JOv4KgAFnGifT6D4t4OD8wyxQSOHjR1fDAXJXVKm6K89qiz2nN/HT
+ XXxhpaK0rSnbrtSqNa2EL+9qID5t5lPxfY3QWeowE+vOMpDbG9N8PlXYgDjXaEjNsQ1p
+ 6i3Ene+u0fjMc+OqQbfGzzONMPBKU7lB3x04Zfl52JDbFvHn8I7OiYNEyzzAP6iuDp2M
+ G45loKtC+1qj4UGiHh16fEDHjo5rCeVmC4Xt+Pb2/IJmun7aOn0lhj0EBhjcU0gJNJYB
+ 4TG9UB4uV9eJYzBHE8hpKQSoZYLE9u1P4rXxK25dJ6ZLh0TFj0xOZ7oIX9al9/JNfFlj
+ ynzQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVOpoCFmOYL9dKx3mcKSawCoT3E5LXF8Z5004A0qHHc2ukgc5CcI73lLJpYALuFRpVm8GoYbZ5KsrPB@nongnu.org
+X-Gm-Message-State: AOJu0YzMD5lqFHM+HSqh2L4rh67FizMfoCauCw23fJTB0vQAmOTGWjLQ
+ 28VM669skVj7nlzNOeR6gffIPdAAqreTDn1DJkby06GMB/3IJU+g8steBbHxbmFnrsUhea62J1j
+ glLQJ2DHOyc/5dd/DlWL7HQS1HgJRhdVBPCqislARKqU987yH0UruRCReqWPlqhBQFVKskzQVj5
+ qP7t1JcLTY/82V4TGN9UUFA+/RRU+QwsQEFR4=
+X-Gm-Gg: ASbGncv9vabIXZc4yaUXv9Z7gQwu0xH+xk7EoU9BEFmF1pcM9s4bTaC9ectZsCUV6Zn
+ nuCUdqABU03p/FxJ04EGGg/sq3jbg9N2CtFxQjRsp1Pyy5i0llmO7+zbRTx2J26+/s/0TD5wcIv
+ o=
+X-Received: by 2002:a05:600c:cc7:b0:43d:ed:ad07 with SMTP id
+ 5b1f17b1804b1-43d4381697cmr70538395e9.29.1742472379754; 
+ Thu, 20 Mar 2025 05:06:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+Wv0RCxiziDtrHYCYRBWqDqbk+OD3++qJY3RinUuCK0Ee+vmfMysXVGnG47/p+o0hYbBxn5ac8QXESWmvu3s=
+X-Received: by 2002:a05:600c:cc7:b0:43d:ed:ad07 with SMTP id
+ 5b1f17b1804b1-43d4381697cmr70537845e9.29.1742472379326; Thu, 20 Mar 2025
+ 05:06:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20250307134203.29443-1-farosas@suse.de>
+ <20250307134203.29443-2-farosas@suse.de>
+ <Z8ssc0NETt9KJjTG@x1.local> <87tt84u0d2.fsf@suse.de>
+ <Z8tv53G5s9MLYv6f@x1.local>
+ <87o6y9t14g.fsf@suse.de> <Z88DmvrNrW5Q1n7y@x1.local> <87ecz4adoi.fsf@suse.de>
+In-Reply-To: <87ecz4adoi.fsf@suse.de>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Thu, 20 Mar 2025 17:36:02 +0530
+X-Gm-Features: AQ5f1JrpZa0UbbiwaPFQ4n7oSLVj5lG97kzG7vr3R7ZlPo9GPKT5opMnj3okYPE
+Message-ID: <CAE8KmOwkLoPB=wLuE5WC0HERzmUqAqjP9ZECTvxBELaN31yBVQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] migration: Add some documentation for multifd
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,88 +106,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thursday, March 20, 2025 11:59:38 AM CET Greg Kurz wrote:
-> On Thu, 20 Mar 2025 10:48:11 +0100
-> Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
-> 
-> > On Wednesday, March 19, 2025 7:52:51 PM CET Greg Kurz wrote:
-> > > On Wed, 19 Mar 2025 13:14:27 +0100
-> > > Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
-> > > 
-> > > > On Wednesday, March 19, 2025 11:08:58 AM CET Christian Schoenebeck wrote:
-> > > > > According to 'man 2 close' errors returned by close() should only be used
-> > > > > for either diagnostic purposes or for catching data loss due to a previous
-> > > > > write error, as an error result of close() usually indicates a deferred
-> > > > > error of a previous write operation.
-> > > > > 
-> > > > > Therefore not decrementing 'total_open_fd' on a close() error is wrong
-> > > > > and would yield in a higher open file descriptor count than actually the
-> > > > > case, leading to 9p server reclaiming open file descriptors too soon.
-> > > > > 
-> > > > > Based-on: <20250312152933.383967-7-groug@kaod.org>
-> > > > > Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> > > > > ---
-> > > > >  hw/9pfs/9p.c     | 14 ++++++++------
-> > > > >  hw/9pfs/codir.c  |  3 ++-
-> > > > >  hw/9pfs/cofile.c |  3 ++-
-> > > > >  3 files changed, 12 insertions(+), 8 deletions(-)
-> > [...]
-> > > > > diff --git a/hw/9pfs/codir.c b/hw/9pfs/codir.c
-> > > > > index 2068a4779d..f1fd97c8a7 100644
-> > > > > --- a/hw/9pfs/codir.c
-> > > > > +++ b/hw/9pfs/codir.c
-> > > > > @@ -353,7 +353,8 @@ int coroutine_fn v9fs_co_closedir(V9fsPDU *pdu, V9fsFidOpenState *fs)
-> > > > >                  err = -errno;
-> > > > >              }
-> > > > >          });
-> > > > > -    if (!err) {
-> > > > > +    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
-> > > > > +    if (!err || errno != EBADF) {
-> > > > >          total_open_fd--;
-> > > > >      }
-> > > > >      return err;
-> > > > 
-> > > > Or, as EBADF is somewhat unexpected here (assuming v9fs_co_closedir() was
-> > > > called by checking for a valid file handle), maybe it would make sense to log
-> > > > this?
-> > > > 
-> > > 
-> > > Getting EBADF could be the result of some unrelated code that closed
-> > > the fd from another thread or the 9p code using some stale fid structure
-> > > or some other serious bug. I'd personally g_assert().
-> > 
-> > Wouldn't that be too harsh? Killing QEMU should be last resort if continuing
-> > to run resulted in a security threat or undefined behaviour. I'm not sure that
-> > would apply here.
-> > 
-> 
-> Getting EBADF on a file descriptor this code is supposed to own already
-> smells like undefined behavior IMHO and, hopefully, such an assert should
-> never trigger, but I understand your concern and it's up to you to decide :-)
+On Tue, 11 Mar 2025 at 00:59, Fabiano Rosas <farosas@suse.de> wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> > To me, this is a fairly important question to ask.  Fundamentally, the very
+> > initial question is why do we need periodic flush and sync at all.  It's
+> > because we want to make sure new version of pages to land later than old
+> > versions.
+...
+> > Then v1 and v2 of the page P are ordered.
+> > If without the message on the main channel:
+> > Then I don't see what protects reorder of arrival of messages like:
+...
+> That's all fine. As long as the recv part doesn't see them out of
+> order. I'll try to write some code to confirm so I don't waste too much
+> of your time.
 
-I think in this case it's better to just log this case. I'll go for a big fat
-warning though:
+* Relying on this receive order seems like a passive solution. On one
+side we are saying there is no defined 'requirement' on the network or
+compute capacity/quality for migration. ie. compute and network can be
+as bad as possible, yet migration shall always work reliably.
 
-    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
-    if (unlikely(err && errno == EBADF)) {
-        /* unexpected case as we should have checked for a valid file handle */
-        error_report("9pfs: WARNING: v9fs_co_close() failed with EBADF");
-    } else {
-        total_open_fd--;
-    }
+* When receiving different versions of pages, couldn't multifd_recv
+check the latest version present in guest RAM and accept the incoming
+version only if it is fresher than the already present one? ie. if v1
+arrives later than v2 on the receive side, the receive side
+could/should discard v1 because v2 is already received.
 
-That's because I currently don't see how this could be exploited, and assert()
-would promote this case to a DoS, which I think is not justified.
-
-I ran some tests here, with assert() that is, and at least it never triggered
-for me.
-
-So I say let's go this way, the error should be prominent enough, note that's
-error_report(), not error_report_once(). So if people are able to trigger 
-this, I am sure they'll annoyed enough to report it. On the long term this
-could still be promoted to an assert().
-
-/Christian
-
+Thank you.
+---
+  - Prasad
 
 
