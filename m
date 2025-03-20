@@ -2,89 +2,147 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C470A6AF13
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 21:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC08A6AE7D
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 20:28:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvMOG-0000sz-Ve; Thu, 20 Mar 2025 16:21:21 -0400
+	id 1tvLX2-0003cN-F6; Thu, 20 Mar 2025 15:26:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tvMOD-0000sa-Pu
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 16:21:18 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1tvMOA-0006iT-DG
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 16:21:17 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5e5e8274a74so1939269a12.1
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 13:21:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742502071; x=1743106871; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0HtNq6Er9OBg+aCTJqYT3cnco2Ah8ZEAsHEr6xP5S38=;
- b=OmH396G5xbuFJSUZS1m5B2brkVK70WzvjGV1VGDp+/0SJ7YAo839Fa5iPhLp5Zqjlx
- kgiS0ulf5GpVvSBDjLeFgd02sJFjbX+d+RDL+VypAYxohy7kFVXMA9jcxXQlqzxcKuzs
- IVgUmzSrA1XL9oy0S7RTnJSkrehzLhKb4KGpVtgVP22DqK+JPN6rGD1upepCNDBTNmuw
- S9cLj+goEIOvIy+7Vh+cADDmhi3ImXPEFv/GWltNeejKLPf5rfRXQOiCm01bxScDo2Ub
- UtnDXQboLGFgP61nNs9ai+PEXHK7Zt/BopPtLa7yYa3/rTCMztokwyoTfjua/Kp148az
- /n9Q==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tvLWz-0003bX-Pw
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 15:26:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tvLWw-0002kC-Fz
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 15:26:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742498771;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=s7teVjlOaFHdrTbcfvvH3mP6MNox6Ep586N9QIuF9ew=;
+ b=VEXHOHv5nSvLmWeOBpwW/rqkUNp1MmQOnJf3qpNYRCxuQyJyOzinKohlRuvpk/uQbPEhDc
+ JQCuajgxCMBLZFYsfdjahDEY8ZGAZeOFODzFH9tU8p27mI4Qa9dI26AvU6QEOEloolxg0x
+ wmjKJnAD+iQsQ2DJEqbFTeGkbTYq5u8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-304-rpNSvzz-McebOPw0VncJRw-1; Thu, 20 Mar 2025 15:26:10 -0400
+X-MC-Unique: rpNSvzz-McebOPw0VncJRw-1
+X-Mimecast-MFC-AGG-ID: rpNSvzz-McebOPw0VncJRw_1742498769
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43935e09897so8020645e9.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 12:26:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742502071; x=1743106871;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0HtNq6Er9OBg+aCTJqYT3cnco2Ah8ZEAsHEr6xP5S38=;
- b=D9q+jJ3QYLqPSRdMfjqewX4N33cxjB49InT/VFcbSR3YwgFeWk2S0TBghJi/HgYjcX
- 7wxd8BgjqaQztywuyeg600jcZGDABPb7Kv/OaASTbYSyk1CrcXbhy0QEUjTYHHln0Pkk
- jJwEkQ8ElJ6sTJUz7tbeEShyWoh74CrYxFcPosjZ3lIo3OXOUw0vlgVghMpgm7w5DVWs
- Ph9UGuG0CwLKRq4r4xqpzA9x3DcDtpiQGMoeoUNic9qouGUgYclaPl5K69/Bw6U7uewo
- kk1haRiUvzr7ARnDnwOVQqYdqHh++ZGDLoMYPGT1FVg652oQSEEEPheZqniR5HBztQqj
- DDBA==
-X-Gm-Message-State: AOJu0YzzFY4kV2gk9yNpqQXAE45m37FtZUaAbmr2BmOT5f+gliYqMQGP
- XZX/pi9yt4p9BaShge3QJirEh3SKwp+XG8Mu9qbz1iYhlA1yrRfBMUqO3Q==
-X-Gm-Gg: ASbGnctfQvWKW3sd1X4ALWIHuU9ZSoaNY83fVtdJ0pab5GOLQkjW0adzAalK1Jj8rCj
- 3lVlyMkEF6nOgmSnFTwPwqud4wzZ1/4+LjJHScXrYbb28xX75Uh7cJad57D7Weuu0tl8G3ySK8u
- BlQZ2BJCE/OFztBTK8h2UtRAhAPBxUMQLomypdAtSmvGBXLXCRqbbrzj4kQvmYfKRU7ZH4YUGKr
- YG2MUlI1ENbrUuxJ8E3iOO3K1VA/CrjYIM0yDAKvyaLMG37kQosP06Vp74JStjqtbH8NnKf5mGt
- HmS2FuL2cjiHAWjaUQZ+HTh4nUpxYkG7/+nzNdL8tR9ujMJk5R3O4vThk+xPZq6NZAwycbuo6kT
- nF2cDASYSSBvst88t+o/qJ6m7EWL4E67NwT5n6TheizIOyRus1i9f
-X-Google-Smtp-Source: AGHT+IGp6saZClzggLsMjgImc9D7yvy7mGe6CVsDK+7kuQItrltyoWXmbi2k5MiOSVlaNAl9miW2dw==
-X-Received: by 2002:a05:6402:3508:b0:5e5:c0e7:f428 with SMTP id
- 4fb4d7f45d1cf-5ebcd24cebfmr634882a12.0.1742502070982; 
- Thu, 20 Mar 2025 13:21:10 -0700 (PDT)
-Received: from ?IPv6:::1?
- (dynamic-2a02-3100-1a2e-5200-69d2-56f6-a5af-50a8.310.pool.telefonica.de.
- [2a02:3100:1a2e:5200:69d2:56f6:a5af:50a8])
+ d=1e100.net; s=20230601; t=1742498769; x=1743103569;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=s7teVjlOaFHdrTbcfvvH3mP6MNox6Ep586N9QIuF9ew=;
+ b=k0vKLx0NNGaqBn1knslkSCn+XkAjIgTTscWPyTA0ObefH3oWuiiSowqyMxLhl54M12
+ +FmqsDPKDl2dZl3hieMRfXN+aYdJovPvuwpao4Jdf1h4vtVIstSulPI1zYtlfM2B5SWH
+ CUFlEiNnl8GHFNEyd3qjX2lz93uX0Qql0Z8Lsu9w5mDxEDIPSG3byHQcra/ooCEsLXCD
+ Hd+aOm0kFSSAdrABCVdD+2ILrETc5XqM0ps/iEPTuiAlzrLZHFg+JQW4RkyrVVSO9c7s
+ YvxGSgOtrfbH6ZhDrcuUdCcJixBIdB5rcMj1v6Ko14LP9hCUlZ4/IiI09+ilH8vLimec
+ Fhjg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXdh/DX3tbSxCBj2dVAq2Tfgwa4W6BSk7JIsgX3RNII3lDeq3xJ1qnB92NKddi2G/X9ZPijT9Wu/3k5@nongnu.org
+X-Gm-Message-State: AOJu0YzbHlF8jQS4ZzIoItDVnSWT+w2+Tu5JFTrXkW5HLO5dyQEzRUG7
+ caWhHq4g3Sqo76f4msBAJ0ySv4+9OdK8Swz2WdbnlRc31OE0x/h4pV280JAfzsWueqmXsIWoUbD
+ vJqNm3ffujhDQH1J67g27xAqb5AbzPvanoEA8ZQoZGdhZQA3t92HR
+X-Gm-Gg: ASbGncvKaVYYvmhWfPjKT6YdkTWAeuXOv4HSiLR+GjjhkHPCszZIz0xebbQFBFOEtVf
+ 31ejTtpUb4YogR1XKnCkYaUZalimzuoMf8D8DUmcfn8mYkdaSd1rHgz8hTV/x5D35gEfxSM0GDz
+ hvoZczaoi3ukAjgc06HEZv7LU2viaVUE4h0SfghP7Zg4sVwWi8KRuxn0TS78Ik6TLozD6WwawKX
+ kQ+yL6r1SZCOJDeSnwnI7vXToY1KhgMkvU4oqL39acPIlmgHf4nByU0L4o9rWNumjJd1t002Y0a
+ w3LN4aIJ0PUJGx7jyHmPqREJyTs9113YmgFDpQHSgA3DZiXkYFGGnQ==
+X-Received: by 2002:a05:600c:3c82:b0:43d:45a:8fbb with SMTP id
+ 5b1f17b1804b1-43d50a1d1ebmr2869235e9.22.1742498768461; 
+ Thu, 20 Mar 2025 12:26:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGPqxJCsvG7W6ObNuhlzZh6zLT8jI7Dl4chiqwnicX4zSyAaTAZRmpiLRtUOZUiQzRUNu3u7Q==
+X-Received: by 2002:a05:600c:3c82:b0:43d:45a:8fbb with SMTP id
+ 5b1f17b1804b1-43d50a1d1ebmr2869085e9.22.1742498767927; 
+ Thu, 20 Mar 2025 12:26:07 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ebcd0df501sm236894a12.69.2025.03.20.13.21.10
+ 5b1f17b1804b1-43d43fdac9dsm56513695e9.30.2025.03.20.12.26.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Mar 2025 13:21:10 -0700 (PDT)
-Date: Thu, 20 Mar 2025 19:22:35 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Ilya Chichkov <i.chichkov@yadro.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-CC: nikita.shubin@maquefel.me
-Subject: Re: [PATCH v2] hw/rtc: Add RTC PCF8563 module
-In-Reply-To: <20250310113635.349822-1-i.chichkov@yadro.com>
-References: <20250310113635.349822-1-i.chichkov@yadro.com>
-Message-ID: <0F90EED3-5010-4C2F-90F3-9C0C40A5C0ED@gmail.com>
+ Thu, 20 Mar 2025 12:26:07 -0700 (PDT)
+Message-ID: <c36e00cf-c440-47c4-abba-3f312e1fe27e@redhat.com>
+Date: Thu, 20 Mar 2025 20:26:06 +0100
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-10.1 13/32] vfio: Move VFIOAddressSpace helpers into
+ container-base.c
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Alex Williamson <alex.williamson@redhat.com>
+Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
+ John Levon <levon@movementarian.org>
+References: <20250318095415.670319-1-clg@redhat.com>
+ <20250318095415.670319-14-clg@redhat.com>
+ <SJ0PR11MB67448F80023E79545BE260AF92D82@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <SJ0PR11MB67448F80023E79545BE260AF92D82@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,878 +158,445 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
++John
+
+On 3/20/25 10:36, Duan, Zhenzhong wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Subject: [PATCH for-10.1 13/32] vfio: Move VFIOAddressSpace helpers into
+>> container-base.c
+>>
+>> VFIOAddressSpace is a common object used by VFIOContainerBase which is
+>> declared in "hw/vfio/vfio-container-base.h". Move the VFIOAddressSpace
+>> related services into "container-base.c".
+>>
+>> While at it, rename :
+>>
+>>   vfio_get_address_space -> vfio_address_space_get
+>>   vfio_put_address_space -> vfio_address_space_put
+>>
+>> to better reflect the namespace these routines belong to.
+>>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+>> include/hw/vfio/vfio-common.h         |  6 ---
+>> include/hw/vfio/vfio-container-base.h |  5 ++
+>> hw/ppc/spapr_pci_vfio.c               |  5 +-
+>> hw/vfio/common.c                      | 66 -------------------------
+>> hw/vfio/container-base.c              | 69 +++++++++++++++++++++++++++
+>> hw/vfio/container.c                   |  6 +--
+>> hw/vfio/iommufd.c                     |  6 +--
+>> hw/vfio/trace-events                  |  4 +-
+>> 8 files changed, 85 insertions(+), 82 deletions(-)
+>>
+>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+>> index
+>> e23626856e6ff96939a4660f059833f166aa88e9..2ea7f9c6f6e7e752699954ac236
+>> cac0bbe834b39 100644
+>> --- a/include/hw/vfio/vfio-common.h
+>> +++ b/include/hw/vfio/vfio-common.h
+>> @@ -120,18 +120,12 @@ struct VFIODeviceOps {
+>> #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO \
+>>              TYPE_HOST_IOMMU_DEVICE_IOMMUFD "-vfio"
+>>
+>> -VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
+>> -void vfio_put_address_space(VFIOAddressSpace *space);
+>> -void vfio_address_space_insert(VFIOAddressSpace *space,
+>> -                               VFIOContainerBase *bcontainer);
+>> -
+>> void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
+>> void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
+>> void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index);
+>> bool vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+>>                              int action, int fd, Error **errp);
+>>
+>> -void vfio_reset_handler(void *opaque);
+>> struct vfio_device_info *vfio_get_device_info(int fd);
+>> bool vfio_device_is_mdev(VFIODevice *vbasedev);
+>> bool vfio_device_hiod_realize(VFIODevice *vbasedev, Error **errp);
+>> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-
+>> container-base.h
+>> index
+>> 4cff9943ab4861a25d07b5ebd1200509ebfab12d..27668879f5ca77e558a2bda954
+>> 8c8e60afefe794 100644
+>> --- a/include/hw/vfio/vfio-container-base.h
+>> +++ b/include/hw/vfio/vfio-container-base.h
+>> @@ -71,6 +71,11 @@ typedef struct VFIORamDiscardListener {
+>>      QLIST_ENTRY(VFIORamDiscardListener) next;
+>> } VFIORamDiscardListener;
+>>
+>> +VFIOAddressSpace *vfio_address_space_get(AddressSpace *as);
+>> +void vfio_address_space_put(VFIOAddressSpace *space);
+>> +void vfio_address_space_insert(VFIOAddressSpace *space,
+>> +                               VFIOContainerBase *bcontainer);
+>> +
+>> int vfio_container_dma_map(VFIOContainerBase *bcontainer,
+>>                             hwaddr iova, ram_addr_t size,
+>>                             void *vaddr, bool readonly);
+>> diff --git a/hw/ppc/spapr_pci_vfio.c b/hw/ppc/spapr_pci_vfio.c
+>> index
+>> 1722a5bfa3983d42baac558f22410e36eed375f5..e318d0d912f3e90d1289e4bc21
+>> 95bf68418e5206 100644
+>> --- a/hw/ppc/spapr_pci_vfio.c
+>> +++ b/hw/ppc/spapr_pci_vfio.c
+>> @@ -24,7 +24,6 @@
+>> #include "hw/pci-host/spapr.h"
+>> #include "hw/pci/msix.h"
+>> #include "hw/pci/pci_device.h"
+>> -#include "hw/vfio/vfio-common.h"
+>> #include "hw/vfio/vfio-container.h"
+>> #include "qemu/error-report.h"
+>> #include CONFIG_DEVICES /* CONFIG_VFIO_PCI */
+>> @@ -86,7 +85,7 @@ static int vfio_eeh_container_op(VFIOContainer *container,
+>> uint32_t op)
+>>
+>> static VFIOContainer *vfio_eeh_as_container(AddressSpace *as)
+>> {
+>> -    VFIOAddressSpace *space = vfio_get_address_space(as);
+>> +    VFIOAddressSpace *space = vfio_address_space_get(as);
+>>      VFIOContainerBase *bcontainer = NULL;
+>>
+>>      if (QLIST_EMPTY(&space->containers)) {
+>> @@ -106,7 +105,7 @@ static VFIOContainer
+>> *vfio_eeh_as_container(AddressSpace *as)
+>>      }
+>>
+>> out:
+>> -    vfio_put_address_space(space);
+>> +    vfio_address_space_put(space);
+>>      return container_of(bcontainer, VFIOContainer, bcontainer);
+>> }
+>>
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index
+>> 0e3746eddd1c08e98bf57a59d542e158487d346e..08e2494d7c4a9858657724730
+>> b2829290fb3f197 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -36,7 +36,6 @@
+>> #include "qemu/main-loop.h"
+>> #include "qemu/range.h"
+>> #include "system/kvm.h"
+>> -#include "system/reset.h"
+>> #include "system/runstate.h"
+>> #include "trace.h"
+>> #include "qapi/error.h"
+>> @@ -48,8 +47,6 @@
+>>
+>> VFIODeviceList vfio_device_list =
+>>      QLIST_HEAD_INITIALIZER(vfio_device_list);
+>> -static QLIST_HEAD(, VFIOAddressSpace) vfio_address_spaces =
+>> -    QLIST_HEAD_INITIALIZER(vfio_address_spaces);
+>>
+>> #ifdef CONFIG_KVM
+>> /*
+>> @@ -1304,24 +1301,6 @@ const MemoryListener vfio_memory_listener = {
+>>      .log_sync = vfio_listener_log_sync,
+>> };
+>>
+>> -void vfio_reset_handler(void *opaque)
+>> -{
+>> -    VFIODevice *vbasedev;
+>> -
+>> -    trace_vfio_reset_handler();
+>> -    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+>> -        if (vbasedev->dev->realized) {
+>> -            vbasedev->ops->vfio_compute_needs_reset(vbasedev);
+>> -        }
+>> -    }
+>> -
+>> -    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+>> -        if (vbasedev->dev->realized && vbasedev->needs_reset) {
+>> -            vbasedev->ops->vfio_hot_reset_multi(vbasedev);
+>> -        }
+>> -    }
+>> -}
+>> -
+>> int vfio_kvm_device_add_fd(int fd, Error **errp)
+>> {
+>> #ifdef CONFIG_KVM
+>> @@ -1380,51 +1359,6 @@ int vfio_kvm_device_del_fd(int fd, Error **errp)
+>>      return 0;
+>> }
+>>
+>> -VFIOAddressSpace *vfio_get_address_space(AddressSpace *as)
+>> -{
+>> -    VFIOAddressSpace *space;
+>> -
+>> -    QLIST_FOREACH(space, &vfio_address_spaces, list) {
+>> -        if (space->as == as) {
+>> -            return space;
+>> -        }
+>> -    }
+>> -
+>> -    /* No suitable VFIOAddressSpace, create a new one */
+>> -    space = g_malloc0(sizeof(*space));
+>> -    space->as = as;
+>> -    QLIST_INIT(&space->containers);
+>> -
+>> -    if (QLIST_EMPTY(&vfio_address_spaces)) {
+>> -        qemu_register_reset(vfio_reset_handler, NULL);
+>> -    }
+>> -
+>> -    QLIST_INSERT_HEAD(&vfio_address_spaces, space, list);
+>> -
+>> -    return space;
+>> -}
+>> -
+>> -void vfio_put_address_space(VFIOAddressSpace *space)
+>> -{
+>> -    if (!QLIST_EMPTY(&space->containers)) {
+>> -        return;
+>> -    }
+>> -
+>> -    QLIST_REMOVE(space, list);
+>> -    g_free(space);
+>> -
+>> -    if (QLIST_EMPTY(&vfio_address_spaces)) {
+>> -        qemu_unregister_reset(vfio_reset_handler, NULL);
+>> -    }
+>> -}
+>> -
+>> -void vfio_address_space_insert(VFIOAddressSpace *space,
+>> -                               VFIOContainerBase *bcontainer)
+>> -{
+>> -    QLIST_INSERT_HEAD(&space->containers, bcontainer, next);
+>> -    bcontainer->space = space;
+>> -}
+>> -
+>> struct vfio_device_info *vfio_get_device_info(int fd)
+>> {
+>>      struct vfio_device_info *info;
+>> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+>> index
+>> 749a3fd29dd6fc9143f14edf7e4ac6238315fcce..83e83ab9e67de8b004dfaf0067e
+>> 4c466a6c88451 100644
+>> --- a/hw/vfio/container-base.c
+>> +++ b/hw/vfio/container-base.c
+>> @@ -13,7 +13,76 @@
+>> #include "qemu/osdep.h"
+>> #include "qapi/error.h"
+>> #include "qemu/error-report.h"
+>> +#include "system/reset.h"
+>> #include "hw/vfio/vfio-container-base.h"
+>> +#include "hw/vfio/vfio-common.h" /* for vfio_device_list */
+>> +#include "trace.h"
+>> +
+>> +static QLIST_HEAD(, VFIOAddressSpace) vfio_address_spaces =
+>> +    QLIST_HEAD_INITIALIZER(vfio_address_spaces);
+>> +
+>> +static void vfio_reset_handler(void *opaque)
+>> +{
+>> +    VFIODevice *vbasedev;
+>> +
+>> +    trace_vfio_reset_handler();
+>> +    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+>> +        if (vbasedev->dev->realized) {
+>> +            vbasedev->ops->vfio_compute_needs_reset(vbasedev);
+>> +        }
+>> +    }
+>> +
+>> +    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+>> +        if (vbasedev->dev->realized && vbasedev->needs_reset) {
+>> +            vbasedev->ops->vfio_hot_reset_multi(vbasedev);
+>> +        }
+>> +    }
+>> +}
+> 
+> This is not an address space scoped function, 
+
+yep.
+
+AIUI, pass-through devices of a VM are not necessarily in the same
+group and we need to scan all groups/address_spaces when the machine
+is reset.
+
+There use to be a long comment explaining the context but we lost it
+along the way. I will add it back :
+
+   /*
+    * We want to differentiate hot reset of mulitple in-use devices vs hot reset
+    * of a single in-use device.  VFIO_DEVICE_RESET will already handle the case
+    * of doing hot resets when there is only a single device per bus.  The in-use
+    * here refers to how many VFIODevices are affected.  A hot reset that affects
+    * multiple devices, but only a single in-use device, means that we can call
+    * it from our bus ->reset() callback since the extent is effectively a single
+    * device.  This allows us to make use of it in the hotplug path.  When there
+    * are multiple in-use devices, we can only trigger the hot reset during a
+    * system reset and thus from our reset handler.  We separate _one vs _multi
+    * here so that we don't overlap and do a double reset on the system reset
+    * path where both our reset handler and ->reset() callback are used.  Calling
+    * _one() will only do a hot reset for the one in-use devices case, calling
+    * _multi() will do nothing if a _one() would have been sufficient.
+    */
+
+See commit f16f39c3fc97 ("Implement PCI hot reset").
+
+> no sure if better to move to helper.c or common.c
+
+This is a machine scope "helper" calling VFIODevice handlers, may be in
+device.c  ?
 
 
-Am 10=2E M=C3=A4rz 2025 11:36:34 UTC schrieb Ilya Chichkov <i=2Echichkov@y=
-adro=2Ecom>:
->Add PCF8563 a real-time clock with calendar and I2C interface=2E
->This commit adds support for interfacing with it and implements
->functionality of setting timer, alarm, reading and writing time=2E
->
->Signed-off-by: Ilya Chichkov <i=2Echichkov@yadro=2Ecom>
->---
->v1->v2
->Phil:
->- Add hot reset
->- Fix trace message
->- Add testing coverage with qtest
->
->Bernhard:
->- Move datasheet link to source code top comment section
->- Fix typos
->- Update licence identifier to SPDX
->- Remove unused import libraries
->- Change OBJECT_CHECK to OBJECT_DECLARE_SIMPLE_TYPE
->- Remove outdated comment
->- Rename i2c to parent_obj
->- Moved get_time inside capture_time function that is
->  called only when I2C request starts
->- Add fields inside VMStateDescription
->- Removed pcf8563_realize
->- Change type_init to DEFINE_TYPES
->---
-> hw/rtc/Kconfig       |   5 +
-> hw/rtc/meson=2Ebuild   |   1 +
-> hw/rtc/pcf8563_rtc=2Ec | 740 +++++++++++++++++++++++++++++++++++++++++++
-> hw/rtc/trace-events  |  12 +
-> 4 files changed, 758 insertions(+)
-> create mode 100644 hw/rtc/pcf8563_rtc=2Ec
->
->diff --git a/hw/rtc/Kconfig b/hw/rtc/Kconfig
->index b90c2e510a=2E=2E4e7a1f75ef 100644
->--- a/hw/rtc/Kconfig
->+++ b/hw/rtc/Kconfig
->@@ -27,5 +27,10 @@ config GOLDFISH_RTC
-> config LS7A_RTC
->     bool
->=20
->+config PCF8563_RTC
->+    bool
->+    depends on I2C
->+    default y if I2C_DEVICES
->+
-> config STM32_RTC
->     bool
->\ No newline at end of file
->diff --git a/hw/rtc/meson=2Ebuild b/hw/rtc/meson=2Ebuild
->index b6bb7436c7=2E=2E6180ffc6d9 100644
->--- a/hw/rtc/meson=2Ebuild
->+++ b/hw/rtc/meson=2Ebuild
->@@ -13,4 +13,5 @@ system_ss=2Eadd(when: 'CONFIG_GOLDFISH_RTC', if_true: f=
-iles('goldfish_rtc=2Ec'))
-> system_ss=2Eadd(when: 'CONFIG_LS7A_RTC', if_true: files('ls7a_rtc=2Ec'))
-> system_ss=2Eadd(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-r=
-tc=2Ec'))
-> system_ss=2Eadd(when: 'CONFIG_MC146818RTC', if_true: files('mc146818rtc=
-=2Ec'))
->+system_ss=2Eadd(when: 'CONFIG_PCF8563_RTC', if_true: files('pcf8563_rtc=
-=2Ec'))
-> system_ss=2Eadd(when: 'CONFIG_STM32_RTC', if_true: files('stm32-rtc=2Ec'=
-))
->diff --git a/hw/rtc/pcf8563_rtc=2Ec b/hw/rtc/pcf8563_rtc=2Ec
->new file mode 100644
->index 0000000000=2E=2E195b697598
->--- /dev/null
->+++ b/hw/rtc/pcf8563_rtc=2Ec
->@@ -0,0 +1,740 @@
->+// SPDX-License-Identifier: GPL-2=2E0-or-later
->+/*
->+ * Real-time clock/calendar PCF8563 with I2C interface=2E
->+ *
->+ * Datasheet: https://www=2Enxp=2Ecom/docs/en/data-sheet/PCF8563=2Epdf
->+ *
->+ * Author (c) 2024 Ilya Chichkov <i=2Echichkov@yadro=2Ecom>
->+ */
->+
->+#include "qemu/osdep=2Eh"
->+#include "hw/sysbus=2Eh"
->+#include "hw/register=2Eh"
->+#include "hw/registerfields=2Eh"
->+#include "hw/irq=2Eh"
->+#include "qemu/bitops=2Eh"
->+#include "hw/qdev-properties=2Eh"
->+#include "qemu/timer=2Eh"
->+#include "hw/i2c/i2c=2Eh"
->+#include "qemu/bcd=2Eh"
->+#include "qom/object=2Eh"
->+#include "sysemu/sysemu=2Eh"
->+#include "sysemu/rtc=2Eh"
->+#include "migration/vmstate=2Eh"
->+#include "qapi/visitor=2Eh"
->+
->+#include "trace=2Eh"
->+
->+#define TYPE_PCF8563 "pcf8563"
->+OBJECT_DECLARE_SIMPLE_TYPE(Pcf8563State, PCF8563)
->+
->+#define  PCF8563_CS1            0x00
->+#define  PCF8563_CS2            0x01
->+#define  PCF8563_VLS            0x02
->+#define  PCF8563_MINUTES        0x03
->+#define  PCF8563_HOURS          0x04
->+#define  PCF8563_DAYS           0x05
->+#define  PCF8563_WEEKDAYS       0x06
->+#define  PCF8563_CENTURY_MONTHS 0x07
->+#define  PCF8563_YEARS          0x08
->+#define  PCF8563_MINUTE_A       0x09
->+#define  PCF8563_HOUR_A         0x0A
->+#define  PCF8563_DAY_A          0x0B
->+#define  PCF8563_WEEKDAY_A      0x0C
->+#define  PCF8563_CLKOUT_CTL     0x0D
->+#define  PCF8563_TIMER_CTL      0x0E
->+#define  PCF8563_TIMER          0x0F
->+
->+#define MINUTES_IN_HOUR 60
->+#define HOURS_IN_DAY 24
->+#define DAYS_IN_MONTH 31
->+#define DAYS_IN_WEEK 7
->+
->+REG8(PCF8563_CS1, 0x00)
->+    FIELD(PCF8563_CS1, RSVD0,  0,  3)
->+    FIELD(PCF8563_CS1, TESTC,  3,  1)
->+    FIELD(PCF8563_CS1, RSVD1,  4,  1)
->+    FIELD(PCF8563_CS1, STOP,   5,  1)
->+    FIELD(PCF8563_CS1, RSVD2,  6,  1)
->+    FIELD(PCF8563_CS1, TEST1,  7,  1)
->+
->+REG8(PCF8563_CS2, 0x01)
->+    FIELD(PCF8563_CS2, TIE,   0,  1)
->+    FIELD(PCF8563_CS2, AIE,   1,  1)
->+    FIELD(PCF8563_CS2, TF,    2,  1)
->+    FIELD(PCF8563_CS2, AF,    3,  1)
->+    FIELD(PCF8563_CS2, TI_TP, 4,  1)
->+    FIELD(PCF8563_CS2, RSVD,  5,  3)
->+
->+REG8(PCF8563_VLS, 0x02)
->+    FIELD(PCF8563_VLS, SECONDS,  0,  7)
->+    FIELD(PCF8563_VLS, VL,       7,  1)
->+
->+REG8(PCF8563_MINUTES, 0x03)
->+    FIELD(PCF8563_MINUTES, MINUTES, 0,  7)
->+    FIELD(PCF8563_MINUTES, RSVD,    7,  1)
->+
->+REG8(PCF8563_HOURS, 0x04)
->+    FIELD(PCF8563_HOURS, HOURS, 0,  6)
->+    FIELD(PCF8563_HOURS, RSVD,  6,  2)
->+
->+REG8(PCF8563_DAYS, 0x05)
->+    FIELD(PCF8563_DAYS, DAYS, 0,  6)
->+    FIELD(PCF8563_DAYS, RSVD, 6,  2)
->+
->+REG8(PCF8563_WEEKDAYS, 0x06)
->+    FIELD(PCF8563_WEEKDAYS, WEEKDAYS, 0,  3)
->+    FIELD(PCF8563_WEEKDAYS, RSVD,     3,  5)
->+
->+REG8(PCF8563_CENTURY_MONTHS, 0x07)
->+    FIELD(PCF8563_CENTURY_MONTHS, MONTHS,  0,  5)
->+    FIELD(PCF8563_CENTURY_MONTHS, RSVD,    5,  2)
->+    FIELD(PCF8563_CENTURY_MONTHS, CENTURY, 7,  1)
->+
->+REG8(PCF8563_YEARS, 0x08)
->+    FIELD(PCF8563_YEARS, YEARS, 0,  8)
->+
->+REG8(PCF8563_MINUTE_A, 0x09)
->+    FIELD(PCF8563_MINUTE_A, MINUTE_A, 0,  7)
->+    FIELD(PCF8563_MINUTE_A, AE_M,     7,  1)
->+
->+REG8(PCF8563_HOUR_A, 0x0A)
->+    FIELD(PCF8563_HOUR_A, HOUR_A, 0,  7)
->+    FIELD(PCF8563_HOUR_A, AE_H,   7,  1)
->+
->+REG8(PCF8563_DAY_A, 0x0B)
->+    FIELD(PCF8563_DAY_A, DAY_A,  0,  7)
->+    FIELD(PCF8563_DAY_A, AE_D,   7,  1)
->+
->+REG8(PCF8563_WEEKDAY_A, 0x0C)
->+    FIELD(PCF8563_WEEKDAY_A, WEEKDAY_A, 0,  3)
->+    FIELD(PCF8563_WEEKDAY_A, RSVD,      3,  4)
->+    FIELD(PCF8563_WEEKDAY_A, AE_W,      7,  1)
->+
->+REG8(PCF8563_CLKOUT_CTL, 0x0D)
->+    FIELD(PCF8563_CLKOUT_CTL, FD,   0,  2)
->+    FIELD(PCF8563_CLKOUT_CTL, RSVD, 2,  5)
->+    FIELD(PCF8563_CLKOUT_CTL, FE,   7,  1)
->+
->+REG8(PCF8563_TIMER_CTL, 0x0E)
->+    FIELD(PCF8563_TIMER_CTL, TD,   0,  2)
->+    FIELD(PCF8563_TIMER_CTL, RSVD, 2,  5)
->+    FIELD(PCF8563_TIMER_CTL, TE,   7,  1)
->+
->+REG8(PCF8563_TIMER, 0x0F)
->+    FIELD(PCF8563_TIMER, TIMER, 0,  8)
->+
->+typedef struct Pcf8563State {
->+    I2CSlave parent_obj;
->+
->+    struct tm current_time;
->+    qemu_irq irq;
->+
->+    uint8_t read_index;
->+    uint8_t write_index;
->+    uint8_t reg_addr;
->+
->+    /* Control and status */
->+    uint8_t cs1;
->+    uint8_t cs2;
->+    /* Counters */
->+    uint8_t vls;
->+    uint8_t minutes;
->+    uint8_t hours;
->+    uint8_t days;
->+    uint8_t weekdays;
->+    uint8_t centure_months;
->+    uint8_t years;
->+    /* Alarm registers */
->+    uint8_t minute_a;
->+    uint8_t hour_a;
->+    uint8_t day_a;
->+    uint8_t weekday_a;
->+    /* Timer control */
->+    uint8_t clkout_ctl;
->+    uint8_t timer_ctl;
->+    uint8_t timer_cnt;
->+
->+    QEMUTimer *alarm_timer;
->+    struct tm tm_alarm;
->+    bool alarm_irq;
->+    QEMUTimer *timer;
->+    time_t time_offset;
->+    time_t stop_time;
->+    QEMUTimer *irq_gen_timer;
->+} Pcf8563State;
->+
->+static uint16_t get_src_freq(Pcf8563State *s, bool *multiply)
->+{
->+    *multiply =3D false;
->+    /* Select source clock frequency (Hz) */
->+    switch (FIELD_EX8(s->timer_ctl, PCF8563_TIMER_CTL, TD)) {
->+    case 0:
->+        return 4096;
->+    case 1:
->+        return 64;
->+    case 2:
->+        return 1;
->+    case 3:
->+        *multiply =3D true;
->+        return 60;
->+    default:
->+        return 0;
->+    }
->+}
->+
->+static uint16_t get_irq_pulse_freq(Pcf8563State *s)
->+{
->+    if (s->timer_cnt > 1) {
->+        switch (FIELD_EX8(s->timer_ctl, PCF8563_TIMER_CTL, TD)) {
->+        case 0:
->+            return 8192;
->+        case 1:
->+            return 128;
->+        case 2:
->+        case 3:
->+            return 64;
->+        default:
->+            return 0;
->+        }
->+    } else {
->+        if (FIELD_EX8(s->timer_ctl, PCF8563_TIMER_CTL, TD) =3D=3D 0) {
->+            return 4096;
->+        }
->+        return 64;
->+    }
->+
->+}
->+
->+static void timer_irq(Pcf8563State *s)
->+{
->+    if (!FIELD_EX8(s->cs2, PCF8563_CS2, TIE)) {
->+        return;
->+    }
->+
->+    if (FIELD_EX8(s->cs2, PCF8563_CS2, TI_TP)) {
->+        qemu_irq_pulse(s->irq);
->+
->+        /* Start IRQ pulse generator */
->+        uint64_t delay =3D s->timer_cnt *
->+                        NANOSECONDS_PER_SECOND *
->+                        get_irq_pulse_freq(s);
->+        timer_mod(s->irq_gen_timer,
->+                    qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + delay);
->+    } else {
->+        qemu_irq_raise(s->irq);
->+    }
->+}
->+
->+static void alarm_irq(Pcf8563State *s)
->+{
->+    if (FIELD_EX8(s->cs2, PCF8563_CS2, AIE)) {
->+        qemu_irq_raise(s->irq);
->+    }
->+}
->+
->+static void set_alarm(Pcf8563State *s)
->+{
->+    uint64_t diff_sec =3D 0;
->+    uint64_t diff_min =3D 0;
->+    uint64_t diff_hour =3D 0;
->+    uint64_t diff_day =3D 0;
->+    uint64_t diff_wday =3D 0;
->+    uint64_t delay =3D 0;
->+    uint64_t now_cl =3D 0;
->+    struct tm now;
->+
->+    bool is_min_en =3D !FIELD_EX8(s->minute_a, PCF8563_MINUTE_A, AE_M);
->+    bool is_hour_en =3D !FIELD_EX8(s->hour_a, PCF8563_HOUR_A, AE_H);
->+    bool is_day_en =3D !FIELD_EX8(s->day_a, PCF8563_DAY_A, AE_D);
->+    bool is_wday_en =3D !FIELD_EX8(s->weekday_a, PCF8563_WEEKDAY_A, AE_W=
-);
->+    if (!is_day_en && !is_wday_en && !is_hour_en && !is_min_en) {
->+        if (s->alarm_timer) {
->+            timer_del(s->alarm_timer);
->+        }
->+        return;
->+    }
->+
->+    qemu_get_timedate(&now, s->time_offset);
->+
->+    if (is_min_en) {
->+        if (s->tm_alarm=2Etm_min > s->current_time=2Etm_min) {
->+            diff_min =3D s->tm_alarm=2Etm_min - s->current_time=2Etm_min=
-;
->+        } else {
->+            diff_min =3D (MINUTES_IN_HOUR -
->+                        s->current_time=2Etm_min + s->tm_alarm=2Etm_min)=
-;
->+        }
->+    }
->+
->+    if (is_hour_en) {
->+        if (s->tm_alarm=2Etm_hour > s->current_time=2Etm_hour) {
->+            diff_hour =3D s->tm_alarm=2Etm_hour - s->current_time=2Etm_h=
-our;
->+        } else {
->+            diff_hour =3D (HOURS_IN_DAY -
->+                         s->current_time=2Etm_hour + s->tm_alarm=2Etm_ho=
-ur);
->+        }
->+    }
->+
->+    if (is_day_en) {
->+        if (s->tm_alarm=2Etm_mday > s->current_time=2Etm_mday) {
->+            diff_day =3D s->tm_alarm=2Etm_mday - s->current_time=2Etm_md=
-ay;
->+        } else {
->+            diff_day =3D (DAYS_IN_MONTH -
->+                        s->current_time=2Etm_mday + s->tm_alarm=2Etm_mda=
-y);
->+        }
->+    }
->+
->+    if (is_wday_en) {
->+        if (s->tm_alarm=2Etm_wday > s->current_time=2Etm_wday) {
->+            diff_wday =3D s->tm_alarm=2Etm_wday - s->current_time=2Etm_w=
-day;
->+        } else {
->+            diff_wday =3D (DAYS_IN_WEEK -
->+                         s->current_time=2Etm_wday + s->tm_alarm=2Etm_wd=
-ay);
->+        }
->+    }
->+
->+    diff_sec =3D (diff_min * 60) +
->+               (diff_hour * 60 * 60) +
->+               (diff_day * 24 * 60 * 60) +
->+               (diff_wday * 24 * 60 * 60);
->+    now_cl =3D muldiv64(qemu_clock_get_ns(rtc_clock), 1, NANOSECONDS_PER=
-_SECOND);
->+    delay =3D muldiv64((now_cl + diff_sec), NANOSECONDS_PER_SECOND, 1);
->+
->+    if (s->alarm_timer) {
->+        timer_del(s->alarm_timer);
->+    }
->+    timer_mod(s->alarm_timer, delay);
->+}
->+
->+static void pcf8563_update_irq(Pcf8563State *s)
->+{
->+    if (FIELD_EX8(s->cs2, PCF8563_CS2, TF)) {
->+        timer_irq(s);
->+    }
->+
->+    if (FIELD_EX8(s->cs2, PCF8563_CS2, AF)) {
->+        alarm_irq(s);
->+    }
->+}
->+
->+static void alarm_timer_cb(void *opaque)
->+{
->+    Pcf8563State *s =3D PCF8563(opaque);
+Thanks,
 
-No need for casting from void*, `Pcf8563State *s =3D opaque;` works as wel=
-l and is shorter=2E There are similar cases below=2E
+C.
 
->+
->+    set_alarm(s);
->+    s->cs2 =3D FIELD_DP8(s->cs2, PCF8563_CS2, AF, 1);
->+    pcf8563_update_irq(s);
->+}
->+
->+static void timer_cb(void *opaque)
->+{
->+    Pcf8563State *s =3D PCF8563(opaque);
->+
->+    s->timer_cnt =3D 0;
->+    s->cs2 =3D FIELD_DP8(s->cs2, PCF8563_CS2, TF, 1);
->+    pcf8563_update_irq(s);
->+}
->+
->+static void irq_gen_timer_cb(void *opaque)
->+{
->+    Pcf8563State *s =3D PCF8563(opaque);
->+
->+    pcf8563_update_irq(s);
->+}
->+
->+static inline void capture_time(Pcf8563State *s)
->+{
->+    qemu_get_timedate(&s->current_time, s->time_offset);
->+    trace_pcf8563_rtc_capture_time();
->+}
->+
->+static void set_time(Pcf8563State *s, struct tm *tm)
->+{
->+    s->time_offset =3D qemu_timedate_diff(tm);
->+    set_alarm(s);
->+    trace_pcf8563_rtc_set_time();
->+}
->+
->+static void pcf8563_reset(I2CSlave *i2c)
->+{
->+    Pcf8563State *s =3D PCF8563(i2c);
->+
->+    s->read_index =3D 0;
->+    s->write_index =3D 0;
->+    s->reg_addr =3D 0;
->+
->+    s->cs1 =3D 0x8;
->+    s->cs2 =3D 0x0;
->+    s->vls =3D 0x80;
->+    s->minutes =3D 0x0;
->+    s->hours =3D 0x0;
->+    s->days =3D 0x0;
->+    s->weekdays =3D 0x0;
->+    s->centure_months =3D 0x0;
->+    s->years =3D 0x0;
->+    s->minute_a =3D 0x80;
->+    s->hour_a =3D 0x80;
->+    s->day_a =3D 0x80;
->+    s->weekday_a =3D 0x80;
->+    s->clkout_ctl =3D 0x80;
->+    s->timer_ctl =3D 0x3;
->+    s->timer_cnt =3D 0x0;
->+
->+    s->stop_time =3D 0;
->+    s->reg_addr =3D 0;
->+
->+    s->alarm_irq =3D false;
->+    s->time_offset =3D 0;
->+
->+    qemu_irq_lower(s->irq);
->+    qemu_get_timedate(&s->tm_alarm, 0);
->+
->+    timer_del(s->alarm_timer);
->+    timer_del(s->timer);
 
-Not everything gets reset according to table 27 in the datasheet=2E I'd on=
-ly reset the bits that are not marked with 'x' there=2E With this, you may =
-not need to handle the timers, IRQ, etc=2E
+  
+> Thanks
+> Zhenzhong
+> 
+>> +
+>> +VFIOAddressSpace *vfio_address_space_get(AddressSpace *as)
+>> +{
+>> +    VFIOAddressSpace *space;
+>> +
+>> +    QLIST_FOREACH(space, &vfio_address_spaces, list) {
+>> +        if (space->as == as) {
+>> +            return space;
+>> +        }
+>> +    }
+>> +
+>> +    /* No suitable VFIOAddressSpace, create a new one */
+>> +    space = g_malloc0(sizeof(*space));
+>> +    space->as = as;
+>> +    QLIST_INIT(&space->containers);
+>> +
+>> +    if (QLIST_EMPTY(&vfio_address_spaces)) {
+>> +        qemu_register_reset(vfio_reset_handler, NULL);
+>> +    }
+>> +
+>> +    QLIST_INSERT_HEAD(&vfio_address_spaces, space, list);
+>> +
+>> +    return space;
+>> +}
+>> +
+>> +void vfio_address_space_put(VFIOAddressSpace *space)
+>> +{
+>> +    if (!QLIST_EMPTY(&space->containers)) {
+>> +        return;
+>> +    }
+>> +
+>> +    QLIST_REMOVE(space, list);
+>> +    g_free(space);
+>> +
+>> +    if (QLIST_EMPTY(&vfio_address_spaces)) {
+>> +        qemu_unregister_reset(vfio_reset_handler, NULL);
+>> +    }
+>> +}
+>> +
+>> +void vfio_address_space_insert(VFIOAddressSpace *space,
+>> +                               VFIOContainerBase *bcontainer)
+>> +{
+>> +    QLIST_INSERT_HEAD(&space->containers, bcontainer, next);
+>> +    bcontainer->space = space;
+>> +}
+>>
+>> int vfio_container_dma_map(VFIOContainerBase *bcontainer,
+>>                             hwaddr iova, ram_addr_t size,
+>> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+>> index
+>> 8badeb98ec052ad1fa7b5d45bb1733b1184bc6fb..9b86e24a4072e579bcdc2c060c
+>> e42608ee44ee2e 100644
+>> --- a/hw/vfio/container.c
+>> +++ b/hw/vfio/container.c
+>> @@ -546,7 +546,7 @@ static bool vfio_connect_container(VFIOGroup *group,
+>> AddressSpace *as,
+>>      VFIOAddressSpace *space;
+>>      VFIOIOMMUClass *vioc;
+>>
+>> -    space = vfio_get_address_space(as);
+>> +    space = vfio_address_space_get(as);
+>>
+>>      /*
+>>       * VFIO is currently incompatible with discarding of RAM insofar as the
+>> @@ -675,7 +675,7 @@ close_fd_exit:
+>>      close(fd);
+>>
+>> put_space_exit:
+>> -    vfio_put_address_space(space);
+>> +    vfio_address_space_put(space);
+>>
+>>      return false;
+>> }
+>> @@ -714,7 +714,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
+>>          close(container->fd);
+>>          object_unref(container);
+>>
+>> -        vfio_put_address_space(space);
+>> +        vfio_address_space_put(space);
+>>      }
+>> }
+>>
+>> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+>> index
+>> a219b6453037e2d4e0d12800ea25678885af98f8..a170f5c71218db8c9b2f00b1a4
+>> 5ee900b6b21346 100644
+>> --- a/hw/vfio/iommufd.c
+>> +++ b/hw/vfio/iommufd.c
+>> @@ -487,7 +487,7 @@ static bool iommufd_cdev_attach(const char *name,
+>> VFIODevice *vbasedev,
+>>          goto err_connect_bind;
+>>      }
+>>
+>> -    space = vfio_get_address_space(as);
+>> +    space = vfio_address_space_get(as);
+>>
+>>      /*
+>>       * The HostIOMMUDevice data from legacy backend is static and doesn't need
+>> @@ -607,7 +607,7 @@ err_discard_disable:
+>> err_attach_container:
+>>      iommufd_cdev_container_destroy(container);
+>> err_alloc_ioas:
+>> -    vfio_put_address_space(space);
+>> +    vfio_address_space_put(space);
+>>      iommufd_cdev_unbind_and_disconnect(vbasedev);
+>> err_connect_bind:
+>>      close(vbasedev->fd);
+>> @@ -632,7 +632,7 @@ static void iommufd_cdev_detach(VFIODevice *vbasedev)
+>>      vfio_cpr_unregister_container(bcontainer);
+>>      iommufd_cdev_detach_container(vbasedev, container);
+>>      iommufd_cdev_container_destroy(container);
+>> -    vfio_put_address_space(space);
+>> +    vfio_address_space_put(space);
+>>
+>>      iommufd_cdev_unbind_and_disconnect(vbasedev);
+>>      close(vbasedev->fd);
+>> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+>> index
+>> 81f4130100c48012c15b5b4858446149a7eaf5b6..c3691c1a172c31c5b10bfd6967
+>> c32fd32b65d0f7 100644
+>> --- a/hw/vfio/trace-events
+>> +++ b/hw/vfio/trace-events
+>> @@ -109,7 +109,6 @@ vfio_get_dev_region(const char *name, int index,
+>> uint32_t type, uint32_t subtype
+>> vfio_legacy_dma_unmap_overflow_workaround(void) ""
+>> vfio_get_dirty_bitmap(uint64_t iova, uint64_t size, uint64_t bitmap_size,
+>> uint64_t start, uint64_t dirty_pages) "iova=0x%"PRIx64" size= 0x%"PRIx64"
+>> bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
+>> vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu
+>> dirty @ 0x%"PRIx64" - 0x%"PRIx64
+>> -vfio_reset_handler(void) ""
+>>
+>> # region.c
+>> vfio_region_write(const char *name, int index, uint64_t addr, uint64_t data,
+>> unsigned size) " (%s:region%d+0x%"PRIx64", 0x%"PRIx64 ", %d)"
+>> @@ -194,3 +193,6 @@ iommufd_cdev_fail_attach_existing_container(const
+>> char *msg) " %s"
+>> iommufd_cdev_alloc_ioas(int iommufd, int ioas_id) " [iommufd=%d] new
+>> IOMMUFD container with ioasid=%d"
+>> iommufd_cdev_device_info(char *name, int devfd, int num_irqs, int
+>> num_regions, int flags) " %s (%d) num_irqs=%d num_regions=%d flags=%d"
+>> iommufd_cdev_pci_hot_reset_dep_devices(int domain, int bus, int slot, int
+>> function, int dev_id) "\t%04x:%02x:%02x.%x devid %d"
+>> +
+>> +# container-base.c
+>> +vfio_reset_handler(void) ""
+>> --
+>> 2.48.1
+> 
 
->+}
->+
->+static void pcf8563_read(Pcf8563State *s, uint8_t *result)
->+{
->+    struct tm *tm =3D &s->current_time;
->+
->+    bool multiply =3D false;
->+    uint16_t src_freq =3D get_src_freq(s, &multiply);
->+
->+    switch (s->reg_addr) {
->+    case PCF8563_CS1:
->+        *result =3D s->cs1;
->+        break;
->+    case PCF8563_CS2:
->+        *result =3D s->cs2;
->+        break;
->+    case PCF8563_VLS:
->+        *result =3D (s->vls & 0x80) | to_bcd(tm->tm_sec);
->+        break;
->+    case PCF8563_MINUTES:
->+        *result =3D to_bcd(tm->tm_min);
->+        break;
->+    case PCF8563_HOURS:
->+        *result =3D to_bcd(tm->tm_hour);
->+        break;
->+    case PCF8563_DAYS:
->+        *result =3D to_bcd(tm->tm_mday);
->+        break;
->+    case PCF8563_WEEKDAYS:
->+        *result =3D to_bcd(tm->tm_wday);
->+        break;
->+    case PCF8563_CENTURY_MONTHS:
->+        *result =3D to_bcd(tm->tm_mon + 1);
->+        break;
->+    case PCF8563_YEARS:
->+        *result =3D to_bcd((tm->tm_year + 1900) % 100);
->+        break;
->+    case PCF8563_MINUTE_A:
->+        *result =3D s->minute_a;
->+        break;
->+    case PCF8563_HOUR_A:
->+        *result =3D s->hour_a;
->+        break;
->+    case PCF8563_DAY_A:
->+        *result =3D s->day_a;
->+        break;
->+    case PCF8563_WEEKDAY_A:
->+        *result =3D s->weekday_a;
->+        break;
->+    case PCF8563_CLKOUT_CTL:
->+        *result =3D s->clkout_ctl;
->+        break;
->+    case PCF8563_TIMER_CTL:
->+        *result =3D s->timer_ctl;
->+        break;
->+    case PCF8563_TIMER:
->+        if (timer_pending(s->timer)) {
->+            uint64_t expire_time_s =3D muldiv64(timer_expire_time_ns(s->=
-timer),
->+                                              1,
->+                                              NANOSECONDS_PER_SECOND);
->+            if (multiply) {
->+                s->timer_cnt =3D muldiv64(expire_time_s, 1, src_freq);
->+            } else {
->+                s->timer_cnt =3D muldiv64(expire_time_s, src_freq, 1);
->+            }
->+        }
->+        *result =3D s->timer_cnt;
->+        break;
->+    }
->+}
->+
->+static void pcf8563_write(Pcf8563State *s, uint8_t val)
->+{
->+    struct tm *tm =3D &s->current_time;
->+    int tmp;
->+
->+    switch (s->reg_addr) {
->+    case PCF8563_CS1:
->+        s->cs1 =3D val & 0xa8;
->+        break;
->+    case PCF8563_CS2:
->+        s->cs2 =3D val & 0x1f;
->+        break;
->+    case PCF8563_VLS:
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_VLS, SECONDS));
->+        if (tmp >=3D 0 && tmp <=3D 59) {
->+            tm->tm_sec =3D tmp;
->+            set_time(s, tm);
->+        }
->+
->+        bool vl =3D FIELD_EX8(val, PCF8563_VLS, VL);
->+
->+        if (vl ^ (s->vls & 0x80)) {
->+            if (vl) {
->+                /* Clock integrity is not guaranteed */
->+                s->stop_time =3D time(NULL);
->+            } else if (s->stop_time !=3D 0) {
->+                s->time_offset +=3D s->stop_time - time(NULL);
->+                s->stop_time =3D 0;
->+            }
->+        }
->+
->+        s->vls =3D vl << 8;
->+        break;
->+    case PCF8563_MINUTES:
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_MINUTES, MINUTES));
->+        if (tmp >=3D 0 && tmp <=3D 59) {
->+            s->minutes =3D val;
->+            tm->tm_min =3D tmp;
->+            set_time(s, tm);
->+        }
->+        break;
->+    case PCF8563_HOURS:
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_HOURS, HOURS));
->+        if (tmp >=3D 0 && tmp <=3D 23) {
->+            s->hours =3D val;
->+            tm->tm_hour =3D tmp;
->+            set_time(s, tm);
->+        }
->+        break;
->+    case PCF8563_DAYS:
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_DAYS, DAYS));
->+        if (tmp >=3D 1 && tmp <=3D 31) {
->+            s->days =3D val;
->+            tm->tm_mday =3D tmp;
->+            set_time(s, tm);
->+        }
->+        break;
->+    case PCF8563_WEEKDAYS:
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_WEEKDAYS, WEEKDAYS));
->+        if (tmp >=3D 0 && tmp <=3D 6) {
->+            s->weekdays =3D val;
->+            tm->tm_wday =3D tmp;
->+            set_time(s, tm);
->+        }
->+        break;
->+    case PCF8563_CENTURY_MONTHS:
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_CENTURY_MONTHS, MONTHS))=
-;
->+        if (tmp >=3D 0 && tmp <=3D 12) {
->+            s->centure_months =3D val;
->+            tm->tm_mon =3D tmp;
->+            set_time(s, tm);
->+        }
->+        break;
->+    case PCF8563_YEARS:
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_YEARS, YEARS));
->+        if (tmp >=3D 0 && tmp <=3D 99) {
->+            s->years =3D val;
->+            tm->tm_year =3D tmp + 100;
->+            set_time(s, tm);
->+        }
->+        break;
->+    case PCF8563_MINUTE_A:
->+        s->minute_a =3D val;
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_MINUTE_A, MINUTE_A));
->+        if (tmp >=3D 0 && tmp <=3D 59) {
->+            s->tm_alarm=2Etm_min =3D tmp;
->+            set_alarm(s);
->+        }
->+        break;
->+    case PCF8563_HOUR_A:
->+        s->hour_a =3D val & 0xbf;
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_HOUR_A, HOUR_A));
->+        if (tmp >=3D 0 && tmp <=3D 23) {
->+            s->tm_alarm=2Etm_hour =3D tmp;
->+            set_alarm(s);
->+        }
->+        break;
->+    case PCF8563_DAY_A:
->+        s->day_a =3D val & 0xbf;
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_DAY_A, DAY_A));
->+        if (tmp >=3D 1 && tmp <=3D 31) {
->+            s->tm_alarm=2Etm_mday =3D tmp;
->+            set_alarm(s);
->+        }
->+        break;
->+    case PCF8563_WEEKDAY_A:
->+        s->weekday_a =3D val & 0x87;
->+        tmp =3D from_bcd(FIELD_EX8(val, PCF8563_WEEKDAY_A, WEEKDAY_A));
->+        if (tmp >=3D 0 && tmp <=3D 6) {
->+            s->tm_alarm=2Etm_wday =3D tmp;
->+            set_alarm(s);
->+        }
->+        break;
->+    case PCF8563_CLKOUT_CTL:
->+        s->clkout_ctl =3D val & 0x83;
->+        break;
->+    case PCF8563_TIMER_CTL:
->+        s->timer_ctl =3D val & 0x83;
->+
->+        if (!FIELD_EX32(s->timer_ctl, PCF8563_TIMER_CTL, TE)) {
->+            if (timer_pending(s->timer)) {
->+                timer_del(s->timer);
->+            }
->+        }
->+        break;
->+    case PCF8563_TIMER:
->+        s->timer_cnt =3D val;
->+        if (FIELD_EX32(s->timer_ctl, PCF8563_TIMER_CTL, TE)) {
->+            bool multiply =3D false;
->+            uint16_t src_freq =3D get_src_freq(s, &multiply);
->+            uint64_t delay =3D 0;
->+
->+            /* Calculate timer's delay in ns based on value and set it u=
-p */
->+            if (multiply) {
->+                delay =3D val * NANOSECONDS_PER_SECOND * src_freq;
->+            } else {
->+                delay =3D val * NANOSECONDS_PER_SECOND / src_freq;
->+            }
->+            timer_mod(s->timer, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + =
-delay);
->+        }
->+        break;
->+    }
->+}
->+
->+static uint8_t pcf8563_rx(I2CSlave *i2c)
->+{
->+    Pcf8563State *s =3D PCF8563(i2c);
->+    uint8_t result =3D 0xff;
->+
->+    pcf8563_read(s, &result);
->+    /* Auto-increment register address */
->+    s->reg_addr++;
->+
->+    trace_pcf8563_rtc_read(s->read_index, result);
->+    return result;
->+}
->+
->+static int pcf8563_tx(I2CSlave *i2c, uint8_t data)
->+{
->+    Pcf8563State *s =3D PCF8563(i2c);
->+
->+    if (s->write_index =3D=3D 0) {
->+        /* Receive register address */
->+        s->reg_addr =3D data;
->+        s->write_index++;
->+        trace_pcf8563_rtc_write_addr(data);
->+    } else {
->+        /* Receive data to write */
->+        pcf8563_write(s, data);
->+        s->write_index++;
->+        s->reg_addr++;
->+        trace_pcf8563_rtc_write_data(data);
->+    }
->+    return 0;
->+}
->+
->+static int pcf8563_event(I2CSlave *i2c, enum i2c_event event)
->+{
->+    trace_pcf8563_rtc_event(event);
->+    Pcf8563State *s =3D PCF8563(i2c);
->+
->+    switch (event) {
->+    case I2C_START_RECV:
->+        capture_time(s);
->+        break;
->+    case I2C_FINISH:
->+        s->read_index =3D 0;
->+        s->write_index =3D 0;
->+    default:
->+        break;
->+    }
->+    return 0;
->+}
->+
->+static const VMStateDescription vmstate_pcf8563 =3D {
->+    =2Ename =3D "PCF8563",
->+    =2Eversion_id =3D 0,
->+    =2Eminimum_version_id =3D 0,
->+    =2Efields =3D (const VMStateField[]) {
->+        VMSTATE_I2C_SLAVE(parent_obj, Pcf8563State),
->+        VMSTATE_UINT8(read_index, Pcf8563State),
->+        VMSTATE_UINT8(write_index, Pcf8563State),
->+        VMSTATE_UINT8(reg_addr, Pcf8563State),
->+        VMSTATE_UINT8(cs1, Pcf8563State),
->+        VMSTATE_UINT8(cs2, Pcf8563State),
->+        VMSTATE_UINT8(vls, Pcf8563State),
->+        VMSTATE_UINT8(minutes, Pcf8563State),
->+        VMSTATE_UINT8(hours, Pcf8563State),
->+        VMSTATE_UINT8(days, Pcf8563State),
->+        VMSTATE_UINT8(weekdays, Pcf8563State),
->+        VMSTATE_UINT8(centure_months, Pcf8563State),
->+        VMSTATE_UINT8(years, Pcf8563State),
->+        VMSTATE_UINT8(minute_a, Pcf8563State),
->+        VMSTATE_UINT8(hour_a, Pcf8563State),
->+        VMSTATE_UINT8(day_a, Pcf8563State),
->+        VMSTATE_UINT8(weekday_a, Pcf8563State),
->+        VMSTATE_UINT8(clkout_ctl, Pcf8563State),
->+        VMSTATE_UINT8(timer_ctl, Pcf8563State),
->+        VMSTATE_UINT8(timer_cnt, Pcf8563State),
->+        VMSTATE_TIMER_PTR(timer, Pcf8563State),
->+        VMSTATE_TIMER_PTR(irq_gen_timer, Pcf8563State),
->+        VMSTATE_TIMER_PTR(alarm_timer, Pcf8563State),
->+        VMSTATE_END_OF_LIST()
->+    }
->+};
->+
->+static void pcf8563_init(Object *obj)
->+{
->+    I2CSlave *i2c =3D I2C_SLAVE(obj);
->+    Pcf8563State *s =3D PCF8563(obj);
->+
->+    s->alarm_timer =3D timer_new_ns(rtc_clock, &alarm_timer_cb, s);
->+    s->timer =3D timer_new_ns(QEMU_CLOCK_VIRTUAL, &timer_cb, s);
->+    s->irq_gen_timer =3D timer_new_ns(QEMU_CLOCK_VIRTUAL, &irq_gen_timer=
-_cb, s);
->+
->+    qdev_init_gpio_out(DEVICE(s), &s->irq, 1);
->+
->+    pcf8563_reset(i2c);
-
-Not needed=2E Reset is done automatically when QEMU starts=2E
-
->+
->+    trace_pcf8563_rtc_init();
->+
->+    s->reg_addr =3D 0x09;
->+    pcf8563_write(s, 0x81);
->+    set_alarm(s);
->+}
->+
->+static void pcf8563_reset_hold(Object *obj, ResetType type)
->+{
->+    I2CSlave *i2c =3D I2C_SLAVE(obj);
->+    pcf8563_reset(i2c);
-
-Eliminating the above invocation of pcf8563_reset() leaves just this one c=
-allside, so pcf8563_reset() can be inlined here=2E
-
-Other than that the code LGTM=2E
-
-Best regards,
-Bernhard
-
->+}
->+
->+static void pcf8563_class_init(ObjectClass *klass, void *data)
->+{
->+    DeviceClass *dc =3D DEVICE_CLASS(klass);
->+    I2CSlaveClass *k =3D I2C_SLAVE_CLASS(klass);
->+    ResettableClass *rc =3D RESETTABLE_CLASS(klass);
->+
->+    k->event =3D pcf8563_event;
->+    k->recv =3D pcf8563_rx;
->+    k->send =3D pcf8563_tx;
->+    dc->vmsd =3D &vmstate_pcf8563;
->+    rc->phases=2Ehold =3D pcf8563_reset_hold;
->+}
->+
->+static const TypeInfo pcf8563_register_types[] =3D {
->+    {
->+        =2Ename          =3D TYPE_PCF8563,
->+        =2Eparent        =3D TYPE_I2C_SLAVE,
->+        =2Einstance_size =3D sizeof(Pcf8563State),
->+        =2Einstance_init =3D pcf8563_init,
->+        =2Eclass_init    =3D pcf8563_class_init,
->+    },
->+};
->+
->+DEFINE_TYPES(pcf8563_register_types)
->diff --git a/hw/rtc/trace-events b/hw/rtc/trace-events
->index 743ff775d4=2E=2E17c524d61d 100644
->--- a/hw/rtc/trace-events
->+++ b/hw/rtc/trace-events
->@@ -43,3 +43,15 @@ stm32_rtc_arm_ointr(uint64_t tocks, uint64_t nsecs) "o=
-verflow interrupt in %" PR
-> stm32_rtc_arm_aintr(uint64_t tocks, uint64_t nsecs) "alarm interrupt in =
-%" PRIu64 " ticks, %" PRIu64" nsecs"
-> stm32_rtc_read(uint64_t addr, uint64_t value, uint32_t size) "addr 0x%02=
-" PRIx64 " value 0x%08" PRIx64" size %u"
-> stm32_rtc_write(uint64_t addr, uint64_t value, uint32_t size) "addr 0x%0=
-2" PRIx64 " value 0x%08" PRIx64" size %u"
->+
->+# pcf8563_rtc=2Ec
->+pcf8563_rtc_write_data(uint8_t data) "data: 0x%x"
->+pcf8563_rtc_write_addr(uint8_t addr) "register address: 0x%x"
->+pcf8563_rtc_read(uint8_t addr, uint8_t data) "addr: 0x%x, data: 0x%x"
->+pcf8563_rtc_event(uint8_t event) "Event: 0x%x"
->+pcf8563_rtc_init(void)
->+pcf8563_rtc_reset(void)
->+pcf8563_rtc_set_time(void)
->+pcf8563_rtc_get_time(void)
->+pcf8563_rtc_set_alarm(void)
->+pcf8563_rtc_capture_time(void)
 
