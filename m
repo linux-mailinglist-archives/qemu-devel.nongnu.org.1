@@ -2,90 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E262AA6A7E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 15:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8375CA6A844
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 15:20:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvGUn-0005Ha-Jz; Thu, 20 Mar 2025 10:03:43 -0400
+	id 1tvGji-000301-I1; Thu, 20 Mar 2025 10:19:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvGUh-00056Z-0j
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 10:03:35 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvGUY-0001Fb-Oe
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 10:03:34 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3913d129c1aso596706f8f.0
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 07:03:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742479403; x=1743084203; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DWgshA8OTIIdBLqESPNQi1EevqOIJBOXPNBXtKqlBfQ=;
- b=eHx0ARgK4v4zJ2Z+3OZD7x+0TzlMi1BEuJqS4286LliQ1khzDeDNjVRhHPSfAvxaHT
- 8KNG9pzriixovVL4IbM2IeeHCNG4/Tap5k/d0vtxXRJFdr8aNEyRKQESJYkTlWIU+Jx9
- i7eGXRMcDcz2DHCoFfHbP10KPcpSwjezjgzYPPZeB26clopkWJVeFnJkW/3mdAR1G2Dz
- WXdlidKhTdMc9uW4fWjvEGTmCViFF6CoC7HGXGIKEbcx+zJTp2chwOfUfdGQQQrPx8C3
- bvAFdIVxoFP7w8Ciz2B9nNmjMwbb+F/UL2C4oRGc2MbnJnzrLh72GfAsu5VVDshYHBL8
- OP5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742479403; x=1743084203;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DWgshA8OTIIdBLqESPNQi1EevqOIJBOXPNBXtKqlBfQ=;
- b=udK+QsmFV/DBYM3I0JicjE8P/IKU1U3J8u4jzkDaD/yeuXIhY8u8jyzG6lqIuhwDve
- RCLqFVmWy0ncXQWdfon/SNkp7czBVyVQCy/3Bji3/VJs+Ev26wOmdfNld6JYfNnFcrhH
- c+YC6uk+EfcWD6WyfVPsm0PJ5wuKheq/tx1QKR61CKpGWpcojjlGa222bSDKwSlu3zIA
- ZFfKM2wph5laF56hLWOZpUxQDPgLQL3WHv/39ZzSi7iQ94VjE4VpUkV67+Z65a5xRu+I
- 9TkxDbY006uV7W/FxAE4Q+JO3n82gAA3SBaN3hGwGeP6YelDcRWRii7Sg2SzqCaDxjtS
- riBw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV+8eNyx9X4iKouYJRs+SJrHM0QfAWYhKMPckCA/4wWwT2yAWMJAiyYTzFf5PzEdEcN+wu0WowicBmS@nongnu.org
-X-Gm-Message-State: AOJu0Yyb4FZdpB6rubGKXagrc5BoIw9OBjrLhq9Xfv/nZWT4lM9ewzf3
- g55pUpyIJhT3PwJGxidMx/HnGqTuKagJa7Ea7NhEs2TXfbsFkzpSTLEBTOoaDs4=
-X-Gm-Gg: ASbGnctuA5gi3sXsgLpP6ReO3Qy3BzDaX3ODI5nejTZMNHRuTEq5ahWsRfv9x4PKnuJ
- LBCmsQACrEtYN0GUEUVdpzVBW1tbWuyCp2AyaTswOPRvMVdreGbXFTvTirtYPW9yGitFAXY13Bj
- 9U/yWh4s8Py6rHjeaxXfHcpGhinkOSYa8C+NcvxAqBVnTpFSAkd1fJmOw06zge8Xp/dvgEFOur1
- 293QEK0mx3CztA0oSwXrpYhjp1hbZ66zcINhZHh6G6IaPVEgQNuPbhsPdZk3ZNAKCUW4yhJZp/U
- tuDe79PJWRXODMIYv/u3N6++VxJaDeNGUDOvOd5rMlgRd8DfvvqM7weddHShf/NcFk+qMRtmOOp
- vMykk849AIh0U
-X-Google-Smtp-Source: AGHT+IGTDQoO7aHWysGbMrPLpNTfSoKHQ39NhGItK6IQbDPcsfg5YtViGUYKhiUO0btx8R+CZgp/5Q==
-X-Received: by 2002:a5d:47ab:0:b0:391:23e6:f0ac with SMTP id
- ffacd0b85a97d-3997955ca8dmr3123367f8f.11.1742479402163; 
- Thu, 20 Mar 2025 07:03:22 -0700 (PDT)
-Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43f43cbasm49379795e9.9.2025.03.20.07.03.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Mar 2025 07:03:21 -0700 (PDT)
-Message-ID: <7bd9e9ee-8b0b-4e06-b513-b66339b33f89@linaro.org>
-Date: Thu, 20 Mar 2025 15:03:20 +0100
+ (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
+ id 1tvGje-0002zF-Mc
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 10:19:02 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kshk@linux.ibm.com>)
+ id 1tvGjc-0007el-Il
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 10:19:02 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52KCT1iD000712;
+ Thu, 20 Mar 2025 14:18:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=sl6kH0
+ SSfBAjy4CT8Ll1+kk9x/d6VScYonQDymdO4No=; b=j3BXy24g0DnPW5LvCxkEV4
+ PFEC+UFQ3ri2dTRJQ6RzYl0sJt4ij4PWMYUJRbuUYXzrITPnuGyvFZ45Y10F+aCE
+ kmUWIDbTpJ3ZW0dMzmHJYqPugLvfXDhxQxoC5lzlyVHxPBV15SX2GTeskCZX4H0H
+ X2w5DRBhqhEqM6Xvxnd2BwaGLiGjM5rIOEqtC53EDb8JXYd9LzaWQ2LtF5QFXV+0
+ Msh70KP4tx3Jrd94O5nhVXoBtj9fM61KBSlRnQubnNjAjBQEh3XZawKr+MbIDsRq
+ jJTTc9IUF68XeRydsnbtRMq+z+L6Fy/27NUSBnPhh9TJ4CPQn1Riw6Hy3A+tFxcw
+ ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45gk21rk1a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 Mar 2025 14:18:58 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52KDombn005631;
+ Thu, 20 Mar 2025 14:18:56 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45dm908gvh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 Mar 2025 14:18:56 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52KEIuec30278380
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 20 Mar 2025 14:18:56 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 28F9558055;
+ Thu, 20 Mar 2025 14:18:56 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EF8E358043;
+ Thu, 20 Mar 2025 14:18:55 +0000 (GMT)
+Received: from [9.41.104.243] (unknown [9.41.104.243])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 20 Mar 2025 14:18:55 +0000 (GMT)
+Message-ID: <2aa3381f-cf89-4634-aac8-3ed5491f0ee8@linux.ibm.com>
+Date: Thu, 20 Mar 2025 09:18:55 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] rust: assertions: add static_assert
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-References: <20250320133248.1679485-1-peter.maydell@linaro.org>
- <20250320133248.1679485-2-peter.maydell@linaro.org>
+Subject: Re: VDPA MAC address problem
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250320133248.1679485-2-peter.maydell@linaro.org>
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, dtatulea@nvidia.com, Cindy Lu <lulu@redhat.com>,
+ eperezma <eperezma@redhat.com>
+References: <553b11b5-4cc4-4e59-9211-74c8cce51a96@linux.ibm.com>
+ <CACGkMEvrOx=jN9iULQ_svJdqKt3guJuZNEOan9-eeLirLk7_=g@mail.gmail.com>
+From: Konstantin Shkolnyy <kshk@linux.ibm.com>
+In-Reply-To: <CACGkMEvrOx=jN9iULQ_svJdqKt3guJuZNEOan9-eeLirLk7_=g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: VA3i5A_TEUl2Wub35Y8Ibo1Y4SaYer41
+X-Proofpoint-GUID: VA3i5A_TEUl2Wub35Y8Ibo1Y4SaYer41
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-20_03,2025-03-20_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015
+ bulkscore=0 adultscore=0 priorityscore=1501 spamscore=0 mlxlogscore=999
+ malwarescore=0 phishscore=0 impostorscore=0 lowpriorityscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503200087
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=kshk@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,23 +110,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/3/25 14:32, Peter Maydell wrote:
-> From: Paolo Bonzini <pbonzini@redhat.com>
+On 3/19/2025 19:58, Jason Wang wrote:
+> Adding Cindy and Eugenio
 > 
-> Add a new assertion that is similar to "const { assert!(...) }" but can be used
-> outside functions and with older versions of Rust.  A similar macro is found in
-> Linux, whereas the "static_assertions" crate has a const_assert macro that
-> produces worse error messages.
+> On Thu, Mar 20, 2025 at 12:34 AM Konstantin Shkolnyy <kshk@linux.ibm.com> wrote:
+>>
+>> I’m observing a problem while testing VDPA with Nvidia ConnectX-6 (mlx5)
+>> on s390.
+>>
+>> Upon start, virtio_net_device_realize() tries to set a new MAC address
+>> by VHOST_VDPA_SET_CONFIG which doesn’t do anything.
+>>
+>> Later, the VM gets started and learns about the old address from
+>> virtio_net_get_config() which returns whatever VHOST_VDPA_GET_CONFIG
+>> returns, unless it's "6 zero bytes", in which case it instead returns
+>> the desired new address (and the problem is avoided).
+>>
+>> Then QEMU again tries to set the new address from vhost_net_start(), now
+>> by calling vhost_vdpa_net_load_cmd(...,VIRTIO_NET_CTRL_MAC,
+>> VIRTIO_NET_CTRL_MAC_ADDR_SET, ...). This time the new address is
+>> successfully programmed into the NIC, but the VM doesn't know about it.
 > 
-> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-> Supersedes: <20250320113356.799412-1-pbonzini@redhat.com>
+> Have you enabled shadow virtqueue? If yes, does it work if you don't do that?
 
-^ extraneous tag
+I only run it in the default configuration, which has SVQ enabled.
 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   rust/qemu-api/src/assertions.rs | 22 ++++++++++++++++++++++
->   1 file changed, 22 insertions(+)
+>> As it is, the only VDPA scenario that's working for me is:
+>> 1) Avoid specifying the MAC address in the "vdpa dev add" command (which
+>> will create the "6 zero bytes" condition on the first launch).
+>> 2) Keep using the same MAC address for every subsequent VM launch on the
+>> same NIC "virtual function" (so that the old and new addresses are the
+>> same).
+> 
+> This is the way we currently use it. Is there any limitation of this?
 
+To be honest, I don't know how severe this limitation is, because I'm 
+not a sysadmin. The problem is that I was searching www for info on how 
+to setup VDPA and ended up hitting this bug and investigating it. 
+Because the found info sources are variable and some show the address 
+specified in "vdpa dev add".
 
