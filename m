@@ -2,63 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64757A6AE89
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 20:31:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 786B4A6AE73
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 20:20:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvLaN-0004qD-DD; Thu, 20 Mar 2025 15:29:47 -0400
+	id 1tvLQb-0000Of-BN; Thu, 20 Mar 2025 15:19:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.aldebert@univ-tlse3.fr>)
- id 1tvJTj-0004QQ-PC
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 13:14:47 -0400
-Received: from gw1-out.univ-tlse3.fr ([195.220.43.153])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.aldebert@univ-tlse3.fr>)
- id 1tvJTZ-0000ML-0x
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 13:14:40 -0400
-DKIM-Filter: OpenDKIM Filter v2.10.3 prod-zextras-mta-out02.univ-tlse3.fr
- AA7FB17F5DF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=univ-tlse3.fr;
- s=c439b0a7-3b73-4fd0-9251-89a2c958e908; t=1742490864;
- bh=t7DeI+Vp0ABtVV8ecwgLihk8WuV4youK74bgGzJwmGg=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=U6PSic4ieOU6Zmk7lr48bdrTWwL1WUw68jKpnaRg33JDVBhC4At9kFUj+Cr+FtxL3
- 4N5h9XlAncNVNXPy4nO1j2fLgaYCjQWf+NORbE12ZpPp11/swJBnZGMQLbx5rmkS1t
- Q9ywxrqqscYmI3VW8D2L6vwlmsiPVEEpIXzP1JIkM0q6k4uvitKO2wf12jAfdyTVrU
- 5er6gux0VP9aSNDStAfdSazxrH0WqUD0/t3N18zkzF7DsNTCRhtbJwQ6P65SzFJTDe
- ZBUwwiZ/yQILXu9Inn6b7XtIyov5Y0HT5o/Qr0GcoPkqMIVobCFse5M//oSy4PhEEo
- vxAO1SrKCZVrg==
-Date: Thu, 20 Mar 2025 18:14:23 +0100 (CET)
-From: clement.aldebert@univ-tlse3.fr
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, "millian.poquet" <millian.poquet@univ-tlse3.fr>, 
- laurent polzin <laurent.polzin@univ-tlse3.fr>
-Message-ID: <4545005.21021813.1742490863752.JavaMail.zimbra@univ-tlse3.fr>
-In-Reply-To: <87ecytm2ru.fsf@draig.linaro.org>
-References: <CABsFrshLGcmBEBXCMrOdDv213c1q6GB6pDs4JDLQGKrTzqvkYQ@mail.gmail.com>
- <87ecytm2ru.fsf@draig.linaro.org>
-Subject: Re: Raspberry Pi 3B energy consumption
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tvLQG-0000L1-U4
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 15:19:21 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tvLQE-0000Bc-P2
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 15:19:20 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-224100e9a5cso23569325ad.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 12:19:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1742498357; x=1743103157; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=tq5F+LFSz7I94wi2CXsI0zOfb8GaJ/jWhQMTyC+MdfY=;
+ b=O9BhWGpQr8Zn9TNXhJlxk3rutFMSRSvyLZiZX0ZcimTl1f1wocjFx8az+ODpYZuK0W
+ eGFzwynqF/9u600OVRe3WzrzSXjMWWP3ypzxYrSv97SCEfyYh+VfGg12tHDSqGB4LQTO
+ I8QX41Ue+sskoVJTUZtvMEznRB9O156L6fES/dl9ZXeOIfCyEChcExNdUx0e3SW8Dimz
+ SXMiYpnslqM0BNgcDwziHQ+41Kwv8h89Zba2/kS/LG1zGFP/8C26V7pkw67w0efzy2ny
+ XigRSM/NEMYq5062qhegUj+Fe1/gJumlRQRuutI2RKDP7pQL9Y8P6HO+HicMChArDyq9
+ 191Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742498357; x=1743103157;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tq5F+LFSz7I94wi2CXsI0zOfb8GaJ/jWhQMTyC+MdfY=;
+ b=K5BXVJ/sI0q6xj5ZG67RUGtoxxH9eQddkUCwcz3Ho97O8TcrIYef319JPa/13HNrOo
+ xToPwgJExNA7YyPayfh3EAcYP/kRTfULh+0ICt1+uanewuzAUMnHhMDbRUFj/a1Vo6bI
+ ag9OQdXYkhmmOnH5Cj39uo+HaimRWja5dNGYQPsA7ELpDM4pGc6LomBScVqqR8r8Opu6
+ qMmUWtkvI6hmvccGbHDIN+BOdM23ZKLrcQssc+rE6x4VtbDPqeDbx69pB8dzERIdeTnw
+ ORPGNCYS/z+gc7QVkojEtLDWBnbJv8DrfLaKolz71BuUxJyCZumgxy27/Sa0F66OVPVR
+ TgEw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXgInbDeJ9F23vlOcjprypOWRtwatR5xI0pg3PVCmeXu66zgE/ywVWUB0RqO/lYsjhNibbzA2UMWTd8@nongnu.org
+X-Gm-Message-State: AOJu0YyDWHG3rrDK3U6gmiSawL694V30UkjH0tPpBhFc9cTNB/ATjbcZ
+ Ke78iLkSIKx5putrY9HkRg4uSRA1W2c2nCp8GzsszxhveXIE5bWCGA5usDdZFro=
+X-Gm-Gg: ASbGncvAODOfIkWFPcF1B6VzginNZTvmJjf3cVQUTd1aFDChz9FlLKRyszkZyQ4JqpJ
+ 7AxVpji6DTiPwk/wadTTn3gZz7Q7oLtYNk1oCl25+hG97DyavXhwfhRwz8ZVjZL7zHvtV2NLjPN
+ Tk4FRASebKYskxYQbHg/V6hHs2XAVcR1KxQLnCgYsocLiSLYoIJsNxcAIzk0WA3MUlmBEMxt2F5
+ MpnPLYnDrvTUxWGwXk0kQeRVIMgQndkvHPqrcFd8CFsAShtzGp1YkJSGr6QDcIlXKnRM+BqGOl2
+ CcSvkR+IP/ded01Wf0ZOmXeS4MNEQIA5cJKrvvzZoljXE8ZyetB4Zxpzgw==
+X-Google-Smtp-Source: AGHT+IHnxwSgcecrpXyfAh4nU3RDQ5gC7c6RX8ocuRb2dcZ8am6818rs0+JuCbrRatAoRrsb5qQzlA==
+X-Received: by 2002:a17:902:ebc6:b0:223:39ae:a98 with SMTP id
+ d9443c01a7336-22780d825c4mr10603855ad.22.1742498356861; 
+ Thu, 20 Mar 2025 12:19:16 -0700 (PDT)
+Received: from [192.168.1.67] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-227811f45a7sm1512305ad.223.2025.03.20.12.19.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 20 Mar 2025 12:19:16 -0700 (PDT)
+Message-ID: <79b3715b-c8e8-4fa9-8bb9-d675a56be7d0@linaro.org>
+Date: Thu, 20 Mar 2025 12:19:15 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 9.0.0_ZEXTRAS_9043 (ZimbraWebClient - GC134
- (Linux)/9.0.0_ZEXTRAS_9043)
-Thread-Topic: Raspberry Pi 3B energy consumption
-Thread-Index: pA6rk1GkJoiscCDX1gT3qCYyA9gHMQ==
-Received-SPF: pass client-ip=195.220.43.153;
- envelope-from=clement.aldebert@univ-tlse3.fr; helo=gw1-out.univ-tlse3.fr
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: assertions: add static_assert
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+References: <20250320115521.808019-1-pbonzini@redhat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250320115521.808019-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DEAR_SOMETHING=1.973,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 20 Mar 2025 15:29:45 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,80 +100,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dear Alex Benn=C3=A9e,
+On 3/20/25 04:55, Paolo Bonzini wrote:
+> Add a new assertion that is similar to "const { assert!(...) }" but can be used
+> outside functions and with older versions of Rust.  A similar macro is found in
+> Linux, whereas the "static_assertions" crate has a const_assert macro that
+> produces worse error messages.
+> 
+> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> Supersedes: <20250320113356.799412-1-pbonzini@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   rust/qemu-api/src/assertions.rs | 22 ++++++++++++++++++++++
+>   1 file changed, 22 insertions(+)
+> 
+> diff --git a/rust/qemu-api/src/assertions.rs b/rust/qemu-api/src/assertions.rs
+> index 104dec39774..bba38cfda11 100644
+> --- a/rust/qemu-api/src/assertions.rs
+> +++ b/rust/qemu-api/src/assertions.rs
+> @@ -120,3 +120,25 @@ macro_rules! assert_match {
+>           );
+>       };
+>   }
+> +
+> +/// Assert at compile time that an expression is true.  This is similar
+> +/// to `const { assert!(...); }` but it works outside functions, as well as
+> +/// on versions of Rust before 1.79.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// # use qemu_api::static_assert;
+> +/// static_assert!("abc".len() == 3);
+> +/// ```
+> +///
+> +/// ```compile_fail
+> +/// # use qemu_api::static_assert;
+> +/// static_assert!("abc".len() == 2); // does not compile
+> +/// ```
+> +#[macro_export]
+> +macro_rules! static_assert {
+> +    ($x:expr) => {
+> +        const _: () = assert!($x);
+> +    };
+> +}
 
-Thank you for your response and for the provided documentation link.
+How about using something already done, and exhaustive for this?
+https://docs.rs/static_assertions/latest/static_assertions/
 
-To clarify, when we refer to energy consumption, we are specifically lookin=
-g at CPU core utilization. Our goal is to ensure that when we turn off CPU =
-cores on the emulated Raspberry Pi 3B, the host machine does not keep its c=
-orresponding cores running at 100% utilization.
-
-This is particularly relevant for our use case, as our supervisor, M. Poque=
-t, intends to use this project for teaching operating system development. S=
-tudents using QEMU to emulate a Raspberry Pi 3B may have different host mac=
-hines, so our objective is to implement a general approach that ensures CPU=
- core deactivation works properly regardless of the host system.
-
-So far, our measurements indicate that even after turning off cores in the =
-emulated system, all CPU cores on the host remain at 100% utilization. We a=
-re exploring ways to improve this behavior.
-
-We have looked into using -icount, but we would like to find a more viable =
-solution, particularly for the Cortex-A53 CPU used in the Raspberry Pi 3B. =
-Ideally, we would like to be able to use -smp 1 without being constrained b=
-y QEMU=E2=80=99s limitations and to implement proper CPU core shutdown, sim=
-ilar to what is available on x86-64 architectures.
-
-Would you have any recommendations or insights on achieving better power ma=
-nagement in this scenario?
-
-Best regards,
-Cl=C3=A9ment Aldebert & Laurent Polzin
-
------ Mail original -----
-De: "Alex Benn=C3=A9e" <alex.bennee@linaro.org>
-=C3=80: "Polzini" <laurentpolzin@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, "millian poquet" <millian.p=
-oquet@univ-tlse3.fr>, "clement aldebert" <clement.aldebert@univ-tlse3.fr>
-Envoy=C3=A9: Mercredi 19 Mars 2025 16:57:41
-Objet: Re: Raspberry Pi 3B energy consumption
-
-Polzini <laurentpolzin@gmail.com> writes:
-
-> Dear Sir/Madam, My name is Cl=C3=A9ment Aldebert, and I am a third-year c=
-omputer science student at Paul Sabatier University.
-> Together with my teammate Laurent Polzin, we are working on a project sup=
-ervised by Millian Poquet. Our project focuses on
-> reducing the energy consumption of QEMU=E2=80=99s Raspberry Pi 3B emulati=
-on, as we have observed that power usage is quite high
-> even when the system is idle.
-
-Can you qualify that a bit more? What are you running the emulation on?
-What power usage do you see?
-
-Power consumption of the emulation is really just down to computational
-efficiency of the emulation and if we ever get to a point that QEMU can
-go idle giving the host system a chance to reach a lower power state.
-
-> Ultimately, we also aim to enable emulation on a single CPU core.
-
-If you want to run all emulation on a single core you could use -icount
-to do that. It is less efficient though.
-
-> We are reaching out to
-> inquire if you have any advice, resources, or suggestions for implementin=
-g power management in QEMU, particularly for the
-> Raspberry Pi 3B model. Additionally, we would like to understand any cons=
-traints or best practices regarding adding new
-> code or features to QEMU.
-
-What documentation that exists can be found in the developers section of
-the manual:
-
-  https://qemu.readthedocs.io/en/master/devel/index.html
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+It provides a lot of convenient asserts related to types, traits, and 
+configs, which will probably end up being introduced in QEMU Rust at 
+some point.
 
