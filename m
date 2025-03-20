@@ -2,102 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D616FA6B0C4
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 23:30:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE71A6B0F8
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 23:34:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvONp-0001jt-FF; Thu, 20 Mar 2025 18:29:02 -0400
+	id 1tvOPI-0002Nc-MG; Thu, 20 Mar 2025 18:30:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tvONh-0001ix-3r
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 18:28:53 -0400
-Received: from mail-qv1-xf31.google.com ([2607:f8b0:4864:20::f31])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tvOPA-0002H2-Ck
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 18:30:24 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tvONZ-0005HQ-QI
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 18:28:51 -0400
-Received: by mail-qv1-xf31.google.com with SMTP id
- 6a1803df08f44-6e8fc176825so11044326d6.0
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 15:28:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tvOP3-000764-Ct
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 18:30:24 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-223594b3c6dso30658815ad.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 15:30:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742509723; x=1743114523; darn=nongnu.org;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=DhzRkPRbZ4GduLZwaltWlcCpN6qXMglp47tgAS0H40A=;
- b=HMky79cVdHKTIfWbn75bEkCHkoy5AbTE3oYCNBpP4IJrmc3wCc8XIQhxmYJmGD3SGp
- 6ZkD6NlCX9DemEwDI+cA3Rcav4y29hXw8j9ZTrVX7m5fmQ9jNqgeobGNZFdHsJ1H9pRU
- +uRjZR3mnuTp2ImMkMK2y74lXK/NWbk+cEwMVw3eYnrGV0U75NOWKmSZhyuDlrebvT33
- /j0JbKj9smSFmBCjTr/8XHR/1pcIHQGpJfcUeC2Uxsf3XnGrTuqgMMpoc2X0s4b+O0bD
- CX7rlTV5/DA9QqpT46/wkaIc3cvwYmUt5ueVXLpnvUXSGYiR403R7knbhjpxqZGZaSPj
- aG0Q==
+ d=linaro.org; s=google; t=1742509811; x=1743114611; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=iqhwlkf8vVBUTfdErW46dXre9tdQWHJk62D7NGKBzrU=;
+ b=HMXX2Y63oXl7RMdr3O4ZkuqwW6ZxgnDlGxtMlrpAH9NJNGhLS+ouOg1+sqEWNkfIHe
+ c5TWmriqFzJK/o18EBgC3iU6Dxt+NV7B7syFC0QvCacaiYPuuylWeQiW5b7m2+aiRO0b
+ OF90zgK5O3Ta2E6TIs8Ya0WX2gUDv5Mfgy+ZjnCCg4MV1Jta6Kvuv7jtmhhCEo+5glGM
+ sNqbbnCrG2OylRZakQs+9sj6/L4JEFudDUo5MKvRQPUUpFQFHp5zFyD+4SaXq3ehpAcT
+ xSh2OWbFoyYlwouSKtn/tU7uo28+6G2U+/NqGzsjtzIr5wWN+AOI5rGGTJtQLGHwuDSF
+ ZZHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742509723; x=1743114523;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DhzRkPRbZ4GduLZwaltWlcCpN6qXMglp47tgAS0H40A=;
- b=WxUOaTwBxkhZq88bRmA3KjfqZbROPcWFBlgx/B8N5u62xc+cBEitSw6JVh1evoUvIy
- +xeLn5uV25o2HBIhiAu50yxykWIlbjJpPYUEdweilW9/8/IPMKbfAGvFrZp7YsinUBs/
- Hd7wLbsEKdBTtty3LfxXur464jenrjzXu2nyj0dqCMt+H0XpHW3x62EjnmMdOJxVjtxW
- eEvJ8vz18bVp4t7RyyhvKifx5ErOpZ6qZQzeSqjq71QI0uhwd9lDowdYIdc8a+PzQsfG
- QfChcHdjJLOCP2WurJi3we9M8uwy/leL5XpPrmjhenXJ11Iu0u2V2pX5i23LpwfrZYQn
- 7GRg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXHFBi6HSdwjiZmDuQzMjWEJL3u21+xYyR8cD5Q/hF1YHknniHRE52gc5IGofVflmGGN4Hl+XLNa8xC@nongnu.org
-X-Gm-Message-State: AOJu0Yy3IPDbXY/Re9FIg2dLRD4HWhVLfmxcZe48IbukvfkBqr9Nl0xN
- sIq2G74LLc4qhMF0ajvAum/eTgOuzjHfyA95bts9++siLNJTHa7m
-X-Gm-Gg: ASbGncuuZIhUnB+FipdpLsuT0fAXpclw3dRl/h5ZYBeTnDcQa9qeuJj/XBkX76DviQh
- SnbAyIospZ/W7ma9wjNPCL8WoFm0E3ylAGPN/IfDzlEWfwtx1v4Bg96gp6Y95i68q7oDaLbw/ZG
- hNADY0weY7Iby9WhMd0A5z4pIfFTnFyVy6iE5PPAZIwe1xe22Y/D91bLlmgaejIbtIoXfMfURlg
- lMmc8/h3EyMOj1BIhgJ6deKv/oO9YuYvXusLc2RMgTIBOb6LbvTkJrTVrvC7qbUKm7MHMbckEIF
- R4dqQagNK/cRbOVLgHfKVb9Xb4595Nfsv8f2q9ok/HcXT7X34M9a6d6gyIbWJZk=
-X-Google-Smtp-Source: AGHT+IHotKrbWm3mUjIjRmiYgvCWAy0qj9zVKQS4ACZ5sytpPC9mKUhFR9+Ckg+loUTaTH0vVkWDSQ==
-X-Received: by 2002:a05:6214:1c0b:b0:6e8:9bcd:bba6 with SMTP id
- 6a1803df08f44-6eb3f27f3abmr15460936d6.7.1742509723133; 
- Thu, 20 Mar 2025 15:28:43 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2603:6000:a500:306:7462:60e4:5895:7c5f])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6eb3ef31abasm3258696d6.58.2025.03.20.15.28.41
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 20 Mar 2025 15:28:42 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Sid Manning'" <sidneym@quicinc.com>,
- "'Brian Cain'" <brian.cain@oss.qualcomm.com>, <qemu-devel@nongnu.org>
-Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
- "'Matheus Bernardino \(QUIC\)'" <quic_mathbern@quicinc.com>, <ale@rev.ng>,
- <anjo@rev.ng>, "'Marco Liebel \(QUIC\)'" <quic_mliebel@quicinc.com>,
- <alex.bennee@linaro.org>,
- "'Mark Burton \(QUIC\)'" <quic_mburton@quicinc.com>,
- "'Brian Cain'" <bcain@quicinc.com>
-References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
- <20250301052845.1012069-23-brian.cain@oss.qualcomm.com>
- <03a101db99d0$8c67c5e0$a53751a0$@gmail.com>
- <IA0PR02MB9486BDD73D3CBCD3468C367FBED82@IA0PR02MB9486.namprd02.prod.outlook.com>
-In-Reply-To: <IA0PR02MB9486BDD73D3CBCD3468C367FBED82@IA0PR02MB9486.namprd02.prod.outlook.com>
-Subject: RE: [PATCH 22/39] target/hexagon: Implement setprio, resched
-Date: Thu, 20 Mar 2025 17:28:41 -0500
-Message-ID: <03aa01db99e7$6f8a20a0$4e9e61e0$@gmail.com>
+ d=1e100.net; s=20230601; t=1742509811; x=1743114611;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iqhwlkf8vVBUTfdErW46dXre9tdQWHJk62D7NGKBzrU=;
+ b=INazp/1S3vFJwrz4W9pqL9LFXOeUuFSHQAzMOWSYUsxCt0XNykAua13wZS3jsN9UEt
+ rpmJS9SsoUeFjB5+kE5Hdptz7X1v2MALxb61goBenwPL9Oll7JyNBtXMg9BWm9+jcx1v
+ h9kw4aSqbHkoUKoT6B8Ivdl29eXMeifj7R3wLXSni+RiM9QoLn3HejCEQktRqKPesr6o
+ krgbzBncR2XGM3Jgx43dUJonLytnDtPTkGOqMWUHVnupq8JMM+xynEyKt1a/hSmzvoiA
+ DuE83QGzdEnwWfCIGBc9RtMGmA2XqLNWpvqn0CMd1pCZMn60s/UOIJA910FpxG/NIMW8
+ sAmA==
+X-Gm-Message-State: AOJu0YxbZrHy2J6n83YrZaUc7wPM54/Qpy4piS9RBgrslOO9unN1cbb1
+ /h7Dkm1cBMqAjLqhvCiW7ICIsXCqGOsq6EL1wORlMMY/GfxuM93iNzn/SMAFQ1Zi0AdIftUAMih
+ k
+X-Gm-Gg: ASbGncteOAfDJ9mwbipis+GAlytnv0bAnQc2TBifAmXPjXUUJWNsM+3KMWhk93nwFDS
+ ETRuDGje5B/5F1/YpE5ruxQyL9p/agfaJXOOpyrJ6YnjNYlJJuL7sxv5xqyFkDhm+xJpREF7Ko5
+ KSo32/rQPRbQNoxAsU6cFg2LX9OXbZozqCqo2xldmh9s9wGIqAZwVppNDBjTxUSjL10S0pqBQ+v
+ bA0kp56eQnhkJ3Zyt0TCHG2ntsvX7qraPNSlBycm9haxXIkWQjNeGknre5b81xumjMhyrxEOOnJ
+ r9j+fMynDZ2B7kbqlI1DKeJmdtqX0Ys2l8GR0W00QY+0ATSxZnCC1H0=
+X-Google-Smtp-Source: AGHT+IF7rxq36QivV5DZYlbW16JQVFyK0VK5/tg8mquF2bSISfiJtuxjSj/kyOctpc9S1USrnAuYdg==
+X-Received: by 2002:a17:903:1110:b0:21f:ba77:c45e with SMTP id
+ d9443c01a7336-22780e20562mr11953595ad.45.1742509810917; 
+ Thu, 20 Mar 2025 15:30:10 -0700 (PDT)
+Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22780f4581csm3370145ad.59.2025.03.20.15.30.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Mar 2025 15:30:10 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 00/30] single-binary: start make hw/arm/ common
+Date: Thu, 20 Mar 2025 15:29:32 -0700
+Message-Id: <20250320223002.2915728-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQIWUu77rEigiK0ljjjo9ZdCZqs5mQH8eWrXAinTeNYBj9+NfrLZdzCQ
-Content-Language: en-us
-X-Antivirus: Norton (VPS 250320-10, 3/20/2025), Outbound message
-X-Antivirus-Status: Clean
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f31;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-qv1-xf31.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,49 +100,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This series focuses on removing compilation units duplication in hw/arm. We
+start with this architecture because it should not be too hard to transform it,
+and should give us some good hints on the difficulties we'll meet later.
 
+We first start by making changes in global headers to be able to not rely on
+specific target defines. In particular, we completely remove cpu-all.h.
+We then focus on removing those defines from target/arm/cpu.h.
 
-> -----Original Message-----
-> From: Sid Manning <sidneym@quicinc.com>
-> Sent: Thursday, March 20, 2025 3:26 PM
-> To: ltaylorsimpson@gmail.com; 'Brian Cain'
-> <brian.cain@oss.qualcomm.com>; qemu-devel@nongnu.org
-> Cc: richard.henderson@linaro.org; philmd@linaro.org; Matheus =
-Bernardino
-> (QUIC) <quic_mathbern@quicinc.com>; ale@rev.ng; anjo@rev.ng; Marco
-> Liebel (QUIC) <quic_mliebel@quicinc.com>; alex.bennee@linaro.org; Mark
-> Burton (QUIC) <quic_mburton@quicinc.com>; Brian Cain
-> <bcain@quicinc.com>
-> Subject: RE: [PATCH 22/39] target/hexagon: Implement setprio, resched
-> > > +    if (lowest_th_prio > best_prio) {
-> > > +        qemu_log_mask(CPU_LOG_INT,
-> > > +                "%s: raising resched int %d, cur PC 0x" =
-TARGET_FMT_lx "\n",
-> > > +                __func__, int_number, arch_get_thread_reg(env,
-> > HEX_REG_PC));
-> > > +        SET_SYSTEM_FIELD(env, HEX_SREG_BESTWAIT, BESTWAIT_PRIO,
-> > > 0x1ff);
-> >
-> > What is the significance of 0x1ff?  The field is 10 bits, so this
-> > isn't setting all the bits.
-> > Should this be lowest_th_prio?
-> [Sid Manning]
->=20
-> Hi Taylor,
->=20
-> The value 0x1ff is correct but it does look like BESTWAIT_PRIO is not, =
-it should
-> be 9 not 10 target/hexagon/reg_fields_def.h.inc
->=20
-> It looks like it was added in "PATCH 19/38 target/hexagon: Define =
-register
-> fields for system regs"
-> I will make a fixup to that patch and correct the value.
+From there, we modify build system to create a new hw common library (per base
+architecture, "arm" in this case), instead of compiling the same files for every
+target.
 
-I see.
-If the intent is to set all the bits in the field, then use ~0.
+Finally, we can declare hw/arm/boot.c, and most of the boards as common as a
+first step for this part.
 
-Taylor
+- Based-on: 20250317183417.285700-1-pierrick.bouvier@linaro.org
+("[PATCH v6 00/18] make system memory API available for common code")
+https://lore.kernel.org/qemu-devel/20250317183417.285700-1-pierrick.bouvier@linaro.org/
+- Based-on: 20250318213209.2579218-1-richard.henderson@linaro.org
+("[PATCH v2 00/42] accel/tcg, codebase: Build once patches")
+https://lore.kernel.org/qemu-devel/20250318213209.2579218-1-richard.henderson@linaro.org
 
+v2:
+- rebase on top of Richard series
+- add target include in hw_common lib
+- hw_common_lib uses -DCOMPILE_SYSTEM_VS_USER introduced by Richard series
+- remove cpu-all header
+- remove BSWAP_NEEDED define
+- new tlb-flags header
+- Cleanup i386 KVM_HAVE_MCE_INJECTION definition + move KVM_HAVE_MCE_INJECTION
+- remove comment about cs_base in target/arm/cpu.h
+- updated commit message about registers visibility between aarch32/aarch64
+- tried remove ifdefs in target/arm/helper.c but this resulted in more a ugly
+  result. So just comment calls for now, as we'll clean this file later.
+- make most of the boards in hw/arm common
+
+Pierrick Bouvier (30):
+  exec/cpu-all: remove BSWAP_NEEDED
+  exec/cpu-all: extract tlb flags defines to exec/tlb-flags.h
+  exec/cpu-all: move cpu_copy to linux-user/qemu.h
+  include/exec/cpu-all: move compile time check for CPUArchState to
+    cpu-target.c
+  exec/cpu-all: remove system/memory include
+  exec/cpu-all: remove exec/page-protection include
+  exec/cpu-all: remove tswap include
+  exec/cpu-all: remove exec/cpu-interrupt include
+  exec/cpu-all: remove exec/cpu-defs include
+  exec/cpu-all: remove exec/target_page include
+  exec/cpu-all: remove hw/core/cpu.h include
+  accel/tcg: fix missing includes for TCG_GUEST_DEFAULT_MO
+  accel/tcg: fix missing includes for TARGET_HAS_PRECISE_SMC
+  exec/cpu-all: remove cpu include
+  exec/cpu-all: transfer exec/cpu-common include to cpu.h headers
+  exec/cpu-all: remove this header
+  exec/target_page: runtime defintion for TARGET_PAGE_BITS_MIN
+  accel/kvm: move KVM_HAVE_MCE_INJECTION define to kvm-all.c
+  exec/poison: KVM_HAVE_MCE_INJECTION can now be poisoned
+  target/arm/cpu: always define kvm related registers
+  target/arm/cpu: flags2 is always uint64_t
+  target/arm/cpu: define same set of registers for aarch32 and aarch64
+  target/arm/cpu: remove inline stubs for aarch32 emulation
+  meson: add common hw files
+  hw/arm/boot: make compilation unit hw common
+  hw/arm/armv7m: prepare compilation unit to be common
+  hw/arm/digic_boards: prepare compilation unit to be common
+  hw/arm/xlnx-zynqmp: prepare compilation unit to be common
+  hw/arm/xlnx-versal: prepare compilation unit to be common
+  hw/arm: make most of the compilation units common
+
+ meson.build                             |  37 +++++++-
+ accel/tcg/internal-target.h             |   1 +
+ accel/tcg/tb-internal.h                 |   1 -
+ hw/s390x/ipl.h                          |   2 +
+ include/exec/cpu_ldst.h                 |   1 +
+ include/exec/exec-all.h                 |   1 +
+ include/exec/poison.h                   |   4 +
+ include/exec/target_page.h              |   3 +
+ include/exec/{cpu-all.h => tlb-flags.h} |  38 +-------
+ include/hw/core/cpu.h                   |   2 +-
+ include/qemu/bswap.h                    |   2 +-
+ include/system/kvm.h                    |   2 -
+ linux-user/qemu.h                       |   3 +
+ linux-user/sparc/target_syscall.h       |   2 +
+ linux-user/syscall_defs.h               |   2 +-
+ target/alpha/cpu.h                      |   4 +-
+ target/arm/cpu.h                        |  40 ++------
+ target/arm/internals.h                  |   1 +
+ target/avr/cpu.h                        |   4 +-
+ target/hexagon/cpu.h                    |   3 +-
+ target/hppa/cpu.h                       |   5 +-
+ target/i386/cpu.h                       |   5 +-
+ target/i386/hvf/vmx.h                   |   1 +
+ target/loongarch/cpu.h                  |   4 +-
+ target/m68k/cpu.h                       |   4 +-
+ target/microblaze/cpu.h                 |   4 +-
+ target/mips/cpu.h                       |   4 +-
+ target/openrisc/cpu.h                   |   4 +-
+ target/ppc/cpu.h                        |   4 +-
+ target/ppc/mmu-hash32.h                 |   2 +
+ target/ppc/mmu-hash64.h                 |   2 +
+ target/riscv/cpu.h                      |   4 +-
+ target/rx/cpu.h                         |   4 +-
+ target/s390x/cpu.h                      |   4 +-
+ target/sh4/cpu.h                        |   4 +-
+ target/sparc/cpu.h                      |   4 +-
+ target/tricore/cpu.h                    |   3 +-
+ target/xtensa/cpu.h                     |   4 +-
+ accel/kvm/kvm-all.c                     |   5 +
+ accel/tcg/cpu-exec.c                    |   3 +-
+ accel/tcg/cputlb.c                      |   1 +
+ accel/tcg/tb-maint.c                    |   1 +
+ accel/tcg/translate-all.c               |   1 +
+ accel/tcg/user-exec.c                   |   2 +
+ bsd-user/elfload.c                      |   6 +-
+ cpu-target.c                            |   5 +
+ hw/alpha/dp264.c                        |   1 +
+ hw/alpha/typhoon.c                      |   1 +
+ hw/arm/armv7m.c                         |  12 ++-
+ hw/arm/boot.c                           |   2 +
+ hw/arm/digic_boards.c                   |   2 +-
+ hw/arm/smmuv3.c                         |   1 +
+ hw/arm/xlnx-versal.c                    |   2 -
+ hw/arm/xlnx-zynqmp.c                    |   2 -
+ hw/hppa/machine.c                       |   1 +
+ hw/i386/multiboot.c                     |   1 +
+ hw/i386/pc.c                            |   1 +
+ hw/i386/pc_sysfw_ovmf.c                 |   1 +
+ hw/i386/vapic.c                         |   1 +
+ hw/loongarch/virt.c                     |   1 +
+ hw/m68k/next-cube.c                     |   1 +
+ hw/m68k/q800.c                          |   1 +
+ hw/m68k/virt.c                          |   1 +
+ hw/openrisc/boot.c                      |   1 +
+ hw/pci-host/astro.c                     |   1 +
+ hw/ppc/e500.c                           |   1 +
+ hw/ppc/mac_newworld.c                   |   5 +-
+ hw/ppc/mac_oldworld.c                   |   5 +-
+ hw/ppc/ppc.c                            |   1 +
+ hw/ppc/ppc_booke.c                      |   1 +
+ hw/ppc/prep.c                           |   1 +
+ hw/ppc/spapr_hcall.c                    |   1 +
+ hw/ppc/spapr_ovec.c                     |   1 +
+ hw/riscv/riscv-iommu-pci.c              |   1 +
+ hw/riscv/riscv-iommu.c                  |   1 +
+ hw/s390x/s390-pci-bus.c                 |   1 +
+ hw/s390x/s390-pci-inst.c                |   1 +
+ hw/s390x/s390-skeys.c                   |   1 +
+ hw/sparc/sun4m.c                        |   7 +-
+ hw/sparc64/sun4u.c                      |   7 +-
+ hw/xtensa/pic_cpu.c                     |   1 +
+ linux-user/elfload.c                    |   8 +-
+ monitor/hmp-cmds-target.c               |   1 +
+ semihosting/uaccess.c                   |   2 +-
+ target/alpha/helper.c                   |   2 +
+ target/arm/gdbstub64.c                  |   1 +
+ target/arm/helper.c                     |   6 ++
+ target/arm/hvf/hvf.c                    |   1 +
+ target/arm/ptw.c                        |   1 +
+ target/arm/tcg/helper-a64.c             |   1 +
+ target/arm/tcg/hflags.c                 |   4 +-
+ target/arm/tcg/mte_helper.c             |   1 +
+ target/arm/tcg/sve_helper.c             |   1 +
+ target/arm/tcg/tlb-insns.c              |   1 +
+ target/avr/helper.c                     |   2 +
+ target/hexagon/translate.c              |   1 +
+ target/i386/arch_memory_mapping.c       |   1 +
+ target/i386/helper.c                    |   2 +
+ target/i386/hvf/hvf.c                   |   1 +
+ target/i386/kvm/hyperv.c                |   1 +
+ target/i386/kvm/kvm.c                   |   1 +
+ target/i386/kvm/xen-emu.c               |   1 +
+ target/i386/sev.c                       |   1 +
+ target/i386/tcg/system/excp_helper.c    |   2 +
+ target/i386/tcg/system/misc_helper.c    |   1 +
+ target/i386/tcg/system/tcg-cpu.c        |   1 +
+ target/i386/xsave_helper.c              |   1 +
+ target/loongarch/cpu_helper.c           |   1 +
+ target/loongarch/tcg/translate.c        |   1 +
+ target/m68k/helper.c                    |   1 +
+ target/microblaze/helper.c              |   1 +
+ target/microblaze/mmu.c                 |   1 +
+ target/mips/tcg/system/cp0_helper.c     |   1 +
+ target/mips/tcg/translate.c             |   1 +
+ target/openrisc/mmu.c                   |   1 +
+ target/ppc/excp_helper.c                |   1 +
+ target/ppc/mmu-book3s-v3.c              |   1 +
+ target/ppc/mmu-hash64.c                 |   1 +
+ target/ppc/mmu-radix64.c                |   1 +
+ target/riscv/cpu_helper.c               |   1 +
+ target/riscv/op_helper.c                |   1 +
+ target/riscv/pmp.c                      |   1 +
+ target/riscv/vector_helper.c            |   2 +
+ target/rx/cpu.c                         |   1 +
+ target/s390x/helper.c                   |   1 +
+ target/s390x/ioinst.c                   |   1 +
+ target/s390x/tcg/mem_helper.c           |   1 +
+ target/sparc/ldst_helper.c              |   1 +
+ target/sparc/mmu_helper.c               |   2 +
+ target/tricore/helper.c                 |   1 +
+ target/xtensa/helper.c                  |   1 +
+ target/xtensa/mmu_helper.c              |   1 +
+ target/xtensa/op_helper.c               |   1 +
+ target/xtensa/xtensa-semi.c             |   1 +
+ tcg/tcg-op-ldst.c                       |   2 +-
+ hw/arm/meson.build                      | 117 ++++++++++++------------
+ 136 files changed, 302 insertions(+), 205 deletions(-)
+ rename include/exec/{cpu-all.h => tlb-flags.h} (78%)
+
+-- 
+2.39.5
 
 
