@@ -2,93 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1939BA6AEF5
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 21:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5CAA6AEFD
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 21:11:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvM8I-00028I-5D; Thu, 20 Mar 2025 16:04:50 -0400
+	id 1tvMDA-0004lp-G5; Thu, 20 Mar 2025 16:09:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tvM8E-00026w-EF
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 16:04:46 -0400
-Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1tvMD7-0004lU-VD
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 16:09:49 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1tvM8B-0006gS-Kz
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 16:04:46 -0400
-Received: by mail-qk1-x733.google.com with SMTP id
- af79cd13be357-7c5b2472969so112541985a.1
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 13:04:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1tvMD2-0001BA-0Y
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 16:09:49 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5e5e8274a74so1924362a12.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 13:09:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742501082; x=1743105882; darn=nongnu.org;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=mfyhA5GejRLV4KHasyeczWQeMaULjQc1TJs4WUP8mR8=;
- b=LzdOM2nuiovlBVhfzxXkuOLcL39iHcDLVunWnGpMsldBKZpnxlyVPnczsmf0LZoVv6
- /qG3foGM35Vr9dT+rYyYSRZKUvbXBw/l8QkUO3ZV5j565NsIiGkzb/0roTY4KrQoydkD
- VJW65JtTL2v9cAvFIpuLhZVqqyu1Tbm060Rp3nyjSWOhivpYwza8JNRWHbFEoXCAtWpc
- WgPDS1/vo15wh3w8EwkR85zEER87+ic/k4g+YSF6fL9fNlBm1t19eHJxEoYQ0VARNI0o
- 7pblsKta5rY57lZ1ALHp2w9B84Q92uMmCus2EvbYVRgjjzRAjNNw66jTkQjcL8fpUrn1
- do/Q==
+ d=gmail.com; s=20230601; t=1742501382; x=1743106182; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Td7EFuTJ2om+RFEY5HkKdjzsPHCJqWxm4Stka7owgiY=;
+ b=AEiar6ZvzPkMBx7Np2p6qNf4lHBNkDaFY8SXkRimYvBm6qQPj5sW0NWEj2WtmFxFmu
+ 384Xg7kD3GQhIG5ISSCvhyGtLMNw8YDQ5fyNk4L7DV/yJ4tXmJrC99bHXXIrTHklCE74
+ gT1XDTgoGXhStfXpoFBZ/JTa4lca/eVwHUiM4M+Svq2GHTC6qLpL+5LnAfWIYvEjO8pc
+ VtwA1X1Sd4V9j5Rcus727W2uOy6MxanBpe4xbhC2/9OXlgFd06ePCRi9ofZEsf1teNgv
+ U38bm6nPFnPe4yr9SfPE4dVfQoWcKzKgsw3zcjHf9DKhvuChoM3e4Q5EdjMdrpJiYCxa
+ VjaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742501082; x=1743105882;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mfyhA5GejRLV4KHasyeczWQeMaULjQc1TJs4WUP8mR8=;
- b=M78WuHNX6FJtsl3faZMlTaKMA2TSkdOwA+SHuxqEbhZ2JxJUjVlSlcTDlIMuYZNC5f
- o7o8BJ/znyExK5wC17BexCrutUDryD5Fe+YOdzUhLBZ1c1U/K2nibzRM2TeV4BFOyI+5
- o7klF60Gy9igW07TSj69O67DDrzUq5HDl3O2RQM9AiAeUSapf/2rQyrsnxq7AIOZyply
- hHcka0TqhfCufSrykMfBSJl4mi8KOFDxQLEGy8dt6JlaEyQBjujiLwAvzZF0AIlfr5/V
- t6D/S/n9/BO+zYBSKVs6w+e/mvuEEL+6CIAY0LqPdYGK4QK+SIWjBbhRXBxXcI35S1+w
- vEKg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVepRFFRA5OL9/OyrsJORHnjRiQYZvGQ9plGVz1Qr/+7Iwee4HaUtEFH5gsPfJrSsEbdTB/0f0GbRPH@nongnu.org
-X-Gm-Message-State: AOJu0YxsBHPYaoivnytUd8wnfpVQ/tfuBdf+jLJhlI6WTNbZmw4TiK7s
- e3jX+k63zKrWayh4UXbeBra2Ci5zHmMvHdXqEcnglqHduRvPXDDhbYljzItS/D0=
-X-Gm-Gg: ASbGnctsl01qS8TEQGR+ag5nonYhLOdqyn3W/eTLwx4FCDVCuUBLLf+b1KuBHZ1RPtF
- j51psiI74FgywSvzBik+deFdHuwAt9zaxK3hjprFvmm2hRZX1WFRlQz4ED0pwTDFRb+AuaF5QIA
- FXfatOsaAlsPrzsw9Kwo7S4nhw8XYPe2jacI1AcRzQWfZGfY/Kf04Mc/PMyK1dW96AEA2XnNb08
- 5zmMvMMJzxV39Q4aGukdj+8nwmTtGCRlSJ+V5umalQnKpGbczsib/oHdh8nwR39516XffLGlUFg
- eSHpWyO7R5vKEXk0MPNzay43iZWe9JGSeo1u4laS9Z52aCNG011OgKyL7Wq1+S1bNFBUiaYahw=
- =
-X-Google-Smtp-Source: AGHT+IE1qKJWT8roCPAnBHx0H0FplsWJairAqvOTKJwMWlotX/Ot0cH7flXrB/cjLDVmRoIyQBDpWg==
-X-Received: by 2002:a05:620a:4443:b0:7c5:5909:18d9 with SMTP id
- af79cd13be357-7c5ba15a850mr70887685a.5.1742501082256; 
- Thu, 20 Mar 2025 13:04:42 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2603:6000:a500:306:7462:60e4:5895:7c5f])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7c5b92d4e57sm27852085a.32.2025.03.20.13.04.41
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 20 Mar 2025 13:04:41 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
-	<qemu-devel@nongnu.org>
-Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
- <quic_mathbern@quicinc.com>, <ale@rev.ng>, <anjo@rev.ng>,
- <quic_mliebel@quicinc.com>, <alex.bennee@linaro.org>,
- <quic_mburton@quicinc.com>, <sidneym@quicinc.com>,
- "'Brian Cain'" <bcain@quicinc.com>
-References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
- <20250301052845.1012069-38-brian.cain@oss.qualcomm.com>
-In-Reply-To: <20250301052845.1012069-38-brian.cain@oss.qualcomm.com>
-Subject: RE: [PATCH 37/39] target/hexagon: Add support for loadw_phys
-Date: Thu, 20 Mar 2025 15:04:40 -0500
-Message-ID: <03a301db99d3$5146df70$f3d49e50$@gmail.com>
+ d=1e100.net; s=20230601; t=1742501382; x=1743106182;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Td7EFuTJ2om+RFEY5HkKdjzsPHCJqWxm4Stka7owgiY=;
+ b=RysD23JPNoRTCDrjFEUfE05iN1h6TV1pIhQxEaE+sYumwuNysk/oOwpGkXFbrqhYOZ
+ ws74gsLvUU+PaVYBj2xm1pFRELL1ie7PSQpQp9oyaBdOz2+FgDHp6XrJgsqCbZ/9RfnS
+ EStOSoaUYrq/gQk+SbVvFvB0X4R0oxdTP1m22JGijULFiFFGz1fYG/fD9DG6C412u9X7
+ tbJJ/H6kRoeNooAdu9Ov0vHPDjhl7nHdi52zbfrUfx62WwTRVXafM0MJm4+8c9Ef7G/I
+ r5u9kiz3rJVndBA+O6XDljPsEvj5hGCeGGVI1yPtEWDVxjxNeQByt/zIOdteqo4PJoaz
+ DpDQ==
+X-Gm-Message-State: AOJu0YwibkJMJey22KQSfpMpoiSlGWBQhiO5VEmdGAuaI0e5jwiHONn5
+ LPtcsuUckCwQagJjKVNjfuMoi1SpUxoQZ8hKaXlQSwp2cJgccAtqI4771/W54khwd38s46fUqsi
+ NGL7WOM2EalVvftZFRpGxmGsT5JA=
+X-Gm-Gg: ASbGncuusm5KSQPu18UGRlR0sjiXcIZ8B0Fl4JGe+jmTCpZ2bs1m5X8bK5ip1u5z2NR
+ jmzFUl0Nyn+/NCe5p12lsysz1GQNHSxS+sSuHxsA9zB21u+y9TeWG/+XfZhff8JRtHhiW+8TuGU
+ 6rfReColCn4Tg47X/ORTY43sg5
+X-Google-Smtp-Source: AGHT+IF3vYsrOEO4xxglMQZCM+rd/gbuWcJR87v8vHeaz+XlGE0OYvTvTLyq52krwHnOtNP8nV7/xWEuRTD3P6ug/oc=
+X-Received: by 2002:a05:6402:27c6:b0:5e6:1842:1346 with SMTP id
+ 4fb4d7f45d1cf-5ebcd520333mr603134a12.30.1742501381372; Thu, 20 Mar 2025
+ 13:09:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQIWUu77rEigiK0ljjjo9ZdCZqs5mQFbUkJnsvwlneA=
-Content-Language: en-us
-X-Antivirus: Norton (VPS 250320-10, 3/20/2025), Outbound message
-X-Antivirus-Status: Clean
-Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-qk1-x733.google.com
+References: <9d87fed729b2697605bcf5b6062669b6239e5c0f.camel@linux.ibm.com>
+In-Reply-To: <9d87fed729b2697605bcf5b6062669b6239e5c0f.camel@linux.ibm.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Thu, 20 Mar 2025 16:09:28 -0400
+X-Gm-Features: AQ5f1Jq1TfDJtoR5_ea50TTMZ9ttzb5_AKh-2U1M5686vcG6zPSMMO6P94-jTFI
+Message-ID: <CAJSP0QXqseVpaHZEfhJv7nZ8N18PGQqpW-tb9LCkGyvOKvW_zQ@mail.gmail.com>
+Subject: Re: Best practice for issuing blocking calls in response to an event
+To: milesg@linux.ibm.com
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=stefanha@gmail.com; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,24 +92,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Mar 20, 2025 at 12:34=E2=80=AFPM Miles Glenn <milesg@linux.ibm.com>=
+ wrote:
+>
+> Hello,
+>
+> I am attempting to simulate a system with multiple CPU
+> architectures.  To do this I am starting a unique QEMU process for each
+> CPU architecture that is needed. I'm also developing some QEMU code
+> that aids in transporting MMIO transactions across the process
+> boundaries using sockets.
 
+I have CCed Phil. He has been working on heterogenous target emulation
+and might be interested.
 
-> -----Original Message-----
-> From: Brian Cain <brian.cain@oss.qualcomm.com>
-> Sent: Friday, February 28, 2025 11:29 PM
-> To: qemu-devel@nongnu.org
-> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
-> philmd@linaro.org; quic_mathbern@quicinc.com; ale@rev.ng; anjo@rev.ng;
-> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
-> alex.bennee@linaro.org; quic_mburton@quicinc.com;
-> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>
-> Subject: [PATCH 37/39] target/hexagon: Add support for loadw_phys
-> 
-> From: Brian Cain <bcain@quicinc.com>
-> 
-> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+>
+> The design takes MMIO request messages off of a socket, services the
+> request by calling address_space_ldq_be(), then sends a response
+> message (containing the requested data) over the same
+> socket.  Currently, this is all done inside the socket IOReadHandler
+> callback function.
 
-Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+At a high level this is similar to the vfio-user feature where a PCI
+device is emulated in a separate process. This also involves sending
+messages describing QEMU's MemoryRegion accesses. See the "remote"
+machine type in QEMU to look at the code.
 
+>
+> This works as long as the targeted register exists in the same QEMU
+> process that received the request.  However, If the register exists in
+> another QEMU process, then the call to address_space_ldq_be() results
+> in another socket message being sent to that QEMU process, requesting
+> the data, and then waiting (blocking) for the response message
+> containing the data.  In other words, it ends up blocking inside the
+> event handler and even though the QEMU process containing the target
+> register was able to receive the request and send the response, the
+> originator of the request is unable to receive the response until it
+> eventually times out and stops blocking.  Once it times out and stops
+> blocking, it does receive the response, but now it is too late.
+>
+> Here's a summary of the stack up to where the code blocks:
+>
+> IOReadHandler callback
+>   calls address_space_ldq_be()
+>     resolves to mmio read op of a remote device
+>       sends request over socket and waits (blocks) for response
+>
+> So, I'm looking for a way to handle the work of calling
+> address_space_ldq_be(), which might block when attempting to read a
+> register of a remote device, without blocking inside the IOReadHandler
+> callback context.
+>
+> I've done a lot of searches and reading about how to do this on the web
+> and in the QEMU code but it's still not really clear to me how this
+> should be done in QEMU.  I've seen a lot about using coroutines to
+> handle cases like this. Is that what I should be using here?
 
+The fundamental problem is that address_space_ldq_be() is synchronous,
+so there is no way to return back to the caller until the response has
+been received.
+
+vfio-user didn't solve this problem. It simply blocks until the
+response is received, but it does drop the Big QEMU Lock during this
+time so that other vCPU threads can run. For example, see
+hw/remote/proxy.c:send_bar_access_msg() and
+mpqemu_msg_send_and_await_reply().
+
+QEMU supports nested event loops, but they come with their own set of
+gotchas. The way a nested event loop might help here is to send the
+request and then call aio_poll() to receive the response in another
+IOReadHandler. This way other event loop processing can take place
+while waiting in address_space_ldq_be().
+
+The second problem is that this approach where QEMU processes send
+requests to each other needs to be implemented carefully to avoid
+deadlocks. For example, devices that do DMA could load/store memory
+belonging to another device handled by another QEMU. Once there is an
+A -> B -> A situation it could deadlock.
+
+Both vfio-user and vhost-user have similar issues with their
+bi-directional communication where a device emulation process can send
+a message to QEMU while processing a message from QEMU. Deadlock can
+be avoided if the code is structured so that QEMU is able to receive
+new requests during the time when it is waiting for a response.
+
+Stefan
 
