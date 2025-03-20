@@ -2,53 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6F2A6A640
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 13:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F69A6A620
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 13:19:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvEyV-00069y-Hh; Thu, 20 Mar 2025 08:26:15 -0400
+	id 1tvEqI-00026O-GJ; Thu, 20 Mar 2025 08:17:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <81bcefde27e7450ea4061acf0f63320ac0f8f95d@kylie.crudebyte.com>)
- id 1tvEyT-00069f-GL
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:26:13 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <81bcefde27e7450ea4061acf0f63320ac0f8f95d@kylie.crudebyte.com>)
- id 1tvEyQ-0006sR-Kc
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:26:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=U1CJbSQ4ojuRj9btueVTKiBMg7jOOtRxixjKO+xArJc=; b=MLS4O
- nrAwjUi8+yZpQ6bA7C57sFM7QNNG7mmnc5U9DTMb388pU9VFybrYttCZt8kucOZQvMUXjKs0bK2n6
- VoHMe6yVF6hdxm7SWQIXBWTDus9/stAhxw0S+2uXNTKstvegqU3JFfwpLuvmIqvU829y7gsgI74am
- BLzSopwWT1g5P05f4Wfw56Q7f68egwwOVzh+QTeNQZD83UsLLnCID/Kr+ORL1du4iME1WaMH4CO6B
- Lso1AR83pxD4BA0BSCY9YGFzb7TpfniAUZjIszZHXgFRU8Z/6Y6wXWEHFd/6O4BfKjd/mJ/5LwTGD
- RlBgSW43CpzzGDEEyaVihJV7yoLCWANhpIK8U8Pcy6GeWFA8B/O6LdR2GQ9mB3IDeR+bCwlx/UCUX
- QZAeEtiBC9RXj68P47DjWGQRI0vLDdfXRK86WFvNAYqZJyjAfusKSh9YvnrkPhDt5spQbBsljcWvP
- 1ZZ8gJAO3UcdddMFaMjMCWnOgmAC5T0m6Z10O38KP5G7E8Vl49j+RcKcQmPrpvZipVh0aPXIJ0cbP
- f25xLBcZHb9JQlDkzQzlgNfNoyuJDpOmMHpYU25PtPjkNI7jqmU4ZW2K/a4FxOvIHlnSgaGWBqi44
- nak1GE/oEYKc3+tUkk0f95r0WpWVzttjGkI43x9nFegQ8iRZWEJiplMxKHbPWk=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Thu, 20 Mar 2025 13:16:20 +0100
-Subject: [PATCH v2] 9pfs: fix 'total_open_fd' decrementation
+ (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
+ id 1tvEqG-00026D-LZ
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:17:44 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1tvEqE-0005Rg-Er
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:17:44 -0400
+Received: by linux.microsoft.com (Postfix, from userid 1219)
+ id 408402116B34; Thu, 20 Mar 2025 05:17:39 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 408402116B34
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1742473059;
+ bh=wHXdCxm5HCr0q8DbzSLrCpiLNzNr2yDR86+dEqwoIeA=;
+ h=Date:From:To:Cc:Subject:From;
+ b=A+FCMVeTjPKbjlbtDLBismxP3aWcVcuJUbcn50mxLfq6PuYZXOHa13Z3p2YGLziQl
+ x2JHPkI6tmwaeGOLik180kGUFb232qaR+psr83+p/yOg/nhVgu3muZ90ATjgu1ZpW1
+ 4+QeFsaImYKUsLra2pzrxXExT4rzP+RuTn97Xb6E=
+Date: Thu, 20 Mar 2025 05:17:39 -0700
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>
-Message-Id: <E1tvEyJ-004dMa-So@kylie.crudebyte.com>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=81bcefde27e7450ea4061acf0f63320ac0f8f95d@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Cc: magnuskulke@microsoft.com, liuwe@linux.microsoft.com,
+ liuwe@microsoft.com, wei.liu@kernel.org
+Subject: ANN: working on an accelerator for MSHV
+Message-ID: <20250320121739.GA14189@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,97 +62,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to 'man 2 close' errors returned by close() should only be used
-for either diagnostic purposes or for catching data loss due to a previous
-write error, as an error result of close() usually indicates a deferred
-error of a previous write operation.
+Hi all, 
 
-Therefore not decrementing 'total_open_fd' on a close() error is wrong
-and would yield in a higher open file descriptor count than actually the
-case, leading to 9p server reclaiming open file descriptors too soon.
+We would like to informally announce an effort we started at Microsoft to
+expose the Microsoft Hypervisor (MSHV) as an alternative accelerator in Qemu on
+Linux hosts. L1 VMs that have been launched on Azure or HyperV will be able to
+use a /dev/mshv device to accelerate the operation of L2 (nested) VMs. The
+support for this device is currently being contributed to the kernel:
 
-Based-on: <20250312152933.383967-7-groug@kaod.org>
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- V2: log a warning message on unexpected close() -> EBADF case
+https://lore.kernel.org/linux-hyperv/1740611284-27506-1-git-send-email-nunodasneves@linux.microsoft.com/T/#t
 
- hw/9pfs/9p.c     | 10 +++++++++-
- hw/9pfs/codir.c  |  7 ++++++-
- hw/9pfs/cofile.c |  7 ++++++-
- 3 files changed, 21 insertions(+), 3 deletions(-)
++-------------+ +----------------+ +--------------+
+|             | |                | |              |
+| Azure Host  | | L1 Linux Dom0  | | L2 Guest VM  |
+|             | |                | |              |
+|     OS      | |                | |              |
+|             | | +------------+ | |              |
+|             | | |  Qemu VMM  | | |              |
+|             | | +------------+ | |              |
+|             | | +------------+ | |              |
+|             | | |   Kernel   | | |              |
+|             | | +-----+------+ | |              |
+|             | +-------|--------+ +--------------+
+|             | +-------v-------------------------+
+|             | |    Microsoft Hypervisor (L1)    |
++-------------+ +-------+-------------------------+
+                        |
++-----------------------v-------------------------+
+|            Microsoft Hypervisor (L0)            |
++-------------------------------------------------+
 
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index b22df3aa2b..8b001b9112 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -510,7 +510,15 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
-             err = (f->fid_type == P9_FID_DIR) ?
-                 s->ops->closedir(&s->ctx, &f->fs_reclaim) :
-                 s->ops->close(&s->ctx, &f->fs_reclaim);
--            if (!err) {
-+
-+            /* 'man 2 close' suggests to ignore close() errors except of EBADF */
-+            if (unlikely(err && errno == EBADF)) {
-+                /*
-+                 * unexpected case as FIDs were picked above by having a valid
-+                 * file descriptor
-+                 */
-+                error_report("9pfs: v9fs_reclaim_fd() WARNING: close() failed with EBADF");
-+            } else {
-                 /* total_open_fd must only be mutated on main thread */
-                 nclosed++;
-             }
-diff --git a/hw/9pfs/codir.c b/hw/9pfs/codir.c
-index 2068a4779d..bce7dd96e9 100644
---- a/hw/9pfs/codir.c
-+++ b/hw/9pfs/codir.c
-@@ -20,6 +20,7 @@
- #include "fsdev/qemu-fsdev.h"
- #include "qemu/thread.h"
- #include "qemu/main-loop.h"
-+#include "qemu/error-report.h"
- #include "coth.h"
- #include "9p-xattr.h"
- #include "9p-util.h"
-@@ -353,7 +354,11 @@ int coroutine_fn v9fs_co_closedir(V9fsPDU *pdu, V9fsFidOpenState *fs)
-                 err = -errno;
-             }
-         });
--    if (!err) {
-+    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
-+    if (unlikely(err && errno == EBADF)) {
-+        /* unexpected case as we should have checked for a valid file handle */
-+        error_report("9pfs: WARNING: v9fs_co_closedir() failed with EBADF");
-+    } else {
-         total_open_fd--;
-     }
-     return err;
-diff --git a/hw/9pfs/cofile.c b/hw/9pfs/cofile.c
-index 71174c3e4a..6e775c8e41 100644
---- a/hw/9pfs/cofile.c
-+++ b/hw/9pfs/cofile.c
-@@ -20,6 +20,7 @@
- #include "fsdev/qemu-fsdev.h"
- #include "qemu/thread.h"
- #include "qemu/main-loop.h"
-+#include "qemu/error-report.h"
- #include "coth.h"
- 
- int coroutine_fn v9fs_co_st_gen(V9fsPDU *pdu, V9fsPath *path, mode_t st_mode,
-@@ -197,7 +198,11 @@ int coroutine_fn v9fs_co_close(V9fsPDU *pdu, V9fsFidOpenState *fs)
-                 err = -errno;
-             }
-         });
--    if (!err) {
-+    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
-+    if (unlikely(err && errno == EBADF)) {
-+        /* unexpected case as we should have checked for a valid file handle */
-+        error_report("9pfs: WARNING: v9fs_co_close() failed with EBADF");
-+    } else {
-         total_open_fd--;
-     }
-     return err;
--- 
-2.39.5
++-------------------------------------------------+
+|                                                 |
+|                    Hardware                     |
+|                                                 |
++-------------------------------------------------+
 
+Please find an early snapshot of our work at this location:  
+
+http://github.com/MSRSSP/qemu-mshv/tree/mshv (some build instructions can be
+found in ./accel/mshv/rust/README.md)
+
+Please note, this is a PoC which is outsourcing the majority of logic to
+to a library version of the Cloud-Hypervisor VMM and several MSHV-specific
+rust-vmm crates. This was done as a feasibility study since Cloud-Hypervisor
+already supports MSHV as an accelerator technology (in addition to KVM). As
+such it doesn't tie in with the Rust infrastructure that exists in Qemu today.
+We are currently in the process of porting MSHV-related logic from
+Cloud-Hypervisor to the Qemu code base, which would be what we aim to upstream.
+
+In the mean time, for reference you might still want to look at the provided
+PoC sources. We expect the self-contained Qemu port to be functionally
+equivalent (in the early revision). However, please note that you would need
+the aforementioned kernel patches on the Host if you would want to test the
+accelerator.
+
+We hope to be able to reuse the existing x86 instruction decoder/emulator that
+already exists in the in Qemu's HVF accelerator (porting the emu from
+Cloud-Hypervisor would be redundant). A colleagues has sent a patch that
+attempts to generalize the emulator:
+
+https://mail.gnu.org/archive/html/qemu-devel/2025-03/msg01967.html
+
+We hope to be able to send an early version of our port as a formal RFC patch
+set soon and look forward to feedback!
+
+thx,
+
+Magnus
 
