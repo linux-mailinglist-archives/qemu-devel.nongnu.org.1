@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9845A6A674
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 13:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3448AA6A820
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 15:15:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvFL3-0005qS-Ie; Thu, 20 Mar 2025 08:49:33 -0400
+	id 1tvGen-0000M7-Uv; Thu, 20 Mar 2025 10:14:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvFL0-0005ob-1y
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:49:32 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <a17877581@gmail.com>)
+ id 1tvF0A-00077d-Qq
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:27:58 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvFKy-0006kc-47
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:49:29 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43d0359b1fcso4770955e9.0
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 05:49:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <a17877581@gmail.com>)
+ id 1tvF09-0008KX-8n
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:27:58 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-ac29af3382dso126362666b.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 05:27:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742474964; x=1743079764; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GsNFRFbs/CtgPtcfcOWOEbEr9nXJH1kuya+MMLm6/c8=;
- b=gSVQLV96NCeE5XduJk0jm/ShPHWlSv33QBGNs4rTDoKhIOQC+EkWpcwIiI7g2gjdfD
- xPJ3FLRh6mxIywtv9dXXxIwCzQkevBfPudH6Gc8h0zXMQswU82dHeqqNvRHlcRJSYbDI
- xJpGpi0IKu6auQfKaikFy2gQnbDwW3W/gu3Jk51oRWVJdKHkOAu2zzrj2wHzI4brGvv3
- ExrRUcUb/OSUCRZncA0WxsKXqp+m9szwaVICpUv02NBTrklc+SWrX9T7RvxK8a3Q4Dcm
- Pu/zqHYNWLcy+Q9Viu0BYE1osQaFByEJnFVCuF3on2BCu+jwsaqQ1pDB7lwU5Xix89RY
- /bCQ==
+ d=gmail.com; s=20230601; t=1742473673; x=1743078473; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=HXwJV7gnT3iW4azo0gisDzMU4cMIpeAMpaYop7z1jbo=;
+ b=aFNCk4CZl9fc0GKBx+OMs4NcE5W8pOF6FJ/RophuqiScmzyUrSAL2WMKuMHfEKGca1
+ wwm6o48DADpkVmX1NybYTROcS6heE37cWKZ+RkO51fcR2QzUmYda3clBaINEO0FZmCpp
+ SOV3Vb9/EjnaVJ1mvNlbTWBQH62NyTqNEiLJa3rhFsE2HZMV52oo6DYLknBI48RbaL61
+ C6tp9MObesZYZDTo4Qjug3pCmQlF6OzaoePDIevyG5XL4WyWqJy5AOI0NF6N/WPtB156
+ 70k52iQ/6g0qx8CZYeOkeCMtnGIUrL29BH3Zz0AZWGsA3so0TQiSehZnWBS7QY1qwp1n
+ MAuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742474964; x=1743079764;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GsNFRFbs/CtgPtcfcOWOEbEr9nXJH1kuya+MMLm6/c8=;
- b=d5JFE5Xdndhg0SfK3eDp8uO2C7xARjlmnYi6P8BAlz4lfq+UHysdCKa7T03kIsOGBA
- WNN/3jEPr60UnUx94H0SAeclqOYEvbH4NeupVXzQjGDejKJKWOwPjuAf2pTt0Yxs2qkA
- 9esKphlpBjVMMQrqpVy4wFAcHPo6Ljr3r4wYP++2azdPSObMFoLf5pACs96Ju2/U8/f4
- xzfVsm/sZAaOuzS7ZidFss0k4E7oiHdXgzlk3Vbhm53Ulz7ghNj7+9NJN8dZUGSnhGTK
- UuVPHzfa5sqSB5DEoTRw40UFVpdEaRTQaRqygRSrukBq0A4pUmooHRQY6xYGHuCLHnFK
- Bp6A==
+ d=1e100.net; s=20230601; t=1742473673; x=1743078473;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HXwJV7gnT3iW4azo0gisDzMU4cMIpeAMpaYop7z1jbo=;
+ b=Tci//qdxN/gaVh9XN62cc63x9F+K5DJ1pWH2Kku3c892aEr+ZQ0CY5WWGrTVp9l0bR
+ 4TUGQAIzbQ6NxsA4CK7Z8VlVmIBFYhEV/tl+h4dy1HeyXcXT9vQyVEw+Bt6oSuy5XXez
+ DT9h65Pjhx4S7F+coZJXuK8NRjMGkZPwMMpQotsrzYW1YzouWlqh8UMMEi99m2XRUeSR
+ 7YV0mKY+mINT7PIrX4E7wxuQeHRlDgYU4zKObysRx1mgxOgdZk6+IA+hWKYUs8KYuyCN
+ f3evCpqkRD+84J1krToxqdVtIALpnHGlVLVxVjlUDGko+bj4bEzVfdmb2vFYFOO+Oio0
+ Qo1g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWkbzO0W6Oexd4IcycU3TqwjVsRnuj300QyeUTC+Vcqgnsa7wMnv2iU7G7U/oez4bAJiDYnxS4vVDeK@nongnu.org
-X-Gm-Message-State: AOJu0YxTaSJOqkUqNc4WGJLoXSQicuDzfOocBuwo3HY4BVBu+rdRF220
- oJcuQCL6lUuJa8mPQECBWlGAbCyAXBkISktMCdUkKsM3Zo93uqZvFArzhgxe7Ow=
-X-Gm-Gg: ASbGncuQqZaQGnvOHxDQ6Yb97Dre1gOXVQdseG72Apip19rovEPZEKvZMA4f+f6Wc5U
- exCZg/zI994ZCu340hRZL0sc4qWeEDpT1hkGpGPBdNa5qXgcT0FKX5XczcnJkrI7WXowNtIlyhN
- mbr3O0JAGvXuJyz8bqM3/dHtBtlyly08+KKwY6972aqS5lMRW0kfPv+mpXEV/CAVXxxOq6HyBHH
- KmEuusaPtc86xru4oZz3hSqFl4u9WzF7NUuSEz0jhII/6otCHB5OB2oBPhG+KHFLVc2k1CqatjR
- aC2jW1Bsn/dfv1nHhfwdKLTRIIEkKrVs1eiiyRcXzEvx4tEuy3pFk4LD3+6uzjH5+dARnIa0fN4
- OyMsxzogTz/8F
-X-Google-Smtp-Source: AGHT+IE94O5jqdIMEic1PV/zUw/gtoTcnyhS6WB7jfvkRKuGYpOjDfp8Mu3l54BQvC00b2SUX92HFg==
-X-Received: by 2002:a05:600c:1e0f:b0:43d:16a0:d98d with SMTP id
- 5b1f17b1804b1-43d491918c5mr34030395e9.15.1742474964264; 
- Thu, 20 Mar 2025 05:49:24 -0700 (PDT)
-Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43f37665sm48558785e9.2.2025.03.20.05.49.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Mar 2025 05:49:23 -0700 (PDT)
-Message-ID: <5e3cc809-8f29-4aaf-9537-beccd8d96353@linaro.org>
-Date: Thu, 20 Mar 2025 13:49:23 +0100
+ AJvYcCV6Edg0jLPfZfQoK97gdFgBLRVL7NBGKbNW9JK32lapDB8wKCu7XQ9IN6Pc+YN5Y6HPYQxCvTz5NSzi@nongnu.org
+X-Gm-Message-State: AOJu0YywnXyJqRYDcYM0hVESh0YiugrOOPDLSxhjZRGtp6wfkTCdNXwF
+ 5bDb6OH/BKgEBsRj/JfqZ/anknWIExtzbh15/LfyunrQYCL+O0V4wmPCyw8wHUBk4IjxnX9b8KZ
+ /85WXFiT3sHT3iLIWLtgCxNDyr/0=
+X-Gm-Gg: ASbGnctrVgUxj827HSz+h1BI1HZtsMGwAAmafGsiidb2I7R1Atomoi2NYpN/bBC2APM
+ tbP3JHxr02Hl701eYdQh15R2Z9itFevwVLD9z2Jnc/Wxk4Ad9pJn6jcHKVNWB9CppaJvujt/Q/f
+ rg179dT9kgv8PHlkyfxzrfMBPu8g==
+X-Google-Smtp-Source: AGHT+IG24aCjSHah0RFizr26czy6BP7YVHBCXoHXnauHp0bK42t4oX8dbw7ce3mQhnTab+tS1IrCHSxbCots22E6al0=
+X-Received: by 2002:a17:907:7da8:b0:ac2:a42a:999b with SMTP id
+ a640c23a62f3a-ac3ce1d4b6emr335581566b.52.1742473673027; Thu, 20 Mar 2025
+ 05:27:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] load_aout: replace bswap_needed with big_endian
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk
-References: <20250320124313.819222-1-pbonzini@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250320124313.819222-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: Ahmad <a17877581@gmail.com>
+Date: Thu, 20 Mar 2025 15:57:39 +0330
+X-Gm-Features: AQ5f1Joe8tdm03nzXzIBezs4PXfdudiX6OPy296l5wqWh7JiMEM4Hg7ir_Zzmwg
+Message-ID: <CAA11P5r-sUf+FX6SMKToo1B7Key61756rM0gz+S7EivEkSC+XA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] docs: pcie: describe PCIe option ROMs
+To: heinrich.schuchardt@canonical.com
+Cc: marcel.apfelbaum@gmail.com, mst@redhat.com, qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000004fc01d0630c54474"
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=a17877581@gmail.com; helo=mail-ej1-x635.google.com
+X-Spam_score_int: 20
+X-Spam_score: 2.0
+X-Spam_bar: ++
+X-Spam_report: (2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, EMPTY_MESSAGE=2.32,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ MIME_HTML_MOSTLY=0.1, PYZOR_CHECK=1.392, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 20 Mar 2025 10:13:58 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,28 +90,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/3/25 13:43, Paolo Bonzini wrote:
-> Targets know whether they are big-endian more than they know if
-> the endianness is different from the host: the former is mostly
-> a constant, at least in machine creation code, while the latter
-> has to be computed with TARGET_BIG_ENDIAN != HOST_BIG_ENDIAN or
-> something like that.
-> 
-> load_aout, however, takes a "bswap_needed" argument.  Replace
-> it with a "big_endian" argument; even though all users are
-> big-endian, it is cheap enough to keep the optional swapping
-> functionality even for little-endian boards.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   include/hw/loader.h   | 2 +-
->   hw/core/loader.c      | 4 ++--
->   hw/ppc/mac_newworld.c | 7 +------
->   hw/ppc/mac_oldworld.c | 7 +------
->   hw/sparc/sun4m.c      | 9 +--------
->   hw/sparc64/sun4u.c    | 9 +--------
->   6 files changed, 7 insertions(+), 31 deletions(-)
+--0000000000004fc01d0630c54474
+Content-Type: text/plain; charset="UTF-8"
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+
+--0000000000004fc01d0630c54474
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="auto"><div dir="auto"><br></div><div dir="auto"><br></div><div dir="auto"><br></div></div>
+
+--0000000000004fc01d0630c54474--
 
