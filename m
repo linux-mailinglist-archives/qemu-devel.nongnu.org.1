@@ -2,95 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94004A6A5D3
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 13:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6F2A6A640
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 13:27:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvEfu-0007Rq-SJ; Thu, 20 Mar 2025 08:07:02 -0400
+	id 1tvEyV-00069y-Hh; Thu, 20 Mar 2025 08:26:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tvEfO-0007Kc-EL
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:06:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1)
+ (envelope-from <81bcefde27e7450ea4061acf0f63320ac0f8f95d@kylie.crudebyte.com>)
+ id 1tvEyT-00069f-GL
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:26:13 -0400
+Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1tvEfK-0002Pd-06
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:06:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742472383;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uThQc2E8ragqKw6JjO9nyh1Qqr/jhvaLXLndjVDzmtU=;
- b=a/KEs3XlBvwgFdVPZ37J29khqvcgYxyGUaVdVkid/uxKqIgFUJ+isSAJ2U160zMqo3UP5R
- GJm+ZdB21EsW7/mnPCnxby78PoMwX/Ma+DZsiH8h8vKxpyVFsa2ZsQMti5+YHVI8jNVa/b
- 6CyCH8MqMqeFrrYnOdnGTK4sQybArn4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-370-dkgkRUDNOLa-iKVGhphRLg-1; Thu, 20 Mar 2025 08:06:21 -0400
-X-MC-Unique: dkgkRUDNOLa-iKVGhphRLg-1
-X-Mimecast-MFC-AGG-ID: dkgkRUDNOLa-iKVGhphRLg_1742472380
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4394c747c72so4032515e9.1
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 05:06:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742472380; x=1743077180;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uThQc2E8ragqKw6JjO9nyh1Qqr/jhvaLXLndjVDzmtU=;
- b=fwnAIimmdexV2JOv4KgAFnGifT6D4t4OD8wyxQSOHjR1fDAXJXVKm6K89qiz2nN/HT
- XXxhpaK0rSnbrtSqNa2EL+9qID5t5lPxfY3QWeowE+vOMpDbG9N8PlXYgDjXaEjNsQ1p
- 6i3Ene+u0fjMc+OqQbfGzzONMPBKU7lB3x04Zfl52JDbFvHn8I7OiYNEyzzAP6iuDp2M
- G45loKtC+1qj4UGiHh16fEDHjo5rCeVmC4Xt+Pb2/IJmun7aOn0lhj0EBhjcU0gJNJYB
- 4TG9UB4uV9eJYzBHE8hpKQSoZYLE9u1P4rXxK25dJ6ZLh0TFj0xOZ7oIX9al9/JNfFlj
- ynzQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVOpoCFmOYL9dKx3mcKSawCoT3E5LXF8Z5004A0qHHc2ukgc5CcI73lLJpYALuFRpVm8GoYbZ5KsrPB@nongnu.org
-X-Gm-Message-State: AOJu0YzMD5lqFHM+HSqh2L4rh67FizMfoCauCw23fJTB0vQAmOTGWjLQ
- 28VM669skVj7nlzNOeR6gffIPdAAqreTDn1DJkby06GMB/3IJU+g8steBbHxbmFnrsUhea62J1j
- glLQJ2DHOyc/5dd/DlWL7HQS1HgJRhdVBPCqislARKqU987yH0UruRCReqWPlqhBQFVKskzQVj5
- qP7t1JcLTY/82V4TGN9UUFA+/RRU+QwsQEFR4=
-X-Gm-Gg: ASbGncv9vabIXZc4yaUXv9Z7gQwu0xH+xk7EoU9BEFmF1pcM9s4bTaC9ectZsCUV6Zn
- nuCUdqABU03p/FxJ04EGGg/sq3jbg9N2CtFxQjRsp1Pyy5i0llmO7+zbRTx2J26+/s/0TD5wcIv
- o=
-X-Received: by 2002:a05:600c:cc7:b0:43d:ed:ad07 with SMTP id
- 5b1f17b1804b1-43d4381697cmr70538395e9.29.1742472379754; 
- Thu, 20 Mar 2025 05:06:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+Wv0RCxiziDtrHYCYRBWqDqbk+OD3++qJY3RinUuCK0Ee+vmfMysXVGnG47/p+o0hYbBxn5ac8QXESWmvu3s=
-X-Received: by 2002:a05:600c:cc7:b0:43d:ed:ad07 with SMTP id
- 5b1f17b1804b1-43d4381697cmr70537845e9.29.1742472379326; Thu, 20 Mar 2025
- 05:06:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250307134203.29443-1-farosas@suse.de>
- <20250307134203.29443-2-farosas@suse.de>
- <Z8ssc0NETt9KJjTG@x1.local> <87tt84u0d2.fsf@suse.de>
- <Z8tv53G5s9MLYv6f@x1.local>
- <87o6y9t14g.fsf@suse.de> <Z88DmvrNrW5Q1n7y@x1.local> <87ecz4adoi.fsf@suse.de>
-In-Reply-To: <87ecz4adoi.fsf@suse.de>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Thu, 20 Mar 2025 17:36:02 +0530
-X-Gm-Features: AQ5f1JrpZa0UbbiwaPFQ4n7oSLVj5lG97kzG7vr3R7ZlPo9GPKT5opMnj3okYPE
-Message-ID: <CAE8KmOwkLoPB=wLuE5WC0HERzmUqAqjP9ZECTvxBELaN31yBVQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] migration: Add some documentation for multifd
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
- "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+ (Exim 4.90_1)
+ (envelope-from <81bcefde27e7450ea4061acf0f63320ac0f8f95d@kylie.crudebyte.com>)
+ id 1tvEyQ-0006sR-Kc
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:26:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
+ Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
+ Content-Description; bh=U1CJbSQ4ojuRj9btueVTKiBMg7jOOtRxixjKO+xArJc=; b=MLS4O
+ nrAwjUi8+yZpQ6bA7C57sFM7QNNG7mmnc5U9DTMb388pU9VFybrYttCZt8kucOZQvMUXjKs0bK2n6
+ VoHMe6yVF6hdxm7SWQIXBWTDus9/stAhxw0S+2uXNTKstvegqU3JFfwpLuvmIqvU829y7gsgI74am
+ BLzSopwWT1g5P05f4Wfw56Q7f68egwwOVzh+QTeNQZD83UsLLnCID/Kr+ORL1du4iME1WaMH4CO6B
+ Lso1AR83pxD4BA0BSCY9YGFzb7TpfniAUZjIszZHXgFRU8Z/6Y6wXWEHFd/6O4BfKjd/mJ/5LwTGD
+ RlBgSW43CpzzGDEEyaVihJV7yoLCWANhpIK8U8Pcy6GeWFA8B/O6LdR2GQ9mB3IDeR+bCwlx/UCUX
+ QZAeEtiBC9RXj68P47DjWGQRI0vLDdfXRK86WFvNAYqZJyjAfusKSh9YvnrkPhDt5spQbBsljcWvP
+ 1ZZ8gJAO3UcdddMFaMjMCWnOgmAC5T0m6Z10O38KP5G7E8Vl49j+RcKcQmPrpvZipVh0aPXIJ0cbP
+ f25xLBcZHb9JQlDkzQzlgNfNoyuJDpOmMHpYU25PtPjkNI7jqmU4ZW2K/a4FxOvIHlnSgaGWBqi44
+ nak1GE/oEYKc3+tUkk0f95r0WpWVzttjGkI43x9nFegQ8iRZWEJiplMxKHbPWk=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Date: Thu, 20 Mar 2025 13:16:20 +0100
+Subject: [PATCH v2] 9pfs: fix 'total_open_fd' decrementation
+To: qemu-devel@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>
+Message-Id: <E1tvEyJ-004dMa-So@kylie.crudebyte.com>
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=81bcefde27e7450ea4061acf0f63320ac0f8f95d@kylie.crudebyte.com;
+ helo=kylie.crudebyte.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,34 +64,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 11 Mar 2025 at 00:59, Fabiano Rosas <farosas@suse.de> wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> > To me, this is a fairly important question to ask.  Fundamentally, the very
-> > initial question is why do we need periodic flush and sync at all.  It's
-> > because we want to make sure new version of pages to land later than old
-> > versions.
-...
-> > Then v1 and v2 of the page P are ordered.
-> > If without the message on the main channel:
-> > Then I don't see what protects reorder of arrival of messages like:
-...
-> That's all fine. As long as the recv part doesn't see them out of
-> order. I'll try to write some code to confirm so I don't waste too much
-> of your time.
+According to 'man 2 close' errors returned by close() should only be used
+for either diagnostic purposes or for catching data loss due to a previous
+write error, as an error result of close() usually indicates a deferred
+error of a previous write operation.
 
-* Relying on this receive order seems like a passive solution. On one
-side we are saying there is no defined 'requirement' on the network or
-compute capacity/quality for migration. ie. compute and network can be
-as bad as possible, yet migration shall always work reliably.
+Therefore not decrementing 'total_open_fd' on a close() error is wrong
+and would yield in a higher open file descriptor count than actually the
+case, leading to 9p server reclaiming open file descriptors too soon.
 
-* When receiving different versions of pages, couldn't multifd_recv
-check the latest version present in guest RAM and accept the incoming
-version only if it is fresher than the already present one? ie. if v1
-arrives later than v2 on the receive side, the receive side
-could/should discard v1 because v2 is already received.
-
-Thank you.
+Based-on: <20250312152933.383967-7-groug@kaod.org>
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 ---
-  - Prasad
+ V2: log a warning message on unexpected close() -> EBADF case
+
+ hw/9pfs/9p.c     | 10 +++++++++-
+ hw/9pfs/codir.c  |  7 ++++++-
+ hw/9pfs/cofile.c |  7 ++++++-
+ 3 files changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index b22df3aa2b..8b001b9112 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -510,7 +510,15 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+             err = (f->fid_type == P9_FID_DIR) ?
+                 s->ops->closedir(&s->ctx, &f->fs_reclaim) :
+                 s->ops->close(&s->ctx, &f->fs_reclaim);
+-            if (!err) {
++
++            /* 'man 2 close' suggests to ignore close() errors except of EBADF */
++            if (unlikely(err && errno == EBADF)) {
++                /*
++                 * unexpected case as FIDs were picked above by having a valid
++                 * file descriptor
++                 */
++                error_report("9pfs: v9fs_reclaim_fd() WARNING: close() failed with EBADF");
++            } else {
+                 /* total_open_fd must only be mutated on main thread */
+                 nclosed++;
+             }
+diff --git a/hw/9pfs/codir.c b/hw/9pfs/codir.c
+index 2068a4779d..bce7dd96e9 100644
+--- a/hw/9pfs/codir.c
++++ b/hw/9pfs/codir.c
+@@ -20,6 +20,7 @@
+ #include "fsdev/qemu-fsdev.h"
+ #include "qemu/thread.h"
+ #include "qemu/main-loop.h"
++#include "qemu/error-report.h"
+ #include "coth.h"
+ #include "9p-xattr.h"
+ #include "9p-util.h"
+@@ -353,7 +354,11 @@ int coroutine_fn v9fs_co_closedir(V9fsPDU *pdu, V9fsFidOpenState *fs)
+                 err = -errno;
+             }
+         });
+-    if (!err) {
++    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
++    if (unlikely(err && errno == EBADF)) {
++        /* unexpected case as we should have checked for a valid file handle */
++        error_report("9pfs: WARNING: v9fs_co_closedir() failed with EBADF");
++    } else {
+         total_open_fd--;
+     }
+     return err;
+diff --git a/hw/9pfs/cofile.c b/hw/9pfs/cofile.c
+index 71174c3e4a..6e775c8e41 100644
+--- a/hw/9pfs/cofile.c
++++ b/hw/9pfs/cofile.c
+@@ -20,6 +20,7 @@
+ #include "fsdev/qemu-fsdev.h"
+ #include "qemu/thread.h"
+ #include "qemu/main-loop.h"
++#include "qemu/error-report.h"
+ #include "coth.h"
+ 
+ int coroutine_fn v9fs_co_st_gen(V9fsPDU *pdu, V9fsPath *path, mode_t st_mode,
+@@ -197,7 +198,11 @@ int coroutine_fn v9fs_co_close(V9fsPDU *pdu, V9fsFidOpenState *fs)
+                 err = -errno;
+             }
+         });
+-    if (!err) {
++    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
++    if (unlikely(err && errno == EBADF)) {
++        /* unexpected case as we should have checked for a valid file handle */
++        error_report("9pfs: WARNING: v9fs_co_close() failed with EBADF");
++    } else {
+         total_open_fd--;
+     }
+     return err;
+-- 
+2.39.5
 
 
