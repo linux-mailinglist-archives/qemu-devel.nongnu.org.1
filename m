@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3448AA6A820
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 15:15:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 625BAA6A73C
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Mar 2025 14:34:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvGen-0000M7-Uv; Thu, 20 Mar 2025 10:14:02 -0400
+	id 1tvG1M-0001CE-Uc; Thu, 20 Mar 2025 09:33:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <a17877581@gmail.com>)
- id 1tvF0A-00077d-Qq
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:27:58 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tvG12-0001AD-9s
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 09:32:56 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <a17877581@gmail.com>)
- id 1tvF09-0008KX-8n
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 08:27:58 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-ac29af3382dso126362666b.2
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 05:27:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1tvG10-0003Qe-0V
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 09:32:56 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43d04dc73b7so8583565e9.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 06:32:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742473673; x=1743078473; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=HXwJV7gnT3iW4azo0gisDzMU4cMIpeAMpaYop7z1jbo=;
- b=aFNCk4CZl9fc0GKBx+OMs4NcE5W8pOF6FJ/RophuqiScmzyUrSAL2WMKuMHfEKGca1
- wwm6o48DADpkVmX1NybYTROcS6heE37cWKZ+RkO51fcR2QzUmYda3clBaINEO0FZmCpp
- SOV3Vb9/EjnaVJ1mvNlbTWBQH62NyTqNEiLJa3rhFsE2HZMV52oo6DYLknBI48RbaL61
- C6tp9MObesZYZDTo4Qjug3pCmQlF6OzaoePDIevyG5XL4WyWqJy5AOI0NF6N/WPtB156
- 70k52iQ/6g0qx8CZYeOkeCMtnGIUrL29BH3Zz0AZWGsA3so0TQiSehZnWBS7QY1qwp1n
- MAuA==
+ d=linaro.org; s=google; t=1742477571; x=1743082371; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7YBryV/uJw5jCFJ3bAoM5/4/QhhkndLN0POBwK58ocE=;
+ b=jWZmVwtPQEJk4OKnFcy6LkT7Kh6JjMwJKMBTZ6PF3a8kmVTJv4+iqhMAGZtK08r746
+ Y0dwAHAYzo0ixDCXEPjtJs4TZN/VUGv7LfQlCly2lcXscqbbiQWWsb+ciXaMXTQZGNrn
+ w/dKInnZhXVN89tzUhEam81uVKKqn/ghse+hfClHWvJhrtGsoW9QgE/xd9Gf4aC0cOEi
+ LxOvaBGnCRgfDvTC81omwu9wV6Bbvqs64yCajbc/VqI24tsvk08XgE0nrAFmERKtDrHn
+ c3lyDe1O1YWNQ1pfHp51QOeqfcH6QsMThdLHGylFch97Ye3G0XzR9fAFgiCP0dTL5tuJ
+ 08HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742473673; x=1743078473;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HXwJV7gnT3iW4azo0gisDzMU4cMIpeAMpaYop7z1jbo=;
- b=Tci//qdxN/gaVh9XN62cc63x9F+K5DJ1pWH2Kku3c892aEr+ZQ0CY5WWGrTVp9l0bR
- 4TUGQAIzbQ6NxsA4CK7Z8VlVmIBFYhEV/tl+h4dy1HeyXcXT9vQyVEw+Bt6oSuy5XXez
- DT9h65Pjhx4S7F+coZJXuK8NRjMGkZPwMMpQotsrzYW1YzouWlqh8UMMEi99m2XRUeSR
- 7YV0mKY+mINT7PIrX4E7wxuQeHRlDgYU4zKObysRx1mgxOgdZk6+IA+hWKYUs8KYuyCN
- f3evCpqkRD+84J1krToxqdVtIALpnHGlVLVxVjlUDGko+bj4bEzVfdmb2vFYFOO+Oio0
- Qo1g==
+ d=1e100.net; s=20230601; t=1742477571; x=1743082371;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7YBryV/uJw5jCFJ3bAoM5/4/QhhkndLN0POBwK58ocE=;
+ b=lva3R7Fltw4gHWWetX0Zm+UAw5YXJPA4mbHqQlJNokfiPdPHUzVmcEuD088S5n0aca
+ VorfM6U2BE6yvDssclJFO2Qu5EAjvEqvi5mizzmA+Oz6dvR/E3MyiJw49ozBdcUvotio
+ GHOg5cSlSYUy18k/qcgmCJcvUWs3TqKQe30g1MI2lbtNXJim1aAzDKnoaTgSMPial7Jv
+ 0fe2zas8t2sj6nOXfxX08+cFJBMv6IMwv563EBqOmksRbTvWBD9hCJK8Z9nRfCmKCwOo
+ TE25Du/amq3EOfduledk8g7+S1G9ecWJFK/X9kdgDyYnz3ppUDfaddne97lEZV3FfZ0t
+ j/Iw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV6Edg0jLPfZfQoK97gdFgBLRVL7NBGKbNW9JK32lapDB8wKCu7XQ9IN6Pc+YN5Y6HPYQxCvTz5NSzi@nongnu.org
-X-Gm-Message-State: AOJu0YywnXyJqRYDcYM0hVESh0YiugrOOPDLSxhjZRGtp6wfkTCdNXwF
- 5bDb6OH/BKgEBsRj/JfqZ/anknWIExtzbh15/LfyunrQYCL+O0V4wmPCyw8wHUBk4IjxnX9b8KZ
- /85WXFiT3sHT3iLIWLtgCxNDyr/0=
-X-Gm-Gg: ASbGnctrVgUxj827HSz+h1BI1HZtsMGwAAmafGsiidb2I7R1Atomoi2NYpN/bBC2APM
- tbP3JHxr02Hl701eYdQh15R2Z9itFevwVLD9z2Jnc/Wxk4Ad9pJn6jcHKVNWB9CppaJvujt/Q/f
- rg179dT9kgv8PHlkyfxzrfMBPu8g==
-X-Google-Smtp-Source: AGHT+IG24aCjSHah0RFizr26czy6BP7YVHBCXoHXnauHp0bK42t4oX8dbw7ce3mQhnTab+tS1IrCHSxbCots22E6al0=
-X-Received: by 2002:a17:907:7da8:b0:ac2:a42a:999b with SMTP id
- a640c23a62f3a-ac3ce1d4b6emr335581566b.52.1742473673027; Thu, 20 Mar 2025
- 05:27:53 -0700 (PDT)
+ AJvYcCWrd+GgXqhHS7HVNQRLTgDPGmkpvlLKL6eVPiK9zItCN7539M6dT50Xn/zYkXR/j6crzI/dQqUDw2as@nongnu.org
+X-Gm-Message-State: AOJu0YzuEhafz56MeYOO3rA+vUkxJayTNp4/vct/EYAN/sIlCiAJbe1m
+ 3/eehl51cjRSCDzRC311+UK659B1CfdjQBcAcITg75wZoqYCqPf+k5IbgrfHmkI=
+X-Gm-Gg: ASbGncucWiceJ4UrZSkvzYvebz8uK0OTzBdGVmky9cztcQJHLBs+KNk0w/U8a+2JIBn
+ sfcg2bvoterOHpmaWzw2VjqIwF4BKIrUYRAjZ4I/12pQ+sRS1eOBdwZaRnYKPT+CPXjU1gGJB7E
+ 2VriAPHVxwylefVG9qxn9RgVJYrZDs3Kjv03FKQED2HXOGI4kn/z+sthRKW2ZAgKvLomRevLh5V
+ bryAuvSr4xZHf8fRY5/PHa0nX4kgXfeReMROUU60xJ/ubbB965GtEz/YdEjuPritUgktaXY3Ipv
+ K/1gNamUXa5/XyBBm6mXYWyyxy7wgqQk5Tgg76HbJNIno7tJpJg=
+X-Google-Smtp-Source: AGHT+IGC2i/lrHcEYiHLepYpKi0ZctU+ZKix5VrmHDenXZcdxn25ITspzzM4ZTUoDrZD7ZrxkaRYeA==
+X-Received: by 2002:a05:600c:1546:b0:43c:fb5b:84d8 with SMTP id
+ 5b1f17b1804b1-43d49549405mr28340205e9.16.1742477571247; 
+ Thu, 20 Mar 2025 06:32:51 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d43fdeba1sm48804525e9.32.2025.03.20.06.32.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Mar 2025 06:32:50 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 0/3] rust: Fix PL011State size mismatch assert
+Date: Thu, 20 Mar 2025 13:32:45 +0000
+Message-ID: <20250320133248.1679485-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-From: Ahmad <a17877581@gmail.com>
-Date: Thu, 20 Mar 2025 15:57:39 +0330
-X-Gm-Features: AQ5f1Joe8tdm03nzXzIBezs4PXfdudiX6OPy296l5wqWh7JiMEM4Hg7ir_Zzmwg
-Message-ID: <CAA11P5r-sUf+FX6SMKToo1B7Key61756rM0gz+S7EivEkSC+XA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] docs: pcie: describe PCIe option ROMs
-To: heinrich.schuchardt@canonical.com
-Cc: marcel.apfelbaum@gmail.com, mst@redhat.com, qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000004fc01d0630c54474"
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=a17877581@gmail.com; helo=mail-ej1-x635.google.com
-X-Spam_score_int: 20
-X-Spam_score: 2.0
-X-Spam_bar: ++
-X-Spam_report: (2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, EMPTY_MESSAGE=2.32,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- MIME_HTML_MOSTLY=0.1, PYZOR_CHECK=1.392, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 20 Mar 2025 10:13:58 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,15 +97,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004fc01d0630c54474
-Content-Type: text/plain; charset="UTF-8"
+We have some users of the PL011 struct which embed it directly into
+their own state structs. This means that the Rust version of the
+device must have a state struct that is the same size or smaller
+than the C struct.
 
+In commit 9b642097d6b7 ("rust: pl011: switch to safe chardev operation")
+the Rust PL011 state struct changed from having a bindings::CharBackend
+to a chardev::CharBackend, which made it grow larger than the C
+version. This results in an assertion at startup when QEMU was
+built with Rust enabled:
 
+ $ qemu-system-arm -M raspi2b -display none
+ ERROR:../../qom/object.c:562:object_initialize_with_type: assertion
+ failed: (size >= type->instance_size)
 
---0000000000004fc01d0630c54474
-Content-Type: text/html; charset="UTF-8"
+This series fixes that by the simple expedient of adding
+a padding field to the end of the C struct to ensure that
+it's big enough to also fit the Rust version of the device.
 
-<div dir="auto"><div dir="auto"><br></div><div dir="auto"><br></div><div dir="auto"><br></div></div>
+It also moves the failure from runtime to compiletime,
+by adding a Rust compile-time assert that it hasn't made
+the state bigger than the C one, so if we do this again
+it should be caught before it gets into git. (We don't
+need to do the same thing for the HPET device, because there
+the HPETState is a private implementation detail of the C
+code, not exposed to its users.)
 
---0000000000004fc01d0630c54474--
+NB: if the Rust version also needed stricter alignment than the
+C struct that would also be bad; I don't attempt to assert on
+that here, assuming that it's unlikely that we'll be trying for
+anything more aligned than the usual pointer-alignment.
+
+Patch 1 is Paolo's static_assert macro that he sent out earlier today.
+
+Having the C struct visible to its users like this is not ideal
+in the longer term; we have had discussions before about shifting
+back to a "users only get an opaque pointer" design style,
+for instance for the benefit of the "create custom machines on
+the commandline" effort. I think this Rust/C issue is further
+weight towards moving that way. But that would be quite a
+lot of reworking of existing C code.
+
+Exposing the C struct to users of the device also means that
+they have direct access to all its fields, which obviously
+will go badly wrong if they try to touch them when the Rust
+version of the device is being used. Those fields are supposed
+to be private, but this is based purely on the honour system,
+and we do actually have a few places in the code that take
+shortcuts and directly access a few fields (not for the PL011).
+I had a proposal a decade ago:
+https://lore.kernel.org/qemu-devel/1399650964-21067-1-git-send-email-peter.maydell@linaro.org/
+for using macros and the compiler 'deprecated' attribute to
+generate compiler warnings/errors for accesses to struct fields
+outside the file implementing the device itself. 
+We could perhaps resurrect that idea as a mechanism for
+detecting places we would need to clean up before conversions
+of future C devices to Rust.
+
+thanks
+-- PMM
+
+Paolo Bonzini (1):
+  rust: assertions: add static_assert
+
+Peter Maydell (2):
+  hw/char/pl011: Pad PL011State struct to same size as Rust impl
+  rust: pl011: Check size of state struct at compile time
+
+ include/hw/char/pl011.h          |  5 +++++
+ rust/wrapper.h                   |  1 +
+ rust/hw/char/pl011/src/device.rs | 10 +++++++++-
+ rust/qemu-api/src/assertions.rs  | 22 ++++++++++++++++++++++
+ 4 files changed, 37 insertions(+), 1 deletion(-)
+
+-- 
+2.43.0
+
 
