@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A621A6C288
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:37:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 222A7A6C286
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:36:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvhEO-0002Ge-Mb; Fri, 21 Mar 2025 14:36:33 -0400
+	id 1tvhEU-0002P8-Eb; Fri, 21 Mar 2025 14:36:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tvhEG-0001kB-Oy
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:24 -0400
+ id 1tvhEL-0002CQ-FI
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tvhEF-00072K-2g
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:24 -0400
+ id 1tvhEJ-00072q-Fn
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742582182;
+ s=mimecast20190719; t=1742582186;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GxdsFjP0x5vh9Jd/1Uxx3cGM8EOg2J+L3U1w2scPDrQ=;
- b=dy/5NynkW1Fa0ic4di4zTGv0GGi8GhLqC4D65l2ns/Y8aJwSPnz4yrskMixv9y9QGgfrSv
- a93PKmywl1aKnASLDhvzJtwQ4vf1NCt71mHp/3ZGSllItc/pAEmGou1ahZWHjBdHjRkUXN
- zoPWNgV/kdIv68EjnDVetN5VHcr2tGg=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dFRuN/PFPVxX94u+Hzbmt9NAGJi6Ilk0kcnMUquL6Qs=;
+ b=aWWW0wVDPhDBJ1h+Am220U4r2yHUPXImS6bG9g2zihYV1jENWfO/gNV1Dd3E/iyBWnuVoK
+ l2XyPpQiLQ1DZbCTTh6LcPXqpjBqarPXax6laqyllQUDqqvBX7wFmn0R6ZWKgRQ4w1sBb3
+ W31KMICGM8KZSJBKA8XefQTFoi7Uuh8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-7TWddNuRNiO5sNoKOvbR4g-1; Fri, 21 Mar 2025 14:36:20 -0400
-X-MC-Unique: 7TWddNuRNiO5sNoKOvbR4g-1
-X-Mimecast-MFC-AGG-ID: 7TWddNuRNiO5sNoKOvbR4g_1742582180
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ac2db121f95so188796966b.1
- for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:36:20 -0700 (PDT)
+ us-mta-615-ouCX0_8ZNcGbvSaagCP_HQ-1; Fri, 21 Mar 2025 14:36:25 -0400
+X-MC-Unique: ouCX0_8ZNcGbvSaagCP_HQ-1
+X-Mimecast-MFC-AGG-ID: ouCX0_8ZNcGbvSaagCP_HQ_1742582184
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-ac3db5469fbso177395066b.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:36:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742582178; x=1743186978;
+ d=1e100.net; s=20230601; t=1742582183; x=1743186983;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GxdsFjP0x5vh9Jd/1Uxx3cGM8EOg2J+L3U1w2scPDrQ=;
- b=M5RXweMCqA1aY9xZkugS5gK0NPRbO9Xzsj3R856cfi0NITeoHjZDueF/G6gR+vbvMA
- MQShFXpTRrx7MPoBgpLCmFM20rB/I82O5/PKpqjRapC4+nVwcNq85TTX2j/oAkAkhGGn
- 16tFrx0WrYNvarBPIhZxlcYv2z2/e0XNMOw2BWTIPqt/7de94bjWZBC77XQ6SIpfEW6J
- jWXSeRYET9369ijlcxJPUI7G4OGazwbUxCFlC+uEHNkwJsWFl9ur5eTFR46/JWeNnKRJ
- VuVwgjEdalFQFQSZFNL4Z8l8/MayWiUfgBWytzGLHNOtCXkctAzN+ijG3fN1lQUf++Ij
- u6kw==
-X-Gm-Message-State: AOJu0YzoEwo+6K28hp0KEWFr2nNydQ6yADxVbyK1wHL7UKxs1aVfC5JC
- mWSD2tT/r6pgVBiez/TpJOeII8DDcE1k8yDiCH6n+rWEdE1pNcFqm8O4lhNlIOFLUHlHe70WpoK
- MTfK4Ea7Mo5CDv3amHDpXOqSD/pdKaA8BAEVORbNoroyOvEhAt0xcdi37iUQ2Cl2l0UVhqbYnbb
- w2jiJN9Q5AsdJBmfw13b768THRUdfvb2ZupLJd
-X-Gm-Gg: ASbGncsUJpl38MsZ8AEWh4WbCN2F6kZ/XPPczQ2RkzZ5mSirsxX6gnl+jrInKCHE16o
- MGPdNHT1wq71DmUYM88k2uU04HvONXSVVS2G3lw1dzBihsYGBaLWUXt8vFJ02XVNOcAVDgYgvzw
- 3MIoIhEis/89ihgZbBWUwW3F81vWKiWN06wiqTXVLVUlz18XHpKSOTIgw14sy1mBjay8s38iOsq
- DcReLfFIKAMLUGMMNjqrXmC4HExyD3L7uf6JGfQqanGqaOm/HVPq2Ei4Hv4ZAXOJfAIqr5+zoX7
- hJE+nHawYelxZTGddHa/
-X-Received: by 2002:a17:907:d26:b0:ac3:45b5:f4cc with SMTP id
- a640c23a62f3a-ac3f25032d1mr453261666b.44.1742582177688; 
- Fri, 21 Mar 2025 11:36:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEv3KqT8vGvDDwhAEfw+OPtmfmvMpoI4MpWRKTIuo9dCwkQQ1p02tb1PeIa0NlfluJZZrUvhQ==
-X-Received: by 2002:a17:907:d26:b0:ac3:45b5:f4cc with SMTP id
- a640c23a62f3a-ac3f25032d1mr453258666b.44.1742582177106; 
- Fri, 21 Mar 2025 11:36:17 -0700 (PDT)
+ bh=dFRuN/PFPVxX94u+Hzbmt9NAGJi6Ilk0kcnMUquL6Qs=;
+ b=I+FCEPYNYuHLpdTBi2ENaE4BXeGkABATkG+TvZu/sM50p9xLjGBf7KfcYxSRP7VNg0
+ RYria92gbQOoS/cs8AyciIu1SnPyRZ4pEsPb9hj8o66ehOd6jfdcHDDoZyAEXyfS9NoW
+ OBLWZhiUcDU2W5vLZdmz1uOMQldQarG6wM0WpMqNrBZ0l+AdcpayNsB3YDOfaNpayOhw
+ EoDdun8gXPsZenVpnV7buastOuaY/OnpyMNIDWpsjjmoKRh5rl5V0RtekoZBjgRoMWwo
+ o4mopd9WhsjOnzs/ZNZ9vqJNpn6VneDZd1b9EkY2GnTlOK939lhb4RVY3b84FNL146J3
+ K1mQ==
+X-Gm-Message-State: AOJu0Yzo0fM7zTRnycoXPPb36WA+EaYc5j/HLW0sCzg/gv3J5jkeAtM9
+ E07B3VcQAdnQjZeDLypkROiFULibtH11y6XpZlA4pu/lN00sx83uFsgQOj97zoLQBfRoLJCZMrw
+ 7NfZt/o3MiIhZ3zPBswwTfWcIWMr4fjvJOhwZHglY0mtSplImJ0weptHdbUxCP95YchyRsQJQjW
+ FXPZ4ZkGuVk0yVzzPGVNRX9wRd1BjUKdrsPA+6
+X-Gm-Gg: ASbGnct0gL6vYGy83ilAF207txHmoLChNhXRuAMaYuwArcsv/WQhWriKtVULIbPiqER
+ LLDQ1SU2QLSOsEguZZQ2GzC8IqUij/TmAS/6BqsNjpNFuUI1kjMxnk/8jyTX4jUzCEF51atRCdD
+ 6cn5Ke4yNVi97OLULa8IVvf1GZldsM8RGJmyw3kPyMmAuk3wXpMT3elQIOMKrUxpaoYd54IW5zN
+ UhiICN6Qot4yp7z3AwBr7jAH6CbTgSCf1ydy5YYhROQzlmHZCFxqOGATeTztuLr8Gl4KtW7czCh
+ VeL6UV7c2PWbKfwSXfaw
+X-Received: by 2002:a17:907:1b2a:b0:ac3:c2eb:bd66 with SMTP id
+ a640c23a62f3a-ac3f2273481mr503210366b.23.1742582182954; 
+ Fri, 21 Mar 2025 11:36:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGa9IgGJHQz9iQ+QdQGJLTsxMfUK5p/UA/0DHZpcL6IZcUW0E3j0mN830bCe1/30yEhzPwyeg==
+X-Received: by 2002:a17:907:1b2a:b0:ac3:c2eb:bd66 with SMTP id
+ a640c23a62f3a-ac3f2273481mr503205966b.23.1742582182430; 
+ Fri, 21 Mar 2025 11:36:22 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.194.153])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5ebcd0c7737sm1766637a12.49.2025.03.21.11.36.16
+ a640c23a62f3a-ac3ef8676c2sm193538566b.9.2025.03.21.11.36.17
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Mar 2025 11:36:16 -0700 (PDT)
+ Fri, 21 Mar 2025 11:36:17 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 06/24] rust: pl011: Check size of state struct at compile time
-Date: Fri, 21 Mar 2025 19:35:38 +0100
-Message-ID: <20250321183556.155097-7-pbonzini@redhat.com>
+Subject: [PULL 07/24] load_aout: replace bswap_needed with big_endian
+Date: Fri, 21 Mar 2025 19:35:39 +0100
+Message-ID: <20250321183556.155097-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250321183556.155097-1-pbonzini@redhat.com>
 References: <20250321183556.155097-1-pbonzini@redhat.com>
@@ -107,75 +106,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+Targets know whether they are big-endian more than they know if
+the endianness is different from the host: the former is mostly
+a constant, at least in machine creation code, while the latter
+has to be computed with TARGET_BIG_ENDIAN != HOST_BIG_ENDIAN or
+something like that.
 
-The PL011 device's C implementation exposes its PL011State struct to
-users of the device, and one common usage pattern is to embed that
-struct into the user's own state struct.  (The internals of the
-struct are technically visible to the C user of the device, but in
-practice are treated as implementation details.)
+load_aout, however, takes a "bswap_needed" argument.  Replace
+it with a "big_endian" argument; even though all users are
+big-endian, it is cheap enough to keep the optional swapping
+functionality even for little-endian boards.
 
-This means that the Rust version of the state struct must not be
-larger than the C version's struct; otherwise it will trip a runtime
-assertion in object_initialize_type() when the C user attempts to
-in-place initialize the type.
-
-Add a compile-time assertion on the Rust side, so that if we
-accidentally make the Rust device state larger we know immediately
-that we need to expand the padding in the C version of the struct.
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Link: https://lore.kernel.org/r/20250321112523.1774131-4-peter.maydell@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/wrapper.h                   | 1 +
- rust/hw/char/pl011/src/device.rs | 9 ++++++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ include/hw/loader.h   | 2 +-
+ hw/core/loader.c      | 4 ++--
+ hw/ppc/mac_newworld.c | 7 +------
+ hw/ppc/mac_oldworld.c | 7 +------
+ hw/sparc/sun4m.c      | 9 +--------
+ hw/sparc64/sun4u.c    | 9 +--------
+ 6 files changed, 7 insertions(+), 31 deletions(-)
 
-diff --git a/rust/wrapper.h b/rust/wrapper.h
-index d927ad6799d..d4fec546571 100644
---- a/rust/wrapper.h
-+++ b/rust/wrapper.h
-@@ -65,3 +65,4 @@ typedef enum memory_order {
- #include "exec/memattrs.h"
- #include "qemu/timer.h"
- #include "exec/address-spaces.h"
-+#include "hw/char/pl011.h"
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index f137b49feaf..bf88e0b00a0 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -2,7 +2,7 @@
- // Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- // SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/include/hw/loader.h b/include/hw/loader.h
+index 784a93d6c17..d280dc33e96 100644
+--- a/include/hw/loader.h
++++ b/include/hw/loader.h
+@@ -190,7 +190,7 @@ ssize_t load_elf(const char *filename,
+ void load_elf_hdr(const char *filename, void *hdr, bool *is64, Error **errp);
  
--use std::{ffi::CStr, ptr::addr_of_mut};
-+use std::{ffi::CStr, mem::size_of, ptr::addr_of_mut};
+ ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
+-                  int bswap_needed, hwaddr target_page_size);
++                  bool big_endian, hwaddr target_page_size);
  
- use qemu_api::{
-     chardev::{CharBackend, Chardev, Event},
-@@ -12,6 +12,7 @@
-     prelude::*,
-     qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
-     qom::{ObjectImpl, Owned, ParentField},
-+    static_assert,
-     sysbus::{SysBusDevice, SysBusDeviceImpl},
-     vmstate::VMStateDescription,
- };
-@@ -124,6 +125,12 @@ pub struct PL011State {
-     pub migrate_clock: bool,
- }
+ #define LOAD_UIMAGE_LOADADDR_INVALID (-1)
  
-+// Some C users of this device embed its state struct into their own
-+// structs, so the size of the Rust version must not be any larger
-+// than the size of the C one. If this assert triggers you need to
-+// expand the padding_for_rust[] array in the C PL011State struct.
-+static_assert!(size_of::<PL011State>() <= size_of::<qemu_api::bindings::PL011State>());
-+
- qom_isa!(PL011State : SysBusDevice, DeviceState, Object);
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index ce6ff1b52e3..2e35f0aa905 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -226,7 +226,7 @@ static void bswap_ahdr(struct exec *e)
  
- #[repr(C)]
+ 
+ ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
+-                  int bswap_needed, hwaddr target_page_size)
++                  bool big_endian, hwaddr target_page_size)
+ {
+     int fd;
+     ssize_t size, ret;
+@@ -241,7 +241,7 @@ ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
+     if (size < 0)
+         goto fail;
+ 
+-    if (bswap_needed) {
++    if (big_endian != HOST_BIG_ENDIAN) {
+         bswap_ahdr(&e);
+     }
+ 
+diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
+index cb3dc3ab482..2d5309d6f55 100644
+--- a/hw/ppc/mac_newworld.c
++++ b/hw/ppc/mac_newworld.c
+@@ -197,11 +197,6 @@ static void ppc_core99_init(MachineState *machine)
+     }
+ 
+     if (machine->kernel_filename) {
+-        int bswap_needed = 0;
+-
+-#ifdef BSWAP_NEEDED
+-        bswap_needed = 1;
+-#endif
+         kernel_base = KERNEL_LOAD_ADDR;
+         kernel_size = load_elf(machine->kernel_filename, NULL,
+                                translate_kernel_address, NULL, NULL, NULL,
+@@ -209,7 +204,7 @@ static void ppc_core99_init(MachineState *machine)
+         if (kernel_size < 0) {
+             kernel_size = load_aout(machine->kernel_filename, kernel_base,
+                                     machine->ram_size - kernel_base,
+-                                    bswap_needed, TARGET_PAGE_SIZE);
++                                    true, TARGET_PAGE_SIZE);
+         }
+         if (kernel_size < 0) {
+             kernel_size = load_image_targphys(machine->kernel_filename,
+diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
+index 0dbcea035c3..b5814690f5a 100644
+--- a/hw/ppc/mac_oldworld.c
++++ b/hw/ppc/mac_oldworld.c
+@@ -153,11 +153,6 @@ static void ppc_heathrow_init(MachineState *machine)
+     }
+ 
+     if (machine->kernel_filename) {
+-        int bswap_needed = 0;
+-
+-#ifdef BSWAP_NEEDED
+-        bswap_needed = 1;
+-#endif
+         kernel_base = KERNEL_LOAD_ADDR;
+         kernel_size = load_elf(machine->kernel_filename, NULL,
+                                translate_kernel_address, NULL, NULL, NULL,
+@@ -165,7 +160,7 @@ static void ppc_heathrow_init(MachineState *machine)
+         if (kernel_size < 0) {
+             kernel_size = load_aout(machine->kernel_filename, kernel_base,
+                                     machine->ram_size - kernel_base,
+-                                    bswap_needed, TARGET_PAGE_SIZE);
++                                    true, TARGET_PAGE_SIZE);
+         }
+         if (kernel_size < 0) {
+             kernel_size = load_image_targphys(machine->kernel_filename,
+diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
+index a48d3622c5a..5aaafb40dac 100644
+--- a/hw/sparc/sun4m.c
++++ b/hw/sparc/sun4m.c
+@@ -233,20 +233,13 @@ static unsigned long sun4m_load_kernel(const char *kernel_filename,
+ 
+     kernel_size = 0;
+     if (linux_boot) {
+-        int bswap_needed;
+-
+-#ifdef BSWAP_NEEDED
+-        bswap_needed = 1;
+-#else
+-        bswap_needed = 0;
+-#endif
+         kernel_size = load_elf(kernel_filename, NULL,
+                                translate_kernel_address, NULL,
+                                NULL, NULL, NULL, NULL,
+                                ELFDATA2MSB, EM_SPARC, 0, 0);
+         if (kernel_size < 0)
+             kernel_size = load_aout(kernel_filename, KERNEL_LOAD_ADDR,
+-                                    RAM_size - KERNEL_LOAD_ADDR, bswap_needed,
++                                    RAM_size - KERNEL_LOAD_ADDR, true,
+                                     TARGET_PAGE_SIZE);
+         if (kernel_size < 0)
+             kernel_size = load_image_targphys(kernel_filename,
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index 8ab5cf0461f..d3cb7270ff5 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -168,13 +168,6 @@ static uint64_t sun4u_load_kernel(const char *kernel_filename,
+ 
+     kernel_size = 0;
+     if (linux_boot) {
+-        int bswap_needed;
+-
+-#ifdef BSWAP_NEEDED
+-        bswap_needed = 1;
+-#else
+-        bswap_needed = 0;
+-#endif
+         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL, kernel_entry,
+                                kernel_addr, &kernel_top, NULL,
+                                ELFDATA2MSB, EM_SPARCV9, 0, 0);
+@@ -182,7 +175,7 @@ static uint64_t sun4u_load_kernel(const char *kernel_filename,
+             *kernel_addr = KERNEL_LOAD_ADDR;
+             *kernel_entry = KERNEL_LOAD_ADDR;
+             kernel_size = load_aout(kernel_filename, KERNEL_LOAD_ADDR,
+-                                    RAM_size - KERNEL_LOAD_ADDR, bswap_needed,
++                                    RAM_size - KERNEL_LOAD_ADDR, true,
+                                     TARGET_PAGE_SIZE);
+         }
+         if (kernel_size < 0) {
 -- 
 2.49.0
 
