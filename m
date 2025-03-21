@@ -2,190 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4312AA6B465
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:26:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BA4A6B46F
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:29:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvVpp-0000Kc-VE; Fri, 21 Mar 2025 02:26:26 -0400
+	id 1tvVsc-0005Nz-II; Fri, 21 Mar 2025 02:29:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tvVoN-00082I-La
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 02:25:04 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <SRS0=rypf=WI=kaod.org=clg@ozlabs.org>)
+ id 1tvVrw-0004fE-1d; Fri, 21 Mar 2025 02:28:41 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1tvVoK-00031W-Ed
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 02:24:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742538292; x=1774074292;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=zrV+J2g3BdkwEVv7JpCnn9Ib1p0eCUm3STW1ILcJAVg=;
- b=laNJwPQN0F/JdIQKXURbDz1Fg+oUttyorcKa9lAjn2a2GkoeAR0+qGFG
- lGU4OE/MCTY7cIzbdL9ADIhvmIp52OuFhqdxu0Hl9DoItwnH7H7OnmEdo
- RDhqIOJkt3LUJNrxcnNacp0H30IM5KDp4h59RXmMlX3RWm+lTl52BHYrn
- Lc8vZxwEv5CGHDiJUYr4kmv9g3PqjfbP4BIomAOskEyNe3TTsSy3rQ2xM
- W86Ua0PxZYINmeoi6hqbui2xjUIt+ROPuFTQR1ln4SgbuIxWrlj6v1N3l
- g68wAnAMuKN97X8IX+b8l1Edm7DTDYgPNvAB7J2V7umSI2a/aKHXnztw2 g==;
-X-CSE-ConnectionGUID: NHW/kPloSoajYmSWc8NK+Q==
-X-CSE-MsgGUID: 9WWkgXOwS+Wpyxb0ToJ4og==
-X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="46548543"
-X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="46548543"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2025 23:24:49 -0700
-X-CSE-ConnectionGUID: Tr5XEYNoTZ6yN8TzvcdUSw==
-X-CSE-MsgGUID: 4bRNMTzzQaaUZUeuUUD4Bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="127997460"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2025 23:24:48 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 20 Mar 2025 23:24:47 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Thu, 20 Mar 2025 23:24:47 -0700
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.44) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 20 Mar 2025 23:24:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fm0r7N/zMSJpvb+XOPak3N3/8+R8+K3evHqgxZHitIo+j8SuntS9OqHYfUGNKpeFsF0xQL3cWCEqn6clPjTuTwPM3pHZ2MJtavoIXBCsT4TmhKI04P4hOLUvaj4T8dRTgqBRhxxyQcT75UzeMgWxK/RpjgkqSfzf/8hXUNDX88UPEZjNKYwAmNX4+NpnLwrJYlXZmttQXupb7imzNlqiOhQMynbXW5ihAbijUBabDBEFPSMN6KSsSgMZBcQ0t87rT1KP8bux6/KhHLgfJS2e4+togMW1ltOfveZ1IZ0vyKRnjsWksvdwAvtIqu4C96vl3GQs/YiUws9Jgq1QtE5ELQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zoiqkTyfZSNsG2Fpfuf8bsXzykcGUtfGQxgzGR+VX3c=;
- b=Xl8A9W/1f6Cq/+k5XtIi7/rY2gXebpyb2z3HRUQuRapf8G90py+LVE8rgIkIbVkl7PlLGaOLBRtehiNh5IdUO3GpAj0/beipJxMbuInI6FvNKxHz+K7mwWPIFpA9AkC8CckdxrnkNmD/MdonD5J4UXj47MEKCkQT4YlnD1lXnFUG7F+c4vVtWQfRo2NBdaEbsVtvYPhTu5vHEefZcabne9quyKJ3e7MrhnGMJ8HVWAmB8lJtN/YvjAoL4w8mdjh9+Y3CrtG9ekPCGW2z1yTx/84ixS3EPhAhXmMOA+a0GSV3sJDP7frof07kLwaNBGddc/d4Dv7TiBxO8qKwnC4biQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by PH8PR11MB6952.namprd11.prod.outlook.com (2603:10b6:510:224::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Fri, 21 Mar
- 2025 06:24:42 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091%6]) with mapi id 15.20.8534.034; Fri, 21 Mar 2025
- 06:24:41 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-CC: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- =?iso-8859-1?Q?C=E9dric_Le_Goater?= <clg@redhat.com>, Alex Williamson
- <alex.williamson@redhat.com>
-Subject: RE: [PATCH for-10.1 24/32] vfio: Introduce new files for dirty
- tracking definitions and declarations
-Thread-Topic: [PATCH for-10.1 24/32] vfio: Introduce new files for dirty
- tracking definitions and declarations
-Thread-Index: AQHbl+v5GdaKalDSUk6u3PTGyZcGg7N7y3bwgAATaICAAQUpwA==
-Date: Fri, 21 Mar 2025 06:24:41 +0000
-Message-ID: <SJ0PR11MB6744DB06536F5A319946748792DB2@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20250318095415.670319-1-clg@redhat.com>
- <20250318095415.670319-25-clg@redhat.com>
- <SJ0PR11MB6744B94364FA17801C4C451592D82@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <fbc6f226-b4be-4f99-aea3-8a8342f6ee4a@oracle.com>
-In-Reply-To: <fbc6f226-b4be-4f99-aea3-8a8342f6ee4a@oracle.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH8PR11MB6952:EE_
-x-ms-office365-filtering-correlation-id: a5192588-47d8-4b9f-6691-08dd684110a1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?fTaXBvzplDlKFxc62qx5HPw/1afWRQfcEO1fJoX3EDn2OVNQk0Lt/D1txO?=
- =?iso-8859-1?Q?mUjPDy4GC1IjZ3qjrfqpcsvr/5x4SROHkLmFH5h4ESP2py9dARDYO3wUxX?=
- =?iso-8859-1?Q?xV7YOsTTtoc2XNw5PLgAlngO8elK+iigv8yaQtfxaoqt+YxUNq3KbNAAZZ?=
- =?iso-8859-1?Q?HhWS1yJ6RN3AK5PmF8rWXxPM8usBjHmIcsbLI0pTbg0b+P/pvgMph+afSY?=
- =?iso-8859-1?Q?7fJtwEH1gH7pVEgQLFwV7gplQRhXoNfl3Py1Fl5jCQfbDEOrYOLz/hsCQD?=
- =?iso-8859-1?Q?9GEZu1wkEuRo75a4jPygHiI62bQUWxA3dh1TQ4gQIT99Au4gpwX9hdB8VW?=
- =?iso-8859-1?Q?oYZh6WtlexiRnHFG2TOJQuaHmBcaRL3Cy14WINmLl0YZracE6iBWla2buY?=
- =?iso-8859-1?Q?n0PbOXuUAdzvW4gpnR94LDs7uak/5XaI3mlenBiQmzIN9V4PINwWH22w9x?=
- =?iso-8859-1?Q?QGh4J5/muPwiV4a/DqoVao1DjXAb1mqSyayPEseQCAIgUHqqifX/94Efke?=
- =?iso-8859-1?Q?sqDf4umRgA0bjQS90liI+1/pe0gbGVIhk4T07ru7xCmctCnO2tarTURMmP?=
- =?iso-8859-1?Q?rzn9t7/EA71+TfD2r+fVoqn5R9WvAScvj36lpi62LVRJ7+FPTmGksnxJax?=
- =?iso-8859-1?Q?RAFzLLnx2HIy9OGyUwu0VS0XJn8ewQENkTMq3cGJONgTHVztOTrlZ0/Suk?=
- =?iso-8859-1?Q?Ky1asF5NKhKY8jbWu76sdmbcDdUpcHb7LXthEvsvaFgo4sI+55ezrFj3DZ?=
- =?iso-8859-1?Q?Y46tYDYynX8tWxOF1GajRU9nJo/toXw8d+cmM39KlHTVTNmr9B/tXgkN3k?=
- =?iso-8859-1?Q?r0iL1KnnyE+HO2djdnSR/2nVgzO93NtEdp1Z5NWaIsVHp5wyLYbQNtMO9n?=
- =?iso-8859-1?Q?WST9PkrkZEpuK80NxqWc57vjvX/P5RRaoMA77x3rvqzuY6V98364ddcrO2?=
- =?iso-8859-1?Q?3qilcmgQPSRJA5U2ayNTbW9jyWHUp2jG7a3FnAXN8i7Zvs3BXbKoEsduKR?=
- =?iso-8859-1?Q?iAtcAz2DE4XEz+ZuETMOgjQ6PJpAwM0TSIk2g0GXfZ7/+oK3hmSpb6ueCK?=
- =?iso-8859-1?Q?cG33tJ3LaV1gB/Bsk0U/gUs7CpNBxHDp7sXKSjS9iooDFn8qmcimQqBqpT?=
- =?iso-8859-1?Q?UDeizur6lwUEeV+xOOH0FZlzr4wUcAramxincr2tiqToYxy1h0OuFZd49g?=
- =?iso-8859-1?Q?xwl6UvxPEkTlhrKcYLd/ATbzU07QioRwiKS+UeELynqWE2iQ5GejQZtCOx?=
- =?iso-8859-1?Q?rCoIZNYU1uBo+YFgnHccYGFgkJYN8CHYNaqpAknDZ9bLwyRAH57ZH+buhI?=
- =?iso-8859-1?Q?88cw36Jnop1DScO6z8FKXuYqhHJNwUdfavPHmDiDBuJc9EPK9bQI/vdtO2?=
- =?iso-8859-1?Q?J7H421XLK+mHagsPbieWFYFN7xAyoChonUq+UxZMG5NhUufmTaNgERORIW?=
- =?iso-8859-1?Q?AW2q5gMtNUIcXm1r26QNde3tB5jOwCCYscQ3RkZxnEqN3ZOJdg3FNYM6R3?=
- =?iso-8859-1?Q?5oOt7wvGEQ1dUJ2Offr+q0?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Z7Bga12EpO719N/wsnA1Ps1+AhiYr8pteR/twzKPGlFAE8dKw45vz2yWPx?=
- =?iso-8859-1?Q?758qfVfyoYI3myLCHUYsOVAHpITF/bbonftEeGUgpmvIrX9YdV+sHVLhSC?=
- =?iso-8859-1?Q?IkpjFXXQDykU6J4J7RgVfmwhVcFlPlrUxferz+bdnxOvE2X0WeAuEOIfy8?=
- =?iso-8859-1?Q?rOIVHwdH5rMCAktaGJ4cuDvol2CV/pJS1CvJW9uT5IfsCtGMV1KxPQbZg2?=
- =?iso-8859-1?Q?hmJyOGkzHq71YSG9O/tR9xCq5RDH12DC4+/xOekQO7T2b0UdWhWe2oal96?=
- =?iso-8859-1?Q?mJ5J92MxDBwua/6tn8ksNgsoGxllknbwNRjiB6pxUB1Z/qe3aaOPhBELwY?=
- =?iso-8859-1?Q?Sc6fnwZk4u4GfIrqa4bYgsafqPZE9OvDzfwp/PD5kjR+HnAuuh+1Sh88c9?=
- =?iso-8859-1?Q?aj5jyTgGB7HTCfADdZrO8AIOgcCOKoEbum86MiDlth8PtQX2jjWKtyL5Pk?=
- =?iso-8859-1?Q?hidEInHzbZRyDJoAkLfGCGvMa700Y4zPVa9woWKIymC56E3/uu756ITR19?=
- =?iso-8859-1?Q?mAarlRUzBRBnp8xJM/bqvvGP1JQ4kUz57JfD5zCcA4tkmhnA4cfIQzQlM/?=
- =?iso-8859-1?Q?dOJQmCwvrLvv4D17Jj8d864XEU3cOeblk2dYsv1/dQS8yXlg28o9Uv4Anb?=
- =?iso-8859-1?Q?1E6stWTCthYmGbbqRjE+czfkt7vdHgp/SccDRfpcuiAGqS1coB+BKcmVkC?=
- =?iso-8859-1?Q?mPubxnquCB8zZURxtqryuTSpWx5rLWg+vD9T9p2dzkqpLA+QLbpDZHxoST?=
- =?iso-8859-1?Q?/ats2KyAmptlzy5t4n4N7kRt2QCOQ3fPb/RQ6G+qfIPbMjRWTvawR1tMSM?=
- =?iso-8859-1?Q?h1v/u0aYaYlMl9cJMgRUEFpOTWDYDIWXlZsE28afaMSFgmoB8m9Nu/pucu?=
- =?iso-8859-1?Q?zQLN40bVctVTeJqNUK6qt+/2bQvI266/jYt0gvd+xnsHLAY38hBr8/bjua?=
- =?iso-8859-1?Q?J4CPmHiiJrZYWVytfV+c7n69/A8o6hgAVHYDTlwBw97uFwT3Vn/ZpHLVkJ?=
- =?iso-8859-1?Q?k58YCBmF5JHsmzwo9mc+0skxL+tAwflvbHtjYKLa4W+5hJt5/dIH3MQc/z?=
- =?iso-8859-1?Q?R/gjZ8EE3TdaP+ZrNKphgK0NIjefRhZc3krmFqE0Koo+1xlS/GyQQ04MTc?=
- =?iso-8859-1?Q?HD+U4B0bc4N2K+SJ630MKp3A9bjIQGhAHxwSsh/Ra2Sc0eyMz7ZGT20OYP?=
- =?iso-8859-1?Q?nByr99LIu7+uQshyzjoXPNLP5oo3GSlUgoeskBkKT0/tffJsG/9BPU4IQQ?=
- =?iso-8859-1?Q?7SUCwJcersgs2WcPj3iLENHilDRhblrjf5Pqve/8wgNqUj2lV8On+ynGOS?=
- =?iso-8859-1?Q?//0AeITxgsourovy0qGof+wyBrPOtTxTIfWmDiIFnt5D97r0nEORspWin2?=
- =?iso-8859-1?Q?sC76eppkTaqCp9LVGKmHRNNe629r70nTAIjxbV1i1qTe9RtAzInNcyAasn?=
- =?iso-8859-1?Q?DdObrXMbahWmmQOCss1R8Wk/mzOkZbEvaw7qShfy7OGZRHOjljE7uhleat?=
- =?iso-8859-1?Q?W0F8GJrnGJ9qLxLFj1/5Y6alV72+Un+9qz7BO1JwI1f8SVpoQ5lLcLg/hu?=
- =?iso-8859-1?Q?PsgCGvrvnFE4AAuXt+KkcWuWLiTMCEHqz1BMfltUANXfoPGNioTOihVSX4?=
- =?iso-8859-1?Q?uTOpYg9AI7TngWmJGDCXiOmGyNybCBiqtb?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <SRS0=rypf=WI=kaod.org=clg@ozlabs.org>)
+ id 1tvVrt-0005dh-6R; Fri, 21 Mar 2025 02:28:35 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZJsvq28p4z4xDK;
+ Fri, 21 Mar 2025 17:28:23 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZJsvl0mgQz4xD3;
+ Fri, 21 Mar 2025 17:28:17 +1100 (AEDT)
+Message-ID: <1339b58c-b12c-4bda-b4e0-ff8c919c288d@kaod.org>
+Date: Fri, 21 Mar 2025 07:28:13 +0100
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5192588-47d8-4b9f-6691-08dd684110a1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2025 06:24:41.7359 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZA4MSapm1xaFMhK6k8GEnJqWM7xtvTS96lvgWssqyTSU+5kBmQmK9/fwgWoQ16X1LyDgwiddU06YoS5scO9hI0ZPDbWqkuSNsWd7gZpAw4M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6952
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.198.163.13;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] hw/intc/aspeed: Fix IRQ handler mask check
+To: Steven Lee <steven_lee@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Cc: Troy Lee <troy_lee@aspeedtech.com>,
+ "longzl2@lenovo.com" <longzl2@lenovo.com>,
+ Yunlin Tang <yunlin.tang@aspeedtech.com>
+References: <20250320092543.4040672-1-steven_lee@aspeedtech.com>
+ <20250320092543.4040672-2-steven_lee@aspeedtech.com>
+ <f6210cfe-2a3f-47be-8ff3-568c3b2fc055@kaod.org>
+ <KL1PR0601MB4180B4C4C323A2C3FE5248D985DB2@KL1PR0601MB4180.apcprd06.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <KL1PR0601MB4180B4C4C323A2C3FE5248D985DB2@KL1PR0601MB4180.apcprd06.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=rypf=WI=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -201,56 +114,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hello Steven,
 
-
->-----Original Message-----
->From: Joao Martins <joao.m.martins@oracle.com>
->Subject: Re: [PATCH for-10.1 24/32] vfio: Introduce new files for dirty tr=
-acking
->definitions and declarations
+On 3/21/25 03:54, Steven Lee wrote:
+> Hi Cédric,
+> 
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@kaod.org>
+>> Sent: Thursday, March 20, 2025 11:29 PM
+>> To: Steven Lee <steven_lee@aspeedtech.com>; Peter Maydell
+>> <peter.maydell@linaro.org>; Troy Lee <leetroy@gmail.com>; Jamin Lin
+>> <jamin_lin@aspeedtech.com>; Andrew Jeffery
+>> <andrew@codeconstruct.com.au>; Joel Stanley <joel@jms.id.au>; open
+>> list:ASPEED BMCs <qemu-arm@nongnu.org>; open list:All patches CC here
+>> <qemu-devel@nongnu.org>
+>> Cc: Troy Lee <troy_lee@aspeedtech.com>; longzl2@lenovo.com; Yunlin Tang
+>> <yunlin.tang@aspeedtech.com>
+>> Subject: Re: [PATCH 1/1] hw/intc/aspeed: Fix IRQ handler mask check
+>>
+>> Hello Steven,
+>>
+>> On 3/20/25 10:25, Steven Lee wrote:
+>>> Updated the IRQ handler mask check to AND with select variable.
+>>> This ensures that the interrupt service routine is correctly triggered
+>>> for the interrupts within the same irq group.
+>>>
+>>> For example, both `eth0` and the debug UART are handled in `GICINT132`.
+>>> Without this fix, the debug console may hang if the `eth0` ISR is not
+>>> handled.
+>>>
+>>> Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
+>>> Change-Id: Ic3609eb72218dfd68be6057d78b8953b18828709
+>>> ---
+>>
+>> I think the issue was introduced by the initial commit :
+>>
+>>     d831c5fd8682 ("aspeed/intc: Add AST2700 support")
+>>
+>> Is that correct ?
+>>
+> 
+> Yes, and the implementation is based on commit 38ba38d (hw/intc/aspeed: Add Support for AST2700 INTCIO Controller).
 >
->On 20/03/2025 09:52, Duan, Zhenzhong wrote:
->>> -----Original Message-----
->>> From: C=E9dric Le Goater <clg@redhat.com>
->>> Subject: [PATCH for-10.1 24/32] vfio: Introduce new files for dirty tra=
-cking
->>> definitions and declarations
->>>
->>> File "common.c" has been emptied of most of its definitions by the
->>> previous changes and the only definitions left are related to dirty
->>> tracking. Rename it to "dirty-tracking.c" and introduce its associated
->>> "dirty-tracking.h" header file for the declarations.
->>>
->>> Cleanup a little the includes while at it.
->>>
->>> Signed-off-by: C=E9dric Le Goater <clg@redhat.com>
->>> --- a/hw/vfio/common.c
->>> +++ b/hw/vfio/dirty-tracking.c
->>> @@ -20,14 +20,10 @@
->>>
->>> #include "qemu/osdep.h"
->>> #include <sys/ioctl.h>
->>> -#ifdef CONFIG_KVM
->>> -#include <linux/kvm.h>
->>> -#endif
->>
->> It looks this change unrelated to this patch?
->>
->>> #include <linux/vfio.h>
->>>
->>> #include "hw/vfio/vfio-common.h"
->>> #include "hw/vfio/pci.h"
->>> -#include "exec/address-spaces.h"
->>
->> Same here.
->>
->
->It's written in the commit message:
->
->	"Cleanup a little the includes while at it."
+> Additionally, I sent a patch series for AST27x0 multi-SoC support on March 13th. However, I forgot to append the v2 tag to the series. 
 
-Oh yes, I missed it, no problem here.
+That's OK.
 
-Thanks
-Zhenzhong=20
+We are in -rc phase of the QEMU 10.0 cycle, so I am looking at fixes
+first.
+
+> Should I resend it with the correct version tag?
+
+No need. This is enough:
+
+Fixes: d831c5fd8682 ("aspeed/intc: Add AST2700 support")
+
+
+
+Thanks,
+
+C.
+
+
+
+
+> Patchwork link:
+> https://patchwork.kernel.org/project/qemu-devel/list/?series=943379
+> 
+> Thanks,
+> Steven
+> 
+>> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+>>
+>> Thanks,
+>>
+>> C.
+>>
+>>
+>>>    hw/intc/aspeed_intc.c | 2 +-
+>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c index
+>>> 3fd417084f..f17bf43925 100644
+>>> --- a/hw/intc/aspeed_intc.c
+>>> +++ b/hw/intc/aspeed_intc.c
+>>> @@ -111,7 +111,7 @@ static void
+>> aspeed_intc_set_irq_handler(AspeedINTCState *s,
+>>>        outpin_idx = intc_irq->outpin_idx;
+>>>        inpin_idx = intc_irq->inpin_idx;
+>>>
+>>> -    if (s->mask[inpin_idx] || s->regs[status_reg]) {
+>>> +    if ((s->mask[inpin_idx] & select) || (s->regs[status_reg] &
+>>> + select)) {
+>>>            /*
+>>>             * a. mask is not 0 means in ISR mode
+>>>             * sources interrupt routine are executing.
+> 
+
 
