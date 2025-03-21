@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA279A6B75D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:30:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A4CA6B75E
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:30:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvYf7-00075E-4U; Fri, 21 Mar 2025 05:27:33 -0400
+	id 1tvYfE-0007Gy-PP; Fri, 21 Mar 2025 05:27:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYet-0006pm-QY; Fri, 21 Mar 2025 05:27:22 -0400
+ id 1tvYet-0006pl-QM; Fri, 21 Mar 2025 05:27:22 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYep-00056F-UI; Fri, 21 Mar 2025 05:27:19 -0400
+ id 1tvYep-00056m-PF; Fri, 21 Mar 2025 05:27:17 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 21 Mar
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v1 11/22] hw/misc/aspeed_hace: Add trace-events for better
- debugging
-Date: Fri, 21 Mar 2025 17:26:07 +0800
-Message-ID: <20250321092623.2097234-12-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 12/22] hw/misc/aspeed_hace Support to dump plaintext and
+ digest for better debugging
+Date: Fri, 21 Mar 2025 17:26:08 +0800
+Message-ID: <20250321092623.2097234-13-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
 References: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
@@ -66,93 +66,62 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduced "trace_aspeed_hace_addr", "trace_aspeed_hace_sg",
-"trace_aspeed_hace_read", and "trace_aspeed_hace_write" trace events.
+1. Disabled by default. Uncomment "#define DEBUG_HACE 1" to enable it.
+2. Uses the "qemu_hexdump" API to dump the digest result.
+3. Uses the "iov_hexdump" API to dump the source vector, which contains the
+   source plaintext.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_hace.c | 8 ++++++++
- hw/misc/trace-events  | 6 ++++++
- 2 files changed, 14 insertions(+)
+ hw/misc/aspeed_hace.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index 53b3b390e3..b8e473ee3f 100644
+index b8e473ee3f..ae4d2fa687 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -18,6 +18,7 @@
- #include "crypto/hash.h"
- #include "hw/qdev-properties.h"
- #include "hw/irq.h"
-+#include "trace.h"
+@@ -10,8 +10,10 @@
+  */
  
+ #include "qemu/osdep.h"
++#include "qemu/cutils.h"
+ #include "qemu/log.h"
+ #include "qemu/error-report.h"
++#include "qemu/iov.h"
+ #include "hw/misc/aspeed_hace.h"
+ #include "qapi/error.h"
+ #include "migration/vmstate.h"
+@@ -20,6 +22,8 @@
+ #include "hw/irq.h"
+ #include "trace.h"
+ 
++/* #define DEBUG_HACE 1 */
++
  #define R_CRYPT_CMD     (0x10 / 4)
  
-@@ -186,6 +187,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-             if (ahc->has_dma64) {
-                 src = deposit64(src, 32, 32, s->regs[R_HASH_SRC_HI]);
-             }
-+            trace_aspeed_hace_addr("src", src);
-             src += i * SG_LIST_ENTRY_SIZE;
- 
-             len = address_space_ldl_le(&s->dram_as, src,
-@@ -194,6 +196,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-             sg_addr = address_space_ldl_le(&s->dram_as, src + SG_LIST_LEN_SIZE,
-                                            MEMTXATTRS_UNSPECIFIED, NULL);
-             sg_addr &= SG_LIST_ADDR_MASK;
-+            trace_aspeed_hace_sg(i, sg_addr, len);
-             /*
-              * Ideally, sg_addr should be 64-bit for the AST2700, using the
-              * following program to obtain the 64-bit sg_addr and convert it
-@@ -237,6 +240,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-     } else {
-         plen = s->regs[R_HASH_SRC_LEN];
-         src = deposit64(src, 0, 32, s->regs[R_HASH_SRC]);
-+        trace_aspeed_hace_addr("src", src);
-         if (ahc->has_dma64) {
-             src = deposit64(src, 32, 32, s->regs[R_HASH_SRC_HI]);
+ #define R_STATUS        (0x1c / 4)
+@@ -268,6 +272,10 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
          }
-@@ -299,6 +303,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-     if (ahc->has_dma64) {
-         digest_addr = deposit64(digest_addr, 32, 32, s->regs[R_HASH_DEST_HI]);
-     }
-+    trace_aspeed_hace_addr("digest", digest_addr);
-     if (address_space_write(&s->dram_as, digest_addr,
-                             MEMTXATTRS_UNSPECIFIED,
-                             digest_buf, digest_len)) {
-@@ -326,6 +331,7 @@ static uint64_t aspeed_hace_read(void *opaque, hwaddr addr, unsigned int size)
-         return 0;
      }
  
-+    trace_aspeed_hace_read(addr << 2, s->regs[addr]);
-     return s->regs[addr];
- }
- 
-@@ -344,6 +350,8 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
-         return;
-     }
- 
-+    trace_aspeed_hace_write(addr << 2, data);
++#ifdef DEBUG_HACE
++    iov_hexdump(iov, i, stdout, "plaintext", 0xa000);
++#endif
 +
-     switch (addr) {
-     case R_STATUS:
-         if (data & HASH_IRQ) {
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 4383808d7a..cf96e68cfa 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -302,6 +302,12 @@ aspeed_peci_read(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%"
- aspeed_peci_write(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%" PRIx64
- aspeed_peci_raise_interrupt(uint32_t ctrl, uint32_t status) "ctrl 0x%" PRIx32 " status 0x%" PRIx32
+     if (acc_mode) {
+         if (qcrypto_hash_updatev(s->hash_ctx, iov, i, &local_err) < 0) {
+             qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash update failed : %s",
+@@ -311,6 +319,10 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+                       "aspeed_hace: address space write failed\n");
+     }
  
-+# aspeed_hace.c
-+aspeed_hace_read(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%" PRIx64
-+aspeed_hace_write(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%" PRIx64
-+aspeed_hace_sg(int index, uint64_t addr, uint32_t len) "%d: addr 0x%" PRIx64 " len 0x%" PRIx32
-+aspeed_hace_addr(const char *s, uint64_t addr) "%s: 0x%" PRIx64
++#ifdef DEBUG_HACE
++    qemu_hexdump(stdout, "digest", digest_buf, digest_len);
++#endif
 +
- # bcm2835_property.c
- bcm2835_mbox_property(uint32_t tag, uint32_t bufsize, size_t resplen) "mbox property tag:0x%08x in_sz:%u out_sz:%zu"
- 
+     for (; i > 0; i--) {
+         address_space_unmap(&s->dram_as, iov[i - 1].iov_base,
+                             iov[i - 1].iov_len, false,
 -- 
 2.43.0
 
