@@ -2,93 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD60FA6C27D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:35:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED56A6C282
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:36:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvhDD-0007qX-Fn; Fri, 21 Mar 2025 14:35:19 -0400
+	id 1tvhEH-0001eX-1s; Fri, 21 Mar 2025 14:36:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvhDB-0007pZ-7N
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:35:17 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvhD8-0006n7-6Z
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:35:16 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3912fdddf8fso2223488f8f.1
- for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:35:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742582113; x=1743186913; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fpmvkEmhJiK6Q/6HWo04Dj+mqs1gWrmUxMp9dj9JYoI=;
- b=tsHzD5ZxIeo4YD2VEqSATlEmL9+sJeqM+tQBNxKJakDXzzDPJPdjHGsLcKC+QO+yPF
- VGFopN9fCtC2B+WtwaWM7UbondDcyAegq31fJTij7VHP7PuyXMmuSmEAsb0GESB6b1LE
- eoZZsYdcrqBy34Kp0Z6/TJhAGrMmCo+gDAdesl+4Z8AkEnLsZAhcS7W5y5RWL7F+mzir
- +dHZoqhADu8Gq5bZzWHmbOv26Kd3rwiU0GQOXZr1IqR780gWNAlTi9XX8kJp8yrhWl5q
- HLPAz3pbID7oDCV1yKgNe4IzcZahrifIS7/9MMy+Hc8q/qdJ/WPFFIjKsq8ozEMSm4rm
- 9TeA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tvhEB-0001So-HA
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1tvhE8-000717-PV
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742582176;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=WIiFgnINXZ71uyJxAf0X6x5Y4veC8fFS8XnwmF9Y+SM=;
+ b=aVpH7lZLkRZE/gYwhmlBMWn6+YE8tlD8ld40jklCbz7f8W2+ju/ywkvnZJmU8IYvdPTycZ
+ vwlH4m/yNAvvKOC1YY4bajq7oSXXTzWlnQpRw7Y+fSbjSkuHVPoitS9Z6hNCKtaU2BW6gT
+ TVgxDlLfmJPWmVnhA8UfBUbMgurP0ks=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-475-8zj7dEEPOdiCt1fAsTizsw-1; Fri, 21 Mar 2025 14:36:07 -0400
+X-MC-Unique: 8zj7dEEPOdiCt1fAsTizsw-1
+X-Mimecast-MFC-AGG-ID: 8zj7dEEPOdiCt1fAsTizsw_1742582166
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43cf5196c25so11107655e9.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:36:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742582113; x=1743186913;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fpmvkEmhJiK6Q/6HWo04Dj+mqs1gWrmUxMp9dj9JYoI=;
- b=dS22qxktkpA9+MyMCIvbBtwS4Eqjbw2ex3dXboqne6yHkTbT3hs242C9mG/C/26Whv
- +YMuKPFF6Ljuh98kQavisTOWe6WTjpjVGdGwzk8XHk6/Y/6gRiYZ78cBgVWDsJZ+hqoG
- 9NRysq5j9VRy5Dy64UpDqIypjznmy/yFpw8MocPx3MHL8owR+OpMlc7CDltNPsoNsW76
- 37nWfLSfL5G/Pbdkzj7Pe9p6XHWUozzf6shuJtSUvpLZNYrqwt7kCFjHWlsTtNS94UGQ
- YsPlfc64QJ2iEBMQJsw+D6JBAD5FRvG4PsFWv1M7xOJpjMnx/oxWvDq8EBMmp3B1yvHO
- d/LA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW536Td9uo1vIN23mBFt1CXE6+RhmDZ1EjKakait766HuaSmiZhfjfWIwdtfmcojU1oLYU/ireLA+xz@nongnu.org
-X-Gm-Message-State: AOJu0YypIO8iS90MLp0ef+q32uuFdFvV1SJJbBtnfK1OdJdN35WB/OA9
- TbmcImidhNjyv3kkm8uTXz2/LAxoMmefgf4rkRvBKqKHwiwY6wRWmUAEVug2fQY=
-X-Gm-Gg: ASbGnctbokUfxcsJk/EKuPVPYBLEPNKExcBi1hyqyo86xEtHDmMsP+7rc4Meb8OLm2d
- K2ajdi13Oim/z4ICMgEEoKslD42eVlVrKI9oB211PE7vkzL2YkuPGBy1i8Nvu2s5n9UeatgiV8q
- 6vyWL0c+gc9yze283sf5F8o0E0P9o6mSDfzHmVvvYHfkhezmnu7sSCFY9HO5roPxbA2D4NMBRPj
- 2sJR0jcrQISk8DZ4/m4RzQs55hXBTKAg+M1RE1klN3IYL1QL3ax1k6IJMh0bFXyQy/EweZa35Mo
- 4LwXIH3/100bKSNPVi/G3JLDQ/6WmFhjYzqSht1KUQb/ffjV1KChgS97cNqJwXwMnjPE8XBdIxh
- WAPr5OJmH3DWYCVdzG3k=
-X-Google-Smtp-Source: AGHT+IHcnCrYCHlC8KT/BsSQtVp7Xj+2Ziv9kW9SBQrWCPhpB2bKvNoNhsifrE3tl06tuShKNChabw==
-X-Received: by 2002:a05:6000:154d:b0:390:f025:9e85 with SMTP id
- ffacd0b85a97d-39979586dc7mr7784421f8f.21.1742582112507; 
- Fri, 21 Mar 2025 11:35:12 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f99540bsm3013201f8f.2.2025.03.21.11.35.11
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Mar 2025 11:35:11 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Anton Johansson <anjo@rev.ng>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 v2 4/4] tcg: Convert TARGET_SUPPORTS_MTTCG to
- TCGCPUOps::mttcg_supported field
-Date: Fri, 21 Mar 2025 19:34:49 +0100
-Message-ID: <20250321183450.3970-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250321183450.3970-1-philmd@linaro.org>
-References: <20250321183450.3970-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1742582165; x=1743186965;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WIiFgnINXZ71uyJxAf0X6x5Y4veC8fFS8XnwmF9Y+SM=;
+ b=UdbCgL3xYLN0kMfTfXS3ZjcM+Au0RRCeN7WHRgPaI8jwtdyujvbMD0Yh2Gdo80fKJ/
+ qsSorSGsZzU0j8Ns8l9VX1ANzC5nxZ7k4v/t54ZU+XGVDhE0HQ8LRG5EHHci0i3hZtPQ
+ 0K1jCl/tpyKAoI7PrIenhHmTYWRdD+j34zb9MVN5IDlVx0HiXxxt8KS1LRTq2cg2Ompg
+ hwFhqp44spZy8xaSPy0jqXBu2dIPUP9iT4XLSJ2PRz/PoShqIVymGz4pNQwSLLBKMvrR
+ euV4KTdXgkebEA2Ht3brcQXMPw0ccCZP9ljbxA8p7Qg9/vtLjl68n3M7rFS3dCiIJ2VE
+ 7mog==
+X-Gm-Message-State: AOJu0YwlrXyhVmZZe0ji1n9D0wWzRYGjqA+6M3tLewS0QrXMpBdM5tyX
+ pwjH7qvflSsegPAtPbjI2a7icXHuB8kopcF9E/C6n4AzX3TGkT9JdOMxzmehIHdSSaI3h6YCAWw
+ JcAMjp7CMm77ieDlUFHzVMRWlRfDEcmasM02BBfh8hQVZS9hwEJE347rfIL7l0zhMQmDjpoCx52
+ lVQKU8IHowUxMJA341LRYekdZr5o86ocYzVcet
+X-Gm-Gg: ASbGnctH4AFpH1uDNYnGMW6phkg+aCM4K8OeCQYw/+s+WRu2JLgHK5387E3Jjy7gyLK
+ BnkB9UzJkOPYaeo7gox9i5dpvi7n4qjhd7J9efRdtdT93GidwzTO8iXsCOVD7aFp7vF7M/nu95Z
+ dceZXvFVI4/XP2hcPWBfyguMC0JcTDql067m5TvmWNKHBpxhxQKolOfSfU54GJqMmTx/XCp4/mJ
+ 0SgHl18ALKvI1tU0Tqgu1GiFt3QwNH0jrZ7kP7FIGnKZNe+Q5rLHraC41EDNYNtqHVtqX9LS60D
+ hFHaeE3FDqMXk5MUFNoS
+X-Received: by 2002:a05:600c:1d8e:b0:43c:f70a:2af0 with SMTP id
+ 5b1f17b1804b1-43d509f642fmr43144375e9.16.1742582165063; 
+ Fri, 21 Mar 2025 11:36:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IElOnFdDQtQN7jkuUxLcCbknkfAnfHScc6anDk+uKruy4hx5Z9uwpBfm9NTsqD+Z52hSieZyg==
+X-Received: by 2002:a05:600c:1d8e:b0:43c:f70a:2af0 with SMTP id
+ 5b1f17b1804b1-43d509f642fmr43144065e9.16.1742582164448; 
+ Fri, 21 Mar 2025 11:36:04 -0700 (PDT)
+Received: from [192.168.122.1] ([151.49.194.153])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3997f9e674fsm2976714f8f.80.2025.03.21.11.36.03
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 Mar 2025 11:36:03 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/24] Mostly Rust changes for QEMU 10.0
+Date: Fri, 21 Mar 2025 19:35:32 +0100
+Message-ID: <20250321183556.155097-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,574 +103,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of having a compile-time TARGET_SUPPORTS_MTTCG definition,
-have each target set the 'mttcg_supported' field in the TCGCPUOps
-structure.
+The following changes since commit 1dae461a913f9da88df05de6e2020d3134356f2e:
 
-Since so far we only emulate one target architecture at a time,
-tcg_init_machine() gets whether MTTCG is supported via the
-&first_cpu global.
+  Update version for v10.0.0-rc0 release (2025-03-18 10:18:14 -0400)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- docs/devel/multi-thread-tcg.rst          | 2 +-
- configs/targets/aarch64-softmmu.mak      | 1 -
- configs/targets/alpha-softmmu.mak        | 1 -
- configs/targets/arm-softmmu.mak          | 1 -
- configs/targets/hppa-softmmu.mak         | 1 -
- configs/targets/i386-softmmu.mak         | 1 -
- configs/targets/loongarch64-softmmu.mak  | 1 -
- configs/targets/microblaze-softmmu.mak   | 1 -
- configs/targets/microblazeel-softmmu.mak | 1 -
- configs/targets/mips-softmmu.mak         | 1 -
- configs/targets/mipsel-softmmu.mak       | 1 -
- configs/targets/or1k-softmmu.mak         | 1 -
- configs/targets/ppc64-softmmu.mak        | 1 -
- configs/targets/riscv32-softmmu.mak      | 1 -
- configs/targets/riscv64-softmmu.mak      | 1 -
- configs/targets/s390x-softmmu.mak        | 1 -
- configs/targets/sparc-softmmu.mak        | 1 -
- configs/targets/sparc64-softmmu.mak      | 1 -
- configs/targets/x86_64-softmmu.mak       | 1 -
- configs/targets/xtensa-softmmu.mak       | 1 -
- configs/targets/xtensaeb-softmmu.mak     | 1 -
- include/accel/tcg/cpu-ops.h              | 8 ++++++++
- include/exec/poison.h                    | 1 -
- accel/tcg/tcg-all.c                      | 7 ++-----
- target/alpha/cpu.c                       | 1 +
- target/arm/cpu.c                         | 1 +
- target/arm/tcg/cpu-v7m.c                 | 1 +
- target/avr/cpu.c                         | 1 +
- target/hexagon/cpu.c                     | 1 +
- target/hppa/cpu.c                        | 1 +
- target/i386/tcg/tcg-cpu.c                | 1 +
- target/loongarch/cpu.c                   | 1 +
- target/m68k/cpu.c                        | 1 +
- target/microblaze/cpu.c                  | 1 +
- target/mips/cpu.c                        | 1 +
- target/openrisc/cpu.c                    | 1 +
- target/ppc/cpu_init.c                    | 1 +
- target/riscv/tcg/tcg-cpu.c               | 1 +
- target/rx/cpu.c                          | 1 +
- target/s390x/cpu.c                       | 1 +
- target/sh4/cpu.c                         | 1 +
- target/sparc/cpu.c                       | 1 +
- target/tricore/cpu.c                     | 1 +
- target/xtensa/cpu.c                      | 1 +
- 44 files changed, 31 insertions(+), 27 deletions(-)
+are available in the Git repository at:
 
-diff --git a/docs/devel/multi-thread-tcg.rst b/docs/devel/multi-thread-tcg.rst
-index 14a2a9dc7b5..da9a1530c9f 100644
---- a/docs/devel/multi-thread-tcg.rst
-+++ b/docs/devel/multi-thread-tcg.rst
-@@ -30,7 +30,7 @@ user-space thread. This is enabled by default for all FE/BE
- combinations where the host memory model is able to accommodate the
- guest (TCGCPUOps::guest_default_memory_order & ~TCG_TARGET_DEFAULT_MO is zero)
- and the guest has had the required work done to support this safely
--(TARGET_SUPPORTS_MTTCG).
-+(TCGCPUOps::mttcg_supported).
- 
- System emulation will fall back to the original round robin approach
- if:
-diff --git a/configs/targets/aarch64-softmmu.mak b/configs/targets/aarch64-softmmu.mak
-index 82cb72cb83d..5dfeb35af90 100644
---- a/configs/targets/aarch64-softmmu.mak
-+++ b/configs/targets/aarch64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=aarch64
- TARGET_BASE_ARCH=arm
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/arm-core.xml gdb-xml/arm-vfp.xml gdb-xml/arm-vfp3.xml gdb-xml/arm-vfp-sysregs.xml gdb-xml/arm-neon.xml gdb-xml/arm-m-profile.xml gdb-xml/arm-m-profile-mve.xml gdb-xml/aarch64-pauth.xml
- # needed by boot.c
-diff --git a/configs/targets/alpha-softmmu.mak b/configs/targets/alpha-softmmu.mak
-index 89f3517aca0..5275076e50d 100644
---- a/configs/targets/alpha-softmmu.mak
-+++ b/configs/targets/alpha-softmmu.mak
-@@ -1,3 +1,2 @@
- TARGET_ARCH=alpha
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=64
-diff --git a/configs/targets/arm-softmmu.mak b/configs/targets/arm-softmmu.mak
-index afc64f5927b..6a5a8eda949 100644
---- a/configs/targets/arm-softmmu.mak
-+++ b/configs/targets/arm-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=arm
--TARGET_SUPPORTS_MTTCG=y
- TARGET_XML_FILES= gdb-xml/arm-core.xml gdb-xml/arm-vfp.xml gdb-xml/arm-vfp3.xml gdb-xml/arm-vfp-sysregs.xml gdb-xml/arm-neon.xml gdb-xml/arm-m-profile.xml gdb-xml/arm-m-profile-mve.xml
- # needed by boot.c
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/hppa-softmmu.mak b/configs/targets/hppa-softmmu.mak
-index 63ca74ed5e6..ea331107a08 100644
---- a/configs/targets/hppa-softmmu.mak
-+++ b/configs/targets/hppa-softmmu.mak
-@@ -1,4 +1,3 @@
- TARGET_ARCH=hppa
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=64
-diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
-index 5dd89217560..e9d89e8ab41 100644
---- a/configs/targets/i386-softmmu.mak
-+++ b/configs/targets/i386-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=i386
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= gdb-xml/i386-32bit.xml
-diff --git a/configs/targets/loongarch64-softmmu.mak b/configs/targets/loongarch64-softmmu.mak
-index 351341132f6..fc44c54233d 100644
---- a/configs/targets/loongarch64-softmmu.mak
-+++ b/configs/targets/loongarch64-softmmu.mak
-@@ -1,7 +1,6 @@
- TARGET_ARCH=loongarch64
- TARGET_BASE_ARCH=loongarch
- TARGET_KVM_HAVE_GUEST_DEBUG=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_XML_FILES= gdb-xml/loongarch-base32.xml gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml gdb-xml/loongarch-lsx.xml gdb-xml/loongarch-lasx.xml
- # all boards require libfdt
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/microblaze-softmmu.mak b/configs/targets/microblaze-softmmu.mak
-index 99a33ed44a8..23457d0ae65 100644
---- a/configs/targets/microblaze-softmmu.mak
-+++ b/configs/targets/microblaze-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=microblaze
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- # needed by boot.c
- TARGET_NEED_FDT=y
- TARGET_XML_FILES=gdb-xml/microblaze-core.xml gdb-xml/microblaze-stack-protect.xml
-diff --git a/configs/targets/microblazeel-softmmu.mak b/configs/targets/microblazeel-softmmu.mak
-index 52cdeae1a28..c82c509623d 100644
---- a/configs/targets/microblazeel-softmmu.mak
-+++ b/configs/targets/microblazeel-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=microblaze
--TARGET_SUPPORTS_MTTCG=y
- # needed by boot.c
- TARGET_NEED_FDT=y
- TARGET_XML_FILES=gdb-xml/microblaze-core.xml gdb-xml/microblaze-stack-protect.xml
-diff --git a/configs/targets/mips-softmmu.mak b/configs/targets/mips-softmmu.mak
-index b62a0882499..c9588066b8d 100644
---- a/configs/targets/mips-softmmu.mak
-+++ b/configs/targets/mips-softmmu.mak
-@@ -1,4 +1,3 @@
- TARGET_ARCH=mips
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/mipsel-softmmu.mak b/configs/targets/mipsel-softmmu.mak
-index 620ec681785..90e09bdc3e5 100644
---- a/configs/targets/mipsel-softmmu.mak
-+++ b/configs/targets/mipsel-softmmu.mak
-@@ -1,3 +1,2 @@
- TARGET_ARCH=mips
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/or1k-softmmu.mak b/configs/targets/or1k-softmmu.mak
-index adfddb1a8ac..0e47d9878b0 100644
---- a/configs/targets/or1k-softmmu.mak
-+++ b/configs/targets/or1k-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=openrisc
--TARGET_SUPPORTS_MTTCG=y
- TARGET_BIG_ENDIAN=y
- # needed by boot.c and all boards
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/ppc64-softmmu.mak b/configs/targets/ppc64-softmmu.mak
-index 7cee0e97f43..74572864b36 100644
---- a/configs/targets/ppc64-softmmu.mak
-+++ b/configs/targets/ppc64-softmmu.mak
-@@ -1,7 +1,6 @@
- TARGET_ARCH=ppc64
- TARGET_BASE_ARCH=ppc
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/power64-core.xml gdb-xml/power-fpu.xml gdb-xml/power-altivec.xml gdb-xml/power-spe.xml gdb-xml/power-vsx.xml
- # all boards require libfdt
-diff --git a/configs/targets/riscv32-softmmu.mak b/configs/targets/riscv32-softmmu.mak
-index c828066ce6b..db55275b868 100644
---- a/configs/targets/riscv32-softmmu.mak
-+++ b/configs/targets/riscv32-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=riscv32
- TARGET_BASE_ARCH=riscv
--TARGET_SUPPORTS_MTTCG=y
- TARGET_XML_FILES= gdb-xml/riscv-32bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-32bit-virtual.xml
- # needed by boot.c
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/riscv64-softmmu.mak b/configs/targets/riscv64-softmmu.mak
-index 09f613d24a0..2bdd4a62cd2 100644
---- a/configs/targets/riscv64-softmmu.mak
-+++ b/configs/targets/riscv64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=riscv64
- TARGET_BASE_ARCH=riscv
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml gdb-xml/riscv-32bit-cpu.xml gdb-xml/riscv-32bit-virtual.xml
- # needed by boot.c
-diff --git a/configs/targets/s390x-softmmu.mak b/configs/targets/s390x-softmmu.mak
-index 5242ebe7c2e..76dd5de6584 100644
---- a/configs/targets/s390x-softmmu.mak
-+++ b/configs/targets/s390x-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=s390x
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/s390x-core64.xml gdb-xml/s390-acr.xml gdb-xml/s390-fpr.xml gdb-xml/s390-vx.xml gdb-xml/s390-cr.xml gdb-xml/s390-virt.xml gdb-xml/s390-virt-kvm.xml gdb-xml/s390-gs.xml
- TARGET_LONG_BITS=64
-diff --git a/configs/targets/sparc-softmmu.mak b/configs/targets/sparc-softmmu.mak
-index 78c2e25bd13..57801faf1fc 100644
---- a/configs/targets/sparc-softmmu.mak
-+++ b/configs/targets/sparc-softmmu.mak
-@@ -1,4 +1,3 @@
- TARGET_ARCH=sparc
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/sparc64-softmmu.mak b/configs/targets/sparc64-softmmu.mak
-index f7bab97a002..2504e31ae33 100644
---- a/configs/targets/sparc64-softmmu.mak
-+++ b/configs/targets/sparc64-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=sparc64
- TARGET_BASE_ARCH=sparc
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=64
-diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
-index 1ceefde1313..5619b2bc686 100644
---- a/configs/targets/x86_64-softmmu.mak
-+++ b/configs/targets/x86_64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=x86_64
- TARGET_BASE_ARCH=i386
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= gdb-xml/i386-64bit.xml
-diff --git a/configs/targets/xtensa-softmmu.mak b/configs/targets/xtensa-softmmu.mak
-index 65845df4ffa..2a9797338a6 100644
---- a/configs/targets/xtensa-softmmu.mak
-+++ b/configs/targets/xtensa-softmmu.mak
-@@ -1,3 +1,2 @@
- TARGET_ARCH=xtensa
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/xtensaeb-softmmu.mak b/configs/targets/xtensaeb-softmmu.mak
-index f1f789d6971..5204729af8b 100644
---- a/configs/targets/xtensaeb-softmmu.mak
-+++ b/configs/targets/xtensaeb-softmmu.mak
-@@ -1,4 +1,3 @@
- TARGET_ARCH=xtensa
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
-index 5fd299cefb6..31e63b8a663 100644
---- a/include/accel/tcg/cpu-ops.h
-+++ b/include/accel/tcg/cpu-ops.h
-@@ -19,6 +19,14 @@
- #include "tcg/tcg-mo.h"
- 
- struct TCGCPUOps {
-+    /**
-+     * mttcg_supported: multi-threaded TCG is supported
-+     *
-+     * Target (TCG frontend) supports:
-+     *   - atomic instructions
-+     *   - memory ordering primitives (barriers)
-+     */
-+    bool mttcg_supported;
- 
-     /**
-      * @guest_default_memory_order: default barrier that is required
-diff --git a/include/exec/poison.h b/include/exec/poison.h
-index 8ed04b31083..6df627868c6 100644
---- a/include/exec/poison.h
-+++ b/include/exec/poison.h
-@@ -35,7 +35,6 @@
- 
- #pragma GCC poison TARGET_HAS_BFLT
- #pragma GCC poison TARGET_NAME
--#pragma GCC poison TARGET_SUPPORTS_MTTCG
- #pragma GCC poison TARGET_BIG_ENDIAN
- #pragma GCC poison BSWAP_NEEDED
- 
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index f83f9b9d79e..18577148c19 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -41,6 +41,7 @@
- #include "hw/boards.h"
- #include "system/tcg.h"
- #endif
-+#include "accel/tcg/cpu-ops.h"
- #include "internal-common.h"
- #include "cpu-param.h"
- 
-@@ -91,11 +92,7 @@ static int tcg_init_machine(MachineState *ms)
- #else
-     unsigned max_cpus = ms->smp.max_cpus;
- #endif
--#ifdef TARGET_SUPPORTS_MTTCG
--    bool mttcg_supported = true;
--#else
--    bool mttcg_supported = false;
--#endif
-+    bool mttcg_supported = first_cpu->cc->tcg_ops->mttcg_supported; /* FIXME avoid first_cpu */
- 
-     tcg_allowed = true;
- 
-diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index e5e14976f51..2bad59a48a4 100644
---- a/target/alpha/cpu.c
-+++ b/target/alpha/cpu.c
-@@ -239,6 +239,7 @@ static const TCGCPUOps alpha_tcg_ops = {
-     .synchronize_from_tb = alpha_cpu_synchronize_from_tb,
-     .restore_state_to_opc = alpha_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     /* Alpha processors have a weak memory model */
-     .guest_default_memory_order = 0,
- 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 8b9f2acf82b..a332d9a5148 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2675,6 +2675,7 @@ static const TCGCPUOps arm_tcg_ops = {
-     .debug_excp_handler = arm_debug_excp_handler,
-     .restore_state_to_opc = arm_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     /* ARM processors have a weak memory model */
-     .guest_default_memory_order = 0,
- 
-diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
-index df6b7198944..7069a7a2ca8 100644
---- a/target/arm/tcg/cpu-v7m.c
-+++ b/target/arm/tcg/cpu-v7m.c
-@@ -238,6 +238,7 @@ static const TCGCPUOps arm_v7m_tcg_ops = {
-     .debug_excp_handler = arm_debug_excp_handler,
-     .restore_state_to_opc = arm_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     /* ARM processors have a weak memory model */
-     .guest_default_memory_order = 0,
- 
-diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index 24e52e28f44..9bc921c1cb2 100644
---- a/target/avr/cpu.c
-+++ b/target/avr/cpu.c
-@@ -216,6 +216,7 @@ static const TCGCPUOps avr_tcg_ops = {
-     .cpu_exec_halt = avr_cpu_has_work,
-     .tlb_fill = avr_cpu_tlb_fill,
-     .do_interrupt = avr_cpu_do_interrupt,
-+    .mttcg_supported = false,
-     .guest_default_memory_order = 0,
- };
- 
-diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-index 34734b0edb0..7bcf297998f 100644
---- a/target/hexagon/cpu.c
-+++ b/target/hexagon/cpu.c
-@@ -324,6 +324,7 @@ static const TCGCPUOps hexagon_tcg_ops = {
-     .translate_code = hexagon_translate_code,
-     .synchronize_from_tb = hexagon_cpu_synchronize_from_tb,
-     .restore_state_to_opc = hexagon_restore_state_to_opc,
-+    .mttcg_supported = false,
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
- };
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 997bd69db19..31f29a95ac0 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -257,6 +257,7 @@ static const TCGCPUOps hppa_tcg_ops = {
-     .synchronize_from_tb = hppa_cpu_synchronize_from_tb,
-     .restore_state_to_opc = hppa_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     /* PA-RISC 1.x processors have a strong memory model.  */
-     /*
-      * ??? While we do not yet implement PA-RISC 2.0, those processors have
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index 4a76c475971..62d36880ceb 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -129,6 +129,7 @@ static const TCGCPUOps x86_tcg_ops = {
-     .need_replay_interrupt = x86_need_replay_interrupt,
- #endif /* !CONFIG_USER_ONLY */
- 
-+    .mttcg_supported = true,
-     /*
-      * The x86 has a strong memory model with some store-after-load re-ordering
-      */
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index c39ff056157..460d05b1ee5 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -869,6 +869,7 @@ static const TCGCPUOps loongarch_tcg_ops = {
-     .synchronize_from_tb = loongarch_cpu_synchronize_from_tb,
-     .restore_state_to_opc = loongarch_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     .guest_default_memory_order = 0,
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index e96b379e266..4c94f031b13 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -593,6 +593,7 @@ static const TCGCPUOps m68k_tcg_ops = {
-     .translate_code = m68k_translate_code,
-     .restore_state_to_opc = m68k_restore_state_to_opc,
- 
-+    .mttcg_supported = false,
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
- 
-diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 4b9ef6e52c4..5604c2a34a0 100644
---- a/target/microblaze/cpu.c
-+++ b/target/microblaze/cpu.c
-@@ -432,6 +432,7 @@ static const TCGCPUOps mb_tcg_ops = {
-     .synchronize_from_tb = mb_cpu_synchronize_from_tb,
-     .restore_state_to_opc = mb_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     /* MicroBlaze is always in-order. */
-     .guest_default_memory_order = TCG_MO_ALL,
- 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 5ddc9bbb829..eee604e9254 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -554,6 +554,7 @@ static const TCGCPUOps mips_tcg_ops = {
-     .synchronize_from_tb = mips_cpu_synchronize_from_tb,
-     .restore_state_to_opc = mips_restore_state_to_opc,
- 
-+    .mttcg_supported = TARGET_LONG_BITS == 32,
-     .guest_default_memory_order = 0,
- 
- #if !defined(CONFIG_USER_ONLY)
-diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-index 6a878aaadd8..1a6ca405a0c 100644
---- a/target/openrisc/cpu.c
-+++ b/target/openrisc/cpu.c
-@@ -248,6 +248,7 @@ static const TCGCPUOps openrisc_tcg_ops = {
-     .synchronize_from_tb = openrisc_cpu_synchronize_from_tb,
-     .restore_state_to_opc = openrisc_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     .guest_default_memory_order = 0,
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 28fbbb8d3c1..ed79cc1a6b7 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7490,6 +7490,7 @@ static const TCGCPUOps ppc_tcg_ops = {
-   .translate_code = ppc_translate_code,
-   .restore_state_to_opc = ppc_restore_state_to_opc,
- 
-+  .mttcg_supported = TARGET_LONG_BITS == 64,
-   .guest_default_memory_order = 0,
- 
- #ifdef CONFIG_USER_ONLY
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 5ccd7b9dc07..f26cfae6cdb 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -140,6 +140,7 @@ static const TCGCPUOps riscv_tcg_ops = {
-     .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
-     .restore_state_to_opc = riscv_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     .guest_default_memory_order = 0,
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 6a24e7e9136..4bcbc22d3ad 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -213,6 +213,7 @@ static const TCGCPUOps rx_tcg_ops = {
-     .cpu_exec_halt = rx_cpu_has_work,
-     .do_interrupt = rx_cpu_do_interrupt,
- 
-+    .mttcg_supported = false,
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
- };
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 12fd853c00a..7ca34002d37 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -361,6 +361,7 @@ static const TCGCPUOps s390_tcg_ops = {
-     .do_unaligned_access = s390x_cpu_do_unaligned_access,
- #endif /* !CONFIG_USER_ONLY */
- 
-+    .mttcg_supported = true,
-     /*
-      * The z/Architecture has a strong memory model with some
-      * store-after-load re-ordering.
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index ce9ed75107a..b796bac8afd 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -267,6 +267,7 @@ static const TCGCPUOps superh_tcg_ops = {
-     .synchronize_from_tb = superh_cpu_synchronize_from_tb,
-     .restore_state_to_opc = superh_restore_state_to_opc,
- 
-+    .mttcg_supported = false,
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
- 
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 39bd0c42855..2ae7173c0bc 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -1005,6 +1005,7 @@ static const TCGCPUOps sparc_tcg_ops = {
-     .synchronize_from_tb = sparc_cpu_synchronize_from_tb,
-     .restore_state_to_opc = sparc_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     /*
-      * From Oracle SPARC Architecture 2015:
-      *
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index e0a48065948..aea1f211516 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -179,6 +179,7 @@ static const TCGCPUOps tricore_tcg_ops = {
-     .tlb_fill = tricore_cpu_tlb_fill,
-     .cpu_exec_interrupt = tricore_cpu_exec_interrupt,
-     .cpu_exec_halt = tricore_cpu_has_work,
-+    .mttcg_supported = false,
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
- };
-diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index dd9061ba469..8cc987f8408 100644
---- a/target/xtensa/cpu.c
-+++ b/target/xtensa/cpu.c
-@@ -237,6 +237,7 @@ static const TCGCPUOps xtensa_tcg_ops = {
-     .debug_excp_handler = xtensa_breakpoint_handler,
-     .restore_state_to_opc = xtensa_restore_state_to_opc,
- 
-+    .mttcg_supported = true,
-     /* Xtensa processors have a weak memory model */
-     .guest_default_memory_order = 0,
- 
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 64acc23c9793e86f2811345f3c122bf3ece8088b:
+
+  rust: hpet: fix decoding of timer registers (2025-03-21 14:23:11 +0100)
+
+The bulk of the changes here are fixes to the vmstate bindings,
+also including test cases, and to the Rust devices.
+
+----------------------------------------------------------------
+* exec/cpu-all: remove BSWAP_NEEDED
+* pl011: pad C PL011State struct to same size as Rust struct
+* rust: hpet: fix type of "timers" property
+* rust: hpet: fix functional tests (and really everything that uses it)
+* rust: Kconfig: Factor out whether devices are Rust or C
+* rust: vmstate: Fixes and tests
+
+----------------------------------------------------------------
+Paolo Bonzini (4):
+      qdev, rust/hpet: fix type of HPET "timers" property
+      rust: assertions: add static_assert
+      load_aout: replace bswap_needed with big_endian
+      rust: hpet: fix decoding of timer registers
+
+Peter Maydell (4):
+      rust: Kconfig: Factor out whether PL011 is Rust or C
+      rust: Kconfig: Factor out whether HPET is Rust or C
+      hw/char/pl011: Pad PL011State struct to same size as Rust impl
+      rust: pl011: Check size of state struct at compile time
+
+Pierrick Bouvier (1):
+      exec/cpu-all: remove BSWAP_NEEDED
+
+Zhao Liu (15):
+      rust/vmstate: Remove unnecessary unsafe
+      rust/vmstate: Fix num_offset in vmstate macros
+      rust/vmstate: Fix num field when varray flags are set
+      rust/vmstate: Fix size field of VMStateField with VMS_ARRAY_OF_POINTER flag
+      rust/vmstate: Fix type check for varray in vmstate_struct
+      rust/vmstate: Fix "cannot infer type" error in vmstate_struct
+      rust/vmstate: Fix unnecessary VMState bound of with_varray_flag()
+      rust/vmstate: Relax array check when build varray in vmstate_struct
+      rust/vmstate: Re-implement VMState trait for timer binding
+      rust/vmstate: Support vmstate_validate
+      rust/vmstate: Add unit test for vmstate_of macro
+      rust/vmstate: Add unit test for vmstate_{of|struct} macro
+      rust/vmstate: Add unit test for pointer case
+      rust/vmstate: Add unit test for vmstate_validate
+      rust/vmstate: Include complete crate path of VMStateFlags in vmstate_clock
+
+ configs/devices/i386-softmmu/default.mak |   1 -
+ include/exec/cpu-all.h                   |  12 -
+ include/exec/poison.h                    |   1 -
+ include/hw/char/pl011.h                  |   5 +
+ include/hw/loader.h                      |   2 +-
+ include/hw/qdev-properties.h             |   1 +
+ linux-user/syscall_defs.h                |   2 +-
+ rust/wrapper.h                           |   1 +
+ bsd-user/elfload.c                       |   6 +-
+ hw/core/loader.c                         |   4 +-
+ hw/core/qdev-properties.c                |  37 +++
+ hw/i386/fw_cfg.c                         |   2 +-
+ hw/i386/pc.c                             |   2 +-
+ hw/ppc/mac_newworld.c                    |   7 +-
+ hw/ppc/mac_oldworld.c                    |   7 +-
+ hw/sparc/sun4m.c                         |   9 +-
+ hw/sparc64/sun4u.c                       |   9 +-
+ linux-user/elfload.c                     |   8 +-
+ hw/arm/Kconfig                           |  30 +-
+ hw/char/Kconfig                          |   6 +
+ hw/char/meson.build                      |   2 +-
+ hw/timer/Kconfig                         |   8 +-
+ hw/timer/meson.build                     |   2 +-
+ rust/hw/char/pl011/src/device.rs         |   9 +-
+ rust/hw/char/pl011/src/device_class.rs   |   8 +-
+ rust/hw/timer/Kconfig                    |   1 -
+ rust/hw/timer/hpet/src/hpet.rs           |   8 +-
+ rust/qemu-api/meson.build                |   5 +-
+ rust/qemu-api/src/assertions.rs          |  37 +++
+ rust/qemu-api/src/vmstate.rs             | 100 +++++--
+ rust/qemu-api/tests/tests.rs             |   2 +
+ rust/qemu-api/tests/vmstate_tests.rs     | 477 +++++++++++++++++++++++++++++++
+ tests/qtest/meson.build                  |   3 +-
+ 33 files changed, 705 insertions(+), 109 deletions(-)
+ create mode 100644 rust/qemu-api/tests/vmstate_tests.rs
 -- 
-2.47.1
+2.49.0
 
 
