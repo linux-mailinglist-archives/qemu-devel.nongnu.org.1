@@ -2,77 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6296FA6B34A
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 04:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6F1A6B370
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 04:46:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvSyY-0007Gn-Pt; Thu, 20 Mar 2025 23:23:14 -0400
+	id 1tvTKE-0006Au-FR; Thu, 20 Mar 2025 23:45:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tvSyW-0007Fr-AM; Thu, 20 Mar 2025 23:23:12 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1tvSyT-0001p1-5F; Thu, 20 Mar 2025 23:23:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742527389; x=1774063389;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=VW905S5AtEa+aqLunlCnNTDg/VfBoD1PewmutLdb2ys=;
- b=byipzbQuVRgfemBYTM9z+GRLDhsScLaCJnIrKfROjXwc/Qt1LaY2koER
- xD03xqp1GVh2pHO+JcVrSLN3LJDa8n0y6QXk0xjHAgBhBkgLu2LKG8vKr
- tTPY3LzKv5wBCU8Wkd0yaXx519M3frxh+S1ehmj+2tM0b4SeOm77msl2+
- L76k3E4FJ0nlC7LMfKBwuKKBCa27SuVcegU+L/tPsp6oppAlhtnn2ZfGN
- Bc71Wyg3/IrI370JAwZjfGiSlZKYW53KzvTQ/d+vgCUSo85tBp76XeRN/
- MgoMHFkHrxsi22q7UgdDHM3FC/P2qkWSHv6HDyJGhHkimHVgwQb3U6d6O Q==;
-X-CSE-ConnectionGUID: yvOqtbflRF2t4qCsVukOAQ==
-X-CSE-MsgGUID: 5ua2EPnfRmqiBPb3I/64Jg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="43973089"
-X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="43973089"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2025 20:23:06 -0700
-X-CSE-ConnectionGUID: zOxVwuLWQFi4cQC1qFTZ9g==
-X-CSE-MsgGUID: PRbIxo2HQ6KErz7zyEbsEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="128114389"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 20 Mar 2025 20:23:03 -0700
-Date: Fri, 21 Mar 2025 11:43:16 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Shaoqin Huang <shahuang@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [RFC v2 0/5] accel/kvm: Support KVM PMU filter
-Message-ID: <Z9zgVKtZyEx3MKuf@intel.com>
-References: <20250122090517.294083-1-zhao1.liu@intel.com>
- <2fe2a98d-f70f-4996-b04e-d81f66d5863f@redhat.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tvTKB-0006AT-My
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 23:45:35 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tvTK8-0002H8-Bn
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 23:45:35 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8AxGHHT4NxnOp2fAA--.8355S3;
+ Fri, 21 Mar 2025 11:45:23 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMBxLsfR4Nxn+j9XAA--.61233S2;
+ Fri, 21 Mar 2025 11:45:22 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org,
+	Song Gao <gaosong@loongson.cn>
+Subject: [PULL 0/3] loongarch-to-apply queue
+Date: Fri, 21 Mar 2025 11:45:18 +0800
+Message-Id: <20250321034521.2425622-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2fe2a98d-f70f-4996-b04e-d81f66d5863f@redhat.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMBxLsfR4Nxn+j9XAA--.61233S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,52 +61,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Shaoqin,
+The following changes since commit 1dae461a913f9da88df05de6e2020d3134356f2e:
 
-Thank you very much for testing!
+  Update version for v10.0.0-rc0 release (2025-03-18 10:18:14 -0400)
 
-> I tried your series on ARM64, but it reports error at compile time, here is
-> the error output:
-> 
-> qapi/kvm.json:59:Unexpected indentation.
+are available in the Git repository at:
 
-I guess this is caused by my invalid format and sphinx complains that,
-as Markus figured out :-(
+  https://gitlab.com/bibo-mao/qemu.git tags/pull-loongarch-20250321
 
-What about the following change?
+for you to fetch changes up to b8d5503a3ecf8bcf75e4960d04215f71dbfd5dd2:
 
-diff --git a/qapi/kvm.json b/qapi/kvm.json
-index 31447dfeffb0..b383dfd9a788 100644
---- a/qapi/kvm.json
-+++ b/qapi/kvm.json
-@@ -54,11 +54,6 @@
- ##
- # @KVMPMUX86DefalutEvent:
- #
--# x86 PMU event encoding with select and umask.
--# raw_event = ((select & 0xf00UL) << 24) | \
--#              (select) & 0xff) | \
--#              ((umask) & 0xff) << 8)
--#
- # @select: x86 PMU event select field, which is a 12-bit unsigned
- #     number.
- #
+  target/loongarch: fix bad shift in check_ps() (2025-03-21 11:31:56 +0800)
 
-> While I compiled it on x86, everything is ok. Could you please check why it
-> failed on ARM64?
+----------------------------------------------------------------
+pull-loongarch-20250321 queue
 
-Maybe your Arm64 environment doesn't have sphinx_rtd_theme?
+----------------------------------------------------------------
+Bibo Mao (1):
+      docs/system: Add entry for LoongArch system
 
-You can check it by:
+Song Gao (1):
+      target/loongarch: fix bad shift in check_ps()
 
-python3 -m pip show sphinx_rtd_theme
+Yao Zi (1):
+      host/include/loongarch64: Fix inline assembly compatibility with Clang
 
-> By the mean time, I will review and test this series.
-
-Thank you again! I also plan to refresh v3, in maybe 1 or 2 weeks.
-
-Best Regards,
-Zhao
-
+ docs/system/loongarch/virt.rst                     | 31 +++++++---------------
+ docs/system/target-loongarch.rst                   | 19 +++++++++++++
+ docs/system/targets.rst                            |  1 +
+ host/include/loongarch64/host/atomic128-ldst.h.inc |  4 +--
+ host/include/loongarch64/host/bufferiszero.c.inc   |  6 +++--
+ .../loongarch64/host/load-extract-al16-al8.h.inc   |  2 +-
+ target/loongarch/internals.h                       |  2 +-
+ target/loongarch/tcg/csr_helper.c                  |  2 +-
+ target/loongarch/tcg/tlb_helper.c                  | 10 +++----
+ 9 files changed, 44 insertions(+), 33 deletions(-)
+ create mode 100644 docs/system/target-loongarch.rst
 
 
