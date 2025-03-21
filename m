@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99AA5A6B371
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 04:46:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7950A6B36F
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 04:46:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvTKE-0006B7-Fn; Thu, 20 Mar 2025 23:45:38 -0400
+	id 1tvTKF-0006CZ-N7; Thu, 20 Mar 2025 23:45:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tvTKB-0006AS-Jw
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 23:45:35 -0400
+ id 1tvTKC-0006Al-Tt
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 23:45:36 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tvTK8-0002MT-Ah
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 23:45:35 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1tvTK9-0002NE-MJ
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 23:45:36 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxmnHX4NxnRp2fAA--.6823S3;
- Fri, 21 Mar 2025 11:45:27 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxOGrY4NxnSJ2fAA--.8555S3;
+ Fri, 21 Mar 2025 11:45:28 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMBxLsfR4Nxn+j9XAA--.61233S4;
+ by front1 (Coremail) with SMTP id qMiowMBxLsfR4Nxn+j9XAA--.61233S5;
  Fri, 21 Mar 2025 11:45:27 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org,
-	Song Gao <gaosong@loongson.cn>
-Subject: [PULL 2/3] docs/system: Add entry for LoongArch system
-Date: Fri, 21 Mar 2025 11:45:20 +0800
-Message-Id: <20250321034521.2425622-3-maobibo@loongson.cn>
+Cc: qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 3/3] target/loongarch: fix bad shift in check_ps()
+Date: Fri, 21 Mar 2025 11:45:21 +0800
+Message-Id: <20250321034521.2425622-4-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250321034521.2425622-1-maobibo@loongson.cn>
 References: <20250321034521.2425622-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxLsfR4Nxn+j9XAA--.61233S4
+X-CM-TRANSID: qMiowMBxLsfR4Nxn+j9XAA--.61233S5
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,122 +63,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add index entry for LoongArch system and do some small modification
-with  LoongArch document with rst syntax.
+From: Song Gao <gaosong@loongson.cn>
 
+In expression 1ULL << tlb_ps, left shifting by more than 63 bits has
+undefined behavior. The shift amount, tlb_ps, is as much as 64. check
+"tlb_ps >=64" to fix.
+
+Resolves: Coverity CID 1593475
+
+Fixes: d882c284a3 ("target/loongarch: check tlb_ps")
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
 ---
- docs/system/loongarch/virt.rst   | 31 ++++++++++---------------------
- docs/system/target-loongarch.rst | 19 +++++++++++++++++++
- docs/system/targets.rst          |  1 +
- 3 files changed, 30 insertions(+), 21 deletions(-)
- create mode 100644 docs/system/target-loongarch.rst
+ target/loongarch/internals.h      |  2 +-
+ target/loongarch/tcg/csr_helper.c |  2 +-
+ target/loongarch/tcg/tlb_helper.c | 10 +++++-----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/docs/system/loongarch/virt.rst b/docs/system/loongarch/virt.rst
-index 172fba079e..7845878469 100644
---- a/docs/system/loongarch/virt.rst
-+++ b/docs/system/loongarch/virt.rst
-@@ -12,14 +12,15 @@ Supported devices
- -----------------
+diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
+index 1cd959a766..9fdc3059d8 100644
+--- a/target/loongarch/internals.h
++++ b/target/loongarch/internals.h
+@@ -43,7 +43,7 @@ enum {
+     TLBRET_PE = 7,
+ };
  
- The ``virt`` machine supports:
--- Gpex host bridge
--- Ls7a RTC device
--- Ls7a IOAPIC device
--- ACPI GED device
--- Fw_cfg device
--- PCI/PCIe devices
--- Memory device
--- CPU device. Type: la464.
-+
-+* Gpex host bridge
-+* Ls7a RTC device
-+* Ls7a IOAPIC device
-+* ACPI GED device
-+* Fw_cfg device
-+* PCI/PCIe devices
-+* Memory device
-+* CPU device. Type: la464.
+-bool check_ps(CPULoongArchState *ent, int ps);
++bool check_ps(CPULoongArchState *ent, uint8_t ps);
  
- CPU and machine Type
- --------------------
-@@ -39,13 +40,7 @@ can be accessed by following steps.
+ extern const VMStateDescription vmstate_loongarch_cpu;
  
- .. code-block:: bash
+diff --git a/target/loongarch/tcg/csr_helper.c b/target/loongarch/tcg/csr_helper.c
+index 379c71e741..6a7a65c860 100644
+--- a/target/loongarch/tcg/csr_helper.c
++++ b/target/loongarch/tcg/csr_helper.c
+@@ -115,7 +115,7 @@ target_ulong helper_csrwr_ticlr(CPULoongArchState *env, target_ulong val)
  
--  ./configure --disable-rdma --prefix=/usr \
--              --target-list="loongarch64-softmmu" \
--              --disable-libiscsi --disable-libnfs --disable-libpmem \
--              --disable-glusterfs --enable-libusb --enable-usb-redir \
--              --disable-opengl --disable-xen --enable-spice \
--              --enable-debug --disable-capstone --disable-kvm \
--              --enable-profiler
-+  ./configure --target-list="loongarch64-softmmu"
-   make -j8
+ target_ulong helper_csrwr_pwcl(CPULoongArchState *env, target_ulong val)
+ {
+-    int shift, ptbase;
++    uint8_t shift, ptbase;
+     int64_t old_v = env->CSR_PWCL;
  
- (2) Set cross tools:
-@@ -53,9 +48,7 @@ can be accessed by following steps.
- .. code-block:: bash
+     /*
+diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+index 646dbf59de..bd8081e886 100644
+--- a/target/loongarch/tcg/tlb_helper.c
++++ b/target/loongarch/tcg/tlb_helper.c
+@@ -19,12 +19,12 @@
+ #include "exec/log.h"
+ #include "cpu-csr.h"
  
-   wget https://github.com/loongson/build-tools/releases/download/2022.09.06/loongarch64-clfs-6.3-cross-tools-gcc-glibc.tar.xz
--
-   tar -vxf loongarch64-clfs-6.3-cross-tools-gcc-glibc.tar.xz  -C /opt
--
-   export PATH=/opt/cross-tools/bin:$PATH
-   export LD_LIBRARY_PATH=/opt/cross-tools/lib:$LD_LIBRARY_PATH
-   export LD_LIBRARY_PATH=/opt/cross-tools/loongarch64-unknown-linux-gnu/lib/:$LD_LIBRARY_PATH
-@@ -74,13 +67,9 @@ Note: To build the release version of the bios,  set --buildtarget=RELEASE,
- .. code-block:: bash
+-bool check_ps(CPULoongArchState *env, int tlb_ps)
++bool check_ps(CPULoongArchState *env, uint8_t tlb_ps)
+ {
+-     if (tlb_ps > 64) {
+-         return false;
+-     }
+-     return BIT_ULL(tlb_ps) & (env->CSR_PRCFG2);
++    if (tlb_ps >= 64) {
++        return false;
++    }
++    return BIT_ULL(tlb_ps) & (env->CSR_PRCFG2);
+ }
  
-   git clone https://github.com/loongson/linux.git
--
-   cd linux
--
-   git checkout loongarch-next
--
-   make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu- loongson3_defconfig
--
-   make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu- -j32
- 
- Note: The branch of linux source code is loongarch-next.
-diff --git a/docs/system/target-loongarch.rst b/docs/system/target-loongarch.rst
-new file mode 100644
-index 0000000000..316c604b91
---- /dev/null
-+++ b/docs/system/target-loongarch.rst
-@@ -0,0 +1,19 @@
-+.. _LoongArch-System-emulator:
-+
-+LoongArch System emulator
-+-------------------------
-+
-+QEMU can emulate loongArch 64 bit systems via the
-+``qemu-system-loongarch64`` binary. Only one machine type ``virt`` is
-+supported.
-+
-+When using KVM as accelerator, QEMU can emulate la464 cpu model. And when
-+using the default cpu model with TCG as accelerator, QEMU will emulate a
-+subset of la464 cpu features that should be enough to run distributions
-+built for the la464.
-+
-+Board-specific documentation
-+============================
-+
-+.. toctree::
-+   loongarch/virt
-diff --git a/docs/system/targets.rst b/docs/system/targets.rst
-index 224fadae71..38e2418801 100644
---- a/docs/system/targets.rst
-+++ b/docs/system/targets.rst
-@@ -18,6 +18,7 @@ Contents:
- 
-    target-arm
-    target-avr
-+   target-loongarch
-    target-m68k
-    target-mips
-    target-ppc
+ void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
 -- 
 2.43.5
 
