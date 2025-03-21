@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A34DA6C2AA
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:41:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C11A6C28B
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:37:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvhFW-00048J-GW; Fri, 21 Mar 2025 14:37:42 -0400
+	id 1tvhF8-00031M-RU; Fri, 21 Mar 2025 14:37:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tvhEV-0002jd-P0
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tvhEV-0002jO-Kf
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tvhEU-00074U-3n
+ id 1tvhET-00074W-Ur
  for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1742582197;
@@ -24,71 +24,72 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7cqHsfdkAuuLT5axwfe786tbbJbT6rXGioO14sbzrY0=;
- b=GxlqnzJOtELQp3ppUPJWPKPYPceMrv4q/xBXuxdvxgsi5vyRtPfKu3A/0Nr6gxL5R3crRw
- yozM/f/wcthtNhWjCmpe77/34PD3kXYRjczXyKAX8erYFJOrcKt/pmuVq1G0BY/PWGZo8p
- qsGrKGSFpd1CW+kk5EX8qQ+1vCO2AIY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Rl3sbMh8PhcAXlK/9RiOT6GC/ca8o4XQipdBcUVoe2k=;
+ b=Wi+xg3z/NpJdTdvTVvFqt3jJoNX2YqAA4Q3jeeXXfGzqYPMqOaH/1OFZolspwlc88HA/qM
+ 6SmnFHeJlNZxLAln49gx+5TvZl17xP9T/TY76Lar7t/fddzHxpWLHmHmPpkpGONLMqPiDK
+ FotPumH39mC/w/H/2fdlH0qFJpT24eE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-387-lbt8mpTOO1-7Faj15FrYzA-1; Fri, 21 Mar 2025 14:36:32 -0400
-X-MC-Unique: lbt8mpTOO1-7Faj15FrYzA-1
-X-Mimecast-MFC-AGG-ID: lbt8mpTOO1-7Faj15FrYzA_1742582191
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3913f546dfdso1270128f8f.1
- for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:36:32 -0700 (PDT)
+ us-mta-58-NdrRkrCZMQ6Pu6RnJx8VIw-1; Fri, 21 Mar 2025 14:36:35 -0400
+X-MC-Unique: NdrRkrCZMQ6Pu6RnJx8VIw-1
+X-Mimecast-MFC-AGG-ID: NdrRkrCZMQ6Pu6RnJx8VIw_1742582194
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3913f97d115so1123809f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:36:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742582190; x=1743186990;
+ d=1e100.net; s=20230601; t=1742582193; x=1743186993;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7cqHsfdkAuuLT5axwfe786tbbJbT6rXGioO14sbzrY0=;
- b=j1GHaV+h/bZiCATYejsFM413/1M8SKSTt3m1P1lXFaa3QPIjdk1pF8Kpg1zn15Ov3Q
- dALLNf62PcYAW5szDRgiCX+E9KISeBHmaYtGHtf5D6+cmIghiupN3ZMt+q3uCet+CWx2
- VRfGzkKJvD08JyGH2bCR2aQC1wN//zJ/92Y61TMHQjildR5I2HDTokspy9TXi8ieQ8R/
- 1YFQUknDoCPxFnH9RKhxhTPE5nkjijC4qHmm/SBRtNl+vuLF70A9c9gEhJS+XdB9aFO4
- e84JWuoG7SZbsELMJzOJAgMMpcJijJBP2+SxayKpwg2k9Yowyx6Kn5y7UpaRwux0w0Tn
- ROtQ==
-X-Gm-Message-State: AOJu0YyQnATgoki+x99Y+VAebFzz3dDlfnNw0iMz5J65Qrw4vn1FHKCx
- Cz3wSmSX6IcTCa3ua0cA7D5FFipD8/zdTNeuEJHroMCjo6kITiEi9vRfvo2oaYKu1kBuF7gOh0X
- lBk+OTmbfy/wS2FIh4mK4NMH48fYmxwObgFKozyBW/PlX2w6DvWRxwY96h9u5UV4IGuAblOcNJP
- rHFgazQmz0YKBBxugO0Rk0eLtWJ9AzZ8bKBOKi
-X-Gm-Gg: ASbGncvFymUroBeWCdt7yZ53KquGfGc79qeoTF/mwzc+u2JcrraFF8vf+R6tutFPWN9
- onSG8tl3V6DZdIMQZ1ccW4qKczOyO/9uHkRioklmQkAoxbDFtjhzYNeUhkE5GyIAjD4EbKRYU8h
- eA1QBVDv56Qfso+hOPK1b/dxkOSWHEJywVejP6kbOFGPFtJeMVm5GoURv7trQ6igrhVYP/bXS4a
- Mu6+wW+RxH6oV8c1LU43dkwseVZji+UmjNe2jVnA5blyr4mgvEVc7JB8wl0Fi4JwavCmbxMZwsD
- SGTOMY70+qd+RBzHG+1A
-X-Received: by 2002:a05:6000:400a:b0:390:fe05:da85 with SMTP id
- ffacd0b85a97d-3997f8fc301mr5388188f8f.16.1742582190212; 
- Fri, 21 Mar 2025 11:36:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8d7QU7teNz4DARB4i3sE48DSlftgjQa9P+2f1sOKXWkmLlrygDpwf0BG8QCXuJyMdeZ8txg==
-X-Received: by 2002:a05:6000:400a:b0:390:fe05:da85 with SMTP id
- ffacd0b85a97d-3997f8fc301mr5388165f8f.16.1742582189663; 
- Fri, 21 Mar 2025 11:36:29 -0700 (PDT)
+ bh=Rl3sbMh8PhcAXlK/9RiOT6GC/ca8o4XQipdBcUVoe2k=;
+ b=gDyAe455l4EroEyAIQq8rmiwYPDXKakQOUf1u8SpbByTwwR68daUjVSg/Zm/8r+gZU
+ hZt4y+ktboEvqilzBYltPwON1fmwfK22Gs7hEaqcSOOy/7Q4QqZLR3KYnDRlaOwHESWU
+ 1oXdS94+kllZXzvmldyd0loYXvmEoHlc6ZrptA5ixX+DpBJdDa6w3t+lUpuSibYXHTji
+ EeL6YkqkqZ8INppc39bAyj5SZkMYvadf/OgaRy41/L11dkTVhd93qOQA796JZy4JkJpK
+ IgZ8Oeax9q52358QM5Sq1BcomFrU0Tfr+0FeS033KCkqSDvWGuJBd1hcvcdzZ7WASmgC
+ 7Ebg==
+X-Gm-Message-State: AOJu0Yy+SJtArxZRBzJ9vxCwXOu2mzqDqRUoPBwSP2tH7EoA2IoWqFCD
+ q/5/NiN2YtFJ2YyBtlYL3qfzNvhc4yypicnndMiNnKqJ/u0UPT86bzwUhfXhGitQgLsMd2SaALH
+ rSPEXzT/ZlMGepsC5RNWwxJBcDidYr4xNLAIrdqkOyncE2UrC8QjT3NjGf4cT+/OVmfnHQ3Lvh7
+ tJrttyTJvGvHECQjMa9ubeEA5kWFsSmSA/xqkE
+X-Gm-Gg: ASbGnct416vmpFCUwxBZJ8deusQtJcro5/RvTP/1NpN+qY9nwNq3SIuQcuSBzbKNiE8
+ d+53HOl9256G2v0DdVHywts5/UjGGniqU2G0x2Qu/oDNM1QW8b6XBOovonXr+u7Sdk8/RywntTm
+ DwC9QXYdRlKPE9GbTViVx6eXeGAcMOSfjEhs9oDfwPF2OowGKkJfUo8v+DHei5bCVXEHuCjMHR4
+ Cg1WHp2uDlfXdZNY36z1UovkrOo/ooy/78L42icvjpzZ3kTXKcSjp12KB9pB+CVqC2m/NIkWIip
+ ygGo9NtAHX/W2McoK239
+X-Received: by 2002:a5d:6daa:0:b0:38d:ae1e:2f3c with SMTP id
+ ffacd0b85a97d-3997f93c45dmr4407475f8f.25.1742582193217; 
+ Fri, 21 Mar 2025 11:36:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGyDzmnhNDpG1ZtLgqb789d242m21SkmGRHkW67zEKYXpF2BEkDjNyzf/gxquGzjkZwSd3R9g==
+X-Received: by 2002:a5d:6daa:0:b0:38d:ae1e:2f3c with SMTP id
+ ffacd0b85a97d-3997f93c45dmr4407456f8f.25.1742582192708; 
+ Fri, 21 Mar 2025 11:36:32 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.194.153])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9e6651sm3031201f8f.75.2025.03.21.11.36.29
+ ffacd0b85a97d-3997f9956b4sm3021725f8f.7.2025.03.21.11.36.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Mar 2025 11:36:29 -0700 (PDT)
+ Fri, 21 Mar 2025 11:36:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 11/24] rust/vmstate: Fix num field when varray flags are set
-Date: Fri, 21 Mar 2025 19:35:43 +0100
-Message-ID: <20250321183556.155097-12-pbonzini@redhat.com>
+Subject: [PULL 12/24] rust/vmstate: Fix size field of VMStateField with
+ VMS_ARRAY_OF_POINTER flag
+Date: Fri, 21 Mar 2025 19:35:44 +0100
+Message-ID: <20250321183556.155097-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250321183556.155097-1-pbonzini@redhat.com>
 References: <20250321183556.155097-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,31 +109,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Array type vmstate has the VMStateField with `num` equals its length.
+The `size` field of the VMStateField with VMS_ARRAY_OF_POINTER flag
+should stores the size of pointer, which depends on platform.
 
-When the varray vmstate is built based a array type, the `num` field
-should be cleaned to 0, because varray uses `num_offset` instead of
-`num` to store elements number information.
+Currently, `*const`, `*mut`, `NonNull`, `Box<>` and their wrapper are
+supported, and they have the same size as `usize`.
+
+Store the size (of `usize`) when VMS_ARRAY_OF_POINTER flag is set.
+
+The size may be changed when more smart pointers are supported, but now
+the size of "usize" is enough.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250318130219.1799170-4-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250318130219.1799170-5-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/vmstate.rs | 1 +
- 1 file changed, 1 insertion(+)
+ rust/qemu-api/src/vmstate.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 9533b1250fa..e3233303f20 100644
+index e3233303f20..e2a1f7a97aa 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -275,6 +275,7 @@ pub const fn with_varray_flag<T: VMState>(mut self, flag: VMStateFlags) -> VMSta
-         assert!((self.flags.0 & VMStateFlags::VMS_ARRAY.0) != 0);
-         self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_ARRAY.0);
-         self.flags = VMStateFlags(self.flags.0 | flag.0);
-+        self.num = 0; // varray uses num_offset instead of num.
-         self
-     }
- 
+@@ -256,6 +256,10 @@ pub const fn with_array_flag(mut self, num: usize) -> Self {
+         if (self.flags.0 & VMStateFlags::VMS_POINTER.0) != 0 {
+             self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_POINTER.0);
+             self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_ARRAY_OF_POINTER.0);
++            // VMS_ARRAY_OF_POINTER flag stores the size of pointer.
++            // FIXME: *const, *mut, NonNull and Box<> have the same size as usize.
++            //        Resize if more smart pointers are supported.
++            self.size = std::mem::size_of::<usize>();
+         }
+         self.flags = VMStateFlags(self.flags.0 & !VMStateFlags::VMS_SINGLE.0);
+         self.flags = VMStateFlags(self.flags.0 | VMStateFlags::VMS_ARRAY.0);
 -- 
 2.49.0
 
