@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E3FA6B744
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:28:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA279A6B75D
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:30:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvYf0-0006vq-NF; Fri, 21 Mar 2025 05:27:27 -0400
+	id 1tvYf7-00075E-4U; Fri, 21 Mar 2025 05:27:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYeR-0006TC-SQ; Fri, 21 Mar 2025 05:26:51 -0400
+ id 1tvYet-0006pm-QY; Fri, 21 Mar 2025 05:27:22 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYeP-00056m-Fi; Fri, 21 Mar 2025 05:26:51 -0400
+ id 1tvYep-00056F-UI; Fri, 21 Mar 2025 05:27:19 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 21 Mar
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v1 10/22] hw/misc/aspeed_hace:: Support setting different
- memory size
-Date: Fri, 21 Mar 2025 17:26:06 +0800
-Message-ID: <20250321092623.2097234-11-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 11/22] hw/misc/aspeed_hace: Add trace-events for better
+ debugging
+Date: Fri, 21 Mar 2025 17:26:07 +0800
+Message-ID: <20250321092623.2097234-12-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
 References: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
@@ -66,92 +66,93 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The memory size was previously hardcoded to 0x1000 (4K). However, the actual
-memory size of the HACE controller varies across different models:
-1. AST2400/AST2500: 0x1000 (4K)
-2. AST2600/AST1030: 0x10000 (64K)
-3. AST2700: 0x100 (256 bytes)
-
-To address this, a new class attribute, mem_size, has been introduced to
-dynamically set the appropriate memory size for each HACE model, ensuring
-correct allocation across AST2400, AST2500, AST2600, AST1030 and AST2700.
+Introduced "trace_aspeed_hace_addr", "trace_aspeed_hace_sg",
+"trace_aspeed_hace_read", and "trace_aspeed_hace_write" trace events.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- include/hw/misc/aspeed_hace.h | 1 +
- hw/misc/aspeed_hace.c         | 8 +++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ hw/misc/aspeed_hace.c | 8 ++++++++
+ hw/misc/trace-events  | 6 ++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/include/hw/misc/aspeed_hace.h b/include/hw/misc/aspeed_hace.h
-index 58fb66009a..db95f2fd4b 100644
---- a/include/hw/misc/aspeed_hace.h
-+++ b/include/hw/misc/aspeed_hace.h
-@@ -53,6 +53,7 @@ struct AspeedHACEClass {
-     uint32_t dest_hi_mask;
-     uint32_t key_hi_mask;
-     bool has_dma64;
-+    uint64_t mem_size;
- };
- 
- #endif /* ASPEED_HACE_H */
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index d4f653670e..53b3b390e3 100644
+index 53b3b390e3..b8e473ee3f 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -463,11 +463,12 @@ static void aspeed_hace_realize(DeviceState *dev, Error **errp)
- {
-     AspeedHACEState *s = ASPEED_HACE(dev);
-     SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+    AspeedHACEClass *ahc = ASPEED_HACE_GET_CLASS(s);
+@@ -18,6 +18,7 @@
+ #include "crypto/hash.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/irq.h"
++#include "trace.h"
  
-     sysbus_init_irq(sbd, &s->irq);
+ #define R_CRYPT_CMD     (0x10 / 4)
  
-     memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_hace_ops, s,
--            TYPE_ASPEED_HACE, 0x1000);
-+            TYPE_ASPEED_HACE, ahc->mem_size);
+@@ -186,6 +187,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+             if (ahc->has_dma64) {
+                 src = deposit64(src, 32, 32, s->regs[R_HASH_SRC_HI]);
+             }
++            trace_aspeed_hace_addr("src", src);
+             src += i * SG_LIST_ENTRY_SIZE;
  
-     if (!s->dram_mr) {
-         error_setg(errp, TYPE_ASPEED_HACE ": 'dram' link not set");
-@@ -521,6 +522,7 @@ static void aspeed_ast2400_hace_class_init(ObjectClass *klass, void *data)
+             len = address_space_ldl_le(&s->dram_as, src,
+@@ -194,6 +196,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+             sg_addr = address_space_ldl_le(&s->dram_as, src + SG_LIST_LEN_SIZE,
+                                            MEMTXATTRS_UNSPECIFIED, NULL);
+             sg_addr &= SG_LIST_ADDR_MASK;
++            trace_aspeed_hace_sg(i, sg_addr, len);
+             /*
+              * Ideally, sg_addr should be 64-bit for the AST2700, using the
+              * following program to obtain the 64-bit sg_addr and convert it
+@@ -237,6 +240,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+     } else {
+         plen = s->regs[R_HASH_SRC_LEN];
+         src = deposit64(src, 0, 32, s->regs[R_HASH_SRC]);
++        trace_aspeed_hace_addr("src", src);
+         if (ahc->has_dma64) {
+             src = deposit64(src, 32, 32, s->regs[R_HASH_SRC_HI]);
+         }
+@@ -299,6 +303,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+     if (ahc->has_dma64) {
+         digest_addr = deposit64(digest_addr, 32, 32, s->regs[R_HASH_DEST_HI]);
+     }
++    trace_aspeed_hace_addr("digest", digest_addr);
+     if (address_space_write(&s->dram_as, digest_addr,
+                             MEMTXATTRS_UNSPECIFIED,
+                             digest_buf, digest_len)) {
+@@ -326,6 +331,7 @@ static uint64_t aspeed_hace_read(void *opaque, hwaddr addr, unsigned int size)
+         return 0;
+     }
  
-     dc->desc = "AST2400 Hash and Crypto Engine";
++    trace_aspeed_hace_read(addr << 2, s->regs[addr]);
+     return s->regs[addr];
+ }
  
-+    ahc->mem_size = 0x1000;
-     ahc->src_mask = 0x0FFFFFFF;
-     ahc->dest_mask = 0x0FFFFFF8;
-     ahc->key_mask = 0x0FFFFFC0;
-@@ -540,6 +542,7 @@ static void aspeed_ast2500_hace_class_init(ObjectClass *klass, void *data)
+@@ -344,6 +350,8 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
+         return;
+     }
  
-     dc->desc = "AST2500 Hash and Crypto Engine";
++    trace_aspeed_hace_write(addr << 2, data);
++
+     switch (addr) {
+     case R_STATUS:
+         if (data & HASH_IRQ) {
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index 4383808d7a..cf96e68cfa 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -302,6 +302,12 @@ aspeed_peci_read(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%"
+ aspeed_peci_write(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%" PRIx64
+ aspeed_peci_raise_interrupt(uint32_t ctrl, uint32_t status) "ctrl 0x%" PRIx32 " status 0x%" PRIx32
  
-+    ahc->mem_size = 0x1000;
-     ahc->src_mask = 0x3fffffff;
-     ahc->dest_mask = 0x3ffffff8;
-     ahc->key_mask = 0x3FFFFFC0;
-@@ -559,6 +562,7 @@ static void aspeed_ast2600_hace_class_init(ObjectClass *klass, void *data)
++# aspeed_hace.c
++aspeed_hace_read(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%" PRIx64
++aspeed_hace_write(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%" PRIx64
++aspeed_hace_sg(int index, uint64_t addr, uint32_t len) "%d: addr 0x%" PRIx64 " len 0x%" PRIx32
++aspeed_hace_addr(const char *s, uint64_t addr) "%s: 0x%" PRIx64
++
+ # bcm2835_property.c
+ bcm2835_mbox_property(uint32_t tag, uint32_t bufsize, size_t resplen) "mbox property tag:0x%08x in_sz:%u out_sz:%zu"
  
-     dc->desc = "AST2600 Hash and Crypto Engine";
- 
-+    ahc->mem_size = 0x10000;
-     ahc->src_mask = 0x7FFFFFFF;
-     ahc->dest_mask = 0x7FFFFFF8;
-     ahc->key_mask = 0x7FFFFFF8;
-@@ -578,6 +582,7 @@ static void aspeed_ast1030_hace_class_init(ObjectClass *klass, void *data)
- 
-     dc->desc = "AST1030 Hash and Crypto Engine";
- 
-+    ahc->mem_size = 0x10000;
-     ahc->src_mask = 0x7FFFFFFF;
-     ahc->dest_mask = 0x7FFFFFF8;
-     ahc->key_mask = 0x7FFFFFF8;
-@@ -597,6 +602,7 @@ static void aspeed_ast2700_hace_class_init(ObjectClass *klass, void *data)
- 
-     dc->desc = "AST2700 Hash and Crypto Engine";
- 
-+    ahc->mem_size = 0x100;
-     ahc->src_mask = 0x7FFFFFFF;
-     ahc->dest_mask = 0x7FFFFFF8;
-     ahc->key_mask = 0x7FFFFFF8;
 -- 
 2.43.0
 
