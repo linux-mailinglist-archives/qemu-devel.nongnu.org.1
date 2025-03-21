@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5AD6A6C207
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:03:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C7AA6C208
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:03:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvghp-0008Fl-NK; Fri, 21 Mar 2025 14:02:54 -0400
+	id 1tvghq-0008GQ-Kg; Fri, 21 Mar 2025 14:02:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tvgh7-00087c-3c; Fri, 21 Mar 2025 14:02:09 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1tvgh2-00034G-Oe; Fri, 21 Mar 2025 14:02:06 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BFE21105AC0;
- Fri, 21 Mar 2025 21:00:54 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id CB0A01D2207;
- Fri, 21 Mar 2025 21:01:57 +0300 (MSK)
-Message-ID: <b47fd8e8-f0dd-448f-ac9f-f6e23aead1bb@tls.msk.ru>
-Date: Fri, 21 Mar 2025 21:01:57 +0300
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tvghL-0008Cq-9X
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:02:27 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tvghJ-00035m-2N
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:02:22 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2240b4de12bso15870365ad.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:02:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1742580139; x=1743184939; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=A9wfgTNVwbh5MviuCEEjiqNP7cX1EHVYoRPAjNSeYzY=;
+ b=OE1i3tqwP+0cOF9rQOlPLmS2yR3ixtigPNPtqc1y3bOafyfdVNyjY/a26GJtG72L/H
+ WOoGq9urMR6hpWVGE55xZtlXB5vtt7zpfOoIUpY5c11d9KKerfcbUHMmVj/1LtAA72ZN
+ iWLRdEDzDQr3dZDpcT2f2GJjcMxzH5lzA2ny9EurUtiyACLOqsq4Lqv5sNEDJEdP/ylx
+ EuZhCYE7mJKS807rTXkB6JIfGyjsiTrVbAm+Wkm+ePMP8Xq4NCqYhJr1bzp8aMJGjbEC
+ YQqZgQDdtiDSEpcxO/sNXqJ74ikZ6XinwX9NZW4PLgjXpJpdYnTh9WcufhpZMzwYZ1R3
+ z10Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742580139; x=1743184939;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=A9wfgTNVwbh5MviuCEEjiqNP7cX1EHVYoRPAjNSeYzY=;
+ b=IDRNWJjHpIjRH+TRsEnXgKS6GRiDXPslpV7mmXKXlT2NV32y3+6pJ7ar43AYhrvQf8
+ 7HfA5o49PCuCfrXwWdj9XzbIUoYuTPn4u6LmNUnBB0xypiUmtX4BN7KI7d2+HaRxhGTw
+ XFOqMvXWdenBZq9sPciy0b+hgOvoHML3uMvJMfm16L5+rd2hvMzfOjFS57ERCy5ZnBny
+ GZQhufH+V02g1b635j+RcAC6lz7W1ntTTaHHKbPcDEqvhaWmM46TADotRKYC5Fvf6PAd
+ 5hQ9kxQOocq8GP6dFeyplIW9bq/ZQvayJNE5ab0RQprJBOdulepq7uHNsYlAOscnQNhe
+ PFRQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV+07ZEci9dWny1VJP6aN0HtAu9Ypp9B1VvsR/YAspTpAfpZ57idSVOw2630O2bPECofLyShEdgR9JH@nongnu.org
+X-Gm-Message-State: AOJu0YxInCC9v+VIvbN+PHBzqZIicUUE0mBhFZ9jIJDWS3aWLgMmN722
+ ZkL5hRIhSEqxB+QS/YzhF1GMXk9+1Q6NPSWQaMi5k2RlqgR1vONmKEvfFjGVsEU=
+X-Gm-Gg: ASbGnctEaOuipyGBnpZap0fdu7I+axjIsyDTM/VX5XWNUdXHJZGjoA/8jM9PNytS9No
+ TAcTY5mznKzJnm3FixAlndRPtfFTTPi+3WqT3I2NNAz8VcrtY+7d20yZnoPMnj1LQ9qskO4j/XV
+ tIGJa5i0r2AfhPCBpePwPYVVHBTMy0kGrHdqNDwXYUQyk89LRI4+6PyE0A4BrxibpgPqQ9P74/b
+ c5Bu5rfh2Ls0Me0IItB75kHI+PtauRJJsprsMM4M4XaP+mE4oGyAiQ756f6jvJUOVizO0gDNS9Z
+ K5//gjeiudrYAQdwcfEBhn7TZ3SH/3wRQgcbdXUDGKl+IbRfnkSHUrBmPy3wCYeoHG+S78c/Xyt
+ dwhHRjKQN
+X-Google-Smtp-Source: AGHT+IHbW47WrFwn8bPtk5JBZarkAnDdE580JK1jViCoJJP9Ixi4V6AItwt378nhBF0j1KTuI5MAIw==
+X-Received: by 2002:a05:6a21:e545:b0:1fa:9819:b064 with SMTP id
+ adf61e73a8af0-1fe42f2cd03mr7722012637.18.1742580139449; 
+ Fri, 21 Mar 2025 11:02:19 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-af8a292b1ffsm2070387a12.61.2025.03.21.11.02.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Mar 2025 11:02:19 -0700 (PDT)
+Message-ID: <a5104aeb-6b4e-4634-9d46-9dab4e09595f@linaro.org>
+Date: Fri, 21 Mar 2025 11:02:17 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] target/riscv: fix access permission checks for
- CSR_SSP
-To: Deepak Gupta <debug@rivosinc.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bmeng.cn@gmail.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, Adam Zabrocki <azabrocki@nvidia.com>
-References: <20250306064636.452396-1-debug@rivosinc.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20250306064636.452396-1-debug@rivosinc.com>
+Subject: Re: [PATCH v2 13/30] accel/tcg: fix missing includes for
+ TARGET_HAS_PRECISE_SMC
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250320223002.2915728-1-pierrick.bouvier@linaro.org>
+ <20250320223002.2915728-14-pierrick.bouvier@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250320223002.2915728-14-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,20 +106,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06.03.2025 09:46, Deepak Gupta wrote:
-> Commit:8205bc1 ("target/riscv: introduce ssp and enabling controls for
-> zicfiss") introduced CSR_SSP but it mis-interpreted the spec on access
-> to CSR_SSP in M-mode. Gated to CSR_SSP is not gated via `xSSE`. But
-> rather rules clearly specified in section "22.2.1. Shadow Stack Pointer
-> (ssp) CSR access contr" in the priv spec.
+On 3/20/25 15:29, Pierrick Bouvier wrote:
+> We prepare to remove cpu.h from cpu-all.h, which will transitively
+> remove it from accel/tcg/tb-internal.h, and thus from most of tcg
+> compilation units.
 > 
-> Fixes: 8205bc127a83 ("target/riscv: introduce ssp and enabling controls
-> for zicfiss". Thanks to Adam Zabrocki for bringing this to attention.
+> Note: this was caught by a test regression for s390x-softmmu.
+> 
+> Signed-off-by: Pierrick Bouvier<pierrick.bouvier@linaro.org>
+> ---
+>   include/exec/poison.h | 1 +
+>   accel/tcg/tb-maint.c  | 1 +
+>   accel/tcg/user-exec.c | 1 +
+>   3 files changed, 3 insertions(+)
 
-Is this patchset (including "[2/2] target/riscv: fixes a bug against
-`ssamoswap` behavior in M-mode") applicable for stable qemu series?
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Thanks,
-
-/mjt
+r~
 
