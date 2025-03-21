@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D666A6B46D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83011A6B470
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:30:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvVrN-0003II-Ii; Fri, 21 Mar 2025 02:28:01 -0400
+	id 1tvVq2-0001HR-K9; Fri, 21 Mar 2025 02:26:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tvVoU-0008D5-Ui; Fri, 21 Mar 2025 02:25:06 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1tvVoY-0008Dr-Ha; Fri, 21 Mar 2025 02:25:11 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tvVoN-000325-OE; Fri, 21 Mar 2025 02:24:57 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-224100e9a5cso30596635ad.2; 
- Thu, 20 Mar 2025 23:24:53 -0700 (PDT)
+ id 1tvVoS-00032e-Pn; Fri, 21 Mar 2025 02:25:05 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2240b4de12bso43014725ad.2; 
+ Thu, 20 Mar 2025 23:24:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742538292; x=1743143092; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742538295; x=1743143095; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tEL/F7R455u00adVFhFI6UsyhKk0acwI0gMRQ2k9pMY=;
- b=KTiNX0xVbRU7YxzOjb+UP5C4Q4g+c2F/QFzW9sUmIlmO5f7R3BHlbjIBX1ywLOKkk/
- bHhuqNbc9WbqKFzFFFrv41gvVpL94eeKX7glJhc/wdEyOoPIm1r5RFR00yKmcJNlXlnQ
- J1Bv5W36xm/48SVspjDfly03hwWoaLZ6iNbchyyrGq1X8duCAWQ6D6GX7Qt3GeoYVDFk
- 2USai7ls4/XfMyqHORcneSHOkS6v/HdKqpM6fmGjnzVcGdqsf3i2CWXwt/QQaHSoEKUV
- K2WApeh/lPj4fyimLj1Msk7UTWgqhcl1VpY8g4uGIsTqX3sU8vpsUCJ5ZKp3IrFRbv89
- peXg==
+ bh=UI94a7Hw91whhjlIDY7N1S0ogpBosIVfhZhQbQGDvvE=;
+ b=fQs0qkF0grf9EMVDffYpEU4cDMaie6lue/15Tqh8TugLVTI+gkB3e+4uIe7Zslf4L3
+ OkpNQgJYnZCM8fLLfc3u2x6AyvLO3YMqAKcC6vN4mR4XN152dw2keRGIeqCtz1bYofwr
+ EUUMrJ5+tnbPBt6h1qd3sv9VB1tG7gknaPF4JbvjzNhETmVtKcUTwKRTHlqpT+KI1l9q
+ Yxs540FZF6bYRsQC/MWNyJR6T5CUvL2oX10LfmQW8FgmOannjirW9DvHME+UUHTG81R4
+ 1dBmGF35kZGRN+c0OD58U5Pxc7OCrvWHKS+lz9j/hAkb4TFu0ERRPiODCMvF5O6t9eXG
+ SC0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742538292; x=1743143092;
+ d=1e100.net; s=20230601; t=1742538295; x=1743143095;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tEL/F7R455u00adVFhFI6UsyhKk0acwI0gMRQ2k9pMY=;
- b=d+rgI2qBtNwMbwSekGPDcw7V+7FFJA7wiQcG7eDse1zfRqSzKFUvj3v1RMxJcJvxRm
- enyEjo7XkvAMnQPEyLbA9oNZb9MYkC546+abCYHpT7B9H/V0QEYi4HCG24d4MrVvlxzd
- xH8aJcCRcW72RCam0nfWfnajhEtqhmXOdf+OHPjVZApmCgWlMPHLPfL5DKE0hyCu40PC
- YLDuUQUiL4yTXhLz76v6gi97KhamKzOYhrYIF2uLej8b7SlzSIgQ1qqmwylRwTLt94ef
- rXAM7cFwxA2esC1qntA1MwHOKLaBUs5QADWX8tBrZsxyJYqDta9NIBidDNAcRYVzd3Xl
- YmLw==
+ bh=UI94a7Hw91whhjlIDY7N1S0ogpBosIVfhZhQbQGDvvE=;
+ b=SpOzqVjtyOPFm/IFDkhn7PVQfLk8bD9NsUkOMlZQHXAyF5O+lDIpOghidMCL0EbJG0
+ WBY9w9Xj0hxjXosRYHZ0aFt6fkpyZfv4KNAKE49yNVSw6OdMRLhNgZHfPwmvdwGN11aS
+ llUCqj/SCA8WvuVB0Gk6xnREJQTLrl3gdvFXDmiKmM64scgQW0WOYAigM3+AJ3ZmMhFt
+ ZH/coo4JEZX9WRnMoMVw5q37nsX3IOL4IciZxT5B5lrpWR/GpO1b5pLgA+cvXvrMiAOD
+ p/coa78OGXGAd7/RQdHQv1Eh72pDd6ln/3KQg7qlj/wtAKjfCMmAKYxTPhUrmsMfi3lw
+ jJzw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVhXUDDEJLCtxwUM83VZcwFmVOAAx0Z2NxpNVjiIhSpCY7um7pVNKzB7RSO3Uv1ALnbdKcO1APdlw==@nongnu.org
-X-Gm-Message-State: AOJu0YwmBJrmTvPodkMB3WHVpYes9LTo3h8xvgbLHt1xkFKGr4FfsEl5
- 0V06I7Unofk/O77MMWIm82a6KlLxWl3cHOoITWh/BOJ1H27KrAVqikIHpw==
-X-Gm-Gg: ASbGnctaBPxOZxEzX8A/P3JzRR66TjdwWUMi6BjF5UJjzfDUFQiPFvfE6Z7WFsRR8+N
- 3a1YUVud02mHjPgYnhvSyznLMB+6uJ6pKMceD93cjXXX4hMaZe25lylEoAwZsZ2HCDknbj20uwh
- T2McOY7mzi7/jcGqkDuLReTi/bGlb6CpZRHQeFi5TJbGYoIg15pL9w5HyzCO+ojSyfAq6Z4CKbK
- stIHRNp6rMyGlppSUBThaWQccrIgBcT9d6OfsRvWnPY8/zNtGkoPCDftas+q5EWhCmXzrFsgDAc
- zS3ji4zKKvCGqX/WMJ/Itm5evKGe4I0DU0rbMN+ecxb+i08K/g==
-X-Google-Smtp-Source: AGHT+IHHS5uWJZUEiUIitUEsV9d7FN+nW+c8WQ9i0lPXIKIA1w77HQqHU30Qw209Y0xUCZtwKVL/rQ==
-X-Received: by 2002:a05:6a20:431c:b0:1f5:81bc:c72e with SMTP id
- adf61e73a8af0-1fe4300ff4fmr3546559637.33.1742538291680; 
- Thu, 20 Mar 2025 23:24:51 -0700 (PDT)
+ AJvYcCX/SCC7zvGoTlqPnCOz2n6dtNW3FvtZmC7C/Nk5+wTjeujtECfuZu6RCqS9VBPUMJeY5E/Ttq9F+w==@nongnu.org
+X-Gm-Message-State: AOJu0Yw20Oa37b/N47YoBAQKHjeAY7zSb/dXGe9im3w+8QTONytQ/ZuL
+ w3sVOeJ1s4Kduk7M56NKPmnAJPmXpHaUHpeZ9Sw/UWjEQjFgI3LCuFC1zQ==
+X-Gm-Gg: ASbGncshaeG+6hjRpxifNi0I24sCrXeopwPtWGldxKTdnuUmrhTU2P2p9RBDJMv/w92
+ Za2nxPQKtHEUnm0SakBaxl3eOQLlALytCaJzo3SYZyZLLiMJ6yxnCkaX50j4nacKUL9dN68BNAb
+ O+E5f3k1vXhEo3vg2EFOALDoXAknVyfSt8RqDxV8jFDLwvH+0r2IoSPsw3RrUXI+jJp6DvdJoJg
+ gsoABjx3/V1LBAD45C7mp9HXiCAULjQ687rfEqKspOkkxCe3cac3H7ynOGx4BUcIn4RIALUhUE5
+ 0T+DDzi5i/D72BVb4vSAJfr7XSlizr962F3C4InxG5aXZOE0hw==
+X-Google-Smtp-Source: AGHT+IHchM7hVeW3NoHawa4F8N20+QV0J2N/cppA+T+l0672m/ck1m4M4Y8Yfta1LyitDdJBF1PNaQ==
+X-Received: by 2002:a05:6a00:240a:b0:735:d89c:4b8e with SMTP id
+ d2e1a72fcca58-7390593b951mr3120789b3a.5.1742538295049; 
+ Thu, 20 Mar 2025 23:24:55 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.135.36])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af8a2a4761fsm941381a12.65.2025.03.20.23.24.49
+ 41be03b00d2f7-af8a2a4761fsm941381a12.65.2025.03.20.23.24.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Mar 2025 23:24:51 -0700 (PDT)
+ Thu, 20 Mar 2025 23:24:54 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 08/12] ppc/amigaone: Check blk_pwrite return value
-Date: Fri, 21 Mar 2025 16:24:12 +1000
-Message-ID: <20250321062421.116129-9-npiggin@gmail.com>
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 09/12] ppc/amigaone: Constify default_env
+Date: Fri, 21 Mar 2025 16:24:13 +1000
+Message-ID: <20250321062421.116129-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250321062421.116129-1-npiggin@gmail.com>
 References: <20250321062421.116129-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,56 +101,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Coverity reported that return value of blk_pwrite() maybe should not
-be ignored. We can't do much if this happens other than report an
-error but let's do that to silence this report.
+The variable holding default env is not supposed to be written.
 
-Resolves: Coverity CID 1593725
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20250314200140.2DBE74E6069@zero.eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250314200145.08E0F4E6067@zero.eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/amigaone.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ hw/ppc/amigaone.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
-index 483512125f..5d787c3059 100644
+index 5d787c3059..e9407a51b5 100644
 --- a/hw/ppc/amigaone.c
 +++ b/hw/ppc/amigaone.c
-@@ -108,8 +108,8 @@ static void nvram_write(void *opaque, hwaddr addr, uint64_t val,
-     uint8_t *p = memory_region_get_ram_ptr(&s->mr);
+@@ -63,7 +63,7 @@ static const char dummy_fw[] = {
+ #define NVRAM_ADDR 0xfd0e0000
+ #define NVRAM_SIZE (4 * KiB)
  
-     p[addr] = val;
--    if (s->blk) {
--        blk_pwrite(s->blk, addr, 1, &val, 0);
-+    if (s->blk && blk_pwrite(s->blk, addr, 1, &val, 0) < 0) {
-+        error_report("%s: could not write %s", __func__, blk_name(s->blk));
-     }
- }
- 
-@@ -151,15 +151,17 @@ static void nvram_realize(DeviceState *dev, Error **errp)
-         *c = cpu_to_be32(CRC32_DEFAULT_ENV);
-         /* Also copies terminating \0 as env is terminated by \0\0 */
-         memcpy(p + 4, default_env, sizeof(default_env));
--        if (s->blk) {
--            blk_pwrite(s->blk, 0, sizeof(crc) + sizeof(default_env), p, 0);
-+        if (s->blk &&
-+            blk_pwrite(s->blk, 0, sizeof(crc) + sizeof(default_env), p, 0) < 0
-+           ) {
-+            error_report("%s: could not write %s", __func__, blk_name(s->blk));
-         }
-         return;
-     }
-     if (*c == 0) {
-         *c = cpu_to_be32(crc32(0, p + 4, NVRAM_SIZE - 4));
--        if (s->blk) {
--            blk_pwrite(s->blk, 0, 4, p, 0);
-+        if (s->blk && blk_pwrite(s->blk, 0, 4, p, 0) < 0) {
-+            error_report("%s: could not write %s", __func__, blk_name(s->blk));
-         }
-     }
-     if (be32_to_cpu(*c) != crc) {
+-static char default_env[] =
++static const char default_env[] =
+     "baudrate=115200\0"
+     "stdout=vga\0"
+     "stdin=ps2kbd\0"
 -- 
 2.47.1
 
