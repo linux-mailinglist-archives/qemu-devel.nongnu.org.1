@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 222A7A6C286
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:36:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6522A6C2A2
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:40:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvhEU-0002P8-Eb; Fri, 21 Mar 2025 14:36:38 -0400
+	id 1tvhEW-0002fJ-UM; Fri, 21 Mar 2025 14:36:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tvhEL-0002CQ-FI
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tvhEN-0002Nl-Bs
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tvhEJ-00072q-Fn
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:29 -0400
+ id 1tvhEL-000732-6u
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:36:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742582186;
+ s=mimecast20190719; t=1742582188;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dFRuN/PFPVxX94u+Hzbmt9NAGJi6Ilk0kcnMUquL6Qs=;
- b=aWWW0wVDPhDBJ1h+Am220U4r2yHUPXImS6bG9g2zihYV1jENWfO/gNV1Dd3E/iyBWnuVoK
- l2XyPpQiLQ1DZbCTTh6LcPXqpjBqarPXax6laqyllQUDqqvBX7wFmn0R6ZWKgRQ4w1sBb3
- W31KMICGM8KZSJBKA8XefQTFoi7Uuh8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ARwQvT1yfemKSMVduMIcuJwWl7QM1d9mutRu5Jpdvbc=;
+ b=ha3Acsru2kMEegsAo7IhiRlA4KsrkNdfjbQg2tscmW8LBsaIIeP+OeSRkZBgtJTOGm9h8R
+ i9KuE0vuptrVYqJgXeAKtD+oDP0BykM+yAMSwsk4GxfeXlBjrus8mZj6q3lYdPnHAy/aC2
+ anbRiwSasqtcJGiLVagQ/bCdEdtNmGc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-ouCX0_8ZNcGbvSaagCP_HQ-1; Fri, 21 Mar 2025 14:36:25 -0400
-X-MC-Unique: ouCX0_8ZNcGbvSaagCP_HQ-1
-X-Mimecast-MFC-AGG-ID: ouCX0_8ZNcGbvSaagCP_HQ_1742582184
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ac3db5469fbso177395066b.0
- for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:36:24 -0700 (PDT)
+ us-mta-120-agGpQ4-mOYa3yLLE6PuHtA-1; Fri, 21 Mar 2025 14:36:26 -0400
+X-MC-Unique: agGpQ4-mOYa3yLLE6PuHtA-1
+X-Mimecast-MFC-AGG-ID: agGpQ4-mOYa3yLLE6PuHtA_1742582185
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43cf172ffe1so16791975e9.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:36:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742582183; x=1743186983;
+ d=1e100.net; s=20230601; t=1742582184; x=1743186984;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dFRuN/PFPVxX94u+Hzbmt9NAGJi6Ilk0kcnMUquL6Qs=;
- b=I+FCEPYNYuHLpdTBi2ENaE4BXeGkABATkG+TvZu/sM50p9xLjGBf7KfcYxSRP7VNg0
- RYria92gbQOoS/cs8AyciIu1SnPyRZ4pEsPb9hj8o66ehOd6jfdcHDDoZyAEXyfS9NoW
- OBLWZhiUcDU2W5vLZdmz1uOMQldQarG6wM0WpMqNrBZ0l+AdcpayNsB3YDOfaNpayOhw
- EoDdun8gXPsZenVpnV7buastOuaY/OnpyMNIDWpsjjmoKRh5rl5V0RtekoZBjgRoMWwo
- o4mopd9WhsjOnzs/ZNZ9vqJNpn6VneDZd1b9EkY2GnTlOK939lhb4RVY3b84FNL146J3
- K1mQ==
-X-Gm-Message-State: AOJu0Yzo0fM7zTRnycoXPPb36WA+EaYc5j/HLW0sCzg/gv3J5jkeAtM9
- E07B3VcQAdnQjZeDLypkROiFULibtH11y6XpZlA4pu/lN00sx83uFsgQOj97zoLQBfRoLJCZMrw
- 7NfZt/o3MiIhZ3zPBswwTfWcIWMr4fjvJOhwZHglY0mtSplImJ0weptHdbUxCP95YchyRsQJQjW
- FXPZ4ZkGuVk0yVzzPGVNRX9wRd1BjUKdrsPA+6
-X-Gm-Gg: ASbGnct0gL6vYGy83ilAF207txHmoLChNhXRuAMaYuwArcsv/WQhWriKtVULIbPiqER
- LLDQ1SU2QLSOsEguZZQ2GzC8IqUij/TmAS/6BqsNjpNFuUI1kjMxnk/8jyTX4jUzCEF51atRCdD
- 6cn5Ke4yNVi97OLULa8IVvf1GZldsM8RGJmyw3kPyMmAuk3wXpMT3elQIOMKrUxpaoYd54IW5zN
- UhiICN6Qot4yp7z3AwBr7jAH6CbTgSCf1ydy5YYhROQzlmHZCFxqOGATeTztuLr8Gl4KtW7czCh
- VeL6UV7c2PWbKfwSXfaw
-X-Received: by 2002:a17:907:1b2a:b0:ac3:c2eb:bd66 with SMTP id
- a640c23a62f3a-ac3f2273481mr503210366b.23.1742582182954; 
- Fri, 21 Mar 2025 11:36:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGa9IgGJHQz9iQ+QdQGJLTsxMfUK5p/UA/0DHZpcL6IZcUW0E3j0mN830bCe1/30yEhzPwyeg==
-X-Received: by 2002:a17:907:1b2a:b0:ac3:c2eb:bd66 with SMTP id
- a640c23a62f3a-ac3f2273481mr503205966b.23.1742582182430; 
- Fri, 21 Mar 2025 11:36:22 -0700 (PDT)
+ bh=ARwQvT1yfemKSMVduMIcuJwWl7QM1d9mutRu5Jpdvbc=;
+ b=gESUC63ObrCJF68W+plpmEqVYMLFYW+dVgZZ8xma7Ac14cQjKYLFM+mQ1Swp+4zxwX
+ NaCXLSPRW/l7ft3+uOYwuRgsdT/6Pj+QpU8INYmiLjLxijx35M8f8bfwmG8GsIxvyyue
+ d1pmz+HYmgmof/8Ml86SGY7d6Z5OJGnHp5AO8i0uTB3ONLxB79bqz95en8JcU99JGw65
+ BjOgUVp+fpsKgKilTtwchYeodwgExs6CYa0+aHykgqvztcSLRG3vCUf3GePdfSElvoHC
+ zE2DTb6PqmS1e7FN7SsatgtRdOCOHoRpzesPtD74/lq0snRy3QiXqYHAK9KRy5kERBuP
+ +7gA==
+X-Gm-Message-State: AOJu0YzjTRJCblAUfG6IvMyeZw/6a7XIGMmzZrdekiMiTqGnRJRD+ojJ
+ jtlG7GSP//ZjTZ3AwbmCWENTrU+qm5vmcl69NFb4ilPyMHtvseUOY1yNcMjHaTNyfB+/nHZN9iq
+ e6QPYolgEVeEDv6+gC+Sd3NnIZ8cq1rh5TOH6v+W0KGLQPY5Bg8fcFy+1rqvCBW7gNCIAm0KCpM
+ qtAnBbklJ+EUIWsZcIG1XDki/7W17BizMUr0do
+X-Gm-Gg: ASbGncsLf5Cl3clRE4LEzDSAEABP/gWfGMxNxIYatF3VZDBDmwYluNZoAMVjQ0NpK33
+ Q3AScxz68IBCjc5OJEaxy5EtDRM/wgIgKkxvMQqbCiRq43ko30eWyFq4d84o8tCheuH3DORm/NH
+ nx3ReWFhwraVJw7nccxVZ8ox+jNnztMPlDi6VevON2Duwrz0DsDbMvdJoRG25BmUvUoFXWGup2H
+ bbkide9/+RmReAhHM1Mw0y2vPhW/+N3EqAkzlZEf2dAD1vY45v4Fg2MXacJEhmKWGeCTtEbuerH
+ LLkCLNHNMG4RGGC7WoXs
+X-Received: by 2002:a05:600c:c07:b0:43d:45a:8fc1 with SMTP id
+ 5b1f17b1804b1-43d509e4640mr41408395e9.4.1742582184450; 
+ Fri, 21 Mar 2025 11:36:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExia5UvrQSVHPoBcIrkOomqSQ8Oaj7AVZIKYatjFo3b3QqoM9Cc7MiWAl7ZAuq8sRs+//gsA==
+X-Received: by 2002:a05:600c:c07:b0:43d:45a:8fc1 with SMTP id
+ 5b1f17b1804b1-43d509e4640mr41408115e9.4.1742582183861; 
+ Fri, 21 Mar 2025 11:36:23 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.194.153])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3ef8676c2sm193538566b.9.2025.03.21.11.36.17
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-3997f9a3a10sm3012109f8f.28.2025.03.21.11.36.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Mar 2025 11:36:17 -0700 (PDT)
+ Fri, 21 Mar 2025 11:36:23 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/24] load_aout: replace bswap_needed with big_endian
-Date: Fri, 21 Mar 2025 19:35:39 +0100
-Message-ID: <20250321183556.155097-8-pbonzini@redhat.com>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 08/24] exec/cpu-all: remove BSWAP_NEEDED
+Date: Fri, 21 Mar 2025 19:35:40 +0100
+Message-ID: <20250321183556.155097-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250321183556.155097-1-pbonzini@redhat.com>
 References: <20250321183556.155097-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,165 +106,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Targets know whether they are big-endian more than they know if
-the endianness is different from the host: the former is mostly
-a constant, at least in machine creation code, while the latter
-has to be computed with TARGET_BIG_ENDIAN != HOST_BIG_ENDIAN or
-something like that.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-load_aout, however, takes a "bswap_needed" argument.  Replace
-it with a "big_endian" argument; even though all users are
-big-endian, it is cheap enough to keep the optional swapping
-functionality even for little-endian boards.
+This identifier is poisoned, so it can't be used from common code
+anyway. We replace all occurrences with its definition directly.
 
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Link: https://lore.kernel.org/r/20250320223002.2915728-2-pierrick.bouvier@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/loader.h   | 2 +-
- hw/core/loader.c      | 4 ++--
- hw/ppc/mac_newworld.c | 7 +------
- hw/ppc/mac_oldworld.c | 7 +------
- hw/sparc/sun4m.c      | 9 +--------
- hw/sparc64/sun4u.c    | 9 +--------
- 6 files changed, 7 insertions(+), 31 deletions(-)
+ include/exec/cpu-all.h    | 12 ------------
+ include/exec/poison.h     |  1 -
+ linux-user/syscall_defs.h |  2 +-
+ bsd-user/elfload.c        |  6 +++---
+ linux-user/elfload.c      |  8 ++++----
+ 5 files changed, 8 insertions(+), 21 deletions(-)
 
-diff --git a/include/hw/loader.h b/include/hw/loader.h
-index 784a93d6c17..d280dc33e96 100644
---- a/include/hw/loader.h
-+++ b/include/hw/loader.h
-@@ -190,7 +190,7 @@ ssize_t load_elf(const char *filename,
- void load_elf_hdr(const char *filename, void *hdr, bool *is64, Error **errp);
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 8cd6c00cf89..47b14446b8f 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -26,18 +26,6 @@
+ #include "exec/tswap.h"
+ #include "hw/core/cpu.h"
  
- ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
--                  int bswap_needed, hwaddr target_page_size);
-+                  bool big_endian, hwaddr target_page_size);
+-/* some important defines:
+- *
+- * HOST_BIG_ENDIAN : whether the host cpu is big endian and
+- * otherwise little endian.
+- *
+- * TARGET_BIG_ENDIAN : same for the target cpu
+- */
+-
+-#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
+-#define BSWAP_NEEDED
+-#endif
+-
+ /* Target-endianness CPU memory access functions. These fit into the
+  * {ld,st}{type}{sign}{size}{endian}_p naming scheme described in bswap.h.
+  */
+diff --git a/include/exec/poison.h b/include/exec/poison.h
+index 8ed04b31083..2c151fd1e0c 100644
+--- a/include/exec/poison.h
++++ b/include/exec/poison.h
+@@ -37,7 +37,6 @@
+ #pragma GCC poison TARGET_NAME
+ #pragma GCC poison TARGET_SUPPORTS_MTTCG
+ #pragma GCC poison TARGET_BIG_ENDIAN
+-#pragma GCC poison BSWAP_NEEDED
  
- #define LOAD_UIMAGE_LOADADDR_INVALID (-1)
+ #pragma GCC poison TARGET_LONG_BITS
+ #pragma GCC poison TARGET_FMT_lx
+diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
+index 86d773add75..5d227599924 100644
+--- a/linux-user/syscall_defs.h
++++ b/linux-user/syscall_defs.h
+@@ -462,7 +462,7 @@ typedef struct {
+     abi_ulong sig[TARGET_NSIG_WORDS];
+ } target_sigset_t;
  
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index ce6ff1b52e3..2e35f0aa905 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -226,7 +226,7 @@ static void bswap_ahdr(struct exec *e)
- 
- 
- ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
--                  int bswap_needed, hwaddr target_page_size)
-+                  bool big_endian, hwaddr target_page_size)
+-#ifdef BSWAP_NEEDED
++#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
+ static inline void tswap_sigset(target_sigset_t *d, const target_sigset_t *s)
  {
-     int fd;
-     ssize_t size, ret;
-@@ -241,7 +241,7 @@ ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
-     if (size < 0)
-         goto fail;
+     int i;
+diff --git a/bsd-user/elfload.c b/bsd-user/elfload.c
+index 833fa3bd057..3bca0cc9ede 100644
+--- a/bsd-user/elfload.c
++++ b/bsd-user/elfload.c
+@@ -44,7 +44,7 @@ static inline void memcpy_fromfs(void *to, const void *from, unsigned long n)
+     memcpy(to, from, n);
+ }
  
--    if (bswap_needed) {
-+    if (big_endian != HOST_BIG_ENDIAN) {
-         bswap_ahdr(&e);
+-#ifdef BSWAP_NEEDED
++#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
+ static void bswap_ehdr(struct elfhdr *ehdr)
+ {
+     bswap16s(&ehdr->e_type);            /* Object file type */
+@@ -111,7 +111,7 @@ static void bswap_note(struct elf_note *en)
+     bswap32s(&en->n_type);
+ }
+ 
+-#else /* ! BSWAP_NEEDED */
++#else
+ 
+ static void bswap_ehdr(struct elfhdr *ehdr) { }
+ static void bswap_phdr(struct elf_phdr *phdr, int phnum) { }
+@@ -119,7 +119,7 @@ static void bswap_shdr(struct elf_shdr *shdr, int shnum) { }
+ static void bswap_sym(struct elf_sym *sym) { }
+ static void bswap_note(struct elf_note *en) { }
+ 
+-#endif /* ! BSWAP_NEEDED */
++#endif /* HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN */
+ 
+ #include "elfcore.c"
+ 
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 8799e4ea27d..fa83d78667c 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -2121,7 +2121,7 @@ static inline void memcpy_fromfs(void * to, const void * from, unsigned long n)
+     memcpy(to, from, n);
+ }
+ 
+-#ifdef BSWAP_NEEDED
++#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
+ static void bswap_ehdr(struct elfhdr *ehdr)
+ {
+     bswap16s(&ehdr->e_type);            /* Object file type */
+@@ -3143,7 +3143,7 @@ static bool parse_elf_properties(const ImageSource *src,
+      * The contents of a valid PT_GNU_PROPERTY is a sequence of uint32_t.
+      * Swap most of them now, beyond the header and namesz.
+      */
+-#ifdef BSWAP_NEEDED
++#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
+     for (int i = 4; i < n / 4; i++) {
+         bswap32s(note.data + i);
      }
+@@ -3999,7 +3999,7 @@ struct target_elf_prpsinfo {
+     char    pr_psargs[ELF_PRARGSZ]; /* initial part of arg list */
+ };
  
-diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
-index cb3dc3ab482..2d5309d6f55 100644
---- a/hw/ppc/mac_newworld.c
-+++ b/hw/ppc/mac_newworld.c
-@@ -197,11 +197,6 @@ static void ppc_core99_init(MachineState *machine)
-     }
- 
-     if (machine->kernel_filename) {
--        int bswap_needed = 0;
--
 -#ifdef BSWAP_NEEDED
--        bswap_needed = 1;
--#endif
-         kernel_base = KERNEL_LOAD_ADDR;
-         kernel_size = load_elf(machine->kernel_filename, NULL,
-                                translate_kernel_address, NULL, NULL, NULL,
-@@ -209,7 +204,7 @@ static void ppc_core99_init(MachineState *machine)
-         if (kernel_size < 0) {
-             kernel_size = load_aout(machine->kernel_filename, kernel_base,
-                                     machine->ram_size - kernel_base,
--                                    bswap_needed, TARGET_PAGE_SIZE);
-+                                    true, TARGET_PAGE_SIZE);
-         }
-         if (kernel_size < 0) {
-             kernel_size = load_image_targphys(machine->kernel_filename,
-diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
-index 0dbcea035c3..b5814690f5a 100644
---- a/hw/ppc/mac_oldworld.c
-+++ b/hw/ppc/mac_oldworld.c
-@@ -153,11 +153,6 @@ static void ppc_heathrow_init(MachineState *machine)
-     }
++#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
+ static void bswap_prstatus(struct target_elf_prstatus *prstatus)
+ {
+     prstatus->pr_info.si_signo = tswap32(prstatus->pr_info.si_signo);
+@@ -4038,7 +4038,7 @@ static void bswap_note(struct elf_note *en)
+ static inline void bswap_prstatus(struct target_elf_prstatus *p) { }
+ static inline void bswap_psinfo(struct target_elf_prpsinfo *p) {}
+ static inline void bswap_note(struct elf_note *en) { }
+-#endif /* BSWAP_NEEDED */
++#endif /* HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN */
  
-     if (machine->kernel_filename) {
--        int bswap_needed = 0;
--
--#ifdef BSWAP_NEEDED
--        bswap_needed = 1;
--#endif
-         kernel_base = KERNEL_LOAD_ADDR;
-         kernel_size = load_elf(machine->kernel_filename, NULL,
-                                translate_kernel_address, NULL, NULL, NULL,
-@@ -165,7 +160,7 @@ static void ppc_heathrow_init(MachineState *machine)
-         if (kernel_size < 0) {
-             kernel_size = load_aout(machine->kernel_filename, kernel_base,
-                                     machine->ram_size - kernel_base,
--                                    bswap_needed, TARGET_PAGE_SIZE);
-+                                    true, TARGET_PAGE_SIZE);
-         }
-         if (kernel_size < 0) {
-             kernel_size = load_image_targphys(machine->kernel_filename,
-diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
-index a48d3622c5a..5aaafb40dac 100644
---- a/hw/sparc/sun4m.c
-+++ b/hw/sparc/sun4m.c
-@@ -233,20 +233,13 @@ static unsigned long sun4m_load_kernel(const char *kernel_filename,
- 
-     kernel_size = 0;
-     if (linux_boot) {
--        int bswap_needed;
--
--#ifdef BSWAP_NEEDED
--        bswap_needed = 1;
--#else
--        bswap_needed = 0;
--#endif
-         kernel_size = load_elf(kernel_filename, NULL,
-                                translate_kernel_address, NULL,
-                                NULL, NULL, NULL, NULL,
-                                ELFDATA2MSB, EM_SPARC, 0, 0);
-         if (kernel_size < 0)
-             kernel_size = load_aout(kernel_filename, KERNEL_LOAD_ADDR,
--                                    RAM_size - KERNEL_LOAD_ADDR, bswap_needed,
-+                                    RAM_size - KERNEL_LOAD_ADDR, true,
-                                     TARGET_PAGE_SIZE);
-         if (kernel_size < 0)
-             kernel_size = load_image_targphys(kernel_filename,
-diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index 8ab5cf0461f..d3cb7270ff5 100644
---- a/hw/sparc64/sun4u.c
-+++ b/hw/sparc64/sun4u.c
-@@ -168,13 +168,6 @@ static uint64_t sun4u_load_kernel(const char *kernel_filename,
- 
-     kernel_size = 0;
-     if (linux_boot) {
--        int bswap_needed;
--
--#ifdef BSWAP_NEEDED
--        bswap_needed = 1;
--#else
--        bswap_needed = 0;
--#endif
-         kernel_size = load_elf(kernel_filename, NULL, NULL, NULL, kernel_entry,
-                                kernel_addr, &kernel_top, NULL,
-                                ELFDATA2MSB, EM_SPARCV9, 0, 0);
-@@ -182,7 +175,7 @@ static uint64_t sun4u_load_kernel(const char *kernel_filename,
-             *kernel_addr = KERNEL_LOAD_ADDR;
-             *kernel_entry = KERNEL_LOAD_ADDR;
-             kernel_size = load_aout(kernel_filename, KERNEL_LOAD_ADDR,
--                                    RAM_size - KERNEL_LOAD_ADDR, bswap_needed,
-+                                    RAM_size - KERNEL_LOAD_ADDR, true,
-                                     TARGET_PAGE_SIZE);
-         }
-         if (kernel_size < 0) {
+ /*
+  * Calculate file (dump) size of given memory region.
 -- 
 2.49.0
 
