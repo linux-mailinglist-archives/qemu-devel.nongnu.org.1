@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6547A6C5E4
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D81A6C5E3
 	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 23:25:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvkmZ-0002IH-Mo; Fri, 21 Mar 2025 18:24:03 -0400
+	id 1tvkmZ-0002IG-G6; Fri, 21 Mar 2025 18:24:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvkmX-0002Hw-UJ
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvkmX-0002Hx-VJ
  for qemu-devel@nongnu.org; Fri, 21 Mar 2025 18:24:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvkmW-0004Oo-7K
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvkmW-0004PG-JW
  for qemu-devel@nongnu.org; Fri, 21 Mar 2025 18:24:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742595837;
+ s=mimecast20190719; t=1742595839;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=AEEJQ1/cvS+mH5QMuVdRMmVTnKQdfzU4Jup29FDrXnc=;
- b=YFbhzXpaeXEXvIhqASOrEqLDxLzGPgYAxOi5zgdjGLsCC+sVnw4UaLTfTTl4Ud0ldYR12o
- /3Ya+Zg/fpVZbDjGs9yPWT3BoMjtiLakQfQd4oMmCe+5Nd6yCIXmnDmJ8ZB2Y+tsGP20qk
- 3uJ+VP+dTHANdwbT18VWR+VEqzRssRI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5PDfmKs2FRYilFGSf9BHWC+dQMg43pD84g/qhAfepq4=;
+ b=IXBqj3H1THplUQUyb3EnKAfJHDb1Qu3sNcxmYB4qoNLGPoiKI7YuYZHQFZAmWrn2+6hZKX
+ 8oD7kn6SOsMm9U5COI5kS9ycRNT6TXWVlR+hJUlRKQBWfxJuq9WAskAdtzYayjS7Ay5uos
+ 1pAjz8zc4jUiflCQZph4kQjm9aTG7nc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-258-7D4RMhdnMN-0Ge8VBzpp0g-1; Fri,
- 21 Mar 2025 18:23:53 -0400
-X-MC-Unique: 7D4RMhdnMN-0Ge8VBzpp0g-1
-X-Mimecast-MFC-AGG-ID: 7D4RMhdnMN-0Ge8VBzpp0g_1742595833
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-338-o-a_VPTgNFSttCBVvrLDtA-1; Fri,
+ 21 Mar 2025 18:23:55 -0400
+X-MC-Unique: o-a_VPTgNFSttCBVvrLDtA-1
+X-Mimecast-MFC-AGG-ID: o-a_VPTgNFSttCBVvrLDtA_1742595834
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E07B218EBE91; Fri, 21 Mar 2025 22:23:51 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6733219560B1; Fri, 21 Mar 2025 22:23:54 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.31])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E67D23001D16; Fri, 21 Mar 2025 22:23:49 +0000 (UTC)
+ id 387833001D23; Fri, 21 Mar 2025 22:23:52 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 0/5] python: add QAPI and qapidoc et al to python linter tests
-Date: Fri, 21 Mar 2025 18:23:42 -0400
-Message-ID: <20250321222347.299121-1-jsnow@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/5] qapi: Add some pylint ignores
+Date: Fri, 21 Mar 2025 18:23:43 -0400
+Message-ID: <20250321222347.299121-2-jsnow@redhat.com>
+In-Reply-To: <20250321222347.299121-1-jsnow@redhat.com>
+References: <20250321222347.299121-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -79,47 +81,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hiya, this series turns on automated linting for scripts/qapi,=0D
-docs/sphinx/qapidoc.py and docs/sphinx/qapi_domain.py.=0D
-=0D
-This includes flake8/isort/pylint/mypy for scripts/qapi, but omits mypy=0D
-from the Sphinx plugins owing to my inability to strictly type the=0D
-extensions given the wide versions of Sphinx we actually support.=0D
-=0D
-Though I have been using black in my own development, I have not yet=0D
-enabled it anywhere automatically. Maybe soon.=0D
-=0D
-John Snow (5):=0D
-  qapi: Add some pylint ignores=0D
-  docs/qapidoc: linting fixes=0D
-  python: update missing dependencies from minreqs=0D
-  python: add qapi static analysis tests=0D
-  qapi: delete un-needed python static analysis configs=0D
-=0D
- docs/sphinx/qapi_domain.py  | 25 ++++++++++++++-----------=0D
- docs/sphinx/qapidoc.py      |  5 +++--=0D
- python/setup.cfg            |  1 +=0D
- python/tests/minreqs.txt    | 25 +++++++++++++++++++++++++=0D
- python/tests/qapi-flake8.sh |  4 ++++=0D
- python/tests/qapi-isort.sh  |  6 ++++++=0D
- python/tests/qapi-mypy.sh   |  2 ++=0D
- python/tests/qapi-pylint.sh |  6 ++++++=0D
- scripts/qapi/.flake8        |  3 ---=0D
- scripts/qapi/.isort.cfg     |  7 -------=0D
- scripts/qapi/backend.py     |  2 ++=0D
- scripts/qapi/mypy.ini       |  4 ----=0D
- scripts/qapi/pylintrc       |  1 +=0D
- 13 files changed, 64 insertions(+), 27 deletions(-)=0D
- create mode 100755 python/tests/qapi-flake8.sh=0D
- create mode 100755 python/tests/qapi-isort.sh=0D
- create mode 100755 python/tests/qapi-mypy.sh=0D
- create mode 100755 python/tests/qapi-pylint.sh=0D
- delete mode 100644 scripts/qapi/.flake8=0D
- delete mode 100644 scripts/qapi/.isort.cfg=0D
- delete mode 100644 scripts/qapi/mypy.ini=0D
-=0D
--- =0D
-2.48.1=0D
-=0D
+This restores the linting baseline in QAPI.
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+---
+ scripts/qapi/backend.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/scripts/qapi/backend.py b/scripts/qapi/backend.py
+index 14e60aa67af..49ae6ecdd33 100644
+--- a/scripts/qapi/backend.py
++++ b/scripts/qapi/backend.py
+@@ -13,6 +13,7 @@
+ 
+ 
+ class QAPIBackend(ABC):
++    # pylint: disable=too-few-public-methods
+ 
+     @abstractmethod
+     def generate(self,
+@@ -36,6 +37,7 @@ def generate(self,
+ 
+ 
+ class QAPICBackend(QAPIBackend):
++    # pylint: disable=too-few-public-methods
+ 
+     def generate(self,
+                  schema: QAPISchema,
+-- 
+2.48.1
 
 
