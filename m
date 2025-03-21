@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64ADEA6B469
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:27:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD02EA6B468
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:27:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvVps-0000he-UN; Fri, 21 Mar 2025 02:26:29 -0400
+	id 1tvVpr-0000TR-F8; Fri, 21 Mar 2025 02:26:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tvVoG-000808-OI; Fri, 21 Mar 2025 02:24:48 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1tvVoH-00080k-1J; Fri, 21 Mar 2025 02:24:49 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tvVoE-000309-He; Fri, 21 Mar 2025 02:24:48 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-223fd89d036so30893035ad.1; 
- Thu, 20 Mar 2025 23:24:41 -0700 (PDT)
+ id 1tvVoE-00030N-IT; Fri, 21 Mar 2025 02:24:48 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-22438c356c8so30779395ad.1; 
+ Thu, 20 Mar 2025 23:24:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742538279; x=1743143079; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742538282; x=1743143082; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SqViPbJrwkFdFnQi1kgDINENtOBtFE3qJ3dGXQXwpNg=;
- b=X1yFSua1JjPqLE1uXq1Jl6WXqn2S/IqqYVfqb1KSdc+O44vt9DWNuLTX03hAVP7Maj
- 7w2ptpy9awpA4bdWD4GcaUqmHhT0Mia1i8vmJ8zdvvOv7Y2fd4KD4DcohIZ/3czMXn1U
- Myhe6Po4Mw8RwzsRESUDzApqxKNTHyq04+im6CD0k/q5A0F/Jdixr4kNSI39sXX76/2x
- BWprQuUeTqdm89IE0gm75WFIJrDqJHUKqmXMWu0TSv/L+8i6pz1TVoDpbBODwXBSn8sV
- CzwnQH0zY3nJ5B33B99hw9e59O8SmAq7cio1FpNzr2amcHLK6ewpSCdaAT/1FsXYqwoO
- ZrYg==
+ bh=fONuj6OGToGS6hsbceww1Dv4M/MhW6pQYlSp4fRXGvo=;
+ b=TORJMf7Bv6qtlY1eRQKfew5uPcZC0qJ+T6ZPEf+l0SjSBtq5XMVkc7ehSQnRGd4/lE
+ Yf4TchRBZAORiEnPTtVDgNLzIpU9HpGeSc/T5zlzwrc+L8jikMqCEqDmybFYaI/ZxLzG
+ JE+FK6Ig6SX3Y+iTXNLmhbpw6etXGXhn6c4YHcIneUOQD/2x3XnWWyg2AIS3eHLXJ8Q/
+ 7oJJQr5V3iN2I8TZ2MNijCAgdTxquwMfCuidOGj11Z6xTv1XrXvqDMUrMeTQJLzoJgTq
+ faCOrQa4jiuXxtO3nxQhBqVxxAAcvlaG8W6cuf8eS94elJNRR7E0YTw6A5wOVyTl4pSS
+ hWBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742538279; x=1743143079;
+ d=1e100.net; s=20230601; t=1742538282; x=1743143082;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SqViPbJrwkFdFnQi1kgDINENtOBtFE3qJ3dGXQXwpNg=;
- b=W8f8Jyqy/M0ZhqP5zehEmsS0c/2VkbV7/oGP3rzSh1AQrCcaRLJfAW7bcojxa4qXUH
- z8S+Xn8EYWqrj6XsjnoxnDMyG+0iBK4xFvdphVLYFp8GNZI5P5nH4ntTTqVuEegIqihl
- RMVvR3w5S6OuOTSx37gdeQyJkzcoaUV7Lr36vbb1PMh6eWJDlIW5YcEKpBG+7fyTaMTh
- CUdkdCLQ5yEOHp5eosAeIYzu7zlg1EYAz3JxAHbdXnDX7CylVhJWAfxF+q9IC34LdSZn
- VRbpzESWOM25Bx6HawZeuRHHEgWTxknEvJlomLmgphDHafgeE1UyOrjsSUflAonW0U1k
- ec3g==
+ bh=fONuj6OGToGS6hsbceww1Dv4M/MhW6pQYlSp4fRXGvo=;
+ b=XDCgWZMUL83w2EujY+CaSMv3wp65NyhGTz1WW1INVtlD2Rff7mw8eMRkwawWaknhNX
+ g0jULKt9gM4lOcDcdBNttAOk+LUXkDBgVn44pyMg4aKwNSPOz3pwh3E8noc6lB2uIsXu
+ 82mIJdgrJgoHZcuSmVR9gnYCqiDXdBxahyJ/bbFI8mRzWRubIsgfaF+WZqI+tbhTd8ZR
+ Y69iWR7eoDXyMW/N6MQDG7Gngj4R/vqsq1C7yFtxSbTDca7S0B/c5LeOkiiytSu9oauO
+ Q8xEBfGwO7PxxM3iYIBX+dJCMudkgf/H9rIkOvHPM8DI6hPExmB5WOqpWvZsa/d21HDY
+ xipw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW8CI2WRKCVGH55kzeht3i/Hu4dfYgMKTJDe/Z5DnYZ38q8SzdRXN0R3rFTWSeExm+cPIkJYYUGUg==@nongnu.org
-X-Gm-Message-State: AOJu0YxH7STPDtt2kdFFyJydTnK2bDZJt0gpD21lryaNK7+RRuPRk5Xo
- alXR8Wr3Sdo+Wzz589ycaR13+IK8NRtKIpwI6PIXHwyqiW975UzIu3pmew==
-X-Gm-Gg: ASbGncu2024o7iGj7i8GpjD/eZ8C/lAUsQgCywvZhOnni0XhDM1/30Rm7yIp8M18Xw/
- C+iFsh2H2L+3O2OA/EWI7dMOYjKGBcz27QvKtVchZnDQjY6bG2xhM+4Dkc3R5ksI3kN4Rv5VTP9
- RUmQQ8rvwWWWKPqouLVKVfNo+e1VdfT6imtEo9f/70K4pq//R2eAALIMP7WchPIUsJpqATBbCtW
- UvK6rteXuVspv9AHP11l9soV4UfxQmQqx8mnstJdxo934EzqJc+tddI/aH4mwRYHfVklgUKQa9O
- Xv0OcH9ODG7VMpRuFddXLTWBG66GAQAs5pvwnHfhfeJAGIV43g==
-X-Google-Smtp-Source: AGHT+IGhTE2seVPaGLaeE3sDq2xR7yTGaBdO/okZaNXp3hmqtCtqbwn9Hbd6fAfsIdSkkD/1Oxbznw==
-X-Received: by 2002:a05:6a00:3d0a:b0:736:4d05:2e2e with SMTP id
- d2e1a72fcca58-739059667damr4118480b3a.6.1742538279456; 
- Thu, 20 Mar 2025 23:24:39 -0700 (PDT)
+ AJvYcCUN1Vms6YXIUHL3m8uqDOph71kC1pI/UdO0frXbqIvtTTrF6/ALyVEjdGquWMs5B0alSQlpAHPj4Q==@nongnu.org
+X-Gm-Message-State: AOJu0Yxcv9BOUXYsyFkEEBmvT86+eJX6tvwzZp/gt35I8/jOZlFE7tsD
+ 0dF7LPVpL4/MPIU3VhHtIOyEiM8BDnAvRPMLr4sTlbMi0eF75ZTsO6ASMQ==
+X-Gm-Gg: ASbGnctW24tzsBxIDefK3KHAaBH2aQs4QJI7w7czFIb+EXLycta5ndxmiYSfwZzESDI
+ 8zFYrnTs9vgTzYq337T0iSTiHpMLRQH97VqMI7LxCN8T5KKx/r5Evwhtvr3w0KhKRtka0C1s2K9
+ bg5xZOeDXMfuYu86Z/LB/Ncqv0almKk1W2aV5zhFzwOEtLptba6KeaUCnZSZRrXHfCXEyyqPZ00
+ cDjidisQfCGa1gD4T/V+RQua9oCPl0U2tn+wc1r8HwSjV1Ciz91eKk64FAlaBIXk+ekKoCjkXl8
+ s/tiYmmX/sU9g2xbbmknZe6BXPMAxAYD1wgTCY75jtf3CXkIMA==
+X-Google-Smtp-Source: AGHT+IGJqmzLzF8cDK5wd50Kx26k9BjsuTZU+sQzltLa1wCV4wllfzX/N/bsclhojFd0kSyxLIm4RA==
+X-Received: by 2002:a05:6a21:4cc1:b0:1f5:6f61:a0ac with SMTP id
+ adf61e73a8af0-1fe42f2a01bmr3851582637.5.1742538282562; 
+ Thu, 20 Mar 2025 23:24:42 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.135.36])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af8a2a4761fsm941381a12.65.2025.03.20.23.24.37
+ 41be03b00d2f7-af8a2a4761fsm941381a12.65.2025.03.20.23.24.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Mar 2025 23:24:39 -0700 (PDT)
+ Thu, 20 Mar 2025 23:24:42 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 04/12] ppc/xive2: Fix logical / bitwise comparison typo
-Date: Fri, 21 Mar 2025 16:24:08 +1000
-Message-ID: <20250321062421.116129-5-npiggin@gmail.com>
+Subject: [PULL 05/12] ppc/spapr: Fix possible pa_features memory overflow
+Date: Fri, 21 Mar 2025 16:24:09 +1000
+Message-ID: <20250321062421.116129-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250321062421.116129-1-npiggin@gmail.com>
 References: <20250321062421.116129-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,30 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The comparison as written is always false (perhaps confusingly, because
-the functions/macros are not really booleans but return 0 or the tested
-bit value). Change to use logical-and.
+Coverity reports a possible memory overflow in spapr_dt_pa_features().
+This should not be a true bug since DAWR1 cap is only be true for
+CPU_POWERPC_LOGICAL_3_10. Add an assertion to ensure any bug there is
+caught.
 
-Resolves: Coverity CID 1593721
+Resolves: Coverity CID 1593722
+Fixes: 5f361ea187ba ("ppc: spapr: Enable 2nd DAWR on Power10 pSeries machine")
+Reviewed-By: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/xive2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/ppc/spapr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 311b42e15d..7d584dfafa 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -1344,7 +1344,7 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
-         return;
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index a415e51d07..9865d7147f 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -296,6 +296,7 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+         pa_features[40 + 2] &= ~0x80; /* Radix MMU */
+     }
+     if (spapr_get_cap(spapr, SPAPR_CAP_DAWR1)) {
++        g_assert(pa_size > 66);
+         pa_features[66] |= 0x80;
      }
  
--    if (xive2_end_is_crowd(&end) & !xive2_end_is_ignore(&end)) {
-+    if (xive2_end_is_crowd(&end) && !xive2_end_is_ignore(&end)) {
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "XIVE: invalid END, 'crowd' bit requires 'ignore' bit\n");
-         return;
 -- 
 2.47.1
 
