@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6832BA6BD9C
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 15:53:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F73CA6BD9E
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 15:53:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvdji-0001YC-QC; Fri, 21 Mar 2025 10:52:39 -0400
+	id 1tvdjm-0001iO-CH; Fri, 21 Mar 2025 10:52:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tvdjJ-0001S6-9U
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:52:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tvdjO-0001TC-Rd
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:52:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tvdjG-0006Xh-UZ
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:52:13 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tvdjL-0006wC-MT
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:52:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742568729;
+ s=mimecast20190719; t=1742568735;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tyMyK7a2El8TcQ9ST0fNlev4IaWn7sj6WWHBc8Hgy8U=;
- b=dVohCvg27qF8dRIrgbc+iIyEJ6RnDjJb41HW+xTM7M2jtzy3nxdeFQM5m3v+3NSavjPVHp
- e5yTzJY1CcnzK97kC3wsUxKU99t19DP6ablz8sO52PJB0IC/T47Xm4IkD0yhfQjUdavtFt
- 2AW/JnJOwKPHl3s5A9E3cQaDZUVYDWo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=3nHcO0iQBZg3xP5D9ExG0a55ZvDcfJdZXcEyDfrBdDg=;
+ b=ENVlwBNXwrm0r0UvxCmA+v5MAB2od+gRWPz1gDEEPn6t3ek9q+K5mhIVaTq0Tcv85wH2g/
+ 7Jvc/WNZm57df8oVySTRWz3lSciXkCkRPZhquNn46RX8OE7uXBymXUTHGFIR+DgsCyuQ+6
+ w1Egd2JOpKAle+n5vCD2rBLghIlqZ9Q=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-45-ys58c8lqOK27aXjuGQAa6g-1; Fri,
- 21 Mar 2025 10:52:04 -0400
-X-MC-Unique: ys58c8lqOK27aXjuGQAa6g-1
-X-Mimecast-MFC-AGG-ID: ys58c8lqOK27aXjuGQAa6g_1742568724
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-GVeEakK6M8CBHPhBjdl5Yw-1; Fri,
+ 21 Mar 2025 10:52:11 -0400
+X-MC-Unique: GVeEakK6M8CBHPhBjdl5Yw-1
+X-Mimecast-MFC-AGG-ID: GVeEakK6M8CBHPhBjdl5Yw_1742568730
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E50971800258; Fri, 21 Mar 2025 14:52:03 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9BB25180882E; Fri, 21 Mar 2025 14:52:09 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 81B39180176A; Fri, 21 Mar 2025 14:52:03 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EB7BD19560AF; Fri, 21 Mar 2025 14:52:08 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D175B21E6694; Fri, 21 Mar 2025 15:51:58 +0100 (CET)
+ id D544921E669A; Fri, 21 Mar 2025 15:51:58 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
-	Stefano Stabellini <sstabellini@kernel.org>
-Subject: [PULL 4/8] hw/xen: Downgrade a xen_bus_realize() non-error to warning
-Date: Fri, 21 Mar 2025 15:51:54 +0100
-Message-ID: <20250321145158.3896812-5-armbru@redhat.com>
+Cc: stefanha@redhat.com, Bibo Mao <maobibo@loongson.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 5/8] target/loongarch: Fix error handling of KVM feature checks
+Date: Fri, 21 Mar 2025 15:51:55 +0100
+Message-ID: <20250321145158.3896812-6-armbru@redhat.com>
 In-Reply-To: <20250321145158.3896812-1-armbru@redhat.com>
 References: <20250321145158.3896812-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,35 +83,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-xen_bus_realize() reports a failure to set up a watch as error, but it
-doesn't treat it as one: it simply continues.  Report a warning
-instead.
+From: Bibo Mao <maobibo@loongson.cn>
 
+For some paravirt KVM features, if user forces to enable it however
+KVM does not support, qemu should fail to run and exit immediately,
+rather than continue to run. Here set error message and return directly
+in function kvm_arch_init_vcpu().
+
+Fixes: 6edd2a9bec90 (target/loongarch/kvm: Implement LoongArch PMU extension)
+Fixes: 936c3f4d7916 (target/loongarch: Use auto method with LSX feature)
+Fixes: 5e360dabedb1 (target/loongarch: Use auto method with LASX feature)
+Fixes: 620d9bd0022e (target/loongarch: Add paravirt ipi feature detection)
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250320032158.1762751-2-maobibo@loongson.cn>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250314143500.2449658-3-armbru@redhat.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 ---
- hw/xen/xen-bus.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ target/loongarch/kvm/kvm.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
-index 2aacc1436f..f808a01813 100644
---- a/hw/xen/xen-bus.c
-+++ b/hw/xen/xen-bus.c
-@@ -353,10 +353,9 @@ static void xen_bus_realize(BusState *bus, Error **errp)
-             xs_node_watch(xenbus->xsh, node, key, xen_bus_backend_changed,
-                           xenbus, &local_err);
-         if (local_err) {
--            /* This need not be treated as a hard error so don't propagate */
--            error_reportf_err(local_err,
--                              "failed to set up '%s' enumeration watch: ",
--                              type[i]);
-+            warn_reportf_err(local_err,
-+                             "failed to set up '%s' enumeration watch: ",
-+                             type[i]);
-             local_err = NULL;
-         }
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index 28735c80be..7f63e7c8fe 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -1081,7 +1081,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     int ret;
+     Error *local_err = NULL;
  
+-    ret = 0;
+     qemu_add_vm_change_state_handler(kvm_loongarch_vm_stage_change, cs);
+ 
+     if (!kvm_get_one_reg(cs, KVM_REG_LOONGARCH_DEBUG_INST, &val)) {
+@@ -1091,29 +1090,34 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     ret = kvm_cpu_check_lsx(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+     ret = kvm_cpu_check_lasx(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+     ret = kvm_cpu_check_lbt(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+     ret = kvm_cpu_check_pmu(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+     ret = kvm_cpu_check_pv_features(cs, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
++        return ret;
+     }
+ 
+-    return ret;
++    return 0;
+ }
+ 
+ static bool loongarch_get_lbt(Object *obj, Error **errp)
 -- 
 2.48.1
 
