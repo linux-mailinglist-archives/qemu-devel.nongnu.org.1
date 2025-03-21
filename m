@@ -2,52 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F37A6B74B
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:29:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F051A6B769
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:31:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvYgA-0002T6-OV; Fri, 21 Mar 2025 05:28:39 -0400
+	id 1tvYhc-0005yA-9f; Fri, 21 Mar 2025 05:30:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYfq-0001ih-9I; Fri, 21 Mar 2025 05:28:18 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tvYhS-0005lK-Ub
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 05:30:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYfo-0005jH-DE; Fri, 21 Mar 2025 05:28:17 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 21 Mar
- 2025 17:26:31 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Fri, 21 Mar 2025 17:26:31 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, Fabiano Rosas <farosas@suse.de>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "open list:ASPEED
- BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v1 22/22] test/qtest/hace: Add tests for AST2700
-Date: Fri, 21 Mar 2025 17:26:18 +0800
-Message-ID: <20250321092623.2097234-23-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
-References: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tvYhR-0000U8-2V
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 05:29:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742549395;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=iaTTMnIxoKsffEU7MlWTVYnGawZKOVQcTD0AvUNLHZ8=;
+ b=IvE6yBOkGr6cFCQ+Z/R6vN0qWIXaTadDG93xdeio3A3ed8phTnabaK8fCkHmjkki/5cv35
+ xgaoZz4nExkNP3h3i8NOMF0NJbHTzCvvjmNRDJruCV2Hx/z/f1uAkFkVVqjjdzf3MyY1o5
+ TaKoB1Tf6cOEnxF3KjpAVZbZF4av52w=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-661-VOakXsDKNLy9NA4xqxl9ZA-1; Fri, 21 Mar 2025 05:29:50 -0400
+X-MC-Unique: VOakXsDKNLy9NA4xqxl9ZA-1
+X-Mimecast-MFC-AGG-ID: VOakXsDKNLy9NA4xqxl9ZA_1742549389
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43935e09897so11667565e9.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 02:29:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742549389; x=1743154189;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iaTTMnIxoKsffEU7MlWTVYnGawZKOVQcTD0AvUNLHZ8=;
+ b=G91TYmj9bIiSLxScWgPj2qMEP+ih3oGHnWPKhvRwxUyFSqGRq58vzqKMQLCleKQBLb
+ 8yKV0FufDYjhZHGX9DnFPuth1A6NvxTGqXDMBjn8InQvWwMVJaxKguxACxTwLxKMlqaX
+ JAYSvsnAOgMjQjvwdwRG41KiCrQMdd1X5JFe1t4KvmLP0y9sWBZjKjmPhYcGBzbirc6b
+ SxACNDqWoj8lhPN00dteqOWiMFxNACMYh57VeB7UCXllOQBopxCAt4lKD5zIRxhin4jc
+ zgXj8GmrXXO7h86PqBk1kgQhgC/4o8rt7l3UWXPxrg5kXvjYDSl0sDgriXrd3hObaeNd
+ SA1g==
+X-Gm-Message-State: AOJu0Yy2/vtyTjvUPM1nFjp93BWWzVCk/Gff4mlpKCt8y2Go+/6R7AaG
+ DfDIzXzOK6WE4EMRs89AraT7OV/LXnV4WHH8qpL4BZMtb6wIZ8FA/iShmJrNiHdbCfZCd3r7yVC
+ Y5D5MLFRQT4kO1yRnOnW7qsnW28Dwmw51xsM4o6fr5tDf8DS31YEq
+X-Gm-Gg: ASbGnctEYOXhlfwbV0WBIOmS6IPmvzFeFqh9BFytHC0xJyrFN9FTeUJGREHm7GGOUQn
+ 2WOdD0s012F0Gz6Os56W4dYqYqKhpQ8rXTvr+BoUh3wnXKeA57TvvuR4h0wABhI7u7LjKnz7gSn
+ dR4jIadXmRuLl8vML1WkQIKPzy1ZEHmiB+KZmzc+5qCh7EAXV9uJ+TDS8cMmaRi1m28ozUNabis
+ XutTl7CNBazO9KMcl56XCxuafkwa7noWLlk2+YG0iC81ilTyCnCn3xRTf9LGafuw03XQen9DV8T
+ YwvNkJRBUD9tEF4uKvOK8XB1x2kSsrZnJFcjz1EP32OvDdM21cCogQ==
+X-Received: by 2002:a05:600c:3c9a:b0:43c:ec97:75db with SMTP id
+ 5b1f17b1804b1-43d509ec467mr24111875e9.11.1742549389196; 
+ Fri, 21 Mar 2025 02:29:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IET7IIKnDaY+sHDi5gQAcnQOXC3P/SszOnBmXml6siHqz9piJ4qlTKtM6s+mh0AKf+1e1YEWA==
+X-Received: by 2002:a05:600c:3c9a:b0:43c:ec97:75db with SMTP id
+ 5b1f17b1804b1-43d509ec467mr24110615e9.11.1742549387566; 
+ Fri, 21 Mar 2025 02:29:47 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d4fd27980sm21298715e9.21.2025.03.21.02.29.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Mar 2025 02:29:47 -0700 (PDT)
+Message-ID: <a29aa643-dea6-470c-a757-a23b04a7c6b4@redhat.com>
+Date: Fri, 21 Mar 2025 10:29:46 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-10.1 24/32] vfio: Introduce new files for dirty
+ tracking definitions and declarations
+To: John Levon <levon@movementarian.org>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+References: <20250318095415.670319-1-clg@redhat.com>
+ <20250318095415.670319-25-clg@redhat.com>
+ <Z9vkCjASN9y0YPPK@movementarian.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <Z9vkCjASN9y0YPPK@movementarian.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,153 +152,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The HACE models in AST2600 and AST2700 are nearly identical. Based on the
-AST2600 test cases, new tests have been added for AST2700.
+On 3/20/25 10:46, John Levon wrote:
+> On Tue, Mar 18, 2025 at 10:54:07AM +0100, Cédric Le Goater wrote:
+> 
+>> File "common.c" has been emptied of most of its definitions by the
+>> previous changes and the only definitions left are related to dirty
+>> tracking. Rename it to "dirty-tracking.c" and introduce its associated
+>> "dirty-tracking.h" header file for the declarations.
+>>
+>> Cleanup a little the includes while at it.
+>>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> 
+>> rename from hw/vfio/common.c
+>> rename to hw/vfio/dirty-tracking.c
+>> index ed2f2ed8839caaf40fabb0cbbcaa1df2c5b70d67..441f9d9a08c06a88dda44ef143dcee5f0a89a900 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/dirty-tracking.c
+>> @@ -20,14 +20,10 @@
+> 
+> I think you might want to update the file comment from "generic functions used
+> by VFIO devices".
 
-Implemented test functions for SHA-256, SHA-384, SHA-512, and MD5.
-Added scatter-gather and accumulation test variants.
-For AST2700, the HACE controller base address starts at "0x12070000", and
-the DRAM start address is "0x4_00000000".
+Yes.
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- tests/qtest/ast2700-hace-test.c | 98 +++++++++++++++++++++++++++++++++
- tests/qtest/meson.build         |  4 +-
- 2 files changed, 101 insertions(+), 1 deletion(-)
- create mode 100644 tests/qtest/ast2700-hace-test.c
+next respin will have to take a closer look at the top of the files:
+comments, copyrights, includes.
 
-diff --git a/tests/qtest/ast2700-hace-test.c b/tests/qtest/ast2700-hace-test.c
-new file mode 100644
-index 0000000000..a400e2962b
---- /dev/null
-+++ b/tests/qtest/ast2700-hace-test.c
-@@ -0,0 +1,98 @@
-+/*
-+ * QTest testcase for the ASPEED Hash and Crypto Engine
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2025 ASPEED Technology Inc.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+#include "qemu/bitops.h"
-+#include "aspeed-hace-utils.h"
-+
-+static const struct AspeedMasks as2700_masks = {
-+    .src  = 0x7fffffff,
-+    .dest = 0x7ffffff8,
-+    .key = 0x7ffffff8,
-+    .len  = 0x0fffffff,
-+    .src_hi  = 0x00000003,
-+    .dest_hi = 0x00000003,
-+    .key_hi = 0x00000003,
-+};
-+
-+/* ast2700 */
-+static void test_md5_ast2700(void)
-+{
-+    aspeed_test_md5("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha256_ast2700(void)
-+{
-+    aspeed_test_sha256("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha256_sg_ast2700(void)
-+{
-+    aspeed_test_sha256_sg("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha384_ast2700(void)
-+{
-+    aspeed_test_sha384("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha384_sg_ast2700(void)
-+{
-+    aspeed_test_sha384_sg("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha512_ast2700(void)
-+{
-+    aspeed_test_sha512("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha512_sg_ast2700(void)
-+{
-+    aspeed_test_sha512_sg("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha256_accum_ast2700(void)
-+{
-+    aspeed_test_sha256_accum("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha384_accum_ast2700(void)
-+{
-+    aspeed_test_sha384_accum("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha512_accum_ast2700(void)
-+{
-+    aspeed_test_sha512_accum("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_addresses_ast2700(void)
-+{
-+    aspeed_test_addresses("-machine ast2700a1-evb", 0x12070000, &as2700_masks);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    qtest_add_func("ast2700/hace/addresses", test_addresses_ast2700);
-+    qtest_add_func("ast2700/hace/sha512", test_sha512_ast2700);
-+    qtest_add_func("ast2700/hace/sha384", test_sha384_ast2700);
-+    qtest_add_func("ast2700/hace/sha256", test_sha256_ast2700);
-+    qtest_add_func("ast2700/hace/md5", test_md5_ast2700);
-+
-+    qtest_add_func("ast2700/hace/sha512_sg", test_sha512_sg_ast2700);
-+    qtest_add_func("ast2700/hace/sha384_sg", test_sha384_sg_ast2700);
-+    qtest_add_func("ast2700/hace/sha256_sg", test_sha256_sg_ast2700);
-+
-+    qtest_add_func("ast2700/hace/sha512_accum", test_sha512_accum_ast2700);
-+    qtest_add_func("ast2700/hace/sha384_accum", test_sha384_accum_ast2700);
-+    qtest_add_func("ast2700/hace/sha256_accum", test_sha256_accum_ast2700);
-+
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 62fc8f9868..253d37f7bd 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -218,7 +218,8 @@ qtests_aspeed = \
-    'aspeed_gpio-test']
- qtests_aspeed64 = \
-   ['ast2700-gpio-test',
--   'ast2700-smc-test']
-+   'ast2700-smc-test',
-+   'ast2700-hace-test']
- 
- qtests_stm32l4x5 = \
-   ['stm32l4x5_exti-test',
-@@ -384,6 +385,7 @@ qtests = {
-   'aspeed_smc-test': files('aspeed-smc-utils.c', 'aspeed_smc-test.c'),
-   'ast2700-smc-test': files('aspeed-smc-utils.c', 'ast2700-smc-test.c'),
-   'aspeed_hace-test': files('aspeed-hace-utils.c', 'aspeed_hace-test.c'),
-+  'ast2700-hace-test': files('aspeed-hace-utils.c', 'ast2700-hace-test.c'),
- }
- 
- if vnc.found()
--- 
-2.43.0
+Thanks,
+
+C.
+
+  
+
 
 
