@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42FBA6BB06
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 13:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D46A6BB4E
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 13:58:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvblk-0004KZ-Gy; Fri, 21 Mar 2025 08:46:36 -0400
+	id 1tvbwY-0007hX-0c; Fri, 21 Mar 2025 08:57:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tvblG-0004AS-R4
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:46:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1tvblF-0006V4-2M
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:46:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742561164;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=82wE7nZ1yarYIxypEDNLJWzDvSoFOAKz+O7c/69pmHA=;
- b=K837F8Syc/+vhu/8LZJmwn/A7TvtQ+uzLzwtQUZNH33brPNdtArJIh7fV4ok2+6KoOkqiD
- V2bAjiR6piU/TnybbkFqaDSINhifG1JcnA8jzflIG7Pj9pDrFCNLEvla9aJwpikKXOHjNw
- X4QgYj3TQ/+J+i5ylD7gGIbdrPfoTAI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-vL6ldYQhOf-6aNzhyiQ5Ug-1; Fri,
- 21 Mar 2025 08:46:00 -0400
-X-MC-Unique: vL6ldYQhOf-6aNzhyiQ5Ug-1
-X-Mimecast-MFC-AGG-ID: vL6ldYQhOf-6aNzhyiQ5Ug_1742561159
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 99BB618DB6D3; Fri, 21 Mar 2025 12:45:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.52])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ECE47192ED65; Fri, 21 Mar 2025 12:45:52 +0000 (UTC)
-Date: Fri, 21 Mar 2025 12:45:49 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Gerd Hoffman <kraxel@redhat.com>
-Cc: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
- Alexander Graf <graf@amazon.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
- interface support
-Message-ID: <Z91ffa53yRxXkJop@redhat.com>
-References: <sxavsa2i4drnei4kmy6pd4uekk3xaa43njd47jtogar7ui7qm7@n73chaex5ms2>
- <Z9LeILiEU5GfEHrl@8bytes.org>
- <CAK3XEhNS10gKLh6SKeSc9cKi+_qwu3+Yu5rAkni5h7tYS59D5g@mail.gmail.com>
- <aet7vo4qwexxrw5khiwvhelvhwya3w7wuk72w77jlq7idn3me5@2ojjjdw43u7q>
- <85a9745d-e3b3-4e0e-90ad-066e6dcc25c1@amazon.com>
- <ahtt7arm3pi7rlv6x4qepktrczgnsgaukftyee75ofn5duviho@v4wp6v7wlxbg>
- <4593a2fe-098b-488b-9d55-1adc1e970f59@amazon.com>
- <vajhincsurwwx5yfmfhamgmvo5i22hxsaaef22aaknkn24m7c6@yxuntxof4iie>
- <Z9vSeF67fNazkxBh@8bytes.org>
- <4p7orqixni5m3444l53isxe5awdwasrb5e5bu6wu4phhycqpir@z22wgnaxowsg>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvbwW-0007gz-6A
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:57:44 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvbwU-0002zj-CZ
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:57:43 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-394780e98easo1204705f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 05:57:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1742561860; x=1743166660; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=r31x35p8ltAnwsmr7YiPke9x3zOvdyh82uVgAn6Y+5Q=;
+ b=y8xNHXPYikcnEph8Bpt0g3yKSGiqVs6OR3WR+AuxTsRa3/Bsohn4oWxyB8FTQR0lfN
+ Zmg9cGokJo7dO9LV9DNuTCWVRlOKRwv4Y213X6gC2S8YR4ZAGbJafOz0crTHqyN4Po2y
+ WlH2GBFtSZoBRB/fxR9XBA9rDTYf4muO6QSsE6ntjCIhxxbEeQuBgKxk5SQ5KkSYLAOv
+ lZCQ40zDqIyIocx8SP8GlK2oogQv4SpIS+25LXQvo68OqRfivxX7V4HiHiYmSNssvYjx
+ A/ect0hz4R/8THFQOkJN4PaK+gsrgZ/SxegSE6K/f9ly2UenStb2CfCjXave3ZlXmy+g
+ k2jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742561860; x=1743166660;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=r31x35p8ltAnwsmr7YiPke9x3zOvdyh82uVgAn6Y+5Q=;
+ b=Ts0n7heMBrjkmDP8jeLCneUdYLz91PmLpW5B99Z0TPrPqv7qrjpaaqCbUSDxT6OsC0
+ EHyo6mc9XPNx/4OZGM4VNX19ibzGELtk/zJ/bkG3ppif++r6EeWacL1reMM1lA3drWcs
+ IH+yl+NXIRv7fSSW7076jkoz9KcuMPNpu+7WUC89hfICx5n8M/tg1zty1f9eq0VVnLQu
+ XIyMOU0paPzMw7ukTsvuflIstDmma20QDi+r+66tCNTgyrEy3CR6Azg2OYWNOcPrKQYv
+ k+n/zHAAuVPOow4lwu11j+XMw7+2MrNDz4oKS8yyDXypbiCDIbK41FeH4P2tDa2rOhFw
+ bfSQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW4QhB4J8Ijtw9Bwbnf+Bi3XkP8SKI7sgY9ElrRgOcW9pa29aQcevH2WC1BF2ayBr/dZcT5WqXD+zVJ@nongnu.org
+X-Gm-Message-State: AOJu0YxpfJ8xG3K+1BG99+kkrOeYJx8bglPp4p2aw8ZsZbWdcjlRpJNN
+ gotw3S9wsz5UDPSf1omr6ym5VshRMJs6piFDdHJseMKoarl3b415rSMJs0Pve7o=
+X-Gm-Gg: ASbGncvV+9OjlaDFsZjUTuDwoRZfGssNaPjzNc+Y2cXEppJuMAWgxLz+SICSgSSW6h7
+ wr6a8I92EnULOssg3qq4aD1mH+hKk6RElRWdu5NuoOAo/UdPg9UcKUJ4PFwVxS3qSJRoCoDZk5p
+ ibFQ2GxXCa8YwxctkRLGQRVOBneOBogIuLjeD6d/nDm676L68ojGKpd6dNQxqwZIO5PcDhd4U1E
+ jmIscpKaHwaENVofkQUPS72OH/Xxp/XKj6+vqymNouOjRKAV5QUSwU1OVCcgNcyNpDlLEFWK77I
+ b/3zeqlch3p9hKkqEB+vCvRJ9HELN/7XANgF2HFwWrUvIns527B1/6iQ2a7zPu3dcNfeFCFq07Z
+ tsu6rhImI5HdqkA7bQR0=
+X-Google-Smtp-Source: AGHT+IEfd3pIfvxRmgYqF3aZWO+3NGRX4y/I3jtWMST4gsan+oO/j8avUWjGn2/D7OHdCjHtwz180Q==
+X-Received: by 2002:a05:6000:18a2:b0:391:952:c728 with SMTP id
+ ffacd0b85a97d-3997f8ede02mr3157655f8f.4.1742561859608; 
+ Fri, 21 Mar 2025 05:57:39 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3997f9f0107sm2347793f8f.99.2025.03.21.05.57.38
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 21 Mar 2025 05:57:38 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Anton Johansson <anjo@rev.ng>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 0/4] tcg: Move TCG_GUEST_DEFAULT_MO ->
+ TCGCPUOps::guest_default_memory_order
+Date: Fri, 21 Mar 2025 13:57:33 +0100
+Message-ID: <20250321125737.72839-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <4p7orqixni5m3444l53isxe5awdwasrb5e5bu6wu4phhycqpir@z22wgnaxowsg>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,81 +98,68 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 21, 2025 at 11:08:11AM +0100, Gerd Hoffman wrote:
->   Hi,
-> 
-> > >      While digging around in the igvm spec I've seen there is the
-> > >      concept of 'parameters'.  Can this be used to pass on the memory
-> > >      location of kernel + initrd + cmdline?  Maybe the kernel hashes too?
-> > 
-> > The find the locations of the kernel, initrd, cmdline, ... I think IGVM
-> > parameters, either directly or (preferably indirectly) are a good
-> > solution. By "indirectly" I mean to put these regions on a separate and
-> > measured page which also contains the region hashes.
-> 
-> regions and hashes should be separate I think.  The regions are not
-> necessarily fixed, the physical memory location where things have been
-> loaded to can change.
-> 
-> But also see my other reply.  I'm not convinced any more carrying
-> forward the hashes logic makes much sense.
-> 
-> > >  (2) Will the igvm be generated on the fly from FUKI data?  Or should
-> > >      the distros ship igvm images with firmware + kernel + initrd?
-> > 
-> > My preference would be that distros ship the tooling and components to
-> > build IGVM files and build them during kernel update. If a distro comes
-> > up with a generic initrd+cmdline it can also ship pre-built IGVM files.
-> 
-> Working with the (F)UKI instead has the advantage that we can make use
-> of the secure boot signature, with a workflow along these lines:
-> 
-> (distro) build:
->  * Embed the firmware as igvm inside the UKI.
->  * Sign the UKI.
-> 
-> first vm launch:
->  * Load the complete UKI.
->  * Pass on (a) the igvm section and (b) the UKI (including signature)
->    to the vmfwupdate device.
-> 
-> vmwupdate device:
->  * loads the igvm image.
->  * passes on the UKI location (as igvm parameter?).
-> 
-> second vm launch:
->  * firmware checks UKI signature.
->  * firmware (optionally) measures UKI into vTPM.
->  * firmware launches UKI.
+Hi,
 
-> 
-> Going ship the distro kernel as igvm image would work too.  Will
-> simplify the measurement pre-calculation.  Also there is no need to pass
-> around any parameters, everything (how the firmware finds the UKI etc)
-> can be arranged at igvm build time then.  Disadvantage: This introduces
-> a completely new boot workflow.  Will probably need a new set of cloud
-> images exclusively for the BYOF case.
+In this series we replace the TCG_GUEST_DEFAULT_MO definition
+from "cpu-param.h" by a 'guest_default_memory_order' field in
+TCGCPUOps.
 
-Having a completely different boot workflow & images for CVM BYOF that
-does not involve/consume existing UKIs & addons feels pretty undesirable
-to me.
+Since tcg_req_mo() now accesses tcg_ctx, this impact the
+cpu_req_mo() calls in accel/tcg/{cputlb,user-exec}.c.
 
-If the baseline is that the distro/user is using UKIs for everything,
-and then they want to do BYOF, that change should involve as little
-difference as possible to pull firmware into the mix. Your first
-workflow example with FUKI looks like it would satisfy that, but
-switching to bundle the kernel/initrd/cmdline directly in the IGVM
-would not.
+The long term goal is to be able to use targets with distinct
+guest memory order restrictions.
 
-With regards,
-Daniel
+Philippe Mathieu-Daudé (4):
+  tcg: Always define TCG_GUEST_DEFAULT_MO
+  tcg: Simplify tcg_req_mo() macro
+  tcg: Have tcg_req_mo() use runtime TCGContext::guest_mo
+  tcg: Define guest_default_memory_order in TCGCPUOps
+
+ accel/tcg/internal-target.h   | 13 ++-----------
+ include/accel/tcg/cpu-ops.h   |  8 ++++++++
+ target/alpha/cpu-param.h      |  3 ---
+ target/arm/cpu-param.h        |  3 ---
+ target/avr/cpu-param.h        |  2 --
+ target/hppa/cpu-param.h       |  8 --------
+ target/i386/cpu-param.h       |  3 ---
+ target/loongarch/cpu-param.h  |  2 --
+ target/microblaze/cpu-param.h |  3 ---
+ target/mips/cpu-param.h       |  2 --
+ target/openrisc/cpu-param.h   |  2 --
+ target/ppc/cpu-param.h        |  2 --
+ target/riscv/cpu-param.h      |  2 --
+ target/s390x/cpu-param.h      |  6 ------
+ target/sparc/cpu-param.h      | 23 -----------------------
+ target/xtensa/cpu-param.h     |  3 ---
+ accel/tcg/tcg-all.c           |  3 ---
+ accel/tcg/translate-all.c     |  6 +-----
+ target/alpha/cpu.c            |  3 +++
+ target/arm/cpu.c              |  3 +++
+ target/arm/tcg/cpu-v7m.c      |  3 +++
+ target/avr/cpu.c              |  1 +
+ target/hexagon/cpu.c          |  2 ++
+ target/hppa/cpu.c             |  8 ++++++++
+ target/i386/tcg/tcg-cpu.c     |  5 +++++
+ target/loongarch/cpu.c        |  2 ++
+ target/m68k/cpu.c             |  3 +++
+ target/microblaze/cpu.c       |  3 +++
+ target/mips/cpu.c             |  2 ++
+ target/openrisc/cpu.c         |  2 ++
+ target/ppc/cpu_init.c         |  2 ++
+ target/riscv/tcg/tcg-cpu.c    |  2 ++
+ target/rx/cpu.c               |  3 +++
+ target/s390x/cpu.c            |  6 ++++++
+ target/sh4/cpu.c              |  3 +++
+ target/sparc/cpu.c            | 23 +++++++++++++++++++++++
+ target/tricore/cpu.c          |  2 ++
+ target/xtensa/cpu.c           |  3 +++
+ 38 files changed, 92 insertions(+), 83 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.47.1
 
 
