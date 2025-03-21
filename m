@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4349AA6B745
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6255A6B743
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:28:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvYfa-0000UW-CK; Fri, 21 Mar 2025 05:28:02 -0400
+	id 1tvYfW-00006o-OF; Fri, 21 Mar 2025 05:27:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYfA-0007Nw-6o; Fri, 21 Mar 2025 05:27:36 -0400
+ id 1tvYfD-0007R1-Ak; Fri, 21 Mar 2025 05:27:40 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYf8-0005EC-Me; Fri, 21 Mar 2025 05:27:35 -0400
+ id 1tvYfA-0005EC-Uq; Fri, 21 Mar 2025 05:27:39 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 21 Mar
@@ -31,9 +31,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v1 16/22] test/qtest/hace: Add SHA-384 tests for AST2600
-Date: Fri, 21 Mar 2025 17:26:12 +0800
-Message-ID: <20250321092623.2097234-17-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 17/22] test/qtest/hace: Add tests for AST1030
+Date: Fri, 21 Mar 2025 17:26:13 +0800
+Message-ID: <20250321092623.2097234-18-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
 References: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
@@ -65,66 +65,120 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduced "test_sha384_ast2600" to validate SHA-384 hashing.
-Added "test_sha384_sg_ast2600" for scatter-gather SHA-384 verification.
-Implemented "test_sha384_accum_ast2600" to test SHA-384 accumulation.
-Registered new test cases in "main" to ensure execution.
+The HACE model in AST2600 and AST1030 is identical. Referencing the AST2600
+test cases, new tests have been created for AST1030.
+
+Implemented test functions for SHA-256, SHA-384, SHA-512, and MD5.
+Added scatter-gather and accumulation test variants.
+For AST1030, the HACE controller base address starts at "0x7e6d0000", and the
+SDRAM start address is "0x0".
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- tests/qtest/aspeed_hace-test.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/qtest/aspeed_hace-test.c | 76 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
 diff --git a/tests/qtest/aspeed_hace-test.c b/tests/qtest/aspeed_hace-test.c
-index 42a306af2a..ab0c98330e 100644
+index ab0c98330e..31890d574e 100644
 --- a/tests/qtest/aspeed_hace-test.c
 +++ b/tests/qtest/aspeed_hace-test.c
-@@ -44,6 +44,16 @@ static void test_sha256_sg_ast2600(void)
-     aspeed_test_sha256_sg("-machine ast2600-evb", 0x1e6d0000, 0x80000000);
- }
+@@ -10,6 +10,12 @@
+ #include "qemu/bitops.h"
+ #include "aspeed-hace-utils.h"
  
-+static void test_sha384_ast2600(void)
++static const struct AspeedMasks ast1030_masks = {
++    .src  = 0x7fffffff,
++    .dest = 0x7ffffff8,
++    .len  = 0x0fffffff,
++};
++
+ static const struct AspeedMasks ast2600_masks = {
+     .src  = 0x7fffffff,
+     .dest = 0x7ffffff8,
+@@ -28,6 +34,62 @@ static const struct AspeedMasks ast2400_masks = {
+     .len  = 0x0fffffff,
+ };
+ 
++/* ast1030 */
++static void test_md5_ast1030(void)
 +{
-+    aspeed_test_sha384("-machine ast2600-evb", 0x1e6d0000, 0x80000000);
++    aspeed_test_md5("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
 +}
 +
-+static void test_sha384_sg_ast2600(void)
++static void test_sha256_ast1030(void)
 +{
-+    aspeed_test_sha384_sg("-machine ast2600-evb", 0x1e6d0000, 0x80000000);
++    aspeed_test_sha256("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
 +}
 +
- static void test_sha512_ast2600(void)
++static void test_sha256_sg_ast1030(void)
++{
++    aspeed_test_sha256_sg("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
++}
++
++static void test_sha384_ast1030(void)
++{
++    aspeed_test_sha384("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
++}
++
++static void test_sha384_sg_ast1030(void)
++{
++    aspeed_test_sha384_sg("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
++}
++
++static void test_sha512_ast1030(void)
++{
++    aspeed_test_sha512("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
++}
++
++static void test_sha512_sg_ast1030(void)
++{
++    aspeed_test_sha512_sg("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
++}
++
++static void test_sha256_accum_ast1030(void)
++{
++    aspeed_test_sha256_accum("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
++}
++
++static void test_sha384_accum_ast1030(void)
++{
++    aspeed_test_sha384_accum("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
++}
++
++static void test_sha512_accum_ast1030(void)
++{
++    aspeed_test_sha512_accum("-machine ast1030-evb", 0x7e6d0000, 0x00000000);
++}
++
++static void test_addresses_ast1030(void)
++{
++    aspeed_test_addresses("-machine ast1030-evb", 0x7e6d0000, &ast1030_masks);
++}
++
+ /* ast2600 */
+ static void test_md5_ast2600(void)
  {
-     aspeed_test_sha512("-machine ast2600-evb", 0x1e6d0000, 0x80000000);
-@@ -59,6 +69,11 @@ static void test_sha256_accum_ast2600(void)
-     aspeed_test_sha256_accum("-machine ast2600-evb", 0x1e6d0000, 0x80000000);
- }
- 
-+static void test_sha384_accum_ast2600(void)
-+{
-+    aspeed_test_sha384_accum("-machine ast2600-evb", 0x1e6d0000, 0x80000000);
-+}
-+
- static void test_sha512_accum_ast2600(void)
+@@ -130,6 +192,20 @@ int main(int argc, char **argv)
  {
-     aspeed_test_sha512_accum("-machine ast2600-evb", 0x1e6d0000, 0x80000000);
-@@ -117,13 +132,16 @@ int main(int argc, char **argv)
+     g_test_init(&argc, &argv, NULL);
  
++    qtest_add_func("ast1030/hace/addresses", test_addresses_ast1030);
++    qtest_add_func("ast1030/hace/sha512", test_sha512_ast1030);
++    qtest_add_func("ast1030/hace/sha384", test_sha384_ast1030);
++    qtest_add_func("ast1030/hace/sha256", test_sha256_ast1030);
++    qtest_add_func("ast1030/hace/md5", test_md5_ast1030);
++
++    qtest_add_func("ast1030/hace/sha512_sg", test_sha512_sg_ast1030);
++    qtest_add_func("ast1030/hace/sha384_sg", test_sha384_sg_ast1030);
++    qtest_add_func("ast1030/hace/sha256_sg", test_sha256_sg_ast1030);
++
++    qtest_add_func("ast1030/hace/sha512_accum", test_sha512_accum_ast1030);
++    qtest_add_func("ast1030/hace/sha384_accum", test_sha384_accum_ast1030);
++    qtest_add_func("ast1030/hace/sha256_accum", test_sha256_accum_ast1030);
++
      qtest_add_func("ast2600/hace/addresses", test_addresses_ast2600);
      qtest_add_func("ast2600/hace/sha512", test_sha512_ast2600);
-+    qtest_add_func("ast2600/hace/sha384", test_sha384_ast2600);
-     qtest_add_func("ast2600/hace/sha256", test_sha256_ast2600);
-     qtest_add_func("ast2600/hace/md5", test_md5_ast2600);
- 
-     qtest_add_func("ast2600/hace/sha512_sg", test_sha512_sg_ast2600);
-+    qtest_add_func("ast2600/hace/sha384_sg", test_sha384_sg_ast2600);
-     qtest_add_func("ast2600/hace/sha256_sg", test_sha256_sg_ast2600);
- 
-     qtest_add_func("ast2600/hace/sha512_accum", test_sha512_accum_ast2600);
-+    qtest_add_func("ast2600/hace/sha384_accum", test_sha384_accum_ast2600);
-     qtest_add_func("ast2600/hace/sha256_accum", test_sha256_accum_ast2600);
- 
-     qtest_add_func("ast2500/hace/addresses", test_addresses_ast2500);
+     qtest_add_func("ast2600/hace/sha384", test_sha384_ast2600);
 -- 
 2.43.0
 
