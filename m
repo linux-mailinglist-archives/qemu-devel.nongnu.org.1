@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D25A6BD0B
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 15:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18163A6BD38
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 15:40:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvdSC-000391-5u; Fri, 21 Mar 2025 10:34:32 -0400
+	id 1tvdWJ-0005AC-89; Fri, 21 Mar 2025 10:38:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tvdS9-00038c-MZ
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:34:30 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tvdWF-00059N-0B
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:38:43 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tvdS5-000553-S3
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:34:29 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1tvdWB-00008U-Qk
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:38:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=X9tsZldLslFZldfnyo6JC3GgBpLTgjlzSWQ4D19Iguw=; b=upVZMQM0FtpFlPQ
- WFD290GkPEk5+ojFwAC2FVq8I+afyRocSHKC/aohPdV4N5qwmTL4PoAWXS2t0d4NGfJMThE2YYbD4
- 2n8lflK80zudxWGgp05m84IQkIUi+MUSkSuhkiht5b9jRwjbotRXM0upQ0Nbmd4PV8nZUBEgcS5Zt
- Yw=;
-Date: Fri, 21 Mar 2025 15:34:45 +0100
+ List-Help; bh=9sStlq0EZGMEMQMstPehaz6QAHeBtjG7+rm2N7/Ka00=; b=HFimjtdIwiXjN+l
+ ++gz+LnFw7jUP0RUacMVE0yaEMJ3hucaz1/M0E/YdF/KWM70ZWlrZdeeDHAFCVFEsPBQzcq63kHR/
+ q1FOEJIXKExdh61FYED5wbeRzf205fkCbUU1tsN+8tcOweJJF1eD9YSU0dEEg0h9lPZHSFCWgrQBk
+ 3A=;
+Date: Fri, 21 Mar 2025 15:39:07 +0100
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: Richard Henderson <richard.henderson@linaro.org>, 
  qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [RFC PATCH-for-10.1 4/4] tcg: Define guest_default_memory_order
- in TCGCPUOps
-Message-ID: <un6e6dztt4uwuqywzt74s4fhnbx3nxhh3syfgode7lnkboe6l6@whsyzuebi4w6>
+Subject: Re: [RFC PATCH-for-10.1 3/4] tcg: Have tcg_req_mo() use runtime
+ TCGContext::guest_mo
+Message-ID: <obxwsiulhaid5f5rpjdgaclzzbay4dgs4jko2wxyojk5lwjmm5@7gctc6ef5n7s>
 References: <20250321125737.72839-1-philmd@linaro.org>
- <20250321125737.72839-5-philmd@linaro.org>
+ <20250321125737.72839-4-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250321125737.72839-5-philmd@linaro.org>
+In-Reply-To: <20250321125737.72839-4-philmd@linaro.org>
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
 X-Spam_score_int: -20
@@ -69,58 +69,41 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 21/03/25, Philippe Mathieu-Daudé wrote:
-> Add the TCGCPUOps::guest_default_memory_order field and have
-> each target initialize it.
-> 
-> Use it to set TCGContext::guest_mo in tb_gen_code(), removing
-> the need for the TCG_GUEST_DEFAULT_MO definition.
+> In order to use TCG with multiple targets, replace the
+> compile time use of TCG_GUEST_DEFAULT_MO by a runtime
+> access to tcg_ctx->guest_mo.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  include/accel/tcg/cpu-ops.h   |  8 ++++++++
->  target/alpha/cpu-param.h      |  3 ---
->  target/arm/cpu-param.h        |  3 ---
->  target/avr/cpu-param.h        |  2 --
->  target/hexagon/cpu-param.h    |  3 ---
->  target/hppa/cpu-param.h       |  8 --------
->  target/i386/cpu-param.h       |  3 ---
->  target/loongarch/cpu-param.h  |  2 --
->  target/m68k/cpu-param.h       |  3 ---
->  target/microblaze/cpu-param.h |  3 ---
->  target/mips/cpu-param.h       |  2 --
->  target/openrisc/cpu-param.h   |  2 --
->  target/ppc/cpu-param.h        |  2 --
->  target/riscv/cpu-param.h      |  2 --
->  target/rx/cpu-param.h         |  3 ---
->  target/s390x/cpu-param.h      |  6 ------
->  target/sh4/cpu-param.h        |  3 ---
->  target/sparc/cpu-param.h      | 23 -----------------------
->  target/tricore/cpu-param.h    |  3 ---
->  target/xtensa/cpu-param.h     |  3 ---
->  accel/tcg/translate-all.c     |  2 +-
->  target/alpha/cpu.c            |  3 +++
->  target/arm/cpu.c              |  3 +++
->  target/arm/tcg/cpu-v7m.c      |  3 +++
->  target/avr/cpu.c              |  1 +
->  target/hexagon/cpu.c          |  2 ++
->  target/hppa/cpu.c             |  8 ++++++++
->  target/i386/tcg/tcg-cpu.c     |  5 +++++
->  target/loongarch/cpu.c        |  2 ++
->  target/m68k/cpu.c             |  3 +++
->  target/microblaze/cpu.c       |  3 +++
->  target/mips/cpu.c             |  2 ++
->  target/openrisc/cpu.c         |  2 ++
->  target/ppc/cpu_init.c         |  2 ++
->  target/riscv/tcg/tcg-cpu.c    |  2 ++
->  target/rx/cpu.c               |  3 +++
->  target/s390x/cpu.c            |  6 ++++++
->  target/sh4/cpu.c              |  3 +++
->  target/sparc/cpu.c            | 23 +++++++++++++++++++++++
->  target/tricore/cpu.c          |  2 ++
->  target/xtensa/cpu.c           |  3 +++
->  41 files changed, 90 insertions(+), 80 deletions(-)
+>  accel/tcg/internal-target.h | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
+> index 1cb35dba99e..014ee756f9d 100644
+> --- a/accel/tcg/internal-target.h
+> +++ b/accel/tcg/internal-target.h
+> @@ -49,11 +49,9 @@ G_NORETURN void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr);
+>   * Filter @type to the barrier that is required for the guest
+>   * memory ordering vs the host memory ordering.  A non-zero
+>   * result indicates that some barrier is required.
+> - *
+> - * This is a macro so that it's constant even without optimization.
+>   */
+>  #define tcg_req_mo(type) \
+> -    ((type) & TCG_GUEST_DEFAULT_MO & ~TCG_TARGET_DEFAULT_MO)
+> +    ((type) & tcg_ctx->guest_mo & ~TCG_TARGET_DEFAULT_MO)
+>  
+>  /**
+>   * cpu_req_mo:
+> -- 
+> 2.47.1
+> 
 
-This is a nice change!:)
+I'll parrot some older feedback by Richard
 
-Reviewed-by: Anton Johansson <anjo@rev.ng>
+  https://lore.kernel.org/all/92cc9335-10bf-4a74-9eb4-249de5545dc5@linaro.org/
+
+but tcg_ctx->guest_mo can be undefined or bogus here. Could we not
+take cpu and access cpu->cc->tcg_ops->guest_default_memory_order
+directly instead?
 
