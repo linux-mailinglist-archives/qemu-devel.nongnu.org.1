@@ -2,61 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D43A6BDAF
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA6CA6BDB0
 	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 15:54:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvdjk-0001dH-96; Fri, 21 Mar 2025 10:52:40 -0400
+	id 1tvdjk-0001dN-Jn; Fri, 21 Mar 2025 10:52:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tvdjP-0001TJ-QP
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:52:26 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tvdjG-0001RR-Si
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:52:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tvdjM-0006wR-S5
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:52:19 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1tvdjE-0006QZ-GX
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 10:52:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742568736;
+ s=mimecast20190719; t=1742568726;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YSrRos5HyrEm16kMqZjAz/pRCErOCij+EXv0KMx7yHA=;
- b=JMgHrg9pecbzSrOW0HuZvqTy82kE/e+zUd+n3OFhy6nxDTDPn3z04kFDCjw7juCP5zXqIb
- Bg017pCW7v2YFevsJCz0AZes2SyHEYSSKrUps76QJC1RfJo6czWMeP69GH7q9wkGAYSGr7
- 2BgPa7lSGE3Pfvkl0UVmXmm0VRTzaaI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=8XsGujRoterEtGzXJVm8qVL9JsXCcR8HxMOqyt9Jv00=;
+ b=SanFAVimfPrXiApJnrMJchLSgz4IOvgcXazj9OZdagQ6f5fFYMLUlq64JGqjevoJpCjS+8
+ rCURnbbBkRSP2mgoMh9s04iuVaPAckZmUwfA7PX2txgSBjHQq+1p0Ce3oDUQ+4V+jlcggL
+ Fj0lbxtXPtyGF50pAjkq+ILg6P4oHOc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-WU9PCvDzPr2Zh28-LoHaZw-1; Fri,
- 21 Mar 2025 10:52:11 -0400
-X-MC-Unique: WU9PCvDzPr2Zh28-LoHaZw-1
-X-Mimecast-MFC-AGG-ID: WU9PCvDzPr2Zh28-LoHaZw_1742568730
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-356-qJWGUSxcPSuCavwt57TDgQ-1; Fri,
+ 21 Mar 2025 10:52:05 -0400
+X-MC-Unique: qJWGUSxcPSuCavwt57TDgQ-1
+X-Mimecast-MFC-AGG-ID: qJWGUSxcPSuCavwt57TDgQ_1742568724
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 90068196D2CD; Fri, 21 Mar 2025 14:52:09 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2B0C4180882E; Fri, 21 Mar 2025 14:52:04 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2CA5B195609D; Fri, 21 Mar 2025 14:52:03 +0000 (UTC)
+ id 5E33F191F241; Fri, 21 Mar 2025 14:52:03 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C9A8A21E6682; Fri, 21 Mar 2025 15:51:58 +0100 (CET)
+ id CD97B21E668C; Fri, 21 Mar 2025 15:51:58 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PULL 2/8] error: Strip trailing '\n' from an error string argument
-Date: Fri, 21 Mar 2025 15:51:52 +0100
-Message-ID: <20250321145158.3896812-3-armbru@redhat.com>
+Cc: stefanha@redhat.com,
+	Stefano Stabellini <sstabellini@kernel.org>
+Subject: [PULL 3/8] hw/xen: Fix xen_bus_realize() error handling
+Date: Fri, 21 Mar 2025 15:51:53 +0100
+Message-ID: <20250321145158.3896812-4-armbru@redhat.com>
 In-Reply-To: <20250321145158.3896812-1-armbru@redhat.com>
 References: <20250321145158.3896812-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
@@ -84,30 +82,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tracked down with scripts/coccinelle/err-bad-newline.cocci.
+The Error ** argument must be NULL, &error_abort, &error_fatal, or a
+pointer to a variable containing NULL.  Passing an argument of the
+latter kind twice without clearing it in between is wrong: if the
+first call sets an error, it no longer points to NULL for the second
+call.
 
+xen_bus_realize() is wrong that way: it passes &local_err to
+xs_node_watch() in a loop.  If this fails in more than one iteration,
+it can trip error_setv()'s assertion.
+
+Fix by clearing @local_err.
+
+Fixes: c4583c8c394e (xen-bus: reduce scope of backend watch)
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250312143504.1659061-1-armbru@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-ID: <20250314143500.2449658-2-armbru@redhat.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 ---
- net/vmnet-common.m | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/xen/xen-bus.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/vmnet-common.m b/net/vmnet-common.m
-index 54d900ba67..ab33ce2b0c 100644
---- a/net/vmnet-common.m
-+++ b/net/vmnet-common.m
-@@ -94,7 +94,7 @@ ssize_t vmnet_receive_common(NetClientState *nc,
+diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
+index 8260f1e1bb..2aacc1436f 100644
+--- a/hw/xen/xen-bus.c
++++ b/hw/xen/xen-bus.c
+@@ -357,6 +357,7 @@ static void xen_bus_realize(BusState *bus, Error **errp)
+             error_reportf_err(local_err,
+                               "failed to set up '%s' enumeration watch: ",
+                               type[i]);
++            local_err = NULL;
+         }
  
-     if_status = vmnet_write(s->vmnet_if, &packet, &pkt_cnt);
-     if (if_status != VMNET_SUCCESS) {
--        error_report("vmnet: write error: %s\n",
-+        error_report("vmnet: write error: %s",
-                      vmnet_status_map_str(if_status));
-         return -1;
-     }
+         g_free(node);
 -- 
 2.48.1
 
