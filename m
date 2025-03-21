@@ -2,73 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70697A6BAAA
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 13:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B7CA6BAF8
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 13:44:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvbTL-0007m5-KM; Fri, 21 Mar 2025 08:27:35 -0400
+	id 1tvbiH-000857-4B; Fri, 21 Mar 2025 08:43:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tvbTJ-0007lR-1n
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:27:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>)
+ id 1tvV9l-0004vC-2r; Fri, 21 Mar 2025 01:42:57 -0400
+Received: from fout-b1-smtp.messagingengine.com ([202.12.124.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1tvbTG-0004he-KY
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:27:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742560046;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BnE34XkShg2fCAXYAPZUZCqM7eXGhnzXnv0QsGUv56w=;
- b=eRhnzFwhOWML80ct1CyYu4+CQlgI2pDII9q8TdBTIZ1Rcn1dWYnqSdd8bHQTjxXo8A58Ms
- W7/V580DB7x2lqd0r/s2V2WYbBcQzddNCv4OizApTR+hgtueUEWePW25N0TK/HtJWBPj81
- 6U+cbCjqz101qMw+7wtdQ864BD8O3KM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-gnjryYGHNNqgcRI-v3-gFw-1; Fri,
- 21 Mar 2025 08:27:23 -0400
-X-MC-Unique: gnjryYGHNNqgcRI-v3-gFw-1
-X-Mimecast-MFC-AGG-ID: gnjryYGHNNqgcRI-v3-gFw_1742560042
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ED1AA1801A06; Fri, 21 Mar 2025 12:27:21 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.134])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 34E781801764; Fri, 21 Mar 2025 12:27:20 +0000 (UTC)
-Date: Thu, 20 Mar 2025 15:17:46 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, fam@euphon.net
-Subject: Re: QEMU Userspace NVMe driver and multiple iothreads
-Message-ID: <20250320191746.GB2541643@fedora>
-References: <0fe1ff1e-2388-453e-9fd9-b550b6be0c41@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>)
+ id 1tvV9i-0003LM-IH; Fri, 21 Mar 2025 01:42:56 -0400
+Received: from phl-compute-13.internal (phl-compute-13.phl.internal
+ [10.202.2.53])
+ by mailfout.stl.internal (Postfix) with ESMTP id 22D4D11401A8;
+ Fri, 21 Mar 2025 01:42:49 -0400 (EDT)
+Received: from phl-imap-13 ([10.202.2.103])
+ by phl-compute-13.internal (MEProxy); Fri, 21 Mar 2025 01:42:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.ru; h=cc
+ :cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm1; t=1742535768;
+ x=1742622168; bh=rWqBSUjJtMAZyEKPI64Qtxx17ankYzsGjvFxn3DLFvw=; b=
+ uZ05dBGgreIOOIFRw0b7s2MY5VJR7z21UIZuc0MmfMBjfWAvQtp1zkR1uBemWKRO
+ aVeWCliMUBmBVbDoCYPNkD+Zg4QiiGtvhKVyalt/1Qep02gelrQTWVbI0bPlFNZ4
+ Wq2EptWzp0hNSunzeUiSip+d1+pw0LrkmIx8Tl46KSjZ9CxVIANTVdlRaTBFu3lU
+ GQxJNSAPYhmb5EIW5dVTR4pZ5VFRfKv8olWUV6WRuRyzP/AaG2ysBB/koen597e7
+ sqVT8KnrSSXSmjOZ8FOmVLQqbITYKmNMD5GCVf2y7cNDo3p3TyuP6+lqu8vUHqbg
+ nbJMY44n1/DvJzaIhaM6GA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1742535768; x=
+ 1742622168; bh=rWqBSUjJtMAZyEKPI64Qtxx17ankYzsGjvFxn3DLFvw=; b=g
+ mOtgJR0Fp+tClWgNHjVQ7ytYjUHAm4ZZpwigSTQLOCV71OuG56DqYSYBBPn/ZooE
+ T115lf5e67hUfjCHLfJMV9hsSx7LPar1FprnX0kXdYNPUKwBYjmN1lrxpAZqZVq+
+ /anjiGQ3qBVbH3uIj9rRdrpoAPnCn6lln4e1PWIji4mJb3Tlis5hNUoznp1pOHBf
+ 3Gwzt7Sc/jM7mAoTSuK9CE8m4WvYBa3lkgzC4paNBok7ib649gYptVf9N+GMhpjY
+ 4ryCUGTf/KcgmT8T8VPARz9+iDTa3X8SGiL4R6UMdrWOwiK99THzZqaCmCN9MHdp
+ Br4QS2TnLuHXPPLUXz9UA==
+X-ME-Sender: <xms:VvzcZ6w7nkwP-V88qpniMjm9zzStMXhzguCVuewJNe1j5Otdm5W8Mg>
+ <xme:VvzcZ2QMgjsf0KIWrJV_X5Gu0YGchSGIo0nztV7GNWZBEwNRGN3nBpVuXzRiv-E4V
+ e56-i2Uo9F7lqxXY54>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduhedtvdekucetufdoteggodetrf
+ dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+ pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+ gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+ tddtnecuhfhrohhmpedftehlvgigvgihucfmrghruggrshhhvghvshhkihihfdcuoegrih
+ hksehoiihlrggsshdrrhhuqeenucggtffrrghtthgvrhhnpeehveelteevieehfeejkeeg
+ udetlefgvdffveelgffhjeeigfetgeegtdetheejvdenucffohhmrghinheprhgrphhtoh
+ hrtghsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
+ rhhomheprghikhesohiilhgrsghsrdhruhdpnhgspghrtghpthhtohepgedpmhhouggvpe
+ hsmhhtphhouhhtpdhrtghpthhtohepsggrlhgrthhonhesvghikhdrsghmvgdrhhhupdhr
+ tghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhope
+ hqvghmuhdqphhptgesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepmhhjthesthhlshdr
+ mhhskhdrrhhu
+X-ME-Proxy: <xmx:VvzcZ8V2EUl3u6Xf72rgsFxpu3LRxSWy8AkmCEQN2Q49n7UFaWMsFw>
+ <xmx:VvzcZwj8o2X0iaJ3ckRR4c3kU8QsOZrUU21RNiaZ7B_V9YSqokY7GQ>
+ <xmx:VvzcZ8BD5R7eqXH6mSWxWn1A9t_i0nOmxZNsVsTFenfmvQPQhL-JHg>
+ <xmx:VvzcZxL1YpgaWjXL_LTA6Wi1QKSRvp_8bXTVwdskl2i4P2TDC-9ENA>
+ <xmx:WPzcZ74ugYwhOhpcwI3z36GFTnyubCuoDtfH-ityXe8-Xtes1j5lI7ap>
+Feedback-ID: i6e394913:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+ id 360A41F00072; Fri, 21 Mar 2025 01:42:46 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="l9uerOyi60XZZC7j"
-Content-Disposition: inline
-In-Reply-To: <0fe1ff1e-2388-453e-9fd9-b550b6be0c41@linux.ibm.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-0.332, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-ThreadId: T87c25bd1b5a51359
+Date: Fri, 21 Mar 2025 16:42:24 +1100
+From: "Alexey Kardashevskiy" <aik@ozlabs.ru>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>, "Michael Tokarev" <mjt@tls.msk.ru>
+Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-PowerPC <qemu-ppc@nongnu.org>
+Message-Id: <60d4416c-6a56-462f-8b98-1ff8800c0e5f@app.fastmail.com>
+In-Reply-To: <6f29bd39-5855-c2c4-80b3-0873c7387897@eik.bme.hu>
+References: <2176cec3-8957-425f-8b50-e48b1f6ff4dc@tls.msk.ru>
+ <6f29bd39-5855-c2c4-80b3-0873c7387897@eik.bme.hu>
+Subject: Re: vof-nvram.bin: what it is and how it is used?
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=202.12.124.144; envelope-from=aik@ozlabs.ru;
+ helo=fout-b1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 21 Mar 2025 08:42:53 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,88 +111,45 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---l9uerOyi60XZZC7j
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 20, 2025 at 11:13:04AM -0700, Farhan Ali wrote:
-> Hi,
->=20
-> I have been experimenting with the QEMU Userspace NVMe driver on s390x
-> architecture. I have noticed an issue when assigning multiple virtqueues =
-and
-> multiple iothreads to the block device. The driver works well with a sing=
-le
-> iothread, but when using more than one iothread we can hit a problem wher=
-e 2
-> iothreads can update the completion queue head doorbell register with the
-> same value within microseconds of each other. As far as I understand this
-> would be an invalid doorbell write as per NVMe spec (for eg spec version =
-1.4
-> section 5.2.1 defines this as an invalid write). This causes the NVMe dev=
-ice
-> not to post any further completions. As far i understand this doesn't seem
-> to be specific to s390x architecture.
->=20
-> I would appreciate some guidance on this to see if there is some known
-> limitations with the userspace NVMe driver and multi queue/multi iothread?
+On Thu, 20 Mar 2025, at 00:14, BALATON Zoltan wrote:
+> On Wed, 19 Mar 2025, Michael Tokarev wrote:
+> > Hi!
+> >
+> > Commit fc8c745d50150a63f6c "spapr: Implement Open Firmware client interface"
+> > in Jun-2021 added a new file, pc-bios/vof-nvram.bin, to qemu sources.
+> >
+> > But there's nothing in the sources which refers to this file, and there's
+> > no mentions about its contents and how it has been generated.
+> >
+> > What's the procedure to create this image?  It would be great if such
+> > procedure can be run during package build time to generate this image anew.
+> >
+> > How it is supposed to be used?
+> 
+> See hw/ppc/spapr.c::spapr_create_nvram(). Looks like it would add a drive 
+> give with -drive if=pflash,index=0 as the nvram backing file. I don't know 
+> if it generates the default if an empty file is passed or maybe SLOF would 
+> do that which then could be used for VOF too and that's how it was made? 
+> So you could try running -machine spapr with an empty nvram with slof then 
+> compare that to the default for VOF.
 
-Yes, the block driver only supports 1 IOThread. The code uses
-bdrv_get_aio_context(bs) rather than qemu_get_current_aio_context(), so
-it will only operate in one AioContext.
+I booted with SLOF and -drive if=pflash,index=0 and let SLOF initialize it, and then use the result with VOF.
 
-Code changes would be necessary to support multiple IOThreads.
+> > Should it be shipped in a downstream distribution?
+> 
+> If is't not auto-created with the default values and not easy to create 
+> then maybe more convenient for users to get an example.
 
-By the way, this block driver is experimental. There are several bugs
-filed against it in bugzilla.redhat.com. It's currently only useful to
-QEMU developers and I wouldn't rely on it for production VMs.
+At the time I wanted to keep hw/ppc/spapr_vof.c and pc-bios/vof.bin as small as possible so avoided formatting. And a VM would still work even without this pc-bios/vof-nvram.bin (but it would annoyingly complain), hence the image. 
 
-Stefan
+http://wiki.raptorcs.com/w/images/c/c5/LoPAPR_DRAFT_v11_24March2016_cmt1.pdf  chapter 8 "Non-Volatile Memory" has the format if anyone feels bored :)
 
-> This is an example xml snippet i used to define the nvme block device
->=20
-> ...
->=20
-> <disk type=3D'nvme' device=3D'disk'>
-> =A0=A0=A0=A0=A0 <driver name=3D'qemu' type=3D'raw' queues=3D'8' packed=3D=
-'on'>
-> =A0=A0=A0=A0=A0=A0=A0 =A0=A0=A0 <iothreads>
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0 =A0=A0=A0 =A0=A0=A0 <iothread id=3D'1'/>
-> =A0=A0=A0=A0=A0=A0=A0 =A0=A0=A0 </iothreads>
-> =A0=A0=A0=A0=A0 </driver>
-> =A0=A0=A0=A0=A0 <source type=3D'pci' managed=3D'yes' namespace=3D'1'>
-> =A0=A0=A0=A0=A0=A0=A0 =A0=A0=A0 <address domain=3D'0x0004' bus=3D'0x00' s=
-lot=3D'0x00' function=3D'0x0'/>
-> =A0=A0=A0=A0=A0 </source>
-> =A0=A0=A0=A0=A0 <target dev=3D'vde' bus=3D'virtio'/>
-> =A0=A0=A0=A0=A0 <address type=3D'ccw' cssid=3D'0xfe' ssid=3D'0x0' devno=
-=3D'0x0002'/>
->=20
-> </disk>
-> ....
->=20
-> Appreciate any help on this!
->=20
-> Thanks
-> Farhan
->=20
+Thanks,
 
---l9uerOyi60XZZC7j
-Content-Type: application/pgp-signature; name=signature.asc
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfcadoACgkQnKSrs4Gr
-c8gBjAgAvqxEQcoaIR5ETmRV2cjlXbgP4MdzTrB9/7f9K++HJvyfJGqFaSdzjRam
-1hn9psfEuaxAiNxKd3azQ5+HU4JHYH+sIa7p4Ruk4Ewqvs9khKJmxkNYh6QYDW6s
-DqAR/QNZzogbKtLQ4bUDFFB77qYLeqn/VQOM1Jnx4h2YrBCMjvqlkT4KtC4eNoF8
-x+iiXmM+8wkFF4U6w2KkGbSI2HNmSLhpkioKSoD9Bqvw1IhrVYchYW3BmRl/kmbs
-ttg/EkONpr40pX8FOWdtOBzAgnkM2Md+kH58iBcNybRUMLKE09UXlXjUW5brIRKD
-i/pnKT0UlqDcctFGfEuUw4vATb8NSw==
-=IqED
------END PGP SIGNATURE-----
-
---l9uerOyi60XZZC7j--
-
+> 
+> Regards,
+> BALATON Zoltan
+> 
 
