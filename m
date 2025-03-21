@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5F4A6BA46
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 13:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5E6A6BACF
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 13:37:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvb6j-0002xs-MC; Fri, 21 Mar 2025 08:04:13 -0400
+	id 1tvbbs-0001nc-D1; Fri, 21 Mar 2025 08:36:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tvb6e-0002w0-OP
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:04:09 -0400
-Received: from mail-yb1-xb2f.google.com ([2607:f8b0:4864:20::b2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1tvb6d-0002th-1R
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:04:08 -0400
-Received: by mail-yb1-xb2f.google.com with SMTP id
- 3f1490d57ef6-e46ebe19368so1497726276.0
- for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 05:04:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742558645; x=1743163445; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=CJwk1+kTte8ITmBZhftdGAPv0C+slT3ULQeayG6Ytkk=;
- b=RuTgMGkB1SSmS6ktJHtXnO2G92XryWo2wQ0U/sgz8k2JQMEzSpbNFiUh1UG8Ftk/ct
- nHFLW3SRmadrtaHtf+/x6jniYz+JDb3EewygV7fp4LNZbN2bwysvFHer5ZrXLiGhm9Zj
- 8nuMW43lEM0URBdi/MycqAJ/ga/Ocp+XFcgU259H3TZwOFJqlF6x+VEZK0HlZjvmHtFu
- Y7WORXUYiYAlMxgEnsPiZQLAlUxfPgzSyy5eyb8fOKmHpDB25GbHvj3Tk9ASSJ/fNsIS
- uNgZ+MWm/6wlioIl/jHj4GCbeuPHF5m4W2mkbZWGa13hkX179txf8kci+sI+dlSq4PWH
- gs+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742558645; x=1743163445;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CJwk1+kTte8ITmBZhftdGAPv0C+slT3ULQeayG6Ytkk=;
- b=MHKmBl0fv4IDSYK5cDCM5LMLu+Ak9D20Q2qpKUhHbhBAwFn8ldIZkaDG73Av9DiB/+
- eFYjmEuEztlvfdYorDgpmIDDhoR+Ar1WqfFlhWzC04cgMSOtTGNrvy8qFxHkoT7g1RA6
- FSrftpaaoowVqLvE7qZXRZuCRdvVw89lUeePpMJ6vKeuZzv3HLm/NoF2+C9zRZSyM1Zb
- ipy1llffed9Hu1YMB8SRwgMiiBJu5I5yNCJ7t3Xqu3eKFy+xqMbS0BkZchfvJoJZlxzi
- 5GXpkcFlEyOwX4uz+wlSP3/Dja4AqfnTnGtw85zaKqxiMlLn/aHuiNA5xEBKHZTdiLLH
- Vzkg==
-X-Gm-Message-State: AOJu0YwrFaycaCUqAhb6z1XT4SnKk1fwQu0V/NRYonMxWDVG2YMjZPe2
- lfnc/ZAuUMQ+XlKxHDxSM2T8HhOgvsVe0io1FDY8Hb8OTiXiJRkw4cLHgSuhNC9eWE5yNlWc/1+
- ZrnOBdKe9i+q+13Z0eF1R1/MtP8rrh5giAeuIUw==
-X-Gm-Gg: ASbGncvIHjG4NflMWXNGPfDJt+uOUtNxI+SEZbnLQy3PL16CtzZmMJQzW1c7uT2RXWC
- Ffo14pDuulZQmz4oPegNLhuSPeC9gq3BCTQzRr7hGk7Rjpezo6XPhTkGIhxfYEjfd5qOnQeWW92
- MOocMPXh48YngTqQ7k2zKBHBB9jSQMD8j8PIi+Gg==
-X-Google-Smtp-Source: AGHT+IEtAHm/R80OnqykCioR1z7zhIqKV+/IPz15QKmwYiTtdD+7UayTPcT6x/BbBEnJfO/08YsKvtsEgOydpeW80cI=
-X-Received: by 2002:a05:6902:260d:b0:e63:5a1a:7ff7 with SMTP id
- 3f1490d57ef6-e66a4fa9420mr3544344276.31.1742558645438; Fri, 21 Mar 2025
- 05:04:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tvbbp-0001lm-My
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:36:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tvbbn-0008LX-DA
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:36:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742560576;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YUiRazojRK/P6MIBeokXrgi2DMcuzUnLip4zXvzo0lg=;
+ b=WyG6/EDJWCfXedxn7Vxyzrfz0maq8rZpKIqeOgEYT2Yuo/qmA25Oc++cFmkohbzWydqf+7
+ 5swWvwAYnH9++pcHmaAbNePqOlqoPVT4TyyZEoCu9xGISVoFcrZsG5YJ8G5bUSIW8qwigI
+ m0H0q0wMjbkWzY3VmKAWDUqVIUOAtvU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-510-xo0Tq3TIMn29WNHdMl0r3A-1; Fri,
+ 21 Mar 2025 08:36:12 -0400
+X-MC-Unique: xo0Tq3TIMn29WNHdMl0r3A-1
+X-Mimecast-MFC-AGG-ID: xo0Tq3TIMn29WNHdMl0r3A_1742560570
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 46A02196B344; Fri, 21 Mar 2025 12:36:09 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.45.224.38])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 676BD1955BFE; Fri, 21 Mar 2025 12:36:07 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id D81351800386; Fri, 21 Mar 2025 13:36:04 +0100 (CET)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Kashyap Chamarthy <kchamart@redhat.com>, Weiwei Li <liwei1518@gmail.com>,
+ Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ qemu-riscv@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 0/6] Uefi 20250321 patches
+Date: Fri, 21 Mar 2025 13:35:58 +0100
+Message-ID: <20250321123604.2126923-1-kraxel@redhat.com>
 MIME-Version: 1.0
-References: <20250309103120.1116448-1-pbonzini@redhat.com>
- <20250309103120.1116448-22-pbonzini@redhat.com>
-In-Reply-To: <20250309103120.1116448-22-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 21 Mar 2025 12:03:54 +0000
-X-Gm-Features: AQ5f1JpM3GMKSH3fVkq4WmYaxMi0k9G8AmvHwpcJ_CUn7GKN917mt4BX7wsUPeA
-Message-ID: <CAFEAcA_h=dHcWyZfc7FibzbQiUtz+jHs+psKz-_ifrzVKU5CYQ@mail.gmail.com>
-Subject: Re: [PULL 21/25] rust: hpet: decode HPET registers into enums
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2f;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,79 +87,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 9 Mar 2025 at 10:35, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> Generalize timer_and_addr() to decode all registers into a single enum
-> HPETRegister, and use the TryInto derive to separate valid and
-> invalid values.
->
-> The main advantage lies in checking that all registers are enumerated
-> in the "match" statements.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+The following changes since commit 1dae461a913f9da88df05de6e2020d3134356f2e:
 
-Hi; this commit seems to break 'make check-functional'. Several
-x86 tests fail; the one I looked at was x86_64_tuxrun:
+  Update version for v10.0.0-rc0 release (2025-03-18 10:18:14 -0400)
 
-$ (cd build/rust; PYTHONPATH=../../python:../../tests/functional
-QEMU_TEST_QEMU_BINARY=./qemu-system-x86_64 ./pyvenv/bin/python3
-../../tests/functional/test_x86_64_tuxrun.py; )
+are available in the Git repository at:
 
-TAP version 13
-/home/petmay01/.cache/qemu/download/4b8b2a99117519c5290e1202cb36eb6c7aaba92b357b5160f5970cf5fb78a751:
-1073741824 bytes
-Traceback (most recent call last):
-  File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional/test_x86_64_tuxrun.py",
-line 31, in test_x86_64
-    self.common_tuxrun(kernel_asset=self.ASSET_X86_64_KERNEL,
-  File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional/qemu_test/tuxruntest.py",
-line 147, in common_tuxrun
-    self.run_tuxtest_tests(haltmsg)
-  File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional/qemu_test/tuxruntest.py",
-line 117, in run_tuxtest_tests
-    self.wait_for_console_pattern('tuxtest login:')
-  File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional/qemu_test/tuxruntest.py",
-line 67, in wait_for_console_pattern
-    wait_for_console_pattern(self, success_message,
-  File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional/qemu_test/cmd.py",
-line 160, in wait_for_console_pattern
-    _console_interaction(test, success_message, failure_message, None, vm=vm)
-  File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional/qemu_test/cmd.py",
-line 116, in _console_interaction
-    if _console_read_line_until_match(test, vm,
-       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional/qemu_test/cmd.py",
-line 67, in _console_read_line_until_match
-    test.fail(
-AssertionError: 'b'Kernel panic - not syncing'' found in console,
-expected 'b'tuxtest login:''
+  https://gitlab.com/kraxel/qemu.git tags/uefi-20250321-pull-request
 
-not ok 1 test_x86_64_tuxrun.TuxRunX86Test.test_x86_64
-1..1
+for you to fetch changes up to 5e5d18d2ccd674778715f828df80fdddac73bdea:
 
-The console output from the guest shows that it fails trying to set
-up the timer:
+  docs/firmware: add feature flag for host uefi variable store (2025-03-21 12:01:12 +0100)
 
-2025-03-21 12:01:10,676: printk: console [ttyS0] enabled
-2025-03-21 12:01:10,678: ACPI: Core revision 20230331
-2025-03-21 12:01:10,695: clocksource: hpet: mask: 0xffffffff
-max_cycles: 0xffffffff, max_idle_ns: 19112604467 ns
-2025-03-21 12:01:10,714: APIC: Switch to symmetric I/O mode setup
-2025-03-21 12:01:10,728: ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
-2025-03-21 12:01:10,774: ..MP-BIOS bug: 8254 timer not connected to IO-APIC
-2025-03-21 12:01:10,774: ...trying to set up timer (IRQ0) through the 8259A ...
-2025-03-21 12:01:10,775: ..... (found apic 0 pin 2) ...
-2025-03-21 12:01:10,818: ....... failed.
-2025-03-21 12:01:10,818: ...trying to set up timer as Virtual Wire IRQ...
-2025-03-21 12:01:10,862: ..... failed.
-2025-03-21 12:01:10,862: ...trying to set up timer as ExtINT IRQ...
-2025-03-21 12:01:10,910: ..... failed :(.
+----------------------------------------------------------------
+hw/uefi-vars: bug fixes
+hw/uefi-vars: support riscv and loongarch
+docs: update firmware.json spec
 
-Incidentally, this is the second case of a 'make check-functional'
-failure I've found in this pullreq, which suggests we should improve
-our CI coverage so that it's doing a check-functional test on
-a config with Rust enabled for at least the arm and x86 targets.
+----------------------------------------------------------------
 
-thanks
--- PMM
+Gerd Hoffmann (6):
+  hw/uefi: flush variable store to disk in post load
+  hw/uefi: fix error handling in uefi_vars_json_save
+  hw/uefi: fix error handling in uefi_vars_json_load
+  hw/uefi-vars-sysbus: allow for riscv virt
+  hw/uefi-vars-sysbus: allow for loongarch virt
+  docs/firmware: add feature flag for host uefi variable store
+
+ hw/loongarch/virt.c        |  2 ++
+ hw/riscv/virt.c            |  2 ++
+ hw/uefi/var-service-core.c |  1 +
+ hw/uefi/var-service-json.c | 24 +++++++++++++++++++-----
+ docs/interop/firmware.json | 12 +++++++++++-
+ hw/uefi/Kconfig            |  2 +-
+ 6 files changed, 36 insertions(+), 7 deletions(-)
+
+-- 
+2.49.0
+
 
