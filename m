@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB7CA6BAD0
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 13:38:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B636CA6BAD1
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 13:38:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvbbu-0001pm-NE; Fri, 21 Mar 2025 08:36:26 -0400
+	id 1tvbby-0001rk-1b; Fri, 21 Mar 2025 08:36:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tvbbs-0001oE-IK
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:36:24 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tvbbu-0001pq-Iv
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:36:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tvbbq-0008ML-Ho
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:36:23 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1tvbbs-0008NM-UZ
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 08:36:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742560581;
+ s=mimecast20190719; t=1742560584;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YP3W3SSziRWWK3FyAofg3Yc/0xIn1O5FtN33E19E/V0=;
- b=Y0nZyIzJW/ze6UXnayVmSaz/584Yzg0dF9MHgy5rAv5qsnvwwc9HdPoDSSuG7Fyj345Hyd
- Dxf66dI2fifnxj7ffJ+H4yeolGbfN93bshwSbfsrshEt2VjR8p+2eyBiGjy8va6BFSo0rI
- X0MGRFdC/0F7X9NT7RSSG31oeh0K6xw=
+ bh=y9+kbTvfIdmx0wX1y2B7qTJOI+nO+LcPh6NHT85VsFE=;
+ b=Xiq1TeNybNfZc+tz7Qytm1TLutwFutktaiy+8gkOU79f3eOxOFjHRNwEc1or6v7bhP7vqL
+ bxTafB6Myy1J4gmFfC/GJSgO5s02KYHtPzusuWyhrgF5xIN2uWCBz5SR1mPr1IHh68gQ0p
+ hSrnpp1m2dpQoNnIXRtmJk6grNW9Eec=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-247-CIlqUPMSMIGPGBQGd2M3Tg-1; Fri,
- 21 Mar 2025 08:36:17 -0400
-X-MC-Unique: CIlqUPMSMIGPGBQGd2M3Tg-1
-X-Mimecast-MFC-AGG-ID: CIlqUPMSMIGPGBQGd2M3Tg_1742560576
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-mDqv5EViP4a53ZHXuITt3Q-1; Fri,
+ 21 Mar 2025 08:36:19 -0400
+X-MC-Unique: mDqv5EViP4a53ZHXuITt3Q-1
+X-Mimecast-MFC-AGG-ID: mDqv5EViP4a53ZHXuITt3Q_1742560577
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BC6271933B4F; Fri, 21 Mar 2025 12:36:15 +0000 (UTC)
+ id 195C51933B57; Fri, 21 Mar 2025 12:36:17 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.45.224.38])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 413B9195609D; Fri, 21 Mar 2025 12:36:15 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9EF701954B38; Fri, 21 Mar 2025 12:36:16 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 28AE81800607; Fri, 21 Mar 2025 13:36:05 +0100 (CET)
+ id 3A3641800608; Fri, 21 Mar 2025 13:36:05 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -56,15 +56,15 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Song Gao <gaosong@loongson.cn>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 4/6] hw/uefi-vars-sysbus: allow for riscv virt
-Date: Fri, 21 Mar 2025 13:36:02 +0100
-Message-ID: <20250321123604.2126923-5-kraxel@redhat.com>
+Subject: [PULL 5/6] hw/uefi-vars-sysbus: allow for loongarch virt
+Date: Fri, 21 Mar 2025 13:36:03 +0100
+Message-ID: <20250321123604.2126923-6-kraxel@redhat.com>
 In-Reply-To: <20250321123604.2126923-1-kraxel@redhat.com>
 References: <20250321123604.2126923-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -90,46 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the device being added to riscv virt VMs.
+Allow the device being added to loongarch virt VMs.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20250319141159.1461621-5-kraxel@redhat.com>
+Message-ID: <20250319141159.1461621-6-kraxel@redhat.com>
 ---
- hw/riscv/virt.c | 2 ++
- hw/uefi/Kconfig | 2 +-
+ hw/loongarch/virt.c | 2 ++
+ hw/uefi/Kconfig     | 2 +-
  2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index dae46f4733cd..e517002fdfc7 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -57,6 +57,7 @@
- #include "hw/acpi/aml-build.h"
- #include "qapi/qapi-visit-common.h"
- #include "hw/virtio/virtio-iommu.h"
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index a5840ff96857..b6f5f6a3b546 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -38,6 +38,7 @@
+ #include "hw/mem/nvdimm.h"
+ #include "hw/platform-bus.h"
+ #include "hw/display/ramfb.h"
 +#include "hw/uefi/var-service-api.h"
- 
- /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
- static bool virt_use_kvm_aia_aplic_imsic(RISCVVirtAIAType aia_type)
-@@ -1935,6 +1936,7 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-     hc->plug = virt_machine_device_plug_cb;
- 
+ #include "hw/mem/pc-dimm.h"
+ #include "system/tpm.h"
+ #include "system/block-backend.h"
+@@ -1207,6 +1208,7 @@ static void virt_class_init(ObjectClass *oc, void *data)
+     object_class_property_set_description(oc, "v-eiointc",
+                             "Enable Virt Extend I/O Interrupt Controller.");
      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RAMFB_DEVICE);
 +    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_UEFI_VARS_SYSBUS);
  #ifdef CONFIG_TPM
      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_TPM_TIS_SYSBUS);
  #endif
 diff --git a/hw/uefi/Kconfig b/hw/uefi/Kconfig
-index ca6c2bc46a96..f139008b632b 100644
+index f139008b632b..046d55320e16 100644
 --- a/hw/uefi/Kconfig
 +++ b/hw/uefi/Kconfig
 @@ -1,3 +1,3 @@
  config UEFI_VARS
  	bool
--        default y if X86_64 || AARCH64
-+        default y if X86_64 || AARCH64 || RISCV64
+-        default y if X86_64 || AARCH64 || RISCV64
++        default y if X86_64 || AARCH64 || RISCV64 || LOONGARCH64
 -- 
 2.49.0
 
