@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4C9A6B76F
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:31:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8085A6B746
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 10:28:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvYeV-0006Tx-Gw; Fri, 21 Mar 2025 05:26:55 -0400
+	id 1tvYeT-0006TM-I1; Fri, 21 Mar 2025 05:26:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYeL-0006L3-Qt; Fri, 21 Mar 2025 05:26:46 -0400
+ id 1tvYeL-0006L4-R8; Fri, 21 Mar 2025 05:26:46 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1tvYeJ-00056F-Qf; Fri, 21 Mar 2025 05:26:44 -0400
+ id 1tvYeJ-00056m-Oi; Fri, 21 Mar 2025 05:26:44 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 21 Mar
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v1 05/22] hw/misc/aspeed_hace: Introduce 64-bit digest_addr
- variable for AST2700
-Date: Fri, 21 Mar 2025 17:26:01 +0800
-Message-ID: <20250321092623.2097234-6-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 06/22] hw/misc/aspeed_hace: Support accumulative mode for
+ direct access mode
+Date: Fri, 21 Mar 2025 17:26:02 +0800
+Message-ID: <20250321092623.2097234-7-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
 References: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
@@ -66,37 +66,44 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AST2700 CPU, based on the Cortex-A35, is a 64-bit processor with a 64-bit
-DRAM address space. To support future AST2700 updates, a new "digest_addr"
-variable is introduced with a 64-bit data type.
+Enable accumulative mode for direct access mode operations. In direct access
+mode, only a single source buffer is used, so the "iovec" count is set to 1.
+If "acc_mode" is enabled:
+1. Accumulate "total_req_len" with the current request length ("plen").
+2. Check for padding and determine whether this is the final request.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_hace.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/misc/aspeed_hace.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index 9771d6e490..8cf3f194a5 100644
+index 8cf3f194a5..d06158dffd 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -148,6 +148,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-     bool sg_acc_mode_final_request = false;
-     g_autofree uint8_t *digest_buf = NULL;
-     struct iovec iov[ASPEED_HACE_MAX_SG];
-+    uint64_t digest_addr = 0;
-     Error *local_err = NULL;
-     uint32_t total_msg_len;
-     size_t digest_len = 0;
-@@ -257,7 +258,8 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-         return;
+@@ -223,8 +223,21 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+             return;
+         }
+         iov[0].iov_base = haddr;
+-        iov[0].iov_len = plen;
+         i = 1;
++        if (acc_mode) {
++            s->total_req_len += plen;
++
++            if (has_padding(s, &iov[0], plen, &total_msg_len,
++                            &pad_offset)) {
++                /* Padding being present indicates the final request */
++                sg_acc_mode_final_request = true;
++                iov[0].iov_len = pad_offset;
++            } else {
++                iov[0].iov_len = plen;
++            }
++        } else {
++            iov[0].iov_len = plen;
++        }
      }
  
--    if (address_space_write(&s->dram_as, s->regs[R_HASH_DEST],
-+    digest_addr = deposit64(digest_addr, 0, 32, s->regs[R_HASH_DEST]);
-+    if (address_space_write(&s->dram_as, digest_addr,
-                             MEMTXATTRS_UNSPECIFIED,
-                             digest_buf, digest_len)) {
-         qemu_log_mask(LOG_GUEST_ERROR,
+     if (acc_mode) {
 -- 
 2.43.0
 
