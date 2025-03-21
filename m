@@ -2,94 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23B4A6B458
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:20:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1F3A6B462
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:26:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvVih-0006Sz-5I; Fri, 21 Mar 2025 02:19:03 -0400
+	id 1tvVo3-0007xa-GV; Fri, 21 Mar 2025 02:24:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1tvVie-0006SC-Kd
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 02:19:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1tvVic-0000kZ-FD
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 02:19:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742537936;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Qz2chVpcxbGPgEJPwxi8a+H5GTZAeWluocIaP9fnlJc=;
- b=QKuXOiGGMEB+wDst3JZfPiZXBeH0cF6zfFl1r0IQvBGnvJA/lWXzNgPybzygnJSd1albK3
- y1zTBZLgRsm4ohB0M8nIjC9gSeKxjuXA4507wiqqM1JMKoGjjl62h1VqU7c+XwfCiOivRv
- m9MD2EKTsxN6gM/cth4jufGjRUFlfYc=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-103-PelTCGFAMgSigq60Xpdplw-1; Fri, 21 Mar 2025 02:18:52 -0400
-X-MC-Unique: PelTCGFAMgSigq60Xpdplw-1
-X-Mimecast-MFC-AGG-ID: PelTCGFAMgSigq60Xpdplw_1742537932
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-ab39f65dc10so168391366b.1
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 23:18:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tvVo1-0007wy-1H; Fri, 21 Mar 2025 02:24:33 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tvVnz-0002yB-2s; Fri, 21 Mar 2025 02:24:32 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-22622ddcc35so2439415ad.2; 
+ Thu, 20 Mar 2025 23:24:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1742538268; x=1743143068; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PlARjNE1CUXCKD/qD10aXpmRUq70iN0LAmQNZZygo2Q=;
+ b=hbKb6jmPi3ay9bnMXkjcUOgGFx7wWXB9XBXeu5pHQOdn4LQlZUpmSLZNulxUm/IKlA
+ 79nV8kazj97D1ppNfGmnOiAIt6HrmkvHiZ8gHsOXGGf/4vo+nTC+PfNxYstpAWOGQog9
+ tlLyVoAhl/W7sZgRQTazWLqtAjy8IWbFOKR0DQGuHykCy0wmFFnCSt+GW4bvpOJBoH4g
+ awhauc7qVW+58reqhAYJh3YzM9AeObRevoDAHdt17gDWhq12fhmmZHquIbeoW6pnsQfT
+ WfQYLaB5jfebgiZwaaidrqvEWyuv6siY+MyTeS0x76Z/ERT5Qb1c7rZQv+iNhPvUToz7
+ /Ujg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742537931; x=1743142731;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Qz2chVpcxbGPgEJPwxi8a+H5GTZAeWluocIaP9fnlJc=;
- b=wDadyNmp6O3+vwxyQDJ9s/32u8uqDtUaDjOLvT74hlaNc8Gt/xEWEHY1mahMsCbIdw
- KDZZkLnU/O66TXFBhF4Ky8gHaOQVQE6KFiFbbG4Aaz66WWlOpj7nDbrAEYUMZyKzIQmC
- XdaZY2uBGNZdm3m7ohZYo4tSfD9wayNecBNOo/CTtCXb1VWDYsc2qvKlQTZdlChof894
- lDc6oP9OcZL180RJQyPTRIpPpd8H2kh+c5aOrbg17aYVkbQ5TXPkSuFCJOOORFEJtiiD
- 0LpJk8ilWK9/77BZ9KBWnpw71GeJ0fpTasqtIbdkw/AsijEX/pqRD2XX1hnFnh8nZp5n
- wxJQ==
+ d=1e100.net; s=20230601; t=1742538268; x=1743143068;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PlARjNE1CUXCKD/qD10aXpmRUq70iN0LAmQNZZygo2Q=;
+ b=oNVC44Z7sIKHfQyjbrkJKNwGk3mnmEE4I92M17+fW0aJwSx3Jrwneww/zKdYPGcZpS
+ vh2zmN6cizCmfTYk2SAZSjEYvRJiZPZLrKEnbouSCuYsF94Bd1HfxJ8yqQVqAjHjp7i7
+ i5PzKT3gILju2XDV9UhhVqFlNZf53r86ZgOB0CwgYnAEczRlIwKMfAK5cDeJSqcUBTC6
+ s5Fhf+X/4CZ7XMynlioaMekEzP83AMxpkBu0UZoEl32D6MhD9RjLsAaBzwSi3oQeQ/0Z
+ 2AIQIu1NDD1k4XDslmtgTdg6uckSjgnFzyv8Od0jNouyEMvvS3fPfCpQ6zDkTqz5g69Q
+ Rt9Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXeuiGrOYM6AALrrc+4g+pTnYoamU+h/GR+vRkYh6TZ3ztE3pTakQmK7A9wPQROnw1PDUqWgdg9uJPG@nongnu.org
-X-Gm-Message-State: AOJu0YwiXERf538oV2JoD/zyCF2L8R1GKl/vKl//dcrBOhXVrR/eP/XP
- F9YhAaWlNDnv97rqG8gzPChGNpb1m6g6jYaSULYOEPuq7cle1OGGsCSdY4Z+ikzSi7s+dSSBX4X
- GJoGpJVwWJQq9382VmA/Lg9i3vqNzNTC0Zmzhd50W6FaTdD3A9jJ4PMNsuezTf4gKTR2FePjUjc
- yLqHUB9WTwogmQ2oohzW70pUgDMBk=
-X-Gm-Gg: ASbGncsmXLASUuexJ4vkV/x5vG+URL8mfYGhV5w4aqQWwmWyr4iZyN/wkUnO+ry0nHT
- s5Q5fDv3KPG8Q9LHbh02M7+85xKUsmUjL1dh74PUwhZeX2H5vScw3p+Smy9kAInEAZfcJ0MOH5Q
- ==
-X-Received: by 2002:a17:906:c152:b0:ac3:c020:25e9 with SMTP id
- a640c23a62f3a-ac3f229c7c2mr237717866b.34.1742537931446; 
- Thu, 20 Mar 2025 23:18:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFdvuyY6oJsFV/zdyK5l0XhY+CVa/tEfUTIxpJEBBo5LseH52+xZoZAFiR3t5sea6jHHnvu3Kbk84emMki/p8I=
-X-Received: by 2002:a17:906:c152:b0:ac3:c020:25e9 with SMTP id
- a640c23a62f3a-ac3f229c7c2mr237714366b.34.1742537930770; Thu, 20 Mar 2025
- 23:18:50 -0700 (PDT)
+ AJvYcCUlKI7yRK+T1egVM1dPd3fk7AnVvJZY8TM5/8cSnXx5fC/R022q+votdBNMaPMv603yWDgiupTc/Q==@nongnu.org
+X-Gm-Message-State: AOJu0YxZUmGju4wJs9gfKjr2NBfafYS0TtM2G/vEUSX3TnsR1vt9yJjD
+ WSo4nfI0hXTl4dB4vRwIngQQW52bA2/x8eRitrAEqHDLQBBUivsxoQrhuw==
+X-Gm-Gg: ASbGnctLrEaJ8u5bsf6S228qwTG7Lf9oEdr0tvNB+dJeMUUhL0RgGpGbIoRUFlzivfO
+ oA2PVpr7JzxtDu9fFNHHQgQlwnWzVm31xU18fUhUKI19Ga5Vmy1dRM0R2o4A10Ik9gLJw+7hu3+
+ i7gM9pkmXRWe34EFu/VcSjz/muHKdjS0nbomQ4XmGwpJ/No2o1FoPB579+rEYTFfVJhupq8BKGS
+ +XShWzEjpheDVXP8j53RUJiGpMLCQRqpINloJ5Dwqn5Nc4UklcjhVGPt1TeJO9HhnQf7pxUhAMP
+ mNExCsGjrmLy2cHQ96jsok6HVhwFRjm5tePK1NgL7TtwCmB9DQ==
+X-Google-Smtp-Source: AGHT+IExyoG2M5z8+vDwolUUOXzxL9Ijy7raNBIIXh1FeDwqQ6NBiG8pZF484bYJ73Q+IQJTA7340g==
+X-Received: by 2002:a05:6a21:900a:b0:1f5:6680:82b6 with SMTP id
+ adf61e73a8af0-1fe43437130mr4383682637.38.1742538268393; 
+ Thu, 20 Mar 2025 23:24:28 -0700 (PDT)
+Received: from wheely.local0.net ([118.208.135.36])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-af8a2a4761fsm941381a12.65.2025.03.20.23.24.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Mar 2025 23:24:27 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	qemu-ppc@nongnu.org
+Subject: [PULL 00/12] ppc-for-10.0-2 queue
+Date: Fri, 21 Mar 2025 16:24:04 +1000
+Message-ID: <20250321062421.116129-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-References: <553b11b5-4cc4-4e59-9211-74c8cce51a96@linux.ibm.com>
- <CACGkMEvrOx=jN9iULQ_svJdqKt3guJuZNEOan9-eeLirLk7_=g@mail.gmail.com>
- <fa821773-225f-4e2b-8642-72d269802d96@linux.ibm.com>
- <CACGkMEsOx5bdpny3y9BfJsefNKbiXk2bG3+TPKtFyr7CWhz1FA@mail.gmail.com>
- <816c6468-9fb4-44d3-9bce-ecdc04f118be@linux.ibm.com>
-In-Reply-To: <816c6468-9fb4-44d3-9bce-ecdc04f118be@linux.ibm.com>
-From: Cindy Lu <lulu@redhat.com>
-Date: Fri, 21 Mar 2025 14:18:12 +0800
-X-Gm-Features: AQ5f1JqNMcMQH8nVYBp5UfjLMFtaqXdVxXU0B8Z8IufbMBWUHXb-NozrVz3ZlT8
-Message-ID: <CACLfguUoDaOPy3nxVGaUhkCO8KnZHqqGjn3CqriuvL6NnqF00w@mail.gmail.com>
-Subject: Re: VDPA MAC address problem
-To: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
- dtatulea@nvidia.com, eperezma <eperezma@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lulu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,86 +95,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 21, 2025 at 12:29=E2=80=AFPM Konstantin Shkolnyy <kshk@linux.ib=
-m.com> wrote:
->
-> On 3/20/2025 20:22, Jason Wang wrote:
-> > On Fri, Mar 21, 2025 at 12:45=E2=80=AFAM Konstantin Shkolnyy <kshk@linu=
-x.ibm.com> wrote:
-> >>
-> >> On 3/19/2025 19:58, Jason Wang wrote:
-> >>> On Thu, Mar 20, 2025 at 12:34=E2=80=AFAM Konstantin Shkolnyy <kshk@li=
-nux.ibm.com> wrote:
-> >>>> Upon reading this forum, I see that VHOST_VDPA_SET_CONFIG is
-> >>>> =E2=80=9Cdeprecated=E2=80=9D, and so VIRTIO_NET_CTRL_MAC_ADDR_SET mu=
-st be the right
-> >>>> method, but it=E2=80=99s apparently called too late.
-> >>>
-> >>> VHOST_VDPA_SET_CONFIG requires the vDPA parent support which is not
-> >>> necessarily there.
-> >>
-> >> The mlx5 driver doesn't do anything for VHOST_VDPA_SET_CONFIG. Intel's
-> >> driver, however, apparently stores the configuration. So, it appears,
-> >> Intel will avoid the problem... Perhaps mlx5 could do the same so that
-> >> QEMU can set the address before it starts the VM (QEMU doesn't have to
-> >> later let the VM change the config).
-> >
-> > The problem is that config space is not allowed to be written, that is
-> > why mlx5 doesn't implement the write method.
-> >
-> >> Conceptually, setting the address
-> >> by QEMU cmdline doesn't look different from setting it by "vdpa dev ad=
-d".
-> >
-> > It's kind of different.
-> >
-> > E.g the device may not even have VIRTIO_NET_F_MAC feature etc.
->
-> I'm not sure I understand... This is the MAC address returned by
-> VHOST_VDPA_GET_CONFIG. If mlx5 allows it to be set by "vdpa dev add",
-> shouldn't it also allow it to be set by VHOST_VDPA_SET_CONFIG called by
-> virtio_net_device_realize(), before the VM exists.
->
-> When VM starts running, it queries this MAC address and QEMU fetches it
-> by VHOST_VDPA_GET_CONFIG. But, because VHOST_VDPA_SET_CONFIG hasn't
-> stored it, it fetches a wrong stale address.
->
-Hi Konstantin
-This buggy process is functioning in the MLX driver as follow steps
+The following changes since commit 1dae461a913f9da88df05de6e2020d3134356f2e:
 
-0: kernel creates VDPA device [MLX: if the mac was not set  while
-creating, the mac is 0 in hardware]
+  Update version for v10.0.0-rc0 release (2025-03-18 10:18:14 -0400)
 
-1. Get Mac from the cmd line.if the cmdline is 0, qemu will create a
-random mac address, save it in VirtIONet->mac and
-VirtIONet->nic_conf.macaddr
+are available in the Git repository at:
 
-3. qemu called virtio_net_device_realize()
-in this function, the mac address in VirtIONet->mac will set to kernel
-while calling vhost_net_set_config() [ MLX not supported  ]
+  https://gitlab.com/npiggin/qemu.git tags/pull-ppc-for-10.0-2-20250321
 
-4. qemu boot called vhost_net_get_config, get the hardware mac address
-and saved in VirtIONet->nic_conf.macaddr
-this will read the mac from the kernel and change the mac address to
-kernel's mac [ for MLX, if the hardware mac is 0, using the cmdline
-mac(or random mac )  ]
-NOTE the information in VirtIONet->mac was not change
+for you to fetch changes up to 73c0c904fc99e2ceecbbded84ec76d40d3f2daae:
 
-5, the qemu will call vhost_vdpa_net_cvq_load(). Even if the cvq/svq
-not enabled in qemu cmdline
-this function will set the mac in VirtIONet->mac to the kernel.[mlx support=
-]
+  target/ppc: Fix e200 duplicate SPRs (2025-03-21 13:54:36 +1000)
 
-This will result in QEMU's MAC address differing from the hardware's
-MAC address.
-So our fix is
-1. Add a tool for users to set the MAC address before QEMU loads.
-2. Include a parameter in QEMU to check the MAC address before
-booting; QEMU will fail to load the system if the MAC addresses do not
-match.
+----------------------------------------------------------------
+* Fix a KVM SMP guest hang. This is not completely trivial, but just
+  small enough to merge it. If this causes any more problems, we can
+  revert it and the timebase patch which exposed the underlying issue
+  for release.
+* Fix a bunch of Coverity issues reported introduced in ppc, mostly in
+  powernv code.
+* Fix a NetBSD boot bug on mac99 caused by VSX/VMX decodetree rewrite.
+* Fix the default CPU selection for older spapr machines.
 
-Thanks
+----------------------------------------------------------------
+BALATON Zoltan (2):
+      ppc/amigaone: Check blk_pwrite return value
+      ppc/amigaone: Constify default_env
 
-Cindy
+Harsh Prateek Bora (1):
+      ppc/spapr: fix default cpu for pre-9.0 machines.
 
+Nicholas Piggin (9):
+      ppc/spapr: Fix RTAS stopped state
+      ppc/xive: Fix typo in crowd block level calculation
+      pnv/xive: Fix possible undefined shift error in group size calculation
+      ppc/xive2: Fix logical / bitwise comparison typo
+      ppc/spapr: Fix possible pa_features memory overflow
+      ppc/pnv: Move the PNOR LPC address into struct PnvPnor
+      ppc/pnv: Fix system symbols in HOMER structure definitions
+      target/ppc: Fix facility interrupt checks for VSX
+      target/ppc: Fix e200 duplicate SPRs
+
+ hw/intc/xive.c                      |  29 +++++-
+ hw/intc/xive2.c                     |  21 ++--
+ hw/ppc/amigaone.c                   |  16 +--
+ hw/ppc/pnv.c                        |   2 +-
+ hw/ppc/pnv_bmc.c                    |   4 +-
+ hw/ppc/pnv_core.c                   |   6 +-
+ hw/ppc/pnv_occ.c                    | 201 +++++++++++++++++-------------------
+ hw/ppc/pnv_pnor.c                   |   2 +
+ hw/ppc/spapr.c                      |   2 +
+ hw/ppc/spapr_cpu_core.c             |   6 ++
+ hw/ppc/spapr_rtas.c                 |   5 +-
+ include/hw/ppc/pnv_pnor.h           |   1 +
+ target/ppc/cpu.h                    |  11 ++
+ target/ppc/cpu_init.c               |   8 --
+ target/ppc/excp_helper.c            |   4 +
+ target/ppc/translate/vmx-impl.c.inc |   2 +-
+ target/ppc/translate/vsx-impl.c.inc |  20 ++--
+ 17 files changed, 194 insertions(+), 146 deletions(-)
 
