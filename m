@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB794A6B367
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 04:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6296FA6B34A
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 04:24:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvTFA-00032c-0a; Thu, 20 Mar 2025 23:40:24 -0400
+	id 1tvSyY-0007Gn-Pt; Thu, 20 Mar 2025 23:23:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1tvTF1-0002wy-Ct
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 23:40:16 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1tvTEz-00080E-Dn
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 23:40:15 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2243803b776so7815ad.0
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 20:40:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1742528411; x=1743133211;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/kByEk8Ezb+MN3eJtjKV8YMAmgK1UNNA7qz2bIqmhrE=;
- b=kh4yb1YraM1Ab2zIjMUHdgay+bR+bcKe3mynm+m8z6OErgj9s1+zsKdsDUqdIuElFV
- lIV1yd11lyqjgPvgRqY1ocam8ejS4ErVI2UI59b5m5WLi4P1OTOAGWHr4jZrJYChncJv
- rB9DM//lrucraelTYwZxehv98S5eQBUzi07iPlyzTmYPl6x8Z/b3ZQUz/nzN6mug4CEq
- wAFMs+vuaI+bqsAAAK0KpIrH20l5qbjX6S/Yb2rCV4YACer54bQmWWexylRRO+0XuENx
- vzc5PTn16T/pDRbQCHSBW1mJpo31WEHSiyLDjM054mnK4aIsCp+H8vXJBr5BuKPoRxD6
- hvig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742528411; x=1743133211;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/kByEk8Ezb+MN3eJtjKV8YMAmgK1UNNA7qz2bIqmhrE=;
- b=gRkbKu86Vfm+/Cn6Ut8VWcfri6+VqLPWGkqSipI1XxG0Z4FwjjS7puwVu/qgCkfmwU
- tBmcEYoaZGqjm0PqstnW0fgxWzjL0IpPXmgV/P3YQR7o4CEJj3O2/B3GmeKQ3o+MHZFf
- FmgSbSaqvNpDqOB5SOh6ALzUOL3HysXd8NDYVCCnbBf2FUa2alkQM+W0wt1DBwzvyC0Q
- jErehQxaWrtHi/eYizmgVCANXnu6UPQbfmhdD7hUR9tCgpAIWQnNx62yLPkjdGZJXuPf
- nRBsRaFdbeaexHP3AisBKDfgJR+uMhUy59MHQEYNSr4Ic9t+kpE8yXMHerADlFYie2Ty
- 6Zpg==
-X-Gm-Message-State: AOJu0YwBMV+Qx87RtyYN3M9J3gQZteGcNVAY31952NanIRSA2kGPzr/g
- B0V8L4e2XsTLvF3PsEfjy5gi6sQ1JkmIlti0yra0x1yadb/9vq/ugMz+63of1hcHCDkGuX9N/a+
- F0UUbwDvl
-X-Gm-Gg: ASbGncs1Otlk6dY+187cXFehntdfas/h8BjwGEhZyngk8IHnNMyl2y/n+F5Yh1mpJee
- 2Eux0TBB2/ih2bXs/rpt3Fk2Yl6oMJjZSzEF7iUZZldzqDSDjkqsCRDFA4Vduxeh7H/WjwY/Lc1
- /ynr3LrqpDMToTZE53BM7nfl7y5pyc4FvmwUybxm4UCxS7L/WJJ/GMBT+JxiQWxBOMM8Ryfj5dI
- SlHLRPbjWC6CDpscwodRhK3Qg7oOERTuOabrQFYFMYoquHo1x8iYyIxDT4h4Vv9KDIhZ6yfZCU/
- kQS0oHLhh2oRcvGldi2pdVJgV+y0d796NERxUZoiGZy13MRnF/EwpsgND14HlE0kVQ==
-X-Google-Smtp-Source: AGHT+IHpvR62fNkaBd5UeLAcRxSKjSbM3zgDh2KyVM+gyDC0wpvpfyXMmxFS4OKH7tcxaGJdGTOvwg==
-X-Received: by 2002:a17:903:2d2:b0:223:6744:bfb9 with SMTP id
- d9443c01a7336-22780e02a15mr34789405ad.41.1742528411534; 
- Thu, 20 Mar 2025 20:40:11 -0700 (PDT)
-Received: from Hyman-Dev-Euler.zelin.local ([103.85.74.93])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-227811b8075sm6079725ad.128.2025.03.20.20.40.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Mar 2025 20:40:11 -0700 (PDT)
-From: yong.huang@smartx.com
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Hyman Huang <yong.huang@smartx.com>, dengpc12@chinatelecom.cn
-Subject: [RFC 3/3] vdagent: Drop blocker to support migration
-Date: Fri, 21 Mar 2025 11:38:13 +0800
-Message-Id: <428847678b4d47b4469236da2d888db18cc4c31c.1742527956.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1742527956.git.yong.huang@smartx.com>
-References: <cover.1742527956.git.yong.huang@smartx.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tvSyW-0007Fr-AM; Thu, 20 Mar 2025 23:23:12 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1tvSyT-0001p1-5F; Thu, 20 Mar 2025 23:23:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1742527389; x=1774063389;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=VW905S5AtEa+aqLunlCnNTDg/VfBoD1PewmutLdb2ys=;
+ b=byipzbQuVRgfemBYTM9z+GRLDhsScLaCJnIrKfROjXwc/Qt1LaY2koER
+ xD03xqp1GVh2pHO+JcVrSLN3LJDa8n0y6QXk0xjHAgBhBkgLu2LKG8vKr
+ tTPY3LzKv5wBCU8Wkd0yaXx519M3frxh+S1ehmj+2tM0b4SeOm77msl2+
+ L76k3E4FJ0nlC7LMfKBwuKKBCa27SuVcegU+L/tPsp6oppAlhtnn2ZfGN
+ Bc71Wyg3/IrI370JAwZjfGiSlZKYW53KzvTQ/d+vgCUSo85tBp76XeRN/
+ MgoMHFkHrxsi22q7UgdDHM3FC/P2qkWSHv6HDyJGhHkimHVgwQb3U6d6O Q==;
+X-CSE-ConnectionGUID: yvOqtbflRF2t4qCsVukOAQ==
+X-CSE-MsgGUID: 5ua2EPnfRmqiBPb3I/64Jg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="43973089"
+X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="43973089"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2025 20:23:06 -0700
+X-CSE-ConnectionGUID: zOxVwuLWQFi4cQC1qFTZ9g==
+X-CSE-MsgGUID: PRbIxo2HQ6KErz7zyEbsEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,263,1736841600"; d="scan'208";a="128114389"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 20 Mar 2025 20:23:03 -0700
+Date: Fri, 21 Mar 2025 11:43:16 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Shaoqin Huang <shahuang@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Eric Auger <eauger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [RFC v2 0/5] accel/kvm: Support KVM PMU filter
+Message-ID: <Z9zgVKtZyEx3MKuf@intel.com>
+References: <20250122090517.294083-1-zhao1.liu@intel.com>
+ <2fe2a98d-f70f-4996-b04e-d81f66d5863f@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2fe2a98d-f70f-4996-b04e-d81f66d5863f@redhat.com>
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,63 +88,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang <yong.huang@smartx.com>
+Hi Shaoqin,
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- ui/vdagent.c | 11 -----------
- 1 file changed, 11 deletions(-)
+Thank you very much for testing!
 
-diff --git a/ui/vdagent.c b/ui/vdagent.c
-index 4635e8fa56..36b0568135 100644
---- a/ui/vdagent.c
-+++ b/ui/vdagent.c
-@@ -6,7 +6,6 @@
- #include "qemu/option.h"
- #include "qemu/units.h"
- #include "hw/qdev-core.h"
--#include "migration/blocker.h"
- #include "migration/vmstate.h"
- #include "ui/clipboard.h"
- #include "ui/console.h"
-@@ -33,9 +32,6 @@
- struct VDAgentChardev {
-     Chardev parent;
- 
--    /* TODO: migration isn't yet supported */
--    Error *migration_blocker;
--
-     /* config */
-     bool mouse;
-     bool clipboard;
-@@ -673,10 +669,6 @@ static void vdagent_chr_open(Chardev *chr,
-     return;
- #endif
- 
--    if (migrate_add_blocker(&vd->migration_blocker, errp) != 0) {
--        return;
--    }
--
-     vd->mouse = VDAGENT_MOUSE_DEFAULT;
-     if (cfg->has_mouse) {
-         vd->mouse = cfg->mouse;
-@@ -998,15 +990,12 @@ static void vdagent_chr_init(Object *obj)
- 
-     buffer_init(&vd->outbuf, "vdagent-outbuf");
-     vmstate_register(NULL, 0, &vmstate_vdagent, vd);
--    error_setg(&vd->migration_blocker,
--               "The vdagent chardev doesn't yet support migration");
- }
- 
- static void vdagent_chr_fini(Object *obj)
- {
-     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(obj);
- 
--    migrate_del_blocker(&vd->migration_blocker);
-     vdagent_disconnect(vd);
-     if (vd->mouse_hs) {
-         qemu_input_handler_unregister(vd->mouse_hs);
--- 
-2.27.0
+> I tried your series on ARM64, but it reports error at compile time, here is
+> the error output:
+> 
+> qapi/kvm.json:59:Unexpected indentation.
+
+I guess this is caused by my invalid format and sphinx complains that,
+as Markus figured out :-(
+
+What about the following change?
+
+diff --git a/qapi/kvm.json b/qapi/kvm.json
+index 31447dfeffb0..b383dfd9a788 100644
+--- a/qapi/kvm.json
++++ b/qapi/kvm.json
+@@ -54,11 +54,6 @@
+ ##
+ # @KVMPMUX86DefalutEvent:
+ #
+-# x86 PMU event encoding with select and umask.
+-# raw_event = ((select & 0xf00UL) << 24) | \
+-#              (select) & 0xff) | \
+-#              ((umask) & 0xff) << 8)
+-#
+ # @select: x86 PMU event select field, which is a 12-bit unsigned
+ #     number.
+ #
+
+> While I compiled it on x86, everything is ok. Could you please check why it
+> failed on ARM64?
+
+Maybe your Arm64 environment doesn't have sphinx_rtd_theme?
+
+You can check it by:
+
+python3 -m pip show sphinx_rtd_theme
+
+> By the mean time, I will review and test this series.
+
+Thank you again! I also plan to refresh v3, in maybe 1 or 2 weeks.
+
+Best Regards,
+Zhao
+
 
 
