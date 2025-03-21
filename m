@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6EAA6C1CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 18:44:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC244A6C1CE
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 18:44:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvgPT-0000Y3-6i; Fri, 21 Mar 2025 13:43:55 -0400
+	id 1tvgPu-0000rw-M9; Fri, 21 Mar 2025 13:44:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvgPK-0000XH-Rc
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 13:43:47 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tvgPi-0000ox-Th
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 13:44:10 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tvgPJ-0006Gx-3P
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 13:43:46 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3997205e43eso1864667f8f.0
- for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 10:43:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tvgPg-0006JI-F3
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 13:44:10 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-225df540edcso70710615ad.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 10:44:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742579023; x=1743183823; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1742579047; x=1743183847; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ffp+FJ6iWhSQvdeCaei1t2HUUY55pSIFlatWQrOLzXE=;
- b=ZZ6BAw9RZlxoWZ0mgDEOParCUu6Vdpq7aIKvOwrSmo6fLrWzEF01eY6axAVAtJffcE
- Vk7FW2hJ4v8pLWnRqE3VTAIJ9nGKPgQEQnXmiMM1vcPHxIwuj3HK1CdmeVDnHSoJQ/VE
- htFAeHIY5q7c/zHxVVlfcHG7BedX5UFbDjfkLRhF6M7+2Tc40uK3pGP7Ge9C8T0VWKcP
- fzK0d7kMO7EOCIU3QCNctPha3xC7yW26N5EN9OsvEHOBVKt7HNjLPlMphiZ/Hz93SMXk
- Oot6WVAlUU6V/p53wTrJdAFZBpykY4OJUnhpr+yXZWhI5iNmZqw5YdLiOWLKe3vW25Gq
- v0Rg==
+ bh=Za8Rfata/87/pFSY+a1ow0zqOmujqb8k6uqizHtIpjE=;
+ b=rP1rl+nIO/Sed+b+6MIgvj8YAM6wvTBmX8uyEQZuoZUdQUEfGZCzZLBC1mL+Lxbv/y
+ 45euELh+jufDUcTN3dx9XzTxA3mNvyCiGSJvDztuFKVGOc2sfEaAVRjZy1g5lI7fG5uZ
+ jX/dq/jBIKf3DUtIlXvZIDau2LpkXFWsy8/MElMTxFKRy70Rh924ANyiyj93nPGBCs6n
+ ntQBHZNXozDXCsEcJ6uD8TY/R7gKSI+VfWbbnNKFRrbxwq9t0wJMo1nzd3UjES6u6vMX
+ r5mNQKvl16Z4V6IRnrl+lGLtAn+HXGa+XrYlH3VPh5qe1YMQ0IG9abD2AtlJKUKXq70G
+ KZ1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742579023; x=1743183823;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1742579047; x=1743183847;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ffp+FJ6iWhSQvdeCaei1t2HUUY55pSIFlatWQrOLzXE=;
- b=b8E/7Ok4D1Rrg3vn1pHRFy8SAImX9/5GA2vsGszFYoZ1uVwIM7gljQJe6Oec5f6lcV
- PHVd/RtgxZxaCawHB7G9IAxdg0dG/nSkz0HPZKUuuzCzjClSLL4/28qSLbJZDsSS28kt
- 0wfj2HPqdnYpuzdCwYEc9J1GctWL0foubU/NguVjyygWgYEAzrQGDypoQiU4VzCIIJw1
- bRhEh12nqpwUIK8Clyk9iDXBhXBSH+LUx8x7ZHRpcBSM7aYZjcC3MH7ZyWNZJRc14Zhp
- FtECWkj61Y7bDimDnD4q5p3pD5eHEK7NV6blKBfFWXjcIjcXh1/q/xtsE20XBcp+OWr9
- b1oQ==
+ bh=Za8Rfata/87/pFSY+a1ow0zqOmujqb8k6uqizHtIpjE=;
+ b=CizyJ8IurZw3VKEcCZkSU/8rIhp9zWPa8n8hhYoxiJb15rnLeqKqOl4da1cTr7BZv8
+ sENgqEFOm2FCAocWY5mh0ED6m1SP97LpqrmcYZExl9jIjZNAzoc2jfYOU6MAXctka0HU
+ tb30PaiJHaWM+qHrlzG/wfOl+D19tO4vDJl1u/t2cPIbmUnIKdvUD25Di9O/YhEjJbcr
+ v4hCOxcIzCb2xlg9Mp7kkqdIN27qW7QZbikPYPq7u2wrUPAQjO+XhrKi2zW1YZwdNWtC
+ hChhQ9CCxvpVtIuK6v9bAV173Rw6BT+BrqOrnXnz19s+e12+7bhGSDiT+iIMhxCOWdDZ
+ gcQA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXSTvoWQqUa0Ihh9KIaWbZCzHIyMrSq02wY4B3XSIVgjCKssb9melOUVARf5K+VrNbakuqrjV7UaZK/@nongnu.org
-X-Gm-Message-State: AOJu0Ywgm+b5sBuOTRgyov4EEWft7UOIIDFepFTs1wiZhGg66QewaGuP
- ZjN1ZPf2daVvuJc0GwLgF7OEp0hKc+IVt90XvM0YLp2JrPbQboGuF8Ug3vaosiU=
-X-Gm-Gg: ASbGncv1us9TlccVBSKeH7taUwFao2vMF+tOJI4XNr5JKH1svDq+addqbs62pnnBTGo
- YBTzL7vdGegvAkzeEefnPgyA8MfDnZ7MsYw8mZVtpd9jFXk0dh0ghcsUBAHaQyR4rw6YZ6bzzzp
- o2JDteBPlnpGbJGOfsrdPO9vQxqN+uF5MqzTnjAonS+5ePXlzR+gXf6quIKxkRdwxH8nWL6FRzS
- dOx83OqnPQz/koJN0Ocfr8caZQ94Or9oF+vNwENgYfx0gatE2j67cfrg48H2eCuPYw5nrJGBeqj
- iunmpd2M9pZ9Ai7EbQ4O9I4BoBmDxyfqY6XaxkA9VIqO4XCAMyJFzf993iyKpJ3O8JMBp5qSnib
- IGy4QnGUftfdf
-X-Google-Smtp-Source: AGHT+IFTfFoD1qdu+7RkrahLO3/ZwWjjR5uBm77eLJfzrzEl7v4xe94nqvd8rCKdvOWLeVJUBI0sGA==
-X-Received: by 2002:a05:6000:1fa4:b0:391:952:c730 with SMTP id
- ffacd0b85a97d-3997f8f8c1fmr4074869f8f.11.1742579023278; 
- Fri, 21 Mar 2025 10:43:43 -0700 (PDT)
-Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9efe61sm2973189f8f.97.2025.03.21.10.43.42
+ AJvYcCVrC7g6AgM/9jOx6u+/AJEjOgJPfVIhsp1EP/fsfxTDWiwv+joWwNVuz3LUN7vJ328t/lrZpBVhhdWh@nongnu.org
+X-Gm-Message-State: AOJu0Yyai2V8KXGMvraxhTDKGq2lXPQyZpKnX9jtd2nMHprjUUinfdY+
+ Cw4+X555qix2yEOj4rb7Qr5wKfZ0RtguGsUqYyZzDqDQX9gBDlo2V0r3MhO9OA78qrSL81AzXW/
+ 8
+X-Gm-Gg: ASbGncug68GTKKcVGasomlIo8LLnOaG2btlJYU7PZVQOsKWhV5eri9fN6JiUEvbpjPj
+ yBmzbBg+aFdJrYw+MJlsVZWojJQ299sHtxJzkSv+7Gy3eIyaa/7n6GYaDUzPNEfiXHACXk5WKzx
+ Ev5RMRbubuZWD4iqQddcbtjc0f3fPuSUx6OGlq9OxwzUyiDoaNFUGJg05VVvH+WBIaBd3FY3JD0
+ MfDW28+UhNsFvbMW8PPFLLsLLDCib+Ysxhtncvuze7+vZ+u+NlUzGO475DcS5DmGPjF/izSydbr
+ /EfJ+BjgHFcUS2wE/AO2uL6Pvaxl1mI6x1ReOyx1BclggMfDbY+ywu/bGEU=
+X-Google-Smtp-Source: AGHT+IEzUFRIHfZE6dqIpzDUI4EZBVqI8w3S2KasQMwvZwuVE1CF96Pi8J8VJ9RO1g78WczB602FQw==
+X-Received: by 2002:a05:6a21:3a8b:b0:1f3:1e5c:c655 with SMTP id
+ adf61e73a8af0-1fe427b15ddmr6619427637.6.1742579046869; 
+ Fri, 21 Mar 2025 10:44:06 -0700 (PDT)
+Received: from [172.16.224.217] ([209.53.90.26])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73905fd5c90sm2344708b3a.51.2025.03.21.10.44.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Mar 2025 10:43:42 -0700 (PDT)
-Message-ID: <b4556abe-2b9e-46d1-9135-498bc30e8a91@linaro.org>
-Date: Fri, 21 Mar 2025 18:43:41 +0100
+ Fri, 21 Mar 2025 10:44:06 -0700 (PDT)
+Message-ID: <5b6baf4f-0b84-4d07-8c3f-d01b9b9a0678@linaro.org>
+Date: Fri, 21 Mar 2025 10:44:05 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.0 1/1] goldfish_rtc: keep time offset when resetting
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc: Frederik Du Toit Lotter <fred.lotter@canonical.com>,
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Laurent Vivier <laurent@vivier.eu>, Anup Patel <anup.patel@wdc.com>,
- Alistair Francis <Alistair.Francis@wdc.com>
-References: <20250321081255.30564-1-heinrich.schuchardt@canonical.com>
- <5dd32cd5-ff51-4d28-bbaa-3153493dec39@linaro.org>
- <3252f0c4-654d-4066-8f9c-87d56d144a6f@canonical.com>
+Subject: Re: [PATCH-for-10.1 1/4] tcg: Always define TCG_GUEST_DEFAULT_MO
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <3252f0c4-654d-4066-8f9c-87d56d144a6f@canonical.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Anton Johansson <anjo@rev.ng>
+References: <20250321125737.72839-1-philmd@linaro.org>
+ <20250321125737.72839-2-philmd@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250321125737.72839-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,92 +104,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/3/25 17:10, Heinrich Schuchardt wrote:
-> On 21.03.25 17:08, Philippe Mathieu-Daudé wrote:
->> Hi Heinrich,
->>
->> On 21/3/25 09:12, Heinrich Schuchardt wrote:
->>> Currently resetting leads to resynchronizing the Goldfish RTC with the
->>> system clock of the host. In real hardware an RTC reset would not change
->>> the wall time. Other RTCs like pl031 do not show this behavior.
->>>
->>> Move the synchronization of the RTC with the system clock to the 
->>> instance
->>> realization.
->>>
->>
->> Cc: qemu-stable@nongnu.org
->> Fixes: 9a5b40b8427 ("hw: rtc: Add Goldfish RTC device")
->>
->>> Reported-by: Frederik Du Toit Lotter <fred.lotter@canonical.com>
->>> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
->>> ---
->>>   hw/rtc/goldfish_rtc.c | 14 +++++++-------
->>>   1 file changed, 7 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/hw/rtc/goldfish_rtc.c b/hw/rtc/goldfish_rtc.c
->>> index 0f1b53e0e4..203a343511 100644
->>> --- a/hw/rtc/goldfish_rtc.c
->>> +++ b/hw/rtc/goldfish_rtc.c
->>> @@ -239,15 +239,8 @@ static const VMStateDescription 
->>> goldfish_rtc_vmstate = {
->>>   static void goldfish_rtc_reset(DeviceState *dev)
->>>   {
->>>       GoldfishRTCState *s = GOLDFISH_RTC(dev);
->>> -    struct tm tm;
->>>       timer_del(s->timer);
->>> -
->>> -    qemu_get_timedate(&tm, 0);
->>> -    s->tick_offset = mktimegm(&tm);
->>> -    s->tick_offset *= NANOSECONDS_PER_SECOND;
->>> -    s->tick_offset -= qemu_clock_get_ns(rtc_clock);
->>> -    s->tick_offset_vmstate = 0;
->>>       s->alarm_next = 0;
->>>       s->alarm_running = 0;
->>>       s->irq_pending = 0;
->>> @@ -258,6 +251,7 @@ static void goldfish_rtc_realize(DeviceState *d, 
->>> Error **errp)
->>>   {
->>>       SysBusDevice *dev = SYS_BUS_DEVICE(d);
->>>       GoldfishRTCState *s = GOLDFISH_RTC(d);
->>> +    struct tm tm;
->>>       memory_region_init_io(&s->iomem, OBJECT(s),
->>>                             &goldfish_rtc_ops[s->big_endian], s,
->>> @@ -267,6 +261,12 @@ static void goldfish_rtc_realize(DeviceState *d, 
->>> Error **errp)
->>>       sysbus_init_irq(dev, &s->irq);
->>>       s->timer = timer_new_ns(rtc_clock, goldfish_rtc_interrupt, s);
->>> +
->>> +    qemu_get_timedate(&tm, 0);
->>> +    s->tick_offset = mktimegm(&tm);
->>> +    s->tick_offset *= NANOSECONDS_PER_SECOND;
->>> +    s->tick_offset -= qemu_clock_get_ns(rtc_clock);
->>
->> OK
->>
->>> +    s->tick_offset_vmstate = 0;
->>
->> This last line is pointless. Otherwise:
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Thanks for reviewing. Is the DeviceState structure fill with 0x00 when 
-> allocated?
-
-The QOM hierarchy of this device is:
-
-GOLDFISH_RTC -> SYS_BUS_DEVICE -> DEVICE -> OBJECT
-
-When objects are created, object_new() ends up calling
-object_initialize_with_type() which calls memset(0).
-
-Objects initialized "in place" via object_initialize_child()
-also end calling object_initialize() -> object_initialize_with_type()
-then memset(0).
-
-So yes, QOM-based objects have their state zero-initialized.
-
-Regards,
-
-Phil.
+T24gMy8yMS8yNSAwNTo1NywgUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgd3JvdGU6DQo+IFdl
+IG9ubHkgcmVxdWlyZSB0aGUgVENHX0dVRVNUX0RFRkFVTFRfTU8gZm9yIE1UVENHLWVuYWJs
+ZWQNCj4gZnJvbnRlbmRzLCBvdGhlcndpc2Ugd2UgdXNlIGEgZGVmYXVsdCB2YWx1ZSBvZiBU
+Q0dfTU9fQUxMLg0KPiANCj4gSW4gb3JkZXIgdG8gc2ltcGxpZnksIHJlcXVpcmUgdGhlIGRl
+ZmluaXRpb24gZm9yIGFsbCB0YXJnZXRzLA0KPiBkZWZpbmluZyBpdCBmb3IgaGV4YWdvbiwg
+bTY4aywgcngsIHNoNCBhbmQgdHJpY29yZS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFBoaWxp
+cHBlIE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGluYXJvLm9yZz4NCj4gLS0tDQo+ICAgdGFy
+Z2V0L2hleGFnb24vY3B1LXBhcmFtLmggfCAzICsrKw0KPiAgIHRhcmdldC9tNjhrL2NwdS1w
+YXJhbS5oICAgIHwgMyArKysNCj4gICB0YXJnZXQvcngvY3B1LXBhcmFtLmggICAgICB8IDMg
+KysrDQo+ICAgdGFyZ2V0L3NoNC9jcHUtcGFyYW0uaCAgICAgfCAzICsrKw0KPiAgIHRhcmdl
+dC90cmljb3JlL2NwdS1wYXJhbS5oIHwgMyArKysNCj4gICBhY2NlbC90Y2cvdHJhbnNsYXRl
+LWFsbC5jICB8IDQgLS0tLQ0KPiAgIDYgZmlsZXMgY2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygr
+KSwgNCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS90YXJnZXQvaGV4YWdvbi9j
+cHUtcGFyYW0uaCBiL3RhcmdldC9oZXhhZ29uL2NwdS1wYXJhbS5oDQo+IGluZGV4IDQ1ZWU3
+YjQ2NDA5Li4yZDU3ZWE2Y2FmOSAxMDA2NDQNCj4gLS0tIGEvdGFyZ2V0L2hleGFnb24vY3B1
+LXBhcmFtLmgNCj4gKysrIGIvdGFyZ2V0L2hleGFnb24vY3B1LXBhcmFtLmgNCj4gQEAgLTIz
+LDQgKzIzLDcgQEANCj4gICAjZGVmaW5lIFRBUkdFVF9QSFlTX0FERFJfU1BBQ0VfQklUUyAz
+Ng0KPiAgICNkZWZpbmUgVEFSR0VUX1ZJUlRfQUREUl9TUEFDRV9CSVRTIDMyDQo+ICAgDQo+
+ICsvKiBNVFRDRyBub3QgeWV0IHN1cHBvcnRlZDogcmVxdWlyZSBzdHJpY3Qgb3JkZXJpbmcg
+Ki8NCj4gKyNkZWZpbmUgVENHX0dVRVNUX0RFRkFVTFRfTU8gICAgICAgIFRDR19NT19BTEwN
+Cj4gKw0KPiAgICNlbmRpZg0KPiBkaWZmIC0tZ2l0IGEvdGFyZ2V0L202OGsvY3B1LXBhcmFt
+LmggYi90YXJnZXQvbTY4ay9jcHUtcGFyYW0uaA0KPiBpbmRleCA3YWZiZjZkMzAyZC4uMWE5
+MDllYWExM2UgMTAwNjQ0DQo+IC0tLSBhL3RhcmdldC9tNjhrL2NwdS1wYXJhbS5oDQo+ICsr
+KyBiL3RhcmdldC9tNjhrL2NwdS1wYXJhbS5oDQo+IEBAIC0xNyw0ICsxNyw3IEBADQo+ICAg
+I2RlZmluZSBUQVJHRVRfUEhZU19BRERSX1NQQUNFX0JJVFMgMzINCj4gICAjZGVmaW5lIFRB
+UkdFVF9WSVJUX0FERFJfU1BBQ0VfQklUUyAzMg0KPiAgIA0KPiArLyogTVRUQ0cgbm90IHll
+dCBzdXBwb3J0ZWQ6IHJlcXVpcmUgc3RyaWN0IG9yZGVyaW5nICovDQo+ICsjZGVmaW5lIFRD
+R19HVUVTVF9ERUZBVUxUX01PICAgICAgICBUQ0dfTU9fQUxMDQo+ICsNCj4gICAjZW5kaWYN
+Cj4gZGlmZiAtLWdpdCBhL3RhcmdldC9yeC9jcHUtcGFyYW0uaCBiL3RhcmdldC9yeC9jcHUt
+cGFyYW0uaA0KPiBpbmRleCBlZjE5NzBhMDllOS4uMmNlMTk5MTY0ZDcgMTAwNjQ0DQo+IC0t
+LSBhL3RhcmdldC9yeC9jcHUtcGFyYW0uaA0KPiArKysgYi90YXJnZXQvcngvY3B1LXBhcmFt
+LmgNCj4gQEAgLTI0LDQgKzI0LDcgQEANCj4gICAjZGVmaW5lIFRBUkdFVF9QSFlTX0FERFJf
+U1BBQ0VfQklUUyAzMg0KPiAgICNkZWZpbmUgVEFSR0VUX1ZJUlRfQUREUl9TUEFDRV9CSVRT
+IDMyDQo+ICAgDQo+ICsvKiBNVFRDRyBub3QgeWV0IHN1cHBvcnRlZDogcmVxdWlyZSBzdHJp
+Y3Qgb3JkZXJpbmcgKi8NCj4gKyNkZWZpbmUgVENHX0dVRVNUX0RFRkFVTFRfTU8gICAgICAg
+IFRDR19NT19BTEwNCj4gKw0KPiAgICNlbmRpZg0KPiBkaWZmIC0tZ2l0IGEvdGFyZ2V0L3No
+NC9jcHUtcGFyYW0uaCBiL3RhcmdldC9zaDQvY3B1LXBhcmFtLmgNCj4gaW5kZXggMmI2ZTEx
+ZGQwYWMuLjFiYzkwZDQ2OTVlIDEwMDY0NA0KPiAtLS0gYS90YXJnZXQvc2g0L2NwdS1wYXJh
+bS5oDQo+ICsrKyBiL3RhcmdldC9zaDQvY3B1LXBhcmFtLmgNCj4gQEAgLTE2LDQgKzE2LDcg
+QEANCj4gICAjIGRlZmluZSBUQVJHRVRfVklSVF9BRERSX1NQQUNFX0JJVFMgMzINCj4gICAj
+ZW5kaWYNCj4gICANCj4gKy8qIE1UVENHIG5vdCB5ZXQgc3VwcG9ydGVkOiByZXF1aXJlIHN0
+cmljdCBvcmRlcmluZyAqLw0KPiArI2RlZmluZSBUQ0dfR1VFU1RfREVGQVVMVF9NTyAgICAg
+ICAgVENHX01PX0FMTA0KPiArDQo+ICAgI2VuZGlmDQo+IGRpZmYgLS1naXQgYS90YXJnZXQv
+dHJpY29yZS9jcHUtcGFyYW0uaCBiL3RhcmdldC90cmljb3JlL2NwdS1wYXJhbS5oDQo+IGlu
+ZGV4IDc5MDI0MmVmM2QyLi45MjM0NTkzNzBjYyAxMDA2NDQNCj4gLS0tIGEvdGFyZ2V0L3Ry
+aWNvcmUvY3B1LXBhcmFtLmgNCj4gKysrIGIvdGFyZ2V0L3RyaWNvcmUvY3B1LXBhcmFtLmgN
+Cj4gQEAgLTEyLDQgKzEyLDcgQEANCj4gICAjZGVmaW5lIFRBUkdFVF9QSFlTX0FERFJfU1BB
+Q0VfQklUUyAzMg0KPiAgICNkZWZpbmUgVEFSR0VUX1ZJUlRfQUREUl9TUEFDRV9CSVRTIDMy
+DQo+ICAgDQo+ICsvKiBNVFRDRyBub3QgeWV0IHN1cHBvcnRlZDogcmVxdWlyZSBzdHJpY3Qg
+b3JkZXJpbmcgKi8NCj4gKyNkZWZpbmUgVENHX0dVRVNUX0RFRkFVTFRfTU8gICAgICAgIFRD
+R19NT19BTEwNCj4gKw0KPiAgICNlbmRpZg0KPiBkaWZmIC0tZ2l0IGEvYWNjZWwvdGNnL3Ry
+YW5zbGF0ZS1hbGwuYyBiL2FjY2VsL3RjZy90cmFuc2xhdGUtYWxsLmMNCj4gaW5kZXggODJi
+YzE2YmQ1MzUuLmZiOWY4M2RiYmEzIDEwMDY0NA0KPiAtLS0gYS9hY2NlbC90Y2cvdHJhbnNs
+YXRlLWFsbC5jDQo+ICsrKyBiL2FjY2VsL3RjZy90cmFuc2xhdGUtYWxsLmMNCj4gQEAgLTM0
+OSwxMSArMzQ5LDcgQEAgVHJhbnNsYXRpb25CbG9jayAqdGJfZ2VuX2NvZGUoQ1BVU3RhdGUg
+KmNwdSwNCj4gICAgICAgdGNnX2N0eC0+dGxiX2R5bl9tYXhfYml0cyA9IENQVV9UTEJfRFlO
+X01BWF9CSVRTOw0KPiAgICNlbmRpZg0KPiAgICAgICB0Y2dfY3R4LT5pbnNuX3N0YXJ0X3dv
+cmRzID0gVEFSR0VUX0lOU05fU1RBUlRfV09SRFM7DQo+IC0jaWZkZWYgVENHX0dVRVNUX0RF
+RkFVTFRfTU8NCj4gICAgICAgdGNnX2N0eC0+Z3Vlc3RfbW8gPSBUQ0dfR1VFU1RfREVGQVVM
+VF9NTzsNCj4gLSNlbHNlDQo+IC0gICAgdGNnX2N0eC0+Z3Vlc3RfbW8gPSBUQ0dfTU9fQUxM
+Ow0KPiAtI2VuZGlmDQo+ICAgDQo+ICAgIHJlc3RhcnRfdHJhbnNsYXRlOg0KPiAgICAgICB0
+cmFjZV90cmFuc2xhdGVfYmxvY2sodGIsIHBjLCB0Yi0+dGMucHRyKTsNCg0KUmV2aWV3ZWQt
+Ynk6IFBpZXJyaWNrIEJvdXZpZXIgPHBpZXJyaWNrLmJvdXZpZXJAbGluYXJvLm9yZz4NCg0K
 
 
