@@ -2,113 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E714FA6B278
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 02:00:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E38B6A6B2AA
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 02:37:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvQjp-0008Im-6q; Thu, 20 Mar 2025 20:59:53 -0400
+	id 1tvRIn-0007jA-Fh; Thu, 20 Mar 2025 21:36:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
- id 1tvQjm-0008IB-1X
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 20:59:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
- id 1tvQjj-0006Et-D1
- for qemu-devel@nongnu.org; Thu, 20 Mar 2025 20:59:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742518785;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wNQuGkuOojxbTctffvW3xyBknRtXGVmfbkBsNlqOf4A=;
- b=GaRWoFrEs42UBF/ohrsxjZsakkjTSmsbW7I7Jo8OxhjSTCp/Jqsbmu9v4TB+aNjaDsFpdI
- KAr/rv4qgd5cl2QyuAe8qV74dv4TwgbrYfv1/mbZGl1FNahPSJDNOjJQGE4ylf6FiKDnm8
- 7pQ76qlxWRqWOADsWA9Thd3h5R7g0m4=
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
- [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-w_m4SvifMkavQYKDZGTT3Q-1; Thu, 20 Mar 2025 20:59:43 -0400
-X-MC-Unique: w_m4SvifMkavQYKDZGTT3Q-1
-X-Mimecast-MFC-AGG-ID: w_m4SvifMkavQYKDZGTT3Q_1742518783
-Received: by mail-io1-f70.google.com with SMTP id
- ca18e2360f4ac-85b3f480d86so123647139f.3
- for <qemu-devel@nongnu.org>; Thu, 20 Mar 2025 17:59:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742518783; x=1743123583;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wNQuGkuOojxbTctffvW3xyBknRtXGVmfbkBsNlqOf4A=;
- b=UmwPR0IJ0onKcAR9P0FLQpkpAZ7nNMJYLWvfk0FxPkALdM2EPtTBQoTBHvQTD4E6Us
- RkvtXXsi8gMf//Ip963RJpf62hkR2ZbnLylm2/oHJJllWr7KMFvvfmV8WjEt9etv0QC2
- TDCWoT+MYQHtLiOa8tPiFjyT+81ilH/ySb2VsJLZIrMm5+sYl/yXAobvvh+DUR0nFHRC
- oChneXvHbT/9FkJ8abJLUL3g9ej/8tFyJQCDFA2kKPWD7QLF+E2wrRGDHCLvINpwV9w2
- 7Pg6qzcMaUxGd5LY/kaig0GbRa2VV+Q3xWWtnfMedwiImFKEO9DSK3WA/8UUjB3H1+Ke
- dh5w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU6n0QrBRKmd/QyRTffADodtJqyuoS+x/H1D3M1KTuWdl8H9fMd3K4AfAkdtkXwrcol+vvYsVyALUeX@nongnu.org
-X-Gm-Message-State: AOJu0Yxq3kU6khh/55beG/HQ8eADbvP3yGYgXAGXPCW2Jc9inMJhHf9l
- RyKYNX7VBkhauHI4QWdUoxWRHZ9+pI3WIbYg1ocXVZrK9ihNQgMTZEC00lmCr4FVBxi/BQFVJEX
- dvDNl6csVDDJbQ4WZAy0eGzXJ6C2Sr6mSMYDJgLVlMh6hTSHsW7or
-X-Gm-Gg: ASbGnctp5Qp9te9S1I1LdaxITobrGVwqU13ZQ5T8s59xRfy0RnUhN+9is5LQCH4b35n
- AUq8BX0zrvsv68yOpy0DZgdcpQagmLrSbLIkfSnuiGp2stNJLPukb9pOGoM3uyFDDUX7FhthrW6
- 5+urJJy/sX18CHRZhYWhux4K+f14aaEPOfiO+yr+3YSkoHUZHQVO0pVCiKwXIxnRoOD17u7euFm
- X4yU3u9gXz8kaD6dDRLBwwyV18LaP+taM+VMp/TYanNVVvUx9Q3UIUd5jxQUGPnq3vMeRAEPeKp
- eoTSy+x2WU5yKl3F
-X-Received: by 2002:a05:6602:3e90:b0:85b:41cc:f709 with SMTP id
- ca18e2360f4ac-85e2cc7c804mr137565639f.14.1742518783070; 
- Thu, 20 Mar 2025 17:59:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE5DI+0GECHAoLWgtzh9jpOwdwXVEpY6IlTNWn2ly5JSGysjUvHwQirKSp+WowNDh5UJ/QZYQ==
-X-Received: by 2002:a05:6602:3e90:b0:85b:41cc:f709 with SMTP id
- ca18e2360f4ac-85e2cc7c804mr137563339f.14.1742518782639; 
- Thu, 20 Mar 2025 17:59:42 -0700 (PDT)
-Received: from [192.168.40.164] ([70.105.235.240])
- by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-85e2bdb5495sm17204039f.46.2025.03.20.17.59.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Mar 2025 17:59:41 -0700 (PDT)
-Message-ID: <1b838258-7d30-4d9e-b350-3950617419e2@redhat.com>
-Date: Thu, 20 Mar 2025 20:59:39 -0400
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1tvRIc-0007if-Gc
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 21:35:50 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1tvRIZ-0003y2-Ee
+ for qemu-devel@nongnu.org; Thu, 20 Mar 2025 21:35:50 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxvnJswtxnWn2fAA--.7422S3;
+ Fri, 21 Mar 2025 09:35:40 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMDx_MRrwtxnlA9XAA--.54357S2;
+ Fri, 21 Mar 2025 09:35:39 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org,
+	peter.maydell@linaro.org,
+	maobibo@loongson.cn
+Cc: richard.henderson@linaro.org,
+	stefanha@gmail.com
+Subject: [PATCH v2] target/loongarch: fix bad shift in check_ps()
+Date: Fri, 21 Mar 2025 09:13:58 +0800
+Message-Id: <20250321011358.463630-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 05/20] hw/arm/smmuv3-accel: Associate a pxb-pcie bus
-Content-Language: en-US
-To: eric.auger@redhat.com,
- Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "berrange@redhat.com" <berrange@redhat.com>,
- "nathanc@nvidia.com" <nathanc@nvidia.com>,
- "mochs@nvidia.com" <mochs@nvidia.com>,
- "smostafa@google.com" <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>,
- "Wangzhou (B)" <wangzhou1@hisilicon.com>,
- jiangkunkun <jiangkunkun@huawei.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-References: <20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com>
- <20250311141045.66620-6-shameerali.kolothum.thodi@huawei.com>
- <b3a4ce7f-41a9-4da9-a8ca-54848b9e9cf1@redhat.com>
- <3d1312b411f04121a3be90879a915982@huawei.com>
- <1c603ab2-4fbb-4838-a544-d88bc2608506@redhat.com>
- <44ed64f0-8e8b-4a87-9a85-074b9d283bc8@redhat.com>
-From: Donald Dutile <ddutile@redhat.com>
-In-Reply-To: <44ed64f0-8e8b-4a87-9a85-074b9d283bc8@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ddutile@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-CM-TRANSID: qMiowMDx_MRrwtxnlA9XAA--.54357S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -126,193 +63,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+ In expression 1ULL << tlb_ps, left shifting by more than 63 bits has undefined behavior.
+The shift amount, tlb_ps, is as much as 64. check "tlb_ps >=64" to fix.
 
+Resolves: Coverity CID 1593475
 
-On 3/19/25 2:21 PM, Eric Auger wrote:
-> Hi Don,
-> 
-> 
-> On 3/19/25 5:21 PM, Donald Dutile wrote:
->>
->>
->> On 3/19/25 5:26 AM, Shameerali Kolothum Thodi wrote:
->>> Hi Don,
->>>
->> Hey!
->>
->>>> -----Original Message-----
->>>> From: Donald Dutile <ddutile@redhat.com>
->>>> Sent: Tuesday, March 18, 2025 10:12 PM
->>>> To: Shameerali Kolothum Thodi
->>>> <shameerali.kolothum.thodi@huawei.com>; qemu-arm@nongnu.org;
->>>> qemu-devel@nongnu.org
->>>> Cc: eric.auger@redhat.com; peter.maydell@linaro.org; jgg@nvidia.com;
->>>> nicolinc@nvidia.com; berrange@redhat.com; nathanc@nvidia.com;
->>>> mochs@nvidia.com; smostafa@google.com; Linuxarm
->>>> <linuxarm@huawei.com>; Wangzhou (B) <wangzhou1@hisilicon.com>;
->>>> jiangkunkun <jiangkunkun@huawei.com>; Jonathan Cameron
->>>> <jonathan.cameron@huawei.com>; zhangfei.gao@linaro.org
->>>> Subject: Re: [RFC PATCH v2 05/20] hw/arm/smmuv3-accel: Associate a pxb-
->>>> pcie bus
->>>>
->>>> Shameer,
->>>>
->>>> Hi!
->>>>
->>>> On 3/11/25 10:10 AM, Shameer Kolothum wrote:
->>>>> User must associate a pxb-pcie root bus to smmuv3-accel
->>>>> and that is set as the primary-bus for the smmu dev.
->>>>>
->>>>> Signed-off-by: Shameer Kolothum
->>>> <shameerali.kolothum.thodi@huawei.com>
->>>>> ---
->>>>>     hw/arm/smmuv3-accel.c | 19 +++++++++++++++++++
->>>>>     1 file changed, 19 insertions(+)
->>>>>
->>>>> diff --git a/hw/arm/smmuv3-accel.c b/hw/arm/smmuv3-accel.c
->>>>> index c327661636..1471b65374 100644
->>>>> --- a/hw/arm/smmuv3-accel.c
->>>>> +++ b/hw/arm/smmuv3-accel.c
->>>>> @@ -9,6 +9,21 @@
->>>>>     #include "qemu/osdep.h"
->>>>>
->>>>>     #include "hw/arm/smmuv3-accel.h"
->>>>> +#include "hw/pci/pci_bridge.h"
->>>>> +
->>>>> +static int smmuv3_accel_pxb_pcie_bus(Object *obj, void *opaque)
->>>>> +{
->>>>> +    DeviceState *d = opaque;
->>>>> +
->>>>> +    if (object_dynamic_cast(obj, "pxb-pcie-bus")) {
->>>>> +        PCIBus *bus = PCI_HOST_BRIDGE(obj->parent)->bus;
->>>>> +        if (d->parent_bus && !strcmp(bus->qbus.name, d->parent_bus-
->>>>> name)) {
->>>>> +            object_property_set_link(OBJECT(d), "primary-bus",
->>>>> OBJECT(bus),
->>>>> +                                     &error_abort);
->>>>> +        }
->>>>> +    }
->>>>> +    return 0;
->>>>> +}
->>>>>
->>>>>     static void smmu_accel_realize(DeviceState *d, Error **errp)
->>>>>     {
->>>>> @@ -17,6 +32,9 @@ static void smmu_accel_realize(DeviceState *d, Error
->>>> **errp)
->>>>>         SysBusDevice *dev = SYS_BUS_DEVICE(d);
->>>>>         Error *local_err = NULL;
->>>>>
->>>>> +    object_child_foreach_recursive(object_get_root(),
->>>>> +                                   smmuv3_accel_pxb_pcie_bus, d);
->>>>> +
->>>>>         object_property_set_bool(OBJECT(dev), "accel", true,
->>>>> &error_abort);
->>>>>         c->parent_realize(d, &local_err);
->>>>>         if (local_err) {
->>>>> @@ -33,6 +51,7 @@ static void smmuv3_accel_class_init(ObjectClass
->>>> *klass, void *data)
->>>>>         device_class_set_parent_realize(dc, smmu_accel_realize,
->>>>>                                         &c->parent_realize);
->>>>>         dc->hotpluggable = false;
->>>>> +    dc->bus_type = TYPE_PCIE_BUS;
->>>>>     }
->>>>>
->>>>>     static const TypeInfo smmuv3_accel_type_info = {
->>>>
->>>> I am not seeing the need for a pxb-pcie bus(switch) introduced for each
->>>> 'accel'.
->>>> Isn't the IORT able to define different SMMUs for different RIDs?
->>>> if so,
->>>> itsn't that sufficient
->>>> to associate (define) an SMMU<->RID association without introducing a
->>>> pxb-pcie?
->>>> and again, I'm not sure how that improves/enables the device<->SMMU
->>>> associativity?
->>>
->>> Thanks for taking a look at the series. As discussed elsewhere in
->>> this thread(with
->>> Eric), normally in physical world (or atleast in the most common
->>> cases) SMMUv3
->>> is attached to PCIe Root Complex and if you take a look at the IORT
->>> spec, it describes
->>> association of ID mappings between a RC node and SMMUV3 node.
->>>
->>> And if my understanding is correct, in Qemu, only pxb-pcie allows you
->>> to add
->>> extra root complexes even though it is still plugged to
->>> parent(pcie.0). ie, for all
->>> devices downstream it acts as a root complex but still plugged into a
->>> parent pcie.0.
->>> This allows us to add/describe multiple "smmuv3-accel" each
->>> associated with a RC.
->>>
->> I find the qemu statements a bit unclear here as well.
->> I looked at the hot plug statement(s) in docs/pcie.txt, as I figured
->> that's where dynamic
->> IORT changes would be needed as well.  There, it says you can hot-add
->> PCIe devices to RPs,
->> one has to define/add RP's to the machine model for that plug-in.
->>
->> Using libvirt, it could auto-add the needed RPs to do dynmaic smmuv3
->> additions,
-> I am not sure I understand your statement here. we don't want "dynamic"
-> SMMUv3 instantiation. SMMUv3 is a platform device which is supposed to
-> be coldplugged on a pre-existing PCIe hierarchy. The SMMUv3 device is
-> not something that is meant to be hotplugged or hotunplugged.
-> To me we hijack the bus= property to provide information about the IORT
-> IDMAP
-> 
-Dynamic in the sense that if one adds smmuv3 for multiple devices,
-libvirt will dynamically figure out how to instantiate one, two, three... smmu's
-in the machine at cold boot.
-If you want a machine to be able to hot-plug a device that would require another smmu,
-than the config, and smmu, would have to be explicilty stated; as is done today for
-hot-plug PCIe if the simple machine that libvirt would make is not sufficient to
-hot-add a PCIe device.
+Fixes: d882c284a3 ("target/loongarch: check tlb_ps")
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+v2:  define parameter tlb_ps as uint type
 
-> Thanks
-> 
-> Eric
->> if I understand how libvirt does that today for pcie devices now (/me
->> looks at danpb for feedback).
->>
->>> Having said that,  current code only allows pxb-pcie root complexes
->>> avoiding
->>> the pcie.0. The idea behind this was, user can use pcie.0 with a non
->>> accel SMMUv3
->>> for any emulated devices avoiding the performance bottlenecks we are
->>> discussing for emulated dev+smmuv3-accel cases. But based on the
->>> feedback from
->>> Eric and Daniel I will relax that restriction and will allow
->>> association with pcie.0.
->>>
->> So, I think this isn't a restriction that this smmuv3 feature should
->> enforce;
->> lack of a proper RP or pxb-pcie will yield an invalid config
->> issue/error, and
->> the machine definition will be modified to meet the needs for IORT.
->>
->>> Thanks,
->>> Shameer
->>>
->>>
->>>
->>>
->>>
->>>
->>>
->>>
->>>   
->>>>>> to root complexes.
->>>> Feel free to enlighten me where I may have mis-read/interpreted the
->>>> IORT
->>>> & SMMUv3 specs.
->>>>
->>>> Thanks,
->>>> - Don
->>>>
->>>
->>
-> 
+ target/loongarch/internals.h      |  2 +-
+ target/loongarch/tcg/csr_helper.c |  2 +-
+ target/loongarch/tcg/tlb_helper.c | 10 +++++-----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
+index 1cd959a766..9fdc3059d8 100644
+--- a/target/loongarch/internals.h
++++ b/target/loongarch/internals.h
+@@ -43,7 +43,7 @@ enum {
+     TLBRET_PE = 7,
+ };
+ 
+-bool check_ps(CPULoongArchState *ent, int ps);
++bool check_ps(CPULoongArchState *ent, uint8_t ps);
+ 
+ extern const VMStateDescription vmstate_loongarch_cpu;
+ 
+diff --git a/target/loongarch/tcg/csr_helper.c b/target/loongarch/tcg/csr_helper.c
+index 379c71e741..6a7a65c860 100644
+--- a/target/loongarch/tcg/csr_helper.c
++++ b/target/loongarch/tcg/csr_helper.c
+@@ -115,7 +115,7 @@ target_ulong helper_csrwr_ticlr(CPULoongArchState *env, target_ulong val)
+ 
+ target_ulong helper_csrwr_pwcl(CPULoongArchState *env, target_ulong val)
+ {
+-    int shift, ptbase;
++    uint8_t shift, ptbase;
+     int64_t old_v = env->CSR_PWCL;
+ 
+     /*
+diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+index 646dbf59de..bd8081e886 100644
+--- a/target/loongarch/tcg/tlb_helper.c
++++ b/target/loongarch/tcg/tlb_helper.c
+@@ -19,12 +19,12 @@
+ #include "exec/log.h"
+ #include "cpu-csr.h"
+ 
+-bool check_ps(CPULoongArchState *env, int tlb_ps)
++bool check_ps(CPULoongArchState *env, uint8_t tlb_ps)
+ {
+-     if (tlb_ps > 64) {
+-         return false;
+-     }
+-     return BIT_ULL(tlb_ps) & (env->CSR_PRCFG2);
++    if (tlb_ps >= 64) {
++        return false;
++    }
++    return BIT_ULL(tlb_ps) & (env->CSR_PRCFG2);
+ }
+ 
+ void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
+-- 
+2.34.1
 
 
