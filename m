@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EE3A6C28D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB80FA6C294
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 19:39:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvhFe-0004qV-Jj; Fri, 21 Mar 2025 14:37:51 -0400
+	id 1tvhFs-0006R0-V5; Fri, 21 Mar 2025 14:38:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tvhEw-0003PS-0I
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:37:07 -0400
+ id 1tvhEw-0003PZ-Mx
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:37:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tvhEt-00078u-OE
+ id 1tvhEt-00078o-OK
  for qemu-devel@nongnu.org; Fri, 21 Mar 2025 14:37:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1742582222;
@@ -24,59 +24,58 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sQLaituN3aYs4wbMz+tZ+slNW5qicDoFAjD2Be2hepc=;
- b=gmvlfDVDRbczD+b7/yK/ezcXGo4xDCc26U/HzsFZ6GoUU91uI85OZTa72wjmYVxmmW3r2o
- SuDZF3gJxhELAZVLNPL6cUL2TJeTYUBd6o2F+X/Yw10kldEPNzhrLvnfXKnW8xXhbET3LM
- fTCeaUbwBaW2ObC7FHNFbwKzPyfeVDU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pkTHz2UWHPEbKgcpzU9XTX788FOigDaRZo+GExD3JvE=;
+ b=RGnyu4j2jHPSrvD4lbhrvWnf6PJcqw8NVPe0mNQ9vf0iOUTX7/6/wOuOrkV31wdbQxx6gB
+ R8Td0sgC1HmAi+sDaxfQoJiYJ10IySQhVooBMTduV/rY8mMDEWsRt9//h+fYTQ4lkPQKu1
+ a85njhCBNpaIVzRTYsgIr1Tyf7T7Nxg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-qApRgpmoMve-tU2WMKsbgQ-1; Fri, 21 Mar 2025 14:36:58 -0400
-X-MC-Unique: qApRgpmoMve-tU2WMKsbgQ-1
-X-Mimecast-MFC-AGG-ID: qApRgpmoMve-tU2WMKsbgQ_1742582218
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43ced8c2eb7so17509455e9.1
- for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:36:58 -0700 (PDT)
+ us-mta-49-8qUzDaZBP7KoylLwJlDs7g-1; Fri, 21 Mar 2025 14:37:00 -0400
+X-MC-Unique: 8qUzDaZBP7KoylLwJlDs7g-1
+X-Mimecast-MFC-AGG-ID: 8qUzDaZBP7KoylLwJlDs7g_1742582219
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3912a0439afso950358f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 11:37:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742582216; x=1743187016;
+ d=1e100.net; s=20230601; t=1742582218; x=1743187018;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sQLaituN3aYs4wbMz+tZ+slNW5qicDoFAjD2Be2hepc=;
- b=lc3Xbhz0IcYgs9/QFCHcFGok+gN9HFtLxlm0OJxbnrVa/fOXl26pLhvwvoQnwBi4s1
- UZBbhUha9Ndb3mxxnzXTl3Fbnk+h/ucFdmjbyTDkPTH/MKEG9gUm510uybkewJhx0t/8
- qgg1/kYSXy+Q1GkhBbT2GEx28vyC6Vbm6QoVzvJoUMqGJJ6a8TIXG0rwIjCku08bAvWp
- 4QgAXVdDTh6Ppy0ncRNvavoAUjoNL0kKnOyK/2eE2CKSM9Inq2EwsiPMq5dCKSrPKiTD
- 658G8x/PXFRPJ2bWhfMwDvwImNmcTVm2CMpfVm4rYU4lmjqmn4oVCo39IJmdtiaGexie
- M9+g==
-X-Gm-Message-State: AOJu0YyWPcGm/UQN6UeimlaFP8tv5zA0DFgreomZ9739kPBL6XHPnO67
- pfkRqmabq4A0YPNC+aZJBT8xjUPOWVOu71YMzQbeCeVO8A1yxt1KDYuYP8jHGhEJTmYtqYkh0SW
- Ds7XKHPX9uRUIwKZojt4fW9hWHjpVoSRJEVPP6XXnMB5msnPJNBizwHy4WRsjPk2CgAQhIkQfPA
- n85fbmT29FlO+0kfslsqFTZIrLZEmOjevqS5a2
-X-Gm-Gg: ASbGncvQEO0+fO3LRXOOaDRvDgY68eLhWTIKxnjQ2Dq6GRN/+iK8RSqzbK7y7mPHufT
- vmOredbdn54+xXL9yirL0UenC2orTXylzbpcmf6BezSQ8jmjfTt9QidAZU3zU7zMlYmvpJUXQmX
- 3udZGIv1LXB2kjc7Ok0CX/efyXnK8c1UwEitdR74kl7MZ47/AY3fNp+Uw/wah8Pe568nMSo3saT
- 6aDCBunPeFzW0v2fOErOwYvGP28N3hoQzUXSFKM/OSwArOvFPBxmAl2ZebhdW7NKXh0I175ovUt
- 4powA1ej/z5tejd1lkIP
-X-Received: by 2002:a05:600c:4512:b0:43d:160:cd9e with SMTP id
- 5b1f17b1804b1-43d509f4581mr45625475e9.17.1742582216482; 
- Fri, 21 Mar 2025 11:36:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWDL7cwWynzC/mbB3EChvC1iPMwC6uZnF60FXPdqln5bsplOTYlk6zMpPyLJeQnfsKGTFrHg==
-X-Received: by 2002:a05:600c:4512:b0:43d:160:cd9e with SMTP id
- 5b1f17b1804b1-43d509f4581mr45625315e9.17.1742582215999; 
- Fri, 21 Mar 2025 11:36:55 -0700 (PDT)
+ bh=pkTHz2UWHPEbKgcpzU9XTX788FOigDaRZo+GExD3JvE=;
+ b=XWf1/sAgH/6NmAvWILZVTC6CIp2BMZhagi3S8sowC08VBf6gDLomVxuZn/uFffcagR
+ EMwlSz5/xxkeVDs50qyj3fGiAhpqsPbL1ttD5TBBB4N/GJD8Q+iV3PdtQ2p2uBDV0yDt
+ qJY/mKQHFevQOoa/vtau///Tlkfm1qLIBQdDxiLe4SMKiwhTfff6lYZnzkRmoAeE1CHR
+ oD6wSOh74Tbnn0Qly0SsEKCKZhhnL9IZJ6cf68MnGgye2wC8VXAHDsCF3uuBGrPn8SrC
+ IP7sMZfED0JRdK5oUf6QTFsaH1ZS5mI0spjXlENycWkOpK43yQVOvUkRNc2KMxzvl3xS
+ qiig==
+X-Gm-Message-State: AOJu0Yxq7ShKVhDkHXuguUfLKyyrKYkwe63fBtADQS9lKQiOHrPJ49fz
+ QrGCmyK6DKIqUZYrRn4qiFSBYlveARrsOlK0AIUD038lvBkhta65nZPOmHS2o4yO2hIfciewr5p
+ zfI4ZAkU2IYfHFKq0qGT9f7m963q1gI39frRWCZ9LOoXQxOkd0PphRFPz8sVEue9c3U+1wwUNBl
+ +IJdL+mmWtVDyYXb/6GqzSpyRbmlxg0e3roVg2
+X-Gm-Gg: ASbGnctxflj+NOIXAbt+Nx2LEhUJILm/KoClmy/9uFfDgGt+eTJw/p6PO1SM2lw2nEW
+ tQnVs8eODuM4FBdbmoTpq3TtYSr3knZwFEFAYKGI0eIaLZ9kptcBEfFBSMYRYLS/0PG5WpkEeNt
+ VcsaOMk6ix4GvjSvYOG/tDjL86isK+nE4AnWgExCFH0YqH4vTs99uOITwXo89OlEiNVuk1nI+k+
+ 4aUNnzGtPzZ7whWsXtjQyUbwO4K/Bbe1SoArFeSFnfQCnzZ6rWeI/znKl5ZT1YBNPhO9IzPDt+i
+ wmScV5XvmslP5m/jhz1G
+X-Received: by 2002:a05:6000:1ac8:b0:390:f6aa:4e80 with SMTP id
+ ffacd0b85a97d-3997f937b82mr5515251f8f.53.1742582217631; 
+ Fri, 21 Mar 2025 11:36:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHXoyhleQ/SIfmXuTMQHSrnyF2Lw4iHtK5E3qJHzUUdmu8ZWaYTj4u9wlI7Y1s33FjxnkapJQ==
+X-Received: by 2002:a05:6000:1ac8:b0:390:f6aa:4e80 with SMTP id
+ ffacd0b85a97d-3997f937b82mr5515225f8f.53.1742582217112; 
+ Fri, 21 Mar 2025 11:36:57 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.194.153])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d440ed4d9sm85476765e9.33.2025.03.21.11.36.53
+ ffacd0b85a97d-3997f9efc9bsm2968491f8f.87.2025.03.21.11.36.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Mar 2025 11:36:53 -0700 (PDT)
+ Fri, 21 Mar 2025 11:36:56 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 23/24] rust/vmstate: Include complete crate path of
- VMStateFlags in vmstate_clock
-Date: Fri, 21 Mar 2025 19:35:55 +0100
-Message-ID: <20250321183556.155097-24-pbonzini@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 24/24] rust: hpet: fix decoding of timer registers
+Date: Fri, 21 Mar 2025 19:35:56 +0100
+Message-ID: <20250321183556.155097-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250321183556.155097-1-pbonzini@redhat.com>
 References: <20250321183556.155097-1-pbonzini@redhat.com>
@@ -107,56 +106,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+Due to a missing "& 0x18", timer registers are not decoded correctly.
+This breaks the tests/functional/test_x86_64_tuxrun.py functional
+test.
 
-The use of "bindings::*" masks incomplete path of VMStateFlags.
-
-Include complete crate path of VMStateFlags in vmstate_clock, and clean
-up "bindings::*" in device_class.rs of pl011.
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250318130219.1799170-16-zhao1.liu@intel.com
+Fixes: 519088b7cf6 ("rust: hpet: decode HPET registers into enums", 2025-03-06)
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Tested-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device_class.rs | 8 ++++++--
- rust/qemu-api/src/vmstate.rs           | 5 ++++-
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ rust/hw/timer/hpet/src/hpet.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
-index 0b2076ddaa0..b4d4a7eb432 100644
---- a/rust/hw/char/pl011/src/device_class.rs
-+++ b/rust/hw/char/pl011/src/device_class.rs
-@@ -8,8 +8,12 @@
- };
- 
- use qemu_api::{
--    bindings::*, c_str, prelude::*, vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct,
--    vmstate_subsections, vmstate_unused, zeroable::Zeroable,
-+    bindings::{qdev_prop_bool, qdev_prop_chr},
-+    c_str,
-+    prelude::*,
-+    vmstate::VMStateDescription,
-+    vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct, vmstate_subsections, vmstate_unused,
-+    zeroable::Zeroable,
- };
- 
- use crate::device::{PL011Registers, PL011State};
-diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 9740931fb16..1b2b12eadd6 100644
---- a/rust/qemu-api/src/vmstate.rs
-+++ b/rust/qemu-api/src/vmstate.rs
-@@ -487,7 +487,10 @@ macro_rules! vmstate_clock {
-                 $crate::offset_of!($struct_name, $field_name)
-             },
-             size: ::core::mem::size_of::<*const $crate::qdev::Clock>(),
--            flags: VMStateFlags(VMStateFlags::VMS_STRUCT.0 | VMStateFlags::VMS_POINTER.0),
-+            flags: $crate::bindings::VMStateFlags(
-+                $crate::bindings::VMStateFlags::VMS_STRUCT.0
-+                    | $crate::bindings::VMStateFlags::VMS_POINTER.0,
-+            ),
-             vmsd: unsafe { ::core::ptr::addr_of!($crate::bindings::vmstate_clock) },
-             ..$crate::zeroable::Zeroable::ZERO
-         }
+diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+index 63c1971f0b5..3ae3ec25f17 100644
+--- a/rust/hw/timer/hpet/src/hpet.rs
++++ b/rust/hw/timer/hpet/src/hpet.rs
+@@ -776,7 +776,7 @@ fn decode(&self, mut addr: hwaddr, size: u32) -> HPETAddrDecode {
+             let timer_id: usize = ((addr - 0x100) / 0x20) as usize;
+             if timer_id <= self.num_timers.get() {
+                 // TODO: Add trace point - trace_hpet_ram_[read|write]_timer_id(timer_id)
+-                TimerRegister::try_from(addr)
++                TimerRegister::try_from(addr & 0x18)
+                     .map(|reg| HPETRegister::Timer(&self.timers[timer_id], reg))
+             } else {
+                 // TODO: Add trace point -  trace_hpet_timer_id_out_of_range(timer_id)
 -- 
 2.49.0
 
