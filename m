@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B638CA6B467
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D666A6B46D
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 07:29:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvVpt-0000m3-M1; Fri, 21 Mar 2025 02:26:29 -0400
+	id 1tvVrN-0003II-Ii; Fri, 21 Mar 2025 02:28:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tvVoN-00082H-L5; Fri, 21 Mar 2025 02:25:04 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1tvVoU-0008D5-Ui; Fri, 21 Mar 2025 02:25:06 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tvVoJ-00031e-02; Fri, 21 Mar 2025 02:24:53 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-225fbdfc17dso26000935ad.3; 
- Thu, 20 Mar 2025 23:24:50 -0700 (PDT)
+ id 1tvVoN-000325-OE; Fri, 21 Mar 2025 02:24:57 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-224100e9a5cso30596635ad.2; 
+ Thu, 20 Mar 2025 23:24:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742538289; x=1743143089; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1742538292; x=1743143092; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s9DMWwN++nDn/z8w6/tFVpHD3yh9Owg5T27xYWy3gZI=;
- b=RmrsANBzHFtxbncn2Q9awNREieq/ZGvIp+jY+DxJY5vIz1UKcQtmA0o5wI+dcwm40I
- 0UK4uGXu4CKYteEj26KX9Zo8ryC6J0mwRHHevKqEo0VFrCJ2MnkfW2G08y8R3wTHXQvz
- BA5yPAmJbkKEXxEXFEUZUIaaCOw4dKmXdq5pv7euo4lhD06KXW0AeMuZtdX0Fm6Ksf3N
- D1uUsC9hKdTLXolwaqN5YyRnRyjeU3f4L+dMUZzz3dnUZNghUD8+kI4ZWoVLpEaRWSKi
- JMJb5atm74w1f4u0s9B/Kjg5tKa0I7r5RhctBjrzSjx+lE9Y/Nj2BioUcHNCbSTLGjpE
- cc8w==
+ bh=tEL/F7R455u00adVFhFI6UsyhKk0acwI0gMRQ2k9pMY=;
+ b=KTiNX0xVbRU7YxzOjb+UP5C4Q4g+c2F/QFzW9sUmIlmO5f7R3BHlbjIBX1ywLOKkk/
+ bHhuqNbc9WbqKFzFFFrv41gvVpL94eeKX7glJhc/wdEyOoPIm1r5RFR00yKmcJNlXlnQ
+ J1Bv5W36xm/48SVspjDfly03hwWoaLZ6iNbchyyrGq1X8duCAWQ6D6GX7Qt3GeoYVDFk
+ 2USai7ls4/XfMyqHORcneSHOkS6v/HdKqpM6fmGjnzVcGdqsf3i2CWXwt/QQaHSoEKUV
+ K2WApeh/lPj4fyimLj1Msk7UTWgqhcl1VpY8g4uGIsTqX3sU8vpsUCJ5ZKp3IrFRbv89
+ peXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742538289; x=1743143089;
+ d=1e100.net; s=20230601; t=1742538292; x=1743143092;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s9DMWwN++nDn/z8w6/tFVpHD3yh9Owg5T27xYWy3gZI=;
- b=Pem8wL455BDzVRx482n2ugseSrTTC5jVhSspH8nMUWglPGjJ0KJ0enVm1CZdbivMFe
- I1Q7IkzjhPk4a34jLtBFMmZs7YbSx+E88D+1vWYAp6bxJJXcQHff1jAuxaVPty+rmZVR
- X7UvP97W8BTmajL7f05T7jx0LRh7sLqjsdCqgDMIlQezdOYfACz/UjxW0ir1sGxKH0GZ
- 4l6onHU1D5I5UYoImK7vGZvchpxQI+y1liUSKl2wAn9HzRI2+xN/8PTsopNjtgzaqnyH
- CEyJ5gttC5pfViGmNnzHyV15Y0/VtJdK2ps7v6+Clq/mMqzLHo21cC0E9x+JhpOf62VA
- GJMg==
+ bh=tEL/F7R455u00adVFhFI6UsyhKk0acwI0gMRQ2k9pMY=;
+ b=d+rgI2qBtNwMbwSekGPDcw7V+7FFJA7wiQcG7eDse1zfRqSzKFUvj3v1RMxJcJvxRm
+ enyEjo7XkvAMnQPEyLbA9oNZb9MYkC546+abCYHpT7B9H/V0QEYi4HCG24d4MrVvlxzd
+ xH8aJcCRcW72RCam0nfWfnajhEtqhmXOdf+OHPjVZApmCgWlMPHLPfL5DKE0hyCu40PC
+ YLDuUQUiL4yTXhLz76v6gi97KhamKzOYhrYIF2uLej8b7SlzSIgQ1qqmwylRwTLt94ef
+ rXAM7cFwxA2esC1qntA1MwHOKLaBUs5QADWX8tBrZsxyJYqDta9NIBidDNAcRYVzd3Xl
+ YmLw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW6jr1tFyq7QfQukM44RphliZa5Ewqjvw6Zy7L6sLVHls74BT6eeSMNOojf4S7GwIZlemU4NJNnew==@nongnu.org
-X-Gm-Message-State: AOJu0YxAumF00GOqEoZg8PS7rBzs0E8EkLoT0VLImkMeKmQ9gHofeJQ5
- +SFLFA3UOxaBf+ldGJcLTTTWbBbP4VoLuanyL7PFfuOCUkKPZ/Ejezj2Dg==
-X-Gm-Gg: ASbGncsQPVc4xNyJUHeAPpiA+DFVPkwRpba11LDQNt0ED99loDeT91cP+EIniPtFZ0J
- j3npCzAK7XSi8axUU/64V1rKct/5VM+ciAKrFkDX0r09VK2bCe0NjVhf0kBG6gH2Ow/zdQDdpEX
- ceHXIuJ77du/LjseacTZSniyrhYTgf5UEUJ0qjTkXtrmBhC8hTuiktSrO+3JSaVDCVVvaPpm8HJ
- +2e3/NEd5L7l9j/JJNTdviMP8TGgYCrzj7swfV7+UQ42Fxs0zn1nPwRGTpgu6jkZ+5LIF/zm+Ud
- TTPmQl+0o0TB7mhz7U8UySQ7O+PJe/FYEsEsNtH+RJOjskImYg==
-X-Google-Smtp-Source: AGHT+IGJ8nABmj58AOFOOSgxZHDCEiNecGwSBxT7AKzK+VA1UUy+uMmYYY8jRECL0l76s2/IBT8w7w==
-X-Received: by 2002:a05:6a20:7347:b0:1ee:e2ac:5159 with SMTP id
- adf61e73a8af0-1fe42f53152mr3551858637.19.1742538289011; 
- Thu, 20 Mar 2025 23:24:49 -0700 (PDT)
+ AJvYcCVhXUDDEJLCtxwUM83VZcwFmVOAAx0Z2NxpNVjiIhSpCY7um7pVNKzB7RSO3Uv1ALnbdKcO1APdlw==@nongnu.org
+X-Gm-Message-State: AOJu0YwmBJrmTvPodkMB3WHVpYes9LTo3h8xvgbLHt1xkFKGr4FfsEl5
+ 0V06I7Unofk/O77MMWIm82a6KlLxWl3cHOoITWh/BOJ1H27KrAVqikIHpw==
+X-Gm-Gg: ASbGnctaBPxOZxEzX8A/P3JzRR66TjdwWUMi6BjF5UJjzfDUFQiPFvfE6Z7WFsRR8+N
+ 3a1YUVud02mHjPgYnhvSyznLMB+6uJ6pKMceD93cjXXX4hMaZe25lylEoAwZsZ2HCDknbj20uwh
+ T2McOY7mzi7/jcGqkDuLReTi/bGlb6CpZRHQeFi5TJbGYoIg15pL9w5HyzCO+ojSyfAq6Z4CKbK
+ stIHRNp6rMyGlppSUBThaWQccrIgBcT9d6OfsRvWnPY8/zNtGkoPCDftas+q5EWhCmXzrFsgDAc
+ zS3ji4zKKvCGqX/WMJ/Itm5evKGe4I0DU0rbMN+ecxb+i08K/g==
+X-Google-Smtp-Source: AGHT+IHHS5uWJZUEiUIitUEsV9d7FN+nW+c8WQ9i0lPXIKIA1w77HQqHU30Qw209Y0xUCZtwKVL/rQ==
+X-Received: by 2002:a05:6a20:431c:b0:1f5:81bc:c72e with SMTP id
+ adf61e73a8af0-1fe4300ff4fmr3546559637.33.1742538291680; 
+ Thu, 20 Mar 2025 23:24:51 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.135.36])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af8a2a4761fsm941381a12.65.2025.03.20.23.24.45
+ 41be03b00d2f7-af8a2a4761fsm941381a12.65.2025.03.20.23.24.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Mar 2025 23:24:48 -0700 (PDT)
+ Thu, 20 Mar 2025 23:24:51 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Stefan Hajnoczi" <stefanha@gmail.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 07/12] ppc/pnv: Fix system symbols in HOMER structure
- definitions
-Date: Fri, 21 Mar 2025 16:24:11 +1000
-Message-ID: <20250321062421.116129-8-npiggin@gmail.com>
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 08/12] ppc/amigaone: Check blk_pwrite return value
+Date: Fri, 21 Mar 2025 16:24:12 +1000
+Message-ID: <20250321062421.116129-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250321062421.116129-1-npiggin@gmail.com>
 References: <20250321062421.116129-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,279 +97,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These definitions were taken from skiboot firmware. I naively thought it
-would be nicer to keep the code similar by using the preprocessor, but
-it was pointed out that system headers might still use those symbols and
-cause something unexpected. Also just nicer to keep the QEMU tree clean.
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-Cc: "Stefan Hajnoczi" <stefanha@gmail.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Fixes: 70bc5c2498f46 ("ppc/pnv: Make HOMER memory a RAM region")
+Coverity reported that return value of blk_pwrite() maybe should not
+be ignored. We can't do much if this happens other than report an
+error but let's do that to silence this report.
+
+Resolves: Coverity CID 1593725
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Message-ID: <20250314200140.2DBE74E6069@zero.eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv_occ.c | 201 ++++++++++++++++++++++-------------------------
- 1 file changed, 96 insertions(+), 105 deletions(-)
+ hw/ppc/amigaone.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/hw/ppc/pnv_occ.c b/hw/ppc/pnv_occ.c
-index bda6b23ad3..177c5e514b 100644
---- a/hw/ppc/pnv_occ.c
-+++ b/hw/ppc/pnv_occ.c
-@@ -364,7 +364,12 @@ static void pnv_occ_register_types(void)
+diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+index 483512125f..5d787c3059 100644
+--- a/hw/ppc/amigaone.c
++++ b/hw/ppc/amigaone.c
+@@ -108,8 +108,8 @@ static void nvram_write(void *opaque, hwaddr addr, uint64_t val,
+     uint8_t *p = memory_region_get_ram_ptr(&s->mr);
  
- type_init(pnv_occ_register_types);
+     p[addr] = val;
+-    if (s->blk) {
+-        blk_pwrite(s->blk, addr, 1, &val, 0);
++    if (s->blk && blk_pwrite(s->blk, addr, 1, &val, 0) < 0) {
++        error_report("%s: could not write %s", __func__, blk_name(s->blk));
+     }
+ }
  
--/* From skiboot/hw/occ.c with tab to space conversion */
-+/*
-+ * From skiboot/hw/occ.c with following changes:
-+ * - tab to space conversion
-+ * - Type conversions u8->uint8_t s8->int8_t __be16->uint16_t etc
-+ * - __packed -> QEMU_PACKED
-+ */
- /* OCC Communication Area for PStates */
- 
- #define OPAL_DYNAMIC_DATA_OFFSET        0x0B80
-@@ -384,20 +389,6 @@ type_init(pnv_occ_register_types);
- #define FREQ_MAX_IN_DOMAIN              0
- #define FREQ_MOST_RECENTLY_SET          1
- 
--#define u8 uint8_t
--#define s8 int8_t
--#define u16 uint16_t
--#define s16 int16_t
--#define u32 uint32_t
--#define s32 int32_t
--#define u64 uint64_t
--#define s64 int64_t
--#define __be16 uint16_t
--#define __be32 uint32_t
--#ifndef __packed
--#define __packed QEMU_PACKED
--#endif /* !__packed */
--
- /**
-  * OCC-OPAL Shared Memory Region
-  *
-@@ -434,69 +425,69 @@ type_init(pnv_occ_register_types);
-  * @spare/reserved/pad:         Unused data
-  */
- struct occ_pstate_table {
--    u8 valid;
--    u8 version;
--    union __packed {
--        struct __packed { /* Version 0x01 and 0x02 */
--            u8 throttle;
--            s8 pstate_min;
--            s8 pstate_nom;
--            s8 pstate_turbo;
--            s8 pstate_ultra_turbo;
--            u8 spare;
--            u64 reserved;
--            struct __packed {
--                s8 id;
--                u8 flags;
--                u8 vdd;
--                u8 vcs;
--                __be32 freq_khz;
-+    uint8_t valid;
-+    uint8_t version;
-+    union QEMU_PACKED {
-+        struct QEMU_PACKED { /* Version 0x01 and 0x02 */
-+            uint8_t throttle;
-+            int8_t pstate_min;
-+            int8_t pstate_nom;
-+            int8_t pstate_turbo;
-+            int8_t pstate_ultra_turbo;
-+            uint8_t spare;
-+            uint64_t reserved;
-+            struct QEMU_PACKED {
-+                int8_t id;
-+                uint8_t flags;
-+                uint8_t vdd;
-+                uint8_t vcs;
-+                uint32_t freq_khz;
-             } pstates[MAX_PSTATES];
--            s8 core_max[MAX_P8_CORES];
--            u8 pad[100];
-+            int8_t core_max[MAX_P8_CORES];
-+            uint8_t pad[100];
-         } v2;
--        struct __packed { /* Version 0x90 */
--            u8 occ_role;
--            u8 pstate_min;
--            u8 pstate_nom;
--            u8 pstate_turbo;
--            u8 pstate_ultra_turbo;
--            u8 spare;
--            u64 reserved1;
--            u64 reserved2;
--            struct __packed {
--                u8 id;
--                u8 flags;
--                u16 reserved;
--                __be32 freq_khz;
-+        struct QEMU_PACKED { /* Version 0x90 */
-+            uint8_t occ_role;
-+            uint8_t pstate_min;
-+            uint8_t pstate_nom;
-+            uint8_t pstate_turbo;
-+            uint8_t pstate_ultra_turbo;
-+            uint8_t spare;
-+            uint64_t reserved1;
-+            uint64_t reserved2;
-+            struct QEMU_PACKED {
-+                uint8_t id;
-+                uint8_t flags;
-+                uint16_t reserved;
-+                uint32_t freq_khz;
-             } pstates[MAX_PSTATES];
--            u8 core_max[MAX_P9_CORES];
--            u8 pad[56];
-+            uint8_t core_max[MAX_P9_CORES];
-+            uint8_t pad[56];
-         } v9;
--        struct __packed { /* Version 0xA0 */
--            u8 occ_role;
--            u8 pstate_min;
--            u8 pstate_fixed_freq;
--            u8 pstate_base;
--            u8 pstate_ultra_turbo;
--            u8 pstate_fmax;
--            u8 minor;
--            u8 pstate_bottom_throttle;
--            u8 spare;
--            u8 spare1;
--            u32 reserved_32;
--            u64 reserved_64;
--            struct __packed {
--                u8 id;
--                u8 valid;
--                u16 reserved;
--                __be32 freq_khz;
-+        struct QEMU_PACKED { /* Version 0xA0 */
-+            uint8_t occ_role;
-+            uint8_t pstate_min;
-+            uint8_t pstate_fixed_freq;
-+            uint8_t pstate_base;
-+            uint8_t pstate_ultra_turbo;
-+            uint8_t pstate_fmax;
-+            uint8_t minor;
-+            uint8_t pstate_bottom_throttle;
-+            uint8_t spare;
-+            uint8_t spare1;
-+            uint32_t reserved_32;
-+            uint64_t reserved_64;
-+            struct QEMU_PACKED {
-+                uint8_t id;
-+                uint8_t valid;
-+                uint16_t reserved;
-+                uint32_t freq_khz;
-             } pstates[MAX_PSTATES];
--            u8 core_max[MAX_P10_CORES];
--            u8 pad[48];
-+            uint8_t core_max[MAX_P10_CORES];
-+            uint8_t pad[48];
-         } v10;
-     };
--} __packed;
-+} QEMU_PACKED;
- 
- /**
-  * OPAL-OCC Command Response Interface
-@@ -531,13 +522,13 @@ struct occ_pstate_table {
-  * @spare:                      Unused byte
-  */
- struct opal_command_buffer {
--    u8 flag;
--    u8 request_id;
--    u8 cmd;
--    u8 spare;
--    __be16 data_size;
--    u8 data[MAX_OPAL_CMD_DATA_LENGTH];
--} __packed;
-+    uint8_t flag;
-+    uint8_t request_id;
-+    uint8_t cmd;
-+    uint8_t spare;
-+    uint16_t data_size;
-+    uint8_t data[MAX_OPAL_CMD_DATA_LENGTH];
-+} QEMU_PACKED;
- 
- /**
-  * OPAL-OCC Response Buffer
-@@ -571,13 +562,13 @@ struct opal_command_buffer {
-  * @data:                       Response specific data
-  */
- struct occ_response_buffer {
--    u8 flag;
--    u8 request_id;
--    u8 cmd;
--    u8 status;
--    __be16 data_size;
--    u8 data[MAX_OCC_RSP_DATA_LENGTH];
--} __packed;
-+    uint8_t flag;
-+    uint8_t request_id;
-+    uint8_t cmd;
-+    uint8_t status;
-+    uint16_t data_size;
-+    uint8_t data[MAX_OCC_RSP_DATA_LENGTH];
-+} QEMU_PACKED;
- 
- /**
-  * OCC-OPAL Shared Memory Interface Dynamic Data Vx90
-@@ -608,31 +599,31 @@ struct occ_response_buffer {
-  * @rsp:                        OCC Response Buffer
-  */
- struct occ_dynamic_data {
--    u8 occ_state;
--    u8 major_version;
--    u8 minor_version;
--    u8 gpus_present;
--    union __packed {
--        struct __packed { /* Version 0x90 */
--            u8 spare1;
-+    uint8_t occ_state;
-+    uint8_t major_version;
-+    uint8_t minor_version;
-+    uint8_t gpus_present;
-+    union QEMU_PACKED {
-+        struct QEMU_PACKED { /* Version 0x90 */
-+            uint8_t spare1;
-         } v9;
--        struct __packed { /* Version 0xA0 */
--            u8 wof_enabled;
-+        struct QEMU_PACKED { /* Version 0xA0 */
-+            uint8_t wof_enabled;
-         } v10;
-     };
--    u8 cpu_throttle;
--    u8 mem_throttle;
--    u8 quick_pwr_drop;
--    u8 pwr_shifting_ratio;
--    u8 pwr_cap_type;
--    __be16 hard_min_pwr_cap;
--    __be16 max_pwr_cap;
--    __be16 cur_pwr_cap;
--    __be16 soft_min_pwr_cap;
--    u8 pad[110];
-+    uint8_t cpu_throttle;
-+    uint8_t mem_throttle;
-+    uint8_t quick_pwr_drop;
-+    uint8_t pwr_shifting_ratio;
-+    uint8_t pwr_cap_type;
-+    uint16_t hard_min_pwr_cap;
-+    uint16_t max_pwr_cap;
-+    uint16_t cur_pwr_cap;
-+    uint16_t soft_min_pwr_cap;
-+    uint8_t pad[110];
-     struct opal_command_buffer cmd;
-     struct occ_response_buffer rsp;
--} __packed;
-+} QEMU_PACKED;
- 
- enum occ_response_status {
-     OCC_RSP_SUCCESS                 = 0x00,
+@@ -151,15 +151,17 @@ static void nvram_realize(DeviceState *dev, Error **errp)
+         *c = cpu_to_be32(CRC32_DEFAULT_ENV);
+         /* Also copies terminating \0 as env is terminated by \0\0 */
+         memcpy(p + 4, default_env, sizeof(default_env));
+-        if (s->blk) {
+-            blk_pwrite(s->blk, 0, sizeof(crc) + sizeof(default_env), p, 0);
++        if (s->blk &&
++            blk_pwrite(s->blk, 0, sizeof(crc) + sizeof(default_env), p, 0) < 0
++           ) {
++            error_report("%s: could not write %s", __func__, blk_name(s->blk));
+         }
+         return;
+     }
+     if (*c == 0) {
+         *c = cpu_to_be32(crc32(0, p + 4, NVRAM_SIZE - 4));
+-        if (s->blk) {
+-            blk_pwrite(s->blk, 0, 4, p, 0);
++        if (s->blk && blk_pwrite(s->blk, 0, 4, p, 0) < 0) {
++            error_report("%s: could not write %s", __func__, blk_name(s->blk));
+         }
+     }
+     if (be32_to_cpu(*c) != crc) {
 -- 
 2.47.1
 
