@@ -2,70 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE40A6C5E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Mar 2025 23:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97622A6C693
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Mar 2025 01:02:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvkmt-0002LI-BM; Fri, 21 Mar 2025 18:24:23 -0400
+	id 1tvmIo-0004rD-3T; Fri, 21 Mar 2025 20:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvkmn-0002Ki-13
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 18:24:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvkml-0004Qp-2L
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 18:24:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742595854;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bTItdUrDg7Cd84ey97EQdcR9LPBq5Jivo28daai7VVk=;
- b=LezQ0jp412Yna/iZAncsWQxIlt5B5xIS5G6QIPQuwhMChx3Wlox7G1wO6AKhApP75cAOmH
- Vfi3qdDri2R1NGx0pNpXk5gMz+KVOGKQvlYngPgXHG/RfWE1gtb24O2ybJCjKqRsvBkkPn
- 1VXakg1PxKRxlAhougYe6ryHJhVSog0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-v5yH0Mn1MGuCtalR5faUDg-1; Fri,
- 21 Mar 2025 18:24:08 -0400
-X-MC-Unique: v5yH0Mn1MGuCtalR5faUDg-1
-X-Mimecast-MFC-AGG-ID: v5yH0Mn1MGuCtalR5faUDg_1742595847
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9CE32196D2DC; Fri, 21 Mar 2025 22:24:06 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.31])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E024C3001D16; Fri, 21 Mar 2025 22:24:03 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 5/5] qapi: delete un-needed python static analysis configs
-Date: Fri, 21 Mar 2025 18:23:47 -0400
-Message-ID: <20250321222347.299121-6-jsnow@redhat.com>
-In-Reply-To: <20250321222347.299121-1-jsnow@redhat.com>
-References: <20250321222347.299121-1-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tvmIm-0004qy-7K
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 20:01:24 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1tvmIj-0001Jw-Rl
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 20:01:23 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-22423adf751so52247675ad.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Mar 2025 17:01:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1742601678; x=1743206478; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8jIF53UuilIp95lERWLD96FBJysroCAg3PsA4TvpjMo=;
+ b=gh+oim/G3/QSxm0XPh8lt2HHpZf5GjinpDUv+XyDvclJv0bjJ/yehmuAjvcyPsOAOe
+ C/b5eaLlPgkBj6zXsVu6HII4+vouNb8DsOUS+8cLr88EVpTrCsPTXdZRrXkoPN1gyFeL
+ v8GPouCv6fgj7vl0jNiawYJvMhXXWt3trYrFTwr0MehXzeiU5RZ9mW1vKoqG/0KAuWs6
+ p3SgWBtE4sd7fWPClUcz0fH+K9u4PxDQ2W/vPtBJzzHfrw96FJQW4ZgIpZ6iJW3neAfI
+ +44HqSVbECydcvttHTCmgZdUUg6onVqNWZqs4couSOO2RKdtc72an3DV7WaKLp01tiTq
+ BNtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742601678; x=1743206478;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8jIF53UuilIp95lERWLD96FBJysroCAg3PsA4TvpjMo=;
+ b=uZtsoP9EzD2F7awEUEH9OnU1jx/zDP36Ox2CjLNKPZSlfgxRASwWjUBvYftkf94EuS
+ 6Pdp3lCoQOOVO1a15qVWqVaV1ZIljAWqgdKyWmN9HZWHPlqM4OkKxYteJciSQTOP93hv
+ ooV6VB/+VnoTg60UysJGYHToek+5YB5dcArYCZuF1aOBqj+ofw+cXdJKgG5l7nzRnTSB
+ QtVi9YMO6knkGj+pjzTmo/wcQJV1rBc2YvFTuRsqpDsUWzXbR8w3bfB1MS6fyG44yaeu
+ Kw3rNZWBWf5eBHYUY8OoX0hqP96aWOMTOzZlRTi2mxbQ13o1UMxf5tfvYH/ESnaUKzds
+ zYdA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUhptmuSqF2e+mnnVSFzsw3bK4bnPRIHBKvfh3C08MvL+0Ow8Ai31/zeFq741RjfexVmnmUeRzv5JVL@nongnu.org
+X-Gm-Message-State: AOJu0YxDse0FbVJf5F5nuNNsuyEKNcOuLMWncCEVXFrnBCbgLjOc1gsp
+ zCJoEvFyXkyWj/DtcsmY60Vo4UtUx7xHL/B5RaBYaJDUIlpf328eydg6UWk/6eU=
+X-Gm-Gg: ASbGnctQ6B5w4yqdPd9dKLQ3RiABlle6SjosCfrbigsmfJYKps0pb4+MwR+HmRkDsoV
+ QQ/Zm0P680ztI4V5wSECsjLjPjBwGvuhKguHgxAyzT3dcx69ZYQLLVs9x51nA0fa0xElaOq4P0I
+ II5m20osUexMU9OupRMFxi3n7XIoU4FRXIC8zCeYz1QOf6LjkuwBvff5YxjlNJnAtg3Bjd8n8ZX
+ p1SvtRKEiC+ckeIGVQaxgm5okvJV9f2uDk/FuJSw3rLwO92e7vJPbBkahNnOGSn/6JJPBsedRIb
+ czGjP+KuqDNZ0TAGA24jAz/GdenTbGtHsZoTy/s6vN1ftO2egQgOYHPx8g==
+X-Google-Smtp-Source: AGHT+IFycojw9Uun5vxQflyFUKmw9FGit8EBg4TDZCtmc6CLRIFEIQnJbgKlCoaW1zxWlIPsnn0Hhg==
+X-Received: by 2002:aa7:88c7:0:b0:736:5725:59b9 with SMTP id
+ d2e1a72fcca58-7390593d43fmr7967391b3a.2.1742601677692; 
+ Fri, 21 Mar 2025 17:01:17 -0700 (PDT)
+Received: from [192.168.1.67] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7390618f080sm2780961b3a.176.2025.03.21.17.01.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Mar 2025 17:01:17 -0700 (PDT)
+Message-ID: <ebd25730-1947-4360-af36-cf1131f4155c@linaro.org>
+Date: Fri, 21 Mar 2025 17:01:16 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 17/30] exec/target_page: runtime defintion for
+ TARGET_PAGE_BITS_MIN
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250320223002.2915728-1-pierrick.bouvier@linaro.org>
+ <20250320223002.2915728-18-pierrick.bouvier@linaro.org>
+ <2e667bb0-7357-4caf-ab60-4e57aabdceeb@linaro.org>
+ <e738b8b8-e06f-48d0-845e-f263adb3dee5@linaro.org>
+ <a67d17bb-e0dc-4767-8a43-8f057db70c71@linaro.org>
+ <216a39c6-384d-4f9e-b615-05af18c6ef59@linaro.org>
+ <c0e338f5-6592-4d83-9f17-120b9c4f039e@linaro.org>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <c0e338f5-6592-4d83-9f17-120b9c4f039e@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,55 +110,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The pylint config is being left in place because the settings differ
-enough from the python/ directory settings that we need a chit-chat on
-how to merge them O:-)
-
-Everything else can go.
-
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- scripts/qapi/.flake8    | 3 ---
- scripts/qapi/.isort.cfg | 7 -------
- scripts/qapi/mypy.ini   | 4 ----
- 3 files changed, 14 deletions(-)
- delete mode 100644 scripts/qapi/.flake8
- delete mode 100644 scripts/qapi/.isort.cfg
- delete mode 100644 scripts/qapi/mypy.ini
-
-diff --git a/scripts/qapi/.flake8 b/scripts/qapi/.flake8
-deleted file mode 100644
-index a873ff67309..00000000000
---- a/scripts/qapi/.flake8
-+++ /dev/null
-@@ -1,3 +0,0 @@
--[flake8]
--# Prefer pylint's bare-except checks to flake8's
--extend-ignore = E722
-diff --git a/scripts/qapi/.isort.cfg b/scripts/qapi/.isort.cfg
-deleted file mode 100644
-index 643caa1fbd6..00000000000
---- a/scripts/qapi/.isort.cfg
-+++ /dev/null
-@@ -1,7 +0,0 @@
--[settings]
--force_grid_wrap=4
--force_sort_within_sections=True
--include_trailing_comma=True
--line_length=72
--lines_after_imports=2
--multi_line_output=3
-diff --git a/scripts/qapi/mypy.ini b/scripts/qapi/mypy.ini
-deleted file mode 100644
-index 8109470a031..00000000000
---- a/scripts/qapi/mypy.ini
-+++ /dev/null
-@@ -1,4 +0,0 @@
--[mypy]
--strict = True
--disallow_untyped_calls = False
--python_version = 3.8
--- 
-2.48.1
+T24gMy8yMS8yNSAxNToxOSwgUmljaGFyZCBIZW5kZXJzb24gd3JvdGU6DQo+IE9uIDMvMjEv
+MjUgMTM6MTEsIFBpZXJyaWNrIEJvdXZpZXIgd3JvdGU6DQo+PiBPbiAzLzIxLzI1IDEyOjI3
+LCBSaWNoYXJkIEhlbmRlcnNvbiB3cm90ZToNCj4+PiBPbiAzLzIxLzI1IDExOjA5LCBQaWVy
+cmljayBCb3V2aWVyIHdyb3RlOg0KPj4+Pj4gTW1tLCBvayBJIGd1ZXNzLsKgIFllc3RlcmRh
+eSBJIHdvdWxkIGhhdmUgc3VnZ2VzdGVkIG1lcmdpbmcgdGhpcyB3aXRoIHBhZ2UtdmFyeS5o
+LCBidXQNCj4+Pj4+IHRvZGF5IEknbSBhY3RpdmVseSB3b3JraW5nIG9uIG1ha2luZyBUQVJH
+RVRfUEFHRV9CSVRTX01JTiBhIGdsb2JhbCBjb25zdGFudC4NCj4+Pj4+DQo+Pj4+DQo+Pj4+
+IFdoZW4geW91IG1lbnRpb24gdGhpcywgZG8geW91IG1lYW4gImNvbnN0YW50IGFjY3Jvc3Mg
+YWxsIGFyY2hpdGVjdHVyZXMiLCBvciBhIGdsb2JhbA0KPj4+PiAoY29uc3QpIHZhcmlhYmxl
+IHZzIGhhdmluZyBhIGZ1bmN0aW9uIGNhbGw/DQo+Pj4gVGhlIGZpcnN0IC0tIGNvbnN0YW50
+IGFjcm9zcyBhbGwgYXJjaGl0ZWN0dXJlcy4NCj4+Pg0KPj4NCj4+IFRoYXQncyBncmVhdC4N
+Cj4+IERvZXMgY2hvb3NpbmcgdGhlIG1pbihzZXRfb2YoVEFSR0VUX1BBR0VfQklUU19NSU4p
+KSBpcyB3aGF0IHdlIHdhbnQgdGhlcmUsIG9yIGlzIHRoZQ0KPj4gYW5zd2VyIG1vcmUgc3Vi
+dGxlIHRoYW4gdGhhdD8NCj4gDQo+IEl0IHdpbGwgYmUsIHllcy4NCj4gDQo+IFRoaXMgaXNu
+J3QgYXMgaGFyZCBhcyBpdCBzZWVtcywgYmVjYXVzZSB0aGVyZSBhcmUgZXhhY3RseSB0d28g
+dGFyZ2V0cyB3aXRoDQo+IFRBUkdFVF9QQUdFX0JJVFMgPCAxMjogYXJtIGFuZCBhdnIuDQo+
+IA0KPiBCZWNhdXNlIHdlIHN0aWxsIHN1cHBvcnQgYXJtdjQsIFRBUkdFVF9QQUdFX0JJVFNf
+TUlOIG11c3QgYmUgPD0gMTAuDQo+IA0KPiBBVlIgY3VycmVudGx5IGhhcyBUQVJHRVRfUEFH
+RV9CSVRTID09IDgsIHdoaWNoIGlzIGEgYml0IG9mIGEgcHJvYmxlbS4NCj4gTXkgZmlyc3Qg
+dGFzayBpcyB0byBhbGxvdyBhdnIgdG8gY2hvb3NlIFRBUkdFVF9QQUdFX0JJVFNfTUlOID49
+IDEwLg0KPiANCj4gV2hpY2ggd2lsbCBsZWF2ZSB1cyB3aXRoIFRBUkdFVF9QQUdFX0JJVFNf
+TUlOID09IDEwLg0KPiANCg0KT2suDQoNCiBGcm9tIHdoYXQgSSB1bmRlcnN0YW5kLCB3ZSBt
+YWtlIHN1cmUgdGxiIGZsYWdzIGFyZSBzdG9yZWQgaW4gYW4gDQppbW11dGFibGUgcG9zaXRp
+b24sIHdpdGhpbiB2aXJ0dWFsIGFkZHJlc3NlcyByZWxhdGVkIHRvIGd1ZXN0LCBieSB1c2lu
+ZyANCmxvd2VyIGJpdHMgYmVsb25naW5nIHRvIGFkZHJlc3MgcmFuZ2UgaW5zaWRlIGEgZ2l2
+ZW4gcGFnZSwgc2luY2UgcGFnZSANCmFkZHJlc3NlcyBhcmUgYWxpZ25lZCBvbiBwYWdlIHNp
+emUsIGxlYXZpbmcgdGhvc2UgYml0cyBmcmVlLg0KDQpiaXRzIFswLi4yKSBhcmUgYnN3YXAs
+IHdhdGNocG9pbnQgYW5kIGNoZWNrX2FsaWduZWQuDQpiaXRzIFtUQVJHRVRfUEFHRV9CSVRT
+X01JTiAtIDUuLlRBUkdFVF9QQUdFX0JJVFNfTUlOKSBhcmUgc2xvdywgDQpkaXNjYXJkX3dy
+aXRlLCBtbWlvLCBub3RkaXJ0eSwgYW5kIGludmFsaWQgbWFzay4NCkFuZCB0aGUgY29tcGls
+ZSB0aW1lIGNoZWNrIHdlIGhhdmUgaXMgdG8gbWFrZSBzdXJlIHdlIGRvbid0IG92ZXJsYXAg
+DQp0aG9zZSBzZXRzICh3b3VsZCBoYXBwZW4gaW4gVEFSR0VUX1BBR0VfQklUU19NSU4gPD0g
+NykuDQoNCkkgd29uZGVyIHdoeSB3ZSBjYW4ndCB1c2UgYml0cyBbMy4uOCkgZXZlcnl3aGVy
+ZSwgbGlrZSBpdCdzIGRvbmUgZm9yIA0KQVZSLCBldmVuIGZvciBiaWdnZXIgcGFnZSBzaXpl
+cy4gSSBub3RpY2VkIHRoZSBjb21tZW50IGFib3V0ICJhZGRyZXNzIA0KYWxpZ25tZW50IGJp
+dHMiLCBidXQgSSdtIGNvbmZ1c2VkIHdoeSBiaXRzIFswLi4yKSBjYW4gYmUgdXNlZCwgYW5k
+IG5vdCANCnVwcGVyIG9uZXMuDQoNCkFyZSB3ZSBzdG9yaW5nIHNvbWV0aGluZyBlbHNlIGlu
+IHRoZSBtaWRkbGUgb24gb3RoZXIgYXJjaHMsIG9yIGRpZCBJIA0KbWlzcyBzb21lIHBpZWNl
+IG9mIHRoZSBwdXp6bGU/DQoNClRoYW5rcywNClBpZXJyaWNrDQoNCj4gDQo+IHJ+DQoNCg==
 
 
