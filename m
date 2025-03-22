@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37246A6C6DA
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Mar 2025 02:10:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC30A6C6D8
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Mar 2025 02:10:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tvnMg-0005EL-72; Fri, 21 Mar 2025 21:09:30 -0400
+	id 1tvnMo-0005GP-RD; Fri, 21 Mar 2025 21:09:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvnMe-0005Di-7z
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 21:09:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvnMk-0005FG-0J
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 21:09:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvnMc-0002x4-Mx
- for qemu-devel@nongnu.org; Fri, 21 Mar 2025 21:09:27 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1tvnMi-0002xy-7b
+ for qemu-devel@nongnu.org; Fri, 21 Mar 2025 21:09:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742605764;
+ s=mimecast20190719; t=1742605771;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=xMFE+OKQXPk6+GcAKOzrqDTIPIMbEsdcGAmWO/K5+ok=;
- b=UVX1QbZcWy130QKlavlTFG7m2EvL9tf/QWP2erIXFgCje/JCrU/WKUZj+6vKoPxYa1cjtQ
- f/6rbLRSKejIkDjTjYC2f3zCdKaLyRo2IRWrkqFhQ8Y5zhQUbr6VM6TpPyvRapktGVp8qX
- bgdc857LvhIiERkDYXFddU/c3T0tdss=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MjP/row18jXL73vj5teE531SmQt9p6smZ45KD4CgyMc=;
+ b=MT4OZ6oJwaWnvLReM23qfzbk5gzT299m3V0Nis+xtFmGcYMjZoDE6nVILKvXjy3SGkR6lN
+ qO85qJoy9SZ+KWntq9IHdiptnlA09LEnGJ4q/hII5lQkqG3pWoA+5K/O5OWrxQwZtIlSbk
+ nWcIJ27whNGNZ333Gtq4vY2vonziYwY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-ZEpSOToVPfqa-74BEAAyXA-1; Fri,
- 21 Mar 2025 21:09:20 -0400
-X-MC-Unique: ZEpSOToVPfqa-74BEAAyXA-1
-X-Mimecast-MFC-AGG-ID: ZEpSOToVPfqa-74BEAAyXA_1742605758
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-pGQeI6bUMga3QinITXqwfg-1; Fri,
+ 21 Mar 2025 21:09:28 -0400
+X-MC-Unique: pGQeI6bUMga3QinITXqwfg-1
+X-Mimecast-MFC-AGG-ID: pGQeI6bUMga3QinITXqwfg_1742605765
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 461B71945103; Sat, 22 Mar 2025 01:09:12 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7D58F180049D; Sat, 22 Mar 2025 01:09:24 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.66])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 740A819373C4; Sat, 22 Mar 2025 01:08:59 +0000 (UTC)
+ id C493D192ED68; Sat, 22 Mar 2025 01:09:12 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -66,23 +67,24 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Zhenwei Pi <pizhenwei@bytedance.com>, Mads Ynddal <mads@ynddal.dk>,
  Gerd Hoffmann <kraxel@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Eric Blake <eblake@redhat.com>, Jiri Pirko <jiri@resnulli.us>
-Subject: [PATCH 0/4] qapi: add auto-generated return docs
-Date: Fri, 21 Mar 2025 21:08:53 -0400
-Message-ID: <20250322010857.309490-1-jsnow@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/4] docs/qapi-domain: add return-nodesc
+Date: Fri, 21 Mar 2025 21:08:54 -0400
+Message-ID: <20250322010857.309490-2-jsnow@redhat.com>
+In-Reply-To: <20250322010857.309490-1-jsnow@redhat.com>
+References: <20250322010857.309490-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,51 +100,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Basically RFC quality, I'm sure there's going to be a ton of back and=0D
-forth on the doc phrasing changes. Ah well.=0D
-=0D
-John Snow (4):=0D
-  docs/qapi-domain: add return-nodesc=0D
-  docs, qapi: generate undocumented return sections=0D
-  qapi: remove trivial "Returns:" sections=0D
-  qapi: rephrase return docs to avoid type name=0D
-=0D
- docs/devel/qapi-domain.rst | 30 ++++++++++++++++++++++++++++++=0D
- docs/sphinx/qapi_domain.py |  8 ++++++++=0D
- docs/sphinx/qapidoc.py     | 14 ++++++++------=0D
- qapi/audio.json            |  2 --=0D
- qapi/block-core.json       | 14 +++-----------=0D
- qapi/block-export.json     |  2 +-=0D
- qapi/block.json            |  2 +-=0D
- qapi/char.json             |  8 --------=0D
- qapi/control.json          |  5 ++---=0D
- qapi/cryptodev.json        |  2 --=0D
- qapi/dump.json             |  5 ++---=0D
- qapi/introspect.json       |  6 +++---=0D
- qapi/job.json              |  2 +-=0D
- qapi/machine-target.json   |  9 +++------=0D
- qapi/machine.json          | 22 ----------------------=0D
- qapi/migration.json        | 12 ------------=0D
- qapi/misc-target.json      | 14 +-------------=0D
- qapi/misc.json             | 12 ++----------=0D
- qapi/net.json              |  2 +-=0D
- qapi/pci.json              |  2 +-=0D
- qapi/qdev.json             |  3 +--=0D
- qapi/qom.json              |  8 +++-----=0D
- qapi/rocker.json           |  4 ----=0D
- qapi/run-state.json        |  2 --=0D
- qapi/stats.json            |  2 +-=0D
- qapi/tpm.json              |  4 ----=0D
- qapi/trace.json            |  2 +-=0D
- qapi/ui.json               | 10 +---------=0D
- qapi/virtio.json           |  8 +++-----=0D
- qapi/yank.json             |  1 -=0D
- scripts/qapi/parser.py     | 11 +++++++++++=0D
- scripts/qapi/schema.py     |  3 +++=0D
- 32 files changed, 91 insertions(+), 140 deletions(-)=0D
-=0D
--- =0D
-2.48.1=0D
-=0D
+This form is used to annotate a return type without an accompanying
+description, for when there is no "Returns:" information in the source
+doc, but we have a return type we want to generate a cross-reference to.
+
+The syntax is:
+
+:return-nodesc: TypeName
+
+It's primarily necessary because Sphinx always expects both a type and a
+description for the prior form and will format it accordingly. To have a
+reasonable rendering when the body is missing, we need to use a
+different info field list entirely.
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+---
+ docs/devel/qapi-domain.rst | 30 ++++++++++++++++++++++++++++++
+ docs/sphinx/qapi_domain.py |  8 ++++++++
+ 2 files changed, 38 insertions(+)
+
+diff --git a/docs/devel/qapi-domain.rst b/docs/devel/qapi-domain.rst
+index a748529f515..5ca060fa04c 100644
+--- a/docs/devel/qapi-domain.rst
++++ b/docs/devel/qapi-domain.rst
+@@ -242,6 +242,36 @@ Example::
+              }
+ 
+ 
++``:return-nodesc:``
++-------------------
++
++Document the return type of a QAPI command, without an accompanying description.
++
++:availability: This field list is only available in the body of the
++               Command directive.
++:syntax: ``:return-nodesc: type``
++:type: `sphinx.util.docfields.Field
++       <https://pydoc.dev/sphinx/latest/sphinx.util.docfields.Field.html?private=1>`_
++
++
++Example::
++
++   .. qapi:command:: query-replay
++      :since: 5.2
++
++      Retrieve the record/replay information.  It includes current
++      instruction count which may be used for ``replay-break`` and
++      ``replay-seek`` commands.
++
++      :return-nodesc: ReplayInfo
++
++      .. qmp-example::
++
++          -> { "execute": "query-replay" }
++          <- { "return": {
++                 "mode": "play", "filename": "log.rr", "icount": 220414 }
++             }
++
+ ``:value:``
+ -----------
+ 
+diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
+index c94af5719ca..d6d4a70f3df 100644
+--- a/docs/sphinx/qapi_domain.py
++++ b/docs/sphinx/qapi_domain.py
+@@ -529,6 +529,14 @@ class QAPICommand(QAPIObject):
+                 names=("return",),
+                 can_collapse=True,
+             ),
++            # :return-nodesc: TypeName
++            CompatField(
++                "returnvalue",
++                label=_("Return"),
++                names=("return-nodesc",),
++                bodyrolename="type",
++                has_arg=False,
++            ),
+         ]
+     )
+ 
+-- 
+2.48.1
 
 
