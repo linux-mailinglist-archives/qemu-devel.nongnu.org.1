@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9074A6D046
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 18:38:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFC5A6D047
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 18:39:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twPGW-0005nu-4I; Sun, 23 Mar 2025 13:37:40 -0400
+	id 1twPGY-0005q2-4o; Sun, 23 Mar 2025 13:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGS-0005nA-KF
- for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:36 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1twPGU-0005ny-DU
+ for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:38 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGP-0002sY-Iw
- for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:34 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-223f4c06e9fso55279645ad.1
+ id 1twPGQ-0002sf-11
+ for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:38 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-2240b4de12bso49156715ad.2
  for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 10:37:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742751452; x=1743356252; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742751453; x=1743356253; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0CsTLV8c98Si7k0XcXe65xYgFmk/mGZL9wnBem+k0DA=;
- b=gRRCwdE4H4oCfNJw0zNmRbA/DKwcznWTBGXwypiI633iApx1o9BAn1E0AQYp3Y/5G0
- LM1EqClvE8YZFoIutbrwSS+xi/YNtztM2hRfkW3XNN5gjD3y0gCkZER9urLoOplvylXe
- a+MhgrV4gJ1hKkE5lvXt2Zj5dsCfZSSCXXNwtNe0X1H/vekUK9i3EAO9VPg9HesJ4XQY
- 4ArjxEiA3XPpVwVC+5j71T4GwC+EtsSmasO/zpVdzzFmjUsxpeN0sA3h7Aoyam9KvDV+
- 7CoRzhezTrAybe/QWy3ajW+f0mJZlOUqkwJA/pcsYzJNrmqJmW1+EYXhZZ3Ql6KHyA9w
- aa7w==
+ bh=n93sFLgifoxtvFypKbIjFGlyxMVTs87sLBcre3AkoOA=;
+ b=QFKBLjBA1GmjGyL/FyySb+Ovt4VGhMGaeU/ugLvwOsydq+W1T7jTdbci9Ro4pxZCm0
+ TFOV3AIPiJrNjwdGx260fPVKVy31xv5bG+69vsXlCGJai0Jt9/Fd13JB7QEI3wb03qs8
+ tOgmSCL3cAvOYukFz2YJmFGK/a8T96hLWwjHOgvDzEaM6OFA/vPmEOZTVasY5h6q/jaQ
+ L8mBfIH2qP0Ol3fK58LLrtEtckddQXOetG2VnFI3re77PPp8xjz1u2Fun6p4kDZq7Hou
+ Mxy8agNE51jSo07zIQSBv05HyRDyhOW4otHYnsYilmcIO73wH+poS3HkPcSAjfLIdf87
+ TPVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742751452; x=1743356252;
+ d=1e100.net; s=20230601; t=1742751453; x=1743356253;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0CsTLV8c98Si7k0XcXe65xYgFmk/mGZL9wnBem+k0DA=;
- b=LFS958+q6jXqa0eYR80sCselJa2ilzy7GqcSdT+fZIbtyw03LglFVSRb3bftRIvfIn
- weyLPONDiQ78BlOfeM7sCP6KhchZG1Txt35mnfG5eRs914qUlDiCeBJtSCJBE5N+3E3o
- Zywfl5Gm3V6te5xI9IZBuf7a25rr01vXdts1lvYz/5t9C5w4xgSrEzwiOG1Ye11sJW1G
- 2YnZGuakKWswn1rchzO5VDbCiF88qROgRZDtNCdna47gadppARxXD++PvHIH4yH0oy82
- WxUknSZdCyoOsTa7IerDGxRtJapPurWdswMn24QMegrVjzoyXSTVOuhLi3oQiXxlbobA
- 1Dlg==
-X-Gm-Message-State: AOJu0YyN00YLCOJkR+2cYFhKikolUfaBuDz/aGvdlerGW2zqbCpK0glZ
- xZboTuXH4IWEwSHHLYSMRhLp/2ac8cacnVV22agxrX1npTBoSfTw2qnh5qgpVAix3Mgl+KajJB7
- N
-X-Gm-Gg: ASbGncs5XkSRwPQpw6owW8y5dLvb5MM2UcaNze/hJFxZZnakrT6M3959MboY+7SFVy7
- LT+b0gaAijNB2RvcE7HcWnOidw0BqNPQ5P6H11868j0CS8XTPWrM1vWcC8gEnyPMSS2tQGaDRvB
- VunoB8r9VTlwiIJ5Ybd2FmVWtQYdLw9FWW+E5SSGHlMPeveN9R2iCGrugeBr7rLJEjorH90h4+6
- iM6DZKgZGOpPHggFWfuCEfmEjuKJj1mlHSYEQaLdAxkYMt1ef/Cu9Wsy2EXUR/R2HyULA8YbKSz
- QI05mR06DHiVS7L1o5h6nY9iYL163Fe7WZrPgZrHgReNg3VwupGNfM502LYOCjigoI3J9m5n079
- p
-X-Google-Smtp-Source: AGHT+IG2X95hsRawzwhbLQ3RGAlspim9GUHMC/QvXyscJbZmJqJzclYSgQ/xg2p+o2hn0Dh49W20wg==
-X-Received: by 2002:a17:902:c949:b0:21f:2e:4e4e with SMTP id
- d9443c01a7336-2278067c0a6mr150255595ad.5.1742751451834; 
- Sun, 23 Mar 2025 10:37:31 -0700 (PDT)
+ bh=n93sFLgifoxtvFypKbIjFGlyxMVTs87sLBcre3AkoOA=;
+ b=LQkPSyxv0xpELFSHNo6c+XFuUYa1lzqFomdndpzUUMDqn/L0UPz4bfOPv/jh0MmOjZ
+ gOM+ERjhWvt7AadOrxsDhdNb593sow/wXwf4C+E0MwtqiJqOPnD4ZZzy3YHY1f4g35tt
+ Zajp11RlyXWnPMHP6XerjSLB4HFRG234PETkxTZEpbXim5C9xW9LGFLgoZ/mbdEMl851
+ AypABIu2PSs6i9J7X1HuzWylJEvXhICSBnpEHYzpg3KF8/6vESWDYH67bL2y7ahAPj1f
+ JCVkchULE3h/e0AP4DXPbNIYvQ7eUCwiT/ZdKbgr6cZ/5zvA2xbqdVnBzJhX2cLcCe2t
+ 8dxg==
+X-Gm-Message-State: AOJu0YwKTpkxdzR3jai4C1VxZIR1R2sMnJtjkvknZlVeixWuKDGHGJk8
+ NTWUU29lY2oNOT47jL0mxYKJAM6P0q4jjqmQEYn74IFZnqSg4z2hGVoBJKKLzPonsl5S8/0fROe
+ /
+X-Gm-Gg: ASbGncsd8JBMnCTKhVQ1AXuA6A461MyVLxo9+Xy5L4fuoAr3EGXPlwa0FUTmU+0RC1T
+ PYRlDmZHWw1Kn5oXkByAjzyrJ1xtNxK9JD0cZEgFoNPoHmHu1Ax3HK3a32p4YgrZKc/kuz7SQ7B
+ wQ3T4bjb+zgyWFGAekY1MoJYDf18Ezp6DrXkGfwxElYAukv0nKEIBdlSjXko1BqxaesBioZYeqC
+ riXMAFcGxaQpPHFbcYPZhBbbMhro/NRqpyzBWRTQxdaxtT/GLt5PaCTTAw9/Yo5Rut5oU1frPb3
+ WeQSEAiTs2pWjuR2wiJixBJ9moUjgr54ivzkRiXPRf3uJGVJJZYAaGA3mlf+lbtrTkbpV2fmaki
+ Z
+X-Google-Smtp-Source: AGHT+IFeL7hfN2mvzRSrDxwvc2HFDLEUkB74qmg6B7Zgf/1gvOLDdKv22Gb/Z3AHuIG15AxxS16TKw==
+X-Received: by 2002:a17:902:e84f:b0:223:f639:69df with SMTP id
+ d9443c01a7336-22780e15275mr165077675ad.41.1742751452680; 
+ Sun, 23 Mar 2025 10:37:32 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22781209ff3sm54075165ad.257.2025.03.23.10.37.31
+ d9443c01a7336-22781209ff3sm54075165ad.257.2025.03.23.10.37.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Mar 2025 10:37:31 -0700 (PDT)
+ Sun, 23 Mar 2025 10:37:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mrolnik@gmail.com,
-	philmd@linaro.org,
-	pierrick.bouvier@linaro.org
-Subject: [PATCH 01/17] hw/core/cpu: Use size_t for memory_rw_debug len argument
-Date: Sun, 23 Mar 2025 10:37:13 -0700
-Message-ID: <20250323173730.3213964-2-richard.henderson@linaro.org>
+Cc: mrolnik@gmail.com, philmd@linaro.org, pierrick.bouvier@linaro.org,
+ qemu-stable@nongnu.org
+Subject: [PATCH 02/17] target/avr: Fix buffer read in avr_print_insn
+Date: Sun, 23 Mar 2025 10:37:14 -0700
+Message-ID: <20250323173730.3213964-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250323173730.3213964-1-richard.henderson@linaro.org>
 References: <20250323173730.3213964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,54 +98,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Match the prototype of cpu_memory_rw_debug().
+Do not unconditionally attempt to read 4 bytes, as there
+may only be 2 bytes remaining in the translator cache.
 
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h     | 2 +-
- target/sparc/cpu.h        | 2 +-
- target/sparc/mmu_helper.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ target/avr/disas.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 5d11d26556..abd8764e83 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -154,7 +154,7 @@ struct CPUClass {
+diff --git a/target/avr/disas.c b/target/avr/disas.c
+index b7689e8d7c..d341030174 100644
+--- a/target/avr/disas.c
++++ b/target/avr/disas.c
+@@ -68,28 +68,35 @@ static bool decode_insn(DisasContext *ctx, uint16_t insn);
  
-     int (*mmu_index)(CPUState *cpu, bool ifetch);
-     int (*memory_rw_debug)(CPUState *cpu, vaddr addr,
--                           uint8_t *buf, int len, bool is_write);
-+                           uint8_t *buf, size_t len, bool is_write);
-     void (*dump_state)(CPUState *cpu, FILE *, int flags);
-     void (*query_cpu_fast)(CPUState *cpu, CpuInfoFast *value);
-     int64_t (*get_arch_id)(CPUState *cpu);
-diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index 462bcb6c0e..68f8c21e7c 100644
---- a/target/sparc/cpu.h
-+++ b/target/sparc/cpu.h
-@@ -604,7 +604,7 @@ void dump_mmu(CPUSPARCState *env);
- 
- #if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
- int sparc_cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
--                              uint8_t *buf, int len, bool is_write);
-+                              uint8_t *buf, size_t len, bool is_write);
- #endif
- 
- /* translate.c */
-diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
-index 7548d01777..3821cd91ec 100644
---- a/target/sparc/mmu_helper.c
-+++ b/target/sparc/mmu_helper.c
-@@ -389,7 +389,7 @@ void dump_mmu(CPUSPARCState *env)
-  * that the sparc ABI is followed.
-  */
- int sparc_cpu_memory_rw_debug(CPUState *cs, vaddr address,
--                              uint8_t *buf, int len, bool is_write)
-+                              uint8_t *buf, size_t len, bool is_write)
+ int avr_print_insn(bfd_vma addr, disassemble_info *info)
  {
-     CPUSPARCState *env = cpu_env(cs);
-     target_ulong addr = address;
+-    DisasContext ctx;
++    DisasContext ctx = { info };
+     DisasContext *pctx = &ctx;
+     bfd_byte buffer[4];
+     uint16_t insn;
+     int status;
+ 
+-    ctx.info = info;
+-
+-    status = info->read_memory_func(addr, buffer, 4, info);
++    status = info->read_memory_func(addr, buffer, 2, info);
+     if (status != 0) {
+         info->memory_error_func(status, addr, info);
+         return -1;
+     }
+     insn = bfd_getl16(buffer);
+-    ctx.next_word = bfd_getl16(buffer + 2);
+-    ctx.next_word_used = false;
++
++    status = info->read_memory_func(addr + 2, buffer + 2, 2, info);
++    if (status == 0) {
++        ctx.next_word = bfd_getl16(buffer + 2);
++    }
+ 
+     if (!decode_insn(&ctx, insn)) {
+         output(".db", "0x%02x, 0x%02x", buffer[0], buffer[1]);
+     }
+ 
+-    return ctx.next_word_used ? 4 : 2;
++    if (!ctx.next_word_used) {
++        return 2;
++    } else if (status == 0) {
++        return 4;
++    }
++    info->memory_error_func(status, addr + 2, info);
++    return -1;
+ }
+ 
+ 
 -- 
 2.43.0
 
