@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80741A6D246
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 23:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF226A6D244
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 23:51:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twU9l-0003qG-AV; Sun, 23 Mar 2025 18:51:01 -0400
+	id 1twU9o-0003qu-JE; Sun, 23 Mar 2025 18:51:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twU9h-0003pv-US
- for qemu-devel@nongnu.org; Sun, 23 Mar 2025 18:50:57 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twU9m-0003qh-K6
+ for qemu-devel@nongnu.org; Sun, 23 Mar 2025 18:51:02 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twU9g-0007Dz-8t
- for qemu-devel@nongnu.org; Sun, 23 Mar 2025 18:50:57 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3913d129c1aso2660143f8f.0
- for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 15:50:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twU9l-0007EO-30
+ for qemu-devel@nongnu.org; Sun, 23 Mar 2025 18:51:02 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-39141ffa9fcso3277188f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 15:51:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742770254; x=1743375054; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742770259; x=1743375059; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cnaIE/coD7iehBI3M+vr/MPS6inHzuGVqj/KxNr6j7E=;
- b=Bc/IwGpfRUSZ81FA+sCWB0EnvEMuK+NWcB3c2+pWgbyEbNaKd2ysHzEaKyQzF3bfRF
- H7h447c5YqGPHVJLVPCpc2L0wZI5/Jgt05v3aNqF/RRPqIwGC9TgkbaXjolDEsiFbQpD
- UZldXoFPZgs3u+eJ9tLnNWrG2YRBqKwL2ZRmGz9L37Gvr3yNRsl3XSF9it8z+CRRWqBW
- WSVTigJoXIsk8cGdG5iJyWuNwPxQmLIdry4xYuI6JfRRcVQjjxGS3RJuOWQKvEh9wqh7
- 03E2Y2+k4DdyeyRCAMhJfVGuj026Ci8GLxvjSE4qYj1ZYSkIcrOh6i7RITZYVN6wuPV1
- /MrA==
+ bh=2ONHD5d7pAXIaEH45P/RlmSMtYEst+nDWdheP9MRJb4=;
+ b=bHerPZeRvZbS6/1ml7IZckksN5V92FsNnyLTh8FpZY449Ay5WU7yF9wKnZBwd9MYLc
+ 4bf7fKrZwfvo4AT1zESGpD2GYBr3U687svh5USRYowCZAgR5j3H35YYCtqnYJUmif5pn
+ kNjUbEp4hdXiHpia3qdGroMiuWv0vB8P2f0w6oy5eo/pmsq7HxPBl47ws41q1R8KqYM4
+ aPoFM76rB0kb+JdytJtY6zO+AmaRe2FZ0QbYClP4zByZ7byn4wmLbuJi8KZz1feFycb/
+ K0PzKTOrDtX0DFdtS1sFsfEprZN6CCJls/82neCTlemTDp8AHkhigDGsWieq+0KkcrGa
+ KIRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742770254; x=1743375054;
+ d=1e100.net; s=20230601; t=1742770259; x=1743375059;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cnaIE/coD7iehBI3M+vr/MPS6inHzuGVqj/KxNr6j7E=;
- b=MB9cko3/IAEZUCG87zeFXXXQBCMuSwcSTP3KeVf+Bjj9NRfmf8nV3USLlpynJNY2W1
- zmEBF4hCLHohaHa/r+bBhBs+T8Tgf+SX8mWDPm9vFx1oQ66PtsjKubpBDNJAEzDVBdUy
- rvcGKVSLmgXTqay0lfrfvIIqpnaTOLf1fpvOMcKgTiKvMB0h3Jjw/lgFtFBl14FZ+lvr
- +r72wQ7SPR+oywrmknef42cwHnL8+xSZgntYc//DJxbXSU3Wsln8ovsPWmvATP/M/Ut/
- WIUjw5toxYHYXDnIzl6r/9QDedEJJ3yONbTYo8gDihVdkIZ7NxUaqoJ2Ns9qRVt9pv0h
- UJFw==
-X-Gm-Message-State: AOJu0YxSknXB2ZPsG63QJdyZ+td9QjhxI61IwhvoUbPtpVTtdNeOVxCq
- cov5TbdNznE39QQ6msxOivFZuEwOBxH5tGYAsvg/zEekH/uRzyCl1rMbpluTNh3Jadu15a4Wt6Y
- D
-X-Gm-Gg: ASbGncvhZqCHBz/GWSsPjp0QSZIXO553JHr76uSizzdApm7eFVvTwy4K7yul64xYZeK
- bxw8sV4wD1juREQTuuK5kSz1T0kV8L4J1zy03guKRbpp/06i17TmvjyAXlUV//o1mODUA/JA8PN
- UIxXbVEUDsiQS6iZULZ8GnkQJVg4a8Blk5IMLIjtMl+bL3WUCuBIicf9c3zKyEVs8pYuu1RZEF1
- ECgVThRebGqDsEBdy1PXNlw3yGcKShfJ+2/MlWZIDUS0XB6CMtoBrxJVQt9PaNaRK18w/XUd5Y9
- P+m4pjkFru3aqoqz4K0tb7I07u52Se6tNe0VLnIH860s3vKTb9QaRhsUlQpLvolGeu+m6xBY3M6
- g4cy+L6U8EKYFPF2c8v4YmXt9
-X-Google-Smtp-Source: AGHT+IHJlAqx46cncW6TLKAt9HPyfMpIfVqSPWFtv4vnUMDmU53hBdSdswSfWDh+InrYpOKDeC+KLA==
-X-Received: by 2002:a05:6000:188e:b0:390:dec3:2780 with SMTP id
- ffacd0b85a97d-3997f93c60fmr8091542f8f.24.1742770253834; 
- Sun, 23 Mar 2025 15:50:53 -0700 (PDT)
+ bh=2ONHD5d7pAXIaEH45P/RlmSMtYEst+nDWdheP9MRJb4=;
+ b=IhbGN22uu1ytHSxNn1u0jYjvgZ2+Y7EyNHoaIRrzJlISjdnuST2ebY63huwMbtH7eS
+ 6qBU8MD46l+jYwtUnEg2T8WNV0aK/voZpnxdO4P9DnNknub33XlM5bQ1CAPNiUsmxza+
+ YGp2iLAfCUQbhSMy4rhZbwyNhz+sP+WvSAXEZOw0O8wMprYah/v9Sv3DHjQoCXNMDIcU
+ RYIRfBF2MPBgVyVgsQge4SXX3iE2ooafwjYTCo0Qtc5nsS0j1oeR2B8gZDzToT19FL4j
+ aIMRftBArUd1drn6AmRNKBwRcCKtqXhHIyZ5WYCSdUDrGPcvZbpQal9ixE0+e8YlDbwB
+ 7E/g==
+X-Gm-Message-State: AOJu0Yzpt8vyMX8AbAvqos1YymwgYkv4aPXNVotaOsvNiV7vGkHYqQJF
+ x/Hi9vXuR++VyXH5bBGwdJZkhodu4gma318Q7V+x445ecqxEzagcx4g1diL1Ngj1mTc9MASjFvB
+ E
+X-Gm-Gg: ASbGncvCiYbWr3EEzH3Gjra20HeDcpVg2+By0+y+EQmWCbC67ihWkTBoraZgwyqRKWr
+ 3gKXRslOdxKSvC8V5uWE8yllX9W18E3LmTmirRb3ZA8jXcZb5kQb3s/YzlNsEBGuWTaCTd7lp/0
+ N8sy3k+JS2Le6JqDQ045uW4czGQ6lz/Ds4ISQzdZ/8wfhZAvnZ/FBo8ak4f2C3i/AL2J3TIJ04Y
+ g46exVbeTh6Yd63zzc9IFAwUzTB42QalSrAA5Q6xgU+lNNyiWsulPb2VGSVMJ5xMIvLvBCph/fF
+ 7sV2CR6WsRBsvDu6KvSdJorJBVe6qgHS5XAyFZIJMpvom5UEM55nyZaruGaUO4wicYBxQaJDaTc
+ gXVegLoUFA3/B3xNFZxnpvzYC
+X-Google-Smtp-Source: AGHT+IG3KHvGSRFsYNuAs2SQQv6JbQY2xOid3/f3amHs7sT6/jnouF5HMwMfYIsL8tbr7m8odZhfoA==
+X-Received: by 2002:a5d:64e7:0:b0:391:13ef:1af8 with SMTP id
+ ffacd0b85a97d-3997f9423admr9035105f8f.54.1742770259316; 
+ Sun, 23 Mar 2025 15:50:59 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9b5193sm9154958f8f.55.2025.03.23.15.50.52
+ 5b1f17b1804b1-43d4fd277c9sm102906645e9.22.2025.03.23.15.50.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 23 Mar 2025 15:50:53 -0700 (PDT)
+ Sun, 23 Mar 2025 15:50:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
@@ -72,18 +72,18 @@ Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Aurelien Jarno <aurelien@aurel32.net>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 1/3] target/mips: Inline qemu_get_betls() and
- qemu_put_betls()
-Date: Sun, 23 Mar 2025 23:50:45 +0100
-Message-ID: <20250323225047.35419-2-philmd@linaro.org>
+Subject: [PATCH-for-10.1 2/3] target/sparc: Inline qemu_get_betl() and
+ qemu_put_betl()
+Date: Sun, 23 Mar 2025 23:50:46 +0100
+Message-ID: <20250323225047.35419-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250323225047.35419-1-philmd@linaro.org>
 References: <20250323225047.35419-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,46 +106,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only use qemu_get_betls() and qemu_put_betls() once in
-the whole code base. Inline them (checking TARGET_MIPS64
+We only use qemu_get_betl() and qemu_put_betl() once in
+the whole code base. Inline them (checking TARGET_SPARC64
 instead of TARGET_LONG_BITS == 64) so we can remove them
 later as unused.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/system/machine.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ target/sparc/machine.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/target/mips/system/machine.c b/target/mips/system/machine.c
-index 8af11fd896b..c4c92a9a1ca 100644
---- a/target/mips/system/machine.c
-+++ b/target/mips/system/machine.c
-@@ -139,7 +139,11 @@ static int get_tlb(QEMUFile *f, void *pv, size_t size,
-     r4k_tlb_t *v = pv;
-     uint16_t flags;
- 
--    qemu_get_betls(f, &v->VPN);
-+#ifdef TARGET_MIPS64
-+    qemu_get_be64s(f, &v->VPN);
+diff --git a/target/sparc/machine.c b/target/sparc/machine.c
+index 222e5709c55..cc58812781b 100644
+--- a/target/sparc/machine.c
++++ b/target/sparc/machine.c
+@@ -87,7 +87,13 @@ static int get_fsr(QEMUFile *f, void *opaque, size_t size,
+                    const VMStateField *field)
+ {
+     SPARCCPU *cpu = opaque;
+-    target_ulong val = qemu_get_betl(f);
++    target_ulong val;
++
++#ifdef TARGET_SPARC64
++    val = qemu_get_be64(f);
 +#else
-+    qemu_get_be32s(f, &v->VPN);
++    val = qemu_get_be32(f);
 +#endif
-     qemu_get_be32s(f, &v->PageMask);
-     qemu_get_be16s(f, &v->ASID);
-     qemu_get_be32s(f, &v->MMID);
-@@ -182,7 +186,11 @@ static int put_tlb(QEMUFile *f, void *pv, size_t size,
-                       (v->D0 << 1) |
-                       (v->D1 << 0));
  
--    qemu_put_betls(f, &v->VPN);
-+#ifdef TARGET_MIPS64
-+    qemu_put_be64s(f, &v->VPN);
+     cpu_put_fsr(&cpu->env, val);
+     return 0;
+@@ -99,7 +105,11 @@ static int put_fsr(QEMUFile *f, void *opaque, size_t size,
+     SPARCCPU *cpu = opaque;
+     target_ulong val = cpu_get_fsr(&cpu->env);
+ 
+-    qemu_put_betl(f, val);
++#ifdef TARGET_SPARC64
++    qemu_put_be64(f, val);
 +#else
-+    qemu_put_be32s(f, &v->VPN);
++    qemu_put_be32(f, val);
 +#endif
-     qemu_put_be32s(f, &v->PageMask);
-     qemu_put_be16s(f, &asid);
-     qemu_put_be32s(f, &mmid);
+     return 0;
+ }
+ 
 -- 
 2.47.1
 
