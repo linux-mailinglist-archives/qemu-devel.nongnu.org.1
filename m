@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47FE3A6D059
+	by mail.lfdr.de (Postfix) with ESMTPS id 2840DA6D057
 	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 18:44:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twPGg-0005vJ-PL; Sun, 23 Mar 2025 13:37:50 -0400
+	id 1twPGc-0005tP-Rr; Sun, 23 Mar 2025 13:37:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGa-0005sC-KK
- for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:44 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1twPGb-0005sd-66
+ for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:45 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGY-0002vQ-S0
+ id 1twPGZ-0002vc-JK
  for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:44 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-2239c066347so79658915ad.2
- for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 10:37:42 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-223a7065ff8so55787375ad.0
+ for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 10:37:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742751461; x=1743356261; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742751462; x=1743356262; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1diLEzRhOjCtwJkuJyBuZiDuZxnU+3/mKXg0OjzXEDE=;
- b=lX7wCGfpEsGZt0SDiucwxbgAl/ey6bKkgaa+Xkp7x/LyZ+M0qpFTM6EakI6h+CsK87
- Gh29RO56w9Cfsb/NzNuEL9q1Elej6J5VcNJL59ezA0xiYRO8DJ0761ekUIceu3vnuorD
- h/quOwteyNcOkkj22QFKKIz6VOKBi3ls/anh4/IXXsgS4UCupNWEpbay5t2G36q6ERPL
- 5vU59gv4nXlzy0ex842gMCFg8r3z98Nf7VkF6ZU79tddhfKwc3AYLr+6HRa16NeJaPbK
- NthD7OKk7ZkzjeLgt5Jjvf5v4pWpl0dPjXqDDcTKqn+FErusosjmV5bCEXJHc6C62ise
- kYKg==
+ bh=yV8UPagoDasIkYgoCkaTjilWFltLUaMj7KB+817IG98=;
+ b=Tl3PuUJJnRg3U19qvXlXGVzXUcNoiI3RsMvDS94oQzDP4v1rkkDbpJ9W7lkdD0mCJq
+ qWfekwmMzS4hBRVN1OXIvAHrPk+mhswf+YfnHqqhnXFKRLkioQtuTbvukeDo6pH2zw8F
+ PA8aNX6KiySWi/gtWsyQQs3xUdn1TugKcV7slSRmf8/n+lhsiqc+H/bPghZPWYGaGHC9
+ yB1Lt/IZ9UGFJXjBYXP/NJdzjrHgG8497dJXZuyyKUEXa2edszSt4N0+6Tp5JSbcdV6H
+ hDl1b9TDMtr/JxFw+69yizr9gBzVgPlbnAltwaj43TyviUriB62f3dvhOSa3KzQFrlJT
+ c4jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742751461; x=1743356261;
+ d=1e100.net; s=20230601; t=1742751462; x=1743356262;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1diLEzRhOjCtwJkuJyBuZiDuZxnU+3/mKXg0OjzXEDE=;
- b=M06JAkChCff1sV9KTWEFaLdnw0VKyFjtdh2u8gsBBPo4/3HykXZRZXgqDpp2LD/Qrv
- ufjLsq6H3rm9e1kBDwQ454ZQs+N7oT+nzsGOG4HEHJinTG6qab3H18UhFDqp2gYpNfZK
- 8ua76uCeAiwUEfvFG+DZbBFnZ7mXgiV/hfpDZLQCi2GZxlcowW8KRmJ3b2m5f6S003Yq
- bmaqpM+56NZp17k2/6m9di5yfnaYmynjBnemsXR8qEw63nxkSCZkoTn2ljGQH/SnL22K
- 2ybRt16JvYaFbdAMagbYRv35ubLiFvOF334NHHiKhaagXkPNBl2oa0e0hTCoR5X6yH4l
- EPiQ==
-X-Gm-Message-State: AOJu0YxAHJmhev7yH9+rcJWItth8OobyRF0TkXTZgve/izAzkxD+aa4O
- 0alnzGl/zsgyuOYZ5yQsRggSk1B+Vpu3hvn8sNX7pGh6Z4+b3f2zea5UTdUphdw0AxBJj0fV6o7
- B
-X-Gm-Gg: ASbGncvqyFjJ/HULaSbMQWXtl7304W6z2EspHVssUaASeLBtr3UXvwLo99e+pVd0dQ0
- ouwEmIgS/TFwpONdrmiQOA6VENiLBpedyLH5JcrQ/XGAQsREYe26Luzs7cQCPSISr1yYMpxyS4W
- o1izSfxZyy7QtzRHwdnPxQ5d4eF8HZ0ISBy5aozWS1yXMhxd6zwaUwh4HOxDosCKUsanCzHhkvM
- PiXA43palHT7fEmrl7tXIxW+Fp1cDAsxVf0DLMT2blrRuU9yfGiIxnjW5oQGe6V0ZufZdJHrg4o
- /eanvkJPQhYHxtAP8kzgnmyfZUmyX4H+hzPifXC1lpEy6WhDWBw3a5zfQrhGB3t/UcMDmioijW1
+ bh=yV8UPagoDasIkYgoCkaTjilWFltLUaMj7KB+817IG98=;
+ b=XWqtfwi+AIWPSq72mMqAPlkzrE1TUsIsm3MnYWhZjOK+Ds6DOuKrfesJh1zlZU/VO8
+ 4PMvTfnDEuoJ9Z3RY55zVXrpCbPIprlbIPhgCAXwT07wADj79y0sEuGiDDwEMtMEhMPQ
+ djeDpuvj6Me9pf8KJfHI16C6er+AMS88vT3J8zZLl/413XStxwhMGODAMNGkj8oNOSzS
+ fGRBWLe9llQLeD0L3zu0S3eqAK3aYGOG/y5f0QTMlENLhaLf/Jn7q0X4CIa1GQ3CYMb3
+ GPLwYUvaGi/zDkFbOuibKbNAQlcd4hgvzIiC+QR7nl5337Oru6alcSfqawq2Pr9ww4qw
+ 0kSA==
+X-Gm-Message-State: AOJu0YxcBZzCyoHcsAO3V9CPE47GpXkUARV9ee1MPbu1aD9mNEtdvoBc
+ NnMftLppBNmal/Q7pWh4hcmjHwyjgfA8s/Y1EsH5C9VBzROgKkAsrfVhAIvcrG/fL154u5NQz7f
+ U
+X-Gm-Gg: ASbGncsuwHC8/k6c80elYmHcC+xtq4rugg/iWOPMLOrEY7W5emwgW5URGKe9PUox4Fq
+ WF/JzdqX5+uBkXibxDkd52MT8UKsoOTzHl9xtgsmLL9IS1edNjcu5TsIiGjLHMfSVdD/KXfCaQ0
+ WqOTyOEwmhjpnbifGc174x5sy1LpwkOlqlxHqRDxPpPYG3RjJX/AcHcxaDQOwscgVXktnv49x+j
+ pVZz240RKvOlTMhOad5zM+8ZrPgZD4IcBN/sv27ZMITw3XdebOBnLeNHQ4X9ct5A+Ua/+CVyr3O
+ AqnCsn3viR9OvB1KR0gv08F6fD82A3C6hCrkTzv4NDSYlcNioIW1vqXmke0C+Jxxk93CDuWAp1X
  c
-X-Google-Smtp-Source: AGHT+IGW3mvxhvtAAZqftWK9jo4R2yWEsTwtWwCEH163/f+UaXvGCVr2MAqFHX50J63Vs+xNm4VbxQ==
-X-Received: by 2002:a17:902:c94a:b0:224:93e:b5d7 with SMTP id
- d9443c01a7336-22780e3fb00mr161436935ad.34.1742751461520; 
- Sun, 23 Mar 2025 10:37:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE9oDlQco/2y1TGo8E15QrNuI5/Mx2hOuD4VZZ3dLMJinx76SxGrg2+fqvGdftllnWFWiucxg==
+X-Received: by 2002:a17:902:f642:b0:21d:3bd7:afdd with SMTP id
+ d9443c01a7336-22780ba18cdmr166709665ad.0.1742751462263; 
+ Sun, 23 Mar 2025 10:37:42 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22781209ff3sm54075165ad.257.2025.03.23.10.37.40
+ d9443c01a7336-22781209ff3sm54075165ad.257.2025.03.23.10.37.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 23 Mar 2025 10:37:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
@@ -68,16 +68,16 @@ To: qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com,
 	philmd@linaro.org,
 	pierrick.bouvier@linaro.org
-Subject: [PATCH 14/17] hw/avr: Set offset_io and increase page size to 1k
-Date: Sun, 23 Mar 2025 10:37:26 -0700
-Message-ID: <20250323173730.3213964-15-richard.henderson@linaro.org>
+Subject: [PATCH 15/17] hw/avr: Pass mcu_type to class_base_init via .class_data
+Date: Sun, 23 Mar 2025 10:37:27 -0700
+Message-ID: <20250323173730.3213964-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250323173730.3213964-1-richard.henderson@linaro.org>
 References: <20250323173730.3213964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,180 +100,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We want to be able to do more common work on MachineClass.
+Pass the class name as a string in .class_data.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/avr/cpu-param.h |  8 +------
- hw/avr/atmega.c        | 54 ++++++++++++++++++++++++++----------------
- 2 files changed, 35 insertions(+), 27 deletions(-)
+ hw/avr/arduino.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/target/avr/cpu-param.h b/target/avr/cpu-param.h
-index 81f3f49ee1..f5248ce9e7 100644
---- a/target/avr/cpu-param.h
-+++ b/target/avr/cpu-param.h
-@@ -21,13 +21,7 @@
- #ifndef AVR_CPU_PARAM_H
- #define AVR_CPU_PARAM_H
- 
--/*
-- * TARGET_PAGE_BITS cannot be more than 8 bits because
-- * 1.  all IO registers occupy [0x0000 .. 0x00ff] address range, and they
-- *     should be implemented as a device and not memory
-- * 2.  SRAM starts at the address 0x0100
-- */
--#define TARGET_PAGE_BITS 8
-+#define TARGET_PAGE_BITS 10
- #define TARGET_PHYS_ADDR_SPACE_BITS 24
- #define TARGET_VIRT_ADDR_SPACE_BITS 24
- 
-diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
-index 273582b8af..d4fc9c4aee 100644
---- a/hw/avr/atmega.c
-+++ b/hw/avr/atmega.c
-@@ -14,6 +14,7 @@
- #include "qapi/error.h"
- #include "exec/memory.h"
- #include "exec/address-spaces.h"
-+#include "exec/target_page.h"
- #include "system/system.h"
- #include "hw/qdev-properties.h"
- #include "hw/sysbus.h"
-@@ -222,6 +223,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-     DeviceState *cpudev;
-     SysBusDevice *sbd;
-     char *devname;
-+    uint32_t offset_io, offset_sram;
-     size_t i;
- 
-     assert(mc->io_size <= 0x200);
-@@ -231,13 +233,25 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    /*
-+     * Bias the virtual data section so that the start of RAM is at
-+     * the start of the second page of the physical data section.
-+     * This puts all of the I/O at the end of the first page of the
-+     * physical data section.
-+     */
-+    offset_io = TARGET_PAGE_SIZE - mc->io_size;
-+    offset_sram = TARGET_PAGE_SIZE;
-+
-     /* CPU */
-     object_initialize_child(OBJECT(dev), "cpu", &s->cpu, mc->cpu_type);
- 
-     object_property_set_uint(OBJECT(&s->cpu), "init-sp",
-                              mc->io_size + mc->sram_size - 1, &error_abort);
-     object_property_set_uint(OBJECT(&s->cpu), "offset-io",
--                             0, &error_abort);
-+                             offset_io, &error_abort);
-+
-+    offset_io += OFFSET_DATA;
-+    offset_sram += OFFSET_DATA;
- 
-     qdev_realize(DEVICE(&s->cpu), NULL, &error_abort);
-     cpudev = DEVICE(&s->cpu);
-@@ -245,8 +259,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-     /* SRAM */
-     memory_region_init_ram(&s->sram, OBJECT(dev), "sram", mc->sram_size,
-                            &error_abort);
--    memory_region_add_subregion(get_system_memory(),
--                                OFFSET_DATA + mc->io_size, &s->sram);
-+    memory_region_add_subregion(get_system_memory(), offset_sram, &s->sram);
- 
-     /* Flash */
-     memory_region_init_rom(&s->flash, OBJECT(dev),
-@@ -258,13 +271,14 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-      *
-      * 0x00 - 0x1f: Registers
-      * 0x20 - 0x5f: I/O memory
--     * 0x60 - 0xff: Extended I/O
-+     * 0x60 - 0x[1]ff: Extended I/O
-      */
-     s->io = qdev_new(TYPE_UNIMPLEMENTED_DEVICE);
-     qdev_prop_set_string(s->io, "name", "I/O");
-     qdev_prop_set_uint64(s->io, "size", mc->io_size);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(s->io), &error_fatal);
--    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(s->io), 0, OFFSET_DATA, -1234);
-+
-+    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(s->io), 0, offset_io, -1234);
- 
-     /* Power Reduction */
-     for (i = 0; i < POWER_MAX; i++) {
-@@ -277,7 +291,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-                                 TYPE_AVR_MASK);
-         sysbus_realize(SYS_BUS_DEVICE(&s->pwr[i]), &error_abort);
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->pwr[i]), 0,
--                        OFFSET_DATA + mc->dev[idx].addr);
-+                        offset_io + mc->dev[idx].addr);
-         g_free(devname);
-     }
- 
-@@ -289,7 +303,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-         }
-         devname = g_strdup_printf("atmega-gpio-%c", 'a' + (char)i);
-         create_unimplemented_device(devname,
--                                    OFFSET_DATA + mc->dev[idx].addr, 3);
-+                                    offset_io + mc->dev[idx].addr, 3);
-         g_free(devname);
-     }
- 
-@@ -305,7 +319,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-         qdev_prop_set_chr(DEVICE(&s->usart[i]), "chardev", serial_hd(i));
-         sbd = SYS_BUS_DEVICE(&s->usart[i]);
-         sysbus_realize(sbd, &error_abort);
--        sysbus_mmio_map(sbd, 0, OFFSET_DATA + mc->dev[USART(i)].addr);
-+        sysbus_mmio_map(sbd, 0, offset_io + mc->dev[USART(i)].addr);
-         connect_peripheral_irq(mc, sbd, 0, cpudev, USART_RXC_IRQ(i));
-         connect_peripheral_irq(mc, sbd, 1, cpudev, USART_DRE_IRQ(i));
-         connect_peripheral_irq(mc, sbd, 2, cpudev, USART_TXC_IRQ(i));
-@@ -321,12 +335,12 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-         }
-         if (!mc->dev[idx].is_timer16) {
-             create_unimplemented_device("avr-timer8",
--                                        OFFSET_DATA + mc->dev[idx].addr, 5);
-+                                        offset_io + mc->dev[idx].addr, 5);
-             create_unimplemented_device("avr-timer8-intmask",
--                                        OFFSET_DATA
-+                                        offset_io
-                                         + mc->dev[idx].intmask_addr, 1);
-             create_unimplemented_device("avr-timer8-intflag",
--                                        OFFSET_DATA
-+                                        offset_io
-                                         + mc->dev[idx].intflag_addr, 1);
-             continue;
-         }
-@@ -337,9 +351,9 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-                                  s->xtal_freq_hz, &error_abort);
-         sbd = SYS_BUS_DEVICE(&s->timer[i]);
-         sysbus_realize(sbd, &error_abort);
--        sysbus_mmio_map(sbd, 0, OFFSET_DATA + mc->dev[idx].addr);
--        sysbus_mmio_map(sbd, 1, OFFSET_DATA + mc->dev[idx].intmask_addr);
--        sysbus_mmio_map(sbd, 2, OFFSET_DATA + mc->dev[idx].intflag_addr);
-+        sysbus_mmio_map(sbd, 0, offset_io + mc->dev[idx].addr);
-+        sysbus_mmio_map(sbd, 1, offset_io + mc->dev[idx].intmask_addr);
-+        sysbus_mmio_map(sbd, 2, offset_io + mc->dev[idx].intflag_addr);
-         connect_peripheral_irq(mc, sbd, 0, cpudev, TIMER_CAPT_IRQ(i));
-         connect_peripheral_irq(mc, sbd, 1, cpudev, TIMER_COMPA_IRQ(i));
-         connect_peripheral_irq(mc, sbd, 2, cpudev, TIMER_COMPB_IRQ(i));
-@@ -349,12 +363,12 @@ static void atmega_realize(DeviceState *dev, Error **errp)
-         g_free(devname);
-     }
- 
--    create_unimplemented_device("avr-twi",          OFFSET_DATA + 0x0b8, 6);
--    create_unimplemented_device("avr-adc",          OFFSET_DATA + 0x078, 8);
--    create_unimplemented_device("avr-ext-mem-ctrl", OFFSET_DATA + 0x074, 2);
--    create_unimplemented_device("avr-watchdog",     OFFSET_DATA + 0x060, 1);
--    create_unimplemented_device("avr-spi",          OFFSET_DATA + 0x04c, 3);
--    create_unimplemented_device("avr-eeprom",       OFFSET_DATA + 0x03f, 3);
-+    create_unimplemented_device("avr-twi",          offset_io + 0x0b8, 6);
-+    create_unimplemented_device("avr-adc",          offset_io + 0x078, 8);
-+    create_unimplemented_device("avr-ext-mem-ctrl", offset_io + 0x074, 2);
-+    create_unimplemented_device("avr-watchdog",     offset_io + 0x060, 1);
-+    create_unimplemented_device("avr-spi",          offset_io + 0x04c, 3);
-+    create_unimplemented_device("avr-eeprom",       offset_io + 0x03f, 3);
+diff --git a/hw/avr/arduino.c b/hw/avr/arduino.c
+index 48ef478346..29cb776848 100644
+--- a/hw/avr/arduino.c
++++ b/hw/avr/arduino.c
+@@ -69,6 +69,13 @@ static void arduino_machine_class_init(ObjectClass *oc, void *data)
+     mc->no_parallel = 1;
  }
  
- static const Property atmega_props[] = {
++static void arduino_machine_class_base_init(ObjectClass *oc, void *data)
++{
++    ArduinoMachineClass *amc = ARDUINO_MACHINE_CLASS(oc);
++
++    amc->mcu_type = data;
++}
++
+ static void arduino_duemilanove_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+@@ -80,7 +87,6 @@ static void arduino_duemilanove_class_init(ObjectClass *oc, void *data)
+      */
+     mc->desc        = "Arduino Duemilanove (ATmega168)",
+     mc->alias       = "2009";
+-    amc->mcu_type   = TYPE_ATMEGA168_MCU;
+     amc->xtal_hz    = 16 * 1000 * 1000;
+ };
+ 
+@@ -95,7 +101,6 @@ static void arduino_uno_class_init(ObjectClass *oc, void *data)
+      */
+     mc->desc        = "Arduino UNO (ATmega328P)";
+     mc->alias       = "uno";
+-    amc->mcu_type   = TYPE_ATMEGA328_MCU;
+     amc->xtal_hz    = 16 * 1000 * 1000;
+ };
+ 
+@@ -110,7 +115,6 @@ static void arduino_mega_class_init(ObjectClass *oc, void *data)
+      */
+     mc->desc        = "Arduino Mega (ATmega1280)";
+     mc->alias       = "mega";
+-    amc->mcu_type   = TYPE_ATMEGA1280_MCU;
+     amc->xtal_hz    = 16 * 1000 * 1000;
+ };
+ 
+@@ -125,7 +129,6 @@ static void arduino_mega2560_class_init(ObjectClass *oc, void *data)
+      */
+     mc->desc        = "Arduino Mega 2560 (ATmega2560)";
+     mc->alias       = "mega2560";
+-    amc->mcu_type   = TYPE_ATMEGA2560_MCU;
+     amc->xtal_hz    = 16 * 1000 * 1000; /* CSTCE16M0V53-R0 */
+ };
+ 
+@@ -134,24 +137,29 @@ static const TypeInfo arduino_machine_types[] = {
+         .name          = MACHINE_TYPE_NAME("arduino-duemilanove"),
+         .parent        = TYPE_ARDUINO_MACHINE,
+         .class_init    = arduino_duemilanove_class_init,
++        .class_data    = (void *)TYPE_ATMEGA168_MCU,
+     }, {
+         .name          = MACHINE_TYPE_NAME("arduino-uno"),
+         .parent        = TYPE_ARDUINO_MACHINE,
+         .class_init    = arduino_uno_class_init,
++        .class_data    = (void *)TYPE_ATMEGA328_MCU,
+     }, {
+         .name          = MACHINE_TYPE_NAME("arduino-mega"),
+         .parent        = TYPE_ARDUINO_MACHINE,
+         .class_init    = arduino_mega_class_init,
++        .class_data    = (void *)TYPE_ATMEGA1280_MCU,
+     }, {
+         .name          = MACHINE_TYPE_NAME("arduino-mega-2560-v3"),
+         .parent        = TYPE_ARDUINO_MACHINE,
+         .class_init    = arduino_mega2560_class_init,
++        .class_data    = (void *)TYPE_ATMEGA2560_MCU,
+     }, {
+         .name           = TYPE_ARDUINO_MACHINE,
+         .parent         = TYPE_MACHINE,
+         .instance_size  = sizeof(ArduinoMachineState),
+         .class_size     = sizeof(ArduinoMachineClass),
+         .class_init     = arduino_machine_class_init,
++        .class_base_init = arduino_machine_class_base_init,
+         .abstract       = true,
+     }
+ };
 -- 
 2.43.0
 
