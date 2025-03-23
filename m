@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EF6A6D04D
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 18:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0B7A6D051
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 18:42:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twPGe-0005uZ-W0; Sun, 23 Mar 2025 13:37:49 -0400
+	id 1twPGe-0005uk-W4; Sun, 23 Mar 2025 13:37:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGb-0005tE-UN
+ id 1twPGc-0005ta-Qx
  for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:46 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGa-0002vr-FQ
- for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:45 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-22398e09e39so70809985ad.3
+ id 1twPGb-0002w3-7r
+ for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:46 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-22409077c06so60882545ad.1
  for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 10:37:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742751463; x=1743356263; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742751464; x=1743356264; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3YwrBfdlhs0bOKiaJCFIoQFWS0HOXf48uYuIIHVmYZU=;
- b=e/VPuBzoxb+UjFwMs1qYY0FGYXzFQZB1geC6H9rHkjlaNFneSxKIMhozkPyneoNICo
- mYWYgyIBw2JIGV+jjRrKp6SDl4jxBPsx2D7J7UtA8hlCz/XmCiV0wCo5q+q/GClY+HUS
- v8DwcmeN0gSdu8XYSZjYZjtmZ3M/uion1+eUWqfqE/S2be2BKRfQS/yGm3rsd8wxBEyO
- akqzYIGQsK8XfvDXrpJfaxZkmyHJ4oOdvZcmUsnqfJFojANOl6OiUVPUrsOd8S/M/Mb5
- 8BF9f6hc6NJOIvUJTEVVaAO1USsWw5N13tIf9zHX+CFylF5CLTOQ70PLy7VpSXV98gfk
- /kIw==
+ bh=rl2kD2O4NtHjGm3/OP8N2dKmDeEtJGe1Kf/Hel8K6aw=;
+ b=DSiA1fHFe2m32Or6pjagtGcC0Z8NJBTef6QxcqMFGIvYOdOXRmhd9P++30KP72TE5e
+ I79/5mLO0dKp+hEPuhVG/VAGY4eY7eRfBTmDB81G00cH/06ZcOoJeYSG89x4otEM5c7s
+ wvQp1Aj0WgTw+xau4VmsXVwdqxIfg0kufX6vJCYD36iulPXd/kXv1mM+0+JadcLf0ZdT
+ k0vl3wJp3mqtGEk2UPKrvxM9/yWaUYugpvAmw3492Iq8v4K+u+o5Zcrgf/b8I9l2qoBw
+ Gm/47pJt9C6y2CMBZXpsfL9c85isp5BxclhpkEDKTw/FW/87zKTKu/TcsYJjJI5zFo0u
+ 1cJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742751463; x=1743356263;
+ d=1e100.net; s=20230601; t=1742751464; x=1743356264;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3YwrBfdlhs0bOKiaJCFIoQFWS0HOXf48uYuIIHVmYZU=;
- b=FFEwXaQSZulz4Pf1kl+fCrDILH7t4sn029rbU3QGq1rSGA1ROTRf1xpP5HP52FdDX0
- dSq6ndx88WglybKvZ6LgVSupBSzer+Ir1b4dWG/hAzwNOupJ9Ig75rfPVGwfAR9mCeIM
- Rdr4iCzxMtIXaR+qQ5U+lPrxyCRduacZAuIS/FZeQMDiHqVbfP5b5btb7RM/g42Czvjh
- mNHfjGmI4/rz9msrPnmOsC8i/CA2VEgwJsP6pywGgmU9tMV52vhRZMGa3Z2EMm1k4wOr
- Jq3P5qnGuH4lbdpStjpDhea66Ne+aGr5jF4Bwm31UoTZn4vfhbwkxGHXbClIeyUtFRJO
- OUvw==
-X-Gm-Message-State: AOJu0YwRfomXQCa/ecYktiNRggXqRUW53DvjF9kRHFofvMyzLc+TRkn2
- d2DCa4YZ+1aC3lvCx06n0x3V2x55VvCZ553RSTGZbrzKMtmft+9UFz+wnrXHtfNzBpfpGrg+iov
- I
-X-Gm-Gg: ASbGncuqfTD1dzLrXLDDcEqfVw/dPs4irmNg7Ik12VMbg+YxxQRsODWGqHf8P4+J9SC
- dqmm625ZE+RQd/VYjTKfvldTVRYucIN8wd0GpFC8afOUe9Hl04qO8HN2LhG6ZsuDXUDKh4wl+1T
- V6hfmdBXVLaUzVsLanuo7IT48gYq0d4mW9pax7/DXaNVPpX+H9QTxXodkU/6a4OFsDzR0qGan2V
- VjkxbJac3xwiQg2GMl4jaX9KVXpSE5rRlpgCVSHOrgL9ITVVlZg34ef/6Cq445i0A3AU+IGbsOv
- wvdII8UQWjpjDXpc+ETGpsBsOL/iFHxFCghg2U+yVzfOfOJz6y5aCC41DVE5h+u24Q/fOu36cab
- 3
-X-Google-Smtp-Source: AGHT+IE3LQU+yoQQmB6CpDVl/ZEpqmAOalsnE1/3HPyLTd8o9Org15gCW/f4UA6JkyuFQs8uyNoSsg==
-X-Received: by 2002:a17:902:dad2:b0:223:2361:e855 with SMTP id
- d9443c01a7336-22780e17b3amr161552435ad.39.1742751463093; 
+ bh=rl2kD2O4NtHjGm3/OP8N2dKmDeEtJGe1Kf/Hel8K6aw=;
+ b=UIxhruPe45LRZdERchK/YIqJh4HO7KoP3fr3HMMVXa3VLQZGj3f0V+0cdVDtX1+OW+
+ si92wA5sREqDezf33KSPSylMqErq/Y+l1AwZsiWuNYA/BlkveWKiUoVjmyUiH8ZdJ58f
+ nCkEiJWntD7nqEOMntITD4NhqaOX5xvErmtI8I2SAV/7BPkvut6XO6J8eeqAlyqWspfh
+ pi3DxWl6n8UC7HG+heg5T4ebd6vnijeC+5BtrSRa5v7KsixFQxJmn6iJ1zLiZT3LmhlY
+ 6nTee2viGiYAbj3heZRpv5kxNisc25KsGyD/WheAPHXkzW40GlFQnvCyLGJbpg1RmQRn
+ 28IA==
+X-Gm-Message-State: AOJu0YyeZUon9X560zUd7qy7u81Wx0ZtcB+gP4gkUea8dMW5cmC92z28
+ KRRVGEfJ2yGXfKtVyEKiv0D3MUei9sULxQ339gK3YXtLv/upvSjlpFbwfHAg5RLX9GcEISDS/p6
+ j
+X-Gm-Gg: ASbGncvPo3qNYi5VizWpbE5E3H/lehHG2ESf3fLzS0qzj2RaKFJhZRcpWHMu+GvSIZf
+ pjThHXg+V12yxuG3qM+mXCXcaRtivjDpYo6es2rXtCgvEwTWPcdi8bqbCOKrO4vlVZkV9EyAuVe
+ OdDK5XptfFFZRQa2SbfFUtf4DKmrNBcE6f0G8wgDWAPLlzAdmIRhK6Cs79a5QKKxKCx4LsaWQRz
+ GGn1Z1VQIGQWHhem0qyTOH31NLjPZeP6tuuOGDGq7cRIc8njx4Ne4sndOXTYg36vK5S7boevKlW
+ oll0OklW59CW4ugw2kumwEIlD14Jxrzh3ieewLQ1/3+Mr/XZOfu/OtO9ahMnokfhrZzwwkUyyxY
+ k
+X-Google-Smtp-Source: AGHT+IFeRguYbLILc3ysomuYg5SndYOwzWvk2ZNfuBJA6KGRZSqYrpgfITlld42jb9zF4iKtyH1u9Q==
+X-Received: by 2002:a17:902:d549:b0:224:a96:e39 with SMTP id
+ d9443c01a7336-22780c55343mr171016455ad.9.1742751463887; 
  Sun, 23 Mar 2025 10:37:43 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22781209ff3sm54075165ad.257.2025.03.23.10.37.42
+ d9443c01a7336-22781209ff3sm54075165ad.257.2025.03.23.10.37.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Mar 2025 10:37:42 -0700 (PDT)
+ Sun, 23 Mar 2025 10:37:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com,
 	philmd@linaro.org,
 	pierrick.bouvier@linaro.org
-Subject: [PATCH 16/17] hw/avr: Move AtmegaMcuClass to atmega.h
-Date: Sun, 23 Mar 2025 10:37:28 -0700
-Message-ID: <20250323173730.3213964-17-richard.henderson@linaro.org>
+Subject: [PATCH 17/17] target/avr: Enable TARGET_PAGE_BITS_VARY
+Date: Sun, 23 Mar 2025 10:37:29 -0700
+Message-ID: <20250323173730.3213964-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250323173730.3213964-1-richard.henderson@linaro.org>
 References: <20250323173730.3213964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,90 +100,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Increase TARGET_PHYS_ADDR_SPACE_BITS to allow flexibility in the page
+size without triggering an assert.  Select the page size based on the
+size of sram.  This leaves sram on exactly one page and minimizes the
+number of pages required to span the flash.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/avr/atmega.h | 20 ++++++++++++++++++++
- hw/avr/atmega.c | 22 +---------------------
- 2 files changed, 21 insertions(+), 21 deletions(-)
+ target/avr/cpu-param.h | 11 +++++++++--
+ hw/avr/arduino.c       | 15 +++++++++++++++
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/hw/avr/atmega.h b/hw/avr/atmega.h
-index a99ee15c7e..f031e6c10a 100644
---- a/hw/avr/atmega.h
-+++ b/hw/avr/atmega.h
-@@ -23,6 +23,10 @@
- #define TYPE_ATMEGA1280_MCU "ATmega1280"
- #define TYPE_ATMEGA2560_MCU "ATmega2560"
+diff --git a/target/avr/cpu-param.h b/target/avr/cpu-param.h
+index f5248ce9e7..a18bf39bb9 100644
+--- a/target/avr/cpu-param.h
++++ b/target/avr/cpu-param.h
+@@ -21,8 +21,15 @@
+ #ifndef AVR_CPU_PARAM_H
+ #define AVR_CPU_PARAM_H
  
-+typedef struct AtmegaMcuClass AtmegaMcuClass;
-+DECLARE_CLASS_CHECKERS(AtmegaMcuClass, ATMEGA_MCU,
-+                       TYPE_ATMEGA_MCU)
+-#define TARGET_PAGE_BITS 10
+-#define TARGET_PHYS_ADDR_SPACE_BITS 24
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 10
 +
- typedef struct AtmegaMcuState AtmegaMcuState;
- DECLARE_INSTANCE_CHECKER(AtmegaMcuState, ATMEGA_MCU,
-                          TYPE_ATMEGA_MCU)
-@@ -32,6 +36,22 @@ DECLARE_INSTANCE_CHECKER(AtmegaMcuState, ATMEGA_MCU,
- #define TIMER_MAX 6
- #define GPIO_MAX 12
++/*
++ * The real value for TARGET_PHYS_ADDR_SPACE_BITS is 24, but selecting
++ * an overly small value will assert in tb-maint.c when selecting the
++ * shape of the page_table tree.  This allows an 8k page size.
++ */
++#define TARGET_PHYS_ADDR_SPACE_BITS 28
+ #define TARGET_VIRT_ADDR_SPACE_BITS 24
  
-+struct AtmegaMcuClass {
-+    /*< private >*/
-+    SysBusDeviceClass parent_class;
-+    /*< public >*/
-+    const char *uc_name;
-+    const char *cpu_type;
-+    size_t flash_size;
-+    size_t eeprom_size;
-+    size_t sram_size;
-+    size_t io_size;
-+    size_t gpio_count;
-+    size_t adc_count;
-+    const uint8_t *irq;
-+    const struct peripheral_cfg *dev;
-+};
+ #define TCG_GUEST_DEFAULT_MO 0
+diff --git a/hw/avr/arduino.c b/hw/avr/arduino.c
+index 29cb776848..f309aa5597 100644
+--- a/hw/avr/arduino.c
++++ b/hw/avr/arduino.c
+@@ -71,9 +71,24 @@ static void arduino_machine_class_init(ObjectClass *oc, void *data)
+ 
+ static void arduino_machine_class_base_init(ObjectClass *oc, void *data)
+ {
++    MachineClass *mc = MACHINE_CLASS(oc);
+     ArduinoMachineClass *amc = ARDUINO_MACHINE_CLASS(oc);
++    AtmegaMcuClass *acc;
++    int page_bits;
+ 
+     amc->mcu_type = data;
 +
- struct AtmegaMcuState {
-     /*< private >*/
-     SysBusDevice parent_obj;
-diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
-index d4fc9c4aee..96e36743bc 100644
---- a/hw/avr/atmega.c
-+++ b/hw/avr/atmega.c
-@@ -36,7 +36,7 @@ enum AtmegaPeripheral {
- #define TIMER(n)    (n + TIMER0)
- #define POWER(n)    (n + POWER0)
++    /* Find the mcu class that we will instantiate. */
++    acc = ATMEGA_MCU_CLASS(object_class_by_name(amc->mcu_type));
++
++    /*
++     * Select a page size based on the size of sram.
++     * This will result in a page size between 1k and 8k
++     * and minimize the number of pages to span flash.
++     */
++    page_bits = ctz32(acc->sram_size);
++    assert(page_bits >= TARGET_PAGE_BITS_MIN && page_bits <= 13);
++    mc->minimum_page_bits = page_bits;
+ }
  
--typedef struct {
-+typedef struct peripheral_cfg {
-     uint16_t addr;
-     enum AtmegaPeripheral power_index;
-     uint8_t power_bit;
-@@ -46,26 +46,6 @@ typedef struct {
-     bool is_timer16;
- } peripheral_cfg;
- 
--struct AtmegaMcuClass {
--    /*< private >*/
--    SysBusDeviceClass parent_class;
--    /*< public >*/
--    const char *uc_name;
--    const char *cpu_type;
--    size_t flash_size;
--    size_t eeprom_size;
--    size_t sram_size;
--    size_t io_size;
--    size_t gpio_count;
--    size_t adc_count;
--    const uint8_t *irq;
--    const peripheral_cfg *dev;
--};
--typedef struct AtmegaMcuClass AtmegaMcuClass;
--
--DECLARE_CLASS_CHECKERS(AtmegaMcuClass, ATMEGA_MCU,
--                       TYPE_ATMEGA_MCU)
--
- static const peripheral_cfg dev168_328[PERIFMAX] = {
-     [USART0]        = {  0xc0, POWER0, 1 },
-     [TIMER2]        = {  0xb0, POWER0, 6, 0x70, 0x37, false },
+ static void arduino_duemilanove_class_init(ObjectClass *oc, void *data)
 -- 
 2.43.0
 
