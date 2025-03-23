@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C67A6D045
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 18:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9074A6D046
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 18:38:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twPGT-0005mr-EQ; Sun, 23 Mar 2025 13:37:37 -0400
+	id 1twPGW-0005nu-4I; Sun, 23 Mar 2025 13:37:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGQ-0005mc-F7
- for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:34 -0400
+ id 1twPGS-0005nA-KF
+ for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:36 -0400
 Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGO-0002sR-NW
+ id 1twPGP-0002sY-Iw
  for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:34 -0400
 Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2254e0b4b79so50947805ad.2
- for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 10:37:32 -0700 (PDT)
+ d9443c01a7336-223f4c06e9fso55279645ad.1
+ for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 10:37:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742751451; x=1743356251; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9BW2dAXVXr0ySSoXg992bbAtIdIuEdH3iISj3g2uQDA=;
- b=PCjRxY2ScYX9t7qrLF3YI6TxHTDwN2JlgSDLoZ/cRWmq+aTBAaN73gxa+PlGQ5YZ5V
- 2WISIzzIRPYYBkONNJvUgIq5t4FGCfeKLiHUbrKbVpz2d2qAA0kz4qauDmLPe/RCP+jN
- MQWal5P2mtp4xDm135YMkYQoQEVNRUAt45OP1b+M15PMBSc9pIDhDzXhORQMwoEvdRyc
- 41OJNVVBu02cb8FX3hsvJT7L6EDZtzHVBqhHjisJbeFYWolG8JS24ahUPpu6xXmCbdXk
- hm3BOrGjEWtT+nTIrMikxJ+nHSi0PZLjbXEUp0f6EiAVeBhQi24oXNmcMFb2Qp37fqKS
- FRxQ==
+ d=linaro.org; s=google; t=1742751452; x=1743356252; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0CsTLV8c98Si7k0XcXe65xYgFmk/mGZL9wnBem+k0DA=;
+ b=gRRCwdE4H4oCfNJw0zNmRbA/DKwcznWTBGXwypiI633iApx1o9BAn1E0AQYp3Y/5G0
+ LM1EqClvE8YZFoIutbrwSS+xi/YNtztM2hRfkW3XNN5gjD3y0gCkZER9urLoOplvylXe
+ a+MhgrV4gJ1hKkE5lvXt2Zj5dsCfZSSCXXNwtNe0X1H/vekUK9i3EAO9VPg9HesJ4XQY
+ 4ArjxEiA3XPpVwVC+5j71T4GwC+EtsSmasO/zpVdzzFmjUsxpeN0sA3h7Aoyam9KvDV+
+ 7CoRzhezTrAybe/QWy3ajW+f0mJZlOUqkwJA/pcsYzJNrmqJmW1+EYXhZZ3Ql6KHyA9w
+ aa7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742751451; x=1743356251;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9BW2dAXVXr0ySSoXg992bbAtIdIuEdH3iISj3g2uQDA=;
- b=iUogVYNN+Q/1y+tmKb5WIMSClRoA6/4Mm+idxoYkzm590vawxtdxn2GxuoC+zaYuoC
- 25kKZyFcisepLKS0rPYZTYBjAfDkoe6UkiVfVUUtNnU4z+XQjRqa4PZyRpO4MTejBShg
- dbN8GSf24epIJlgU+aM9ZSsusp75i8qLife9IdAZoZSDIjqJ8+w6FAv2CiiBIDL5GIe7
- zIPNhrb3A611OQDuDIbbA5FVUnTML1icbL+4UsyOltVZ4oKYQZuBkSkR/JBGi+us2bXW
- zZUuxPmGSQ9XivRXAg0qdte6nIqYh5OBbIH812q5FPImlVWgBBkHr/p/lRwq28hyUl3P
- wgIg==
-X-Gm-Message-State: AOJu0YyR42JHxdmNuuutpQkBUzY0hsRpLRQBZCLoELMJrN12dfotWmcC
- AAab9d1Nr6LsV6CjePA61BOTA3TPUyAvWB0DG7SDbZhnhe/TF7hkw2cYwjpkbLzPJldsxdD1Dtr
- S
-X-Gm-Gg: ASbGnctPe0E4X9OGtT/FyK5hrNztkSTYHrJAMgeHO2QOrOmUiPWOZKt1/Dc0AmKtNfs
- KBYnOJhT4RzTzzL5Jjc0TAadaug71dQYuja+N87IjHjt6cIobsGFTTHNMDDLCeGgPEPAmLE30aV
- 6kT67pp3sej1HGE2F8LNTeqUfX9SJvW26zikHkPcXqk7GnTNzae0/vg2LPqTwNjpEsNMDxid3O0
- ZdTqK+5mcD/n88Gt0FalmGHjGUS28hY8U7x7SqUWmEdl9cKTiIdbfapHAC6NF+FeFwHxfvoAqVB
- bCvpNIH6QkuabJMldWvU0hn+BNVpPc7lOraZlA/IAPxEVpzf+W/w8mo+37RikC1wwJ8xBawHXp/
- fE/0XKo8B2lg=
-X-Google-Smtp-Source: AGHT+IE7rpc++sC9o1GBacCIDCGtbP5z1DzrC/EBzxiaZmHJ5Ik9CDM92tbHoMJmq0opXDcI7mSNKw==
-X-Received: by 2002:a17:902:d48d:b0:220:f59b:6e6 with SMTP id
- d9443c01a7336-22780c54d63mr128993865ad.8.1742751451167; 
+ d=1e100.net; s=20230601; t=1742751452; x=1743356252;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0CsTLV8c98Si7k0XcXe65xYgFmk/mGZL9wnBem+k0DA=;
+ b=LFS958+q6jXqa0eYR80sCselJa2ilzy7GqcSdT+fZIbtyw03LglFVSRb3bftRIvfIn
+ weyLPONDiQ78BlOfeM7sCP6KhchZG1Txt35mnfG5eRs914qUlDiCeBJtSCJBE5N+3E3o
+ Zywfl5Gm3V6te5xI9IZBuf7a25rr01vXdts1lvYz/5t9C5w4xgSrEzwiOG1Ye11sJW1G
+ 2YnZGuakKWswn1rchzO5VDbCiF88qROgRZDtNCdna47gadppARxXD++PvHIH4yH0oy82
+ WxUknSZdCyoOsTa7IerDGxRtJapPurWdswMn24QMegrVjzoyXSTVOuhLi3oQiXxlbobA
+ 1Dlg==
+X-Gm-Message-State: AOJu0YyN00YLCOJkR+2cYFhKikolUfaBuDz/aGvdlerGW2zqbCpK0glZ
+ xZboTuXH4IWEwSHHLYSMRhLp/2ac8cacnVV22agxrX1npTBoSfTw2qnh5qgpVAix3Mgl+KajJB7
+ N
+X-Gm-Gg: ASbGncs5XkSRwPQpw6owW8y5dLvb5MM2UcaNze/hJFxZZnakrT6M3959MboY+7SFVy7
+ LT+b0gaAijNB2RvcE7HcWnOidw0BqNPQ5P6H11868j0CS8XTPWrM1vWcC8gEnyPMSS2tQGaDRvB
+ VunoB8r9VTlwiIJ5Ybd2FmVWtQYdLw9FWW+E5SSGHlMPeveN9R2iCGrugeBr7rLJEjorH90h4+6
+ iM6DZKgZGOpPHggFWfuCEfmEjuKJj1mlHSYEQaLdAxkYMt1ef/Cu9Wsy2EXUR/R2HyULA8YbKSz
+ QI05mR06DHiVS7L1o5h6nY9iYL163Fe7WZrPgZrHgReNg3VwupGNfM502LYOCjigoI3J9m5n079
+ p
+X-Google-Smtp-Source: AGHT+IG2X95hsRawzwhbLQ3RGAlspim9GUHMC/QvXyscJbZmJqJzclYSgQ/xg2p+o2hn0Dh49W20wg==
+X-Received: by 2002:a17:902:c949:b0:21f:2e:4e4e with SMTP id
+ d9443c01a7336-2278067c0a6mr150255595ad.5.1742751451834; 
  Sun, 23 Mar 2025 10:37:31 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22781209ff3sm54075165ad.257.2025.03.23.10.37.30
+ d9443c01a7336-22781209ff3sm54075165ad.257.2025.03.23.10.37.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Mar 2025 10:37:30 -0700 (PDT)
+ Sun, 23 Mar 2025 10:37:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com,
 	philmd@linaro.org,
 	pierrick.bouvier@linaro.org
-Subject: [PATCH 00/17] target/avr: Increase page size
-Date: Sun, 23 Mar 2025 10:37:12 -0700
-Message-ID: <20250323173730.3213964-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/17] hw/core/cpu: Use size_t for memory_rw_debug len argument
+Date: Sun, 23 Mar 2025 10:37:13 -0700
+Message-ID: <20250323173730.3213964-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250323173730.3213964-1-richard.henderson@linaro.org>
+References: <20250323173730.3213964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
@@ -97,65 +100,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For single-binary, we would really like to have a common
-TARGET_PAGE_BITS_MIN.  A value of 10 will suffice for armv4
-and will just fit required page flags and alignment.
+Match the prototype of cpu_memory_rw_debug().
 
-AVR's use of TARGET_PAGE_BITS == 8 is unfortunate, and is due to
-having memory mapped i/o in the first 256 or 512 bytes and sram
-starting immediately afterward -- the softmmu page table mapping
-really doesn't like mixed i/o and sram on the same page.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/hw/core/cpu.h     | 2 +-
+ target/sparc/cpu.h        | 2 +-
+ target/sparc/mmu_helper.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-My solution is to bias the entire AVR address space up in the
-QEMU address space.  This places sram at the start of the second
-QEMU page, and the i/o immediately beforehand, at the end of
-the first QEMU page.
-
-Once the bias exists, we can choose any value we like.
-Use this to select a larger page size, based on the size of sram.
-This minimizes the number of pages required to span flash and sram.
-
-There are also two bugs fixed in the avr disassembler.
-
-
-r~
-
-
-Richard Henderson (17):
-  hw/core/cpu: Use size_t for memory_rw_debug len argument
-  target/avr: Fix buffer read in avr_print_insn
-  target/avr: Improve decode of LDS, STS
-  target/avr: Remove OFFSET_CPU_REGISTERS
-  target/avr: Move cpu register accesses into system memory
-  target/avr: Use cpu_stb_mmuidx_ra in helper_fullwr
-  target/avr: Use do_stb in avr_cpu_do_interrupt
-  target/avr: Add offset-io cpu property
-  target/avr: Introduce gen_data_{load,store}_raw
-  target/avr: Update cpu_sp after push and pop
-  target/avr: Implement CPUState.memory_rw_debug
-  target/avr: Handle offset_io in helper.c
-  target/avr: Handle offset_io in avr_cpu_realizefn
-  hw/avr: Set offset_io and increase page size to 1k
-  hw/avr: Pass mcu_type to class_base_init via .class_data
-  hw/avr: Move AtmegaMcuClass to atmega.h
-  target/avr: Enable TARGET_PAGE_BITS_VARY
-
- hw/avr/atmega.h           |  20 +++
- include/hw/core/cpu.h     |   2 +-
- target/avr/cpu-param.h    |  13 +-
- target/avr/cpu.h          |  11 +-
- target/avr/helper.h       |   3 -
- target/sparc/cpu.h        |   2 +-
- hw/avr/arduino.c          |  31 ++++-
- hw/avr/atmega.c           |  76 ++++++-----
- target/avr/cpu.c          |  49 +++++++
- target/avr/disas.c        |  21 ++-
- target/avr/helper.c       | 263 +++++++++++++++++---------------------
- target/avr/translate.c    | 106 +++++++++------
- target/sparc/mmu_helper.c |   2 +-
- target/avr/insn.decode    |   7 +-
- 14 files changed, 346 insertions(+), 260 deletions(-)
-
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 5d11d26556..abd8764e83 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -154,7 +154,7 @@ struct CPUClass {
+ 
+     int (*mmu_index)(CPUState *cpu, bool ifetch);
+     int (*memory_rw_debug)(CPUState *cpu, vaddr addr,
+-                           uint8_t *buf, int len, bool is_write);
++                           uint8_t *buf, size_t len, bool is_write);
+     void (*dump_state)(CPUState *cpu, FILE *, int flags);
+     void (*query_cpu_fast)(CPUState *cpu, CpuInfoFast *value);
+     int64_t (*get_arch_id)(CPUState *cpu);
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index 462bcb6c0e..68f8c21e7c 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -604,7 +604,7 @@ void dump_mmu(CPUSPARCState *env);
+ 
+ #if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
+ int sparc_cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+-                              uint8_t *buf, int len, bool is_write);
++                              uint8_t *buf, size_t len, bool is_write);
+ #endif
+ 
+ /* translate.c */
+diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
+index 7548d01777..3821cd91ec 100644
+--- a/target/sparc/mmu_helper.c
++++ b/target/sparc/mmu_helper.c
+@@ -389,7 +389,7 @@ void dump_mmu(CPUSPARCState *env)
+  * that the sparc ABI is followed.
+  */
+ int sparc_cpu_memory_rw_debug(CPUState *cs, vaddr address,
+-                              uint8_t *buf, int len, bool is_write)
++                              uint8_t *buf, size_t len, bool is_write)
+ {
+     CPUSPARCState *env = cpu_env(cs);
+     target_ulong addr = address;
 -- 
 2.43.0
 
