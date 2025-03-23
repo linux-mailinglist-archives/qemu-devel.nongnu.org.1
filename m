@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E44FA6D048
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 18:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F61EA6D04B
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Mar 2025 18:39:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twPGc-0005sa-6W; Sun, 23 Mar 2025 13:37:46 -0400
+	id 1twPGd-0005u7-Pb; Sun, 23 Mar 2025 13:37:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGY-0005r7-MK
- for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:42 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1twPGZ-0005rN-9P
+ for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:44 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twPGW-0002un-UE
- for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:42 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-223fd89d036so64755695ad.1
- for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 10:37:40 -0700 (PDT)
+ id 1twPGX-0002v0-Lx
+ for qemu-devel@nongnu.org; Sun, 23 Mar 2025 13:37:43 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2255003f4c6so66876955ad.0
+ for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 10:37:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742751459; x=1743356259; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742751460; x=1743356260; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oGR007VvjFffVl8PvgR+T2VNJf200xt2PbQ7cdgNESw=;
- b=Two8K1g2LVyOQZ9cFcyeIpnd33HDl1qspvQAKTT+g1U6STwdo667rdd4D9CQdia5by
- qp4SA1YIV8og6+M+24W02JJFCv2jpZvJkRbtgDuqfdGIsBnHvLGT7s5KZp/gJLHhmv6b
- xrPgvPQ9jJ5udjB9clW1PaGbWz/Ubg55kU60KX4NbyumJvEGqlhaHCFWQBJpX8ttdioo
- HESQ+5ZN/doTGHWkRLN0N2sZjNFmYucAqnhbKpgRrFSvND/OQ8YzPFaHxGLkDkVorQ5/
- rxXOjtkONmQ1paJ7ZSGT9h4oZMqI1vmhd5Tr9R2YtvHXhEpXTnPjq8qTshoGeSmlTwfR
- l8mA==
+ bh=n5/rrT9rGaCRyYHGfR9L9lev75C870EJXXZh29se8QE=;
+ b=V0kcn3QfBPvZI+tew/CR1Mc65ccpVAYzDu4sL/tEYVGo4RveRAvX3H1+vO0zzo/SIr
+ LItWujIk8rCJ676QV1GvoPUE8D8hg8+Ht+qbbpwr5CIwQe/DO10wBkmuR3/0hT4k5pYs
+ FaVibqyEMff7OY5bWaJRUNEHt+9527jodFo7daNZI2omAg0RZueIAzmrPCPK+gl/hYXg
+ lZswQkpt0M0AAoXKhM+LyAwrVhKHktpBeriAI0v1BhVWD9Z2PvvrnGqdzJ02Ke7sWdu8
+ Zo3+q8PSRprseD9VzCnk8NZHybP1QMWEPdC1Z47Fj9bkkA2ZqQlZ5m7QKS93nwyPnJBX
+ e9+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742751459; x=1743356259;
+ d=1e100.net; s=20230601; t=1742751460; x=1743356260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oGR007VvjFffVl8PvgR+T2VNJf200xt2PbQ7cdgNESw=;
- b=XGjTYG/t6AW9f4X6p14a9+bsZlMIpmVB4vObdwjE5a2U9YmOzWbCYRBy/kjmoldBki
- wWveg51Jr1knChyjN483BCUpGTkp3K7q20Ggh2LzELl0uSijaLyOtYO/4N9sStOxi3t5
- pcNs4qVGzwjdw3Fo7uBpiz/ntkhOWzuM6IGhovCO7Xvy96UsM0He+tCBmo6MI7JlSOXw
- 4vgBv2/Qr53J0u1h4Tb5rDo7lSpIZL/WJmDJjDAyPIsaoPrOO0YcI98AdqikSQVd7/dn
- H5aB0r+xOz81ZOz8dslTIk7hLpeDaFu2Sb6UJpeOKH1sJJagJd7XTeeDPGpOvA3pXCyv
- Vm0Q==
-X-Gm-Message-State: AOJu0YxCLRmAbBErV9OaANxkAoSEcjSkYerrPbu9n2hC89lB6IcKnuIo
- mj5b0SiSmjDNvA81E6paRtYEC0f3xjX50Dr/LtgeNDCn6eFhGOkgens98KrJuYb5DtAOQe5q1a6
- Q
-X-Gm-Gg: ASbGnct70Ri83uKc1LJEKB7wTbUfTV9NLefnDHkJYYQihxFdNXKOhqVnSAQe95vFGKg
- C19FH5rAbw71FDB++qGx6boolEfLAPk7rYsmzVPNxTJIlzWpKqSI8qo8nbOIQHNcXupYXK9ic/o
- 3JO/7/6Leh9gQo0wi4PHi4hLacBMVlDMLiDiswElx5uwDsK43+F/yCp9+fBW3L+hLNzyXzlN8p+
- OznLCq2RDFt9crxi9viNWVfzXYL24Yb2NZpv7VB4o4hEUXMdcRTXrKXc0xxzQPLZoewDY/7RtTo
- lOTpWry4eA5+pCLsfyNN44jS95dT+YE5M0HOiDo+nxKuu+6OodMInUhR+VSREMe8uCtNR8Vlb/w
- H
-X-Google-Smtp-Source: AGHT+IHHx0nOVmHngDjuW981So2eTho/hEHIb4ep9xftdtoXyFfhar8ZUpbQmkUQtm6NonO0IxxAdQ==
-X-Received: by 2002:a17:902:f550:b0:224:26f2:97d6 with SMTP id
- d9443c01a7336-22780db4699mr188214705ad.28.1742751459621; 
- Sun, 23 Mar 2025 10:37:39 -0700 (PDT)
+ bh=n5/rrT9rGaCRyYHGfR9L9lev75C870EJXXZh29se8QE=;
+ b=YA+rCNcBxMhYdVzgmHmrq/Gq9YyxmHHh0JyzJGH5RBoG/m6ypXeO6nSnZiIJQ2eKLj
+ +ppKYb7OyvB8JxtOr72dkroYwtrGs83qALbYC1nUdHv3ZGXNjZmhUZkBy9lTxdFA8EVj
+ g59kJo7Y04fm+xzNZtQbhMUxD67YeYUsm9PpGHzYLDxYgLZElY42iTiyIldh1vX13guD
+ Z1fXjFrmxldsS9cBZ/K6TZv0kQqGeu7ZWlBDIrMEP9VMHd2jAjZC+nTqjLVy2Ifq6EC3
+ XBUs4TYvqmUbQ+ExJAqwy4oJOlNxF2wqw+G7uKlXyk3HMfDprrSSnjpwXW706CJas9q8
+ k45w==
+X-Gm-Message-State: AOJu0Yyua2AT2sveXHqHTZwsdRlf69NtGBmsm/HDXpHSUOGPIGFUA5F2
+ YHbUWCmA5NQkkzXjT+YRLaCDYYps0mfcPN7dy104aPG7iKgIMkRP8aA8qSY2MBx2hkXRE8Ke9Vg
+ d
+X-Gm-Gg: ASbGncuuITguODO20uTJamKYUwP1uNZeYYbnwg/pILCdseEIodVXj+xjqrTE/owKcJN
+ dUF0hJ8M+kDmzaoEjjRxlcv2qg1nVCO1Uk67UexcK9qZTNALhVG8BsRm093JT4YUZuFwdju94AN
+ GyRfVd5XrRVsahLzc7grAFxKMhYtaH+SAmmqLT5zussnrp1ckRLfI93kqcWgGHACIbMg32sy4yW
+ fKudnYdgy1s1ld4/94MumiDRmkBtigNP0wzRXoU/p0eTKfTXoisFz/La//zLpjrB4XIQU+8lwTA
+ TO/YQqMUrtiRoHWNO3ipxBdu/Ji44E6uQeTn6ylP4E6By4tjOpsWdBCxw/sxXqglQLakU4gPljx
+ LEqivXm7UwKw=
+X-Google-Smtp-Source: AGHT+IH/b1yUzgQ+kNOeWXZv97pYh9WAiXHTeLCP/1q17A19wPjHihwThAzrv9MMFbpd9mE3VVPK3w==
+X-Received: by 2002:a17:902:cccb:b0:223:65dc:4580 with SMTP id
+ d9443c01a7336-22780e45f67mr141878385ad.52.1742751460212; 
+ Sun, 23 Mar 2025 10:37:40 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-22781209ff3sm54075165ad.257.2025.03.23.10.37.39
@@ -68,16 +68,16 @@ To: qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com,
 	philmd@linaro.org,
 	pierrick.bouvier@linaro.org
-Subject: [PATCH 11/17] target/avr: Implement CPUState.memory_rw_debug
-Date: Sun, 23 Mar 2025 10:37:23 -0700
-Message-ID: <20250323173730.3213964-12-richard.henderson@linaro.org>
+Subject: [PATCH 12/17] target/avr: Handle offset_io in helper.c
+Date: Sun, 23 Mar 2025 10:37:24 -0700
+Message-ID: <20250323173730.3213964-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250323173730.3213964-1-richard.henderson@linaro.org>
 References: <20250323173730.3213964-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,61 +100,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prepare for offset_io being non-zero when accessing from gdb.
+Prepare for offset_io being non-zero in do_stb.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/avr/cpu.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ target/avr/helper.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index 080f6f30d3..e4011004b4 100644
---- a/target/avr/cpu.c
-+++ b/target/avr/cpu.c
-@@ -68,6 +68,35 @@ static void avr_restore_state_to_opc(CPUState *cs,
-     cpu_env(cs)->pc_w = data[0];
- }
+diff --git a/target/avr/helper.c b/target/avr/helper.c
+index 9608e59584..3323f32c22 100644
+--- a/target/avr/helper.c
++++ b/target/avr/helper.c
+@@ -69,7 +69,8 @@ bool avr_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
  
-+static int avr_memory_rw_debug(CPUState *cpu, vaddr addr,
-+                               uint8_t *buf, size_t len, bool is_write)
-+{
-+    if (addr < OFFSET_DATA) {
-+        size_t len_code;
-+        int ret;
-+
-+        if (addr + len <= OFFSET_DATA) {
-+            return cpu_memory_rw_debug(cpu, addr, buf, len, is_write);
-+        }
-+
-+        len_code = addr + len - OFFSET_DATA;
-+        ret = cpu_memory_rw_debug(cpu, addr, buf, len_code, is_write);
-+        if (ret != 0) {
-+            return ret;
-+        }
-+        addr = OFFSET_DATA;
-+        len -= len_code;
-+    }
-+
-+    /*
-+     * Data is biased such that SRAM begins at TARGET_PAGE_SIZE,
-+     * and I/O is immediately prior.  This leave a hole between
-+     * OFFSET_DATA and the relative start of the address space.
-+     */
-+    addr += env_archcpu(cpu_env(cpu))->offset_io;
-+    return cpu_memory_rw_debug(cpu, addr, buf, len, is_write);
-+}
-+
- static void avr_cpu_reset_hold(Object *obj, ResetType type)
+ static void do_stb(CPUAVRState *env, uint32_t addr, uint8_t data, uintptr_t ra)
  {
-     CPUState *cs = CPU(obj);
-@@ -262,6 +291,7 @@ static void avr_cpu_class_init(ObjectClass *oc, void *data)
-     cc->gdb_write_register = avr_cpu_gdb_write_register;
-     cc->gdb_adjust_breakpoint = avr_cpu_gdb_adjust_breakpoint;
-     cc->gdb_core_xml_file = "avr-cpu.xml";
-+    cc->memory_rw_debug = avr_memory_rw_debug;
-     cc->tcg_ops = &avr_tcg_ops;
+-    cpu_stb_mmuidx_ra(env, addr, data, MMU_DATA_IDX, ra);
++    cpu_stb_mmuidx_ra(env, addr + env_archcpu(env)->offset_io,
++                      data, MMU_DATA_IDX, ra);
  }
  
+ void avr_cpu_do_interrupt(CPUState *cs)
 -- 
 2.43.0
 
