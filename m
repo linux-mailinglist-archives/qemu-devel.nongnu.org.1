@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574F5A6E2ED
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 20:00:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F00EA6E2E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 19:59:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twn0u-0000zW-A9; Mon, 24 Mar 2025 14:59:08 -0400
+	id 1twn12-000144-UX; Mon, 24 Mar 2025 14:59:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twn0s-0000yx-F8
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 14:59:06 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twn0z-00012v-Bc
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 14:59:13 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twn0q-0001PS-S8
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 14:59:06 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3914aba1ce4so4058563f8f.2
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 11:59:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twn0w-0001Qy-Kj
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 14:59:13 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-38f2f391864so2823624f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 11:59:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742842743; x=1743447543; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742842748; x=1743447548; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H0dvd2P36winpZovlVz4NmarrWHHCldFw3mWW6dP9ow=;
- b=OI2G3Azk+a5sNtfMmME005iyAiRlNgl8HDiynHZ+DJItQVaRf9HOOXjhk1dEGqcHn3
- eOdkDDVmhX4bFL6L3i88+7bcXk1HOWr4/ZQ/1a2iPD/ajStz3JfaMGe3KDUJ85uxSeaj
- 7QIeP6L3rghXwmjkpiuWd6yef6oV/CD5dBvL17Lvscmn/MS9hvgMYafKppAWwXlHoYF6
- 7DbiJ5ENbZ5sC/Kdi6tLBavlMuzZnN9kNEVdNizInYjnni/HidsM7qhxVh578irw2SXb
- vkhuxsNoH9WN7mlrGJITUrPYk8utRWndQrBQteBxHuHAG2tC1mTEtfQHDsgUffIS+iTH
- lh5A==
+ bh=vhAN9Lyj4bqTf4UUrdE+Pmn+JYUm8J4DDJYtyAVBykw=;
+ b=tsbZ9IDWQzEi9TLyUBrySZJb04NukdaXjn4GluRc3gmMINqEcvuyn7WpqVKG0Wh9zr
+ 1U7PegJc7y0DLjQDFMS1ZcGfK1GWoktTQYGR/ifnCzOthTuLFXrEpYxAAAwtad5LLu07
+ cMgKvVItVlxkbTtVyUeEjdBcf720BPeMXgaFDH8eBTd5hsxttiPwTyQ/ZotJbCZwkyxd
+ yLMOTJCZIpaJKRhafHha8aPYTOh3AvMxUpSxH9+fp2P7sdK3tQ5qcTvwzJFruuRcBHpr
+ t1EP3KrNiM6ma/W4NRKWeJcQ6PUZMyGq9o8vmWaOjc8eQ7nILWbsuWfwkNRrAV37iDLn
+ mNRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742842743; x=1743447543;
+ d=1e100.net; s=20230601; t=1742842748; x=1743447548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H0dvd2P36winpZovlVz4NmarrWHHCldFw3mWW6dP9ow=;
- b=nPXrdUZGctRWhkzIXuDD0qLrMZzN2Yn7EF+F6jPle4pi6sdOJDj0lzYTx7iozZNIwH
- JMphrPQPpD7AKFFlf9q5Z3fGjvfk/We99jgQoyQL7+vC1EJce1hdEnOqXSfFuQkhpAgC
- 3aIX3tmOa0MH0f457AKILR2HfN7ePevwTbkEmwWj80jff5gQ9iw+7pr3u7wZjdq7ZScf
- 2YWUDXn6o3CHnJZU8nqzgu8mZnalb1nKlBtNefMOapZ6mli0Cjiy3jbANoJA95kEh+ic
- 0h3RVo4rh5EqtokR1caIFClJVCXu4bgXbFR3FeGgn4clDLfrdGLWOvDAfKPeUIDY3hPn
- ZVJQ==
-X-Gm-Message-State: AOJu0YxSeIA4uFwJxp22WDtvNHvYdf1mksFa4dyeLNujTWvIqaVgVi0h
- lngtaVd2TwrSaKp12YLkN4sibB0Ie/yS6m2AU1wVdvKJ6SqaaGFP+ma0aGWlq+d1BBTc44a9nqV
- y
-X-Gm-Gg: ASbGncsqCclWy2fX7O7wwXmGGJAppIAE5XY1vUPcxcpoL/hGYLvy1c4pJrElBRrd88o
- BQqSx+4RW3e+23g9PeFy/J+USTlNoyDSIYd7kBwn8L+K13j6NNJXVEKVE3/GsZ2/Eo1X/copUPj
- dGtJOjzNrny7aVHuz82QdmFWebKpiPjWpcxCCfrOslWBznGLhWXrEJmgk33o9wjyyDpIR+gKnHH
- 8RcCKEJltfzJwoAR1CDJtILoHYr8WnV2y79hkXw7l5ZhAArCky4KdVhKGed5z2Os5icXGi8RtkH
- R1+XS0F+wYY2CTcfPAjqPq7jfKmmtChvvLSDCgOISerj81H0JzVbMX5xPzAb7XQZi26HbZJK2WA
- YAHNWu34oQq8ugASO+0+LhTEj
-X-Google-Smtp-Source: AGHT+IHC6tzIzk1XqaJZfNEoX4ga1xqBGGRmiZwnpZijmlQbX/ux/00M6PoWFd34rkDOxKwVmpkTEw==
-X-Received: by 2002:a05:6000:2801:b0:391:139f:61af with SMTP id
- ffacd0b85a97d-3997f913a91mr9102368f8f.32.1742842742804; 
- Mon, 24 Mar 2025 11:59:02 -0700 (PDT)
+ bh=vhAN9Lyj4bqTf4UUrdE+Pmn+JYUm8J4DDJYtyAVBykw=;
+ b=pSfv4mMD/fkGFfmUOlUTs7/1DHdNdKp/mYhMMOZ/iYGKB8+S7UvzOu8T3+UvDOxBRQ
+ yxDFJMzkriW7iHVZHY7eF4QNBt0kvr+IrTHz0nzOXDiSKqmB2zRPGMKBBNNlE4xK/5Sg
+ TRM33bDMeHKJ090BcCkjczbfKi9k/lefZR2fRKZawZ8VbWw3/URXBjpndY2v505ROYA5
+ 4X1E6D/VlJk1hIqeYwzgoyd/uQdYTFmPC4WwL6z8rZiAXsV0PQAQjNxHLt6y8vonqoXl
+ qQ5XMQlf9kM9hYj6CKc53eaXg0XBpC7rIn3UKHRGrm1+nNSdWv8SPt0OooA60JfZ2hMq
+ KlzA==
+X-Gm-Message-State: AOJu0Yz+wHZlClHGG0emVHN4/dmz0o/oNbcYvjd3m20N4t3t+cdjLm2r
+ r8jsEsHqVl+dGmykcmAVGkVHICEqv1MvXYUUD4H+S+yPltxpfnP/Xv0IKKI0dWb9Fqs8bxlZP/3
+ 4
+X-Gm-Gg: ASbGncss1T84fODfoeoxZaSrFd9I6aT/Oz4p3fv7dddn5JfsmraffQdKPj7bqOrOCAa
+ Ho3xU/FD2WyMMepTtUlAkYxQ86+3SVkM7IfVCrAqtXlO5bKALxFN9iPPZskKEVm9AA6bzEOJpm0
+ i7WAyq2MC4yHQWevAoFlK3nbyQPVEMkb8y3TRsJz+5U6vMHFe8PO7CrRIa/1eLa/FtQnQ1b68RG
+ By/JbcZRJQPvfsyQTLrPl7a3TvljlT9kVaZ/5UipAJkGaaJUDhorXR1aFFqv/EJ8sbO0Vw32ZQo
+ XGr3yM59Al+/xPlxEPViM5imRYhxMO8gYRS10xsYlmwjKzY7gwLzIuBfJd/QcIobCLT42Hu+NO6
+ p9+SgtHnA3NjXJxlCuY+E38hT
+X-Google-Smtp-Source: AGHT+IHSXq7aBGYSHo2L/NTUy+C5NUrNhAlF0hx0ukZe2EkKi39RyxMiiCSlj20y5DIqxApvQU45vQ==
+X-Received: by 2002:a5d:5f85:0:b0:390:d6b0:b89 with SMTP id
+ ffacd0b85a97d-3997f93c41fmr11979681f8f.50.1742842748242; 
+ Mon, 24 Mar 2025 11:59:08 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d4fd18505sm127632185e9.11.2025.03.24.11.59.00
+ ffacd0b85a97d-3997f9b25c9sm11542529f8f.42.2025.03.24.11.59.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 24 Mar 2025 11:59:01 -0700 (PDT)
+ Mon, 24 Mar 2025 11:59:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
@@ -76,17 +76,18 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v3 4/7] target/sparc: Register CPUClass:list_cpus
-Date: Mon, 24 Mar 2025 19:58:34 +0100
-Message-ID: <20250324185837.46506-5-philmd@linaro.org>
+Subject: [PATCH v3 5/7] target/s390x: Declare s390_set_qemu_cpu_model/cpu_list
+ in cpu_models.h
+Date: Mon, 24 Mar 2025 19:58:35 +0100
+Message-ID: <20250324185837.46506-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250324185837.46506-1-philmd@linaro.org>
 References: <20250324185837.46506-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,59 +110,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Register sparc_cpu_list() as CPUClass:list_cpus callback.
-Reduce its scope and remove the cpu_list definition.
+Both s390_cpu_list() and s390_set_qemu_cpu_model() are
+defined in cpu_models.c, move their declarations in the
+related "cpu_models.h" header. Use full path to header
+in s390-virtio-ccw.c file.
 
+Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/cpu.h | 3 ---
- target/sparc/cpu.c | 3 ++-
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ target/s390x/cpu.h         | 4 ----
+ target/s390x/cpu_models.h  | 3 +++
+ hw/s390x/s390-virtio-ccw.c | 2 +-
+ 3 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index 462bcb6c0e6..7c6296ae70e 100644
---- a/target/sparc/cpu.h
-+++ b/target/sparc/cpu.h
-@@ -594,7 +594,6 @@ G_NORETURN void cpu_raise_exception_ra(CPUSPARCState *, int, uintptr_t);
- 
- /* cpu_init.c */
- void cpu_sparc_set_id(CPUSPARCState *env, unsigned int cpu);
--void sparc_cpu_list(void);
- /* mmu_helper.c */
- bool sparc_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                         MMUAccessType access_type, int mmu_idx,
-@@ -665,8 +664,6 @@ hwaddr cpu_get_phys_page_nofault(CPUSPARCState *env, target_ulong addr,
- 
- #define CPU_RESOLVING_TYPE TYPE_SPARC_CPU
- 
--#define cpu_list sparc_cpu_list
--
- /* MMU modes definitions */
- #if defined (TARGET_SPARC64)
- #define MMU_USER_IDX   0
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 57161201173..635d5d81143 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -579,7 +579,7 @@ static void print_features(uint32_t features, const char *prefix)
-     }
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index 5b7992deda6..8dd1936e3e2 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -900,11 +900,7 @@ static inline uint8_t s390_cpu_get_state(S390CPU *cpu)
  }
  
--void sparc_cpu_list(void)
-+static void sparc_cpu_list(void)
- {
-     unsigned int i;
  
-@@ -1031,6 +1031,7 @@ static void sparc_cpu_class_init(ObjectClass *oc, void *data)
-                                        &scc->parent_phases);
+-/* cpu_models.c */
+-void s390_cpu_list(void);
+ #define cpu_list s390_cpu_list
+-void s390_set_qemu_cpu_model(uint16_t type, uint8_t gen, uint8_t ec_ga,
+-                             const S390FeatInit feat_init);
  
-     cc->class_by_name = sparc_cpu_class_by_name;
-+    cc->list_cpus = sparc_cpu_list,
-     cc->parse_features = sparc_cpu_parse_features;
-     cc->mmu_index = sparc_cpu_mmu_index;
-     cc->dump_state = sparc_cpu_dump_state;
+ 
+ /* helper.c */
+diff --git a/target/s390x/cpu_models.h b/target/s390x/cpu_models.h
+index 71d4bc2dd4a..f701bc0b532 100644
+--- a/target/s390x/cpu_models.h
++++ b/target/s390x/cpu_models.h
+@@ -113,6 +113,9 @@ static inline uint64_t s390_cpuid_from_cpu_model(const S390CPUModel *model)
+ }
+ S390CPUDef const *s390_find_cpu_def(uint16_t type, uint8_t gen, uint8_t ec_ga,
+                                     S390FeatBitmap features);
++void s390_set_qemu_cpu_model(uint16_t type, uint8_t gen, uint8_t ec_ga,
++                             const S390FeatInit feat_init);
++void s390_cpu_list(void);
+ 
+ bool kvm_s390_cpu_models_supported(void);
+ bool kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp);
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 75b32182eb0..4f11c75b625 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -35,7 +35,7 @@
+ #include "hw/s390x/css-bridge.h"
+ #include "hw/s390x/ap-bridge.h"
+ #include "migration/register.h"
+-#include "cpu_models.h"
++#include "target/s390x/cpu_models.h"
+ #include "hw/nmi.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/s390x/tod.h"
 -- 
 2.47.1
 
