@@ -2,139 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E379EA6D435
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 07:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7E1A6D4C7
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 08:15:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twbFQ-0003PE-KL; Mon, 24 Mar 2025 02:25:20 -0400
+	id 1twc0R-0002Z4-Om; Mon, 24 Mar 2025 03:13:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1twbFG-0003OP-G6
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 02:25:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1twc0O-0002Xg-Gh; Mon, 24 Mar 2025 03:13:52 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1twbFB-0003iO-Na
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 02:25:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742797504;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=o7yro2ewmPxDuWq1VEmeEJLhfIhUk3+GJMzodbI33V8=;
- b=BiRuQAhO9vhvON1bQCJBJE+rahXwEFp8LoBd5LOfeHG0lnBDw4GPUwsNS+FyOOMZxRqgzN
- UUvTO6v4/oNvupouHg8gBnxJN9NG9rsygC/Q82xGORLrNdjH4MRva2TQ3UJLSd+WVG+8kB
- M3TEVdHla1ST/gBQmImBY0G6UbNo1JE=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-367-PiEy388ZMwCqsPygoT6eWQ-1; Mon, 24 Mar 2025 02:25:02 -0400
-X-MC-Unique: PiEy388ZMwCqsPygoT6eWQ-1
-X-Mimecast-MFC-AGG-ID: PiEy388ZMwCqsPygoT6eWQ_1742797501
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-ac3df3f1193so284285066b.2
- for <qemu-devel@nongnu.org>; Sun, 23 Mar 2025 23:25:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742797501; x=1743402301;
- h=content-transfer-encoding:in-reply-to:autocrypt:cc:content-language
- :from:references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o7yro2ewmPxDuWq1VEmeEJLhfIhUk3+GJMzodbI33V8=;
- b=HiTJgk7EEsoBHLKxQprcy8WFmKaEfZpvr4TI2IcMYFKf/qxxPdDODaaYviVtjtc4Ff
- 3dvLiOLjYlqgAv5TVRbniAaMAk8RR4xyzGHzC5xpnpbYPNrAN+QQKNfWttG92OtMtZAv
- Zs6Lzh+x7meiIEzie2/XFht46GZuN7x3/Gnk272n3JWM6jOkDZIh3esxw+Hv5aga7rJ2
- 6TqeSvWtv+Bll10+TilGCZzUvP5+axYadd60RklbQNZYYtaRWC1RxkyQTczeWGPWPPDU
- FuLihaDTn5EbN2MEkw6X9vEE7XUWqhSVJMvUf2CzlK/wdnd9fCe2AKqABNYfdxbRUw/f
- +HnA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWNva/c2N/Aabu4ozZnUk2FseHYoCTBUwQjvchJqVYzbd2RSJy6sdtVKSNGKpm255NisdOmMOtd4tpB@nongnu.org
-X-Gm-Message-State: AOJu0YxwnNSMVAO53kKDxK9yykJQD1Enfrx5fMbKmt4VIAxXNMo7+Yyd
- TgOCZcxfizmHeOSTWKioP9pYibgj+F+EJXUtBSpQuRexOuLQGXa8mQs0/dZQQeZdsla6qoUfrg9
- bAzA9sEWdYUmY3x6dNThNcO/sCyhA4uRcNOySzyJ2A6Ffs18T8wpl
-X-Gm-Gg: ASbGncs66RMoiIR/zhOp7x4U5DMwzIBqtlr24EUvphKvbnMkrMdZ2kr7v8/ZRCd86ws
- wq65d6UE9NqD98M7nN1ZAx9/pDC/02JfnqF68kQSCRIiNqMuosKugt9Jzgf33+XKwKOtzhpDj1j
- EU8Y72A8f8KgS3XEvN/e6GjHS2a5rwgKFgOZGS7XOnCzAd/4T8IId6K2lNH9unqfqBar4rVFX0o
- bL+xfcyAvTqhZhUc6oN+Oz+mIJm1yBMkjprsSaDAKmp3VNmtMAaEd7AfDvdg17Zp7NvMfwICCxA
- OmW+kZXZnjhBZddsqzuukOXbt5+jxEuVjEDXVHIPvA==
-X-Received: by 2002:a17:907:9482:b0:ac3:10e3:7fa5 with SMTP id
- a640c23a62f3a-ac3f20f51cbmr963894366b.21.1742797501296; 
- Sun, 23 Mar 2025 23:25:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHz8M+JwrrwtcwEoZ8r/UjlHEFdHnHtztmQ2TTIzsbZQy3GYhV29YaDnAdI9ZgQsHnlXs5ww==
-X-Received: by 2002:a17:907:9482:b0:ac3:10e3:7fa5 with SMTP id
- a640c23a62f3a-ac3f20f51cbmr963893066b.21.1742797500885; 
- Sun, 23 Mar 2025 23:25:00 -0700 (PDT)
-Received: from [192.168.0.7] (ip-109-42-50-2.web.vodafone.de. [109.42.50.2])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3efd8f37asm626899766b.179.2025.03.23.23.25.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Mar 2025 23:25:00 -0700 (PDT)
-Message-ID: <c82ea7ec-7f53-4113-a4ee-95d215522d4d@redhat.com>
-Date: Mon, 24 Mar 2025 07:24:59 +0100
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1twc0M-0000Wr-Pz; Mon, 24 Mar 2025 03:13:52 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52NKeB2B027468;
+ Mon, 24 Mar 2025 07:13:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=Bj/ph5
+ rohYlJAZkx9Jm0X6zH5p2DC6OecRuf09JtLFs=; b=sMsdR9Org/1QdIE38fDAKq
+ HIyhMIPHfnaZlkh5J3LZjyMmNHnd9OIcYG45NSNPBh8BRqVX2nJfwNig5xXvpURD
+ 0VazHA6CrGHZgmplJhIjv4+GbnVc3RTLHulNsDesjTJzav2NGpRNh5KBokWCZ7/2
+ cbX6KlBxDOPTPwvxHndgTiwlk4nuMYkfDNpQTJ/bk6JAomJuIJYUBHUQEUL1YfAP
+ cyDYzOZdJUk5PqHpF1pDcbjaP+HrYbcZtWL/0WaCJad9IhUPj4LEsEqU58ZWPcPL
+ vKw5O/N19U3GzkBZAyJmqSgyFdsOxIJDb/mFEHQ/RaQqkCJGmaje79xMNd7gX4tA
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45jjb4ubat-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Mar 2025 07:13:40 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52O7Brlf000756;
+ Mon, 24 Mar 2025 07:13:40 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45jjb4ubap-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Mar 2025 07:13:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52O4mCBD009709;
+ Mon, 24 Mar 2025 07:13:39 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j9rkcuwq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Mar 2025 07:13:38 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52O7DZ9s54264108
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 Mar 2025 07:13:35 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 290D12004B;
+ Mon, 24 Mar 2025 07:13:35 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4CADF20040;
+ Mon, 24 Mar 2025 07:13:33 +0000 (GMT)
+Received: from [9.109.199.160] (unknown [9.109.199.160])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 24 Mar 2025 07:13:33 +0000 (GMT)
+Message-ID: <337b1a39-ed5f-4737-a98a-1ed2784aef7b@linux.ibm.com>
+Date: Mon, 24 Mar 2025 12:43:32 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] smbios: Fix buffer overrun when using path= option
-To: Daan De Meyer <daan.j.demeyer@gmail.com>, qemu-devel@nongnu.org
-References: <20250323213622.2581013-1-daan.j.demeyer@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v5 7/8] ppc/pnv: Add a Power11 Pnv11Chip, and a Power11
+ Machine
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <20250308205141.3219333-1-adityag@linux.ibm.com>
+ <20250308205141.3219333-8-adityag@linux.ibm.com>
+ <bce5dcfc-24d2-41e2-b11e-7cb5967f2132@kaod.org>
 Content-Language: en-US
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov
- <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250323213622.2581013-1-daan.j.demeyer@gmail.com>
+From: Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <bce5dcfc-24d2-41e2-b11e-7cb5967f2132@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: I0HNRdAOnMxe5KNyiGEhi-GCdHnLpexY
+X-Proofpoint-ORIG-GUID: PKb0eHPVTWWJcgxXeZjUrZUe-eKr5lme
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-24_03,2025-03-21_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ malwarescore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=999 suspectscore=0 bulkscore=0 adultscore=0 spamscore=0
+ mlxscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503240049
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=-0.01, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,37 +121,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/03/2025 22.35, Daan De Meyer wrote:
-> We have to make sure the array of bytes read from the path= file
-> is null-terminated, otherwise we run into a buffer overrun later on.
-> 
-> Fixes: bb99f4772f54017490e3356ecbb3df25c5d4537f ("hw/smbios: support loading OEM strings values from a file")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2879
-> 
-> Signed-off-by: Daan De Meyer <daan.j.demeyer@gmail.com>
-> ---
->   hw/smbios/smbios.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-> index 02a09eb9cd..ad4cd6721e 100644
-> --- a/hw/smbios/smbios.c
-> +++ b/hw/smbios/smbios.c
-> @@ -1285,6 +1285,9 @@ static int save_opt_one(void *opaque,
->               g_byte_array_append(data, (guint8 *)buf, ret);
->           }
->   
-> +        buf[0] = '\0';
-> +        g_byte_array_append(data, (guint8 *)buf, 1);
-> +
->           qemu_close(fd);
->   
->           *opt->dest = g_renew(char *, *opt->dest, (*opt->ndest) + 1);
+Hi Cedric,
 
-Please make sure to put the maintainers on CC: (done now, for the next time 
-please see the MAINTAINERS file or use the scripts/get_maintainers.pl 
-script), otherwise your patch might go unnoticed.
+On 09/03/25 19:38, Cédric Le Goater wrote:
+> On 3/8/25 21:51, Aditya Gupta wrote:
+>> <...snip...>
+>>
+>>   static void pnv_chip_power8_instance_init(Object *obj)
+>>   {
+>>       Pnv8Chip *chip8 = PNV8_CHIP(obj);
+>> @@ -1966,6 +1996,20 @@ static void 
+>> pnv_chip_power10_instance_init(Object *obj)
+>>       PnvChipClass *pcc = PNV_CHIP_GET_CLASS(obj);
+>>       int i;
+>>   +    /*
+>> +     * Power11 declares Power10 as it's parent class, to be able to 
+>> reuse
+>> +     * most of the Power10 code.
+>> +     * But this causes Power10 and Power11's both instance init to be
+>> +     * called for PowerNV11 chip
+>> +     *
+>> +     * Skip initialising Power10 specific child objects, if the chip is
+>> +     * Power11 chip, in which case power11's instance init will 
+>> initialise
+>> +     * the child objects
+>> +     */
+>> +    if (!strcmp(object_get_typename(obj), TYPE_PNV_CHIP_POWER11)) {
+>> +        return;
+>> +    }
+>> +
+>
+> This is a hack !  Please duplicate the code like done for other chips.
+>
+>
+>> <...snip...>
+>>
+>>   +    /*
+>> +     * P11 chip and variants
+>> +     */
+>> +    {
+>> +        .name          = TYPE_PNV11_CHIP,
+>> +        .parent        = TYPE_PNV10_CHIP,
+>
+> why is the parent not TYPE_PNV_CHIP like the other chips ?
+>
+> This is a hack which can be easily avoided with more work :)
 
-  Thomas
+
+When I do this, every function using Pnv10Chip* will need to be 
+duplicated to use Pnv11Chip*.
+
+I will do that.
+
+But what do you say about changing Pnv10 chip to Pnv1x chip ? It may 
+only be used by Pnv10 and Pnv11, not future chips. But is that 
+unnecessary for just two versions of the chip ?
+
+Just tried to think of some ways to reduce duplication, or having 
+different files such as pnv10.c, pnv11.c ? I am not sure because these 
+might be unnecessary things too.
+
+
+Thanks,
+
+- Aditya G
 
 
