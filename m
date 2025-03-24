@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABE0A6D49B
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 08:10:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4E3A6D706
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 10:11:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twbw1-0008IF-Ps; Mon, 24 Mar 2025 03:09:21 -0400
+	id 1twdp0-0007rl-7N; Mon, 24 Mar 2025 05:10:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1twbvZ-0008Gu-Sk
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 03:08:54 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1twdoy-0007rX-Gl
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:10:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1twbvX-0008JX-HW
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 03:08:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742800132; x=1774336132;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=bcLIsmrOKPi83DhR2wgRbrkYxT7RJ0kVGYi7GuXJLOQ=;
- b=JoZFWQYT9QSYSh+RrMoXqLR6N2AoQiXodQfi+2wERAM3tUEHW4HCv+LQ
- D0HRHVhOrzSQq7B7JMgLGdHbznhMFAnMb97niY6Goo8vHxOomlrMcBmCR
- 5WmEOXHn7hdjAWEOAbqknDnI3ZnFSslfO4sNsIvVeAzm60aFGDClj97v6
- 9Gbk1PNxlpTdlDq1EXLcwtkZi8HsrdcuMsoLRSmXZ9o/56HE10ktAIS0e
- uZcyhoSG6mf9XAycqXUjwC41inu07SZA3V5WL98QLY+fQ/qiIFUF0GGZU
- ix/ZPRJxQQNNcsY5cSAf1WEdgqVoJz1Xde9jbU66g6sbUKvUYIUl5zjbb g==;
-X-CSE-ConnectionGUID: dhzub2eST3Wu8YXltlItEQ==
-X-CSE-MsgGUID: cpcWyyIKSBGAQN52RqyiWw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11382"; a="31588480"
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="31588480"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 00:08:50 -0700
-X-CSE-ConnectionGUID: N3YfX5fhRDWeGrJegQyyAw==
-X-CSE-MsgGUID: Gqadn5AZR9ejQjmgIv0XLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="123944422"
-Received: from emr.sh.intel.com ([10.112.229.56])
- by fmviesa007.fm.intel.com with ESMTP; 24 Mar 2025 00:08:47 -0700
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>,
- Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Dongli Zhang <dongli.zhang@oracle.com>, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Dapeng Mi <dapeng1.mi@intel.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
-Subject: [PATCH 3/3] target/i386: Support
- VMX_VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL
-Date: Mon, 24 Mar 2025 12:37:12 +0000
-Message-Id: <20250324123712.34096-4-dapeng1.mi@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20250324123712.34096-1-dapeng1.mi@linux.intel.com>
-References: <20250324123712.34096-1-dapeng1.mi@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1twdov-0006Iy-DL
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:10:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742807406;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=n97f2z7th9agSHgtXKHlEs8mtFefbW/nzYFp4gk4Ejc=;
+ b=YLK1C9ZS9q6FoqzygymQwWWqCDiXbjT7mk6jG9grzzHyjXBIFHSj6DFgaJXdHVUYSKplUV
+ 8pYsrTg6ch9R2vZaG7X14IQJfAZU2zrVeR0DDXGMbFGsK7OQ9dqnZIHFiMxFYIgRc7W+Bi
+ l11xlBIqZKKAE6ctHpb4fAY5AF8AmEA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-297--Lh1UDl9OH2bAfi-8RtfWA-1; Mon,
+ 24 Mar 2025 05:09:57 -0400
+X-MC-Unique: -Lh1UDl9OH2bAfi-8RtfWA-1
+X-Mimecast-MFC-AGG-ID: -Lh1UDl9OH2bAfi-8RtfWA_1742807396
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 26B79180035E; Mon, 24 Mar 2025 09:09:56 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.56])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9335B180B488; Mon, 24 Mar 2025 09:09:53 +0000 (UTC)
+Date: Mon, 24 Mar 2025 09:09:49 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH] system/vl: Tidy up break in QEMU_OPTION_machine case
+Message-ID: <Z-EhXQExJlSof5rT@redhat.com>
+References: <20250323230006.36057-1-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.16;
- envelope-from=dapeng1.mi@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_FUTURE_03_06=3.027,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+In-Reply-To: <20250323230006.36057-1-philmd@linaro.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,78 +84,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since Sapphire Rapids starts, VMX instrocude a new bit
-SAVE_IA32_PERF_GLOBAL_CTRL in VMCS VM-EXIT control field to manage if
-vmx can save guest PERF_GLOBAL_CTRL MSR.
+On Mon, Mar 24, 2025 at 12:00:06AM +0100, Philippe Mathieu-Daudé wrote:
+> The break in the QEMU_OPTION_machine case is mis-placed.
 
-This patch enables this feature.
+I think that's largely a bikeshed colouring question. If you
+look at other places in the outer switch using a block in
+the case, eg
 
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
----
- target/i386/cpu.c | 12 ++++++++----
- target/i386/cpu.h |  1 +
- 2 files changed, 9 insertions(+), 4 deletions(-)
+   case FOO:
+      {
+         .....
+      }
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1b64ceaaba..317ccc8b0a 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1481,7 +1481,8 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "vmx-exit-save-efer", "vmx-exit-load-efer",
-                 "vmx-exit-save-preemption-timer", "vmx-exit-clear-bndcfgs",
-             NULL, "vmx-exit-clear-rtit-ctl", NULL, NULL,
--            NULL, "vmx-exit-load-pkrs", NULL, "vmx-exit-secondary-ctls",
-+            NULL, "vmx-exit-load-pkrs", "vmx-exit-save-perf-global-ctrl",
-+            "vmx-exit-secondary-ctls",
-         },
-         .msr = {
-             .index = MSR_IA32_VMX_TRUE_EXIT_CTLS,
-@@ -4212,7 +4213,8 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-             VMX_VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL |
-             VMX_VM_EXIT_ACK_INTR_ON_EXIT | VMX_VM_EXIT_SAVE_IA32_PAT |
-             VMX_VM_EXIT_LOAD_IA32_PAT | VMX_VM_EXIT_SAVE_IA32_EFER |
--            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER,
-+            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER |
-+            VMX_VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL,
-         .features[FEAT_VMX_MISC] =
-             MSR_VMX_MISC_STORE_LMA | MSR_VMX_MISC_ACTIVITY_HLT |
-             MSR_VMX_MISC_VMWRITE_VMEXIT,
-@@ -4368,7 +4370,8 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-             VMX_VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL |
-             VMX_VM_EXIT_ACK_INTR_ON_EXIT | VMX_VM_EXIT_SAVE_IA32_PAT |
-             VMX_VM_EXIT_LOAD_IA32_PAT | VMX_VM_EXIT_SAVE_IA32_EFER |
--            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER,
-+            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER |
-+            VMX_VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL,
-         .features[FEAT_VMX_MISC] =
-             MSR_VMX_MISC_STORE_LMA | MSR_VMX_MISC_ACTIVITY_HLT |
-             MSR_VMX_MISC_VMWRITE_VMEXIT,
-@@ -4511,7 +4514,8 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-             VMX_VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL |
-             VMX_VM_EXIT_ACK_INTR_ON_EXIT | VMX_VM_EXIT_SAVE_IA32_PAT |
-             VMX_VM_EXIT_LOAD_IA32_PAT | VMX_VM_EXIT_SAVE_IA32_EFER |
--            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER,
-+            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER |
-+            VMX_VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL,
-         .features[FEAT_VMX_MISC] =
-             MSR_VMX_MISC_STORE_LMA | MSR_VMX_MISC_ACTIVITY_HLT |
-             MSR_VMX_MISC_VMWRITE_VMEXIT,
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 76f24446a5..ad387e6ee7 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1312,6 +1312,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define VMX_VM_EXIT_PT_CONCEAL_PIP                  0x01000000
- #define VMX_VM_EXIT_CLEAR_IA32_RTIT_CTL             0x02000000
- #define VMX_VM_EXIT_LOAD_IA32_PKRS                  0x20000000
-+#define VMX_VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL      0x40000000
- #define VMX_VM_EXIT_ACTIVATE_SECONDARY_CONTROLS     0x80000000
- 
- #define VMX_VM_ENTRY_LOAD_DEBUG_CONTROLS            0x00000004
+or
+
+   case FOO: {
+         .....
+   }
+
+they'll also have 'break' inside the '{}', so either this patch
+should change all, or change none.
+
+> 
+> Not a big deal, since producing the same outcome, but
+> suspicious, so put it in the correct place.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  system/vl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/system/vl.c b/system/vl.c
+> index ec93988a03a..dbca9ebba4d 100644
+> --- a/system/vl.c
+> +++ b/system/vl.c
+> @@ -3409,8 +3409,8 @@ void qemu_init(int argc, char **argv)
+>                          machine_help_func(machine_opts_dict);
+>                          exit(EXIT_SUCCESS);
+>                      }
+> -                    break;
+>                  }
+> +                break;
+>              case QEMU_OPTION_accel:
+>                  accel_opts = qemu_opts_parse_noisily(qemu_find_opts("accel"),
+>                                                       optarg, true);
+> -- 
+> 2.47.1
+> 
+> 
+
+With regards,
+Daniel
 -- 
-2.40.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
