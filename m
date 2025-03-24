@@ -2,81 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3ADA6D761
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 10:30:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF37A6D7AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 10:39:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twe8h-0005IK-Dr; Mon, 24 Mar 2025 05:30:35 -0400
+	id 1tweFg-0007IA-Ea; Mon, 24 Mar 2025 05:37:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1twe8e-0005F3-VW
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:30:33 -0400
-Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1twe8c-0000dq-SZ
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:30:32 -0400
-Received: by mail-qt1-x831.google.com with SMTP id
- d75a77b69052e-476805acddaso48028921cf.1
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 02:30:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742808628; x=1743413428; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GH/hfBW+1DtRhfgFa0lH6ukFMCurbYIWadTLpiL6pfU=;
- b=RW6MDcX9YJiMVwhHMiSnmgFY84S0iATRPlCizWpWQMFp2inJBEez6R77pOgH43E1Ka
- ltAIrU08Xi0fRmyrwZsvOEkaYhKetptqQk9h1Xz7+gwUIUjJVw6EIWAQ9tKZ6Ut4MIDp
- rVWxhcmaaZAQhF4yJqseZMZkV2Dyu8oBnChaI1m0XNNBB61/sgvnTbcgZYnZXx5boH2z
- 8okfzOADW6HwW8ODd42Hx905OcIjukfiC8mWeLDKbQJg8OXujd2RaAE1R0MvJRZ2ANPm
- Yq0OeXRpWHkexi5Mtondmft0RcFtJYat0NYKEMgANlD/ZfcMjbULw09cCWS9svKg5wJz
- r0Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742808628; x=1743413428;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GH/hfBW+1DtRhfgFa0lH6ukFMCurbYIWadTLpiL6pfU=;
- b=kpOh4motMS1J95ToKfIEHF0sYENvwReupwo3No0q+/EXdIuRZpErHoJBm9Z6h96zh5
- 5l4W1oh6m5a5/d21FB7OCjmnpHtBDhVUEkIq/sWiUdhCUV7f/+IL+qU91HIRGZbc3ElU
- m7lvciE/4WQSv5nYzCLj+p69ffopf6XXnk0XvAL1o3F/RZJQduirhSDbYwKXL1hZ6vDA
- LDEyP98LasO/bOqVw1E6JWEnBMpn3Qw/+R26GgNznSHW70SfkyLP764F7pZ65+dgnj4W
- fKkqk8o/lvUaDNwDrC6lF6E6De9wOM5iqFzmgR5gXseFY07cSJjaVoDcsaekODPq3et4
- CvrA==
-X-Gm-Message-State: AOJu0Yzak09krVmpRqGIDrA/gwfs1MkZJq24x4n81ANMO92L2AqaogmI
- Po5HPm5N/QVtK6vLV2L8XkVZnS8tvrGq0nZiwfA4s5DFXEu5FEk4cckgYh7zyXJ/Wet5Kirhzg6
- c5qP8o93ifnAr5KYEtss08pjzrP4=
-X-Gm-Gg: ASbGncvegB7SzWJIrBjc/b2jqjuEw0Ply6y6OVAVijP28SyuyzX7wJi46HUUVEAmDbh
- KxMyWTDf2OX6LSM2fXpYXacL1raDajoiPbQzAE7eVNSztYBbf4UA8zOPKKtJJt/HyQrsl3ObsD7
- mrtEsa9x8kTqjuvBFzCydCf/DY859dbwcYKy8S5VKZKGn/ZL1VNV14huhQQCg=
-X-Google-Smtp-Source: AGHT+IHe4ztzLDxnsVim2wEAoMIPZ0rC5rFQbWcgzl9OoIZVtG98ZHI42KB+Za6ls4+klh66gcuzFBF3S2d+O9Lt4dU=
-X-Received: by 2002:a05:622a:5449:b0:476:923a:f1cb with SMTP id
- d75a77b69052e-4771de13fccmr227152181cf.41.1742808628010; Mon, 24 Mar 2025
- 02:30:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1tweFb-0007En-HR
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:37:43 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1tweFY-0001Rj-5q
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:37:43 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8AxQK3cJ+FnLPujAA--.62038S3;
+ Mon, 24 Mar 2025 17:37:32 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMCxPsfaJ+FnGn1dAA--.15661S2;
+ Mon, 24 Mar 2025 17:37:31 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH v2 00/16] hw/intc/loongarch_pch: Cleanup with memory region ops
+Date: Mon, 24 Mar 2025 17:37:14 +0800
+Message-Id: <20250324093730.3683378-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20250324081922.359369-1-yuq825@gmail.com>
- <20250324081922.359369-7-yuq825@gmail.com>
-In-Reply-To: <20250324081922.359369-7-yuq825@gmail.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 24 Mar 2025 13:30:16 +0400
-X-Gm-Features: AQ5f1JpFTfUNQp0-qKOAYi3QhnCi-tpI6Cqs98alZnFrrHcbIlXiwn8vcwOF8Ic
-Message-ID: <CAJ+F1C+NCda4V_1n-zL3GA_e+HabO6sbKBxWQb_S_zzPPjLNQQ@mail.gmail.com>
-Subject: Re: [PATCH 6/6] ui/spice: support multi plane dmabuf scanout
-To: yuq825@gmail.com
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMCxPsfaJ+FnGn1dAA--.15661S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,226 +61,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+This series patchset is to clean up with memory regions of loongarch pch
+pic interrupt controller. Originally there are three iomem regions:
+iomem32_low, iomem8, iomem32_highm. Since these regions only support
+4 bytes/1 byte/4 bytes access, it is divided into three regions.
 
-On Mon, Mar 24, 2025 at 12:20=E2=80=AFPM <yuq825@gmail.com> wrote:
->
-> From: Qiang Yu <yuq825@gmail.com>
->
-> Signed-off-by: Qiang Yu <yuq825@gmail.com>
-> ---
->  meson.build        |  2 +-
->  ui/spice-display.c | 65 +++++++++++++++++++++++-----------------------
->  2 files changed, 34 insertions(+), 33 deletions(-)
->
-> diff --git a/meson.build b/meson.build
-> index 9d9c11731f..b87704a83b 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -1329,7 +1329,7 @@ if get_option('spice') \
->               .require(pixman.found(),
->                        error_message: 'cannot enable SPICE if pixman is n=
-ot available') \
->               .allowed()
-> -  spice =3D dependency('spice-server', version: '>=3D0.14.0',
-> +  spice =3D dependency('spice-server', version: '>=3D0.14.3',
+Now it is merged into one region, this regions supports 1/2/4/8 bytes
+access.
 
-I am okay with bumping dependency requirements, but the nicer
-alternative would be to allow the current version and check the
-existence of the new API/function instead.
+Patch 1-6 is to replace register name, no function change.
+Patch 7-16 is to use unifed memory region iomem, and supports 1/2/4/8
+bytes access with read/write ops for this region, and merge three
+regions above into one.
 
+---
+  v1 ... v2:
+    1. Add 1/2/4/8 bytes access support with memory region read and
+       write ops.
+    2. Merge three memory regions iomem32_low, iomem8 and iomem32_high
+       into one region iomem.
+    3. Merge trace functions for ops in above three memory regions into
+       one trace function
+---
+Bibo Mao (16):
+  hw/intc/loongarch_pch: Modify name of some registers
+  hw/intc/loongarch_pch: Modify register name PCH_PIC_xxx_OFFSET with
+    PCH_PIC_xxx
+  hw/intc/loongarch_pch: Remove some duplicate macro
+  hw/intc/loongarch_pch: Set version information at initial stage
+  hw/intc/loongarch_pch: Use relative address in MemoryRegionOps
+  hw/intc/loongarch_pch: Discard write operation with ISR register
+  hw/intc/loongarch_pch: Use generic read callback for iomem32_low
+    region
+  hw/intc/loongarch_pch: Use generic read callback for iomem32_high
+    region
+  hw/intc/loongarch_pch: Use generic read callback for iomem8 region
+  hw/intc/loongarch_pch: Use generic write callback for iomem32_low
+    region
+  hw/intc/loongarch_pch: Use generic write callback for iomem32_high
+    region
+  hw/intc/loongarch_pch: Use generic write callback for iomem8 region
+  hw/intc/loongarch_pch: Use unified trace event for memory region ops
+  hw/intc/loongarch_pch: Rename memory region iomem32_low with iomem
+  hw/intc/loongarch_pch: Set flexible memory access size with iomem
+    region
+  hw/intc/loongarch_pch: Merge three memory region into one
 
->                       required: get_option('spice'),
->                       method: 'pkg-config')
->  endif
-> diff --git a/ui/spice-display.c b/ui/spice-display.c
-> index b7016ece6a..46b6d5dfc9 100644
-> --- a/ui/spice-display.c
-> +++ b/ui/spice-display.c
-> @@ -28,6 +28,8 @@
->
->  #include "ui/spice-display.h"
->
-> +#include "standard-headers/drm/drm_fourcc.h"
-> +
->  bool spice_opengl;
->
->  int qemu_spice_rect_is_empty(const QXLRect* r)
-> @@ -884,16 +886,11 @@ static void spice_gl_switch(DisplayChangeListener *=
-dcl,
->      if (ssd->ds) {
->          uint32_t offset[DMABUF_MAX_PLANES], stride[DMABUF_MAX_PLANES];
->          int fd[DMABUF_MAX_PLANES], num_planes, fourcc;
-> +        uint64_t modifier;
->
->          surface_gl_create_texture(ssd->gls, ssd->ds);
->          if (!egl_dmabuf_export_texture(ssd->ds->texture, fd, (EGLint *)o=
-ffset,
-> -                                       (EGLint *)stride, &fourcc, &num_p=
-lanes, NULL)) {
-> -            surface_gl_destroy_texture(ssd->gls, ssd->ds);
-> -            return;
-> -        }
-> -
-> -        if (num_planes > 1) {
-> -            fprintf(stderr, "%s: does not support multi-plane texture\n"=
-, __func__);
-> +                                       (EGLint *)stride, &fourcc, &num_p=
-lanes, &modifier)) {
->              surface_gl_destroy_texture(ssd->gls, ssd->ds);
->              return;
->          }
-> @@ -904,10 +901,11 @@ static void spice_gl_switch(DisplayChangeListener *=
-dcl,
->                                      fourcc);
->
->          /* note: spice server will close the fd */
-> -        spice_qxl_gl_scanout(&ssd->qxl, fd[0],
-> -                             surface_width(ssd->ds),
-> -                             surface_height(ssd->ds),
-> -                             stride[0], fourcc, false);
-> +        spice_qxl_gl_scanout2(&ssd->qxl, fd,
-> +                              surface_width(ssd->ds),
-> +                              surface_height(ssd->ds),
-> +                              offset, stride, num_planes,
-> +                              fourcc, modifier, false);
->          ssd->have_surface =3D true;
->          ssd->have_scanout =3D false;
->
-> @@ -930,7 +928,8 @@ static void qemu_spice_gl_scanout_disable(DisplayChan=
-geListener *dcl)
->      SimpleSpiceDisplay *ssd =3D container_of(dcl, SimpleSpiceDisplay, dc=
-l);
->
->      trace_qemu_spice_gl_scanout_disable(ssd->qxl.id);
-> -    spice_qxl_gl_scanout(&ssd->qxl, -1, 0, 0, 0, 0, false);
-> +    spice_qxl_gl_scanout2(&ssd->qxl, NULL, 0, 0, NULL, NULL, 0, DRM_FORM=
-AT_INVALID,
-> +                          DRM_FORMAT_MOD_INVALID, false);
->      qemu_spice_gl_monitor_config(ssd, 0, 0, 0, 0);
->      ssd->have_surface =3D false;
->      ssd->have_scanout =3D false;
-> @@ -948,22 +947,21 @@ static void qemu_spice_gl_scanout_texture(DisplayCh=
-angeListener *dcl,
->      SimpleSpiceDisplay *ssd =3D container_of(dcl, SimpleSpiceDisplay, dc=
-l);
->      EGLint offset[DMABUF_MAX_PLANES], stride[DMABUF_MAX_PLANES], fourcc =
-=3D 0;
->      int fd[DMABUF_MAX_PLANES], num_planes;
-> +    uint64_t modifier;
->
->      assert(tex_id);
->      if (!egl_dmabuf_export_texture(tex_id, fd, offset, stride, &fourcc,
-> -                                   &num_planes, NULL)) {
-> +                                   &num_planes, &modifier)) {
->          fprintf(stderr, "%s: failed to export dmabuf for texture\n", __f=
-unc__);
->          return;
->      }
-> -    if (num_planes > 1) {
-> -        fprintf(stderr, "%s: does not support multi-plane dmabuf\n", __f=
-unc__);
-> -        return;
-> -    }
-> +
->      trace_qemu_spice_gl_scanout_texture(ssd->qxl.id, w, h, fourcc);
->
->      /* note: spice server will close the fd */
-> -    spice_qxl_gl_scanout(&ssd->qxl, fd[0], backing_width, backing_height=
-,
-> -                         stride[0], fourcc, y_0_top);
-> +    spice_qxl_gl_scanout2(&ssd->qxl, fd, backing_width, backing_height,
-> +                          (uint32_t *)offset, (uint32_t *)stride, num_pl=
-anes,
-> +                          fourcc, modifier, y_0_top);
->      qemu_spice_gl_monitor_config(ssd, x, y, w, h);
->      ssd->have_surface =3D false;
->      ssd->have_scanout =3D true;
-> @@ -1034,11 +1032,10 @@ static void qemu_spice_gl_update(DisplayChangeLis=
-tener *dcl,
->                                   uint32_t x, uint32_t y, uint32_t w, uin=
-t32_t h)
->  {
->      SimpleSpiceDisplay *ssd =3D container_of(dcl, SimpleSpiceDisplay, dc=
-l);
-> -    EGLint stride =3D 0, fourcc =3D 0;
-> +    EGLint fourcc =3D 0;
->      bool render_cursor =3D false;
->      bool y_0_top =3D false; /* FIXME */
->      uint64_t cookie;
-> -    int fd;
->      uint32_t width, height, texture;
->
->      if (!ssd->have_scanout) {
-> @@ -1075,6 +1072,7 @@ static void qemu_spice_gl_update(DisplayChangeListe=
-ner *dcl,
->                  ssd->blit_fb.height !=3D height) {
->                  int fds[DMABUF_MAX_PLANES], num_planes;
->                  uint32_t offsets[DMABUF_MAX_PLANES], strides[DMABUF_MAX_=
-PLANES];
-> +                uint64_t modifier;
->
->                  trace_qemu_spice_gl_render_dmabuf(ssd->qxl.id, width,
->                                                    height);
-> @@ -1083,27 +1081,30 @@ static void qemu_spice_gl_update(DisplayChangeLis=
-tener *dcl,
->                                       width, height);
->                  if (!egl_dmabuf_export_texture(ssd->blit_fb.texture, fds=
-,
->                                                 (EGLint *)offsets, (EGLin=
-t *)strides,
-> -                                               &fourcc, &num_planes, NUL=
-L)) {
-> +                                               &fourcc, &num_planes, &mo=
-difier)) {
->                      fprintf(stderr, "%s: failed to export dmabuf for tex=
-ture\n", __func__);
->                      return;
->                  }
-> -                if (num_planes > 1) {
-> -                    fprintf(stderr, "%s: does not support multi-plane dm=
-abuf\n", __func__);
-> -                    return;
-> -                }
-> -                spice_qxl_gl_scanout(&ssd->qxl, fds[0], width, height,
-> -                                     strides[0], fourcc, false);
-> +
-> +                spice_qxl_gl_scanout2(&ssd->qxl, fds, width, height, off=
-sets, strides,
-> +                                      num_planes, fourcc, modifier, fals=
-e);
->              }
->          } else {
-> -            stride =3D qemu_dmabuf_get_stride(dmabuf)[0];
-> +            int fds[DMABUF_MAX_PLANES];
-> +
->              fourcc =3D qemu_dmabuf_get_fourcc(dmabuf);
->              y_0_top =3D qemu_dmabuf_get_y0_top(dmabuf);
-> -            qemu_dmabuf_dup_fd(dmabuf, &fd);
-> +            qemu_dmabuf_dup_fd(dmabuf, fds);
->
->              trace_qemu_spice_gl_forward_dmabuf(ssd->qxl.id, width, heigh=
-t);
->              /* note: spice server will close the fd, so hand over a dup =
-*/
-> -            spice_qxl_gl_scanout(&ssd->qxl, fd, width, height,
-> -                                 stride, fourcc, y_0_top);
-> +            spice_qxl_gl_scanout2(&ssd->qxl, fds, width, height,
-> +                                  qemu_dmabuf_get_offset(dmabuf),
-> +                                  qemu_dmabuf_get_stride(dmabuf),
-> +                                  qemu_dmabuf_get_num_planes(dmabuf),
-> +                                  fourcc,
-> +                                  qemu_dmabuf_get_modifier(dmabuf),
-> +                                  y_0_top);
->          }
->          qemu_spice_gl_monitor_config(ssd, 0, 0, width, height);
->          ssd->guest_dmabuf_refresh =3D false;
-> --
-> 2.43.0
->
->
+ hw/intc/loongarch_pch_pic.c            | 339 +++++++++----------------
+ hw/intc/trace-events                   |   8 +-
+ hw/loongarch/virt.c                    |   6 -
+ include/hw/intc/loongarch_pic_common.h |  57 ++---
+ 4 files changed, 147 insertions(+), 263 deletions(-)
 
 
---=20
-Marc-Andr=C3=A9 Lureau
+base-commit: 71119ed3651622e1c531d1294839e9f3341adaf5
+-- 
+2.39.3
+
 
