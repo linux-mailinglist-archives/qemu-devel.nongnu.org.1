@@ -2,73 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03F9FA6DB02
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 14:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E27CA6DB6D
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 14:28:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twhlQ-0002xY-7N; Mon, 24 Mar 2025 09:22:49 -0400
+	id 1twhL2-0003Lk-DZ; Mon, 24 Mar 2025 08:55:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1twhkd-0002t9-LS
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 09:22:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1twhka-0007XD-97
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 09:21:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742822515;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hdaAXwkVpc+e3DjsV11aCwViY1TvgwnAjS6IVuAqSUg=;
- b=g4b3ybPoP87he2prpfxwK71XfJl9G4aIwFubc/Om+Q/tX4EaNv203O7kIGs3xvPK4Bp07c
- CeMfe6HvrV7cRuABegx5jaGB+7UsBStX//TEs+tp6F8LF7zM9y+mc9byNkIGwEbftdcsDj
- NbD+cZZBF1851n4Jjwo6vVbhP+8DCu4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-05ar8HDINm-ba53Qy0oQ5A-1; Mon,
- 24 Mar 2025 09:21:51 -0400
-X-MC-Unique: 05ar8HDINm-ba53Qy0oQ5A-1
-X-Mimecast-MFC-AGG-ID: 05ar8HDINm-ba53Qy0oQ5A_1742822510
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 48DE919560BC
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 13:21:50 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.139])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D699F1955BC1; Mon, 24 Mar 2025 13:21:49 +0000 (UTC)
-Date: Sun, 23 Mar 2025 18:30:02 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/24] Mostly Rust changes for QEMU 10.0
-Message-ID: <20250323223002.GA41923@fedora>
-References: <20250321183556.155097-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1twhKw-0003LH-Qm
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 08:55:27 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1twhKo-0003Ug-MZ
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 08:55:26 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxaeAuVuFnICukAA--.15289S3;
+ Mon, 24 Mar 2025 20:55:10 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMBxHcUuVuFnFbNdAA--.12920S2;
+ Mon, 24 Mar 2025 20:55:10 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: Bibo Mao <maobibo@loongson.cn>,
+	Song Gao <gaosong@loongson.cn>
+Subject: [PATCH] target/loongarch: Fix the cpu unplug resource leak
+Date: Mon, 24 Mar 2025 20:33:28 +0800
+Message-Id: <20250324123328.518076-1-lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="jRhtFQSb4aBlMVU6"
-Content-Disposition: inline
-In-Reply-To: <20250321183556.155097-1-pbonzini@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -9
-X-Spam_score: -1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMBxHcUuVuFnFbNdAA--.12920S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,30 +61,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+When the cpu is created, qemu_add_vm_change_state_handler
+is called in the kvm_arch_init_vcpu function to create
+the VMChangeStateEntry resource.
 
---jRhtFQSb4aBlMVU6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+However, the resource is not released when the cpu is destroyed.
+This results in a qemu process segment error when the virtual
+machine restarts after the cpu is unplugged.
 
-Applied, thanks.
+This patch solves the problem by adding the corresponding resource
+release process to the kvm_arch_destroy_vcpu function.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+---
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>
+Cc: Xianglai Li <lixianglai@loongson.cn>
 
---jRhtFQSb4aBlMVU6
-Content-Type: application/pgp-signature; name=signature.asc
+ target/loongarch/cpu.h     | 1 +
+ target/loongarch/kvm/kvm.c | 7 ++++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfgi2oACgkQnKSrs4Gr
-c8iwrwf/cTkuLUqzJC1wzTorPFv/pATzIuo6zri//JLYPPCvDuTe5p30gZdCDMdr
-9pMi81clNQf1DpKvqCIA96YZ9GKq/qpG3lQY7JF5jBxTMwEMQ4PmQNBuTkIVWv7H
-FIaJMxMbery86nonCGAO9YXpbeJDl/tCMpJtOgBEUso3IGaZbWfjdesZjxu0L0zG
-K3KpRrqu4OGQFl9ttw1o2k4APIyX5/mMyqHXzFaopCESB9H0Iuv23X9MEEzrYSHP
-0MxZlaLaP3bDXbY03DjjwGLGuPvoktzr1Uv6mAdwCkhZK8w4fiiw1LAtkftUxFg0
-YMt+Be+Ou55HxnUBEal1KqnEUfKm8Q==
-=5T17
------END PGP SIGNATURE-----
-
---jRhtFQSb4aBlMVU6--
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index eae874c67b..254e4fbdcd 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -426,6 +426,7 @@ struct ArchCPU {
+     const char *dtb_compatible;
+     /* used by KVM_REG_LOONGARCH_COUNTER ioctl to access guest time counters */
+     uint64_t kvm_state_counter;
++    VMChangeStateEntry *vmsentry;
+ };
+ 
+ /**
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index 7f63e7c8fe..f0e3cfef03 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -1080,8 +1080,10 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     uint64_t val;
+     int ret;
+     Error *local_err = NULL;
++    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+ 
+-    qemu_add_vm_change_state_handler(kvm_loongarch_vm_stage_change, cs);
++    cpu->vmsentry = qemu_add_vm_change_state_handler(
++                    kvm_loongarch_vm_stage_change, cs);
+ 
+     if (!kvm_get_one_reg(cs, KVM_REG_LOONGARCH_DEBUG_INST, &val)) {
+         brk_insn = val;
+@@ -1197,6 +1199,9 @@ void kvm_loongarch_cpu_post_init(LoongArchCPU *cpu)
+ 
+ int kvm_arch_destroy_vcpu(CPUState *cs)
+ {
++    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
++
++    qemu_del_vm_change_state_handler(cpu->vmsentry);
+     return 0;
+ }
+ 
+-- 
+2.39.1
 
 
