@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBE8A6D7A6
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 10:39:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30973A6D7B6
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 10:40:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tweFf-0007Fh-6P; Mon, 24 Mar 2025 05:37:47 -0400
+	id 1tweFg-0007IB-UU; Mon, 24 Mar 2025 05:37:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1tweFb-0007Eo-Ju
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:37:43 -0400
+ id 1tweFc-0007FF-3X
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:37:44 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1tweFY-0001Ri-5i
+ (envelope-from <maobibo@loongson.cn>) id 1tweFY-0001Rv-A8
  for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:37:43 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxaeDfJ+FnNPujAA--.14996S3;
- Mon, 24 Mar 2025 17:37:35 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxqmrhJ+FnN_ujAA--.14258S3;
+ Mon, 24 Mar 2025 17:37:37 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMCxPsfaJ+FnGn1dAA--.15661S5;
- Mon, 24 Mar 2025 17:37:35 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMCxPsfaJ+FnGn1dAA--.15661S6;
+ Mon, 24 Mar 2025 17:37:36 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 03/16] hw/intc/loongarch_pch: Remove some duplicate macro
-Date: Mon, 24 Mar 2025 17:37:17 +0800
-Message-Id: <20250324093730.3683378-4-maobibo@loongson.cn>
+Subject: [PATCH v2 04/16] hw/intc/loongarch_pch: Set version information at
+ initial stage
+Date: Mon, 24 Mar 2025 17:37:18 +0800
+Message-Id: <20250324093730.3683378-5-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250324093730.3683378-1-maobibo@loongson.cn>
 References: <20250324093730.3683378-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxPsfaJ+FnGn1dAA--.15661S5
+X-CM-TRANSID: qMiowMCxPsfaJ+FnGn1dAA--.15661S6
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,88 +64,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The meaning of macro definition STATUS_LO_START is simliar with
-PCH_PIC_INT_STATUS, only that offset is different, the same for
-macro POL_LO_START. Now remove these duplicated macro definitions.
+Register PCH_PIC_INT_ID constains version and supported irq number
+information, and it is read only register. The detailed value can
+be set at initial stage, rather than read callback.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- hw/intc/loongarch_pch_pic.c            | 20 ++++++++++----------
- include/hw/intc/loongarch_pic_common.h |  5 -----
- 2 files changed, 10 insertions(+), 15 deletions(-)
+ hw/intc/loongarch_pch_pic.c            | 17 ++++++++++-------
+ include/hw/intc/loongarch_pic_common.h | 17 +++++++++++++++--
+ 2 files changed, 25 insertions(+), 9 deletions(-)
 
 diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-index 4c845ba5e9..a2d9930ac9 100644
+index a2d9930ac9..7043b8b9f4 100644
 --- a/hw/intc/loongarch_pch_pic.c
 +++ b/hw/intc/loongarch_pch_pic.c
-@@ -208,19 +208,19 @@ static uint64_t loongarch_pch_pic_high_readw(void *opaque, hwaddr addr,
- {
-     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
-     uint64_t val = 0;
--    uint32_t offset = addr & 0xfff;
-+    uint32_t offset = addr + PCH_PIC_INT_STATUS;
+@@ -80,15 +80,10 @@ static uint64_t loongarch_pch_pic_low_readw(void *opaque, hwaddr addr,
  
      switch (offset) {
--    case STATUS_LO_START:
-+    case PCH_PIC_INT_STATUS:
-         val = (uint32_t)(s->intisr & (~s->int_mask));
+     case PCH_PIC_INT_ID:
+-        val = PCH_PIC_INT_ID_VAL;
++        val = s->id.data & UINT_MAX;
          break;
--    case STATUS_HI_START:
-+    case PCH_PIC_INT_STATUS + 4:
-         val = (s->intisr & (~s->int_mask)) >> 32;
+     case PCH_PIC_INT_ID + 4:
+-        /*
+-         * With 7A1000 manual
+-         *   bit  0-15 pch irqchip version
+-         *   bit 16-31 irq number supported with pch irqchip
+-         */
+-        val = deposit32(PCH_PIC_INT_ID_VER, 16, 16, s->irq_num - 1);
++        val = s->id.data >> 32;
          break;
--    case POL_LO_START:
-+    case PCH_PIC_INT_POL:
-         val = (uint32_t)s->int_polarity;
-         break;
--    case POL_HI_START:
-+    case PCH_PIC_INT_POL + 4:
-         val = s->int_polarity >> 32;
-         break;
-     default:
-@@ -236,21 +236,21 @@ static void loongarch_pch_pic_high_writew(void *opaque, hwaddr addr,
- {
-     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
-     uint32_t offset, data = (uint32_t)value;
--    offset = addr & 0xfff;
-+    offset = addr + PCH_PIC_INT_STATUS;
+     case PCH_PIC_INT_MASK:
+         val = (uint32_t)s->int_mask;
+@@ -361,6 +356,14 @@ static void loongarch_pch_pic_reset(DeviceState *d)
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(d);
+     int i;
  
-     trace_loongarch_pch_pic_high_writew(size, addr, data);
- 
-     switch (offset) {
--    case STATUS_LO_START:
-+    case PCH_PIC_INT_STATUS:
-         s->intisr = get_writew_val(s->intisr, data, 0);
-         break;
--    case STATUS_HI_START:
-+    case PCH_PIC_INT_STATUS + 4:
-         s->intisr = get_writew_val(s->intisr, data, 1);
-         break;
--    case POL_LO_START:
-+    case PCH_PIC_INT_POL:
-         s->int_polarity = get_writew_val(s->int_polarity, data, 0);
-         break;
--    case POL_HI_START:
-+    case PCH_PIC_INT_POL + 4:
-         s->int_polarity = get_writew_val(s->int_polarity, data, 1);
-         break;
-     default:
++    /*
++     * With 7A1000 manual
++     *   bit  0-15 pch irqchip version
++     *   bit 16-31 irq number supported with pch irqchip
++     */
++    s->id.desc.id = PCH_PIC_INT_ID_VAL;
++    s->id.desc.version = PCH_PIC_INT_ID_VER;
++    s->id.desc.irq_num = s->irq_num - 1;
+     s->int_mask = -1;
+     s->htmsi_en = 0x0;
+     s->intedge  = 0x0;
 diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
-index b33bebb129..ef6edc15bf 100644
+index ef6edc15bf..fb848da4b8 100644
 --- a/include/hw/intc/loongarch_pic_common.h
 +++ b/include/hw/intc/loongarch_pic_common.h
-@@ -26,11 +26,6 @@
- #define PCH_PIC_INT_STATUS              0x3a0
- #define PCH_PIC_INT_POL                 0x3e0
+@@ -10,9 +10,9 @@
+ #include "hw/pci-host/ls7a.h"
+ #include "hw/sysbus.h"
  
--#define STATUS_LO_START                 0
--#define STATUS_HI_START                 0x4
--#define POL_LO_START                    0x40
--#define POL_HI_START                    0x44
--
- #define TYPE_LOONGARCH_PIC_COMMON "loongarch_pic_common"
+-#define PCH_PIC_INT_ID_VAL              0x7000000UL
+-#define PCH_PIC_INT_ID_VER              0x1UL
+ #define PCH_PIC_INT_ID                  0x00
++#define  PCH_PIC_INT_ID_VAL             0x7
++#define  PCH_PIC_INT_ID_VER             0x1
+ #define PCH_PIC_INT_MASK                0x20
+ #define PCH_PIC_HTMSI_EN                0x40
+ #define PCH_PIC_INT_EDGE                0x60
+@@ -30,10 +30,23 @@
  OBJECT_DECLARE_TYPE(LoongArchPICCommonState,
                      LoongArchPICCommonClass, LOONGARCH_PIC_COMMON)
+ 
++union LoongArchPIC_ID {
++    struct {
++        uint64_t _reserved_0:24;
++        uint64_t id:8;
++        uint64_t version:8;
++        uint64_t _reserved_1:8;
++        uint64_t irq_num:8;
++        uint64_t _reserved_2:8;
++    } QEMU_PACKED desc;
++    uint64_t data;
++};
++
+ struct LoongArchPICCommonState {
+     SysBusDevice parent_obj;
+ 
+     qemu_irq parent_irq[64];
++    union LoongArchPIC_ID id; /* 0x00  interrupt ID register */
+     uint64_t int_mask;        /* 0x020 interrupt mask register */
+     uint64_t htmsi_en;        /* 0x040 1=msi */
+     uint64_t intedge;         /* 0x060 edge=1 level=0 */
 -- 
 2.39.3
 
