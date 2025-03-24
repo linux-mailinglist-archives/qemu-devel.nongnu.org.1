@@ -2,60 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D36A6D810
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 11:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0790A6D81A
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 11:10:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twegf-00064K-NH; Mon, 24 Mar 2025 06:05:41 -0400
+	id 1tweku-0000ML-1Q; Mon, 24 Mar 2025 06:10:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nikita.shubin@maquefel.me>)
- id 1twegS-000615-TZ
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:05:29 -0400
-Received: from forward501d.mail.yandex.net ([2a02:6b8:c41:1300:1:45:d181:d501])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1tweks-0000M9-4z
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:10:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nikita.shubin@maquefel.me>)
- id 1twegN-00052C-Um
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:05:27 -0400
-Received: from mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:2347:0:640:6ae5:0])
- by forward501d.mail.yandex.net (Yandex) with ESMTPS id 3856B60F45;
- Mon, 24 Mar 2025 13:05:17 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net
- (smtp/Yandex) with ESMTPSA id D5L6Pk2LeW20-5jGd8TrE; 
- Mon, 24 Mar 2025 13:05:16 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maquefel.me; s=mail;
- t=1742810716; bh=xmQc5peEEnmmeQLP727x20HyEvrn5Isa+kNm35zGjaQ=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=iEnxEUTNr207xJd46T9bokc/hYRBmnokNf84PwiNDKk3Q4UapjwpeRFrJ7Y926Kbl
- PZpHp7gLERuyx68FwvjXVZTZNW/t523AOCHq4BX1J0cLfuC0qCh7asQyfqnyrE9i5w
- p6qUZxKM61Fa4hkTAjL7ca/vV7fXGRe3P/WUy220=
-Authentication-Results: mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net;
- dkim=pass header.i=@maquefel.me
-From: Nikita Shubin <nikita.shubin@maquefel.me>
-To: qemu-devel@nongnu.org
-Cc: Nikita Shubin <n.shubin@yadro.com>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 3/3] tests/qtest: add qtests for STM32 DMA
-Date: Mon, 24 Mar 2025 13:05:08 +0300
-Message-ID: <20250324100508.2176-4-nikita.shubin@maquefel.me>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250324100508.2176-1-nikita.shubin@maquefel.me>
-References: <20250324100508.2176-1-nikita.shubin@maquefel.me>
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1twekp-0005QG-22
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:10:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742810997;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7MXG48POaE2HhRYyJdhbvKKICJsFU5Ity7F7zf/mjPg=;
+ b=TrcmOIfgFOQRtFpEJup5e+kshEfliyHBAN5uYCjGvVwlnb/axq2hiJTG0yyqtjo6XYXgcV
+ iHXB4uBgcN9NyJoQz1zBq1fCNEAHyk1JE5FDbuuWHaA7YxnyBI8BYnrjYCHwDyTn8Bb2Io
+ 36F3jnQhGbgW2Rh/prsMqMFApEHgq9o=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-56-qCfJmc_VPySHkNVL0Gpm6Q-1; Mon, 24 Mar 2025 06:09:53 -0400
+X-MC-Unique: qCfJmc_VPySHkNVL0Gpm6Q-1
+X-Mimecast-MFC-AGG-ID: qCfJmc_VPySHkNVL0Gpm6Q_1742810993
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7c3c8f8ab79so596166485a.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 03:09:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742810993; x=1743415793;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7MXG48POaE2HhRYyJdhbvKKICJsFU5Ity7F7zf/mjPg=;
+ b=L5Ha+Dbo5h/DYPru+s1aCVm7Q73ipudP8zJAp1+r5ye629yJ3oxeydgQXq8m53c3F+
+ UG79EGCKZowlTzbZ+fp1HnhMo7cnCA8Sh7LGuNvy6UNnwP4M8Wp6S4al67awTvlGub2s
+ A8zZhq1pg3I88XVhUbnN/9JFl4U9GvDJARdhZ9BMQ/FnvazfUVbGiMcIWht6Qz+fxT2o
+ LMWj4FM1yMKA11tLifjqbZxreQVo8dymwOfjDeunxSpTmjVQXQR43gY4k0MbNgKA4p5C
+ 4jZOBt3555bRCGI8enZqtS2vrKUf8x6wEnyqvUMZpxsCY2dH2nSrKKghL5Wpxwjfh5Ll
+ BqTg==
+X-Gm-Message-State: AOJu0YxzTMd/HDGyoLi3MTg29LOOrtEcue0Htfzn2qld7MaMUomnAqhQ
+ tM013R9+r32OK8Mv4QaJMalsuDUbgUpPehZQxgbcDdXW05xhAt2CbE7xFBmhpBQooesRxfFz61A
+ kSBxVbXRZgiqoJG1YJIYj56WpOlMgQnSP8XxoYZC6w6qjhMkN3P7ndlGy5p6TlKTlQ7r+YQxxbZ
+ 57kqYHdJnwDcxfkhrYZBtn2zeSS323MZp3onDqgg==
+X-Gm-Gg: ASbGncvXbx2xczRPhQQJkekCkL3CnaaRyf0vNPehyKCVAVC65sAr6bUGvijMqrXhDyI
+ SS0DD4dN7XEVAfUOQc0g91T3DU7mdaP850T+JdlvYGLDB2p2Z3eW/JN+wwjgnSR3ov0IBOnBxQo
+ H9dWztT1UAWg/RoES39CHiGexN80itDg==
+X-Received: by 2002:a05:620a:284c:b0:7c3:cd78:df43 with SMTP id
+ af79cd13be357-7c5ba2058b8mr1870810285a.58.1742810992792; 
+ Mon, 24 Mar 2025 03:09:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFJ+MPzwavpc6LHCOScO7XXhYjNX5dKtZFjHjvEyA1BrgIeUi3K5UY/3q/uec8lYQaxfGjFOI1mrVkNXvYsxB8=
+X-Received: by 2002:a05:620a:284c:b0:7c3:cd78:df43 with SMTP id
+ af79cd13be357-7c5ba2058b8mr1870807285a.58.1742810992385; Mon, 24 Mar 2025
+ 03:09:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:d501;
- envelope-from=nikita.shubin@maquefel.me; helo=forward501d.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20250324081922.359369-1-yuq825@gmail.com>
+ <20250324081922.359369-3-yuq825@gmail.com>
+In-Reply-To: <20250324081922.359369-3-yuq825@gmail.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Mon, 24 Mar 2025 14:09:40 +0400
+X-Gm-Features: AQ5f1JpAh2TPSS-qgzNkcXGfeCkniidjRyEIcSQhAptSMI1khMTlF7y3njyQDRA
+Message-ID: <CAMxuvazW2TEFm-6GMZiNO25JuSKxAupa2N=fPR9n_6ibTadCHg@mail.gmail.com>
+Subject: Re: [PATCH 2/6] ui/egl: require EGL_EXT_image_dma_buf_import_modifiers
+To: yuq825@gmail.com
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,449 +101,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nikita Shubin <n.shubin@yadro.com>
+Hi
 
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
----
- tests/qtest/meson.build      |   1 +
- tests/qtest/stm32-dma-test.c | 415 +++++++++++++++++++++++++++++++++++
- 2 files changed, 416 insertions(+)
- create mode 100644 tests/qtest/stm32-dma-test.c
+On Mon, Mar 24, 2025 at 12:19=E2=80=AFPM <yuq825@gmail.com> wrote:
+>
+> From: Qiang Yu <yuq825@gmail.com>
+>
+> It's used already, just check it explicitly.
+>
+> Signed-off-by: Qiang Yu <yuq825@gmail.com>
+> ---
+>  ui/egl-helpers.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+> index 72a1405782..45b1b0b700 100644
+> --- a/ui/egl-helpers.c
+> +++ b/ui/egl-helpers.c
+> @@ -257,6 +257,11 @@ int egl_rendernode_init(const char *rendernode, Disp=
+layGLMode mode)
+>          error_report("egl: EGL_MESA_image_dma_buf_export not supported")=
+;
+>          goto err;
+>      }
+> +    if (!epoxy_has_egl_extension(qemu_egl_display,
+> +                                 "EGL_EXT_image_dma_buf_import_modifiers=
+")) {
+> +        error_report("egl: EGL_EXT_image_dma_buf_import_modifiers not su=
+pported");
+> +        goto err;
+> +    }
+>
+>      qemu_egl_rn_ctx =3D qemu_egl_init_ctx();
+>      if (!qemu_egl_rn_ctx) {
+> @@ -308,7 +313,7 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+>      EGLImageKHR image =3D EGL_NO_IMAGE_KHR;
+>      EGLint attrs[64];
+>      int i =3D 0;
+> -    uint64_t modifier;
+> +    uint64_t modifier =3D qemu_dmabuf_get_modifier(dmabuf);
+>      uint32_t texture =3D qemu_dmabuf_get_texture(dmabuf);
+>
+>      if (texture !=3D 0) {
+> @@ -328,15 +333,12 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+>      attrs[i++] =3D qemu_dmabuf_get_stride(dmabuf)[0];
+>      attrs[i++] =3D EGL_DMA_BUF_PLANE0_OFFSET_EXT;
+>      attrs[i++] =3D 0;
+> -#ifdef EGL_DMA_BUF_PLANE0_MODIFIER_LO_EXT
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 5a8c1f102c..6c45692f9d 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -240,6 +240,7 @@ qtests_arm = \
-   (config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_VEXPRESS') ? ['test-arm-mptimer'] : []) + \
-   (config_all_devices.has_key('CONFIG_MICROBIT') ? ['microbit-test'] : []) + \
-+  (config_all_devices.has_key('CONFIG_STM32F100_SOC') ? ['stm32-dma-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_STM32L4X5_SOC') ? qtests_stm32l4x5 : []) + \
-   (config_all_devices.has_key('CONFIG_FSI_APB2OPB_ASPEED') ? ['aspeed_fsi-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_STM32L4X5_SOC') and
-diff --git a/tests/qtest/stm32-dma-test.c b/tests/qtest/stm32-dma-test.c
-new file mode 100644
-index 0000000000..74b81fa434
---- /dev/null
-+++ b/tests/qtest/stm32-dma-test.c
-@@ -0,0 +1,415 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * QTest testcase for STM32 DMA engine.
-+ *
-+ * This includes STM32F1xxxx, STM32F2xxxx and GD32F30x
-+ *
-+ * Author: 2025 Nikita Shubin <n.shubin@yadro.com>
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/bitops.h"
-+#include "libqtest-single.h"
-+#include "libqos/libqos.h"
-+
-+/* Offsets in stm32vldiscovery platform: */
-+#define DMA_BASE    0x40020000
-+#define SRAM_BASE   0x20000000
-+
-+/* Global interrupt flag */
-+#define DMA_ISR_GIF   BIT(0)
-+/* Full transfer finish */
-+#define DMA_ISR_TCIF  BIT(1)
-+/* Half transfer finish */
-+#define DMA_ISR_HTIF  BIT(2)
-+/* Transfer error */
-+#define DMA_ISR_TEIF  BIT(3)
-+
-+/* Used register/fields definitions */
-+#define DMA_CCR(idx)     (0x08 + 0x14 * idx)
-+#define DMA_CNDTR(idx)   (0x0C + 0x14 * idx)
-+#define DMA_CPAR(idx)    (0x10 + 0x14 * idx)
-+#define DMA_CMAR(idx)    (0x14 + 0x14 * idx)
-+
-+#define DMA_MAX_CHAN    7
-+
-+/* Register offsets for a dma chan0 within a dma block. */
-+#define DMA_CHAN(_idx, _irq)  \
-+    { \
-+        .ccr = DMA_CCR(_idx), \
-+        .cndrt = DMA_CNDTR(_idx), \
-+        .cpar = DMA_CPAR(_idx), \
-+        .cmar = DMA_CMAR(_idx), \
-+        .irq_line = _irq,\
-+    }
-+
-+typedef struct DMAChan {
-+    uint32_t ccr;
-+    uint32_t cndrt;
-+    uint32_t cpar;
-+    uint32_t cmar;
-+    uint8_t irq_line;
-+} DMAChan;
-+
-+const DMAChan dma_chans[] = {
-+    DMA_CHAN(0, 11),
-+    DMA_CHAN(1, 12),
-+    DMA_CHAN(2, 12),
-+    DMA_CHAN(3, 13),
-+    DMA_CHAN(4, 14),
-+    DMA_CHAN(5, 16),
-+    DMA_CHAN(6, 17),
-+};
-+
-+/* Register offsets for a dma within a dma block. */
-+typedef struct DMA {
-+    uint32_t base_addr;
-+    uint32_t isr;
-+    uint32_t ofcr;
-+} DMA;
-+
-+const DMA dma = {
-+    .base_addr = DMA_BASE,
-+    .isr = 0x00,
-+    .ofcr = 0x04,
-+};
-+
-+typedef struct TestData {
-+    QTestState *qts;
-+    const DMA *dma;
-+    const DMAChan *chans;
-+} TestData;
-+
-+#define NVIC_ISER 0xE000E100
-+#define NVIC_ISPR 0xE000E200
-+#define NVIC_ICPR 0xE000E280
-+
-+static void enable_nvic_irq(unsigned int n)
-+{
-+    writel(NVIC_ISER, 1 << n);
-+}
-+
-+static void unpend_nvic_irq(unsigned int n)
-+{
-+    writel(NVIC_ICPR, 1 << n);
-+}
-+
-+static bool check_nvic_pending(unsigned int n)
-+{
-+    return readl(NVIC_ISPR) & (1 << n);
-+}
-+
-+static uint32_t dma_read(const TestData *td, uint32_t offset)
-+{
-+    return qtest_readl(td->qts, td->dma->base_addr + offset);
-+}
-+
-+static void dma_write(const TestData *td, uint32_t offset, uint32_t value)
-+{
-+    qtest_writel(td->qts, td->dma->base_addr + offset, value);
-+}
-+
-+static void dma_write_ofcr(const TestData *td, uint32_t value)
-+{
-+    return dma_write(td, td->dma->ofcr, value);
-+}
-+
-+static uint32_t dma_read_isr(const TestData *td)
-+{
-+    return dma_read(td, td->dma->isr);
-+}
-+
-+static void dma_write_ccr(const TestData *td, uint8_t idx, uint32_t value)
-+{
-+    dma_write(td, td->chans[idx].ccr, value);
-+}
-+
-+static uint32_t dma_read_ccr(const TestData *td, uint8_t idx)
-+{
-+    return dma_read(td, td->chans[idx].ccr);
-+}
-+
-+static void dma_write_cndrt(const TestData *td, uint8_t idx, uint32_t value)
-+{
-+    dma_write(td, td->chans[idx].cndrt, value);
-+}
-+
-+static void dma_write_cpar(const TestData *td, uint8_t idx, uint32_t value)
-+{
-+    dma_write(td, td->chans[idx].cpar, value);
-+}
-+
-+static void dma_write_cmar(const TestData *td, uint8_t idx, uint32_t value)
-+{
-+    dma_write(td, td->chans[idx].cmar, value);
-+}
-+
-+static void test_m2m(gconstpointer test_data)
-+{
-+    const TestData *td = test_data;
-+    QTestState *s = td->qts;
-+    const uint32_t patt_len = 0xff;
-+    char *pattern_check = g_malloc(patt_len);
-+    char *pattern = g_malloc(patt_len);
-+    uint8_t idx = 0;
-+    uint32_t val;
-+
-+    enable_nvic_irq(td->chans[idx].irq_line);
-+    qtest_irq_intercept_in(global_qtest, "/machine/soc/dma[0]");
-+
-+    /* write addr */
-+    dma_write_cpar(td, idx, SRAM_BASE);
-+    dma_write_cmar(td, idx, SRAM_BASE + patt_len);
-+
-+    /* enable increment and M2M */
-+    val = dma_read_ccr(td, idx);
-+    val |= BIT(1); /* TCIE */
-+    val |= BIT(6); /* PINC */
-+    val |= BIT(7); /* MINC */
-+    val |= BIT(14); /* M2M */
-+    dma_write_ccr(td, idx, val);
-+
-+    generate_pattern(pattern, patt_len, patt_len);
-+    qtest_memwrite(s, SRAM_BASE, pattern, patt_len);
-+
-+    dma_write_cndrt(td, idx, patt_len);
-+
-+    val |= BIT(0); /* enable channel */
-+    dma_write_ccr(td, idx, val);
-+
-+    qtest_memread(s, SRAM_BASE + patt_len, pattern_check, patt_len);
-+
-+    g_assert(memcmp(pattern, pattern_check, patt_len) == 0);
-+
-+    g_assert_true(check_nvic_pending(td->chans[idx].irq_line));
-+}
-+
-+typedef struct width_pattern {
-+    uint32_t src;
-+    uint8_t swidth;
-+    uint32_t dst;
-+    uint8_t dwidth;
-+} width_pattern;
-+
-+static void test_width(gconstpointer test_data)
-+{
-+    const width_pattern patterns[] = {
-+        { 0xb0,       1, 0xb0,       1 },
-+        { 0xb0,       1, 0x00b0,     2 },
-+        { 0xb0,       1, 0x000000b0, 4 },
-+        { 0xb1b0,     2, 0xb0,       1 },
-+        { 0xb1b0,     2, 0xb1b0,     2 },
-+        { 0xb1b0,     2, 0x0000b1b0, 4 },
-+        { 0xb3b2b1b0, 4, 0xb0,       1 },
-+        { 0xb3b2b1b0, 4, 0xb1b0,     2 },
-+        { 0xb3b2b1b0, 4, 0xb3b2b1b0, 4 },
-+    };
-+
-+    const TestData *td = test_data;
-+    QTestState *s = td->qts;
-+    const uint32_t patt = 0xffffffff;
-+    const uint32_t patt_len = 4;
-+    uint32_t dst;
-+    uint8_t idx = 0;
-+    uint32_t val;
-+
-+    qmp("{'execute':'system_reset' }");
-+
-+    /* write addr */
-+    dma_write_cpar(td, idx, SRAM_BASE);
-+    dma_write_cmar(td, idx, SRAM_BASE + patt_len);
-+
-+    /* enable increment and M2M */
-+    val = dma_read_ccr(td, idx);
-+    val |= BIT(6); /* PINC */
-+    val |= BIT(7); /* MINC */
-+    val |= BIT(14); /* M2M */
-+    dma_write_ccr(td, idx, val);
-+
-+    for (int i = 0; i < ARRAY_SIZE(patterns); i++) {
-+        /* fill destination and source with pattern */
-+        qtest_memwrite(s, SRAM_BASE, &patt, patt_len);
-+        qtest_memwrite(s, SRAM_BASE + patt_len, &patt, patt_len);
-+
-+        qtest_memwrite(s, SRAM_BASE, &patterns[i].src, patterns[i].swidth);
-+
-+        dma_write_cndrt(td, idx, 1);
-+        val |= BIT(0); /* enable channel */
-+        val = deposit32(val, 8, 2, patterns[i].swidth >> 1);
-+        val = deposit32(val, 10, 2, patterns[i].dwidth >> 1);
-+        dma_write_ccr(td, idx, val);
-+
-+        qtest_memread(s, SRAM_BASE + patt_len, &dst, patterns[i].dwidth);
-+
-+        g_assert(memcmp(&dst, &patterns[i].dst, patterns[i].dwidth) == 0);
-+
-+        /* disable chan */
-+        val &= ~BIT(0);
-+        dma_write_ccr(td, idx, val);
-+    }
-+}
-+
-+static void dma_set_irq(unsigned int idx, int num, int level)
-+{
-+    g_autofree char *name = g_strdup_printf("/machine/soc/dma[%u]",
-+                                            idx);
-+    qtest_set_irq_in(global_qtest, name, NULL, num, level);
-+}
-+
-+static void test_triggers(gconstpointer test_data)
-+{
-+    const TestData *td = test_data;
-+    QTestState *s = td->qts;
-+    const uint32_t patt = 0xffffffff;
-+    const uint32_t patt_len = 4;
-+    uint32_t dst;
-+    uint32_t val;
-+
-+    qmp("{'execute':'system_reset' }");
-+
-+    for (int i = 0; i < ARRAY_SIZE(dma_chans); i++) {
-+        qtest_memset(s, SRAM_BASE, 0, patt_len * 2);
-+        qtest_memwrite(s, SRAM_BASE, &patt, patt_len);
-+
-+        /* write addr */
-+        dma_write_cpar(td, i, SRAM_BASE);
-+        dma_write_cmar(td, i, SRAM_BASE + patt_len);
-+
-+        val = dma_read_ccr(td, i);
-+
-+        dma_write_cndrt(td, i, 1);
-+        val |= BIT(0); /* enable channel */
-+        val = deposit32(val, 8, 2, patt_len >> 1);
-+        val = deposit32(val, 10, 2, patt_len >> 1);
-+        dma_write_ccr(td, i, val);
-+
-+        dma_set_irq(0, i, 1);
-+
-+        qtest_memread(s, SRAM_BASE + patt_len, &dst, patt_len);
-+
-+        g_assert(memcmp(&dst, &patt, patt_len) == 0);
-+
-+        /* disable chan */
-+        val &= ~BIT(0);
-+        dma_write_ccr(td, i, val);
-+    }
-+}
-+
-+static void test_interrupts(gconstpointer test_data)
-+{
-+    const TestData *td = test_data;
-+    const uint32_t patt_len = 1024;
-+    uint8_t idx = 0;
-+    uint32_t val;
-+
-+    qmp("{'execute':'system_reset' }");
-+
-+    enable_nvic_irq(td->chans[idx].irq_line);
-+
-+    /* write addr */
-+    dma_write_cpar(td, idx, SRAM_BASE);
-+    dma_write_cmar(td, idx, SRAM_BASE + patt_len);
-+
-+    /* write counter */
-+    dma_write_cndrt(td, idx, 2);
-+
-+    /* enable increment and M2M */
-+    val = dma_read_ccr(td, idx);
-+    val |= BIT(0); /* EN */
-+    val |= BIT(1); /* TCIE */
-+    val |= BIT(2); /* HTIE */
-+    val |= BIT(3); /* TEIE */
-+    val |= BIT(6); /* PINC */
-+    val |= BIT(7); /* MINC */
-+    dma_write_ccr(td, idx, val);
-+
-+    /* Half-transfer */
-+    dma_set_irq(0, idx, 1);
-+    g_assert_true(check_nvic_pending(td->chans[idx].irq_line));
-+    val = dma_read_isr(td);
-+
-+    g_assert_true(val & DMA_ISR_GIF);
-+    g_assert_true(val & DMA_ISR_HTIF);
-+    unpend_nvic_irq(td->chans[idx].irq_line);
-+
-+    dma_write_ofcr(td, 0xffffffff);
-+    val = dma_read_isr(td);
-+    g_assert_false(val & DMA_ISR_GIF);
-+    g_assert_false(val & DMA_ISR_HTIF);
-+
-+    /* Full-transfer */
-+    dma_set_irq(0, idx, 1);
-+    g_assert_true(check_nvic_pending(td->chans[idx].irq_line));
-+    val = dma_read_isr(td);
-+
-+    g_assert_true(val & DMA_ISR_GIF);
-+    g_assert_true(val & DMA_ISR_HTIF);
-+    g_assert_true(val & DMA_ISR_TCIF);
-+    unpend_nvic_irq(td->chans[idx].irq_line);
-+
-+    dma_write_ofcr(td, 0xffffffff);
-+    val = dma_read_isr(td);
-+    g_assert_false(val & DMA_ISR_GIF);
-+    g_assert_false(val & DMA_ISR_HTIF);
-+    g_assert_false(val & DMA_ISR_TCIF);
-+
-+    /* Error-on-transfer */
-+    val = dma_read_ccr(td, idx);
-+    val &= ~BIT(0);
-+    dma_write_ccr(td, idx, val);
-+
-+    dma_write_cndrt(td, idx, 1);
-+    dma_write_cpar(td, idx, 0xffffffff);
-+
-+    val |= BIT(0);
-+    dma_write_ccr(td, idx, val);
-+
-+    dma_set_irq(0, idx, 1);
-+    g_assert_true(check_nvic_pending(td->chans[idx].irq_line));
-+    val = dma_read_isr(td);
-+
-+    g_assert_true(val & DMA_ISR_GIF);
-+    g_assert_true(val & DMA_ISR_TEIF);
-+    unpend_nvic_irq(td->chans[idx].irq_line);
-+
-+    dma_write_ofcr(td, 0xffffffff);
-+    val = dma_read_isr(td);
-+    g_assert_false(val & DMA_ISR_GIF);
-+    g_assert_false(val & DMA_ISR_TEIF);
-+}
-+
-+static void stm32_add_test(const char *name, const TestData *td,
-+                           GTestDataFunc fn)
-+{
-+    g_autofree char *full_name = g_strdup_printf(
-+        "stm32_dma/%s", name);
-+    qtest_add_data_func(full_name, td, fn);
-+}
-+
-+/* Convenience macro for adding a test with a predictable function name. */
-+#define add_test(name, td) stm32_add_test(#name, td, test_##name)
-+
-+int main(int argc, char **argv)
-+{
-+    TestData testdata;
-+    QTestState *s;
-+    int ret;
-+
-+    g_test_init(&argc, &argv, NULL);
-+    s = qtest_start("-machine stm32vldiscovery");
-+    g_test_set_nonfatal_assertions();
-+
-+    TestData *td = &testdata;
-+    td->qts = s;
-+    td->dma = &dma;
-+    td->chans = dma_chans;
-+    add_test(m2m, td);
-+    add_test(width, td);
-+    add_test(triggers, td);
-+    add_test(interrupts, td);
-+
-+    ret = g_test_run();
-+    qtest_end();
-+
-+    return ret;
-+}
--- 
-2.48.1
+We should check for that define during meson.build when gbm.found(),
+to avoid potential later build errors.
+
+> -    modifier =3D qemu_dmabuf_get_modifier(dmabuf);
+>      if (modifier) {
+>          attrs[i++] =3D EGL_DMA_BUF_PLANE0_MODIFIER_LO_EXT;
+>          attrs[i++] =3D (modifier >>  0) & 0xffffffff;
+>          attrs[i++] =3D EGL_DMA_BUF_PLANE0_MODIFIER_HI_EXT;
+>          attrs[i++] =3D (modifier >> 32) & 0xffffffff;
+>      }
+> -#endif
+>      attrs[i++] =3D EGL_NONE;
+>
+>      image =3D eglCreateImageKHR(qemu_egl_display,
+> --
+> 2.43.0
+>
 
 
