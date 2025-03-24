@@ -2,98 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44A8A6DCA0
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 15:10:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C128A6DCAB
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 15:15:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twiUU-0005Kv-Vg; Mon, 24 Mar 2025 10:09:23 -0400
+	id 1twiZU-0007Ue-AF; Mon, 24 Mar 2025 10:14:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1twiUH-0005G8-47
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 10:09:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1twiU8-0005ZU-K6
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 10:09:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742825334;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hA9M1B4yvdck0fn8XvTOk+NM2ZGOZygG00aXXl1W8WA=;
- b=C3wTA3aV8pGj78DdSoeYoiAm9xmhnNYzRbSgsQPHc+fG95ubH/XQVi5XmUh2yLEZLSEQnQ
- RGpNgDY4zeDVwwWnGJ0x6+Vl5qWlnGlyVJOAgrNfdc2U8nHOZ78gwJIlVmSCjrWTZ8yBoz
- 1wlo2AWQmZ+b7TZFm1Ih1V2PZu7nX9E=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-MyZWDImqPM2oWwQTyEA2VA-1; Mon, 24 Mar 2025 10:08:53 -0400
-X-MC-Unique: MyZWDImqPM2oWwQTyEA2VA-1
-X-Mimecast-MFC-AGG-ID: MyZWDImqPM2oWwQTyEA2VA_1742825332
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43941ad86d4so23045395e9.2
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 07:08:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1twiZS-0007U8-9p
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 10:14:30 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1twiZQ-0006D4-6P
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 10:14:30 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-22435603572so77842485ad.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 07:14:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1742825666; x=1743430466; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :references:cc:to:from:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=/1QXAsBf/kG47KGLqoBvUDdn+FdykaRCJkXL/V9RtUE=;
+ b=VtFts/+14G32hQp9gUKBcGAh09zEJMXPBk3C73eyFtLsFpgTM+TBhbziOa2UAgRB2j
+ 3mONJMHNvUYmRvwiQxvodAkVdfbhs4+pu7x0oopzuFOGYEX/RDgrWPIcZkxcqPqksCfN
+ YqkKjUvgQuNUV5FggCv4EbmWh3s57r6tU8H7rwGbn52G7Lypx/I0LMwt/ciKdpyUm5TI
+ MfX8M4+Zuf19mAd/zbPkWuOpPQp++2y0zuE3k1MA1vGUNwLnwm9lnUs5ycBchnZ70xsx
+ PWoMl5KVd12Op73pVYSqm0N1NNgXb600cWDMAFpJfj5OugmdDd5C4dpwKjZkCjsWDAJk
+ B+uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742825332; x=1743430132;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hA9M1B4yvdck0fn8XvTOk+NM2ZGOZygG00aXXl1W8WA=;
- b=CyUEKC1Yi3DsX1AR7DeyCflCSPkySKywlwPnAHK9QGrutob8P4YzyCzZW8i2UP62/l
- p5HX1qctT0en25kDDu8FFaI079slfnmOU6OWoxO07HuQ8QcTIsyroyNtDRmy2OstbWKt
- DePw956UATHyY0E9fiWK7hXIyCqakzc/5EEVkMgR2DEvJGB23fW4NuuIV8uNg2mngR8E
- S2wNqx0woAiBC+ujDJlbV8OwffvaCEogI00pAKy1RIyTs/qNm7iAHnmEcKvdLuoJMrQE
- qqU9NU/CijWjGzBfgzqGb/0/lGKa7EV4qIlVCqP6mIMTmHECIbjSIw+IQ0k7eB7OA5Ba
- +7mg==
-X-Gm-Message-State: AOJu0YxyCaNbva7ahvMHN1mwTn4xkUObKoIEYBRCIdmEUQfhc/Hc0loE
- FHBiUztBJMvFMzC/ZDn1SCpJx9SC9LUdPtKz/6y4X83S++KwNFb8IyssNFUyCR0++fNdnqsYGQk
- pFfeIp9q/HSYt3kiIxcOWk5oZKlN9RnsyMB8WDBVXpkYOQfWrBUjc
-X-Gm-Gg: ASbGncvo667XAkgkUuLYeEdzLoopq4753TWJiaj9CwTqONqjrB/f8uhT3aGPOjFAJL3
- r//SIqXhN6jwUYLGyH1+pM9iOFv6i1kl40puCL+X431yw7noZ5Lmmv94/Tg57PhUkUEc2jq+Zcl
- hygFsxr4lqBBSVesN46u8HrkYEMoGeoa9VB6VRIECk0jEeX89XHYKnfNmL9tbIlQNTjjy0ym07Q
- y8Wj2vKmdXPktpwczscaLWsi/UF2UxTTLCuYB+z0ZGyCa04Bg5w5CNiOj+9+SIdSKNLkS2L4JQx
- nTJigMMGSA==
-X-Received: by 2002:a05:600c:5025:b0:43d:300f:fa51 with SMTP id
- 5b1f17b1804b1-43d509ea850mr116847205e9.9.1742825331703; 
- Mon, 24 Mar 2025 07:08:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH5eyEfBYrHYad5NPuIHXvv4i4rmE+nrbwfMJLyCFh3yg9S41GdX7O/lCB15cVqAwmcY84LxA==
-X-Received: by 2002:a05:600c:5025:b0:43d:300f:fa51 with SMTP id
- 5b1f17b1804b1-43d509ea850mr116846595e9.9.1742825331115; 
- Mon, 24 Mar 2025 07:08:51 -0700 (PDT)
-Received: from rh-jmarcin ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43f55c99sm173355095e9.24.2025.03.24.07.08.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Mar 2025 07:08:50 -0700 (PDT)
-Date: Mon, 24 Mar 2025 15:08:48 +0100
-From: Juraj Marcin <jmarcin@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, 
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 2/2] utils/qemu-sockets: Introduce
- keep-alive-idle-period inet socket option
-Message-ID: <io7z2ds3sw66f75wlb5noln3wcewaek4hulm2ysho25siknh35@syhcgxoypjmn>
-References: <20250319163638.456417-1-jmarcin@redhat.com>
- <20250319163638.456417-3-jmarcin@redhat.com>
- <Z-E-JNWlGYuTTK8t@redhat.com>
+ d=1e100.net; s=20230601; t=1742825666; x=1743430466;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :references:cc:to:from:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/1QXAsBf/kG47KGLqoBvUDdn+FdykaRCJkXL/V9RtUE=;
+ b=p5waBcfpxbGd9Hzy7KKvwgQm57n7fMgupT7DIqbKDSIdOKh/GJpFAM+ia3Nkff7UL8
+ 2cxLd/tIbqRCMiwFehFW/giHeTVcMHkRAG/MoBl3/NahjsY9LJv6r4vTlyuRXtHQPehf
+ /OoDkuma4VVbbISuXMIr9UMIF80/3AaDPPb4iz3B2EQgF4BTyo+Znqw78pcRJBr6OirF
+ WwW2iU+1uIuPGEnV2ULUAltbPkW9XX9qBeKo4u4UJS90klXsXmsb184DJf9gWJyYTVbB
+ ibqx7hxjiGCZ0MWyR3s8Y8DoUyXuDxePwNRbcWxS8LDz56ZixZQSAp1n20XloVRdQAsw
+ aocQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWmz/7P7yRunJNOA5p9q14gr2K+6NAd1CLzyWjH0OZhVXt5PEg9jkd4r1QdURxUIKh6NZZjkbwVx5IK@nongnu.org
+X-Gm-Message-State: AOJu0YwnClGuVwb2RMALSKths7uC4OTwqPcUI/ZBg3w1Iy9wxpqvW793
+ b7HmsLGPT5eIyKi2oOfA1VQLSkyuppWRk9dWJeUM6qH1n5Jq86aGU1FzYQ==
+X-Gm-Gg: ASbGnctdwWxCerb7d5ZtCV2rX0M+ahu0rKjC2HLuS0wRUljxGpxmmPwa9j5ZyrMdeTd
+ pbs6MM5z1fsF08jEB18C0yRaR3JmJ06XRDHeUYDFiwQT31+p9FTPXeFoCXvQNge1k/mHADOBBlb
+ f9XtRpxV4/9XLIs0QP35OsHKryE0Ny0mEMHYjD5buVrjDSr1DEXJaT7MdZZAE/ZtIqVmhfrSCdp
+ L2nWr8kL+WyPg2cDhYfQTtzreMZ4VETZEb5fjb3FqP1uzQRwjCyAx9l185itv9g+575x4CAFCls
+ gXO+7RuB+KaE3b0TpZ9ojwy/09qga4icx311bd+Nqz44k3rUqanH/GufWUVTXc3COeaGzvOgNMN
+ NPJx39k6oGkRl
+X-Google-Smtp-Source: AGHT+IGJbwfGBev3WEq5Vq5PE0WMQ369RldooHKsG4X54Tk2lk4AUx9S90Fov2ImiSdmMs1NZp+UMA==
+X-Received: by 2002:a17:902:da86:b0:224:1001:6787 with SMTP id
+ d9443c01a7336-22780c53fbbmr230477175ad.4.1742825666166; 
+ Mon, 24 Mar 2025 07:14:26 -0700 (PDT)
+Received: from ?IPV6:2401:4900:1c7e:7fd6:5c7b:30a9:c6b6:f81d?
+ ([2401:4900:1c7e:7fd6:5c7b:30a9:c6b6:f81d])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-227811b2ae1sm71093875ad.114.2025.03.24.07.14.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Mar 2025 07:14:25 -0700 (PDT)
+Message-ID: <a878b49b-0d00-483a-a5b6-27d048c4ebc7@gmail.com>
+Date: Mon, 24 Mar 2025 19:44:22 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z-E-JNWlGYuTTK8t@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v5 3/7] vhost: Forward descriptors to device via packed SVQ
+From: Sahil Siddiq <icegambit91@gmail.com>
+To: eperezma@redhat.com, sgarzare@redhat.com
+Cc: mst@redhat.com, qemu-devel@nongnu.org, sahilcdq@proton.me
+References: <20250324135929.74945-1-sahilcdq@proton.me>
+ <20250324135929.74945-4-sahilcdq@proton.me>
+Content-Language: en-US
+Autocrypt: addr=icegambit91@gmail.com; keydata=
+ xsDNBGcgaYEBDADpKUSKbchLCMdCuZGkuF50/7BiraKc8Ch+mk4T+2+E2/6qXAkalvCkFoqx
+ 3/sa35rconZAFzB/r19e7i3UajIQjATvENrGxqe/IFqcJxo2Jr1HQBwCrsmlQoUCilSC6nDi
+ ejcEIAFytJORDkCcZwLXPjdf5/4pbqVAW5823LB5j5F0TqHAnGY1RhS2V1eBPdRqjAA3xecT
+ zTmLHlkqAXgM2DOot1KbycedZSieCwEykTXMaLC0/3Gyo2Cp1WTWOIyD0hsXpLyFioV4FaX2
+ Lm+z45Zc4PoNXeC6+l4PdDxixs+saAbadknP+9omwlb+PkMd3esq2wkowTwTJVJK8FCCNTo5
+ 2OArA/ddxcyXY25JHN7vzGooFNW6Bb9YV+lbX6y95ytE3KcAmid73tQrcjlebIpgNAvOMyyZ
+ BgQJY0HSu3DGNZuKtbNM3iTl82TFj7MVgkEffgF83N6XyBqDztIz2lN47/q5wyRi3jda9NDt
+ geI+Nv145HjulO7bI3NT048AEQEAAc0kU2FoaWwgU2lkZGlxIDxpY2VnYW1iaXQ5MUBnbWFp
+ bC5jb20+wsENBBMBCAA3FiEERtYfQYWFu+uAZjYrrzGlXdb6f1cFAmcgaYEFCQWjmoACGwME
+ CwkIBwUVCAkKCwUWAgMBAAAKCRCvMaVd1vp/V/nnC/9KnNIr4a3JW3E/snxv1+XIyUmHBDLn
+ PKBmLDYxO9RJe1xKo/sNmLEno4c8G1F/y12TLV086cpBYGKkE8mPMBABqxuiPG8srwoKc2HW
+ bvoC2Zfeu/WeQ0YqeI9ZEwRhsDGQZ7vc8PnKnEUaPZn6iWW4GeX7dXWeGNrK0wU2B04l2d+M
+ FIKaoPHk8w5Ff++QNcn0YRkm//nYlukHUrMxhNcuc18jaLLftOh7BH/4EbKtTN75KAFePQBi
+ I2CbuC41fchTt12QrPB3yz1GKfudsEMLFHBNeComJNnuolPOq0YSyuKdRO8Jubn5ZqWQeTwj
+ XbG7wTonDc8xe46irOhz36VcjsjSY+PYhVZSeDWeDUZgpaJkBjQDDodIN2eoMwVEyUByos9H
+ mKrqrpBMmylOspAZzqjb5FtOqM0BCxQINdKKiMwRelSb6pHYCrbS0XzpwDUEpp7RWCbHgg+6
+ Ot72kQCEFxj2LzX9VxF24GGQy9inlUfN51IV04klSibtBuuz/NbOwM0EZyBpgQEMAJelVX4k
+ CtCxD4Ji3FQ8LZs22z7VoUvqIb7Gj2lNvhPeijlqqBkSMIgnSCLxlH4ahqKnEV58IrfVriV0
+ 92zb94Az2nl0r+bZYfvev1qCcVIYxk+pYYcRl5qPXX8XGalrkcBBWmkgTSwzNK9rV4850iVI
+ hsJNel49qen9JwiFYMSKa2MYgdYSbeuuwXwUp0ZHeVFc5RnPK2wxws1xcnsdb9hRXs2UeTEE
+ 0klG3HuXqJ96DzKrCieKHLjs330h+16gDWAFZSEoT7Mh3HFGI2dscVuBstQNgnwUMnsJv8jx
+ c005CfLCjCBnJEhMd2/QFuLwCZv4IdoghKwYw18e61UbX2bFovo9dduD527pD4sFqi7U7ofv
+ aO3yf+ulL6jiKypGvnbiBP3KY3aKxx6pHHH3aDc9eOqCUgrtS3+xt1du4+qxrYqEnrywFoJy
+ 5zqSzbnTTjFpdTbY5SS52fIOktLlAKzEg6V9hkg2r08hC3/L4NVj6I4tsGZlqb2neRlHFmCr
+ bQARAQABwsD8BBgBCAAmFiEERtYfQYWFu+uAZjYrrzGlXdb6f1cFAmcgaYIFCQWjmoACGwwA
+ CgkQrzGlXdb6f1fDIgwAmpB7eL3XNSx3F+gbmksOPMqCU5rEswRedjEt6tBzFTXhdNFfhZTb
+ vCddUNePZnzddgxAnDBcTqI1jx6Go6Hkti/mxJqXSczMYBsImD/lEm47axsADvpnNaEM+tmu
+ m/cMKfpILUpy2Ey7CKXUA1vpzYeUD29EQWi0fxM0arplrVt/uzUdFRFQRn2hCqeDLBLONX1F
+ Adq+re6M0dhKl4a2+erzZRIXh3vIGiDmpJEGrajrhqEnMXFp6toSiMGian94m8H3NT6rB64E
+ JmdHgyjXADFbn2G5Mb6Pwa8KnnK1kYcZ+Pwu9LfMXfgI01Sh/k01hjUVmnpYep4nHUfwXA8r
+ kn6WekD80DYbAfKyFAXQCO/nclZ82RNmJbDRi3AeMFrxKi6KgdGCp1Izhj9USaMOVqcuV2p0
+ Rsoq+sFqWOKaHWnQHCM9RkynQVqrgUaSawEbGlCP1KIhVmjfjVsmsCaKkUb9T6VeO+ZNe+Pn
+ rPgMe6IIvn24UuW2f6fIt0AaqOWq
+In-Reply-To: <20250324135929.74945-4-sahilcdq@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=icegambit91@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,169 +139,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025-03-24 11:12, Daniel P. Berrangé wrote:
-> On Wed, Mar 19, 2025 at 05:36:20PM +0100, Juraj Marcin wrote:
-> > From: Juraj Marcin <jmarcin@redhat.com>
-> > 
-> > The default idle period for TCP connection could be even 2 hours.
-> > However, in some cases, the application needs to be aware of a
-> > connection issue much sooner.
-> > 
-> > This is the case, for example, for postcopy live migration. If there is
-> > no traffic from the migration destination guest (server-side) to the
-> > migration source guest (client-side), the destination keeps waiting for
-> > pages indefinitely and does not switch to the postcopy-paused state.
-> > This can happen, for example, if the destination QEMU instance is
-> > started with '-S' command line option and the machine is not started yet
-> > or if the machine is idle and produces no new page faults for
-> > not-yet-migrated pages.
-> > 
-> > This patch introduces a new inet socket parameter on platforms where
-> > TCP_KEEPIDLE is defined and passes the configured value to the
-> > TCP_KEEPIDLE socket option when a client-side or server-side socket is
-> > created.
-> > 
-> > The default value is 0, which means system configuration is used, and no
-> > custom value is set.
-> > 
-> > Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
-> > ---
-> >  io/dns-resolver.c   |  4 ++++
-> >  meson.build         |  2 ++
-> >  qapi/sockets.json   |  5 +++++
-> >  util/qemu-sockets.c | 29 +++++++++++++++++++++++++++++
-> >  4 files changed, 40 insertions(+)
-> > 
-> > diff --git a/io/dns-resolver.c b/io/dns-resolver.c
-> > index ee7403b65b..03c59673f0 100644
-> > --- a/io/dns-resolver.c
-> > +++ b/io/dns-resolver.c
-> > @@ -128,6 +128,10 @@ static int qio_dns_resolver_lookup_sync_inet(QIODNSResolver *resolver,
-> >  #endif
-> >              .has_keep_alive = iaddr->has_keep_alive,
-> >              .keep_alive = iaddr->keep_alive,
-> > +#ifdef HAVE_TCP_KEEPIDLE
-> > +            .has_keep_alive_idle_period = iaddr->has_keep_alive_idle_period,
-> > +            .keep_alive_idle_period = iaddr->keep_alive_idle_period,
-> > +#endif
-> >          };
-> >  
-> >          (*addrs)[i] = newaddr;
-> 
-> I feel like this code is somewhat fragile. It is probably best to add a
-> commit that refactors it to do a struct copy, and then override the few
-> fields that need to be different.
-> 
->      newaddr->u.inet = iaddr;
->      newaddr->u.inet.host = g_strdup(uaddr);
->      ...
-> 
-> that way we don't risk forgetting to copy fields as fixed in the previous
-> commit
-> 
-> > diff --git a/meson.build b/meson.build
-> > index 41f68d3806..e3440b09c8 100644
-> > --- a/meson.build
-> > +++ b/meson.build
-> > @@ -2734,6 +2734,8 @@ if linux_io_uring.found()
-> >    config_host_data.set('HAVE_IO_URING_PREP_WRITEV2',
-> >                         cc.has_header_symbol('liburing.h', 'io_uring_prep_writev2'))
-> >  endif
-> > +config_host_data.set('HAVE_TCP_KEEPIDLE',
-> > +                     cc.has_header_symbol('netinet/tcp.h', 'TCP_KEEPIDLE'))
-> >  
-> >  # has_member
-> >  config_host_data.set('HAVE_SIGEV_NOTIFY_THREAD_ID',
-> > diff --git a/qapi/sockets.json b/qapi/sockets.json
-> > index eb50f64e3a..ddd82b1e66 100644
-> > --- a/qapi/sockets.json
-> > +++ b/qapi/sockets.json
-> > @@ -59,6 +59,10 @@
-> >  # @keep-alive: enable keep-alive when connecting to/listening on this socket.
-> >  #     (Since 4.2, not supported for listening sockets until 10.0)
-> >  #
-> > +# @keep-alive-idle-period: time in seconds the connection needs to be idle
-> > +#     before sending a keepalive packet.  Only supported for TCP sockets on
-> > +#     systems where TCP_KEEPIDLE socket option is defined.  (Since 10.0)
-> 
-> There are three tunables for keepalive on TCP sockets:
-> 
->    TCP_KEEPCNT (since Linux 2.4)
->        The maximum number of keepalive probes TCP should send before
->        dropping the connection.  This option should not be used in
->        code intended to be portable.
-> 
->    TCP_KEEPIDLE (since Linux 2.4)
->        The time (in seconds) the connection needs to remain idle
->        before TCP starts sending keepalive probes, if the socket
->        option SO_KEEPALIVE has  been  set  on  this socket.  This
->        option should not be used in code intended to be portable.
-> 
->    TCP_KEEPINTVL (since Linux 2.4)
->        The time (in seconds) between individual keepalive probes.
->        This option should not be used in code intended to be portable.
-> 
-> Shouldn't we be supporting all of these, rather than just a subset ?
+Hi,
 
-They were not strictly necessary for the Live Migration use case, but I
-can also include them in the next version.
+I had a few queries here.
 
-Thank you for your feedback, also for the first patch.
+On 3/24/25 7:29 PM, Sahil Siddiq wrote:
+> Implement the insertion of available buffers in the descriptor area of
+> packed shadow virtqueues. It takes into account descriptor chains, but
+> does not consider indirect descriptors.
+> 
+> Enable the packed SVQ to forward the descriptors to the device.
+> 
+> Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
+> ---
+> Changes from v4 -> v5:
+> - This was commit #2 in v4. This has been reordered to commit #3
+>    based on review comments.
+> - vhost-shadow-virtqueue.c:
+>    (vhost_svq_valid_features): Move addition of enums to commit #6
+>    based on review comments.
+>    (vhost_svq_add_packed): Set head_idx to buffer id instead of vring's
+>    index.
+>    (vhost_svq_kick): Split into vhost_svq_kick_split and
+>    vhost_svq_kick_packed.
+>    (vhost_svq_add): Use new vhost_svq_kick_* functions.
+> 
+>   hw/virtio/vhost-shadow-virtqueue.c | 117 +++++++++++++++++++++++++++--
+>   1 file changed, 112 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+> index 4f74ad402a..6e16cd4bdf 100644
+> --- a/hw/virtio/vhost-shadow-virtqueue.c
+> +++ b/hw/virtio/vhost-shadow-virtqueue.c
+> @@ -193,10 +193,83 @@ static void vhost_svq_add_split(VhostShadowVirtqueue *svq,
+>       /* Update the avail index after write the descriptor */
+>       smp_wmb();
+>       avail->idx = cpu_to_le16(svq->shadow_avail_idx);
+> +}
+> +
+> +/**
+> + * Write descriptors to SVQ packed vring
+> + *
+> + * @svq: The shadow virtqueue
+> + * @out_sg: The iovec to the guest
+> + * @out_num: Outgoing iovec length
+> + * @in_sg: The iovec from the guest
+> + * @in_num: Incoming iovec length
+> + * @sgs: Cache for hwaddr
+> + * @head: Saves current free_head
+> + */
+> +static void vhost_svq_add_packed(VhostShadowVirtqueue *svq,
+> +                                 const struct iovec *out_sg, size_t out_num,
+> +                                 const struct iovec *in_sg, size_t in_num,
+> +                                 hwaddr *sgs, unsigned *head)
+> +{
+> +    uint16_t id, curr, i, head_flags = 0, head_idx;
+> +    size_t num = out_num + in_num;
+> +    unsigned n;
+> +
+> +    struct vring_packed_desc *descs = svq->vring_packed.vring.desc;
+> +
+> +    head_idx = svq->vring_packed.next_avail_idx;
 
-Best regards,
+Since "svq->vring_packed.next_avail_idx" is part of QEMU internals and not
+stored in guest memory, no endianness conversion is required here, right?
 
-Juraj Marcin
+> +    i = head_idx;
+> +    id = svq->free_head;
+> +    curr = id;
+> +    *head = id;
 
-> 
-> > +#
-> >  # @mptcp: enable multi-path TCP.  (Since 6.1)
-> >  #
-> >  # Since: 1.3
-> > @@ -71,6 +75,7 @@
-> >      '*ipv4': 'bool',
-> >      '*ipv6': 'bool',
-> >      '*keep-alive': 'bool',
-> > +    '*keep-alive-idle-period': { 'type': 'uint32', 'if': 'HAVE_TCP_KEEPIDLE' },
-> >      '*mptcp': { 'type': 'bool', 'if': 'HAVE_IPPROTO_MPTCP' } } }
-> >  
-> >  ##
-> 
-> > @@ -697,6 +710,22 @@ int inet_parse(InetSocketAddress *addr, const char *str, Error **errp)
-> >          }
-> >          addr->has_keep_alive = true;
-> >      }
-> > +#ifdef HAVE_TCP_KEEPIDLE
-> > +    begin = strstr(optstr, ",keep-alive-idle-period=");
-> 
-> A bit too verbose - make it just 'keep-alive-idle='
-> 
-> > +    if (begin) {
-> > +        begin += strlen(",keep-alive-idle-period=");
-> > +        if (sscanf(begin, "%" PRIu32 "%n", &addr->keep_alive_idle_period, &pos) != 1 ||
-> > +            (begin[pos] != '\0' && begin[pos] != ',')) {
-> > +            error_setg(errp, "error parsing keep-alive-idle-period argument");
-> > +            return -1;
-> > +        }
-> > +        if (addr->keep_alive_idle_period > INT_MAX) {
-> > +            error_setg(errp, "keep-alive-idle-period value is too large");
-> > +            return -1;
-> > +        }
-> > +        addr->has_keep_alive_idle_period = true;
-> > +    }
-> > +#endif
-> >  #ifdef HAVE_IPPROTO_MPTCP
-> >      begin = strstr(optstr, ",mptcp");
-> >      if (begin) {
-> > -- 
-> > 2.48.1
-> > 
-> 
-> With regards,
-> Daniel
-> -- 
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-> 
+Should head be the buffer id or the idx of the descriptor ring where the
+first descriptor of a descriptor chain is inserted?
 
+> +    /* Write descriptors to SVQ packed vring */
+> +    for (n = 0; n < num; n++) {
+> +        uint16_t flags = cpu_to_le16(svq->vring_packed.avail_used_flags |
+> +                                     (n < out_num ? 0 : VRING_DESC_F_WRITE) |
+> +                                     (n + 1 == num ? 0 : VRING_DESC_F_NEXT));
+> +        if (i == head_idx) {
+> +            head_flags = flags;
+> +        } else {
+> +            descs[i].flags = flags;
+> +        }
+> +
+> +        descs[i].addr = cpu_to_le64(sgs[n]);
+> +        descs[i].id = id;
+> +        if (n < out_num) {
+> +            descs[i].len = cpu_to_le32(out_sg[n].iov_len);
+> +        } else {
+> +            descs[i].len = cpu_to_le32(in_sg[n - out_num].iov_len);
+> +        }
+> +
+> +        curr = cpu_to_le16(svq->desc_next[curr]);
+> +
+> +        if (++i >= svq->vring_packed.vring.num) {
+> +            i = 0;
+> +            svq->vring_packed.avail_used_flags ^=
+> +                1 << VRING_PACKED_DESC_F_AVAIL |
+> +                1 << VRING_PACKED_DESC_F_USED;
+> +        }
+> +    }
+>   
+> +    if (i <= head_idx) {
+> +        svq->vring_packed.avail_wrap_counter ^= 1;
+> +    }
+> +
+> +    svq->vring_packed.next_avail_idx = i;
+> +    svq->shadow_avail_idx = i;
+> +    svq->free_head = curr;
+> +
+> +    /*
+> +     * A driver MUST NOT make the first descriptor in the list
+> +     * available before all subsequent descriptors comprising
+> +     * the list are made available.
+> +     */
+> +    smp_wmb();
+> +    svq->vring_packed.vring.desc[head_idx].flags = head_flags;
+>   }
+>   
+> -static void vhost_svq_kick(VhostShadowVirtqueue *svq)
+> +static void vhost_svq_kick_split(VhostShadowVirtqueue *svq)
+>   {
+>       bool needs_kick;
+>   
+> @@ -209,7 +282,8 @@ static void vhost_svq_kick(VhostShadowVirtqueue *svq)
+>       if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
+>           uint16_t avail_event = le16_to_cpu(
+>                   *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]));
+> -        needs_kick = vring_need_event(avail_event, svq->shadow_avail_idx, svq->shadow_avail_idx - 1);
+> +        needs_kick = vring_need_event(avail_event, svq->shadow_avail_idx,
+> +                     svq->shadow_avail_idx - 1);
+>       } else {
+>           needs_kick =
+>                   !(svq->vring.used->flags & cpu_to_le16(VRING_USED_F_NO_NOTIFY));
+> @@ -222,6 +296,30 @@ static void vhost_svq_kick(VhostShadowVirtqueue *svq)
+>       event_notifier_set(&svq->hdev_kick);
+>   }
+>   
+> +static void vhost_svq_kick_packed(VhostShadowVirtqueue *svq)
+> +{
+> +    bool needs_kick;
+> +
+> +    /*
+> +     * We need to expose the available array entries before checking
+> +     * notification suppressions.
+> +     */
+> +    smp_mb();
+> +
+> +    if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) {
+> +        return;
+> +    } else {
+> +        needs_kick = (svq->vring_packed.vring.device->flags !=
+> +                      cpu_to_le16(VRING_PACKED_EVENT_FLAG_DISABLE));
+> +    }
+> +
+> +    if (!needs_kick) {
+> +        return;
+> +    }
+> +
+> +    event_notifier_set(&svq->hdev_kick);
+> +}
+> +
+>   /**
+>    * Add an element to a SVQ.
+>    *
+> @@ -258,13 +356,22 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
+>           return -EINVAL;
+>       }
+>   
+> -    vhost_svq_add_split(svq, out_sg, out_num, in_sg,
+> -                        in_num, sgs, &qemu_head);
+> +    if (svq->is_packed) {
+> +        vhost_svq_add_packed(svq, out_sg, out_num, in_sg,
+> +                             in_num, sgs, &qemu_head);
+> +    } else {
+> +        vhost_svq_add_split(svq, out_sg, out_num, in_sg,
+> +                            in_num, sgs, &qemu_head);
+> +    }
+>   
+>       svq->num_free -= ndescs;
+>       svq->desc_state[qemu_head].elem = elem;
+>       svq->desc_state[qemu_head].ndescs = ndescs;
+
+*head in vhost_svq_add_packed() is stored in "qemu_head" here.
+
+> -    vhost_svq_kick(svq);
+> +    if (svq->is_packed) {
+> +        vhost_svq_kick_packed(svq);
+> +    } else {
+> +        vhost_svq_kick_split(svq);
+> +    }
+>       return 0;
+>   }
+>   
+
+Thanks,
+Sahil
 
