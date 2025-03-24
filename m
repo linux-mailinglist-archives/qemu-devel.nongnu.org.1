@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F69A6D74D
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 10:28:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13B6A6D75E
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 10:30:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twe6v-0004Bp-O9; Mon, 24 Mar 2025 05:28:45 -0400
+	id 1twe8V-000590-PX; Mon, 24 Mar 2025 05:30:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1twe6t-00047o-Ik
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:28:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1twe8O-00058N-2X
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:30:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1twe6r-0000BW-2D
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:28:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1twe8M-0000cb-Co
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 05:30:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742808520;
+ s=mimecast20190719; t=1742808612;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=fQbssTF4Stj/GdfTKHhtwUnOn5wgCucrNDLTffE1AaE=;
- b=F72wWciBf+bP9tzZtdlxD4Q0IlY8FWG5/n4gB6bEwE0x0gJgN1Gqgo0Ppe4ybx1zbySGpx
- FZdHJF5zrjXFXYuY57hI2JHL25eIFbdKse7bM4tZ8eKHtMekq8NYBQ0DE8WNAbykWgwSYT
- 9mW1M78JdkK7ff0j6a/09Qrv/Fpc6yo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0JXU5pRRY9gsgeef4yq0ZYoQdOJr9GVQpFHfd70Mgww=;
+ b=WSLU8oQETKxTklATa95SmcXSQbnZy/I78SrYEfLeoQBw5FQpzFi5zlIUXvkpLQnmIbioq8
+ d/lxIY1LPI0sSfHcsCqwuaV/UYzIHRGw8TVaobKXcnvnMmfQ2DI1GfXJLctKWNkuioVaif
+ 9GL9ADaZIElKhln+d3y6UTc7/IXpDAk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-462-L3K4NKhEM7CXGCkXkLRhIw-1; Mon, 24 Mar 2025 05:28:38 -0400
-X-MC-Unique: L3K4NKhEM7CXGCkXkLRhIw-1
-X-Mimecast-MFC-AGG-ID: L3K4NKhEM7CXGCkXkLRhIw_1742808518
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43d51bd9b41so24360475e9.3
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 02:28:38 -0700 (PDT)
+ us-mta-428-qAOx7pMCMRCPwMQcAEIViQ-1; Mon, 24 Mar 2025 05:30:11 -0400
+X-MC-Unique: qAOx7pMCMRCPwMQcAEIViQ-1
+X-Mimecast-MFC-AGG-ID: qAOx7pMCMRCPwMQcAEIViQ_1742808609
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43ce245c5acso49319395e9.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 02:30:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742808517; x=1743413317;
+ d=1e100.net; s=20230601; t=1742808609; x=1743413409;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=fQbssTF4Stj/GdfTKHhtwUnOn5wgCucrNDLTffE1AaE=;
- b=MkV7F0ArJ0MH/qyG9Z4XyBSqaIbUSsoQXXrVDR7JT2DySr9AKB7vog1uESIaYXJ+95
- kqTc7HlNTgdbunWb+a3KBjrGE6IaGYwl8T+BzVLBI31aXvHsBUcCKX2ZxuKJOEurMU0w
- XR016uZzyQk4hiYDyjiYG1goG3O7KdqIaoE/Asl6aLXhciW+zBbqfXmX/eU6IvaGeCkG
- 525PEy1g1sYUntchyxtJEQpFh+jxtFJPN4g5vvXQxT8hjp8hP0M4bdmHwC0w3bfzV5Rm
- Evv1LRDnNgSWscLfNmccQp6FDFm0CjkVDOYpGu/j0AIzlGTTA1E5hHNuLZCDNnaOYCYw
- RKDg==
+ bh=0JXU5pRRY9gsgeef4yq0ZYoQdOJr9GVQpFHfd70Mgww=;
+ b=m8HZ8irdXN2TH2q0stT6NWXFWqGKwVDqrPanVIVCZrL3cWorp949p1G36ZclgegOaO
+ UzUvteJoX8NU/GJn5ObLKau2IDo3l8/zw+rt1SumCFQ6BfZFF8P/c3NEC5pwXBi+0RUn
+ j4DBp7ujHFB7TkAhJI50TZ3TfUQyKAJdkhJBqISRPzXB9Mo7LVMW6mYfI+T4INDHlQQ/
+ gX5W/olxelYRX7ALRbJkTBSd2DZlsj5t6uH4ktJX0kW+kskQ07M4VoqkFQNh1wcQjjZU
+ p2y34ZR9vHt61fxPN9VFN/7y6RDK9ELp5NZe/9bNtKqd/VSVzQFhiIGmihk753JqskzL
+ +NXQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUvNtp2WF1nQ8WuBsEvzMIH6W6FDwVHGPud60C/T+LpQOpRpNzucwCwLr2wxVtxENzxNsGna61uterw@nongnu.org
-X-Gm-Message-State: AOJu0YzYNcU0/t6X/49rRnQXpfsFwBKxfdC0vlTNuyp/LJeoTJGFIxuj
- P/Z8HQkL/tbpUuCFCzM2PFT/q7esW1N9R8NheXP+bHaWnI7Qjx0EM2goV3LDiMW/Ior1A6T3BW1
- VjMd9A2UzQqVOw3DNgDiCAOiP99QFRdv5g3odbwee1kVi2jgmo0J2
-X-Gm-Gg: ASbGncug0RZVYY9i2liyGlerU28j0DnNfr7k7q/JRr75CcNCw6HsR6EN9cM8f9/EQvf
- IXet2At8/7SPNTFJ5WcZaoxjw7skZunWqZ/3nQkZDzAlNm7ZHZkI0tKls1wa+lhHYl0cQh6iRfB
- AYn8fo4280S8TKPXbh0Gc+PJC7xcUP7Xny9zgPR3RcanZzKmUn1YNC7Z8q2aJ2riiZyaIPzNDhN
- PRC7VClP31RDATu8XBG3zh+7cKddqxpEP+wtMRvGjV7rdtlFqkAoUGi0XSXyKchFlHuXWKClrtM
- q6MtDy/559BiSkbGbgrMPEYT4Kmc+lyDnHf5xJh8
-X-Received: by 2002:a05:6000:2801:b0:391:139f:61af with SMTP id
- ffacd0b85a97d-3997f913a91mr7668504f8f.32.1742808517451; 
- Mon, 24 Mar 2025 02:28:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHF9XgJjXZYZdQgwPmbJN8aii8ZT63j1VMUP2loGTwWzSqMclyjMfwqFlyO/byzfGfnIldmXA==
-X-Received: by 2002:a05:6000:2801:b0:391:139f:61af with SMTP id
- ffacd0b85a97d-3997f913a91mr7668487f8f.32.1742808517054; 
- Mon, 24 Mar 2025 02:28:37 -0700 (PDT)
+ AJvYcCXM/yf+kHbr38cyKy0QDb7CBQDje5P6MoHc/48G45dh9B3a13fRJZRey9VTIK9J/kgXLbf5NhxShtTI@nongnu.org
+X-Gm-Message-State: AOJu0YyAp32DLtM8Q/NjR6zXYVe79oFF2uGAOH7VpwxwwyfWzivFXzAa
+ VU9RugzP6RbIPxi0JcPfNGgl7dQfKpK+6yhHnDU3GTcaJJ/vn7JtDKmKYoWW/kGC4Hldf+CAfpK
+ DBovA893u6pr7JwJNk6wVSw4xfgal4nQwCTSpHdGQd180CRc0tRUyAaXq/U5n1nU=
+X-Gm-Gg: ASbGncveNKwTpxVc5C7/2o9WqzEw2bPDOWmt3RhAbhsyYngvR32P/hiffQWzymU565e
+ AS8EBIe5ACUvanRiN0K7zcvY1VQ62CuF2Z4w9CSybqShUpj1IeAVOxo5b4R0G7W3cS2Q4eBil8W
+ oqu3Lfs3y/0xvSmkgvig7uZe101gsyNah3+PtEcO0wfX8leEoFksH4y2iJjmfNk5f3oA0hm4oLO
+ 0/GTcgn8x+8lJ4IsTWBexlxSOOCQJXCXdqTce+oF9IzKKt9tbS/RB1bUMJIryHH5inuwGoN33Q6
+ RKsxR6XblPb+lV3KO+zOVk0ax4oq1IyUlf3lzHcR
+X-Received: by 2002:a5d:47a5:0:b0:390:f699:8c27 with SMTP id
+ ffacd0b85a97d-3997f902e3dmr9964694f8f.12.1742808609038; 
+ Mon, 24 Mar 2025 02:30:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8EjFFlmetYJ2148IJ+GTBCpB/JwWCtg3HA/wWmoJ8XZAgFsncnABuA3gBtwzehm97oB0gjg==
+X-Received: by 2002:a5d:47a5:0:b0:390:f699:8c27 with SMTP id
+ ffacd0b85a97d-3997f902e3dmr9964655f8f.12.1742808608589; 
+ Mon, 24 Mar 2025 02:30:08 -0700 (PDT)
 Received: from [10.33.192.228] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d4fcea6ecsm115321105e9.5.2025.03.24.02.28.36
+ ffacd0b85a97d-3997f9eef37sm10206764f8f.85.2025.03.24.02.30.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Mar 2025 02:28:36 -0700 (PDT)
-Message-ID: <fa4c7f3b-7c77-4919-936a-2dcb328670d7@redhat.com>
-Date: Mon, 24 Mar 2025 10:28:36 +0100
+ Mon, 24 Mar 2025 02:30:08 -0700 (PDT)
+Message-ID: <8115b7be-03b8-4d08-8f7e-9d316f11e082@redhat.com>
+Date: Mon, 24 Mar 2025 10:30:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 4/6] target/sparc: Register CPUClass:list_cpus
+Subject: Re: [PATCH-for-10.1 5/6] target/sparc: Register CPUClass:list_cpus
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -85,7 +85,7 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 References: <20250323224035.34698-1-philmd@linaro.org>
- <20250323224035.34698-5-philmd@linaro.org>
+ <20250323224035.34698-6-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -130,7 +130,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250323224035.34698-5-philmd@linaro.org>
+In-Reply-To: <20250323224035.34698-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -159,15 +159,42 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 23/03/2025 23.40, Philippe Mathieu-Daudé wrote:
-> Register sparc_cpu_list() as CPUClass:list_cpus callback.
-> Reduce its scope and remove the cpu_list definition.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/sparc/cpu.h | 3 ---
->   target/sparc/cpu.c | 3 ++-
->   2 files changed, 2 insertions(+), 4 deletions(-)
+> Register sparc_cpu_list() as CPUClass:list_cpus callback
+> and remove the cpu_list definition.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Copy-n-paste error in both, subject and patch description: This should be 
+about s390x, not sparc.
+
+> diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+> index 5b7992deda6..1aac967a0ce 100644
+> --- a/target/s390x/cpu.h
+> +++ b/target/s390x/cpu.h
+> @@ -902,7 +902,6 @@ static inline uint8_t s390_cpu_get_state(S390CPU *cpu)
+>   
+>   /* cpu_models.c */
+>   void s390_cpu_list(void);
+
+Don't you want to remove the prototype here, too? (and make the function 
+static in the .c file)
+
+  Thomas
+
+
+> -#define cpu_list s390_cpu_list
+>   void s390_set_qemu_cpu_model(uint16_t type, uint8_t gen, uint8_t ec_ga,
+>                                const S390FeatInit feat_init);
+>   
+> diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+> index 1f75629ddc2..ac05e82f0ac 100644
+> --- a/target/s390x/cpu.c
+> +++ b/target/s390x/cpu.c
+> @@ -378,6 +378,7 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
+>                                          &scc->parent_phases);
+>   
+>       cc->class_by_name = s390_cpu_class_by_name;
+> +    cc->list_cpus = s390_cpu_list;
+>       cc->mmu_index = s390x_cpu_mmu_index;
+>       cc->dump_state = s390_cpu_dump_state;
+>       cc->query_cpu_fast = s390_query_cpu_fast;
 
 
