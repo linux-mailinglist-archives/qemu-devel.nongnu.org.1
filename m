@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB40A6E2C2
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 19:55:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0009AA6E2D4
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 19:59:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twmwV-0008Nc-JF; Mon, 24 Mar 2025 14:54:35 -0400
+	id 1twn0a-0000sR-5q; Mon, 24 Mar 2025 14:58:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twmwT-0008NK-T9
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 14:54:33 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twn0W-0000ro-Sg
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 14:58:46 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twmwS-0000xV-2x
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 14:54:33 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43cf0d787eeso51099745e9.3
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 11:54:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1twn0U-0001M0-J6
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 14:58:44 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43cef035a3bso33452325e9.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 11:58:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742842470; x=1743447270; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QhniJqJiM+UzT+FGHLzZBxft2LbeuB3hSKSZ8RUvv0c=;
- b=hEbAsvFhgUhAWELy+wNigCe786FrH/iBPh3vH6C4t+cfS9CwefBrNtinJf5ORsS/1K
- J3a09krCm1DAxklzAxKbkSxht0RLBLZgAisYRkmemRTR6P0GqSYm9h5fYsrqxdhtEFPZ
- O8HTMeMv+5jI49yr87O1IWXhvtmCnSWo+GFZbKjWeCRAT/I2yRn9K8umsqJ0SIa8Qea4
- YMf1nKd4EYfOY0//W7SCDie0nxnlH5bsri4yRaHDiZFzz4g2lhP9JVwLaMRSxB/oEHTJ
- 6x/FPyM9NIShZwVuCH06Amtdb05ERFNwNnaNm3QqJc7WPoNu6sIbVzj1WhLquxrODGWT
- 38Ig==
+ d=linaro.org; s=google; t=1742842720; x=1743447520; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=a0AwkWHNDJlaUEffINspb+B6dvAVGc13coRiJeXLgEg=;
+ b=MlpMJH35BKovBqQkQ7uMkUuWLwIQbzqTYKwS7joE7acgLpNzc19PnRigQkiyjXhuLK
+ cDNEt4JpXjRJ9edCI3AJRZpGriCUvjW83K9tdBc+V+zYTUnFx69sJOwVlh/0B7AmPcOD
+ YvkUD8rXPWko/ax65NlmbUUP/HOQRDnoSGAUzrE/QkBf44pLCRFBL4MyTU58u2NIqQ/w
+ z2z893gXTydAPe3rsOW8vEGuA1p1+S6tuRnlFQGPLv4Xmf7vYON4TB3SOtnCZrTwstCs
+ CsA8JGDgsSp+WoDpjBtz5Z2+BBjEjFbg+objrIRz/oKNAguWBRskUy/a7O6qm8S9l2Ru
+ 2aWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742842470; x=1743447270;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QhniJqJiM+UzT+FGHLzZBxft2LbeuB3hSKSZ8RUvv0c=;
- b=jkd+0qs+PL1YPd84riUtEHhdZ79KnWP2oCtywlneLNxBt6Q4pc9iX5JXLc/Nx/arOv
- Fop+RRFWvJVUq7NdifJa0rizOP9ekDcwksAV0hjtkw5+sfNDks9xhJE6abDtQS7X9sFj
- SVYsNX3DIKoqsMd5K4n+RY3huaY4GpRqm9np+htJix94QXSwX7UCqb725KKc4xJ30Nmu
- JaRaPsqCqfIRVBLsQ5cwo3CyXRWA9ClWyJDhxAVVMLwMqxv/MW4ARiXEMDo77OQMr9Z9
- q+LTpnNlwZyVIFmcUwsSj9MggWxkyXvLi6M6gd9QCPo8pTzAJn9xABFSrXv330WwaexD
- G1iw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUoSJoOsIVmG/tOAalNSl7JATsYoXjuwK1iP6jSnH4MjGTKBnviBpI4r5foQ0Om2uI50ZaZzulFIlBf@nongnu.org
-X-Gm-Message-State: AOJu0YzgOkciBuTdAHVCWHhiE+vtdCDwDr87qH1EszBksuv9yjRg50RL
- kBRHRDF4bRZdTJlV6+h1D7kDwsHsZyKSoIpDtwbeYSKZFZrToAbMqWfJ6uPRWho=
-X-Gm-Gg: ASbGncuOStfbIW2E2thURkAnpTT3Gumlsex9NPVfoLC7cpNHF5Q+ZScgnAsZbFzTaD2
- ntnVMWmNPYRMWk2KEpi4EHG4i4jIMGJiLRbjQt3x+tUOR8iFatuUsW/kNHYApgaQkdzU+gO9WP7
- P1rzTxI2w2HU5Re0uhSq+YlL0Q2dqKAzAjO3lNYzzoWOVofZCSd2Wi+nFZS024EaKvwtBrSLLwY
- 0SZzYkh4SLVYxZGAl1h2yIGFKpceA+rCVd5yjgg2pPYqclqwN2/p/WMFd7PpaiBAHkNKENfqFYK
- yDfA+5XE5QxzisLPupNXV8nem+AOZ6cgm6G1LHDNXuzOHrhkv4/WDAmoxTDjiF2zO6Q9aUuVctJ
- nviJRiR21fbsZrylUBA==
-X-Google-Smtp-Source: AGHT+IG7COj5eyHM+UMi8BRxHQAcGWI6FDjKs5OEV11Ei6Ja93pyWUMcviitr77BTUio5hoOvu0lrw==
-X-Received: by 2002:a05:600c:1d92:b0:43c:fdbe:4398 with SMTP id
- 5b1f17b1804b1-43d509e3881mr135210055e9.6.1742842469816; 
- Mon, 24 Mar 2025 11:54:29 -0700 (PDT)
-Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1742842720; x=1743447520;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=a0AwkWHNDJlaUEffINspb+B6dvAVGc13coRiJeXLgEg=;
+ b=qY2orXTNwyyVZPyLofeq6PtfGft569U9EHy0DZiR6OuCbJ9n4Jc/H894GPNro22ZUO
+ gTM1sxlLp2cXm7/kn80g8NjMeJOee6rwxm6Fth8/ytHzsPjbcoxyVmWlKbj1NxUr70ow
+ 6LJllIX2wQktGepxslu3UetN02QnKRA/IuaNxToVZDDQJ3CqrmyOY8u/aPIv6HGog1p5
+ 6vdk7uthy9CC9OkEM9iq24A1juoy3snSMMU0t09hdHzOdtjJn5dz9ovb7yP4gmW42vte
+ svCM6SN91m8oUxLAs0h+MlJGlvHRK1nsaA3DO67E5TuwPZyRD+kaGTtTV6ny6Mvv8nsV
+ zb+w==
+X-Gm-Message-State: AOJu0YzxHc1XJMtGxBslD9c9NuIE1IXNR2E+ZYzgXYBaHmo2BL00M5oB
+ ByecGGneZDOAeJikMV7DiwHwl9itfTpkKy+VEqchKaXVa+lS6q4xmBTx4SBT4hYBTTdD9YcLl4v
+ H
+X-Gm-Gg: ASbGncuUd0vX0X44LFEV/wKpubJKZtFdtIs8YYMsS8/lUh2qbKS9K/UcSUwJ1Bzq1Rw
+ cNjUe54dxsipekRLoexwG22E7Gw4bdU7scQuDFpUaHg8Ve4lq1IYoLr8IAklIbyRNxNqdPeSS21
+ yfYjALMAAdAloAlWg9SjV+CSZ59bSnlNpaM0GDhNnvr9i5b1NPunZju6plof9mOqdqvmtHtDLyN
+ BgUSy1nuziKesTOJILK6GpSTuZQ5LYV+Fl5YU7Z8f5QbuUPVDv+MEyIARiZxP9DsQMNAp3XJXjv
+ mG8HTEGW+bs+LbIQ45f9aG8xcAhX/9iWc/XJ8PLd7MhyMXm5lEDcdwln4CDvrtiFTGIj04i7hgI
+ Su1Id8zjGfLmNmrahBNtcaqhu
+X-Google-Smtp-Source: AGHT+IEchKmevO9CborAblfcQXE7+yItWpXu3QAxqQnAZ1+XcGUC7UuzAa6k8O+eoTJEsfSMy9wGYQ==
+X-Received: by 2002:a05:600c:1548:b0:43c:f513:958a with SMTP id
+ 5b1f17b1804b1-43d509f4d23mr133217015e9.13.1742842720265; 
+ Mon, 24 Mar 2025 11:58:40 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43f55c3dsm179939015e9.23.2025.03.24.11.54.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Mar 2025 11:54:28 -0700 (PDT)
-Message-ID: <12eed6b9-ed87-43e1-b40a-2ebdd20b4dfa@linaro.org>
-Date: Mon, 24 Mar 2025 19:54:27 +0100
+ 5b1f17b1804b1-43d43f55c3dsm180035005e9.23.2025.03.24.11.58.38
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 24 Mar 2025 11:58:39 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Hildenbrand <david@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Eric Farman <farman@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v3 0/7] cpus: Convert cpu_list definition to
+ CPUClass:list_cpus callback
+Date: Mon, 24 Mar 2025 19:58:30 +0100
+Message-ID: <20250324185837.46506-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs/devel/build-environment: enhance MSYS2 instructions
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org,
- Yonggang Luo <luoyonggang@gmail.com>, Stefan Weil <sw@weilnetz.de>
-Cc: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-References: <20250305213853.3685771-1-pierrick.bouvier@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250305213853.3685771-1-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,31 +107,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc'ing Stefan and Yonggang
+Since v2
+- Added R-b tags
+- Added missing s390x hunk
 
-On 5/3/25 22:38, Pierrick Bouvier wrote:
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   docs/devel/build-environment.rst | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/docs/devel/build-environment.rst b/docs/devel/build-environment.rst
-> index f133ef2e012..661f6ea8504 100644
-> --- a/docs/devel/build-environment.rst
-> +++ b/docs/devel/build-environment.rst
-> @@ -97,11 +97,11 @@ build QEMU in MSYS2 itself.
->   
->   ::
->   
-> -    pacman -S wget
-> +    pacman -S wget base-devel git
->       wget https://raw.githubusercontent.com/msys2/MINGW-packages/refs/heads/master/mingw-w64-qemu/PKGBUILD
->       # Some packages may be missing for your environment, installation will still
->       # be done though.
-> -    makepkg -s PKGBUILD || true
-> +    makepkg --syncdeps --nobuild PKGBUILD || true
->   
->   Build on windows-aarch64
->   ++++++++++++++++++++++++
+Since v1 (Thomas review comments)
+- Move s390_set_qemu_cpu_model/s390_cpu_list to "cpu_models.h"
+- Correct 'target/s390x: Register CPUClass:list_cpus' subject
+
+'cpu_list' might be defined per target, and force code to be
+built per-target. We can avoid that by introducing a CPUClass
+callback.
+
+This series combined with another which converts CPU_RESOLVING_TYPE
+to a runtime helper, allows to move most of cpu-target to common.
+
+Based-on: <20250324165356.39540-1-philmd@linaro.org>
+
+Philippe Mathieu-Daudé (7):
+  cpus: Introduce CPUClass::list_cpus() callback
+  target/i386: Register CPUClass:list_cpus
+  target/ppc: Register CPUClass:list_cpus
+  target/sparc: Register CPUClass:list_cpus
+  target/s390x: Declare s390_set_qemu_cpu_model/cpu_list in cpu_models.h
+  target/s390x: Register CPUClass:list_cpus
+  cpus: Remove #ifdef check on cpu_list definition
+
+ include/hw/core/cpu.h      |  2 ++
+ target/i386/cpu.h          |  3 ---
+ target/ppc/cpu.h           |  4 ----
+ target/s390x/cpu.h         |  7 -------
+ target/s390x/cpu_models.h  |  3 +++
+ target/sparc/cpu.h         |  3 ---
+ cpu-target.c               | 25 ++++++++++++-------------
+ hw/s390x/s390-virtio-ccw.c |  2 +-
+ target/i386/cpu.c          |  3 ++-
+ target/ppc/cpu_init.c      |  3 ++-
+ target/s390x/cpu.c         |  1 +
+ target/sparc/cpu.c         |  3 ++-
+ 12 files changed, 25 insertions(+), 34 deletions(-)
+
+-- 
+2.47.1
 
 
