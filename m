@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE77A6D49A
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 08:10:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC35A6D49D
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 08:10:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twbvb-0008GG-LS; Mon, 24 Mar 2025 03:08:57 -0400
+	id 1twbvd-0008Gd-Go; Mon, 24 Mar 2025 03:08:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1twbvT-0008Fk-54
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 03:08:47 -0400
+ id 1twbvW-0008G9-05
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 03:08:50 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1twbvR-0008Ii-3v
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 03:08:46 -0400
+ id 1twbvT-0008Ii-Hv
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 03:08:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742800125; x=1774336125;
+ t=1742800128; x=1774336128;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GkePnjIVwJy2gtvDqRPqWnH+ClNauDcNXM7UqV0aetc=;
- b=LBgsq+rTHnlTD0vviTTkmqMKy0lqGqwKUsaEEjuQt9AnMaJ/2UtVJz+/
- xtv22SctisTF6IgSDGnyDsh0lKbptsoCUYCR4ElT2YBuav5lexSyOWd+2
- ft7mSyRuASGfONXR12UJta/q0VNxL6qzSX6S4E73IVhTH3LaDsL8Nh/gl
- CtPbFjveY2zEFLpxe+go4wBOHGw3AQKdYEGxMBJhAvd9JhFUVIZGnKrOa
- 30t7/2FvKg9c+K2rrJgqYFTCrJhsWVJDAU7XxWsLvRMcSw6glifuN+0j7
- Hf3BCiqRZCcGHz9KCfO9sheNzt01/LmzfLYrsC+m3TaIc6ONX/UYs0Ckm A==;
-X-CSE-ConnectionGUID: 85qNR3FOSKOyYT8CiaXl4g==
-X-CSE-MsgGUID: dhHv/Z4hRvGyoTRfBE1iHA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11382"; a="31588458"
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="31588458"
+ bh=RSPvGIZxsfM4bA/IY36Wq0EbC6TmhSvPF08yfS2Nt4k=;
+ b=oCgY3wbDoNG85tEQf19EozkDsvlF1sQ6+BaWNlkHcAPaT1HXcUc5wONq
+ 7F2OMwUZLZSDa/tajoCmBC7sKVp8UBLRAE2G3S/D55J7Ke81xTWEMT5+/
+ CahnvSQgsU5V49CB+8XOqUNoWrwvVkz8OoncYkoGbPfMaf5y0dR4yJB7P
+ wQOuaCaZ4XsA+ksjskyeI9b160YrIBOm17kJHgA9suoiEt8//+T8NMOk3
+ kAce0V75ORXhJ/YKh63u2lP+XiX6kr15fSZTbuRi3rCZpSOdnQ/isSLJA
+ p5MxeuHSvW3wh+Ig519YYO5lzIgcl13InLfkejPSxe2GHQTD88F8jUmj+ A==;
+X-CSE-ConnectionGUID: Kh6vU1fCRL60onHUco7K/g==
+X-CSE-MsgGUID: wS/RfJwBQI6Nqs9UM0+AWg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11382"; a="31588466"
+X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="31588466"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Mar 2025 00:08:44 -0700
-X-CSE-ConnectionGUID: C9tRJ6dtTjuTepXb6kbW3Q==
-X-CSE-MsgGUID: uqJ5HATGRKK6tTeN6Y6cww==
+ 24 Mar 2025 00:08:47 -0700
+X-CSE-ConnectionGUID: h7j1ukYCQSqoT6dryF50Bw==
+X-CSE-MsgGUID: 6xu+B54JQaiEpUbobTY1pw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="123944365"
+X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; d="scan'208";a="123944393"
 Received: from emr.sh.intel.com ([10.112.229.56])
- by fmviesa007.fm.intel.com with ESMTP; 24 Mar 2025 00:08:40 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 24 Mar 2025 00:08:44 -0700
 From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>
@@ -50,10 +50,11 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>,
  Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
  Dongli Zhang <dongli.zhang@oracle.com>, Mingwei Zhang <mizhang@google.com>,
  Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Dapeng Mi <dapeng1.mi@intel.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 1/3] kvm: Introduce kvm_arch_pre_create_vcpu()
-Date: Mon, 24 Mar 2025 12:37:10 +0000
-Message-Id: <20250324123712.34096-2-dapeng1.mi@linux.intel.com>
+ Dapeng Mi <dapeng1.mi@intel.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
+Subject: [PATCH 2/3] target/i386: Call KVM_CAP_PMU_CAPABILITY iotcl to
+ enable/disable PMU
+Date: Mon, 24 Mar 2025 12:37:11 +0000
+Message-Id: <20250324123712.34096-3-dapeng1.mi@linux.intel.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20250324123712.34096-1-dapeng1.mi@linux.intel.com>
 References: <20250324123712.34096-1-dapeng1.mi@linux.intel.com>
@@ -84,168 +85,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+After introducing mediated vPMU, mediated vPMU must be enabled by
+explicitly calling KVM_CAP_PMU_CAPABILITY to enable. Thus call
+KVM_CAP_PMU_CAPABILITY to enable/disable PMU base on user configuration.
 
-Introduce kvm_arch_pre_create_vcpu(), to perform arch-dependent
-work prior to create any vcpu. This is for i386 TDX because it needs
-call TDX_INIT_VM before creating any vcpu.
-
-The specific implemnet of i386 will be added in the future patch.
-
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 ---
- accel/kvm/kvm-all.c        | 5 +++++
- include/system/kvm.h       | 1 +
- target/arm/kvm.c           | 5 +++++
- target/i386/kvm/kvm.c      | 5 +++++
- target/loongarch/kvm/kvm.c | 5 +++++
- target/mips/kvm.c          | 5 +++++
- target/ppc/kvm.c           | 5 +++++
- target/riscv/kvm/kvm-cpu.c | 5 +++++
- target/s390x/kvm/kvm.c     | 5 +++++
- 9 files changed, 41 insertions(+)
+ target/i386/kvm/kvm.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index f89568bfa3..df9840e53a 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -540,6 +540,11 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
- 
-     trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
- 
-+    ret = kvm_arch_pre_create_vcpu(cpu, errp);
-+    if (ret < 0) {
-+        goto err;
-+    }
-+
-     ret = kvm_create_vcpu(cpu);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret,
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index ab17c09a55..d7dfa25493 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -374,6 +374,7 @@ int kvm_arch_get_default_type(MachineState *ms);
- 
- int kvm_arch_init(MachineState *ms, KVMState *s);
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp);
- int kvm_arch_init_vcpu(CPUState *cpu);
- int kvm_arch_destroy_vcpu(CPUState *cpu);
- 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index da30bdbb23..93f1a7245b 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -1874,6 +1874,11 @@ static int kvm_arm_sve_set_vls(ARMCPU *cpu)
- 
- #define ARM_CPU_ID_MPIDR       3, 0, 0, 0, 5
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     int ret;
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 6c749d4ee8..f41e190fb8 100644
+index f41e190fb8..d3e6984844 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -2051,6 +2051,11 @@ full:
+@@ -2051,8 +2051,25 @@ full:
      abort();
  }
  
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
++static bool pmu_cap_set = false;
+ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
  {
-     struct {
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 7f63e7c8fe..ed0ddf1cbf 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -1075,6 +1075,11 @@ static int kvm_cpu_check_pv_features(CPUState *cs, Error **errp)
++    KVMState *s = kvm_state;
++    X86CPU *x86_cpu = X86_CPU(cpu);
++
++    if (!pmu_cap_set && kvm_check_extension(s, KVM_CAP_PMU_CAPABILITY)) {
++        int r = kvm_vm_enable_cap(s, KVM_CAP_PMU_CAPABILITY, 0,
++                                  KVM_PMU_CAP_DISABLE & !x86_cpu->enable_pmu);
++        if (r < 0) {
++            error_report("kvm: Failed to %s pmu cap: %s",
++                         x86_cpu->enable_pmu ? "enable" : "disable",
++                         strerror(-r));
++            return r;
++        }
++
++        pmu_cap_set = true;
++    }
++
      return 0;
  }
  
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     uint64_t val;
-diff --git a/target/mips/kvm.c b/target/mips/kvm.c
-index d67b7c1a8e..ec53acb51a 100644
---- a/target/mips/kvm.c
-+++ b/target/mips/kvm.c
-@@ -61,6 +61,11 @@ int kvm_arch_irqchip_create(KVMState *s)
-     return 0;
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     CPUMIPSState *env = cpu_env(cs);
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index 992356cb75..20fabccecd 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -479,6 +479,11 @@ static void kvmppc_hw_debug_points_init(CPUPPCState *cenv)
-     }
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 4ffeeaa1c9..451c00f17c 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1389,6 +1389,11 @@ static int kvm_vcpu_enable_sbi_dbcn(RISCVCPU *cpu, CPUState *cs)
-     return kvm_set_one_reg(cs, kvm_sbi_dbcn.kvm_reg_id, &reg);
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     int ret = 0;
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index 4d56e653dd..1f592733f4 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -404,6 +404,11 @@ unsigned long kvm_arch_vcpu_id(CPUState *cpu)
-     return cpu->cpu_index;
- }
- 
-+int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-+{
-+    return 0;
-+}
-+
- int kvm_arch_init_vcpu(CPUState *cs)
- {
-     unsigned int max_cpus = MACHINE(qdev_get_machine())->smp.max_cpus;
 -- 
 2.40.1
 
