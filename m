@@ -2,71 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84740A6D610
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 09:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D702EA6D668
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 09:40:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twd38-0006Tm-Ep; Mon, 24 Mar 2025 04:20:46 -0400
+	id 1twdKx-0003jM-SN; Mon, 24 Mar 2025 04:39:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1twd2A-0005wg-Oy; Mon, 24 Mar 2025 04:19:46 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1twdKY-0003hk-5i; Mon, 24 Mar 2025 04:38:46 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1twd26-0008T5-V3; Mon, 24 Mar 2025 04:19:46 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZLmDS5Tf3z6L4wl;
- Mon, 24 Mar 2025 16:19:20 +0800 (CST)
-Received: from frapeml100007.china.huawei.com (unknown [7.182.85.133])
- by mail.maildlp.com (Postfix) with ESMTPS id 77893140441;
- Mon, 24 Mar 2025 16:19:27 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml100007.china.huawei.com (7.182.85.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 24 Mar 2025 09:19:27 +0100
-Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
- frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Mon, 24 Mar 2025 09:19:27 +0100
-To: Nicolin Chen <nicolinc@nvidia.com>
-CC: Donald Dutile <ddutile@redhat.com>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "berrange@redhat.com" <berrange@redhat.com>, "nathanc@nvidia.com"
- <nathanc@nvidia.com>, "mochs@nvidia.com" <mochs@nvidia.com>,
- "smostafa@google.com" <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>,
- "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
- <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-Subject: RE: [RFC PATCH v2 05/20] hw/arm/smmuv3-accel: Associate a pxb-pcie bus
-Thread-Topic: [RFC PATCH v2 05/20] hw/arm/smmuv3-accel: Associate a pxb-pcie
- bus
-Thread-Index: AQHbkps6in4QB/PMZUednFRw1zRmILN5b66AgADGVyCAAgfGgIAFxokw
-Date: Mon, 24 Mar 2025 08:19:27 +0000
-Message-ID: <2f84490d309440a4a2ac56fd893ddab8@huawei.com>
-References: <20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com>
- <20250311141045.66620-6-shameerali.kolothum.thodi@huawei.com>
- <b3a4ce7f-41a9-4da9-a8ca-54848b9e9cf1@redhat.com>
- <3d1312b411f04121a3be90879a915982@huawei.com>
- <Z9xKL49nOenvQIsW@Asurada-Nvidia>
-In-Reply-To: <Z9xKL49nOenvQIsW@Asurada-Nvidia>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.203.177.241]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1twdKW-0002Qm-6r; Mon, 24 Mar 2025 04:38:45 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O3kRtD013975;
+ Mon, 24 Mar 2025 08:38:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=WCRy4l
+ DXSkOOjJaJSbt0mxicKspc6+9EqPI2WOcQqZw=; b=L1HR20vjoIES64crWikCI7
+ mXTzVPSXDH+6+6qGIY83Opaf0RcC5oFI2oC9VbhIe2ztHzWNRE2juvhnCmUONvhA
+ beRBo55spAHNYCCstFUASZ3DLGRVpqH2/OvSWhT7wjIL3lnM7rRbgJfxAS6yvcet
+ OrmOO1am7B9MqxnToOpfByISgJLenKhLmwZaWEdXYYbkNP5ZNAs/Vmu2gyDf/cPh
+ G0cY041Yy5T0Sc4z63mYqsgmASSHzWU8ySHvE+B61RO3XMmHA13MFbTB/Jn6Pte0
+ ZSvwknVsmmkmZ13sqE9s5gA3IQ/jQbRzXLiXDpjMKCC27mJ711eBE11U4ENxzgNg
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45jys915ut-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Mar 2025 08:38:33 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52O8WnRe021374;
+ Mon, 24 Mar 2025 08:38:33 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45jys915ur-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Mar 2025 08:38:33 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52O75PfU030321;
+ Mon, 24 Mar 2025 08:38:32 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j7ht5jkg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Mar 2025 08:38:32 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52O8cSSB55836942
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 Mar 2025 08:38:28 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BD45E20043;
+ Mon, 24 Mar 2025 08:38:28 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 885EE20040;
+ Mon, 24 Mar 2025 08:38:26 +0000 (GMT)
+Received: from [9.109.199.160] (unknown [9.109.199.160])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 24 Mar 2025 08:38:26 +0000 (GMT)
+Message-ID: <1df64072-b054-4c8e-b426-12f1ad76b550@linux.ibm.com>
+Date: Mon, 24 Mar 2025 14:08:25 +0530
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 7/8] ppc/pnv: Add a Power11 Pnv11Chip, and a Power11
+ Machine
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <20250308205141.3219333-1-adityag@linux.ibm.com>
+ <20250308205141.3219333-8-adityag@linux.ibm.com>
+ <bce5dcfc-24d2-41e2-b11e-7cb5967f2132@kaod.org>
+ <337b1a39-ed5f-4737-a98a-1ed2784aef7b@linux.ibm.com>
+ <a724951a-738c-403d-8d47-8d3b83c68e13@kaod.org>
+Content-Language: en-US
+From: Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <a724951a-738c-403d-8d47-8d3b83c68e13@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -Ptg1P9QXAvR1Nfx22naKjB_sXSRZ4KJ
+X-Proofpoint-GUID: YWpvxG_-khhjm8ILz5crkZv1twgxgW6a
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-24_04,2025-03-21_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxlogscore=999 priorityscore=1501
+ lowpriorityscore=0 mlxscore=0 adultscore=0 impostorscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503240061
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_MSPIKE_H2=-0.01, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -82,62 +120,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 24/03/25 13:05, Cédric Le Goater wrote:
 
+> On 3/24/25 08:13, Aditya Gupta wrote:
+>> Hi Cedric,
+>>
+>> <...snip...>
+>>
+>> When I do this, every function using Pnv10Chip* will need to be 
+>> duplicated to use Pnv11Chip*.
+>>
+>> I will do that.
+>>
+>> But what do you say about changing Pnv10 chip to Pnv1x chip ? It may 
+>> only be used by Pnv10 and Pnv11, not future chips. But is that 
+>> unnecessary for just two versions of the chip ?
+>>
+>> Just tried to think of some ways to reduce duplication, or having 
+>> different files such as pnv10.c, pnv11.c ? I am not sure because 
+>> these might be unnecessary things too.
+>
+> Please open code (and duplicate) first. Then we will see how we
+> can make things common. Checking the typename in the instance_init
+> handleris a hack not for upstream.
 
-> -----Original Message-----
-> From: Nicolin Chen <nicolinc@nvidia.com>
-> Sent: Thursday, March 20, 2025 5:03 PM
-> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-> Cc: Donald Dutile <ddutile@redhat.com>; qemu-arm@nongnu.org; qemu-
-> devel@nongnu.org; eric.auger@redhat.com; peter.maydell@linaro.org;
-> jgg@nvidia.com; berrange@redhat.com; nathanc@nvidia.com;
-> mochs@nvidia.com; smostafa@google.com; Linuxarm
-> <linuxarm@huawei.com>; Wangzhou (B) <wangzhou1@hisilicon.com>;
-> jiangkunkun <jiangkunkun@huawei.com>; Jonathan Cameron
-> <jonathan.cameron@huawei.com>; zhangfei.gao@linaro.org
-> Subject: Re: [RFC PATCH v2 05/20] hw/arm/smmuv3-accel: Associate a pxb-
-> pcie bus
->=20
-> On Wed, Mar 19, 2025 at 09:26:29AM +0000, Shameerali Kolothum Thodi
-> wrote:
-> > Having said that,  current code only allows pxb-pcie root complexes
-> avoiding
-> > the pcie.0. The idea behind this was, user can use pcie.0 with a non ac=
-cel
-> SMMUv3
-> > for any emulated devices avoiding the performance bottlenecks we are
-> > discussing for emulated dev+smmuv3-accel cases. But based on the
-> feedback from
-> > Eric and Daniel I will relax that restriction and will allow associatio=
-n with
-> pcie.0.
->=20
-> Just want a clarification here..
->=20
-> If VM has a passthrough device only:
->  attach it to PCIE.0 <=3D> vSMMU0 (accel=3Don)
+Sure Cedric, will duplicate it then.
 
-Yes. Basically support accel=3Don to pcie.0 as well.
-
-> If VM has an emulated device and a passthrough device:
->  attach the emulated device to PCIE.0 <=3D> vSMMU bypass (or accel=3Doff?=
-)
->  attach the passthrough device to pxb-pcie <=3D> vSMMU0 (accel=3Don)
-
-This can be other way around as well:
-ie,=20
-pass-through to pcie.0(accel=3Don) and emulated to any other pxb-pcie with =
-accel =3D off.
-
-I think the way bus numbers are allocated in Qemu for pcie.0 and pxb-pcie a=
-llows
-us to support this in IORT ID maps.
 
 Thanks,
-Shameer
+
+- Aditya Gupta
+
+
+>
+> Thanks,
+>
+> C.
+>
+>
 
