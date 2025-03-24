@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C55A6D83A
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 11:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B51A6D83B
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 11:23:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twewm-0002wG-Ss; Mon, 24 Mar 2025 06:22:20 -0400
+	id 1twewl-0002uJ-GE; Mon, 24 Mar 2025 06:22:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1twewS-0002ld-Hn
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:22:04 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1twewS-0002lb-HN
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:22:03 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1twewI-000719-JE
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:21:57 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5e5bc066283so6100477a12.0
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 03:21:50 -0700 (PDT)
+ id 1twewL-00071r-1L
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:21:58 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-ac2a9a74d9cso854931166b.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 03:21:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742811709; x=1743416509; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742811710; x=1743416510; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=anRXtUlHElY7q3eBibps8zhum/h3zcEOqynU32vgNmQ=;
- b=Mjk69l0DtWRbb5NyH/nSmM5U7TpOMFT7ZSgR8TrnB/MSdmace9C5GfA9haVMDIOcga
- z3pPrqsM7AfpwAC64gT8aqCZh3R+21xtT7lVBmuYwZovMUQGbV4IZasrDooJlGdllK/H
- TJ9DLaLOlZgh6bK+gBJeJqg4b3xMxQG9oltKK77pqscNmMZ5VhP02+qge/pJQF5vM3wX
- UvBdWFDql/qLAGlxIs3CVT8A3LTAsqPAbHQHSXiTbeAirmLTlZC+8ldeY9fTKPZYHh8A
- /Z3udvgQxNZL9twFWIKnklyi28vN7TL/WtpHFVZdVzFwVvDiqZdGI9rDVolESFakt+xa
- Ufjw==
+ bh=iW3Fn8eqm0D6+xTGEoDksVr71AgPRXfZU523o0DiCP4=;
+ b=VBrvkZpkdOFOY96wtkxxFD9XOYmXzJYtln6RYHrAGHmjzb84XVKfudzr3xNZdYZOzi
+ SBzHrMbjQkMvwrVtsfvUbhEcHrgwWP/J757IWQqtad1KWBvYkCvcufQ8F6aYXp5b4Cmp
+ txO3u2fzCZjl2IDL0UJ6lMpM/DqvobEJY6ccIFNPTE+MLMpN41QB48IF1vC+aqW/qI+e
+ 84xvtunpCciW9/1Cd6QhIhnagc1XkdyJu8ZNoJ4Xb+p7QT4xLG26nC3T0iIUG6wRY1IT
+ jNvuDAI/sMoETn98vpqNm47yD/H5GUJWQ1oChHB/3vtEwSlCBjXK8IafhfdI+2V0tglT
+ 76SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742811709; x=1743416509;
+ d=1e100.net; s=20230601; t=1742811710; x=1743416510;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=anRXtUlHElY7q3eBibps8zhum/h3zcEOqynU32vgNmQ=;
- b=tZfKGOm2+pbvjsVjWwpv/dDxkbbjAM1xzXXBeBQ4vnCzjo4BKIzUaOf7i1isD9n3t5
- qr9lw298uRI/4uDTItQbZxZ4b9eM1mD7o9JKuUTLgzk9C6BP2x+T/RuV51ZcFvQKR7S7
- K29/AjxnbHvf2p0P+65+Pa5FnOsG7maVNY5i9UhyU9vQzyhpvob4CyM3Rr5cr/iD3oOE
- 6jwML6541/rdtti88U5/sAQxAsNqin2kqZojSxIWsdB1Qtwio3Z0XgxpuKfYKoHgiQHY
- ipv1vG1QLYdbh6QyNfe/HKRemqXaShVr7nrUPtjkUArBPsHZUK4mJezPa20UdynUz1XL
- L2pA==
-X-Gm-Message-State: AOJu0YxRJcCEqLlC8Nv/TkqWVI7F2nA6KZpACh1qhoE2JU4Wm/ckmMh/
- 6g0lzjBKoROEjecMzzIumAcsTFwPTVoZTJXemY+tJWrtSPJ/uiPbHBXlOn9E6wE=
-X-Gm-Gg: ASbGncuHyXgfpfLO+UzzMJw340SvoxlBKUNAgh59/xHHcsQQ3dmXKejq0JtDg5DPL2A
- /kzFuyxyIkAqGoqP6O81FNOuHz+VtTjF1uF/iqDnQZ42Lgv1DcDGfsJLQV8miNT7madOpL3Kd0o
- AXSEwjc9UBBF3vU5J8/qgUpCaeZhs1FQ2qaabEQ5xSiOUwdUCZ8W66936rcNaC492uEs0f7EKww
- gldJ//EeW4pQ+m9iVjnppjG6UmbrBRY/kDIlHZNRA5wtuSu0cZ297gMft1Bo0uON695R87w7XHn
- tGoD2ak+E6fO+IQ6r99NgBkLC2FMkkIdRumjjubqEbjTmwQ=
-X-Google-Smtp-Source: AGHT+IFOtION1xBThZUSS0Gi/bW/CsiHB5vJFSHH7hDjp4LaP6NYiBydytfxSLpMaxDcS97CrVw1tA==
-X-Received: by 2002:a17:907:2d14:b0:abf:75d7:72a2 with SMTP id
- a640c23a62f3a-ac3f24ada3dmr1066907666b.38.1742811708863; 
- Mon, 24 Mar 2025 03:21:48 -0700 (PDT)
+ bh=iW3Fn8eqm0D6+xTGEoDksVr71AgPRXfZU523o0DiCP4=;
+ b=gn1//GbGtoHDfd8Eq1MREdYG1/gE9X5T+dUglCjUxcfutmbGI2Ejsan09y5Q+LbdoG
+ mQo2cGOWBF/UZ0d86sAGMFMXVsYqlMLp5w6oX205QgjbdjfEvOI9kJT7cHCFBXmMUQjN
+ vnD3kT3/Vv8aqGl7C5SSUzLfEHUYmT3sIA+xAukv1iKKdzqAH6GcM3VOkVYdrPFLpLV5
+ yi8Y9dymIayBRh4RMVQQNvSBHVtPrw1OEOqbSaKUcWF8jMxzhh3TgzZKxk1LI00UI4fg
+ Xg7m1jxybrFmRGxscB7oyblldQINrq5lf3jN8ywyuibq7xYZJmmRDV/1fvnMttTJnRwX
+ ejzQ==
+X-Gm-Message-State: AOJu0YymtnAGP+PpO3jwczg0RAnjMGKMsWNQR2kq48y7G5bDVuanUvnY
+ jJ8RYskZ9FNkk+MwAXm6GLo67hbmLMrtF1hh78JyRzreiOZuYTXwy5A1dIBBhf4=
+X-Gm-Gg: ASbGnct8hjfQJTt68Qkle9jdPJdgp0reRbqIetvl59OOAp/oQsPyThZNy3zQL8qKVi/
+ ncm0Hv47Q/q8arQ1YDBpo6nR4Vxq2W+HfNk2uirZh7qOiy08MWhOnUZWiGBhNFcjRQYPx9YsX+V
+ aEXxkWkBExe41xVyl0AtM5VJNUqrDr9llHdadmhxigXfkIu1OjEh06KiHIk+wrqS9n55CjI9srk
+ ucIBjeIoNLDK1KXXg8uP9j+YpUHPaJTzHRSJeEoaQdBmkeCPUvtdx59opsKB/Dn9wC2r90QXcjQ
+ Ln2CWqL97P9ZF0XJO8P7sgoJRyBueDc0rUSRaF4FiUclUsw=
+X-Google-Smtp-Source: AGHT+IHTbIoZ9tLGno6JURbszhYf9MxRehBTNDNSIVqj6/q4UcG2lHlak8H2DzY/HL+KYEfVcTRB4Q==
+X-Received: by 2002:a17:907:f50a:b0:abf:425d:5d3 with SMTP id
+ a640c23a62f3a-ac3f251f180mr1253979066b.40.1742811709663; 
+ Mon, 24 Mar 2025 03:21:49 -0700 (PDT)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3efd47f39sm642345566b.169.2025.03.24.03.21.44
+ a640c23a62f3a-ac3ef868769sm651607566b.14.2025.03.24.03.21.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 24 Mar 2025 03:21:46 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 457295FD05;
+ by draig.lan (Postfix) with ESMTP id 5C3C85FD17;
  Mon, 24 Mar 2025 10:21:43 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,18 +81,17 @@ Cc: qemu-arm@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  David Hildenbrand <david@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 07/11] target/ppc: expand comment on FP/VMX/VSX access
- functions
-Date: Mon, 24 Mar 2025 10:21:38 +0000
-Message-Id: <20250324102142.67022-8-alex.bennee@linaro.org>
+Subject: [PATCH v2 08/11] target/ppc: make ppc_maybe_bswap_register static
+Date: Mon, 24 Mar 2025 10:21:39 +0000
+Message-Id: <20250324102142.67022-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250324102142.67022-1-alex.bennee@linaro.org>
 References: <20250324102142.67022-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -115,33 +114,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mainly as an aid to myself getting confused too many bswaps deep into
-the code.
+It's not used outside of the gdbstub code.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/ppc/cpu.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ target/ppc/cpu.h     | 1 -
+ target/ppc/gdbstub.c | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index efab54a068..1e833ade04 100644
+index 1e833ade04..950bb6e06c 100644
 --- a/target/ppc/cpu.h
 +++ b/target/ppc/cpu.h
-@@ -2906,7 +2906,12 @@ static inline bool lsw_reg_in_range(int start, int nregs, int rx)
-            (start + nregs > 32 && (rx >= start || rx < start + nregs - 32));
- }
+@@ -3016,7 +3016,6 @@ static inline bool ppc_interrupts_little_endian(PowerPCCPU *cpu, bool hv)
  
--/* Accessors for FP, VMX and VSX registers */
-+/*
-+ * Access functions for FP, VMX and VSX registers
-+ *
-+ * The register is stored as a 128 bit host endian value so we need to
-+ * take that into account when accessing smaller parts of it.
-+ */
- #if HOST_BIG_ENDIAN
- #define VsrB(i) u8[i]
- #define VsrSB(i) s8[i]
+ void dump_mmu(CPUPPCState *env);
+ 
+-void ppc_maybe_bswap_register(CPUPPCState *env, uint8_t *mem_buf, int len);
+ void ppc_store_vscr(CPUPPCState *env, uint32_t vscr);
+ uint32_t ppc_get_vscr(CPUPPCState *env);
+ void ppc_set_cr(CPUPPCState *env, uint64_t cr);
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index 3b28d4e21c..c09e93abaf 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -81,7 +81,7 @@ static int ppc_gdb_register_len(int n)
+  * TARGET_BIG_ENDIAN is always set, and we must check the current
+  * mode of the chip to see if we're running in little-endian.
+  */
+-void ppc_maybe_bswap_register(CPUPPCState *env, uint8_t *mem_buf, int len)
++static void ppc_maybe_bswap_register(CPUPPCState *env, uint8_t *mem_buf, int len)
+ {
+ #ifndef CONFIG_USER_ONLY
+     if (!FIELD_EX64(env->msr, MSR, LE)) {
 -- 
 2.39.5
 
