@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7010BA6D836
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 11:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F200A6D839
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Mar 2025 11:22:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twewf-0002jg-CW; Mon, 24 Mar 2025 06:22:13 -0400
+	id 1twewj-0002tG-8A; Mon, 24 Mar 2025 06:22:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1twewH-0002hd-Ha
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:21:49 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1twewI-0002iP-RM
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:21:50 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1twewE-0006yI-6o
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:21:48 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-aaf0f1adef8so746914966b.3
+ id 1twewE-0006yQ-7f
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 06:21:50 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5e5c9662131so6578542a12.3
  for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 03:21:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1742811704; x=1743416504; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Yu8RlLKAJY774dQq/0UwJZZsh2CwMTMr9ikfsbGGuSA=;
- b=f2rMd78vq/SngrpuuUun7pwqGDClkKbDfLE7nYgsV5GceFhn6JqOr2OncW2Fc8WnYk
- KMWVapKdTdd8L/03Qc5Q8Ifm1VPi0jVS43t4lu33G5AyOEHEwPmZ6F2WneshtLcilTPj
- hGdmrpk24jFlQmdGSQL1rpWwxWLPTWeUnLU3QRfEQqjJEcF16ZsBAc7pxjX/4IxdV8/Y
- dK/2utVxFVuwWAR4pP8wSCYNVna4NIk8AZvpVCqGdPv55LRzXhCGk09rkdp7fsHl1ehb
- wYR7ZeLzUTGUVTcE74NkQobtFMxpsbD7iMZphYspjh/qZf+DMYoPcPu0nkz89IFpe6ic
- GwRg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=j0frMJFHURFqzSvkfeW8iN6QG7CZAG19LBjdMEoqvJI=;
+ b=GPFox9bzWoeTiJS4c8LoAW3c2q685oWYl1sYHDZ+FzQvLXv4KXuNQ/DX/W0xY2ARPt
+ LtNfpHIXXnapMn+UU+CBwSrexYPHP2R9E8pV8sigHhpujaNIeL1EUeccH2/8PUYPfXRN
+ KSt8cbCLPwzN+E5q+FsnwXQ9PIMOOJizyGGLzDVqb+QWMbsJTU5SChNSpWF8MnPw/rEO
+ N9HnNEv3nA8VNMV5qsh8ooiExCclhnGnzCRPJoKRLkAXcY0C3ghUxMgUB1zvc42VeCkI
+ pqWjEz8taAxbrgabR90NW6VBA2zlRNKJS+v8ivzJQtDVboC7rKMYNGQC1F6zU6kzTTBn
+ EK1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1742811704; x=1743416504;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Yu8RlLKAJY774dQq/0UwJZZsh2CwMTMr9ikfsbGGuSA=;
- b=ZxLYWF+Ma9YlhTc0ZR0EUqXLOPlNbzBOoNRqjeNUa0B5iGHcz+iTabkZJZRcDJqJdP
- YwAMS1bgOcvyWW9rH1k9o7wnyVihu+2RD+xwHaA9bP3eFPhsPch3qNTSCYZr7nE31Hl9
- xa6VAo8rQB0j6Jegc1ZRHdR7LBbXzzPP1lAzJgRPh3B+kZrqzLS/BN1PekUp/1mb/6Xi
- 4rl19AS4TZHfNmH2SBWfmSfKDi6YVjCE8GRAAf6yEuaDusB1ckvMot6dhWKMG0npVPEp
- LSCXCb/2m7HAgxNXIr7KzZavj+ihaaR8rHRs7lxcKnxRoUgqhHKPKz/I2UUNFnEx6QJo
- QyUw==
-X-Gm-Message-State: AOJu0YxA2RFdFlRxxw6OWAFrooLwdiUVGYBhvfiUOGtUqB0BG4V9NUGD
- /KdpWS3opiNsI8A1SvRq3X+hfEzhQgZYzSk26pv5gdcGSYvC3xFioprFfgVTajQ=
-X-Gm-Gg: ASbGncuSGBckhZvIWI1mYxhun0gUqCri4lTCQxt5S3HI3guHQdLBsKPUie/Cp1RyDyp
- tBRLA0m1FJLEDVuqhK1/2VYi+GJQd8iXNzbIgJaW6xQZiKjHYhXWUgNPvXy1nOsNzXhQk4P+ELt
- 542dUlGWsFTu8Jvv6cvzAIA3avz5zHcZQkvWATUVCmWm+qrEuJWTBZuRogLL+aBe5KzTjozURUo
- EX5fdbydLQK8lELCWFao903x+yX+teyhXafOTIxegoZPxGO8hpDypKwhDyaHl82ofGR87A7diav
- xNbblzTlvSHvwR7dSpCgjG8/msp7m2BU5SSjT322JdzRG7qCTKsXeJobbQ==
-X-Google-Smtp-Source: AGHT+IEX8SGzROIudRzJshBqcN82NYLkpsCoaD/Yo/ftNW65T4eTY18sBup7fcabjuDKnu0zFZp1Zg==
-X-Received: by 2002:a17:907:1b10:b0:ac3:c56c:26ca with SMTP id
- a640c23a62f3a-ac3f20f8556mr1332662766b.8.1742811703927; 
- Mon, 24 Mar 2025 03:21:43 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=j0frMJFHURFqzSvkfeW8iN6QG7CZAG19LBjdMEoqvJI=;
+ b=I1JfvP2f+hL0nNll/u/onh0VEkwUeL+DMSVBYpjHr0FhBzGJDU4YYnKmvhgzqqG4fH
+ 2Gvod71iqSK8wbEcz6sRoFZeNaBtQgiiTb19v7PzUzUMWDkdXLRpi/v9wh7+poG8anbR
+ yBrUP49L/r9oFpIu/16djUIlKT6umeJgBLg2eGY56mvtucVizyROrmfmk0u0idBCdWU7
+ JHEh/WH9qsIznLf5UkHQ9Hgr+C3m2DZXAKpof7AVNv/WGwo9WIZV/pM/8COEOV/Quxm8
+ 0s6Bx++xLtSGwYPVUNfsdK0eGDSxjK0otoKL0L5qztPjTvnfnVFqj0biQJSqwoW5mWZy
+ 3diA==
+X-Gm-Message-State: AOJu0YwrCQ+zSGapGnU5a0gNOhgifvf2KERwKl9UDnEz96ouB9aR1en2
+ 8QYLltYCClQjPJVCKr3uQpLw1Ggt4yjuMYHNt4nphLX3UNAR2nC/kjcd8aNuHIw=
+X-Gm-Gg: ASbGncvFiNNc/qUpbg9T+Az3V0mDgC3IvMASjttIpgsKhy0+SS1vQft9wwrk7b/ICll
+ 5MblVSp8G/3CWpASzdDBk/mToaAPRqKtvIeFaiimKc+yewk1rCs4oMNJ+/JFAGn9jhB5T2cLzIi
+ UcTebjb4TwaI1LSUezQhdTqH/0iZC4cVWMiycqvVuLQ/CErlmy/5SHOT/+l0+RggzAIZ7nchKi7
+ iix86dJTF9E1n1/NndbFeuDTlDDWUfR+AlruLZCoNk5SaejGhJTDFlMcH6SPDU7VByNBl0NB5fl
+ IUylVsxNE4rCVh1jTs53vMPm9MTwYGYMeCJtwrsXunhf6G0=
+X-Google-Smtp-Source: AGHT+IHwSd6NzIfqKhQkug04WTcI9nAnPTul+n/Wo/urhoWHkFNugeCcE4XD5W1Ewaqi1uZ+cJjuwg==
+X-Received: by 2002:a05:6402:27cd:b0:5e6:6407:3b23 with SMTP id
+ 4fb4d7f45d1cf-5ebcd4ef41emr9266584a12.21.1742811704252; 
+ Mon, 24 Mar 2025 03:21:44 -0700 (PDT)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3efbdfcc7sm654291866b.146.2025.03.24.03.21.43
+ 4fb4d7f45d1cf-5ebccfae189sm5784268a12.37.2025.03.24.03.21.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 24 Mar 2025 03:21:43 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 95AEB5F8B9;
+ by draig.lan (Postfix) with ESMTP id ACFDA5F90B;
  Mon, 24 Mar 2025 10:21:42 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,16 +80,19 @@ Cc: qemu-arm@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  David Hildenbrand <david@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 00/11] gdbstub: conversion to runtime endianess helpers
-Date: Mon, 24 Mar 2025 10:21:31 +0000
-Message-Id: <20250324102142.67022-1-alex.bennee@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>
+Subject: [PATCH v2 01/11] include/exec: fix assert in size_memop
+Date: Mon, 24 Mar 2025 10:21:32 +0000
+Message-Id: <20250324102142.67022-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250324102142.67022-1-alex.bennee@linaro.org>
+References: <20250324102142.67022-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -111,54 +115,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The aim of this work is to get rid of the endian aware helpers in
-gdbstub/helpers.h which due to their use of tswap() mean target
-gdbstubs need to be built multiple times. While this series doesn't
-actually build each stub once it introduces a new helper -
-gdb_get_register_value() which takes a MemOp which can describe the
-current endian state of the system. This will be a lot easier to
-dynamically feed from a helper function.
+We can handle larger sized memops now, expand the range of the assert.
 
-The most complex example is PPC which has a helper called
-ppc_maybe_bswap_register() which was doing this.
+Fixes: 4b473e0c60 (tcg: Expand MO_SIZE to 3 bits)
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-This is still an RFC but I've spun out v2 for further discussion.
+---
+v2
+  - instead of 128 use 1 << MO_SIZE for future proofing
+---
+ include/exec/memop.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-In v2:
-
-  - drop uint8_t casting and use void as C intended ;-)
-  - add specific 32/64 bit helpers with type checking an assertion
-  - various tweaks and fixes (see individual commits)
-
-There are a few other misc clean-ups I did on the way which might be
-worth cherry picking for 10.0 but I'll leave that up to maintainers.
-
-Alex Bennée (11):
-  include/exec: fix assert in size_memop
-  include/gdbstub: fix include guard in commands.h
-  gdbstub: assert earlier in handle_read_all_regs
-  gdbstub: introduce target independent gdb register helper
-  target/arm: convert 32 bit gdbstub to new helpers
-  target/arm: convert 64 bit gdbstub to new helpers
-  target/ppc: expand comment on FP/VMX/VSX access functions
-  target/ppc: make ppc_maybe_bswap_register static
-  target/ppc: convert gdbstub to new helpers
-  target/microblaze: convert gdbstub to new helper
-  include/gdbstub: add note to helpers.h
-
- include/exec/memop.h        |   4 +-
- include/gdbstub/commands.h  |   2 +-
- include/gdbstub/helpers.h   |   4 +-
- include/gdbstub/registers.h |  55 ++++++++++
- target/ppc/cpu.h            |   8 +-
- gdbstub/gdbstub.c           |  25 ++++-
- target/arm/gdbstub.c        |  55 ++++++----
- target/arm/gdbstub64.c      |  53 ++++++----
- target/microblaze/gdbstub.c |  49 ++++-----
- target/ppc/gdbstub.c        | 197 ++++++++++++++++++++----------------
- 10 files changed, 292 insertions(+), 160 deletions(-)
- create mode 100644 include/gdbstub/registers.h
-
+diff --git a/include/exec/memop.h b/include/exec/memop.h
+index 407a47d82c..6afe50a7d0 100644
+--- a/include/exec/memop.h
++++ b/include/exec/memop.h
+@@ -162,8 +162,8 @@ static inline unsigned memop_size(MemOp op)
+ static inline MemOp size_memop(unsigned size)
+ {
+ #ifdef CONFIG_DEBUG_TCG
+-    /* Power of 2 up to 8.  */
+-    assert((size & (size - 1)) == 0 && size >= 1 && size <= 8);
++    /* Power of 2 up to 128.  */
++    assert((size & (size - 1)) == 0 && size >= 1 && size <= (1 << MO_SIZE));
+ #endif
+     return (MemOp)ctz32(size);
+ }
 -- 
 2.39.5
 
