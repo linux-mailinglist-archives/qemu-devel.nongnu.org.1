@@ -2,37 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1353A6E9F5
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8036CA6E9C8
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:52:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twy7f-0004X0-Co; Tue, 25 Mar 2025 02:50:51 -0400
+	id 1twy7g-0004XR-LN; Tue, 25 Mar 2025 02:50:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7a-0004WW-SK; Tue, 25 Mar 2025 02:50:46 -0400
+ id 1twy7b-0004Wk-Ud; Tue, 25 Mar 2025 02:50:47 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7Y-0001cM-9y; Tue, 25 Mar 2025 02:50:46 -0400
+ id 1twy7Z-0001cL-Qu; Tue, 25 Mar 2025 02:50:47 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 93862107D5F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 974F1107D60;
  Tue, 25 Mar 2025 09:49:21 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 32B3E1D5E6E;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 39E241D5E6F;
  Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 2BB5257024; Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
+ id 2DAA757026; Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 v2 00/34] Patch Round-up for stable 7.2.17,
- freeze on 2025-03-24 (frozen)
-Date: Tue, 25 Mar 2025 09:50:21 +0300
-Message-Id: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 27/34] ui/cocoa: Temporarily ignore annoying
+ deprecated declaration warnings
+Date: Tue, 25 Mar 2025 09:50:22 +0300
+Message-Id: <20250325065031.3263718-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
+References: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -59,95 +62,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.17:
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+These warnings are breaking some build configurations since 2 months
+now (https://gitlab.com/qemu-project/qemu/-/issues/2575):
 
-Patch freeze is 2025-03-24 (frozen), and the release is planned for 2025-03-26:
+  ui/cocoa.m:662:14: error: 'CVDisplayLinkCreateWithCGDisplay' is deprecated: first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:), NSWindow.displayLink(target:selector:), or NSScreen.displayLink(target:selector:)  [-Werror,-Wdeprecated-declarations]
+    662 |         if (!CVDisplayLinkCreateWithCGDisplay(display, &displayLink)) {
+        |              ^
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:89:20: note: 'CVDisplayLinkCreateWithCGDisplay' has been explicitly marked deprecated here
+     89 | CV_EXPORT CVReturn CVDisplayLinkCreateWithCGDisplay(
+        |                    ^
+  ui/cocoa.m:663:29: error: 'CVDisplayLinkGetNominalOutputVideoRefreshPeriod' is deprecated: first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:), NSWindow.displayLink(target:selector:), or NSScreen.displayLink(target:selector:)  [-Werror,-Wdeprecated-declarations]
+    663 |             CVTime period = CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
+        |                             ^
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:182:18: note: 'CVDisplayLinkGetNominalOutputVideoRefreshPeriod' has been explicitly marked deprecated here
+    182 | CV_EXPORT CVTime CVDisplayLinkGetNominalOutputVideoRefreshPeriod( CVDisplayLinkRef CV_NONNULL displayLink );
+        |                  ^
+  ui/cocoa.m:664:13: error: 'CVDisplayLinkRelease' is deprecated: first deprecated in macOS 15.0 - use NSView.displayLink(target:selector:), NSWindow.displayLink(target:selector:), or NSScreen.displayLink(target:selector:)  [-Werror,-Wdeprecated-declarations]
+    664 |             CVDisplayLinkRelease(displayLink);
+        |             ^
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVDisplayLink.h:249:16: note: 'CVDisplayLinkRelease' has been explicitly marked deprecated here
+    249 | CV_EXPORT void CVDisplayLinkRelease( CV_RELEASES_ARGUMENT CVDisplayLinkRef CV_NULLABLE displayLink );
+        |                ^
+  3 errors generated.
 
-  https://wiki.qemu.org/Planning/7.2
+For the next release, ignore the warnings using #pragma directives.
+At least until we figure the correct new API usage.
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Tested-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Message-Id: <20241121131954.98949-1-philmd@linaro.org>
+(cherry picked from commit 9cf6e41fe293dd56089faac94c36ff5cb3d96726)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index c41689e951..54acf14794 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -549,6 +549,9 @@ - (void) setContentDimensions
+     }
+ }
+ 
++#pragma clang diagnostic push
++#pragma clang diagnostic ignored "-Wdeprecated-declarations"
++
+ - (void) updateUIInfoLocked
+ {
+     /* Must be called with the iothread lock, i.e. via updateUIInfo */
+@@ -594,6 +597,8 @@ - (void) updateUIInfoLocked
+     dpy_set_ui_info(dcl.con, &info, TRUE);
+ }
+ 
++#pragma clang diagnostic pop
++
+ - (void) updateUIInfo
+ {
+     if (!allow_events) {
+-- 
+2.39.5
 
-Thanks!
-
-/mjt
-
---------------------------------------
-01* 27a8d899c7a1 Khem Raj:
-   linux-user: Do not define struct sched_attr if libc headers do
-02* 4dafba778aa3 Volker Rümelin:
-   ui/sdl2: reenable the SDL2 Windows keyboard hook procedure
-03* 7a74e468089a Mikael Szreder:
-   target/sparc: Fix gdbstub incorrectly handling registers f32-f62
-04* b819fd699424 Peter Maydell:
-   target/arm: Report correct syndrome for UNDEFINED CNTPS_*_EL1 from EL2 
-   and NS EL1
-05* ccda792945d6 Peter Maydell:
-   target/arm: Report correct syndrome for UNDEFINED S1E2 AT ops at EL3
-06* 707d478ed8f2 Peter Maydell:
-   target/arm: Report correct syndrome for UNDEFINED LOR sysregs when NS=0
-07* 4cf494865161 Peter Maydell:
-   target/arm: Make CP_ACCESS_TRAPs to AArch32 EL3 be Monitor traps
-08* d04c6c3c000a Peter Maydell:
-   hw/intc/arm_gicv3_cpuif: Don't downgrade monitor traps for AArch32 EL3
-09* 464ce71a963b Bernhard Beschow:
-   Kconfig: Extract CONFIG_USB_CHIPIDEA from CONFIG_IMX
-10* 63dc0b864739 Sairaj Kodilkar:
-   amd_iommu: Use correct DTE field for interrupt passthrough
-11* 6291a28645a0 Philippe Mathieu-Daudé:
-   hw/i386/amd_iommu: Explicit use of AMDVI_BASE_ADDR in amdvi_init
-12* 3684717b7407 Sairaj Kodilkar:
-   amd_iommu: Use correct bitmask to set capability BAR
-13* 83cb18ac4500 Stefano Garzarella:
-   cryptodev/vhost: allocate CryptoDevBackendVhost using g_mem0()
-14* ffd455963f23 Max Chou:
-   target/riscv: rvv: Fix unexpected behavior of vector reduction 
-   instructions when vl is 0
-15* 3fba76e61caa Daniel Henrique Barboza:
-   target/riscv/debug.c: use wp size = 4 for 32-bit CPUs
-16* c86edc547692 Daniel Henrique Barboza:
-   target/riscv: throw debug exception before page fault
-17* 3521f9cadc29 Rodrigo Dias Correa:
-   goldfish_rtc: Fix tick_offset migration
-18* 2ad638a3d160 Denis Rastyogin:
-   block/qed: fix use-after-free by nullifying timer pointer after free
-19* 3b2e22c0bbe2 Patrick Venture:
-   hw/gpio: npcm7xx: fixup out-of-bounds access
-20* 29c041ca7f8d Nicholas Piggin:
-   ppc/pnv/occ: Fix common area sensor offsets
-21* 937df81af675 Peter Maydell:
-   hw/net/smc91c111: Ignore attempt to pop from empty RX fifo
-22* 2fa3a5b94696 Peter Maydell:
-   hw/net/smc91c111: Sanitize packet numbers
-23* aad6f264add3 Peter Maydell:
-   hw/net/smc91c111: Sanitize packet length on tx
-24* 700d3d6dd41d Peter Maydell:
-   hw/net/smc91c111: Don't allow data register access to overrun buffer
-25* b75c5f987916 Kevin Wolf:
-   block: Zero block driver state before reopening
-26* 48170c2d865a Greg Kurz:
-   docs: Rename default-configs to configs
-27 9cf6e41fe293 Philippe Mathieu-Daudé:
-   ui/cocoa: Temporarily ignore annoying deprecated declaration warnings
-28 e6c38d2ab55d Joe Komlodi:
-   util/cacheflush: Make first DSB unconditional on aarch64
-29 298a04998fa4 Richard Henderson:
-   target/arm: Make DisasContext.{fp, sve}_access_checked tristate
-30 cc7abc35dfa7 Richard Henderson:
-   target/arm: Simplify pstate_sm check in sve_access_check
-31* 50e975414906 Konstantin Shkolnyy:
-   vdpa: Fix endian bugs in shadow virtqueue
-32 b027f55a994a Konstantin Shkolnyy:
-   vdpa: Allow vDPA to work on big-endian machine
-33 73c0c904fc99 Nicholas Piggin:
-   target/ppc: Fix e200 duplicate SPRs
-34 78877b2e0646 Jamin Lin:
-   hw/misc/aspeed_hace: Fix buffer overflow in has_padding function
-
-(commit(s) marked with * were in previous series and are not resent)
 
