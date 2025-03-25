@@ -2,97 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F04CA70642
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 17:11:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35EF8A7066A
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 17:13:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tx6of-0004Vp-DW; Tue, 25 Mar 2025 12:07:49 -0400
+	id 1tx6og-0004jZ-2C; Tue, 25 Mar 2025 12:07:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6o5-0004Th-Q2
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:07:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6oC-0004VL-Ez
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:07:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6o3-0007NJ-UT
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:07:13 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6oA-0007PJ-Hx
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:07:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742918831;
+ s=mimecast20190719; t=1742918835;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jhcRNjx2BrP+0kRyGk0tVLJsIELhnDkDYM8TRdfrTQA=;
- b=XdDtLRRg1aD81kcszyHJ4NB6JkFLEtCNUuWZgPjiTibzOVePm8c9A6VhDF07FsmIwj8ZZH
- WLPbxm6cpETnHB2OfyoL4fsCskGLOLIEr1x9/ChQg2KpJnvrnm4Cp1URqEDp+pNoIPRm+I
- ezuB80ZM3l05qeSDgOEWl7YSJ5qeOM0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rjFF7/NAnTPz1YSqozhAn7Ks81w0e1zU5LPdNmpLML8=;
+ b=ei8t3ds+Ds0v4EHFovElFwxLYYbotIg6mbcaJ0OnTKriGr7cuk4H6UK3FC7KCIWaibC7xF
+ A3lTUje+4N0VRNyEfBf5E9dPOU5fVvzLTvYORnykJyAYMEo+xV8oOe5/U1HTyxwM809qMb
+ OZrdNZymHjoRjZeN3UTstRiLnKBzDD4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-xxzk1bPrPd2iLJQ1RvTv3Q-1; Tue, 25 Mar 2025 12:07:09 -0400
-X-MC-Unique: xxzk1bPrPd2iLJQ1RvTv3Q-1
-X-Mimecast-MFC-AGG-ID: xxzk1bPrPd2iLJQ1RvTv3Q_1742918828
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-39ac9b0cb6aso534651f8f.2
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 09:07:09 -0700 (PDT)
+ us-mta-682-VsC58CdeM1WAo8h1dX5nwg-1; Tue, 25 Mar 2025 12:07:13 -0400
+X-MC-Unique: VsC58CdeM1WAo8h1dX5nwg-1
+X-Mimecast-MFC-AGG-ID: VsC58CdeM1WAo8h1dX5nwg_1742918832
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43cf172ffe1so49082065e9.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 09:07:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742918828; x=1743523628;
+ d=1e100.net; s=20230601; t=1742918832; x=1743523632;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jhcRNjx2BrP+0kRyGk0tVLJsIELhnDkDYM8TRdfrTQA=;
- b=UVBpmw7yNWhKzsLj8ylErD0nZjwbObHHQaC0slCFIeBJ5jAiuhxDJ98kvT7b9OE+Q6
- I5mswI/Mqu5CGsjRDP0IEv6Z/GRlDJE58qc7H90Gvl/mOowUvi8GqXFpGrTWp6A7Qeik
- HiGdidGvWu2iwyLJr3xtpidrKnuovclLM3J5dVK28y45B2vAiGuGs6gWR5OJj7WutFlg
- FMsHpNU02u/8KvspvW/juABemZrBgHfQdTKNbv1zsaOjkY3F+C1tSL3oiAXY60cE35TO
- LtbIkf+BRKOXb/ZQTK0dgvwSvL2Un9EtozupHeIjRd2EzYa5rbLdYCMXPHT4baCtDCp+
- ugPw==
-X-Gm-Message-State: AOJu0YycD6XzOX0qGGoBHqouQvD/BP9R0WbMoNVqMW569Ae+Thvoc1CP
- p9TbFEn1RgSQkkac8Rf2VgZ9GsEKxh6sqzxlz2LhFMXbz3EtYBtfBhDud68nVfDPFZLLEl5vgl4
- 4szujzIZjGOQjnpixL0DLmchwWI8X5uU8q6TPrIwFvz9Ft1PzJUMq
-X-Gm-Gg: ASbGncucMXbBYv9uPJM3mLSRZLvvLLt5pHytSScjIQlQ9FyAb8crXjrAoYqA50Td1xk
- V5BCzi1hZG/yWFf6kQ0i/cOXisizUpYWi6ZSbD+ooAeO8yhnZSdC+rud+/WdoK5VQtCSgzdPCYH
- DcJJZy5htovHFIO1SSNzQmeG2SlvDkRj09c2xebdErQkBzOl9nFIozDo+PwhfTCR7+Lp3AgDATp
- VKjzkzw/fw08+YaENA3wgPpvsH1ruhUSh+sEMVNPz8ceUam8X+XONbSQvFZkbVeUVtlUhknOYoE
- Cpy0ziYnxXFuAqyG4j9s/5UnfxpQEg/M4a0SuZ8GQF/oN/Uz+eIUnyoPQ9ol1EqY6BxcyxMShQ=
+ bh=rjFF7/NAnTPz1YSqozhAn7Ks81w0e1zU5LPdNmpLML8=;
+ b=gyAugOK7y8qdgbeHdc/iCSqZ+D2oHu8Y8Au0v+Ef3Jm/IDkMIrInSGItxagBW7lAKf
+ ZFNZA7VTQIun4Px+ZBd1DqOOwob+WONRhXlh6QCf6aMADtSux7Oh4gZXB51EW5NSrwUi
+ UvPoGEKNwFkSYCBaFfYPCSwSIJ/J9gJynzxwQw+9hiYQjsy38RDgxgtjv+1UnW4Rqn49
+ py1i0ArUKgvd21KOkfnqBZBT5JvcrW/12O6yH/hA2xdFPq/1NdJaQDDS7fZCNCW+UiPW
+ fjvdcbjiPvYnP6scsiUU0KcDftq5eutUUIlMgTOSCDtttSFDMLWhjqRg9ipsC9f2Byyo
+ 9Y+w==
+X-Gm-Message-State: AOJu0YxEt0U2xVN98JxiWS8NE+kSivCOY6Lssw3IO1g2AaSvpc1Jjucl
+ UGdmfi/tyAT/wgFSlaqM3o/hRP5W5+TO+l/QGENCF8TK8GNgwymRdlDbZtyw/b3MX+xDlTsW5rq
+ vN+F7PfwCpPH5pGopcLdEpIdoQdlTyHa34y5QFpz7xmRCga+9wfXM
+X-Gm-Gg: ASbGnctW/1TYrQaLPo3jCNfKPY4WLNQEveLMrBN6ACfFuCbO8f/vVhVsoQ9F9ixyaIU
+ Tj/kfrrAx/EDGYrIFYlKt2Sp3/JY6FdkZfuUsswHmjxZxHW/dykKMWrMPVeIjasGGYVfBiqSauG
+ 3qX4VONtzChhnyHqp9kbo30UJr2x8XZMNoEdyZoRIjR5C1cDYSTdvpOfV+irknj+Br9LQtbziyP
+ Pb9ahrjXWA5CLkavqGr5P1kc3bHnYQPoajRZ/6NB70RSf5EV+uVk1hqzl48XiSv79o25AtzjDGF
+ a45fHbrQ8ZfvTXa/0GfEikGTpUQ5BX5ck8vkolIpPlVheLdmJFL/BXuCrwKxoDVGr65W+h1vrQ=
  =
-X-Received: by 2002:a05:6000:178c:b0:391:3207:2e75 with SMTP id
- ffacd0b85a97d-3997f8fc3cemr13654817f8f.18.1742918828337; 
- Tue, 25 Mar 2025 09:07:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCkrD/wzEorkAVHvh1K8UNAFCtoVb4CUf6LTpZKu2/s/1cTGrAe7sXbe3mn+oCr0e5ot2hJQ==
-X-Received: by 2002:a05:6000:178c:b0:391:3207:2e75 with SMTP id
- ffacd0b85a97d-3997f8fc3cemr13654785f8f.18.1742918827936; 
- Tue, 25 Mar 2025 09:07:07 -0700 (PDT)
+X-Received: by 2002:a05:600c:4512:b0:43c:f87c:24ce with SMTP id
+ 5b1f17b1804b1-43d50a3781amr120915875e9.21.1742918832346; 
+ Tue, 25 Mar 2025 09:07:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUBgrGpYPXbqZB6tLBOLQtQlBqo13vqTWJnk1A1xcnG1uyuXkYtseU9zsy2hosH8lYgud0OQ==
+X-Received: by 2002:a05:600c:4512:b0:43c:f87c:24ce with SMTP id
+ 5b1f17b1804b1-43d50a3781amr120915145e9.21.1742918831558; 
+ Tue, 25 Mar 2025 09:07:11 -0700 (PDT)
 Received: from localhost
  (p200300cfd74f9db6ee8035b86ef736e5.dip0.t-ipconnect.de.
  [2003:cf:d74f:9db6:ee80:35b8:6ef7:36e5])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9eef37sm13852281f8f.85.2025.03.25.09.07.04
+ 5b1f17b1804b1-43d6eab2466sm14707875e9.1.2025.03.25.09.07.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Mar 2025 09:07:04 -0700 (PDT)
+ Tue, 25 Mar 2025 09:07:09 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH 05/15] fuse: Change setup_... to mount_fuse_export()
-Date: Tue, 25 Mar 2025 17:06:45 +0100
-Message-ID: <20250325160655.119407-4-hreitz@redhat.com>
+Subject: [PATCH 06/15] fuse: Fix mount options
+Date: Tue, 25 Mar 2025 17:06:46 +0100
+Message-ID: <20250325160655.119407-5-hreitz@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250325160529.117543-1-hreitz@redhat.com>
 References: <20250325160529.117543-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,127 +108,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no clear separation between what should go into
-setup_fuse_export() and what should stay in fuse_export_create().
+Since I actually took a look into how mounting with libfuse works[1], I
+now know that the FUSE mount options are not exactly standard mount
+system call options.  Specifically:
+- We should add "nosuid,nodev,noatime" because that is going to be
+  translated into the respective MS_ mount flags; and those flags make
+  sense for us.
+- We can set rw/ro to make the mount writable or not.  It makes sense to
+  set this flag to produce a better error message for read-only exports
+  (EROFS instead of EACCES).
+  This changes behavior as can be seen in iotest 308: It is no longer
+  possible to modify metadata of read-only exports.
 
-Make it clear that setup_fuse_export() is for mounting only.  Rename it,
-and move everything that has nothing to do with mounting up into
-fuse_export_create().
+In addition, in the comment, we can note that the FUSE mount() system
+call actually expects some more parameters that we can omit because
+fusermount3 (i.e. libfuse) will figure them out by itself:
+- fd: /dev/fuse fd
+- rootmode: Inode mode of the root node
+- user_id/group_id: Mounter's UID/GID
+
+[1] It invokes fusermount3, an SUID libfuse helper program, which parses
+    and processes some mount options before actually invoking the
+    mount() system call.
 
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c | 49 ++++++++++++++++++++-------------------------
- 1 file changed, 22 insertions(+), 27 deletions(-)
+ block/export/fuse.c        | 14 +++++++++++---
+ tests/qemu-iotests/308     |  4 ++--
+ tests/qemu-iotests/308.out |  3 ++-
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index 10606454c3..7bdec43b5c 100644
+index 7bdec43b5c..0d20995a0e 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -72,8 +72,7 @@ static void fuse_export_delete(BlockExport *exp);
+@@ -246,10 +246,18 @@ static int mount_fuse_export(FuseExport *exp, Error **errp)
+     int ret;
  
- static void init_exports_table(void);
- 
--static int setup_fuse_export(FuseExport *exp, const char *mountpoint,
--                             bool allow_other, Error **errp);
-+static int mount_fuse_export(FuseExport *exp, Error **errp);
- static void read_from_fuse_export(void *opaque);
- 
- static bool is_regular_file(const char *path, Error **errp);
-@@ -193,23 +192,32 @@ static int fuse_export_create(BlockExport *blk_exp,
-     exp->st_gid = getgid();
- 
-     if (args->allow_other == FUSE_EXPORT_ALLOW_OTHER_AUTO) {
--        /* Ignore errors on our first attempt */
--        ret = setup_fuse_export(exp, args->mountpoint, true, NULL);
--        exp->allow_other = ret == 0;
-+        /* Try allow_other == true first, ignore errors */
-+        exp->allow_other = true;
-+        ret = mount_fuse_export(exp, NULL);
-         if (ret < 0) {
--            ret = setup_fuse_export(exp, args->mountpoint, false, errp);
-+            exp->allow_other = false;
-+            ret = mount_fuse_export(exp, errp);
-         }
-     } else {
-         exp->allow_other = args->allow_other == FUSE_EXPORT_ALLOW_OTHER_ON;
--        ret = setup_fuse_export(exp, args->mountpoint, exp->allow_other, errp);
-+        ret = mount_fuse_export(exp, errp);
-     }
-     if (ret < 0) {
-         goto fail;
-     }
- 
-+    g_hash_table_insert(exports, g_strdup(exp->mountpoint), NULL);
-+
-+    aio_set_fd_handler(exp->common.ctx,
-+                       fuse_session_fd(exp->fuse_session),
-+                       read_from_fuse_export, NULL, NULL, NULL, exp);
-+    exp->fd_handler_set_up = true;
-+
-     return 0;
- 
- fail:
-+    fuse_export_shutdown(blk_exp);
-     fuse_export_delete(blk_exp);
-     return ret;
- }
-@@ -227,10 +235,10 @@ static void init_exports_table(void)
- }
- 
- /**
-- * Create exp->fuse_session and mount it.
-+ * Create exp->fuse_session and mount it.  Expects exp->mountpoint,
-+ * exp->writable, and exp->allow_other to be set as intended for the mount.
-  */
--static int setup_fuse_export(FuseExport *exp, const char *mountpoint,
--                             bool allow_other, Error **errp)
-+static int mount_fuse_export(FuseExport *exp, Error **errp)
- {
-     const char *fuse_argv[4];
-     char *mount_opts;
-@@ -243,7 +251,7 @@ static int setup_fuse_export(FuseExport *exp, const char *mountpoint,
+     /*
+-     * max_read needs to match what fuse_init() sets.
+-     * max_write need not be supplied.
++     * Note that these mount options differ from what we would pass to a direct
++     * mount() call:
++     * - nosuid, nodev, and noatime are not understood by the kernel; libfuse
++     *   uses those options to construct the mount flags (MS_*)
++     * - The FUSE kernel driver requires additional options (fd, rootmode,
++     *   user_id, group_id); these will be set by libfuse.
++     * Note that max_read is set here, while max_write is set via the FUSE INIT
++     * operation.
       */
-     mount_opts = g_strdup_printf("max_read=%zu,default_permissions%s",
+-    mount_opts = g_strdup_printf("max_read=%zu,default_permissions%s",
++    mount_opts = g_strdup_printf("%s,nosuid,nodev,noatime,max_read=%zu,"
++                                 "default_permissions%s",
++                                 exp->writable ? "rw" : "ro",
                                   FUSE_MAX_BOUNCE_BYTES,
--                                 allow_other ? ",allow_other" : "");
-+                                 exp->allow_other ? ",allow_other" : "");
+                                  exp->allow_other ? ",allow_other" : "");
  
-     fuse_argv[0] = ""; /* Dummy program name */
-     fuse_argv[1] = "-o";
-@@ -256,30 +264,17 @@ static int setup_fuse_export(FuseExport *exp, const char *mountpoint,
-     g_free(mount_opts);
-     if (!exp->fuse_session) {
-         error_setg(errp, "Failed to set up FUSE session");
--        ret = -EIO;
--        goto fail;
-+        return -EIO;
-     }
+diff --git a/tests/qemu-iotests/308 b/tests/qemu-iotests/308
+index ea81dc496a..266b109ff3 100755
+--- a/tests/qemu-iotests/308
++++ b/tests/qemu-iotests/308
+@@ -177,7 +177,7 @@ stat -c 'Permissions pre-chmod: %a' "$EXT_MP"
+ chmod u+w "$EXT_MP" 2>&1 | _filter_testdir | _filter_imgfmt
+ stat -c 'Permissions post-+w: %a' "$EXT_MP"
  
--    ret = fuse_session_mount(exp->fuse_session, mountpoint);
-+    ret = fuse_session_mount(exp->fuse_session, exp->mountpoint);
-     if (ret < 0) {
-         error_setg(errp, "Failed to mount FUSE session to export");
--        ret = -EIO;
--        goto fail;
-+        return -EIO;
-     }
-     exp->mounted = true;
+-# But that we can set, say, +x (if we are so inclined)
++# Same for other flags, like, say +x
+ chmod u+x "$EXT_MP" 2>&1 | _filter_testdir | _filter_imgfmt
+ stat -c 'Permissions post-+x: %a' "$EXT_MP"
  
--    g_hash_table_insert(exports, g_strdup(mountpoint), NULL);
--
--    aio_set_fd_handler(exp->common.ctx,
--                       fuse_session_fd(exp->fuse_session),
--                       read_from_fuse_export, NULL, NULL, NULL, exp);
--    exp->fd_handler_set_up = true;
--
-     return 0;
--
--fail:
--    fuse_export_shutdown(&exp->common);
--    return ret;
- }
+@@ -235,7 +235,7 @@ output=$($QEMU_IO -f raw -c 'write -P 42 1M 64k' "$TEST_IMG" 2>&1 \
  
- /**
+ # Expected reference output: Opening the file fails because it has no
+ # write permission
+-reference="Could not open 'TEST_DIR/t.IMGFMT': Permission denied"
++reference="Could not open 'TEST_DIR/t.IMGFMT': Read-only file system"
+ 
+ if echo "$output" | grep -q "$reference"; then
+     echo "Writing to read-only export failed: OK"
+diff --git a/tests/qemu-iotests/308.out b/tests/qemu-iotests/308.out
+index e5e233691d..aa96faab6d 100644
+--- a/tests/qemu-iotests/308.out
++++ b/tests/qemu-iotests/308.out
+@@ -53,7 +53,8 @@ Images are identical.
+ Permissions pre-chmod: 400
+ chmod: changing permissions of 'TEST_DIR/t.IMGFMT.fuse': Read-only file system
+ Permissions post-+w: 400
+-Permissions post-+x: 500
++chmod: changing permissions of 'TEST_DIR/t.IMGFMT.fuse': Read-only file system
++Permissions post-+x: 400
+ 
+ === Mount over existing file ===
+ {'execute': 'block-export-add',
 -- 
 2.48.1
 
