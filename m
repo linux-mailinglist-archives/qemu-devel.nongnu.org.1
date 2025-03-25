@@ -2,88 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E631A702AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 14:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FE5A7029F
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 14:49:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tx4fI-0004dM-Mn; Tue, 25 Mar 2025 09:50:04 -0400
+	id 1tx4cv-0003JX-6X; Tue, 25 Mar 2025 09:47:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nabelova31@gmail.com>)
- id 1tx1tI-0001gM-BJ; Tue, 25 Mar 2025 06:52:16 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nabelova31@gmail.com>)
- id 1tx1tG-0000Jt-Gh; Tue, 25 Mar 2025 06:52:15 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-5499e3ec54dso6168411e87.0; 
- Tue, 25 Mar 2025 03:52:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742899929; x=1743504729; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=pHEcMVh/SYBIMGHrkkB/aUk+EIlj1RwdFO7FM1ymqiQ=;
- b=R/V+uPwtYaWivCdZFeGreRNceE3dxf7fGfrteqO60FMxkPk9AdxBI1Rj7rV5Kkrsik
- qPu04BdgP7me7hpCjAGwv61XNODVw9HtZENKJLvcD2pQLWu7Q1yKwDOLxmwquVzENZ29
- qHhC/lE0Fp/1DPf5vUuQ/96Yxa/WSlsVSUqPQvNklYb35O4qrRcrWae85xvq4iJaaMlf
- 0otmU+YFF/eC/2qS29+VkgfapNzDp/BlEms0sth/tXluXk1n7Crs6pN6p2JZZe6lH+i8
- /YDwD5cQuquGVS3FwbpskemXq4J0jtYL5dlwVUw2oLF/+m9gT85WgAjSaJpPdNaWpKow
- GKwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742899929; x=1743504729;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pHEcMVh/SYBIMGHrkkB/aUk+EIlj1RwdFO7FM1ymqiQ=;
- b=VGVQqoP2V/Q+ELw7GX/tMskCaitT1eqj8XSy4T0zEYZEWXh389FJYnJ/m5djyYtnur
- 7USthRTnDiwCYEaRmtARIcDHj0F2Ei316BvuelgTzJPE7W7f/V+g/rdMEOKrAN+Pma1L
- gLEjsKoR+vdpVQAW/PMBnGRr4aGzDbOpsD4G1WKpk3jJNXVm0I1WaG9YQj4OCNBKBemA
- uhPQLkzSZpH3Yum4FxOAJvAxGgh7Z4lZoDOk/vPlpkaTXgJPrI40GGDhe5XBuNC45HrY
- 4gO3uA1qzIi707xNLZ2/nAalskGBiyM/ehVA6xybH+iocPi1dlwTsSUKmtoUJAhb1bUc
- qf0A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVcHv+3SqwOr3RwDZDQloxUSrDn8sPgah5f8jOArVfhg8TGzbDux0lyLIDqNftsG3llObJwNMYe6A==@nongnu.org
-X-Gm-Message-State: AOJu0YxrVpR0qTGitiM9YaYEc0Y5+yIJFUc8yOI2a8q4STb6AHlzgo1Q
- iTSCmsvjfCFkY7I+cyICD65rAmP734vRm4JvlVmqVqVJ6TQqgzPQspH5ixSGxttYhA==
-X-Gm-Gg: ASbGnctW25X4AkERf0um7GoVUPYjTUZlfw87bR4r7HVC1xbtvf7HjlQ9ZcZMwwgI3gW
- cwx/oGfLiMscUckOB4PBK2L6pR2m5+KbBD/Bn2/7IJ6anl0PT87jLJ4rY8qulUR8GGW3FmVPfiY
- 5OZt9TYagmQoWhv/1cBx/zZW8aVWLVwnGkwQaF79qxDoR4dxMlifrCgSiv0eDL1pW8ddMutnOTe
- DVeUM9yv3Np0V9RhayHAb+JbpnN85OWrIxsPpI+Ay6AilVLd/FDP6OzCbV0wSsrNdYogMO8Ox95
- c4oKwqQY19bAOzfIZoSALQVYjxeH97VdssE7WhX/R+NAHd1mKhjv2f7R0zzq7SHA8ov+fbmLIXt
- 8WsE=
-X-Google-Smtp-Source: AGHT+IGmA7MhKflP/qlY7gXakCQ+NavqPexLT2yKcy/SGNabH4+9GKprgtyXW+6Lgvp4kkiJSZYO3A==
-X-Received: by 2002:a05:6512:e84:b0:549:2ae5:99db with SMTP id
- 2adb3069b0e04-54ad64f82ecmr5445217e87.45.1742899928951; 
- Tue, 25 Mar 2025 03:52:08 -0700 (PDT)
-Received: from localhost.localdomain ([195.16.41.104])
- by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-54ad6480ed6sm1450635e87.103.2025.03.25.03.52.06
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Mar 2025 03:52:08 -0700 (PDT)
-From: Anastasia Belova <nabelova31@gmail.com>
-To: qemu-devel@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Cc: Anastasia Belova <nabelova31@gmail.com>, qemu-arm@nongnu.org,
- sdl.qemu@linuxtesting.org, Anastasia Belova <abelova@astralinux.ru>
-Subject: [PATCH test] target/arm: add bounding a->imm assertion
-Date: Tue, 25 Mar 2025 13:52:03 +0300
-Message-ID: <20250325105204.59368-1-nabelova31@gmail.com>
-X-Mailer: git-send-email 2.47.0
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1tx4cq-0003Ir-SA; Tue, 25 Mar 2025 09:47:29 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1tx4co-0005c5-Uw; Tue, 25 Mar 2025 09:47:28 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52PCSRq5013331;
+ Tue, 25 Mar 2025 13:47:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=9Xe5U+
+ 5eMeHUIVPtmke8pC/Mqs6nNJclVj5XBD54RfY=; b=fbqBPI8RSyAE1tisn0LthG
+ WauNZiqSeGV7FqHiBNJkfgMfb+X/HfSLU6So0+58xpKEp4/B/Tx1n1jcZgpHAg/l
+ xlKJFd+8x82NGCI1EdFR7C35Fun8oPjp0qejG+lVta14cXVvwXK6tMwTPbV2Qpqm
+ B035trsSeTZHnYMCn46Ll7m2peKJa3Kpoy2vTDQh5Dt+YZb4Urkhi5Q4l/GQktwE
+ 9RjdYLfMN8rRwZ1G707fUQ2qqtrYZPh60TInHjdK5Bd3LhzJ8DN3jY6H5tlLAc2V
+ GY+4LYlHGfzD6Y+uFSbwe+XfuSUYOPVPvOIywEeEQOB+zFYpuR8o2QPo9QSy5RyA
+ ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45kvh30cj8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Mar 2025 13:47:20 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52PAVxrJ005796;
+ Tue, 25 Mar 2025 13:47:20 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45ja82ba5a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Mar 2025 13:47:20 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52PDlJqr29754032
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 25 Mar 2025 13:47:19 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 28F3B58055;
+ Tue, 25 Mar 2025 13:47:19 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8C39058043;
+ Tue, 25 Mar 2025 13:47:18 +0000 (GMT)
+Received: from [9.12.79.26] (unknown [9.12.79.26])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 25 Mar 2025 13:47:18 +0000 (GMT)
+Message-ID: <a043e145-5f18-4489-8335-58152e262654@linux.ibm.com>
+Date: Tue, 25 Mar 2025 09:47:18 -0400
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 5/5] s390: implementing CHSC SEI for AP config
+ change
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, akrowiak@linux.ibm.com
+References: <20250311151616.98244-1-rreyes@linux.ibm.com>
+ <20250311151616.98244-6-rreyes@linux.ibm.com>
+ <f2168937-5252-4e91-80d6-2ad344f443fa@redhat.com>
+Content-Language: en-US
+From: Rorie Reyes <rreyes@linux.ibm.com>
+In-Reply-To: <f2168937-5252-4e91-80d6-2ad344f443fa@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=nabelova31@gmail.com; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: uyiiGidUHhS87KMpGUdbJ7ZCcFxh4Q86
+X-Proofpoint-GUID: uyiiGidUHhS87KMpGUdbJ7ZCcFxh4Q86
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-25_05,2025-03-25_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999 mlxscore=0
+ clxscore=1015 phishscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503250095
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=rreyes@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 25 Mar 2025 09:49:44 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,30 +112,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an assertion similar to that in the do_shr_narrow().
-This will make sure that functions from sshll_ops
-have correct arguments.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+On 3/17/25 9:41 AM, Thomas Huth wrote:
+> On 11/03/2025 16.16, Rorie Reyes wrote:
+>> Handle interception of the CHSC SEI instruction for requests
+>> indicating the guest's AP configuration has changed.
+>>
+>> Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
+>> Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> Tested-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> ---
+>>   target/s390x/ioinst.c | 11 +++++++++--
+>>   1 file changed, 9 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
+>> index a944f16c25..f061c6db14 100644
+>> --- a/target/s390x/ioinst.c
+>> +++ b/target/s390x/ioinst.c
+>> @@ -17,6 +17,7 @@
+>>   #include "trace.h"
+>>   #include "hw/s390x/s390-pci-bus.h"
+>>   #include "target/s390x/kvm/pv.h"
+>> +#include "hw/s390x/ap-bridge.h"
+>>     /* All I/O instructions but chsc use the s format */
+>>   static uint64_t get_address_from_regs(CPUS390XState *env, uint32_t 
+>> ipb,
+>> @@ -573,13 +574,19 @@ out:
+>>     static int chsc_sei_nt0_get_event(void *res)
+>>   {
+>> -    /* no events yet */
+>> +    if (s390_has_feat(S390_FEAT_AP)) {
+>> +        return ap_chsc_sei_nt0_get_event(res);
+>> +    }
+>> +
+>>       return 1;
+>>   }
+>>     static int chsc_sei_nt0_have_event(void)
+>>   {
+>> -    /* no events yet */
+>> +    if (s390_has_feat(S390_FEAT_AP)) {
+>> +        return ap_chsc_sei_nt0_have_event();
+>> +    }
+>> +
+>>       return 0;
+>>   }
+>
+>  Hi!
+>
+> This unfortunately fails to link when configuring QEMU with the 
+> "--without-default-devices" configure switch:
+>
+> /usr/bin/ld: libqemu-s390x-softmmu.a.p/target_s390x_ioinst.c.o: in 
+> function `ioinst_handle_chsc':
+> /tmp/qemu-mini/target/s390x/ioinst.c:587:(.text+0x1ce1): undefined 
+> reference to `ap_chsc_sei_nt0_have_event'
+> /usr/bin/ld: /tmp/qemu-mini/target/s390x/ioinst.c:578:(.text+0x1d1c): 
+> undefined reference to `ap_chsc_sei_nt0_get_event'
+> collect2: error: ld returned 1 exit status
+>
+> I guess you have to rather use some callback mechanism, stubs or 
+> #ifdefs here instead.
+>
+>  Thomas
+>
+Hey Thomas,
 
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
----
- target/arm/tcg/translate-sve.c | 1 +
- 1 file changed, 1 insertion(+)
+Just want to let you know that I saw your review and I will address this 
+issue
 
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index d23be477b4..47ada85c92 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -6250,6 +6250,7 @@ static bool do_shll_tb(DisasContext *s, arg_rri_esz *a,
-     if (a->esz < 0 || a->esz > 2) {
-         return false;
-     }
-+    assert(a->imm > 0 && a->imm <= (8 << a->esz));
-     if (sve_access_check(s)) {
-         unsigned vsz = vec_full_reg_size(s);
-         tcg_gen_gvec_2i(vec_full_reg_offset(s, a->rd),
--- 
-2.47.0
 
 
