@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04942A70D3D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:50:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E943A70D30
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:47:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txD0Y-0002cJ-QL; Tue, 25 Mar 2025 18:44:30 -0400
+	id 1txD0X-0002VH-EQ; Tue, 25 Mar 2025 18:44:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1txD0F-0001Mg-GZ
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:11 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1txD0G-0001Tt-F4
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:12 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1txD0B-00072Q-Nq
+ id 1txD0C-00072d-MP
  for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:11 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-22423adf751so116948005ad.2
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:44:07 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-22580c9ee0aso127172505ad.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:44:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742942646; x=1743547446; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742942647; x=1743547447; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BEoa5+P2s+dvjQMF6oUGcAe5STudghf85RD71OkQiHw=;
- b=mdYuAJBb6nUkpq0aI58jwcnu0xk5zG2VDx7w6Qpn7KwfgEXPQ5t3M7KIdevOoo6QIa
- yCL9GyYldenr1SSrmBgvwnsdxSCAn6Ri4KhJbdPIDVQGUQu4+CkhyI9IK2GlKBtFHXez
- 1i32lZc1pwHUI9klrf40IPV6T+hBRHBp0MtQ/vEdQI7bAmmVh/21Nt20BtAfZPfY9Yhv
- b1s0XSvxwy92WDJx0XLSsMiSg4sRCUXaXzPaJh4XiOKJxrhyLNrh4YG9Y2/DzVUsf0bC
- +wc5P/AvJusE8sI2yJp7e85HHtd1hLWfjuhX5zpDqzYY8MMKNV0tqQyEY7A7KsyI9FhE
- lxqQ==
+ bh=YP1/YoZtmNlvDfK/7GvLWQk4iAQ+/s3R4pyDEvaptyk=;
+ b=z3MuKUL8R610AmnUVQnnfoUul6I09LrP6+xPBJCffXlM7XzynQmvINOV9Iqat2uIV+
+ PYsvu1EBDihLN+1vR3jnTheT9oHgyh4wTp3rKeKaholFcbJrkQ/lhBqP43yk2tfYHR3e
+ pyEMonI9sTB8yMbbcgH6Y2ZyCazmUVv1k0YQGURkrwbP0RTTJbcOFB1924uxbdwaBKj8
+ DS15E0CeG1B3NjLSdluYrwSme/9jjeLkKb+iVasYWUZayxMczFq5v67RtIiHVC7NfESW
+ EgO5FvmgRksoq1dEeokPavO6xnzaHf3nLN77t0PPRdJfl45bG7F4jhYLG69jP/+yQ6mu
+ FNrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742942646; x=1743547446;
+ d=1e100.net; s=20230601; t=1742942647; x=1743547447;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BEoa5+P2s+dvjQMF6oUGcAe5STudghf85RD71OkQiHw=;
- b=kpHhoxpsl3D8/Rb5duqYJuNisA8NOzFW1XBa3gSvn6C5WKbRMrZt4b5itKP7ke5N8W
- 1rS8bElQBlCbnjARUx0Zl+8BpdAZUspdjLVd6upQ0v1ZzEHSydbiuXolDYX0N5hEKf73
- FGbGPYzE7+pvNJSGjSVUsUJMcWJMLdzBATnpvt/HApRFqqpSzgLIiUFPk3S4TioFEODO
- EJp5YFceH3YNnqDt47hGUY3rcweYi4pNmH1RHi1Kex1wSL/c8tC7EdGYjdQaxhdrnNpC
- M/SgIpDgO1jvx8fImvQM/hfCE/xHjkk0MkUh1uewraTWYyFeLLZySACv3DEgVB8G1+hD
- d2Xw==
-X-Gm-Message-State: AOJu0YzQ+ZvifebEVzaH2EeCfmH3GjNKU1XdYPqU+jfYDU3x1FA41DkS
- wwWtjw7nPdgfklHsUnLyEehReQpnz9Eo+bh4R6VxtUTa/9e+Wm0evjTQ355YfAisRQ3k9XcoHwR
- N
-X-Gm-Gg: ASbGnctGc9EgO4HXLy8abp+w/PJO4f43YHfYHBTCp27dWWA0bzygHXIfUciIvGf3Kvo
- GOC/l7UyoGUB7Iucfos9JuJThxX566PfjcPNKhryUujmaPMAvKx3vQiarKYCKWBSL6lb10+Ue5N
- qgNx9BjHoITvQvr8tgOWYS8LZezvvFc/IeVqASPIlkuyvMwaGPErVDsWJFtiMIAw3pDpLLzOT64
- yO+st8P1R/BVg0E5Jz3o77Twu2gBxf1DfztdGTQhoCs+F4mzUc1PoRx7Zqp4c87hSFX/pThwBpa
- PT08YQ4JUZJupomovgdW5RO5csivvv0lj6nAo5WHBeijEmCcsDoqxuAoQr7CrjmI6nVVa93IG0c
- T
-X-Google-Smtp-Source: AGHT+IFnjpLQqFskCkmRthOCUw2WWZMAB8rTHZgfcwPMPqwOhf4H/UfSI+lZ3iEOB2qttPWlZdM+/g==
-X-Received: by 2002:a05:6a21:9188:b0:1f5:64fd:68eb with SMTP id
- adf61e73a8af0-1fe42f07ba9mr32640081637.7.1742942646156; 
+ bh=YP1/YoZtmNlvDfK/7GvLWQk4iAQ+/s3R4pyDEvaptyk=;
+ b=UZhasAFYQkzlsLFwD1jstijtbBJIrozdyFEAShx2Cej1JlAqWdBrxrv6AJ4QOzCHy9
+ tQtNuLiHrWSMwmT4+4xzALUSUbAOeAalJTxf0C9+NktiBW2kq7+AvoNmrcov0TFMhK6S
+ U0u0RFDKnjcP1T24ni5l86v3inR3/9m0bFSZEfgZfpfeuLhJAKa2qDCI8dthu6IJpoxU
+ cGlQL4XM8JQpQ7x9mvKkXR7Q2V7M4oXMLsqPgVxDWWhqpeOguJ43rhSYVBYdgSsTqq4E
+ Dg3tLmcSCNIzOUrePFSG1J/AdzzC0Pqv+UdLIHjMGmscO/HZ9s9jqu7oNR52M5Ci9W9F
+ Nj6Q==
+X-Gm-Message-State: AOJu0Yx+9c3vC7EqYzXgcFQkqnvfS+BVjXBqNbmiEm6Q22h3oBTlu4Wj
+ PV1m5UNf2s5DhtYTXAXQpFzMl7+VWjnYT0ztuB/2q0F03gi46SLsCl5IlmTr05FPThI0Z/D9z1r
+ 0
+X-Gm-Gg: ASbGnctmB0hB58lHPH3O8ddlHzRRVf6FDnH81iErgvLwWTlnMkPlyjA2XSa7OgfWGE/
+ IkHMtS3qIOCG6KTIkQnNb7jl2dLOyh/VOuh3Ql5IJcv2oxvvMfmEVAxKX0LEZnlC4jADplZ3ImP
+ RnvuAQ90dK4a9Uy7CRJv6uL/pJvMQBDwLLvO/MfFZJLYWeD1sBI62TR2PwBfJS8dROTVzPU+ZJW
+ luvs94VRMsw3xJB08RxvZEt0O6LdiylIDjOKeBo4ttwPdwrJQpn05jtEZZKth6iRdAw2ty2rW/m
+ bUCic+88pYm6hvaGtRXTpeA7plv/fNzQrRkbfI753icZIdFheIKq5aPcYHRrmhdUU/aUCLBDIzz
+ LRkLdT3u9S9A=
+X-Google-Smtp-Source: AGHT+IEXfQ8MaK3uGSzdmc4hzEM4xER01btUhd+yn5FrwCtOOjvoRd/HgC0pKaFssgBZQ8J2qv2eDA==
+X-Received: by 2002:a05:6a00:4fd6:b0:736:fff2:9ac with SMTP id
+ d2e1a72fcca58-73905a2780bmr29178545b3a.23.1742942646941; 
  Tue, 25 Mar 2025 15:44:06 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7390611d3d6sm11111321b3a.94.2025.03.25.15.44.05
+ d2e1a72fcca58-7390611d3d6sm11111321b3a.94.2025.03.25.15.44.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Mar 2025 15:44:05 -0700 (PDT)
+ Tue, 25 Mar 2025 15:44:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mrolnik@gmail.com, philmd@linaro.org, pierrick.bouvier@linaro.org,
- qemu-stable@nongnu.org
-Subject: [PATCH v2 02/11] target/avr: Improve decode of LDS, STS
-Date: Tue, 25 Mar 2025 15:43:54 -0700
-Message-ID: <20250325224403.4011975-3-richard.henderson@linaro.org>
+Cc: mrolnik@gmail.com,
+	philmd@linaro.org,
+	pierrick.bouvier@linaro.org
+Subject: [PATCH v2 03/11] hw/core/cpu: Use size_t for memory_rw_debug len
+ argument
+Date: Tue, 25 Mar 2025 15:43:55 -0700
+Message-ID: <20250325224403.4011975-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250325224403.4011975-1-richard.henderson@linaro.org>
 References: <20250325224403.4011975-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,59 +102,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The comment about not being able to define a field with
-zero bits is out of date since 94597b6146f3
-("decodetree: Allow !function with no input bits").
+Match the prototype of cpu_memory_rw_debug().
 
-This fixes the missing load of imm in the disassembler.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 9d8caa67a24 ("target/avr: Add support for disassembling via option '-d in_asm'")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/avr/translate.c | 2 --
- target/avr/insn.decode | 7 ++-----
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ include/hw/core/cpu.h     | 2 +-
+ target/sparc/cpu.h        | 2 +-
+ target/sparc/mmu_helper.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/avr/translate.c b/target/avr/translate.c
-index 4ab71d8138..e7f8ced9b3 100644
---- a/target/avr/translate.c
-+++ b/target/avr/translate.c
-@@ -1578,7 +1578,6 @@ static bool trans_LDS(DisasContext *ctx, arg_LDS *a)
-     TCGv Rd = cpu_r[a->rd];
-     TCGv addr = tcg_temp_new_i32();
-     TCGv H = cpu_rampD;
--    a->imm = next_word(ctx);
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 5d11d26556..abd8764e83 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -154,7 +154,7 @@ struct CPUClass {
  
-     tcg_gen_mov_tl(addr, H); /* addr = H:M:L */
-     tcg_gen_shli_tl(addr, addr, 16);
-@@ -1783,7 +1782,6 @@ static bool trans_STS(DisasContext *ctx, arg_STS *a)
-     TCGv Rd = cpu_r[a->rd];
-     TCGv addr = tcg_temp_new_i32();
-     TCGv H = cpu_rampD;
--    a->imm = next_word(ctx);
+     int (*mmu_index)(CPUState *cpu, bool ifetch);
+     int (*memory_rw_debug)(CPUState *cpu, vaddr addr,
+-                           uint8_t *buf, int len, bool is_write);
++                           uint8_t *buf, size_t len, bool is_write);
+     void (*dump_state)(CPUState *cpu, FILE *, int flags);
+     void (*query_cpu_fast)(CPUState *cpu, CpuInfoFast *value);
+     int64_t (*get_arch_id)(CPUState *cpu);
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index 462bcb6c0e..68f8c21e7c 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -604,7 +604,7 @@ void dump_mmu(CPUSPARCState *env);
  
-     tcg_gen_mov_tl(addr, H); /* addr = H:M:L */
-     tcg_gen_shli_tl(addr, addr, 16);
-diff --git a/target/avr/insn.decode b/target/avr/insn.decode
-index 482c23ad0c..cc302249db 100644
---- a/target/avr/insn.decode
-+++ b/target/avr/insn.decode
-@@ -118,11 +118,8 @@ BRBC            1111 01 ....... ...         @op_bit_imm
- @io_rd_imm      .... . .. ..... ....        &rd_imm     rd=%rd imm=%io_imm
- @ldst_d         .. . . .. . rd:5  . ...     &rd_imm     imm=%ldst_d_imm
+ #if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
+ int sparc_cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+-                              uint8_t *buf, int len, bool is_write);
++                              uint8_t *buf, size_t len, bool is_write);
+ #endif
  
--# The 16-bit immediate is completely in the next word.
--# Fields cannot be defined with no bits, so we cannot play
--# the same trick and append to a zero-bit value.
--# Defer reading the immediate until trans_{LDS,STS}.
--@ldst_s         .... ... rd:5 ....          imm=0
-+%ldst_imm       !function=next_word
-+@ldst_s         .... ... rd:5 ....          imm=%ldst_imm
- 
- MOV             0010 11 . ..... ....        @op_rd_rr
- MOVW            0000 0001 .... ....         &rd_rr      rd=%rd_d rr=%rr_d
+ /* translate.c */
+diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
+index 7548d01777..3821cd91ec 100644
+--- a/target/sparc/mmu_helper.c
++++ b/target/sparc/mmu_helper.c
+@@ -389,7 +389,7 @@ void dump_mmu(CPUSPARCState *env)
+  * that the sparc ABI is followed.
+  */
+ int sparc_cpu_memory_rw_debug(CPUState *cs, vaddr address,
+-                              uint8_t *buf, int len, bool is_write)
++                              uint8_t *buf, size_t len, bool is_write)
+ {
+     CPUSPARCState *env = cpu_env(cs);
+     target_ulong addr = address;
 -- 
 2.43.0
 
