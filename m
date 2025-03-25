@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CB2A6E9F7
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:58:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B10A6E9CF
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:53:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twyC0-0004OZ-3u; Tue, 25 Mar 2025 02:55:20 -0400
+	id 1twy95-0005Fi-Ma; Tue, 25 Mar 2025 02:52:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twyA2-0007BF-1f; Tue, 25 Mar 2025 02:53:21 -0400
+ id 1twy8O-00050m-S5; Tue, 25 Mar 2025 02:51:37 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy9z-0001z0-5H; Tue, 25 Mar 2025 02:53:16 -0400
+ id 1twy8M-0001qj-Hx; Tue, 25 Mar 2025 02:51:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F22A7107D80;
- Tue, 25 Mar 2025 09:49:33 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2FA14107D70;
+ Tue, 25 Mar 2025 09:49:29 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 94DD11D5E8B;
- Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id C65B81D5E7D;
+ Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 85FF15705E; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
+ id BCE0257042; Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 62/69] ppc/spapr: fix default cpu for pre-9.0 machines.
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Andreas Schwab <schwab@suse.de>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.10 49/51] linux-user/riscv: Fix handling of cpu mask in
+ riscv_hwprobe syscall
 Date: Tue, 25 Mar 2025 09:50:35 +0300
-Message-Id: <20250325065043.3263864-11-mjt@tls.msk.ru>
+Message-Id: <20250325065038.3263786-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
-References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
+References: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,35 +62,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-When POWER10 CPU was made as default, we missed keeping POWER9 as
-default for older pseries releases (pre-9.0) at that time.
-This caused breakge in default cpu evaluation for older pseries
-machines and hence this fix.
+The third argument of the syscall contains the size of the
+cpu mask in bytes, not bits.  Nor is the size rounded up to
+a multiple of sizeof(abi_ulong).
 
-Fixes: 51113013f3 ("ppc/spapr: change pseries machine default to POWER10 CPU")
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250313094705.2361997-1-harshpb@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit 1490d0bcdfcb78b4503cae42353d3dd50f4e9d96)
+Reported-by: Andreas Schwab <schwab@suse.de>
+Fixes: 9e1c7d982d7 ("linux-user/riscv: Add syscall riscv_hwprobe")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250308225902.1208237-3-richard.henderson@linaro.org>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit 1a010d22b7adecf0fb1c069e1e535af1aa51e9cf)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 0d4efaa0c0..e11b686625 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4771,6 +4771,7 @@ static void spapr_machine_8_2_class_options(MachineClass *mc)
- {
-     spapr_machine_9_0_class_options(mc);
-     compat_props_add(mc->compat_props, hw_compat_8_2, hw_compat_8_2_len);
-+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 4dff03d2bd..15caa698b2 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -8906,35 +8906,38 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
+     }
  }
  
- DEFINE_SPAPR_MACHINE(8, 2);
+-static int cpu_set_valid(abi_long arg3, abi_long arg4)
++/*
++ * If the cpumask_t of (target_cpus, cpusetsize) cannot be read: -EFAULT.
++ * If the cpumast_t has no bits set: -EINVAL.
++ * Otherwise the cpumask_t contains some bit set: 0.
++ * Unlike the kernel, we do not mask cpumask_t by the set of online cpus,
++ * nor bound the search by cpumask_size().
++ */
++static int nonempty_cpu_set(abi_ulong cpusetsize, abi_ptr target_cpus)
+ {
+-    int ret, i, tmp;
+-    size_t host_mask_size, target_mask_size;
+-    unsigned long *host_mask;
+-
+-    /*
+-     * cpu_set_t represent CPU masks as bit masks of type unsigned long *.
+-     * arg3 contains the cpu count.
+-     */
+-    tmp = (8 * sizeof(abi_ulong));
+-    target_mask_size = ((arg3 + tmp - 1) / tmp) * sizeof(abi_ulong);
+-    host_mask_size = (target_mask_size + (sizeof(*host_mask) - 1)) &
+-                     ~(sizeof(*host_mask) - 1);
+-
+-    host_mask = alloca(host_mask_size);
+-
+-    ret = target_to_host_cpu_mask(host_mask, host_mask_size,
+-                                  arg4, target_mask_size);
+-    if (ret != 0) {
+-        return ret;
+-    }
++    unsigned char *p = lock_user(VERIFY_READ, target_cpus, cpusetsize, 1);
++    int ret = -TARGET_EFAULT;
+ 
+-    for (i = 0 ; i < host_mask_size / sizeof(*host_mask); i++) {
+-        if (host_mask[i] != 0) {
+-            return 0;
++    if (p) {
++        ret = -TARGET_EINVAL;
++        /*
++         * Since we only care about the empty/non-empty state of the cpumask_t
++         * not the individual bits, we do not need to repartition the bits
++         * from target abi_ulong to host unsigned long.
++         *
++         * Note that the kernel does not round up cpusetsize to a multiple of
++         * sizeof(abi_ulong).  After bounding cpusetsize by cpumask_size(),
++         * it copies exactly cpusetsize bytes into a zeroed buffer.
++         */
++        for (abi_ulong i = 0; i < cpusetsize; ++i) {
++            if (p[i]) {
++                ret = 0;
++                break;
++            }
+         }
++        unlock_user(p, target_cpus, 0);
+     }
+-    return -TARGET_EINVAL;
++    return ret;
+ }
+ 
+ static abi_long do_riscv_hwprobe(CPUArchState *cpu_env, abi_long arg1,
+@@ -8951,7 +8954,7 @@ static abi_long do_riscv_hwprobe(CPUArchState *cpu_env, abi_long arg1,
+ 
+     /* check cpu_set */
+     if (arg3 != 0) {
+-        ret = cpu_set_valid(arg3, arg4);
++        ret = nonempty_cpu_set(arg3, arg4);
+         if (ret != 0) {
+             return ret;
+         }
 -- 
 2.39.5
 
