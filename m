@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73851A6E9DD
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:56:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8F4A6E9F9
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:59:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twyBz-0004KQ-FQ; Tue, 25 Mar 2025 02:55:20 -0400
+	id 1twyC6-0004nV-56; Tue, 25 Mar 2025 02:55:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twyA4-0007C0-3T; Tue, 25 Mar 2025 02:53:21 -0400
+ id 1twyA4-0007C2-Cp; Tue, 25 Mar 2025 02:53:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twyA1-00020L-PA; Tue, 25 Mar 2025 02:53:19 -0400
+ id 1twyA2-00020U-K6; Tue, 25 Mar 2025 02:53:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 05F50107D82;
+ by isrv.corpit.ru (Postfix) with ESMTP id 09AB5107D83;
  Tue, 25 Mar 2025 09:49:34 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9CE341D5E8D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A0B3A1D5E8E;
  Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 8AE6C57062; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
+ id 8D36F57064; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Roman Kapl <rka@sysgo.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 64/69] target/ppc: Fix e200 duplicate SPRs
-Date: Tue, 25 Mar 2025 09:50:37 +0300
-Message-Id: <20250325065043.3263864-13-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [Stable-9.2.3 65/69] Makefile: "make dist" generates a .xz, not .bz2
+Date: Tue, 25 Mar 2025 09:50:38 +0300
+Message-Id: <20250325065043.3263864-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,38 +60,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
-
-DSRR0/1 registers are in the BookE ISA not e200 specific, so
-remove the duplicate e200 register definitions.
-
-Cc: Roman Kapl <rka@sysgo.com>
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2768
-Fixes: 0e3bf4890906 ("ppc: add DBCR based debugging")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit 73c0c904fc99e2ceecbbded84ec76d40d3f2daae)
+Fixes: 9bc9e9511944 (make-release: switch to .xz format by default)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 14fb6dbbc50f43057202c685c3aa017287cca37f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index efcb80d1c2..158b8035be 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -2732,14 +2732,6 @@ static void init_proc_e200(CPUPPCState *env)
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_write_generic,
-                  0x00000000); /* TOFIX */
--    spr_register(env, SPR_BOOKE_DSRR0, "DSRR0",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_generic,
--                 0x00000000);
--    spr_register(env, SPR_BOOKE_DSRR1, "DSRR1",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_generic,
--                 0x00000000);
+diff --git a/Makefile b/Makefile
+index b65b0bd41a..c92a3cf785 100644
+--- a/Makefile
++++ b/Makefile
+@@ -207,10 +207,10 @@ clean: recurse-clean
  
-     init_tlbs_emb(env);
-     init_excp_e200(env, 0xFFFF0000UL);
+ VERSION = $(shell cat $(SRC_PATH)/VERSION)
+ 
+-dist: qemu-$(VERSION).tar.bz2
++dist: qemu-$(VERSION).tar.xz
+ 
+-qemu-%.tar.bz2:
+-	$(SRC_PATH)/scripts/make-release "$(SRC_PATH)" "$(patsubst qemu-%.tar.bz2,%,$@)"
++qemu-%.tar.xz:
++	$(SRC_PATH)/scripts/make-release "$(SRC_PATH)" "$(patsubst qemu-%.tar.xz,%,$@)"
+ 
+ distclean: clean recurse-distclean
+ 	-$(quiet-@)test -f build.ninja && $(NINJA) $(NINJAFLAGS) -t clean -g || :
 -- 
 2.39.5
 
