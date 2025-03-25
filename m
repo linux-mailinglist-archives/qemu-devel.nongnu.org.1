@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DACA6E9FB
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:59:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE11A6E9E5
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:57:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twyBm-0003e8-Ir; Tue, 25 Mar 2025 02:55:07 -0400
+	id 1twyD8-0006yk-Ua; Tue, 25 Mar 2025 02:56:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twyAc-0000HD-12; Tue, 25 Mar 2025 02:53:54 -0400
+ id 1twyAe-0000TB-GF; Tue, 25 Mar 2025 02:53:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twyAQ-00021D-QM; Tue, 25 Mar 2025 02:53:53 -0400
+ id 1twyAc-00027a-GU; Tue, 25 Mar 2025 02:53:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1363E107D85;
+ by isrv.corpit.ru (Postfix) with ESMTP id 16B30107D86;
  Tue, 25 Mar 2025 09:49:34 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A9D061D5E90;
+ by tsrv.corpit.ru (Postfix) with ESMTP id ADACF1D5E91;
  Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 9282257068; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
+ id 94E5F5706A; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Chao Liu <lc00631@tecorigin.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 67/69] target/riscv: fix handling of nop for vstart >=
- vl in some vector instruction
-Date: Tue, 25 Mar 2025 09:50:40 +0300
-Message-Id: <20250325065043.3263864-16-mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 68/69] hw/misc/aspeed_hace: Fix buffer overflow in
+ has_padding function
+Date: Tue, 25 Mar 2025 09:50:41 +0300
+Message-Id: <20250325065043.3263864-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,118 +62,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chao Liu <lc00631@tecorigin.com>
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Recently, when I was writing a RISCV test, I found that when VL is set to 0, the
-instruction should be nop, but when I tested it, I found that QEMU will treat
-all elements as tail elements, and in the case of VTA=1, write all elements
-to 1.
+The maximum padding size is either 64 or 128 bytes and should always be smaller
+than "req_len". If "padding_size" exceeds "req_len", then
+"req_len - padding_size" underflows due to "uint32_t" data type, leading to a
+large incorrect value (e.g., `0xFFXXXXXX`). This causes an out-of-bounds memory
+access, potentially leading to a buffer overflow.
 
-After troubleshooting, it was found that the vext_vx_rm_1 function was called in
-the vext_vx_rm_2, and then the vext_set_elems_1s function was called to process
-the tail element, but only VSTART >= vl was checked in the vext_vx_rm_1
-function, which caused the tail element to still be processed even if it was
-returned in advance.
+Added a check to ensure "padding_size" does not exceed "req_len" before
+computing "pad_offset". This prevents "req_len - padding_size" from underflowing
+and avoids accessing invalid memory.
 
-So I've made the following change:
-
-Put VSTART_CHECK_EARLY_EXIT(env) at the beginning of the vext_vx_rm_2 function,
-so that the VSTART register is checked correctly.
-
-Fixes: df4252b2ec ("target/riscv/vector_helpers: do early exit when
-vstart >= vl")
-Signed-off-by: Chao Liu <lc00631@tecorigin.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <b2649f14915150be4c602d63cd3ea4adf47e9d75.1741573286.git.lc00631@tecorigin.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 4e9e2478dfd26480bbf50367a67b9be0edafef2b)
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Fixes: 5cd7d8564a8b563da724b9e6264c967f0a091afa ("aspeed/hace: Support AST2600 HACE ")
+Link: https://lore.kernel.org/qemu-devel/20250321092623.2097234-3-jamin_lin@aspeedtech.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit 78877b2e06464f49f777e086845e094ea7bc82ef)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 08c7b4eaaf..9394a7233c 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -2151,8 +2151,6 @@ vext_vv_rm_1(void *vd, void *v0, void *vs1, void *vs2,
-              uint32_t vl, uint32_t vm, int vxrm,
-              opivv2_rm_fn *fn, uint32_t vma, uint32_t esz)
- {
--    VSTART_CHECK_EARLY_EXIT(env, vl);
--
-     for (uint32_t i = env->vstart; i < vl; i++) {
-         if (!vm && !vext_elem_mask(v0, i)) {
-             /* set masked-off elements to 1s */
-@@ -2176,6 +2174,8 @@ vext_vv_rm_2(void *vd, void *v0, void *vs1, void *vs2,
-     uint32_t vta = vext_vta(desc);
-     uint32_t vma = vext_vma(desc);
- 
-+    VSTART_CHECK_EARLY_EXIT(env, vl);
+diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
+index bc1d66ad80..801e52377d 100644
+--- a/hw/misc/aspeed_hace.c
++++ b/hw/misc/aspeed_hace.c
+@@ -124,6 +124,11 @@ static bool has_padding(AspeedHACEState *s, struct iovec *iov,
+     if (*total_msg_len <= s->total_req_len) {
+         uint32_t padding_size = s->total_req_len - *total_msg_len;
+         uint8_t *padding = iov->iov_base;
 +
-     switch (env->vxrm) {
-     case 0: /* rnu */
-         vext_vv_rm_1(vd, v0, vs1, vs2,
-@@ -2278,8 +2278,6 @@ vext_vx_rm_1(void *vd, void *v0, target_long s1, void *vs2,
-              uint32_t vl, uint32_t vm, int vxrm,
-              opivx2_rm_fn *fn, uint32_t vma, uint32_t esz)
- {
--    VSTART_CHECK_EARLY_EXIT(env, vl);
--
-     for (uint32_t i = env->vstart; i < vl; i++) {
-         if (!vm && !vext_elem_mask(v0, i)) {
-             /* set masked-off elements to 1s */
-@@ -2303,6 +2301,8 @@ vext_vx_rm_2(void *vd, void *v0, target_long s1, void *vs2,
-     uint32_t vta = vext_vta(desc);
-     uint32_t vma = vext_vma(desc);
- 
-+    VSTART_CHECK_EARLY_EXIT(env, vl);
++        if (padding_size > req_len) {
++            return false;
++        }
 +
-     switch (env->vxrm) {
-     case 0: /* rnu */
-         vext_vx_rm_1(vd, v0, s1, vs2,
-@@ -4638,6 +4638,8 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,          \
-     uint32_t i;                                           \
-     TD s1 =  *((TD *)vs1 + HD(0));                        \
-                                                           \
-+    VSTART_CHECK_EARLY_EXIT(env, vl);                     \
-+                                                          \
-     for (i = env->vstart; i < vl; i++) {                  \
-         TS2 s2 = *((TS2 *)vs2 + HS2(i));                  \
-         if (!vm && !vext_elem_mask(v0, i)) {              \
-@@ -4726,6 +4728,8 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1,           \
-     uint32_t i;                                            \
-     TD s1 =  *((TD *)vs1 + HD(0));                         \
-                                                            \
-+    VSTART_CHECK_EARLY_EXIT(env, vl);                      \
-+                                                           \
-     for (i = env->vstart; i < vl; i++) {                   \
-         TS2 s2 = *((TS2 *)vs2 + HS2(i));                   \
-         if (!vm && !vext_elem_mask(v0, i)) {               \
-@@ -4890,6 +4894,8 @@ static void vmsetm(void *vd, void *v0, void *vs2, CPURISCVState *env,
-     int i;
-     bool first_mask_bit = false;
- 
-+    VSTART_CHECK_EARLY_EXIT(env, vl);
-+
-     for (i = env->vstart; i < vl; i++) {
-         if (!vm && !vext_elem_mask(v0, i)) {
-             /* set masked-off elements to 1s */
-@@ -4962,6 +4968,8 @@ void HELPER(NAME)(void *vd, void *v0, void *vs2, CPURISCVState *env,      \
-     uint32_t sum = 0;                                                     \
-     int i;                                                                \
-                                                                           \
-+    VSTART_CHECK_EARLY_EXIT(env, vl);                                     \
-+                                                                          \
-     for (i = env->vstart; i < vl; i++) {                                  \
-         if (!vm && !vext_elem_mask(v0, i)) {                              \
-             /* set masked-off elements to 1s */                           \
-@@ -5320,6 +5328,8 @@ void HELPER(NAME)(void *vd, void *v0, void *vs1, void *vs2,               \
-     uint32_t vta = vext_vta(desc);                                        \
-     uint32_t num = 0, i;                                                  \
-                                                                           \
-+    VSTART_CHECK_EARLY_EXIT(env, vl);                                     \
-+                                                                          \
-     for (i = env->vstart; i < vl; i++) {                                  \
-         if (!vext_elem_mask(vs1, i)) {                                    \
-             continue;                                                     \
+         *pad_offset = req_len - padding_size;
+         if (padding[*pad_offset] == 0x80) {
+             return true;
 -- 
 2.39.5
 
