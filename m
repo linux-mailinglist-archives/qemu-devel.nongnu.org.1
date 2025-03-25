@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FE3A6E9ED
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:58:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29921A6E9F8
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:59:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twy8l-0004zr-LQ; Tue, 25 Mar 2025 02:52:01 -0400
+	id 1twyBB-0001Ev-Q4; Tue, 25 Mar 2025 02:54:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7v-0004lo-Mw; Tue, 25 Mar 2025 02:51:08 -0400
+ id 1twy9X-0006IA-J6; Tue, 25 Mar 2025 02:52:49 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7t-0001iQ-UG; Tue, 25 Mar 2025 02:51:07 -0400
+ id 1twy9R-0001xc-RY; Tue, 25 Mar 2025 02:52:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 20219107D6C;
- Tue, 25 Mar 2025 09:49:29 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id E2934107D7C;
+ Tue, 25 Mar 2025 09:49:33 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id B6ED91D5E79;
- Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 852BF1D5E87;
+ Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id B2F155703A; Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
+ id 7BB6857056; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 44/51] target/arm: Simplify pstate_sm check in
- sve_access_check
+Cc: qemu-stable@nongnu.org, Deepak Gupta <debug@rivosinc.com>,
+ Adam Zabrocki <azabrocki@nvidia.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 58/69] target/riscv: fix access permission checks for
+ CSR_SSP
 Date: Tue, 25 Mar 2025 09:50:31 +0300
-Message-Id: <20250325065038.3263786-3-mjt@tls.msk.ru>
+Message-Id: <20250325065043.3263864-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
-References: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
+References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -60,61 +62,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Deepak Gupta <debug@rivosinc.com>
 
-In StreamingMode, fp_access_checked is handled already.
-We cannot fall through to fp_access_check lest we fall
-foul of the double-check assertion.
+Commit:8205bc1 ("target/riscv: introduce ssp and enabling controls for
+zicfiss") introduced CSR_SSP but it mis-interpreted the spec on access
+to CSR_SSP in M-mode. Gated to CSR_SSP is not gated via `xSSE`. But
+rather rules clearly specified in section "22.2.1. Shadow Stack Pointer
+(ssp) CSR access contr" in the priv spec.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 285b1d5fcef ("target/arm: Handle SME in sve_access_check")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250307190415.982049-3-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: move declaration of 'ret' to top of block]
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit cc7abc35dfa790ba6c20473c03745428c1c626b6)
+Fixes: 8205bc127a83 ("target/riscv: introduce ssp and enabling controls
+for zicfiss". Thanks to Adam Zabrocki for bringing this to attention.
+
+Reported-by: Adam Zabrocki <azabrocki@nvidia.com>
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250306064636.452396-1-debug@rivosinc.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit 86c78b280607fcff787866a03374047c65037a90)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 67d3219a30..c7428eb674 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1244,23 +1244,23 @@ static bool fp_access_check(DisasContext *s)
- bool sve_access_check(DisasContext *s)
- {
-     if (s->pstate_sm || !dc_isar_feature(aa64_sve, s)) {
-+        bool ret;
-+
-         assert(dc_isar_feature(aa64_sme, s));
--        if (!sme_sm_enabled_check(s)) {
--            goto fail_exit;
--        }
--    } else if (s->sve_excp_el) {
-+        ret = sme_sm_enabled_check(s);
-+        s->sve_access_checked = (ret ? 1 : -1);
-+        return ret;
-+    }
-+    if (s->sve_excp_el) {
-+        /* Assert that we only raise one exception per instruction. */
-+        assert(!s->sve_access_checked);
-         gen_exception_insn_el(s, 0, EXCP_UDEF,
-                               syn_sve_access_trap(), s->sve_excp_el);
--        goto fail_exit;
-+        s->sve_access_checked = -1;
-+        return false;
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 9846770820..c2e39c91b6 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -190,6 +190,11 @@ static RISCVException cfi_ss(CPURISCVState *env, int csrno)
+         return RISCV_EXCP_ILLEGAL_INST;
      }
-     s->sve_access_checked = 1;
-     return fp_access_check(s);
--
-- fail_exit:
--    /* Assert that we only raise one exception per instruction. */
--    assert(!s->sve_access_checked);
--    s->sve_access_checked = -1;
--    return false;
- }
  
- /*
++    /* If ext implemented, M-mode always have access to SSP CSR */
++    if (env->priv == PRV_M) {
++        return RISCV_EXCP_NONE;
++    }
++
+     /* if bcfi not active for current env, access to csr is illegal */
+     if (!cpu_get_bcfien(env)) {
+ #if !defined(CONFIG_USER_ONLY)
 -- 
 2.39.5
 
