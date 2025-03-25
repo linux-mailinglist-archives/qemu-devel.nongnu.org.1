@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3838A70662
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 17:13:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75B1A70635
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 17:11:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tx6qf-0007D3-3K; Tue, 25 Mar 2025 12:09:54 -0400
+	id 1tx6o4-0004QS-0S; Tue, 25 Mar 2025 12:07:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6ox-0005Tz-4n
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:08:12 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6nw-0004Pj-Fb
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:07:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6ot-0007Z4-HX
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:08:06 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6nu-0007Jr-7a
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:07:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742918882;
+ s=mimecast20190719; t=1742918821;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vMGs3E6Ei0m6WABpctn8IHBAUugpx7h6jWwNQOkWU5M=;
- b=bM15d98EwDwnq3JswC1SurV+wvlmxiZVK3h92R7tc+kkS4R6OFhyyr4WwcHPY4IHCzoq5z
- hUGaoOKMXqTGAIbZGAxTsbfbTIqor+bi3maMFR2VAsBUFotKf+Sd/wXUXpHEQBUaoZhuTz
- ofSqEXR997r1gIQSuTspgW9tP1UgOXM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ehiVzbvvOQFr7YUJ9/vdGbUS2C1aGZiIVOQbC1KmTxg=;
+ b=JqDEjOt1Ts+OeWJN/PYDQsfoo/3P2pabCsSRW+AhSNzcPkRlV1KNejhXH4NKExJ+wcKs/+
+ 62FWr0CQl0Gk2u0meUNQ3lFFdJ90Rp6JO2rmZb+YZudNHXmk3t205HPyClSxthtsHw4Ptm
+ ukR3IQ74G9daVZuSCO7+CzmTEkTcQqA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-E_QsW6--Pd2H0sbhOk-UMg-1; Tue, 25 Mar 2025 12:06:41 -0400
-X-MC-Unique: E_QsW6--Pd2H0sbhOk-UMg-1
-X-Mimecast-MFC-AGG-ID: E_QsW6--Pd2H0sbhOk-UMg_1742918800
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43cf327e9a2so46327995e9.3
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 09:06:41 -0700 (PDT)
+ us-mta-650-L--i5pZHOoquXAD6gUS4Aw-1; Tue, 25 Mar 2025 12:06:59 -0400
+X-MC-Unique: L--i5pZHOoquXAD6gUS4Aw-1
+X-Mimecast-MFC-AGG-ID: L--i5pZHOoquXAD6gUS4Aw_1742918818
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3913f546dfdso3136578f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 09:06:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742918800; x=1743523600;
+ d=1e100.net; s=20230601; t=1742918818; x=1743523618;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vMGs3E6Ei0m6WABpctn8IHBAUugpx7h6jWwNQOkWU5M=;
- b=uoyg0MV56P5xYgbbuKgFLKi6maqFBV+tXWQIZ/X9ng3kNn1f7G7H9euDiI+lB58N8C
- zbTyBC44cZ+eDRaP8k/0U2WLCedXzpBWJ3wrZXFPTAU0nJpZDS1aS0w5B76v0k9bQReS
- ncA8VQDrZ3bs0YR+8yl1jR1agbDzLoza0hRXNUlxZl0QEnTy/+dH9REu6MxGPFpUuSsI
- OMlIfoXNFOm2w89aRyA7SuPVDNKdUG7pSrnjYlRmqc8dq/Kiwp3ex4+6s4hFsB06A9Q1
- SI1/qB9DqYVqiTwZgW+LFiDx0HXu4YK4p4ohd/5ZzOKp5GpN3f2x2sKdhNl6xn8LbQV0
- NKKw==
-X-Gm-Message-State: AOJu0YwOGy04sgv7ajk+WsDAoVb81Kj12gI6bv1BJoA9TDQplnnWk0lx
- z0cKz/Ptv37sg/YVZ04ZHRNbUtohL/1YbXQGU6VR6aAl4HAb81t4Zo5p5BD4QGvQxaiCOObC1IJ
- V2dERIwyOn4e935SFWiDhA5dq8yeuzMENe5IWfMCnD3wSvO61HAi/
-X-Gm-Gg: ASbGncvlKVvRYTMZ4pp/raAN3e7r45LTXB3mARLeKjIHCWXH0ViKpbMuRYXsy9pXE8g
- pXtG8Hkbo4k3gs5utUVzmiMdse8Z2uoAxB7O2eW2Iq3emcQXgIXKWWgmbNYpdljAAVJUYnkSldG
- AeK2mbH8eaIqQ8JAVoa+Z2IssTpzHDPiIq8p/DkidwHwIISwQ8egm9AMzsty3NWrd+SXbs//31a
- gyhcKsOAFBbcFVza+0ZP/KGHqNiFCZlBR3rPl1YkuqfT4w/uXedJ3MCibH2Fktdzur3uPGtnOmr
- lD77EqLeddoZILdxOT/+6LuYYu+NqAmNCTdbTuIV9XU3MVaaNJrrES1OlIlIRGgoxZzCO3NVdw=
+ bh=ehiVzbvvOQFr7YUJ9/vdGbUS2C1aGZiIVOQbC1KmTxg=;
+ b=Vb0440iJZYzMRdAF09PlwkquAur2AjJVgBbxikLGDBMGaAUUM9ixUMIvalkRLGLWwE
+ wpU6sAuauy/1TCiE+mKsJBoQaGeSReUvywLuWsp1xLzzABYI9accp3UkOFEHmlwzF/gY
+ VizG+e/IlW6My3JCXKIZrswU8eb+bM7HcfRxfIeQhOSFekmR8zz9WTqjRBn5oyPrP+Nh
+ 3vhMIf3dTVyKuGvy2oTey7FZY5Vikk2RL19bDSD5V02HEN/6rZrjvI5U+Vsx7oX1+OnE
+ 1jZ1RKXXt8zPf68J42EjecdnIqMv7upQrIDpCkH+xmniEiEJd46XZzHT+MFQ0ppajJhj
+ 66SQ==
+X-Gm-Message-State: AOJu0YwY38jDmdyzXsMBT+cx8Eo0sjuwA8+6/NzFjTehk6LHJJwNIJJH
+ YpfOZc67wwcZnbiZ7Klyjc0wF1YtGo+wIp9LsMTzc4gGmmR4sTSEcQp+z0MNw2JXYEkZI7iAFhD
+ HQyJ/eWqVneeSPPRSfbZWaP7gW+VYekXKs0deVxHgU54xwIanIvOr
+X-Gm-Gg: ASbGncszgjgucVGg/TwYE0ae6CyC0QizfIDg+bVs10exlYzerq+EoZHk8Uja1i4Yx9A
+ h8Sj5ajdPJn1Mi9+Jrp6oOWOgL4hUuKySSlWSfDYiRJ9uc5il0yr93fbV4ZxFcKNJqgSCbfnqlT
+ HzR/8qG0dBd4FrmH3ZvLMgJl047ixsZoe0cufrUgJHaCzaW9bd/w3tXzR+tkfzW8fuGpFTjq9hb
+ /4CriNDYeKO61KMPa3ij1BWnmx6o/H6zcVn6vI/TSYhSA6BWjmHjmoJ1zO2cEaArxH8yHRfaCkk
+ owNw1FFAemUSD7JC6g+mcTVEsPLU2P5essuEA5pLO/sZada6EsQ9GWgrW+FK+Pku8oP26pJnPg=
  =
-X-Received: by 2002:a05:600c:b8d:b0:43b:ce08:c382 with SMTP id
- 5b1f17b1804b1-43d509f6797mr176878155e9.16.1742918798719; 
- Tue, 25 Mar 2025 09:06:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkCedYmAoZ641KoSS1am6gtapvsT19N1TBNd5OEUdcmp12ej5vJPMbwQWip3GAukepRcpNYQ==
-X-Received: by 2002:a05:600c:b8d:b0:43b:ce08:c382 with SMTP id
- 5b1f17b1804b1-43d509f6797mr176876355e9.16.1742918797260; 
- Tue, 25 Mar 2025 09:06:37 -0700 (PDT)
+X-Received: by 2002:a05:6000:2801:b0:39a:c9cb:8296 with SMTP id
+ ffacd0b85a97d-39ac9cb82ffmr1855246f8f.22.1742918817855; 
+ Tue, 25 Mar 2025 09:06:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFzjwPgzg4o/qXq6inyog6I78Gddk11DDmqtMmY52xljdoT7Rvla6jHSHRiRdM2pLcDj7Fnrw==
+X-Received: by 2002:a05:6000:2801:b0:39a:c9cb:8296 with SMTP id
+ ffacd0b85a97d-39ac9cb82ffmr1855218f8f.22.1742918817530; 
+ Tue, 25 Mar 2025 09:06:57 -0700 (PDT)
 Received: from localhost
  (p200300cfd74f9db6ee8035b86ef736e5.dip0.t-ipconnect.de.
  [2003:cf:d74f:9db6:ee80:35b8:6ef7:36e5])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d4fd277d5sm155950915e9.19.2025.03.25.09.06.36
+ 5b1f17b1804b1-43d43f556afsm203550785e9.19.2025.03.25.09.06.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Mar 2025 09:06:36 -0700 (PDT)
+ Tue, 25 Mar 2025 09:06:56 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, qemu-stable@nongnu.org
-Subject: [PATCH 01/15] fuse: Copy write buffer content before polling
-Date: Tue, 25 Mar 2025 17:06:35 +0100
-Message-ID: <20250325160635.118812-1-hreitz@redhat.com>
+ Kevin Wolf <kwolf@redhat.com>
+Subject: [PATCH 02/15] fuse: Ensure init clean-up even with error_fatal
+Date: Tue, 25 Mar 2025 17:06:42 +0100
+Message-ID: <20250325160655.119407-1-hreitz@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250325160529.117543-1-hreitz@redhat.com>
 References: <20250325160529.117543-1-hreitz@redhat.com>
@@ -108,134 +108,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Polling in I/O functions can lead to nested read_from_fuse_export()
-calls, overwriting the request buffer's content.  The only function
-affected by this is fuse_write(), which therefore must use a bounce
-buffer or corruption may occur.
+When exports are created on the command line (with the storage daemon),
+errp is going to point to error_fatal.  Without ERRP_GUARD, we would
+exit immediately when *errp is set, i.e. skip the clean-up code under
+the `fail` label.  Use ERRP_GUARD so we always run that code.
 
-Note that in addition we do not know whether libfuse-internal structures
-can cope with this nesting, and even if we did, we probably cannot rely
-on it in the future.  This is the main reason why we want to remove
-libfuse from the I/O path.
+As far as I know, this has no actual impact right now[1], but it is
+still better to make this right.
 
-I do not have a good reproducer for this other than:
+[1] Not cleaning up the mount point is the only thing I can imagine
+    would be problematic, but that is the last thing we attempt, so if
+    it fails, it will clean itself up.
 
-$ dd if=/dev/urandom of=image bs=1M count=4096
-$ dd if=/dev/zero of=copy bs=1M count=4096
-$ touch fuse-export
-$ qemu-storage-daemon \
-    --blockdev file,node-name=file,filename=copy \
-    --export \
-    fuse,id=exp,node-name=file,mountpoint=fuse-export,writable=true \
-    &
-
-Other shell:
-$ qemu-img convert -p -n -f raw -O raw -t none image fuse-export
-$ killall -SIGINT qemu-storage-daemon
-$ qemu-img compare image copy
-Content mismatch at offset 0!
-
-(The -t none in qemu-img convert is important.)
-
-I tried reproducing this with throttle and small aio_write requests from
-another qemu-io instance, but for some reason all requests are perfectly
-serialized then.
-
-I think in theory we should get parallel writes only if we set
-fi->parallel_direct_writes in fuse_open().  In fact, I can confirm that
-if we do that, that throttle-based reproducer works (i.e. does get
-parallel (nested) write requests).  I have no idea why we still get
-parallel requests with qemu-img convert anyway.
-
-Also, a later patch in this series will set fi->parallel_direct_writes
-and note that it makes basically no difference when running fio on the
-current libfuse-based version of our code.  It does make a difference
-without libfuse.  So something quite fishy is going on.
-
-I will try to investigate further what the root cause is, but I think
-for now let's assume that calling blk_pwrite() can invalidate the buffer
-contents through nested polling.
-
-Cc: qemu-stable@nongnu.org
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ block/export/fuse.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index 465cc9891d..a12f479492 100644
+index a12f479492..7c035dd6ca 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -301,6 +301,12 @@ static void read_from_fuse_export(void *opaque)
-         goto out;
-     }
- 
-+    /*
-+     * Note that polling in any request-processing function can lead to a nested
-+     * read_from_fuse_export() call, which will overwrite the contents of
-+     * exp->fuse_buf.  Anything that takes a buffer needs to take care that the
-+     * content is copied before potentially polling.
-+     */
-     fuse_session_process_buf(exp->fuse_session, &exp->fuse_buf);
- 
- out:
-@@ -624,6 +630,7 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
-                        size_t size, off_t offset, struct fuse_file_info *fi)
+@@ -119,6 +119,7 @@ static int fuse_export_create(BlockExport *blk_exp,
+                               BlockExportOptions *blk_exp_args,
+                               Error **errp)
  {
-     FuseExport *exp = fuse_req_userdata(req);
-+    void *copied;
-     int64_t length;
++    ERRP_GUARD(); /* ensure clean-up even with error_fatal */
+     FuseExport *exp = container_of(blk_exp, FuseExport, common);
+     BlockExportOptionsFuse *args = &blk_exp_args->u.fuse;
      int ret;
- 
-@@ -638,6 +645,14 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
-         return;
-     }
- 
-+    /*
-+     * Heed the note on read_from_fuse_export(): If we poll (which any blk_*()
-+     * I/O function may do), read_from_fuse_export() may be nested, overwriting
-+     * the request buffer content.  Therefore, we must copy it here.
-+     */
-+    copied = blk_blockalign(exp->common.blk, size);
-+    memcpy(copied, buf, size);
-+
-     /**
-      * Clients will expect short writes at EOF, so we have to limit
-      * offset+size to the image length.
-@@ -645,7 +660,7 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
-     length = blk_getlength(exp->common.blk);
-     if (length < 0) {
-         fuse_reply_err(req, -length);
--        return;
-+        goto free_buffer;
-     }
- 
-     if (offset + size > length) {
-@@ -653,19 +668,22 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
-             ret = fuse_do_truncate(exp, offset + size, true, PREALLOC_MODE_OFF);
-             if (ret < 0) {
-                 fuse_reply_err(req, -ret);
--                return;
-+                goto free_buffer;
-             }
-         } else {
-             size = length - offset;
-         }
-     }
- 
--    ret = blk_pwrite(exp->common.blk, offset, size, buf, 0);
-+    ret = blk_pwrite(exp->common.blk, offset, size, copied, 0);
-     if (ret >= 0) {
-         fuse_reply_write(req, size);
-     } else {
-         fuse_reply_err(req, -ret);
-     }
-+
-+free_buffer:
-+    qemu_vfree(copied);
- }
- 
- /**
 -- 
 2.48.1
 
