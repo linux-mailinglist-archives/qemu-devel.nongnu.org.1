@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E43A70D25
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:44:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDB9A70D35
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:48:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txD0G-0001Jx-SH; Tue, 25 Mar 2025 18:44:12 -0400
+	id 1txD0L-0001jT-Jv; Tue, 25 Mar 2025 18:44:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzr-0000tn-K3
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzs-0000u3-W0
  for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:49 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzn-0006xg-Gk
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:46 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43690d4605dso43756725e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:43:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzr-0006yS-At
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:48 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43d07ca6a80so30983215e9.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:43:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742942620; x=1743547420; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742942626; x=1743547426; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yIX4KSGXtWAoTbQjaPooH4t4GimyycM1pa7qZNzCrRo=;
- b=vKqZ9GTAkJyecLZDVzo2FTK+nnSdAY6lWTjkZ3dNMNaO8jVx4nu32eF3qTILgJoKot
- lw5GeRZVy/MoPMRGCad8bj47gK15HQv/HB09SfbH7xpGMk5zvfOJK1o/uED6FwNZXuPB
- hRWjqS+4gpyZ4FsH9L2EPC4FmytkagjAzBSwgdsC64y8X+5XZ8BDVoLaxtvyELKjc+14
- hYfYIHkfYqWlagqASs3RLdO6dhMlBQHTQsdw9s4sWZJQIot6XEHozuImc2YRZ1JrFKr+
- NZVTb2gVjcXB48LYc5rxeVAXvTkeavPieYErtVJ3Poi7yntfJm+8I0TP2pTvhddQCVDN
- EQzw==
+ bh=nzqWg6apFTmrvlzKNkVE/DNpvTLzQXt9JAyNTfEbkHg=;
+ b=gdNBCWWI6gAs8m7v05zYj0ItwDQlMvWg356mNwUEH7wfNqOK9xLUU2j8u6iAHxFbpK
+ 9AoE2buGVuj9+Ep6K2yZeIYWnE7CEhqn6slMUIBwsExl8yFbj1iyjAatt9ZpKX04Af20
+ ZRxGP4f+BIGJaBH4EjbIWApoD15lyoJAj6IKKjQV9hThKNTPnjzkzl+MzxiAF2KEamyO
+ HZqDvW9PkQF68VxAamWONrJi0I0iW3jAsSLG5PZS6PrV8KQc0TbJTl5GlLtj7mmg8SZU
+ yzg5w9rrSBQ3SYdrfBiSXrjEP0q+EEqogguwJg56icgV5uqMNwqWndZ2+GdvUzTvJVZs
+ 5U3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742942620; x=1743547420;
+ d=1e100.net; s=20230601; t=1742942626; x=1743547426;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yIX4KSGXtWAoTbQjaPooH4t4GimyycM1pa7qZNzCrRo=;
- b=Ti5H96AWjjWRk7gQmGI4MkRz2VhfCmmjHCwZRzLusuT0LNelnIn5ZBx/wYg2QzPS21
- BlgSuyYfjNeNRm5/ODNoydsQUskirpTdOxjB3je5VmpyjnC0LbM5+Kgka9ymdzXGNmtj
- KImO1jIvyQCozbSHMLnMvLSRAmrYHVdTwKHPlnsZZ8RKiKq3ebK874NiBIuJ8WzoJxFS
- 97Hni6xWe8gqnyZGcjHxJgLXmY9nViicVfzPJJVTqquE6Rw8dNta8aYx8KdhcTyZiyKj
- 26nY9eR/3I18T3MBTWlajwT4V9L8D0+LtY1TscYyT2TVFZqWLx1dPxdCzcehn8O2fk2y
- N1gQ==
+ bh=nzqWg6apFTmrvlzKNkVE/DNpvTLzQXt9JAyNTfEbkHg=;
+ b=e7uGkL4IBzt2F+GS0ArMPkc7KwNIJF6htDSntJN0XcAyf6P9PJEGqeB8nzg0cynr0L
+ j32Yc8RMy9PAeomATc6Hzhp2kHJ2fl0WMdu5PwqbsIY28DTrOfLwcr95K9emYcXd3riD
+ DEmJX41G66pptpy1Vf2FzMSqCTJggtGvbIfRW0oaeQVslWB62Mk01uiTl/DgFo65LWhx
+ 2RXVLTQYlz2UZ3yo53gB2NfwBCsaVtTPEZW67jqVee/vyuH9y6P88JaO14b1N9WQgpO5
+ jlqTwj0xIX/3aBmthiewka8oBVl2r8UmZ263l6KZVZxyC8l+8ZpjnmTmgX8VfAnNzJRR
+ QqsQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWUTdMd9bOm6LLbndn1dcoWTglYYeGfAgbklzvaFUn1SmoLSFngNEFnPbAMSir7rSM0smrOj4ntPyEo@nongnu.org
-X-Gm-Message-State: AOJu0Yw7+unUM2eK+Yr42pnZxQWVt8knrU05+V9gEvNadLMOHX06xZxd
- wKG/OtMdXtJ20zAbBp5uiDtJanEWu6aI/enyMtp/JGFckcOiAxQPIQAIP0iS6vU=
-X-Gm-Gg: ASbGncup2A3GdWFd4cNhDK+JcYZCD5UqirYj5GLjkPU/aZ3hEvcO14Pmx/P+iWBL7dw
- mczEuyzJt0hRv9xNf7tmwxUxo/so+KwgW8yYstZg7mOYOXQHNJi6Zb3niSvfjh1X/05mHUpPiEl
- Ewkal1h2uRWGCZ6m/FXpxUy+eBHWkThFf+FWPtaO7BRc3szgfpFpxaZqQfZyZoYKERWpL3b+zyk
- A1OPdSxpIYS4O/IWBEG1Zdberk6HLJOr9d8iqCEpgzxFg/wilpMljROFfrFems7R3bihTKSl0Aq
- gVu19Cjz8ulDpdTaiK/oSh38KNXMhmBYlKqnikQLAN49s8MvAwuv3d0yTcyB5QcepCvzxotXsXY
- fP/aN6vSE2Ikma51ZlF5X1i5pqHO+PA==
-X-Google-Smtp-Source: AGHT+IFRqh/Vd1SuHAABJReB+gbfJmTAkiSk3He+i35fHdQnaMoXvEG8rqhh197oEjZJPnwiu3FGtw==
-X-Received: by 2002:a05:600c:1989:b0:43d:9d5:474d with SMTP id
- 5b1f17b1804b1-43d50873c28mr165157725e9.0.1742942620465; 
- Tue, 25 Mar 2025 15:43:40 -0700 (PDT)
+ AJvYcCW+G0qj+PVUVcZkdrBKNl/DKSF/7FJdWQJFirc2MWCDOoNrLfAd17Inkr5aktfvY8mpLgg7MXVHoa6s@nongnu.org
+X-Gm-Message-State: AOJu0YzmLdwf8Tm9boGbgpqDCuS3glDAfRf9KScooAAVF4XQ2COBIFMg
+ PvTzqKYc4MIItMMK3+AzHgLURn9ULmYCrNCi6XMqyw5/KwxUwLPlssEAdDFNSOk=
+X-Gm-Gg: ASbGncuFX/BWdb/HJ264vJwuLrv5qCv9roKwOdq0lMLor5wUPPhUyBYwix1XVCm3a51
+ slxvLYR+/vWQKJKeiq7Yty7GV2n6/zNa2K2U1WAuY0jDqs2E7E5YfqI9PC6WS3TYQzUXBPQXFtU
+ 9zt1IPHYVMmTxk1vFLFjeCL5e1v0Jjo7YmD1wb0sWvS/fe9IAwjO2a1KTMr+K+iJ5uUnOFURQGW
+ /FRCnZ/UhtuJ3ts/909yfP2gbz/M/e8naniJU7I6JOpnzBdDanH5AeEjcsmogTZD6m7ingt8YOb
+ yPHO+zKIZV6pG7lkUvfmMYvEaQCJ/MZO3aQkhhymnKDnIgKpMDpzgtj7UMPk0cEPfDJHMt1zg+m
+ pfa1KvGsVY5RIZxnTc+tCRNWIqK2dQg==
+X-Google-Smtp-Source: AGHT+IHs4UQHBwFObHDTNeiYxdNcM9vTxmJmo8Rr+pkZo5Yzr0PBtMCZ8vgGTj9Sd9VPusd/HyANOA==
+X-Received: by 2002:a05:600c:1c19:b0:43d:db5:7b1a with SMTP id
+ 5b1f17b1804b1-43d509efb48mr157940585e9.12.1742942625793; 
+ Tue, 25 Mar 2025 15:43:45 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43fdeb79sm214467435e9.25.2025.03.25.15.43.38
+ ffacd0b85a97d-3997f9b565bsm15149881f8f.58.2025.03.25.15.43.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Mar 2025 15:43:39 -0700 (PDT)
+ Tue, 25 Mar 2025 15:43:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Thomas Huth <thuth@redhat.com>,
 	qemu-devel@nongnu.org
@@ -82,24 +82,24 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  Bernhard Beschow <shentey@gmail.com>, Hanna Reitz <hreitz@redhat.com>,
  Hao Wu <wuhaotsh@google.com>, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH-for-10.0 05/12] hw/gpio/pca9552: Categorize and add description
-Date: Tue, 25 Mar 2025 23:43:03 +0100
-Message-ID: <20250325224310.8785-6-philmd@linaro.org>
+Subject: [PATCH-for-10.0 06/12] hw/i2c/pca954x: Categorize and add description
+Date: Tue, 25 Mar 2025 23:43:04 +0100
+Message-ID: <20250325224310.8785-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250325224310.8785-1-philmd@linaro.org>
 References: <20250325224310.8785-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,22 +117,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/gpio/pca9552.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/i2c/i2c_mux_pca954x.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/hw/gpio/pca9552.c b/hw/gpio/pca9552.c
-index 1ac0cf6c464..b152872f6c6 100644
---- a/hw/gpio/pca9552.c
-+++ b/hw/gpio/pca9552.c
-@@ -459,6 +459,8 @@ static void pca9552_class_init(ObjectClass *oc, void *data)
-     DeviceClass *dc = DEVICE_CLASS(oc);
-     PCA955xClass *pc = PCA955X_CLASS(oc);
+diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
+index 779cc4e66ed..100b8d86093 100644
+--- a/hw/i2c/i2c_mux_pca954x.c
++++ b/hw/i2c/i2c_mux_pca954x.c
+@@ -175,12 +175,18 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t channel)
+ static void pca9546_class_init(ObjectClass *klass, void *data)
+ {
+     Pca954xClass *s = PCA954X_CLASS(klass);
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->desc = "PCA9546 I2C multiplexer";
+     s->nchans = PCA9546_CHANNEL_COUNT;
+ }
  
-+    dc->desc = "PCA9552 LED blinker";
-+    set_bit(DEVICE_CATEGORY_DISPLAY, dc->categories);
-     device_class_set_legacy_reset(dc, pca9552_reset);
-     dc->vmsd = &pca9552_vmstate;
-     pc->max_reg = PCA9552_LS3;
+ static void pca9548_class_init(ObjectClass *klass, void *data)
+ {
+     Pca954xClass *s = PCA954X_CLASS(klass);
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->desc = "PCA9548 I2C multiplexer";
+     s->nchans = PCA9548_CHANNEL_COUNT;
+ }
+ 
+@@ -226,13 +232,13 @@ static void pca954x_class_init(ObjectClass *klass, void *data)
+ 
+     rc->phases.enter = pca954x_enter_reset;
+ 
+-    dc->desc = "Pca954x i2c-mux";
+     dc->realize = pca954x_realize;
+ 
+     k->write_data = pca954x_write_data;
+     k->receive_byte = pca954x_read_byte;
+ 
+     device_class_set_props(dc, pca954x_props);
++    set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
+ }
+ 
+ static const TypeInfo pca954x_info[] = {
 -- 
 2.47.1
 
