@@ -2,90 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B254A6E7F1
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99543A6E80C
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:39:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twt0E-0007Ac-2V; Mon, 24 Mar 2025 21:22:50 -0400
+	id 1twtEc-0001Zc-1L; Mon, 24 Mar 2025 21:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twt0C-0007AM-Ol
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:22:48 -0400
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1twtEZ-0001Z4-E0
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:39 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1twt0A-000605-V1
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:22:48 -0400
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2ff4a4f901fso9302683a91.2
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:22:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1twtEQ-0007QO-HF
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:32 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2243803b776so25110405ad.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742865764; x=1743470564; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1742866649; x=1743471449; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=aG/ikolZ9gVRmszvosTh9e33E/vQ1AmQm3yTNYjPZIM=;
- b=FcqfCDrk+g/7LnlW2v2aEfE/Zo7AFpFrg3z5W2DdaC3swzg78YkiDNfp2tw6vDChcY
- VNIJpqZyNBKYIWh+PdV7goVaO28FRRCAqvCNXPT19NVltDIFnMfenZdojWss7w4bc34B
- 4nqxbmVF7lYDStZK8WAntJx48i/rYnX6s6lLs4q6WZVKEJveXN/cgThrvCMwEFbi+83n
- i6Kgako6rixQOMwrb15npxhisXmvkeFAjK7xJpy4Z55xvb8Qfiqq29qXcZTtQkgjDow9
- o8Z2k0WDIKp6rPuDIasdRjjVDQjJNSSUIoObEJoRCU5HqIabddE2iheaaZw4X4vJtSL/
- 5Qdg==
+ bh=hy7YxU/BOkkmct0LEa6sX5iFnTbsVC/VEJwRAgXKmQ8=;
+ b=DPY0Iwfgyv//K7WXSeaEv2tzdMiQFY/nRdF9la2TR6q/7Jm/0WbDDfbVRbSI1DXr4+
+ I2l1pviPHuXFkoBME9BDGdR6M/VP1ffLsYa435rvzw10z3Q4bz8Ad+5D4lXvqCWsfTA9
+ YD8GIDveIED0uBRWWNdS0AcfBdDB/NoEAC/2vOB5DJ5JsJODv3fju9IrQckghA7JKgrj
+ /buQvMR7c2ruYYJNP83r/LHkXrY330ixFtjkN2nE559TSOyqnQM3lx3KOtTxrptDut0u
+ 2eOOP+WSlqgJxt6DefeLMxU+VjJpv7vU/XjwtrKyhbHUjLkIzPwP+qrV+AwllDTuj3Zc
+ 5jSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742865764; x=1743470564;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1742866649; x=1743471449;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aG/ikolZ9gVRmszvosTh9e33E/vQ1AmQm3yTNYjPZIM=;
- b=WX0Fh5SxQ6vrDrJxQHct5ZheGYcEoxAEt+jwee8SDVoO1Gx2KGFLZar1ZsMJ47naqx
- RO3edRtQKfHueNSX9OS5CyuzFTm730tauKdr50qMI+tF6Oumhd3aNKFYB7kl65zbS581
- FwUkLB1EhIliDdTMeVPYLalFDDHv8r+uY9DLWvdJ5ekzC00Coj4/7P85IeDJGzSef7t4
- rBE7ZnEfCFtunuBlPpPVIH5XxVje4emrURBo2F2VWNIBgjnnM4YmfHPKfoIDtKS9X7la
- Xu7FSaNu6iZQ6Di4uGQcwe/qTWgpQUBnE+I9FdNYWMLkuZElgRd/oWiwltNGog6VSfGa
- KGqg==
+ bh=hy7YxU/BOkkmct0LEa6sX5iFnTbsVC/VEJwRAgXKmQ8=;
+ b=kQshcRdUXA253ZsXEh+RdNdJe9Oh7yHcV1L9Oev39GCDvWqCZByFSrjSAJMt5Of6WW
+ lj80y/HdBHk9Ikw2bX0gj1n0YrEA6aoBpAJWXMYYCqhu7HXArxkUvRo0sKVKD8LWu+up
+ MwfmyZ9+MCV47owllGf2PnKlnRIco/t4/sBM5srZR6T9OCw1UeGnPpj8Wg0X/syxHsQR
+ ceAq9U9Rknu7/A6OSKK54abrhbj7nMifOKEUopYrCv1OrEgcf7r8k3EzDZugqCGbjQO+
+ +vwJ6YdajmA3LHBI1igGVyUJDigyEvGQP+wWsQUpUjxnI7sGGXPSbkLe9Iuy72kqjCiM
+ fyeQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXiZRJBw7P0U9MdhFbvxEJcbq7Y68YmveYCnQa4tKYryTHIoX1520nkyJyujQAVEZ0+uleZZjRljNwe@nongnu.org
-X-Gm-Message-State: AOJu0YzJS0bmLHssmrBOXJrTwYPY/Eqx/+IBZC1tosZnXyeYGLZZx/wS
- ugxSHC7jWUq9LhL0MrAibKhL+o8xQfD5qxJ8U6aecFi4Z2ND+4SJftv9bh1ere4=
-X-Gm-Gg: ASbGncvHiVy79IgNzqW4eZUWDO8/aFu5GsrhrBXKZiYloYcLcNNreVP0XE2d9PEAgAr
- r154b9US7AChsvY1IiEzErsGXA/fmL77ZoEqRVqMfeHgr9O1Z2PFVSC1TAOA8Gaq1pwtKMRhKtn
- oM6dy8kGWVV6cEfB8UOIzK8eTX+OyPdHN+4Psqzr83Iy1/rpnkB6/JrlvHZnswTsKl6hnR2nB6K
- /X7gJwXjZtt8y2t5rnen1b7QpsIeHxlHaBt4BD6RPqvRs1/iELiBSRihSiqsQeB14U7cVQPh8i2
- OMH25OM1RgWwyJfQxNvA56tFe67vm5qNU9pGVTKiGsZWTrXKtqccnsS7rMZrbqow6P0hd/TLybU
- u7kOyOO19
-X-Google-Smtp-Source: AGHT+IHEZCg9xs1G0ztU1F3GqMs42dpDB5T8VAwisopTv+ewq4W5/2ROGq56Z/iMGj+HJJwkTysYNg==
-X-Received: by 2002:a17:90b:2743:b0:2ff:4a8d:74f8 with SMTP id
- 98e67ed59e1d1-3030fe721dfmr21437984a91.6.1742865764131; 
- Mon, 24 Mar 2025 18:22:44 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
+ AJvYcCWNGZhmHVFN5HfBQJw2brADUJn+suyaOrh3BZu8+OYF7y78F+xO8QsoMC5DdA3SwiFykWnBTPCiDRwJ@nongnu.org
+X-Gm-Message-State: AOJu0YxnJCmnVTra8qpPcyi7EekJYd83xrOYdMSghY9qKw4llxp10lxo
+ hqgwSPK5ye23jGfb+WrTCyAosezvaUsMVfHIzZJeK/k1nL7WQYA5MVgLpYOAasA=
+X-Gm-Gg: ASbGnct2wbHDDGszcSausVCmZb0To+dTlgtQoDKsbRCG7tYsJz3zlV1BDcBd2Iw17I7
+ i9Rrk71ffFSy5phe455/NP/6oOtv+Gv/G7gF2LCvpL2ioJcDcpYSDWzcT0qJnU54wmM7lriPnX+
+ uIqyOIza8obILotWBUuuEIRi8Y3J4P3728bZs0F1/z4ArgLfgw/u0cmlCFYGLGvP08svwjHwBlV
+ OiusPF7wowpiQF4N6bGCFUWR2xebmqswwc1XpG//zglj+BfWu37cBfsoahvLUPxdcJnF/tZUjit
+ gPNXMueGomDvHzdi132x2GRJAF5nzDVYUV3IpZgJRdeYXmKlIy/oT9xbCg==
+X-Google-Smtp-Source: AGHT+IE0ViLTJJKIDYC+v+HjmD2dTkpz1tg1gxPDYjWHjlVt9rgnR8M9FQqYMVsIQunInfx02DfYAg==
+X-Received: by 2002:a05:6a00:2291:b0:735:7bc0:dcda with SMTP id
+ d2e1a72fcca58-7390597e330mr21664245b3a.5.1742866648965; 
+ Mon, 24 Mar 2025 18:37:28 -0700 (PDT)
+Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3030fe83d50sm8832615a91.24.2025.03.24.18.22.43
+ d2e1a72fcca58-73906158ef2sm9090422b3a.141.2025.03.24.18.37.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Mar 2025 18:22:43 -0700 (PDT)
-Message-ID: <67313299-0ce6-457d-ace7-73ad864a0eb0@linaro.org>
-Date: Mon, 24 Mar 2025 18:22:42 -0700
+ Mon, 24 Mar 2025 18:37:28 -0700 (PDT)
+Message-ID: <a4f03a8b-4bfa-4039-97c8-11f1a04d4c94@linaro.org>
+Date: Mon, 24 Mar 2025 18:22:53 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 26/30] hw/arm/armv7m: prepare compilation unit to be
- common
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20250320223002.2915728-1-pierrick.bouvier@linaro.org>
- <20250320223002.2915728-27-pierrick.bouvier@linaro.org>
- <0c9055a3-2650-4802-a28c-e5d79052bc81@linaro.org>
- <6cce9fd1-d008-4b63-a77f-c091fcd933e0@linaro.org>
+Subject: Re: [PATCH 16/17] hw/avr: Move AtmegaMcuClass to atmega.h
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <6cce9fd1-d008-4b63-a77f-c091fcd933e0@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: mrolnik@gmail.com, philmd@linaro.org
+References: <20250323173730.3213964-1-richard.henderson@linaro.org>
+ <20250323173730.3213964-17-richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250323173730.3213964-17-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,55 +101,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/24/25 14:31, Pierrick Bouvier wrote:
-> On 3/23/25 12:48, Richard Henderson wrote:
->> On 3/20/25 15:29, Pierrick Bouvier wrote:
->>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>> ---
->>>    hw/arm/armv7m.c | 12 ++++++++----
->>>    1 file changed, 8 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
->>> index 98a69846119..c367c2dcb99 100644
->>> --- a/hw/arm/armv7m.c
->>> +++ b/hw/arm/armv7m.c
->>> @@ -139,8 +139,9 @@ static MemTxResult v7m_sysreg_ns_write(void *opaque, hwaddr addr,
->>>        if (attrs.secure) {
->>>            /* S accesses to the alias act like NS accesses to the real region */
->>>            attrs.secure = 0;
->>> +        MemOp end = target_words_bigendian() ? MO_BE : MO_LE;
->>>            return memory_region_dispatch_write(mr, addr, value,
->>> -                                            size_memop(size) | MO_TE, attrs);
->>> +                                            size_memop(size) | end, attrs);
->>
->> target_words_bigendian() is always false for arm system mode.
->> Just s/TE/LE/.
->>
+On 3/23/25 10:37, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   hw/avr/atmega.h | 20 ++++++++++++++++++++
+>   hw/avr/atmega.c | 22 +---------------------
+>   2 files changed, 21 insertions(+), 21 deletions(-)
 > 
-> Good point.
-> 
-> By the way, what's the QEMU rationale behind having Arm big endian user binaries, and not 
-> provide it for softmmu binaries?
+> diff --git a/hw/avr/atmega.h b/hw/avr/atmega.h
+> index a99ee15c7e..f031e6c10a 100644
+> --- a/hw/avr/atmega.h
+> +++ b/hw/avr/atmega.h
+> @@ -23,6 +23,10 @@
+>   #define TYPE_ATMEGA1280_MCU "ATmega1280"
+>   #define TYPE_ATMEGA2560_MCU "ATmega2560"
+>   
+> +typedef struct AtmegaMcuClass AtmegaMcuClass;
+> +DECLARE_CLASS_CHECKERS(AtmegaMcuClass, ATMEGA_MCU,
+> +                       TYPE_ATMEGA_MCU)
+> +
+>   typedef struct AtmegaMcuState AtmegaMcuState;
+>   DECLARE_INSTANCE_CHECKER(AtmegaMcuState, ATMEGA_MCU,
+>                            TYPE_ATMEGA_MCU)
+> @@ -32,6 +36,22 @@ DECLARE_INSTANCE_CHECKER(AtmegaMcuState, ATMEGA_MCU,
+>   #define TIMER_MAX 6
+>   #define GPIO_MAX 12
+>   
+> +struct AtmegaMcuClass {
+> +    /*< private >*/
+> +    SysBusDeviceClass parent_class;
+> +    /*< public >*/
+> +    const char *uc_name;
+> +    const char *cpu_type;
+> +    size_t flash_size;
+> +    size_t eeprom_size;
+> +    size_t sram_size;
+> +    size_t io_size;
+> +    size_t gpio_count;
+> +    size_t adc_count;
+> +    const uint8_t *irq;
+> +    const struct peripheral_cfg *dev;
+> +};
+> +
+>   struct AtmegaMcuState {
+>       /*< private >*/
+>       SysBusDevice parent_obj;
+> diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
+> index d4fc9c4aee..96e36743bc 100644
+> --- a/hw/avr/atmega.c
+> +++ b/hw/avr/atmega.c
+> @@ -36,7 +36,7 @@ enum AtmegaPeripheral {
+>   #define TIMER(n)    (n + TIMER0)
+>   #define POWER(n)    (n + POWER0)
+>   
+> -typedef struct {
+> +typedef struct peripheral_cfg {
+>       uint16_t addr;
+>       enum AtmegaPeripheral power_index;
+>       uint8_t power_bit;
+> @@ -46,26 +46,6 @@ typedef struct {
+>       bool is_timer16;
+>   } peripheral_cfg;
+>   
+> -struct AtmegaMcuClass {
+> -    /*< private >*/
+> -    SysBusDeviceClass parent_class;
+> -    /*< public >*/
+> -    const char *uc_name;
+> -    const char *cpu_type;
+> -    size_t flash_size;
+> -    size_t eeprom_size;
+> -    size_t sram_size;
+> -    size_t io_size;
+> -    size_t gpio_count;
+> -    size_t adc_count;
+> -    const uint8_t *irq;
+> -    const peripheral_cfg *dev;
+> -};
+> -typedef struct AtmegaMcuClass AtmegaMcuClass;
+> -
+> -DECLARE_CLASS_CHECKERS(AtmegaMcuClass, ATMEGA_MCU,
+> -                       TYPE_ATMEGA_MCU)
+> -
+>   static const peripheral_cfg dev168_328[PERIFMAX] = {
+>       [USART0]        = {  0xc0, POWER0, 1 },
+>       [TIMER2]        = {  0xb0, POWER0, 6, 0x70, 0x37, false },
 
-For system mode, endianness is set via a combination of CPSR.E, SCTLR.B and SCTLR.EE, 
-details depending on armv4, armv6, armv7+.
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-It is IMPLEMENTATION DEFINED how the cpu initiailizes at reset.  In olden times, via a 
-board-level pin (sometimes switched, sometimes soldered).  We model the board-level pin 
-via the "cfgend" cpu property.
-
-In any case, for system mode we expect the guest to do the same thing it would need to do 
-on real hardware.  For user mode, we can't do that, as we're also emulating the OS layer, 
-which needs to know the endianness to expect from the guest binaries.
-
-> If those systems are so rare, why would people need a user mode emulation?
-
-IMO armbe-linux-user is extinct.
-
-Debian never had big-endian support at all.  If there was some other distro which had it, 
-I don't recall which.  Otherwise you'd need to bootstrap the entire toolchain, which to me 
-seems rather beside the point.
-
-
-r~
 
