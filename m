@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A693A6E9C5
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 695A2A6E9C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:52:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twy7i-0004YZ-0a; Tue, 25 Mar 2025 02:50:54 -0400
+	id 1twy7n-0004cg-Qb; Tue, 25 Mar 2025 02:50:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7f-0004Y7-LY; Tue, 25 Mar 2025 02:50:51 -0400
+ id 1twy7k-0004Zu-IJ; Tue, 25 Mar 2025 02:50:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7d-0001dQ-B0; Tue, 25 Mar 2025 02:50:51 -0400
+ id 1twy7i-0001eN-Fn; Tue, 25 Mar 2025 02:50:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9EF2C107D62;
+ by isrv.corpit.ru (Postfix) with ESMTP id A2CEF107D63;
  Tue, 25 Mar 2025 09:49:21 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 41B5B1D5E71;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 459541D5E72;
  Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 3313F5702A; Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
+ id 3596A5702C; Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 29/34] target/arm: Make DisasContext.{fp,
- sve}_access_checked tristate
-Date: Tue, 25 Mar 2025 09:50:24 +0300
-Message-Id: <20250325065031.3263718-3-mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 30/34] target/arm: Simplify pstate_sm check in
+ sve_access_check
+Date: Tue, 25 Mar 2025 09:50:25 +0300
+Message-Id: <20250325065031.3263718-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
 References: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
@@ -62,126 +62,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-The check for fp_excp_el in assert_fp_access_checked is
-incorrect.  For SME, with StreamingMode enabled, the access
-is really against the streaming mode vectors, and access
-to the normal fp registers is allowed to be disabled.
-C.f. sme_enabled_check.
-
-Convert sve_access_checked to match, even though we don't
-currently check the exception state.
+In StreamingMode, fp_access_checked is handled already.
+We cannot fall through to fp_access_check lest we fall
+foul of the double-check assertion.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 3d74825f4d6 ("target/arm: Add SME enablement checks")
+Fixes: 285b1d5fcef ("target/arm: Handle SME in sve_access_check")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250307190415.982049-2-richard.henderson@linaro.org
+Message-id: 20250307190415.982049-3-richard.henderson@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: move declaration of 'ret' to top of block]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 298a04998fa4a6dc977abe9234d98dfcdab98423)
-(Mjt: minor context fix in target/arm/tcg/translate.h,
- target/arm/tcg/translate-a64.c is target/arm/translate-a64.c)
+(cherry picked from commit cc7abc35dfa790ba6c20473c03745428c1c626b6)
+(Mjt: target/arm/tcg/translate-a64.c is target/arm/translate-a64.c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/arm/translate-a64.c b/target/arm/translate-a64.c
-index f0b8db7ce5..00463a1e35 100644
+index 00463a1e35..190574cb29 100644
 --- a/target/arm/translate-a64.c
 +++ b/target/arm/translate-a64.c
-@@ -1176,14 +1176,14 @@ static bool fp_access_check_only(DisasContext *s)
+@@ -1208,23 +1208,23 @@ static bool fp_access_check(DisasContext *s)
+ bool sve_access_check(DisasContext *s)
  {
-     if (s->fp_excp_el) {
-         assert(!s->fp_access_checked);
--        s->fp_access_checked = true;
-+        s->fp_access_checked = -1;
- 
-         gen_exception_insn_el(s, 0, EXCP_UDEF,
-                               syn_fp_access_trap(1, 0xe, false, 0),
-                               s->fp_excp_el);
-         return false;
-     }
--    s->fp_access_checked = true;
-+    s->fp_access_checked = 1;
-     return true;
- }
- 
-@@ -1217,13 +1217,13 @@ bool sve_access_check(DisasContext *s)
-                               syn_sve_access_trap(), s->sve_excp_el);
-         goto fail_exit;
-     }
--    s->sve_access_checked = true;
-+    s->sve_access_checked = 1;
-     return fp_access_check(s);
- 
-  fail_exit:
-     /* Assert that we only raise one exception per instruction. */
-     assert(!s->sve_access_checked);
--    s->sve_access_checked = true;
-+    s->sve_access_checked = -1;
-     return false;
- }
- 
-@@ -1252,8 +1252,9 @@ bool sme_enabled_check(DisasContext *s)
-      * sme_excp_el by itself for cpregs access checks.
-      */
-     if (!s->fp_excp_el || s->sme_excp_el < s->fp_excp_el) {
--        s->fp_access_checked = true;
--        return sme_access_check(s);
-+        bool ret = sme_access_check(s);
-+        s->fp_access_checked = (ret ? 1 : -1);
+     if (s->pstate_sm || !dc_isar_feature(aa64_sve, s)) {
++        bool ret;
++
+         assert(dc_isar_feature(aa64_sme, s));
+-        if (!sme_sm_enabled_check(s)) {
+-            goto fail_exit;
+-        }
+-    } else if (s->sve_excp_el) {
++        ret = sme_sm_enabled_check(s);
++        s->sve_access_checked = (ret ? 1 : -1);
 +        return ret;
++    }
++    if (s->sve_excp_el) {
++        /* Assert that we only raise one exception per instruction. */
++        assert(!s->sve_access_checked);
+         gen_exception_insn_el(s, 0, EXCP_UDEF,
+                               syn_sve_access_trap(), s->sve_excp_el);
+-        goto fail_exit;
++        s->sve_access_checked = -1;
++        return false;
      }
-     return fp_access_check_only(s);
+     s->sve_access_checked = 1;
+     return fp_access_check(s);
+-
+- fail_exit:
+-    /* Assert that we only raise one exception per instruction. */
+-    assert(!s->sve_access_checked);
+-    s->sve_access_checked = -1;
+-    return false;
  }
-@@ -14870,8 +14871,8 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     s->insn = insn;
-     s->base.pc_next = pc + 4;
  
--    s->fp_access_checked = false;
--    s->sve_access_checked = false;
-+    s->fp_access_checked = 0;
-+    s->sve_access_checked = 0;
- 
-     if (s->pstate_il) {
-         /*
-diff --git a/target/arm/translate-a64.h b/target/arm/translate-a64.h
-index ad3762d1ac..f01d2d973c 100644
---- a/target/arm/translate-a64.h
-+++ b/target/arm/translate-a64.h
-@@ -66,7 +66,7 @@ TCGv_i64 gen_mte_checkN(DisasContext *s, TCGv_i64 addr, bool is_write,
- static inline void assert_fp_access_checked(DisasContext *s)
- {
- #ifdef CONFIG_DEBUG_TCG
--    if (unlikely(!s->fp_access_checked || s->fp_excp_el)) {
-+    if (unlikely(s->fp_access_checked <= 0)) {
-         fprintf(stderr, "target-arm: FP access check missing for "
-                 "instruction 0x%08x\n", s->insn);
-         abort();
-diff --git a/target/arm/translate.h b/target/arm/translate.h
-index 3cdc7dbc2f..3856df8060 100644
---- a/target/arm/translate.h
-+++ b/target/arm/translate.h
-@@ -85,15 +85,19 @@ typedef struct DisasContext {
-     uint64_t features; /* CPU features bits */
-     bool aarch64;
-     bool thumb;
--    /* Because unallocated encodings generate different exception syndrome
-+    /*
-+     * Because unallocated encodings generate different exception syndrome
-      * information from traps due to FP being disabled, we can't do a single
-      * "is fp access disabled" check at a high level in the decode tree.
-      * To help in catching bugs where the access check was forgotten in some
-      * code path, we set this flag when the access check is done, and assert
-      * that it is set at the point where we actually touch the FP regs.
-+     *   0: not checked,
-+     *   1: checked, access ok
-+     *  -1: checked, access denied
-      */
--    bool fp_access_checked;
--    bool sve_access_checked;
-+    int8_t fp_access_checked;
-+    int8_t sve_access_checked;
-     /* ARMv8 single-step state (this is distinct from the QEMU gdbstub
-      * single-step support).
-      */
+ /*
 -- 
 2.39.5
 
