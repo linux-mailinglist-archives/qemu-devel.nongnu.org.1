@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8EAA6E9CB
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:52:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D347A6E9F2
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:58:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twy7o-0004dx-WD; Tue, 25 Mar 2025 02:51:01 -0400
+	id 1twyBA-00015I-NZ; Tue, 25 Mar 2025 02:54:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7k-0004Zv-Ia; Tue, 25 Mar 2025 02:50:56 -0400
+ id 1twy90-0005ZB-1O; Tue, 25 Mar 2025 02:52:18 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7i-0001eX-Fj; Tue, 25 Mar 2025 02:50:56 -0400
+ id 1twy8t-0001vd-H4; Tue, 25 Mar 2025 02:52:13 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A6B2F107D64;
- Tue, 25 Mar 2025 09:49:21 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id CF1DA107D77;
+ Tue, 25 Mar 2025 09:49:33 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 496391D5E73;
- Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 71C661D5E82;
+ Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 3814E5702E; Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
+ id 6F0E15704C; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 32/34] vdpa: Allow vDPA to work on big-endian machine
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 52/69] target/arm: Make DisasContext.{fp,
+ sve}_access_checked tristate
 Date: Tue, 25 Mar 2025 09:50:26 +0300
-Message-Id: <20250325065031.3263718-5-mjt@tls.msk.ru>
+Message-Id: <20250325065043.3263864-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
-References: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
+References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,51 +60,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Konstantin Shkolnyy <kshk@linux.ibm.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Add .set_vnet_le() function that always returns success, assuming that
-vDPA h/w always implements LE data format. Otherwise, QEMU disables vDPA and
-outputs the message:
-"backend does not support LE vnet headers; falling back on userspace virtio"
+The check for fp_excp_el in assert_fp_access_checked is
+incorrect.  For SME, with StreamingMode enabled, the access
+is really against the streaming mode vectors, and access
+to the normal fp registers is allowed to be disabled.
+C.f. sme_enabled_check.
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit b027f55a994af885a7a498a40373a2dcc2d8b15e)
+Convert sve_access_checked to match, even though we don't
+currently check the exception state.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 3d74825f4d6 ("target/arm: Add SME enablement checks")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250307190415.982049-2-richard.henderson@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 298a04998fa4a6dc977abe9234d98dfcdab98423)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 1b1a27de02..fcc9406a20 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -203,6 +203,18 @@ static bool vhost_vdpa_has_ufo(NetClientState *nc)
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index b2851ea503..dc6af6ea25 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -1215,14 +1215,14 @@ static bool fp_access_check_only(DisasContext *s)
+ {
+     if (s->fp_excp_el) {
+         assert(!s->fp_access_checked);
+-        s->fp_access_checked = true;
++        s->fp_access_checked = -1;
  
+         gen_exception_insn_el(s, 0, EXCP_UDEF,
+                               syn_fp_access_trap(1, 0xe, false, 0),
+                               s->fp_excp_el);
+         return false;
+     }
+-    s->fp_access_checked = true;
++    s->fp_access_checked = 1;
+     return true;
  }
  
-+/*
-+ * FIXME: vhost_vdpa doesn't have an API to "set h/w endianness". But it's
-+ * reasonable to assume that h/w is LE by default, because LE is what
-+ * virtio 1.0 and later ask for. So, this function just says "yes, the h/w is
-+ * LE". Otherwise, on a BE machine, higher-level code would mistakely think
-+ * the h/w is BE and can't support VDPA for a virtio 1.0 client.
-+ */
-+static int vhost_vdpa_set_vnet_le(NetClientState *nc, bool enable)
-+{
-+    return 0;
-+}
-+
- static bool vhost_vdpa_check_peer_type(NetClientState *nc, ObjectClass *oc,
-                                        Error **errp)
- {
-@@ -230,6 +242,7 @@ static NetClientInfo net_vhost_vdpa_info = {
-         .cleanup = vhost_vdpa_cleanup,
-         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
-         .has_ufo = vhost_vdpa_has_ufo,
-+        .set_vnet_le = vhost_vdpa_set_vnet_le,
-         .check_peer_type = vhost_vdpa_check_peer_type,
- };
+@@ -1256,13 +1256,13 @@ bool sve_access_check(DisasContext *s)
+                               syn_sve_access_trap(), s->sve_excp_el);
+         goto fail_exit;
+     }
+-    s->sve_access_checked = true;
++    s->sve_access_checked = 1;
+     return fp_access_check(s);
  
+  fail_exit:
+     /* Assert that we only raise one exception per instruction. */
+     assert(!s->sve_access_checked);
+-    s->sve_access_checked = true;
++    s->sve_access_checked = -1;
+     return false;
+ }
+ 
+@@ -1291,8 +1291,9 @@ bool sme_enabled_check(DisasContext *s)
+      * sme_excp_el by itself for cpregs access checks.
+      */
+     if (!s->fp_excp_el || s->sme_excp_el < s->fp_excp_el) {
+-        s->fp_access_checked = true;
+-        return sme_access_check(s);
++        bool ret = sme_access_check(s);
++        s->fp_access_checked = (ret ? 1 : -1);
++        return ret;
+     }
+     return fp_access_check_only(s);
+ }
+@@ -11825,8 +11826,8 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+     s->insn = insn;
+     s->base.pc_next = pc + 4;
+ 
+-    s->fp_access_checked = false;
+-    s->sve_access_checked = false;
++    s->fp_access_checked = 0;
++    s->sve_access_checked = 0;
+ 
+     if (s->pstate_il) {
+         /*
+diff --git a/target/arm/tcg/translate-a64.h b/target/arm/tcg/translate-a64.h
+index 0fcf7cb63a..bb35ebe3ef 100644
+--- a/target/arm/tcg/translate-a64.h
++++ b/target/arm/tcg/translate-a64.h
+@@ -65,7 +65,7 @@ TCGv_i64 gen_mte_checkN(DisasContext *s, TCGv_i64 addr, bool is_write,
+ static inline void assert_fp_access_checked(DisasContext *s)
+ {
+ #ifdef CONFIG_DEBUG_TCG
+-    if (unlikely(!s->fp_access_checked || s->fp_excp_el)) {
++    if (unlikely(s->fp_access_checked <= 0)) {
+         fprintf(stderr, "target-arm: FP access check missing for "
+                 "instruction 0x%08x\n", s->insn);
+         abort();
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 20cd0e851c..06893a61c0 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -91,15 +91,19 @@ typedef struct DisasContext {
+     bool aarch64;
+     bool thumb;
+     bool lse2;
+-    /* Because unallocated encodings generate different exception syndrome
++    /*
++     * Because unallocated encodings generate different exception syndrome
+      * information from traps due to FP being disabled, we can't do a single
+      * "is fp access disabled" check at a high level in the decode tree.
+      * To help in catching bugs where the access check was forgotten in some
+      * code path, we set this flag when the access check is done, and assert
+      * that it is set at the point where we actually touch the FP regs.
++     *   0: not checked,
++     *   1: checked, access ok
++     *  -1: checked, access denied
+      */
+-    bool fp_access_checked;
+-    bool sve_access_checked;
++    int8_t fp_access_checked;
++    int8_t sve_access_checked;
+     /* ARMv8 single-step state (this is distinct from the QEMU gdbstub
+      * single-step support).
+      */
 -- 
 2.39.5
 
