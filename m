@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29921A6E9F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D52AA6E9D9
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:54:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twyBB-0001Ev-Q4; Tue, 25 Mar 2025 02:54:30 -0400
+	id 1twyAc-0008Bf-8N; Tue, 25 Mar 2025 02:53:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy9X-0006IA-J6; Tue, 25 Mar 2025 02:52:49 -0400
+ id 1twy9X-0006IB-Jd; Tue, 25 Mar 2025 02:52:49 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy9R-0001xc-RY; Tue, 25 Mar 2025 02:52:45 -0400
+ id 1twy9T-0001xr-QI; Tue, 25 Mar 2025 02:52:47 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E2934107D7C;
+ by isrv.corpit.ru (Postfix) with ESMTP id E6BE1107D7D;
  Tue, 25 Mar 2025 09:49:33 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 852BF1D5E87;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 890751D5E88;
  Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 7BB6857056; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
+ id 7E30F57058; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Deepak Gupta <debug@rivosinc.com>,
- Adam Zabrocki <azabrocki@nvidia.com>,
+ Ved Shanbhogue <ved@rivosinc.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 58/69] target/riscv: fix access permission checks for
- CSR_SSP
-Date: Tue, 25 Mar 2025 09:50:31 +0300
-Message-Id: <20250325065043.3263864-7-mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 59/69] target/riscv: fixes a bug against `ssamoswap`
+ behavior in M-mode
+Date: Tue, 25 Mar 2025 09:50:32 +0300
+Message-Id: <20250325065043.3263864-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
@@ -64,39 +64,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Deepak Gupta <debug@rivosinc.com>
 
-Commit:8205bc1 ("target/riscv: introduce ssp and enabling controls for
-zicfiss") introduced CSR_SSP but it mis-interpreted the spec on access
-to CSR_SSP in M-mode. Gated to CSR_SSP is not gated via `xSSE`. But
-rather rules clearly specified in section "22.2.1. Shadow Stack Pointer
-(ssp) CSR access contr" in the priv spec.
+Commit f06bfe3dc38c ("target/riscv: implement zicfiss instructions") adds
+`ssamoswap` instruction. `ssamoswap` takes the code-point from existing
+reserved encoding (and not a zimop like other shadow stack instructions).
+If shadow stack is not enabled (via xenvcfg.SSE) and effective priv is
+less than M then `ssamoswap` must result in an illegal instruction
+exception. However if effective priv is M, then `ssamoswap` results in
+store/AMO access fault. See Section "22.2.3. Shadow Stack Memory
+Protection" of priv spec.
 
-Fixes: 8205bc127a83 ("target/riscv: introduce ssp and enabling controls
-for zicfiss". Thanks to Adam Zabrocki for bringing this to attention.
+Fixes: f06bfe3dc38c ("target/riscv: implement zicfiss instructions")
 
-Reported-by: Adam Zabrocki <azabrocki@nvidia.com>
+Reported-by: Ved Shanbhogue <ved@rivosinc.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250306064636.452396-1-debug@rivosinc.com>
+Message-ID: <20250306064636.452396-2-debug@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 86c78b280607fcff787866a03374047c65037a90)
+(cherry picked from commit d2c5759c8dd4c00195d4ebecc7d009e41df6baef)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 9846770820..c2e39c91b6 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -190,6 +190,11 @@ static RISCVException cfi_ss(CPURISCVState *env, int csrno)
-         return RISCV_EXCP_ILLEGAL_INST;
-     }
- 
-+    /* If ext implemented, M-mode always have access to SSP CSR */
-+    if (env->priv == PRV_M) {
-+        return RISCV_EXCP_NONE;
+diff --git a/target/riscv/insn_trans/trans_rvzicfiss.c.inc b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
+index e3ebc4977c..b0096adcd0 100644
+--- a/target/riscv/insn_trans/trans_rvzicfiss.c.inc
++++ b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
+@@ -15,6 +15,13 @@
+  * You should have received a copy of the GNU General Public License along with
+  * this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
++
++#define REQUIRE_ZICFISS(ctx) do {        \
++    if (!ctx->cfg_ptr->ext_zicfiss) {    \
++        return false;                    \
++    }                                    \
++} while (0)
++
+ static bool trans_sspopchk(DisasContext *ctx, arg_sspopchk *a)
+ {
+     if (!ctx->bcfi_enabled) {
+@@ -77,6 +84,11 @@ static bool trans_ssrdp(DisasContext *ctx, arg_ssrdp *a)
+ static bool trans_ssamoswap_w(DisasContext *ctx, arg_amoswap_w *a)
+ {
+     REQUIRE_A_OR_ZAAMO(ctx);
++    REQUIRE_ZICFISS(ctx);
++    if (ctx->priv == PRV_M) {
++        generate_exception(ctx, RISCV_EXCP_STORE_AMO_ACCESS_FAULT);
 +    }
 +
-     /* if bcfi not active for current env, access to csr is illegal */
-     if (!cpu_get_bcfien(env)) {
- #if !defined(CONFIG_USER_ONLY)
+     if (!ctx->bcfi_enabled) {
+         return false;
+     }
+@@ -97,6 +109,11 @@ static bool trans_ssamoswap_d(DisasContext *ctx, arg_amoswap_w *a)
+ {
+     REQUIRE_64BIT(ctx);
+     REQUIRE_A_OR_ZAAMO(ctx);
++    REQUIRE_ZICFISS(ctx);
++    if (ctx->priv == PRV_M) {
++        generate_exception(ctx, RISCV_EXCP_STORE_AMO_ACCESS_FAULT);
++    }
++
+     if (!ctx->bcfi_enabled) {
+         return false;
+     }
 -- 
 2.39.5
 
