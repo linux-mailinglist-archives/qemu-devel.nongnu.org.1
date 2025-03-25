@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42EEA6E80F
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:39:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5906A6E806
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:38:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twtEe-0001ao-To; Mon, 24 Mar 2025 21:37:45 -0400
+	id 1twtEf-0001bD-HT; Mon, 24 Mar 2025 21:37:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEb-0001Ze-Pd
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:41 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1twtEc-0001Zq-1v
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:42 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEY-0007Qj-9i
+ id 1twtEZ-0007Qn-7K
  for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:41 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2240b4de12bso26594005ad.2
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:32 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-224100e9a5cso96813205ad.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742866652; x=1743471452; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742866653; x=1743471453; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=PdIuuyzjE10djLKABnFHUca/VobMzDkIZQ/hl9k6w4Q=;
- b=gIL39EQouNygW9Feru1ohsxoKsx6Unkd4NI5i5cLX+IrFLdybNa5j+A+nCPRhGMOWq
- WsAE4p0stZ2AhbbY7w++a3Ko84e4hoEg4Mobc7vwD8zVBBbklSHpXG2vjZa37IBMlFTL
- sjou5cf1gurcUhGhhZIIjiYlIGpxSXEPuKGRCPuCU8KFETp+lXbGGdffyJW5gt61Jci3
- +xwgcIhQdyOzAj1M2PEpc92RKD/3xJys5twXxtoqDX9OHYdLxYBU7L2RxICjmuRGQK+x
- TtdqOnLE25Yj79J0AXxQxrU4TPyaZxUJ0vSDvmj6QFKK8UJ0YXjpjRTBnb5xNvuaK/8J
- RzeA==
+ bh=ESyhJvzRgJ6eHUMJCajcUTPd7s/x9kUPr3F5kS9BQiQ=;
+ b=TTumDdVA3Xg38X66kz8P50DvwMujcJT9NPO9xpH9at0ItdUTsYqpFJFztYbTHAyndu
+ 8bTCrwBEbwM2i9RRdMOXXZo+gTkaToDYPUhUpGUSIQAh61pExWTvyUoC+JufpdZcX7Sm
+ g7/EY4CYnyk3d/N53LSZv5HUOydEsHB6Zi9J6ZwUDJvKQeDHHOuMjN6wT9tJnvj7su6f
+ ouQ1QdagrRC3DoYmcMsRF7iMPHB9epJ9CQEhqYbCuMisN/izWH21Nkhj5cYIjxSPbi/1
+ 3TySmCH9Kdx4VoCvwlmQbBH/QR4hJfOTNAydBxcE0hQYNVS+6AVV1wTwSscQAOsxRykb
+ Ekiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742866652; x=1743471452;
+ d=1e100.net; s=20230601; t=1742866653; x=1743471453;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PdIuuyzjE10djLKABnFHUca/VobMzDkIZQ/hl9k6w4Q=;
- b=uUWlqSHqmHEMJ7NeN2IMZnEgGDXlq7HSiPl4FgqAR6kVTFO2DNYPw1vfQfyha0tb8l
- BaMgYq6744gJ5rZLuiPtSB7VcUOO/kNSsgi2/NyBttoPgfQpqYuN7gQP7Lbpg74LiIG+
- N1iYmm9TLHoDfDRLo2f1VSRsyj8QP1drBpMBQs4OMWCnl4WQGgC8CttBPkA7WrU/p44M
- bVUzAJOIfDdqn3hSiU/4cPvQMUfKn4WyrZFLQem/phXz6rkefZ3mvVJ0Nn/SahH0+Cnt
- Q2A/lbRpNQ3xOjifb9rANEbRA91GcXgCYoIReYfG4m3tlbEMhR/7D8WcCwi6snCItsSf
- oGEA==
+ bh=ESyhJvzRgJ6eHUMJCajcUTPd7s/x9kUPr3F5kS9BQiQ=;
+ b=a7V7LS3rgI2vMDl5yxQ5vR0o8v6nFHRS8BQXf9Kc6JkvkN7TZvmgSZf+RTWqSo9vIK
+ 437GMCUaJ+U5t5za5C8d9cHKK7PtdvfUmjBr0XUn00qmL442fdUtJaiLkdwIf03HPEmi
+ R20w3tgKL5mP3IgG1GdSyNYp7Lg7F7Si25zhuvk1QHOWfEoubz6zTduXwWKGDD7IhjLr
+ 6nn2u6phAEbT1wGk2DKXXWv3zSjqxd2sGIPGhhP0DmQcW110T9MaYcJiDnckS9glq5wa
+ WB85UYR0Tg4hI/H/8wh+2WGtbxTIgz1YR8a7CNn/hy6FEF4yZ1xRajeorB3AKoU61Dmt
+ dChQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVHM6RPUyty7yB/VaIodtkvumqV0Xdk//5LOJtbKEwfRn/QCtIbk7N0kjyqYL1D8Ou/tk22ANKUhzu7@nongnu.org
-X-Gm-Message-State: AOJu0Yw1q1AuLpLAGxEYiOEkEI6PObHZ2UiH9UwZ/6sdNf4y6QGxY71j
- oW0UOqZE8r1C4FpKZykPLYbT6/tBT8u400KYHgDjdaqJdtS8whzFHUIdRQ9X+ac=
-X-Gm-Gg: ASbGncvmixgnggn29JL/APl2kwu0dqn50lLFxWecBwoFpSq8v3XkbTmSQ70+oc/+J9r
- ah9DsJsIepKpQB7Nu6qn69YrJzpeBdWBN0dWOpM4UREwIuSqcqScqIRaj1A+R5EDpCfC0cYed/u
- qRz8XhI4uef2ML1t5t4vpUMRYAMfVIO22hfwUYRUwYvF22Qxc1OhE+gYx2Cb0vfpkW8CVnalXfq
- Z8D6wosD3wnHN9wjZrdSoIPQzEYpY1CfFRUaLO0WvVPGPhECI8oG8uBBFtH6Znv0N3KFtYvZWrR
- RgHvFjmiWBScxq+jub3/HXOFXrhl51FP5jtLtiIBFagRXBV3bEcuyg1cuvYLV4GeMKw0
-X-Google-Smtp-Source: AGHT+IGbUvvMCBthX6qLdWTxiDMXFJQ5zTF7lLjWQwRSvA9e4uCV/Gza3enG+chm0Jn3eMp6/t1aXg==
-X-Received: by 2002:a05:6a00:4648:b0:736:a973:748 with SMTP id
- d2e1a72fcca58-73905a2515emr21873570b3a.22.1742866651627; 
- Mon, 24 Mar 2025 18:37:31 -0700 (PDT)
+ AJvYcCX6ljZDz0m4mAxEgF8QUae40yWX7bciKpPHXjSVUskxO8+rEMSuJhQTtryZX4JYkB9cmz9bR0viWoqp@nongnu.org
+X-Gm-Message-State: AOJu0YwNsivgPsWElQB8hbbvzIqh3QN2uClOjzP9KCJ7FvBm7N0PuduE
+ zqV94TZXJxdoP2tC6JJ0UcsAZ9tE7evav8RYbegO7y0steadWMavkuWKxBbi1sNbL8VozvSCaTG
+ 8mmI=
+X-Gm-Gg: ASbGnct4CGL/3puOw+T6w8Ye1CVaHOdRgzK4J0GNIPuJEW3KBoeOblqheIxtqhQv95O
+ cyjmNVRjhd4fFzqw3y7q7CHvg3/vX4XrnYcdT3YtVyzPwjYz4hE4vm6LJ2OqnWFkatNYVBRH5LG
+ WV8RwZGrCXSr/tzknLGLAwuBgxvmllu4sURlZQ9ergohqA5KaG9h1MP1kQHxCJXL4muv4OwxIdt
+ y3ZXpl8ZbzgpvbIoo3AYVynykjHDcXEnnk06sX4pqJKatfwzFX1ppDIV3OzksvTCaCb1D4AnHuT
+ MTqgJXmjxaXXM8kqzclpJQa++XgvuSgAu3JLVn89lHVyG0vfRdgLic+01g==
+X-Google-Smtp-Source: AGHT+IFPDpmPfZp7Xp8wT8MAHKr9FhRK+XC9TA1s5D9zvkJb4+DIOdjr+lFEgJM76iB9RcZHsv97JA==
+X-Received: by 2002:a05:6a00:1a93:b0:736:6ac4:d1ff with SMTP id
+ d2e1a72fcca58-7390598e236mr27130189b3a.3.1742866653196; 
+ Mon, 24 Mar 2025 18:37:33 -0700 (PDT)
 Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73905fa38e1sm8784770b3a.35.2025.03.24.18.37.30
+ d2e1a72fcca58-73905fa38e1sm8784770b3a.35.2025.03.24.18.37.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Mar 2025 18:37:31 -0700 (PDT)
-Message-ID: <76becbf8-650c-4435-8719-4083c5a7c6ba@linaro.org>
-Date: Mon, 24 Mar 2025 18:25:17 -0700
+ Mon, 24 Mar 2025 18:37:32 -0700 (PDT)
+Message-ID: <cf9f6109-64ef-4691-933b-dc44a6038f27@linaro.org>
+Date: Mon, 24 Mar 2025 18:36:49 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/17] hw/avr: Pass mcu_type to class_base_init via
- .class_data
+Subject: Re: [PATCH 10/17] target/avr: Update cpu_sp after push and pop
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com, philmd@linaro.org
 References: <20250323173730.3213964-1-richard.henderson@linaro.org>
- <20250323173730.3213964-16-richard.henderson@linaro.org>
+ <20250323173730.3213964-11-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250323173730.3213964-16-richard.henderson@linaro.org>
+In-Reply-To: <20250323173730.3213964-11-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,13 +103,78 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/23/25 10:37, Richard Henderson wrote:
-> We want to be able to do more common work on MachineClass.
-> Pass the class name as a string in .class_data.
+> Not that AVR has memory paging traps, but it's better
+> form to allow the memory operation to finish before
+> updating the cpu register.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   hw/avr/arduino.c | 16 ++++++++++++----
->   1 file changed, 12 insertions(+), 4 deletions(-)
+>   target/avr/translate.c | 32 +++++++++++++++-----------------
+>   1 file changed, 15 insertions(+), 17 deletions(-)
+> 
+> diff --git a/target/avr/translate.c b/target/avr/translate.c
+> index 6bb4154dff..3446007be1 100644
+> --- a/target/avr/translate.c
+> +++ b/target/avr/translate.c
+> @@ -967,40 +967,38 @@ static void gen_push_ret(DisasContext *ctx, int ret)
+>       } else if (avr_feature(ctx->env, AVR_FEATURE_2_BYTE_PC)) {
+>           TCGv t0 = tcg_constant_i32(ret & 0x00ffff);
+>   
+> -        tcg_gen_subi_tl(cpu_sp, cpu_sp, 1);
+> -        gen_data_store_raw(ctx, t0, cpu_sp, 0, MO_BEUW);
+> -        tcg_gen_subi_tl(cpu_sp, cpu_sp, 1);
+> +        gen_data_store_raw(ctx, t0, cpu_sp, -1, MO_BEUW);
+> +        tcg_gen_subi_tl(cpu_sp, cpu_sp, 2);
+>       } else if (avr_feature(ctx->env, AVR_FEATURE_3_BYTE_PC)) {
+>           TCGv lo = tcg_constant_i32(ret & 0x0000ff);
+>           TCGv hi = tcg_constant_i32((ret & 0xffff00) >> 8);
+>   
+>           gen_data_store_raw(ctx, lo, cpu_sp, 0, MO_UB);
+> -        tcg_gen_subi_tl(cpu_sp, cpu_sp, 2);
+> -        gen_data_store_raw(ctx, hi, cpu_sp, 0, MO_BEUW);
+> -        tcg_gen_subi_tl(cpu_sp, cpu_sp, 1);
+> +        gen_data_store_raw(ctx, hi, cpu_sp, -2, MO_BEUW);
+> +        tcg_gen_subi_tl(cpu_sp, cpu_sp, 3);
+> +    } else {
+> +        g_assert_not_reached();
+>       }
+>   }
+>   
+>   static void gen_pop_ret(DisasContext *ctx, TCGv ret)
+>   {
+>       if (avr_feature(ctx->env, AVR_FEATURE_1_BYTE_PC)) {
+> +        gen_data_load_raw(ctx, ret, cpu_sp, 1, MO_UB);
+>           tcg_gen_addi_tl(cpu_sp, cpu_sp, 1);
+> -        gen_data_load_raw(ctx, ret, cpu_sp, 0, MO_UB);
+>       } else if (avr_feature(ctx->env, AVR_FEATURE_2_BYTE_PC)) {
+> -        tcg_gen_addi_tl(cpu_sp, cpu_sp, 1);
+> -        gen_data_load_raw(ctx, ret, cpu_sp, 0, MO_BEUW);
+> -        tcg_gen_addi_tl(cpu_sp, cpu_sp, 1);
+> +        gen_data_load_raw(ctx, ret, cpu_sp, 1, MO_BEUW);
+> +        tcg_gen_addi_tl(cpu_sp, cpu_sp, 2);
+>       } else if (avr_feature(ctx->env, AVR_FEATURE_3_BYTE_PC)) {
+> -        TCGv lo = tcg_temp_new_i32();
+>           TCGv hi = tcg_temp_new_i32();
+>   
+> -        tcg_gen_addi_tl(cpu_sp, cpu_sp, 1);
+> -        gen_data_load_raw(ctx, hi, cpu_sp, 0, MO_BEUW);
+> +        gen_data_load_raw(ctx, hi, cpu_sp, 1, MO_BEUW);
+> +        gen_data_load_raw(ctx, ret, cpu_sp, 3, MO_UB);
+> +        tcg_gen_addi_tl(cpu_sp, cpu_sp, 3);
+>   
+> -        tcg_gen_addi_tl(cpu_sp, cpu_sp, 2);
+> -        gen_data_load_raw(ctx, lo, cpu_sp, 0, MO_UB);
+> -
+> -        tcg_gen_deposit_tl(ret, lo, hi, 8, 16);
+> +        tcg_gen_deposit_tl(ret, ret, hi, 8, 16);
+> +    } else {
+> +        g_assert_not_reached();
+>       }
+>   }
+>   
+
+A bit hard to review with the side effect of gen_data_*_raw, but number 
+seems to match.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
