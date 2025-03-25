@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5576A70AFA
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 21:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F514A70AF3
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 21:03:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txASy-0000ac-Ep; Tue, 25 Mar 2025 16:01:41 -0400
+	id 1txAT5-0000ee-Jr; Tue, 25 Mar 2025 16:01:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASj-0000XF-4j
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASj-0000XH-4x
  for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASd-0002jW-17
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASd-0002jY-Bu
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1742932878;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GHHfz+fegxqk8qT+aLB4m7mRgq2owx0MGuT4JPovqSs=;
- b=RONMfINeUE4KG6NyDrvVk9xgqwflFbnE1rKRQpdncCOZ1kkwu3cNbYpkKhDJAdpo9me99S
- J3yg/T+a4nC6S/hjVhem4T2tf+24psKdqAJLZyUolGDG7xgLTWK511drh/+weoRgAU3KWj
- NUvDWs4p8K5g435uoNL+U8gtlWR41k0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=fv7s8G624YmEy1VbJqOHq/CAZDI22pfZqn0fmq+hM7I=;
+ b=ecvvQtCpaCyHpljAtvdXB3lq4UNEvRrDXdlMqw29dOkIWzSh3vSHys/TjLDDkC0SHLB1MT
+ 0qIutBsiDyMyF02+65g/FwBZKK9yL5V6tDCjAy3OcoMKH5wTMvLMP9GQXGe6Kmm+G42RjY
+ uy8QpR0BnJYZG+c/jrnNPK7TophaU90=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-9zq7HHX2Ma61ARixEoXJCA-1; Tue,
- 25 Mar 2025 16:01:11 -0400
-X-MC-Unique: 9zq7HHX2Ma61ARixEoXJCA-1
-X-Mimecast-MFC-AGG-ID: 9zq7HHX2Ma61ARixEoXJCA_1742932870
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-k5xfUF_aOnmpkVdXGQuo3g-1; Tue,
+ 25 Mar 2025 16:01:14 -0400
+X-MC-Unique: k5xfUF_aOnmpkVdXGQuo3g-1
+X-Mimecast-MFC-AGG-ID: k5xfUF_aOnmpkVdXGQuo3g_1742932873
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B07351956075; Tue, 25 Mar 2025 20:01:10 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A26F6196D2D2; Tue, 25 Mar 2025 20:01:13 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.142])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F1C8D1801A65; Tue, 25 Mar 2025 20:01:08 +0000 (UTC)
+ id 6F1AD180175F; Tue, 25 Mar 2025 20:01:11 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 13/15] tests/functional: Convert the SMMU test to the
- functional framework
-Date: Tue, 25 Mar 2025 21:00:21 +0100
-Message-ID: <20250325200026.344006-14-thuth@redhat.com>
+Subject: [PATCH 14/15] gitlab-ci: Update QEMU_JOB_AVOCADO and
+ QEMU_CI_AVOCADO_TESTING
+Date: Tue, 25 Mar 2025 21:00:22 +0100
+Message-ID: <20250325200026.344006-15-thuth@redhat.com>
 In-Reply-To: <20250325200026.344006-1-thuth@redhat.com>
 References: <20250325200026.344006-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,425 +83,101 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-This test was using cloudinit and a "dnf install" command in the guest
-to exercise the NIC with SMMU enabled. Since we don't have the cloudinit
-stuff in the functional framework and we should not rely on having access
-to external networks (once our ASSETs have been cached), we rather boot
-into the initrd first, manually mount the root disk and then use the
-check_http_download() function from the functional framework here instead
-for testing whether the network works as expected.
+Since we don't run the Avocado jobs in the CI anymore, rename
+these variables to QEMU_JOB_FUNCTIONAL and QEMU_CI_FUNCTIONAL_TESTING.
 
-Unfortunately, there seems to be a small race when using the files
-from Fedora 33: To enter the initrd shell, we have to send a "return"
-once. But it does not seem to work if we send it too early. Using a
-sleep(0.2) makes it work reliably for me, but to make it even more
-unlikely to trigger this situation, let's better limit the Fedora 33
-tests to only run with KVM.
+Also, there was a mismatch between the documentation and the
+implementation of QEMU_CI_AVOCADO_TESTING: While the documentation
+said that you had to "Set this variable to have the tests using the
+Avocado framework run automatically", you indeed needed to set it
+to make the pipelines appear in your dashboard - but they were never
+run automatically in forks and had to be triggered manually. Let's
+improve this now: No need to hide these pipelines from the users
+by default anymore (the functional tests should be stable enough
+nowadays), and rather allow the users to run the pipelines auto-
+matically with this switch now instead, as was documented.
 
-Finally, while we're at it, we also add some lines for testing writes
-to the hard disk, as we already do it in the test_intel_iommu test.
-
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Tested-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                           |   2 +-
- tests/avocado/smmu.py                 | 139 -----------------
- tests/functional/meson.build          |   2 +
- tests/functional/test_aarch64_smmu.py | 205 ++++++++++++++++++++++++++
- 4 files changed, 208 insertions(+), 140 deletions(-)
- delete mode 100644 tests/avocado/smmu.py
- create mode 100755 tests/functional/test_aarch64_smmu.py
+ docs/devel/testing/ci-jobs.rst.inc  | 19 +++++++++----------
+ .gitlab-ci.d/base.yml               |  8 ++------
+ .gitlab-ci.d/buildtest-template.yml |  2 +-
+ 3 files changed, 12 insertions(+), 17 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index acdd8941168..9bd9cb836ce 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -211,7 +211,7 @@ L: qemu-arm@nongnu.org
- S: Maintained
- F: hw/arm/smmu*
- F: include/hw/arm/smmu*
--F: tests/avocado/smmu.py
-+F: tests/functional/test_aarch64_smmu.py
+diff --git a/docs/devel/testing/ci-jobs.rst.inc b/docs/devel/testing/ci-jobs.rst.inc
+index 3756bbe3554..4f4c96dd883 100644
+--- a/docs/devel/testing/ci-jobs.rst.inc
++++ b/docs/devel/testing/ci-jobs.rst.inc
+@@ -126,10 +126,10 @@ QEMU_JOB_PUBLISH
+ The job is for publishing content after a branch has been
+ merged into the upstream default branch.
  
- AVR TCG CPUs
- M: Michael Rolnik <mrolnik@gmail.com>
-diff --git a/tests/avocado/smmu.py b/tests/avocado/smmu.py
-deleted file mode 100644
-index 83fd79e922e..00000000000
---- a/tests/avocado/smmu.py
-+++ /dev/null
-@@ -1,139 +0,0 @@
--# SMMUv3 Functional tests
--#
--# Copyright (c) 2021 Red Hat, Inc.
--#
--# Author:
--#  Eric Auger <eric.auger@redhat.com>
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later.  See the COPYING file in the top-level directory.
--import os
+-QEMU_JOB_AVOCADO
+-~~~~~~~~~~~~~~~~
++QEMU_JOB_FUNCTIONAL
++~~~~~~~~~~~~~~~~~~~
+ 
+-The job runs the Avocado integration test suite
++The job runs the functional test suite
+ 
+ Contributor controlled runtime variables
+ ----------------------------------------
+@@ -149,13 +149,12 @@ the jobs to be manually started from the UI
+ Set this variable to 2 to create the pipelines and run all
+ the jobs immediately, as was the historical behaviour
+ 
+-QEMU_CI_AVOCADO_TESTING
+-~~~~~~~~~~~~~~~~~~~~~~~
+-By default, tests using the Avocado framework are not run automatically in
+-the pipelines (because multiple artifacts have to be downloaded, and if
+-these artifacts are not already cached, downloading them make the jobs
+-reach the timeout limit). Set this variable to have the tests using the
+-Avocado framework run automatically.
++QEMU_CI_FUNCTIONAL_TESTING
++~~~~~~~~~~~~~~~~~~~~~~~~~~
++By default, tests using the functional framework are not run automatically
++in the pipelines (because multiple artifacts have to be downloaded, which
++might cause a lot of network traffic). Set this variable to have the tests
++using the functional framework run automatically.
+ 
+ Other misc variables
+ --------------------
+diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
+index 25b88aaa06a..172028e1731 100644
+--- a/.gitlab-ci.d/base.yml
++++ b/.gitlab-ci.d/base.yml
+@@ -69,10 +69,6 @@ variables:
+     - if: '$QEMU_CI != "1" && $QEMU_CI != "2" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
+       when: never
+ 
+-    # Avocado jobs don't run in forks unless $QEMU_CI_AVOCADO_TESTING is set
+-    - if: '$QEMU_JOB_AVOCADO && $QEMU_CI_AVOCADO_TESTING != "1" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
+-      when: never
 -
--from avocado import skipUnless
--from avocado_qemu import BUILD_DIR
--from avocado_qemu.linuxtest import LinuxTest
--
--@skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
--class SMMU(LinuxTest):
--    """
--    :avocado: tags=accel:kvm
--    :avocado: tags=cpu:host
--    :avocado: tags=arch:aarch64
--    :avocado: tags=machine:virt
--    :avocado: tags=distro:fedora
--    :avocado: tags=smmu
--    :avocado: tags=flaky
--    """
--
--    IOMMU_ADDON = ',iommu_platform=on,disable-modern=off,disable-legacy=on'
--    kernel_path = None
--    initrd_path = None
--    kernel_params = None
--
--    def set_up_boot(self):
--        path = self.download_boot()
--        self.vm.add_args('-device', 'virtio-blk-pci,bus=pcie.0,' +
--                         'drive=drv0,id=virtio-disk0,bootindex=1,'
--                         'werror=stop,rerror=stop' + self.IOMMU_ADDON)
--        self.vm.add_args('-drive',
--                         'file=%s,if=none,cache=writethrough,id=drv0' % path)
--
--    def setUp(self):
--        super(SMMU, self).setUp(None, 'virtio-net-pci' + self.IOMMU_ADDON)
--
--    def common_vm_setup(self, custom_kernel=False):
--        self.require_accelerator("kvm")
--        self.vm.add_args("-accel", "kvm")
--        self.vm.add_args("-cpu", "host")
--        self.vm.add_args("-machine", "iommu=smmuv3")
--        self.vm.add_args("-d", "guest_errors")
--        self.vm.add_args('-bios', os.path.join(BUILD_DIR, 'pc-bios',
--                         'edk2-aarch64-code.fd'))
--        self.vm.add_args('-device', 'virtio-rng-pci,rng=rng0')
--        self.vm.add_args('-object',
--                         'rng-random,id=rng0,filename=/dev/urandom')
--
--        if custom_kernel is False:
--            return
--
--        kernel_url = self.distro.pxeboot_url + 'vmlinuz'
--        initrd_url = self.distro.pxeboot_url + 'initrd.img'
--        self.kernel_path = self.fetch_asset(kernel_url)
--        self.initrd_path = self.fetch_asset(initrd_url)
--
--    def run_and_check(self):
--        if self.kernel_path:
--            self.vm.add_args('-kernel', self.kernel_path,
--                             '-append', self.kernel_params,
--                             '-initrd', self.initrd_path)
--        self.launch_and_wait()
--        self.ssh_command('cat /proc/cmdline')
--        self.ssh_command('dnf -y install numactl-devel')
--
--
--    # 5.3 kernel without RIL #
--
--    def test_smmu_noril(self):
--        """
--        :avocado: tags=smmu_noril
--        :avocado: tags=smmu_noril_tests
--        :avocado: tags=distro_version:31
--        """
--        self.common_vm_setup()
--        self.run_and_check()
--
--    def test_smmu_noril_passthrough(self):
--        """
--        :avocado: tags=smmu_noril_passthrough
--        :avocado: tags=smmu_noril_tests
--        :avocado: tags=distro_version:31
--        """
--        self.common_vm_setup(True)
--        self.kernel_params = (self.distro.default_kernel_params +
--                              ' iommu.passthrough=on')
--        self.run_and_check()
--
--    def test_smmu_noril_nostrict(self):
--        """
--        :avocado: tags=smmu_noril_nostrict
--        :avocado: tags=smmu_noril_tests
--        :avocado: tags=distro_version:31
--        """
--        self.common_vm_setup(True)
--        self.kernel_params = (self.distro.default_kernel_params +
--                              ' iommu.strict=0')
--        self.run_and_check()
--
--    # 5.8 kernel featuring range invalidation
--    # >= v5.7 kernel
--
--    def test_smmu_ril(self):
--        """
--        :avocado: tags=smmu_ril
--        :avocado: tags=smmu_ril_tests
--        :avocado: tags=distro_version:33
--        """
--        self.common_vm_setup()
--        self.run_and_check()
--
--    def test_smmu_ril_passthrough(self):
--        """
--        :avocado: tags=smmu_ril_passthrough
--        :avocado: tags=smmu_ril_tests
--        :avocado: tags=distro_version:33
--        """
--        self.common_vm_setup(True)
--        self.kernel_params = (self.distro.default_kernel_params +
--                              ' iommu.passthrough=on')
--        self.run_and_check()
--
--    def test_smmu_ril_nostrict(self):
--        """
--        :avocado: tags=smmu_ril_nostrict
--        :avocado: tags=smmu_ril_tests
--        :avocado: tags=distro_version:33
--        """
--        self.common_vm_setup(True)
--        self.kernel_params = (self.distro.default_kernel_params +
--                              ' iommu.strict=0')
--        self.run_and_check()
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index b36fcab0896..8c1d3bb4bdb 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -18,6 +18,7 @@ test_timeouts = {
-   'aarch64_rme_sbsaref' : 1200,
-   'aarch64_sbsaref_alpine' : 1200,
-   'aarch64_sbsaref_freebsd' : 720,
-+  'aarch64_smmu' : 720,
-   'aarch64_tuxrun' : 240,
-   'aarch64_virt' : 360,
-   'aarch64_virt_gpu' : 480,
-@@ -88,6 +89,7 @@ tests_aarch64_system_thorough = [
-   'aarch64_sbsaref',
-   'aarch64_sbsaref_alpine',
-   'aarch64_sbsaref_freebsd',
-+  'aarch64_smmu',
-   'aarch64_tcg_plugins',
-   'aarch64_tuxrun',
-   'aarch64_virt',
-diff --git a/tests/functional/test_aarch64_smmu.py b/tests/functional/test_aarch64_smmu.py
-new file mode 100755
-index 00000000000..c65d0f28178
---- /dev/null
-+++ b/tests/functional/test_aarch64_smmu.py
-@@ -0,0 +1,205 @@
-+#!/usr/bin/env python3
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+# SMMUv3 Functional tests
-+#
-+# Copyright (c) 2021 Red Hat, Inc.
-+#
-+# Author:
-+#  Eric Auger <eric.auger@redhat.com>
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+import os
-+import time
-+
-+from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
-+from qemu_test import BUILD_DIR
-+from qemu.utils import kvm_available
-+
-+
-+class SMMU(LinuxKernelTest):
-+
-+    default_kernel_params = ('earlyprintk=pl011,0x9000000 no_timer_check '
-+                             'printk.time=1 rd_NO_PLYMOUTH net.ifnames=0 '
-+                             'console=ttyAMA0 rd.rescue')
-+    IOMMU_ADDON = ',iommu_platform=on,disable-modern=off,disable-legacy=on'
-+    kernel_path = None
-+    initrd_path = None
-+    kernel_params = None
-+
-+    GUEST_PORT = 8080
-+
-+    def set_up_boot(self, path):
-+        self.vm.add_args('-device', 'virtio-blk-pci,bus=pcie.0,' +
-+                         'drive=drv0,id=virtio-disk0,bootindex=1,'
-+                         'werror=stop,rerror=stop' + self.IOMMU_ADDON)
-+        self.vm.add_args('-drive',
-+                f'file={path},if=none,cache=writethrough,id=drv0,snapshot=on')
-+
-+        self.vm.add_args('-netdev',
-+                         'user,id=n1,hostfwd=tcp:127.0.0.1:0-:%d' %
-+                         self.GUEST_PORT)
-+        self.vm.add_args('-device', 'virtio-net,netdev=n1' + self.IOMMU_ADDON)
-+
-+    def common_vm_setup(self, kernel, initrd, disk):
-+        self.require_accelerator("kvm")
-+        self.require_netdev('user')
-+        self.set_machine("virt")
-+        self.vm.add_args('-m', '1G')
-+        self.vm.add_args("-accel", "kvm")
-+        self.vm.add_args("-cpu", "host")
-+        self.vm.add_args("-machine", "iommu=smmuv3")
-+        self.vm.add_args("-d", "guest_errors")
-+        self.vm.add_args('-bios', os.path.join(BUILD_DIR, 'pc-bios',
-+                         'edk2-aarch64-code.fd'))
-+        self.vm.add_args('-device', 'virtio-rng-pci,rng=rng0')
-+        self.vm.add_args('-object',
-+                         'rng-random,id=rng0,filename=/dev/urandom')
-+
-+        self.kernel_path = kernel.fetch()
-+        self.initrd_path = initrd.fetch()
-+        self.set_up_boot(disk.fetch())
-+
-+    def run_and_check(self, filename, hashsum):
-+        self.vm.add_args('-initrd', self.initrd_path)
-+        self.vm.add_args('-append', self.kernel_params)
-+        self.launch_kernel(self.kernel_path, initrd=self.initrd_path,
-+                           wait_for='attach it to a bug report.')
-+        prompt = '# '
-+        # Fedora 33 requires 'return' to be pressed to enter the shell.
-+        # There seems to be a small race between detecting the previous ':'
-+        # and sending the newline, so we need to add a small delay here.
-+        self.wait_for_console_pattern(':')
-+        time.sleep(0.2)
-+        exec_command_and_wait_for_pattern(self, '\n', prompt)
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cmdline',
-+                                          self.kernel_params)
-+
-+        # Checking for SMMU enablement:
-+        self.log.info("Checking whether SMMU has been enabled...")
-+        exec_command_and_wait_for_pattern(self, 'dmesg | grep smmu',
-+                                          'arm-smmu-v3')
-+        self.wait_for_console_pattern(prompt)
-+        exec_command_and_wait_for_pattern(self,
-+                                    'find /sys/kernel/iommu_groups/ -type l',
-+                                    'devices/0000:00:')
-+        self.wait_for_console_pattern(prompt)
-+
-+        # Copy a file (checked later), umount afterwards to drop disk cache:
-+        self.log.info("Checking hard disk...")
-+        exec_command_and_wait_for_pattern(self,
-+                        "while ! (dmesg -c | grep vda:) ; do sleep 1 ; done",
-+                        "vda2")
-+        exec_command_and_wait_for_pattern(self, 'mount /dev/vda2 /sysroot',
-+                                          'mounted filesystem')
-+        exec_command_and_wait_for_pattern(self, 'cp /bin/vi /sysroot/root/vi',
-+                                          prompt)
-+        exec_command_and_wait_for_pattern(self, 'umount /sysroot', prompt)
-+        # Switch from initrd to the cloud image filesystem:
-+        exec_command_and_wait_for_pattern(self, 'mount /dev/vda2 /sysroot',
-+                                          prompt)
-+        exec_command_and_wait_for_pattern(self,
-+                ('for d in dev proc sys run ; do '
-+                 'mount -o bind /$d /sysroot/$d ; done'), prompt)
-+        exec_command_and_wait_for_pattern(self, 'chroot /sysroot', prompt)
-+        # Check files on the hard disk:
-+        exec_command_and_wait_for_pattern(self,
-+            ('if diff -q /root/vi /usr/bin/vi ; then echo "file" "ok" ; '
-+             'else echo "files differ"; fi'), 'file ok')
-+        self.wait_for_console_pattern(prompt)
-+        exec_command_and_wait_for_pattern(self, f'sha256sum {filename}',
-+                                          hashsum)
-+
-+        # Check virtio-net via HTTP:
-+        exec_command_and_wait_for_pattern(self, 'dhclient eth0', prompt)
-+        self.check_http_download(filename, hashsum, self.GUEST_PORT)
-+
-+
-+    # 5.3 kernel without RIL #
-+
-+    ASSET_KERNEL_F31 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-+         'releases/31/Server/aarch64/os/images/pxeboot/vmlinuz'),
-+        '3ae07fcafbfc8e4abeb693035a74fe10698faae15e9ccd48882a9167800c1527')
-+
-+    ASSET_INITRD_F31 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-+         'releases/31/Server/aarch64/os/images/pxeboot/initrd.img'),
-+        '9f3146b28bc531c689f3c5f114cb74e4bd7bd548e0ba19fa77921d8bd256755a')
-+
-+    ASSET_DISK_F31 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
-+         '/31/Cloud/aarch64/images/Fedora-Cloud-Base-31-1.9.aarch64.qcow2'),
-+        '1e18d9c0cf734940c4b5d5ec592facaed2af0ad0329383d5639c997fdf16fe49')
-+
-+    F31_FILENAME = '/boot/initramfs-5.3.7-301.fc31.aarch64.img'
-+    F31_HSUM = '1a4beec6607d94df73d9dd1b4985c9c23dd0fdcf4e6ca1351d477f190df7bef9'
-+
-+    def test_smmu_noril(self):
-+        self.common_vm_setup(self.ASSET_KERNEL_F31, self.ASSET_INITRD_F31,
-+                             self.ASSET_DISK_F31)
-+        self.kernel_params = self.default_kernel_params
-+        self.run_and_check(self.F31_FILENAME, self.F31_HSUM)
-+
-+    def test_smmu_noril_passthrough(self):
-+        self.common_vm_setup(self.ASSET_KERNEL_F31, self.ASSET_INITRD_F31,
-+                             self.ASSET_DISK_F31)
-+        self.kernel_params = (self.default_kernel_params +
-+                              ' iommu.passthrough=on')
-+        self.run_and_check(self.F31_FILENAME, self.F31_HSUM)
-+
-+    def test_smmu_noril_nostrict(self):
-+        self.common_vm_setup(self.ASSET_KERNEL_F31, self.ASSET_INITRD_F31,
-+                             self.ASSET_DISK_F31)
-+        self.kernel_params = (self.default_kernel_params +
-+                              ' iommu.strict=0')
-+        self.run_and_check(self.F31_FILENAME, self.F31_HSUM)
-+
-+
-+    # 5.8 kernel featuring range invalidation
-+    # >= v5.7 kernel
-+
-+    ASSET_KERNEL_F33 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-+         'releases/33/Server/aarch64/os/images/pxeboot/vmlinuz'),
-+        'd8b1e6f7241f339d8e7609c456cf0461ffa4583ed07e0b55c7d1d8a0c154aa89')
-+
-+    ASSET_INITRD_F33 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-+         'releases/33/Server/aarch64/os/images/pxeboot/initrd.img'),
-+        '92513f55295c2c16a777f7b6c35ccd70a438e9e1e40b6ba39e0e60900615b3df')
-+
-+    ASSET_DISK_F33 = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases'
-+         '/33/Cloud/aarch64/images/Fedora-Cloud-Base-33-1.2.aarch64.qcow2'),
-+        'e7f75cdfd523fe5ac2ca9eeece68edc1a81f386a17f969c1d1c7c87031008a6b')
-+
-+    F33_FILENAME = '/boot/initramfs-5.8.15-301.fc33.aarch64.img'
-+    F33_HSUM = '079cfad0caa82e84c8ca1fb0897a4999dd769f262216099f518619e807a550d9'
-+
-+    def test_smmu_ril(self):
-+        self.common_vm_setup(self.ASSET_KERNEL_F33, self.ASSET_INITRD_F33,
-+                             self.ASSET_DISK_F33)
-+        self.kernel_params = self.default_kernel_params
-+        self.run_and_check(self.F33_FILENAME, self.F33_HSUM)
-+
-+    def test_smmu_ril_passthrough(self):
-+        self.common_vm_setup(self.ASSET_KERNEL_F33, self.ASSET_INITRD_F33,
-+                             self.ASSET_DISK_F33)
-+        self.kernel_params = (self.default_kernel_params +
-+                              ' iommu.passthrough=on')
-+        self.run_and_check(self.F33_FILENAME, self.F33_HSUM)
-+
-+    def test_smmu_ril_nostrict(self):
-+        self.common_vm_setup(self.ASSET_KERNEL_F33, self.ASSET_INITRD_F33,
-+                             self.ASSET_DISK_F33)
-+        self.kernel_params = (self.default_kernel_params +
-+                              ' iommu.strict=0')
-+        self.run_and_check(self.F33_FILENAME, self.F33_HSUM)
-+
-+
-+if __name__ == '__main__':
-+    LinuxKernelTest.main()
+ 
+     #############################################################
+     # Stage 2: fine tune execution of jobs in specific scenarios
+@@ -101,8 +97,8 @@ variables:
+       when: manual
+       allow_failure: true
+ 
+-    # Avocado jobs can be manually start in forks if $QEMU_CI_AVOCADO_TESTING is unset
+-    - if: '$QEMU_JOB_AVOCADO && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
++    # Functional jobs can be manually started in forks
++    - if: '$QEMU_JOB_FUNCTIONAL && $QEMU_CI_FUNCTIONAL_TESTING != "1" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
+       when: manual
+       allow_failure: true
+ 
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 13fa4f4a4fc..d4f145fdb58 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -114,4 +114,4 @@
+     - cd build
+     - du -chs ${CI_PROJECT_DIR}/*-cache
+   variables:
+-    QEMU_JOB_AVOCADO: 1
++    QEMU_JOB_FUNCTIONAL: 1
 -- 
 2.49.0
 
