@@ -2,89 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B8BA70D3B
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:49:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C269A70D51
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:57:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txD0c-0002sm-FN; Tue, 25 Mar 2025 18:44:34 -0400
+	id 1txDBD-0003Lu-B8; Tue, 25 Mar 2025 18:55:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1txD0K-0001km-KE
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:16 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1txDB4-0003Jo-IE
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:55:23 -0400
+Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1txD0I-00075K-BA
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:16 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-224341bbc1dso120713455ad.3
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:44:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1txDB1-0008Ob-Q6
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:55:22 -0400
+Received: by mail-oa1-x31.google.com with SMTP id
+ 586e51a60fabf-2c6f6f75a81so3242085fac.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:55:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742942653; x=1743547453; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1fPwSz5GvcZ1Wj62YV7bWBMY5Lb2GJ48t6nbamWgO3Q=;
- b=ocRikbaxEWCtd+AFga/lyUo/gpyxwpTBEj6z0kQcOF9a4X10hhRO92983EhQpcoJM+
- /E2gpLffWfGQkIl+3iR/gLrE5ySTINq2xE8xjvejydLCP0KO/0rqdiFjLcTqCj6ed54B
- x9T1WgGcDL0Aq/5+mUmB9L9ogi8X3S0LnShKyaWi7WlsdWWtT62H0Eg0QwJtnKlDemS5
- Au/EHFRbTRGtBJveXqJi141qK5MbgcFlb9hJiYiFfy9SEIbv/JR06TcwTa6GgAk5YN2z
- 2l6IGYz6G/Of5XPacpc51fDKKhhiZRpQX6kmobbBRc7ca/6cLf2Y55zdabnxbgmX2hO2
- CGhA==
+ d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1742943316; x=1743548116;
+ darn=nongnu.org; 
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=PfZDCKs3ZZUCUEu3Ht/6snT7EFTNozaP+2Yg92XkYUQ=;
+ b=JBNZrLLMZ0z2UJijw1fozHp0wnDNQgDKYGAVfjVmSApQ8Aa3jKaL3uFEYT4RE8K2KS
+ wAS2uZzuZsWTB8omsnC/V6UzzROj8kuROe6IRKzrI4Cf0O83+oK2dSpxS3jCpi62cBtt
+ LrVHp/1SaQX4Uf5kHlS4TmIC3WFokFo4Eu4phKOm4RBKq8LWw/FoKiCK7VzXtNma0Ojv
+ vR4ZBgXeMVoOMQvTmOMydL+TZe9UaDfUK+jK/gGR9Hz+OovnjtD17su029zmjVdb3aZG
+ UPoZRAfUqpAzLz05C1/L0sn5UWU2lrm0j+JMZ/Y+2X7XO97Z/bSC2lI26cWi3VijVBgB
+ 9GsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742942653; x=1743547453;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1fPwSz5GvcZ1Wj62YV7bWBMY5Lb2GJ48t6nbamWgO3Q=;
- b=UNb17CJGtUdO1oOX5q4PnnEckaCIWDfJePx6vd49KOShxl3vf7h2bf8mplTUtjuNuk
- z9d4uIqJd5Q/ISSf7KRuytZOFuPRRnQ05ypLV3IjxZF0JbC+E4BBXvw8MFJQIdcjMY9n
- itHz4Mz+SFEYjEazHQNRscVZhZFOof0WDsoABcu+1c7/uzLPm64mF638hACBzdaJW6Cg
- txCOGda3qE/dWYFJlKu9cd55BDQ4g1r1G8Fnn+ru7LBCbSAfbz1jO4U+KVuyoM2Vaa3e
- yZiau5WhiJRMlse+yAEqPWQ2K9DKXbq/jfuYI+SRPhdM8PeUHDtDu2UGdEiX81n7alyS
- GgOQ==
-X-Gm-Message-State: AOJu0YwwRQ7M7jbavZzSx+sYt80uPC5T3IigCCR0UaTx5N1d8pbN31fw
- iImsIJ5zKoeCw64MFQsWemDs49JAjY134b9gyiZCt7RcjhMvaw6Ia38aV7ak0h4outJpZnVJP7Y
- b
-X-Gm-Gg: ASbGncvyeASlAYctHZmYUJ6wjkM4ZiDwezU2m1vgNhRN5FIuNvsgERC3uMVkSxtprH0
- 7oWGa1Pa/0nf1ZvUlK19heVC0u8FtVbnnB1swL1k4JkCgWKx9FPlpS2Kp+lfM+hWO5S/9hFNqyp
- bTb/MKIq+WDGLxtG3aU8LxlHTpQ7RDReYprIOzrQ0rFaAk18vwM+8eQwDvcAJoPIUkOdiBXm/S2
- gjl12S5IuQ0Li0a71yzOww5/Cj0G5AIuqNzJ8XeCi7EGn01aHNwID78Wrc86FI1lsSoku9CZ2yN
- 6Bzi/o1RUqa4N9FXVWv2wH0h+yB+wuF0c81aCA/q3jgEuw9CNulVFTmyQ69nLoi43HjHGwP8AQ2
- BHiV45LuNHJM=
-X-Google-Smtp-Source: AGHT+IEn8+sU8CpFQ2NuIKfaB+YMFzhBDTbw6HkdVOvQrNXUHdgR26cnN+BHZ4EbS2CESbdr/0YTIg==
-X-Received: by 2002:a05:6a00:ac4:b0:736:4c93:1bdf with SMTP id
- d2e1a72fcca58-73905a275famr27519160b3a.18.1742942652681; 
- Tue, 25 Mar 2025 15:44:12 -0700 (PDT)
-Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
+ d=1e100.net; s=20230601; t=1742943316; x=1743548116;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PfZDCKs3ZZUCUEu3Ht/6snT7EFTNozaP+2Yg92XkYUQ=;
+ b=U1JY90zCdM03T5DwZjobXsmqm/dlC67RqbTntTa0ob8UYAM87hplPJ/YRrFbOJPUia
+ IRBOffjwu/PKvNZmhpWdod+om7FgBGciwTEijf/XFBSxkC3yICgVTDZW5UCjjJD+aFik
+ krfHXAWmSr2KpWdCQVRh30jhO1kQpfL/y+R3f71mdxqicyjwKBtQ+Z7IIwbWhiPoMdKg
+ i+L0slYz2FSTIoxzMHQDXbPiu+PJLiIyNO4et0oZsPZMegMerd/Soc6tAcew/shRwwV9
+ Kvf10HL1UylCBwFqsQ0hBDTQejowRopeNz46HAxg8czEX7m3c0iggXl9JbnwzRQdAsjO
+ CG7g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVj9CAy1lIvcw/SVccilG5gxqWtxuPPpFq6Is9xikdKOs9KuYIrA7amImoCtkY0wEJAK+QCc1K69xPq@nongnu.org
+X-Gm-Message-State: AOJu0YwgKgu1m3odU0UbY/oILZUt7h8VeVvbXne/FvLM5oObWo44NxoO
+ xMiYr4GwN+kGxFpKeDPKlL0GSY+GHb59r6OWR6llzX3vQv9WBCW2w22hdlE+ihs=
+X-Gm-Gg: ASbGncuE2oIhBsyaaLWk8wJSdBwstkQ5maORNkrCHLTSamRF4yPdnV7xnf+U0fIIbpi
+ PielrN+qZhdYar4DOIJg5n6M3g7t4IUhc+RzbqXRg++A+Caagf7bii2CiVK0ZbngVpCOyS3LVdw
+ gNnSdpivwTRBP2cZXSWDe8m8p0OFO8srN27JBvFuIGGqKO0ywxu6VKA2VCoQAaP+PQtmVN2Uv60
+ ng4rSEpCdX/UYnSNofeJPUeTTeSeU1pJyn5f3WhhBpXlOiL0qUVsACvUDM+vrveHrWRbQPjsC0x
+ DWjWphsAc9WKJDhbhx8jZcsHL8UFVQm+dXeijeI47UawaUE/
+X-Google-Smtp-Source: AGHT+IF1wlCPAMuXOBSAMgEfiUi8a94TPyK5fyROqMZ2Yo7o8YLFZyGyHK+96Jyh2JIYuTQ0EoJvCA==
+X-Received: by 2002:a05:6870:a112:b0:29d:c85f:bc8c with SMTP id
+ 586e51a60fabf-2c78054b065mr12483637fac.36.1742943315624; 
+ Tue, 25 Mar 2025 15:55:15 -0700 (PDT)
+Received: from mail.minyard.net ([2001:470:b8f6:1b:7eec:65ba:af63:5029])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7390611d3d6sm11111321b3a.94.2025.03.25.15.44.12
+ 586e51a60fabf-2c77ecda836sm2728604fac.25.2025.03.25.15.55.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Mar 2025 15:44:12 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: mrolnik@gmail.com,
-	philmd@linaro.org,
-	pierrick.bouvier@linaro.org
-Subject: [PATCH v2 11/11] target/avr: Increase TARGET_PAGE_BITS to 10
-Date: Tue, 25 Mar 2025 15:44:03 -0700
-Message-ID: <20250325224403.4011975-12-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250325224403.4011975-1-richard.henderson@linaro.org>
-References: <20250325224403.4011975-1-richard.henderson@linaro.org>
+ Tue, 25 Mar 2025 15:55:14 -0700 (PDT)
+Date: Tue, 25 Mar 2025 17:55:07 -0500
+From: Corey Minyard <corey@minyard.net>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ =?utf-8?B?SGVydsOp?= Poussineau <hpoussin@reactos.org>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Glenn Miles <milesg@linux.ibm.com>,
+ Samuel Tardieu <sam@rfc1149.net>, qemu-block@nongnu.org,
+ Patrick Leis <venture@google.com>, David Hildenbrand <david@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Tyrone Ting <kfting@nuvoton.com>, Eric Farman <farman@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Alistair Francis <alistair@alistair23.me>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Hanna Reitz <hreitz@redhat.com>, Hao Wu <wuhaotsh@google.com>,
+ qemu-s390x@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org
+Subject: Re: [PATCH-for-10.0 06/12] hw/i2c/pca954x: Categorize and add
+ description
+Message-ID: <Z-M0SzZFk1yihEi0@mail.minyard.net>
+References: <20250325224310.8785-1-philmd@linaro.org>
+ <20250325224310.8785-7-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250325224310.8785-7-philmd@linaro.org>
+Received-SPF: none client-ip=2001:4860:4864:20::31;
+ envelope-from=corey@minyard.net; helo=mail-oa1-x31.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,38 +112,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: corey@minyard.net
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we can handle the MCU allocating only a portion of the
-first page to i/o, increase the page size.  Choose 10 as larger
-than the i/o on every MCU, just so that this path is tested.
+On Tue, Mar 25, 2025 at 11:43:04PM +0100, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  hw/i2c/i2c_mux_pca954x.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/avr/cpu-param.h | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+Looks ok to me.
 
-diff --git a/target/avr/cpu-param.h b/target/avr/cpu-param.h
-index 81f3f49ee1..f5248ce9e7 100644
---- a/target/avr/cpu-param.h
-+++ b/target/avr/cpu-param.h
-@@ -21,13 +21,7 @@
- #ifndef AVR_CPU_PARAM_H
- #define AVR_CPU_PARAM_H
- 
--/*
-- * TARGET_PAGE_BITS cannot be more than 8 bits because
-- * 1.  all IO registers occupy [0x0000 .. 0x00ff] address range, and they
-- *     should be implemented as a device and not memory
-- * 2.  SRAM starts at the address 0x0100
-- */
--#define TARGET_PAGE_BITS 8
-+#define TARGET_PAGE_BITS 10
- #define TARGET_PHYS_ADDR_SPACE_BITS 24
- #define TARGET_VIRT_ADDR_SPACE_BITS 24
- 
--- 
-2.43.0
+Acked-by: Corey Minyard <cminyard@mvista.com>
 
+> 
+> diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
+> index 779cc4e66ed..100b8d86093 100644
+> --- a/hw/i2c/i2c_mux_pca954x.c
+> +++ b/hw/i2c/i2c_mux_pca954x.c
+> @@ -175,12 +175,18 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t channel)
+>  static void pca9546_class_init(ObjectClass *klass, void *data)
+>  {
+>      Pca954xClass *s = PCA954X_CLASS(klass);
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +
+> +    dc->desc = "PCA9546 I2C multiplexer";
+>      s->nchans = PCA9546_CHANNEL_COUNT;
+>  }
+>  
+>  static void pca9548_class_init(ObjectClass *klass, void *data)
+>  {
+>      Pca954xClass *s = PCA954X_CLASS(klass);
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +
+> +    dc->desc = "PCA9548 I2C multiplexer";
+>      s->nchans = PCA9548_CHANNEL_COUNT;
+>  }
+>  
+> @@ -226,13 +232,13 @@ static void pca954x_class_init(ObjectClass *klass, void *data)
+>  
+>      rc->phases.enter = pca954x_enter_reset;
+>  
+> -    dc->desc = "Pca954x i2c-mux";
+>      dc->realize = pca954x_realize;
+>  
+>      k->write_data = pca954x_write_data;
+>      k->receive_byte = pca954x_read_byte;
+>  
+>      device_class_set_props(dc, pca954x_props);
+> +    set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
+>  }
+>  
+>  static const TypeInfo pca954x_info[] = {
+> -- 
+> 2.47.1
+> 
+> 
 
