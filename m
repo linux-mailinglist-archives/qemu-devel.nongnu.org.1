@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE8EA70AEF
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 21:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7307BA70AF4
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 21:04:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txAT5-0000ed-3C; Tue, 25 Mar 2025 16:01:47 -0400
+	id 1txAT4-0000e6-MG; Tue, 25 Mar 2025 16:01:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASW-0000WT-Ay
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASW-0000WU-B3
  for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASS-0002iV-Mr
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:10 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASU-0002ip-65
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742932865;
+ s=mimecast20190719; t=1742932869;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N+iAdaQ+NI5jREqyJw1BczLgIl/Xxx+7leiQHYSN6Rc=;
- b=OXLMTy/fkr8huIVyluCdrIV6nELyXX6RQ5u2v613PjSFtg0QvKtLoo6o6zCjYOf29jKdNp
- ADhBbKGjxfTmyuoLch+8uEGaYy1rSF1kE0Nqn7LQ5qhy+806xQhcFLKKNwbBWBJJDVUCFQ
- eggAyhcc2Dq5dy/YDCepeDu2esgMtyU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=OMfKHH7jWlCkxAkMF9yH52BXKUoQi/4NSWSb+piWgVM=;
+ b=FdEwLAFBMItz8J4pE07RIIlhhZGvRV53vXGUJXvdcL6CdM7tdvp1GmVkN7mSeWDQK+Pdr1
+ A4fqo3+HESJrbQz+eLF0qOnEFdt42oAP/KxvQYK74mOmvFpr78t3e1QwkqswswSnM9ylKO
+ Xz9N/PscJkZ18qWKS+KIyZgVELQtu2s=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-kp5-laBYMkecShAKp42_yQ-1; Tue,
- 25 Mar 2025 16:01:04 -0400
-X-MC-Unique: kp5-laBYMkecShAKp42_yQ-1
-X-Mimecast-MFC-AGG-ID: kp5-laBYMkecShAKp42_yQ_1742932863
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-255-OMTVpebkPhO_z89hxQMZCw-1; Tue,
+ 25 Mar 2025 16:01:07 -0400
+X-MC-Unique: OMTVpebkPhO_z89hxQMZCw-1
+X-Mimecast-MFC-AGG-ID: OMTVpebkPhO_z89hxQMZCw_1742932866
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 17A811809CA5; Tue, 25 Mar 2025 20:01:03 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 92C88180035C; Tue, 25 Mar 2025 20:01:05 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.142])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6933F1801747; Tue, 25 Mar 2025 20:00:59 +0000 (UTC)
+ id C414A1801756; Tue, 25 Mar 2025 20:01:03 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/15] tests/avocado: Remove the boot_linux.py tests
-Date: Tue, 25 Mar 2025 21:00:18 +0100
-Message-ID: <20250325200026.344006-11-thuth@redhat.com>
+Subject: [PATCH 11/15] tests/functional: Use the tuxrun kernel for the x86
+ replay test
+Date: Tue, 25 Mar 2025 21:00:19 +0100
+Message-ID: <20250325200026.344006-12-thuth@redhat.com>
 In-Reply-To: <20250325200026.344006-1-thuth@redhat.com>
 References: <20250325200026.344006-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,161 +83,142 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-These tests are based on the cloudinit functions from Avocado.
-The cloudinit is very, very slow compared to our other tests,
-so most of these Avocado tests have either been disabled by default
-with a decorator, or have been marked to only run with KVM.
+This way we can do a full boot in record-replay mode and
+should get a similar test coverage compared to the old
+replay test from tests/avocado/replay_linux.py. Thus remove
+the x86 avocado replay_linux test now.
 
-We won't include this sluggish cloudinit stuff in the functional
-framework, and we've already got plenty of other tests there that
-check pretty much the same things, so let's simply get rid of these
-old tests now.
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/boot_linux.py | 132 ------------------------------------
- 1 file changed, 132 deletions(-)
- delete mode 100644 tests/avocado/boot_linux.py
+ tests/avocado/replay_linux.py          | 46 --------------------------
+ tests/functional/test_x86_64_replay.py | 43 ++++++++++++++++++------
+ 2 files changed, 33 insertions(+), 56 deletions(-)
 
-diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
-deleted file mode 100644
-index a029ef4ad1e..00000000000
---- a/tests/avocado/boot_linux.py
-+++ /dev/null
-@@ -1,132 +0,0 @@
--# Functional test that boots a complete Linux system via a cloud image
--#
--# Copyright (c) 2018-2020 Red Hat, Inc.
--#
--# Author:
--#  Cleber Rosa <crosa@redhat.com>
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later.  See the COPYING file in the top-level directory.
--
--import os
--
--from avocado_qemu.linuxtest import LinuxTest
--from avocado_qemu import BUILD_DIR
--
--from avocado import skipUnless
--
--
--class BootLinuxX8664(LinuxTest):
+diff --git a/tests/avocado/replay_linux.py b/tests/avocado/replay_linux.py
+index 59169224353..6ba283d3bf6 100644
+--- a/tests/avocado/replay_linux.py
++++ b/tests/avocado/replay_linux.py
+@@ -118,52 +118,6 @@ def run_replay_dump(self, replay_path):
+         except subprocess.CalledProcessError:
+             self.fail('replay-dump.py failed')
+ 
+-@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
+-class ReplayLinuxX8664(ReplayLinux):
 -    """
 -    :avocado: tags=arch:x86_64
+-    :avocado: tags=accel:tcg
 -    """
--    timeout = 480
 -
--    def test_pc_i440fx_tcg(self):
+-    chksum = 'e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0'
+-
+-    def test_pc_i440fx(self):
 -        """
 -        :avocado: tags=machine:pc
--        :avocado: tags=accel:tcg
 -        """
--        self.require_accelerator("tcg")
--        self.vm.add_args("-accel", "tcg")
--        self.launch_and_wait(set_up_ssh_connection=False)
+-        self.run_rr(shift=1)
 -
--    def test_pc_i440fx_kvm(self):
+-    def test_pc_q35(self):
+-        """
+-        :avocado: tags=machine:q35
+-        """
+-        self.run_rr(shift=3)
+-
+-@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
+-class ReplayLinuxX8664Virtio(ReplayLinux):
+-    """
+-    :avocado: tags=arch:x86_64
+-    :avocado: tags=virtio
+-    :avocado: tags=accel:tcg
+-    """
+-
+-    hdd = 'virtio-blk-pci'
+-    cd = 'virtio-blk-pci'
+-    bus = None
+-
+-    chksum = 'e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0'
+-
+-    def test_pc_i440fx(self):
 -        """
 -        :avocado: tags=machine:pc
--        :avocado: tags=accel:kvm
 -        """
--        self.require_accelerator("kvm")
--        self.vm.add_args("-accel", "kvm")
--        self.launch_and_wait(set_up_ssh_connection=False)
+-        self.run_rr(shift=1)
 -
--    def test_pc_q35_tcg(self):
+-    def test_pc_q35(self):
 -        """
 -        :avocado: tags=machine:q35
--        :avocado: tags=accel:tcg
 -        """
--        self.require_accelerator("tcg")
--        self.vm.add_args("-accel", "tcg")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--    def test_pc_q35_kvm(self):
--        """
--        :avocado: tags=machine:q35
--        :avocado: tags=accel:kvm
--        """
--        self.require_accelerator("kvm")
--        self.vm.add_args("-accel", "kvm")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--
--# For Aarch64 we only boot KVM tests in CI as booting the current
--# Fedora OS in TCG tests is very heavyweight. There are lighter weight
--# distros which we use in the machine_aarch64_virt.py tests.
--class BootLinuxAarch64(LinuxTest):
--    """
--    :avocado: tags=arch:aarch64
--    :avocado: tags=machine:virt
--    """
--    timeout = 720
--
--    def test_virt_kvm(self):
--        """
--        :avocado: tags=accel:kvm
--        :avocado: tags=cpu:host
--        """
--        self.require_accelerator("kvm")
--        self.vm.add_args("-accel", "kvm")
--        self.vm.add_args("-machine", "virt,gic-version=host")
--        self.vm.add_args('-bios',
--                         os.path.join(BUILD_DIR, 'pc-bios',
--                                      'edk2-aarch64-code.fd'))
--        self.vm.add_args('-device', 'virtio-rng-pci,rng=rng0')
--        self.vm.add_args('-object', 'rng-random,id=rng0,filename=/dev/urandom')
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--
--# See the tux_baseline.py tests for almost the same coverage in a lot
--# less time.
--class BootLinuxPPC64(LinuxTest):
--    """
--    :avocado: tags=arch:ppc64
--    """
--
--    timeout = 360
--
--    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
--    def test_pseries_tcg(self):
--        """
--        :avocado: tags=machine:pseries
--        :avocado: tags=accel:tcg
--        """
--        self.require_accelerator("tcg")
--        self.vm.add_args("-accel", "tcg")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--    def test_pseries_kvm(self):
--        """
--        :avocado: tags=machine:pseries
--        :avocado: tags=accel:kvm
--        """
--        self.require_accelerator("kvm")
--        self.vm.add_args("-accel", "kvm")
--        self.vm.add_args("-machine", "cap-ccf-assist=off")
--        self.launch_and_wait(set_up_ssh_connection=False)
--
--class BootLinuxS390X(LinuxTest):
--    """
--    :avocado: tags=arch:s390x
--    """
--
--    timeout = 240
--
--    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
--    def test_s390_ccw_virtio_tcg(self):
--        """
--        :avocado: tags=machine:s390-ccw-virtio
--        :avocado: tags=accel:tcg
--        """
--        self.require_accelerator("tcg")
--        self.vm.add_args("-accel", "tcg")
--        self.launch_and_wait(set_up_ssh_connection=False)
+-        self.run_rr(shift=3)
+ 
+ @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
+ class ReplayLinuxAarch64(ReplayLinux):
+diff --git a/tests/functional/test_x86_64_replay.py b/tests/functional/test_x86_64_replay.py
+index 180f23a60c5..27287d452dc 100755
+--- a/tests/functional/test_x86_64_replay.py
++++ b/tests/functional/test_x86_64_replay.py
+@@ -5,30 +5,53 @@
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-from qemu_test import Asset, skipFlakyTest
++from subprocess import check_call, DEVNULL
++
++from qemu_test import Asset, skipFlakyTest, get_qemu_img
+ from replay_kernel import ReplayKernelBase
+ 
+ 
+ class X86Replay(ReplayKernelBase):
+ 
+     ASSET_KERNEL = Asset(
+-         ('https://archives.fedoraproject.org/pub/archive/fedora/linux'
+-          '/releases/29/Everything/x86_64/os/images/pxeboot/vmlinuz'),
+-        '8f237d84712b1b411baf3af2aeaaee10b9aae8e345ec265b87ab3a39639eb143')
++        'https://storage.tuxboot.com/buildroot/20241119/x86_64/bzImage',
++        'f57bfc6553bcd6e0a54aab86095bf642b33b5571d14e3af1731b18c87ed5aef8')
++
++    ASSET_ROOTFS = Asset(
++        'https://storage.tuxboot.com/buildroot/20241119/x86_64/rootfs.ext4.zst',
++        '4b8b2a99117519c5290e1202cb36eb6c7aaba92b357b5160f5970cf5fb78a751')
+ 
+-    def do_test_x86(self, machine):
++    def do_test_x86(self, machine, blkdevice, devroot):
++        self.require_netdev('user')
+         self.set_machine(machine)
++        self.cpu="Nehalem"
+         kernel_path = self.ASSET_KERNEL.fetch()
+-        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
+-        console_pattern = 'VFS: Cannot open root device'
+-        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
++
++        raw_disk = self.uncompress(self.ASSET_ROOTFS)
++        disk = self.scratch_file('scratch.qcow2')
++        qemu_img = get_qemu_img(self)
++        check_call([qemu_img, 'create', '-f', 'qcow2', '-b', raw_disk,
++                    '-F', 'raw', disk], stdout=DEVNULL, stderr=DEVNULL)
++
++        args = ('-drive', 'file=%s,snapshot=on,id=hd0,if=none' % disk,
++                '-drive', 'driver=blkreplay,id=hd0-rr,if=none,image=hd0',
++                '-device', '%s,drive=hd0-rr' % blkdevice,
++                '-netdev', 'user,id=vnet,hostfwd=:127.0.0.1:0-:22',
++                '-device', 'virtio-net,netdev=vnet',
++                '-object', 'filter-replay,id=replay,netdev=vnet')
++
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               f"console=ttyS0 root=/dev/{devroot}")
++        console_pattern = 'Welcome to TuxTest'
++        self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5,
++                    args=args)
+ 
+     @skipFlakyTest('https://gitlab.com/qemu-project/qemu/-/issues/2094')
+     def test_pc(self):
+-        self.do_test_x86('pc')
++        self.do_test_x86('pc', 'virtio-blk', 'vda')
+ 
+     def test_q35(self):
+-        self.do_test_x86('q35')
++        self.do_test_x86('q35', 'ide-hd', 'sda')
+ 
+ 
+ if __name__ == '__main__':
 -- 
 2.49.0
 
