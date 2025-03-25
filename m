@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF83A70AF7
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 21:05:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE8EA70AEF
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 21:03:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txAT2-0000am-Ik; Tue, 25 Mar 2025 16:01:44 -0400
+	id 1txAT5-0000ed-3C; Tue, 25 Mar 2025 16:01:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASS-0000Vu-Ba
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASW-0000WT-Ay
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASO-0002iG-3i
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:07 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txASS-0002iV-Mr
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 16:01:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742932863;
+ s=mimecast20190719; t=1742932865;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NF2WpfoQbiQUI4IzT/ViJ7b761G0mBoV5vuWCfOzwVo=;
- b=e/ZoS3Gie06oyi3pbwyQAAXQXIrANrY4V1lVC8MsB7cF71Yn3nmyg6NnL7qwF8mXmqKCk0
- jN0bRzyeanpHUmlicLhuRXXiG5gysVf2IVh+uYYBZ6dzl1s8ZefRpr9FBofEdeuG2Q6Ivu
- urgt+6yHYsRBQV1WFOvwuXg+01BF004=
+ bh=N+iAdaQ+NI5jREqyJw1BczLgIl/Xxx+7leiQHYSN6Rc=;
+ b=OXLMTy/fkr8huIVyluCdrIV6nELyXX6RQ5u2v613PjSFtg0QvKtLoo6o6zCjYOf29jKdNp
+ ADhBbKGjxfTmyuoLch+8uEGaYy1rSF1kE0Nqn7LQ5qhy+806xQhcFLKKNwbBWBJJDVUCFQ
+ eggAyhcc2Dq5dy/YDCepeDu2esgMtyU=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-i_UBX9y9Mfu4fSdvMgCqtA-1; Tue,
- 25 Mar 2025 16:00:59 -0400
-X-MC-Unique: i_UBX9y9Mfu4fSdvMgCqtA-1
-X-Mimecast-MFC-AGG-ID: i_UBX9y9Mfu4fSdvMgCqtA_1742932858
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-kp5-laBYMkecShAKp42_yQ-1; Tue,
+ 25 Mar 2025 16:01:04 -0400
+X-MC-Unique: kp5-laBYMkecShAKp42_yQ-1
+X-Mimecast-MFC-AGG-ID: kp5-laBYMkecShAKp42_yQ_1742932863
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B073E180AF65; Tue, 25 Mar 2025 20:00:58 +0000 (UTC)
+ id 17A811809CA5; Tue, 25 Mar 2025 20:01:03 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.142])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 261E01801756; Tue, 25 Mar 2025 20:00:56 +0000 (UTC)
+ id 6933F1801747; Tue, 25 Mar 2025 20:00:59 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 09/15] tests/functional: Convert the 64-bit big endian Wheezy
- mips test
-Date: Tue, 25 Mar 2025 21:00:17 +0100
-Message-ID: <20250325200026.344006-10-thuth@redhat.com>
+Subject: [PATCH 10/15] tests/avocado: Remove the boot_linux.py tests
+Date: Tue, 25 Mar 2025 21:00:18 +0100
+Message-ID: <20250325200026.344006-11-thuth@redhat.com>
 In-Reply-To: <20250325200026.344006-1-thuth@redhat.com>
 References: <20250325200026.344006-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,282 +83,161 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Reuse the test function from the 32-bit big endian test to easily
-convert the 64-bit big endian Wheezy mips test.
+These tests are based on the cloudinit functions from Avocado.
+The cloudinit is very, very slow compared to our other tests,
+so most of these Avocado tests have either been disabled by default
+with a decorator, or have been marked to only run with KVM.
 
-Since this was the last test in tests/avocado/linux_ssh_mips_malta.py,
-we can remove this avocado file now, too.
+We won't include this sluggish cloudinit stuff in the functional
+framework, and we've already got plenty of other tests there that
+check pretty much the same things, so let's simply get rid of these
+old tests now.
 
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                           |   1 -
- tests/avocado/linux_ssh_mips_malta.py | 181 --------------------------
- tests/functional/meson.build          |   2 +
- tests/functional/test_mips64_malta.py |  35 +++++
- 4 files changed, 37 insertions(+), 182 deletions(-)
- delete mode 100644 tests/avocado/linux_ssh_mips_malta.py
- create mode 100755 tests/functional/test_mips64_malta.py
+ tests/avocado/boot_linux.py | 132 ------------------------------------
+ 1 file changed, 132 deletions(-)
+ delete mode 100644 tests/avocado/boot_linux.py
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4e1d816f2b4..7b843c543ff 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1354,7 +1354,6 @@ F: hw/acpi/piix4.c
- F: hw/mips/malta.c
- F: hw/pci-host/gt64120.c
- F: include/hw/southbridge/piix.h
--F: tests/avocado/linux_ssh_mips_malta.py
- F: tests/functional/test_mips*_malta.py
- F: tests/functional/test_mips*_tuxrun.py
- 
-diff --git a/tests/avocado/linux_ssh_mips_malta.py b/tests/avocado/linux_ssh_mips_malta.py
+diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
 deleted file mode 100644
-index 2fa5cf9a6c1..00000000000
---- a/tests/avocado/linux_ssh_mips_malta.py
+index a029ef4ad1e..00000000000
+--- a/tests/avocado/boot_linux.py
 +++ /dev/null
-@@ -1,181 +0,0 @@
--# Functional test that boots a VM and run commands via a SSH session
+@@ -1,132 +0,0 @@
+-# Functional test that boots a complete Linux system via a cloud image
 -#
--# Copyright (c) Philippe Mathieu-Daudé <f4bug@amsat.org>
+-# Copyright (c) 2018-2020 Red Hat, Inc.
+-#
+-# Author:
+-#  Cleber Rosa <crosa@redhat.com>
 -#
 -# This work is licensed under the terms of the GNU GPL, version 2 or
 -# later.  See the COPYING file in the top-level directory.
 -
 -import os
--import re
--import base64
--import logging
--import time
+-
+-from avocado_qemu.linuxtest import LinuxTest
+-from avocado_qemu import BUILD_DIR
 -
 -from avocado import skipUnless
--from avocado_qemu import LinuxSSHMixIn
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import wait_for_console_pattern
--from avocado.utils import process
--from avocado.utils import archive
--from avocado.utils import ssh
 -
 -
--@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
--@skipUnless(ssh.SSH_CLIENT_BINARY, 'No SSH client available')
--class LinuxSSH(QemuSystemTest, LinuxSSHMixIn):
+-class BootLinuxX8664(LinuxTest):
 -    """
--    :avocado: tags=accel:tcg
+-    :avocado: tags=arch:x86_64
+-    """
+-    timeout = 480
+-
+-    def test_pc_i440fx_tcg(self):
+-        """
+-        :avocado: tags=machine:pc
+-        :avocado: tags=accel:tcg
+-        """
+-        self.require_accelerator("tcg")
+-        self.vm.add_args("-accel", "tcg")
+-        self.launch_and_wait(set_up_ssh_connection=False)
+-
+-    def test_pc_i440fx_kvm(self):
+-        """
+-        :avocado: tags=machine:pc
+-        :avocado: tags=accel:kvm
+-        """
+-        self.require_accelerator("kvm")
+-        self.vm.add_args("-accel", "kvm")
+-        self.launch_and_wait(set_up_ssh_connection=False)
+-
+-    def test_pc_q35_tcg(self):
+-        """
+-        :avocado: tags=machine:q35
+-        :avocado: tags=accel:tcg
+-        """
+-        self.require_accelerator("tcg")
+-        self.vm.add_args("-accel", "tcg")
+-        self.launch_and_wait(set_up_ssh_connection=False)
+-
+-    def test_pc_q35_kvm(self):
+-        """
+-        :avocado: tags=machine:q35
+-        :avocado: tags=accel:kvm
+-        """
+-        self.require_accelerator("kvm")
+-        self.vm.add_args("-accel", "kvm")
+-        self.launch_and_wait(set_up_ssh_connection=False)
+-
+-
+-# For Aarch64 we only boot KVM tests in CI as booting the current
+-# Fedora OS in TCG tests is very heavyweight. There are lighter weight
+-# distros which we use in the machine_aarch64_virt.py tests.
+-class BootLinuxAarch64(LinuxTest):
+-    """
+-    :avocado: tags=arch:aarch64
+-    :avocado: tags=machine:virt
+-    """
+-    timeout = 720
+-
+-    def test_virt_kvm(self):
+-        """
+-        :avocado: tags=accel:kvm
+-        :avocado: tags=cpu:host
+-        """
+-        self.require_accelerator("kvm")
+-        self.vm.add_args("-accel", "kvm")
+-        self.vm.add_args("-machine", "virt,gic-version=host")
+-        self.vm.add_args('-bios',
+-                         os.path.join(BUILD_DIR, 'pc-bios',
+-                                      'edk2-aarch64-code.fd'))
+-        self.vm.add_args('-device', 'virtio-rng-pci,rng=rng0')
+-        self.vm.add_args('-object', 'rng-random,id=rng0,filename=/dev/urandom')
+-        self.launch_and_wait(set_up_ssh_connection=False)
+-
+-
+-# See the tux_baseline.py tests for almost the same coverage in a lot
+-# less time.
+-class BootLinuxPPC64(LinuxTest):
+-    """
+-    :avocado: tags=arch:ppc64
 -    """
 -
--    timeout = 150 # Not for 'configure --enable-debug --enable-debug-tcg'
+-    timeout = 360
 -
--    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
--    VM_IP = '127.0.0.1'
--
--    BASE_URL = 'https://people.debian.org/~aurel32/qemu/'
--    IMAGE_INFO = {
--        'be': {'base_url': 'mips',
--               'image_name': 'debian_wheezy_mips_standard.qcow2',
--               'image_hash': '8987a63270df67345b2135a6b7a4885a35e392d5',
--               'kernel_hash': {
--                   32: '592e384a4edc16dade52a6cd5c785c637bcbc9ad',
--                   64: 'db6eea7de35d36c77d8c165b6bcb222e16eb91db'}
--              },
--        'le': {'base_url': 'mipsel',
--               'image_name': 'debian_wheezy_mipsel_standard.qcow2',
--               'image_hash': '7866764d9de3ef536ffca24c9fb9f04ffdb45802',
--               'kernel_hash': {
--                   32: 'a66bea5a8adaa2cb3d36a1d4e0ccdb01be8f6c2a',
--                   64: '6a7f77245acf231415a0e8b725d91ed2f3487794'}
--              }
--        }
--    CPU_INFO = {
--        32: {'cpu': 'MIPS 24Kc', 'kernel_release': '3.2.0-4-4kc-malta'},
--        64: {'cpu': 'MIPS 20Kc', 'kernel_release': '3.2.0-4-5kc-malta'}
--        }
--
--    def get_url(self, endianess, path=''):
--        qkey = {'le': 'el', 'be': ''}
--        return '%s/mips%s/%s' % (self.BASE_URL, qkey[endianess], path)
--
--    def get_image_info(self, endianess):
--        dinfo = self.IMAGE_INFO[endianess]
--        image_url = self.get_url(endianess, dinfo['image_name'])
--        image_hash = dinfo['image_hash']
--        return (image_url, image_hash)
--
--    def get_kernel_info(self, endianess, wordsize):
--        minfo = self.CPU_INFO[wordsize]
--        kernel_url = self.get_url(endianess,
--                                  'vmlinux-%s' % minfo['kernel_release'])
--        kernel_hash = self.IMAGE_INFO[endianess]['kernel_hash'][wordsize]
--        return kernel_url, kernel_hash
--
--    def ssh_disconnect_vm(self):
--        self.ssh_session.quit()
--
--    def boot_debian_wheezy_image_and_ssh_login(self, endianess, kernel_path):
--        image_url, image_hash = self.get_image_info(endianess)
--        image_path = self.fetch_asset(image_url, asset_hash=image_hash)
--
--        self.vm.set_console()
--        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE
--                               + 'console=ttyS0 root=/dev/sda1')
--        self.vm.add_args('-no-reboot',
--                         '-kernel', kernel_path,
--                         '-append', kernel_command_line,
--                         '-drive', 'file=%s,snapshot=on' % image_path,
--                         '-netdev', 'user,id=vnet,hostfwd=:127.0.0.1:0-:22',
--                         '-device', 'pcnet,netdev=vnet')
--        self.vm.launch()
--
--        self.log.info('VM launched, waiting for sshd')
--        console_pattern = 'Starting OpenBSD Secure Shell server: sshd'
--        wait_for_console_pattern(self, console_pattern, 'Oops')
--        self.log.info('sshd ready')
--
--        self.ssh_connect('root', 'root', False)
--
--    def shutdown_via_ssh(self):
--        self.ssh_command('poweroff')
--        self.ssh_disconnect_vm()
--        wait_for_console_pattern(self, 'Power down', 'Oops')
--
--    def run_common_commands(self, wordsize):
--        self.ssh_command_output_contains(
--            'cat /proc/cpuinfo',
--            self.CPU_INFO[wordsize]['cpu'])
--        self.ssh_command_output_contains(
--            'uname -m',
--            'mips')
--        self.ssh_command_output_contains(
--            'uname -r',
--            self.CPU_INFO[wordsize]['kernel_release'])
--        self.ssh_command_output_contains(
--            'cat /proc/interrupts',
--            'XT-PIC  timer')
--        self.ssh_command_output_contains(
--            'cat /proc/interrupts',
--            'XT-PIC  i8042')
--        self.ssh_command_output_contains(
--            'cat /proc/interrupts',
--            'XT-PIC  serial')
--        self.ssh_command_output_contains(
--            'cat /proc/interrupts',
--            'XT-PIC  ata_piix')
--        self.ssh_command_output_contains(
--            'cat /proc/interrupts',
--            'XT-PIC  eth0')
--        self.ssh_command_output_contains(
--            'cat /proc/devices',
--            'input')
--        self.ssh_command_output_contains(
--            'cat /proc/devices',
--            'usb')
--        self.ssh_command_output_contains(
--            'cat /proc/devices',
--            'fb')
--        self.ssh_command_output_contains(
--            'cat /proc/ioports',
--            ' : serial')
--        self.ssh_command_output_contains(
--            'cat /proc/ioports',
--            ' : ata_piix')
--        self.ssh_command_output_contains(
--            'cat /proc/ioports',
--            ' : piix4_smbus')
--        self.ssh_command_output_contains(
--            'lspci -d 11ab:4620',
--            'GT-64120')
--        self.ssh_command_output_contains(
--            'cat /sys/bus/i2c/devices/i2c-0/name',
--            'SMBus PIIX4 adapter')
--        self.ssh_command_output_contains(
--            'cat /proc/mtd',
--            'YAMON')
--        # Empty 'Board Config' (64KB)
--        self.ssh_command_output_contains(
--            'md5sum /dev/mtd2ro',
--            '0dfbe8aa4c20b52e1b8bf3cb6cbdf193')
--
--    def check_mips_malta(self, uname_m, endianess):
--        wordsize = 64 if '64' in uname_m else 32
--        kernel_url, kernel_hash = self.get_kernel_info(endianess, wordsize)
--        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
--        self.boot_debian_wheezy_image_and_ssh_login(endianess, kernel_path)
--
--        stdout, _ = self.ssh_command('uname -a')
--        self.assertIn(True, [uname_m + " GNU/Linux" in line for line in stdout])
--
--        self.run_common_commands(wordsize)
--        self.shutdown_via_ssh()
--        # Wait for VM to shut down gracefully
--        self.vm.wait()
--
--    def test_mips_malta64eb_kernel3_2_0(self):
+-    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+-    def test_pseries_tcg(self):
 -        """
--        :avocado: tags=arch:mips64
--        :avocado: tags=endian:big
--        :avocado: tags=device:pcnet32
+-        :avocado: tags=machine:pseries
+-        :avocado: tags=accel:tcg
 -        """
--        self.check_mips_malta('mips64', 'be')
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 63876bc7c42..b36fcab0896 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -42,6 +42,7 @@ test_timeouts = {
-   'mips_malta' : 480,
-   'mipsel_malta' : 420,
-   'mipsel_replay' : 480,
-+  'mips64_malta' : 240,
-   'mips64el_malta' : 420,
-   'mips64el_replay' : 180,
-   'netdev_ethtool' : 180,
-@@ -191,6 +192,7 @@ tests_mipsel_system_thorough = [
- ]
- 
- tests_mips64_system_thorough = [
-+  'mips64_malta',
-   'mips64_tuxrun',
- ]
- 
-diff --git a/tests/functional/test_mips64_malta.py b/tests/functional/test_mips64_malta.py
-new file mode 100755
-index 00000000000..53c3e0c1221
---- /dev/null
-+++ b/tests/functional/test_mips64_malta.py
-@@ -0,0 +1,35 @@
-+#!/usr/bin/env python3
-+#
-+# Functional tests for the big-endian 64-bit MIPS Malta board
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+from qemu_test import LinuxKernelTest, Asset
-+from test_mips_malta import mips_check_wheezy
-+
-+
-+class MaltaMachineConsole(LinuxKernelTest):
-+
-+    ASSET_WHEEZY_KERNEL = Asset(
-+        ('https://people.debian.org/~aurel32/qemu/mips/'
-+         'vmlinux-3.2.0-4-5kc-malta'),
-+        '3e4ec154db080b3f1839f04dde83120654a33e5e1716863de576c47cb94f68f6')
-+
-+    ASSET_WHEEZY_DISK = Asset(
-+        ('https://people.debian.org/~aurel32/qemu/mips/'
-+         'debian_wheezy_mips_standard.qcow2'),
-+        'de03599285b8382ad309309a6c4869f6c6c42a5cfc983342bab9ec0dfa7849a2')
-+
-+    def test_wheezy(self):
-+        kernel_path = self.ASSET_WHEEZY_KERNEL.fetch()
-+        image_path = self.ASSET_WHEEZY_DISK.fetch()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE
-+                               + 'console=ttyS0 root=/dev/sda1')
-+        mips_check_wheezy(self,
-+            kernel_path, image_path, kernel_command_line, cpuinfo='MIPS 20Kc',
-+            dl_file='/boot/initrd.img-3.2.0-4-5kc-malta',
-+            hsum='d98b953bb4a41c0fc0fd8d19bbc691c08989ac52568c1d3054d92dfd890d3f06')
-+
-+
-+if __name__ == '__main__':
-+    LinuxKernelTest.main()
+-        self.require_accelerator("tcg")
+-        self.vm.add_args("-accel", "tcg")
+-        self.launch_and_wait(set_up_ssh_connection=False)
+-
+-    def test_pseries_kvm(self):
+-        """
+-        :avocado: tags=machine:pseries
+-        :avocado: tags=accel:kvm
+-        """
+-        self.require_accelerator("kvm")
+-        self.vm.add_args("-accel", "kvm")
+-        self.vm.add_args("-machine", "cap-ccf-assist=off")
+-        self.launch_and_wait(set_up_ssh_connection=False)
+-
+-class BootLinuxS390X(LinuxTest):
+-    """
+-    :avocado: tags=arch:s390x
+-    """
+-
+-    timeout = 240
+-
+-    @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+-    def test_s390_ccw_virtio_tcg(self):
+-        """
+-        :avocado: tags=machine:s390-ccw-virtio
+-        :avocado: tags=accel:tcg
+-        """
+-        self.require_accelerator("tcg")
+-        self.vm.add_args("-accel", "tcg")
+-        self.launch_and_wait(set_up_ssh_connection=False)
 -- 
 2.49.0
 
