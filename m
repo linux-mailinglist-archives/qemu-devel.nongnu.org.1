@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E943A70D30
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:47:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACEE5A70D27
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:44:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txD0X-0002VH-EQ; Tue, 25 Mar 2025 18:44:29 -0400
+	id 1txD0Z-0002fD-Sj; Tue, 25 Mar 2025 18:44:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1txD0G-0001Tt-F4
+ id 1txD0G-0001TV-ER
  for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:12 -0400
 Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1txD0C-00072d-MP
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:11 -0400
+ id 1txD0D-00072p-0e
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:12 -0400
 Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-22580c9ee0aso127172505ad.2
+ d9443c01a7336-223a7065ff8so65114635ad.0
  for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:44:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742942647; x=1743547447; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742942648; x=1743547448; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YP1/YoZtmNlvDfK/7GvLWQk4iAQ+/s3R4pyDEvaptyk=;
- b=z3MuKUL8R610AmnUVQnnfoUul6I09LrP6+xPBJCffXlM7XzynQmvINOV9Iqat2uIV+
- PYsvu1EBDihLN+1vR3jnTheT9oHgyh4wTp3rKeKaholFcbJrkQ/lhBqP43yk2tfYHR3e
- pyEMonI9sTB8yMbbcgH6Y2ZyCazmUVv1k0YQGURkrwbP0RTTJbcOFB1924uxbdwaBKj8
- DS15E0CeG1B3NjLSdluYrwSme/9jjeLkKb+iVasYWUZayxMczFq5v67RtIiHVC7NfESW
- EgO5FvmgRksoq1dEeokPavO6xnzaHf3nLN77t0PPRdJfl45bG7F4jhYLG69jP/+yQ6mu
- FNrA==
+ bh=whE4tOIG14eY8JQ2gptqlrplDWnqt4RDL3Ybv6G0d7s=;
+ b=sG/NaOzEaWpk7opPUEF4B3xv9qoNkqSWagSfDVvQx8MhZnv8StkWtd0LTKxQvdVsiK
+ yVdRWmB778QuFxhC9q87NNkK2/F/tOwAA/hrjiPQFiZW6bcSnWC2B+bNPEmHSmZUR4zk
+ 3qvF3W5HpDcxZhRqsucRhCdxmGTKnmwgMOK5Dpf8fhHH/xH9msyqdi2KG6/vH1SLefxN
+ O/XATIwPpL42qfgL2Dv0r4N2Hh7GXt0W5SDb21BkgkEtqIY/9UcFVqNIhbD8o3qYXU3h
+ gc3V4QN8t91Q130LDZL26kwSTogAPjPuhVHOYePOMXbQ+sWg4rWH233DP3pY9xFNd63e
+ jFPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742942647; x=1743547447;
+ d=1e100.net; s=20230601; t=1742942648; x=1743547448;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YP1/YoZtmNlvDfK/7GvLWQk4iAQ+/s3R4pyDEvaptyk=;
- b=UZhasAFYQkzlsLFwD1jstijtbBJIrozdyFEAShx2Cej1JlAqWdBrxrv6AJ4QOzCHy9
- tQtNuLiHrWSMwmT4+4xzALUSUbAOeAalJTxf0C9+NktiBW2kq7+AvoNmrcov0TFMhK6S
- U0u0RFDKnjcP1T24ni5l86v3inR3/9m0bFSZEfgZfpfeuLhJAKa2qDCI8dthu6IJpoxU
- cGlQL4XM8JQpQ7x9mvKkXR7Q2V7M4oXMLsqPgVxDWWhqpeOguJ43rhSYVBYdgSsTqq4E
- Dg3tLmcSCNIzOUrePFSG1J/AdzzC0Pqv+UdLIHjMGmscO/HZ9s9jqu7oNR52M5Ci9W9F
- Nj6Q==
-X-Gm-Message-State: AOJu0Yx+9c3vC7EqYzXgcFQkqnvfS+BVjXBqNbmiEm6Q22h3oBTlu4Wj
- PV1m5UNf2s5DhtYTXAXQpFzMl7+VWjnYT0ztuB/2q0F03gi46SLsCl5IlmTr05FPThI0Z/D9z1r
- 0
-X-Gm-Gg: ASbGnctmB0hB58lHPH3O8ddlHzRRVf6FDnH81iErgvLwWTlnMkPlyjA2XSa7OgfWGE/
- IkHMtS3qIOCG6KTIkQnNb7jl2dLOyh/VOuh3Ql5IJcv2oxvvMfmEVAxKX0LEZnlC4jADplZ3ImP
- RnvuAQ90dK4a9Uy7CRJv6uL/pJvMQBDwLLvO/MfFZJLYWeD1sBI62TR2PwBfJS8dROTVzPU+ZJW
- luvs94VRMsw3xJB08RxvZEt0O6LdiylIDjOKeBo4ttwPdwrJQpn05jtEZZKth6iRdAw2ty2rW/m
- bUCic+88pYm6hvaGtRXTpeA7plv/fNzQrRkbfI753icZIdFheIKq5aPcYHRrmhdUU/aUCLBDIzz
- LRkLdT3u9S9A=
-X-Google-Smtp-Source: AGHT+IEXfQ8MaK3uGSzdmc4hzEM4xER01btUhd+yn5FrwCtOOjvoRd/HgC0pKaFssgBZQ8J2qv2eDA==
-X-Received: by 2002:a05:6a00:4fd6:b0:736:fff2:9ac with SMTP id
- d2e1a72fcca58-73905a2780bmr29178545b3a.23.1742942646941; 
- Tue, 25 Mar 2025 15:44:06 -0700 (PDT)
+ bh=whE4tOIG14eY8JQ2gptqlrplDWnqt4RDL3Ybv6G0d7s=;
+ b=KVNcrM5RXcKnaPq1lOxrrzPuVK03wLaW7sTgaUO1ieC1UHVKQqeiXWjRwP7UxXRRxl
+ ry0/1CdC2xz3yYj+2YOwvzx6Eapano/0bfgcRnS5wv9qELp4yuLVvJMtwFlPPTN5yRWT
+ QGFI+HwLMYVaCZ/k/fs5cAeG6mpo8s16E2izvv2z80wC97qKlTQSsTPDcCMFa/lDN/C1
+ Tzw+cbzfvCepsra09tqubfIwNPIxRIvR8fqU/XpgSqQWdf5B4eLGVHH39SG8GDZ+bRUo
+ FFTgpqrkcGVokF9+9GVpsgDJK+Q9PUgKsH8R9DVneBywzYBLR/1bqQmhiQ9/RUeFOqSw
+ X5tA==
+X-Gm-Message-State: AOJu0YxZd8ECkN/ZGo9N2/1bR3hTUalGtvZ0eEvUvVHiuvqB1O80734Y
+ fpVg/94ATxgPXsDiHwy5qPPiXpu5sr/wM9uCBBu/qh9lEPXgDMTVVsb1+RyU9W2Nzvte2AMPbev
+ d
+X-Gm-Gg: ASbGncvkc74AC47V2qJCUC+MxDwT5cnLd9J8IoY7WTzktW2BsVRmRnBqMqOhBn7yjzN
+ JAvX/se4fRissPY1iD636+i3tYaPj6OrdojE1rhS6f1gAbEsxxL1F/udPgA9wCTcrMQRssY2UBx
+ +Lto7R49Mk48FN9HchX+JXMBAddk++lmu9d4CBIaqS1Tu1kpnyazN0ZmhbPifQnWKvJ6NvQQ1+O
+ 1CNwYfJOVWAMPd9S0PbrEQfdQdoc8tmUvk3pBCDVenOGAv4wxrbMjitWyK/JE0Goc8e2W3DzRae
+ JyRhYOys6D2r3sm7Gbnw8VhsXFaupH8n/8nPRbK/1uRehzc4Qv2RrwyLRiDhj7Y+48f9esITtIV
+ F
+X-Google-Smtp-Source: AGHT+IEXffIXkKaM32i1wEX+euvVjlaaKwE1ovgiZkhgtiVM2mWY7BsVax9OA5jpwqtcKGfJClW2gw==
+X-Received: by 2002:a05:6a21:9990:b0:1f5:679a:226c with SMTP id
+ adf61e73a8af0-1fe42f07b0dmr29169962637.5.1742942647740; 
+ Tue, 25 Mar 2025 15:44:07 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7390611d3d6sm11111321b3a.94.2025.03.25.15.44.06
+ d2e1a72fcca58-7390611d3d6sm11111321b3a.94.2025.03.25.15.44.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Mar 2025 15:44:06 -0700 (PDT)
+ Tue, 25 Mar 2025 15:44:07 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com,
 	philmd@linaro.org,
 	pierrick.bouvier@linaro.org
-Subject: [PATCH v2 03/11] hw/core/cpu: Use size_t for memory_rw_debug len
- argument
-Date: Tue, 25 Mar 2025 15:43:55 -0700
-Message-ID: <20250325224403.4011975-4-richard.henderson@linaro.org>
+Subject: [PATCH v2 04/11] target/avr: Remove OFFSET_CPU_REGISTERS
+Date: Tue, 25 Mar 2025 15:43:56 -0700
+Message-ID: <20250325224403.4011975-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250325224403.4011975-1-richard.henderson@linaro.org>
 References: <20250325224403.4011975-1-richard.henderson@linaro.org>
@@ -102,56 +101,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Match the prototype of cpu_memory_rw_debug().
+This define isn't really used.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h     | 2 +-
- target/sparc/cpu.h        | 2 +-
- target/sparc/mmu_helper.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ target/avr/cpu.h    | 2 --
+ target/avr/helper.c | 3 +--
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 5d11d26556..abd8764e83 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -154,7 +154,7 @@ struct CPUClass {
+diff --git a/target/avr/cpu.h b/target/avr/cpu.h
+index 06f5ae4d1b..84a8f5cc8c 100644
+--- a/target/avr/cpu.h
++++ b/target/avr/cpu.h
+@@ -60,8 +60,6 @@
+ #define OFFSET_CODE 0x00000000
+ /* CPU registers, IO registers, and SRAM */
+ #define OFFSET_DATA 0x00800000
+-/* CPU registers specifically, these are mapped at the start of data */
+-#define OFFSET_CPU_REGISTERS OFFSET_DATA
+ /*
+  * IO registers, including status register, stack pointer, and memory
+  * mapped peripherals, mapped just after CPU registers
+diff --git a/target/avr/helper.c b/target/avr/helper.c
+index 3412312ad5..e5bf16c6b7 100644
+--- a/target/avr/helper.c
++++ b/target/avr/helper.c
+@@ -340,8 +340,7 @@ void helper_fullwr(CPUAVRState *env, uint32_t data, uint32_t addr)
+     env->fullacc = false;
  
-     int (*mmu_index)(CPUState *cpu, bool ifetch);
-     int (*memory_rw_debug)(CPUState *cpu, vaddr addr,
--                           uint8_t *buf, int len, bool is_write);
-+                           uint8_t *buf, size_t len, bool is_write);
-     void (*dump_state)(CPUState *cpu, FILE *, int flags);
-     void (*query_cpu_fast)(CPUState *cpu, CpuInfoFast *value);
-     int64_t (*get_arch_id)(CPUState *cpu);
-diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index 462bcb6c0e..68f8c21e7c 100644
---- a/target/sparc/cpu.h
-+++ b/target/sparc/cpu.h
-@@ -604,7 +604,7 @@ void dump_mmu(CPUSPARCState *env);
+     /* Following logic assumes this: */
+-    assert(OFFSET_CPU_REGISTERS == OFFSET_DATA);
+-    assert(OFFSET_IO_REGISTERS == OFFSET_CPU_REGISTERS +
++    assert(OFFSET_IO_REGISTERS == OFFSET_DATA +
+                                   NUMBER_OF_CPU_REGISTERS);
  
- #if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
- int sparc_cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
--                              uint8_t *buf, int len, bool is_write);
-+                              uint8_t *buf, size_t len, bool is_write);
- #endif
- 
- /* translate.c */
-diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
-index 7548d01777..3821cd91ec 100644
---- a/target/sparc/mmu_helper.c
-+++ b/target/sparc/mmu_helper.c
-@@ -389,7 +389,7 @@ void dump_mmu(CPUSPARCState *env)
-  * that the sparc ABI is followed.
-  */
- int sparc_cpu_memory_rw_debug(CPUState *cs, vaddr address,
--                              uint8_t *buf, int len, bool is_write)
-+                              uint8_t *buf, size_t len, bool is_write)
- {
-     CPUSPARCState *env = cpu_env(cs);
-     target_ulong addr = address;
+     if (addr < NUMBER_OF_CPU_REGISTERS) {
 -- 
 2.43.0
 
