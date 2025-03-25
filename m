@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB388A6E9C6
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:51:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D47A6E9E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:57:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twy7s-0004h4-Ll; Tue, 25 Mar 2025 02:51:04 -0400
+	id 1twyAH-0007mZ-Ks; Tue, 25 Mar 2025 02:53:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7p-0004f6-4w; Tue, 25 Mar 2025 02:51:01 -0400
+ id 1twy9P-0006AJ-P4; Tue, 25 Mar 2025 02:52:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy7m-0001fz-1E; Tue, 25 Mar 2025 02:51:00 -0400
+ id 1twy9L-0001wI-FW; Tue, 25 Mar 2025 02:52:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AE37E107D66;
- Tue, 25 Mar 2025 09:49:21 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id DB0B2107D7A;
+ Tue, 25 Mar 2025 09:49:33 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5104C1D5E75;
- Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7D6B41D5E85;
+ Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 3CB0957032; Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
+ id 7697A57052; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.17 34/34] hw/misc/aspeed_hace: Fix buffer overflow in
- has_padding function
-Date: Tue, 25 Mar 2025 09:50:28 +0300
-Message-Id: <20250325065031.3263718-7-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 56/69] vdpa: Allow vDPA to work on big-endian machine
+Date: Tue, 25 Mar 2025 09:50:29 +0300
+Message-Id: <20250325065043.3263864-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
-References: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
+References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -62,42 +62,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+From: Konstantin Shkolnyy <kshk@linux.ibm.com>
 
-The maximum padding size is either 64 or 128 bytes and should always be smaller
-than "req_len". If "padding_size" exceeds "req_len", then
-"req_len - padding_size" underflows due to "uint32_t" data type, leading to a
-large incorrect value (e.g., `0xFFXXXXXX`). This causes an out-of-bounds memory
-access, potentially leading to a buffer overflow.
+Add .set_vnet_le() function that always returns success, assuming that
+vDPA h/w always implements LE data format. Otherwise, QEMU disables vDPA and
+outputs the message:
+"backend does not support LE vnet headers; falling back on userspace virtio"
 
-Added a check to ensure "padding_size" does not exceed "req_len" before
-computing "pad_offset". This prevents "req_len - padding_size" from underflowing
-and avoids accessing invalid memory.
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Fixes: 5cd7d8564a8b563da724b9e6264c967f0a091afa ("aspeed/hace: Support AST2600 HACE ")
-Link: https://lore.kernel.org/qemu-devel/20250321092623.2097234-3-jamin_lin@aspeedtech.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit 78877b2e06464f49f777e086845e094ea7bc82ef)
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit b027f55a994af885a7a498a40373a2dcc2d8b15e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index 69175e972d..11bd25708e 100644
---- a/hw/misc/aspeed_hace.c
-+++ b/hw/misc/aspeed_hace.c
-@@ -123,6 +123,11 @@ static bool has_padding(AspeedHACEState *s, struct iovec *iov,
-     if (*total_msg_len <= s->total_req_len) {
-         uint32_t padding_size = s->total_req_len - *total_msg_len;
-         uint8_t *padding = iov->iov_base;
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 7195d340a0..5a962255e7 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -262,6 +262,18 @@ static bool vhost_vdpa_has_ufo(NetClientState *nc)
+ 
+ }
+ 
++/*
++ * FIXME: vhost_vdpa doesn't have an API to "set h/w endianness". But it's
++ * reasonable to assume that h/w is LE by default, because LE is what
++ * virtio 1.0 and later ask for. So, this function just says "yes, the h/w is
++ * LE". Otherwise, on a BE machine, higher-level code would mistakely think
++ * the h/w is BE and can't support VDPA for a virtio 1.0 client.
++ */
++static int vhost_vdpa_set_vnet_le(NetClientState *nc, bool enable)
++{
++    return 0;
++}
 +
-+        if (padding_size > req_len) {
-+            return false;
-+        }
-+
-         *pad_offset = req_len - padding_size;
-         if (padding[*pad_offset] == 0x80) {
-             return true;
+ static bool vhost_vdpa_check_peer_type(NetClientState *nc, ObjectClass *oc,
+                                        Error **errp)
+ {
+@@ -429,6 +441,7 @@ static NetClientInfo net_vhost_vdpa_info = {
+         .cleanup = vhost_vdpa_cleanup,
+         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
+         .has_ufo = vhost_vdpa_has_ufo,
++        .set_vnet_le = vhost_vdpa_set_vnet_le,
+         .check_peer_type = vhost_vdpa_check_peer_type,
+         .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
+ };
 -- 
 2.39.5
 
