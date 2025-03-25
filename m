@@ -2,83 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4282CA6E809
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B254A6E7F1
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:24:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twtEY-0001YB-Mb; Mon, 24 Mar 2025 21:37:38 -0400
+	id 1twt0E-0007Ac-2V; Mon, 24 Mar 2025 21:22:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtER-0001WP-8y
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:31 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1twt0C-0007AM-Ol
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:22:48 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEP-0007QF-9h
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:31 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-30362ee1312so1610517a91.0
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1twt0A-000605-V1
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:22:48 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2ff4a4f901fso9302683a91.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:22:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742866648; x=1743471448; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1742865764; x=1743470564; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=v2mbYEXOhUiqCfK+pSBO34P8IdJNnYPI/baQPVvT0po=;
- b=v8gjk/Sz6mzHcJZa4gIud3VCdvOS8f1FF9bSXS1D2vUkMdNp/lIjmB0gAf+GrgKtqM
- xblR96HdT0lFxmwm9bQsQ8hv6eZuE3TWjQV6X93zkiCbX09wGWqJ/8es1bLEe1sYD4JX
- ufKwnf0WZvzToZ+AepWZRkR7+p6BkYR7Kw4buEUklaFK8LM0XNIHttIZQ1sk1Yn7Tyl1
- Nv/2wvbcu+AJTravRO0zmf1zJRD31xZKhqVhQx7OBdsvz5LGHC38Rie+KLtihxQqIk6+
- wdtUcy9piweSN+8UrrcSHTWeJUAFZfAqRs9rXi5He9USYAnkdiS/HiG3sypdcdWv/bvf
- nn1g==
+ bh=aG/ikolZ9gVRmszvosTh9e33E/vQ1AmQm3yTNYjPZIM=;
+ b=FcqfCDrk+g/7LnlW2v2aEfE/Zo7AFpFrg3z5W2DdaC3swzg78YkiDNfp2tw6vDChcY
+ VNIJpqZyNBKYIWh+PdV7goVaO28FRRCAqvCNXPT19NVltDIFnMfenZdojWss7w4bc34B
+ 4nqxbmVF7lYDStZK8WAntJx48i/rYnX6s6lLs4q6WZVKEJveXN/cgThrvCMwEFbi+83n
+ i6Kgako6rixQOMwrb15npxhisXmvkeFAjK7xJpy4Z55xvb8Qfiqq29qXcZTtQkgjDow9
+ o8Z2k0WDIKp6rPuDIasdRjjVDQjJNSSUIoObEJoRCU5HqIabddE2iheaaZw4X4vJtSL/
+ 5Qdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742866648; x=1743471448;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1742865764; x=1743470564;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=v2mbYEXOhUiqCfK+pSBO34P8IdJNnYPI/baQPVvT0po=;
- b=fIKp/BG3etiza1P2ykdX/J2CDdK9uyPAphU+fMcApTu2SjTYKcNl7JPzjdyyOcrc+x
- Dy52j9Zlng1lR26xgzj0HjQhRULpDJeQPssUKCC+hDwgoG7R7S6QxLJETqF3vFxzRSlV
- LOcku4il62U03nrH7yVMH5FEKdMIv+1kKtXTGBWvL467QqJcgnXcAXfGwS0x7uH8mncQ
- nOsOkvNHr2kEvFYSP9RKlkPzzIe2yyIWm7JWVu+GGSQ29ZBDVH5GstPOWXaBlOpTuDax
- ztM5HSgJ99uGRKWwkwj+8cp/J9ti3o3zIaiqu/nb8BsvZZ8zkoBsZAnEoUSO/+y8VaJ4
- 86oA==
+ bh=aG/ikolZ9gVRmszvosTh9e33E/vQ1AmQm3yTNYjPZIM=;
+ b=WX0Fh5SxQ6vrDrJxQHct5ZheGYcEoxAEt+jwee8SDVoO1Gx2KGFLZar1ZsMJ47naqx
+ RO3edRtQKfHueNSX9OS5CyuzFTm730tauKdr50qMI+tF6Oumhd3aNKFYB7kl65zbS581
+ FwUkLB1EhIliDdTMeVPYLalFDDHv8r+uY9DLWvdJ5ekzC00Coj4/7P85IeDJGzSef7t4
+ rBE7ZnEfCFtunuBlPpPVIH5XxVje4emrURBo2F2VWNIBgjnnM4YmfHPKfoIDtKS9X7la
+ Xu7FSaNu6iZQ6Di4uGQcwe/qTWgpQUBnE+I9FdNYWMLkuZElgRd/oWiwltNGog6VSfGa
+ KGqg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV7oPMvlWwJpzZ1uBH+fJjlZh3xzNEXn3QXq9CM9SADOpzT30Q5Z1AcUaM/pjlHaBRttGI66H8TOTZR@nongnu.org
-X-Gm-Message-State: AOJu0YwC1jgOer6vU/V/aj3f3rFPkyppczTexb/P2ETHZRn7cBPx3zjb
- eRZQR2CF1wufdyHxRMUcqMg4b2ITaWJN6wwKQft/wWTE5teZn3d0333lJzwoMWg=
-X-Gm-Gg: ASbGncuE5hA0/G8OFXZav5+cQbXDhPHyy1Z2Hiq/5JJA8peA2dhCeYtSbTHV9IA7/xY
- MsJ0CIQlr9Rn4erKzT6CctnmQcvcSOGpPE9STL0RJtHpm/wMRDIzkAiGUu58R9hfgKHlAVK+iaG
- N1e/Jew3yMtWTHJXVv6VHc+6qXvnAq2h1dTvVK+FdgrsMKO8JYwaVzIjPptGsu3cCGhcjv9MwBR
- zsTtWfJuTGMoBz9yMcXuHQMQcMP8yJPlb2H7nbzZq/18se3ntQkYMaB7ofnpWjD1GQ1Fiq0GoQV
- 0TxypQewqC411pNf58KqzmWU7GprAz/vyvQJ/ikv2EYF6EXmsGP34c0pcA==
-X-Google-Smtp-Source: AGHT+IHuoIySUrq9lZzMF7Z/adbot5mQdfRYj0j1rvkExpPYO125OW2mj/R4qgkLhOlZvlCI0phyaA==
-X-Received: by 2002:a05:6a21:999a:b0:1f5:67c2:e3eb with SMTP id
- adf61e73a8af0-1fe43439eb8mr25169786637.41.1742866647431; 
- Mon, 24 Mar 2025 18:37:27 -0700 (PDT)
-Received: from [192.168.1.67] ([38.39.164.180])
+ AJvYcCXiZRJBw7P0U9MdhFbvxEJcbq7Y68YmveYCnQa4tKYryTHIoX1520nkyJyujQAVEZ0+uleZZjRljNwe@nongnu.org
+X-Gm-Message-State: AOJu0YzJS0bmLHssmrBOXJrTwYPY/Eqx/+IBZC1tosZnXyeYGLZZx/wS
+ ugxSHC7jWUq9LhL0MrAibKhL+o8xQfD5qxJ8U6aecFi4Z2ND+4SJftv9bh1ere4=
+X-Gm-Gg: ASbGncvHiVy79IgNzqW4eZUWDO8/aFu5GsrhrBXKZiYloYcLcNNreVP0XE2d9PEAgAr
+ r154b9US7AChsvY1IiEzErsGXA/fmL77ZoEqRVqMfeHgr9O1Z2PFVSC1TAOA8Gaq1pwtKMRhKtn
+ oM6dy8kGWVV6cEfB8UOIzK8eTX+OyPdHN+4Psqzr83Iy1/rpnkB6/JrlvHZnswTsKl6hnR2nB6K
+ /X7gJwXjZtt8y2t5rnen1b7QpsIeHxlHaBt4BD6RPqvRs1/iELiBSRihSiqsQeB14U7cVQPh8i2
+ OMH25OM1RgWwyJfQxNvA56tFe67vm5qNU9pGVTKiGsZWTrXKtqccnsS7rMZrbqow6P0hd/TLybU
+ u7kOyOO19
+X-Google-Smtp-Source: AGHT+IHEZCg9xs1G0ztU1F3GqMs42dpDB5T8VAwisopTv+ewq4W5/2ROGq56Z/iMGj+HJJwkTysYNg==
+X-Received: by 2002:a17:90b:2743:b0:2ff:4a8d:74f8 with SMTP id
+ 98e67ed59e1d1-3030fe721dfmr21437984a91.6.1742865764131; 
+ Mon, 24 Mar 2025 18:22:44 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73906158ef2sm9090422b3a.141.2025.03.24.18.37.26
+ 98e67ed59e1d1-3030fe83d50sm8832615a91.24.2025.03.24.18.22.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Mar 2025 18:37:26 -0700 (PDT)
-Message-ID: <5c19c4ac-fed9-4405-921d-42da3a4ed93c@linaro.org>
-Date: Mon, 24 Mar 2025 18:21:58 -0700
+ Mon, 24 Mar 2025 18:22:43 -0700 (PDT)
+Message-ID: <67313299-0ce6-457d-ace7-73ad864a0eb0@linaro.org>
+Date: Mon, 24 Mar 2025 18:22:42 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/17] hw/avr: Set offset_io and increase page size to 1k
+Subject: Re: [PATCH v2 26/30] hw/arm/armv7m: prepare compilation unit to be
+ common
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250320223002.2915728-1-pierrick.bouvier@linaro.org>
+ <20250320223002.2915728-27-pierrick.bouvier@linaro.org>
+ <0c9055a3-2650-4802-a28c-e5d79052bc81@linaro.org>
+ <6cce9fd1-d008-4b63-a77f-c091fcd933e0@linaro.org>
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: mrolnik@gmail.com, philmd@linaro.org
-References: <20250323173730.3213964-1-richard.henderson@linaro.org>
- <20250323173730.3213964-15-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250323173730.3213964-15-richard.henderson@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <6cce9fd1-d008-4b63-a77f-c091fcd933e0@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1031.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,182 +108,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/23/25 10:37, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/avr/cpu-param.h |  8 +------
->   hw/avr/atmega.c        | 54 ++++++++++++++++++++++++++----------------
->   2 files changed, 35 insertions(+), 27 deletions(-)
+On 3/24/25 14:31, Pierrick Bouvier wrote:
+> On 3/23/25 12:48, Richard Henderson wrote:
+>> On 3/20/25 15:29, Pierrick Bouvier wrote:
+>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>> ---
+>>>    hw/arm/armv7m.c | 12 ++++++++----
+>>>    1 file changed, 8 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+>>> index 98a69846119..c367c2dcb99 100644
+>>> --- a/hw/arm/armv7m.c
+>>> +++ b/hw/arm/armv7m.c
+>>> @@ -139,8 +139,9 @@ static MemTxResult v7m_sysreg_ns_write(void *opaque, hwaddr addr,
+>>>        if (attrs.secure) {
+>>>            /* S accesses to the alias act like NS accesses to the real region */
+>>>            attrs.secure = 0;
+>>> +        MemOp end = target_words_bigendian() ? MO_BE : MO_LE;
+>>>            return memory_region_dispatch_write(mr, addr, value,
+>>> -                                            size_memop(size) | MO_TE, attrs);
+>>> +                                            size_memop(size) | end, attrs);
+>>
+>> target_words_bigendian() is always false for arm system mode.
+>> Just s/TE/LE/.
+>>
 > 
-> diff --git a/target/avr/cpu-param.h b/target/avr/cpu-param.h
-> index 81f3f49ee1..f5248ce9e7 100644
-> --- a/target/avr/cpu-param.h
-> +++ b/target/avr/cpu-param.h
-> @@ -21,13 +21,7 @@
->   #ifndef AVR_CPU_PARAM_H
->   #define AVR_CPU_PARAM_H
->   
-> -/*
-> - * TARGET_PAGE_BITS cannot be more than 8 bits because
-> - * 1.  all IO registers occupy [0x0000 .. 0x00ff] address range, and they
-> - *     should be implemented as a device and not memory
-> - * 2.  SRAM starts at the address 0x0100
-> - */
-> -#define TARGET_PAGE_BITS 8
-> +#define TARGET_PAGE_BITS 10
->   #define TARGET_PHYS_ADDR_SPACE_BITS 24
->   #define TARGET_VIRT_ADDR_SPACE_BITS 24
->   
-> diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
-> index 273582b8af..d4fc9c4aee 100644
-> --- a/hw/avr/atmega.c
-> +++ b/hw/avr/atmega.c
-> @@ -14,6 +14,7 @@
->   #include "qapi/error.h"
->   #include "exec/memory.h"
->   #include "exec/address-spaces.h"
-> +#include "exec/target_page.h"
->   #include "system/system.h"
->   #include "hw/qdev-properties.h"
->   #include "hw/sysbus.h"
-> @@ -222,6 +223,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->       DeviceState *cpudev;
->       SysBusDevice *sbd;
->       char *devname;
-> +    uint32_t offset_io, offset_sram;
->       size_t i;
->   
->       assert(mc->io_size <= 0x200);
-> @@ -231,13 +233,25 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->           return;
->       }
->   
-> +    /*
-> +     * Bias the virtual data section so that the start of RAM is at
-> +     * the start of the second page of the physical data section.
-> +     * This puts all of the I/O at the end of the first page of the
-> +     * physical data section.
-> +     */
-> +    offset_io = TARGET_PAGE_SIZE - mc->io_size;
-> +    offset_sram = TARGET_PAGE_SIZE;
-> +
->       /* CPU */
->       object_initialize_child(OBJECT(dev), "cpu", &s->cpu, mc->cpu_type);
->   
->       object_property_set_uint(OBJECT(&s->cpu), "init-sp",
->                                mc->io_size + mc->sram_size - 1, &error_abort);
->       object_property_set_uint(OBJECT(&s->cpu), "offset-io",
-> -                             0, &error_abort);
-> +                             offset_io, &error_abort);
-> +
-> +    offset_io += OFFSET_DATA;
-> +    offset_sram += OFFSET_DATA;
->   
->       qdev_realize(DEVICE(&s->cpu), NULL, &error_abort);
->       cpudev = DEVICE(&s->cpu);
-> @@ -245,8 +259,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->       /* SRAM */
->       memory_region_init_ram(&s->sram, OBJECT(dev), "sram", mc->sram_size,
->                              &error_abort);
-> -    memory_region_add_subregion(get_system_memory(),
-> -                                OFFSET_DATA + mc->io_size, &s->sram);
-> +    memory_region_add_subregion(get_system_memory(), offset_sram, &s->sram);
->   
->       /* Flash */
->       memory_region_init_rom(&s->flash, OBJECT(dev),
-> @@ -258,13 +271,14 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->        *
->        * 0x00 - 0x1f: Registers
->        * 0x20 - 0x5f: I/O memory
-> -     * 0x60 - 0xff: Extended I/O
-> +     * 0x60 - 0x[1]ff: Extended I/O
->        */
->       s->io = qdev_new(TYPE_UNIMPLEMENTED_DEVICE);
->       qdev_prop_set_string(s->io, "name", "I/O");
->       qdev_prop_set_uint64(s->io, "size", mc->io_size);
->       sysbus_realize_and_unref(SYS_BUS_DEVICE(s->io), &error_fatal);
-> -    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(s->io), 0, OFFSET_DATA, -1234);
-> +
-> +    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(s->io), 0, offset_io, -1234);
->   
->       /* Power Reduction */
->       for (i = 0; i < POWER_MAX; i++) {
-> @@ -277,7 +291,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->                                   TYPE_AVR_MASK);
->           sysbus_realize(SYS_BUS_DEVICE(&s->pwr[i]), &error_abort);
->           sysbus_mmio_map(SYS_BUS_DEVICE(&s->pwr[i]), 0,
-> -                        OFFSET_DATA + mc->dev[idx].addr);
-> +                        offset_io + mc->dev[idx].addr);
->           g_free(devname);
->       }
->   
-> @@ -289,7 +303,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->           }
->           devname = g_strdup_printf("atmega-gpio-%c", 'a' + (char)i);
->           create_unimplemented_device(devname,
-> -                                    OFFSET_DATA + mc->dev[idx].addr, 3);
-> +                                    offset_io + mc->dev[idx].addr, 3);
->           g_free(devname);
->       }
->   
-> @@ -305,7 +319,7 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->           qdev_prop_set_chr(DEVICE(&s->usart[i]), "chardev", serial_hd(i));
->           sbd = SYS_BUS_DEVICE(&s->usart[i]);
->           sysbus_realize(sbd, &error_abort);
-> -        sysbus_mmio_map(sbd, 0, OFFSET_DATA + mc->dev[USART(i)].addr);
-> +        sysbus_mmio_map(sbd, 0, offset_io + mc->dev[USART(i)].addr);
->           connect_peripheral_irq(mc, sbd, 0, cpudev, USART_RXC_IRQ(i));
->           connect_peripheral_irq(mc, sbd, 1, cpudev, USART_DRE_IRQ(i));
->           connect_peripheral_irq(mc, sbd, 2, cpudev, USART_TXC_IRQ(i));
-> @@ -321,12 +335,12 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->           }
->           if (!mc->dev[idx].is_timer16) {
->               create_unimplemented_device("avr-timer8",
-> -                                        OFFSET_DATA + mc->dev[idx].addr, 5);
-> +                                        offset_io + mc->dev[idx].addr, 5);
->               create_unimplemented_device("avr-timer8-intmask",
-> -                                        OFFSET_DATA
-> +                                        offset_io
->                                           + mc->dev[idx].intmask_addr, 1);
->               create_unimplemented_device("avr-timer8-intflag",
-> -                                        OFFSET_DATA
-> +                                        offset_io
->                                           + mc->dev[idx].intflag_addr, 1);
->               continue;
->           }
-> @@ -337,9 +351,9 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->                                    s->xtal_freq_hz, &error_abort);
->           sbd = SYS_BUS_DEVICE(&s->timer[i]);
->           sysbus_realize(sbd, &error_abort);
-> -        sysbus_mmio_map(sbd, 0, OFFSET_DATA + mc->dev[idx].addr);
-> -        sysbus_mmio_map(sbd, 1, OFFSET_DATA + mc->dev[idx].intmask_addr);
-> -        sysbus_mmio_map(sbd, 2, OFFSET_DATA + mc->dev[idx].intflag_addr);
-> +        sysbus_mmio_map(sbd, 0, offset_io + mc->dev[idx].addr);
-> +        sysbus_mmio_map(sbd, 1, offset_io + mc->dev[idx].intmask_addr);
-> +        sysbus_mmio_map(sbd, 2, offset_io + mc->dev[idx].intflag_addr);
->           connect_peripheral_irq(mc, sbd, 0, cpudev, TIMER_CAPT_IRQ(i));
->           connect_peripheral_irq(mc, sbd, 1, cpudev, TIMER_COMPA_IRQ(i));
->           connect_peripheral_irq(mc, sbd, 2, cpudev, TIMER_COMPB_IRQ(i));
-> @@ -349,12 +363,12 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->           g_free(devname);
->       }
->   
-> -    create_unimplemented_device("avr-twi",          OFFSET_DATA + 0x0b8, 6);
-> -    create_unimplemented_device("avr-adc",          OFFSET_DATA + 0x078, 8);
-> -    create_unimplemented_device("avr-ext-mem-ctrl", OFFSET_DATA + 0x074, 2);
-> -    create_unimplemented_device("avr-watchdog",     OFFSET_DATA + 0x060, 1);
-> -    create_unimplemented_device("avr-spi",          OFFSET_DATA + 0x04c, 3);
-> -    create_unimplemented_device("avr-eeprom",       OFFSET_DATA + 0x03f, 3);
-> +    create_unimplemented_device("avr-twi",          offset_io + 0x0b8, 6);
-> +    create_unimplemented_device("avr-adc",          offset_io + 0x078, 8);
-> +    create_unimplemented_device("avr-ext-mem-ctrl", offset_io + 0x074, 2);
-> +    create_unimplemented_device("avr-watchdog",     offset_io + 0x060, 1);
-> +    create_unimplemented_device("avr-spi",          offset_io + 0x04c, 3);
-> +    create_unimplemented_device("avr-eeprom",       offset_io + 0x03f, 3);
->   }
->   
->   static const Property atmega_props[] = {
+> Good point.
+> 
+> By the way, what's the QEMU rationale behind having Arm big endian user binaries, and not 
+> provide it for softmmu binaries?
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+For system mode, endianness is set via a combination of CPSR.E, SCTLR.B and SCTLR.EE, 
+details depending on armv4, armv6, armv7+.
 
+It is IMPLEMENTATION DEFINED how the cpu initiailizes at reset.  In olden times, via a 
+board-level pin (sometimes switched, sometimes soldered).  We model the board-level pin 
+via the "cfgend" cpu property.
+
+In any case, for system mode we expect the guest to do the same thing it would need to do 
+on real hardware.  For user mode, we can't do that, as we're also emulating the OS layer, 
+which needs to know the endianness to expect from the guest binaries.
+
+> If those systems are so rare, why would people need a user mode emulation?
+
+IMO armbe-linux-user is extinct.
+
+Debian never had big-endian support at all.  If there was some other distro which had it, 
+I don't recall which.  Otherwise you'd need to bootstrap the entire toolchain, which to me 
+seems rather beside the point.
+
+
+r~
 
