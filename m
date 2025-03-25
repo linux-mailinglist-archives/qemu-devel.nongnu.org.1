@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D240DA70D23
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:44:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71396A70D22
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:44:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txCzT-0000Z2-Pi; Tue, 25 Mar 2025 18:43:23 -0400
+	id 1txCzY-0000bM-P7; Tue, 25 Mar 2025 18:43:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzR-0000YN-H8
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:21 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzW-0000ag-Kw
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:26 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzP-0006u1-RK
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:21 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3914aba1ce4so5216921f8f.2
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:43:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzV-0006v0-4j
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:26 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-39127512371so4138193f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:43:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742942598; x=1743547398; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742942603; x=1743547403; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dgIm8zLPaxk+AUkAm/dvi7OwWVyJ7xQvb+Sh8UY2ml4=;
- b=Hg+xxvkBQPBwbTf2H3pGN5EH0rR0SfOeB4MaaQP8FVB8o8K6sYcTIhwK6vHP4j2r1J
- 70nJJf5DoqfbPU+s4nsgS0jENWpOax4qcmYPAVbgSNIVQoDeB0r1opQ78z5eAj/DFYZP
- gbqpuk25gsq6nJJZ0KWHoFJfyeREOEAqXLtJKWBU2qgVGWnaQavhSKDBwlkjuKiN68li
- HvD6hFawK/uzaOdMDMaq2eQhxxnKCpF/CaweAqO3xqH0BAE5YfaCLzeqrz10n2v2iyME
- gQ86X7Pqb9UbPkzQCFYtmLPm92oR358NgLeBoZH7WtSTeiuOcuGepGhN/NJGDaBjjkvW
- WN4Q==
+ bh=cYc6dMHLoDeNtKrCf+LG0joQxNLfS1rrchv/hf06HXc=;
+ b=nj0qulVevYq+b6YzJpT1+8WYjH/zIqJlUiKOpWIUKYcY67lsfXuVQnPE5HgiTTM28n
+ xL0mPzcEa8XrR6IrTCKpVWPWCXxzcdqVVfHIT443aJ5VQvyloLT7UeJMkGBakhkdQZy3
+ 9XXaJjSPHS2jlBaDMRymziW6Yoo+y/RyqB6yYOe567iYEDl6GCxuxRusXOlB62nqft58
+ YBuPh1RT/Db0HG8XdZHHeRhwXL7X6LKPYV6dM4edqeLuqhgXEcs168rpY+x76J9aFq/V
+ wWeP+6nbWhYv9WbUt+hTkSjsGr8nnwKHss5g3avCE1lWnzpRtIHO4npcYwN+yKb1SSjr
+ dvow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742942598; x=1743547398;
+ d=1e100.net; s=20230601; t=1742942603; x=1743547403;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dgIm8zLPaxk+AUkAm/dvi7OwWVyJ7xQvb+Sh8UY2ml4=;
- b=qYzgp8ZmozYreCQbmXelOBiW1WFl1s1GFR/ixrbWowngAykOGU6/3fjKFMGsF/bZbK
- UgLVS/RP9j+4jyAZ0rYTrkhW0X69VjXpBOfqN1kzNu6aN79z4bn31InVjP2auAQ2lVX7
- /4uSbVNviRRh0a+6JfFU6qoUDK0E/5ZxBoH4UXvf07rLgf8h29RSIghGRgz8AroskBkR
- 4mCowllMXvvrk6/9s/Mu+/283itGvsitDirMZUaVwUyUXu7BLVPwZxKnlilceGWN/Eds
- +i9tQx5RnsWa7RFNw4uqCx8guj3AUleuYsuUP0a1YRzqjNkCYxi5FV7gKzwf1Q+qkGRL
- k3uw==
+ bh=cYc6dMHLoDeNtKrCf+LG0joQxNLfS1rrchv/hf06HXc=;
+ b=nS6A/7Tyyg8/pSWBJOep1yh8gNJ0sCr469+T5oxElh+Ty+CABEa+kM7H7YRkgoFtr0
+ pkJiKOt48MXi8ojevVnEVebeNtFFOeDcMYaaNM8c6YBquPn6CtSlFwsSimYikRAUHbWy
+ 8X2dq4v4Wyq3WUAqpJrddT6MRRCNrFSkqrzu5VI8KjU+r8OJ8j/3kY/V2x/2rXJdpYuK
+ imoIsLALMS2xrn6eCAxJoD7/UydnAV60tj2++/7XgLFK1tlM50QMGqwAdpupr3seUeUn
+ Ld58QrpDXQZzAsWUhmQ4MWbdtlFE/qzt95fMLTQTcoT9P85q9C9lBT2V9yT0Tnu6y8sz
+ JJRA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXMFDk4ZS+vIXmS/I0YIgPsSloZByAWz1K8mPn2HK8KS+ejndrNPzUpo0gcF4YMqvec3WZYj/0aYuVp@nongnu.org
-X-Gm-Message-State: AOJu0Yz3OOm3gATi+CFRP9kaAbqax8zlFUp7fgrHv3TtEY1WGZvYhkOk
- XSEe/Qy7dQVTiod/b4i+1yirkhohfzPNnQKcP8b+M0B/d15JzELE4mJELO//Nr8=
-X-Gm-Gg: ASbGnctDxj7mlwpczU2diMDd61HuI6d4n9ByD89BvcjiAMaLtJArexoT6DLdmgtFId5
- HUUWGGKOw6dadngaOsdc/1HDWREIcqTEVY8hXRisSHMJ7oo0SaOJHpsolVuHjdxYvN4cd+m5VIC
- yz4jq8CSH/kmj+hoCjJTurP5pcnFdfg36guYZM7OJ/Bdj4OaGndURf/nHjavCbUxTJ+v7wlsB/M
- DtA55CSMcPODXMWj75rShwrpQtj9HEtRfhj3oIYEPdddJ0IBWn1r9Nhs3BEZiqNXU9MLl0DqBVF
- rAhTicHnYE9ioV3KWetgKbwd3ndQFV9OhaJx5/IFoPUT4GGeZd0ltmp5wAuUsD8JvMOkG0YOIlF
- GzlhPO+M8VbqVGKc34bc=
-X-Google-Smtp-Source: AGHT+IGhZnH2e+iz8KJ1jLrFXI8jqcYDZlPyn7S4q452PhbJDUjzDXJYi6HU/1eiPxtvh2icXzLMVQ==
-X-Received: by 2002:a5d:59ad:0:b0:391:3cb0:3d8d with SMTP id
- ffacd0b85a97d-3997f9017fbmr16486964f8f.19.1742942598154; 
- Tue, 25 Mar 2025 15:43:18 -0700 (PDT)
+ AJvYcCUn/Vtlgu2zSwtUdhr4McdllLLrFIJE+1phMqYOevDVV9RkEFjoKbncWGUKXFRA2DBD+KXykQaZ9I9R@nongnu.org
+X-Gm-Message-State: AOJu0Ywa8CLDFuwgl2v+3ksXmv5loL4e1Q+JEay7hPSMTcLVtxUvFBTY
+ E0/Fbgb5Y8UzFUOCsFWghD5LDT9Y+pdxKw1+0JftqOJjwlcR0e+c5rHy1UG+c6Y=
+X-Gm-Gg: ASbGncsDV0Rrl24yt3aglx5zs+I4Ia5xwX4PKFCvAQ+lxr0ijlDyvBc5jLoLIAqsFgF
+ KV+o8QQblt47S5ZyEANTNOhfOQavPTDJGtPWXfeAtn34G+STc97A2nZD8ZWpjA1G0f+By+FIWlV
+ w8NqRDOF94jSpCYzIcsu/0m/87r6yyRf0MDqOxeIvwvSsf/Xff13/HbzLrZvV0lq/bbWGLGlvCZ
+ T+kLDQhBzDAwFkDJSWoFXSkM1YMLx+xG7r/78XWpe4TX/xqr62yhY1rzhNXKLCkMokcLoWBKC0V
+ qZERAJsOKnRFz/HeBpLEaGC2PIGZIqfhamS25ujDeDhvSv3ypJRZ+CvmrW8qBgsSsJbapKFGs+h
+ a5RF37p4SpFvEJdGvUoU=
+X-Google-Smtp-Source: AGHT+IHbWP2NpLXngbCuea+R9kz0i2z8NoiPhWa6Yi42iOs8SNBqD0IPdP6EbjFlajk1W60GizPPYQ==
+X-Received: by 2002:a5d:59ab:0:b0:391:3fd2:610f with SMTP id
+ ffacd0b85a97d-3997f8fea42mr17215939f8f.13.1742942603446; 
+ Tue, 25 Mar 2025 15:43:23 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9b2654sm14733494f8f.41.2025.03.25.15.43.16
+ 5b1f17b1804b1-43d74b48b90sm15360315e9.14.2025.03.25.15.43.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Mar 2025 15:43:17 -0700 (PDT)
+ Tue, 25 Mar 2025 15:43:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Thomas Huth <thuth@redhat.com>,
 	qemu-devel@nongnu.org
@@ -82,24 +82,24 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  Bernhard Beschow <shentey@gmail.com>, Hanna Reitz <hreitz@redhat.com>,
  Hao Wu <wuhaotsh@google.com>, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH-for-10.0 01/12] hw/audio/wm8750: Categorize and add description
-Date: Tue, 25 Mar 2025 23:42:59 +0100
-Message-ID: <20250325224310.8785-2-philmd@linaro.org>
+Subject: [PATCH-for-10.0 02/12] hw/block/m25p80: Categorize and add description
+Date: Tue, 25 Mar 2025 23:43:00 +0100
+Message-ID: <20250325224310.8785-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250325224310.8785-1-philmd@linaro.org>
 References: <20250325224310.8785-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,22 +117,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/audio/wm8750.c | 2 ++
+ hw/block/m25p80.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/audio/wm8750.c b/hw/audio/wm8750.c
-index 8d381dbc658..6c1bb20fb75 100644
---- a/hw/audio/wm8750.c
-+++ b/hw/audio/wm8750.c
-@@ -721,6 +721,8 @@ static void wm8750_class_init(ObjectClass *klass, void *data)
-     sc->send = wm8750_tx;
-     dc->vmsd = &vmstate_wm8750;
-     device_class_set_props(dc, wm8750_properties);
-+    set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
-+    dc->desc = "WM8750 Stereo CODEC";
+diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
+index b84c6afb327..0887c103e4f 100644
+--- a/hw/block/m25p80.c
++++ b/hw/block/m25p80.c
+@@ -1870,7 +1870,9 @@ static void m25p80_class_init(ObjectClass *klass, void *data)
+     dc->vmsd = &vmstate_m25p80;
+     device_class_set_props(dc, m25p80_properties);
+     device_class_set_legacy_reset(dc, m25p80_reset);
++    set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
+     mc->pi = data;
++    dc->desc = "Serial Flash";
  }
  
- static const TypeInfo wm8750_info = {
+ static const TypeInfo m25p80_info = {
 -- 
 2.47.1
 
