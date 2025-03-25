@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C464DA6E807
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12123A6E80E
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:39:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twtET-0001W0-If; Mon, 24 Mar 2025 21:37:33 -0400
+	id 1twtEV-0001X0-S0; Mon, 24 Mar 2025 21:37:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEK-0001Uo-Ob
+ id 1twtEK-0001Us-TY
  for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:24 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEI-0007PA-4B
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:23 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-225477548e1so93981645ad.0
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:21 -0700 (PDT)
+ id 1twtEJ-0007PJ-9E
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:24 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2260c915749so66295155ad.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742866640; x=1743471440; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742866642; x=1743471442; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3w9DhmowczHvs1JiFYb2LZX6ZUXuVOWpO5YW7Ek+lOo=;
- b=Su7hpnSWYcrNSEvU70/zWDcwTE5LW+bo2bY0Y0uMWJh28fVS3x8li2S8LTPEvVL2+5
- y0AHlYtljQjnbkFLJzp/N0a7uKM3YyKZpwq4uTuOr553mKPEwBM6Ba3fHiS1bf2RW8N1
- c5Wy7or06ynTVJqoGq6M18jtjoHzWn/KdqU6LfvPCVv00ARdGaboSijarpRG/IPlsbPu
- uU2ZeFZNAOZcMH4KuQrf/sjEmuI5jkrmYNhB+/QCz97wAgjRO9PwToJ5NdgLTdUOoVT7
- aorzGazwyyHRDJxvhbYjAljqpcu0RNA14722zfb5XAh+B+pEInCzNUvYsH9i1tcv6aOz
- KVWQ==
+ bh=U+TZInR2wyUL/fIdQxW8KxlK8QHtFZYM5KguBd4nFQI=;
+ b=JCkdrM5jHT2cgBgcqXq4TS/wL3cchtHn07RJyYquRetIy2ggDUS0vTBa3V+mrsEeDe
+ 7Zecj+0f+5jtPsm3KPdUaBkestWwipl/Eb8jbhm8tL8H/QKHjZ4X6OX2sQ28JRNCqcSW
+ hpHQ5Nhd6kk9bkrRozsnRArzBgS/jUYOW9IkRf+sEqqAYoapOwzSe0KNxTf8eqBR4cCu
+ Whb/bIv3iaqxeP4OxRbDLEvk+sH44upBauRBvy5/GL5LSdMmykw63na+KjbiCCM1dx5k
+ d+QTtqoxWn6bFyRcCPtbPs03ztN3x/fnlKKN80RDnQgjmBKK8DavlLJPLN2GZcPPUWgL
+ F6dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742866640; x=1743471440;
+ d=1e100.net; s=20230601; t=1742866642; x=1743471442;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3w9DhmowczHvs1JiFYb2LZX6ZUXuVOWpO5YW7Ek+lOo=;
- b=xT7RzdMwoHEP6EL8grLLvtNciANqE4PKZibuAF9SHIjE3r2cbSIn7wuQN2BokXsfds
- GCUYVmEA5qW76MCHU83Or0M0YhfWIXJffhupY1s0+Gny3nit9O+ci+N+gSHr2GOGZH/x
- NbG1qT5CRO1xWWE/YdB0VXmZ4/3pC5o04YYocyLpeyp4ntasLvcO6tXjhcjRAGxAIth7
- Fvqfn/ENf2fZS3zBh6ww/SlmOQZGAM4IdyNI9OndV/9UxFNhmYQ5op7ISM0DZsm/W1xj
- 5rM5zGkOgSEo1aQHHuxEt+mDG/E30+D6sZcVZdFD5/+wPov9AocMUmRA8v2TtMOjhH+j
- Q9fQ==
+ bh=U+TZInR2wyUL/fIdQxW8KxlK8QHtFZYM5KguBd4nFQI=;
+ b=kqNlavvKkhx2RJet5vP77WhEoT9uNeS+QwbTMxgum27DYxfq+KUeCGZ8N0eb730vAp
+ s4MoI825JPp3l7QAlDHZ5lQhXZxd89NuHMbFGjSskW/n95iZeCeArUBbfpxYs3rd+4wR
+ jgATCFqOniy6gwsbHUMsA2rD8fGBtVuz7ZAny2wn7IWVDt344FKp3p88Ve4pJwdd/C/j
+ u5PS+3TkQnUVn7iejqcXHw+dZJAj+PMni90vKxYh/ZXm5r6hQG3hwbSZ/pmTW//q71M8
+ rRcrmLwv5bZIPMQ3SPVJrk2ir5Sly8YwDdDXeZ5VpGm6cdxbO+m//1W4o+wZoFx9l07D
+ FUPQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXCaot0itEyM8lrOno+l+tCnqvq+nE9ClyEFMkWFdgwwVCO407bbPfyzEkbIHXXo5m9CQOVES7O0JAy@nongnu.org
-X-Gm-Message-State: AOJu0Yw3dhz1r/5c3plmIv2CFZmVdarIGCk/iyJMcFj2eLwi2NUaGMJ/
- V3mXMregefDY8IJ6kcFKmYR0BtCGKlr7WBOUuvnnhM9wm8dna2d8nFnAVoAsgt0=
-X-Gm-Gg: ASbGnctzr87MWdz0TcoKJOlb8wsh+sxOQGUbn5H7yBN20PPssgJYdjsq2bAMfRm5EkX
- G6iWNu7hu+nie/KdlNaa5nRDquWWww4JPgG5viYPurTLrGDBPOLHm6E9Zw2yhYh3abgItWlFfHA
- 4Cue1n0y2UDz9FaxQYwlAjV7YSoYiqb9cZymIefDgMbYKnj4g38+W2XheDX/G7tbxoBqP5FZ70f
- kiryRb6cLTR/i1e94r8z3whHkEInTeN/t95PhMe5rQAQKzMFReP2EEDrt/LpDSXyX3Cf90QSPgN
- X3iM2b0mvYfpyI1G57QMD01Akx6c1mvGbDBrZIj0DFe9WbH5u284kxdT9A==
-X-Google-Smtp-Source: AGHT+IFPLM77V7cYy3BO/mwgzEUIWpMlJKvorGVkKRj5fSI4j9oxUI8HgCwXkebDBXt4yEB6mGTj6A==
-X-Received: by 2002:a05:6a00:ac8:b0:736:4ebd:e5a with SMTP id
- d2e1a72fcca58-73905a63bd5mr26455469b3a.20.1742866640392; 
- Mon, 24 Mar 2025 18:37:20 -0700 (PDT)
+ AJvYcCWOUormIP6//UtopIKIoZZnfoTO0+eTbG4enivM6foDLe1dTjpGB3fAB+HTqjtMSHjU3DJNKgjA7/nu@nongnu.org
+X-Gm-Message-State: AOJu0Ywr0qRknMF6JVz6DFG9VbPhGBGf3fNXU9jLCk0Ubm1MwasqEXPD
+ M7WyB6dCEE78JPb04mtfO20RfBkJeBCW+7o6wbuvSR4jpEJJrpj0pCWQbEEfrwU=
+X-Gm-Gg: ASbGncuNPJY6zON736IlZMDcjNjQHmYtVAbFCthRbjdqtewgu1mkQXeIjdV6G4sZvde
+ nf90NgkyEODetCGkVQ4Ppndrnya1E34JyW0Nx4dZzccGyyrULoZsVLcfw4ws669+C9p0rHqNN9g
+ gELcBdAcu3E3YzbgRkPY4f/zTavtYLHhIiJ/RFQ9geuMhdnUtJxqFFFE6NAaZsm/Rgr+pWeR8AW
+ Aj9I2/XVrrcLyNMrc06bhFf6/oLC+8WK7d89blRl0d8at/YPF8N3wAHGZOXl/aKZqM4DClpFL3+
+ Szgl0+Q0a8x9m5WXF2rzyo4Y/0sQHu/32IRJ21NusuUoo0Bw7cwqMSLEJg==
+X-Google-Smtp-Source: AGHT+IG3feS6PStJzkLRwFwoFDTB2rjWrdRiNiA8+9spJ5CzvRd+uAPgb5SzKBiE/abBxRDSlp0rEA==
+X-Received: by 2002:a17:903:2311:b0:224:122d:d2de with SMTP id
+ d9443c01a7336-22780c7bfa6mr217133535ad.16.1742866641684; 
+ Mon, 24 Mar 2025 18:37:21 -0700 (PDT)
 Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73906158ef2sm9090422b3a.141.2025.03.24.18.37.19
+ d2e1a72fcca58-73906158ef2sm9090422b3a.141.2025.03.24.18.37.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Mar 2025 18:37:19 -0700 (PDT)
-Message-ID: <1b32a0c9-4073-409c-acde-bb819c5c79c3@linaro.org>
-Date: Mon, 24 Mar 2025 18:09:29 -0700
+ Mon, 24 Mar 2025 18:37:21 -0700 (PDT)
+Message-ID: <ea5f47aa-1bee-4bc0-a5b1-bfce9fb5c09e@linaro.org>
+Date: Mon, 24 Mar 2025 18:10:37 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/17] target/avr: Use do_stb in avr_cpu_do_interrupt
+Subject: Re: [PATCH 08/17] target/avr: Add offset-io cpu property
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com, philmd@linaro.org
 References: <20250323173730.3213964-1-richard.henderson@linaro.org>
- <20250323173730.3213964-8-richard.henderson@linaro.org>
+ <20250323173730.3213964-9-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250323173730.3213964-8-richard.henderson@linaro.org>
+In-Reply-To: <20250323173730.3213964-9-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,36 +102,76 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/23/25 10:37, Richard Henderson wrote:
+> Communicate the offset of io within the first page between the
+> board, the cpu, and the translator.  So far this is always 0.
+> This will be used to optimize memory layout.
+> 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/avr/helper.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
+>   target/avr/cpu.h       | 2 ++
+>   hw/avr/atmega.c        | 2 ++
+>   target/avr/cpu.c       | 1 +
+>   target/avr/translate.c | 2 ++
+>   4 files changed, 7 insertions(+)
 > 
-> diff --git a/target/avr/helper.c b/target/avr/helper.c
-> index 7cfd3d1093..9608e59584 100644
-> --- a/target/avr/helper.c
-> +++ b/target/avr/helper.c
-> @@ -88,14 +88,14 @@ void avr_cpu_do_interrupt(CPUState *cs)
->       }
+> diff --git a/target/avr/cpu.h b/target/avr/cpu.h
+> index be27b0152b..0f5e1a53bc 100644
+> --- a/target/avr/cpu.h
+> +++ b/target/avr/cpu.h
+> @@ -148,6 +148,8 @@ struct ArchCPU {
 >   
->       if (avr_feature(env, AVR_FEATURE_3_BYTE_PC)) {
-> -        cpu_stb_data(env, env->sp--, (ret & 0x0000ff));
-> -        cpu_stb_data(env, env->sp--, (ret & 0x00ff00) >> 8);
-> -        cpu_stb_data(env, env->sp--, (ret & 0xff0000) >> 16);
-> +        do_stb(env, env->sp--, ret, 0);
-> +        do_stb(env, env->sp--, ret >> 8, 0);
-> +        do_stb(env, env->sp--, ret >> 16, 0);
->       } else if (avr_feature(env, AVR_FEATURE_2_BYTE_PC)) {
-> -        cpu_stb_data(env, env->sp--, (ret & 0x0000ff));
-> -        cpu_stb_data(env, env->sp--, (ret & 0x00ff00) >> 8);
-> +        do_stb(env, env->sp--, ret, 0);
-> +        do_stb(env, env->sp--, ret >> 8, 0);
->       } else {
-> -        cpu_stb_data(env, env->sp--, (ret & 0x0000ff));
-> +        do_stb(env, env->sp--, ret, 0);
->       }
+>       /* Initial value of stack pointer */
+>       uint32_t init_sp;
+> +    /* Offset of the beginning of I/O within the first page. */
+> +    uint32_t offset_io;
+>   };
 >   
->       env->pc_w = base + vector * size;
+>   /**
+> diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
+> index f6844bf118..273582b8af 100644
+> --- a/hw/avr/atmega.c
+> +++ b/hw/avr/atmega.c
+> @@ -236,6 +236,8 @@ static void atmega_realize(DeviceState *dev, Error **errp)
+>   
+>       object_property_set_uint(OBJECT(&s->cpu), "init-sp",
+>                                mc->io_size + mc->sram_size - 1, &error_abort);
+> +    object_property_set_uint(OBJECT(&s->cpu), "offset-io",
+> +                             0, &error_abort);
+>   
+>       qdev_realize(DEVICE(&s->cpu), NULL, &error_abort);
+>       cpudev = DEVICE(&s->cpu);
+> diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+> index 0b14b36c17..080f6f30d3 100644
+> --- a/target/avr/cpu.c
+> +++ b/target/avr/cpu.c
+> @@ -169,6 +169,7 @@ static void avr_cpu_initfn(Object *obj)
+>   
+>   static const Property avr_cpu_properties[] = {
+>       DEFINE_PROP_UINT32("init-sp", AVRCPU, init_sp, 0),
+> +    DEFINE_PROP_UINT32("offset-io", AVRCPU, offset_io, 0),
+>   };
+>   
+>   static ObjectClass *avr_cpu_class_by_name(const char *cpu_model)
+> diff --git a/target/avr/translate.c b/target/avr/translate.c
+> index 0490936cd5..e9fef1aaad 100644
+> --- a/target/avr/translate.c
+> +++ b/target/avr/translate.c
+> @@ -92,6 +92,7 @@ struct DisasContext {
+>   
+>       /* Routine used to access memory */
+>       int memidx;
+> +    uint32_t offset_io;
+>   
+>       /*
+>        * some AVR instructions can make the following instruction to be skipped
+> @@ -2664,6 +2665,7 @@ static void avr_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+>       ctx->cs = cs;
+>       ctx->env = cpu_env(cs);
+>       ctx->npc = ctx->base.pc_first / 2;
+> +    ctx->offset_io = env_archcpu(ctx->env)->offset_io;
+>   
+>       ctx->skip_cond = TCG_COND_NEVER;
+>       if (tb_flags & TB_FLAGS_SKIP) {
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
