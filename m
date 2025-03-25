@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A663A6FF68
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 14:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D58A6FF77
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 14:05:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tx3wL-0001B3-Hv; Tue, 25 Mar 2025 09:03:33 -0400
+	id 1tx3wV-0001Pk-SI; Tue, 25 Mar 2025 09:03:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx3vY-0000sG-1J
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 09:02:46 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx3vc-0000tv-4m
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 09:02:50 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx3vV-000833-Eg
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 09:02:43 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43bb6b0b898so53663675e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 06:02:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx3vZ-00083S-Ns
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 09:02:47 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43cf3192f3bso47982445e9.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 06:02:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742907759; x=1743512559; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742907764; x=1743512564; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J/DOA8hAmAVfg6M/0jKhvBqsPxQAowypQJ33xuaxeRc=;
- b=zHmbEOfiP8/YbteXBDxqsoUfUnkBO+XvhsMFySm0A4rz6zkN/4owWPfPE5ry5a9uoN
- 30Fi7C4a/dNw3xwEN9N42VSv6OlbTX8iV4SuUDoMIYrHNKxSjHMfdZEA+0vVZgz46F0G
- jp9OuIiZcaSkLeL/wE+/6dxd2nH0MuwU01eOn4OwXByd1AdMdmjDLyaepW+bvhk3W8Qz
- RV2mykVD23wVgXj3vS3OmgjKKUd3bfghJvDVz0HPw/GFEIBbQSrbjoH/P/t9+Kaku8N/
- 391tv1UDo7Ye4z+1D7ltxh5HfegRfCgxT64SQyANdz49I9vTqF2YfLSBnsKwYg3EypUa
- EYdQ==
+ bh=XPwtIJ7PyZH/NUhwd2km9X/kSSpo1y0r8LhrZ/SyOu8=;
+ b=YZcBzdFNAn7GSksyuJ2pEZ7k3rPKX/D8FQhQsthfTXloZdSbpLclz/4uGNOaG6M0b0
+ oomTRzzToUnKbbBIKD/UAN8DlRCJf4i25nfqmxqgsAiizZASjBBJa2LLhRM6G3QsVO/K
+ RHHPDTNiHnV0Xr5AoHRavJDZXnOBND9PIITghSQ5UvYIpKyWp9nWQai+cs3H7CYY34bi
+ g3A19OQE34gUPEkJqvKxbbVUcLsJG9y42UxSi0n5b33LOI5q6wORVJuRwQtttoVYeo9k
+ ua8NkBcO7n5zZ6hVdniBbgOCM6K3isxSpCcwLP2uPk/nKO2zKyVkSdLah1Ome2tzxtBG
+ 7bqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742907759; x=1743512559;
+ d=1e100.net; s=20230601; t=1742907764; x=1743512564;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J/DOA8hAmAVfg6M/0jKhvBqsPxQAowypQJ33xuaxeRc=;
- b=OrZya6DqYrCR9szV1b/FdxbRSqlrZtCBq5lW8nnbJBj5lGkyBSDRPhQajsSUP9T3+2
- ZINVJtfDRoZwUoVZzdBuRXWpROhyc5TXQiOxOsZnaRortIoSBzbA/ferxcJGrntGCV6j
- FG2PGEJumRPm8HMl16+LWYmxMsrmaVl3wrIwmIZrDXJN+riC/kH+J/zUbC4VqYWkHBSJ
- Mwd5FwgX6V2W+fiRiUujsTWOj83BWG49nyuwGToTSWMMxCwjttIiFwZmbBrX8TS90qs8
- 9Mpj1wki2ep/cE+tq8E/zXUy5Vbh2EcDQ7wq9YN014oH3Ec5AjYwyTlyl5rCMl7Y8vVi
- KtjQ==
-X-Gm-Message-State: AOJu0YxzF1WSB/esRcekG+ztcAcADLfa9sJgkc4jIdsXQ0oRbhIB/1GS
- rqxFlkWH+ESAeXXBa7rFn1mvz+E8ypUi+ea0ri7cRrgrVnQ7egSgW+hkG3Nk10hkulrfuSwaRtx
- z
-X-Gm-Gg: ASbGncuENMfbHFMdZ5Y4Oue9sxPDEqzsrFrjzF6Bugy//FnYWuMfyAeKC5K8GvvDq8G
- qp+uEELsykXMzp+Swd6wa+yBXlxPuV9EOXxpjbumPY853hMQLKY9kaRu2KNw8B+VbfXZc1t8T6s
- 0XtV3nAvlYl0PE3y8qgB7MUrbw6ym2+22ug2cJUZuic2XRFg11UfnwTkwn/vrxFcp4A/Io3PTrI
- kaLEjICk8nsTWvO5bgJxToACZ164fqcHyjkS5QBcNMEloqiZ4EWwX3SJH3X0kdDRs8UrjZ827jX
- MY3PURpIYG7y5+02Pe0d1f3OM1iygv3oxu1b4PSIAbAClHDf5JoJ/++5KQH13lTnnNyWtieOxv1
- nrBUgGxIYhlF4SSQK2mc=
-X-Google-Smtp-Source: AGHT+IER1+XvWTZ4UFakvZLTuYePWcaH1fuaZlt1K+eW1Kk6zElKCMWesaNDlxy3KNbbqoADoz2RMw==
-X-Received: by 2002:a05:6000:1ac9:b0:390:fbdd:994d with SMTP id
- ffacd0b85a97d-3997f910670mr15533763f8f.27.1742907758574; 
- Tue, 25 Mar 2025 06:02:38 -0700 (PDT)
+ bh=XPwtIJ7PyZH/NUhwd2km9X/kSSpo1y0r8LhrZ/SyOu8=;
+ b=VC1fEqvA4A845eqNyAgA7CFuIdQhKVkOP/F0S9l3OeFe5xm4RQaGiLLjSu/AKB0Xzc
+ 4mkWI03y8O7Iwwpm9y4cgP2FCJDPTmrnxqSF/T0L7gvu3U3AGOsXchSY8nM8Ze7qt/n/
+ OBMq9XwgVaMBK7Ncy8SgvWyZ3V5c+4fRx84WV+t8atAlZAtja2GCkGBTHLtoyI5YaAI0
+ LEtggmFQGTdPsmIlpu65kVBGXgpCGT2C0sIcveFkaxfKF4x3DpizUEbIt35vqTo+XSA9
+ YM4y0/JEOw9WS2a4EAgzxXTg4KJ7JdENfE3iWUnj8Dl49368qaSGUO4Mg6poElppVrzL
+ BmUA==
+X-Gm-Message-State: AOJu0YxMaIz+SFq3QIcExalo5sID5ZdGvhaxKh4+K5a11/o9cIqX0EOP
+ vWc67suUM34yK/JjmBy8tbYgfnVswBnw/WHJbyd2hT648CC3eTGLG4fccIzm+IKLD6ZpWnI9Sjn
+ S
+X-Gm-Gg: ASbGncuizWnDeH79tNhHEJmfoo/SDABunbhTGyVpkT5jHonBhFyufi33O360MZMhsAX
+ keKagK8JA5xBn+IKSGX9n7d2pIYqXfiEM6faLwqDi3KEWjx4LA224TqSEJiaPNtawAeJRiP3wwl
+ 7oI+QyVjzO1auodBACrg+o9oL/WtkMpZyukWbLw7bYwyiY8PbDFteJDfANE/Dk1Nknx/mizlNnq
+ iOhK4aeWX0uhcZpAXUKhh1OBM/QFFKrqutI2eDYISttSS58fTJ4yBcyAHdAsLyDGtD+s/hE11HV
+ l1pDq0+XCcaMrzMQij3cO+Z8JVQwzjcIKGj/FlIjUnvBp4b69wIDuQBOf4B02jGxxwwE5pLI3gx
+ H3ob6lC8Ykg+aMJG9wKA=
+X-Google-Smtp-Source: AGHT+IEMIP/8iOrSgXM1xj9+77tapHOdqrFUtarrlpEzgOJ6FvO7fKL0tpMBgH/nfRs1lb39dAiytQ==
+X-Received: by 2002:a05:600c:83cf:b0:43d:22d9:4b8e with SMTP id
+ 5b1f17b1804b1-43d509ec3famr189652755e9.10.1742907763580; 
+ Tue, 25 Mar 2025 06:02:43 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43f43e50sm198899785e9.12.2025.03.25.06.02.37
+ 5b1f17b1804b1-43d440eda26sm201420575e9.36.2025.03.25.06.02.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Mar 2025 06:02:38 -0700 (PDT)
+ Tue, 25 Mar 2025 06:02:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -72,18 +72,18 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Riku Voipio <riku.voipio@iki.fi>, Paolo Bonzini <pbonzini@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org
-Subject: [PATCH-for-10.1 3/5] target/ppc/gdbstub: Replace TARGET_LONG_SIZE ->
- sizeof(target_ulong)
-Date: Tue, 25 Mar 2025 14:02:18 +0100
-Message-ID: <20250325130221.76116-4-philmd@linaro.org>
+Subject: [PATCH-for-10.1 4/5] user/tswap: Replace TARGET_LONG_SIZE ->
+ TARGET_LONG_BITS
+Date: Tue, 25 Mar 2025 14:02:19 +0100
+Message-ID: <20250325130221.76116-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250325130221.76116-1-philmd@linaro.org>
 References: <20250325130221.76116-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,69 +106,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TARGET_LONG_SIZE is equivalent of sizeof(target_ulong).
-Since this is the single use of TARGET_LONG_SIZE in a
-source file, use the equivalent form to be able to remove
-the definition in a pair of commits.
+Having in "exec/target_long.h" this definition:
+
+  #define TARGET_LONG_SIZE (TARGET_LONG_BITS / 8)
+
+It is safe to check TARGET_LONG_BITS == 32 instead
+of the equivalent TARGET_LONG_SIZE == 4 expression.
+
+This removes the last use of TARGET_LONG_SIZE outside
+of "exec/target_long.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/gdbstub.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/user/tswap-target.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
-index 3b28d4e21c7..4d36dcfb563 100644
---- a/target/ppc/gdbstub.c
-+++ b/target/ppc/gdbstub.c
-@@ -367,6 +367,7 @@ static int gdb_get_spr_reg(CPUState *cs, GByteArray *buf, int n)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
-     CPUPPCState *env = &cpu->env;
-+    target_ulong val;
-     int reg;
-     int len;
+diff --git a/include/user/tswap-target.h b/include/user/tswap-target.h
+index 4719330dbbc..1c66a5b9344 100644
+--- a/include/user/tswap-target.h
++++ b/include/user/tswap-target.h
+@@ -11,7 +11,7 @@
+ #include "exec/cpu-defs.h"
+ #include "exec/tswap.h"
  
-@@ -375,10 +376,7 @@ static int gdb_get_spr_reg(CPUState *cs, GByteArray *buf, int n)
-         return 0;
-     }
- 
--    len = TARGET_LONG_SIZE;
--
-     /* Handle those SPRs that are not part of the env->spr[] array */
--    target_ulong val;
-     switch (reg) {
- #if defined(TARGET_PPC64)
-     case SPR_CFAR:
-@@ -402,6 +400,7 @@ static int gdb_get_spr_reg(CPUState *cs, GByteArray *buf, int n)
-     }
-     gdb_get_regl(buf, val);
- 
-+    len = sizeof(val);
-     ppc_maybe_bswap_register(env, gdb_get_reg_ptr(buf, len), len);
-     return len;
- }
-@@ -410,6 +409,7 @@ static int gdb_set_spr_reg(CPUState *cs, uint8_t *mem_buf, int n)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
-     CPUPPCState *env = &cpu->env;
-+    target_ulong val;
-     int reg;
-     int len;
- 
-@@ -418,11 +418,11 @@ static int gdb_set_spr_reg(CPUState *cs, uint8_t *mem_buf, int n)
-         return 0;
-     }
- 
--    len = TARGET_LONG_SIZE;
-+    len = sizeof(val);
-     ppc_maybe_bswap_register(env, mem_buf, len);
- 
-     /* Handle those SPRs that are not part of the env->spr[] array */
--    target_ulong val = ldn_p(mem_buf, len);
-+    val = ldn_p(mem_buf, len);
-     switch (reg) {
- #if defined(TARGET_PPC64)
-     case SPR_CFAR:
+-#if TARGET_LONG_SIZE == 4
++#if TARGET_LONG_BITS == 32
+ #define tswapl(s) tswap32(s)
+ #define bswaptls(s) bswap32s(s)
+ #else
 -- 
 2.47.1
 
