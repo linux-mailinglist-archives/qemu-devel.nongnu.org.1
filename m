@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFF2A704E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 16:21:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA26A70549
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 16:42:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tx658-0007Ey-C9; Tue, 25 Mar 2025 11:20:46 -0400
+	id 1tx6Ot-0003nF-2q; Tue, 25 Mar 2025 11:41:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx656-0007EW-Bm
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:20:44 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx6Oq-0003mr-0m
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:41:08 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx654-0001BQ-Dv
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:20:44 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3912e96c8e8so3276423f8f.2
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 08:20:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx6Ol-00045L-2b
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:41:07 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-39149bccb69so5109689f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 08:41:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742916041; x=1743520841; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=CLhTm/m5kZr9omcJwQPqd2se7F6veBndREeo7KRRozU=;
- b=xHLx937s6hHhzyks1TJqX+L0jB3+fQXxHdwuHgf8olHzMSEJBNeaztQJqivejNxUuJ
- AC2ZVRipeySfXCCbqgY1KvaqufaO5PSLcYFjp9zK9rSVC5ztm/3ScbuIyRZAeuIdY0cd
- rSARwEsyGB75oW/TG+ltxBXyt/OspB+A80YOFYB6ODeaiAuByy3rJieJZs/yCWz7aMPr
- IYsZrK5iTGsYYaYqjYzsvDV3ASxFeRnFTdMkM0VNbTuZZDpXAw28jQJl7z9VnhLwMKZv
- PfRe+ZToHDyfb7IJyyqH7gd1Zjzi32yVC8w+TArZRDcw15Q3lxM/lUYqk/omB4e8EJko
- o4xw==
+ d=linaro.org; s=google; t=1742917260; x=1743522060; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=35BUB0yKlMpR/hJurzs00OmRTmd2ntRQUmn7l5RxrmM=;
+ b=av6t/4AtpzZau9xUn4ijrPF525fhiaU0i6Q7HTNo8U4C2A+hDPJZWZZC128r8KdfD0
+ K1sNf+RC/CRa+GVGg5pCY0oML9bapqPLiXICBrnhP+XhlxPcGuCIFf43Yf6tljz1QIkH
+ S4hmXkQUJ24CL+v7ZmIFTiQpXpVsjuNicdiBAVkgoUUrtD6sNYf1ReZK9pAalcJjco9F
+ PXHj1o8M3HUibES+63uw0/qjWx1QUB0LyWJ1t9N1VwO410nxxP0/yr3AoVN9ayWE7Q5O
+ rfJ4brzsFh0kxR96HeXlkZWmFLrpiDp+qmZxt6n1xXabxArV+3jM7lF1/9kpcXxtFzMv
+ Vnlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742916041; x=1743520841;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CLhTm/m5kZr9omcJwQPqd2se7F6veBndREeo7KRRozU=;
- b=VHLqzIPPFrLL4UeAiyoxfSIF8IdI41NkUNCB5cIbt+mHjlWlVbh5M6yH2uJ4MZoyBI
- UU/E9k5flm0yA4/lfVxq1MGsdGt8wdux4dj3KIE8/tj7NxY3rd5oKQZdEJ/ncAwMAeUz
- a/BH7xcsyi6OqOqZa6acE1QwHb6HijnKiezCgfQARcf7iqeZ1UCN1Q0yRmloaSBFYehM
- DVa4Hw1rZwNUCKRx5sDpyB4n+6PEUDq8Jt+nKO9fbLQasFZZYdGipaJxo0e3+odFegqy
- 9rh9X0KAPXckabI7eYj24gEczMoZqjk3B3daTxg0OwFF+iQEM6lcZ9214M/jzxK6LxJh
- mXgw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUFLGdlwCuqLPGKRuZC1AMpZERfAJ+YTpGGzaFus5JsgTypskBC002nZQKVa6CieqC/0NanFd/S70fG@nongnu.org
-X-Gm-Message-State: AOJu0YzqxV6Nt1eJlWh5fsDqTBsRtnlcuPJBhVUvCwy2APLPPcERRsqP
- W7BQy3PUBdbvMwfoki+qBOfmV7gnhnyQpSMgyMpE+hrvkC/qjfKz4CP2F9eqTr8=
-X-Gm-Gg: ASbGncsuRolf2eLdrgtBZdJPNF1sYCcn1s0MfeJccW00j8icGD5lVOsspAnUcRjwM6w
- T6q08GjpFcmvahjbISRpOdQe11/XGypKlAAtbxbcAMy5wbOsBU/3EB8tz1fBPtdjZ8VBd/2oEnE
- i/dJAxdw2a8dlh4iVxcGpNSgK01LEY6Ras32FC3eHEG5LoV219SZ9jp+ox02HOrscsVjpf6hYjh
- AYUirtB8MAVdYOSmYkvS1IxzZB7VIoAOLK9dtW2n8TQTpJJ8lcf59sQT/eXciCAOTKO88ZIv9N5
- YjV+AyTQANZPWG6MIJf0ajmmzwPUONrvVBBlz+xAStZaHIrEiAU5QkQi+nsBoFh7/2HSfQTXQKF
- 78LeG0yKmhfFn
-X-Google-Smtp-Source: AGHT+IG6fPf/X02ymhwblZyZ11SfUl1c0hew2Uw+MJNvTKVFO0ww067fHoaRhAFhL1W9QylX6hancA==
-X-Received: by 2002:a5d:59a6:0:b0:390:f6aa:4e72 with SMTP id
- ffacd0b85a97d-3997f8fabdbmr15020725f8f.18.1742916040692; 
- Tue, 25 Mar 2025 08:20:40 -0700 (PDT)
-Received: from [192.168.69.175] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1742917260; x=1743522060;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=35BUB0yKlMpR/hJurzs00OmRTmd2ntRQUmn7l5RxrmM=;
+ b=hoLuee8Kyzd4wXn72g/BKO4uyOBE6E51Aa5k6vDYKQDaOHa1RQ8hrux4v2X82jxBPe
+ 733KMiUAO3qPnewS+vJ5tpvRqg4Ic9cMeUzWlg9nX20fd6VV0Fk3gwTe49eKBK9gsbMi
+ Y1zkIRr70iEAw4lGvBbMn+xycDy9xupSPnj+pyMmo+GrWrzoUjMkEGXXi/5pMaiPvOaE
+ TwqIvO4D9TrRIYNGWl0Hch5GAkPTNGGSPm50tuZho4nPBLIHEHSldX+D5Q2zLtflOU5N
+ Xl4Y7xz5QGgmFaQ6Xel9AvL0WHYONgaDehhyXWVj+MZ5WLgWWot5o+SvNclPTBbt17YB
+ tNVQ==
+X-Gm-Message-State: AOJu0YzsGPCr/i/IFbZjxaOEaib99XEXExmo3k+GW5tyzZX4NFCGVzBC
+ PAX9nBh6jomEony5eH2qLfqfgbtIKyey/cDTjfYt0P+0HGajzAYfrpxm8HbrNFmKf1zQIHWqd9l
+ J
+X-Gm-Gg: ASbGncsXbRBkfugUVf0XizGAroLXa3HlOeVT/j9UUcA+mmzfhw7qINUbnQcBT4u5bW1
+ jgTBP3Cuh/Oo+iKDFmJSwW/aGKKgjPs/YfZMlQexWjS9IuzYjzEbISvldGJ1iVeFjcf2OslE+17
+ yyMwouGhWupmIoLblxkw036XADsy8hoc2Yd2Z0m5dVFZ0U4pQr96S7nMSHZlLpp0HhejPbjerux
+ EPbgNigNiz2Fg6U1bqPtqVY+bkS+rLUIN4acK7b2w/bRFQkutKppqrcEi8zFgUVd45YGymMWnpQ
+ JxGZOQBh0FgKLshhG0jiMVQU0WuD0bhOSVbj49yj1sG9tFa/1wf24ObxjFkG5OioSWI7gJBu97i
+ Drgt7Dsm2zRJuDOOzDr8=
+X-Google-Smtp-Source: AGHT+IHGkGYRrA0lVyiXauJGhuzpwoDB48kM9ElMQCP7hlh2B8m0HGsVlpsaUVCMxD1EAC7vz33/Zg==
+X-Received: by 2002:a05:6000:42c2:b0:391:4052:a232 with SMTP id
+ ffacd0b85a97d-3997f9424ffmr11023749f8f.55.1742917260472; 
+ Tue, 25 Mar 2025 08:41:00 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9b55cdsm14089517f8f.52.2025.03.25.08.20.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Mar 2025 08:20:39 -0700 (PDT)
-Message-ID: <8426486f-d795-475a-b98e-35c31ae3f9a9@linaro.org>
-Date: Tue, 25 Mar 2025 16:20:39 +0100
+ ffacd0b85a97d-3997f9955fbsm13940057f8f.5.2025.03.25.08.40.59
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 25 Mar 2025 08:40:59 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <arikalo@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Anton Johansson <anjo@rev.ng>
+Subject: [PATCH-for-10.1 0/8] target/mips: Make 'cpu-qom.h' target agnostic
+Date: Tue, 25 Mar 2025 16:40:50 +0100
+Message-ID: <20250325154058.92735-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/18] target/mips: Make MIPS_CPU common to new MIPS32_CPU
- / MIPS64_CPU types
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20231010092901.99189-1-philmd@linaro.org>
- <20231010092901.99189-18-philmd@linaro.org>
- <8d30ccda-5b81-42fd-b36c-79bbaceffa2a@linaro.org>
- <f46958e5-01e3-4d88-9d76-00af9d30f110@linaro.org>
-Content-Language: en-US
-In-Reply-To: <f46958e5-01e3-4d88-9d76-00af9d30f110@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,79 +103,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/3/24 13:22, Philippe Mathieu-Daudé wrote:
-> On 13/10/23 06:34, Richard Henderson wrote:
->> On 10/10/23 02:28, Philippe Mathieu-Daudé wrote:
->>> "target/foo/cpu-qom.h" can not use any target specific definitions.
->>>
->>> Currently "target/mips/cpu-qom.h" defines TYPE_MIPS_CPU depending
->>> on the mips(32)/mips64 build type. This doesn't scale in a
->>> heterogeneous context where we need to access both types concurrently.
->>>
->>> In order to do that, introduce the new MIPS32_CPU / MIPS64_CPU types,
->>> both inheriting a common TYPE_MIPS_CPU base type.
->>>
->>> Keep the current CPU types registered in mips_register_cpudef_type()
->>> as 32 or 64-bit, but instead of depending on the binary built being
->>> targeting 32/64-bit, check whether the CPU is 64-bit by looking at
->>> the CPU_MIPS64 bit.
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   target/mips/cpu-qom.h | 13 ++++++-------
->>>   target/mips/cpu.h     |  3 +++
->>>   target/mips/cpu.c     | 11 ++++++++++-
->>>   3 files changed, 19 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/target/mips/cpu-qom.h b/target/mips/cpu-qom.h
->>> index 9c98ca1956..1a71509b5e 100644
->>> --- a/target/mips/cpu-qom.h
->>> +++ b/target/mips/cpu-qom.h
->>> @@ -1,5 +1,5 @@
->>>   /*
->>> - * QEMU MIPS CPU
->>> + * QEMU MIPS CPU QOM header (target agnostic)
->>>    *
->>>    * Copyright (c) 2012 SUSE LINUX Products GmbH
->>>    *
->>> @@ -23,13 +23,12 @@
->>>   #include "hw/core/cpu.h"
->>>   #include "qom/object.h"
->>> -#ifdef TARGET_MIPS64
->>> -#define TYPE_MIPS_CPU "mips64-cpu"
->>> -#else
->>> -#define TYPE_MIPS_CPU "mips-cpu"
->>> -#endif
->>> +#define TYPE_MIPS_CPU   "mips-cpu"
->>> +#define TYPE_MIPS32_CPU "mips32-cpu"
->>> +#define TYPE_MIPS64_CPU "mips64-cpu"
->>> -OBJECT_DECLARE_CPU_TYPE(MIPSCPU, MIPSCPUClass, MIPS_CPU)
->>> +OBJECT_DECLARE_CPU_TYPE(MIPS32CPU, MIPSCPUClass, MIPS32_CPU)
->>> +OBJECT_DECLARE_CPU_TYPE(MIPS64CPU, MIPSCPUClass, MIPS64_CPU)
->>>   #define MIPS_CPU_TYPE_SUFFIX "-" TYPE_MIPS_CPU
->>>   #define MIPS_CPU_TYPE_NAME(model) model MIPS_CPU_TYPE_SUFFIX
->>> diff --git a/target/mips/cpu.h b/target/mips/cpu.h
->>> index 6b026e6bcf..3b6d0a7a8a 100644
->>> --- a/target/mips/cpu.h
->>> +++ b/target/mips/cpu.h
->>> @@ -10,6 +10,9 @@
->>>   #include "hw/clock.h"
->>>   #include "mips-defs.h"
->>> +/* Abstract QOM MIPS CPU, not exposed to other targets */
->>> +OBJECT_DECLARE_CPU_TYPE(MIPSCPU, MIPSCPUClass, MIPS_CPU)
->>
->> Why is this one moved back to cpu.h?
->> You exposed TYPE_X86_CPU in i386/cpu-qom.h...
-> 
-> First thinking was to expose the base TYPE, so we can use QOM methods
-> to enumerate implementations, but not expose QOM state/class getter
-> for the base type (except in target/foo/). HW would use concrete
-> 32 or 64b type state/class getter. I might be wrong, so I'll keep
-> the base type exposed for now. We might restrict later.
+- Remove the TARGET_MIPS64 use in 'cpu-qom.h' to
+  make it target agnostic
+- Introduce mips_cpu_is_64bit() as a runtime check
+  for compile time TARGET_MIPS64 definition
+- Replace the ldtul_p() gdbstub call by ldn_p()
+- Rename few symbols to avoid future linkage clash
 
-With retrospective I was indeed wrong, as it seems useful for a
-heterogeneous board to check "is there any vCPU based on Arch FOO"
-without having to worry for FOO being 32 or 64. I'll expose the
-base arch as QOM definition.
+Philippe Mathieu-Daudé (8):
+  cpus: Open code OBJECT_DECLARE_TYPE() in OBJECT_DECLARE_CPU_TYPE()
+  target/mips: Declare CPU QOM types using DEFINE_TYPES() macro
+  target/mips: Make MIPS_CPU common to new MIPS32_CPU / MIPS64_CPU types
+  target/mips: Prefix MMU API with 'mips_'
+  target/mips: Replace ldtul_p() -> ldn_p(sizeof(target_ulong))
+  target/mips: Introduce mips_cpu_is_64bit() helper
+  target/mips: Get CPU register size using mips_cpu_is_64bit()
+  target/mips: Introduce mips_env_64bit_enabled() helper
+
+ include/hw/core/cpu.h               |  7 ++++-
+ target/mips/cpu-qom.h               | 14 +++++-----
+ target/mips/internal.h              |  5 ++++
+ target/mips/tcg/tcg-internal.h      |  2 +-
+ target/mips/cpu.c                   | 42 ++++++++++++++++++++---------
+ target/mips/gdbstub.c               | 14 +++++++---
+ target/mips/tcg/system/tlb_helper.c |  2 +-
+ 7 files changed, 61 insertions(+), 25 deletions(-)
+
+-- 
+2.47.1
 
 
