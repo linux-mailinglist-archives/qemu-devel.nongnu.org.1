@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E78CA70DBE
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 00:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 590A6A70DC0
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 00:44:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txDvg-0000PP-FD; Tue, 25 Mar 2025 19:43:32 -0400
+	id 1txDvh-0000QI-Si; Tue, 25 Mar 2025 19:43:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1txDvd-0000Oi-Lr
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 19:43:29 -0400
+ id 1txDve-0000PE-6J
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 19:43:30 -0400
 Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1txDvb-0005Gz-Uk
+ id 1txDvc-0005HG-E2
  for qemu-devel@nongnu.org; Tue, 25 Mar 2025 19:43:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1742946208; x=1774482208;
+ t=1742946209; x=1774482209;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gilOvD+ZFdvZm09hlDiPqRgDGyPEDoaNjCx+Ynr01Hc=;
- b=RnSv/r9x/dldEkY8JLlh9wz+kAl2Pg/3wTp2iGkl6LXBhsv7ydb5yzQ6
- KnVzPtYa/P+C+4lUnDF5kdw5czjhEQR5QdmnfHHVStcEHLLH1VHM9Ro10
- xHnwlBTUo1Pax4WLgVkZpOExeFZyVnrQyVHZggSO7LnHBPtGn4BK/wLaU
- g7d5YfC+VtdDEcspedCYHp4h9cyYTjPqIzZWN8740JmyCvcMmOAoUbHQz
- mwPJpsfjJm/cy3lPAH18E+d5IHzkMVB3qLI+6QHPmtVHLEQdPWgkVBcD+
- r9thoyx0jkZYmu47rx2xWv401KUc9ltRyCA9gN+0BfrgcsPJ7aZSZ0H6C Q==;
-X-CSE-ConnectionGUID: vCf23y1fRrGcgpTTmSqHXQ==
-X-CSE-MsgGUID: QlzMSoJBRTSlMeBLEhn8Mw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="55582841"
-X-IronPort-AV: E=Sophos;i="6.14,276,1736841600"; d="scan'208";a="55582841"
+ bh=ncD6agZmF3oz1bSf+Cj/TALHncQK1yrSZlA8HMMyTHs=;
+ b=kNAfG7I6eKpOpwZkghkGd+RHsd1X5G/WhZUR+z9buSQ2tIAbof2wIlGk
+ xR+1yAROvo8/Ot2lJDMdePbsJAwdc31vrlJWPjmY7KB6RhoyNvXN30KRw
+ m7Bd3FcKIZccVi6el2EZ04Cgykj+e268vpn2tmCdiQe3qcVUO72c3ktsJ
+ t3jhMor9SKY4bSllGsUdPWIE04eI2nnlDbIsIqxx8G7TlOgCQ/+ZyyFh9
+ T8SQmCVydz+i9e6NhHazT5iLAJz3zVm/fgVGNmuTF6mw7jWww5o15rtcY
+ TBLh7m0DvRXeNiwvpjHdbef0Zk3gU8R00HXoHKnhQVmxPkdgETPQIC6an g==;
+X-CSE-ConnectionGUID: P98zSwivSs+qG+MPn/GQKw==
+X-CSE-MsgGUID: pwdMZSIYSdqmyzfjsgTcwQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="55582846"
+X-IronPort-AV: E=Sophos;i="6.14,276,1736841600"; d="scan'208";a="55582846"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Mar 2025 16:43:19 -0700
-X-CSE-ConnectionGUID: K1PSUXKTQhaVQ+tBlD1oFQ==
-X-CSE-MsgGUID: KDlAAC1xTvSP73PHYVXweA==
+X-CSE-ConnectionGUID: Gbj/qVDpRxO8GAuZc2NPLQ==
+X-CSE-MsgGUID: hG/KNTs7RSSXR5LVSCGeZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,276,1736841600"; d="scan'208";a="124332502"
+X-IronPort-AV: E=Sophos;i="6.14,276,1736841600"; d="scan'208";a="124332505"
 Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Mar 2025 16:43:18 -0700
@@ -51,10 +51,10 @@ Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
-Subject: [PATCH v2 3/6] ui/spice: Submit the gl_draw requests at 60 FPS for
- remote clients
-Date: Tue, 25 Mar 2025 16:39:33 -0700
-Message-ID: <20250325234115.1332883-4-vivek.kasireddy@intel.com>
+Subject: [PATCH v2 4/6] ui/console-gl: Add a helper to create a texture with
+ linear memory layout
+Date: Tue, 25 Mar 2025 16:39:34 -0700
+Message-ID: <20250325234115.1332883-5-vivek.kasireddy@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250325234115.1332883-1-vivek.kasireddy@intel.com>
 References: <20250325234115.1332883-1-vivek.kasireddy@intel.com>
@@ -86,12 +86,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the specific case where the display layer (virtio-gpu) is using
-dmabuf, and if remote clients are enabled (-spice gl=on,port=xxxx),
-it makes sense to limit the maximum (streaming) rate to 60 FPS
-using the GUI timer. This matches the behavior of GTK UI where the
-display updates are submitted at 60 FPS (assuming the underlying
-mode is WxY@60).
+There are cases where we do not want the memory layout of a texture to
+be tiled as the component processing the texture would not know how to
+de-tile either via software or hardware. Therefore, ensuring that the
+memory backing the texture has a linear layout is absolutely necessary
+in these situations.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
@@ -100,105 +99,60 @@ Cc: Frediano Ziglio <freddy77@gmail.com>
 Cc: Dongwon Kim <dongwon.kim@intel.com>
 Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 ---
- ui/spice-display.c | 53 +++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 43 insertions(+), 10 deletions(-)
+ include/ui/console.h |  2 ++
+ ui/console-gl.c      | 26 ++++++++++++++++++++++++++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index bf4caf0d1b..2c4daa0707 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -842,12 +842,32 @@ static void qemu_spice_gl_block_timer(void *opaque)
-     warn_report("spice: no gl-draw-done within one second");
+diff --git a/include/ui/console.h b/include/ui/console.h
+index 46b3128185..fa2dd53e2e 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -422,6 +422,8 @@ bool console_gl_check_format(DisplayChangeListener *dcl,
+                              pixman_format_code_t format);
+ void surface_gl_create_texture(QemuGLShader *gls,
+                                DisplaySurface *surface);
++void surface_gl_create_texture_from_fd(DisplaySurface *surface,
++                                       int fd, GLuint *texture);
+ void surface_gl_update_texture(QemuGLShader *gls,
+                                DisplaySurface *surface,
+                                int x, int y, int w, int h);
+diff --git a/ui/console-gl.c b/ui/console-gl.c
+index 103b954017..8ee882bc3c 100644
+--- a/ui/console-gl.c
++++ b/ui/console-gl.c
+@@ -96,6 +96,32 @@ void surface_gl_create_texture(QemuGLShader *gls,
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
  }
  
-+static void spice_gl_draw(SimpleSpiceDisplay *ssd,
-+                           uint32_t x, uint32_t y, uint32_t w, uint32_t h)
++void surface_gl_create_texture_from_fd(DisplaySurface *surface,
++                                       int fd, GLuint *texture)
 +{
-+    uint64_t cookie;
++    unsigned long size = surface_stride(surface) * surface_height(surface);
++    GLuint mem_obj;
 +
-+    cookie = (uintptr_t)qxl_cookie_new(QXL_COOKIE_TYPE_GL_DRAW_DONE, 0);
-+    spice_qxl_gl_draw_async(&ssd->qxl, x, y, w, h, cookie);
-+}
-+
- static void spice_gl_refresh(DisplayChangeListener *dcl)
- {
-     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
--    uint64_t cookie;
- 
--    if (!ssd->ds || qemu_console_is_gl_blocked(ssd->dcl.con)) {
-+    if (!ssd->ds) {
++    if (!epoxy_has_gl_extension("GL_EXT_memory_object") ||
++        !epoxy_has_gl_extension("GL_EXT_memory_object_fd")) {
 +        return;
 +    }
 +
-+    if (qemu_console_is_gl_blocked(ssd->dcl.con)) {
-+        if (remote_client && ssd->gl_updates && ssd->have_scanout) {
-+            glFlush();
-+            spice_gl_draw(ssd, 0, 0,
-+                          surface_width(ssd->ds), surface_height(ssd->ds));
-+            ssd->gl_updates = 0;
-+            /* To stream at 60 FPS, the (GUI) timer delay needs to be ~17 ms */
-+            dcl->update_interval = 1000 / (2 * GUI_REFRESH_INTERVAL_DEFAULT) + 1;
-+        }
-         return;
-     }
- 
-@@ -855,11 +875,8 @@ static void spice_gl_refresh(DisplayChangeListener *dcl)
-     if (ssd->gl_updates && ssd->have_surface) {
-         qemu_spice_gl_block(ssd, true);
-         glFlush();
--        cookie = (uintptr_t)qxl_cookie_new(QXL_COOKIE_TYPE_GL_DRAW_DONE, 0);
--        spice_qxl_gl_draw_async(&ssd->qxl, 0, 0,
--                                surface_width(ssd->ds),
--                                surface_height(ssd->ds),
--                                cookie);
-+        spice_gl_draw(ssd, 0, 0,
-+                      surface_width(ssd->ds), surface_height(ssd->ds));
-         ssd->gl_updates = 0;
-     }
- }
-@@ -926,6 +943,20 @@ static void qemu_spice_gl_scanout_disable(DisplayChangeListener *dcl)
-     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
- 
-     trace_qemu_spice_gl_scanout_disable(ssd->qxl.id);
++#ifdef GL_EXT_memory_object_fd
++    glCreateMemoryObjectsEXT(1, &mem_obj);
++    glImportMemoryFdEXT(mem_obj, size, GL_HANDLE_TYPE_OPAQUE_FD_EXT, fd);
++    if (!glIsMemoryObjectEXT(mem_obj)) {
++        return;
++    }
 +
-+    /*
-+     * We need to check for the case of "lost" updates, where a gl_draw
-+     * was not submitted because the timer did not get a chance to run.
-+     * One case where this happens is when the Guest VM is getting
-+     * rebooted. If the console is blocked in this situation, we need
-+     * to unblock it. Otherwise, newer updates would not take effect.
-+     */
-+    if (qemu_console_is_gl_blocked(ssd->dcl.con)) {
-+        if (remote_client && ssd->gl_updates && ssd->have_scanout) {
-+            ssd->gl_updates = 0;
-+            qemu_spice_gl_block(ssd, false);
-+        }
-+    }
-     spice_qxl_gl_scanout(&ssd->qxl, -1, 0, 0, 0, 0, false);
-     qemu_spice_gl_monitor_config(ssd, 0, 0, 0, 0);
-     ssd->have_surface = false;
-@@ -1029,7 +1060,6 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-     EGLint stride = 0, fourcc = 0;
-     bool render_cursor = false;
-     bool y_0_top = false; /* FIXME */
--    uint64_t cookie;
-     int fd;
-     uint32_t width, height, texture;
- 
-@@ -1107,8 +1137,11 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-     trace_qemu_spice_gl_update(ssd->qxl.id, w, h, x, y);
-     qemu_spice_gl_block(ssd, true);
-     glFlush();
--    cookie = (uintptr_t)qxl_cookie_new(QXL_COOKIE_TYPE_GL_DRAW_DONE, 0);
--    spice_qxl_gl_draw_async(&ssd->qxl, x, y, w, h, cookie);
-+    if (remote_client) {
-+        ssd->gl_updates++;
-+    } else {
-+        spice_gl_draw(ssd, x, y, w, h);
-+    }
- }
- 
- static const DisplayChangeListenerOps display_listener_gl_ops = {
++    glGenTextures(1, texture);
++    glBindTexture(GL_TEXTURE_2D, *texture);
++    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_TILING_EXT, GL_LINEAR_TILING_EXT);
++    glTexStorageMem2DEXT(GL_TEXTURE_2D, 1, GL_RGBA8, surface_width(surface),
++                         surface_height(surface), mem_obj, 0);
++#endif
++}
++
+ void surface_gl_update_texture(QemuGLShader *gls,
+                                DisplaySurface *surface,
+                                int x, int y, int w, int h)
 -- 
 2.48.1
 
