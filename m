@@ -2,41 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D52AA6E9D9
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACA1A6E9DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:57:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twyAc-0008Bf-8N; Tue, 25 Mar 2025 02:53:54 -0400
+	id 1twy9P-0005l5-HP; Tue, 25 Mar 2025 02:52:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy9X-0006IB-Jd; Tue, 25 Mar 2025 02:52:49 -0400
+ id 1twy8J-0004xb-CP; Tue, 25 Mar 2025 02:51:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy9T-0001xr-QI; Tue, 25 Mar 2025 02:52:47 -0400
+ id 1twy8H-0001j9-A0; Tue, 25 Mar 2025 02:51:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E6BE1107D7D;
- Tue, 25 Mar 2025 09:49:33 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 24002107D6D;
+ Tue, 25 Mar 2025 09:49:29 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 890751D5E88;
- Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id BACF51D5E7A;
+ Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 7E30F57058; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
+ id B57FC5703C; Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Deepak Gupta <debug@rivosinc.com>,
- Ved Shanbhogue <ved@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: qemu-stable@nongnu.org, Guo Hongyu <guohongyu24@mails.ucas.ac.cn>,
+ Xianglai Li <lixianglai@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 59/69] target/riscv: fixes a bug against `ssamoswap`
- behavior in M-mode
+Subject: [Stable-8.2.10 45/51] target/loongarch: Fix vldi inst
 Date: Tue, 25 Mar 2025 09:50:32 +0300
-Message-Id: <20250325065043.3263864-8-mjt@tls.msk.ru>
+Message-Id: <20250325065038.3263786-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
-References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
+References: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -62,69 +60,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Deepak Gupta <debug@rivosinc.com>
+From: Guo Hongyu <guohongyu24@mails.ucas.ac.cn>
 
-Commit f06bfe3dc38c ("target/riscv: implement zicfiss instructions") adds
-`ssamoswap` instruction. `ssamoswap` takes the code-point from existing
-reserved encoding (and not a zimop like other shadow stack instructions).
-If shadow stack is not enabled (via xenvcfg.SSE) and effective priv is
-less than M then `ssamoswap` must result in an illegal instruction
-exception. However if effective priv is M, then `ssamoswap` results in
-store/AMO access fault. See Section "22.2.3. Shadow Stack Memory
-Protection" of priv spec.
+Refer to the link below for a description of the vldi instructions:
+https://jia.je/unofficial-loongarch-intrinsics-guide/lsx/misc/#synopsis_88
+Fixed errors in vldi instruction implementation.
 
-Fixes: f06bfe3dc38c ("target/riscv: implement zicfiss instructions")
-
-Reported-by: Ved Shanbhogue <ved@rivosinc.com>
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250306064636.452396-2-debug@rivosinc.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit d2c5759c8dd4c00195d4ebecc7d009e41df6baef)
+Signed-off-by: Guo Hongyu <guohongyu24@mails.ucas.ac.cn>
+Tested-by: Xianglai Li <lixianglai@loongson.cn>
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+(cherry picked from commit 02ce6cea71be4f6774351f5e658d50044c5b53b2)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2865
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/insn_trans/trans_rvzicfiss.c.inc b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-index e3ebc4977c..b0096adcd0 100644
---- a/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
-@@ -15,6 +15,13 @@
-  * You should have received a copy of the GNU General Public License along with
-  * this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
-+
-+#define REQUIRE_ZICFISS(ctx) do {        \
-+    if (!ctx->cfg_ptr->ext_zicfiss) {    \
-+        return false;                    \
-+    }                                    \
-+} while (0)
-+
- static bool trans_sspopchk(DisasContext *ctx, arg_sspopchk *a)
- {
-     if (!ctx->bcfi_enabled) {
-@@ -77,6 +84,11 @@ static bool trans_ssrdp(DisasContext *ctx, arg_ssrdp *a)
- static bool trans_ssamoswap_w(DisasContext *ctx, arg_amoswap_w *a)
- {
-     REQUIRE_A_OR_ZAAMO(ctx);
-+    REQUIRE_ZICFISS(ctx);
-+    if (ctx->priv == PRV_M) {
-+        generate_exception(ctx, RISCV_EXCP_STORE_AMO_ACCESS_FAULT);
-+    }
-+
-     if (!ctx->bcfi_enabled) {
-         return false;
-     }
-@@ -97,6 +109,11 @@ static bool trans_ssamoswap_d(DisasContext *ctx, arg_amoswap_w *a)
- {
-     REQUIRE_64BIT(ctx);
-     REQUIRE_A_OR_ZAAMO(ctx);
-+    REQUIRE_ZICFISS(ctx);
-+    if (ctx->priv == PRV_M) {
-+        generate_exception(ctx, RISCV_EXCP_STORE_AMO_ACCESS_FAULT);
-+    }
-+
-     if (!ctx->bcfi_enabled) {
-         return false;
-     }
+diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
+index ba5ca98a33..dff92772ad 100644
+--- a/target/loongarch/insn_trans/trans_vec.c.inc
++++ b/target/loongarch/insn_trans/trans_vec.c.inc
+@@ -3480,7 +3480,7 @@ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
+         break;
+     case 1:
+         /* data: {2{16'0, imm[7:0], 8'0}} */
+-        data = (t << 24) | (t << 8);
++        data = (t << 40) | (t << 8);
+         break;
+     case 2:
+         /* data: {2{8'0, imm[7:0], 16'0}} */
 -- 
 2.39.5
 
