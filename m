@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BD8A6E92C
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 06:06:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5124A6E919
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 06:02:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twwQZ-0006gT-7t; Tue, 25 Mar 2025 01:02:15 -0400
+	id 1twwQ7-0005xK-Kh; Tue, 25 Mar 2025 01:01:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twwOA-00041f-Tn
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 00:59:48 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ id 1twwOC-00042C-Kk
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 00:59:50 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twwO9-0005yR-56
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 00:59:46 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2ff69365e1dso7102779a91.3
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 21:59:44 -0700 (PDT)
+ id 1twwO9-0005ym-VY
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 00:59:47 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-301c4850194so7515151a91.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 21:59:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742878784; x=1743483584; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742878785; x=1743483585; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kI6HALsdQGcYyIHmM8Ppnw0EYvYwjf9AgyEFGP9MumA=;
- b=jwo/0ENXfDGGU13ghgCw2kF2ba88BoXTFYY/6RZQvA/KZ1tKvcCd/hJdZ9EiqtLD55
- zLOH8Yo4gP9m+1RqnBWloTNxFy1H/5l3s/RPlYRzoE/iLxW4g1+vgAqze2xMifgqqthZ
- PM7IcB2mREORcSVIH8PR5HVkJS4FsGvJBFS3vs1upw4kth6pn4dCTfjXdvu6V012SqRR
- oZgm/mpco6133EFSrJtlgpjheCXXHH5pnX0iMZ4VoqLBoJBgZcjal52Kl7wtkfpzUOIP
- HEfyv3V1aprjidHad6l99JfkxclfgzVvbR3A0NLb/9KBwSU2nlZWdKUVOzrRG5OP2Kku
- D9wA==
+ bh=ZFUKmZL89sYZSB0AC07VWMO1RZJQlXSAYHwQi6w+77U=;
+ b=Xc2FBGEy0wMvdhCHdPPo1/Ozo7HvpIDHPGsmqXwlApP7gNQ572YZahdKkDUXibKYFX
+ a3YUMkrhtkEXrW4uQnsVa8EqFB/nj5t4knAhbmFXUt17UIdyyqLkwAYmMugdnW+zz6R5
+ dk4IcV+rWsyVelFzAvemIOFqTZhu9Mg7K82Bh2v5rD0kfKt+XYFSF0aGL2llGjSbOJCX
+ CpfBVWCareQC+x0oM3sRVAou13uIwAnxJzqjexLd3hAXxC2SkU0v5fCCpmGxB3Cp3EqT
+ G9HNzMj7018S0H1hFzXtZx+pIfrDi9LzrM3lj3OIJ8eDur9dyiisheWVnbWmXqlH5lEM
+ Bn0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742878784; x=1743483584;
+ d=1e100.net; s=20230601; t=1742878785; x=1743483585;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kI6HALsdQGcYyIHmM8Ppnw0EYvYwjf9AgyEFGP9MumA=;
- b=A5wgpQrdoLh42EDKDxKyxIDfadQ7bH8VCJrlv7LARoBdWait4H8Q8yOaI/9l+MF2tW
- 5mFhZjWd2fr1DFJYamk6BoP2vdGlUHzbajkq96NKqy3iDrMMWk2Ky6GvsJZyJ/8Ico26
- fkcHUJFW4B+QGHKBD3hXQTxRo2cl75eVF8eacSnRDX+7tcNk+LVOK8CZhGTFy/pL2EaY
- KLP6HnJ2brBDEr3vfbTNr8We+LcB3EjGqXHFe2jGkuYnSJlIbgNN1+tJFkcDEF3TU5gf
- 9GFCh+WcUbXrliHVq8+ptHdqmcbytFj5ElFL9Tl6v2psCZo9JbZaRtmHfvsaAj47N1tE
- vXQg==
-X-Gm-Message-State: AOJu0Ywxf7LsfxDSS0kcaSGmgfCdKC9ZZ2Lhery8k6hjmoB2wpknUzCK
- +jqVvmZsrW9DZgwVjEVI1tOhLxNaWATbQhGjNL9CvVJ1DWP1uOOWFQvJDggOapKYUcffe7viYJ4
- R
-X-Gm-Gg: ASbGncuAtqWdK6uPHkOsgeO4zC34NmbCSj6mdBDSXowwvrmi5iEc2BokU0zL8oSMVP2
- gKxSBda+vhyk4MeHimE0KeX6OrcnKAzUFIkBKrQepgmLj0YRgcwPVt/SvlSXpFNeBHvEhXmfObc
- tw/LGkZUJgiLdtkbUGLpoAbf1UNvRrAre+oOfspuuOT3HDBKJppnpJvFkqos0Mrt+ensBNXfFet
- 4k9HugM+67BJNsV5gCk7NapsKYIpadXp+EJwCCF7tYq752wiGJFjhemXNx2HdVnCIX3MZkYJ579
- j6TNfpS0xdOx3SKjefoI3evF3F8za/qUUVaYYhuotxPW
-X-Google-Smtp-Source: AGHT+IEViWj0HXthzkisCL6XXxnNrY9f+XJAj3XYkE+svRDw8yixLHab1+2GgLUvE4lRjRG8yLIalg==
-X-Received: by 2002:a17:90b:3847:b0:2ff:79ca:24b7 with SMTP id
- 98e67ed59e1d1-3030fe9804emr16981073a91.21.1742878783768; 
- Mon, 24 Mar 2025 21:59:43 -0700 (PDT)
+ bh=ZFUKmZL89sYZSB0AC07VWMO1RZJQlXSAYHwQi6w+77U=;
+ b=caYsN6o1QGYIiuCqDTxDwART9s1jEmcN96VonxXajO6y1yF7kOZsMvFu2R7pY8tbTA
+ Q7mrwzNPehKAf6c7/ED999ufNcMIk/KmR7pQJUcNa0f82mBUJ6O4SkFYD33vLwUFFKbK
+ 1ShZl9GREBAx5B96q6OTlM0mtYhNKaLWlogT0PTTuKY6WC18VV4gEVwyuIBXLRK9VK9l
+ f/MOXrecfCnNAbxJ1tYcUlbru97jL+DO6GKWyorNermMO9puA0vbdMICvK5/XhxG1ORp
+ Z8sLPFxwSi6m1Gxv0LDSpLL31gcst/AYleYEdU+ZrQOlgR36thn+A4wqMjn3HrKmMNvg
+ AqEg==
+X-Gm-Message-State: AOJu0YzTAlrqtyMUW6kX9KJ9dHcv0rZs9Fc38FcYwEpySkysTnVLZTv0
+ wAS2XcEndFjAsnbEPclqESR8sc9gGrgv9QMZhD29Ap6ftvips0GNot5LmgTw7QAMJz0JGcm9Vpt
+ e
+X-Gm-Gg: ASbGnctEa26c7tjFF3y7fXXKlx3rxxyIqlbyPZ1bkX+53Wt8neaGaPAgxK4s0JkReFu
+ fnwRfiVVCB121hB3H6wm59L9lPkU/xrMNPkRVgcbLttPtkBg18l45HmLgXvR36R9ljj+a8VhyMM
+ 9V5JClFvfPD0puRxoDGUV9nW0WK7d1/kYJt2czqJWnft+iN1NJIVxh5qq23T0W6rfs39GHJFtKY
+ sEbhf46O98wnQ95dWOrs6MzQXlOH1NRWxOKLj4Y3xY6hev2oS3JAcwrK/Ntt8ftGwWbvvCk9P+X
+ w2UnVx430dkT3k9SZxaLxCuhPDB/wSJ+y72Hy9JzcIqf
+X-Google-Smtp-Source: AGHT+IGzn0ZGA2yyhJM9CpgiHL9SBWuGcmvmqiHcbR5yuPfCRFgOow8H3weAwCmoy8McjCHWxqFWgA==
+X-Received: by 2002:a17:90b:2747:b0:2fe:a336:fe63 with SMTP id
+ 98e67ed59e1d1-3030ff10879mr26301744a91.24.1742878784581; 
+ Mon, 24 Mar 2025 21:59:44 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-301bf58b413sm14595120a91.13.2025.03.24.21.59.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Mar 2025 21:59:43 -0700 (PDT)
+ Mon, 24 Mar 2025 21:59:44 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -70,16 +70,16 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  kvm@vger.kernel.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 23/29] meson: add common hw files
-Date: Mon, 24 Mar 2025 21:59:08 -0700
-Message-Id: <20250325045915.994760-24-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 24/29] hw/arm/boot: make compilation unit hw common
+Date: Mon, 24 Mar 2025 21:59:09 -0700
+Message-Id: <20250325045915.994760-25-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250325045915.994760-1-pierrick.bouvier@linaro.org>
 References: <20250325045915.994760-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,87 +102,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Those files will be compiled once per base architecture ("arm" in this
-case), instead of being compiled for every variant/bitness of
-architecture.
+Now we eliminated poisoned identifiers from headers, this file can now
+be compiled once for all arm targets.
 
-We make sure to not include target cpu definitions (exec/cpu-defs.h) by
-defining header guard directly. This way, a given compilation unit can
-access a specific cpu definition, but not access to compile time defines
-associated.
-
-Previous commits took care to clean up some headers to not rely on
-cpu-defs.h content.
-
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- meson.build | 37 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ hw/arm/boot.c      | 1 +
+ hw/arm/meson.build | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index c21974020dd..994d3e5d536 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3691,6 +3691,7 @@ hw_arch = {}
- target_arch = {}
- target_system_arch = {}
- target_user_arch = {}
-+hw_common_arch = {}
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index d3811b896fd..f94b940bc31 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -14,6 +14,7 @@
+ #include <libfdt.h>
+ #include "hw/arm/boot.h"
+ #include "hw/arm/linux-boot-if.h"
++#include "cpu.h"
+ #include "exec/target_page.h"
+ #include "system/kvm.h"
+ #include "system/tcg.h"
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index ac473ce7cda..9e8c96059eb 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -1,5 +1,5 @@
+ arm_ss = ss.source_set()
+-arm_ss.add(files('boot.c'))
++arm_common_ss = ss.source_set()
+ arm_ss.add(when: 'CONFIG_ARM_VIRT', if_true: files('virt.c'))
+ arm_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
+ arm_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic_boards.c'))
+@@ -75,4 +75,7 @@ system_ss.add(when: 'CONFIG_SX1', if_true: files('omap_sx1.c'))
+ system_ss.add(when: 'CONFIG_VERSATILE', if_true: files('versatilepb.c'))
+ system_ss.add(when: 'CONFIG_VEXPRESS', if_true: files('vexpress.c'))
  
- # NOTE: the trace/ subdirectory needs the qapi_trace_events variable
- # that is filled in by qapi/.
-@@ -4089,6 +4090,34 @@ common_all = static_library('common',
-                             implicit_include_directories: false,
-                             dependencies: common_ss.all_dependencies())
- 
-+# construct common libraries per base architecture
-+hw_common_arch_libs = {}
-+foreach target : target_dirs
-+  config_target = config_target_mak[target]
-+  target_base_arch = config_target['TARGET_BASE_ARCH']
++arm_common_ss.add(fdt, files('boot.c'))
 +
-+  # check if already generated
-+  if target_base_arch in hw_common_arch_libs
-+    continue
-+  endif
-+
-+  if target_base_arch in hw_common_arch
-+    target_inc = [include_directories('target' / target_base_arch)]
-+    src = hw_common_arch[target_base_arch]
-+    lib = static_library(
-+      'hw_' + target_base_arch,
-+      build_by_default: false,
-+      sources: src.all_sources() + genh,
-+      include_directories: common_user_inc + target_inc,
-+      implicit_include_directories: false,
-+      # prevent common code to access cpu compile time
-+      # definition, but still allow access to cpu.h
-+      c_args: ['-DCPU_DEFS_H', '-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU'],
-+      dependencies: src.all_dependencies())
-+    hw_common_arch_libs += {target_base_arch: lib}
-+  endif
-+endforeach
-+
- if have_rust
-   # We would like to use --generate-cstr, but it is only available
-   # starting with bindgen 0.66.0.  The oldest supported versions
-@@ -4254,8 +4283,14 @@ foreach target : target_dirs
-   arch_deps += t.dependencies()
- 
-   target_common = common_ss.apply(config_target, strict: false)
--  objects = common_all.extract_objects(target_common.sources())
-+  objects = [common_all.extract_objects(target_common.sources())]
-   arch_deps += target_common.dependencies()
-+  if target_type == 'system' and target_base_arch in hw_common_arch_libs
-+    src = hw_common_arch[target_base_arch].apply(config_target, strict: false)
-+    lib = hw_common_arch_libs[target_base_arch]
-+    objects += lib.extract_objects(src.sources())
-+    arch_deps += src.dependencies()
-+  endif
- 
-   target_specific = specific_ss.apply(config_target, strict: false)
-   arch_srcs += target_specific.sources()
+ hw_arch += {'arm': arm_ss}
++hw_common_arch += {'arm': arm_common_ss}
 -- 
 2.39.5
 
