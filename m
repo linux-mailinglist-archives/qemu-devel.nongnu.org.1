@@ -2,90 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99543A6E80C
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C84A6E7F2
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:24:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twtEc-0001Zc-1L; Mon, 24 Mar 2025 21:37:42 -0400
+	id 1twt1a-0007s5-5q; Mon, 24 Mar 2025 21:24:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEZ-0001Z4-E0
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:39 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1twt1T-0007qt-0a
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:24:07 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEQ-0007QO-HF
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:32 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-2243803b776so25110405ad.0
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1twt1Q-00063K-Nw
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:24:06 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-224171d6826so23590705ad.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:24:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742866649; x=1743471449; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1742865843; x=1743470643; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hy7YxU/BOkkmct0LEa6sX5iFnTbsVC/VEJwRAgXKmQ8=;
- b=DPY0Iwfgyv//K7WXSeaEv2tzdMiQFY/nRdF9la2TR6q/7Jm/0WbDDfbVRbSI1DXr4+
- I2l1pviPHuXFkoBME9BDGdR6M/VP1ffLsYa435rvzw10z3Q4bz8Ad+5D4lXvqCWsfTA9
- YD8GIDveIED0uBRWWNdS0AcfBdDB/NoEAC/2vOB5DJ5JsJODv3fju9IrQckghA7JKgrj
- /buQvMR7c2ruYYJNP83r/LHkXrY330ixFtjkN2nE559TSOyqnQM3lx3KOtTxrptDut0u
- 2eOOP+WSlqgJxt6DefeLMxU+VjJpv7vU/XjwtrKyhbHUjLkIzPwP+qrV+AwllDTuj3Zc
- 5jSA==
+ bh=3f/aamhcaq65N5QVWFb7BojgdxkqrG6VyY1uYeOMdAE=;
+ b=JbuM7bEN97m1TZtBfDTSAQ0jjrQvL5/L+nkXDTZvwvpKoa/jklyIrufRgCP4yMKMV3
+ AD9GBseTQYlbP6RC+sCcWavYGeBAKggv+p1eVTHwwtO1KKEDzl7f1giErMZm6PO1ibuR
+ 25ZSWJyni+x2IueaYbs3Z5VPM5uGE+OXYUxS1+y7eXomqcLLQiaJ1gPwFuw3gG4KE2HV
+ qw8W1F56t220n1xjvdLIqLOXJtnjNSP48oEewXgCqj5+qr/Nb78okotHquvj8ykM03UK
+ u79VyA2uowI+yHLPm7wVXEd5nv3nOqFZX+rdk23DFUvx5koW/NipY88JsSg8p2XV2z4M
+ 3B+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742866649; x=1743471449;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1742865843; x=1743470643;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hy7YxU/BOkkmct0LEa6sX5iFnTbsVC/VEJwRAgXKmQ8=;
- b=kQshcRdUXA253ZsXEh+RdNdJe9Oh7yHcV1L9Oev39GCDvWqCZByFSrjSAJMt5Of6WW
- lj80y/HdBHk9Ikw2bX0gj1n0YrEA6aoBpAJWXMYYCqhu7HXArxkUvRo0sKVKD8LWu+up
- MwfmyZ9+MCV47owllGf2PnKlnRIco/t4/sBM5srZR6T9OCw1UeGnPpj8Wg0X/syxHsQR
- ceAq9U9Rknu7/A6OSKK54abrhbj7nMifOKEUopYrCv1OrEgcf7r8k3EzDZugqCGbjQO+
- +vwJ6YdajmA3LHBI1igGVyUJDigyEvGQP+wWsQUpUjxnI7sGGXPSbkLe9Iuy72kqjCiM
- fyeQ==
+ bh=3f/aamhcaq65N5QVWFb7BojgdxkqrG6VyY1uYeOMdAE=;
+ b=ZIkUHifCIlvK/cUFaRi25syQG492eJnpSDlYuXVabD4ReoPj6DTvAA+lFyqBD/cF8t
+ YPNQDu+S8ndfxUkrNVJE+tmwWDVeeDSCJbbv3a8xH7pYGiWP4xKoIUptHdBDI8wLtGHM
+ z4HbaWJOCgUa2DSrKifOGQYEK2eTPyMjs6/SOXk3+NhHGDdd54KSg4GiDVskO/0LQUSk
+ FjUfmV9RTBwgPrndyglH/1Jmfg5PQPqBu8+u/aeysk7J0363ExRCQZvXRZuEyWnNZpVu
+ 5YZrVSWDh/S/USwXQI11cw0WKj90UCIUqMnHKyVHfvOFRoecp08Qig9qNJA+myUK2S8U
+ Ck+Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWNGZhmHVFN5HfBQJw2brADUJn+suyaOrh3BZu8+OYF7y78F+xO8QsoMC5DdA3SwiFykWnBTPCiDRwJ@nongnu.org
-X-Gm-Message-State: AOJu0YxnJCmnVTra8qpPcyi7EekJYd83xrOYdMSghY9qKw4llxp10lxo
- hqgwSPK5ye23jGfb+WrTCyAosezvaUsMVfHIzZJeK/k1nL7WQYA5MVgLpYOAasA=
-X-Gm-Gg: ASbGnct2wbHDDGszcSausVCmZb0To+dTlgtQoDKsbRCG7tYsJz3zlV1BDcBd2Iw17I7
- i9Rrk71ffFSy5phe455/NP/6oOtv+Gv/G7gF2LCvpL2ioJcDcpYSDWzcT0qJnU54wmM7lriPnX+
- uIqyOIza8obILotWBUuuEIRi8Y3J4P3728bZs0F1/z4ArgLfgw/u0cmlCFYGLGvP08svwjHwBlV
- OiusPF7wowpiQF4N6bGCFUWR2xebmqswwc1XpG//zglj+BfWu37cBfsoahvLUPxdcJnF/tZUjit
- gPNXMueGomDvHzdi132x2GRJAF5nzDVYUV3IpZgJRdeYXmKlIy/oT9xbCg==
-X-Google-Smtp-Source: AGHT+IE0ViLTJJKIDYC+v+HjmD2dTkpz1tg1gxPDYjWHjlVt9rgnR8M9FQqYMVsIQunInfx02DfYAg==
-X-Received: by 2002:a05:6a00:2291:b0:735:7bc0:dcda with SMTP id
- d2e1a72fcca58-7390597e330mr21664245b3a.5.1742866648965; 
- Mon, 24 Mar 2025 18:37:28 -0700 (PDT)
-Received: from [192.168.1.67] ([38.39.164.180])
+ AJvYcCU24YP82JlBsHOxfcO8JIJToDic++MRQz8D5Vi5gu5S/S6R3oWmQ4EVim5otFV5m9pVQF/dJFeVXGGN@nongnu.org
+X-Gm-Message-State: AOJu0YyOeRpry+iVZM97OE72bnjfgEIXjSfaYiw7oLagQNdSBvaEju2M
+ pAAr0bApg6D1tUAYvCEJesTAp8++8hHxerwdFRlb8zjL4HR8ggtlHNqE44LqkO8=
+X-Gm-Gg: ASbGncvXdVJQtopIJFHmwJ/W1ZyrLd9UaNPhG3Osp9EJcW99qdvWRplwrnMC2iMyl8p
+ NizjDxSsunnRnboGiJ1Bl8yYONgxBQFVB+W/MpMc/lmRc0nbAr9MaEWCfqHoD+L2vl1IexPfKe9
+ IQsli/XhVjV9krD/qtVNYPFVHglZd2a/VBB+xCK6F+c4z1OfI1iaIEy5lvKC0NbfPrc+cvKCJmv
+ tk4oYMCUD/uBm8A/oyJMlkaVCvGVieefS1i9DSA8ujTFFnjMu7jHr7lKAk2QfBYKQQtUKwyoPET
+ 49Lz1JvL9qvVqYtyCLs5zJj3+yFt/ZgDkghWp+paIbikEJbl1D9cXt+V0KmW1hKRZSrSADFU5D6
+ +wqP/EhjQ
+X-Google-Smtp-Source: AGHT+IHtYFXPUcyvhT6u7EcdDtjGqWUVYlhcNricl/EtL0dR+OXt6ZmrKRY5nBmdo5X4L15+2ngQQA==
+X-Received: by 2002:a05:6a20:258a:b0:1f5:7280:1cdb with SMTP id
+ adf61e73a8af0-1fe42f2c9d0mr25068794637.16.1742865842846; 
+ Mon, 24 Mar 2025 18:24:02 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73906158ef2sm9090422b3a.141.2025.03.24.18.37.27
+ 41be03b00d2f7-af8a28467e9sm6648568a12.37.2025.03.24.18.24.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Mar 2025 18:37:28 -0700 (PDT)
-Message-ID: <a4f03a8b-4bfa-4039-97c8-11f1a04d4c94@linaro.org>
-Date: Mon, 24 Mar 2025 18:22:53 -0700
+ Mon, 24 Mar 2025 18:24:02 -0700 (PDT)
+Message-ID: <428e6fdb-24b9-47a2-9d3f-4ef5c2e1a0ae@linaro.org>
+Date: Mon, 24 Mar 2025 18:24:00 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/17] hw/avr: Move AtmegaMcuClass to atmega.h
+Subject: Re: [PATCH v2 20/30] target/arm/cpu: always define kvm related
+ registers
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250320223002.2915728-1-pierrick.bouvier@linaro.org>
+ <20250320223002.2915728-21-pierrick.bouvier@linaro.org>
+ <1109fe22-9008-47c6-b14d-7323f9888822@linaro.org>
+ <11b5441f-c7c0-4b4c-8061-471a49e8465a@linaro.org>
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: mrolnik@gmail.com, philmd@linaro.org
-References: <20250323173730.3213964-1-richard.henderson@linaro.org>
- <20250323173730.3213964-17-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250323173730.3213964-17-richard.henderson@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <11b5441f-c7c0-4b4c-8061-471a49e8465a@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,92 +108,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/23/25 10:37, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   hw/avr/atmega.h | 20 ++++++++++++++++++++
->   hw/avr/atmega.c | 22 +---------------------
->   2 files changed, 21 insertions(+), 21 deletions(-)
+On 3/24/25 14:11, Pierrick Bouvier wrote:
+> On 3/23/25 12:37, Richard Henderson wrote:
+>> On 3/20/25 15:29, Pierrick Bouvier wrote:
+>>> This does not hurt, even if they are not used.
+>>>
+>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>> ---
+>>>    target/arm/cpu.h | 2 --
+>>>    1 file changed, 2 deletions(-)
+>>>
+>>> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+>>> index a8a1a8faf6b..ab7412772bc 100644
+>>> --- a/target/arm/cpu.h
+>>> +++ b/target/arm/cpu.h
+>>> @@ -971,7 +971,6 @@ struct ArchCPU {
+>>>         */
+>>>        uint32_t kvm_target;
+>>> -#ifdef CONFIG_KVM
+>>>        /* KVM init features for this CPU */
+>>>        uint32_t kvm_init_features[7];
+>>> @@ -984,7 +983,6 @@ struct ArchCPU {
+>>>        /* KVM steal time */
+>>>        OnOffAuto kvm_steal_time;
+>>> -#endif /* CONFIG_KVM */
+>>>        /* Uniprocessor system with MP extensions */
+>>>        bool mp_is_up;
+>>
+>> I'm not sure what this achieves?   CONFIG_KVM is a configure-time selection.
+>>
 > 
-> diff --git a/hw/avr/atmega.h b/hw/avr/atmega.h
-> index a99ee15c7e..f031e6c10a 100644
-> --- a/hw/avr/atmega.h
-> +++ b/hw/avr/atmega.h
-> @@ -23,6 +23,10 @@
->   #define TYPE_ATMEGA1280_MCU "ATmega1280"
->   #define TYPE_ATMEGA2560_MCU "ATmega2560"
->   
-> +typedef struct AtmegaMcuClass AtmegaMcuClass;
-> +DECLARE_CLASS_CHECKERS(AtmegaMcuClass, ATMEGA_MCU,
-> +                       TYPE_ATMEGA_MCU)
-> +
->   typedef struct AtmegaMcuState AtmegaMcuState;
->   DECLARE_INSTANCE_CHECKER(AtmegaMcuState, ATMEGA_MCU,
->                            TYPE_ATMEGA_MCU)
-> @@ -32,6 +36,22 @@ DECLARE_INSTANCE_CHECKER(AtmegaMcuState, ATMEGA_MCU,
->   #define TIMER_MAX 6
->   #define GPIO_MAX 12
->   
-> +struct AtmegaMcuClass {
-> +    /*< private >*/
-> +    SysBusDeviceClass parent_class;
-> +    /*< public >*/
-> +    const char *uc_name;
-> +    const char *cpu_type;
-> +    size_t flash_size;
-> +    size_t eeprom_size;
-> +    size_t sram_size;
-> +    size_t io_size;
-> +    size_t gpio_count;
-> +    size_t adc_count;
-> +    const uint8_t *irq;
-> +    const struct peripheral_cfg *dev;
-> +};
-> +
->   struct AtmegaMcuState {
->       /*< private >*/
->       SysBusDevice parent_obj;
-> diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
-> index d4fc9c4aee..96e36743bc 100644
-> --- a/hw/avr/atmega.c
-> +++ b/hw/avr/atmega.c
-> @@ -36,7 +36,7 @@ enum AtmegaPeripheral {
->   #define TIMER(n)    (n + TIMER0)
->   #define POWER(n)    (n + POWER0)
->   
-> -typedef struct {
-> +typedef struct peripheral_cfg {
->       uint16_t addr;
->       enum AtmegaPeripheral power_index;
->       uint8_t power_bit;
-> @@ -46,26 +46,6 @@ typedef struct {
->       bool is_timer16;
->   } peripheral_cfg;
->   
-> -struct AtmegaMcuClass {
-> -    /*< private >*/
-> -    SysBusDeviceClass parent_class;
-> -    /*< public >*/
-> -    const char *uc_name;
-> -    const char *cpu_type;
-> -    size_t flash_size;
-> -    size_t eeprom_size;
-> -    size_t sram_size;
-> -    size_t io_size;
-> -    size_t gpio_count;
-> -    size_t adc_count;
-> -    const uint8_t *irq;
-> -    const peripheral_cfg *dev;
-> -};
-> -typedef struct AtmegaMcuClass AtmegaMcuClass;
-> -
-> -DECLARE_CLASS_CHECKERS(AtmegaMcuClass, ATMEGA_MCU,
-> -                       TYPE_ATMEGA_MCU)
-> -
->   static const peripheral_cfg dev168_328[PERIFMAX] = {
->       [USART0]        = {  0xc0, POWER0, 1 },
->       [TIMER2]        = {  0xb0, POWER0, 6, 0x70, 0x37, false },
+> CONFIG_KVM is a poisoned identifier.
+> It's included via config-target.h, and not config-host.h.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Whoops, yes.
 
+r~
 
