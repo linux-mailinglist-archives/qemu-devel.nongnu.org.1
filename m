@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9BDA6E9EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:58:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9CC8A6E9DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:55:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twy9P-0005py-MO; Tue, 25 Mar 2025 02:52:41 -0400
+	id 1twyBR-0002op-Ov; Tue, 25 Mar 2025 02:54:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy8J-0004xe-VR; Tue, 25 Mar 2025 02:51:33 -0400
+ id 1twy9v-0006xB-Hs; Tue, 25 Mar 2025 02:53:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy8I-0001jP-77; Tue, 25 Mar 2025 02:51:31 -0400
+ id 1twy9t-0001yT-Jl; Tue, 25 Mar 2025 02:53:11 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 27CA4107D6E;
- Tue, 25 Mar 2025 09:49:29 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id EE2BF107D7F;
+ Tue, 25 Mar 2025 09:49:33 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id BEA311D5E7B;
- Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 90F2D1D5E8A;
+ Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id B7E5D5703E; Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
+ id 837115705C; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 47/51] vdpa: Allow vDPA to work on big-endian machine
-Date: Tue, 25 Mar 2025 09:50:33 +0300
-Message-Id: <20250325065038.3263786-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Yao Zi <ziyao@disroot.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bibo Mao <maobibo@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 61/69] host/include/loongarch64: Fix inline assembly
+ compatibility with Clang
+Date: Tue, 25 Mar 2025 09:50:34 +0300
+Message-Id: <20250325065043.3263864-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
-References: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
+References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,51 +61,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Konstantin Shkolnyy <kshk@linux.ibm.com>
+From: Yao Zi <ziyao@disroot.org>
 
-Add .set_vnet_le() function that always returns success, assuming that
-vDPA h/w always implements LE data format. Otherwise, QEMU disables vDPA and
-outputs the message:
-"backend does not support LE vnet headers; falling back on userspace virtio"
+Clang on LoongArch only accepts fp register names in the dollar-prefixed
+form, while GCC allows omitting the dollar. Change registers in ASM
+clobbers to the dollar-prefixed form to make user emulators buildable
+with Clang on loongarch64. No functional change invovled.
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit b027f55a994af885a7a498a40373a2dcc2d8b15e)
+Cc: qemu-stable@nongnu.org
+Fixes: adc8467e697 ("host/include/loongarch64: Add atomic16 load and store")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+(cherry picked from commit ca2737d6eca7fcc62ecb7a27246837b7c18830fc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 94b68063e4..0d82205576 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -258,6 +258,18 @@ static bool vhost_vdpa_has_ufo(NetClientState *nc)
+diff --git a/host/include/loongarch64/host/atomic128-ldst.h b/host/include/loongarch64/host/atomic128-ldst.h
+index 9a4a8f8b9e..754d2143f0 100644
+--- a/host/include/loongarch64/host/atomic128-ldst.h
++++ b/host/include/loongarch64/host/atomic128-ldst.h
+@@ -28,7 +28,7 @@ static inline Int128 atomic16_read_ro(const Int128 *ptr)
+     asm("vld $vr0, %2, 0\n\t"
+         "vpickve2gr.d %0, $vr0, 0\n\t"
+         "vpickve2gr.d %1, $vr0, 1"
+-	: "=r"(l), "=r"(h) : "r"(ptr), "m"(*ptr) : "f0");
++        : "=r"(l), "=r"(h) : "r"(ptr), "m"(*ptr) : "$f0");
  
+     return int128_make128(l, h);
+ }
+@@ -46,7 +46,7 @@ static inline void atomic16_set(Int128 *ptr, Int128 val)
+     asm("vinsgr2vr.d $vr0, %1, 0\n\t"
+         "vinsgr2vr.d $vr0, %2, 1\n\t"
+         "vst $vr0, %3, 0"
+-	: "=m"(*ptr) : "r"(l), "r"(h), "r"(ptr) : "f0");
++        : "=m"(*ptr) : "r"(l), "r"(h), "r"(ptr) : "$f0");
  }
  
-+/*
-+ * FIXME: vhost_vdpa doesn't have an API to "set h/w endianness". But it's
-+ * reasonable to assume that h/w is LE by default, because LE is what
-+ * virtio 1.0 and later ask for. So, this function just says "yes, the h/w is
-+ * LE". Otherwise, on a BE machine, higher-level code would mistakely think
-+ * the h/w is BE and can't support VDPA for a virtio 1.0 client.
-+ */
-+static int vhost_vdpa_set_vnet_le(NetClientState *nc, bool enable)
-+{
-+    return 0;
-+}
-+
- static bool vhost_vdpa_check_peer_type(NetClientState *nc, ObjectClass *oc,
-                                        Error **errp)
- {
-@@ -421,6 +433,7 @@ static NetClientInfo net_vhost_vdpa_info = {
-         .cleanup = vhost_vdpa_cleanup,
-         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
-         .has_ufo = vhost_vdpa_has_ufo,
-+        .set_vnet_le = vhost_vdpa_set_vnet_le,
-         .check_peer_type = vhost_vdpa_check_peer_type,
-         .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
- };
+ #endif /* LOONGARCH_ATOMIC128_LDST_H */
+diff --git a/host/include/loongarch64/host/bufferiszero.c.inc b/host/include/loongarch64/host/bufferiszero.c.inc
+index 69891eac80..bb2598fdc3 100644
+--- a/host/include/loongarch64/host/bufferiszero.c.inc
++++ b/host/include/loongarch64/host/bufferiszero.c.inc
+@@ -61,7 +61,8 @@ static bool buffer_is_zero_lsx(const void *buf, size_t len)
+     "2:"
+         : "=&r"(ret), "+r"(p)
+         : "r"(buf), "r"(e), "r"(l)
+-        : "f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "fcc0");
++        : "$f0", "$f1", "$f2", "$f3", "$f4", "$f5", "$f6", "$f7", "$f8",
++          "$fcc0");
+ 
+     return ret;
+ }
+@@ -119,7 +120,8 @@ static bool buffer_is_zero_lasx(const void *buf, size_t len)
+     "3:"
+         : "=&r"(ret), "+r"(p)
+         : "r"(buf), "r"(e), "r"(l)
+-        : "f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "fcc0");
++        : "$f0", "$f1", "$f2", "$f3", "$f4", "$f5", "$f6", "$f7", "$f8",
++          "$fcc0");
+ 
+     return ret;
+ }
+diff --git a/host/include/loongarch64/host/load-extract-al16-al8.h.inc b/host/include/loongarch64/host/load-extract-al16-al8.h.inc
+index d1fb59d8af..9528521e7d 100644
+--- a/host/include/loongarch64/host/load-extract-al16-al8.h.inc
++++ b/host/include/loongarch64/host/load-extract-al16-al8.h.inc
+@@ -31,7 +31,7 @@ static inline uint64_t load_atom_extract_al16_or_al8(void *pv, int s)
+     asm("vld $vr0, %2, 0\n\t"
+         "vpickve2gr.d %0, $vr0, 0\n\t"
+         "vpickve2gr.d %1, $vr0, 1"
+-	: "=r"(l), "=r"(h) : "r"(ptr_align), "m"(*ptr_align) : "f0");
++        : "=r"(l), "=r"(h) : "r"(ptr_align), "m"(*ptr_align) : "$f0");
+ 
+     return (l >> shr) | (h << (-shr & 63));
+ }
 -- 
 2.39.5
 
