@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A60A70D2F
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:47:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCF3A70D24
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:44:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txCzt-0000jP-8E; Tue, 25 Mar 2025 18:43:51 -0400
+	id 1txD0B-0000v0-P2; Tue, 25 Mar 2025 18:44:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzd-0000dI-7B
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:33 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzh-0000jx-D5
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:39 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCza-0006vs-Gx
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:32 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43cef035a3bso43327525e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:43:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzf-0006wr-Sm
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:37 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3913b539aabso3423623f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:43:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742942609; x=1743547409; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742942614; x=1743547414; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uIsbtSKYbmjuBlwlygMfh2FAmt4wKaqUSYQkYlcHhAY=;
- b=PQz9VHJQnv9EXVpieVpBpnyn5UKBTIaPufX3fyeO59/MWAgy4A9XjovQ7B2DZUZ2iC
- vEo0UV0XSBw6byBP+i1f8hE1+1Lbkbddv7LR6/hzkmqSkThlS04Td+42StZdNKNrQXkp
- GnHBpAFODeO69ur8c1CrSI58A150/Bux2K3bDLWHgY/R0OdXGZ3SoVbTGt59uPt8mOE2
- NOXx1E7/JZOts4qURzLobXDohK+8eKDDMFAQ34sD/mW+tXGm2HJb/CYs6oNwUpb7EKqj
- O3YdWmgM6qE5CerXhH9F+PQADUg3vasw5Io0rttNurzCdRcYbFDUYcZ93vBMefSTxXVS
- MdZw==
+ bh=0SOvxtJeq0EX5lR/jkU2/dH8LgMhbpkIvEfLhQT46Rg=;
+ b=cS+9YF5DO1DzdWrCU5nGAMAQliQt2Ombjdj8Tod6IdFBtB3t05t5+tfbVOi21IugBo
+ yhWlPTTKLAm0u/l6r1TWN4JDs0Q+naS/XxSt6+bhk5xfIWA93LRz2R0lxKC6fe1BsKM0
+ WOTGniZqasvKsv0YpPdHC+jrq1c4UNa/t7QxzlNFNssW5VjhiY2cJ5xwvMJzMTiBLvna
+ Y8IGLH8XTf3pfnIWHiH600Yy5oCBt6MIWYKvWFQFWQxjV4JJ3pvxbz9Cs1yDyPJkS7kI
+ uOKRiFTHQt0PNVcAHy3DTqv9ViYLI59H19zieviylLnNAkavoPeCWpte8ZnA0B3ztWWq
+ AF1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742942609; x=1743547409;
+ d=1e100.net; s=20230601; t=1742942614; x=1743547414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uIsbtSKYbmjuBlwlygMfh2FAmt4wKaqUSYQkYlcHhAY=;
- b=FHAPDmUMKLx1lKcuCQqoCRvDAQuEk21iTGvUCU/hZ7jT4hM7w9AYM4nO7sfzlGErFE
- t2zCglc5mVBkvXr0Q+41jB188U2PAhd3n0U2x4KvvUYGJ/AFDkL5indLQlJHsLh28Y62
- 9zHedPCHnTPL49soLzWOxYRi5ksbmwrGdWqnVEGRpGm59J5HIbWMvngWcEv9OdZHi2O7
- fmx+5OoV0GzOX8dPnn468aq91zNJpmtVaSwsEgJ7O2ZFctXw4Hicp2LSZKdTEpn6YBiJ
- SP9a6NolyQ5vpygN11BK3ycpw1dLhxdpB26Anqapv+mB/mZgs8mDrSxeNvLikE7ZybIG
- nrHQ==
+ bh=0SOvxtJeq0EX5lR/jkU2/dH8LgMhbpkIvEfLhQT46Rg=;
+ b=T8SKOq3wAQeF31iFvbiFauocrTNKTdy9Qz9WchNW3Yi0Y+QEQ13g5uBeUL3Ga/81+M
+ v0Bq1fLogh8GioS2W53Ov/I1BYEEJvyb4bqvLk8nia78PmupDSVFXFVgJYXFc+VTZ3u5
+ cq90ArPKqtK/MaDd1pFQ2CE99WCYV7mmA0v83sHSNbd+ypHQJaJVy/G9IEOYR2QqeZi7
+ HiPidvwLqVOQmZZXgCnDadbODYcoIh6wGma5Kjouyfst+pjmM+Z+xrZATSUuEorzb30f
+ FboBOqePcuOPDcT5j6qeugILnrfZ+Z78M/fEsyPkk9HL+XfGMDJUL4PWFjto9KdjhnfD
+ okiQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV8i/I52qLlUkSv7kWsTPq0R3BBootP7aSx1DhoTO+XvKupaKz0O2mA3y0jbtGPlgIcx9ZaK/7AdsjE@nongnu.org
-X-Gm-Message-State: AOJu0YyLi3A4ggd3G68jw3UHAJGMPJLDt+3VsWR2M5y80lMkRV2KgyPj
- wFHvv90JjSdnyFQJsWI8tEDVOFCpAi/frMptFvNaZxgOuWOGoZ2dnlHjso7dQhg=
-X-Gm-Gg: ASbGnct+TRFrFiZ5r7ER+KCCEh801fmZPZxYiEQ+PwQx6qVrO0DPkBmcgiKLoXKoijc
- /qirxXSL/KI9/oDpeDYSvcBk2GGPmi+y5yL7d5e6Z4/kEqwS6JFh9OftRw+N9bIK3s71UBcVzo/
- GBy5h0/LrQWZRiKEDyQzCTXIJnGAe/Bt2+LFJ1nWP887obV7HodBvT7mN7v5MLvQjHzr5cc1ou3
- PuccyKRkXciokgLHvpokhqUKDgkKxdC85zDBeyQLHMHsF5674a09rLZaz9ESl91Qyx3Qk4ojCkO
- i89djEEz5VlS4wav90Bbfiz1yeOxxmterEv+oQiNcl7+Qjix36It2eguoVXOwh1URgDXiFt6a06
- /ESLdngwXxtq856JLYIg=
-X-Google-Smtp-Source: AGHT+IEikcytfaNnArbXeF3qffbmnL+GFR4CLgt3WXT0mak2c6j/QH6STzKh/q5GWmP4LsWfw2zlRg==
-X-Received: by 2002:a05:600c:34cc:b0:43c:efed:732c with SMTP id
- 5b1f17b1804b1-43d50a3c1d4mr162965315e9.28.1742942609083; 
- Tue, 25 Mar 2025 15:43:29 -0700 (PDT)
+ AJvYcCVsw7cbIMSNc6xZYJxqPUyMSOnksNVkQS7bhMjjYJ5r0titFU0JPnXJas7dFBuE+KfooVWuQcC8+bDl@nongnu.org
+X-Gm-Message-State: AOJu0Yxr/t0aerAWbmRzoQFmBW+5PnEL/zy8DGrdCX2/IA1w3+Ed3nak
+ hdvqF3ktBvxk6+SIrnvRA8owZwV0hqmtUQcRTe3uMVX6MxXTm60S5FdPgTpI5uA=
+X-Gm-Gg: ASbGncvbYAoZwzSqqFXh1QdglUmKf6MkshWsxFDiuntfn+CZDcAgDwD/Loht0yBXOMt
+ XHuzthZGX3TjLu0QqmlOBYmE1+QMv9rBVglES1Bp0FriLjlsMDmsZys2mOOrIP/xi5Bt9cGVALk
+ 4THRcyOs7yvhNjdSePoTvkTbr2clP/1PVAIqNiatFATzsejUvlnKZPAgADdQ7TWNnTUqMQZH3MP
+ MUmYQSJJNxpIgJEbRUa54S8dnXH0QW28U/DIlhiHhgYcFxDkKNDbAB67UQQvrVdXO/gHj41qniA
+ RULjo/NU99Kd62R1wEr5/G4WxlIog6W6MvtngYXfjkAYb+XRh2ZFLOdKK/VbRlZMZiUgPgF8Scd
+ BInZOen0kiN+voH8CnSo=
+X-Google-Smtp-Source: AGHT+IFeVdGSd4Y1ZRCNz3OUiqxsUVPZjedabVUe+RqcSWSAusCvErNVEAL+11un++kP3/MeK5lCEg==
+X-Received: by 2002:a05:6000:1842:b0:391:2c09:bdef with SMTP id
+ ffacd0b85a97d-3997f9261d0mr15336360f8f.30.1742942614322; 
+ Tue, 25 Mar 2025 15:43:34 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9b517csm15243394f8f.51.2025.03.25.15.43.27
+ ffacd0b85a97d-3997f9efe61sm15199585f8f.97.2025.03.25.15.43.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Mar 2025 15:43:28 -0700 (PDT)
+ Tue, 25 Mar 2025 15:43:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Thomas Huth <thuth@redhat.com>,
 	qemu-devel@nongnu.org
@@ -82,24 +82,24 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  Bernhard Beschow <shentey@gmail.com>, Hanna Reitz <hreitz@redhat.com>,
  Hao Wu <wuhaotsh@google.com>, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH-for-10.0 03/12] hw/display/dm163: Add description
-Date: Tue, 25 Mar 2025 23:43:01 +0100
-Message-ID: <20250325224310.8785-4-philmd@linaro.org>
+Subject: [PATCH-for-10.0 04/12] hw/dma/i82374: Categorize and add description
+Date: Tue, 25 Mar 2025 23:43:02 +0100
+Message-ID: <20250325224310.8785-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250325224310.8785-1-philmd@linaro.org>
 References: <20250325224310.8785-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,22 +117,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/display/dm163.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/dma/i82374.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/display/dm163.c b/hw/display/dm163.c
-index 75a91f62bd3..f6f0ec0c632 100644
---- a/hw/display/dm163.c
-+++ b/hw/display/dm163.c
-@@ -330,7 +330,7 @@ static void dm163_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     ResettableClass *rc = RESETTABLE_CLASS(klass);
+diff --git a/hw/dma/i82374.c b/hw/dma/i82374.c
+index 9652d47adcd..0bf69ef399b 100644
+--- a/hw/dma/i82374.c
++++ b/hw/dma/i82374.c
+@@ -150,6 +150,8 @@ static void i82374_class_init(ObjectClass *klass, void *data)
+     dc->realize = i82374_realize;
+     dc->vmsd = &vmstate_i82374;
+     device_class_set_props(dc, i82374_properties);
++    dc->desc = "Intel 82374 DMA controller";
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+ }
  
--    dc->desc = "DM163";
-+    dc->desc = "DM163 8x3-channel constant current LED driver";
-     dc->vmsd = &vmstate_dm163;
-     dc->realize = dm163_realize;
-     rc->phases.hold = dm163_reset_hold;
+ static const TypeInfo i82374_info = {
 -- 
 2.47.1
 
