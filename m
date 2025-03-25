@@ -2,86 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590D0A705A0
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 16:56:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B9BA70621
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 17:09:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tx6d6-0005qK-1a; Tue, 25 Mar 2025 11:55:52 -0400
+	id 1tx6of-0004bT-O5; Tue, 25 Mar 2025 12:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx6d3-0005ps-O0
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:55:49 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx6d1-0005yx-UG
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:55:49 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43d07ca6a80so29089465e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 08:55:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742918145; x=1743522945; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uTSRyU7OmmZxDsqp8vpgSBKkvfiWvPzZOW8ib7E9a2o=;
- b=oUMOhmbVswJvNEvy1+LY+Q3vHGJ/M4kgbQvDUyFFman1kQKVc/IkvYBnJK5mBCHwPO
- Y6hOp3riOBSKRd0rWpGyNe5Sb+UTC+uyy58C42iUGMkZK2DPTXhPSFHKF1BqHy5iWqke
- IBfQ/YqEVwpW39/vawH9I68kQZWZG6LfMvULMgviJAVi5U+c2jL0gZIRKla+B5c0HaYm
- q7QDpIM5RIdqpyV5HhPTuWNZKOzc7i/kPjRBHVogV6dIHycAV/zsjUgI0sAn5Ormc8Qn
- /0mmhFlY/go7kmObVeLZPkkpujdHfdgaRvLGo4PhACbeMojtNSccdBbaeCBYdjIx7HuD
- wQgg==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6o8-0004Un-Sj
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:07:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1tx6o2-0007Me-IM
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 12:07:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742918829;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=aPucCJcezmnrMHSlX3SuWvFnIYSF1kQvwN+fpOZv8bc=;
+ b=DHR0501YwRm5+KqcXCTzlspHA9N3ZQSe223X2msLLUG4uUWDTBWsuYOvkw+X+xIiRn2G9n
+ 76Zniy4I1hw9HaViEZWttjD85mw2N/fRM37bALP7P3b8EOdcp2gTsLWgUncphIBZFxYSNf
+ 4x1I2Ulo7WfJoYtceIMfBlR1XbJ47WI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-be4OaaM4PZ2y59Kep1kPZw-1; Tue, 25 Mar 2025 12:05:43 -0400
+X-MC-Unique: be4OaaM4PZ2y59Kep1kPZw-1
+X-Mimecast-MFC-AGG-ID: be4OaaM4PZ2y59Kep1kPZw_1742918742
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3913aea90b4so2205496f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 09:05:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742918145; x=1743522945;
+ d=1e100.net; s=20230601; t=1742918742; x=1743523542;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=uTSRyU7OmmZxDsqp8vpgSBKkvfiWvPzZOW8ib7E9a2o=;
- b=OUUtsM0zmDQEnPqhCy0nonqBLWt27flo8s2dK8G5lKuzxPUGKACMJ5h59I2Hk452Tw
- BlDL2natDML4FS4vWgss/CMv2DSKjZfchgsocBChJyqTSWQ68YdQaw4WF2Wh9/ZxAicH
- DEjHUdiqNgTlVtnJ5F+/UXXNFbF72bF3sWHlKr6f3sZ8XeOGCPwDrWiYAVrPNWnTE5VW
- jekh9gCsy+viqLmC9d9g7q6Ku0TJpa6vtnUsVqdJNK25JIWLm6Lqe2PycXLHXNmUanvQ
- IUtXz7IeYv6yyts/WRz0qdGnWq6VmT0+XGgvv9v4wR17JgW+0kh+sqS1cApGvQSUvLyK
- mhPA==
-X-Gm-Message-State: AOJu0YzmUiGtCBfJIWOWmaHh6u4dZ5STt6O+lxe1ljo945krOkknRVx2
- qed49an2YsTE1ZWwg4FxwpyYDyse/xeDigegbhrwQSar4QvfKlV/TQPqV91AezB1FZp0kRfU3d4
- u
-X-Gm-Gg: ASbGncvG0GkO9+ygTzOK/wq9CpBiAuldlFGeaNKGTc5lZXcuA2fV4rZUDQdjt5i0Lwn
- WWJusWQaurO0CD1EeTVndElUtFXil/QY3gzWE4XTTy6M45VUY6UOj9fBi/9QqAyBWDbM0DQwClt
- aHBAP6muCau2ePV+XWOr916RyTy36PHeGP2cymZRy4Jz1/wqWPUI4MbxmvPpPb7Hi21qTRJJLRI
- 1vZoFybJlgJzXlqFuzCJZooqFDO4sBuSwz6h2drct86aStRdJhuRVMqBcXSgIPfJkHcs38Cu2Yq
- KZaNwl934GPfJD0obInLcXbH6WREcA0xsuzc147Ra/V+UtmRidyo8ySQSXFbpkFelnb0vJDuAIO
- lXZgnDjUDzEYAj5CzlAuTObkUa9gNEg==
-X-Google-Smtp-Source: AGHT+IFFvzhxS//Ekl0XCK+aH+qOMTvGsWVyfqXD3XSW/v/yAR8SgzlXv1hSrbY4YPwRFHqhvyeClA==
-X-Received: by 2002:a05:6000:2b10:b0:391:401f:bfd8 with SMTP id
- ffacd0b85a97d-3997f939a54mr11684861f8f.55.1742918145474; 
- Tue, 25 Mar 2025 08:55:45 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9eff6esm14028941f8f.100.2025.03.25.08.55.44
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Mar 2025 08:55:44 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Anton Johansson <anjo@rev.ng>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1] gdbstub/helpers: Remove ldtul_p() macro definitions
-Date: Tue, 25 Mar 2025 16:55:43 +0100
-Message-ID: <20250325155543.95684-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
+ bh=aPucCJcezmnrMHSlX3SuWvFnIYSF1kQvwN+fpOZv8bc=;
+ b=VddIMfTVxb19sbNUFKRxffm7nfm684IugGcbn4KrwMeasE7tYm7q6ax0MpL9OOHBS4
+ pWuIGQIPssmb2Y9CWSryOZr9wJsrcdbrJBTGqUE7FMPlwe55yLDrCMxCf36LhXLHm5Fh
+ c6qYBNkRgP0++DDBOUpjyNGRdePKm26g+89n6dBG2OUSRFMIGdTXVMSEwe+oVPMz3JN1
+ 3w50+0gWqknhOnQmB1GvO9s7wMKpe4/jp07NV7iCjSpcMbaQCa5UuORVnqGSB8oXXnM1
+ nPU1+7NXyLiWo/dkfzyEvzQ6Np53HSyzDlEvj9rAYoOOFuJF0+eb+ev532ZU64N7Vn4Y
+ YeUg==
+X-Gm-Message-State: AOJu0Yw8N9dQgszPIxXQHoAhal32Gv64Ggq7hLzsuIfqBI6z7tFS/EH/
+ 8hfWb54KU7LWbyvsmtmEhQVqTgWxw4A2M/PLZYhvmOojTPnOerYRkve+lPHLkpEwiYv5aMnr4AK
+ 9PXJQtUk7rFlxv1hmdvrrThv/V853qiltFyIlv7cWjD++MePl7tly
+X-Gm-Gg: ASbGnct54pDRJCfVaDQEw80D4nMn49SnAlRnasOehLBtg5dborBpMae8khed9+d/yvf
+ AWGwncFngCzazNmleOSYDKCV/ni8fulJ7GDWdl9clLtz+PBzhvbhYP9K+85c8q3U1iscRiZfQZm
+ JMYwIRfMQMTc07TRJU/nzWrxWmuvoMcU3ld9E11+oZOF9DZ5O/VI7OelYyaDjb/jXdRaEtfiAP6
+ LdIEVvKsbJ261C/j/7t9NM72CCJGbi7ZDm8f9QRyjxCQc8k9f9f8Y2+WJY83dTSDB6+ezQfuCey
+ cFBmHLcGkHKYKho+t3/gr23zDA4LtA6AcFy1UtfsCXJRf1yS9xFGEV9iw7E7G/3ywtI0bXJ1/Q=
+ =
+X-Received: by 2002:a5d:6d09:0:b0:38f:28a1:501e with SMTP id
+ ffacd0b85a97d-3997f8ed9dfmr16321952f8f.8.1742918741681; 
+ Tue, 25 Mar 2025 09:05:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGj2CLKK4M/NmBl8C8a4MTh7WVAbcrdNFmWbdjYrrKO+gE0EQ1LLOtAm+Sz2wbRJVrfQAikbA==
+X-Received: by 2002:a5d:6d09:0:b0:38f:28a1:501e with SMTP id
+ ffacd0b85a97d-3997f8ed9dfmr16321910f8f.8.1742918741294; 
+ Tue, 25 Mar 2025 09:05:41 -0700 (PDT)
+Received: from localhost
+ (p200300cfd74f9db6ee8035b86ef736e5.dip0.t-ipconnect.de.
+ [2003:cf:d74f:9db6:ee80:35b8:6ef7:36e5])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d4fd9e960sm153568945e9.29.2025.03.25.09.05.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Mar 2025 09:05:40 -0700 (PDT)
+From: Hanna Czenczek <hreitz@redhat.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: [PATCH 00/15] export/fuse: Use coroutines and multi-threading
+Date: Tue, 25 Mar 2025 17:05:29 +0100
+Message-ID: <20250325160529.117543-1-hreitz@redhat.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,37 +106,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are no more use of ldtul_p() in the code base,
-remove the definitions.
+Hi,
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-Based-on:
-- https://lore.kernel.org/qemu-devel/20250325154058.92735-6-philmd@linaro.org/ (mips)
-- https://lore.kernel.org/qemu-devel/20250325154528.93845-1-philmd@linaro.org/ (x86)
-- https://lore.kernel.org/qemu-devel/20250325154913.95283-1-philmd@linaro.org/ (riscv)
----
- include/gdbstub/helpers.h | 2 --
- 1 file changed, 2 deletions(-)
+This series first contains some two bug fix patches (one more than the
+other), then a couple of small modifications to prepare for the big
+ones:
 
-diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
-index 6f7cc48adcb..3d4a13b919c 100644
---- a/include/gdbstub/helpers.h
-+++ b/include/gdbstub/helpers.h
-@@ -94,12 +94,10 @@ static inline uint8_t *gdb_get_reg_ptr(GByteArray *buf, int len)
- 
- #if TARGET_LONG_BITS == 64
- #define gdb_get_regl(buf, val) gdb_get_reg64(buf, val)
--#define ldtul_p(addr) ldq_p(addr)
- #define ldtul_le_p(addr) ldq_le_p(addr)
- #define ldtul_be_p(addr) ldq_be_p(addr)
- #else
- #define gdb_get_regl(buf, val) gdb_get_reg32(buf, val)
--#define ldtul_p(addr) ldl_p(addr)
- #define ldtul_le_p(addr) ldl_le_p(addr)
- #define ldtul_be_p(addr) ldl_be_p(addr)
- #endif
+We remove libfuse from the request processing path, only using it for
+mounting.  This does not really have a performance impact (but see the
+benchmark results on that patch’s commit message), but it allows me to
+sleep easier when it comes to concurrency, because I don’t know what
+guarantees libfuse makes for coroutine concurrency.
+
+In general, I just don’t feel that libfuse is really the best choice for
+us: It seems primarily designed for projects that only provide a
+filesystem, and nothing else, i.e. it provides a variety of main loops
+and you’re supposed to use them.  QEMU however has its own main loop and
+event processing, so the opacity of libfuse’s request processing makes
+me uneasy.  Also, FUSE request parsing is not that hard.
+
+Then, this series makes request processing run in coroutines.
+
+Finally, it adds FUSE multi-threading (i.e. one FUSE FD per I/O thread).
+
+
+Hanna Czenczek (15):
+  fuse: Copy write buffer content before polling
+  fuse: Ensure init clean-up even with error_fatal
+  fuse: Remove superfluous empty line
+  fuse: Explicitly set inode ID to 1
+  fuse: Change setup_... to mount_fuse_export()
+  fuse: Fix mount options
+  fuse: Set direct_io and parallel_direct_writes
+  fuse: Introduce fuse_{at,de}tach_handlers()
+  fuse: Introduce fuse_{inc,dec}_in_flight()
+  fuse: Add halted flag
+  fuse: Manually process requests (without libfuse)
+  fuse: Reduce max read size
+  fuse: Process requests in coroutines
+  fuse: Implement multi-threading
+  fuse: Increase MAX_WRITE_SIZE with a second buffer
+
+ qapi/block-export.json     |    8 +-
+ block/export/fuse.c        | 1227 ++++++++++++++++++++++++++++--------
+ tests/qemu-iotests/308     |    4 +-
+ tests/qemu-iotests/308.out |    5 +-
+ 4 files changed, 965 insertions(+), 279 deletions(-)
+
 -- 
-2.47.1
+2.48.1
 
 
