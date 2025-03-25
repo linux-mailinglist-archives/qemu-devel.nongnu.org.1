@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EAD4A6E80D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C42EEA6E80F
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:39:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twtEd-0001aF-Ck; Mon, 24 Mar 2025 21:37:43 -0400
+	id 1twtEe-0001ao-To; Mon, 24 Mar 2025 21:37:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEa-0001ZP-N0
+ id 1twtEb-0001Ze-Pd
  for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:41 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEU-0007QY-Bk
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:40 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2260c915749so66296455ad.3
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:31 -0700 (PDT)
+ id 1twtEY-0007Qj-9i
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:41 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2240b4de12bso26594005ad.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742866650; x=1743471450; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742866652; x=1743471452; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UwgoocbzyjIZFw5YoMLGSPLzvZLOD/sl0xS6wYzFato=;
- b=db0Wz4JTHHzS3bBsugv0W4X7JsvA2mqYEsoox17Nnovb5AqbGQhRG35RaGb9G8Q8tl
- VLVsij35YdfPjko49lusxWXU15LY87yLsHTPosNueP+CC1RkKX9qojPSARV6ihOevzZ8
- veLB3WzsE+RqP1TeSfic4O6iiVrX+a4IeLpVmupFtI1TPJaiblgNd1jkxNCYMyg+6YAB
- KNxcFybODpbI7hsI2XSdfGwOTEIB0G8OxoL9Swt8s+O014QRKFVdS1q8NJnU9vCVFdYv
- jKYuvMlIqt3j2AwWdG5cjMbMRyR2b10qFzEMe7aMS3FiH7NyneWv1LgrfCAk56y7WR2E
- Q6eA==
+ bh=PdIuuyzjE10djLKABnFHUca/VobMzDkIZQ/hl9k6w4Q=;
+ b=gIL39EQouNygW9Feru1ohsxoKsx6Unkd4NI5i5cLX+IrFLdybNa5j+A+nCPRhGMOWq
+ WsAE4p0stZ2AhbbY7w++a3Ko84e4hoEg4Mobc7vwD8zVBBbklSHpXG2vjZa37IBMlFTL
+ sjou5cf1gurcUhGhhZIIjiYlIGpxSXEPuKGRCPuCU8KFETp+lXbGGdffyJW5gt61Jci3
+ +xwgcIhQdyOzAj1M2PEpc92RKD/3xJys5twXxtoqDX9OHYdLxYBU7L2RxICjmuRGQK+x
+ TtdqOnLE25Yj79J0AXxQxrU4TPyaZxUJ0vSDvmj6QFKK8UJ0YXjpjRTBnb5xNvuaK/8J
+ RzeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742866650; x=1743471450;
+ d=1e100.net; s=20230601; t=1742866652; x=1743471452;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UwgoocbzyjIZFw5YoMLGSPLzvZLOD/sl0xS6wYzFato=;
- b=VhR7+vKGVjRavN5EAGcf51YZdH37OiyF8oUvHpgw0EfGBSORfSgMsxrw/bP6J/xbsO
- l5kxRxrrZMH4lxorFo8VxVxtudbwqxivS6wIe/IkpaFK4HouwC8L5L3niABlREO7h8hA
- MRlL9Ksvt5XU8dtsZdu8fiVYawZrDkUgqKwKDpjcTZvEJjqKgK+a1CGkRti3IwbaPOkU
- ImNZgOwEt/WuVE3fA7pXa1/f5TX6nnh36MYhYWsGN/p2tE7k8iPVAz/mL6dD3XjDFcnI
- MpK4oG0faOBpTkax/ngR8QaGFL4SCmtBG8Mpwf2vE58rAOxLifyoLrAeQe5rYLv/TTCZ
- pWIg==
+ bh=PdIuuyzjE10djLKABnFHUca/VobMzDkIZQ/hl9k6w4Q=;
+ b=uUWlqSHqmHEMJ7NeN2IMZnEgGDXlq7HSiPl4FgqAR6kVTFO2DNYPw1vfQfyha0tb8l
+ BaMgYq6744gJ5rZLuiPtSB7VcUOO/kNSsgi2/NyBttoPgfQpqYuN7gQP7Lbpg74LiIG+
+ N1iYmm9TLHoDfDRLo2f1VSRsyj8QP1drBpMBQs4OMWCnl4WQGgC8CttBPkA7WrU/p44M
+ bVUzAJOIfDdqn3hSiU/4cPvQMUfKn4WyrZFLQem/phXz6rkefZ3mvVJ0Nn/SahH0+Cnt
+ Q2A/lbRpNQ3xOjifb9rANEbRA91GcXgCYoIReYfG4m3tlbEMhR/7D8WcCwi6snCItsSf
+ oGEA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXc/0U6c1ClcEs66bASj5vbnORxkRXo4SaxwRsIukk8QEELEbq9JV62TAvTYJp/yajQAcwYd278v3ys@nongnu.org
-X-Gm-Message-State: AOJu0Yx1R6nkZS2pBTDrATKnepY/zaelAT8vBrpcs1pTd6EEiGEYCTSl
- xgQiWqy7tJSWFO3XeYPuSKzAFXGWsVZjral/NIR5El8QUh4QmN1Y6+mYAJ78Cs8QLuWKobWbGWc
- T6rU=
-X-Gm-Gg: ASbGncuvyYMP0h5MG+b2xvZD1CxOLT9hTLkbJQ3tZSLaZkGFJXfd0z0C4qk2/8DhvZi
- SxK+5BoY+jCFoXtZSCuaQHqiIjKTdx6r0NMSiasTfktdW01aCLVYB1kfw3TLPWePOp0GNTZCb96
- qP4+mOgoYAT1u3+7tW1mdnTpyJr8+f9neFOjF+P/NWgqINZO8G9IpbBuMtiBBwMIz5pc9aJXENH
- ThPoiy5suo750vt8qCUf9X2TGWZ+9ctb/iLcHU/hzMCJZvTq8XLE0qRTRVnzV375a2W7VOaIHq9
- CTsf+qEWt8nhpaRs2ujSCEcHW2YvSVHLfOuL5eba8PaLhKEN1o9d2tS0nw==
-X-Google-Smtp-Source: AGHT+IHjEpHCQ0H2gpHkBwhU12Hh3f1pvPqq29o3qNn2s8Hc78qWYTm1QwX5L0b8zIxH2zexZQbfDA==
-X-Received: by 2002:a05:6a00:2316:b0:736:3fa8:cf7b with SMTP id
- d2e1a72fcca58-739059a347cmr24165122b3a.13.1742866650335; 
- Mon, 24 Mar 2025 18:37:30 -0700 (PDT)
+ AJvYcCVHM6RPUyty7yB/VaIodtkvumqV0Xdk//5LOJtbKEwfRn/QCtIbk7N0kjyqYL1D8Ou/tk22ANKUhzu7@nongnu.org
+X-Gm-Message-State: AOJu0Yw1q1AuLpLAGxEYiOEkEI6PObHZ2UiH9UwZ/6sdNf4y6QGxY71j
+ oW0UOqZE8r1C4FpKZykPLYbT6/tBT8u400KYHgDjdaqJdtS8whzFHUIdRQ9X+ac=
+X-Gm-Gg: ASbGncvmixgnggn29JL/APl2kwu0dqn50lLFxWecBwoFpSq8v3XkbTmSQ70+oc/+J9r
+ ah9DsJsIepKpQB7Nu6qn69YrJzpeBdWBN0dWOpM4UREwIuSqcqScqIRaj1A+R5EDpCfC0cYed/u
+ qRz8XhI4uef2ML1t5t4vpUMRYAMfVIO22hfwUYRUwYvF22Qxc1OhE+gYx2Cb0vfpkW8CVnalXfq
+ Z8D6wosD3wnHN9wjZrdSoIPQzEYpY1CfFRUaLO0WvVPGPhECI8oG8uBBFtH6Znv0N3KFtYvZWrR
+ RgHvFjmiWBScxq+jub3/HXOFXrhl51FP5jtLtiIBFagRXBV3bEcuyg1cuvYLV4GeMKw0
+X-Google-Smtp-Source: AGHT+IGbUvvMCBthX6qLdWTxiDMXFJQ5zTF7lLjWQwRSvA9e4uCV/Gza3enG+chm0Jn3eMp6/t1aXg==
+X-Received: by 2002:a05:6a00:4648:b0:736:a973:748 with SMTP id
+ d2e1a72fcca58-73905a2515emr21873570b3a.22.1742866651627; 
+ Mon, 24 Mar 2025 18:37:31 -0700 (PDT)
 Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73905fa38e1sm8784770b3a.35.2025.03.24.18.37.29
+ d2e1a72fcca58-73905fa38e1sm8784770b3a.35.2025.03.24.18.37.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Mar 2025 18:37:29 -0700 (PDT)
-Message-ID: <b07b3853-ca39-4098-ac9e-56a3ea6b508e@linaro.org>
-Date: Mon, 24 Mar 2025 18:24:10 -0700
+ Mon, 24 Mar 2025 18:37:31 -0700 (PDT)
+Message-ID: <76becbf8-650c-4435-8719-4083c5a7c6ba@linaro.org>
+Date: Mon, 24 Mar 2025 18:25:17 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/17] target/avr: Enable TARGET_PAGE_BITS_VARY
+Subject: Re: [PATCH 15/17] hw/avr: Pass mcu_type to class_base_init via
+ .class_data
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com, philmd@linaro.org
 References: <20250323173730.3213964-1-richard.henderson@linaro.org>
- <20250323173730.3213964-18-richard.henderson@linaro.org>
+ <20250323173730.3213964-16-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250323173730.3213964-18-richard.henderson@linaro.org>
+In-Reply-To: <20250323173730.3213964-16-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,16 +103,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/23/25 10:37, Richard Henderson wrote:
-> Increase TARGET_PHYS_ADDR_SPACE_BITS to allow flexibility in the page
-> size without triggering an assert.  Select the page size based on the
-> size of sram.  This leaves sram on exactly one page and minimizes the
-> number of pages required to span the flash.
+> We want to be able to do more common work on MachineClass.
+> Pass the class name as a string in .class_data.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/avr/cpu-param.h | 11 +++++++++--
->   hw/avr/arduino.c       | 15 +++++++++++++++
->   2 files changed, 24 insertions(+), 2 deletions(-)
+>   hw/avr/arduino.c | 16 ++++++++++++----
+>   1 file changed, 12 insertions(+), 4 deletions(-)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
