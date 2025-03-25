@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50DF9A70D3A
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:49:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8811BA70D3C
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:49:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txD0f-00030m-Mh; Tue, 25 Mar 2025 18:44:37 -0400
+	id 1txD0d-0002xI-TD; Tue, 25 Mar 2025 18:44:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1txD0L-0001hd-34
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:17 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1txD0K-0001lj-R3
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:16 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1txD0G-00074n-TO
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:15 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-22435603572so114894755ad.1
+ id 1txD0I-000756-Au
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:16 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-227d6b530d8so51673125ad.3
  for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:44:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742942651; x=1743547451; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742942652; x=1743547452; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DUF+4Y4/PqO50T2IhlnvWA6B/DIxYokH9Y5du5vjVAo=;
- b=bgPB6yiFVH5jS42UV3b0FnAH686e/n5E9eZRTD8LuUTyESImhNy703ucuErOfWC35+
- /4Tqr+Y9pdRa+3/1bzp6rDR3GXfxv/7neBGJJvRvrQZA1HKE7qd4qIk9F/KnuVvU4aV2
- A51enqWaoWN2YA/CFVgIosiLnEyt98RgvJ7aaEhw5GC4yvXKk+EoXYB14DmChEcj+Y0B
- NVLE5hU7QcOWxGxEYKmmfAJV7HMxydpu1TYpTrK5xUsEo33tw11mvNaA2J6jDrNRGUUs
- FWkwRVkRiUUY19kEYNFOeisPwwlThPf1VzUxRGtG0K9s3KE8/ct+UAQ3h3P2sAjZvj5z
- 2DmA==
+ bh=my/amCjVPulkTASqhfbzg7kjMYbxalxX57V5rEPDp7E=;
+ b=cqWuDF+2YwWSWcnajvmr+G2JCtfnDSgAlP7t0wkOBtKkuJeW/PDHgGU4lzxk2DFzIq
+ pFoeoHeH21UrovO/v6Ip9Uceg+rN6OIqzFbsL9y3x07+JzRK4Bkq83fXcR16hV743MKh
+ aXrmwBo2B4eavTvFxXkAOJIuCQ3menhWlWHjsr2UhAnGSeC0955obO99S/AQum9qPc8E
+ vtSTwBEl+NelcdcbrcFV1I03QWGtJNs5qiLR5Qbl0748z6mtbFDhzTRPJThqo8uR+0dz
+ vcYe2rdWBnsHmnA23AmiGboZ0YdD+V40AsXx4pfgYXw5WU9Xzkwsu3MJpexs929IQqKp
+ YHgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742942651; x=1743547451;
+ d=1e100.net; s=20230601; t=1742942652; x=1743547452;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DUF+4Y4/PqO50T2IhlnvWA6B/DIxYokH9Y5du5vjVAo=;
- b=dbgaLI2Y4JBj9ILEDlfLoDzlq0GYZsa4mZwO5WYMOrC5hVAOOEvBugwd6nc+dFCIVR
- 8bn8vQcZHTPYBpVhBc1N9SlAkyv1QQGUfm6vz5LheESxklUvVLiq3qlvhHdG9kPUAYYb
- tHiwSlwiVHDegmSgrqTg+NV/XhOiQeg6yay3Kv5LSfDuUopA8Pb4nRNNRYCY8zAmu2o7
- M0I+Lxwwm9P5cfmrFjtDCBgH2/tJqJKYcM4BlI1/Ymr4+sJxP29dQujvmkmKliJoYlXj
- g1+Ql2KDRTa6ESSqWV3MIhSl8mSMOzi+D9lbUuTuoYqY2ohD15ZC+fQTkCizdhPBSINb
- Q/OQ==
-X-Gm-Message-State: AOJu0YwzTYLdAWIoWxt/zUSmF7XPudVaDmOKtOVa3mvCkL9i3lhxk8ql
- XtyyX3q8rNSJ8AcoqepyI/RlWu73+cVizXa9EV9iDCUKvnQONPap0HjClnkbepHSqLWAf6JEus6
- b
-X-Gm-Gg: ASbGncuiNSdGiYYUVZFnbspxZv+vsGtoYXuXNIPkMeCNVcfoo5aA8qskyRHNa6+gcu+
- 9b4ebir+vPbYcyu+V6YcchBaq5ouUyWSW0+LAQR3jKAwKP48JrhJgkwE5q4VwD4sjxWPWpf/nPH
- u73IMOzm4VTrozZ7KhqOmtCg/kL9gag8gCMJ+edShOle9Ghvlt6L1xD7EGVa6M+KM6HbA9b73PP
- vHz0VBdO+VCojSZOy5g6f7qRiLtPg3tgf3HJtzQkqB4TIweBejTKGDaiSgllwdVz1BX8xDsqVhf
- I0HU21bzxn6TmjIcunbIbmgMBaX8Ae7EE2/DHvsdDwP7F3KfO+1uE9fLqhYL2F+A+SB4nts4uBr
- D
-X-Google-Smtp-Source: AGHT+IF+O3jqSfhskRIrF/LYeAaFY9DjONIdRIEXeBM1gppUB3NNc4GfWGD4AezYeBzPHfXGTz9wcQ==
-X-Received: by 2002:a05:6a00:3a1e:b0:736:3954:d78c with SMTP id
- d2e1a72fcca58-739059b3e40mr28359477b3a.6.1742942651220; 
+ bh=my/amCjVPulkTASqhfbzg7kjMYbxalxX57V5rEPDp7E=;
+ b=RZGnqLJDmwkOM0SrHcPDAh+hf8gcbycdy1047wisSd7x6d1XmEckNBwi+1ufDLXi3s
+ 4/6IPDl7B0HJMTPxM4LsCsXQPhGMnNfxw84jV6nm0SEGr9beycUiK7aplLmnHu/XUWw2
+ zeVTvVTYGVDUZP2oJ7bWmzxtD1JVD7gYaeSPOqXNIznNOIjKX777sQuUsdUaa7FupZPd
+ C7eQkP1hbFWyk07uvLeM2Ssi9yOf/JTthNCdbgNVHtg+PlE/tnDasf9hWaxoNORVfU+G
+ yPgC4CfLXRFmv5lIYM3QCoO32Gr4spctEW4h+ijXBZImVWekzeV6Z3Ot255/5F/6exHs
+ P02w==
+X-Gm-Message-State: AOJu0YyJY8ifupy6ZNfG9SYZhh5B5MaLFa0AsPRlaIZBqKDs8fV6pO4N
+ n4JktylLCJAFDjt3Bj3jyqDDjTJ/JLg2SUEdYs4AqNfdUbDyHROu/9sWq8koKzoUUGUy4MMqQG9
+ 7
+X-Gm-Gg: ASbGncvuNJNdt3dUh4SSDL/PDSf2T0USdcBB/aoJ32/5KSc/BziYK4KGX1dfkRhvPkl
+ X+6list+Zas53OReo/MqIr4/9+b42k4iYJCRY9nTiOQ8uY1BkXaYFmnrpA+TT57PBYmMp3dUxrP
+ pI3uoiRiFezv+HbBg4zY2ESiL+R4NhrzFgAYIVlln3H78vWRcsn105MoWC34rrrFJOQUkPXiADb
+ MapReLOJ7o6eNciZUrTm1gCFCGdLlLP87rIZ/GyhfQ1EauvE0R4KTnQkAjo0nlz0Ubd073HHZfX
+ Z2OKPFbpuXdK5u8BZVa1zZVQXiz0NKa8/dAsYz76DtdhHRzmAfeOjMWPHm/sUKNp/tPVOwF72Oo
+ 7M3BaeqpKOpA=
+X-Google-Smtp-Source: AGHT+IEszGH0V/rAOIia344CQu0LmDGG4ehRgPGlgICY3wuExP5TSQdw9x22gU+E54/rb4XuSFp8TQ==
+X-Received: by 2002:a05:6a20:7347:b0:1ee:e2ac:5159 with SMTP id
+ adf61e73a8af0-1fe42f53152mr31245781637.19.1742942651963; 
  Tue, 25 Mar 2025 15:44:11 -0700 (PDT)
 Received: from stoup.. (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7390611d3d6sm11111321b3a.94.2025.03.25.15.44.10
+ d2e1a72fcca58-7390611d3d6sm11111321b3a.94.2025.03.25.15.44.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Mar 2025 15:44:10 -0700 (PDT)
+ Tue, 25 Mar 2025 15:44:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com,
 	philmd@linaro.org,
 	pierrick.bouvier@linaro.org
-Subject: [PATCH v2 09/11] target/avr: Use do_stb in avr_cpu_do_interrupt
-Date: Tue, 25 Mar 2025 15:44:01 -0700
-Message-ID: <20250325224403.4011975-10-richard.henderson@linaro.org>
+Subject: [PATCH v2 10/11] hw/avr: Prepare for TARGET_PAGE_SIZE > 256
+Date: Tue, 25 Mar 2025 15:44:02 -0700
+Message-ID: <20250325224403.4011975-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250325224403.4011975-1-richard.henderson@linaro.org>
 References: <20250325224403.4011975-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,38 +100,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+If i/o does not cover the entire first page, allocate a portion
+of ram as an i/o device, so that the entire first page is i/o.
+
+While memory_region_init_ram_device_ptr is happy to allocate
+the RAMBlock, it does not register the ram for migration.
+Do this by hand.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/avr/helper.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ hw/avr/atmega.h |  1 +
+ hw/avr/atmega.c | 39 ++++++++++++++++++++++++++++++++-------
+ 2 files changed, 33 insertions(+), 7 deletions(-)
 
-diff --git a/target/avr/helper.c b/target/avr/helper.c
-index 7d6954ec26..f23fa3e8ba 100644
---- a/target/avr/helper.c
-+++ b/target/avr/helper.c
-@@ -88,14 +88,14 @@ void avr_cpu_do_interrupt(CPUState *cs)
-     }
+diff --git a/hw/avr/atmega.h b/hw/avr/atmega.h
+index a99ee15c7e..9ac4678231 100644
+--- a/hw/avr/atmega.h
++++ b/hw/avr/atmega.h
+@@ -41,6 +41,7 @@ struct AtmegaMcuState {
+     MemoryRegion flash;
+     MemoryRegion eeprom;
+     MemoryRegion sram;
++    MemoryRegion sram_io;
+     DeviceState *io;
+     AVRMaskState pwr[POWER_MAX];
+     AVRUsartState usart[USART_MAX];
+diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
+index f6844bf118..11fab184de 100644
+--- a/hw/avr/atmega.c
++++ b/hw/avr/atmega.c
+@@ -19,6 +19,7 @@
+ #include "hw/sysbus.h"
+ #include "qom/object.h"
+ #include "hw/misc/unimp.h"
++#include "migration/vmstate.h"
+ #include "atmega.h"
  
-     if (avr_feature(env, AVR_FEATURE_3_BYTE_PC)) {
--        cpu_stb_data(env, env->sp--, (ret & 0x0000ff));
--        cpu_stb_data(env, env->sp--, (ret & 0x00ff00) >> 8);
--        cpu_stb_data(env, env->sp--, (ret & 0xff0000) >> 16);
-+        do_stb(env, env->sp--, ret, 0);
-+        do_stb(env, env->sp--, ret >> 8, 0);
-+        do_stb(env, env->sp--, ret >> 16, 0);
-     } else if (avr_feature(env, AVR_FEATURE_2_BYTE_PC)) {
--        cpu_stb_data(env, env->sp--, (ret & 0x0000ff));
--        cpu_stb_data(env, env->sp--, (ret & 0x00ff00) >> 8);
-+        do_stb(env, env->sp--, ret, 0);
-+        do_stb(env, env->sp--, ret >> 8, 0);
-     } else {
--        cpu_stb_data(env, env->sp--, (ret & 0x0000ff));
-+        do_stb(env, env->sp--, ret, 0);
-     }
+ enum AtmegaPeripheral {
+@@ -224,8 +225,6 @@ static void atmega_realize(DeviceState *dev, Error **errp)
+     char *devname;
+     size_t i;
  
-     env->pc_w = base + vector * size;
+-    assert(mc->io_size <= 0x200);
+-
+     if (!s->xtal_freq_hz) {
+         error_setg(errp, "\"xtal-frequency-hz\" property must be provided.");
+         return;
+@@ -240,11 +239,37 @@ static void atmega_realize(DeviceState *dev, Error **errp)
+     qdev_realize(DEVICE(&s->cpu), NULL, &error_abort);
+     cpudev = DEVICE(&s->cpu);
+ 
+-    /* SRAM */
+-    memory_region_init_ram(&s->sram, OBJECT(dev), "sram", mc->sram_size,
+-                           &error_abort);
+-    memory_region_add_subregion(get_system_memory(),
+-                                OFFSET_DATA + mc->io_size, &s->sram);
++    /*
++     * SRAM
++     *
++     * Softmmu is not able mix i/o and ram on the same page.
++     * Therefore in all cases, the first page exclusively contains i/o.
++     *
++     * If the MCU's i/o region matches the page size, then we can simply
++     * allocate all ram starting at the second page.  Otherwise, we must
++     * allocate some ram as i/o to complete the first page.
++     */
++    assert(mc->io_size == 0x100 || mc->io_size == 0x200);
++    if (mc->io_size >= TARGET_PAGE_SIZE) {
++        memory_region_init_ram(&s->sram, OBJECT(dev), "sram", mc->sram_size,
++                               &error_abort);
++        memory_region_add_subregion(get_system_memory(),
++                                    OFFSET_DATA + mc->io_size, &s->sram);
++    } else {
++        int sram_io_size = TARGET_PAGE_SIZE - mc->io_size;
++        void *sram_io_mem = g_malloc0(sram_io_size);
++
++        memory_region_init_ram_device_ptr(&s->sram_io, OBJECT(dev), "sram-as-io",
++                                          sram_io_size, sram_io_mem);
++        memory_region_add_subregion(get_system_memory(),
++                                    OFFSET_DATA + mc->io_size, &s->sram_io);
++        vmstate_register_ram(&s->sram_io, dev);
++
++        memory_region_init_ram(&s->sram, OBJECT(dev), "sram",
++                               mc->sram_size - sram_io_size, &error_abort);
++        memory_region_add_subregion(get_system_memory(),
++                                    OFFSET_DATA + TARGET_PAGE_SIZE, &s->sram);
++    }
+ 
+     /* Flash */
+     memory_region_init_rom(&s->flash, OBJECT(dev),
 -- 
 2.43.0
 
