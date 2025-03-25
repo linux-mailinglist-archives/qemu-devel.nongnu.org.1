@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421A7A6E9D0
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8EAA6E9CB
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:52:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twy9n-0006G8-58; Tue, 25 Mar 2025 02:53:03 -0400
+	id 1twy7o-0004dx-WD; Tue, 25 Mar 2025 02:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy8q-0005Mb-Qh; Tue, 25 Mar 2025 02:52:05 -0400
+ id 1twy7k-0004Zv-Ia; Tue, 25 Mar 2025 02:50:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy8p-0001vL-19; Tue, 25 Mar 2025 02:52:04 -0400
+ id 1twy7i-0001eX-Fj; Tue, 25 Mar 2025 02:50:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CAF57107D76;
- Tue, 25 Mar 2025 09:49:33 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id A6B2F107D64;
+ Tue, 25 Mar 2025 09:49:21 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6D9111D5E81;
- Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 496391D5E73;
+ Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id 6C73D5704A; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
+ id 3814E5702E; Tue, 25 Mar 2025 09:50:31 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Joe Komlodi <komlodi@google.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.3 51/69] util/cacheflush: Make first DSB unconditional on
- aarch64
-Date: Tue, 25 Mar 2025 09:50:25 +0300
-Message-Id: <20250325065043.3263864-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Konstantin Shkolnyy <kshk@linux.ibm.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.17 32/34] vdpa: Allow vDPA to work on big-endian machine
+Date: Tue, 25 Mar 2025 09:50:26 +0300
+Message-Id: <20250325065031.3263718-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
-References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
+References: <qemu-stable-7.2.17-20250325094839@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,50 +62,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joe Komlodi <komlodi@google.com>
+From: Konstantin Shkolnyy <kshk@linux.ibm.com>
 
-On ARM hosts with CTR_EL0.DIC and CTR_EL0.IDC set, this would only cause
-an ISB to be executed during cache maintenance, which could lead to QEMU
-executing TBs containing garbage instructions.
+Add .set_vnet_le() function that always returns success, assuming that
+vDPA h/w always implements LE data format. Otherwise, QEMU disables vDPA and
+outputs the message:
+"backend does not support LE vnet headers; falling back on userspace virtio"
 
-This seems to be because the ISB finishes executing instructions and
-flushes the pipeline, but the ISB doesn't guarantee that writes from the
-executed instructions are committed. If a small enough TB is created, it's
-possible that the writes setting up the TB aren't committed by the time the
-TB is executed.
-
-This function is intended to be a port of the gcc implementation
-(https://github.com/gcc-mirror/gcc/blob/85b46d0795ac76bc192cb8f88b646a647acf98c1/libgcc/config/aarch64/sync-cache.c#L67)
-which makes the first DSB unconditional, so we can fix the synchronization
-issue by doing that as well.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 664a79735e4deb1 ("util: Specialize flush_idcache_range for aarch64")
-Signed-off-by: Joe Komlodi <komlodi@google.com>
-Message-id: 20250310203622.1827940-2-komlodi@google.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit e6c38d2ab55d66c74ceade5699e22cabe9058d22)
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit b027f55a994af885a7a498a40373a2dcc2d8b15e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/util/cacheflush.c b/util/cacheflush.c
-index a08906155a..1d12899a39 100644
---- a/util/cacheflush.c
-+++ b/util/cacheflush.c
-@@ -279,9 +279,11 @@ void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
-         for (p = rw & -dcache_lsize; p < rw + len; p += dcache_lsize) {
-             asm volatile("dc\tcvau, %0" : : "r" (p) : "memory");
-         }
--        asm volatile("dsb\tish" : : : "memory");
-     }
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 1b1a27de02..fcc9406a20 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -203,6 +203,18 @@ static bool vhost_vdpa_has_ufo(NetClientState *nc)
  
-+    /* DSB unconditionally to ensure any outstanding writes are committed. */
-+    asm volatile("dsb\tish" : : : "memory");
+ }
+ 
++/*
++ * FIXME: vhost_vdpa doesn't have an API to "set h/w endianness". But it's
++ * reasonable to assume that h/w is LE by default, because LE is what
++ * virtio 1.0 and later ask for. So, this function just says "yes, the h/w is
++ * LE". Otherwise, on a BE machine, higher-level code would mistakely think
++ * the h/w is BE and can't support VDPA for a virtio 1.0 client.
++ */
++static int vhost_vdpa_set_vnet_le(NetClientState *nc, bool enable)
++{
++    return 0;
++}
 +
-     /*
-      * If CTR_EL0.DIC is enabled, Instruction cache cleaning to the Point
-      * of Unification is not required for instruction to data coherence.
+ static bool vhost_vdpa_check_peer_type(NetClientState *nc, ObjectClass *oc,
+                                        Error **errp)
+ {
+@@ -230,6 +242,7 @@ static NetClientInfo net_vhost_vdpa_info = {
+         .cleanup = vhost_vdpa_cleanup,
+         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
+         .has_ufo = vhost_vdpa_has_ufo,
++        .set_vnet_le = vhost_vdpa_set_vnet_le,
+         .check_peer_type = vhost_vdpa_check_peer_type,
+ };
+ 
 -- 
 2.39.5
 
