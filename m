@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5A3A702A3
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 14:49:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13118A70334
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 15:08:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tx4e0-0003j5-EA; Tue, 25 Mar 2025 09:48:40 -0400
+	id 1tx4vy-0007cH-0U; Tue, 25 Mar 2025 10:07:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tx4dr-0003cT-Ah
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 09:48:32 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1tx4vv-0007c3-MP
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 10:07:11 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tx4dp-0005ed-I2
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 09:48:31 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2255003f4c6so107547005ad.0
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 06:48:28 -0700 (PDT)
+ id 1tx4vt-0007rR-95
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 10:07:11 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-227d6b530d8so37719155ad.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 07:07:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742910507; x=1743515307; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742911627; x=1743516427; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Czzon5K/5x/I60Y0Bh+t941XjCpVSTS9Se92DssohBY=;
- b=pUAQVbm1WhDsupAWdcMyX15IVYjHa7ENsxWmi4d7kapx3Hlymt4OrvsQeSSEkfx9ns
- 5p0wtnPyP1mscAQTBOFAF1IGxasJgg2XU4E5B+IFo8H+At0+4OUsZxdw0ZFNi2qQX4uF
- 4AUOanns4WfPxAzUOlIBqOOzxnvvUoMmGuJZD9ZPOiW9ZlnHlKQSdnWM68+Jd6Gvmk+R
- 8NkcLQK2OfVxTCBGiCXu71rRKc0lj9banVaUfzZuF93p+l728iiMNuj68pQroOOvYPDo
- /bhcw7nPy4YR/nSCyRcQ5pQkKXwa6vfJEOguDHXnAL23VMm7ptfYzyIEfeyVfrp101Sq
- Gs/w==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=RbQNz+6OeKZktN9Q3r8BX6Mq5YEh7BfEVEWtdcklxnA=;
+ b=S2+8FQiLEIHovJRRFo/xg4GmbuXCeORBhtnsXgjTGSa49ElVggH7KHklC9909BYGdv
+ 80qjdhv9JJV6Q0G+JiiJRBEaerAZpf92YGUYw2H1lZPk0yYt3Q0YTmK97kKzGGcS+G/G
+ AdUe5aFnYruIUJvR2mtUkJaazNX96baMkyyW6SfzUWLzatp3tg/Ovm1Ls4g2leyRLxC4
+ etDwzqdm58gya5CC5kIWeImBNPml5MRnSgM9osvR7akQ6qSn+TovX1JVDfghzZ54ATPB
+ XIZ72CoKwnhBa1aCgfnsHJuelO+78pcBkVHbUYf9JGzvbBrliWepR4LkLWNssFWeznbZ
+ p3LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742910507; x=1743515307;
+ d=1e100.net; s=20230601; t=1742911627; x=1743516427;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Czzon5K/5x/I60Y0Bh+t941XjCpVSTS9Se92DssohBY=;
- b=CvKhSf+LwZ9UUVUtoIdmZL2IAfh2cPnoY/CqOCUJaAxc8YFp9qZviuf2tB6Wv4v6LL
- TR6RuJheLsy8BgOe3tc4e5+Rko/voZLN0MGhjmh+/Cu8DDuyrpXhw72+t5W4Lwu0pJom
- 8fZuddfgxcN7zci0acS8X05Saq4DKrU4JSQOYfFjUkLEG1cnBcSY7bCAVpP6/GnqgMxx
- 8NYX6DKRB2ywmxmSaU84J1SCUlyudHEnzFwVWs4QS/+h1X1R1KEchvspwfkTSp7StPia
- xp+98KIn/sSPWi6RRYm08kg4FBdXmx0EkxzJ1Z7P/0IbWI7CcKRyAwy2Z/srlJzM/N0w
- dY2w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVOfA9HWnaIfcSf9OEH+RMGUNFlNjlXvSo0A6AkSxUhefHtKX8EsI/nBbaiAOJAEoVrwajtW0wFNeaG@nongnu.org
-X-Gm-Message-State: AOJu0Yx0EHMIYCk92bqeJMIyt/QwAfZpeaKYAIduBW3nLw+fjc30T33m
- 5Eg0dkzfa1eYB7Y02e35lrA0gqwNOy5st0JztGhZMplih70u+Al2QfxfY9U8T80=
-X-Gm-Gg: ASbGnct2w1o5i0oUYpPMoM6ki/GKJBIIB3iEMc/cuGA8JKIh2MiZYa/spUWSjcgp/qM
- voljHKrRJWRuxDuG8wRNkTxAtQAp5VZhxRQWzIQeQaZY5PlDMZbRU5j9WtboZq7USkCaiea7ic4
- v6LWCXIu7k2o1y7qtbL8cHb6In+a/KaCQpPzjZsovW9X8LyaVWp26VgeDffWpGSq2+UNF/neG6l
- /CCVpdS67nzsUjuLwYUG79coFrIdPjG+HKKEsS4mfXIV+rS5WYXQGPlSkoYEbHHFMgZm3o7Mgbr
- 1UzCQSKvVqcvm892pXqLz4vi94dI88jeUJ//VKmLPBPS8C6Sdwc9jrkKswwSsfJD5ODGPEgyuvH
- qieD6fXHn
-X-Google-Smtp-Source: AGHT+IFcdpYS+uKF+J1EgsZI5eiNN9BVElD3ZDRfyrrFJLZQviH4BtDOOL8LpWju8ZmZttT4DsLLWA==
-X-Received: by 2002:a05:6a21:4603:b0:1ee:a914:1d64 with SMTP id
- adf61e73a8af0-1fe4300f794mr29581203637.28.1742910507190; 
- Tue, 25 Mar 2025 06:48:27 -0700 (PDT)
+ bh=RbQNz+6OeKZktN9Q3r8BX6Mq5YEh7BfEVEWtdcklxnA=;
+ b=MRKZJxT5/RIqyrEv0jaHt/BHGVWxara6q0K/afIM/nDXE7FPdwGIwVndkuY5hgdL4M
+ LaDV3dqmmyCQeC+gL/6mOxNycZmo/pXVprQZaLS/yczscjGkjlDLXrZrTjp6FgU8D1/f
+ V6UWreezve8cUT0LZysDwRMxj7SdLcH+h2h9PmM9xKi5tRBh6BP76gU1Pe4rfLSWyqIV
+ KaD1gl09hM132RYO1EqT49skmIktcTOWzvlly0iTKXQJK6uxz3xG2+SDXXWfe/5fJicB
+ 52kZZwTcjEGwZL48ze1T1Xe8+yrNi5nY1ScBP3i/FFdpV5zsBUie3sA3a4+kOjNdAIeS
+ 7C4A==
+X-Gm-Message-State: AOJu0YynqKCAMYdfO0mHxi7iEuqU5vVTRXgqk0eoFVCiqV48PWwNt73d
+ MIxVdOj7l9Lp75QhBTMsU0BzMHHJgQlHJkRMkGv7uSXKfG4AQkjg2wpqQoQUIfCCKQA8QHG/lfm
+ u
+X-Gm-Gg: ASbGncvmm0IhHo2apxNK6mAyJQf23toLuVlRWTpzmtxxusaD5P/Kgk/Ij2kMqAVbEad
+ lNrCQZRKtwfwBxZXKxXav/QgfyKKR1YKOSGar/kRg4QE+zp3AwDuRK+4xUBJNvKuhqFUFao5A93
+ El+dpCmgGT9AQA2maxVW+ucEOQdtyljdLIwOhPmqQEuOurQiJ2CiTjOraTJKhhmUDtLIj1lHbmQ
+ nYVGasDaOr5mnsGWagvH4EqTHoGvDHremSptYauBwJMhiQN2WwUJrLCNkhDKRHO+e8FNZhBcnAg
+ U2dO54UmRydfsWAKdNGmjnClEY3zWkg939HbijFTx/ltsmm0fi5K65uEx0efDVlG1nUt3jMGg8i
+ aeF6AiftN
+X-Google-Smtp-Source: AGHT+IFeDl4UgfOcBY8v8su//qy5sCA3uDSUZolZrOdu+5TH4K77wT9yUQcZt5YOKnRjlsbhrIjOKA==
+X-Received: by 2002:aa7:8883:0:b0:736:5753:12f7 with SMTP id
+ d2e1a72fcca58-7390593d41amr29303904b3a.3.1742911627013; 
+ Tue, 25 Mar 2025 07:07:07 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af8a27db581sm9034954a12.8.2025.03.25.06.48.25
+ 41be03b00d2f7-af8a284888bsm9087835a12.46.2025.03.25.07.07.06
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Mar 2025 06:48:26 -0700 (PDT)
-Message-ID: <7df3dc8f-c4ad-47fc-96b7-7ddad3274d51@linaro.org>
-Date: Tue, 25 Mar 2025 06:48:23 -0700
+ Tue, 25 Mar 2025 07:07:06 -0700 (PDT)
+Message-ID: <3776d8fe-f94c-41f2-baba-81c76655703e@linaro.org>
+Date: Tue, 25 Mar 2025 07:07:05 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/17] target/avr: Move cpu register accesses into system
- memory
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: mrolnik@gmail.com, philmd@linaro.org
-References: <20250323173730.3213964-1-richard.henderson@linaro.org>
- <20250323173730.3213964-6-richard.henderson@linaro.org>
- <fcd2d092-f37d-4912-97e2-a55c475e0540@linaro.org>
+Subject: Re: [PATCH-for-10.1 2/4] target/sparc: Restrict SPARC64 specific
+ features
+To: qemu-devel@nongnu.org
+References: <20250325123927.74939-1-philmd@linaro.org>
+ <20250325123927.74939-3-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <fcd2d092-f37d-4912-97e2-a55c475e0540@linaro.org>
+In-Reply-To: <20250325123927.74939-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,21 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/24/25 18:07, Pierrick Bouvier wrote:
-> A simple nit, maybe we could define constant for register names. This way, it can be used 
-> in the two switch for read/access.
+On 3/25/25 05:39, Philippe Mathieu-Daudé wrote:
+> @@ -2750,12 +2752,16 @@ static bool trans_SETHI(DisasContext *dc, arg_SETHI *a)
+>   static bool do_tcc(DisasContext *dc, int cond, int cc,
+>                      int rs1, bool imm, int rs2_or_imm)
+>   {
+> -    int mask = ((dc->def->features & CPU_FEATURE_HYPV) && supervisor(dc)
+> -                ? UA2005_HTRAP_MASK : V8_TRAP_MASK);
+> +    int mask = 0;
+>       DisasCompare cmp;
+>       TCGLabel *lab;
+>       TCGv_i32 trap;
+>   
+> +#ifdef TARGET_SPARC64
+> +    mask = ((dc->def->features & CPU_FEATURE_HYPV) && supervisor(dc))
+> +           ? UA2005_HTRAP_MASK : V8_TRAP_MASK;
+> +#endif
 
-Which constant?
+This is wrong.  The conversion could have been
 
-   - The absolute address (0x58-0x5f)
-   - The i/o port address (0x38-0x3f)
-   - or the region offset (0-7)
+   int mask = V8_TRAP_MASK;
+#ifdef
+   if (HYPV && super) {
+     mask = UA2005_HTRAP_MASK;
+   }
+#endif
 
-?  That's where I got stuck and didn't add such.
+but that's an excellent reason not to have the ifdef at all.
 
-> By the way, are there other architectures where cpu registers are mapped in memory like AVR?
+If you want to hide the features from sparc32, so they don't show up on the command-line, 
+fine.  But I think you want to introduce
 
-Not that I know of.
+#define CPU_FEATURE_HYPV 0
+
+etc for sparc32 to automatically fail such tests as these without further modification.
 
 
 r~
