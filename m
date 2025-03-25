@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0EDA6E808
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB5CA6E80B
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:39:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twtEX-0001Xb-To; Mon, 24 Mar 2025 21:37:37 -0400
+	id 1twtEY-0001YC-MG; Mon, 24 Mar 2025 21:37:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEP-0001W7-IQ
+ id 1twtEQ-0001WB-LA
  for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:31 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1twtEM-0007Pr-FM
- for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:27 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-22403cbb47fso96023825ad.0
- for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:26 -0700 (PDT)
+ id 1twtEN-0007Q3-Ow
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 21:37:30 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-225477548e1so93982975ad.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Mar 2025 18:37:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742866645; x=1743471445; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742866646; x=1743471446; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=73eju5b8PAtVZfnFlHNygTriKdBR5WLNyrjR3QHF0ZA=;
- b=tZhzaiTo2jzCq9rGnjGJvhJlV666Vod6wmDXY6cU27FJHTkI60RGFdee4CAk6TJJlT
- rIpqVBuwa+xY0MIZR/btfJ1mvw7WEQSOA3vhfzE9fmoRs3qPEMXBRIP2UK9b8jNeaJie
- qqa5ZECAuFMHmHCla5OkWtvPYHfyA7iC314RElIBhF34uHXvnHZ03HW2zbTXwGbGVeV5
- xIQT0DURQCPujDLJSbhMS9Ai3LeMb/h1tNg8uIzJuy6VL+fbjeCIW+D7W4H0cIafTxvM
- q2jNK1++ogZ+yuu9WAIpqBvRQGBTHAsVSWu4Ud4FLA8d8KEKr0NUWq87clQvc29fk5Ru
- y5nA==
+ bh=EJWH1JQ3QOsizwZm+yB1jnOQjFplJCPNhPrOKRo7MRc=;
+ b=tOmiZG2NJ9h9JR85+PZdd079n1mFQv7WzlyzHQ3Iywjj1AB7Sv5ad/bhkhqIVPzD8B
+ nBBJJEuzBRX+iv9QgIjBPuYfePXkKQ2a3JltEyRWtLRUL3yJH1w0JGuw8LrovnxlOLtk
+ qq1tSv0IDLsdBEslLY+7GRPxmf8yopL3kL1G0ir3arCItI4gDHiWpoHFzPwvGIBJmgm9
+ 22Bo9I3J/svt5zcAV/7Z6yGvqMVqlqJ6lHPDZak1IHMktStLgDlG3kVfp3Doqq88nFCf
+ VROMWg51yUn61bZ2l6UTFz9I/VNoXU0Ha0MMdo9nu4L2+Gklp7DAPppPfOgTjh+/hhG6
+ zkVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742866645; x=1743471445;
+ d=1e100.net; s=20230601; t=1742866646; x=1743471446;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=73eju5b8PAtVZfnFlHNygTriKdBR5WLNyrjR3QHF0ZA=;
- b=SMiophc+ppBSRLwHKwqi3HIXCcPexWPO8nejiLU9xMKhpTbSJCkmgiKZY9DLz5aiCU
- 9ZZyUzRoOaboGIkwDc0DMvCW4+RpNQAp+3Ndge6lioAbBPQaMzTmOjhqRrDd9wx501P+
- fGMD1v9F+TxenjRHH7k/Y2dltr9V2aAO+7OdPpxr/pVZTGlFg57yEVbTsQTvbTkFm0jX
- rXkLigXJJXAuVojdK/e+A3ZbgP4DBnqiqvy8fEVjPsA5TWm+OUMydo0uIRNnpAcz3Gb4
- WC7XcKBOO9Vr2y/jx0d1zBO1fHI+g+JCf4w0XfDxn0F9RJgr+8oNz2wVFTyH573IbWnq
- ZOvQ==
+ bh=EJWH1JQ3QOsizwZm+yB1jnOQjFplJCPNhPrOKRo7MRc=;
+ b=vnzK3Lv0ShCv+7UGcwcykA3H94abPeDPNE9mN2HOgMiJ23RBfWoMvXTmXK5ZnpZxz6
+ z02g5pAlhkus5rqQtqr+Whydb+7P0xpYQxPdIKx0vJ+f6D2xm+W/QpqvFPOwaDz2jSE8
+ Owh1SQGuj2y/ob+AEP2uSB9NELhhtRC63Mj8uRm5ODh7dOWTk3K3c3nc0Ex4pjrXL2CA
+ jCUIRPDUhokjeAJUZWBLH1xXxLC8tpWy4IbbjiAoLMQ6GcW8AdoY7gz9YEka6onZac/r
+ Yl3AhVJDPmiONlfLOpwKlZ3wuS215Qn85A4EzQG94oewuBGHALWASAKPF8poqxuo7UIC
+ IiXw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVALxw/gwM+AKoKGMpY0CciNkExClo3qxlEtlSfCo+q5dSk6NdB8tb7Z+mH2QGpPVvr3yScl80+f09G@nongnu.org
-X-Gm-Message-State: AOJu0YxpFtZljL0RO+jXEg0p69u3x9Pb4/vHqR7ZhbPAzC6xYvOGxZX4
- mx6l1YEjRxYcnyYSKIQSzmU7AnHn77NpKapoguoGFPcCfA4Z2uJLqNzPsUrarCE=
-X-Gm-Gg: ASbGncs1NAVDAo9jp8fZOYAuDQnJtR56GZf5otB6GIFzY7+nSd5ZmG44tXzfHtuOQTU
- 1TlHq1TY7dnu6op1eFbQkHqoLymcbha3ZrgrDWjdzyoBuu3Jt/PLb6GIkXYi6LGAPyEeTt+CVPx
- 8Kp1x76WLXzth5xXLxh5Ai2fEzKklRS6XXPHms3cX4lsuwuJkaQtlJMr5BS1g9ZzddBOCUf5aCB
- 2buKNFhK0Zqda3J695XMih6DR6c5sg7f4XQqHOsDcRIvu5etBJN6F6XVs7IorsV1EmvcYCuillc
- hizYKEZyaGslV70zA4fLmW2DnL8cdqRx7upZhKfiA0TKyWnSOMRP48x+Jw==
-X-Google-Smtp-Source: AGHT+IHfDbroOS1ZoUL1OayUMtVUZKYQWW/z735eNg/g17WHhtISdjS64F/4Vz3lewH3oj7sLRwJdQ==
-X-Received: by 2002:a05:6a00:3d43:b0:732:2923:b70f with SMTP id
- d2e1a72fcca58-7390599ea49mr25946966b3a.11.1742866644872; 
- Mon, 24 Mar 2025 18:37:24 -0700 (PDT)
+ AJvYcCWIP9Hv8Sv++tA8rFkltBbzkhkr69YkAQUnWb758KVfGA7jGmNJO6ylZaFvcpcE4mnJWkRlZonn2QbL@nongnu.org
+X-Gm-Message-State: AOJu0Yz6tDt2jVf+PYy8kaM3CkAtDwJRskmsgvhwIHgqKPAXAm/BU/ZF
+ 1Saax4jd11fnb3aSfEyprAucvE9NcPTRkwCJGNwyQzQSF7sWun2tKJlg7qGhXOk=
+X-Gm-Gg: ASbGncvMxlzyLsnE5JPwww9f4JTs5X4Mr7k4N5qZqDLaBHrxHzbh2vQ5IeiV5b+qfGE
+ e9ULqJ7JoC8AuA1/gFG868oA7oIHdzl1gbhHXEFIXw72sjqvtPwegXflsjqIjsdIkpmzb65Oo0W
+ IPJ/8ZkvYoV7/lv2zJliynbbvEYanNragPet2R1MfZ0F+Xdm8JQ6Z5F2exe0YATCS3Q3Z0MnmGp
+ NMJiWfmfPjAeAp+Z9VVwf1uVHhIxz68vT9OduDr/LAhHm/YHWWBXVr2l8Gpxv9ZNVHEyBCqNZDG
+ QyYq3prDR5ezJ1m4YG31281N1fU+VdRwYme3LXw9tqBt/n99RWSWVrTLeg==
+X-Google-Smtp-Source: AGHT+IHQVL5P0tb1UfuO+Eo0NH00Psvv9pqc8tos+3iEM+D2zVNr93jTENHvuGDRSzVzlu4yUC/+IQ==
+X-Received: by 2002:a05:6a20:6a1e:b0:1f5:70d8:6a99 with SMTP id
+ adf61e73a8af0-1fe42f08ea1mr23781170637.4.1742866646223; 
+ Mon, 24 Mar 2025 18:37:26 -0700 (PDT)
 Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73906158ef2sm9090422b3a.141.2025.03.24.18.37.23
+ d2e1a72fcca58-73906158ef2sm9090422b3a.141.2025.03.24.18.37.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Mar 2025 18:37:24 -0700 (PDT)
-Message-ID: <7f12053e-b9cf-4182-bbfc-bb96040776ae@linaro.org>
-Date: Mon, 24 Mar 2025 18:20:19 -0700
+ Mon, 24 Mar 2025 18:37:25 -0700 (PDT)
+Message-ID: <d76e4f0c-bbc1-48a4-a841-a38fecc07fcf@linaro.org>
+Date: Mon, 24 Mar 2025 18:20:44 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/17] target/avr: Handle offset_io in helper.c
+Subject: Re: [PATCH 13/17] target/avr: Handle offset_io in avr_cpu_realizefn
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com, philmd@linaro.org
 References: <20250323173730.3213964-1-richard.henderson@linaro.org>
- <20250323173730.3213964-13-richard.henderson@linaro.org>
+ <20250323173730.3213964-14-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250323173730.3213964-13-richard.henderson@linaro.org>
+In-Reply-To: <20250323173730.3213964-14-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,27 +102,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/23/25 10:37, Richard Henderson wrote:
-> Prepare for offset_io being non-zero in do_stb.
-> 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/avr/helper.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   target/avr/cpu.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/target/avr/helper.c b/target/avr/helper.c
-> index 9608e59584..3323f32c22 100644
-> --- a/target/avr/helper.c
-> +++ b/target/avr/helper.c
-> @@ -69,7 +69,8 @@ bool avr_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+> diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+> index e4011004b4..538fcbc215 100644
+> --- a/target/avr/cpu.c
+> +++ b/target/avr/cpu.c
+> @@ -161,12 +161,14 @@ static void avr_cpu_realizefn(DeviceState *dev, Error **errp)
+>       memory_region_init_io(&cpu->cpu_reg1, OBJECT(cpu), &avr_cpu_reg1, env,
+>                             "avr-cpu-reg1", 32);
+>       memory_region_add_subregion(get_system_memory(),
+> -                                OFFSET_DATA, &cpu->cpu_reg1);
+> +                                OFFSET_DATA + cpu->offset_io,
+> +                                &cpu->cpu_reg1);
 >   
->   static void do_stb(CPUAVRState *env, uint32_t addr, uint8_t data, uintptr_t ra)
->   {
-> -    cpu_stb_mmuidx_ra(env, addr, data, MMU_DATA_IDX, ra);
-> +    cpu_stb_mmuidx_ra(env, addr + env_archcpu(env)->offset_io,
-> +                      data, MMU_DATA_IDX, ra);
+>       memory_region_init_io(&cpu->cpu_reg2, OBJECT(cpu), &avr_cpu_reg2, env,
+>                             "avr-cpu-reg2", 8);
+>       memory_region_add_subregion(get_system_memory(),
+> -                                OFFSET_DATA + 0x58, &cpu->cpu_reg2);
+> +                                OFFSET_DATA + cpu->offset_io + 0x58,
+> +                                &cpu->cpu_reg2);
 >   }
 >   
->   void avr_cpu_do_interrupt(CPUState *cs)
+>   static void avr_cpu_set_int(void *opaque, int irq, int level)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
