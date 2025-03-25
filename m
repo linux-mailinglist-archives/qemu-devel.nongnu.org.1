@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89F0A70D38
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B89BA70D26
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:44:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txD0U-0002Ep-2e; Tue, 25 Mar 2025 18:44:26 -0400
+	id 1txD0P-0001wU-IK; Tue, 25 Mar 2025 18:44:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txD0E-0001MP-VS
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:11 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txD0J-0001by-Ae
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:15 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txD0B-000724-7r
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:10 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43cf06eabdaso56970665e9.2
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:44:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txD0G-00074H-By
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:15 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3913b539aabso3423837f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:44:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742942645; x=1743547445; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742942651; x=1743547451; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E9/STNz6nQDMG9kyJBqDX5R7dSuwG1jTpb/QPXoh7r8=;
- b=s2ZTPOPJs+eqBeYXrVm110GfrZ8gpa+8maI8Vfn8yUdQawg+foKJJSYzCGHkpgVYN/
- yai6KOOfE6h8lI75Xzg4TT3iGnDNo9hjiyJLBsvWYjV64lpxWXVEvIuqzQmh5Wa4xxBz
- 5TC88HjQeogoy/zKdPglzdxBP3zageHuWpXs5MMD1cM9QTTOTDC8cpOUN9qSHwPnjq/c
- EyqfmcjEXFWn3oXkvmS4ivdfYKtdoitkTBGUrlkciqRhgRiMwWoOvZxfaMeSZndLQ33W
- A9+OMQtbCSZL63OHfdu7YHVtMYv2aKeDJgDXAHceXPBirNNht0Fje+aDA9XUgmUs4l91
- 9x9Q==
+ bh=DK+uWh0VCKgLvFlRmYU1/+eCsypc6Q9Oe4mzDQEUpcU=;
+ b=uegHxEdlSfbpWcRVBdukpVBBHylh13PVvAPZQVcJbbRjyw2yWCjpAszeIwck3tjbtS
+ 5x7zQcKDEPatHXomGY549ElqZ9Qbstcjpv+dTbVZnLYhi/gVRRl3tt6vfV4RwOru0Mwu
+ f+byCT/Igsw8GdRNXLZPEg+2ZbXEPS2KZNBTfvF/zW6zs4Tb+SFGokvrY6FKkL6izLJ1
+ Rj7xEccrwwl9f/0XPjKURTSA1xwIjPiApICUTX6Ay34Cg9gMrX1rl6Mg/tXoZZO51Eue
+ 4HtW6NO4kPkU1vP0Y13AUn4wpU5jXswwM6M5FnmopmB7T+YAsVFqU9Wv7Dae6vRU17M2
+ 4h2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742942645; x=1743547445;
+ d=1e100.net; s=20230601; t=1742942651; x=1743547451;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E9/STNz6nQDMG9kyJBqDX5R7dSuwG1jTpb/QPXoh7r8=;
- b=P3Z/S5SZyqoo834xYQIvIGX50eUDUWObry6puM5UnRNYqmcSK4b8LjztdY+7Jc7VVq
- saXyL+fxCRVsOJY6s9JCJDsr33N0QvVKYgQKKrNc64feWN7RzK5hqNsPgLfpa7bHQbGG
- k/6D93SpTgqRVFXxsDvvh0wjDn1ojaCOFpMwc0DeggWZusIpU3Tq5xS6wVncKfIjWYC9
- mXCTkseL8x8wbr0ofoRRCuW5YhBjsQK5TNOnITPFFlFBENdqe5m0SErNr7r9h9O9AoSb
- zTuX2LbYXN121ohOmtNTitjd1IdRzSTKTAsKQv+zKrux+ZnLAinMoqPIYqL/uc1Pxq1+
- aqPg==
+ bh=DK+uWh0VCKgLvFlRmYU1/+eCsypc6Q9Oe4mzDQEUpcU=;
+ b=X+g8KF4CVaaAeusx8xwTxdLAV0awmfmccfuWBMoLHDIHJ6v/mGXkK1KvxV5r9FjnNc
+ 9H6KXYutylbgfeqCDnShM+Wi1RkrUWQ2cnB6qnTPu+hL7NhO9SY/36bChW3r139Uh4S8
+ TPFEGgqHi/2ds4g495B9PcKj29oTE+Png7c75SsQ6COfJCnpIpJB1XRF1NZCB+xGxMD4
+ wIHLlMsaneD9E6uYe1INw2v+S5uEEqn7brpuwvs3ZVmDrIvuVqfxhw9GLOZwBsAEW3CO
+ 4i0+JYTROnSIVHblPvtidhTTNZC4Wu7NsthiMAxKSWca1czTP8wIh8pN1JKnW495fkHH
+ 4rtQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW8FhNZGgf/cLOJ1YUdFL0y6jLu362G6YN5NHukIMqzszTExZS63hENtolaa5c0rXRLa0XR+XwC3i9h@nongnu.org
-X-Gm-Message-State: AOJu0YxiB4RW0Wur7f55cWY7GMtDxyC8imYZeJz+PcfVnpt6HPfWCjr8
- n6OfauadMI1pLH1CTz1WhWrevIOcTbbF1VDn0fAn2VFS9aLrHFcbrqrg/t4lVgs=
-X-Gm-Gg: ASbGncv2wOQbtJu/V9tXrfbS8yRqZ6s8QD6ghlJIyqMTiN3ZSAePDksabVZKk+9QyY5
- FnF7C8M1snpnvvhnNdL18CqKCJwxMkURW4ekwqaafKDzgfZg7FihMTzFb4ji+nLplohM0Yv4D4O
- OgCoVkUEKsmRhrL56vxcFrsz2YPvY3nbI/SFbL18ls6sDjsi1ZVulg+jkI6O+RVNwjPmxrpo/Xc
- DQr3v7dJHBDIp4dIEHw9iDbzZD2Bbcsm/BviAqLcOxv83KsEPl0bhJQUgIObNt1dFMJWwdllvOp
- 9F167jtt4YmPReis8i9ekFFVJQwAuF+NjGuMBXsuqYvNhJljDtHDjEJFs4mW7siMBb/dHrl22eW
- HquGETJAMAzsJGKP8TVM=
-X-Google-Smtp-Source: AGHT+IHQncLLXGBF0htKe21i8k3nraJt/ZV1SOe2Y1LqXAFzYvG95pKq/Cj4J4oTKE397zrZrhet/w==
-X-Received: by 2002:a5d:47af:0:b0:391:2dea:c98d with SMTP id
- ffacd0b85a97d-3997f8f89bbmr16627163f8f.8.1742942645300; 
- Tue, 25 Mar 2025 15:44:05 -0700 (PDT)
+ AJvYcCW8290l/gS3oH20gfAR48wUTmIoG1p0pQ1ZlcGGYw/vBdBlNNwmRhnIyTrtn4P8lYIMTpzPeYdqrAC2@nongnu.org
+X-Gm-Message-State: AOJu0YxXxqHumgEopd3RG5d+ljiq83ZgBrdCH8WTJ3ZDJXQv1ky27LdU
+ Bi6C0aZnsR8yrjngiJcfxyH4tn1o0+X3PkWAmJ53GQqzZNW/Fk5bmkZ4IW1BKkQVkTRLq9JmROu
+ a
+X-Gm-Gg: ASbGnct3GHPLmj37bPhT1FOi64wPwm7/7oPR9K16s5fDs09V/FVR90r75E10tDSTLEA
+ XpubduYYJLmOIepQoq299f6DMntiyepUaApaoti8V9b9Bi/G1r3jqA2cqLCBeb+QVH/cc98gq4U
+ JYHUsQYB5f3qkoSPatdgwubJvgZweRSBXyCh9Zalcz0MtvUwZ3S/eJxSuEJTDxxc0G4UtcVN9nI
+ NPaanc7TucZPuWErRwljkxVxoJTdhbD2RnBUioBxCV0sCYDIitcptTXlvBrA53XOgbgfBblsV3F
+ pX7qJvK8Yza2g6cs65AxD3Hwgm5eVE40m2dWx4H29i2E1Frv6diLrizLzCQi2TgInjZSFCHUvxP
+ 4u0RowpChJnkCchlUwMU=
+X-Google-Smtp-Source: AGHT+IF4MxQTwQeGiFzb6zn4OeYNagVxliRZXRWdOlUF+YSpV2v/ejwNFMuO5oIMwmK710nmV2L+gw==
+X-Received: by 2002:a5d:598c:0:b0:391:3aaf:1d5f with SMTP id
+ ffacd0b85a97d-3997f9595f6mr16437604f8f.52.1742942650628; 
+ Tue, 25 Mar 2025 15:44:10 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43fdeba1sm213436255e9.32.2025.03.25.15.44.02
+ 5b1f17b1804b1-43d43f32fcdsm218803915e9.7.2025.03.25.15.44.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Mar 2025 15:44:04 -0700 (PDT)
+ Tue, 25 Mar 2025 15:44:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Thomas Huth <thuth@redhat.com>,
 	qemu-devel@nongnu.org
@@ -82,18 +83,17 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  Bernhard Beschow <shentey@gmail.com>, Hanna Reitz <hreitz@redhat.com>,
  Hao Wu <wuhaotsh@google.com>, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH-for-10.0 09/12] hw/nvram/xlnx-efuse: Do not expose as
- user-creatable
-Date: Tue, 25 Mar 2025 23:43:07 +0100
-Message-ID: <20250325224310.8785-10-philmd@linaro.org>
+Subject: [PATCH-for-10.0 10/12] hw/rtc: Categorize and add description
+Date: Tue, 25 Mar 2025 23:43:08 +0100
+Message-ID: <20250325224310.8785-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250325224310.8785-1-philmd@linaro.org>
 References: <20250325224310.8785-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,27 +116,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This device is part of SoC components thus can not
-be created manually.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/nvram/xlnx-efuse.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/rtc/ds1338.c  | 2 ++
+ hw/rtc/m41t80.c  | 2 ++
+ hw/rtc/rs5c372.c | 2 ++
+ 3 files changed, 6 insertions(+)
 
-diff --git a/hw/nvram/xlnx-efuse.c b/hw/nvram/xlnx-efuse.c
-index 29e7dd539ec..176e88fcd17 100644
---- a/hw/nvram/xlnx-efuse.c
-+++ b/hw/nvram/xlnx-efuse.c
-@@ -280,6 +280,8 @@ static void efuse_class_init(ObjectClass *klass, void *data)
- 
-     dc->realize = efuse_realize;
-     device_class_set_props(dc, efuse_properties);
-+    /* Reason: Part of Xilinx SoC */
-+    dc->user_creatable = false;
+diff --git a/hw/rtc/ds1338.c b/hw/rtc/ds1338.c
+index 8dd17fdc07c..56162917c1b 100644
+--- a/hw/rtc/ds1338.c
++++ b/hw/rtc/ds1338.c
+@@ -230,6 +230,8 @@ static void ds1338_class_init(ObjectClass *klass, void *data)
+     k->send = ds1338_send;
+     device_class_set_legacy_reset(dc, ds1338_reset);
+     dc->vmsd = &vmstate_ds1338;
++    dc->desc = "Maxim DS1338 RTC";
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
  }
  
- static const TypeInfo efuse_info = {
+ static const TypeInfo ds1338_types[] = {
+diff --git a/hw/rtc/m41t80.c b/hw/rtc/m41t80.c
+index 96006956798..55f52d95c51 100644
+--- a/hw/rtc/m41t80.c
++++ b/hw/rtc/m41t80.c
+@@ -99,6 +99,8 @@ static void m41t80_class_init(ObjectClass *klass, void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     I2CSlaveClass *sc = I2C_SLAVE_CLASS(klass);
+ 
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    dc->desc = "ST M41T80 RTC";
+     dc->realize = m41t80_realize;
+     sc->send = m41t80_send;
+     sc->recv = m41t80_recv;
+diff --git a/hw/rtc/rs5c372.c b/hw/rtc/rs5c372.c
+index 5542f74085a..98067ad06d1 100644
+--- a/hw/rtc/rs5c372.c
++++ b/hw/rtc/rs5c372.c
+@@ -216,6 +216,8 @@ static void rs5c372_class_init(ObjectClass *klass, void *data)
+     I2CSlaveClass *k = I2C_SLAVE_CLASS(klass);
+     ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    dc->desc = "Ricoh RS5C372 RTC";
+     k->event = rs5c372_event;
+     k->recv = rs5c372_recv;
+     k->send = rs5c372_send;
 -- 
 2.47.1
 
