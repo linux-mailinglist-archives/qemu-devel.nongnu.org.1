@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB498A70D33
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 558E1A70D2B
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 23:46:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txD0V-0002MF-H7; Tue, 25 Mar 2025 18:44:27 -0400
+	id 1txD0J-0001TG-8z; Tue, 25 Mar 2025 18:44:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txD00-00010I-7Q
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:58 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txD07-00015H-6R
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:04 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txCzx-0006zk-Gx
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:43:55 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43ce70f9afbso60889485e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:43:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1txD04-00070e-Ca
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 18:44:02 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43cfba466b2so57277675e9.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 15:43:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742942632; x=1743547432; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742942638; x=1743547438; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eP0RXPwsF3SX47mGX273slrVOKCgPW3RL9KKH1EnAUU=;
- b=y5Kg2eQrWYPcuhZoVCOgic3gwlOIjNWl9ZJ8oR0nCY3lIbNI0sMC9mh9XwYHMAspcr
- h43tzhoyH1e0T36HxGNSdduO3DQzeThDxkv3gTSaPgBpE6MCSDO+xNfcloTtb0KNABaU
- pmQKRkBZOTftWE/rsW7C06tkhMHaINzenmDKHbE2q866Tq0RG/F0uDgWHsM84jmJCIdD
- vLOP6mghI4E91ZirX82zuhNo6qUH4DM20ixXTt2rw3FQkIFIbDCpT4LXpqOPwBw5f5bZ
- WynyfwLzvbKQxGOqfGfoQVE7UTTc34KVKGXFHFbHm4B7oiJbnqfjAaHIidhNlh7eNSSB
- NFfg==
+ bh=osjmsBy4EAioOK42b1HcZjn9rcVF3JF4Z8bCs6awJ0A=;
+ b=SxpPUkJx9/wRQBKFc2+0g8HU8v9b0enq/JdvA6PVWTPjDScC99ZqryxnOQxR+wJnRJ
+ ynvIj/8ulJXN+6GAiY03kvAvsI0Be/m7/wbZh8EUps54f25Nt5TRrMzN4Yo+VJFWVbWX
+ x9udBFfjI/LA9bz+KpEoXXO7a9xliMne/8wRWjNQ8hGAGTJM3sbf0qmaz8R3PXOJ51Gl
+ +kZgVS5E7FPie9vq2VDQ02Ys/OjoifYNZb29VhwGFSw1WGbgBhBoCc/gZHYV64tmUmkx
+ pMxHZruD6Q1Ntnm+rDnrl5FsvALIbGgLTup+TiiYRYmdIIZyhM6Xh8K0tGXJvroBUN4t
+ PcyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742942632; x=1743547432;
+ d=1e100.net; s=20230601; t=1742942638; x=1743547438;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eP0RXPwsF3SX47mGX273slrVOKCgPW3RL9KKH1EnAUU=;
- b=TmtB6Osn3u+vbjgs6dBaDldgVFkNL3dXGxU/qfT+bAnZrB4IorUkojB64LjNN4abqm
- Y10Om6pMwWh+LlBTBnCiY/EndwP+ZiYAGYhbQAanIA3bhbAbOV5RTOF6t/qRSVWfrb/1
- dKkF18J5JIYSGhW+WM89656ZooXN4lAilU2ZRPAm7grUSwx3Hiy+qF9rH4ptn18WpycY
- ICzXKbhHgQ+z0fqj6EH8xjaR0I003sUP8lxtJ8c78U4i3+WW7gc6ePuK8s27FtLawvNr
- sI4iribx8GZCg7CXJgGA5UPqZBn7CPvNk6yibHbAFJk/b/6BBklyfnN9WzVw1qYcKgUa
- vCAQ==
+ bh=osjmsBy4EAioOK42b1HcZjn9rcVF3JF4Z8bCs6awJ0A=;
+ b=JZ12xpk7fjjRMJbP2l55JvvrwzJk3xWXg2jDjTdXci8AXpgZny7Q9cuM0SneExppm6
+ zJKBifJ/tX8+kq/cpf4GkOHIIJ9ADMKudU0KSEDrl71/GDWniwssLzT7x6RU9DtuMPm5
+ QPKGJsb0sl1os8EUqNR0K3nAdgNFG2Vpy0PGxD0YOIFOJNLW5YVkF1OQX/JXhsxAfnEl
+ YcgvDhaBUNn4OJ/aX+4WxEr0rxV6K5MjIKEO0kNwXFuXAUp1yzUQquBCYuC5pNDHS/qq
+ c+51hRVD3VGl8wSNNtBEy00tJDxsdWORG41T4KqYMktAhGv9tVN5nQz1bY6/DyHDrk+6
+ NhBQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVCD/dAvhIygI4dNGgYyMCZXUZei6ZKMzSDF0Mo069JqB4eK74V3zSPXiZ3+cM25ob1LoIi3YbbbvtX@nongnu.org
-X-Gm-Message-State: AOJu0YzffC/LYGPaWqHZySf8xD2EzqzrXgPg9ruSf8CL0nLQLUthkFsU
- V2enydWR93zlfUpkrI4zsXnHHCmKyWPDYra1FCH4MF4kDuCn+AgvYRD1DRc5BEE=
-X-Gm-Gg: ASbGnctr4D124jcU5evyoH+ivA3w7R1arEAJDgOkp5aVTCbPWtj8K50ow/LihPbjlDv
- bFPBDVp2I7MTo4ZYpdQ6hr1kzoF3EoicA+PH08YdCY9qHayhdiqj5I0R3A1uv6CutqYCFncGFkD
- AV+KJXZl8h8sQ4adJl7SCd/63ouGA+AgAd/+Obzg+RPP8HbUHKq9+8znSsF0L6I+1xDVYN6TBHi
- 0QHPu4VTlRYbddCH4a+UK2zj/Vo5Bh7rAeXJDTk9CLa3+u+OIDVfFklyqDAcc1XITR/S0oYW+Db
- xyNqPOWcATSC4dhEsMRa5jEBBrFgPT01dEQZ3glUIEXxjRLCFSjh0DOCZliGlhRGLX6VsHi9ETC
- WWXaQAAAN/Ipj32O1DAk=
-X-Google-Smtp-Source: AGHT+IFRD/qFLzoLgvBst6JqhurFyP69z55jO8SNGLjYctQKmdZPg3mLwjwd/KwbbwRGh7MUlT+PLg==
-X-Received: by 2002:a05:6000:144e:b0:38f:28cb:4d35 with SMTP id
- ffacd0b85a97d-3997f902c76mr19201735f8f.13.1742942631785; 
- Tue, 25 Mar 2025 15:43:51 -0700 (PDT)
+ AJvYcCUi+zGNMSItscNPlYL/v+ICRdFqVKu0LPaxiyMBTEJOAMA8eBkp94ZjMi5kog2ucZEq5hOf5fFik9RA@nongnu.org
+X-Gm-Message-State: AOJu0YyJri5I09GYDASKmQm/FVef2noNogQUA4fTbMFYVN/0pw/BKyQc
+ tqA3p6fq3oSejcJgm7o61XiM+fpgFBDVMNSYKCdrPP4Lv3NBUblGw1WA6lzASe0=
+X-Gm-Gg: ASbGncune5ruJzTLTNo99h8i8/GmwzHawAdCTNK69x0/y0fNA9S8hbo7MkjSHpNL7ol
+ FhdhV2U5a7PcSi+2x8ch1PAadmemVPqWQz/Pevk8QZxazMoUiZQl9GkajRpehzux11b8CEZcML4
+ HvlAswzTbPYOKP5LxqA26BP3lwWUgVPKPbHg13LMNiXd97msy+IMmJl9wJqQGrA+fevA8SfXXb8
+ hYSPgXlgrFjcaslE7p6ECWgKY3leSth1IQGGGwE05hn9ApCjksNvsqjQNgUS2T8FJIIlRLRfF2q
+ w1/lB/Wp3sZLRJunr0UoGEYBE1depu8MWytD2mFXpJfHngenLUE8elUcs9EgfHPovIShKb1OvyL
+ QU2QM83psrd10MjV+Ie4=
+X-Google-Smtp-Source: AGHT+IH7IwnLOu5ks9q70sVMBA0RrASsxYDSc3i1aFJbfcKsO4f9xfsBAoPaHlJB4xv2AIJoGT5fWw==
+X-Received: by 2002:a05:600c:b8e:b0:43c:e7ae:4bc9 with SMTP id
+ 5b1f17b1804b1-43d5a369745mr110172185e9.1.1742942638565; 
+ Tue, 25 Mar 2025 15:43:58 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d43f33237sm214876075e9.4.2025.03.25.15.43.49
+ 5b1f17b1804b1-43d43f3328bsm213438795e9.1.2025.03.25.15.43.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Mar 2025 15:43:50 -0700 (PDT)
+ Tue, 25 Mar 2025 15:43:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Thomas Huth <thuth@redhat.com>,
 	qemu-devel@nongnu.org
@@ -82,17 +82,17 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  Bernhard Beschow <shentey@gmail.com>, Hanna Reitz <hreitz@redhat.com>,
  Hao Wu <wuhaotsh@google.com>, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org
-Subject: [PATCH-for-10.0 07/12] hw/misc/axp2xx: Categorize and add description
-Date: Tue, 25 Mar 2025 23:43:05 +0100
-Message-ID: <20250325224310.8785-8-philmd@linaro.org>
+Subject: [PATCH-for-10.0 08/12] hw/misc/pll: Do not expose as user-creatable
+Date: Tue, 25 Mar 2025 23:43:06 +0100
+Message-ID: <20250325224310.8785-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250325224310.8785-1-philmd@linaro.org>
 References: <20250325224310.8785-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,43 +115,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+All these devices are part of SoC components and can not
+be created manually.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/misc/axp2xx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/misc/bcm2835_cprman.c | 8 ++++++++
+ hw/misc/npcm_clk.c       | 6 ++++++
+ hw/misc/stm32l4x5_rcc.c  | 4 ++++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/hw/misc/axp2xx.c b/hw/misc/axp2xx.c
-index af646878cd2..747af430479 100644
---- a/hw/misc/axp2xx.c
-+++ b/hw/misc/axp2xx.c
-@@ -232,6 +232,7 @@ static void axp2xx_class_init(ObjectClass *oc, void *data)
-     ResettableClass *rc = RESETTABLE_CLASS(oc);
+diff --git a/hw/misc/bcm2835_cprman.c b/hw/misc/bcm2835_cprman.c
+index aa14cd931f5..0c4d4b7de50 100644
+--- a/hw/misc/bcm2835_cprman.c
++++ b/hw/misc/bcm2835_cprman.c
+@@ -137,6 +137,8 @@ static void pll_class_init(ObjectClass *klass, void *data)
  
-     rc->phases.enter = axp2xx_reset_enter;
-+    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     dc->vmsd = &vmstate_axp2xx;
-     isc->event = axp2xx_event;
-     isc->recv = axp2xx_rx;
-@@ -250,7 +251,9 @@ static const TypeInfo axp2xx_info = {
- static void axp209_class_init(ObjectClass *oc, void *data)
- {
-     AXP2xxClass *sc = AXP2XX_CLASS(oc);
-+    DeviceClass *dc = DEVICE_CLASS(oc);
- 
-+    dc->desc = "AXP209 power system management";
-     sc->reset_enter = axp209_reset_enter;
+     device_class_set_legacy_reset(dc, pll_reset);
+     dc->vmsd = &pll_vmstate;
++    /* Reason: Part of BCM2835CprmanState component */
++    dc->user_creatable = false;
  }
  
-@@ -263,7 +266,9 @@ static const TypeInfo axp209_info = {
- static void axp221_class_init(ObjectClass *oc, void *data)
- {
-     AXP2xxClass *sc = AXP2XX_CLASS(oc);
-+    DeviceClass *dc = DEVICE_CLASS(oc);
+ static const TypeInfo cprman_pll_info = {
+@@ -241,6 +243,8 @@ static void pll_channel_class_init(ObjectClass *klass, void *data)
  
-+    dc->desc = "AXP221 power system management";
-     sc->reset_enter = axp221_reset_enter;
+     device_class_set_legacy_reset(dc, pll_channel_reset);
+     dc->vmsd = &pll_channel_vmstate;
++    /* Reason: Part of BCM2835CprmanState component */
++    dc->user_creatable = false;
  }
  
+ static const TypeInfo cprman_pll_channel_info = {
+@@ -362,6 +366,8 @@ static void clock_mux_class_init(ObjectClass *klass, void *data)
+ 
+     device_class_set_legacy_reset(dc, clock_mux_reset);
+     dc->vmsd = &clock_mux_vmstate;
++    /* Reason: Part of BCM2835CprmanState component */
++    dc->user_creatable = false;
+ }
+ 
+ static const TypeInfo cprman_clock_mux_info = {
+@@ -416,6 +422,8 @@ static void dsi0hsck_mux_class_init(ObjectClass *klass, void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+     dc->vmsd = &dsi0hsck_mux_vmstate;
++    /* Reason: Part of BCM2835CprmanState component */
++    dc->user_creatable = false;
+ }
+ 
+ static const TypeInfo cprman_dsi0hsck_mux_info = {
+diff --git a/hw/misc/npcm_clk.c b/hw/misc/npcm_clk.c
+index 0e85974cf96..b6a893ffb22 100644
+--- a/hw/misc/npcm_clk.c
++++ b/hw/misc/npcm_clk.c
+@@ -1108,6 +1108,8 @@ static void npcm7xx_clk_pll_class_init(ObjectClass *klass, void *data)
+ 
+     dc->desc = "NPCM7xx Clock PLL Module";
+     dc->vmsd = &vmstate_npcm7xx_clk_pll;
++    /* Reason: Part of NPCMCLKState component */
++    dc->user_creatable = false;
+ }
+ 
+ static void npcm7xx_clk_sel_class_init(ObjectClass *klass, void *data)
+@@ -1116,6 +1118,8 @@ static void npcm7xx_clk_sel_class_init(ObjectClass *klass, void *data)
+ 
+     dc->desc = "NPCM7xx Clock SEL Module";
+     dc->vmsd = &vmstate_npcm7xx_clk_sel;
++    /* Reason: Part of NPCMCLKState component */
++    dc->user_creatable = false;
+ }
+ 
+ static void npcm7xx_clk_divider_class_init(ObjectClass *klass, void *data)
+@@ -1124,6 +1128,8 @@ static void npcm7xx_clk_divider_class_init(ObjectClass *klass, void *data)
+ 
+     dc->desc = "NPCM7xx Clock Divider Module";
+     dc->vmsd = &vmstate_npcm7xx_clk_divider;
++    /* Reason: Part of NPCMCLKState component */
++    dc->user_creatable = false;
+ }
+ 
+ static void npcm_clk_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
+index fd8466dff34..158b743cae7 100644
+--- a/hw/misc/stm32l4x5_rcc.c
++++ b/hw/misc/stm32l4x5_rcc.c
+@@ -150,6 +150,8 @@ static void clock_mux_class_init(ObjectClass *klass, void *data)
+     rc->phases.hold = clock_mux_reset_hold;
+     rc->phases.exit = clock_mux_reset_exit;
+     dc->vmsd = &clock_mux_vmstate;
++    /* Reason: Part of Stm32l4x5RccState component */
++    dc->user_creatable = false;
+ }
+ 
+ static void clock_mux_set_enable(RccClockMuxState *mux, bool enabled)
+@@ -302,6 +304,8 @@ static void pll_class_init(ObjectClass *klass, void *data)
+     rc->phases.hold = pll_reset_hold;
+     rc->phases.exit = pll_reset_exit;
+     dc->vmsd = &pll_vmstate;
++    /* Reason: Part of Stm32l4x5RccState component */
++    dc->user_creatable = false;
+ }
+ 
+ static void pll_set_vco_multiplier(RccPllState *pll, uint32_t vco_multiplier)
 -- 
 2.47.1
 
