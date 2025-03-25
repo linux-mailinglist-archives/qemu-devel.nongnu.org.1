@@ -2,69 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC62A6E81E
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 02:56:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A099A6E848
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 03:18:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twtWN-000322-79; Mon, 24 Mar 2025 21:56:03 -0400
+	id 1twtrn-0007Qv-Tk; Mon, 24 Mar 2025 22:18:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1twtWJ-00031F-Cv; Mon, 24 Mar 2025 21:55:59 -0400
-Received: from tor.source.kernel.org ([172.105.4.254])
+ (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
+ id 1twtrk-0007Qa-1q
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 22:18:08 -0400
+Received: from mail-bn8nam12on2089.outbound.protection.outlook.com
+ ([40.107.237.89] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1twtWH-0000iA-5x; Mon, 24 Mar 2025 21:55:59 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id 969F5615EE;
- Tue, 25 Mar 2025 01:55:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BEC6C4CEDD;
- Tue, 25 Mar 2025 01:55:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1742867748;
- bh=z+Wk5IOn8VAQYfBz4WAglsmF7LsYJkY/3Dz5LBKsXM4=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=MB9dJaYHD69rttkB55fX1MpeO+qMHYheWWeLHl7gXSQ0SjdGHf5q33wucdlxtv7tt
- ZbmBY2kxkdK1SdyoVdFMfGE+/Bad7HIJEtmQ73dFTIcRhZOo3XURi1hXMjbVhnwy29
- PKD4Z7OvZ8WHYN1biIRho/k6kwBi608gYyUWgIdZwNB94oIPHGpzv1A7O+3Pi8asfj
- CJTi5d3iNDH9QVzY//nWqAEs6jA3wtEIhHcbgD57WD9oi8/CHTVdmTJyMgQwIewb5G
- AX24T8slszXJL5JDpTUiWns8RfVW7qJjwI+5C8J9GiHuTmHjZEDbSXa18mU2GB/qdn
- vCBmiSwDnTgcw==
-Date: Tue, 25 Mar 2025 09:55:22 +0800
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: "Michael S . Tsirkin" <mst@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Shiju Jose <shiju.jose@huawei.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org, Philippe =?UTF-8?B?TWF0aGll?=
- =?UTF-8?B?dS1EYXVkw6k=?= <philmd@linaro.org>, Gavin Shan
- <gshan@redhat.com>, Ani Sinha <anisinha@redhat.com>, Cleber Rosa
- <crosa@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>, Eduardo Habkost
- <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>, John Snow
- <jsnow@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Markus
- Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, Yanan Wang
- <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 00/20] Change ghes to use HEST-based offsets and add
- support for error inject
-Message-ID: <20250325095522.335112ba@sal.lan>
-In-Reply-To: <cover.1741374594.git.mchehab+huawei@kernel.org>
-References: <cover.1741374594.git.mchehab+huawei@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
+ id 1twtrh-0003WE-BA
+ for qemu-devel@nongnu.org; Mon, 24 Mar 2025 22:18:07 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Sl8uFtLSy7q9+8AjsW/EVPu2IqHPxvoeMEeowhj+m7VhZK/FAqhKbL3X8qedMAo1KR5z5Es3McRI2QPGCosQLWxQlVFqVQgaLFXlO0urtSvMK/iNERME2OcwrMt76KV2hWH61shs+nwerU+DnFuw4kGj+oc4DzyO6xIkeooNpK7hkX3aUi5HFg5+eWU/PObnMpIBes2Y463gXPEWMdH3KQ7kL73fZz3SmiPZj+9+OZNZSoTqzALsn9sx/xAb7AXKH6TJzetZT9r237zELSp1+B4l9CVaUMUoNa4fB+OvoA5H8K/eCCFd8x5OwX+exsiriAo1xlqN/cCdGZPvaeJ8Og==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dm3IKU2iI1d7YpOwBTi0o92/1oVKgh+dmX6N9nZhMYE=;
+ b=DEVWStUTis8qcsp+Kiw2nVeTrgHcnFP2UIOHnzR8TwsvRNtwMwZn1+WSCewfyHRFQUBzKTtfBKc23Ud6oU9unwruG+XM8ImlnGt7yNwDMnxNqoEyijPmqCDAaEq82ON8HLvFo1RCkfZaTWb05xvrRlXptdtmz75gJBuDXLYfFe19kXI/W/C9FH4h3JsMsm8zJLWzpqFhSDD/WVg/S3rmIhaIQ9sfbjwML1vOURMFjy2sT9sacEj/BK5qgSYz70xr3s4O79ozGn/92eIn6H9vw6f3nj6vf2/KewdNCJa44czsbuM/4ToCuamGJSWz/CVK10ZGSBtA2Sg3G3cGIWSVTg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dm3IKU2iI1d7YpOwBTi0o92/1oVKgh+dmX6N9nZhMYE=;
+ b=aZh1OFuVaNKysSOvWiseqDCX87BDPNiGRnWOO8vpIdOECCL9c9N/e/PAwLU61yEedNxeI9wlEG2lsOnmJUIZHA32bKd7wHmKxwQvobpleFhrYtH35dCYW60Mh7vZ8mb13h4laD5XdpZtxmhf0veTMa5V+o+Wv2zG5cjy22uhPJM=
+Received: from CH2PR03CA0025.namprd03.prod.outlook.com (2603:10b6:610:59::35)
+ by PH8PR12MB6819.namprd12.prod.outlook.com (2603:10b6:510:1ca::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Tue, 25 Mar
+ 2025 02:12:54 +0000
+Received: from CH1PEPF0000AD82.namprd04.prod.outlook.com
+ (2603:10b6:610:59:cafe::e0) by CH2PR03CA0025.outlook.office365.com
+ (2603:10b6:610:59::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.42 via Frontend Transport; Tue,
+ 25 Mar 2025 02:12:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH1PEPF0000AD82.mail.protection.outlook.com (10.167.244.91) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8534.20 via Frontend Transport; Tue, 25 Mar 2025 02:12:53 +0000
+Received: from purico-ed03host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Mar
+ 2025 21:12:47 -0500
+From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <mst@redhat.com>,
+ <marcel.apfelbaum@gmail.com>, <jon.grimm@amd.com>, <santosh.shukla@amd.com>,
+ <vasant.hegde@amd.com>, <Wei.Huang2@amd.com>, <kraxel@redhat.com>,
+ <bsd@redhat.com>, <berrange@redhat.com>, <ddutile@redhat.com>,
+ <yvugenfi@redhat.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Subject: [PATCH v2] hw/i386/amd_iommu: Assign pci-id 0x1419 for the AMD IOMMU
+ device
+Date: Tue, 25 Mar 2025 02:11:40 +0000
+Message-ID: <20250325021140.5676-1-suravee.suthikulpanit@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=172.105.4.254;
- envelope-from=mchehab+huawei@kernel.org; helo=tor.source.kernel.org
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD82:EE_|PH8PR12MB6819:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c30ab13-9579-43bc-1811-08dd6b428d5c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|7416014|376014|1800799024|82310400026|13003099007; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?sKa/zRENc9sJbpdTjio/fabsEY96qTzVJcN/i8ZcyywdxRMDh1cz637Esc72?=
+ =?us-ascii?Q?H50ibn16EaoGLYCkjVlu/xQ0veezhRlMTDSTSrRDX15tjzastGuq6giLx7x9?=
+ =?us-ascii?Q?jfbEivDvf7CPiTqzH90C6RAm3jsGvzvr22J3N4iyw+OWX1x+C04A8dUpMPqO?=
+ =?us-ascii?Q?bT6lE6rGWFFPCixA3qlW0+EPmv7vwNlF01ZBdY9SSsNjvn1cGZRsafUSGI8F?=
+ =?us-ascii?Q?8zYVyL8e7A6e0qnEj7Iht1VPURo21c0ocM5CVo6qUDipN4qVCKckQD1EhT1i?=
+ =?us-ascii?Q?tF3vRqZoN6P/N+A7FGtSEw3KE99BUMqgswmu5cE5tC9K1EH5mPHkR48qdhLX?=
+ =?us-ascii?Q?83/3EMRyisUs/Xi3GZlQ++RGo+viwrc3d2Ptd2bia4N2yP/1Xt3tbRxchu+N?=
+ =?us-ascii?Q?9DjIqsSIaP9qTKyS8dO0x8zA7ZLg60F64vskOE3pX3RFuJLLr8sgrU2CHL/U?=
+ =?us-ascii?Q?bJQA5c/KwDDI+TjEHw/z1CuJF6z85Gw4iedp7FAY4X8EZBuUFbQHhrqsj5OY?=
+ =?us-ascii?Q?PLth3WpfVsH5C56HVHYlALF5IxrhVE/R9Skwj2EqZNNaMhLb5lJSM9cFYeDN?=
+ =?us-ascii?Q?PLjxsPubkM87tnXkaAacwvOjwbjw45VQ5ryiwF+lq0shHjqfxnQlIDk3EZLl?=
+ =?us-ascii?Q?mLRXCnQBvBssikOJWGwx0tcjVOS7yme7l5J6obBranJwtOfNXf6tj63zNxeH?=
+ =?us-ascii?Q?nRjgavnlDzTlmrl5tKIZYGTFCUxqbGm6y8vBEH/Yz2qo5s282gOW5f4tAlHK?=
+ =?us-ascii?Q?2N9hAaZHtaEdjJMkmrIyO0UTVvISHJ0J3J4IcYu0EduvOKzMFXKfZWyPpmOU?=
+ =?us-ascii?Q?hgNI91fgXXkSVLi3YNoWfxhkVz4C5NAIKKwk9QfPHBbkL7THeNR59kV2De16?=
+ =?us-ascii?Q?EZ2ec+1H//THcdEWGRSOJyaFLmMpsXWOt4FXqCfP5QdteiH6BYXJMxe/BcEi?=
+ =?us-ascii?Q?JaqmhWWRwB+LZU7XOLtanz+0sqk2h9ka2gAj/tYkoB/gaHxkBIm576u11J/o?=
+ =?us-ascii?Q?F9ykB2GVKBvKlP0R7Ym1iyZYrdbkZLOmC89QX0K/Cz5R001n+NEcPzhYa3Gz?=
+ =?us-ascii?Q?aUXWQzidXFLvaK3BPyISmuRxzEm+Q6+y3HzqrOAD5zxMJeqSbUkzRCZv2CBc?=
+ =?us-ascii?Q?KsqYalw447PrxmamlPO3aZ/K8B+7UVCJOwxlehd5nr8Boh8KGwaonbY2tOjj?=
+ =?us-ascii?Q?YfMjsHdP7GOtAJMUPLU5fAseS6+KKZohZszjDvKvxZo8MMMaFAuzkor9BXR0?=
+ =?us-ascii?Q?HDHUN8LiOooU44njlvaq8DgmkZ2qCFPeadV/E+cx6JtqZgEjBX4IybJc+nMz?=
+ =?us-ascii?Q?mpvI2d7h7GLNicHvZQx1/aWW6mFJvjtHqw7CtWeLU6JmFwinBkD8JiMcwtdL?=
+ =?us-ascii?Q?eoTE5qBNvJQp7x/o30B02N2pFN/DWkLnrs9LDiK9uH/VUHVv287CX5FqyeEP?=
+ =?us-ascii?Q?xtfnLNLNhFqks/gE0mh9ET5OTqBmcUO1rL4XogSiMH0n4FCMbsigEFpKsm++?=
+ =?us-ascii?Q?OLQe55SkF2BJcJk=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(7416014)(376014)(1800799024)(82310400026)(13003099007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2025 02:12:53.9489 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c30ab13-9579-43bc-1811-08dd6b428d5c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD82.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6819
+Received-SPF: permerror client-ip=40.107.237.89;
+ envelope-from=Suravee.Suthikulpanit@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,154 +150,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
+Currently, the QEMU-emulated AMD IOMMU device use PCI vendor id 0x1022
+(AMD) with device id zero (undefined). Eventhough this does not cause any
+functional issue for AMD IOMMU driver since it normally uses information
+in the ACPI IVRS table to probe and initialize the device per
+recommendation in the AMD IOMMU specification, the device id zero causes
+the Windows Device Manager utility to show the device as an unknown device.
 
-Gentile ping.
+Since Windows only recognizes AMD IOMMU device with device id 0x1419 as
+listed in the machine.inf file, modify the QEMU AMD IOMMU model to use
+the id 0x1419 to avoid the issue. This advertise the IOMMU as the AMD
+IOMMU device for Family 15h (Models 10h-1fh).
 
-Regards,
-Mauro
+Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+---
+Changes from v1 (https://lore.kernel.org/all/20250304183747.639382-1-suravee.suthikulpanit@amd.com/)
+* Use the existing device id 0x1419 instead of the proposed new id.
 
-Em Fri,  7 Mar 2025 20:14:29 +0100
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> escreveu:
+ hw/i386/amd_iommu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> Hi Michael,
-> 
-> I'm sending v8 to avoid a merge conflict with v7 due to this
-> changeset:
-> 
->    611f3bdb20f7 ("hw/acpi/ghes: Make  static")
-> 
-> As ghes_record_cper_errors() was written since the beginning
-> to be public and used by ghes-cper.c. It ended being meged
-> earlier because the error-injection series become too big,
-> so it was decided last year to split in two to make easier for
-> reviewers and maintainers to discuss.
-> 
-> Anyway, as mentioned on v7, I guess we're ready to merge this
-> series, as patches here have been thoughfully reviewed mainly 
-> by Igor and Jonathan over the last 5-6 months.
-> 
-> The only change from v7 is a minor editorial change at HEST doc
-> spec, and the addition of Igor and Jonathan's A-B/R-B.
-> 
-> This series change the way HEST table offsets are calculated,
-> making them identical to what an OSPM would do and allowing
-> multiple HEST entries without causing migration issues. It open
-> space to add HEST support for non-arm architectures, as now
-> the number and type of HEST notification entries are not
-> hardcoded at ghes.c. Instead, they're passed as a parameter
-> from the arch-dependent init code.
-> 
-> With such issue addressed, it adds a new notification type and
-> add support to inject errors via a Python script. The script
-> itself is at the final patch.
-> 
-> ---
-> v8:
->   - added a patch to revert recently-added changeset causing a
->     conflict with these. All remaining patches are identical.
-> 
-> v7:
->   - minor editorial change at the patch updating HEST doc spec
->    with the new workflow
-> 
-> v6:
-> - some minor nits addressed:
->    - use GPA instead of offset;
->    - merged two patches;
->    - fixed a couple of long line coding style issues;
->    - the HEST/DSDT diff inside a patch was changed to avoid troubles
->      applying it.
-> 
-> v5:
-> - make checkpatch happier;
-> - HEST table is now tested;
-> - some changes at HEST spec documentation to align with code changes;
-> - extra care was taken with regards to git bisectability.
-> 
-> v4:
-> - added an extra comment for AcpiGhesState structure;
-> - patches reordered;
-> - no functional changes, just code shift between the patches in this series.
-> 
-> v3:
-> - addressed more nits;
-> - hest_add_le now points to the beginning of HEST table;
-> - removed HEST from tests/data/acpi;
-> - added an extra patch to not use fw_cfg with virt-10.0 for hw_error_le
-> 
-> v2: 
-> - address some nits;
-> - improved ags cleanup patch and removed ags.present field;
-> - added some missing le*_to_cpu() calls;
-> - update date at copyright for new files to 2024-2025;
-> - qmp command changed to: inject-ghes-v2-error ans since updated to 10.0;
-> - added HEST and DSDT tables after the changes to make check target happy.
->   (two patches: first one whitelisting such tables; second one removing from
->    whitelist and updating/adding such tables to tests/data/acpi)
-> 
-> Mauro Carvalho Chehab (20):
->   tests/acpi: virt: add an empty HEST file
->   tests/qtest/bios-tables-test: extend to also check HEST table
->   tests/acpi: virt: update HEST file with its current data
->   Revert "hw/acpi/ghes: Make ghes_record_cper_errors() static"
->   acpi/ghes: Cleanup the code which gets ghes ged state
->   acpi/ghes: prepare to change the way HEST offsets are calculated
->   acpi/ghes: add a firmware file with HEST address
->   acpi/ghes: Use HEST table offsets when preparing GHES records
->   acpi/ghes: don't hard-code the number of sources for HEST table
->   acpi/ghes: add a notifier to notify when error data is ready
->   acpi/generic_event_device: Update GHES migration to cover hest addr
->   acpi/generic_event_device: add logic to detect if HEST addr is
->     available
->   acpi/generic_event_device: add an APEI error device
->   tests/acpi: virt: allow acpi table changes at DSDT and HEST tables
->   arm/virt: Wire up a GED error device for ACPI / GHES
->   qapi/acpi-hest: add an interface to do generic CPER error injection
->   acpi/generic_event_device.c: enable use_hest_addr for QEMU 10.x
->   tests/acpi: virt: update HEST and DSDT tables
->   docs: hest: add new "etc/acpi_table_hest_addr" and update workflow
->   scripts/ghes_inject: add a script to generate GHES error inject
-> 
->  MAINTAINERS                                   |  10 +
->  docs/specs/acpi_hest_ghes.rst                 |  28 +-
->  hw/acpi/Kconfig                               |   5 +
->  hw/acpi/aml-build.c                           |  10 +
->  hw/acpi/generic_event_device.c                |  44 ++
->  hw/acpi/ghes-stub.c                           |   7 +-
->  hw/acpi/ghes.c                                | 233 ++++--
->  hw/acpi/ghes_cper.c                           |  38 +
->  hw/acpi/ghes_cper_stub.c                      |  19 +
->  hw/acpi/meson.build                           |   2 +
->  hw/arm/virt-acpi-build.c                      |  35 +-
->  hw/arm/virt.c                                 |  19 +-
->  hw/core/machine.c                             |   2 +
->  include/hw/acpi/acpi_dev_interface.h          |   1 +
->  include/hw/acpi/aml-build.h                   |   2 +
->  include/hw/acpi/generic_event_device.h        |   1 +
->  include/hw/acpi/ghes.h                        |  51 +-
->  include/hw/arm/virt.h                         |   2 +
->  qapi/acpi-hest.json                           |  35 +
->  qapi/meson.build                              |   1 +
->  qapi/qapi-schema.json                         |   1 +
->  scripts/arm_processor_error.py                | 476 ++++++++++++
->  scripts/ghes_inject.py                        |  51 ++
->  scripts/qmp_helper.py                         | 703 ++++++++++++++++++
->  target/arm/kvm.c                              |   7 +-
->  tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5240 bytes
->  .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5326 bytes
->  tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6601 bytes
->  tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7723 bytes
->  tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5442 bytes
->  tests/data/acpi/aarch64/virt/HEST             | Bin 0 -> 224 bytes
->  tests/qtest/bios-tables-test.c                |   2 +-
->  32 files changed, 1695 insertions(+), 90 deletions(-)
->  create mode 100644 hw/acpi/ghes_cper.c
->  create mode 100644 hw/acpi/ghes_cper_stub.c
->  create mode 100644 qapi/acpi-hest.json
->  create mode 100644 scripts/arm_processor_error.py
->  create mode 100755 scripts/ghes_inject.py
->  create mode 100755 scripts/qmp_helper.py
->  create mode 100644 tests/data/acpi/aarch64/virt/HEST
-> 
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index dda1a5781f..b006ead804 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1767,6 +1767,7 @@ static void amdvi_pci_class_init(ObjectClass *klass, void *data)
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+ 
+     k->vendor_id = PCI_VENDOR_ID_AMD;
++    k->device_id = 0x1419;
+     k->class_id = 0x0806;
+     k->realize = amdvi_pci_realize;
+ 
+-- 
+2.34.1
+
 
