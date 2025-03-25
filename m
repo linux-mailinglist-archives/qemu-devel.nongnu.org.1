@@ -2,93 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B3BA703D2
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 15:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA867A703EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 15:39:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tx5Mh-0005PM-A5; Tue, 25 Mar 2025 10:34:51 -0400
+	id 1tx5QT-00078m-K6; Tue, 25 Mar 2025 10:38:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tx5Mc-0005PA-Ot
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 10:34:46 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tx5Mb-0002Zw-7j
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 10:34:46 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-22580c9ee0aso114830685ad.2
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 07:34:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742913283; x=1743518083; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4tANRWR6rCezFKi0rNGPblrcZy4LnuJAvLq6/bKy180=;
- b=c2cYiBZgc7uKZ1jDsMsQwPjOgcOYjQDHqc+Ayvs/R2btZ2hlqLQFXrQ9HTifbsBHjy
- Pkco5brsUEDNDoxtP7Ew/FxX0REcmu3D/u2W0Z9FVoqlTEeNTboBXbUEx84qq8U1WfJU
- mVZWQxlU50CrcM0QZNdQUrHTg5qgD/q9rlGB2Wmi8rrGCCd72H2cugrrG8r8HZVxm4Dh
- sv5FsMf7b8jKvvjJwA2I93ShG9oNnJONOU1Eu1vNwy3D95iHKVwrN+VbMohMjaDoaN05
- 6F3tVUtAMPhGUHrDNO/WG+fIDp7o+CM2I5ZToRwd8eQHbbS6vMj5j3IgNmpuobCnzmaK
- 2+Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742913283; x=1743518083;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4tANRWR6rCezFKi0rNGPblrcZy4LnuJAvLq6/bKy180=;
- b=t8K302pQ+Jt5C6bXRhki7KBxkFlOaWcM10CMCqwWr/p3GvUD3dBCqjPhnYnDzlssi3
- eXSaect1vaAVGyFflfV1VKAVUls/A1Q86DCEq0UvPGVNSE7zbqGzfJKzwpB66KEx2Pyf
- 5mQruLjXDuLF1/mvMazz46Uu0L4HZ6ZWpoalWxZPgr4tGlB9bwUPkyAeArhvPojrn+ye
- C0SC8Ht7P7+50sVtO6U1ne2SVmAYrgpzdb/ZuERqVA+xrweWU0e2nnUrUgJ0eWd0vBmM
- GQltd03wwptP+/yzRXlNmtTCG7kSLQJjfuVBDfCD/BPTyW6WDb60JY2s/WylvWWZ3zPw
- B1jA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUnwbbsu2jHvTKK0ci9MInqtl1vJekadHDCsEaBvOw+0GlAWNsC8WOrPMFzceGnpAoQ9VhqfbR/FBd5@nongnu.org
-X-Gm-Message-State: AOJu0YxCcdC8+VrjZrZACibHjKVOIVpTm3hlYhcTYk1/0j6zGxgbqy+K
- 9PD0E9cc4kv7pbT6/K+/T0hQ5ccXaYuxuv+gOul5eLVPt3+MWoT9zgqCEFlbclk=
-X-Gm-Gg: ASbGncuYg/8QC1TeRZDHN3sU9mQ9+Tb1D0IwsBDYl4DJ8JQfzOIAGd7fFhtbsPqsjbD
- TAO2IEv+ytiUcuigh62gPemqr7LasTYA7Y/yTsipn6Xdu5qijGdTvDIBp3r7hb3ysJoRqoazhsT
- 9Qd3SQtBVP5E3NbID8Ddy1HduH6PkzGrnz2ACBz9RP5rwkd0sIKADd3AQ/W05LSbX5ZsaSBgvFf
- w+vvAo7c0RjSRLkpMZ7NBz++16f7HRikVFUAPzJUC5Wu/WZsBFXEX0n856E6qn6g93YyhIJiuFl
- dAiDLJeQGUCt3j+h7Ierlkmzgp+npEHNIg5ypK2lCxTKoCYFos6d1nbjzA==
-X-Google-Smtp-Source: AGHT+IG1p5yDETxh98r9349xUtGGZgYUt20C5xBTs7B1RB1rS9QVw/s319WJ9o8+wE/ay6UkW2aNiA==
-X-Received: by 2002:a05:6a21:339a:b0:1f5:51d5:9ef3 with SMTP id
- adf61e73a8af0-1fe42f995edmr23611776637.20.1742913283305; 
- Tue, 25 Mar 2025 07:34:43 -0700 (PDT)
-Received: from [192.168.1.67] ([38.39.164.180])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-af8a283b33esm7778345a12.35.2025.03.25.07.34.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Mar 2025 07:34:42 -0700 (PDT)
-Message-ID: <d3da05a2-a01b-49bd-8d25-4128a408ed03@linaro.org>
-Date: Tue, 25 Mar 2025 07:34:42 -0700
+ (Exim 4.90_1) (envelope-from <SRS0=TX69=WM=kaod.org=clg@ozlabs.org>)
+ id 1tx5QD-00075Y-P5; Tue, 25 Mar 2025 10:38:37 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=TX69=WM=kaod.org=clg@ozlabs.org>)
+ id 1tx5Py-000376-FM; Tue, 25 Mar 2025 10:38:29 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZMXb56ZXDz4x21;
+ Wed, 26 Mar 2025 01:38:09 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZMXb23PkVz4xM3;
+ Wed, 26 Mar 2025 01:38:06 +1100 (AEDT)
+Message-ID: <6647e498-a334-4eb7-8067-6ea20d0340ac@kaod.org>
+Date: Tue, 25 Mar 2025 15:38:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/17] target/avr: Move cpu register accesses into system
- memory
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: mrolnik@gmail.com, philmd@linaro.org
-References: <20250323173730.3213964-1-richard.henderson@linaro.org>
- <20250323173730.3213964-6-richard.henderson@linaro.org>
- <fcd2d092-f37d-4912-97e2-a55c475e0540@linaro.org>
- <7df3dc8f-c4ad-47fc-96b7-7ddad3274d51@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <7df3dc8f-c4ad-47fc-96b7-7ddad3274d51@linaro.org>
+Subject: Re: [PATCH v6 04/10] ppc/pnv: Add a PSI bridge model for Power11
+To: Aditya Gupta <adityag@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
+ <fbarrat@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <20250325112319.927190-1-adityag@linux.ibm.com>
+ <20250325112319.927190-5-adityag@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20250325112319.927190-5-adityag@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=TX69=WM=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,39 +108,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/25/25 06:48, Richard Henderson wrote:
-> On 3/24/25 18:07, Pierrick Bouvier wrote:
->> A simple nit, maybe we could define constant for register names. This way, it can be used
->> in the two switch for read/access.
+On 3/25/25 12:23, Aditya Gupta wrote:
+> Power11 core is same as Power10, reuse PNV10_PSI initialisation, by
+> declaring 'PNV11_PSI' as child class of 'PNV10_PSI'
 > 
-> Which constant?
-> 
->     - The absolute address (0x58-0x5f)
->     - The i/o port address (0x38-0x3f)
->     - or the region offset (0-7)
-> 
-> ?  That's where I got stuck and didn't add such.
-> 
+> Cc: Cédric Le Goater <clg@kaod.org>
+> Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
+> Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-Something like:
+I am removing this Rb.
 
-#define RAMPD 0
-...
-#define SREG 7
-#define REG_IOPORT_BASE_ADDR 0x38
-#define REG_BASE_ADDR 0x58
-
-And in the switch, we can substract base addresses, so only cases 0..7 
-are left.
-
-I don't have a strong opinion on names, just thought seeing those 2 
-address constants + register offset is useful and makes intention clearer.
-
->> By the way, are there other architectures where cpu registers are mapped in memory like AVR?
+> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+> ---
+>   hw/ppc/pnv_psi.c         | 24 ++++++++++++++++++++++++
+>   include/hw/ppc/pnv_psi.h |  2 +-
+>   2 files changed, 25 insertions(+), 1 deletion(-)
 > 
-> Not that I know of.
-> 
-> 
-> r~
+> diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
+> index 1fe11dde501b..c568edb80e53 100644
+> --- a/hw/ppc/pnv_psi.c
+> +++ b/hw/ppc/pnv_psi.c
+> @@ -937,6 +937,29 @@ static const TypeInfo pnv_psi_power10_info = {
+>       .name          = TYPE_PNV10_PSI,
+>       .parent        = TYPE_PNV9_PSI,
+>       .class_init    = pnv_psi_power10_class_init,
+> +    .class_base_init = pnv_psi_power10_class_init,
+
+why change class_base_init ?
+
+Thanks,
+
+C.
+
+
+> +};
+> +
+> +static void pnv_psi_power11_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +    PnvPsiClass *ppc = PNV_PSI_CLASS(klass);
+> +    static const char compat[] = "ibm,power11-psihb-x\0ibm,psihb-x";
+> +
+> +    dc->desc    = "PowerNV PSI Controller (Power11)";
+> +
+> +    /*
+> +     * ppc->xscom_pbca and ppc->xscom_size will be set up by
+> +     * pnv_psi_power10_class_init
+> +     */
+> +    ppc->compat     = compat;
+> +    ppc->compat_size = sizeof(compat);
+> +}
+> +
+> +static const TypeInfo pnv_psi_power11_info = {
+> +    .name          = TYPE_PNV11_PSI,
+> +    .parent        = TYPE_PNV10_PSI,
+> +    .class_init    = pnv_psi_power11_class_init,
+>   };
+>   
+>   static void pnv_psi_class_init(ObjectClass *klass, void *data)
+> @@ -971,6 +994,7 @@ static void pnv_psi_register_types(void)
+>       type_register_static(&pnv_psi_power8_info);
+>       type_register_static(&pnv_psi_power9_info);
+>       type_register_static(&pnv_psi_power10_info);
+> +    type_register_static(&pnv_psi_power11_info);
+>   }
+>   
+>   type_init(pnv_psi_register_types);
+> diff --git a/include/hw/ppc/pnv_psi.h b/include/hw/ppc/pnv_psi.h
+> index cf7f95a6b1f5..1182ed47d280 100644
+> --- a/include/hw/ppc/pnv_psi.h
+> +++ b/include/hw/ppc/pnv_psi.h
+> @@ -69,7 +69,7 @@ struct Pnv9Psi {
+>   };
+>   
+>   #define TYPE_PNV10_PSI TYPE_PNV_PSI "-POWER10"
+> -
+> +#define TYPE_PNV11_PSI TYPE_PNV_PSI "-POWER11"
+>   
+>   struct PnvPsiClass {
+>       SysBusDeviceClass parent_class;
 
 
