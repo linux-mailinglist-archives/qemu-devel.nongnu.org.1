@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6B8A6E9EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CB2A6E9F7
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 07:58:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1twyAA-0007Dt-6r; Tue, 25 Mar 2025 02:53:26 -0400
+	id 1twyC0-0004OZ-3u; Tue, 25 Mar 2025 02:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy8O-00050l-Iu; Tue, 25 Mar 2025 02:51:37 -0400
+ id 1twyA2-0007BF-1f; Tue, 25 Mar 2025 02:53:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1twy8K-0001pv-Q7; Tue, 25 Mar 2025 02:51:34 -0400
+ id 1twy9z-0001z0-5H; Tue, 25 Mar 2025 02:53:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2BD98107D6F;
- Tue, 25 Mar 2025 09:49:29 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id F22A7107D80;
+ Tue, 25 Mar 2025 09:49:33 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C27E91D5E7C;
- Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 94DD11D5E8B;
+ Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id BA5D757040; Tue, 25 Mar 2025 09:50:38 +0300 (MSK)
+ id 85FF15705E; Tue, 25 Mar 2025 09:50:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- Santiago Monserrat Campanello <santimonserr@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.10 48/51] docs/about/emulation: Fix broken link
-Date: Tue, 25 Mar 2025 09:50:34 +0300
-Message-Id: <20250325065038.3263786-6-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.3 62/69] ppc/spapr: fix default cpu for pre-9.0 machines.
+Date: Tue, 25 Mar 2025 09:50:35 +0300
+Message-Id: <20250325065043.3263864-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
-References: <qemu-stable-8.2.10-20250325094857@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
+References: <qemu-stable-9.2.3-20250325094901@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,32 +62,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Santiago Monserrat Campanello <santimonserr@gmail.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-semihosting link to risc-v changed
+When POWER10 CPU was made as default, we missed keeping POWER9 as
+default for older pseries releases (pre-9.0) at that time.
+This caused breakge in default cpu evaluation for older pseries
+machines and hence this fix.
 
-Signed-off-by: Santiago Monserrat Campanello <santimonserr@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2717
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250305102632.91376-1-santimonserr@gmail.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 672cb29d1e811180bf1aeefbcb0936ecd5bd3853)
+Fixes: 51113013f3 ("ppc/spapr: change pseries machine default to POWER10 CPU")
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250313094705.2361997-1-harshpb@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+(cherry picked from commit 1490d0bcdfcb78b4503cae42353d3dd50f4e9d96)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index a2eefe3f3f..cfe9379ef2 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -185,7 +185,7 @@ for that architecture.
-     - https://sourceware.org/git/gitweb.cgi?p=newlib-cygwin.git;a=blob;f=libgloss/nios2/nios2-semi.txt;hb=HEAD
-   * - RISC-V
-     - System and User-mode
--    - https://github.com/riscv/riscv-semihosting-spec/blob/main/riscv-semihosting-spec.adoc
-+    - https://github.com/riscv-non-isa/riscv-semihosting/blob/main/riscv-semihosting.adoc
-   * - Xtensa
-     - System
-     - Tensilica ISS SIMCALL
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 0d4efaa0c0..e11b686625 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4771,6 +4771,7 @@ static void spapr_machine_8_2_class_options(MachineClass *mc)
+ {
+     spapr_machine_9_0_class_options(mc);
+     compat_props_add(mc->compat_props, hw_compat_8_2, hw_compat_8_2_len);
++    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
+ }
+ 
+ DEFINE_SPAPR_MACHINE(8, 2);
 -- 
 2.39.5
 
