@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21543A7054D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 16:42:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8242A7054A
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Mar 2025 16:42:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tx6Ov-0003nt-NS; Tue, 25 Mar 2025 11:41:13 -0400
+	id 1tx6P1-0003oe-US; Tue, 25 Mar 2025 11:41:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx6Os-0003nH-Co
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:41:10 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx6Oy-0003o2-4x
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:41:16 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx6Op-00045x-Ng
- for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:41:10 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3912baafc58so4594734f8f.1
- for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 08:41:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tx6Ou-00046l-FL
+ for qemu-devel@nongnu.org; Tue, 25 Mar 2025 11:41:15 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43cfba466b2so53877155e9.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Mar 2025 08:41:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742917265; x=1743522065; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742917270; x=1743522070; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vQ002iHqIIcWPiB1XY1rX4088N6FNysAgcdy0xlTwbQ=;
- b=CMjMS5r8r1TqVpRTdum4cQLvc4HWychQ/OiMBdSo1y2+nCoDkmyamMlaFdZDur9yb0
- cgx1MBsc/Zb/vEgkuv4SQJzLKsce2iDPsaNW4TFs2EEkXfSi+wyIyxnW71Jt0clSydmG
- pAxug+ltjBMZzOKwI6sc8TpjIzl2ZgTRwasPfeNh4/89bN3abXHSbBW/+18kO8yfD9PK
- xDJrDZwTQvaSK3M1zHGoWXiW/gpQkDhAGfU1KnUlDvAh71un2+PFCedk5lKlwGdhBreB
- rWBuGbF5nFWGgZLDg88Rwtpee23OdsytZ8Wcft07l4rTko40HsQRbwZzvBKC5XZ5nWro
- enFQ==
+ bh=B9EcvePMMiziHxvQ+1Uv0hWd3cavq64til709QLPVTs=;
+ b=Gt4d5ZxdsOyWr5a01vlFwq9CFfwHxjTGoDXCLshNR2/whoLCc4pKLLOUs+zrDl1Aa2
+ AkbyLhd305lpxVoyeYazb9C0I2SNUnuh0zmIvii/kVNkbhGiRx/tCCcBWP6yPNfkJAuW
+ 4zc/cmi9tXnMBRRIMxMQnusX0xo1NbyIaX+8B19GrPgU7kDIi7MqnLmBB+R4ToHaDmn9
+ 6jrIHWlsyf0sr8OCWv/kXcxIzY9l3lx5NGacS8JD8LnmBFzGmqV3fKelOAwzw4ssaza1
+ 267RMHMht7sgQIlKKBx3E8pxM1Zlo1xpCYXuGCXnb5Fp4eKfQcqFJIM6ozvrgHUqHFRx
+ qEDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742917265; x=1743522065;
+ d=1e100.net; s=20230601; t=1742917270; x=1743522070;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vQ002iHqIIcWPiB1XY1rX4088N6FNysAgcdy0xlTwbQ=;
- b=Exd/vSjbkxCWLrMiuCg5RJNAfC22fZquYZ+7+o8xC+7BvQZ0Ct9lotoZQwDhOW/VzH
- i5/XgZNZJu9chCP7idNsfKtHWbGvmiPxROpdiCgtptqwMYM6fZaHxk/0ze2mETw7K8dp
- H12BPZPsZzxbmOJid/QzzOsKt4v5ALjx9P1Y2tF22cOaRkoy+/1zdGBchbEAXDAQlRD4
- b/y3A0sLFYY2kDPkqvbW45KEsjFWV+r2c5yI2p9755YWB9ZhIMfiHlN+WY0f1mx4+oFK
- z7SMUJq+hdhn7etD1H0FAc0A+yjiweyozBYSVhY9t0BBpoet2ppZDXBiIkSmtDkFUNow
- t+WA==
-X-Gm-Message-State: AOJu0Ywml1Pv6ydf3oGnZb6WuTdsY3b6mc1O2B76myNibaDQn0YdmApM
- MlslKoSFRwb5f2+j4vmwHi9SPIbi3WM7qaZc72xUl8ITkrVvDdIZ/CtYtc49AQsSiHWPod7/c89
- I
-X-Gm-Gg: ASbGncsBH4vHo3vIxl7JLlQt8VmEN/epsk0W3h+tJuL46p/lx/ETOoP6Opi8kWoVT19
- +jG76oNS7/n0w8kI6HlYQL2gtH2g4x3PFYDMuZUd+8hxg+kX7g2xfCHESaRHALc9qV1Gd3Tkuze
- I+g4gvOBNEaY3y3wuX8QLBOZhymzYdF1HFjy/2k5NW7ImPsAzdaP8x4+ZGatciSVfmUppnoeOJw
- /cF48xWONb1FYPf4xLl1DmtNVkM2R6A09n/WkIlVFy5X2VzCzNEOjtVKaafKoI/nf83iQpBkjgk
- XNRHTXsQKCXzzI/pNd8XV3aDO1UX1UTDQW9/JnKMDuOr2RDfNAThhQ1yY5OGbEAvexWCEveUba2
- d04SRzZaNMotHaYyrsr0=
-X-Google-Smtp-Source: AGHT+IGECrLTcWKDu7mHWtA1lA/qZo8cfniO7etIuxla2lCEwg8UOGl7Ig8dnQNHROioc1iJozH6cQ==
-X-Received: by 2002:a5d:588b:0:b0:391:4282:f60e with SMTP id
- ffacd0b85a97d-3997f91d8e1mr15663179f8f.32.1742917265328; 
- Tue, 25 Mar 2025 08:41:05 -0700 (PDT)
+ bh=B9EcvePMMiziHxvQ+1Uv0hWd3cavq64til709QLPVTs=;
+ b=ne+AKGyjAktMHpK+dPfOL9GtI9nrZ0RPW1TmmM3MYE71pvRzLqdbO+J88Blm/6x1wa
+ LEdbkMTIlH1ffT71jbeHqNiRlpMa0aFxF4S9KDApAjSjpimmeU71ljSQBUTAJdT5XoEq
+ vOOEd/s3nuy5ESIizYsdF9HGmYy8abDECobbzRcsvo/s2mSAG054Ne6w98XzBq4o1l4m
+ 9ro9cbg2be95F9128Udk3MayVQTV5JPYOXlHZT8tSreUNSW0k79o1PxE+wsyQd2hqNI5
+ psYRX2MEcnju7r6keSv7el8U0Xsa2C90aIfEaugMaV4zzmJOS30tdlv3hAPxw8hrWD9R
+ HnPA==
+X-Gm-Message-State: AOJu0YyUIccSL1zl0ZAnidbJVM4eKgTexz9tRghJDerjdb8dxn0cj5Fr
+ TOCqQhI95+Qmlh1CGRropwXmd9HUIcvc74sMOOzs0XHBsl1CMiOTpjqmMXy5r5E66E4PXuIL5MK
+ 8
+X-Gm-Gg: ASbGncvUB/a+y/tnDyYah6msT52NCnGaLkMDDl7vqV3lXSxE3i3nY2CVXOoxxsCY5Um
+ wOjasAhJ6WbJ3SCZjT8/5eN2yIrjkIoE1FXEgQdE58HKLEEo6R0Kp170CxkTN+2m57ZrZhseSWq
+ ig9XYVH2lJoKxO0hoBZDPKOSAgj0Njk8DJFVaUU6lgb3c6CQluHGM/P+D8sbLj3PNGz4GqOA2Gu
+ sDruj/514l/kZtfEtdoPJr5eTQpzdUrI0kfR/MEE1yZ/OCPaEoZdz5j2wlR9vbEPdW4R8i1dDIh
+ tqyzuHQ0/y/DhS4AtunK15dbBOBsnhH0BfV7jUM84MQiyqXU9EY3v4uz2QuanzGTgWNEkvW2QKS
+ VqV4JIDq1eO0cd+dXQ9g=
+X-Google-Smtp-Source: AGHT+IFVn8V1/KX8LHz5TKfTH3Bq1V1p3NnDxQEWWA7VWJ3gnAhAlsXB06IaaBMapFZmlBoN0CetNw==
+X-Received: by 2002:a05:6000:4188:b0:391:487f:27e7 with SMTP id
+ ffacd0b85a97d-3997f947b9dmr11810016f8f.55.1742917270166; 
+ Tue, 25 Mar 2025 08:41:10 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9b3c2csm13776977f8f.46.2025.03.25.08.41.04
+ ffacd0b85a97d-3997f9955c0sm13861946f8f.3.2025.03.25.08.41.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Mar 2025 08:41:04 -0700 (PDT)
+ Tue, 25 Mar 2025 08:41:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -74,18 +74,18 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH-for-10.1 1/8] cpus: Open code OBJECT_DECLARE_TYPE() in
- OBJECT_DECLARE_CPU_TYPE()
-Date: Tue, 25 Mar 2025 16:40:51 +0100
-Message-ID: <20250325154058.92735-2-philmd@linaro.org>
+Subject: [PATCH-for-10.1 2/8] target/mips: Declare CPU QOM types using
+ DEFINE_TYPES() macro
+Date: Tue, 25 Mar 2025 16:40:52 +0100
+Message-ID: <20250325154058.92735-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250325154058.92735-1-philmd@linaro.org>
 References: <20250325154058.92735-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,63 +108,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the OBJECT_DECLARE_CPU_TYPE() macro uses the abstract ArchCPU
-type, when declaring multiple CPUs of the same ArchCPU type we get
-an error related to the indirect G_DEFINE_AUTOPTR_CLEANUP_FUNC()
-use within OBJECT_DECLARE_TYPE():
+When multiple QOM types are registered in the same file,
+it is simpler to use the the DEFINE_TYPES() macro. In
+particular because type array declared with such macro
+are easier to review.
 
-  target/mips/cpu-qom.h:31:1: error: redefinition of 'glib_autoptr_clear_ArchCPU'
-  OBJECT_DECLARE_CPU_TYPE(MIPS64CPU, MIPSCPUClass, MIPS64_CPU)
-  ^
-  include/hw/core/cpu.h:82:5: note: expanded from macro 'OBJECT_DECLARE_CPU_TYPE'
-      OBJECT_DECLARE_TYPE(ArchCPU, CpuClassType, CPU_MODULE_OBJ_NAME);
-      ^
-  include/qom/object.h:237:5: note: expanded from macro 'OBJECT_DECLARE_TYPE'
-      G_DEFINE_AUTOPTR_CLEANUP_FUNC(InstanceType, object_unref) \
-      ^
-  /usr/include/glib-2.0/glib/gmacros.h:1371:3: note: expanded from macro 'G_DEFINE_AUTOPTR_CLEANUP_FUNC'
-    _GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS(TypeName, TypeName, func)
-    ^
-  /usr/include/glib-2.0/glib/gmacros.h:1354:36: note: expanded from macro '_GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS'
-    static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_CLEAR_FUNC_NAME(TypeName) (TypeName *_ptr)                     \
-                                     ^
-  /usr/include/glib-2.0/glib/gmacros.h:1338:49: note: expanded from macro '_GLIB_AUTOPTR_CLEAR_FUNC_NAME'
-  #define _GLIB_AUTOPTR_CLEAR_FUNC_NAME(TypeName) glib_autoptr_clear_##TypeName
-                                                  ^
-  <scratch space>:54:1: note: expanded from here
-  glib_autoptr_clear_ArchCPU
-  ^
-  target/mips/cpu-qom.h:30:1: note: previous definition is here
-  OBJECT_DECLARE_CPU_TYPE(MIPS32CPU, MIPSCPUClass, MIPS32_CPU)
-  ^
-
-Avoid that problem by expanding the OBJECT_DECLARE_TYPE() macro
-within OBJECT_DECLARE_CPU_TYPE().
+In few commits we are going to add more types, so replace
+the type_register_static() to ease further reviews.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ target/mips/cpu.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 5d11d26556a..01e03f267cc 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -82,7 +82,12 @@ DECLARE_CLASS_CHECKERS(CPUClass, CPU,
-  */
- #define OBJECT_DECLARE_CPU_TYPE(CpuInstanceType, CpuClassType, CPU_MODULE_OBJ_NAME) \
-     typedef struct ArchCPU CpuInstanceType; \
--    OBJECT_DECLARE_TYPE(ArchCPU, CpuClassType, CPU_MODULE_OBJ_NAME);
-+    typedef struct CpuClassType CpuClassType; \
-+    \
-+    G_DEFINE_AUTOPTR_CLEANUP_FUNC(CpuInstanceType, object_unref) \
-+    \
-+    DECLARE_OBJ_CHECKERS(CpuInstanceType, CpuClassType, \
-+                         CPU_MODULE_OBJ_NAME, TYPE_##CPU_MODULE_OBJ_NAME)
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index b207106dd79..097554fd8ae 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -597,17 +597,21 @@ static void mips_cpu_class_init(ObjectClass *c, void *data)
+ #endif /* CONFIG_TCG */
+ }
  
- typedef struct CPUWatchpoint CPUWatchpoint;
+-static const TypeInfo mips_cpu_type_info = {
+-    .name = TYPE_MIPS_CPU,
+-    .parent = TYPE_CPU,
+-    .instance_size = sizeof(MIPSCPU),
+-    .instance_align = __alignof(MIPSCPU),
+-    .instance_init = mips_cpu_initfn,
+-    .abstract = true,
+-    .class_size = sizeof(MIPSCPUClass),
+-    .class_init = mips_cpu_class_init,
++static const TypeInfo mips_cpu_types[] = {
++    {
++        .name           = TYPE_MIPS_CPU,
++        .parent         = TYPE_CPU,
++        .instance_size  = sizeof(MIPSCPU),
++        .instance_align = __alignof(MIPSCPU),
++        .instance_init  = mips_cpu_initfn,
++        .abstract       = true,
++        .class_size     = sizeof(MIPSCPUClass),
++        .class_init     = mips_cpu_class_init,
++    }
+ };
  
++DEFINE_TYPES(mips_cpu_types)
++
+ static void mips_cpu_cpudef_class_init(ObjectClass *oc, void *data)
+ {
+     MIPSCPUClass *mcc = MIPS_CPU_CLASS(oc);
+@@ -632,7 +636,6 @@ static void mips_cpu_register_types(void)
+ {
+     int i;
+ 
+-    type_register_static(&mips_cpu_type_info);
+     for (i = 0; i < mips_defs_number; i++) {
+         mips_register_cpudef_type(&mips_defs[i]);
+     }
 -- 
 2.47.1
 
