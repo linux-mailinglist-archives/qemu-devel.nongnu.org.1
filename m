@@ -2,56 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16D2A713B3
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 10:29:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43295A713AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 10:28:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txN3q-0005ph-2Q; Wed, 26 Mar 2025 05:28:34 -0400
+	id 1txN2t-0005GI-86; Wed, 26 Mar 2025 05:27:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zoudongjie@huawei.com>)
- id 1txN3b-0005WX-3r; Wed, 26 Mar 2025 05:28:19 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1txN2p-0005Fd-JI
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:27:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zoudongjie@huawei.com>)
- id 1txN3Y-0002tK-HN; Wed, 26 Mar 2025 05:28:18 -0400
-Received: from mail.maildlp.com (unknown [172.19.163.48])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4ZN1ZQ6xcbzvWv5;
- Wed, 26 Mar 2025 17:24:14 +0800 (CST)
-Received: from kwepemk500007.china.huawei.com (unknown [7.202.194.92])
- by mail.maildlp.com (Postfix) with ESMTPS id B4D48185910;
- Wed, 26 Mar 2025 17:28:11 +0800 (CST)
-Received: from huawei.com (10.246.99.19) by kwepemk500007.china.huawei.com
- (7.202.194.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 26 Mar
- 2025 17:28:10 +0800
-To: <qemu-devel@nongnu.org>
-CC: <stefanha@redhat.com>, <kwolf@redhat.com>, <fam@euphon.net>,
- <hreitz@redhat.com>, <alex.chen@huawei.com>, <chenjianfei3@huawei.com>,
- <eric.fangyi@huawei.com>, <luolongmin@huawei.com>, <mujinsheng@huawei.com>,
- <qemu-block@nongnu.org>, <qemu-stable@nongnu.org>, <renxuming@huawei.com>,
- <suxiaodong1@huawei.com>, <wangjian161@huawei.com>, <wangyan122@huawei.com>,
- <yebiaoxiang@huawei.com>, <zhuyangyang14@huawei.com>, <zoudongjie@huawei.com>
-Subject: [PATCH v3 2/2] qapi/throttle: add timeout parameter for
- qmp_block_set_io_throttle()
-Date: Wed, 26 Mar 2025 17:26:34 +0800
-Message-ID: <20250326092634.1691355-3-zoudongjie@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20250326092634.1691355-1-zoudongjie@huawei.com>
-References: <20250326092634.1691355-1-zoudongjie@huawei.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1txN2m-0002hO-HL
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:27:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742981246;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tehrT5xctE47Pe+fTQR2Yr/KsdVhYPPS35i51tw4rjA=;
+ b=AfyVlqKQaKzYst2RqZNGaK8uVZdNV3Ah5VzFjfWtER7/tXi5YDo0sKWBbSmGqKxhv3zgQc
+ Q1CUC8IDxOfhD2FCOCDlkLwJgy6TorNa88Xu8YeEFP/c4HXlyg3FJKZR8DrlZsBWMBNB6p
+ /ssnZGBzTUCycXLVg9ODfACtCoZMjgo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-gIw1Pj1LOPeOAbLjpR3vNg-1; Wed,
+ 26 Mar 2025 05:27:25 -0400
+X-MC-Unique: gIw1Pj1LOPeOAbLjpR3vNg-1
+X-Mimecast-MFC-AGG-ID: gIw1Pj1LOPeOAbLjpR3vNg_1742981244
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 647A31944F0A; Wed, 26 Mar 2025 09:27:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.107])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B966A30001A1; Wed, 26 Mar 2025 09:27:21 +0000 (UTC)
+Date: Wed, 26 Mar 2025 09:27:18 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH 02/15] tests/functional: Move the check for the
+ parameters from avocado to functional
+Message-ID: <Z-PIduHuKP_CU-X7@redhat.com>
+References: <20250325200026.344006-1-thuth@redhat.com>
+ <20250325200026.344006-3-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.246.99.19]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemk500007.china.huawei.com (7.202.194.92)
-Received-SPF: pass client-ip=45.249.212.187;
- envelope-from=zoudongjie@huawei.com; helo=szxga01-in.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+In-Reply-To: <20250325200026.344006-3-thuth@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -66,140 +85,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  zoudongjie <zoudongjie@huawei.com>
-From:  zoudongjie via <qemu-devel@nongnu.org>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhu Yangyang <zhuyangyang14@huawei.com>
+On Tue, Mar 25, 2025 at 09:00:10PM +0100, Thomas Huth wrote:
+> From: Thomas Huth <thuth@redhat.com>
+> 
+> test_x86_64_pc in tests/avocado/boot_linux_console.py only checks
+> whether the kernel parameters have correctly been passed to the
+> kernel in the guest by looking for them in the console output of the
+> guest. Let's move that to the functional test framework now, but
+> instead of doing it in a separate test, let's do it for all tuxrun
+> tests instead, so it is done automatically for all targets that have
+> a tuxrun test.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  tests/avocado/boot_linux_console.py      | 34 ------------------------
+>  tests/functional/qemu_test/tuxruntest.py |  9 ++++---
+>  2 files changed, 5 insertions(+), 38 deletions(-)
 
-Calling qmp_block_set_io_throttle() will be blocked for a long time
-when a network disk is configured and the network failure is just about
-to occur.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Therefore, we add a timeout parameter for qmp_block_set_io_throttle to control
-its execution duration.
 
-The default value of timeout is 0, that is infinite wait, consistent with
-previous behavior.
-
-Signed-off-by: Zhu Yangyang <zhuyangyang14@huawei.com>
----
- block/block-backend.c                       | 14 +++++++++++++-
- block/qapi-system.c                         | 10 +++++++++-
- include/system/block-backend-global-state.h |  1 +
- qapi/block-core.json                        |  5 ++++-
- 4 files changed, 27 insertions(+), 3 deletions(-)
-
-diff --git a/block/block-backend.c b/block/block-backend.c
-index a402db13f2..fc1554ea55 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -2679,20 +2679,32 @@ void blk_set_io_limits(BlockBackend *blk, ThrottleConfig *cfg)
- }
- 
- void blk_io_limits_disable(BlockBackend *blk)
-+{
-+    blk_io_limits_disable_timeout(blk, 0);
-+}
-+
-+int blk_io_limits_disable_timeout(BlockBackend *blk, uint64_t timeout_ns)
- {
-     BlockDriverState *bs = blk_bs(blk);
-     ThrottleGroupMember *tgm = &blk->public.throttle_group_member;
-+    int ret = 0;
-+
-     assert(tgm->throttle_state);
-     GLOBAL_STATE_CODE();
-     if (bs) {
-         bdrv_ref(bs);
--        bdrv_drained_begin(bs);
-+        ret = bdrv_drained_begin_timeout(bs, timeout_ns);
-+        if (ret < 0) {
-+            goto out;
-+        }
-     }
-     throttle_group_unregister_tgm(tgm);
-+out:
-     if (bs) {
-         bdrv_drained_end(bs);
-         bdrv_unref(bs);
-     }
-+    return ret;
- }
- 
- /* should be called before blk_set_io_limits if a limit is set */
-diff --git a/block/qapi-system.c b/block/qapi-system.c
-index 54b7409b2b..3b7ba0959c 100644
---- a/block/qapi-system.c
-+++ b/block/qapi-system.c
-@@ -423,6 +423,7 @@ void qmp_block_set_io_throttle(BlockIOThrottle *arg, Error **errp)
-     ThrottleConfig cfg;
-     BlockDriverState *bs;
-     BlockBackend *blk;
-+    uint64_t timeout_ns;
- 
-     blk = qmp_get_blk(arg->device, arg->id, errp);
-     if (!blk) {
-@@ -444,6 +445,10 @@ void qmp_block_set_io_throttle(BlockIOThrottle *arg, Error **errp)
-     cfg.buckets[THROTTLE_OPS_READ].avg  = arg->iops_rd;
-     cfg.buckets[THROTTLE_OPS_WRITE].avg = arg->iops_wr;
- 
-+    timeout_ns = 0; /* 0 means infinite */
-+    if (arg->has_timeout) {
-+        timeout_ns = arg->timeout * NANOSECONDS_PER_SECOND;
-+    }
-     if (arg->has_bps_max) {
-         cfg.buckets[THROTTLE_BPS_TOTAL].max = arg->bps_max;
-     }
-@@ -502,7 +507,10 @@ void qmp_block_set_io_throttle(BlockIOThrottle *arg, Error **errp)
-         blk_set_io_limits(blk, &cfg);
-     } else if (blk_get_public(blk)->throttle_group_member.throttle_state) {
-         /* If all throttling settings are set to 0, disable I/O limits */
--        blk_io_limits_disable(blk);
-+        if (blk_io_limits_disable_timeout(blk, timeout_ns) < 0) {
-+            error_setg(errp, "Blk io limits disable timeout");
-+            return;
-+        }
-     }
- }
- 
-diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
-index 35b5e8380b..8a2a6cbda4 100644
---- a/include/system/block-backend-global-state.h
-+++ b/include/system/block-backend-global-state.h
-@@ -110,6 +110,7 @@ int blk_probe_geometry(BlockBackend *blk, HDGeometry *geo);
- 
- void blk_set_io_limits(BlockBackend *blk, ThrottleConfig *cfg);
- void blk_io_limits_disable(BlockBackend *blk);
-+int blk_io_limits_disable_timeout(BlockBackend *blk, uint64_t timeout_ns);
- void blk_io_limits_enable(BlockBackend *blk, const char *group);
- void blk_io_limits_update_group(BlockBackend *blk, const char *group);
- void blk_set_force_allow_inactivate(BlockBackend *blk);
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index b1937780e1..88ef593efd 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -2626,6 +2626,9 @@
- #
- # @group: throttle group name (Since 2.4)
- #
-+# @timeout: In seconds. Timeout for block_set_io_throttle,
-+#     0 means no limit. Defaults to 0. (Since 10.0)
-+#
- # Features:
- #
- # @deprecated: Member @device is deprecated.  Use @id instead.
-@@ -2642,7 +2645,7 @@
-             '*bps_max_length': 'int', '*bps_rd_max_length': 'int',
-             '*bps_wr_max_length': 'int', '*iops_max_length': 'int',
-             '*iops_rd_max_length': 'int', '*iops_wr_max_length': 'int',
--            '*iops_size': 'int', '*group': 'str' } }
-+            '*iops_size': 'int', '*group': 'str', '*timeout': 'uint32'} }
- 
- ##
- # @ThrottleLimits:
+With regards,
+Daniel
 -- 
-2.33.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
