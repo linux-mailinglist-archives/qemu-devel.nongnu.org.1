@@ -2,64 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1318A71990
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 15:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84711A719C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 16:08:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txSCq-0007jl-TP; Wed, 26 Mar 2025 10:58:13 -0400
+	id 1txSL7-0002du-Nj; Wed, 26 Mar 2025 11:06:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1txSCo-0007i5-2q
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 10:58:10 -0400
+ id 1txSL2-0002ZK-Qr
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:06:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1txSCm-0001ra-H3
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 10:58:09 -0400
+ id 1txSKz-0002vV-Ke
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:06:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743001087;
+ s=mimecast20190719; t=1743001596;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=iCgd6qABCsBo8wKBo4Fp4nb65vMu6ZhUrL8xx2jyCfA=;
- b=cg7/Y1CfXUt8ZpXejEZKywqkc52swZ5LiqqX37UBP8lbcgkbdhnWWqJoLf3qtP/JgI4QBn
- J8XAbeATA7cizokU8rXUCJQTqAIbGsi9R+quyp6MPiAHBc1iHXHiZaUyTZYZqzGcVT005E
- 8uRe88dxn7LYCiGGygd05BB8o1TAoEI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=3rRonVveb6ng06ZVyE/PrPgcb2jEXEF8myNjaRzegiY=;
+ b=F8kqEo6V9RAaO/ZabuaaNpGaKgghqSLvh9eJkjc7cQW07wiQG0RjdQXJWSPSqK0nv2FeFI
+ 73cZaG9lVfrikEfEVJKVtqYdu/zU6JrFpowIXDXGJJH/dRd5F7/X9z032imtkU0iVQ/qZ+
+ dgQl/R5yxN0oOam5EIWmSfPF8pRwxms=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-307-Owo8tfEdONmwyxOg5e24jA-1; Wed,
- 26 Mar 2025 10:58:04 -0400
-X-MC-Unique: Owo8tfEdONmwyxOg5e24jA-1
-X-Mimecast-MFC-AGG-ID: Owo8tfEdONmwyxOg5e24jA_1743001083
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-59-ovfR30d5NKGSJinW8oxsQA-1; Wed,
+ 26 Mar 2025 11:06:29 -0400
+X-MC-Unique: ovfR30d5NKGSJinW8oxsQA-1
+X-Mimecast-MFC-AGG-ID: ovfR30d5NKGSJinW8oxsQA_1743001585
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A71C4196B377; Wed, 26 Mar 2025 14:58:02 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3DCE3180AB19; Wed, 26 Mar 2025 15:06:24 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.113])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 365A81956095; Wed, 26 Mar 2025 14:58:01 +0000 (UTC)
-Date: Wed, 26 Mar 2025 10:57:59 -0400
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A0B9F1801750; Wed, 26 Mar 2025 15:06:21 +0000 (UTC)
+Date: Wed, 26 Mar 2025 11:06:20 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: ~h0lyalg0rithm <surajshirvankar@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
-	Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH qemu 1/1] Add IOURING_SETUP_SINGLE_ISSUER flag to improve
- iouring performance
-Message-ID: <20250326145759.GC783416@fedora>
-References: <174293621917.22751.11381319865102029969-0@git.sr.ht>
- <174293621917.22751.11381319865102029969-1@git.sr.ht>
+To: zoudongjie <zoudongjie@huawei.com>
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, fam@euphon.net,
+ hreitz@redhat.com, alex.chen@huawei.com, chenjianfei3@huawei.com,
+ eric.fangyi@huawei.com, luolongmin@huawei.com,
+ mujinsheng@huawei.com, qemu-block@nongnu.org,
+ qemu-stable@nongnu.org, renxuming@huawei.com,
+ suxiaodong1@huawei.com, wangjian161@huawei.com,
+ wangyan122@huawei.com, yebiaoxiang@huawei.com, zhuyangyang14@huawei.com
+Subject: Re: [PATCH v3 0/2] qapi/throttle: Fix qmp_block_set_io_throttle
+ blocked for too long
+Message-ID: <20250326150620.GF783416@fedora>
+References: <20250326092634.1691355-1-zoudongjie@huawei.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="L3dtV/1I1Uq+fdFo"
+ protocol="application/pgp-signature"; boundary="bsOd05ymlpMMikiU"
 Content-Disposition: inline
-In-Reply-To: <174293621917.22751.11381319865102029969-1@git.sr.ht>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+In-Reply-To: <20250326092634.1691355-1-zoudongjie@huawei.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -69,7 +73,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,95 +90,83 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---L3dtV/1I1Uq+fdFo
+--bsOd05ymlpMMikiU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 25, 2025 at 09:49:38PM +0100, ~h0lyalg0rithm wrote:
-> From: Suraj Shirvankar <surajshirvankar@gmail.com>
+On Wed, Mar 26, 2025 at 05:26:32PM +0800, zoudongjie wrote:
+> From: Zhu Yangyang <zhuyangyang14@huawei.com>
 >=20
-
-Please include the rationale for this change in the commit description.
-This way anyone reading the git log will be able to understand the
-intent behind this change. Something like:
-
-  IORING_SETUP_SINGLE_ISSUER enables optimizations in the kernel for
-  applications that only access the io_uring context from one thread.
-  QEMU calls io_uring_enter(2) from one AioContext, so it is safe to
-  enable this flag.
-
-> Signed-off-by: Suraj Shirvankar <surajshirvankar@gmail.com>
-> ---
->  util/fdmon-io_uring.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-
-`make check` fails with this patch applied because aio_context_new()
-(which calls fdmon_io_uring_setup()) is called before the thread is
-created. When fdmon_io_uring_wait() is called the io_uring context is
-now being used by another thread:
-
-  qemu-system-x86_64: ../util/fdmon-io_uring.c:330: fdmon_io_uring_wait: As=
-sertion `ret >=3D 0' failed.
-
-Once this hurdle is overcome it should be possible to use
-IORING_SETUP_SINGLE_ISSUER. Two ideas:
-
-1. Modify aio_context_new() callers so they create the AioContext inside
-   the thread.
-
-2. Defer io_uring context creation until it is needed. It's probably
-   still a good idea to create a temporary io-uring context early during
-   startup to check that io_uring is available (and then destroy it
-   right away).
-
-I slightly prefer the first option.
-
+> Calling qmp_block_set_io_throttle() will be blocked for a long time
+> when a network disk is configured and the network failure is just about
+> to occur.
 >=20
-> diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
-> index b0d68bdc44..235837abcb 100644
-> --- a/util/fdmon-io_uring.c
-> +++ b/util/fdmon-io_uring.c
-> @@ -324,8 +324,14 @@ static const FDMonOps fdmon_io_uring_ops =3D {
->  bool fdmon_io_uring_setup(AioContext *ctx)
->  {
->      int ret;
-> +    unsigned int flags =3D 0;
-> =20
-> -    ret =3D io_uring_queue_init(FDMON_IO_URING_ENTRIES, &ctx->fdmon_io_u=
-ring, 0);
-> +    /* This improves performance but can be skipped on old hosts */
-> +#ifdef IORING_SETUP_SINGLE_ISSUER
-> +    flags |=3D IORING_SETUP_SINGLE_ISSUER
-
-The semicolon is missing at the end of the line.
-
-> +#endif
-> +
-> +    ret =3D io_uring_queue_init(FDMON_IO_URING_ENTRIES, &ctx->fdmon_io_u=
-ring, flags);
->      if (ret !=3D 0) {
->          return false;
->      }
+> This series add a timeout parameter for qmp_block_set_io_throttle to cont=
+rol
+> its execution duration.
+>=20
+> Changelog
+> v3 ---
+>   Unify AIO_WAIT_WHILE_{TIMEOUT/INTERNAL} by replacing AIO_WAIT_WHILE_INT=
+ERNAL() with
+>   AIO_WAIT_WHILE_TIMEOUT(..., 0).
+>=20
+> v2 ----
+>   1. Support 0 in BDRV_POLL_WHILE_TIMEOUT(), 0 means infinite.
+>   2. Use uint64_t timeout_ns instead of int64 timeout to name variables.
+>   3. Use timer_pending() to check for expiry instead of explicitly checki=
+ng
+>      against the deadline for BDRV_POLL_WHILE_TIMEOUT().
+>   4. Add documentation for bdrv_drained_begin_timeout(), note that bdrv_d=
+rained_end()
+>      must be called when -ETIMEDOUT is returned.
+>   5. Add a timeout parameter to the qmp_block_set_io_throttle() instead o=
+f hardcoding
+>      the timeout, and the default value is 0, mean an infinite timeout.
+>=20
+> v1 patch link:
+> https://lore.kernel.org/qemu-devel/20250308101618.721954-1-zoudongjie@hua=
+wei.com/
+>=20
+> Zhu Yangyang (2):
+>   io/block: Refactoring the bdrv_drained_begin() function and implement
+>     a timeout mechanism.
+>   qapi/throttle: add timeout parameter for qmp_block_set_io_throttle()
+>=20
+>  block/block-backend.c                       | 14 ++++-
+>  block/io.c                                  | 58 +++++++++++++++++----
+>  block/qapi-system.c                         | 10 +++-
+>  include/block/aio-wait.h                    | 47 ++++++++++++-----
+>  include/block/block-io.h                    | 22 +++++++-
+>  include/system/block-backend-global-state.h |  1 +
+>  qapi/block-core.json                        |  5 +-
+>  util/aio-wait.c                             |  5 ++
+>  8 files changed, 135 insertions(+), 27 deletions(-)
+>=20
 > --=20
-> 2.45.3
+> 2.33.0
 >=20
 
---L3dtV/1I1Uq+fdFo
+Aside from Markus' comments:
+
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--bsOd05ymlpMMikiU
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfkFfcACgkQnKSrs4Gr
-c8igDQf+IQF7ysaQzhm+KfVr2vpl9id3mkQ7mvo1uq1dRvOEEoivS0bpTHXDauE3
-u1jdMzeGOjw8kYctgxZYDmaWxR+LsuEjhc+zkmSHbPUbf0TJIKXwfWv5o8kueGhE
-3sCccdDRIwXGx0ldKiaBmGWVo8ZD96R4gdX8rR/1NNI5YZDAKtk6S9po3k3nzxBr
-LtRQ5IBWF2EPhKp4CDs6ZItV5HYWFfG+v2VKIcV2xGKATsIbrkPkFdPOX6hUUEFZ
-hMk7+d4DW99X7EGYGBCk2ZZ4fCADB7JXdWkLb+2sE/bE5Ac1+LEPIbeBXr0xs4ZI
-jdoOxEoFPXYvYf6MeR9tipZDJyRmmw==
-=5M7O
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfkF+wACgkQnKSrs4Gr
+c8hDSAf+P5eL3gm158iJNBlkfDXrVAJibqSN9znmbs5OmpRh+JBlmUpDZpJhzxzS
+s3gwO9zd+xbXDN7CCpdXiFO9XvGLkteK8Cr66xDS7NcFIoiekuykkhneYQQJvDAS
+RLVa00Mw0r8XBljEDcSJGnAi3ny9mpBVOZMl7DTpwB85XmD67fvYlKITKCpRuXx5
+mY3ZbyiJXoduSAgrPdf12HMErBPxrsNVT391zPh06pYN+wIPCGxf4jOuNs9KarBu
+NQ0GMC6h/zEYsMuj3hwAD0Ji6lEs2AtPxsl60rq+nA+jVX3KP+M2McdG5PZ1L1Hu
+ax75hbp32+FWiyI71iYlx9vhAlGRoQ==
+=5ZsD
 -----END PGP SIGNATURE-----
 
---L3dtV/1I1Uq+fdFo--
+--bsOd05ymlpMMikiU--
 
 
