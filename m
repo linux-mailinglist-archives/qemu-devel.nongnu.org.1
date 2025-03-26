@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1198A71A4D
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 16:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5B6A71A5B
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 16:31:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txSh5-0000s2-CK; Wed, 26 Mar 2025 11:29:27 -0400
+	id 1txSh7-0000u4-BM; Wed, 26 Mar 2025 11:29:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1txSh0-0000qJ-Dv
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:29:22 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1txSh1-0000r9-Q8
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:29:23 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1txSgy-0005ie-TO
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:29:22 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2243803b776so496655ad.0
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 08:29:20 -0700 (PDT)
+ id 1txSgz-0005ik-PG
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:29:23 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2255003f4c6so457315ad.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 08:29:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743002959; x=1743607759; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743002960; x=1743607760; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=z3ZXlCUm86uymAguQXlmFO6CfoP8zlCCdX2A86h4w+s=;
- b=wVmcS09aoLPXWgtP441K7lzC4Q7OEcjF++Z9rcvXUUx/98GpBujFXd9RQVAijr5A8c
- HGAs+3L8V32Y8xBJizqbub4XSmEK1r5jG4/fIU+dBA4yv6+yT/nJbEh334CvGj3l9EFW
- sp13Nq1BoNwP83KlvrwHWYP5q76eAIWl43WoCag3pqmWYo+S9wiGHXUf5FXc/cB4qBws
- phXuyyqkYgLlGbDTz/FpdaP1ret4tdsW7JNPFJdxH0lJJfW4krZLuqAGiCrRTieBv4uF
- G2v3z05Uq/77tc6khI2nsVCcMt6GtUSXqbB9u7aspyw6vJ0OBvn6KwrV32s/G/NlewWQ
- JFcg==
+ bh=2+niFRVTMJRdZez4RhAi1o+lkjF/AM3JuYUoySr+NOM=;
+ b=eWkCAtJ9F3i8cU+IuhxYht2IFbo6cTtxl8JaDmiYPN7SUb8s4srY1y6g6SKxUPoGKU
+ VktmUjO5Ol9L1pb/49UYdElAsp3lEfhgmKHTyayKweiIxR9nDUN9O/rcZ0jMPxh8cnGz
+ Gijk2+OTCIC2F4cctO3yJpSmyoyn+tHWZOgCq2wz+ixTVgZ+6bA1sRI+wbaynRi2PaaC
+ 542/p+F+2ZHBlRf1gUMAKxNe9wpT/jXjU1dDgIxc2y0K4E8r38/pfc52D2apKi3RZH9j
+ WhPu6UhJO9+DW/birBGjNycTGvlGcTj2y5aVdw+nET/n4h90AzwEJ7h9mc7yU6aBzU5x
+ et+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743002959; x=1743607759;
+ d=1e100.net; s=20230601; t=1743002960; x=1743607760;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z3ZXlCUm86uymAguQXlmFO6CfoP8zlCCdX2A86h4w+s=;
- b=ESN9CVBfakwn1xFb5fAO6+IZu5kWFfhjNxjmJUk2zLfpzjawD5AGQ5iVZgxvly7aiN
- qIQ97CDY9n20F9XM5njTypzB5/qQTmH2RJlH6uNFn869GiWs8dhUy/h12op6wf187c+6
- E32t4gkmJgjY55AMrdX/xczswsGT31XVieSXcTRdGLweMcmMAksi91GJBlfE+mgrbP32
- MGqme2VoFfc8QAtB+v0AkVvqx37FM3AqHeh6IrPQGcbt79We+6Ax19AM1bHDao+Hpvjh
- T8z3olrfXMv6HECJPytg1A5n1/AsIhkBQulJ0Qbc0SESfmRq+txXayxbx/sx3+wcHpOj
- YIBA==
+ bh=2+niFRVTMJRdZez4RhAi1o+lkjF/AM3JuYUoySr+NOM=;
+ b=tkA9mz7vIgMsrbdcBiNv8h76E5CB0RV/5nlPP4h8AoHFRnYOhFP1WomA9pkDFDIl/T
+ R88hpDJTrLvSFYZ55SgO3KYApMTMSRaIpdGEi/rLrz4/WlO19Krz3p8VAyiNAgTX7+pA
+ WHbaxZFhg+nrUcxmNJ96fZtK1oO6J3vxSAebdiY0GTdP1hpuZzDB2Ll5TEGhCskN6SR2
+ DPMRnl8vKltEK3EqehfbS7wDFvQQniUImwaJFoxd3xfLNFeIc+lQL5mWSYaxyDIIw271
+ BRHJqqfnRkZLEwQNxOrAytjHs3fY85y3B3WH7FZvOTXWqd2xqsXmTPLJu06RLrIj+Gpm
+ Q35Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXB6KMsF2OyJZfJr8DuFAKp0sCmvNlY3ikG1u4KobQuc/aI0C90ZZyXZBRgyqTDhSpXhK3vWSCv7YLf@nongnu.org
-X-Gm-Message-State: AOJu0YzyF2lSKDjseraivpwoUmnyxwyRRhRCXb/MX67slKL3qhG6IpJT
- y5tJeoNcQ+nXNQtBvEY0JXwKuboPZxpHPXeqfzTW9RXDNLMWEs5VZXKvZg0WNws=
-X-Gm-Gg: ASbGncutmGqdfZo/fh7SyBuxM5b/OeLv3j0EuM+u9T43f4yIyDpWySReDxxhdolpBbI
- JXTITRvV0mbGf+0Ne09X5hx5jBrt7a10DlesPIQmZQZPJziiTgStkxqpruF1J87s2doEvm5EjSa
- SFw7aErfvkqepHy2HCg+wABE5HhsE9zvxmAvpTkjUSXyKN4gWELladZsTg0+/+5h8bbybBcw0SU
- 1pmsYdxcUSX3qPLD781ufaVim0P7cMuuDgqaIgRNYvvmHmhSkLKbb7YLjr9hXwJwKeribAhvSQ7
- I1Ujr8/8xsEUjE7yQuQQEpowQ//H5rFYl/96GLockhnijbabNeBEimePwA==
-X-Google-Smtp-Source: AGHT+IFMI+FP0IpnxHH6TkrNBRgTaRaVkIdmm4iFDQZxmWoAQdJOdTN5OA3m87FMEspLgVO12RcrwQ==
-X-Received: by 2002:a17:903:228c:b0:223:6180:1bea with SMTP id
- d9443c01a7336-22780e038e2mr320750815ad.37.1743002959153; 
- Wed, 26 Mar 2025 08:29:19 -0700 (PDT)
+ AJvYcCWo3oO92uVe3zti/xEjMVwr2YXfM1Z/J2UCySKrLF3YhT7u1WsCGVsS/cJhJTZZh41uNvmSCABX2cOI@nongnu.org
+X-Gm-Message-State: AOJu0Yyz8OgmAGdgfqO9qnMMLqR/NJGwKYI5ro+MQ6bYQ0xMedlq5b/E
+ U8cZFbFjWDBO0flrkTIqpZjKAQGeESEDyL4NPllb+dcuGhQohdpmFnt+zXyGn+hPvT/ci0jCIcT
+ i
+X-Gm-Gg: ASbGncv/AgEh8E4+8lp0KR40DKnrEa6OU5yxuapZ9GXk4E6p1/3YkvPVjEb5OtuKZpv
+ NqK7LRWlM5MzCBeCovS1SBRtsKUZaWlvs5s0YRSJb6X5LAVZUUk0jvxMKtc0s/HuKajLXsH5MEN
+ b3gZKRiiQPvAcPfPW7Cv4p3jnQjr3jym+/b4l16KX27tuf20MOmT5qC50Rcba1xfHUhiULm9hou
+ h5HLVRck/q1MFJX2koHhMQXOgzCoZ3J5eexOXsQdV8onD0FRuL8p0Jx5+2cXEQK+tKwTDU5TEbd
+ 5uE/6vglYRCiYZ/dml//uS92T4SyP9f9O3iyuFB+THi+COJ73GCx7ENvJts/fRrmWmeH
+X-Google-Smtp-Source: AGHT+IHqYS5wuBY0ZfH0pGyxVIVqG6CpF44aU7G1PnJ6qykviEaFsjyd8NaZE8s6d+Oj+ptskG3CDQ==
+X-Received: by 2002:a17:902:e74d:b0:223:5e6a:57ab with SMTP id
+ d9443c01a7336-22780e10df0mr320196865ad.39.1743002960110; 
+ Wed, 26 Mar 2025 08:29:20 -0700 (PDT)
 Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-227811bc272sm111122885ad.146.2025.03.26.08.29.18
+ d9443c01a7336-227811bc272sm111122885ad.146.2025.03.26.08.29.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Mar 2025 08:29:18 -0700 (PDT)
-Message-ID: <6016c97c-dfc7-427e-8281-0a420b31ceac@linaro.org>
-Date: Wed, 26 Mar 2025 08:16:59 -0700
+ Wed, 26 Mar 2025 08:29:19 -0700 (PDT)
+Message-ID: <b5b28249-0548-48fc-9967-19a2f9e8d247@linaro.org>
+Date: Wed, 26 Mar 2025 08:18:41 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/11] target/avr: Increase TARGET_PAGE_BITS to 10
+Subject: Re: [PATCH v2 10/11] hw/avr: Prepare for TARGET_PAGE_SIZE > 256
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: mrolnik@gmail.com, philmd@linaro.org
 References: <20250325224403.4011975-1-richard.henderson@linaro.org>
- <20250325224403.4011975-12-richard.henderson@linaro.org>
+ <20250325224403.4011975-11-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250325224403.4011975-12-richard.henderson@linaro.org>
+In-Reply-To: <20250325224403.4011975-11-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,34 +103,95 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/25/25 15:44, Richard Henderson wrote:
-> Now that we can handle the MCU allocating only a portion of the
-> first page to i/o, increase the page size.  Choose 10 as larger
-> than the i/o on every MCU, just so that this path is tested.
+> If i/o does not cover the entire first page, allocate a portion
+> of ram as an i/o device, so that the entire first page is i/o.
+> 
+> While memory_region_init_ram_device_ptr is happy to allocate
+> the RAMBlock, it does not register the ram for migration.
+> Do this by hand.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/avr/cpu-param.h | 8 +-------
->   1 file changed, 1 insertion(+), 7 deletions(-)
+>   hw/avr/atmega.h |  1 +
+>   hw/avr/atmega.c | 39 ++++++++++++++++++++++++++++++++-------
+>   2 files changed, 33 insertions(+), 7 deletions(-)
 > 
-> diff --git a/target/avr/cpu-param.h b/target/avr/cpu-param.h
-> index 81f3f49ee1..f5248ce9e7 100644
-> --- a/target/avr/cpu-param.h
-> +++ b/target/avr/cpu-param.h
-> @@ -21,13 +21,7 @@
->   #ifndef AVR_CPU_PARAM_H
->   #define AVR_CPU_PARAM_H
+> diff --git a/hw/avr/atmega.h b/hw/avr/atmega.h
+> index a99ee15c7e..9ac4678231 100644
+> --- a/hw/avr/atmega.h
+> +++ b/hw/avr/atmega.h
+> @@ -41,6 +41,7 @@ struct AtmegaMcuState {
+>       MemoryRegion flash;
+>       MemoryRegion eeprom;
+>       MemoryRegion sram;
+> +    MemoryRegion sram_io;
+>       DeviceState *io;
+>       AVRMaskState pwr[POWER_MAX];
+>       AVRUsartState usart[USART_MAX];
+> diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
+> index f6844bf118..11fab184de 100644
+> --- a/hw/avr/atmega.c
+> +++ b/hw/avr/atmega.c
+> @@ -19,6 +19,7 @@
+>   #include "hw/sysbus.h"
+>   #include "qom/object.h"
+>   #include "hw/misc/unimp.h"
+> +#include "migration/vmstate.h"
+>   #include "atmega.h"
 >   
-> -/*
-> - * TARGET_PAGE_BITS cannot be more than 8 bits because
-> - * 1.  all IO registers occupy [0x0000 .. 0x00ff] address range, and they
-> - *     should be implemented as a device and not memory
-> - * 2.  SRAM starts at the address 0x0100
-> - */
-> -#define TARGET_PAGE_BITS 8
-> +#define TARGET_PAGE_BITS 10
->   #define TARGET_PHYS_ADDR_SPACE_BITS 24
->   #define TARGET_VIRT_ADDR_SPACE_BITS 24
+>   enum AtmegaPeripheral {
+> @@ -224,8 +225,6 @@ static void atmega_realize(DeviceState *dev, Error **errp)
+>       char *devname;
+>       size_t i;
 >   
+> -    assert(mc->io_size <= 0x200);
+> -
+>       if (!s->xtal_freq_hz) {
+>           error_setg(errp, "\"xtal-frequency-hz\" property must be provided.");
+>           return;
+> @@ -240,11 +239,37 @@ static void atmega_realize(DeviceState *dev, Error **errp)
+>       qdev_realize(DEVICE(&s->cpu), NULL, &error_abort);
+>       cpudev = DEVICE(&s->cpu);
+>   
+> -    /* SRAM */
+> -    memory_region_init_ram(&s->sram, OBJECT(dev), "sram", mc->sram_size,
+> -                           &error_abort);
+> -    memory_region_add_subregion(get_system_memory(),
+> -                                OFFSET_DATA + mc->io_size, &s->sram);
+> +    /*
+> +     * SRAM
+> +     *
+> +     * Softmmu is not able mix i/o and ram on the same page.
+> +     * Therefore in all cases, the first page exclusively contains i/o.
+> +     *
+> +     * If the MCU's i/o region matches the page size, then we can simply
+> +     * allocate all ram starting at the second page.  Otherwise, we must
+> +     * allocate some ram as i/o to complete the first page.
+> +     */
+> +    assert(mc->io_size == 0x100 || mc->io_size == 0x200);
+> +    if (mc->io_size >= TARGET_PAGE_SIZE) {
+> +        memory_region_init_ram(&s->sram, OBJECT(dev), "sram", mc->sram_size,
+> +                               &error_abort);
+> +        memory_region_add_subregion(get_system_memory(),
+> +                                    OFFSET_DATA + mc->io_size, &s->sram);
+> +    } else {
+> +        int sram_io_size = TARGET_PAGE_SIZE - mc->io_size;
+> +        void *sram_io_mem = g_malloc0(sram_io_size);
+> +
+> +        memory_region_init_ram_device_ptr(&s->sram_io, OBJECT(dev), "sram-as-io",
+> +                                          sram_io_size, sram_io_mem);
+> +        memory_region_add_subregion(get_system_memory(),
+> +                                    OFFSET_DATA + mc->io_size, &s->sram_io);
+> +        vmstate_register_ram(&s->sram_io, dev);
+> +
+> +        memory_region_init_ram(&s->sram, OBJECT(dev), "sram",
+> +                               mc->sram_size - sram_io_size, &error_abort);
+> +        memory_region_add_subregion(get_system_memory(),
+> +                                    OFFSET_DATA + TARGET_PAGE_SIZE, &s->sram);
+> +    }
+>   
+>       /* Flash */
+>       memory_region_init_rom(&s->flash, OBJECT(dev),
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
