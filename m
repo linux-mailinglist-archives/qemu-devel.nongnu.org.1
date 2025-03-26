@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAC8A715B2
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 12:26:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DB8A715BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 12:28:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txOti-0005by-8n; Wed, 26 Mar 2025 07:26:14 -0400
+	id 1txOvW-00071k-36; Wed, 26 Mar 2025 07:28:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1txOte-0005bL-Nv
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:26:10 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1txOtc-0006FT-5N
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:26:10 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43cec5cd73bso42213015e9.3
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 04:26:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742988366; x=1743593166; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9s10LsKmHUKQpYc2s69GOFKwovPe1QZoil3Spxlj2OE=;
- b=sAr6KI6ESj/pqJuVZlpn56+TnXYid5jUtNlZj3w9KPvi1dlcphh3SnJIyGnYCIS4ps
- YZOJ883gtFfanWIkOio5wHUud6r2WZf1PYtQYQVI/5aunvf0pwPEQmySy/k6K1XrtLLD
- eJPsxJUUHn2X/eqxcM5iD12hwrAnUzBI2gSEv1kNbi2Pol+V6VcB6D+eihYki7WxMZfs
- HWqJkRIRvqMysvUswieFC5KOZPPUCCNRGwGH6HQh6BNc0LsPRcdo5bjtN+24dy/hC3Is
- cM9NlSTalgbfp6uunsZE6Oi3Txmsc4wUTDGZFs1HAFwWWBrH4plIRHlNwuUz5HTq79ir
- oUrA==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1txOur-0006ld-43
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:27:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1txOuo-0006KN-MC
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:27:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742988441;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GLSNH3zhDh9VqbeFpSwjl3hhBYCph9Oc7Nmzhv7a4IU=;
+ b=YpZv3svgvh/Sm2EJocuGRFFT0U1JhVwtL82OPo15Qjt3DzmDdOjBzwa7UnmKqAlItpcees
+ zECpmcTt8bWKjFc3hm6+7rw+hoIiDStDOiYehldYJCsHeenP/htFGnCmAMGsCKnPZcu8tR
+ guwyYjhCLT5ylc78SPqR1cnxSeUT9ts=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-348-5HTQ-WhrOXyVM7HEYGbFZw-1; Wed, 26 Mar 2025 07:27:19 -0400
+X-MC-Unique: 5HTQ-WhrOXyVM7HEYGbFZw-1
+X-Mimecast-MFC-AGG-ID: 5HTQ-WhrOXyVM7HEYGbFZw_1742988438
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-2ff8a2c7912so1691698a91.1
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 04:27:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742988366; x=1743593166;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=9s10LsKmHUKQpYc2s69GOFKwovPe1QZoil3Spxlj2OE=;
- b=I4Ck93hTjbba7CUpyjJ/ZtTh/jEVKDTABRspSguh/afKm3A0ujFQik9zPt8kzWFK9J
- d/iIyLimWZMONHMBHE/Dzajq3n4AGinxy5SypytmDBW7ML5FPgn/sBECsHNSfje+DS4y
- zObRaXL2aKBDfY7XvMdr/tKgxBPj4RC1s2Z0mEAUqlDC0pUdhFp4cklE8OYpFrHzdzJ4
- qoQPEbA3sRd5A9tss3nH5Wy7cTx2G2Asevfq2NazL+wAxm6AA5Q2hXr9wh62NOSpOaiJ
- zVXmrq40mZZcvEqAlTCnJgT+BH7bVfifgGdolx8LJciIfiDYAwmbgySOzLawFqMx1WU6
- 8fCQ==
-X-Gm-Message-State: AOJu0YwZJx8k1Lxr35Kv8zhrBOmTb1e1U65rrutQvrdtjw3DdGvHQjQ9
- 6Ofeqj82K5tYmDu3DjrH2k02bnF7i88WXwwWJFdBtE/xgceHp9TmGuiWdWssHKQ=
-X-Gm-Gg: ASbGncvLVyuE1p5K+VLiDJi9H8+8VoKw4zLaQvQvRvEDIa/AmodKstJSFimBXzrJMSS
- Mp06Ik4PZB1ofWHJXiXOJ7Kkg9ZBN5HBH4NEu53QqcmRQ/mp6Kgirv/4w3V1/L3rSAngt+A593+
- b6Swz9/g7DAloTMtyBpXgji9u99nhpa/DbMQZlWpmPnag1x1+249a0Aj1irIYLld83M0z5zQ3/h
- nKH4/c9zUK6d8NcnCMagf821UF7+ZxwvVLf2QIHniHaQ4KhHwPWmcUm10RkgpDOPgzZeJlzk/Gp
- UeXgNk5xV+ENJcqkoplHPiLfDe+vVx7rSAzac1N9x/ptji0=
-X-Google-Smtp-Source: AGHT+IF1HkiNyKHRCE2C5iO6dL2QPperjNyh8RCGDxOakKGmHgqHtUiHVI+/kMKCry6vi2jXJototw==
-X-Received: by 2002:a05:600c:4d1f:b0:43d:609:b305 with SMTP id
- 5b1f17b1804b1-43d5100ba49mr147485605e9.17.1742988365708; 
- Wed, 26 Mar 2025 04:26:05 -0700 (PDT)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9e6445sm16614727f8f.71.2025.03.26.04.26.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Mar 2025 04:26:05 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 67E665F90B;
- Wed, 26 Mar 2025 11:26:04 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Zhao Liu
- <zhao1.liu@intel.com>,  Anton Johansson <anjo@rev.ng>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH-for-10.1] target/i386/gdbstub: Replace ldtul_p() -> ldq_p()
-In-Reply-To: <20250325154528.93845-1-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 25 Mar 2025 16:45:28
- +0100")
-References: <20250325154528.93845-1-philmd@linaro.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Wed, 26 Mar 2025 11:26:04 +0000
-Message-ID: <87zfh8119v.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1742988438; x=1743593238;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GLSNH3zhDh9VqbeFpSwjl3hhBYCph9Oc7Nmzhv7a4IU=;
+ b=WVMYRWvrJLYKsV76+zdguIxpNocaCeZEEMqHfTkPgqMymrDqyL5lkYhlAAdINOj/8k
+ cVM2yaiBNak4ib6wh2hBjd8GYnUQDMvLmFVfxnuV44k4OVCkMEir3neOPa05eXZw+TyA
+ j/LTBkRDS9uzjNo7n6bavKwrNl8+uvjDlSP0XmTwokXBN3o1IVA9NTbdwrM7C4gCokTK
+ ltsvo9IH8Uakvn1Bx56PLpqorR1WQzj/t29MKFB4HGEOIVTHzb+esfZMxIEjSBcjH3Yh
+ urr3Nwg8Z5pCL7jht3WletwPFK59BNOptkyxDxHbR/hpU7Or79YQV+ZUEbK4AHNhN4ll
+ L1Ew==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXNkrFK5F5jb/pnJIG8l4w3erUELECoj9leg0tZMk06zG1yAPGnQWiHB+yaiyU52WC2QI7zVfKdAOBs@nongnu.org
+X-Gm-Message-State: AOJu0YxGBPyxVmPNyjJYTKFOSH16d7qkUMMuNlNEx0qmankHxPhS+Lqm
+ Nv+eHeAEB2mhjWyB0T8cfyqb+kO/VEkDy8RAVlkYjHBVzjBQxmVcJMrpDQewH5sZJQTsL/6nRhl
+ mT8hsIXd/cYOVGNwVuJVJJotVJcWkge1y8qKPP8Xdyy6yM8xi0t9AeboWpSYYFmA960gTR3BcLS
+ 3ydaq+UzniSFEcwKg2CRmE6dvjTwU=
+X-Gm-Gg: ASbGnctZCH0iI55XT/JDQIhbQU+XmoonZmvDncAiD1PdITST2k6GJHBjFNb1e094v4h
+ 5g/kaOJcvsBGzAmtjdHe4RTD8c0Yb/7XEMJtOVUnATlLFic0p+oIEUPA1mZBu/rzvZzE7TWQ=
+X-Received: by 2002:a17:90b:2dc7:b0:2ff:4a8d:74f9 with SMTP id
+ 98e67ed59e1d1-3037890df74mr4934211a91.10.1742988437966; 
+ Wed, 26 Mar 2025 04:27:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFznsNlo6CSJVXRbXiry7Z4pCn441SIruyl4mPR1GRjb0Qk0qPBJ1MLYsbKWDJDWMNa7vt0BXEWl/NHvaO+I6Y=
+X-Received: by 2002:a17:90b:2dc7:b0:2ff:4a8d:74f9 with SMTP id
+ 98e67ed59e1d1-3037890df74mr4934158a91.10.1742988437377; Wed, 26 Mar 2025
+ 04:27:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250324135929.74945-1-sahilcdq@proton.me>
+ <20250324135929.74945-3-sahilcdq@proton.me>
+In-Reply-To: <20250324135929.74945-3-sahilcdq@proton.me>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Wed, 26 Mar 2025 12:26:40 +0100
+X-Gm-Features: AQ5f1JoGVj2_DvV6rgdOaQT7nT7gkdJ6CFkPvEInUEy4P1Y2wNT75ZiS5lu5gT8
+Message-ID: <CAJaqyWfSFH7vrCRdg0zV4xrs7AmjMAnmZnqp1P3fMCeiMEGFMg@mail.gmail.com>
+Subject: Re: [RFC v5 2/7] vhost: Data structure changes to support packed vqs
+To: Sahil Siddiq <icegambit91@gmail.com>
+Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ sahilcdq@proton.me
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,17 +103,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
-
-> When TARGET_LONG_BITS =3D=3D 64, ldtul_p() expand to ldq_p().
-> Directly use the expanded form for clarity.
+On Mon, Mar 24, 2025 at 3:00=E2=80=AFPM Sahil Siddiq <icegambit91@gmail.com=
+> wrote:
 >
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Introduce "struct vring_packed".
+>
+> Modify VhostShadowVirtqueue so it can support split and packed virtqueue
+> formats.
+>
+> Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
+> ---
+> Changes from v4 -> v5:
+> - This was commit #3 in v4. This has been reordered to commit #2
+>   based on review comments.
+> - Place shadow_avail_idx, shadow_used_idx, last_used_idx
+>   above the "shadow vring" union.
+>
 
-Queued to gdbsub/next, thanks.
-<snip>
+What is the reason for the member reorder?
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+>  hw/virtio/vhost-shadow-virtqueue.h | 87 +++++++++++++++++++-----------
+>  1 file changed, 56 insertions(+), 31 deletions(-)
+>
+> diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-=
+virtqueue.h
+> index 9c273739d6..5f7699da9d 100644
+> --- a/hw/virtio/vhost-shadow-virtqueue.h
+> +++ b/hw/virtio/vhost-shadow-virtqueue.h
+> @@ -46,10 +46,65 @@ typedef struct VhostShadowVirtqueueOps {
+>      VirtQueueAvailCallback avail_handler;
+>  } VhostShadowVirtqueueOps;
+>
+> +struct vring_packed {
+> +    /* Actual memory layout for this queue. */
+> +    struct {
+> +        unsigned int num;
+> +        struct vring_packed_desc *desc;
+> +        struct vring_packed_desc_event *driver;
+> +        struct vring_packed_desc_event *device;
+> +    } vring;
+> +
+> +    /* Avail used flags. */
+> +    uint16_t avail_used_flags;
+> +
+> +    /* Index of the next avail descriptor. */
+> +    uint16_t next_avail_idx;
+> +
+> +    /* Driver ring wrap counter */
+> +    bool avail_wrap_counter;
+> +};
+> +
+>  /* Shadow virtqueue to relay notifications */
+>  typedef struct VhostShadowVirtqueue {
+> +    /* True if packed virtqueue */
+> +    bool is_packed;
+> +
+> +    /* Virtio queue shadowing */
+> +    VirtQueue *vq;
+> +
+> +    /* Virtio device */
+> +    VirtIODevice *vdev;
+> +
+> +    /* SVQ vring descriptors state */
+> +    SVQDescState *desc_state;
+> +
+> +    /*
+> +     * Backup next field for each descriptor so we can recover securely,=
+ not
+> +     * needing to trust the device access.
+> +     */
+> +    uint16_t *desc_next;
+> +
+> +    /* Next free descriptor */
+> +    uint16_t free_head;
+> +
+> +    /* Size of SVQ vring free descriptors */
+> +    uint16_t num_free;
+> +
+> +    /* Next head to expose to the device */
+> +    uint16_t shadow_avail_idx;
+> +
+> +    /* Last seen used idx */
+> +    uint16_t shadow_used_idx;
+> +
+> +    /* Next head to consume from the device */
+> +    uint16_t last_used_idx;
+> +
+>      /* Shadow vring */
+> -    struct vring vring;
+> +    union {
+> +        struct vring vring;
+> +        struct vring_packed vring_packed;
+> +    };
+>
+>      /* Shadow kick notifier, sent to vhost */
+>      EventNotifier hdev_kick;
+> @@ -69,47 +124,17 @@ typedef struct VhostShadowVirtqueue {
+>      /* Guest's call notifier, where the SVQ calls guest. */
+>      EventNotifier svq_call;
+>
+> -    /* Virtio queue shadowing */
+> -    VirtQueue *vq;
+> -
+> -    /* Virtio device */
+> -    VirtIODevice *vdev;
+> -
+>      /* IOVA mapping */
+>      VhostIOVATree *iova_tree;
+>
+> -    /* SVQ vring descriptors state */
+> -    SVQDescState *desc_state;
+> -
+>      /* Next VirtQueue element that guest made available */
+>      VirtQueueElement *next_guest_avail_elem;
+>
+> -    /*
+> -     * Backup next field for each descriptor so we can recover securely,=
+ not
+> -     * needing to trust the device access.
+> -     */
+> -    uint16_t *desc_next;
+> -
+>      /* Caller callbacks */
+>      const VhostShadowVirtqueueOps *ops;
+>
+>      /* Caller callbacks opaque */
+>      void *ops_opaque;
+> -
+> -    /* Next head to expose to the device */
+> -    uint16_t shadow_avail_idx;
+> -
+> -    /* Next free descriptor */
+> -    uint16_t free_head;
+> -
+> -    /* Last seen used idx */
+> -    uint16_t shadow_used_idx;
+> -
+> -    /* Next head to consume from the device */
+> -    uint16_t last_used_idx;
+> -
+> -    /* Size of SVQ vring free descriptors */
+> -    uint16_t num_free;
+>  } VhostShadowVirtqueue;
+>
+>  bool vhost_svq_valid_features(uint64_t features, Error **errp);
+> --
+> 2.48.1
+>
+
 
