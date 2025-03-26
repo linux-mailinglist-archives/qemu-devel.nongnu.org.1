@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F34A711DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 09:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 135AEA711BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 08:58:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txLbM-00046Y-Uv; Wed, 26 Mar 2025 03:55:07 -0400
+	id 1txLbj-0004bM-By; Wed, 26 Mar 2025 03:55:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1txLa8-0002BL-2P
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 03:53:49 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1txLaA-0002DN-RJ
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 03:53:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1txLa6-0006OP-8j
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 03:53:47 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1txLa8-0006OY-28
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 03:53:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742975625;
+ s=mimecast20190719; t=1742975627;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lld9Q74bpn3EN/UpGvKG5u/N5iLFSTuKTDjNkrkKkR4=;
- b=ZzttBFvEgOSdkJRAT7q+/Xg2x5HLaPPl/qMOFW0WSxVF7YBTIAiDwelLVOuVcN46SpRy70
- H2nmIaWVj0ulQY+9UVerAdCIskQB9jHGyNbUTJ4nHVwRkuNCFIIqRfmfD1L30ptS41OzDW
- V04zbv4VVUC6TmUa7sbmImxtIcYtlBo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Nira7vj1rB2GdhYrLlNesycOcNFMOT5PMRQNK8MKLB8=;
+ b=a8LVptngbnwUUmVHEKR82BKj7agb9iM0M+aQYvQkwXDL3j/DouLtptqqngTWXFO/ff8pow
+ OopT9Gm+Gkos4nkvvMLL+VhKgTuB5o+ftzf42TYpIubtArXIVpOQy7cg27GrughSSlpZAW
+ RZGUglkXJIeY9JTnBLrNhxDwwc4lRiA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-540--o5PBWxcOvivVoqNOa2tWg-1; Wed,
- 26 Mar 2025 03:53:40 -0400
-X-MC-Unique: -o5PBWxcOvivVoqNOa2tWg-1
-X-Mimecast-MFC-AGG-ID: -o5PBWxcOvivVoqNOa2tWg_1742975618
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-LhiJOTuTM8Ok58tEhaB6iQ-1; Wed,
+ 26 Mar 2025 03:53:43 -0400
+X-MC-Unique: LhiJOTuTM8Ok58tEhaB6iQ-1
+X-Mimecast-MFC-AGG-ID: LhiJOTuTM8Ok58tEhaB6iQ_1742975622
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CCBF019560BC; Wed, 26 Mar 2025 07:53:38 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 18697190308B; Wed, 26 Mar 2025 07:53:42 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.226.180])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5D81C19560AB; Wed, 26 Mar 2025 07:53:35 +0000 (UTC)
+ id 5767919560AB; Wed, 26 Mar 2025 07:53:39 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	Alex Williamson <alex.williamson@redhat.com>
@@ -51,10 +51,9 @@ Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
  John Levon <john.levon@nutanix.com>,
  Joao Martins <joao.m.martins@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH for-10.1 v2 34/37] vfio: Introduce vfio_listener_un/register()
- routines
-Date: Wed, 26 Mar 2025 08:51:19 +0100
-Message-ID: <20250326075122.1299361-35-clg@redhat.com>
+Subject: [PATCH for-10.1 v2 35/37] vfio: Rename vfio-common.h to vfio-device.h
+Date: Wed, 26 Mar 2025 08:51:20 +0100
+Message-ID: <20250326075122.1299361-36-clg@redhat.com>
 In-Reply-To: <20250326075122.1299361-1-clg@redhat.com>
 References: <20250326075122.1299361-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,137 +85,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This hides the MemoryListener implementation and makes the code common
-to both IOMMU backends, legacy and IOMMUFD.
+"hw/vfio/vfio-common.h" has been emptied of most of its declarations
+by the previous changes and the only declarations left are related to
+VFIODevice. Rename it to "hw/vfio/vfio-device.h" and make the
+necessary adjustments.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/vfio-listener.h |  3 ++-
- hw/vfio/container.c     | 11 +++--------
- hw/vfio/iommufd.c       |  9 ++-------
- hw/vfio/listener.c      | 22 +++++++++++++++++++++-
- 4 files changed, 28 insertions(+), 17 deletions(-)
+ hw/vfio/migration-multifd.h                      | 2 +-
+ hw/vfio/pci.h                                    | 2 +-
+ include/hw/s390x/vfio-ccw.h                      | 2 +-
+ include/hw/vfio/{vfio-common.h => vfio-device.h} | 0
+ include/hw/vfio/vfio-platform.h                  | 2 +-
+ backends/iommufd.c                               | 2 +-
+ hw/vfio/ap.c                                     | 2 +-
+ hw/vfio/ccw.c                                    | 2 +-
+ hw/vfio/container-base.c                         | 2 +-
+ hw/vfio/container.c                              | 2 +-
+ hw/vfio/cpr.c                                    | 2 +-
+ hw/vfio/device.c                                 | 2 +-
+ hw/vfio/helpers.c                                | 2 +-
+ hw/vfio/iommufd.c                                | 2 +-
+ hw/vfio/listener.c                               | 2 +-
+ hw/vfio/migration-multifd.c                      | 2 +-
+ hw/vfio/migration.c                              | 2 +-
+ hw/vfio/region.c                                 | 4 ++--
+ 18 files changed, 18 insertions(+), 18 deletions(-)
+ rename include/hw/vfio/{vfio-common.h => vfio-device.h} (100%)
 
-diff --git a/hw/vfio/vfio-listener.h b/hw/vfio/vfio-listener.h
-index 93af6747b28955f038454a335b361787f8364a3a..eb69ddd374fa20683007cfc4e9a7bf6fe707f27d 100644
---- a/hw/vfio/vfio-listener.h
-+++ b/hw/vfio/vfio-listener.h
-@@ -9,6 +9,7 @@
- #ifndef HW_VFIO_VFIO_LISTENER_H
- #define HW_VFIO_VFIO_LISTENER_H
+diff --git a/hw/vfio/migration-multifd.h b/hw/vfio/migration-multifd.h
+index a664051eb8ae03bc41cb7f9362ace840f41066ff..0bab63211d30cef04c50e50b3ea57840915ffc2a 100644
+--- a/hw/vfio/migration-multifd.h
++++ b/hw/vfio/migration-multifd.h
+@@ -12,7 +12,7 @@
+ #ifndef HW_VFIO_MIGRATION_MULTIFD_H
+ #define HW_VFIO_MIGRATION_MULTIFD_H
  
--extern const MemoryListener vfio_memory_listener;
-+bool vfio_listener_register(VFIOContainerBase *bcontainer, Error **errp);
-+void vfio_listener_unregister(VFIOContainerBase *bcontainer);
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
  
- #endif /* HW_VFIO_VFIO_LISTENER_H */
+ bool vfio_multifd_setup(VFIODevice *vbasedev, bool alloc_multifd, Error **errp);
+ void vfio_multifd_cleanup(VFIODevice *vbasedev);
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 2071b725ea5236a971964750fde81485eb8b10a9..32f3fed043643df57b89f0de3ddf6c930e5c6dd2 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -14,7 +14,7 @@
+ 
+ #include "exec/memory.h"
+ #include "hw/pci/pci_device.h"
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "qemu/event_notifier.h"
+ #include "qemu/queue.h"
+ #include "qemu/timer.h"
+diff --git a/include/hw/s390x/vfio-ccw.h b/include/hw/s390x/vfio-ccw.h
+index 4209d27657c1fbde44c160445396bcab3f3fd2b0..1e0922dca11e6caada08c2aae82bd3462ace35f5 100644
+--- a/include/hw/s390x/vfio-ccw.h
++++ b/include/hw/s390x/vfio-ccw.h
+@@ -14,7 +14,7 @@
+ #ifndef HW_VFIO_CCW_H
+ #define HW_VFIO_CCW_H
+ 
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "hw/s390x/s390-ccw.h"
+ #include "hw/s390x/ccw-device.h"
+ #include "qom/object.h"
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-device.h
+similarity index 100%
+rename from include/hw/vfio/vfio-common.h
+rename to include/hw/vfio/vfio-device.h
+diff --git a/include/hw/vfio/vfio-platform.h b/include/hw/vfio/vfio-platform.h
+index 3191545717da51abc41d10cd3646cd047b4a676c..256d8500b70a2e985e975b0895e3cfca435ed8ed 100644
+--- a/include/hw/vfio/vfio-platform.h
++++ b/include/hw/vfio/vfio-platform.h
+@@ -17,7 +17,7 @@
+ #define HW_VFIO_VFIO_PLATFORM_H
+ 
+ #include "hw/sysbus.h"
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "qemu/event_notifier.h"
+ #include "qemu/queue.h"
+ #include "qom/object.h"
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index d57da44755be3d7fdba74f7dbecfe6d1c89921ba..9587e4d99b131e88674326a5196cfd2079560430 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -18,7 +18,7 @@
+ #include "qemu/error-report.h"
+ #include "monitor/monitor.h"
+ #include "trace.h"
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include <sys/ioctl.h>
+ #include <linux/iommufd.h>
+ 
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index c7ab4ff57ada0ed0e5a76f52b5a05c86ca4fe0b4..4fdb74e33c427595a9b0a4d28b2b5a70df951e4e 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -15,7 +15,7 @@
+ #include <linux/vfio.h>
+ #include <sys/ioctl.h>
+ #include "qapi/error.h"
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "system/iommufd.h"
+ #include "hw/s390x/ap-device.h"
+ #include "qemu/error-report.h"
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index e5e0d9e3e7ed124f242b3eda345bc973e418a64c..a40169bc85e51406822247f5b3ef6da1f7f92881 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -21,7 +21,7 @@
+ #include <sys/ioctl.h>
+ 
+ #include "qapi/error.h"
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "system/iommufd.h"
+ #include "hw/s390x/s390-ccw.h"
+ #include "hw/s390x/vfio-ccw.h"
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index a2e7a3b2e747d422f7a681fb09b1182e119c6d20..45870b2e6ce03a440a5c4d18e8b3f2ef8a55193a 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -19,7 +19,7 @@
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "hw/vfio/vfio-container-base.h"
+-#include "hw/vfio/vfio-common.h" /* vfio_reset_handler */
++#include "hw/vfio/vfio-device.h" /* vfio_reset_handler */
+ #include "system/reset.h"
+ #include "vfio-helpers.h"
+ 
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index acebb53dcb1b829d31cc31d9f7f2cc9599f952eb..f086e5c802f058c01ca740de338538106874fb03 100644
+index f086e5c802f058c01ca740de338538106874fb03..86a1a8e4e816d3605d406d76cbb0663112c3976b 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -616,12 +616,7 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-     group->container = container;
-     QLIST_INSERT_HEAD(&container->group_list, group, container_next);
+@@ -22,7 +22,7 @@
+ #include <sys/ioctl.h>
+ #include <linux/vfio.h>
  
--    bcontainer->listener = vfio_memory_listener;
--    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
--
--    if (bcontainer->error) {
--        error_propagate_prepend(errp, bcontainer->error,
--            "memory listener initialization failed: ");
-+    if (!vfio_listener_register(bcontainer, errp)) {
-         goto listener_release_exit;
-     }
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "exec/address-spaces.h"
+ #include "exec/memory.h"
+ #include "exec/ram_addr.h"
+diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
+index 696987006b853227e76caedb3c7f4e4be31cfa06..3214184f97421a17b4d981facdcadde3a1fcec9a 100644
+--- a/hw/vfio/cpr.c
++++ b/hw/vfio/cpr.c
+@@ -6,7 +6,7 @@
+  */
  
-@@ -631,7 +626,7 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
- listener_release_exit:
-     QLIST_REMOVE(group, container_next);
-     vfio_kvm_device_del_group(group);
--    memory_listener_unregister(&bcontainer->listener);
-+    vfio_listener_unregister(bcontainer);
-     if (vioc->release) {
-         vioc->release(bcontainer);
-     }
-@@ -669,7 +664,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
-      * group.
-      */
-     if (QLIST_EMPTY(&container->group_list)) {
--        memory_listener_unregister(&bcontainer->listener);
-+        vfio_listener_unregister(bcontainer);
-         if (vioc->release) {
-             vioc->release(bcontainer);
-         }
+ #include "qemu/osdep.h"
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "migration/misc.h"
+ #include "qapi/error.h"
+ #include "system/runstate.h"
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index e122c797c206c285ef26c3a56d841d8c3be8b58b..543750c3b13b53dbd6705d08ac8cead0ebe49ed7 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -21,7 +21,7 @@
+ #include "qemu/osdep.h"
+ #include <sys/ioctl.h>
+ 
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "hw/vfio/pci.h"
+ #include "hw/hw.h"
+ #include "trace.h"
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index 48bd61d5280967dffa509dcbaeeee7a1ba01335a..d0dbab1d17132743ea5f5ed0f25701436be11945 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -23,7 +23,7 @@
+ #include <sys/ioctl.h>
+ 
+ #include "system/kvm.h"
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "hw/hw.h"
+ #include "qapi/error.h"
+ #include "vfio-helpers.h"
 diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 7488d21215b6eee78c9c51cfb227d9c8c59c4978..e47720247d6acfd6ea0e5a2e2a2eecabfa62dce3 100644
+index e47720247d6acfd6ea0e5a2e2a2eecabfa62dce3..48db10542269111804643713270199657145accc 100644
 --- a/hw/vfio/iommufd.c
 +++ b/hw/vfio/iommufd.c
-@@ -410,7 +410,7 @@ static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer *container)
-     if (!QLIST_EMPTY(&bcontainer->device_list)) {
-         return;
-     }
--    memory_listener_unregister(&bcontainer->listener);
-+    vfio_listener_unregister(bcontainer);
-     iommufd_backend_free_id(container->be, container->ioas_id);
-     object_unref(container);
- }
-@@ -562,12 +562,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
-         bcontainer->pgsizes = qemu_real_host_page_size();
-     }
+@@ -15,7 +15,7 @@
+ #include <linux/vfio.h>
+ #include <linux/iommufd.h>
  
--    bcontainer->listener = vfio_memory_listener;
--    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
--
--    if (bcontainer->error) {
--        error_propagate_prepend(errp, bcontainer->error,
--                                "memory listener initialization failed: ");
-+    if (!vfio_listener_register(bcontainer, errp)) {
-         goto err_listener_register;
-     }
- 
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "qemu/error-report.h"
+ #include "trace.h"
+ #include "qapi/error.h"
 diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index 07c8dc6ce343510dea20c5946e64a23a57c0f91b..324dc47183be82933197017f473f67cce6d7ec56 100644
+index 324dc47183be82933197017f473f67cce6d7ec56..05ce6f45a6944226d09bf1636f4b8e277fd8d539 100644
 --- a/hw/vfio/listener.c
 +++ b/hw/vfio/listener.c
-@@ -46,6 +46,7 @@
- #include "system/tpm.h"
- #include "vfio-migration-internal.h"
- #include "vfio-helpers.h"
-+#include "vfio-listener.h"
+@@ -25,7 +25,7 @@
+ #endif
+ #include <linux/vfio.h>
  
- /*
-  * Device state interfaces
-@@ -1163,7 +1164,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
-     }
- }
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "hw/vfio/pci.h"
+ #include "exec/address-spaces.h"
+ #include "exec/memory.h"
+diff --git a/hw/vfio/migration-multifd.c b/hw/vfio/migration-multifd.c
+index 1eba74beb0f207804e9c80935eacb0de19589b85..ec622bdf168d00ad625ad7ecf80471f3e19e19f9 100644
+--- a/hw/vfio/migration-multifd.c
++++ b/hw/vfio/migration-multifd.c
+@@ -10,7 +10,7 @@
+  */
  
--const MemoryListener vfio_memory_listener = {
-+static const MemoryListener vfio_memory_listener = {
-     .name = "vfio",
-     .region_add = vfio_listener_region_add,
-     .region_del = vfio_listener_region_del,
-@@ -1171,3 +1172,22 @@ const MemoryListener vfio_memory_listener = {
-     .log_global_stop = vfio_listener_log_global_stop,
-     .log_sync = vfio_listener_log_sync,
- };
-+
-+bool vfio_listener_register(VFIOContainerBase *bcontainer, Error **errp)
-+{
-+    bcontainer->listener = vfio_memory_listener;
-+    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
-+
-+    if (bcontainer->error) {
-+        error_propagate_prepend(errp, bcontainer->error,
-+                                "memory listener initialization failed: ");
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+void vfio_listener_unregister(VFIOContainerBase *bcontainer)
-+{
-+    memory_listener_unregister(&bcontainer->listener);
-+}
+ #include "qemu/osdep.h"
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "hw/vfio/vfio-migration.h"
+ #include "migration/misc.h"
+ #include "qapi/error.h"
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 8d69de3c80eaedf9bf4b8bc9b25f6d722ae619b2..bda514b91969156491c0cd8c5c0d1ac47ae8c45f 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -16,7 +16,7 @@
+ #include <sys/ioctl.h>
+ 
+ #include "system/runstate.h"
+-#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-device.h"
+ #include "hw/vfio/vfio-migration.h"
+ #include "migration/misc.h"
+ #include "migration/savevm.h"
+diff --git a/hw/vfio/region.c b/hw/vfio/region.c
+index 9049143abffa28bed333d110d1e01d68ad7f83be..010b5241e15c2063051fd780c335fef80f214dc1 100644
+--- a/hw/vfio/region.c
++++ b/hw/vfio/region.c
+@@ -21,8 +21,8 @@
+ #include "qemu/osdep.h"
+ #include <sys/ioctl.h>
+ 
+-#include "hw/vfio/vfio-common.h"
+-#include "hw/vfio/pci.h"
++#include "hw/vfio/vfio-region.h"
++#include "hw/vfio/vfio-device.h"
+ #include "hw/hw.h"
+ #include "trace.h"
+ #include "qapi/error.h"
 -- 
 2.49.0
 
