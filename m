@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A16A711E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 09:01:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF41A711E2
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 09:02:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txLZM-0000OJ-26; Wed, 26 Mar 2025 03:53:00 -0400
+	id 1txLZL-00009P-L1; Wed, 26 Mar 2025 03:52:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1txLZ1-0008Le-2c
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 03:52:39 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1txLZ2-0008QJ-LE
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 03:52:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1txLYz-0006IG-CP
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 03:52:38 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1txLZ0-0006IR-Ku
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 03:52:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742975556;
+ s=mimecast20190719; t=1742975557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Jer0hzHOfemCPA34A9WeI+bx2/vH5fk/N8lzAilDwJ0=;
- b=WLVdmsA9NUCbZ9SRXqlKSjyZuiZi+2aEeSfFIDgiN65iJgDjpHgPSLvLetji0qHvwPz7BC
- ufn6uzrmWxdXjSI6l0BdJBdclDbAsKguX726MsgjkjYcxNy8WZs1RE1TkTTJ8FdlMc3LK5
- vaJV5RbuSxEqdBRbVuWVsfkv8nfW71s=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=HXFchWed6Lh6Ij2c/uPcF3+XXunM8TGYrA54SMYNzWo=;
+ b=VWM7ieujLN64JGRLHa0O48NauWG+8R4CvoGPoPm1qbUq/JUloaJcCo9GJiFezXRgHnm520
+ CgWcpYxLHngDCIRyMxAG5HaUfbXA+loZ9vyXZNX/yfazNbLk+FM8L62ZxSK9p7uVwVabu7
+ YgvdOHB5Dsed7YIpG4iOExzfqNeDW74=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-168-jyrheO-QMU-qkwprBYT8fA-1; Wed,
- 26 Mar 2025 03:52:33 -0400
-X-MC-Unique: jyrheO-QMU-qkwprBYT8fA-1
-X-Mimecast-MFC-AGG-ID: jyrheO-QMU-qkwprBYT8fA_1742975552
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-510-zGzuUbOwOsyNf6y4pHnG6g-1; Wed,
+ 26 Mar 2025 03:52:36 -0400
+X-MC-Unique: zGzuUbOwOsyNf6y4pHnG6g-1
+X-Mimecast-MFC-AGG-ID: zGzuUbOwOsyNf6y4pHnG6g_1742975555
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 32FBF180AB19; Wed, 26 Mar 2025 07:52:32 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6EC401800259; Wed, 26 Mar 2025 07:52:35 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.226.180])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 755CA19560AB; Wed, 26 Mar 2025 07:52:29 +0000 (UTC)
+ id B16C319560AB; Wed, 26 Mar 2025 07:52:32 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	Alex Williamson <alex.williamson@redhat.com>
@@ -51,10 +51,10 @@ Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
  John Levon <john.levon@nutanix.com>,
  Joao Martins <joao.m.martins@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH for-10.1 v2 15/37] vfio: Move Host IOMMU type declarations
- into their respective files
-Date: Wed, 26 Mar 2025 08:51:00 +0100
-Message-ID: <20250326075122.1299361-16-clg@redhat.com>
+Subject: [PATCH for-10.1 v2 16/37] vfio: Introduce a new header file for
+ helper services
+Date: Wed, 26 Mar 2025 08:51:01 +0100
+Message-ID: <20250326075122.1299361-17-clg@redhat.com>
 In-Reply-To: <20250326075122.1299361-1-clg@redhat.com>
 References: <20250326075122.1299361-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,63 +86,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These definitions don't have any use outside of their respective
-submodules. There is no need to expose them externally. Keep them
-private.
+Gather all helper routine declarations into "vfio-helpers.h" to reduce
+exposure of VFIO internals in "hw/vfio/vfio-common.h".
 
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: John Levon <john.levon@nutanix.com>
-Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-15-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-16-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h | 5 -----
- hw/vfio/container.c           | 2 ++
- hw/vfio/iommufd.c             | 3 +++
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ hw/vfio/vfio-helpers.h        | 26 ++++++++++++++++++++++++++
+ include/hw/vfio/vfio-common.h |  7 -------
+ hw/s390x/s390-pci-vfio.c      |  1 +
+ hw/vfio/common.c              |  1 +
+ hw/vfio/container.c           |  1 +
+ hw/vfio/helpers.c             |  1 +
+ hw/vfio/pci.c                 |  1 +
+ hw/vfio/region.c              |  1 +
+ 8 files changed, 32 insertions(+), 7 deletions(-)
+ create mode 100644 hw/vfio/vfio-helpers.h
 
+diff --git a/hw/vfio/vfio-helpers.h b/hw/vfio/vfio-helpers.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..d7e4dcba512a2a842c4a9d75e2d834bdf97c8f31
+--- /dev/null
++++ b/hw/vfio/vfio-helpers.h
+@@ -0,0 +1,26 @@
++/*
++ * VFIO helpers
++ *
++ * Copyright Red Hat, Inc. 2025
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_VFIO_VFIO_HELPERS_H
++#define HW_VFIO_VFIO_HELPERS_H
++
++#ifdef CONFIG_LINUX
++#include <linux/vfio.h>
++
++struct vfio_info_cap_header *
++vfio_get_cap(void *ptr, uint32_t cap_offset, uint16_t id);
++struct vfio_info_cap_header *
++vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id);
++struct vfio_info_cap_header *
++vfio_get_region_info_cap(struct vfio_region_info *info, uint16_t id);
++
++#endif
++
++int vfio_bitmap_alloc(VFIOBitmap *vbmap, hwaddr size);
++
++#endif /* HW_VFIO_VFIO_HELPERS_H */
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index b2d4ff68650b205dca42ef00c7dfc7f2505b7e51..072b2c028f36234807c71b451a4e3c7caefa7f14 100644
+index 072b2c028f36234807c71b451a4e3c7caefa7f14..3487fc75a77e4413c3ef4ef6db6303ce17d6dc82 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -115,11 +115,6 @@ struct VFIODeviceOps {
-     int (*vfio_load_config)(VFIODevice *vdev, QEMUFile *f);
- };
+@@ -147,17 +147,10 @@ int vfio_get_region_info(VFIODevice *vbasedev, int index,
+ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
+                              uint32_t subtype, struct vfio_region_info **info);
+ bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type);
+-struct vfio_info_cap_header *
+-vfio_get_region_info_cap(struct vfio_region_info *info, uint16_t id);
+ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
+                              unsigned int *avail);
+-struct vfio_info_cap_header *
+-vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id);
+-struct vfio_info_cap_header *
+-vfio_get_cap(void *ptr, uint32_t cap_offset, uint16_t id);
+ #endif
  
--
--#define TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO TYPE_HOST_IOMMU_DEVICE "-legacy-vfio"
--#define TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO \
--            TYPE_HOST_IOMMU_DEVICE_IOMMUFD "-vfio"
--
- void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
- void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
- void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index);
+-int vfio_bitmap_alloc(VFIOBitmap *vbmap, hwaddr size);
+ bool vfio_devices_all_dirty_tracking_started(
+     const VFIOContainerBase *bcontainer);
+ bool
+diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
+index 88d4c5b3ecc617c5b93ca53cba0850666db3a67b..1a76d4c00bf88a46623c9f848fbcfeab91bd958c 100644
+--- a/hw/s390x/s390-pci-vfio.c
++++ b/hw/s390x/s390-pci-vfio.c
+@@ -21,6 +21,7 @@
+ #include "hw/s390x/s390-pci-vfio.h"
+ #include "hw/vfio/pci.h"
+ #include "hw/vfio/vfio-container.h"
++#include "hw/vfio/vfio-helpers.h"
+ 
+ /*
+  * Get the current DMA available count from vfio.  Returns true if vfio is
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index a8cece570a6092103a5cf573b5343e1d8817bde7..4b3f26d4c0ced17c93f6a1fab02c85181d55f6be 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -45,6 +45,7 @@
+ #include "system/tcg.h"
+ #include "system/tpm.h"
+ #include "vfio-migration-internal.h"
++#include "vfio-helpers.h"
+ 
+ VFIODeviceList vfio_device_list =
+     QLIST_HEAD_INITIALIZER(vfio_device_list);
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 9b86e24a4072e579bcdc2c060ce42608ee44ee2e..9aa9f6931f591211e46f57029df2ca194f9c3eaf 100644
+index 9aa9f6931f591211e46f57029df2ca194f9c3eaf..9293e626bc85aef5537d8aca500564f90c31faaf 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -34,6 +34,8 @@
+@@ -33,6 +33,7 @@
+ #include "qapi/error.h"
  #include "pci.h"
  #include "hw/vfio/vfio-container.h"
++#include "vfio-helpers.h"
  
-+#define TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO TYPE_HOST_IOMMU_DEVICE "-legacy-vfio"
-+
- typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
- static VFIOGroupList vfio_group_list =
-     QLIST_HEAD_INITIALIZER(vfio_group_list);
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index a520d40afc00d79ae8617fd3c40433e228583b5a..2ec15bc2692e2eb90299e5a1c09ab6b738c69cf0 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -27,6 +27,9 @@
- #include "pci.h"
- #include "vfio-iommufd.h"
+ #define TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO TYPE_HOST_IOMMU_DEVICE "-legacy-vfio"
  
-+#define TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO             \
-+            TYPE_HOST_IOMMU_DEVICE_IOMMUFD "-vfio"
-+
- static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
-                             ram_addr_t size, void *vaddr, bool readonly)
- {
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index 89403943a7a219e491b6812d50b27b7f1fd7b4a4..054ee6e31ebd080cc10516b9fc5a0373725b63d8 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -30,6 +30,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/units.h"
+ #include "monitor/monitor.h"
++#include "vfio-helpers.h"
+ 
+ /*
+  * Common VFIO interrupt disable
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 7457e81cdb07bc6657bb1514349c172a152cb540..8a18a5e3646f35f2a36ac73e791198d96d21fbb7 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -46,6 +46,7 @@
+ #include "system/iommufd.h"
+ #include "vfio-migration-internal.h"
+ #include "hw/vfio/vfio-region.h"
++#include "vfio-helpers.h"
+ 
+ #define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
+ 
+diff --git a/hw/vfio/region.c b/hw/vfio/region.c
+index 08cd69e7047ab950151832864a14af7af774ff3b..9049143abffa28bed333d110d1e01d68ad7f83be 100644
+--- a/hw/vfio/region.c
++++ b/hw/vfio/region.c
+@@ -29,6 +29,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/units.h"
+ #include "monitor/monitor.h"
++#include "vfio-helpers.h"
+ 
+ /*
+  * IO Port/MMIO - Beware of the endians, VFIO is always little endian
 -- 
 2.49.0
 
