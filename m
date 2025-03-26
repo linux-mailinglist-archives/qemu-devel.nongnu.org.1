@@ -2,85 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C93A71BAE
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 17:21:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 047F2A71C05
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 17:41:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txTUU-0003uJ-HR; Wed, 26 Mar 2025 12:20:30 -0400
+	id 1txTnM-00005u-EL; Wed, 26 Mar 2025 12:40:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
- id 1txTUR-0003ru-6o
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 12:20:27 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
- id 1txTUP-0003qJ-2d
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 12:20:26 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5e5e0caa151so12637601a12.0
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 09:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743006022; x=1743610822; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=I3JFUKCCRkTnpbwiMFKH97iS5KTKZQkgxVnBd4MkOAc=;
- b=UPWznZy0pXVGysvMD4b9ev843s4oVzAGwUGhNthxR+LwhwjwoyJqN77GDAcFnP7j9A
- 1orXniaA8LgKPt56d9e+8Z3ynAiJHEPS2H6ffD4kOlpAmaHqjJEf7Je/XfgAB2t5T+sS
- lBV9AzuUcyOcBBE17wwqpuHUxlWsStC5TYAR1PK2mo2Vg/DFuu/s8H8aIqVVMvF4Z2lG
- 3z8R/gx9jZEh5iDQ0+KAwYxKMkVxplu22T251lRpmcbI8jgor20UpgDI1Qxfy5o7f3bd
- chVR5W6AFjxVe+bGHuJtuZreqi30BNskzHuzQAxRPLB80o2FAzWNkMoGUMl6DZcRwBzi
- H4gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743006022; x=1743610822;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=I3JFUKCCRkTnpbwiMFKH97iS5KTKZQkgxVnBd4MkOAc=;
- b=dYKsk6c3fCmrLcoi/5V7CVJXRLdvSjGPiE9o64nbfyXpGdBzLJulhe2R6nA7f5CY9K
- b+myj7E4yMUFbn+B21fdwL/s7we4YFfIBgqoWPLDCkvsMQqtuypouJqhoNLRdX4SB/Xa
- cFXjvWqA2LTECl1N7U8Py5IyLIoGfnqQllmd8ASIsKPsSofxgZq9EG14waT/ni68PHeN
- h5aygkLoKYBDvSKTsMwqbLUwGPi7H9OL5Y8m11B0tNcmz7NiIbYJ73f+m+WchelrHfg5
- /uNg3Q1bgYatQD+xo5Ki0FhOJigGKbOfhaEpWxVyLYAGt4jb/81qC2eZBCY9kApH+OEr
- VHqQ==
-X-Gm-Message-State: AOJu0Yzy9un+azjoDvNbfGizmoom7YQrNrDYUpfQzCXEmVXlhcUcVKwc
- DpcWfZj4tqR8VsolzGt73oqZDf0GKH0wJREWN2MfXCL0DKcODMZ1yvpUrIWn
-X-Gm-Gg: ASbGnctmfBvQz0pgbQDbySa3VUJnqyTwgEwFFPXXSrHIBEEDcUJueWVR268day0CdOn
- kxVeIc6EXLTCJGlyIYKpi3kkE99g2Rfh2bBws959ux/UWT8AXqr1S91ZV0Jjfv/uVUwS/47J+ja
- rGMTs/Y4VX9GIjGmcvpI0XMfvlrPs8evg0ahS8knEivf0v1MaXltiYGO5/zoNcmOos0hyK4a4aU
- BpCaStcfykiBoAjy5SQSZL1AdSLez/wx1h7sIE73RE85e4O6F3f0AJj4kgb7ClJx1rnI8CEiGau
- DJtjZ8wQ/9FRFOwjxU+dVouas8Tfh+sk7hgvXRKNUZ63AJMn44ZRIA==
-X-Google-Smtp-Source: AGHT+IFHXq5f7XlA6VNKaCSpqMNRDnMXcGtZsq2tro0p7CcRAanHoB9vJj4sOuEEpcSnVTLNU115NQ==
-X-Received: by 2002:a17:906:4fd5:b0:ac3:e4ea:de3b with SMTP id
- a640c23a62f3a-ac6faf3479emr875466b.27.1743006021599; 
- Wed, 26 Mar 2025 09:20:21 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:14f:49b:dfe6::4cbf:5fb6])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3efbde4bfsm1049411966b.143.2025.03.26.09.20.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Mar 2025 09:20:21 -0700 (PDT)
-From: donno2048 <just4now666666@gmail.com>
-To: 
-Cc: qemu-devel@nongnu.org,
-	donno2048 <just4now666666@gmail.com>
-Subject: [PATCH 1/1] util/memfd: allow allocating 0 bytes
-Date: Wed, 26 Mar 2025 16:19:27 +0000
-Message-Id: <20250326161927.15572-1-just4now666666@gmail.com>
-X-Mailer: git-send-email 2.30.2
+ (Exim 4.90_1) (envelope-from <Marco.Cavenati@eurecom.fr>)
+ id 1txTXO-0005kT-4E; Wed, 26 Mar 2025 12:23:30 -0400
+Received: from smtp.eurecom.fr ([193.55.113.210])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Marco.Cavenati@eurecom.fr>)
+ id 1txTXI-00042J-AP; Wed, 26 Mar 2025 12:23:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=eurecom.fr; i=@eurecom.fr; q=dns/txt; s=default;
+ t=1743006204; x=1774542204;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ib5IvQ3tvyGQ/iuonjN8bNwSr8FqBwTNLajh/EN271E=;
+ b=S3vFjzJzJXdqy/23e9UfQ8iSBDMHcnO8RxalXsWA6pkn4dA6gf/aEoiP
+ wv/WDSK5d+1onWAN50PTnXOTwJfwOAfn48Yr9xziCNk6XPwslUrJ98Sht
+ 5B+n83JbH3E/DXuSw07nPqKdcfmP3Del1BwEQCq3G87pQyHex+iiM1DNX o=;
+X-CSE-ConnectionGUID: +wusofiwQ2ySHDERDtzK8Q==
+X-CSE-MsgGUID: 4yUF5vo4R0Gwuh1tm1NJGA==
+X-IronPort-AV: E=Sophos;i="6.14,278,1736809200"; 
+   d="scan'208";a="547941"
+Received: from waha.eurecom.fr (HELO smtps.eurecom.fr) ([10.3.2.236])
+ by drago1i.eurecom.fr with ESMTP; 26 Mar 2025 17:23:19 +0100
+Received: from marco-eurecom-desktop.s3.eurecom.fr (unknown [193.55.114.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by smtps.eurecom.fr (Postfix) with ESMTPSA id F11D027CF;
+ Wed, 26 Mar 2025 17:23:18 +0100 (CET)
+From: Marco Cavenati <Marco.Cavenati@eurecom.fr>
+To: Peter Xu <peterx@redhat.com>,
+	Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Marco Cavenati <Marco.Cavenati@eurecom.fr>,
+ qemu-trivial@nongnu.org
+Subject: [PATCH] migration: fix SEEK_CUR offset calculation in
+ qio_channel_block_seek
+Date: Wed, 26 Mar 2025 17:22:30 +0100
+Message-ID: <20250326162230.3323199-1-Marco.Cavenati@eurecom.fr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=just4now666666@gmail.com; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=193.55.113.210;
+ envelope-from=Marco.Cavenati@eurecom.fr; helo=smtp.eurecom.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 26 Mar 2025 12:39:54 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,37 +73,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This silently fixes issues resulting from trying to allocate 0 bytes.
+The SEEK_CUR case in qio_channel_block_seek was incorrectly using the
+'whence' parameter instead of the 'offset' parameter when calculating the
+new position.
 
-Fixes error, for example, for writing byte 0x20 to port 0x3c0, then word 0xf09 to port 0x3b4 when CPU is initiated, which shouldn't break.
+Fixes: 65cf200a51ddc6d0a28ecceac30dc892233cddd7 ("migration: introduce a QIOChannel impl for BlockDriverState VMState")
 
-Signed-off-by: donno2048 <just4now666666@gmail.com>
+Signed-off-by: Marco Cavenati <Marco.Cavenati@eurecom.fr>
 ---
- util/memfd.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ migration/channel-block.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/util/memfd.c b/util/memfd.c
-index 07beab174d..4f2c4ea1dd 100644
---- a/util/memfd.c
-+++ b/util/memfd.c
-@@ -131,9 +131,13 @@ void *qemu_memfd_alloc(const char *name, size_t size, unsigned int seals,
-         }
-     }
- 
--    ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, mfd, 0);
--    if (ptr == MAP_FAILED) {
--        goto err;
-+    if (size != 0) {
-+        ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, mfd, 0);
-+        if (ptr == MAP_FAILED) {
-+            goto err;
-+        }
-+    } else {
-+        ptr = fdopen(mfd, "rw");
-     }
- 
-     *fd = mfd;
+diff --git a/migration/channel-block.c b/migration/channel-block.c
+index fff8d87094..b0477f5b6d 100644
+--- a/migration/channel-block.c
++++ b/migration/channel-block.c
+@@ -123,7 +123,7 @@ qio_channel_block_seek(QIOChannel *ioc,
+         bioc->offset = offset;
+         break;
+     case SEEK_CUR:
+-        bioc->offset += whence;
++        bioc->offset += offset;
+         break;
+     case SEEK_END:
+         error_setg(errp, "Size of VMstate region is unknown");
 -- 
-2.30.2
+2.43.0
 
 
