@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C7FA715B7
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 12:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A8CA715D9
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 12:35:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txOug-0006IH-9L; Wed, 26 Mar 2025 07:27:14 -0400
+	id 1txP24-0000rZ-2N; Wed, 26 Mar 2025 07:34:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1txOuP-0005vR-35
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:26:57 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1txP20-0000r9-OL
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:34:48 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1txOuI-0006Iz-28
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:26:51 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43cfe574976so40297895e9.1
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 04:26:49 -0700 (PDT)
+ id 1txP1y-0007MJ-Pk
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:34:48 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43cf0d787eeso69656225e9.3
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 04:34:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1742988408; x=1743593208; darn=nongnu.org;
+ d=linaro.org; s=google; t=1742988885; x=1743593685; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7g2IKnrBrJG+N9GY0A6+8nTLCF+vCW3XpzFaL6k+rbk=;
- b=RUzN208g7h3kaD8LK2lUYtCF29lM3SPRHl6UQbJtC926xr0pqLevBjwkN+WB6YgN75
- 1XhNiCSh0xeQKbfV4YS/1l2HiVVdBJjLcFR/nwx492+VSrnGJanqVrMXyWsZOzD7cSur
- FSXmwlzVCgnuJQNfo6Ughq7m9u0kJn829WrayAzw7hRHcbpMsFAGFXI+lmdtq7EA1xLd
- 41zIWi0kRt8BAS1I6MzOgtYU8VYMkRg4dhHpffHa4sJwUNr5d1gfXqGBNjCg68H27ZfN
- K0ntj052eZ1jM1OSpHJax+fe7zVv3/JnWDxigka7K4IyJ47TAy0GVXlIcFoQxTX9H++7
- Q3hA==
+ bh=akZ8qs/Xxsoa+xOxqgQwA81zDOR3vrkO5oeTxPGaEns=;
+ b=eudo6uIOyzGhHjqxc3SEbgPjuDW4JHikglg78c2t9WhmycB/PL620Js3vd0XnTOAzw
+ yslL2rzzY+mo5/Eixe1JWu0lX5QGfZYr7sBxo+yATkNz+be5GSGq8dv3llWBC+nFh9EY
+ 3SVc52jMLY3PC/gBAge0b1DMHz/6SbThqUD938uZMARieZxbt0o7amHkuFpcUGS7yD5u
+ 7derKVeSj2vfolB/C42Fdlfy0b+Mv2vFaPIBK7AjlUImERwpFc2XmAdGjMN3VXzRsgA1
+ nz3cQ/bkNaLDNyEOGsg5K7LK7OJcySwz9NBoK77ACkle5r+LVzwhznl4hs3+TjUdJmrW
+ sraw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742988408; x=1743593208;
+ d=1e100.net; s=20230601; t=1742988885; x=1743593685;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=7g2IKnrBrJG+N9GY0A6+8nTLCF+vCW3XpzFaL6k+rbk=;
- b=S41MivjonWIp0byXvx6IfYYOyE9k+FTHnmxKNiRTSpNHc17D0j1QccZCX6aYi0lncU
- IFubYqnKRAAoabp5zuRnrIx+jDFafSOx/CmUDxDVs+/7H5vvVjksg72iAfJclHfJRH+E
- vf4hpnQBFbmFBG7w5WyX5qXz2lGBw65JiPhk0VUHgFqtEJd1lvTKlypKoAXvfcm3AU0q
- v6xAV+QsIvjEg5ZzEjuLT6ZkeJeF6z0NPDWzSmyYn9pHvDJMn9TZlrCONFveECpQ5b98
- gpDRo/D/pRGZQl7DIiLM+wSmiWh4e4xH5zmqNfWRwH6uCwvEBaoJSIcrk6agJz20/2u9
- qYaQ==
-X-Gm-Message-State: AOJu0Yz7Seva2NUu0/mLUC3kxXJUosLO7EAR2ycr0gKN51ysq2araXPw
- zH7HAAIVEhaEOlRTDNyOQuZKAmctGbVY5RPvzGsU3+si9k2pY3UoL9Ua1S68OmE=
-X-Gm-Gg: ASbGncuRahDzv4zxtvLZxiZ3PiIcB0J6+RI9sFQDM3890B9xM2vBO1Fu0PAzaLvhrax
- cfCeCjEw2wHgbBmZ+3CxHIchcLYAKkn8FYNnG6D3xXdEAwmf09eoHOIVzOT49LTw0AFHYg8HxPW
- 1dfICQIJzyCBS3f9gtYHy6TN2GkOB5wEgu7knsdQegIblUr/QmT0eIRL2C3IRe59DXkFKXOD8W9
- 9GRcN9tMgYKHpqgrMlCv7IjmvmT/hBhfjDa291KBNef8+32UtVRorfIJgNI5KBm/iwnXjNhFhau
- 5X+il5HVIQDmxLcHyqYFIDjcFVoVT1HuwYIWx6NUeFl0i04=
-X-Google-Smtp-Source: AGHT+IES2Re9pQalUvHFOUIYdRBm5Y1Mc23ubaKSfKumPKaNKusbkFVeGI0CfdWa28ukFmWzNyDulw==
-X-Received: by 2002:a05:600c:3155:b0:43c:f81d:34 with SMTP id
- 5b1f17b1804b1-43d509eae2dmr169841015e9.9.1742988408129; 
- Wed, 26 Mar 2025 04:26:48 -0700 (PDT)
+ bh=akZ8qs/Xxsoa+xOxqgQwA81zDOR3vrkO5oeTxPGaEns=;
+ b=kdRUIllNe5n8wjEWXXW0Rz3WCavh8deTx52BlqdjCLjaJZhbvzl+v1etqGV7RCFC5F
+ 8I/iIUdaIkBn4Z74lTy+3CqaGXYwxyhnd58tDORw5SDkPQ8KDyCMdhcoRhiB0Hjs7Ro4
+ ODCWlSs9ZubiKstToATBKtyb0ARyjs4ZKVOFYXCv3jDkhed0aMXXvvi0E0QQM2w0yutl
+ JDGuRnbRe7yGG0LV4fTLufY/s2KopJb6HE5l9q8YiTEQ1fOG+NBYDPgpXgLEkQF+LF4h
+ Ur3bt0s210qp2nQr1jOntypPrbWB9xVte2ou4DO4UkGjaOmCodL347ONdLB3EzlrwmvU
+ nIaQ==
+X-Gm-Message-State: AOJu0Yy2HMD8fn1ssOVtT1y3sKSp/Ycu63kYDXeA/D4Qa+293F8U1e5G
+ JDhU3hSxDgwB3X06THesC6uXC57/Cj1Gmp+jS2cmO+8TcW8rwyqbqtDmCajwoy0=
+X-Gm-Gg: ASbGnctEOIuAkZ7FvvJOBpoj9RWllmWhYvw6p7ZHQL2GVbeGCpUMWCZ1VPPyvUnYAbf
+ 20E12/CKNl1+CSnJJI4aCX3aq5U6ucXCXnuxLQEkDFMunRG4d1vZWE3IFkMzi+K6hzP3vKnAY4e
+ F01u+/RI1cH5+LFUy+DMWo4b2RdG3oNyTfeEXaRBrJpbTIrVTYOM7iFBACK7jkq1Ry8Vqm7W63g
+ vCGmZm0CwlOwSpcSAQde3mrHc1GH0mbz267YXBYtIkM7bDfOVDhclqPynOoRBgjFz9jCQvNKQnU
+ DqICfxEEREZ7h03/zv2RqcjvFTbmhhPATKgOqPZu10wIvJsuBI8nVp4Ecw==
+X-Google-Smtp-Source: AGHT+IHmZ9gycHok8LOPsKwQswa0qI1F8TgsTt0g3q1eysg0WtX+k2XQBeCWWtWmG00/z7XWtUJjIQ==
+X-Received: by 2002:a05:600c:3491:b0:439:6118:c188 with SMTP id
+ 5b1f17b1804b1-43d50a1d166mr193740315e9.19.1742988884876; 
+ Wed, 26 Mar 2025 04:34:44 -0700 (PDT)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d4fceafacsm183483745e9.6.2025.03.26.04.26.47
+ 5b1f17b1804b1-43d4fbd321esm182788655e9.0.2025.03.26.04.34.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Mar 2025 04:26:47 -0700 (PDT)
+ Wed, 26 Mar 2025 04:34:44 -0700 (PDT)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EFFAD5F90B;
- Wed, 26 Mar 2025 11:26:46 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 98A315F90B;
+ Wed, 26 Mar 2025 11:34:43 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Zhao Liu
- <zhao1.liu@intel.com>,  Alistair Francis <alistair.francis@wdc.com>,
- qemu-riscv@nongnu.org,  Anton Johansson <anjo@rev.ng>,  Daniel Henrique
- Barboza <dbarboza@ventanamicro.com>,  Palmer Dabbelt <palmer@dabbelt.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,  Weiwei Li
- <liwei1518@gmail.com>,  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH-for-10.1 v2] target/riscv/gdbstub: Replace ldtul_p() ->
- ldn_p(sizeof(target_ulong))
-In-Reply-To: <20250325154913.95283-1-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 25 Mar 2025 16:49:13
+Cc: qemu-devel@nongnu.org,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Anton Johansson <anjo@rev.ng>
+Subject: Re: [PATCH-for-10.1] gdbstub/helpers: Remove ldtul_p() macro
+ definitions
+In-Reply-To: <20250325155543.95684-1-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 25 Mar 2025 16:55:43
  +0100")
-References: <20250325154913.95283-1-philmd@linaro.org>
+References: <20250325155543.95684-1-philmd@linaro.org>
 User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Wed, 26 Mar 2025 11:26:46 +0000
-Message-ID: <87tt7g118p.fsf@draig.linaro.org>
+Date: Wed, 26 Mar 2025 11:34:43 +0000
+Message-ID: <87o6xo10vg.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,8 +105,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> Replace the few ldtul_p() calls by a generic ldn_p() ones.
-> No logical change.
+> There are no more use of ldtul_p() in the code base,
+> remove the definitions.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
 Queued to gdbstub/next, thanks.
 <snip>
