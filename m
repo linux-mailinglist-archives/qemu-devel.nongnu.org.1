@@ -2,86 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224E3A716CB
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 13:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75943A715B0
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 12:26:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txPza-0001VC-3i; Wed, 26 Mar 2025 08:36:22 -0400
+	id 1txOtR-0005ZX-Rd; Wed, 26 Mar 2025 07:25:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1txPzO-0001UN-LW
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 08:36:10 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1txPzK-0007ws-6g
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 08:36:09 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5e5e34f4e89so12419689a12.1
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 05:36:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742992562; x=1743597362; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uwEfkNTlu12efVeJwJERkXNRxbeXXzC5duSZWiytiIU=;
- b=lONKifuhnaXLcVh0y5nN9WdHJwovKBfnYf9NmlZTpknytl0TUUkJMd6HymWn0euPrw
- Ui86VbFnf3P7BVJtUk9Vyaq55kSJslzlCUouWO14WdhunOCwDN0UtkUR/HFrdxEysWBq
- 4FXnzFYfTzZT/QRp1kfRfJ4C3MKL1+Bnac1pBbEcn27/zjRAPJsAhnlmlCCwzcmAL/rp
- iBuKFN39puG4cA4rVNQBiBLBAAW5SHDiH39QHNjKBh8Hf0jTa+9iNlEPP2C18eY/xJVq
- rKR78NUpw6CJ8y+zfGv65bGwPMrEOUOecBXBML+8znHmPkAnHm2nm0xALcl3cn0ATCeo
- Ow+A==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1txOtN-0005ZH-Bu
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:25:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1txOtL-0006ED-Gx
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:25:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1742988349;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jD/7nvPVW9fep+uEZMyWP3w9EGMOQduv4LVRjkhbt1Q=;
+ b=ezl6iHuUmsGoVQmtFjhcuPcpRdIMqMlAXxBiql5X9bOzhrO88oDXWrxlbK4duL0GkR9UeM
+ ANbqIc+T8tGVR/PSsR3WJD9+Fj7Ao1ua47PhkvvJbsnJlQuuUp0PTjj56W2JnkYduH2lj/
+ /EcJDnrCfLOGTFf7r7CLd/R71fVVTmE=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-fcKJhLxgNHG5O73DqHr0xQ-1; Wed, 26 Mar 2025 07:25:47 -0400
+X-MC-Unique: fcKJhLxgNHG5O73DqHr0xQ-1
+X-Mimecast-MFC-AGG-ID: fcKJhLxgNHG5O73DqHr0xQ_1742988346
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-2254e500a73so83433895ad.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 04:25:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742992562; x=1743597362;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1742988346; x=1743593146;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uwEfkNTlu12efVeJwJERkXNRxbeXXzC5duSZWiytiIU=;
- b=q+JCpjcIF67OKotPzjEFaNxxIv8aXyFLVpWgFJAsYDLA8oTgRUCboWVJjzBEEdY4Xb
- 9Mra/bhZzx5ReUYCeAOuSLaVpX4r9CEXFocuODui1TV1HY7y5GV2qDHsUbcOzmiHN3q+
- YuNO38TbpoPSMZ1NO6/55qnvJVMtou95FvGF10OE2xRu7jku2ZvlIuN4HsoEZAVtdbkO
- BzVSjF/1JAVFqYff5gAcJK4dRHrHA5hzIQ3FNOdzfU0b+UdCyCimfMDrESLgw6xTGrhq
- I8DiqDXz7t6KsmkDmC4ZMlE5ha0A32mCAEkWL+zgQzXPG4B1GV0Qo+NoNI2Bb3Ixdvyn
- TTZw==
-X-Gm-Message-State: AOJu0Yz55TB/WxKJjU6T8+9MY4pk3FgGARc2Pj6D7N6ACoON3WLTQc7Q
- /osqN9Tx/+3Hp8o25HyVM7Nz7TjraleGirxPDrjIKQKaV6GmB/2ZYzrx9w==
-X-Gm-Gg: ASbGnctemP/Ym4V/j2S5Ki/Z59jQN5hd0AdQafMtivq2ZJstAr6/JfWE0CwTHU94xHV
- OPNe8BnvE/e9CA9gjjAkTyvKm2ZxuhDj0RgT6nov+2WxC7ZA2rJDKBG4aIV5bzA9Tre8k2iaFqq
- kYYaHwztS06EByWkluz90osbmbepZzVY0jGV8XgNEzOSCSv/oZm7fThHO4SDEqfbM2BuGVss1bl
- OSYXM2M/YVNQtMBLe03hNRdJVOZIA97L5UzcacOQr6Rzp++SlJUkfI48YKdAISo43qngMWI9PmP
- ng12JH1pT7dxC9LDrmFQowLnig4MfTrYmzLHTSZ2
-X-Google-Smtp-Source: AGHT+IF/M5rGDICowG9q8O7jPourU9wfPC+mt6p4NCp/6vffsT7vHSm5OFbPNOyXLbHGURjkLnN5fQ==
-X-Received: by 2002:a17:907:3eaa:b0:abf:749f:f719 with SMTP id
- a640c23a62f3a-ac3f20b8934mr2127261566b.7.1742992562089; 
- Wed, 26 Mar 2025 05:36:02 -0700 (PDT)
-Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac3efbde51dsm1020799366b.136.2025.03.26.05.36.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Mar 2025 05:36:01 -0700 (PDT)
-Date: Wed, 26 Mar 2025 10:51:14 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Ilya Chichkov <i.chichkov@yadro.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-CC: nikita.shubin@maquefel.me
-Subject: Re: [PATCH v2] tests/qtest: Unit test for pcf8563_rtc
-In-Reply-To: <20250310113635.349822-2-i.chichkov@yadro.com>
-References: <20250310113635.349822-1-i.chichkov@yadro.com>
- <20250310113635.349822-2-i.chichkov@yadro.com>
-Message-ID: <0C63718C-D9B8-40B6-84D8-037019B1B84A@gmail.com>
+ bh=jD/7nvPVW9fep+uEZMyWP3w9EGMOQduv4LVRjkhbt1Q=;
+ b=hZn3Jzvsn0CFcsV6/ob6sjqMnTaHmv/AqnSfV0GhTR8hsvX+T6gCNxwLyyWsVaZzy2
+ oD4d+ZRj2vbSXE18j0C0C6KNSAPdOVvL7EI/MRdVmvrsIhNZJD9rkThrra1SMI6rYYXI
+ L+n5SvPEznjL4/3bR9MN/KPGTZJA3vX3KZPKZ2y9tTscgZX/ebZUjY70uKQLMzNkAS6t
+ 0oInoHTbQ2WJVzVJ9qH+k6dnaXlS5QJyWX6ZadP/yoobfmWUwa4OW4I4PAU2OmjQ3e1U
+ PnJgSedeGjq/wdxsSzR90ulf/mR8vFFfnQIIPIljiVrkeCJ1jF7HvYwpz0EkYW0g5spi
+ 0ZIA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV15w5OnspRFeeT0MuNzzJuS3PeQM9kO7t9UcLs06faohPqDTOdrGnQ3iS30sX2hiRgdKsQwmGjZD8P@nongnu.org
+X-Gm-Message-State: AOJu0YxoR52ZKn0nDKlOaPzA4Qj/KK9gzGiCg5CG4WTM/yakjBKZ/Bxq
+ JHRbMoWO96xBHmCnUhrDS5Z2pjE+9JVr3CGBL2sMFxQmbcFIIH4g1kK12jYe6S9KDQE32b8rpt5
+ hMFD6nnmZ1KZ8de/ak1yat5Gab0eO7DuC7cWy6dKqa5pXQPAhLw9zRl9QilbX0JMZM77MD9apxw
+ SS3iX7TAuWdiyxtBe/vJFk5wYmm90=
+X-Gm-Gg: ASbGncvreftmhN42GpWWdzLRKWb1kwzGAgAASCT5FqOxW+K5IB1s8EMiGrovzywHjya
+ IWJo7MtTtsvtoyN7N/clQ5ahPSmvbftk/zlOTkWcN4QjHf0a5DWf54vW09AAqsQwApUY3qCs=
+X-Received: by 2002:a17:903:2346:b0:223:fb3a:8631 with SMTP id
+ d9443c01a7336-22780da4870mr340373255ad.24.1742988345946; 
+ Wed, 26 Mar 2025 04:25:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFBQRwQHxU00hROnZIyGH1xtGjZao7lg/C1G7Ptdld8iDPGtO4tnW/KcOX0AwIVBCKq3jgbVmUo5SPRUKWzt48=
+X-Received: by 2002:a17:903:2346:b0:223:fb3a:8631 with SMTP id
+ d9443c01a7336-22780da4870mr340372525ad.24.1742988345324; Wed, 26 Mar 2025
+ 04:25:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250324135929.74945-1-sahilcdq@proton.me>
+ <20250324135929.74945-2-sahilcdq@proton.me>
+In-Reply-To: <20250324135929.74945-2-sahilcdq@proton.me>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Wed, 26 Mar 2025 12:25:07 +0100
+X-Gm-Features: AQ5f1JqE_rUx9zXXx6oYVbJeEhjaMSodp_fYFctOmgfPmu9T7zIxqWATwNUeSI8
+Message-ID: <CAJaqyWc0sH0o9MnnJPO8jLbpQVyec+QeG_TE2hnWxoiBqmivFA@mail.gmail.com>
+Subject: Re: [RFC v5 1/7] vhost: Refactor vhost_svq_add_split
+To: Sahil Siddiq <icegambit91@gmail.com>
+Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ sahilcdq@proton.me
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,603 +103,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 10=2E M=C3=A4rz 2025 11:36:35 UTC schrieb Ilya Chichkov <i=2Echichkov@y=
-adro=2Ecom>:
->Add a unit test for pcf8563_rtc module
+On Mon, Mar 24, 2025 at 2:59=E2=80=AFPM Sahil Siddiq <icegambit91@gmail.com=
+> wrote:
 >
->- Check default value after initialization
->- Check set/get time
->- Check minute alarm
->- Check hour alarm
->- Check day alarm
->- Check wday alarm
->- Check minute & hour alarm
->- Check minute & day alarm
->- Check day & wday alarm
->- Check timer
-
-Impressive!
-
->---
->v1->v2
->Phil:
->- Add hot reset
->- Fix trace message
->- Add testing coverage with qtest
+> This commit refactors vhost_svq_add_split and vhost_svq_add to simplify
+> their implementation and prepare for the addition of packed vqs in the
+> following commits.
 >
->Bernhard:
->- Move datasheet link to source code top comment section
->- Fix typos
->- Update licence identifier to SPDX
->- Remove unused import libraries
->- Change OBJECT_CHECK to OBJECT_DECLARE_SIMPLE_TYPE
->- Remove outdated comment
->- Rename i2c to parent_obj
->- Moved get_time inside capture_time function that is
->  called only when I2C request starts
->- Add fields inside VMStateDescription
->- Removed pcf8563_realize
->- Change type_init to DEFINE_TYPES
->---
-> tests/qtest/meson=2Ebuild    |   1 +
-> tests/qtest/pcf8563-test=2Ec | 508 +++++++++++++++++++++++++++++++++++++
-> 2 files changed, 509 insertions(+)
-> create mode 100644 tests/qtest/pcf8563-test=2Ec
+> Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
+> ---
+> No changes from v4 -> v5.
 >
->diff --git a/tests/qtest/meson=2Ebuild b/tests/qtest/meson=2Ebuild
->index bd41c9da5f=2E=2Ea10843dd49 100644
->--- a/tests/qtest/meson=2Ebuild
->+++ b/tests/qtest/meson=2Ebuild
->@@ -293,6 +293,7 @@ qos_test_ss=2Eadd(
->   'tulip-test=2Ec',
->   'nvme-test=2Ec',
->   'pca9552-test=2Ec',
->+  'pcf8563-test=2Ec',
->   'pci-test=2Ec',
->   'pcnet-test=2Ec',
->   'sdhci-test=2Ec',
->diff --git a/tests/qtest/pcf8563-test=2Ec b/tests/qtest/pcf8563-test=2Ec
->new file mode 100644
->index 0000000000=2E=2E42aded2e42
->--- /dev/null
->+++ b/tests/qtest/pcf8563-test=2Ec
->@@ -0,0 +1,508 @@
->+/*
->+ * QTests for the PCF8563 RTC
->+ *
->+ * Copyright 2021 Google LLC
 
-Why Google? Why 2021?
+You can carry the Acked-by from previous series if you make no changes
+(or even small changes).
 
-For simplicity I suggest to merge this patch with your other one=2E Altern=
-atively you could create a series using e=2Eg=2E git-publish <https://githu=
-b=2Ecom/stefanha/git-publish> to keep the patches logically together=2E
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
->+ *
->+ * SPDX-License-Identifier: GPL-2=2E0-or-later
->+ */
->+
->+#include "qemu/osdep=2Eh"
->+
->+#include "libqtest-single=2Eh"
->+#include "libqos/qgraph=2Eh"
->+#include "libqos/i2c=2Eh"
->+#include "sysemu/rtc=2Eh"
->+#include "qapi/qmp/qdict=2Eh"
->+#include "qapi/qmp/qnum=2Eh"
->+#include "qemu/bitops=2Eh"
->+#include "qemu/bcd=2Eh"
->+
->+#define TEST_ID "pcf8563-test"
-
->+#define NANOSECONDS_PER_SECOND 1000000000LL
-
-Looks like there should exist such a define already=2E If that's the case =
-then it should be reused=2E
-
->+
->+#define  PCF8563_CS1            0x00
->+#define  PCF8563_CS2            0x01
->+#define  PCF8563_VLS            0x02
->+#define  PCF8563_MINUTES        0x03
->+#define  PCF8563_HOURS          0x04
->+#define  PCF8563_DAYS           0x05
->+#define  PCF8563_WEEKDAYS       0x06
->+#define  PCF8563_CENTURY_MONTHS 0x07
->+#define  PCF8563_YEARS          0x08
->+#define  PCF8563_MINUTE_A       0x09
->+#define  PCF8563_HOUR_A         0x0A
->+#define  PCF8563_DAY_A          0x0B
->+#define  PCF8563_WEEKDAY_A      0x0C
->+#define  PCF8563_CLKOUT_CTL     0x0D
->+#define  PCF8563_TIMER_CTL      0x0E
->+#define  PCF8563_TIMER          0x0F
-
-I'd rather have a common header for test and production code for these def=
-ines (which would also motivate merging this patch with your other one)=2E
-
-By briefly skimming through the rest of the test the patch LGTM=2E
-
-Best regards,
-Bernhard
-
->+
->+static void set_time(QI2CDevice *i2cdev, struct tm *tm)
->+{
->+    tm->tm_sec =3D 30;
->+    tm->tm_min =3D 45;
->+    tm->tm_hour =3D 14;
->+    tm->tm_mday =3D 25;
->+    tm->tm_mon =3D 11;
->+    tm->tm_year =3D 125;
->+    tm->tm_wday =3D 1;
->+
->+    i2c_set8(i2cdev, PCF8563_VLS, to_bcd(tm->tm_sec));
->+    i2c_set8(i2cdev, PCF8563_MINUTES, to_bcd(tm->tm_min));
->+    i2c_set8(i2cdev, PCF8563_HOURS, to_bcd(tm->tm_hour));
->+    i2c_set8(i2cdev, PCF8563_DAYS, to_bcd(tm->tm_mday));
->+    i2c_set8(i2cdev, PCF8563_CENTURY_MONTHS, to_bcd(tm->tm_mon));
->+    i2c_set8(i2cdev, PCF8563_YEARS, to_bcd(tm->tm_year));
->+    i2c_set8(i2cdev, PCF8563_WEEKDAYS, to_bcd(tm->tm_wday));
->+}
->+
->+static void test_defaults(void *obj, void *data, QGuestAllocator *alloc)
->+{
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+
->+    /* CS1 */
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_CS1);
->+    g_assert_cmphex(i2c_value, =3D=3D, 0x8);
->+
->+    /* CS2 */
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_CS2);
->+    g_assert_cmphex(from_bcd(i2c_value), =3D=3D, 0x0);
->+
->+    /* Minute alarm */
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_MINUTE_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, 0x80);
->+
->+    /* Hour alarm */
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_HOUR_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, 0x80);
->+
->+    /* Day alarm */
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_DAY_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, 0x80);
->+
->+    /* Weekend alarm */
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_WEEKDAY_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, 0x80);
->+
->+    /* Clkout CTL */
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_CLKOUT_CTL);
->+    g_assert_cmphex(i2c_value, =3D=3D, 0x80);
->+
->+    /* Timer CTL */
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_TIMER_CTL);
->+    g_assert_cmphex(i2c_value, =3D=3D, 0x3);
->+
->+    /* Timer CNT */
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_TIMER);
->+    g_assert_cmphex(i2c_value, =3D=3D, 0x0);
->+}
->+
->+static void test_check_time(void *obj, void *data, QGuestAllocator *allo=
-c)
->+{
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+    struct tm tm;
->+
->+    tm=2Etm_sec =3D 20;
->+    tm=2Etm_min =3D 48;
->+    tm=2Etm_hour =3D 8;
->+    tm=2Etm_mday =3D 24;
->+    tm=2Etm_mon =3D 11;
->+    tm=2Etm_year =3D (2024 - 1900) % 100;
->+    tm=2Etm_wday =3D 2;
->+
->+    i2c_set8(i2cdev, PCF8563_VLS, to_bcd(tm=2Etm_sec));
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_VLS);
->+    i2c_value =3D extract32(i2c_value, 0, 7);
->+    g_assert_cmphex(from_bcd(i2c_value), =3D=3D, tm=2Etm_sec);
->+
->+    i2c_set8(i2cdev, PCF8563_MINUTES, to_bcd(tm=2Etm_min));
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_MINUTES);
->+    i2c_value =3D extract32(i2c_value, 0, 7);
->+    g_assert_cmphex(from_bcd(i2c_value), =3D=3D, tm=2Etm_min);
->+
->+    i2c_set8(i2cdev, PCF8563_HOURS, to_bcd(tm=2Etm_hour));
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_HOURS);
->+    i2c_value =3D extract32(i2c_value, 0, 6);
->+    g_assert_cmphex(from_bcd(i2c_value), =3D=3D, tm=2Etm_hour);
->+
->+    i2c_set8(i2cdev, PCF8563_DAYS, to_bcd(tm=2Etm_mday));
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_DAYS);
->+    i2c_value =3D extract32(i2c_value, 0, 6);
->+    g_assert_cmphex(from_bcd(i2c_value), =3D=3D, tm=2Etm_mday);
->+
->+    i2c_set8(i2cdev, PCF8563_CENTURY_MONTHS, to_bcd(tm=2Etm_mon));
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_CENTURY_MONTHS);
->+    i2c_value =3D extract32(i2c_value, 0, 5);
->+    g_assert_cmphex(from_bcd(i2c_value), =3D=3D, tm=2Etm_mon + 1);
->+
->+    i2c_set8(i2cdev, PCF8563_YEARS, to_bcd(tm=2Etm_year));
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_YEARS);
->+    i2c_value =3D extract32(i2c_value, 0, 8);
->+    g_assert_cmphex(from_bcd(i2c_value), =3D=3D, tm=2Etm_year);
->+
->+    i2c_set8(i2cdev, PCF8563_WEEKDAYS, to_bcd(tm=2Etm_wday));
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_WEEKDAYS);
->+    i2c_value =3D extract32(i2c_value, 0, 3);
->+    g_assert_cmphex(from_bcd(i2c_value), =3D=3D, tm=2Etm_wday);
->+}
->+
->+static void test_set_minute_alarm(void *obj, void *data, QGuestAllocator=
- *alloc)
->+{
->+    QTestState *qts =3D global_qtest;
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+    uint8_t irq_line =3D 0;
->+    uint64_t alarm_min =3D 1;
->+    uint64_t alarm_sec =3D alarm_min * 60;
->+    uint8_t reg_min_a =3D 0x0;
->+    struct tm tm;
->+
->+    qtest_irq_intercept_out(qts, "/machine/peripheral/pcf8563-test/");
->+    set_time(i2cdev, &tm);
->+
->+    /* Enable alarm interrupt */
->+    i2c_set8(i2cdev, PCF8563_CS2, 0x2);
->+
->+    /* Set minute alarm & enable it */
->+    alarm_min =3D tm=2Etm_min + alarm_min;
->+    reg_min_a =3D to_bcd(alarm_min) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_MINUTE_A, reg_min_a);
->+
->+    /* Check when half of supposed alarm time passed */
->+    clock_step((alarm_sec - 1) * NANOSECONDS_PER_SECOND);
->+
->+    g_assert_false(qtest_get_irq(global_qtest, irq_line));
->+
->+    /* Check when alarm time passed */
->+    clock_step((2) * NANOSECONDS_PER_SECOND);
->+
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_MINUTE_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, reg_min_a);
->+    g_assert_true(qtest_get_irq(global_qtest, irq_line));
->+}
->+
->+static void test_set_hour_alarm(void *obj, void *data, QGuestAllocator *=
-alloc)
->+{
->+    QTestState *qts =3D global_qtest;
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+    uint8_t irq_line =3D 0;
->+    uint64_t alarm_hour =3D 3;
->+    uint64_t alarm_sec =3D alarm_hour * 60 * 60;
->+    uint8_t reg_hour_a =3D 0x0;
->+    struct tm tm;
->+
->+    qtest_irq_intercept_out(qts, "/machine/peripheral/pcf8563-test/");
->+    set_time(i2cdev, &tm);
->+
->+    /* Enable alarm interrupt */
->+    i2c_set8(i2cdev, PCF8563_CS2, 0x2);
->+
->+    /* Set hour alarm & enable it */
->+    alarm_hour =3D tm=2Etm_hour + alarm_hour;
->+    reg_hour_a =3D to_bcd(alarm_hour) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_HOUR_A, reg_hour_a);
->+
->+    /* Check when half of supposed alarm time passed */
->+    clock_step((alarm_sec - 1) * NANOSECONDS_PER_SECOND);
->+
->+    g_assert_false(qtest_get_irq(qts, irq_line));
->+
->+    /* Check when alarm time passed */
->+    clock_step((2) * NANOSECONDS_PER_SECOND);
->+
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_HOUR_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, reg_hour_a);
->+    g_assert_true(qtest_get_irq(qts, irq_line));
->+}
->+
->+static void test_set_day_alarm(void *obj, void *data, QGuestAllocator *a=
-lloc)
->+{
->+    QTestState *qts =3D global_qtest;
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+    uint8_t irq_line =3D 0;
->+    uint64_t alarm_day =3D 1;
->+    uint64_t alarm_sec =3D alarm_day * 24 * 60 * 60;
->+    uint8_t reg_day_a =3D 0x0;
->+    struct tm tm;
->+
->+    qtest_irq_intercept_out(qts, "/machine/peripheral/pcf8563-test/");
->+    set_time(i2cdev, &tm);
->+
->+    /* Enable alarm interrupt */
->+    i2c_set8(i2cdev, PCF8563_CS2, 0x2);
->+
->+    /* Set hour alarm & enable it */
->+    alarm_day =3D tm=2Etm_mday + alarm_day;
->+    reg_day_a =3D to_bcd(alarm_day) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_DAY_A, reg_day_a);
->+
->+    /* Check when half of supposed alarm time passed */
->+    clock_step((alarm_sec - 1) * NANOSECONDS_PER_SECOND);
->+
->+    g_assert_false(qtest_get_irq(qts, irq_line));
->+
->+    /* Check when alarm time passed */
->+    clock_step((2) * NANOSECONDS_PER_SECOND);
->+
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_DAY_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, reg_day_a);
->+    g_assert_true(qtest_get_irq(qts, irq_line));
->+}
->+
->+static void test_set_wday_alarm(void *obj, void *data, QGuestAllocator *=
-alloc)
->+{
->+    QTestState *qts =3D global_qtest;
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+    uint8_t irq_line =3D 0;
->+    uint64_t alarm_wday =3D 1;
->+    uint64_t alarm_sec =3D alarm_wday * 24 * 60 * 60;
->+    uint8_t reg_wday_a =3D 0x0;
->+    struct tm tm;
->+
->+    qtest_irq_intercept_out(qts, "/machine/peripheral/pcf8563-test/");
->+    set_time(i2cdev, &tm);
->+
->+    /* Enable alarm interrupt */
->+    i2c_set8(i2cdev, PCF8563_CS2, 0x2);
->+
->+    /* Set hour alarm & enable it */
->+    alarm_wday =3D tm=2Etm_wday + alarm_wday;
->+    reg_wday_a =3D to_bcd(alarm_wday) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_WEEKDAY_A, reg_wday_a);
->+
->+    /* Check when half of supposed alarm time passed */
->+    clock_step((alarm_sec - 1) * NANOSECONDS_PER_SECOND);
->+
->+    g_assert_false(qtest_get_irq(qts, irq_line));
->+
->+    /* Check when alarm time passed */
->+    clock_step((2) * NANOSECONDS_PER_SECOND);
->+
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_WEEKDAY_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, reg_wday_a);
->+    g_assert_true(qtest_get_irq(qts, irq_line));
->+}
->+
->+static void test_set_min_and_hour_alarm(void *obj,
->+                                        void *data,
->+                                        QGuestAllocator *alloc)
->+{
->+    QTestState *qts =3D global_qtest;
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+    uint8_t irq_line =3D 0;
->+    uint64_t alarm_min =3D 1;
->+    uint8_t reg_min_a =3D 0x0;
->+    uint64_t alarm_hour =3D 3;
->+    uint8_t reg_hour_a =3D 0x0;
->+    uint64_t alarm_sec =3D (alarm_hour * 60 * 60) + (alarm_min * 60);
->+    struct tm tm;
->+
->+    qtest_irq_intercept_out(qts, "/machine/peripheral/pcf8563-test/");
->+    set_time(i2cdev, &tm);
->+
->+    /* Enable alarm interrupt */
->+    i2c_set8(i2cdev, PCF8563_CS2, 0x2);
->+
->+    /* Set hour alarm & enable it */
->+    alarm_hour =3D tm=2Etm_hour + alarm_hour;
->+    reg_hour_a =3D to_bcd(alarm_hour) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_HOUR_A, reg_hour_a);
->+
->+    /* Set minute alarm & enable it */
->+    alarm_min =3D tm=2Etm_min + alarm_min;
->+    reg_min_a =3D to_bcd(alarm_min) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_MINUTE_A, reg_min_a);
->+
->+    /* Check when half of supposed alarm time passed */
->+    clock_step((alarm_sec - 1) * NANOSECONDS_PER_SECOND);
->+
->+    g_assert_false(qtest_get_irq(global_qtest, irq_line));
->+
->+    /* Check when alarm time passed */
->+    clock_step((2) * NANOSECONDS_PER_SECOND);
->+
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_MINUTE_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, reg_min_a);
->+    g_assert_true(qtest_get_irq(global_qtest, irq_line));
->+}
->+
->+static void test_set_min_and_day_alarm(void *obj,
->+                                       void *data,
->+                                       QGuestAllocator *alloc)
->+{
->+    QTestState *qts =3D global_qtest;
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+    uint8_t irq_line =3D 0;
->+    uint64_t alarm_min =3D 1;
->+    uint8_t reg_min_a =3D 0x0;
->+    uint64_t alarm_day =3D 2;
->+    uint8_t reg_day_a =3D 0x0;
->+    uint64_t alarm_sec =3D (alarm_day * 24 * 60 * 60) + (alarm_min * 60)=
+>  hw/virtio/vhost-shadow-virtqueue.c | 107 +++++++++++------------------
+>  1 file changed, 41 insertions(+), 66 deletions(-)
+>
+> diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-=
+virtqueue.c
+> index 2481d49345..4f74ad402a 100644
+> --- a/hw/virtio/vhost-shadow-virtqueue.c
+> +++ b/hw/virtio/vhost-shadow-virtqueue.c
+> @@ -139,87 +139,48 @@ static bool vhost_svq_translate_addr(const VhostSha=
+dowVirtqueue *svq,
+>  }
+>
+>  /**
+> - * Write descriptors to SVQ vring
+> + * Write descriptors to SVQ split vring
+>   *
+>   * @svq: The shadow virtqueue
+> - * @sg: Cache for hwaddr
+> - * @iovec: The iovec from the guest
+> - * @num: iovec length
+> - * @addr: Descriptors' GPAs, if backed by guest memory
+> - * @more_descs: True if more descriptors come in the chain
+> - * @write: True if they are writeable descriptors
+> - *
+> - * Return true if success, false otherwise and print error.
+> + * @out_sg: The iovec to the guest
+> + * @out_num: Outgoing iovec length
+> + * @in_sg: The iovec from the guest
+> + * @in_num: Incoming iovec length
+> + * @sgs: Cache for hwaddr
+> + * @head: Saves current free_head
+>   */
+> -static bool vhost_svq_vring_write_descs(VhostShadowVirtqueue *svq, hwadd=
+r *sg,
+> -                                        const struct iovec *iovec, size_=
+t num,
+> -                                        const hwaddr *addr, bool more_de=
+scs,
+> -                                        bool write)
+> +static void vhost_svq_add_split(VhostShadowVirtqueue *svq,
+> +                                const struct iovec *out_sg, size_t out_n=
+um,
+> +                                const struct iovec *in_sg, size_t in_num=
+,
+> +                                hwaddr *sgs, unsigned *head)
+>  {
+> +    unsigned avail_idx, n;
+>      uint16_t i =3D svq->free_head, last =3D svq->free_head;
+> -    unsigned n;
+> -    uint16_t flags =3D write ? cpu_to_le16(VRING_DESC_F_WRITE) : 0;
+> +    vring_avail_t *avail =3D svq->vring.avail;
+>      vring_desc_t *descs =3D svq->vring.desc;
+> -    bool ok;
+> -
+> -    if (num =3D=3D 0) {
+> -        return true;
+> -    }
+> +    size_t num =3D in_num + out_num;
+>
+> -    ok =3D vhost_svq_translate_addr(svq, sg, iovec, num, addr);
+> -    if (unlikely(!ok)) {
+> -        return false;
+> -    }
+> +    *head =3D svq->free_head;
+>
+>      for (n =3D 0; n < num; n++) {
+> -        if (more_descs || (n + 1 < num)) {
+> -            descs[i].flags =3D flags | cpu_to_le16(VRING_DESC_F_NEXT);
+> +        descs[i].flags =3D cpu_to_le16(n < out_num ? 0 : VRING_DESC_F_WR=
+ITE);
+> +        if (n + 1 < num) {
+> +            descs[i].flags |=3D cpu_to_le16(VRING_DESC_F_NEXT);
+>              descs[i].next =3D cpu_to_le16(svq->desc_next[i]);
+> +        }
+> +
+> +        descs[i].addr =3D cpu_to_le64(sgs[n]);
+> +        if (n < out_num) {
+> +            descs[i].len =3D cpu_to_le32(out_sg[n].iov_len);
+>          } else {
+> -            descs[i].flags =3D flags;
+> +            descs[i].len =3D cpu_to_le32(in_sg[n - out_num].iov_len);
+>          }
+> -        descs[i].addr =3D cpu_to_le64(sg[n]);
+> -        descs[i].len =3D cpu_to_le32(iovec[n].iov_len);
+>
+>          last =3D i;
+>          i =3D svq->desc_next[i];
+>      }
+>
+>      svq->free_head =3D svq->desc_next[last];
+> -    return true;
+> -}
+> -
+> -static bool vhost_svq_add_split(VhostShadowVirtqueue *svq,
+> -                                const struct iovec *out_sg, size_t out_n=
+um,
+> -                                const hwaddr *out_addr,
+> -                                const struct iovec *in_sg, size_t in_num=
+,
+> -                                const hwaddr *in_addr, unsigned *head)
+> -{
+> -    unsigned avail_idx;
+> -    vring_avail_t *avail =3D svq->vring.avail;
+> -    bool ok;
+> -    g_autofree hwaddr *sgs =3D g_new(hwaddr, MAX(out_num, in_num));
+> -
+> -    *head =3D svq->free_head;
+> -
+> -    /* We need some descriptors here */
+> -    if (unlikely(!out_num && !in_num)) {
+> -        qemu_log_mask(LOG_GUEST_ERROR,
+> -                      "Guest provided element with no descriptors");
+> -        return false;
+> -    }
+> -
+> -    ok =3D vhost_svq_vring_write_descs(svq, sgs, out_sg, out_num, out_ad=
+dr,
+> -                                     in_num > 0, false);
+> -    if (unlikely(!ok)) {
+> -        return false;
+> -    }
+> -
+> -    ok =3D vhost_svq_vring_write_descs(svq, sgs, in_sg, in_num, in_addr,=
+ false,
+> -                                     true);
+> -    if (unlikely(!ok)) {
+> -        return false;
+> -    }
+>
+>      /*
+>       * Put the entry in the available array (but don't update avail->idx=
+ until
+> @@ -233,7 +194,6 @@ static bool vhost_svq_add_split(VhostShadowVirtqueue =
+*svq,
+>      smp_wmb();
+>      avail->idx =3D cpu_to_le16(svq->shadow_avail_idx);
+>
+> -    return true;
+>  }
+>
+>  static void vhost_svq_kick(VhostShadowVirtqueue *svq)
+> @@ -276,16 +236,31 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const =
+struct iovec *out_sg,
+>      unsigned ndescs =3D in_num + out_num;
+>      bool ok;
+>
+> +    /* We need some descriptors here */
+> +    if (unlikely(!ndescs)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "Guest provided element with no descriptors");
+> +        return -EINVAL;
+> +    }
+> +
+>      if (unlikely(ndescs > vhost_svq_available_slots(svq))) {
+>          return -ENOSPC;
+>      }
+>
+> -    ok =3D vhost_svq_add_split(svq, out_sg, out_num, out_addr, in_sg, in=
+_num,
+> -                             in_addr, &qemu_head);
+> +    g_autofree hwaddr *sgs =3D g_new(hwaddr, ndescs);
+> +    ok =3D vhost_svq_translate_addr(svq, sgs, out_sg, out_num, out_addr)=
 ;
->+    struct tm tm;
->+
->+    qtest_irq_intercept_out(qts, "/machine/peripheral/pcf8563-test/");
->+    set_time(i2cdev, &tm);
->+
->+    /* Enable alarm interrupt */
->+    i2c_set8(i2cdev, PCF8563_CS2, 0x2);
->+
->+    /* Set day alarm & enable it */
->+    alarm_day =3D tm=2Etm_mday + alarm_day;
->+    reg_day_a =3D to_bcd(alarm_day) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_DAY_A, reg_day_a);
->+
->+    /* Set minute alarm & enable it */
->+    alarm_min =3D tm=2Etm_min + alarm_min;
->+    reg_min_a =3D to_bcd(alarm_min) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_MINUTE_A, reg_min_a);
->+
->+    /* Check when half of supposed alarm time passed */
->+    clock_step((alarm_sec - 1) * NANOSECONDS_PER_SECOND);
->+
->+    g_assert_false(qtest_get_irq(global_qtest, irq_line));
->+
->+    /* Check when alarm time passed */
->+    clock_step((2) * NANOSECONDS_PER_SECOND);
->+
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_MINUTE_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, reg_min_a);
->+    g_assert_true(qtest_get_irq(global_qtest, irq_line));
->+}
->+
->+static void test_set_day_and_wday_alarm(void *obj,
->+                                        void *data,
->+                                        QGuestAllocator *alloc)
->+{
->+    QTestState *qts =3D global_qtest;
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+    uint8_t irq_line =3D 0;
->+    uint64_t alarm_day =3D 1;
->+    uint8_t reg_day_a =3D 0x0;
->+    uint64_t alarm_wday =3D 2;
->+    uint8_t reg_wday_a =3D 0x0;
->+    uint64_t alarm_sec =3D (alarm_day * 24 * 60 * 60) +
->+                         (alarm_wday * 24 * 60 * 60);
->+    struct tm tm;
->+
->+    qtest_irq_intercept_out(qts, "/machine/peripheral/pcf8563-test/");
->+    set_time(i2cdev, &tm);
->+
->+    /* Enable alarm interrupt */
->+    i2c_set8(i2cdev, PCF8563_CS2, 0x2);
->+
->+    /* Set day alarm & enable it */
->+    alarm_day =3D tm=2Etm_mday + alarm_day;
->+    reg_day_a =3D to_bcd(alarm_day) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_DAY_A, reg_day_a);
->+
->+    /* Set wday alarm & enable it */
->+    alarm_wday =3D tm=2Etm_wday + alarm_wday;
->+    reg_wday_a =3D to_bcd(alarm_wday) & ~0x80;
->+    i2c_set8(i2cdev, PCF8563_WEEKDAY_A, reg_wday_a);
->+
->+    /* Check when half of supposed alarm time passed */
->+    clock_step((alarm_sec - 1) * NANOSECONDS_PER_SECOND);
->+
->+    g_assert_false(qtest_get_irq(global_qtest, irq_line));
->+
->+    /* Check when alarm time passed */
->+    clock_step((2) * NANOSECONDS_PER_SECOND);
->+
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_WEEKDAY_A);
->+    g_assert_cmphex(i2c_value, =3D=3D, reg_wday_a);
->+    g_assert_true(qtest_get_irq(global_qtest, irq_line));
->+}
->+
->+static void test_set_timer(void *obj, void *data, QGuestAllocator *alloc=
-)
->+{
->+    QTestState *qts =3D global_qtest;
->+    uint16_t i2c_value =3D 0;
->+    QI2CDevice *i2cdev =3D (QI2CDevice *)obj;
->+    uint8_t irq_line =3D 0;
->+    uint64_t src_clk_freq =3D 64;
->+    uint8_t reg_timer_ctl =3D 0x81;
->+    uint8_t reg_timer =3D 0xff;
->+    uint64_t countdown_period =3D reg_timer / src_clk_freq;
->+
->+    qtest_irq_intercept_out(qts, "/machine/peripheral/pcf8563-test/");
->+    g_assert_false(qtest_get_irq(global_qtest, irq_line));
->+
->+    i2c_set8(i2cdev, PCF8563_CS2, 0x1);
->+    i2c_set8(i2cdev, PCF8563_TIMER_CTL, reg_timer_ctl);
->+    i2c_set8(i2cdev, PCF8563_TIMER, reg_timer);
->+
->+    clock_step((countdown_period - 1) * NANOSECONDS_PER_SECOND);
->+
->+    g_assert_false(qtest_get_irq(global_qtest, irq_line));
->+
->+    clock_step((2) * NANOSECONDS_PER_SECOND);
->+
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_TIMER_CTL);
->+    g_assert_cmphex(i2c_value, =3D=3D, reg_timer_ctl);
->+    i2c_value =3D i2c_get8(i2cdev, PCF8563_TIMER);
->+    g_assert_cmphex(i2c_value, =3D=3D, 0);
->+    g_assert_true(qtest_get_irq(global_qtest, irq_line));
->+}
->+
->+static void pcf8563_register_nodes(void)
->+{
->+    QOSGraphEdgeOptions opts =3D {
->+        =2Eextra_device_opts =3D "id=3D" TEST_ID ",address=3D0x10",
->+        =2Ebefore_cmd_line =3D "-rtc clock=3Dvm"
->+    };
->+    add_qi2c_address(&opts, &(QI2CAddress) { 0x10 });
->+
->+    qos_node_create_driver("pcf8563", i2c_device_create);
->+
->+    qos_node_consumes("pcf8563", "i2c-bus", &opts);
->+
->+    qos_add_test("test_defaults",
->+                 "pcf8563",
->+                 test_defaults,
->+                 NULL);
->+    qos_add_test("test_check_time",
->+                 "pcf8563",
->+                 test_check_time,
->+                 NULL);
->+    qos_add_test("test_set_minute_alarm",
->+                 "pcf8563",
->+                 test_set_minute_alarm,
->+                 NULL);
->+    qos_add_test("test_set_hour_alarm",
->+                 "pcf8563",
->+                 test_set_hour_alarm,
->+                 NULL);
->+    qos_add_test("test_set_day_alarm",
->+                 "pcf8563",
->+                 test_set_day_alarm,
->+                 NULL);
->+    qos_add_test("test_set_wday_alarm",
->+                 "pcf8563",
->+                 test_set_wday_alarm,
->+                 NULL);
->+    qos_add_test("test_set_min_and_hour_alarm",
->+                 "pcf8563",
->+                 test_set_min_and_hour_alarm,
->+                 NULL);
->+    qos_add_test("test_set_min_and_day_alarm",
->+                 "pcf8563",
->+                 test_set_min_and_day_alarm,
->+                 NULL);
->+    qos_add_test("test_set_day_and_wday_alarm",
->+                 "pcf8563",
->+                 test_set_day_and_wday_alarm,
->+                 NULL);
->+    qos_add_test("test_set_timer",
->+                 "pcf8563",
->+                 test_set_timer,
->+                 NULL);
->+}
->+libqos_init(pcf8563_register_nodes);
+>      if (unlikely(!ok)) {
+>          return -EINVAL;
+>      }
+>
+> +    ok =3D vhost_svq_translate_addr(svq, sgs + out_num, in_sg, in_num, i=
+n_addr);
+> +    if (unlikely(!ok)) {
+> +        return -EINVAL;
+> +    }
+> +
+> +    vhost_svq_add_split(svq, out_sg, out_num, in_sg,
+> +                        in_num, sgs, &qemu_head);
+> +
+>      svq->num_free -=3D ndescs;
+>      svq->desc_state[qemu_head].elem =3D elem;
+>      svq->desc_state[qemu_head].ndescs =3D ndescs;
+> --
+> 2.48.1
+>
+
 
