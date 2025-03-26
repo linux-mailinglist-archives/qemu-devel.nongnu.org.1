@@ -2,93 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24855A712BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 09:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3CCA71266
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 09:16:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txME9-0002om-5j; Wed, 26 Mar 2025 04:35:09 -0400
+	id 1txLuY-0002Ie-0Y; Wed, 26 Mar 2025 04:14:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1txME2-0002nM-DD
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 04:35:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1txLuV-0002Hy-0p; Wed, 26 Mar 2025 04:14:51 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1txMDz-00040j-C6
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 04:35:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742978098;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5lC/i9b+rrLInrfb1CAQqFaNrV4DucAAU7t1STN5P2Q=;
- b=F6sE6JpZlNfT5XAgflzEzOeLwr/tn7fbMu73j6m05LzP6OymcSYsKzo0UKscHBDpu3xCq6
- nqHIreZ2AV3YPHyi1IzbJrdm/GArbJf7cypSD57TWOuuOJv0zYET6CmyZbDfQuHdff2Fh0
- 9AAzj/Ax3/2jCTFbb5yZv1M760VcNjc=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-xkuXiYk8NkOB1CF9afxzag-1; Wed, 26 Mar 2025 04:34:55 -0400
-X-MC-Unique: xkuXiYk8NkOB1CF9afxzag-1
-X-Mimecast-MFC-AGG-ID: xkuXiYk8NkOB1CF9afxzag_1742978095
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-2ff799be8f5so11710096a91.1
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 01:34:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742978095; x=1743582895;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5lC/i9b+rrLInrfb1CAQqFaNrV4DucAAU7t1STN5P2Q=;
- b=lDQaJ9CxlSuU0OMBVPreQKZffiP5y0A8IQfgaG3LtxNapEh7C2/OD6sRDTRvmvUigz
- y8iFHECInPavXFNKhOCUeaAhJP++NS3EGMimjiiTnqlQGU07B8r9p7Ym0aaigP66vIT+
- COr4eM0t5PqyMyinnEn+tT9RZZCwTWFvSe1DfrINcwzwaOop5vSkw10mJDD1GNIEuLUl
- zsi3EO0wOFr/L7q3xb6nxhLxWCZsmH/jgXJbgX1JT6oY9frQtM0diwYP72R67LqMqXve
- OPzyeVaYVmErmpSWErUptzq1CrK0JTMgfqXmPKZzQqHSDoacId4j9vsVVxLkre1geJGH
- HIdA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVuXbLYCn3D1EZp46DaPRZBhi0tmgqb8lxwk9zms6T5iWQAgmL8i1dgl5utIHRovBCjWwicUBuk9r56@nongnu.org
-X-Gm-Message-State: AOJu0YzaDXy+LqdvLI/rDllyBqVgo5FMt8LHTd8FYhZ0vZG9/wuilnGG
- U4m4cmlUchDtkeu8CLXw6kbyGnl6KlPoCTdtFZfZH4otQjDx2SbDoRIiWhwmRnYA4vDpjNu3tG+
- R3rQ6/cgGDwxlG8eD9jqEiSwEVI06+iMKnPZr/eBo9zn5AJKeE6uLqKOUeh9d89atq4Gd0oua/r
- 9W7O43V7AQ5J+81/B2zuZ+JmEjMl0=
-X-Gm-Gg: ASbGnctQdoDnleu6WjA+9tjGjry6yfsuEBJvhFCcuB8BY/0Cg/LFe8+vRp9RcLC8d3Z
- +8vtpH95sd9Ec2K971TqF74AgEGr0grd27Mp8vsqrnrkOpNfEd8E+8sNcNEKnikR09TQ7/5s=
-X-Received: by 2002:a17:90b:510e:b0:301:1bce:c255 with SMTP id
- 98e67ed59e1d1-3030fee56bdmr29901517a91.27.1742978094482; 
- Wed, 26 Mar 2025 01:34:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHRrzJenaeZn4sP3eL9RjYIDaOA2Q3Bcv1sezVd1TXXYP6xPutJNj/ZjbYJz05e7TpOMxSjwicTZk69po7kZ3s=
-X-Received: by 2002:a17:90b:510e:b0:301:1bce:c255 with SMTP id
- 98e67ed59e1d1-3030fee56bdmr29901483a91.27.1742978093955; Wed, 26 Mar 2025
- 01:34:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1txLuS-0000kb-Ey; Wed, 26 Mar 2025 04:14:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1742976889; x=1774512889;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=UyMaI+X0PQS4bqR3h3G79mOWpe6pvu9V0IDdt5/mpbQ=;
+ b=TIe/ymWp4eDDo0vo3uFtArK7A1cWzv8uXZupjJfGKM4qxbaer8tK8htM
+ yYFz9CbCejUKcv5xqVu5Q70Nn8o4rB8Pn1PuV0WvKmsGaoXAwAMxwsPCO
+ /7TSZ2COc0gTvcERPN+kI1Kj9hcOrZNQG8vTqSKN8lC57BtON34xNM/v0
+ UK6wyfYpYehj4dx4r3zN33Rzo069+63iJBSL9K/Xjn3CnW5lBbBKABnOB
+ vfBsBbuNyF57r/IOyHaNd7hMCyLHk3KB6JGp7AKf4zrpKXPAQyfMmsJaI
+ EgMyw7zQT1CmouQo0qrKdrubaXdojy8p6aGVVCLu9581bxf9dvCn34uYz Q==;
+X-CSE-ConnectionGUID: VXmCursnTmq3MpIDrsLYVA==
+X-CSE-MsgGUID: 3ePymZ2BTUeBq12YrsbLwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="54900866"
+X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; d="scan'208";a="54900866"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2025 01:14:45 -0700
+X-CSE-ConnectionGUID: IPtli1dgQWG7I0hOa5dhVw==
+X-CSE-MsgGUID: VDOhIR/eSdOKG0Z7cmaMEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; d="scan'208";a="129709514"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 26 Mar 2025 01:14:40 -0700
+Date: Wed, 26 Mar 2025 16:34:57 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ qemu-s390x@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Hildenbrand <david@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Eric Farman <farman@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH v3 7/7] cpus: Remove #ifdef check on cpu_list definition
+Message-ID: <Z+O8MRoUZWOgGRBm@intel.com>
+References: <20250324185837.46506-1-philmd@linaro.org>
+ <20250324185837.46506-8-philmd@linaro.org>
 MIME-Version: 1.0
-References: <20250324135929.74945-1-sahilcdq@proton.me>
- <20250324135929.74945-6-sahilcdq@proton.me>
- <49e5e2e1-4715-4949-93d5-b4e0f5425bbf@gmail.com>
-In-Reply-To: <49e5e2e1-4715-4949-93d5-b4e0f5425bbf@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 26 Mar 2025 09:34:17 +0100
-X-Gm-Features: AQ5f1JobSyqD5t0sfVCJHUmfHq4AwtYps84TurYiX-bymmneX5wa2KXadBAeS2M
-Message-ID: <CAJaqyWckqkkE=sB6yk1RhV8DVoPBAODqdNfgq5Vc0DLGo2_TNw@mail.gmail.com>
-Subject: Re: [RFC v5 5/7] vhost: Forward descriptors to guest via packed vqs
-To: Sahil Siddiq <icegambit91@gmail.com>
-Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- sahilcdq@proton.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250324185837.46506-8-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,103 +91,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 24, 2025 at 3:34=E2=80=AFPM Sahil Siddiq <icegambit91@gmail.com=
-> wrote:
->
-> Hi,
->
-> I had a few more queries here as well.
->
-> On 3/24/25 7:29 PM, Sahil Siddiq wrote:
-> > Detect when used descriptors are ready for consumption by the guest via
-> > packed virtqueues and forward them from the device to the guest.
-> >
-> > Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
-> > ---
-> > Changes from v4 -> v5:
-> > - New commit.
-> > - vhost-shadow-virtqueue.c:
-> >    (vhost_svq_more_used): Split into vhost_svq_more_used_split and
-> >    vhost_svq_more_used_packed.
-> >    (vhost_svq_enable_notification): Handle split and packed vqs.
-> >    (vhost_svq_disable_notification): Likewise.
-> >    (vhost_svq_get_buf): Split into vhost_svq_get_buf_split and
-> >    vhost_svq_get_buf_packed.
-> >    (vhost_svq_poll): Use new functions.
-> >
-> >   hw/virtio/vhost-shadow-virtqueue.c | 121 ++++++++++++++++++++++++++--=
--
-> >   1 file changed, 110 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shado=
-w-virtqueue.c
-> > index 126957231d..8430b3c94a 100644
-> > --- a/hw/virtio/vhost-shadow-virtqueue.c
-> > +++ b/hw/virtio/vhost-shadow-virtqueue.c
-> > @@ -463,7 +463,7 @@ static void vhost_handle_guest_kick_notifier(EventN=
-otifier *n)
-> >       vhost_handle_guest_kick(svq);
-> >   }
-> >
-> > -static bool vhost_svq_more_used(VhostShadowVirtqueue *svq)
-> > +static bool vhost_svq_more_used_split(VhostShadowVirtqueue *svq)
-> >   {
-> >       uint16_t *used_idx =3D &svq->vring.used->idx;
-> >       if (svq->last_used_idx !=3D svq->shadow_used_idx) {
-> > @@ -475,6 +475,22 @@ static bool vhost_svq_more_used(VhostShadowVirtque=
-ue *svq)
-> >       return svq->last_used_idx !=3D svq->shadow_used_idx;
-> >   }
-> >
-> > +static bool vhost_svq_more_used_packed(VhostShadowVirtqueue *svq)
-> > +{
-> > +    bool avail_flag, used_flag, used_wrap_counter;
-> > +    uint16_t last_used_idx, last_used, flags;
-> > +
-> > +    last_used_idx =3D svq->last_used_idx;
-> > +    last_used =3D last_used_idx & ~(1 << VRING_PACKED_EVENT_F_WRAP_CTR=
-);
->
-> In the linux kernel, last_used is calculated as:
->
-> last_used_idx & ~(-(1 << VRING_PACKED_EVENT_F_WRAP_CTR))
->
-> ...instead of...
->
-> last_used_idx & ~(1 << VRING_PACKED_EVENT_F_WRAP_CTR)
->
-> Isn't the second option good enough if last_used_idx is uint16_t
-> and VRING_PACKED_EVENT_F_WRAP_CTR is defined as 15.
->
+On Mon, Mar 24, 2025 at 07:58:37PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Mon, 24 Mar 2025 19:58:37 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH v3 7/7] cpus: Remove #ifdef check on cpu_list definition
+> X-Mailer: git-send-email 2.47.1
+> 
+> Since we removed all definitions of cpu_list, the #ifdef
+> check is always true. Remove it, inlining cpu_list().
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  cpu-target.c | 19 ++++++-------------
+>  1 file changed, 6 insertions(+), 13 deletions(-)
 
-I think it is good enough with the u16 restrictions but it's just
-defensive code.
-
-> > +    used_wrap_counter =3D !!(last_used_idx & (1 << VRING_PACKED_EVENT_=
-F_WRAP_CTR));
-> > +
-> > +    flags =3D le16_to_cpu(svq->vring_packed.vring.desc[last_used].flag=
-s);
-> > +    avail_flag =3D !!(flags & (1 << VRING_PACKED_DESC_F_AVAIL));
-> > +    used_flag =3D !!(flags & (1 << VRING_PACKED_DESC_F_USED));
-> > +
-> > +    return avail_flag =3D=3D used_flag && used_flag =3D=3D used_wrap_c=
-ounter;
-> > +}
-> > +
->
-> Also in the implementation of vhost_svq_more_used_split() [1], I haven't
-> understood why the following condition:
->
-> svq->last_used_idx !=3D svq->shadow_used_idx
->
-> is checked before updating the value of "svq->shadow_used_idx":
->
-> svq->shadow_used_idx =3D le16_to_cpu(*(volatile uint16_t *)used_idx)
->
-
-As far as I know this is used to avoid concurrent access to guest's
-used_idx, avoiding cache sharing, the memory barrier, and the
-potentially costly volatile access.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
