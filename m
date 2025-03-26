@@ -2,74 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FE5A713B8
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 10:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C80A713D2
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 10:36:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txN6o-0008Tm-CU; Wed, 26 Mar 2025 05:31:39 -0400
+	id 1txN9o-0000wd-7S; Wed, 26 Mar 2025 05:34:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1txN6A-0008RI-JN
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:31:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1txN67-0003Mn-8t
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:30:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742981451;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=r+mDRhxCXg/J+ccPFl7rg148xFIbllxWiEEQqChfTPQ=;
- b=WmjcE3KjZcF0XS3N5JL62iWBuzcGEEoHnkujNCJf1Qah2YNz0j/Ax69SfOoetC6f4crOpY
- y2AFYTvWlsgXXsTpU8L91oe1tsUGnjdVFpf1/dira6sYHW8A5n/VkRBijwlXUAhpHw9wNg
- T+V4VSOdMDMRPGC3nxZhuzhzKbQx0E4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-52-m8HXSSytM3Sy1HeM6GmQlA-1; Wed,
- 26 Mar 2025 05:30:49 -0400
-X-MC-Unique: m8HXSSytM3Sy1HeM6GmQlA-1
-X-Mimecast-MFC-AGG-ID: m8HXSSytM3Sy1HeM6GmQlA_1742981448
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5AA72180AF55; Wed, 26 Mar 2025 09:30:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.107])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D3B0319541A5; Wed, 26 Mar 2025 09:30:46 +0000 (UTC)
-Date: Wed, 26 Mar 2025 09:30:43 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH 03/15] tests/functional: Convert reverse_debugging tests
- to the functional framework
-Message-ID: <Z-PJQwDMG3QYP563@redhat.com>
-References: <20250325200026.344006-1-thuth@redhat.com>
- <20250325200026.344006-4-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txN9i-0000wH-UK
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:34:39 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txN9g-0003WQ-Va
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:34:38 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2255003f4c6so126918135ad.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 02:34:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1742981675; x=1743586475; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AFzJoEt0Ixt5u8WKVL91yF4RT8EZ3t7tZkR0nOBMuJ4=;
+ b=TW1pJNrpJwKU45Oib0LMyIWIR0sa8BmXEeheF/LNZhwdEf9P8Pk8S8j32lqTz+GBLj
+ q45+cdAHshV9Y8I/bDQ1z4VOepCxqV96ypEEN/Le8LFv/2LeaKL63Qlwlfc/Gfzn3Obz
+ chXWMuSHoFTCtvKEEPSntw3QzK+Gi/K+MnqRcUfCJsoOZzgZMU2KZo6TodbPiQRaC2TF
+ vLUsuLEnfqp0BGjmV/sOWJehjLGyFP05b8iQ3E97KTr9t+N+yGDt+z5iOA3OSXzhCs7S
+ uZvmGJvWBtq3CaRYR3fmeRmDKP+a+wlSkbfO0wxqgH4+POTC12GfvbJnvDcGUCF4rRNo
+ 4hNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1742981675; x=1743586475;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AFzJoEt0Ixt5u8WKVL91yF4RT8EZ3t7tZkR0nOBMuJ4=;
+ b=ByN3U1BurDS5DSt84yfs9B7D9gnhZ5Ix9MCRI0dVLRN1q1P3150RvNwHYnrI4zbLSy
+ IJEsNTo8sjCa+EpKB7erzCpGjtXE4FHowA10u4pyq3s7JndGzHPrci96Z9MqPMVfFL44
+ orSz87lFqQREiAJNDgReFVtcSu7QFBf3wvWPEnzDcuvX4QiRoUFBlK7pAXW5YRICho5A
+ r7Zp8REQxPkcMOo+uzmUimxLLMi31J6FDGQNe3TjdKSl4j7sLkQlSGPqyxZ5FbZv2m1K
+ 24hJtup/+XnVx7MioG5UxID7KWMYip1A5UUMx1Orm9ZQ1Hsab6qtDaKDc9g5IqsKG7Oz
+ qrjQ==
+X-Gm-Message-State: AOJu0Yz9gErPKllFVUoEpwVlsLEJr2f/bXQC9EKoalEARPa2AMtPSPN4
+ 0T0fqHZLevgNsjE3zrGQeORbSg+dFmznL0Snr0rXWgeiE6Kgg1xycUd2X/sw
+X-Gm-Gg: ASbGncsJeht5y3gAhuJzDV6G7TRaTB7kI78DtiXxsPFmJTpWxQA0Wwvj09iR0tOWUXA
+ TKG5VxaEIbuXtDS0nDYBMxf+xl/3PYFYdNfRWeYhVotoOLtzlgD16cr1XcvCxli43u/TawfVcrH
+ cGYb19Ppsv4Yfd7s8+Z5CK7ELKL9L7g9vOPnevLPtrPig5DlTTBG/usIW27DB6zWSLqBKmi/PVT
+ 1ITXC+WCeDqjvciVxuTCoSbc4XZvHV4Sshi9OeKtkUhu2XEhfRs/hmzO/5KNlHvglPhwapg16MJ
+ 19msrMxlUADcTSsZrEHCz1ChusmUsm6wAV4qsbX7YjUXEL7pbfRHbw6HFVwol+NDt7UZYNrqm3k
+ KcZyglRw18h3ToEAmXNve
+X-Google-Smtp-Source: AGHT+IE/m6ZJHsMixaTLNC71+XnyBHlDVr2Q85xAMEo3slO1t4MgJObpXmstOwW/TXNu32LRoCF5Qg==
+X-Received: by 2002:a05:6a00:a29:b0:736:39d4:ccf6 with SMTP id
+ d2e1a72fcca58-739059763admr37531431b3a.8.1742981674891; 
+ Wed, 26 Mar 2025 02:34:34 -0700 (PDT)
+Received: from localhost.localdomain (awork062150.netvigator.com.
+ [203.198.28.150]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73905fd57f7sm11729684b3a.44.2025.03.26.02.34.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 Mar 2025 02:34:34 -0700 (PDT)
+From: yuq825@gmail.com
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
+ Qiang Yu <yuq825@gmail.com>
+Subject: [PATCH v2 0/6] ui: support multi plane texture
+Date: Wed, 26 Mar 2025 17:34:12 +0800
+Message-ID: <20250326093418.397269-1-yuq825@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250325200026.344006-4-thuth@redhat.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=yuq825@gmail.com; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,148 +92,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 25, 2025 at 09:00:11PM +0100, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
-> 
-> These tests are using the gdb-related library functions from the
-> Avocado framework which we don't have in the functional framework
-> yet. So for the time being, keep those imports and skip the test
-> if the Avocado framework is not installed on the host.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  MAINTAINERS                                   |   2 +-
->  tests/functional/meson.build                  |   4 +
->  .../reverse_debugging.py                      | 114 +++---------------
->  .../functional/test_aarch64_reverse_debug.py  |  37 ++++++
->  tests/functional/test_ppc64_reverse_debug.py  |  41 +++++++
->  tests/functional/test_x86_64_reverse_debug.py |  36 ++++++
->  6 files changed, 138 insertions(+), 96 deletions(-)
->  rename tests/{avocado => functional}/reverse_debugging.py (66%)
->  create mode 100755 tests/functional/test_aarch64_reverse_debug.py
->  create mode 100755 tests/functional/test_ppc64_reverse_debug.py
->  create mode 100755 tests/functional/test_x86_64_reverse_debug.py
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8f470a1c9b7..73ccf5e5176 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3670,7 +3670,7 @@ F: docs/system/replay.rst
->  F: stubs/replay.c
->  F: tests/avocado/replay_kernel.py
->  F: tests/avocado/replay_linux.py
-> -F: tests/avocado/reverse_debugging.py
-> +F: tests/functional/*reverse_debug*.py
->  F: tests/functional/*replay*.py
->  F: qapi/replay.json
->  
+From: Qiang Yu <yuq825@gmail.com>
 
-> diff --git a/tests/functional/test_aarch64_reverse_debug.py b/tests/functional/test_aarch64_reverse_debug.py
-> new file mode 100755
-> index 00000000000..82925bf5908
-> --- /dev/null
-> +++ b/tests/functional/test_aarch64_reverse_debug.py
-> @@ -0,0 +1,37 @@
-> +#!/usr/bin/env python3
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +#
-> +# Reverse debugging test
-> +#
-> +# Copyright (c) 2020 ISP RAS
-> +#
-> +# Author:
-> +#  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2 or
-> +# later.  See the COPYING file in the top-level directory.
-> +
-> +from qemu_test import Asset, skipIfMissingImports
-> +from reverse_debugging import ReverseDebugging
-> +
-> +
-> +@skipIfMissingImports('avocado')
+mesa/radeonsi is going to support explicit modifier with this MR:
+  * https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/31658
 
-Would it make sense to specialize this to 'avocado.utils' ?
+The side effect is some texture will become multi-plane which
+breaks qemu. Because qemu currently only support single plane
+texture.
 
-> +class ReverseDebugging_AArch64(ReverseDebugging):
-> +
-> +    REG_PC = 32
-> +
-> +    KERNEL_ASSET = Asset(
-> +        ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-> +         'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
-> +        '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
-> +
-> +    def test_aarch64_virt(self):
-> +        self.set_machine('virt')
-> +        self.cpu = 'cortex-a53'
-> +        kernel_path = self.KERNEL_ASSET.fetch()
-> +        self.reverse_debugging(args=('-kernel', kernel_path))
-> +
-> +
-> +if __name__ == '__main__':
-> +    ReverseDebugging.main()
+For example, texture with DCC (a compressed format) enabled modifier
+will expose one plane for compressed data, another plane with metadata
+for compression.
 
-> diff --git a/tests/functional/test_x86_64_reverse_debug.py b/tests/functional/test_x86_64_reverse_debug.py
-> new file mode 100755
-> index 00000000000..aba31f68748
-> --- /dev/null
-> +++ b/tests/functional/test_x86_64_reverse_debug.py
-> @@ -0,0 +1,36 @@
-> +#!/usr/bin/env python3
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +#
-> +# Reverse debugging test
-> +#
-> +# Copyright (c) 2020 ISP RAS
-> +#
-> +# Author:
-> +#  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2 or
-> +# later.  See the COPYING file in the top-level directory.
-> +
-> +from qemu_test import skipIfMissingImports, skipFlakyTest
-> +from reverse_debugging import ReverseDebugging
-> +
-> +
-> +@skipIfMissingImports('avocado')
-> +class ReverseDebugging_X86_64(ReverseDebugging):
-> +
-> +    REG_PC = 0x10
-> +    REG_CS = 0x12
-> +    def get_pc(self, g):
-> +        return self.get_reg_le(g, self.REG_PC) \
-> +            + self.get_reg_le(g, self.REG_CS) * 0x10
-> +
-> +    @skipFlakyTest("https://gitlab.com/qemu-project/qemu/-/issues/1992")
+This patch serial fix qemu to support multi-plane texture for
+DBus and SPICE display, other display seems not affected by multi
+plane.
 
-This bug refers to ppc64. Was this a copy and paste mistake, does
-that bug need updating to also mention x86_64 ?
+This patch serial also depends on the spice changes here:
+  * https://gitlab.freedesktop.org/spice/spice/-/merge_requests/232
 
-> +    def test_x86_64_pc(self):
-> +        self.set_machine('pc')
-> +        # start with BIOS only
-> +        self.reverse_debugging()
-> +
-> +
-> +if __name__ == '__main__':
-> +    ReverseDebugging.main()
-> -- 
-> 2.49.0
-> 
+SPICE client change here:
+  * https://gitlab.freedesktop.org/spice/spice-gtk/-/merge_requests/130
 
-With regards,
-Daniel
+DBus client change here:
+  * https://gitlab.com/marcandre.lureau/qemu-display/-/merge_requests/5
+
+v2:
+  * change dmabuf API for array length
+  * check spice_qxl_gl_scanout2 API instead of bumping spice version
+
+Qiang Yu (6):
+  ui/dmabuf: extend QemuDmaBuf to support multi-plane
+  ui/egl: require EGL_EXT_image_dma_buf_import_modifiers
+  ui/egl: use DRM_FORMAT_MOD_INVALID as default modifier
+  ui/egl: support multi-plane dmabuf when egl export/import
+  ui/dbus: change dbus ScanoutDMABUF interface
+  ui/spice: support multi plane dmabuf scanout
+
+ hw/display/vhost-user-gpu.c     |   9 ++-
+ hw/display/virtio-gpu-udmabuf.c |   8 ++-
+ hw/vfio/display.c               |   7 +-
+ include/ui/dmabuf.h             |  20 +++---
+ include/ui/egl-helpers.h        |   5 +-
+ meson.build                     |   5 ++
+ ui/dbus-display1.xml            |  37 ++++++++++
+ ui/dbus-listener.c              | 123 ++++++++++++++++++++++++++++----
+ ui/dmabuf.c                     |  77 +++++++++++++-------
+ ui/egl-helpers.c                | 102 +++++++++++++++++++-------
+ ui/spice-display.c              | 102 ++++++++++++++++++--------
+ 11 files changed, 385 insertions(+), 110 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.43.0
 
 
