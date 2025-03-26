@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579CEA71DA3
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 18:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9BAA71E1C
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 19:12:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txUq0-0000XS-KG; Wed, 26 Mar 2025 13:46:48 -0400
+	id 1txVD1-0004Le-CP; Wed, 26 Mar 2025 14:10:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1txUpu-0000WT-1N
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 13:46:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1txVCw-0004Jh-LM; Wed, 26 Mar 2025 14:10:30 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1txUps-0006J9-5u
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 13:46:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743011199;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=u3iIZQ1bQlGpgGnlFkW1x0J+ijLDY61xtufX+Vg/IQY=;
- b=H20WduOR0nZIR6fAKFX0BKIKBZ/tvEB9WcHgNIWed3pp6he8xp0FwweTRLbKaUAT5lljWt
- 9gR02TvhnKM39GmGk6BZ+wS1/pvf8pMR/3BYcR/FupgWFF546b3DdiIMAqdJl2a3dBtG6Z
- guRVqeh5YVJeLvDV/wpDxlDrt8Mt4gc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-1XCfcm5JN2CiAyuUavEoKw-1; Wed,
- 26 Mar 2025 13:46:33 -0400
-X-MC-Unique: 1XCfcm5JN2CiAyuUavEoKw-1
-X-Mimecast-MFC-AGG-ID: 1XCfcm5JN2CiAyuUavEoKw_1743011192
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7B40C196B356; Wed, 26 Mar 2025 17:46:32 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.113])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 21EBC180B48B; Wed, 26 Mar 2025 17:46:30 +0000 (UTC)
-Date: Wed, 26 Mar 2025 13:46:29 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: ~h0lyalg0rithm <surajshirvankar@gmail.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH qemu 1/1] Add IOURING_SETUP_SINGLE_ISSUER flag to improve
- iouring performance
-Message-ID: <20250326174629.GA909841@fedora>
-References: <174293621917.22751.11381319865102029969-0@git.sr.ht>
- <174293621917.22751.11381319865102029969-1@git.sr.ht>
- <Z-Q1yDqmS3gniW4X@redhat.com>
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1txVCq-0000Ea-Co; Wed, 26 Mar 2025 14:10:30 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QGRhQU032229;
+ Wed, 26 Mar 2025 18:10:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=j+rJx70jFjhi0rIvylJ8WJsZ7/KYVdQmaQwvstvgp
+ 6c=; b=N4RaQBAR3X6FJr62487y1IH+nQuQexwwNU8AUn0uNPjaQ9zj9Vh0o+m/U
+ BhDVVSDu0/lM5MzVv7G19TnJlihFKBTv4UPz0mwcrrwMzLrVmzjaRaM7dz5r9Yhi
+ crpbt/tQX0GVjNYVh0fHFIAOAhhbMA4mPTPl8wYNWP4Ur0r/5ZhrlxiQJCQNCyLW
+ 2TkP2eTdkn3MGL5M5Incg0xERb6Gg5YkOYaFyTscFuJRvwZh8F5mqteT1mNkrkR5
+ l3RmXahFDohqmoXND9rajwJReiJS4krhpOcxa78mgvPB+QJYAJbu6huolk7opQLe
+ C4cJFFOS2ejgf7wKW2JpTnmLUPjTQ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45m3q0ng7h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 26 Mar 2025 18:10:11 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52QHJ7hT025443;
+ Wed, 26 Mar 2025 18:10:10 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45j7x09s5v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 26 Mar 2025 18:10:10 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52QIA8ap17302148
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 26 Mar 2025 18:10:09 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CEB0F5805F;
+ Wed, 26 Mar 2025 18:10:08 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C361958051;
+ Wed, 26 Mar 2025 18:10:07 +0000 (GMT)
+Received: from IBM-D32RQW3.ibm.com (unknown [9.61.243.159])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 26 Mar 2025 18:10:07 +0000 (GMT)
+From: Farhan Ali <alifm@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: alifm@linux.ibm.com, mjrosato@linux.ibm.com, schnelle@linux.ibm.com,
+ qemu-s390x@nongnu.org, qemu-block@nongnu.org, stefanha@redhat.com,
+ fam@euphon.net, philmd@linaro.org, kwolf@redhat.com, hreitz@redhat.com,
+ thuth@redhat.com
+Subject: [PATCH v1 0/2] Enable QEMU NVMe userspace driver on s390x
+Date: Wed, 26 Mar 2025 11:10:05 -0700
+Message-ID: <20250326181007.1099-1-alifm@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="pRyw0oLiMdVf6SQX"
-Content-Disposition: inline
-In-Reply-To: <Z-Q1yDqmS3gniW4X@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Ffk-h3udD2lZVwyio3yxXrIOzOaJQQpP
+X-Proofpoint-GUID: Ffk-h3udD2lZVwyio3yxXrIOzOaJQQpP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-26_08,2025-03-26_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ suspectscore=0 clxscore=1011 spamscore=0 lowpriorityscore=0 phishscore=0
+ mlxlogscore=422 priorityscore=1501 adultscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503260110
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=alifm@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,57 +104,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
---pRyw0oLiMdVf6SQX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Recently on s390x we have enabled mmap support for vfio-pci devices [1].
+This allows us to take advantage and use userspace drivers on s390x. However,
+on s390x we have special instructions for MMIO access. Starting with z15 
+(and newer platforms) we have new PCI Memory I/O (MIO) instructions which 
+operate on virtually mapped PCI memory spaces, and can be used from userspace.
+On older platforms we would fallback to using existing system calls for MMIO access.
 
-On Wed, Mar 26, 2025 at 06:13:44PM +0100, Kevin Wolf wrote:
-> Am 25.03.2025 um 21:49 hat ~h0lyalg0rithm geschrieben:
-> > From: Suraj Shirvankar <surajshirvankar@gmail.com>
-> >=20
-> > Signed-off-by: Suraj Shirvankar <surajshirvankar@gmail.com>
-> > ---
-> >  util/fdmon-io_uring.c | 8 +++++++-
-> >  1 file changed, 7 insertions(+), 1 deletion(-)
->=20
-> As Stefan already mentioned, the commit message should say why we want
-> to set this flag and why it is correct to do so.
->=20
-> Is there a reason why you change the io_uring_queue_init() call in
-> util/fdmon-io_uring.c, but not the one in block/io_uring.c?
+This patch series introduces support the PCI MIO instructions, and enables s390x
+support for the userspace NVMe driver on s390x. I would appreciate any review/feedback
+on the patches.
 
-I only asked Suraj to look at util/fdmon-io_uring.c because I expect
-block/io_uring.c's io_uring context to go away soon.
+Thanks
+Farhan
 
-In my local io_uring branches I have prepared commits that replace the
-io_uring context in block/io_uring.c with aio_add_sqe() calls that use
-the AioContext's fdmon-io_uring.c io_uring context.
+[1] https://lore.kernel.org/linux-s390/20250226-vfio_pci_mmap-v7-0-c5c0f1d26efd@linux.ibm.com/
 
-Stefan
+Farhan Ali (2):
+  util: Add functions for s390x mmio read/write
+  block/nvme: Enable NVMe userspace driver for s390x
 
->=20
-> If so, please document it in the commit message, too.
->=20
-> Kevin
->=20
+ block/nvme.c                  |  95 ++++++++++++++++++++++++------
+ include/qemu/s390x_pci_mmio.h |  17 ++++++
+ util/meson.build              |   2 +
+ util/s390x_pci_mmio.c         | 105 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 201 insertions(+), 18 deletions(-)
+ create mode 100644 include/qemu/s390x_pci_mmio.h
+ create mode 100644 util/s390x_pci_mmio.c
 
---pRyw0oLiMdVf6SQX
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfkPXUACgkQnKSrs4Gr
-c8ioBQf/XehQSy9Xy2T3lC3LykG6ez4kWekGJ/hVPYaoaOh9z8iJVt7qlKo6vtDi
-5A4aYX/guEOxCEBEb2wytUttJyr6bXN+I9YC2WCnqReXCyDzG8fSSTwka5SqLkf2
-bsqPZ5pOus4tk559Ts+WfSMkG4mHfRgMUToJNuSy5rsHLnhWm2oWYlHOkM83oNST
-A7mMsBRI8yYVanpuskTNDSsCKrJjrMym0xzjHWm54bEqmczMp4U9suvWY9DgHIRn
-iijNXfvovkMagnvgeHp7vKK+X3MCj5IvtU5E9DoZvN9UoCu71h8jTDTHYicP0Y4A
-mQKdSpjw91hW44L572P41EDmH8uJvQ==
-=zRrH
------END PGP SIGNATURE-----
-
---pRyw0oLiMdVf6SQX--
+-- 
+2.43.0
 
 
