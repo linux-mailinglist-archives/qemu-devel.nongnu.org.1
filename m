@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB51BA71750
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 14:21:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AACEEA71752
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 14:21:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txQgG-0008K6-K9; Wed, 26 Mar 2025 09:20:28 -0400
+	id 1txQgu-0008Vs-4l; Wed, 26 Mar 2025 09:21:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1txQgB-0008Ir-Ri; Wed, 26 Mar 2025 09:20:24 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1txQgr-0008VR-TG; Wed, 26 Mar 2025 09:21:05 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1txQgA-0006wV-4p; Wed, 26 Mar 2025 09:20:23 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52Q8OIB6011284;
- Wed, 26 Mar 2025 13:20:10 GMT
+ id 1txQgp-00072H-JA; Wed, 26 Mar 2025 09:21:05 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52Q8ulbV026778;
+ Wed, 26 Mar 2025 13:20:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=3s8TbJ
- frwe/5PkfIXZ9j9BfIJOtMfWmkprnj9htbYw8=; b=LuQ9YARAM/Gxd0sXgSHnkU
- YWszEtqY1Y/t86eBWfSZWwS+ydZeFeZiquwtLgNQOxbDmhqLju/eKKZgGqmQP6tX
- 1TApp7KIYlAs4sZtXzn2Vy37MFeVrrKalfy/prE3XunOaOcbqdeh72E8pSbup7NB
- b4WzyrsE8PLU2WSxnEdLk/qXcg74BupB4xV+Ymf1p79/5ZUCJ1Mge8VVEIPwglwI
- 8MeVDBf4jqG9s+OhL2gej8AGFUrclZFylyXzsyNgdhVrD51DlGST5zA+iz/jtDSl
- i6KkepYWbu15xcLoP6MxwlgzeGUJb3yA/qp3E2pXkVY+O9Ed78eOpHFi46T5AXtA
+ :message-id:mime-version:references:subject:to; s=pp1; bh=VcYwVk
+ cgT+FWgak1lo4CkKbO8+FtIslc8/IRn9qcWO0=; b=bCJ1WErKCq3zhW7gdQp1iB
+ fX3mNeR+mr10N4JhpSyUzF1e7idBHCO2yG75gnfyG0qKtel3WkUyiQSEiQdlh7aJ
+ Pe1c24CXPHeaY55l6BCR2sLz+uI5zwZfI7kv+TvdIcge/M5ENWEak1GGyOh1PF5k
+ xzOYSRwJ/NX1flF59x9JEcUEEcIFjb/ZAsXdky4QRzQhYl/V6lWEuTF2wBM0D7fc
+ mmwSN2JEUi4pWk47clk+JToWl879/kCVqhRiZ0SaUR9gSpqKf6LGugdhumwKFno5
+ 5tccGl5lgLETH+ozatWzFeJFTsb3XSafb12TFSGHTdtADOVXDP0Fny2MTES5dxSQ
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45m3nqkv7g-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45kwwqe79n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Mar 2025 13:20:09 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52QDC1LI020947;
- Wed, 26 Mar 2025 13:20:09 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45m3nqkv7e-1
+ Wed, 26 Mar 2025 13:20:51 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52QCvPA6006558;
+ Wed, 26 Mar 2025 13:20:50 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45kwwqe79j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Mar 2025 13:20:09 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52Q9GUOh025443;
- Wed, 26 Mar 2025 13:20:08 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45j7x08m0f-1
+ Wed, 26 Mar 2025 13:20:50 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52QBdmah009694;
+ Wed, 26 Mar 2025 13:20:49 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j9rkr8uq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Mar 2025 13:20:08 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 52QDK7f637225060
+ Wed, 26 Mar 2025 13:20:49 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52QDKmu724838814
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Mar 2025 13:20:07 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 525E458051;
- Wed, 26 Mar 2025 13:20:07 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CEC125805A;
- Wed, 26 Mar 2025 13:20:05 +0000 (GMT)
+ Wed, 26 Mar 2025 13:20:48 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 334995805B;
+ Wed, 26 Mar 2025 13:20:48 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 185B15804B;
+ Wed, 26 Mar 2025 13:20:46 +0000 (GMT)
 Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.118.127]) by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 26 Mar 2025 13:20:05 +0000 (GMT)
-Message-ID: <6653951fe8afed27c217e44aeed70a6d3798a818.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 5/7] target/s390x: Declare
- s390_set_qemu_cpu_model/cpu_list in cpu_models.h
+ [9.61.118.127]) by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 26 Mar 2025 13:20:45 +0000 (GMT)
+Message-ID: <817578197d91a73a1de564e2826d0ec88736d5ab.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 6/7] target/s390x: Register CPUClass:list_cpus
 From: Eric Farman <farman@linux.ibm.com>
 To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -79,28 +78,28 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org, Daniel Henrique
  Piggin	 <npiggin@gmail.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Mark
  Cave-Ayland	 <mark.cave-ayland@ilande.co.uk>, Marcel Apfelbaum
  <marcel.apfelbaum@gmail.com>
-Date: Wed, 26 Mar 2025 09:20:05 -0400
-In-Reply-To: <20250324185837.46506-6-philmd@linaro.org>
+Date: Wed, 26 Mar 2025 09:20:45 -0400
+In-Reply-To: <20250324185837.46506-7-philmd@linaro.org>
 References: <20250324185837.46506-1-philmd@linaro.org>
- <20250324185837.46506-6-philmd@linaro.org>
+ <20250324185837.46506-7-philmd@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2Vcl4f4W1J9HB6vxr2x1wTyciqUyQdDv
-X-Proofpoint-GUID: nDdXLDUDcvfcirkYF8U5-3mCV-zaX580
+X-Proofpoint-GUID: mWoxuQ4VHY03-b16HmWewOZQ2SdZucD_
+X-Proofpoint-ORIG-GUID: C3WWam4pgKEYuHFGW4GkAohQRYBDAfoT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-26_06,2025-03-26_02,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 mlxscore=0 impostorscore=0 suspectscore=0 phishscore=0
- spamscore=0 clxscore=1011 mlxlogscore=602 bulkscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 adultscore=0
+ bulkscore=0 clxscore=1011 mlxlogscore=863 spamscore=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2502280000 definitions=main-2503260079
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -125,20 +124,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Mon, 2025-03-24 at 19:58 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
-> Both s390_cpu_list() and s390_set_qemu_cpu_model() are
-> defined in cpu_models.c, move their declarations in the
-> related "cpu_models.h" header. Use full path to header
-> in s390-virtio-ccw.c file.
+> Register s390_cpu_list() as CPUClass:list_cpus callback
+> and remove the cpu_list definition.
 >=20
-> Suggested-by: Thomas Huth <thuth@redhat.com>
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  target/s390x/cpu.h         | 4 ----
->  target/s390x/cpu_models.h  | 3 +++
->  hw/s390x/s390-virtio-ccw.c | 2 +-
->  3 files changed, 4 insertions(+), 5 deletions(-)
+>  target/s390x/cpu.h | 3 ---
+>  target/s390x/cpu.c | 1 +
+>  2 files changed, 1 insertion(+), 3 deletions(-)
 
-(resending with reply-all)
+Fine squashed with patch 5 or not...
 
 Reviewed-by: Eric Farman <farman@linux.ibm.com>
 
