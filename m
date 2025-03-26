@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E17A71642
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 13:09:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DECA716AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 13:29:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txPZ2-0002Rg-VS; Wed, 26 Mar 2025 08:08:57 -0400
+	id 1txPrh-0007tq-6Y; Wed, 26 Mar 2025 08:28:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1txPYt-0002O9-CD
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 08:08:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1txPre-0007tb-PE
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 08:28:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1txPYr-0003Qc-DG
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 08:08:46 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1txPrY-0006oT-Br
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 08:28:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742990923;
+ s=mimecast20190719; t=1742992079;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+UY1arTL+T7gB0D6k5osfySS6w21iYXBKfhlOnNCepM=;
- b=c1EVGc6OviYqRhNIii6CWrV0hvVxJr+4o3Wljj4PXGOpimSYdTA0MTXukCFYti+CD7yJBy
- wkQiNzAWrW2GMCGlpZX7F9TSyXqWzqm4QWZl5Nfh/BUfRClPuK/8FrHcQFw6125TVR5l+y
- 6X1kl+auoU4JKSs78rGH8OIepXEf2S8=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-640-Kvoz043hNgCnC6Rpke74Zg-1; Wed, 26 Mar 2025 08:08:40 -0400
-X-MC-Unique: Kvoz043hNgCnC6Rpke74Zg-1
-X-Mimecast-MFC-AGG-ID: Kvoz043hNgCnC6Rpke74Zg_1742990920
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-2ff6aaa18e8so10430578a91.1
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 05:08:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742990920; x=1743595720;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+UY1arTL+T7gB0D6k5osfySS6w21iYXBKfhlOnNCepM=;
- b=ZeC0xgOG84BGwEjiN5AbzQtHYHJDpP7wlTg5FZ1WHbIBXtilEmlE3iykhynhJrLGB0
- UAa0BKBsztv8F6GVsYxIS1LUMsMkvKI4qb3mD9ST7JMpn9UI5sQOJigATgJcvh5hYmaR
- v1QnHsVa/pcQi2Z6FN6Xoj5TeNHpvIrQk7OU3iSSjhjyV244Bc0h50CzyKMss97Y19/p
- SuNrzX085zQao7qaeu05oU5JI/B+yJsm/fAezCQ8F6kexGo6HL2dZpUQn1ZsTU4/CaZP
- Dp7XawK/trrQxMOWPMWqJuYzQLeTD9mVIUZxiNefNS/XAgjPmkQa+HozBL9vzHUGqqOp
- sJhQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWIhMN+qVR/zo4a26GOM7foJq6dk+GbaBekzGMri5Y36v6JheTXMZMoYTr6AxVk2GU9N4QmgccE8+3l@nongnu.org
-X-Gm-Message-State: AOJu0YwnHntYKgPUhgUi1egrP1+kBnqvpDuRKH37vYMZxfkGBzSMru22
- cGPumFBtR/dI823vLaZTJaujqNHsJBNnYwLO+eJuiqkdxWfL0ki9v6XxZdEGD90CCADR8h55TiJ
- 3jPe61Jd+DIsTfKSayGmG8Z+fCZDSnq0AI8sXfQwntRexPtoYB8soahovB0Tdg90aRnHQGxob9v
- 0/bcJbuufEqJ+ZnNSRFlUEUGsVsnM=
-X-Gm-Gg: ASbGncueik7s+PsDwUyeI1GAFsOCtMX8BhqOdgOv36VbyydJBwlGiJ/7fjqeZ6N1l8o
- PQC8Z0VirQN6R4flSs+ERpRdsjzO08FyYhUItXCayQ6fd1wBaEUaHqMIpk0x4mvcbJOyD+CU=
-X-Received: by 2002:a17:90b:2647:b0:2f7:7680:51a6 with SMTP id
- 98e67ed59e1d1-3030fe6a058mr26571499a91.6.1742990919509; 
- Wed, 26 Mar 2025 05:08:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFO1KeARrVa+p2C6nWkzML+r/jwppMQw/d4eQDlLPj21Cqkc4rpAZPVP/gYDNbySezhFCiTNzSWBAX6j4KjOdI=
-X-Received: by 2002:a17:90b:2647:b0:2f7:7680:51a6 with SMTP id
- 98e67ed59e1d1-3030fe6a058mr26571460a91.6.1742990918951; Wed, 26 Mar 2025
- 05:08:38 -0700 (PDT)
+ bh=y41TtKI+zLtArU6fPk2brgQEN0JVguf4f9qRTSDRDkQ=;
+ b=ObbJZrZP5wOdj7kpucEisHFh2P23Nfggwh1YSf116pYmDBWv5VGUZxbGan/N+ci4+TxIg+
+ vihX2vFp1srIqOOXV9AxB6BgvQZBXpw8NYmcKk41Sq8aOciJsHUdascP2reX2w0aY5vbg4
+ dRIZ5TmyUBIl11/nWWU3/ZxND9lBzho=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-155-d0cUcWEaObu9WaU6MGvrXA-1; Wed,
+ 26 Mar 2025 08:27:53 -0400
+X-MC-Unique: d0cUcWEaObu9WaU6MGvrXA-1
+X-Mimecast-MFC-AGG-ID: d0cUcWEaObu9WaU6MGvrXA_1742992072
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E3791180882E; Wed, 26 Mar 2025 12:27:51 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.45.224.27])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 183FE180A803; Wed, 26 Mar 2025 12:27:50 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 94B941800787; Wed, 26 Mar 2025 13:27:47 +0100 (CET)
+Date: Wed, 26 Mar 2025 13:27:47 +0100
+From: Gerd Hoffman <kraxel@redhat.com>
+To: Alexander Graf <graf@amazon.com>
+Cc: Ani Sinha <anisinha@redhat.com>, 
+ =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Laurent Vivier <lvivier@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Vitaly Kuznetsov <vkuznets@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v6] hw/misc/vmfwupdate: Introduce hypervisor fw-cfg
+ interface support
+Message-ID: <rtbmlitus6unzibiatblquot2bthx4dmozbxgcbovisial6qar@konful7gzrsz>
+References: <vajhincsurwwx5yfmfhamgmvo5i22hxsaaef22aaknkn24m7c6@yxuntxof4iie>
+ <Z9vSeF67fNazkxBh@8bytes.org>
+ <4p7orqixni5m3444l53isxe5awdwasrb5e5bu6wu4phhycqpir@z22wgnaxowsg>
+ <CAK3XEhNeB29eaPxZ_1Cc7WfEzOGZZPcvTc5uC1XAdtG0uNfDRw@mail.gmail.com>
+ <h2s75tkddnrmodbbr7hxugrivpbhq7cfpbmhmgqmnn5mlafedk@jhv5cobgtjkc>
+ <CAK3XEhPYmBsn2-=PMR7qVQHiu0ydoh3EfJOEuunLccriSkKipg@mail.gmail.com>
+ <53jhridwtejsuy4qojjr66rcjdebnyarwke4bs3m3w2afmqhe6@pab5zfyo46fx>
+ <4f6a21a9-746e-45ac-88c7-dc0204480a86@amazon.com>
+ <kmqzqeaatk3iyrpl4tvfxtfv6gefyusxpyxtz5bollw7jlp3wk@5c4zawrzehwq>
+ <d79cff63-324f-4624-aef3-b6570cdb23e2@amazon.com>
 MIME-Version: 1.0
-References: <20250324135929.74945-1-sahilcdq@proton.me>
- <20250324135929.74945-8-sahilcdq@proton.me>
-In-Reply-To: <20250324135929.74945-8-sahilcdq@proton.me>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 26 Mar 2025 13:08:02 +0100
-X-Gm-Features: AQ5f1JrhfwGGxKGc6Dz4lWVBBw7vH0RWg_RIydy_4cevCt0QVubKQlcROY_n5NQ
-Message-ID: <CAJaqyWfkGpRCv1a0qS3XC3Tnco-YSVH-CHd3itFG4V41tnc3wQ@mail.gmail.com>
-Subject: Re: [RFC v5 7/7] vdpa: Support setting vring_base for packed SVQ
-To: Sahil Siddiq <icegambit91@gmail.com>
-Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- sahilcdq@proton.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d79cff63-324f-4624-aef3-b6570cdb23e2@amazon.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,78 +103,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 24, 2025 at 3:00=E2=80=AFPM Sahil Siddiq <icegambit91@gmail.com=
-> wrote:
->
-> This commit is the first in a series to add support for packed
-> virtqueues in vhost_shadow_virtqueue.
->
-> Linux commit 1225c216d954 ("vp_vdpa: allow set vq state to initial
-> state after reset") enabled the vp_vdpa driver to set the vq state to
-> the device's initial state. This works differently for split and packed
-> vqs.
->
-> With shadow virtqueues enabled, vhost-vdpa sets the vring base using
-> the VHOST_SET_VRING_BASE ioctl. The payload (vhost_vring_state)
-> differs for split and packed vqs. The implementation in QEMU currently
-> uses the payload required for split vqs (i.e., the num field of
-> vhost_vring_state is set to 0). The kernel throws EOPNOTSUPP when this
-> payload is used with packed vqs.
->
-> This patch sets the num field in the payload appropriately so vhost-vdpa
-> (with the vp_vdpa driver) can use packed SVQs.
->
-> Link: https://lists.nongnu.org/archive/html/qemu-devel/2024-10/msg05106.h=
-tml
-> Link: https://lore.kernel.org/r/20210602021536.39525-4-jasowang@redhat.co=
-m
-> Link: 1225c216d954 ("vp_vdpa: allow set vq state to initial state after r=
-eset")
-> Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
-> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> ---
-> Changes from v4 -> v5:
-> - Initially commit #5 in v4.
-> - Fix coding style of commit block as stated by checkpatch.pl.
->
->  hw/virtio/vhost-vdpa.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index 58c8931d89..0625e349b3 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -1265,6 +1265,21 @@ static bool vhost_vdpa_svq_setup(struct vhost_dev =
-*dev,
->      };
->      int r;
->
-> +    /*
-> +     * In Linux, the upper 16 bits of s.num is encoded as
-> +     * the last used idx while the lower 16 bits is encoded
-> +     * as the last avail idx when using packed vqs. The most
-> +     * significant bit for each idx represents the counter
-> +     * and should be set in both cases while the remaining
-> +     * bits are cleared.
-> +     */
-> +    if (virtio_vdev_has_feature(dev->vdev, VIRTIO_F_RING_PACKED)) {
-> +        uint32_t last_avail_idx =3D 0 | (1 << VRING_PACKED_EVENT_F_WRAP_=
-CTR);
-> +        uint32_t last_used_idx =3D 0 | (1 << VRING_PACKED_EVENT_F_WRAP_C=
-TR);
-> +
-> +        s.num =3D (last_used_idx << 16) | last_avail_idx;
-> +    }
-> +
+  Hi,
 
-This should be added before 6/7 so we don't declare we support packed
-without this.
+> The problem is that add-ons are
+> 
+>   1) Separate binaries. So you need to match multiple files.
+>   2) In this case, get generated out of the vendor (RH)'s control in a
+> one-off fashion.
+> 
+> I don't think "signing" is the correct way to address the latter. It's
+> rather hashing. But I agree with you that it could (should?) be hashing at
+> the PE loader level similar or identical to Secure Boot rather than a
+> separate hashing mechanism.
 
->      r =3D vhost_vdpa_set_dev_vring_base(dev, &s);
->      if (unlikely(r)) {
->          error_setg_errno(errp, -r, "Cannot set vring base");
-> --
-> 2.48.1
->
+Secure boot offers signing and hashing.  You can add both signing
+certificates and authenticode hashes to 'db'.
+
+> > Not sure I understand the point you are trying to raise.  Add-ons
+> > signatures are checked too.
+> 
+> 2 points here here:
+> 
+>   1) With add-ons, there are multiple binaries. We can't only pass a single
+> one.
+
+Sure.  You'll go need some container, say a cpio archive, but that is
+something vmfwupdate loader and loaded firmware have to agree on and not
+something we have to worry about too much for the vmfwupdate interface
+design.
+
+>   2) The security posture of the system may be different between 2 validly
+> signed images. Think of Daniel's example of verbose kernel output. Maybe I
+> consider verbose kernel output already inacceptable, while RH thinks it's an
+> ok posture to have. The user needs to have the chance to differentiate
+> between a system booted with or without verbose kernel output.
+
+You easily get that by looking at the vTPM measurements.  So not sure
+what you are asking for, do you want be able to also do that without a
+vTPM?
+
+> > > So we need some equivalent of a hash page.
+> > Ok.  So two opaque blobs, one which is measured into the launch
+> > measurement and one which is not?  That gives you the option to pass
+> > around hashes (or any other data) and leave a trace in the launch
+> > measurement should you need that.
+> 
+> Yes, I think you want to have one or multiple pages with what effectively is
+> a db append variable update blob.
+
+Makes sense to me.
+
+> Or even a full variable store blob.
+
+Hmm, not sure.  I'd rather go for passing efi signature database
+appendix, probably for both allow ('db') and deny ('dbx').  That is
+going to work better I think, variable store format is an
+firmware-internal implementation detail I'd avoid encoding that in
+some interface.
+
+> The IGVM should dictate the physical location of that blob so that you
+> can precalculate the launch digest with the blob included.
+
+Hmm, right.  Physical location matters for the launch measurement, so
+adding opaque_measured_addr to struct vmfwupdate isn't going to work
+very well.
+
+> Ukify.py then generates the blob along with the FUKI.
+
+Doesn't fly from a distro point of view.  The UKI is signed, so RH ships
+that and the customer can't modify it to update the blob, say with some
+additional hashes for 'db'.
+
+Effectively we need something roughly equivalent to shim's MokList.  The
+distro ships a default configuration (like the cert compiled into the
+shim binary) which works fine for most people.  For IGVM that would be a
+default efi variable store compiled into the firmware binary.
+
+If you need additional stuff (like the signer cert for the nvidia
+driver) there must be some way to add hashes and certificates to db/dbx.
+
+Does it make sense to simply move the firmware update sections from the
+main UKI to an add-on?  That would allow customers to easily use their
+own if they wish, without breaking the RH signature on the UKI.
+
+> I agree, from a vmfwupdate point of view, we would basically have an IGVM.
+> The IGVM describes 2 special page (ranges?): One for the CPUID special page,
+> one for the variable store seed. To precalculate the launch digest you would
+> need the firmware IGVM, and the seed blob.
+
+Guess we'll have to update the IGVM format spec for that, so we have
+page types for 'db' and 'dbx'.  With that it should be possible to load
+the igvm, find + update the pages + write it out again.  Then wrap it
+into an UKI add-on + copy to ESP.
+
+RH default igvm/add-on would simply have empty 'db' and 'dbx' pages.
+
+Looks workable to me.
+
+> All unauthenticated data, such as locations of the UKI and its add-ons gets
+> passed as parameter to the firmware IGVM.
+
+i.e. have a IGVM parameter for opaque_addr + opaque_size instead of
+placing this in the vmfwupdate struct?
+
+take care,
+  Gerd
+
+PS: in Berlin tomorrow?
 
 
