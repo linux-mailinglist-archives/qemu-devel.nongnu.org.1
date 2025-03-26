@@ -2,92 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75943A715B0
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0AEA715B1
 	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 12:26:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txOtR-0005ZX-Rd; Wed, 26 Mar 2025 07:25:57 -0400
+	id 1txOtW-0005ae-L0; Wed, 26 Mar 2025 07:26:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1txOtN-0005ZH-Bu
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:25:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1txOtL-0006ED-Gx
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:25:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1742988349;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jD/7nvPVW9fep+uEZMyWP3w9EGMOQduv4LVRjkhbt1Q=;
- b=ezl6iHuUmsGoVQmtFjhcuPcpRdIMqMlAXxBiql5X9bOzhrO88oDXWrxlbK4duL0GkR9UeM
- ANbqIc+T8tGVR/PSsR3WJD9+Fj7Ao1ua47PhkvvJbsnJlQuuUp0PTjj56W2JnkYduH2lj/
- /EcJDnrCfLOGTFf7r7CLd/R71fVVTmE=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-fcKJhLxgNHG5O73DqHr0xQ-1; Wed, 26 Mar 2025 07:25:47 -0400
-X-MC-Unique: fcKJhLxgNHG5O73DqHr0xQ-1
-X-Mimecast-MFC-AGG-ID: fcKJhLxgNHG5O73DqHr0xQ_1742988346
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-2254e500a73so83433895ad.0
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 04:25:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1txOtU-0005a2-Sh
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:26:00 -0400
+Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1txOtR-0006EY-Cy
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 07:25:59 -0400
+Received: by mail-qt1-x829.google.com with SMTP id
+ d75a77b69052e-47688ae873fso68091601cf.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 04:25:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1742988356; x=1743593156; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BnvpWylyh4DisXpHunBIyns2XIaKGBFJDebBH3f1y0I=;
+ b=ApeaLzshcoMXpNjDmrVzsMela3+mbN6DXvajYTOs0aesspGekAWYwoK6nFjykOW4jc
+ RJPgJQ0Ty8GghyP9OK8w4XCXg6Gw1uqXxrO1AmC0N82wuzJep58YJk82Rvm4zJ+N2O4Z
+ hLTHrdz833uwCgUjUV2tX/SqOhHnjr4bRGUngBeLV+jmEuWlb8RcxVlx9E6MSmDmlWZG
+ ruM0K1/nPsm1oAOJcE5vQge+KRpWXCP0pVeW7KMRbf9Ma58f4ZnCycnEo/Z7A5CLU0ZR
+ R7hfsDHty18WNlkzILOFXI3y0DYYQ3lUt3HAmPET8rQNBRn+B/Dos8Sx6jDrckVoVtNs
+ lDDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742988346; x=1743593146;
+ d=1e100.net; s=20230601; t=1742988356; x=1743593156;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jD/7nvPVW9fep+uEZMyWP3w9EGMOQduv4LVRjkhbt1Q=;
- b=hZn3Jzvsn0CFcsV6/ob6sjqMnTaHmv/AqnSfV0GhTR8hsvX+T6gCNxwLyyWsVaZzy2
- oD4d+ZRj2vbSXE18j0C0C6KNSAPdOVvL7EI/MRdVmvrsIhNZJD9rkThrra1SMI6rYYXI
- L+n5SvPEznjL4/3bR9MN/KPGTZJA3vX3KZPKZ2y9tTscgZX/ebZUjY70uKQLMzNkAS6t
- 0oInoHTbQ2WJVzVJ9qH+k6dnaXlS5QJyWX6ZadP/yoobfmWUwa4OW4I4PAU2OmjQ3e1U
- PnJgSedeGjq/wdxsSzR90ulf/mR8vFFfnQIIPIljiVrkeCJ1jF7HvYwpz0EkYW0g5spi
- 0ZIA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV15w5OnspRFeeT0MuNzzJuS3PeQM9kO7t9UcLs06faohPqDTOdrGnQ3iS30sX2hiRgdKsQwmGjZD8P@nongnu.org
-X-Gm-Message-State: AOJu0YxoR52ZKn0nDKlOaPzA4Qj/KK9gzGiCg5CG4WTM/yakjBKZ/Bxq
- JHRbMoWO96xBHmCnUhrDS5Z2pjE+9JVr3CGBL2sMFxQmbcFIIH4g1kK12jYe6S9KDQE32b8rpt5
- hMFD6nnmZ1KZ8de/ak1yat5Gab0eO7DuC7cWy6dKqa5pXQPAhLw9zRl9QilbX0JMZM77MD9apxw
- SS3iX7TAuWdiyxtBe/vJFk5wYmm90=
-X-Gm-Gg: ASbGncvreftmhN42GpWWdzLRKWb1kwzGAgAASCT5FqOxW+K5IB1s8EMiGrovzywHjya
- IWJo7MtTtsvtoyN7N/clQ5ahPSmvbftk/zlOTkWcN4QjHf0a5DWf54vW09AAqsQwApUY3qCs=
-X-Received: by 2002:a17:903:2346:b0:223:fb3a:8631 with SMTP id
- d9443c01a7336-22780da4870mr340373255ad.24.1742988345946; 
- Wed, 26 Mar 2025 04:25:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBQRwQHxU00hROnZIyGH1xtGjZao7lg/C1G7Ptdld8iDPGtO4tnW/KcOX0AwIVBCKq3jgbVmUo5SPRUKWzt48=
-X-Received: by 2002:a17:903:2346:b0:223:fb3a:8631 with SMTP id
- d9443c01a7336-22780da4870mr340372525ad.24.1742988345324; Wed, 26 Mar 2025
- 04:25:45 -0700 (PDT)
+ bh=BnvpWylyh4DisXpHunBIyns2XIaKGBFJDebBH3f1y0I=;
+ b=BahOBCrV/fYdQj3uvTa4XiIUXkQtQ7209b+n+WOOc8DgLb4qcCWrRjawn7sZu2eK3c
+ f6zLFCkpqFPQzHJpQ1HtapVTjWXVNqqTMUIEsp2izypO6zInJpzkpBRw3G/f8J/Jt328
+ 0RqwMtOHYVjclOVOyciham8XOLq2FK/uOTHA6kSUUh6oDgvlXEdsO8dU3MAkSdcu/boN
+ 1OQH1kR/lqKikRfjmhmogch0NIMlOAxKl2NgjL576zBIJvm2dgvTHuDrf4BMGxlQYtTA
+ HzelrhbLPlX6/Ca10ISwfb5MbdQg7T88ZHpsR/L+czl6OO6yoK7DDOvVQHejwak+WI8D
+ 6pQA==
+X-Gm-Message-State: AOJu0YwcN3Gu28SQfoq6c7xbX6NiNF+nL4MCN80ssQz+0l4aTJIMrtj+
+ mWmd/rn4nXIFAnY586SBlJAWS/pWPfT43gWnMnMhy3pqsBHRz5bVwTBsZ2Rl4MbTDLz1asVL+NO
+ KDWIsUIMsz7W32P12CRz/z6hyqxifrTlT
+X-Gm-Gg: ASbGncuNWIgtvkfMkIDKc8BcvJTfgAP3+FApKevLRus49NkJyvcxbyEyw5igIq85n0B
+ OsHd0K9L/YU0iR/QhKgTjFvArc4n1vkoJQhuidRbXCsQGHP/N7LSbqvPclPgKGKKBL+8g1tT9FD
+ 0eb+dmJXW18jfchcbmdYWKP+XxQtiAbdtkVNdLKSHMPn7JPxJVBfdMGlNit7s=
+X-Google-Smtp-Source: AGHT+IEpR22vzyITsJPP3HHHUdjR0lBZpORR1OCDmDeDRn66IKPeFkwvi8LvAvDuOvgMQJKFkKIhh7eKBf2eC3Zt4dM=
+X-Received: by 2002:a05:622a:22aa:b0:476:7f5c:e304 with SMTP id
+ d75a77b69052e-4771dd7038dmr311237171cf.19.1742988355734; Wed, 26 Mar 2025
+ 04:25:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250324135929.74945-1-sahilcdq@proton.me>
- <20250324135929.74945-2-sahilcdq@proton.me>
-In-Reply-To: <20250324135929.74945-2-sahilcdq@proton.me>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 26 Mar 2025 12:25:07 +0100
-X-Gm-Features: AQ5f1JqE_rUx9zXXx6oYVbJeEhjaMSodp_fYFctOmgfPmu9T7zIxqWATwNUeSI8
-Message-ID: <CAJaqyWc0sH0o9MnnJPO8jLbpQVyec+QeG_TE2hnWxoiBqmivFA@mail.gmail.com>
-Subject: Re: [RFC v5 1/7] vhost: Refactor vhost_svq_add_split
-To: Sahil Siddiq <icegambit91@gmail.com>
-Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- sahilcdq@proton.me
+References: <20250326093418.397269-1-yuq825@gmail.com>
+ <20250326093418.397269-6-yuq825@gmail.com>
+In-Reply-To: <20250326093418.397269-6-yuq825@gmail.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Wed, 26 Mar 2025 15:25:42 +0400
+X-Gm-Features: AQ5f1JoX_oK-7oN1xXQHmB8WWEp1pihhvYtXH2g6DtJVFyja326nmHLpFecVjF0
+Message-ID: <CAJ+F1CJ_Xc8mbMGKTZYUJT=irpAWG32AU3nhFhNzB6amDt_xGA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] ui/dbus: change dbus ScanoutDMABUF interface
+To: yuq825@gmail.com
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x829.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,204 +92,270 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 24, 2025 at 2:59=E2=80=AFPM Sahil Siddiq <icegambit91@gmail.com=
-> wrote:
+Hi
+
+On Wed, Mar 26, 2025 at 1:34=E2=80=AFPM <yuq825@gmail.com> wrote:
 >
-> This commit refactors vhost_svq_add_split and vhost_svq_add to simplify
-> their implementation and prepare for the addition of packed vqs in the
-> following commits.
+> From: Qiang Yu <yuq825@gmail.com>
 >
-> Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
+> To handle multi plane.
+>
+> v2:
+>   * use new dmabuf API and check length
+>
+> Signed-off-by: Qiang Yu <yuq825@gmail.com>
 > ---
-> No changes from v4 -> v5.
+>  ui/dbus-display1.xml |  37 +++++++++++++++
+>  ui/dbus-listener.c   | 108 ++++++++++++++++++++++++++++++++++++++++---
+>  2 files changed, 138 insertions(+), 7 deletions(-)
 >
-
-You can carry the Acked-by from previous series if you make no changes
-(or even small changes).
-
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-
->  hw/virtio/vhost-shadow-virtqueue.c | 107 +++++++++++------------------
->  1 file changed, 41 insertions(+), 66 deletions(-)
+> diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
+> index 72deefa455..c1d1a402b7 100644
+> --- a/ui/dbus-display1.xml
+> +++ b/ui/dbus-display1.xml
+> @@ -614,6 +614,43 @@
+>      </method>
+>    </interface>
 >
-> diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-=
-virtqueue.c
-> index 2481d49345..4f74ad402a 100644
-> --- a/hw/virtio/vhost-shadow-virtqueue.c
-> +++ b/hw/virtio/vhost-shadow-virtqueue.c
-> @@ -139,87 +139,48 @@ static bool vhost_svq_translate_addr(const VhostSha=
-dowVirtqueue *svq,
+> +  <!--
+> +      org.qemu.Display1.Listener.Unix.MultiPlane:
+> +
+> +      This optional client-side interface can complement
+> +      org.qemu.Display1.Listener on ``/org/qemu/Display1/Listener`` for
+> +      Unix-specific multi plane DMABUF scanout setup.
+> +  -->
+> +  <?if $(env.HOST_OS) !=3D windows?>
+> +  <interface name=3D"org.qemu.Display1.Listener.Unix.MultiPlane">
+
+As it may be used with single plane, it is essentially ScanoutDMABUF2,
+I think we should use that name rather than MultiPlane.
+
+> +    <!--
+> +        ScanoutDMABUF2:
+> +        @dmabuf: DMABUF file descriptor of each plane.
+> +        @width: display width, in pixels.
+> +        @height: display height, in pixels.
+> +        @offset: offset of each plane, in bytes.
+> +        @stride: stride of each plane, in bytes.
+> +        @num_planes: plane number.
+> +        @fourcc: DMABUF fourcc.
+> +        @modifier: DMABUF modifier.
+> +        @y0_top: whether Y position 0 is the top or not.
+
+Let's use this opportunity adding a few fields that went missing in
+V1: x, y, backing_width, backing_height.
+
+lgtm otherwise
+
+> +
+> +        Resize and update the display content with DMABUF.
+> +    -->
+> +    <method name=3D"ScanoutDMABUF2">
+> +      <arg type=3D"ah" name=3D"dmabuf" direction=3D"in"/>
+> +      <arg type=3D"u" name=3D"width" direction=3D"in"/>
+> +      <arg type=3D"u" name=3D"height" direction=3D"in"/>
+> +      <arg type=3D"au" name=3D"offset" direction=3D"in"/>
+> +      <arg type=3D"au" name=3D"stride" direction=3D"in"/>
+> +      <arg type=3D"u" name=3D"num_planes" direction=3D"in"/>
+> +      <arg type=3D"u" name=3D"fourcc" direction=3D"in"/>
+> +      <arg type=3D"t" name=3D"modifier" direction=3D"in"/>
+> +      <arg type=3D"b" name=3D"y0_top" direction=3D"in"/>
+> +    </method>
+> +  </interface>
+> +  <?endif?>
+> +
+>    <!--
+>        org.qemu.Display1.Clipboard:
+>
+> diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+> index 90147972cd..a225890084 100644
+> --- a/ui/dbus-listener.c
+> +++ b/ui/dbus-listener.c
+> @@ -85,6 +85,7 @@ struct _DBusDisplayListener {
+>  #endif
+>  #else /* !WIN32 */
+>      QemuDBusDisplay1ListenerUnixMap *map_proxy;
+> +    QemuDBusDisplay1ListenerUnixMultiPlane *multi_plane_proxy;
+>  #endif
+>
+>      guint dbus_filter;
+> @@ -288,10 +289,9 @@ static void dbus_call_update_gl(DisplayChangeListene=
+r *dcl,
 >  }
 >
->  /**
-> - * Write descriptors to SVQ vring
-> + * Write descriptors to SVQ split vring
->   *
->   * @svq: The shadow virtqueue
-> - * @sg: Cache for hwaddr
-> - * @iovec: The iovec from the guest
-> - * @num: iovec length
-> - * @addr: Descriptors' GPAs, if backed by guest memory
-> - * @more_descs: True if more descriptors come in the chain
-> - * @write: True if they are writeable descriptors
-> - *
-> - * Return true if success, false otherwise and print error.
-> + * @out_sg: The iovec to the guest
-> + * @out_num: Outgoing iovec length
-> + * @in_sg: The iovec from the guest
-> + * @in_num: Incoming iovec length
-> + * @sgs: Cache for hwaddr
-> + * @head: Saves current free_head
->   */
-> -static bool vhost_svq_vring_write_descs(VhostShadowVirtqueue *svq, hwadd=
-r *sg,
-> -                                        const struct iovec *iovec, size_=
-t num,
-> -                                        const hwaddr *addr, bool more_de=
-scs,
-> -                                        bool write)
-> +static void vhost_svq_add_split(VhostShadowVirtqueue *svq,
-> +                                const struct iovec *out_sg, size_t out_n=
-um,
-> +                                const struct iovec *in_sg, size_t in_num=
-,
-> +                                hwaddr *sgs, unsigned *head)
+>  #ifdef CONFIG_GBM
+> -static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
+> -                                QemuDmaBuf *dmabuf)
+> +static void dbus_scanout_dmabuf_single_plane(DBusDisplayListener *ddl,
+> +                                             QemuDmaBuf *dmabuf)
 >  {
-> +    unsigned avail_idx, n;
->      uint16_t i =3D svq->free_head, last =3D svq->free_head;
-> -    unsigned n;
-> -    uint16_t flags =3D write ? cpu_to_le16(VRING_DESC_F_WRITE) : 0;
-> +    vring_avail_t *avail =3D svq->vring.avail;
->      vring_desc_t *descs =3D svq->vring.desc;
-> -    bool ok;
-> -
-> -    if (num =3D=3D 0) {
-> -        return true;
-> -    }
-> +    size_t num =3D in_num + out_num;
->
-> -    ok =3D vhost_svq_translate_addr(svq, sg, iovec, num, addr);
-> -    if (unlikely(!ok)) {
-> -        return false;
-> -    }
-> +    *head =3D svq->free_head;
->
->      for (n =3D 0; n < num; n++) {
-> -        if (more_descs || (n + 1 < num)) {
-> -            descs[i].flags =3D flags | cpu_to_le16(VRING_DESC_F_NEXT);
-> +        descs[i].flags =3D cpu_to_le16(n < out_num ? 0 : VRING_DESC_F_WR=
-ITE);
-> +        if (n + 1 < num) {
-> +            descs[i].flags |=3D cpu_to_le16(VRING_DESC_F_NEXT);
->              descs[i].next =3D cpu_to_le16(svq->desc_next[i]);
-> +        }
+> -    DBusDisplayListener *ddl =3D container_of(dcl, DBusDisplayListener, =
+dcl);
+>      g_autoptr(GError) err =3D NULL;
+>      g_autoptr(GUnixFDList) fd_list =3D NULL;
+>      int fd;
+> @@ -322,6 +322,81 @@ static void dbus_scanout_dmabuf(DisplayChangeListene=
+r *dcl,
+>          y0_top, G_DBUS_CALL_FLAGS_NONE,
+>          -1, fd_list, NULL, NULL, NULL);
+>  }
 > +
-> +        descs[i].addr =3D cpu_to_le64(sgs[n]);
-> +        if (n < out_num) {
-> +            descs[i].len =3D cpu_to_le32(out_sg[n].iov_len);
->          } else {
-> -            descs[i].flags =3D flags;
-> +            descs[i].len =3D cpu_to_le32(in_sg[n - out_num].iov_len);
->          }
-> -        descs[i].addr =3D cpu_to_le64(sg[n]);
-> -        descs[i].len =3D cpu_to_le32(iovec[n].iov_len);
+> +static void dbus_scanout_dmabuf_multi_plane(DBusDisplayListener *ddl,
+> +                                            QemuDmaBuf *dmabuf)
+> +{
+> +    g_autoptr(GError) err =3D NULL;
+> +    g_autoptr(GUnixFDList) fd_list =3D NULL;
+> +    int i, fd_index[DMABUF_MAX_PLANES], num_fds;
+> +    uint32_t width, height, fourcc;
+> +    GVariant *fd, *offset, *stride, *fd_handles[DMABUF_MAX_PLANES];
+> +    uint64_t modifier;
+> +    bool y0_top;
+> +    int nfds, noffsets, nstrides;
+> +    const int *fds =3D qemu_dmabuf_get_fds(dmabuf, &nfds);
+> +    const uint32_t *offsets =3D qemu_dmabuf_get_offsets(dmabuf, &noffset=
+s);
+> +    const uint32_t *strides =3D qemu_dmabuf_get_strides(dmabuf, &nstride=
+s);
+> +    uint32_t num_planes =3D qemu_dmabuf_get_num_planes(dmabuf);
+> +
+> +    assert(nfds >=3D num_planes);
+> +    assert(noffsets >=3D num_planes);
+> +    assert(nstrides >=3D num_planes);
+> +
+> +    fd_list =3D g_unix_fd_list_new();
+> +
+> +    for (num_fds =3D 0; num_fds < num_planes; num_fds++) {
+> +        int plane_fd =3D fds[num_fds];
+> +
+> +        if (plane_fd < 0)
+> +            break;
+> +
+> +        fd_index[num_fds] =3D g_unix_fd_list_append(fd_list, plane_fd, &=
+err);
+> +        if (fd_index[num_fds] < 0) {
+> +            error_report("Failed to setup dmabuf fdlist: %s", err->messa=
+ge);
+> +            return;
+> +        }
+> +    }
+> +
+> +    ddl_discard_display_messages(ddl);
+> +
+> +    width =3D qemu_dmabuf_get_width(dmabuf);
+> +    height =3D qemu_dmabuf_get_height(dmabuf);
+> +    fourcc =3D qemu_dmabuf_get_fourcc(dmabuf);
+> +    modifier =3D qemu_dmabuf_get_modifier(dmabuf);
+> +    y0_top =3D qemu_dmabuf_get_y0_top(dmabuf);
+> +
+> +    offset =3D g_variant_new_fixed_array(G_VARIANT_TYPE_UINT32,
+> +                                       offsets, num_planes, sizeof(uint3=
+2_t));
+> +    stride =3D g_variant_new_fixed_array(G_VARIANT_TYPE_UINT32,
+> +                                       strides, num_planes, sizeof(uint3=
+2_t));
+> +
+> +    for (i =3D 0; i < num_fds; i++) {
+> +        fd_handles[i] =3D g_variant_new_handle(fd_index[i]);
+> +    }
+> +    fd =3D g_variant_new_array(G_VARIANT_TYPE_HANDLE, fd_handles, num_fd=
+s);
+> +
+> +    qemu_dbus_display1_listener_unix_multi_plane_call_scanout_dmabuf2(
+> +        ddl->multi_plane_proxy, fd, width, height, offset, stride, num_p=
+lanes,
+> +        fourcc, modifier, y0_top, G_DBUS_CALL_FLAGS_NONE,
+> +        -1, fd_list, NULL, NULL, NULL);
+> +}
+> +
+> +static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
+> +                                QemuDmaBuf *dmabuf)
+> +{
+> +    DBusDisplayListener *ddl =3D container_of(dcl, DBusDisplayListener, =
+dcl);
+> +
+> +    if (ddl->multi_plane_proxy) {
+> +        dbus_scanout_dmabuf_multi_plane(ddl, dmabuf);
+> +    } else {
+> +        if (qemu_dmabuf_get_num_planes(dmabuf) > 1) {
+> +            g_debug("org.qemu.Display1.Listener.ScanoutDMABUF does not s=
+upport mutli plane");
+> +            return;
+> +        }
+> +        dbus_scanout_dmabuf_single_plane(ddl, dmabuf);
+> +    }
+> +}
+>  #endif /* GBM */
+>  #endif /* OPENGL */
 >
->          last =3D i;
->          i =3D svq->desc_next[i];
+> @@ -514,10 +589,6 @@ static void dbus_scanout_texture(DisplayChangeListen=
+er *dcl,
+>          error_report("%s: failed to export dmabuf for texture", __func__=
+);
+>          return;
 >      }
->
->      svq->free_head =3D svq->desc_next[last];
-> -    return true;
-> -}
-> -
-> -static bool vhost_svq_add_split(VhostShadowVirtqueue *svq,
-> -                                const struct iovec *out_sg, size_t out_n=
-um,
-> -                                const hwaddr *out_addr,
-> -                                const struct iovec *in_sg, size_t in_num=
+> -    if (num_planes > 1) {
+> -        error_report("%s: does not support multi-plane dmabuf", __func__=
+);
+> -        return;
+> -    }
+>      dmabuf =3D qemu_dmabuf_new(w, h, offset, stride, x, y, backing_width=
 ,
-> -                                const hwaddr *in_addr, unsigned *head)
-> -{
-> -    unsigned avail_idx;
-> -    vring_avail_t *avail =3D svq->vring.avail;
-> -    bool ok;
-> -    g_autofree hwaddr *sgs =3D g_new(hwaddr, MAX(out_num, in_num));
-> -
-> -    *head =3D svq->free_head;
-> -
-> -    /* We need some descriptors here */
-> -    if (unlikely(!out_num && !in_num)) {
-> -        qemu_log_mask(LOG_GUEST_ERROR,
-> -                      "Guest provided element with no descriptors");
-> -        return false;
-> -    }
-> -
-> -    ok =3D vhost_svq_vring_write_descs(svq, sgs, out_sg, out_num, out_ad=
-dr,
-> -                                     in_num > 0, false);
-> -    if (unlikely(!ok)) {
-> -        return false;
-> -    }
-> -
-> -    ok =3D vhost_svq_vring_write_descs(svq, sgs, in_sg, in_num, in_addr,=
- false,
-> -                                     true);
-> -    if (unlikely(!ok)) {
-> -        return false;
-> -    }
+>                               backing_height, fourcc, modifier, fd, num_p=
+lanes,
+>                               false, backing_y_0_top);
+> @@ -886,6 +957,8 @@ dbus_display_listener_dispose(GObject *object)
+>  #ifdef CONFIG_OPENGL
+>      egl_fb_destroy(&ddl->fb);
+>  #endif
+> +#else /* !WIN32 */
+> +    g_clear_object(&ddl->multi_plane_proxy);
+>  #endif
 >
->      /*
->       * Put the entry in the available array (but don't update avail->idx=
- until
-> @@ -233,7 +194,6 @@ static bool vhost_svq_add_split(VhostShadowVirtqueue =
-*svq,
->      smp_wmb();
->      avail->idx =3D cpu_to_le16(svq->shadow_avail_idx);
->
-> -    return true;
+>      G_OBJECT_CLASS(dbus_display_listener_parent_class)->dispose(object);
+> @@ -1074,6 +1147,26 @@ dbus_display_listener_setup_shared_map(DBusDisplay=
+Listener *ddl)
+>  #endif
 >  }
 >
->  static void vhost_svq_kick(VhostShadowVirtqueue *svq)
-> @@ -276,16 +236,31 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const =
-struct iovec *out_sg,
->      unsigned ndescs =3D in_num + out_num;
->      bool ok;
->
-> +    /* We need some descriptors here */
-> +    if (unlikely(!ndescs)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "Guest provided element with no descriptors");
-> +        return -EINVAL;
+> +static void dbus_display_listener_setup_multi_plane(DBusDisplayListener =
+*ddl)
+> +{
+> +#ifndef WIN32
+> +    g_autoptr(GError) err =3D NULL;
+> +
+> +    if (!dbus_display_listener_implements(
+> +            ddl, "org.qemu.Display1.Listener.Unix.MultiPlane")) {
+> +        return;
 > +    }
-> +
->      if (unlikely(ndescs > vhost_svq_available_slots(svq))) {
->          return -ENOSPC;
->      }
->
-> -    ok =3D vhost_svq_add_split(svq, out_sg, out_num, out_addr, in_sg, in=
-_num,
-> -                             in_addr, &qemu_head);
-> +    g_autofree hwaddr *sgs =3D g_new(hwaddr, ndescs);
-> +    ok =3D vhost_svq_translate_addr(svq, sgs, out_sg, out_num, out_addr)=
-;
->      if (unlikely(!ok)) {
->          return -EINVAL;
->      }
->
-> +    ok =3D vhost_svq_translate_addr(svq, sgs + out_num, in_sg, in_num, i=
-n_addr);
-> +    if (unlikely(!ok)) {
-> +        return -EINVAL;
+> +    ddl->multi_plane_proxy =3D
+> +        qemu_dbus_display1_listener_unix_multi_plane_proxy_new_sync(
+> +            ddl->conn, G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START, NULL,
+> +            "/org/qemu/Display1/Listener", NULL, &err);
+> +    if (!ddl->multi_plane_proxy) {
+> +        g_debug("Failed to setup Unix multi plane proxy: %s", err->messa=
+ge);
+> +        return;
 > +    }
+> +#endif
+> +}
 > +
-> +    vhost_svq_add_split(svq, out_sg, out_num, in_sg,
-> +                        in_num, sgs, &qemu_head);
-> +
->      svq->num_free -=3D ndescs;
->      svq->desc_state[qemu_head].elem =3D elem;
->      svq->desc_state[qemu_head].ndescs =3D ndescs;
+>  static GDBusMessage *
+>  dbus_filter(GDBusConnection *connection,
+>              GDBusMessage    *message,
+> @@ -1162,6 +1255,7 @@ dbus_display_listener_new(const char *bus_name,
+>      dbus_display_listener_setup_shared_map(ddl);
+>      trace_dbus_can_share_map(ddl->can_share_map);
+>      dbus_display_listener_setup_d3d11(ddl);
+> +    dbus_display_listener_setup_multi_plane(ddl);
+>
+>      con =3D qemu_console_lookup_by_index(dbus_display_console_get_index(=
+console));
+>      assert(con);
 > --
-> 2.48.1
+> 2.43.0
 >
 
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
