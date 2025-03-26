@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDEAA71FC7
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 20:59:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EECAA71FF6
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 21:14:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txWti-0003g6-VZ; Wed, 26 Mar 2025 15:58:47 -0400
+	id 1txX70-0003WY-Vh; Wed, 26 Mar 2025 16:12:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1txWtg-0003ew-0Q
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 15:58:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1txX6v-0003W6-1B
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 16:12:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1txWtd-0008LR-R9
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 15:58:43 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1txX6s-0001wB-Ui
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 16:12:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743019121;
+ s=mimecast20190719; t=1743019941;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=7MxAvzY769J8K2bWCUsuMzogtD/ffT/PXzQiwAkN85Q=;
- b=LQjDnhCdVaILqEeKUExuUHVOwoQEUsUY5efqUly8/5sSFLXibC/SPPLenQkSAHGvs0gNf7
- XJG9q4ZiHM/oNerBnTPkGAvW1RgrGaGu1N+tUINQC26Fo/FdBKwlGcdoprucJwM/XBNCml
- hfog8dUXfitFEi1XaDVhfG6RA/eBoPI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-43-gk5LWnZ1Pw248YMJg6jx6Q-1; Wed,
- 26 Mar 2025 15:58:35 -0400
-X-MC-Unique: gk5LWnZ1Pw248YMJg6jx6Q-1
-X-Mimecast-MFC-AGG-ID: gk5LWnZ1Pw248YMJg6jx6Q_1743019113
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A02A61800EC5; Wed, 26 Mar 2025 19:58:32 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.89.152])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CCAE91801A6D; Wed, 26 Mar 2025 19:58:26 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- Hanna Reitz <hreitz@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-trivial@nongnu.org,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Yanan Wang <wangyanan55@huawei.com>, qemu-block@nongnu.org,
- Lukas Straub <lukasstraub2@web.de>, Jiri Pirko <jiri@resnulli.us>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>, Zhenwei Pi <pizhenwei@bytedance.com>,
- Eric Blake <eblake@redhat.com>, Peter Xu <peterx@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: [PATCH v2 4/4] qapi: rephrase return docs to avoid type name
-Date: Wed, 26 Mar 2025 15:57:56 -0400
-Message-ID: <20250326195756.330817-5-jsnow@redhat.com>
-In-Reply-To: <20250326195756.330817-1-jsnow@redhat.com>
-References: <20250326195756.330817-1-jsnow@redhat.com>
+ bh=T7ggLutzIxFrsNcyu+MhNLd8yVQvqhnKVLpfhrmbTjE=;
+ b=ZP2n1H2+zNJmjlOt82WsHnoqhE0Uc3KlX6YxsZRVRC3fvhTmInF470i+LyNRvT1lmpAgqH
+ BLhaF+JnjuhFgVe5UY441mycwpxM06kP9nxdgn0IFEbckbZF6pl17t/oI0u3v+MeVgEfnb
+ 0wX0p3ChL6m4aVhKaWGmUwh8dF7qwvg=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-520-taOkONiWMLKJ5P7a3y6TAw-1; Wed, 26 Mar 2025 16:12:18 -0400
+X-MC-Unique: taOkONiWMLKJ5P7a3y6TAw-1
+X-Mimecast-MFC-AGG-ID: taOkONiWMLKJ5P7a3y6TAw_1743019938
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2ff8340d547so291348a91.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 13:12:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1743019937; x=1743624737;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=T7ggLutzIxFrsNcyu+MhNLd8yVQvqhnKVLpfhrmbTjE=;
+ b=XyJF7Od2hM9iAVdTnHXVwjVtTAMkMi1deaavu0sjKrxXe6dnJoF9OcSMFpLRB6j8Lm
+ EKZszZBrfPVG/zvteAif4aCUPljC9g036dD7/tbT9lIWTj/Bj9KY767JQXQPnd4Xabhj
+ q8/7CA8ErEGdiPp30IG5m2pQqUT6NqiE3uP8CBleUijcPCoc+SaHdirrac78NCsIQ2dV
+ atGS7j6eC7mGDWKDwJssbWc0pS4HNLQ4QI37OlFcDlPSNiyEjENacbjrN+otWedC19Ca
+ wfWgSb/1mp9rAj7nLTk+YYYDc/tBx8sOgdQao1ywy94mYBC9Iylz8F9TBu26X7BfoXQs
+ eGgg==
+X-Gm-Message-State: AOJu0Yw2uFKK1ksOWbXKOF6AfIeV8YQJxIj9wQJCfy2SozoDkY0oonAn
+ ZxX0RCQoGIcvZz2vWHBmV//7nXNbG2bIAe51Mbs+Oqbt2gXv3ZPjShJ7Ok8Tn/mqw+BM8taQboM
+ ie7+4JaXFjdeLrj1267TGaXq6POMWHPVh4Q7Tl1RuRaHLm0yIBGx8t2k2vhL/f8sn/S+KLndscQ
+ RCaqXgH1yHpQuN0+YCvYW6q5RGVpc=
+X-Gm-Gg: ASbGncuEE7eiqK/R0Tv4Ao7fghYSgpoq/CrRQkWHaqxuSaVBROqiyU71rn+fQRMQdQo
+ dkQkb9pkD7TFvAmVz8m31QdzxJoVqGXp/ytWQw5WWeaIyl31AXj1Kt8ABoC53NZs2WtE0z8UGaA
+ 9R2U1Qho38jvaZcSBJbhhwp0E6HRBu
+X-Received: by 2002:a17:90b:2645:b0:2ef:19d0:2261 with SMTP id
+ 98e67ed59e1d1-303a815d2ccmr1826475a91.16.1743019937686; 
+ Wed, 26 Mar 2025 13:12:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGz7zBUDlE8ZdK7/k77bzZGouDqMuxZYGa7wshUI1Qa6WV1Rm4DuhDGHPt9x2pAutHWYfAdFg3kgeieS7S/rgs=
+X-Received: by 2002:a17:90b:2645:b0:2ef:19d0:2261 with SMTP id
+ 98e67ed59e1d1-303a815d2ccmr1826427a91.16.1743019937271; Wed, 26 Mar 2025
+ 13:12:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+References: <20250321222347.299121-1-jsnow@redhat.com>
+ <20250321222347.299121-4-jsnow@redhat.com>
+ <87a598fhnp.fsf@pond.sub.org>
+In-Reply-To: <87a598fhnp.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Wed, 26 Mar 2025 16:12:04 -0400
+X-Gm-Features: AQ5f1JrH3HB9jm21Bnt4gplYii6SK5JSSGTj6qvnEY6wznDtQF42_zHkoF4PrCk
+Message-ID: <CAFn=p-aixsXRdE86tDS9kBd4azBQ7KU-h-utNkCndykbORAZ8w@mail.gmail.com>
+Subject: Re: [PATCH 3/5] python: update missing dependencies from minreqs
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>, 
+ Michael Roth <michael.roth@amd.com>, Peter Maydell <peter.maydell@linaro.org>
+Content-Type: multipart/alternative; boundary="00000000000032ac070631447413"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,376 +99,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Well, I tried. Maybe not very hard. Sorry!
+--00000000000032ac070631447413
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- qapi/block-core.json     | 6 +++---
- qapi/block-export.json   | 2 +-
- qapi/block.json          | 2 +-
- qapi/control.json        | 5 ++---
- qapi/dump.json           | 5 ++---
- qapi/introspect.json     | 6 +++---
- qapi/job.json            | 2 +-
- qapi/machine-target.json | 7 +++----
- qapi/misc-target.json    | 2 +-
- qapi/misc.json           | 5 ++---
- qapi/net.json            | 2 +-
- qapi/pci.json            | 2 +-
- qapi/qdev.json           | 3 +--
- qapi/qom.json            | 8 +++-----
- qapi/stats.json          | 2 +-
- qapi/trace.json          | 2 +-
- qapi/ui.json             | 2 +-
- qapi/virtio.json         | 6 +++---
- 18 files changed, 31 insertions(+), 38 deletions(-)
+On Wed, Mar 26, 2025 at 2:08=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 92b2e368b72..eb97b70cd80 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -763,7 +763,7 @@
- #
- # Get a list of BlockInfo for all virtual block devices.
- #
--# Returns: a list of @BlockInfo describing each virtual block device.
-+# Returns: a list describing each virtual block device.
- #     Filter nodes that were created implicitly are skipped over.
- #
- # Since: 0.14
-@@ -1168,7 +1168,7 @@
- #     nodes that were created implicitly are skipped over in this
- #     mode.  (Since 2.3)
- #
--# Returns: A list of @BlockStats for each virtual block devices.
-+# Returns: A list of statistics for each virtual block device.
- #
- # Since: 0.14
- #
-@@ -1440,7 +1440,7 @@
- #
- # Return information about long-running block device operations.
- #
--# Returns: a list of @BlockJobInfo for each active block job
-+# Returns: a list of job info for each active block job
- #
- # Since: 1.1
- ##
-diff --git a/qapi/block-export.json b/qapi/block-export.json
-index c783e01a532..84852606e52 100644
---- a/qapi/block-export.json
-+++ b/qapi/block-export.json
-@@ -472,7 +472,7 @@
- ##
- # @query-block-exports:
- #
--# Returns: A list of BlockExportInfo describing all block exports
-+# Returns: A list describing all block exports
- #
- # Since: 5.2
- ##
-diff --git a/qapi/block.json b/qapi/block.json
-index e66666f5c64..bdbbe78854f 100644
---- a/qapi/block.json
-+++ b/qapi/block.json
-@@ -86,7 +86,7 @@
- # Returns a list of information about each persistent reservation
- # manager.
- #
--# Returns: a list of @PRManagerInfo for each persistent reservation
-+# Returns: a list of manager info for each persistent reservation
- #     manager
- #
- # Since: 3.0
-diff --git a/qapi/control.json b/qapi/control.json
-index 336386f79e1..2e45bf25df8 100644
---- a/qapi/control.json
-+++ b/qapi/control.json
-@@ -93,8 +93,7 @@
- #
- # Returns the current version of QEMU.
- #
--# Returns: A @VersionInfo object describing the current version of
--#     QEMU.
-+# Returns: An object describing the current version of QEMU.
- #
- # Since: 0.14
- #
-@@ -131,7 +130,7 @@
- #
- # Return a list of supported QMP commands by this server
- #
--# Returns: A list of @CommandInfo for all supported commands
-+# Returns: A list of all supported commands
- #
- # Since: 0.14
- #
-diff --git a/qapi/dump.json b/qapi/dump.json
-index d7826c0e323..1bd6bacc5ce 100644
---- a/qapi/dump.json
-+++ b/qapi/dump.json
-@@ -146,7 +146,7 @@
- #
- # Query latest dump status.
- #
--# Returns: A @DumpStatus object showing the dump status.
-+# Returns: An object showing the dump status.
- #
- # Since: 2.6
- #
-@@ -197,8 +197,7 @@
- #
- # Returns the available formats for dump-guest-memory
- #
--# Returns: A @DumpGuestMemoryCapability object listing available
--#     formats for dump-guest-memory
-+# Returns: An object listing available formats for dump-guest-memory
- #
- # Since: 2.0
- #
-diff --git a/qapi/introspect.json b/qapi/introspect.json
-index 01bb242947c..7daec5045fb 100644
---- a/qapi/introspect.json
-+++ b/qapi/introspect.json
-@@ -34,10 +34,10 @@
- # string into a specific enum or from one specific type into an
- # alternate that includes the original type alongside something else.
- #
--# Returns: array of @SchemaInfo, where each element describes an
--#     entity in the ABI: command, event, type, ...
-+# Returns: an array where each element describes an entity in the ABI:
-+#     command, event, type, ...
- #
--#     The order of the various SchemaInfo is unspecified; however, all
-+#     The order of the various elements is unspecified; however, all
- #     names are guaranteed to be unique (no name will be duplicated
- #     with different meta-types).
- #
-diff --git a/qapi/job.json b/qapi/job.json
-index cfc3beedd21..856dd688f95 100644
---- a/qapi/job.json
-+++ b/qapi/job.json
-@@ -269,7 +269,7 @@
- #
- # Return information about jobs.
- #
--# Returns: a list with a @JobInfo for each active job
-+# Returns: a list with info for each active job
- #
- # Since: 3.0
- ##
-diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-index 37e75520094..6d8a6e53436 100644
---- a/qapi/machine-target.json
-+++ b/qapi/machine-target.json
-@@ -162,8 +162,7 @@
- # @modelb: description of the second CPU model to compare, referred to
- #     as "model B" in CpuModelCompareResult
- #
--# Returns: a CpuModelCompareInfo describing how both CPU models
--#     compare
-+# Returns: An object describing how both CPU models compare
- #
- # Errors:
- #     - if comparing CPU models is not supported
-@@ -218,7 +217,7 @@
- #
- # @modelb: description of the second CPU model to baseline
- #
--# Returns: a CpuModelBaselineInfo describing the baselined CPU model
-+# Returns: An object describing the baselined CPU model
- #
- # Errors:
- #     - if baselining CPU models is not supported
-@@ -296,7 +295,7 @@
- #
- # @type: expansion type, specifying how to expand the CPU model
- #
--# Returns: a CpuModelExpansionInfo describing the expanded CPU model
-+# Returns: An object describing the expanded CPU model
- #
- # Errors:
- #     - if expanding CPU models is not supported
-diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index 59a8f5b2bed..295d63df76b 100644
---- a/qapi/misc-target.json
-+++ b/qapi/misc-target.json
-@@ -158,7 +158,7 @@
- #
- # Query the SEV guest launch information.
- #
--# Returns: The @SevLaunchMeasureInfo for the guest
-+# Returns: The guest's SEV guest launch measurement info
- #
- # Since: 2.12
- #
-diff --git a/qapi/misc.json b/qapi/misc.json
-index de5dd531071..3d10aeb215c 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -105,7 +105,7 @@
- #    declared using the ``-object iothread`` command-line option.  It
- #    is always the main thread of the process.
- #
--# Returns: a list of @IOThreadInfo for each iothread
-+# Returns: a list of info for each iothread
- #
- # Since: 2.0
- #
-@@ -509,8 +509,7 @@
- #
- # @option: option name
- #
--# Returns: list of @CommandLineOptionInfo for all options (or for the
--#     given @option).
-+# Returns: list of objects for all options (or for the given @option).
- #
- # Errors:
- #     - if the given @option doesn't exist
-diff --git a/qapi/net.json b/qapi/net.json
-index 310cc4fd190..43739fd0259 100644
---- a/qapi/net.json
-+++ b/qapi/net.json
-@@ -845,7 +845,7 @@
- #
- # @name: net client name
- #
--# Returns: list of @RxFilterInfo for all NICs (or for the given NIC).
-+# Returns: list of info for all NICs (or for the given NIC).
- #
- # Errors:
- #     - if the given @name doesn't exist
-diff --git a/qapi/pci.json b/qapi/pci.json
-index dc85a41d28b..29549d94551 100644
---- a/qapi/pci.json
-+++ b/qapi/pci.json
-@@ -175,7 +175,7 @@
- #
- # Return information about the PCI bus topology of the guest.
- #
--# Returns: a list of @PciInfo for each PCI bus.  Each bus is
-+# Returns: a list of info for each PCI bus.  Each bus is
- #     represented by a json-object, which has a key with a json-array
- #     of all PCI devices attached to it.  Each device is represented
- #     by a json-object.
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index 25cbcf977b4..55a509071e9 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -17,8 +17,7 @@
- #
- # @typename: the type name of a device
- #
--# Returns: a list of ObjectPropertyInfo describing a devices
--#     properties
-+# Returns: a list describing a devices properties
- #
- # .. note:: Objects can create properties at runtime, for example to
- #    describe links between different devices and/or objects.  These
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 28ce24cd8d0..b053e8bf0c7 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -54,8 +54,7 @@
- # @path: the path within the object model.  See @qom-get for a
- #     description of this parameter.
- #
--# Returns: a list of @ObjectPropertyInfo that describe the properties
--#     of the object.
-+# Returns: a list that describe the properties of the object.
- #
- # Since: 1.2
- #
-@@ -178,8 +177,7 @@
- #
- # @abstract: if true, include abstract types in the results
- #
--# Returns: a list of @ObjectTypeInfo or an empty list if no results
--#     are found
-+# Returns: a list of types, or an empty list if no results are found
- #
- # Since: 1.1
- ##
-@@ -199,7 +197,7 @@
- #    describe links between different devices and/or objects.  These
- #    properties are not included in the output of this command.
- #
--# Returns: a list of ObjectPropertyInfo describing object properties
-+# Returns: a list describing object properties
- #
- # Since: 2.12
- ##
-diff --git a/qapi/stats.json b/qapi/stats.json
-index 8902ef94e08..7e7f1dabbc3 100644
---- a/qapi/stats.json
-+++ b/qapi/stats.json
-@@ -186,7 +186,7 @@
- # The arguments are a StatsFilter and specify the provider and objects
- # to return statistics about.
- #
--# Returns: a list of StatsResult, one for each provider and object
-+# Returns: a list of statistics, one for each provider and object
- #     (e.g., for each vCPU).
- #
- # Since: 7.1
-diff --git a/qapi/trace.json b/qapi/trace.json
-index eb5f63f5135..11f0b5c3427 100644
---- a/qapi/trace.json
-+++ b/qapi/trace.json
-@@ -47,7 +47,7 @@
- #
- # @name: Event name pattern (case-sensitive glob).
- #
--# Returns: a list of @TraceEventInfo for the matching events
-+# Returns: a list of info for the matching events
- #
- # Since: 2.2
- #
-diff --git a/qapi/ui.json b/qapi/ui.json
-index 46843bdbefa..a1015801b1b 100644
---- a/qapi/ui.json
-+++ b/qapi/ui.json
-@@ -816,7 +816,7 @@
- #
- # Returns information about each active mouse device
- #
--# Returns: a list of @MouseInfo for each device
-+# Returns: a list of info for each device
- #
- # Since: 0.14
- #
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index 93c576a21da..cee0e100d44 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -199,7 +199,7 @@
- #
- # @unstable: This command is meant for debugging.
- #
--# Returns: VirtioStatus of the virtio device
-+# Returns: Status of the virtio device
- #
- # Since: 7.2
- #
-@@ -563,7 +563,7 @@
- #
- # @unstable: This command is meant for debugging.
- #
--# Returns: VirtQueueStatus of the VirtQueue
-+# Returns: Status of the queue
- #
- # .. note:: last_avail_idx will not be displayed in the case where the
- #    selected VirtIODevice has a running vhost device and the
-@@ -698,7 +698,7 @@
- #
- # @unstable: This command is meant for debugging.
- #
--# Returns: VirtVhostQueueStatus of the vhost_virtqueue
-+# Returns: Status of the vhost_virtqueue
- #
- # Since: 7.2
- #
--- 
-2.48.1
+> John Snow <jsnow@redhat.com> writes:
+>
+> > A few transitive dependencies were left floating; as a result, pip's
+> > dependency solver can pull in newer dependencies, which we don't
+> > want. Pin them down.
+> >
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+>
+> What problem exactly does this fix?  Make target check-minreqs?
+>
+
+I'm not sure it's a "problem" as such, but an inconsistency. Yes, it's with
+check-minreqs -- without this patch, pip is free to choose newer versions
+of these dependencies as appropriate. Though unlikely at this point, in
+theory, new dependency updates could be selected by pip and invalidate the
+concept of an entirely fixed/pinned virtual environment.
+
+That these transitive dependencies were not frozen initially was an
+oversight.
+
+check-minreqs is supposed to build the exact same venv every time without
+fail. Without this change, it's *possible* that it might do something
+different on release day if someone releases a new package. No good,
+probably.
+
+
+>
+> > ---
+> >  python/tests/minreqs.txt | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
+> > index a3f423efd84..19c0f5e4c50 100644
+> > --- a/python/tests/minreqs.txt
+> > +++ b/python/tests/minreqs.txt
+> > @@ -38,10 +38,14 @@ pyflakes=3D=3D2.5.0
+> >
+> >  # Transitive mypy dependencies
+> >  mypy-extensions=3D=3D1.0.0
+> > +tomli=3D=3D1.1.0
+> >  typing-extensions=3D=3D4.7.1
+> >
+> >  # Transitive pylint dependencies
+> >  astroid=3D=3D2.15.4
+> > +dill=3D=3D0.2
+> >  lazy-object-proxy=3D=3D1.4.0
+> > +platformdirs=3D=3D2.2.0
+> >  toml=3D=3D0.10.0
+> > +tomlkit=3D=3D0.10.1
+> >  wrapt=3D=3D1.14.0
+>
+>
+
+--00000000000032ac070631447413
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Mar 26,=
+ 2025 at 2:08=E2=80=AFAM Markus Armbruster &lt;<a href=3D"mailto:armbru@red=
+hat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">John Snow &lt;<a href=3D"mailto:jsnow@redhat.com"=
+ target=3D"_blank">jsnow@redhat.com</a>&gt; writes:<br>
+<br>
+&gt; A few transitive dependencies were left floating; as a result, pip&#39=
+;s<br>
+&gt; dependency solver can pull in newer dependencies, which we don&#39;t<b=
+r>
+&gt; want. Pin them down.<br>
+&gt;<br>
+&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
+t=3D"_blank">jsnow@redhat.com</a>&gt;<br>
+<br>
+What problem exactly does this fix?=C2=A0 Make target check-minreqs?<br></b=
+lockquote><div><br></div><div>I&#39;m not sure it&#39;s a &quot;problem&quo=
+t; as such, but an inconsistency. Yes, it&#39;s with check-minreqs -- witho=
+ut this patch, pip is free to choose newer versions of these dependencies a=
+s appropriate. Though unlikely at this point, in theory, new dependency upd=
+ates could be selected by pip and invalidate the concept of an entirely fix=
+ed/pinned virtual environment.</div><div><br></div><div>That these transiti=
+ve dependencies were not frozen initially was an oversight.</div><div><br><=
+/div><div>check-minreqs is supposed to build the exact same venv every time=
+ without fail. Without this change, it&#39;s *possible* that it might do so=
+mething different on release day if someone releases a new package. No good=
+, probably.</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">
+<br>
+&gt; ---<br>
+&gt;=C2=A0 python/tests/minreqs.txt | 4 ++++<br>
+&gt;=C2=A0 1 file changed, 4 insertions(+)<br>
+&gt;<br>
+&gt; diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt<br>
+&gt; index a3f423efd84..19c0f5e4c50 100644<br>
+&gt; --- a/python/tests/minreqs.txt<br>
+&gt; +++ b/python/tests/minreqs.txt<br>
+&gt; @@ -38,10 +38,14 @@ pyflakes=3D=3D2.5.0<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 # Transitive mypy dependencies<br>
+&gt;=C2=A0 mypy-extensions=3D=3D1.0.0<br>
+&gt; +tomli=3D=3D1.1.0<br>
+&gt;=C2=A0 typing-extensions=3D=3D4.7.1<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 # Transitive pylint dependencies<br>
+&gt;=C2=A0 astroid=3D=3D2.15.4<br>
+&gt; +dill=3D=3D0.2<br>
+&gt;=C2=A0 lazy-object-proxy=3D=3D1.4.0<br>
+&gt; +platformdirs=3D=3D2.2.0<br>
+&gt;=C2=A0 toml=3D=3D0.10.0<br>
+&gt; +tomlkit=3D=3D0.10.1<br>
+&gt;=C2=A0 wrapt=3D=3D1.14.0<br>
+<br>
+</blockquote></div></div>
+
+--00000000000032ac070631447413--
 
 
