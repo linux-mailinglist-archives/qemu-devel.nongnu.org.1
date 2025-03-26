@@ -2,113 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6968BA71D11
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 18:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A25A71D58
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 18:39:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txUTC-0002ML-GZ; Wed, 26 Mar 2025 13:23:14 -0400
+	id 1txUhd-0004xP-51; Wed, 26 Mar 2025 13:38:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1txUTA-0002Lu-DC; Wed, 26 Mar 2025 13:23:12 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1txUha-0004wR-C8
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 13:38:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1txUT8-0003Ao-Gq; Wed, 26 Mar 2025 13:23:12 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QFvNEr032156;
- Wed, 26 Mar 2025 17:23:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Wgjt40
- wIIlKObQrfb7GVq4l5s+GiGOOMxmVWA1++7wg=; b=sVf+Jvke+uWRTt689GEbCU
- sTPIZ4UhQmTm8E4bc4fwWMdYlLWL3NCTQmT3HTX0XOr/sTHpaLZB1J0eAG+RbAMk
- sMxDTt5nlFbTseUTh0varnITqIHfimjKKGaHjdGWz8Jd4pnrYdJ7HGDTdov/3iql
- n9SNPcR1X21UyBVkknPzZkVK+kNiAIsMQ44zZunaAidEiPRE7Jp7BMTgRJKa2E1w
- pbETap2rb+x0JA2cDjZFED+mlyTFnVydVr71MIrlL+SvTR5EGsFHnfN99XXfk5Mh
- EmCZ4h1XfFBZPbk6nr4nJ00IqZ56hp6qBOU/km+zR0k/9KdxzEWNdGnngeQw/OMA
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45m3q0n8r6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Mar 2025 17:23:01 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52QHIaE5007214;
- Wed, 26 Mar 2025 17:23:01 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45m3q0n8r4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Mar 2025 17:23:01 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52QEOX9i020105;
- Wed, 26 Mar 2025 17:23:00 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45j8hp1e96-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Mar 2025 17:23:00 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 52QHMu4520775276
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Mar 2025 17:22:56 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D5C32004B;
- Wed, 26 Mar 2025 17:22:56 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7BA6620040;
- Wed, 26 Mar 2025 17:22:54 +0000 (GMT)
-Received: from [9.39.30.126] (unknown [9.39.30.126])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 26 Mar 2025 17:22:54 +0000 (GMT)
-Message-ID: <1b46fa60-6460-42fb-b77b-fe03cb9ea591@linux.ibm.com>
-Date: Wed, 26 Mar 2025 22:52:53 +0530
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1txUhY-00053v-F2
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 13:38:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1743010676;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=GoxYL0e5inO/4S8C3FeRtVRqh9nONxsW6KEuR5VNGOI=;
+ b=GKFrkAcjjUKPyUsA6A2SyS7S4q0qqCQjIeKke7919etdNDQqBMo/fWqMtJAzAfRXfB3gSL
+ egYFH+cJwwR5ywR/GRse3mFjrnHwmK6Kwfhp8NfuoTc+v+zqM2R/qNG1cCHZCfiKKpxUKG
+ Twrxfa4xvPDwHKuLIRhXr+ojyREcpo8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-6-XINHyLPaqQaI86B8urEw-1; Wed,
+ 26 Mar 2025 13:37:51 -0400
+X-MC-Unique: 6-XINHyLPaqQaI86B8urEw-1
+X-Mimecast-MFC-AGG-ID: 6-XINHyLPaqQaI86B8urEw_1743010669
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 506231800267; Wed, 26 Mar 2025 17:37:47 +0000 (UTC)
+Received: from gondolin.redhat.com (unknown [10.67.24.38])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B457B180B486; Wed, 26 Mar 2025 17:37:30 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
+ agraf@csgraf.de
+Cc: shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
+ pbonzini@redhat.com, Cornelia Huck <cohuck@redhat.com>
+Subject: [PATCH for-10.1 v4 00/13] arm: rework id register storage
+Date: Wed, 26 Mar 2025 18:37:10 +0100
+Message-ID: <20250326173723.389988-1-cohuck@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 07/10] ppc/pnv: Introduce Power11 PowerNV machine
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-References: <20250325112319.927190-1-adityag@linux.ibm.com>
- <20250325112319.927190-8-adityag@linux.ibm.com>
- <952b3afa-dc63-4230-bdff-5decabc8c25c@kaod.org>
- <8567b41e-f2b8-413c-93b8-15c74788c171@linux.ibm.com>
- <5a08e139-a18d-4aae-836f-0ec0bb8fadc9@kaod.org>
- <6d610966-cdc0-42c2-abb8-e80b4be1178d@linux.ibm.com>
- <6e830dd1-88c1-4029-bae7-d2817d95262f@kaod.org>
- <2ffb5a70-be51-45e9-82a1-b71362221577@kaod.org>
-Content-Language: en-US
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <2ffb5a70-be51-45e9-82a1-b71362221577@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: TCZKdsONKzjgGzCyG8GROf62nbRf4uiv
-X-Proofpoint-GUID: haOQjwJYd5ZWE9YLLicDnfwUHzyVmJzg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-26_08,2025-03-26_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- suspectscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0 phishscore=0
- mlxlogscore=999 priorityscore=1501 adultscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503260104
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,52 +84,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/03/25 16:12, Cédric Le Goater wrote:
+Next iteration of the id register patches; only small changes.
 
-> [ ... ]
->
->> You could use a buildroot image instead. :
->>
->> https://github.com/buildroot/buildroot/blob/master/configs/qemu_ppc64le_powernv8_defconfig
->
-> Images pushed here :
->
-> https://github.com/legoater/qemu-ppc-boot/tree/main/buildroot/qemu_ppc64le_powernv8-2025.02
->
->   qemu-system-ppc64 -m 1G -M powernv10 \
->     -kernel ./buildroot/qemu_ppc64le_powernv8-2025.02/vmlinux \
->     -append root=/dev/nvme0n1 \
->     -device nvme,bus=pcie.2,addr=0x0,drive=drive0,serial=1234 \
->     -drive 
-> file=./buildroot/qemu_ppc64le_powernv8-2025.02/rootfs.ext2,if=none,id=drive0,format=raw,cache=none 
-> \
->     -device e1000e,bus=pcie.1,addr=0x0,netdev=net0 \
->     -netdev user,id=net0 \
->     -serial mon:stdio -nographic -snapshot
->
->   [    0.010515922,5] OPAL v7.1-106-g785a5e307 starting...
->   ...
->   [    0.000000][    T0] Linux version 6.12.9 (legoater@ryzen) 
-> (powerpc64le-buildroot-linux-gnu-gcc.br_real (Buildroot 2025.02) 
-> 13.3.0, GNU ld (GNU Binutils) 2.43.1) #1 SMP Wed Mar 26 11:11:35 CET 2025
->   ...
->
-> Please use these images or the opbuild image which should also work but
-> the CPU won't be recognized as a POWER11.
+Changed from v3:
+- added R-bs (thanks!)
+- added missing SPDX header
+- merged patch introducing accessors for kvm to the first user
+- skip over sysregs outside of the id register range when generating
+  register definitions again
 
-Thank you, will use those images then.
+Also available at
+https://gitlab.com/cohuck/qemu/-/commits/arm-rework-idreg-storage-v4
 
-opbuild image boots but since it doesn't "print" p11 in its dmesg log, the
-powernv test fails with it. Will use your images.
+<v3 cover letter>
+Yet another update of the id register series, less changes this time
+around.
 
+Changed from v2:
+- changed generation of the various register defines via the "DEF"
+  magic suggested by Richard
+- some kvm-only code moved to kvm.c; some code potentially useful to
+  non-kvm code stayed out of there (the cpu model code will make use
+  of it, and that one should be extendable outside of kvm -- a
+  revised version of those patches is still in the works, but I'll be
+  off for a few days and rather wanted to get this one out first)
 
-Thanks,
+Also available at
+https://gitlab.com/cohuck/qemu/-/commits/arm-rework-idreg-storage-v3
 
-- Aditya Gupta
+<v2 cover letter>
 
->
-> Thanks,
->
-> C.
->
+Changed from v1:
+- Noticed that we missed the hvf code. Converted, compiled, but not tested
+  as I'm lacking an environment for testing.
+- Hopefully incorporated most of the suggested changes -- if I missed
+  something, it was unintentional unless mentioned below.
+  - fixed repeated inclusion of definitions
+  - hopefully made macros more robust
+  - removed distinction between reading 32/64 values, which was mostly
+    adding churn for little value
+  - postponed generating property definitions to the cpu model patches,
+    where they are actually used
+  - juggled hunks and moved them to the right patches
+  - fixed some typos
+- rebased to a more recent code base
+
+NOT changed from v1:
+- definitions are still generated from the Linux sysregs file
+  - I still think updating the generated files on demand (so that we can
+    double check the result) is the right thing to do
+  - I'm open to changing the source of the definitions from the sysregs
+    file to the JSON definitions published by Arm; however, I first wanted
+    to get the code using it right -- we can switch out the code generating
+    the file to use a different source easily later on, and I'd also like
+    to steal parts of the script from Linux once integrated (which I think
+    hasn't happened yet?)
+
+<v1 cover letter>
+
+[Note: I've kept the cc list from the last round of cpu model patches;
+so if you're confused as to why you're cc:ed here, take it as a
+heads-up that a new cpu model series will come along soon]
+
+This patch series contains patches extracted from the larger cpu model
+series (RFC v2 last posted at
+https://lore.kernel.org/qemu-devel/20241206112213.88394-1-cohuck@redhat.com/)
+and aims at providing a base upon which we can continue with building
+support for cpu models, but which is hopefully already an improvement
+on its own.
+
+Main changes from the patches in that series include:
+- post-pone the changes to handle KVM writable ID registers for cpu models
+  (I have a series including that on top of this one)
+- change how we store the list of ID registers, and access them
+  basically, use an enum for indexing, and an enum doing encodings in a
+  pattern similar to cpregs
+- move some hunks to different patches
+- update the scripts to generate the register descriptions, and run
+  them against a recent Linux sysregs file
+
+What I've kept:
+- generating the register descriptions from the Linux sysregs file
+  I think that file is still our best bet to generate the descriptions
+  easily, and updating the definitions is a manual step that can be checked
+  for unintended changes
+- most of the hard work that Eric had been doing; all new bugs in there
+  are my own :)
+
+</v1 cover letter>
+</v2 cover letter>
+</v3 cover letter>
+
+Cornelia Huck (1):
+  arm/cpu: switch to a generated cpu-sysregs.h.inc
+
+Eric Auger (12):
+  arm/cpu: Add sysreg definitions in cpu-sysregs.h
+  arm/cpu: Store aa64isar0/aa64zfr0 into the idregs arrays
+  arm/cpu: Store aa64isar1/2 into the idregs array
+  arm/cpu: Store aa64pfr0/1 into the idregs array
+  arm/cpu: Store aa64mmfr0-3 into the idregs array
+  arm/cpu: Store aa64dfr0/1 into the idregs array
+  arm/cpu: Store aa64smfr0 into the idregs array
+  arm/cpu: Store id_isar0-7 into the idregs array
+  arm/cpu: Store id_pfr0/1/2 into the idregs array
+  arm/cpu: Store id_dfr0/1 into the idregs array
+  arm/cpu: Store id_mmfr0-5 into the idregs array
+  arm/cpu: Add sysreg generation scripts
+
+ hw/intc/armv7m_nvic.c                 |  27 +-
+ scripts/gen-cpu-sysregs-header.awk    |  35 ++
+ scripts/update-aarch64-sysreg-code.sh |  25 ++
+ target/arm/cpu-features.h             | 317 +++++++++---------
+ target/arm/cpu-sysregs.h              |  46 +++
+ target/arm/cpu-sysregs.h.inc          |  52 +++
+ target/arm/cpu.c                      | 111 +++----
+ target/arm/cpu.h                      |  80 +++--
+ target/arm/cpu64.c                    | 128 +++----
+ target/arm/helper.c                   |  68 ++--
+ target/arm/hvf/hvf.c                  |  36 +-
+ target/arm/internals.h                |   6 +-
+ target/arm/kvm.c                      | 129 ++++----
+ target/arm/ptw.c                      |   6 +-
+ target/arm/tcg/cpu-v7m.c              | 174 +++++-----
+ target/arm/tcg/cpu32.c                | 320 +++++++++---------
+ target/arm/tcg/cpu64.c                | 460 +++++++++++++-------------
+ 17 files changed, 1101 insertions(+), 919 deletions(-)
+ create mode 100755 scripts/gen-cpu-sysregs-header.awk
+ create mode 100755 scripts/update-aarch64-sysreg-code.sh
+ create mode 100644 target/arm/cpu-sysregs.h
+ create mode 100644 target/arm/cpu-sysregs.h.inc
+
+-- 
+2.48.1
+
 
