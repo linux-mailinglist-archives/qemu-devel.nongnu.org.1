@@ -2,84 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5B6A71A5B
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 16:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1229A71A5C
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 16:31:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txSh7-0000u4-BM; Wed, 26 Mar 2025 11:29:29 -0400
+	id 1txSh7-0000uW-LS; Wed, 26 Mar 2025 11:29:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1txSh1-0000r9-Q8
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:29:23 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1txSh2-0000sW-JL
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:29:24 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1txSgz-0005ik-PG
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:29:23 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2255003f4c6so457315ad.0
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 08:29:21 -0700 (PDT)
+ id 1txSh0-0005iq-Sj
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 11:29:24 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-224100e9a5cso141770095ad.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 08:29:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743002960; x=1743607760; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743002961; x=1743607761; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=2+niFRVTMJRdZez4RhAi1o+lkjF/AM3JuYUoySr+NOM=;
- b=eWkCAtJ9F3i8cU+IuhxYht2IFbo6cTtxl8JaDmiYPN7SUb8s4srY1y6g6SKxUPoGKU
- VktmUjO5Ol9L1pb/49UYdElAsp3lEfhgmKHTyayKweiIxR9nDUN9O/rcZ0jMPxh8cnGz
- Gijk2+OTCIC2F4cctO3yJpSmyoyn+tHWZOgCq2wz+ixTVgZ+6bA1sRI+wbaynRi2PaaC
- 542/p+F+2ZHBlRf1gUMAKxNe9wpT/jXjU1dDgIxc2y0K4E8r38/pfc52D2apKi3RZH9j
- WhPu6UhJO9+DW/birBGjNycTGvlGcTj2y5aVdw+nET/n4h90AzwEJ7h9mc7yU6aBzU5x
- et+g==
+ bh=uT6F6heBrk9Q/LX5QwBgt708tsSobJJmDHMZRlaCWGc=;
+ b=AQ30qz+Q3Qpoz4CDfuj+S1SDicXJJdgp7cAgQW5uL8679PyRIZyp6MWxz1NC6cKtZA
+ aAy+u2+jI65bJlm2K+V0uMevn/NGS3PHP9S1dacBYCiWmeq63kJi6qnKjpoiACOtdpXU
+ wlN4scWBlw1VnyayNnrVo15E/4uoA3g2fXAW26SydGLJ4RNoJkuqJESjcFwBJ/Q4EXkx
+ 4fe/ks69bBD708EbDM4cZM/KaQpAq07MH1MrpRDhM8sPavu3R38DFEIGKgRpw4C91dhq
+ PO2VYJ4Op8GAwqb76SzIHaFxdfQADLe17FoLTd88C+FgJHrRYmFlTmXxOc1oYahQC2N9
+ a3Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743002960; x=1743607760;
+ d=1e100.net; s=20230601; t=1743002961; x=1743607761;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2+niFRVTMJRdZez4RhAi1o+lkjF/AM3JuYUoySr+NOM=;
- b=tkA9mz7vIgMsrbdcBiNv8h76E5CB0RV/5nlPP4h8AoHFRnYOhFP1WomA9pkDFDIl/T
- R88hpDJTrLvSFYZ55SgO3KYApMTMSRaIpdGEi/rLrz4/WlO19Krz3p8VAyiNAgTX7+pA
- WHbaxZFhg+nrUcxmNJ96fZtK1oO6J3vxSAebdiY0GTdP1hpuZzDB2Ll5TEGhCskN6SR2
- DPMRnl8vKltEK3EqehfbS7wDFvQQniUImwaJFoxd3xfLNFeIc+lQL5mWSYaxyDIIw271
- BRHJqqfnRkZLEwQNxOrAytjHs3fY85y3B3WH7FZvOTXWqd2xqsXmTPLJu06RLrIj+Gpm
- Q35Q==
+ bh=uT6F6heBrk9Q/LX5QwBgt708tsSobJJmDHMZRlaCWGc=;
+ b=ZdXa4F2qYP05WN17LmOY1N/zVxpbOYCFenlXzCaRYXA8kQeINekDanR8p/Q/10XQVc
+ 0enUAXeondpgZkiH+Qvc9LH8RcoCWPqXM4uXV85yqH4qHRL/7aL/UMeoV4ygegwWHiaw
+ hxkyGMrS/GHE1LpREZM6mUltrDFDwSgVTnTUTsWn3O4/hqs0B2R3qT8bB8Gp48KuRi+p
+ Vk6lIITY0Pa5vNo+o/v/4kGxr7niiNH2hEAw156lJIpl0vMoFo3nF3tufChB0VNgE2FE
+ ZWzIYAIvewibhJxE8l1Lg5z7LCjUYT8P10VdIsyNL1PLSA997CJGhN0veAqxzCN3i3F4
+ mGxA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWo3oO92uVe3zti/xEjMVwr2YXfM1Z/J2UCySKrLF3YhT7u1WsCGVsS/cJhJTZZh41uNvmSCABX2cOI@nongnu.org
-X-Gm-Message-State: AOJu0Yyz8OgmAGdgfqO9qnMMLqR/NJGwKYI5ro+MQ6bYQ0xMedlq5b/E
- U8cZFbFjWDBO0flrkTIqpZjKAQGeESEDyL4NPllb+dcuGhQohdpmFnt+zXyGn+hPvT/ci0jCIcT
- i
-X-Gm-Gg: ASbGncv/AgEh8E4+8lp0KR40DKnrEa6OU5yxuapZ9GXk4E6p1/3YkvPVjEb5OtuKZpv
- NqK7LRWlM5MzCBeCovS1SBRtsKUZaWlvs5s0YRSJb6X5LAVZUUk0jvxMKtc0s/HuKajLXsH5MEN
- b3gZKRiiQPvAcPfPW7Cv4p3jnQjr3jym+/b4l16KX27tuf20MOmT5qC50Rcba1xfHUhiULm9hou
- h5HLVRck/q1MFJX2koHhMQXOgzCoZ3J5eexOXsQdV8onD0FRuL8p0Jx5+2cXEQK+tKwTDU5TEbd
- 5uE/6vglYRCiYZ/dml//uS92T4SyP9f9O3iyuFB+THi+COJ73GCx7ENvJts/fRrmWmeH
-X-Google-Smtp-Source: AGHT+IHqYS5wuBY0ZfH0pGyxVIVqG6CpF44aU7G1PnJ6qykviEaFsjyd8NaZE8s6d+Oj+ptskG3CDQ==
-X-Received: by 2002:a17:902:e74d:b0:223:5e6a:57ab with SMTP id
- d9443c01a7336-22780e10df0mr320196865ad.39.1743002960110; 
- Wed, 26 Mar 2025 08:29:20 -0700 (PDT)
+ AJvYcCX5yMKwpOv/haAYNbuDatENq+yL50QLigXnIgp8sjsy/J4ES+Axx7DAtRKIyWRUknjtDwoOH0P/mrmd@nongnu.org
+X-Gm-Message-State: AOJu0YxQm0haGDAzxKRrGVTPCom81Jua/9onkKO9JzEqI6jYXcV2FJG0
+ fvCJe8P2E/89bAx7Wk4Ewh2WwkGXmT+2zBBCtAcgItiQ0WyOeMLltWlj07DCfjkpZtrLpHLPI/6
+ h
+X-Gm-Gg: ASbGncscLGoKYmf5rYl+q42yU6eGQwwuago02K70tCAPM+YQwyGp3JZMLGyEVKE3G4X
+ 3DM7A0pyj6qV0u1/OxMOxZwTA0r4VAJTrwzd+WvHwHE/SN5Q78xkyPxFiYRpVFad23Kga+IjdCo
+ hWedn3X2YptEXVmcMV4kIDcRDLrSXVy0Kavv1uRUmZG+1pkXnnTauf2xBKmsG0Sx7hDt6F2awfw
+ AuURqHsMWsvJ5BLqMua9UvlvCp+H5zR9kev6S15/2OhQOSsBVmJczPvXDZGs4OCxH8/9/A4qNIo
+ 9muousZPdyZkwL4Z4Z2YNRoQAgsTt6EWOGwr3YyRASa4AEb3SYbNS7r58L5kZcjCLShh
+X-Google-Smtp-Source: AGHT+IHYc7oTPd/3PqXRLgCQOiqASNMbyI1jpNjL1YzBjfh7ZJKTolQLMW8nykTRQmK+67EC1Y1LaQ==
+X-Received: by 2002:a17:903:2352:b0:224:3c9:19ae with SMTP id
+ d9443c01a7336-22780e0b570mr344752465ad.34.1743002961428; 
+ Wed, 26 Mar 2025 08:29:21 -0700 (PDT)
 Received: from [192.168.1.67] ([38.39.164.180])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-227811bc272sm111122885ad.146.2025.03.26.08.29.19
+ d9443c01a7336-227811bc272sm111122885ad.146.2025.03.26.08.29.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Mar 2025 08:29:19 -0700 (PDT)
-Message-ID: <b5b28249-0548-48fc-9967-19a2f9e8d247@linaro.org>
-Date: Wed, 26 Mar 2025 08:18:41 -0700
+ Wed, 26 Mar 2025 08:29:20 -0700 (PDT)
+Message-ID: <188cf71f-e94b-40c0-81d4-0a3319e2b3ac@linaro.org>
+Date: Wed, 26 Mar 2025 08:21:42 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/11] hw/avr: Prepare for TARGET_PAGE_SIZE > 256
+Subject: Re: [PATCH-for-10.1 2/8] target/mips: Declare CPU QOM types using
+ DEFINE_TYPES() macro
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: mrolnik@gmail.com, philmd@linaro.org
-References: <20250325224403.4011975-1-richard.henderson@linaro.org>
- <20250325224403.4011975-11-richard.henderson@linaro.org>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Aleksandar Rikalo
+ <arikalo@gmail.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Anton Johansson <anjo@rev.ng>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20250325154058.92735-1-philmd@linaro.org>
+ <20250325154058.92735-3-philmd@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250325224403.4011975-11-richard.henderson@linaro.org>
+In-Reply-To: <20250325154058.92735-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,97 +110,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/25/25 15:44, Richard Henderson wrote:
-> If i/o does not cover the entire first page, allocate a portion
-> of ram as an i/o device, so that the entire first page is i/o.
-> 
-> While memory_region_init_ram_device_ptr is happy to allocate
-> the RAMBlock, it does not register the ram for migration.
-> Do this by hand.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   hw/avr/atmega.h |  1 +
->   hw/avr/atmega.c | 39 ++++++++++++++++++++++++++++++++-------
->   2 files changed, 33 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/avr/atmega.h b/hw/avr/atmega.h
-> index a99ee15c7e..9ac4678231 100644
-> --- a/hw/avr/atmega.h
-> +++ b/hw/avr/atmega.h
-> @@ -41,6 +41,7 @@ struct AtmegaMcuState {
->       MemoryRegion flash;
->       MemoryRegion eeprom;
->       MemoryRegion sram;
-> +    MemoryRegion sram_io;
->       DeviceState *io;
->       AVRMaskState pwr[POWER_MAX];
->       AVRUsartState usart[USART_MAX];
-> diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
-> index f6844bf118..11fab184de 100644
-> --- a/hw/avr/atmega.c
-> +++ b/hw/avr/atmega.c
-> @@ -19,6 +19,7 @@
->   #include "hw/sysbus.h"
->   #include "qom/object.h"
->   #include "hw/misc/unimp.h"
-> +#include "migration/vmstate.h"
->   #include "atmega.h"
->   
->   enum AtmegaPeripheral {
-> @@ -224,8 +225,6 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->       char *devname;
->       size_t i;
->   
-> -    assert(mc->io_size <= 0x200);
-> -
->       if (!s->xtal_freq_hz) {
->           error_setg(errp, "\"xtal-frequency-hz\" property must be provided.");
->           return;
-> @@ -240,11 +239,37 @@ static void atmega_realize(DeviceState *dev, Error **errp)
->       qdev_realize(DEVICE(&s->cpu), NULL, &error_abort);
->       cpudev = DEVICE(&s->cpu);
->   
-> -    /* SRAM */
-> -    memory_region_init_ram(&s->sram, OBJECT(dev), "sram", mc->sram_size,
-> -                           &error_abort);
-> -    memory_region_add_subregion(get_system_memory(),
-> -                                OFFSET_DATA + mc->io_size, &s->sram);
-> +    /*
-> +     * SRAM
-> +     *
-> +     * Softmmu is not able mix i/o and ram on the same page.
-> +     * Therefore in all cases, the first page exclusively contains i/o.
-> +     *
-> +     * If the MCU's i/o region matches the page size, then we can simply
-> +     * allocate all ram starting at the second page.  Otherwise, we must
-> +     * allocate some ram as i/o to complete the first page.
-> +     */
-> +    assert(mc->io_size == 0x100 || mc->io_size == 0x200);
-> +    if (mc->io_size >= TARGET_PAGE_SIZE) {
-> +        memory_region_init_ram(&s->sram, OBJECT(dev), "sram", mc->sram_size,
-> +                               &error_abort);
-> +        memory_region_add_subregion(get_system_memory(),
-> +                                    OFFSET_DATA + mc->io_size, &s->sram);
-> +    } else {
-> +        int sram_io_size = TARGET_PAGE_SIZE - mc->io_size;
-> +        void *sram_io_mem = g_malloc0(sram_io_size);
-> +
-> +        memory_region_init_ram_device_ptr(&s->sram_io, OBJECT(dev), "sram-as-io",
-> +                                          sram_io_size, sram_io_mem);
-> +        memory_region_add_subregion(get_system_memory(),
-> +                                    OFFSET_DATA + mc->io_size, &s->sram_io);
-> +        vmstate_register_ram(&s->sram_io, dev);
-> +
-> +        memory_region_init_ram(&s->sram, OBJECT(dev), "sram",
-> +                               mc->sram_size - sram_io_size, &error_abort);
-> +        memory_region_add_subregion(get_system_memory(),
-> +                                    OFFSET_DATA + TARGET_PAGE_SIZE, &s->sram);
-> +    }
->   
->       /* Flash */
->       memory_region_init_rom(&s->flash, OBJECT(dev),
-
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-
+T24gMy8yNS8yNSAwODo0MCwgUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgd3JvdGU6DQo+IFdo
+ZW4gbXVsdGlwbGUgUU9NIHR5cGVzIGFyZSByZWdpc3RlcmVkIGluIHRoZSBzYW1lIGZpbGUs
+DQo+IGl0IGlzIHNpbXBsZXIgdG8gdXNlIHRoZSB0aGUgREVGSU5FX1RZUEVTKCkgbWFjcm8u
+IEluDQo+IHBhcnRpY3VsYXIgYmVjYXVzZSB0eXBlIGFycmF5IGRlY2xhcmVkIHdpdGggc3Vj
+aCBtYWNybw0KPiBhcmUgZWFzaWVyIHRvIHJldmlldy4NCj4gDQo+IEluIGZldyBjb21taXRz
+IHdlIGFyZSBnb2luZyB0byBhZGQgbW9yZSB0eXBlcywgc28gcmVwbGFjZQ0KPiB0aGUgdHlw
+ZV9yZWdpc3Rlcl9zdGF0aWMoKSB0byBlYXNlIGZ1cnRoZXIgcmV2aWV3cy4NCj4gDQo+IFNp
+Z25lZC1vZmYtYnk6IFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGluYXJvLm9y
+Zz4NCj4gUmV2aWV3ZWQtYnk6IFJpY2hhcmQgSGVuZGVyc29uIDxyaWNoYXJkLmhlbmRlcnNv
+bkBsaW5hcm8ub3JnPg0KPiAtLS0NCj4gICB0YXJnZXQvbWlwcy9jcHUuYyB8IDIzICsrKysr
+KysrKysrKystLS0tLS0tLS0tDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDEzIGluc2VydGlvbnMo
+KyksIDEwIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3RhcmdldC9taXBzL2Nw
+dS5jIGIvdGFyZ2V0L21pcHMvY3B1LmMNCj4gaW5kZXggYjIwNzEwNmRkNzkuLjA5NzU1NGZk
+OGFlIDEwMDY0NA0KPiAtLS0gYS90YXJnZXQvbWlwcy9jcHUuYw0KPiArKysgYi90YXJnZXQv
+bWlwcy9jcHUuYw0KPiBAQCAtNTk3LDE3ICs1OTcsMjEgQEAgc3RhdGljIHZvaWQgbWlwc19j
+cHVfY2xhc3NfaW5pdChPYmplY3RDbGFzcyAqYywgdm9pZCAqZGF0YSkNCj4gICAjZW5kaWYg
+LyogQ09ORklHX1RDRyAqLw0KPiAgIH0NCj4gICANCj4gLXN0YXRpYyBjb25zdCBUeXBlSW5m
+byBtaXBzX2NwdV90eXBlX2luZm8gPSB7DQo+IC0gICAgLm5hbWUgPSBUWVBFX01JUFNfQ1BV
+LA0KPiAtICAgIC5wYXJlbnQgPSBUWVBFX0NQVSwNCj4gLSAgICAuaW5zdGFuY2Vfc2l6ZSA9
+IHNpemVvZihNSVBTQ1BVKSwNCj4gLSAgICAuaW5zdGFuY2VfYWxpZ24gPSBfX2FsaWdub2Yo
+TUlQU0NQVSksDQo+IC0gICAgLmluc3RhbmNlX2luaXQgPSBtaXBzX2NwdV9pbml0Zm4sDQo+
+IC0gICAgLmFic3RyYWN0ID0gdHJ1ZSwNCj4gLSAgICAuY2xhc3Nfc2l6ZSA9IHNpemVvZihN
+SVBTQ1BVQ2xhc3MpLA0KPiAtICAgIC5jbGFzc19pbml0ID0gbWlwc19jcHVfY2xhc3NfaW5p
+dCwNCj4gK3N0YXRpYyBjb25zdCBUeXBlSW5mbyBtaXBzX2NwdV90eXBlc1tdID0gew0KPiAr
+ICAgIHsNCj4gKyAgICAgICAgLm5hbWUgICAgICAgICAgID0gVFlQRV9NSVBTX0NQVSwNCj4g
+KyAgICAgICAgLnBhcmVudCAgICAgICAgID0gVFlQRV9DUFUsDQo+ICsgICAgICAgIC5pbnN0
+YW5jZV9zaXplICA9IHNpemVvZihNSVBTQ1BVKSwNCj4gKyAgICAgICAgLmluc3RhbmNlX2Fs
+aWduID0gX19hbGlnbm9mKE1JUFNDUFUpLA0KPiArICAgICAgICAuaW5zdGFuY2VfaW5pdCAg
+PSBtaXBzX2NwdV9pbml0Zm4sDQo+ICsgICAgICAgIC5hYnN0cmFjdCAgICAgICA9IHRydWUs
+DQo+ICsgICAgICAgIC5jbGFzc19zaXplICAgICA9IHNpemVvZihNSVBTQ1BVQ2xhc3MpLA0K
+PiArICAgICAgICAuY2xhc3NfaW5pdCAgICAgPSBtaXBzX2NwdV9jbGFzc19pbml0LA0KPiAr
+ICAgIH0NCj4gICB9Ow0KPiAgIA0KPiArREVGSU5FX1RZUEVTKG1pcHNfY3B1X3R5cGVzKQ0K
+PiArDQo+ICAgc3RhdGljIHZvaWQgbWlwc19jcHVfY3B1ZGVmX2NsYXNzX2luaXQoT2JqZWN0
+Q2xhc3MgKm9jLCB2b2lkICpkYXRhKQ0KPiAgIHsNCj4gICAgICAgTUlQU0NQVUNsYXNzICpt
+Y2MgPSBNSVBTX0NQVV9DTEFTUyhvYyk7DQo+IEBAIC02MzIsNyArNjM2LDYgQEAgc3RhdGlj
+IHZvaWQgbWlwc19jcHVfcmVnaXN0ZXJfdHlwZXModm9pZCkNCj4gICB7DQo+ICAgICAgIGlu
+dCBpOw0KPiAgIA0KPiAtICAgIHR5cGVfcmVnaXN0ZXJfc3RhdGljKCZtaXBzX2NwdV90eXBl
+X2luZm8pOw0KPiAgICAgICBmb3IgKGkgPSAwOyBpIDwgbWlwc19kZWZzX251bWJlcjsgaSsr
+KSB7DQo+ICAgICAgICAgICBtaXBzX3JlZ2lzdGVyX2NwdWRlZl90eXBlKCZtaXBzX2RlZnNb
+aV0pOw0KPiAgICAgICB9DQoNClJldmlld2VkLWJ5OiBQaWVycmljayBCb3V2aWVyIDxwaWVy
+cmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQoNCg==
 
