@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9BAA71E1C
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E82A71E1B
 	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 19:12:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txVD1-0004Le-CP; Wed, 26 Mar 2025 14:10:37 -0400
+	id 1txVD0-0004Kq-E4; Wed, 26 Mar 2025 14:10:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1txVCw-0004Jh-LM; Wed, 26 Mar 2025 14:10:30 -0400
+ id 1txVCs-0004Ie-QJ; Wed, 26 Mar 2025 14:10:27 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1txVCq-0000Ea-Co; Wed, 26 Mar 2025 14:10:30 -0400
+ id 1txVCo-0000Eb-2n; Wed, 26 Mar 2025 14:10:26 -0400
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QGRhQU032229;
- Wed, 26 Mar 2025 18:10:11 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QH0OZw032164;
+ Wed, 26 Mar 2025 18:10:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=j+rJx70jFjhi0rIvylJ8WJsZ7/KYVdQmaQwvstvgp
- 6c=; b=N4RaQBAR3X6FJr62487y1IH+nQuQexwwNU8AUn0uNPjaQ9zj9Vh0o+m/U
- BhDVVSDu0/lM5MzVv7G19TnJlihFKBTv4UPz0mwcrrwMzLrVmzjaRaM7dz5r9Yhi
- crpbt/tQX0GVjNYVh0fHFIAOAhhbMA4mPTPl8wYNWP4Ur0r/5ZhrlxiQJCQNCyLW
- 2TkP2eTdkn3MGL5M5Incg0xERb6Gg5YkOYaFyTscFuJRvwZh8F5mqteT1mNkrkR5
- l3RmXahFDohqmoXND9rajwJReiJS4krhpOcxa78mgvPB+QJYAJbu6huolk7opQLe
- C4cJFFOS2ejgf7wKW2JpTnmLUPjTQ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45m3q0ng7h-1
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=uEQECHnuvok5wIgKj
+ dZbhhFm7/uWpFE8UpHMUPOPWq8=; b=UPNp1kjuBMuWOmB6eAYF68gozNzxN4VHa
+ Apmudc6cV/Plwh2ya0Z9mKquP/fBOUmKPINHC0aWYvl/lRt7Z9zmuSlOztZbl2cu
+ JlX5AZoPTfukVfCS9pM8zpH6ZVZOsw0Hk8OW5sgN1x4vxID5QD2a70OxEQT5igeT
+ eutKUXq/u0Jp+K7e0TlC4BlfEN5CjG6LpdsEmQFjQ49VzGi0dr9cs6Up1uVxw2c7
+ iaZLhrJlSGLDy8c/dOwAxd0N/U2EEnDgT1U3e0jtGHc2q/Y8NNOKE3VruxoIW8Xl
+ ee1RCm8zOuN368CXXuDP4fhzBqYv0+8xu246T6wRgF8bHOSFaVOng==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45m3q0ng7k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 26 Mar 2025 18:10:11 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52QHJ7hT025443;
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52QH4P1m030304;
  Wed, 26 Mar 2025 18:10:10 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45j7x09s5v-1
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j7hthtqw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 26 Mar 2025 18:10:10 +0000
 Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
  [10.241.53.101])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 52QIA8ap17302148
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52QIAAQq14877258
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Mar 2025 18:10:09 GMT
+ Wed, 26 Mar 2025 18:10:10 GMT
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CEB0F5805F;
+ by IMSVA (Postfix) with ESMTP id E83885805C;
+ Wed, 26 Mar 2025 18:10:09 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F25425805A;
  Wed, 26 Mar 2025 18:10:08 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C361958051;
- Wed, 26 Mar 2025 18:10:07 +0000 (GMT)
 Received: from IBM-D32RQW3.ibm.com (unknown [9.61.243.159])
  by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 26 Mar 2025 18:10:07 +0000 (GMT)
+ Wed, 26 Mar 2025 18:10:08 +0000 (GMT)
 From: Farhan Ali <alifm@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: alifm@linux.ibm.com, mjrosato@linux.ibm.com, schnelle@linux.ibm.com,
  qemu-s390x@nongnu.org, qemu-block@nongnu.org, stefanha@redhat.com,
  fam@euphon.net, philmd@linaro.org, kwolf@redhat.com, hreitz@redhat.com,
  thuth@redhat.com
-Subject: [PATCH v1 0/2] Enable QEMU NVMe userspace driver on s390x
-Date: Wed, 26 Mar 2025 11:10:05 -0700
-Message-ID: <20250326181007.1099-1-alifm@linux.ibm.com>
+Subject: [PATCH v1 1/2] util: Add functions for s390x mmio read/write
+Date: Wed, 26 Mar 2025 11:10:06 -0700
+Message-ID: <20250326181007.1099-2-alifm@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250326181007.1099-1-alifm@linux.ibm.com>
+References: <20250326181007.1099-1-alifm@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Ffk-h3udD2lZVwyio3yxXrIOzOaJQQpP
-X-Proofpoint-GUID: Ffk-h3udD2lZVwyio3yxXrIOzOaJQQpP
+X-Proofpoint-ORIG-GUID: 3XAbjahtpFnRHlDQ8nSy-yktw5v9L3qL
+X-Proofpoint-GUID: 3XAbjahtpFnRHlDQ8nSy-yktw5v9L3qL
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-26_08,2025-03-26_02,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  mlxscore=0 malwarescore=0
  suspectscore=0 clxscore=1011 spamscore=0 lowpriorityscore=0 phishscore=0
- mlxlogscore=422 priorityscore=1501 adultscore=0 bulkscore=0
+ mlxlogscore=628 priorityscore=1501 adultscore=0 bulkscore=0
  impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2502280000 definitions=main-2503260110
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=alifm@linux.ibm.com;
@@ -104,36 +106,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Starting with z15 (or newer) we can execute mmio
+instructions from userspace. On older platforms
+where we don't have these instructions available
+we can fallback to using system calls to access
+the PCI mapped resources.
 
-Recently on s390x we have enabled mmap support for vfio-pci devices [1].
-This allows us to take advantage and use userspace drivers on s390x. However,
-on s390x we have special instructions for MMIO access. Starting with z15 
-(and newer platforms) we have new PCI Memory I/O (MIO) instructions which 
-operate on virtually mapped PCI memory spaces, and can be used from userspace.
-On older platforms we would fallback to using existing system calls for MMIO access.
+This patch adds helper functions for mmio reads
+and writes for s390x.
 
-This patch series introduces support the PCI MIO instructions, and enables s390x
-support for the userspace NVMe driver on s390x. I would appreciate any review/feedback
-on the patches.
-
-Thanks
-Farhan
-
-[1] https://lore.kernel.org/linux-s390/20250226-vfio_pci_mmap-v7-0-c5c0f1d26efd@linux.ibm.com/
-
-Farhan Ali (2):
-  util: Add functions for s390x mmio read/write
-  block/nvme: Enable NVMe userspace driver for s390x
-
- block/nvme.c                  |  95 ++++++++++++++++++++++++------
+Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+---
  include/qemu/s390x_pci_mmio.h |  17 ++++++
  util/meson.build              |   2 +
  util/s390x_pci_mmio.c         | 105 ++++++++++++++++++++++++++++++++++
- 4 files changed, 201 insertions(+), 18 deletions(-)
+ 3 files changed, 124 insertions(+)
  create mode 100644 include/qemu/s390x_pci_mmio.h
  create mode 100644 util/s390x_pci_mmio.c
 
+diff --git a/include/qemu/s390x_pci_mmio.h b/include/qemu/s390x_pci_mmio.h
+new file mode 100644
+index 0000000000..be61b5ae29
+--- /dev/null
++++ b/include/qemu/s390x_pci_mmio.h
+@@ -0,0 +1,17 @@
++/*
++ * s390x PCI MMIO definitions
++ *
++ * Copyright 2025 IBM Corp.
++ * Author(s): Farhan Ali <alifm@linux.ibm.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef S390X_PCI_MMIO_H
++#define S390X_PCI_MMIO_H
++
++uint64_t s390x_pci_mmio_read_64(const void *ioaddr);
++uint32_t s390x_pci_mmio_read_32(const void *ioaddr);
++void s390x_pci_mmio_write_64(void *ioaddr, uint64_t val);
++void s390x_pci_mmio_write_32(void *ioaddr, uint32_t val);
++
++#endif
+diff --git a/util/meson.build b/util/meson.build
+index 780b5977a8..acb21592f9 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -131,4 +131,6 @@ elif cpu in ['ppc', 'ppc64']
+   util_ss.add(files('cpuinfo-ppc.c'))
+ elif cpu in ['riscv32', 'riscv64']
+   util_ss.add(files('cpuinfo-riscv.c'))
++elif cpu == 's390x'
++  util_ss.add(files('s390x_pci_mmio.c'))
+ endif
+diff --git a/util/s390x_pci_mmio.c b/util/s390x_pci_mmio.c
+new file mode 100644
+index 0000000000..2e0825d617
+--- /dev/null
++++ b/util/s390x_pci_mmio.c
+@@ -0,0 +1,105 @@
++/*
++ * s390x PCI MMIO definitions
++ *
++ * Copyright 2025 IBM Corp.
++ * Author(s): Farhan Ali <alifm@linux.ibm.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include <unistd.h>
++#include <sys/syscall.h>
++#include "qemu/osdep.h"
++#include "qemu/s390x_pci_mmio.h"
++#include "elf.h"
++
++union register_pair {
++    unsigned __int128 pair;
++    struct {
++        uint64_t even;
++        uint64_t odd;
++    };
++};
++
++static bool is_mio_supported;
++
++static __attribute__((constructor)) void check_is_mio_supported(void)
++{
++    is_mio_supported = !!(qemu_getauxval(AT_HWCAP) & HWCAP_S390_PCI_MIO);
++}
++
++static uint64_t s390x_pcilgi(const void *ioaddr, size_t len)
++{
++    union register_pair ioaddr_len = { .even = (uint64_t)ioaddr,
++                                       .odd = len };
++    uint64_t val;
++    int cc;
++
++    asm volatile(
++        /* pcilgi */
++        ".insn   rre,0xb9d60000,%[val],%[ioaddr_len]\n"
++        "ipm     %[cc]\n"
++        "srl     %[cc],28\n"
++        : [cc] "=d"(cc), [val] "=d"(val),
++        [ioaddr_len] "+&d"(ioaddr_len.pair) :: "cc");
++
++    if (cc) {
++        val = -1ULL;
++    }
++
++    return val;
++}
++
++static void s390x_pcistgi(void *ioaddr, uint64_t val, size_t len)
++{
++    union register_pair ioaddr_len = {.even = (uint64_t)ioaddr, .odd = len};
++
++    asm volatile (
++        /* pcistgi */
++        ".insn   rre,0xb9d40000,%[val],%[ioaddr_len]\n"
++        : [ioaddr_len] "+&d" (ioaddr_len.pair)
++        : [val] "d" (val)
++        : "cc", "memory");
++}
++
++uint32_t s390x_pci_mmio_read_32(const void *ioaddr)
++{
++    uint32_t val = 0;
++
++    if (is_mio_supported) {
++        val = s390x_pcilgi(ioaddr, sizeof(val));
++    } else {
++        syscall(__NR_s390_pci_mmio_read, ioaddr, &val, sizeof(val));
++    }
++    return val;
++}
++
++uint64_t s390x_pci_mmio_read_64(const void *ioaddr)
++{
++    uint64_t val = 0;
++
++    if (is_mio_supported) {
++        val = s390x_pcilgi(ioaddr, sizeof(val));
++    } else {
++        syscall(__NR_s390_pci_mmio_read, ioaddr, &val, sizeof(val));
++    }
++    return val;
++}
++
++void s390x_pci_mmio_write_64(void *ioaddr, uint64_t val)
++{
++    if (is_mio_supported) {
++        s390x_pcistgi(ioaddr, val, sizeof(val));
++    } else {
++        syscall(__NR_s390_pci_mmio_write, ioaddr, &val, sizeof(val));
++    }
++}
++
++void s390x_pci_mmio_write_32(void *ioaddr, uint32_t val)
++{
++    if (is_mio_supported) {
++        s390x_pcistgi(ioaddr, val, sizeof(val));
++    } else {
++        syscall(__NR_s390_pci_mmio_write, ioaddr, &val, sizeof(val));
++    }
++}
 -- 
 2.43.0
 
