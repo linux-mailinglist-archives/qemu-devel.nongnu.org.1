@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C80A713D2
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 10:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A6FA713C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Mar 2025 10:35:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txN9o-0000wd-7S; Wed, 26 Mar 2025 05:34:44 -0400
+	id 1txN9r-0000xe-CE; Wed, 26 Mar 2025 05:34:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txN9i-0000wH-UK
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:34:39 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txN9m-0000wx-1c
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:34:43 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txN9g-0003WQ-Va
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:34:38 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2255003f4c6so126918135ad.0
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 02:34:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txN9j-0003WX-Ko
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 05:34:41 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-22435603572so121738685ad.1
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 02:34:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1742981675; x=1743586475; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=AFzJoEt0Ixt5u8WKVL91yF4RT8EZ3t7tZkR0nOBMuJ4=;
- b=TW1pJNrpJwKU45Oib0LMyIWIR0sa8BmXEeheF/LNZhwdEf9P8Pk8S8j32lqTz+GBLj
- q45+cdAHshV9Y8I/bDQ1z4VOepCxqV96ypEEN/Le8LFv/2LeaKL63Qlwlfc/Gfzn3Obz
- chXWMuSHoFTCtvKEEPSntw3QzK+Gi/K+MnqRcUfCJsoOZzgZMU2KZo6TodbPiQRaC2TF
- vLUsuLEnfqp0BGjmV/sOWJehjLGyFP05b8iQ3E97KTr9t+N+yGDt+z5iOA3OSXzhCs7S
- uZvmGJvWBtq3CaRYR3fmeRmDKP+a+wlSkbfO0wxqgH4+POTC12GfvbJnvDcGUCF4rRNo
- 4hNw==
+ d=gmail.com; s=20230601; t=1742981677; x=1743586477; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ATYBbnhbtbBsTk/t++AIt/R5/IqVj7f3CIXIbyHaWGw=;
+ b=Ohkrh9UKUGJUb0vqBQu+o6CZX/DgGkcOeEf7hc6nLnktyAr/WdiDNNSlTyqhX/Ez48
+ +di1snCJdVPik915KsZ5wnkc1m3Gu2TR4x7rKYhPGeXN7qCodCmWepNVMdSM8ggeLvDm
+ dkWc/2eEPRVIb58FfC+lGIoYAZDlvUt3jiQYtFtd/oXUifiLA/c+W0Hm2X/31L0dn4Lg
+ GtYSeL0nCzMLLVO9NXgoiduaiFgpnINnC/xuTiGMCiVhoHqLgRBx6/9hjvQOAQiqh9zd
+ uyORTla7G2mvPJGggKq2ak2lMqQIMbSTAQfrgUCKll9oMn/YxBJcnuLaHNN6J5wsV6w7
+ a/Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1742981675; x=1743586475;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=AFzJoEt0Ixt5u8WKVL91yF4RT8EZ3t7tZkR0nOBMuJ4=;
- b=ByN3U1BurDS5DSt84yfs9B7D9gnhZ5Ix9MCRI0dVLRN1q1P3150RvNwHYnrI4zbLSy
- IJEsNTo8sjCa+EpKB7erzCpGjtXE4FHowA10u4pyq3s7JndGzHPrci96Z9MqPMVfFL44
- orSz87lFqQREiAJNDgReFVtcSu7QFBf3wvWPEnzDcuvX4QiRoUFBlK7pAXW5YRICho5A
- r7Zp8REQxPkcMOo+uzmUimxLLMi31J6FDGQNe3TjdKSl4j7sLkQlSGPqyxZ5FbZv2m1K
- 24hJtup/+XnVx7MioG5UxID7KWMYip1A5UUMx1Orm9ZQ1Hsab6qtDaKDc9g5IqsKG7Oz
- qrjQ==
-X-Gm-Message-State: AOJu0Yz9gErPKllFVUoEpwVlsLEJr2f/bXQC9EKoalEARPa2AMtPSPN4
- 0T0fqHZLevgNsjE3zrGQeORbSg+dFmznL0Snr0rXWgeiE6Kgg1xycUd2X/sw
-X-Gm-Gg: ASbGncsJeht5y3gAhuJzDV6G7TRaTB7kI78DtiXxsPFmJTpWxQA0Wwvj09iR0tOWUXA
- TKG5VxaEIbuXtDS0nDYBMxf+xl/3PYFYdNfRWeYhVotoOLtzlgD16cr1XcvCxli43u/TawfVcrH
- cGYb19Ppsv4Yfd7s8+Z5CK7ELKL9L7g9vOPnevLPtrPig5DlTTBG/usIW27DB6zWSLqBKmi/PVT
- 1ITXC+WCeDqjvciVxuTCoSbc4XZvHV4Sshi9OeKtkUhu2XEhfRs/hmzO/5KNlHvglPhwapg16MJ
- 19msrMxlUADcTSsZrEHCz1ChusmUsm6wAV4qsbX7YjUXEL7pbfRHbw6HFVwol+NDt7UZYNrqm3k
- KcZyglRw18h3ToEAmXNve
-X-Google-Smtp-Source: AGHT+IE/m6ZJHsMixaTLNC71+XnyBHlDVr2Q85xAMEo3slO1t4MgJObpXmstOwW/TXNu32LRoCF5Qg==
-X-Received: by 2002:a05:6a00:a29:b0:736:39d4:ccf6 with SMTP id
- d2e1a72fcca58-739059763admr37531431b3a.8.1742981674891; 
- Wed, 26 Mar 2025 02:34:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1742981677; x=1743586477;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ATYBbnhbtbBsTk/t++AIt/R5/IqVj7f3CIXIbyHaWGw=;
+ b=u6nsM8fQNy939JiRBh0vCPhZi/F6KVkRX5WtqEfwvHQgspAcP9Zsk/6uPwltUV/5/I
+ mjCqNgqywEHl7oTMeBeI9Dt+UOkc7ZY9JbnoVXR9B49epbUVLsbR7xyhe+iNfzU2Aa7K
+ LETQOx68v3zNS1dReEPNxZxa6TXi9Xt34m9SHB5IqBE6fEVq2VTutc+VOm4LHkx/WvGI
+ 9wm2GF7l/0QTcg03HiWig8JZqC1jDBwnJg2OrNvAi6MZcjrIkJRM5OVvwrsOjSDk01kc
+ WhOrmJcLXVRDrdowKL0jo8xpVWaXjNyz+JWcyDtHz8B2EMQPJe1TQDX/YeH4xt0l6C97
+ F4lQ==
+X-Gm-Message-State: AOJu0YwmPmxrSFoSph9Ob6qAvCr1nbn/rvm6l8rGqsMUADR/YNm6CBhF
+ DxE76wqUokqVgB6dL4UGb+iM6uQwF3Yds/PFIb+GmE3UALAFi2Y2u6gsKDdJ
+X-Gm-Gg: ASbGnctN5IV8NBrTR2HgI52fiEYAGPKpAu+EnOddwB3MmRxHEObuM/UZDst8DPA3lAb
+ gR2RuZ/aZH1ueFpn+3tMyyjNJL9aZrVT+JDbVnAnkIgTXMI80GHy5A5QQilo113k7A/A5Dp045g
+ lSdIWRdTeILrTdUwfDFi5uEDyuN5rm8fdPrbR6t0kMjJyaSJd50gBmM/0qvWSnVCkCS66XYuN+v
+ Z2PNsrUTa4kM7aY/y4tt7GOv0YK5P9ByIivRDc91MPd2VZabuWQaD7RfXD1zE2ZgfIeKP5kt7nn
+ RCWtp1vHBr+0kUQgknjU1isZEaFNYLjXm8h8Wyld5XPSy7Ubu0ueG3bCAVAw0wNPqdjkW8gYguv
+ 3kzrqvASEIyZLtbreZiqO
+X-Google-Smtp-Source: AGHT+IHZ2vqUv23U8AsBa4YSG68aVRfnjxi0mTUrPvO/27P3M+g8ELXa5MWQq0U/2SY2VkAfQbQPWA==
+X-Received: by 2002:a05:6a21:2d87:b0:1f5:93b1:6a58 with SMTP id
+ adf61e73a8af0-1fe42f090dcmr34133074637.8.1742981677192; 
+ Wed, 26 Mar 2025 02:34:37 -0700 (PDT)
 Received: from localhost.localdomain (awork062150.netvigator.com.
  [203.198.28.150]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73905fd57f7sm11729684b3a.44.2025.03.26.02.34.33
+ d2e1a72fcca58-73905fd57f7sm11729684b3a.44.2025.03.26.02.34.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Mar 2025 02:34:34 -0700 (PDT)
+ Wed, 26 Mar 2025 02:34:36 -0700 (PDT)
 From: yuq825@gmail.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
  Qiang Yu <yuq825@gmail.com>
-Subject: [PATCH v2 0/6] ui: support multi plane texture
-Date: Wed, 26 Mar 2025 17:34:12 +0800
-Message-ID: <20250326093418.397269-1-yuq825@gmail.com>
+Subject: [PATCH v2 1/6] ui/dmabuf: extend QemuDmaBuf to support multi-plane
+Date: Wed, 26 Mar 2025 17:34:13 +0800
+Message-ID: <20250326093418.397269-2-yuq825@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250326093418.397269-1-yuq825@gmail.com>
+References: <20250326093418.397269-1-yuq825@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=yuq825@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=yuq825@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,55 +99,383 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Qiang Yu <yuq825@gmail.com>
 
-mesa/radeonsi is going to support explicit modifier with this MR:
-  * https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/31658
-
-The side effect is some texture will become multi-plane which
-breaks qemu. Because qemu currently only support single plane
-texture.
-
-For example, texture with DCC (a compressed format) enabled modifier
-will expose one plane for compressed data, another plane with metadata
-for compression.
-
-This patch serial fix qemu to support multi-plane texture for
-DBus and SPICE display, other display seems not affected by multi
-plane.
-
-This patch serial also depends on the spice changes here:
-  * https://gitlab.freedesktop.org/spice/spice/-/merge_requests/232
-
-SPICE client change here:
-  * https://gitlab.freedesktop.org/spice/spice-gtk/-/merge_requests/130
-
-DBus client change here:
-  * https://gitlab.com/marcandre.lureau/qemu-display/-/merge_requests/5
+mesa/radeonsi is going to support explicit modifier which
+may export a multi-plane texture. For example, texture with
+DCC enabled (a compressed format) has two planes, one with
+compressed data, the other with meta data for compression.
 
 v2:
-  * change dmabuf API for array length
-  * check spice_qxl_gl_scanout2 API instead of bumping spice version
+  * change API qemu_dmabuf_get_fd/offset/stride to
+    qemu_dmabuf_get_fds/offsets/strides.
+  * change API qemu_dmabuf_dup_fd to qemu_dmabuf_dup_fds.
+  * add an extra arg to these API for the length of the
+    array.
 
-Qiang Yu (6):
-  ui/dmabuf: extend QemuDmaBuf to support multi-plane
-  ui/egl: require EGL_EXT_image_dma_buf_import_modifiers
-  ui/egl: use DRM_FORMAT_MOD_INVALID as default modifier
-  ui/egl: support multi-plane dmabuf when egl export/import
-  ui/dbus: change dbus ScanoutDMABUF interface
-  ui/spice: support multi plane dmabuf scanout
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+---
+ hw/display/vhost-user-gpu.c     |  6 ++-
+ hw/display/virtio-gpu-udmabuf.c |  6 ++-
+ hw/vfio/display.c               |  7 +--
+ include/ui/dmabuf.h             | 20 +++++----
+ ui/dbus-listener.c              | 10 ++---
+ ui/dmabuf.c                     | 77 +++++++++++++++++++++++----------
+ ui/egl-helpers.c                |  4 +-
+ ui/spice-display.c              |  4 +-
+ 8 files changed, 86 insertions(+), 48 deletions(-)
 
- hw/display/vhost-user-gpu.c     |   9 ++-
- hw/display/virtio-gpu-udmabuf.c |   8 ++-
- hw/vfio/display.c               |   7 +-
- include/ui/dmabuf.h             |  20 +++---
- include/ui/egl-helpers.h        |   5 +-
- meson.build                     |   5 ++
- ui/dbus-display1.xml            |  37 ++++++++++
- ui/dbus-listener.c              | 123 ++++++++++++++++++++++++++++----
- ui/dmabuf.c                     |  77 +++++++++++++-------
- ui/egl-helpers.c                | 102 +++++++++++++++++++-------
- ui/spice-display.c              | 102 ++++++++++++++++++--------
- 11 files changed, 385 insertions(+), 110 deletions(-)
-
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 2aed6243f6..a7949c7078 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -249,6 +249,8 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+     case VHOST_USER_GPU_DMABUF_SCANOUT: {
+         VhostUserGpuDMABUFScanout *m = &msg->payload.dmabuf_scanout;
+         int fd = qemu_chr_fe_get_msgfd(&g->vhost_chr);
++        uint32_t offset = 0;
++        uint32_t stride = m->fd_stride;
+         uint64_t modifier = 0;
+         QemuDmaBuf *dmabuf;
+ 
+@@ -282,10 +284,10 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+         }
+ 
+         dmabuf = qemu_dmabuf_new(m->width, m->height,
+-                                 m->fd_stride, 0, 0,
++                                 &offset, &stride, 0, 0,
+                                  m->fd_width, m->fd_height,
+                                  m->fd_drm_fourcc, modifier,
+-                                 fd, false, m->fd_flags &
++                                 &fd, 1, false, m->fd_flags &
+                                  VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP);
+ 
+         dpy_gl_scanout_dmabuf(con, dmabuf);
+diff --git a/hw/display/virtio-gpu-udmabuf.c b/hw/display/virtio-gpu-udmabuf.c
+index 85ca23cb32..34fbe05b7a 100644
+--- a/hw/display/virtio-gpu-udmabuf.c
++++ b/hw/display/virtio-gpu-udmabuf.c
+@@ -176,16 +176,18 @@ static VGPUDMABuf
+                           struct virtio_gpu_rect *r)
+ {
+     VGPUDMABuf *dmabuf;
++    uint32_t offset = 0;
+ 
+     if (res->dmabuf_fd < 0) {
+         return NULL;
+     }
+ 
+     dmabuf = g_new0(VGPUDMABuf, 1);
+-    dmabuf->buf = qemu_dmabuf_new(r->width, r->height, fb->stride,
++    dmabuf->buf = qemu_dmabuf_new(r->width, r->height,
++                                  &offset, &fb->stride,
+                                   r->x, r->y, fb->width, fb->height,
+                                   qemu_pixman_to_drm_format(fb->format),
+-                                  0, res->dmabuf_fd, true, false);
++                                  0, &res->dmabuf_fd, 1, true, false);
+     dmabuf->scanout_id = scanout_id;
+     QTAILQ_INSERT_HEAD(&g->dmabuf.bufs, dmabuf, next);
+ 
+diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+index ea87830fe0..9d882235fb 100644
+--- a/hw/vfio/display.c
++++ b/hw/vfio/display.c
+@@ -214,6 +214,7 @@ static VFIODMABuf *vfio_display_get_dmabuf(VFIOPCIDevice *vdev,
+     struct vfio_device_gfx_plane_info plane;
+     VFIODMABuf *dmabuf;
+     int fd, ret;
++    uint32_t offset = 0;
+ 
+     memset(&plane, 0, sizeof(plane));
+     plane.argsz = sizeof(plane);
+@@ -246,10 +247,10 @@ static VFIODMABuf *vfio_display_get_dmabuf(VFIOPCIDevice *vdev,
+ 
+     dmabuf = g_new0(VFIODMABuf, 1);
+     dmabuf->dmabuf_id  = plane.dmabuf_id;
+-    dmabuf->buf = qemu_dmabuf_new(plane.width, plane.height,
+-                                  plane.stride, 0, 0, plane.width,
++    dmabuf->buf = qemu_dmabuf_new(plane.width, plane.height, &offset,
++                                  &plane.stride, 0, 0, plane.width,
+                                   plane.height, plane.drm_format,
+-                                  plane.drm_format_mod, fd, false, false);
++                                  plane.drm_format_mod, &fd, 1, false, false);
+ 
+     if (plane_type == DRM_PLANE_TYPE_CURSOR) {
+         vfio_display_update_cursor(dmabuf, &plane);
+diff --git a/include/ui/dmabuf.h b/include/ui/dmabuf.h
+index dc74ba895a..3decdca497 100644
+--- a/include/ui/dmabuf.h
++++ b/include/ui/dmabuf.h
+@@ -10,24 +10,29 @@
+ #ifndef DMABUF_H
+ #define DMABUF_H
+ 
++#define DMABUF_MAX_PLANES 4
++
+ typedef struct QemuDmaBuf QemuDmaBuf;
+ 
+ QemuDmaBuf *qemu_dmabuf_new(uint32_t width, uint32_t height,
+-                            uint32_t stride, uint32_t x,
+-                            uint32_t y, uint32_t backing_width,
+-                            uint32_t backing_height, uint32_t fourcc,
+-                            uint64_t modifier, int dmabuf_fd,
++                            const uint32_t *offset, const uint32_t *stride,
++                            uint32_t x, uint32_t y,
++                            uint32_t backing_width, uint32_t backing_height,
++                            uint32_t fourcc, uint64_t modifier,
++                            const int32_t *dmabuf_fd, uint32_t num_planes,
+                             bool allow_fences, bool y0_top);
+ void qemu_dmabuf_free(QemuDmaBuf *dmabuf);
+ 
+ G_DEFINE_AUTOPTR_CLEANUP_FUNC(QemuDmaBuf, qemu_dmabuf_free);
+ 
+-int qemu_dmabuf_get_fd(QemuDmaBuf *dmabuf);
+-int qemu_dmabuf_dup_fd(QemuDmaBuf *dmabuf);
++const int *qemu_dmabuf_get_fds(QemuDmaBuf *dmabuf, int *nfds);
++void qemu_dmabuf_dup_fds(QemuDmaBuf *dmabuf, int *fds, int nfds);
+ void qemu_dmabuf_close(QemuDmaBuf *dmabuf);
+ uint32_t qemu_dmabuf_get_width(QemuDmaBuf *dmabuf);
+ uint32_t qemu_dmabuf_get_height(QemuDmaBuf *dmabuf);
+-uint32_t qemu_dmabuf_get_stride(QemuDmaBuf *dmabuf);
++const uint32_t *qemu_dmabuf_get_offsets(QemuDmaBuf *dmabuf, int *noffsets);
++const uint32_t *qemu_dmabuf_get_strides(QemuDmaBuf *dmabuf, int *nstrides);
++uint32_t qemu_dmabuf_get_num_planes(QemuDmaBuf *dmabuf);
+ uint32_t qemu_dmabuf_get_fourcc(QemuDmaBuf *dmabuf);
+ uint64_t qemu_dmabuf_get_modifier(QemuDmaBuf *dmabuf);
+ uint32_t qemu_dmabuf_get_texture(QemuDmaBuf *dmabuf);
+@@ -44,6 +49,5 @@ void qemu_dmabuf_set_texture(QemuDmaBuf *dmabuf, uint32_t texture);
+ void qemu_dmabuf_set_fence_fd(QemuDmaBuf *dmabuf, int32_t fence_fd);
+ void qemu_dmabuf_set_sync(QemuDmaBuf *dmabuf, void *sync);
+ void qemu_dmabuf_set_draw_submitted(QemuDmaBuf *dmabuf, bool draw_submitted);
+-void qemu_dmabuf_set_fd(QemuDmaBuf *dmabuf, int32_t fd);
+ 
+ #endif
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 51244c9240..65373d519c 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -299,7 +299,7 @@ static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
+     uint64_t modifier;
+     bool y0_top;
+ 
+-    fd = qemu_dmabuf_get_fd(dmabuf);
++    fd = qemu_dmabuf_get_fds(dmabuf, NULL)[0];
+     fd_list = g_unix_fd_list_new();
+     if (g_unix_fd_list_append(fd_list, fd, &err) != 0) {
+         error_report("Failed to setup dmabuf fdlist: %s", err->message);
+@@ -310,7 +310,7 @@ static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
+ 
+     width = qemu_dmabuf_get_width(dmabuf);
+     height = qemu_dmabuf_get_height(dmabuf);
+-    stride = qemu_dmabuf_get_stride(dmabuf);
++    stride = qemu_dmabuf_get_strides(dmabuf, NULL)[0];
+     fourcc = qemu_dmabuf_get_fourcc(dmabuf);
+     modifier = qemu_dmabuf_get_modifier(dmabuf);
+     y0_top = qemu_dmabuf_get_y0_top(dmabuf);
+@@ -505,7 +505,7 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
+ #ifdef CONFIG_GBM
+     g_autoptr(QemuDmaBuf) dmabuf = NULL;
+     int fd;
+-    uint32_t stride, fourcc;
++    uint32_t offset = 0, stride, fourcc;
+     uint64_t modifier;
+ 
+     assert(tex_id);
+@@ -515,8 +515,8 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
+         error_report("%s: failed to get fd for texture", __func__);
+         return;
+     }
+-    dmabuf = qemu_dmabuf_new(w, h, stride, x, y, backing_width,
+-                             backing_height, fourcc, modifier, fd,
++    dmabuf = qemu_dmabuf_new(w, h, &offset, &stride, x, y, backing_width,
++                             backing_height, fourcc, modifier, &fd, 1,
+                              false, backing_y_0_top);
+ 
+     dbus_scanout_dmabuf(dcl, dmabuf);
+diff --git a/ui/dmabuf.c b/ui/dmabuf.c
+index df7a09703f..99e085fe88 100644
+--- a/ui/dmabuf.c
++++ b/ui/dmabuf.c
+@@ -11,10 +11,12 @@
+ #include "ui/dmabuf.h"
+ 
+ struct QemuDmaBuf {
+-    int       fd;
++    int       fd[DMABUF_MAX_PLANES];
+     uint32_t  width;
+     uint32_t  height;
+-    uint32_t  stride;
++    uint32_t  offset[DMABUF_MAX_PLANES];
++    uint32_t  stride[DMABUF_MAX_PLANES];
++    uint32_t  num_planes;
+     uint32_t  fourcc;
+     uint64_t  modifier;
+     uint32_t  texture;
+@@ -30,28 +32,33 @@ struct QemuDmaBuf {
+ };
+ 
+ QemuDmaBuf *qemu_dmabuf_new(uint32_t width, uint32_t height,
+-                            uint32_t stride, uint32_t x,
+-                            uint32_t y, uint32_t backing_width,
+-                            uint32_t backing_height, uint32_t fourcc,
+-                            uint64_t modifier, int32_t dmabuf_fd,
++                            const uint32_t *offset, const uint32_t *stride,
++                            uint32_t x, uint32_t y,
++                            uint32_t backing_width, uint32_t backing_height,
++                            uint32_t fourcc, uint64_t modifier,
++                            const int32_t *dmabuf_fd, uint32_t num_planes,
+                             bool allow_fences, bool y0_top) {
+     QemuDmaBuf *dmabuf;
+ 
++    assert(num_planes > 0 && num_planes <= DMABUF_MAX_PLANES);
++
+     dmabuf = g_new0(QemuDmaBuf, 1);
+ 
+     dmabuf->width = width;
+     dmabuf->height = height;
+-    dmabuf->stride = stride;
++    memcpy(dmabuf->offset, offset, num_planes * sizeof(*offset));
++    memcpy(dmabuf->stride, stride, num_planes * sizeof(*stride));
+     dmabuf->x = x;
+     dmabuf->y = y;
+     dmabuf->backing_width = backing_width;
+     dmabuf->backing_height = backing_height;
+     dmabuf->fourcc = fourcc;
+     dmabuf->modifier = modifier;
+-    dmabuf->fd = dmabuf_fd;
++    memcpy(dmabuf->fd, dmabuf_fd, num_planes * sizeof(*dmabuf_fd));
+     dmabuf->allow_fences = allow_fences;
+     dmabuf->y0_top = y0_top;
+     dmabuf->fence_fd = -1;
++    dmabuf->num_planes = num_planes;
+ 
+     return dmabuf;
+ }
+@@ -65,31 +72,39 @@ void qemu_dmabuf_free(QemuDmaBuf *dmabuf)
+     g_free(dmabuf);
+ }
+ 
+-int qemu_dmabuf_get_fd(QemuDmaBuf *dmabuf)
++const int *qemu_dmabuf_get_fds(QemuDmaBuf *dmabuf, int *nfds)
+ {
+     assert(dmabuf != NULL);
+ 
++    if (nfds)
++        *nfds = ARRAY_SIZE(dmabuf->fd);
++
+     return dmabuf->fd;
+ }
+ 
+-int qemu_dmabuf_dup_fd(QemuDmaBuf *dmabuf)
++void qemu_dmabuf_dup_fds(QemuDmaBuf *dmabuf, int *fds, int nfds)
+ {
++    int i;
++
+     assert(dmabuf != NULL);
++    assert(nfds >= dmabuf->num_planes);
+ 
+-    if (dmabuf->fd >= 0) {
+-        return dup(dmabuf->fd);
+-    } else {
+-        return -1;
++    for (i = 0; i < dmabuf->num_planes; i++) {
++        fds[i] = dmabuf->fd[i] >= 0 ? dup(dmabuf->fd[i]) : -1;
+     }
+ }
+ 
+ void qemu_dmabuf_close(QemuDmaBuf *dmabuf)
+ {
++    int i;
++
+     assert(dmabuf != NULL);
+ 
+-    if (dmabuf->fd >= 0) {
+-        close(dmabuf->fd);
+-        dmabuf->fd = -1;
++    for (i = 0; i < dmabuf->num_planes; i++) {
++        if (dmabuf->fd[i] >= 0) {
++            close(dmabuf->fd[i]);
++            dmabuf->fd[i] = -1;
++        }
+     }
+ }
+ 
+@@ -107,13 +122,33 @@ uint32_t qemu_dmabuf_get_height(QemuDmaBuf *dmabuf)
+     return dmabuf->height;
+ }
+ 
+-uint32_t qemu_dmabuf_get_stride(QemuDmaBuf *dmabuf)
++const uint32_t *qemu_dmabuf_get_offsets(QemuDmaBuf *dmabuf, int *noffsets)
++{
++    assert(dmabuf != NULL);
++
++    if (noffsets)
++        *noffsets = ARRAY_SIZE(dmabuf->offset);
++
++    return dmabuf->offset;
++}
++
++const uint32_t *qemu_dmabuf_get_strides(QemuDmaBuf *dmabuf, int *nstrides)
+ {
+     assert(dmabuf != NULL);
+ 
++    if (nstrides)
++        *nstrides = ARRAY_SIZE(dmabuf->stride);
++
+     return dmabuf->stride;
+ }
+ 
++uint32_t qemu_dmabuf_get_num_planes(QemuDmaBuf *dmabuf)
++{
++    assert(dmabuf != NULL);
++
++    return dmabuf->num_planes;
++}
++
+ uint32_t qemu_dmabuf_get_fourcc(QemuDmaBuf *dmabuf)
+ {
+     assert(dmabuf != NULL);
+@@ -221,9 +256,3 @@ void qemu_dmabuf_set_draw_submitted(QemuDmaBuf *dmabuf, bool draw_submitted)
+     assert(dmabuf != NULL);
+     dmabuf->draw_submitted = draw_submitted;
+ }
+-
+-void qemu_dmabuf_set_fd(QemuDmaBuf *dmabuf, int32_t fd)
+-{
+-    assert(dmabuf != NULL);
+-    dmabuf->fd = fd;
+-}
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index d591159480..d194d004b7 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -323,9 +323,9 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+     attrs[i++] = qemu_dmabuf_get_fourcc(dmabuf);
+ 
+     attrs[i++] = EGL_DMA_BUF_PLANE0_FD_EXT;
+-    attrs[i++] = qemu_dmabuf_get_fd(dmabuf);
++    attrs[i++] = qemu_dmabuf_get_fds(dmabuf, NULL)[0];
+     attrs[i++] = EGL_DMA_BUF_PLANE0_PITCH_EXT;
+-    attrs[i++] = qemu_dmabuf_get_stride(dmabuf);
++    attrs[i++] = qemu_dmabuf_get_strides(dmabuf, NULL)[0];
+     attrs[i++] = EGL_DMA_BUF_PLANE0_OFFSET_EXT;
+     attrs[i++] = 0;
+ #ifdef EGL_DMA_BUF_PLANE0_MODIFIER_LO_EXT
+diff --git a/ui/spice-display.c b/ui/spice-display.c
+index c794ae0649..40547edb5e 100644
+--- a/ui/spice-display.c
++++ b/ui/spice-display.c
+@@ -1075,10 +1075,10 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
+                                      stride, fourcc, false);
+             }
+         } else {
+-            stride = qemu_dmabuf_get_stride(dmabuf);
++            stride = qemu_dmabuf_get_strides(dmabuf, NULL)[0];
+             fourcc = qemu_dmabuf_get_fourcc(dmabuf);
+             y_0_top = qemu_dmabuf_get_y0_top(dmabuf);
+-            fd = qemu_dmabuf_dup_fd(dmabuf);
++            qemu_dmabuf_dup_fds(dmabuf, &fd, 1);
+ 
+             trace_qemu_spice_gl_forward_dmabuf(ssd->qxl.id, width, height);
+             /* note: spice server will close the fd, so hand over a dup */
 -- 
 2.43.0
 
