@@ -2,109 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD89A734BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 15:41:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E8CA734C3
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 15:41:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txoOm-0006V8-0a; Thu, 27 Mar 2025 10:40:01 -0400
+	id 1txoOr-0006XR-JZ; Thu, 27 Mar 2025 10:40:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1txoOZ-0006UF-TH
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 10:39:48 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1txoOg-0006VL-5Q
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 10:39:55 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1txoOX-0005Z8-Rk
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 10:39:47 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1txoOd-0005aB-LJ
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 10:39:53 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 22D792117A;
- Thu, 27 Mar 2025 14:39:44 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 9EB902119B;
+ Thu, 27 Mar 2025 14:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1743086384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1743086386; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QJh18vi4S8VW/S7WC4c3Cmkh0hz+w8GARbqarPZ7238=;
- b=E/GwY7Tuipqoisjwi2ZzJyv6zNoa87FY3ForjvI5QTgfvy+5En6qetEUKpr6NrzFxO13N1
- F/NU4+OlYUoSAwOlkDbDXZwYsG+MAglRWCdAeq0+dpA1QoQ7ab1fMZIA8hIXxRaNXAioAi
- NgbL7iED8/PADEvFihsbDdpvrzQoppM=
+ bh=u8Aa/7lfvtNeiQpq20QkviAb2ltlW4xgHZk21dTHB6U=;
+ b=UjEExAtoQR38GnzeYdjkjJjCBmrqJRRoyKHwYeTJMuWDHi8cxcVV4YY9mkhlGj3MYsMO8V
+ bwHf5g8SbSAzgmZeaWr12vh1CfEOlTja2rew2/t1nT0wBxTgE2lBA9N93rcUam4yzTIaOC
+ 3d54T+DBZonF/mKthyr7lYuV24LxM9k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1743086384;
+ s=susede2_ed25519; t=1743086386;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QJh18vi4S8VW/S7WC4c3Cmkh0hz+w8GARbqarPZ7238=;
- b=K/+T6SUBU7VafipPW+v9qJskKxIfeRJ9BKkRHFnv2NbTpDUoEVZmYLg7ADsnf6c0fZ/4qs
- yJSaxmpmfpWTwABA==
+ bh=u8Aa/7lfvtNeiQpq20QkviAb2ltlW4xgHZk21dTHB6U=;
+ b=GQZPXPy3y8uicf6nYOFqXIVYGYjmwP5S9HVdVHkWMKk598Ag5HSz/qVlaXDIA5jcWtPF5j
+ DaJEJjbjb58QM4Cg==
 Authentication-Results: smtp-out1.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UjEExAto;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GQZPXPy3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1743086384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1743086386; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QJh18vi4S8VW/S7WC4c3Cmkh0hz+w8GARbqarPZ7238=;
- b=E/GwY7Tuipqoisjwi2ZzJyv6zNoa87FY3ForjvI5QTgfvy+5En6qetEUKpr6NrzFxO13N1
- F/NU4+OlYUoSAwOlkDbDXZwYsG+MAglRWCdAeq0+dpA1QoQ7ab1fMZIA8hIXxRaNXAioAi
- NgbL7iED8/PADEvFihsbDdpvrzQoppM=
+ bh=u8Aa/7lfvtNeiQpq20QkviAb2ltlW4xgHZk21dTHB6U=;
+ b=UjEExAtoQR38GnzeYdjkjJjCBmrqJRRoyKHwYeTJMuWDHi8cxcVV4YY9mkhlGj3MYsMO8V
+ bwHf5g8SbSAzgmZeaWr12vh1CfEOlTja2rew2/t1nT0wBxTgE2lBA9N93rcUam4yzTIaOC
+ 3d54T+DBZonF/mKthyr7lYuV24LxM9k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1743086384;
+ s=susede2_ed25519; t=1743086386;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QJh18vi4S8VW/S7WC4c3Cmkh0hz+w8GARbqarPZ7238=;
- b=K/+T6SUBU7VafipPW+v9qJskKxIfeRJ9BKkRHFnv2NbTpDUoEVZmYLg7ADsnf6c0fZ/4qs
- yJSaxmpmfpWTwABA==
+ bh=u8Aa/7lfvtNeiQpq20QkviAb2ltlW4xgHZk21dTHB6U=;
+ b=GQZPXPy3y8uicf6nYOFqXIVYGYjmwP5S9HVdVHkWMKk598Ag5HSz/qVlaXDIA5jcWtPF5j
+ DaJEJjbjb58QM4Cg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 188D1139D4;
- Thu, 27 Mar 2025 14:39:41 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9A1F3139D4;
+ Thu, 27 Mar 2025 14:39:44 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id sM9wMi1j5WcVZgAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 27 Mar 2025 14:39:41 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id GKiDFjBj5WcVZgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 27 Mar 2025 14:39:44 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
  Juraj Marcin <jmarcin@redhat.com>, berrange@redhat.com,
  Marco Cavenati <Marco.Cavenati@eurecom.fr>
-Subject: [PATCH 2/4] tests/qtest/migration: Extract machine type resolution
-Date: Thu, 27 Mar 2025 11:39:32 -0300
-Message-Id: <20250327143934.7935-3-farosas@suse.de>
+Subject: [PATCH 3/4] tests/qtest/migration: Add QMP helpers for snapshot
+Date: Thu, 27 Mar 2025 11:39:33 -0300
+Message-Id: <20250327143934.7935-4-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250327143934.7935-1-farosas@suse.de>
 References: <20250327143934.7935-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: 9EB902119B
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- TO_DN_SOME(0.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; TO_DN_SOME(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FROM_HAS_DN(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
- RCPT_COUNT_FIVE(0.00)[6];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:mid,
- suse.de:email]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ MIME_TRACE(0.00)[0:+]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ ARC_NA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ DKIM_TRACE(0.00)[suse.de:+]; RCPT_COUNT_FIVE(0.00)[6];
+ RCVD_TLS_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:dkim, suse.de:mid,
+ imap1.dmz-prg2.suse.org:helo, imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,120 +127,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the machine type resolution code to a separate function, along
-with the machine alias, which is only used for this purpose.
+Add helpers to call QMP snapshot commands and monitor the snapshot
+job.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/framework.c | 52 +++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 17 deletions(-)
+ tests/qtest/migration/migration-qmp.c | 120 ++++++++++++++++++++++++++
+ tests/qtest/migration/migration-qmp.h |   4 +
+ 2 files changed, 124 insertions(+)
 
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 10e1d04b58..2311100dd6 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -207,6 +207,38 @@ static QList *migrate_start_get_qmp_capabilities(const MigrateStart *args)
-     return capabilities;
+diff --git a/tests/qtest/migration/migration-qmp.c b/tests/qtest/migration/migration-qmp.c
+index fb59741b2c..f5941e9473 100644
+--- a/tests/qtest/migration/migration-qmp.c
++++ b/tests/qtest/migration/migration-qmp.c
+@@ -518,3 +518,123 @@ void migrate_postcopy_start(QTestState *from, QTestState *to,
+     wait_for_stop(from, src_state);
+     qtest_qmp_eventwait(to, "RESUME");
  }
- 
-+static char *migrate_resolve_alias(const char *arch)
++
++static void job_status_wait(QTestState *s, const char *id, const char *target)
 +{
-+    const char *machine_alias;
++    QDict *response, *data;
++    const char *status, *name;
++    bool found;
 +
-+    if (g_str_equal(arch, "i386")) {
-+        machine_alias = "pc";
++    do {
++        response = qtest_qmp_eventwait_ref(s, "JOB_STATUS_CHANGE");
++        data = qdict_get_qdict(response, "data");
++        g_assert(data);
 +
-+    } else if (g_str_equal(arch, "x86_64")) {
-+        machine_alias = "q35";
++        name = qdict_get_str(data, "id");
++        if (g_str_equal(name, id)) {
++            status = qdict_get_str(data, "status");
++            found = (strcmp(status, target) == 0);
++        }
 +
-+    } else if (g_str_equal(arch, "s390x")) {
-+        machine_alias = "s390-ccw-virtio";
-+
-+    } else if (g_str_equal(arch, "ppc64")) {
-+        machine_alias = "pseries";
-+
-+    } else if (g_str_equal(arch, "aarch64")) {
-+        machine_alias = "virt";
-+
-+    } else {
-+        g_assert_not_reached();
-+    }
-+
-+    if (!qtest_has_machine(machine_alias)) {
-+        g_autofree char *msg = g_strdup_printf("machine %s not supported", machine_alias);
-+        g_test_skip(msg);
-+        return NULL;
-+    }
-+
-+    return resolve_machine_version(machine_alias, QEMU_ENV_SRC, QEMU_ENV_DST);
++        qobject_unref(response);
++    } while (!found);
 +}
 +
- int migrate_start(QTestState **from, QTestState **to, const char *uri,
-                   MigrateStart *args)
- {
-@@ -220,7 +252,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-     const char *kvm_opts = NULL;
-     const char *arch = qtest_get_arch();
-     const char *memory_size;
--    const char *machine_alias, *machine_opts = "";
-+    const char *machine_opts = "";
-     g_autofree char *machine = NULL;
-     const char *bootpath;
-     g_autoptr(QList) capabilities = migrate_start_get_qmp_capabilities(args);
-@@ -241,12 +273,6 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
++static bool job_check_status(QTestState *qts, const char *id, char **msg)
++{
++    QDict *rsp, *info;
++    QList *list;
++    const QListEntry *p;
++    gchar *status;
++    const char *job_msg, *job_id;
++
++    rsp = qtest_qmp(qts, "{ 'execute': 'query-jobs' }");
++    g_assert(rsp);
++    g_assert(qdict_haskey(rsp, "return"));
++
++    list = qdict_get_qlist(rsp, "return");
++    g_assert(list);
++
++    for (p = qlist_first(list); p; p = qlist_next(p)) {
++        info = qobject_to(QDict, qlist_entry_obj(p));
++
++        g_assert(qdict_haskey(info, "id"));
++        job_id = qdict_get_str(info, "id");
++
++        if (g_str_equal(job_id, id)) {
++            break;
++        }
++    }
++
++    /* otherwise job not found */
++    g_assert(p);
++
++    g_assert(qdict_haskey(info, "status"));
++    status = g_strdup(qdict_get_str(info, "status"));
++    g_assert(g_str_equal(status, "concluded"));
++
++    if (qdict_haskey(info, "error")) {
++        job_msg = qdict_get_str(info, "error");
++
++        g_assert(msg);
++        *msg = g_strdup(job_msg);
++
++        return false;
++    }
++
++    qobject_unref(rsp);
++
++    return true;
++}
++
++static void snapshot_cmd_qmp(QTestState *qts, const char *cmd, const char *id)
++{
++    if (g_str_equal(cmd, "snapshot-delete")) {
++        qtest_qmp_assert_success(qts, "{ 'execute': %s,"
++                                 "'arguments': { "
++                                 "'job-id': %s,"
++                                 "'tag': 'my-snap',"
++                                 "'devices': [ 'disk0' ] } }",
++                                 cmd, id);
++    } else {
++        qtest_qmp_assert_success(qts, "{ 'execute': %s,"
++                                 "'arguments': { "
++                                 "'job-id': %s,"
++                                 "'tag': 'my-snap',"
++                                 "'devices': [ 'disk0' ],"
++                                 "'vmstate': 'disk0' } }",
++                                 cmd, id);
++    }
++}
++
++static bool snapshot_cmd_qmp_sync(QTestState *qts, const char *cmd, const char* id,
++                                  char **error_str)
++{
++    bool ret;
++
++    snapshot_cmd_qmp(qts, cmd, id);
++    job_status_wait(qts, id, "concluded");
++    ret = job_check_status(qts, id, error_str);
++
++    qtest_qmp_assert_success(qts,
++                             "{ 'execute': 'job-dismiss',"
++                             "'arguments': { "
++                             "'id': %s } }", id);
++    return ret;
++}
++
++bool snapshot_delete_qmp_sync(QTestState *qts, char **error_str)
++{
++    return snapshot_cmd_qmp_sync(qts, "snapshot-delete", "snapdelete0",
++                                 error_str);
++}
++
++bool snapshot_load_qmp_sync(QTestState *qts, char **error_str)
++{
++    return snapshot_cmd_qmp_sync(qts, "snapshot-load", "snapload0", error_str);
++}
++
++bool snapshot_save_qmp_sync(QTestState *qts, char **error_str)
++{
++    return snapshot_cmd_qmp_sync(qts, "snapshot-save", "snapsave0", error_str);
++}
+diff --git a/tests/qtest/migration/migration-qmp.h b/tests/qtest/migration/migration-qmp.h
+index faa8181d91..9033828f7d 100644
+--- a/tests/qtest/migration/migration-qmp.h
++++ b/tests/qtest/migration/migration-qmp.h
+@@ -44,5 +44,9 @@ void migrate_recover(QTestState *who, const char *uri);
+ void migrate_cancel(QTestState *who);
+ void migrate_postcopy_start(QTestState *from, QTestState *to,
+                             QTestMigrationState *src_state);
++bool snapshot_delete_qmp_sync(QTestState *qts, char **error_str);
++bool snapshot_load_qmp_sync(QTestState *qts, char **error_str);
++bool snapshot_save_qmp_sync(QTestState *qts, char **error_str);
++
  
-     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-         memory_size = "150M";
--
--        if (g_str_equal(arch, "i386")) {
--            machine_alias = "pc";
--        } else {
--            machine_alias = "q35";
--        }
-         arch_opts = g_strdup_printf(
-             "-drive if=none,id=d0,file=%s,format=raw "
-             "-device ide-hd,drive=d0,secs=1,cyls=1,heads=1", bootpath);
-@@ -254,7 +280,6 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-         end_address = X86_TEST_MEM_END;
-     } else if (g_str_equal(arch, "s390x")) {
-         memory_size = "128M";
--        machine_alias = "s390-ccw-virtio";
-         arch_opts = g_strdup_printf("-bios %s", bootpath);
-         start_address = S390_TEST_MEM_START;
-         end_address = S390_TEST_MEM_END;
-@@ -262,14 +287,12 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-         memory_size = "256M";
-         start_address = PPC_TEST_MEM_START;
-         end_address = PPC_TEST_MEM_END;
--        machine_alias = "pseries";
-         machine_opts = "vsmt=8";
-         arch_opts = g_strdup_printf(
-             "-nodefaults -machine " PSERIES_DEFAULT_CAPABILITIES " "
-             "-bios %s", bootpath);
-     } else if (strcmp(arch, "aarch64") == 0) {
-         memory_size = "150M";
--        machine_alias = "virt";
-         machine_opts = "gic-version=3";
-         arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
-         start_address = ARM_TEST_MEM_START;
-@@ -311,15 +334,10 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-         kvm_opts = ",dirty-ring-size=4096";
-     }
- 
--    if (!qtest_has_machine(machine_alias)) {
--        g_autofree char *msg = g_strdup_printf("machine %s not supported", machine_alias);
--        g_test_skip(msg);
-+    machine = migrate_resolve_alias(arch);
-+    if (!machine) {
-         return -1;
-     }
--
--    machine = resolve_machine_version(machine_alias, QEMU_ENV_SRC,
--                                      QEMU_ENV_DST);
--
-     g_test_message("Using machine type: %s", machine);
- 
-     cmd_source = g_strdup_printf("-accel kvm%s -accel tcg "
+ #endif /* MIGRATION_QMP_H */
 -- 
 2.35.3
 
