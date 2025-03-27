@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAEEA72C81
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 10:33:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 498D5A72C84
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 10:33:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txjbR-0004LO-3I; Thu, 27 Mar 2025 05:32:45 -0400
+	id 1txjc4-00050F-AD; Thu, 27 Mar 2025 05:33:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1txjbK-0004CU-CS
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 05:32:38 -0400
+ id 1txjc0-0004x1-Ob
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 05:33:20 -0400
 Received: from ssh.movementarian.org ([139.162.205.133] helo=movementarian.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1txjbH-00080y-Np
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 05:32:37 -0400
+ id 1txjby-00083b-BR
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 05:33:20 -0400
 Received: from movement by movementarian.org with local (Exim 4.95)
- (envelope-from <movement@movementarian.org>) id 1txjbF-003mVy-EL;
- Thu, 27 Mar 2025 09:32:33 +0000
-Date: Thu, 27 Mar 2025 09:32:33 +0000
+ (envelope-from <movement@movementarian.org>) id 1txjbw-003mXL-LH;
+ Thu, 27 Mar 2025 09:33:16 +0000
+Date: Thu, 27 Mar 2025 09:33:16 +0000
 From: John Levon <levon@movementarian.org>
 To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
 Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- Kirti Wankhede <kwankhede@nvidia.com>
-Subject: Re: [PATCH for-10.1 v2 03/37] vfio: Introduce a new header file for
- external migration services
-Message-ID: <Z+UbMZZkVwWCU+pW@movementarian.org>
+ Joao Martins <joao.m.martins@oracle.com>
+Subject: Re: [PATCH for-10.1 v2 25/37] vfio: Move vfio_reset_handler() into
+ device.c
+Message-ID: <Z+UbXJH8k9U0mmM4@movementarian.org>
 References: <20250326075122.1299361-1-clg@redhat.com>
- <20250326075122.1299361-4-clg@redhat.com>
+ <20250326075122.1299361-26-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250326075122.1299361-4-clg@redhat.com>
+In-Reply-To: <20250326075122.1299361-26-clg@redhat.com>
 X-Url: http://www.movementarian.org/
 Received-SPF: pass client-ip=139.162.205.133;
  envelope-from=movement@movementarian.org; helo=movementarian.org
@@ -63,23 +62,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 26, 2025 at 08:50:48AM +0100, Cédric Le Goater wrote:
+On Wed, Mar 26, 2025 at 08:51:10AM +0100, Cédric Le Goater wrote:
 
-> The migration core subsystem makes use of the VFIO migration API to
-> collect statistics on the number of bytes transferred. These services
-> are declared in "hw/vfio/vfio-common.h" which also contains VFIO
-> internal declarations. Move the migration declarations into a new
-> header file "hw/vfio/vfio-migration.h" to reduce the exposure of VFIO
-> internals.
+> Pass-through devices of a VM are not necessarily in the same group and
+> all groups/address_spaces need to be scanned when the machine is
+> reset. Commit f16f39c3fc97 ("Implement PCI hot reset") introduced a VM
+> reset handler for this purpose. Move it under device.c
 > 
-> While at it, use a 'vfio_migration_' prefix for these services.
+> Also reintroduce the comment which explained the context and was lost
+> along the way.
 > 
-> To be noted, vfio_migration_add_bytes_transferred() is a VFIO
-> migration internal service which we will moved in the subsequent
-> patches.
-> 
-> Cc: Kirti Wankhede <kwankhede@nvidia.com>
-> Cc: Avihai Horon <avihaih@nvidia.com>
 > Signed-off-by: Cédric Le Goater <clg@redhat.com>
 
 Reviewed-by: John Levon <john.levon@nutanix.com>
