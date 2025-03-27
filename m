@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C321FA728EB
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 04:00:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BDF5A728F1
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 04:01:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txdT1-0006wh-EY; Wed, 26 Mar 2025 22:59:39 -0400
+	id 1txdT2-0006x0-A6; Wed, 26 Mar 2025 22:59:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txdSz-0006vJ-Dg
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 22:59:37 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txdT0-0006vk-Mt
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 22:59:38 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txdSx-0007f2-AB
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 22:59:37 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-227aaa82fafso11441935ad.2
- for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 19:59:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txdSy-0007fP-IG
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 22:59:38 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-301a4d5156aso757742a91.1
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 19:59:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743044372; x=1743649172; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1743044375; x=1743649175; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IF6+1qu9uhL+EekOvwEYbOGbn7hB8tB+Fgd35faQhNg=;
- b=j8Q6rOTrk6pwLkzsSfS6Ofz7U2qw4MlAwvusrBRdb9gjY4/alB11ObbEgqv44kOIc+
- 3M3ISZVuO88CycGaynIwLMLw6m4BlJ/hqIFLU4ecqRjFKanTrD9ZRFi5FgGhv2+mGVUX
- +T7kdQk1MZOHSHWgKSpx0qKrqmYHa5Cnd7vvZ2AsGaiJivdvulSSmKdMwehmiG5tvU3O
- Oj+YXzHmGBNhWodMc5+2oovs7zPIXlhtNdEz9+ridw8UIbiXxUJGN3QF3DalSU+heRVT
- 0e3ztbjT/SOpq+hhP/cdoj5QU7SnptfUzznRNdCUGGFLoBWoY/OuJhlEuVzkVx03WOJ9
- AziA==
+ bh=l+CnokoM4dJ/mv3foQ5OXlEgVAPO+ixDiCKrot48SCs=;
+ b=RYLk+hM3aOh/BsmqRPobJcnFMJXvE3RuEpv4R4BGmC8EjxGgIprkKFjbA8sCrJxqQk
+ UQkz+Cx6alsGvJmhYhC566g42/BLZpyJKjJ6RawykQZq8ujD3M3CZQ+juOag+M5VeDeU
+ PK9AFxzMnhwbJjKI7RtqPuQkw4CeDORukBxWzHOGKFFXGP2ABle8exczyRmrTNo8eu+j
+ erQDpDgpOdcPb7loFPNfrwAuYF0SrAgObRa5CTFXorIy5xKgEe1XugAjAurO9GCxyg0I
+ qQRrMIaqt0rOhVnpRpZ7/h8yVxLP/oBTnpfkNBFNpM03zua9APQEJlrSvj0EZGl3kxhR
+ sZ+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743044372; x=1743649172;
+ d=1e100.net; s=20230601; t=1743044375; x=1743649175;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IF6+1qu9uhL+EekOvwEYbOGbn7hB8tB+Fgd35faQhNg=;
- b=ArWkLErJZm/01yfGdYq3d1ELOcDf3ZzT5lqzHePGL1m3L56lmFKrd7Oz5mvKCaBH4A
- hGlvgx6nxqoFueghOPY68OVqpLMrYLTDVLaBBe74Q540YqmZpEf0IsXNUaQ0WVKTUYGS
- O4ZKpTaP6vnpj+7Y39wUPEilIQga+fTW4OUHkvrHCLNK+FQQnMw2STZVSD8kRwRZw7yV
- jRedtidEQvfia7ESoI3WiqVFrllj7pAysQe3SSpoCOs4SIBj44nd7xNb7GcJRC+/tgFK
- aeMvxEnCc09N6nremiqx4CuxU1XHTtNsSW+BJzHVZGmZnBHNfzW/Ai6uY95tG7KmvZL8
- w+2A==
-X-Gm-Message-State: AOJu0YzGjH0DxTVQR1t0olAzW+4FkEzMnTsVa4ozcbHbrwwD/gCbzfJ9
- mPgQUYwGjeuHoZGE6DlI0OX2j1byJLi06lfabCzqgsGZnmAGJjHzQVQoHpWH
-X-Gm-Gg: ASbGncuzUpiqAgFh5vVtdi/ofQ3/5uyybMipB0/c2RCiyONzu9S75gyJRis5+6nZrr/
- Xxyo6onWOtG5pO18ggzlklwJsNW1O4Ent+1s9AeX910OI4Evw2KRvE0aXv3HeSePtLzDLHG7CjS
- qLelLpxgaH5xwB9UIjF5XsyzswD9DujUvBK9+JhmN3XYkBWgahoVn+xKKPNB4pxVltlo2AukVT5
- 9U74AGciBVcqsjczRiKzQPEY9ceyvo4lTkh5U9tSQNRODMRcY1xbKb/a76O+T1tvnp5D+wBm9+g
- GNazLNy7qy0OcRAhl5Sc0vpnOoCDcf5365VEjwQvdOtk+5UprTfn+jKbHOFwol150tBdAPW9FDV
- ZCSsW04p6pa6tWrNKbqOT
-X-Google-Smtp-Source: AGHT+IH/5Tsj4Y/u82eXIdi//lBKLJIGL9IP2oEITHk0/29sjP56+mMxuixuszdsQNBtuOkHiGvjXA==
-X-Received: by 2002:a17:902:ecc3:b0:21f:85d0:828 with SMTP id
- d9443c01a7336-22804913ccamr27624055ad.41.1743044372365; 
- Wed, 26 Mar 2025 19:59:32 -0700 (PDT)
+ bh=l+CnokoM4dJ/mv3foQ5OXlEgVAPO+ixDiCKrot48SCs=;
+ b=MA9uxRrDMGVJNbK1wNxbd8/I8RWfI9d4dfsoQDUmE4WqogbnpLCNNQT7yGeuFg3/Jg
+ r+yErbLLuHRLQ7Cj4FeiGpYpwhRL46J/2ogeY6wo+skLLyCtNup38OtLS6xckJAVtRdE
+ jTUZgtmvF7YZ0pjYZKIR2BsX2CUIl4WYGrPXCvNzIOQ3ek1pW1txwwd4ANWDY/Pa3g5Q
+ dcEeByU2SweES4Gjr6f6IxKFx4qRqmvgc0lXC/jupMPc//DigVgUlkm4TKS105zVA3UG
+ pJ8iLhP2zJCi2w4q6uIY2D3jLDW79ztOd20Fs92ehtgcudIJaQH1WBgvMHywP9XjErlI
+ Vb1Q==
+X-Gm-Message-State: AOJu0YyEnT+FAURqWi1fbY02E9hq2WWcN2w9XQDK9AKXuOesYrDvpu8B
+ Wxo4sHCPjOQ/A4V75JxAqEHdQW3lslpJs6HoUT/9eN6RiGXoCH7rARMXjZjs
+X-Gm-Gg: ASbGncvXkJ/IXgvzy8EYpOYFlU9O4YsXWjrKKopg4vjPBTHuc9z9iG0cO5OBt/mJZFl
+ I2ORm82LTH0CK+NMwKj27XUT45QpkNpkweul2VpWqVLKHaWaKs0K6x4tHjWx0KQLB1QQA/+dMd/
+ pjIMbNRO7SDNyCtKmS8tnBUIIyi0C2tVuseQQJCDPsBShziKQTuETI33H6nHrlkXwiY8r9hXjIH
+ t6g6J3RmxGGuV9N0QhKTdRqWVfwalWBRwQqJpblMwXR1LPOzeK9OSkhQzABoDbw1wb+sjI4JD1a
+ kvNSj3fvVI3fygIr6jJ4CIg56J18/tbh9YVSWc8IYqDOg7rY2K9AHradZ5MpmxZQrLEbbVKOwN/
+ ONxwD8tZj6zbPc7qJR+Y2
+X-Google-Smtp-Source: AGHT+IEdm1Zh6B733F1cF0QpSik1lJo+JzCbPl7b3nrQlBS6r+FU0oZJB4SlgGRcvotPZHJDmjcnNg==
+X-Received: by 2002:a17:90b:4b07:b0:301:98fc:9b5a with SMTP id
+ 98e67ed59e1d1-303a7b5b051mr2767309a91.6.1743044374500; 
+ Wed, 26 Mar 2025 19:59:34 -0700 (PDT)
 Received: from localhost.localdomain (awork062150.netvigator.com.
  [203.198.28.150]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3039dfd37e5sm1027698a91.2.2025.03.26.19.59.30
+ 98e67ed59e1d1-3039dfd37e5sm1027698a91.2.2025.03.26.19.59.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Mar 2025 19:59:32 -0700 (PDT)
+ Wed, 26 Mar 2025 19:59:34 -0700 (PDT)
 From: yuq825@gmail.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
  Qiang Yu <yuq825@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v3 4/6] ui/egl: support multi-plane dmabuf when egl
- export/import
-Date: Thu, 27 Mar 2025 10:58:46 +0800
-Message-ID: <20250327025848.46962-5-yuq825@gmail.com>
+Subject: [PATCH v3 5/6] ui/dbus: change dbus ScanoutDMABUF interface
+Date: Thu, 27 Mar 2025 10:58:47 +0800
+Message-ID: <20250327025848.46962-6-yuq825@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250327025848.46962-1-yuq825@gmail.com>
 References: <20250327025848.46962-1-yuq825@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=yuq825@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=yuq825@gmail.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -102,316 +101,244 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Qiang Yu <yuq825@gmail.com>
 
+To handle multi plane.
+
+v3:
+  * rename interface
+  * add x/y/backing_width/backing_height arg
+
 v2:
   * use new dmabuf API and check length
 
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Qiang Yu <yuq825@gmail.com>
 ---
- include/ui/egl-helpers.h |  5 ++-
- ui/dbus-listener.c       | 19 +++++----
- ui/egl-helpers.c         | 91 ++++++++++++++++++++++++++++++----------
- ui/spice-display.c       | 58 ++++++++++++++++---------
- 4 files changed, 121 insertions(+), 52 deletions(-)
+ ui/dbus-display1.xml |  45 +++++++++++++++++
+ ui/dbus-listener.c   | 112 ++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 150 insertions(+), 7 deletions(-)
 
-diff --git a/include/ui/egl-helpers.h b/include/ui/egl-helpers.h
-index 4b8c0d2281..fb80e15142 100644
---- a/include/ui/egl-helpers.h
-+++ b/include/ui/egl-helpers.h
-@@ -46,8 +46,9 @@ extern int qemu_egl_rn_fd;
- extern struct gbm_device *qemu_egl_rn_gbm_dev;
+diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
+index 72deefa455..4a41a7e0f3 100644
+--- a/ui/dbus-display1.xml
++++ b/ui/dbus-display1.xml
+@@ -614,6 +614,51 @@
+     </method>
+   </interface>
  
- int egl_rendernode_init(const char *rendernode, DisplayGLMode mode);
--int egl_get_fd_for_texture(uint32_t tex_id, EGLint *stride, EGLint *fourcc,
--                           EGLuint64KHR *modifier);
-+bool egl_dmabuf_export_texture(uint32_t tex_id, int *fd, EGLint *offset,
-+                               EGLint *stride, EGLint *fourcc, int *num_planes,
-+                               EGLuint64KHR *modifier);
++  <!--
++      org.qemu.Display1.Listener.Unix.ScanoutDMABUF2:
++
++      This optional client-side interface can complement
++      org.qemu.Display1.Listener on ``/org/qemu/Display1/Listener`` for
++      Unix-specific DMABUF scanout setup which support multi plane.
++  -->
++  <?if $(env.HOST_OS) != windows?>
++  <interface name="org.qemu.Display1.Listener.Unix.ScanoutDMABUF2">
++    <!--
++        ScanoutDMABUF2:
++        @dmabuf: DMABUF file descriptor of each plane.
++        @x: display x offset, in pixels
++        @y: display y offset, in pixels
++        @width: display width, in pixels.
++        @height: display height, in pixels.
++        @offset: offset of each plane, in bytes.
++        @stride: stride of each plane, in bytes.
++        @num_planes: plane number.
++        @fourcc: DMABUF fourcc.
++        @backing_width: backing framebuffer width, in pixels
++        @backing_height: backing framebuffer height, in pixels
++        @modifier: DMABUF modifier.
++        @y0_top: whether Y position 0 is the top or not.
++
++        Resize and update the display content with DMABUF.
++    -->
++    <method name="ScanoutDMABUF2">
++      <arg type="ah" name="dmabuf" direction="in"/>
++      <arg type="u" name="x" direction="in"/>
++      <arg type="u" name="y" direction="in"/>
++      <arg type="u" name="width" direction="in"/>
++      <arg type="u" name="height" direction="in"/>
++      <arg type="au" name="offset" direction="in"/>
++      <arg type="au" name="stride" direction="in"/>
++      <arg type="u" name="num_planes" direction="in"/>
++      <arg type="u" name="fourcc" direction="in"/>
++      <arg type="u" name="backing_width" direction="in"/>
++      <arg type="u" name="backing_height" direction="in"/>
++      <arg type="t" name="modifier" direction="in"/>
++      <arg type="b" name="y0_top" direction="in"/>
++    </method>
++  </interface>
++  <?endif?>
++
+   <!--
+       org.qemu.Display1.Clipboard:
  
- void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf);
- void egl_dmabuf_release_texture(QemuDmaBuf *dmabuf);
 diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index 65373d519c..90147972cd 100644
+index 90147972cd..58a7002611 100644
 --- a/ui/dbus-listener.c
 +++ b/ui/dbus-listener.c
-@@ -504,19 +504,22 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
-                                backing_width, backing_height, x, y, w, h);
+@@ -85,6 +85,7 @@ struct _DBusDisplayListener {
+ #endif
+ #else /* !WIN32 */
+     QemuDBusDisplay1ListenerUnixMap *map_proxy;
++    QemuDBusDisplay1ListenerUnixScanoutDMABUF2 *scanout_dmabuf_v2_proxy;
+ #endif
+ 
+     guint dbus_filter;
+@@ -288,10 +289,9 @@ static void dbus_call_update_gl(DisplayChangeListener *dcl,
+ }
+ 
  #ifdef CONFIG_GBM
-     g_autoptr(QemuDmaBuf) dmabuf = NULL;
--    int fd;
--    uint32_t offset = 0, stride, fourcc;
-+    int fd[DMABUF_MAX_PLANES], num_planes;
-+    uint32_t offset[DMABUF_MAX_PLANES], stride[DMABUF_MAX_PLANES], fourcc;
-     uint64_t modifier;
- 
-     assert(tex_id);
--    fd = egl_get_fd_for_texture(tex_id, (EGLint *)&stride, (EGLint *)&fourcc,
--                                &modifier);
--    if (fd < 0) {
--        error_report("%s: failed to get fd for texture", __func__);
-+    if (!egl_dmabuf_export_texture(tex_id, fd, (EGLint *)offset, (EGLint *)stride,
-+                                   (EGLint *)&fourcc, &num_planes, &modifier)) {
-+        error_report("%s: failed to export dmabuf for texture", __func__);
-+        return;
-+    }
-+    if (num_planes > 1) {
-+        error_report("%s: does not support multi-plane dmabuf", __func__);
-         return;
-     }
--    dmabuf = qemu_dmabuf_new(w, h, &offset, &stride, x, y, backing_width,
--                             backing_height, fourcc, modifier, &fd, 1,
-+    dmabuf = qemu_dmabuf_new(w, h, offset, stride, x, y, backing_width,
-+                             backing_height, fourcc, modifier, fd, num_planes,
-                              false, backing_y_0_top);
- 
-     dbus_scanout_dmabuf(dcl, dmabuf);
-diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
-index 8c0e394d2b..f76d0c04a2 100644
---- a/ui/egl-helpers.c
-+++ b/ui/egl-helpers.c
-@@ -283,44 +283,85 @@ err:
-     return -1;
- }
- 
--int egl_get_fd_for_texture(uint32_t tex_id, EGLint *stride, EGLint *fourcc,
--                           EGLuint64KHR *modifier)
-+bool egl_dmabuf_export_texture(uint32_t tex_id, int *fd, EGLint *offset,
-+                               EGLint *stride, EGLint *fourcc, int *num_planes,
-+                               EGLuint64KHR *modifier)
+-static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
+-                                QemuDmaBuf *dmabuf)
++static void dbus_scanout_dmabuf_v1(DBusDisplayListener *ddl,
++                                   QemuDmaBuf *dmabuf)
  {
-     EGLImageKHR image;
--    EGLint num_planes, fd;
-+    EGLuint64KHR modifiers[DMABUF_MAX_PLANES];
- 
-     image = eglCreateImageKHR(qemu_egl_display, eglGetCurrentContext(),
-                               EGL_GL_TEXTURE_2D_KHR,
-                               (EGLClientBuffer)(unsigned long)tex_id,
-                               NULL);
-     if (!image) {
--        return -1;
-+        return false;
-     }
- 
-     eglExportDMABUFImageQueryMESA(qemu_egl_display, image, fourcc,
--                                  &num_planes, modifier);
--    if (num_planes != 1) {
--        eglDestroyImageKHR(qemu_egl_display, image);
--        return -1;
--    }
--    eglExportDMABUFImageMESA(qemu_egl_display, image, &fd, stride, NULL);
-+                                  num_planes, modifiers);
-+    eglExportDMABUFImageMESA(qemu_egl_display, image, fd, stride, offset);
-     eglDestroyImageKHR(qemu_egl_display, image);
- 
--    return fd;
-+    /* Only first modifier matters. */
-+    if (modifier)
-+        *modifier = modifiers[0];
+-    DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
+     g_autoptr(GError) err = NULL;
+     g_autoptr(GUnixFDList) fd_list = NULL;
+     int fd;
+@@ -322,6 +322,85 @@ static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
+         y0_top, G_DBUS_CALL_FLAGS_NONE,
+         -1, fd_list, NULL, NULL, NULL);
+ }
 +
-+    return true;
- }
- 
- void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
- {
-     EGLImageKHR image = EGL_NO_IMAGE_KHR;
-     EGLint attrs[64];
--    int i = 0;
-+    int i = 0, j;
-     uint64_t modifier = qemu_dmabuf_get_modifier(dmabuf);
-     uint32_t texture = qemu_dmabuf_get_texture(dmabuf);
++static void dbus_scanout_dmabuf_v2(DBusDisplayListener *ddl,
++                                   QemuDmaBuf *dmabuf)
++{
++    g_autoptr(GError) err = NULL;
++    g_autoptr(GUnixFDList) fd_list = NULL;
++    int i, fd_index[DMABUF_MAX_PLANES], num_fds;
++    uint32_t x, y, width, height, fourcc, backing_width, backing_height;
++    GVariant *fd, *offset, *stride, *fd_handles[DMABUF_MAX_PLANES];
++    uint64_t modifier;
++    bool y0_top;
 +    int nfds, noffsets, nstrides;
 +    const int *fds = qemu_dmabuf_get_fds(dmabuf, &nfds);
 +    const uint32_t *offsets = qemu_dmabuf_get_offsets(dmabuf, &noffsets);
 +    const uint32_t *strides = qemu_dmabuf_get_strides(dmabuf, &nstrides);
 +    uint32_t num_planes = qemu_dmabuf_get_num_planes(dmabuf);
 +
-+    EGLint fd_attrs[] = {
-+        EGL_DMA_BUF_PLANE0_FD_EXT,
-+        EGL_DMA_BUF_PLANE1_FD_EXT,
-+        EGL_DMA_BUF_PLANE2_FD_EXT,
-+        EGL_DMA_BUF_PLANE3_FD_EXT,
-+    };
-+    EGLint offset_attrs[] = {
-+        EGL_DMA_BUF_PLANE0_OFFSET_EXT,
-+        EGL_DMA_BUF_PLANE1_OFFSET_EXT,
-+        EGL_DMA_BUF_PLANE2_OFFSET_EXT,
-+        EGL_DMA_BUF_PLANE3_OFFSET_EXT,
-+    };
-+    EGLint stride_attrs[] = {
-+        EGL_DMA_BUF_PLANE0_PITCH_EXT,
-+        EGL_DMA_BUF_PLANE1_PITCH_EXT,
-+        EGL_DMA_BUF_PLANE2_PITCH_EXT,
-+        EGL_DMA_BUF_PLANE3_PITCH_EXT,
-+    };
-+    EGLint modifier_lo_attrs[] = {
-+        EGL_DMA_BUF_PLANE0_MODIFIER_LO_EXT,
-+        EGL_DMA_BUF_PLANE1_MODIFIER_LO_EXT,
-+        EGL_DMA_BUF_PLANE2_MODIFIER_LO_EXT,
-+        EGL_DMA_BUF_PLANE3_MODIFIER_LO_EXT,
-+    };
-+    EGLint modifier_hi_attrs[] = {
-+        EGL_DMA_BUF_PLANE0_MODIFIER_HI_EXT,
-+        EGL_DMA_BUF_PLANE1_MODIFIER_HI_EXT,
-+        EGL_DMA_BUF_PLANE2_MODIFIER_HI_EXT,
-+        EGL_DMA_BUF_PLANE3_MODIFIER_HI_EXT,
-+    };
- 
-     if (texture != 0) {
-         return;
-     }
- 
 +    assert(nfds >= num_planes);
 +    assert(noffsets >= num_planes);
 +    assert(nstrides >= num_planes);
 +
-     attrs[i++] = EGL_WIDTH;
-     attrs[i++] = qemu_dmabuf_get_backing_width(dmabuf);
-     attrs[i++] = EGL_HEIGHT;
-@@ -328,18 +369,22 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
-     attrs[i++] = EGL_LINUX_DRM_FOURCC_EXT;
-     attrs[i++] = qemu_dmabuf_get_fourcc(dmabuf);
- 
--    attrs[i++] = EGL_DMA_BUF_PLANE0_FD_EXT;
--    attrs[i++] = qemu_dmabuf_get_fds(dmabuf, NULL)[0];
--    attrs[i++] = EGL_DMA_BUF_PLANE0_PITCH_EXT;
--    attrs[i++] = qemu_dmabuf_get_strides(dmabuf, NULL)[0];
--    attrs[i++] = EGL_DMA_BUF_PLANE0_OFFSET_EXT;
--    attrs[i++] = 0;
--    if (modifier != DRM_FORMAT_MOD_INVALID) {
--        attrs[i++] = EGL_DMA_BUF_PLANE0_MODIFIER_LO_EXT;
--        attrs[i++] = (modifier >>  0) & 0xffffffff;
--        attrs[i++] = EGL_DMA_BUF_PLANE0_MODIFIER_HI_EXT;
--        attrs[i++] = (modifier >> 32) & 0xffffffff;
-+    for (j = 0; j < num_planes; j++) {
-+        attrs[i++] = fd_attrs[j];
-+        /* fd[1-3] may be -1 if using a joint buffer for all planes */
-+        attrs[i++] = fds[j] >= 0 ? fds[j] : fds[0];
-+        attrs[i++] = stride_attrs[j];
-+        attrs[i++] = strides[j];
-+        attrs[i++] = offset_attrs[j];
-+        attrs[i++] = offsets[j];
-+        if (modifier != DRM_FORMAT_MOD_INVALID) {
-+            attrs[i++] = modifier_lo_attrs[j];
-+            attrs[i++] = (modifier >>  0) & 0xffffffff;
-+            attrs[i++] = modifier_hi_attrs[j];
-+            attrs[i++] = (modifier >> 32) & 0xffffffff;
-+        }
-     }
++    fd_list = g_unix_fd_list_new();
 +
-     attrs[i++] = EGL_NONE;
- 
-     image = eglCreateImageKHR(qemu_egl_display,
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 40547edb5e..d7ebb3682d 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -876,19 +876,24 @@ static void spice_gl_switch(DisplayChangeListener *dcl,
-                             struct DisplaySurface *new_surface)
- {
-     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
--    EGLint stride, fourcc;
--    int fd;
- 
-     if (ssd->ds) {
-         surface_gl_destroy_texture(ssd->gls, ssd->ds);
-     }
-     ssd->ds = new_surface;
-     if (ssd->ds) {
-+        uint32_t offset[DMABUF_MAX_PLANES], stride[DMABUF_MAX_PLANES];
-+        int fd[DMABUF_MAX_PLANES], num_planes, fourcc;
++    for (num_fds = 0; num_fds < num_planes; num_fds++) {
++        int plane_fd = fds[num_fds];
 +
-         surface_gl_create_texture(ssd->gls, ssd->ds);
--        fd = egl_get_fd_for_texture(ssd->ds->texture,
--                                    &stride, &fourcc,
--                                    NULL);
--        if (fd < 0) {
-+        if (!egl_dmabuf_export_texture(ssd->ds->texture, fd, (EGLint *)offset,
-+                                       (EGLint *)stride, &fourcc, &num_planes, NULL)) {
-+            surface_gl_destroy_texture(ssd->gls, ssd->ds);
++        if (plane_fd < 0)
++            break;
++
++        fd_index[num_fds] = g_unix_fd_list_append(fd_list, plane_fd, &err);
++        if (fd_index[num_fds] < 0) {
++            error_report("Failed to setup dmabuf fdlist: %s", err->message);
 +            return;
 +        }
-+
-+        if (num_planes > 1) {
-+            fprintf(stderr, "%s: does not support multi-plane texture\n", __func__);
-             surface_gl_destroy_texture(ssd->gls, ssd->ds);
-             return;
-         }
-@@ -899,10 +904,10 @@ static void spice_gl_switch(DisplayChangeListener *dcl,
-                                     fourcc);
- 
-         /* note: spice server will close the fd */
--        spice_qxl_gl_scanout(&ssd->qxl, fd,
-+        spice_qxl_gl_scanout(&ssd->qxl, fd[0],
-                              surface_width(ssd->ds),
-                              surface_height(ssd->ds),
--                             stride, fourcc, false);
-+                             stride[0], fourcc, false);
-         ssd->have_surface = true;
-         ssd->have_scanout = false;
- 
-@@ -941,20 +946,24 @@ static void qemu_spice_gl_scanout_texture(DisplayChangeListener *dcl,
-                                           void *d3d_tex2d)
- {
-     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
--    EGLint stride = 0, fourcc = 0;
--    int fd = -1;
-+    EGLint offset[DMABUF_MAX_PLANES], stride[DMABUF_MAX_PLANES], fourcc = 0;
-+    int fd[DMABUF_MAX_PLANES], num_planes;
- 
-     assert(tex_id);
--    fd = egl_get_fd_for_texture(tex_id, &stride, &fourcc, NULL);
--    if (fd < 0) {
--        fprintf(stderr, "%s: failed to get fd for texture\n", __func__);
-+    if (!egl_dmabuf_export_texture(tex_id, fd, offset, stride, &fourcc,
-+                                   &num_planes, NULL)) {
-+        fprintf(stderr, "%s: failed to export dmabuf for texture\n", __func__);
-+        return;
 +    }
-+    if (num_planes > 1) {
-+        fprintf(stderr, "%s: does not support multi-plane dmabuf\n", __func__);
++
++    ddl_discard_display_messages(ddl);
++
++    x = qemu_dmabuf_get_x(dmabuf);
++    y = qemu_dmabuf_get_y(dmabuf);
++    width = qemu_dmabuf_get_width(dmabuf);
++    height = qemu_dmabuf_get_height(dmabuf);
++    fourcc = qemu_dmabuf_get_fourcc(dmabuf);
++    backing_width = qemu_dmabuf_get_backing_width(dmabuf);
++    backing_height = qemu_dmabuf_get_backing_height(dmabuf);
++    modifier = qemu_dmabuf_get_modifier(dmabuf);
++    y0_top = qemu_dmabuf_get_y0_top(dmabuf);
++
++    offset = g_variant_new_fixed_array(G_VARIANT_TYPE_UINT32,
++                                       offsets, num_planes, sizeof(uint32_t));
++    stride = g_variant_new_fixed_array(G_VARIANT_TYPE_UINT32,
++                                       strides, num_planes, sizeof(uint32_t));
++
++    for (i = 0; i < num_fds; i++) {
++        fd_handles[i] = g_variant_new_handle(fd_index[i]);
++    }
++    fd = g_variant_new_array(G_VARIANT_TYPE_HANDLE, fd_handles, num_fds);
++
++    qemu_dbus_display1_listener_unix_scanout_dmabuf2_call_scanout_dmabuf2(
++        ddl->scanout_dmabuf_v2_proxy, fd, x, y, width, height, offset, stride,
++        num_planes, fourcc, backing_width, backing_height, modifier, y0_top,
++        G_DBUS_CALL_FLAGS_NONE, -1, fd_list, NULL, NULL, NULL);
++}
++
++static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
++                                QemuDmaBuf *dmabuf)
++{
++    DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
++
++    if (ddl->scanout_dmabuf_v2_proxy) {
++        dbus_scanout_dmabuf_v2(ddl, dmabuf);
++    } else {
++        if (qemu_dmabuf_get_num_planes(dmabuf) > 1) {
++            g_debug("org.qemu.Display1.Listener.ScanoutDMABUF does not support mutli plane");
++            return;
++        }
++        dbus_scanout_dmabuf_v1(ddl, dmabuf);
++    }
++}
+ #endif /* GBM */
+ #endif /* OPENGL */
+ 
+@@ -514,10 +593,6 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
+         error_report("%s: failed to export dmabuf for texture", __func__);
          return;
      }
-     trace_qemu_spice_gl_scanout_texture(ssd->qxl.id, w, h, fourcc);
+-    if (num_planes > 1) {
+-        error_report("%s: does not support multi-plane dmabuf", __func__);
+-        return;
+-    }
+     dmabuf = qemu_dmabuf_new(w, h, offset, stride, x, y, backing_width,
+                              backing_height, fourcc, modifier, fd, num_planes,
+                              false, backing_y_0_top);
+@@ -886,6 +961,8 @@ dbus_display_listener_dispose(GObject *object)
+ #ifdef CONFIG_OPENGL
+     egl_fb_destroy(&ddl->fb);
+ #endif
++#else /* !WIN32 */
++    g_clear_object(&ddl->scanout_dmabuf_v2_proxy);
+ #endif
  
-     /* note: spice server will close the fd */
--    spice_qxl_gl_scanout(&ssd->qxl, fd, backing_width, backing_height,
--                         stride, fourcc, y_0_top);
-+    spice_qxl_gl_scanout(&ssd->qxl, fd[0], backing_width, backing_height,
-+                         stride[0], fourcc, y_0_top);
-     qemu_spice_gl_monitor_config(ssd, x, y, w, h);
-     ssd->have_surface = false;
-     ssd->have_scanout = true;
-@@ -1064,15 +1073,26 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-             /* dest framebuffer */
-             if (ssd->blit_fb.width  != width ||
-                 ssd->blit_fb.height != height) {
-+                int fds[DMABUF_MAX_PLANES], num_planes;
-+                uint32_t offsets[DMABUF_MAX_PLANES], strides[DMABUF_MAX_PLANES];
+     G_OBJECT_CLASS(dbus_display_listener_parent_class)->dispose(object);
+@@ -1074,6 +1151,26 @@ dbus_display_listener_setup_shared_map(DBusDisplayListener *ddl)
+ #endif
+ }
+ 
++static void dbus_display_listener_setup_scanout_dmabuf_v2(DBusDisplayListener *ddl)
++{
++#ifndef WIN32
++    g_autoptr(GError) err = NULL;
 +
-                 trace_qemu_spice_gl_render_dmabuf(ssd->qxl.id, width,
-                                                   height);
-                 egl_fb_destroy(&ssd->blit_fb);
-                 egl_fb_setup_new_tex(&ssd->blit_fb,
-                                      width, height);
--                fd = egl_get_fd_for_texture(ssd->blit_fb.texture,
--                                            &stride, &fourcc, NULL);
--                spice_qxl_gl_scanout(&ssd->qxl, fd, width, height,
--                                     stride, fourcc, false);
-+                if (!egl_dmabuf_export_texture(ssd->blit_fb.texture, fds,
-+                                               (EGLint *)offsets, (EGLint *)strides,
-+                                               &fourcc, &num_planes, NULL)) {
-+                    fprintf(stderr, "%s: failed to export dmabuf for texture\n", __func__);
-+                    return;
-+                }
-+                if (num_planes > 1) {
-+                    fprintf(stderr, "%s: does not support multi-plane dmabuf\n", __func__);
-+                    return;
-+                }
-+                spice_qxl_gl_scanout(&ssd->qxl, fds[0], width, height,
-+                                     strides[0], fourcc, false);
-             }
-         } else {
-             stride = qemu_dmabuf_get_strides(dmabuf, NULL)[0];
++    if (!dbus_display_listener_implements(
++            ddl, "org.qemu.Display1.Listener.Unix.ScanoutDMABUF2")) {
++        return;
++    }
++    ddl->scanout_dmabuf_v2_proxy =
++        qemu_dbus_display1_listener_unix_scanout_dmabuf2_proxy_new_sync(
++            ddl->conn, G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START, NULL,
++            "/org/qemu/Display1/Listener", NULL, &err);
++    if (!ddl->scanout_dmabuf_v2_proxy) {
++        g_debug("Failed to setup Unix scanout dmabuf v2 proxy: %s", err->message);
++        return;
++    }
++#endif
++}
++
+ static GDBusMessage *
+ dbus_filter(GDBusConnection *connection,
+             GDBusMessage    *message,
+@@ -1162,6 +1259,7 @@ dbus_display_listener_new(const char *bus_name,
+     dbus_display_listener_setup_shared_map(ddl);
+     trace_dbus_can_share_map(ddl->can_share_map);
+     dbus_display_listener_setup_d3d11(ddl);
++    dbus_display_listener_setup_scanout_dmabuf_v2(ddl);
+ 
+     con = qemu_console_lookup_by_index(dbus_display_console_get_index(console));
+     assert(con);
 -- 
 2.43.0
 
