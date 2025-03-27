@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0958CA72B0D
+	by mail.lfdr.de (Postfix) with ESMTPS id 39723A72B0F
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 09:07:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txiGW-0000ku-O3; Thu, 27 Mar 2025 04:07:04 -0400
+	id 1txiGS-0000Vn-Tw; Thu, 27 Mar 2025 04:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txiGT-0000am-LF
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 04:07:01 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txiGG-0000RS-4J
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 04:06:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txiGS-00065n-1u
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 04:07:01 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txiGE-00063y-GA
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 04:06:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743062819;
+ s=mimecast20190719; t=1743062804;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VMBpKp04CIINiZQusrQvsEbysXUo3UnkwiHZM16eSXs=;
- b=a2gmKTprnqSUzHdZknyxMfnJg0jA16q6dNEUmaCbadtQ+fr6C6Tq0gwdOgaVJAcvIJ+e7U
- 3qC4ElVsC0RLdscx5Sz+UXs9rzL+G+lBcn4KoTN50hEkIxycMRFuiDBaTFfwBhxHiNcPpC
- 8KGzQ1pFtkozyUlIUf48j2/vcgqP/qY=
+ bh=HcF9btIJ40JVRmNnmzpLg0Y1eP9hb/M0NGRSrm//eHo=;
+ b=Lw7C/ESoAsAHDuC0DqmSLS0z06n3dh4kSBFTyZjjIFMnIMQ+cczkCG5I8vE9YanI9NVpc8
+ Nz5QO6xCWhFkuOib0NdZJ3g1bmnaad8p56yfDZYJgnbP0P1Zq0j3ejDOz9yJH6sYl7lrY4
+ No4JGHKT/cOUPErMvu70vwKyTewvOic=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-viO8-p2bOw6sRGziXESZ-w-1; Thu,
- 27 Mar 2025 04:06:40 -0400
-X-MC-Unique: viO8-p2bOw6sRGziXESZ-w-1
-X-Mimecast-MFC-AGG-ID: viO8-p2bOw6sRGziXESZ-w_1743062799
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-523-EifAxaOKMaGwTw8vBQLVSQ-1; Thu,
+ 27 Mar 2025 04:06:42 -0400
+X-MC-Unique: EifAxaOKMaGwTw8vBQLVSQ-1
+X-Mimecast-MFC-AGG-ID: EifAxaOKMaGwTw8vBQLVSQ_1743062801
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9844A18007E1; Thu, 27 Mar 2025 08:06:39 +0000 (UTC)
+ id CBB791809CA3
+ for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 08:06:41 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.126])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2734819560AB; Thu, 27 Mar 2025 08:06:37 +0000 (UTC)
+ id 1DC6719560AB; Thu, 27 Mar 2025 08:06:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 5/6] tests/functional/test_aarch64_virt_gpu: Skip if "dbus"
- display isn't available
-Date: Thu, 27 Mar 2025 09:06:21 +0100
-Message-ID: <20250327080622.954388-6-thuth@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 6/6] tests/functional/test_vnc: Skip test if VNC support is not
+ available
+Date: Thu, 27 Mar 2025 09:06:22 +0100
+Message-ID: <20250327080622.954388-7-thuth@redhat.com>
 In-Reply-To: <20250327080622.954388-1-thuth@redhat.com>
 References: <20250327080622.954388-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,47 +85,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-This test currently fails if the "dbus" display has not been compiled
-into the binary (which can happen when CFI has been enabled, for example).
-Check for the error message to skip the test in that case.
+These tests currently fail if VNC support has not been compiled into
+the QEMU binary. Let's add some checks to skip the tests in that
+case instead.
 
-While we're at it, also make sure that this test is covered in the
-right section in the MAINTAINERS file.
-
-Message-ID: <20250325061609.272847-1-thuth@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20250325064715.278876-1-thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                               | 2 +-
- tests/functional/test_aarch64_virt_gpu.py | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ tests/functional/test_vnc.py | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8f470a1c9b7..c1ccb0acd14 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1018,7 +1018,7 @@ S: Maintained
- F: hw/arm/virt*
- F: include/hw/arm/virt.h
- F: docs/system/arm/virt.rst
--F: tests/functional/test_aarch64_virt.py
-+F: tests/functional/test_aarch64_virt*.py
- F: tests/functional/test_aarch64_tuxrun.py
- F: tests/functional/test_arm_tuxrun.py
+diff --git a/tests/functional/test_vnc.py b/tests/functional/test_vnc.py
+index 1916be0103f..8c9953bdb00 100755
+--- a/tests/functional/test_vnc.py
++++ b/tests/functional/test_vnc.py
+@@ -12,6 +12,7 @@
  
-diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
-index 314d994a7aa..38447278579 100755
---- a/tests/functional/test_aarch64_virt_gpu.py
-+++ b/tests/functional/test_aarch64_virt_gpu.py
-@@ -74,6 +74,8 @@ def _launch_virt_gpu(self, gpu_device):
-                 self.skipTest("Can't access host DRM render node")
-             elif "'type' does not accept value 'egl-headless'" in excp.output:
-                 self.skipTest("egl-headless support is not available")
-+            elif "'type' does not accept value 'dbus'" in excp.output:
-+                self.skipTest("dbus display support is not available")
-             else:
-                 self.log.info("unhandled launch failure: %s", excp.output)
-                 raise excp
+ import socket
+ from typing import List
++from qemu.machine.machine import VMLaunchFailure
+ 
+ from qemu_test import QemuSystemTest
+ from qemu_test.ports import Ports
+@@ -32,7 +33,14 @@ class Vnc(QemuSystemTest):
+     def test_no_vnc_change_password(self):
+         self.vm.add_args('-nodefaults', '-S')
+         self.vm.launch()
+-        self.assertFalse(self.vm.qmp('query-vnc')['return']['enabled'])
++
++        query_vnc_response = self.vm.qmp('query-vnc')
++        if 'error' in query_vnc_response:
++            self.assertEqual(query_vnc_response['error']['class'],
++                             'CommandNotFound')
++            self.skipTest('VNC support not available')
++        self.assertFalse(query_vnc_response['return']['enabled'])
++
+         set_password_response = self.vm.qmp('change-vnc-password',
+                                             password='new_password')
+         self.assertIn('error', set_password_response)
+@@ -41,9 +49,19 @@ def test_no_vnc_change_password(self):
+         self.assertEqual(set_password_response['error']['desc'],
+                          'Could not set password')
+ 
++    def launch_guarded(self):
++        try:
++            self.vm.launch()
++        except VMLaunchFailure as excp:
++            if "-vnc: invalid option" in excp.output:
++                self.skipTest("VNC support not available")
++            else:
++                self.log.info("unhandled launch failure: %s", excp.output)
++                raise excp
++
+     def test_change_password_requires_a_password(self):
+         self.vm.add_args('-nodefaults', '-S', '-vnc', ':1,to=999')
+-        self.vm.launch()
++        self.launch_guarded()
+         self.assertTrue(self.vm.qmp('query-vnc')['return']['enabled'])
+         set_password_response = self.vm.qmp('change-vnc-password',
+                                             password='new_password')
+@@ -55,7 +73,7 @@ def test_change_password_requires_a_password(self):
+ 
+     def test_change_password(self):
+         self.vm.add_args('-nodefaults', '-S', '-vnc', ':1,to=999,password=on')
+-        self.vm.launch()
++        self.launch_guarded()
+         self.assertTrue(self.vm.qmp('query-vnc')['return']['enabled'])
+         self.vm.cmd('change-vnc-password',
+                     password='new_password')
+@@ -66,7 +84,7 @@ def do_test_change_listen(self, a, b, c):
+         self.assertFalse(check_connect(c))
+ 
+         self.vm.add_args('-nodefaults', '-S', '-vnc', f'{VNC_ADDR}:{a - 5900}')
+-        self.vm.launch()
++        self.launch_guarded()
+         self.assertEqual(self.vm.qmp('query-vnc')['return']['service'], str(a))
+         self.assertTrue(check_connect(a))
+         self.assertFalse(check_connect(b))
 -- 
 2.49.0
 
