@@ -2,103 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562D6A7344B
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 15:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE19A7348A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 15:36:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txo7K-0001PY-3R; Thu, 27 Mar 2025 10:21:58 -0400
+	id 1txoKK-00052s-OG; Thu, 27 Mar 2025 10:35:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1txo7I-0001PI-5O
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 10:21:56 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1txoKH-00052V-Aj
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 10:35:21 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1txo7F-0003ap-Gu
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 10:21:55 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1txoKF-0005Gm-Am
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 10:35:21 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B7DB21F792;
- Thu, 27 Mar 2025 14:21:49 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A7EAE211A2;
+ Thu, 27 Mar 2025 14:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1743085311; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1743086117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=tF4iam6m+tlwvWiL+PJw0PpBX+OvYpTlqBN6fj+QCkg=;
- b=etnGlkkeF/73djvEO4Q+bDd9cfCafw89bkceQfyHvxCuHsWV/zBufttjLfp8NzpKfX4/dn
- 9lqfBK7DGA02DaFpnceQZ45Zt4pYgHkn9utM+a/V5SuDU7ondaw/IdRUOJ3xQQZHotsmgC
- wmKTXXDUglZ4+8xIF2j52uCC0UQoCyM=
+ bh=OqoQzbD/0qsorJFQ+gmmbyCGOnRknTzGSVySyVHezLQ=;
+ b=DEVOlkbjV4GwWayuiXbMPfHs0slPy60LiqIrmlviMddbli5xUi2kpvzqIXNJlTpFiFSpf+
+ qbUaJFpMojdqmtnN1CEuDYFR9G2nuAX+PNDHrnsTtpMBLTMUCyhduuatBZ20Q32+NgMNqJ
+ +H+3TzDmftbAggX2t0k83Jq+t1HBWUg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1743085311;
+ s=susede2_ed25519; t=1743086117;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=tF4iam6m+tlwvWiL+PJw0PpBX+OvYpTlqBN6fj+QCkg=;
- b=oYTYNE+E10PP5Y21umLlh4dUzO5CK+2ukDcGmjPZA9LHaYu0ufWt8yAwuragIc5AUhlWFO
- nKEqBaUk6pkiZOAg==
-Authentication-Results: smtp-out2.suse.de;
+ bh=OqoQzbD/0qsorJFQ+gmmbyCGOnRknTzGSVySyVHezLQ=;
+ b=MriXHdrFRFgw+qY9FuZVKk6WTLOCfFcfC+D2AK1j12q0ntN27DtgpXCX6KCtYa755/PPCn
+ peqhDklnWx1SJkCQ==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1743085309; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1743086117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=tF4iam6m+tlwvWiL+PJw0PpBX+OvYpTlqBN6fj+QCkg=;
- b=vnje8MG2Nz8hFqaSXYnVzcIw2PHH6z7NKeHLoKWcSABXM2Kio5cl/f2FHEma9QLeoIEyAu
- BHgolNP5z2kDroxb7A92zauOpHYoc8rcR9FyMEE0A2mgRJt0fyueXqZslMWEU+ers5Gryg
- oO1wcnudFSc7GcWOP8ZjctToAQx4pew=
+ bh=OqoQzbD/0qsorJFQ+gmmbyCGOnRknTzGSVySyVHezLQ=;
+ b=DEVOlkbjV4GwWayuiXbMPfHs0slPy60LiqIrmlviMddbli5xUi2kpvzqIXNJlTpFiFSpf+
+ qbUaJFpMojdqmtnN1CEuDYFR9G2nuAX+PNDHrnsTtpMBLTMUCyhduuatBZ20Q32+NgMNqJ
+ +H+3TzDmftbAggX2t0k83Jq+t1HBWUg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1743085309;
+ s=susede2_ed25519; t=1743086117;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=tF4iam6m+tlwvWiL+PJw0PpBX+OvYpTlqBN6fj+QCkg=;
- b=H90vf3vuMhLAESjn8bzW6d/jIqrhM8s/nITUe8EcD5MWLPcZb6EAi4DHwz2FIGxREFXV9y
- Su28EyQqbhYPVcCw==
+ bh=OqoQzbD/0qsorJFQ+gmmbyCGOnRknTzGSVySyVHezLQ=;
+ b=MriXHdrFRFgw+qY9FuZVKk6WTLOCfFcfC+D2AK1j12q0ntN27DtgpXCX6KCtYa755/PPCn
+ peqhDklnWx1SJkCQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D1C9C139D4;
- Thu, 27 Mar 2025 14:21:48 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 21FEC139D4;
+ Thu, 27 Mar 2025 14:35:16 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 4a1xIPxe5WdgYAAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 27 Mar 2025 14:21:48 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id pNh+NCRi5We9ZAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 27 Mar 2025 14:35:16 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, Tom
- Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: Re: [PATCH V1] migration: cpr breaks SNP guest
-In-Reply-To: <1743082598-428927-1-git-send-email-steven.sistare@oracle.com>
-References: <1743082598-428927-1-git-send-email-steven.sistare@oracle.com>
-Date: Thu, 27 Mar 2025 11:21:44 -0300
-Message-ID: <87iknua70n.fsf@suse.de>
+To: Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, berrange@redhat.com, Prasad Pandit
+ <pjp@fedoraproject.org>
+Subject: Re: [PATCH v8 0/7] Allow to enable multifd and postcopy migration
+ together
+In-Reply-To: <CAE8KmOwiyboWwyjV=gA=GqJSQxQKwm7uG=Jxh3Y1xnJEarYD=g@mail.gmail.com>
+References: <20250318123846.1370312-1-ppandit@redhat.com>
+ <CAE8KmOwiyboWwyjV=gA=GqJSQxQKwm7uG=Jxh3Y1xnJEarYD=g@mail.gmail.com>
+Date: Thu, 27 Mar 2025 11:35:13 -0300
+Message-ID: <87friya6e6.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Score: -4.01
-X-Spamd-Result: default: False [-4.01 / 50.00]; BAYES_HAM(-2.71)[98.73%];
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  NEURAL_HAM_LONG(-1.00)[-1.000];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCPT_COUNT_SEVEN(0.00)[7]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
  RCVD_TLS_ALL(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_TWO(0.00)[2];
  FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, amd.com:email,
- suse.de:mid, oracle.com:email]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,66 +116,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve Sistare <steven.sistare@oracle.com> writes:
+Prasad Pandit <ppandit@redhat.com> writes:
 
-> With aux-ram-share=off, booting an SNP guest fails with:
+> Hello Fabiano,
 >
->   ../util/error.c:68: error_setv: Assertion `*errp == NULL' failed.
+> On Tue, 18 Mar 2025 at 18:10, Prasad Pandit <ppandit@redhat.com> wrote:
+>> * This series (v8) splits earlier patch-2 which enabled multifd and
+>>   postcopy options together into two separate patches. One modifies
+>>   the channel discovery in migration_ioc_process_incoming() function,
+>>   and second one enables the multifd and postcopy migration together.
+>>
+>>   It also adds the 'save_postcopy_prepare' savevm_state handler to
+>>   enable different sections to take an action just before the Postcopy
+>>   phase starts. Thank you Peter for these patches.
+>> ===
+>> 67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             152.66s   81 subtests passed
+>> ===
+>>
 >
-> This is because a CPR blocker for the guest_memfd ramblock is added
-> twice, once in ram_block_add_cpr_blocker because aux-ram-share=off so
-> rb->fd < 0, and once in ram_block_add for a specific guest_memfd blocker.
+> Ping..! Did you have chance to review this (v8) series. (just checking)
 >
-> To fix, add the guest_memfd blocker iff a generic one would not be
-> added by ram_block_add_cpr_blocker.
->
-> Fixes: 094a3dbc55df ("migration: ram block cpr blockers")
-> Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Reported-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->  system/physmem.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
->
-> diff --git a/system/physmem.c b/system/physmem.c
-> index e97de3e..cfafb06 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -1908,13 +1908,18 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
->              goto out_free;
->          }
->  
-> -        error_setg(&new_block->cpr_blocker,
-> -                   "Memory region %s uses guest_memfd, "
-> -                   "which is not supported with CPR.",
-> -                   memory_region_name(new_block->mr));
-> -        migrate_add_blocker_modes(&new_block->cpr_blocker, errp,
-> -                                  MIG_MODE_CPR_TRANSFER,
-> -                                  -1);
-> +        /*
-> +         * Add a specific guest_memfd blocker if a generic one would not be
-> +         * added by ram_block_add_cpr_blocker.
-> +         */
-> +        if (new_block->fd >= 0 && qemu_ram_is_shared(new_block)) {
 
-Can we avoid having two instances of the same condition that will need
-to be kept in sync? What about:
-
-/*
- * Preserving guest_memfd may be sufficient for CPR, but it has not
- * been tested yet.
- */
-if (ram_is_cpr_compatible(new_block)) {
-...
-
-> +            error_setg(&new_block->cpr_blocker,
-> +                       "Memory region %s uses guest_memfd, "
-> +                       "which is not supported with CPR.",
-> +                       memory_region_name(new_block->mr));
-> +            migrate_add_blocker_modes(&new_block->cpr_blocker, errp,
-> +                                      MIG_MODE_CPR_TRANSFER, -1);
-> +        }
->      }
->  
->      ram_size = (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS;
+I'll get to it soon. I need to send a PR for the recent SNP breakage and
+also check Li Zhijian's RDMA series first.
 
