@@ -2,35 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A7BA736C5
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 17:26:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D36A4A736C9
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 17:26:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txq2J-0002Bc-CF; Thu, 27 Mar 2025 12:24:55 -0400
+	id 1txq2L-0002C4-Ng; Thu, 27 Mar 2025 12:24:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1txq2H-0002B7-QU; Thu, 27 Mar 2025 12:24:53 -0400
+ id 1txq2I-0002BB-0n; Thu, 27 Mar 2025 12:24:54 -0400
 Received: from air.basealt.ru ([193.43.8.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1txq2B-00043A-41; Thu, 27 Mar 2025 12:24:53 -0400
+ id 1txq2F-00043a-Eo; Thu, 27 Mar 2025 12:24:53 -0400
 Received: from boringlust.malta.altlinux.ru (obninsk.basealt.ru
  [217.15.195.17]) (Authenticated sender: rastyoginds)
- by air.basealt.ru (Postfix) with ESMTPSA id 57C8023382;
- Thu, 27 Mar 2025 19:24:44 +0300 (MSK)
+ by air.basealt.ru (Postfix) with ESMTPSA id 771E023383;
+ Thu, 27 Mar 2025 19:24:49 +0300 (MSK)
 From: gerben@altlinux.org
 To: qemu-block@nongnu.org,
 	kwolf@redhat.com,
 	hreitz@redhat.com
 Cc: qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org,
- Denis Rastyogin <gerben@altlinux.org>,
- Vasiliy Kovalev <kovalev@altlinux.org>
-Subject: [PATCH 3/4] qemu-img: prevent stack overflow in bench by using bottom
- half
-Date: Thu, 27 Mar 2025 19:24:22 +0300
-Message-ID: <20250327162423.25154-4-gerben@altlinux.org>
+ Denis Rastyogin <gerben@altlinux.org>
+Subject: [PATCH 4/4] qemu-img: improve queue depth validation in img_bench
+Date: Thu, 27 Mar 2025 19:24:23 +0300
+Message-ID: <20250327162423.25154-5-gerben@altlinux.org>
 X-Mailer: git-send-email 2.42.2
 In-Reply-To: <20250327162423.25154-1-gerben@altlinux.org>
 References: <20250327162423.25154-1-gerben@altlinux.org>
@@ -63,65 +61,27 @@ From: Denis Rastyogin <gerben@altlinux.org>
 
 This error was discovered by fuzzing qemu-img.
 
-Previously, new I/O requests were launched synchronously inside the
-completion callback `bench_cb`, leading to deep recursion and stack
-overflow. This patch moves the launching of new requests to a separate
-function `bench_bh`, scheduled via `qemu_bh_schedule` to run in the event
-loop context, thus unwinding the stack and preventing overflow.
+Currently, running `qemu-img bench -d 0` in img_bench is allowed,
+which is a pointless operation and causes qemu-img to hang.
 
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
 ---
- qemu-img.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ qemu-img.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 71c9fe496f..5cbf3d18d7 100644
+index 5cbf3d18d7..4817bd9b05 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -4426,6 +4426,7 @@ typedef struct BenchData {
-     int in_flight;
-     bool in_flush;
-     uint64_t offset;
-+    QEMUBH *bh;
- } BenchData;
+@@ -4581,7 +4581,7 @@ static int img_bench(int argc, char **argv)
+         {
+             unsigned long res;
  
- static void bench_undrained_flush_cb(void *opaque, int ret)
-@@ -4479,7 +4480,16 @@ static void bench_cb(void *opaque, int ret)
+-            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > INT_MAX) {
++            if (qemu_strtoul(optarg, NULL, 0, &res) <= 0 || res > INT_MAX) {
+                 error_report("Invalid queue depth specified");
+                 return 1;
              }
-         }
-     }
-+    if (b->n > b->in_flight && b->in_flight < b->nrreq) {
-+        qemu_bh_schedule(b->bh);
-+    }
-+}
- 
-+static void bench_bh(void *opaque)
-+{
-+    BenchData *b = opaque;
-+    BlockAIOCB *acb;
-+    
-     while (b->n > b->in_flight && b->in_flight < b->nrreq) {
-         int64_t offset = b->offset;
-         /* blk_aio_* might look for completed I/Os and kick bench_cb
-@@ -4737,6 +4747,7 @@ static int img_bench(int argc, char **argv)
-     }
- 
-     gettimeofday(&t1, NULL);
-+    data.bh = qemu_bh_new(bench_bh, &data);
-     bench_cb(&data, 0);
- 
-     while (data.n > 0) {
-@@ -4755,6 +4766,9 @@ out:
-     qemu_vfree(data.buf);
-     blk_unref(blk);
- 
-+    if (data.bh) {
-+        qemu_bh_delete(data.bh);
-+    }
-     if (ret) {
-         return 1;
-     }
 -- 
 2.42.2
 
