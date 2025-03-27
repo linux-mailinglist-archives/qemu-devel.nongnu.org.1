@@ -2,86 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70FC3A73F3B
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 21:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D32A73E7E
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 20:23:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txtbZ-0000y7-Mc; Thu, 27 Mar 2025 16:13:33 -0400
+	id 1txsn3-0001Rc-FZ; Thu, 27 Mar 2025 15:21:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rakeshjb010@gmail.com>)
- id 1txpHr-00049j-BP
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 11:36:55 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rakeshjb010@gmail.com>)
- id 1txpHp-00069k-8H
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 11:36:54 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2239c066347so28677135ad.2
- for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 08:36:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743089810; x=1743694610; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jY2pZXqmdN91zoyHJQ9Q6dIwOWQgQsjp2Sjz6EpDJy0=;
- b=kXD085HcOFKZtX7OfA9CJsMHFkJ+R0YBndTqcIg2B3PNyndb2y+4s25oSlsB7g1Vk5
- mqOcnZoIJPUX/7wR0D1jqvL9Cter0DYhuCl5DIHzK5Us9pAXeA6A1eS7bP4liQ+j0H4K
- TwqrJOHDSLwWw2Egev9iDP1lSrz5nDallAfOMynWDvZUPnoYSW+TbX8JyByAzkXPYQcd
- XBwmXBnjkuI59LUFeUNiN4WWABW9cT73eHxlCHTGO/QcQrujdZ/d100QCkRc9KoxTrrJ
- EBA0lk0gxFGRyQupa/+D/x0o/g55YJ42X+PrnHkmpsMGNQETcl+lTze8zYNipAc6BN+N
- /2DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743089810; x=1743694610;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jY2pZXqmdN91zoyHJQ9Q6dIwOWQgQsjp2Sjz6EpDJy0=;
- b=pAK93UK9EU3xrDk2kvoXP9LgpWaKDEEq3dCrZ3p7LdEJyl2w7dNWKI/NdLjOxAFFxf
- Rr/SAFhSldW0ILn1X0F6ceaxObkdItAKDitZpJihMwJpC2Fh3kpFCq3MrRH01tnlSErW
- P5jlwlswQt6cAOekCMhfWJKi6PJ4U1ZtSVwSnd7OYKkgqnIaBWYHL3vdbwB+SarFzX38
- jun6RGARd1HOZroxvMrTipQQdtthDbvZH7tmNSL+kuQRd5gEtYgm6EgW7a5Q+thFPCOu
- 7WVkhW48GcfpTfTgPeVLoooZtpnFd4BKwSGOZ/+b0u1OMvfOasVDG1T/S92SefrC9Uwq
- 9ZEA==
-X-Gm-Message-State: AOJu0YzBihTDmVqDJQ44ozn9ufXVKpFPt/Zzuwxjm4xZNKbQL6YJ1zLF
- WPHHkcV+3qgsjruTVlWWzQPfWtSx1M2FmGGJEwFCihB4PFi4g+MYvtZ0pSKcG8Q=
-X-Gm-Gg: ASbGncsb3m1Hhb3w3KRDYmcwr2z2TW6Qwd896E2zT30AihZnYe9Uw/D8wzGyMx4A1rP
- PWussgsmnzv8bvOhup1tpHbFtI8C4Lz8tGikx6vQoPJAL8nOGBvxXPbQlnS/sbVweOEhV37G0A6
- gXtUD7LCOqr8KLdGLRNVdOC1KCZzzuyT01TrwAE3/CbBLn9JNof56yw7S1teh8lIw1uHjXXTQNq
- HRSO8ymWT0Y7jLy+DYBftkEThlWWrURw5TSkGAbtpQqwu3Yh2Uh/Aghx6aIpE4237cQyi4izT/o
- fnh/N8fy+dQ30l7p67H1aW2Ed+nz9mUG6pdebzkCegz2Fkrf
-X-Google-Smtp-Source: AGHT+IED+OonyK/RYmGbXPRqetHcui6wMkxvsUMt7nY7AM0C097dGeC6giILVW3xhjlfnIwG+oI8kw==
-X-Received: by 2002:a05:6a20:160f:b0:1fd:f8dc:83f6 with SMTP id
- adf61e73a8af0-1fea2fa6363mr8146433637.40.1743089810380; 
- Thu, 27 Mar 2025 08:36:50 -0700 (PDT)
-Received: from blackjackal.. ([2409:40f4:26:6ed:a652:7103:3a70:1af9])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7390611c7cfsm14431624b3a.110.2025.03.27.08.36.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Mar 2025 08:36:49 -0700 (PDT)
-From: rakeshj <rakeshjb010@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, philmd@linaro.org, thuth@redhat.com,
- rakeshj <rakeshjb010@gmail.com>
-Subject: [PATCH] hw/pci-host/gt64120.c: Fix PCI host bridge endianness handling
-Date: Thu, 27 Mar 2025 21:06:27 +0530
-Message-ID: <20250327153627.307040-1-rakeshjb010@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1txsmp-0001RH-Rd
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 15:21:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1txsmn-0002SI-D6
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 15:21:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1743103261;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YTDHA4j5rrBO4tuTzusDxcnLwIaDBOjt1UrR4Y1i1M8=;
+ b=Pe4lhQw8ufB4NDfynojQWtQq0a0LDR3dVinzTaMeDfvyNT58u6wArZjwQZEgJGpCBL4x7Z
+ +zbkyKNrkfCYCL0YOroMIYjnKrpTRjLOolQb9/3sJESk0WYHY+/1OwaCoEDMBVe3QWKfBD
+ 0pAp8ZMtB8/S2UhvJCgkGrFKMMmlw5U=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-z6kY8zATMKqtRJ9FHXxIng-1; Thu,
+ 27 Mar 2025 15:20:57 -0400
+X-MC-Unique: z6kY8zATMKqtRJ9FHXxIng-1
+X-Mimecast-MFC-AGG-ID: z6kY8zATMKqtRJ9FHXxIng_1743103256
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3182819560BA; Thu, 27 Mar 2025 19:20:55 +0000 (UTC)
+Received: from localhost (unknown [10.2.17.98])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 26A5B1956095; Thu, 27 Mar 2025 19:20:53 +0000 (UTC)
+Date: Thu, 27 Mar 2025 15:20:52 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Farhan Ali <alifm@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, mjrosato@linux.ibm.com, schnelle@linux.ibm.com,
+ qemu-s390x@nongnu.org, qemu-block@nongnu.org, fam@euphon.net,
+ philmd@linaro.org, kwolf@redhat.com, hreitz@redhat.com, thuth@redhat.com
+Subject: Re: [PATCH v1 1/2] util: Add functions for s390x mmio read/write
+Message-ID: <20250327192052.GC46883@fedora>
+References: <20250326181007.1099-1-alifm@linux.ibm.com>
+ <20250326181007.1099-2-alifm@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=rakeshjb010@gmail.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="Nf4qM+rI8ZlVQaik"
+Content-Disposition: inline
+In-Reply-To: <20250326181007.1099-2-alifm@linux.ibm.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 27 Mar 2025 16:13:31 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,77 +85,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The GT-64120 PCI controller requires special handling where:
-1. Host bridge (device 0) must use native endianness
-2. Other devices follow MByteSwap bit in GT_PCI0_CMD
 
-Previous implementation accidentally swapped all accesses, breaking
-host bridge detection (lspci -d 11ab:4620). This fix:
+--Nf4qM+rI8ZlVQaik
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- Adds device filtering via (phb->config_reg & 0x00FFF800)
-- Preserves native endianness for host bridge
-- Maintains swapping for other devices in big-endian mode
+On Wed, Mar 26, 2025 at 11:10:06AM -0700, Farhan Ali wrote:
+> Starting with z15 (or newer) we can execute mmio
+> instructions from userspace. On older platforms
+> where we don't have these instructions available
+> we can fallback to using system calls to access
+> the PCI mapped resources.
+>=20
+> This patch adds helper functions for mmio reads
+> and writes for s390x.
+>=20
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+> ---
+>  include/qemu/s390x_pci_mmio.h |  17 ++++++
+>  util/meson.build              |   2 +
+>  util/s390x_pci_mmio.c         | 105 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 124 insertions(+)
+>  create mode 100644 include/qemu/s390x_pci_mmio.h
+>  create mode 100644 util/s390x_pci_mmio.c
+>=20
+> diff --git a/include/qemu/s390x_pci_mmio.h b/include/qemu/s390x_pci_mmio.h
+> new file mode 100644
+> index 0000000000..be61b5ae29
+> --- /dev/null
+> +++ b/include/qemu/s390x_pci_mmio.h
+> @@ -0,0 +1,17 @@
+> +/*
+> + * s390x PCI MMIO definitions
+> + *
+> + * Copyright 2025 IBM Corp.
+> + * Author(s): Farhan Ali <alifm@linux.ibm.com>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +#ifndef S390X_PCI_MMIO_H
+> +#define S390X_PCI_MMIO_H
+> +
+> +uint64_t s390x_pci_mmio_read_64(const void *ioaddr);
+> +uint32_t s390x_pci_mmio_read_32(const void *ioaddr);
+> +void s390x_pci_mmio_write_64(void *ioaddr, uint64_t val);
+> +void s390x_pci_mmio_write_32(void *ioaddr, uint32_t val);
+> +
+> +#endif
+> diff --git a/util/meson.build b/util/meson.build
+> index 780b5977a8..acb21592f9 100644
+> --- a/util/meson.build
+> +++ b/util/meson.build
+> @@ -131,4 +131,6 @@ elif cpu in ['ppc', 'ppc64']
+>    util_ss.add(files('cpuinfo-ppc.c'))
+>  elif cpu in ['riscv32', 'riscv64']
+>    util_ss.add(files('cpuinfo-riscv.c'))
+> +elif cpu =3D=3D 's390x'
+> +  util_ss.add(files('s390x_pci_mmio.c'))
+>  endif
+> diff --git a/util/s390x_pci_mmio.c b/util/s390x_pci_mmio.c
+> new file mode 100644
+> index 0000000000..2e0825d617
+> --- /dev/null
+> +++ b/util/s390x_pci_mmio.c
+> @@ -0,0 +1,105 @@
+> +/*
+> + * s390x PCI MMIO definitions
+> + *
+> + * Copyright 2025 IBM Corp.
+> + * Author(s): Farhan Ali <alifm@linux.ibm.com>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include <unistd.h>
+> +#include <sys/syscall.h>
+> +#include "qemu/osdep.h"
 
-Fixes: 145e2198 ("hw/mips/gt64xxx_pci: Endian-swap using PCI_HOST_BRIDGE MemoryRegionOps")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2826
-Signed-off-by: rakeshj <rakeshjb010@gmail.com>
----
- hw/pci-host/gt64120.c | 37 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+This should be the first #include in the file. From
+docs/devel/style.rst:
 
-diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
-index d5c13a89b6..098f8e5988 100644
---- a/hw/pci-host/gt64120.c
-+++ b/hw/pci-host/gt64120.c
-@@ -320,11 +320,46 @@ static void gt64120_isd_mapping(GT64120State *s)
-     memory_region_transaction_commit();
- }
- 
-+static uint64_t gt64120_pci_data_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    GT64120State *s = opaque;
-+    PCIHostState *phb = PCI_HOST_BRIDGE(s);
-+    uint32_t val = pci_data_read(phb->bus, phb->config_reg, size);
-+    
-+    /* Only swap for non-bridge devices in big-endian mode */
-+    if (!(s->regs[GT_PCI0_CMD] & 1) && (phb->config_reg & 0x00fff800)) {
-+        val = bswap32(val);
-+    }
-+    return val;
-+}
-+
-+static void gt64120_pci_data_write(void *opaque, hwaddr addr, 
-+    uint64_t val, unsigned size)
-+{
-+    GT64120State *s = opaque;
-+    PCIHostState *phb = PCI_HOST_BRIDGE(s);
-+    if (!(s->regs[GT_PCI0_CMD] & 1) && (phb->config_reg & 0x00fff800)) {
-+        val = bswap32(val);
-+    }
-+    if (phb->config_reg & (1u << 31))
-+        pci_data_write(phb->bus, phb->config_reg | (addr & 3), val, size);
-+}
-+
-+static const MemoryRegionOps gt64120_pci_data_ops = {
-+    .read = gt64120_pci_data_read,
-+    .write = gt64120_pci_data_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 1,
-+        .max_access_size = 4,
-+    },
-+};
-+
- static void gt64120_update_pci_cfgdata_mapping(GT64120State *s)
- {
-     /* Indexed on MByteSwap bit, see Table 158: PCI_0 Command, Offset: 0xc00 */
-     static const MemoryRegionOps *pci_host_data_ops[] = {
--        &pci_host_data_be_ops, &pci_host_data_le_ops
-+        &gt64120_pci_data_ops, &pci_host_data_le_ops
-     };
-     PCIHostState *phb = PCI_HOST_BRIDGE(s);
- 
--- 
-2.43.0
+  Include directives
+  ------------------
+ =20
+  Order include directives as follows:
+ =20
+  .. code-block:: c
+ =20
+      #include "qemu/osdep.h"  /* Always first... */
+      #include <...>           /* then system headers... */
+      #include "..."           /* and finally QEMU headers. */
+
+Otherwise:
+
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--Nf4qM+rI8ZlVQaik
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmflpRQACgkQnKSrs4Gr
+c8g5SggAhwprjKa88lmd9IEXvOOvTam0DpM4GBr//Fyoe2DIaJR+oAgmQu3O89Hz
+TfoEG2ng3IDCVGnn4agLwoqIHjv9ta9es2HptcZO+upOXJmzMhCiTrVw3hyhlVI7
+qKt1NkV/btXaMT5pPgXmRIFQB4lUXC1VHrKO9JJJCd1jNqZfnozKk84W9cOMip/+
+Z4Qd0EMk1lVLdgYEYWVfSnfBwIBtCqGJ6PiFkCP+UCrTI6NOXvX6rOvRzK0b+nYS
+Wi1oVQCRHZGFGPNA7cShLtLKmufdklh6NtO21XLeCuucGUKW6e2a4nhmAc9nx7lT
+Zx55tqoy3L7gMxrkX7PdTHm4aiP8rQ==
+=43y3
+-----END PGP SIGNATURE-----
+
+--Nf4qM+rI8ZlVQaik--
 
 
