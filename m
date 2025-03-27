@@ -2,71 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2065BA728A5
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 03:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C42CCA728F5
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 04:01:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txck6-0008A9-VB; Wed, 26 Mar 2025 22:13:14 -0400
+	id 1txdSx-0006tl-Rp; Wed, 26 Mar 2025 22:59:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1txck4-00089w-Rg
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 22:13:12 -0400
-Received: from esa2.hc1455-7.c3s2.iphmx.com ([207.54.90.48])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1txck2-0001le-DP
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 22:13:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1743041591; x=1774577591;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ThFB4JJpj5BNlLiAZGjU5GQkGR+67ntJM6+5DR3CXSE=;
- b=XO88uVaNqz1EuouMoZwiktUlTFiXgmdHTEA7azSi93MfZ7A5HbyX0Du3
- Efpx2/fQITqb77sDbFS58VQGYPzjKLE6OGxq1gD+l+ynE0OH5ZTWtSVJX
- agaBlpoJAQdMsmMxcqJ77Uhqs3PYRSfsQfBLx6PwBBPKIRbq4r5U7YdIP
- JiNzHDyOhHdTHmoBjEwqX12EM5Y8Fr7z/uHI/L9944uPQI7iRE850rr1B
- LoZVsZHPP7O3tv3O2EchnmJ9g8r//g5BlR2pPnKODKPi8YE+gxqCPEh1H
- N/EEjQMF/W/GXjRizIF83TvCjlNcnC6N3wNu/z+jTAMuNgm3CoaQi/la/ g==;
-X-CSE-ConnectionGUID: sOpfBHedTP+eeVuX31l0RQ==
-X-CSE-MsgGUID: bWQO9YJdQzit02OTcdeGsg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="194583587"
-X-IronPort-AV: E=Sophos;i="6.14,279,1736780400"; d="scan'208";a="194583587"
-Received: from unknown (HELO yto-r1.gw.nic.fujitsu.com) ([218.44.52.217])
- by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2025 11:13:06 +0900
-Received: from yto-m4.gw.nic.fujitsu.com (yto-nat-yto-m4.gw.nic.fujitsu.com
- [192.168.83.67])
- by yto-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id C3482D6EB1
- for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 11:13:02 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by yto-m4.gw.nic.fujitsu.com (Postfix) with ESMTP id 85A4DEA0EB
- for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 11:13:02 +0900 (JST)
-Received: from FNSTPC.g08.fujitsu.local (unknown [10.167.135.44])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 1DE0F1A0071;
- Thu, 27 Mar 2025 10:13:00 +0800 (CST)
-To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Li Zhijian <lizhijian@fujitsu.com>, Jack Wang <jinpu.wang@ionos.com>,
- "Michael R . Galaxy" <mrgalaxy@nvidia.com>, Yu Zhang <yu.zhang@ionos.com>
-Subject: [PATCH] qtest/migration/rdma: Add test for rdma migration with ipv6
-Date: Thu, 27 Mar 2025 10:12:34 +0800
-Message-ID: <20250327021234.264161-1-lizhijian@fujitsu.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txdSr-0006tK-9S
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 22:59:29 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yuq825@gmail.com>) id 1txdSn-0007db-PO
+ for qemu-devel@nongnu.org; Wed, 26 Mar 2025 22:59:28 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-2260c91576aso9250935ad.3
+ for <qemu-devel@nongnu.org>; Wed, 26 Mar 2025 19:59:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1743044363; x=1743649163; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yJyAHUwFlVJraZEtb73M+HzUUPfVVPBywg26KBCi8IU=;
+ b=QOaxxPWp3/is0mq32wNTt7v3V2Mvlr+G2mZB3raqf3Vj437vbPnlebAjzRKt4QoH4d
+ mB5uET23CeKSbRDf+CraClKjzR+0kEpzioHjyg2FbC995qSPgN2ofQqf7Wd586Rr7UHF
+ Ay30FQHeL2mGw1HDrio0uVuObE+pOjb7G2lukALtOAAyb9Z0IS360DAAeOuVuZyYfm0X
+ Y7kU4+As8MjqGdNNtBUqRUA/qkNMSn2LkLucctJvud+VHY8SUc9Luffq1gptWNG0e98J
+ SA1h1QvXGixIDMD3cbUBaKq8p+tC7SfIcSAl/yEGhNvoMMK0ozg+aQssN8P3ZouOor2X
+ SdkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1743044363; x=1743649163;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yJyAHUwFlVJraZEtb73M+HzUUPfVVPBywg26KBCi8IU=;
+ b=XKhQkrprAemA0aDcfyi7IkTvCMAhuaaU0bXRtzW5GOCgpy0lj5YAhUcTSFs6oDVgKP
+ F5EHWmvuuKLp9zAMag3olxOSH/rMT7se1UV5FphaXK2NA2EZghbOsZOFxyDRo8Uu8irU
+ p8Hdz7pG7vhsF3UBQtJ91RXJ0z5LFkaACB1fXOw2xxLa6kvEVgDPaEZKxVYsOZU5xEKu
+ rP1IYNTq8Qrwao5XypJwAjCiFqbVf9FbSOY+qv4rp9hevT0neRbxQBIG5ru4oPKz/KkR
+ x5RivpSCvHWO7j+I+O4bzWfrBBO73BpMvZrpDyAHvdcKFWDByff0ZJsMG6yDtGGbvS11
+ L16g==
+X-Gm-Message-State: AOJu0YxgW0UPyBV2aas3jPGKrs4wT9acjCS8fDcqYgfjn3Wd3Ynz/jYg
+ F3kcQScmXo/Q+uRlO2HPMkw9qCxhaGbLYxnv4dHAwV5+OD5dJWWObL2KINAN
+X-Gm-Gg: ASbGncuH7b/GusplrTs09iA2XBmgkDnR9tFJKVfbzKnpBkUTR+nXZuBK7WUTi/a1cZV
+ bGloKgFcM8br3Mdtwu2dqYMMbR2PlFsoz/1CQGh1/1ItMj6cGiRcRuFiwBvSu1LI4kpo9DHRWpk
+ MnXZr0SzZ6zS/cDDPfbJlEUN9rHWp7JuEASE0ZcqmBJfDCb2zC25rPyYvPeUWrqHj3UnYWskkBG
+ WTX1RET2TfjLuRrhDMRacIaebdB94M0PsDyvpOajPC8vRV8Ux6V+bpZSsa9G5CFfeeAxQDiZarC
+ uOfLLtjPR1IGMN9yN3cLieCmfzH0n68nlw9VArwZChQezsi3Bw4QhqgGl2+r4ca6w+KGZJvypNs
+ UgcLKifd5bHvHhBLuCOdR
+X-Google-Smtp-Source: AGHT+IHEjZLGZPmfTrPwgawGGysCEiB3ueR+fk6bKAZU3j59yQlNc15QKlHoPaX2Y0950vD3+IMyfA==
+X-Received: by 2002:a17:90b:2650:b0:2fe:afbc:cd53 with SMTP id
+ 98e67ed59e1d1-303a87b2f9dmr3032682a91.28.1743044363222; 
+ Wed, 26 Mar 2025 19:59:23 -0700 (PDT)
+Received: from localhost.localdomain (awork062150.netvigator.com.
+ [203.198.28.150]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-3039dfd37e5sm1027698a91.2.2025.03.26.19.59.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 Mar 2025 19:59:22 -0700 (PDT)
+From: yuq825@gmail.com
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
+ Qiang Yu <yuq825@gmail.com>
+Subject: [PATCH v3 0/6] ui: support multi plane texture
+Date: Thu, 27 Mar 2025 10:58:42 +0800
+Message-ID: <20250327025848.46962-1-yuq825@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=207.54.90.48; envelope-from=lizhijian@fujitsu.com;
- helo=esa2.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=yuq825@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,157 +92,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Li Zhijian <lizhijian@fujitsu.com>
-From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Recently, we removed ipv6 restriction[0] from RDMA migration, add a
-test for it.
+From: Qiang Yu <yuq825@gmail.com>
 
-[0] https://lore.kernel.org/qemu-devel/20250326095224.9918-1-jinpu.wang@ionos.com/
+mesa/radeonsi is going to support explicit modifier with this MR:
+  * https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/31658
 
-Cc: Jack Wang <jinpu.wang@ionos.com>
-Cc: Michael R. Galaxy <mrgalaxy@nvidia.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Yu Zhang <yu.zhang@ionos.com>
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
----
+The side effect is some texture will become multi-plane which
+breaks qemu. Because qemu currently only support single plane
+texture.
 
-This test is added based on [1]
+For example, texture with DCC (a compressed format) enabled modifier
+will expose one plane for compressed data, another plane with metadata
+for compression.
 
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
----
- scripts/rdma-migration-helper.sh      | 26 +++++++++++++++++++++++---
- tests/qtest/migration/precopy-tests.c | 21 +++++++++++++++++----
- 2 files changed, 40 insertions(+), 7 deletions(-)
+This patch serial fix qemu to support multi-plane texture for
+DBus and SPICE display, other display seems not affected by multi
+plane.
 
-diff --git a/scripts/rdma-migration-helper.sh b/scripts/rdma-migration-helper.sh
-index 019b9ad932..c358392b72 100755
---- a/scripts/rdma-migration-helper.sh
-+++ b/scripts/rdma-migration-helper.sh
-@@ -8,6 +8,15 @@ get_ipv4_addr()
-         head -1 | tr -d '\n'
- }
- 
-+get_ipv6_addr() {
-+    ipv6=$(ip -6 -o addr show dev "$1" |
-+        sed -n 's/.*[[:blank:]]inet6[[:blank:]]*\([^[:blank:]/]*\).*/\1/p' |
-+        head -1 | tr -d '\n')
-+
-+    [ $? -eq 0 ] || return
-+    echo -n ["$ipv6"%$1]
-+}
-+
- # existing rdma interfaces
- rdma_interfaces()
- {
-@@ -20,11 +29,16 @@ ipv4_interfaces()
-     ip -o addr show | awk '/inet / {print $2}' | sort -u | grep -v -w lo
- }
- 
-+ipv6_interfaces()
-+{
-+    ip -o addr show | awk '/inet6 / {print $2}' | sort -u | grep -v -w lo
-+}
-+
- rdma_rxe_detect()
- {
-     for r in $(rdma_interfaces)
-     do
--        ipv4_interfaces | grep -qw $r && get_ipv4_addr $r && return
-+        "$IP_FAMILY"_interfaces | grep -qw $r && get_"$IP_FAMILY"_addr $r && return
-     done
- 
-     return 1
-@@ -32,11 +46,11 @@ rdma_rxe_detect()
- 
- rdma_rxe_setup()
- {
--    for i in $(ipv4_interfaces)
-+    for i in $("$IP_FAMILY"_interfaces)
-     do
-         rdma_interfaces | grep -qw $i && continue
-         rdma link add "${i}_rxe" type rxe netdev "$i" && {
--            echo "Setup new rdma/rxe ${i}_rxe for $i with $(get_ipv4_addr $i)"
-+            echo "Setup new rdma/rxe ${i}_rxe for $i with $(get_"$IP_FAMILY"_addr $i)"
-             return
-         }
-     done
-@@ -50,6 +64,12 @@ rdma_rxe_clean()
-     modprobe -r rdma_rxe
- }
- 
-+IP_FAMILY=${IP_FAMILY:-ipv4}
-+if [ "$IP_FAMILY" != "ipv6" ] && [ "$IP_FAMILY" != "ipv4" ]; then
-+    echo "Unknown ip family '$IP_FAMILY', only ipv4 or ipv6 is supported," >&2
-+    exit 1
-+fi
-+
- operation=${1:-detect}
- 
- command -v rdma >/dev/null || {
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index a137ea9f2c..9f7236dc59 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -102,12 +102,13 @@ static void test_precopy_unix_dirty_ring(void)
- #ifdef CONFIG_RDMA
- 
- #define RDMA_MIGRATION_HELPER "scripts/rdma-migration-helper.sh"
--static int new_rdma_link(char *buffer)
-+static int new_rdma_link(char *buffer, bool ipv6)
- {
-     char cmd[256];
-     bool verbose = g_getenv("QTEST_LOG");
- 
--    snprintf(cmd, sizeof(cmd), "%s detect %s", RDMA_MIGRATION_HELPER,
-+    snprintf(cmd, sizeof(cmd), "IP_FAMILY=%s %s detect %s",
-+             ipv6 ? "ipv6" : "ipv4", RDMA_MIGRATION_HELPER,
-              verbose ? "" : "2>/dev/null");
- 
-     FILE *pipe = popen(cmd, "r");
-@@ -132,11 +133,11 @@ static int new_rdma_link(char *buffer)
-     return -1;
- }
- 
--static void test_precopy_rdma_plain(void)
-+static void test_precopy_rdma_plain_ip(bool ipv6)
- {
-     char buffer[128] = {};
- 
--    if (new_rdma_link(buffer)) {
-+    if (new_rdma_link(buffer, ipv6)) {
-         g_test_skip("No rdma link available\n"
-                     "# To enable the test:\n"
-                     "# Run \'" RDMA_MIGRATION_HELPER " setup\' with root to setup"
-@@ -159,6 +160,16 @@ static void test_precopy_rdma_plain(void)
- 
-     test_precopy_common(&args);
- }
-+
-+static void test_precopy_rdma_plain(void)
-+{
-+    test_precopy_rdma_plain_ip(0);
-+}
-+
-+static void test_precopy_rdma_plain_ipv6(void)
-+{
-+    test_precopy_rdma_plain_ip(1);
-+}
- #endif
- 
- static void test_precopy_tcp_plain(void)
-@@ -1189,6 +1200,8 @@ static void migration_test_add_precopy_smoke(MigrationTestEnv *env)
- #ifdef CONFIG_RDMA
-     migration_test_add("/migration/precopy/rdma/plain",
-                        test_precopy_rdma_plain);
-+    migration_test_add("/migration/precopy/rdma/plain/ipv6",
-+                       test_precopy_rdma_plain_ipv6);
- #endif
- }
- 
+This patch serial also depends on the spice changes here:
+  * https://gitlab.freedesktop.org/spice/spice/-/merge_requests/232
+
+SPICE client change here:
+  * https://gitlab.freedesktop.org/spice/spice-gtk/-/merge_requests/130
+
+DBus client change here:
+  * https://gitlab.com/marcandre.lureau/qemu-display/-/merge_requests/5
+
+v3:
+  * dbus rename interface, add more args
+
+v2:
+  * change dmabuf API for array length
+  * check spice_qxl_gl_scanout2 API instead of bumping spice version
+
+Qiang Yu (6):
+  ui/dmabuf: extend QemuDmaBuf to support multi-plane
+  ui/egl: require EGL_EXT_image_dma_buf_import_modifiers
+  ui/egl: use DRM_FORMAT_MOD_INVALID as default modifier
+  ui/egl: support multi-plane dmabuf when egl export/import
+  ui/dbus: change dbus ScanoutDMABUF interface
+  ui/spice: support multi plane dmabuf scanout
+
+ hw/display/vhost-user-gpu.c     |   9 ++-
+ hw/display/virtio-gpu-udmabuf.c |   8 +-
+ hw/vfio/display.c               |   7 +-
+ include/ui/dmabuf.h             |  20 +++--
+ include/ui/egl-helpers.h        |   5 +-
+ meson.build                     |   5 ++
+ ui/dbus-display1.xml            |  45 +++++++++++
+ ui/dbus-listener.c              | 127 ++++++++++++++++++++++++++++----
+ ui/dmabuf.c                     |  77 +++++++++++++------
+ ui/egl-helpers.c                | 102 ++++++++++++++++++-------
+ ui/spice-display.c              | 102 ++++++++++++++++++-------
+ 11 files changed, 397 insertions(+), 110 deletions(-)
+
 -- 
-2.41.0
+2.43.0
 
 
