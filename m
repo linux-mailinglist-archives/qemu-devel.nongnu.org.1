@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B15A736C7
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4FCA736C6
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 17:26:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txq22-00022x-Vy; Thu, 27 Mar 2025 12:24:39 -0400
+	id 1txq2D-0002AO-Mj; Thu, 27 Mar 2025 12:24:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1txq20-00022G-HG; Thu, 27 Mar 2025 12:24:36 -0400
+ id 1txq2A-00028l-5L; Thu, 27 Mar 2025 12:24:46 -0400
 Received: from air.basealt.ru ([193.43.8.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1txq1y-00041z-Pn; Thu, 27 Mar 2025 12:24:36 -0400
+ id 1txq28-00042z-BE; Thu, 27 Mar 2025 12:24:45 -0400
 Received: from boringlust.malta.altlinux.ru (obninsk.basealt.ru
  [217.15.195.17]) (Authenticated sender: rastyoginds)
- by air.basealt.ru (Postfix) with ESMTPSA id 7521123383;
- Thu, 27 Mar 2025 19:24:31 +0300 (MSK)
+ by air.basealt.ru (Postfix) with ESMTPSA id 53C9323383;
+ Thu, 27 Mar 2025 19:24:42 +0300 (MSK)
 From: gerben@altlinux.org
 To: qemu-block@nongnu.org,
 	kwolf@redhat.com,
 	hreitz@redhat.com
 Cc: qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org,
  Denis Rastyogin <gerben@altlinux.org>
-Subject: [PATCH 1/4] qemu-img: fix division by zero in bench_cb() for
- zero-sized
-Date: Thu, 27 Mar 2025 19:24:20 +0300
-Message-ID: <20250327162423.25154-2-gerben@altlinux.org>
+Subject: [PATCH 2/4] qemu-img: fix offset calculation in bench
+Date: Thu, 27 Mar 2025 19:24:21 +0300
+Message-ID: <20250327162423.25154-3-gerben@altlinux.org>
 X-Mailer: git-send-email 2.42.2
 In-Reply-To: <20250327162423.25154-1-gerben@altlinux.org>
 References: <20250327162423.25154-1-gerben@altlinux.org>
@@ -62,36 +61,41 @@ From: Denis Rastyogin <gerben@altlinux.org>
 
 This error was discovered by fuzzing qemu-img.
 
-This commit fixes a division by zero error in the bench_cb() function
-that occurs when using the bench command with a zero-sized image.
+The current offset calculation leads to an EIO error
+in block/block-backend.c: blk_check_byte_request():
 
-The issue arises because b->image_size can be zero, leading to a
-division by zero in the modulo operation (b->offset %= b->image_size).
-This patch adds a check for b->image_size == 0 and resets b->offset
-to 0 in such cases, preventing the error.
+ if (offset > len || len - offset < bytes) {
+     return -EIO;
+ }
+
+This triggers the error message:
+"qemu-img: Failed request: Input/output error".
+
+Example of the issue:
+ offset: 260076
+ len: 260096
+ bytes: 4096
+
+This fix ensures that offset remains within a valid range.
 
 Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
 ---
- qemu-img.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ qemu-img.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 89c93c1eb5..2044c22a4c 100644
+index 2044c22a4c..71c9fe496f 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -4488,7 +4488,11 @@ static void bench_cb(void *opaque, int ret)
-          */
-         b->in_flight++;
-         b->offset += b->step;
--        b->offset %= b->image_size;
-+        if (b->image_size == 0) {
-+            b->offset = 0;
-+        } else {
-+            b->offset %= b->image_size;
-+        }
+@@ -4491,7 +4491,7 @@ static void bench_cb(void *opaque, int ret)
+         if (b->image_size == 0) {
+             b->offset = 0;
+         } else {
+-            b->offset %= b->image_size;
++            b->offset %= b->image_size - b->bufsize;
+         }
          if (b->write) {
              acb = blk_aio_pwritev(b->blk, offset, b->qiov, 0, bench_cb, b);
-         } else {
 -- 
 2.42.2
 
