@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC01A72956
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 04:49:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E93EA729E9
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 06:38:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txeDU-0002Kc-K9; Wed, 26 Mar 2025 23:47:45 -0400
+	id 1txfuv-0003tH-2i; Thu, 27 Mar 2025 01:36:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1txeDQ-0002KO-UZ
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 23:47:37 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1txfur-0003t3-FX
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 01:36:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1txeDO-0006Cl-7d
- for qemu-devel@nongnu.org; Wed, 26 Mar 2025 23:47:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743047255; x=1774583255;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=jd5V66xzNMVVQpsPvdqBDVug/cTkyvdUpfxi1ZnZZRc=;
- b=jcenF/bku4IDeemO8VLwAU2CKvDATvfnSwqSHwfHifUZLkKUCbQM/whp
- 5qeKVro6t1WcNjrh/FPThjaqE9EfRLjexkTHKea7Cl5hhCh8ywUyarnDB
- LLbRpgTHkGkvaP4QP5aKRQ7glU2li3Kj35YV4lKUAM+eMK4biWsQE81Uq
- QP3zfFqUD2uJcoKVNF80kJC8MNK2Ze/uVxe7OY//2Q2V1hM0e4OG+e5kQ
- 8joEdiVzuCcKZ0E6gX8Ujc0vo/rFgVYfbNHHECPqmL4v0S0WL61u0SeO1
- Hdgu33ESDicSPl3nPTUWRbVUkJ89M1RKpXaCrFsB2KMtUhU2MxqIrK/gg A==;
-X-CSE-ConnectionGUID: QUzHjgEnTpqU0GTKb0Absg==
-X-CSE-MsgGUID: 4KHRbjHrShOSZPWLQ2Ud1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="66825889"
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="66825889"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2025 20:47:31 -0700
-X-CSE-ConnectionGUID: eQQvm33XSkmb0FreCz6SXQ==
-X-CSE-MsgGUID: ImzR1k+LTgCtBLUtfepdOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; d="scan'208";a="124979505"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.245.128])
- ([10.124.245.128])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2025 20:47:27 -0700
-Message-ID: <04f025bb-2ce8-49d9-9d94-857bd4106156@linux.intel.com>
-Date: Thu, 27 Mar 2025 11:47:24 +0800
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1txfup-0004eO-Dk
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 01:36:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1743053789;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZXyINpsT14diTrqxYmt1neoUXtrwPNBPkVD6X5SwLz8=;
+ b=BR0oNu57lkxQFYzI+HJGWQp3uWPeu33Z8yb4XkHUn6kKhajWcxqsJBYfZhqk5WzrQsKhIh
+ BTC3uP/mMpK8H7Xw+XwyQ8bNqYYu+GJj9Ce15M5TIV38xobiZ4ROiRgdnw0uywiNgxI2BD
+ 3ULTRSn9zO0Pem0M3zkYR4cFFh8NsO0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-ifHlPBUCOe-6mHCoQInQNg-1; Thu,
+ 27 Mar 2025 01:36:23 -0400
+X-MC-Unique: ifHlPBUCOe-6mHCoQInQNg-1
+X-Mimecast-MFC-AGG-ID: ifHlPBUCOe-6mHCoQInQNg_1743053783
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A579C190308B; Thu, 27 Mar 2025 05:36:22 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.22.74.4])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7F9321955D81; Thu, 27 Mar 2025 05:36:20 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C368921E66C7; Thu, 27 Mar 2025 06:36:17 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Cleber Rosa <crosa@redhat.com>,  Michael Roth
+ <michael.roth@amd.com>,  Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 3/5] python: update missing dependencies from minreqs
+In-Reply-To: <CAFn=p-aixsXRdE86tDS9kBd4azBQ7KU-h-utNkCndykbORAZ8w@mail.gmail.com>
+ (John Snow's message of "Wed, 26 Mar 2025 16:12:04 -0400")
+References: <20250321222347.299121-1-jsnow@redhat.com>
+ <20250321222347.299121-4-jsnow@redhat.com>
+ <87a598fhnp.fsf@pond.sub.org>
+ <CAFn=p-aixsXRdE86tDS9kBd4azBQ7KU-h-utNkCndykbORAZ8w@mail.gmail.com>
+Date: Thu, 27 Mar 2025 06:36:17 +0100
+Message-ID: <87wmcb2fxq.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] target/i386: Call KVM_CAP_PMU_CAPABILITY iotcl to
- enable/disable PMU
-To: Mingwei Zhang <mizhang@google.com>
-Cc: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>,
- Zide Chen <zide.chen@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Sean Christopherson <seanjc@google.com>, Das Sandipan
- <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Dapeng Mi <dapeng1.mi@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20250324123712.34096-1-dapeng1.mi@linux.intel.com>
- <20250324123712.34096-3-dapeng1.mi@linux.intel.com>
- <3a01b0d8-8f0b-4068-8176-37f61295f87f@oracle.com>
- <a8e4649d-5402-4c3a-bc86-1d1b76122541@linux.intel.com>
- <CAL715WJmj=7wO_HTSendCLAs6TAPbUyKM9gMFKLhiSKqgr1s4A@mail.gmail.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <CAL715WJmj=7wO_HTSendCLAs6TAPbUyKM9gMFKLhiSKqgr1s4A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=198.175.65.9;
- envelope-from=dapeng1.mi@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, LONG_TERM_PRICE=0.001,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,118 +88,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+John Snow <jsnow@redhat.com> writes:
 
-On 3/27/2025 10:15 AM, Mingwei Zhang wrote:
-> On Wed, Mar 26, 2025 at 5:44 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
->>
->> On 3/26/2025 2:46 PM, Dongli Zhang wrote:
->>> Hi Dapeng,
->>>
->>> PATCH 1-4 from the below patchset are already reviewed. (PATCH 5-10 are for PMU
->>> registers reset).
->>>
->>> https://lore.kernel.org/all/20250302220112.17653-1-dongli.zhang@oracle.com/
->>>
->>> They require only trivial modification. i.e.:
->>>
->>> https://github.com/finallyjustice/patchset/tree/master/qemu-amd-pmu-mid/v03
->>>
->>> Therefore, since PATCH 5-10 are for another topic, any chance if I re-send 1-4
->>> as a prerequisite for the patch to explicitly call KVM_CAP_PMU_CAPABILITY?
->> any option is fine for me, spiting it into two separated ones or still keep
->> in a whole patch series. I would rebase this this patchset on top of your
->> v3 patches.
->>
->>
->>> In addition, I have a silly question. Can mediated vPMU coexist with legacy
->>> perf-based vPMU, that is, something like tdp and tdp_mmu? Or the legacy
->>> perf-based vPMU is going to be purged from the most recent kernel?
->> No, they can't. As long as mediated vPMU is enabled, it would totally
->> replace the legacy perf-based vPMU. The legacy perf-based vPMU code would
->> still be kept in the kernel in near future, but the long-term target is to
->> totally remove the perf-based vPMU once mediated vPMU is mature.
-> mediated vPMU will co-exist with legacy vPMU right? Mediated vPMU
-> currently was constrained to SPR+ on Intel and Genoa+ on AMD. So
-> legacy CPUs will have no choice but legacy vPMU.
+> On Wed, Mar 26, 2025 at 2:08=E2=80=AFAM Markus Armbruster <armbru@redhat.=
+com> wrote:
 >
-> In the future, to fully replace legacy vPMU we need to solve the
-> performance issue due to PMU context switching being located at VM
-> enter/exit boundary. Once those limitations are resolved, and older
-> x86 CPUs fade away, mediated vPMU can fully take over.
-
-yeah, the code would co-exist in near feature or maybe longer, but mediated
-vPMU and the legacy vPMU won't work concurrently, once mediated vPMU is
-enabled, it would preempt the legacy vPMU.
-
-
->
-> Thanks.
-> -Mingwei
+>> John Snow <jsnow@redhat.com> writes:
 >>
->>> If they can coexist, how about add property to QEMU control between
->>> legacy/modern? i.e. by default use legacy and change to modern as default in the
->>> future once the feature is stable.
+>> > A few transitive dependencies were left floating; as a result, pip's
+>> > dependency solver can pull in newer dependencies, which we don't
+>> > want. Pin them down.
+>> >
+>> > Signed-off-by: John Snow <jsnow@redhat.com>
+>>
+>> What problem exactly does this fix?  Make target check-minreqs?
+>>
+>
+> I'm not sure it's a "problem" as such, but an inconsistency. Yes, it's wi=
+th
+> check-minreqs -- without this patch, pip is free to choose newer versions
+> of these dependencies as appropriate. Though unlikely at this point, in
+> theory, new dependency updates could be selected by pip and invalidate the
+> concept of an entirely fixed/pinned virtual environment.
+>
+> That these transitive dependencies were not frozen initially was an
+> oversight.
+>
+> check-minreqs is supposed to build the exact same venv every time without
+> fail. Without this change, it's *possible* that it might do something
+> different on release day if someone releases a new package. No good,
+> probably.
 
-I don't prefer to add such property in Qemu. Whether KVM selects to enable
-mediated vPMU or the legacy perf-based vPMU, it should be transparent for
-Qemu. Qemu is unnecessary to know it.
+I see.
 
-Currently Qemu already has too much PMU related options, such as pmu,
-lbr/arch_lbr. It's too complicated, it introduces too much dependency on
-the code and user needs to take time to learn how to configure these
-options correctly as well. 
+You've been spoiling me with really nice commit messages...  If you'd
+like to push this one to that level, I'd suggest to start with a short
+paragraph explaining why we pin versions for check-minreq, then state
+the issue being fixed: we missed some pins.
 
-We don't need more options, on the contrary we need to simplify the PMU
-options in Qemu. The ideal situation is to keep only one "pmu" option which
-is used to manage all these PMU features, like basic perfmon, LBR and PEBS
-etc,. But it may cause back-compatible issues if remove these additional
-options...
+[...]
 
-
->>>
->>> Thank you very much!
->>>
->>> Dongli Zhang
->>>
->>> On 3/24/25 5:37 AM, Dapeng Mi wrote:
->>>> After introducing mediated vPMU, mediated vPMU must be enabled by
->>>> explicitly calling KVM_CAP_PMU_CAPABILITY to enable. Thus call
->>>> KVM_CAP_PMU_CAPABILITY to enable/disable PMU base on user configuration.
->>>>
->>>> Suggested-by: Zhao Liu <zhao1.liu@intel.com>
->>>> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
->>>> ---
->>>>  target/i386/kvm/kvm.c | 17 +++++++++++++++++
->>>>  1 file changed, 17 insertions(+)
->>>>
->>>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
->>>> index f41e190fb8..d3e6984844 100644
->>>> --- a/target/i386/kvm/kvm.c
->>>> +++ b/target/i386/kvm/kvm.c
->>>> @@ -2051,8 +2051,25 @@ full:
->>>>      abort();
->>>>  }
->>>>
->>>> +static bool pmu_cap_set = false;
->>>>  int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
->>>>  {
->>>> +    KVMState *s = kvm_state;
->>>> +    X86CPU *x86_cpu = X86_CPU(cpu);
->>>> +
->>>> +    if (!pmu_cap_set && kvm_check_extension(s, KVM_CAP_PMU_CAPABILITY)) {
->>>> +        int r = kvm_vm_enable_cap(s, KVM_CAP_PMU_CAPABILITY, 0,
->>>> +                                  KVM_PMU_CAP_DISABLE & !x86_cpu->enable_pmu);
->>>> +        if (r < 0) {
->>>> +            error_report("kvm: Failed to %s pmu cap: %s",
->>>> +                         x86_cpu->enable_pmu ? "enable" : "disable",
->>>> +                         strerror(-r));
->>>> +            return r;
->>>> +        }
->>>> +
->>>> +        pmu_cap_set = true;
->>>> +    }
->>>> +
->>>>      return 0;
->>>>  }
->>>>
 
