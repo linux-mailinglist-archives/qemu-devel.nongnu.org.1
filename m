@@ -2,117 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD118A72C25
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 10:13:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBAEA72C34
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 10:17:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txjHV-0007Bl-6E; Thu, 27 Mar 2025 05:12:09 -0400
+	id 1txjLW-0000ab-8j; Thu, 27 Mar 2025 05:16:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1txjHQ-00078Z-1u
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 05:12:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1txjLP-0000Zd-FO
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 05:16:15 -0400
+Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1txjHO-0005lW-14
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 05:12:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743066719;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1txjLL-0006N1-Ac
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 05:16:10 -0400
+Received: from [IPV6:2a02:a03f:eafe:6901:38ac:f342:2515:2d3c] (unknown
+ [IPv6:2a02:a03f:eafe:6901:38ac:f342:2515:2d3c])
+ by apollo.dupie.be (Postfix) with ESMTPSA id 6B7FF1520CC7;
+ Thu, 27 Mar 2025 10:16:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
+ t=1743066960;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KxJ16tDeYAGFS0tk1Xhh+SQUoUEZcKzgVt37yURehds=;
- b=BeS8k180fyJCN/FXZ3Ih2d5VehpHQwJpoQHUp7GZza4ihERQTFaqdaQ5We/aapfZrqp25z
- 11dS7yJfgnsvyZ58FcNQtwb/9IVDRhu/ldXrHrg8VHmbol9VtfV9hxUdrpw1EMJG3v0WUv
- 7tSUIHk6aqqEKtU79PJ46E/i5YkB70s=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-32-lrPt-mfvOSSdbvRKSDsLHw-1; Thu, 27 Mar 2025 05:11:56 -0400
-X-MC-Unique: lrPt-mfvOSSdbvRKSDsLHw-1
-X-Mimecast-MFC-AGG-ID: lrPt-mfvOSSdbvRKSDsLHw_1743066715
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3912a0439afso243990f8f.3
- for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 02:11:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743066715; x=1743671515;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KxJ16tDeYAGFS0tk1Xhh+SQUoUEZcKzgVt37yURehds=;
- b=pKGiICQW/OhzA2AOks+Or8i12GmxJja96dIKwRg+CMKUT86OZj6a1EZWo26g95hn/E
- UQiPVr5jeAL6SV8dsJABFDRJlzyevKmliROF3UxpHylHlB1YuaSGDJuSIWCOxX4Qomzt
- 5Uld1wTUGCDDSO+7shHjKe15bgxRrjvm3KxzBKHrw/TfHeueUV1E7legCaUh4CWzBQPh
- KXPUx62Ir+kSsoG78v+6iEG4kcN2F+zOWGt6lty+BT8KYYa5ByUsfloeMil8MsFHCbxV
- ZxtaBmCJ4VBY/d9Nor9FYh5NAT0YD61bmvqUl8uz/qivo6KHCkvGSLVjT+GM0FX4e35W
- nnmA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXrQZzVit3S8g40pCYntgJh8tS9bygG0yco+hgrToA8RpfDLMtY0LwW9y+C/6gUdjo7clFeI5XsuV6m@nongnu.org
-X-Gm-Message-State: AOJu0YxgC0UyhyEG7gN8PEUsD11Gb3RK3nMU765jwCOrqwpSyFee6uUV
- gtjU1rqE6HX1xRyYex5Io39s47G58YoM2DU7gIJ1IZ/KJITReATTAWuURCLxDS7Sm74moNK7E9J
- TOLNo0k3KhBhwy7PSm6/mh8qptS84DYk5Gg6G49vLMPSENUDZm935
-X-Gm-Gg: ASbGnctJYZUXsFWWSgXF2T4xm5r7Ko9HqvtkkxfI98EhUmftgrfLZIGw5pA0HQEsJpR
- mSA2Kf+mdHJ5YEv76K5eksJ9Wi14RuAWrzdyVeUcZJbZSaW87fnA3Ht4tJUxmmUuszpEJjz2okY
- ijCYlMnM25ovC7hy8PWJfUy76qLeFBPICxDwWh6a9kp+2k0+Kcb2Af/8GH16LGv4FRV5wmJZrBk
- HG9K3P9tAQg5gohGSi4OELdQYhIiRjxobvq2QRbCQLFkTFjoAxWjFo4KilHR37KZPROKm0cnuVG
- mU+jNj9LznucVknmF3KAwi6qrzte6Vp8tdCaQy1JxSQIl/kvcp6HVN7qJfHG9JE=
-X-Received: by 2002:a05:6000:2913:b0:391:48f7:bd8a with SMTP id
- ffacd0b85a97d-39ad17596e3mr1874950f8f.30.1743066714867; 
- Thu, 27 Mar 2025 02:11:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGEG5FSrBR8J4J9AB2bJFJl2bP2huEg6tmBliFAA1iBIBed7Jpr9bCE4PAoPA4+tN24wuZRbg==
-X-Received: by 2002:a05:6000:2913:b0:391:48f7:bd8a with SMTP id
- ffacd0b85a97d-39ad17596e3mr1874930f8f.30.1743066714449; 
- Thu, 27 Mar 2025 02:11:54 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3997f9a3f2asm19488557f8f.30.2025.03.27.02.11.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Mar 2025 02:11:53 -0700 (PDT)
-Message-ID: <c081ba1e-4e6a-48ec-ab8a-36474cdce8fe@redhat.com>
-Date: Thu, 27 Mar 2025 10:11:52 +0100
+ bh=ax6rds7LRZrvWHwQJp64OtXQXBD10Va89eJSdzd0pX0=;
+ b=KNWV2w3mZDtjf/VLkh8KGQA0hzCiGKzaO606kMagTxqJJaPrB/KDLG/zDk5+wY+sG2NHlW
+ stF+wdOBEpOApQRaFvS8lflsG0WZwvQX5ila19eSniqNFP4shxBgrux3w3JWeragJ2GOOt
+ Ts3o6/rPBzz0iB3XhUIARVQyMLl7zoZkwx3u4pX8jNvOaG5K+nCqx/BvAc86cmPidiAaQG
+ /oJn778BLGZm1BMsAv/Ws31CkmnaM6XbEM3xqTRuwuEt26nDUyrobt9JvmIwmbotFpIkQk
+ lvF020G9AytbHv/+uUw/joj8+6abx//0IPsf3VMYOWtc8+44fatqXNnYQZAQig==
+Message-ID: <6a324cf0-ad13-4c9f-a6cf-fd35290eb428@dupond.be>
+Date: Thu, 27 Mar 2025 10:16:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 17/20] hw/arm/smmuv3: Check idr registers for
- STE_S1CDMAX and STE_S1STALLD
+Subject: Re: [PATCH v2 1/2] qcow2: handle discard-no-unref in measure
+From: Jean-Louis Dupond <jean-louis@dupond.be>
+To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org,
+ kwolf@redhat.com, andrey.drobyshev@virtuozzo.com
+References: <20240605132539.3668497-2-jean-louis@dupond.be>
+ <80a77456-da98-4346-aa56-a7389934cdcf@redhat.com>
+ <a652c543-faa4-4c26-85b6-4fd56183aa66@dupond.be>
 Content-Language: en-US
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Nicolin Chen <nicolinc@nvidia.com>
-Cc: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "ddutile@redhat.com"
- <ddutile@redhat.com>, "berrange@redhat.com" <berrange@redhat.com>,
- "nathanc@nvidia.com" <nathanc@nvidia.com>,
- "mochs@nvidia.com" <mochs@nvidia.com>,
- "smostafa@google.com" <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>,
- "Wangzhou (B)" <wangzhou1@hisilicon.com>,
- jiangkunkun <jiangkunkun@huawei.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-References: <20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com>
- <20250311141045.66620-18-shameerali.kolothum.thodi@huawei.com>
- <477323cb-12d3-484c-8ad9-61229ede3efe@redhat.com>
- <Z+RZsES0+Ywxi7Xx@nvidia.com> <cd1393939aaa43bebce8bd926b4b00de@huawei.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <cd1393939aaa43bebce8bd926b4b00de@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <a652c543-faa4-4c26-85b6-4fd56183aa66@dupond.be>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
+ envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,49 +69,232 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Any chance this can get reviewed and perhaps merged?
 
-On 3/27/25 8:54 AM, Shameerali Kolothum Thodi wrote:
+We would like to enable discard-no-unref by default on oVirt, as this 
+makes qcow2 inside LVM LV's way more reliable (because we can calculate 
+the size).
+But we are still missing this measure patch to be able to properly 
+calculate the destination size of the LV on a snapshot merge.
+
+Thanks
+Jean-Louis
+
+On 2/17/25 16:34, Jean-Louis Dupond wrote:
+> Hi,
 >
->> -----Original Message-----
->> From: Nicolin Chen <nicolinc@nvidia.com>
->> Sent: Wednesday, March 26, 2025 7:47 PM
->> To: Eric Auger <eric.auger@redhat.com>
->> Cc: Shameerali Kolothum Thodi
->> <shameerali.kolothum.thodi@huawei.com>; qemu-arm@nongnu.org;
->> qemu-devel@nongnu.org; peter.maydell@linaro.org; jgg@nvidia.com;
->> ddutile@redhat.com; berrange@redhat.com; nathanc@nvidia.com;
->> mochs@nvidia.com; smostafa@google.com; Linuxarm
->> <linuxarm@huawei.com>; Wangzhou (B) <wangzhou1@hisilicon.com>;
->> jiangkunkun <jiangkunkun@huawei.com>; Jonathan Cameron
->> <jonathan.cameron@huawei.com>; zhangfei.gao@linaro.org
->> Subject: Re: [RFC PATCH v2 17/20] hw/arm/smmuv3: Check idr registers for
->> STE_S1CDMAX and STE_S1STALLD
->>
->>> Again I think we need to understand the consequence of having a more
->>> comprehensive support of SSID. This also holds with old the IDR fields
->>> that may be inherited from the HW and we don't support yet in the
->>> emulation code
->> To support guest-level SVA, it must support SSID. We can keep the
->> SSIDSIZE=0 in an emulated SMMU. Would you elaborate the concern of
->> doing so?
-I just want to make sure we dissociate both accel and emulated paths and
-we do not advertise SSID in one mode while we do not fully support it.
->>
-> Regarding adding support for SSID/SVA in emulation code, the support also depends on
-> device PRI/IOPF feature as well. Do we have any emulated devices that can make use
-> this? I would say we can add that support later if there is any real use cases for that.
-
-x86 may be ahead of us in this area. Maybe this was tested by Zhenzhong
-when contributing emulation for S1 support in intel_iommu?
-
-Eric
+> First of all sorry for the huge delay, but didn't had time to 
+> follow-up on this lately.
+> And it got some lower priority, as we don't hit it often and have a 
+> fairly easy workaround (fill the empty blocks again in the snapshot by 
+> writing data to the disk).
 >
-> Thanks,
-> Shameer 
-
+> On 7/10/24 14:58, Hanna Czenczek wrote:
+>> On 05.06.24 15:25, Jean-Louis Dupond wrote:
+>>> When doing a measure on an image with a backing file and
+>>> discard-no-unref is enabled, the code should take this into account.
+>>
+>> That doesn’t make sense to me.  As far as I understand, 'measure' is 
+>> supposed to report how much space you need for a given image, i.e. if 
+>> you were to convert it to a new image. discard-no-unref doesn’t 
+>> factor into that, because for a 'convert' target (a new image), 
+>> nothing can be discarded.
+>>
+>> Reading the issue, I understand that oVirt uses measure to determine 
+>> the size of the target of a 'commit' operation.  Seems a bit like 
+>> abuse to me, precisely because of the issue you’re facing.  More 
+>> specifically, a 'commit' operation is a complex thing with a lot of 
+>> variables, so the outcome depends on a lot.
+> Correct. oVirt uses the measure command to find out how big the 
+> destination volume needs to be when running a commit/merge of 2 disks.
+> This way it can resize the container (Logical Volume here) to the 
+> correct size in order to succeed the commit.
+>>
+>> For example, this patch just checks the discard-no-unref setting on 
+>> the top image.  But AFAIU it doesn’t matter what the setting on the 
+>> top image is, it matters what the setting on the commit target is. 
+>> 'measure' can’t know this because it doesn’t know what the commit 
+>> target is.  As far as I can see, this patch actually assumes the 
+>> commit target is the first backing image (it specifically checks in 
+>> the image whether a block is allocated) – why?
+> By default it would check the top image indeed, but not when using the 
+> complex json parameters to qemu-img measure.
+> For example:
+> ./build/qemu-img create -f qcow2 /tmp/test.qcow2 128M
+> ./build/qemu-io -c 'open /tmp/test.qcow2' -c 'write 0 8M' -c 'write 
+> 56M 20M' -c 'write 10M 8M' -c 'write 24M 32M'
+> ./build/qemu-img create -f qcow2 -b /tmp/test.qcow2 -F qcow2 
+> /tmp/test_snap.qcow2
+> ./build/qemu-io -c 'open -o discard=unmap,discard-no-unref=on 
+> /tmp/test_snap.qcow2' -c 'write 16M 8M' -c 'discard 60M 20M' -c 'write 
+> 84M 10M'
+>
+>
+> The following commands will give the current output:
+> [jean-louis@lt-jeanlouis qemu]$ ./build/qemu-img measure --output json 
+> -O qcow2 'json:{"file": {"driver": "file", "filename": 
+> "/tmp/test_snap.qcow2"}, "driver": "qcow2", "discard":"unmap", 
+> "discard-no-unref":true, "backing": {"driver": "qcow2", 
+> "discard-no-unref":false, "file": {"driver": "file", "filename": 
+> "/tmp/test.qcow2"}, "backing": null}}'
+> {
+>     "bitmaps": 0,
+>     "required": 71630848,
+>     "fully-allocated": 134545408
+> }
+> [jean-louis@lt-jeanlouis qemu]$ ./build/qemu-img measure --output json 
+> -O qcow2 /tmp/test_snap.qcow2
+> {
+>     "bitmaps": 0,
+>     "required": 71630848,
+>     "fully-allocated": 134545408
+> }
+> [jean-louis@lt-jeanlouis qemu]$ ./build/qemu-img measure --output json 
+> -O qcow2 'json:{"file": {"driver": "file", "filename": 
+> "/tmp/test_snap.qcow2"}, "driver": "qcow2", "backing": {"driver": 
+> "qcow2", "file": {"driver": "file", "filename": "/tmp/test.qcow2"}, 
+> "backing": null}}'
+> {
+>     "bitmaps": 0,
+>     "required": 71630848,
+>     "fully-allocated": 134545408
+> }
+>
+> Cause it will not take into account the discard-no-unref flag. And 
+> will give the output like you have in the current version.
+>
+>
+> But when running measure with the following options:
+> ./build/qemu-img measure --output json -O qcow2 'json:{"file": 
+> {"driver": "file", "filename": "/tmp/test_snap.qcow2"}, "driver": 
+> "qcow2", "discard":"unmap", "discard-no-unref":true, "backing": 
+> {"driver": "qcow2", "discard-no-unref":true, "file": {"driver": 
+> "file", "filename": "/tmp/test.qcow2"}, "backing": null}}'
+>
+> It will give a bigger required size:
+> {
+>     "bitmaps": 0,
+>     "required": 88408064,
+>     "fully-allocated": 134545408
+> }
+>
+>
+> Why? if a block has already been allocated (either with data or 
+> contains an allocated ZERO block), we want to include its size in the 
+> calculation.
+> Because with discard-no-unref, an allocated block will not be reused 
+> for some other cluster, so it's not available for data in the snapshot 
+> layer.
+> So if the cluster was not yet allocated in the destination image, a 
+> new cluster will need to be allocated to fit the new data from the 
+> snapshot layer.
+>
+>>
+>> So to me that means if 'measure' is supposed to give reliable data on 
+>> the commit case, it needs to be extended.  Best thing I can come up 
+>> with off the top of my head would be to add an option e.g. 
+>> 'commit=<target-node-name>', so we (A) that we’re looking at a commit 
+>> and not a convert, and (B) we know what data will be collapsed into 
+>> which image and where we need to check for discard-no-unref.
+> I think that is what can be achieved by using the json argument. Cause 
+> there we can specify the target with its flags.
+> And it's then the responsibility of oVirt (or whatever other tool), to 
+> pass the correct flags.
+>>
+>> Hanna
+> Thanks for the review
+>
+> Jean-Louis
+>>
+>>> If for example you have a snapshot image with a base, and you do a
+>>> discard within the snapshot, it will be ZERO and ALLOCATED, but without
+>>> host offset.
+>>> Now if we commit this snapshot, and the clusters in the base image have
+>>> a host offset, the clusters will only be set to ZERO, but the host 
+>>> offset
+>>> will not be cleared.
+>>> Therefor non-data clusters in the top image need to check the
+>>> base to see if space will be freed or not, to have a correct measure
+>>> output.
+>>>
+>>> Bug-Url: https://gitlab.com/qemu-project/qemu/-/issues/2369
+>>> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
+>>> ---
+>>>   block/qcow2.c | 32 +++++++++++++++++++++++++++++---
+>>>   1 file changed, 29 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/block/qcow2.c b/block/qcow2.c
+>>> index 956128b409..50354e5b98 100644
+>>> --- a/block/qcow2.c
+>>> +++ b/block/qcow2.c
+>>> @@ -5163,9 +5163,16 @@ static BlockMeasureInfo 
+>>> *qcow2_measure(QemuOpts *opts, BlockDriverState *in_bs,
+>>>           } else {
+>>>               int64_t offset;
+>>>               int64_t pnum = 0;
+>>> +            BlockDriverState *parent = bdrv_filter_or_cow_bs(in_bs);
+>>> +            BDRVQcow2State *s = NULL;
+>>> +
+>>> +            if (parent) {
+>>> +                s = parent->opaque;
+>>> +            }
+>>>                 for (offset = 0; offset < ssize; offset += pnum) {
+>>>                   int ret;
+>>> +                int retp = 0;
+>>>                     ret = bdrv_block_status_above(in_bs, NULL, offset,
+>>>                                                 ssize - offset, 
+>>> &pnum, NULL,
+>>> @@ -5176,10 +5183,29 @@ static BlockMeasureInfo 
+>>> *qcow2_measure(QemuOpts *opts, BlockDriverState *in_bs,
+>>>                       goto err;
+>>>                   }
+>>>   -                if (ret & BDRV_BLOCK_ZERO) {
+>>> +                /* If we have a parent in the chain and the current 
+>>> block is not data,
+>>> +                 * then we want to check the allocation state of 
+>>> the parent block.
+>>> +                 * If it has a valid offset, then we want to 
+>>> include it into
+>>> +                 * the calculation, cause blocks with an offset 
+>>> will not be freed when
+>>> +                 * committing the top into base with 
+>>> discard-no-unref enabled.
+>>> +                 */
+>>> +                if (parent && s->discard_no_unref && !(ret & 
+>>> BDRV_BLOCK_DATA)) {
+>>> +                        int64_t pnum_parent = 0;
+>>> +                        retp = bdrv_block_status_above(parent, 
+>>> NULL, offset,
+>>> +                                              ssize - offset, 
+>>> &pnum_parent, NULL,
+>>> +                                              NULL);
+>>> +                        /* If the parent continuous block is 
+>>> smaller, use that pnum,
+>>> +                         * so the next iteration starts with the 
+>>> smallest offset.
+>>> +                         */
+>>> +                        if (pnum_parent < pnum) {
+>>> +                            pnum = pnum_parent;
+>>> +                        }
+>>> +                }
+>>> +                if (ret & BDRV_BLOCK_ZERO && !parent && !(parent && 
+>>> s->discard_no_unref)) {
+>>>                       /* Skip zero regions (safe with no backing 
+>>> file) */
+>>> -                } else if ((ret & (BDRV_BLOCK_DATA | 
+>>> BDRV_BLOCK_ALLOCATED)) ==
+>>> -                           (BDRV_BLOCK_DATA | BDRV_BLOCK_ALLOCATED)) {
+>>> +                } else if (((ret & (BDRV_BLOCK_DATA | 
+>>> BDRV_BLOCK_ALLOCATED)) ==
+>>> +                            (BDRV_BLOCK_DATA | 
+>>> BDRV_BLOCK_ALLOCATED)) ||
+>>> +                           (retp & BDRV_BLOCK_OFFSET_VALID)) {
+>>>                       /* Extend pnum to end of cluster for next 
+>>> iteration */
+>>>                       pnum = ROUND_UP(offset + pnum, cluster_size) - 
+>>> offset;
+>>
 
