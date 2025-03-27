@@ -2,53 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12885A72B0B
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 09:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF731A72B11
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 09:07:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txiG6-0000O7-85; Thu, 27 Mar 2025 04:06:38 -0400
+	id 1txiGx-00019V-5p; Thu, 27 Mar 2025 04:07:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txiG4-0000Nu-4y
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 04:06:36 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txiGg-00012n-AR
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 04:07:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txiG2-00061w-Bw
- for qemu-devel@nongnu.org; Thu, 27 Mar 2025 04:06:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1txiGc-00067C-4P
+ for qemu-devel@nongnu.org; Thu, 27 Mar 2025 04:07:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743062791;
+ s=mimecast20190719; t=1743062826;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=jyrX5+gf0v3ERSESOyhfYHCoU2YcBYbGxw5i9X5uDQQ=;
- b=TVlHq1+REEWj+9jbnaZWvMlJo9ryWqUt2E1QqGx9EXMCmpt3IXKhXDzpB+cEd1HbprbOIk
- j8FUBKEHUC1xlJvwtjVh7bM3gNbQ6S94GT1muuK6g4fTRJveEndHHc/WeSRahlFggue6eF
- r8DtljKQpcWKUJpRAdj1QPirBwLPbrc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=EmC7BeGrHtiYw29etxp23105ZudT3hmL7Ks2UIdZshM=;
+ b=f72PEjFsJoZOLIFH3sJxQl+YlsAprFb7kTlwY/kftEjXaBmBWObXJssFw1OcBYXIx6WeVh
+ Y3LHJeydZLfdJocZgQGQ6X8GTq/PQsHbLJwjI9tCNnDJE0Pzn1QUthEFH1iY9oNYXdGzDA
+ 33nMYxGgnndBJ0nTIm8kN5Sk2y2wK0Y=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-SthLBaDrM4SDgl7dD2wL8A-1; Thu,
- 27 Mar 2025 04:06:27 -0400
-X-MC-Unique: SthLBaDrM4SDgl7dD2wL8A-1
-X-Mimecast-MFC-AGG-ID: SthLBaDrM4SDgl7dD2wL8A_1743062786
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-ll-5yHE_NQq0AyFhGZ2VzQ-1; Thu,
+ 27 Mar 2025 04:06:34 -0400
+X-MC-Unique: ll-5yHE_NQq0AyFhGZ2VzQ-1
+X-Mimecast-MFC-AGG-ID: ll-5yHE_NQq0AyFhGZ2VzQ_1743062794
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B1045180035C
- for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 08:06:25 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C91451801A06
+ for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 08:06:28 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.126])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0EEAF19560AB; Thu, 27 Mar 2025 08:06:23 +0000 (UTC)
+ id 525E619560AD; Thu, 27 Mar 2025 08:06:25 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 0/6] Functional test fixes for 10.0-rc2
-Date: Thu, 27 Mar 2025 09:06:16 +0100
-Message-ID: <20250327080622.954388-1-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 1/6] tests/functional/test_ppc64_replay: Mark the e500 test as
+ flaky
+Date: Thu, 27 Mar 2025 09:06:17 +0100
+Message-ID: <20250327080622.954388-2-thuth@redhat.com>
+In-Reply-To: <20250327080622.954388-1-thuth@redhat.com>
+References: <20250327080622.954388-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -78,50 +83,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Stefan!
+From: Thomas Huth <thuth@redhat.com>
 
-The following changes since commit b876e721f1c939f3e83ac85bd3c1c2821e12b3fa:
+The test_ppc64_e500 occasionally fails (it just hangs and finally times
+out). The same issue could also be reproduced with the former Avocado
+test already (especially if the host system is under heavy load), so
+it's not a new regression. It's very likely the issue that has been
+filed at https://gitlab.com/qemu-project/qemu/-/issues/2523 instead (e.g.
+I could not reproduce the issue in older commits before commit 578912ad),
+so use this URL for the reasoning in the the decorator.
 
-  Update version for v10.0.0-rc1 release (2025-03-25 13:58:14 -0400)
+Message-ID: <20250320065012.309520-1-thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/functional/test_ppc64_replay.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-03-27
-
-for you to fetch changes up to 5a8d024f8d3f55846cb8385b025d795fee4afd35:
-
-  tests/functional/test_vnc: Skip test if VNC support is not available (2025-03-27 08:59:35 +0100)
-
-----------------------------------------------------------------
-* Make some functional tests more robust
-* Fix a typo in the s390x code
-
-----------------------------------------------------------------
-Peter Maydell (1):
-      tests/functional/meson.build: Bump arm_aspeed_bletchley timeout
-
-Philippe Mathieu-Daudé (1):
-      target/s390x: Fix a typo in s390_cpu_class_init()
-
-Thomas Huth (4):
-      tests/functional/test_ppc64_replay: Mark the e500 test as flaky
-      tests/functional: Add missing require_netdev('user') statements
-      tests/functional/test_aarch64_virt_gpu: Skip if "dbus" display isn't available
-      tests/functional/test_vnc: Skip test if VNC support is not available
-
- MAINTAINERS                                  |  2 +-
- target/s390x/cpu.c                           |  2 +-
- tests/functional/meson.build                 |  2 +-
- tests/functional/test_aarch64_rme_sbsaref.py |  1 +
- tests/functional/test_aarch64_rme_virt.py    |  4 +++-
- tests/functional/test_aarch64_virt_gpu.py    |  2 ++
- tests/functional/test_arm_bpim2u.py          |  2 ++
- tests/functional/test_arm_cubieboard.py      |  2 ++
- tests/functional/test_arm_orangepi.py        |  4 ++++
- tests/functional/test_ppc64_hv.py            |  3 +++
- tests/functional/test_ppc64_replay.py        |  3 ++-
- tests/functional/test_vnc.py                 | 26 ++++++++++++++++++++++----
- tests/functional/test_x86_64_kvm_xen.py      |  1 +
- 13 files changed, 45 insertions(+), 9 deletions(-)
+diff --git a/tests/functional/test_ppc64_replay.py b/tests/functional/test_ppc64_replay.py
+index 48ce1b7f1e1..e8c9c4bcbf8 100755
+--- a/tests/functional/test_ppc64_replay.py
++++ b/tests/functional/test_ppc64_replay.py
+@@ -5,7 +5,7 @@
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-from qemu_test import Asset
++from qemu_test import Asset, skipFlakyTest
+ from replay_kernel import ReplayKernelBase
+ 
+ 
+@@ -16,6 +16,7 @@ class Ppc64Replay(ReplayKernelBase):
+          'day19.tar.xz'),
+         '20b1bb5a8488c664defbb5d283addc91a05335a936c63b3f5ff7eee74b725755')
+ 
++    @skipFlakyTest('https://gitlab.com/qemu-project/qemu/-/issues/2523')
+     def test_ppc64_e500(self):
+         self.set_machine('ppce500')
+         self.cpu = 'e5500'
+-- 
+2.49.0
 
 
