@@ -2,34 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EF8A736C8
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B15A736C7
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Mar 2025 17:26:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1txq22-00022H-Cj; Thu, 27 Mar 2025 12:24:38 -0400
+	id 1txq22-00022x-Vy; Thu, 27 Mar 2025 12:24:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1txq1z-000221-4t; Thu, 27 Mar 2025 12:24:35 -0400
+ id 1txq20-00022G-HG; Thu, 27 Mar 2025 12:24:36 -0400
 Received: from air.basealt.ru ([193.43.8.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gerben@altlinux.org>)
- id 1txq1w-00041F-KL; Thu, 27 Mar 2025 12:24:34 -0400
+ id 1txq1y-00041z-Pn; Thu, 27 Mar 2025 12:24:36 -0400
 Received: from boringlust.malta.altlinux.ru (obninsk.basealt.ru
  [217.15.195.17]) (Authenticated sender: rastyoginds)
- by air.basealt.ru (Postfix) with ESMTPSA id C9ADA23382;
- Thu, 27 Mar 2025 19:24:26 +0300 (MSK)
+ by air.basealt.ru (Postfix) with ESMTPSA id 7521123383;
+ Thu, 27 Mar 2025 19:24:31 +0300 (MSK)
 From: gerben@altlinux.org
 To: qemu-block@nongnu.org,
 	kwolf@redhat.com,
 	hreitz@redhat.com
 Cc: qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org,
  Denis Rastyogin <gerben@altlinux.org>
-Subject: [PATCH 0/4] Fix qemu-img bench issues and improve checks
-Date: Thu, 27 Mar 2025 19:24:19 +0300
-Message-ID: <20250327162423.25154-1-gerben@altlinux.org>
+Subject: [PATCH 1/4] qemu-img: fix division by zero in bench_cb() for
+ zero-sized
+Date: Thu, 27 Mar 2025 19:24:20 +0300
+Message-ID: <20250327162423.25154-2-gerben@altlinux.org>
 X-Mailer: git-send-email 2.42.2
+In-Reply-To: <20250327162423.25154-1-gerben@altlinux.org>
+References: <20250327162423.25154-1-gerben@altlinux.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=193.43.8.18; envelope-from=gerben@altlinux.org;
@@ -57,26 +60,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Denis Rastyogin <gerben@altlinux.org>
 
-This series fixes several qemu-img crashes found during fuzzing.
+This error was discovered by fuzzing qemu-img.
 
-The patch "qemu-img: fix division by zero in bench_cb() for zero-sized" 
-was already submitted earlier:  
-https://lore.kernel.org/qemu-devel/20250318101933.255617-1-gerben@altlinux.org/  
+This commit fixes a division by zero error in the bench_cb() function
+that occurs when using the bench command with a zero-sized image.
 
-However, it has been included in this series because it 
-has not yet been merged into master.  Without it, the series 
-would conflict with this commit due to modifications 
-in the same parts of the code.  
+The issue arises because b->image_size can be zero, leading to a
+division by zero in the modulo operation (b->offset %= b->image_size).
+This patch adds a check for b->image_size == 0 and resets b->offset
+to 0 in such cases, preventing the error.
 
-Denis Rastyogin (4):
-  qemu-img: fix division by zero in bench_cb() for zero-sized
-  qemu-img: fix offset calculation in bench
-  qemu-img: prevent stack overflow in bench by using bottom half
-  qemu-img: improve queue depth validation in img_bench
+Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
+---
+ qemu-img.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
- qemu-img.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
-
+diff --git a/qemu-img.c b/qemu-img.c
+index 89c93c1eb5..2044c22a4c 100644
+--- a/qemu-img.c
++++ b/qemu-img.c
+@@ -4488,7 +4488,11 @@ static void bench_cb(void *opaque, int ret)
+          */
+         b->in_flight++;
+         b->offset += b->step;
+-        b->offset %= b->image_size;
++        if (b->image_size == 0) {
++            b->offset = 0;
++        } else {
++            b->offset %= b->image_size;
++        }
+         if (b->write) {
+             acb = blk_aio_pwritev(b->blk, offset, b->qiov, 0, bench_cb, b);
+         } else {
 -- 
 2.42.2
 
