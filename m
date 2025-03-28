@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9803A74FE0
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 18:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2811CA7501B
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 19:06:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tyDve-0007Jp-BI; Fri, 28 Mar 2025 13:55:38 -0400
+	id 1tyE52-0001wk-IZ; Fri, 28 Mar 2025 14:05:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tyDvc-0007JN-4i
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:55:36 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tyE4i-0001wP-NU
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 14:05:00 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tyDva-0003Kb-CP
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:55:35 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3fcfc85f1f5so723171b6e.2
- for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 10:55:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tyE4g-0004k5-JV
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 14:05:00 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43cfe574976so18119375e9.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 11:04:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743184533; x=1743789333; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Gcyk73YP4oKFYII3KIDsxDGo+q3lvpuGonD6HbKGNuc=;
- b=btAlVbzm531jQ4LiGvCSDkEiaFpDUNHiZ1+Is6ldwV/QVTFzFvLwRo6a+b8JAfzBfj
- oTMNpM9wIYYPWfIQxUS1eyzx0TfEg5wEOZSCYrstTz/MQXgEa8kBg2MGxunO9LnkQJUC
- kSr3LNgTZ7W3W/wJtnLWXgpFanIGUiJaKFmM2Dma+JIzfCUcSPnBFlYaXWpzVs3wusiV
- L0PqumYZ2XQU132rcRmCxLbrkDV7b7cTmGDrgMHGf4grcVI5R9oi3aq1aDMmUnKePdOk
- hMyKfj8/zteLb/gnpcosFjMo/QhL92Iv+EaMchIGYr5krDzne/y+fO4Eu2tJDW6fi/8z
- nj4A==
+ d=linaro.org; s=google; t=1743185095; x=1743789895; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=QHjP/YKXhLWoIr4nXTAjT7jA/tINeXrzU2bH0vCq4Ck=;
+ b=sCNd4i8PUFVE1eFiPA8oemIzFYRJi30it7sJwKK+Qhms2kFCw7r9nF80K+meUQdm77
+ Sfki3lFLSSHMATxOGRJMoMDrnmtckoCHWgVlCidXClz7aYOhrNKtoQTtZwmOj0R8VfN6
+ cucE35r1UTrq3whEDvenTVF2E0fOAqj1jzTmVq4P3sZsh7SqZfz/fHtT8tDpmtpbMCNY
+ LGdeL37vu7Sqmv2+RgCRgD0T5MZKsofjzX5JcTVHo5exoPbVXgpURowmLOLSPjJSjza2
+ J5ePveZ5PFRbDtUyPzWDIqXcv12UV2AN4ilMZ/7Q1nYx0peFfJnGaH0gJZ68r+i/bgCb
+ W7hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743184533; x=1743789333;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Gcyk73YP4oKFYII3KIDsxDGo+q3lvpuGonD6HbKGNuc=;
- b=JScXec1iyt5ObVKr17CL8OFsU/5WqSiZW5QnBUN3hwXg/0niFWhFRPyrvQA6NTC//S
- LhzznimGHlRBwMwM3/Co4aRu0wgv4V9YAxvBbXI85UN1tA9PaHHzCI4Xx0JSLCS3+otg
- wtUH27OEBFcNWhWbrb6cksTSZvDM7Ie3+X2DsiYF7Ckdg4rELqACwFRMGYxAqkVHtQts
- M9GCOKJl9T8lF8wD8ltQRN+Bf88hVnea5JCreYqlxDKb9u2ojyuff3KcCx6dx1goQOIT
- OpjSvMJeffUFeG/3dwJWZLGlhyN1gzubvaL7xnnbrCKk9QI25JQtFLKu2TUMgtj0XiqO
- OH/w==
-X-Gm-Message-State: AOJu0YwC0R6AqvLjd4FiaVOQi/ICkaC+iSRZvix7QqploBUs4BX+ZEst
- e+3864PM02nxw7lU2av5+OjJRoAakve5gLVgQxNBYa+5wOuCYjUO6X2aukA5ZCLcEqBasVywv/3
- Z
-X-Gm-Gg: ASbGncuhbnHwyky+EpgqjLsU5iWRJNyRvtxyLUVstYOetw2m5wyPDf93oIeVGFd+0WL
- P1ULpzjqCbPCuuuMe6KSzVSCqU+NDzWeMDRmb1ypwdOW+TqSbT3ZZ/FP+8+D8tdOW3637SbUjeu
- aqopsEeZJa1vvIWzYtufBGRKgj6ohzk3jADEbxYAQ6NHtcZ4EukLo5RCAchK9+WY57xh7n8ymEU
- TQSc5BV4niEST04/72FGinJU6DjRaZO74oHRKsubBkBz5ECEEF+7dtoWTWGk1KWJiJ4U4ns3r6Y
- INlK6cW4qtXLxlWDIJcAcAU99YQP8i8KciNrjKFriKDz4JJOgxiMTN3C1+9dp5YqJCMPBj9lkkO
- TpJ2oNPoNT2o=
-X-Google-Smtp-Source: AGHT+IHbtlYHrfuJo1HynYWlEwqVxcyquZY3jF1MeBugHxN+3u9k86f4n4EecqBT8SJgiPSuTBwOog==
-X-Received: by 2002:a05:6808:398d:b0:3fe:aeaf:316d with SMTP id
- 5614622812f47-3ff0f534c6dmr189121b6e.20.1743184532885; 
- Fri, 28 Mar 2025 10:55:32 -0700 (PDT)
-Received: from stoup.. (syn-071-042-197-003.biz.spectrum.com. [71.42.197.3])
- by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ff0529511esm410338b6e.46.2025.03.28.10.55.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Mar 2025 10:55:32 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, chenhuacai@kernel.org, jiaxun.yang@flygoat.com,
- arikalo@gmail.com
-Subject: [PATCH 3/3] target/mips: Simplify and fix update_pagemask
-Date: Fri, 28 Mar 2025 12:55:26 -0500
-Message-ID: <20250328175526.368121-4-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250328175526.368121-1-richard.henderson@linaro.org>
-References: <20250328175526.368121-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1743185095; x=1743789895;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QHjP/YKXhLWoIr4nXTAjT7jA/tINeXrzU2bH0vCq4Ck=;
+ b=MG0HZEv+Cq6AgzBc14cKm0w9+qcT3qIZYPtoO2fnLafydvC69rRT2TeoEiJTsMNs3K
+ t70qVTaoe3KbJopZ1dDhmyqx/7nm5nvD0CXQIetS+D8GMjrkna6ZG0qN9c1kCjFCsN1p
+ AqHSvjr058THs797Ii0BTfKV9tdyxvRgrysk95w8MFbb8O+iMPUBzw9O+/KDYMQ6GqyY
+ 22+55XNCF+WWUsnaRpnsFu4TtYpper2btaB779NKHOfQtDdjVbA0NVPK+yw+TD/QSkfn
+ n6I5OKWVmPpW8OvyLWoNvABNn2c4ihDzhuifq9IqalNMni/xOrMEuw741jw2wbpFSNdm
+ UsnQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVgmgh/tCTNhp4ctwG7hNX1ZO1p9L37kNo4WqOnnYEMyirok4AR2vA1nOZpQXxf+euMBQvwkApTNemZ@nongnu.org
+X-Gm-Message-State: AOJu0YzT9X3m5La2O7zmh253V8gzSa0RtHiz1oj2OqvbnE8DZl5iemy7
+ +f8wIr2fIaggR1ht32tL8EpS17NPhvrVHGLka7S1dJY0VYziUfuQg/T0KtGmuWk=
+X-Gm-Gg: ASbGnctKPAoDj3XGlTAXN35X2wLpqtjmEdgtoyN4SepIa7SBd4VovHML4xCB9cYAY5R
+ tCnEbo0TlsodUAd5JdCE3CBCTR7uX0olOt2ejJ7F8qeCPc0UYw+kbXsaiTppQsofq7ePSecgTba
+ Yn0HBzCqn3BVnAux9vbGRJ/fMR0fuxBubU+A9Kv+BxsGKD3Sz1p/D7zPxsU1qvJVKe/1HNZJhYF
+ /MoCrG076nMAxgOIVBdsRH+OIkMSlyHnXxuWI0NgpdNtLmdyTUTDdruCPcvvAmPYwI0JSKYF9Fu
+ 7mMesfYs3kM1u1x3hhJH/pbQWiJNgtWwsRB4Xz5ykfX3CqtNqBMGN/KOKpMe+RidWjFhPtxJScR
+ 7/W3QcRwSO1fo
+X-Google-Smtp-Source: AGHT+IHNWEeyVbg7i0Cp32DblEZfDTVW4rHwKlZ3otnD/FjvunMIrddE278DMIw5xZoY7mFtGtDwAA==
+X-Received: by 2002:a05:600c:4747:b0:43b:c95f:fd9 with SMTP id
+ 5b1f17b1804b1-43db5fbe009mr4611675e9.5.1743185095245; 
+ Fri, 28 Mar 2025 11:04:55 -0700 (PDT)
+Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d8fbc10f7sm35975175e9.14.2025.03.28.11.04.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 28 Mar 2025 11:04:54 -0700 (PDT)
+Message-ID: <6682f611-2cfd-4651-b3b5-3072e18ee46b@linaro.org>
+Date: Fri, 28 Mar 2025 19:04:54 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/scsi/lsi53c895a: fix memory leak in lsi_scsi_realize()
+To: Zheng Huang <hz1624917200@gmail.com>, qemu-devel@nongnu.org
+References: <73cd69f9-ff9b-4cd4-b8aa-265f9d6067b9@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <73cd69f9-ff9b-4cd4-b8aa-265f9d6067b9@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,84 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When update_pagemask was split from helper_mtc0_pagemask,
-we failed to actually write to the new parameter but continue
-to write to env->CP0_PageMask.  Thus the use within
-page_table_walk_refill modifies cpu state and not the local
-variable as expected.
+On 28/3/25 04:21, Zheng Huang wrote:
+> Hi,
+> This patch addresses a memory leak bug in the usages of `timer_del()`.
+> The issue arisesfrom the incorrect use of the ambiguous timer API
+> `timer_del()`, which does not free the timer object. The LeakSanitizer
+> report this issue during fuzzing. The correct API `timer_free()` freed
+> the timer object instead.
+> 
+> =================================================================
+> ==2586273==ERROR: LeakSanitizer: detected memory leaks
+> 
+> Direct leak of 48 byte(s) in 1 object(s) allocated from:
+>      #0 0x55f2afd89879 in calloc /home/runner/work/llvm-project/llvm-project/compiler-rt/lib/asan/asan_malloc_linux.cpp:75:3
+>      #1 0x7f443b93ac50 in g_malloc0 (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5ec50) (BuildId: 224ac2a88b72bc8e2fe8566ee28fae789fc69241)
+>      #2 0x55f2b053962e in timer_new /root/qemu/include/qemu/timer.h:542:12
+>      #3 0x55f2b0514771 in timer_new_us /root/qemu/include/qemu/timer.h:582:12
+>      #4 0x55f2b0514288 in lsi_scsi_realize /root/qemu/build-fuzz/../hw/scsi/lsi53c895a.c:2350:24
+>      #5 0x55f2b0452d26 in pci_qdev_realize /root/qemu/build-fuzz/../hw/pci/pci.c:2174:9
+> 
+> 
+> Signed-off-by: Zheng Huang <hz1624917200@outlook.com>
+> 
+> ---
+>   hw/scsi/lsi53c895a.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Simplify by renaming to compute_pagemask and returning the
-value directly.  No need for either env or pointer return.
-
-Fixes: 074cfcb4dae ("target/mips: Implement hardware page table walker for MIPS32")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/mips/tcg/tcg-internal.h      |  2 +-
- target/mips/tcg/system/cp0_helper.c | 10 +++++-----
- target/mips/tcg/system/tlb_helper.c |  2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/target/mips/tcg/tcg-internal.h b/target/mips/tcg/tcg-internal.h
-index 74fc1309a7..950e6afc3f 100644
---- a/target/mips/tcg/tcg-internal.h
-+++ b/target/mips/tcg/tcg-internal.h
-@@ -47,7 +47,7 @@ bool mips_cpu_exec_interrupt(CPUState *cpu, int int_req);
- 
- void mmu_init(CPUMIPSState *env, const mips_def_t *def);
- 
--void update_pagemask(CPUMIPSState *env, target_ulong arg1, int32_t *pagemask);
-+uint32_t compute_pagemask(uint32_t val);
- 
- void r4k_invalidate_tlb(CPUMIPSState *env, int idx, int use_extra);
- uint32_t cpu_mips_get_random(CPUMIPSState *env);
-diff --git a/target/mips/tcg/system/cp0_helper.c b/target/mips/tcg/system/cp0_helper.c
-index 5db8166d45..78e422b0ca 100644
---- a/target/mips/tcg/system/cp0_helper.c
-+++ b/target/mips/tcg/system/cp0_helper.c
-@@ -864,24 +864,24 @@ void helper_mtc0_memorymapid(CPUMIPSState *env, target_ulong arg1)
-     }
- }
- 
--void update_pagemask(CPUMIPSState *env, target_ulong arg1, int32_t *pagemask)
-+uint32_t compute_pagemask(uint32_t val)
- {
-     /* Don't care MASKX as we don't support 1KB page */
--    uint32_t mask = extract32((uint32_t)arg1, CP0PM_MASK, 16);
-+    uint32_t mask = extract32(val, CP0PM_MASK, 16);
-     int maskbits = cto32(mask);
- 
-     /* Ensure no more set bit after first zero, and maskbits even. */
-     if ((mask >> maskbits) == 0 && maskbits % 2 == 0) {
--        env->CP0_PageMask = mask << CP0PM_MASK;
-+        return mask << CP0PM_MASK;
-     } else {
-         /* When invalid, set to default target page size. */
--        env->CP0_PageMask = 0;
-+        return 0;
-     }
- }
- 
- void helper_mtc0_pagemask(CPUMIPSState *env, target_ulong arg1)
- {
--    update_pagemask(env, arg1, &env->CP0_PageMask);
-+    env->CP0_PageMask = compute_pagemask(arg1);
- }
- 
- void helper_mtc0_pagegrain(CPUMIPSState *env, target_ulong arg1)
-diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
-index 123639fa18..df80301a41 100644
---- a/target/mips/tcg/system/tlb_helper.c
-+++ b/target/mips/tcg/system/tlb_helper.c
-@@ -876,7 +876,7 @@ refill:
-         }
-     }
-     pw_pagemask = m >> TARGET_PAGE_BITS;
--    update_pagemask(env, pw_pagemask << CP0PM_MASK, &pw_pagemask);
-+    pw_pagemask = compute_pagemask(pw_pagemask << CP0PM_MASK);
-     pw_entryhi = (address & ~0x1fff) | (env->CP0_EntryHi & 0xFF);
-     {
-         target_ulong tmp_entryhi = env->CP0_EntryHi;
--- 
-2.43.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
