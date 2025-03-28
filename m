@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1315A7442A
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 07:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4872CA7442E
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 07:55:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ty3b3-0004MZ-Ru; Fri, 28 Mar 2025 02:53:42 -0400
+	id 1ty3b7-0004O8-Hx; Fri, 28 Mar 2025 02:53:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ty3av-0004Lh-HL
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 02:53:33 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1ty3ay-0004MD-Jk; Fri, 28 Mar 2025 02:53:37 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1ty3as-0005Kz-SK
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 02:53:32 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2ff6cf448b8so4098763a91.3
- for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 23:53:30 -0700 (PDT)
+ id 1ty3aw-0005LO-Pb; Fri, 28 Mar 2025 02:53:36 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2239c066347so43235705ad.2; 
+ Thu, 27 Mar 2025 23:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743144809; x=1743749609; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1743144812; x=1743749612; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/R+xXFP2DtT7bnCBgR/WcCWpSoZRhHsSh5/jC3ZG6ZU=;
- b=jp9X+AJPNGWw1s9n6MrAaWySLyQW/4dalpaI+yhtdb0YdEPjv16pp+84sZppvbVg27
- ifINvAlNvP4ixsFGkVe7LnpkGoDOZ6VP2b3d/8BtSfulkoUFDnuxsvCQdupy4QlKOR07
- 7mI+CtuFFcnPs7vmd0yn1y9q4PzmowyUMzK6dFC5eHvzzvBhUlyDt6IeYnE3xr3P8M7F
- P7FUZLObJH/jg91zYVCmvxS1/mqAM4SHEMvChJ7jau8exJYMtxzoHq/f5YjMHfDZBCNg
- 9IrG8lbx7sRp71q42CTXlvWvBXIYmdeQJtkKWuY9u1pSJ7gorQmdafzH/K2aYTzDR+4C
- FGcw==
+ bh=qmnZdWQzlLyYjTplGV7qmefZ1pbKTLM/vow/Mo7WpQ4=;
+ b=eYRf2VnuNc4mP8O71Ro+bJHUbfbPdrIgNCzz91+xJ4GK2MmuHGftKbCjWubwSRJJQU
+ iLHJ3TKV2VSEC50Uwcf4s13vVvDFWT8wOukTArbr/kzn5J/MCYAtj8PUGsYlq6KHEHxi
+ uV/Fv8oq4UgBAFI5CEZGYZtOWHyGcRJ3mu+VCAhdrUEs5l9ZdAzh1+NQTAGE4dTZv153
+ +82TA8PfwyuyFMQjJZl2LqZk6cKd4l3RyqGifaW57v3VE3vDjnXxRJ5i8feVN7S9oNzF
+ wus8m7gGMthXg8C2VAm/f9SCbNlnAqv3sXgDS6Z60+6vZYEaeyA7hsIeTIx9Z2vIIB7J
+ wGNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743144809; x=1743749609;
+ d=1e100.net; s=20230601; t=1743144812; x=1743749612;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/R+xXFP2DtT7bnCBgR/WcCWpSoZRhHsSh5/jC3ZG6ZU=;
- b=rCurPSfYr9u1kXSg2S5/cSOexmxyemlupTMr9CwSwN9RN4n+4pb7st5/DYalinShlM
- 1QlgprlppeCc+JJoqlKDSL4YYFh9W8xHADhviuhwZe2IGFr8cWo4NIJPiNoAEj6aL83I
- nsi1JGtmmNW6ixcvM4eduiyql7akIRjMvfspQoI8k1iIaceLzaaPfTB3TAzWSqcweEJY
- k9ffM2DvRgF2snqPT3/BC9hqgFHU1qmnRWz0CAXgcSKx0GSSlI001fvrNfUCvSG73QJc
- zjHa1qJ6V4MBu1qube85rSsazsLgKjpVA8sDfoOaQca8OXjYyU9ECYKGc6U7lQaIllih
- 4S2g==
-X-Gm-Message-State: AOJu0Yysb7/WbSWLam+adnv7wjGzu695ejaCR5BI0kPFt6g7sMpA9PLz
- 8SKeOabNQtcxoK1OxAfXD7qeP01zEB+1Uh4q7Bb0CGOItL39PO1YST9qVA==
-X-Gm-Gg: ASbGncvZ0cd3DsHbFGWIUt0tB/29RrX8e8UP0YEw2AuDbMqjpvN9wEr8HM9hxIBry8/
- Lp+M56ibbGZC2yFWbtGsUQGCN0UCCOgW7W2NGeq0ABCbAs1kfHZdHS0BO5+0TAwnbd+dl/Pwgsm
- gCZSyzoq5a+d4Ev8hZh6HfqUBz/CgD27slYhcQMbyGzKHi4hNzeM6EPkM8hc+kFhoiF/qDc1pz3
- 8zobLDqkfHZGZBv4HRCzQP9PZsc058Nm08+XqQAj/KrAmNXglgSlv7aP/k1bx9COonUkkuywveg
- GFEgs1uww0QP7P8S6zXcrux4bZ5ewVcsQ2S96DWXDIdPwPGNGL5usGBc0iLyzxVxCxM4lgIEJj5
- 2MqJN3xDove5P/5gaIG6IHM8aL1krK41K/Ug0Y3VgiFRCA9+wuZisME5wqTqhlQ==
-X-Google-Smtp-Source: AGHT+IEmCGOmU9HSJh8mK+VxFGuBJtMnykSp0eI4ItIUm/CG86FznIp70z9qZKInnbhooDH0yrZoqw==
-X-Received: by 2002:a17:90b:3802:b0:2ff:52e1:c4a1 with SMTP id
- 98e67ed59e1d1-303a83c3580mr10215083a91.24.1743144808895; 
- Thu, 27 Mar 2025 23:53:28 -0700 (PDT)
+ bh=qmnZdWQzlLyYjTplGV7qmefZ1pbKTLM/vow/Mo7WpQ4=;
+ b=oWGo429nNZSGMALMT58vzpyiJgEHN36Bohpyqjbx2h7oPtNNqK7aVhB2nM2kG+NidN
+ l2If7FJa8soQxQcMpWaGKZ6ur0PccNK69UenZ5XXBSHlyb8csV2feYD0Tpc1u5wKSN6U
+ FNdkpHmMV0wTgN/0yS5yFWOj++Au+wFg0DBaZuch7WnlxQ/7PAjG7ktg6vks5hz5/tGN
+ BO2J9ZLw50MQWLciZTu0gZCummbtSP3MjGzcTp2HVhVveBWrqcqgT4X5Y6vQZDzjLyJF
+ kG1Gfq3d9b1x6XVudLLuUjuY8g+16yKkMA63ZEPWCKVYZwWDclP18WQCoH5gwlRUM9Pp
+ MY6g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVd7gXDyFJFtHIwKCA2KHZ6k4kY6IhXIVGz6RCIHFxEGOfDON3eFh4x+QozCwXgVaCynWQewZOiJ4U6ZFs=@nongnu.org,
+ AJvYcCXHvea6N2IPEo7jpXsaeBmdCeToqWznV/LBXNQOssFrxOD8J/dSsS3WMoY9jFEo13LWOyayxyZ5UbPf@nongnu.org
+X-Gm-Message-State: AOJu0Yyjwx6Bn4c8fW9r6mgrLRlrRKMR4ujcg4RYTsYRtSFhepGiqqN7
+ 8kdZfDaXx2LLWlpYlNcMfQ/s0CYpyy3QJSmctb5t1uPJCSvnMwVJgcCTzQ==
+X-Gm-Gg: ASbGnct3oVQm9xLG7hheWfs7ymMEdTC0MH4L0VzX+zvx2ucjiRnEdPC93uO45p4k3UJ
+ 3AeOPzRRzqF7sjYVRxAOtfijlZZstOjX190qhjD3dMxgFoR/phiXvSzbzugDWp6xoMDQtuMuzxW
+ jb13GVZZu86Ji+Mkb2ODhvOy9VRFdKGPfAAXyhfP4MSyrEyPMC7mw4leVJSPxJfHrlYF9jXcTLp
+ +b8x+wzekxsiFAeT72qjBlX5LeRClMaWq2RJFh4UWdCQPbU/CiXnGA/hk5XcnNu+cxZaBBkjjhg
+ Qle55c1SGSAUgBVLLdbiFGXkaCK0Ippm0y5IA6ysjI+bwvBagEPta6HAoiN6Tb/+la2J2sek6qG
+ z3d5cRC6nVU1itb2HcxcPjdo/sBQK6NhOJ2RohSBLZXWMI5ZxT9o=
+X-Google-Smtp-Source: AGHT+IFA3QA3i05W6JhgzB7Q+MvJSrm/M1O9HpHJLtsdcXbMACN0zS/rRBmJoUVjU953ILWmovg4+A==
+X-Received: by 2002:a17:902:f644:b0:216:6901:d588 with SMTP id
+ d9443c01a7336-228048ac56amr93772935ad.15.1743144812181; 
+ Thu, 27 Mar 2025 23:53:32 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2291f1cf8fesm10633025ad.110.2025.03.27.23.53.26
+ d9443c01a7336-2291f1cf8fesm10633025ad.110.2025.03.27.23.53.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Mar 2025 23:53:28 -0700 (PDT)
+ Thu, 27 Mar 2025 23:53:31 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com,
  "hemanshu.khilari.foss" <hemanshu.khilari.foss@gmail.com>,
+ qemu-stable@nongnu.org, qemu-riscv@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 1/3] docs: Added docs/specs/riscv-iommu.rst in MAINTAINERS file.
-Date: Fri, 28 Mar 2025 16:53:16 +1000
-Message-ID: <20250328065318.1990698-2-alistair.francis@wdc.com>
+Subject: [PULL 2/3] docs/specs/riscv-iommu: Fixed broken link to external risv
+ iommu document
+Date: Fri, 28 Mar 2025 16:53:17 +1000
+Message-ID: <20250328065318.1990698-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250328065318.1990698-1-alistair.francis@wdc.com>
 References: <20250328065318.1990698-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,31 +108,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "hemanshu.khilari.foss" <hemanshu.khilari.foss@gmail.com>
 
-Added docs/specs/riscv-iommu.rst under `RISC-V TCG CPUs` section in
-in MAINTAINERS file since
-`scripts/get_maintainer.pl -f docs/specs/riscv-iommu.rst` doesn't list any
-maintainers.
+The links to riscv iommu specification document are incorrect. This patch
+updates all the said link to point to correct location.
 
+Cc: qemu-stable@nongnu.org
+Cc: qemu-riscv@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2808
 Signed-off-by: hemanshu.khilari.foss <hemanshu.khilari.foss@gmail.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250323140151.9994-1-hemanshu.khilari.foss@gmail.com>
+Message-ID: <20250323063404.13206-1-hemanshu.khilari.foss@gmail.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ docs/specs/riscv-iommu.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8f470a1c9b..27f2cfd833 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -319,6 +319,7 @@ L: qemu-riscv@nongnu.org
- S: Supported
- F: configs/targets/riscv*
- F: docs/system/target-riscv.rst
-+F: docs/specs/riscv-iommu.rst
- F: target/riscv/
- F: hw/char/riscv_htif.c
- F: hw/riscv/
+diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
+index 000c7e1f57..991d376fdc 100644
+--- a/docs/specs/riscv-iommu.rst
++++ b/docs/specs/riscv-iommu.rst
+@@ -4,7 +4,7 @@ RISC-V IOMMU support for RISC-V machines
+ ========================================
+ 
+ QEMU implements a RISC-V IOMMU emulation based on the RISC-V IOMMU spec
+-version 1.0 `iommu1.0`_.
++version 1.0 `iommu1.0.0`_.
+ 
+ The emulation includes a PCI reference device (riscv-iommu-pci) and a platform
+ bus device (riscv-iommu-sys) that QEMU RISC-V boards can use.  The 'virt'
+@@ -14,7 +14,7 @@ riscv-iommu-pci reference device
+ --------------------------------
+ 
+ This device implements the RISC-V IOMMU emulation as recommended by the section
+-"Integrating an IOMMU as a PCIe device" of `iommu1.0`_: a PCI device with base
++"Integrating an IOMMU as a PCIe device" of `iommu1.0.0`_: a PCI device with base
+ class 08h, sub-class 06h and programming interface 00h.
+ 
+ As a reference device it doesn't implement anything outside of the specification,
+@@ -109,7 +109,7 @@ riscv-iommu options:
+ - "s-stage": enabled
+ - "g-stage": enabled
+ 
+-.. _iommu1.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0/riscv-iommu.pdf
++.. _iommu1.0.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0.0/riscv-iommu.pdf
+ 
+ .. _linux-v8: https://lore.kernel.org/linux-riscv/cover.1718388908.git.tjeznach@rivosinc.com/
+ 
 -- 
 2.48.1
 
