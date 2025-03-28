@@ -2,96 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D36A74F8A
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 18:36:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F45A74FE1
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 18:56:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tyDbs-00041t-Ud; Fri, 28 Mar 2025 13:35:13 -0400
+	id 1tyDvb-0007Is-3E; Fri, 28 Mar 2025 13:55:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tyDbb-0003wh-Mi
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:35:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1tyDbY-0000rz-Fo
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:34:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743183290;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pmTBEpXxdB868KsVPa0XELCnCWsZb70LJgfed75aEq0=;
- b=G28vZT0QMOS02D4sUNvqPxWHoYVBBUAusiC73D8xeY477vsWRMmgx+ixyTGQ8Oontz8cM5
- LATa8PuoBbY0yC13K3n4Xzsror1iFqsUJWumXLDa4TIACNd03EQYigwor7oeU47X9dYFQ4
- hGkGSc0zPtZujbGmOdtYtslTuY3mIVc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-W8v7VQdpPwW7tq5x3sM6TQ-1; Fri, 28 Mar 2025 13:34:45 -0400
-X-MC-Unique: W8v7VQdpPwW7tq5x3sM6TQ-1
-X-Mimecast-MFC-AGG-ID: W8v7VQdpPwW7tq5x3sM6TQ_1743183284
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43d01024089so25593715e9.1
- for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 10:34:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tyDvY-0007I9-P9
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:55:32 -0400
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1tyDvW-0003KA-VJ
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:55:32 -0400
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3fa58dc37c5so1918933b6e.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 10:55:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1743184529; x=1743789329; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=M+S7a9QC5YKsggE51++wQSF28OMoPxK47/MhF/n7eFE=;
+ b=EVGXECG9XMhbv9G5aFiVoDsz5gS/eDZxU09aTJy0j4sWUZSl1fXnNM7Z4v6PF1omax
+ k9e1iX6RqCTRQ7FfrP/s0NOd5T68CK4LInG2o6haY7nsSvLUzIU0Oc5wsXX4N33/laMT
+ DDH8vVrK9EOxh+D60Zl3Z61tYxgIo7V5qkhP+PucYbu6fCAzefYcC1VC0VsOCL9M/neB
+ ZPYJRQdF01pYnDiFlbKRzEiUeWN2gWVBCVLH3eISR2a/Sbqp7lhgAOCJxBJq7IModoOy
+ wIb4ahKaspoQ9HLs9rSBzxxX5hgJ8/5dB7Gozx0e3X2iiQvv0QvAewaxoQODsJDWZpgX
+ +cMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743183284; x=1743788084;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pmTBEpXxdB868KsVPa0XELCnCWsZb70LJgfed75aEq0=;
- b=Fe3qnz0FV5SonL3Yqe5ceT3PIh9EU5XTrRCKrcSksNU0NEWeF1Gyrt5Wduc4dh1kgl
- gflQmmOSQPUXGKjpuLvcQeTb+jV7sHADw52InsSef7jV7OyKrDEX3nhvUcI3AlSLtEEW
- 7uCgS+MBCJ8vq66WKslaruqjMJBZR1fDH5YxK66cvbCNm1K90PK11m3UtDNUA/YhJbsm
- v0gP0DLx3v0Mvfn3UTNEIs5rBbMZSUfom3CgSVWCpKcAgNfxnJlolDgtInhni8+bPvWF
- QVDSa15liFPYUnw2y7dCWpV+d3YH4hU5AOuot3TTPEiyN52Gmn2Xdw/4/UiwYbSGZi2H
- o2DA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWRiAiLkRWZoWBSms9Fl8Zk8TBOKmwTOHvGuxSsc+6PrA/dE/VsOGoGuom8Gj6/ISXZiXeEXfx0t4zG@nongnu.org
-X-Gm-Message-State: AOJu0YwS+QLUYJYLnahe/SDXj/twPTvlUyqEdwJbgj5JqfGTTcgnpToh
- qDnCG/LXm51nS8Lrf3X0QxQ4TK9ELQYcreD4fP8Amy6Zi9OYdalfp2K1RNtN6Q2ckNZiV0Sw7Ub
- Z7nLSFE/UTF+MGYjJUX5396dEN/Fr29+GXIfJbGM4EutwRVCJcxpPuFFNOlqdaz54vJQC8qu4GX
- paHQz8+XIGOOBxBRPVg/vZm5Gt8+8=
-X-Gm-Gg: ASbGncuxIlLnKLcbDqfjhL7QbZFtc4AQJlvc9werWSLUE5+SrkUBO+uhY9255/Gj7YJ
- 3fz2vLzWz12Zt1rhsbYnSSd7xcsNWPluiZygJPOkvdwpJ75WYCb0QRw9A9PBgq6p/HtejNPMaHw
- ==
-X-Received: by 2002:a05:600c:4754:b0:43c:fbe2:df3c with SMTP id
- 5b1f17b1804b1-43db8516e66mr2197885e9.26.1743183284272; 
- Fri, 28 Mar 2025 10:34:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDV7ZT6Bx+qhN+5cyOyemuCfn2JGh4X6+yrJ8UoAMAE4FiRRZC8POXkjgOyn0V6NiUVWzMQV0VjB9gjpiOf78=
-X-Received: by 2002:a05:600c:4754:b0:43c:fbe2:df3c with SMTP id
- 5b1f17b1804b1-43db8516e66mr2197715e9.26.1743183283856; Fri, 28 Mar 2025
- 10:34:43 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1743184529; x=1743789329;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=M+S7a9QC5YKsggE51++wQSF28OMoPxK47/MhF/n7eFE=;
+ b=jU9utUgJNDNiP7MiILpjoKwnu7YAtSuWJknB009/asfGZVYghL8W/nbsCiv721qMkO
+ FWSnfk1txPD5IVy0XgqiMHbrg9JLNyAcq8ohRg2uuVMVDCmvvGHVC38gxU0GiLYMOafy
+ xp0HThTmOMzIN/78t4LTp0crRmGO53SQJbeovT24Cv85u5Xn91cm8eaJV44BIqlrvM3g
+ CZg4jgm/KPipfK7K+utbsUSLi7JbMcPxTx41BRE15WFXDFJbOPox/u5KrCkXEQUmybKH
+ oWdaL8xH/UtQqVt1AmIjox6Z6r8tyPLLRsMRIVSKaxCqwnV6rAI5QLfJDxikWICSATdC
+ /Xxw==
+X-Gm-Message-State: AOJu0YzQPu5S1OVsoaeW8L9ttyKigryOvaDcU7ckb8e0jxM1PqyCGU4w
+ wS8FK3i+fmg0/H52DRI27pmJ1pQYiHT/AsUf/TuhUBqynT2htYgiJIzXWNIdF5sTBqWufWUPuy3
+ W
+X-Gm-Gg: ASbGncvlD2rqznVs1dK6vruCSekbAMBsRbIaBnquh9u3mODYHwvy+Mco8pcjHlb1U/u
+ 1wRIjmxRcvHrJbSXmviqIDibObk/rW8WmJAFliEJRVMrxuv+tcOcQ3wLqmIYBVhxnbCL5kIsyNI
+ vMxYWb3SNyYgvSh7hljyw+jDNMZRtMuw27ZEJUPQSZvlrutQ8e4Qq3/tXk3rqUaLXI57oUrJV0/
+ 4wVJeeal6PN4FBJFjrElxj149gmIX+d7u/t4D0oGT1trjnLUvGTecZChAJ8Hi7SX51B5/1911XU
+ xiTrcTTPEccfY2/pYHKLOsz1bM45pCLqi0lwj/7pa+WwCvy2nm+J+/kOFR8vgW1kg2satH9S9JA
+ 60Xp8FjLvrBs=
+X-Google-Smtp-Source: AGHT+IGa8soSS3fUfjV/HA50iD7jnBGglfeFpemP+xrzphQAkMDe43uvBlQTqvWCs3AcFOhL46oHpw==
+X-Received: by 2002:a05:6808:2184:b0:3f9:aeb6:6e92 with SMTP id
+ 5614622812f47-3ff05cab70fmr2069844b6e.9.1743184529129; 
+ Fri, 28 Mar 2025 10:55:29 -0700 (PDT)
+Received: from stoup.. (syn-071-042-197-003.biz.spectrum.com. [71.42.197.3])
+ by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-3ff0529511esm410338b6e.46.2025.03.28.10.55.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 28 Mar 2025 10:55:28 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org, chenhuacai@kernel.org, jiaxun.yang@flygoat.com,
+ arikalo@gmail.com
+Subject: [PATCH 0/3] target/mips: Revert TARGET_PAGE_BITS_VARY and bug fixes
+Date: Fri, 28 Mar 2025 12:55:23 -0500
+Message-ID: <20250328175526.368121-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20250327153627.307040-1-rakeshjb010@gmail.com>
- <364c91ef-b086-9aea-4073-e0be49b77d76@eik.bme.hu>
- <ca76bcb1-7cea-4153-ae74-02718a6a1cfb@redhat.com>
- <971ac7f1-618d-c94a-93db-9ba887bdc997@eik.bme.hu>
-In-Reply-To: <971ac7f1-618d-c94a-93db-9ba887bdc997@eik.bme.hu>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 28 Mar 2025 18:34:32 +0100
-X-Gm-Features: AQ5f1Jp1hjJOk6yvOff3obB31736u3EWstPGLS5TsA8PtFEkDSdZkdlhVqPwG2U
-Message-ID: <CABgObfbL0b7G-Okq=0xnbDMJ4viu0Uk8gduuTUeCS0C4Xtn6aw@mail.gmail.com>
-Subject: Re: [PATCH] hw/pci-host/gt64120.c: Fix PCI host bridge endianness
- handling
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: rakeshj <rakeshjb010@gmail.com>, qemu-devel@nongnu.org, 
- marcandre.lureau@redhat.com, philmd@linaro.org, thuth@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,52 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 28, 2025 at 3:16=E2=80=AFPM BALATON Zoltan <balaton@eik.bme.hu>=
- wrote:
-> > It should be fine.  You should take into account:
-> >
-> > - the endianness produced by pci_data_read/pci_data_write (always littl=
-e
-> > endian)
-> >
-> > - the endianness expected by the guest (big endian under the conditions=
- in
-> > the patch)
-> >
-> > - the endianness expected by memory.c (always little endian, as specifi=
-ed in
-> > gt64120_pci_data_ops)
-> >
-> > Because there is either zero or one mismatch, bswap32 is fine.
->
-> This may worth a comment but I'm still not convinced this works on big
-> endian host because I think pci_data_read returns val in host endianness
-> and if you want big endian then you only need to bswap on LE host not on
-> BE host. Was this tested on BE host and confirmed it works?
+The logic behind changing the system page size because of what the
+Loongson kernel "prefers" is flawed.
 
-Looking again at the code, there is definitely one problem: since you have
+In the Loongson-2E manual, section 5.5, it is clear that the cpu
+supports a 4k page size (along with many others).  Therefore we
+must continue to support a 4k page size.
 
-+        .min_access_size =3D 1,
-+        .max_access_size =3D 4,
-
-the bswap can also be bswap16 if size =3D=3D 2 (and bswap32 only if size =
-=3D=3D 4).
-
-Also WRT to what Zoltan is saying, I think it's safe to just add an
-extra swap, as long as it's of the correct size. The swap changes the
-combined action of ops->read and adjust_endianness() to have 1 or 2
-swaps instead of 0 and 1, and that is the same as inverting the result
-of devend_memop().
-
-The loops in access_with_adjusted_size() could be a problem but they
-do not matter here, because split accesses are never needed
-(impl.*_access_size are the same as valid.*_access_size).
-
-Thanks,
-
-Paolo
+While in the area, I noticed two other bugs related to update_pagemask.
 
 
-Paolo
+r~
+
+
+Richard Henderson (3):
+  target/mips: Revert TARGET_PAGE_BITS_VARY
+  target/mips: Require even maskbits in update_pagemask
+  target/mips: Simplify and fix update_pagemask
+
+ target/mips/cpu-param.h             |  5 -----
+ target/mips/tcg/tcg-internal.h      |  2 +-
+ hw/mips/fuloong2e.c                 |  1 -
+ hw/mips/loongson3_virt.c            |  1 -
+ target/mips/tcg/system/cp0_helper.c | 32 +++++++++--------------------
+ target/mips/tcg/system/tlb_helper.c |  4 ++--
+ 6 files changed, 13 insertions(+), 32 deletions(-)
+
+-- 
+2.43.0
 
 
