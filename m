@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC9A9A75142
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 21:07:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEFBA7513A
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 21:06:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tyFx0-0002qq-IC; Fri, 28 Mar 2025 16:05:10 -0400
+	id 1tyFx4-0002st-CH; Fri, 28 Mar 2025 16:05:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tyFwx-0002pb-En
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 16:05:07 -0400
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ id 1tyFwy-0002qM-9X
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 16:05:08 -0400
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tyFwv-0007n4-Fp
+ id 1tyFww-0007nK-HO
  for qemu-devel@nongnu.org; Fri, 28 Mar 2025 16:05:07 -0400
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-3fbaa18b810so697028b6e.2
- for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 13:05:04 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3f8d2f8d890so1534957b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 13:05:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743192304; x=1743797104; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743192305; x=1743797105; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1dr/ia722bLIN9dEZ7twaM/nT3BoEXqpJL6WGPcn5bc=;
- b=J6imUvrzuG8w+QKV122rMtBq9bQwz24c2CmnBj4CGc7ZBIgfUckMufcSe5ZgWD5Y6v
- IFO83cVSlNRws9jJScJVEqz+gyO3FsvFEQ2dMeninv8bYS6RsKIEld8fpX7Eo70pIxZt
- QyAC4aZxYhtbxR8p1BceMml4BHX/k4dU6HWLdOlxr+EYKEYYywLbpyWi35PMRbuvWDcN
- Ar550vQv8DrWU+CTOg1T4RNydKmYSsiWt1JlCEthscgaK97rZuDK+UJRmuT8FyfGxoBa
- 6yEUowUDHfHO7a8DtIrakDUdQItoBc1z0FG275ifFP8f5tyhLR6OokrjhdXWrV3Jenrd
- douw==
+ bh=yu5KF6BrH2yp81gEA850j0dS4wEWUhM6jM/Abi77cw4=;
+ b=neN94agz2ihvw7gLOv7TcVBob4G/48XgyWghxfuJrlAvb0ED7Djl5rmgetNhKR9zH3
+ jYkFdpyw2tFoMuK8WUogcy6gWiqRLUM0OtatEgrsCtIbv5ZUdBWUpgYTycKOxW4VjVd5
+ rfcbQH7f/FuKitEL7DRSYPIpumooWZbIA67y9ueTdHWRqJRcsi1ElIn+oh3/XgQgVsFz
+ YPQ7Lv3YK1gSnE1AAjctFcxKGyzmIA9Dn90Gsbt6k16LpskVIbwTtq3PVNLwhe48ruvS
+ U8HbUl//sd0+fiDYt6c+mOVv5ANuo/5wsaqbRo1uqZbiVDA8ASNMnzvl8cqdqfrEp3WD
+ /2Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743192304; x=1743797104;
+ d=1e100.net; s=20230601; t=1743192305; x=1743797105;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1dr/ia722bLIN9dEZ7twaM/nT3BoEXqpJL6WGPcn5bc=;
- b=Ihxs1+9RDYga/ILTVUQd4faAyXedw2Idi5DZKVpGz1m6hxW93U7Wv4Y5QT9vLxeZc3
- rm+722zMG/RsEw55sg+1251FA0ZDYYWtP81x5QgrmXjsTCqZDH++qiEO1vF0gV2sIzyP
- M7RsUjeog/+WSqSqndRqZ4wPWXaAzb9USmpxZb2kf0mF3QUA4/wkaVxUbgHc9h2/dtAt
- JhYZYhVyMQUUZhoLhjkT37o/kydTytrsF+RenAXHOmFPb6WX6eIAmDTBEioDMwk0Xh+J
- u3yyfSr+g0VkyFWUODAL8Xv7IjbOTgfMJ7L0T8jat7XrHYIB5zSP2THTEtNWIPJwThAm
- V/rg==
-X-Gm-Message-State: AOJu0YweFSo1NYVizi72kXZcee+98RdrlQQrbVcut5l0xcmI1soUKmfK
- du4hB8uJwZRVoQQ4d4qAbxQA0agzDlghDY/VMuMtKyVJfSIZR4pMr8zmZG7j2OOFTf3PKy8rq22
- p
-X-Gm-Gg: ASbGncsrNeR7d7J/DSa4WoN1N+lCLNgQXaVZ1d41SPB7JzhjhQy7bZCkhKzTWdsgLJ9
- Z6ko7IeGrH3p7ZCuqxRc0tuDTCAPzydgRpwwHW2wM64oQz5D53rMVzMQREEWS+20OxifQky9nmY
- 4JIPxEQ4cXGo1/e8+NsPbSsdvZlrbMsceTpqxrDHlL3kVGuNUaxjph770StGm2T25Z+69oG7ECL
- erTGg6BwIVLScvlMb/MBvtECXuMNsCKriGJSYLVTNIu65XTUkf1J9x4oWJfG7AlaXpWMykVeXxF
- xd+YJIMwSqLavJSnX8ejxw5pEXaLmG/itgHHD6GpieDvAgSYTyRPt8pwLHasG3VrAPutFHa8QQr
- cGJavAXYypV4=
-X-Google-Smtp-Source: AGHT+IFKJcFKMbsKAtbXh771OXmp2CVeSPiJZw5k5W6LxIR5YMmv9iw7OvuodCp59AJG/2LAHH7VtQ==
-X-Received: by 2002:a05:6808:15a5:b0:3f8:b73b:683c with SMTP id
- 5614622812f47-3ff0f4e59fbmr483472b6e.2.1743192303919; 
- Fri, 28 Mar 2025 13:05:03 -0700 (PDT)
+ bh=yu5KF6BrH2yp81gEA850j0dS4wEWUhM6jM/Abi77cw4=;
+ b=PpEKSF+puemp8jkGDHnYG/fby4Z/4hSL6pEalLxRNkpEUtvQkAPr0H2bI/lqpNEVpv
+ 92oJxbEkLHIGd4deTqM2iDkUCXfM8DckWG+V8vvMycmVWdvoRbnnLA5NhScVJC5Q6LS5
+ kl5frRseispgeLhFEYPNgdhlwTSIxoJGPq8NIGjxQ2Rq/5/Iq6/jAD6pgktkcHil9KIG
+ hKXpY46k+DvpuP7vmi09I8QYNqOdISZWqfkUuR+AxG5mVHM0qBkxDHLkoDmKck7Hd0Iu
+ brmqnpAukKajodv1/8GCXctG3xvU0kBieweecQKsef2Ugb5qvzSUzFNZINkIj33mdO61
+ dOXA==
+X-Gm-Message-State: AOJu0Yy8xa9xGDb4EnUrFogg+8NjHHi3EcxLpT27J0338gEU2Png6lko
+ +UZVVUJCVcjcGDBKOIIXGS87MRMYepgigi6McNihqAcEr9NE1i7Fdv2r/Eq/H+VF5aO7DVPia3c
+ 5
+X-Gm-Gg: ASbGncsQmL2aAE9FlHjFCXsQNPB4faAQYwIYNZp+eUYiScuZaNt1l4wl5dRZpaXk2Xt
+ fG4ACrDjOepvXbpbWlPTyVzkS6LqjcUDQ9oPZoLR0rYW43SCKv5oQKYYf8cimygxbos9jNBIrOE
+ fnSyen2OLOhpzvE7sPmHu6TRtXyfFoOQ1gVtUmmEdTCDiVwn6AeJfEwcV2v/fPGlCgritEsww08
+ ihYMTJ7AXUkZKhXUsqM5peYJle09x5VyFgZdeMwf0mJK4X4KZexteSHZFtyvQfPtH/zo3GCphIy
+ TU3JIhOyAKEQQsG/rpsI7KfOyix2CjIi05vxwK0/+tEIYAEdaywv1ZXBs35OHyoQQS/+fMU8n6b
+ /FNDiL2Fl6TY=
+X-Google-Smtp-Source: AGHT+IFG4hD2s22xWh/CxHeK9tLPwlTt3t8F2UZL/SAHYLKKWHT0/XvVTAPxPpBYi2q7Ua52Z8QR/Q==
+X-Received: by 2002:a05:6808:159a:b0:3f8:cf10:f113 with SMTP id
+ 5614622812f47-3ff0f4e246fmr480094b6e.5.1743192304881; 
+ Fri, 28 Mar 2025 13:05:04 -0700 (PDT)
 Received: from stoup.. (syn-071-042-197-003.biz.spectrum.com. [71.42.197.3])
  by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ff052799b6sm465104b6e.37.2025.03.28.13.05.03
+ 5614622812f47-3ff052799b6sm465104b6e.37.2025.03.28.13.05.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Mar 2025 13:05:03 -0700 (PDT)
+ Fri, 28 Mar 2025 13:05:04 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH 3/9] accel/tcg: Remove page_protect
-Date: Fri, 28 Mar 2025 15:04:53 -0500
-Message-ID: <20250328200459.483089-4-richard.henderson@linaro.org>
+Subject: [PATCH 4/9] accel/tcg: Remove cpu-all.h, exec-all.h from tb-internal.h
+Date: Fri, 28 Mar 2025 15:04:54 -0500
+Message-ID: <20250328200459.483089-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250328200459.483089-1-richard.henderson@linaro.org>
 References: <20250328200459.483089-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,78 +99,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Merge the user-only page_protect function with the user-only
-implementation of tb_lock_page0.  This avoids pulling
-page-protection.h into tb-internal.h.
+Not used by tb-internal.h, but add an include for
+target_page.h in tb-maint.c.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-internal.h        | 11 +++--------
- include/user/page-protection.h |  1 -
- accel/tcg/user-exec.c          |  2 +-
- 3 files changed, 4 insertions(+), 10 deletions(-)
+ accel/tcg/tb-internal.h | 2 --
+ accel/tcg/tb-maint.c    | 1 +
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/accel/tcg/tb-internal.h b/accel/tcg/tb-internal.h
-index 68aa8d17f4..f7c2073e29 100644
+index f7c2073e29..f9a06bcbab 100644
 --- a/accel/tcg/tb-internal.h
 +++ b/accel/tcg/tb-internal.h
-@@ -51,28 +51,23 @@
+@@ -9,8 +9,6 @@
+ #ifndef ACCEL_TCG_TB_INTERNAL_TARGET_H
+ #define ACCEL_TCG_TB_INTERNAL_TARGET_H
  
- #endif /* CONFIG_SOFTMMU */
- 
-+void tb_lock_page0(tb_page_addr_t);
-+
- #ifdef CONFIG_USER_ONLY
--#include "user/page-protection.h"
- /*
-  * For user-only, page_protect sets the page read-only.
-  * Since most execution is already on read-only pages, and we'd need to
-  * account for other TBs on the same page, defer undoing any page protection
-  * until we receive the write fault.
-  */
--static inline void tb_lock_page0(tb_page_addr_t p0)
--{
--    page_protect(p0);
--}
--
- static inline void tb_lock_page1(tb_page_addr_t p0, tb_page_addr_t p1)
- {
--    page_protect(p1);
-+    tb_lock_page0(p1);
- }
- 
- static inline void tb_unlock_page1(tb_page_addr_t p0, tb_page_addr_t p1) { }
- static inline void tb_unlock_pages(TranslationBlock *tb) { }
- #else
--void tb_lock_page0(tb_page_addr_t);
- void tb_lock_page1(tb_page_addr_t, tb_page_addr_t);
- void tb_unlock_page1(tb_page_addr_t, tb_page_addr_t);
- void tb_unlock_pages(TranslationBlock *);
-diff --git a/include/user/page-protection.h b/include/user/page-protection.h
-index 51daa18648..d5c8748d49 100644
---- a/include/user/page-protection.h
-+++ b/include/user/page-protection.h
-@@ -16,7 +16,6 @@
- #include "exec/target_long.h"
+-#include "exec/cpu-all.h"
+-#include "exec/exec-all.h"
  #include "exec/translation-block.h"
  
--void page_protect(tb_page_addr_t page_addr);
- int page_unprotect(tb_page_addr_t address, uintptr_t pc);
- 
- int page_get_flags(target_ulong address);
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 667c5e0354..72a9809c2d 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -657,7 +657,7 @@ target_ulong page_find_range_empty(target_ulong min, target_ulong max,
-     }
- }
- 
--void page_protect(tb_page_addr_t address)
-+void tb_lock_page0(tb_page_addr_t address)
- {
-     PageFlagsNode *p;
-     target_ulong start, last;
+ /*
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index d5899ad047..df3438e190 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -26,6 +26,7 @@
+ #include "exec/page-protection.h"
+ #include "exec/mmap-lock.h"
+ #include "exec/tb-flush.h"
++#include "exec/target_page.h"
+ #include "tb-internal.h"
+ #include "system/tcg.h"
+ #include "tcg/tcg.h"
 -- 
 2.43.0
 
