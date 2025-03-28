@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54C1A75079
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 19:40:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E656FA750E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 20:38:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tyEbG-0002K1-AM; Fri, 28 Mar 2025 14:38:38 -0400
+	id 1tyFWR-0005DE-1o; Fri, 28 Mar 2025 15:37:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tyEb7-0002JG-Gn
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 14:38:30 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1tyEb5-0002wO-8l
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 14:38:29 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2240b4de12bso14479335ad.2
- for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 11:38:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743187104; x=1743791904; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ssdVNB+g9zRxrEC+Fseszdr1LEiiY1jNxyK/Gm+atso=;
- b=jN9nGEXL3ZgcftCOYocGl/JTSKe+/59GZExHNH1MxZfdDjAF8SKwFM7XmfBzbaqjy3
- QXlmaK4M3ZuxRnddeA8NMi3D4JdoTvaDC1eW4sSWbAb3O9tY5AUgfbC8S22Tu+fItK0/
- YGlKSz5cdLCUluyFvdKxwLgJbQnNJxnl75hlWpRjrTDWZH7Sw5Z3ftV/fGgpTdm1tuOd
- ROhYUfsDGMTOGvXZILYUW4ty3FR1bU4hNzmANzoF6EwsME6And5X1N5G6QwfgthYEOAc
- qGZdfm4tys7sg6jZkG1SM5l1/HgPIUwcI2BH1AE5/e1aGyPHWU4aVaSy/QUa5l2euxW7
- FX2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743187104; x=1743791904;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ssdVNB+g9zRxrEC+Fseszdr1LEiiY1jNxyK/Gm+atso=;
- b=H4hmfggdWAYT3sqsKTy5jh5AjTxi8aRQ0mhcWF765+P82H4Y0oRVlWk4gBfZwAuZta
- DbvcfOKlwkbAmHfqpiWzNSJe98AZdmeGJfkOrPN8hMgU10x6J7xN99kOnQLga9uBaXfb
- VjbeZEslF3/m2m3yaHdOogpff6MBOyq1iFGmsIP8BwtpJj7yej2i9jGY7+qBB+bHlduH
- DrSjJ5MFRAlC5zqAGlZpRKpqMYHLFtw+ltOPOsdJD4kwmqMUSN6j2vCtGPLStRDkrV2g
- nmdFkIbl2DTphOoHVEF9augjBjQkNb3+/Eb8xdbrUTaim0TEh/tE+6JvQ5KSUJfK0gvc
- wSrQ==
-X-Gm-Message-State: AOJu0Yyy95FozG4L4Z4qkdES2/6VI1vA8P4OZsEBjQEofnx1QAJibMjf
- T3iRZdO62djoHTqm+D6gbC9QpkfRQEnwk5X0M+uqmkO2A08HnszPIBgYWL5drf4qGIaibXmjNIw
- 1+Io=
-X-Gm-Gg: ASbGnctEFVIIh2k0vX3A/3v0snrtleiPYESwPfq/3gzVoo8+qS+J3S/HQQVWC1cboN/
- MNUPFcc4N+9V5ioTGab2wThgQkfDQMh4bNgr6mE6AZJZwuAQGZv0qll1SW5NxfyBPyeR4taVZKP
- Ijrq9iSshn8zbJzA2EA4bz0C6WSQnVeSaAQCmBMc9K31K5S6f/oMJbuCcWPpEDGpwqS8rweGYKF
- IUYyNfT3Wa2GOQqyw1duYTHhq5TMj9lNzsStRp9+vds2LPWB5agBMruO08naB4MRrgnPsUM8Fw7
- Rh9IzbPG0DzeG/lLKJEZudA3EwkkOSLYcYgPnmC+OjeACVVdMyBnmCA=
-X-Google-Smtp-Source: AGHT+IEsZ5CLLHOyuF2GEHYYXBy/cC/N6iQErdqNB/GMTo64QUs+RuZUh4ZMYIY1irAWy6xA2xFR2w==
-X-Received: by 2002:a17:902:ce0b:b0:227:e74a:a063 with SMTP id
- d9443c01a7336-2292f9e53d5mr3138525ad.37.1743187104272; 
- Fri, 28 Mar 2025 11:38:24 -0700 (PDT)
-Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2291eedfd85sm22010365ad.77.2025.03.28.11.38.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Mar 2025 11:38:23 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, berrange@redhat.com,
- peter.maydell@linaro.org, alex.bennee@linaro.org, qemu-arm@nongnu.org,
- thuth@redhat.com, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH] tests/functional/test_aarch64_rme_virt: fix sporadic failure
-Date: Fri, 28 Mar 2025 11:38:16 -0700
-Message-Id: <20250328183816.2687925-1-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.5
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tyFWO-0005Ci-U4
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 15:37:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1tyFWM-0004aO-5S
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 15:37:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1743190654;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=EJtmUpo9ayZbJl0I50HyH+Jk4SxSizt2Hj8QdXqz1yM=;
+ b=B/OOJAd0Eyd4p7RhSu2CXDqB/On+zusQdQ1tDZ6WcTZcAvUCdRef1E2OHEfRcqlgU3JC+W
+ 62TQby+daale5zO91zuq+BONGmNRCST76B0nKzywt5FATQ8e+M/OzBhiK4eob7sybu2FT0
+ xQtGlRFnEjLaM/H68bG4vVw3cKu2exw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-8LchNgmDNb-TobkknGBaiA-1; Fri,
+ 28 Mar 2025 15:37:32 -0400
+X-MC-Unique: 8LchNgmDNb-TobkknGBaiA-1
+X-Mimecast-MFC-AGG-ID: 8LchNgmDNb-TobkknGBaiA_1743190651
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 29A9F180AF67; Fri, 28 Mar 2025 19:37:31 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.238])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 265EA1801766; Fri, 28 Mar 2025 19:37:29 +0000 (UTC)
+Date: Fri, 28 Mar 2025 12:36:20 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
+Subject: Re: [PULL 0/1] Migration patches for 2025-03-27
+Message-ID: <20250328163620.GA76614@fedora>
+References: <20250327185316.23523-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="zZ6we1v5+39H6czZ"
+Content-Disposition: inline
+In-Reply-To: <20250327185316.23523-1-farosas@suse.de>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -4
+X-Spam_score: -0.5
+X-Spam_bar: /
+X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,38 +83,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This test was randomly failing on our CI, and on dev machines,
-especially with QEMU debug builds.
 
-From the information collected, it's related to an implementation choice
-in edk2 QEMU virt support. The workaround is to disable KASLR, to avoid
-accessing protected memory.
-Note: this is *not* needed for the similar test_aarch64_rme_sbsaref.
+--zZ6we1v5+39H6czZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-More information is available on the associated GitLab issue.
+Applied, thanks.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2823
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- tests/functional/test_aarch64_rme_virt.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
 
-diff --git a/tests/functional/test_aarch64_rme_virt.py b/tests/functional/test_aarch64_rme_virt.py
-index f4ad4d33d58..a1abf584f0e 100755
---- a/tests/functional/test_aarch64_rme_virt.py
-+++ b/tests/functional/test_aarch64_rme_virt.py
-@@ -87,7 +87,9 @@ def test_aarch64_rme_virt(self):
-         self.vm.add_args('-fsdev', f'local,security_model=none,path={rme_stack},id=shr0')
-         self.vm.add_args('-device', 'virtio-net-pci,netdev=net0')
-         self.vm.add_args('-netdev', 'user,id=net0')
--        self.vm.add_args('-append', 'root=/dev/vda')
-+        # We need to add nokaslr to avoid triggering this sporadic bug:
-+        # https://gitlab.com/qemu-project/qemu/-/issues/2823
-+        self.vm.add_args('-append', 'root=/dev/vda nokaslr')
- 
-         self.vm.launch()
-         # Wait for host VM boot to complete.
--- 
-2.39.5
+--zZ6we1v5+39H6czZ
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfm0AQACgkQnKSrs4Gr
+c8j/yAf/QUuboZJpea5UnxdTkN2f9gn4Sk0y/WrOpysxmbEYvZ5YDeiEb/UweRDp
+nzPAQBYOry8cvOgUDvL+ppcX6DsXtCQ+7/l6AEg6BCrjB+cWHACNFgaUw4HQs55x
+v2LMC0RnFXkFNrHGencxnzfnN960NRixVN6pHMb6VMHLJvX0xfywjinAlanMyN2B
+SR1LaKlIPIOt6Of5yvMHGnaGFi2bLkqnf8eginLwbd+uyHoDImE9gzAHDn9cUfqb
+txnhtZNcC1DOjqvb5H4NNLnq3kxTCVVkX1O5wGKRWI8yrzNgySSeJPidFflTybUe
+Su2KuDSnxHMGy4btwhP44ipi08/lHw==
+=xPrx
+-----END PGP SIGNATURE-----
+
+--zZ6we1v5+39H6czZ--
 
 
