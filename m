@@ -2,97 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5B1A744E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 09:03:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1C8A74592
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 09:38:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ty4fz-0003xQ-7w; Fri, 28 Mar 2025 04:02:51 -0400
+	id 1ty5D3-0000JV-5O; Fri, 28 Mar 2025 04:37:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=v09i=WP=kaod.org=clg@ozlabs.org>)
- id 1ty4fx-0003x7-Me; Fri, 28 Mar 2025 04:02:49 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ty5Ct-0000HF-7p
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 04:36:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=v09i=WP=kaod.org=clg@ozlabs.org>)
- id 1ty4fu-0006qS-E6; Fri, 28 Mar 2025 04:02:49 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZPCgR0XPJz4x3d;
- Fri, 28 Mar 2025 19:02:43 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ty5Cp-0003DO-SS
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 04:36:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1743151007;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jQo3SYbIH2xS24gQn/PqAMrTv2PngwzkiXR2mQRDI14=;
+ b=DjJqRiRBOewW06fspWNMqkUdzKHjgFnJCpd7IAlq83NjgTEFENf4KS71A2EjRedsmX+tGZ
+ ph4ewfB8/RYzjUhGLs1+p5qZoEgPhowdvF+cj+RkswT7c4xle1eE0RTX/bcB9G5cUPw3Gi
+ autVP7BfCNLwRki3NxD3vLinZQ2yyJ4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-AXUkay0XM6yeRFdtpwKGIA-1; Fri,
+ 28 Mar 2025 04:36:42 -0400
+X-MC-Unique: AXUkay0XM6yeRFdtpwKGIA-1
+X-Mimecast-MFC-AGG-ID: AXUkay0XM6yeRFdtpwKGIA_1743151000
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZPCgN4RdXz4wj2;
- Fri, 28 Mar 2025 19:02:40 +1100 (AEDT)
-Message-ID: <c2f2fb9a-3cf9-4d5c-bf2a-01522b047759@kaod.org>
-Date: Fri, 28 Mar 2025 09:02:38 +0100
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9FCD5180049D; Fri, 28 Mar 2025 08:36:37 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.16])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E9B5730001A1; Fri, 28 Mar 2025 08:36:27 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4D43F21E6773; Fri, 28 Mar 2025 09:36:25 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Jason Wang <jasowang@redhat.com>,  Zhao Liu
+ <zhao1.liu@intel.com>,  Fabiano Rosas <farosas@suse.de>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Mads Ynddal <mads@ynddal.dk>,  Hanna Reitz
+ <hreitz@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  "Michael S.
+ Tsirkin" <mst@redhat.com>,  qemu-trivial@nongnu.org,  =?utf-8?Q?Marc-Andr?=
+ =?utf-8?Q?=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Yanan Wang <wangyanan55@huawei.com>,
+ qemu-block@nongnu.org,  Lukas Straub <lukasstraub2@web.de>,  Jiri Pirko
+ <jiri@resnulli.us>,  Stefan Berger <stefanb@linux.vnet.ibm.com>,  Gerd
+ Hoffmann <kraxel@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Michael
+ Tokarev <mjt@tls.msk.ru>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Laurent
+ Vivier <laurent@vivier.eu>,  Zhenwei Pi <pizhenwei@bytedance.com>,  Eric
+ Blake <eblake@redhat.com>,  Peter Xu <peterx@redhat.com>,  Ani Sinha
+ <anisinha@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  Kevin Wolf
+ <kwolf@redhat.com>,  Michael Roth <michael.roth@amd.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>,  "Gonglei (Arei)" <arei.gonglei@huawei.com>
+Subject: Re: [PATCH v2 4/4] qapi: rephrase return docs to avoid type name
+In-Reply-To: <20250326195756.330817-5-jsnow@redhat.com> (John Snow's message
+ of "Wed, 26 Mar 2025 15:57:56 -0400")
+References: <20250326195756.330817-1-jsnow@redhat.com>
+ <20250326195756.330817-5-jsnow@redhat.com>
+Date: Fri, 28 Mar 2025 09:36:25 +0100
+Message-ID: <87jz89mu0m.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/7] Power11 support for QEMU [PowerNV]
-To: Aditya Gupta <adityag@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-References: <20250327200738.1524401-1-adityag@linux.ibm.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20250327200738.1524401-1-adityag@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=v09i=WP=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.083, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,116 +101,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/27/25 21:07, Aditya Gupta wrote:
-> Overview
-> ============
-> 
-> Add support for Power11 powernv machine type.
-> 
-> As Power11 core is same as Power10, hence much of the code has been reused
-> from Power10.
-> 
-> Split Powernv11 chip/machine code into commits introducing: chip,machine,xive,phb
-> This is to try to keep the code smaller in each commit, but can squash the
-> xive/phb commits into respective chip/machine commit
-> 
-> Power11 PSeries already added in QEMU in:
->    commit 273db89bcaf4 ("ppc/pseries: Add Power11 cpu type")
-> 
-> Git Tree for Testing
-> ====================
-> 
-> QEMU: https://github.com/adi-g15-ibm/qemu/tree/p11-powernv-v7
-> 
-> Has been tested with following cases:
-> * '-M powernv' / '-M powernv10' / '-M powernv11'
-> * '-smp' option tested
-> 
-> skiboot with Power11 support: https://github.com/open-power/skiboot, since
-> commit 785a5e3
+John Snow <jsnow@redhat.com> writes:
 
+> Well, I tried. Maybe not very hard. Sorry!
 
-In OPAL, the Power11 "CPU: PXYZ generation processor" string seems
-inconsistent with the previous generations :
+No need to be sorry!  Kick-starting discussion with limited effort is
+better than a big effort going into a direction that turns out to be
+unwanted once we discuss it.
 
-[    0.033505806,6] CPU: P8 generation processor
-[    0.072640552,5] PLAT: Detected QEMU POWER8 platform
-[    0.035156993,6] CPU: P9 generation processor
-[    0.062078034,5] PLAT: Detected QEMU POWER9 platform
-[    0.026078226,6] CPU: P10 generation processor
-[    0.044514479,5] PLAT: Detected QEMU POWER10 platform
-[    0.022154632,6] CPU: Power11 generation processor
-[    0.038760508,5] PLAT: Detected QEMU Power11 platform
+Instead of just rephrasing Returns descriptions, I'd like us to consider
+both Returns and intro.  See below for why.
 
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  qapi/block-core.json     | 6 +++---
+>  qapi/block-export.json   | 2 +-
+>  qapi/block.json          | 2 +-
+>  qapi/control.json        | 5 ++---
+>  qapi/dump.json           | 5 ++---
+>  qapi/introspect.json     | 6 +++---
+>  qapi/job.json            | 2 +-
+>  qapi/machine-target.json | 7 +++----
+>  qapi/misc-target.json    | 2 +-
+>  qapi/misc.json           | 5 ++---
+>  qapi/net.json            | 2 +-
+>  qapi/pci.json            | 2 +-
+>  qapi/qdev.json           | 3 +--
+>  qapi/qom.json            | 8 +++-----
+>  qapi/stats.json          | 2 +-
+>  qapi/trace.json          | 2 +-
+>  qapi/ui.json             | 2 +-
+>  qapi/virtio.json         | 6 +++---
+>  18 files changed, 31 insertions(+), 38 deletions(-)
+>
+> diff --git a/qapi/block-core.json b/qapi/block-core.json
+> index 92b2e368b72..eb97b70cd80 100644
+> --- a/qapi/block-core.json
+> +++ b/qapi/block-core.json
+> @@ -763,7 +763,7 @@
+   ##
+   # @query-block:
+>  #
+>  # Get a list of BlockInfo for all virtual block devices.
+>  #
+> -# Returns: a list of @BlockInfo describing each virtual block device.
+> +# Returns: a list describing each virtual block device.
+>  #     Filter nodes that were created implicitly are skipped over.
+>  #
+>  # Since: 0.14
+> @@ -1168,7 +1168,7 @@
+   ##
+   # @query-blockstats:
+   #
+   # Query the @BlockStats for all virtual block devices.
+   #
+   # @query-nodes: If true, the command will query all the block nodes
+   #     that have a node name, in a list which will include "parent"
+   #     information, but not "backing".  If false or omitted, the
+   #     behavior is as before - query all the device backends,
+   #     recursively including their "parent" and "backing".  Filter
+>  #     nodes that were created implicitly are skipped over in this
+>  #     mode.  (Since 2.3)
+>  #
+> -# Returns: A list of @BlockStats for each virtual block devices.
+> +# Returns: A list of statistics for each virtual block device.
+>  #
+>  # Since: 0.14
+>  #
+> @@ -1440,7 +1440,7 @@
+   ##
+   # @query-block-jobs:
+>  #
+>  # Return information about long-running block device operations.
+>  #
+> -# Returns: a list of @BlockJobInfo for each active block job
+> +# Returns: a list of job info for each active block job
+>  #
+>  # Since: 1.1
+>  ##
 
-Thanks,
+Stopping here, because I believe this is already enough to make a useful
+observation.
 
-C.
+There's overlap between query-FOO's intro and Returns.  The intro
+describes the command's purpose, and the purpose of a query-FOO is to
+return certain information.  Returns describes the value returned.  Both
+talk about the same thing, namely the value returned.
 
+Why two prose descriptions of the value returned?  Wouldn't one be
+better?
 
+Let's try.  We need to choose where to put it, intro or Returns.
 
-> 
-> Linux with Power11 support: https://github.com/torvalds/linux, since v6.9-rc1
-> 
-> Changelog
-> =========
-> v7:
->    + use Power10 models of homer, sbe, occ, psi, lpc. As they are same.
->    + switch powernv tests to use buildroot images instead of op-build images
->    + add functional test for powernv11
->    - remove dynamic sysbus device for PHBs, so no more dynamic number of
->    PHBs in Power11 as it became complex to handle it and not much used
-> 
-> v6 (https://lore.kernel.org/qemu-devel/20250325112319.927190-1-adityag@linux.ibm.com/):
->    + make Pnv11Chip's parent as PnvChip, instead of Pnv10Chip
->    + rebase on upstream/master
-> 
-> v5 (https://lore.kernel.org/qemu-devel/57ce8d50-db92-44f0-96a9-e1297eea949f@kaod.org/):
->    + add chiptod
->    + add instance_init for P11 to use P11 models
->    + move patch introducing Pnv11Chip to the last
->    + update skiboot.lid to skiboot's upstream/master
-> 
-> v4:
->    + patch #5: fix memory leak in pnv_chip_power10_quad_realize
->    - no change in other patches
-> 
-> v3:
->    + patch #1: version power11 as power11_v2.0
->    + patch #2: split target hw/pseries code into patch #2
->    + patch #3,#4: fix regression due to Power10 and Power11 having same PCR
->    + patch #5: create pnv_chip_power11_dt_populate and split pnv_chip_power10_common_realize as per review
->    + patch #6-#11: no change
->    - remove commit to make Power11 as default
-> 
-> v2:
->    + split powernv patch into homer,lpc,occ,psi,sbe
->    + reduce code duplication by reusing power10 code
->    + make power11 as default
->    + rebase on qemu upstream/master
->    + add more information in commit descriptions
->    + update docs
->    + update skiboot.lid
-> 
-> Aditya Gupta (7):
->    ppc/pnv: Introduce Pnv11Chip
->    ppc/pnv: Introduce Power11 PowerNV machine
->    ppc/pnv: Add XIVE2 controller to Power11
->    ppc/pnv: Add PHB5 PCIe Host bridge to Power11
->    ppc/pnv: Add ChipTOD model for Power11
->    tests/powernv: Switch to buildroot images instead of op-build
->    tests/powernv: Add PowerNV test for Power11
-> 
->   docs/system/ppc/powernv.rst            |   9 +-
->   hw/ppc/pnv.c                           | 546 +++++++++++++++++++++++++
->   hw/ppc/pnv_chiptod.c                   |  59 +++
->   hw/ppc/pnv_core.c                      |  17 +
->   include/hw/ppc/pnv.h                   |  38 ++
->   include/hw/ppc/pnv_chip.h              |   7 +
->   include/hw/ppc/pnv_chiptod.h           |   2 +
->   include/hw/ppc/pnv_xscom.h             |  49 +++
->   tests/functional/test_ppc64_powernv.py |  34 +-
->   9 files changed, 743 insertions(+), 18 deletions(-)
-> 
+When Returns comes right after intro, putting it into Returns can work
+fine, because the command's purpose still comes first.  For instance:
+
+   ##
+   # @query-block:
+   #
+   # Return information about all virtual block devices.  Filter nodes
+   # that were created implicitly are skipped over.
+
+renders like
+
+    Command query-block (Since: 0.14)
+
+       Return information about all virtual block devices. Filter nodes
+       that were created implicitly are skipped over.
+
+       Return:
+          ["BlockInfo"]
+
+and
+
+   ##
+   # @query-block:
+   #
+   # Returns: Information about all virtual block devices.
+   #     Filter nodes that were created implicitly are skipped over.
+
+renders like
+
+    Command query-block (Since: 0.14)
+
+       Return:
+          ["BlockInfo"] -- Information about all virtual block
+          devices. Filter nodes that were created implicitly are skipped
+          over.
+
+Both work.
+
+But when there's something in between, intro is preferable.  For
+instance:
+
+   ##
+   # @query-blockstats:
+   #
+   # Return statistics for all virtual block devices.
+   #
+   # @query-nodes: If true, the command will query all the block nodes
+   #     that have a node name, in a list which will include "parent"
+   #     information, but not "backing".  If false or omitted, the
+   #     behavior is as before - query all the device backends,
+   #     recursively including their "parent" and "backing".  Filter
+   #     nodes that were created implicitly are skipped over in this
+   #     mode.  (Since 2.3)
+
+renders like
+
+    Command query-blockstats (Since: 0.14)
+
+       Return statistics for all virtual block devices.
+
+       Arguments:
+          * **query-nodes** ("boolean", *optional*) -- If true, the
+            command will query all the block nodes that have a node name,
+            in a list which will include "parent" information, but not
+            "backing".  If false or omitted, the behavior is as before -
+            query all the device backends, recursively including their
+            "parent" and "backing".  Filter nodes that were created
+            implicitly are skipped over in this mode.  (Since 2.3)
+
+       Return:
+          ["BlockStats"]
+
+while
+
+   ##
+   # @query-blockstats:
+   #
+   # @query-nodes: If true, the command will query all the block nodes
+   #     that have a node name, in a list which will include "parent"
+   #     information, but not "backing".  If false or omitted, the
+   #     behavior is as before - query all the device backends,
+   #     recursively including their "parent" and "backing".  Filter
+   #     nodes that were created implicitly are skipped over in this
+   #     mode.  (Since 2.3)
+   #
+   # Returns: Statistics for all virtual block devices
+
+renders like
+
+    Command query-blockstats (Since: 0.14)
+
+       Arguments:
+          * **query-nodes** ("boolean", *optional*) -- If true, the
+            command will query all the block nodes that have a node name,
+            in a list which will include "parent" information, but not
+            "backing".  If false or omitted, the behavior is as before -
+            query all the device backends, recursively including their
+            "parent" and "backing".  Filter nodes that were created
+            implicitly are skipped over in this mode.  (Since 2.3)
+
+       Return:
+          ["BlockStats"] -- Statistics for all virtual block devices
+
+I much prefer the former, because it puts the command's purpose where it
+belongs: first.
+
+Perhaps we should simply use the intro always.
+
+Thoughts?
 
 
