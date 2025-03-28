@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E88A74FDF
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 18:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D35D3A74FE2
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 18:56:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tyDvc-0007J0-9k; Fri, 28 Mar 2025 13:55:36 -0400
+	id 1tyDvd-0007JW-Ii; Fri, 28 Mar 2025 13:55:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tyDva-0007Ia-6W
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:55:34 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ id 1tyDvb-0007Iy-7G
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:55:35 -0400
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tyDvX-0003KG-QA
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:55:33 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3fbaa18b810so660321b6e.2
- for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 10:55:31 -0700 (PDT)
+ id 1tyDvZ-0003KN-54
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 13:55:34 -0400
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3fbc00143d6so1468360b6e.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 10:55:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743184530; x=1743789330; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743184531; x=1743789331; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EybSmwG1+RXjmkQtMMdAGfPYVQXdDRNwqAPKK7xa2Q8=;
- b=EmVlhyg8wA4bt9naE9DnU9LFT8UJTnzytSV9/4MPnEogCrvANdw5NIZbBwYvwk/Y9Y
- AhTa1KJ0nD18bj3EV098tsjz5auOreaO0iMxpGmp0NP/1GCZYjALc1DOjHMQejc/Nh9U
- 1OYMfuWeVvASJtWX31ZZGloHAprMEvwdSSMkz6ty7wRQg0FBHstuDx2gwiEVACpvKJQx
- pXC2w3ZjERf+j71B9MBAsnz6AQIIx9VO6HZa6LqprVgIERbY0FTdQFAAy6SU1xUi/OVA
- +yG5+GRdzRA/P9SzZebMHoHXRp2FXOyb1Vl4vrQig0bezbI3OOBoTie86Zu+rZGCMnwp
- hkHg==
+ bh=iYwdx/b2OGQgAVCciSrxPH8SiijoimtZp2y9rlzhyo8=;
+ b=vmQ4eMKtEM4u75dDbuFzuOJrBV/v2cjp46m04HoiMiTiaAMeXynFX/pBU5+hlJqyqp
+ HdvyvTkny0kVCFwiMrtxPC5SrZ7Rj97LnT17EGsu8pj4dqIrReD2pj42BaNyZrxmpndO
+ a2Zh3emuG9ODuaBE00o93cJI3pzP+2PFWzMtVo/mvgKqmg/0hmsdvofEuGDXqBN4PLLp
+ aVkVdjZwRBhykEuNsvCNr8nRNpD6LsVSxbgpfG5/YlGBDhVtGoCPR/g058VVf/RDC+jz
+ +9G1f5gMVDpoS3Fco3mkgJgrGmL+HrilWfybO3b9p0LHOVRDam3BbNN54/O4aSjeoLdQ
+ 2Q7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743184530; x=1743789330;
+ d=1e100.net; s=20230601; t=1743184532; x=1743789332;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EybSmwG1+RXjmkQtMMdAGfPYVQXdDRNwqAPKK7xa2Q8=;
- b=P0lf1WYKCZF1ngQv4gmJvyrwEbgJxcr7y9cEObfclpTwOIKICGf5OtNWD3ltV5jVyF
- pMDkvbIywENG+rRyIIr5WnB4kNsh/6JjO6ctEdaRX0J1iKhwba7i+TqMYvsGeoMIhSeO
- KypcTAXhn2P/9nKcl3kjBeBLEmuT+WK7r3rnshT7QoviYtztzVz1JM6pGm0je3nNlTbh
- gra5g9imEBEipzPu7zI7k8UdXRLe2G3Q5IP0Nbr6AU423ZeeYzjyLt9UqSWm/Bn2FO6V
- UjWy73w3gdlSXQQ3K9LYenWYPcMnyiT3E1KOd1U+uAZVyLl2QqIQPC5jIPUgTenIAEmH
- gCEQ==
-X-Gm-Message-State: AOJu0Yw7GLV7+SRFa0iTsyCOYmS3CAG/WQ4wFvBAGlqlUNkhkdmhCoPI
- BUDNuwEBYDxBSUaYhGrO5j2TCDdXL1Q+FrWskabCYVlFLXmkawvSfAuNJ4o5gWgpV4BFZZyhffY
- j
-X-Gm-Gg: ASbGncsbkbu+bJ4B+xrSTfQEP+v1hT40KkFz+gsEMrzpDIYt4BNGIsoSo2n1G7D+QN/
- BW499zpV3/arrMWM9+gV0QdLSy0lEqbQsNN9GPbss+YMo7nU8jiI5yntciTp0p2UWQI0gyvFp3s
- G+98ZS5GKhfzkT11YJeQ7xuR6+jkgkzJg6paust2rtEnlZ4oXA1CE7PtS7fMSjYnSbK1XWxpJSd
- b1307FhHPYAnEZFLM3ODCVbUCTp4VvvOKM0BLbEDw4MQFGDaT9LU/t4C7Jfop/q6O5iQjfcX6T0
- 9SJ3DxEeClehN+saLLl1rYN5ZOgzzVsmnjFKtigjuHwVnrFVchJFpG1TF7QLQg5rGH9ilMdRaRL
- jAjDq4oZxY28=
-X-Google-Smtp-Source: AGHT+IG4N+7WiuvIDandEcPzovNkmXfgq/TcqRVrXpj11lDtQ7xhMGhes7x5ifiW0Ulg+e23iehBtQ==
-X-Received: by 2002:a05:6808:120a:b0:3f8:3eeb:1192 with SMTP id
- 5614622812f47-3ff0f60ffd6mr111322b6e.27.1743184530162; 
- Fri, 28 Mar 2025 10:55:30 -0700 (PDT)
+ bh=iYwdx/b2OGQgAVCciSrxPH8SiijoimtZp2y9rlzhyo8=;
+ b=U5weJQFZPuzr3ehavC3z7tbXMI31NRLfErq3b9OFQZT0Pv/o6BqHY8qmCzpf/sz6Ks
+ TVKAvvV/5uKkhBuu9wbiHZnd2XsVPMes+Jmjf8IKVc9rlWjuC6oaAxYD0zSaYCTHlz+9
+ Iru/OWisB1tpmFoE7FIGvNL4xJS2hnGCvhtpPdo/Lw74V9eVOGojFBXdK4XYGVRZLmeG
+ 2DE80MyW9mg3DXmYg8Hl5a04plKs8ZfWLNQcI2GBlOm9v/uYhTNkinLkFWQgi7ndhmPE
+ vpIV8QGeMXOFkYm/lu+L1OXCCRxrSp7uNI5+3QWXjfpRGHuYopEnM6J2InEpQeR0DF2R
+ Qgrw==
+X-Gm-Message-State: AOJu0Yy/ygAhc/XoMZYmRWYPkApnlzQKiF/e+CVHz0l3o0ANWouDuenz
+ fspuM6WRfB9EXK56hrix5vLDD/AtzAibO93yXRIrGfC6yOnTKBjcPBkV7eBCgBeKWxmiJqIYoBu
+ R
+X-Gm-Gg: ASbGncujsrEGNLF4zFeFzc2KtbpmFj23yRye+h6KX4cN8qAv4EzRPSu2IEyZjYeYTIz
+ rFAGwmWhPY6GWiuNbCEC861joua48mz8+SD+h/NrbhVBj9GRa7GbnWxLT/SSQMdUQQPkLCsLtbC
+ kBmRdXZi0dxWOqmiab/B7OqS5XEtovMJZxuVZ0eaGz13Mp6kDReg4BRP1qTOloMH7eK5FcggNYC
+ qHCiXdf65KJrqkV8R3UB+ZXWReJKbLkX1V4FsCIYqOuWrRz7YEYWxPnyL8T95jVfXTRWQP3NwKm
+ 9uzxwHKR5+SU6KSjPm0rVba2oqwCK0j1CskNLlevL9OI571JCwuQ0N9mrP5/cDukp1a8yEBnITa
+ yFjn+VrGDgGs=
+X-Google-Smtp-Source: AGHT+IHIyzPjBjUwJRpxzQGrxpgILqK9jhpg2X02WJDJ+WC3j0jT1S8qdxpV4VHn64Ks+z9Ilh/bDw==
+X-Received: by 2002:a05:6808:1408:b0:3fb:2e8f:4dd8 with SMTP id
+ 5614622812f47-3ff0f54f247mr106878b6e.15.1743184531585; 
+ Fri, 28 Mar 2025 10:55:31 -0700 (PDT)
 Received: from stoup.. (syn-071-042-197-003.biz.spectrum.com. [71.42.197.3])
  by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ff0529511esm410338b6e.46.2025.03.28.10.55.29
+ 5614622812f47-3ff0529511esm410338b6e.46.2025.03.28.10.55.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Mar 2025 10:55:29 -0700 (PDT)
+ Fri, 28 Mar 2025 10:55:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org, chenhuacai@kernel.org, jiaxun.yang@flygoat.com,
  arikalo@gmail.com
-Subject: [PATCH 1/3] target/mips: Revert TARGET_PAGE_BITS_VARY
-Date: Fri, 28 Mar 2025 12:55:24 -0500
-Message-ID: <20250328175526.368121-2-richard.henderson@linaro.org>
+Subject: [PATCH 2/3] target/mips: Require even maskbits in update_pagemask
+Date: Fri, 28 Mar 2025 12:55:25 -0500
+Message-ID: <20250328175526.368121-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250328175526.368121-1-richard.henderson@linaro.org>
 References: <20250328175526.368121-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,101 +99,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Revert ee3863b9d41 and a08d60bc6c2b.  The logic behind changing
-the system page size because of what the Loongson kernel "prefers"
-is flawed.
+The number of bits set in PageMask must be even.
 
-In the Loongson-2E manual, section 5.5, it is clear that the cpu
-supports a 4k page size (along with many others).  Therefore we
-must continue to support a 4k page size.
-
+Fixes: d40b55bc1b86 ("target/mips: Fix PageMask with variable page size")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/mips/cpu-param.h             | 5 -----
- hw/mips/fuloong2e.c                 | 1 -
- hw/mips/loongson3_virt.c            | 1 -
- target/mips/tcg/system/cp0_helper.c | 7 +------
- target/mips/tcg/system/tlb_helper.c | 2 +-
- 5 files changed, 2 insertions(+), 14 deletions(-)
+ target/mips/tcg/system/cp0_helper.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/target/mips/cpu-param.h b/target/mips/cpu-param.h
-index 11b3ac0ac6..8fcb1b4f5f 100644
---- a/target/mips/cpu-param.h
-+++ b/target/mips/cpu-param.h
-@@ -18,12 +18,7 @@
- #  define TARGET_VIRT_ADDR_SPACE_BITS 32
- #endif
- #endif
--#ifdef CONFIG_USER_ONLY
- #define TARGET_PAGE_BITS 12
--#else
--#define TARGET_PAGE_BITS_VARY
--#define TARGET_PAGE_BITS_MIN 12
--#endif
- 
- #define TCG_GUEST_DEFAULT_MO (0)
- 
-diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
-index 646044e274..2a8507b8b0 100644
---- a/hw/mips/fuloong2e.c
-+++ b/hw/mips/fuloong2e.c
-@@ -334,7 +334,6 @@ static void mips_fuloong2e_machine_init(MachineClass *mc)
-     mc->default_cpu_type = MIPS_CPU_TYPE_NAME("Loongson-2E");
-     mc->default_ram_size = 256 * MiB;
-     mc->default_ram_id = "fuloong2e.ram";
--    mc->minimum_page_bits = 14;
-     machine_add_audiodev_property(mc);
- }
- 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index db1cc51314..1da20dccec 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -677,7 +677,6 @@ static void loongson3v_machine_class_init(ObjectClass *oc, void *data)
-     mc->max_cpus = LOONGSON_MAX_VCPUS;
-     mc->default_ram_id = "loongson3.highram";
-     mc->default_ram_size = 1600 * MiB;
--    mc->minimum_page_bits = 14;
-     mc->default_nic = "virtio-net-pci";
- }
- 
 diff --git a/target/mips/tcg/system/cp0_helper.c b/target/mips/tcg/system/cp0_helper.c
-index 01a07a169f..8c2114c58a 100644
+index 8c2114c58a..5db8166d45 100644
 --- a/target/mips/tcg/system/cp0_helper.c
 +++ b/target/mips/tcg/system/cp0_helper.c
-@@ -877,18 +877,13 @@ void update_pagemask(CPUMIPSState *env, target_ulong arg1, int32_t *pagemask)
-     if ((mask >> maskbits) != 0) {
-         goto invalid;
-     }
--    /* We don't support VTLB entry smaller than target page */
--    if ((maskbits + TARGET_PAGE_BITS_MIN) < TARGET_PAGE_BITS) {
+@@ -866,24 +866,17 @@ void helper_mtc0_memorymapid(CPUMIPSState *env, target_ulong arg1)
+ 
+ void update_pagemask(CPUMIPSState *env, target_ulong arg1, int32_t *pagemask)
+ {
+-    uint32_t mask;
+-    int maskbits;
+-
+     /* Don't care MASKX as we don't support 1KB page */
+-    mask = extract32((uint32_t)arg1, CP0PM_MASK, 16);
+-    maskbits = cto32(mask);
++    uint32_t mask = extract32((uint32_t)arg1, CP0PM_MASK, 16);
++    int maskbits = cto32(mask);
+ 
+-    /* Ensure no more set bit after first zero */
+-    if ((mask >> maskbits) != 0) {
 -        goto invalid;
--    }
-     env->CP0_PageMask = mask << CP0PM_MASK;
- 
-     return;
- 
- invalid:
-     /* When invalid, set to default target page size. */
--    mask = (~TARGET_PAGE_MASK >> TARGET_PAGE_BITS_MIN);
++    /* Ensure no more set bit after first zero, and maskbits even. */
++    if ((mask >> maskbits) == 0 && maskbits % 2 == 0) {
++        env->CP0_PageMask = mask << CP0PM_MASK;
++    } else {
++        /* When invalid, set to default target page size. */
++        env->CP0_PageMask = 0;
+     }
 -    env->CP0_PageMask = mask << CP0PM_MASK;
-+    env->CP0_PageMask = 0;
+-
+-    return;
+-
+-invalid:
+-    /* When invalid, set to default target page size. */
+-    env->CP0_PageMask = 0;
  }
  
  void helper_mtc0_pagemask(CPUMIPSState *env, target_ulong arg1)
-diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
-index ca4d6b27bc..123639fa18 100644
---- a/target/mips/tcg/system/tlb_helper.c
-+++ b/target/mips/tcg/system/tlb_helper.c
-@@ -875,7 +875,7 @@ refill:
-             break;
-         }
-     }
--    pw_pagemask = m >> TARGET_PAGE_BITS_MIN;
-+    pw_pagemask = m >> TARGET_PAGE_BITS;
-     update_pagemask(env, pw_pagemask << CP0PM_MASK, &pw_pagemask);
-     pw_entryhi = (address & ~0x1fff) | (env->CP0_EntryHi & 0xFF);
-     {
 -- 
 2.43.0
 
