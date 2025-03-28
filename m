@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7AFA74417
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 07:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 347D7A7442B
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 07:54:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ty3RS-0002tl-QG; Fri, 28 Mar 2025 02:43:46 -0400
+	id 1ty3az-0004Lc-Po; Fri, 28 Mar 2025 02:53:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1ty3RP-0002t6-R8
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 02:43:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1ty3RN-0003wr-EI
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 02:43:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743144217;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lQahW0W/1AnV7OX8EQMx65YV0zyKr/k32VH2WuFL9TM=;
- b=asXv2pjcxnQvzsRsfiGIdJ64Dz3sgB0BQbdjiysHTa64NGeyO/nwAKZzbXDqSg0Gd3G0Uh
- bh6VnjuV0iosGj0+plQKsQ4zf1CM9VVKy1uhY3vAb8M33st/aezTpfL5Ck8HbG+7x7pbop
- A2du2/HCbojPDaW5aIW5yiYAjcJD9JU=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-ispz_lnoOCGKuM3lNrTlTA-1; Fri, 28 Mar 2025 02:43:35 -0400
-X-MC-Unique: ispz_lnoOCGKuM3lNrTlTA-1
-X-Mimecast-MFC-AGG-ID: ispz_lnoOCGKuM3lNrTlTA_1743144214
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-2254e0b4b85so31979305ad.0
- for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 23:43:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1ty3as-0004LI-CS
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 02:53:31 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1ty3aq-0005Ke-Jx
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 02:53:30 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-301918a4e3bso3098581a91.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Mar 2025 23:53:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1743144806; x=1743749606; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=OHNarUGlXtjwIopY/we/xfcYuqVTydUgWVuaPaaAq1Y=;
+ b=B1oZui5J1HiKN66jpDEU0d5aNTVrxZW3O7GKMBEh9Hxlz/h7ri2nOv6TAElF+9QqH7
+ 1MbKcUj0O57XazOKoQAAtmVIezvKodd8q7YcqBLfXS8XEu8kpdRUpSnpsESzV7UH0i43
+ EulJhko8KhqQLn4FaR7j95mtzs6yMou4vz1IWO0p+3itv5KHhHSKbtT4FSW7MuGcVpMX
+ EUjmTXI7rP/OfZ9k24iJHUbVe5go6PxpWJgUdBk8ZhFq99Go2OQodDzqMyIYaTRQhiAE
+ vS0Mpvn1wJFaIJnkomu6gZ4UlLreT76A9yFS0oV1GKh16HS3/IzLLvkeLjx7K0XOPRxP
+ Ezxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743144214; x=1743749014;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lQahW0W/1AnV7OX8EQMx65YV0zyKr/k32VH2WuFL9TM=;
- b=eAVvq8PxLlxXgnKTryFda1lkTxNdLlavb2xZx5ou0WOunOOPFC0inWfF+aHxdEztzy
- QwaNuv6YC0TBnooXjtwMqxl4GQ+/cPnOYxQCluDWJNpi+/Cs0IJibbH1nJ/ajfpvqfEn
- NjUC9txQfNgfiWt1o9hoibXesCNAJq//YOcxuWBPZea+NsRl5f1JbJRbN+p4Y29g93gT
- 46QcmfYA6mtQow6Ruoo/ARPuXNqi+20lNzlO8CUzG3Ni5+quqPbl5SONy4tb3J4ocyU4
- 54zfU1B6yvDYre0mtUVgxTzG5J/AWjx0Wdcr2b//xfgFDvonCLdhRM2UELuVVq+lBgpR
- V2Kg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUlINneWls6RMKaD2gmxQFiL5dA1FUIbK8+fG6F4Km1YI3OCQMyhzgGCXFp+ywxHU75A6wbRmMyXSQu@nongnu.org
-X-Gm-Message-State: AOJu0Yx6o1kJmLeCDXmy1GGm5nceHTTnBoDDbEjacDTDZOTeDAKi9EoH
- AJDWHw7o7/ugsf/YZaYe9GKQkO+DielT2yeBEqiNWL8BE0j212L8iEXRbRnqXHs8SXd67o9ahOY
- Ahr4oBXPlgIVPFo9U0vZURSer/OSWHFXFAFCcME74apMDVXH2xWJowQrfTjVALR9zvE/t7tjdEP
- eLhCf3UBZVhszdzHbKJ8nv/T1CrYk=
-X-Gm-Gg: ASbGnctMpLHQ+0qPPptsa3Qf03Czt1PZ6oFBaVAlvsM3gCCCQuj70KcOtqnCyRHvLT7
- kZS671qFGjfTblGNc1kwT2m4Fo7Ft+TtlyT3kjInRLkhJNjnOLGgq3UnGyqp5z6DPbciG/o0=
-X-Received: by 2002:a17:902:ebc6:b0:21f:6ce8:29df with SMTP id
- d9443c01a7336-22921c7981emr27478095ad.3.1743144213888; 
- Thu, 27 Mar 2025 23:43:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXKSNOSconUEJR8uW6rAeJTtFZFIMW4A5Tm2G8ePnlZNTck6X86/KS2v1uKBm4kLzdYlSamBQplgbT7qchuPg=
-X-Received: by 2002:a17:902:ebc6:b0:21f:6ce8:29df with SMTP id
- d9443c01a7336-22921c7981emr27477735ad.3.1743144213372; Thu, 27 Mar 2025
- 23:43:33 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1743144806; x=1743749606;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OHNarUGlXtjwIopY/we/xfcYuqVTydUgWVuaPaaAq1Y=;
+ b=NdJ7mCCt6S+HETnWLa6ljtL5smscaBSzvZupuJt1CE8k31D1vPHiyJrXOwniQitrA6
+ H7dMTPY/1u2mk/K6dlDqqmGauuxcJ7lA8ek3w1aFxAPfWRJnC9qy5Vw3Iq57obhzJOou
+ S7WqK2P5ee26qfc1ik18mcE3sNVE9OXeG0GL10Gmlw/0dZrkAB0joh/Olcx6di/tvUBf
+ +vCRDgO/7FrfgZopsdFTbERFrgxgaMgGv35WU89EZhLr5Ds8H+jbRHjTkrewl9LOOH0O
+ 616uU7NnVN1AXV0FQyI6GX662cZsxQArsTk8wSk9j42w8W3/t7hZE8y4RadK5IQLGUqk
+ BpYg==
+X-Gm-Message-State: AOJu0YysMmTOnqVrOMlllJA+SDhByQ7lHUEiXKLMQGFfk6CMNWtz9pqh
+ 0PLBRcLlyl3bmuLBTb/jMkVya7HXwi9x5n70ZBovQ4zQrOkwAQ3X6hH94Q==
+X-Gm-Gg: ASbGncvIKUSDg9oiGRN5mhOZBbgs7JS1yEF4yxxpsfUVaRdxW7/qY9f+2FZ6jB/gxB2
+ oMzIee7hMurV1DWep4ViRFC3IHd+5Bmu9Oe6/oshz2w6DpbkMEjOWPj/b5G7+cXB8Sac67lbN3s
+ 6jOzVhapkEvtr8zbkHYLaOjOBvPxSkhge6lRX6ME65pdJrBQlq37CY0WmYcdJ5Ee3cuFdQEitSb
+ DWcfnPRI70bPcxcKbt9ZliLf6vBJhRU5hrluTAO73Kivo+sTnTxfUvGwK8oin4Is8BMOCXq7Fyv
+ SyHtY8zFn5U/EYvQx8+5KhiQJES23ESoxT3N4PSu7kuG2UruNdJ/h0mi+3p/N4gFzCtqJjodFyh
+ UOYGsbLvlM4MOtgo7XblECeRWgpXd+1Icd8umVgK/rvH8iYkt+kQ=
+X-Google-Smtp-Source: AGHT+IE0ASWNPIyaY8bObc8ul2m4wjJ1HQjJk5fJPh75lcJo1aHQEI9bGTsGCMsiM9utDVPwHhIBvg==
+X-Received: by 2002:a17:90b:5485:b0:2fe:6942:3710 with SMTP id
+ 98e67ed59e1d1-303a7c5b782mr9076846a91.3.1743144806128; 
+ Thu, 27 Mar 2025 23:53:26 -0700 (PDT)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
+ [2403:580b:97e8:0:82ce:f179:8a79:69f4])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2291f1cf8fesm10633025ad.110.2025.03.27.23.53.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Mar 2025 23:53:25 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 0/3] riscv-to-apply queue
+Date: Fri, 28 Mar 2025 16:53:15 +1000
+Message-ID: <20250328065318.1990698-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <20250324135929.74945-1-sahilcdq@proton.me>
- <20250324135929.74945-4-sahilcdq@proton.me>
- <CAJaqyWeRhwjTK8CZKNbDzv620664h90PkdWq+gHBs-n6JdkSsA@mail.gmail.com>
- <c8ccbb23-2f44-47a3-aeb5-afe6aa588f73@gmail.com>
-In-Reply-To: <c8ccbb23-2f44-47a3-aeb5-afe6aa588f73@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 28 Mar 2025 07:42:56 +0100
-X-Gm-Features: AQ5f1JpcKE-YhQXfDr8Mh7yMbpEgPbfi7p6HLRcZYFcRYIhIFecFML55nG-Yq08
-Message-ID: <CAJaqyWeC7g+S13cvGZ_sBKPFMJjZ13ZVRzzKpa0Mmsktd7p5RA@mail.gmail.com>
-Subject: Re: [RFC v5 3/7] vhost: Forward descriptors to device via packed SVQ
-To: Sahil Siddiq <icegambit91@gmail.com>
-Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- sahilcdq@proton.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x102f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,192 +99,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 28, 2025 at 6:10=E2=80=AFAM Sahil Siddiq <icegambit91@gmail.com=
-> wrote:
->
-> Hi,
->
-> On 3/26/25 5:32 PM, Eugenio Perez Martin wrote:
-> > On Mon, Mar 24, 2025 at 3:00=E2=80=AFPM Sahil Siddiq <icegambit91@gmail=
-.com> wrote:
-> >>
-> >> Implement the insertion of available buffers in the descriptor area of
-> >> packed shadow virtqueues. It takes into account descriptor chains, but
-> >> does not consider indirect descriptors.
-> >>
-> >> Enable the packed SVQ to forward the descriptors to the device.
-> >>
-> >> Signed-off-by: Sahil Siddiq <sahilcdq@proton.me>
-> >> ---
-> >> Changes from v4 -> v5:
-> >> - This was commit #2 in v4. This has been reordered to commit #3
-> >>    based on review comments.
-> >> - vhost-shadow-virtqueue.c:
-> >>    (vhost_svq_valid_features): Move addition of enums to commit #6
-> >>    based on review comments.
-> >>    (vhost_svq_add_packed): Set head_idx to buffer id instead of vring'=
-s
-> >>    index.
-> >>    (vhost_svq_kick): Split into vhost_svq_kick_split and
-> >>    vhost_svq_kick_packed.
-> >>    (vhost_svq_add): Use new vhost_svq_kick_* functions.
-> >>
-> >>   hw/virtio/vhost-shadow-virtqueue.c | 117 +++++++++++++++++++++++++++=
---
-> >>   1 file changed, 112 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shad=
-ow-virtqueue.c
-> >> index 4f74ad402a..6e16cd4bdf 100644
-> >> --- a/hw/virtio/vhost-shadow-virtqueue.c
-> >> +++ b/hw/virtio/vhost-shadow-virtqueue.c
-> >> @@ -193,10 +193,83 @@ static void vhost_svq_add_split(VhostShadowVirtq=
-ueue *svq,
-> >>       /* Update the avail index after write the descriptor */
-> >>       smp_wmb();
-> >>       avail->idx =3D cpu_to_le16(svq->shadow_avail_idx);
-> >> +}
-> >> +
-> >> +/**
-> >> + * Write descriptors to SVQ packed vring
-> >> + *
-> >> + * @svq: The shadow virtqueue
-> >> + * @out_sg: The iovec to the guest
-> >> + * @out_num: Outgoing iovec length
-> >> + * @in_sg: The iovec from the guest
-> >> + * @in_num: Incoming iovec length
-> >> + * @sgs: Cache for hwaddr
-> >> + * @head: Saves current free_head
-> >> + */
-> >> +static void vhost_svq_add_packed(VhostShadowVirtqueue *svq,
-> >> +                                 const struct iovec *out_sg, size_t o=
-ut_num,
-> >> +                                 const struct iovec *in_sg, size_t in=
-_num,
-> >> +                                 hwaddr *sgs, unsigned *head)
-> >> +{
-> >> +    uint16_t id, curr, i, head_flags =3D 0, head_idx;
-> >> +    size_t num =3D out_num + in_num;
-> >> +    unsigned n;
-> >> +
-> >> +    struct vring_packed_desc *descs =3D svq->vring_packed.vring.desc;
-> >> +
-> >> +    head_idx =3D svq->vring_packed.next_avail_idx;
-> >> +    i =3D head_idx;
-> >> +    id =3D svq->free_head;
-> >> +    curr =3D id;
-> >> +    *head =3D id;
-> >> +
-> >> +    /* Write descriptors to SVQ packed vring */
-> >> +    for (n =3D 0; n < num; n++) {
-> >> +        uint16_t flags =3D cpu_to_le16(svq->vring_packed.avail_used_f=
-lags |
-> >> +                                     (n < out_num ? 0 : VRING_DESC_F_=
-WRITE) |
-> >> +                                     (n + 1 =3D=3D num ? 0 : VRING_DE=
-SC_F_NEXT));
-> >> +        if (i =3D=3D head_idx) {
-> >> +            head_flags =3D flags;
-> >> +        } else {
-> >> +            descs[i].flags =3D flags;
-> >> +        }
-> >> +
-> >> +        descs[i].addr =3D cpu_to_le64(sgs[n]);
-> >> +        descs[i].id =3D id;
-> >> +        if (n < out_num) {
-> >> +            descs[i].len =3D cpu_to_le32(out_sg[n].iov_len);
-> >> +        } else {
-> >> +            descs[i].len =3D cpu_to_le32(in_sg[n - out_num].iov_len);
-> >> +        }
-> >> +
-> >> +        curr =3D cpu_to_le16(svq->desc_next[curr]);
-> >> +
-> >> +        if (++i >=3D svq->vring_packed.vring.num) {
-> >> +            i =3D 0;
-> >> +            svq->vring_packed.avail_used_flags ^=3D
-> >> +                1 << VRING_PACKED_DESC_F_AVAIL |
-> >> +                1 << VRING_PACKED_DESC_F_USED;
-> >> +        }
-> >> +    }
-> >>
-> >> +    if (i <=3D head_idx) {
-> >> +        svq->vring_packed.avail_wrap_counter ^=3D 1;
-> >> +    }
-> >> +
-> >> +    svq->vring_packed.next_avail_idx =3D i;
-> >> +    svq->shadow_avail_idx =3D i;
-> >> +    svq->free_head =3D curr;
-> >> +
-> >> +    /*
-> >> +     * A driver MUST NOT make the first descriptor in the list
-> >> +     * available before all subsequent descriptors comprising
-> >> +     * the list are made available.
-> >> +     */
-> >> +    smp_wmb();
-> >> +    svq->vring_packed.vring.desc[head_idx].flags =3D head_flags;
-> >>   }
-> >>
-> >> -static void vhost_svq_kick(VhostShadowVirtqueue *svq)
-> >> +static void vhost_svq_kick_split(VhostShadowVirtqueue *svq)
-> >>   {
-> >>       bool needs_kick;
-> >>
-> >> @@ -209,7 +282,8 @@ static void vhost_svq_kick(VhostShadowVirtqueue *s=
-vq)
-> >>       if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX))=
- {
-> >>           uint16_t avail_event =3D le16_to_cpu(
-> >>                   *(uint16_t *)(&svq->vring.used->ring[svq->vring.num]=
-));
-> >> -        needs_kick =3D vring_need_event(avail_event, svq->shadow_avai=
-l_idx, svq->shadow_avail_idx - 1);
-> >> +        needs_kick =3D vring_need_event(avail_event, svq->shadow_avai=
-l_idx,
-> >> +                     svq->shadow_avail_idx - 1);
-> >>       } else {
-> >>           needs_kick =3D
-> >>                   !(svq->vring.used->flags & cpu_to_le16(VRING_USED_F_=
-NO_NOTIFY));
-> >> @@ -222,6 +296,30 @@ static void vhost_svq_kick(VhostShadowVirtqueue *=
-svq)
-> >>       event_notifier_set(&svq->hdev_kick);
-> >>   }
-> >>
-> >> +static void vhost_svq_kick_packed(VhostShadowVirtqueue *svq)
-> >> +{
-> >> +    bool needs_kick;
-> >> +
-> >> +    /*
-> >> +     * We need to expose the available array entries before checking
-> >> +     * notification suppressions.
-> >> +     */
-> >> +    smp_mb();
-> >> +
-> >> +    if (virtio_vdev_has_feature(svq->vdev, VIRTIO_RING_F_EVENT_IDX)) =
-{
-> >> +        return;
-> >
-> > It's weird SVQ does not need to kick if _F_EVENT_IDX. This should have
-> > code checking the device ring flags etc.
-> >
->
-> Right, I haven't implemented this yet. Since the current implementation i=
-s
-> being tested with event_idx=3Doff (points 3 and 4 of the roadmap [1]), I =
-thought
-> I would leave this for later.
->
-> Maybe I can add a comment in the implementation explaining this.
->
+The following changes since commit b876e721f1c939f3e83ac85bd3c1c2821e12b3fa:
 
-Sure that's fine, and probably even better than trying to address
-everything in one shot :) Can you add a TODO in each place you
-identify so we're sure we don't miss any?
+  Update version for v10.0.0-rc1 release (2025-03-25 13:58:14 -0400)
 
-> Thanks,
-> Sahil
->
-> [1] https://wiki.qemu.org/Internships/ProjectIdeas/PackedShadowVirtqueue
->
+are available in the Git repository at:
 
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20250328
+
+for you to fetch changes up to 897c68fb795cf03b89b6688a6f945d68a765c3e4:
+
+  Revert "target/riscv/kvm: add missing KVM CSRs" (2025-03-28 16:50:25 +1000)
+
+----------------------------------------------------------------
+Fifth RISC-V PR for 10.0
+
+* Add docs/specs/riscv-iommu.rst to MAINTAINERS
+* Fix broken link to external risv iommu document
+* Revert scounteren and senvcfg to fixup older kernel boots
+
+----------------------------------------------------------------
+Daniel Henrique Barboza (1):
+      Revert "target/riscv/kvm: add missing KVM CSRs"
+
+hemanshu.khilari.foss (2):
+      docs: Added docs/specs/riscv-iommu.rst in MAINTAINERS file.
+      docs/specs/riscv-iommu: Fixed broken link to external risv iommu document
+
+ MAINTAINERS                | 1 +
+ docs/specs/riscv-iommu.rst | 6 +++---
+ target/riscv/kvm/kvm-cpu.c | 6 ------
+ 3 files changed, 4 insertions(+), 9 deletions(-)
 
