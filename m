@@ -2,85 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BADA750AB
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 20:10:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46925A75140
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Mar 2025 21:07:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tyF5d-00013S-5z; Fri, 28 Mar 2025 15:10:01 -0400
+	id 1tyFwy-0002qH-Ob; Fri, 28 Mar 2025 16:05:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tyF5V-00012y-TH
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 15:09:54 -0400
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ id 1tyFww-0002nM-0e
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 16:05:06 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1tyF5U-0000mP-2G
- for qemu-devel@nongnu.org; Fri, 28 Mar 2025 15:09:53 -0400
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-3fea0363284so1434604b6e.1
- for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 12:09:49 -0700 (PDT)
+ id 1tyFwt-0007bq-Uc
+ for qemu-devel@nongnu.org; Fri, 28 Mar 2025 16:05:05 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3f8df49e75fso679099b6e.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Mar 2025 13:05:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743188987; x=1743793787; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=i0pkNn25HUpzF4wfTpeaHB2/k6L4VqHJEjzBNWGIc7s=;
- b=SwOxRFVdnN8jf6ujf9OvJZfXdyVGWBkCQoi5hgnqgAJqnSkNqiXVrfsgkEJPrwapl1
- d9XKfCySvtsxxPV7A2ODA+mL+K+r0BePdvhsbkN18xMF1cZ1GDGy+Seh5cAoZk+RKpiu
- 7JxMByQ+6xXcd1tiqJUSuZpTP+v5o4SLXaULOArmNtCe+z+v9Vt+QnKpGRENgZIm31GF
- Pb50vIeH+sMPR/Guh6Afhm+0+YL86ntBDKAplhgd2yN6tcViAjsHlbxF6+2J7K3buFUm
- wPev/IB+9lJFYXkCdTO8IwQc52M/+4Y2VHRGHDznSp9ylxbtSLqoAtFPHOoHwkw1MThq
- 1PTg==
+ d=linaro.org; s=google; t=1743192301; x=1743797101; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BokeM+CWV1OZuSBS6Fb3zbsmKHp3Lt3H2t4ExWnYYWc=;
+ b=Fqk9BNZ3Q6oFgWIZy7DXVNFr80sgjI0J+aoCfkMvAVtqx8woCfrvp9qu4m1AXGe/2x
+ MTtY6ikD9NxDemXu+sCUBqhsQ1DOYj9trTW6kwCHhIattmFSE0cf2RAar58Cu0Dl0Pue
+ 1lgXNzLy4e4+7pG2zKUDks7CXwkNI7DIuDJtJA/nFN/bCTF76SwyTJNmwniRjoBSzWud
+ CeE80BVr/dd3MbxJswfqfMGdW4yN4iKkrHHQGsVpswGmUhQzLnZhpqY42WY6VzoASfIS
+ R88Gk4+Xi+HYzPp/3VLcvzhlzq5tStesd+iFzk7eve1W0o+ouDH39zXOWI2hQSkh97tw
+ gcWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743188987; x=1743793787;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i0pkNn25HUpzF4wfTpeaHB2/k6L4VqHJEjzBNWGIc7s=;
- b=C12cYPwBKa2AV5KE3sQdNLJNJ0xiHdIsEejRGDL4b3oOVnwRNBTiZZ/v9MDU/JZPNP
- LGx3ZxBs3tF/5h8/RXY0YceWG/6mS2/IYWlAyoKKUHtLetXkkz4G1E+aU/mNiGK7lYnT
- voFOe3iZnJC7BsKp+ofdE57J/RlGsUK0sUy9QXjXTfARyiJcsv6sy1lY370I5ozYGc/g
- J0CeW6Lv3s3BaDM2bliGKA3+kNVksgFZ8dReo72ppdO4CMDewHdQOPY5Eqyoodq6/Az4
- VKL54OSbQTC5vHVMZ0MQXTz+REddCyebcCAYTj+CkQmXmO8iLAyRHpxnMS3Yoo2b9dJf
- 6HHA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUgD5qlSyg8N0l8+TgSgmFPdA1kvs4j9VU14WuPEJUcj2gOydI8bHDzMqXplHJyb9EU8W7LNjk+xcb1@nongnu.org
-X-Gm-Message-State: AOJu0YxtkS4DCtOEdSEZyYhVR+MZLXtFoe221C1Md7xgU+UE/JBEquUi
- 8vNv/q6bPthRZQ3J5SHbvovysIk/bV5W+46/QTl/jyBcTLFSlhyNKplM4QDGL+o=
-X-Gm-Gg: ASbGnctwbOF8Mh10YdAySaCNzpy+FIuwaDwt1YlhrqEuTmX0wuvi5BL60LQ2wWSMCta
- ovW+ojCrBc17rlIiAHoxOr3wJ6DdN2LY58l4vrdXjOt/zTD+dsU2Q90vuYqg6iOAsdjTDuhrV1S
- mBGZiyBhwWnsv/D43P7LiLtNSoub9t8OuXMOSU8bdt0/KNey2W7hAj7zuTfWxHodRzGu5yAqgxd
- wQyoVYOOCyWPv/IMXI1iJSwAZJcJra1/YuUfHLuwFe/iKUKLsKF2cv7po1gO/EI9csSOVzSrweq
- UxCce4AR9Gji7WIjKQa5K0PbUcynsD2nGKmOxZ0kSrgP9d3UdY1ciuY5yhSxCzLwiqYRSSsVWMi
- xZZ+E7x41eBRQBOQB7hNa2g==
-X-Google-Smtp-Source: AGHT+IEJuBqpfVJSqKSWvwJkyRmirpRVWtacAIUF3uTfxr02T/HFWO6KK5fCfteLQ/0TeGILfM5g7Q==
-X-Received: by 2002:a05:6808:19a9:b0:3fe:af0a:a264 with SMTP id
- 5614622812f47-3ff05c8ea80mr2791593b6e.7.1743188987165; 
- Fri, 28 Mar 2025 12:09:47 -0700 (PDT)
-Received: from [172.20.102.85] (syn-071-042-197-003.biz.spectrum.com.
- [71.42.197.3]) by smtp.gmail.com with ESMTPSA id
- 5614622812f47-3ff05185823sm441662b6e.17.2025.03.28.12.09.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Mar 2025 12:09:46 -0700 (PDT)
-Message-ID: <de560d94-d7d8-4e49-b4c4-68341c2b0fbd@linaro.org>
-Date: Fri, 28 Mar 2025 14:09:44 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/functional/test_aarch64_rme_virt: fix sporadic
- failure
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com, peter.maydell@linaro.org, alex.bennee@linaro.org,
- qemu-arm@nongnu.org, thuth@redhat.com
-References: <20250328183816.2687925-1-pierrick.bouvier@linaro.org>
-Content-Language: en-US
+ d=1e100.net; s=20230601; t=1743192301; x=1743797101;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BokeM+CWV1OZuSBS6Fb3zbsmKHp3Lt3H2t4ExWnYYWc=;
+ b=nRvFXSgQbNTW2fln3O3ou3jIQNLrbFsSbULRBEwSl8ripMXXz1IzTZ+RA6CeajcDZ9
+ erdr5S7e+vsOoh92+CKKfnwtpYe2g9Vrw1HYXi3e+Au/Znmx4vmf6qMaZ5vozBSEQpyU
+ BG1uIvQ60i/cKc0mCHi/yDX6G3VRhYhAJ0+yDTeeZx1vBLWIZhbu3Y8Gi760Pr4sKFYp
+ Dh5I3sMuurVZk/wOeguI19MsQIWcYrUrDoGIZ8AATfOrxsWpDg85+zKjdnfkfIZhR/wE
+ Y9Nq8+ZD6lkQ3lAJQfVhihx2z1KDistwMnq5oaec5N5u+GkAY8P0iURCm8GyfH1eOqGS
+ uDsA==
+X-Gm-Message-State: AOJu0Yxfbs98JIDy9Sc7ikyhmuc5TgMFN94SsQKqGjkOAuTurKmTmBSV
+ xRNdgxOvfMGcMlgRDkR/uODTt/am8h+rN2HQ67KDgovHASM6SibVr5ZKskueUiEF1SRbiBxFqYN
+ X
+X-Gm-Gg: ASbGncsGBf2RdYO8Ckxr/rdMh3Sue9N7A3ibWRAOS7tD87cnROAn9bN/KP4SmmpJdd5
+ CpVRS61MRMkKUh29qwSYONbl0z2rbCFe3G3iOyFlALDYnOES2LVtRUEJjBLkzNCGdBjMjUczN69
+ RzAn6m2iWBGoK8MDhagUEhLVg8haBGsmiGBF++7/YYwdY4BowIuDeGlI0BJz/bOoUSJjk+UfJ3h
+ PsaNpnKsv74fzXpKK4lS7iAfcHPBKQUxYzSA8V9C1o9jpQbGADrFHQ4E6TehBzHZnud6Haf45Tm
+ HWKEeMq55gYR24Bvt3/RIlPmWPm75RYR2uDvxWP9m6lfGeNzjplVpc6OgTTWPejL4psIBodqG87
+ ce9ksNDinIWo=
+X-Google-Smtp-Source: AGHT+IH2jESxULxLAqiz+tim+yaKOCL1oTViHdoMDG+K5CGYt0NR7MVLSVup0ncmDpO9ENS2sSWKQQ==
+X-Received: by 2002:a05:6808:1921:b0:3fb:bc53:d292 with SMTP id
+ 5614622812f47-3ff0f5351fcmr429682b6e.19.1743192301236; 
+ Fri, 28 Mar 2025 13:05:01 -0700 (PDT)
+Received: from stoup.. (syn-071-042-197-003.biz.spectrum.com. [71.42.197.3])
+ by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-3ff052799b6sm465104b6e.37.2025.03.28.13.05.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 28 Mar 2025 13:05:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250328183816.2687925-1-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
+To: qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org,
+	philmd@linaro.org
+Subject: [PATCH 0/9] single-binary: Restrict scope of TARGET_PAGE_BITS_MIN
+Date: Fri, 28 Mar 2025 15:04:50 -0500
+Message-ID: <20250328200459.483089-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,40 +96,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/28/25 13:38, Pierrick Bouvier wrote:
-> This test was randomly failing on our CI, and on dev machines,
-> especially with QEMU debug builds.
-> 
->  From the information collected, it's related to an implementation choice
-> in edk2 QEMU virt support. The workaround is to disable KASLR, to avoid
-> accessing protected memory.
-> Note: this is *not* needed for the similar test_aarch64_rme_sbsaref.
-> 
-> More information is available on the associated GitLab issue.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2823
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   tests/functional/test_aarch64_rme_virt.py | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/functional/test_aarch64_rme_virt.py b/tests/functional/test_aarch64_rme_virt.py
-> index f4ad4d33d58..a1abf584f0e 100755
-> --- a/tests/functional/test_aarch64_rme_virt.py
-> +++ b/tests/functional/test_aarch64_rme_virt.py
-> @@ -87,7 +87,9 @@ def test_aarch64_rme_virt(self):
->           self.vm.add_args('-fsdev', f'local,security_model=none,path={rme_stack},id=shr0')
->           self.vm.add_args('-device', 'virtio-net-pci,netdev=net0')
->           self.vm.add_args('-netdev', 'user,id=net0')
-> -        self.vm.add_args('-append', 'root=/dev/vda')
-> +        # We need to add nokaslr to avoid triggering this sporadic bug:
-> +        # https://gitlab.com/qemu-project/qemu/-/issues/2823
-> +        self.vm.add_args('-append', 'root=/dev/vda nokaslr')
->   
->           self.vm.launch()
->           # Wait for host VM boot to complete.
+With this, TARGET_PAGE_BITS_MIN no longer exists outside of
+page-vary-target.c, as that's the only place that needs the
+information.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Based-on: 20250318213209.2579218-1-richard.henderson@linaro.org
+("[PATCH v2 00/42] accel/tcg, codebase: Build once patches")
+Based-on: 20250325224403.4011975-1-richard.henderson@linaro.org
+("[PATCH v2 00/11] target/avr: Increase page size")
+Based-on: 20250328175526.368121-1-richard.henderson@linaro.org
+("[PATCH 0/3] target/mips: Revert TARGET_PAGE_BITS_VARY and bug fixes")
+
+Which is a lot, so for avoidance of doubt:
+https://gitlab.com/rth7680/qemu/-/commit/c8b593f1a907794b5767274cb3f5c70985638397
 
 r~
+
+Richard Henderson (9):
+  include/exec: Move tb_{,set_}page_addr[01] to translation-block.h
+  accel/tcg: Move get_page_addr_code* declarations
+  accel/tcg: Remove page_protect
+  accel/tcg: Remove cpu-all.h, exec-all.h from tb-internal.h
+  accel/tcg: Build translator.c twice
+  accel/tcg: Split out tlb-bounds.h
+  include/exec: Redefine tlb-flags with absolute values
+  page-vary: Move and rename qemu_target_page_bits_min
+  page-vary: Restrict scope of TARGET_PAGE_BITS_MIN
+
+ accel/tcg/internal-common.h      | 34 +++++++++++++
+ accel/tcg/tb-internal.h          | 38 +--------------
+ accel/tcg/tlb-bounds.h           | 32 ++++++++++++
+ include/exec/cpu-defs.h          | 10 +---
+ include/exec/exec-all.h          | 83 --------------------------------
+ include/exec/page-vary.h         |  9 ++++
+ include/exec/poison.h            |  1 +
+ include/exec/target_page.h       |  2 -
+ include/exec/tlb-flags.h         | 68 ++++++++++++--------------
+ include/exec/translation-block.h | 50 +++++++++++++++++++
+ include/qemu/osdep.h             |  6 +++
+ include/user/page-protection.h   |  1 -
+ target/alpha/cpu-param.h         |  1 -
+ target/arm/cpu-param.h           |  3 +-
+ target/ppc/cpu-param.h           |  1 -
+ accel/tcg/cputlb.c               |  2 +
+ accel/tcg/tb-maint.c             |  1 +
+ accel/tcg/translate-all.c        |  1 +
+ accel/tcg/translator.c           | 15 +++---
+ accel/tcg/user-exec.c            |  2 +-
+ migration/savevm.c               |  6 +--
+ page-target.c                    |  5 --
+ page-vary-target.c               | 48 ++++++++++++++++--
+ accel/tcg/meson.build            |  2 +-
+ 24 files changed, 230 insertions(+), 191 deletions(-)
+ create mode 100644 accel/tcg/tlb-bounds.h
+
+-- 
+2.43.0
+
 
