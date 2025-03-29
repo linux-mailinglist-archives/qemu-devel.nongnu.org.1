@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40598A756CA
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Mar 2025 15:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C21EA756D4
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Mar 2025 15:49:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tyXQz-0007z8-G2; Sat, 29 Mar 2025 10:45:17 -0400
+	id 1tyXR6-00082B-N3; Sat, 29 Mar 2025 10:45:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1tyXQl-0007uX-VO
- for qemu-devel@nongnu.org; Sat, 29 Mar 2025 10:45:06 -0400
+ id 1tyXQr-0007uv-0u
+ for qemu-devel@nongnu.org; Sat, 29 Mar 2025 10:45:12 -0400
 Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1tyXQk-0004EW-30
- for qemu-devel@nongnu.org; Sat, 29 Mar 2025 10:45:03 -0400
+ id 1tyXQo-0004LW-5x
+ for qemu-devel@nongnu.org; Sat, 29 Mar 2025 10:45:08 -0400
 Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-301d6cbbd5bso5099618a91.3
- for <qemu-devel@nongnu.org>; Sat, 29 Mar 2025 07:45:01 -0700 (PDT)
+ 98e67ed59e1d1-2ff64550991so3961576a91.0
+ for <qemu-devel@nongnu.org>; Sat, 29 Mar 2025 07:45:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1743259500; x=1743864300; darn=nongnu.org;
+ d=sifive.com; s=google; t=1743259503; x=1743864303; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xtSo8S5OEBT4DMRlalXCu7rqXrD21r5pPZJo/XU9Y9s=;
- b=S7/ett0nxXThRZ511gpWet+GPl0EH9IYf7Svni1OCDkJqjVzlaRgdjmb+9z1+CJCdp
- C/bX6jdf6KBqX6Fj/e8d6Nuu5qfqanNPwGmmtmXNhqBt0/tmFz1Cy9Mi93sImGxmarlK
- 8G+Nz3c91RKWUuJGui8ZZM+U+uUv3nHMpOdr0a5nzoXQsxGrCvampPtJAWTlHbh/vUoN
- kijMQPLHDWwmKxliotjR7rhamkU81CJVuGuH8/C5gUHc4siwZvkGmcivY+hGLnHh8rnO
- NA7527c2ZoyJQzPnfl2tSuAfCWVQktv6Ud6XSRnnFRcPaC72SiS3JzzhEFsjPQwKTL21
- YsiA==
+ bh=7yiRTyvv8HDyh7DkIPVVEzeV4GFr++tl7EjdhkATDMY=;
+ b=bSnQdckHBZ5kAITd14vRQdKRs2MVVDE35j/eOsLba6/OHYM23m3YZDwGujwwMrVqr2
+ R0S5qVEgCW0Z/8zkoCVkeMSSW+4Iq0n1Cn321alJBBZVmYH/pDxfa7hgxPawqWWXaYyZ
+ SaLCgjpjvhTBLpoHam8dWisVr4cj9vhsV4f/1pxvr5OtfPdnan5Svki1VfBDffgTYjvU
+ 0ZoAyzRQ3zriGSM39hVzsBJ6oUwFMtneV1Ef3ahufOXj/GKxyCweFEkcPwkJTb9t+22Q
+ my6GCJatB546qYk9qhs8J3JyFNa89jN72SBS5bYv82QqEh7hVR2mOUBfp5+Az62P7dxs
+ +Egg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743259500; x=1743864300;
+ d=1e100.net; s=20230601; t=1743259503; x=1743864303;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xtSo8S5OEBT4DMRlalXCu7rqXrD21r5pPZJo/XU9Y9s=;
- b=e/2tTLK0vfs2Uam6UI/rnFGe/Xv616D0OkhPyHtfCDqbiLWdfUxQz3jxSw62b//Pdh
- MBaj0XCwWnwnr1vZ/Xnt8btcjdq0H6RgnLHBwJG4aNihteMAIkOmz1W4x3+VBfi+Sz6k
- FTtKOqKGEh5Svoh6HEalgK8zFLPS749op+QqZEiV/Q0Tr+NLlc1LA0tFkuFevtwTxQH2
- 4OyXjoTthbXt2UcHME9D9BmG+qgUNPK6k0XwPMBH00r+F+Kd95YCr9FIDctdemWY7+lu
- xrPBRBzYQmU/pjG6RY/ED4YlMeW0zElN397BKqtVuTNnw4SuKxAeKa4FGJXWCTirqBGF
- II6Q==
-X-Gm-Message-State: AOJu0Yx6yhC+nrWvZBqgEOyY/va209uW0M3PkG87yUWb6RCdmOS4c9To
- e6tDrzDciOJQut6lTb6dj+Ubfvuq1CDwkZaMmZMZ00OVUG6bFHv1LL+sefh9XNmUnmUHhk47oe4
- 3ZKUaDdfT9C5yZwV61omq/ExXdQcjalJLzkmo/JGrr1AUvNmiOpwuf1Bl7Wsl4gHE90BNXIag4L
- +JCe5dTUH8aOXj3lKzQi373/jv6gvB0/hheK9RIg==
-X-Gm-Gg: ASbGncuyGt16UE9YT0877YOmG4waJwg7IraXFHafc13simLWb4Uv59O7TQ7W4M3V3qO
- FpbPrafEyWdomxKYhF6JplhDoddZkyAIsiDxh0zPFcTDpqjlzOAxPbmjLnoz9Md1pQ93qgUQ22x
- rr0HrgrWz6VArmiE6eq0399kV/SXA+Q8pk//KOyLqTmJgiTYjc/x+VcLbZ9eriL0dV9r/Yc3All
- WR2QSDKSaP1KIL3WZD2rHdX/E6XPdH0msK1W8qarKlX3fHk5AwyECkLX3OjjUA9XJCPy/bPTelC
- QsbWIXSR6kTDtnabwvr1EGh7DptmyhdCoRL6cH6ru8/LE5vp+57pDhcNBC3NrUxmosla46KWj7Z
- fJhUmvjvh1eiNkw==
-X-Google-Smtp-Source: AGHT+IGhMkJTmTKVty3lDI0HZVYQlybcZIK0+t+SGMbZYc8kAdoU+OBLajVmCqeIOk+Myg5KCKNk2g==
-X-Received: by 2002:a17:90b:56cb:b0:2ee:9e06:7db0 with SMTP id
- 98e67ed59e1d1-30531f94677mr5273778a91.11.1743259500126; 
- Sat, 29 Mar 2025 07:45:00 -0700 (PDT)
+ bh=7yiRTyvv8HDyh7DkIPVVEzeV4GFr++tl7EjdhkATDMY=;
+ b=YDNP5wn8hDNoehEsBTdl0UuJyrKRaut3aLbwkDAKWad1yeRKkL4y7cNNNhRKv1ES9c
+ ajjNmo1MJqBRnBxI7ENoLZW5HlZTsCHJvii8fEXQ6rxk+wXHs/wJhcwGIH3YLjx3iXba
+ /TkV+2RIkNBaG3+5AVXFzUDnoN/2kusJInQcr0MjC56uCU8VylqEufjpDmd0UuTe7y08
+ oI+9MYAcxvBOb/ZYkHxHHzTSrCeinUXCXOdeIL0Ww9NroMo/Jpp6BohI2uIGHXHrNP2p
+ pFiktXXd2nDPxk5bqv6N5+/ieer/SFxKNZo7gLMXrIOc8FWFBL2U1K3Ry/XQb70NlmkA
+ jMlw==
+X-Gm-Message-State: AOJu0YzwNVFi3iinpS0U27ghZHDp9wFfj3akBPSkDcbdcjopyRKcnTqA
+ zwt8i1hCxzCNPNNDw3WWcDUAxIHFUEHLEir0FiDd7t3iYngVdmJi4Bxes6ExXucrV4UcBFrZ26p
+ GaT9fI8oroaE2bdPbuGzMve6NcR+KX9nCZTc3SjuwYInkg3BBczqZTQ2wiLgpz3Y8xSoTJ362JT
+ 6bzLs1JKy7rDx6d7Y7iNV6vdFXYUgtxckryEC4Dw==
+X-Gm-Gg: ASbGnct10q29ro1jLVQ1fmp6GrEVRYhRsBm+qZkJQd1J+nA9fmywAdgR4EPNybiyLGz
+ vPXlrOWsFIEyOmWnKIIaDE52dv9u7EDsX8NBa4yUUn9K3zAsPDmtOcVS5w7P6jkbYPfb11Gg/CC
+ fQaKtT0KMmVN1xDhPLDF/dxO6ZR9AKrX2odSmI3UMhKtjJ1MuxwGllml5hNfIfmyFsrgY48s2VY
+ VYnGFNQhsqE2h9aNBujVqwSf7JLvrlKUlpHwmONVpCfNmVROwg3vIeUR89xSzO8d/5k+sWCHuU+
+ JGy2uv347ODsY1IOeSozElFv9pNAFnlwRrPxOYsY+6mOV5dzve9hvQzCiq4BRiPmKo8vl9mlDAi
+ CRgNEtOgVsrQJCw==
+X-Google-Smtp-Source: AGHT+IGw+c4PFPemW8vVY9tNVQnFmnXdaN4ec9dlSXyp4/t2qx3uZ+7KYOOODn1UXd3GMF9zkxbdxw==
+X-Received: by 2002:a17:90b:2744:b0:2f1:2fa5:1924 with SMTP id
+ 98e67ed59e1d1-30532147029mr3653314a91.26.1743259503031; 
+ Sat, 29 Mar 2025 07:45:03 -0700 (PDT)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3039f6b6bcbsm6737196a91.45.2025.03.29.07.44.58
+ 98e67ed59e1d1-3039f6b6bcbsm6737196a91.45.2025.03.29.07.45.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 29 Mar 2025 07:44:59 -0700 (PDT)
+ Sat, 29 Mar 2025 07:45:02 -0700 (PDT)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -73,10 +73,10 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, antonb@tenstorrent.com,
  Max Chou <max.chou@sifive.com>
-Subject: [PATCH v2 02/12] target/riscv: rvv: Add CHECK arg to
- GEN_OPFVF_WIDEN_TRANS
-Date: Sat, 29 Mar 2025 22:44:36 +0800
-Message-ID: <20250329144446.2619306-3-max.chou@sifive.com>
+Subject: [PATCH v2 03/12] target/riscv: Add vext_check_input_eew to check
+ mismatched input EEWs encoding constraint
+Date: Sat, 29 Mar 2025 22:44:37 +0800
+Message-ID: <20250329144446.2619306-4-max.chou@sifive.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250329144446.2619306-1-max.chou@sifive.com>
 References: <20250329144446.2619306-1-max.chou@sifive.com>
@@ -106,66 +106,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Blanchard <antonb@tenstorrent.com>
+According to the v spec, a vector register cannot be used to provide source
+operands with more than one EEW for a single instruction.
 
-Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/insn_trans/trans_rvv.c.inc | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 29 +++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 20b1cb127b4..e630f8661e1 100644
+index e630f8661e1..70c19c49ae4 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -2403,10 +2403,10 @@ static bool opfvf_widen_check(DisasContext *s, arg_rmrr *a)
+@@ -379,6 +379,35 @@ static bool vext_check_ld_index(DisasContext *s, int vd, int vs2,
+     return ret;
  }
  
- /* OPFVF with WIDEN */
--#define GEN_OPFVF_WIDEN_TRANS(NAME)                              \
-+#define GEN_OPFVF_WIDEN_TRANS(NAME, CHECK)                       \
- static bool trans_##NAME(DisasContext *s, arg_rmrr *a)           \
- {                                                                \
--    if (opfvf_widen_check(s, a)) {                               \
-+    if (CHECK(s, a)) {                                           \
-         uint32_t data = 0;                                       \
-         static gen_helper_opfvf *const fns[2] = {                \
-             gen_helper_##NAME##_h, gen_helper_##NAME##_w,        \
-@@ -2422,8 +2422,8 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr *a)           \
-     return false;                                                \
- }
- 
--GEN_OPFVF_WIDEN_TRANS(vfwadd_vf)
--GEN_OPFVF_WIDEN_TRANS(vfwsub_vf)
-+GEN_OPFVF_WIDEN_TRANS(vfwadd_vf, opfvf_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwsub_vf, opfvf_widen_check)
- 
- static bool opfwv_widen_check(DisasContext *s, arg_rmrr *a)
++/*
++ * Check whether a vector register is used to provide source operands with
++ * more than one EEW for the vector instruction.
++ * Returns true if the instruction has valid encoding
++ * Returns false if encoding violates the mismatched input EEWs constraint
++ */
++static bool vext_check_input_eew(DisasContext *s, int vs1, uint8_t eew_vs1,
++                                 int vs2, uint8_t eew_vs2, int vm)
++{
++    bool is_valid = true;
++    int8_t emul_vs1 = eew_vs1 - s->sew + s->lmul;
++    int8_t emul_vs2 = eew_vs2 - s->sew + s->lmul;
++
++    /* When vm is 0, vs1 & vs2(EEW!=1) group can't overlap v0 (EEW=1) */
++    if ((vs1 != -1 && !require_vm(vm, vs1)) ||
++        (vs2 != -1 && !require_vm(vm, vs2))) {
++        is_valid = false;
++    }
++
++    /* When eew_vs1 != eew_vs2, check whether vs1 and vs2 are overlapped */
++    if ((vs1 != -1 && vs2 != -1) && (eew_vs1 != eew_vs2) &&
++        is_overlapped(vs1, 1 << MAX(emul_vs1, 0),
++                      vs2, 1 << MAX(emul_vs2, 0))) {
++        is_valid = false;
++    }
++
++    return is_valid;
++}
++
+ static bool vext_check_ss(DisasContext *s, int vd, int vs, int vm)
  {
-@@ -2505,7 +2505,7 @@ GEN_OPFVF_TRANS(vfrdiv_vf,  opfvf_check)
- 
- /* Vector Widening Floating-Point Multiply */
- GEN_OPFVV_WIDEN_TRANS(vfwmul_vv, opfvv_widen_check)
--GEN_OPFVF_WIDEN_TRANS(vfwmul_vf)
-+GEN_OPFVF_WIDEN_TRANS(vfwmul_vf, opfvf_widen_check)
- 
- /* Vector Single-Width Floating-Point Fused Multiply-Add Instructions */
- GEN_OPFVV_TRANS(vfmacc_vv, opfvv_check)
-@@ -2530,10 +2530,10 @@ GEN_OPFVV_WIDEN_TRANS(vfwmacc_vv, opfvv_widen_check)
- GEN_OPFVV_WIDEN_TRANS(vfwnmacc_vv, opfvv_widen_check)
- GEN_OPFVV_WIDEN_TRANS(vfwmsac_vv, opfvv_widen_check)
- GEN_OPFVV_WIDEN_TRANS(vfwnmsac_vv, opfvv_widen_check)
--GEN_OPFVF_WIDEN_TRANS(vfwmacc_vf)
--GEN_OPFVF_WIDEN_TRANS(vfwnmacc_vf)
--GEN_OPFVF_WIDEN_TRANS(vfwmsac_vf)
--GEN_OPFVF_WIDEN_TRANS(vfwnmsac_vf)
-+GEN_OPFVF_WIDEN_TRANS(vfwmacc_vf, opfvf_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwnmacc_vf, opfvf_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwmsac_vf, opfvf_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwnmsac_vf, opfvf_widen_check)
- 
- /* Vector Floating-Point Square-Root Instruction */
- 
+     return require_vm(vm, vd) &&
 -- 
 2.43.0
 
