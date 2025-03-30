@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582D8A75C36
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Mar 2025 23:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9DDA75C38
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Mar 2025 23:03:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tyzka-0004Ye-SC; Sun, 30 Mar 2025 16:59:24 -0400
+	id 1tyzo0-00075x-Ce; Sun, 30 Mar 2025 17:02:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tyzkO-0004WZ-2A; Sun, 30 Mar 2025 16:59:13 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <rakeshjb010@gmail.com>)
+ id 1tyznu-00075D-8D
+ for qemu-devel@nongnu.org; Sun, 30 Mar 2025 17:02:51 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tyzkM-0007SN-7f; Sun, 30 Mar 2025 16:59:11 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-ac73723b2d5so302790066b.3; 
- Sun, 30 Mar 2025 13:59:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rakeshjb010@gmail.com>)
+ id 1tyzns-0007pS-Ll
+ for qemu-devel@nongnu.org; Sun, 30 Mar 2025 17:02:50 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-227d6b530d8so70032185ad.3
+ for <qemu-devel@nongnu.org>; Sun, 30 Mar 2025 14:02:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743368347; x=1743973147; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HA5m80PGHeMhp6Qte+bs8EECaUJOTtoErWdt8fGztaw=;
- b=IcoMEteBHbyrO3qVhexoLeiCYQ5UrHWEs6duKC97CCtfXgQuvvfiprk6P1XxbwPaCO
- 5zfVUw8/bqGVcqvxru/RitOlIorKAanyQ0qG43EkxQ2rBXG0blePS1o7r8B7PvWW2SIv
- FFnv0IBlS3j/E//2OYob776hLNH5sva1coJG4qc3C3kKFKr1VyyyL7eXrjNfcR/G6wwS
- BisJdBar7skCZh1iGIfoPjuPvcGOnUCyvonPiLg0pKsEg+uvBC1CnvGzR1HfwLsMnlIf
- 9T/btdfu74forEaHB1YBLjEyT1UANX+h3bPGw9NZEHSo9ccdGpM7NlX2/1DA2zhN3zp4
- 9K/Q==
+ d=gmail.com; s=20230601; t=1743368566; x=1743973366; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PNL+sq7ReZolDVsxymrfkswoHp0GBOU+QPgWgEqFXL4=;
+ b=likGt/Ykhmqog2Gvz+VhgTkun0GeymYBRoo7U96XiSDB/z1W72KyBHn/7xSjEOL34d
+ +B1wZ8sjhiQugcbTjOvs6IMCwWAsC/PhUK3EzSIPOe02OQtgBW9fN8I+WP8D949yqmjw
+ gyNcpgYiVJ0ZbN/H7c8wAyy/l9YJMmCBfBLUqQy4aEureTI+w8exY9Del1IV6MzGc8Oi
+ cpJ0EGX8Z1RRfozlEA21/UK3bky23tPHvIit33t1i5iANJXi4KOW9NO+kzdfmPdppGdM
+ jQpzQNrOrFaJfqvIk3b4SX60e/42P1QgUJprcF5BF+Mtt/1c8U3pJQw58OO25TkS3BqE
+ ta+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743368347; x=1743973147;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HA5m80PGHeMhp6Qte+bs8EECaUJOTtoErWdt8fGztaw=;
- b=TQZ8JBzAAxo6gYvwAUk2ptFBbax8AdbYnu1eo7Efzr7MRgtuRmx5DIY712KJlk3kid
- Rvlt9YCEShvlQWNJcDThyff1HyzzfUGreBj7Y4OhpghMLRhv4XG1LimxA4yzgt2lcEWT
- 40QccsWZ8ykNWqTQK443SXlBqIVE724+sXKI5MU041v+biSQ9/JIzTef7yHp/yGVGWof
- X45yR9wZMBOiHdIfhNxpWhrecs2m2kYT8vxoPXJs66EZBt1OuCH8GoSoxo69Bzr2gmyq
- s4Y4P1f3m6tYYSxANXx0I0+dSuM9ny2ElnA+hiGzP85y8dRLS5CDVJOneoit5tKGjpEq
- eYUA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVQasJIXEZHHwE0q/O7FFJlClmeF0LYe2fU7TCasavaCmJMeuKIu3wWPfUpVJwr9Af1lUwOCnQRTdo=@nongnu.org
-X-Gm-Message-State: AOJu0Yz5hBHuJdlqX8SY8Djuek/pMqGu6p/RLEMsOsM8e6h1slTeIqe/
- S6ETEphaflR4x/CeBKWOT7wydpY4+v7DVuWG/bzpkcvNxNLo00Qr/PpRnA==
-X-Gm-Gg: ASbGncs7K9iki6d9r7tWX+L6p5ULgN6gDeQXwj+zL6jMjz19n06Ul3EXyBXhf7ERlWL
- DoPHzkuidRobZdNESaZm8e8dukvmYvDu2ObNtPwSBdOrdBK4aKkxTyINKale/el+tHBG02sWldL
- lagQKMLMJ8XpvjtFF0VYFr8WseUx1kj3XVQGfYjUSYr2VRMOhBc5AGu8AIMGXcTUHFJek+GjqvB
- qqjsLdvO+7gWQN9BNOjKDL2z/TZs+E+3SE40gA8+1Mznh27fZw07yDbd1WES6Gb3Xip3zlAk3q7
- tGpCCTwr7lnJ/zpr8HqeO/fm6O5OE09uu9aQY59Px+VgAGB8u12o3dVkCYaWuQlv3Emw6vZEGKO
- N15bnEMjv5bSkGB5vOoTdtXU35QlvkVgS/wrX/9R11M3TeldSLLqfOhRslNqNSPN/xA==
-X-Google-Smtp-Source: AGHT+IF2MZWaFC925Fs+H9r0Zm2vTNCxqZjeGB2uLkRcTbrBH9lt9YvJmnr7W2fmdFQURiFoMYNaLg==
-X-Received: by 2002:a17:907:97c9:b0:ac3:8626:615 with SMTP id
- a640c23a62f3a-ac738c20c5bmr686124266b.49.1743368347148; 
- Sun, 30 Mar 2025 13:59:07 -0700 (PDT)
-Received: from localhost.localdomain
- (dynamic-2a02-3100-2ddd-7900-0219-99ff-feb2-2458.310.pool.telefonica.de.
- [2a02:3100:2ddd:7900:219:99ff:feb2:2458])
+ d=1e100.net; s=20230601; t=1743368566; x=1743973366;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PNL+sq7ReZolDVsxymrfkswoHp0GBOU+QPgWgEqFXL4=;
+ b=T/XvN65sq5UedX3yPYUQoA8Fw5iO5gKpAET7uXvKJaSs8L+jl7pg9pl9XE4W+mrIiG
+ ZUKMEO8vYXqCb8WR0UPv7UZn4MQVEXGQflYYDiv92yewjw3LSQMdcFNQxOiukYSMqKDO
+ xjgUDX6ZEO2wp7BkQ7ztR+RmwWWxpdJyl1mZlwoFBRTk35mkR/1+Pn0d3jIVIe85jawn
+ 9iD0cMMI9dTTouLfZXkohh/n9wtGWwgzrD/rixEIfaGLYzhPllHfum3VvbyBruRp7pah
+ 7Nj+vs2RR+FBkuzrB6Y+q7WI0p+KdtSaCvJO0sCVCdDmc6F5hyxf2HHPL7uTX89xjMog
+ B/rg==
+X-Gm-Message-State: AOJu0YwW3EXk+7PAUwH0iY7BRpV8Qzb3pIWHcrntyQBilq3VO6z8zxsD
+ qhKhPFy1tRpvdT9C8/pDwOOHNd5dRs7ASL1RvBhj/2tbMGyFMURhvcGEIZBOgrA=
+X-Gm-Gg: ASbGncslnCCkRpaxx3Ms5rsmWWOs8mo7JqhPoc1gu253GQd8I6eb8BBxWGb8DhGLU5a
+ UtXOvQEBGk1eabzjsZqBzeKNBDm1vyNxZZupKz1GWj3kVPqRyqzMt+6elBDftjSzCtgekMJhTG+
+ Ui/gHtiCN10PayUAN7X5qAq0zGRO2LlNe19Js6b3NXoWO4zn11kbxfC5eLw3AqszXDy7CHk/4E8
+ M6p2zuePJ4YM2eqqOrviKShpfdvj7nWLi6fY62IfmTUFY/0lleV7DEKoQY7IDRYj6P9CQGMLkDQ
+ dE5HYdyL6ZrytlD90jArIG04CSwOaGyzmNLzY58omFsIhG0yMNs=
+X-Google-Smtp-Source: AGHT+IFa+U54/pyPdM2Sn9OtmNcfJ8aMebUQgKLNYkShT2gyEr+m0MlEMRpleRaqPf1Kt2zLv9C+Hw==
+X-Received: by 2002:a05:6a21:a4c2:b0:1fd:f8dc:833e with SMTP id
+ adf61e73a8af0-2009f7785f7mr13311194637.30.1743368566123; 
+ Sun, 30 Mar 2025 14:02:46 -0700 (PDT)
+Received: from blackjackal.. ([2409:40f4:2018:65c1:9e7e:5b0:1e97:7aae])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac71967fdbbsm520902466b.135.2025.03.30.13.59.06
+ 41be03b00d2f7-af93b6a08f7sm5218166a12.29.2025.03.30.14.02.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Mar 2025 13:59:06 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-rust@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 2/2] rust/hw/char/pl011/src/device: Implement logging
-Date: Sun, 30 Mar 2025 22:58:57 +0200
-Message-ID: <20250330205857.1615-3-shentey@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250330205857.1615-1-shentey@gmail.com>
-References: <20250330205857.1615-1-shentey@gmail.com>
+ Sun, 30 Mar 2025 14:02:45 -0700 (PDT)
+From: Rakesh Jeyasingh <rakeshjb010@gmail.com>
+To: qemu-devel@nongnu.org,
+	philmd@linaro.org,
+	thuth@redhat.com
+Cc: pbonzini@redhat.com, balaton@eik.bme.hu, marcandre.lureau@redhat.com,
+ rakeshjb010@gmail.com
+Subject: [PATCH v3 0/2] GT64120 PCI endianness fixes and cleanup
+Date: Mon, 31 Mar 2025 02:31:53 +0530
+Message-ID: <20250330210155.74295-1-rakeshjb010@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=rakeshjb010@gmail.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,61 +97,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that there is logging support in Rust for QEMU, use it in the pl011 device.
+v2: https://mail.gnu.org/archive/html/qemu-devel/2025-03/msg06884.html
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- rust/hw/char/pl011/src/device.rs | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+Rakesh Jeyasingh (2):
+  hw/pci-host/gt64120: Fix endianness handling
+  hw/pci-host: Remove unused pci_host_data_be_ops
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index bf88e0b00a..d5470fae11 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -8,9 +8,11 @@
-     chardev::{CharBackend, Chardev, Event},
-     impl_vmstate_forward,
-     irq::{IRQState, InterruptSource},
-+    log::{LOG_GUEST_ERROR, LOG_UNIMP},
-     memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
-     prelude::*,
-     qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
-+    qemu_log_mask,
-     qom::{ObjectImpl, Owned, ParentField},
-     static_assert,
-     sysbus::{SysBusDevice, SysBusDeviceImpl},
-@@ -298,8 +300,7 @@ pub(self) fn write(
-             DMACR => {
-                 self.dmacr = value;
-                 if value & 3 > 0 {
--                    // qemu_log_mask(LOG_UNIMP, "pl011: DMA not implemented\n");
--                    eprintln!("pl011: DMA not implemented");
-+                    qemu_log_mask!(LOG_UNIMP, "pl011: DMA not implemented\n");
-                 }
-             }
-         }
-@@ -535,7 +536,7 @@ fn read(&self, offset: hwaddr, _size: u32) -> u64 {
-                 u64::from(device_id[(offset - 0xfe0) >> 2])
-             }
-             Err(_) => {
--                // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
-+                qemu_log_mask!(LOG_GUEST_ERROR, "pl011_read: Bad offset {offset}\n");
-                 0
-             }
-             Ok(field) => {
-@@ -567,7 +568,10 @@ fn write(&self, offset: hwaddr, value: u64, _size: u32) {
-                 .borrow_mut()
-                 .write(field, value as u32, &self.char_backend);
-         } else {
--            eprintln!("write bad offset {offset} value {value}");
-+            qemu_log_mask!(
-+                LOG_GUEST_ERROR,
-+                "pl011_write: Bad offset {offset} value {value}\n"
-+            );
-         }
-         if update_irq {
-             self.update();
+ hw/pci-host/gt64120.c      | 99 +++++++++++++++++++++++++-------------
+ hw/pci/pci_host.c          |  6 ---
+ include/hw/pci-host/dino.h |  4 --
+ include/hw/pci/pci_host.h  |  1 -
+ 4 files changed, 65 insertions(+), 45 deletions(-)
+
 -- 
-2.49.0
+2.43.0
 
 
