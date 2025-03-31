@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B220A76DA0
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 21:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D24A4A76D9E
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 21:49:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzL7n-00026w-VR; Mon, 31 Mar 2025 15:48:47 -0400
+	id 1tzL7o-00027B-BB; Mon, 31 Mar 2025 15:48:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL7c-00024t-Mb
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:48:41 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL7j-000268-IP
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:48:43 -0400
 Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL7b-0003JV-5w
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:48:36 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL7h-0003K6-Qj
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:48:43 -0400
 Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3996af42857so3830181f8f.0
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 12:48:34 -0700 (PDT)
+ ffacd0b85a97d-3914bc3e01aso2742792f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 12:48:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743450513; x=1744055313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743450519; x=1744055319; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dNjcGIacRf9GBqLFNdn+7xavPFEAK8T6dq58lm39+Ws=;
- b=M2xNUzbSu0FvvI1HotFgjhngGSxgG/BhMZ38L2PAPG7JANMnGL3eVyz3xBUj8CRz1z
- uXWZz55jp43PH2PY8sk/RjabNsACyIBOivbqYxe+Ftq0p+v5fV6f04Q6P9MiRVArda77
- MFHpSr/Wm5QQ7I32SxEk7p84zRwaR1PilN0rPKRtj5odMDDc40oRSDzd89JDc1KD8gSR
- nUW820I64yLXReYByoXcBHQLX2IS1FPKi9SVIAxjg8WUA1UdKIR8fSNdi8W94H2jFWE/
- /7i7cNwkKypDn72qAwvEKYBWq+r1DJjlj0q0S+HOu6xtewExyiy+meKi4lqMEATP0r+9
- pTGg==
+ bh=txTiE4d1NZi9r9wcwRp40Op4LBLauweOXwjfQZIQKOA=;
+ b=yoj4gDzz1Fq96zsWVZzBY5gBPgw7lLtSscE4jMT1HU7a5wc2859VqdfvKmpL4oncKO
+ EkmZ1hsfYFMRMnYp4UBWjRyhigWACq7cK2iJpgMqtsArojHhg7sw3HhbrRDteX9X3Iu7
+ TT2IQ4leXD9M+lM77DGOPqZ60aTI8n4Vpf3tXUv7M86Qtff9rnKoFw4Qg3KNj4z9xyeO
+ 2HEpR1NWhIc4MEJHUs6Wwc+7IKy9O17jjjBlOSFHrIUcEcSnGZ0AzdyHYbKhLXBp4/0E
+ sVAljGNkpbiv4oT5pcnLttsLbYgtHKFcj0q9t1inTHlE20lsu5NF9hkkyNnayu7/jP2a
+ Nidw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743450513; x=1744055313;
+ d=1e100.net; s=20230601; t=1743450519; x=1744055319;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dNjcGIacRf9GBqLFNdn+7xavPFEAK8T6dq58lm39+Ws=;
- b=c/cOvU0Wt2PA7GyPG2M8r5b2L+xFgwYkpt6/c7/6pai67Yzmy8ZaMjU6lMpLHyNGUj
- XAYwIL9q+hgTGrp/uIYqsWEGGzTr8giNUGuWgZvts7HZh+ro2s1CXGb+gEDc4vkj50FV
- u3V/exmU1uGugRdAU38RoxBg9dZjbzOB06kLv3GMbjXVt0P4+Rxq8XTi6Nu6kAKou4/C
- NXBZN9IoU1sQrXXtVpjYPizqRIPNYKGhGUKDZEhLHmwcktHINoNh0obq/mzAEufpLOb2
- n8fNbsVD7EDy8RDggTxzVjF07NhZt+4PMYZdIohvMWJDA/M7ZDF/LyD39w8fZnIigHuI
- BkWQ==
-X-Gm-Message-State: AOJu0Yx3P6ZqvEHNCcJnIzM4XcEISH0AXP68SwCpUv5k92blbOA0Eiod
- 7HDLrd6awzoMCWmFsqzh2gCb+SVTjAX9VyU/n/7qglCmQYd/u0EtdDw6IOae9yjJdQhtWSZfnlU
- z
-X-Gm-Gg: ASbGncvIdbek7d+PA1pDiLSOr8blt4CDun/1WzMeE9rNj/K7GTYhRcgdNa/OyfFUFPt
- cWnGsBF264NYH81ahQOOi0SESA245vL+ZBm7siQQa8iMCcZoG6s1QDO6N+L0uV8cGE7txjSIaD+
- Bwzt/2/GUaNBOb0G3nbYog54ZINEbkojGZtEV9ooWlYlnnN9hhOJ7kuFfeqGxHiyCdLOMgbZLD8
- pPej3bPIOrAJTGYjPb9zYW/rq9LVD+0DwpG1ldTpavxolH0ltqn/CF7lEktgK++d1hK2l2pGM5X
- MWTFkFfaxR2eY3PAB4WJAs5438Scs85F86MXNcf1EIQfXLxDT/8ysmk6jeiFhhW3OI8QWLgNWLi
- kc19woqilZg5MrHtXGQk=
-X-Google-Smtp-Source: AGHT+IH8DOsqdvvORZihplizucZpE8iA82IR3GrQ6/4R3B5Vvg8JHB+fn9qgoEFNE8K5nB7yhbv5EA==
-X-Received: by 2002:a05:6000:4010:b0:38d:df15:2770 with SMTP id
- ffacd0b85a97d-39c0beb9889mr11670908f8f.0.1743450513334; 
- Mon, 31 Mar 2025 12:48:33 -0700 (PDT)
+ bh=txTiE4d1NZi9r9wcwRp40Op4LBLauweOXwjfQZIQKOA=;
+ b=Y9dqVzTrkXpUEXZ8k94eFQptoyZikP7FUPTKvqNWt0NetmVpM/Vfegrmgil0b0jUor
+ Vlma9tey6u6nWdkpL1u+tr5ANGhuVxglJoGDMlwJbLTJNRNvRNQd9vNf4v+PYA/TnDxg
+ CY3ZLVe29lqJ8mJYubKdARF/7M/Fs5zQqQTMKQc/LLsZxvwMcq/GE27SS5r9Ot6nlTBu
+ vKsdV8zm4cXeTE0LhQ0tMf3Rt9685M8PHTHkITROoE7XCkEn6blKVmlh3qGItnzehkhs
+ +/AT8Z0vZShjz7JIy40+HNZnyFfvBJ/oyUSw9FP3SjNWMUJi+bAPpoxlPM6SJjeN0B13
+ S52A==
+X-Gm-Message-State: AOJu0YxnucULSdSWF3VMYR2UCLo45vn5qbmcTL+xLiK99J2dnR49FctN
+ c8aVelt9q+LdcItsWTOL2opuVsrgi/lTRi+bcRMn2kiYYuHVYnM+1STy3IZcRjmZr6FGwM6Nr2c
+ S
+X-Gm-Gg: ASbGnctSEldRx0hbDyZsNdF5O/127+YzM9V0rrN4+9qQzkFX/9vz9oKWcCGYSeMj1oE
+ WwPllqj+ezO/nuuDoKwPnG48Yc5UoLc2q7U6KW34pdhreadFnDINVyQzpgbaHg4bXabGHucqod/
+ EeTcqbQPz64ccS7ssbZqhE1gEQpImN2CHgAVj6e9cBU7Jw43biyLRW2xl35HdMzD1ObUKdk8dIg
+ 9hZW2vEhA7RO0dgOt+yDW+69Al06jIKiqDHtCXsP5wm4MHHoW0U91c9t683SEaXMNExOwXJuw7Y
+ D04QLSXiqOiWsAY4yAW4wE2T3AxEMr8ZP4hGaU8zDGWYe/pIkJUTIJLeJOdmq2ST/HKpigKuyX5
+ BcthokNMKNtbrw1UeJTc=
+X-Google-Smtp-Source: AGHT+IHslVBC5LKP5M/RUIpHQXwJAiQovDPft1xjCARCwOnZRCIibW52WvqcQTfbqavuq2aeMsEdSg==
+X-Received: by 2002:a05:6000:2c4:b0:391:78a:33de with SMTP id
+ ffacd0b85a97d-39c120dc8e5mr8805942f8f.12.1743450518730; 
+ Mon, 31 Mar 2025 12:48:38 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d90000a09sm130314525e9.35.2025.03.31.12.48.32
+ ffacd0b85a97d-39c0b658b5dsm11970208f8f.3.2025.03.31.12.48.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 31 Mar 2025 12:48:32 -0700 (PDT)
+ Mon, 31 Mar 2025 12:48:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
+Cc: Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/23] hw/arm/imx8mp-evk: Fix reference count of SoC object
-Date: Mon, 31 Mar 2025 21:48:00 +0200
-Message-ID: <20250331194822.77309-3-philmd@linaro.org>
+Subject: [PULL 03/23] hw/arm/fsl-imx8mp: Derive struct FslImx8mpState from
+ TYPE_SYS_BUS_DEVICE
+Date: Mon, 31 Mar 2025 21:48:01 +0200
+Message-ID: <20250331194822.77309-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250331194822.77309-1-philmd@linaro.org>
 References: <20250331194822.77309-1-philmd@linaro.org>
@@ -101,28 +102,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-TYPE_FSL_IMX8MP is created using object_new(), so must be realized with
-qdev_realize_and_unref() to keep the reference counting intact.
+Deriving from TYPE_SYS_BUS_DEVICE fixes the SoC object to be reset upon machine
+reset. It also makes the SoC implementation not user-creatable which can trigger
+the following crash:
+
+  $ ./qemu-system-aarch64  -M virt -device fsl-imx8mp
+  **
+  ERROR:../../devel/qemu/tcg/tcg.c:1006:tcg_register_thread: assertion failed:
+  (n < tcg_max_ctxs)
+  Bail out! ERROR:../../devel/qemu/tcg/tcg.c:1006:tcg_register_thread:
+  assertion failed: (n < tcg_max_ctxs)
+  Aborted (core dumped)
 
 Fixes: a4eefc69b237 "hw/arm: Add i.MX 8M Plus EVK board"
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reported-by: Thomas Huth <thuth@redhat.com>
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20250318205709.28862-2-shentey@gmail.com>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Message-ID: <20250318205709.28862-3-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/imx8mp-evk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/arm/fsl-imx8mp.h | 3 ++-
+ hw/arm/fsl-imx8mp.c         | 2 +-
+ hw/arm/imx8mp-evk.c         | 2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
+diff --git a/include/hw/arm/fsl-imx8mp.h b/include/hw/arm/fsl-imx8mp.h
+index bc97fc416eb..22fdc0d67c2 100644
+--- a/include/hw/arm/fsl-imx8mp.h
++++ b/include/hw/arm/fsl-imx8mp.h
+@@ -26,6 +26,7 @@
+ #include "hw/timer/imx_gpt.h"
+ #include "hw/usb/hcd-dwc3.h"
+ #include "hw/watchdog/wdt_imx2.h"
++#include "hw/sysbus.h"
+ #include "qom/object.h"
+ #include "qemu/units.h"
+ 
+@@ -49,7 +50,7 @@ enum FslImx8mpConfiguration {
+ };
+ 
+ struct FslImx8mpState {
+-    DeviceState    parent_obj;
++    SysBusDevice   parent_obj;
+ 
+     ARMCPU             cpu[FSL_IMX8MP_NUM_CPUS];
+     GICv3State         gic;
+diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
+index c3f6da63220..82edf61082a 100644
+--- a/hw/arm/fsl-imx8mp.c
++++ b/hw/arm/fsl-imx8mp.c
+@@ -702,7 +702,7 @@ static void fsl_imx8mp_class_init(ObjectClass *oc, void *data)
+ static const TypeInfo fsl_imx8mp_types[] = {
+     {
+         .name = TYPE_FSL_IMX8MP,
+-        .parent = TYPE_DEVICE,
++        .parent = TYPE_SYS_BUS_DEVICE,
+         .instance_size = sizeof(FslImx8mpState),
+         .instance_init = fsl_imx8mp_init,
+         .class_init = fsl_imx8mp_class_init,
 diff --git a/hw/arm/imx8mp-evk.c b/hw/arm/imx8mp-evk.c
-index e1a7892fd7c..e1a21e52f96 100644
+index e1a21e52f96..f17d5db466d 100644
 --- a/hw/arm/imx8mp-evk.c
 +++ b/hw/arm/imx8mp-evk.c
 @@ -37,7 +37,7 @@ static void imx8mp_evk_init(MachineState *machine)
      s = FSL_IMX8MP(object_new(TYPE_FSL_IMX8MP));
      object_property_add_child(OBJECT(machine), "soc", OBJECT(s));
      object_property_set_uint(OBJECT(s), "fec1-phy-num", 1, &error_fatal);
--    qdev_realize(DEVICE(s), NULL, &error_fatal);
-+    qdev_realize_and_unref(DEVICE(s), NULL, &error_fatal);
+-    qdev_realize_and_unref(DEVICE(s), NULL, &error_fatal);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(s), &error_fatal);
  
      memory_region_add_subregion(get_system_memory(), FSL_IMX8MP_RAM_START,
                                  machine->ram);
