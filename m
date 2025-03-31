@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C597BA76D09
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9B9A76D0A
 	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 20:49:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzKCH-0002Nw-2m; Mon, 31 Mar 2025 14:49:21 -0400
+	id 1tzKBw-0002LK-D1; Mon, 31 Mar 2025 14:49:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rakeshjb010@gmail.com>)
- id 1tzKCB-0002NA-DU
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 14:49:18 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzKBt-0002L6-Lq
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 14:48:57 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rakeshjb010@gmail.com>)
- id 1tzKC9-0001nC-3e
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 14:49:14 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-3012a0c8496so6243984a91.2
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 11:49:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzKBs-0001mB-2v
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 14:48:57 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43690d4605dso32114205e9.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 11:48:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743446951; x=1744051751; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=c34zp6QHzUyuitt4Vixfy5pfieckp6MjfH8iM6VqqHQ=;
- b=ZrCs9NsGL5JOV3201yKNXve9PWp5FdoBbRsPz7GuL+S6yIcvLqN/ql6xV2W2+5dP17
- dXmamtjgB1cDMcW66VrxoRZ5BpqXTnYr0NSaPPX//OCoxl+M1UC1CDA201jgBAVVtIew
- PqwLPXHnBvaz0N4HtTEozut9gFUs1ONarPV1AUTqUCvaoHQZBOhnSXsL9tAB+bAzYsA2
- 7qG6K7m/JZ5NP37o6b7nKlarxHaz6k1HZiWLpsTBqbuhfZ4b32sHbgrAgXSojyQjN7qn
- UTVLbQnaQaAUln7UOv8cWafuonZECBKDkOFiQEb04EyHSfgQR654GuOXJBgn201L6y6G
- KlgA==
+ d=linaro.org; s=google; t=1743446934; x=1744051734; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=er6pDxh8XIqvAoPkH06hhDErlAezot/dtgnUBaxh+vA=;
+ b=kvMumHUISOj19Yb3a4wuPSFz/TYxMb786SmvCGra2zUs8fSukk35at4I7oFcqWStwE
+ p9jR+KN0qjTk2t9LU3nbVJjkBog8t/sCPdsXPHG2TZv8L2QTwk3K7zgHIkYTArx8V+Fn
+ Ze0k0Bf0BtvJcLz+Xtpc6xciO0tcqJV0xTOwncPWbW7U3u78SykpC24V5N/L9ehSktFj
+ XGIBLd3sbdrjoMpZdf49dLnhqb4g2vlPHXzsHqpPGmqrRknm/NnZIxZ8OUzJnq8Rm1Jt
+ RQpvgPyjn2hOv3w+AnQofWDowggjW+hpEBzOYbRDCSP6XZGLIuqhGJv6sISAxqgoXHVk
+ x2Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743446951; x=1744051751;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=c34zp6QHzUyuitt4Vixfy5pfieckp6MjfH8iM6VqqHQ=;
- b=QKh2Itj1HvHaC52lKjZVhfAXXFuBbmwPsp+2JmHLOsUDr+R7uzveg4R/uc2pgc5Xpm
- XQiYOBpf1BWS2GaZY5Ua90jK/h/RRQm8Q+hqNldmhqlpDTBtEcOA+stgERYcGemjO2sM
- H8sAKAqEMk5YiW9g0o7idPuhBldCqJ+V6AagoKi77UpV1a+HNXljzrUuo6nQH8D9YaQw
- E+9EMh9BlJrP0xM7QeJHn1ZSLvk+Zmi7IRTsKM2bSllkoqfU9gT7ZdBhkbnHV8G1CNrm
- pg4+2yvM5G+ZZ6cIF+hafu0zwaehBEloe5s3Pk2jhGaa3Z6IqH46OLcLAkw4ZUplL6AM
- iihA==
-X-Gm-Message-State: AOJu0Ywh36j0q3gqa2NuBU02hypdEMmtqD/kYEzqC51HnqZBhJqkYdlz
- QRRRyqMRPeffnFZEkHhEug1UXm8CN9GjvS04Zi3QsZr915/X0guSLqtdgH4t
-X-Gm-Gg: ASbGncuSvcnJUlHUr4pD4VnGKKFreqATWdh/iu+Whrb1M8k5/Y+zQdl5MIR8fb3dsMv
- LaCZhp0l28TCQpz0ZjVNe8BhUozTvdapZ8786BONjDeATXMC1o8ksN1aRmK60P99K3G3IyEaojC
- t7lhSKiT1hCrb+CDckDcRXhPDUy4UpIKJnTii1u7qEr5eyObpQNMHccV8osSTZZi+KpVJphfk1o
- abu4lZ2vBWOoSFuMDzG03xtH4nKdPFqTvWD6moC5vmZi3hKaaFDja+68tCTAbEgcTOXmgmEbv7L
- S7aPdawTsSA0VeIm1VdJ8ZAtGmdvIbRzCwvGJgmFqpDMcy4e2CI/
-X-Google-Smtp-Source: AGHT+IH09QtKdtPBXNgrQlmAh7i9VHT8EfN/XAnHSHHoAZ93tsi681tEdoUf541XKijeVZlg4L0dSA==
-X-Received: by 2002:a17:90b:5483:b0:2ff:64c3:3bd9 with SMTP id
- 98e67ed59e1d1-3053214bcc3mr13048092a91.23.1743446950867; 
- Mon, 31 Mar 2025 11:49:10 -0700 (PDT)
-Received: from blackjackal.. ([2409:40f4:2018:65c1:99be:24ba:7ca2:678f])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3039f1d4f4bsm9928476a91.33.2025.03.31.11.49.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Mar 2025 11:49:10 -0700 (PDT)
-From: Rakesh Jeyasingh <rakeshjb010@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, pbonzini@redhat.com, philmd@linaro.org,
- thuth@redhat.com, rakeshjb010@gmail.com, balaton@eik.bme.hu
-Subject: [PATCH v4 2/2] hw/pci-host: Remove unused pci_host_data_be_ops
-Date: Tue,  1 Apr 2025 00:18:20 +0530
-Message-ID: <20250331184820.34673-3-rakeshjb010@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250331184820.34673-1-rakeshjb010@gmail.com>
-References: <20250331184820.34673-1-rakeshjb010@gmail.com>
+ d=1e100.net; s=20230601; t=1743446934; x=1744051734;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=er6pDxh8XIqvAoPkH06hhDErlAezot/dtgnUBaxh+vA=;
+ b=vyL6ViIC5s8K1E8Bgt4Qu/4oEoVC/J2CatxUAr2bzcgt4jJ7O6JaUOPztKTjZGi6r3
+ EJAOICaspznzW9NaFh0Z2F474zVt0Gg2wrRrBej+52dRqJMGco6LcKRT9IycfM0fvlK1
+ av4LQTw+kcBpTBNijFJTBJChl+WZa+L7vkzKdBGwTx7McWQ0d04l4xJ8RTVavhJYl6sG
+ qkSuRF0ZY3YPE5/p77K2MFwpJ4Dl1EzPV4wlDFFsiJ0+eJMeWe2/Av//+5WQEDP96XID
+ LwKpv/8FMgChaUT8JwJSccHrL4N0dxd6i7DhKhiY5gQ63ldn/RIYgXlqKUBcBivUTtSq
+ ejhw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWaC2Q6ajEYDABN2FZ1wg9XpISgXhcicj5kVkrw62P6cD0UqG9Z5SffvlHFxE67cbFR3pkNTYEhjn6L@nongnu.org
+X-Gm-Message-State: AOJu0YzKZeD7PGgSu2kyZx+WSYxN9wapVejpbQLYTmigNw5zTW7flxN+
+ DJSDQQYffLhUS7e2N/xfJYwBisyC4lGt01oQt1cYfKkxMi+ceNwLu28kNCDzOD0=
+X-Gm-Gg: ASbGncvhShl5Rj5uMdziuWpvYvc9kAKTUMK250JWveb93BYoMwgo2WLIL9O+KWKVrq8
+ 09tumUuyHe+5fv8RAMeP8LmcRYUoQ/HyHlNXLHxsPMqC66T+t5k/GY7im+wRF9F34rbCUuciNR9
+ PBTMuTVd48Rt/rc+eYSXPDM0y8CLsf2viOgWv1PgokznG3rk4g6+j2CEuNPC84m8CHNmyVYGUG/
+ ZXp3odNxh9mjR+sSEkRv72X7U24iR20njUylMd05a1YrDXFN22n2iiCmT9af1ZN+75/KB9VoZFe
+ lfCd01FqD9eP64xUpTE/M3Q1vgPmg/ZscMnN8S0GyzA1w7RllTbMK+15WBhH/JvaQWqedXk7FIO
+ N8ViU1I/XPozp
+X-Google-Smtp-Source: AGHT+IHTXxaUU3mPE4R4w1BUKCG1Lu/OwIUh8GZt8oBsaReHx8V9B62SXUG8Iq+Xu7ugIT90mJEI7w==
+X-Received: by 2002:a05:600c:4e91:b0:43c:e7a7:1e76 with SMTP id
+ 5b1f17b1804b1-43e94a410ebmr63500765e9.1.1743446934179; 
+ Mon, 31 Mar 2025 11:48:54 -0700 (PDT)
+Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d8314f5c6sm178267595e9.40.2025.03.31.11.48.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Mar 2025 11:48:53 -0700 (PDT)
+Message-ID: <a4823d77-9182-4b92-8ef4-a894e25b0b9b@linaro.org>
+Date: Mon, 31 Mar 2025 20:48:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=rakeshjb010@gmail.com; helo=mail-pj1-x102f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/11] target/avr: Increase page size
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: mrolnik@gmail.com, pierrick.bouvier@linaro.org
+References: <20250325224403.4011975-1-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250325224403.4011975-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,62 +99,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pci_host_data_be_ops became unused after endianness fixes
+On 25/3/25 23:43, Richard Henderson wrote:
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+> Richard Henderson (11):
+>    target/avr: Fix buffer read in avr_print_insn
 
-Signed-off-by: Rakesh Jeyasingh <rakeshjb010@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/pci/pci_host.c          | 6 ------
- include/hw/pci-host/dino.h | 4 ----
- include/hw/pci/pci_host.h  | 1 -
- 3 files changed, 11 deletions(-)
-
-diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
-index 80f91f409f..56f7f28a1a 100644
---- a/hw/pci/pci_host.c
-+++ b/hw/pci/pci_host.c
-@@ -217,12 +217,6 @@ const MemoryRegionOps pci_host_data_le_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
--const MemoryRegionOps pci_host_data_be_ops = {
--    .read = pci_host_data_read,
--    .write = pci_host_data_write,
--    .endianness = DEVICE_BIG_ENDIAN,
--};
--
- static bool pci_host_needed(void *opaque)
- {
-     PCIHostState *s = opaque;
-diff --git a/include/hw/pci-host/dino.h b/include/hw/pci-host/dino.h
-index fd7975c798..5dc8cdf610 100644
---- a/include/hw/pci-host/dino.h
-+++ b/include/hw/pci-host/dino.h
-@@ -109,10 +109,6 @@ static const uint32_t reg800_keep_bits[DINO800_REGS] = {
- struct DinoState {
-     PCIHostState parent_obj;
- 
--    /*
--     * PCI_CONFIG_ADDR is parent_obj.config_reg, via pci_host_conf_be_ops,
--     * so that we can map PCI_CONFIG_DATA to pci_host_data_be_ops.
--     */
-     uint32_t config_reg_dino; /* keep original copy, including 2 lowest bits */
- 
-     uint32_t iar0;
-diff --git a/include/hw/pci/pci_host.h b/include/hw/pci/pci_host.h
-index e52d8ec2cd..954dd446fa 100644
---- a/include/hw/pci/pci_host.h
-+++ b/include/hw/pci/pci_host.h
-@@ -68,6 +68,5 @@ uint32_t pci_data_read(PCIBus *s, uint32_t addr, unsigned len);
- extern const MemoryRegionOps pci_host_conf_le_ops;
- extern const MemoryRegionOps pci_host_conf_be_ops;
- extern const MemoryRegionOps pci_host_data_le_ops;
--extern const MemoryRegionOps pci_host_data_be_ops;
- 
- #endif /* PCI_HOST_H */
--- 
-2.43.0
-
+Patch 1 queued for 10.1, thanks!
 
