@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E556A76557
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 14:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6720A76560
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 14:07:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzDsf-0008Ci-6O; Mon, 31 Mar 2025 08:04:43 -0400
+	id 1tzDvE-0002ZJ-JX; Mon, 31 Mar 2025 08:07:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tzDsM-000896-K3; Mon, 31 Mar 2025 08:04:23 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzDv5-0002Yp-CJ
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 08:07:11 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tzDsH-0002kK-3Q; Mon, 31 Mar 2025 08:04:19 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-22435603572so81264095ad.1; 
- Mon, 31 Mar 2025 05:04:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzDv3-0003Ie-HR
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 08:07:11 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-391342fc0b5so3259754f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 05:07:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743422654; x=1744027454; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Qtffgwyx0AwV3qpAIbOBPENMavt/bbk2jp2VaktYe+k=;
- b=a7i6Q9gGAECgP9YUTJsm4Of7EKIiwlYZRnmyV201kH98+nEVCkuQiY4yzo5E+J9DC3
- E4q6hIqwj1lmNcI7qfJSi2lwCHwmwCSULyLAZGQhqWY5yqCEe4pRY5Jaw6wJqtnW6cd5
- LY13S1eMQsOOGoRv68LGbrX6bp/nfYUIfUmqlnYjC58JnAStxR1+5B4SBJ5691Kpbdri
- LERTKeOvMe+cg3HN1T75VZMZLcpFbVCW4FTs5ZtXDZ3QpQBS/1Cd0adm7XwqoHTMbvWM
- CH5Zp7lztFey3ZQjotEyelJKkNu7NRE1v3WvYmD7gbvCKggnscAo6TGDMfHbms+IpD+s
- eteg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743422654; x=1744027454;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=linaro.org; s=google; t=1743422827; x=1744027627; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qtffgwyx0AwV3qpAIbOBPENMavt/bbk2jp2VaktYe+k=;
- b=fs1eZ0ZqKfb7+1/18WRTQbB4pMjXhz/OYchpdU2o0I/UcUboq9F6WHCehUF4bpW1Cu
- bYARTpOHQ+nwU7H5i4aFgJQPxWCFE1r1mitF056gtIDa+CrvuRYIQhChWrUcUSGbeFws
- njGLVPjl9wHGgplofWjdni7VjHyjEUj/7Li/Dku5KQXSIV18sShUjiDT/SS7Zc9p0yX+
- /IpkLiPoXypZ3/b8D4XGkEw0n0JxJaMiCrhsR9l+YnRUytwQERK/bHznz8zxEjyC8KpO
- 4dkwKUWScdQwX5hiosLBlJkIYJrpPmqiH7cPJkNimG9XO3JG9ep/PquHyqy0+m3ihvlE
- q6tg==
+ bh=0YU2OLsvo/qtutzo+RPIOTWZ+6IuK1AZJ5y8/j1H11I=;
+ b=nGYuB0p2+IqyiBJRBIyK39gdyP00vvLEEmE8+5HUHJG5puUpClSHYnWAFs6PO82nhm
+ CZP4p01f8vHt7fb/PeqvRJtwKIMRf41rMvQZOyl2vrFH2XoFGEY6j2XFLEfJWaamwzA4
+ HDrR3tQEHnNTEIRu119dZEbncZ2GukcQ/+7J1vvmyFg5wN4aPxfqp5zeG0oA/ls+8wGf
+ Mh82xyB3E5swfxt8cC6I92kmqzITwOH//XfgN/e0HjUt2cUT+JVVhX0tDVtVzYct3WMW
+ zL5YFLvCkqU6H3CqPXxfgRM6Zjf01Amx8X8Dsae61SyifC7E9utXexitWeouMku0jnEg
+ +YaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1743422827; x=1744027627;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0YU2OLsvo/qtutzo+RPIOTWZ+6IuK1AZJ5y8/j1H11I=;
+ b=F7C27hTgvr4SIjMZqmfHvHa4vK/msyY16zWNB8QrIh6zP5tCasjLi7Jfj7J6QcpbnD
+ RB7zPJcxcqmLF1+as9WiLOX0HvgXpGMh1GsSim831rhyJPMEGxzj0vNdelpSaCBBOx98
+ 4DBnHwSzXpuqNy9mrHsnAsGqhzGBsrUy3fE7q4+L229iFAmVymGwnvv3i4a1NBhNHuVf
+ tOn28H2i50qTsXQtRT1wuCfQd0CLbe1UJ8efSOA669P9EvA0xnxlgUcv45OL2eaS7Dli
+ VRDHWuYyNQ9bf+zE0K/bnNpsYiRGBNkBfTL3fuy67sAkNfWwQtD9DZ6pzSmBooO3Hu/w
+ LcWA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU9JZn1M4MyGqv4Z1QMPF9WZIR78EaVJdBxzUyWHC3Iqwl6hwZE/by+TFodDya7zGFjlNOKXEcLanmv@nongnu.org,
- AJvYcCXHH473/EB69Mwmi/ZBvGluh5YHhHn3VZh/lqejXU7S80JVD/ARW0MB/ecYo2WiOyWksZ91TUz2UvjvvoA=@nongnu.org
-X-Gm-Message-State: AOJu0YwjKMGd3XZzLCP7KZO8VJNgNsGSchbUopk7Vi7wf1l7PfIM4aYM
- 0H882pu9wrAJaGXyuX0dC+SFcSNbt1uZ146AIY2+GMJPIiGlvmqAMkBu5Q==
-X-Gm-Gg: ASbGncscXyY2dgWhSP0tAAmhKex1vUuvwpUvBgotZaZjlQfE5g/Q6JQi5Oae21rKx0G
- pGR9brSLzsUbdTqEfNItfpv1dJXOaYRayFzt9W07b0A+wdK8cYsSxSHng1wuPNc74P23kKhey1T
- er3HiS+0vcespQ7HLah0ydo7dcmJdtxjNFACbDzW2z4NgcD7AV9Zj+Sa4ly0on2Vcj3HAztZ/wi
- 2FHq8slAr0gzsQZXEmLsNYs0APMWsGwsfKlANeJJqRHOmDKuFkZulKWrGqxhZOiVke/6meXjzS8
- Wgkq3mCVudF+jDEBFMWs7npjZJwUaZxJwu5jsU9oc7GuX6yBFRm3DNr87Stv
-X-Google-Smtp-Source: AGHT+IGAl1tfKuSycwFXbrgQHHGkWHZD5Fb+rCUSCQTNeybRYMcquuPLtbgnF45OX8PbAREogepEsQ==
-X-Received: by 2002:a17:903:1a07:b0:223:37b8:c213 with SMTP id
- d9443c01a7336-2292fa07306mr127974935ad.52.1743422654242; 
- Mon, 31 Mar 2025 05:04:14 -0700 (PDT)
-Received: from wheely.local0.net ([203.185.207.94])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2291eedfde5sm67526105ad.78.2025.03.31.05.04.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Mar 2025 05:04:13 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-stable@nongnu.org
-Subject: [PATCH 2/2] target/ppc: Fix SPRC/SPRD SPRs for P9/10
-Date: Mon, 31 Mar 2025 22:03:56 +1000
-Message-ID: <20250331120357.584561-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250331120357.584561-1-npiggin@gmail.com>
-References: <20250331120357.584561-1-npiggin@gmail.com>
+ AJvYcCWc87/kc61TvaK5SmhYRPZ3IU2lBwX7K9t7hh66P5pkkbqLzUjxqOEUGEtsFKfNuFwGBFpkWGpaQb5v@nongnu.org
+X-Gm-Message-State: AOJu0YwM+kvMT6yimGqp2UU0kkKAIn3eDnclMFyGNexw+zQRTvIDhu5g
+ cDaVBXDPVolEtSzo5yl8DhSxVKIwlFqVocqoLQeCA7Kqv8rHdt1eSAqW8wNiM7Jibt0QzDhRAmJ
+ b
+X-Gm-Gg: ASbGnctJDlgw69/P7cd8oT1vY4VS9NFrjYaYsTIeFg/ahCXWn2KTw4Msrd47gIAgZT3
+ z52vgqrZvnqg6a9buWow1ZWiLbaeTNMfIN29HjVm5vOrc4cjNXjAgTj0KxxtC+tY5kaqOdJrMPc
+ ppSlSTQmMB/wED7s2H0NspPiQVJ1ovxXE/o6tES2PY+erzPeTF+nK+ZT23AvdV7qOKnJOf6BKEG
+ rO3tNBIxwszeY29TL/S5vJr+ejASp1PXrWqYZsnMS0OrAiS6JmE0rqbyCMZbs+PmNUohnG3JQyU
+ L9CeGFAuXQDs99ZIldEEzDIYiHNLmfR0Ha/rGsZ5/kL2SZFOkhO5HzVGtYl5UNAF5jcOcFV0d3H
+ 8na+M+AYa9DSS
+X-Google-Smtp-Source: AGHT+IE5jw0q4rvHJsWNjdlUZ1QE2yQ1oPtKw8EiQfms8LhxbxOAAlzK1GrEwsUtEdav8eqYimEqxQ==
+X-Received: by 2002:a5d:5982:0:b0:390:e9b5:d69c with SMTP id
+ ffacd0b85a97d-39c120e3873mr7349636f8f.25.1743422827529; 
+ Mon, 31 Mar 2025 05:07:07 -0700 (PDT)
+Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d914f1561sm79866055e9.1.2025.03.31.05.07.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Mar 2025 05:07:07 -0700 (PDT)
+Message-ID: <430d8a07-903d-4fc5-b8e3-04946b2e26d0@linaro.org>
+Date: Mon, 31 Mar 2025 14:07:06 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mips: Mark the "mipssim" machine as deprecated
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, Thomas Huth <thuth@redhat.com>,
+ QEMU devel <qemu-devel@nongnu.org>, Aleksandar Rikalo <arikalo@gmail.com>
+References: <20250121103655.1285596-1-thuth@redhat.com>
+ <b0accbae-b9ca-4fb2-a842-f08ac947ef0a@app.fastmail.com>
+ <f96de148-67e2-41ab-ad5e-23d68af25f85@app.fastmail.com>
+ <bfe9e233-bcaa-4c27-9c8b-7540dc2795ef@linaro.org>
+Content-Language: en-US
+In-Reply-To: <bfe9e233-bcaa-4c27-9c8b-7540dc2795ef@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,59 +103,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 60d30cff847 ("target/ppc: Move SPR indirect registers into
-PnvCore") was mismerged and moved the SPRs to power8-only, instead
-of power9/10-only.
+On 31/3/25 14:03, Philippe Mathieu-Daudé wrote:
+> On 21/1/25 13:09, Jiaxun Yang wrote:
+>> 在2025年1月21日一月 下午12:07，Jiaxun Yang写道：
+>>> 在2025年1月21日一月 上午10:36，Thomas Huth写道：
+>>>> We are not aware of anybody still using this machine, support for it
+>>>> has been withdrawn from the Linux kernel (i.e. there also won't be
+>>>> any future development anymore), and we are not aware of any binaries
+>>>> online that could be used for regression testing to avoid that the
+>>>> machine bitrots ... thus let's mark it as deprecated now.
+>>>>
+>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>> ---
+>>>>   If anybody is still using this machine, please speak up now!
+>>>
+>>>
+>>> FYI I'm using it to run MIPS AVP (Architecture Verification Programs)
+>>> time by time to check TCG's compliance.
+>>>
+>>> It is a proprietary software so unfortunately no binary available
+>>> to public :-(
+>>>
+>>> AVP has two supported platforms, the first is plain old MIPSSIM
+>>> here, the second is OVPSim MIPS, which is compatible with my previous
+>>> MIPS virt machine effort.
+>>>
+>>> Maybe I should bring MIPSSIM work back?
+>>                          ^ Oops I meant MIPS VIRT.
+> 
+> IIRC I didn't finished to review the previous version?
+> 
+> Is it this series?
+> https://lore.kernel.org/qemu-devel/20221124212916.723490-1- 
+> jiaxun.yang@flygoat.com/
 
-Fixes: 60d30cff847 ("target/ppc: Move SPR indirect registers into PnvCore")
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- target/ppc/cpu_init.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 7decc09aec8..f81cb680fc3 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5801,6 +5801,18 @@ static void register_power9_book4_sprs(CPUPPCState *env)
-                  &spr_read_generic, &spr_write_generic,
-                  &spr_read_generic, &spr_write_generic,
-                  0x00000000);
-+
-+    /* SPRC/SPRD exist in earlier CPUs but only tested on POWER9/10 */
-+    spr_register_hv(env, SPR_POWER_SPRC, "SPRC",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_generic, &spr_write_sprc,
-+                 0x00000000);
-+    spr_register_hv(env, SPR_POWER_SPRD, "SPRD",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_sprd, &spr_write_sprd,
-+                 0x00000000);
- #endif
- }
- 
-@@ -5822,17 +5834,6 @@ static void register_power8_book4_sprs(CPUPPCState *env)
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_generic,
-                      KVM_REG_PPC_WORT, 0);
--    /* SPRC/SPRD exist in earlier CPUs but only tested on POWER9/10 */
--    spr_register_hv(env, SPR_POWER_SPRC, "SPRC",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_sprc,
--                 0x00000000);
--    spr_register_hv(env, SPR_POWER_SPRD, "SPRD",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_sprd, &spr_write_sprd,
--                 0x00000000);
- #endif
- }
- 
--- 
-2.47.1
-
+As the 'MIPS VirtIO Machine' looks quite easy, I can see it being
+merged within 2 releases, so it seems safe to deprecate the MipsSim
+one meanwhile.
 
