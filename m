@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FDBA766B9
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 15:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD956A766DD
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 15:27:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzF2u-0006Kg-C4; Mon, 31 Mar 2025 09:19:20 -0400
+	id 1tzF9U-0000r6-RK; Mon, 31 Mar 2025 09:26:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tzF2n-0006Jb-Kr
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:19:13 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1tzF9L-0000qY-AF
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:26:00 -0400
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tzF2m-00052m-0l
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:19:13 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-227b650504fso89553645ad.0
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 06:19:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1tzF9I-0006Le-4k
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:25:58 -0400
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-2c7e5f7f0e3so1199519fac.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 06:25:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743427149; x=1744031949; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1743427555; x=1744032355;
+ darn=nongnu.org; 
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BYuLLevDThsIlhYiPwTOv7bRzn5s5UV46Vyannfxfao=;
- b=B+CXsHg6wGGsRfbtFTS/o8Emeasgd9XphpSXX4NJ22RvpJZzq0BLBsOWKM2GN8MEu7
- 4r2yB0rVQ2Ce+kqYzSe4Zx0mWrfVf6qEqrVvm+7m7I/zen1ccoSeuLViutGr93kRmDuX
- m5rcdPZpb42omhQ50VIjxnwGiZPXpMwRC47t/o+EXgkaL3aXNBT8R263nLsjeL1lPaxi
- dRMphyxPT2TIaxrhtmt4ARsplyXivqCMu3uhBoZ3N4j2/kj7THyM5eMXzrQI+w4nniSN
- BlVEOBa0BdXGd/pDwbaWVTIlanCyod2qvnNYMpkQ+UXIihZ9Ad8HJX3nb6zYpXznuTly
- GvHw==
+ bh=hc7M5T1RbeXSxeGRh3KQFlWKqApoAGTisYvoo/yzzD4=;
+ b=AFIcSeTYlbRv1vLHIby9ZQfpFsR6jXUhsCWiZ9OPh2rDMQnfDf718B6YT35JgL8hzH
+ is23Z8ryX6onPXh24j6Qeo/OphrCQ+9yorrhSk5Hn2oVRzWHaGeud7xGpPqtqXA34GRY
+ bjis2P0+JjiFf5IkDTgMFkKv8PxKfxkNiC06hnaolGnAz0plyz0KHL2Z4LFYMc2v0f0N
+ cYSCXkKGwEKwp7WNtziVw/EuHzm4hGi/hLC+mgW7L6vMWQ+IIibPW3d8+UmXdOvaKySn
+ 6KKi/2nBDM39/+goUjQuxPu/pp3tku0IL/2gCrPGhOMfXvDJ9WpHteZXYAU+g2fH/ooE
+ xiZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743427149; x=1744031949;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1743427555; x=1744032355;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BYuLLevDThsIlhYiPwTOv7bRzn5s5UV46Vyannfxfao=;
- b=PlvnZ18Joc7Zw3wyZqoe1yIHqdsmegPxX/79ZWyfo+A3sAfSmOkgpgVvGAQ6QKjExx
- mVKMrgipw/ztpX+ip0RQh217OJPjefsvfCZbrcO2Hi81y2xBQj3UUiLAIYLVN7M1q/sr
- SOjPVEeuhfOVJnQLDFXnS+by2xIHUJ4hNs0npcJuqpZojkOGWSJomJ7oTpVeUiXkBvgE
- aZe5kle7CjWIdSlaTOIvsymiNJ86MxeLGqeqWuA4ZaI5CxIIAeTo35RmJ7kYgPVNgp+J
- oWhe6+kkVO2WADuC5E69wJ39MAoyFVEc6hu4HxgxeEX06uBMy0nskLZqLjRMg9vN6Zo2
- UAHg==
-X-Gm-Message-State: AOJu0Yyzlu82+yi9E80rm4lvEpxSgBNtBsm6IdXEXNr3DCjrzmM860hZ
- X39XUTVgc+OZVeJQmFUWi/lSbtm76IMf3PFjyJd6GuE2DaomYppQJDSntw==
-X-Gm-Gg: ASbGncuKpCe6/yuonV7w10XXXxOuMZXuROjx66tR8cTok0pvO6L3LIawdvvLEa9Qx3V
- 6HXV25N9JMF+RQWiPH1s2UtNiL28oXRA3zg29K3DyUEZPQWI47kJXAsByqunTj7ValsTRHWJGyC
- 8YZvNRCK1DI6rC2eIXnAzKPDztbytN0kCyXqGWhN1YYal5k/hYcu62RDdafecKiEz3Vpbq+29la
- kn4ebHmt1Fok+44/ZwJ4ILS29SqJ+q9dtrGvdxCTJwq6RJEOdIuDy39uRpBDSL58xf0qbKP+ONk
- zXx7iIt0Sk+9ng/TMeDHIPOBsCz3UsLM1UNbhhJhRM7v9npmWg==
-X-Google-Smtp-Source: AGHT+IHTsK7MV+NL7jbzeHzsoELLHPnFcqLnfL/fawOkQZxR7CwIYDo30xA75mHXsfLEku19EyNipw==
-X-Received: by 2002:a17:903:2446:b0:221:85:f384 with SMTP id
- d9443c01a7336-2292f95d401mr136652195ad.16.1743427149112; 
- Mon, 31 Mar 2025 06:19:09 -0700 (PDT)
-Received: from wheely.local0.net ([203.185.207.94])
+ bh=hc7M5T1RbeXSxeGRh3KQFlWKqApoAGTisYvoo/yzzD4=;
+ b=SZ2SbIEy0mzQPo3R7PGwYrB4sC2B5fwg55g8J2MqyhvxAVDnvEgYfxPFtbfBVPxF1Z
+ SdOQ6OXAnBqdhc5SP6ic0Cqknz6HoIY8aDWsH/9tcubgLP5kVrBl4Sbqd7UZOY5g30aY
+ ODfwu4G1UI/klEzJGLlo+PlzcLZdaeF9sHusO8UA3NThSy3dI2ztj96YSDw5RfIUYX0E
+ IUqlvqZOej9jHqOdO1RZUplHeiLZfnLKCiBtAUJn2oJ/3ni54uIHZL7GUd4Dy4pWyWnS
+ BVUXm3CWJwQyWm+KfreH2I32kyCUU5DvJt1DeoachYtSt+cx2dkFXQtYD6RZ5cyv/tXs
+ U2mA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVu/LB4uIpc0XYLJppowwaFX3paZMccoyayZpBGMze3J0S40xV2m8D6mxmNytl3Sdem6Sdt3gGhtZJG@nongnu.org
+X-Gm-Message-State: AOJu0Yxfi753hyVQb3NT5ioZjqIwq6Z2/ATg+U8ShYCJ2Axqk5DPFB4b
+ vNN1k6vP92Q0HOIW+8MBYSeuX3XithcTdgcsuurjtgZZVwk5pHnG32OWTkDgcApnaWOj56TFoS0
+ B
+X-Gm-Gg: ASbGncsrP5TgF1eXoX7XGeroW4iVd+1P8t2HVgYtEXKikPXfyEV6SnuPuDtBVmQ7IF1
+ 39geme3TBlGH7xruaRDPggUJnr8o2StYTF3nkHXkzWvHI8OOLviaBMY5RVtSoWWOyZnyEPJPafP
+ PZ0E9pZfh5xH9t03YF3vTIrtahzCT9x9S0PZrq5xg6HTWBL3CtpEnHJbRX7Ai5ZJ6HnyLml310Z
+ 8EEY4QyYPSACACw3h24sTl7c9grZrO8muKb0mO1Yyz7vUMjmVM5o3ZvV0CqUuw6779P68ASQ+zh
+ DegTjfHCOyW3imSHAKzaL82LY2PV5DvmVqjhZjVO1kDD+Odn
+X-Google-Smtp-Source: AGHT+IHPc6xzfva5xOSpG5/wAryPHX7/iHPeLkv0aHM4Qr3phmwR8YXIHdzDNZLg/hU9cSK3i8XmHA==
+X-Received: by 2002:a05:6870:5308:b0:2c3:1680:d1a9 with SMTP id
+ 586e51a60fabf-2cbcf576c76mr4993645fac.22.1743427554652; 
+ Mon, 31 Mar 2025 06:25:54 -0700 (PDT)
+Received: from mail.minyard.net ([2001:470:b8f6:1b:da64:426e:c0da:b180])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7397109c494sm7090671b3a.136.2025.03.31.06.19.05
+ 586e51a60fabf-2c86a48d7efsm1834155fac.14.2025.03.31.06.25.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Mar 2025 06:19:08 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PATCH v3 2/2] memory: suppress INVALID_MEM logs caused by debug
- access
-Date: Mon, 31 Mar 2025 23:18:51 +1000
-Message-ID: <20250331131852.612406-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250331131852.612406-1-npiggin@gmail.com>
-References: <20250331131852.612406-1-npiggin@gmail.com>
+ Mon, 31 Mar 2025 06:25:52 -0700 (PDT)
+Date: Mon, 31 Mar 2025 08:25:45 -0500
+From: Corey Minyard <corey@minyard.net>
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: Corey Minyard <minyard@acm.org>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 3/3] ipmi/bmc-sim: Add 'Get Channel Info' command
+Message-ID: <Z-qX2R9o-kpby24z@mail.minyard.net>
+References: <20250331125724.607355-1-npiggin@gmail.com>
+ <20250331125724.607355-4-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250331125724.607355-4-npiggin@gmail.com>
+Received-SPF: none client-ip=2001:4860:4864:20::2d;
+ envelope-from=corey@minyard.net; helo=mail-oa1-x2d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,60 +95,183 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: corey@minyard.net
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Debugger-driven invalid memory accesses are not guest errors, so should
-not cause these error logs.
+On Mon, Mar 31, 2025 at 10:57:24PM +1000, Nicholas Piggin wrote:
+> Linux issues this command when booting a powernv machine.
 
-Debuggers can access memory wildly, including access to addresses not
-specified by the user (e.g., gdb it might try to walk the stack or load
-target addresses to display disassembly). Failure is reported
-synchronously by the GDB protcol so the user can be notified via the
-debugger client.
+This is good, just a couple of nits.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- system/memory.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  include/hw/ipmi/ipmi.h | 14 +++++++++++
+>  hw/ipmi/ipmi_bmc_sim.c | 56 ++++++++++++++++++++++++++++++++++++++++--
+>  hw/ipmi/ipmi_bt.c      |  2 ++
+>  hw/ipmi/ipmi_kcs.c     |  1 +
+>  4 files changed, 71 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/ipmi/ipmi.h b/include/hw/ipmi/ipmi.h
+> index 77a7213ed93..5f01a50cd86 100644
+> --- a/include/hw/ipmi/ipmi.h
+> +++ b/include/hw/ipmi/ipmi.h
+> @@ -41,6 +41,15 @@ enum ipmi_op {
+>      IPMI_SEND_NMI
+>  };
+>  
+> +/* Channel properties */
+> +#define IPMI_CHANNEL_IPMB                0x00
+> +#define IPMI_CHANNEL_SYSTEM              0x0f
+> +#define IPMI_CH_MEDIUM_IPMB              0x01
+> +#define IPMI_CH_MEDIUM_SYSTEM            0x0c
+> +#define IPMI_CH_PROTOCOL_IPMB            0x01
+> +#define IPMI_CH_PROTOCOL_KCS             0x05
+> +#define IPMI_CH_PROTOCOL_BT_15           0x08
 
-diff --git a/system/memory.c b/system/memory.c
-index 4c829793a0a..4c64a56676d 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -1412,7 +1412,9 @@ bool memory_region_access_valid(MemoryRegion *mr,
- {
-     if (mr->ops->valid.accepts
-         && !mr->ops->valid.accepts(mr->opaque, addr, size, is_write, attrs)) {
--        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
-+        /* Don't log memory errors due to debugger accesses */
-+        int log_mask = attrs.debug ? 0 : LOG_INVALID_MEM;
-+        qemu_log_mask(log_mask, "Invalid %s at addr 0x%" HWADDR_PRIX
-                       ", size %u, region '%s', reason: rejected\n",
-                       is_write ? "write" : "read",
-                       addr, size, memory_region_name(mr));
-@@ -1420,7 +1422,8 @@ bool memory_region_access_valid(MemoryRegion *mr,
-     }
- 
-     if (!mr->ops->valid.unaligned && (addr & (size - 1))) {
--        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
-+        int log_mask = attrs.debug ? 0 : LOG_INVALID_MEM;
-+        qemu_log_mask(log_mask, "Invalid %s at addr 0x%" HWADDR_PRIX
-                       ", size %u, region '%s', reason: unaligned\n",
-                       is_write ? "write" : "read",
-                       addr, size, memory_region_name(mr));
-@@ -1434,7 +1437,8 @@ bool memory_region_access_valid(MemoryRegion *mr,
- 
-     if (size > mr->ops->valid.max_access_size
-         || size < mr->ops->valid.min_access_size) {
--        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
-+        int log_mask = attrs.debug ? 0 : LOG_INVALID_MEM;
-+        qemu_log_mask(log_mask, "Invalid %s at addr 0x%" HWADDR_PRIX
-                       ", size %u, region '%s', reason: invalid size "
-                       "(min:%u max:%u)\n",
-                       is_write ? "write" : "read",
--- 
-2.47.1
+I know it's picky, but could you spell out CHANNEL here?
 
+> +
+>  #define IPMI_CC_INVALID_CMD                              0xc1
+>  #define IPMI_CC_COMMAND_INVALID_FOR_LUN                  0xc2
+>  #define IPMI_CC_TIMEOUT                                  0xc3
+> @@ -170,6 +179,11 @@ struct IPMIInterfaceClass {
+>       * Return the firmware info for a device.
+>       */
+>      void (*get_fwinfo)(struct IPMIInterface *s, IPMIFwInfo *info);
+> +
+> +    /*
+> +     * IPMI channel protocol type number.
+> +     */
+> +    uint8_t protocol;
+>  };
+>  
+>  /*
+> diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
+> index 8c3313aa65f..9198f854bd9 100644
+> --- a/hw/ipmi/ipmi_bmc_sim.c
+> +++ b/hw/ipmi/ipmi_bmc_sim.c
+> @@ -70,6 +70,7 @@
+>  #define IPMI_CMD_GET_MSG                  0x33
+>  #define IPMI_CMD_SEND_MSG                 0x34
+>  #define IPMI_CMD_READ_EVT_MSG_BUF         0x35
+> +#define IPMI_CMD_GET_CHANNEL_INFO         0x42
+>  
+>  #define IPMI_NETFN_STORAGE            0x0a
+>  
+> @@ -1033,8 +1034,8 @@ static void send_msg(IPMIBmcSim *ibs,
+>      uint8_t *buf;
+>      uint8_t netfn, rqLun, rsLun, rqSeq;
+>  
+> -    if (cmd[2] != 0) {
+> -        /* We only handle channel 0 with no options */
+> +    if (cmd[2] != IPMI_CHANNEL_IPMB) {
+> +        /* We only handle channel 0h (IPMB) with no options */
+>          rsp_buffer_set_error(rsp, IPMI_CC_INVALID_DATA_FIELD);
+>          return;
+>      }
+> @@ -1232,6 +1233,56 @@ static void get_watchdog_timer(IPMIBmcSim *ibs,
+>      }
+>  }
+>  
+> +static void get_channel_info(IPMIBmcSim *ibs,
+> +                             uint8_t *cmd, unsigned int cmd_len,
+> +                             RspBuffer *rsp)
+> +{
+> +    IPMIInterface *s = ibs->parent.intf;
+> +    IPMIInterfaceClass *k = IPMI_INTERFACE_GET_CLASS(s);
+> +    uint8_t ch = cmd[1] & 0x0f;
+> +
+> +    /* Only define channel 0h (IPMB) and Fh (system interface) */
+> +
+> +    if (ch == 0x0e) { /* "This channel" */
+> +        ch = IPMI_CHANNEL_SYSTEM;
+> +    }
+> +    rsp_buffer_push(rsp, ch);
+> +
+> +    if (ch != IPMI_CHANNEL_IPMB && ch != IPMI_CHANNEL_SYSTEM) {
+> +        /* Not supported */
+
+I think that an all zero response is a valid response.  I think you
+should return a IPMI_CC_INVALID_DATA_FIELD instead, right?
+
+> +        int i;
+> +        for (i = 0; i < 8; i++) {
+> +            rsp_buffer_push(rsp, 0x00);
+> +        }
+> +        return;
+> +    }
+> +
+> +    if (ch == IPMI_CHANNEL_IPMB) {
+> +        rsp_buffer_push(rsp, IPMI_CH_MEDIUM_IPMB);
+> +        rsp_buffer_push(rsp, IPMI_CH_PROTOCOL_IPMB);
+> +    } else { /* IPMI_CHANNEL_SYSTEM */
+> +        rsp_buffer_push(rsp, IPMI_CH_MEDIUM_SYSTEM);
+> +        rsp_buffer_push(rsp, k->protocol);
+> +    }
+> +
+> +    rsp_buffer_push(rsp, 0x00); /* Session-less */
+> +
+> +    /* IPMI Vendor ID */
+> +    rsp_buffer_push(rsp, 0xf2);
+> +    rsp_buffer_push(rsp, 0x1b);
+> +    rsp_buffer_push(rsp, 0x00);
+
+Where does this come from?
+
+> +
+> +    if (ch == IPMI_CHANNEL_SYSTEM) {
+> +        /* IRQ assigned by ACPI/PnP (XXX?) */
+> +        rsp_buffer_push(rsp, 0x60);
+> +        rsp_buffer_push(rsp, 0x60);
+
+The interrupt should be available.  For the isa versions there is a
+get_fwinfo function pointer that you can fetch this with.  For PCI it's
+more complicated, unfortunately.
+
+-corey
+
+> +    } else {
+> +        /* Reserved */
+> +        rsp_buffer_push(rsp, 0x00);
+> +        rsp_buffer_push(rsp, 0x00);
+> +    }
+> +}
+> +
+>  static void get_sdr_rep_info(IPMIBmcSim *ibs,
+>                               uint8_t *cmd, unsigned int cmd_len,
+>                               RspBuffer *rsp)
+> @@ -2028,6 +2079,7 @@ static const IPMICmdHandler app_cmds[] = {
+>      [IPMI_CMD_RESET_WATCHDOG_TIMER] = { reset_watchdog_timer },
+>      [IPMI_CMD_SET_WATCHDOG_TIMER] = { set_watchdog_timer, 8 },
+>      [IPMI_CMD_GET_WATCHDOG_TIMER] = { get_watchdog_timer },
+> +    [IPMI_CMD_GET_CHANNEL_INFO] = { get_channel_info, 3 },
+>  };
+>  static const IPMINetfn app_netfn = {
+>      .cmd_nums = ARRAY_SIZE(app_cmds),
+> diff --git a/hw/ipmi/ipmi_bt.c b/hw/ipmi/ipmi_bt.c
+> index 583fc64730c..d639c151c4d 100644
+> --- a/hw/ipmi/ipmi_bt.c
+> +++ b/hw/ipmi/ipmi_bt.c
+> @@ -434,4 +434,6 @@ void ipmi_bt_class_init(IPMIInterfaceClass *iic)
+>      iic->handle_if_event = ipmi_bt_handle_event;
+>      iic->set_irq_enable = ipmi_bt_set_irq_enable;
+>      iic->reset = ipmi_bt_handle_reset;
+> +    /* BT System Interface Format, IPMI v1.5 */
+> +    iic->protocol = IPMI_CH_PROTOCOL_BT_15;
+>  }
+> diff --git a/hw/ipmi/ipmi_kcs.c b/hw/ipmi/ipmi_kcs.c
+> index c15977cab4c..8af7698286d 100644
+> --- a/hw/ipmi/ipmi_kcs.c
+> +++ b/hw/ipmi/ipmi_kcs.c
+> @@ -420,4 +420,5 @@ void ipmi_kcs_class_init(IPMIInterfaceClass *iic)
+>      iic->handle_rsp = ipmi_kcs_handle_rsp;
+>      iic->handle_if_event = ipmi_kcs_handle_event;
+>      iic->set_irq_enable = ipmi_kcs_set_irq_enable;
+> +    iic->protocol = IPMI_CH_PROTOCOL_KCS;
+>  }
+> -- 
+> 2.47.1
+> 
 
