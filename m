@@ -2,87 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6318AA76B59
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 17:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F193A76BBB
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 18:16:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzHTt-0001LC-Vx; Mon, 31 Mar 2025 11:55:23 -0400
+	id 1tzHnQ-00020L-9R; Mon, 31 Mar 2025 12:15:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tzHTI-00019i-9Y; Mon, 31 Mar 2025 11:54:51 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1tzHnN-0001zU-Qh
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 12:15:29 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tzHTG-0005II-JC; Mon, 31 Mar 2025 11:54:44 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-225477548e1so82097865ad.0; 
- Mon, 31 Mar 2025 08:54:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1tzHnK-0008MV-Mo
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 12:15:29 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-22928d629faso51239305ad.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 09:15:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743436480; x=1744041280; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=E2wJNuH1xvXGk6SXFgIvKU6voGjgibA+BiurgRrjWX4=;
- b=NYcDULHoegxOPCLTnHh7fUDSLuz4jql4hqLe5uf+8xVU6lDiE3lfJbFCQ+PzN/SFrs
- /wV3BzGCeOaXK3kFQ+OdGZDfTbnjZLqBF1kzvJk1SHWDm14M8MBYUFHjRKUCzHpheydG
- BbY8rbghI5rTND+k8V5H+pa2l8/jmvwjLOmABejeoqbxQb1OJYMQyXNGSPCWz9V5qqau
- JFFpa6y9qIUUvwWE+lkRxXsRVotNzBd6EySTYzhucVzaxnLPIKUo0szOXe9bDxHi7TPw
- 9QgsFqBG0J2+ZWFlrb8HKIgakc61gYu0Ozii9DJXJOOM8QqHwU0r90JCXte8ArLyJXhM
- rgqQ==
+ d=linaro.org; s=google; t=1743437724; x=1744042524; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9689pOzOcnr692n5+VxzO3lhYTf7JXr5AdR9IwYqDI0=;
+ b=Cug/sfmfYgEy2RXrXrNjOUVaNKmeWsFwe11k01JdXGv8j2QIYXI8ctSJH3UOzAuo6g
+ eP6B2WmjIGVthysHMsW+x2SzfgZidWUzDcZ0k85JcxQ91YzS4qTGzhxPm3h+82IS/iGN
+ CBTdOyOlE9ZbmOYYvWaqhZlLmxplVg2aXMGyAA/YhZfunzRnwKZb4Lskmo2l2LWKoq4Z
+ 9ev8IMhEOsjryf8Quc10KiwcV6S7wyTwr8bbYzGgglh28k9mOu3XfKIqLatygofN3IrD
+ 7RcKH56i5kO7nzd17o54tyygjjcWavPd5TYEPVdqCyAZN3cZAYQpe6WX+ttQCPISMCNA
+ /zpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743436480; x=1744041280;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E2wJNuH1xvXGk6SXFgIvKU6voGjgibA+BiurgRrjWX4=;
- b=QLJCL9ANyUdo9E0LNYC1O90WYxEA0zjdZkg0iGn7RV2Im22cZGvR1Bd8S8gacRKdXl
- ZlXk9lC0iUB76zEq1bBIi+iuvtuoAeI5yyZXqpaAvA4FDZyn7yObaCA05qXcygU/nTiE
- RO+83Jl3x27bLxhnw6sDVZWlobIjnWQ3vvUmyfwm6V/espgnzpji0nImtzm7uaZuPmYZ
- Son87Qz7vabojoXfDUGEx3gRolnaYW4jhSGekpDdLc9I2dwIKCPIPYGS9XPWE2scPrpK
- +bpAhLY59DARNvQ1xd5lv/UBKWfpIq6w3IUBK6cUrSl2dgZWQM+D9y4SsNSP7ioXyweX
- zkMQ==
+ d=1e100.net; s=20230601; t=1743437724; x=1744042524;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9689pOzOcnr692n5+VxzO3lhYTf7JXr5AdR9IwYqDI0=;
+ b=h5BG4s8CHU36pIL29DFL8SgaD06VBXJfLdjnB4wYObQJ1PTm8HU3PUf8VEXTWaTjrP
+ zBr969wopd+SO6fHQpKid366hERkRGzSEpTDAGfDs1GDTmuFzoqjtBreL9IvziPmn5PJ
+ w5sSPjWVYv/Ie/HSDG88rrdW53u1XdOcOrepLw2BfaydlBWZp4EQv1YhP8Tt4NTTlsnK
+ dz+8VQIG7SeMG0I/vht4T/6gV4rg0syeWb9IQwMCJ4U0uepxbnUlcrlDX6HQRWKgk+cd
+ UlWxMZg5/s1c38JU1OsgQKP1ChMQTGmp4BdRe1nkRZ2zSPY7pG5HA29lUOLu0t3RLeRW
+ 4s8Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXmxfhfb5umAzT3mIDqXWvCKnHBwM1Xh8hDaJRh7sZOnr7sH6jZ/okSiG51QoX7w+XJQg6nWVT5E+r9@nongnu.org
-X-Gm-Message-State: AOJu0Yzw8iFkiJz53tnmShC9PN2AFSET96ihZCZBo5lOO8fml/2L8pla
- c1T8g1NzCNi+8nxaqE+Bv9gK8v1DvtwTyyFs/cbWVBMcGQFeFJF+MJXXJw==
-X-Gm-Gg: ASbGnct70qxwFABwc3gkZSYgwkkxEJExGha8zGC67GJUtnn9X29mZwLH1KUkAQk5b36
- 2nTvA5XH44eda/PKXJvVjZ99Jtqb6n16Xfg+QT/wMOzziFWUNlLQuF1s3C1zZo1LIYXp5Y4rvo3
- TAfhmjtpRvNieMaAieBoUPd3ct621aBxLy3DnQ5EasrDovEm4Vi2uWkUlnAHbXrTqqK2iq1CNNs
- 70JeoqDoHfNVh/7LM1vXTKUv/gZvS8crgyX0SxlXuzfqD37SMtl0I/AhP/co1TShC7bAMjrJZ5k
- 5vLjkQcpiv9ukXsvXshAWWlQhxk0VI56VM05qlqs88/4DcQXtNqpRr7ahlmE
-X-Google-Smtp-Source: AGHT+IFPwjmdtsDi+Hhcd9WYDfHCxdeq8qqYiXZQO4HGYtHXFirK6H+drc41cFzl33p0qUbeXQBNEQ==
-X-Received: by 2002:a17:902:d489:b0:224:256e:5e4e with SMTP id
- d9443c01a7336-2292f961168mr134784455ad.16.1743436479899; 
- Mon, 31 Mar 2025 08:54:39 -0700 (PDT)
-Received: from wheely.local0.net ([203.185.207.94])
+ AJvYcCVF1KKM089ewckUXIHFs3tzdS3B1FKXhYIN39oufbwGjP5Y8CG84Del5BDBfITwg7VGM6OkQu0oETxd@nongnu.org
+X-Gm-Message-State: AOJu0YwkAnNoHQHcM+AkYpe2Bd1SplpgXeJ2qbc+PQ90zZqXcezphbPy
+ KAe3HQo5vitmwpZQaa+XoGSpQBouZHBqwcySgTpW6y0phOFvIEN5ySf+mlNY4+/wLj18I5Vh4fl
+ 7
+X-Gm-Gg: ASbGncugeg9C/DsGwVOTK5+utyf3iSTG6SlZz3YmG/2qe66fbOSxUsnj2AcRly7lUHQ
+ tuOnRzSk5gmzP9WBcMBFLSXoKA0e5K2adNJPS7IAgKqoQP5VKArwqlMThRcpOtEZPdS0arSl9TQ
+ pp8MEg0WSKsgsPZJ2boR+sOXMFD4KAJCnWMmnQQvazbmscMkG1+eu0LaY50aOEgWmFUl+do1Bci
+ msKpGeIFZoPN2W8OXmUtFYzEuL6ZMKSslQ3Jayg74ybG55KsBZVUX4G1xyZX2DbJ0N/G+IZ8qZT
+ SBPWQIviatSY+varWk2qA9eGmlfhGfylMERqE+ClbtFHdTMNYXtqhFr1VAZCCvNdDcY=
+X-Google-Smtp-Source: AGHT+IGw94lp3DvNLbq3wZYouVEha8tdiGl3NicnLc3k2v2IQiU3q/nDpFeTYaspmn5vOktnfI2Rlg==
+X-Received: by 2002:a05:6a00:a85:b0:736:450c:fa56 with SMTP id
+ d2e1a72fcca58-739803238ebmr12482252b3a.5.1743437724503; 
+ Mon, 31 Mar 2025 09:15:24 -0700 (PDT)
+Received: from [192.168.0.102] ([186.215.49.85])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2291eec6fbdsm70742045ad.16.2025.03.31.08.54.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Mar 2025 08:54:39 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [RFC PATCH 3/3] target/ppc: Allow goto-tb on fixed real mode
- translations
-Date: Tue,  1 Apr 2025 01:54:23 +1000
-Message-ID: <20250331155423.619451-4-npiggin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250331155423.619451-1-npiggin@gmail.com>
-References: <20250331155423.619451-1-npiggin@gmail.com>
+ d2e1a72fcca58-73971063d19sm7372763b3a.90.2025.03.31.09.15.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Mar 2025 09:15:23 -0700 (PDT)
+Message-ID: <86700de0-42b6-4403-bd9f-1334e22bcfa8@linaro.org>
+Date: Mon, 31 Mar 2025 13:15:20 -0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-10.0 1/2] hw/pci-host/designware: Fix access to
+ ATU_UPPER_TARGET register
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Joey <jeundery@gmail.com>, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-stable@nongnu.org
+References: <20250331152041.74533-1-philmd@linaro.org>
+ <20250331152041.74533-2-philmd@linaro.org>
+Content-Language: en-US
+From: Gustavo Romero <gustavo.romero@linaro.org>
+In-Reply-To: <20250331152041.74533-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,69 +106,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixed translations (mapping and protections unchanged) do not have
-to restrict TB chaining to within a target page.
+Hi Phil,
 
-Hypervisor-real mode is a fixed translation.
+On 3/31/25 12:20, Philippe Mathieu-Daudé wrote:
+> Fix copy/paste error writing to the ATU_UPPER_TARGET
+> register, we want to update the upper 32 bits.
+> 
+> Cc: qemu-stable@nongnu.org
+> Reported-by: Joey <jeundery@gmail.com>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2861
+> Fixes: d64e5eabc4c ("pci: Add support for Designware IP block")
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/pci-host/designware.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+> index c07740bfaa4..5598d18f478 100644
+> --- a/hw/pci-host/designware.c
+> +++ b/hw/pci-host/designware.c
+> @@ -371,7 +371,7 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
+>   
+>       case DESIGNWARE_PCIE_ATU_UPPER_TARGET:
+>           viewport->target &= 0x00000000FFFFFFFFULL;
+> -        viewport->target |= val;
+> +        viewport->target |= (uint64_t)val << 32;
+>           break;
+>   
+>       case DESIGNWARE_PCIE_ATU_LIMIT:
 
-TODO: Supervisor-real mode in spapr should also be a fixed translation.
----
- target/ppc/translate.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 5e610bf29a5..4b4440c8a16 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -183,6 +183,7 @@ struct DisasContext {
-     bool sf_mode;
-     bool has_cfar;
-     bool has_bhrb;
-+    bool ifetch_fixed_xlate;
- #endif
-     bool fpu_enabled;
-     bool altivec_enabled;
-@@ -3656,6 +3657,18 @@ static inline bool use_goto_tb(DisasContext *ctx, target_ulong dest)
-     if (unlikely(ctx->singlestep_enabled)) {
-         return false;
-     }
-+
-+#if defined(TARGET_PPC64)
-+    /* XXX: make translator_use_goto_tb take a 'fixed map' bool */
-+    /* Suppress goto_tb if requested. */
-+    if (ctx->ifetch_fixed_xlate) {
-+        if (tb_cflags(ctx->base.tb) & CF_NO_GOTO_TB) {
-+            return false;
-+        }
-+        return true;
-+    }
-+#endif
-+
-     return translator_use_goto_tb(&ctx->base, dest);
- }
- 
-@@ -6545,6 +6558,7 @@ static void ppc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     ctx->sf_mode = (hflags >> HFLAGS_64) & 1;
-     ctx->has_cfar = !!(env->flags & POWERPC_FLAG_CFAR);
-     ctx->has_bhrb = !!(env->flags & POWERPC_FLAG_BHRB);
-+    ctx->ifetch_fixed_xlate = ((hflags >> HFLAGS_IMMU_IDX) & 7) == 3;
- #endif
-     ctx->lazy_tlb_flush = env->mmu_model == POWERPC_MMU_32B
-         || env->mmu_model & POWERPC_MMU_64;
-@@ -6627,6 +6641,12 @@ static void ppc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-         gen_invalid(ctx);
-     }
- 
-+#if defined(TARGET_PPC64)
-+    if (ctx->ifetch_fixed_xlate) {
-+        return;
-+    }
-+#endif
-+
-     /* End the TB when crossing a page boundary. */
-     if (ctx->base.is_jmp == DISAS_NEXT && !(pc & ~TARGET_PAGE_MASK)) {
-         ctx->base.is_jmp = DISAS_TOO_MANY;
--- 
-2.47.1
 
+Cheers,
+Gustavo
 
