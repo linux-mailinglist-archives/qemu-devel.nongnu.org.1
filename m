@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53847A76556
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 14:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BF3A76559
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 14:05:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzDs3-0007xc-6Q; Mon, 31 Mar 2025 08:04:03 -0400
+	id 1tzDt4-0008RG-M1; Mon, 31 Mar 2025 08:05:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzDrh-0007wQ-P8
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 08:03:43 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tzDsM-000898-Jj; Mon, 31 Mar 2025 08:04:22 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzDrc-0002dx-RZ
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 08:03:39 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43d0618746bso29876815e9.2
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 05:03:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tzDsE-0002jW-Ut; Mon, 31 Mar 2025 08:04:19 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-223fd89d036so92609615ad.1; 
+ Mon, 31 Mar 2025 05:04:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743422614; x=1744027414; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=cEk3jO9GTHWeddzAWGtgrx0xbF/oiL5qddsxWmnJo6I=;
- b=NvMKAHpjp2YdAfrFLjsQ6aFdx0s6/anjbQ4KMPF9LaIB7iE+AGCWFczny9sKhD9xNM
- 9RnLMHhxGQIbNsv7r/m4CVXE6kAPYoQcfqPXEOPF9+jOEfDYS5CY/wHHqufd/Z+y118t
- i7hSaW8XDg1eji0aPt9QagqFmRsvk9eQcRGv8HYH4Sg3mgZT6/XyVuGqMjsJURBwMJVK
- NuxIDTUHFtelkje6VTODyy4HPdxmdEtqET7FQJCqmHhp+DcSi5rlu6Q6gftxCJC9KYr0
- Wdy1YU+Kn/B3mt82wgCxso8XRdqh0uN2p49twiL4ZlLnY93nguXcErG3hpkd/Hi7zjnr
- VwCg==
+ d=gmail.com; s=20230601; t=1743422646; x=1744027446; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=e3Vflko7P43hQcWNkcdnjtMCZoIt3KeseCROzk0XT/Y=;
+ b=DiQmksepPcGGRTN+kJjcpS1Wf06H029Yr5N+88lbVOgyUL1hWVaCXlyShYDg1x5KkO
+ mi6+D1dXTT1vfPTIM3Y29W8AseGoms+//ySVWjjiN2Yl7a+BFihX6KMcRjfjOW8X1Hrz
+ VDrjnj2Ede1L4ZQmOrNcWrOWzVZKcjKj68IE+oaUK7HVwpfQzLo58C9yNNCUGmcfbDha
+ +Z/9/5L7wYYlfbw+4bSi6My4O6DUcPq9arNxaGKr8bS7s/YOjU00FgRqxCYPGABZVUxL
+ hChZ4PRl+L8M9s8XDhdQQswc3TEtrDJcHnWJkFYbJLOwMRAUEK3TicUo6osLZDDqQ5Ws
+ QqnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743422614; x=1744027414;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cEk3jO9GTHWeddzAWGtgrx0xbF/oiL5qddsxWmnJo6I=;
- b=snafqpXtJu48DpKeUefYebTUgaELZq2uzn06CCZyqAWaGBda/eoNkaa4KL2s1IYM5Q
- LdK5qJOPhlDx1Kpct0/zoiagKDH1gNhjrECMp8UQidxkpEklqS4axebVVKPPAo1t6Yq6
- hJnMYYvjiD8Yi9ET9QHjO1DSTwvtIlnKecGu4yfZsc/Z0jsCAMapybLgRAuQzlKwER8r
- e5nEeOcoL35fjYJ70rHKJU9xDiX9hqSHZCUew58wGbzM4n/DtUuxb4qeuGfVKdpL3aB6
- r4LoKWBT6cZgQZ5+05We59vUi0t3YT+X+rmR6R1uS7v/h2g90BvesEnTdEf+H0Qk143C
- ht5A==
+ d=1e100.net; s=20230601; t=1743422646; x=1744027446;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=e3Vflko7P43hQcWNkcdnjtMCZoIt3KeseCROzk0XT/Y=;
+ b=NrYxZ/FgE5HDWRjDcWOAs86ThfJqq6KWNT7aVIrjS8IegXm/pBDnoKJCGy2aC1FWt7
+ uE/YVGfDfKLqI0rcQyVLEBWJx0mYDYrjJwWG1JsoeEQtz+Pu0uZFL7DW926h9iHy9FYN
+ zRqCoFBnbUApCxhMbh5wBPHaw5h+YTvHetUI+yQ6Ssqf06ZpoRDx397hg8S/1tmyIWZq
+ 2Gk831cz87O9wXezrDpJ/C9yQZxuyo4ySh0p0yx5umB1oi2rGRXKZPK/PcT0DgJ5u0GB
+ tS4ClheoUBlZl2KiD349sqqi3QmbobqiisodELd3lzTXkivV/VvmPpDJBFbvpszj1pS8
+ curg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVyfb3oohKf55bmgzsDV0IUSLwVeXlXxPyCZ35Kme51I3hxYCjXqtoZEwtmWhXBFwscSeFUGr60pc5d@nongnu.org
-X-Gm-Message-State: AOJu0YxdEsqgoa22MWrNYCJX9r7aXsvfVTNAJsY2YHYT8SzcCrwjBhIC
- /lsqtdqVFXdGIUwjfvv8mDpEOv17DBc307EpPDHkhm3yi/W+sbVcBks66sOGNqQ=
-X-Gm-Gg: ASbGncuFba2KOLLnVZxoI/VNuppzHlI0Kyqf55lQeAYhkGsZHSbTE3diPvDW5H5AguK
- HkspklHtIqhZ4dMA00J1Dnvb9mAcb3sNBMenjjKETzDapymsnasf8H9lVa0g6/grqZNh0pULbU5
- KIjnkR7LLmA2+mC/HO1GTjU5wBoKtZHE0ResJRAfNwVI/ZqoJ/wq3gcSk5uGyvAVmddBSEWIhgs
- QdfrzCZ7K2s4dvgD3RkAxZIKvNVIWXoWvYgwEUeMtM3phDvsCwPtuPw/tHmu5ZrWwzw4nRZBzV0
- TjUQ4P1nb8gzG790CzeRGJSoVmClU9FxIfohYU+JJoXdzYBj1JdGlOPz3pHaple5Gx4FLAEga9q
- ZXF+E4EhPVeUt
-X-Google-Smtp-Source: AGHT+IFcLYhmRgHVt+W7gFZQTIxL437kdCSYkdJn7QmSKbEPj9Gns298tnEPSYHgJXzXnndGDfT7xw==
-X-Received: by 2002:a05:600c:501f:b0:43c:efed:732c with SMTP id
- 5b1f17b1804b1-43db62bf0acmr67100615e9.28.1743422614549; 
- Mon, 31 Mar 2025 05:03:34 -0700 (PDT)
-Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d82dede2csm162435215e9.5.2025.03.31.05.03.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Mar 2025 05:03:34 -0700 (PDT)
-Message-ID: <bfe9e233-bcaa-4c27-9c8b-7540dc2795ef@linaro.org>
-Date: Mon, 31 Mar 2025 14:03:33 +0200
+ AJvYcCX11TEaChxPtHQB81TaWzfWJE4zmTmjcUzwZbj5pLrw6J+Ex6S0Co527lfbHzDeNxrW075/xopUHGz6@nongnu.org
+X-Gm-Message-State: AOJu0YwxHXSLJSeGAxqw6DQu4lUAHuU7NTlyN4TVOEqY2CXo6dMvm0aC
+ H02//Ub12n6mWS0uDJPibazntdUDotdnR2qv/buOCr+nNpKqYL+4weQfiw==
+X-Gm-Gg: ASbGnctMN+eX8TmH7IZDQ/wLW2z08kEK+jysJ0HNRAZ7t4LG7X15WMYN2JfpPZnaKvM
+ JoZ8o2fHOm+xdxwoIGs71s4unLoiT6cRxnEP3I6+bSxWmjzct5/0AjjhfeArouwovCvBNt4MODK
+ FRE5h0b6xwtegk2opMRcEU7RNo69q9HEY+Ts3pgLz70/j4f+MSgUYdurk+Zrz7+olfnijpyKbVG
+ bKWAw/fA4B8iB5NlEoZ/xN0v8NGjh9dGJB8/NuRgVRKO30FUmtimFfuu2BJR20Ge8V9gAm5j/0E
+ v7JNlzIXpxe7kMcDN82o22NGS/0UoNECR58Gq9RT02yw+p3GhA==
+X-Google-Smtp-Source: AGHT+IGf8IqTFvJXgG8237V+fXmgQfPXR+wx3uTQJ2kzNQGVyDy6kF7dRidEapIpJPrfCo30q4Jfkw==
+X-Received: by 2002:a17:902:7684:b0:229:1717:882a with SMTP id
+ d9443c01a7336-2292f946e33mr108576245ad.4.1743422646551; 
+ Mon, 31 Mar 2025 05:04:06 -0700 (PDT)
+Received: from wheely.local0.net ([203.185.207.94])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2291eedfde5sm67526105ad.78.2025.03.31.05.04.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 31 Mar 2025 05:04:05 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
+Subject: [PATCH 0/2] target/ppc: regression fixes
+Date: Mon, 31 Mar 2025 22:03:54 +1000
+Message-ID: <20250331120357.584561-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mips: Mark the "mipssim" machine as deprecated
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, Thomas Huth <thuth@redhat.com>,
- QEMU devel <qemu-devel@nongnu.org>, Aleksandar Rikalo <arikalo@gmail.com>
-References: <20250121103655.1285596-1-thuth@redhat.com>
- <b0accbae-b9ca-4fb2-a842-f08ac947ef0a@app.fastmail.com>
- <f96de148-67e2-41ab-ad5e-23d68af25f85@app.fastmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <f96de148-67e2-41ab-ad5e-23d68af25f85@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,37 +95,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/1/25 13:09, Jiaxun Yang wrote:
-> 
-> 
-> 在2025年1月21日一月 下午12:07，Jiaxun Yang写道：
->> 在2025年1月21日一月 上午10:36，Thomas Huth写道：
->>> We are not aware of anybody still using this machine, support for it
->>> has been withdrawn from the Linux kernel (i.e. there also won't be
->>> any future development anymore), and we are not aware of any binaries
->>> online that could be used for regression testing to avoid that the
->>> machine bitrots ... thus let's mark it as deprecated now.
->>>
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>> ---
->>>   If anybody is still using this machine, please speak up now!
->>
->>
->> FYI I'm using it to run MIPS AVP (Architecture Verification Programs)
->> time by time to check TCG's compliance.
->>
->> It is a proprietary software so unfortunately no binary available
->> to public :-(
->>
->> AVP has two supported platforms, the first is plain old MIPSSIM
->> here, the second is OVPSim MIPS, which is compatible with my previous
->> MIPS virt machine effort.
->>
->> Maybe I should bring MIPSSIM work back?
->                          ^ Oops I meant MIPS VIRT.
+Couple of minor regression fixes for powernv registers. Minor because
+they aren't bad enough to affect Skiboot/Linux (PowerVM makes more use
+of these).
 
-IIRC I didn't finished to review the previous version?
+Thanks,
+Nick
 
-Is it this series?
-https://lore.kernel.org/qemu-devel/20221124212916.723490-1-jiaxun.yang@flygoat.com/
+Nicholas Piggin (2):
+  target/ppc: Big-core scratch register fix
+  target/ppc: Fix SPRC/SPRD SPRs for P9/10
+
+ target/ppc/cpu_init.c    | 23 ++++++++++++-----------
+ target/ppc/misc_helper.c |  9 ++++++++-
+ 2 files changed, 20 insertions(+), 12 deletions(-)
+
+-- 
+2.47.1
+
 
