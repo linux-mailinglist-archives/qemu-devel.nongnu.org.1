@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE560A76DAD
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 21:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 455C4A76DA6
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 21:50:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzL9c-0004IB-26; Mon, 31 Mar 2025 15:50:40 -0400
+	id 1tzL9B-0003gT-2O; Mon, 31 Mar 2025 15:50:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL8a-0002Tf-HH
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:49:49 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL8f-0002Wt-Tj
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:49:51 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL8Z-0003Qm-0t
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:49:36 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-39141ffa9fcso4633703f8f.0
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 12:49:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL8d-0003R7-Tj
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:49:41 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-399749152b4so2011220f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 12:49:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743450573; x=1744055373; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743450578; x=1744055378; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QeP6jQz4X7+XY7FtN/BipVDSziqVvseYgaJ7e11b81k=;
- b=xV5mj+FBzulAqGZz1AymvU/xLaZLOMQCCwNgFmlUQ3g2tmn7IqHFbmKxo27zKJSNJ+
- F2MpfMpo8hZQlWbPIhKDkiCefKiGSxW9OUXRJyex4zZpC8Ihn8qWixfTw1SYziQdRZQn
- XMdMpHlJgjgb9j6vAa3BD0i9/z7av9rmRLhV4/bPKDailvw82W+gHvUrPGDyRWVqE4mq
- 9GPz4Lm95OXqEKRqkcFE22domYK43BgbRjXznl4yoo+5H2gszdtly+hoTei8J+yURSZq
- uQCnBWqQhtP8Puj0giX+LXsj2bS4uj3jA45XtcMBXpcoZF5EOIRf5FeT0Bn31WhUqyBa
- FaCQ==
+ bh=e7DpG1j0l2crn6m64hQcn/HA4bp5z0J1QxJNTGXkaR0=;
+ b=zlZWvxTqVIlWvaIgPaECkImSOTlhb/z02Me7p0wW25UgIscov5n7QgmTJw1XYzQEIZ
+ 6baCP2rajjmS8X/9N/mwqbE8nY0z6jhcTcNaMrMK6teI+/WDT746+oVce2hCDVL/KzpR
+ dilFHpVD4+5MykE3mnRsOeY2vA0jOLdpUA2iufL7U+cWnWhx+0PkNceGfSYxDHfVhdvi
+ RXVRIfKlBRi/kzPyd4SuZWaP1P2cHJMLpFfDpGjJcyIkkhwF5CZm7RfxJQHkVQeNGTEr
+ slGT4NbdAxshEJPnOMmMutvvghMI3gZGIonMWD71d7rQRHaRkPxUyBc9kMD7sQkSoiby
+ /Sbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743450573; x=1744055373;
+ d=1e100.net; s=20230601; t=1743450578; x=1744055378;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QeP6jQz4X7+XY7FtN/BipVDSziqVvseYgaJ7e11b81k=;
- b=xQV2j/OLld7bGTR7+0v2h+imm6E6UxZ4vBG01FUI5GtZO01ZLZz/kCHbvp8diHaPDl
- vX28ABYDeJoRtnZleF5UfcBSWtiN2DheUINJmOE9B4cDw+tTlnw6DFVJRf9g5CxKd8y+
- qdBaehV/RVFZ5Hx9c5e+sBcGv0YtLtKB/N+mphZtqjLDl2DcU+W4D8GV2XOvhX97ZSYD
- znFWlstK6BSAyAzAaD+mYSre4ZRqrb+qLl0x8737iKlYHCwDzlY4dNQdVi6ueghQf0Gb
- qlZhDtHIknmU8sIyUt2V+DQ7CH+BBDFb9DnVWjooZ8ApsunVUt83gTCMUsiAH6M2ttwx
- 8BSg==
-X-Gm-Message-State: AOJu0YyOUpgly5IutG9DZpEi7uTs1jBRmI+0k4i4zgBG1mMijUGGiQiW
- oWiAkRIEW5L0rfSJ3BDIKIp+KGwC6ZGz+puLpE+N7s6WYP4HQ7Vs3gIfYzaSy+5nRZvXm7GdD6V
- /
-X-Gm-Gg: ASbGncugjNm/d6rIn0ievAorxH0GS9DQylA2yNgpugjreLO5TlLLiCGT3zrLHzfDmor
- d1xkw564wFmz8f2CQQ62PVceiQ+T0fbIpMjQahTigv0mRycpc4LA/08MY4KonYamYw9YR51dhdG
- 40Wpx+GG/O2tylASIuHyy//JCmcF92KImQRdiprN2ylPkFcOECM/pxpIZ244V26xSFdno5VSJ6P
- NI0xMRZquZ6DlLru4mmineXK2fTo2LE6RCDVskWouEmryWgd9rYPa5RKQaDEllVtUO/Zg1/7oQe
- w8wYEYcpf4GUQHmUGA+n/hvurVPeZpgaHz2A0uO2iT+C4FCuSImQ1LoxGAbmDpbpqqfPVRAGli+
- Xg6e+IDAq3mplg9gsMuc=
-X-Google-Smtp-Source: AGHT+IHPkNX8mlPBJJVaShl76um6Dv5nAOBoqgSWsx+vME1rnw1bqT6PlOuDheO1psoGT4MPkQf3bQ==
-X-Received: by 2002:a5d:5f90:0:b0:391:2e0f:efce with SMTP id
- ffacd0b85a97d-39c120ccaa4mr8262930f8f.1.1743450573350; 
- Mon, 31 Mar 2025 12:49:33 -0700 (PDT)
+ bh=e7DpG1j0l2crn6m64hQcn/HA4bp5z0J1QxJNTGXkaR0=;
+ b=go/INrDjy4PIAUMj/TmfGLpNrjoGShSDfvGVYapeF7O9flf5krRjr0cdFyGgP8ShVc
+ RiGxlm3vdrTPyCCIXmnHc0HN5tK/l+kqkBBKPOiz+GN4n1oesFdWNky5jYQXv93wRs4b
+ LX9YTNwq7CJQ3boLMVadxLUnBerfQWh6l54xrg6cwJ3C6EnfihEUlfGp9OSUc3KPdJg/
+ dJXKd2Q6VigmqgsQyOK7YNy/7PG5+4iHVyL9MaV2QpZQ9WUwEbewK8VxfGsRQi20NIUo
+ YSPsArQRY4unylo0hJdVLrluhvMOnANCG24I5acuGTTsZtfROXCLGayEIGMcyDrj1HiE
+ XUjQ==
+X-Gm-Message-State: AOJu0YxP2h5cwrDHGsYNlnvtZJA+iqMfNst1N89hjO70hq8wcXmJMzP3
+ L8cm9fErqDZaNowwI41JD5vVjSSqGlSyAtkGViYY1vbrXYmdIW/6grFG8gUpTtfdnD38YXOiy0b
+ o
+X-Gm-Gg: ASbGncsXfLc9ugnNdwMLxDaJtLSnyEf1NBb21u4sQYVb7NZAtFLJJSHTOviRo+/Mdsk
+ hYT5FX5XaA+Bneg9X//QJOljWx4OgqrAJx6L1R/o5Z7QTqjpeHmlFBMGK2lJj8/bZErX4zu9i7E
+ zE8hPPkIPRF3I6iKVdGVRaSP+cdqR/GmlX3mUODyvqX3Ua0vBef7Nc8g7dv4a6QlwmfGQDux9w8
+ U8J8aRHqndaJGaVc2eybOd0Rtf2oPvPTw0HjH5JxZxvVl2QILjx9o5NA/Wz9eup8YMYwlIKhg/M
+ 4OITOthwdRuv3s7HF6Fox0skXA2OTEunlBb6oD4+HMkmPcT4KYa/jkQO9Sz8zQWkEnREkgXAQ7L
+ S+qXB6LVSWRtpIa0UVno=
+X-Google-Smtp-Source: AGHT+IEWRXZXU9m2OrNLMJy3vLYS+wgKV7TyyNhWGIiqZlYRKszNjJSSNUITLl5v0FH3/Z/YBFBUow==
+X-Received: by 2002:a05:6000:240c:b0:391:ab2:9e80 with SMTP id
+ ffacd0b85a97d-39c2364b666mr239869f8f.24.1743450577995; 
+ Mon, 31 Mar 2025 12:49:37 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d82efdff2sm174620815e9.17.2025.03.31.12.49.32
+ ffacd0b85a97d-39c0b663860sm12251119f8f.39.2025.03.31.12.49.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 31 Mar 2025 12:49:32 -0700 (PDT)
+ Mon, 31 Mar 2025 12:49:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Zheng Huang <hz1624917200@gmail.com>,
+Cc: Chung-Yi Chen <yeechen0207@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/23] hw/sd/sdhci: free irq on exit
-Date: Mon, 31 Mar 2025 21:48:12 +0200
-Message-ID: <20250331194822.77309-15-philmd@linaro.org>
+Subject: [PULL 15/23] hw/char/bcm2835_aux: Fix incorrect interrupt ID when RX
+ disabled
+Date: Mon, 31 Mar 2025 21:48:13 +0200
+Message-ID: <20250331194822.77309-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250331194822.77309-1-philmd@linaro.org>
 References: <20250331194822.77309-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,40 +99,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zheng Huang <hz1624917200@gmail.com>
+From: Chung-Yi Chen <yeechen0207@gmail.com>
 
-Fix a memory leak bug in sdhci_pci_realize() due to s->irq
-not being freed in sdhci_pci_exit().
+Fix a misconfiguration issue in the read implementation of the
+AUX_MU_IIR_REG register. This issue can lead to a transmit interrupt
+being incorrectly interpreted as a receive interrupt when the receive
+interrupt is disabled and the receive FIFO holds valid bytes.
 
-Signed-off-by: Zheng Huang <hz1624917200@gmail.com>
+The AUX_MU_IIR_REG register (interrupt ID bits [2:1]) indicates the
+status of mini UART interrupts:
+
+    - 00: No interrupts
+    - 01: Transmit FIFO is empty
+    - 10: Receive FIFO is not empty
+    - 11: <Not possible>
+
+When the transmit interrupt is enabled and the receive interrupt is
+disabled, the original code incorrectly sets the interrupt ID bits.
+Specifically:
+
+    1. Transmit FIFO empty, receive FIFO empty
+        - Expected 0b01, returned 0b01 (correct)
+    2. Transmit FIFO empty, receive FIFO not empty
+        - Expected 0b01, returned 0b10 (incorrect)
+
+In the second case, the code sets the interrupt ID to 0b10 (receive FIFO
+is not empty) even if the receive interrupt is disabled.
+
+To fix this, the patch adds additional condition for setting the
+interrupt ID bits to also check if the receive interrupt is enabled.
+
+Reference: BCM2835 ARM Peripherals, page 13. Available on
+https://datasheets.raspberrypi.com/bcm2835/bcm2835-peripherals.pdf
+
+Fixes: 97398d900ca ("bcm2835_aux: add emulation of BCM2835 AUX (aka  UART1) block")
+Signed-off-by: Chung-Yi Chen <yeechen0207@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <09ddf42b-a6db-42d5-954b-148d09d8d6cc@gmail.com>
-[PMD: Moved qemu_free_irq() call before sdhci_common_unrealize()]
+Message-ID: <20250328123725.94176-1-yeechen0207@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sdhci-pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/char/bcm2835_aux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/sd/sdhci-pci.c b/hw/sd/sdhci-pci.c
-index 5268c0dee50..bca149e8113 100644
---- a/hw/sd/sdhci-pci.c
-+++ b/hw/sd/sdhci-pci.c
-@@ -18,6 +18,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qemu/module.h"
-+#include "hw/irq.h"
- #include "hw/qdev-properties.h"
- #include "hw/sd/sdhci.h"
- #include "sdhci-internal.h"
-@@ -48,6 +49,7 @@ static void sdhci_pci_exit(PCIDevice *dev)
- {
-     SDHCIState *s = PCI_SDHCI(dev);
- 
-+    qemu_free_irq(s->irq);
-     sdhci_common_unrealize(s);
-     sdhci_uninitfn(s);
- }
+diff --git a/hw/char/bcm2835_aux.c b/hw/char/bcm2835_aux.c
+index c6e7eccf7dd..9b073fc3308 100644
+--- a/hw/char/bcm2835_aux.c
++++ b/hw/char/bcm2835_aux.c
+@@ -98,7 +98,7 @@ static uint64_t bcm2835_aux_read(void *opaque, hwaddr offset, unsigned size)
+          * interrupts are active, besides that this cannot occur. At
+          * present, we choose to prioritise the rx interrupt, since
+          * the tx fifo is always empty. */
+-        if (s->read_count != 0) {
++        if ((s->iir & RX_INT) && s->read_count != 0) {
+             res |= 0x4;
+         } else {
+             res |= 0x2;
 -- 
 2.47.1
 
