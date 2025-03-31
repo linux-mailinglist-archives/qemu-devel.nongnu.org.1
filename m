@@ -2,84 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87001A76721
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 15:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B47FA76752
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 16:03:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzFZD-0005rd-9j; Mon, 31 Mar 2025 09:52:43 -0400
+	id 1tzFhq-0007G9-Nu; Mon, 31 Mar 2025 10:01:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hz1624917200@gmail.com>)
- id 1tzFZ9-0005rO-LM
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:52:39 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hz1624917200@gmail.com>)
- id 1tzFZ7-0001k6-UE
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:52:39 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-22928d629faso48260685ad.3
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 06:52:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743429155; x=1744033955; darn=nongnu.org;
- h=content-transfer-encoding:subject:from:to:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=pDmh587MNtmbO4Hi7j8VcvMCR3H/Msk9nHMXgpFAZ/Q=;
- b=Ftrm+OVIq3cah9zTY2g2pbS25ZqTh3WuLH/jJpBPmMOeDFGIVGcHeMHPVpfPFcdE7O
- w1rlMhn+vvCFIyVkdlPyadxn5gvTvsCPYH29/+aa9r8a1MI4ZLxd2aniXzcVt8dLIhNz
- deAFcWUgLu3xTrsoXL96nTtv06+dskI2e/sAtywSlsTdVm0YOQ3PasfJSKFPFI2byK9P
- F5pHPTwbdh2nqza/2Ki4gLi8B1nnru5+NJhPf35vFnmlPou/qB7+bLA9l1mJJan2EukJ
- /dbJ69+tcIyGTSGhbmEp/2XQR0enYKu2WAQOg9jCIv3+u4Iseut2MLTWVnQ4kJ8HzqnS
- OKyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743429155; x=1744033955;
- h=content-transfer-encoding:subject:from:to:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pDmh587MNtmbO4Hi7j8VcvMCR3H/Msk9nHMXgpFAZ/Q=;
- b=B3qZvkcfmCdA3h7J32FgYcx8dSy9uGcDnadALpA/+FQqc/SEPPS0eyQOIf3nGdmRQ0
- jiA6ITw7VEYCW7+akI2rNGEegvflZnW4pl3EZ9yKSTiStHN6vqPr0S9rFJhnld1ocFTI
- W9dOTuddzC4cjSCEKLLX37m4WFDi4rPKBET3LAoKiF9pNHrYQvMzw1G8SJ4nWwrGH1fF
- Y0j9/zP0nOgmuEKoyWC1s3j5Y/Bxs3RgIiUpYhlpRTLP6am0TmvAu0G7XxwoTopxkH/O
- W4E7Tz9wMeFJ4gT3F2UtFFKplCPy2XPgCm0lbyvqzORPLvHRvK3v7p53l3XWuI64QBc0
- bDAg==
-X-Gm-Message-State: AOJu0YwSYD9gaPYoYgaBD0R7Z7qVsrioTkWOkjynPsi//fij3o2fdyqn
- UAYnkSSObkiVZSEv6HR5EdNkwkZGsFb4z0ztpaLogmRWjzVo7QeYUibO1A==
-X-Gm-Gg: ASbGnctJj1JKLHzi8Z2Efanp1UdYfV6zFT2kZMbmBKeQ2+4kYiRLsXECOz9f04PF92/
- rdNygQWCG/dkFUvbXwn6fX5nc+uvDoMBTGiCbsUCsqnE3WQSR+9+VoelKStC2S3s35M9K2y3RgN
- rBMN3pXmv7h7iDNHXIbDZLuuH2HJLoQrabztBq1iW8T+wO74p30Vd+29rKuRmYwMvdjMLa96uRh
- F5HskQcAJdPIjXPz4KhNu9OwvJGlWixxTXdRl5Od4mnSLDYRXdOVjkpaOcprT3ukDbANyi0/VP+
- AbAlVSnss9jk05pkZxmvb8rUag8Q6JW3UlTLzMHHATG5ZI2O+q+lL2uLo40leX3b
-X-Google-Smtp-Source: AGHT+IGZq5bwtTuwxV/xfamWPb6QYX3Z1pgqDWZCetsGwMZjjBiwZ/uBlgM4nTvT3s8kEa+4dXfK7Q==
-X-Received: by 2002:a17:902:e74e:b0:223:f9a4:3f9c with SMTP id
- d9443c01a7336-2292f949436mr142440435ad.9.1743429154739; 
- Mon, 31 Mar 2025 06:52:34 -0700 (PDT)
-Received: from [192.168.31.221] ([124.64.23.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2291f1dee68sm68929535ad.205.2025.03.31.06.52.33
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Mar 2025 06:52:34 -0700 (PDT)
-Message-ID: <a4e34adc-a425-4183-bb4f-f1b8197125eb@gmail.com>
-Date: Mon, 31 Mar 2025 21:52:31 +0800
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1tzFhm-0007FE-13; Mon, 31 Mar 2025 10:01:34 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1tzFhj-0002vt-Pl; Mon, 31 Mar 2025 10:01:33 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52VCRteo026641;
+ Mon, 31 Mar 2025 14:01:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=iudA85r25R64LHp2CR1TIJG+6LNI6Y9hWtJpjMxbv
+ GA=; b=cH/5We2sc9ZB2EjoUpmuK0MUm0lk1lo2BPlxwEBmw6D6vp6FAvwEFcrpF
+ lZXOE07SkkKcegU13c79al/qIqr8uzrlqfHKSjbY331s2x1V3Ll404kWiHkhuWsh
+ sDSeB7jqbaQpOZtwrHlembPHv588055XClxGIbt1RRi0Deib521mQk7Yus5wO4+p
+ FgcVzhGIh9JsCQL16Mk1SlaL1GDU/Ds2RBTAP16YMkflWZoGmdi074O2SnE7LxGm
+ 73eI76gd/0Jr6FSTRBXY2zaGM1wVL8/L6Ym2niZXNUWdsnkYg9qG5xac833uILfg
+ UnH6OntXyKHqr3x4xwXFXjjMCEAcw==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45qu328etc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 31 Mar 2025 14:01:15 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52VAbEig014555;
+ Mon, 31 Mar 2025 14:01:14 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45pvpkwy6r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 31 Mar 2025 14:01:14 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 52VE1Alw21692740
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 31 Mar 2025 14:01:10 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 433DC20043;
+ Mon, 31 Mar 2025 14:01:10 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 17B0920040;
+ Mon, 31 Mar 2025 14:01:10 +0000 (GMT)
+Received: from a46lp68.lnxne.boe (unknown [9.152.108.100])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 31 Mar 2025 14:01:10 +0000 (GMT)
+From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+To: qemu-s390x mailing list <qemu-s390x@nongnu.org>,
+ Thomas Huth <thuth@redhat.com>, Daniel Berrange <berrange@redhat.com>
+Cc: qemu-devel mailing list <qemu-devel@nongnu.org>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ Hendrik Brueckner <brueckner@linux.ibm.com>,
+ Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+Subject: [PATCH v3 0/4] *** Add SCLP event type CPI ***
+Date: Mon, 31 Mar 2025 16:00:37 +0200
+Message-ID: <20250331140041.3133621-1-shalini@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: qemu-devel@nongnu.org
-From: Zheng Huang <hz1624917200@gmail.com>
-Subject: [PATCH] hw/9pfs: add cleanup operation for 9p-synth
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=hz1624917200@gmail.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3FoWozYQdu9YrdaDAQh468uNWs7MDiQV
+X-Proofpoint-ORIG-GUID: 3FoWozYQdu9YrdaDAQh468uNWs7MDiQV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-31_06,2025-03-27_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0
+ impostorscore=0 priorityscore=1501 mlxscore=0 bulkscore=0 clxscore=1015
+ lowpriorityscore=0 suspectscore=0 spamscore=0 mlxlogscore=801 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503310100
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=shalini@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,77 +105,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-This patch adds a cleanup operation for 9p-synth, which fixes a memory
-leak bug in synth_init() and other related operations. All child nodes
-of synth_root need to be freed before the entire filesystem exits.
+Implement the Service-Call Logical Processor (SCLP) event
+type Control-Program Identification (CPI) in QEMU.
 
-If you have any better ideas for the implementation, please feel free
-to share them.
+Changed since v2:
+- Add SPDX license tag in the new file hw/s390x/sclpcpi.c
+- Store the control-program Identification data in the sclpcpi device
+- Update the description of CPI attributes
+- Use ldq_be_p() intead of be64_to_cpu() 	
+- Return the CPI attribute system-level as an integer in QMP
+- Add compat handling for backward migration
+- Other minor changes
 
-Signed-off-by: Zheng Huang <hz1624917200@gmail.com>
+Shalini Chellathurai Saroja (4):
+  hw/s390x: add SCLP event type CPI
+  hw/s390x: add Control-Program Identification to QOM
+  hw/s390x: support migration of CPI data
+  hw/s390x: compat handling for backward migration
 
+ hw/s390x/event-facility.c         |  28 ++++-
+ hw/s390x/meson.build              |   1 +
+ hw/s390x/s390-virtio-ccw.c        |   1 +
+ hw/s390x/sclpcpi.c                | 196 ++++++++++++++++++++++++++++++
+ include/hw/s390x/event-facility.h |  12 ++
+ qapi/machine.json                 |  58 +++++++++
+ 6 files changed, 295 insertions(+), 1 deletion(-)
+ create mode 100644 hw/s390x/sclpcpi.c
 
----
- hw/9pfs/9p-synth.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
-
-diff --git a/hw/9pfs/9p-synth.c b/hw/9pfs/9p-synth.c
-index 2abaf3a291..ead8b9e3be 100644
---- a/hw/9pfs/9p-synth.c
-+++ b/hw/9pfs/9p-synth.c
-@@ -24,6 +24,7 @@
- #include "qemu/rcu.h"
- #include "qemu/rcu_queue.h"
- #include "qemu/cutils.h"
-+#include "qobject/qlist.h"
- #include "system/qtest.h"
- 
- /* Root node for synth file system */
-@@ -136,6 +137,19 @@ int qemu_v9fs_synth_add_file(V9fsSynthNode *parent, int mode,
-     return 0;
- }
- 
-+// Must call after get synth_mutex
-+static void v9fs_recursive_free_node(V9fsSynthNode *node)
-+{
-+    V9fsSynthNode *entry;
-+
-+    for (entry = QLIST_FIRST(&node->child); entry;) {
-+        V9fsSynthNode *next = QLIST_NEXT(entry, sibling);
-+        v9fs_recursive_free_node(entry);
-+        g_free(entry);
-+        entry = next;
-+    }
-+}
-+
- static void synth_fill_statbuf(V9fsSynthNode *node, struct stat *stbuf)
- {
-     stbuf->st_dev = 0;
-@@ -615,8 +629,22 @@ static int synth_init(FsContext *ctx, Error **errp)
-     return 0;
- }
- 
-+
-+static void synth_cleanup(FsContext *ctx)
-+{
-+    // recursively free all child nodes of synth_root
-+    // V9fsSynthNode *tmp;
-+    QEMU_LOCK_GUARD(&synth_mutex);
-+    v9fs_recursive_free_node(&synth_root);
-+    // QLIST_FOREACH(tmp, &synth_root.child, sibling) {
-+    //     v9fs_recursive_free_node(tmp);
-+    // }
-+    QLIST_INIT(&synth_root.child);
-+}
-+
- FileOperations synth_ops = {
-     .init         = synth_init,
-+    .cleanup      = synth_cleanup,
-     .lstat        = synth_lstat,
-     .readlink     = synth_readlink,
-     .close        = synth_close,
 -- 
-2.34.1
+2.47.0
 
 
