@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015C2A766BA
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 15:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9FDBA766B9
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 15:20:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzF2v-0006Kh-7x; Mon, 31 Mar 2025 09:19:21 -0400
+	id 1tzF2u-0006Kg-C4; Mon, 31 Mar 2025 09:19:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tzF2i-0006J8-Fp
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:19:10 -0400
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tzF2n-0006Jb-Kr
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:19:13 -0400
 Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tzF2g-00051h-RQ
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:19:08 -0400
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tzF2m-00052m-0l
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 09:19:13 -0400
 Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-223a7065ff8so65084245ad.0
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 06:19:06 -0700 (PDT)
+ d9443c01a7336-227b650504fso89553645ad.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 06:19:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743427145; x=1744031945; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1743427149; x=1744031949; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W4NVrWdEyfU0wG0uWtwwgd0qzv2VLsdlH2nP1WAvLOU=;
- b=BuvzFWps3G4n20KTbMuGgkT7Qz+1YEtF/bfSjtXdaD+NRC1ByKa1hI8yEupqd3lcga
- E+5opYTI5yW+yP4SQHA3S4rI7bxlQsWdhVl7Na6Zfbp0+EcFmmOlWnwz80GZt1b1hfXG
- +VfN4BHQRPnFin066FPtTpHWASC76gqxvjfUL/PBfIfHkzPG6fyZEUY9S63Y+9YT4x27
- n855FUwy7v1xwlOSBV8e/XMfvMlTNJJLCtjenp95zKyac7xNdheQu6KCgLhYFmZCJspK
- BAFYHogxEA6IelrtsEZfBL+BT7MfxuWMZqUs+NwSmZ/F61WbaOvJRVjUjETrgSHMWEl3
- xymA==
+ bh=BYuLLevDThsIlhYiPwTOv7bRzn5s5UV46Vyannfxfao=;
+ b=B+CXsHg6wGGsRfbtFTS/o8Emeasgd9XphpSXX4NJ22RvpJZzq0BLBsOWKM2GN8MEu7
+ 4r2yB0rVQ2Ce+kqYzSe4Zx0mWrfVf6qEqrVvm+7m7I/zen1ccoSeuLViutGr93kRmDuX
+ m5rcdPZpb42omhQ50VIjxnwGiZPXpMwRC47t/o+EXgkaL3aXNBT8R263nLsjeL1lPaxi
+ dRMphyxPT2TIaxrhtmt4ARsplyXivqCMu3uhBoZ3N4j2/kj7THyM5eMXzrQI+w4nniSN
+ BlVEOBa0BdXGd/pDwbaWVTIlanCyod2qvnNYMpkQ+UXIihZ9Ad8HJX3nb6zYpXznuTly
+ GvHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743427145; x=1744031945;
+ d=1e100.net; s=20230601; t=1743427149; x=1744031949;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W4NVrWdEyfU0wG0uWtwwgd0qzv2VLsdlH2nP1WAvLOU=;
- b=uXGNmH41cXJm6PAoqiVt5tzlf+qfiCrj/BtM+zQQs5tuwCIbz7/ZHGA4x+OMn6bEiW
- ImnnZiIMBJigirMQZA82BDT/oSbHf/OjhynyxlcJcjoh1L5A0cUVbCkQFAMtt5ClfG1q
- 4z1qFTN7yN7tRYZGqYbcp/FrfuYrN3FnGqWHOGk70xNPhBOyTsT6f2a4ASGyY+6Cb/2W
- 2mPrFXHNqkfLOI/Oi1MEjtca00Oa2B2kXL1wZx/BssTV+WIXS3fTBxMX34Af3Xhm3qd6
- J44qM0wy228y8sXwDq+mXNq+WRWrR0xww7MnTGwWhigK5rSv+2IGOxcjncIDMAVLcfgu
- RQFg==
-X-Gm-Message-State: AOJu0YxDAf17yrwwhmaWVABb4e2/0rvI1UVhATlQaohLNkxfR0S701EU
- 2Mps72w9W/SViJTXWZu3DWVaJ9mdlKPTlZc4cbMKZBFLv9/jScdDGFnf6Q==
-X-Gm-Gg: ASbGncvc3HqeTYOHSg6ZREjYROmJp8A6PpyP2ZD9fAFIXXuXlhNKQjW7cv/ntxmLWsy
- vqV6c7o5W99OYid6+uPQU4t3YQQyBIb8NAKjM2qGyK5BwyMULKPxUgBShEIc5ydxNR9ex+PhRAz
- 0/21g7XGQtusLTx+kjs2wKQh4QZu7VA0ouUopczkSAlnUbvxyLYmzSDKISGlJnTtAPlTbZNtuOW
- DuXsUxkcVUz3Dz/lABLrpYyNqA/U1LW2mMh07M9Ws4+ep3gRKdfwdppiuztJCxc74q+eD9AT+YC
- DC6KBPPncW7YBo3VXHbfSs0dPgzTcI9QFg47xoCDxDsWUT5uFA==
-X-Google-Smtp-Source: AGHT+IHvQ+1dXnyTvj3kGT4jyuXP9m1rMfUreO6siN59MQVYsI5UDnPcr4udw4jQlKRMLg/Xq6WH/g==
-X-Received: by 2002:a05:6a00:170c:b0:730:8a0a:9f09 with SMTP id
- d2e1a72fcca58-7398041c86amr12679240b3a.18.1743427144904; 
- Mon, 31 Mar 2025 06:19:04 -0700 (PDT)
+ bh=BYuLLevDThsIlhYiPwTOv7bRzn5s5UV46Vyannfxfao=;
+ b=PlvnZ18Joc7Zw3wyZqoe1yIHqdsmegPxX/79ZWyfo+A3sAfSmOkgpgVvGAQ6QKjExx
+ mVKMrgipw/ztpX+ip0RQh217OJPjefsvfCZbrcO2Hi81y2xBQj3UUiLAIYLVN7M1q/sr
+ SOjPVEeuhfOVJnQLDFXnS+by2xIHUJ4hNs0npcJuqpZojkOGWSJomJ7oTpVeUiXkBvgE
+ aZe5kle7CjWIdSlaTOIvsymiNJ86MxeLGqeqWuA4ZaI5CxIIAeTo35RmJ7kYgPVNgp+J
+ oWhe6+kkVO2WADuC5E69wJ39MAoyFVEc6hu4HxgxeEX06uBMy0nskLZqLjRMg9vN6Zo2
+ UAHg==
+X-Gm-Message-State: AOJu0Yyzlu82+yi9E80rm4lvEpxSgBNtBsm6IdXEXNr3DCjrzmM860hZ
+ X39XUTVgc+OZVeJQmFUWi/lSbtm76IMf3PFjyJd6GuE2DaomYppQJDSntw==
+X-Gm-Gg: ASbGncuKpCe6/yuonV7w10XXXxOuMZXuROjx66tR8cTok0pvO6L3LIawdvvLEa9Qx3V
+ 6HXV25N9JMF+RQWiPH1s2UtNiL28oXRA3zg29K3DyUEZPQWI47kJXAsByqunTj7ValsTRHWJGyC
+ 8YZvNRCK1DI6rC2eIXnAzKPDztbytN0kCyXqGWhN1YYal5k/hYcu62RDdafecKiEz3Vpbq+29la
+ kn4ebHmt1Fok+44/ZwJ4ILS29SqJ+q9dtrGvdxCTJwq6RJEOdIuDy39uRpBDSL58xf0qbKP+ONk
+ zXx7iIt0Sk+9ng/TMeDHIPOBsCz3UsLM1UNbhhJhRM7v9npmWg==
+X-Google-Smtp-Source: AGHT+IHTsK7MV+NL7jbzeHzsoELLHPnFcqLnfL/fawOkQZxR7CwIYDo30xA75mHXsfLEku19EyNipw==
+X-Received: by 2002:a17:903:2446:b0:221:85:f384 with SMTP id
+ d9443c01a7336-2292f95d401mr136652195ad.16.1743427149112; 
+ Mon, 31 Mar 2025 06:19:09 -0700 (PDT)
 Received: from wheely.local0.net ([203.185.207.94])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7397109c494sm7090671b3a.136.2025.03.31.06.19.00
+ d2e1a72fcca58-7397109c494sm7090671b3a.136.2025.03.31.06.19.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Mar 2025 06:19:04 -0700 (PDT)
+ Mon, 31 Mar 2025 06:19:08 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -67,9 +67,10 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>
-Subject: [PATCH v3 1/2] gdbstub: Improve physical memory access handling
-Date: Mon, 31 Mar 2025 23:18:50 +1000
-Message-ID: <20250331131852.612406-2-npiggin@gmail.com>
+Subject: [PATCH v3 2/2] memory: suppress INVALID_MEM logs caused by debug
+ access
+Date: Mon, 31 Mar 2025 23:18:51 +1000
+Message-ID: <20250331131852.612406-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250331131852.612406-1-npiggin@gmail.com>
 References: <20250331131852.612406-1-npiggin@gmail.com>
@@ -99,70 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bring gdb's physical memory access handling up to speed with the CPU
-memory access, by setting MemTxAttribute.debug=1, and by checking for
-memory transaction errors.
+Debugger-driven invalid memory accesses are not guest errors, so should
+not cause these error logs.
 
-GDB with PhyMemMode will now report failure for memory access outside
-valid system memory addresses, and it is also able to write to ROMs as
-it can with virtual memory access.
+Debuggers can access memory wildly, including access to addresses not
+specified by the user (e.g., gdb it might try to walk the stack or load
+target addresses to display disassembly). Failure is reported
+synchronously by the GDB protcol so the user can be notified via the
+debugger client.
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- gdbstub/system.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ system/memory.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/gdbstub/system.c b/gdbstub/system.c
-index dd22ff0fb3a..6a550e229e2 100644
---- a/gdbstub/system.c
-+++ b/gdbstub/system.c
-@@ -17,6 +17,7 @@
- #include "exec/gdbstub.h"
- #include "gdbstub/syscalls.h"
- #include "gdbstub/commands.h"
-+#include "exec/address-spaces.h"
- #include "exec/hwaddr.h"
- #include "exec/tb-flush.h"
- #include "system/accel-ops.h"
-@@ -453,16 +454,30 @@ void gdb_qemu_exit(int code)
-  */
- static int phy_memory_mode;
- 
-+/*
-+ * Like cpu_memory_rw_debug but it operates on the system address space
-+ * rather than the CPU's view of memory.
-+ */
-+static int phys_memory_rw_debug(hwaddr addr, void *buf,
-+                                hwaddr len, bool is_write)
-+{
-+    MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
-+    MemTxResult res;
-+
-+    attrs.debug = 1;
-+    res = address_space_rw(&address_space_memory, addr, attrs,
-+                           buf, len, is_write);
-+    if (res != MEMTX_OK) {
-+        return -1;
-+    }
-+    return 0;
-+}
-+
- int gdb_target_memory_rw_debug(CPUState *cpu, hwaddr addr,
-                                uint8_t *buf, int len, bool is_write)
+diff --git a/system/memory.c b/system/memory.c
+index 4c829793a0a..4c64a56676d 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1412,7 +1412,9 @@ bool memory_region_access_valid(MemoryRegion *mr,
  {
-     if (phy_memory_mode) {
--        if (is_write) {
--            cpu_physical_memory_write(addr, buf, len);
--        } else {
--            cpu_physical_memory_read(addr, buf, len);
--        }
--        return 0;
-+        return phys_memory_rw_debug(addr, buf, len, is_write);
+     if (mr->ops->valid.accepts
+         && !mr->ops->valid.accepts(mr->opaque, addr, size, is_write, attrs)) {
+-        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
++        /* Don't log memory errors due to debugger accesses */
++        int log_mask = attrs.debug ? 0 : LOG_INVALID_MEM;
++        qemu_log_mask(log_mask, "Invalid %s at addr 0x%" HWADDR_PRIX
+                       ", size %u, region '%s', reason: rejected\n",
+                       is_write ? "write" : "read",
+                       addr, size, memory_region_name(mr));
+@@ -1420,7 +1422,8 @@ bool memory_region_access_valid(MemoryRegion *mr,
      }
  
-     if (cpu->cc->memory_rw_debug) {
+     if (!mr->ops->valid.unaligned && (addr & (size - 1))) {
+-        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
++        int log_mask = attrs.debug ? 0 : LOG_INVALID_MEM;
++        qemu_log_mask(log_mask, "Invalid %s at addr 0x%" HWADDR_PRIX
+                       ", size %u, region '%s', reason: unaligned\n",
+                       is_write ? "write" : "read",
+                       addr, size, memory_region_name(mr));
+@@ -1434,7 +1437,8 @@ bool memory_region_access_valid(MemoryRegion *mr,
+ 
+     if (size > mr->ops->valid.max_access_size
+         || size < mr->ops->valid.min_access_size) {
+-        qemu_log_mask(LOG_INVALID_MEM, "Invalid %s at addr 0x%" HWADDR_PRIX
++        int log_mask = attrs.debug ? 0 : LOG_INVALID_MEM;
++        qemu_log_mask(log_mask, "Invalid %s at addr 0x%" HWADDR_PRIX
+                       ", size %u, region '%s', reason: invalid size "
+                       "(min:%u max:%u)\n",
+                       is_write ? "write" : "read",
 -- 
 2.47.1
 
