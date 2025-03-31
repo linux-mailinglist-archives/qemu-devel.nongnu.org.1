@@ -2,45 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68239A75D41
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 00:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A74C4A75DAD
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 03:37:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tz1FE-0003oE-0x; Sun, 30 Mar 2025 18:35:08 -0400
+	id 1tz444-0005xy-Tj; Sun, 30 Mar 2025 21:35:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tz1Ex-0003nq-4r; Sun, 30 Mar 2025 18:34:51 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1tz43s-0005lF-3V; Sun, 30 Mar 2025 21:35:36 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1tz1Ev-0002Jh-4v; Sun, 30 Mar 2025 18:34:50 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9BA9E4E6041;
- Mon, 31 Mar 2025 00:34:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id rA3qO74CbdBC; Mon, 31 Mar 2025 00:34:42 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 930724E6036; Mon, 31 Mar 2025 00:34:42 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH] ppc/vof: Make nextprop behave more like Open Firmware
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-Id: <20250330223442.930724E6036@zero.eik.bme.hu>
-Date: Mon, 31 Mar 2025 00:34:42 +0200 (CEST)
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1tz43o-0005Ba-VH; Sun, 30 Mar 2025 21:35:35 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52V1A82C006257;
+ Mon, 31 Mar 2025 01:34:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2023-11-20; bh=WRQnXlsVvt5F+MzqJcvC5XwxlSQaU
+ FwKCWkOCtPrkJg=; b=n/gnG5g7+vs9thekNNi20NklGmX/T6bvF7ir47EGKdB66
+ fs2dTf3z9LsREf7zGM2H5R/Q9dPrLdANrotRmqy1OWhw2Xt9SC874BIB09G0Tu5U
+ ZyXG/do7zUw7y0LLyBdIRwpYs8sU9h38cZ+I2iXCfbY+lH2Ju1NVymDjP3jtD/sH
+ XiYNH0kxDNbAVsfWeuUf5y0/a4vMSAaLpYzmJmJUEg2wgmVExqIS/+VyWyXmD5XI
+ GI3eNwF935zhHCjixDVJ2/HzHd3xco8tjB2vRXhKT92wzENoICGkQCguLTNcYOo2
+ yCtS+JnOUs6zWxDYX6dNF7MFvh3G/kJ0tnH1g+VgA==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45p79c2erp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 31 Mar 2025 01:34:44 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 52UNEXY2032863; Mon, 31 Mar 2025 01:34:43 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 45p7a7ddna-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 31 Mar 2025 01:34:42 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 52V1YfxF015214;
+ Mon, 31 Mar 2025 01:34:41 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 45p7a7ddms-1; Mon, 31 Mar 2025 01:34:41 +0000
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+ like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
+ peter.maydell@linaro.org, gaosong@loongson.cn, chenhuacai@kernel.org,
+ philmd@linaro.org, aurelien@aurel32.net, jiaxun.yang@flygoat.com,
+ arikalo@gmail.com, npiggin@gmail.com, danielhb413@gmail.com,
+ palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, pasic@linux.ibm.com,
+ borntraeger@linux.ibm.com, richard.henderson@linaro.org,
+ david@redhat.com, iii@linux.ibm.com, thuth@redhat.com,
+ flavra@baylibre.com, ewanhai-oc@zhaoxin.com, ewanhai@zhaoxin.com,
+ cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
+ frankzhu@zhaoxin.com, silviazhao@zhaoxin.com
+Subject: [PATCH v3 00/10] target/i386/kvm/pmu: PMU Enhancement,
+ Bugfix and Cleanup 
+Date: Sun, 30 Mar 2025 18:32:19 -0700
+Message-ID: <20250331013307.11937-1-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-30_11,2025-03-27_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ phishscore=0
+ suspectscore=0 mlxscore=0 malwarescore=0 spamscore=0 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502280000 definitions=main-2503310009
+X-Proofpoint-GUID: H2kCsUXmwabAypZO0F9eMmPotf_g5fUP
+X-Proofpoint-ORIG-GUID: H2kCsUXmwabAypZO0F9eMmPotf_g5fUP
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.368,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -58,106 +110,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The FDT does not normally store name properties but reconsrtucts it
-from path but each node in Open Firmware should at least have this
-property. This is correctly handled in getprop but nextprop should
-also return it even if not present as a property. This patch fixes
-that and also skips phandle which does not appear in Open Firmware
-and only added for internal use by VOF.
+This patchset addresses four bugs related to AMD PMU virtualization.
 
-Explicit name properties are still allowed because they are needed
-e.g. on the root node that guests expect to have specific names as
-seen on real machines instead of being empty so sometimes the node
-name may need to be overriden.
+1. The PerfMonV2 is still available if PERCORE if disabled via
+"-cpu host,-perfctr-core".
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
-I've tested this with pegasos2 but don't know how to test spapr.
+2. The VM 'cpuid' command still returns PERFCORE although "-pmu" is
+configured.
 
- hw/ppc/vof.c | 56 ++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 41 insertions(+), 15 deletions(-)
+3. The third issue is that using "-cpu host,-pmu" does not disable AMD PMU
+virtualization. When using "-cpu EPYC" or "-cpu host,-pmu", AMD PMU
+virtualization remains enabled. On the VM's Linux side, you might still
+see:
 
-diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
-index 09cb77de93..2c00d11521 100644
---- a/hw/ppc/vof.c
-+++ b/hw/ppc/vof.c
-@@ -353,34 +353,60 @@ static uint32_t vof_nextprop(const void *fdt, uint32_t phandle,
- {
-     int offset, nodeoff = fdt_node_offset_by_phandle(fdt, phandle);
-     char prev[OF_PROPNAME_LEN_MAX + 1];
--    const char *tmp;
-+    const char *tmp = NULL;
- 
-     if (readstr(prevaddr, prev, sizeof(prev))) {
-         return PROM_ERROR;
-     }
--
--    fdt_for_each_property_offset(offset, fdt, nodeoff) {
--        if (!fdt_getprop_by_offset(fdt, offset, &tmp, NULL)) {
--            return 0;
-+    /*
-+     * "name" may or may not be present in fdt but we should still return it.
-+     * Do that first and then skip it if seen later. Also skip phandle which is
-+     * an internal value we added in vof_build_dt but should not appear here.
-+     */
-+    if (prev[0] == '\0') {
-+        tmp = "name";
-+    } else {
-+        if (strcmp(prev, "name") == 0) {
-+            prev[0] = '\0';
-         }
--        if (prev[0] == '\0' || strcmp(prev, tmp) == 0) {
--            if (prev[0] != '\0') {
-+        fdt_for_each_property_offset(offset, fdt, nodeoff) {
-+            if (!fdt_getprop_by_offset(fdt, offset, &tmp, NULL)) {
-+                return 0;
-+            }
-+            if (strcmp(tmp, "name") == 0 || strcmp(tmp, "phandle") == 0) {
-+                continue;
-+            }
-+            if (prev[0] == '\0') {
-+                break;
-+            }
-+            if (strcmp(prev, tmp) == 0) {
-                 offset = fdt_next_property_offset(fdt, offset);
--                if (offset < 0) {
--                    return 0;
--                }
-+                break;
-             }
-+        }
-+        if (!fdt_getprop_by_offset(fdt, offset, &tmp, NULL)) {
-+            return 0;
-+        }
-+        if (strcmp(tmp, "name") == 0 || strcmp(tmp, "phandle") == 0) {
-+            offset = fdt_next_property_offset(fdt, offset);
-             if (!fdt_getprop_by_offset(fdt, offset, &tmp, NULL)) {
-                 return 0;
-             }
--
--            if (VOF_MEM_WRITE(nameaddr, tmp, strlen(tmp) + 1) != MEMTX_OK) {
--                return PROM_ERROR;
-+        }
-+        /* name and phandle can follow each other so check again */
-+        if (strcmp(tmp, "name") == 0 || strcmp(tmp, "phandle") == 0) {
-+            offset = fdt_next_property_offset(fdt, offset);
-+            if (!fdt_getprop_by_offset(fdt, offset, &tmp, NULL)) {
-+                return 0;
-             }
--            return 1;
-         }
-     }
--
-+    if (tmp) {
-+        if (VOF_MEM_WRITE(nameaddr, tmp, strlen(tmp) + 1) != MEMTX_OK) {
-+            return PROM_ERROR;
-+        }
-+        return 1;
-+    }
-     return 0;
- }
- 
--- 
-2.41.3
+[    0.510611] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
+
+instead of:
+
+[    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
+[    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
+
+To address this, KVM_CAP_PMU_CAPABILITY is used to set KVM_PMU_CAP_DISABLE
+when "-pmu" is configured.
+
+4. The fourth issue is that unreclaimed performance events (after a QEMU
+system_reset) in KVM may cause random, unwanted, or unknown NMIs to be
+injected into the VM.
+
+The AMD PMU registers are not reset during QEMU system_reset.
+
+(1) If the VM is reset (e.g., via QEMU system_reset or VM kdump/kexec) while
+running "perf top", the PMU registers are not disabled properly.
+
+(2) Despite x86_cpu_reset() resetting many registers to zero, kvm_put_msrs()
+does not handle AMD PMU registers, causing some PMU events to remain
+enabled in KVM.
+
+(3) The KVM kvm_pmc_speculative_in_use() function consistently returns true,
+preventing the reclamation of these events. Consequently, the
+kvm_pmc->perf_event remains active.
+
+(4) After a reboot, the VM kernel may report the following error:
+
+[    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
+[    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
+
+(5) In the worst case, the active kvm_pmc->perf_event may inject unknown
+NMIs randomly into the VM kernel:
+
+[...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
+
+To resolve these issues, we propose resetting AMD PMU registers during the
+VM reset process
+
+
+Changed since v1:
+  - Use feature_dependencies for CPUID_EXT3_PERFCORE and
+    CPUID_8000_0022_EAX_PERFMON_V2.
+  - Remove CPUID_EXT3_PERFCORE when !cpu->enable_pmu.
+  - Pick kvm_arch_pre_create_vcpu() patch from Xiaoyao Li.
+  - Use "-pmu" but not a global "pmu-cap-disabled" for KVM_PMU_CAP_DISABLE.
+  - Also use sysfs kvm.enable_pmu=N to determine if PMU is supported.
+  - Some changes to PMU register limit calculation.
+Changed since v2:
+  - Change has_pmu_cap to pmu_cap.
+  - Use cpuid_find_entry() instead of cpu_x86_cpuid().
+  - Rework the code flow of PATCH 07 related to kvm.enable_pmu=N following
+    Zhao's suggestion.
+  - Use object_property_get_int() to get CPU family.
+  - Add support to Zhaoxin.
+
+Xiaoyao Li (1):
+  kvm: Introduce kvm_arch_pre_create_vcpu()
+
+Dongli Zhang (9):
+  target/i386: disable PerfMonV2 when PERFCORE unavailable
+  target/i386: disable PERFCORE when "-pmu" is configured
+  target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu" is configured
+  target/i386/kvm: extract unrelated code out of kvm_x86_build_cpuid()
+  target/i386/kvm: rename architectural PMU variables
+  target/i386/kvm: query kvm.enable_pmu parameter
+  target/i386/kvm: reset AMD PMU registers during VM reset
+  target/i386/kvm: support perfmon-v2 for reset
+  target/i386/kvm: don't stop Intel PMU counters
+
+ accel/kvm/kvm-all.c        |   5 +
+ include/system/kvm.h       |   1 +
+ target/arm/kvm.c           |   5 +
+ target/i386/cpu.c          |   8 +
+ target/i386/cpu.h          |  12 ++
+ target/i386/kvm/kvm.c      | 356 ++++++++++++++++++++++++++++++++++------
+ target/loongarch/kvm/kvm.c |   5 +
+ target/mips/kvm.c          |   5 +
+ target/ppc/kvm.c           |   5 +
+ target/riscv/kvm/kvm-cpu.c |   5 +
+ target/s390x/kvm/kvm.c     |   5 +
+ 11 files changed, 365 insertions(+), 47 deletions(-)
+
+base-commit: 0f15892acaf3f50ecc20c6dad4b3ebdd701aa93e
+
+Thank you very much!
+
+Dongli Zhang
 
 
