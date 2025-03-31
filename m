@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE70A76DA4
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 21:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CAFFA76DBD
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 21:54:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzL8w-0002uq-54; Mon, 31 Mar 2025 15:49:58 -0400
+	id 1tzL8x-0002w4-9c; Mon, 31 Mar 2025 15:49:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL8V-0002QO-M9
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:49:40 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL8X-0002QR-7l
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:49:42 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL8P-0003Pv-TX
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:49:30 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43d04dc73b7so54303715e9.3
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 12:49:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzL8V-0003Q6-DD
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 15:49:32 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43d0359b1fcso31314675e9.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 12:49:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743450564; x=1744055364; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743450569; x=1744055369; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vmsVNeCK9XAwasYEG5loG6D8JvxrnUff8X/1oJ1HOX8=;
- b=z2n4VUvkc0vvhzkky/OJBs7Ed/wyeriqvCHKQhF7XkHGeeBaVcRAu5leKFe8PmoLa2
- v92mqpCfDgCybaSv/2Bf9uGFsyS+yhljRbSGYH+YFnBYjaUQs3dh2cEip8OeBsz+uq9L
- Ve0QaTVxqBW3rHBpn8/ORgNvVyyg+zlebBE3jErJNF1JiaCt1LmxlAowJ/PKw0P4HtEU
- OZ1Vj1rx2zDOMTrALN7NsUFs3NGoRxJGJ8Bm1hAWP2VCyfwVnbv8bee1CasrNfdV2IOt
- jBS6ZweycO22eBGb5NZ2O2wGYDfBqLYMSmZkfTeW7tDterzT7DBZibE/1wQNkJwtsoB8
- Aebw==
+ bh=RLKl/DQ934NXDgHaUVfID1TPnM6HcvqoUZCXZk9DXsw=;
+ b=Lb2DmhycIw1arJdgtH1jjHJUPllHppY52Qm69/6nL5AVk26fxZKgjReKiGFWtyKWtm
+ 4zRKph3qTqwtm5hhzBdNUfI6H+PH5+oMymL2b1AYzpI7Hz7t/V8IP4ykjl4+17cm5kbz
+ eZ0LoMDP1nbXRWw322OzWbLAMgF1JibBCmdDSSwfYarwsQcDyLh6ECN3TYoe+DY8cO7e
+ +yZ9BBnvyc7y0BX5NAbZFLw+00OCVza5WzMQzGTio0FUFbPk0oQQZc2LrmiTlPRIIp3z
+ 8K3X3ouabtFN7wAnuDb4F4k/NXRNVrKxfki6yW2qtx07iP9kJ+6OU5YBp+N0gQ/rDgXY
+ VZpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743450564; x=1744055364;
+ d=1e100.net; s=20230601; t=1743450569; x=1744055369;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vmsVNeCK9XAwasYEG5loG6D8JvxrnUff8X/1oJ1HOX8=;
- b=uEi8fsXVrJcz0AuKXv9RgBupWIdAz0own9NmryKCLLsfCBRAH3iFgMci6iJd8jWFhP
- 716qBY7eBoii8FUG0K3houITtGBGV8u4xhOZDVyAVkoniC4ysZEPhs/vdf8BNMAm4QQ3
- IBgo3R0aaav3iGpkn4yVxYrJ68a/W3mat9LF6RqVXBVhdQd4F6NkhSIEU7sCEuP6EeNA
- w21kpsngeNpuqhdBiga/Y6aCLZyQ4afsRoUgQvRlC4V5Y5ahtvm9k+7wRyJ/qbyf0ILJ
- z42xrFfPAWod75IU5Ca4Hyjb9Iel9NAl2Cj7nAOTInTnyAKME57Vk/nfZ8sBGms0Jn5x
- aCFw==
-X-Gm-Message-State: AOJu0YxDVIyw9ifE7S8ZrMWDmHjPniGb4qR01r31TgZbPXXEBNtA+FGH
- 2v26fhnA1LacfNCayaUZIS5qBb9r7wy2c3UY+dBmF4IGmLDKuRvcVtyKXU+gGQzuJ6Wn3GOYTy3
- N
-X-Gm-Gg: ASbGncszE1IXQ9PmKTJl7PKt5ES9j0woetCQ0qCegjKlHlzqA3JESOKo2IervSgv4MH
- VpvQuUhm9x47VSbeNDBnGY2pLOOR+RUYiHFA8ocSYiYoSm9wT3JZYGv+pUjxxekzq0aVXikZa+L
- +Rl6CkMohT3/AEOlB+/TntA20b+LsWaWI/qY5Q81OAr1ExbtE8VkDfegpzXaF1j+4M0nkF/TxjP
- 2aPYjzzLXqT8HAcBwvQN3QsVfGdXEAQuSCe6lV/WPk9HDFSxzvAJj+hiLoB2Bw9847/DC4ipbIl
- tEt7s5ruDva6D0F0fZ+QsHB64umSYpdx5zKoc5Puu5mXPIHGFO2bjgTEGGQsZ2lhr9OPFaYLz6r
- FcUjUuRpUHvaoz0AyH5U=
-X-Google-Smtp-Source: AGHT+IEfgxt36ulSKtuyj6A2nMLc7IVi8RSrnshZAnV1G5LB6549fKVwCMqFSJLjms1H4UC6Z7T6AA==
-X-Received: by 2002:a05:600c:46d1:b0:43d:160:cd9e with SMTP id
- 5b1f17b1804b1-43db6249d14mr90561565e9.17.1743450564127; 
- Mon, 31 Mar 2025 12:49:24 -0700 (PDT)
+ bh=RLKl/DQ934NXDgHaUVfID1TPnM6HcvqoUZCXZk9DXsw=;
+ b=uy8VhTaem3dW2X5OZKZ44W6DG+bQPLdNL1SaQnP9zibyqBaa6xmMstT8UR2cbXqGAb
+ J2O6rd2d40wwpJOJyNB0iA6qnNFPzYLiD9uYWnHdHChc2lJSxs8aZ0wOTTGRdFbqE6Ru
+ /PqTbQ5Q9YSa4sEkL1H15yfwpwQytLY28JMZjy0oACDJPH8LuMT2NyNQkh1iuNVmIH7K
+ gVDeqssd3EC2qgxt1lNv5Vn1PW7tFzMN1QOApjOPnlL5avbRiLfjtxyPSIEfwmh8QHKP
+ CthuFTz3qfELKGnz87FN/8xw9Aa9vomVGR+NUefbmov4dU0LaM4czgKZVAUZj1OPYzbC
+ N1RQ==
+X-Gm-Message-State: AOJu0YxcckZHG1cDeaqdbEWEmK0RNFAVXADuUwmgTyMKl92STfRLxgCO
+ f7glcjZjuLhE4H4wwgd+tYWhlBn9KbfecWiHfoN+qRS4xySllA1h7FPxozrxyPR7YdzW0B1z0db
+ 4
+X-Gm-Gg: ASbGncvuNY+MYexUu3ZpnaIafRjtWzYsPBTzIbt8026V4EcDiRpuTWfqLY1Pzn3XOcz
+ DkwfZMDusbbcHRAisnNyTib9pwqGIJe4e1VX88poc6JQX/kX7KJzuckt+pDG3+yQTVdvLrR18Kl
+ Dss0NUI1fenezpVBsDV7Xdj9cZvw6rR/QqEppUT60B8o3geubRPIXk0BVs0ZyW0iUdmXI37J8/3
+ PqcZ6xWt1Z4pVJUYAwDWsf2mL+Q0RQm2ESmkTYvaZMhlk1gUwrMl0r4HnLlbU4U/QdWQdIXbOav
+ fqI4bMVK7PwL8dAWRRQcrXEeCgF2XSwlqkYPiATb8on2hpyR/VBJ30ej40FcWjF1Jq8TZ0vm7yi
+ 2FIOutcO6iilcCX2WIaPSCo46lUdrVw==
+X-Google-Smtp-Source: AGHT+IEbLwBNPAU24yEFMIehDIm4aMBSHxKuX9Bha+tzrHrqpE16Mvs5G1nGv0jNAedOKS7XBK2MJg==
+X-Received: by 2002:a05:600c:c08:b0:439:8e95:796a with SMTP id
+ 5b1f17b1804b1-43db62bda6cmr82376705e9.13.1743450568715; 
+ Mon, 31 Mar 2025 12:49:28 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d8fba4c29sm136189505e9.5.2025.03.31.12.49.21
+ 5b1f17b1804b1-43d8fccfd9bsm132177175e9.20.2025.03.31.12.49.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 31 Mar 2025 12:49:22 -0700 (PDT)
+ Mon, 31 Mar 2025 12:49:28 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 12/23] hw/nvram/xlnx-efuse: Do not expose as user-creatable
-Date: Mon, 31 Mar 2025 21:48:10 +0200
-Message-ID: <20250331194822.77309-13-philmd@linaro.org>
+Cc: Zheng Huang <hz1624917200@gmail.com>,
+ Zheng Huang <hz1624917200@outlook.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 13/23] hw/scsi/lsi53c895a: fix memory leak in lsi_scsi_realize()
+Date: Mon, 31 Mar 2025 21:48:11 +0200
+Message-ID: <20250331194822.77309-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250331194822.77309-1-philmd@linaro.org>
 References: <20250331194822.77309-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,29 +99,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This device is part of SoC components thus can not
-be created manually.
+From: Zheng Huang <hz1624917200@gmail.com>
 
+Address a memory leak bug in the usages of timer_del().
+
+The issue arises from the incorrect use of the ambiguous timer API
+timer_del(), which does not free the timer object. The LeakSanitizer
+report this issue during fuzzing. The correct API timer_free() freed
+the timer object instead.
+
+=================================================================
+==2586273==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 48 byte(s) in 1 object(s) allocated from:
+    #0 0x55f2afd89879 in calloc /llvm-project/compiler-rt/lib/asan/asan_malloc_linux.cpp:75:3
+    #1 0x7f443b93ac50 in g_malloc0 (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5ec50)
+    #2 0x55f2b053962e in timer_new include/qemu/timer.h:542:12
+    #3 0x55f2b0514771 in timer_new_us include/qemu/timer.h:582:12
+    #4 0x55f2b0514288 in lsi_scsi_realize hw/scsi/lsi53c895a.c:2350:24
+    #5 0x55f2b0452d26 in pci_qdev_realize hw/pci/pci.c:2174:9
+
+Signed-off-by: Zheng Huang <hz1624917200@outlook.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <73cd69f9-ff9b-4cd4-b8aa-265f9d6067b9@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20250325224310.8785-10-philmd@linaro.org>
 ---
- hw/nvram/xlnx-efuse.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/scsi/lsi53c895a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/nvram/xlnx-efuse.c b/hw/nvram/xlnx-efuse.c
-index 29e7dd539ec..176e88fcd17 100644
---- a/hw/nvram/xlnx-efuse.c
-+++ b/hw/nvram/xlnx-efuse.c
-@@ -280,6 +280,8 @@ static void efuse_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
+index d85e384ad63..6689ebba25b 100644
+--- a/hw/scsi/lsi53c895a.c
++++ b/hw/scsi/lsi53c895a.c
+@@ -2372,7 +2372,7 @@ static void lsi_scsi_exit(PCIDevice *dev)
+     LSIState *s = LSI53C895A(dev);
  
-     dc->realize = efuse_realize;
-     device_class_set_props(dc, efuse_properties);
-+    /* Reason: Part of Xilinx SoC */
-+    dc->user_creatable = false;
+     address_space_destroy(&s->pci_io_as);
+-    timer_del(s->scripts_timer);
++    timer_free(s->scripts_timer);
  }
  
- static const TypeInfo efuse_info = {
+ static void lsi_class_init(ObjectClass *klass, void *data)
 -- 
 2.47.1
 
