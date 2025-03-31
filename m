@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5B8A77139
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 01:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D82A7713A
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 01:05:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzOAA-00062X-JK; Mon, 31 Mar 2025 19:03:26 -0400
+	id 1tzOBZ-0006jy-1M; Mon, 31 Mar 2025 19:04:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1tzOA6-00061i-IW
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 19:03:22 -0400
-Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzOBW-0006jO-HH
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 19:04:50 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1tzOA4-0005ZX-FB
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 19:03:22 -0400
-Received: by mail-oa1-x2c.google.com with SMTP id
- 586e51a60fabf-2a01bcd0143so5425867fac.2
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 16:03:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzOBU-0005kf-RY
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 19:04:50 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43cf628cb14so40261285e9.1
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 16:04:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1743462198; x=1744066998;
- darn=nongnu.org; 
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:reply-to:message-id:subject:cc:to:from:date
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0b/HREWlSts9X6mo5RQnPiJulzCTMn4twu4d9WJao30=;
- b=GrWDDSYldbjdWvIsSSpaygkh2DoKeSyJV0eVtqfc3Jm5bVYm0Kkvs1SOTskR5vdKvV
- K9qJvarAp18+1+AChfOuoaOiKaICrSAnSDVxAuAvR5Ykn/Yev4PzUkGS0qi2Xsv1D6Bi
- qDVnv1b4IZlv1CNI0KTkZklpJmZD8MwCQVvn5oi2E2YSdqAcExd67N6wkWicB4wgFCpg
- ZCzpc44VV5a4jbNUIvw+WqyTAhk0uwAyOscuhrwdRC8Z4zxHSDuye5tEaSWyMJoHMrrK
- JpLCtEDN6LXvTt4vzFQVSPQ3aCHCqY22iKLxS5tSfgaS3mvECytyIv3omsIbtimb4RRS
- k2QA==
+ d=linaro.org; s=google; t=1743462287; x=1744067087; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FSCM4rp57UZEJzLBnlz1xi9GYjXld1lLy219uTKGxdQ=;
+ b=swJ3EaDexVh/ul/sPmoJMFcLPMfd/WCyP/8lg6X+is6tkYa10Ixi6/lwlbpqY2Whfz
+ s8izHc539/YLysUO3H0XjQSDxQ/QFGIFyxm2TjAi7e1+gA2TuHst/pBXPXQbZjdE+A1t
+ U86ri84Bj+oh8SobOwUJSX9uMFFVRVhl3mv8Ipr2gh4VRbmJm/EaMAffcSgX1PPRS5hY
+ xegarXj/UAZ3ciA+Q+t3CfSRs1aW6/IdefeRqBJDeBKmEgXp8Z//F8qZDzrhKsQ7ZhDm
+ Qxb5DyGbh+982zWBBQt5w+vlDniSFNTVEm6KVnROA4SlV+bRoaon/+2zFjoELuLHJqXz
+ Ogig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743462198; x=1744066998;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:reply-to:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0b/HREWlSts9X6mo5RQnPiJulzCTMn4twu4d9WJao30=;
- b=ERxXuDU32iSMhOQgO/Dwz301EIG+bGmagW2MnJa9ffktSOIXSXFw3Jfq0CV4dr0oim
- 5CyCqLeOzsHq7IEFD5iNh/+kj3Z7ty7Xyx1CINX1m6aZIMtGWsYRm9Ympq67nthqf0oQ
- cAsigAtGM2AQOKFAQbwOBEObSJoruA43r273JGExj83v9mq/dJwl2L9nmA/2mV0c6mGq
- B01WrHz6Ior6AwiZvpmhWCYAAOxFN9AEhzGXalj6AYzvt2odzPfRLZDrcxw+TJkUg9jV
- A7NshdJf4eJLP+43n/Za/Bem4+4vn7ldLJJtbW6pX7DIkFBId7YOtZeMg1qQ/LnaGFfY
- CG1w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXlslFy/EwJIepXwZXhkP5J/RT+XWbk9C7QFSN/uQ24dPf2w4rMSxkaF0hzYQIOG8/kkrV6mDvCobGa@nongnu.org
-X-Gm-Message-State: AOJu0YxObkmvVAMmckjQ5K86RbNLVSCObnMX6EqMIVy0bjaNN1Asyunh
- zTrqgxMnfp3Ms6j3Sly9+8mb9jIUtp7Xku4834nN0+aK4U8e8vtObZ7cUBry2sQ=
-X-Gm-Gg: ASbGncubX1tUKqXWJjXKkchSNZ5jmadCpkbP3CuAnPFORb4scMs3iwzH5xCTrG40t8x
- +Z4GmCndNZNCratCH7vkMfwzH/OOkd0rextson6t1ZHQ3DeUgfXWQcCH1oI/Z+KDqzb+D8YyBxb
- pPLE3T5Hy3SA8tGkW4XhVv5OwVpCouJbMuF7MowMVNtiSgqMB3pvTDunYcoM0Q8kqQkOGK2H7q6
- +cCm/U5R05XV+6VJedOMKw5jX+qVEbFG/8isEPbniEcOzhvPzUdC/xc7y8Cg0eLrLEraY0LC9aK
- hsdNePzzD+ck/yCOPtHWWFMkVA/SE0vKWfycThgSQ0MS2dsa
-X-Google-Smtp-Source: AGHT+IHS3C/1z1AASrJ+n37ajLlILqGsoopGzGnCy9lE7adF1fk6EuWY2pXJa6fcTT2SPfkl0n2R2g==
-X-Received: by 2002:a05:6871:554:b0:29e:32e7:5f17 with SMTP id
- 586e51a60fabf-2cbcf6c7ff8mr6179022fac.28.1743462198592; 
- Mon, 31 Mar 2025 16:03:18 -0700 (PDT)
-Received: from mail.minyard.net ([2001:470:b8f6:1b:8459:d76b:f4fb:8568])
- by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-72c580927f4sm1656119a34.3.2025.03.31.16.03.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Mar 2025 16:03:17 -0700 (PDT)
-Date: Mon, 31 Mar 2025 18:03:11 -0500
-From: Corey Minyard <corey@minyard.net>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: Corey Minyard <minyard@acm.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/3] ipmi/bmc-sim: implement watchdog dont log flag
-Message-ID: <Z-sfL6mlGud_N76m@mail.minyard.net>
-References: <20250331125724.607355-1-npiggin@gmail.com>
- <20250331125724.607355-2-npiggin@gmail.com>
- <Z-qU_5RWxK-qpGTn@mail.minyard.net>
- <D8UT7SKP9L19.126NYIT8BU3AI@gmail.com>
+ d=1e100.net; s=20230601; t=1743462287; x=1744067087;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FSCM4rp57UZEJzLBnlz1xi9GYjXld1lLy219uTKGxdQ=;
+ b=ITWWXGFZ2bwBpqY7D+nlVdlJkWZpxOHIkk1q8L4sTSF2ZERl+6pXc6BAKIRzuhD8En
+ 02rz4vwoDwiubHVHCsJfCw0RmCZJA/u6bhXCrftbk6gx7rV3lArE8VS1RQGl5K45EB1h
+ zkKLUq7fDIoA1jCnlpBn/E//g4WihQothP4XEmB9JO3dcddtr5WK6rOMngxzb/CEuHe8
+ 5wA5RB+NT0rHR6FynXJbzWMFgjnwWmnbOTVl8xcRXIruJbQyHHldulvzV8LMdA+Exumo
+ kMKK2kmMdYhuo768amIzIwF8r3AB0Ci0qWEF/ecA58uyx9EsOf5sF9bXxu8XT7s2Cr6J
+ KrNQ==
+X-Gm-Message-State: AOJu0YxFMJBWEuWXARmWgl7zQsiuiYlUeEcSTQMEbmgm4+R/I5aSgiqS
+ yILgqRtyqw1QRrnBD2QBeQqtcSdTBcPnBCpKgbKmS6E6ej7kCEymdplpRPRD1igxPxKMOvBcFAw
+ M
+X-Gm-Gg: ASbGncuLITTpcYTuvOa9nFgrWzk46nla/yWATZ68FCmg7eb8UXlc+9+ae3j0zjVLwuw
+ Gsy3oJI9x2JW3Yqvg/QeNjevMdoFKF7jvBeKiHfdcaPmeyi5n+W4o6V/I5QHX9HyP39LuQmGT4j
+ jbmFN19LD7eMm0fQ3by81P1vTPBx7bwgIKyj1Q8e/dSwk9pyzQAeZY83HW4EQjjoWw2a4a/iVLq
+ 5cztVVhBPYrsXaAv68QQl4trfQYcWa7oU8XWVlPLFOLTOl5rpLtloWYZTXn8s7kT+hg0vwFTzty
+ dETNd/ofYT7q4xlTQ1zyaVNUIaN6+ZOO8xseUnoGRbY97sMHYNNQpta3u10xiw2Iwls2WQkeHl2
+ oFhyAn+vBPPB77H+3Wws=
+X-Google-Smtp-Source: AGHT+IG3Mq1ewJNogMgGNasriJpeEoRPHaPwWRYXZeQmv8YbCDofMpt6SaNazKaqyjrGze4oHg65Sg==
+X-Received: by 2002:a05:600c:6dca:b0:43c:f509:2bbf with SMTP id
+ 5b1f17b1804b1-43d911902efmr121371275e9.15.1743462286834; 
+ Mon, 31 Mar 2025 16:04:46 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d8fcd0738sm134952745e9.19.2025.03.31.16.04.45
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 31 Mar 2025 16:04:46 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Steven Lee <steven_lee@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jamin Lin <jamin_lin@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, qemu-arm@nongnu.org,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.0 0/2] hw/misc/aspeed_scu: Correct minimum access size
+ for AST2500 / AST2600
+Date: Tue,  1 Apr 2025 01:04:42 +0200
+Message-ID: <20250331230444.88295-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <D8UT7SKP9L19.126NYIT8BU3AI@gmail.com>
-Received-SPF: none client-ip=2001:4860:4864:20::2c;
- envelope-from=corey@minyard.net; helo=mail-oa1-x2c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,55 +98,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: corey@minyard.net
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 08:37:19AM +1000, Nicholas Piggin wrote:
-> On Mon Mar 31, 2025 at 11:13 PM AEST, Corey Minyard wrote:
-> > On Mon, Mar 31, 2025 at 10:57:22PM +1000, Nicholas Piggin wrote:
-> >> If the dont-log flag is set in the 'timer use' field for the
-> >> 'set watchdog' command, a watchdog timeout will not get logged as
-> >> a timer use expiration.
-> >> 
-> >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> >> ---
-> >>  hw/ipmi/ipmi_bmc_sim.c | 7 ++++++-
-> >>  1 file changed, 6 insertions(+), 1 deletion(-)
-> >> 
-> >> diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
-> >> index 6157ac71201..32161044c0b 100644
-> >> --- a/hw/ipmi/ipmi_bmc_sim.c
-> >> +++ b/hw/ipmi/ipmi_bmc_sim.c
-> >> @@ -733,7 +733,12 @@ static void ipmi_sim_handle_timeout(IPMIBmcSim *ibs)
-> >>  
-> >>   do_full_expiry:
-> >>      ibs->watchdog_running = 0; /* Stop the watchdog on a timeout */
-> >> -    ibs->watchdog_expired |= (1 << IPMI_BMC_WATCHDOG_GET_USE(ibs));
-> >> +
-> >> +    /* Log the expiry if the don't log bit is clear */
-> >> +    if (!IPMI_BMC_WATCHDOG_GET_DONT_LOG(ibs)) {
-> >> +        ibs->watchdog_expired |= (1 << IPMI_BMC_WATCHDOG_GET_USE(ibs));
-> >> +    }
-> >> +
-> >
-> > Are you sure this is correct?  The spec doesn't say what this means, but
-> > I would assume this means "Don't add a system log" not "Don't set the
-> > expiry happened bit".
-> 
-> From IPMI spec, Set Watchdog Timer command timer use field of byte 1
-> says "timer use (logged on expiration when “don’t log” bit = 0b)".
-> But it also says it should disable the timeout sensor event logging.
-> I missed that part, I will see if I can make that work.
+Mark SCU MemoryRegionOps read/write handler implementations
+as 32-bit, then allow down to 8-bit accesses.
 
-It doesn't currently add an event to the log, I don't think.  If you
-want to add that, it's fine.
+Joel Stanley (1):
+  hw/misc/aspeed_scu: Correct minimum access size for AST2500 / AST2600
 
-However, as it is, your change will cause the Get Watchdog Timer command
-to return the wrong value for Timer Use Expiration flags.  It's not what
-you want to do.
+Philippe Mathieu-Daudé (1):
+  hw/misc/aspeed_scu: Set MemoryRegionOps::impl::access_size to 32-bit
 
-What bug are you trying to solve?
+ hw/misc/aspeed_scu.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
--corey
+-- 
+2.47.1
+
 
