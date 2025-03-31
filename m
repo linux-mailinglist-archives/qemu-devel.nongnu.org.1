@@ -2,102 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAB8A769E8
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 17:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED761A769FE
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Mar 2025 17:21:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzGv7-0006OV-Ji; Mon, 31 Mar 2025 11:19:25 -0400
+	id 1tzGwa-0007Ec-MS; Mon, 31 Mar 2025 11:20:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tzGur-0006L2-8n
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 11:19:19 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzGwU-0007BA-6b
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 11:20:51 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1tzGum-0006qv-Qd
- for qemu-devel@nongnu.org; Mon, 31 Mar 2025 11:19:07 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 51FF31F452;
- Mon, 31 Mar 2025 15:19:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1743434341; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ysoJEtUlkwj3bmSNPu5ussTeXpVEyqYmS23kBOCMNmM=;
- b=JUeC6vbKJXfzdvXxe1lHc+VJf4Wx42qu+R6Woc8DJtGVq2jLsNDD3IKVCCzBoXfJ6HpIbm
- G21hsk+pBQYT4YuFY6Ib4xqdD96pDV2HcxDIbzSmxW9lIbepODWqFAhobbp2i2WLrjFm+o
- pMnYyASQ7FPVHXbNPRgxaDYo7MSb1SA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1743434341;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ysoJEtUlkwj3bmSNPu5ussTeXpVEyqYmS23kBOCMNmM=;
- b=AhpXnkXkhdeVL5Y9hGV2WQcUiWQbRpyggIuBfaWqbCTZhTTAp5TSaYO3rcuqVNpkY0QG+n
- bWI5sJmlw9nwcHBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1743434341; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ysoJEtUlkwj3bmSNPu5ussTeXpVEyqYmS23kBOCMNmM=;
- b=JUeC6vbKJXfzdvXxe1lHc+VJf4Wx42qu+R6Woc8DJtGVq2jLsNDD3IKVCCzBoXfJ6HpIbm
- G21hsk+pBQYT4YuFY6Ib4xqdD96pDV2HcxDIbzSmxW9lIbepODWqFAhobbp2i2WLrjFm+o
- pMnYyASQ7FPVHXbNPRgxaDYo7MSb1SA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1743434341;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ysoJEtUlkwj3bmSNPu5ussTeXpVEyqYmS23kBOCMNmM=;
- b=AhpXnkXkhdeVL5Y9hGV2WQcUiWQbRpyggIuBfaWqbCTZhTTAp5TSaYO3rcuqVNpkY0QG+n
- bWI5sJmlw9nwcHBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B9DEA13A1F;
- Mon, 31 Mar 2025 15:19:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id TAyqHWSy6mdtSAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 31 Mar 2025 15:19:00 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com, berrange@redhat.com
-Subject: Re: [PATCH v8 7/7] migration/ram: Implement save_postcopy_prepare()
-In-Reply-To: <20250318123846.1370312-8-ppandit@redhat.com>
-References: <20250318123846.1370312-1-ppandit@redhat.com>
- <20250318123846.1370312-8-ppandit@redhat.com>
-Date: Mon, 31 Mar 2025 12:18:57 -0300
-Message-ID: <87semtkz32.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzGwQ-0007NQ-CR
+ for qemu-devel@nongnu.org; Mon, 31 Mar 2025 11:20:49 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-39ac56756f6so3922304f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 08:20:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1743434443; x=1744039243; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8fZQ/jWuVgumxwu0tM3Cq9QmlHQyh2uem8M+GBR9J8Y=;
+ b=dtwv2VyhZeCSLplD3Qs4+G+vif0ug49JRPKbhH5yZF1IfEHPC8PzEBFfCCTlrBsmXo
+ XLYtOOfLXbTsy0Ft9DD5trDKlcet5PSoU7hokFfuPy4h5m0dSAzCnQM9NM++u7ZAnS5i
+ uLuWnX7B83VNw5uhdIYqvmgzUo5G4WP4icJTjPmx0ITIABMZUcpmcUkN/rRl83CUjRy5
+ EKXlqSvk8td2b1eSr8vxLH0Gn3X5lDFPw0wkaHRfwj1JEj9Lx5HFia8nbonCV8vTqlzz
+ 5cNYgxTMj+c5phllKaUF1GyBm9NkOKjWEW8QHURsAqaM4zkOiMCm/zDTbbyzfwaZ/LXe
+ zuvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1743434443; x=1744039243;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8fZQ/jWuVgumxwu0tM3Cq9QmlHQyh2uem8M+GBR9J8Y=;
+ b=XgiQQfNbBqYSgJWV6XMZNuRJwJyzlJdjMMXJJzbP9viWR9hU2FwQmd4sFdHGgxlZz4
+ tDMYbgDwkAB9cuSjdG+HwYKeCTEPll38wXbQC0uUd+u2aoKBE+eq9mLjfKzWI2arqaSl
+ 70/iUG+wZEdowC/YsYDtRiMzB947DibtM1W6aMJ+Wtbd7o04YcSZN6raYQ6rz/LkNydC
+ LnN5lNQ86t6/yOpA3SKIMXRU8F2gQWmGcvbKcQl+aObR1XaCdCFR9G0VqyTmmHrlq+JZ
+ tDkQ1XuWaZhDrzcbM7hM3Fx6uwU2lpAMigNQwbcwqeDPS8jIp5+kei5fVDF2p8Uhlut7
+ 9Ekw==
+X-Gm-Message-State: AOJu0YxykEmPB9llvUpKIeTL+rERc148iqk9GwkOTuNxooiFOFbX/HnU
+ gaby/E4iADAF7BFjAfnGBoGtG3aA5m4XHcOnXpDWwH+cwmMYembnVO3JaDiR0Ribq04nPCEUkU0
+ y
+X-Gm-Gg: ASbGncuy+QqChKpAEZUCKe6tFhc6lYF6mQiRL5jGBe0nAc6TwopEV/iTnNJY3xUUSWw
+ buujXTgik2T6/qw9EugSYgIbZ7bo0nO/oEHUbD7rQXBzXharRxRpUVpLhtQv+eXEb58UaEPNgOV
+ MBbXpeTJbVJ2qFXFHxhNacZ3jrdGsVb49kZjdOk5bKhlhNeSjsgIWdAke+XkxN2ZR0Logq/xGCN
+ pqmqa7kt5tpqz/lLqm3PfaIxsl01HMoIWbscW+Z0QEW7G733R0rAXvG0gm5eC9RMYbNo0lTsPq6
+ erMtUIUgohLELULcmXfLAO7T3fpnfWY1WT9zuxSZQc1X/deELXdjUGXH0uS4d/TXWdgs0pF/45L
+ hyYaZ7ONJkgU6Y+76Uoc=
+X-Google-Smtp-Source: AGHT+IG7avYraxYq0Sb2IDtToM/Wsawr8fDiwA/RJjqxW5rjncAL5sCmFHRQadvyNkFNd8QG1y9dKw==
+X-Received: by 2002:a5d:5f48:0:b0:391:47d8:de2d with SMTP id
+ ffacd0b85a97d-39c120e3585mr7717333f8f.23.1743434443014; 
+ Mon, 31 Mar 2025 08:20:43 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-39c0b7a4498sm11816188f8f.99.2025.03.31.08.20.42
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 31 Mar 2025 08:20:42 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Gustavo Romero <gustavo.romero@linaro.org>, Joey <jeundery@gmail.com>,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.0 0/2] hw/pci-host/designware: Fix ATU_UPPER_TARGET
+ register access
+Date: Mon, 31 Mar 2025 17:20:39 +0200
+Message-ID: <20250331152041.74533-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_THREE(0.00)[4]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,92 +98,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prasad Pandit <ppandit@redhat.com> writes:
+Trivial fix for issue #2861.
 
-> From: Peter Xu <peterx@redhat.com>
->
-> Implement save_postcopy_prepare(), preparing for the enablement of both
-> multifd and postcopy.
->
-> Please see the rich comment for the rationals.
->
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
-> ---
->  migration/ram.c | 37 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
->
-> v8:
-> - New patch
->
-> v7:
-> - https://lore.kernel.org/qemu-devel/20250228121749.553184-1-ppandit@redhat.com/T/#t
->
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 6fd88cbf2a..04fde7ba6b 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -4419,6 +4419,42 @@ static int ram_resume_prepare(MigrationState *s, void *opaque)
->      return 0;
->  }
->  
-> +static bool ram_save_postcopy_prepare(QEMUFile *f, void *opaque, Error **errp)
-> +{
-> +    int ret;
-> +
-> +    if (migrate_multifd()) {
-> +        /*
-> +         * When multifd is enabled, source QEMU needs to make sure all the
-> +         * pages queued before postcopy starts to be flushed.
+Philippe Mathieu-Daudé (2):
+  hw/pci-host/designware: Fix access to ATU_UPPER_TARGET register
+  hw/pci-host/designware: Use deposit/extract API
 
-s/to be/have been/
+ hw/pci-host/designware.c | 47 ++++++++++++++--------------------------
+ 1 file changed, 16 insertions(+), 31 deletions(-)
 
-> +         *
-> +         * Meanwhile, the load of these pages must happen before switching
+-- 
+2.47.1
 
-s/Meanwhile,//
-
-> +         * to postcopy.  It's because loading of guest pages (so far) in
-> +         * multifd recv threads is still non-atomic, so the load cannot
-> +         * happen with vCPUs running on destination side.
-> +         *
-> +         * This flush and sync will guarantee those pages loaded _before_
-
-s/loaded/are loaded/
-
-> +         * postcopy starts on destination. The rational is, this happens
-
-s/rational/rationale/
-
-> +         * before VM stops (and before source QEMU sends all the rest of
-> +         * the postcopy messages).  So when the destination QEMU received
-> +         * the postcopy messages, it must have received the sync message on
-> +         * the main channel (either RAM_SAVE_FLAG_MULTIFD_FLUSH, or
-> +         * RAM_SAVE_FLAG_EOS), and such message should have guaranteed all
-> +         * previous guest pages queued in the multifd channels to be
-> +         * completely loaded.
-> +         */
-> +        ret = multifd_ram_flush_and_sync(f);
-> +        if (ret < 0) {
-> +            error_setg(errp, "%s: multifd flush and sync failed", __func__);
-> +            return false;
-> +        }
-> +    }
-> +
-> +    qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
-> +
-> +    return true;
-> +}
-> +
->  void postcopy_preempt_shutdown_file(MigrationState *s)
->  {
->      qemu_put_be64(s->postcopy_qemufile_src, RAM_SAVE_FLAG_EOS);
-> @@ -4438,6 +4474,7 @@ static SaveVMHandlers savevm_ram_handlers = {
->      .load_setup = ram_load_setup,
->      .load_cleanup = ram_load_cleanup,
->      .resume_prepare = ram_resume_prepare,
-> +    .save_postcopy_prepare = ram_save_postcopy_prepare,
->  };
->  
->  static void ram_mig_ram_block_resized(RAMBlockNotifier *n, void *host,
 
