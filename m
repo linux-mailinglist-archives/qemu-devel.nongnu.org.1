@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDACA77611
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 10:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DE9A77618
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 10:16:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzWhT-0006nF-K7; Tue, 01 Apr 2025 04:10:24 -0400
+	id 1tzWhT-0006nA-Hg; Tue, 01 Apr 2025 04:10:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzWhM-0006mJ-BO
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:10:17 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzWhP-0006mh-24
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:10:19 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzWhI-0005vp-7Q
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:10:15 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43cec5cd73bso33699545e9.3
- for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 01:10:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzWhM-0005wI-AX
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:10:18 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-39727fe912cso1913581f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 01:10:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743495010; x=1744099810; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743495014; x=1744099814; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PkCoYIb7m4pc+ERBu4up+WFfgiLqv22+MYfn749jHu4=;
- b=z4r3JOH6GR6Nt0jDS+FOtg5AgnMGuiHYLecnJpeJH49ryezpyWpO2/RVd5WRs61JAb
- 5RHWD2l0Z/DjEOmvLcnrpWnGxZFIMETVwVmrwOLbKQdUbv3kN8JYlHSo+9gf/Vpi/jaS
- D2m+LAHk4Rb79rSLjEodWLXVR4baHvnTdmEVFBrZ+dVyi1RFbdOE1c6sUO7zHvJ+bKvw
- iKGSwWuzkEPu9yS/MKNvwhVEppwO0FizbnJmRRRqulhD5tXav3bD1EHjG3KXoTMtpdid
- qsegeo3AH5l1vlsYwpZKQPEL5GN1jiS2yFhVm7hMbfYTnBhDDGj8icTl7KimJd86T0nl
- Dz4A==
+ bh=fOHYuFnp4koozIqx1uCsPrUxKvA8s1qXFiegecsD2JY=;
+ b=GKE3MOv8doAdvbWUDdV+pCxRzVt3L4HvMQ22iEYyp//akfn5TnA6V7jckO7eJgSail
+ yEYYtMiVxEtJXqlIBr6g0f3VY6Hq5oIQ5pl/AeR6hbAoj3KUaTo9AWLJ2aqnh4RRD12x
+ 4kiCKhf7zeL7MF2Le1KGFTCMzHAJ6nAjqLiFS8xRnRDGjIMAEHnvf2pDC8GT8THVyiwr
+ OiuYYznOlwrgX1a+lFPH/GKDCPB1TGTqt3fikI+Mx0tktfuSLZoXT++E+pIhfIR068NY
+ 1bwBQJMN9XJN6TtRJqZUoewATWEDXeoP1mPL1rDnZvxmaXihJr/3zld5/5tt10XaQK/h
+ WSOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743495010; x=1744099810;
+ d=1e100.net; s=20230601; t=1743495014; x=1744099814;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PkCoYIb7m4pc+ERBu4up+WFfgiLqv22+MYfn749jHu4=;
- b=ONzP2JZkl+PuBilkRML2oXZIWV14kOlok1iSp0ISJtlNnReljg14/UTbWWjM1OAXbi
- VdxkXaIaoFsxDgXs1Wbmtd1MvZrVA9QC28Xrdbm9vHkXu5AcFkKuCiH4eW15PXIn5GQh
- ZxXQuw1Q5PD1n7GLzkVLJyZ0g+HuPjhUfYm5xmh907E8nKYi1mzBrAj8X86WxqqgWmTj
- RsMAiBXuSEioyiO6Lgcefq6IHBzvLGSeq+AmVTAtZhcee6q3kLjNqcw2zBUCDmO4UKV6
- TV8ld+8Q6rSZ59HdQa5MzfeAN7siDa8XpuxnIRDIRVIvehHFRCtst22SXRFQzuw0h2YV
- SxYQ==
-X-Gm-Message-State: AOJu0YyS3Zlevt4FroK9fDmeDp8glvF1QVCPROFE7PoUeYKNe9BBDSEI
- 5HuG9uQ/YkJZvgyC9romV2g+MsnEcnmsuHRrFawHVy9IdKOMrGku0OdZi+ttPIq/0R86CWqgQKF
- R
-X-Gm-Gg: ASbGncvjwemUbut3+9WDed9v5Wwx3JKhmvA6v+1Qiq00CiU0iZku00PJJR3dcQ0/gen
- OE1GLA0VVTaBWBxcmPKZ0rJMPh/KWBs9wU3a5CQTNNgHeZpgTCt3Pz4FnzjgLjaK6fdOj73423h
- dtvfkb30c4oextfgKbwpkOe1aGljmBBTWn83oPNMd5GpKKMIueS5ymOeFEPP4gZcHJ+qPfLKlQ7
- HHwtWlcsjxn9XVp7KvFucjX8ckxoLRaurr9PN6A++vzliwsF7MAZ+d7lZR9aI96BHyYhIRCvgKW
- gczVincRMDgy2ZwQseIhVA3oMx7izQOp95B0s0qUZASqoWY3vHWcmzSohRRYLRoCH+S8fFwCvqq
- n7zr1kNLI9ac7u48Dqew=
-X-Google-Smtp-Source: AGHT+IFgWb5b+Usf6fqbgmjVF84LAXSZlVNqv0uCsDDKENPxC+kO6PY2w/u6+iYWnNv9GvwTej2rdg==
-X-Received: by 2002:a05:600c:34ce:b0:43c:e7ae:4bcf with SMTP id
- 5b1f17b1804b1-43dabe235b5mr125439145e9.0.1743495009665; 
- Tue, 01 Apr 2025 01:10:09 -0700 (PDT)
+ bh=fOHYuFnp4koozIqx1uCsPrUxKvA8s1qXFiegecsD2JY=;
+ b=BKvHNBgbF+auqC9jzny+en4aZlvD5SQ+uZeRhhR7ofzqO8i29sHGUBOOPl/HWJFuhX
+ OdZjMYBMOgCTksnBmfaYt6JHXHejz6VGWsp/nwX8m4WBAszpXrh+abgZTHdcqPMt4M4X
+ 8aw6EyHD3P25JxCIYENLmmvoouahLVGjReRTEPkPLE2s6nrAXQGVMkU5y12F1nrffD1b
+ FIBiJfnQ+8D94ofUFb8ogF5V1PV9nKB/3xiZoicxkJo/lHeMONKSFG376cnsy8v397YE
+ Qc7wmOnwRK7cfyMKtWjKhEnbdQ70l/W+XKx5qxNRJ6ZPXOIyXTjNtONCkvZV6rFwZrzd
+ mZOA==
+X-Gm-Message-State: AOJu0YxaA46A/yGuGoycfdfx50Z0rUi3bkRbY+eTv3lAzv6sH0JbcXpS
+ oKtBgNEHF+zs9SPBccmUySSfWOXvBx/+WQMtRey6lAYYDrbRJZYUB/ObwcmACwZ8Atv+2ShuOlt
+ e
+X-Gm-Gg: ASbGncsWHThCsw98nM8yoxKRxvozXVo3WzV1g0Qp1mIVeV+uKmjKuhi0gzx+g6mox1Y
+ LmFaV7ytFI5cd5Aro1TFqDcPZYCLBjNyit3A6QUHzvBElwHQcaTTCXENfVI3tjWVFCrQ59VIDq/
+ 6Pm30F8gVMfp8IeZ3nEyyjRE9hjSNJyRtNYqaWuKwCvcZIBhpotxlRittY9M5fCYbtQzujXN5KJ
+ FHv6OpXeAlJIhn525K/ASYBHhD1e3my6+SxX4yDHSsJ4LgU7dUD13pQl0tH+fEb1nJxNkGGrpOG
+ tvGXZ1ZZbMl0T09z3Yb09+xTQnVkduJD3/p8HrrjoZL5dWWEeTy7FuBxwpMyjLmyL5hEB8CHuBn
+ iWeuNAmjNc3MEefgAvp87KRkgFVIrrA==
+X-Google-Smtp-Source: AGHT+IEwUpblceau/VUwUlPvpZgXaZdYfCSm7xoYW6y3V8ZLS0wVVIgmt0WvN9sSGHcbIvi57EyiIA==
+X-Received: by 2002:a05:6000:1a8f:b0:391:43cb:43e6 with SMTP id
+ ffacd0b85a97d-39c1211cfd6mr8560797f8f.51.1743495014350; 
+ Tue, 01 Apr 2025 01:10:14 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d8fcceaaasm147949435e9.18.2025.04.01.01.10.08
+ 5b1f17b1804b1-43d82dedc2dsm190349835e9.2.2025.04.01.01.10.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 01 Apr 2025 01:10:09 -0700 (PDT)
+ Tue, 01 Apr 2025 01:10:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>,
@@ -68,18 +68,18 @@ Cc: Gustavo Romero <gustavo.romero@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 06/24] target/hppa: Restrict SoftMMU mmu_index() to
- TCG
-Date: Tue,  1 Apr 2025 10:09:19 +0200
-Message-ID: <20250401080938.32278-7-philmd@linaro.org>
+Subject: [PATCH-for-10.1 07/24] target/i386: Remove unused cpu_(ldub,
+ stb)_kernel macros
+Date: Tue,  1 Apr 2025 10:09:20 +0200
+Message-ID: <20250401080938.32278-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250401080938.32278-1-philmd@linaro.org>
 References: <20250401080938.32278-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,29 +104,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/hppa/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/tcg/seg_helper.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 0da8cdf41f5..51bff0c5d62 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -257,6 +257,7 @@ static const TCGCPUOps hppa_tcg_ops = {
-     .translate_code = hppa_translate_code,
-     .synchronize_from_tb = hppa_cpu_synchronize_from_tb,
-     .restore_state_to_opc = hppa_restore_state_to_opc,
-+    .mmu_index = hppa_cpu_mmu_index,
+diff --git a/target/i386/tcg/seg_helper.h b/target/i386/tcg/seg_helper.h
+index ebf10352778..6b8606cd6d8 100644
+--- a/target/i386/tcg/seg_helper.h
++++ b/target/i386/tcg/seg_helper.h
+@@ -35,8 +35,6 @@
+  * TODO: Convert callers to compute cpu_mmu_index_kernel once
+  * and use *_mmuidx_ra directly.
+  */
+-#define cpu_ldub_kernel_ra(e, p, r) \
+-    cpu_ldub_mmuidx_ra(e, p, cpu_mmu_index_kernel(e), r)
+ #define cpu_lduw_kernel_ra(e, p, r) \
+     cpu_lduw_mmuidx_ra(e, p, cpu_mmu_index_kernel(e), r)
+ #define cpu_ldl_kernel_ra(e, p, r) \
+@@ -44,8 +42,6 @@
+ #define cpu_ldq_kernel_ra(e, p, r) \
+     cpu_ldq_mmuidx_ra(e, p, cpu_mmu_index_kernel(e), r)
  
- #ifndef CONFIG_USER_ONLY
-     .tlb_fill_align = hppa_cpu_tlb_fill_align,
-@@ -282,7 +283,6 @@ static void hppa_cpu_class_init(ObjectClass *oc, void *data)
-                                        &acc->parent_phases);
+-#define cpu_stb_kernel_ra(e, p, v, r) \
+-    cpu_stb_mmuidx_ra(e, p, v, cpu_mmu_index_kernel(e), r)
+ #define cpu_stw_kernel_ra(e, p, v, r) \
+     cpu_stw_mmuidx_ra(e, p, v, cpu_mmu_index_kernel(e), r)
+ #define cpu_stl_kernel_ra(e, p, v, r) \
+@@ -53,12 +49,10 @@
+ #define cpu_stq_kernel_ra(e, p, v, r) \
+     cpu_stq_mmuidx_ra(e, p, v, cpu_mmu_index_kernel(e), r)
  
-     cc->class_by_name = hppa_cpu_class_by_name;
--    cc->mmu_index = hppa_cpu_mmu_index;
-     cc->dump_state = hppa_cpu_dump_state;
-     cc->set_pc = hppa_cpu_set_pc;
-     cc->get_pc = hppa_cpu_get_pc;
+-#define cpu_ldub_kernel(e, p)    cpu_ldub_kernel_ra(e, p, 0)
+ #define cpu_lduw_kernel(e, p)    cpu_lduw_kernel_ra(e, p, 0)
+ #define cpu_ldl_kernel(e, p)     cpu_ldl_kernel_ra(e, p, 0)
+ #define cpu_ldq_kernel(e, p)     cpu_ldq_kernel_ra(e, p, 0)
+ 
+-#define cpu_stb_kernel(e, p, v)  cpu_stb_kernel_ra(e, p, v, 0)
+ #define cpu_stw_kernel(e, p, v)  cpu_stw_kernel_ra(e, p, v, 0)
+ #define cpu_stl_kernel(e, p, v)  cpu_stl_kernel_ra(e, p, v, 0)
+ #define cpu_stq_kernel(e, p, v)  cpu_stq_kernel_ra(e, p, v, 0)
 -- 
 2.47.1
 
