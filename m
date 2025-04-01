@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0062A77B82
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 14:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E97A2A77A5F
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 14:07:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbC0-0001sQ-KN; Tue, 01 Apr 2025 08:58:12 -0400
+	id 1tzaO8-0004r6-S4; Tue, 01 Apr 2025 08:06:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <timlee660101@gmail.com>)
- id 1tzXSr-0002I6-15; Tue, 01 Apr 2025 04:59:23 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <timlee660101@gmail.com>)
- id 1tzXSn-0003xS-OX; Tue, 01 Apr 2025 04:59:19 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-227a8cdd241so14992025ad.3; 
- Tue, 01 Apr 2025 01:59:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743497955; x=1744102755; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yr/ylujgk47Z0kyANssU9cf1XdMKa/cPxXGrPAQPkiE=;
- b=S9+goyJdU+d2enQu2LdRx3z/cPBxHdm0fJNacJV511wVG66Z0MgQHVt6edLBI9C9Gn
- wL1u85rHaCR0alJbQ/l5F3dagg1zBosaBwBAoIMvZ6a4WeeSDsqGZZ7RXy1zRvdJB/GN
- tMir+v9ZU4J6se83whYgFngmSGVSEErMgGksl09sIMOYCZtYGtmi2NKu+1dpwVevh8eC
- VuCU7VmLnmx+8m3w9yxEeRMJKwW5wIVrxcAYBZT3g0f6pt2c4eUeObxYwUaIn3HKeB4P
- gWAJQ5M1X3rvzD6m3s1CnkjKeMUt4AUUeKJer+O/o4hovyD9Ta7BoA/4G5uFyDPJlgtO
- oBDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743497955; x=1744102755;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yr/ylujgk47Z0kyANssU9cf1XdMKa/cPxXGrPAQPkiE=;
- b=lO+HwVO3AgaLbRNSYGsDlVNDO5cFIlhnHF90usO0iayIVJQzXaXpiqy5rWuQP2TBF3
- VinepveZVnhuEFKWxysOnzIsXVMK8rPvKK7Czk0veyIWYX2ccNxQCqDxk6lPB7hremLt
- v6dk3NDUgtAgFIgmfrNqhCe4f1RTnQUfcjJ7dm/UxoXkDN2wlSnTRWCKAN5i5i5FH4Gb
- J2lt6o9ec1VPtdYs2WJbV7qQEYtMrgXGqmZ4uTy0y8Hihtf3Ki4MSTgEPmn5MzxkpWd+
- iqXohINGO1Ov6XjO/4Md4htiKcuZaGA0MoNQ8YLYpy0G+MEJhzw4M8QY9xx2yWnN7/f8
- mu9w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXmX97os0sB1FIptIxDRgCY0mDJZEZJsMO4RXB9tYhQE5whCVqBMFG2DRaze5U35wTsk5gkEq9YZHwu@nongnu.org
-X-Gm-Message-State: AOJu0Yz34h/sBLD5PBtHXGXd5XDa0+Lk1F2jGsQtLxDbQTZya77aryQL
- PP+BngsUhtTaY7QZppC2n3EW2sEC1yqKUSyPS1HrLgNgBuEeVDwQRwjdSo0ysXM=
-X-Gm-Gg: ASbGnctu899DBCteJiRrDjJ3dSJrESKc3CEWGsx0U1kDgcZv7tXO7jc4yjSbpP3crhA
- 5ds14RgG1MdVf+6Wmy2FVYjeuht8S4m9b7RXBIXdNvV9nnyLzJmh//4JRc6ZMFZwqHxPlGJm9O5
- OmYeLg8ZhGUojrlOHIKxrGRtgyL1WbUgqhEoSLK7ONGnbLbqtE7mzhSsN92hC7SIj4L1w0yGshT
- be8mgKC2i8Te26hrVrlCj9azAgB0jX/Jf8fyAyyZaeDDer4fxczXUbbTBrbcbASmtX3c8Uo8wjW
- UI4n0sqRhEtLaWGDY3y1JuwfrhRp/il/Zk/JBhd5rkLr6baUYPIxmNI1Q+wdq2L0ZWV5Q4gY/yI
- TFpwgb4H2Cn5b
-X-Google-Smtp-Source: AGHT+IGUhExkUTCVJ1CxkibHZ2pfpyh4lOr5lXvACkDyV0O3dmf8pWpvHhsEfas9u6ZkbFR6D/y9lw==
-X-Received: by 2002:a17:902:cec8:b0:215:94eb:adb6 with SMTP id
- d9443c01a7336-2292f9f0afcmr209785925ad.40.1743497955213; 
- Tue, 01 Apr 2025 01:59:15 -0700 (PDT)
-Received: from hcdev-d520mt.. (60-250-196-139.hinet-ip.hinet.net.
- [60.250.196.139]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2291f1dee68sm83047055ad.205.2025.04.01.01.59.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Apr 2025 01:59:14 -0700 (PDT)
-From: Tim Lee <timlee660101@gmail.com>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, wuhaotsh@google.com,
- chli30@nuvoton.com, kfting@nuvoton.com, Tim Lee <timlee660101@gmail.com>
-Subject: [PATCH] hw/arm/npcm8xx_boards: Add auto zero flash image and device
- part number
-Date: Tue,  1 Apr 2025 16:59:03 +0800
-Message-Id: <20250401085903.224787-1-timlee660101@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tzaNR-0004i9-JC
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 08:06:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1tzaNO-0006tK-DT
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 08:05:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1743509148;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LcbFe9E+Zvr5gitiMBvfLk8vaOihvpLNEVBt7hY8CoQ=;
+ b=hfRIswxVA0yXHwVgcdBfUfiz2REAhVcWvE2oJJYAIabCGYJKN6T5AX/espXWGThVBKjP6r
+ XDZDFOgYgv5f+r2JhBK/mdmDMfz5tAM9sAutdZ1DXFQY4RJJSgDD/00sBggduxPqMmgRL3
+ qfrvxa3c4Fv6NrW94o2osOmlUOY8O7g=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-ueXqpodGNRmqqxJH8jPsQQ-1; Tue,
+ 01 Apr 2025 08:05:46 -0400
+X-MC-Unique: ueXqpodGNRmqqxJH8jPsQQ-1
+X-Mimecast-MFC-AGG-ID: ueXqpodGNRmqqxJH8jPsQQ_1743509146
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8472D1801A00; Tue,  1 Apr 2025 12:05:45 +0000 (UTC)
+Received: from redhat.com (unknown [10.44.34.48])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F04771955D81; Tue,  1 Apr 2025 12:05:42 +0000 (UTC)
+Date: Tue, 1 Apr 2025 14:05:40 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH 14/15] fuse: Implement multi-threading
+Message-ID: <Z-vWlL1_P5UmK2Gl@redhat.com>
+References: <20250325160529.117543-1-hreitz@redhat.com>
+ <20250325160655.119407-13-hreitz@redhat.com>
+ <87sen0fj1j.fsf@pond.sub.org>
+ <23f3bdae-c48f-4b23-9f6f-389625617a35@redhat.com>
+ <874izg81dt.fsf@pond.sub.org>
+ <4c2b5ab0-23d9-4ad8-9549-0ee2a9551b26@redhat.com>
+ <87tt7eu0nt.fsf@pond.sub.org>
+ <cfad66d7-1ba1-440e-9a48-4d0c91eb5aa1@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=timlee660101@gmail.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <cfad66d7-1ba1-440e-9a48-4d0c91eb5aa1@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.997,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 01 Apr 2025 08:58:09 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,69 +89,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix flash device part number to `mx66l1g45g` according image-bmc run on npcm8xx
-evb board (SPIFlash...SF: Detected mx66l1g45g, total 128 MiB)
+Am 27.03.2025 um 14:45 hat Hanna Czenczek geschrieben:
+> On 27.03.25 13:18, Markus Armbruster wrote:
+> > Hanna Czenczek <hreitz@redhat.com> writes:
+> > 
+> > > On 26.03.25 12:41, Markus Armbruster wrote:
+> > > > Hanna Czenczek <hreitz@redhat.com> writes:
+> > > > 
+> > > > > On 26.03.25 06:38, Markus Armbruster wrote:
+> > > > > > Hanna Czenczek <hreitz@redhat.com> writes:
+> > > > > > 
+> > > > > > > FUSE allows creating multiple request queues by "cloning" /dev/fuse FDs
+> > > > > > > (via open("/dev/fuse") + ioctl(FUSE_DEV_IOC_CLONE)).
+> > > > > > > 
+> > > > > > > We can use this to implement multi-threading.
+> > > > > > > 
+> > > > > > > Note that the interface presented here differs from the multi-queue
+> > > > > > > interface of virtio-blk: The latter maps virtqueues to iothreads, which
+> > > > > > > allows processing multiple virtqueues in a single iothread.  The
+> > > > > > > equivalent (processing multiple FDs in a single iothread) would not make
+> > > > > > > sense for FUSE because those FDs are used in a round-robin fashion by
+> > > > > > > the FUSE kernel driver.  Putting two of them into a single iothread will
+> > > > > > > just create a bottleneck.
+> > > > > > > 
+> > > > > > > Therefore, all we need is an array of iothreads, and we will create one
+> > > > > > > "queue" (FD) per thread.
+> > > > > > [...]
+> > > > > > 
+> > > > > > > Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> > > > > > > ---
+> > > > > > >   qapi/block-export.json |   8 +-
+> > > > > > >   block/export/fuse.c    | 214 +++++++++++++++++++++++++++++++++--------
+> > > > > > >   2 files changed, 179 insertions(+), 43 deletions(-)
+> > > > > > > 
+> > > > > > > diff --git a/qapi/block-export.json b/qapi/block-export.json
+> > > > > > > index c783e01a53..0bdd5992eb 100644
+> > > > > > > --- a/qapi/block-export.json
+> > > > > > > +++ b/qapi/block-export.json
+> > > > > > > @@ -179,12 +179,18 @@
+> > > > > > >   #     mount the export with allow_other, and if that fails, try again
+> > > > > > >   #     without.  (since 6.1; default: auto)
+> > > > > > >   #
+> > > > > > > +# @iothreads: Enables multi-threading: Handle requests in each of the
+> > > > > > > +#     given iothreads (instead of the block device's iothread, or the
+> > > > > > > +#     export's "main" iothread).
+> > > > > > When does "the block device's iothread" apply, and when "the export's
+> > > > > > main iothread"?
+> > > > > Depends on where you set the iothread option.
+> > > > Assuming QMP users need to know (see right below), can we trust they
+> > > > understand which one applies when?  If not, can we provide clues?
+> > > I don’t understand what exactly you mean, but which one applies when has nothing to do with this option, but with the @iothread (and @fixed-iothread) option(s) on BlockExportOptions, which do document this.
+> > Can you point me to the spot?
+> 
+> Sure: https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#object-QMP-block-export.BlockExportOptions
+> (iothread and fixed-iothread)
+> 
+> > 
+> > > > > > Is this something the QMP user needs to know?
+> > > > > I think so, because e.g. if you set iothread on the device and the export, you’ll get a conflict.  But if you set it there and set this option, you won’t.  This option will just override the device/export option.
+> > > > Do we think the doc comment sufficient for QMP users to figure this out?
+> > > As for conflict, BlockExportOptions.iothread and BlockExportOptions.fixed-iothread do.
+> > > 
+> > > As for overriding, I do think so.  Do you not?  I’m always open to suggestions.
+> > > 
+> > > > If not, can we provide clues?
+> > > > 
+> > > > In particular, do we think they can go from an export failure to the
+> > > > setting @iothreads here?  Perhaps the error message will guide them.
+> > > > What is the message?
+> > > I don’t understand what failure you mean.
+> > You wrote "you'll get a conflict".  I assume this manifests as failure
+> > of a QMP command (let's ignore CLI to keep things simple here).
+> 
+> If you set the @iothread option on both the (guest) device and the export
+> (and also @fixed-iothread on the export), then you’ll get an error.  Nothing
+> to do with this new @iothreads option here.
+> 
+> > Do we think ordinary users running into that failure can figure out they
+> > can avoid it by setting @iothreads?
+> 
+> It shouldn’t affect the failure.  Setting @iothread on both device and
+> export (with @fixed-iothread) will always cause an error, and should. 
+> Setting this option is not supposed to “fix” that configuration error.
+> 
+> Theoretically, setting @iothreads here could make it so that
+> BlockExportOptions.iothread (and/or fixed-iothread) is ignored, because that
+> thread will no longer be used for export-issued I/O; but in practice,
+> setting that option (BlockExportOptions.iothread) moves that export and the
+> whole BDS tree behind it to that I/O thread, so if you haven’t specified an
+> I/O thread on the guest device, the guest device will then use that thread. 
+> So making @iothreads silently completely ignore BlockExportOptions.iothread
+> may cause surprising behavior.
+> 
+> Maybe we could make setting @iothreads here and the generic
+> BlockExportOptions.iothread at the same time an error.  That would save us
+> the explanation here.
 
-And add auto zero flash image size to resolve error below after executing
-`./qemu-system-aarch64 -machine npcm845-evb -drive file=image-bmc`
+This raises the question if the better interface wouldn't be to change
+the BlockExportOptions.iothread from 'str' to an alternate between 'str'
+and ['str'], allowing the user to specify multiple iothreads in the
+already existing related option without creating conflicting options.
 
-Error message:
-qemu-system-aarch64: mx66l1g45g device '/machine/unattached/device[73]'
-requires 134217728 bytes, mtd0 block backend provides 67108864 bytes
+In the long run, I would be surprised if FUSE remained the only export
+supporting multiple iothreads. At least the virtio based ones
+(vhost-user-blk and VDUSE) even have precedence in the virtio-blk device
+itself, so while I don't know how much interest there is in actually
+implementing it, in theory we know it makes sense.
 
-Tested:
-Build passes and runs ./qemu-system-aarch64 -machine npcm845-evb normally
-
-Signed-off-by: Tim Lee <timlee660101@gmail.com>
----
- hw/arm/npcm8xx_boards.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/hw/arm/npcm8xx_boards.c b/hw/arm/npcm8xx_boards.c
-index 3fb8478e72..11b792c613 100644
---- a/hw/arm/npcm8xx_boards.c
-+++ b/hw/arm/npcm8xx_boards.c
-@@ -27,6 +27,7 @@
- #include "qemu/error-report.h"
- #include "qemu/datadir.h"
- #include "qemu/units.h"
-+#include "system/block-backend.h"
- 
- #define NPCM845_EVB_POWER_ON_STRAPS 0x000017ff
- 
-@@ -59,10 +60,21 @@ static void npcm8xx_connect_flash(NPCM7xxFIUState *fiu, int cs_no,
- {
-     DeviceState *flash;
-     qemu_irq flash_cs;
-+    BlockBackend *blk;
-+    uint64_t blk_size, perm, shared_perm;
- 
-     flash = qdev_new(flash_type);
-     if (dinfo) {
-         qdev_prop_set_drive(flash, "drive", blk_by_legacy_dinfo(dinfo));
-+        blk = blk_by_legacy_dinfo(dinfo);
-+        blk_size = blk_getlength(blk);
-+        if (blk_size < fiu->flash_size) {
-+            blk_get_perm(blk, &perm, &shared_perm);
-+            blk_set_perm(blk, BLK_PERM_ALL, BLK_PERM_ALL, &error_abort);
-+            blk_truncate(blk, fiu->flash_size, true, PREALLOC_MODE_OFF,
-+                         BDRV_REQ_ZERO_WRITE, &error_abort);
-+            blk_set_perm(blk, perm, shared_perm, &error_abort);
-+        }
-     }
-     qdev_realize_and_unref(flash, BUS(fiu->spi), &error_fatal);
- 
-@@ -194,7 +206,8 @@ static void npcm845_evb_init(MachineState *machine)
-     qdev_realize(DEVICE(soc), NULL, &error_fatal);
- 
-     npcm8xx_load_bootrom(machine, soc);
--    npcm8xx_connect_flash(&soc->fiu[0], 0, "w25q256", drive_get(IF_MTD, 0, 0));
-+    npcm8xx_connect_flash(&soc->fiu[0], 0, "mx66l1g45g",
-+                          drive_get(IF_MTD, 0, 0));
-     npcm845_evb_i2c_init(soc);
-     npcm845_evb_fan_init(NPCM8XX_MACHINE(machine), soc);
-     npcm8xx_load_kernel(machine, soc);
--- 
-2.34.1
+Kevin
 
 
