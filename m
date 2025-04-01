@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CF3A77D2F
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:04:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F118A77D22
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:03:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbyx-0005gI-7G; Tue, 01 Apr 2025 09:48:47 -0400
+	id 1tzbz1-00069S-1t; Tue, 01 Apr 2025 09:48:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbuh-0000rD-JO
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:23 -0400
+ id 1tzbul-00014c-Lt
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:29 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbuf-0006Zf-M6
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:23 -0400
+ id 1tzbui-0006XQ-J0
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743515061; x=1775051061;
+ t=1743515064; x=1775051064;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XEwqmQoSvwYMfkPqc6TzR0UgP5NnIAttqomtt/9PTFQ=;
- b=MtxKClP/0cqBS7WvrBaSdaxjokXTuUEHPYMKxKMqoHY5vcS1nUz67wRy
- KHW1vb7aKsM91bhv7REpVcU46EtO00Tq/VcBntPyBLtIgzRMYocxWvkCV
- 2+rt3nGS9Exv6wy0Ib2vo0UnSqct0ID8zldOOBkABmSbp7zcxWTtMJerF
- 5zH1pPMhJaVUIfQuNCGyguGe0FqumthOEkKJ2uei01THros66JJZM2rP6
- yqc6C55f+0QFGQp/OPgODqxZwuaWvaibzC2REciYp/3AHkHbQo9bjQDwf
- fgXBdiTcegxsN9Gd6LErV9zHFBrEZ6dspBztSjU9FUI/v18Yf+w48nFmr Q==;
-X-CSE-ConnectionGUID: wngH2rInTA+fmsQZK8AmGw==
-X-CSE-MsgGUID: QgRbCRBfSgiI8f/J5BVnFg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433513"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433513"
+ bh=cZBW6+bWAvYI3eaiq1KLwD7+rkeaAgANzXrfYjRXdeo=;
+ b=BxSnDoT2DxWP9zl8qbbXqhnIQPTOLLj17Nqn7+DiGmaE1ejY9YrwRhg7
+ oEsJmBsZ6/s8KZbcyn+ajzfWOcYyIbMGBGLAVqP3bLHTuc8XFWxleaXyE
+ J6yjKYWCUhJXm2bcITqbt70voQNkScj5kKORYC6J6wPr59YYv9Wdi+Pd8
+ OzTSX9A1q6SJe3YWhfcXOBETbLUhersrtn6hBJ8Xc92ldl4sbgJzaqnVP
+ puvzal0ZK7ys2tCYJc/WNQtTRu+7qInaW2b1Q/W1kZxjQXjTmIE4lV4zX
+ lbJN2DpyR34vkQt7IA4sTlbH3rxX4ZkOrdIW241daWFM4g+d/ms0NDpBW w==;
+X-CSE-ConnectionGUID: 5WK/OK81QJ2ku5tK5L6HnQ==
+X-CSE-MsgGUID: 12xOG4+BTs+NLNLO64GS2w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433522"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433522"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 06:43:00 -0700
-X-CSE-ConnectionGUID: bT+JGD2FQGuZGZSxrBVLLg==
-X-CSE-MsgGUID: qBgUs5PmTmiC0aGQheHqmQ==
+ 01 Apr 2025 06:43:02 -0700
+X-CSE-ConnectionGUID: wXDH2ZBjR0KuVUl77bSgxw==
+X-CSE-MsgGUID: g+f3eYfgQfaKQsw3/ZeVPQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640199"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640218"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:42:57 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:43:00 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -53,10 +53,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v8 43/55] i386/cgs: Rename *mask_cpuid_features() to
- *adjust_cpuid_features()
-Date: Tue,  1 Apr 2025 09:01:53 -0400
-Message-Id: <20250401130205.2198253-44-xiaoyao.li@intel.com>
+Subject: [PATCH v8 44/55] i386/tdx: Implement adjust_cpuid_features() for TDX
+Date: Tue,  1 Apr 2025 09:01:54 -0400
+Message-Id: <20250401130205.2198253-45-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250401130205.2198253-1-xiaoyao.li@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
@@ -87,96 +86,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because for TDX case, there are also fixed-1 bits that enfored by TDX
-module.
+Maintain a TDX specific supported CPUID set, and use it to mask the
+common supported CPUID value of KVM. It can avoid newly added supported
+features (reported via KVM_GET_SUPPORTED_CPUID) for common VMs being
+falsely reported as supported for TDX.
+
+As the first step, initialize the TDX supported CPUID set with all the
+configurable CPUID bits. It's not complete because there are other CPUID
+bits are supported for TDX but not reported as directly configurable.
+E.g. the XFAM related bits, attribute related bits and fixed-1 bits.
+They will be handled in the future.
+
+Also, what matters are the CPUID bits related to QEMU's feature word.
+Only mask the CPUID leafs which are feature word leaf.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/confidential-guest.h | 20 ++++++++++----------
- target/i386/kvm/kvm.c            |  2 +-
- target/i386/sev.c                |  4 ++--
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ target/i386/cpu.c          | 18 ++++++++++++++++++
+ target/i386/cpu.h          |  1 +
+ target/i386/kvm/kvm.c      |  2 +-
+ target/i386/kvm/kvm_i386.h |  1 +
+ target/i386/kvm/tdx.c      | 34 ++++++++++++++++++++++++++++++++++
+ 5 files changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
-index a86c42a47558..777d43cc9688 100644
---- a/target/i386/confidential-guest.h
-+++ b/target/i386/confidential-guest.h
-@@ -40,8 +40,8 @@ struct X86ConfidentialGuestClass {
-     /* <public> */
-     int (*kvm_type)(X86ConfidentialGuest *cg);
-     void (*cpu_instance_init)(X86ConfidentialGuest *cg, CPUState *cpu);
--    uint32_t (*mask_cpuid_features)(X86ConfidentialGuest *cg, uint32_t feature, uint32_t index,
--                                    int reg, uint32_t value);
-+    uint32_t (*adjust_cpuid_features)(X86ConfidentialGuest *cg, uint32_t feature,
-+                                      uint32_t index, int reg, uint32_t value);
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index f219961b62cd..4061d38d3fbe 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1655,6 +1655,24 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+     },
  };
  
- /**
-@@ -71,21 +71,21 @@ static inline void x86_confidential_guest_cpu_instance_init(X86ConfidentialGuest
- }
++bool is_feature_word_cpuid(uint32_t feature, uint32_t index, int reg)
++{
++    FeatureWordInfo *wi;
++    FeatureWord w;
++
++    for (w = 0; w < FEATURE_WORDS; w++)
++    {
++        wi = &feature_word_info[w];
++        if (wi->type == CPUID_FEATURE_WORD && wi->cpuid.eax == feature &&
++            (!wi->cpuid.needs_ecx || wi->cpuid.ecx == index) &&
++            wi->cpuid.reg == reg)
++        {
++            return true;
++        }
++    }
++    return false;
++}
++
+ typedef struct FeatureMask {
+     FeatureWord index;
+     uint64_t mask;
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 3910b488f775..42ef77789ded 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2515,6 +2515,7 @@ void cpu_set_apic_feature(CPUX86State *env);
+ void host_cpuid(uint32_t function, uint32_t count,
+                 uint32_t *eax, uint32_t *ebx, uint32_t *ecx, uint32_t *edx);
+ bool cpu_has_x2apic_feature(CPUX86State *env);
++bool is_feature_word_cpuid(uint32_t feature, uint32_t index, int reg);
  
- /**
-- * x86_confidential_guest_mask_cpuid_features:
-+ * x86_confidential_guest_adjust_cpuid_features:
-  *
-- * Removes unsupported features from a confidential guest's CPUID values, returns
-- * the value with the bits removed.  The bits removed should be those that KVM
-- * provides independent of host-supported CPUID features, but are not supported by
-- * the confidential computing firmware.
-+ * Adjust the supported features from a confidential guest's CPUID values,
-+ * returns the adjusted value.  There are bits being removed that are not
-+ * supported by the confidential computing firmware or bits being added that
-+ * are forcibly exposed to guest by the confidential computing firmware.
-  */
--static inline int x86_confidential_guest_mask_cpuid_features(X86ConfidentialGuest *cg,
-+static inline int x86_confidential_guest_adjust_cpuid_features(X86ConfidentialGuest *cg,
-                                                              uint32_t feature, uint32_t index,
-                                                              int reg, uint32_t value)
+ static inline bool x86_has_cpuid_0x1f(X86CPU *cpu)
  {
-     X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
- 
--    if (klass->mask_cpuid_features) {
--        return klass->mask_cpuid_features(cg, feature, index, reg, value);
-+    if (klass->adjust_cpuid_features) {
-+        return klass->adjust_cpuid_features(cg, feature, index, reg, value);
-     } else {
-         return value;
-     }
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4078ba40473e..fa46edaeac8d 100644
+index fa46edaeac8d..17d7bf6ae9aa 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -573,7 +573,7 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+@@ -393,7 +393,7 @@ static bool host_tsx_broken(void)
+ 
+ /* Returns the value for a specific register on the cpuid entry
+  */
+-static uint32_t cpuid_entry_get_reg(struct kvm_cpuid_entry2 *entry, int reg)
++uint32_t cpuid_entry_get_reg(struct kvm_cpuid_entry2 *entry, int reg)
+ {
+     uint32_t ret = 0;
+     switch (reg) {
+diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+index dc696cb7238a..484a1de84d51 100644
+--- a/target/i386/kvm/kvm_i386.h
++++ b/target/i386/kvm/kvm_i386.h
+@@ -62,6 +62,7 @@ void kvm_update_msi_routes_all(void *private, bool global,
+ struct kvm_cpuid_entry2 *cpuid_find_entry(struct kvm_cpuid2 *cpuid,
+                                           uint32_t function,
+                                           uint32_t index);
++uint32_t cpuid_entry_get_reg(struct kvm_cpuid_entry2 *entry, int reg);
+ uint32_t kvm_x86_build_cpuid(CPUX86State *env, struct kvm_cpuid_entry2 *entries,
+                              uint32_t cpuid_i);
+ #endif /* CONFIG_KVM */
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index 4128f27d6b64..b9a96c2e392d 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -45,6 +45,7 @@
+ static TdxGuest *tdx_guest;
+ 
+ static struct kvm_tdx_capabilities *tdx_caps;
++static struct kvm_cpuid2 *tdx_supported_cpuid;
+ 
+ /* Valid after kvm_arch_init()->confidential_guest_kvm_init()->tdx_kvm_init() */
+ bool is_tdx_vm(void)
+@@ -368,6 +369,20 @@ static Notifier tdx_machine_done_notify = {
+     .notify = tdx_finalize_vm,
+ };
+ 
++static void tdx_setup_supported_cpuid(void)
++{
++    if (tdx_supported_cpuid) {
++        return;
++    }
++
++    tdx_supported_cpuid = g_malloc0(sizeof(*tdx_supported_cpuid) +
++                    KVM_MAX_CPUID_ENTRIES * sizeof(struct kvm_cpuid_entry2));
++
++    memcpy(tdx_supported_cpuid->entries, tdx_caps->cpuid.entries,
++           tdx_caps->cpuid.nent * sizeof(struct kvm_cpuid_entry2));
++    tdx_supported_cpuid->nent = tdx_caps->cpuid.nent;
++}
++
+ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ {
+     MachineState *ms = MACHINE(qdev_get_machine());
+@@ -405,6 +420,8 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+         }
      }
  
-     if (current_machine->cgs) {
--        ret = x86_confidential_guest_mask_cpuid_features(
-+        ret = x86_confidential_guest_adjust_cpuid_features(
-             X86_CONFIDENTIAL_GUEST(current_machine->cgs),
-             function, index, reg, ret);
-     }
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 0e1dbb6959ec..a6c0a697250b 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -946,7 +946,7 @@ out:
++    tdx_setup_supported_cpuid();
++
+     /* TDX relies on KVM_HC_MAP_GPA_RANGE to handle TDG.VP.VMCALL<MapGPA> */
+     if (!kvm_enable_hypercall(BIT_ULL(KVM_HC_MAP_GPA_RANGE))) {
+         return -EOPNOTSUPP;
+@@ -442,6 +459,22 @@ static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
+     x86cpu->enable_cpuid_0x1f = true;
  }
  
- static uint32_t
--sev_snp_mask_cpuid_features(X86ConfidentialGuest *cg, uint32_t feature, uint32_t index,
-+sev_snp_adjust_cpuid_features(X86ConfidentialGuest *cg, uint32_t feature, uint32_t index,
-                             int reg, uint32_t value)
++static uint32_t tdx_adjust_cpuid_features(X86ConfidentialGuest *cg,
++                                          uint32_t feature, uint32_t index,
++                                          int reg, uint32_t value)
++{
++    struct kvm_cpuid_entry2 *e;
++
++    if (is_feature_word_cpuid(feature, index, reg)) {
++        e = cpuid_find_entry(tdx_supported_cpuid, feature, index);
++        if (e) {
++            value &= cpuid_entry_get_reg(e, reg);
++        }
++    }
++
++    return value;
++}
++
+ static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
  {
-     switch (feature) {
-@@ -2404,7 +2404,7 @@ sev_snp_guest_class_init(ObjectClass *oc, void *data)
-     klass->launch_finish = sev_snp_launch_finish;
-     klass->launch_update_data = sev_snp_launch_update_data;
-     klass->kvm_init = sev_snp_kvm_init;
--    x86_klass->mask_cpuid_features = sev_snp_mask_cpuid_features;
-+    x86_klass->adjust_cpuid_features = sev_snp_adjust_cpuid_features;
-     x86_klass->kvm_type = sev_snp_kvm_type;
- 
-     object_class_property_add(oc, "policy", "uint64",
+     if ((tdx->attributes & ~tdx_caps->supported_attrs)) {
+@@ -824,4 +857,5 @@ static void tdx_guest_class_init(ObjectClass *oc, void *data)
+     klass->kvm_init = tdx_kvm_init;
+     x86_klass->kvm_type = tdx_kvm_type;
+     x86_klass->cpu_instance_init = tdx_cpu_instance_init;
++    x86_klass->adjust_cpuid_features = tdx_adjust_cpuid_features;
+ }
 -- 
 2.34.1
 
