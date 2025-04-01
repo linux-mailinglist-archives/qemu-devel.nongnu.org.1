@@ -2,93 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8444A77CFA
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 182B7A77C7F
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:45:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbtc-00089D-CN; Tue, 01 Apr 2025 09:43:16 -0400
+	id 1tzbvJ-0001Va-GY; Tue, 01 Apr 2025 09:45:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tzbtO-0007PZ-Oj
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:43:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tzbua-0000ma-Fx
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tzbtM-0006gW-Ui
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:43:02 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1tzbuY-0006mu-2V
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743514980;
+ s=mimecast20190719; t=1743515053;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7tnjkpzqpRW4hX7h9+mlM+/8i9Q3XeE+RY2fIOmtnGk=;
- b=HLeSgDMjxLLw58ZG5hUpSF3XCpuw2WdwjTrG9UcoHQ5PKJQhYKjlnxydfgr9faDLvWi6vM
- sFnuy9efrvJLYrMLeUBEr620H2yzaCNJ5COAtvuQUeOPt0mBg3CYEsdSfPpSlGMLhrfm1D
- Troh1Ud8hY456EyQDhQCs2v123qQ04s=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-y2xV2wn-Ok6V_-4CSxDcag-1; Tue, 01 Apr 2025 09:42:58 -0400
-X-MC-Unique: y2xV2wn-Ok6V_-4CSxDcag-1
-X-Mimecast-MFC-AGG-ID: y2xV2wn-Ok6V_-4CSxDcag_1743514978
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3912b54611dso2984195f8f.1
- for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 06:42:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743514977; x=1744119777;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7tnjkpzqpRW4hX7h9+mlM+/8i9Q3XeE+RY2fIOmtnGk=;
- b=SrCPwEGRdq0UvDJddFOUr/ORL3Bo68fh7f5BsB/qUnc0tfL5haY3PZlt4wUjdPyvQ4
- oEMlutyfgDhke6o/4zJhIfWqoalM7HQP9P4s2IZMt03KJ25kBz9bz0nGmEWQW2rX1yLX
- lO6Fa0j+t2I1hbYKKHtuFR04iVTjwmzHbnArvwsKryFwYgJGqg+LI1rTsVw19qNJ9zDi
- CgOuqg3PqsUHkjDi6uppS3iCPC52a5D2YrRAHpqwPGBnUJbRZPiZdEal0SUucgShxJEq
- 8ceSoP46TzvJgqMd5K5dBOvJQZHQgbs6xcRrEZIFSfpZx4PKLVq8qQsCboLP9CpAK355
- npfA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXkmAvpe0agdVuMU31zF/c+gq0hNXPbXHkv+l9NU+LGkkhdBjVcvc3OVPtKA57EdyNqrK+0xbNtiOH4@nongnu.org
-X-Gm-Message-State: AOJu0YzGfn1UXKKaGTOuHDOcvKyDZKgZu90lOPTdd1hFe5fZRCPTXrMj
- gc3UvrUpPaZO3GQQ4h/owsc2Pg6K75Qaf0CgiDWg2z1fksPWeXd/U9JyWdzf4egJ5KNtHHUOq51
- pZrYRKueZOCFrKXfnCt9CH9RDfbZH7EDU5S+U6Q83AB63ZNEc9YyrKDWGECDw9dg=
-X-Gm-Gg: ASbGncuP2l0jfKpWZwuYU3Bj0iLgTh+WgSRVropLAndc2p6qW++YgQcb6xDvQXCGLU7
- mDPvED+4HPsF32cgioER9OlBmxR7pH+tJ1yyRbIRLfkvHvVUGGOFWe7ICQU1uKnxqdzKTnsDGi7
- aYMRCI2J7SkGPjF/gfHY4xsKX3r+Xp1AtX0Z9DRx3rembtO0VofyoCgJznmkn4ygJENSE+Dz9J7
- vhFrn86iNKiA+KM3udZBm8UFdDdoC07QNreGPsl0zxhTl6UeoLFUV0Ri6Vs4mogGOGqMp5RGk51
- qevKPbP/PEV8Cp3Utl2b5cORlg6AVOAB/B0J
-X-Received: by 2002:a05:6000:1888:b0:39a:c9ed:8657 with SMTP id
- ffacd0b85a97d-39c120dbb06mr9206920f8f.17.1743514976836; 
- Tue, 01 Apr 2025 06:42:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRr3P81bjCiStnDLOiolqnmcwQDjZnisZ5UqYKR/nxr0lZqSe4UdhTQ3foLyVbYp2N0OD1Ig==
-X-Received: by 2002:a05:6000:1888:b0:39a:c9ed:8657 with SMTP id
- ffacd0b85a97d-39c120dbb06mr9206898f8f.17.1743514976536; 
- Tue, 01 Apr 2025 06:42:56 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com ([85.93.96.130])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c0b663860sm14337975f8f.39.2025.04.01.06.42.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Apr 2025 06:42:56 -0700 (PDT)
-Date: Tue, 1 Apr 2025 15:42:55 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVk?=
- =?UTF-8?B?w6k=?= <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH 6/6] tests/qtest: Enable bios-tables-test for LoongArch
-Message-ID: <20250401154255.138cffc2@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20250228092729.543097-7-maobibo@loongson.cn>
-References: <20250228092729.543097-1-maobibo@loongson.cn>
- <20250228092729.543097-7-maobibo@loongson.cn>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ bh=uStuQa0FmcOdgtFM3GEHpttxtdUK9V+iHWCzAJHKHqs=;
+ b=Fvo0IHEgrsiZEUyuquTMluFpn0SnLvBZyNNT1OVGKb8cojB7pDqreLbgTDtajHEMSvu5FV
+ NNSNOsDUVP0QaPGmO7SnvD2Lt2SJS3a6I6lXmzZLaKK+VJVB6xoESDfZ6OUzRy9DS1NxET
+ /IkNkKHqthicFQzVZhiNAZZvZDUQfVk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-_SunuaUHNPODiTz4FT48fg-1; Tue,
+ 01 Apr 2025 09:44:10 -0400
+X-MC-Unique: _SunuaUHNPODiTz4FT48fg-1
+X-Mimecast-MFC-AGG-ID: _SunuaUHNPODiTz4FT48fg_1743515049
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4A9F71809CA3; Tue,  1 Apr 2025 13:44:09 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.88])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 951191955D81; Tue,  1 Apr 2025 13:44:06 +0000 (UTC)
+Date: Tue, 1 Apr 2025 08:44:03 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, qemu-stable@nongnu.org
+Subject: Re: [PATCH 01/15] fuse: Copy write buffer content before polling
+Message-ID: <re2wbm3hv4tqymmyan2rovwvxvfayh4rkyzn6ckjuoqlysmyjb@iscof2qe4fvg>
+References: <20250325160529.117543-1-hreitz@redhat.com>
+ <20250325160635.118812-1-hreitz@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250325160635.118812-1-hreitz@redhat.com>
+User-Agent: NeoMutt/20250113
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -113,33 +82,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 28 Feb 2025 17:27:29 +0800
-Bibo Mao <maobibo@loongson.cn> wrote:
-
-> Enable bios-tables-test for LoongArch virt machine, it passes to run
-> with command "make check-qtest-loongarch64".
+On Tue, Mar 25, 2025 at 05:06:35PM +0100, Hanna Czenczek wrote:
+> Polling in I/O functions can lead to nested read_from_fuse_export()
+> calls, overwriting the request buffer's content.  The only function
+> affected by this is fuse_write(), which therefore must use a bounce
+> buffer or corruption may occur.
 > 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-
-I suggest merging it into of 3/6
-
-> ---
->  tests/qtest/meson.build | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Note that in addition we do not know whether libfuse-internal structures
+> can cope with this nesting, and even if we did, we probably cannot rely
+> on it in the future.  This is the main reason why we want to remove
+> libfuse from the I/O path.
 > 
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index 8a6243382a..8628eebfbc 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -149,7 +149,8 @@ qtests_hppa = \
+
+> @@ -624,6 +630,7 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
+>                         size_t size, off_t offset, struct fuse_file_info *fi)
+>  {
+>      FuseExport *exp = fuse_req_userdata(req);
+> +    void *copied;
+
+Do we have a good way to annotate variables that require qemu_vfree()
+if non-NULL for automatic cleanup?  If so, should this be annotated
+and set to NULL here,...
+
+>      int64_t length;
+>      int ret;
 >  
->  qtests_loongarch64 = qtests_filter + \
->    (config_all_devices.has_key('CONFIG_LOONGARCH_VIRT') ? ['numa-test'] : []) + \
-> -  ['boot-serial-test']
-> +  ['boot-serial-test'] + \
-> +  (unpack_edk2_blobs ? ['bios-tables-test'] : [])
+> @@ -638,6 +645,14 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
+>          return;
+>      }
 >  
->  qtests_m68k = ['boot-serial-test'] + \
->    qtests_filter
+> +    /*
+> +     * Heed the note on read_from_fuse_export(): If we poll (which any blk_*()
+> +     * I/O function may do), read_from_fuse_export() may be nested, overwriting
+> +     * the request buffer content.  Therefore, we must copy it here.
+> +     */
+> +    copied = blk_blockalign(exp->common.blk, size);
+> +    memcpy(copied, buf, size);
+> +
+>      /**
+>       * Clients will expect short writes at EOF, so we have to limit
+>       * offset+size to the image length.
+> @@ -645,7 +660,7 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
+>      length = blk_getlength(exp->common.blk);
+>      if (length < 0) {
+>          fuse_reply_err(req, -length);
+> -        return;
+> +        goto free_buffer;
+
+...so that this and similar hunks are not needed?
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
