@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48B8A77CBE
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFD8A77C95
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:49:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbva-0002Da-Vh; Tue, 01 Apr 2025 09:45:20 -0400
+	id 1tzbyH-0004Cp-Dp; Tue, 01 Apr 2025 09:48:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbu7-0000Us-Ke
+ id 1tzbu7-0000Uu-Kb
  for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:00 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbtz-0006ZP-Uo
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:43:41 -0400
+ id 1tzbu1-0006XQ-1Q
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:43:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743515020; x=1775051020;
+ t=1743515021; x=1775051021;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=m2lenDu9bW+75Eq/1SrtcTJxjbE4TtBg2fjTNckDDXI=;
- b=WR0raWR+n+saTmeX5r1PxOGEP9P7uwnfgftuZx+na1sckB5lIl5rnBXN
- Du9zNskUw/QhFfUna2TBwxPVTMF1QrrPzXoyEKmlGZozXMvO1PKcvJS/N
- ez1nhDlBplsl5fLEZg84U4oapvpQOIoWa/Xe1IBPompog58qT4DRj33CU
- XQ21uCIuq7cBm86PilXKSsDYGMqk5dY16y3Kc00InUU19hFl4N718XPj1
- W43uZGjajWT+v/gRFP66NcNw2Hw5LVTdK2dR1PxQ97Db8hijIGnlFqf4o
- Apxv8ulCPEFDZCDe1ouQi04/ZIiNksNNfQmKc++5KuH/537iVjlAbyJPU Q==;
-X-CSE-ConnectionGUID: zlxCR1usRb61QeHvWIQX3Q==
-X-CSE-MsgGUID: xm1lJvkBRFKcgvUvC1Z6kA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433454"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433454"
+ bh=HwScKJFzwiqf5BzHfzfSKnBgtID2JLDKcoV7qGODNiU=;
+ b=XAt4YXyHOINujcGMCrdzj5do+tdAqOZbm4Hp+U+MZyfzD38WMSru0cLW
+ nkfkLzJvOHBB76q1I55aoH/zhDpPHXZ1MCSJ0293+bu/31P1BX/fj8yFG
+ 2ME5abEBuZvh9XQ696521SwFsvYtTnbq3cI+2/HfLMvKYzmLbrDz5TDiG
+ o11D7dDLD2DcBI6L2ydLV7ZE2y8tUkkrqhpLM67YueX9mVBggxEaRAE0U
+ MlpiRtM821jdux8T7OuPXH2lwjNosHpSQfDHM37OKdgrB3pyCTuyHhVP/
+ zLU2lT/UoPzIdoayHoGAytFfl/D+3NHkN5uRUe/2SP9/fHps3gPNMGbo9 w==;
+X-CSE-ConnectionGUID: 72uM4vEfTLCJr39EGznR5A==
+X-CSE-MsgGUID: cictwSCOREu4JixzfmBr9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433466"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433466"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 06:42:38 -0700
-X-CSE-ConnectionGUID: CuHhDGo4STK41z4uWKR32g==
-X-CSE-MsgGUID: k1cFb/oQSt6lOreAfVcxFw==
+ 01 Apr 2025 06:42:43 -0700
+X-CSE-ConnectionGUID: gJVZlGc0Toe5Wi8jv/Td2w==
+X-CSE-MsgGUID: uBjGreyaRDGGHB9LO4o5bw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640123"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640134"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:42:35 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:42:40 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -53,9 +53,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v8 34/55] i386/tdx: Force exposing CPUID 0x1f
-Date: Tue,  1 Apr 2025 09:01:44 -0400
-Message-Id: <20250401130205.2198253-35-xiaoyao.li@intel.com>
+Subject: [PATCH v8 36/55] i386/tdx: Disable SMM for TDX VMs
+Date: Tue,  1 Apr 2025 09:01:46 -0400
+Message-Id: <20250401130205.2198253-37-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250401130205.2198253-1-xiaoyao.li@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
@@ -86,30 +86,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX uses CPUID 0x1f to configure TD guest's CPU topology. So set
-enable_cpuid_0x1f for TDs.
+TDX doesn't support SMM and VMM cannot emulate SMM for TDX VMs because
+VMM cannot manipulate TDX VM's memory.
+
+Disable SMM for TDX VMs and error out if user requests to enable SMM.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/tdx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/i386/kvm/tdx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 49e748af3949..b0616eb3d371 100644
+index a816f57043f6..0eefd058f7a2 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -402,7 +402,11 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
+@@ -369,11 +369,20 @@ static Notifier tdx_machine_done_notify = {
  
- static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
+ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
  {
-+    X86CPU *x86cpu = X86_CPU(cpu);
-+
-     object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
-+
-+    x86cpu->enable_cpuid_0x1f = true;
- }
++    MachineState *ms = MACHINE(qdev_get_machine());
++    X86MachineState *x86ms = X86_MACHINE(ms);
+     TdxGuest *tdx = TDX_GUEST(cgs);
+     int r = 0;
  
- static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
+     kvm_mark_guest_state_protected();
+ 
++    if (x86ms->smm == ON_OFF_AUTO_AUTO) {
++        x86ms->smm = ON_OFF_AUTO_OFF;
++    } else if (x86ms->smm == ON_OFF_AUTO_ON) {
++        error_setg(errp, "TDX VM doesn't support SMM");
++        return -EINVAL;
++    }
++
+     if (!tdx_caps) {
+         r = get_tdx_capabilities(errp);
+         if (r) {
 -- 
 2.34.1
 
