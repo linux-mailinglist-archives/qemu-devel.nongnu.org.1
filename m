@@ -2,101 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC3EA77D14
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C249A77CE7
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:55:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzc29-0000du-81; Tue, 01 Apr 2025 09:52:05 -0400
+	id 1tzc3y-0002AR-2A; Tue, 01 Apr 2025 09:54:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tzc0p-0008Th-0B
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:50:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=ooSu=WT=kaod.org=clg@ozlabs.org>)
+ id 1tzc2g-0001dF-J8; Tue, 01 Apr 2025 09:52:39 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tzc0n-0007Xh-82
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:50:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743515440;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FimNuAvNHPXMUfJfSY+a3FqUY0CSnbtGI00gSyxpzSE=;
- b=K36a6ihW+I6m/S/HTzOyg818eRC+fM/2VxSFFMjq3rhU0O8iYMyp0kzZe6Dmu160TKWktd
- /yErOrz0S/RCyHiHR54M0IFRnZ4B+iYNrjT9ZkC+mSytVgLdwYfksavEZgnEvmgW+2uYM1
- D11SOpMKB4iUH5IASe9ImX9fJQKExWk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-592-8xz4aiwDP4a8Sijpc1QhMQ-1; Tue, 01 Apr 2025 09:50:37 -0400
-X-MC-Unique: 8xz4aiwDP4a8Sijpc1QhMQ-1
-X-Mimecast-MFC-AGG-ID: 8xz4aiwDP4a8Sijpc1QhMQ_1743515436
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43cf172ff63so36512105e9.3
- for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 06:50:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743515436; x=1744120236;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FimNuAvNHPXMUfJfSY+a3FqUY0CSnbtGI00gSyxpzSE=;
- b=GaL62hRoWHpXqad6CfeyT92T6GbX7S8nO7w9OnXjXwD8+t9LRabzPLFXnr+aAF7cWK
- E8oUMbEdrvnvxmG3Sqdkj9wWgjQ6vhCxf3Oq1Pl6ES4URTlOJLAQGQJyqpNQjmtwBspA
- 3Vq9185YClLqEi+R1FYoTdGKhum/dsji2ENml3Gllhc2i2vzmioct/8F77OB4D+uH4AD
- Y45VEoWTw2/8/rRwj2nYD6tNU5wV1BSzI2u+6skfY0lACtHePUlShcTOBi3XD+YeWLDe
- u5NbytsV61bxCoUk8lV+1XzpgL5iJ93V59mf8rOd6OBszmLqwiMNgcaCaOOAJfzqFrqg
- Igbg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXZtCs7IXu6oAbqwD0VXtWYFAkWOUSyjpQM8ULlX02dxQzHJEK5tSUwW1Q3YBaOFRVisE46hU8lOF7B@nongnu.org
-X-Gm-Message-State: AOJu0Yygtn6zXPM+EfPyTKbie+Ak9TEn4OH1TbeINDxDX7MmWBCgIaqv
- XBUUo10fzz7cjjVL0F3SZCfr9zej2K/woU41rVnVCjoO2wkl72iwbl3GcYzXWoI2h441c6/5yd6
- SLQOJluPzuvZb1AI2qjr47tTaIDw/7CnJwvUe5VQ/C5cfzjjCuBf5
-X-Gm-Gg: ASbGncsGI3B62G4ynokPqSYdmgWi5OeD2uYRaWduHq21Eq0N8KL6t5kVKuwV3wAsP+Z
- yAkgrqvXT7VJfyF9anREnmq21LiBp44H8oInJpdbUiYTGbXYYo58vuAm+1D9ef6Jd2jzCCGFY0M
- 16umk2jB6F7386+0zn4eJIU61rSgV3h+bJAzAfmQWKIq8zBuD3Lkse3yclpdHWUGfRkLaXmKKOl
- KSHcOdHkxbcpubfgJzZxhvMdDApjijZnV+6ixxyOd8nMD3+Imx+uac9AzXQ5R7li8iqpwY3SD/Z
- gDK7S6cozo7YJuzu7PMsdxEBZeI6NYGgCCll
-X-Received: by 2002:a05:600c:4fce:b0:43b:cc42:c54f with SMTP id
- 5b1f17b1804b1-43ea7c71a97mr33129005e9.14.1743515436019; 
- Tue, 01 Apr 2025 06:50:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEB7vA9Nbv2xo+w4fCuBVjMa5Xv9r7t/3qIGoFfzgAxsj9lRaW3zq3YTwAezJtSRhZhpUckpg==
-X-Received: by 2002:a05:600c:4fce:b0:43b:cc42:c54f with SMTP id
- 5b1f17b1804b1-43ea7c71a97mr33128675e9.14.1743515435634; 
- Tue, 01 Apr 2025 06:50:35 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com ([85.93.96.130])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c0b66ab86sm14580909f8f.51.2025.04.01.06.50.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Apr 2025 06:50:35 -0700 (PDT)
-Date: Tue, 1 Apr 2025 15:50:34 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVk?=
- =?UTF-8?B?w6k=?= <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH 0/6] Add bios-tables-test for LoongArch64 system
-Message-ID: <20250401155034.528b35a8@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20250228092729.543097-1-maobibo@loongson.cn>
-References: <20250228092729.543097-1-maobibo@loongson.cn>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <SRS0=ooSu=WT=kaod.org=clg@ozlabs.org>)
+ id 1tzc2e-0007cU-BG; Tue, 01 Apr 2025 09:52:38 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZRqFC0N5vz4x1w;
+ Wed,  2 Apr 2025 00:52:31 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZRqF66vX3z4wby;
+ Wed,  2 Apr 2025 00:52:26 +1100 (AEDT)
+Message-ID: <0cfb7e37-8347-47f5-8cbf-d8b88fc7312e@kaod.org>
+Date: Tue, 1 Apr 2025 15:52:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 04/22] hw/misc/aspeed_hace: Update hash source address
+ handling to 64-bit for AST2700
+To: Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Cc: troy_lee@aspeedtech.com
+References: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
+ <20250321092623.2097234-5-jamin_lin@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20250321092623.2097234-5-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.997,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=ooSu=WT=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,68 +113,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 28 Feb 2025 17:27:23 +0800
-Bibo Mao <maobibo@loongson.cn> wrote:
+On 3/21/25 10:26, Jamin Lin wrote:
+> The AST2700 CPU, based on the Cortex-A35, is a 64-bit processor, and its DRAM
+> address space is also 64-bit. To support future AST2700 updates, the source
+> hash buffer address data type is being updated to 64-bit.
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> ---
+>   hw/misc/aspeed_hace.c | 8 +++++---
+>   1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
+> index 4bcf6ed074..9771d6e490 100644
+> --- a/hw/misc/aspeed_hace.c
+> +++ b/hw/misc/aspeed_hace.c
+> @@ -154,7 +154,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+>       uint32_t sg_addr = 0;
+>       uint32_t pad_offset;
+>       uint32_t len = 0;
+> -    uint32_t src = 0;
+> +    uint64_t src = 0;
+>       void *haddr;
+>       hwaddr plen;
+>       int i;
+> @@ -177,7 +177,8 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+>                   break;
+>               }
+>   
+> -            src = s->regs[R_HASH_SRC] + (i * SG_LIST_ENTRY_SIZE);
+> +            src = deposit64(src, 0, 32, s->regs[R_HASH_SRC]);
 
-> This patchset add bios-tables-test for LoongArch64 virt machine
-> system. It works with UEFI bios, with uefi-test-tools LoongArch64
-> support is added to build bios-tables-test.loongarch64.iso.
-> 
-> Also with test case bios-tables-test, LoongArch64 support is added
-> and some basic ACPI tables is added here. It passes with command
-> make check-qtest-loongarch64 with the result:
->  qtest-loongarch64/bios-tables-test OK 29.52s 4 subtests passed
-> 
-> Bibo Mao (6):
->   uefi-test-tools:: Add LoongArch64 support
->   tests/data/uefi-boot-images: Add ISO image for LoongArch system
->   tests/qtest/bios-tables-test: Add basic testing for LoongArch64
->   tests/acpi: Add empty ACPI data files for LoongArch64
->   tests/acpi: Fill acpi table data for LoongArch
+I would introduce an helper routine to return the hash 'src' address.
+More changes are expected in the following patches.
 
-blobs no longer match (since cpu hotplug was merged after this series)
-so blobs need to be updated and series needs to be re-spun
+Why is the initial hash 'src' address assigned in the loop ? This
+could done before looping on the scatter-gather list elements.
 
->   tests/qtest: Enable bios-tables-test for LoongArch
-> 
->  tests/data/acpi/loongarch64/virt/APIC         | Bin 0 -> 108 bytes
->  .../data/acpi/loongarch64/virt/APIC.topology  | Bin 0 -> 213 bytes
->  tests/data/acpi/loongarch64/virt/DSDT         | Bin 0 -> 3614 bytes
->  tests/data/acpi/loongarch64/virt/DSDT.memhp   | Bin 0 -> 4951 bytes
->  tests/data/acpi/loongarch64/virt/FACP         | Bin 0 -> 268 bytes
->  tests/data/acpi/loongarch64/virt/MCFG         | Bin 0 -> 60 bytes
->  tests/data/acpi/loongarch64/virt/PPTT         | Bin 0 -> 76 bytes
->  .../data/acpi/loongarch64/virt/PPTT.topology  | Bin 0 -> 296 bytes
->  tests/data/acpi/loongarch64/virt/SLIT         |   0
->  tests/data/acpi/loongarch64/virt/SLIT.memhp   | Bin 0 -> 48 bytes
->  tests/data/acpi/loongarch64/virt/SPCR         | Bin 0 -> 80 bytes
->  tests/data/acpi/loongarch64/virt/SRAT         | Bin 0 -> 104 bytes
->  tests/data/acpi/loongarch64/virt/SRAT.memhp   | Bin 0 -> 184 bytes
->  .../data/acpi/loongarch64/virt/SRAT.topology  | Bin 0 -> 216 bytes
->  .../bios-tables-test.loongarch64.iso.qcow2    | Bin 0 -> 12800 bytes
->  tests/qtest/bios-tables-test.c                |  62 ++++++++++++++++++
->  tests/qtest/meson.build                       |   3 +-
->  tests/uefi-test-tools/Makefile                |   5 +-
->  .../UefiTestToolsPkg/UefiTestToolsPkg.dsc     |   6 +-
->  tests/uefi-test-tools/uefi-test-build.config  |  10 +++
->  20 files changed, 82 insertions(+), 4 deletions(-)
->  create mode 100644 tests/data/acpi/loongarch64/virt/APIC
->  create mode 100644 tests/data/acpi/loongarch64/virt/APIC.topology
->  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT
->  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.memhp
->  create mode 100644 tests/data/acpi/loongarch64/virt/FACP
->  create mode 100644 tests/data/acpi/loongarch64/virt/MCFG
->  create mode 100644 tests/data/acpi/loongarch64/virt/PPTT
->  create mode 100644 tests/data/acpi/loongarch64/virt/PPTT.topology
->  create mode 100644 tests/data/acpi/loongarch64/virt/SLIT
->  create mode 100644 tests/data/acpi/loongarch64/virt/SLIT.memhp
->  create mode 100644 tests/data/acpi/loongarch64/virt/SPCR
->  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT
->  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.memhp
->  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.topology
->  create mode 100644 tests/data/uefi-boot-images/bios-tables-test.loongarch64.iso.qcow2
-> 
-> 
-> base-commit: b69801dd6b1eb4d107f7c2f643adf0a4e3ec9124
+Also should this address be aligned to some size ?
+
+
+Thanks,
+
+C.
+
+
+
+
+> +            src += i * SG_LIST_ENTRY_SIZE;
+>   
+>               len = address_space_ldl_le(&s->dram_as, src,
+>                                          MEMTXATTRS_UNSPECIFIED, NULL);
+> @@ -212,8 +213,9 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+>           }
+>       } else {
+>           plen = s->regs[R_HASH_SRC_LEN];
+> +        src = deposit64(src, 0, 32, s->regs[R_HASH_SRC]);
+>   
+> -        haddr = address_space_map(&s->dram_as, s->regs[R_HASH_SRC],
+> +        haddr = address_space_map(&s->dram_as, src,
+>                                     &plen, false, MEMTXATTRS_UNSPECIFIED);
+>           if (haddr == NULL) {
+>               qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto failed\n", __func__);
 
 
