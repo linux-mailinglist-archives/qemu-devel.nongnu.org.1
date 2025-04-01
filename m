@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF33DA77C6A
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 498BEA77CC5
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:52:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbsB-0005Cc-Br; Tue, 01 Apr 2025 09:41:51 -0400
+	id 1tzbsK-0005F0-QH; Tue, 01 Apr 2025 09:41:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbrl-000581-Pi
+ id 1tzbrl-000583-UF
  for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:41:22 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbri-0006X0-CF
+ id 1tzbri-0006XQ-CE
  for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:41:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1743514878; x=1775050878;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3SVhGUzFlrkSqrq1xjNiQAaSh1TdBYlRfyw2WOvSTA8=;
- b=Tx+8gR9S0E1sa0tEjVVaZBV64cFOB1NS3Vioz91ZWiHDjZOjw9zVI/Qf
- LN46A8PxaPdCNdz8QfG2QkLwu0mW8CWRkfGMNhMfG6LH/as6MvJ75PnAF
- gn5Mrxg6RiZJu6a59D8lcKJEDcCiNxr+RZQlUcujotu1leiMIOZJDyJ6s
- xKwtzGXLmwRAgBcItpzQ8atrkDAGhPKGo9WCZB9kqrj7zTODy5838nw2C
- N4f2omB/8W+lfZ6qSQy8zG59rqU/VPvAoZuNwcJsp/JPP3ViZ1Vg4z7C1
- IpQU6ltP8x6NsLjWFlW9Wpf89xqL6eWS5fbMa5eR0Sa0gPtZLekK+Kz5p g==;
-X-CSE-ConnectionGUID: aREE32WqTICQBdYJ7MvH5w==
-X-CSE-MsgGUID: B6WcxtasQee05i59PXrn/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433127"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433127"
+ bh=NqPLdKx9K4/ocnNZ/SwlaOAJCtMDFlFx4Dmo25CwXCg=;
+ b=LN7EA4QhVnYDOP9w/x9OjcjbsCwxIXNvr70Pk3Qql+npJLSvzCkEtvfC
+ RoeqbWfaY2bczUhGEBvu71G6axmpXgpmmX8kmQ6BXOMWkNnn+ox+kr80t
+ RCkBWzwbBoR3eXQVpuUQIvFpkyUTwqEu7yh+bCaSzmqYwQxTIvP1lmAQ1
+ vuYM6vPCLH2lBP7SC/4iXDz5WSJsVCmcXxMUjzu0p1mJXWzLww8snVktY
+ h38Iz1Ta1QD4GvTHf1A86vTTxEtYSuF4lR92DE+sRSyUHA25hs7BH/rzX
+ LA9VFxgZBn6+cCRxnFt2zyQ91iazfwOyy5fai7Ww44302hY9I+93bhyRX Q==;
+X-CSE-ConnectionGUID: +HlGZmgOSr+UW46mDo4Prw==
+X-CSE-MsgGUID: nPom+FzYS+qHILCoaTR+wQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433140"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433140"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 06:41:13 -0700
-X-CSE-ConnectionGUID: uIgM9P7EQ/SdC37+GNnbuw==
-X-CSE-MsgGUID: 0XgS44L9TX23iSquXCLdWQ==
+ 01 Apr 2025 06:41:16 -0700
+X-CSE-ConnectionGUID: 2fzgoTaLSqeGIxrwvjJTtg==
+X-CSE-MsgGUID: PLleRpdaTEqehQ82p2UX0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126639845"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126639856"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:41:10 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:41:13 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -53,10 +53,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v8 01/55] *** HACK *** linux-headers: Update headers to pull
- in TDX API changes
-Date: Tue,  1 Apr 2025 09:01:11 -0400
-Message-Id: <20250401130205.2198253-2-xiaoyao.li@intel.com>
+Subject: [PATCH v8 02/55] i386: Introduce tdx-guest object
+Date: Tue,  1 Apr 2025 09:01:12 -0400
+Message-Id: <20250401130205.2198253-3-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250401130205.2198253-1-xiaoyao.li@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
@@ -87,110 +86,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pull in recent TDX updates, which are not backwards compatible.
+Introduce tdx-guest object which inherits X86_CONFIDENTIAL_GUEST,
+and will be used to create TDX VMs (TDs) by
 
-It's just to make this series runnable. It will be updated by script
+  qemu -machine ...,confidential-guest-support=tdx0	\
+       -object tdx-guest,id=tdx0
 
-	scripts/update-linux-headers.sh
-
-once TDX support is upstreamed in linux kernel
+It has one QAPI member 'attributes' defined, which allows user to set
+TD's attributes directly.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
 ---
- linux-headers/asm-x86/kvm.h | 69 +++++++++++++++++++++++++++++++++++++
- linux-headers/linux/kvm.h   |  1 +
- 2 files changed, 70 insertions(+)
+Changes in v7:
+ - update QAPI version to 10.0;
+ - update to use SPDX tags for license info;
+ - update copyright to 2025;
 
-diff --git a/linux-headers/asm-x86/kvm.h b/linux-headers/asm-x86/kvm.h
-index 86f2c34e7afa..baca2d479365 100644
---- a/linux-headers/asm-x86/kvm.h
-+++ b/linux-headers/asm-x86/kvm.h
-@@ -925,4 +925,73 @@ struct kvm_hyperv_eventfd {
- #define KVM_X86_SNP_VM		4
- #define KVM_X86_TDX_VM		5
+Chanegs in v6:
+ - Make tdx-guest inherits X86_CONFIDENTIAL_GUEST;
+ - set cgs->require_guest_memfd;
+ - allow attributes settable via QAPI;
+ - update QAPI version to since 9.2;
+
+Changes in v4:
+ - update the new qapi `since` filed from 8.2 to 9.0
+
+Changes in v1
+ - make @attributes not user-settable
+---
+ configs/devices/i386-softmmu/default.mak |  1 +
+ hw/i386/Kconfig                          |  5 +++
+ qapi/qom.json                            | 15 +++++++++
+ target/i386/kvm/meson.build              |  2 ++
+ target/i386/kvm/tdx.c                    | 43 ++++++++++++++++++++++++
+ target/i386/kvm/tdx.h                    | 21 ++++++++++++
+ 6 files changed, 87 insertions(+)
+ create mode 100644 target/i386/kvm/tdx.c
+ create mode 100644 target/i386/kvm/tdx.h
+
+diff --git a/configs/devices/i386-softmmu/default.mak b/configs/devices/i386-softmmu/default.mak
+index 4faf2f0315e2..bc0479a7e0a3 100644
+--- a/configs/devices/i386-softmmu/default.mak
++++ b/configs/devices/i386-softmmu/default.mak
+@@ -18,6 +18,7 @@
+ #CONFIG_QXL=n
+ #CONFIG_SEV=n
+ #CONFIG_SGA=n
++#CONFIG_TDX=n
+ #CONFIG_TEST_DEVICES=n
+ #CONFIG_TPM_CRB=n
+ #CONFIG_TPM_TIS_ISA=n
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index d34ce07b215d..cce9521ba934 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -10,6 +10,10 @@ config SGX
+     bool
+     depends on KVM
  
-+/* Trust Domain eXtension sub-ioctl() commands. */
-+enum kvm_tdx_cmd_id {
-+	KVM_TDX_CAPABILITIES = 0,
-+	KVM_TDX_INIT_VM,
-+	KVM_TDX_INIT_VCPU,
-+	KVM_TDX_INIT_MEM_REGION,
-+	KVM_TDX_FINALIZE_VM,
-+	KVM_TDX_GET_CPUID,
++config TDX
++    bool
++    depends on KVM
 +
-+	KVM_TDX_CMD_NR_MAX,
-+};
+ config PC
+     bool
+     imply APPLESMC
+@@ -26,6 +30,7 @@ config PC
+     imply QXL
+     imply SEV
+     imply SGX
++    imply TDX
+     imply TEST_DEVICES
+     imply TPM_CRB
+     imply TPM_TIS_ISA
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 28ce24cd8d08..c0b61df964ef 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -1047,6 +1047,19 @@
+             '*host-data': 'str',
+             '*vcek-disabled': 'bool' } }
+ 
++##
++# @TdxGuestProperties:
++#
++# Properties for tdx-guest objects.
++#
++# @attributes: The 'attributes' of a TD guest that is passed to
++#     KVM_TDX_INIT_VM
++#
++# Since: 10.1
++##
++{ 'struct': 'TdxGuestProperties',
++  'data': { '*attributes': 'uint64' } }
 +
-+struct kvm_tdx_cmd {
-+	/* enum kvm_tdx_cmd_id */
-+	__u32 id;
-+	/* flags for sub-commend. If sub-command doesn't use this, set zero. */
-+	__u32 flags;
-+	/*
-+	 * data for each sub-command. An immediate or a pointer to the actual
-+	 * data in process virtual address.  If sub-command doesn't use it,
-+	 * set zero.
-+	 */
-+	__u64 data;
-+	/*
-+	 * Auxiliary error code.  The sub-command may return TDX SEAMCALL
-+	 * status code in addition to -Exxx.
-+	 * Defined for consistency with struct kvm_sev_cmd.
-+	 */
-+	__u64 hw_error;
-+};
+ ##
+ # @ThreadContextProperties:
+ #
+@@ -1132,6 +1145,7 @@
+     'sev-snp-guest',
+     'thread-context',
+     's390-pv-guest',
++    'tdx-guest',
+     'throttle-group',
+     'tls-creds-anon',
+     'tls-creds-psk',
+@@ -1204,6 +1218,7 @@
+                                       'if': 'CONFIG_SECRET_KEYRING' },
+       'sev-guest':                  'SevGuestProperties',
+       'sev-snp-guest':              'SevSnpGuestProperties',
++      'tdx-guest':                  'TdxGuestProperties',
+       'thread-context':             'ThreadContextProperties',
+       'throttle-group':             'ThrottleGroupProperties',
+       'tls-creds-anon':             'TlsCredsAnonProperties',
+diff --git a/target/i386/kvm/meson.build b/target/i386/kvm/meson.build
+index 3996cafaf29f..466bccb9cb17 100644
+--- a/target/i386/kvm/meson.build
++++ b/target/i386/kvm/meson.build
+@@ -8,6 +8,8 @@ i386_kvm_ss.add(files(
+ 
+ i386_kvm_ss.add(when: 'CONFIG_XEN_EMU', if_true: files('xen-emu.c'))
+ 
++i386_kvm_ss.add(when: 'CONFIG_TDX', if_true: files('tdx.c'))
 +
-+struct kvm_tdx_capabilities {
-+	__u64 supported_attrs;
-+	__u64 supported_xfam;
-+	__u64 reserved[254];
-+	struct kvm_cpuid2 cpuid;
-+};
+ i386_system_ss.add(when: 'CONFIG_HYPERV', if_true: files('hyperv.c'), if_false: files('hyperv-stub.c'))
+ 
+ i386_system_ss.add_all(when: 'CONFIG_KVM', if_true: i386_kvm_ss)
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+new file mode 100644
+index 000000000000..ec84ae2947bb
+--- /dev/null
++++ b/target/i386/kvm/tdx.c
+@@ -0,0 +1,43 @@
++/*
++ * QEMU TDX support
++ *
++ * Copyright (c) 2025 Intel Corporation
++ *
++ * Author:
++ *      Xiaoyao Li <xiaoyao.li@intel.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-+struct kvm_tdx_init_vm {
-+	__u64 attributes;
-+	__u64 xfam;
-+	__u64 mrconfigid[6];	/* sha384 digest */
-+	__u64 mrowner[6];	/* sha384 digest */
-+	__u64 mrownerconfig[6];	/* sha384 digest */
++#include "qemu/osdep.h"
++#include "qom/object_interfaces.h"
 +
-+	/* The total space for TD_PARAMS before the CPUIDs is 256 bytes */
-+	__u64 reserved[12];
++#include "tdx.h"
 +
-+	/*
-+	 * Call KVM_TDX_INIT_VM before vcpu creation, thus before
-+	 * KVM_SET_CPUID2.
-+	 * This configuration supersedes KVM_SET_CPUID2s for VCPUs because the
-+	 * TDX module directly virtualizes those CPUIDs without VMM.  The user
-+	 * space VMM, e.g. qemu, should make KVM_SET_CPUID2 consistent with
-+	 * those values.  If it doesn't, KVM may have wrong idea of vCPUIDs of
-+	 * the guest, and KVM may wrongly emulate CPUIDs or MSRs that the TDX
-+	 * module doesn't virtualize.
-+	 */
-+	struct kvm_cpuid2 cpuid;
-+};
++/* tdx guest */
++OBJECT_DEFINE_TYPE_WITH_INTERFACES(TdxGuest,
++                                   tdx_guest,
++                                   TDX_GUEST,
++                                   X86_CONFIDENTIAL_GUEST,
++                                   { TYPE_USER_CREATABLE },
++                                   { NULL })
 +
-+#define KVM_TDX_MEASURE_MEMORY_REGION   _BITULL(0)
++static void tdx_guest_init(Object *obj)
++{
++    ConfidentialGuestSupport *cgs = CONFIDENTIAL_GUEST_SUPPORT(obj);
++    TdxGuest *tdx = TDX_GUEST(obj);
 +
-+struct kvm_tdx_init_mem_region {
-+	__u64 source_addr;
-+	__u64 gpa;
-+	__u64 nr_pages;
-+};
++    cgs->require_guest_memfd = true;
++    tdx->attributes = 0;
 +
- #endif /* _ASM_X86_KVM_H */
-diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
-index 27181b3dd8fb..bf728042db0c 100644
---- a/linux-headers/linux/kvm.h
-+++ b/linux-headers/linux/kvm.h
-@@ -369,6 +369,7 @@ struct kvm_run {
- #define KVM_SYSTEM_EVENT_WAKEUP         4
- #define KVM_SYSTEM_EVENT_SUSPEND        5
- #define KVM_SYSTEM_EVENT_SEV_TERM       6
-+#define KVM_SYSTEM_EVENT_TDX_FATAL      7
- 			__u32 type;
- 			__u32 ndata;
- 			union {
++    object_property_add_uint64_ptr(obj, "attributes", &tdx->attributes,
++                                   OBJ_PROP_FLAG_READWRITE);
++}
++
++static void tdx_guest_finalize(Object *obj)
++{
++}
++
++static void tdx_guest_class_init(ObjectClass *oc, void *data)
++{
++}
+diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
+new file mode 100644
+index 000000000000..f3b725336161
+--- /dev/null
++++ b/target/i386/kvm/tdx.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#ifndef QEMU_I386_TDX_H
++#define QEMU_I386_TDX_H
++
++#include "confidential-guest.h"
++
++#define TYPE_TDX_GUEST "tdx-guest"
++#define TDX_GUEST(obj)  OBJECT_CHECK(TdxGuest, (obj), TYPE_TDX_GUEST)
++
++typedef struct TdxGuestClass {
++    X86ConfidentialGuestClass parent_class;
++} TdxGuestClass;
++
++typedef struct TdxGuest {
++    X86ConfidentialGuest parent_obj;
++
++    uint64_t attributes;    /* TD attributes */
++} TdxGuest;
++
++#endif /* QEMU_I386_TDX_H */
 -- 
 2.34.1
 
