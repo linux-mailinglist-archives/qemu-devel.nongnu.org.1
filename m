@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE56CA77C69
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8401A77C85
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:47:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbsP-0005Jl-DQ; Tue, 01 Apr 2025 09:42:01 -0400
+	id 1tzbss-0005V5-TU; Tue, 01 Apr 2025 09:42:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbsH-0005Ej-95
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:41:53 -0400
+ id 1tzbsU-0005LY-GL
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:42:09 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbsF-0006Zf-KA
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:41:53 -0400
+ id 1tzbsQ-0006ZP-4o
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:42:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743514911; x=1775050911;
+ t=1743514922; x=1775050922;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lqgmctOznK2bav9EKRyz3Cr7vVK4UhygN00UQ3hENgc=;
- b=UtqwgxrCcLzAwG+/e9LZKnefmPKW1Igeip/X73G+M0RU/qTsRtsa6QvY
- JeNYR8d7VAe61kJv6+2Pzv3Ay5YKuzDLBVSFMgyjuLY3T3uW6RvFeM3pV
- XcGe+RL9nS6oQtUkfyJK0rxeIhcn8QpsZ5XFSrt27M9Y70p8RkTcyEUij
- g7qXvr+s1ocHSBFwF1MkYd7M48pPue00vUK9Tm6llTruaNJBde5GwDA+t
- C/NhadZT/B6hAb6u/ytf5Jp3vk36VriMd69WOTncjw4xH2aPWwStBY9Ia
- vnbKvjoxVUgQG+cYWzzTL17nbWJOIBLm4sbnASiMEqSwxCbCGIbAKY9HV Q==;
-X-CSE-ConnectionGUID: 7snFiIU8RbWDU0/6Tv9e8A==
-X-CSE-MsgGUID: SO8Dirs9SSmdwSoGUdh82w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433230"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433230"
+ bh=mdbz9OkSTyNbzZFyMfnp3iGYyHMQ3poqcVGKHQ1jteI=;
+ b=CFO9APRq3bHK+PNjXw/gE+E2hwGAtD+O5V4ZMZFx7UualgbbB7M1az8c
+ zti9D0/BVsTnJtH0BIySlDQiHSTCgL5hJPAH3deMBBH4YkCAiSkyhAgSo
+ zelSVaCLQOdxciV8CyUWL2olBU4SNccJUIMEnXz3ufl+5U0aW5SKhF/PZ
+ gxdx9PuqStK8TRtxkxbVIhHxpZsECLkcgfyTLKiEDfcdVVvIurpMx49/K
+ DY0tqKyVl1FiQQLn37r9fHkI1mfame9dhPHZQf3vDEIYwJ/eFiaxf3KUY
+ PaAFq8DKV3Wr+hiGDUCrfhgM1XvOQZPL4KlnK3ZB0Y2i0K/uio6POLSEr g==;
+X-CSE-ConnectionGUID: TcTuJG47TWGQqTuRQiY2XA==
+X-CSE-MsgGUID: yFpCtJoJThulL/x4bwicLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433242"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433242"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 06:41:42 -0700
-X-CSE-ConnectionGUID: DIsW2/koTiKVmrRoUvtDBw==
-X-CSE-MsgGUID: Oy3V9a/GSHiFsLnjI5JeBQ==
+ 01 Apr 2025 06:41:44 -0700
+X-CSE-ConnectionGUID: A0AQrzaqS0WPhyaEHfnD4w==
+X-CSE-MsgGUID: 0SxOCk8DT4yBrDvAENgsPA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126639962"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126639969"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:41:39 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:41:42 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -53,13 +53,15 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v8 12/55] i386/tdx: Validate TD attributes
-Date: Tue,  1 Apr 2025 09:01:22 -0400
-Message-Id: <20250401130205.2198253-13-xiaoyao.li@intel.com>
+Subject: [PATCH v8 13/55] i386/tdx: Support user configurable
+ mrconfigid/mrowner/mrownerconfig
+Date: Tue,  1 Apr 2025 09:01:23 -0400
+Message-Id: <20250401130205.2198253-14-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250401130205.2198253-1-xiaoyao.li@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.16; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
@@ -86,97 +88,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Validate TD attributes with tdx_caps that only supported bits are
-allowed by KVM.
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Besides, sanity check the attribute bits that have not been supported by
-QEMU yet. e.g., debug bit, it will be allowed in the future when debug
-TD support lands in QEMU.
+Three sha384 hash values, mrconfigid, mrowner and mrownerconfig, of a TD
+can be provided for TDX attestation. Detailed meaning of them can be
+found: https://lore.kernel.org/qemu-devel/31d6dbc1-f453-4cef-ab08-4813f4e0ff92@intel.com/
 
+Allow user to specify those values via property mrconfigid, mrowner and
+mrownerconfig. They are all in base64 format.
+
+example
+-object tdx-guest, \
+  mrconfigid=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v,\
+  mrowner=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v,\
+  mrownerconfig=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v
+
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
 Changes in v8:
-- Split the mrconfigid/mrowner/mrownerconfig part into a seperate next
-  patch;
+ - it gets squashed into previous patch in v7. So split it out in v8;
 
-Changes in v7:
-- Define TDX_SUPPORTED_TD_ATTRS as QEMU supported mask, to validates
-  user's request. (Rick)
+Changes in v6:
+ - refine the doc comment of QAPI properties;
+
+Changes in v5:
+ - refine the description of QAPI properties and add description of
+   default value when not specified;
+
+Changes in v4:
+ - describe more of there fields in qom.json
+ - free the old value before set new value to avoid memory leak in
+   _setter(); (Daniel)
 
 Changes in v3:
-- using error_setg() for error report; (Daniel)
+ - use base64 encoding instread of hex-string;
 ---
- target/i386/kvm/tdx.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ qapi/qom.json         | 16 +++++++-
+ target/i386/kvm/tdx.c | 86 +++++++++++++++++++++++++++++++++++++++++++
+ target/i386/kvm/tdx.h |  3 ++
+ 3 files changed, 104 insertions(+), 1 deletion(-)
 
+diff --git a/qapi/qom.json b/qapi/qom.json
+index f229bb07aaec..a8379bac1719 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -1060,11 +1060,25 @@
+ #     pages.  Some guest OS (e.g., Linux TD guest) may require this to
+ #     be set, otherwise they refuse to boot.
+ #
++# @mrconfigid: ID for non-owner-defined configuration of the guest TD,
++#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
++#     Defaults to all zeros.
++#
++# @mrowner: ID for the guest TD’s owner (base64 encoded SHA384 digest).
++#     Defaults to all zeros.
++#
++# @mrownerconfig: ID for owner-defined configuration of the guest TD,
++#     e.g., specific to the workload rather than the run-time or OS
++#     (base64 encoded SHA384 digest).  Defaults to all zeros.
++#
+ # Since: 10.1
+ ##
+ { 'struct': 'TdxGuestProperties',
+   'data': { '*attributes': 'uint64',
+-            '*sept-ve-disable': 'bool' } }
++            '*sept-ve-disable': 'bool',
++            '*mrconfigid': 'str',
++            '*mrowner': 'str',
++            '*mrownerconfig': 'str' } }
+ 
+ ##
+ # @ThreadContextProperties:
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 1202b2111ba8..aa043acb1a88 100644
+index aa043acb1a88..77ddb2655c53 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -18,10 +18,15 @@
+@@ -11,8 +11,10 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
++#include "qemu/base64.h"
+ #include "qapi/error.h"
+ #include "qom/object_interfaces.h"
++#include "crypto/hash.h"
+ 
+ #include "hw/i386/x86.h"
  #include "kvm_i386.h"
- #include "tdx.h"
- 
-+#define TDX_TD_ATTRIBUTES_DEBUG             BIT_ULL(0)
- #define TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE   BIT_ULL(28)
- #define TDX_TD_ATTRIBUTES_PKS               BIT_ULL(30)
- #define TDX_TD_ATTRIBUTES_PERFMON           BIT_ULL(63)
- 
-+#define TDX_SUPPORTED_TD_ATTRS  (TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE |\
-+                                 TDX_TD_ATTRIBUTES_PKS | \
-+                                 TDX_TD_ATTRIBUTES_PERFMON)
-+
- static TdxGuest *tdx_guest;
- 
- static struct kvm_tdx_capabilities *tdx_caps;
-@@ -153,13 +158,33 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
-     return KVM_X86_TDX_VM;
- }
- 
--static void setup_td_guest_attributes(X86CPU *x86cpu)
-+static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
-+{
-+    if ((tdx->attributes & ~tdx_caps->supported_attrs)) {
-+        error_setg(errp, "Invalid attributes 0x%lx for TDX VM "
-+                   "(KVM supported: 0x%llx)", tdx->attributes,
-+                   tdx_caps->supported_attrs);
-+        return -1;
-+    }
-+
-+    if (tdx->attributes & ~TDX_SUPPORTED_TD_ATTRS) {
-+        warn_report("Some QEMU unsupported TD attribute bits being requested:"
-+                    "requested: 0x%lx QEMU supported: 0x%llx",
-+                    tdx->attributes, TDX_SUPPORTED_TD_ATTRS);
-+    }
-+
-+    return 0;
-+}
-+
-+static int setup_td_guest_attributes(X86CPU *x86cpu, Error **errp)
- {
+@@ -239,6 +241,7 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
      CPUX86State *env = &x86cpu->env;
+     g_autofree struct kvm_tdx_init_vm *init_vm = NULL;
+     Error *local_err = NULL;
++    size_t data_len;
+     int retry = 10000;
+     int r = 0;
  
-     tdx_guest->attributes |= (env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS) ?
-                              TDX_TD_ATTRIBUTES_PKS : 0;
-     tdx_guest->attributes |= x86cpu->enable_pmu ? TDX_TD_ATTRIBUTES_PERFMON : 0;
-+
-+    return tdx_validate_attributes(tdx_guest, errp);
- }
- 
- static int setup_td_xfam(X86CPU *x86cpu, Error **errp)
-@@ -225,7 +250,10 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+@@ -250,6 +253,36 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
      init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
                          sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
  
--    setup_td_guest_attributes(x86cpu);
-+    r = setup_td_guest_attributes(x86cpu, errp);
-+    if (r) {
-+        return r;
++    if (tdx_guest->mrconfigid) {
++        g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrconfigid,
++                              strlen(tdx_guest->mrconfigid), &data_len, errp);
++        if (!data || data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
++            error_setg(errp, "TDX: failed to decode mrconfigid");
++            return -1;
++        }
++        memcpy(init_vm->mrconfigid, data, data_len);
 +    }
- 
-     r = setup_td_xfam(x86cpu, errp);
++
++    if (tdx_guest->mrowner) {
++        g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrowner,
++                              strlen(tdx_guest->mrowner), &data_len, errp);
++        if (!data || data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
++            error_setg(errp, "TDX: failed to decode mrowner");
++            return -1;
++        }
++        memcpy(init_vm->mrowner, data, data_len);
++    }
++
++    if (tdx_guest->mrownerconfig) {
++        g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrownerconfig,
++                            strlen(tdx_guest->mrownerconfig), &data_len, errp);
++        if (!data || data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
++            error_setg(errp, "TDX: failed to decode mrownerconfig");
++            return -1;
++        }
++        memcpy(init_vm->mrownerconfig, data, data_len);
++    }
++
+     r = setup_td_guest_attributes(x86cpu, errp);
      if (r) {
+         return r;
+@@ -313,6 +346,51 @@ static void tdx_guest_set_sept_ve_disable(Object *obj, bool value, Error **errp)
+     }
+ }
+ 
++static char *tdx_guest_get_mrconfigid(Object *obj, Error **errp)
++{
++    TdxGuest *tdx = TDX_GUEST(obj);
++
++    return g_strdup(tdx->mrconfigid);
++}
++
++static void tdx_guest_set_mrconfigid(Object *obj, const char *value, Error **errp)
++{
++    TdxGuest *tdx = TDX_GUEST(obj);
++
++    g_free(tdx->mrconfigid);
++    tdx->mrconfigid = g_strdup(value);
++}
++
++static char *tdx_guest_get_mrowner(Object *obj, Error **errp)
++{
++    TdxGuest *tdx = TDX_GUEST(obj);
++
++    return g_strdup(tdx->mrowner);
++}
++
++static void tdx_guest_set_mrowner(Object *obj, const char *value, Error **errp)
++{
++    TdxGuest *tdx = TDX_GUEST(obj);
++
++    g_free(tdx->mrowner);
++    tdx->mrowner = g_strdup(value);
++}
++
++static char *tdx_guest_get_mrownerconfig(Object *obj, Error **errp)
++{
++    TdxGuest *tdx = TDX_GUEST(obj);
++
++    return g_strdup(tdx->mrownerconfig);
++}
++
++static void tdx_guest_set_mrownerconfig(Object *obj, const char *value, Error **errp)
++{
++    TdxGuest *tdx = TDX_GUEST(obj);
++
++    g_free(tdx->mrownerconfig);
++    tdx->mrownerconfig = g_strdup(value);
++}
++
+ /* tdx guest */
+ OBJECT_DEFINE_TYPE_WITH_INTERFACES(TdxGuest,
+                                    tdx_guest,
+@@ -336,6 +414,14 @@ static void tdx_guest_init(Object *obj)
+     object_property_add_bool(obj, "sept-ve-disable",
+                              tdx_guest_get_sept_ve_disable,
+                              tdx_guest_set_sept_ve_disable);
++    object_property_add_str(obj, "mrconfigid",
++                            tdx_guest_get_mrconfigid,
++                            tdx_guest_set_mrconfigid);
++    object_property_add_str(obj, "mrowner",
++                            tdx_guest_get_mrowner, tdx_guest_set_mrowner);
++    object_property_add_str(obj, "mrownerconfig",
++                            tdx_guest_get_mrownerconfig,
++                            tdx_guest_set_mrownerconfig);
+ }
+ 
+ static void tdx_guest_finalize(Object *obj)
+diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
+index 4e2b5c61ff5b..e472b11fb0dd 100644
+--- a/target/i386/kvm/tdx.h
++++ b/target/i386/kvm/tdx.h
+@@ -24,6 +24,9 @@ typedef struct TdxGuest {
+     bool initialized;
+     uint64_t attributes;    /* TD attributes */
+     uint64_t xfam;
++    char *mrconfigid;       /* base64 encoded sha348 digest */
++    char *mrowner;          /* base64 encoded sha348 digest */
++    char *mrownerconfig;    /* base64 encoded sha348 digest */
+ } TdxGuest;
+ 
+ #ifdef CONFIG_TDX
 -- 
 2.34.1
 
