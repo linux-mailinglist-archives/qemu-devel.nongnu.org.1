@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031F0A77CE2
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1D4A77CE1
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:54:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbwN-0002o0-SM; Tue, 01 Apr 2025 09:46:09 -0400
+	id 1tzbwk-00035O-Az; Tue, 01 Apr 2025 09:46:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbuY-0000jL-2E
+ id 1tzbuY-0000jM-2X
  for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:18 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbuU-0006XQ-On
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:12 -0400
+ id 1tzbuW-0006ZP-2B
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743515051; x=1775051051;
+ t=1743515052; x=1775051052;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XivRqsU75f1UeqvfNnKISLROmXQcU9CQq1uW4OiP9Sw=;
- b=MGhedKX0sMV6pa/0v9H24EShiLq6/3XQFxup683bQ1L9H+aBv6rmOeG0
- JNrSvhVkz4NTKuxWMzWhBA5rOiQq07iKPSearvphN0IKR2qupTuY/Nc4T
- +XnuzVXLkoUja+UxmaI9f4ioZ4eGaMJ1tI6aicVDJer+Ng/wnEbq0SuzY
- R1dwPGB2grhPxXY2+S5SejQDHL5PmbKHnOv7oTUciURmDJE6i0wjc/ZtB
- ImJ0SS6BEN2EvJHn1wGcpgfaJiJbgPLgnSxZdT3ZcmeUgi1weNe268cMM
- BfHZ6U7XcixBi+Ifc+YeZbjih+I7Rg3Kp5W0c8eY8C//Zfx9urmP68as4 w==;
-X-CSE-ConnectionGUID: DZNiyhvGS2SQp9pd3UtfFA==
-X-CSE-MsgGUID: bUDI57fSR5ud6YnWdKt/WA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433502"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433502"
+ bh=GpbiAevDOu7dBEajhCo3Fos/R3B4WgEf7uAd71HM9uI=;
+ b=NReaV5hg0XphAAa3bbn8oj8uZlcTon3Kql7ktWm8aqdIXUg3Tvxy6wP3
+ XqAH2nk33BbIi+np0HSn/adrj57qrtq+P5RCBh/AyIB8hDDD/Ka+Cz8oZ
+ RFQTEEZ7ahP5rzTSQ/3b8sluuc1SXQl6VzyHR8b/1fNoB5E1cBDjRNUpU
+ UYyA/59A7nuqNbtWWI5GXdbjgsS7CpoKKMVZcjeI39EiDerYviNgj2BzM
+ kNT2Y4ss7ocHobIbY2n9g7N2w3WdK5DtZUXiBVawbmXEFaBHjygbBCyOA
+ nD4HQqX8ItCX93+9Vzt4uuUbUXduEVxk7d2v/vCu7po+skgV9Xz0XhQ2v w==;
+X-CSE-ConnectionGUID: agh/lOzoTOu5jWkdDJefFg==
+X-CSE-MsgGUID: LPZTZNDNS0eevMFDP52N5A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433509"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433509"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 06:42:55 -0700
-X-CSE-ConnectionGUID: Psx4vOG5SZKGPo8x3TRaFA==
-X-CSE-MsgGUID: WPN9Q/hgQhKr3ThsmXGcoQ==
+ 01 Apr 2025 06:42:57 -0700
+X-CSE-ConnectionGUID: GdIZvIZeQ4azEMUoy6dnpg==
+X-CSE-MsgGUID: ZMAkU/4dR6S9PizJhF3uHA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640171"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640177"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:42:52 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:42:55 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -53,9 +53,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v8 41/55] i386/apic: Skip kvm_apic_put() for TDX
-Date: Tue,  1 Apr 2025 09:01:51 -0400
-Message-Id: <20250401130205.2198253-42-xiaoyao.li@intel.com>
+Subject: [PATCH v8 42/55] cpu: Don't set vcpu_dirty when guest_state_protected
+Date: Tue,  1 Apr 2025 09:01:52 -0400
+Message-Id: <20250401130205.2198253-43-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250401130205.2198253-1-xiaoyao.li@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
@@ -86,50 +86,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM neithers allow writing to MSR_IA32_APICBASE for TDs, nor allow for
-KVM_SET_LAPIC[*].
+QEMU calls kvm_arch_put_registers() when vcpu_dirty is true in
+kvm_vcpu_exec(). However, for confidential guest, like TDX, putting
+registers is disallowed due to guest state is protected.
 
-Note, KVM_GET_LAPIC is also disallowed for TDX. It is called in the path
-
-  do_kvm_cpu_synchronize_state()
-  -> kvm_arch_get_registers()
-     -> kvm_get_apic()
-
-and it's already disllowed for confidential guest through
-guest_state_protected.
-
-[*] https://lore.kernel.org/all/Z3w4Ku4Jq0CrtXne@google.com/
+Only set vcpu_dirty to true with guest state is not protected when
+creating the vcpu.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Changes in v8:
-- Fix the coding style; (Francesco)
+Changes in v7:
+ - new patch to replace "i386/tdx: Don't get/put guest state for TDX VMs"
+   in v6;
 ---
- hw/i386/kvm/apic.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ accel/kvm/kvm-all.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/kvm/apic.c b/hw/i386/kvm/apic.c
-index 757510600098..cb65fca49586 100644
---- a/hw/i386/kvm/apic.c
-+++ b/hw/i386/kvm/apic.c
-@@ -17,6 +17,7 @@
- #include "system/hw_accel.h"
- #include "system/kvm.h"
- #include "kvm/kvm_i386.h"
-+#include "kvm/tdx.h"
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 5835d840f3ad..9862d8ff1d38 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -466,7 +466,9 @@ int kvm_create_vcpu(CPUState *cpu)
  
- static inline void kvm_apic_set_reg(struct kvm_lapic_state *kapic,
-                                     int reg_id, uint32_t val)
-@@ -141,6 +142,10 @@ static void kvm_apic_put(CPUState *cs, run_on_cpu_data data)
-     struct kvm_lapic_state kapic;
-     int ret;
- 
-+    if (is_tdx_vm()) {
-+        return;
+     cpu->kvm_fd = kvm_fd;
+     cpu->kvm_state = s;
+-    cpu->vcpu_dirty = true;
++    if (!s->guest_state_protected) {
++        cpu->vcpu_dirty = true;
 +    }
-+
-     kvm_put_apicbase(s->cpu, s->apicbase);
-     kvm_put_apic_state(s, &kapic);
+     cpu->dirty_pages = 0;
+     cpu->throttle_us_per_full = 0;
  
 -- 
 2.34.1
