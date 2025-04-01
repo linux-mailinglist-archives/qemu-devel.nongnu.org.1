@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAB7A78172
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 19:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40316A78163
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 19:24:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzfKZ-0004iZ-Gc; Tue, 01 Apr 2025 13:23:19 -0400
+	id 1tzfKc-0004jr-TI; Tue, 01 Apr 2025 13:23:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1tzfKF-0004fn-Si; Tue, 01 Apr 2025 13:23:00 -0400
+ id 1tzfKI-0004gb-8A; Tue, 01 Apr 2025 13:23:03 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1tzfKD-0005vH-5s; Tue, 01 Apr 2025 13:22:58 -0400
+ id 1tzfKF-0005w0-Ce; Tue, 01 Apr 2025 13:23:01 -0400
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 531Gf4G4002444;
- Tue, 1 Apr 2025 17:22:52 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 531Gf9Xw002667;
+ Tue, 1 Apr 2025 17:22:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=bCFobd
- StZf3H/XWan64B1rnOwW39hOKaIS5l8IoldU0=; b=s0PCyytgMbZ1K71h59q4V9
- jKNTud1KeGRqqlJRMdsKMr0r49qS8WYoE3Zgj5sGjbcCNQzzK+A/pvmYvAxXppUF
- fk6JvEB++9daWvdBSsnfgr8aMSt3kBjA1eg9+HOcTX8AFVdKoHggQS2IPkMP4+nJ
- MUGKB36dvYOiUAcws+Fs4PRAPC/m5K9p02DHwX27lImFEy/4GVayibEAlSN/M2Cy
- cFuSEqbUBSVhRdr5uV74dljt3S1z6XIcubfSnoY8ZMHT4px6eiqX6FWhszYz2bwh
- mkvtLET2bAgP3SE0iBbVLyXgOr66ijpaL3eQGkXg9O5RI9B8+sx5lE4cSFfh/wIg
+ :message-id:mime-version:references:subject:to; s=pp1; bh=nC7FB1
+ pwbm5octQaaoSTqyZZdYWIxjXLrstXWTcH8iQ=; b=iABUfT7TaVghQrkAoQZlQJ
+ /Xl/4Q63x6F15yrU06xJbhWqupQAcBo8VSkE/k+RoIwTE5ZOp4+Jie1/gh/Fh67G
+ AEoapkmgHfF1n7oGugOo31sEQlRDtiyptgRp+tdE07WMmcNdOKioAYVxOEjeec3D
+ zFfSB+l6sJQp7CqCbdwh2vbpZtvz0v5g2hs/yQW6c1XtN7YmAe9Cpqr798SqVvpE
+ werYQ8VCTUbOAoTn/CSIIU5/JRNDSKx3QOvvHH7fHcn1OjAyfSApHPkTCheg0yDn
+ 0HqEmCBf3pA3codRIR5FU+OfyfDw03hS+uuih2eW76F31si2gGZVbITLAq+ivRGg
  ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45r290n2ma-1
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45r290n2mf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Apr 2025 17:22:51 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 531DJqAo009999;
- Tue, 1 Apr 2025 17:22:51 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45pv6nug9q-1
+ Tue, 01 Apr 2025 17:22:52 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 531GQhea004829;
+ Tue, 1 Apr 2025 17:22:52 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45pujyunds-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Apr 2025 17:22:51 +0000
+ Tue, 01 Apr 2025 17:22:52 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
  [10.241.53.100])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 531HMnAB30016014
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 531HMpdZ19857988
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Apr 2025 17:22:50 GMT
+ Tue, 1 Apr 2025 17:22:51 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C3ACC58058;
+ by IMSVA (Postfix) with ESMTP id E302E58058;
+ Tue,  1 Apr 2025 17:22:50 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EF1AD5805D;
  Tue,  1 Apr 2025 17:22:49 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C9BAB5805D;
- Tue,  1 Apr 2025 17:22:48 +0000 (GMT)
 Received: from IBM-D32RQW3.ibm.com (unknown [9.61.254.127])
  by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  1 Apr 2025 17:22:48 +0000 (GMT)
+ Tue,  1 Apr 2025 17:22:49 +0000 (GMT)
 From: Farhan Ali <alifm@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-s390x@nongnu.org, stefanha@redhat.com,
  fam@euphon.net, philmd@linaro.org, kwolf@redhat.com, hreitz@redhat.com,
  thuth@redhat.com, alifm@linux.ibm.com, mjrosato@linux.ibm.com,
  schnelle@linux.ibm.com
-Subject: [PATCH v3 2/3] include: Add a header to define host PCI MMIO functions
-Date: Tue,  1 Apr 2025 10:22:45 -0700
-Message-ID: <20250401172246.2688-3-alifm@linux.ibm.com>
+Subject: [PATCH v3 3/3] block/nvme: Use host PCI MMIO API
+Date: Tue,  1 Apr 2025 10:22:46 -0700
+Message-ID: <20250401172246.2688-4-alifm@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250401172246.2688-1-alifm@linux.ibm.com>
 References: <20250401172246.2688-1-alifm@linux.ibm.com>
@@ -72,15 +72,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UFtx_qgfqYEixo8eeXe9DJywsySy5gTp
-X-Proofpoint-GUID: UFtx_qgfqYEixo8eeXe9DJywsySy5gTp
+X-Proofpoint-ORIG-GUID: ouiuaVic1suWTdaC7VFd9gvw0ttw8QTT
+X-Proofpoint-GUID: ouiuaVic1suWTdaC7VFd9gvw0ttw8QTT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-01_06,2025-04-01_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0
  priorityscore=1501 bulkscore=0 clxscore=1015 adultscore=0 spamscore=0
- lowpriorityscore=0 suspectscore=0 mlxscore=0 mlxlogscore=823
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
  impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.19.0-2502280000 definitions=main-2504010104
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=alifm@linux.ibm.com;
@@ -108,140 +108,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a generic API for host PCI MMIO reads/writes
-(e.g. Linux VFIO BAR accesses). The functions access
-little endian memory and returns the result in
-host cpu endianness.
+Use the host PCI MMIO functions to read/write
+to NVMe registers, rather than directly accessing
+them.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 ---
- include/qemu/host-pci-mmio.h | 116 +++++++++++++++++++++++++++++++++++
- 1 file changed, 116 insertions(+)
- create mode 100644 include/qemu/host-pci-mmio.h
+ block/nvme.c | 37 +++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/include/qemu/host-pci-mmio.h b/include/qemu/host-pci-mmio.h
-new file mode 100644
-index 0000000000..c26426524f
---- /dev/null
-+++ b/include/qemu/host-pci-mmio.h
-@@ -0,0 +1,116 @@
-+/*
-+ * API for host PCI MMIO accesses (e.g. Linux VFIO BARs)
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Farhan Ali <alifm@linux.ibm.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HOST_PCI_MMIO_H
-+#define HOST_PCI_MMIO_H
-+
-+#include "qemu/bswap.h"
-+#include "qemu/s390x_pci_mmio.h"
-+
-+
-+static inline uint8_t host_pci_mmio_read_8(const void *ioaddr)
-+{
-+    uint8_t ret = 0;
-+#ifdef __s390x__
-+    ret = s390x_pci_mmio_read_8(ioaddr);
-+#else
-+    /* Prevent the compiler from optimizing away the load */
-+    ret = *((volatile uint8_t *)ioaddr);
-+#endif
-+
-+    return ret;
-+}
-+
-+static inline uint16_t host_pci_mmio_read_16(const void *ioaddr)
-+{
-+    uint16_t ret = 0;
-+#ifdef __s390x__
-+    ret = s390x_pci_mmio_read_16(ioaddr);
-+#else
-+    /* Prevent the compiler from optimizing away the load */
-+    ret = *((volatile uint16_t *)ioaddr);
-+#endif
-+
-+    return le16_to_cpu(ret);
-+}
-+
-+static inline uint32_t host_pci_mmio_read_32(const void *ioaddr)
-+{
-+    uint32_t ret = 0;
-+#ifdef __s390x__
-+    ret = s390x_pci_mmio_read_32(ioaddr);
-+#else
-+    /* Prevent the compiler from optimizing away the load */
-+    ret = *((volatile uint32_t *)ioaddr);
-+#endif
-+
-+    return le32_to_cpu(ret);
-+}
-+
-+static inline uint64_t host_pci_mmio_read_64(const void *ioaddr)
-+{
-+    uint64_t ret = 0;
-+#ifdef __s390x__
-+    ret = s390x_pci_mmio_read_64(ioaddr);
-+#else
-+    /* Prevent the compiler from optimizing away the load */
-+    ret = *((volatile uint64_t *)ioaddr);
-+#endif
-+
-+    return le64_to_cpu(ret);
-+}
-+
-+static inline void host_pci_mmio_write_8(void *ioaddr, uint8_t val)
-+{
-+
-+#ifdef __s390x__
-+    s390x_pci_mmio_write_8(ioaddr, val);
-+#else
-+    /* Prevent the compiler from optimizing away the store */
-+    *((volatile uint8_t *)ioaddr) = val;
-+#endif
-+}
-+
-+static inline void host_pci_mmio_write_16(void *ioaddr, uint16_t val)
-+{
-+    val = cpu_to_le16(val);
-+
-+#ifdef __s390x__
-+    s390x_pci_mmio_write_16(ioaddr, val);
-+#else
-+    /* Prevent the compiler from optimizing away the store */
-+    *((volatile uint16_t *)ioaddr) = val;
-+#endif
-+}
-+
-+static inline void host_pci_mmio_write_32(void *ioaddr, uint32_t val)
-+{
-+    val = cpu_to_le32(val);
-+
-+#ifdef __s390x__
-+    s390x_pci_mmio_write_32(ioaddr, val);
-+#else
-+    /* Prevent the compiler from optimizing away the store */
-+    *((volatile uint32_t *)ioaddr) = val;
-+#endif
-+}
-+
-+static inline void host_pci_mmio_write_64(void *ioaddr, uint64_t val)
-+{
-+    val = cpu_to_le64(val);
-+
-+#ifdef __s390x__
-+    s390x_pci_mmio_write_64(ioaddr, val);
-+#else
-+    /* Prevent the compiler from optimizing away the store */
-+    *((volatile uint64_t *)ioaddr) = val;
-+#endif
-+}
-+
-+#endif
+diff --git a/block/nvme.c b/block/nvme.c
+index bbf7c23dcd..ba66fbc93a 100644
+--- a/block/nvme.c
++++ b/block/nvme.c
+@@ -18,6 +18,7 @@
+ #include "qobject/qstring.h"
+ #include "qemu/defer-call.h"
+ #include "qemu/error-report.h"
++#include "qemu/host-pci-mmio.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/module.h"
+ #include "qemu/cutils.h"
+@@ -60,7 +61,7 @@ typedef struct {
+     uint8_t  *queue;
+     uint64_t iova;
+     /* Hardware MMIO register */
+-    volatile uint32_t *doorbell;
++    uint32_t *doorbell;
+ } NVMeQueue;
+ 
+ typedef struct {
+@@ -100,7 +101,7 @@ struct BDRVNVMeState {
+     QEMUVFIOState *vfio;
+     void *bar0_wo_map;
+     /* Memory mapped registers */
+-    volatile struct {
++    struct {
+         uint32_t sq_tail;
+         uint32_t cq_head;
+     } *doorbells;
+@@ -292,7 +293,7 @@ static void nvme_kick(NVMeQueuePair *q)
+     assert(!(q->sq.tail & 0xFF00));
+     /* Fence the write to submission queue entry before notifying the device. */
+     smp_wmb();
+-    *q->sq.doorbell = cpu_to_le32(q->sq.tail);
++    host_pci_mmio_write_32(q->sq.doorbell, q->sq.tail);
+     q->inflight += q->need_kick;
+     q->need_kick = 0;
+ }
+@@ -441,7 +442,7 @@ static bool nvme_process_completion(NVMeQueuePair *q)
+     if (progress) {
+         /* Notify the device so it can post more completions. */
+         smp_mb_release();
+-        *q->cq.doorbell = cpu_to_le32(q->cq.head);
++        host_pci_mmio_write_32(q->cq.doorbell, q->cq.head);
+         nvme_wake_free_req_locked(q);
+     }
+ 
+@@ -460,7 +461,7 @@ static void nvme_process_completion_bh(void *opaque)
+      * so notify the device that it has space to fill in more completions now.
+      */
+     smp_mb_release();
+-    *q->cq.doorbell = cpu_to_le32(q->cq.head);
++    host_pci_mmio_write_32(q->cq.doorbell, q->cq.head);
+     nvme_wake_free_req_locked(q);
+ 
+     nvme_process_completion(q);
+@@ -749,9 +750,10 @@ static int nvme_init(BlockDriverState *bs, const char *device, int namespace,
+     int ret;
+     uint64_t cap;
+     uint32_t ver;
++    uint32_t cc;
+     uint64_t timeout_ms;
+     uint64_t deadline, now;
+-    volatile NvmeBar *regs = NULL;
++    NvmeBar *regs = NULL;
+ 
+     qemu_co_mutex_init(&s->dma_map_lock);
+     qemu_co_queue_init(&s->dma_flush_queue);
+@@ -779,7 +781,7 @@ static int nvme_init(BlockDriverState *bs, const char *device, int namespace,
+     /* Perform initialize sequence as described in NVMe spec "7.6.1
+      * Initialization". */
+ 
+-    cap = le64_to_cpu(regs->cap);
++    cap = host_pci_mmio_read_64(&regs->cap);
+     trace_nvme_controller_capability_raw(cap);
+     trace_nvme_controller_capability("Maximum Queue Entries Supported",
+                                      1 + NVME_CAP_MQES(cap));
+@@ -805,16 +807,17 @@ static int nvme_init(BlockDriverState *bs, const char *device, int namespace,
+     bs->bl.request_alignment = s->page_size;
+     timeout_ms = MIN(500 * NVME_CAP_TO(cap), 30000);
+ 
+-    ver = le32_to_cpu(regs->vs);
++    ver = host_pci_mmio_read_32(&regs->vs);
+     trace_nvme_controller_spec_version(extract32(ver, 16, 16),
+                                        extract32(ver, 8, 8),
+                                        extract32(ver, 0, 8));
+ 
+     /* Reset device to get a clean state. */
+-    regs->cc = cpu_to_le32(le32_to_cpu(regs->cc) & 0xFE);
++    cc = host_pci_mmio_read_32(&regs->cc);
++    host_pci_mmio_write_32(&regs->cc, cc & 0xFE);
+     /* Wait for CSTS.RDY = 0. */
+     deadline = qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + timeout_ms * SCALE_MS;
+-    while (NVME_CSTS_RDY(le32_to_cpu(regs->csts))) {
++    while (NVME_CSTS_RDY(host_pci_mmio_read_32(&regs->csts))) {
+         if (qemu_clock_get_ns(QEMU_CLOCK_REALTIME) > deadline) {
+             error_setg(errp, "Timeout while waiting for device to reset (%"
+                              PRId64 " ms)",
+@@ -843,19 +846,21 @@ static int nvme_init(BlockDriverState *bs, const char *device, int namespace,
+     s->queues[INDEX_ADMIN] = q;
+     s->queue_count = 1;
+     QEMU_BUILD_BUG_ON((NVME_QUEUE_SIZE - 1) & 0xF000);
+-    regs->aqa = cpu_to_le32(((NVME_QUEUE_SIZE - 1) << AQA_ACQS_SHIFT) |
+-                            ((NVME_QUEUE_SIZE - 1) << AQA_ASQS_SHIFT));
+-    regs->asq = cpu_to_le64(q->sq.iova);
+-    regs->acq = cpu_to_le64(q->cq.iova);
++    host_pci_mmio_write_32(&regs->aqa,
++                        ((NVME_QUEUE_SIZE - 1) << AQA_ACQS_SHIFT) |
++                        ((NVME_QUEUE_SIZE - 1) << AQA_ASQS_SHIFT));
++    host_pci_mmio_write_64(&regs->asq, q->sq.iova);
++    host_pci_mmio_write_64(&regs->acq, q->cq.iova);
+ 
+     /* After setting up all control registers we can enable device now. */
+-    regs->cc = cpu_to_le32((ctz32(NVME_CQ_ENTRY_BYTES) << CC_IOCQES_SHIFT) |
++    host_pci_mmio_write_32(&regs->cc,
++                           (ctz32(NVME_CQ_ENTRY_BYTES) << CC_IOCQES_SHIFT) |
+                            (ctz32(NVME_SQ_ENTRY_BYTES) << CC_IOSQES_SHIFT) |
+                            CC_EN_MASK);
+     /* Wait for CSTS.RDY = 1. */
+     now = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
+     deadline = now + timeout_ms * SCALE_MS;
+-    while (!NVME_CSTS_RDY(le32_to_cpu(regs->csts))) {
++    while (!NVME_CSTS_RDY(host_pci_mmio_read_32(&regs->csts))) {
+         if (qemu_clock_get_ns(QEMU_CLOCK_REALTIME) > deadline) {
+             error_setg(errp, "Timeout while waiting for device to start (%"
+                              PRId64 " ms)",
 -- 
 2.43.0
 
