@@ -2,88 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F245A772F9
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 05:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1490FA7742C
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 07:54:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzSJS-0002uH-N1; Mon, 31 Mar 2025 23:29:18 -0400
+	id 1tzUY9-0003uF-DB; Tue, 01 Apr 2025 01:52:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tzSJP-0002tc-1j; Mon, 31 Mar 2025 23:29:15 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1tzSJM-0006PK-1s; Mon, 31 Mar 2025 23:29:13 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-30332dfc821so7103206a91.3; 
- Mon, 31 Mar 2025 20:29:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743478150; x=1744082950; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SBHBZQBygJrkuYmvBUgz98ilFLgpfVe79oWnJ8DMj7A=;
- b=PBWNglJpv6pPP0YbL9oeS5rneROogLosyKCDOHBnfB5M6t8jJ2LUq9DR8/PHSgNDsR
- hu2b69rda06Q1r6bHhtWIv+yHNZOWjcxV5ix11x/YtqSo+Wiqr1gNC9NPAHINuWG3Kl8
- ZEfy23+dlQUUr65N4XeRMU2KMACeWzJ38sN5L0g5MOwgA++yILQUxrzrU+TrB+RvElPb
- b8n/PCaUQF9QZr3FwhNgQhLPlkwyiz93brIpI2zgmZCu9pHJg9EAgQvrasqriT3Zi9QX
- chUCVvl0Co8QKyVNRrKn5FgpA10+XShGrKVTZUpymRJEhmSjppz67GE6RpmBuOe+0XJf
- 61fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743478150; x=1744082950;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=SBHBZQBygJrkuYmvBUgz98ilFLgpfVe79oWnJ8DMj7A=;
- b=WBmnAE7RbqsoR1kZ4zt2Kn4uIplkXazStWkfPR6rT5NhJLwhcY6vvihfwTn9vaNaio
- GNAEdAfW8JX32vkYDZB2X7R/zl8v7p6XEvOnfRczkSUWub+dpITopEpPTmw9mEfFleDN
- qdGSty963N2wGZ1SXsGd7kCpB9O/TLienQTVX28ofQxcy92ThBdnb4NENin/OsLTxmnk
- hAzkZQl21mT2O2hZa+1e53aASB3Ef6tSziwJOQw4DIljxBaSybXnIf7m4mtNh3FyGubN
- ZzJBaKkG9C9n2drGVvKiKrR7bA8gWujYlFXpFN28gNwJv4WGe/PzeJh2ZW4e/DYQWeEc
- BI7Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVf9+Jnd03WX5HYATpeBQ3NMn75K6ib0Pp5OVRVH+uV9RaWveLCCEKjr8L9LX5l+vxsZLt128sKr9c=@nongnu.org,
- AJvYcCWUcdckVRIQJL/O2AUjaCLutqznOn3SlXxD8fF0JOuW8lTetezS6GGaG0YI+p8uBs7OTQSRQiepb3hc@nongnu.org
-X-Gm-Message-State: AOJu0YzmK3nsPWlhy70AbIqRKq2E1hPNVvL69HfYitDlLNmAW1OOWwtn
- 6Wi7BLWqdyHww8r+ARxR98c6nPPkTzfBnKEx8dA6TGwxPEgR8GUX
-X-Gm-Gg: ASbGncvMbY16sY1KyRJeJO2uvUTRTMkbGlxp/uPA0tx3ixJdSeBaW1Jpn/bV9qQYtow
- 5iSubXt1uAvXtd3jKyEmeQ//x75PTA8yotXGCo9Fj0/18g2PhpvYhbuF41n47RwOXMHglfAoGkU
- VEuUDf8agWP9keyOo3RneBYbJfuzA0Gw7H6d6wYE9qd3BGTpPkH6P9bHna2QfIDqMyA1XyEo/KQ
- xdhL2uJSYFiclHjLLmjDHg3mtVzqJlj3uZgeHdBtGmo1BE2AxQqjdyth3RYvm8o+hHr8rdeTM+N
- 0toqq177qUUDu9NP7XW9WMxZ0aT+mIbuVs83qY4=
-X-Google-Smtp-Source: AGHT+IFfR5Fh++V0ykygpADJOAQc9ba1pbBpNcDL9vss9QDbWvmUX3dwjgv7lsmY0AfYvchODwF6kQ==
-X-Received: by 2002:a17:90b:2e4f:b0:2ff:702f:7172 with SMTP id
- 98e67ed59e1d1-3053216e3f2mr18445200a91.33.1743478150099; 
- Mon, 31 Mar 2025 20:29:10 -0700 (PDT)
-Received: from localhost ([203.185.207.94]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3039dcf48fcsm10465540a91.0.2025.03.31.20.29.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Mar 2025 20:29:09 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 01 Apr 2025 13:29:04 +1000
-Message-Id: <D8UZF6NLQG6W.3IBC5MPZBFZ1J@gmail.com>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>, "Harsh Prateek Bora"
- <harshpb@linux.ibm.com>, "Alexey Kardashevskiy" <aik@ozlabs.ru>
-Subject: Re: [PATCH v2] ppc/vof: Make nextprop behave more like Open Firmware
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
- <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.19.0
-References: <20250331142627.BAA2F4E6029@zero.eik.bme.hu>
-In-Reply-To: <20250331142627.BAA2F4E6029@zero.eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1tzUY1-0003ts-3z
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 01:52:30 -0400
+Received: from mx2.zhaoxin.com ([61.152.208.219])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1tzUXy-0006Gi-Aq
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 01:52:28 -0400
+X-ASG-Debug-ID: 1743486736-1eb14e18d900240001-jgbH7p
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
+ mx2.zhaoxin.com with ESMTP id gP0W5X89XsjhBRGA (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Tue, 01 Apr 2025 13:52:16 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from ZXSHMBX3.zhaoxin.com (10.28.252.165) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Tue, 1 Apr
+ 2025 13:52:16 +0800
+Received: from ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2]) by
+ ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2%6]) with mapi id
+ 15.01.2507.044; Tue, 1 Apr 2025 13:52:16 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from [192.168.31.91] (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 1 Apr
+ 2025 11:35:50 +0800
+Message-ID: <65a6e617-8dd8-46ee-b867-931148985e79@zhaoxin.com>
+Date: Tue, 1 Apr 2025 11:35:49 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
+ VM reset
+To: Dongli Zhang <dongli.zhang@oracle.com>, <qemu-devel@nongnu.org>,
+ <kvm@vger.kernel.org>
+X-ASG-Orig-Subj: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers
+ during VM reset
+CC: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <sandipan.das@amd.com>,
+ <babu.moger@amd.com>, <likexu@tencent.com>, <like.xu.linux@gmail.com>,
+ <zhenyuw@linux.intel.com>, <groug@kaod.org>, <khorenko@virtuozzo.com>,
+ <alexander.ivanov@virtuozzo.com>, <den@virtuozzo.com>,
+ <davydov-max@yandex-team.ru>, <xiaoyao.li@intel.com>,
+ <dapeng1.mi@linux.intel.com>, <joe.jin@oracle.com>, <ewanhai@zhaoxin.com>,
+ <cobechen@zhaoxin.com>, <louisqi@zhaoxin.com>, <liamni@zhaoxin.com>,
+ <frankzhu@zhaoxin.com>, <silviazhao@zhaoxin.com>, <zhao1.liu@intel.com>
+References: <20250302220112.17653-1-dongli.zhang@oracle.com>
+ <20250302220112.17653-9-dongli.zhang@oracle.com>
+ <8a547bf5-bdd4-4a49-883a-02b4aa0cc92c@zhaoxin.com>
+ <84653627-3a20-44fd-8955-a19264bd2348@oracle.com>
+ <e3a64575-ab1f-4b6f-a91d-37a862715742@zhaoxin.com>
+ <a94487ab-b06d-4df4-92d8-feceeeaf5ec3@oracle.com>
+In-Reply-To: <a94487ab-b06d-4df4-92d8-feceeeaf5ec3@oracle.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.28.66.62]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 4/1/2025 1:52:15 PM
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1743486736
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 3842
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.01
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.01 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=TRACK_DBX_001
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.139319
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+ 0.01 TRACK_DBX_001          Custom rule TRACK_DBX_001
+Received-SPF: pass client-ip=61.152.208.219;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,57 +109,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Apr 1, 2025 at 12:26 AM AEST, BALATON Zoltan wrote:
-> The FDT does not normally store name properties but reconstructs it
-> from path but each node in Open Firmware should at least have this
-> property. This is correctly handled in getprop but nextprop should
-> also return it even if not present as a property. This patch fixes
-> that and also skips phandle which does not appear in Open Firmware
-> and only added for internal use by VOF.
->
-> Explicit name properties are still allowed because they are needed
-> e.g. on the root node that guests expect to have specific names as
-> seen on real machines instead of being empty so sometimes the node
-> name may need to be overriden.
->
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-> I've tested this with pegasos2 but don't know how to test spapr.
+>> [2] As mentioned in [1], QEMU always sets the vCPU's vendor to match the host's
+>> vendor
+>> when acceleration (KVM or HVF) is enabled. Therefore, if users want to emulate a
+>> Zhaoxin CPU on an Intel host, the vendor must be set manually.Furthermore,
+>> should we display a warning to users who enable both vPMU and KVM acceleration
+>> but do not manually set the guest vendor when it differs from the host vendor?
+> 
+> Maybe not? Sometimes I emulate AMD on Intel host, while vendor is still the
+> default :)
 
-Boot a pseries machine with pseries (book3s 64-bit) Linux kernel
-with x-vof=3Don option.
+Okay, handling this situation can be rather complex, so let's keep it simple. I 
+have added a dedicated function to capture the intended behavior for potential 
+future reference.
 
-AFAIKS the two places Linux calls nextprop look like this
+Anyway, Thanks for taking Zhaoxin's situation into account, regardless.
 
-               if (call_prom("nextprop", 3, 1, node, prev_name,
-                              pname) !=3D 1)
-                        break;
 
-                /* skip "name" */
-                if (prom_strcmp(pname, "name") =3D=3D 0) {
-                        prev_name =3D "name";
-                        continue;
-                }
-
-So, seems like skipping name is okay?
-
-After iterating through properties it also has this:
-
-        /* Add a "phandle" property if none already exist */
-        if (!has_phandle) {
-                soff =3D dt_find_string("phandle");
-                if (soff =3D=3D 0)
-                        prom_printf("WARNING: Can't find string index for <=
-phandle> node %s\n", path);
-
-That warning does not seem to fire after your patch.
-
-spapr *seems* to be okay booting, but I would not be inclined to
-take this for 10.0 at least without review from someone who knows
-more than I do about OF since there can be subtle breakage.
-
-What actual problem is it causing for pegasos?
-
-Thanks,
-Nick
++/*
++ * check_vendor_compatibility_and_warn() returns true if the host and
++ * guest vendors are compatible for vPMU virtualization. In addition, if
++ * the guest vendor is not explicitly set in a cross-vendor emulation
++ * scenario (e.g., a Zhaoxin host emulating an Intel guest or vice versa),
++ * it issues a warning.
++ */
++static bool check_vendor_compatibility_and_warn(CPUX86State *env)
++{
++    char host_vendor[CPUID_VENDOR_SZ + 1];
++    uint32_t host_cpuid_vendor1, host_cpuid_vendor2, host_cpuid_vendor3;
++
++    /* Retrieve host vendor info */
++    host_cpuid(0x0, 0, NULL, &host_cpuid_vendor1, &host_cpuid_vendor3,
++               &host_cpuid_vendor2);
++    x86_cpu_vendor_words2str(host_vendor, host_cpuid_vendor1,
++                             host_cpuid_vendor2, host_cpuid_vendor3);
++
++    /*
++     * Case A:
++     * If the host vendor is Intel or Zhaoxin and the guest CPU type is
++     * either Intel or Zhaoxin, consider them compatible. However, if a
++     * cross-vendor scenario is detected (e.g., host is Zhaoxin but guest is
++     * Intel, or vice versa) and the guest vendor fields have not been
++     * overridden (i.e., they still match the host), then warn the user.
++     */
++    if ((g_str_equal(host_vendor, CPUID_VENDOR_INTEL) ||
++         g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN1) ||
++         g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN2)) &&
++        (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env)))
++    {
++        if ((g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN1) ||
++             g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN2)) &&
++            IS_INTEL_CPU(env) &&
++            (env->cpuid_vendor1 == host_cpuid_vendor1 &&
++             env->cpuid_vendor2 == host_cpuid_vendor2 &&
++             env->cpuid_vendor3 == host_cpuid_vendor3))
++        {
++            warning_report("vPMU emulation will fail because the guest vendor "
++                            "is not explicitly set. Use '-cpu,vendor=Intel' to "
++                            "emulate Intel vPMU on a Zhaoxin host.");
++        }
++        else if (g_str_equal(host_vendor, CPUID_VENDOR_INTEL) &&
++                 IS_ZHAOXIN_CPU(env) &&
++                 (env->cpuid_vendor1 == host_cpuid_vendor1 &&
++                  env->cpuid_vendor2 == host_cpuid_vendor2 &&
++                  env->cpuid_vendor3 == host_cpuid_vendor3))
++        {
++            warning_report("vPMU emulation will fail because the guest vendor"
++                            "is not explicitly set. Use '-cpu,vendor=Zhaoxin' "
++                            "to emulate Zhaoxin vPMU on an Intel host.");
++        }
++        return true;
++    }
++
++    /*
++     * Case B:
++     * For other CPU types, if the guest vendor fields exactly match the host,
++     * consider them compatible.
++     */
++    if (env->cpuid_vendor1 == host_cpuid_vendor1 &&
++        env->cpuid_vendor2 == host_cpuid_vendor2 &&
++        env->cpuid_vendor3 == host_cpuid_vendor3)
++    {
++        return true;
++    }
++
++    return false;
++}
++
 
