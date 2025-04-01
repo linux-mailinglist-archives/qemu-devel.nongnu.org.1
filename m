@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7145BA77D23
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC3EA77D14
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:00:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzc0U-0007OH-EE; Tue, 01 Apr 2025 09:50:24 -0400
+	id 1tzc29-0000du-81; Tue, 01 Apr 2025 09:52:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tzbz2-0006aU-IW
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:48:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1tzc0p-0008Th-0B
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:50:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1tzbz0-0007Ee-HX
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:48:52 -0400
+ id 1tzc0n-0007Xh-82
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:50:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743515329;
+ s=mimecast20190719; t=1743515440;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h8W7D8fC9cpDW8I+kTWOevlK5SmojoV0WRC1tF3MyF4=;
- b=Qr6CS8loNoYHqyPe14isTbDp//FCQ+OaUxrV916Tkf9Zs+0f09XUAIe6/0TrzQ4aOihFlp
- kkXOLZMrBPJ9ujsuHDzUvVVWF2gg7At/1jTUo5VVWJhc+7187D7FE53r8yU1T2WG1gBq0C
- LmkkjRln5YSjfvMk3MbAfv9r/BEhrIw=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FimNuAvNHPXMUfJfSY+a3FqUY0CSnbtGI00gSyxpzSE=;
+ b=K36a6ihW+I6m/S/HTzOyg818eRC+fM/2VxSFFMjq3rhU0O8iYMyp0kzZe6Dmu160TKWktd
+ /yErOrz0S/RCyHiHR54M0IFRnZ4B+iYNrjT9ZkC+mSytVgLdwYfksavEZgnEvmgW+2uYM1
+ D11SOpMKB4iUH5IASe9ImX9fJQKExWk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-R8QjXXuoNPWdA8TusaSgxg-1; Tue, 01 Apr 2025 09:48:44 -0400
-X-MC-Unique: R8QjXXuoNPWdA8TusaSgxg-1
-X-Mimecast-MFC-AGG-ID: R8QjXXuoNPWdA8TusaSgxg_1743515323
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5eb80d465b7so5135760a12.3
- for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 06:48:44 -0700 (PDT)
+ us-mta-592-8xz4aiwDP4a8Sijpc1QhMQ-1; Tue, 01 Apr 2025 09:50:37 -0400
+X-MC-Unique: 8xz4aiwDP4a8Sijpc1QhMQ-1
+X-Mimecast-MFC-AGG-ID: 8xz4aiwDP4a8Sijpc1QhMQ_1743515436
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43cf172ff63so36512105e9.3
+ for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 06:50:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743515323; x=1744120123;
+ d=1e100.net; s=20230601; t=1743515436; x=1744120236;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h8W7D8fC9cpDW8I+kTWOevlK5SmojoV0WRC1tF3MyF4=;
- b=B6gHKWbEciIc1IYTACocwE4ENZAWZnVAdwcCoX6J6DVN5b8sX/JEH0ntFZsiHt3UDy
- sO2lV5A1SJL/mq5qSJ6xlyTq6B+jw/G12C2DzkCViuyqHD0SNMHcp7zqQxFZP/Z+s0jk
- E4bbzlG8POmv6TKejqGEkmXFugSx7s19uIREtV63Ulk5m+tJi2G64vO/5unC8Wy319oi
- Pq60SkbKqyXu5mUFwkbxv6GCwwg/VZzNQj9u6tz6IPlrrzO1l22vdn3X+x3tArftE4El
- CWzkQaWqRLFCx+EWbxqbiY9TKw53jlb/xj4CVBGTm2EFzpGPLC+5DK6VGsAhS4CYn36n
- GSdA==
+ bh=FimNuAvNHPXMUfJfSY+a3FqUY0CSnbtGI00gSyxpzSE=;
+ b=GaL62hRoWHpXqad6CfeyT92T6GbX7S8nO7w9OnXjXwD8+t9LRabzPLFXnr+aAF7cWK
+ E8oUMbEdrvnvxmG3Sqdkj9wWgjQ6vhCxf3Oq1Pl6ES4URTlOJLAQGQJyqpNQjmtwBspA
+ 3Vq9185YClLqEi+R1FYoTdGKhum/dsji2ENml3Gllhc2i2vzmioct/8F77OB4D+uH4AD
+ Y45VEoWTw2/8/rRwj2nYD6tNU5wV1BSzI2u+6skfY0lACtHePUlShcTOBi3XD+YeWLDe
+ u5NbytsV61bxCoUk8lV+1XzpgL5iJ93V59mf8rOd6OBszmLqwiMNgcaCaOOAJfzqFrqg
+ Igbg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXAAsLX4jL5QFdXikNIOen+ofZZoOqKYNGkwoJ0YjSPdPQpMkpWSdZXAD9x+uuO742HpBMSNPmQbndT@nongnu.org
-X-Gm-Message-State: AOJu0Yzi/s10DkEnthWBcpH7BVXESrzFXt80DlEjK+OGvghMWXJXSHCx
- S0nRK+HexWSmtrGrlJS0Wd/Nq9j3FGQaTmZw3JwONT3KyneV0m78hduGJ+k/ymiFaJ//+D6G9Cj
- Zd4t/LjuHA6Q1rbqIIxUD9HfSpnxbhLDBzKgTmy5y/+JRFGKlEC2W
-X-Gm-Gg: ASbGncvEV0ihlnYA8azLM2XNAyg9ezpzrK2tFevXECghzY/vwiKDhmS+UJepL53jPzY
- WDL+01rAfYXAztRWsxWvRThFoGTEcpDYl8N0EYb4QqvWAcCdsWKTtkyhRXpCDYwvI6o/Qmg1mGu
- t8fAcP9N3vvenoBz/15fkwWPXVltSswKVi2cFJGjGdfR5vRCRcf4kQLJM7CAvdqaFLcCrtwRvF4
- JGtGzXP7bOUXh61K4pgeN/YRFzd3IiLTyawNdA0SSOQpgXbiQvxj6IxXw46RUFpUPAfaj3tO+5X
- yFMiVSFydjWWeiPpIeCAn/x+hmSy7OGTPMN9
-X-Received: by 2002:a17:907:2d87:b0:ac3:cff:80e1 with SMTP id
- a640c23a62f3a-ac738baeab8mr1014745866b.56.1743515323193; 
- Tue, 01 Apr 2025 06:48:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFtkMSwraE2O/OdOUOVHDdzpW4kU5LuyLoVq1Theq6NBP2/UTCupswwvABWxCHmESJdGJPWHQ==
-X-Received: by 2002:a17:907:2d87:b0:ac3:cff:80e1 with SMTP id
- a640c23a62f3a-ac738baeab8mr1014743466b.56.1743515322844; 
- Tue, 01 Apr 2025 06:48:42 -0700 (PDT)
+ AJvYcCXZtCs7IXu6oAbqwD0VXtWYFAkWOUSyjpQM8ULlX02dxQzHJEK5tSUwW1Q3YBaOFRVisE46hU8lOF7B@nongnu.org
+X-Gm-Message-State: AOJu0Yygtn6zXPM+EfPyTKbie+Ak9TEn4OH1TbeINDxDX7MmWBCgIaqv
+ XBUUo10fzz7cjjVL0F3SZCfr9zej2K/woU41rVnVCjoO2wkl72iwbl3GcYzXWoI2h441c6/5yd6
+ SLQOJluPzuvZb1AI2qjr47tTaIDw/7CnJwvUe5VQ/C5cfzjjCuBf5
+X-Gm-Gg: ASbGncsGI3B62G4ynokPqSYdmgWi5OeD2uYRaWduHq21Eq0N8KL6t5kVKuwV3wAsP+Z
+ yAkgrqvXT7VJfyF9anREnmq21LiBp44H8oInJpdbUiYTGbXYYo58vuAm+1D9ef6Jd2jzCCGFY0M
+ 16umk2jB6F7386+0zn4eJIU61rSgV3h+bJAzAfmQWKIq8zBuD3Lkse3yclpdHWUGfRkLaXmKKOl
+ KSHcOdHkxbcpubfgJzZxhvMdDApjijZnV+6ixxyOd8nMD3+Imx+uac9AzXQ5R7li8iqpwY3SD/Z
+ gDK7S6cozo7YJuzu7PMsdxEBZeI6NYGgCCll
+X-Received: by 2002:a05:600c:4fce:b0:43b:cc42:c54f with SMTP id
+ 5b1f17b1804b1-43ea7c71a97mr33129005e9.14.1743515436019; 
+ Tue, 01 Apr 2025 06:50:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEB7vA9Nbv2xo+w4fCuBVjMa5Xv9r7t/3qIGoFfzgAxsj9lRaW3zq3YTwAezJtSRhZhpUckpg==
+X-Received: by 2002:a05:600c:4fce:b0:43b:cc42:c54f with SMTP id
+ 5b1f17b1804b1-43ea7c71a97mr33128675e9.14.1743515435634; 
+ Tue, 01 Apr 2025 06:50:35 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com ([85.93.96.130])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac774e83a1csm210465666b.88.2025.04.01.06.48.41
+ ffacd0b85a97d-39c0b66ab86sm14580909f8f.51.2025.04.01.06.50.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Apr 2025 06:48:42 -0700 (PDT)
-Date: Tue, 1 Apr 2025 15:48:40 +0200
+ Tue, 01 Apr 2025 06:50:35 -0700 (PDT)
+Date: Tue, 1 Apr 2025 15:50:34 +0200
 From: Igor Mammedov <imammedo@redhat.com>
 To: Bibo Mao <maobibo@loongson.cn>
 Cc: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
@@ -79,16 +79,15 @@ Cc: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVk?=
  =?UTF-8?B?w6k=?= <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
  qemu-devel@nongnu.org
-Subject: Re: [PATCH 4/6] tests/acpi: Add empty ACPI data files for LoongArch64
-Message-ID: <20250401154840.1d591aa8@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20250228092729.543097-5-maobibo@loongson.cn>
+Subject: Re: [PATCH 0/6] Add bios-tables-test for LoongArch64 system
+Message-ID: <20250401155034.528b35a8@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20250228092729.543097-1-maobibo@loongson.cn>
 References: <20250228092729.543097-1-maobibo@loongson.cn>
- <20250228092729.543097-5-maobibo@loongson.cn>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -113,67 +112,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 28 Feb 2025 17:27:27 +0800
+On Fri, 28 Feb 2025 17:27:23 +0800
 Bibo Mao <maobibo@loongson.cn> wrote:
 
-> Add empty acpi table for LoongArch64 virt machine, it is only empty
-> file and there is no data in these files.
-
-this patch after 3/6 doesn't make sense,
-either drop.
-
-Adding empty blobs, can be useful (as then you can get ACPI diff during test)
-but only if you follow update acpi blos process as described in
-bios-tables-test.c
-
-
-as is, the next patch (5/6) should precede 3/6
-
-
+> This patchset add bios-tables-test for LoongArch64 virt machine
+> system. It works with UEFI bios, with uefi-test-tools LoongArch64
+> support is added to build bios-tables-test.loongarch64.iso.
 > 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->  tests/data/acpi/loongarch64/virt/APIC | 0
->  tests/data/acpi/loongarch64/virt/DSDT | 0
->  tests/data/acpi/loongarch64/virt/FACP | 0
->  tests/data/acpi/loongarch64/virt/MCFG | 0
->  tests/data/acpi/loongarch64/virt/PPTT | 0
->  tests/data/acpi/loongarch64/virt/SLIT | 0
->  tests/data/acpi/loongarch64/virt/SPCR | 0
->  tests/data/acpi/loongarch64/virt/SRAT | 0
->  8 files changed, 0 insertions(+), 0 deletions(-)
+> Also with test case bios-tables-test, LoongArch64 support is added
+> and some basic ACPI tables is added here. It passes with command
+> make check-qtest-loongarch64 with the result:
+>  qtest-loongarch64/bios-tables-test OK 29.52s 4 subtests passed
+> 
+> Bibo Mao (6):
+>   uefi-test-tools:: Add LoongArch64 support
+>   tests/data/uefi-boot-images: Add ISO image for LoongArch system
+>   tests/qtest/bios-tables-test: Add basic testing for LoongArch64
+>   tests/acpi: Add empty ACPI data files for LoongArch64
+>   tests/acpi: Fill acpi table data for LoongArch
+
+blobs no longer match (since cpu hotplug was merged after this series)
+so blobs need to be updated and series needs to be re-spun
+
+>   tests/qtest: Enable bios-tables-test for LoongArch
+> 
+>  tests/data/acpi/loongarch64/virt/APIC         | Bin 0 -> 108 bytes
+>  .../data/acpi/loongarch64/virt/APIC.topology  | Bin 0 -> 213 bytes
+>  tests/data/acpi/loongarch64/virt/DSDT         | Bin 0 -> 3614 bytes
+>  tests/data/acpi/loongarch64/virt/DSDT.memhp   | Bin 0 -> 4951 bytes
+>  tests/data/acpi/loongarch64/virt/FACP         | Bin 0 -> 268 bytes
+>  tests/data/acpi/loongarch64/virt/MCFG         | Bin 0 -> 60 bytes
+>  tests/data/acpi/loongarch64/virt/PPTT         | Bin 0 -> 76 bytes
+>  .../data/acpi/loongarch64/virt/PPTT.topology  | Bin 0 -> 296 bytes
+>  tests/data/acpi/loongarch64/virt/SLIT         |   0
+>  tests/data/acpi/loongarch64/virt/SLIT.memhp   | Bin 0 -> 48 bytes
+>  tests/data/acpi/loongarch64/virt/SPCR         | Bin 0 -> 80 bytes
+>  tests/data/acpi/loongarch64/virt/SRAT         | Bin 0 -> 104 bytes
+>  tests/data/acpi/loongarch64/virt/SRAT.memhp   | Bin 0 -> 184 bytes
+>  .../data/acpi/loongarch64/virt/SRAT.topology  | Bin 0 -> 216 bytes
+>  .../bios-tables-test.loongarch64.iso.qcow2    | Bin 0 -> 12800 bytes
+>  tests/qtest/bios-tables-test.c                |  62 ++++++++++++++++++
+>  tests/qtest/meson.build                       |   3 +-
+>  tests/uefi-test-tools/Makefile                |   5 +-
+>  .../UefiTestToolsPkg/UefiTestToolsPkg.dsc     |   6 +-
+>  tests/uefi-test-tools/uefi-test-build.config  |  10 +++
+>  20 files changed, 82 insertions(+), 4 deletions(-)
 >  create mode 100644 tests/data/acpi/loongarch64/virt/APIC
+>  create mode 100644 tests/data/acpi/loongarch64/virt/APIC.topology
 >  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT
+>  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.memhp
 >  create mode 100644 tests/data/acpi/loongarch64/virt/FACP
 >  create mode 100644 tests/data/acpi/loongarch64/virt/MCFG
 >  create mode 100644 tests/data/acpi/loongarch64/virt/PPTT
+>  create mode 100644 tests/data/acpi/loongarch64/virt/PPTT.topology
 >  create mode 100644 tests/data/acpi/loongarch64/virt/SLIT
+>  create mode 100644 tests/data/acpi/loongarch64/virt/SLIT.memhp
 >  create mode 100644 tests/data/acpi/loongarch64/virt/SPCR
 >  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT
+>  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.memhp
+>  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.topology
+>  create mode 100644 tests/data/uefi-boot-images/bios-tables-test.loongarch64.iso.qcow2
 > 
-> diff --git a/tests/data/acpi/loongarch64/virt/APIC b/tests/data/acpi/loongarch64/virt/APIC
-> new file mode 100644
-> index 0000000000..e69de29bb2
-> diff --git a/tests/data/acpi/loongarch64/virt/DSDT b/tests/data/acpi/loongarch64/virt/DSDT
-> new file mode 100644
-> index 0000000000..e69de29bb2
-> diff --git a/tests/data/acpi/loongarch64/virt/FACP b/tests/data/acpi/loongarch64/virt/FACP
-> new file mode 100644
-> index 0000000000..e69de29bb2
-> diff --git a/tests/data/acpi/loongarch64/virt/MCFG b/tests/data/acpi/loongarch64/virt/MCFG
-> new file mode 100644
-> index 0000000000..e69de29bb2
-> diff --git a/tests/data/acpi/loongarch64/virt/PPTT b/tests/data/acpi/loongarch64/virt/PPTT
-> new file mode 100644
-> index 0000000000..e69de29bb2
-> diff --git a/tests/data/acpi/loongarch64/virt/SLIT b/tests/data/acpi/loongarch64/virt/SLIT
-> new file mode 100644
-> index 0000000000..e69de29bb2
-> diff --git a/tests/data/acpi/loongarch64/virt/SPCR b/tests/data/acpi/loongarch64/virt/SPCR
-> new file mode 100644
-> index 0000000000..e69de29bb2
-> diff --git a/tests/data/acpi/loongarch64/virt/SRAT b/tests/data/acpi/loongarch64/virt/SRAT
-> new file mode 100644
-> index 0000000000..e69de29bb2
+> 
+> base-commit: b69801dd6b1eb4d107f7c2f643adf0a4e3ec9124
 
 
