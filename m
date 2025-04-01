@@ -2,74 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20515A77D39
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A96A77D33
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:05:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbv0-0000oZ-Cq; Tue, 01 Apr 2025 09:44:42 -0400
+	id 1tzc7y-0000r3-C6; Tue, 01 Apr 2025 09:58:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbu0-0000U9-JB
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:43:58 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1tzc5T-0007qG-Tb; Tue, 01 Apr 2025 09:55:34 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbty-0006Zf-SI
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:43:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743515019; x=1775051019;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=cAro8MzxFmRGhh9aV6WIQcVxy6QrVJYyqaC9eDj7okM=;
- b=CO93svLPrdU0thOky8w7wgZgfrlF+75BvVE8lnQRKN1CE9F8o7W6GE+L
- Dd+tVQU07ftrk+NRPKdBYsROx00Fh7Kf103z+ej/FCwYQoOhTXq8tz0DD
- wgtGaUBOdtDV2pYs5xASi+P6ATsbtnDrHLIZy+QcP2mHxfswqD6J6LnK1
- Uv1XJUYUuh1zIJTIag3SHLuzrTLGwjqB+vMpQisZxLwtE1iJNOo1cl7Hd
- YtEI7A2IRPoFNHDR51kP3XpXFdl4Mrohwq033YOrlW8Aw5+Rb9nQhjRHQ
- 0JVh4jkYwMhLToh+z+oMfbqqH9k/wl72ZehODjh+Hj9LJOGzTvkV8p8E3 Q==;
-X-CSE-ConnectionGUID: jiXApwvwRNW5pABHh4lkiw==
-X-CSE-MsgGUID: pSc6p5KzRCimV7wTMhL+uA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433460"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433460"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 06:42:40 -0700
-X-CSE-ConnectionGUID: h39X+B+yS9urmiKsWvvY4g==
-X-CSE-MsgGUID: be4NTG0ARhGb5pVSGoXFfA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640129"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:42:38 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v8 35/55] i386/tdx: Set kvm_readonly_mem_enabled to false for
- TDX VM
-Date: Tue,  1 Apr 2025 09:01:45 -0400
-Message-Id: <20250401130205.2198253-36-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250401130205.2198253-1-xiaoyao.li@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1tzc5S-00089W-4E; Tue, 01 Apr 2025 09:55:31 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5318oVxE031090;
+ Tue, 1 Apr 2025 13:55:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=w+VfJp
+ lgE+gW980p6hx4ONMithxRflQKBUxtQpfnZps=; b=kBC7h2kmfOwbocd/vpyNlY
+ sWUGm7C0irUIgcxJF66ak4a5k+BUPA93AEtZheaJTGHe9iX78lFO+64dOnFrvyKL
+ 8E3VHHKUxsyfWu5v2wx5aTaELHZGL60DdrgCTTAGoHXv7RqrvBXW1n47tvLbXHHe
+ Kz38DNlrBP/aT/K1ip3mUJgonCvHYpQruhLoKk/4zmTX8rnRg3dvVQILaIUzwnQH
+ UYKd1YOEOnNxbIskq2atbkn7Ml1svcA5mtKhQyF/IfpKpNXy+Fo3mrAju4IxDtGz
+ jY7yOGjOwBNJxLLkGRqOpam1pzahQfIpupWO0mVXDQ/PkZmWadYlLnXwaolSRWIA
+ ==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45r27q40bm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Apr 2025 13:55:23 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 531CLmX7010313;
+ Tue, 1 Apr 2025 13:55:23 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45pv6ntr66-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Apr 2025 13:55:23 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 531DtJZk42140050
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Apr 2025 13:55:19 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4434F20043;
+ Tue,  1 Apr 2025 13:55:19 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB8BF20040;
+ Tue,  1 Apr 2025 13:55:18 +0000 (GMT)
+Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
+ [9.179.0.254]) by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Apr 2025 13:55:18 +0000 (GMT)
+Message-ID: <9f8c17cbdf157ceb7b339b4fbfc1cf7d06082df0.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 2/4] hw/s390x: add Control-Program Identification to QOM
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Shalini Chellathurai Saroja <shalini@linux.ibm.com>, qemu-s390x mailing
+ list <qemu-s390x@nongnu.org>, Thomas Huth <thuth@redhat.com>, Daniel
+ Berrange <berrange@redhat.com>
+Cc: qemu-devel mailing list <qemu-devel@nongnu.org>, Hendrik Brueckner
+ <brueckner@linux.ibm.com>
+Date: Tue, 01 Apr 2025 15:55:20 +0200
+In-Reply-To: <20250331140041.3133621-3-shalini@linux.ibm.com>
+References: <20250331140041.3133621-1-shalini@linux.ibm.com>
+ <20250331140041.3133621-3-shalini@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.997,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: TawFrlIIYxuu-6fmO3ed3SqM-8qk6Gv1
+X-Proofpoint-GUID: TawFrlIIYxuu-6fmO3ed3SqM-8qk6Gv1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-01_05,2025-03-27_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ impostorscore=0 malwarescore=0 mlxscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 phishscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2504010083
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,39 +109,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX only supports readonly for shared memory but not for private memory.
+On Mon, 2025-03-31 at 16:00 +0200, Shalini Chellathurai Saroja wrote:
+> Add Control-Program Identification data to the QEMU Object
+> Model (QOM), along with the timestamp in which the data was received.
+>=20
+> Example:
+> virsh # qemu-monitor-command vm --pretty '{
+> "execute": "qom-get",
+> "arguments": {
+> "path": "/machine/sclp/s390-sclp-event-facility/sclpcpi",
+> "property": "control-program-id" }}'
+> {
+>   "return": {
+>     "timestamp": 1742390410685762000,
+>     "system-level": 74872343805430528,
+>     "sysplex-name": "PLEX ",
+>     "system-name": "TESTVM  ",
+>     "system-type": "LINUX   "
+>   },
+>   "id": "libvirt-15"
+> }
+>=20
+> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+> ---
+>  hw/s390x/sclpcpi.c                | 38 ++++++++++++++++++++
+>  include/hw/s390x/event-facility.h |  9 +++++
+>  qapi/machine.json                 | 58 +++++++++++++++++++++++++++++++
+>  3 files changed, 105 insertions(+)
+>=20
+> diff --git a/hw/s390x/sclpcpi.c b/hw/s390x/sclpcpi.c
+> index 7ace5dd64e..969c15e43d 100644
+> --- a/hw/s390x/sclpcpi.c
+> +++ b/hw/s390x/sclpcpi.c
+> @@ -57,8 +57,11 @@
+>    */
+> =20
+>  #include "qemu/osdep.h"
+> +#include "qemu/timer.h"
+>  #include "hw/s390x/sclp.h"
+>  #include "hw/s390x/event-facility.h"
+> +#include "hw/s390x/ebcdic.h"
+> +#include "qapi/qapi-visit-machine.h"
+> =20
+>  typedef struct Data {
+>      uint8_t id_format;
+> @@ -99,10 +102,37 @@ static int write_event_data(SCLPEvent *event, EventB=
+ufferHeader *evt_buf_hdr)
+>      ControlProgramIdMsg *cpim =3D container_of(evt_buf_hdr, ControlProgr=
+amIdMsg,
+>                                               ebh);
+> =20
+> +    ascii_put(event->cpi.system_type, (char *)cpim->data.system_type, 8)=
+;
+> +    ascii_put(event->cpi.system_name, (char *)cpim->data.system_name, 8)=
+;
+> +    ascii_put(event->cpi.sysplex_name, (char *)cpim->data.sysplex_name, =
+8);
+> +    event->cpi.system_level =3D ldq_be_p(&cpim->data.system_level);
+> +    event->cpi.timestamp =3D qemu_clock_get_ns(QEMU_CLOCK_HOST);
+> +
+>      cpim->ebh.flags =3D SCLP_EVENT_BUFFER_ACCEPTED;
+>      return SCLP_RC_NORMAL_COMPLETION;
+>  }
+> =20
+> +static void get_control_program_id(Object *obj, Visitor *v,
+> +                                   const char *name, void *opaque,
+> +                                   Error **errp)
+> +{
+> +    SCLPEvent *event =3D (SCLPEvent *)(obj);
 
-In the view of QEMU, it has no idea whether a memslot is used as shared
-memory of private. Thus just mark kvm_readonly_mem_enabled to false to
-TDX VM for simplicity.
+Do a checked cast with SCLP_EVENT(obj).
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
----
- target/i386/kvm/tdx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> +    S390ControlProgramId *cpi;
+> +
+> +    cpi =3D &(S390ControlProgramId){
+> +        .system_type =3D g_strndup((char *) event->cpi.system_type,
+> +                                 sizeof(event->cpi.system_type)),
+> +        .system_name =3D g_strndup((char *) event->cpi.system_name,
+> +                                 sizeof(event->cpi.system_name)),
+> +        .system_level =3D event->cpi.system_level,
+> +        .sysplex_name =3D g_strndup((char *) event->cpi.sysplex_name,
+> +                                  sizeof(event->cpi.sysplex_name)),
+> +        .timestamp =3D event->cpi.timestamp
+> +    };
+> +
+> +    visit_type_S390ControlProgramId(v, name, &cpi, errp);
+> +}
+> +
+>  static void cpi_class_init(ObjectClass *klass, void *data)
+>  {
+>      DeviceClass *dc =3D DEVICE_CLASS(klass);
+> @@ -114,6 +144,14 @@ static void cpi_class_init(ObjectClass *klass, void =
+*data)
+>      k->get_send_mask =3D send_mask;
+>      k->get_receive_mask =3D receive_mask;
+>      k->write_event_data =3D write_event_data;
+> +
+> +    object_class_property_add(klass, "control-program-id",
+> +                              "S390ControlProgramId",
+> +                              get_control_program_id,
+> +                              NULL, NULL, NULL);
+> +    object_class_property_set_description(klass, "control-program-id",
+> +        "Control-program identifiers provide data about the guest "
+> +        "operating system");
+>  }
+> =20
+>  static const TypeInfo sclp_cpi_info =3D {
+> diff --git a/include/hw/s390x/event-facility.h b/include/hw/s390x/event-f=
+acility.h
+> index f445d2f9f5..39e589ed44 100644
+> --- a/include/hw/s390x/event-facility.h
+> +++ b/include/hw/s390x/event-facility.h
+> @@ -169,10 +169,19 @@ typedef struct ReadEventData {
+>      };
+>  } QEMU_PACKED ReadEventData;
+> =20
+> +typedef struct ControlProgramId {
+> +    uint8_t system_type[8];
+> +    uint8_t system_name[8];
+> +    uint64_t system_level;
+> +    uint8_t sysplex_name[8];
+> +    uint64_t timestamp;
+> +} QEMU_PACKED ControlProgramId;
+> +
+>  struct SCLPEvent {
+>      DeviceState qdev;
+>      bool event_pending;
+>      char *name;
+> +    ControlProgramId cpi;
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index b0616eb3d371..a816f57043f6 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -386,6 +386,15 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-         return -EOPNOTSUPP;
-     }
- 
-+    /*
-+     * Set kvm_readonly_mem_allowed to false, because TDX only supports readonly
-+     * memory for shared memory but not for private memory. Besides, whether a
-+     * memslot is private or shared is not determined by QEMU.
-+     *
-+     * Thus, just mark readonly memory not supported for simplicity.
-+     */
-+    kvm_readonly_mem_allowed = false;
-+
-     qemu_add_machine_init_done_notifier(&tdx_machine_done_notify);
- 
-     tdx_guest = tdx;
--- 
-2.34.1
+I don't think this should go into SCLPEvent.
+Rather SCLPEventFacility or SCLPDevice. Otherwise all events,
+so also quiesce and cpu_hotplug have a cpi field.
 
+>  };
+
+[...]
+--=20
+IBM Deutschland Research & Development GmbH
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+Gesch=C3=A4ftsf=C3=BChrung: David Faller
+Sitz der Gesellschaft: B=C3=B6blingen / Registergericht: Amtsgericht Stuttg=
+art, HRB 243294
 
