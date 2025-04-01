@@ -2,53 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07073A77A75
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E20A77A76
 	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 14:15:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzaVN-0007cy-Ub; Tue, 01 Apr 2025 08:14:09 -0400
+	id 1tzaVJ-0007bF-RD; Tue, 01 Apr 2025 08:14:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tzaV3-0007YH-LX
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 08:13:53 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tzaV5-0007YR-MB
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 08:13:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tzaV1-0007rk-FE
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 08:13:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1tzaV1-0007rm-Ga
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 08:13:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743509625;
+ s=mimecast20190719; t=1743509626;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=z7YzhWpL1hJtAG+D+c5L3yyWhN/Mh1HbDqfui5xAhHY=;
- b=O3/QoQrjU/ry8WhToPD2z6riSzO0Co4h0owojuB9WfKbjUoYU5JOicWN3a9C191lWEbuEm
- EmALZ88533m0wrwZ65ISSwec4j41ODP+qB4g5yizyzY7RBlL9Gc+B+lnYArlv4I41yYQyF
- 2+cdTwQwu0+bNgHelnFSTDo0HcO20OQ=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dKaWrx46T3xqbSdOVgY4n2L6yvjmlCUhAgoIRBKISKA=;
+ b=PGkcyh18pw4IxixpK82AWHUIL6a/MCnyLlcxSl2h1AtrFle5zTywwaXIclAeM4w8Pums2k
+ NqNtPmyJQSl2Cl9kQDfd3ms5yFiRmODXvl+chSZOfgd5cg7kyV2w8typKteQj058izeW21
+ 1nVdj7pn4ePQwUOM4q9DDmP2QdrUBtI=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-Xz8e8imqO2iU_mShv7Rxag-1; Tue,
- 01 Apr 2025 08:13:42 -0400
-X-MC-Unique: Xz8e8imqO2iU_mShv7Rxag-1
-X-Mimecast-MFC-AGG-ID: Xz8e8imqO2iU_mShv7Rxag_1743509621
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-240-V8nuX2LYP0GMDGVp-zlp-w-1; Tue,
+ 01 Apr 2025 08:13:45 -0400
+X-MC-Unique: V8nuX2LYP0GMDGVp-zlp-w-1
+X-Mimecast-MFC-AGG-ID: V8nuX2LYP0GMDGVp-zlp-w_1743509624
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 142EA19560B3; Tue,  1 Apr 2025 12:13:41 +0000 (UTC)
+ id A66C919560BD; Tue,  1 Apr 2025 12:13:43 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.20])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3ECC6180A803; Tue,  1 Apr 2025 12:13:38 +0000 (UTC)
+ id 8F0D6180B488; Tue,  1 Apr 2025 12:13:41 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 0/2] aspeed queue
-Date: Tue,  1 Apr 2025 14:13:34 +0200
-Message-ID: <20250401121336.788924-1-clg@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 1/2] hw/misc/aspeed_scu: Set MemoryRegionOps::impl::access_size
+ to 32-bit
+Date: Tue,  1 Apr 2025 14:13:35 +0200
+Message-ID: <20250401121336.788924-2-clg@redhat.com>
+In-Reply-To: <20250401121336.788924-1-clg@redhat.com>
+References: <20250401121336.788924-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -78,31 +84,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 0f15892acaf3f50ecc20c6dad4b3ebdd701aa93e:
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-  Merge tag 'pull-riscv-to-apply-20250328' of https://github.com/alistair23/qemu into staging (2025-03-28 08:06:53 -0400)
+All MemoryRegionOps::read/write() handlers switch over a 32-bit
+aligned value, because converted using TO_REG(), which is defined
+as:
 
-are available in the Git repository at:
+  #define TO_REG(offset) ((offset) >> 2)
 
-  https://github.com/legoater/qemu/ tags/pull-aspeed-20250401
+So all implementations are 32-bit.
+Set min/max access_size accordingly.
 
-for you to fetch changes up to 20ab88a9066bcacc28acbd7cbe2c617d90bfb27e:
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Link: https://lore.kernel.org/qemu-devel/20250331230444.88295-2-philmd@linaro.org
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/misc/aspeed_scu.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-  hw/misc/aspeed_scu: Correct minimum access size for AST2500 / AST2600 (2025-04-01 11:29:25 +0200)
-
-----------------------------------------------------------------
-aspeed queue:
-
-* Fixed SCU access size on AST2500 and AST2600 SoCs
-
-----------------------------------------------------------------
-Joel Stanley (1):
-      hw/misc/aspeed_scu: Correct minimum access size for AST2500 / AST2600
-
-Philippe Mathieu-Daudé (1):
-      hw/misc/aspeed_scu: Set MemoryRegionOps::impl::access_size to 32-bit
-
- hw/misc/aspeed_scu.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
+index 76cfd9167161..6703f3f96914 100644
+--- a/hw/misc/aspeed_scu.c
++++ b/hw/misc/aspeed_scu.c
+@@ -427,6 +427,10 @@ static const MemoryRegionOps aspeed_ast2400_scu_ops = {
+     .read = aspeed_scu_read,
+     .write = aspeed_ast2400_scu_write,
+     .endianness = DEVICE_LITTLE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
+     .valid = {
+         .min_access_size = 1,
+         .max_access_size = 4,
+@@ -437,6 +441,8 @@ static const MemoryRegionOps aspeed_ast2500_scu_ops = {
+     .read = aspeed_scu_read,
+     .write = aspeed_ast2500_scu_write,
+     .endianness = DEVICE_LITTLE_ENDIAN,
++    .impl.min_access_size = 4,
++    .impl.max_access_size = 4,
+     .valid.min_access_size = 4,
+     .valid.max_access_size = 4,
+     .valid.unaligned = false,
+@@ -779,6 +785,8 @@ static const MemoryRegionOps aspeed_ast2600_scu_ops = {
+     .read = aspeed_ast2600_scu_read,
+     .write = aspeed_ast2600_scu_write,
+     .endianness = DEVICE_LITTLE_ENDIAN,
++    .impl.min_access_size = 4,
++    .impl.max_access_size = 4,
+     .valid.min_access_size = 4,
+     .valid.max_access_size = 4,
+     .valid.unaligned = false,
+@@ -906,6 +914,8 @@ static const MemoryRegionOps aspeed_ast2700_scu_ops = {
+     .read = aspeed_ast2700_scu_read,
+     .write = aspeed_ast2700_scu_write,
+     .endianness = DEVICE_LITTLE_ENDIAN,
++    .impl.min_access_size = 4,
++    .impl.max_access_size = 4,
+     .valid.min_access_size = 1,
+     .valid.max_access_size = 8,
+     .valid.unaligned = false,
+@@ -1028,6 +1038,8 @@ static const MemoryRegionOps aspeed_ast2700_scuio_ops = {
+     .read = aspeed_ast2700_scuio_read,
+     .write = aspeed_ast2700_scuio_write,
+     .endianness = DEVICE_LITTLE_ENDIAN,
++    .impl.min_access_size = 4,
++    .impl.max_access_size = 4,
+     .valid.min_access_size = 1,
+     .valid.max_access_size = 8,
+     .valid.unaligned = false,
+-- 
+2.49.0
 
 
