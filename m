@@ -2,98 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A96A77D33
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B94A77D3A
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:06:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzc7y-0000r3-C6; Tue, 01 Apr 2025 09:58:08 -0400
+	id 1tzcC9-00086C-1P; Tue, 01 Apr 2025 10:02:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1tzc5T-0007qG-Tb; Tue, 01 Apr 2025 09:55:34 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1tzc5S-00089W-4E; Tue, 01 Apr 2025 09:55:31 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5318oVxE031090;
- Tue, 1 Apr 2025 13:55:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=w+VfJp
- lgE+gW980p6hx4ONMithxRflQKBUxtQpfnZps=; b=kBC7h2kmfOwbocd/vpyNlY
- sWUGm7C0irUIgcxJF66ak4a5k+BUPA93AEtZheaJTGHe9iX78lFO+64dOnFrvyKL
- 8E3VHHKUxsyfWu5v2wx5aTaELHZGL60DdrgCTTAGoHXv7RqrvBXW1n47tvLbXHHe
- Kz38DNlrBP/aT/K1ip3mUJgonCvHYpQruhLoKk/4zmTX8rnRg3dvVQILaIUzwnQH
- UYKd1YOEOnNxbIskq2atbkn7Ml1svcA5mtKhQyF/IfpKpNXy+Fo3mrAju4IxDtGz
- jY7yOGjOwBNJxLLkGRqOpam1pzahQfIpupWO0mVXDQ/PkZmWadYlLnXwaolSRWIA
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45r27q40bm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Apr 2025 13:55:23 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 531CLmX7010313;
- Tue, 1 Apr 2025 13:55:23 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45pv6ntr66-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Apr 2025 13:55:23 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 531DtJZk42140050
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Apr 2025 13:55:19 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4434F20043;
- Tue,  1 Apr 2025 13:55:19 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CB8BF20040;
- Tue,  1 Apr 2025 13:55:18 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.179.0.254]) by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  1 Apr 2025 13:55:18 +0000 (GMT)
-Message-ID: <9f8c17cbdf157ceb7b339b4fbfc1cf7d06082df0.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 2/4] hw/s390x: add Control-Program Identification to QOM
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Shalini Chellathurai Saroja <shalini@linux.ibm.com>, qemu-s390x mailing
- list <qemu-s390x@nongnu.org>, Thomas Huth <thuth@redhat.com>, Daniel
- Berrange <berrange@redhat.com>
-Cc: qemu-devel mailing list <qemu-devel@nongnu.org>, Hendrik Brueckner
- <brueckner@linux.ibm.com>
-Date: Tue, 01 Apr 2025 15:55:20 +0200
-In-Reply-To: <20250331140041.3133621-3-shalini@linux.ibm.com>
-References: <20250331140041.3133621-1-shalini@linux.ibm.com>
- <20250331140041.3133621-3-shalini@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tzcBn-0007sc-Hr
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 10:02:05 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1tzcBl-0000OD-Ed
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 10:02:02 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-22622ddcc35so32809615ad.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 07:02:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1743516120; x=1744120920; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wHJp3mOzC9AVWUB09CFtdysPyIqdv35aj1gSx0lNkL8=;
+ b=FtRIqj8BC6Zw9s/tEPzSch6QtRW3Zaq3lDf5sJObBehmGB+ONKkNB70voIZXJS41I6
+ no8HRhA0nni13AWspIdQulIFM6+zl02PzXWJdeXzrcO8yOLaxWhIts6ZzOIKzZ3UWxxP
+ 8NlnxXQ3tMWU6eLKsuPhFShSbxIVpdIuZdrya0reZQoeEdznybO5Lip87rD9HtdEk8/u
+ sYf+6vtgdhLZRBscmG1H+X68B7h2CXvErI3SfOpPAWZhkKP2t/7Hj7iMyg2fu5gVmMnB
+ htEYfpM/m6joE5IWYMosSW7OrKCggiEWLupNopSwK3f5O+wMnltlDdxnZxlSzDIofddO
+ O8DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1743516120; x=1744120920;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wHJp3mOzC9AVWUB09CFtdysPyIqdv35aj1gSx0lNkL8=;
+ b=laKzPkItp/fDiqmzeaWJ8FU0MMac9QAlr0GcSjcot0E9epD0p/HWZaeYTm+ijPKOAB
+ 8WmBWDMRZ0EatqsqGIK9PYddswjW9hLxG58myUffAHy+x25oG2jj0oJSMW8DxBN5ENbQ
+ rTg2ZgOUmF97EkxruMeVAyalP4zkvGbiSNFsQ48oyv8cAF13biR+7ULrU2SdNOMCMnVy
+ aUAIrtjpNtHMEaBoNZYsS0kz7H2aEQYeL2tWAiR4DL77w+TUwv94y/cCFf4CtY6df0le
+ KRxr9E1kcReesl6URnYQxfP0k/BvRa2KChJN1T1A/lKlA3919li6OVyXkVl8p2fuQuRt
+ Iiug==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXfUgaEUMYIauUwUI+BeNM5UT9Ck1V/1qjDFuJExB8X33xDBbCQRFuCI1GdhScthTzF6vcdHnT8up6X@nongnu.org
+X-Gm-Message-State: AOJu0YwVK0D49d7zzO5JeIWre18D0uucPhsY+VrzQ0BRhgvHk2N6DRi/
+ jEV2eNDqFNgTQAEVQUSUj0Qj+WVX4AJEAiiVFZkgbfOvovEPNOZH
+X-Gm-Gg: ASbGncv4tZROX7/MeprhpvhvtlnHIvfJ5AC1r+40AkEQ+ScM+72GAHMd7qW5LrXsPWR
+ Na6ABwHRroLGV8iI5N/1vKgPUEzlsjPG54uc5cB+n0XllAHN7rKW8/lsMIUkyepzuLRvT4YCqgM
+ 5ZySyEoui62P+N91LbjT/s7ksOw5aI85IN9BsR+en6pMyr1WkwcAhiwBe9GETkMGe214/AGKMU1
+ b3PRmKMh1k4T78IPt6jy7XvxENz2t03hgNx7SICScH31Y73oU+QaoHlS9hgajg2mEiZhGwtITAH
+ buSigSaA7/l2uQHDBDG08z7vGIAqpY1SqDxU6g7wnF0ZNDepRQ==
+X-Google-Smtp-Source: AGHT+IHgs0BqqRYmXp5N8kw/u0vRr8vDl9VALCyYAt45bJryiuKYKyH/oYAukoap9ZMVCn0r+yYYtA==
+X-Received: by 2002:a17:903:19ee:b0:224:10a2:cad5 with SMTP id
+ d9443c01a7336-2292f942a6amr247359225ad.10.1743516119726; 
+ Tue, 01 Apr 2025 07:01:59 -0700 (PDT)
+Received: from wheely.local0.net ([203.185.207.94])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2291f1f5774sm87768455ad.214.2025.04.01.07.01.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Apr 2025 07:01:59 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Corey Minyard <minyard@acm.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH v3 0/5] ipmi: bmc-sim improvements
+Date: Wed,  2 Apr 2025 00:01:47 +1000
+Message-ID: <20250401140153.685523-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: TawFrlIIYxuu-6fmO3ed3SqM-8qk6Gv1
-X-Proofpoint-GUID: TawFrlIIYxuu-6fmO3ed3SqM-8qk6Gv1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-01_05,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- impostorscore=0 malwarescore=0 mlxscore=0 lowpriorityscore=0
- suspectscore=0 clxscore=1015 phishscore=0 bulkscore=0 spamscore=0
- priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502280000 definitions=main-2504010083
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,146 +95,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2025-03-31 at 16:00 +0200, Shalini Chellathurai Saroja wrote:
-> Add Control-Program Identification data to the QEMU Object
-> Model (QOM), along with the timestamp in which the data was received.
->=20
-> Example:
-> virsh # qemu-monitor-command vm --pretty '{
-> "execute": "qom-get",
-> "arguments": {
-> "path": "/machine/sclp/s390-sclp-event-facility/sclpcpi",
-> "property": "control-program-id" }}'
-> {
->   "return": {
->     "timestamp": 1742390410685762000,
->     "system-level": 74872343805430528,
->     "sysplex-name": "PLEX ",
->     "system-name": "TESTVM  ",
->     "system-type": "LINUX   "
->   },
->   "id": "libvirt-15"
-> }
->=20
-> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-> ---
->  hw/s390x/sclpcpi.c                | 38 ++++++++++++++++++++
->  include/hw/s390x/event-facility.h |  9 +++++
->  qapi/machine.json                 | 58 +++++++++++++++++++++++++++++++
->  3 files changed, 105 insertions(+)
->=20
-> diff --git a/hw/s390x/sclpcpi.c b/hw/s390x/sclpcpi.c
-> index 7ace5dd64e..969c15e43d 100644
-> --- a/hw/s390x/sclpcpi.c
-> +++ b/hw/s390x/sclpcpi.c
-> @@ -57,8 +57,11 @@
->    */
-> =20
->  #include "qemu/osdep.h"
-> +#include "qemu/timer.h"
->  #include "hw/s390x/sclp.h"
->  #include "hw/s390x/event-facility.h"
-> +#include "hw/s390x/ebcdic.h"
-> +#include "qapi/qapi-visit-machine.h"
-> =20
->  typedef struct Data {
->      uint8_t id_format;
-> @@ -99,10 +102,37 @@ static int write_event_data(SCLPEvent *event, EventB=
-ufferHeader *evt_buf_hdr)
->      ControlProgramIdMsg *cpim =3D container_of(evt_buf_hdr, ControlProgr=
-amIdMsg,
->                                               ebh);
-> =20
-> +    ascii_put(event->cpi.system_type, (char *)cpim->data.system_type, 8)=
-;
-> +    ascii_put(event->cpi.system_name, (char *)cpim->data.system_name, 8)=
-;
-> +    ascii_put(event->cpi.sysplex_name, (char *)cpim->data.sysplex_name, =
-8);
-> +    event->cpi.system_level =3D ldq_be_p(&cpim->data.system_level);
-> +    event->cpi.timestamp =3D qemu_clock_get_ns(QEMU_CLOCK_HOST);
-> +
->      cpim->ebh.flags =3D SCLP_EVENT_BUFFER_ACCEPTED;
->      return SCLP_RC_NORMAL_COMPLETION;
->  }
-> =20
-> +static void get_control_program_id(Object *obj, Visitor *v,
-> +                                   const char *name, void *opaque,
-> +                                   Error **errp)
-> +{
-> +    SCLPEvent *event =3D (SCLPEvent *)(obj);
+These little things came up when looking at behaviour of IPMI with
+the bmc-sim implementation running the ppc powernv machine, and
+trying to clean up error messages and missing features.
 
-Do a checked cast with SCLP_EVENT(obj).
+Since v1 (thanks to Corey for review and suggestions):
+- Added fwinfo to PCI devices
+- Report interrupt number in Get Channel Info for ISA, PCI, and
+  unknown/unassigned.
+- Fix error reporting for Get Channel Info unsupported channels.
+  Verify it is the correct error code that ipmitool looks for
+  https://github.com/ipmitool/ipmitool/blob/master/lib/ipmi_channel.c#L256C16-L256C45
+- Change _CH_ to _CHANNEL_ in some defines names.
+- Also avoid adding event logs with watchdog don't log flag.
 
-> +    S390ControlProgramId *cpi;
-> +
-> +    cpi =3D &(S390ControlProgramId){
-> +        .system_type =3D g_strndup((char *) event->cpi.system_type,
-> +                                 sizeof(event->cpi.system_type)),
-> +        .system_name =3D g_strndup((char *) event->cpi.system_name,
-> +                                 sizeof(event->cpi.system_name)),
-> +        .system_level =3D event->cpi.system_level,
-> +        .sysplex_name =3D g_strndup((char *) event->cpi.sysplex_name,
-> +                                  sizeof(event->cpi.sysplex_name)),
-> +        .timestamp =3D event->cpi.timestamp
-> +    };
-> +
-> +    visit_type_S390ControlProgramId(v, name, &cpi, errp);
-> +}
-> +
->  static void cpi_class_init(ObjectClass *klass, void *data)
->  {
->      DeviceClass *dc =3D DEVICE_CLASS(klass);
-> @@ -114,6 +144,14 @@ static void cpi_class_init(ObjectClass *klass, void =
-*data)
->      k->get_send_mask =3D send_mask;
->      k->get_receive_mask =3D receive_mask;
->      k->write_event_data =3D write_event_data;
-> +
-> +    object_class_property_add(klass, "control-program-id",
-> +                              "S390ControlProgramId",
-> +                              get_control_program_id,
-> +                              NULL, NULL, NULL);
-> +    object_class_property_set_description(klass, "control-program-id",
-> +        "Control-program identifiers provide data about the guest "
-> +        "operating system");
->  }
-> =20
->  static const TypeInfo sclp_cpi_info =3D {
-> diff --git a/include/hw/s390x/event-facility.h b/include/hw/s390x/event-f=
-acility.h
-> index f445d2f9f5..39e589ed44 100644
-> --- a/include/hw/s390x/event-facility.h
-> +++ b/include/hw/s390x/event-facility.h
-> @@ -169,10 +169,19 @@ typedef struct ReadEventData {
->      };
->  } QEMU_PACKED ReadEventData;
-> =20
-> +typedef struct ControlProgramId {
-> +    uint8_t system_type[8];
-> +    uint8_t system_name[8];
-> +    uint64_t system_level;
-> +    uint8_t sysplex_name[8];
-> +    uint64_t timestamp;
-> +} QEMU_PACKED ControlProgramId;
-> +
->  struct SCLPEvent {
->      DeviceState qdev;
->      bool event_pending;
->      char *name;
-> +    ControlProgramId cpi;
+Since v2:
+- Don't log watchog flag should not apply to watchdog expiry
+  field.
+- Moved protocol type field from class to IPMIFwInfo.
+- Rename new FwInfo member irq to irq_source.
+- Add comments about handling PCI devices to  existing callers
+  of ->fwinfo
 
-I don't think this should go into SCLPEvent.
-Rather SCLPEventFacility or SCLPDevice. Otherwise all events,
-so also quiesce and cpu_hotplug have a cpi field.
+Thanks,
+Nick
 
->  };
 
-[...]
---=20
-IBM Deutschland Research & Development GmbH
-Vorsitzender des Aufsichtsrats: Wolfgang Wendt
-Gesch=C3=A4ftsf=C3=BChrung: David Faller
-Sitz der Gesellschaft: B=C3=B6blingen / Registergericht: Amtsgericht Stuttg=
-art, HRB 243294
+Nicholas Piggin (5):
+  ipmi/pci-ipmi-bt: Rename copy-paste variables
+  ipmi: add fwinfo to pci ipmi devices
+  ipmi/bmc-sim: Add 'Get Channel Info' command
+  ipmi/bmc-sim: implement watchdog dont log flag
+  ipmi/bmc-sim: add error handling for 'Set BMC Global Enables' command
+
+ include/hw/ipmi/ipmi.h     |  15 ++++++
+ hw/acpi/ipmi.c             |   3 +-
+ hw/ipmi/ipmi_bmc_sim.c     | 104 ++++++++++++++++++++++++++++++++-----
+ hw/ipmi/ipmi_bt.c          |   2 +
+ hw/ipmi/ipmi_kcs.c         |   1 +
+ hw/ipmi/isa_ipmi_bt.c      |   1 +
+ hw/ipmi/isa_ipmi_kcs.c     |   1 +
+ hw/ipmi/pci_ipmi_bt.c      |  50 +++++++++++-------
+ hw/ipmi/pci_ipmi_kcs.c     |  11 ++++
+ hw/smbios/smbios_type_38.c |   7 ++-
+ 10 files changed, 162 insertions(+), 33 deletions(-)
+
+-- 
+2.47.1
+
 
