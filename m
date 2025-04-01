@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6C6A77D19
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 16:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D84A77CC2
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:52:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbxM-0003R6-OP; Tue, 01 Apr 2025 09:47:14 -0400
+	id 1tzbyH-0004Cq-Dm; Tue, 01 Apr 2025 09:48:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbux-0001Mf-OE
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:42 -0400
+ id 1tzbv7-0001Vj-3q
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:51 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbuw-0006ZP-4K
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:39 -0400
+ id 1tzbv4-0006Zf-Ll
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743515078; x=1775051078;
+ t=1743515086; x=1775051086;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=xXJsHp6IKbQ0urWG/A57EAspFBUln9gJODiT0xlm4gY=;
- b=WDSgL4vHA8LQKmKWODSd3mjRB4mlsLBJX3gL0840/5Wd97r51ImG1t4Q
- XWs0Zhf54uQSkADI4O/sj0Nb1F6zp1QxlFkQxCGo/3EoTfxBU17iRhD0l
- CJnHxykRaTjRKzOqalWzxuF5NWByA2k71ctEyqkAUbCvuKTg1MlHQ82sC
- Yq6Vh9xem4fLLBwph1dKzBnwxR3zRNLMsG99gkKkwKrUDT9RZ9idswx5E
- J+4U/tSBztXZW8Bxyr7lMRu7SBIXFBtQXiOYh/IaOpH83zA9pSuiX2naZ
- Uq1q71Cjqwm1GauYXnYjAYwavgLZvcLje7gUzeM4bSWg6Okm2bu9jk2e3 g==;
-X-CSE-ConnectionGUID: A8qWQc1ySnCO4QawgW4j4g==
-X-CSE-MsgGUID: NdG5JK1bRL+O537OXrikBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433552"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433552"
+ bh=qc403tQtaS3XiL+U4JspzsP2n45u6luhwv6QZO33vJA=;
+ b=S/yMYiQAS5immoflM1bt4dOcsws23Pz8HATHdHf7DcIJfx5J09H422BE
+ s++r90D4yxV1bf7FjJ5TJ+5Ds+Ii6/Z016RzCH1Apa42HXPkuXjLBOk95
+ 276kbe6IvgsjZXqz9Sa/kBMKyiQljS6nvbFADYzfAuJDxcVoJgWvGBZ7C
+ U+EPOCXkx26JPQHPvkPjmKbWNMBNT84K0E1mwKSs5dev5kYl2dCn4ds9F
+ VCB/TzOLmXYJVPN3dkTZv+SOlPw/Z9m7I0/9Y+z3EJTZeFoZLHvFZ+Uej
+ aPlqV9Btie7tU85YHEs2VM3TBY0JdHjK2Qy1kFWW6sWX45X1pWRei+kOR Q==;
+X-CSE-ConnectionGUID: cM1BaQyDQrC3RmQ4VM38uQ==
+X-CSE-MsgGUID: bvQ32rW6Taq5E+d6O5lOfg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433563"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433563"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 06:43:12 -0700
-X-CSE-ConnectionGUID: eLruHHsSQp6zcuVnYtf3zA==
-X-CSE-MsgGUID: AlbD/7EaT+eJ+vvVw5r3Jg==
+ 01 Apr 2025 06:43:15 -0700
+X-CSE-ConnectionGUID: +uwqTifORuKREla3jCcJTg==
+X-CSE-MsgGUID: IZsjWTFaQH6RWn1mjDXSqg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640253"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640264"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:43:10 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:43:12 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -53,9 +53,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v8 48/55] i386/tdx: Add XFD to supported bit of TDX
-Date: Tue,  1 Apr 2025 09:01:58 -0400
-Message-Id: <20250401130205.2198253-49-xiaoyao.li@intel.com>
+Subject: [PATCH v8 49/55] i386/tdx: Define supported KVM features for TDX
+Date: Tue,  1 Apr 2025 09:01:59 -0400
+Message-Id: <20250401130205.2198253-50-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250401130205.2198253-1-xiaoyao.li@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
@@ -86,44 +86,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just mark XFD as always supported for TDX. This simple solution relies
-on the fact KVM will report XFD as 0 when it's not supported by the
-hardware.
+For TDX, only limited KVM PV features are supported.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/cpu.h     | 1 +
- target/i386/kvm/tdx.c | 5 +++++
- 2 files changed, 6 insertions(+)
+ target/i386/kvm/tdx.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 132312d70a54..a223e09a25c4 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1126,6 +1126,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define CPUID_XSAVE_XSAVEC     (1U << 1)
- #define CPUID_XSAVE_XGETBV1    (1U << 2)
- #define CPUID_XSAVE_XSAVES     (1U << 3)
-+#define CPUID_XSAVE_XFD        (1U << 4)
- 
- #define CPUID_6_EAX_ARAT       (1U << 2)
- 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index c7b4a098d12f..e07cd9a1ee15 100644
+index e07cd9a1ee15..7382b53fcc51 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -620,6 +620,11 @@ static void tdx_add_supported_cpuid_by_xfam(void)
-     e->edx |= (tdx_caps->supported_xfam & CPUID_XSTATE_XCR0_MASK) >> 32;
+@@ -32,6 +32,8 @@
+ #include "kvm_i386.h"
+ #include "tdx.h"
  
-     e = find_in_supported_entry(0xd, 1);
-+    /* Mark XFD always support for TDX, it will be cleared finally in
-+     * tdx_adjust_cpuid_features() if XFD is unavailable on the hardware
-+     * because in this case the original data has it as 0.
-+     */
-+    e->eax |= CPUID_XSAVE_XFD;
-     e->ecx |= (tdx_caps->supported_xfam & CPUID_XSTATE_XSS_MASK);
++#include "standard-headers/asm-x86/kvm_para.h"
++
+ #define TDX_MIN_TSC_FREQUENCY_KHZ   (100 * 1000)
+ #define TDX_MAX_TSC_FREQUENCY_KHZ   (10 * 1000 * 1000)
+ 
+@@ -44,6 +46,14 @@
+                                  TDX_TD_ATTRIBUTES_PKS | \
+                                  TDX_TD_ATTRIBUTES_PERFMON)
+ 
++#define TDX_SUPPORTED_KVM_FEATURES  ((1U << KVM_FEATURE_NOP_IO_DELAY) | \
++                                     (1U << KVM_FEATURE_PV_UNHALT) | \
++                                     (1U << KVM_FEATURE_PV_TLB_FLUSH) | \
++                                     (1U << KVM_FEATURE_PV_SEND_IPI) | \
++                                     (1U << KVM_FEATURE_POLL_CONTROL) | \
++                                     (1U << KVM_FEATURE_PV_SCHED_YIELD) | \
++                                     (1U << KVM_FEATURE_MSI_EXT_DEST_ID))
++
+ static TdxGuest *tdx_guest;
+ 
+ static struct kvm_tdx_capabilities *tdx_caps;
+@@ -629,6 +639,14 @@ static void tdx_add_supported_cpuid_by_xfam(void)
      e->edx |= (tdx_caps->supported_xfam & CPUID_XSTATE_XSS_MASK) >> 32;
  }
+ 
++static void tdx_add_supported_kvm_features(void)
++{
++    struct kvm_cpuid_entry2 *e;
++
++    e = find_in_supported_entry(0x40000001, 0);
++    e->eax = TDX_SUPPORTED_KVM_FEATURES;
++}
++
+ static void tdx_setup_supported_cpuid(void)
+ {
+     if (tdx_supported_cpuid) {
+@@ -645,6 +663,8 @@ static void tdx_setup_supported_cpuid(void)
+     tdx_add_supported_cpuid_by_fixed1_bits();
+     tdx_add_supported_cpuid_by_attrs();
+     tdx_add_supported_cpuid_by_xfam();
++
++    tdx_add_supported_kvm_features();
+ }
+ 
+ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
 -- 
 2.34.1
 
