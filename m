@@ -2,63 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A04A7812B
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 19:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE27A78164
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 19:24:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzf67-0001i9-TJ; Tue, 01 Apr 2025 13:08:23 -0400
+	id 1tzfKc-0004k0-UJ; Tue, 01 Apr 2025 13:23:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1tzf5x-0001h5-R1
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 13:08:14 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1tzfKF-0004fi-1H; Tue, 01 Apr 2025 13:23:00 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1tzf5u-0003bc-6E
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 13:08:12 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c24:4c7:0:640:d178:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id EC04460C0F;
- Tue,  1 Apr 2025 20:08:02 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:1225::1:31])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id u7aBXD0FVa60-f3dudGwv; Tue, 01 Apr 2025 20:08:01 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1743527281;
- bh=c/0hjmruM+BZrWBpxOTOMhwv8lN+xD8LtM5GWoUUHWk=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=zTvesAw1LkHThw1HxYt8q4n4pqFo3svSe1UVy8gR71CP+ztNiSrT4xemFJLuM40aD
- Rk4nKWpDFlN04Fz93CuBNliB3oFOdstGXo/lfd66P2llR+hd9k/B+cn5zXctBBK2IU
- QrPY/5Vt2hJQXxH88w8E/5sy47w22l0eSRmXuSQg=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: mst@redhat.com
-Cc: sgarzare@redhat.com, armbru@redhat.com, dave@treblig.org,
- eblake@redhat.com, pbonzini@redhat.com, berrange@redhat.com,
- eduardo@habkost.net, qemu-devel@nongnu.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Denis Plotnikov <den-plotnikov@yandex-team.ru>
-Subject: [PATCH v5] [for-10.1] virtio: add VIRTQUEUE_ERROR QAPI event
-Date: Tue,  1 Apr 2025 20:07:31 +0300
-Message-ID: <20250401170731.121336-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1tzfKC-0005ut-HS; Tue, 01 Apr 2025 13:22:58 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 531Gf56b025868;
+ Tue, 1 Apr 2025 17:22:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=6Khw9ioB9eIU3WuoUvGr7YttATKuVFOdVv2h4h7Cm
+ I4=; b=Uw9J7jK4feQ1YbB2Ag2flXgEQzCjvjRCI8W2KkekvzPfjkFLFKdYclFD8
+ 1GSOBr+FTwvsE7UCW0u3W7nBnKyu0aEz+YrxT2Sf5pX6kAo0Diw718vnvxud8nYl
+ leVJR0Vdu9bD8pRA1/MXMlpSB5dS7Bs+CzrWag+znRUazRYS4dsxxC8Y1zCF+7Gh
+ ZoEb9073AIUOk+Ma4gpWzI81QRJJZtPEGDta4WUikUktn1koXpEwfZzmLegDow1A
+ ZRtV9Pv/qqjSig6GEhJAkx5zQnmkVOnFLzMDqgnp1pwpQeB7dCd1aeXgQYdX+D2H
+ vAAWWcrA5BAnHW6q0Q5Ej+VKmwD+A==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45r27q52ct-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Apr 2025 17:22:50 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 531Fl2h6019742;
+ Tue, 1 Apr 2025 17:22:49 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45pu6t3s01-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Apr 2025 17:22:49 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 531HMlc040698514
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Apr 2025 17:22:47 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6652F58063;
+ Tue,  1 Apr 2025 17:22:47 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 611AE58061;
+ Tue,  1 Apr 2025 17:22:46 +0000 (GMT)
+Received: from IBM-D32RQW3.ibm.com (unknown [9.61.254.127])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Apr 2025 17:22:46 +0000 (GMT)
+From: Farhan Ali <alifm@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, qemu-s390x@nongnu.org, stefanha@redhat.com,
+ fam@euphon.net, philmd@linaro.org, kwolf@redhat.com, hreitz@redhat.com,
+ thuth@redhat.com, alifm@linux.ibm.com, mjrosato@linux.ibm.com,
+ schnelle@linux.ibm.com
+Subject: [PATCH v3 0/3] Enable QEMU NVMe userspace driver on s390x
+Date: Tue,  1 Apr 2025 10:22:43 -0700
+Message-ID: <20250401172246.2688-1-alifm@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: E5CZi7-P35wKkuHSuF526kPFtZkSxNbH
+X-Proofpoint-GUID: E5CZi7-P35wKkuHSuF526kPFtZkSxNbH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-01_06,2025-04-01_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=738
+ impostorscore=0 malwarescore=0 mlxscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 phishscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2504010104
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=alifm@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,149 +104,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For now we only log the vhost device error, when virtqueue is actually
-stopped. Let's add a QAPI event, which makes possible:
+Hi,
 
- - collect statistics of such errors
- - make immediate actions: take core dumps or do some other debugging
- - inform the user through a management API or UI, so that (s)he can
-  react somehow, e.g. reset the device driver in the guest or even
-  build up some automation to do so
+Recently on s390x we have enabled mmap support for vfio-pci devices [1].
+This allows us to take advantage and use userspace drivers on s390x. However,
+on s390x we have special instructions for MMIO access. Starting with z15 
+(and newer platforms) we have new PCI Memory I/O (MIO) instructions which 
+operate on virtually mapped PCI memory spaces, and can be used from userspace.
+On older platforms we would fallback to using existing system calls for MMIO access.
 
-Note that basically every inconsistency discovered during virtqueue
-processing results in a silent virtqueue stop.  The guest then just
-sees the requests getting stuck somewhere in the device for no visible
-reason.  This event provides a means to inform the management layer of
-this situation in a timely fashion.
+This patch series introduces support the PCI MIO instructions, and enables s390x
+support for the userspace NVMe driver on s390x. I would appreciate any review/feedback
+on the patches.
 
-The event could be reused for some other virtqueue problems (not only
-for vhost devices) in future. For this it gets a generic name and
-structure.
+Thanks
+Farhan
 
-We keep original VHOST_OPS_DEBUG(), to keep original debug output as is
-here, it's not the only call to VHOST_OPS_DEBUG in the file.
+[1] https://lore.kernel.org/linux-s390/20250226-vfio_pci_mmap-v7-0-c5c0f1d26efd@linux.ibm.com/
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Denis Plotnikov <den-plotnikov@yandex-team.ru>
----
+ChangeLog
+---------
+v2 series https://mail.gnu.org/archive/html/qemu-devel/2025-03/msg06847.html
+v2 -> v3
+    - Update the PCI MMIO APIs to reflect that its PCI MMIO access on host 
+as suggested by Stefan(patch 2)
+    - Move s390x ifdef check to s390x_pci_mmio.h as suggested by Philippe (patch 1)
+    - Add R-bs for the respective patches.
 
-v5: resend, update version in QAPI to 10.1
-    drop a-b by Markus (too much time passed, the context could
-    changed. Markus, is the patch still OK?)
+v1 series https://mail.gnu.org/archive/html/qemu-devel/2025-03/msg06596.html
+v1 -> v2
+    - Add 8 and 16 bit reads/writes for completeness (patch 1)
+    - Introduce new QEMU PCI MMIO read/write API as suggested by Stefan (patch 2)
+    - Update NVMe userspace driver to use QEMU PCI MMIO functions (patch 3)
 
- hw/virtio/vhost.c | 12 +++++++++---
- monitor/monitor.c | 10 ++++++++++
- qapi/qdev.json    | 32 ++++++++++++++++++++++++++++++++
- 3 files changed, 51 insertions(+), 3 deletions(-)
+Farhan Ali (3):
+  util: Add functions for s390x mmio read/write
+  include: Add a header to define host PCI MMIO functions
+  block/nvme: Use host PCI MMIO API
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 6aa72fd434..0b205cef73 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -15,6 +15,7 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-events-qdev.h"
- #include "hw/virtio/vhost.h"
- #include "qemu/atomic.h"
- #include "qemu/range.h"
-@@ -1442,11 +1443,16 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
-     struct vhost_virtqueue *vq = container_of(n, struct vhost_virtqueue,
-                                               error_notifier);
-     struct vhost_dev *dev = vq->dev;
--    int index = vq - dev->vqs;
- 
-     if (event_notifier_test_and_clear(n) && dev->vdev) {
--        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d",
--                        dev->vq_index + index);
-+        int ind = vq - dev->vqs + dev->vq_index;
-+        DeviceState *ds = &dev->vdev->parent_obj;
-+
-+        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d", ind);
-+        qapi_event_send_virtqueue_error(ds->id, ds->canonical_path, ind,
-+                                        VIRTQUEUE_ERROR_VHOST_VRING_ERROR,
-+                                        "vhost reported failure through vring "
-+                                        "error fd");
-     }
- }
- 
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index c5a5d30877..1296a9207e 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -313,6 +313,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_VIRTQUEUE_ERROR]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
-     [QAPI_EVENT_HV_BALLOON_STATUS_REPORT] = { 1000 * SCALE_MS },
-@@ -499,6 +500,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
-         hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
-     }
- 
-+    if (evstate->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-+        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
-+    }
-+
-     return hash;
- }
- 
-@@ -527,6 +532,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
-                        qdict_get_str(evb->data, "qom-path"));
-     }
- 
-+    if (eva->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-+        return !strcmp(qdict_get_str(eva->data, "device"),
-+                       qdict_get_str(evb->data, "device"));
-+    }
-+
-     return TRUE;
- }
- 
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index 25cbcf977b..2d20f4777e 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -187,3 +187,35 @@
- { 'command': 'device-sync-config',
-   'features': [ 'unstable' ],
-   'data': {'id': 'str'} }
-+
-+##
-+# @VirtqueueError:
-+#
-+# @vhost-vring-error: Vhost device reported failure through
-+#     through vring error fd.
-+#
-+# Since: 10.1
-+##
-+{ 'enum': 'VirtqueueError',
-+  'data': [ 'vhost-vring-error' ] }
-+
-+##
-+# @VIRTQUEUE_ERROR:
-+#
-+# Emitted when a device virtqueue fails in runtime.
-+#
-+# @device: the device's ID if it has one
-+#
-+# @path: the device's QOM path
-+#
-+# @virtqueue: virtqueue index
-+#
-+# @error: error identifier
-+#
-+# @description: human readable description
-+#
-+# Since: 10.1
-+##
-+{ 'event': 'VIRTQUEUE_ERROR',
-+ 'data': { '*device': 'str', 'path': 'str', 'virtqueue': 'int',
-+            'error': 'VirtqueueError', 'description': 'str'} }
+ block/nvme.c                  |  37 +++++----
+ include/qemu/host-pci-mmio.h  | 116 ++++++++++++++++++++++++++
+ include/qemu/s390x_pci_mmio.h |  24 ++++++
+ util/meson.build              |   2 +
+ util/s390x_pci_mmio.c         | 148 ++++++++++++++++++++++++++++++++++
+ 5 files changed, 311 insertions(+), 16 deletions(-)
+ create mode 100644 include/qemu/host-pci-mmio.h
+ create mode 100644 include/qemu/s390x_pci_mmio.h
+ create mode 100644 util/s390x_pci_mmio.c
+
 -- 
-2.48.1
+2.43.0
 
 
