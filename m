@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C1CA775E3
+	by mail.lfdr.de (Postfix) with ESMTPS id D8132A775E2
 	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 10:11:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzWh1-0006dD-AJ; Tue, 01 Apr 2025 04:09:55 -0400
+	id 1tzWh6-0006dz-9X; Tue, 01 Apr 2025 04:10:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzWgw-0006cw-MD
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:09:51 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzWh2-0006dX-Kp
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:09:57 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzWgt-0005hq-Fq
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:09:48 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-39ac9aea656so4321021f8f.3
- for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 01:09:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzWgz-0005iZ-R7
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:09:55 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-399744f74e9so3392420f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 01:09:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743494985; x=1744099785; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743494991; x=1744099791; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UNtQ0wjdidlnHf+EtMOg0l4ypH3brGi+lZBt3b6ydkU=;
- b=fQSyTa5/bTHrXv0uYW/4gUcxqMpB3IY8XELMU7RoIL4C2WoZZeORAnUcEC+l/Crl5A
- vo2/h6C83LGyJA78aJTmTRth/QOruHad7PEfJyn9iM9aHpd+j2PHcvkuMOB6ITZMFJtv
- U6g7KtSAd6dYnG0SzNdTHTjzTRavkP/i6e37+10sPbyfvWghIOXyRVav37y1B0je+HBG
- P5Gy3WqwjMcAtJw0VrHE9QDLpilDzE7P4dD2gpnrT0jOSiQWXtXbux4mwzhblUZkxZO/
- JKa0/n9wSj4qwGAdGxHy6KEwivNTaALV0NvDGN5xe26wMQCK7r6/myathYdgxI4Orb0O
- wf6A==
+ bh=Z/C9eBT5K6NV+Z7IEOoDW8bFUHrvBiPlv6gBs4OyowY=;
+ b=PI/MTn3/i1mEMSCbCzFZ4mSNZDKyHdi31cA/PdRrVVqVy6U4g0rZw/+EorBdzEtRWH
+ m1+8HU8GaFr2R7RctbaT1ux7EyR2feyrfpKwNZ4WmsvSgiPUGFj87xuTOtGDqPrnpncN
+ oWrvpTIozYMaHm24XzjMmIwL5r7yjug00Y8iKSWULdIfwWa48CYibd04fDMi+/RkEcQl
+ zBAyoewmDaLXBBd68+MnoFkRX5/l4g/r3t+EQl/QhWMFe4Lh1YaLJygUygX93ufVmWBV
+ Mm3OWo0aPQrzb0VaIzSGjlUGy4kvpqvZejB26CRwNYB3EFtINBsU79m8ESggvkFaUCBB
+ DuLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743494985; x=1744099785;
+ d=1e100.net; s=20230601; t=1743494991; x=1744099791;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UNtQ0wjdidlnHf+EtMOg0l4ypH3brGi+lZBt3b6ydkU=;
- b=NJHAiuVN1oY7Ft6kIZVVAqMp2oOcLG4gkRRl43K28HyAvAbzo8gF3rV6uvLMpZbLRl
- p1uzdwRBF7nDz8M9xPdSuYLjhwWT4vEoC4GFgOG4mQ0xoba0Xo0lr7Pdy+j45QjtUI1s
- EWBTjXQcP8Hma+roSm0u1NMBUUlRlQRiBiAhqUf/NkZdg5fcy2ik+aa9ZAqg+hxfLNxf
- gXtW1TOxLISHQ9GNpdaHbx3K2bPaspt6MeOxYxwisfHfgQIwij1hrVnJz4leJTKy8l6w
- Z1mQlbxnHcnJgwqNPcgKzfO9LhJKMSAbz3a6tmAK3/431ufjPVqN11hJ20Oso6YDq4DN
- OGEg==
-X-Gm-Message-State: AOJu0Yx7aWWv8Y+DTBR1Cqdq5Y23XnfMTBDutfX5RIGaM0x2Ga2w0C2r
- oSfwpDg/lO5DoAlrJXin7Oq7EBvJMWagbtrKqQhbdK77+7hdRGeuFW/QiZQHZwglB5MJFWZzSFD
- D
-X-Gm-Gg: ASbGncv5JLW5ckDgCx5pEx7e0JiTc05dokuom8H1+hK9vRg6MWc5fFRxossPm3aSpnR
- 0Z3YpmZ0Qjcdtzq8fcWFdGQz6Oo6pX5R7ZkP1L/giXKxSXryl4PeIGhtBeqhvdINWYmb8W7FePR
- vLaaz/Mdj97e10Xv0/rrt4+n3uvfdyY/CVIGjqgYmGGszclJP65W+Q7VQgtX+HV1Qp2KX+X/9ZG
- D3ORK/Fw55i1h0KJVo8Fx0k/JAB+Zqz2S1tR9Z9ZDCJLjsmnj9UGPmBJv0WILodIh33t3M50ARw
- 6XjlI+jZT0RxythYD7OoZhF+Xbg4w7jKcc0+p/+MOeo12w9airSt7dkBzWvJ2Sqjs/A3gLkx2/F
- LAq85qWUiOy0t9jJfWvUD57TqqPo/tQ==
-X-Google-Smtp-Source: AGHT+IGUy/m+s/etawRsKabVccvS2BIilGr+T5pt0O60knmpFzGYs6+35rzTTNxVlgMoj/zBqyPjrw==
-X-Received: by 2002:a05:6000:42c4:b0:39a:d20b:5c14 with SMTP id
- ffacd0b85a97d-39c12117aeemr6826736f8f.36.1743494985460; 
- Tue, 01 Apr 2025 01:09:45 -0700 (PDT)
+ bh=Z/C9eBT5K6NV+Z7IEOoDW8bFUHrvBiPlv6gBs4OyowY=;
+ b=LHwnwbvgt0Th38kTkFtotFUsmBNAXw3A9+mTAYDnLIcqjNaLBzl99bxRrrdZfNu2By
+ txzwOEXtRNP2A6C/Oc8/FOvWuJsdeR7oYNm/r7upfUdOguu/3oEHHnzwloUFDGkHoKe6
+ JKaAM+9dwkKPCba2tVz6Ox87TRbOJNk8CgIZYivK+zqx4zwE60PAvTPFJ1scmKZuEWqn
+ 6Rvol2qqVWdKNWyEFFiFSoTkfrIQme2ubLgmxvuSxdoDUAro+RcPMSF0l684nYKdvid6
+ IZn/9P5kX0ZtG3DFK1LAHG0vrUlmbMfeTrk50iToAU9OA8/O10ykwzpgBm2rQ7Tt1saL
+ lhnw==
+X-Gm-Message-State: AOJu0YxxbRMJA2MgkpwtjkN6/mwtQr4+5/O+kqL3l2a9XkrHvTazdaYp
+ Jk+WJOFg18BMvDMVUIIVVL9Fl6DwvuaUpDzu9aJKTn5oH5Qt7pohOM7Itxdk5vmsu/yD06SB433
+ 1
+X-Gm-Gg: ASbGncvu/TQdKvjhD3AM6XJYnbU2pHR1a7zw/Q8MgaFuDPm8iuH3EhQE5JBS6lz71OJ
+ FdcCzwoHrn948Ifz4K6EF5qVldl8ZhrsZa0t3ifoQrPcRgKlCLQYfOgOhaEodco/UYDPvGUy9Xy
+ If0hiwDO0mz6Niy8G0Qq7njvTiTZTay/of9upxLnkeh5WcD4/sYvA/kxP5vuc6NjaP00+8q0jyh
+ XwvtH9dOqsNAXzpnHqdKordVaUIonM0xtLkcM1VdbP9JocBOmpimQ36NownGI0KeOvUrJF9TJMU
+ 2CwbUwpX/qaoIIJz1LaTl3Y7ilhT17sUfwsi1nx8FoL8Eu+k7reCiLizLOsKt8b2Z1yu5yNBXF6
+ Vs1rdUPch9/6A094/m3s=
+X-Google-Smtp-Source: AGHT+IEKyHABW/9S8MH+kAgs6Yt/oKt/EVfk0i2V29/3U1pIuY5Jx2iNHdVs56QAL9K2kaJcsqiXcA==
+X-Received: by 2002:a05:6000:40e1:b0:391:49f6:dad4 with SMTP id
+ ffacd0b85a97d-39c12113977mr8572739f8f.41.1743494991123; 
+ Tue, 01 Apr 2025 01:09:51 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c0b658b52sm13272047f8f.4.2025.04.01.01.09.44
+ ffacd0b85a97d-39c0b79e1b0sm13319243f8f.75.2025.04.01.01.09.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 01 Apr 2025 01:09:44 -0700 (PDT)
+ Tue, 01 Apr 2025 01:09:50 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>,
@@ -68,18 +68,18 @@ Cc: Gustavo Romero <gustavo.romero@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 01/24] hw/core/cpu: Update CPUClass::mmu_index
- docstring
-Date: Tue,  1 Apr 2025 10:09:14 +0200
-Message-ID: <20250401080938.32278-2-philmd@linaro.org>
+Subject: [PATCH-for-10.1 02/24] accel/tcg: Introduce TCGCPUOps::mmu_index()
+ callback
+Date: Tue,  1 Apr 2025 10:09:15 +0200
+Message-ID: <20250401080938.32278-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250401080938.32278-1-philmd@linaro.org>
 References: <20250401080938.32278-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,30 +102,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commits 32a8ea12fab..90b7022e698 (target: "Split out
-TARGET_env_mmu_index"), target's memory_rw_debug() callbacks
-use the target's TARGET_env_mmu_index(), not the generic
-CPUClass::mmu_index() callback. Update the documentation.
+We'll move CPUClass::mmu_index() to TCGCPUOps::mmu_index().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/core/cpu.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/accel/tcg/cpu-ops.h  | 3 +++
+ include/exec/cpu-mmu-index.h | 5 ++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 84a71d8cf17..60b7abaf49b 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -104,8 +104,7 @@ struct SysemuCPUOps;
-  *                 instantiatable CPU type.
-  * @parse_features: Callback to parse command line arguments.
-  * @reset_dump_flags: #CPUDumpFlags to use for reset logging.
-- * @mmu_index: Callback for choosing softmmu mmu index;
-- *       may be used internally by memory_rw_debug without TCG.
-+ * @mmu_index: Callback for choosing softmmu mmu index.
-  * @memory_rw_debug: Callback for GDB memory access.
-  * @dump_state: Callback for dumping state.
-  * @query_cpu_fast:
+diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
+index f60e5303f21..106a0688da8 100644
+--- a/include/accel/tcg/cpu-ops.h
++++ b/include/accel/tcg/cpu-ops.h
+@@ -67,6 +67,9 @@ struct TCGCPUOps {
+     /** @debug_excp_handler: Callback for handling debug exceptions */
+     void (*debug_excp_handler)(CPUState *cpu);
+ 
++    /** @mmu_index: Callback for choosing softmmu mmu index */
++    int (*mmu_index)(CPUState *cpu, bool ifetch);
++
+ #ifdef CONFIG_USER_ONLY
+     /**
+      * @fake_user_interrupt: Callback for 'fake exception' handling.
+diff --git a/include/exec/cpu-mmu-index.h b/include/exec/cpu-mmu-index.h
+index cfc13d46bea..651526e9f97 100644
+--- a/include/exec/cpu-mmu-index.h
++++ b/include/exec/cpu-mmu-index.h
+@@ -10,6 +10,7 @@
+ #define EXEC_CPU_MMU_INDEX_H
+ 
+ #include "hw/core/cpu.h"
++#include "accel/tcg/cpu-ops.h"
+ #include "tcg/debug-assert.h"
+ #ifdef COMPILING_PER_TARGET
+ #include "cpu.h"
+@@ -31,7 +32,9 @@ static inline int cpu_mmu_index(CPUState *cs, bool ifetch)
+ # endif
+ #endif
+ 
+-    int ret = cs->cc->mmu_index(cs, ifetch);
++    const TCGCPUOps *tcg_ops = cs->cc->tcg_ops;
++    int ret = tcg_ops->mmu_index ? tcg_ops->mmu_index(cs, ifetch)
++                                 : cs->cc->mmu_index(cs, ifetch);
+     tcg_debug_assert(ret >= 0 && ret < NB_MMU_MODES);
+     return ret;
+ }
 -- 
 2.47.1
 
