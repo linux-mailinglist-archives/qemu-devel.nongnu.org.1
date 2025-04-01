@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D84A77CC2
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC6DA77CE6
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 15:55:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzbyH-0004Cq-Dm; Tue, 01 Apr 2025 09:48:16 -0400
+	id 1tzbzL-0006b1-Mr; Tue, 01 Apr 2025 09:49:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbv7-0001Vj-3q
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:51 -0400
+ id 1tzbvA-0001Z1-4j
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:53 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1tzbv4-0006Zf-Ll
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:48 -0400
+ id 1tzbv8-0006ZP-27
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 09:44:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743515086; x=1775051086;
+ t=1743515090; x=1775051090;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qc403tQtaS3XiL+U4JspzsP2n45u6luhwv6QZO33vJA=;
- b=S/yMYiQAS5immoflM1bt4dOcsws23Pz8HATHdHf7DcIJfx5J09H422BE
- s++r90D4yxV1bf7FjJ5TJ+5Ds+Ii6/Z016RzCH1Apa42HXPkuXjLBOk95
- 276kbe6IvgsjZXqz9Sa/kBMKyiQljS6nvbFADYzfAuJDxcVoJgWvGBZ7C
- U+EPOCXkx26JPQHPvkPjmKbWNMBNT84K0E1mwKSs5dev5kYl2dCn4ds9F
- VCB/TzOLmXYJVPN3dkTZv+SOlPw/Z9m7I0/9Y+z3EJTZeFoZLHvFZ+Uej
- aPlqV9Btie7tU85YHEs2VM3TBY0JdHjK2Qy1kFWW6sWX45X1pWRei+kOR Q==;
-X-CSE-ConnectionGUID: cM1BaQyDQrC3RmQ4VM38uQ==
-X-CSE-MsgGUID: bvQ32rW6Taq5E+d6O5lOfg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433563"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433563"
+ bh=JKMlucssmDcGsanH6kb+uP0DlL1BGA8NocL5uyi4aSQ=;
+ b=DxhoRu/n/t5pjBnSlNRaQoLtHE0admoU0CqfvtnVXqBGw4nSHQxvsSgA
+ OywNacpb8l7NNx+jFpdvtRhpao/kQpdhEK9M2Y9AdDD/MT6y9UXU+XeW7
+ wv6vvGyItmouOHsRN0bfcbSBcfyIO1bU3IT5FuU+O+Y8FraFj5oXk0SMM
+ INR+0i5GSMMCp2ta/tTAnyP/UK897Q21lRd/DUecU2QH48l4LLexJQFBD
+ oDHOOcfnYkeGPRuoGdqNAexhJXX8kxhIKS4+G0pjjIGSqNEnvWfWLDC5G
+ vv/yuAeU4KtYP7n7esWyfYf+iJQ8Mz6evgb+R3mPcdswHque7+hObCWDw Q==;
+X-CSE-ConnectionGUID: vpNHQca8RfqfSW77BUIeEg==
+X-CSE-MsgGUID: OJuJFXDTTK6UjYsTAvbShw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="32433572"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="32433572"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 06:43:15 -0700
-X-CSE-ConnectionGUID: +uwqTifORuKREla3jCcJTg==
-X-CSE-MsgGUID: IZsjWTFaQH6RWn1mjDXSqg==
+ 01 Apr 2025 06:43:17 -0700
+X-CSE-ConnectionGUID: soV37tHIRrqHZ3XcBXxZZw==
+X-CSE-MsgGUID: kODZuYubSb+ZnGe13hBtWA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640264"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; d="scan'208";a="126640269"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:43:12 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 01 Apr 2025 06:43:15 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -53,9 +53,10 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v8 49/55] i386/tdx: Define supported KVM features for TDX
-Date: Tue,  1 Apr 2025 09:01:59 -0400
-Message-Id: <20250401130205.2198253-50-xiaoyao.li@intel.com>
+Subject: [PATCH v8 50/55] i386/cgs: Introduce
+ x86_confidential_guest_check_features()
+Date: Tue,  1 Apr 2025 09:02:00 -0400
+Message-Id: <20250401130205.2198253-51-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250401130205.2198253-1-xiaoyao.li@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
@@ -86,65 +87,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For TDX, only limited KVM PV features are supported.
+To do cgs specific feature checking. Note the feature checking in
+x86_cpu_filter_features() is valid for non-cgs VMs. For cgs VMs like
+TDX, what features can be supported has more restrictions.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/kvm/tdx.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ target/i386/confidential-guest.h | 13 +++++++++++++
+ target/i386/kvm/kvm.c            |  8 ++++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index e07cd9a1ee15..7382b53fcc51 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -32,6 +32,8 @@
- #include "kvm_i386.h"
- #include "tdx.h"
+diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
+index 777d43cc9688..48b88dbd3130 100644
+--- a/target/i386/confidential-guest.h
++++ b/target/i386/confidential-guest.h
+@@ -42,6 +42,7 @@ struct X86ConfidentialGuestClass {
+     void (*cpu_instance_init)(X86ConfidentialGuest *cg, CPUState *cpu);
+     uint32_t (*adjust_cpuid_features)(X86ConfidentialGuest *cg, uint32_t feature,
+                                       uint32_t index, int reg, uint32_t value);
++    int (*check_features)(X86ConfidentialGuest *cg, CPUState *cs);
+ };
  
-+#include "standard-headers/asm-x86/kvm_para.h"
-+
- #define TDX_MIN_TSC_FREQUENCY_KHZ   (100 * 1000)
- #define TDX_MAX_TSC_FREQUENCY_KHZ   (10 * 1000 * 1000)
- 
-@@ -44,6 +46,14 @@
-                                  TDX_TD_ATTRIBUTES_PKS | \
-                                  TDX_TD_ATTRIBUTES_PERFMON)
- 
-+#define TDX_SUPPORTED_KVM_FEATURES  ((1U << KVM_FEATURE_NOP_IO_DELAY) | \
-+                                     (1U << KVM_FEATURE_PV_UNHALT) | \
-+                                     (1U << KVM_FEATURE_PV_TLB_FLUSH) | \
-+                                     (1U << KVM_FEATURE_PV_SEND_IPI) | \
-+                                     (1U << KVM_FEATURE_POLL_CONTROL) | \
-+                                     (1U << KVM_FEATURE_PV_SCHED_YIELD) | \
-+                                     (1U << KVM_FEATURE_MSI_EXT_DEST_ID))
-+
- static TdxGuest *tdx_guest;
- 
- static struct kvm_tdx_capabilities *tdx_caps;
-@@ -629,6 +639,14 @@ static void tdx_add_supported_cpuid_by_xfam(void)
-     e->edx |= (tdx_caps->supported_xfam & CPUID_XSTATE_XSS_MASK) >> 32;
+ /**
+@@ -91,4 +92,16 @@ static inline int x86_confidential_guest_adjust_cpuid_features(X86ConfidentialGu
+     }
  }
  
-+static void tdx_add_supported_kvm_features(void)
++static inline int x86_confidential_guest_check_features(X86ConfidentialGuest *cg,
++                                                        CPUState *cs)
 +{
-+    struct kvm_cpuid_entry2 *e;
++    X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
 +
-+    e = find_in_supported_entry(0x40000001, 0);
-+    e->eax = TDX_SUPPORTED_KVM_FEATURES;
++    if (klass->check_features) {
++        return klass->check_features(cg, cs);
++    }
++
++    return 0;
 +}
 +
- static void tdx_setup_supported_cpuid(void)
- {
-     if (tdx_supported_cpuid) {
-@@ -645,6 +663,8 @@ static void tdx_setup_supported_cpuid(void)
-     tdx_add_supported_cpuid_by_fixed1_bits();
-     tdx_add_supported_cpuid_by_attrs();
-     tdx_add_supported_cpuid_by_xfam();
-+
-+    tdx_add_supported_kvm_features();
- }
+ #endif
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 17d7bf6ae9aa..27b4a069d194 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2092,6 +2092,14 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     int r;
+     Error *local_err = NULL;
  
- static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
++    if (current_machine->cgs) {
++        r = x86_confidential_guest_check_features(
++                X86_CONFIDENTIAL_GUEST(current_machine->cgs), cs);
++        if (r < 0) {
++            return r;
++        }
++    }
++
+     memset(&cpuid_data, 0, sizeof(cpuid_data));
+ 
+     cpuid_i = 0;
 -- 
 2.34.1
 
