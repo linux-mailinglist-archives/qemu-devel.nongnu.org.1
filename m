@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF822A779E2
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 13:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DA3A77934
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 13:00:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tza3R-00031h-Bc; Tue, 01 Apr 2025 07:45:18 -0400
+	id 1tzZKl-0006Pj-J5; Tue, 01 Apr 2025 06:59:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tza3H-0002c5-0e; Tue, 01 Apr 2025 07:45:07 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzZKX-0006IU-6T
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 06:58:56 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1tza3E-0003kq-MN; Tue, 01 Apr 2025 07:45:06 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5e5deb6482cso11575152a12.1; 
- Tue, 01 Apr 2025 04:45:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzZKU-0008JH-H2
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 06:58:52 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43cf848528aso47006035e9.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 03:58:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743507901; x=1744112701; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xkjqRIowxFnTqYWsqxNLtB4fGkcNFUW57Tm2wP1HwOA=;
- b=N+WZwHE9RUYSLzjZzxMSHmEIkViaoWLohO81uBAelc2QF/WMtBYuOBHZV6pXJBEmml
- R0335FIwOtKY4BAuinNytiiLtfzdHzuAGA2dBdhajS4kAXj2CsArLs6WTWKFmcuNcKCH
- eaWtPti6/rQKaoAF2/1j/GiVSgDd+23Xdv/Yri0tGDjxgxNZxC9HgZGBPhMy0sOKIduB
- Av38dZ3M3UnEXdAHWI3nbuV1aoaen9Iux4n5CbQNieu4BXj3B4eEOsiiV8G6ZEgDVPNJ
- BsKY2MxWJESxrtZr6ooI1d4g7C1LN8LzWy+juNrljl0eKST8pm6FyrDTlRcjfC4B2/xy
- pn2g==
+ d=linaro.org; s=google; t=1743505128; x=1744109928; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=B7kxli4tgFHp0Cs3y1KNEmWTsT52dCDoUETSH4GjUe8=;
+ b=Fk/oRtloplncDfPSctyyrXKXWcI1swwE1+HpoNFkUWUeOYF3mNLP2KHYvQ4RbgvfZC
+ u1Bkntg8WarjQTfIwoLShjujWINqgDBxzqj8RJ7X+O61+CSDPS7iTCruFXD3KvJNDYSl
+ em3Sx/fb8c9MqWiSe8ZfgidpvhXYTHBIKyyF/Fq7UiVLe/i+/4Y5iH3WHUAGXpcJ3ndf
+ R2PLkIKec7G8qFhLr2yJBa3xCve8wh+Eop1xaJH+EEDOuvAo+5JgLA3cuJP4AuQaCeHI
+ B1eob/97JQ7GwK+oYdNwRunpSU/ru/uCfwSD8MUp1f2g97T0lIRD7mN+jRKM7BwynXnZ
+ vjoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743507901; x=1744112701;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xkjqRIowxFnTqYWsqxNLtB4fGkcNFUW57Tm2wP1HwOA=;
- b=Z1cwKwlQk0vc6HMA641I0grAmwj2S8C8i756XmRjNfOr/OTMVxo7TyihtUAFc39U6W
- uYM49Awh7ynyU5l60BbPnud/mbFMB51CnYunmoB/wtq+dxLBhXwAEhHivsCvR89nyR+W
- 05TFp31jTNxB2duQInZlPkENKBkWm0UFd3lKfTWDjw1Ato4WZWKlNKBFxYXrclcDj+8L
- TAoLaYNVVaJfrmsLFWB1Dlpkhd6C48i4Yd468gaPX5a6O+szB8cDzuR0N8WZpaf317qE
- dAzX71zSMSA4qi8FE4ytJr3IO4DcrOlmiJWaxRJQODXqDbTfQfxzvEcUA/YU5Cnu1gh9
- 6Ulg==
+ d=1e100.net; s=20230601; t=1743505128; x=1744109928;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=B7kxli4tgFHp0Cs3y1KNEmWTsT52dCDoUETSH4GjUe8=;
+ b=Emt4EtPeHc/dZDmAFjPKEy04aXkmCpdIfa8Muhydf3MWss00YTCuPVg9hRXE7i5ROR
+ m1dCEF+da3/3CnIizYooYZFWUA+DYZ3owFDMq+JjwlI+AW4iSuXQ7UxNtS48p/WI02Js
+ B1ftNPXTPW3aXhGhyRITfRim0vZkr1FgFVtENJvX2T0YXoWAP71kmYJAxUsnRv8ep7SZ
+ GeAYumlq45/sm4n6OJPt0uFqAoglNDia7U6uU0W5cYMM9RqW5SFsyQYwLPdi9FUmcVbq
+ 7oE3suwIFDnOGeb2GcsuqFer4tMft3Pt22V/TLH9zhLJQYdzTBc9r8lT12W9Ik7Di/ok
+ sa7A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVPjam1i5OdwFODxCwH+uHeWr2e/vBH2b8t2AxhaTGLZ8K6f5M7z0I8SWP7ca9ZyWBZieSqLhzqaIpg@nongnu.org,
- AJvYcCWkJzjW1f2TQTMtavJfkFjJg6a/nrlNZV03c3GvgJQOgbz7D3/gW8ebacFQWXx90j6tsKuXbyLcrkEl@nongnu.org
-X-Gm-Message-State: AOJu0YwoPOV0N7eD2DW08+JwpMnGy/3BW1QNzuNDdSqrUcVetPXMtKbQ
- IntF/z4B0i/Qj7bc9DOyx2ZpPB461bU1WcZMGnHdpiJDNznAUb3s
-X-Gm-Gg: ASbGncuiAUb1BCX67Kl63poHJkAvavNTaDLFEDGblzXiKWvRl6cBHTwJoGNkLfJRdO/
- exNMQiBm3zQDFi6u7nqkebiR73TFORZGgdfGdfJVZgb57ZiGtm3M8A9ZzXKkCFIgev+pLteEEPO
- nvnGFk2Aq1F2eyypVdxgvlNRZJq3cYH2LZS79l/PFd0ytLrd/bqnMRCxhpiwuDwqJDeYE3brRlp
- ZJ+coquB4z6C1/GwnTra/+LY3fXehOHSY7pIhM3SeoG6OSnG+chrPdUMCxmP/KIU8R5EcR12iAx
- kk0ZDchiMGlaqv5ErPY6hl1ypzT+X52mXyxDKUkS
-X-Google-Smtp-Source: AGHT+IHiedffj/SqKwpxqtaZ6rV/M49KooBe+OYB0KXRjJ5whYSY3LK9aNzukVhDCtvBzkiixZnsUw==
-X-Received: by 2002:a05:6402:35ca:b0:5ec:cb95:c3ce with SMTP id
- 4fb4d7f45d1cf-5edf5321d0dmr10770071a12.1.1743507900947; 
- Tue, 01 Apr 2025 04:45:00 -0700 (PDT)
-Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5edc16f02bdsm7009754a12.43.2025.04.01.04.45.00
+ AJvYcCWCieeQV/Mw8rcO5cZMagPGHAjqgCmcfR8EUHyO8QuGkSmp/Ckx+XACZVumm/7HIt630JHeNfCZKXbe@nongnu.org
+X-Gm-Message-State: AOJu0Yx8ikGWHYVaBhweHQXzKsM8l9D6I1+QfPRUiU50c7rAlokowlsY
+ ocRExhYYVtt1JQWu0lwga6x6es2rF7ZI+cBADGLDwnCFTCGafZeR1Ji71Fs5Z64=
+X-Gm-Gg: ASbGncsn/wqztD8h+kEZ9ycDg6qDRMNucqYvvQrJdMmXROn87qV9zWbXrxQe12QspI1
+ hhsiE1ux8G2ptfzePhsPYcw3bYNt2WNDOZ8YZSj2D/sxuRFpUIFUag5GmEfTCEhyZWMYxRqo5n2
+ oA0s5fLIDmd9HtBuW8i1iIU/j+Fuq3HJEbjxzyuXzmIveFgSAXgxTyrdhrbc/fRcv6Lz9xnpsZw
+ noRRd2Eta494BSrvyQy9KVl+EdNvB2qugpTRK+ulFmEUCDQ1Z+jmMIKQluEZ63blOEnRyekIfzu
+ xP19XwaeBFxN4el5dj59yIw+0UHGLQcmQbhuaVUYTaZs9JnDv9Ow4OoRroCFAjl4m0C2X3ENJOe
+ DGgi0a325UkmU
+X-Google-Smtp-Source: AGHT+IHVUBiBPLs1yReZGAeHgSa7vquc86IUvneq7dC6TMb5ITdogd/h8+J6mIq9SszMNdra6aEzLA==
+X-Received: by 2002:a05:6000:2913:b0:39a:ca59:a626 with SMTP id
+ ffacd0b85a97d-39c120e3e5cmr10394801f8f.28.1743505128038; 
+ Tue, 01 Apr 2025 03:58:48 -0700 (PDT)
+Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d8314b5e7sm197209115e9.35.2025.04.01.03.58.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Apr 2025 04:45:00 -0700 (PDT)
-Date: Tue, 01 Apr 2025 10:51:06 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-CC: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-rust@nongnu.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_1/2=5D_rust/qemu-api=3A_Add_i?=
- =?US-ASCII?Q?nitial_logging_support_based_on_C_API?=
-In-Reply-To: <340649cf-9348-458d-97e7-aee73c02217c@redhat.com>
-References: <20250330205857.1615-1-shentey@gmail.com>
- <20250330205857.1615-2-shentey@gmail.com>
- <340649cf-9348-458d-97e7-aee73c02217c@redhat.com>
-Message-ID: <540905F9-7DF7-436F-905C-A7F225F5E156@gmail.com>
+ Tue, 01 Apr 2025 03:58:47 -0700 (PDT)
+Message-ID: <f9a3fc79-220e-41a3-b626-91d2de958690@linaro.org>
+Date: Tue, 1 Apr 2025 12:58:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] target/ppc: Deprecate Power8E and Power8NVL
+To: Aditya Gupta <adityag@linux.ibm.com>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+References: <20250330211012.2932258-1-adityag@linux.ibm.com>
+ <805a75a4-07c9-41f2-9456-d74b414ddf89@linaro.org>
+ <k3ick2ilcc3h4nkq46uavibuw5zg7otanutr7syhyynpakcteh@uu4ia2nmm633>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <k3ick2ilcc3h4nkq46uavibuw5zg7otanutr7syhyynpakcteh@uu4ia2nmm633>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,94 +106,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 1/4/25 11:54, Aditya Gupta wrote:
+> On 25/03/31 01:37PM, Philippe Mathieu-Daudé wrote:
+>> On 30/3/25 23:10, Aditya Gupta wrote:
+>>> <...snip...>
+>>>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Thanks for the tag, Philippe !
+> 
+> I will be posting a v5 with this patch split into 2 as suggested by
+> Cedric (one introducing the POWERPC_DEF_SVR_DEPR, and another marking
+> power8e/8nvl as deprecated).
+> 
+> Should I keep your Reviewed-by in both patches ?
 
-
-Am 31=2E M=C3=A4rz 2025 09:53:41 UTC schrieb Paolo Bonzini <pbonzini@redha=
-t=2Ecom>:
->On 3/30/25 22:58, Bernhard Beschow wrote:
->> A qemu_log_mask!() macro is provided which expects similar arguments as=
- the C
->> version=2E However, the formatting works as one would expect from Rust=
-=2E
->>=20
->> To maximize code reuse the macro is just a thin wrapper around qemu_log=
-()=2E
->> Also, just the bare minimum of logging masks is provided which should s=
-uffice
->> for the current use case of Rust in QEMU=2E
->
->It's probably better to use an enum for this=2E  One possibility is also =
-to change the #defines to a C enum, and see which enum translation of the s=
-everal allowed by bindgen is best=2E
-
-Currently the #defines contain some holes for "private" mask bits=2E Turni=
-ng these into an enum without exposing all publicly, and changing the type =
-of qemu_loglevel for consistency, would result in undefined behavior=2E Or =
-do you suggest to convert just the public #defines into an enum to expose t=
-hem to Rust, and keep the rest of the C API including the type of qemu_logl=
-evel as is?
-
-There are surely several tradeoffs and/or cleanups possible here, but that=
-'s way beyond for what I wanted to achieve -- which is closing a gap betwee=
-n C and Rust=2E My main goal is just to get my feet wet with Rust=2E
-
->
->Also, while this is good for now, later on we probably want to reimplemen=
-t logging at a lower level via the std::fmt::Write trait=2E  But that's jus=
-t for efficiency and your macro is indeed good enough to define what the AP=
-I would look like=2E
-
-Can we live with an easy solution then for now? As you suggest below, furt=
-her abstractions like log_guest_error! can be built on top which further in=
-sulates client code from implementation details such as the representation =
-of the mask bits=2E
-
-> Right now I have a project for GSoC that will look at that, and the stud=
-ent can look into it later on=2E
-
-Whoops, I didn't intend to spoil the project=2E
-
->
->This means answering the following two questions:
->
->- the mapping the LOG_* constants into Rust
->
->- whether to keep the "qemu" prefix for the API (personal opinion: no)
->
->- whether it makes sense to add more macros such as log_guest_error! or l=
-og_unimp! for the most common LOG_* values
->
->> +#[macro_export]
->> +macro_rules! qemu_log_mask {
->> +    ($mask:expr, $fmt:expr $(, $args:expr)*) =3D> {{
->
->Looking at https://doc=2Erust-lang=2Eorg/std/macro=2Ewrite=2Ehtml they ju=
-st use $($arg:tt)* for what is passed to format_args! (or in your case form=
-at!), so we can do the same here too=2E The main advantage is that it allow=
-s giving a trailing comma to qemu_log_mask!=2E
-
-Easy to fix=2E Before proceeding I'd like to see a solution for the topic =
-above=2E
-
-Best regards,
-Bernhard
-
->
->Paolo
->
->> +        if unsafe {
->> +            (::qemu_api::bindings::qemu_loglevel & ($mask as std::os::=
-raw::c_int)) !=3D 0
->> +        } {
->> +            let formatted_string =3D format!($fmt, $($args),*);
->> +            let c_string =3D std::ffi::CString::new(formatted_string)=
-=2Eunwrap();
->> +
->> +            unsafe {
->> +                ::qemu_api::bindings::qemu_log(c_string=2Eas_ptr());
->> +            }
->> +        }
->> +    }};
->> +}
->
+Fine by me!
 
