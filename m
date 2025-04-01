@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80571A77350
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 06:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D15A7743D
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 08:06:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzT2F-0002Nn-N4; Tue, 01 Apr 2025 00:15:35 -0400
+	id 1tzUjW-0005Vu-9U; Tue, 01 Apr 2025 02:04:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1tzT25-0002NQ-HO
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 00:15:26 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzUjU-0005VX-Eh
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 02:04:20 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1tzT23-00067C-88
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 00:15:25 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-30155bbbed9so6707765a91.1
- for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 21:15:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzUjS-0007K3-RQ
+ for qemu-devel@nongnu.org; Tue, 01 Apr 2025 02:04:20 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4394a0c65fcso49067145e9.1
+ for <qemu-devel@nongnu.org>; Mon, 31 Mar 2025 23:04:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743480918; x=1744085718; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
- bh=XWdhtLkh9Cuym5k9ccauOExrWAXdOsewsn3csqwoKYE=;
- b=nLfXkeObSj9mcrV+8L1zoWWCYSZGkQMRznos3hsVMIoQMgLvQxePXfLSsr/omHnrqq
- +X6L9yRCvpFd1I26AaTYK7w65v0F8EkyVYepZENrQsxuseyyGG+sntG1ZJd1c6XfMEo8
- 6yumgXQoVC4W9Bg13Znyq4VHgaB4XI2o2jzwuj96cJWB+5XjW9LI21n22zkdJxMA0kPR
- qZpFcw8AP3TEFwjWfSxaYRWuwXo3Rq7WUujNlGYbPAmkSBkBObZKyiljlPGOT3CVfJsq
- VbavQnoSkGR4pkwVKkjrX4KkL4OcadZOonA9egy78lAxTPHxpKZ5pezye4O2ZgAjg4Hy
- nC6A==
+ d=linaro.org; s=google; t=1743487457; x=1744092257; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YYQZPKrin10s1SzM4YPppgefqBxNl0fndOtyNy2BPLI=;
+ b=sy0/aZDfGbIZ2LWwx1Ir1slQamXGUH2QqP+oy/HZfFl/RWODkqKda7/yoGgg30MUMA
+ jMUsVJHLYb5J00DfAChrS8I8SOvHTvesALMuRsWrJyxAgnQ6WuRHWkRCDVQHBB1tzFDD
+ HVntT2lDyCEBnKGbioRTKGbn8x7wIKhEuwOrr6nTUXv1UphtchkzP18YzBfNbV/mgubF
+ sGgR8GyaQFU/sUy0LJI4d8ai/m1mhBZjvCBzTsv1NViOiJ6matGDM9j3cAwy8zLw0nKC
+ Cz7qZ6uZw4XDHkFmNvHkzxmPFodaDHYuYSfUwKFh3+LBySbWNQ4zmsospeDMTeo3jBm3
+ kwpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743480918; x=1744085718;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XWdhtLkh9Cuym5k9ccauOExrWAXdOsewsn3csqwoKYE=;
- b=iVnY3lx/P4kunscWErjjTDIdRd/XnjKVyiMTAS2nAa88NTyd6xwWH3riC8BDV8Gxj/
- oy7dVNRFroSYGbfb0GwWV3q403SYxqBw+0MMWNVxO5U24bZHLgzUBvGvyTwkLe0fDZmv
- FQV1FDZOHOmBUDlslIbbvQStyCtUeudCSNhBTVFWxX4nhu3WI3pOUllUYQ2qQeOgxoud
- hwdbAHAeQIq/gT5394OCzlOLLVwNvCElFW8Twyt7/Nk+mJusFSCqdrRumI9RwEsFVJ/M
- ANnsBytCrj/1Pxwo0M8IKRvLKYoXYp8YeNMBGziLCXoWJSwUG+myvMIE2yIjVkv95iAq
- 6vjQ==
+ d=1e100.net; s=20230601; t=1743487457; x=1744092257;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YYQZPKrin10s1SzM4YPppgefqBxNl0fndOtyNy2BPLI=;
+ b=dvU6Zb18OcsOuBD2LBK6bUKRwoydp1u5O7eiwcHqapPjGCY4i2BR5U/R7Oou8qwL2f
+ GLIo4EsAiOb6wCixH30JV3C2FAOgfZAsXs83jTs9Cqb5CmR5kaXS7iM+wn8WjLlY7zMy
+ qE5BkEczo4jyYMzXZX8YBnm20LqFUIG0OuWv+1mVK8s/bv8gTayEOZhnIgEWo708l6pj
+ zwY/Z6oc3vA9c8N9DYt0TNEG9sNHloeR4bxFGxGkL4/yKNSAHUQulS8aBYC8UPiR4cBt
+ b73quZS3UB4f9xgwGTge+njo+JAUYjSBlcFXAEJDSbQwWlR9YydS2Dsvn+3qGUo9Yykl
+ tpSw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW/eJtkRKW3XIfk4RzivHNHmkcFo4O7NHNEdERGgP6Ndd+0Tx4rjolgg5wVk7k14cBzqgVMjAdgHxz1@nongnu.org
-X-Gm-Message-State: AOJu0YzGmnksWxuvL1Z+Dyge1ctQUOiIb/sxQOzuiJKP118GXvxBdPHQ
- LjAiLNL+woOlWx5G+2bcQLsTQgfbgfMgAefIdOvmIXtSF+1fCPgo
-X-Gm-Gg: ASbGnctlONWUG5CHHYnBLPtcs3tS4MQL9Uge/VVK6+lcVGuv2f/PAUI4KzGTxYyFLFQ
- 8Kg/4M9YZB8Y3xG4CQoL8h+fXytqFF5ZiTduVaz4VBHCYhdwu3xoJHPb0qxZfdaWcSFD5A46bSC
- 5kTUvPpMmikavIBqv7I+SDv6G1I4oJFcwJn0a3pNE6NIpTtQc4deLKK53s8IvGhU9nv92JdVF/q
- FJESvK7XChiHfWJ7hgl6Ek3oLMF/gvBM9Ty4gB7obyvTkkwq4mlVq+s2NbS/K73LK59kBi18bZA
- ni6nd1lnAvhDsafPtQxTtKfnrgK3HLifO9XxeFoRLZLpFTQCJy1uuTGL7MtGA6gukA==
-X-Google-Smtp-Source: AGHT+IGmaz1kDDKSU0sj9WNLtds4v+SkkJ4P5LDRtYwQlfPuKUzIirDQOUoGE1XknDZpNOi5c/0wAw==
-X-Received: by 2002:a17:90b:538e:b0:2ee:bc7b:9237 with SMTP id
- 98e67ed59e1d1-3056094a636mr2887609a91.27.1743480918356; 
- Mon, 31 Mar 2025 21:15:18 -0700 (PDT)
-Received: from donnager-debian.. ([45.124.203.18])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30516d56008sm8192117a91.18.2025.03.31.21.15.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Mar 2025 21:15:17 -0700 (PDT)
-From: Joel Stanley <joel@jms.id.au>
-To: Peter Maydell <peter.maydell@linaro.org>
+ AJvYcCXJiIkpZYJJYjlKSEbIesngG9jlBkiUgSf8RnQLowMdYYTI17M/2fmYS6Z6oWW7FqVPfPhhMFHYP+Ei@nongnu.org
+X-Gm-Message-State: AOJu0YyuL278qN/zpUooChz1JEK+u3YH3X+QDcc2QA7MrHgBBQIPm/ye
+ 7urAZgT/5RnoA+hkJf6sVjOtW6+7Ye6nuuMfChuaqJ9f73gW8KJYtUEaWaxZ8/Y=
+X-Gm-Gg: ASbGncuDO9txtHxdyVhdK1wxe40KKw+YELxzCO1CMRq7DG3qR/DOrAx6x5EdGIafXF+
+ azOL5lGs2S0TuApQ0Q7qXuIIoUOv5fdzV4A9kV1FLoSUW7oUiBJVSXhFdneMEtIMp0NguAQKZKS
+ 3KPpP7+Jjtqr8b71bwig6sJ2OgFmbyx+IKjNiHJM6F7Vl/Y5MnDKgHiClU5iEfYkP4ZR6/ObqJL
+ QdVRYZdPqhsXwrpDNb+ucEPj/Rkr72AX2Xq1goUUX9VRLydoCRjPvPvxRPRdFbP6dSW2pkAtbf/
+ rvHLW3lU7gDGYZP9twt/8hll3/nPkXR3DG9zJWtgeeGcPgDRULMqIT2TWsjuGlJKPmLbsVxFthU
+ yQvlPazQHG537
+X-Google-Smtp-Source: AGHT+IHllcB/2dsKVjZDcvLxmBkDjZ8uyuaake6PXKKuPR6MSLYF+PjP4pq7S8PKh75TyRAiXIaw/g==
+X-Received: by 2002:a05:600c:4705:b0:43c:fffc:7855 with SMTP id
+ 5b1f17b1804b1-43db6249861mr105285445e9.15.1743487457029; 
+ Mon, 31 Mar 2025 23:04:17 -0700 (PDT)
+Received: from [192.168.69.235] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43d8fbc1889sm144364965e9.16.2025.03.31.23.04.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Mar 2025 23:04:16 -0700 (PDT)
+Message-ID: <261d4adb-c497-460e-9050-ed15a252ec9a@linaro.org>
+Date: Tue, 1 Apr 2025 08:04:15 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-10.0] hw/core/machine.c: Fix -machine dumpdtb=file.dtb
+To: Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>
 Cc: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
-Subject: [PATCH-for-10.0] hw/core/machine.c: Fix -machine dumpdtb=file.dtb
-Date: Tue,  1 Apr 2025 14:45:08 +1030
-Message-ID: <20250401041509.719153-1-joel@jms.id.au>
-X-Mailer: git-send-email 2.47.2
-MIME-Version: 1.0
+References: <20250401041509.719153-1-joel@jms.id.au>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250401041509.719153-1-joel@jms.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=joel.stan@gmail.com; helo=mail-pj1-x102e.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,55 +100,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 8fd2518ef2f8 ("hw: Centralize handling of -machine dumpdtb
-option") the call to dump was moved with respect to the init of the
-machine.  This resulted in the device tree missing parts of the machine
-description, depending on how they construct their device tree.
+On 1/4/25 06:15, Joel Stanley wrote:
+> In commit 8fd2518ef2f8 ("hw: Centralize handling of -machine dumpdtb
+> option") the call to dump was moved with respect to the init of the
+> machine.  This resulted in the device tree missing parts of the machine
+> description, depending on how they construct their device tree.
+> 
+> The arm virt machine is missing some PSCI nodes, while the riscv one
+> is missing most of its content.
+> 
+> Move the dump to after the notifiers have been run, allowing
+> virt_machine_done to be called and the device tree to be fully
+> populated.
+> 
+> Fixes: 8fd2518ef2f8 ("hw: Centralize handling of -machine dumpdtb option")
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> ---
+>   hw/core/machine.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
 
-The arm virt machine is missing some PSCI nodes, while the riscv one
-is missing most of its content.
-
-Move the dump to after the notifiers have been run, allowing
-virt_machine_done to be called and the device tree to be fully
-populated.
-
-Fixes: 8fd2518ef2f8 ("hw: Centralize handling of -machine dumpdtb option")
-Signed-off-by: Joel Stanley <joel@jms.id.au>
----
- hw/core/machine.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index f52a4f2273b2..63c6ef93d296 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1731,12 +1731,6 @@ void qdev_machine_creation_done(void)
-     phase_advance(PHASE_MACHINE_READY);
-     qdev_assert_realized_properly();
- 
--    /*
--     * If the user used -machine dumpdtb=file.dtb to request that we
--     * dump the DTB to a file,  do it now, and exit.
--     */
--    handle_machine_dumpdtb(current_machine);
--
-     /* TODO: once all bus devices are qdevified, this should be done
-      * when bus is created by qdev.c */
-     /*
-@@ -1750,6 +1744,12 @@ void qdev_machine_creation_done(void)
- 
-     notifier_list_notify(&machine_init_done_notifiers, NULL);
- 
-+    /*
-+     * If the user used -machine dumpdtb=file.dtb to request that we
-+     * dump the DTB to a file, do it now, and exit.
-+     */
-+    handle_machine_dumpdtb(current_machine);
-+
-     if (rom_check_and_register_reset() != 0) {
-         exit(1);
-     }
--- 
-2.47.2
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
