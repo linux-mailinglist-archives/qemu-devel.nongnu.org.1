@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC08A77686
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 10:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D974A77685
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Apr 2025 10:33:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzX3O-0001SJ-5X; Tue, 01 Apr 2025 04:33:02 -0400
+	id 1tzX3y-0002QF-1A; Tue, 01 Apr 2025 04:33:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzX3D-0001Mc-3F
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:32:51 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tzX3o-00027y-9E; Tue, 01 Apr 2025 04:33:28 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1tzX3B-00012w-E9
- for qemu-devel@nongnu.org; Tue, 01 Apr 2025 04:32:50 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43cebe06e9eso40389125e9.3
- for <qemu-devel@nongnu.org>; Tue, 01 Apr 2025 01:32:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1tzX3m-000158-6D; Tue, 01 Apr 2025 04:33:27 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-22401f4d35aso103121775ad.2; 
+ Tue, 01 Apr 2025 01:33:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743496367; x=1744101167; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1743496404; x=1744101204; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2hqxnb6HRgZx4zMBcClLax+N04cp1fAmMIfTPJWgUr0=;
- b=oiwQc0DdeFREHSFMUbvm4hA2756LIT3ut5eEhGlz8rm45AKHLMd9/Nox9YkbX89X5s
- vtHQkTl9oMrApaUUNKhrRIuonOvUrsGvDdAlkFVbB0Xq0wePFJNBzuqvQw7XazGuSDWk
- S5EeZdfjmBtWs3k+wKziwIZWFFguilYD6E692CG4NUIGM41bxPcjb4zbpLAm4XyqdEwc
- w8xynJJWyaLo0PC5PX5aiQoL80bIeQiBgevEnaJpzyw1kZXBJCvelSLCJZupobZUebZ3
- k+ZN6DIWCwgvVi5AIPieiop/CLgQOPeB941NuKBD0L80VUBYtj9zyw+ezTrHEeo2Nj3M
- QQWw==
+ bh=JLVE40W/XGAQOr1jx4pd9tNsIM2lcVMwDaZ/6pQHw7M=;
+ b=cL0AUYPGvSqZn+rmBnsWCuFcEyprm6wdevr6yb9qMAqt6r3GMVrLmHyMYKzGJBdbU3
+ hDNir2yDwlRlnf88BxHkQLq2pFzAGKzJyTZmB25nN5EqCdM/BzujCH6OrIjk2DTCflIr
+ PV7P8qoBT8QjWq/zDEX3/lVfrqj4JBW4ecySF4AxE4rMA+sLQ27ghz55IHZLeOCWPUEP
+ l0ViLCp2NwE5uMbzxQk6kOXb41nIab8tpIOhURKtbtTJd1anDiq/24TmpQ8/EC5YIl1A
+ GT0IAjCon3bjFSeBtDbdRJR2JVkEzVMsEoi6/bX05unWA9ViCmdwSvIUzTWLs7le9Vg7
+ 5hcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743496367; x=1744101167;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2hqxnb6HRgZx4zMBcClLax+N04cp1fAmMIfTPJWgUr0=;
- b=hXAJF34OhDnr5d+NeGo9o6HNNg0+LBDUqC7jh4Wj+rrD3jcu4C2vjqZugH55oM1M1V
- 3VXwv7P+AM2L7y7eY/XtL/kMcNWqwI5wC/H3Ngiq1WWwNuTfm+PhVgqnap7uhSs4HP7N
- lf+0eWJRvSKHL1Qn4m56665ZSVwRZIVo9Kr3t4eqDCNoUwSrEQ0vijvIjOu78IJeepHk
- I0ZYdSXY2KsMhVHE5iB4sesHyUSnBcSnIzi+qkO8K4ONWIjzyRWdCQXBIPRoJjtibTTV
- og2vGCizy0e8G6pdPvbyTFezGCLZ2R8K/PlLU7EFzUSzeNeW28J+2O7ah9T7x3KkjWWJ
- pGDw==
-X-Gm-Message-State: AOJu0Yzd0sN1jmnlq334pbjwfrPBXMa54B44kzSt5VrvI40laCEGGi9F
- wM/vYe/g8238ztW8iw1OOht8YZSXUOopx3oAmnxnu6O9dZYV5QymujJ1kXkVIZE5lHXEgImpW12
- 4
-X-Gm-Gg: ASbGncu4HxZ26oGJQyVFBcyEbP1L1BxPWLw/7KcqO6XB4BI2z3kN8oHG4r1ogY76dZu
- v8G/gLEv7iBchq3WStST/C3Vwggd7ZoYJIH7KyMYeiCpYw5SViXrwGmRnpqEa8j9xiNAMXMS8P/
- gYezHsCjxm84msY7IGOcCqwl//KaNZbFFhaXklrDFfH3A4HQZdAotmhw0NRbCQSEjYSQsQRZUQM
- S+01WvLiJKHEnXrawjnO7Zmznz2Wt/sZN7Q47t47qQCEfQaYGmVdWVG0sBru9KiMUCPm/Wlzk/C
- +C7hM3TBxwZVwrZTrpBeF3XEjH5UNsEgU5JVfz6fKyGxo4CHBX8AWS9r4rSJBUNo4rNK/6lpfze
- cpuy4YfcPSiPYEqX7BCU=
-X-Google-Smtp-Source: AGHT+IHGOURURP1beKwRoF7gU8FCjJsNnPQEnCWFihYh6MQq+ifMcOgvbQwgsWvSS0/q6iXyHGkbUw==
-X-Received: by 2002:a05:600c:34c7:b0:43d:26e3:f2f6 with SMTP id
- 5b1f17b1804b1-43db61d6ac0mr124099915e9.5.1743496367479; 
- Tue, 01 Apr 2025 01:32:47 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43d8fbc12bbsm148735865e9.13.2025.04.01.01.32.46
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 01 Apr 2025 01:32:47 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 3/3] exec: Do not include 'accel/tcg/cpu-ldst.h' in
- 'exec-all.h'
-Date: Tue,  1 Apr 2025 10:32:32 +0200
-Message-ID: <20250401083232.33773-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250401083232.33773-1-philmd@linaro.org>
-References: <20250401083232.33773-1-philmd@linaro.org>
-MIME-Version: 1.0
+ d=1e100.net; s=20230601; t=1743496404; x=1744101204;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=JLVE40W/XGAQOr1jx4pd9tNsIM2lcVMwDaZ/6pQHw7M=;
+ b=EjQzwxdKkU5AMh4LkTbve2hyn6i+WXo1GRecdcXtPZhRhKsCvKtQuE9evcjj+KnEa/
+ 80g2oPt1GeHU/OpmSVkiadO506+FQe86Z1PxNfmBhO84ehiQruDeJEdTK4dGN2jooGf1
+ jlImFj1v9LbPG/ao67VOnB85JfvkLGHuDToA8TTzyH7DkCg8+OnqVszombHH5iSvWraB
+ KGKq/hZR1Ab/43hucPCV7C0aKwrQ488n+cUBEGbTKT8Cx04ePKcyfFmPes9lt71Giz3u
+ olsK1QgWudDjSWiRsxMwZYGcXfkkSHlEjw2X3uNWNFJp69Usy2hfAhYcldtEg0Ix75Tc
+ mmHw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUQ3UPYEN9muJlIYdXE9qx2zd6+a3xg4O0g1aQ2c1uzMrq0v9PN9BohGYuUR/3qw+AR1ClMyGgkyg==@nongnu.org
+X-Gm-Message-State: AOJu0YypCPT7fY9CqEvx5eaTKAVx14scuhs/7E0EyiX3SVy62yQOH7SZ
+ L6KHqecB13vGQ5BOGrFzCYW6rE/f4o/qBnD0kswNKxFv2WzcFhoYsORxwQ==
+X-Gm-Gg: ASbGncsggC27vfL2pG0rKXGGKViweJW6xIP+ZcS20nUcFzGnQhL2irQz9jkn7HJozzF
+ i2ZV0GMVZKGOshCwCIOMiLzdf//lgvOPDc+YcXAc3VZUo5VmF0GCzb8YIkKnTqSd/dzqF/iB531
+ 7vqLxqyKeyrsk3iqcNzoE/Fpixls08sh45s92z5C+cgHKGAa5kAXHVcOKoUTgIOiBlaOEcp72R1
+ nPzZGnzIGzc/iMzBO0nlXDUV5Cq51WqwkY4u7T/Wm9MHSziR64qoeyc8BgggHjP3Say8uPXdFHe
+ 7PzdAAE7iV3hGuYJMF5lLZBY9/m5V2a9+sGSMdU=
+X-Google-Smtp-Source: AGHT+IGFrpxEeEP+/r8JVY9uDZOUQIt+Lg5IEjpTv/hLRlKRWB4k95ae0Ccz4gLdU88efGCAYfx9bw==
+X-Received: by 2002:a05:6a21:3408:b0:1f5:8754:324d with SMTP id
+ adf61e73a8af0-2009f5bbf98mr22861094637.9.1743496403871; 
+ Tue, 01 Apr 2025 01:33:23 -0700 (PDT)
+Received: from localhost ([203.185.207.94]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-af93b679f0csm7587258a12.3.2025.04.01.01.33.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Apr 2025 01:33:23 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Date: Tue, 01 Apr 2025 18:33:19 +1000
+Message-Id: <D8V5W4N51IMU.3GNZNC0FK5KKN@gmail.com>
+Cc: <qemu-devel@nongnu.org>
+Subject: Re: [RFC PATCH 0/3] translation performance improvements
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.19.0
+References: <20250331155423.619451-1-npiggin@gmail.com>
+ <6e647368-9fde-4c7f-ac17-d4c4e46fab3a@linaro.org>
+In-Reply-To: <6e647368-9fde-4c7f-ac17-d4c4e46fab3a@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,58 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only 2 files requiring "accel/tcg/cpu-ldst.h" API do not
-include it:
-- accel/tcg/cpu-exec.c
-- target/arm/tcg/sve_helper.c
-Include it there and remove it from "exec/exec-all.h".
+On Tue Apr 1, 2025 at 5:40 AM AEST, Richard Henderson wrote:
+> On 3/31/25 10:54, Nicholas Piggin wrote:
+>> I've been struggling with these couple of performance issues with
+>> TB coherency. I almost thought deferring flush to icbi would be
+>> workable, buta note in the docs says that exceptions require TB
+>> to be coherent... I don't know what requires that, maybe it could
+>> be worked around?
+>
+> Which note?  Anyway, qemu implements accurate tb invalidation for x86 and=
+ s390x, which=20
+> means we don't really need to do anything special for other targets.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/exec/exec-all.h     | 3 ---
- accel/tcg/cpu-exec.c        | 1 +
- target/arm/tcg/sve_helper.c | 1 +
- 3 files changed, 2 insertions(+), 3 deletions(-)
+In docs/devel/tcg.rst
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 70608a11b60..944b579d91c 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -20,9 +20,6 @@
- #ifndef EXEC_ALL_H
- #define EXEC_ALL_H
- 
--#if defined(CONFIG_USER_ONLY)
--#include "accel/tcg/cpu-ldst.h"
--#endif
- #include "exec/mmu-access-type.h"
- #include "exec/translation-block.h"
- 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 6c6098955f0..8057a5a0ce8 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -22,6 +22,7 @@
- #include "qapi/error.h"
- #include "qapi/type-helpers.h"
- #include "hw/core/cpu.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "accel/tcg/cpu-ops.h"
- #include "trace.h"
- #include "disas/disas.h"
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 9b0d40c9e18..87b6b4b3e64 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -30,6 +30,7 @@
- #include "tcg/tcg.h"
- #include "vec_internal.h"
- #include "sve_ldst_internal.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "accel/tcg/cpu-ops.h"
- #ifdef CONFIG_USER_ONLY
- #include "user/page-protection.h"
--- 
-2.47.1
+On RISC targets, correctly written software uses memory barriers and
+cache flushes, so some of the protection above would not be
+necessary. However, QEMU still requires that the generated code always
+matches the target instructions in memory in order to handle
+exceptions correctly.
 
+>
+> Compare aarch64 "IC_IVAU" which (at least for system mode) is implemented=
+ as a nop.
+
+I'll take a look at it.
+
+
+>> Another thing is PowerVM runtime firmware runs with MMU disabled
+>> for ifetch. This means a fixed linear map with no memory protection.
+>> Is it possible we can enable goto tb across TARGET_PAGE_SIZE for
+>> ifetches in this mode?
+>
+> No, there are several things that assume nothing jumps across TARGET_PAGE=
+_SIZE, including=20
+> breakpoints.
+
+I see. It did actually work and run fine, so I wonder how much effort
+it would take to cater for these issues. I guess for this rather niche
+"real mode" it may not be worth bending over backward.
+
+Thanks,
+Nick
 
