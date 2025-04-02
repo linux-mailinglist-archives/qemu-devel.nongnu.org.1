@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3179A7974B
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91282A79722
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:06:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u05Fd-0004Fj-FE; Wed, 02 Apr 2025 17:03:57 -0400
+	id 1u05Fg-0004Jy-4w; Wed, 02 Apr 2025 17:04:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05FH-0004EV-V5
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:03:42 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05FV-0004Fs-UU
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:03:53 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05FF-0005rd-Jt
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:03:35 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4394036c0efso1127735e9.2
- for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:03:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05FN-0005wv-NY
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:03:45 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4393dc02b78so925945e9.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:03:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743627811; x=1744232611; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=d0fKFBon4pB7dc6VUmLW6/oZNCtsLDUu6Wgh2bN2ZF4=;
- b=l9/KCFo9lTjUGXkC0qmw90k9ashJKGDAJfGOaU7vyDNPy4k0suWbrI1E0ERKBIRKye
- p736CL/gHoWnJXCEPVjXRoDSVyziraSAi8Z7G6QecdjvPNQgEg0Xxmm4SNFqSlfKUUJI
- Q6cT+1pLObBArB9kvSUXpQmEzq4ZcN2JZyupqHW5wNA8T3bIgi9gCuyG6WZU4LZ8QCEk
- 0BvHXQ+MUkGHabE8iCfqT9YLvR6vSYGDloYeTvsinvSFkKnPOLLL41FrBLHhk1NZGDtC
- gDgcmNVmpRguaUX1jbxKm1kJGxY3/rV/oGWjVrlCxUMkN9nr0YjqwaRKytGev025QP+4
- fqyg==
+ d=linaro.org; s=google; t=1743627815; x=1744232615; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=+24YNhnxmvc5nUiqHFxsW1vaBRjPX4O6CgQPfWiZ8fQ=;
+ b=WvdvyXZ3htTIBJcbiEkXTGcwT/6OP2wkH2tLx3P2FIafscNjLLfJ01h6ou81OoqAAr
+ uvWrZQ/rtLx13y0N773euYnV9RMeWH7cv9jyqSmKRpSVEZutQ3xDMRUk6QFQmQTZKwuU
+ jBJF6w6JaRQRqoCUHTDn/so2LdIe2SZhFLdWbkpTXtO1zs7cK9gr4TIl2EdCtkcr78z1
+ KHhVTI6JA0T4NwJC/s5h52RVMMIpkfbWR39CjMLADbiKqT+2OOZLefrkN5UuFvVaxtps
+ RtI+9yM+/oj8YNrSzqhaRa4VuZyNTmp9aKyrskNzyMPPI0v7GUj7oh1+YtHh5gtV4+hz
+ +B3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743627811; x=1744232611;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d0fKFBon4pB7dc6VUmLW6/oZNCtsLDUu6Wgh2bN2ZF4=;
- b=QDRG3DEt+5mm0M62FP+ll4rH6l0LOodeinEaU8jyfsZbY39biGeE2arUbmsinUIvmO
- Wp2zRG6CpfhZSe4wK4geXjWVfTnGS3LJj4ycUQCKkbHjBt3y3c9urDi3mQiK/VWlCZQP
- TOVhb+Ty2h0XM169KCYdoauEGY5mBSVhAcl/tazTBevkCR6vRQEUiK6+c6uDuUcNVFiH
- 7nYwzd5DRaPMG54fSU8FfMgxvMMbzRHEFfd9jc7OSMAJTzmjDekvI5sG2sF8YCT4jJSQ
- qH4OLZ/oITEEr2fLYf5CC1eHrVEw4drNAZYR3zB0MYIRXBDdNgQ80rCpyOdSE33ap4Br
- OPRg==
+ d=1e100.net; s=20230601; t=1743627815; x=1744232615;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+24YNhnxmvc5nUiqHFxsW1vaBRjPX4O6CgQPfWiZ8fQ=;
+ b=a4magIp7ES4kG038gWo36FRATwBT5c6M18EQC5yJidT4bpxxhISik99W7Nb1x7jCWS
+ zh2MV1fGihr8xnfPdolvuPTlP++0HZzKh9aHbw/bH3MFlUlvDI3sXecKh2f7gpktWQN4
+ RRIUExJX5BdQn6m3H3hIGr44OoqMcKvtydfcqtBqnFjLe6nS+sFDbMaytjFOninTCWy0
+ iGWD6K8xCgqFpbBQ7UHkKSxuL/LrjRzpYcpNFTR4x6e5NcZQS/A8EGonuPxssO1znuaM
+ XYmaM8CHuaLh2nWimoB91/o4nqUEReiAMXeBvWudXSpmM4cb6N/H2itXtPGnd/6wSyLw
+ pahw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUGK1mRcY0BrrPaBtAJzR/bL55BBvwrC6mnuIdurFfhX6pe4Jxwju+hcL65WzXrMKVFnyrfdybOKD23@nongnu.org
-X-Gm-Message-State: AOJu0YxCbiIQSzRLDcdJOa0yj9wAyFjYidNXzgPGDk3kniQykGuSo/Bs
- OWSeonnamcIg1AAxI9rC5ZsqnMP1Eygd41tWrS5ocubpjC0/321ZBnwVNWNMOjX6W12ykkO59gR
- J
-X-Gm-Gg: ASbGnct4xujHKOyOY6f4ZXZHZkGSVUUVOk96Nv0VHFMELdpkBrX5cA2juvKM+Rpkhcp
- 9fTdyGq8sEXH6WxBobJSMW6wf3c9ofj5XB86gUYpBNGafTn8A7lMHb0tNcSuIAg3XtcXT/wb9U0
- ZaL119N6agEqvh7BOHJzBdc8m6MCKG0wN5mrGby5N5UN9KhSV0j/96PG4QXal+JxYQjEkH97x1P
- /A2NKdV/Cl1WpHgam4yrKlsTXfcUczqgysjVpJQGiGA3yj9gV7JBK9pA3LlTeR3dEse3TrTg/E2
- gsFUU2daV+FjnPv0WoLN2P7ovMtPrhJYGENTvw86fcwIO23KMhkxJFuQfJ3vKnbjtbOo+9RoTmd
- gQRm4Ebvk57h9nqc/9jU=
-X-Google-Smtp-Source: AGHT+IFtInDn0kzpb8r4Tc16zxvTSBMMCSfbaRlZWLJOewv28vQo0rXjF0t2Ki8RvSvwspHJei+Asw==
-X-Received: by 2002:a05:600c:296:b0:43e:afca:808f with SMTP id
- 5b1f17b1804b1-43eafca80a3mr49744465e9.31.1743627810658; 
- Wed, 02 Apr 2025 14:03:30 -0700 (PDT)
+ AJvYcCVFRqEqgXfJUVDWI+vvqU20GljEwZNXsT0CDrUCHLhvze8WsrpzGsWtwrrEL0IUBXC/A9pOSMA/1m2z@nongnu.org
+X-Gm-Message-State: AOJu0Yxyx4kO0+e7G+V4LTA26KiJEiXZxNdQgr8FI5BFt8vqik3phFNg
+ CjQ4XkjZ5BC/G++9KvXNaLblVn8g8DKQGs+fPmKMFWd+EdWprCIOcRP4Oq89/lTijCL2jwjlD0s
+ u
+X-Gm-Gg: ASbGnctEwu1Q8+yzb+oNLlzA9hSrwQIIYZjNGIT4JGKf9iQVGp802hHzK3QshAfv3O4
+ QYoXFjJOqdj6L3xGAz2eBNTlJoKodHzAOan8IeXW1fbA7hxxlVKt3gdgKiL3eVfISGmFzjtburV
+ m9UIHMFFegZFgwUceartiwF4/oCI0nIOTfZogqPiitz2Xr3GmGBKj4hNxNPdPkk3jdKVE8HqVfN
+ I7iFPzb6V5uTKng7uohtniCBAuav8NVLh2KpqNYh3SPELlhniAoiG9Pd7ADSVFqsABFvwhJOLJx
+ SBT9dWDZVrtcjkLhb+c2iDcqedKSt+QZ75nLtklQRm9acCiGNbHpV13E2gSFATWet2A2fFeeHX7
+ ZQZL0YZr7CCdOZDr+jeE=
+X-Google-Smtp-Source: AGHT+IFr3UrxhabV+LGm8Qe8wWWyOkmqniLZtIaHocS8z/1V9A/65CBBrMWILpCvQGMF5rOTecX2jw==
+X-Received: by 2002:a05:600c:5941:b0:439:8c80:6af4 with SMTP id
+ 5b1f17b1804b1-43ea81a2f23mr58175255e9.19.1743627815356; 
+ Wed, 02 Apr 2025 14:03:35 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c0b663617sm18106351f8f.34.2025.04.02.14.03.29
+ 5b1f17b1804b1-43eb613a7edsm32563485e9.38.2025.04.02.14.03.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Apr 2025 14:03:30 -0700 (PDT)
+ Wed, 02 Apr 2025 14:03:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
-Subject: [PATCH-for-10.1 00/43] tcg: philmd's queue
-Date: Wed,  2 Apr 2025 23:02:45 +0200
-Message-ID: <20250402210328.52897-1-philmd@linaro.org>
+Subject: [PATCH-for-10.1 01/43] tcg: Declare TARGET_INSN_START_EXTRA_WORDS in
+ 'cpu-param.h'
+Date: Wed,  2 Apr 2025 23:02:46 +0200
+Message-ID: <20250402210328.52897-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250402210328.52897-1-philmd@linaro.org>
+References: <20250402210328.52897-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,230 +99,336 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+To avoid including the huge "cpu.h" for a simple definition,
+move TARGET_INSN_START_EXTRA_WORDS to "cpu-param.h".
 
-Here is my patch queue based on your tcg-next tree.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/arm/cpu-param.h        | 7 +++++++
+ target/arm/cpu.h              | 6 ------
+ target/hppa/cpu-param.h       | 2 ++
+ target/hppa/cpu.h             | 2 --
+ target/i386/cpu-param.h       | 2 ++
+ target/i386/cpu.h             | 2 --
+ target/m68k/cpu-param.h       | 2 ++
+ target/m68k/cpu.h             | 2 --
+ target/microblaze/cpu-param.h | 2 ++
+ target/microblaze/cpu.h       | 2 --
+ target/mips/cpu-param.h       | 2 ++
+ target/mips/cpu.h             | 2 --
+ target/openrisc/cpu-param.h   | 2 ++
+ target/openrisc/cpu.h         | 2 --
+ target/riscv/cpu-param.h      | 8 ++++++++
+ target/riscv/cpu.h            | 6 ------
+ target/s390x/cpu-param.h      | 2 ++
+ target/s390x/cpu.h            | 2 --
+ target/sh4/cpu-param.h        | 2 ++
+ target/sh4/cpu.h              | 2 --
+ target/sparc/cpu-param.h      | 2 ++
+ target/sparc/cpu.h            | 1 -
+ 22 files changed, 33 insertions(+), 29 deletions(-)
 
-Missing review: 38, 41, 43 (all news)
-
-Thanks,
-
-Phil.
-
-Philippe Mathieu-Daudé (43):
-  tcg: Declare TARGET_INSN_START_EXTRA_WORDS in 'cpu-param.h'
-  tcg: Always define TARGET_INSN_START_EXTRA_WORDS
-  hw/core/cpu: Update CPUClass::mmu_index docstring
-  accel/tcg: Introduce TCGCPUOps::mmu_index() callback
-  target/alpha: Restrict SoftMMU mmu_index() to TCG
-  target/arm: Restrict SoftMMU mmu_index() to TCG
-  target/avr: Restrict SoftMMU mmu_index() to TCG
-  target/hppa: Restrict SoftMMU mmu_index() to TCG
-  target/i386: Remove unused cpu_(ldub,stb)_kernel macros
-  target/i386: Restrict cpu_mmu_index_kernel() to TCG
-  target/i386: Restrict SoftMMU mmu_index() to TCG
-  target/loongarch: Restrict SoftMMU mmu_index() to TCG
-  target/m68k: Restrict SoftMMU mmu_index() to TCG
-  target/microblaze: Restrict SoftMMU mmu_index() to TCG
-  target/mips: Restrict SoftMMU mmu_index() to TCG
-  target/openrisc: Restrict SoftMMU mmu_index() to TCG
-  target/ppc: Restrict SoftMMU mmu_index() to TCG
-  target/riscv: Restrict SoftMMU mmu_index() to TCG
-  target/rx: Fix copy/paste typo (riscv -> rx)
-  target/rx: Restrict SoftMMU mmu_index() to TCG
-  target/s390x: Restrict SoftMMU mmu_index() to TCG
-  target/sh4: Restrict SoftMMU mmu_index() to TCG
-  target/sparc: Restrict SoftMMU mmu_index() to TCG
-  target/tricore: Restrict SoftMMU mmu_index() to TCG
-  target/xtensa: Restrict SoftMMU mmu_index() to TCG
-  hw/core/cpu: Remove CPUClass::mmu_index()
-  exec: Restrict cpu-mmu-index.h to accel/tcg/
-  exec: Restrict 'cpu-ldst-common.h' to accel/tcg/
-  exec: Restrict 'cpu_ldst.h' to accel/tcg/
-  exec: Do not include 'accel/tcg/cpu-ldst.h' in 'exec-all.h'
-  tcg: Always define TCG_GUEST_DEFAULT_MO
-  tcg: Simplify tcg_req_mo() macro
-  tcg: Define guest_default_memory_order in TCGCPUOps
-  tcg: Remove use of TCG_GUEST_DEFAULT_MO in tb_gen_code()
-  tcg: Propagate CPUState argument to cpu_req_mo()
-  tcg: Have tcg_req_mo() use TCGCPUOps::guest_default_memory_order
-  tcg: Remove the TCG_GUEST_DEFAULT_MO definition globally
-  tcg: Move cpu_req_mo() macro to target-agnostic 'backend-ldst.h'
-  tcg: Move qemu_tcg_mttcg_enabled() to 'system/tcg.h'
-  tcg: Convert TCGState::mttcg_enabled to TriState
-  tcg: Factor mttcg_init() out
-  tcg: Convert TARGET_SUPPORTS_MTTCG to TCGCPUOps::mttcg_supported field
-  target/arm: Update comment around cpu_untagged_addr()
-
- docs/devel/multi-thread-tcg.rst               |  6 +-
- configs/targets/aarch64-softmmu.mak           |  1 -
- configs/targets/alpha-softmmu.mak             |  1 -
- configs/targets/arm-softmmu.mak               |  1 -
- configs/targets/hppa-softmmu.mak              |  1 -
- configs/targets/i386-softmmu.mak              |  1 -
- configs/targets/loongarch64-softmmu.mak       |  1 -
- configs/targets/microblaze-softmmu.mak        |  1 -
- configs/targets/microblazeel-softmmu.mak      |  1 -
- configs/targets/mips-softmmu.mak              |  1 -
- configs/targets/mipsel-softmmu.mak            |  1 -
- configs/targets/or1k-softmmu.mak              |  1 -
- configs/targets/ppc64-softmmu.mak             |  1 -
- configs/targets/riscv32-softmmu.mak           |  1 -
- configs/targets/riscv64-softmmu.mak           |  1 -
- configs/targets/s390x-softmmu.mak             |  1 -
- configs/targets/sparc-softmmu.mak             |  1 -
- configs/targets/sparc64-softmmu.mak           |  1 -
- configs/targets/x86_64-softmmu.mak            |  1 -
- configs/targets/xtensa-softmmu.mak            |  1 -
- configs/targets/xtensaeb-softmmu.mak          |  1 -
- accel/tcg/backend-ldst.h                      | 41 +++++++++
- accel/tcg/internal-common.h                   | 27 ++++++
- accel/tcg/internal-target.h                   | 35 --------
- bsd-user/qemu.h                               |  2 +-
- include/{exec => accel/tcg}/cpu-ldst-common.h |  6 +-
- .../{exec/cpu_ldst.h => accel/tcg/cpu-ldst.h} | 10 +--
- include/{exec => accel/tcg}/cpu-mmu-index.h   |  9 +-
- include/accel/tcg/cpu-ops.h                   | 19 +++++
- include/exec/exec-all.h                       |  3 -
- include/exec/poison.h                         |  1 -
- include/hw/core/cpu.h                         | 12 ---
- include/system/tcg.h                          |  8 ++
- include/tcg/insn-start-words.h                |  4 -
- include/tcg/tcg-op.h                          |  2 +-
- linux-user/qemu.h                             |  2 +-
- target/alpha/cpu-param.h                      |  3 +-
- target/arm/cpu-param.h                        |  8 +-
- target/arm/cpu.h                              |  8 +-
- target/arm/internals.h                        |  1 +
- target/arm/tcg/sve_ldst_internal.h            |  2 +-
- target/avr/cpu-param.h                        |  2 +-
- target/hexagon/cpu-param.h                    |  2 +
- target/hppa/cpu-param.h                       |  8 +-
- target/hppa/cpu.h                             |  2 -
- target/i386/cpu-param.h                       |  3 +-
- target/i386/cpu.h                             |  5 --
- target/i386/tcg/seg_helper.h                  | 10 +--
- target/i386/tcg/tcg-cpu.h                     |  2 +
- target/loongarch/cpu-param.h                  |  2 +-
- target/m68k/cpu-param.h                       |  2 +
- target/m68k/cpu.h                             |  2 -
- target/microblaze/cpu-param.h                 |  3 +-
- target/microblaze/cpu.h                       |  2 -
- target/mips/cpu-param.h                       |  2 +-
- target/mips/cpu.h                             |  2 -
- target/openrisc/cpu-param.h                   |  2 +-
- target/openrisc/cpu.h                         |  2 -
- target/ppc/cpu-param.h                        |  2 +-
- target/riscv/cpu-param.h                      | 10 ++-
- target/riscv/cpu.h                            |  6 --
- target/rx/cpu-param.h                         |  2 +
- target/s390x/cpu-param.h                      |  6 +-
- target/s390x/cpu.h                            |  2 -
- target/sh4/cpu-param.h                        |  2 +
- target/sh4/cpu.h                              |  2 -
- target/sparc/cpu-param.h                      | 23 +----
- target/sparc/cpu.h                            |  1 -
- target/tricore/cpu-param.h                    |  2 +
- target/xtensa/cpu-param.h                     |  3 +-
- accel/tcg/cpu-exec.c                          |  2 +
- accel/tcg/cputlb.c                            | 23 ++---
- accel/tcg/tcg-all.c                           | 84 +++++++++++--------
- accel/tcg/translate-all.c                     |  6 +-
- accel/tcg/translator.c                        |  4 +-
- accel/tcg/user-exec.c                         | 23 ++---
- semihosting/uaccess.c                         |  2 +-
- target/alpha/cpu.c                            |  6 +-
- target/alpha/mem_helper.c                     |  2 +-
- target/arm/cpu.c                              | 17 ++--
- target/arm/gdbstub64.c                        |  2 +-
- target/arm/tcg/cpu-v7m.c                      |  5 ++
- target/arm/tcg/helper-a64.c                   |  2 +-
- target/arm/tcg/m_helper.c                     |  2 +-
- target/arm/tcg/mte_helper.c                   |  2 +-
- target/arm/tcg/mve_helper.c                   |  2 +-
- target/arm/tcg/op_helper.c                    |  2 +-
- target/arm/tcg/pauth_helper.c                 |  2 +-
- target/arm/tcg/sme_helper.c                   |  2 +-
- target/arm/tcg/sve_helper.c                   |  1 +
- target/avr/cpu.c                              |  4 +-
- target/avr/helper.c                           |  2 +-
- target/hexagon/cpu.c                          |  3 +
- target/hexagon/op_helper.c                    |  2 +-
- target/hexagon/translate.c                    |  2 +-
- target/hppa/cpu.c                             | 11 ++-
- target/hppa/mem_helper.c                      |  2 +-
- target/hppa/op_helper.c                       |  2 +-
- target/i386/cpu.c                             | 34 --------
- target/i386/tcg/access.c                      |  2 +-
- target/i386/tcg/fpu_helper.c                  |  2 +-
- target/i386/tcg/mem_helper.c                  |  2 +-
- target/i386/tcg/mpx_helper.c                  |  2 +-
- target/i386/tcg/seg_helper.c                  | 19 ++++-
- target/i386/tcg/system/excp_helper.c          |  2 +-
- target/i386/tcg/system/misc_helper.c          |  2 +-
- target/i386/tcg/system/seg_helper.c           |  2 +-
- target/i386/tcg/system/svm_helper.c           |  2 +-
- target/i386/tcg/tcg-cpu.c                     | 23 +++++
- target/i386/tcg/translate.c                   |  2 +-
- target/i386/tcg/user/seg_helper.c             |  2 +-
- target/loongarch/cpu.c                        |  7 +-
- target/loongarch/cpu_helper.c                 |  2 +-
- target/loongarch/tcg/csr_helper.c             |  2 +-
- target/loongarch/tcg/fpu_helper.c             |  2 +-
- target/loongarch/tcg/iocsr_helper.c           |  2 +-
- target/loongarch/tcg/op_helper.c              |  2 +-
- target/loongarch/tcg/tlb_helper.c             |  2 +-
- target/m68k/cpu.c                             |  6 +-
- target/m68k/fpu_helper.c                      |  2 +-
- target/m68k/op_helper.c                       |  2 +-
- target/microblaze/cpu.c                       |  8 +-
- target/microblaze/helper.c                    |  2 +-
- target/microblaze/mmu.c                       |  2 +-
- target/microblaze/op_helper.c                 |  2 +-
- target/microblaze/translate.c                 |  2 +-
- target/mips/cpu.c                             |  5 +-
- target/mips/tcg/ldst_helper.c                 |  2 +-
- target/mips/tcg/msa_helper.c                  |  2 +-
- target/mips/tcg/system/tlb_helper.c           |  2 +-
- target/openrisc/cpu.c                         |  5 +-
- target/openrisc/translate.c                   |  2 +-
- target/ppc/cpu_init.c                         |  5 +-
- target/ppc/mem_helper.c                       |  2 +-
- target/ppc/mmu_helper.c                       |  2 +-
- target/ppc/tcg-excp_helper.c                  |  2 +-
- target/riscv/cpu.c                            |  6 --
- target/riscv/op_helper.c                      |  2 +-
- target/riscv/tcg/tcg-cpu.c                    | 10 +++
- target/riscv/vector_helper.c                  |  2 +-
- target/riscv/zce_helper.c                     |  2 +-
- target/rx/cpu.c                               |  8 +-
- target/rx/helper.c                            |  2 +-
- target/rx/op_helper.c                         |  2 +-
- target/s390x/cpu.c                            |  9 +-
- target/s390x/tcg/crypto_helper.c              |  2 +-
- target/s390x/tcg/int_helper.c                 |  2 +-
- target/s390x/tcg/mem_helper.c                 |  2 +-
- target/s390x/tcg/misc_helper.c                |  2 +-
- target/s390x/tcg/vec_helper.c                 |  2 +-
- target/sh4/cpu.c                              |  6 +-
- target/sh4/op_helper.c                        |  2 +-
- target/sparc/cpu.c                            | 28 ++++++-
- target/sparc/int32_helper.c                   |  2 +-
- target/sparc/ldst_helper.c                    |  2 +-
- target/sparc/mmu_helper.c                     |  2 +-
- target/tricore/cpu.c                          |  5 +-
- target/tricore/helper.c                       |  2 +-
- target/tricore/op_helper.c                    |  2 +-
- target/tricore/translate.c                    |  2 +-
- target/xtensa/cpu.c                           |  6 +-
- target/xtensa/mmu_helper.c                    |  2 +-
- tcg/region.c                                  |  4 +-
- 163 files changed, 472 insertions(+), 378 deletions(-)
- create mode 100644 accel/tcg/backend-ldst.h
- rename include/{exec => accel/tcg}/cpu-ldst-common.h (97%)
- rename include/{exec/cpu_ldst.h => accel/tcg/cpu-ldst.h} (99%)
- rename include/{exec => accel/tcg}/cpu-mmu-index.h (78%)
-
+diff --git a/target/arm/cpu-param.h b/target/arm/cpu-param.h
+index a7ae42d17dc..2cee4be6938 100644
+--- a/target/arm/cpu-param.h
++++ b/target/arm/cpu-param.h
+@@ -37,6 +37,13 @@
+ # define TARGET_PAGE_BITS_LEGACY 10
+ #endif /* !CONFIG_USER_ONLY */
+ 
++/*
++ * ARM-specific extra insn start words:
++ * 1: Conditional execution bits
++ * 2: Partial exception syndrome for data aborts
++ */
++#define TARGET_INSN_START_EXTRA_WORDS 2
++
+ /* ARM processors have a weak memory model */
+ #define TCG_GUEST_DEFAULT_MO      (0)
+ 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index c1a0faed3ad..3705b34285b 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -98,12 +98,6 @@
+ #define offsetofhigh32(S, M) (offsetof(S, M) + sizeof(uint32_t))
+ #endif
+ 
+-/* ARM-specific extra insn start words:
+- * 1: Conditional execution bits
+- * 2: Partial exception syndrome for data aborts
+- */
+-#define TARGET_INSN_START_EXTRA_WORDS 2
+-
+ /* The 2nd extra word holding syndrome info for data aborts does not use
+  * the upper 6 bits nor the lower 13 bits. We mask and shift it down to
+  * help the sleb128 encoder do a better job.
+diff --git a/target/hppa/cpu-param.h b/target/hppa/cpu-param.h
+index 7ed6b5741e7..68ed84e84af 100644
+--- a/target/hppa/cpu-param.h
++++ b/target/hppa/cpu-param.h
+@@ -19,6 +19,8 @@
+ 
+ #define TARGET_PAGE_BITS 12
+ 
++#define TARGET_INSN_START_EXTRA_WORDS 2
++
+ /* PA-RISC 1.x processors have a strong memory model.  */
+ /*
+  * ??? While we do not yet implement PA-RISC 2.0, those processors have
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 2269d1c1064..1c8b610647b 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -48,8 +48,6 @@
+ #define PRIV_KERNEL       0
+ #define PRIV_USER         3
+ 
+-#define TARGET_INSN_START_EXTRA_WORDS 2
+-
+ /* No need to flush MMU_ABS*_IDX  */
+ #define HPPA_MMU_FLUSH_MASK                             \
+         (1 << MMU_KERNEL_IDX | 1 << MMU_KERNEL_P_IDX |  \
+diff --git a/target/i386/cpu-param.h b/target/i386/cpu-param.h
+index b0e884c5d70..0c8efce8619 100644
+--- a/target/i386/cpu-param.h
++++ b/target/i386/cpu-param.h
+@@ -22,6 +22,8 @@
+ #endif
+ #define TARGET_PAGE_BITS 12
+ 
++#define TARGET_INSN_START_EXTRA_WORDS 1
++
+ /* The x86 has a strong memory model with some store-after-load re-ordering */
+ #define TCG_GUEST_DEFAULT_MO      (TCG_MO_ALL & ~TCG_MO_ST_LD)
+ 
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 44ee263d8f1..ad14e22224e 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1610,8 +1610,6 @@ typedef struct {
+ #define MAX_FIXED_COUNTERS 3
+ #define MAX_GP_COUNTERS    (MSR_IA32_PERF_STATUS - MSR_P6_EVNTSEL0)
+ 
+-#define TARGET_INSN_START_EXTRA_WORDS 1
+-
+ #define NB_OPMASK_REGS 8
+ 
+ /* CPU can't have 0xFFFFFFFF APIC ID, use that value to distinguish
+diff --git a/target/m68k/cpu-param.h b/target/m68k/cpu-param.h
+index 7afbf6d302d..256a2b5f8b2 100644
+--- a/target/m68k/cpu-param.h
++++ b/target/m68k/cpu-param.h
+@@ -17,4 +17,6 @@
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #define TARGET_VIRT_ADDR_SPACE_BITS 32
+ 
++#define TARGET_INSN_START_EXTRA_WORDS 1
++
+ #endif
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index 0b70e8c6ab6..39d0b9d6d73 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -78,8 +78,6 @@
+ #define M68K_MAX_TTR 2
+ #define TTR(type, index) ttr[((type & ACCESS_CODE) == ACCESS_CODE) * 2 + index]
+ 
+-#define TARGET_INSN_START_EXTRA_WORDS 1
+-
+ typedef CPU_LDoubleU FPReg;
+ 
+ typedef struct CPUArchState {
+diff --git a/target/microblaze/cpu-param.h b/target/microblaze/cpu-param.h
+index c866ec6c149..5d55e0e3c4a 100644
+--- a/target/microblaze/cpu-param.h
++++ b/target/microblaze/cpu-param.h
+@@ -27,6 +27,8 @@
+ /* FIXME: MB uses variable pages down to 1K but linux only uses 4k.  */
+ #define TARGET_PAGE_BITS 12
+ 
++#define TARGET_INSN_START_EXTRA_WORDS 1
++
+ /* MicroBlaze is always in-order. */
+ #define TCG_GUEST_DEFAULT_MO  TCG_MO_ALL
+ 
+diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
+index 2bfa396c96d..d511f22a559 100644
+--- a/target/microblaze/cpu.h
++++ b/target/microblaze/cpu.h
+@@ -233,8 +233,6 @@ typedef struct CPUArchState CPUMBState;
+ #define STREAM_CONTROL   (1 << 3)
+ #define STREAM_NONBLOCK  (1 << 4)
+ 
+-#define TARGET_INSN_START_EXTRA_WORDS 1
+-
+ /* use-non-secure property masks */
+ #define USE_NON_SECURE_M_AXI_DP_MASK 0x1
+ #define USE_NON_SECURE_M_AXI_IP_MASK 0x2
+diff --git a/target/mips/cpu-param.h b/target/mips/cpu-param.h
+index 8fcb1b4f5f2..99ca8d1684c 100644
+--- a/target/mips/cpu-param.h
++++ b/target/mips/cpu-param.h
+@@ -20,6 +20,8 @@
+ #endif
+ #define TARGET_PAGE_BITS 12
+ 
++#define TARGET_INSN_START_EXTRA_WORDS 2
++
+ #define TCG_GUEST_DEFAULT_MO (0)
+ 
+ #endif
+diff --git a/target/mips/cpu.h b/target/mips/cpu.h
+index 20f31370bcb..d16f9a7220e 100644
+--- a/target/mips/cpu.h
++++ b/target/mips/cpu.h
+@@ -100,8 +100,6 @@ struct CPUMIPSFPUContext {
+ #define FP_UNIMPLEMENTED  32
+ };
+ 
+-#define TARGET_INSN_START_EXTRA_WORDS 2
+-
+ typedef struct CPUMIPSMVPContext CPUMIPSMVPContext;
+ struct CPUMIPSMVPContext {
+     int32_t CP0_MVPControl;
+diff --git a/target/openrisc/cpu-param.h b/target/openrisc/cpu-param.h
+index 37627f2c394..7ea0ecb55a6 100644
+--- a/target/openrisc/cpu-param.h
++++ b/target/openrisc/cpu-param.h
+@@ -12,6 +12,8 @@
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #define TARGET_VIRT_ADDR_SPACE_BITS 32
+ 
++#define TARGET_INSN_START_EXTRA_WORDS 1
++
+ #define TCG_GUEST_DEFAULT_MO (0)
+ 
+ #endif
+diff --git a/target/openrisc/cpu.h b/target/openrisc/cpu.h
+index 19ee85ff5a0..569819bfb0b 100644
+--- a/target/openrisc/cpu.h
++++ b/target/openrisc/cpu.h
+@@ -40,8 +40,6 @@ struct OpenRISCCPUClass {
+     ResettablePhases parent_phases;
+ };
+ 
+-#define TARGET_INSN_START_EXTRA_WORDS 1
+-
+ enum {
+     MMU_NOMMU_IDX = 0,
+     MMU_SUPERVISOR_IDX = 1,
+diff --git a/target/riscv/cpu-param.h b/target/riscv/cpu-param.h
+index fba30e966a8..ff4ba81965a 100644
+--- a/target/riscv/cpu-param.h
++++ b/target/riscv/cpu-param.h
+@@ -16,6 +16,14 @@
+ # define TARGET_VIRT_ADDR_SPACE_BITS 32 /* sv32 */
+ #endif
+ #define TARGET_PAGE_BITS 12 /* 4 KiB Pages */
++
++/*
++ * RISC-V-specific extra insn start words:
++ * 1: Original instruction opcode
++ * 2: more information about instruction
++ */
++#define TARGET_INSN_START_EXTRA_WORDS 2
++
+ /*
+  * The current MMU Modes are:
+  *  - U mode 0b000
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 867e539b53a..167909c89bc 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -45,12 +45,6 @@ typedef struct CPUArchState CPURISCVState;
+ # define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
+ #endif
+ 
+-/*
+- * RISC-V-specific extra insn start words:
+- * 1: Original instruction opcode
+- * 2: more information about instruction
+- */
+-#define TARGET_INSN_START_EXTRA_WORDS 2
+ /*
+  * b0: Whether a instruction always raise a store AMO or not.
+  */
+diff --git a/target/s390x/cpu-param.h b/target/s390x/cpu-param.h
+index 5c331ec424c..a8a4377f4ff 100644
+--- a/target/s390x/cpu-param.h
++++ b/target/s390x/cpu-param.h
+@@ -12,6 +12,8 @@
+ #define TARGET_PHYS_ADDR_SPACE_BITS 64
+ #define TARGET_VIRT_ADDR_SPACE_BITS 64
+ 
++#define TARGET_INSN_START_EXTRA_WORDS 2
++
+ /*
+  * The z/Architecture has a strong memory model with some
+  * store-after-load re-ordering.
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index 940eda8dd12..90f64ee20cc 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -37,8 +37,6 @@
+ 
+ #define TARGET_HAS_PRECISE_SMC
+ 
+-#define TARGET_INSN_START_EXTRA_WORDS 2
+-
+ #define MMU_USER_IDX 0
+ 
+ #define S390_MAX_CPUS 248
+diff --git a/target/sh4/cpu-param.h b/target/sh4/cpu-param.h
+index 2b6e11dd0ac..f328715ee86 100644
+--- a/target/sh4/cpu-param.h
++++ b/target/sh4/cpu-param.h
+@@ -16,4 +16,6 @@
+ # define TARGET_VIRT_ADDR_SPACE_BITS 32
+ #endif
+ 
++#define TARGET_INSN_START_EXTRA_WORDS 1
++
+ #endif
+diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
+index 7752a0c2e1a..906f99ddf00 100644
+--- a/target/sh4/cpu.h
++++ b/target/sh4/cpu.h
+@@ -127,8 +127,6 @@ typedef struct tlb_t {
+ #define UTLB_SIZE 64
+ #define ITLB_SIZE 4
+ 
+-#define TARGET_INSN_START_EXTRA_WORDS 1
+-
+ enum sh_features {
+     SH_FEATURE_SH4A = 1,
+     SH_FEATURE_BCR3_AND_BCR4 = 2,
+diff --git a/target/sparc/cpu-param.h b/target/sparc/cpu-param.h
+index 6952ee2b826..62d47b804bb 100644
+--- a/target/sparc/cpu-param.h
++++ b/target/sparc/cpu-param.h
+@@ -21,6 +21,8 @@
+ # define TARGET_VIRT_ADDR_SPACE_BITS 32
+ #endif
+ 
++#define TARGET_INSN_START_EXTRA_WORDS 1
++
+ /*
+  * From Oracle SPARC Architecture 2015:
+  *
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index 734dfdb1d3d..83ac818933b 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -223,7 +223,6 @@ typedef struct trap_state {
+     uint32_t tt;
+ } trap_state;
+ #endif
+-#define TARGET_INSN_START_EXTRA_WORDS 1
+ 
+ typedef struct sparc_def_t {
+     const char *name;
 -- 
 2.47.1
 
