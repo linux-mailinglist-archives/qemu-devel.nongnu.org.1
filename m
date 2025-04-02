@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FEE3A7971B
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A428EA79718
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:06:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u05Gy-0005ss-L8; Wed, 02 Apr 2025 17:05:20 -0400
+	id 1u05HO-0006Bh-JN; Wed, 02 Apr 2025 17:05:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Gc-0005Jy-J7
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:05:00 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Gj-0005SR-2V
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:05:06 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Ga-0006FU-Vn
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:04:58 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43690d4605dso1294995e9.0
- for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:04:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Gh-0006GV-DS
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:05:04 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-39c13fa05ebso164055f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743627895; x=1744232695; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743627901; x=1744232701; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nb+c/Z4w3wqEwv6YT3XISFL6Vm6o+2eT8WWgkU5k0OE=;
- b=vgJlgC7y5UIVyv/v3B8K0nyOeczFssdSDnrmzZopavcbtKEUr9g81uq2K+qcHs9Cro
- iNQvD5Xc64g9YJt3tPU7JfO+Pl0iCxvfXz5RBR/wnkjtowMtQxs/74kTEL1WUVhImo2+
- FiY/zxeGX8+zoMOgd+QQMGn0FJzebaRgRB6T7HjMWvg7Y8B/9uq+phkSPzCgo/xRZw1A
- POxMwmsuYfZfEuZRPf8n3GUiLRdTpZcuW1SJnz/hg2hEPqJAtyhIU90ZfU0q7rGeocBu
- F1mE2bxQ5uHTNSGrcGqhLzLoJOni/SNR99HIQnvxTVG+xnelTYIOlWQ8SnXhtgxWWqa2
- UYGA==
+ :reply-to; bh=CWC4luGIs4rwgDiOpPSKAfYrqZ1/3M59pzf9+63JVic=;
+ b=PI+W9E7ol8ekdY42Jq5MccTtbNqtXkIGSNeLNu/zD/wJt+3xn15YaCTtR9y2RFiR2/
+ zE8bUZSigKSowOFds8DKJR7XCZOU4bVFMEm1lwGWxkWDMC4SkFzYodplV4JX8M2v04MZ
+ 2T0GqOYtxSe8+7j2iAUP9holSFQwBOtkH7j9ahVjyhcdt4YDcemrat1pPNOnmDHqDlGi
+ ORrRfOitSb26JN+Gv4hb0w5zaFgVCe40JItoF0LqFIqC7yIGB2JT8g4VC8HmBwVugEt2
+ /mhlPfhjpHkKht4zkG/Vc+o2CZ6z/lv2kpY9FcWWV3/WJ7JNl44R7dtffDDgSDWGgydk
+ HP3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743627895; x=1744232695;
+ d=1e100.net; s=20230601; t=1743627901; x=1744232701;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nb+c/Z4w3wqEwv6YT3XISFL6Vm6o+2eT8WWgkU5k0OE=;
- b=sMjndvfcB+5Ifb1F3xJO2jbrpl7fcM2IYirYe/Ir7bZ9ZSxRK8sL74eSVDSf/pIzbT
- EihQUhEbQr0LCNv0e5CUYRdZwmqn3YXIOstAFC5glgX0AbIpfvdoBffTFuBntetzvWzQ
- tsCsC5His0LLw9RJIZZ6fzAs868LMeIrcJWNRYEUIOlYSZao6QOGdPf+WR7XVJmRAQsu
- nJBcFcOC6rF6LhxWFzK3Hhx9DTq6VljmhSP7MoMzyx8BDpmVVGvTeGRteYs5L3+ylCgo
- tT2JN2YozqvIa6KhNk2aIxvc1dT/Z/OmWdJ5Kjl5Zp5OrjqGxKScGFWWX3y/UjIzdZwn
- N5vQ==
+ bh=CWC4luGIs4rwgDiOpPSKAfYrqZ1/3M59pzf9+63JVic=;
+ b=p4uA1S1dFy5ZVwcyb7VeF4rCbGvcI7Za2nyuGvnJrlpLFWdkPVgEEza9hpZ/o9+xOI
+ quqlU6x5XOd7ESe6q/LdFyBwUGXg8WTZ+q6ip7c/x50JDTePePOqlxRSG0x/2d3z26Ba
+ pSaM25VlVBXcC2RJ6vuUB78dzDkmXg6+dFhPY8abjAYS7Sp9qYYL8bUNfQ5EFDYO7/sH
+ YGJR5QFW0skhsh5PZzayrrLU5RuJzdgwVRq49s559GE9r83jbO7+rqYtIKJiwHA2SSv5
+ bwNl66i4htxZWyCLFovscs/FgQ7wZvNS1+E1QCoRq/MlX5RIZlUnDltjVIS3JQstxkjL
+ ku8g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWMVXcD0VKPn2kVqcAeu8USR9ps0G7xyphJREUp+XkuFbFg3ZqlkvRLc300CO+esYkiD1fUIBqIfhuf@nongnu.org
-X-Gm-Message-State: AOJu0Yx+XLS0F70v2z2rf4WbZdEsELnAnrZrMwqKUzET8fq25yFp/CZ8
- BuVotDRgEc7ymjmZFE3LtG9k4iezOgPaO0UAzf37UdYeDFsYH5xA595gKoUfOSJXEkiHQmP4MKt
- q
-X-Gm-Gg: ASbGnct0wVB116AcTA4gJyf5ILm8H77MRGrQJy4cpud1cxH1J5AWVZCZvav0BRzkTyE
- K64WFzbFmkc/rIJGBrbZTl23YCgyuMmKaE1WOWro1EfbDzoZTxr4BAYmhdc7UPBMALG/PC4XX7o
- +edx8QI4xPRts2eG4Ks0vSDwk1BtfIincfQv/q4H9b3bv9p/z+tc6UdGDY1bT/QWqa5Nc1+btLt
- RJWhenWEBXhqLO7KF28Xp2Yg4W6sNl2KxoOpqvxdU79+64d6XRtjmwwG4eUOo3MdLs2xLWHM7Sh
- bSv8L1xcDZYtQ6kZ1KlhS7875jpWUDIXbYJ/7W+aXdMR9vTiI+m+4Isy2B8ywyifjGHga2MSX92
- 8veaWH/hEjzMDvmKpaDE=
-X-Google-Smtp-Source: AGHT+IFTBucdF9FOJ2+WL466IfvlNe84U8kh/Pd7fMpb7I8ZuoBxZpQXdNfLoApqzcC8jX2HTttmDg==
-X-Received: by 2002:a05:600c:3d0a:b0:43c:f597:d584 with SMTP id
- 5b1f17b1804b1-43ec1532085mr2191695e9.29.1743627895461; 
- Wed, 02 Apr 2025 14:04:55 -0700 (PDT)
+ AJvYcCUuId5hmQ7UbPwgYNoCt0yvopVDB8Lq8eVry/WL0b6DuVdy27BFXz1Dcvbo19ZCJAYTRGRYM6O64Zhh@nongnu.org
+X-Gm-Message-State: AOJu0YwPPynE4mU8JQkfcR2KPZTftKcavGjkBxWkFl4GstPs6OYLJFK0
+ LucsoKrRcZUFs/TJzflKsXo0hRGusCIQieFfL2gHzF8YJ+zPv2BwnZV9zJJ/L4Y=
+X-Gm-Gg: ASbGncuQvQPi+oLGFQYipe+s9atsX/H+Hr2Z2VsM2uoMv5o/ucqVvyiQ26158KQeudp
+ MqBh7OsyVheWHvyuI8qCZKyzUWhhbcTQVGL/xZJDU+p04Pia0WaHsUHR6bADx75NPIi73TI3Y/L
+ qk1hMDd9XQRMYh8WNSjRx4aC+9pm7BTkYv1Ndm4ZNWT5KxRG2SWfr/IR2EIfuTpPsef7yVBioy3
+ awZXu0LmwHbryj5jI4BR4VoxcjMXiGN2XzemZ+y53GzR7W26u8m/uO4mJiUGwcbULrt9rshpwUI
+ L2zhhpjQyIc56hH87skoefNlcOMdoBMiSfB/QEKYj55OKrvA9iUsk36Y72rf6Bg7u1cJ5vQTKn2
+ Oc6z2xcwNHH8NbfUg5mQ=
+X-Google-Smtp-Source: AGHT+IEobvOrYKlo/wUoUy6KZ1O2vAfyvDc7dLRyrx7Exk7RoxVLlXAG/ThQUPmweJiHXk1at+AWMA==
+X-Received: by 2002:a5d:59af:0:b0:391:40bd:6222 with SMTP id
+ ffacd0b85a97d-39c2f8d3582mr128572f8f.22.1743627900788; 
+ Wed, 02 Apr 2025 14:05:00 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec1630de9sm2099945e9.1.2025.04.02.14.04.54
+ ffacd0b85a97d-39c0b79e0a3sm18136284f8f.71.2025.04.02.14.04.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Apr 2025 14:04:55 -0700 (PDT)
+ Wed, 02 Apr 2025 14:04:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
-Subject: [PATCH-for-10.1 18/43] target/riscv: Restrict SoftMMU mmu_index() to
- TCG
-Date: Wed,  2 Apr 2025 23:03:03 +0200
-Message-ID: <20250402210328.52897-19-philmd@linaro.org>
+Subject: [PATCH-for-10.1 19/43] target/rx: Fix copy/paste typo (riscv -> rx)
+Date: Wed,  2 Apr 2025 23:03:04 +0200
+Message-ID: <20250402210328.52897-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250402210328.52897-1-philmd@linaro.org>
 References: <20250402210328.52897-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,64 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move riscv_cpu_mmu_index() to the TCG-specific file,
-convert CPUClass::mmu_index() to TCGCPUOps::mmu_index().
+Rename riscv_cpu_mmu_index() -> rx_cpu_mmu_index().
 
+Fixes: ef5cc166da1 ("target/rx: Populate CPUClass.mmu_index")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/cpu.c         | 6 ------
- target/riscv/tcg/tcg-cpu.c | 6 ++++++
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ target/rx/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index c7c5d082ffa..ad534cee51f 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1019,11 +1019,6 @@ bool riscv_cpu_has_work(CPUState *cs)
+diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+index 65e26e7a6b6..723262f4b54 100644
+--- a/target/rx/cpu.c
++++ b/target/rx/cpu.c
+@@ -67,7 +67,7 @@ static bool rx_cpu_has_work(CPUState *cs)
+         (CPU_INTERRUPT_HARD | CPU_INTERRUPT_FIR);
  }
- #endif /* !CONFIG_USER_ONLY */
  
--static int riscv_cpu_mmu_index(CPUState *cs, bool ifetch)
--{
--    return riscv_env_mmu_index(cpu_env(cs), ifetch);
--}
--
- static void riscv_cpu_reset_hold(Object *obj, ResetType type)
+-static int riscv_cpu_mmu_index(CPUState *cs, bool ifunc)
++static int rx_cpu_mmu_index(CPUState *cs, bool ifunc)
  {
- #ifndef CONFIG_USER_ONLY
-@@ -3047,7 +3042,6 @@ static void riscv_cpu_common_class_init(ObjectClass *c, void *data)
-                                        &mcc->parent_phases);
+     return 0;
+ }
+@@ -228,7 +228,7 @@ static void rx_cpu_class_init(ObjectClass *klass, void *data)
+                                        &rcc->parent_phases);
  
-     cc->class_by_name = riscv_cpu_class_by_name;
+     cc->class_by_name = rx_cpu_class_by_name;
 -    cc->mmu_index = riscv_cpu_mmu_index;
-     cc->dump_state = riscv_cpu_dump_state;
-     cc->set_pc = riscv_cpu_set_pc;
-     cc->get_pc = riscv_cpu_get_pc;
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 778c4dcd703..5d0429b4d00 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -92,6 +92,11 @@ static const char *cpu_priv_ver_to_str(int priv_ver)
-     return priv_spec_str;
- }
- 
-+static int riscv_cpu_mmu_index(CPUState *cs, bool ifetch)
-+{
-+    return riscv_env_mmu_index(cpu_env(cs), ifetch);
-+}
-+
- static void riscv_cpu_synchronize_from_tb(CPUState *cs,
-                                           const TranslationBlock *tb)
- {
-@@ -139,6 +144,7 @@ static const TCGCPUOps riscv_tcg_ops = {
-     .translate_code = riscv_translate_code,
-     .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
-     .restore_state_to_opc = riscv_restore_state_to_opc,
-+    .mmu_index = riscv_cpu_mmu_index,
- 
- #ifndef CONFIG_USER_ONLY
-     .tlb_fill = riscv_cpu_tlb_fill,
++    cc->mmu_index = rx_cpu_mmu_index;
+     cc->dump_state = rx_cpu_dump_state;
+     cc->set_pc = rx_cpu_set_pc;
+     cc->get_pc = rx_cpu_get_pc;
 -- 
 2.47.1
 
