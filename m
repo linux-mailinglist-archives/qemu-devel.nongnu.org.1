@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D79A78B2B
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 11:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7EF8A78B78
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 11:45:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzuW8-00017U-MN; Wed, 02 Apr 2025 05:36:16 -0400
+	id 1tzudk-0002lf-9C; Wed, 02 Apr 2025 05:44:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=yfRC=WU=kaod.org=clg@ozlabs.org>)
- id 1tzuVr-00015j-Do; Wed, 02 Apr 2025 05:36:02 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ id 1tzudg-0002kx-F4; Wed, 02 Apr 2025 05:44:04 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=yfRC=WU=kaod.org=clg@ozlabs.org>)
- id 1tzuVp-0007f5-7n; Wed, 02 Apr 2025 05:35:59 -0400
+ id 1tzudd-00025r-UZ; Wed, 02 Apr 2025 05:44:04 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZSKVb1BT3z4x3p;
- Wed,  2 Apr 2025 20:35:51 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZSKgv59sLz4x3p;
+ Wed,  2 Apr 2025 20:43:55 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZSKVW0fvnz4wbx;
- Wed,  2 Apr 2025 20:35:46 +1100 (AEDT)
-Message-ID: <e2a8770c-d206-441e-9542-9616531e263c@kaod.org>
-Date: Wed, 2 Apr 2025 11:35:44 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZSKgq4qvgz4wbc;
+ Wed,  2 Apr 2025 20:43:51 +1100 (AEDT)
+Message-ID: <43581924-e627-427c-b290-05f473877c41@kaod.org>
+Date: Wed, 2 Apr 2025 11:43:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 09/22] hw/misc/aspeed_hace: Ensure HASH_IRQ is always
- set to prevent firmware hang
+Subject: Re: [PATCH v1 14/22] test/qtest/hace: Adjust test address range for
+ AST1030 due to SRAM limitations
 To: Jamin Lin <jamin_lin@aspeedtech.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
@@ -41,7 +41,7 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 Cc: troy_lee@aspeedtech.com
 References: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
- <20250321092623.2097234-10-jamin_lin@aspeedtech.com>
+ <20250321092623.2097234-15-jamin_lin@aspeedtech.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -86,16 +86,17 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250321092623.2097234-10-jamin_lin@aspeedtech.com>
+In-Reply-To: <20250321092623.2097234-15-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=yfRC=WU=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
  HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,75 +114,136 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/21/25 10:26, Jamin Lin wrote:
-> Currently, if the program encounters an unsupported algorithm, it does not set
-> the HASH_IRQ bit in the status register and send an interrupt to indicate
-> command completion. As a result, the FW gets stuck waiting for a completion
-> signal from the HACE module.
+> The digest_addr is set to "src_addr + 0x1000000", where src_addr is the DRAM
+> base address. However, the value 0x1000000 (16MB) is too large because the
+> AST1030 does not support DRAM, and its SRAM size is only 768KB.
 > 
-> Additionally, in do_hash_operation, if an error occurs within the conditional
-> statement, the HASH_IRQ bit is not set in the status register. This causes the
-> firmware to continuously send HASH commands, as it is unaware that the HACE
-> model has completed processing the command.
+> A range size of 0x1000 (64KB) is sufficient for HACE test cases, as the test
+> vector size does not exceed 64KB.
 > 
-> To fix this, the HASH_IRQ bit in the status register must always be set to
-> ensure that the firmware receives an interrupt from the HACE module, preventing
-> it from getting stuck or repeatedly sending HASH commands.
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> Updates:
+> 1. Direct Access Mode
+> Update digest_addr to "src_addr + 0x1000" in the following functions:
 
-Should we add a 'Fixes' trailer ?
+The change does src_addr + 0x10000. Can you please adjust the commit log
+or the code ?
 
-> ---
->   hw/misc/aspeed_hace.c | 18 +++++++++---------
->   1 file changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-> index 8f333fc97e..d4f653670e 100644
-> --- a/hw/misc/aspeed_hace.c
-> +++ b/hw/misc/aspeed_hace.c
-> @@ -311,12 +311,6 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
->                               iov[i - 1].iov_len, false,
->                               iov[i - 1].iov_len);
->       }
-> -
-> -    /*
-> -     * Set status bits to indicate completion. Testing shows hardware sets
-> -     * these irrespective of HASH_IRQ_EN.
-> -     */
-> -    s->regs[R_STATUS] |= HASH_IRQ;
->   }
->   
->   static uint64_t aspeed_hace_read(void *opaque, hwaddr addr, unsigned int size)
-> @@ -400,10 +394,16 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
->                   qemu_log_mask(LOG_GUEST_ERROR,
->                           "%s: Invalid hash algorithm selection 0x%"PRIx64"\n",
->                           __func__, data & ahc->hash_mask);
-> -                break;
-> +        } else {
-> +            do_hash_operation(s, algo, data & HASH_SG_EN,
-> +                    ((data & HASH_HMAC_MASK) == HASH_DIGEST_ACCUM));
->           }
-> -        do_hash_operation(s, algo, data & HASH_SG_EN,
-> -                ((data & HASH_HMAC_MASK) == HASH_DIGEST_ACCUM));
-> +
-> +        /*
-> +         * Set status bits to indicate completion. Testing shows hardware sets
-> +         * these irrespective of HASH_IRQ_EN.
-
-is that still true on the AST2700 SoC ?
-
-> +         */
-> +        s->regs[R_STATUS] |= HASH_IRQ;
->   >           if (data & HASH_IRQ_EN) {
->               qemu_irq_raise(s->irq);
-
-
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
 
+
+
+> aspeed_test_md5
+> aspeed_test_sha256
+> aspeed_test_sha512
+> 
+> 2. Scatter-Gather (SG) Mode
+> Update source address for different SG buffer addresses in the following
+> functions:
+> src_addr1 = src_addr + 0x1000
+> src_addr2 = src_addr + 0x2000
+> src_addr3 = src_addr + 0x3000
+> digest_addr = src_addr + 0x4000
+> 
+> aspeed_test_sha256_sg
+> aspeed_test_sha512_sg
+> 
+> 3. ACC Mode Update
+> Update the SG List start address: src_addr + 0x10000
+> Update the SG List buffer size to 0x3000 (192KB).
+> 
+> buffer_addr = src_addr + 0x10000
+> digest_addr = src_addr + 0x40000
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> ---
+>   tests/qtest/aspeed-hace-utils.c | 30 +++++++++++++++---------------
+>   1 file changed, 15 insertions(+), 15 deletions(-)
+> 
+> diff --git a/tests/qtest/aspeed-hace-utils.c b/tests/qtest/aspeed-hace-utils.c
+> index 8582847945..8fbbba49c1 100644
+> --- a/tests/qtest/aspeed-hace-utils.c
+> +++ b/tests/qtest/aspeed-hace-utils.c
+> @@ -132,7 +132,7 @@ void aspeed_test_md5(const char *machine, const uint32_t base,
+>   {
+>       QTestState *s = qtest_init(machine);
+>   
+> -    uint32_t digest_addr = src_addr + 0x01000000;
+> +    uint32_t digest_addr = src_addr + 0x010000;
+>       uint8_t digest[16] = {0};
+>   
+>       /* Check engine is idle, no busy or irq bits set */
+> @@ -166,7 +166,7 @@ void aspeed_test_sha256(const char *machine, const uint32_t base,
+>   {
+>       QTestState *s = qtest_init(machine);
+>   
+> -    const uint32_t digest_addr = src_addr + 0x1000000;
+> +    const uint32_t digest_addr = src_addr + 0x10000;
+>       uint8_t digest[32] = {0};
+>   
+>       /* Check engine is idle, no busy or irq bits set */
+> @@ -200,7 +200,7 @@ void aspeed_test_sha512(const char *machine, const uint32_t base,
+>   {
+>       QTestState *s = qtest_init(machine);
+>   
+> -    const uint32_t digest_addr = src_addr + 0x1000000;
+> +    const uint32_t digest_addr = src_addr + 0x10000;
+>       uint8_t digest[64] = {0};
+>   
+>       /* Check engine is idle, no busy or irq bits set */
+> @@ -234,10 +234,10 @@ void aspeed_test_sha256_sg(const char *machine, const uint32_t base,
+>   {
+>       QTestState *s = qtest_init(machine);
+>   
+> -    const uint32_t src_addr_1 = src_addr + 0x1000000;
+> -    const uint32_t src_addr_2 = src_addr + 0x2000000;
+> -    const uint32_t src_addr_3 = src_addr + 0x3000000;
+> -    const uint32_t digest_addr = src_addr + 0x4000000;
+> +    const uint32_t src_addr_1 = src_addr + 0x10000;
+> +    const uint32_t src_addr_2 = src_addr + 0x20000;
+> +    const uint32_t src_addr_3 = src_addr + 0x30000;
+> +    const uint32_t digest_addr = src_addr + 0x40000;
+>       uint8_t digest[32] = {0};
+>       struct AspeedSgList array[] = {
+>           {  cpu_to_le32(sizeof(test_vector_sg1)),
+> @@ -285,10 +285,10 @@ void aspeed_test_sha512_sg(const char *machine, const uint32_t base,
+>   {
+>       QTestState *s = qtest_init(machine);
+>   
+> -    const uint32_t src_addr_1 = src_addr + 0x1000000;
+> -    const uint32_t src_addr_2 = src_addr + 0x2000000;
+> -    const uint32_t src_addr_3 = src_addr + 0x3000000;
+> -    const uint32_t digest_addr = src_addr + 0x4000000;
+> +    const uint32_t src_addr_1 = src_addr + 0x10000;
+> +    const uint32_t src_addr_2 = src_addr + 0x20000;
+> +    const uint32_t src_addr_3 = src_addr + 0x30000;
+> +    const uint32_t digest_addr = src_addr + 0x40000;
+>       uint8_t digest[64] = {0};
+>       struct AspeedSgList array[] = {
+>           {  cpu_to_le32(sizeof(test_vector_sg1)),
+> @@ -336,8 +336,8 @@ void aspeed_test_sha256_accum(const char *machine, const uint32_t base,
+>   {
+>       QTestState *s = qtest_init(machine);
+>   
+> -    const uint32_t buffer_addr = src_addr + 0x1000000;
+> -    const uint32_t digest_addr = src_addr + 0x4000000;
+> +    const uint32_t buffer_addr = src_addr + 0x10000;
+> +    const uint32_t digest_addr = src_addr + 0x40000;
+>       uint8_t digest[32] = {0};
+>       struct AspeedSgList array[] = {
+>           {  cpu_to_le32(sizeof(test_vector_accum_256) | SG_LIST_LEN_LAST),
+> @@ -377,8 +377,8 @@ void aspeed_test_sha512_accum(const char *machine, const uint32_t base,
+>   {
+>       QTestState *s = qtest_init(machine);
+>   
+> -    const uint32_t buffer_addr = src_addr + 0x1000000;
+> -    const uint32_t digest_addr = src_addr + 0x4000000;
+> +    const uint32_t buffer_addr = src_addr + 0x10000;
+> +    const uint32_t digest_addr = src_addr + 0x40000;
+>       uint8_t digest[64] = {0};
+>       struct AspeedSgList array[] = {
+>           {  cpu_to_le32(sizeof(test_vector_accum_512) | SG_LIST_LEN_LAST),
 
 
