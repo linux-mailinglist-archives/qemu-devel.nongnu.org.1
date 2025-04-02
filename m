@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644BCA7972F
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB385A79738
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:09:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u05Hy-000068-4Z; Wed, 02 Apr 2025 17:06:22 -0400
+	id 1u05Hs-0007lV-TG; Wed, 02 Apr 2025 17:06:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Hc-00071m-Qt
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:06:04 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Hc-00070o-6G
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:06:03 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05HY-0006Z2-8d
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:06:00 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43cef035a3bso1241135e9.1
- for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:05:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Ha-0006bO-4W
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:05:59 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43cfba466b2so1582075e9.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:05:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743627952; x=1744232752; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743627957; x=1744232757; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=2KXOzDB2gse2g7W4UaWCuE7+DNS89zrd8hUtTGN3caM=;
- b=vRkg+FY5RYCkY4FBcr5ZCSaw9b4j/rxfJLxYHZtVbO0J2HSQ7INRvqjWayp+g534GR
- voPAbNey/kD20/mgvFSMybXyv/o0hxZR8v8ullSGQheiqViXtmY0+p30fh+zA5Ge5RZo
- LFY1Fj6JJVfsRjaeut1vvXaUi3eeddAA7/vZnOYmLu3sdyjckirL/aGhz9pvzBD8l4JR
- FeuPEKi6uEW6eQWzcqwD1kp6d7ujf6zLw9M2bwyiajQouht+qBppGuuiZbm3Y06uyyV/
- eUqD6Dg1YppY6r92T77EdYTihruLpXpwW5SpmO8S4a3x+mEXJ12N2JfUxspzjTGYDrSv
- YzSQ==
+ :reply-to; bh=2CuFRMF8tGsrdfqJ5EAiHOu7bINkhnIQDSuUKCH5uiE=;
+ b=Z61Wg0dIHWC34F4/1Wc6I4Wn4JnuN6PEdCo/rgvgYYhPLLu0Tt4Iw8tSdgKOsYahyw
+ ZCMlZyNgc+dJ/PTd7j5+CVIHLGZcRpkFUs8s3FMRypcD7Cmdp+FLLpkaVhRY+90CcsAl
+ ydK7z3Usr6wWVzoUvBefB6f/ZhDU7b3os52vsVHn+TbygQZzjaWXtVZi6QtB8PBj98GO
+ xWFNnHTZZXZBidhHnYvXSFda0xdRXm7Ljbc+m3dKbReho6arKQ1za/CSPbZqp2uZzJtm
+ G5cRr8VsD9KlHDm31M5UShCUaGXrUhFDyVwB5Fa3gtGL7N119MpJuSvmw/Y6cobaM6So
+ P1tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743627952; x=1744232752;
+ d=1e100.net; s=20230601; t=1743627957; x=1744232757;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2KXOzDB2gse2g7W4UaWCuE7+DNS89zrd8hUtTGN3caM=;
- b=TJ15JjiqWpwUWXmaHSEa/fnr7Xxxd511Nn+WYzs28CDbS2R35HWz0U/VmeNKysUSVm
- NvCZEgj0JAzgzAd04nIFyhRzO04DBOLYfp4PRaXZ1Qc4nn3w4n9S/gW+iuCy/GNqq9rp
- eyFRyaDbt4K6WWhoLC9IqPiNA/F9xSvJoeNL2EwQo0Kx0GV13/2A2HLZj2YhHFpui3Gw
- EqQeK05HACjPtE5KqaQtZzwC5bzUUcRBNnFW12zf2Fo94xWAvBNEkkizDx6HD0qZpjf1
- UGs34bb6wYNbkBpwE35rfc6t8ROiw/1L+3l+IqMc9AlE6rWk/arBwS0BG356umuX87/V
- T/Uw==
+ bh=2CuFRMF8tGsrdfqJ5EAiHOu7bINkhnIQDSuUKCH5uiE=;
+ b=n6eRCUir2zrf/3lmC5x8sf2uRUqfxBPwoEP7oBHf161o+lE7RemAPzjT8TpImrcOja
+ Tjq/WbfvFRqYMd6wuEaZk/anEwlaUXRAKUr65xoPIaqgLPIcTMJVaHLCp/5zwWdUvE5c
+ HlgZnvciq10NBviWktDSOi4fLLBQ/8X5PXPdpWgvcCebc31KiaBvX38HzPxwIl3APalh
+ z0nLtTNGIoOOP/zBw4O4+c/IYVGh+7Tw/+yhBkp8DbWSm5GuzAWBlo/eUWxJXFriXJMw
+ smAjfT7KZBZnsJHZdi+uq58FP1gZN87K0gBfg+NTohTOkynprEHUgjhhQk8jqenOAcCP
+ kZ6w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUQN4wxUidne2OLgsccB6aqc55J34q8Jwm1qk9lIjM8PUlCcioo9+Jk0h9SdQvNbkJTSaKJtIslG389@nongnu.org
-X-Gm-Message-State: AOJu0YyyqzZwfyPZQ75CbytWC5+ajwPHHgjRS4B6UPq8RgE+M0uv6muV
- 05HoN3TAxMTk3iNc3WLGNKwlKxNgnHX63FgIQg2qBwegGN+Kt7RI2gW4hAUOuuqPk+fRwmdkuuz
- W
-X-Gm-Gg: ASbGncsEugMnGCNfOCuVlIgfsknrCnuX9hv2h9OS2Kdgujccnqi2BLV9Klad3bF4lWz
- ij/Hbdi1IJEe1v4TvorgEVQ5+7C8/EcOOKEwmJZVQKvVfU2fbNhn70EojyNSLhSgwF4JMrIp1v3
- lUmbexjTHC4lVYWF8eZJQmk/1OLzFCnEBjd0IRjbZthbrFbYeqWbFixq5b7TKa/ol5qT8Xmgyqf
- iFCuTiJOfjsFBsYmqtztpqmD73D4C9cw3yd27e26hNwHxDt/vJF5ATioFaUhsoZnjqCbqlkLOJT
- rRDByOZZIWaV+rWR94m2fg/xfcEKkeHbsoykwpINEG6gzahL9voXh2gAhz+7t0uyzMaGUykUU4Q
- kiW6axAEgfzHY0myPBrA=
-X-Google-Smtp-Source: AGHT+IH50hSJpL9x4esWEPgu2nJHLk+9Vu7GVuZcQEo44k/ke2Z52tiTtdXiLPA5EBUL3xBOcPKdBA==
-X-Received: by 2002:a05:600c:4e4f:b0:43d:45a:8fca with SMTP id
- 5b1f17b1804b1-43ec153642bmr2623215e9.30.1743627951976; 
- Wed, 02 Apr 2025 14:05:51 -0700 (PDT)
+ AJvYcCU8okZ9A34jn3ru0SRp8hUhEFtmP9NfkY4QPmU7J1gIiRE2oDVHTxvezxUtHn7whR1UIso1rrqt1KgB@nongnu.org
+X-Gm-Message-State: AOJu0Yz3SHcgOVIx283Xvug/ah8vvc6WcvadNg//aCE2xIOwe3lNtKeu
+ pIALs/DDj87uKKVurRxUh1M0K/UgdttNBUq6fpUDQeQgx3s95TlVoCa84Bmx2I+U85lwmyI14cO
+ u
+X-Gm-Gg: ASbGncvg9DAZuhpBR6dx8hXJkmQQfckZ5SrHYStQ9EhYq+terQGYUUa3xI+u4MRAZOZ
+ bycFAy2zlSYvKLkKrAt5cMjZSos8aj5u8dEi4ZUyKzupSNCE/IHeYAlZXn4hE6w9P3VODV7y4kH
+ cERXUltsmXjlBF7bvnu/CkBglKhVNd2ENBOZcorVnNXk4GSU49aVLSsoJVDpI5jTkrOF6/yIXOE
+ Guwk4/WO7pS8T4Jqxdvayol74XkwNzSXgixU2zw+SGlazZWKc+E2J28ENfCz9NTjR4sinn20XVR
+ l3kTswChSmg2tr40U7cthaMut0DY/yC5CBpczmN9Ed5FotwMQql1SYDXJ26xGtj2gs8ChZd/Gjd
+ G4iY+fabWmaY+lq9YU/c=
+X-Google-Smtp-Source: AGHT+IFmVNF8ZLRNUURTrGxrJDg3M6ixisV63EIroyyYYd26NwDZyJMkanAaTgBDMI5XOtopsRG7vw==
+X-Received: by 2002:a5d:6191:0:b0:391:3915:cffb with SMTP id
+ ffacd0b85a97d-39c2f94bed8mr83463f8f.43.1743627956818; 
+ Wed, 02 Apr 2025 14:05:56 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43eb6103a07sm31878985e9.29.2025.04.02.14.05.51
+ 5b1f17b1804b1-43ec16a3aefsm2075535e9.21.2025.04.02.14.05.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Apr 2025 14:05:51 -0700 (PDT)
+ Wed, 02 Apr 2025 14:05:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
-Subject: [PATCH-for-10.1 29/43] exec: Restrict 'cpu_ldst.h' to accel/tcg/
-Date: Wed,  2 Apr 2025 23:03:14 +0200
-Message-ID: <20250402210328.52897-30-philmd@linaro.org>
+Subject: [PATCH-for-10.1 30/43] exec: Do not include 'accel/tcg/cpu-ldst.h' in
+ 'exec-all.h'
+Date: Wed,  2 Apr 2025 23:03:15 +0200
+Message-ID: <20250402210328.52897-31-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250402210328.52897-1-philmd@linaro.org>
 References: <20250402210328.52897-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,883 +99,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mechanical change using:
-
-  $ sed -i -e 's,exec/cpu_ldst,accel/tcg/cpu-ldst,' \
-        $(git grep -l exec/cpu_ldst.h)
+Only 2 files requiring "accel/tcg/cpu-ldst.h" API do not
+include it:
+- accel/tcg/cpu-exec.c
+- target/arm/tcg/sve_helper.c
+Include it there and remove it from "exec/exec-all.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/qemu.h                                   | 2 +-
- include/{exec/cpu_ldst.h => accel/tcg/cpu-ldst.h} | 6 +++---
- include/exec/exec-all.h                           | 2 +-
- linux-user/qemu.h                                 | 2 +-
- target/arm/tcg/sve_ldst_internal.h                | 2 +-
- accel/tcg/cputlb.c                                | 2 +-
- accel/tcg/user-exec.c                             | 2 +-
- target/alpha/mem_helper.c                         | 2 +-
- target/arm/tcg/helper-a64.c                       | 2 +-
- target/arm/tcg/m_helper.c                         | 2 +-
- target/arm/tcg/mte_helper.c                       | 2 +-
- target/arm/tcg/mve_helper.c                       | 2 +-
- target/arm/tcg/op_helper.c                        | 2 +-
- target/arm/tcg/pauth_helper.c                     | 2 +-
- target/arm/tcg/sme_helper.c                       | 2 +-
- target/avr/helper.c                               | 2 +-
- target/hexagon/op_helper.c                        | 2 +-
- target/hexagon/translate.c                        | 2 +-
- target/hppa/op_helper.c                           | 2 +-
- target/i386/tcg/access.c                          | 2 +-
- target/i386/tcg/fpu_helper.c                      | 2 +-
- target/i386/tcg/mem_helper.c                      | 2 +-
- target/i386/tcg/mpx_helper.c                      | 2 +-
- target/i386/tcg/seg_helper.c                      | 2 +-
- target/i386/tcg/system/excp_helper.c              | 2 +-
- target/i386/tcg/system/misc_helper.c              | 2 +-
- target/i386/tcg/system/seg_helper.c               | 2 +-
- target/i386/tcg/system/svm_helper.c               | 2 +-
- target/i386/tcg/user/seg_helper.c                 | 2 +-
- target/loongarch/cpu.c                            | 2 +-
- target/loongarch/tcg/csr_helper.c                 | 2 +-
- target/loongarch/tcg/fpu_helper.c                 | 2 +-
- target/loongarch/tcg/iocsr_helper.c               | 2 +-
- target/loongarch/tcg/op_helper.c                  | 2 +-
- target/loongarch/tcg/tlb_helper.c                 | 2 +-
- target/m68k/fpu_helper.c                          | 2 +-
- target/m68k/op_helper.c                           | 2 +-
- target/microblaze/cpu.c                           | 2 +-
- target/microblaze/op_helper.c                     | 2 +-
- target/microblaze/translate.c                     | 2 +-
- target/mips/tcg/ldst_helper.c                     | 2 +-
- target/mips/tcg/msa_helper.c                      | 2 +-
- target/mips/tcg/system/tlb_helper.c               | 2 +-
- target/ppc/mem_helper.c                           | 2 +-
- target/ppc/mmu_helper.c                           | 2 +-
- target/ppc/tcg-excp_helper.c                      | 2 +-
- target/riscv/op_helper.c                          | 2 +-
- target/riscv/vector_helper.c                      | 2 +-
- target/riscv/zce_helper.c                         | 2 +-
- target/rx/helper.c                                | 2 +-
- target/rx/op_helper.c                             | 2 +-
- target/s390x/tcg/crypto_helper.c                  | 2 +-
- target/s390x/tcg/int_helper.c                     | 2 +-
- target/s390x/tcg/mem_helper.c                     | 2 +-
- target/s390x/tcg/misc_helper.c                    | 2 +-
- target/s390x/tcg/vec_helper.c                     | 2 +-
- target/sh4/op_helper.c                            | 2 +-
- target/sparc/int32_helper.c                       | 2 +-
- target/sparc/ldst_helper.c                        | 2 +-
- target/tricore/op_helper.c                        | 2 +-
- target/tricore/translate.c                        | 2 +-
- 61 files changed, 63 insertions(+), 63 deletions(-)
- rename include/{exec/cpu_ldst.h => accel/tcg/cpu-ldst.h} (99%)
+ include/exec/exec-all.h     | 3 ---
+ accel/tcg/cpu-exec.c        | 1 +
+ target/arm/tcg/sve_helper.c | 1 +
+ 3 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index c1c508281a8..244670dd24d 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -22,7 +22,7 @@
- #include "qemu/int128.h"
- #include "cpu.h"
- #include "qemu/units.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/exec-all.h"
- 
- #include "user/abitypes.h"
-diff --git a/include/exec/cpu_ldst.h b/include/accel/tcg/cpu-ldst.h
-similarity index 99%
-rename from include/exec/cpu_ldst.h
-rename to include/accel/tcg/cpu-ldst.h
-index 74761ba5f30..f97a730703e 100644
---- a/include/exec/cpu_ldst.h
-+++ b/include/accel/tcg/cpu-ldst.h
-@@ -59,8 +59,8 @@
-  * The "mmu" suffix carries the full MemOpIdx, with both mmu_idx and the
-  * MemOp including alignment requirements.  The alignment will be enforced.
-  */
--#ifndef CPU_LDST_H
--#define CPU_LDST_H
-+#ifndef ACCEL_TCG_CPU_LDST_H
-+#define ACCEL_TCG_CPU_LDST_H
- 
- #ifndef CONFIG_TCG
- #error Can only include this header with TCG
-@@ -560,4 +560,4 @@ static inline void clear_helper_retaddr(void)
- #define clear_helper_retaddr()   do { } while (0)
- #endif
- 
--#endif /* CPU_LDST_H */
-+#endif /* ACCEL_TCG_CPU_LDST_H */
 diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index f52a680f42b..70608a11b60 100644
+index 70608a11b60..944b579d91c 100644
 --- a/include/exec/exec-all.h
 +++ b/include/exec/exec-all.h
-@@ -21,7 +21,7 @@
+@@ -20,9 +20,6 @@
+ #ifndef EXEC_ALL_H
  #define EXEC_ALL_H
  
- #if defined(CONFIG_USER_ONLY)
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #endif
+-#if defined(CONFIG_USER_ONLY)
+-#include "accel/tcg/cpu-ldst.h"
+-#endif
  #include "exec/mmu-access-type.h"
  #include "exec/translation-block.h"
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 948de8431a5..0b19fa43e65 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -2,7 +2,7 @@
- #define QEMU_H
  
- #include "cpu.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- 
- #include "user/abitypes.h"
- #include "user/page-protection.h"
-diff --git a/target/arm/tcg/sve_ldst_internal.h b/target/arm/tcg/sve_ldst_internal.h
-index 4f159ec4adf..f2243daf370 100644
---- a/target/arm/tcg/sve_ldst_internal.h
-+++ b/target/arm/tcg/sve_ldst_internal.h
-@@ -20,7 +20,7 @@
- #ifndef TARGET_ARM_SVE_LDST_INTERNAL_H
- #define TARGET_ARM_SVE_LDST_INTERNAL_H
- 
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- 
- /*
-  * Load one element into @vd + @reg_off from @host.
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 0de46903dd9..2cafd38d2af 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -23,7 +23,7 @@
- #include "exec/exec-all.h"
- #include "exec/page-protection.h"
- #include "system/memory.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/cputlb.h"
- #include "exec/tb-flush.h"
- #include "system/ram_addr.h"
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 7f57d8f1aff..1b878ead7a7 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -26,7 +26,7 @@
- #include "tcg/tcg.h"
- #include "qemu/bitops.h"
- #include "qemu/rcu.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "user/cpu_loop.h"
- #include "qemu/main-loop.h"
- #include "user/page-protection.h"
-diff --git a/target/alpha/mem_helper.c b/target/alpha/mem_helper.c
-index 872955f5e74..a4d5adb40c6 100644
---- a/target/alpha/mem_helper.c
-+++ b/target/alpha/mem_helper.c
-@@ -21,7 +21,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- 
- static void do_unaligned_access(CPUAlphaState *env, vaddr addr, uintptr_t retaddr)
- {
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 507dbc1a440..08d8f63ffea 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -30,7 +30,7 @@
- #include "qemu/crc32c.h"
- #include "exec/cpu-common.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/target_page.h"
- #include "exec/tlb-flags.h"
- #include "qemu/int128.h"
-diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
-index f7354f3c6e0..37dc98dc35c 100644
---- a/target/arm/tcg/m_helper.c
-+++ b/target/arm/tcg/m_helper.c
-@@ -18,7 +18,7 @@
- #include "exec/exec-all.h"
- #include "exec/page-protection.h"
- #ifdef CONFIG_TCG
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "semihosting/common-semi.h"
- #endif
- #if !defined(CONFIG_USER_ONLY)
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index 888c6707547..7dc5fb776b3 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -29,7 +29,7 @@
- #else
- #include "system/ram_addr.h"
- #endif
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/helper-proto.h"
- #include "exec/tlb-flags.h"
- #include "accel/tcg/cpu-ops.h"
-diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
-index 274003e2e5b..f9f67d1f88e 100644
---- a/target/arm/tcg/mve_helper.c
-+++ b/target/arm/tcg/mve_helper.c
-@@ -22,7 +22,7 @@
- #include "internals.h"
- #include "vec_internal.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/exec-all.h"
- #include "tcg/tcg.h"
- #include "fpu/softfloat.h"
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index 71ba406782f..38d49cbb9d8 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -24,7 +24,7 @@
- #include "internals.h"
- #include "cpu-features.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "cpregs.h"
- 
- #define SIGNBIT (uint32_t)0x80000000
-diff --git a/target/arm/tcg/pauth_helper.c b/target/arm/tcg/pauth_helper.c
-index c4b143024f3..59bf27541dc 100644
---- a/target/arm/tcg/pauth_helper.c
-+++ b/target/arm/tcg/pauth_helper.c
-@@ -22,7 +22,7 @@
- #include "internals.h"
- #include "cpu-features.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/helper-proto.h"
- #include "tcg/tcg-gvec-desc.h"
- #include "qemu/xxhash.h"
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index dcc48e43db3..96b84c37a2d 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -22,7 +22,7 @@
- #include "internals.h"
- #include "tcg/tcg-gvec-desc.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/exec-all.h"
- #include "qemu/int128.h"
- #include "fpu/softfloat.h"
-diff --git a/target/avr/helper.c b/target/avr/helper.c
-index 32cbf179195..afa591470fe 100644
---- a/target/avr/helper.c
-+++ b/target/avr/helper.c
-@@ -27,7 +27,7 @@
- #include "exec/cputlb.h"
- #include "exec/page-protection.h"
- #include "exec/target_page.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/helper-proto.h"
- 
- bool avr_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
-diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index 6da8db8ea5c..3f3d86db2b2 100644
---- a/target/hexagon/op_helper.c
-+++ b/target/hexagon/op_helper.c
-@@ -18,7 +18,7 @@
- #include "qemu/osdep.h"
- #include "qemu/log.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/helper-proto.h"
- #include "fpu/softfloat.h"
- #include "cpu.h"
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index fe7858703c8..dd26801e647 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -23,7 +23,7 @@
- #include "exec/helper-gen.h"
- #include "exec/helper-proto.h"
- #include "exec/translation-block.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/log.h"
- #include "internal.h"
- #include "attribs.h"
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index beb8f88799e..2398ce2c648 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -22,7 +22,7 @@
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "qemu/timer.h"
- #include "trace.h"
- #ifdef CONFIG_USER_ONLY
-diff --git a/target/i386/tcg/access.c b/target/i386/tcg/access.c
-index 5a4721dcee1..0fdd587eddf 100644
---- a/target/i386/tcg/access.c
-+++ b/target/i386/tcg/access.c
-@@ -3,7 +3,7 @@
- 
- #include "qemu/osdep.h"
- #include "cpu.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/exec-all.h"
- #include "exec/target_page.h"
- #include "access.h"
-diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index c1184ca2198..1cbadb14533 100644
---- a/target/i386/tcg/fpu_helper.c
-+++ b/target/i386/tcg/fpu_helper.c
-@@ -22,7 +22,7 @@
- #include "cpu.h"
- #include "tcg-cpu.h"
- #include "exec/cputlb.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/helper-proto.h"
- #include "fpu/softfloat.h"
- #include "fpu/softfloat-macros.h"
-diff --git a/target/i386/tcg/mem_helper.c b/target/i386/tcg/mem_helper.c
-index 3ef84e90d94..84a08152171 100644
---- a/target/i386/tcg/mem_helper.c
-+++ b/target/i386/tcg/mem_helper.c
-@@ -21,7 +21,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "qemu/int128.h"
- #include "qemu/atomic128.h"
- #include "tcg/tcg.h"
-diff --git a/target/i386/tcg/mpx_helper.c b/target/i386/tcg/mpx_helper.c
-index b942665adcf..a0f816dfae0 100644
---- a/target/i386/tcg/mpx_helper.c
-+++ b/target/i386/tcg/mpx_helper.c
-@@ -20,7 +20,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/exec-all.h"
- #include "exec/target_page.h"
- #include "helper-tcg.h"
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 9dfbc4208cd..3af902e0ec5 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -23,7 +23,7 @@
- #include "qemu/log.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/log.h"
- #include "helper-tcg.h"
- #include "seg_helper.h"
-diff --git a/target/i386/tcg/system/excp_helper.c b/target/i386/tcg/system/excp_helper.c
-index a563c9b35ea..93614aa3e54 100644
---- a/target/i386/tcg/system/excp_helper.c
-+++ b/target/i386/tcg/system/excp_helper.c
-@@ -19,7 +19,7 @@
- 
- #include "qemu/osdep.h"
- #include "cpu.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/cputlb.h"
- #include "exec/page-protection.h"
- #include "exec/target_page.h"
-diff --git a/target/i386/tcg/system/misc_helper.c b/target/i386/tcg/system/misc_helper.c
-index 67896c8c875..9c3f5cc99b3 100644
---- a/target/i386/tcg/system/misc_helper.c
-+++ b/target/i386/tcg/system/misc_helper.c
-@@ -21,7 +21,7 @@
- #include "qemu/main-loop.h"
- #include "cpu.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "system/address-spaces.h"
- #include "system/memory.h"
- #include "exec/cputlb.h"
-diff --git a/target/i386/tcg/system/seg_helper.c b/target/i386/tcg/system/seg_helper.c
-index b07cc9f9b12..d4ea890c124 100644
---- a/target/i386/tcg/system/seg_helper.c
-+++ b/target/i386/tcg/system/seg_helper.c
-@@ -23,7 +23,7 @@
- #include "qemu/main-loop.h"
- #include "cpu.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "tcg/helper-tcg.h"
- #include "../seg_helper.h"
- 
-diff --git a/target/i386/tcg/system/svm_helper.c b/target/i386/tcg/system/svm_helper.c
-index f9982b72d17..b27049b9ed1 100644
---- a/target/i386/tcg/system/svm_helper.c
-+++ b/target/i386/tcg/system/svm_helper.c
-@@ -22,7 +22,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/cputlb.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "tcg/helper-tcg.h"
- 
- /* Secure Virtual Machine helpers */
-diff --git a/target/i386/tcg/user/seg_helper.c b/target/i386/tcg/user/seg_helper.c
-index c45f2ac2ba6..5692dd51953 100644
---- a/target/i386/tcg/user/seg_helper.c
-+++ b/target/i386/tcg/user/seg_helper.c
-@@ -22,7 +22,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "tcg/helper-tcg.h"
- #include "tcg/seg_helper.h"
- 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index cb96b17911a..4cc8e02f70b 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -29,7 +29,7 @@
- #include <linux/kvm.h>
- #endif
- #ifdef CONFIG_TCG
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "tcg/tcg.h"
- #endif
- 
-diff --git a/target/loongarch/tcg/csr_helper.c b/target/loongarch/tcg/csr_helper.c
-index 6a7a65c860b..2942d7feb81 100644
---- a/target/loongarch/tcg/csr_helper.c
-+++ b/target/loongarch/tcg/csr_helper.c
-@@ -13,7 +13,7 @@
- #include "qemu/host-utils.h"
- #include "exec/helper-proto.h"
- #include "exec/cputlb.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "hw/irq.h"
- #include "cpu-csr.h"
- 
-diff --git a/target/loongarch/tcg/fpu_helper.c b/target/loongarch/tcg/fpu_helper.c
-index a83acf64b08..fc3fd0561e3 100644
---- a/target/loongarch/tcg/fpu_helper.c
-+++ b/target/loongarch/tcg/fpu_helper.c
-@@ -9,7 +9,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "fpu/softfloat.h"
- #include "internals.h"
- 
-diff --git a/target/loongarch/tcg/iocsr_helper.c b/target/loongarch/tcg/iocsr_helper.c
-index b6916f53d20..e62170de3ce 100644
---- a/target/loongarch/tcg/iocsr_helper.c
-+++ b/target/loongarch/tcg/iocsr_helper.c
-@@ -10,7 +10,7 @@
- #include "qemu/host-utils.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- 
- #define GET_MEMTXATTRS(cas) \
-         ((MemTxAttrs){.requester_id = env_cpu(cas)->cpu_index})
-diff --git a/target/loongarch/tcg/op_helper.c b/target/loongarch/tcg/op_helper.c
-index b17208e5b96..94e3b28016a 100644
---- a/target/loongarch/tcg/op_helper.c
-+++ b/target/loongarch/tcg/op_helper.c
-@@ -11,7 +11,7 @@
- #include "qemu/host-utils.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "internals.h"
- #include "qemu/crc32c.h"
- #include <zlib.h> /* for crc32 */
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 0d6c9844a6f..9a76a2a205f 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -16,7 +16,7 @@
- #include "exec/exec-all.h"
- #include "exec/page-protection.h"
- #include "exec/target_page.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/log.h"
- #include "cpu-csr.h"
- 
-diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
-index eb1cb8c6872..ac4a0d85be5 100644
---- a/target/m68k/fpu_helper.c
-+++ b/target/m68k/fpu_helper.c
-@@ -22,7 +22,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "softfloat.h"
- 
- /*
-diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
-index 15bad5dd465..242aecccbbc 100644
---- a/target/m68k/op_helper.c
-+++ b/target/m68k/op_helper.c
-@@ -21,7 +21,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "semihosting/semihost.h"
- 
- #if !defined(CONFIG_USER_ONLY)
-diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 88baeb6807a..d10ae0702ad 100644
---- a/target/microblaze/cpu.c
-+++ b/target/microblaze/cpu.c
-@@ -28,7 +28,7 @@
- #include "qemu/module.h"
- #include "hw/qdev-properties.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/gdbstub.h"
- #include "exec/translation-block.h"
- #include "fpu/softfloat-helpers.h"
-diff --git a/target/microblaze/op_helper.c b/target/microblaze/op_helper.c
-index f6378030b7a..4624ce5b672 100644
---- a/target/microblaze/op_helper.c
-+++ b/target/microblaze/op_helper.c
-@@ -24,7 +24,7 @@
- #include "exec/helper-proto.h"
- #include "qemu/host-utils.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "fpu/softfloat.h"
- 
- void helper_put(uint32_t id, uint32_t ctrl, uint32_t data)
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 4bb867c9695..7dcad6cf0d7 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -21,7 +21,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "tcg/tcg-op.h"
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
-diff --git a/target/mips/tcg/ldst_helper.c b/target/mips/tcg/ldst_helper.c
-index f92a923d7ad..2fb879fcbcc 100644
---- a/target/mips/tcg/ldst_helper.c
-+++ b/target/mips/tcg/ldst_helper.c
-@@ -24,7 +24,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/memop.h"
- #include "internal.h"
- 
-diff --git a/target/mips/tcg/msa_helper.c b/target/mips/tcg/msa_helper.c
-index 969dd34b3e6..14de4a71ff6 100644
---- a/target/mips/tcg/msa_helper.c
-+++ b/target/mips/tcg/msa_helper.c
-@@ -22,7 +22,7 @@
- #include "internal.h"
- #include "tcg/tcg.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/helper-proto.h"
- #include "exec/memop.h"
- #include "exec/target_page.h"
-diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
-index d239fa93536..e477ef812ae 100644
---- a/target/mips/tcg/system/tlb_helper.c
-+++ b/target/mips/tcg/system/tlb_helper.c
-@@ -25,7 +25,7 @@
- #include "exec/exec-all.h"
- #include "exec/page-protection.h"
- #include "exec/target_page.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/log.h"
- #include "exec/helper-proto.h"
- 
-diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
-index 0967624afee..d7e8d678f4b 100644
---- a/target/ppc/mem_helper.c
-+++ b/target/ppc/mem_helper.c
-@@ -24,7 +24,7 @@
- #include "qemu/host-utils.h"
- #include "exec/helper-proto.h"
- #include "helper_regs.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "internal.h"
- #include "qemu/atomic128.h"
- 
-diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
-index c90ceb7d60d..2138666122b 100644
---- a/target/ppc/mmu_helper.c
-+++ b/target/ppc/mmu_helper.c
-@@ -37,7 +37,7 @@
- #include "mmu-radix64.h"
- #include "mmu-booke.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- 
- /* #define FLUSH_ALL_TLBS */
- 
-diff --git a/target/ppc/tcg-excp_helper.c b/target/ppc/tcg-excp_helper.c
-index c422648cfdd..2b15e5f2f07 100644
---- a/target/ppc/tcg-excp_helper.c
-+++ b/target/ppc/tcg-excp_helper.c
-@@ -20,7 +20,7 @@
- #include "qemu/main-loop.h"
- #include "qemu/log.h"
- #include "target/ppc/cpu.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/exec-all.h"
- #include "exec/helper-proto.h"
- #include "system/runstate.h"
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index f3d26b6b957..5b0db2c45ab 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -23,7 +23,7 @@
- #include "internals.h"
- #include "exec/exec-all.h"
- #include "exec/cputlb.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/helper-proto.h"
- #include "exec/tlb-flags.h"
- #include "trace.h"
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 7de6cbae5cc..b8ae7044578 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -22,7 +22,7 @@
- #include "cpu.h"
- #include "exec/memop.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/page-protection.h"
- #include "exec/helper-proto.h"
- #include "exec/tlb-flags.h"
-diff --git a/target/riscv/zce_helper.c b/target/riscv/zce_helper.c
-index b433bda16dc..50d65f386c7 100644
---- a/target/riscv/zce_helper.c
-+++ b/target/riscv/zce_helper.c
-@@ -20,7 +20,7 @@
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- 
- target_ulong HELPER(cm_jalt)(CPURISCVState *env, uint32_t index)
- {
-diff --git a/target/rx/helper.c b/target/rx/helper.c
-index e8aabf40ffb..0640ab322b5 100644
---- a/target/rx/helper.c
-+++ b/target/rx/helper.c
-@@ -20,7 +20,7 @@
- #include "qemu/bitops.h"
- #include "cpu.h"
- #include "exec/log.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "hw/irq.h"
- 
- void rx_cpu_unpack_psw(CPURXState *env, uint32_t psw, int rte)
-diff --git a/target/rx/op_helper.c b/target/rx/op_helper.c
-index b3ed822dd11..a2f1f3824d9 100644
---- a/target/rx/op_helper.c
-+++ b/target/rx/op_helper.c
-@@ -21,7 +21,7 @@
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "fpu/softfloat.h"
- #include "tcg/debug-assert.h"
- 
-diff --git a/target/s390x/tcg/crypto_helper.c b/target/s390x/tcg/crypto_helper.c
-index 93aabd236f4..642c1b18c4c 100644
---- a/target/s390x/tcg/crypto_helper.c
-+++ b/target/s390x/tcg/crypto_helper.c
-@@ -18,7 +18,7 @@
- #include "tcg_s390x.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- 
- static uint64_t R(uint64_t x, int c)
- {
-diff --git a/target/s390x/tcg/int_helper.c b/target/s390x/tcg/int_helper.c
-index 2af970f2c8b..253c0364157 100644
---- a/target/s390x/tcg/int_helper.c
-+++ b/target/s390x/tcg/int_helper.c
-@@ -25,7 +25,7 @@
- #include "exec/exec-all.h"
- #include "qemu/host-utils.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- 
- /* #define DEBUG_HELPER */
- #ifdef DEBUG_HELPER
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index d5eece4384b..0cdfd380ce4 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -28,7 +28,7 @@
- #include "exec/exec-all.h"
- #include "exec/cputlb.h"
- #include "exec/page-protection.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/target_page.h"
- #include "exec/tlb-flags.h"
- #include "accel/tcg/cpu-ops.h"
-diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
-index e02f4438508..d5088493ead 100644
---- a/target/s390x/tcg/misc_helper.c
-+++ b/target/s390x/tcg/misc_helper.c
-@@ -28,7 +28,7 @@
- #include "qemu/timer.h"
- #include "exec/exec-all.h"
- #include "exec/cputlb.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "exec/target_page.h"
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 5ced3879ac4..b00f046b29f 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -22,6 +22,7 @@
  #include "qapi/error.h"
- #include "tcg_s390x.h"
-diff --git a/target/s390x/tcg/vec_helper.c b/target/s390x/tcg/vec_helper.c
-index dafc4c3582c..781ccc565bd 100644
---- a/target/s390x/tcg/vec_helper.c
-+++ b/target/s390x/tcg/vec_helper.c
-@@ -16,7 +16,7 @@
- #include "tcg/tcg.h"
- #include "tcg/tcg-gvec-desc.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
+ #include "qapi/type-helpers.h"
+ #include "hw/core/cpu.h"
 +#include "accel/tcg/cpu-ldst.h"
- #include "exec/exec-all.h"
- 
- void HELPER(gvec_vbperm)(void *v1, const void *v2, const void *v3,
-diff --git a/target/sh4/op_helper.c b/target/sh4/op_helper.c
-index 99394b714c9..e7fcad3c1b7 100644
---- a/target/sh4/op_helper.c
-+++ b/target/sh4/op_helper.c
-@@ -20,7 +20,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "fpu/softfloat.h"
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
-index f0266061023..39db4ffa70a 100644
---- a/target/sparc/int32_helper.c
-+++ b/target/sparc/int32_helper.c
-@@ -21,7 +21,7 @@
- #include "qemu/main-loop.h"
- #include "cpu.h"
+ #include "accel/tcg/cpu-ops.h"
  #include "trace.h"
--#include "exec/cpu_ldst.h"
+ #include "disas/disas.h"
+diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
+index 9b0d40c9e18..87b6b4b3e64 100644
+--- a/target/arm/tcg/sve_helper.c
++++ b/target/arm/tcg/sve_helper.c
+@@ -30,6 +30,7 @@
+ #include "tcg/tcg.h"
+ #include "vec_internal.h"
+ #include "sve_ldst_internal.h"
 +#include "accel/tcg/cpu-ldst.h"
- #include "exec/log.h"
- #include "system/runstate.h"
- 
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 10cc6f7835d..ca5a4d38ac2 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -27,7 +27,7 @@
- #include "exec/cputlb.h"
- #include "exec/page-protection.h"
- #include "exec/target_page.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "system/memory.h"
+ #include "accel/tcg/cpu-ops.h"
  #ifdef CONFIG_USER_ONLY
  #include "user/page-protection.h"
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index a0d5a0da1df..ae559b69220 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -19,7 +19,7 @@
- #include "qemu/host-utils.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include <zlib.h> /* for crc32 */
- 
- 
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 5c7ed395caa..7cd26d8eaba 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -22,7 +22,7 @@
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "tcg/tcg-op.h"
--#include "exec/cpu_ldst.h"
-+#include "accel/tcg/cpu-ldst.h"
- #include "qemu/qemu-print.h"
- 
- #include "exec/helper-proto.h"
 -- 
 2.47.1
 
