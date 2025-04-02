@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3FF9A78AA0
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 11:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D54A78ACA
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 11:13:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1tzu3a-00084H-CA; Wed, 02 Apr 2025 05:06:46 -0400
+	id 1tzu95-0002FR-L6; Wed, 02 Apr 2025 05:12:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
- id 1tzu3X-00082R-6A; Wed, 02 Apr 2025 05:06:43 -0400
+ id 1tzu8u-0002Cv-Si; Wed, 02 Apr 2025 05:12:17 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
- id 1tzu3V-00066H-4S; Wed, 02 Apr 2025 05:06:42 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5322xqVo032389;
- Wed, 2 Apr 2025 09:06:39 GMT
+ id 1tzu8t-0000Lg-2Q; Wed, 02 Apr 2025 05:12:16 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 531NDI2I005015;
+ Wed, 2 Apr 2025 09:12:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=pp1; bh=AzJxKGIHRba4kdlMiqUFZmdqx5N1
- 08hhHtUc969g+YI=; b=XbangdkK+LVCL76oLC7vn2WdrSbRzkIhH9k+CKw8EMFS
- M02mh97uBptjVfmCC69KGwrzTuy1pxbU9FENUaTTB1dFSvGht+dR4WjqHLGAyEmh
- JGNZUADsxFrveTnI4juxDSYiNnMwFn4OYESbSUYGywOennR1VASWaEscYxkRglma
- 1PQ93LUxB5f3njMYfvaj0HczmPhS0iaMXsBj+xNYE6v+iumsxlKwep6D5zJVkI92
- oBeeO4ocPegnyoz2aD2xEBSqsJa2aq18ZPbSebdrM/yP1GI0cWdn8qCUyGfKHPwj
- VzrnQGa4wbm3pUEDAZznXdX8ASFKQ35JTGnzFoFnFQ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45rg67nhxv-1
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=Pl57NX
+ P8Waboz/12D81WL9G/3/41+51SNNt34mDGOdc=; b=QvGXOgAA99Xn9NoabsUmxz
+ dvKUrRGE3vSHzDMVS2B7PC0mUdwjOTCpQn/g9Xl4R2YjraWtr53psngY1RHxAjRH
+ XE0PwmKWKTlXuJU1/MDXqq8/hVlYqFnnyF5oCFaaCKNX2AtsXF/gXDxGQlOYJMKk
+ LRI11jJFH1gA7lpmSecZn0u4duZQfumpqoRaU6TGjJTZeNtUSu2bd9w3wS0rT5DL
+ +VvaUmju6iNDP/STpthv2bG61rS79jPsenRwVEEHslDgZCAlku3TANvuG0ZjUtVi
+ 2YD6b9KIyrpE7ohRqNhh71CzzEZ4k5pMhAo3UGafMJ5XHUIRMQAsPXsLH7Ud6SyQ
+ ==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45rhjpw2ga-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Apr 2025 09:06:38 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5328KIdJ004829;
- Wed, 2 Apr 2025 09:06:37 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45pujyy6fu-1
+ Wed, 02 Apr 2025 09:12:11 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5328CTG7019410;
+ Wed, 2 Apr 2025 09:12:10 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45pu6t7ad2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Apr 2025 09:06:37 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53296aTQ31523418
+ Wed, 02 Apr 2025 09:12:10 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
+ [10.39.53.230])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5329C9nU26280510
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Apr 2025 09:06:36 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 956F758055;
- Wed,  2 Apr 2025 09:06:36 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4A00158043;
- Wed,  2 Apr 2025 09:06:36 +0000 (GMT)
+ Wed, 2 Apr 2025 09:12:09 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 98A2A58054;
+ Wed,  2 Apr 2025 09:12:09 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0C9825805A;
+ Wed,  2 Apr 2025 09:12:09 +0000 (GMT)
 Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  2 Apr 2025 09:06:36 +0000 (GMT)
+ by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Apr 2025 09:12:08 +0000 (GMT)
 MIME-Version: 1.0
-Date: Wed, 02 Apr 2025 11:06:36 +0200
+Date: Wed, 02 Apr 2025 11:12:08 +0200
 From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
 To: Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x mailing list <qemu-s390x@nongnu.org>, Daniel Berrange
  <berrange@redhat.com>, qemu-devel mailing list <qemu-devel@nongnu.org>,
  Nina Schoetterl-Glausch <nsg@linux.ibm.com>, Hendrik Brueckner
  <brueckner@linux.ibm.com>
-Subject: Re: [PATCH v3 2/4] hw/s390x: add Control-Program Identification to QOM
-Message-ID: <bd0f521e58c4c2bb42a3b25882b1cd80@linux.ibm.com>
+Subject: Re: [PATCH v3 3/4] hw/s390x: support migration of CPI data
+In-Reply-To: <6da8fc30-c951-43dc-a3b3-903fa54237dd@redhat.com>
+References: <20250331140041.3133621-1-shalini@linux.ibm.com>
+ <20250331140041.3133621-4-shalini@linux.ibm.com>
+ <6da8fc30-c951-43dc-a3b3-903fa54237dd@redhat.com>
+Message-ID: <2c4a1a9015f051aeffd4bb5d9534edef@linux.ibm.com>
 X-Sender: shalini@linux.ibm.com
 Organization: IBM Deutschland Research & Development GmbH
 Content-Type: text/plain; charset=UTF-8;
  format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: KPhLaDD2kWPJxM7YNuuL862od8RoeRZ0
-X-Proofpoint-GUID: KPhLaDD2kWPJxM7YNuuL862od8RoeRZ0
+X-Proofpoint-GUID: MDxT6I9B9JoGNiFTgSx3AXUnufvnD9Oj
+X-Proofpoint-ORIG-GUID: MDxT6I9B9JoGNiFTgSx3AXUnufvnD9Oj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-02_03,2025-04-01_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxlogscore=999
- suspectscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
- malwarescore=0 phishscore=0 adultscore=0 mlxscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504020053
+ mlxlogscore=999 phishscore=0
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 spamscore=0 mlxscore=0
+ impostorscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504020056
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=shalini@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -107,138 +112,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025-04-02 07:58, Thomas Huth wrote:
+On 2025-04-02 08:05, Thomas Huth wrote:
 > On 31/03/2025 16.00, Shalini Chellathurai Saroja wrote:
->> Add Control-Program Identification data to the QEMU Object
->> Model (QOM), along with the timestamp in which the data was received.
->> 
->> Example:
->> virsh # qemu-monitor-command vm --pretty '{
->> "execute": "qom-get",
->> "arguments": {
->> "path": "/machine/sclp/s390-sclp-event-facility/sclpcpi",
->> "property": "control-program-id" }}'
->> {
->>    "return": {
->>      "timestamp": 1742390410685762000,
->>      "system-level": 74872343805430528,
->>      "sysplex-name": "PLEX ",
->>      "system-name": "TESTVM  ",
->>      "system-type": "LINUX   "
->>    },
->>    "id": "libvirt-15"
->> }
+>> Register Control-Program Identification data with the live
+>> migration infrastructure.
 >> 
 >> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+>> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 >> ---
->>   hw/s390x/sclpcpi.c                | 38 ++++++++++++++++++++
->>   include/hw/s390x/event-facility.h |  9 +++++
->>   qapi/machine.json                 | 58 
->> +++++++++++++++++++++++++++++++
->>   3 files changed, 105 insertions(+)
+>>   hw/s390x/sclpcpi.c | 27 +++++++++++++++++++++++++++
+>>   1 file changed, 27 insertions(+)
 >> 
->> diff --git a/include/hw/s390x/event-facility.h 
->> b/include/hw/s390x/event-facility.h
->> index f445d2f9f5..39e589ed44 100644
->> --- a/include/hw/s390x/event-facility.h
->> +++ b/include/hw/s390x/event-facility.h
->> @@ -169,10 +169,19 @@ typedef struct ReadEventData {
->>       };
->>   } QEMU_PACKED ReadEventData;
->>   +typedef struct ControlProgramId {
->> +    uint8_t system_type[8];
->> +    uint8_t system_name[8];
->> +    uint64_t system_level;
->> +    uint8_t sysplex_name[8];
->> +    uint64_t timestamp;
->> +} QEMU_PACKED ControlProgramId;
+>> diff --git a/hw/s390x/sclpcpi.c b/hw/s390x/sclpcpi.c
+>> index 969c15e43d..0b1b5293ea 100644
+>> --- a/hw/s390x/sclpcpi.c
+>> +++ b/hw/s390x/sclpcpi.c
+>> @@ -62,6 +62,7 @@
+>>   #include "hw/s390x/event-facility.h"
+>>   #include "hw/s390x/ebcdic.h"
+>>   #include "qapi/qapi-visit-machine.h"
+>> +#include "migration/vmstate.h"
+>>     typedef struct Data {
+>>       uint8_t id_format;
+>> @@ -133,12 +134,38 @@ static void get_control_program_id(Object *obj, 
+>> Visitor *v,
+>>       visit_type_S390ControlProgramId(v, name, &cpi, errp);
+>>   }
+>>   +static const VMStateDescription vmstate_control_program_id = {
+>> +    .name = "s390_control_program_id",
+>> +    .version_id = 0,
+>> +    .minimum_version_id = 0,
 > 
-> Do we need the QEMU_PACKED here? The members seem naturally aligned,
-> and the struct does not seem to be involved in the communication with
-> the guest directly, so if you don't need it, please drop the
-> QEMU_PACKED here.
-> (without PACKED, the compiler can optimize the code in a better way,
-> and this causes less trouble on exotic platforms like SPARC that
-> cannot access unaligned memory addresses)
-
-Hello Thomas,
-
-Thank you for the explanation. I will drop the QEMU_PACKED.
-
+> Nit: As long as it is 0, I think you could simply omit the
+> minimum_version_id field here.
 > 
->>   struct SCLPEvent {
->>       DeviceState qdev;
->>       bool event_pending;
->>       char *name;
->> +    ControlProgramId cpi;
->>   };
->>     struct SCLPEventClass {
->> diff --git a/qapi/machine.json b/qapi/machine.json
->> index a6b8795b09..cd2bcd2d13 100644
->> --- a/qapi/machine.json
->> +++ b/qapi/machine.json
->> @@ -1898,3 +1898,61 @@
->>   { 'command': 'x-query-interrupt-controllers',
->>     'returns': 'HumanReadableText',
->>     'features': [ 'unstable' ]}
+
+Ok, I will omit the minimum_version_id field in both, thank you.
+
+>> +    .fields = (const VMStateField[]) {
+>> +        VMSTATE_UINT8_ARRAY(system_type, ControlProgramId, 8),
+>> +        VMSTATE_UINT8_ARRAY(system_name, ControlProgramId, 8),
+>> +        VMSTATE_UINT64(system_level, ControlProgramId),
+>> +        VMSTATE_UINT8_ARRAY(sysplex_name, ControlProgramId, 8),
+>> +        VMSTATE_UINT64(timestamp, ControlProgramId),
+>> +        VMSTATE_END_OF_LIST()
+>> +    }
+>> +};
 >> +
->> +##
->> +# @S390ControlProgramId:
->> +#
->> +# Control-program identifiers provide data about the guest operating 
->> system.
->> +# The control-program identifiers are: system type, system name, 
->> system level
->> +# and sysplex name.
->> +#
->> +# In Linux, all the control-program identifiers are user 
->> configurable. The
->> +# system type, system name, and sysplex name use EBCDIC characters 
->> from
->> +# this set: capital A-Z, 0-9, $, @, #, and blank.  In Linux, the 
->> system type,
->> +# system name and sysplex name are arbitrary free-form texts.
->> +#
->> +# In Linux, the 8-byte hexadecimal system-level has the format
->> +# 0x<a><b><cc><dd><eeee><ff><gg><hh>, where:
->> +# <a>: is one hexadecimal byte, its most significant bit indicates 
->> hypervisor
->> +# use
->> +# <b>: is one digit that represents Linux distributions as follows
->> +# 0: generic Linux
->> +# 1: Red Hat Enterprise Linux
->> +# 2: SUSE Linux Enterprise Server
->> +# 3: Canonical Ubuntu
->> +# 4: Fedora
->> +# 5: openSUSE Leap
->> +# 6: Debian GNU/Linux
->> +# 7: Red Hat Enterprise Linux CoreOS
->> +# <cc>: are two digits for a distribution-specific encoding of the 
->> major version
->> +# of the distribution
->> +# <dd>: are two digits for a distribution-specific encoding of the 
->> minor version
->> +# of the distribution
->> +# <eeee>: are four digits for the patch level of the distribution
->> +# <ff>: are two digits for the major version of the kernel
->> +# <gg>: are two digits for the minor version of the kernel
->> +# <hh>: are two digits for the stable version of the kernel
->> +# (e.g. 74872343805430528, when converted to hex is 
->> 0x010a000000060b00). On
->> +# machines prior to z16, some of the values are not available to 
->> display.
+>> +static const VMStateDescription vmstate_sclpcpi = {
+>> +    .name = "s390_sclpcpi",
+>> +    .version_id = 0,
+>> +    .minimum_version_id = 0,
 > 
-> You've got the same information in the comment at the beginning of the
-> sclpcpi.c file already ... maybe it would be good to have it in one
-> place only to avoid double maintenance in case it needs to be changed
-> in the future. I'd suggest to change the comment at the beginning of
-> sclpcpi.c to say something like "for a detailed description of the
-> contents of the CPI, please see the S390ControlProgramId QOM-type
-> description." or something similar?
-
-ok, I will do that.
-
+> dito
 > 
+>> +    .fields = (const VMStateField[]) {
+>> +        VMSTATE_STRUCT(cpi, SCLPEvent, 0, vmstate_control_program_id,
+>> +                       ControlProgramId),
+>> +        VMSTATE_END_OF_LIST()
+>> +    }
+>> +};
 >  Thomas
 
 -- 
