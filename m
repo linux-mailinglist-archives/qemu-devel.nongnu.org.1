@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCAE8A79733
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE34CA7972E
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:08:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u05Hs-0007jU-Lk; Wed, 02 Apr 2025 17:06:16 -0400
+	id 1u05I2-0000Wt-Ju; Wed, 02 Apr 2025 17:06:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05HP-0006fV-HH
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:05:47 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05HP-0006h8-Lt
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:05:49 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05HI-0006WZ-2O
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:05:44 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-39ac56756f6so182987f8f.2
- for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:05:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05HL-0006XF-Qp
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:05:46 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43cf06eabdaso1421275e9.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:05:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743627938; x=1744232738; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743627942; x=1744232742; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=yZbL9HEXLhlzWM0wEEnYehKfsmjVyV6ys25T3H/AAyg=;
- b=hbJmOlUQQQxZXyCOv5j6YzF89pGVAJ6d44NkcYLNUDIq2ioqPbizJyqhcEpwwUuFTV
- bJyHwpNwwjjRWZqICSQGFMsVBq4iRFflh1embSDQkD2HQVzLKcAjYDccnhF3vfPNGgBr
- o77cMwN84NL8tvmnLk3b5AmCB4NVMi821q5PN1TJvJbgVPjZBD1hT119CLkOryD3/LR4
- jvDv891vBOpH2iEV9zsZZyUDwr/+NqNYsAhxTMpTQCZxTt5XoAQa1U6Bu8aMiA2E8TmN
- hNLWoncQGhJb1PQgETOArneGsHaP1CIzKeNSS2BFAQJQH24xGdHpbhrAfH7jxZMXbqIz
- yKUw==
+ :reply-to; bh=5Gb1GaYZmsu1RdbSY9Ixqzg56VogQUZiis5J/e8e3jk=;
+ b=WN1EILQsNpMjXxtZKZN1xgw2uzUTcbSkOvJpYlScapGSlGL0LpZB+xwX0FTWRjBn+4
+ oqvER/HBRyRvDlLKgiK2EKOrvhktuLD+65RuF0dMWA8UnEjbk7qjAA+kp+4NH1ehfMMc
+ CuMQ4WjbyM3ExfuNoPFeTm3PkdzWAb2iGcD1mHCur9ubXPDEjnZS5HP6H1GKMK2Fi5vS
+ fDx4E48w1ASuq6p1c2rVG+c/+2eDmSyOGEHZ+QNDrC2HQOrkVL3BZf7B+PmCMeXoEyFl
+ jTcZST1iGwiVGnFSyQWA9jI03yTn3nFvSTKNcrrg5wh6juAsoe0uA1287ASbFBFhfdmy
+ pISQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743627938; x=1744232738;
+ d=1e100.net; s=20230601; t=1743627942; x=1744232742;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yZbL9HEXLhlzWM0wEEnYehKfsmjVyV6ys25T3H/AAyg=;
- b=OMHBahMgTTNSoVzVrRVma9xX/QV1gQVs5rnXDazbnfDuOI7NlwZ8IjbpD1CBu537u7
- qVDG7FEGT4vIHUDxCDNS6+mKPZ5OxqnRhFoOlgFHxl0lMh9Asg34tqHG9zwH1zYf/Ba2
- A5kwrll+lnJoFaKF+glRhv+28EjUGCzcTi3ehxPkgCM27+sENSLXSv3+5J1h9idkiA3g
- 30KhtPMDAD6luprwlnIR3q3C2O9ArXjIOEe2A3kaBLshzDxyJHASbTFf9JFUqcyjIhx0
- jpkH1lTAOxml9wLBpovMwHP3oiNqfoWMYJyRf2k+rgD3rkkTsvH3E9DXWFR6353Xomyt
- LdBw==
+ bh=5Gb1GaYZmsu1RdbSY9Ixqzg56VogQUZiis5J/e8e3jk=;
+ b=a1Wu4OW49rkh4KirBHo2WrCAs/boF92XagoVBzBxYHGyMsqPJSHlUkhakXxRg2pHIg
+ NME2X0iy4sAU6nUBWs2uPxeq6gTbqFSKuPhot8I2NYrA7Wv927GMlpS47GcUgpLl6+PV
+ +PEnXX2/MQYyauyofOJoJVUPr74p/Ru1pTL8NUJG7y3VBkowtMHRDZBdmxdd5g7Gg+t+
+ OStGCr6Baqx/pQDf/HgVj0XG8gqnSm7ZYtCbkmEiDZUiMzs4O41sbs6Cm/+Nbw8YGwwj
+ bPIk8Ti/U7Qixgf1aqhQnAUj2jh5L5BdbDO89hQbOJie9Mye04EDZvsqlJbj5f6YP91f
+ Eq+g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUeKycKIYfI1gVhB98qzCWyw7JasGs72iJjD5kOSQ1bgdKYJtPYg/HNmKgefUrNFMoZzprCwBKVg9AB@nongnu.org
-X-Gm-Message-State: AOJu0YwX5CNhieLcbLj1iF3aFWYiCCTSCJ3t91Bx4TamS/RhBhcluEWi
- j7CRL8QtpOhtgIROhV5KW1xNVvSdyZGd+fXzOhYWPoFvuxHsAHDjtIhy7Ekt+GXsrlpoMiGML6k
- K
-X-Gm-Gg: ASbGncsaSFJTF5cCqa7fAd3oCd7K8miB/Q4vWWFUWyKtehRn975f6RI5MuR0Sk0CqVA
- 1LX8VGwiKK6OhSqjq5ld3KHJWUv2OAQnE83sGRViBQD8i4URx7G1ZqOWABl+xbXsJ6A6kUKVH4p
- P6V1wmG4lpLZvBTwXLgeiQrdAn5kaGATrJVbDnlx2QcoMnO8scwxCdNt2vpCCswOS8Wz3v8PBz9
- /QxOf6198m+DkR+6Ce6mEpWeDwh7AJcrGdNsS0zidHiQBdest88KAatyb0teTzM/qJsCrFHdU05
- wd0t7cLX0lWBX7c1TZ+xVLvEDKcLA9BMk5nEokwjsmlVjVwNJt3uSm2GQWGj6CKFFO71cEDPW7I
- wUL8kJP6wW/Caffzr0Oo=
-X-Google-Smtp-Source: AGHT+IFZYewMrZIU8iVT4Fjh9zvyR9NEHA+iVP1/21FedxSipl8M31ryniM+0s34Rxb7eC73txSz/w==
-X-Received: by 2002:a05:6000:18a7:b0:39a:c6c4:f877 with SMTP id
- ffacd0b85a97d-39c2f8d5369mr117037f8f.20.1743627937839; 
- Wed, 02 Apr 2025 14:05:37 -0700 (PDT)
+ AJvYcCWqIsbjSy1g4NFz0TlAfQlThVJ17uDptcwjHs4yRuWdiBUJMpK064fg0zhPNt/CmnTOV7LrchbCo7ML@nongnu.org
+X-Gm-Message-State: AOJu0YzKbv9QpETrzsMapXIaGA43sgkPi/n8nqCKKhWydK2Nb270ByRT
+ yKW/LewXnCD7XLs93QyhBDK9DYJB2iiV76Mas/qEy3B2fPwpyS2YZLnrKkV3r43e878aYV3XSZb
+ q
+X-Gm-Gg: ASbGncstUqduMq+8QbYqQRXgIIs7wLRr9mhAAdqEqmR7pqOWvSWQ0Qwk/+5gJBZZGl1
+ X6nwMHZvVsUO2piW6h51fiqv4dqOblSRwpXKt7kC2d/EQZ3p0YwIp/e38dP6z0sJjCs5RVACkuf
+ pXOvvbeSbHVgL+v1nvAc5h+HOOL7ZrYkzphEkORffw14AHhJzcSoro89AhgiR9r9J4oi0ICOxrO
+ Ez5bgkvN6hMaLO986AO7osj8mhGHGgiIeKLz5zjBavR5Yg5PDwiIGMH3xiGt/S+1l6kU1CcliE+
+ tV7UBbGqQ5TKA5M7K99DqgDydkL5iN28WSOCPuXldhnGfdquJL4bXKE/JY0RGaUmuy7hjYWIDTq
+ dfo49paPckIeR010VRZw=
+X-Google-Smtp-Source: AGHT+IEIwbm0Ab3BegNusN1W1ee7bDB23SGAGSD2lgHrMA2yXSh8fhpYp4E3gkPM4WufRqrjBTdQQQ==
+X-Received: by 2002:a05:600c:1d1a:b0:43d:fa59:be39 with SMTP id
+ 5b1f17b1804b1-43ec14e7168mr1534625e9.33.1743627942352; 
+ Wed, 02 Apr 2025 14:05:42 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec1795630sm2006255e9.29.2025.04.02.14.05.37
+ 5b1f17b1804b1-43ec1663060sm2100155e9.14.2025.04.02.14.05.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Apr 2025 14:05:37 -0700 (PDT)
+ Wed, 02 Apr 2025 14:05:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
-Subject: [PATCH-for-10.1 26/43] hw/core/cpu: Remove CPUClass::mmu_index()
-Date: Wed,  2 Apr 2025 23:03:11 +0200
-Message-ID: <20250402210328.52897-27-philmd@linaro.org>
+Subject: [PATCH-for-10.1 27/43] exec: Restrict cpu-mmu-index.h to accel/tcg/
+Date: Wed,  2 Apr 2025 23:03:12 +0200
+Message-ID: <20250402210328.52897-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250402210328.52897-1-philmd@linaro.org>
 References: <20250402210328.52897-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,66 +98,233 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All targets have been converted to TCGCPUOps::mmu_index(),
-remove the now unused CPUClass::mmu_index().
-Since this handler is now mandatory, add an assertion in
-tcg_exec_realizefn().
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-mmu-index.h | 4 +---
- include/hw/core/cpu.h        | 2 --
- accel/tcg/cpu-exec.c         | 1 +
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ include/{exec => accel/tcg}/cpu-mmu-index.h | 6 +++---
+ include/exec/cpu_ldst.h                     | 2 +-
+ accel/tcg/translator.c                      | 2 +-
+ semihosting/uaccess.c                       | 2 +-
+ target/arm/gdbstub64.c                      | 2 +-
+ target/hppa/mem_helper.c                    | 2 +-
+ target/i386/tcg/translate.c                 | 2 +-
+ target/loongarch/cpu_helper.c               | 2 +-
+ target/microblaze/helper.c                  | 2 +-
+ target/microblaze/mmu.c                     | 2 +-
+ target/openrisc/translate.c                 | 2 +-
+ target/sparc/cpu.c                          | 2 +-
+ target/sparc/mmu_helper.c                   | 2 +-
+ target/tricore/helper.c                     | 2 +-
+ target/xtensa/mmu_helper.c                  | 2 +-
+ 15 files changed, 17 insertions(+), 17 deletions(-)
+ rename include/{exec => accel/tcg}/cpu-mmu-index.h (87%)
 
-diff --git a/include/exec/cpu-mmu-index.h b/include/exec/cpu-mmu-index.h
-index 651526e9f97..a87b6f7c4b7 100644
+diff --git a/include/exec/cpu-mmu-index.h b/include/accel/tcg/cpu-mmu-index.h
+similarity index 87%
+rename from include/exec/cpu-mmu-index.h
+rename to include/accel/tcg/cpu-mmu-index.h
+index a87b6f7c4b7..3699c18b4cb 100644
 --- a/include/exec/cpu-mmu-index.h
-+++ b/include/exec/cpu-mmu-index.h
-@@ -32,9 +32,7 @@ static inline int cpu_mmu_index(CPUState *cs, bool ifetch)
- # endif
- #endif
++++ b/include/accel/tcg/cpu-mmu-index.h
+@@ -6,8 +6,8 @@
+  * SPDX-License-Identifier: LGPL-2.1-or-later
+  */
  
--    const TCGCPUOps *tcg_ops = cs->cc->tcg_ops;
--    int ret = tcg_ops->mmu_index ? tcg_ops->mmu_index(cs, ifetch)
--                                 : cs->cc->mmu_index(cs, ifetch);
-+    int ret = cs->cc->tcg_ops->mmu_index(cs, ifetch);
-     tcg_debug_assert(ret >= 0 && ret < NB_MMU_MODES);
+-#ifndef EXEC_CPU_MMU_INDEX_H
+-#define EXEC_CPU_MMU_INDEX_H
++#ifndef ACCEL_TCG_CPU_MMU_INDEX_H
++#define ACCEL_TCG_CPU_MMU_INDEX_H
+ 
+ #include "hw/core/cpu.h"
+ #include "accel/tcg/cpu-ops.h"
+@@ -37,4 +37,4 @@ static inline int cpu_mmu_index(CPUState *cs, bool ifetch)
      return ret;
  }
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 60b7abaf49b..10b6b25b344 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -104,7 +104,6 @@ struct SysemuCPUOps;
-  *                 instantiatable CPU type.
-  * @parse_features: Callback to parse command line arguments.
-  * @reset_dump_flags: #CPUDumpFlags to use for reset logging.
-- * @mmu_index: Callback for choosing softmmu mmu index.
-  * @memory_rw_debug: Callback for GDB memory access.
-  * @dump_state: Callback for dumping state.
-  * @query_cpu_fast:
-@@ -151,7 +150,6 @@ struct CPUClass {
-     ObjectClass *(*class_by_name)(const char *cpu_model);
-     void (*parse_features)(const char *typename, char *str, Error **errp);
  
--    int (*mmu_index)(CPUState *cpu, bool ifetch);
-     int (*memory_rw_debug)(CPUState *cpu, vaddr addr,
-                            uint8_t *buf, size_t len, bool is_write);
-     void (*dump_state)(CPUState *cpu, FILE *, int flags);
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 6c6098955f0..5ced3879ac4 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -1076,6 +1076,7 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
-         assert(tcg_ops->cpu_exec_interrupt);
- #endif /* !CONFIG_USER_ONLY */
-         assert(tcg_ops->translate_code);
-+        assert(tcg_ops->mmu_index);
-         tcg_ops->initialize();
-         tcg_target_initialized = true;
-     }
+-#endif /* EXEC_CPU_MMU_INDEX_H */
++#endif /* ACCEL_TCG_CPU_MMU_INDEX_H */
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 313100fcda1..63847f6e618 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -68,7 +68,7 @@
+ 
+ #include "exec/cpu-common.h"
+ #include "exec/cpu-ldst-common.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/abi_ptr.h"
+ 
+ #if defined(CONFIG_USER_ONLY)
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 36a6a9e0408..c53bbdef99f 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -12,7 +12,7 @@
+ #include "qemu/log.h"
+ #include "qemu/error-report.h"
+ #include "exec/cpu-ldst-common.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/target_page.h"
+ #include "exec/translator.h"
+ #include "exec/plugin-gen.h"
+diff --git a/semihosting/uaccess.c b/semihosting/uaccess.c
+index 92b2421dce5..81ffecaaba4 100644
+--- a/semihosting/uaccess.c
++++ b/semihosting/uaccess.c
+@@ -8,7 +8,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/exec-all.h"
+ #include "exec/target_page.h"
+ #include "exec/tlb-flags.h"
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index 3bbca4cbb98..64ee9b3b567 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
+@@ -28,7 +28,7 @@
+ #include "mte_user_helper.h"
+ #endif
+ #ifdef CONFIG_TCG
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/target_page.h"
+ #endif
+ 
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index df4e35f4de6..554d7bf4d14 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -22,7 +22,7 @@
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "exec/cputlb.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
+ #include "exec/helper-proto.h"
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 7e6d1ef9379..ca49f8d6dcb 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -20,7 +20,7 @@
+ 
+ #include "qemu/host-utils.h"
+ #include "cpu.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/exec-all.h"
+ #include "exec/translation-block.h"
+ #include "tcg/tcg-op.h"
+diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
+index 4597e29b153..bb343078bf7 100644
+--- a/target/loongarch/cpu_helper.c
++++ b/target/loongarch/cpu_helper.c
+@@ -8,7 +8,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/target_page.h"
+ #include "internals.h"
+ #include "cpu-csr.h"
+diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
+index 9e6969ccc9a..92031924830 100644
+--- a/target/microblaze/helper.c
++++ b/target/microblaze/helper.c
+@@ -21,7 +21,7 @@
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+ #include "exec/cputlb.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
+ #include "qemu/host-utils.h"
+diff --git a/target/microblaze/mmu.c b/target/microblaze/mmu.c
+index 7f20c4e4c69..95a12e16f8e 100644
+--- a/target/microblaze/mmu.c
++++ b/target/microblaze/mmu.c
+@@ -22,7 +22,7 @@
+ #include "qemu/log.h"
+ #include "cpu.h"
+ #include "exec/cputlb.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
+ 
+diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
+index 4a8e203cf88..d4ce60188bd 100644
+--- a/target/openrisc/translate.c
++++ b/target/openrisc/translate.c
+@@ -20,7 +20,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/exec-all.h"
+ #include "tcg/tcg-op.h"
+ #include "qemu/log.h"
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 072d5da5736..af3cec43e78 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -22,7 +22,7 @@
+ #include "cpu.h"
+ #include "qemu/module.h"
+ #include "qemu/qemu-print.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/exec-all.h"
+ #include "exec/translation-block.h"
+ #include "hw/qdev-properties.h"
+diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
+index b3351eebd0a..217580a4d8c 100644
+--- a/target/sparc/mmu_helper.c
++++ b/target/sparc/mmu_helper.c
+@@ -21,7 +21,7 @@
+ #include "qemu/log.h"
+ #include "cpu.h"
+ #include "exec/cputlb.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
+ #include "exec/tlb-flags.h"
+diff --git a/target/tricore/helper.c b/target/tricore/helper.c
+index a5ae5bcb619..e4c53d453dd 100644
+--- a/target/tricore/helper.c
++++ b/target/tricore/helper.c
+@@ -20,7 +20,7 @@
+ #include "hw/registerfields.h"
+ #include "cpu.h"
+ #include "exec/cputlb.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
+ #include "fpu/softfloat-helpers.h"
+diff --git a/target/xtensa/mmu_helper.c b/target/xtensa/mmu_helper.c
+index 45601a4b850..a7dd8100555 100644
+--- a/target/xtensa/mmu_helper.c
++++ b/target/xtensa/mmu_helper.c
+@@ -33,7 +33,7 @@
+ #include "exec/helper-proto.h"
+ #include "qemu/host-utils.h"
+ #include "exec/cputlb.h"
+-#include "exec/cpu-mmu-index.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/exec-all.h"
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
 -- 
 2.47.1
 
