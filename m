@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D18A79759
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C405DA79708
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 23:04:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u05Ff-0004Jk-BQ; Wed, 02 Apr 2025 17:03:59 -0400
+	id 1u05Fg-0004Jz-Me; Wed, 02 Apr 2025 17:04:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Fb-0004I5-Vu
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:03:56 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Fd-0004If-BC
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:03:57 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05FY-00066f-LE
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:03:54 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43cf034d4abso1768485e9.3
- for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:03:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u05Fb-00067Q-OB
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 17:03:57 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43ce70f9afbso1723765e9.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 14:03:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743627829; x=1744232629; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743627834; x=1744232634; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sxbMVhD3bEvS83tquXFpF0OjRyJof4LX4BkOe9da+FA=;
- b=f1MkhKGD6UxmvSzQEBd8JH42lua/ExFFv4Du8tJ2VHPKhylNgLQ49vvvFzl8irbaIo
- 4NnQ+afYcS3aKlzoo52GX1migPjS4pE6uLzwSx9L4kOxrYM4h2A6CYXNUPIw+NWOx6GJ
- A1C0h4uMzvYLnytHTyabbKnxsNp64a28811OLnvCsQOggbDPKyaZGiRrthMPAsShE/tk
- sTeoLZ4ovPjusB+L1RU5GwYool5vPlX/Bfm+UKg4mmcSZEJXKpjhYxlBRrXg56sckS+a
- 8SXC67T89I3qYsMm+h9pFBA3+/P/XpJJ0uZxaz1Rg46/0stNyk6ixYXIxRn+fNUhMxbO
- 0OuQ==
+ :reply-to; bh=Dmyx3JTZYFq9p9197cADu5kbBYB8RIN9hQSzz7RhzyM=;
+ b=hmHvLSt2NeWKHGTpT3ARv2t9AT5cza9u8WiAyvdsuknkk3XiB20EH+PRt/ZPAbthsB
+ 3rfp0P8Ia4OQpakXq/2u8oxhQWCc0VEGiJSI97ky9Fh/aNAqetwZYBpjfqm6DAmwJIQG
+ 53ho8dfdXgCoyD2OXYe1QXxYr2LRmHeDgetuIb8nJBmkPbjJFoTdz139Gp/7JKWOOUjx
+ N3eSTm8tg4WM9YvWnowM6alOobCGSHPb5tLEN3h95+IeF3Odn867sMO53fAJGM13jz4h
+ 5wD54Z6K+4Wg5Ilk+bfZJI+3Nj3YBgog5rHuciMmxdaLR7x4MAmiHDYlOjCAcfD20NXe
+ IjQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743627829; x=1744232629;
+ d=1e100.net; s=20230601; t=1743627834; x=1744232634;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sxbMVhD3bEvS83tquXFpF0OjRyJof4LX4BkOe9da+FA=;
- b=hxMCfvgE84ECbP//Xx68iJ4uyrfI1scsRbMJrkx9almTUs3M4oWmf2RyRRER0qiiat
- C0CQmzdoqQSZ6Duj63qMz9H/wc/tzJF2uh0TiVHEt4z1Ce6MW1q9kqq6nIu2Hu4xpL+A
- ucBw/G2y2iDmb+bvgZZHZkInQ0Me/wQvmfqHPSlT9obGQ3x+Aixp86sdng2Xb8O0ba2k
- 3kSIRz46ROpTpXPxrf6MWxzDbHG8M0MiBWYyDW14Q1MaWFOgNAPuajFIvo1VYWmNjt+H
- 1RSrKZN3kMlOd/xNOtB6jzYEUe9mdePHtav93nF2fIMzwST8pYwJvmKwvSgdoC17mTKS
- ysHg==
+ bh=Dmyx3JTZYFq9p9197cADu5kbBYB8RIN9hQSzz7RhzyM=;
+ b=klSbhdf7R1aVATbYp7g910oculewDmRLnkKKmyZZb5OwT8PFnTiAI3UM3LKL+2Ivv3
+ OHff8nkgvb+jKVQsbUpb116L/Gl82G0wl459r1EmTQM7fRhFtuhmjygykEMFQnvx6En0
+ CyoibYfWlk40+KyxOFtondhYCIFUWhO7L0VXaaH3VNLOubQ9Y+nPJrnWB9D1av6NkyU0
+ R1nsJAnzgvJzs0eDt3VRQUdmRjO4SJQCnwjPmRiBNrfRKcCPtbdAV00pZ/auCaZp6eEq
+ fpzF+fVA5gMwlAA/8vIY4GVAl33xLyOQMc3+2usH6NUQlcl5XFn0m7B68H4I/KbImLut
+ 51jw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUPTf8iSZB8zCyggRH9UsHuPoPU66FvpxOcFeEAOo0BoG2D39WnraXlUswVYqicwgKTELNhHkgnYTb+@nongnu.org
-X-Gm-Message-State: AOJu0Yyz/h8NTqqD8IgdhafofTsNEgchZljbibcB0+qM1Unaflbp1Ru1
- r0ArNRiCNEO6CAL7Z6I93IU2ht4FRbiu6Vw1we8lsHIUuHgQdnvNGxQZ5TNF+jNFNuNaCXFeaoB
- t
-X-Gm-Gg: ASbGncvHhmWp0DREI4hZ53cSX83c7bFtaH+Ll6V18kP5u716/UNxD9iEaUYEOYKSuaR
- sIOiH1GH/LuZYl8LH+hZDsklsRFoPAzOCMB5+2Vh0/kQRCCWH2f3lzOJgI6rDdPpnOWWHmcQPR0
- 3sWBbqg6HRRnweZT7kxWKgejqr7OaOyP3NoZbgdJh7VTfPqnotNjNgTtsQllsiKLDPOxvlr9vvm
- hZP1pSrmLLb3LzATIrhgemQnViu8/UfH+tR8TDrnyjoCEuO8BgE6Y9sEn9BpViGA+/yehtt6RDJ
- wgQyV4zOPzSR8a2XvIPLXF29UmbMAFvaPr3hI1sWVOIjiTAe073lmsj5PbJ/69Xp/q773kIato+
- nqjmIkT8iINpERcC9JOY=
-X-Google-Smtp-Source: AGHT+IFyx/ADxTDJ3l/5k9lF0izabW1IqTtXZ0I3Uut75AqVObKJjcrqEwYNFPOr4KVkjP3y77GkPQ==
-X-Received: by 2002:a05:600c:198b:b0:43c:ec28:d310 with SMTP id
- 5b1f17b1804b1-43eb5c20f9cmr39794575e9.10.1743627829448; 
- Wed, 02 Apr 2025 14:03:49 -0700 (PDT)
+ AJvYcCXSCO/Ba8+Ei3vLHkRv0DB2QZKfzMfM1y3sjzzIMw10oU+iQ4Hefz9GWlVzZEPV6fMUa6FQEiQNBQOi@nongnu.org
+X-Gm-Message-State: AOJu0Ywux74Ez4rws206PoENOLxv5DQFRUuRTe7fWm5kneQEN47gODhS
+ HOnimq5NcA4l71AaPPLV3gSZubu+rwZIQm9JOQ2o4MmO0QcZUhKx97FOiQDlBMVl49DDnbENMwc
+ k
+X-Gm-Gg: ASbGncszZBlFI6vvBFwHwhuPkZeG2NF8a2X0BzTD2BZ58MHWfzv1LpSFOyUaKBe8Yph
+ R6clVZnhCvWg4y77ohQkMHmoCjx4Gcu+TF1hasM1KCFVqrB7ZAk5DN+0ZOG8iw8VguVjv5LbJkt
+ S4Tu6kxiQphM+YkrCv6cjrXL014E5h8XemeqJ4necTs6j/BgjPBL6cENdid4vmM6e0M5FEqQOGs
+ KJzhenbT440jrtAW9Bcmx9Ey65iS/zhwjUzVLPaqAWCMXbYNMA8jH7crudPemSXSI1Y93G5R3nP
+ trbNY2/cZVO7j/6TFbzTNxaqf996KJ3ByKcB/NIdskV3MhgtCmPXN0rnbOAz02cX6EHC2sy1GH3
+ e8nEGVnKriRkDPfTKO7I=
+X-Google-Smtp-Source: AGHT+IG8pNs9POLoM1LW27FqdR7PKhbMuZxT2uhYl8YLX6iWMZ7t2TygPzvHfj0ScfRrUEhW5TBRcA==
+X-Received: by 2002:a05:600c:5108:b0:43c:f629:66f3 with SMTP id
+ 5b1f17b1804b1-43db624be12mr158671285e9.18.1743627834098; 
+ Wed, 02 Apr 2025 14:03:54 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c0b6656afsm17751785f8f.40.2025.04.02.14.03.48
+ ffacd0b85a97d-39c0b663573sm18460291f8f.33.2025.04.02.14.03.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Apr 2025 14:03:48 -0700 (PDT)
+ Wed, 02 Apr 2025 14:03:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
-Subject: [PATCH-for-10.1 04/43] accel/tcg: Introduce TCGCPUOps::mmu_index()
- callback
-Date: Wed,  2 Apr 2025 23:02:49 +0200
-Message-ID: <20250402210328.52897-5-philmd@linaro.org>
+Subject: [PATCH-for-10.1 05/43] target/alpha: Restrict SoftMMU mmu_index() to
+ TCG
+Date: Wed,  2 Apr 2025 23:02:50 +0200
+Message-ID: <20250402210328.52897-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250402210328.52897-1-philmd@linaro.org>
 References: <20250402210328.52897-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,52 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll move CPUClass::mmu_index() to TCGCPUOps::mmu_index().
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/accel/tcg/cpu-ops.h  | 3 +++
- include/exec/cpu-mmu-index.h | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ target/alpha/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
-index f60e5303f21..106a0688da8 100644
---- a/include/accel/tcg/cpu-ops.h
-+++ b/include/accel/tcg/cpu-ops.h
-@@ -67,6 +67,9 @@ struct TCGCPUOps {
-     /** @debug_excp_handler: Callback for handling debug exceptions */
-     void (*debug_excp_handler)(CPUState *cpu);
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index 935ad2ee1ae..99d839a2792 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -239,6 +239,7 @@ static const TCGCPUOps alpha_tcg_ops = {
+     .translate_code = alpha_translate_code,
+     .synchronize_from_tb = alpha_cpu_synchronize_from_tb,
+     .restore_state_to_opc = alpha_restore_state_to_opc,
++    .mmu_index = alpha_cpu_mmu_index,
  
-+    /** @mmu_index: Callback for choosing softmmu mmu index */
-+    int (*mmu_index)(CPUState *cpu, bool ifetch);
-+
  #ifdef CONFIG_USER_ONLY
-     /**
-      * @fake_user_interrupt: Callback for 'fake exception' handling.
-diff --git a/include/exec/cpu-mmu-index.h b/include/exec/cpu-mmu-index.h
-index cfc13d46bea..651526e9f97 100644
---- a/include/exec/cpu-mmu-index.h
-+++ b/include/exec/cpu-mmu-index.h
-@@ -10,6 +10,7 @@
- #define EXEC_CPU_MMU_INDEX_H
+     .record_sigsegv = alpha_cpu_record_sigsegv,
+@@ -263,7 +264,6 @@ static void alpha_cpu_class_init(ObjectClass *oc, void *data)
+                                     &acc->parent_realize);
  
- #include "hw/core/cpu.h"
-+#include "accel/tcg/cpu-ops.h"
- #include "tcg/debug-assert.h"
- #ifdef COMPILING_PER_TARGET
- #include "cpu.h"
-@@ -31,7 +32,9 @@ static inline int cpu_mmu_index(CPUState *cs, bool ifetch)
- # endif
- #endif
- 
--    int ret = cs->cc->mmu_index(cs, ifetch);
-+    const TCGCPUOps *tcg_ops = cs->cc->tcg_ops;
-+    int ret = tcg_ops->mmu_index ? tcg_ops->mmu_index(cs, ifetch)
-+                                 : cs->cc->mmu_index(cs, ifetch);
-     tcg_debug_assert(ret >= 0 && ret < NB_MMU_MODES);
-     return ret;
- }
+     cc->class_by_name = alpha_cpu_class_by_name;
+-    cc->mmu_index = alpha_cpu_mmu_index;
+     cc->dump_state = alpha_cpu_dump_state;
+     cc->set_pc = alpha_cpu_set_pc;
+     cc->get_pc = alpha_cpu_get_pc;
 -- 
 2.47.1
 
