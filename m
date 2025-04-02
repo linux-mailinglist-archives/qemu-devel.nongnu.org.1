@@ -2,74 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA497A79279
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 17:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C742A792F0
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 18:23:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u00Nr-0003wt-88; Wed, 02 Apr 2025 11:52:07 -0400
+	id 1u00qo-0004MG-MM; Wed, 02 Apr 2025 12:22:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u00No-0003wF-9y
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 11:52:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1u00ql-0004Ln-Ti
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 12:22:00 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u00Nm-0001xY-Lm
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 11:52:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743609121;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=IIr8q62LoRIyviTx/pdZhEXZBPu89FdOIxFcN4LTFXc=;
- b=FuqbqXymw2u/JmdOfJKsM6+pCfboO4yLv43Zu5uDIJbb81f1RrgyxwmVxIkLbYKVwQc/vf
- AqjBCqrOFPiPOAp4Iek99QRGKkQPo+EoeBw48KOHsXhIlgyNQegeI1YCQgmuZYOpKmF8Hc
- RYNsj4cq1pR1E0jrbKqtj5lKwdH1f10=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-145-lzhqgkWsMT-DoKHHa1XaUQ-1; Wed,
- 02 Apr 2025 11:51:58 -0400
-X-MC-Unique: lzhqgkWsMT-DoKHHa1XaUQ-1
-X-Mimecast-MFC-AGG-ID: lzhqgkWsMT-DoKHHa1XaUQ_1743609117
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0577D19560B7; Wed,  2 Apr 2025 15:51:57 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.101])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 55E55195609D; Wed,  2 Apr 2025 15:51:53 +0000 (UTC)
-Date: Wed, 2 Apr 2025 11:51:52 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-s390x@nongnu.org,
- fam@euphon.net, philmd@linaro.org, kwolf@redhat.com,
- hreitz@redhat.com, thuth@redhat.com, mjrosato@linux.ibm.com,
- schnelle@linux.ibm.com, Farhan Ali <alifm@linux.ibm.com>
-Subject: Re: [PATCH v3 0/3] Enable QEMU NVMe userspace driver on s390x
-Message-ID: <20250402155152.GE304512@fedora>
-References: <20250401172246.2688-1-alifm@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1u00qj-0004A6-Ki
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 12:21:59 -0400
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 532AuAP7014503
+ for <qemu-devel@nongnu.org>; Wed, 2 Apr 2025 16:21:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ kgWH8l6GJsM4fRmXzwmaAo997BgYviF8pZKPYiOIaEs=; b=h+ak1RfSzbUaA6No
+ +2XkGicZiZNsJThnkfnKCXiWbf+AguMfahk0oQ44tXdPSpgwm9FFcgeaOtv5ma78
+ Xa7sDVO76epJOUCh61QDpHq31ffi/Oa04+0zoY83TjAZ83NdrPmOfcJQMhir9x+v
+ FcMxLSe22Sj7NKHEBq930pbT0IJ+79dKeMtYbxWl0MTW/KZe10s85SlDUB7mbeqZ
+ mevL26KTMKrwedKDlSviJvc8G38AluDgRRV0iPGSRrsLiUXxtBxe5j2rDBPgUrWo
+ VpD6SAWLxb4926Gn2iIjRfjvYsGDegFnnPuiLpRYz9bqBkBaGETYoZm+EHPNp3GX
+ cfQX6g==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45p7tvm2gb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 16:21:54 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-7375e2642b4so209492b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 09:21:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1743610913; x=1744215713;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kgWH8l6GJsM4fRmXzwmaAo997BgYviF8pZKPYiOIaEs=;
+ b=sflnAodHjjgGF+b2G2BUmkJH4Jsevz6MjqRRkQC2IsNXhUfpWKDgZIKo75NkDXDc2J
+ 7SZB6bXbaCOie/8qymxBSubNhNs7AlP3aA3Ie4IW3h5195f3aFU5h8FfrbD2Lvtg/Lhp
+ Sv1Hikb42KO8cAM9FdhItln6RlcxhY2EbfzK7YEmNd+z/M6LNh5bPgFXkTLYWaEQx0au
+ FRjSSui2CJyBnYsWGfan7Ugg9PXBpcNet0jjm7T4ziXAWwNoBpm8LtEhx+34QRlUJFws
+ H0lusqNl5Y61VGTiIkJ8PRm8m+ui1vC9QoiBMG+7WafaZp6Xja2HLfg35GYCHtbwbtg0
+ 9ecg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUsh4F/1Nf61PmyimcEsnWzvci0+dOK9mAHfrM5++MHX4qhUK/CYkWTtZBuFfuZpL5KlUVaNQNZUuzI@nongnu.org
+X-Gm-Message-State: AOJu0YzNVpwxVvnsPzJepldEtcgiIXBwORMjszXCsz6Zl5eZXmRRUvFG
+ qflV81Z7q9yl6V5mTw1mLrWfUTDlJiBFeKgnpkBhznboTfDjeMByR+ld1ECN4ACiquj7Q086iHR
+ CICBUBuTFpAt96eIb7aXMuWrRV20dArgCm9xmtTZiVYZYjEuVnnIE5w==
+X-Gm-Gg: ASbGnctD+BDAx6aKHvbTsZvOyjhBjXdjCThjR5xts1DiTH3bx/bTrXMcuiNr4JJdg/h
+ kYnn9gLh7ZRHkCOH8w6xAyyw2mI+Pv7lqKFW+MD9pQYty3ll9VgtJAOA89CuPmXHYDqUMdfyQCU
+ q1flApvA9Z9M4VspT/ny/aVG8YY8z5A0LD3ggpp1HT/Vilya3lWD/U8RHjfDZy7IhcfhhRGVYDb
+ 6VozvL1s91o3BNCObwYrcPqSfEG8P4sqpBbcchEkQQI+PqZC15Aidp1dwKvsfXGoXaQ2rXRQOkC
+ DAC73TCmoLagRafHcYE5/lBOjbZT712yTe4ikE6EFe9Y6ELCblTIedvEYtRkm1scyto/vFVQaA=
+ =
+X-Received: by 2002:a05:6a21:c8f:b0:1f5:7eb5:72c7 with SMTP id
+ adf61e73a8af0-200d155f5c6mr12423475637.29.1743610913160; 
+ Wed, 02 Apr 2025 09:21:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHK6qbCbhErJv38Lt7o/uAmM0RI4zsFLXs6RiJU1Gsc1ONOMiQoZh9DShfFX3uErFsPWRJyyA==
+X-Received: by 2002:a05:6a21:c8f:b0:1f5:7eb5:72c7 with SMTP id
+ adf61e73a8af0-200d155f5c6mr12423447637.29.1743610912755; 
+ Wed, 02 Apr 2025 09:21:52 -0700 (PDT)
+Received: from [10.222.168.90] (Global_NAT1_IAD_FW.qualcomm.com.
+ [129.46.232.65]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-739710920adsm11138469b3a.122.2025.04.02.09.21.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Apr 2025 09:21:52 -0700 (PDT)
+Message-ID: <9a96af7b-4ee7-424f-9934-ecd37cff5a31@oss.qualcomm.com>
+Date: Wed, 2 Apr 2025 11:21:50 -0500
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="cljUvCXO0cOjgEvH"
-Content-Disposition: inline
-In-Reply-To: <20250401172246.2688-1-alifm@linux.ibm.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] target/hexagon: Replace `prepare` script with
+ meson target
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: ale@rev.ng, ltaylorsimpson@gmail.com, philmd@linaro.org
+References: <20250402114259.21953-1-anjo@rev.ng>
+ <20250402114259.21953-2-anjo@rev.ng>
+Content-Language: en-US
+From: Brian Cain <brian.cain@oss.qualcomm.com>
+In-Reply-To: <20250402114259.21953-2-anjo@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=OIon3TaB c=1 sm=1 tr=0 ts=67ed6422 cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=C3Dk8TwHQYyIj7nOf9RCJw==:17
+ a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=mDV3o1hIAAAA:8 a=EUspDBNiAAAA:8
+ a=_8qmwitvIyZaJUrpDDIA:9 a=QEXdDO2ut3YA:10
+ a=RVmHIydaz68A:10 a=2VI0MkxyNR6bbpdq8BZq:22
+X-Proofpoint-ORIG-GUID: jWqwWtLy9wGsKpdvbRs0s6140pm-J-p5
+X-Proofpoint-GUID: jWqwWtLy9wGsKpdvbRs0s6140pm-J-p5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-02_06,2025-04-02_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ mlxlogscore=999 lowpriorityscore=0 malwarescore=0 mlxscore=0 clxscore=1015
+ adultscore=0 bulkscore=0 phishscore=0 suspectscore=0 impostorscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504020104
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,101 +131,72 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---cljUvCXO0cOjgEvH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 4/2/2025 6:42 AM, Anton Johansson wrote:
+> The purpose of the prepare script is to invoke `cpp` to preprocess input
+> to idef-parser by expanding a few select macros.  On macOS `cpp`
+> expands into `clang ... -traditional-cpp` which breaks macro
+> concatenation.  Replace `cpp` with `${compiler} -E`
+> and replace the script with a meson custom_target.
+>
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> ---
 
-On Tue, Apr 01, 2025 at 10:22:43AM -0700, Farhan Ali wrote:
-> Hi,
->=20
-> Recently on s390x we have enabled mmap support for vfio-pci devices [1].
 
-Hi Alex,
-I wanted to bring this to your attention. Feel free to merge it through
-the VFIO tree, otherwise I will merge it once you have taken a look.
+Reviewed-by: Brian Cain <brian.cain@oss.qualcomm.com>
 
-Thanks,
-Stefan
 
-> This allows us to take advantage and use userspace drivers on s390x. Howe=
-ver,
-> on s390x we have special instructions for MMIO access. Starting with z15=
-=20
-> (and newer platforms) we have new PCI Memory I/O (MIO) instructions which=
-=20
-> operate on virtually mapped PCI memory spaces, and can be used from users=
-pace.
-> On older platforms we would fallback to using existing system calls for M=
-MIO access.
->=20
-> This patch series introduces support the PCI MIO instructions, and enable=
-s s390x
-> support for the userspace NVMe driver on s390x. I would appreciate any re=
-view/feedback
-> on the patches.
->=20
-> Thanks
-> Farhan
->=20
-> [1] https://lore.kernel.org/linux-s390/20250226-vfio_pci_mmap-v7-0-c5c0f1=
-d26efd@linux.ibm.com/
->=20
-> ChangeLog
-> ---------
-> v2 series https://mail.gnu.org/archive/html/qemu-devel/2025-03/msg06847.h=
-tml
-> v2 -> v3
->     - Update the PCI MMIO APIs to reflect that its PCI MMIO access on hos=
-t=20
-> as suggested by Stefan(patch 2)
->     - Move s390x ifdef check to s390x_pci_mmio.h as suggested by Philippe=
- (patch 1)
->     - Add R-bs for the respective patches.
->=20
-> v1 series https://mail.gnu.org/archive/html/qemu-devel/2025-03/msg06596.h=
-tml
-> v1 -> v2
->     - Add 8 and 16 bit reads/writes for completeness (patch 1)
->     - Introduce new QEMU PCI MMIO read/write API as suggested by Stefan (=
-patch 2)
->     - Update NVMe userspace driver to use QEMU PCI MMIO functions (patch =
-3)
->=20
-> Farhan Ali (3):
->   util: Add functions for s390x mmio read/write
->   include: Add a header to define host PCI MMIO functions
->   block/nvme: Use host PCI MMIO API
->=20
->  block/nvme.c                  |  37 +++++----
->  include/qemu/host-pci-mmio.h  | 116 ++++++++++++++++++++++++++
->  include/qemu/s390x_pci_mmio.h |  24 ++++++
->  util/meson.build              |   2 +
->  util/s390x_pci_mmio.c         | 148 ++++++++++++++++++++++++++++++++++
->  5 files changed, 311 insertions(+), 16 deletions(-)
->  create mode 100644 include/qemu/host-pci-mmio.h
->  create mode 100644 include/qemu/s390x_pci_mmio.h
->  create mode 100644 util/s390x_pci_mmio.c
->=20
-> --=20
-> 2.43.0
->=20
-
---cljUvCXO0cOjgEvH
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmftXRgACgkQnKSrs4Gr
-c8hDkAf/Yst62QgRHVggfEY46uDPa9/J/rWPgTTcHaEAMNEyB59mlvDKqFqbL1c6
-NA5eRSjyFNXhFO8OaiGjBnybRgW59sRXlPRwkei+RFybi35AQgXMZLijWn9Hq4ve
-1UOdz+h9HcPMuPc6PdhoMS4EPSXHSrpdau3o/uQl0YE8hsm75S+bWTkYGmGrCJR/
-uhzssvefWROcjiILxNeJrZsOVYlQPvu38gRWbvC6juimntJPPZVvVWTMM3Im3trF
-4d8jli3zr64IeWgqi6zU73oE5sJvfIcyeen+uaf5kj1VEBV6dSo+r+f/C0T2GRLi
-nNavlHkI7Rc7W0D57A/BnewXo8YwmA==
-=Fv6j
------END PGP SIGNATURE-----
-
---cljUvCXO0cOjgEvH--
-
+>   target/hexagon/idef-parser/prepare | 24 ------------------------
+>   target/hexagon/meson.build         |  3 ++-
+>   2 files changed, 2 insertions(+), 25 deletions(-)
+>   delete mode 100755 target/hexagon/idef-parser/prepare
+>
+> diff --git a/target/hexagon/idef-parser/prepare b/target/hexagon/idef-parser/prepare
+> deleted file mode 100755
+> index cb3622d4f8..0000000000
+> --- a/target/hexagon/idef-parser/prepare
+> +++ /dev/null
+> @@ -1,24 +0,0 @@
+> -#!/usr/bin/env bash
+> -
+> -#
+> -#  Copyright(c) 2019-2021 rev.ng Labs Srl. All Rights Reserved.
+> -#
+> -#  This program is free software; you can redistribute it and/or modify
+> -#  it under the terms of the GNU General Public License as published by
+> -#  the Free Software Foundation; either version 2 of the License, or
+> -#  (at your option) any later version.
+> -#
+> -#  This program is distributed in the hope that it will be useful,
+> -#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+> -#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> -#  GNU General Public License for more details.
+> -#
+> -#  You should have received a copy of the GNU General Public License
+> -#  along with this program; if not, see <http://www.gnu.org/licenses/>.
+> -#
+> -
+> -set -e
+> -set -o pipefail
+> -
+> -# Run the preprocessor and drop comments
+> -cpp "$@"
+> diff --git a/target/hexagon/meson.build b/target/hexagon/meson.build
+> index bb4ebaae81..abcf00ca1f 100644
+> --- a/target/hexagon/meson.build
+> +++ b/target/hexagon/meson.build
+> @@ -280,12 +280,13 @@ if idef_parser_enabled and 'hexagon-linux-user' in target_dirs
+>           command: [python, files('gen_idef_parser_funcs.py'), semantics_generated, '@OUTPUT@'],
+>       )
+>   
+> +    compiler = meson.get_compiler('c').get_id()
+>       preprocessed_idef_parser_input_generated = custom_target(
+>           'idef_parser_input.preprocessed.h.inc',
+>           output: 'idef_parser_input.preprocessed.h.inc',
+>           input: idef_parser_input_generated,
+>           depend_files: [idef_parser_dir / 'macros.h.inc'],
+> -        command: [idef_parser_dir / 'prepare', '@INPUT@', '-I' + idef_parser_dir, '-o', '@OUTPUT@'],
+> +        command: [compiler, '-x', 'c', '-E', '-I', idef_parser_dir, '-o', '@OUTPUT@', '@INPUT@'],
+>       )
+>   
+>       flex = generator(
 
