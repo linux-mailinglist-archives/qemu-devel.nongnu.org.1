@@ -2,90 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E36A79276
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 17:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79ED2A7927C
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Apr 2025 17:55:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u00M1-00036P-Cd; Wed, 02 Apr 2025 11:50:13 -0400
+	id 1u00R5-0005RY-9i; Wed, 02 Apr 2025 11:55:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1u00Lz-000367-Fz
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 11:50:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1u00R1-0005RJ-Pc
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 11:55:24 -0400
+Received: from mail-dm6nam12on2072.outbound.protection.outlook.com
+ ([40.107.243.72] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1u00Lw-0000nq-T4
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 11:50:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743609005;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ycRpxBBOz/moeCjj4EOVJDYjmoGxZMbGSzE5TMq1L+8=;
- b=Qg8nrOnpuuWCs1X7/bZqbFFgMY3zh+gc0w1hc3QxE+mKOLREWszco44plwJRM6aOEosDR1
- 9Gr3gAz4nGT9osFobPbuWnquGwrhFhAX2ZB7+xpqMA2YQunbfwHlb3MThfCQmWRUIDpJT5
- 6OuLzAjVeVFwqvr/Lg9Hy+8iygvqwJM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-mRWqA1LBNiGdJByK7IJmpw-1; Wed,
- 02 Apr 2025 11:50:02 -0400
-X-MC-Unique: mRWqA1LBNiGdJByK7IJmpw-1
-X-Mimecast-MFC-AGG-ID: mRWqA1LBNiGdJByK7IJmpw_1743608999
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 30FFD180AF74; Wed,  2 Apr 2025 15:49:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.12])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9AC0A19541A5; Wed,  2 Apr 2025 15:49:50 +0000 (UTC)
-Date: Wed, 2 Apr 2025 16:49:47 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
- qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
- Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v5 49/65] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
-Message-ID: <Z-1cm6cEwNGs9NEu@redhat.com>
-References: <20240229063726.610065-1-xiaoyao.li@intel.com>
- <20240229063726.610065-50-xiaoyao.li@intel.com>
- <Zv7dtghi20DZ9ozz@redhat.com>
- <0e15f14b-cd63-4ec4-8232-a5c0a96ba31d@intel.com>
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1u00Qz-0004mS-Ah
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 11:55:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pWzUEuQMDgSJbOP/nUszR0uMS18QmDSDawgp3IVb8oL4l16V0Vpn48p3jaDsEX191VLsp70cijZV4y/WNOSY8WZDAXhLhq1uZd6t8AO6maruugQdAdR6El5IcQBC+PjFtShKOQAnu/svtwzPRYvI20S82FpskxDM7ZtfnZ68FZLuA0AxE7gVM1iLaQe71f2mU5ODpGlH4wsOqF3whnYZwjfmG0x8rM+MpBmXVhabk7BaKhFU5ehEpg4dj1yFG1ZUP4gFPHZhoGP+SclAPiTmIDWCgJ+YAyng7RfMBftGj5Ip0qE8esqzaWwSlFj68rtAoDvhogPGPko5Hhb1NzbuPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d+mvkcMlTtimDfxr3wsdR0sUI7IoIIiT9X8ODR327Zg=;
+ b=iYr78HHaRmyTuXdJVVYqEQkaq2I/OibMa/TpMwAo2PBZ2XTHKo/6GE0XwhDY/3ME4S8+/6XcvpBcSzOb21UqsgsAskXqDkrrkoF7EagabDCvyftEWQEdaSEJc0rsY5fMZhc20dkv6O2AWlC6rvSNLwIlQvPaSOhYIf4hSSymWiFj0E3IGR8yo342gWEUYmLXG3/iwg/IGkk5dE6fHBFlOPhfp/4DDu0enV1zGxhwErwTh5O352EJ02uQ9qdmElBdQR5y3dKxY+5VX5SQc1iOnOMOatSZ7odra6nt8A4gmpOsCfc3apLAFgz64TQlOEQwvrAfkQTxv57MPnBHof214g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=d+mvkcMlTtimDfxr3wsdR0sUI7IoIIiT9X8ODR327Zg=;
+ b=LP3JvX+GvbMRl5LgQvbdSP69jPROiWJpo8nBi0fhFfAc1wu3SnamHORMFoM4mQUv1F6BPbiyGzVHll388WBqT8w1f3rwN0IsDhwU70wGNzo0Ph+okRmsz6GII/Sw+N+6rA8TcrM7kjClzroLD+6iFxqgLzTeoUZDQ7Oz4kvWn7o=
+Received: from BL1PR13CA0012.namprd13.prod.outlook.com (2603:10b6:208:256::17)
+ by SA3PR12MB7805.namprd12.prod.outlook.com (2603:10b6:806:319::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8583.41; Wed, 2 Apr
+ 2025 15:50:13 +0000
+Received: from MN1PEPF0000F0E3.namprd04.prod.outlook.com
+ (2603:10b6:208:256:cafe::72) by BL1PR13CA0012.outlook.office365.com
+ (2603:10b6:208:256::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8606.22 via Frontend Transport; Wed,
+ 2 Apr 2025 15:50:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MN1PEPF0000F0E3.mail.protection.outlook.com (10.167.242.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8606.22 via Frontend Transport; Wed, 2 Apr 2025 15:50:12 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 2 Apr
+ 2025 10:50:12 -0500
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0e15f14b-cd63-4ec4-8232-a5c0a96ba31d@intel.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: quoted-printable
+Subject: [ANNOUNCE] QEMU 10.0.0-rc2 is now available
+From: Michael Roth <michael.roth@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: Stefan Hajnoczi <stefanha@redhat.com>
+Date: Wed, 2 Apr 2025 10:49:57 -0500
+Message-ID: <174360899767.2652907.11077257925426395819@amd.com>
+User-Agent: alot/0.9
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E3:EE_|SA3PR12MB7805:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19e4f49d-8fda-4dd7-f9ad-08dd71fe0dff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|36860700013|82310400026|376014|13003099007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UW1SUHlhSW51YklCNEEwNDFMekZBbFJkUFVoY0lnK1BLOUVBanAzc0dOcE1W?=
+ =?utf-8?B?ZUh1UUpRMzltTUpiL2NPNVhyNmdrSUQ3SWRxSXFsM1FvQWwvSDFLbUdNVGJ4?=
+ =?utf-8?B?RzByYktLaTVsUk5BdG5melJqWlFJY1hlTnVNM05FTFpYbU9BVENkK2hyQkFB?=
+ =?utf-8?B?UTBlRlhqWWJ2TWs1VDVMVDhXdXQ2YkhqNjBoTTZMOEhObEdWMFRnTzNsaTJ3?=
+ =?utf-8?B?dXpsQWpuajdlN2RPbktnS0YrejdLS1VDZ2tQTUs3OHF5NGFFU29rZnpHWnVm?=
+ =?utf-8?B?ckNvQ0JPYW5QSmxqbDdKMmFzV0FFZFJzMnROQnBGTm9IdXRkWHlDSTI1MTBB?=
+ =?utf-8?B?NEdCdFJWcTc5S0VPMHdJTWxNWWo4ZlRyNG82TWdwMzlRcDZlVzhHa3pINVdl?=
+ =?utf-8?B?cloxOENoWFR4UkxNd3JjVnNYMnJRLzZ0S1VIdnI3M2NxVmlYYzNmSWQzaDhZ?=
+ =?utf-8?B?TFpQTkdKQmFsbWIrWmg3OVRiVldLUkl4NGxsdURVZHo3c3FUaW9LUzFnVk5T?=
+ =?utf-8?B?cW1oeVAyaWI1RXNkSUVGYkJsLzdwZ0daU1BhMDB4UkU4TjBjTmtIdTczUEpz?=
+ =?utf-8?B?ai85UUYxVmxSWVVxc1daY1VDRVVEeEdqWGhtOFVZa2hWbm5hWHNnQm1mMjNn?=
+ =?utf-8?B?a1VINUhXaTVEZ2hCOVFtMm1rMlU1cmdZbkVOMy9CcFpyZWIweGpGSG52THh2?=
+ =?utf-8?B?NS80Q2R1UGFUSm80UThxMTFsUEhPc0NPeHdEYTdFUG5DdnFrR0VJUXY4SlNj?=
+ =?utf-8?B?ZkVnelQwZ1kwN2dtSmJET29zTENHZzVJd3U2VG5JcG0yaWZ1U21lcjhQZGVQ?=
+ =?utf-8?B?Q2UxdFhaQlFvcXFKWmtIQy9HRFVEZlFpSGlMR21CQ21ZQ1NRR0RJbm5wdlFV?=
+ =?utf-8?B?UlE1RjVSOGE5Vnl5d3BRK1ZtM1BhYXJEMGQ3ckZpcUJCZlNVTTlaNWhvcFhi?=
+ =?utf-8?B?OGZvQkV5OUd6N3NYRHc0ZXd2ZENvcTJvTnlpREZFQ1dudTc5SUJXeUo4bmlL?=
+ =?utf-8?B?VmJ6YTliSmNtOWQvQmVxRVd1OE4vZElDRUE0QzBITmVQbFJHektkYTVnc3Rq?=
+ =?utf-8?B?Yk0yYTcxbytGYi8zOUdUKytTWjFZUXhUT21FdjhEeG54VTdhdVJlZEpPRXJk?=
+ =?utf-8?B?Q3B6Z3hqdzZVdFovUGF4UzZwM3BDVkh4RGQyNDNDb0ZMRFoyVGJIcTE5dDVJ?=
+ =?utf-8?B?MUQxK1RYSlVnYm81WlBoV3QxWUs3VDFqUDJ2ZFRCNFUwZW5VUlYzY0VRaWJM?=
+ =?utf-8?B?eU1BRTJySmxEdGNlcXRGb3FLRnRhQ1RpOHJmQkZHaUFXaVdhdHlhQ3hsWCtR?=
+ =?utf-8?B?TTltOGZCdjBCVzMzOHVXSW9nSktOL2luZzBzWGJBTHdSdmZKWmdZbFNLaHhI?=
+ =?utf-8?B?WkhYL0x3K0ZJeXdVb2ZXRDVxd2FjZ1hYaFBmNElBcWM1Tkp6c3YyNVZUL3do?=
+ =?utf-8?B?N2dVVjJaL2NhV2lFU3pZOVIzT2pnV1E0dmVjZHpoWW1yTG5DbFlNaTdxMVF4?=
+ =?utf-8?B?dzI5VzVkVzNXOUdCYktHb2RnZXFkR0VHMGdQdEN4aDVnTkY3WFJTcHhRV0pQ?=
+ =?utf-8?B?aEROS0t3WEozSzRFZlJ0NGVkeEZaMlU4cTRFZWhQK0RCcHNRbGJYcm1Pb040?=
+ =?utf-8?B?a1JoZHdrUjZQZVp5S1hBdk1nSUJudWwyVzZja1pFeDJiTU5IWVlmeWphL3hl?=
+ =?utf-8?B?RzV3eElKV2xNMDQrWVYwSHY1Rng4QndiNis5akFnWlpCRGJMaVVuZ0Y4VTdk?=
+ =?utf-8?B?dnVNMWEwdlQ4VGNTL3pITnM5VWd4UW1ITXlCRHRZM3Vmc3YwK1FTTEc4eWky?=
+ =?utf-8?B?dnFGd3ZJdkQ4VHRXQ1VMbko2SkFMNUhWVERkck0wd1p3bDl1UGYzZDBMZXFa?=
+ =?utf-8?B?OFF6SHUrUlZFZE95bkVyM2NNZkZOSGFSakRNV1Y4QlcvL3BWY2JKYkd6eWRD?=
+ =?utf-8?B?M2tkREtUN29kbDZJYWtOOTJUNDlaQnFkakVHZDd5T0Vueks3NERRdkduMDUz?=
+ =?utf-8?B?TXhDMWhydERnPT0=?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(13003099007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 15:50:12.6677 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19e4f49d-8fda-4dd7-f9ad-08dd71fe0dff
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: MN1PEPF0000F0E3.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7805
+Received-SPF: permerror client-ip=40.107.243.72;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,283 +150,100 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 02, 2025 at 11:26:11PM +0800, Xiaoyao Li wrote:
-> Sorry for the late response.
-> 
-> KVM part of TDX attestation support is submitting again. QEMU part will
-> follow and we need to settle dowm this topic before QEMU patches submission.
-> 
-> On 10/4/2024 2:08 AM, Daniel P. Berrangé wrote:
-> > On Thu, Feb 29, 2024 at 01:37:10AM -0500, Xiaoyao Li wrote:
-> > > From: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > 
-> > > Add property "quote-generation-socket" to tdx-guest, which is a property
-> > > of type SocketAddress to specify Quote Generation Service(QGS).
-> > > 
-> > > On request of GetQuote, it connects to the QGS socket, read request
-> > > data from shared guest memory, send the request data to the QGS,
-> > > and store the response into shared guest memory, at last notify
-> > > TD guest by interrupt.
-> > > 
-> > > command line example:
-> > >    qemu-system-x86_64 \
-> > >      -object '{"qom-type":"tdx-guest","id":"tdx0","quote-generation-socket":{"type": "vsock", "cid":"1","port":"1234"}}' \
-> > >      -machine confidential-guest-support=tdx0
-> > > 
-> > > Note, above example uses vsock type socket because the QGS we used
-> > > implements the vsock socket. It can be other types, like UNIX socket,
-> > > which depends on the implementation of QGS.
-> > > 
-> > > To avoid no response from QGS server, setup a timer for the transaction.
-> > > If timeout, make it an error and interrupt guest. Define the threshold of
-> > > time to 30s at present, maybe change to other value if not appropriate.
-> > > 
-> > > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > Codeveloped-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> > > Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> > > Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > 
-> > 
-> > > diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-> > > index 49f94d9d46f4..7dfda507cc8c 100644
-> > > --- a/target/i386/kvm/tdx.c
-> > > +++ b/target/i386/kvm/tdx.c
-> > 
-> > > +static int tdx_handle_get_quote(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
-> > > +{
-> > > +    struct tdx_generate_quote_task *task;
-> > > +    struct tdx_get_quote_header hdr;
-> > > +    hwaddr buf_gpa = vmcall->in_r12;
-> > > +    uint64_t buf_len = vmcall->in_r13;
-> > > +
-> > > +    QEMU_BUILD_BUG_ON(sizeof(struct tdx_get_quote_header) != TDX_GET_QUOTE_HDR_SIZE);
-> > > +
-> > > +    vmcall->status_code = TDG_VP_VMCALL_INVALID_OPERAND;
-> > > +
-> > > +    if (buf_len == 0) {
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    /* GPA must be shared. */
-> > > +    if (!(buf_gpa & tdx_shared_bit(cpu))) {
-> > > +        return 0;
-> > > +    }
-> > > +    buf_gpa &= ~tdx_shared_bit(cpu);
-> > > +
-> > > +    if (!QEMU_IS_ALIGNED(buf_gpa, 4096) || !QEMU_IS_ALIGNED(buf_len, 4096)) {
-> > > +        vmcall->status_code = TDG_VP_VMCALL_ALIGN_ERROR;
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    if (address_space_read(&address_space_memory, buf_gpa, MEMTXATTRS_UNSPECIFIED,
-> > > +                           &hdr, TDX_GET_QUOTE_HDR_SIZE) != MEMTX_OK) {
-> > > +        error_report("TDX: get-quote: failed to read GetQuote header.\n");
-> > > +        return -1;
-> > > +    }
-> > > +
-> > > +    if (le64_to_cpu(hdr.structure_version) != TDX_GET_QUOTE_STRUCTURE_VERSION) {
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    /*
-> > > +     * Paranoid: Guest should clear error_code and out_len to avoid information
-> > > +     * leak.  Enforce it.  The initial value of them doesn't matter for qemu to
-> > > +     * process the request.
-> > > +     */
-> > > +    if (le64_to_cpu(hdr.error_code) != TDX_VP_GET_QUOTE_SUCCESS ||
-> > > +        le32_to_cpu(hdr.out_len) != 0) {
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    /* Only safe-guard check to avoid too large buffer size. */
-> > > +    if (buf_len > TDX_GET_QUOTE_MAX_BUF_LEN ||
-> > > +        le32_to_cpu(hdr.in_len) > buf_len - TDX_GET_QUOTE_HDR_SIZE) {
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    vmcall->status_code = TDG_VP_VMCALL_SUCCESS;
-> > > +    if (!tdx_guest->quote_generator) {
-> > > +        hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_QGS_UNAVAILABLE);
-> > > +        if (address_space_write(&address_space_memory, buf_gpa,
-> > > +                                MEMTXATTRS_UNSPECIFIED,
-> > > +                                &hdr, TDX_GET_QUOTE_HDR_SIZE) != MEMTX_OK) {
-> > > +            error_report("TDX: failed to update GetQuote header.\n");
-> > > +            return -1;
-> > > +        }
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    qemu_mutex_lock(&tdx_guest->quote_generator->lock);
-> > > +    if (tdx_guest->quote_generator->num >= TDX_MAX_GET_QUOTE_REQUEST) {
-> > > +        qemu_mutex_unlock(&tdx_guest->quote_generator->lock);
-> > > +        vmcall->status_code = TDG_VP_VMCALL_RETRY;
-> > > +        return 0;
-> > > +    }
-> > > +    tdx_guest->quote_generator->num++;
-> > > +    qemu_mutex_unlock(&tdx_guest->quote_generator->lock);
-> > > +
-> > > +    /* Mark the buffer in-flight. */
-> > > +    hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_IN_FLIGHT);
-> > > +    if (address_space_write(&address_space_memory, buf_gpa,
-> > > +                            MEMTXATTRS_UNSPECIFIED,
-> > > +                            &hdr, TDX_GET_QUOTE_HDR_SIZE) != MEMTX_OK) {
-> > > +        error_report("TDX: failed to update GetQuote header.\n");
-> > > +        return -1;
-> > > +    }
-> > > +
-> > > +    task = g_malloc(sizeof(*task));
-> > > +    task->buf_gpa = buf_gpa;
-> > > +    task->payload_gpa = buf_gpa + TDX_GET_QUOTE_HDR_SIZE;
-> > > +    task->payload_len = buf_len - TDX_GET_QUOTE_HDR_SIZE;
-> > > +    task->hdr = hdr;
-> > > +    task->quote_gen = tdx_guest->quote_generator;
-> > > +    task->completion = tdx_get_quote_completion;
-> > > +
-> > > +    task->send_data_size = le32_to_cpu(hdr.in_len);
-> > > +    task->send_data = g_malloc(task->send_data_size);
-> > > +    task->send_data_sent = 0;
-> > > +
-> > > +    if (address_space_read(&address_space_memory, task->payload_gpa,
-> > > +                           MEMTXATTRS_UNSPECIFIED, task->send_data,
-> > > +                           task->send_data_size) != MEMTX_OK) {
-> > > +        g_free(task->send_data);
-> > > +        return -1;
-> > > +    }
-> > 
-> > In this method we've received "struct tdx_get_quote_header" from
-> > the guest OS, and the 'hdr.in_len' field in that struct tells us
-> > the payload to read from guest memory. This payload is treated as
-> > opaque by QEMU and sent over the UNIX socket directly to QGS with
-> > no validation of the payload.
-> > 
-> > The payload is supposed to be a raw TDX report, that QGS will turn
-> > into a quote.
-> > 
-> > Nothing guarantees that the guest OS has actually given QEMU a
-> > payload that represents a TDX report.
-> > 
-> > The only validation done in this patch is to check the 'hdr.in_len'
-> > was not ridiculously huge:
-> > 
-> >       #define TDX_GET_QUOTE_MAX_BUF_LEN       (128 * 1024)
-> > 
-> >       #define TDX_GET_QUOTE_HDR_SIZE          24
-> > 
-> >       ...
-> >       /* Only safe-guard check to avoid too large buffer size. */
-> >       if (buf_len > TDX_GET_QUOTE_MAX_BUF_LEN ||
-> >           le32_to_cpu(hdr.in_len) > buf_len - TDX_GET_QUOTE_HDR_SIZE) {
-> >           return 0;
-> >       }
-> > 
-> > IOW, hdr.in_len can be any value between 0 and 131048, and
-> > the payload data read can contain arbitrary bytes.
-> > 
-> > 
-> > Over in the QGS code, QGS historically had a socket protocol
-> > taking various messages from the libtdxattest library which
-> > were defined in this:
-> > 
-> >    https://github.com/intel/SGXDataCenterAttestationPrimitives/blob/main/QuoteGeneration/quote_wrapper/qgs_msg_lib/inc/qgs_msg_lib.h
-> > 
-> >    typedef enum _qgs_msg_type_t {
-> >      GET_QUOTE_REQ = 0,
-> >      GET_QUOTE_RESP = 1,
-> >      GET_COLLATERAL_REQ = 2,
-> >      GET_COLLATERAL_RESP = 3,
-> >      GET_PLATFORM_INFO_REQ = 4,
-> >      GET_PLATFORM_INFO_RESP = 5,
-> >      QGS_MSG_TYPE_MAX
-> >    } qgs_msg_type_t;
-> > 
-> >    typedef struct _qgs_msg_header_t {
-> >      uint16_t major_version;
-> >      uint16_t minor_version;
-> >      uint32_t type;
-> >      uint32_t size;              // size of the whole message, include this header, in byte
-> >      uint32_t error_code;        // used in response only
-> >    } qgs_msg_header_t;
-> > 
-> > such messages are processed by the 'get_resp' method in QGS:
-> > 
-> >    https://github.com/intel/SGXDataCenterAttestationPrimitives/blob/main/QuoteGeneration/quote_wrapper/qgs/qgs_ql_logic.cpp#L78
-> > 
-> > The 1.21 release of DCAP introduced a new "raw" mode in QGS which
-> > just receives the raw 1024 byte packet from the client which is
-> > supposed to be a raw TDX report.  This is what this QEMU patch
-> > is relying on IIUC.
-> > 
-> > 
-> > The QGS daemon decides whether a client is speaking the formal
-> > protocol, or "raw" mode, by trying to interpret the incoming
-> > data as a 'qgs_msg_header_t' struct. If the header size looks
-> > wrong & it has exactly 1024 bytes, then QGS assumes it has got
-> > a raw TDX report:
-> > 
-> >    https://github.com/intel/SGXDataCenterAttestationPrimitives/blob/main/QuoteGeneration/quote_wrapper/qgs/qgs_server.cpp#L165
-> > 
-> > This all works if the data QEMU gets from the guest is indeed a
-> > 1024 byte raw TDX report, but what happens if we face a malicious
-> > guest ?
-> > 
-> > AFAICT, the guest OS is able to send a "qgs_msg_header_t" packet
-> > to QEMU, which QEMU blindly passes on to QGS. This allows the
-> > guest OS to invoke any of the three QGS commands - GET_QUOTE_REQ,
-> > GET_COLLATERAL_REQ, or GET_PLATFORM_INFO_REQ. Fortunately I think
-> > those three messages are all safe to invoke, but none the less,
-> > this should not be permitted, as it leaves a wide open door for
-> > possible future exploits.
-> > 
-> > As mentioned before, I don't know why this raw mode was invented
-> > for QGS, when QEMU itself could just take the guest report and
-> > pack it into the 'GET_QUOTE_REQ' message format and send it to
-> > QGS. This prevents the guest OS from being able to exploit QEMU
-> > to invoke arbirtary QGS messages.
-> 
-> I guess the raw mode was introduced due to the design was changed to let
-> guest kernel to forward to TD report to host QGS via TDVMCALL instead of
-> guest application communicates with host QGS via vsock, and Linux TD guest
-> driver doesn't integrate any QGS protocol but just forward the raw TD report
-> data to KVM.
-> 
-> > IMHO, QEMU should be made to pack & unpack the TDX report from
-> > the guest into the GET_QUOTE_REQ / GET_QUOTE_RESP messages, and
-> > this "raw" mode should be removed to QGS as it is inherantly
-> > dangerous to have this magic protocol overloading.
-> 
-> There is no enforcement that the input data of TDVMCALL.GetQuote is the raw
-> data of TD report. It is just the current Linux tdx-guest driver of tsm
-> implementation send the raw data. For other TDX OS, or third-party driver,
-> they might encapsulate the raw TD report data with QGS message header. For
-> such cases, if QEMU adds another layer of package, it leads to the wrong
-> result.
+Hello,
 
-If I look at the GHCI spec 
+On behalf of the QEMU Team, I'd like to announce the availability of the
+third release candidate for the QEMU 10.0 release. This release is meant
+for testing purposes and should not be used in a production environment.
 
-  https://cdrdv2-public.intel.com/726790/TDX%20Guest-Hypervisor%20Communication%20Interface_1.0_344426_006%20-%2020230311.pdf
+  http://download.qemu.org/qemu-10.0.0-rc2.tar.xz
+  http://download.qemu.org/qemu-10.0.0-rc2.tar.xz.sig
 
-In "3.3 TDG.VP.VMCALL<GetQuote>", it indicates the parameter is a
-"TDREPORT_STRUCT". IOW, it doesn't look valid to allow the guest to
-send arbitrary other data as QGS protocol messages.
+You can help improve the quality of the QEMU 10.0 release by testing this
+release and reporting bugs using our GitLab issue tracker:
 
-> If we are going to pack the input data of GETQUOTE in QEMU, it becomes a
-> hard requirement from QEMU that the input data of GETQUOTE must be raw data
-> of TD report.
+  https://gitlab.com/qemu-project/qemu/-/milestones/15
 
-AFAICT it must be a raw TDREPORT_STRUCT per the spec and thus QEMU must not
-allow anything different, as that exposes a significantly larger security
-attack surface on the QGS daemon.
+The release plan, as well a documented known issues for release
+candidates, are available at:
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+  http://wiki.qemu.org/Planning/10.0
 
+Please add entries to the ChangeLog for the 10.0 release below:
+
+  http://wiki.qemu.org/ChangeLog/10.0
+
+Thank you to everyone involved!
+
+Changes since rc1:
+
+0adf626718: Update version for v10.0.0-rc2 release (Stefan Hajnoczi)
+20ab88a906: hw/misc/aspeed_scu: Correct minimum access size for AST2500 / A=
+ST2600 (Joel Stanley)
+f0095c8ad9: hw/misc/aspeed_scu: Set MemoryRegionOps::impl::access_size to 3=
+2-bit (Philippe Mathieu-Daud=C3=A9)
+256ba7715b: target/mips: Simplify and fix update_pagemask (Richard Henderso=
+n)
+d89b9899ba: target/mips: Require even maskbits in update_pagemask (Richard =
+Henderson)
+fca2817fdc: target/mips: Revert TARGET_PAGE_BITS_VARY (Richard Henderson)
+8001d22b0c: target/sparc: Log unimplemented ASI load/store accesses (Philip=
+pe Mathieu-Daud=C3=A9)
+070a500cc0: target/avr: Fix buffer read in avr_print_insn (Richard Henderso=
+n)
+fb5bc76cae: target/hppa: Remove duplicated CPU_RESOLVING_TYPE definition (P=
+hilippe Mathieu-Daud=C3=A9)
+04e99f9eb7: hw/pci-host/designware: Fix ATU_UPPER_TARGET register access (P=
+hilippe Mathieu-Daud=C3=A9)
+c458f9474d: hw/ufs: free irq on exit (Zheng Huang)
+70fe5ae121: hw/char/bcm2835_aux: Fix incorrect interrupt ID when RX disable=
+d (Chung-Yi Chen)
+1c2d03bb08: hw/sd/sdhci: free irq on exit (Zheng Huang)
+48ca224250: hw/scsi/lsi53c895a: fix memory leak in lsi_scsi_realize() (Zhen=
+g Huang)
+b2e72fadc8: hw/nvram/xlnx-efuse: Do not expose as user-creatable (Philippe =
+Mathieu-Daud=C3=A9)
+490aaae935: hw/misc/pll: Do not expose as user-creatable (Philippe Mathieu-=
+Daud=C3=A9)
+2542d5cf47: hw/rtc/goldfish: keep time offset when resetting (Heinrich Schu=
+chardt)
+facfc943cb: hw/mips: Mark the "mipssim" machine as deprecated (Thomas Huth)
+c0a1dabd0b: hw/dma/i82374: Categorize and add description (Philippe Mathieu=
+-Daud=C3=A9)
+43b815eae1: hw/display/dm163: Add description (Philippe Mathieu-Daud=C3=A9)
+82bdce7b94: hw/block/m25p80: Categorize and add description (Philippe Mathi=
+eu-Daud=C3=A9)
+581ca58246: hw/core/cpu: Use size_t for memory_rw_debug len argument (Richa=
+rd Henderson)
+f32d678252: hw/arm/fsl-imx8mp: Remove unused define (Bernhard Beschow)
+26c1c41e8c: hw/arm/fsl-imx8mp: Derive struct FslImx8mpState from TYPE_SYS_B=
+US_DEVICE (Bernhard Beschow)
+02e5214624: hw/arm/imx8mp-evk: Fix reference count of SoC object (Bernhard =
+Beschow)
+8dcfb54090: hw/arm/armv7m: Expose and access System Control Space as little=
+ endian (Philippe Mathieu-Daud=C3=A9)
+897c68fb79: Revert "target/riscv/kvm: add missing KVM CSRs" (Daniel Henriqu=
+e Barboza)
+e768f0246c: docs/specs/riscv-iommu: Fixed broken link to external risv iomm=
+u document (hemanshu.khilari.foss)
+4a7b8c3f5c: docs: Added docs/specs/riscv-iommu.rst in MAINTAINERS file. (he=
+manshu.khilari.foss)
+694b5a913d: migration: Avoid SNP guest crash due to duplicate cpr blocker (=
+Steve Sistare)
+0c346576e4: target/loongarch: Fix the cpu unplug resource leak (Xianglai Li)
+5a8d024f8d: tests/functional/test_vnc: Skip test if VNC support is not avai=
+lable (Thomas Huth)
+c3612d0b6a: tests/functional/test_aarch64_virt_gpu: Skip if "dbus" display =
+isn't available (Thomas Huth)
+6a93b1c7b4: target/s390x: Fix a typo in s390_cpu_class_init() (Philippe Mat=
+hieu-Daud=C3=A9)
+dba0752f2c: tests/functional: Add missing require_netdev('user') statements=
+ (Thomas Huth)
+f0a6b3ec6d: tests/functional/meson.build: Bump arm_aspeed_bletchley timeout=
+ (Peter Maydell)
+3b9731020d: tests/functional/test_ppc64_replay: Mark the e500 test as flaky=
+ (Thomas Huth)
 
