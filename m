@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8F3A7AEC3
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 22:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93BDA7AEBD
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 22:34:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0RFX-00040y-Eq; Thu, 03 Apr 2025 16:33:19 -0400
+	id 1u0RFb-00044y-N0; Thu, 03 Apr 2025 16:33:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RFM-00040V-6U
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:33:09 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RFP-00040t-Vi
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:33:12 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RFJ-00044K-3f
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:33:06 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43cf58eea0fso6984905e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 13:33:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RFN-00044Z-V8
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:33:11 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-39149bccb69so1177080f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 13:33:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743712383; x=1744317183; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743712388; x=1744317188; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lv7WRDAe+YGQs2mxscSeBnIuH1FPhg0M1NDpEDTQH9Q=;
- b=kG1+Z9thqJaXNdVDgkeNHywmAxsEN+Ssocu5xDV8l/V8ufcm3fsDPDpE2karm1hRsp
- cI2D0OO/g1QDnFsS/9habPvxRplPqxJgV77VK7Vb/NucSkjn+K3goLbG4sfYXkNG01SY
- 18w8LVhBVI06W5OILZ6MaocaOsCy/C9V5rmaD6Zp0pcIWjEHHUayjIIwD/Nw26ZE8snY
- 9WwOgBEDgUZa6Xyo4wnPGWtp4hxx9v1W/HvRacrfYjc8l0zdCmASkXwc48ZnoA6DA802
- z3q5cwz95qYa7+UU+DGbO4emPvOVaUHULeCboUzVZ12lNUXEKG6nenUoUZi31CpgKVyx
- PxFA==
+ bh=i7P8huLNBvJOP7nd4dB1l20n900j9HtETUh1v4TfTS8=;
+ b=BGRZwgNrZYhKyISI+Sp69uko6dWskSKz0zTeKDuCfgebBsnPXlBItKeeWHrwEi/j03
+ /GwLghqjdC9Zpcj6pht9DYAohk//m5zyljD+4qVtWdWjFgOeXvE8B9wzAPdkjaqweSy5
+ tKTyp5lHYz9OM538RG766oDSndZVyLXRXN7WKcTc16MFl5fRQFbN6Jjj0VbRTtrbykwZ
+ Zd4QY3sZ9zVInLNYQmD34fEwD+pye+NRqQN6CeZmL6YiBisCQltJd8k9fXR95HRLKMK1
+ 9EpqY2pbgBiB5WtCSlfP2rhJwWGdl1fLi1iBtwyjm5U6G+ObMIxNqK9toP9fqGkQ2i3n
+ ySIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743712383; x=1744317183;
+ d=1e100.net; s=20230601; t=1743712388; x=1744317188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Lv7WRDAe+YGQs2mxscSeBnIuH1FPhg0M1NDpEDTQH9Q=;
- b=SXfUJFF9cqRn2AK+eWVCrGmROXQEWEcDQXxEgusClfFnSfj8XeaXbxKpIdPT7yFbxP
- ooUCzejnsOGfJKeA9ctbBhwbo+FrSnFCgXj8OF/vuKFB8gKnw3EnZ2Xz2fnFfr/lTGk/
- 8DoxOML2d4cPrC/Ds1WR39VMClIp/JwPD3412SnCQ28HkJHZKbdRECdLk1zOWaSOhZwe
- tsaH6T9DlCVMiFw67Mhgnxt/jXprJCRKqYneqZ9LQoopytrfovWxIHgeniNM8wTZl4SS
- hIa2CGKcAH0ExyHKp+NdYNnKGj5KFpDwEWefUNz/rz1nuJGKneu6/r1ITluMOaq4kvxK
- LYUg==
-X-Gm-Message-State: AOJu0Yw9wXy3bTaJN1kRRfPZivPMdl+57PmNlG2Wp9IRW36cJZxYdBLe
- 8dm7elBgb+zzgB/PfwvEuUfkEHz+R+02v2rzX6AnhWRjZOmc0xTPSs2F2qeV7GmopWUEMzrAsGZ
- Y
-X-Gm-Gg: ASbGncubFWwuHf4Bc/dRrKGkPsfhOgedVRhUjgRctMtgCMZVcsbPmatqQRqO4/mXmBL
- rLAQwOqbVd/74LecJ5bU+0RwdoEdEd/cUz+CO4jkHoGEXVR990N60tAiYZRdQ9tUfuqqjphRJ6z
- 6P7kOSpxVD957VGoi5HeVDxTSZByzZWnIQun+oXVrx15DpABhSFD1kJ7XohBbGX4KPGwu7yTLiT
- gsUwQtN8OPV+xbWCYV41NZ6ogkjdKbSrUbF5mXnyrJrKYkuG9NEKnM5y9X+4ZpnzMy1LMReJWC6
- e4SHhLZ1HwqGWJ2s0CQs1Mlc+Qj1j09wig2LH7xLdt6qeHn9mQwTIgOvR4sb4r3l0az/ixItkcR
- Y9ZjkY2ANfAZZ9Vg9fPWbh/Lw
-X-Google-Smtp-Source: AGHT+IEpNujC6ObkbA2+VyHek7N5ZyJT2+swRY2rg4uTUw1d+UnZ23wJJtADL3/Lh6xoor4OKixmSg==
-X-Received: by 2002:a05:600c:511f:b0:43c:e8ba:e166 with SMTP id
- 5b1f17b1804b1-43ecf9c3d51mr2840225e9.22.1743712383043; 
- Thu, 03 Apr 2025 13:33:03 -0700 (PDT)
+ bh=i7P8huLNBvJOP7nd4dB1l20n900j9HtETUh1v4TfTS8=;
+ b=u1Ikw7CEKm5MOw9swmHaF9iJosZtOljGjMd7n7PnKqplO3oPj8wTM6hIEpywQ+vPKj
+ gEjbL+qDuWSN83wTPQIz/6lEozizc5LnUB4C7oJorLF9O8b5DFoOLCd9PyO9nn3Ae8Ph
+ n1l0kjNmiOFaWLdvLLs6WQ2RpzoeH9cAPrgH6ZvyCN2Dh8l9P3uNMHSLO9qWjPxHnJZ7
+ 9aZgFfYONVK+O5aq78GpJI2sjP10JgTryf6Ux39hC4JOq7feO+dGOeys6tXnv+W8jFBz
+ KhPuZsqtUZjbGaTaKAbPL1SM49yRH+9tPC/7HygxmkuJNASnW9hReV8lT3HX7MkxIc8A
+ Cqfw==
+X-Gm-Message-State: AOJu0YzEnambyn3cXFGFXqlYqlUlgWNsmnI+cHaMJTes9T05FJ4xGnml
+ J7BAQAjITY09A4IkS4Ur+swUb9mo6JK6bIghIVCec5BFfEI7H7MpvDoyVYojdT2E5ezBNMSb/aQ
+ 0
+X-Gm-Gg: ASbGnct4y0pjgJs/4VVzgaZZR/RJr75uUwLSbEIeNLogqSonfdKP0kADwBfKqSmKpUN
+ hptu4yyTJNVKMpQnan4cgpZjTtHvppWqdkWXfR+SEYBg2mdrhboBYE2cFFapmxgiey7mUc7ToMz
+ hf5eNAdjsAhUEwVjP/6eXCFjHoALki0IlmDqJibztGnTSfhEe/rZblPmaUL5ctLqs18S/qLbckk
+ /NnwhF+2fJk9pvWufRSoCFaFh/rrAOW674fGomej68h676QWfgxCfpgohEuT2vnunvvNe1I3wE/
+ qpVPmkCjDBFfF6SwPDbfetlA7N/lN5LJZs50az/seUO1PTYGMH9Ik0bhorA1qj10fla6KjUq6Kr
+ 2P5FD139eBOW6f6x+rlpertPQ
+X-Google-Smtp-Source: AGHT+IF3FUguB0EvTpyHd8MltBrOfmE2hcv1EI3ehRRGy0NnWkF4yS9AYJvHalKm56xlv0y98rHadQ==
+X-Received: by 2002:a5d:5f52:0:b0:38d:d0ca:fbad with SMTP id
+ ffacd0b85a97d-39cb359bf41mr627115f8f.14.1743712387831; 
+ Thu, 03 Apr 2025 13:33:07 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec1660bcesm30716045e9.10.2025.04.03.13.33.02
+ ffacd0b85a97d-39c3020dacfsm2666744f8f.72.2025.04.03.13.33.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 13:33:02 -0700 (PDT)
+ Thu, 03 Apr 2025 13:33:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -70,19 +70,19 @@ Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH-for-10.0 v3 4/5] tests/qtest: Skip Aarch64 VMapple machine
-Date: Thu,  3 Apr 2025 22:32:40 +0200
-Message-ID: <20250403203241.46692-5-philmd@linaro.org>
+Subject: [PATCH-for-10.0 v3 5/5] hw/arm: Do not build VMapple machine by
+ default
+Date: Thu,  3 Apr 2025 22:32:41 +0200
+Message-ID: <20250403203241.46692-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403203241.46692-1-philmd@linaro.org>
 References: <20250403203241.46692-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,54 +105,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-First, the VMapple machine only works with the ARM 'host' CPU
-type, which isn't accepted for QTest:
+Unfortunately as of v10.0.0-rc2 the VMapple machine is unusable:
 
-  $ qemu-system-aarch64 -M vmapple -accel qtest
-  qemu-system-aarch64: The 'host' CPU type can only be used with KVM or HVF
+  $ qemu-system-aarch64 -M vmapple [...]
+  *** Terminating app due to uncaught exception 'NSInvalidArgumentException',
+      reason: '-[PGIOSurfaceHostDeviceDescriptor setMapMemory:]: unrecognized selector sent to instance 0x600001ede820'
+  *** First throw call stack:
+  (
+    0   CoreFoundation          0x000000019c759df0 __exceptionPreprocess + 176
+    1   libobjc.A.dylib         0x000000019c21eb60 objc_exception_throw + 88
+    2   CoreFoundation          0x000000019c816ce0 -[NSObject(NSObject) __retain_OA] + 0
+    3   CoreFoundation          0x000000019c6c7efc ___forwarding___ + 1500
+    4   CoreFoundation          0x000000019c6c7860 _CF_forwarding_prep_0 + 96
+    5   qemu-system-aarch64     0x000000010486dbd0 apple_gfx_mmio_realize + 200
+    6   qemu-system-aarch64     0x0000000104e6ab5c device_set_realized + 352
+    7   qemu-system-aarch64     0x0000000104e7250c property_set_bool + 100
+    8   qemu-system-aarch64     0x0000000104e7023c object_property_set + 136
+    9   qemu-system-aarch64     0x0000000104e74870 object_property_set_qobject + 60
+    10  qemu-system-aarch64     0x0000000104e70748 object_property_set_bool + 60
+    11  qemu-system-aarch64     0x0000000104e69bd8 qdev_realize_and_unref + 20
+    12  qemu-system-aarch64     0x0000000104e258e0 mach_vmapple_init + 1728
+    13  qemu-system-aarch64     0x000000010481b0ac machine_run_board_init + 1892
+    14  qemu-system-aarch64     0x0000000104a4def8 qmp_x_exit_preconfig + 260
+    15  qemu-system-aarch64     0x0000000104a51ba8 qemu_init + 14460
+    16  qemu-system-aarch64     0x0000000104f7cef8 main + 36
+    17  dyld                    0x000000019c25eb4c start + 6000
+  )
+  libc++abi: terminating due to uncaught exception of type NSException
+  Abort trap: 6
 
-Second, the QTest framework expects machines to be createable
-without specifying optional arguments, however the VMapple
-machine requires few of them:
+Disable the machine so it isn't built by default.
 
-  $ qemu-system-aarch64 -M vmapple -accel qtest
-  qemu-system-aarch64: No firmware specified
+This is tracked as https://gitlab.com/qemu-project/qemu/-/issues/2913
 
-  $ qemu-system-aarch64 -M vmapple -accel qtest -bios /dev/null
-  qemu-system-aarch64: No AUX device. Please specify one as pflash drive.
-
-Restrict this machine with QTest so we can at least run check-qtest,
-otherwise we get:
-
-  $ make check-qtest-aarch64
-  qemu-system-aarch64: The 'host' CPU type can only be used with KVM or HVF
-  Broken pipe
-  ../tests/qtest/libqtest.c:199: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
-  ...
-   7/26 qemu:qtest+qtest-aarch64 / qtest-aarch64/test-hmp     ERROR      24.71s   killed by signal 6 SIGABRT
-   2/26 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test     ERROR      71.23s   killed by signal 6 SIGABRT
-
-Suggested-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/libqtest.c | 1 +
+ configs/devices/aarch64-softmmu/default.mak | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 2750067861e..fad307d125a 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -1788,6 +1788,7 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
-         if (!strncmp("xenfv", machines[i].name, 5) ||
-             g_str_equal("xenpv", machines[i].name) ||
-             g_str_equal("xenpvh", machines[i].name) ||
-+            g_str_equal("vmapple", machines[i].name) ||
-             g_str_equal("nitro-enclave", machines[i].name)) {
-             continue;
-         }
+diff --git a/configs/devices/aarch64-softmmu/default.mak b/configs/devices/aarch64-softmmu/default.mak
+index 93f4022ad62..ad8028cfd48 100644
+--- a/configs/devices/aarch64-softmmu/default.mak
++++ b/configs/devices/aarch64-softmmu/default.mak
+@@ -9,3 +9,4 @@ include ../arm-softmmu/default.mak
+ # CONFIG_XLNX_VERSAL=n
+ # CONFIG_SBSA_REF=n
+ # CONFIG_NPCM8XX=n
++CONFIG_VMAPPLE=n
 -- 
 2.47.1
 
