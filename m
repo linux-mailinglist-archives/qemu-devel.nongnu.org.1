@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6323A7B2AE
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31413A7B2B2
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:00:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0UTm-0001Tk-Lu; Thu, 03 Apr 2025 20:00:14 -0400
+	id 1u0UTs-0001qO-MP; Thu, 03 Apr 2025 20:00:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTh-0001Hl-NK
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:10 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTm-0001bq-LA
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:14 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTf-0002ix-P6
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:09 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3914bc3e01aso937828f8f.2
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 17:00:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTk-0002w1-AO
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:14 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43cef035a3bso10269945e9.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 17:00:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724803; x=1744329603; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724810; x=1744329610; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=x/hYdhB/qBclFHB0dhTATnM1BEowxhG26HVaZBLKHNI=;
- b=S2F0UDsbralmicgewmsCM8p6IW7gvnOU0KBjLYC3zgonowdBDmEhoUvyLJkWzUJGDy
- 362KgGNWJE7zJOLo1JLhv3XCSQ6e9FkFkaWAn/w/lUS8aXUDjzU1URXVqezU/5moRSlV
- eWIfrdqSC54ptt/0uoAvvRMXCVra6XXkbS2vk0uPKAzpYHYIdsCixPFDq/DdvgkIPG29
- nNFi6AD/Kw66KQyF3vQ3bj+noqCEv3p/ymyN1gUND9edrQtja00pOUr72E+yKo2Ct6FO
- 3fE5A0sjfBmVpN7m11d6pBq//tHKH0PD6OmzRZiuBIbP5YBZGOiDPM5ubchoe94lw7oR
- NVQQ==
+ bh=MU0NXB5YOpxPzbW3TbTpdtY5zarUPJhlnGyCYPlRhd4=;
+ b=CJGx2E4UAN7RsRXGOsCfYwYyg5jOxFZ7oOoZSo4HTeCyhGuGOTTZpfSAYBA9CMbWAh
+ /gub1S6YXzHxo0QNbf2c4crtYdBXYQ4TYM+h9y3/Zn6W+bd7tnWLiQcm2+snZY08GFsO
+ M4JAg7iSKUJIxEJoQvBzxvWQQ9TpNhcKXqbaRYWsCh72G6BLy1e9A9fpKQMT0oOUboEP
+ +3tqAXdyST8271bVB+rwDGx5BCILchxgYkjCYjPrzs/wSUaq98menauEdZr8xMB4xbpK
+ MvxtUDXwW581MdIopYK20leQy4pdvhCTZ2Sx5toyFRZ4PWdMVDuljTm33jOtxNR1QTLO
+ VAPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724803; x=1744329603;
+ d=1e100.net; s=20230601; t=1743724810; x=1744329610;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x/hYdhB/qBclFHB0dhTATnM1BEowxhG26HVaZBLKHNI=;
- b=V3WmDBevcXVhi+wKcBBfvWVK5ITTTZMvCXTke8p2XYjf3SVpnXDhqhzXd+ulSRbeLW
- hlzIWOHj2/uGCW7+TeYCDNcLef2vn3VTdnCikvKYS4cPQHcZ+Ma5BVhE4L9fPzMXjw+/
- plkqRkKt7An39eFA+MYCykP13wR1gtwAgmwmcsYmefWxJtNIz57McvuOk6lxaO/nMVI5
- zTt0aP9e5Gf4LoulfZZBKr5XxKvtJ9Aw/H/JXudnflzBv7omQiN4NfZudJYG5OZrDh7y
- 5fzg9kVGwRNf0gqEOm7C6rF9/MDTXsvVTFKroLOQe0zaLdIEBUr7ue6JRvj2UV8cJwE9
- ZkYQ==
-X-Gm-Message-State: AOJu0YzIJ7fvbvUQzeKPWBXc5YjTOD19bXPb5RyLdFmv3ls1DqYwlXjg
- BflgIP5AI+UkRofvkPY6fbLAlm/POHf2srci8GXtEl2sX+sqy0TKwAh/12CIUGN5XnLgI9kVZiq
- g
-X-Gm-Gg: ASbGncv3ks/sZHQiGB7CP8aKiqglzDWfmWmNoEC2IefxlgwIMFS4leA8kldnFVGMnJD
- fMC8sPXLw34D1zJXEKdP90+A449jhgCdRUQP0WDTjtuU9TDI+XsbVo3y1rtWZdLgb+AxxPfWjlZ
- pIGhUzbXo7tMdDF06bS+nMv0IkF8qoz9KCmQUmm3lzRlyQ8BJhlHS8GCyyasgMjPuGiKH1tNDhW
- sZoqnrhRlhT0QZ3hiwLGsfaDCvemsnfxdAVPfOVT7axnnW3Y7UKeQj1KkX+VrB9r94cRAP5/WxW
- Dtchvmc3g8KM3mmUqSbezMSTNv6yduR/7SNcx81lPFCFW7phG8+mn6YbHdwRXu5/Z/iM5Kj6bOq
- YEOB6CzvoN8dI1zyE5io=
-X-Google-Smtp-Source: AGHT+IHrCZUfK51c0Csq0xsrVSRro/RsfmTfFbp1yd57fBdVtfnQzNYtY5sfV/V4mbppUIDArGNMZA==
-X-Received: by 2002:a05:6000:2d0c:b0:39c:1257:dbab with SMTP id
- ffacd0b85a97d-39d1476309fmr283778f8f.59.1743724803393; 
- Thu, 03 Apr 2025 17:00:03 -0700 (PDT)
+ bh=MU0NXB5YOpxPzbW3TbTpdtY5zarUPJhlnGyCYPlRhd4=;
+ b=Y1Y0cDs6wuobn7FNN80qzO5YvDaBlDUtff658b+mWycMtdSf2641upw6XqK8ubAH9M
+ KZiRTHlUjr3tclfEoFDV3NAVU66wAvjiyiKz0bsWuu2mmqdNkszARSv657A3LT90FXpq
+ wT8R3T72X29XdbLj2H5TB6pqKoXcY7V5afL3JXenMYO6KbhmedHqHFHjTw6eVBI4JJQC
+ E4AoCaKPxVC5QN+WDVzrH3HBZ6x25G/9uXwZrYBrVmbUpNXbMITW2rQy4RBFfhIzCm+r
+ rWrMiaPbpUPHiHjzY2bPHO2z3Fi4Cmavy+70vsHXEjMVktw2dX1kSXHDLjVNHsiQyUtn
+ e9Yw==
+X-Gm-Message-State: AOJu0YwGS34ObmuPvPnXIKxS0N2XbOFz4D7IHRu1wfsuAeo1qzvxJoUr
+ +R+ge7JYvW7wUJY1p48fS+H6Ik6JQZi6sZYVczMgJUQmmVzFyJADWM0u/iQC1jev4YIXziBqLVR
+ T
+X-Gm-Gg: ASbGncvH5J8bki3Srpe1tFhq8E8pHv9DsEOwu5ryg0p7wlcU65IWKgF/Gt3d5lFkVcs
+ O45cw6AsNmuQOg6f4q0AF6GViYMxoS9X8jfhVMm7rYMZnbQzAQALl6jqLyWWd+4rM0MN+nUkdQs
+ sGk+cpnB8nBaWOBsNOeiEia7oW4gqNVSi771mEcqZ2YxnD0TpURy5XQtiErxDQ7MlgkKe3LsQ28
+ 2YheBNM5uFlQX+EYl2kDNSWhlmFMIwUAKIibFiGSMK4EcJ8+X8qQUBB7HIjm3okyCCi7XxOGJXv
+ yBmn4/wdCJChzMC+sago+tudFmInuhm8eWHboNGtCncBCdYZjAR5pAOnuZcPNdVfhMorfhxmitf
+ 5OGUD4VNVSoS4WJOXc3A=
+X-Google-Smtp-Source: AGHT+IG1ckqzvb0I3f8A/UyhFfPwY5rbtDc9FJKBy6WLCBC501gf4/vUNQ54uqShBypVpNnlRxYYKA==
+X-Received: by 2002:a05:600c:4443:b0:43c:fabf:9146 with SMTP id
+ 5b1f17b1804b1-43ecf8d04e2mr7608485e9.17.1743724810106; 
+ Thu, 03 Apr 2025 17:00:10 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c300968c4sm3012877f8f.9.2025.04.03.17.00.02
+ 5b1f17b1804b1-43ec34ae0c5sm30942505e9.15.2025.04.03.17.00.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 17:00:02 -0700 (PDT)
+ Thu, 03 Apr 2025 17:00:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH-for-10.1 15/39] target/arm/hvf: Include missing
- 'cpu-qom.h' header
-Date: Fri,  4 Apr 2025 01:57:57 +0200
-Message-ID: <20250403235821.9909-16-philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 16/39] hw/arm: Remove unnecessary 'cpu.h' header
+Date: Fri,  4 Apr 2025 01:57:58 +0200
+Message-ID: <20250403235821.9909-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403235821.9909-1-philmd@linaro.org>
 References: <20250403235821.9909-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,32 +100,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ARMCPU typedef is declared in "cpu-qom.h". Include it in
-order to avoid when refactoring unrelated headers:
-
-  target/arm/hvf_arm.h:23:41: error: unknown type name 'ARMCPU'
-     23 | void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
-        |                                         ^
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/hvf_arm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/arm/exynos4210.c | 1 -
+ hw/arm/highbank.c   | 1 -
+ hw/arm/mps3r.c      | 1 -
+ hw/arm/smmuv3.c     | 1 -
+ 4 files changed, 4 deletions(-)
 
-diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
-index 26c717b3826..ee5545f2d10 100644
---- a/target/arm/hvf_arm.h
-+++ b/target/arm/hvf_arm.h
-@@ -11,7 +11,7 @@
- #ifndef QEMU_HVF_ARM_H
- #define QEMU_HVF_ARM_H
- 
+diff --git a/hw/arm/exynos4210.c b/hw/arm/exynos4210.c
+index b452470598b..04439364370 100644
+--- a/hw/arm/exynos4210.c
++++ b/hw/arm/exynos4210.c
+@@ -24,7 +24,6 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "exec/tswap.h"
 -#include "cpu.h"
-+#include "target/arm/cpu-qom.h"
+ #include "hw/cpu/a9mpcore.h"
+ #include "hw/irq.h"
+ #include "system/blockdev.h"
+diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
+index ea3621e4f87..0caa08631ad 100644
+--- a/hw/arm/highbank.c
++++ b/hw/arm/highbank.c
+@@ -35,7 +35,6 @@
+ #include "hw/cpu/a15mpcore.h"
+ #include "qemu/log.h"
+ #include "qom/object.h"
+-#include "cpu.h"
+ #include "target/arm/cpu-qom.h"
  
- /**
-  * hvf_arm_init_debug() - initialize guest debug capabilities
+ #define SMP_BOOT_ADDR           0x100
+diff --git a/hw/arm/mps3r.c b/hw/arm/mps3r.c
+index e9abbf00b43..604f6845fde 100644
+--- a/hw/arm/mps3r.c
++++ b/hw/arm/mps3r.c
+@@ -29,7 +29,6 @@
+ #include "qapi/error.h"
+ #include "qobject/qlist.h"
+ #include "system/address-spaces.h"
+-#include "cpu.h"
+ #include "system/system.h"
+ #include "hw/boards.h"
+ #include "hw/or-irq.h"
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index 4362ae6aa1c..df3f5a707a9 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -24,7 +24,6 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-core.h"
+ #include "hw/pci/pci.h"
+-#include "cpu.h"
+ #include "exec/target_page.h"
+ #include "trace.h"
+ #include "qemu/log.h"
 -- 
 2.47.1
 
