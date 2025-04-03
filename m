@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD955A7B2A3
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6671FA7B2A8
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:59:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0USM-0004PU-Nr; Thu, 03 Apr 2025 19:58:46 -0400
+	id 1u0USR-0004Uh-No; Thu, 03 Apr 2025 19:58:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0USJ-0004PB-DJ
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:58:44 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0USP-0004Tm-Ow
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:58:49 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0USH-0002Rj-QA
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:58:43 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43d04dc73b7so14488175e9.3
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:58:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0USO-0002Se-3m
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:58:49 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-39c266c2dd5so1253652f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:58:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724719; x=1744329519; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724726; x=1744329526; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gqJyLYQ99OAQqFYuKShvFfQyIlJYmG5rcZMVwRgrMss=;
- b=TeJWlHOVYY3t1HLL9aN0HFegP1z3Pul4fyd/9miQlNNFCHL8X7uOuv3qnldjpE9vD7
- 1Zps0Iw96uiIynhbf/w+K1VwbmGK9R8mepbl3WfsblxyQ5NX87cXxvJQt7OSyqvD26wS
- 0bXu4nxFzQRzzj5Sl15eJAAoGW/ZtH/2lNKoAueTtPf7/GP8gyTAO/49LGRFTDCi2FJQ
- 5L6zg6zp+JxmvVQGAUslMW+vGa3TJX/Ud4N357XiRgcjfQY82eTokNXIdE0V/smGBHeo
- xTSdaaUgMQkFPS/RvcjcZmqIHr2lS2i/sQ3du+uUCcj5T9Ll0iM6BcXUvQZK5axLLLrU
- YPbg==
+ bh=PhZdnfz+UN3n5DTP+/t+ydvw2Q2+PLLpLlc8rXzZtok=;
+ b=kRx5dde1Yog1lAr8bZtO0rLvJIknK1sCN4I/81vI7edQrfZPIsajzp8t2yZC1MJzLz
+ pCdGMLBw7edR9Me+5ichLOpMfrybljkrSORdPupUzysU5E79xXHnEd0V4k0ph73KmgV0
+ v9o9EMeDM04ouOesuYi1y2/kx8aS5R9q3PenwJj+V8ZSAJ/QjQ0PinEhDXJO/VhzzIgh
+ bzKCoG4tKkP7Jdl2C2iGuR+uuQpiEENAr8EGpNrAZObsT6H8khOrBkA1iTic2y0ssmAz
+ yrIwVwLk2LJ3Ym1020hIKSLUlf5fA5fooY91vluxe32r05uiK4GX1OScqdjZDrxIkP3t
+ Jj6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724719; x=1744329519;
+ d=1e100.net; s=20230601; t=1743724726; x=1744329526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gqJyLYQ99OAQqFYuKShvFfQyIlJYmG5rcZMVwRgrMss=;
- b=tBp6YLd4g5ub4xW51gl5KHDhTFfi5BPzfGwnxSHzpN7TMKJnTFjX7pyX2MyS2wr1rr
- jIzvPWkUYsJ7qQh534rbcm4lU2rfCZI2+QL5cOYWV/MaxcnBeZ/4gVzwBI9jQuVkYAf7
- gVYJyLACWwqIrr51LxANe/PzKqD7AJPbGsUuD4v/fenBZfqBMNNrJLBhiJrLA+uyVc4b
- sG87illWgP4lVZXXbfp3vJ0cc8YvCVRNK4aH7SfitqX0IlbDxKHnkYgiM4TEQaXbVkIb
- 2PcNVEmhtdsimvxL/PqeYy2akkcgPZykQPD8hNA0cSuXu5pu79RbDBMyRT3y4LasYGBQ
- 70+w==
-X-Gm-Message-State: AOJu0Yyo+PaJgbXxHIHHXsiHVF2mmCIcGODjz0jEUkk8/XPaYmhBssnL
- eZBPLMoyPmQzQK6NDd0MJU+a6zJo3Oah7rCt17oQ3fuVFwLbkTthOmACTyB3Uu8SuzCNSMgF4Rx
- L
-X-Gm-Gg: ASbGnctK3KJAMM0ZQWPa9NkTJuJOyolVSsAf+r2MZfHQIBxZVLiBglN/n/mNuckKndj
- GqgoKUUcIqAdDdGC/M008antXQ+i9oTvCefdorhxagjyBRLdBdcrHFpppe/+xZN/Y5T0GVNobgy
- JR97hCM9LTmqK7U5Yiz8Jmj/o/BWetcim/8XorWwblrK+Q3Be4b2eNV3F+ZwW2kg/pWb/Ty29TW
- Auq3k/CGbRx9+D6NW04ubCMuAqSRKV/fnpAKZ1awth9wQFsU8l84Ci2WH9ipqCghLP4yO2gC/ry
- X5bBcFnuDjrPcq9jF4tXC/bT1KXzCHSue1sWvQ6G+T4eLfYT1MBBeUiCDHuUmBUiRiSpQ7XD6P1
- t1wSYccV9oJYywKevH64=
-X-Google-Smtp-Source: AGHT+IG24GUQlyq/xWr+fAgAGVLEB4efPzER9XP8iAFFX7j2jni2VmHvlB9Xnw1JLRXwu5fBv5ZxSw==
-X-Received: by 2002:a05:600c:18a6:b0:43d:98e7:38dc with SMTP id
- 5b1f17b1804b1-43ed242f065mr1331375e9.5.1743724719380; 
- Thu, 03 Apr 2025 16:58:39 -0700 (PDT)
+ bh=PhZdnfz+UN3n5DTP+/t+ydvw2Q2+PLLpLlc8rXzZtok=;
+ b=buYXKQgZzPXVsTzyuhlOb3grCew0IXH/jQy4Z3BHSjKDY6orR7cVn1vFs2ctk+d8Mh
+ 97VchnnSswNUFLZyd2qmf8iHgalBSDVfOSQlVm5IDR81gBkvN4D1gSO+mqs2gQzvjF2/
+ bl377JcGaK96jjjx3Wu2eBt1yEdbSursBQqu4yI942lg1jTwQEGDfjyT7U83egLjjtzK
+ Wa2GPtw0W10BmJFY0bD/c8x3yPTrqmPVMgJXd7v9i3nUZ4sqE45ZYaPCcQgtctael+z5
+ yJHzV957dxizWxrauWwUDNZicp/WRIIjFdQNCbtHjC1BWCgY7iM6pP905WxUtgyL8SXL
+ 8Bng==
+X-Gm-Message-State: AOJu0Yw1wLtqlaffn+fXJocpe+ZuazOHXk6EPH6wNcrXB/rlMXU3OGM2
+ sIRzILzdYcu/ct6EApepAE1+0ezF0IaxrsK/zEZJP6C+5QlilcpxD0w7suzl+zpdnNl/YoN6xPD
+ x
+X-Gm-Gg: ASbGncvsA4E03k01TEiJtEXm1BZKN7xWRv//xuaD9dbl0FPE1ppbgQp/SxahZNn6aMz
+ sfZ0TUQ6wZg8lF8VC0ae0wnAoHsXRLuxt/gQhzBEmSYZFTRVHt50/EbI2It0ZDXba1bsOZUDdjf
+ oRpdvQGUhl/rt8vCoA2W/xw0WRIsgir+XAltwF5XxZ6oIPAxRlA7o096SQyOSJVu+AN8XObcwet
+ b6AhGuSf7cy4/yo0RAXBlEE5IQ7AroSmGito5RqeMcke8/pRkJjc181UBbdqbmCtzeZLQ63+HZQ
+ mlcpTBarEwVfM00Kx0U7cabVN0KMVqKvs6q2Jg+61ieQrAaEE8olUBZuP7CGkM/UPoqTd5ykJKK
+ VNAI6HWx58vLq+WC7KVY=
+X-Google-Smtp-Source: AGHT+IF7htBl/12AIAduYvRIMb6+pZgOWKYSQllyRa8zJ8e2FzenNIB1TTKeDxOkbU3Lj0qgfJMOSg==
+X-Received: by 2002:a5d:648c:0:b0:39c:1f02:5409 with SMTP id
+ ffacd0b85a97d-39d08b10724mr516977f8f.9.1743724726256; 
+ Thu, 03 Apr 2025 16:58:46 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec34ae0c5sm30916015e9.15.2025.04.03.16.58.36
+ 5b1f17b1804b1-43ec364d071sm30461335e9.32.2025.04.03.16.58.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 16:58:38 -0700 (PDT)
+ Thu, 03 Apr 2025 16:58:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH-for-10.1 02/39] target/arm: Register
- TYPE_BINARY_QEMU_SYSTEM_ARM/AARCH64 interfaces
-Date: Fri,  4 Apr 2025 01:57:44 +0200
-Message-ID: <20250403235821.9909-3-philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 03/39] target/arm: Filter CPU types for binary
+Date: Fri,  4 Apr 2025 01:57:45 +0200
+Message-ID: <20250403235821.9909-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403235821.9909-1-philmd@linaro.org>
 References: <20250403235821.9909-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,60 +102,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/target_info-qom.h | 20 ++++++++++++++++++++
- target_info-qom.c              |  8 ++++++++
- 2 files changed, 28 insertions(+)
+ target/arm/cpu.c   | 2 ++
+ target/arm/cpu64.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/include/qemu/target_info-qom.h b/include/qemu/target_info-qom.h
-index c87d47acf66..880b34e699e 100644
---- a/include/qemu/target_info-qom.h
-+++ b/include/qemu/target_info-qom.h
-@@ -9,6 +9,26 @@
- #ifndef QEMU_TARGET_INFO_QOM_H
- #define QEMU_TARGET_INFO_QOM_H
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 377791c84dd..b1aa482c726 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -50,6 +50,7 @@
+ #include "disas/capstone.h"
+ #include "fpu/softfloat.h"
+ #include "cpregs.h"
++#include "qemu/target_info-qom.h"
+ #include "target/arm/cpu-qom.h"
+ #include "target/arm/gtimer.h"
  
-+#include "qom/object.h"
-+
- #define TYPE_LEGACY_BINARY_PREFIX "legacy-binary-"
+@@ -2759,6 +2760,7 @@ void arm_cpu_register(const ARMCPUInfo *info)
+         .instance_init = arm_cpu_instance_init,
+         .class_init = info->class_init ?: cpu_register_class_init,
+         .class_data = (void *)info,
++        .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     };
  
-+#define TYPE_LEGACY_BINARY_QEMU_SYSTEM_ARM \
-+        "legacy-binary-qemu-system-arm"
-+#define TYPE_LEGACY_BINARY_QEMU_SYSTEM_AARCH64 \
-+        "legacy-binary-qemu-system-aarch64"
-+
-+#define LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE \
-+    (InterfaceInfo[]) { \
-+        { TYPE_LEGACY_BINARY_QEMU_SYSTEM_ARM }, \
-+        { TYPE_LEGACY_BINARY_QEMU_SYSTEM_AARCH64 }, \
-+        { }, \
-+    }
-+
-+#define LEGACY_BINARY_QEMU_SYSTEM_AARCH64_INTERFACE \
-+    (InterfaceInfo[]) { \
-+        { TYPE_LEGACY_BINARY_QEMU_SYSTEM_AARCH64 }, \
-+        { }, \
-+    }
-+
- #endif
-diff --git a/target_info-qom.c b/target_info-qom.c
-index 6970b95ee0b..db3054c307d 100644
---- a/target_info-qom.c
-+++ b/target_info-qom.c
-@@ -10,6 +10,14 @@
- #include "qemu/target_info-qom.h"
+     type_info.name = g_strdup_printf("%s-" TYPE_ARM_CPU, info->name);
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 8188ede5cc8..9f8c98563ac 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -24,6 +24,7 @@
+ #include "cpregs.h"
+ #include "qemu/module.h"
+ #include "qemu/units.h"
++#include "qemu/target_info-qom.h"
+ #include "system/kvm.h"
+ #include "system/hvf.h"
+ #include "system/qtest.h"
+@@ -856,6 +857,7 @@ void aarch64_cpu_register(const ARMCPUInfo *info)
+         .instance_init = aarch64_cpu_instance_init,
+         .class_init = info->class_init ?: cpu_register_class_init,
+         .class_data = (void *)info,
++        .interfaces = LEGACY_BINARY_QEMU_SYSTEM_AARCH64_INTERFACE,
+     };
  
- static const TypeInfo target_info_types[] = {
-+    {
-+        .name           = TYPE_LEGACY_BINARY_QEMU_SYSTEM_ARM,
-+        .parent         = TYPE_INTERFACE,
-+    },
-+    {
-+        .name           = TYPE_LEGACY_BINARY_QEMU_SYSTEM_AARCH64,
-+        .parent         = TYPE_INTERFACE,
-+    },
- };
- 
- DEFINE_TYPES(target_info_types)
+     type_info.name = g_strdup_printf("%s-" TYPE_ARM_CPU, info->name);
 -- 
 2.47.1
 
