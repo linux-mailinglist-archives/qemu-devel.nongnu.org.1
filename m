@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AB7A7B270
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F99DA7B285
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:51:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0UAw-0007Wu-CA; Thu, 03 Apr 2025 19:40:46 -0400
+	id 1u0UJP-0000b8-Ry; Thu, 03 Apr 2025 19:49:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u0UAs-0007WX-UG; Thu, 03 Apr 2025 19:40:43 -0400
-Received: from mail-ua1-x92a.google.com ([2607:f8b0:4864:20::92a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UJN-0000ar-3o
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:49:29 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u0UAp-0008Gq-Vq; Thu, 03 Apr 2025 19:40:41 -0400
-Received: by mail-ua1-x92a.google.com with SMTP id
- a1e0cc1a2514c-86d587dbc15so1312027241.1; 
- Thu, 03 Apr 2025 16:40:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UJH-0000P3-5I
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:49:24 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-39c266c1389so993645f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:49:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743723638; x=1744328438; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=w/a4EQ9NCQ5q17YdsafP52dZ2Wnqu4rs3Cn5sjtuUOs=;
- b=drlDMJqRVKciddB20jXJaQ5Loohw+xLURl16afYvdEX1ee10JPCFQVGOVtaE1Q0xZx
- xeicYSoePgOmTj8CtThNxxoTVBxgrYfwhYaVJjQB5v5FKD4Z7A/fpJ0CzWLfTmmCK8td
- j5hF78K/Tmnd3CvVowfG+gM3QVcQm2iseEfiyA8zEv06lctapAkoZTLjc2gTREzI7Y6n
- VLAzcvmVyP2pk92WcKooD1HjojjUAY0zEXXQjchs6ksD1Se89zr2zPd9tWGSLwaJVAyW
- 3e5EbGoLMQz9FsKbj3PMavlqbeRDdJCR/sb63VNAaAI9+KxSmrzuez4xMN63nhZ7pnfJ
- 9Dig==
+ d=linaro.org; s=google; t=1743724159; x=1744328959; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Zi6xCCOKToJ81JFzAN6pttjWdXmk4enmEEr52kCZ6B8=;
+ b=cdnnu8oI0WOHZeEUi8oZSSPsHLN2kSyaFwKrUqj8b8FzQRJnVBSC5AQTkaBvy4MY0w
+ RMGgiZjNELX5zu5qL/HUjUb6nAynSJlOZ/juCriamC2xbIqBXKA5FvSRWtSFKDM2hTEh
+ klhaVD3uNmGdb/hWDQ0LZPz3A33bncX5dU8oc7qooRbm2hb8iVtfCz2SfqJ8JSydCiI5
+ IKtU7JaeI3WS+dfLgRCXqxOI8gwm1Egcbyxs6Gw0jmUdOdXiDTANhOgvXEIgNcjYpzoB
+ deuVG56nT74ymF0c102YDuRvM90+oGahgL+YtdsfkI1NivLQbDxCRMVot0TKbU6aXyrl
+ 7EeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743723638; x=1744328438;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=w/a4EQ9NCQ5q17YdsafP52dZ2Wnqu4rs3Cn5sjtuUOs=;
- b=o/oPIysYZUnSj6JHlAe69ADTzN5AIQEAtPnrv5E5Mli+A2rtV7We4glZJ+Udn0/1rG
- O+zMKH1ndfIs5eKGL+AWeFvpcdXVs0hV1DtLFR0Q/I33jkMt8Rl2Xntb6suHZcCRUmTF
- /3egkQ1icQeCFTyf7t5YiACU0+nvHR/YU7xfHBCvJIsVbsRTD5H2XEdAj4FtZxrWdPun
- YTxTCBf6KX4m3R76+r9DP37IeLTw2aBlNLKZA8NmXYAT6mSVnJP+f8uYCHQ/gBxSCqSN
- EdsX+9SBFjoNlV20drcyG+Sof6wqM4FbmpxCkMJhXWscuUiHG/WOsP5RetEYxOZOgZgR
- hiwA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWbhOxw8tRVqY1pUvIElKVXGaDIndMcIzC6AcLatlmXkF3XScOkjCGtDRk7LtKHr7A3Gvw+5GqLFy3S@nongnu.org
-X-Gm-Message-State: AOJu0Yy4/m0XxiqRe4fa+1wIQvc+Rs+J0XFhXPLsTBduu00tnlkNy2pe
- LooXJEom+sptRH5fieUtoIMvlvsoKVNk/VOTK4ddH6nqrOMyKyhRDwe7WFlFt5Lugd560p/87Gn
- XyRkouG8ds78TcW2govZ8SjC4zjU=
-X-Gm-Gg: ASbGnctkYuPXztdGW9z8HJYTct+cH5pZAmscVf4BoCzOJ49V4AFhEmKjqZ2Tmy5IFqG
- wKhJtPvCWegxwRAzLcJreFoX7tgkznFJmQCqHTOnGgkmcexi6ZVaIh+vNmBUUS0pPcA4/yL+egz
- 5Dkfe7CxRYXrp/5DjGoNejIWm33pMe5Qao9FfY5DP+OvYC635vzgjD7BsM00r8QP+P6+s=
-X-Google-Smtp-Source: AGHT+IEbkQggoWJ+Lf399yzKhD9zHKygWNEPjZHJIXgGK41sNpgnSQInd2/io9HB3xKeQzXiUmsBXVsilEFBr6CCOjg=
-X-Received: by 2002:a67:be02:0:b0:4c1:8ded:2d66 with SMTP id
- ada2fe7eead31-4c845b9933dmr4335799137.12.1743723637999; Thu, 03 Apr 2025
- 16:40:37 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1743724159; x=1744328959;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Zi6xCCOKToJ81JFzAN6pttjWdXmk4enmEEr52kCZ6B8=;
+ b=aauCUlfjkqsoydySjLLNmELBwxGusPekHfBoqrjHTmCYkkPzI405Rl4/jHrT1MlrQq
+ 8HeTHISQpnTaMuQ5xN6U8caDwDjIJQmO9R3wprGUX7YT+cGw/T5IPK/koyRTTd2yiDB+
+ Kwi78u699XIYkHPq7ePcfdTLWmxJm12x8UBh5Ly645Ruy6uMoizhW3rk/bgbASf7wteb
+ yCtTctFcUi/iobCe+tav9TYkLHvJz8I7AXnfaSvp8ukia2oo3NRCIDj/EI6ceisQkCzN
+ tUL4D5vjKlasHT7hnnSzOY2GsT72IfszUw1gDgHoffMC70D8vjh6sK8PnXllY/AtqVRT
+ Fmsw==
+X-Gm-Message-State: AOJu0Yx1lS5mSvQ188R16uiHpPaXCAdTlaQDlFhY5OHHY38UYW8isApx
+ x/jdMi8KLQ3GiAXGr6RqxS0sYNxLXxebOi5Giw7F2d0jL0caNtQv/6b35Gvptdwzc9U+lyvPmnn
+ 1
+X-Gm-Gg: ASbGncu+bpw+wRbWuzG5TmW9uizmiei6DDNYORMYweg8Z8HcvC3zOP8oeI9NdgvV5NJ
+ IrUxADaGviOzKAGW8RKTU+NfJCiqv/oOExUBTh2/Axo3BBKn0uxQn2pWk+qwVGIStvqbCrGxYuz
+ BHqGqi+1INrHzXZrR3JsL77g25X7MbRYHNvkdqZZSmArmqjiUCh/S54hfGmvpP+8THxmuBcnE/3
+ 7+fn15iyjfQDDwphCBNhN/1wlxgLbaE2g1mR7aCp1IXZaIk8N5v0SUd7FiCzcWTiIYhS0IhaQtg
+ SfIXvfSVsMErQJULgffi3jQHhe/fD1mJAtpPu/HaMh6X4wHpCvnmt1QyHeCbNTKfBSN/8zxbBEF
+ uUpCo0jDXxZlQfcsj8Hk=
+X-Google-Smtp-Source: AGHT+IFW25vS4gfqLoQa50HWR4bw9ydMOC1xOlkeguBGapH6sKvxCFssorww662HMYPVemMBRJguEw==
+X-Received: by 2002:a05:6000:250a:b0:391:2dea:c984 with SMTP id
+ ffacd0b85a97d-39d07db55b9mr507516f8f.11.1743724159297; 
+ Thu, 03 Apr 2025 16:49:19 -0700 (PDT)
+Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
+ [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-39c3020d938sm2971469f8f.65.2025.04.03.16.49.16
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 03 Apr 2025 16:49:17 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [RFC PATCH-for-10.1 00/19] qemu: Introduce TargetInfo API (for single
+ binary)
+Date: Fri,  4 Apr 2025 01:48:55 +0200
+Message-ID: <20250403234914.9154-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-References: <20250401103344.84257-1-jay.chang@sifive.com>
- <20250401103344.84257-2-jay.chang@sifive.com>
-In-Reply-To: <20250401103344.84257-2-jay.chang@sifive.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 4 Apr 2025 09:40:11 +1000
-X-Gm-Features: ATxdqUHxrllk8mygpReRWqOdYoaIlT-STBw3nNlgjPnTJ1mDEB8LIHct8GWhzIY
-Message-ID: <CAKmqyKPB2HBFnreduGPjQFE1cqL7VFk6-7iB=ecymr8Luf3O9A@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] target/riscv: Restrict midelegh access to S-mode
- harts
-To: Jay Chang <jay.chang@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Frank Chang <frank.chang@sifive.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92a;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,65 +98,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 1, 2025 at 8:35=E2=80=AFPM Jay Chang <jay.chang@sifive.com> wro=
-te:
->
-> RISC-V AIA Spec states:
-> "For a machine-level environment, extension Smaia encompasses all added
-> CSRs and all modifications to interrupt response behavior that the AIA
-> specifies for a hart, over all privilege levels. For a supervisor-level
-> environment, extension Ssaia is essentially the same as Smaia except
-> excluding the machine-level CSRs and behavior not directly visible to
-> supervisor level."
->
-> Since midelegh is an AIA machine-mode CSR, add Smaia extension check in
-> aia_smode32 predicate.
->
-> Reviewed-by: Frank Chang <frank.chang@sifive.com>
-> Signed-off-by: Jay Chang <jay.chang@sifive.com>
+Hi,
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+At this point this series is mostly a draft for Pierrick.
+It implement his idea of a per-binary structure containing
+all target-specific information, exposing them via a
+target-agnostic API. Commits are barely commented, since
+I'd rather get feedback before pursuing further.
 
-Alistair
+Available here, based on tcg-next:
+https://gitlab.com/philmd/qemu/-/tags/single-binary-target-info-api-rfc-v1
 
-> ---
->  target/riscv/csr.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index 975d6e307f..81a57249bf 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -372,8 +372,11 @@ static RISCVException aia_smode(CPURISCVState *env, =
-int csrno)
->  static RISCVException aia_smode32(CPURISCVState *env, int csrno)
->  {
->      int ret;
-> +    int csr_priv =3D get_field(csrno, 0x300);
->
-> -    if (!riscv_cpu_cfg(env)->ext_ssaia) {
-> +    if (csr_priv =3D=3D PRV_M && !riscv_cpu_cfg(env)->ext_smaia) {
-> +        return RISCV_EXCP_ILLEGAL_INST;
-> +    } else if (!riscv_cpu_cfg(env)->ext_ssaia) {
->          return RISCV_EXCP_ILLEGAL_INST;
->      }
->
-> @@ -5832,7 +5835,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] =3D {
->      [CSR_MVIP]     =3D { "mvip",     aia_any, NULL, NULL, rmw_mvip    },
->
->      /* Machine-Level High-Half CSRs (AIA) */
-> -    [CSR_MIDELEGH] =3D { "midelegh", aia_any32, NULL, NULL, rmw_midelegh=
- },
-> +    [CSR_MIDELEGH] =3D { "midelegh", aia_smode32, NULL, NULL, rmw_midele=
-gh },
->      [CSR_MIEH]     =3D { "mieh",     aia_any32, NULL, NULL, rmw_mieh    =
- },
->      [CSR_MVIENH]   =3D { "mvienh",   aia_any32, NULL, NULL, rmw_mvienh  =
- },
->      [CSR_MVIPH]    =3D { "mviph",    aia_any32, NULL, NULL, rmw_mviph   =
- },
-> --
-> 2.48.1
->
->
+Another series will follow with the ARM implementation.
+
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (19):
+  qemu: Introduce TargetInfo API in 'target_info.h'
+  qemu: Convert target_name() to TargetInfo API
+  qemu: Factor target_system_arch() out
+  qemu: Convert target_words_bigendian() to TargetInfo API
+  qemu: Introduce target_long_bits()
+  target/tricore: Replace TARGET_LONG_BITS -> target_long_bits()
+  target/hppa: Replace TARGET_LONG_BITS -> target_long_bits()
+  target/riscv: Replace TARGET_LONG_BITS -> target_long_bits()
+  qemu: Introduce target_cpu_type()
+  cpus: Replace CPU_RESOLVING_TYPE -> target_cpu_type()
+  accel/tcg: Replace CPU_RESOLVING_TYPE -> target_cpu_type()
+  cpus: Move target-agnostic methods out of cpu-target.c
+  accel: Replace CPU_RESOLVING_TYPE -> target_cpu_type()
+  accel: Implement accel_init_ops_interfaces() for both system/user mode
+  accel: Include missing 'qemu/accel.h' header in accel-internal.h
+  accel: Make AccelCPUClass structure target-agnostic
+  accel: Move target-agnostic code from accel-target.c -> accel-common.c
+  qemu: Prepare per-binary QOM filter via TYPE_BINARY_PREFIX
+  system/vl: Filter machine list for binary using
+    machine_binary_filter()
+
+ meson.build                                |  10 ++
+ accel/{accel-system.h => accel-internal.h} |  10 +-
+ include/accel/accel-cpu-target.h           |  12 +-
+ include/accel/accel-cpu.h                  |  23 ++++
+ include/exec/poison.h                      |   1 +
+ include/exec/tswap.h                       |  13 +-
+ include/hw/boards.h                        |   1 +
+ include/hw/core/cpu.h                      |   2 -
+ include/qemu/target_info-impl.h            |  38 ++++++
+ include/qemu/target_info-qom.h             |  14 ++
+ include/qemu/target_info.h                 |  39 ++++++
+ accel/accel-common.c                       | 142 +++++++++++++++++++++
+ accel/accel-system.c                       |   4 +-
+ accel/accel-target.c                       | 134 -------------------
+ accel/accel-user.c                         |   6 +
+ accel/tcg/tcg-all.c                        |   4 +-
+ cpu-target.c                               |  88 +------------
+ hw/core/cpu-common.c                       |  74 +++++++++++
+ hw/core/cpu-system.c                       |   2 +-
+ hw/core/machine-qmp-cmds.c                 |   7 +-
+ hw/display/vga.c                           |   2 +-
+ hw/riscv/riscv-iommu.c                     |   3 +-
+ hw/riscv/riscv_hart.c                      |   3 +-
+ hw/virtio/virtio.c                         |   2 +-
+ plugins/loader.c                           |   2 +-
+ system/qtest.c                             |   1 +
+ system/vl.c                                |  26 +++-
+ target/hppa/mem_helper.c                   |   3 +-
+ target/hppa/translate.c                    |   3 +-
+ target/tricore/translate.c                 |   6 +-
+ target_info-qom.c                          |  15 +++
+ target_info-stub.c                         |  29 +++++
+ target_info.c                              |  48 +++++++
+ accel/meson.build                          |   1 +
+ 34 files changed, 499 insertions(+), 269 deletions(-)
+ rename accel/{accel-system.h => accel-internal.h} (56%)
+ create mode 100644 include/accel/accel-cpu.h
+ create mode 100644 include/qemu/target_info-impl.h
+ create mode 100644 include/qemu/target_info-qom.h
+ create mode 100644 include/qemu/target_info.h
+ create mode 100644 accel/accel-common.c
+ create mode 100644 target_info-qom.c
+ create mode 100644 target_info-stub.c
+ create mode 100644 target_info.c
+
+-- 
+2.47.1
+
 
