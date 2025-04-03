@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EF7A79FF8
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 11:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 321AEA7A00B
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 11:31:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0GnH-0006gq-D0; Thu, 03 Apr 2025 05:23:27 -0400
+	id 1u0GuE-0003Wb-Kc; Thu, 03 Apr 2025 05:30:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u0GnF-0006gW-9I
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 05:23:25 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u0Gu2-0003R0-M7
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 05:30:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u0Gn7-0007sN-V6
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 05:23:20 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u0Gtz-00011X-Sx
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 05:30:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743672196;
+ s=mimecast20190719; t=1743672622;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=LC+gYGtECwfjOJawCLynEC/py1rd213xM3YAgBwzGO8=;
- b=fJbPh/SlW+Y2aVDUn8TKixXk5URsR24XncGp5KtOSXOSrsvtc879soKgvJdI6HVdVtI49f
- kshHTaHxxF+6S6L21ELum8wjEJZ2TR0v3MkjQezhFWvBwD1uQfdRLvNfn+/6phfxp+CMic
- eEI1rjduXhmpNuX25Hlnh7z62V6jR2s=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kbBDFW79wsyAMb930eg0fwGDYvhglN8b78rB9VYB2QA=;
+ b=eHLjcgDptgS+GDdgW0fhnUrQAwAiiH6bDKA709f7J6JPpWa2ot82C4lzCXdlL9m7It+fB6
+ 4ne/1H7lDpMh7EnUrYmulLXcYaQqsPMd7BdqmrEH/0nd6tUJLtQHt8dvP1+TE97iMtnjKo
+ 9AYN0R9teEus1V4MDz37c2f5jij2rHM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-187-9qd8oy05OhSktlH7ZSjSQw-1; Thu, 03 Apr 2025 05:23:13 -0400
-X-MC-Unique: 9qd8oy05OhSktlH7ZSjSQw-1
-X-Mimecast-MFC-AGG-ID: 9qd8oy05OhSktlH7ZSjSQw_1743672193
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43ea256f039so5370495e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 02:23:13 -0700 (PDT)
+ us-mta-251-9iNrj4hHPpCXL4q0vIDLbQ-1; Thu, 03 Apr 2025 05:30:21 -0400
+X-MC-Unique: 9iNrj4hHPpCXL4q0vIDLbQ-1
+X-Mimecast-MFC-AGG-ID: 9iNrj4hHPpCXL4q0vIDLbQ_1743672619
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4394c489babso3278355e9.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 02:30:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743672192; x=1744276992;
+ d=1e100.net; s=20230601; t=1743672618; x=1744277418;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LC+gYGtECwfjOJawCLynEC/py1rd213xM3YAgBwzGO8=;
- b=e1VdaZ+Mjh/qSONL6RU64V5xqetalTuSp5REoaf80QbO3DEfZUhR66j1fBZabouGIA
- H9QYifCQ+suX0aDfXJLeBY/yHVB37fkG/ygSYn0TXJnCG2WVtnS4HZEWxBZQyTiJO+vl
- m7bRU89JlV/ysCJ4k1VlId8SPE2TVAcyBYErCzm0Vc/xOdxJG90+XBnxXO+7gZTP5E4Q
- 5zCPxvZdzFgRZoj8pPIsG3bRLAJ4xoBM/gHRuTTlysbvO19W0R5/y4UzU7FyIYDKxymX
- Vsx9f9G70HAr+uercxLe/b78uLKeKItCUlDVGk7dZDRsZJoGBuQkcgYevb+1wyRzRXKq
- g2OA==
+ bh=kbBDFW79wsyAMb930eg0fwGDYvhglN8b78rB9VYB2QA=;
+ b=lknj/lNPFYVIeTyJ3AB6Mlupt6jWMB/hfJaG9mU3yJOq6jMfSs6hTXd+Chb8V9j6G0
+ LGG0o3Y4d9FHA4Wk4oC2ndV1iS4U8qlKanLSchiWUkEF1d9+y/1lnCdanaWDz5Ys2UUL
+ algQFnqhYnXW3F/6iauR1h2oIS6Mh+S80gfoZ0zLSlEREUMqm+8mtX7NccETDw9tYke+
+ tb9+1xTG30BgGDmgQ8qae+uyFpklkb50kJrO7aFocaxNmDoQgnKXCycTNUmv08W7/B/c
+ nsL1jqwIdeBnrUjk4/cEqUxCWNoEPnmqyHV5V5m84xaZOnfWMjB9varE5e0xyq+CcLMv
+ 3vfg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVSy8LHHC4nykaNjAHgm34hv6vXhuNomXkS/FSYD3phiXbKi8vRdEtVCLZrAWseBnz+TntW1PJ+wt55@nongnu.org
-X-Gm-Message-State: AOJu0YxMkAicfDMLRk0rPw5evtxMA7H1UuugwLE+ksKN17PBWHcHsexC
- 31gWFxdRXjxq8I/83aNL9AfbLMtBSWUj1y6q3TK9WwNhnuCPRGd1OPRodGfrin6dPC8Z33NqIlu
- Wtyesh4BR3hfYSvs+UQfU1L/RI+FMh3ouBvHgGtUe04J5nnFJvN5u
-X-Gm-Gg: ASbGnct769E6+PohvJ9FVf16xAM5iX0d0Ui93bVLBUkFM4SduGaz4jdTvRL0foKJ98P
- 9F6T1XY+jNKks1FzaZXuRge2ZfVIm0MFP0fwHEkj4RYgS6Cc+dBiZVlPznf3K5EHdatM8uSGOym
- uSJmXJEhC4Zi4pnU9JLhghextY93Y+8e49akBpLwPZBe8s9VP90MJnexYrnlSKE4M1yIx4AQDAw
- 6YkMjJVydsB3TXrBrmyInXorf3AFMSrS0/kI8+d6xBgScXCunsAXSEsCH9dNdBCp97iidXpEvHn
- 9zhuRvCVv6l1pUhsSDDtr0d6c7lKKu6K+bhe+tn3VPlcdsiTAem5UQ==
-X-Received: by 2002:a05:600c:154d:b0:43d:738:4a9 with SMTP id
- 5b1f17b1804b1-43db62be3bbmr176996155e9.27.1743672192542; 
- Thu, 03 Apr 2025 02:23:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkPa+UEhHC8hV21NWGG5VPOalWrGTGn4ngbIbKgaSFabklCegA7y7B7S0jim+3Fa3fK9/Kpw==
-X-Received: by 2002:a05:600c:154d:b0:43d:738:4a9 with SMTP id
- 5b1f17b1804b1-43db62be3bbmr176995885e9.27.1743672192159; 
- Thu, 03 Apr 2025 02:23:12 -0700 (PDT)
+ AJvYcCUixZ49AMB85yMKohhcpEI7Ve3pzyiqz7TyR10JXk/tz3/H5jmzbXe2Li3NTunjcv/tQFR5klJhB/KR@nongnu.org
+X-Gm-Message-State: AOJu0YzBECUrPZ0VM8vj4+/CQrXaSYNHMVhG7kVSJVsYoU63su87M1Q/
+ vdJZ73dN2CD0ouL0tcJ2JxO4YdqaGFkV8T+YnYyqmqlVDiF1qrIqN8zvYBt9lLDV/KX2iL+wZMT
+ L+O5vkKowXQ2kLGwwgAVl4ojoI9ufLdTwYmyDA3oM20hHf/LFomlPy4SS1xd5
+X-Gm-Gg: ASbGncspT8Si5Cw33paLJhvgMnLW2bvdQMtPAH1UhTxzhjoVL9YWbv9Mbqfbm94hcTa
+ wvpg6WyiEObgXcK6VLKkx7kVvaEFtZECsARoFEQveWtgNXqR1UAtZBBqwSp/ditrz3pLRsLenxY
+ lp0tptm1CgXNh4+C+gprod+KMXhLaiQuJW1ILCW7uOyBvGo57zw9leiddqZTpEKGQx2MvSZ5nv7
+ mAzMmnejfnEYpbj2qiKgHy5odypDYK5WVpzF6WKMhJ0lmAz4gxY33aVRnodld+OEa5DpTlhicK5
+ Ii4n/nbwyz3uWZwxsDpUNj+cK2Zz4Fgj08x0Y4pNquiE/CcO45mqvg==
+X-Received: by 2002:a5d:5f8a:0:b0:392:c64:9aef with SMTP id
+ ffacd0b85a97d-39c2f8d33b8mr1598340f8f.20.1743672618497; 
+ Thu, 03 Apr 2025 02:30:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEstCoIw/U8CrIbrn0FARE9BMMs6gLM94UO4sSg5IbzY9PWNnUP8vuVU0mymaJugmDwhfWFww==
+X-Received: by 2002:a5d:5f8a:0:b0:392:c64:9aef with SMTP id
+ ffacd0b85a97d-39c2f8d33b8mr1598291f8f.20.1743672617912; 
+ Thu, 03 Apr 2025 02:30:17 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec34a895fsm12744555e9.13.2025.04.03.02.23.10
+ 5b1f17b1804b1-43ea8d16d35sm55668755e9.0.2025.04.03.02.30.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Apr 2025 02:23:10 -0700 (PDT)
-Message-ID: <d68a6f8a-9c8e-41e2-9290-ef041c0e10d2@redhat.com>
-Date: Thu, 3 Apr 2025 11:23:09 +0200
+ Thu, 03 Apr 2025 02:30:17 -0700 (PDT)
+Message-ID: <bff90a4a-3668-4be0-ab6b-5ee7bf5e169b@redhat.com>
+Date: Thu, 3 Apr 2025 11:30:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 06/28] vfio: refactor out vfio_interrupt_setup()
+Subject: Re: [PATCH v8 07/28] vfio: refactor out vfio_pci_config_setup()
 To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
 Cc: Jason Herne <jjherne@linux.ibm.com>,
  Thanos Makatos <thanos.makatos@nutanix.com>,
@@ -91,7 +91,7 @@ Cc: Jason Herne <jjherne@linux.ibm.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>
 References: <20250219144858.266455-1-john.levon@nutanix.com>
- <20250219144858.266455-7-john.levon@nutanix.com>
+ <20250219144858.266455-8-john.levon@nutanix.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -137,9 +137,9 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250219144858.266455-7-john.levon@nutanix.com>
+In-Reply-To: <20250219144858.266455-8-john.levon@nutanix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -166,94 +166,223 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2/19/25 15:48, John Levon wrote:
-> Refactor the interrupt setup code out of vfio_realize(), as we will
+> Refactor the PCI config setup code out of vfio_realize(), as we will
 > later need this for vfio-user too.
 > 
 > Signed-off-by: John Levon <john.levon@nutanix.com>
-> ---
->   hw/vfio/pci.c | 54 +++++++++++++++++++++++++++++++--------------------
->   1 file changed, 33 insertions(+), 21 deletions(-)
-> 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 89d900e9cf..5fb6c4c4c6 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -2957,6 +2957,37 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
->       vdev->req_enabled = false;
->   }
->   
-> +static bool vfio_interrupt_setup(VFIOPCIDevice *vdev, Error **errp)
-> +{
-> +    PCIDevice *pdev = &vdev->pdev;
-> +
-> +    /* QEMU emulates all of MSI & MSIX */
-> +    if (pdev->cap_present & QEMU_PCI_CAP_MSIX) {
-> +        memset(vdev->emulated_config_bits + pdev->msix_cap, 0xff,
-> +               MSIX_CAP_LENGTH);
-> +    }
-> +
-> +    if (pdev->cap_present & QEMU_PCI_CAP_MSI) {
-> +        memset(vdev->emulated_config_bits + pdev->msi_cap, 0xff,
-> +               vdev->msi_cap_size);
-> +    }
-> +
-> +    if (vfio_pci_read_config(&vdev->pdev, PCI_INTERRUPT_PIN, 1)) {
-> +        vdev->intx.mmap_timer = timer_new_ms(QEMU_CLOCK_VIRTUAL,
-> +                                                  vfio_intx_mmap_enable, vdev);
-> +        pci_device_set_intx_routing_notifier(&vdev->pdev,
-> +                                             vfio_intx_routing_notifier);
-> +        vdev->irqchip_change_notifier.notify = vfio_irqchip_change;
-> +        kvm_irqchip_add_change_notifier(&vdev->irqchip_change_notifier);
-> +        if (!vfio_intx_enable(vdev, errp)) {
-> +            pci_device_set_intx_routing_notifier(&vdev->pdev, NULL);
-> +            kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
-> +            return false;
-> +        }
-> +    }
-> +    return true;
-> +}
-> +
->   static void vfio_realize(PCIDevice *pdev, Error **errp)
->   {
->       ERRP_GUARD();
-> @@ -3157,27 +3188,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->           }
->       }
->   
-> -    /* QEMU emulates all of MSI & MSIX */
-> -    if (pdev->cap_present & QEMU_PCI_CAP_MSIX) {
-> -        memset(vdev->emulated_config_bits + pdev->msix_cap, 0xff,
-> -               MSIX_CAP_LENGTH);
-> -    }
-> -
-> -    if (pdev->cap_present & QEMU_PCI_CAP_MSI) {
-> -        memset(vdev->emulated_config_bits + pdev->msi_cap, 0xff,
-> -               vdev->msi_cap_size);
-> -    }
-> -
-> -    if (vfio_pci_read_config(&vdev->pdev, PCI_INTERRUPT_PIN, 1)) {
-> -        vdev->intx.mmap_timer = timer_new_ms(QEMU_CLOCK_VIRTUAL,
-> -                                                  vfio_intx_mmap_enable, vdev);
-> -        pci_device_set_intx_routing_notifier(&vdev->pdev,
-> -                                             vfio_intx_routing_notifier);
-> -        vdev->irqchip_change_notifier.notify = vfio_irqchip_change;
-> -        kvm_irqchip_add_change_notifier(&vdev->irqchip_change_notifier);
-> -        if (!vfio_intx_enable(vdev, errp)) {
-> -            goto out_deregister;
-> -        }
-> +    if (!vfio_interrupt_setup(vdev, errp)) {
-> +        goto out_teardown;
 
-is that the correct exit label ?
+We should have more of these routines to reduce vfio_realize(). It's
+way too big.
 
+This can be merged now.
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
 
 
+> ---
+>   hw/vfio/pci.c | 176 +++++++++++++++++++++++++++-----------------------
+>   1 file changed, 94 insertions(+), 82 deletions(-)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 5fb6c4c4c6..83fe329474 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -2957,6 +2957,99 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
+>       vdev->req_enabled = false;
+>   }
+>   
+> +static bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp)
+> +{
+> +    PCIDevice *pdev = &vdev->pdev;
+> +    VFIODevice *vbasedev = &vdev->vbasedev;
+> +
+> +    /* vfio emulates a lot for us, but some bits need extra love */
+> +    vdev->emulated_config_bits = g_malloc0(vdev->config_size);
+> +
+> +    /* QEMU can choose to expose the ROM or not */
+> +    memset(vdev->emulated_config_bits + PCI_ROM_ADDRESS, 0xff, 4);
+> +    /* QEMU can also add or extend BARs */
+> +    memset(vdev->emulated_config_bits + PCI_BASE_ADDRESS_0, 0xff, 6 * 4);
+> +
+> +    /*
+> +     * The PCI spec reserves vendor ID 0xffff as an invalid value.  The
+> +     * device ID is managed by the vendor and need only be a 16-bit value.
+> +     * Allow any 16-bit value for subsystem so they can be hidden or changed.
+> +     */
+> +    if (vdev->vendor_id != PCI_ANY_ID) {
+> +        if (vdev->vendor_id >= 0xffff) {
+> +            error_setg(errp, "invalid PCI vendor ID provided");
+> +            return false;
+> +        }
+> +        vfio_add_emulated_word(vdev, PCI_VENDOR_ID, vdev->vendor_id, ~0);
+> +        trace_vfio_pci_emulated_vendor_id(vbasedev->name, vdev->vendor_id);
+> +    } else {
+> +        vdev->vendor_id = pci_get_word(pdev->config + PCI_VENDOR_ID);
+> +    }
+> +
+> +    if (vdev->device_id != PCI_ANY_ID) {
+> +        if (vdev->device_id > 0xffff) {
+> +            error_setg(errp, "invalid PCI device ID provided");
+> +            return false;
+> +        }
+> +        vfio_add_emulated_word(vdev, PCI_DEVICE_ID, vdev->device_id, ~0);
+> +        trace_vfio_pci_emulated_device_id(vbasedev->name, vdev->device_id);
+> +    } else {
+> +        vdev->device_id = pci_get_word(pdev->config + PCI_DEVICE_ID);
+> +    }
+> +
+> +    if (vdev->sub_vendor_id != PCI_ANY_ID) {
+> +        if (vdev->sub_vendor_id > 0xffff) {
+> +            error_setg(errp, "invalid PCI subsystem vendor ID provided");
+> +            return false;
+> +        }
+> +        vfio_add_emulated_word(vdev, PCI_SUBSYSTEM_VENDOR_ID,
+> +                               vdev->sub_vendor_id, ~0);
+> +        trace_vfio_pci_emulated_sub_vendor_id(vbasedev->name,
+> +                                              vdev->sub_vendor_id);
+> +    }
+> +
+> +    if (vdev->sub_device_id != PCI_ANY_ID) {
+> +        if (vdev->sub_device_id > 0xffff) {
+> +            error_setg(errp, "invalid PCI subsystem device ID provided");
+> +            return false;
+> +        }
+> +        vfio_add_emulated_word(vdev, PCI_SUBSYSTEM_ID, vdev->sub_device_id, ~0);
+> +        trace_vfio_pci_emulated_sub_device_id(vbasedev->name,
+> +                                              vdev->sub_device_id);
+> +    }
+> +
+> +    /* QEMU can change multi-function devices to single function, or reverse */
+> +    vdev->emulated_config_bits[PCI_HEADER_TYPE] =
+> +                                              PCI_HEADER_TYPE_MULTI_FUNCTION;
+> +
+> +    /* Restore or clear multifunction, this is always controlled by QEMU */
+> +    if (vdev->pdev.cap_present & QEMU_PCI_CAP_MULTIFUNCTION) {
+> +        vdev->pdev.config[PCI_HEADER_TYPE] |= PCI_HEADER_TYPE_MULTI_FUNCTION;
+> +    } else {
+> +        vdev->pdev.config[PCI_HEADER_TYPE] &= ~PCI_HEADER_TYPE_MULTI_FUNCTION;
+> +    }
+> +
+> +    /*
+> +     * Clear host resource mapping info.  If we choose not to register a
+> +     * BAR, such as might be the case with the option ROM, we can get
+> +     * confusing, unwritable, residual addresses from the host here.
+> +     */
+> +    memset(&vdev->pdev.config[PCI_BASE_ADDRESS_0], 0, 24);
+> +    memset(&vdev->pdev.config[PCI_ROM_ADDRESS], 0, 4);
+> +
+> +    vfio_pci_size_rom(vdev);
+> +
+> +    vfio_bars_prepare(vdev);
+> +
+> +    if (!vfio_msix_early_setup(vdev, errp)) {
+> +        return false;
+> +    }
+> +
+> +    vfio_bars_register(vdev);
+> +
+> +    return true;
+> +}
+> +
+>   static bool vfio_interrupt_setup(VFIOPCIDevice *vdev, Error **errp)
+>   {
+>       PCIDevice *pdev = &vdev->pdev;
+> @@ -3060,91 +3153,10 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>           goto error;
 >       }
 >   
->       if (vdev->display != ON_OFF_AUTO_OFF) {
+> -    /* vfio emulates a lot for us, but some bits need extra love */
+> -    vdev->emulated_config_bits = g_malloc0(vdev->config_size);
+> -
+> -    /* QEMU can choose to expose the ROM or not */
+> -    memset(vdev->emulated_config_bits + PCI_ROM_ADDRESS, 0xff, 4);
+> -    /* QEMU can also add or extend BARs */
+> -    memset(vdev->emulated_config_bits + PCI_BASE_ADDRESS_0, 0xff, 6 * 4);
+> -
+> -    /*
+> -     * The PCI spec reserves vendor ID 0xffff as an invalid value.  The
+> -     * device ID is managed by the vendor and need only be a 16-bit value.
+> -     * Allow any 16-bit value for subsystem so they can be hidden or changed.
+> -     */
+> -    if (vdev->vendor_id != PCI_ANY_ID) {
+> -        if (vdev->vendor_id >= 0xffff) {
+> -            error_setg(errp, "invalid PCI vendor ID provided");
+> -            goto error;
+> -        }
+> -        vfio_add_emulated_word(vdev, PCI_VENDOR_ID, vdev->vendor_id, ~0);
+> -        trace_vfio_pci_emulated_vendor_id(vbasedev->name, vdev->vendor_id);
+> -    } else {
+> -        vdev->vendor_id = pci_get_word(pdev->config + PCI_VENDOR_ID);
+> -    }
+> -
+> -    if (vdev->device_id != PCI_ANY_ID) {
+> -        if (vdev->device_id > 0xffff) {
+> -            error_setg(errp, "invalid PCI device ID provided");
+> -            goto error;
+> -        }
+> -        vfio_add_emulated_word(vdev, PCI_DEVICE_ID, vdev->device_id, ~0);
+> -        trace_vfio_pci_emulated_device_id(vbasedev->name, vdev->device_id);
+> -    } else {
+> -        vdev->device_id = pci_get_word(pdev->config + PCI_DEVICE_ID);
+> -    }
+> -
+> -    if (vdev->sub_vendor_id != PCI_ANY_ID) {
+> -        if (vdev->sub_vendor_id > 0xffff) {
+> -            error_setg(errp, "invalid PCI subsystem vendor ID provided");
+> -            goto error;
+> -        }
+> -        vfio_add_emulated_word(vdev, PCI_SUBSYSTEM_VENDOR_ID,
+> -                               vdev->sub_vendor_id, ~0);
+> -        trace_vfio_pci_emulated_sub_vendor_id(vbasedev->name,
+> -                                              vdev->sub_vendor_id);
+> -    }
+> -
+> -    if (vdev->sub_device_id != PCI_ANY_ID) {
+> -        if (vdev->sub_device_id > 0xffff) {
+> -            error_setg(errp, "invalid PCI subsystem device ID provided");
+> -            goto error;
+> -        }
+> -        vfio_add_emulated_word(vdev, PCI_SUBSYSTEM_ID, vdev->sub_device_id, ~0);
+> -        trace_vfio_pci_emulated_sub_device_id(vbasedev->name,
+> -                                              vdev->sub_device_id);
+> -    }
+> -
+> -    /* QEMU can change multi-function devices to single function, or reverse */
+> -    vdev->emulated_config_bits[PCI_HEADER_TYPE] =
+> -                                              PCI_HEADER_TYPE_MULTI_FUNCTION;
+> -
+> -    /* Restore or clear multifunction, this is always controlled by QEMU */
+> -    if (vdev->pdev.cap_present & QEMU_PCI_CAP_MULTIFUNCTION) {
+> -        vdev->pdev.config[PCI_HEADER_TYPE] |= PCI_HEADER_TYPE_MULTI_FUNCTION;
+> -    } else {
+> -        vdev->pdev.config[PCI_HEADER_TYPE] &= ~PCI_HEADER_TYPE_MULTI_FUNCTION;
+> -    }
+> -
+> -    /*
+> -     * Clear host resource mapping info.  If we choose not to register a
+> -     * BAR, such as might be the case with the option ROM, we can get
+> -     * confusing, unwritable, residual addresses from the host here.
+> -     */
+> -    memset(&vdev->pdev.config[PCI_BASE_ADDRESS_0], 0, 24);
+> -    memset(&vdev->pdev.config[PCI_ROM_ADDRESS], 0, 4);
+> -
+> -    vfio_pci_size_rom(vdev);
+> -
+> -    vfio_bars_prepare(vdev);
+> -
+> -    if (!vfio_msix_early_setup(vdev, errp)) {
+> +    if (!vfio_pci_config_setup(vdev, errp)) {
+>           goto error;
+>       }
+>   
+> -    vfio_bars_register(vdev);
+> -
+>       if (!vbasedev->mdev &&
+>           !pci_device_set_iommu_device(pdev, vbasedev->hiod, errp)) {
+>           error_prepend(errp, "Failed to set vIOMMU: ");
 
 
