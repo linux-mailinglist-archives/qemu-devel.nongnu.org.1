@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F1BA7B2C7
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F180A7B2C6
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:02:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0UVu-0002Kk-NT; Thu, 03 Apr 2025 20:02:27 -0400
+	id 1u0UVu-0002S7-Oh; Thu, 03 Apr 2025 20:02:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UVS-0001oD-8c
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:02:04 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UVd-0001sT-4q
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:02:13 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UVQ-0003Ex-FW
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:01:57 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43d04dc73b7so14510635e9.3
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 17:01:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UVX-0003GA-Bb
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:02:06 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-39c0e0bc733so1226243f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 17:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724914; x=1744329714; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724920; x=1744329720; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VlQYulyRFs+KcJzdqcrZEMpQxfGXO+wcW4ZSqu04L5k=;
- b=hQyFGS7ymuJsBu00R+0e+vrquuhWJ7oTeOi6+1geNOqiZ+nfd0YcpMSfgPgn/IxmML
- OKyyePPaUm5PpkgGIF97Zc2WWZKkSnGiMiS7KuLu7J5E8EW8HwcI/0F2hc9cDW0clyK+
- 5pZFIXZ3Ljn1pjNwOc56cwFzp4MNFMFfOqAe4slubkLw3mWP0p6vjLFzEETWGQS2kjCm
- l8ObZ44HDrVTcUa5fnbTU5h4GDzzBnN6ykiUBRYHcOSobaL9nf/Qm3PQ+O47TuU6h8VU
- +SVz9vNQ4k4O45PMwpFrBAS0BlgzWDl6uUgaI4XsGe/5Bx77iFXxV+xKvlTtSXRmJQI2
- kjyA==
+ bh=pEQ4caRuUm17bqEdIOfMLiQw9DDP+11LU+Cj2r4W6Vc=;
+ b=DiDhqPnUaC4SRbYNlQmpQg9VqleterL4nzs2cFNnINdG9TROxwQguuoQFsFnL7DFOi
+ +5Bs1Hw7JhhBhXXoOdIeJjgitntj/SRkDLJAqJUL6AEu+txd5tZtjpjOtkqfPhhQNf1j
+ GrCUHnue/X4Df67wMjoAtlJL4pQL9DNPTPglBfbfO2xYfhE2+uTszB1rsOVX6g0JUwa5
+ Gw4Zx0j4TcxSj5sh5VoLcA8OoB6GOu2p/PILA+uVfIAN+0wSgXfAmvlAQgyi5vh9Fq4Q
+ 4WZXMPSrutGrJpa/GTKbZSeM04yUllTKuVUHWZ6qxLDzJ4I4L/77O2jWK7bgeIm3YTjX
+ PpGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724914; x=1744329714;
+ d=1e100.net; s=20230601; t=1743724920; x=1744329720;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VlQYulyRFs+KcJzdqcrZEMpQxfGXO+wcW4ZSqu04L5k=;
- b=JwXlyHO9Kc3eX4MMjmiOw3QSMYpxtEwCVJspSsqxMQnvoy2GUdo4/TEpHAD4epZr2H
- P3sC0p+GsrNtceLXhk6c7lCNne7nZrIhXLjROt3hY4X3+kB8vPywV/qXoIYIWq33iLKZ
- /zaLYEE5Ka9g+LRH68Z3mKlJv+iOYz1yhEgkXg6B6R1ZHjrAAv8inJDOyaoZM4I3zpxU
- mOj+OYikpTTz34c0i2B9CEgvIG/ZPr6U0AtnRZvAyfp3jz7LKSVoiFj0Arq/aiJAiroR
- KOpsY1ShivodShiudGQst6O4HeWuYmttF5fsHwWfGCwhCRM0GfSH3BIW4J5CPq6cGKCC
- tbGA==
-X-Gm-Message-State: AOJu0YxR3D/rW3a0+vxX+RCG+tqGyT/1l4iNJ9KwqLEvaZHHWk3wUxew
- UTSIGZjuq41QXzZZ8Lj5K5qs6Ojospqox0jHjMVsZXxhBkSeoHDdz2fO0jhkpGDE4oQNoWhq95B
- B
-X-Gm-Gg: ASbGncsLV5eqZL1SG5Uw4Xg8VUAf89rPsi4ZCOoVbLt6hIQw/wf1Ci8+N4NCIj5sdZk
- rb8CAemn1byycZf2raIMpH8zzxt5W5onMgvzU19mNrJ9irkDxQ5XKs6er6ymqTDxz2S9EDd9Zpe
- GOd5CIfNs3r0Ec+2B2Nk6MetmqxX6By19wRwl2kqfx2ZvfKkc/UBWyALU2uSvqWn1cuNsJK9zno
- B0/Dthkj5/okLj/y34Qr7XNTu//s0PmgIbld/sCXniohX52ds5e/fL3KamZqfReTnt6cxXHjeaO
- mFfbU9AWt+mqxYVb58pfeanJ+jEXe2DUMbN+3Ta4MtXiRpgf4wGwhkxduZii/1Bip4hv1PCV4L3
- LufvjhXDrAQz0tqdwvlw=
-X-Google-Smtp-Source: AGHT+IECRzMi5XQthL/0ZboD1pA2DQQu7uOvI46WYc3BJW0sfEyHo0Zm3TZ7Ud7ClAbi57LsvZRJgQ==
-X-Received: by 2002:a05:600c:3d94:b0:43c:fceb:91f with SMTP id
- 5b1f17b1804b1-43ed0bc8d58mr5501025e9.11.1743724914582; 
- Thu, 03 Apr 2025 17:01:54 -0700 (PDT)
+ bh=pEQ4caRuUm17bqEdIOfMLiQw9DDP+11LU+Cj2r4W6Vc=;
+ b=QQD/0QgDuMJNvBhNpCWPYaD0l2RR2GIuTn1rSenvm+mqoh8uDkpqrhuYy3HUBr2T55
+ 3qAfxlUhWNLMtvgMkGS7Bz3xmHS77rS8JyZTpfxh7jUi3J8nOnarDJW/19qFbMXfExwU
+ bZ9RzMKxAohiGPTk289lif6Z7vu0oapInsKvaH5BeYuccCJ1FzaPdyLy0vlfbFCAk8bR
+ fgCloUzVq8RiszqDqoelOViVOafnfenugRb++El6uLacbD+ZqTP1rl2CsAaw7fi8plYs
+ mQRid6xkIzKYhpwQIn+Vg3//if1GJW0F0WHNvzenRDBB96V2n62C4xHFKeOC11aRNFUS
+ EBaw==
+X-Gm-Message-State: AOJu0YwCI9LSixap2QBHrCnDC5aLl2j/LM6S/nM7yLGPtUbCkl48DK7w
+ a2e2ovopiWxtJHemFJc+hm+a2H1vexyXKVi9Cxf6+BYVg83OwP81uoJQo+WovtXHKTeHr7dZQEV
+ J
+X-Gm-Gg: ASbGncuK2XW+oWZynYlxeGCGA2FyLmcNeTV07NGpICy0azbJenpXiBCXpUlPoQIyb4x
+ zxH7rBgLWq6ezj57SjYsXdm/BVOIT9CZ7yzJh1BrjBke5RnZSbySUbk1vq+YyAimXG3efuD2+n9
+ cDbJoBH+WG+doUH286RoXlwYUKPdKfa2muENSAHAUNoUPQSAm8m1n1xVnXzg8y/dlqd6KxE8AH8
+ yIfJuN3U3vUv6diqqwmsmG/ZByFdSHU9zChOL65ajhwXLF7LPXp+zVM6loUUFp4XM08/1Z6VhUm
+ RqCNhGdY3zBjINYa/Als7BDMLZNwMPrIeCNSEL4XyMh1FBuPuIxmulQU6GU2rlDF6ilJdoEs5bt
+ gjY/vePsZkYPlyhYGJq4=
+X-Google-Smtp-Source: AGHT+IGMYDZ9BiUVKCWLsZyqPKwlwfLqqm7cKvIQLVdU8TrrcadW1B86XNq4q+uriYiyXYW3pzA9OA==
+X-Received: by 2002:a05:6000:1ac5:b0:390:de33:b0ef with SMTP id
+ ffacd0b85a97d-39cba93c429mr785050f8f.30.1743724920555; 
+ Thu, 03 Apr 2025 17:02:00 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec16602bbsm34181125e9.9.2025.04.03.17.01.51
+ 5b1f17b1804b1-43ec163107csm35041975e9.3.2025.04.03.17.01.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 17:01:53 -0700 (PDT)
+ Thu, 03 Apr 2025 17:02:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH-for-10.1 32/39] target/arm: Replace target_ulong -> vaddr
- for CPUWatchpoint
-Date: Fri,  4 Apr 2025 01:58:14 +0200
-Message-ID: <20250403235821.9909-33-philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 33/39] hw/core/machine: Allow dynamic
+ registration of valid CPU types
+Date: Fri,  4 Apr 2025 01:58:15 +0200
+Message-ID: <20250403235821.9909-34-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403235821.9909-1-philmd@linaro.org>
 References: <20250403235821.9909-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,81 +101,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUWatchpoint::vaddr/len are of type vaddr.
+Add MachineClass::valid_cpu_types_list, a dynamic list of strings.
 
+CPU types can be registered with machine_class_add_valid_cpu_type().
+
+Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/internals.h   | 9 +++++----
- target/arm/hyp_gdbstub.c | 8 ++++----
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ include/hw/boards.h |  8 ++++++++
+ hw/core/machine.c   | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index ce60aee41d8..86577207b85 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -26,6 +26,7 @@
- #define TARGET_ARM_INTERNALS_H
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index b1bbf3c34d4..92a13b0dc32 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -57,6 +57,13 @@ void machine_set_cache_topo_level(MachineState *ms, CacheLevelAndType cache,
+ bool machine_check_smp_cache(const MachineState *ms, Error **errp);
+ void machine_memory_devices_init(MachineState *ms, hwaddr base, uint64_t size);
  
- #include "exec/hwaddr.h"
-+#include "exec/vaddr.h"
- #include "exec/breakpoint.h"
- #include "hw/registerfields.h"
- #include "tcg/tcg-gvec-desc.h"
-@@ -1948,10 +1949,10 @@ bool find_hw_breakpoint(CPUState *cpu, uint64_t pc);
- int insert_hw_breakpoint(uint64_t pc);
- int delete_hw_breakpoint(uint64_t pc);
- 
--bool check_watchpoint_in_range(int i, target_ulong addr);
--CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, target_ulong addr);
--int insert_hw_watchpoint(target_ulong addr, target_ulong len, int type);
--int delete_hw_watchpoint(target_ulong addr, target_ulong len, int type);
-+bool check_watchpoint_in_range(int i, vaddr addr);
-+CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, vaddr addr);
-+int insert_hw_watchpoint(vaddr addr, vaddr len, int type);
-+int delete_hw_watchpoint(vaddr addr, vaddr len, int type);
- 
- /* Return the current value of the system counter in ticks */
- uint64_t gt_get_countervalue(CPUARMState *env);
-diff --git a/target/arm/hyp_gdbstub.c b/target/arm/hyp_gdbstub.c
-index 4e52d37ed80..4d8fd933868 100644
---- a/target/arm/hyp_gdbstub.c
-+++ b/target/arm/hyp_gdbstub.c
-@@ -125,7 +125,7 @@ int delete_hw_breakpoint(uint64_t pc)
-  * need to ensure you mask the address as required and set BAS=0xff
-  */
- 
--int insert_hw_watchpoint(target_ulong addr, target_ulong len, int type)
-+int insert_hw_watchpoint(vaddr addr, vaddr len, int type)
- {
-     HWWatchpoint wp = {
-         .wcr = R_DBGWCR_E_MASK, /* E=1, enable */
-@@ -182,7 +182,7 @@ int insert_hw_watchpoint(target_ulong addr, target_ulong len, int type)
-     return 0;
++/**
++ * machine_class_add_valid_cpu_type: Add type to list of valid CPUs
++ * @mc: Machine class
++ * @type: CPU type to allow (should be a subtype of TYPE_CPU)
++ */
++void machine_class_add_valid_cpu_type(MachineClass *mc, const char *type);
++
+ /**
+  * machine_class_allow_dynamic_sysbus_dev: Add type to list of valid devices
+  * @mc: Machine class
+@@ -307,6 +314,7 @@ struct MachineClass {
+     bool ignore_memory_transaction_failures;
+     int numa_mem_align_shift;
+     const char * const *valid_cpu_types;
++    strList *valid_cpu_types_list;
+     strList *allowed_dynamic_sysbus_devices;
+     bool auto_enable_numa_with_memhp;
+     bool auto_enable_numa_with_memdev;
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index f52a4f2273b..5993c6e38d5 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1538,6 +1538,11 @@ const char *machine_class_default_cpu_type(MachineClass *mc)
+     return mc->default_cpu_type;
  }
  
--bool check_watchpoint_in_range(int i, target_ulong addr)
-+bool check_watchpoint_in_range(int i, vaddr addr)
++void machine_class_add_valid_cpu_type(MachineClass *mc, const char *type)
++{
++    QAPI_LIST_PREPEND(mc->valid_cpu_types_list, g_strdup(type));
++}
++
+ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
  {
-     HWWatchpoint *wp = get_hw_wp(i);
-     uint64_t addr_top, addr_bottom = wp->wvr;
-@@ -214,7 +214,7 @@ bool check_watchpoint_in_range(int i, target_ulong addr)
-  * Delete a breakpoint and shuffle any above down
-  */
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+@@ -1581,6 +1586,29 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+             return false;
+         }
+     }
++    if (mc->valid_cpu_types_list) {
++        bool valid = false;
++        unsigned count = 0;
++        strList *wl;
++
++        for (wl = mc->valid_cpu_types_list; !valid && wl; wl = wl->next) {
++            valid |= !!object_class_dynamic_cast(oc, wl->value);
++            count++;
++        }
++
++        if (!valid) {
++            g_autofree char *requested = cpu_model_from_type(machine->cpu_type);
++            error_setg(errp, "Invalid CPU model: %s", requested);
++            error_append_hint(errp, "The valid models are: ");
++            for (wl = mc->valid_cpu_types_list; wl; wl = wl->next) {
++                g_autofree char *model = cpu_model_from_type(wl->value);
++                error_append_hint(errp, "%s%s", model, --count ? ", " : "");
++            }
++            error_append_hint(errp, "\n");
++
++            return false;
++        }
++    }
  
--int delete_hw_watchpoint(target_ulong addr, target_ulong len, int type)
-+int delete_hw_watchpoint(vaddr addr, vaddr len, int type)
- {
-     int i;
-     for (i = 0; i < cur_hw_wps; i++) {
-@@ -239,7 +239,7 @@ bool find_hw_breakpoint(CPUState *cpu, uint64_t pc)
-     return false;
- }
- 
--CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, target_ulong addr)
-+CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, vaddr addr)
- {
-     int i;
- 
+     /* Check if CPU type is deprecated and warn if so */
+     cc = CPU_CLASS(oc);
 -- 
 2.47.1
 
