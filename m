@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9287A7AEB9
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 22:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83BD5A7AEB1
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 22:33:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0RF7-0003yT-Ee; Thu, 03 Apr 2025 16:32:53 -0400
+	id 1u0RFG-0003zL-D4; Thu, 03 Apr 2025 16:33:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RF6-0003yI-0n
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:32:52 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RFC-0003z1-9H
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:32:58 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RF4-00042g-5u
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:32:51 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43cfa7e7f54so8424185e9.1
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 13:32:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RF9-00043E-7Z
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:32:56 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3913958ebf2so963043f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 13:32:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743712368; x=1744317168; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743712373; x=1744317173; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VGswViVnnb77pop0AHAfmo4nHoQCnlrKr2lNkpeHI/g=;
- b=Y3FXd3MpOBD2xUC4hMS3N7an1JUPIjCdWo2arIB0xNseED/Ol3LGpUtt7UU7g1/ZLI
- LibpJWaBL1JgkqZdlNTn3iJLnTf7Yslmx4c39McWP0036evjcQEN6e+z/PKX1RF+9fAD
- 5YjrGIDeYxQmIi3WXgaN/qFo7CKVBl9aaVy+Jd/17/lTArcpGsX7iZRSfQu2APEscz8q
- h9b76pSWA9arfJalshQLa3QvtwOorbKK/zWBfcWcAhLrgNSoQdmJt8AN7swGYeLsCr2o
- N0tTkdc668fgBV9a0Bb3p1KrTQN5u7a7ku1jgJajwnd73AoAPjpywxNt8P6apAz2Qwrl
- uFKA==
+ bh=A6+6tP0FDiD90XBJa6S5dJ//D1whWgsc0bfGPime3dk=;
+ b=WdJsw10kcAtx2pl0+Kv6rdoaSX+pyOt6a/bLlprdrdDP10qy0IfxRYFa8Cz+dPOA2k
+ 29GBzSxqd3ni9Fq7pNR5UC2dTWy5sCjMO45ikAtJlVwmvEJNgXfcFfWxFcCj8DK+euH5
+ qFVbfw/fUP16MGcDiF2Wbo5dHZH+26DSx2nJzG7OR654sqoEGrFaaX2yOrs5L2fiLKDe
+ LSPeVBftYa7lQU6sU1KurhRA4UPCfS4TUGLGHa3tng2LN2O6b2g4FR4V/7DZwoRQEYo2
+ T9ooDlKQlL0iAf114hIoQMSWyh+79z8+dYv0TKLIMPG8pLN8i2vQihE82L00TimkYS/J
+ R2Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743712368; x=1744317168;
+ d=1e100.net; s=20230601; t=1743712373; x=1744317173;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VGswViVnnb77pop0AHAfmo4nHoQCnlrKr2lNkpeHI/g=;
- b=wZKEFD+3Yu8pSxasOyULqNJ5+WiYUBUBkFrR2NBux5m0HbRo2GjwosyuK4wLTdE1oV
- uKjbU+291UYx7YkKTHe+ZEojDHh3RZ0ImZTzmOndtDkzhskx6NScVaqKAxEUJg4/x26W
- Jr4s+JYTw6+txsM/mSRYSDztQJmJVYJejB2UevD6ikr5oKrWvfqcQz/kNdz7YWkIZj0Z
- itLynAiTDFLyYRcGgM4ka7WwxshFX97mFwLuFUzAj8wV1gc0zjxFOJzCuRzhwt+QGlg6
- JrUQ0ZzRnm4TEpib8Sa2HDSfcYbZ4pfFvdWezuNBVonvqE97exFv8SCr8qfwZzo8RHzd
- tidA==
-X-Gm-Message-State: AOJu0YyMnls58NMeaq0zWJ942YXh/wPFcz5Uw9aQyHrGzON5plXbIcFs
- hK7HECZlGSNx00U3BczV8W9kRW0HSeAhZ6MGXxatQTR5HNue7gtvO85F7DnmhH4ehfg5wvhqjU7
- 8
-X-Gm-Gg: ASbGncvtN+qv+ATCJbf83iC2s4sansKBvaRb1bC4zd2gFCuUg3wCAvIJ6bevCaRloO8
- OATpYbKKlL0ReZlw7tFF1y0b5lCA9ehwGXg/tLtfgFPjOpX8h2FQjreyMrqZ39kTN4usgdDQG8t
- n2ae4KXa5DKoUzmY2glQ+K5Ptb/W4nOA49YjaR7ufri4u34kgBp6pqS1WlpMbcU3Fo4chWJD9IW
- FxS9QDItkEKrzNu3YBMmoEeAhJQACakNZ2SUwrR+/H8LFgUnvzv6fBozYpIaFWkDjbGzXH5PJFc
- rd0XE/HV1c/QbWBc8SWpWURPp8/aP60DaMUDkwxheuZ1k7J5HqjuXDfa53RaMNsHhZVQqGDoFnQ
- BZlXO5oq79Fm/0Hiy4UExIPUO
-X-Google-Smtp-Source: AGHT+IE5/ZI6EM+luxv3kFtX1kBmoAZ6GZYPFB9qVadZ5lGZn+NLX9l/VUj1PqYTg0FxXNA2sfv/Rg==
-X-Received: by 2002:a05:600c:1827:b0:43d:174:2668 with SMTP id
- 5b1f17b1804b1-43ebeda3c57mr33607555e9.0.1743712368451; 
- Thu, 03 Apr 2025 13:32:48 -0700 (PDT)
+ bh=A6+6tP0FDiD90XBJa6S5dJ//D1whWgsc0bfGPime3dk=;
+ b=XeR3E76sXlot+MnA047sBuympN0PPyEB6MZy5ksS1qtarj6Xg1VnmcuZSePE0bYIoB
+ sgdOPOX/KqXZzaQG6JPtp+8LXcg5iZOGop5HqVtCOyOi8Xyoaa0WDG9t1GogBU+MO89G
+ drN3fMIvU+hw0b3YkIVuqAq3JfJTFqVRjbPhnH3A/K+RF7u2skakKRw+BvYEq4agmgfC
+ TRHF73hwZxfJ+m+T6S+OACcI3nxbCXz8ZJt8ZGc5hO07dRV8zkn0UuPKehx3jrBhDLtJ
+ tHtQFQOKRLQd5IVC1hJi3K6PL1CaU/wpjMvnBuxzo+NPv8KjGWIieHvm+WUMLXHSRgfw
+ dGmw==
+X-Gm-Message-State: AOJu0YyudKRFOEq1pkn/UekMfD8Hgo1Qu16TYX38uoS66TFmHys97ZHj
+ dKD//9KFEE832MQbQNP3egtSFDxPR7DtJ/s/LRzBJLUCFDlq5SxeH/J5x5PbLzhreMlsxLmWc0x
+ Y
+X-Gm-Gg: ASbGnctLO8P1DpOZXX6xhXv3/+TmMI0a0ZhNSbNHtcTqw+VfRW+BU5B1DPSjV9avTEH
+ 7bMUp19JAyEJ1vhv9rmIpCG5MIRZUfe04b+fHyWuv8+6YYItIGhVyrpLZn+yUwMLHKefZk7y3jl
+ wp7VtLkEjLYcC0KfYPs+xj31QU5ztS6LXyKYDgKHSeFqtbIf1DCjvpy3jNk4KJFWDK2xDWRSqc7
+ N7DBsNvV2rMhfB0VkGYlrJX3jD7TgylpnNCVzyvYxIaQHYCNWSyFTjxDB+qiucggcvftwS8rWuu
+ 2AYqJoVN0S1yHaUoML7cvp6W0xOyT3zlqXlj3BBP1Ij2okSTwh3O3HscEavQNNduQJ9RrxKsZzs
+ Yk0RGtaiagtB1Kn5WDJMG2FftFHObitS3+ls=
+X-Google-Smtp-Source: AGHT+IGWDmr/Jg9vuJcsGn9SC40GCpkw35f6RHeYWix9nSxFU5dnPplOgOjeQ9Yv3qFw5Nsnm5msbA==
+X-Received: by 2002:a5d:5d13:0:b0:39c:1f0b:8f6f with SMTP id
+ ffacd0b85a97d-39cb35a1821mr554968f8f.24.1743712373310; 
+ Thu, 03 Apr 2025 13:32:53 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301b6778sm2581591f8f.46.2025.04.03.13.32.47
+ ffacd0b85a97d-39c30226f1fsm2703680f8f.95.2025.04.03.13.32.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 13:32:47 -0700 (PDT)
+ Thu, 03 Apr 2025 13:32:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -70,21 +70,20 @@ Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH-for-10.0 v3 1/5] tests/functional/test_aarch64_rme_virt: fix
- sporadic failure
-Date: Thu,  3 Apr 2025 22:32:37 +0200
-Message-ID: <20250403203241.46692-2-philmd@linaro.org>
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH-for-10.0 v3 2/5] tests/functional: Add a decorator for
+ skipping tests on particular OS
+Date: Thu,  3 Apr 2025 22:32:38 +0200
+Message-ID: <20250403203241.46692-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403203241.46692-1-philmd@linaro.org>
 References: <20250403203241.46692-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,44 +106,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Since tests might be failing on some operating systems,
+introduce the skipIfOperatingSystem() decorator.
 
-This test was randomly failing on our CI, and on dev machines,
-especially with QEMU debug builds.
-
-From the information collected, it's related to an implementation choice
-in edk2 QEMU virt support. The workaround is to disable KASLR, to avoid
-accessing protected memory.
-Note: this is *not* needed for the similar test_aarch64_rme_sbsaref.
-
-More information is available on the associated GitLab issue.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2823
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250328183816.2687925-1-pierrick.bouvier@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/functional/test_aarch64_rme_virt.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/functional/qemu_test/__init__.py   |  2 +-
+ tests/functional/qemu_test/decorators.py | 15 ++++++++++++++-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/test_aarch64_rme_virt.py b/tests/functional/test_aarch64_rme_virt.py
-index f4ad4d33d58..a1abf584f0e 100755
---- a/tests/functional/test_aarch64_rme_virt.py
-+++ b/tests/functional/test_aarch64_rme_virt.py
-@@ -87,7 +87,9 @@ def test_aarch64_rme_virt(self):
-         self.vm.add_args('-fsdev', f'local,security_model=none,path={rme_stack},id=shr0')
-         self.vm.add_args('-device', 'virtio-net-pci,netdev=net0')
-         self.vm.add_args('-netdev', 'user,id=net0')
--        self.vm.add_args('-append', 'root=/dev/vda')
-+        # We need to add nokaslr to avoid triggering this sporadic bug:
-+        # https://gitlab.com/qemu-project/qemu/-/issues/2823
-+        self.vm.add_args('-append', 'root=/dev/vda nokaslr')
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index 45f7befa374..af41c2c6a22 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -15,6 +15,6 @@
+ from .linuxkernel import LinuxKernelTest
+ from .decorators import skipIfMissingCommands, skipIfNotMachine, \
+     skipFlakyTest, skipUntrustedTest, skipBigDataTest, skipSlowTest, \
+-    skipIfMissingImports
++    skipIfMissingImports, skipIfOperatingSystem
+ from .archive import archive_extract
+ from .uncompress import uncompress
+diff --git a/tests/functional/qemu_test/decorators.py b/tests/functional/qemu_test/decorators.py
+index 1651eb739a7..50d29de533d 100644
+--- a/tests/functional/qemu_test/decorators.py
++++ b/tests/functional/qemu_test/decorators.py
+@@ -5,7 +5,7 @@
+ import importlib
+ import os
+ import platform
+-from unittest import skipUnless
++from unittest import skipIf, skipUnless
  
-         self.vm.launch()
-         # Wait for host VM boot to complete.
+ from .cmd import which
+ 
+@@ -26,6 +26,19 @@ def skipIfMissingCommands(*args):
+     return skipUnless(has_cmds, 'required command(s) "%s" not installed' %
+                                 ", ".join(args))
+ 
++'''
++Decorator to skip execution of a test if the current
++host operating system does match one of the prohibited
++ones.
++Example
++
++  @skipIfOperatingSystem("Linux", "Darwin")
++'''
++def skipIfOperatingSystem(*args):
++    return skipIf(platform.system() in args,
++                  'running on an OS (%s) that is not able to run this test' %
++                  ", ".join(args))
++
+ '''
+ Decorator to skip execution of a test if the current
+ host machine does not match one of the permitted
 -- 
 2.47.1
 
