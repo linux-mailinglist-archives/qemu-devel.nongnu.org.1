@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD7BA7A885
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 19:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E56D0A7A8A0
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 19:32:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0OGM-0001mZ-W1; Thu, 03 Apr 2025 13:21:59 -0400
+	id 1u0OPm-0003Tg-EM; Thu, 03 Apr 2025 13:31:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u0OGL-0001mP-H7
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 13:21:57 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1u0OPg-0003T8-MA
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 13:31:37 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u0OGJ-0005l0-Py
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 13:21:57 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-2255003f4c6so12135065ad.0
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 10:21:54 -0700 (PDT)
+ id 1u0OPe-0007AW-Gb
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 13:31:36 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-7376dd56f8fso1453790b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 10:31:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743700914; x=1744305714; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743701492; x=1744306292; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zOHzce89H5d9MLVZt5g59EpME4w7sz8Zoyc5MAMKMik=;
- b=ldoovLxm/31mCw+oNSh3S8F08jBLK8dBxubGtdnmrD7oBS3xz/4fOFL4+L3tVMl5TM
- 8iivfEFzr6m8A0pFj8lOYhYhi85RX9kCoCOwTp9MH8V33K71SvZPykU4z3OsTFG6PjFm
- MJGin+vzSGeyDQKL8ofge+ZjYPkkstizZUxQYNSdA5GctT3k1mVFxyPQuueTb/OBQXwm
- FYgrq7NyB6gJbFT3XafnFRUIp+yY8lih61z2RwGDcASP8M+4bCq+Z3GLzMfyEjNZAjlO
- 2anJvv41uYT9XiKvnYKm7kPTKkJSiXob7ULTN1c7gzRpRkGrwdi5o269iL5PKyvuOQ66
- L1QA==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ZTaDmVjioQOvHiurialnVJTfakcHBh91bAWdCG+QtCk=;
+ b=OAdWmFUh1l0F4WnVhXlmJDLbACywtsNHViA8bVcnpyfDnCkcfwF/HXP3NLBPG6/1Lo
+ TRwZ4uqg/RXGGjFA6mBciU224k68bXpDOlhnIYFWFNdN1B39anS7hF2cr18lP3W+i7TZ
+ KwnUTvF4OyEYjAKY90pT1uDFM5IIJJhA8z/dnKjKwmsDHgpyddgEGJBAEfF2OsGGHuql
+ ygvNKV5YiisfpR17mUd87gjJaXKPw/41b51hTpqM++zzccFqHltScH+v+3TvzdlbOKWP
+ 1ebtlVWJRbPMvCufqDXXguPYJGYyuxecZSmhGniAQQINssjX2cKFvP4CBEWf0bJD4dby
+ whkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743700914; x=1744305714;
+ d=1e100.net; s=20230601; t=1743701492; x=1744306292;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zOHzce89H5d9MLVZt5g59EpME4w7sz8Zoyc5MAMKMik=;
- b=V0ktbYUIB/Xn7B1rL+rS3LzfJGsctNc86c79JwtYtvOK9LG73J+9wY62is6TXmJqXF
- dTWYCmGP8tsEE/+f0kkbI1m7J9yyGla918dYxUzLoyDd84vL+FL7bQGT/pEvCEeJHbIp
- bri/Nz8oXhwfIujWTkPTehM2WCId8zjinvb13V4/ok7GEPbCoAMfOFgVMEtTg5D24xLz
- BAsqFgWdeJZJhO4HYjEnCpUDnhReQhDdMA1+g3IjZuAZaiFpo+sAMJicO1hEbUJbkOmO
- TTiM7AMJl4517sb8CKDxcef1+29f1AmrXlcOQBl1bmmAqYeT5xRmKHpdWem/nmKheHBq
- VDqQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU28F9nhrn18mf9KGYuXyUogyomKgfBdqeDWY78Y+fTa6CUKMLytW0IAW7LemUVj5jE52JAlFxrMv0f@nongnu.org
-X-Gm-Message-State: AOJu0YzvGQkxsR61tziSY+w1P/IMu7C+ZId8zAfC7txUxbeOrungpHEQ
- ySbcAYNZbKJae2tKRSiWOS5hPmZfFjWWG0hXL63GAbX1v+P7Up8SaBhJ3GOiSKk=
-X-Gm-Gg: ASbGncvvTnR5MN6uK4TlRltLb1IuirFxC6uK5HfFCKkQOXwTcEDQaBAAY43IB2iQ/wH
- JpUxrUe3OwkZbPwdN84Al23BdDBEDcyyj7gN9koFmcnTsVNpO2HFVUaIQb4+hB9Pzr2dh1YAwe6
- xkDuwFVFSKUcShPR4j8uZOD1VOZUXoi4ZdO8z9PRs0kHB0Agtlapj1M1FwLjTYip9SEyYrT5vLg
- MBVT7ex0LVWVX69xjJTcEbs1xCUKoSV+ciu966Gh2qb6zJiCItPrFUzVNsnL+tQcXXjw+Taa+Yi
- 4LCuYunZ3ptWURRZzTVYHw3L5eEPbDRDwBZS9FUjz/UNOR87+fmxwejKghd90OqzCCu1XSzVPbh
- LpMNe5Onf
-X-Google-Smtp-Source: AGHT+IEv3UGhXGWo7JyQIcbl7h0cwssQ4+1ecvhTUDe/kdznsZiO2nJliFS2Vo/EqRoCWg8LqMsw2Q==
-X-Received: by 2002:a17:903:2302:b0:219:e4b0:4286 with SMTP id
- d9443c01a7336-22993c20215mr43836815ad.29.1743700913437; 
- Thu, 03 Apr 2025 10:21:53 -0700 (PDT)
+ bh=ZTaDmVjioQOvHiurialnVJTfakcHBh91bAWdCG+QtCk=;
+ b=KrZUm0287f0bPJXUhIvqPjW6eWxgaToxIh5KGui1+cOZqzT66Zi4ZUfZ3Pi+Yl+otH
+ nLe5fhJX+vPhauA+xANa04uXCqWb+rGDEWjHlRAC0CLbuXqBsNgKmtdaLe/JbTxm0aaU
+ 8Pf2AFUTeE9/fDUgvbUH31o2+weINjVtuudwtwwvQMqYkn+c+f36sHS+wRgOrxi2+ovg
+ ymnHVEjOZbSYkdrGmGy5zH8EiaM/WZW5+XXzZJ5dZ3YT6LEucCyS4BFBYW5VQ/5kmCiS
+ uQNp3AMLLYYf90oz8GELvRWlTaw9ovisOaz2MmkqQb1b15nzswza0nV2CGMEbVFH7cPQ
+ xcnw==
+X-Gm-Message-State: AOJu0Yy24Pef1MBUeKmtrdQ8S/dJpiGwn2ifhoOmy6FZ/A4xFwC4iKRW
+ 68OvQ6w0pEHrNXwL1dSdvZuFe2jHQ4Hs8pFcIkVXn2m12+qMJxFZbNcsjy6qFpGniVjPRORUhsV
+ X
+X-Gm-Gg: ASbGncvYx6b5kzcmqB2IUvu8fqFF2VLdsc+mZ/ZPH4rW+FBBLZDQFo54eejfseGeAGf
+ e4SAVAgQ/uYCLiEOk78+d4ulTtrk93axWHMseHIJm89ZKGkks8v8V31n0xRnzI4ZYkkX/R+Q2XE
+ a34PBfD9YUTXZVmnXrsKZSg1Lo+xJVZS+1h5NsKZ7roWWSnVqK0dmytQO20jYnBYKgmApQMWx4h
+ NHwbJEibTNn15lLr2SLAyq5Srud15wI0q4F8jNuf/HcLiDtjTkd+HuiWT5GPCutdxap5DedhVTp
+ 2LheRBzITJMA3Ik9PrI2Yj3KX8VErz2MUDEYot/o9NLG8/7/2OJgP60MLyw8UBXd7Mm4SXonRxu
+ yT6acjkFn
+X-Google-Smtp-Source: AGHT+IEtcZVwUGJGegEBE1hIFgOstTTSqhON1IUNk+5gIL468J5lcagMSJpMLWId7J+Cf31j0l7GpA==
+X-Received: by 2002:a05:6a20:c88b:b0:1f5:8748:76b0 with SMTP id
+ adf61e73a8af0-20104720fecmr418461637.29.1743701491930; 
+ Thu, 03 Apr 2025 10:31:31 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-739da0e7d3fsm1766626b3a.180.2025.04.03.10.21.51
+ d2e1a72fcca58-739d97ee713sm1822049b3a.51.2025.04.03.10.31.31
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Apr 2025 10:21:53 -0700 (PDT)
-Message-ID: <a90e5b30-1992-4460-86fa-f7e447dbdcfb@linaro.org>
-Date: Thu, 3 Apr 2025 10:21:49 -0700
+ Thu, 03 Apr 2025 10:31:31 -0700 (PDT)
+Message-ID: <c68cd058-851d-4eec-8edd-b6294c3ad362@linaro.org>
+Date: Thu, 3 Apr 2025 10:31:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 00/24] cpus: Restrict SoftMMU mmu_index() to TCG
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20250401080938.32278-1-philmd@linaro.org>
+Subject: Re: [PATCH-for-10.0 v2 02/14] tests/functional: Add a decorator for
+ skipping tests on particular OS
+To: qemu-devel@nongnu.org
+References: <20250403151829.44858-1-philmd@linaro.org>
+ <20250403151829.44858-3-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250401080938.32278-1-philmd@linaro.org>
+In-Reply-To: <20250403151829.44858-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,37 +102,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/1/25 01:09, Philippe Mathieu-Daudé wrote:
-> mmu_index() is specific to TCG SoftMMU,
-> moveCPUClass::mmu_index() toTCGCPUOps::mmu_index().
-> 
-> Philippe Mathieu-Daudé (24):
->    hw/core/cpu: UpdateCPUClass::mmu_index docstring
->    accel/tcg: IntroduceTCGCPUOps::mmu_index() callback
->    target/alpha: Restrict SoftMMU mmu_index() to TCG
->    target/arm: Restrict SoftMMU mmu_index() to TCG
->    target/avr: Restrict SoftMMU mmu_index() to TCG
->    target/hppa: Restrict SoftMMU mmu_index() to TCG
->    target/i386: Remove unused cpu_(ldub,stb)_kernel macros
->    target/i386: Restrict cpu_mmu_index_kernel() to TCG
->    target/i386: Restrict SoftMMU mmu_index() to TCG
->    target/loongarch: Restrict SoftMMU mmu_index() to TCG
->    target/m68k: Restrict SoftMMU mmu_index() to TCG
->    target/microblaze: Restrict SoftMMU mmu_index() to TCG
->    target/mips: Restrict SoftMMU mmu_index() to TCG
->    target/openrisc: Restrict SoftMMU mmu_index() to TCG
->    target/ppc: Restrict SoftMMU mmu_index() to TCG
->    target/riscv: Restrict SoftMMU mmu_index() to TCG
->    target/rx: Restrict SoftMMU mmu_index() to TCG
->    target/s390x: Restrict SoftMMU mmu_index() to TCG
->    target/sh4: Restrict SoftMMU mmu_index() to TCG
->    target/sparc: Restrict SoftMMU mmu_index() to TCG
->    target/tricore: Restrict SoftMMU mmu_index() to TCG
->    target/xtensa: Restrict SoftMMU mmu_index() to TCG
->    hw/core/cpu: RemoveCPUClass::mmu_index()
->    exec: Restrict cpu-mmu-index.h to accel/tcg/
+On 4/3/25 08:18, Philippe Mathieu-Daudé wrote:
+> +Decorator to skip execution of a test if the current
+> +host operating system does not match one of the permitted
+> +ones.
+> +Example
+> +
+> +  @skipIfOperatingSystem("Linux", "Darwin")
+> +'''
+> +def skipIfOperatingSystem(*args):
+> +    return skipIf(platform.system() in args,
+> +                  'not running on one of the required OS(s) "%s"' %
 
-Queued to tcg-next, including the addition of the assert.
+s/required/prohibited/ ?
+
+With that, or similar wording,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
