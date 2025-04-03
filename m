@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E36EA79DD9
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 10:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 728B8A79DD7
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 10:18:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0Fl4-0002OC-Dm; Thu, 03 Apr 2025 04:17:06 -0400
+	id 1u0Fl5-0002OO-5p; Thu, 03 Apr 2025 04:17:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <prantoran@gmail.com>)
- id 1u0Fkr-0002Lw-Gd; Thu, 03 Apr 2025 04:16:58 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1u0Fkt-0002Lz-EY; Thu, 03 Apr 2025 04:16:58 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <prantoran@gmail.com>)
- id 1u0Fkp-0002ky-P7; Thu, 03 Apr 2025 04:16:53 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2264aefc45dso9058845ad.0; 
- Thu, 03 Apr 2025 01:16:50 -0700 (PDT)
+ id 1u0Fkr-0002lA-5N; Thu, 03 Apr 2025 04:16:54 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-7376dd56f8fso747557b3a.2; 
+ Thu, 03 Apr 2025 01:16:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743668210; x=1744273010; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=s22xc8a7/LMS7AdVZEhGMSNTlbtCtL8y6XcLvc6taQw=;
- b=TYwt1ZGIVAFKyVm0D55h2DK0Xdba4Lvo4U+7oXdSA9MY2KDY8Gmwq+YDkBLV/8PWQW
- xXM4qtNAffh3ONlXwo82iB0zxVAOtxfjpmiKnHWV6U3eJa36gxj4i4ds49wnQUaKzoNy
- 01Cxj4IJinjjZbdQ90PfTAdalrMsGSgPbSqCDpmxhmTXyz9FAXz8cSEh8X42STZbAIlU
- nwROA3w52EDxclVq0hgX9ignBADxU1vVnscihuKBkZXkUiFot/+oR85zrp1+A7O6Mem4
- SSkZuha9OKfzBxHJCdJU3l8AlPjkUAaW3Lfc7+Zymoc1NV2FyWBUSN6qxHY5R7koy/Ga
- zwyQ==
+ d=gmail.com; s=20230601; t=1743668211; x=1744273011; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yqvVEl8tA6R9IQjAY85z/m0Nm3Q19B3rLXCLdGwPbCQ=;
+ b=IhaqUJuZMnIZoUAmQCCTi3pOT96gdHpj3159rLLsoAz/NRqepTgpZ/5OxhWHXeXeiL
+ 4yD052M1hFcBdDdMkZl2skscZLE5ShIj0p+5K/pQMhAnxhVX363HQq6uK8m8zsWOhRVR
+ u5eAwSY5RqsPdkiVfRa2m4Zx0mXpc0Oj8MbR94m1kW9RlkI7giaclfF2q7BAv7nlyoJn
+ LJFKlGSfppr+Q6jsAzvUjYFb+BSnKcRWPJ7JoVPnBU7KgZGjkg8BV5E1pNu6nH3JwZXq
+ g+2VWbrQPxSsBk7T7qbcsjAepEUCKrtN463VUpWEbjOid2cAsX3DhEWcOkrLCCktR0J7
+ 7JLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743668210; x=1744273010;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=s22xc8a7/LMS7AdVZEhGMSNTlbtCtL8y6XcLvc6taQw=;
- b=YTsQv5rxrvejM4awa7iRbauebPfSCRovu6WqPbejHbx1Ym0+8aKm7MQ6bk+TkW3NOt
- d0H179/hFVX1b+4xSry3+DBeCiTReu9q81BTMMdaxoRAE0rQtkzayniJIofsn4he1xBS
- lZQ/THx2JibAR0HrWocjCYKUtJTLpyDH1VMSSy61BmIdyBqankE2eIwxey0KCTYbaseo
- 5PG/nJ+rkRtGR+YPlPvyDjyWFXYigYGgyoGphUFzDLRsHMahSiHSe19tNlYueuFVQzMe
- HHpUsmsaS/96o6vfpsHOqKdSVtlO/2sLhEJ0Jvybei7o6jbPF/k9ku1KKpFtR2erZvqq
- Fj1A==
+ d=1e100.net; s=20230601; t=1743668211; x=1744273011;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yqvVEl8tA6R9IQjAY85z/m0Nm3Q19B3rLXCLdGwPbCQ=;
+ b=R1VSoqs8tK51GttQ2nHGY3Xd9OTvW9eg+VdEmHOZ/uQ8X14ta4UU/257lMxQUcjZCk
+ OQHdB+Fs6qhdvKlmHxLStM8KuC9/FjWS+ThxTcZnJ1tnmSnX1+jS1rTsr6j++rf/z6Tn
+ Jj+kqDpL/KYbV4cWRbz93osI9jWQZhfEV0/8HLVbiTtZNkmMpBhCz/+SR2ITaCzyj5+v
+ fQB1XI29vvTkh83/8mRlG1lLxVuN6drD9aPyArT+EzuSdTiNrRWoLg/UuEEOOOrtAf2u
+ 6tUdUcRlrxizjLFCCeMbSEdWiJrFUTRg7yH3UsNmEWMnUh9UzDAkQ2VRoi56ODyOiR3n
+ 1bCA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU/kjUXaeeKuPEAgM8ImeVW/kcyd3Y8ECaSuhx1G4mmSIS10BQcS7A9tM2zs16qK4DRx2QZ6v9xByrz@nongnu.org
-X-Gm-Message-State: AOJu0YwDPzm7Xq4KOP+lBPn3Ej7GjWiVKnx8pcNfGChkKaTgpTtbxuEU
- xqUr599caAdpMs4LBgPjwRYx8HhVmyxWc2UQpxEz3PIggVc/g0Ai
-X-Gm-Gg: ASbGnctFp3zwOOR3SaGUUoKXIqV8UdDR8aRVjulhLfgPeF403hLRqR7m0Slj9MpI/FF
- pertrO3iUY5w4SRl9Puim5jKqAgrD09VXIvMI9jO4ddi7hy9mConUN00x/qszNaxM59k8oCsi1u
- V7GXUXzKrpHCb+Of3ebjJO2wYfWuFV0TYHV23WYHXd4Jm0HNElV3x7Qc8Zr27pJmBt/o8sYr5Z8
- d9U8uRO50f57740gmOVM9AY1K5IKfKvXd0fGrt1kQTjAuy3AbdMTc7lrfJNgZfXBBQKDxTpaBAA
- wVCxshb3MipR2LSlCl5hRfbAnjcpzLo/0WYZPZL/Yg==
-X-Google-Smtp-Source: AGHT+IH+yj8Dy9fuQZd1p9yiMdu51O70uAW8WE/q3EhU1x4yuMgDFzVEsThamA4w07kXY175yrJ8cQ==
-X-Received: by 2002:a17:903:1a10:b0:224:1c41:a4bc with SMTP id
- d9443c01a7336-2292f96114cmr362522795ad.12.1743668209509; 
- Thu, 03 Apr 2025 01:16:49 -0700 (PDT)
+ AJvYcCU+8ofmhRec802Ok1yb073UJz7z2Mo4ZcvfzbJpOG4+ZgD5RFAKKDGmw1OWOeK/fH7GxakkpFCyYGCt@nongnu.org
+X-Gm-Message-State: AOJu0YyEB6m3Nrve3lZi3ZcSANTo7Lav8orIQcddRibvLUmOXL8Gjuiz
+ G0WjJUfgPJGtKJu9sH1jlrBKDeIL3lns3AG6J3fY5Cv1ACSQ8QjVLBHywwo0eyw=
+X-Gm-Gg: ASbGncuF7r1vJV8iNA33zvPY7BbTbpEfB3mVdnRv40y9ymGNODdP06NG/KeolYINb/A
+ 71jbe4crcaGGdeCInW0TRQwppm+V8nUb+2qzhn3NogVwWcjtCS5CSoN3zmC+xLlNp/5ydZuCLI0
+ WeX8ewre/23u/sVOImqh4bR4kOKb/65/ASyXJNIX3uWP4+AS0A1+/bpmqJm0Riqf5fa/yFR+Y+W
+ qBC9Rj5xQt1123qkHG0yZHH4i0ag7Pgm80r+D1qhLBuTSsuuYC1tsqX68L27iovs4XJPJPsHcVI
+ 7flDb4P2cJrVeP2LNxCcBlE1pdUmFjzU+S1u188SbQ==
+X-Google-Smtp-Source: AGHT+IHQU6Xt/8iF8aw/F81Adfr8GMuCHe/su1wn0IzwOVnwlaXDYQOXRajGyMdedkQOWhDIsc6ckQ==
+X-Received: by 2002:a05:6a00:238a:b0:736:5822:74b4 with SMTP id
+ d2e1a72fcca58-739c7965d2dmr6782370b3a.21.1743668211174; 
+ Thu, 03 Apr 2025 01:16:51 -0700 (PDT)
 Received: from queen.. ([2604:3d08:7485:e900:a9bb:524:486b:23c8])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-739d9e9db78sm895308b3a.97.2025.04.03.01.16.48
+ d2e1a72fcca58-739d9e9db78sm895308b3a.97.2025.04.03.01.16.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Apr 2025 01:16:48 -0700 (PDT)
+ Thu, 03 Apr 2025 01:16:49 -0700 (PDT)
 From: Pinku Deb Nath <prantoran@gmail.com>
 To: Kevin Wolf <kwolf@redhat.com>,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
  Pinku Deb Nath <prantoran@gmail.com>
-Subject: [PATCH v2 0/2] [PATCH] block/file-posix.c: Use pwritev2() with
- RWF_DSYNC for FUA - update
-Date: Thu,  3 Apr 2025 01:16:31 -0700
-Message-ID: <20250403081633.158591-1-prantoran@gmail.com>
+Subject: [PATCH v2 1/2] block/file-posix.c: Use pwritev2() with RWF_DSYNC for
+ FUA
+Date: Thu,  3 Apr 2025 01:16:32 -0700
+Message-ID: <20250403081633.158591-2-prantoran@gmail.com>
 X-Mailer: git-send-email 2.43.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250403081633.158591-1-prantoran@gmail.com>
+References: <20250403081633.158591-1-prantoran@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=prantoran@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=prantoran@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,28 +99,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The testing with "-t writeback" works for turning on enable_write_cache.
-I renamed the function to qemu_pwritev_fua() and fixed any typos.
+Full Unit Access (FUA) is an optimization where a disk write with the
+flag set will be persisted to disk immediately instead of potentially
+remaining in the disk's write cache. This commit address the todo task
+for using pwritev2() with RWF_DSYNC in the thread pool section of
+raw_co_prw(), if pwritev2 with RWF_DSYNC is available in the host,
+which is alway for Linux kernel >= 4.7. The intent for FUA is indicated
+with the BDRV_REQ_FUA flag. The old code paths are preserved in case
+BDRV_REQ_FUA is off or pwritev2() with RWF_DSYNC is not available.
 
-I moved the handle_aiocb_flush() into the qemu_pwritev_fua() and
-removed from the previously todo seciont. Initially I thought
-of only passing aiocb, but then I was not sure whethe I could
-derive buf from aiocb, so I added arguments for iovec and iovcnt
-into qemu_pwritev_fua().
-
-For handling buf in handle_aiocb_rw_linear(), I created iovec
-and passed its reference. I assumed that there will be only one
-buffer/iovec, so I passed 1 for iovcnt.
+During testing, I observed that the BDRV_REQ_FUA is always turned on
+when blk->enable_write_cache is not set in block/block-backend.c, so
+I commented this section off during testing:
+https://gitlab.com/qemu-project/qemu/-/blob/master/block/block-backend.c?ref_type=heads#L1432-1434
 
 Signed-off-by: Pinku Deb Nath <prantoran@gmail.com>
+---
+ block/file-posix.c | 42 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 34 insertions(+), 8 deletions(-)
 
-Pinku Deb Nath (2):
-  block/file-posix.c: Use pwritev2() with RWF_DSYNC for FUA
-  block/file-posix.c: Use pwritev2() with RWF_DSYNC for FUA - update
-
- block/file-posix.c | 54 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 42 insertions(+), 12 deletions(-)
-
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 56d1972d15..34de816eab 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -229,6 +229,7 @@ typedef struct RawPosixAIOData {
+             unsigned long op;
+         } zone_mgmt;
+     };
++    BdrvRequestFlags flags;
+ } RawPosixAIOData;
+ 
+ #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+@@ -1674,6 +1675,16 @@ qemu_pwritev(int fd, const struct iovec *iov, int nr_iov, off_t offset)
+     return pwritev(fd, iov, nr_iov, offset);
+ }
+ 
++static ssize_t
++qemu_pwrite_fua(int fd, const struct iovec *iov, int nr_iov, off_t offset)
++{
++#ifdef RWF_DSYNC
++    return pwritev2(fd, iov, nr_iov, offset, RWF_DSYNC);
++#else
++    return pwritev2(fd, iov, nr_iov, offset, 0);
++#endif
++}
++
+ #else
+ 
+ static bool preadv_present = false;
+@@ -1698,10 +1709,15 @@ static ssize_t handle_aiocb_rw_vector(RawPosixAIOData *aiocb)
+ 
+     len = RETRY_ON_EINTR(
+         (aiocb->aio_type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) ?
+-            qemu_pwritev(aiocb->aio_fildes,
+-                           aiocb->io.iov,
+-                           aiocb->io.niov,
+-                           aiocb->aio_offset) :
++            (aiocb->flags &  BDRV_REQ_FUA) ?
++                qemu_pwrite_fua(aiocb->aio_fildes,
++                                aiocb->io.iov,
++                                aiocb->io.niov,
++                                aiocb->aio_offset) :
++                qemu_pwritev(aiocb->aio_fildes,
++                            aiocb->io.iov,
++                            aiocb->io.niov,
++                            aiocb->aio_offset) :
+             qemu_preadv(aiocb->aio_fildes,
+                           aiocb->io.iov,
+                           aiocb->io.niov,
+@@ -1727,10 +1743,17 @@ static ssize_t handle_aiocb_rw_linear(RawPosixAIOData *aiocb, char *buf)
+ 
+     while (offset < aiocb->aio_nbytes) {
+         if (aiocb->aio_type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
+-            len = pwrite(aiocb->aio_fildes,
+-                         (const char *)buf + offset,
+-                         aiocb->aio_nbytes - offset,
+-                         aiocb->aio_offset + offset);
++            if (aiocb->flags & BDRV_REQ_FUA) {
++                len = qemu_pwrite_fua(aiocb->aio_fildes,
++                                    aiocb->io.iov,
++                                    aiocb->io.niov,
++                                    aiocb->aio_offset);
++            } else {
++                len = pwrite(aiocb->aio_fildes,
++                            (const char *)buf + offset,
++                            aiocb->aio_nbytes - offset,
++                            aiocb->aio_offset + offset);
++            }
+         } else {
+             len = pread(aiocb->aio_fildes,
+                         buf + offset,
+@@ -2539,14 +2562,17 @@ static int coroutine_fn raw_co_prw(BlockDriverState *bs, int64_t *offset_ptr,
+             .iov            = qiov->iov,
+             .niov           = qiov->niov,
+         },
++        .flags          = flags,
+     };
+ 
+     assert(qiov->size == bytes);
+     ret = raw_thread_pool_submit(handle_aiocb_rw, &acb);
++#ifndef RWD_DSYNC
+     if (ret == 0 && (flags & BDRV_REQ_FUA)) {
+         /* TODO Use pwritev2() instead if it's available */
+         ret = raw_co_flush_to_disk(bs);
+     }
++#endif
+     goto out; /* Avoid the compiler err of unused label */
+ 
+ out:
 -- 
 2.43.0
 
