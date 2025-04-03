@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708A7A7B280
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2B6A7B282
 	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:50:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0UK4-0000u5-M5; Thu, 03 Apr 2025 19:50:12 -0400
+	id 1u0UK9-0001Cy-Bl; Thu, 03 Apr 2025 19:50:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UK0-0000k6-06
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:50:08 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UK5-00014F-In
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:50:13 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UJx-0000VE-L2
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:50:07 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3995ff6b066so810785f8f.3
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:50:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UK3-0000gr-Mx
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:50:13 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-39c1ee0fd43so1243951f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:50:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724204; x=1744329004; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724209; x=1744329009; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zdkIZVCk0oK1AHydxn4CXLts02MNjyPOTlWUooOm/tw=;
- b=abfsmUeeBqROTADd5ddB16yN5Bn0HBLa3Hnxk5HeN9tQIPsEmjMHQQtCT4sGrgd2iV
- LgTpXB2rodemD5jM6T/OadrJFso+JpPORTlb6vtliEISTyD2K/gOAa7tchUp6P/x+BW7
- qTzCyNAWxgu563w6Ch7GaJa6QtkFkZDWbQC3jS3ui1cV2CZznrXobpK8VDkewh9n1o2l
- EF3RgG87G1cwCGERgcCVqBXG2yWoj72Mowxj2a6JLty+MBOXqzxKtFslW22RYg0shY/c
- gXtfRADjNZ2fCItaQEBtCXVVGAKd83zjhX6QYlbbTGr4W9YAx/Uq7oOakvD9HxCJEv85
- L+PQ==
+ bh=F4hQtsRqLsOAfmfIygYHr5yTvJJXu3lpTgjRUryOvbU=;
+ b=vWhmwXnBRb9XRw9XPjZoe1l0ymrDprgPxL0lGn/bJ2+1YlGygL7AfEqJ4/uJboTHNJ
+ hmw/A6/hW+7d7YRSstBBTeau4rAHkT8XGX1sw/fH+f7U30BmxCjZAVkjVL/RgNYDPrTV
+ ryHgewR48Yiu5KadCmLNd99M/eNVkkusJDERMOaA545BigF8PkmFfg3pVeuxDYocNI/V
+ d0WHHdZKQrU31DeRymyYopAUuTyKgRa0mDuKQLVeVr4stHjqQSrdlo5J6/d1QPCdIAfe
+ 11K6muiIf/Fv1tJtpJIxZ1RwOkueYH+ueVYLKzSe2TRUIlYe/TsKRaLMFNbvpYKnqr2/
+ tOSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724204; x=1744329004;
+ d=1e100.net; s=20230601; t=1743724209; x=1744329009;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zdkIZVCk0oK1AHydxn4CXLts02MNjyPOTlWUooOm/tw=;
- b=r9LWLGXiKEdBZh4IZgNWJ9cf5iBziihgb5kKsIKKyMcLwUPdU5HyOlomYn4pMBTMke
- VzovnmwY+pexXMtk3DtD3yvBoNYJSp16h7b3aEcg2yr6ER5+cTpkmi3OBuhj7+USEepn
- GWcNLoTReoyoZb7Z0MC0Ofxks46oUukdmsAJnGjMnmrjC3jqJvBFrm2HVvQr5jpcw8W6
- 9okuZxho0FImz/9iWFhhd+pluITZ2cx5g/UCKJUnGEd5UfdltttCGTF/WTrzYMegL0KU
- +nzRBsfcXraaBWAWjVLbixlDEwaOqioXrhuv5q1orQXHE6VSw4Kl+m2NdqH/9m9LDHkB
- jmXA==
-X-Gm-Message-State: AOJu0YzHk4fpIQVJTVZ/L7FShoai/A35RWGYAM+oOTGcvnX4OEEBOCQn
- d4CW8B4NvOZG/AtjU2+9uv+LR/xSIIPhFNPpSS/rzY8ZuzrgJCKGUyhBbe4ZOYrGXicJEfRhr0D
- j
-X-Gm-Gg: ASbGncvCjMTYk6SoLPEFv868E9bBw55GPoIWpNTz0UGv1Wpbp7AiP0F+oKyfOR/kCFN
- hqr6F3fNhZsB0bBfR0/Hf+eoSlbhjtUyiUxdRGUv2Tkn4Tbq3R6/XiS1xvjfW2Z4EUdzWGxVl+8
- FHy1jJLzPCWwjpFsL1E0IPqhjcc+a4ULBeKURixa3gjzkTC5wJC1wKcp5EyJkcDyUO1WwfZr5QX
- AKRT4hn9pBCcpN7LA1sSarNGHq8CdXA9vX5bJ6EJ7mW/NAWK17spBJ+I4KnGSApJs6CVisMLb0X
- 7fMb/z6AnPhHnUI7d7/6NQQzJYjw7zw0WN+4kHX9W5amqovyu5MovPEe9dTe6Q4Aplnb6n6zsCz
- pFYCCWHfIbZJrSOX/CBk=
-X-Google-Smtp-Source: AGHT+IGJc7xf48j7MctoqfOOUopvibIJsAcYZUdY+TDZCXDR6W+Sp2SZdRgUpKo5a6+BPy5NCfzH8A==
-X-Received: by 2002:a05:6000:220b:b0:39c:2692:4259 with SMTP id
- ffacd0b85a97d-39cb35981fdmr991805f8f.21.1743724203828; 
- Thu, 03 Apr 2025 16:50:03 -0700 (PDT)
+ bh=F4hQtsRqLsOAfmfIygYHr5yTvJJXu3lpTgjRUryOvbU=;
+ b=aO1BdO2mpAvhGrII/fq295QW4zMzzFC+uSxwbiwvCde38qo0/meBh/fi/cEE0YA/f9
+ tV/sqjWXVbaX4AfL2pIazxgFE08NNicZT9WQXxsH1xt+0tPkeY6QDQ6mGutfAfE4XmUY
+ z8bEthzioWHnTh05MuqZLkICHKtX8YdgW/JBbgJB+ERkwMH847f2uldjYUguoiL8tPzu
+ TbjeVYjNHtte9VTlR5VgTyWg0VLcuwk+ugjTaOzWn5/aibwTfjYmwsJlsSMeKCOwYw+5
+ am7doio/OK6cn9+E2AqKEXqEtJdIlOuN45CFHRT2ro99yctePTtzv32GRkbtRejYX27/
+ Huog==
+X-Gm-Message-State: AOJu0YwQMgIY1b1cgfFAGBLNxa2FDKTXqUUEGp9GtZ6UiuQEkC8o2C5j
+ nDLUBEt6WX9yDXYbdr+Mc59eVMhmxvm0wmaQdgQof1UcaAa3D/31TexAM/UbJkCJ+fec4MFuWwq
+ s
+X-Gm-Gg: ASbGnctU3oBRpb8W7um+Ufl5rT2uoIrVtiDSFr+/ovWuUZU6f4IjKqhkNG4EHKwAiJ4
+ utatLKeOc7GVwva7EcdnG/LXr0oGUurq0Ar5pyo6OTl1bh80JwoJaJTkSk0Wbf6tdORF13IcBwh
+ QM8VFODA4JQj4yJpgCBTkosOF6Mk70uTs8utzDyc+f3QPR60XJkwXVetLs2KDXG1V20VuFw+Kh+
+ iH2uBT8tojaGtI82olhYlcrR8S7+SFwKZsh6qyibykSVZKWo9eEoDyN/4WgXLtNcLQ3TT8NFXv4
+ /wg7UfiOQZ14vIlA2QfjWRhtZwbs1Wa7mbudr2ratyT/guwyNO0fVNg+Dxo9zr+S3CeEvtF19Lu
+ 8C1MsWDNqPEJixKvtRwlXhREaR/OIKA==
+X-Google-Smtp-Source: AGHT+IHgo84CqX39MHLOljzDfCIs/gYPnZSVlSftyCKU3RiHgkB0JxR2VO2oTfQ4WXzOz6k2V9ziyA==
+X-Received: by 2002:a05:6000:40c7:b0:391:40bd:621e with SMTP id
+ ffacd0b85a97d-39cba9827c6mr852409f8f.44.1743724209677; 
+ Thu, 03 Apr 2025 16:50:09 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec3174cf0sm32222245e9.0.2025.04.03.16.50.00
+ ffacd0b85a97d-39c301b816csm2968052f8f.57.2025.04.03.16.50.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 16:50:03 -0700 (PDT)
+ Thu, 03 Apr 2025 16:50:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [RFC PATCH-for-10.1 07/19] target/hppa: Replace TARGET_LONG_BITS ->
+Subject: [RFC PATCH-for-10.1 08/19] target/riscv: Replace TARGET_LONG_BITS ->
  target_long_bits()
-Date: Fri,  4 Apr 2025 01:49:02 +0200
-Message-ID: <20250403234914.9154-8-philmd@linaro.org>
+Date: Fri,  4 Apr 2025 01:49:03 +0200
+Message-ID: <20250403234914.9154-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403234914.9154-1-philmd@linaro.org>
 References: <20250403234914.9154-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,52 +103,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/hppa/mem_helper.c | 3 ++-
- target/hppa/translate.c  | 3 ++-
+ hw/riscv/riscv-iommu.c | 3 ++-
+ hw/riscv/riscv_hart.c  | 3 ++-
  2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 554d7bf4d14..03cd103f284 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -19,6 +19,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/log.h"
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index 65411b3e4c0..37563b2102f 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -26,6 +26,7 @@
+ #include "migration/vmstate.h"
+ #include "qapi/error.h"
+ #include "qemu/timer.h"
 +#include "qemu/target_info.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "exec/cputlb.h"
-@@ -101,7 +102,7 @@ static void hppa_flush_tlb_ent(CPUHPPAState *env, HPPATLBEntry *ent,
  
-     tlb_flush_range_by_mmuidx(cs, ent->itree.start,
-                               ent->itree.last - ent->itree.start + 1,
--                              HPPA_MMU_FLUSH_MASK, TARGET_LONG_BITS);
-+                              HPPA_MMU_FLUSH_MASK, target_long_bits());
+ #include "cpu_bits.h"
+ #include "riscv-iommu.h"
+@@ -393,7 +394,7 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
+             if (pass == S_STAGE && va_len > 32) {
+                 target_ulong mask, masked_msbs;
  
-     /* Never clear BTLBs, unless forced to do so. */
-     is_btlb = ent < &env->tlb[HPPA_BTLB_ENTRIES(env)];
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 14f38333222..81f535589cf 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -18,6 +18,7 @@
-  */
+-                mask = (1L << (TARGET_LONG_BITS - (va_len - 1))) - 1;
++                mask = (1L << (target_long_bits() - (va_len - 1))) - 1;
+                 masked_msbs = (addr >> (va_len - 1)) & mask;
  
+                 if (masked_msbs != 0 && masked_msbs != mask) {
+diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
+index a55d1566687..667d3b0a507 100644
+--- a/hw/riscv/riscv_hart.c
++++ b/hw/riscv/riscv_hart.c
+@@ -21,6 +21,7 @@
  #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qemu/module.h"
 +#include "qemu/target_info.h"
- #include "cpu.h"
- #include "qemu/host-utils.h"
- #include "exec/exec-all.h"
-@@ -3731,7 +3732,7 @@ static bool trans_shrp_imm(DisasContext *ctx, arg_shrp_imm *a)
-     t2 = load_gpr(ctx, a->r2);
-     if (a->r1 == 0) {
-         tcg_gen_extract_i64(dest, t2, sa, width - sa);
--    } else if (width == TARGET_LONG_BITS) {
-+    } else if (width == target_long_bits()) {
-         tcg_gen_extract2_i64(dest, t2, cpu_gr[a->r1], sa);
-     } else {
-         assert(!a->d);
+ #include "system/reset.h"
+ #include "system/qtest.h"
+ #include "qemu/cutils.h"
+@@ -72,7 +73,7 @@ static void csr_call(char *cmd, uint64_t cpu_num, int csrno, uint64_t *val)
+         ret = riscv_csrr(env, csrno, (target_ulong *)val);
+     } else if (strcmp(cmd, "set_csr") == 0) {
+         ret = riscv_csrrw(env, csrno, NULL, *(target_ulong *)val,
+-                MAKE_64BIT_MASK(0, TARGET_LONG_BITS));
++                MAKE_64BIT_MASK(0, target_long_bits()));
+     }
+ 
+     g_assert(ret == RISCV_EXCP_NONE);
 -- 
 2.47.1
 
