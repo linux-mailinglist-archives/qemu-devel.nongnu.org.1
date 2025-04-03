@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA0CA7B2BC
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C11AA7B2B9
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:01:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0UUj-0005n9-Su; Thu, 03 Apr 2025 20:01:14 -0400
+	id 1u0UUk-0005t6-Uy; Thu, 03 Apr 2025 20:01:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UUO-0005Hf-VZ
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:55 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UUW-0005QF-13
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:01:02 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UUN-00033L-5o
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:52 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43cf628cb14so18154475e9.1
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 17:00:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UUU-00034i-EM
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:59 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43ce70f9afbso14790655e9.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 17:00:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724849; x=1744329649; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724856; x=1744329656; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TP105EOAJeVHdN1BZY7s+jUHXieu6gJKrsZ9gC9TZqY=;
- b=Xe/iBpF7Jji64IrtJEhEpXiNTAj3VnbLJvXYFh3hhRwbF6odbzlOOV/18b8tPzJz0T
- tnTFqnZq8K9zMbbTNpSN+utPigB6dqC2HRQalS9fIRvN1P41wYOPy0vxdqMTlKDuR4Us
- WKv0pZ93A3scedeZMDYqUIViHSyXXKtBJBrEs6RbE7SCiMVSmseDQipaqinIeL/tH0Lj
- 3gUjwksKULcbDHLqd6CKqE2yTXFz+/gtYOpO/zHvu4k/mBW0x2EULkYWxgC+2De4KTbs
- MOdp4CFnxCuWy78xCoiY5kpWD2P4UdgJqacYg819Hd6WD00d1q8xYRQfZGpKCPSqShLr
- rwOw==
+ bh=Cdt0hEBhBGBOeVvjrYC1cczHi2xnkVQcQE65ySBiFwY=;
+ b=ShBQnjBwxUKy/8+CmC//p+Dj6h5WDUXtIWmObLxHv5h44GMqyyvaZygtHpSEJQniXp
+ 30eDZUIqLkFAjlSdFTaPWSzqLvWFcQx6bdm9gvepcOBIHPMkmHtaHYoWdJZSTKjWjbej
+ fzPRuJOanxonssZxp0kckf8h8h9WRbgOaFzjzaeY9WpK6zdlWHAohgq5/ie8FW3kCbQK
+ m4eBllBAD2crIyr1sk2zgab8jE69NI1k5V/8cPa1fjzKdY83LaQIz6iEpuPnNFb5BgNd
+ CTwCdCS1wFqWnamYPTXwNn0WlTO2la/htKK2OgUaySQMHeb1E0qk8xuCZ+bBHf1KOhVt
+ ztaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724849; x=1744329649;
+ d=1e100.net; s=20230601; t=1743724856; x=1744329656;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TP105EOAJeVHdN1BZY7s+jUHXieu6gJKrsZ9gC9TZqY=;
- b=fru/VDpFBc5g4pQbjYiNmYqt2IvcxQc/l+v6xRxbdfbX1RSmifQ5Wvp6CevwPELNJc
- obvK7hz/T34xyCyA9WOdxZKpoykUk00RmJtsK+PuqtwZC4yyuWcfALkJ3WXS2HChmfrP
- yUhZvCb/pq6+fFjABv25B8lNip+8Y/yu0VSeJX/LT6Xx7+VDNTzBCbTr1ozqdRumxihq
- CezyEfuSBH/IWqW19v20q9T2lB1BCwGlBIt8EUrYdKa/16stB7QRre5mMvY1XlE8v1Ke
- 2j3S1VauHQ1Gf3x0zbrQTqBOIsoqQMyuzem2cN2nQ2uxK7TxSuNGxU8Ax4mXVdhpXB70
- NW4A==
-X-Gm-Message-State: AOJu0Yw9lisl9swMMvFaAu1RMkmiA7BGGfjWW3Dfg1rnK72iiZR1GuKK
- +dA2ELz94sCgJe3QyFKKcJ/FQIJCQiDaM2errHZXIHQO23q9xdiFY7cM/bLfil6NSRvmjyoQw/P
- f
-X-Gm-Gg: ASbGnctz5ObIZBZeCkWjUS2dxpqWuGMwIuWzRRn2jsVPQ4GcDzQ6sw9ajvX/EUw3uqP
- Krx6zvEO7/JvqWflTogrQJQ/jg3VuN3HDNuX2Lm4NvuDFDw/RJ6FUab8qDvRoTYJzgzli85QH3b
- yLgjFS4HyWwSg9kiW8VaUqjRCIkEgrFC/lJc9+7qlEUGvpTmrWBkW/L99RlVfJQz2gw0sIpgg8z
- rATaebpnMqvg16ReYKsSqdMFD/5JxwpDyDBeni/byTJX0B/EW0OHmUpsW5mNYY6zdiG/PUcs4RN
- pe2kFC90FZhvXSzCG24iM7Eh6mkrwVsWjKfnfkhAgzuWMxxlWueA22NUIXX2wZRl1ibA/nxlp+M
- kSeZY1q73at6Yx/UxBts=
-X-Google-Smtp-Source: AGHT+IH3dHRiC6deYZ2yxOUlEwDOJ+CG1G5m1SWXjXDMG26gT+K7OlPKw0PKaBz+jNHNVvP4hb7yKw==
-X-Received: by 2002:a05:6000:4027:b0:39c:140c:308 with SMTP id
- ffacd0b85a97d-39c2e5f50b6mr4084817f8f.3.1743724849120; 
- Thu, 03 Apr 2025 17:00:49 -0700 (PDT)
+ bh=Cdt0hEBhBGBOeVvjrYC1cczHi2xnkVQcQE65ySBiFwY=;
+ b=fmK9giOyKt/PDV6O8gWx3CWAz3kqns41VgYbQ8aF2QX7OigWcW7aSvDCx7FIX/fZKi
+ Pd3aR8emcEcFSX+WFXBgmuBgDXYi3KQup0VqtigdbuXHKKU65065L6ZKLSEIzDgFe8FS
+ n9iqbmQUNfy5aT77+vwNo0DDHd0ZXzTTeZAIrFYA1nEahsbk5mZvjrQCBbg7AMsJMzW7
+ t+fcV+o3Qs6qjNFmpcdF0OB0w5xLGLZcl2nQZEivPJkFi7O76q4F0KcBHEbC91yLhnjc
+ e8LbSTL/V/JfFwWUPuUp4mS3vBUPUL5WTu8AQaIHRFCcn2VRO5SYcsO0OU6aPuLyHQ1Y
+ LBEQ==
+X-Gm-Message-State: AOJu0Yw5GrJd48e+UwDIm5FeUITUVHSf3IHO3hzNzBl/A3dInINxwT+i
+ UodvoWrobu0ZIBpQ6Q5ObMdqyabnieyRsB+xos/x02mO7s/AuWFHMGn5fbsuu+fmwbTlsXw1yOH
+ Q
+X-Gm-Gg: ASbGncvsjKNNu5FAVxwulmJN4OSn5ACAnOJeM86HjApCt1TysP/4/7XXIApAyC8ytkj
+ MnbqLlfK2IR6v2sRaB7YrBe8rfesCoHEV4mI0d2UHYlddYu7EhUTc6H0n72aGz9k2DI9wu8oC6S
+ /P0EFNAAGiWByLbYMZV+/7PO6DhDwLcw3Xx+7cNkn63ykNhbqQKrepdsLjKL5fLkdWrx/wn0rsH
+ 5FUb65L9OsMuFJseVGmraEevhw4+MgDryeQgcEzdY9Fm2u9pLJgH6MyeDcf0nXQWVb7Gmr4SEL6
+ IIDcK14AmI19XuWJTJOjGOMkQns0FR+TQN+TkE8lRHtgjCgUfjeYqR0RnS2XrLAvD8MdT7lruL4
+ BVan7uzKpow08Ml1CCw0=
+X-Google-Smtp-Source: AGHT+IEqZyd9GIfN/fyi7zrWJCxEgusjwLJRf5dLfiHsYEpiwpt851kiIrU0p1MzYWj2d1pmP3cn3g==
+X-Received: by 2002:a5d:5f83:0:b0:390:ee01:68fa with SMTP id
+ ffacd0b85a97d-39d0de2564cmr576097f8f.24.1743724856425; 
+ Thu, 03 Apr 2025 17:00:56 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec3428298sm31329365e9.8.2025.04.03.17.00.47
+ 5b1f17b1804b1-43ec3669d0fsm31250975e9.36.2025.04.03.17.00.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 17:00:47 -0700 (PDT)
+ Thu, 03 Apr 2025 17:00:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH-for-10.1 22/39] target/arm: Add arm_cpu_has_feature()
- helper
-Date: Fri,  4 Apr 2025 01:58:04 +0200
-Message-ID: <20250403235821.9909-23-philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 23/39] hw/arm/realview: Replace arm_feature() ->
+ arm_cpu_has_feature()
+Date: Fri,  4 Apr 2025 01:58:05 +0200
+Message-ID: <20250403235821.9909-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403235821.9909-1-philmd@linaro.org>
 References: <20250403235821.9909-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,46 +101,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-arm_cpu_has_feature() is equivalent of arm_feature(), however
-while the latter uses CPUARMState so is target-specific, the
-former doesn't and can be called by target-agnostic code in hw/.
+By using arm_cpu_has_feature() instead of arm_feature()
+we don't need to include "cpu.h" anymore.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/cpu_has_feature.h | 2 ++
- target/arm/cpu.c             | 7 +++++++
- 2 files changed, 9 insertions(+)
+ hw/arm/realview.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/cpu_has_feature.h b/target/arm/cpu_has_feature.h
-index 2adfccd9208..352f9d75bed 100644
---- a/target/arm/cpu_has_feature.h
-+++ b/target/arm/cpu_has_feature.h
-@@ -62,4 +62,6 @@ typedef enum arm_features {
-     ARM_FEATURE_BACKCOMPAT_CNTFRQ, /* 62.5MHz timer default */
- } ArmCpuFeature;
+diff --git a/hw/arm/realview.c b/hw/arm/realview.c
+index f81d084eb80..48cfe05add0 100644
+--- a/hw/arm/realview.c
++++ b/hw/arm/realview.c
+@@ -9,7 +9,6 @@
  
-+bool arm_cpu_has_feature(ARMCPU *cpu, ArmCpuFeature feature);
-+
- #endif
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 6f62745d7f6..66a58916fcc 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -55,6 +55,13 @@
- #include "target/arm/gtimer.h"
- #include "target/arm/multiprocessing.h"
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "cpu.h"
+ #include "hw/sysbus.h"
+ #include "hw/arm/boot.h"
+ #include "hw/arm/primecell.h"
+@@ -31,6 +30,7 @@
+ #include "hw/sd/sd.h"
+ #include "audio/audio.h"
+ #include "target/arm/cpu-qom.h"
++#include "target/arm/cpu_has_feature.h"
  
-+bool arm_cpu_has_feature(ARMCPU *cpu, ArmCpuFeature feature)
-+{
-+    CPUARMState *env = &cpu->env;
-+
-+    return arm_feature(env, feature);
-+}
-+
- static void arm_cpu_set_pc(CPUState *cs, vaddr value)
+ #define SMP_BOOT_ADDR 0xe0000000
+ #define SMP_BOOTREG_ADDR 0x10000030
+@@ -77,7 +77,6 @@ static void realview_init(MachineState *machine,
+                           enum realview_board_type board_type)
  {
-     ARMCPU *cpu = ARM_CPU(cs);
+     ARMCPU *cpu = NULL;
+-    CPUARMState *env;
+     MemoryRegion *sysmem = get_system_memory();
+     MemoryRegion *ram_lo;
+     MemoryRegion *ram_hi = g_new(MemoryRegion, 1);
+@@ -138,16 +137,15 @@ static void realview_init(MachineState *machine,
+         cpu_irq[n] = qdev_get_gpio_in(DEVICE(cpuobj), ARM_CPU_IRQ);
+     }
+     cpu = ARM_CPU(first_cpu);
+-    env = &cpu->env;
+-    if (arm_feature(env, ARM_FEATURE_V7)) {
++    if (arm_cpu_has_feature(cpu, ARM_FEATURE_V7)) {
+         if (is_mpcore) {
+             proc_id = 0x0c000000;
+         } else {
+             proc_id = 0x0e000000;
+         }
+-    } else if (arm_feature(env, ARM_FEATURE_V6K)) {
++    } else if (arm_cpu_has_feature(cpu, ARM_FEATURE_V6K)) {
+         proc_id = 0x06000000;
+-    } else if (arm_feature(env, ARM_FEATURE_V6)) {
++    } else if (arm_cpu_has_feature(cpu, ARM_FEATURE_V6)) {
+         proc_id = 0x04000000;
+     } else {
+         proc_id = 0x02000000;
 -- 
 2.47.1
 
