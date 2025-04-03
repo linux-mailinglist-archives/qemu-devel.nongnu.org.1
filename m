@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B92A7A8CA
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 19:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FCAA7A79B
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 18:10:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0OZa-0006sI-Or; Thu, 03 Apr 2025 13:41:50 -0400
+	id 1u0N7t-0001D8-7o; Thu, 03 Apr 2025 12:09:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiangxueqian@gmail.com>)
- id 1u0Msm-0003nM-1V
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 11:53:32 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jiangxueqian@gmail.com>)
- id 1u0Msk-0000Ms-Db
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 11:53:31 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-22435603572so11050685ad.1
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 08:53:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743695607; x=1744300407; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=REwPsuC/Zo+NZ1xL2bWVm+fPOTfIvVA3rA4SqfRMqiM=;
- b=G6rT5ijwB8I2X+4rMbPx/2So1xkFODBzr7xaPwTAVFbVRuPh6kgzry0dHvh+LamooR
- cgob7FrFAavC125w0rVMqWEPotmU2UHMeD96FDvpk694RoHMiOWZqEXwaWzdsK0IAeCf
- T3N+LU5dal5bn8W7Hr4CuRWRXh7OZfpSm3jSTawHz6obENIYcrRAMp08+IEIzoYIEDvQ
- SpYfyiG/9/zaMeVVhOkb+Jh090pdI0uobltcBApjrHcKs4AIUGvcD4CHGQ7+AvX5GZqq
- xWed69mxdpEW/D+PkCU1FsroOJnvzqDpV2TS5jszIwZuNkWqzsGhAglbzGUgjzZjGEzs
- H+tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743695607; x=1744300407;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=REwPsuC/Zo+NZ1xL2bWVm+fPOTfIvVA3rA4SqfRMqiM=;
- b=V1sRGwYKYD6XQfwPPtLE7586v/dXL+MAf8ftz0I9NIkejrYQYSEiOAeie1JpDgMXmn
- Q3MMQZ6HYLwxNtxs67yfDNbr1x/bNL+uUY4WgpPgSkxiDW7lYDRV58iPlsUqhQtWqgIf
- Kg/tpRdbdPHhnKFzGdVHhYi4ePUXZAd+YmpUce/wToeAtdyCx3fKn23+1b9vFcy0r7H+
- UwTxam+6DC87oPsl1I4SZv6kOMCIrX904uyNN+cKC8KMPzcfPSd3DPJGLnZtbGXNkQsN
- hM6SclJILhxAl4qOA4oakCujbgbxKJx4jxcgXtJl6fmo2ed1SYgVDuGZ0Cy1PWdM4VCP
- kM/w==
-X-Gm-Message-State: AOJu0YyMMTeodOfq4uXkaLicmpZyMo5C30QWWNjJJ0PxmO9uSFu94+v8
- Mru9pJ6OLmdpyxuD/CJmGT5WBAd1HyieMypGpBAVBXmtXzaG9rTAzNfdhikTbZI=
-X-Gm-Gg: ASbGncuca8TH4IVVNis6bFbFyf1r0E5HPGRNPdpyWLhMGuNo2YV0hDY1RwSYM3T8D8o
- o9+ZCVPhz29XO1swm54VmOgoX1YFS/n+p0CdcoybWd8DLRrobtdqMQEAyIsNuBmv1i3Lvf7qRS8
- GrZTU6tosg/omdeswLaFP8cA5y7PlhwoMENQBtnsB/yO1GtT9+pMhpwno82aVoFAgqYHKk/M6n0
- Yq2Z0B2LkrNdyLyXuTwrZVNqCqyGQfWpSClmP7KpiReqcpYPrlLXJ5/2NDtlyHKkPRKv1B2ykN+
- jXaXKGxWJIOafVzEHEgHXZjQ9UZblTENjRTa04g/pCL/ZDDl3BTHcbD0TQ==
-X-Google-Smtp-Source: AGHT+IG9gH2hGcbB5UsFFVVR5XvABwb8V37MV2soiPH2zx4dvR+kkN/JZCAa9SuT0sXauud0z7AoPg==
-X-Received: by 2002:a17:903:19ef:b0:223:33cb:335f with SMTP id
- d9443c01a7336-2292f9493e3mr327512825ad.3.1743695607136; 
- Thu, 03 Apr 2025 08:53:27 -0700 (PDT)
-Received: from desktop.lan ([112.32.32.142]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-739d97f36besm1664772b3a.72.2025.04.03.08.53.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Apr 2025 08:53:26 -0700 (PDT)
-From: Jiang XueQian <jiangxueqian@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Jiang XueQian <jiangxueqian@gmail.com>
-Subject: [PATCH] virtio-gpu-gl: Add 'serverfd' property
-Date: Thu,  3 Apr 2025 23:51:29 +0800
-Message-ID: <20250403155129.3396821-1-jiangxueqian@gmail.com>
-X-Mailer: git-send-email 2.49.0
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u0N7o-0001CW-Ht
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 12:09:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u0N7m-0002je-Ui
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 12:09:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1743696542;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=i6i7VJ3PsrNBVHXenjdVw0WcdHD0e4kWdvwc8HerVTc=;
+ b=C/sD8QSSyqG6OIBR4IaTHpQ1xXCV75Mg7DikuNfDTRkh6lDl6W+zZMQbD3A4uMWYmAk1L7
+ vKLbdzsrlEgEFFEE0vU+N/5RMIyLPRFFYa3g6C1Br33mAhzKei2AbgEO+LSWqe4S/xohkr
+ B5dmc9mj0geS8ZYFl3/D3NkjY2GQoV0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-KTVyhtItNkmWJSCTJ0jhkw-1; Thu,
+ 03 Apr 2025 12:08:58 -0400
+X-MC-Unique: KTVyhtItNkmWJSCTJ0jhkw-1
+X-Mimecast-MFC-AGG-ID: KTVyhtItNkmWJSCTJ0jhkw_1743696537
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4766C1955BC1; Thu,  3 Apr 2025 16:08:57 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.203])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9E375195609D; Thu,  3 Apr 2025 16:08:56 +0000 (UTC)
+Date: Thu, 3 Apr 2025 12:08:55 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Pinku Deb Nath <prantoran@gmail.com>
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 0/2] [PATCH] block/file-posix.c: Use pwritev2() with
+ RWF_DSYNC for FUA - update
+Message-ID: <20250403160855.GC349582@fedora>
+References: <20250403081633.158591-1-prantoran@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=jiangxueqian@gmail.com; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="owDC9HSLUb9osZmA"
+Content-Disposition: inline
+In-Reply-To: <20250403081633.158591-1-prantoran@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.649,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 03 Apr 2025 13:41:35 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,107 +83,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This property passes socket of a externally started virgl_render_server
-to virglrenderer, so that it won't try to spawn new process and get
-killed by seccomp, allowing virtio-gpu-gl venus and sandbox to enable
-at the same time.
 
-Signed-off-by: Jiang XueQian <jiangxueqian@gmail.com>
----
- hw/display/virtio-gpu-gl.c     | 15 +++++++++++++++
- hw/display/virtio-gpu-virgl.c  | 17 +++++++++++++++++
- include/hw/virtio/virtio-gpu.h |  2 ++
- 3 files changed, 34 insertions(+)
+--owDC9HSLUb9osZmA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index 683fad3bf8..e7c89f7c29 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -22,6 +22,7 @@
- #include "hw/virtio/virtio-gpu-bswap.h"
- #include "hw/virtio/virtio-gpu-pixman.h"
- #include "hw/qdev-properties.h"
-+#include "monitor/monitor.h"
- 
- #include <virglrenderer.h>
- 
-@@ -143,6 +144,17 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
-         return;
-     }
- 
-+#if VIRGL_RENDERER_CALLBACKS_VERSION >= 3
-+    if (g->parent_obj.conf.serverfd) {
-+        g->parent_obj.conf.serverfd_parsed =
-+            monitor_fd_param(monitor_cur(), g->parent_obj.conf.serverfd, errp);
-+        if (g->parent_obj.conf.serverfd_parsed < 0) {
-+            error_prepend(errp, "unable to parse serverfd: ");
-+            return;
-+        }
-+    }
-+#endif
-+
-     g->parent_obj.conf.flags |= (1 << VIRTIO_GPU_FLAG_VIRGL_ENABLED);
-     g->capset_ids = virtio_gpu_virgl_get_capsets(g);
-     VIRTIO_GPU_BASE(g)->virtio_config.num_capsets = g->capset_ids->len;
-@@ -159,6 +171,9 @@ static const Property virtio_gpu_gl_properties[] = {
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-     DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-+#if VIRGL_RENDERER_CALLBACKS_VERSION >= 3
-+    DEFINE_PROP_STRING("serverfd", VirtIOGPU, parent_obj.conf.serverfd),
-+#endif
- };
- 
- static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 145a0b3879..420aae3b05 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1030,6 +1030,19 @@ static int virgl_make_context_current(void *opaque, int scanout_idx,
-                                    qctx);
- }
- 
-+#if VIRGL_RENDERER_CALLBACKS_VERSION >= 3
-+static int virgl_get_server_fd(void *opaque, uint32_t version)
-+{
-+    VirtIOGPU *g = opaque;
-+
-+    if (g->parent_obj.conf.serverfd) {
-+        return g->parent_obj.conf.serverfd_parsed;
-+    }
-+
-+    return -1;
-+}
-+#endif
-+
- static struct virgl_renderer_callbacks virtio_gpu_3d_cbs = {
-     .version             = 1,
-     .write_fence         = virgl_write_fence,
-@@ -1097,6 +1110,10 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-     uint32_t flags = 0;
-     VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
- 
-+#if VIRGL_RENDERER_CALLBACKS_VERSION >= 3
-+    virtio_gpu_3d_cbs.version = 3;
-+    virtio_gpu_3d_cbs.get_server_fd = virgl_get_server_fd;
-+#endif
- #if VIRGL_RENDERER_CALLBACKS_VERSION >= 4
-     if (qemu_egl_display) {
-         virtio_gpu_3d_cbs.version = 4;
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index a42957c4e2..40a81f500c 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -128,6 +128,8 @@ struct virtio_gpu_base_conf {
-     uint32_t xres;
-     uint32_t yres;
-     uint64_t hostmem;
-+    char *serverfd;
-+    int serverfd_parsed;
- };
- 
- struct virtio_gpu_ctrl_command {
--- 
-2.49.0
+On Thu, Apr 03, 2025 at 01:16:31AM -0700, Pinku Deb Nath wrote:
+> The testing with "-t writeback" works for turning on enable_write_cache.
+> I renamed the function to qemu_pwritev_fua() and fixed any typos.
+>=20
+> I moved the handle_aiocb_flush() into the qemu_pwritev_fua() and
+> removed from the previously todo seciont. Initially I thought
+> of only passing aiocb, but then I was not sure whethe I could
+> derive buf from aiocb, so I added arguments for iovec and iovcnt
+> into qemu_pwritev_fua().
+>=20
+> For handling buf in handle_aiocb_rw_linear(), I created iovec
+> and passed its reference. I assumed that there will be only one
+> buffer/iovec, so I passed 1 for iovcnt.
+>=20
+> Signed-off-by: Pinku Deb Nath <prantoran@gmail.com>
+>=20
+> Pinku Deb Nath (2):
+>   block/file-posix.c: Use pwritev2() with RWF_DSYNC for FUA
+>   block/file-posix.c: Use pwritev2() with RWF_DSYNC for FUA - update
+>=20
+>  block/file-posix.c | 54 +++++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 42 insertions(+), 12 deletions(-)
+
+Thanks for sending this updates patch series. Please squash changes in
+the future instead of appending them as separate commits. This means
+editing previous commits (e.g. git rebase -i master) so that they
+contain changes made after code review.
+
+So if commit 1 is '+ printf("foo\n")', then instead of adding commit 2
+to add a semi-colon to the end of the line, just edit the commit so it
+is '+ printf("foo\n");' in v2 of your patch.
+
+One reason to squash changes is so that git-bisect(1) works. Without
+squashing, there will be intermediate commits that are broken and maybe
+don't even compile. git-bisect(1) is only usable when each commit
+compiles and passes tests.
+
+Reviews also tend to prefer to see the final state of commits so they
+don't have to review every incremental edit that was made (often
+replacing code they already reviewed). It saves them time.
+
+Thanks,
+Stefan
+
+--owDC9HSLUb9osZmA
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfuspcACgkQnKSrs4Gr
+c8gDiQf9FCDLqeXOX0ShqPK6SPWoQGasdB7jqEw4cG5DAKdVD1UxdrwV8tXB2X83
+GJz53sLb0rs5xdFH1AE5NN3PhFdTpmn7JsSpKsaOGDEEYD2L3kTb1nPZDWhcMLRg
+ZmIcuwh3DL9IVVdKpG/PzzP49nG3/8Y6BQbLi6sAsXyXM0HFDdXwFMKhwcpEBQu5
+JZ4VfNmzR3t3YQlFXnclcikJMmXnomgroF1t+o+IBuYV6sAJqwLHm/p8Sg/j8iIt
++UX5/2ijtUA8g2jY0THMrDg+fdxW2r3vc1rlFDLhtHt5uwD26LjlbDRU7XieDrwD
+mQI3SfYvvuZAYJmP/byfIX+hTCY1yA==
+=RPtn
+-----END PGP SIGNATURE-----
+
+--owDC9HSLUb9osZmA--
 
 
