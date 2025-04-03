@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB34A7B2B0
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD40A7B2B3
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:00:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0UU3-00030E-4Z; Thu, 03 Apr 2025 20:00:31 -0400
+	id 1u0UUC-0003zg-3x; Thu, 03 Apr 2025 20:00:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTy-0002km-O2
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:26 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UU5-0003cX-SZ
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:34 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTw-0002yE-KZ
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:26 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-39c0e0bc733so1224932f8f.1
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 17:00:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UU3-0002zT-11
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 20:00:33 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43cf034d4abso15510545e9.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 17:00:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724822; x=1744329622; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724829; x=1744329629; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=32V1HojRNsh/T5N/dXOEuwUaz3gtbYi6NWT44YAtRCI=;
- b=e0ZAfoRk3rLy+n5YUJjuSkWWgmfyx2GJWnmyg4SBNloS4RzPwo2oFilH7fohcxLmd2
- weeyvAvPCkfJQoPT5BCFhrwUsehnxBciiBUl5iNVbTl0WXiZwu3pStvm/S3v/tXjdwjS
- VL+5DzvL9YJ8ggLW6jmHYl55uu5BakpDe46UA791QqgboXhzXL3qZbrCbkZ7FuYTI1YG
- rlomLsHfgUdgue2cU4t4Jjrvnd9vNINJBmyw2QvS0dsQV9fggBAeApNmW4PCO0DoxsLh
- MhWrDZ5vOqEnX/GvOexV7uOFiVFg4XkhfTrgZZCDmrloLJqREWnCdhJH7XePvwjFALCi
- n6Zw==
+ bh=qWzncIlD/jPDOChfnrDcKNqYdRNXnmA3myNJZtWNdQo=;
+ b=RAf1QEd6y4EmPzQW5alBRJhZA9hS00J3OS3cXfiZ4qtNFdLcdgyNF/PnxXAhAC87go
+ Fpcy7HpKVBbpz0ney/gY4vIg0OFuc70HtaES0hss+GsZ0XXJdsUEQp+Wx/9bS+GVIO6w
+ 23TgdooopUrj2BOsppaw1gGGYM/xqEu5PugrMzOSOxSZoRZKuycs2FDx0znIINvJo9Ce
+ MMIXUjCRH9Hq3If7vEj7hD/ZkU+UWSY9vNtT++BWbtG4qzaxAZjvEOFQJCEXYeIsBV98
+ XiDBZ1VxYRsjzpufQF+C6g/TKZFdYZH8wkWGdKU3+PTKVvYzmElPS4bkBMiJwQoceGrv
+ ryyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724822; x=1744329622;
+ d=1e100.net; s=20230601; t=1743724829; x=1744329629;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=32V1HojRNsh/T5N/dXOEuwUaz3gtbYi6NWT44YAtRCI=;
- b=sLCxnPibVKIz/uznOs9ZnOz17QMt9vdcd/bwCFE2AjZPqnEGdtuGyB6bX9QDFm8BaM
- Iq5HJsjKuVq3a2GXeNnS/IOm1KKNoMe/4/bVOTSPRkGIcHO1OAjadsbkCUJyBJzouVu7
- mjMftJwW7xsYplQ7U1DjOgsWkiMWtYefw1OQiV6wSRWyPuIp6OeM7w14KPp3vBpdf5J+
- U3m7CVPw9txK9VsGJxglWG70GcLOOkiSfSFStldkFjW6bQ54gpdN2a7SLYak5kAw+7GO
- +IkgrhUnJMMMCclvnxgZYjo9vLTbAoyp2KTWiubkai5a9UyyGd9HR4bnKGXAQtYAR+uF
- fI9Q==
-X-Gm-Message-State: AOJu0YwPJCrYdrGBYpDtlIdLeJXpjCfPi5DpKJCGcGHCi4bZ24iHQxbr
- mD3yXKm6Gd9sgsIhLUATOSaHFxkX7zhMPPwaCJ2TRp4I05xHCCttVfc+LFwkm8atbBDbNYKVT1m
- s
-X-Gm-Gg: ASbGncvUhDI9EWhhEGnrucRAJFhLwX+ZcD86cdZ9WT6P0SNcOkLDxoirHrVoCbszS8L
- geZt5xKj7EGkcLB91EsVMh4vOJ4d+EexWRLa/JojrInTOTdyYuqEYnoehHPfPo3cCNhLvpvyhjR
- jMJaDclzZ9BXjoCOsup2yU1aAJSplWrxXG8+xmurSGvvjjBbyY6tf9VjF4VXpy+ipkBcXgch6Os
- R2YqfUC4zCBpBphf48zifWqPEbQjiuyY/HlEHDo5hHYhu8qFwa4ZtxinSXZUTjvZdw/sM3GI4B2
- 0Bczi06LRrVtRMYYxdJrF/p6dKWOJL1auaBjIQTdhvpxsFSTV50IbDTF4lqwmgIZMVQBfeRsbtx
- KI1CRG405VveHlanpOlg=
-X-Google-Smtp-Source: AGHT+IF9RcpNw8afbE4Br0wvMrHGjZYCmODuHqwekIhOM1V90rPXGNTMYD/OsZYaUKOHitLAS39AiQ==
-X-Received: by 2002:a5d:64aa:0:b0:39c:dfa:d347 with SMTP id
- ffacd0b85a97d-39cb36b2afemr845667f8f.2.1743724822630; 
- Thu, 03 Apr 2025 17:00:22 -0700 (PDT)
+ bh=qWzncIlD/jPDOChfnrDcKNqYdRNXnmA3myNJZtWNdQo=;
+ b=JHTOMvzREm7Nq8QdKz4+/XfqMPeEmIa2a7aPb97MZ8oWNCNoUFCG6xBFn8az4qbMBp
+ 2qcQ3JAWTuR2jiTNefpF0dXPB2a6uKLAaQm79S7MQjU5umx+Lqlrmgqo8MjeAalg6FmG
+ MQnHED2LDMMt4kJu5YfFNyy/jXILout1Tx90Q4YiPVGVnEIPhStiEPNq4dP7SFOda4Wu
+ R6KvEQ8PCCbJ/rpo9xNzIZ50r0/1sX48MCRhRVMKBKeyOcf8z2Ohrko+2N+kYDoW/nQS
+ G1lvCUxyt9qJBiBtGpK+I5+38QNYmhJkNs+irbMkpSOkDSogO5JDiard67hE/hpw1tYt
+ lVWA==
+X-Gm-Message-State: AOJu0YwLM+ULLg7JQlvvsFSCbfpBB7i7VVMeqx29IskteIaHwAXLF8pm
+ 045fk2SEvhRokeEI3ISr6Q3ihyk1Y3iHcw+I9HSK9bX8+jz/1pCr2Lvz6++lk2V2Bp44N7Q1OC2
+ a
+X-Gm-Gg: ASbGncsCUOBg8cwqaETId9El3uS/1HnXsRvHOfhTMkNGoMqYGe99Rr2LH3YYI1hognb
+ 6cnBnPuhp5tpbtZ6zdIe25CdH5yF0wBv7p8jFf2+hMpGIYKDZR8WJpPB8Yo0/GpIXUAXFwYFntt
+ 2Y88zKdC1h1nty3D6La+Yj7je8GN5jips05pDio4yswxLUoanGto61EQ8vrj1NUrXBuBWNmDBez
+ 4O7NeiOVo6hgvfuGJnlOIp3q4yoz+ER0SF7ah/X1Rzye9EcNmoyUEDEb2nLHOndcf2dZdb6rlou
+ TeM12BDew+nn/alXVSyCtZcs+uT72GXnQSd0uSf8wA1maicTF/54n3ExLU+8ML1oojkxbda7XZF
+ Q9lU6EEcN5dRm4YJ+juk=
+X-Google-Smtp-Source: AGHT+IFG64zDHb5Pvt4t+IvngcBkXhgLKZqlZzqyNCO8ncDN8ez/4L/iNIdQDA3mtzXh0vsdwzBiTQ==
+X-Received: by 2002:a05:600c:4503:b0:43c:f78d:82eb with SMTP id
+ 5b1f17b1804b1-43ecf8eb2bbmr7344195e9.15.1743724829228; 
+ Thu, 03 Apr 2025 17:00:29 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301a67a1sm2931343f8f.24.2025.04.03.17.00.21
+ 5b1f17b1804b1-43ea8d16049sm61437675e9.0.2025.04.03.17.00.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 17:00:22 -0700 (PDT)
+ Thu, 03 Apr 2025 17:00:28 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH-for-10.1 18/39] target/arm: Move some definitions from
- 'cpu.h' to 'multiprocessing.h'
-Date: Fri,  4 Apr 2025 01:58:00 +0200
-Message-ID: <20250403235821.9909-19-philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 19/39] hw/arm: Include missing
+ 'target/arm/gtimer.h' header
+Date: Fri,  4 Apr 2025 01:58:01 +0200
+Message-ID: <20250403235821.9909-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403235821.9909-1-philmd@linaro.org>
 References: <20250403235821.9909-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,165 +101,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-arm_build_mp_affinity() and affinity mask definitionss are
-related to multiprocessing. Move them to "multiprocessing.h",
-including this header when necessary.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/cpu.h             | 17 -----------------
- target/arm/multiprocessing.h | 18 ++++++++++++++++++
- hw/arm/aspeed_ast2600.c      |  1 +
- hw/arm/aspeed_ast27x0.c      |  1 +
- hw/arm/exynos4210.c          |  1 +
- hw/arm/npcm8xx.c             |  1 +
- hw/arm/sbsa-ref.c            |  1 +
- hw/vmapple/vmapple.c         |  1 +
- target/arm/kvm.c             |  1 +
- 9 files changed, 25 insertions(+), 17 deletions(-)
+ hw/arm/aspeed_ast27x0.c    | 1 +
+ hw/arm/bcm2838.c           | 1 +
+ hw/arm/exynos4210.c        | 1 +
+ hw/arm/fsl-imx8mp.c        | 1 +
+ hw/arm/mps3r.c             | 1 +
+ hw/arm/npcm8xx.c           | 1 +
+ hw/vmapple/vmapple.c       | 1 +
+ target/arm/tcg/op_helper.c | 1 +
+ 8 files changed, 8 insertions(+)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 1a1ae229e1d..0db7292698c 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1158,23 +1158,6 @@ void gt_rme_post_el_change(ARMCPU *cpu, void *opaque);
- 
- void arm_cpu_post_init(Object *obj);
- 
--#define ARM_AFF0_SHIFT 0
--#define ARM_AFF0_MASK  (0xFFULL << ARM_AFF0_SHIFT)
--#define ARM_AFF1_SHIFT 8
--#define ARM_AFF1_MASK  (0xFFULL << ARM_AFF1_SHIFT)
--#define ARM_AFF2_SHIFT 16
--#define ARM_AFF2_MASK  (0xFFULL << ARM_AFF2_SHIFT)
--#define ARM_AFF3_SHIFT 32
--#define ARM_AFF3_MASK  (0xFFULL << ARM_AFF3_SHIFT)
--#define ARM_DEFAULT_CPUS_PER_CLUSTER 8
--
--#define ARM32_AFFINITY_MASK (ARM_AFF0_MASK | ARM_AFF1_MASK | ARM_AFF2_MASK)
--#define ARM64_AFFINITY_MASK \
--    (ARM_AFF0_MASK | ARM_AFF1_MASK | ARM_AFF2_MASK | ARM_AFF3_MASK)
--#define ARM64_AFFINITY_INVALID (~ARM64_AFFINITY_MASK)
--
--uint64_t arm_build_mp_affinity(int idx, uint8_t clustersz);
--
- #ifndef CONFIG_USER_ONLY
- extern const VMStateDescription vmstate_arm_cpu;
- 
-diff --git a/target/arm/multiprocessing.h b/target/arm/multiprocessing.h
-index 81715d345c2..8eec79b11d8 100644
---- a/target/arm/multiprocessing.h
-+++ b/target/arm/multiprocessing.h
-@@ -11,6 +11,24 @@
- 
- #include "target/arm/cpu-qom.h"
- 
-+#define ARM_AFF0_SHIFT 0
-+#define ARM_AFF0_MASK  (0xFFULL << ARM_AFF0_SHIFT)
-+#define ARM_AFF1_SHIFT 8
-+#define ARM_AFF1_MASK  (0xFFULL << ARM_AFF1_SHIFT)
-+#define ARM_AFF2_SHIFT 16
-+#define ARM_AFF2_MASK  (0xFFULL << ARM_AFF2_SHIFT)
-+#define ARM_AFF3_SHIFT 32
-+#define ARM_AFF3_MASK  (0xFFULL << ARM_AFF3_SHIFT)
-+#define ARM_DEFAULT_CPUS_PER_CLUSTER 8
-+
-+#define ARM32_AFFINITY_MASK \
-+            (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK)
-+#define ARM64_AFFINITY_MASK \
-+            (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK|ARM_AFF3_MASK)
-+#define ARM64_AFFINITY_INVALID (~ARM64_AFFINITY_MASK)
-+
-+uint64_t arm_build_mp_affinity(int idx, uint8_t clustersz);
-+
- uint64_t arm_cpu_mp_affinity(ARMCPU *cpu);
- 
- #endif
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index 1f994ba26c6..4438402340b 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -17,6 +17,7 @@
- #include "net/net.h"
- #include "system/system.h"
- #include "target/arm/cpu-qom.h"
-+#include "target/arm/multiprocessing.h"
- 
- #define ASPEED_SOC_IOMEM_SIZE       0x00200000
- #define ASPEED_SOC_DPMCU_SIZE       0x00040000
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index dce7255a2c0..37bfeef304d 100644
+index 37bfeef304d..5c2481225dd 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
 @@ -22,6 +22,7 @@
  #include "hw/intc/arm_gicv3.h"
  #include "qobject/qlist.h"
  #include "qemu/log.h"
-+#include "target/arm/multiprocessing.h"
++#include "target/arm/gtimer.h"
+ #include "target/arm/multiprocessing.h"
  
  static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_SRAM]      =  0x10000000,
+diff --git a/hw/arm/bcm2838.c b/hw/arm/bcm2838.c
+index ddb7c5f757a..38d9b785a75 100644
+--- a/hw/arm/bcm2838.c
++++ b/hw/arm/bcm2838.c
+@@ -12,6 +12,7 @@
+ #include "hw/arm/raspi_platform.h"
+ #include "hw/sysbus.h"
+ #include "hw/arm/bcm2838.h"
++#include "target/arm/gtimer.h"
+ #include "trace.h"
+ 
+ #define GIC400_MAINTENANCE_IRQ      9
 diff --git a/hw/arm/exynos4210.c b/hw/arm/exynos4210.c
-index 04439364370..01e6e2fb052 100644
+index 01e6e2fb052..ca40df3db75 100644
 --- a/hw/arm/exynos4210.c
 +++ b/hw/arm/exynos4210.c
 @@ -36,6 +36,7 @@
  #include "hw/sd/sdhci.h"
  #include "hw/usb/hcd-ehci.h"
  #include "target/arm/cpu-qom.h"
-+#include "target/arm/multiprocessing.h"
++#include "target/arm/gtimer.h"
+ #include "target/arm/multiprocessing.h"
  
  #define EXYNOS4210_CHIPID_ADDR         0x10000000
+diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
+index 2cf5eeaf313..180feca9d80 100644
+--- a/hw/arm/fsl-imx8mp.c
++++ b/hw/arm/fsl-imx8mp.c
+@@ -17,6 +17,7 @@
+ #include "hw/boards.h"
+ #include "system/system.h"
+ #include "target/arm/cpu-qom.h"
++#include "target/arm/gtimer.h"
+ #include "qapi/error.h"
+ #include "qobject/qlist.h"
  
+diff --git a/hw/arm/mps3r.c b/hw/arm/mps3r.c
+index 604f6845fde..37c0de28a92 100644
+--- a/hw/arm/mps3r.c
++++ b/hw/arm/mps3r.c
+@@ -47,6 +47,7 @@
+ #include "hw/ssi/pl022.h"
+ #include "hw/timer/cmsdk-apb-dualtimer.h"
+ #include "hw/watchdog/cmsdk-apb-watchdog.h"
++#include "target/arm/gtimer.h"
+ 
+ /* Define the layout of RAM and ROM in a board */
+ typedef struct RAMInfo {
 diff --git a/hw/arm/npcm8xx.c b/hw/arm/npcm8xx.c
-index f182accc47c..3987e55355b 100644
+index 3987e55355b..2f11bc53a86 100644
 --- a/hw/arm/npcm8xx.c
 +++ b/hw/arm/npcm8xx.c
 @@ -29,6 +29,7 @@
  #include "qapi/error.h"
  #include "qemu/units.h"
  #include "system/system.h"
-+#include "target/arm/multiprocessing.h"
++#include "target/arm/gtimer.h"
+ #include "target/arm/multiprocessing.h"
  
  /*
-  * This covers the whole MMIO space. We'll use this to catch any MMIO accesses
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 112cbbf29e6..90fbb56ba7a 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -52,6 +52,7 @@
- #include "qom/object.h"
- #include "target/arm/cpu-qom.h"
- #include "target/arm/gtimer.h"
-+#include "target/arm/multiprocessing.h"
- 
- #define RAMLIMIT_GB 8192
- #define RAMLIMIT_BYTES (RAMLIMIT_GB * GiB)
 diff --git a/hw/vmapple/vmapple.c b/hw/vmapple/vmapple.c
-index fa117bf1511..9bb5b0553a2 100644
+index 9bb5b0553a2..25652b16f0c 100644
 --- a/hw/vmapple/vmapple.c
 +++ b/hw/vmapple/vmapple.c
 @@ -51,6 +51,7 @@
  #include "system/reset.h"
  #include "system/runstate.h"
  #include "system/system.h"
-+#include "target/arm/multiprocessing.h"
++#include "target/arm/gtimer.h"
+ #include "target/arm/multiprocessing.h"
  
  struct VMAppleMachineState {
-     MachineState parent;
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 97de8c7e939..a28acdecf3e 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -39,6 +39,7 @@
- #include "hw/acpi/acpi.h"
- #include "hw/acpi/ghes.h"
- #include "target/arm/gtimer.h"
-+#include "target/arm/multiprocessing.h"
- #include "migration/blocker.h"
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 38d49cbb9d8..005f84082af 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -25,6 +25,7 @@
+ #include "cpu-features.h"
+ #include "exec/exec-all.h"
+ #include "accel/tcg/cpu-ldst.h"
++#include "target/arm/gtimer.h"
+ #include "cpregs.h"
  
- const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+ #define SIGNBIT (uint32_t)0x80000000
 -- 
 2.47.1
 
