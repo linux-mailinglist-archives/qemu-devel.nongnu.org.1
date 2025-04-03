@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2B6A7B282
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CFAA7B283
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:50:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0UK9-0001Cy-Bl; Thu, 03 Apr 2025 19:50:17 -0400
+	id 1u0UKY-0001V6-AA; Thu, 03 Apr 2025 19:50:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UK5-00014F-In
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:50:13 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UKB-0001ND-20
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:50:19 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UK3-0000gr-Mx
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:50:13 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-39c1ee0fd43so1243951f8f.0
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:50:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UK9-0000hJ-7b
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:50:18 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43d0c18e84eso7108195e9.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:50:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724209; x=1744329009; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724215; x=1744329015; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F4hQtsRqLsOAfmfIygYHr5yTvJJXu3lpTgjRUryOvbU=;
- b=vWhmwXnBRb9XRw9XPjZoe1l0ymrDprgPxL0lGn/bJ2+1YlGygL7AfEqJ4/uJboTHNJ
- hmw/A6/hW+7d7YRSstBBTeau4rAHkT8XGX1sw/fH+f7U30BmxCjZAVkjVL/RgNYDPrTV
- ryHgewR48Yiu5KadCmLNd99M/eNVkkusJDERMOaA545BigF8PkmFfg3pVeuxDYocNI/V
- d0WHHdZKQrU31DeRymyYopAUuTyKgRa0mDuKQLVeVr4stHjqQSrdlo5J6/d1QPCdIAfe
- 11K6muiIf/Fv1tJtpJIxZ1RwOkueYH+ueVYLKzSe2TRUIlYe/TsKRaLMFNbvpYKnqr2/
- tOSQ==
+ bh=NDF3v2bQG3D1D/TAN/dJYz9MV3sitzpGTqOBdLUJDgo=;
+ b=sczgrsPaxlXTm63KzPiXNcxxA2uVgNDjbDusMx/qF++Xs0JCDyH4NHiXXkORX6YKZ+
+ ghemcSwgp/98jWv5HQ3hqJCHxx3u8h+py85KuyPlUfcxLLbdv6NPLYli4tHB+3AmVGRv
+ pvsZsFakkxONewGlvyrZHJooOgr5f5yUcuOJmFjllJ3XEl4sjDfJSlFM9KuGqZcIIewL
+ SlXYcYbCocJ/ps8eXlU8wbwot3T3fkVgGlnLeRLNOL9pa+TXX/4CXDWlmNKyd+wOCdiz
+ KS71OglZwl4/4K+ZcRvD4IeC4X/2m8r82w788TM9Qi1jcyHFFFKwJDUN4Osrw6m/y2zX
+ SYgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724209; x=1744329009;
+ d=1e100.net; s=20230601; t=1743724215; x=1744329015;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=F4hQtsRqLsOAfmfIygYHr5yTvJJXu3lpTgjRUryOvbU=;
- b=aO1BdO2mpAvhGrII/fq295QW4zMzzFC+uSxwbiwvCde38qo0/meBh/fi/cEE0YA/f9
- tV/sqjWXVbaX4AfL2pIazxgFE08NNicZT9WQXxsH1xt+0tPkeY6QDQ6mGutfAfE4XmUY
- z8bEthzioWHnTh05MuqZLkICHKtX8YdgW/JBbgJB+ERkwMH847f2uldjYUguoiL8tPzu
- TbjeVYjNHtte9VTlR5VgTyWg0VLcuwk+ugjTaOzWn5/aibwTfjYmwsJlsSMeKCOwYw+5
- am7doio/OK6cn9+E2AqKEXqEtJdIlOuN45CFHRT2ro99yctePTtzv32GRkbtRejYX27/
- Huog==
-X-Gm-Message-State: AOJu0YwQMgIY1b1cgfFAGBLNxa2FDKTXqUUEGp9GtZ6UiuQEkC8o2C5j
- nDLUBEt6WX9yDXYbdr+Mc59eVMhmxvm0wmaQdgQof1UcaAa3D/31TexAM/UbJkCJ+fec4MFuWwq
- s
-X-Gm-Gg: ASbGnctU3oBRpb8W7um+Ufl5rT2uoIrVtiDSFr+/ovWuUZU6f4IjKqhkNG4EHKwAiJ4
- utatLKeOc7GVwva7EcdnG/LXr0oGUurq0Ar5pyo6OTl1bh80JwoJaJTkSk0Wbf6tdORF13IcBwh
- QM8VFODA4JQj4yJpgCBTkosOF6Mk70uTs8utzDyc+f3QPR60XJkwXVetLs2KDXG1V20VuFw+Kh+
- iH2uBT8tojaGtI82olhYlcrR8S7+SFwKZsh6qyibykSVZKWo9eEoDyN/4WgXLtNcLQ3TT8NFXv4
- /wg7UfiOQZ14vIlA2QfjWRhtZwbs1Wa7mbudr2ratyT/guwyNO0fVNg+Dxo9zr+S3CeEvtF19Lu
- 8C1MsWDNqPEJixKvtRwlXhREaR/OIKA==
-X-Google-Smtp-Source: AGHT+IHgo84CqX39MHLOljzDfCIs/gYPnZSVlSftyCKU3RiHgkB0JxR2VO2oTfQ4WXzOz6k2V9ziyA==
-X-Received: by 2002:a05:6000:40c7:b0:391:40bd:621e with SMTP id
- ffacd0b85a97d-39cba9827c6mr852409f8f.44.1743724209677; 
- Thu, 03 Apr 2025 16:50:09 -0700 (PDT)
+ bh=NDF3v2bQG3D1D/TAN/dJYz9MV3sitzpGTqOBdLUJDgo=;
+ b=bKNw/gTa5W8xLh333SV8Rt9kDMjfUj0+ZCgsYHbLw0zi5L/K4bDbuyJpFtwMVUp3na
+ QeugAMjoM/g0z3xJMczVM1WRXQFjNIvS5eb3BWhThuVJZ17mQHQ5Cq41YKfpftOKLWg5
+ zekAIK6YFpCtv0Mo5aqBCHCDEvBlPBBhutF/7zb9vRBCMKi0x5lLtusJQKMcIoGbWlkM
+ dwY21Mzd64Vq6xaJuYSosgsIo2FTzYpaqaGka724oE78CEiSgxbbN9uB+/xBg53OrMYL
+ jpE332FM+accPdJpTrDeUX207k4zV88v120pt/J9p2XKbpDdLhv+UtjGrmTO3fOJ20K8
+ kkPQ==
+X-Gm-Message-State: AOJu0YwUmrCst+O36WrG6ieU1CZ/dtFMpSV8e2TJUUhMAPRtByFeIKRq
+ FkDjToH2JzNIj6H0x7RZpFIGwhEsqPG5Yu1uZdhyesRDU2ioZoxWU5GCeZh17Ru9V6CQSjTirSj
+ +
+X-Gm-Gg: ASbGncuaICY9qjRf5Ah91aroWqbAAzQhATk5OqI3lImOdh8bWx5cPJIvc1B5DIJ2K1b
+ 5zWfpr+ojV9XC1WxLfypNeDbVBMluSoI9qBLGQ9PJWVQ98FYzLAi23B4TF7mw+0Q6QKhEPc6e4R
+ mw34tg2vwCM+CMxiLuCxiaTjt62Co0Fi+Yi9kugDBSntrT3qNe+eWExo1AIETAALaE+ASvU5gzJ
+ PlqTeKQzxXMfMo/pFi4j2isfCiSA0il5WFyHdJB5t4pcoIuJrFq2RsAsHUqVynqP/laBQYeNNXI
+ yTsDx/DMtonkC8W0xN0Bb/o7UwElQv8b4k8B72xCwDhKzut4ZG74kvoNWWQ/ky5Om4P027xqLyB
+ HyJ2dGuVHvSPXKnHieNQ=
+X-Google-Smtp-Source: AGHT+IH6VzX2CqKWpfEPEV+geA0SbkppmehUfV8m2k1croxwKzPuZNzifpmxYAYV2SmJY9Htfaj0UQ==
+X-Received: by 2002:a05:600c:3548:b0:43d:77c5:9c1a with SMTP id
+ 5b1f17b1804b1-43ed0b5e285mr4871085e9.4.1743724215280; 
+ Thu, 03 Apr 2025 16:50:15 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301b816csm2968052f8f.57.2025.04.03.16.50.08
+ ffacd0b85a97d-39c30226f2bsm2980657f8f.96.2025.04.03.16.50.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 16:50:09 -0700 (PDT)
+ Thu, 03 Apr 2025 16:50:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [RFC PATCH-for-10.1 08/19] target/riscv: Replace TARGET_LONG_BITS ->
- target_long_bits()
-Date: Fri,  4 Apr 2025 01:49:03 +0200
-Message-ID: <20250403234914.9154-9-philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 09/19] qemu: Introduce target_cpu_type()
+Date: Fri,  4 Apr 2025 01:49:04 +0200
+Message-ID: <20250403234914.9154-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403234914.9154-1-philmd@linaro.org>
 References: <20250403234914.9154-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,52 +102,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/riscv/riscv-iommu.c | 3 ++-
- hw/riscv/riscv_hart.c  | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ include/qemu/target_info-impl.h | 3 +++
+ include/qemu/target_info.h      | 2 ++
+ target_info-stub.c              | 2 ++
+ target_info.c                   | 5 +++++
+ 4 files changed, 12 insertions(+)
 
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index 65411b3e4c0..37563b2102f 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -26,6 +26,7 @@
- #include "migration/vmstate.h"
- #include "qapi/error.h"
- #include "qemu/timer.h"
-+#include "qemu/target_info.h"
+diff --git a/include/qemu/target_info-impl.h b/include/qemu/target_info-impl.h
+index 8fa585f8138..d6d671a03c0 100644
+--- a/include/qemu/target_info-impl.h
++++ b/include/qemu/target_info-impl.h
+@@ -30,6 +30,9 @@ struct BinaryTargetInfo {
+     /* runtime equivalent of TARGET_LONG_BITS definition */
+     unsigned long_bits;
  
- #include "cpu_bits.h"
- #include "riscv-iommu.h"
-@@ -393,7 +394,7 @@ static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
-             if (pass == S_STAGE && va_len > 32) {
-                 target_ulong mask, masked_msbs;
++    /* runtime equivalent of CPU_RESOLVING_TYPE definition */
++    const char *const cpu_resolving_type;
++
+ };
  
--                mask = (1L << (TARGET_LONG_BITS - (va_len - 1))) - 1;
-+                mask = (1L << (target_long_bits() - (va_len - 1))) - 1;
-                 masked_msbs = (addr >> (va_len - 1)) & mask;
+ #endif
+diff --git a/include/qemu/target_info.h b/include/qemu/target_info.h
+index 66c43b329cc..407ce328e85 100644
+--- a/include/qemu/target_info.h
++++ b/include/qemu/target_info.h
+@@ -34,4 +34,6 @@ bool target_words_bigendian(void);
  
-                 if (masked_msbs != 0 && masked_msbs != mask) {
-diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
-index a55d1566687..667d3b0a507 100644
---- a/hw/riscv/riscv_hart.c
-+++ b/hw/riscv/riscv_hart.c
-@@ -21,6 +21,7 @@
+ unsigned target_long_bits(void);
+ 
++const char *target_cpu_type(void);
++
+ #endif
+diff --git a/target_info-stub.c b/target_info-stub.c
+index a5374caed6c..7d21675d4c0 100644
+--- a/target_info-stub.c
++++ b/target_info-stub.c
+@@ -8,6 +8,7 @@
+ 
  #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qemu/module.h"
-+#include "qemu/target_info.h"
- #include "system/reset.h"
- #include "system/qtest.h"
- #include "qemu/cutils.h"
-@@ -72,7 +73,7 @@ static void csr_call(char *cmd, uint64_t cpu_num, int csrno, uint64_t *val)
-         ret = riscv_csrr(env, csrno, (target_ulong *)val);
-     } else if (strcmp(cmd, "set_csr") == 0) {
-         ret = riscv_csrrw(env, csrno, NULL, *(target_ulong *)val,
--                MAKE_64BIT_MASK(0, TARGET_LONG_BITS));
-+                MAKE_64BIT_MASK(0, target_long_bits()));
-     }
+ #include "qemu/target_info-impl.h"
++#include "cpu.h"
  
-     g_assert(ret == RISCV_EXCP_NONE);
+ #ifdef TARGET_INFO_STUB_NEEDED
+ 
+@@ -17,6 +18,7 @@ static const BinaryTargetInfo target_info_stub = {
+     .system_arch = -1,
+     .endianness = TARGET_BIG_ENDIAN ? ENDIAN_MODE_BIG : ENDIAN_MODE_LITTLE,
+     .long_bits = TARGET_LONG_BITS,
++    .cpu_resolving_type = CPU_RESOLVING_TYPE,
+ };
+ 
+ const BinaryTargetInfo *target_info(void)
+diff --git a/target_info.c b/target_info.c
+index 2fd32931e13..4ad205636c2 100644
+--- a/target_info.c
++++ b/target_info.c
+@@ -41,3 +41,8 @@ unsigned target_long_bits(void)
+ {
+     return target_info()->long_bits;
+ }
++
++const char *target_cpu_type(void)
++{
++    return target_info()->cpu_resolving_type;
++}
 -- 
 2.47.1
 
