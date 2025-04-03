@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB1FA7B2AF
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB18A7B2AC
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 02:00:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0UTL-0007PA-AC; Thu, 03 Apr 2025 19:59:47 -0400
+	id 1u0UTQ-0007xh-BI; Thu, 03 Apr 2025 19:59:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTH-0007AH-2l
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:59:43 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTN-0007pP-OT
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:59:49 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTF-0002cz-25
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:59:42 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43ce70f9afbso14782855e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:59:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UTM-0002ed-25
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:59:49 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43cef035a3bso10268965e9.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724779; x=1744329579; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724786; x=1744329586; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WA+aRHvNoDByFG0pXYQNX38xTne48Zg59Pu/HsGsRuU=;
- b=fileE6QROhKFFSqZLylEa61UQLrze5n5FF/e8tvaEIv49nUQW2qSFQoQboQCKxB53/
- 72KM18ai5fdoAmXef1W7Z5I17HAhh/aHoAWCncrb7Td4019vLzV2g3DPEmTy3Dge3YvK
- LX692Igo9CZidCKFy4uD2D+aV7HVqxfzLEXFC93MyzQwdo87gSpQnIYo+6TlihofrGP1
- vAwQ492fXnkzeaFjQGfLNnUStcwnDWzH6rmWWhoivU48q2CW2N9bcGIOZjARsYhc5p4O
- ysyTX8qNvMXgrLUDazOy+ICuXubOuVoIfvqADaa5UKooQCmBwKLtW2jpF1oWeNaYdpM8
- oiBA==
+ bh=1DnV5Hp0tmpiDlfH4Mi6kMgDb46uwa+8Kt5FmKdT51M=;
+ b=LnNJxmKBz1sIPqvMLUr/IUJ18ZwtsL0/2qDBGJB+K263D/u1UWda6/8xkpO/1mIL1Z
+ +Cwc+5q7CAfntt8N0ffhgUbEcysMFTi/fJIODTnoVPq2iwA0MVYxeqVhAoUcIN+Fqur0
+ egjh4NhLMW65tHjenlmzod5K7YCPNKlA8r6K5kuFTpqUug3tKin/Cds79xhpVs/N0Cio
+ /Pk0e3+gM4GPzDQ473MgtwhO4One9FH5E117npHuD+5jVYHt1y6PlZ/H8VTOZAVMPq0Q
+ mmv+yEBdegDwsM3nYvrdENBhVW6J8Ldd1JEJapsxkfkiCiJzdm02kkjoqwQyFP4jOZwH
+ esxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724779; x=1744329579;
+ d=1e100.net; s=20230601; t=1743724786; x=1744329586;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WA+aRHvNoDByFG0pXYQNX38xTne48Zg59Pu/HsGsRuU=;
- b=AHe6OolxbT3F/umVnTDxy99IoAjAFh4XQmAma/vIig/w2jrk/g1nIXrUEzDFbXFiHt
- yc7sN9SycgzIVk226tGyrNV7fVz1TCgG9kIIjIEhjCBEczMSO+2WHVtp1sKm/KrkAAFu
- Y2NH//yJjfyXAOP4QfRXgGG0PsXVFS/gjPqUcKAL13NIr7XC+bWK6+OUmGZxfh8O7yM+
- qqkKfOFED7ML538mImbyI7cj5Mp93VSwJgv6acYBwS8XB7tuo+j4jt7Mu4Gp3azmOLQW
- xE6/MaqCUmCL1WrgovPR/xcV2QMgabYOLY3mn4VTYf1EQxp1cKZbN82f5aXI/ozYOhSU
- 4rVQ==
-X-Gm-Message-State: AOJu0Yz2bTzLk2sS5dPkiscf2/nfh1ILvXBgVX/2806HjNIgR+3Bcl3o
- XLGivTguVINuq5UFv2rmJ9t0n6DKdzoQNYXO9VSqbWba/ZI22NNOG+HDv/g/mp+XknSNovfUMN8
- I
-X-Gm-Gg: ASbGncumb/BgZF+7u59OAI0974XL8BtfFO9hLx1/Z7mJ7GjVpH5kDzXWQNvJdu593W6
- rYU4/do9ujMFPR/ihsRMvFJe/jjLjZKgRbR4/LqEauTE9Xp8JNXk82AfipHGIq0Owgx8yYRMsWd
- HfVu78mXGejU0RQ1e/c7Gys9JcpKFRw6LUHPGEePo10jdmziYYfcdIzWEJm1F2dv++iuz0gMHdD
- N8W65lolezOw5tpK08om3ARMhCA7436yGLJqmoWGfgpJr1rxN4Yf+ZCCHUPFoQHXCJKxejTyTU1
- dqQMSPRkBE/KQ2LduGhLKmGUXr2OJeoWFZl/4GUHcgqgk0ppTcq5UDo3DDbgG63OlxxWcsG5CWK
- 9AUD5wFJ9ipV1nofHQ+A=
-X-Google-Smtp-Source: AGHT+IE1Q3z9pWqGifkD+P0jUOYvfmmPQry9vvoO0NvO7g6dPks5IqHFTbX8hwAlI7XJucDzt0U5UQ==
-X-Received: by 2002:a5d:6d8b:0:b0:390:eb50:37c3 with SMTP id
- ffacd0b85a97d-39d0de25f88mr474677f8f.27.1743724778843; 
- Thu, 03 Apr 2025 16:59:38 -0700 (PDT)
+ bh=1DnV5Hp0tmpiDlfH4Mi6kMgDb46uwa+8Kt5FmKdT51M=;
+ b=Cb+dSqEDIJlrPum5lfOkmw1vjKIs6RfcW3mCfJaGAs45Mq/m7TSYfa/AQWKwkoz3rT
+ 6G4fPds+oK0eBhBD3fsaPUKxVps4CTm/vXG6nSgL79oQOgC3ywS1lrdueb34MtWQtLFY
+ rMWlDcxWUAasthSg7lI0ciZyj7TY66yXH7iydbVCuCPx4RngOx/5fwYx9IBvBELJO4Nz
+ WkIFVQVkMrOw5DuJdVro9gd8HCtTnXIkbXklOd4AbElkrhNfHkYzKpVcZj3OG4tu3v8w
+ aLc7oYm0iLG7ssEJvnMxMBxkfqF7DSjMmY+rowRRL7ii8j+fJgNBb4GcDv62mf/jBtsO
+ 6Gvw==
+X-Gm-Message-State: AOJu0Yyg4Sdcr81fkgAgplcD++gJsp2iZvyrKxej1kkKbcIjlWIwODil
+ H0+7wGCe8B4NqJ6lelSH1CtT5lBbZCWtK2bVGsX+Me4zYO8QwNKKxXj8HURy0YkjzoUgdwYcBSl
+ 5
+X-Gm-Gg: ASbGncsfuzetGJWHhz7A6kdz0XxYd7AftUPZrnlAXB9PbtkgJgb8na7Sk0CjKFVsQYL
+ PwXsWOkSUmnmV3bJNvuA6puaJKUH+9DJUBSTSYNJXMEv2AsoHip9Bz3R3mUkqzYq7biIzvkiXqp
+ DCobsWxtqtZT3QKLy8sYKbSLgVwyeoxufErgg5hIXQ0eFxBY+0iLYB4LI0QzN3dh4wBLtPRsukL
+ 2Oo4EF/nhTFzZwovyFmh5B3zaXwWIqtweDJaHaxmjD5PUPY79fbibm1XMXaCCUcQ7AuZyH1wYB3
+ ZUffMhclsnRB3PcLketz89diHJ+MdkDH8Z6TfTkSjbR2gU+umwdsqV1mc1i54lPUy8YjaI/3x2k
+ /Lke/j7g1di84cqu5dhQ=
+X-Google-Smtp-Source: AGHT+IEUs8ro3CdmhxSTxIZp6e6T9fSDy4jbLiW0GQXwHTwq3DChGzS3N2MT/ojVNXO/VsaTctEBbw==
+X-Received: by 2002:a5d:5f81:0:b0:38f:4d40:358 with SMTP id
+ ffacd0b85a97d-39cb3575d11mr859095f8f.9.1743724786023; 
+ Thu, 03 Apr 2025 16:59:46 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c30226ea8sm2937655f8f.81.2025.04.03.16.59.35
+ 5b1f17b1804b1-43ec147c9dbsm35465045e9.0.2025.04.03.16.59.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 16:59:37 -0700 (PDT)
+ Thu, 03 Apr 2025 16:59:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH-for-10.1 11/39] hw/arm: Use full "target/arm/cpu.h" path
- to include target's "cpu.h"
-Date: Fri,  4 Apr 2025 01:57:53 +0200
-Message-ID: <20250403235821.9909-12-philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 12/39] target/arm/cpu-features: Include missing
+ 'cpu.h' header
+Date: Fri,  4 Apr 2025 01:57:54 +0200
+Message-ID: <20250403235821.9909-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403235821.9909-1-philmd@linaro.org>
 References: <20250403235821.9909-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,84 +101,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We would like to get rid of '-I target/$ARCH/' in the CPPFLAGS.
-Use the full path to "cpu.h": "target/arm/cpu.h".
+"target/arm/cpu-features.h" dereferences the ARMISARegisters
+structure, which is defined in "cpu.h". Include the latter to
+avoid when refactoring unrelated headers:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+  In file included from target/arm/internals.h:33:
+  target/arm/cpu-features.h:45:54: error: unknown type name 'ARMISARegisters'
+     45 | static inline bool isar_feature_aa32_thumb_div(const ARMISARegisters *id)
+        |                                                      ^
+  target/arm/cpu-features.h:47:12: error: use of undeclared identifier 'R_ID_ISAR0_DIVIDE_SHIFT'
+     47 |     return FIELD_EX32(id->id_isar0, ID_ISAR0, DIVIDE) != 0;
+        |            ^
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/hw/arm/digic.h      | 2 +-
- include/hw/arm/fsl-imx6.h   | 2 +-
- include/hw/arm/fsl-imx6ul.h | 2 +-
- include/hw/arm/fsl-imx7.h   | 2 +-
- include/hw/arm/fsl-imx8mp.h | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ target/arm/cpu-features.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/hw/arm/digic.h b/include/hw/arm/digic.h
-index 8f2735c284f..646802806e0 100644
---- a/include/hw/arm/digic.h
-+++ b/include/hw/arm/digic.h
-@@ -18,7 +18,7 @@
- #ifndef HW_ARM_DIGIC_H
- #define HW_ARM_DIGIC_H
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 525e4cee12f..4452e7c21e3 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -22,6 +22,7 @@
  
--#include "cpu.h"
-+#include "target/arm/cpu.h"
- #include "hw/timer/digic-timer.h"
- #include "hw/char/digic-uart.h"
- #include "qom/object.h"
-diff --git a/include/hw/arm/fsl-imx6.h b/include/hw/arm/fsl-imx6.h
-index 124bbd478fd..0ac145cf6ba 100644
---- a/include/hw/arm/fsl-imx6.h
-+++ b/include/hw/arm/fsl-imx6.h
-@@ -35,7 +35,7 @@
- #include "hw/pci-host/designware.h"
- #include "hw/or-irq.h"
- #include "system/memory.h"
--#include "cpu.h"
-+#include "target/arm/cpu.h"
- #include "qom/object.h"
+ #include "hw/registerfields.h"
+ #include "qemu/host-utils.h"
++#include "cpu.h"
  
- #define TYPE_FSL_IMX6 "fsl-imx6"
-diff --git a/include/hw/arm/fsl-imx6ul.h b/include/hw/arm/fsl-imx6ul.h
-index 4e3209b25b2..f8f9c249a23 100644
---- a/include/hw/arm/fsl-imx6ul.h
-+++ b/include/hw/arm/fsl-imx6ul.h
-@@ -34,7 +34,7 @@
- #include "hw/usb/chipidea.h"
- #include "hw/usb/imx-usb-phy.h"
- #include "system/memory.h"
--#include "cpu.h"
-+#include "target/arm/cpu.h"
- #include "qom/object.h"
- #include "qemu/units.h"
- 
-diff --git a/include/hw/arm/fsl-imx7.h b/include/hw/arm/fsl-imx7.h
-index aa7818c4999..6aedd2b80b5 100644
---- a/include/hw/arm/fsl-imx7.h
-+++ b/include/hw/arm/fsl-imx7.h
-@@ -37,7 +37,7 @@
- #include "hw/pci-host/designware.h"
- #include "hw/usb/chipidea.h"
- #include "hw/or-irq.h"
--#include "cpu.h"
-+#include "target/arm/cpu.h"
- #include "qom/object.h"
- #include "qemu/units.h"
- 
-diff --git a/include/hw/arm/fsl-imx8mp.h b/include/hw/arm/fsl-imx8mp.h
-index bc97fc416eb..f20f9e53187 100644
---- a/include/hw/arm/fsl-imx8mp.h
-+++ b/include/hw/arm/fsl-imx8mp.h
-@@ -9,7 +9,7 @@
- #ifndef FSL_IMX8MP_H
- #define FSL_IMX8MP_H
- 
--#include "cpu.h"
-+#include "target/arm/cpu.h"
- #include "hw/char/imx_serial.h"
- #include "hw/gpio/imx_gpio.h"
- #include "hw/i2c/imx_i2c.h"
+ /*
+  * Naming convention for isar_feature functions:
 -- 
 2.47.1
 
