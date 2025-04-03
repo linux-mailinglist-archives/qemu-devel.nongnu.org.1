@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C484A7B1E6
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 00:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E17A7B1E0
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 00:06:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0Sgd-0000QL-Uo; Thu, 03 Apr 2025 18:05:24 -0400
+	id 1u0Sgj-0000nQ-8P; Thu, 03 Apr 2025 18:05:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0Sga-0000Gn-HP
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 18:05:20 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0Sgg-0000g3-6X
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 18:05:26 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0SgY-0003ys-Rd
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 18:05:20 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43d0618746bso9928745e9.2
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 15:05:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0Sgd-0003zV-VV
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 18:05:25 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43cf257158fso9395735e9.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 15:05:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743717917; x=1744322717; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743717922; x=1744322722; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z9hjvUeWbVz+/CYEuU3h1CcQqcFWfFRSfQhQvW00JOQ=;
- b=B98AKiPKVm24ZJrn4Pgm++BkkXxHSQSamlDbL8t5ih69hvarkeZ/Oum3s02rg7fryU
- EYgvhhz2eXKy8x1tOYyJs/mArJRR9jBjWsoLjKU1hjiAx/fqPCPnZj+5h52eYqkdge/c
- aQroYmkWF9u7pfbBY8o0U/XuUzQSs6KuCDqOuu2K1T1vzVadYuGfvudoVW5SpLPOBJX9
- 8esmmzVPc3Lgyj5Q9Su3NvJZyv5nx22DwotikFVhZtx2CldX2OMZoYFjncBS7e+wjScf
- p3/cHW+NuPf9HseMr1JZ8OhY8S8mzbjXczd6SjM9NIoTZZbTmIEa+wULyeiqvuGSLaN8
- NyXw==
+ bh=rcpj2tcbvjBZshPtyS3/CSwa5AEapPfd25KE2HwFvNA=;
+ b=Wjglruph0MCqu1JTsPUBoEPveaUfYutwkKsuV55gMCjPzjHGSl34qatf4qeEovYQHF
+ 8FaKVmWvARn2d9wummd2ru96riZwE0OVwBecvRfVUYbXwzlKuKL2KI4eboWIgr59+QOj
+ PCEP0OhGy3zMTLgwlBuyQ+ERpU1AxZcAjiLgeLD3/5+Sk4VAeCG65VfiBlojdfl9rHB5
+ aGrT04SnGx2PWrKzdNjYw9dnPHUB5HbBjdPjY/6uAxvSjcZaEyDJIMF6z+zvCh5iS/iS
+ JhQYp7lOZz8MmokAAAhy64BtNKeS4YLLpJ2yIYYCF2WiNFeMbFZl5xrp9nODczzDKwyy
+ hIwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743717917; x=1744322717;
+ d=1e100.net; s=20230601; t=1743717922; x=1744322722;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z9hjvUeWbVz+/CYEuU3h1CcQqcFWfFRSfQhQvW00JOQ=;
- b=Ke3EUz1GSQIKQ2GTI6DIdwtMAsQEG/y9dNYmY+ATf3Ho9hwSiKRFMWwlVIkGku5dyM
- gW9zJrKteQE8FHJM4eRP+pS46GZxrPhixgvAKjCNHyBzBLyzBoOv2gPSP0CqEgZPIUuD
- rhV5Inls/pI1Y3wp92W15SZ4WNRyfWItGRn8dHVnZQZwFJCSGSkdG7qXNCf4UNNfg5Py
- NEHXrGOMAkYoNJ2o7tTIbax0XaQPWQJYZn/tKvDK6/k4vU2sJVvztIhQC5sYtgxF+5cV
- hPJIASh8WK+MAqKZY9DbBNUpAATrJ6qjf20rUfEOieev2B4KgLIDhjt/2nHxzdkNGvoo
- Mb+w==
-X-Gm-Message-State: AOJu0YyFCCOoNOcupzlqXaN4yc/QYJ0KLX60Ks8XMQWbv6rYOCJLO+0h
- x9DU/DeW9j8df1aurOwrELOcC0hTY2vAFd3pTvMmgeyg52Ek3qP4cJHeQ/L7HaK7WaZ70oluA03
- z
-X-Gm-Gg: ASbGncuSx7bYUChWUTj6QZjtxd/wCmgBrSj5C4k1IQm3eJTJy3Ngap7KNON4Xc7Cm1p
- WXQosE5PL5R9oGhNEQa+INZk0FDeNHza8I3nLM8FlAyuJo0vKIYhG+r4FZRs9u72AiPtTiJdNFq
- gy+XgNDVMFXOXEk+Ra3q1CWGn4wlCKEHezW4XXL5lKFKg+66S6cxLqXRxrfcjyj9F8dlIx0DbKs
- JqJylsJEmFQzpZXPiVd4jnSkVCLEhkHYpVVYxx9XGUP2qRoK9K9jW62I4H3QkuLGZmOtrpw8i84
- 2V7XCUnv+F6eVzYzCYzMRj4nndLf/Uf1LdzhfckO7NQx049LD0qL2wTy/im5DHW6u9U9gioW+fR
- w6moSleB7ljmmlGMjH0KJa+Pn
-X-Google-Smtp-Source: AGHT+IEZL0dZVEzKHPrsX1jEJkmQ6QTIw3uOLUo/w3bssSwpimc72WKm3ryUn6b/NYrPRKzEBuOaDA==
-X-Received: by 2002:a05:600c:1f0c:b0:43d:4e9:27f3 with SMTP id
- 5b1f17b1804b1-43ecf85f4bamr6368125e9.9.1743717916825; 
- Thu, 03 Apr 2025 15:05:16 -0700 (PDT)
+ bh=rcpj2tcbvjBZshPtyS3/CSwa5AEapPfd25KE2HwFvNA=;
+ b=T0lOwaqSFitqKYZQFok40u8MyE9wnwZ1BoZ84EITv2LMLu1sUzwEPJQ0A70c54p5zh
+ t0zakCsjFPeWLZGZc8Q+GCM76stplhlz899aq/jUp0lqArjZtLhxiR3EawSPZQd3uuKp
+ K5KeT7WjXT4NuYYCHOSjHAvFERfO3gdo03kDd8MmGhZo76T95QwrQApnVAk/q3ChhsXR
+ b6gI3Ym1dFNqU1VVVj3EOryw7xwxKleYGSij7bHcbAAGi824LsTma1OorMQ6HXUgmsnN
+ /3dqKcL3QrkLnFpyc5HMYBiiHy6ZH0bcZSCchuBije8xlxNE8iWl2nbTSd3JRJ0AvMWk
+ +TDg==
+X-Gm-Message-State: AOJu0Yxn72YG6xDGJz1PDt24aFfdaQuIJ0FvoEocbnU8yZof7Sm11Djm
+ 4HFMHjFjRjXJ+1XkuJwkYRJARR3uBoftCXvKUNGHU3gNKJ61eOJNLkNQyawwpMkvEbsKD1dG+xi
+ G
+X-Gm-Gg: ASbGncvCdNRhgr0zIp8xfyDtey9C3pRSl4+i4dTHlkeIN8lrlqS5KI759/sZ6FqsK+d
+ 6lrVKNrveGqReo6lWURhkU3gHrBp7/mHnqBhYqLwHtzTGcZgHGR4IRLXQL/tTTDbSKuMZPmy1SG
+ qfNxJq5EU1SreEu5cev+PNlR+QjhojxDn/tAgOxEpJNCk1LVyeSVyAXTyY+XZXj9xotPcr1B+Dy
+ h5+DpoTPk/kYyAdQ2ipO8toW0JgZKBN44SLZ+PHzU8qbQuaMybT8LJj99zkZ+DELzMTc11pajIe
+ BRv16AOLPcyx/2Qw54Bd7LtqruCrqhsnksh15ibCy2cvKRSFVkqagzgohu9sikfUYddyZRYCs1d
+ lx0dW8jz1+dowgKXGL6n4ba1f
+X-Google-Smtp-Source: AGHT+IFXMow78jI+Cwvt4AZgSZeEB/0UYMCr+Z+ORfbkDmzI6/wDtnhhfN+zSdhuptKXDErfoJY/2w==
+X-Received: by 2002:a05:600c:502b:b0:43d:fa58:8378 with SMTP id
+ 5b1f17b1804b1-43ecfa4285dmr5514765e9.33.1743717922131; 
+ Thu, 03 Apr 2025 15:05:22 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec17b0d06sm32774765e9.35.2025.04.03.15.05.14
+ 5b1f17b1804b1-43ec34a92desm28790655e9.14.2025.04.03.15.05.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 15:05:14 -0700 (PDT)
+ Thu, 03 Apr 2025 15:05:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH-for-10.1 v3 11/19] tcg: Remove use of TCG_GUEST_DEFAULT_MO in
- tb_gen_code()
-Date: Fri,  4 Apr 2025 00:04:11 +0200
-Message-ID: <20250403220420.78937-12-philmd@linaro.org>
+Subject: [PATCH-for-10.1 v3 12/19] tcg: Propagate CPUState argument to
+ cpu_req_mo()
+Date: Fri,  4 Apr 2025 00:04:12 +0200
+Message-ID: <20250403220420.78937-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403220420.78937-1-philmd@linaro.org>
 References: <20250403220420.78937-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,27 +99,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use TCGCPUOps::guest_default_memory_order to set TCGContext::guest_mo.
+In preparation of having tcg_req_mo() access CPUState in
+the next commit, pass it to cpu_req_mo(), its single caller.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/translate-all.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ accel/tcg/internal-target.h |  3 ++-
+ accel/tcg/cputlb.c          | 20 ++++++++++----------
+ accel/tcg/user-exec.c       | 20 ++++++++++----------
+ 3 files changed, 22 insertions(+), 21 deletions(-)
 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 7467255f6e4..c007b9a1902 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -353,7 +353,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-     tcg_ctx->tlb_dyn_max_bits = CPU_TLB_DYN_MAX_BITS;
- #endif
-     tcg_ctx->insn_start_words = TARGET_INSN_START_WORDS;
--    tcg_ctx->guest_mo = TCG_GUEST_DEFAULT_MO;
-+    tcg_ctx->guest_mo = cpu->cc->tcg_ops->guest_default_memory_order;
+diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
+index 1a46a7c87dc..23aac39b572 100644
+--- a/accel/tcg/internal-target.h
++++ b/accel/tcg/internal-target.h
+@@ -59,12 +59,13 @@ G_NORETURN void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr);
  
-  restart_translate:
-     trace_translate_block(tb, pc, tb->tc.ptr);
+ /**
+  * cpu_req_mo:
++ * @cpu: CPUState
+  * @type: TCGBar
+  *
+  * If tcg_req_mo indicates a barrier for @type is required
+  * for the guest memory model, issue a host memory barrier.
+  */
+-#define cpu_req_mo(type)          \
++#define cpu_req_mo(cpu, type)     \
+     do {                          \
+         if (tcg_req_mo(type)) {   \
+             smp_mb();             \
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 2cafd38d2af..35b1ff03a51 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -2324,7 +2324,7 @@ static uint8_t do_ld1_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     MMULookupLocals l;
+     bool crosspage;
+ 
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, access_type, &l);
+     tcg_debug_assert(!crosspage);
+ 
+@@ -2339,7 +2339,7 @@ static uint16_t do_ld2_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     uint16_t ret;
+     uint8_t a, b;
+ 
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, access_type, &l);
+     if (likely(!crosspage)) {
+         return do_ld_2(cpu, &l.page[0], l.mmu_idx, access_type, l.memop, ra);
+@@ -2363,7 +2363,7 @@ static uint32_t do_ld4_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     bool crosspage;
+     uint32_t ret;
+ 
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, access_type, &l);
+     if (likely(!crosspage)) {
+         return do_ld_4(cpu, &l.page[0], l.mmu_idx, access_type, l.memop, ra);
+@@ -2384,7 +2384,7 @@ static uint64_t do_ld8_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     bool crosspage;
+     uint64_t ret;
+ 
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, access_type, &l);
+     if (likely(!crosspage)) {
+         return do_ld_8(cpu, &l.page[0], l.mmu_idx, access_type, l.memop, ra);
+@@ -2407,7 +2407,7 @@ static Int128 do_ld16_mmu(CPUState *cpu, vaddr addr,
+     Int128 ret;
+     int first;
+ 
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, MMU_DATA_LOAD, &l);
+     if (likely(!crosspage)) {
+         if (unlikely(l.page[0].flags & TLB_MMIO)) {
+@@ -2735,7 +2735,7 @@ static void do_st1_mmu(CPUState *cpu, vaddr addr, uint8_t val,
+     MMULookupLocals l;
+     bool crosspage;
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, MMU_DATA_STORE, &l);
+     tcg_debug_assert(!crosspage);
+ 
+@@ -2749,7 +2749,7 @@ static void do_st2_mmu(CPUState *cpu, vaddr addr, uint16_t val,
+     bool crosspage;
+     uint8_t a, b;
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, MMU_DATA_STORE, &l);
+     if (likely(!crosspage)) {
+         do_st_2(cpu, &l.page[0], val, l.mmu_idx, l.memop, ra);
+@@ -2771,7 +2771,7 @@ static void do_st4_mmu(CPUState *cpu, vaddr addr, uint32_t val,
+     MMULookupLocals l;
+     bool crosspage;
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, MMU_DATA_STORE, &l);
+     if (likely(!crosspage)) {
+         do_st_4(cpu, &l.page[0], val, l.mmu_idx, l.memop, ra);
+@@ -2792,7 +2792,7 @@ static void do_st8_mmu(CPUState *cpu, vaddr addr, uint64_t val,
+     MMULookupLocals l;
+     bool crosspage;
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, MMU_DATA_STORE, &l);
+     if (likely(!crosspage)) {
+         do_st_8(cpu, &l.page[0], val, l.mmu_idx, l.memop, ra);
+@@ -2815,7 +2815,7 @@ static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
+     uint64_t a, b;
+     int first;
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     crosspage = mmu_lookup(cpu, addr, oi, ra, MMU_DATA_STORE, &l);
+     if (likely(!crosspage)) {
+         if (unlikely(l.page[0].flags & TLB_MMIO)) {
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 1b878ead7a7..3f4d6824460 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -1061,7 +1061,7 @@ static uint8_t do_ld1_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     void *haddr;
+     uint8_t ret;
+ 
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     haddr = cpu_mmu_lookup(cpu, addr, get_memop(oi), ra, access_type);
+     ret = ldub_p(haddr);
+     clear_helper_retaddr();
+@@ -1075,7 +1075,7 @@ static uint16_t do_ld2_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     uint16_t ret;
+     MemOp mop = get_memop(oi);
+ 
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     haddr = cpu_mmu_lookup(cpu, addr, mop, ra, access_type);
+     ret = load_atom_2(cpu, ra, haddr, mop);
+     clear_helper_retaddr();
+@@ -1093,7 +1093,7 @@ static uint32_t do_ld4_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     uint32_t ret;
+     MemOp mop = get_memop(oi);
+ 
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     haddr = cpu_mmu_lookup(cpu, addr, mop, ra, access_type);
+     ret = load_atom_4(cpu, ra, haddr, mop);
+     clear_helper_retaddr();
+@@ -1111,7 +1111,7 @@ static uint64_t do_ld8_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     uint64_t ret;
+     MemOp mop = get_memop(oi);
+ 
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     haddr = cpu_mmu_lookup(cpu, addr, mop, ra, access_type);
+     ret = load_atom_8(cpu, ra, haddr, mop);
+     clear_helper_retaddr();
+@@ -1130,7 +1130,7 @@ static Int128 do_ld16_mmu(CPUState *cpu, abi_ptr addr,
+     MemOp mop = get_memop(oi);
+ 
+     tcg_debug_assert((mop & MO_SIZE) == MO_128);
+-    cpu_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
++    cpu_req_mo(cpu, TCG_MO_LD_LD | TCG_MO_ST_LD);
+     haddr = cpu_mmu_lookup(cpu, addr, mop, ra, MMU_DATA_LOAD);
+     ret = load_atom_16(cpu, ra, haddr, mop);
+     clear_helper_retaddr();
+@@ -1146,7 +1146,7 @@ static void do_st1_mmu(CPUState *cpu, vaddr addr, uint8_t val,
+ {
+     void *haddr;
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     haddr = cpu_mmu_lookup(cpu, addr, get_memop(oi), ra, MMU_DATA_STORE);
+     stb_p(haddr, val);
+     clear_helper_retaddr();
+@@ -1158,7 +1158,7 @@ static void do_st2_mmu(CPUState *cpu, vaddr addr, uint16_t val,
+     void *haddr;
+     MemOp mop = get_memop(oi);
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     haddr = cpu_mmu_lookup(cpu, addr, mop, ra, MMU_DATA_STORE);
+ 
+     if (mop & MO_BSWAP) {
+@@ -1174,7 +1174,7 @@ static void do_st4_mmu(CPUState *cpu, vaddr addr, uint32_t val,
+     void *haddr;
+     MemOp mop = get_memop(oi);
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     haddr = cpu_mmu_lookup(cpu, addr, mop, ra, MMU_DATA_STORE);
+ 
+     if (mop & MO_BSWAP) {
+@@ -1190,7 +1190,7 @@ static void do_st8_mmu(CPUState *cpu, vaddr addr, uint64_t val,
+     void *haddr;
+     MemOp mop = get_memop(oi);
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     haddr = cpu_mmu_lookup(cpu, addr, mop, ra, MMU_DATA_STORE);
+ 
+     if (mop & MO_BSWAP) {
+@@ -1206,7 +1206,7 @@ static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
+     void *haddr;
+     MemOpIdx mop = get_memop(oi);
+ 
+-    cpu_req_mo(TCG_MO_LD_ST | TCG_MO_ST_ST);
++    cpu_req_mo(cpu, TCG_MO_LD_ST | TCG_MO_ST_ST);
+     haddr = cpu_mmu_lookup(cpu, addr, mop, ra, MMU_DATA_STORE);
+ 
+     if (mop & MO_BSWAP) {
 -- 
 2.47.1
 
