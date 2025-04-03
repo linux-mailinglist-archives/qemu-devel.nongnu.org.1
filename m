@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA40CA7B28F
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3AAAA7B288
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:51:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0UJo-0000eL-Mz; Thu, 03 Apr 2025 19:49:56 -0400
+	id 1u0UJt-0000f2-Ud; Thu, 03 Apr 2025 19:50:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UJm-0000e4-6b
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:49:54 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UJs-0000ej-9Y
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:50:00 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UJk-0000Sf-K5
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:49:53 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43cf680d351so14686495e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:49:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0UJq-0000TG-Fz
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:49:59 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43cf05f0c3eso9179015e9.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:49:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724190; x=1744328990; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724196; x=1744328996; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+PyUW7pUGtdQFg0mGJcdbddKSlIReGI4v2OUa97+DAA=;
- b=Z1bFKRhr5xqV6wahMD8DNZ0ADvgVz5oocGYjYlhoQ/n94ZDS/RBkoPxvfwGMam+d9V
- Xm5NMdALktSlg3sqUCgBvGPtsI0lvRXase8z/phT3mXtmu9ZekAF7sGI0qEF27TVVo+S
- xSlXauzlUKFbd1KUs1CJiX/3FvFXg8IVbGYmFpSZuf0PmTwXPNIH3db6Hd/mAz7Mv6KE
- 4J+DLy5G++RKfYzgMaayy8qEgvwjB6vbTcbo/+xuB8xjossxeINI2T3L2+QjKoKeQQjg
- 5+gOceXBvs2bR9PvYIbJMbok3ivjjncGCI5zw0dBeQRLKsvNSNoprktBSNDkP4pjeki5
- I7Jg==
+ bh=mgkLDZ47lJdUOfhv84ZtqSryce3s2ehUhrQmnYvG1gU=;
+ b=B18YblHoc7coTxxKHryrzOKiQgh4vH5mhZsCBRbYJuT6gsfBNFyXs4HiW0ZjAfmMJu
+ PjYA9SRM+060r+uf79T2WpR44hbHR06pVlSdoPCj9n6cluRJqk5ZCuezlKZIBBSY+9sF
+ FC9GA6gYN0hUJhnyJgiyTNACjaV0buynTlR11pGCkR8Fm5JhyK5PVsS/0zdvAivkpCmy
+ iv2tJdlZgPpp4iHXtSRTXVpD2Ye4yuu1vQ4PbqmTvUBxoV0Qn9fjDiAAu5KUfU8ijGFN
+ 5onTVY8UqUiPCVtXXLjxufWX8FSarSHtwjYZ38sinIP5T+vvL7TkSsulJKfD8geNb8J+
+ mlTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724190; x=1744328990;
+ d=1e100.net; s=20230601; t=1743724196; x=1744328996;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+PyUW7pUGtdQFg0mGJcdbddKSlIReGI4v2OUa97+DAA=;
- b=hqXRtBqq82phUzeH5xRwW2qw5zdEz88qAWvALg0t78tRLZdHrs1qX5NcVPDVetbSRh
- bDe9pj+BWC8w2xcyfYZnBiQN92/VB0FH520OvIQuiSKEjT0FXbx7h5wez5xelv8gbqwr
- 48qscB885ranhfSvkb6Kcy2AvOzPu9uHufzEscMS4xkcnrfP3DriVu0TsD7sVX0niy49
- bZwlnAf4wnNvQrk2jx9kMisxyp/e9aqHWZTijaS7HJJuOXPRqhEVoNSmv1NLXAs0UTJc
- Hg7z2IOK12zPYRmma7Bs5xCZreZGCoxopUPoJijPmP+16GeFsVHZnsyxZIDZJ5dsslSr
- k8FA==
-X-Gm-Message-State: AOJu0YwCLUi9jjajUjoBJO9LZqPIevQoutnXnEslxpN+nHGomX2eRTyx
- RK7YzYRU2FazSPqXVIVzQHN7qFD7AD0PtwogYP0Sq1RotH/B2aixUWJTZlF3u00qw8GjT7VAsB2
- s
-X-Gm-Gg: ASbGncuPCYR75ayHaKmWdveXBG0Jkf+RHmCIIq1Q3qPgG06uShdVkbWA0FZp//5Rrip
- b5ADLMb97BmxTL0kPlbWNbr69iIEDqMUkMwMaWE2BjoxbLjA8848fLKLNLVKmziA0YaWUDgc7m3
- HH9yzG5jWcy/39j1KL28z32meRSVCK4rjdrTLp0P9Nsn2lQ4AfpTTQThETdD3PbAARVQg/Ni02+
- WERbB+42DygIV5dkzfr1PK7BklmoSSwEa4/gXW1s+doKrDxbVRChG4dAz2/RfDhrOMT8Lay4m55
- yGYKJdZZmzeyUlDn3/Fuiog1LT/0mjuaYHu9OXZaA2yR9MdrAPmgXr9w2RcaC4PGF7xj8YgZ3kV
- pcUodygHokzGiZUn/ffc=
-X-Google-Smtp-Source: AGHT+IHM9D9L28psTSkzvUhTw9HfoNOBAz0mGzP1zV24uzdFTZ2kPAAVNnZhqi/vrKI5xGBeI11+DA==
-X-Received: by 2002:a05:6000:2211:b0:391:952:c74a with SMTP id
- ffacd0b85a97d-39c2e610f88mr4782528f8f.8.1743724190564; 
- Thu, 03 Apr 2025 16:49:50 -0700 (PDT)
+ bh=mgkLDZ47lJdUOfhv84ZtqSryce3s2ehUhrQmnYvG1gU=;
+ b=LWPPXESRZWo9yHsr6ckh6lZp+2t95LhLKz1How5qVbGTSSJtLPauLozTNYMDeGXfB7
+ lsZQ34TYhTuJuqVpbdB6Lk4d5QtFuXdCDsH7bY1BiI6cAQXYjaApEFWlY1170Kh3onQ1
+ LJW4b9/DxJtS2uU693Ab+ZtasZzy0uxUWVx4CysQITPZTbkHzwek/E6rgbP6KvBGEc8W
+ SV4GKwVHPZEYNyfAvx/UKljISIY1LDYM2vv2Vyk8cb+jSf0vB7XZ+Jb5UNRktGb3lv+d
+ hfAch6nzYqi3MSBW5vN4o1Nu1ePdDbt7BvIchb5m5blFV6uo3mYZ2z7JW7jvCgGNu8BL
+ kblA==
+X-Gm-Message-State: AOJu0YxUcO4uDjsxxycmi/V/Zq0H0jzdahJqz45b5Y8DdiJK1cuhlUMD
+ A97Xvvsf/P/aZnF6sgaIvqn4HrBnLcP2AY5qKceHyy5H/26KQNyZFTV7syQNcS9zVywCiMQ9wYZ
+ x
+X-Gm-Gg: ASbGncu+BbB7xIHbsVarOtyxbqImxAxezrwWqnNbk0DtyZyYv4npSrPGBQ5iKHrZJ+j
+ WS1mSAeaS1lU+cppZxu7257x4ErSRK4JVz/hTbACPWYqduFVoz2EY1s1RdDFXhTeAsE+SuiE18k
+ KkJe9MG/3PlBKf8SVr4RMp8eiL5WbXSHZ+A4czT13CeKdpac7/cxhiB3A4XD20fxyAzqQxFTN1Y
+ 1fLoxBUQyG/iujLFrZyzhJbrcH9Q9BAbvB1GuJnEBAlfIwQEOSC+6/GVdT4sTTLN9Uhe/2QEedL
+ HWl9E2YjnWrtTQrkZd5VwvE8oQK8D5Ik5Ezy3Gn3h2Y3QKgnLFXz8xWrUuYCFA1nuBgVgS8NypX
+ 7+2SvR9TVpqa1KS6hdgs=
+X-Google-Smtp-Source: AGHT+IGQaRD6bk+aKugk47ByDk+zkSEEaCeKRFLhA+IN/wEQ5NSkMDnoj6DDZaPsPOSUs+1vJPPeng==
+X-Received: by 2002:a05:600c:3b13:b0:43c:f050:fed3 with SMTP id
+ 5b1f17b1804b1-43ed0bde8a8mr4685965e9.11.1743724196405; 
+ Thu, 03 Apr 2025 16:49:56 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec1663046sm34887965e9.13.2025.04.03.16.49.49
+ 5b1f17b1804b1-43ec147c9dbsm35295975e9.0.2025.04.03.16.49.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 16:49:50 -0700 (PDT)
+ Thu, 03 Apr 2025 16:49:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [RFC PATCH-for-10.1 05/19] qemu: Introduce target_long_bits()
-Date: Fri,  4 Apr 2025 01:49:00 +0200
-Message-ID: <20250403234914.9154-6-philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 06/19] target/tricore: Replace TARGET_LONG_BITS
+ -> target_long_bits()
+Date: Fri,  4 Apr 2025 01:49:01 +0200
+Message-ID: <20250403234914.9154-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403234914.9154-1-philmd@linaro.org>
 References: <20250403234914.9154-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,62 +103,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/target_info-impl.h | 3 +++
- include/qemu/target_info.h      | 2 ++
- target_info-stub.c              | 1 +
- target_info.c                   | 5 +++++
- 4 files changed, 11 insertions(+)
+ target/tricore/translate.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/qemu/target_info-impl.h b/include/qemu/target_info-impl.h
-index 14566e4a913..8fa585f8138 100644
---- a/include/qemu/target_info-impl.h
-+++ b/include/qemu/target_info-impl.h
-@@ -27,6 +27,9 @@ struct BinaryTargetInfo {
-     /* related to TARGET_BIG_ENDIAN definition */
-     EndianMode endianness;
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 7cd26d8eaba..ad959f3b0a1 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -24,6 +24,7 @@
+ #include "tcg/tcg-op.h"
+ #include "accel/tcg/cpu-ldst.h"
+ #include "qemu/qemu-print.h"
++#include "qemu/target_info.h"
  
-+    /* runtime equivalent of TARGET_LONG_BITS definition */
-+    unsigned long_bits;
-+
- };
- 
- #endif
-diff --git a/include/qemu/target_info.h b/include/qemu/target_info.h
-index e84f16d1034..66c43b329cc 100644
---- a/include/qemu/target_info.h
-+++ b/include/qemu/target_info.h
-@@ -32,4 +32,6 @@ SysEmuTarget target_system_arch(void);
-  */
- bool target_words_bigendian(void);
- 
-+unsigned target_long_bits(void);
-+
- #endif
-diff --git a/target_info-stub.c b/target_info-stub.c
-index c1a15f5cc12..a5374caed6c 100644
---- a/target_info-stub.c
-+++ b/target_info-stub.c
-@@ -16,6 +16,7 @@ static const BinaryTargetInfo target_info_stub = {
-     .name = TARGET_NAME,
-     .system_arch = -1,
-     .endianness = TARGET_BIG_ENDIAN ? ENDIAN_MODE_BIG : ENDIAN_MODE_LITTLE,
-+    .long_bits = TARGET_LONG_BITS,
- };
- 
- const BinaryTargetInfo *target_info(void)
-diff --git a/target_info.c b/target_info.c
-index 22796dda543..2fd32931e13 100644
---- a/target_info.c
-+++ b/target_info.c
-@@ -36,3 +36,8 @@ bool target_words_bigendian(void)
+ #include "exec/helper-proto.h"
+ #include "exec/helper-gen.h"
+@@ -5922,6 +5923,7 @@ static void decode_rr_logical_shift(DisasContext *ctx)
  {
-     return target_info()->endianness == ENDIAN_MODE_BIG;
- }
-+
-+unsigned target_long_bits(void)
-+{
-+    return target_info()->long_bits;
-+}
+     uint32_t op2;
+     int r3, r2, r1;
++    unsigned long_bits = target_long_bits();
+ 
+     r3 = MASK_OP_RR_D(ctx->opcode);
+     r2 = MASK_OP_RR_S2(ctx->opcode);
+@@ -5937,7 +5939,7 @@ static void decode_rr_logical_shift(DisasContext *ctx)
+         break;
+     case OPC2_32_RR_CLO:
+         tcg_gen_not_tl(cpu_gpr_d[r3], cpu_gpr_d[r1]);
+-        tcg_gen_clzi_tl(cpu_gpr_d[r3], cpu_gpr_d[r3], TARGET_LONG_BITS);
++        tcg_gen_clzi_tl(cpu_gpr_d[r3], cpu_gpr_d[r3], long_bits);
+         break;
+     case OPC2_32_RR_CLO_H:
+         gen_helper_clo_h(cpu_gpr_d[r3], cpu_gpr_d[r1]);
+@@ -5949,7 +5951,7 @@ static void decode_rr_logical_shift(DisasContext *ctx)
+         gen_helper_cls_h(cpu_gpr_d[r3], cpu_gpr_d[r1]);
+         break;
+     case OPC2_32_RR_CLZ:
+-        tcg_gen_clzi_tl(cpu_gpr_d[r3], cpu_gpr_d[r1], TARGET_LONG_BITS);
++        tcg_gen_clzi_tl(cpu_gpr_d[r3], cpu_gpr_d[r1], long_bits);
+         break;
+     case OPC2_32_RR_CLZ_H:
+         gen_helper_clz_h(cpu_gpr_d[r3], cpu_gpr_d[r1]);
 -- 
 2.47.1
 
