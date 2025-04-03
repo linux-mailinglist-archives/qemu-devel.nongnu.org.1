@@ -2,55 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8EDA79AA9
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 05:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D39A2A799F0
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 04:25:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0BeO-0000Ox-2O; Wed, 02 Apr 2025 23:53:56 -0400
+	id 1u0AFM-0007Kc-Dj; Wed, 02 Apr 2025 22:24:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <purplearmadillo77@proton.me>)
- id 1u0947-0000pD-BK
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 21:08:20 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <purplearmadillo77@proton.me>)
- id 1u0943-0007hM-Fp
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 21:08:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
- s=protonmail; t=1743642481; x=1743901681;
- bh=IuIxDV9ZU7dW/T6L0RPb9jN3ZKTUoLiK+7IPUZdw5nQ=;
- h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
- Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
- List-Unsubscribe:List-Unsubscribe-Post;
- b=ZF2s1+Z20pXQJts5nSu8B1lzn+3SdIAa9OPvFXWIH2aljAClqffMOmRCn0motMxnu
- VhaS+LRJ2cWAzgcj4J/Lo/xI5PfSsFfScyQhcvMGWUXt4umzdI3olq6jlvFUzlS+iD
- rnprVEkyGvgM/g5Z+3QSAXWROBu3bEXZeIdHYi3BXzoeR0eP0rqDOpWcpUMOx5CcTY
- IuWo+SahrNb6eZS0Ku3jbpQFaBiGUSwP8al3ZObvZGcxHdcEAiRbZ0vUNKij0xdExX
- qEjw0b7emIZUjnrZ51HRpIytaV+jyhPBwl6UNUFBv7flhcaV4SK9j9iInnAynj/dHC
- df+dNdrUNhF1g==
-Date: Thu, 03 Apr 2025 01:07:56 +0000
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: [PATCH] ui/curses: Fix infinite loop on windows
-Message-ID: <tSO5to8--iex6QMThG3Z8ElfnNOUahK_yitw2G2tEVRPoMKV936CBdrpyfbeNpVEpziKqeQ1ShBwPOoDkofgApM8YWwnPKJR_JrPDThV8Bc=@proton.me>
-Feedback-ID: 51238035:user:proton
-X-Pm-Message-ID: 1a0ed4ef1e55ba72f73976a7ad9b638932a48003
+ (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
+ id 1u0AFK-0007KU-JX
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 22:23:58 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
+ id 1u0AFJ-0007pT-2r
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 22:23:58 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-ac339f53df9so70294266b.1
+ for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 19:23:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1743647035; x=1744251835; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=UwYvqZubT95wB55iqEL+orSxR2/hZ6ceYcxdu3NlnmU=;
+ b=MG2etgZ5lHrQ15ZO/TFaBdsq82eAG8jPcP1t8dF2idMEH1tab8GVdM4NxuyARTpHN8
+ UKqs4gbm4n1fxyRUPx+JKl69E1jyhF1rO7ciyELu0tgE2D50a9wkc0xqY4ZS26D+OCXg
+ 2naqRv9jtUG90BbwVXx+9J+46hvPNcI0JU5pQu/8hQRbzQaQtVk1bJr3OJ/4cM/VU+jO
+ 5OT4zvfvbtyJU7Gc2OZCUKWleKSQBQyDNNrrOD1fZmThjdWX7MEAmSaiWRoLIBHSgb4Z
+ zU5waQ1xr4nB6G3jCrzkVdGd0PZ8RTcpS98ma650gHj6XvtExy5RqkKwWLhNHROfNywG
+ i6MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1743647035; x=1744251835;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=UwYvqZubT95wB55iqEL+orSxR2/hZ6ceYcxdu3NlnmU=;
+ b=KYE3wB8J4jhgBH7iwIOCpSD2xFKBNQ8hGbv0XRvARbws0LKQGURFarrcCOlVvOZo8w
+ n78aN/D8w50Rt0CXkaYBZWXYUCym9iHUNY7MD/FZtk5tpwrwEG13ABBr9DHq14QXv9F6
+ nbD2qAjRU4sIVMjR+Nu0dKsDzi65N9YB4Zan+uwSvm1NvpDp/HCHlpyFEYTPA4dhcunC
+ y4PIzIEyCepGnR+oey5nBL1E9nel0JZVD3zCRZ1QIgArbV6M42YBBfXs5C1X7T9Hh2gh
+ gBr89A0hhjTzp0O1VKWSw9tGO/WPRtD7tcuGQjhYgPt6Hfdd9EE5m2gensrgpwP1d/DJ
+ qqew==
+X-Gm-Message-State: AOJu0YwHuuENK8rC4f84g4ZJyar6GaqBZ9T9Edoqm7ZZrcVwbv6dl649
+ BSjXCjYfKKxZ7C3LcGuIIhZ/y+536qvu3bbqDlXzERE7WgqyYIUsqAnsuXn+CzlYFPN/KuHfjYe
+ w5WwOqj9tBO1xBZn9jpLvEnnFymh2bFSHSv7L3g==
+X-Gm-Gg: ASbGnct+aXVvvU1Sbpg6uTCoA+UOv8/RwFcUzHpSGV+IRZvs4Gwln5+IgGfnXA+aTng
+ GdptD4VM8EUHwTARbmfezaYyDufZPbtIY2eG/mGkzjQAIyl0PYLGNUUtbeZebHYDqU9aYVzSB/f
+ T4RxfAXLiBGAsOGEmozE09ZM8SeIM=
+X-Google-Smtp-Source: AGHT+IGexXGXXx7xDw8ZR6tzwRHzI7egiyBLYvla0R6vRv5Iyw1qLmRQAf3dt2AQkf+HgHgOKWxcFos38Dv4Tbk/XQQ=
+X-Received: by 2002:a17:907:3d89:b0:ac3:9587:f2ac with SMTP id
+ a640c23a62f3a-ac7bc15f2f4mr77881466b.33.1743647034710; Wed, 02 Apr 2025
+ 19:23:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250402135402.14526-1-zhangckid@gmail.com>
+ <d39ed054-d99b-46a8-afc8-1a2981d919e1@linaro.org>
+In-Reply-To: <d39ed054-d99b-46a8-afc8-1a2981d919e1@linaro.org>
+From: Zhang Chen <zhangckid@gmail.com>
+Date: Thu, 3 Apr 2025 10:23:18 +0800
+X-Gm-Features: AQ5f1JqNca12j6S48RKJAZMiwQBpljqJ1ueqHHSRnYHtO2tumMum8JKfb2Vz8_4
+Message-ID: <CAK3tnvLqGLzQffAi=dk_VzXgH_k_r_z2xNTN3tVE-G+xjpPWcw@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm/virt.c: Fix wrong default cpu type in AARCH64
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=51.77.79.158;
- envelope-from=purplearmadillo77@proton.me; helo=mail-0201.mail-europe.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=zhangckid@gmail.com; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 02 Apr 2025 23:53:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,58 +89,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  William Hu <purplearmadillo77@proton.me>
-From:  William Hu via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From a42046272f0544dd18ed58661e53ea17d1584c2c Mon Sep 17 00:00:00 2001
-From: William Hu <purplearmadillo77@proton.me>
-Date: Wed, 2 Apr 2025 12:00:00 -0400
-Subject: [PATCH] ui/curses: Fix infinite loop on windows
+On Thu, Apr 3, 2025 at 2:43=E2=80=AFAM Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 4/2/25 06:54, Zhang Chen wrote:
+> > Because of the CONFIG_TCG auto enabled, the cpu type "cortex-a15"
+> > is mistakenly set to the default AARCH64 target.
+>
+> This is the correct backward compatible setting.
+> In essence, it means that you *must* supply a -cpu argument.
+>
+>
 
-Replace -1 comparisons for wint_t with WEOF to fix infinite loop caused by =
-a
-65535 =3D=3D -1 comparison.
+If the "-cpu" is required, the VM should not be started without this argume=
+nt.
+If yes, I will skip this patch and submit another one to make QEMU
+refuse to start without this parameter.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2905
-Signed-off-by: William Hu <purplearmadillo77@proton.me>
----
- ui/curses.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Thanks
+Chen
 
-diff --git a/ui/curses.c b/ui/curses.c
-index a39aee8762..3f5c5adf78 100644
---- a/ui/curses.c
-+++ b/ui/curses.c
-@@ -265,7 +265,12 @@ static int curses2foo(const int _curses2foo[], const i=
-nt _curseskey2foo[],
-=20
- static void curses_refresh(DisplayChangeListener *dcl)
- {
--    int chr, keysym, keycode, keycode_alt;
-+    /*
-+     * DO NOT MAKE chr AN INT:
-+     * Causes silent conversion errors on Windows where wint_t is unsigned=
- short.
-+     */
-+    wint_t chr =3D 0;
-+    int keysym, keycode, keycode_alt;
-     enum maybe_keycode maybe_keycode =3D CURSES_KEYCODE;
-=20
-     curses_winch_check();
-@@ -284,8 +289,9 @@ static void curses_refresh(DisplayChangeListener *dcl)
-         /* while there are any pending key strokes to process */
-         chr =3D console_getch(&maybe_keycode);
-=20
--        if (chr =3D=3D -1)
-+        if (chr =3D=3D WEOF) {
-             break;
-+        }
-=20
- #ifdef KEY_RESIZE
-         /* this shouldn't occur when we use a custom SIGWINCH handler */
---=20
-2.47.0
-
+> r~
+>
+> >
+> > Signed-off-by: Zhang Chen <zhangckid@gmail.com>
+> > ---
+> >   hw/arm/virt.c | 5 +++--
+> >   1 file changed, 3 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> > index a96452f17a..63649e9543 100644
+> > --- a/hw/arm/virt.c
+> > +++ b/hw/arm/virt.c
+> > @@ -3178,9 +3178,10 @@ static void virt_machine_class_init(ObjectClass =
+*oc, void *data)
+> >       mc->cpu_index_to_instance_props =3D virt_cpu_index_to_props;
+> >   #ifdef CONFIG_TCG
+> >       mc->default_cpu_type =3D ARM_CPU_TYPE_NAME("cortex-a15");
+> > -#else
+> > +#ifdef TARGET_AARCH64
+> >       mc->default_cpu_type =3D ARM_CPU_TYPE_NAME("max");
+> > -#endif
+> > +#endif /* TARGET_AARCH64 */
+> > +#endif /* CONFIG_TCG */
+> >       mc->valid_cpu_types =3D valid_cpu_types;
+> >       mc->get_default_cpu_node_id =3D virt_get_default_cpu_node_id;
+> >       mc->kvm_type =3D virt_kvm_type;
+>
+>
 
