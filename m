@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3964A7A901
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 20:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0913CA7A90B
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 20:05:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0OsU-0003m5-IM; Thu, 03 Apr 2025 14:01:22 -0400
+	id 1u0Ow2-0005Di-JV; Thu, 03 Apr 2025 14:05:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u0Ort-0003QQ-Ub
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 14:00:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u0Ovs-0005BF-CX
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 14:04:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u0Orr-0006AP-5W
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 14:00:44 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u0Ovl-0006e0-Va
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 14:04:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743703240;
+ s=mimecast20190719; t=1743703481;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=tDhXga8I+eW/Cyg6XZ6X7k/EkQpsb8wB/HingNiAwaM=;
- b=KK3IGbldhDioMDE2jYDJS0LuzXn11BrR00KHD3kxjFXGHzYuDDbqvGQfAC4fX6G48Dh5v3
- phnMWIBDfjRfTBInZ8I5THLvbTIIyZH4pOZ7c8BhIZA8WypCK+7DGMnZfMdEzYIXqoKOeJ
- kowaCqktvXgNu6WK74prI75AjOlLmXY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zA54mzJX1QM4ZbqBQn/Jr/oljogyDh/69nY++/8aROc=;
+ b=dX3hId5boBi48XjcoXHgaU3gXhZ2oJ906IM6f1XP/y8+sbv7R2SGmKcFPiBKV8E7kh1HbE
+ dHSpICRT75FxQT4eqcpnHNS/lcBbvXtDQ0WcmxRHyGwoRhFe+wusmiWcvTWN+NS0cEOTDf
+ tLY8O7DVxjj5JdKrL2sVGMRJdwHyijI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-59AORO9tPIi7zN_tm4VLKg-1; Thu, 03 Apr 2025 14:00:37 -0400
-X-MC-Unique: 59AORO9tPIi7zN_tm4VLKg-1
-X-Mimecast-MFC-AGG-ID: 59AORO9tPIi7zN_tm4VLKg_1743703236
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3912b54611dso771805f8f.1
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 11:00:37 -0700 (PDT)
+ us-mta-532-ME4EOxsoOjaWVHAxhymFBg-1; Thu, 03 Apr 2025 14:04:40 -0400
+X-MC-Unique: ME4EOxsoOjaWVHAxhymFBg-1
+X-Mimecast-MFC-AGG-ID: ME4EOxsoOjaWVHAxhymFBg_1743703479
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3912e4e2033so635566f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 11:04:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743703236; x=1744308036;
+ d=1e100.net; s=20230601; t=1743703479; x=1744308279;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=tDhXga8I+eW/Cyg6XZ6X7k/EkQpsb8wB/HingNiAwaM=;
- b=d49UGifn+CrhTr1gLnYITLLtawdTBDdp1mgyJ9ETqgVBfTEt/qRoJeC7ercmWaZm6f
- KPGzwySqg/pfFGZr+vcUalx8G8KL6FjBWl5/Em4nHE2tJ6nbcWU3yFfcPN+M3AYsjgVa
- 0+IAcTaXQGjKqeesWrNwvlMMtEk24JxdH9Eo+JZ6FP4FOT2F18w/57X/+5FOLFdH6/Vr
- tkutzBqgP434MAPpKDKDl+8e/W57zle5I5USbftTp+ph7pXOYgQMnX/zp4GbdgLwa0wb
- uP3OALfamQMuHuTsdgblzmC9LtR92vDuNsO9kD+wLph54xXNgfekg1JN19bqTsZ2Hpd4
- 11Rw==
+ bh=zA54mzJX1QM4ZbqBQn/Jr/oljogyDh/69nY++/8aROc=;
+ b=LyrIBK7UogTIjrgacMe6TX9GzDfiFA+iqkyFTabOPEcXS9lRQjNB5uHWPuXJBWRq9A
+ Xd6FFCB4cEzsArVrcDru+yghgb81MbYlU+61jDatzaWMEiZNX8lBEUWD021+6Z2yGA6n
+ kGjexcwymPYkfsTy8f/Fdc0SxnxUlYikCs9I9hyZh8xJXsQmhI/iWwr37nCBceXDKCLS
+ LIaDIYd5WwcYkC4yIrYIdhbmMU8X+VFOkbj2OQGbTm6J94jb/RJ4RFS7Lb/1pbb9xnH4
+ vC+P2ysaqfez8LL9ou+fFE1oaabFz3LprLpxngM0HwFWTqK66t+9gepRF+OvJhScUgLz
+ qLDA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWfs10upKMSRVnF96gMJa68MUG2ldHUkPZy4cHnKarlNmO2EnOgF7X4SeJwAEG+y3tW2d30eb0S1bRK@nongnu.org
-X-Gm-Message-State: AOJu0Yy2+jUrGiMh66uzy7XnoHCRLOTftzZ6LjTxJXbCg+44zKCN2gqP
- A84l+IM0KiWkKqW/jAYneTZmcCaNAHeKdaRedpQ9HddJTie0L+GhQl8+9tDn8VzC8iIlToVQJBW
- S819Ldb8alhKbMZEKFaijWRIMW5A0OQ9vp/wAMutyejAJnJw/eg/7
-X-Gm-Gg: ASbGnctutYv0XZ0i0ktp2VxcGsPGnT4JhLLbzAv2Vdf6VaIhpTpvQOK3DeRgcXigYwA
- DAYzVuW4iXErBVECwWKK17jNAPrxRA5HMwTCvZwlTSF1uKjr7rj+TjSu8AWvHofUBkO9S18HVNU
- MyMAlQbAmVtDjjXyUWvf18I8naVPV4T6Bc4Fuy/VLXTvItxlya7uvzoK3nNj5kyz6ddSN8B/1XG
- iWn5U8wiuWwtAfGYQV7ekVKly5pvOB+/z4su2A80+ebVui39uBNeTObUr8kNCupVLay0WqiJ7Ye
- 0VzE2g3kDcB4BTve+/dywsAxf40hdpz4Z7JUMl9MnwjP
-X-Received: by 2002:a05:6000:1acb:b0:390:f6aa:4e7c with SMTP id
- ffacd0b85a97d-39cba93534emr210756f8f.28.1743703236566; 
- Thu, 03 Apr 2025 11:00:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7qVT3JKr2cqd/7LysPSGmIymxSbpXL0i9rRBvpGZ/0B6ghb/HJkGUFBTE+ZB+ozjE87szxg==
-X-Received: by 2002:a05:6000:1acb:b0:390:f6aa:4e7c with SMTP id
- ffacd0b85a97d-39cba93534emr210718f8f.28.1743703236189; 
- Thu, 03 Apr 2025 11:00:36 -0700 (PDT)
+ AJvYcCVhGf0g80U/uAm847+MzjxARy9yjeP6Rdf2nT9x7e9iBst2oGJ5bpYgYAUkyMytgu03GwmpeI+klPGd@nongnu.org
+X-Gm-Message-State: AOJu0Yy6zB+9dyLwI5MKHospAG5Ht7atWdIkp/Fh00rOWxw2Btq/w+1q
+ qaiQZmvjhwPysPFzTt0SbiAz/rOn67wt8nXr+9fQ+bPEjEZ1vaj5BKpBQaLAtXbVQxjgHUU+9CP
+ N6Frq7Gi7VjJf2lGSBU4ctochSnIIZWrs43Y5bFesnZ0TKRDTRhCg
+X-Gm-Gg: ASbGncsEeD779oX1/6qTmA+YSvsSUYlzvxgjTxm9xDUldQbMyWWC+Bsg8k90Gv6tf/x
+ D2trUIZVgjPSKFtkawQgbGEHNMFZcxGS9Erp9gd1Wn8e8dF+QBpDvrz+uMXuc9MUVe+0LxLYXWt
+ WXYzFV701BIheJ6fqs6jTTOnkkQtSW615RMRPgOOv55QUwevCSplJjOYhP4YxLxp1KNIeloOZk0
+ rMKxPGCvxilawvcTCSQZVTzAbvGYkDNiqnTg9hoRLE5pFAxXMW93c+/K0OvXRL3myERDdDemXle
+ woPq0vQ8tZq4ASH+ZXHf5+Vc6MN8cRVp71lTHLTlKZol
+X-Received: by 2002:a05:6000:2489:b0:391:4873:7943 with SMTP id
+ ffacd0b85a97d-39cb35aaaeamr280814f8f.32.1743703478921; 
+ Thu, 03 Apr 2025 11:04:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvY9PmpMXz4cYGfu5GYif1bYn2tLZnL1GXdG8t3vb5h0XpXGyMwPGNuahoR45Mx7Oergww5A==
+X-Received: by 2002:a05:6000:2489:b0:391:4873:7943 with SMTP id
+ ffacd0b85a97d-39cb35aaaeamr280761f8f.32.1743703478312; 
+ Thu, 03 Apr 2025 11:04:38 -0700 (PDT)
 Received: from [192.168.0.7] (ip-109-42-51-76.web.vodafone.de. [109.42.51.76])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301ba2dfsm2396422f8f.60.2025.04.03.11.00.34
+ ffacd0b85a97d-39c3020d9cfsm2368607f8f.78.2025.04.03.11.04.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Apr 2025 11:00:35 -0700 (PDT)
-Message-ID: <4bd6f358-3de7-44f9-9cf2-7c2086a87fca@redhat.com>
-Date: Thu, 3 Apr 2025 20:00:33 +0200
+ Thu, 03 Apr 2025 11:04:37 -0700 (PDT)
+Message-ID: <7c417483-7d5d-456f-8187-56b5264f539e@redhat.com>
+Date: Thu, 3 Apr 2025 20:04:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.0 v2 04/14] tests/qtest: Skip Aarch64 VMapple
- machine
+Subject: Re: [PATCH-for-10.0 v2 02/14] tests/functional: Add a decorator for
+ skipping tests on particular OS
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>,
@@ -88,7 +88,7 @@ Cc: Gustavo Romero <gustavo.romero@linaro.org>,
  Fabiano Rosas <farosas@suse.de>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
  <alex.bennee@linaro.org>, Shannon Zhao <shannon.zhaosl@gmail.com>
 References: <20250403151829.44858-1-philmd@linaro.org>
- <20250403151829.44858-5-philmd@linaro.org>
+ <20250403151829.44858-3-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -133,10 +133,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250403151829.44858-5-philmd@linaro.org>
+In-Reply-To: <20250403151829.44858-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -145,7 +145,7 @@ X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.649,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -162,52 +162,65 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 03/04/2025 17.18, Philippe Mathieu-Daudé wrote:
-> First, the VMapple machine only works with the ARM 'host' CPU
-> type, which isn't accepted for QTest:
+> Since tests might be failing on some operating systems,
+> introduce the skipIfOperatingSystem() decorator.
 > 
->    $ qemu-system-aarch64 -M vmapple -accel qtest
->    qemu-system-aarch64: The 'host' CPU type can only be used with KVM or HVF
-> 
-> Second, the QTest framework expects machines to be createable
-> without specifying optional arguments, however the VMapple
-> machine requires few of them:
-> 
->    $ qemu-system-aarch64 -M vmapple -accel qtest
->    qemu-system-aarch64: No firmware specified
-> 
->    $ qemu-system-aarch64 -M vmapple -accel qtest -bios /dev/null
->    qemu-system-aarch64: No AUX device. Please specify one as pflash drive.
-> 
-> Restrict this machine with QTest so we can at least run check-qtest,
-> otherwise we get:
-> 
->    $ make check-qtest-aarch64
->    qemu-system-aarch64: The 'host' CPU type can only be used with KVM or HVF
->    Broken pipe
->    ../tests/qtest/libqtest.c:199: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
->    ...
->     7/26 qemu:qtest+qtest-aarch64 / qtest-aarch64/test-hmp     ERROR      24.71s   killed by signal 6 SIGABRT
->     2/26 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test     ERROR      71.23s   killed by signal 6 SIGABRT
-> 
-> Suggested-by: Fabiano Rosas <farosas@suse.de>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   tests/qtest/libqtest.c | 1 +
->   1 file changed, 1 insertion(+)
+>   tests/functional/qemu_test/__init__.py   |  2 +-
+>   tests/functional/qemu_test/decorators.py | 15 ++++++++++++++-
+>   2 files changed, 15 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-> index 2750067861e..fad307d125a 100644
-> --- a/tests/qtest/libqtest.c
-> +++ b/tests/qtest/libqtest.c
-> @@ -1788,6 +1788,7 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
->           if (!strncmp("xenfv", machines[i].name, 5) ||
->               g_str_equal("xenpv", machines[i].name) ||
->               g_str_equal("xenpvh", machines[i].name) ||
-> +            g_str_equal("vmapple", machines[i].name) ||
->               g_str_equal("nitro-enclave", machines[i].name)) {
->               continue;
->           }
+> diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+> index 45f7befa374..af41c2c6a22 100644
+> --- a/tests/functional/qemu_test/__init__.py
+> +++ b/tests/functional/qemu_test/__init__.py
+> @@ -15,6 +15,6 @@
+>   from .linuxkernel import LinuxKernelTest
+>   from .decorators import skipIfMissingCommands, skipIfNotMachine, \
+>       skipFlakyTest, skipUntrustedTest, skipBigDataTest, skipSlowTest, \
+> -    skipIfMissingImports
+> +    skipIfMissingImports, skipIfOperatingSystem
+>   from .archive import archive_extract
+>   from .uncompress import uncompress
+> diff --git a/tests/functional/qemu_test/decorators.py b/tests/functional/qemu_test/decorators.py
+> index 1651eb739a7..b6a1d41c55c 100644
+> --- a/tests/functional/qemu_test/decorators.py
+> +++ b/tests/functional/qemu_test/decorators.py
+> @@ -5,7 +5,7 @@
+>   import importlib
+>   import os
+>   import platform
+> -from unittest import skipUnless
+> +from unittest import skipIf, skipUnless
+>   
+>   from .cmd import which
+>   
+> @@ -26,6 +26,19 @@ def skipIfMissingCommands(*args):
+>       return skipUnless(has_cmds, 'required command(s) "%s" not installed' %
+>                                   ", ".join(args))
+>   
+> +'''
+> +Decorator to skip execution of a test if the current
+> +host operating system does not match one of the permitted
+> +ones.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+"permitted ones" sounds like you'd need to specify the ones that are allowed 
+to run the test, but it's rather the other way round, you have to specify 
+the ones that are not able to run the test. I'd suggest to rewrite the 
+comment accordingly.
+
+> +Example
+> +
+> +  @skipIfOperatingSystem("Linux", "Darwin")
+> +'''
+> +def skipIfOperatingSystem(*args):
+> +    return skipIf(platform.system() in args,
+> +                  'not running on one of the required OS(s) "%s"' %
+
+Same here, maybe rather: "running on an OS (%s) that is not able to run this 
+test" ?
+
+  Thomas
 
 
