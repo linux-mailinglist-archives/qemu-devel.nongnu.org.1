@@ -2,90 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A81A79890
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 01:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8EDA79AA9
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 05:55:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u07FI-0004Vg-6R; Wed, 02 Apr 2025 19:11:44 -0400
+	id 1u0BeO-0000Ox-2O; Wed, 02 Apr 2025 23:53:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u07FG-0004VM-9k
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 19:11:42 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u07FE-0005pV-Ln
- for qemu-devel@nongnu.org; Wed, 02 Apr 2025 19:11:42 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43d0782d787so1710325e9.0
- for <qemu-devel@nongnu.org>; Wed, 02 Apr 2025 16:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743635498; x=1744240298; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SCuuyED5vv978zd8stIQgFW8xErmGOTaeFOafHOtSeQ=;
- b=td67V2hv2H16Ukgd95GCWIlDN0/usFtQQ2HU+pPqTLlli9qFNmLWnMMDLE7tvyKTaD
- /jZdf3U7kBV9pYvbIm+zQhNaIu2t7npzuZMrYRhkKFq3mLlVUe91oPSjSyzIYCJ1++cp
- X+VsWgpIM0/vXK/6h51aOX9ykvUoXTxVOF/ijKmeg9ls+9kHPaqODxskK2QtR6CDF0S3
- vwfyquNaI1d3P++eOVx1SHHE5SnrGdidKqbwt6DJcXqt4WsTzDji/+Gu9gd9cOO/XUJr
- a7S8F/1SQV8AxxRDRpV8lQcx5Ai5STfKGuOMukEQzpn69h1NI30LMx3Vq/WMT7DWGaa4
- xwtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743635498; x=1744240298;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SCuuyED5vv978zd8stIQgFW8xErmGOTaeFOafHOtSeQ=;
- b=UuCoj8RkUdso3Bso1WhPHnJGPj5YwJPaYpUjphfwyDb7+mfdXDEYTSVR5ujldK3acg
- f4K3eZfj05tlKy3K8Obs1ElWU0e1h5qIhLD0i1Ssjs1dAcHPYO+nTnnaT+OBxm8u5eww
- kQ0Df5Bw/Kp2t/WGWwomwSXWEgg1K3C247CgfptwnhkY0iazVhJltIFmyrq0HB3pgzsj
- eS3CLh95PjI679ZB9snLcPpOr48+EznCnnhyKCInwN7EcnXIUceUXY4oDnp4HHHIvrX4
- y/EoyMb2Vc8xZGE4AvfNQ+hGYwB9nssVsC3wCTdClpHqMJyXlE5TkzB5oL6B3chPlG8N
- svXQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXN3+E2a4aMWn35gHXw2qjMo40KHNf7oJnlwjJcvJUi9RTXJGhsgkJEej7eHfpI652ZFP/96JjR/mlo@nongnu.org
-X-Gm-Message-State: AOJu0YzVj8nTAaP8Kf2QVu6BFYD/or+6dEn35FWVhGojz09wACx8+mRc
- UNNDD7jRSnfKylwD1E8u3VPguCwLhtv5Ao8tb3R5Q5JjUEAEycQh4/7Ff+a4TP0=
-X-Gm-Gg: ASbGncvxBnN8ftS1aLhmPLd7gZqghYWHLXari/NPW36mtZSwBU87Ns047h9qQoZFwn4
- 9c2shZhAOvyz96etU1zAeESFpw8VWMtKTPpLoC9S1Z40bymlOFvnhz8n7V8KHlgJv/RwgmxtpAC
- SwNcDepWtfcJ96fA/YRbuPFhNJ6dwIi9phyDZHbP2Phq6DeL2Iu3SCSO/gtLcG8iH/emyuJr6Om
- SElgJmeuy6sdTOtUk3Us9Uv4T4X2bG+troKyp2ZVjicF69KzBcw1m68X9K4nTOtbGaFJzbYLW1s
- 9eUTN2xOr+aQGunTFOsJorHf99olYtFTz3awVIzEJtl95Z2uHAXXGckVeYzmfZfLL3ztsOmGHR7
- nR8ZPyAnZaM9K
-X-Google-Smtp-Source: AGHT+IG0STEvBx8a3foQvVzQCkaIUE+7I6MC2jXyuJzOrlewzlqDB0h+N52QttC38PzIQxq6kgaGOw==
-X-Received: by 2002:a05:600c:1c90:b0:43c:f63c:babb with SMTP id
- 5b1f17b1804b1-43e9d4edc28mr107000025e9.1.1743635498595; 
- Wed, 02 Apr 2025 16:11:38 -0700 (PDT)
-Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec1630de9sm4805245e9.1.2025.04.02.16.11.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Apr 2025 16:11:38 -0700 (PDT)
-Message-ID: <4e17734f-2f63-41e6-9bed-d7613d9723e2@linaro.org>
-Date: Thu, 3 Apr 2025 01:11:36 +0200
+ (Exim 4.90_1) (envelope-from <purplearmadillo77@proton.me>)
+ id 1u0947-0000pD-BK
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 21:08:20 -0400
+Received: from mail-0201.mail-europe.com ([51.77.79.158])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <purplearmadillo77@proton.me>)
+ id 1u0943-0007hM-Fp
+ for qemu-devel@nongnu.org; Wed, 02 Apr 2025 21:08:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+ s=protonmail; t=1743642481; x=1743901681;
+ bh=IuIxDV9ZU7dW/T6L0RPb9jN3ZKTUoLiK+7IPUZdw5nQ=;
+ h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+ Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+ List-Unsubscribe:List-Unsubscribe-Post;
+ b=ZF2s1+Z20pXQJts5nSu8B1lzn+3SdIAa9OPvFXWIH2aljAClqffMOmRCn0motMxnu
+ VhaS+LRJ2cWAzgcj4J/Lo/xI5PfSsFfScyQhcvMGWUXt4umzdI3olq6jlvFUzlS+iD
+ rnprVEkyGvgM/g5Z+3QSAXWROBu3bEXZeIdHYi3BXzoeR0eP0rqDOpWcpUMOx5CcTY
+ IuWo+SahrNb6eZS0Ku3jbpQFaBiGUSwP8al3ZObvZGcxHdcEAiRbZ0vUNKij0xdExX
+ qEjw0b7emIZUjnrZ51HRpIytaV+jyhPBwl6UNUFBv7flhcaV4SK9j9iInnAynj/dHC
+ df+dNdrUNhF1g==
+Date: Thu, 03 Apr 2025 01:07:56 +0000
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: [PATCH] ui/curses: Fix infinite loop on windows
+Message-ID: <tSO5to8--iex6QMThG3Z8ElfnNOUahK_yitw2G2tEVRPoMKV936CBdrpyfbeNpVEpziKqeQ1ShBwPOoDkofgApM8YWwnPKJR_JrPDThV8Bc=@proton.me>
+Feedback-ID: 51238035:user:proton
+X-Pm-Message-ID: 1a0ed4ef1e55ba72f73976a7ad9b638932a48003
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 21/43] target/s390x: Restrict SoftMMU mmu_index()
- to TCG
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250402210328.52897-1-philmd@linaro.org>
- <20250402210328.52897-22-philmd@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250402210328.52897-22-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=51.77.79.158;
+ envelope-from=purplearmadillo77@proton.me; helo=mail-0201.mail-europe.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 02 Apr 2025 23:53:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,68 +62,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  William Hu <purplearmadillo77@proton.me>
+From:  William Hu via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/4/25 23:03, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/s390x/cpu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-> index 1f75629ddc2..320ace67198 100644
-> --- a/target/s390x/cpu.c
-> +++ b/target/s390x/cpu.c
-> @@ -348,6 +348,7 @@ static const TCGCPUOps s390_tcg_ops = {
->       .initialize = s390x_translate_init,
->       .translate_code = s390x_translate_code,
->       .restore_state_to_opc = s390x_restore_state_to_opc,
-> +    .mmu_index = s390x_cpu_mmu_index,
->   
->   #ifdef CONFIG_USER_ONLY
->       .record_sigsegv = s390_cpu_record_sigsegv,
-> @@ -378,7 +379,6 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
->                                          &scc->parent_phases);
->   
->       cc->class_by_name = s390_cpu_class_by_name;
-> -    cc->mmu_index = s390x_cpu_mmu_index;
->       cc->dump_state = s390_cpu_dump_state;
->       cc->query_cpu_fast = s390_query_cpu_fast;
->       cc->set_pc = s390_cpu_set_pc;
+From a42046272f0544dd18ed58661e53ea17d1584c2c Mon Sep 17 00:00:00 2001
+From: William Hu <purplearmadillo77@proton.me>
+Date: Wed, 2 Apr 2025 12:00:00 -0400
+Subject: [PATCH] ui/curses: Fix infinite loop on windows
 
-Missing:
+Replace -1 comparisons for wint_t with WEOF to fix infinite loop caused by =
+a
+65535 =3D=3D -1 comparison.
 
--- >8 --
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 9efa4ef735..43fc3194bc 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -128,7 +128,2 @@ static vaddr s390_cpu_get_pc(CPUState *cs)
-
--static int s390x_cpu_mmu_index(CPUState *cs, bool ifetch)
--{
--    return s390x_env_mmu_index(cpu_env(cs), ifetch);
--}
--
-  static void s390_query_cpu_fast(CPUState *cpu, CpuInfoFast *value)
-@@ -310,2 +305,7 @@ static const Property s390x_cpu_properties[] = {
-
-+static int s390x_cpu_mmu_index(CPUState *cs, bool ifetch)
-+{
-+    return s390x_env_mmu_index(cpu_env(cs), ifetch);
-+}
-+
-  void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
-
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2905
+Signed-off-by: William Hu <purplearmadillo77@proton.me>
 ---
+ ui/curses.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-With following description:
-
----
-Convert CPUClass::mmu_index() to TCGCPUOps::mmu_index(),
-restricting s390x_cpu_mmu_index() to TCG #ifdef.
----
+diff --git a/ui/curses.c b/ui/curses.c
+index a39aee8762..3f5c5adf78 100644
+--- a/ui/curses.c
++++ b/ui/curses.c
+@@ -265,7 +265,12 @@ static int curses2foo(const int _curses2foo[], const i=
+nt _curseskey2foo[],
+=20
+ static void curses_refresh(DisplayChangeListener *dcl)
+ {
+-    int chr, keysym, keycode, keycode_alt;
++    /*
++     * DO NOT MAKE chr AN INT:
++     * Causes silent conversion errors on Windows where wint_t is unsigned=
+ short.
++     */
++    wint_t chr =3D 0;
++    int keysym, keycode, keycode_alt;
+     enum maybe_keycode maybe_keycode =3D CURSES_KEYCODE;
+=20
+     curses_winch_check();
+@@ -284,8 +289,9 @@ static void curses_refresh(DisplayChangeListener *dcl)
+         /* while there are any pending key strokes to process */
+         chr =3D console_getch(&maybe_keycode);
+=20
+-        if (chr =3D=3D -1)
++        if (chr =3D=3D WEOF) {
+             break;
++        }
+=20
+ #ifdef KEY_RESIZE
+         /* this shouldn't occur when we use a custom SIGWINCH handler */
+--=20
+2.47.0
 
 
