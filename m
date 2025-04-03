@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2575A7A3E5
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 15:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1620A7A31A
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 14:46:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0KkT-0001ac-0v; Thu, 03 Apr 2025 09:36:49 -0400
+	id 1u0JwB-0003pO-3N; Thu, 03 Apr 2025 08:44:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1u0JVR-0000L9-E8
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 08:17:13 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0Jw4-0003kb-5B
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 08:44:45 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1u0JVP-0002w4-0J
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 08:17:13 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5ec9d24acfbso3609739a12.0
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 05:17:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0Jw1-0000Kq-Tp
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 08:44:43 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43cfba466b2so8538045e9.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 05:44:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743682629; x=1744287429; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=diGTPMOfCdQXRY7pq98mNhHNXR0bqqEOtRlrBmePnE0=;
- b=A0th0HbefJHJgrYUSwXkuVPJTA4t2x1bbthJIvDu1ZlE1OgoD6G63Ea+qGZgVEnc9G
- sML0g2zw8K+CkAjDaqfcon5OA3VA/xKgLdGDEuxzjXO7HsRh4GzPZXCJIOns9BRGEgNn
- 6TguU0AY9u9OQx1VZTwK0+vhWhug8dO6sFLdhpXJ67xK7CEbQlDTiAiE6HxWk0Mtj8aw
- E/neJEjqzjiQPfWhSOilkkuKYipePCI8wTA2IDjfVVvJZkKIQFBRG6Vc7UhLkAhTjn3A
- 1OSrQuCYzJrDnA/LnkIzYpE/S8GvoLsrnuactsDLH/QrBIrML/l62FJ9k4DW1sc8PKHJ
- 01BA==
+ d=linaro.org; s=google; t=1743684279; x=1744289079; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=n2ohynJjnfD5DeT1HE5SEIg9+Jkq0bbN0Tyd9EntOxI=;
+ b=o7ltH+Nz3tNP2k/rf9mRIn8xtAof3h0FN3xedmXhnw7KaqnO7754x6txJJGoBv6rAG
+ kGBqKtJeSShRXsIq4horhgjCX1zMrHDJwsF2xtAMNslehQDn2NDarGuGS7PYl0Anhl+L
+ whozF+6Po0u5A0w+rscfv6jKxCrkuHrahvL4Mx8ui29kO1otQxIsazjqJJ7fYmoz3FGV
+ U7D+PBrrPabGuq0Vm4k2BdmaTe9ytY4H4w2l2lUCCLIXj95z5btFbyCZhGG0o1IdNX/F
+ n7rwHL8C8/i0cwbSW7R/qlePhbhow3yLf2DF1YYg0qdTJ2vOlFPB8ULlB6lagfVbOWHl
+ vqfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743682629; x=1744287429;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=diGTPMOfCdQXRY7pq98mNhHNXR0bqqEOtRlrBmePnE0=;
- b=tJu6mHwjFgS1MeKy5w9/JeSyNSU7FcSepm7q7+E2UM0fl/bk0dkzhMWqh8yzoDNHUI
- KDIdkfU8zxBoqNviQc7rhmTp8wqwoPt4CRBuGabzfim0umfe9K4IxRU0Hz8WjdRpzR8l
- eqfLcT0KuJbAB1fGVmxUtT3TkB1ZVlun5gzWrylx1RUVJ7K7ou4c3n67Rb/fY7Ys4pZi
- kwNw/PHgU9LrgIv4GXwayo8+S+A7MWs6gaWSRunE8gsMdrAMAMw7TQsVMnk7GclLotb8
- EBRvHYQK1EE+V6dn8FoY25fRUy0za4LQL70SyPu4+rV69TkKewYX7cfj2ZtFM+nh+4we
- Cc+A==
-X-Gm-Message-State: AOJu0Yw4zYSotxdXk3zprOhfDVqkadk1ybNU0dcum3Ql4KfTHCXThjTn
- 8YS8UFVI9xBeIUjL4L7LyYHiU5NvlHa+GilneqAxYIrLccWXx7IOVg1ZkDVCWe2mAmQcPTFqD8v
- IZU8=
-X-Gm-Gg: ASbGncuo1/D1cnao/3DRoWa4tV+OwXZKIQvsv7yV4QH2S3FSHHShujTtT4Z+qW2CO3W
- Wb2S0A3cmOBpBgDYc9Zbz9M9x9X0IZTmuonkTqL9WudA8QAKMXpZJ+QwszvaqTT6g5SeiNzjGxc
- iwVzovTd09I+mCBbz1dJcyrdhpW6+eW3J1E6KnsN3I8d/G1hQpsaM4DEWCj1+xDsZ3EEQ7Xh6Kn
- 4z9OJ24GVk4Jwmvp1+ldhoLoTuurz6uTRu9/bAShw9/H4g2rQ/FwODuI+2MKkE96yhLgAASk/Ig
- /eta/XElKzMiPKhhnrrcjJd/b/6s9dibZ8zrYJFQHqsjVLsC3gYryqM5CDcBsx8xEMSW83XJyvY
- Mk0nXw/YE6GLFOr74uJcr+l3dh5BKCA==
-X-Google-Smtp-Source: AGHT+IFcAZgTAKf5LvrF2Rb+YHZVbWxj/aZ0MQew0BXekA2eRja6x5sWAIaYIvi+4yTL2DGBat5fIQ==
-X-Received: by 2002:a17:907:7f91:b0:ac0:4364:4083 with SMTP id
- a640c23a62f3a-ac7b6762bf7mr320997266b.0.1743682629244; 
- Thu, 03 Apr 2025 05:17:09 -0700 (PDT)
-Received: from localhost.localdomain (adsl-37.37.6.161.tellas.gr.
- [37.6.161.37]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ac7bfe61c15sm85641666b.12.2025.04.03.05.17.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Apr 2025 05:17:09 -0700 (PDT)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v1 2/2] virtio-gpu: refactor async blob unmapping
-Date: Thu,  3 Apr 2025 15:17:02 +0300
-Message-ID: <20250403121704.2754589-3-manos.pitsidianakis@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250403121704.2754589-1-manos.pitsidianakis@linaro.org>
-References: <20250403121704.2754589-1-manos.pitsidianakis@linaro.org>
+ d=1e100.net; s=20230601; t=1743684279; x=1744289079;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=n2ohynJjnfD5DeT1HE5SEIg9+Jkq0bbN0Tyd9EntOxI=;
+ b=oibmw0noAxXXtnj5IT9gSV2Hsm7nPAN7VQNn8czSR4c6+d9oQ2+h4A3HHA3DPy/k57
+ 9Higsx/AxD8yyugFJ44odR+Ohjk5aFQRnZOEvi2psu8L50SkXWlJ+IJlaMDcWAaPsknt
+ l0vl+OaW0KiBbDKKkQC/F+nMXtpzDHQtg0ZAjnejDLmG9tBmIc6AbumrpEdbsZBOVAFM
+ WIeRbVM6ZZD7sI6LqbHPkpwfA2h5q6P/LkuJm/unuU41A24I5mYlTObi67Mz8mhu5Esg
+ 7DlYlFurrTdvmssAKeb9t7RqCNVX7sXD3z+orID8Mm/84i6P5GHmlE7YRe4BndUas+6e
+ T9kw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWVjLo4BNwqwTz+bYG27eN79v0Pd0uErJKuWH6utjPRbSbqaWAvF226i3uFzZ8kRq3Iiie41fDOrq6W@nongnu.org
+X-Gm-Message-State: AOJu0YxCoDWRXsKpPPG3OcY38YmeDVVl1p5VnOiQSHphh4UbZVHNfMPG
+ nlrRbjbaoCahBiuRT2GelebyLkrOAFTXGgcf9p4CxZ32Yi8odatLVyQwuC6aaGA=
+X-Gm-Gg: ASbGncsSSZ+Wn0fn9xB84gndHWqj9JnbJsVWvOAvKQgQ/yAMDmgpLFRaJqbuFtzG+ky
+ d2iS3TSbgRGgu5gp2Qbd/NZrqUtVqlxAow5i6Pg1dd34S0Qv4pjuW1lvAFh7c4TFodlEi0hPho0
+ XhNYxm5q24DP5FGFdsTqO2/8iIPLz/RpS3rooNKebbwWxJQe/C+zRv5/uEHSL1v/DXx/6e8b2sy
+ pcLCvH28t6EWrM/cvkegD++ZCC7Ghr3SxEkySTEX26c/FIvzKqWyea1MoDvF26NU5XBU1kTEV4e
+ mU+r7wc2vNfvZ6f4isZ0myolMeBZvowwHc8HL+GtdA36qQjMVpkpjo+HNjI9d5RJrEtMDmULG9o
+ kJTz6MNBXqQHGSZ2WMg==
+X-Google-Smtp-Source: AGHT+IFi+MxMQ+kjXKcs0F0juB2ynhdNy1rzmHCReIbLQt+GuPpPoc3gYPRdYOOUAzWVZ71u8Lip3w==
+X-Received: by 2002:a05:600c:1d1a:b0:43d:fa59:be39 with SMTP id
+ 5b1f17b1804b1-43ec14e7168mr22806635e9.33.1743684278744; 
+ Thu, 03 Apr 2025 05:44:38 -0700 (PDT)
+Received: from [192.168.69.175] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-39c3020d62fsm1722586f8f.79.2025.04.03.05.44.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 03 Apr 2025 05:44:38 -0700 (PDT)
+Message-ID: <5f5e6140-d8d9-4cbc-9510-098bfddb661c@linaro.org>
+Date: Thu, 3 Apr 2025 14:44:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH-for-10.0] hw/vmapple: Allow running QTest framework on
+ macOS
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+References: <20250401090607.36375-1-philmd@linaro.org> <87msd0f27g.fsf@suse.de>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <87msd0f27g.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,7 +88,6 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 03 Apr 2025 09:36:46 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,71 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change the 3 part async cleanup of a blob memory mapping to check if the
-unmapping has finished already after deleting the subregion; this
-condition allows us to skip suspending the command and responding to the
-guest right away.
+On 1/4/25 15:20, Fabiano Rosas wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+> 
+>> First, the VMapple machine only works with the ARM 'host' CPU
+>> type, which isn't accepted for QTest:
+>>
+>>    $ qemu-system-aarch64 -M vmapple -accel qtest
+>>    qemu-system-aarch64: The 'host' CPU type can only be used with KVM or HVF
+>>
+>> Second, the QTest framework expects machines to be createable
+>> without specifying optional arguments, however the VMapple
+>> machine requires few of them:
+>>
+>>    $ qemu-system-aarch64 -M vmapple -accel qtest
+>>    qemu-system-aarch64: No firmware specified
+>>
+>>    $ qemu-system-aarch64 -M vmapple -accel qtest -bios /dev/null
+>>    qemu-system-aarch64: No AUX device. Please specify one as pflash drive.
+>>
+>> Restrict some code path to QTest so we can at least run check-qtest,
+>> otherwise we get:
+> 
+> Or add vmapple as an exception in qtest_cb_for_every_machine():
+> 
+>      for (i = 0; machines[i].name != NULL; i++) {
+>          /* Ignore machines that cannot be used for qtests */
+>          if (!strncmp("xenfv", machines[i].name, 5) ||
+>              g_str_equal("xenpv", machines[i].name) ||
+>              g_str_equal("xenpvh", machines[i].name) ||
+>              g_str_equal("nitro-enclave", machines[i].name)) {
+>              continue;
+>          }
+>          ...
+>      }
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- hw/display/virtio-gpu-virgl.c | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
-
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index ad600ccc9c..c75206114d 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -162,7 +162,32 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
-      *    asynchronously by virtio_gpu_virgl_hostmem_region_free().
-      * 3. Finish the unmapping with final virgl_renderer_resource_unmap().
-      */
-+
-+    /* 1. Check if we should start unmapping now */
-+    if (!vmr->finish_unmapping) {
-+        /* begin async unmapping. render will be unblocked once MR is freed */
-+        b->renderer_blocked++;
-+
-+        memory_region_set_enabled(mr, false);
-+        memory_region_del_subregion(&b->hostmem, mr);
-+        object_unparent(OBJECT(mr));
-+        /*
-+         * The unmapping might have already finished at this point if no one
-+         * else held a reference to the MR; if yes, we can skip suspending the
-+         * command and unmap the resource right away.
-+         */
-+        *cmd_suspended = !vmr->finish_unmapping;
-+    }
-+
-+    /*
-+     * 2. if virtio_gpu_virgl_hostmem_region_free hasn't been executed yet, we
-+     * have marked the command to be re-processed later by setting
-+     * cmd_suspended to true. The freeing callback will be called from RCU
-+     * context later.
-+     */
-+
-     if (vmr->finish_unmapping) {
-+        /* 3. MemoryRegion has been freed, so finish unmapping */
-         res->mr = NULL;
-         g_free(vmr);
- 
-@@ -173,16 +198,6 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
-                           __func__, strerror(-ret));
-             return ret;
-         }
--    } else {
--        *cmd_suspended = true;
--
--        /* render will be unblocked once MR is freed */
--        b->renderer_blocked++;
--
--        /* memory region owns self res->mr object and frees it by itself */
--        memory_region_set_enabled(mr, false);
--        memory_region_del_subregion(&b->hostmem, mr);
--        object_unparent(OBJECT(mr));
-     }
- 
-     return 0;
--- 
-γαῖα πυρί μιχθήτω
-
+Oh, I was not aware of qtest_cb_for_every_machine(), thanks!
 
