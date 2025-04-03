@@ -2,99 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D5CA7A009
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 11:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F00A79FF2
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 11:24:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0GtF-0002uf-A8; Thu, 03 Apr 2025 05:29:37 -0400
+	id 1u0Gn0-0006cm-1G; Thu, 03 Apr 2025 05:23:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keosung.park@samsung.com>)
- id 1u0GtC-0002u7-OV
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 05:29:34 -0400
-Received: from mailout1.samsung.com ([203.254.224.24])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1u0Gmu-0006cZ-NO
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 05:23:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keosung.park@samsung.com>)
- id 1u0Gt6-0000re-PL
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 05:29:34 -0400
-Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
- by mailout1.samsung.com (KnoxPortal) with ESMTP id
- 20250403092142epoutp010286aa03b6441f9534711e2a4bfab13a~yxInjehnH0245602456epoutp01c
- for <qemu-devel@nongnu.org>; Thu,  3 Apr 2025 09:21:42 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
- 20250403092142epoutp010286aa03b6441f9534711e2a4bfab13a~yxInjehnH0245602456epoutp01c
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1743672102;
- bh=GRJ5SS0ceFZ6u/WGNw9HoPV2P9q+zrAFaXLxmXr3EUc=;
- h=Subject:Reply-To:From:To:CC:Date:References:From;
- b=OhB0bYYSMk/44+HjUKbiyOzFrUomjRdxaRP49/jApKzWsOh8vIghdg9YLJZtX0Q9J
- Jhpvwkzf+Ft7y06tNYsl9kCo2RNScbitB+j4j56+J7rC8IzZhoGuZd+/h+9ZPXigUa
- 4b38W0jcrRNz5QzlRgSnZYcl/ftm8QylknsvR3qE=
-Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
- epcas2p3.samsung.com (KnoxPortal) with ESMTPS id
- 20250403092141epcas2p398b352dd7b6f649371386e4289d43e55~yxInTU_jS1351813518epcas2p3b;
- Thu,  3 Apr 2025 09:21:41 +0000 (GMT)
-Received: from epsmges2p1.samsung.com (unknown [182.195.36.68]) by
- epsnrtp03.localdomain (Postfix) with ESMTP id 4ZSx7n2cgtz3hhT9; Thu,  3 Apr
- 2025 09:21:41 +0000 (GMT)
-X-AuditID: b6c32a45-9d3ff7000000263b-99-67ee53254ac6
-Received: from epcas2p2.samsung.com ( [182.195.41.54]) by
- epsmges2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
- 36.DC.09787.5235EE76; Thu,  3 Apr 2025 18:21:41 +0900 (KST)
-Mime-Version: 1.0
-Subject: [PATCH] hw/ufs: Fix incorrect comment for segment_size and
- allocation_unit_size
-From: Keoseong Park <keosung.park@samsung.com>
-To: Jeuk Kim <jeuk20.kim@samsung.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-X-Priority: 3
-X-Content-Kind-Code: NORMAL
-X-CPGS-Detection: blocking_info_exchange
-X-Drm-Type: N,general
-X-Msg-Generator: Mail
-X-Msg-Type: PERSONAL
-X-Reply-Demand: N
-Message-ID: <20250403092140epcms2p355a7f039871b3e5b409754ef450b9158@epcms2p3>
-Date: Thu, 03 Apr 2025 18:21:40 +0900
-X-CMS-MailID: 20250403092140epcms2p355a7f039871b3e5b409754ef450b9158
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-X-CPGSPASS: Y
-X-CPGSPASS: Y
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrEKsWRmVeSWpSXmKPExsWy7bCmma5q8Lt0g559XBYvD2la3N96jdHi
- eO8OFgdmjyfXNjN59G1ZxRjAFJVtk5GamJJapJCal5yfkpmXbqvkHRzvHG9qZmCoa2hpYa6k
- kJeYm2qr5OIToOuWmQO0Q0mhLDGnFCgUkFhcrKRvZ1OUX1qSqpCRX1xiq5RakJJTYF6gV5yY
- W1yal66Xl1piZWhgYGQKVJiQnfHq/DPmgl1cFcePPmNvYLzC0cXIySEhYCLx+fIH5i5GLg4h
- gR2MEvvWH2PvYuTg4BUQlPi7QxikRlggSuLatf+sILaQgJJE18KtzBBxA4l10/eA2WwCehJT
- ft9hBLFFBFQlXi3exAJiMwsYSyw5M5UdYhevxIz2pywQtrTE9uVbGSFsDYkfy3qZIWxRiZur
- 37LD2O+PzYeqEZFovXcWqkZQ4sHP3YwgZ0oISEq8v6oIEa6XaH1/ih3kFQmBCYwSjcf+QM3R
- l7jWsRFsL6+Ar8SKCU1gc1iA7vy07TdUjYvEhTuNbBA3y0tsfzuHGWQ+s4CmxPpd+hCrlCWO
- 3IL6ik+i4/BfuK8aNv7Gyt4x7wkThK0m8WjBFlYIW0bi4pxzzBMYlWYhwnkWkr2zEPYuYGRe
- xSiWWlCcm55abFRgCI/a5PzcTYzgxKbluoNx8tsPeocYmTgYDzFKcDArifAWar1NF+JNSays
- Si3Kjy8qzUktPsRoCvTxRGYp0eR8YGrNK4k3NLE0MDEzMzQ3MjUwVxLnPfTxabqQQHpiSWp2
- ampBahFMHxMHp1QDE0OwP8OUf2drHnp0rH8sEylZ8Ytv0gozBraOIt5it5iyep57Jx5O/vb4
- 4YnZzZc7TJ5vvTct+9W+61Yyy0J9GGO/it6vNX06bRGzS9uFs7vk23tEOOfmJmZd/biJN4PJ
- qFmtp6Jyt9rZVSWT12kn/N/qvy+1jEu36uq1M6ze0908GZiP9L71Tcma/6jLo23D+iht5oOJ
- 551DzcrzmjNXl0lesuhVS/o3t1dac8JplW8PTT/G+116WHkhQE2I93Gs+Ivqjst8omITun7J
- 68902dqxsiTjkFrRxwNlqpc6tyXfPvK+yWJjS7VJvUlwoEWZUdAD2bnb/nurBW4p/9VZ8/ry
- ovumKukVvEf+r/+gxFKckWioxVxUnAgAjOwVlfUDAAA=
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250403092140epcms2p355a7f039871b3e5b409754ef450b9158
-References: <CGME20250403092140epcms2p355a7f039871b3e5b409754ef450b9158@epcms2p3>
-Received-SPF: pass client-ip=203.254.224.24;
- envelope-from=keosung.park@samsung.com; helo=mailout1.samsung.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1u0Gms-0007p0-N5
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 05:23:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1743672178;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=H9p4O1rMYuUh7mtR/C12bn5JqYODPsjCuiAV9mktXxY=;
+ b=VboWaF7yJ2Gaue/lsJ5VbxG6DRA3G4xqaCfFCifqoikk6P/F5V/ikGHOHVQHkeJVUfU58X
+ 6hhDuU9bkiFZYotIoluwJh8PUM0KhJrXFq8DGcGM0IX3MJv5hUgOXUu8owQo+HQcp4BOpl
+ D1GHkmaNWY7bzB9jfhD8uXYW2R6jho4=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-261-451IY9y7PdGcmDHtyKJS0A-1; Thu, 03 Apr 2025 05:22:55 -0400
+X-MC-Unique: 451IY9y7PdGcmDHtyKJS0A-1
+X-Mimecast-MFC-AGG-ID: 451IY9y7PdGcmDHtyKJS0A_1743672174
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-ac737973d06so24777866b.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 02:22:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1743672173; x=1744276973;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=H9p4O1rMYuUh7mtR/C12bn5JqYODPsjCuiAV9mktXxY=;
+ b=N62k4q2laq6hMs2oxyaXghvZq2oVE5+GM4eykA7a3TmdcDIHfflOZIpF8nd46mtrEU
+ RSNidlHo7Oacbh0nbAv8kfO/DO3f+RG4vfZRBYStkbN8bRVC2fv4NT+1kQ9MiQ6salfG
+ 6dUQggmdRObD1LUwricy3zOqgh2CfekYTvxFexkYvHQ5ewxXYKC26TVx1ijRpEuLaGdQ
+ vwY+98ZKN/NTItARJwgn5Bi9pE2SQQL+YxT2eXIwgGsK2aNyBRGpjty0REN2XBOlcYtP
+ zk8FThJ6Y8l6TK1q2OX3yCCr1LtQhT+Cs8pWWHgnGdcgefvP/0GMPMHjXRlHijtEdEm4
+ uwLA==
+X-Gm-Message-State: AOJu0YwaeykKUyPSGgAloCM07I46s1qYZIyQPglJCqoBhXo3PKGOwYeK
+ Bu91L1DQ4h1xn1jVNatN+9Uwe2LJemj7ELs/wvXrfVZru/aR79EaxkVjNHt9GhLlyLc/lQonYA6
+ xIDppcOhFwQ0AJxsifzc70+LV/Ng3/DGGBd/zVaOf+2hbeaTujk8cQl7DdjLDmEaX/l66BUELbU
+ UVihFViMhLGV1JoTuBH8/8+FL7MZOvCRxCF4ml
+X-Gm-Gg: ASbGncu8dWgwlEJKFVDbwifYmNl82/TxLLMYcweV68Bv/R/5SulITBYcQnfk07/gyqs
+ jN0jo9wdXzabXdwED7hBgi7+1nkdiVr9/UmpPy5jd1RC0PyhLmLlf25u+eAHHPSYl3SrrqMOZxa
+ KOZQyUSgDxG5nofj+wkszl2tq2xzZsPIgS7ayWdbcbcc4N0O5lFvKRfAnLu/SAEFz5vBQY3GuJR
+ UdYd6m4Ujaj1uCHv521wUM7tGrcgY0ekjeGytXUk/skSf3X4peIYGBY+XdFyXW6kuAne2YdaG5b
+ vUkRX0a+vFlv2WfRjkS+
+X-Received: by 2002:a17:906:dc95:b0:ac6:bf3d:bf45 with SMTP id
+ a640c23a62f3a-ac7bc1ba8e2mr189716166b.36.1743672173674; 
+ Thu, 03 Apr 2025 02:22:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnJO9fs83smOxxm2t1US9q+DaRb/IQTbvI5UuyaSddRSGZBwSDfJ1NowxP3kuBzsXWy/+20A==
+X-Received: by 2002:a17:906:dc95:b0:ac6:bf3d:bf45 with SMTP id
+ a640c23a62f3a-ac7bc1ba8e2mr189714266b.36.1743672173248; 
+ Thu, 03 Apr 2025 02:22:53 -0700 (PDT)
+Received: from [192.168.122.1] ([151.49.230.224])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ac7bfe5d437sm62549466b.27.2025.04.03.02.22.52
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Apr 2025 02:22:52 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH for 10.1 0/5] target/i386: TCG changes
+Date: Thu,  3 Apr 2025 11:22:46 +0200
+Message-ID: <20250403092251.54441-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,39 +99,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: keosung.park@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The comments for segment_size and allocation_unit_size incorrectly
-described them as 4KB. According to the UFS specification,
-segment_size is expressed in units of 512 bytes.
-Given segment_size = 0x2000 (8192), the actual size is 4MB.
-Similarly, allocation_unit_size = 1 means 1 segment = 4MB.
+Small improvements to ADC and SBB code generation, and inching towards
+removal of temporaries (other than T0 and T1).
 
-This patch updates the comments to reflect the correct size.
+Paolo Bonzini (5):
+  target/i386: special case ADC/SBB x,0 and SBB x,x
+  target/i386: tcg: remove tmp0 and tmp4 from SHLD/SHRD
+  target/i386: tcg: remove subf from SHLD/SHRD expansion
+  target/i386: tcg: remove tmp0
+  target/i386: tcg: remove some more uses of temporaries
 
-Signed-off-by: Keoseong Park <keosung.park@samsung.com>
----
- hw/ufs/ufs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/i386/tcg/translate.c | 144 ++++++++++++++++++-----------
+ target/i386/tcg/emit.c.inc  | 174 +++++++++++++++++++++++++-----------
+ 2 files changed, 214 insertions(+), 104 deletions(-)
 
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index ee13edacd8..542f13b10e 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -1753,8 +1753,8 @@ static void ufs_init_hc(UfsHc *u)
-     u->geometry_desc.length = sizeof(GeometryDescriptor);
-     u->geometry_desc.descriptor_idn = UFS_QUERY_DESC_IDN_GEOMETRY;
-     u->geometry_desc.max_number_lu = (UFS_MAX_LUS == 32) ? 0x1 : 0x0;
--    u->geometry_desc.segment_size = cpu_to_be32(0x2000); /* 4KB */
--    u->geometry_desc.allocation_unit_size = 0x1; /* 4KB */
-+    u->geometry_desc.segment_size = cpu_to_be32(0x2000); /* 4MB: 8192 * 512B */
-+    u->geometry_desc.allocation_unit_size = 0x1; /* 4MB: 1 segment */
-     u->geometry_desc.min_addr_block_size = 0x8; /* 4KB */
-     u->geometry_desc.max_in_buffer_size = 0x8;
-     u->geometry_desc.max_out_buffer_size = 0x8;
 -- 
-2.25.1
+2.49.0
 
 
