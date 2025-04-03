@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D818FA7A89F
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 19:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CAFA7A8A3
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 19:34:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0OQB-0003YF-Vc; Thu, 03 Apr 2025 13:32:08 -0400
+	id 1u0ORV-0004pY-Qi; Thu, 03 Apr 2025 13:33:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u0OQ8-0003XR-J3
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 13:32:04 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1u0ORT-0004ok-4L
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 13:33:27 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u0OQ6-0007D2-Qi
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 13:32:04 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-736c1cf75e4so985778b3a.2
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 10:32:02 -0700 (PDT)
+ id 1u0ORR-0007Rl-Af
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 13:33:26 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-7359aca7ef2so1436616b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 10:33:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743701521; x=1744306321; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743701604; x=1744306404; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=I9t72SvxHJHwR7VXXENUvyeoxFJMEGXR3JFXvAvha2g=;
- b=AAzGEkgs5WvL3XmTKA5EAmplVaKdep9slcWntVxMJYKe/Xtq2UrjzLXtW/7RLAi1wC
- vL6PtVbQVp8DGhmezrlua9ys9oT6+Of1HgN4HIFN8CgTNOAGf/v0PXl153w4u4yIX5EG
- rvNav1AEhjGvy0SxfrCf0kzO+qTtei8smge0tdb09w2B5Dczl5L7+G6iXACp/AQxs8yh
- +V8j/bx9MiQEJjDMEI5m8Dmw6DpC6ocd/LB34PIQEihVu6L51yIx/OpBpJSM/LPFTLuu
- qXpqo8QqBnFnN0oF+Fvm1bkMyDdad1eBnu8cc7sjHKkLM0bTe8qHN6ia5vtK42+dGY7A
- DGOQ==
+ bh=muBPTjYt3KMh4Cr3cxDcAhIlTFkT5C3V+LLPY/a3I8w=;
+ b=sRq3jsL3TtF2d6MGpyNPsVrf8W0g5ZbpDNLONHGHRBIULc+H12HGe9MkAOryfEDWgK
+ BssWNRg7IKlQ3jIabOuRF5Q9vgdkGDrBW666GXfV4BM8bf8dd5204pprBEh0UB1HEUKp
+ r5p7PBFb/KiW6CRt64yfyJVjaVLuDOs+EGAvdYteo+gloNrLuLoL92yUEJBiK59jXwcv
+ yMwq+9C3asuR6vy/pzPGIBeqCeXZEKkMpfogO2fcGlVes8e0WCMnw5ImukbkcagdMOOr
+ F8W4YVEm/yOO2SOrJnZxU2tsx8lfLSAEVnLSKCDatTFFngzPCg9CLxR1OoVNuICTnlMo
+ TuTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743701521; x=1744306321;
+ d=1e100.net; s=20230601; t=1743701604; x=1744306404;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I9t72SvxHJHwR7VXXENUvyeoxFJMEGXR3JFXvAvha2g=;
- b=HOiZO9pRS//6Ucx4Jmt5ZIvsffXS0bGymOmn1IwZj7Jjw7Uhgd22TJhlYebFUpVazH
- 3ujikuMsX9kSpnub2k+GPru7psbtB5tPI7MJbHpYJaIIJ7NDDWu4bWPmgGb4uerWC8Rb
- O+n57WNQUPb7ODbDAO5xej6JuVOaHMPaDc+O0pAITLBif1fKLB+KRrdBWThDTUzSLmcQ
- /l6yRKC34DiIo9fsQcnSN4s1j/BfgUztxcPyu38IfNMh/ufUTLWY+gduL/wYm9R5wO8H
- e9iBNhuY3SHnUmXwdSJQDhzL1Iz8jviDsS455KjFg3X+deHHwFwEmloOzkyWj5sRS1is
- mrSQ==
-X-Gm-Message-State: AOJu0YwcIq3Vey5XyWr1ijG+pK9uOcgrHCuxKPiWJd4kq6EVH0jh0Ybb
- 5wBcCaDla0Z9n+wE9ENZ0+GJlK7nWIim6wS+qF9uQ1jHHE1A3LTSgdiHT4rOflJR5BaHJqslNSw
- u
-X-Gm-Gg: ASbGncvVXw4iTrb5rEqTVq1pyc9eS0LziRK3PX0tqITsWAcVfM9qNBVJ4+INQ3xBB8B
- I8rVZ/hM6TIvI0j8jqSFuUSMiYLpbSSeaNabyzm2lPZ6hlMsGivOH+GUgg/Fb1pG1asRm/rbyOA
- NGag/3PlAmhpmPM6qA9y7TyK3AzrzgmrAQ0yXzZOmCZiVYwDhsQFto6Xy9vdsQG4ONwtKPWi9fm
- iNYGVy/gBU/eX19TsLAGpKBy787Qw5zOAeIxCXbmE2B+EMg4BjODDBY3ZXSH5xGSM69XL6ahAw0
- 1LXiYkG4ApTaVG0q8fZkkc48SWjOcf0n1wLcZM4xl1iIQzLA1KHWXUlgjtJRHIUPe90DW21HvvR
- VeQs/Uvg5
-X-Google-Smtp-Source: AGHT+IEEcKWUPK6OLUtrLOXPDvab+5It1IFbTf104yF/3TRjPn1k70uo4A4hSHKiSdSi3Ug12hI+iQ==
-X-Received: by 2002:a05:6a00:2343:b0:728:e2cc:bfd6 with SMTP id
- d2e1a72fcca58-739e4c15233mr508135b3a.18.1743701520851; 
- Thu, 03 Apr 2025 10:32:00 -0700 (PDT)
+ bh=muBPTjYt3KMh4Cr3cxDcAhIlTFkT5C3V+LLPY/a3I8w=;
+ b=C8Q0ZmryDXSAZDS2GWet1zgF7r0HXsYhj2R3WX8GfeOusxQ9nN2Aeh8ppsrLVyXDTF
+ /8xmt1Zdh2qPmy0c2C4kHWX4eB9s0TuxRYLOAWe8aXeMksVNjejM8EfHnmsb01K0GeQO
+ k0M20Zkz7xc4hmY16HXK8MktBywC0/erseBuGIcorxKR4yprTZDtK3jBwRBo8ra7S0Zs
+ CzwJt716hyMkiHhi8MJCWX6RhWREBJUs2IX+DGZhU5WvT3HyysDHJ/qRFQJH6OhJqWh6
+ MkqnWqOZ/lpvQRBedl2gXRtEFIPQZbZ62rKaCMXAMi3V8K2OE/qD1ipy4ZvEEUYFZIwD
+ x7kg==
+X-Gm-Message-State: AOJu0YyZqXfCT+etRZZjDY49krqDn3Bn6zTXzF86l2udzcKupVjkzWer
+ YUUIzoeD4KNyslPQwN6Gf0foXmn81eWLEFql7rkc9LeoVat5TmW0hGOROr3JAnNsGk76N01MrW6
+ p
+X-Gm-Gg: ASbGnctDy/Q4D7Xa0R2lYqBPxAbJeIhZx5nz7ZOr0DKY7GDnusrX0r6l3eR/o5MTTUM
+ d4QCyYMrjksOUR6WGAJHMidMwYlQWO01e9D6bL1Wq661obQLCprNmIYx1YK5vvD18FRZTGspoO2
+ qQXmV1caCZLvuW0qfG2V/5MjYRuFFmFIHBpMKFI+ZLcY3W9kI3uTXKKuxjJ6pp2MbZpOfScB/Pt
+ xiNV6Sb9AxnCw+6DpejidUH5yx5oBtuk1k0e7s1hkGgK9Xt6vMO4tcqMWTlnb93afMD95q/jxgi
+ Dle9kqyNsuwHp2gJPaJkxSF9Lx+T1xd8eyh5lBYjMaw4dJ3I7j1G4KAQygR24GI3Mw06avCS0aZ
+ p//uklQTgwJoHJHRXCNk=
+X-Google-Smtp-Source: AGHT+IGZ8hyhv07dR7aSplnTY6CLIYTLP4g5vyZdhZKME4bcp5IQWQbygkxngicLWHL1uLDQolO5vQ==
+X-Received: by 2002:a05:6a00:3317:b0:736:5dc6:a14f with SMTP id
+ d2e1a72fcca58-739e4c26381mr516362b3a.23.1743701603273; 
+ Thu, 03 Apr 2025 10:33:23 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-74-48.tukw.qwest.net. [174.21.74.48])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-739d97d1befsm1773971b3a.30.2025.04.03.10.32.00
+ 41be03b00d2f7-af9bc10dea2sm1507271a12.0.2025.04.03.10.33.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Apr 2025 10:32:00 -0700 (PDT)
-Message-ID: <24b7fa86-611a-464a-934b-186df86ba31a@linaro.org>
-Date: Thu, 3 Apr 2025 10:31:59 -0700
+ Thu, 03 Apr 2025 10:33:22 -0700 (PDT)
+Message-ID: <c5865e7f-67ab-4b63-90b3-b96083a9c661@linaro.org>
+Date: Thu, 3 Apr 2025 10:33:21 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.0 v2 03/14] tests/functional: Skip aarch64_replay
- test on macOS
+Subject: Re: [PATCH-for-10.0 v2 04/14] tests/qtest: Skip Aarch64 VMapple
+ machine
 To: qemu-devel@nongnu.org
 References: <20250403151829.44858-1-philmd@linaro.org>
- <20250403151829.44858-4-philmd@linaro.org>
+ <20250403151829.44858-5-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250403151829.44858-4-philmd@linaro.org>
+In-Reply-To: <20250403151829.44858-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,46 +103,56 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/3/25 08:18, Philippe Mathieu-Daudé wrote:
-> As of v10.0.0-rc2 this test is still failing on macos:
+> First, the VMapple machine only works with the ARM 'host' CPU
+> type, which isn't accepted for QTest:
 > 
->    $ make check-functional-aarch64 V=1
+>    $ qemu-system-aarch64 -M vmapple -accel qtest
+>    qemu-system-aarch64: The 'host' CPU type can only be used with KVM or HVF
+> 
+> Second, the QTest framework expects machines to be createable
+> without specifying optional arguments, however the VMapple
+> machine requires few of them:
+> 
+>    $ qemu-system-aarch64 -M vmapple -accel qtest
+>    qemu-system-aarch64: No firmware specified
+> 
+>    $ qemu-system-aarch64 -M vmapple -accel qtest -bios /dev/null
+>    qemu-system-aarch64: No AUX device. Please specify one as pflash drive.
+> 
+> Restrict this machine with QTest so we can at least run check-qtest,
+> otherwise we get:
+> 
+>    $ make check-qtest-aarch64
+>    qemu-system-aarch64: The 'host' CPU type can only be used with KVM or HVF
+>    Broken pipe
+>    ../tests/qtest/libqtest.c:199: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
 >    ...
->    ERROR:../../replay/replay-internal.c:235:replay_mutex_unlock: assertion failed: (replay_mutex_locked())
->    Bail out! ERROR:../../replay/replay-internal.c:235:replay_mutex_unlock: assertion failed: (replay_mutex_locked())
+>     7/26 qemu:qtest+qtest-aarch64 / qtest-aarch64/test-hmp     ERROR      24.71s   killed by signal 6 SIGABRT
+>     2/26 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test     ERROR      71.23s   killed by signal 6 SIGABRT
 > 
-> This is tracked as https://gitlab.com/qemu-project/qemu/-/issues/2907
-> 
+> Suggested-by: Fabiano Rosas <farosas@suse.de>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   tests/functional/test_aarch64_replay.py | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+>   tests/qtest/libqtest.c | 1 +
+>   1 file changed, 1 insertion(+)
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
 > 
-> diff --git a/tests/functional/test_aarch64_replay.py b/tests/functional/test_aarch64_replay.py
-> index 04cde433bcf..029fef3cbf8 100755
-> --- a/tests/functional/test_aarch64_replay.py
-> +++ b/tests/functional/test_aarch64_replay.py
-> @@ -5,7 +5,7 @@
->   #
->   # SPDX-License-Identifier: GPL-2.0-or-later
->   
-> -from qemu_test import Asset
-> +from qemu_test import Asset, skipIfOperatingSystem
->   from replay_kernel import ReplayKernelBase
->   
->   
-> @@ -16,6 +16,8 @@ class Aarch64Replay(ReplayKernelBase):
->            'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
->           '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
->   
-> +    # Failing on Darwin: https://gitlab.com/qemu-project/qemu/-/issues/2907
-> +    @skipIfOperatingSystem('Darwin')
->       def test_aarch64_virt(self):
->           self.set_machine('virt')
->           self.cpu = 'cortex-a53'
+> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+> index 2750067861e..fad307d125a 100644
+> --- a/tests/qtest/libqtest.c
+> +++ b/tests/qtest/libqtest.c
+> @@ -1788,6 +1788,7 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
+>           if (!strncmp("xenfv", machines[i].name, 5) ||
+>               g_str_equal("xenpv", machines[i].name) ||
+>               g_str_equal("xenpvh", machines[i].name) ||
+> +            g_str_equal("vmapple", machines[i].name) ||
+>               g_str_equal("nitro-enclave", machines[i].name)) {
+>               continue;
+>           }
 
 
