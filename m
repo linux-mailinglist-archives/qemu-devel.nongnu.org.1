@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A984A7AF20
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 22:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 618EBA7AF22
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Apr 2025 22:43:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0RNQ-0000bk-R7; Thu, 03 Apr 2025 16:41:30 -0400
+	id 1u0RNb-0000p7-Fr; Thu, 03 Apr 2025 16:41:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RNB-0000Wb-Qv
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:41:15 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RNI-0000c5-6y
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:41:20 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RN9-00056D-Jm
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:41:13 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43690d4605dso9486075e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 13:41:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0RND-00057B-Kg
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 16:41:19 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43cec5cd73bso7894005e9.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 13:41:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743712869; x=1744317669; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743712873; x=1744317673; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AzIe1y6exrD0xJczT8npcuq1OBfi7eudR1jNiJ2MiPM=;
- b=s+rknz10+5TcCyvo2fbjrz69Orcn8pi/St4AhB4/J5pNxRdm323XiVwcAioaaCWMlp
- QoJ7B3M+zuo6NGX6Pt+Ry8MxCvlUV9onNHsEh4qZqNVmJhkEt1FCkTsXusFYbfo/LXRd
- nyUihKn5EeBDW3I6Zq4ToRMd9vD1hqfK6BJjYC5xTye0m+apuOupEgzpoddfxzyphHXj
- BEi5vm+UukArFt3p5hqJTAWt0CYruNoNlffuNA2+roiW6wrSzWlhE7HcdC0NlunLoHkV
- 2egl9LYZW19AtMEE+HutjnCaNS0VcniWtjXq77fqqwsF/X5YyiDY4fJcsxq7AkeZed8X
- vFVw==
+ bh=Y1ud80T7n6XBN/Vt1w60MmBJZWVmW7lhw8QbR2LN0sI=;
+ b=jVaWe86fgsmIvWn+/TpVJEMqk2sRsRSyTMw5iTrjf/RtTnQag3Rx2HLsf0RoUC7UDG
+ u+K4oswtlyOl4AWsA5yEKMWJF1DXWnIrnA1S3rOK01qE4GTHW7bQ68l9lRDzpucdghRZ
+ FPwZMCyf0L1NHH4mAW3p1asgRMMqNF4IB7HbR/GZwKqM27nC6++mNOb6lB7rsgIeXbX1
+ 7XA62rmn24M4izH3FPFNyguGhS9xd27Z04JLHGPhqbu7I4ueMhM/W3Aze59eE1sWxwuj
+ ekO1fQ2dy55mtObdmXhI0ymTNXfDF4mVGQBADzfOe/VjoWiL0TMeaTWG9n1F7aHXvdKh
+ JkfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743712869; x=1744317669;
+ d=1e100.net; s=20230601; t=1743712873; x=1744317673;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AzIe1y6exrD0xJczT8npcuq1OBfi7eudR1jNiJ2MiPM=;
- b=kOHnDW13cfsNsRkrVEXo41mH21Qgv2Y6Mt4ub4IfVptSk14ceoyw4ZY5H+ve5sB/Oz
- vbT0WGidq9Cu15ttD1+Qox4hRSGNYLaTKjgTudS6ECSze52SYfUItyERY/z21bzS40cV
- 5RzB7MdPpzj5zDOr7H6bwasma5FFDkVjnuLhvvTNB7Tc4w0VHFoSLHr6deOdzOJfZ/6D
- mR4GTeVEckU7gGWHkTSRldgwK1l/c2yJ8sCaNBDo2RyHY5C0zsNJ3ipn46HR59TCMEjZ
- 83g9A92880EIfyF4DpQL5anZdSBWD9zDNZMdT0ImBS+uI6ilb0+yJq60x/L/Q6Mdj+mR
- sn0w==
-X-Gm-Message-State: AOJu0Yy6+Mzvy8d28dRUqkWU1NvwQhFkNha1UAzFijTb9rFFIzOd+OBn
- K3+LDqeemTkI5SuRyXmby1wZyujluBqpAmBF7xr34az/dUR5GiHx/IbIDTryGzo4mAFKIx2e+Vv
- G
-X-Gm-Gg: ASbGnctAi3N57D3mLRNBANcu2OwLGMr/GcwgXMpwV3A0mSNY8BP3zu9ZPCXzo2P7J7s
- cN4cgZQJ5J95e1GQQhMd00lkLD16qknsscEVAwMvvuZrgHsPk/5WWW8C2KDgtQo8E8ANnkaonC2
- wTGvfsdjU9vkPmrYli8HuLqaforVLGlpBRinVO5YepnWlmAOzNoD5Zyx3rjL1g2qxWcSQu0C48h
- BZ36/ECj05Z36O4+5l37jtDhjfoOGSUqPxpkPUfT0+zbqUjEBncJlbPxtTh73QGde4MxzCUNWc6
- 3Gijyky5QmGGZD2UluiAurMaspo7AkO13HNbI7rtY1xhEG+KdjJfrN46svP5XiTzzd/S9nQ4WTM
- jFfb6M6XLthzwt3MhJZC5zPn8
-X-Google-Smtp-Source: AGHT+IGf6uH+7GL3enjPwL35FczmiuP3WQ9HgY23LIOqkXLkKIH/Lul8LuROoosf3k3pEiGcm8IRjQ==
-X-Received: by 2002:a05:6000:2509:b0:390:d6ab:6c49 with SMTP id
- ffacd0b85a97d-39cb35b1a8cmr571814f8f.35.1743712868622; 
- Thu, 03 Apr 2025 13:41:08 -0700 (PDT)
+ bh=Y1ud80T7n6XBN/Vt1w60MmBJZWVmW7lhw8QbR2LN0sI=;
+ b=kgzQ+y3HxPMnCzpMuoAxuX6MyXPQeJPH2wvKzghuljyKHEm85Ri0zaTqzb225a0Uu6
+ RjWpRfS9JbklkDkv/4l2mBL7+xEfS3ej9YcLhrxXvUg5LKVTqFHyfUGnU+oBCSORq4MN
+ nbJNdI3iYZ1pxTHGT7EboFArdYecbTEzubCG5T/rO5vgSUyN2m4w5qhh82tIwLMqpqd7
+ VCjNMFp9OyQ/buuITw4jZotQ92FlAHE0oHTfb/6sLEXr9UKFFv4qHwwTBmKItnq+nWhy
+ a3/kiQ4Vi1nUtfAbQqbcnFVsGyyRNgsEQAbFV5OFj8mWQtBeiVdfPI52QIdqdPZpUFdd
+ leiA==
+X-Gm-Message-State: AOJu0Yyqx6Mea6iA/PCn4gWQkRfvVKdgQLZso2z7bQhFKzYSU+vzC3K9
+ bEdXXrkZP3qtRQPaCnu/Ek1ggL2JLKC/pUl26P09o6doszF9L3Gg7J7yaZRj3agV2Y85vFj5tY4
+ U
+X-Gm-Gg: ASbGnctaX5C8UDqkFhS+SbkmW++ROvH9s3sJ9+F5wFCXwNb1V7P0foKPh+FTqStNJ1n
+ aj+beHTjMHUnfP1t/0wRCOycIH1jEl/8PhZ9bMVU3y7p2BBj/nVhMai1FCJB5Js8qlI7BFuDaCB
+ 2Xe7BT7X7fAb08gA28l9WurWfcGRHeZjcj9e6kN0QyylktoAeOpyTmoVvSU+kvSxfFtaVLZ/DxY
+ xPS46C+/OJi1l/9x930qX154DChk0aTn8NyJyLg/bgbHcjouNHqlHFdwhJTEvmllR/Czw9qoswA
+ MEwG2CYVsXv72oh+6R/Pl1K4izddMdlfkZlu8JmixrXXWL8JgQ8SanIu4Tatc4mKO5eccdUf9Q7
+ cJOdyIzi5f7o7C7oBpzDfmGyS
+X-Google-Smtp-Source: AGHT+IEU+UhUNAfd9zMk+eAeD58yweIdBZ4ugK4h46Ifvyvwj/FZT0/mzLLDu94w+ivy3mHLgSMRbA==
+X-Received: by 2002:a5d:6d8b:0:b0:391:ab2:9e71 with SMTP id
+ ffacd0b85a97d-39cb35bd8bfmr546809f8f.20.1743712873478; 
+ Thu, 03 Apr 2025 13:41:13 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec1630ddesm30923505e9.5.2025.04.03.13.41.07
+ 5b1f17b1804b1-43ec34a7615sm27325625e9.9.2025.04.03.13.41.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 13:41:08 -0700 (PDT)
+ Thu, 03 Apr 2025 13:41:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Andrew Jones <ajones@ventanamicro.com>,
@@ -72,18 +72,18 @@ Cc: Andrew Jones <ajones@ventanamicro.com>,
  Igor Mammedov <imammedo@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 v3 7/9] hw/arm/virt-acpi: Always build IORT table
- (even with GIC ITS disabled)
-Date: Thu,  3 Apr 2025 22:40:27 +0200
-Message-ID: <20250403204029.47958-8-philmd@linaro.org>
+Subject: [PATCH-for-10.1 v3 8/9] hw/arm/virt-acpi: Do not advertise disabled
+ GIC ITS
+Date: Thu,  3 Apr 2025 22:40:28 +0200
+Message-ID: <20250403204029.47958-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403204029.47958-1-philmd@linaro.org>
 References: <20250403204029.47958-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,99 +106,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Citing Gustavo [*]:
+GIC ITS can be disabled at runtime using '-M its=off',
+which sets VirtMachineState::its = false. Check this
+field to avoid advertising the ITS in the MADT table.
 
-  Gating IORT table generation entirely based on the presence
-  of ITS looks wrong because IORT table has data beyond GIC ITS,
-  like for SMMUv3 etc..
-
-[*] https://lore.kernel.org/qemu-devel/bae6e29a-7290-47d2-8caf-14702ee091f0@linaro.org/
-
-Reported-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reported-by: Udo Steinberg <udo@hypervisor.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2886
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- hw/arm/virt-acpi-build.c | 38 +++++++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ hw/arm/virt-acpi-build.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 1c389ef5cdb..e7e27951cb9 100644
+index e7e27951cb9..38a9e6fe0c5 100644
 --- a/hw/arm/virt-acpi-build.c
 +++ b/hw/arm/virt-acpi-build.c
-@@ -287,6 +287,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-     uint32_t id = 0;
-     GArray *smmu_idmaps = g_array_new(false, true, sizeof(AcpiIortIdMapping));
-     GArray *its_idmaps = g_array_new(false, true, sizeof(AcpiIortIdMapping));
-+    bool has_its = its_enabled(vms);
+@@ -212,7 +212,7 @@ static bool its_enabled(VirtMachineState *vms)
+ {
+     VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
  
-     AcpiTable table = { .sig = "IORT", .rev = 3, .oem_id = vms->oem_id,
-                         .oem_table_id = vms->oem_table_id };
-@@ -325,9 +326,12 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+-    return !vmc->no_its;
++    return !vmc->no_its && vms->its;
+ }
  
-         nb_nodes = 3; /* RC, ITS, SMMUv3 */
-         rc_mapping_count = smmu_idmaps->len + its_idmaps->len;
--    } else {
-+    } else if (has_its) {
-         nb_nodes = 2; /* RC, ITS */
-         rc_mapping_count = 1;
-+    } else {
-+        nb_nodes = 1; /* RC */
-+        rc_mapping_count = 1;
-     }
-     /* Number of IORT Nodes */
-     build_append_int_noprefix(table_data, nb_nodes, 4);
-@@ -336,17 +340,19 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-     build_append_int_noprefix(table_data, IORT_NODE_OFFSET, 4);
-     build_append_int_noprefix(table_data, 0, 4); /* Reserved */
- 
--    /* Table 12 ITS Group Format */
--    build_append_int_noprefix(table_data, 0 /* ITS Group */, 1); /* Type */
--    node_size =  20 /* fixed header size */ + 4 /* 1 GIC ITS Identifier */;
--    build_append_int_noprefix(table_data, node_size, 2); /* Length */
--    build_append_int_noprefix(table_data, 1, 1); /* Revision */
--    build_append_int_noprefix(table_data, id++, 4); /* Identifier */
--    build_append_int_noprefix(table_data, 0, 4); /* Number of ID mappings */
--    build_append_int_noprefix(table_data, 0, 4); /* Reference to ID Array */
--    build_append_int_noprefix(table_data, 1, 4); /* Number of ITSs */
--    /* GIC ITS Identifier Array */
--    build_append_int_noprefix(table_data, 0 /* MADT translation_id */, 4);
-+    if (has_its) {
-+        /* Table 12 ITS Group Format */
-+        build_append_int_noprefix(table_data, 0 /* ITS Group */, 1); /* Type */ //
-+        node_size =  20 /* fixed header size */ + 4 /* 1 GIC ITS Identifier */;
-+        build_append_int_noprefix(table_data, node_size, 2); /* Length */
-+        build_append_int_noprefix(table_data, 1, 1); /* Revision */
-+        build_append_int_noprefix(table_data, id++, 4); /* Identifier */
-+        build_append_int_noprefix(table_data, 0, 4); /* Number of ID mappings */
-+        build_append_int_noprefix(table_data, 0, 4); /* Reference to ID Array */
-+        build_append_int_noprefix(table_data, 1, 4); /* Number of ITSs */
-+        /* GIC ITS Identifier Array */
-+        build_append_int_noprefix(table_data, 0 /* MADT translation_id */, 4);
-+    }
- 
-     if (vms->iommu == VIRT_IOMMU_SMMUV3) {
-         int irq =  vms->irqmap[VIRT_SMMU] + ARM_SPI_BASE;
-@@ -429,7 +435,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-             build_iort_id_mapping(table_data, range->input_base,
-                                   range->id_count, IORT_NODE_OFFSET);
-         }
--    } else {
-+    } else if (has_its) {
-         /* output IORT node is the ITS group node (the first node) */
-         build_iort_id_mapping(table_data, 0, 0x10000, IORT_NODE_OFFSET);
-     }
-@@ -979,10 +985,8 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
-                           vms->oem_table_id);
-     }
- 
--    if (its_enabled(vms)) {
--        acpi_add_table(table_offsets, tables_blob);
--        build_iort(tables_blob, tables->linker, vms);
--    }
-+    acpi_add_table(table_offsets, tables_blob);
-+    build_iort(tables_blob, tables->linker, vms);
- 
- #ifdef CONFIG_TPM
-     if (tpm_get_version(tpm_find()) == TPM_VERSION_2_0) {
+ /*
 -- 
 2.47.1
 
