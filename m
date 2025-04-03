@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC7EA7B1E7
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 00:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D39A7B1D7
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 00:05:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0Sfl-0008AJ-JU; Thu, 03 Apr 2025 18:04:29 -0400
+	id 1u0Sfu-0008BD-7k; Thu, 03 Apr 2025 18:04:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0Sfj-00089x-9J
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 18:04:27 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0Sfn-0008Ae-EN
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 18:04:32 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0Sfh-0003ik-1l
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 18:04:27 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-39c0dfad22aso875356f8f.2
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 15:04:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0Sfl-0003j4-Q7
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 18:04:31 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43948f77f1aso10576175e9.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 15:04:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743717862; x=1744322662; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=xbMz4QlTsswxFmDVubzItp5sarMx+/xbDzlb26CXOjk=;
- b=c+RCrN8GA6gvbAv1UucRMZnDF4EWKDond57R8zNCLFWcUvOkGaLomNN8R1xnHOH/1P
- EIwFtKVbDb6hcMJ+59wFf961r1IPslUbSNSaLri+7Qpz5WROd7yM+J2EaXBpf3W3PQEr
- lTZh4Lz8xa5xdCqvSdgMn/oBXi0xHjdEAEsJKlKz+DEcZY6xYU94a7UsGFuLQFDYdz8X
- S/qSGOLgcqhhCBiRqqnTJ1GGzoj3uEx4mY4pOV00KQQginyswKrNgeWkgqFPOfRsK0DQ
- 6r7tqAAmePN06DIfqSWfVrc7Jqky/NrXrTqiujSAb0Sh8jzaYh8ilvi2UppZhM0aAZW+
- zFWw==
+ d=linaro.org; s=google; t=1743717868; x=1744322668; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GS22WEeeGx00HzARJRM4WG6Tz81Z8nWUDKi4UP1ius4=;
+ b=LrrfZcfcjkIuKsKvd4EZHjFjkNAYA4ev8wBhPrXP9DQVHfU+K5p8HxUSO5t5oB6kz7
+ ce6HvLRB2poC1xZO+nw9GJnQxWL6Hah0bLb2ReNhuBixMe67q60LJbxAyQauiKFy77uj
+ Yif7eHQDRsfOr9Gjg0gbePPCNVhtzItVMihl9XR88C4mgFfLaL1vr+l1VcdKqWGtYIh8
+ hLTichvlWBUbAUlzLDW1KL+41gGztYBJ0R2ArA4yzboBugSDtmWVF1HrtxYcSobbcs9B
+ LaPkiaRpTHKCcT+C6PlCHFNrXkoInTOHYXOv7fuXZ1S9kIWVeE6Y7UKL3v8oLd/nxyiW
+ cIqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743717862; x=1744322662;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xbMz4QlTsswxFmDVubzItp5sarMx+/xbDzlb26CXOjk=;
- b=EI5pKp57Ndo6jjAwVKxVJ5ewqiQYjupa9E55WfumJNOv4a3w6TkQ7QiaUqniJNbj7f
- 2/k+2nsSqQ6cyags/pUoONZSWle9EB+i76XK0SyBuPEdU3vS++0kf4RbyueydY5yYyih
- aFMEDm61p55dszvMjUHLvEyaqrF9AxQVHraF582gl196+M5R6cZTeQYu+SVQeWPydstq
- VgK+QmWT6os+i/v2wlMoo27Jk4QSuXa7+THzVjGIZry6HYosSfFnYNOnP45Ds7PwtveN
- g6v9S3xRgW99lOEz2d71llq+O4vxVCH/pfLaimcaLq3+H/GRqAxGK/hdttw5EAXOSfJZ
- 5Lcg==
-X-Gm-Message-State: AOJu0Yy4wVP8MKF/GKrEaZjbTSPFkjNx1MHNUTXmTOU1gkjquMdH+S/5
- QSmZp+2WgXwphbJAIhjQnbr9wyX+iHpXqHPm8DNuSMSWB52BRMZrp6jOZbdNvFtUNxneHKXbUxm
- J
-X-Gm-Gg: ASbGncuBMom/kJhXvCoumihmh3rTpi2gTQzpYi1hIJ2u0/3YWTW4FFkbnPXDN+5iWlQ
- PaWZZbnTszLE6DajehTWgwmVp5QUA3dKZzQ6p8MN8TV/V+wbJNAuIjQkv6CkCSdtcWl0+6+cOyc
- MkckyPie7b7ue/AJfJ1AZYUW5erE7WBvwEAtt1u2zmxr3ZlUBX857MjDzT4USVLg37S6GkxQeOw
- ua3kjLpGFDQqd5b2aNcRgZPfTDVnFt8TGTPsb/rFwUox/OihUT3Z5Owgl8UmYCKqARnTlyeQUnH
- efOb+8DBINeg7k1R01xFC5Kikk+K+JkxUV9VY2wU7xi5BtuHFqll+xpA5NcFOGXsZR3rE5H9TyX
- uuCez++9x2uWy0n1lyJlpVoK3
-X-Google-Smtp-Source: AGHT+IFLrJQvVvnYmQ4IPOMlbJd4MuzdSErBg8RUd3CN3UDGcQeZPYJWNi+mY3OPE2RjYjn3qOk6jQ==
-X-Received: by 2002:a5d:6dac:0:b0:38f:2b77:a9f3 with SMTP id
- ffacd0b85a97d-39cba975b4dmr687281f8f.43.1743717862488; 
- Thu, 03 Apr 2025 15:04:22 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1743717868; x=1744322668;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GS22WEeeGx00HzARJRM4WG6Tz81Z8nWUDKi4UP1ius4=;
+ b=GrW4equUSApQTz+K22abBitlIcJETFt/dfkGVLQ8HflmDTAYHxdc/6j4tqGvZKeQIy
+ ZN5atNFWhtQZlB/6mezP6NjPhfpwm+7wRcr/glqabR5bvogrey4TxJE6DJ5REL43lKgc
+ zlwLinqkfVCOYUq+BGUkqAkJIAfhy0+yl67utHzwK3cLM5aPJkGkUtf2ZaXtzyCT4bYP
+ YdwViPi/Iltl9aKsakbi8bQxUIJtQw7lsE1EZwPrUhrMr99A1StJg2e/8t7UQ1OksVnr
+ 0sKUhhuA7hldMsRVFs2HvZ+0qUo0xI5/KKLe1HK//40UVDYRDU/XZBxvaayth9aGDi04
+ 5Dnw==
+X-Gm-Message-State: AOJu0YxZDk8b/C/A7/sLUGobc2w7h8mcZ1z1laopZcYX6yx18rQnWtdV
+ VOQPIoGAFhGAOMCmTsxm9hikAJaanMmdB8M1pirA9m9JeHex6zC6FXcSXwIVcqTIbOvm20QMnRq
+ l
+X-Gm-Gg: ASbGncsvQeY7pRjd4krgMDpzMhIAhSPCpcRGksPhjolKJ0g2CnmShL9F9fhf3zvTRsB
+ Uy3wJeRCE4YFxZWkmdQJPswP6sd6azQCM4fg9Ej+0PK/9Kgq/s//0gq38HLp0OH8al6REGEEDZJ
+ AAJxEITGEOjYaMKPurpvlUsElKJ0Z0htRfR17KG+NCzbo1TohRfRNL+6XQ2HfpwsK9PE/32qU5Z
+ kr/AvL8ZlJaaMxplGxSdR2cLftwJYViKCsmv6c0EMQ36SwGXIIiQxEajOQDJ5gizCyQ5bBkGAPE
+ 7Ulgns34OZiMLGDMIWLaugogq1eFovdZNAgtyuGQCFZ5VbZSTqHmOwefogp8+RVeEGX3uGvGCef
+ rk+kHyURwyEE55S0OmfmaFnML
+X-Google-Smtp-Source: AGHT+IEzzrz/YD50wq0HOq2LW7blQyejCX5UxSMlhMuLl9GPqJk3A7Fs8QKuPilKXWxBqKYiu3YfOQ==
+X-Received: by 2002:a05:6000:290d:b0:391:2e6a:30fe with SMTP id
+ ffacd0b85a97d-39cba93333emr690288f8f.39.1743717867892; 
+ Thu, 03 Apr 2025 15:04:27 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301a6608sm2782328f8f.23.2025.04.03.15.04.21
+ 5b1f17b1804b1-43ea9a88b70sm49229865e9.3.2025.04.03.15.04.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 15:04:21 -0700 (PDT)
+ Thu, 03 Apr 2025 15:04:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH-for-10.1 v3 00/19] tcg: philmd's queue
-Date: Fri,  4 Apr 2025 00:04:00 +0200
-Message-ID: <20250403220420.78937-1-philmd@linaro.org>
+Subject: [PATCH-for-10.1 v3 01/19] target/riscv: Do not expose rv128 CPU on
+ user mode emulation
+Date: Fri,  4 Apr 2025 00:04:01 +0200
+Message-ID: <20250403220420.78937-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250403220420.78937-1-philmd@linaro.org>
+References: <20250403220420.78937-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,194 +99,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+As Richard mentioned:
 
-Here is my patch queue based on your tcg-next tree fixed.
+  We should allow RV128 in user-mode at all until there's a
+  kernel abi for it.
 
-You can find it as commit 511d57c091f on my repository:
-https://gitlab.com/philmd/qemu/-/tree/tcg-next-fixed
+Remove the experimental 'x-rv128' CPU on user emulation
+(since it is experimental, no deprecation period is required).
 
-Thanks,
+Reported-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/riscv/cpu.c         | 10 ++++------
+ target/riscv/tcg/tcg-cpu.c |  5 +++--
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-Phil.
-
-Since v1:
-- Deferred warning change and updated desc (patches 40 & 42)
-Since v2:
-- Rebased & addressed review comments
-
-Philippe Mathieu-Daudé (19):
-  target/riscv: Do not expose rv128 CPU on user mode emulation
-  tcg: Include missing 'cpu.h' in translate-all.c
-  tcg: Declare TARGET_INSN_START_EXTRA_WORDS in 'cpu-param.h'
-  tcg: Always define TARGET_INSN_START_EXTRA_WORDS
-  exec: Restrict 'cpu-ldst-common.h' to accel/tcg/
-  exec: Restrict 'cpu_ldst.h' to accel/tcg/
-  exec: Do not include 'accel/tcg/cpu-ldst.h' in 'exec-all.h'
-  tcg: Always define TCG_GUEST_DEFAULT_MO
-  tcg: Simplify tcg_req_mo() macro
-  tcg: Define guest_default_memory_order in TCGCPUOps
-  tcg: Remove use of TCG_GUEST_DEFAULT_MO in tb_gen_code()
-  tcg: Propagate CPUState argument to cpu_req_mo()
-  tcg: Have tcg_req_mo() use TCGCPUOps::guest_default_memory_order
-  tcg: Remove the TCG_GUEST_DEFAULT_MO definition globally
-  tcg: Move cpu_req_mo() macro to target-agnostic 'backend-ldst.h'
-  tcg: Move qemu_tcg_mttcg_enabled() to 'system/tcg.h'
-  tcg: Convert TCGState::mttcg_enabled to TriState
-  tcg: Factor mttcg_init() out
-  tcg: Convert TARGET_SUPPORTS_MTTCG to TCGCPUOps::mttcg_supported field
-
- docs/devel/multi-thread-tcg.rst               |  6 +-
- configs/targets/aarch64-softmmu.mak           |  1 -
- configs/targets/alpha-softmmu.mak             |  1 -
- configs/targets/arm-softmmu.mak               |  1 -
- configs/targets/hppa-softmmu.mak              |  1 -
- configs/targets/i386-softmmu.mak              |  1 -
- configs/targets/loongarch64-softmmu.mak       |  1 -
- configs/targets/microblaze-softmmu.mak        |  1 -
- configs/targets/microblazeel-softmmu.mak      |  1 -
- configs/targets/mips-softmmu.mak              |  1 -
- configs/targets/mipsel-softmmu.mak            |  1 -
- configs/targets/or1k-softmmu.mak              |  1 -
- configs/targets/ppc64-softmmu.mak             |  1 -
- configs/targets/riscv32-softmmu.mak           |  1 -
- configs/targets/riscv64-softmmu.mak           |  1 -
- configs/targets/s390x-softmmu.mak             |  1 -
- configs/targets/sparc-softmmu.mak             |  1 -
- configs/targets/sparc64-softmmu.mak           |  1 -
- configs/targets/x86_64-softmmu.mak            |  1 -
- configs/targets/xtensa-softmmu.mak            |  1 -
- configs/targets/xtensaeb-softmmu.mak          |  1 -
- accel/tcg/backend-ldst.h                      | 41 +++++++++
- accel/tcg/internal-target.h                   | 35 --------
- bsd-user/qemu.h                               |  2 +-
- include/{exec => accel/tcg}/cpu-ldst-common.h |  6 +-
- .../{exec/cpu_ldst.h => accel/tcg/cpu-ldst.h} |  8 +-
- include/accel/tcg/cpu-ops.h                   | 16 ++++
- include/exec/exec-all.h                       |  3 -
- include/exec/poison.h                         |  1 -
- include/hw/core/cpu.h                         |  9 --
- include/system/tcg.h                          |  8 ++
- include/tcg/insn-start-words.h                |  6 +-
- include/tcg/tcg-op.h                          |  2 +-
- linux-user/qemu.h                             |  2 +-
- target/alpha/cpu-param.h                      |  3 +-
- target/arm/cpu-param.h                        |  8 +-
- target/arm/cpu.h                              |  6 --
- target/arm/tcg/sve_ldst_internal.h            |  2 +-
- target/avr/cpu-param.h                        |  2 +-
- target/hexagon/cpu-param.h                    |  2 +
- target/hppa/cpu-param.h                       |  8 +-
- target/hppa/cpu.h                             |  2 -
- target/i386/cpu-param.h                       |  3 +-
- target/i386/cpu.h                             |  2 -
- target/loongarch/cpu-param.h                  |  2 +-
- target/m68k/cpu-param.h                       |  2 +
- target/m68k/cpu.h                             |  2 -
- target/microblaze/cpu-param.h                 |  3 +-
- target/microblaze/cpu.h                       |  2 -
- target/mips/cpu-param.h                       |  2 +-
- target/mips/cpu.h                             |  2 -
- target/openrisc/cpu-param.h                   |  2 +-
- target/openrisc/cpu.h                         |  2 -
- target/ppc/cpu-param.h                        |  2 +-
- target/riscv/cpu-param.h                      | 10 ++-
- target/riscv/cpu.h                            |  6 --
- target/rx/cpu-param.h                         |  2 +
- target/s390x/cpu-param.h                      |  6 +-
- target/s390x/cpu.h                            |  2 -
- target/sh4/cpu-param.h                        |  2 +
- target/sh4/cpu.h                              |  2 -
- target/sparc/cpu-param.h                      | 23 +----
- target/sparc/cpu.h                            |  1 -
- target/tricore/cpu-param.h                    |  2 +
- target/xtensa/cpu-param.h                     |  3 +-
- accel/tcg/cpu-exec.c                          |  1 +
- accel/tcg/cputlb.c                            | 23 ++---
- accel/tcg/tcg-all.c                           | 84 +++++++++++--------
- accel/tcg/translate-all.c                     |  7 +-
- accel/tcg/translator.c                        |  2 +-
- accel/tcg/user-exec.c                         | 23 ++---
- target/alpha/cpu.c                            |  4 +
- target/alpha/mem_helper.c                     |  2 +-
- target/arm/cpu.c                              |  4 +
- target/arm/tcg/cpu-v7m.c                      |  4 +
- target/arm/tcg/helper-a64.c                   |  2 +-
- target/arm/tcg/m_helper.c                     |  2 +-
- target/arm/tcg/mte_helper.c                   |  2 +-
- target/arm/tcg/mve_helper.c                   |  2 +-
- target/arm/tcg/op_helper.c                    |  2 +-
- target/arm/tcg/pauth_helper.c                 |  2 +-
- target/arm/tcg/sme_helper.c                   |  2 +-
- target/arm/tcg/sve_helper.c                   |  1 +
- target/avr/cpu.c                              |  2 +
- target/avr/helper.c                           |  2 +-
- target/hexagon/cpu.c                          |  3 +
- target/hexagon/op_helper.c                    |  2 +-
- target/hexagon/translate.c                    |  2 +-
- target/hppa/cpu.c                             |  9 ++
- target/hppa/op_helper.c                       |  2 +-
- target/i386/tcg/access.c                      |  2 +-
- target/i386/tcg/fpu_helper.c                  |  2 +-
- target/i386/tcg/mem_helper.c                  |  2 +-
- target/i386/tcg/mpx_helper.c                  |  2 +-
- target/i386/tcg/seg_helper.c                  |  2 +-
- target/i386/tcg/system/excp_helper.c          |  2 +-
- target/i386/tcg/system/misc_helper.c          |  2 +-
- target/i386/tcg/system/seg_helper.c           |  2 +-
- target/i386/tcg/system/svm_helper.c           |  2 +-
- target/i386/tcg/tcg-cpu.c                     |  5 ++
- target/i386/tcg/user/seg_helper.c             |  2 +-
- target/loongarch/cpu.c                        |  5 +-
- target/loongarch/tcg/csr_helper.c             |  2 +-
- target/loongarch/tcg/fpu_helper.c             |  2 +-
- target/loongarch/tcg/iocsr_helper.c           |  2 +-
- target/loongarch/tcg/op_helper.c              |  2 +-
- target/loongarch/tcg/tlb_helper.c             |  2 +-
- target/m68k/cpu.c                             |  4 +
- target/m68k/fpu_helper.c                      |  2 +-
- target/m68k/op_helper.c                       |  2 +-
- target/microblaze/cpu.c                       |  6 +-
- target/microblaze/op_helper.c                 |  2 +-
- target/microblaze/translate.c                 |  2 +-
- target/mips/cpu.c                             |  3 +
- target/mips/tcg/ldst_helper.c                 |  2 +-
- target/mips/tcg/msa_helper.c                  |  2 +-
- target/mips/tcg/system/tlb_helper.c           |  2 +-
- target/openrisc/cpu.c                         |  3 +
- target/ppc/cpu_init.c                         |  2 +
- target/ppc/mem_helper.c                       |  2 +-
- target/ppc/mmu_helper.c                       |  2 +-
- target/ppc/tcg-excp_helper.c                  |  2 +-
- target/riscv/cpu.c                            | 10 +--
- target/riscv/op_helper.c                      |  2 +-
- target/riscv/tcg/tcg-cpu.c                    |  9 +-
- target/riscv/vector_helper.c                  |  2 +-
- target/riscv/zce_helper.c                     |  2 +-
- target/rx/cpu.c                               |  4 +
- target/rx/helper.c                            |  2 +-
- target/rx/op_helper.c                         |  2 +-
- target/s390x/cpu.c                            |  7 ++
- target/s390x/tcg/crypto_helper.c              |  2 +-
- target/s390x/tcg/int_helper.c                 |  2 +-
- target/s390x/tcg/mem_helper.c                 |  2 +-
- target/s390x/tcg/misc_helper.c                |  2 +-
- target/s390x/tcg/vec_helper.c                 |  2 +-
- target/sh4/cpu.c                              |  4 +
- target/sh4/op_helper.c                        |  2 +-
- target/sparc/cpu.c                            | 24 ++++++
- target/sparc/int32_helper.c                   |  2 +-
- target/sparc/ldst_helper.c                    |  2 +-
- target/tricore/cpu.c                          |  3 +
- target/tricore/op_helper.c                    |  2 +-
- target/tricore/translate.c                    |  2 +-
- target/xtensa/cpu.c                           |  4 +
- tcg/region.c                                  |  4 +-
- 146 files changed, 357 insertions(+), 294 deletions(-)
- create mode 100644 accel/tcg/backend-ldst.h
- rename include/{exec => accel/tcg}/cpu-ldst-common.h (97%)
- rename include/{exec/cpu_ldst.h => accel/tcg/cpu-ldst.h} (99%)
-
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 430b02d2a58..ad534cee51f 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -697,7 +697,7 @@ static void rv64_xiangshan_nanhu_cpu_init(Object *obj)
+ #endif
+ }
+ 
+-#ifdef CONFIG_TCG
++#if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+ static void rv128_base_cpu_init(Object *obj)
+ {
+     RISCVCPU *cpu = RISCV_CPU(obj);
+@@ -708,11 +708,9 @@ static void rv128_base_cpu_init(Object *obj)
+ 
+     /* Set latest version of privileged specification */
+     env->priv_ver = PRIV_VERSION_LATEST;
+-#ifndef CONFIG_USER_ONLY
+     set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
+-#endif
+ }
+-#endif /* CONFIG_TCG */
++#endif /* CONFIG_TCG && !CONFIG_USER_ONLY */
+ 
+ static void rv64i_bare_cpu_init(Object *obj)
+ {
+@@ -3255,9 +3253,9 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,  MXL_RV64,  rv64_veyron_v1_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU,
+                                                  MXL_RV64, rv64_xiangshan_nanhu_cpu_init),
+-#ifdef CONFIG_TCG
++#if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,   MXL_RV128, rv128_base_cpu_init),
+-#endif /* CONFIG_TCG */
++#endif /* CONFIG_TCG && !CONFIG_USER_ONLY */
+     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I,        MXL_RV64,  rv64i_bare_cpu_init),
+     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64E,        MXL_RV64,  rv64e_bare_cpu_init),
+     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64,  MXL_RV64,  rva22u64_profile_cpu_init),
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 710449d17e8..5d0429b4d00 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1046,7 +1046,6 @@ static bool riscv_cpu_is_generic(Object *cpu_obj)
+ static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+-    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
+ 
+     if (!riscv_cpu_tcg_compatible(cpu)) {
+         g_autofree char *name = riscv_cpu_get_name(cpu);
+@@ -1055,6 +1054,9 @@ static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp)
+         return false;
+     }
+ 
++#ifndef CONFIG_USER_ONLY
++    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
++
+     if (mcc->misa_mxl_max >= MXL_RV128 && qemu_tcg_mttcg_enabled()) {
+         /* Missing 128-bit aligned atomics */
+         error_setg(errp,
+@@ -1063,7 +1065,6 @@ static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp)
+         return false;
+     }
+ 
+-#ifndef CONFIG_USER_ONLY
+     CPURISCVState *env = &cpu->env;
+ 
+     tcg_cflags_set(CPU(cs), CF_PCREL);
 -- 
 2.47.1
 
