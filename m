@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6B4A7B2A2
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C00BBA7B2A4
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 01:59:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0USY-0004dQ-PO; Thu, 03 Apr 2025 19:58:58 -0400
+	id 1u0USe-0004j5-8d; Thu, 03 Apr 2025 19:59:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0USW-0004Y7-EO
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:58:56 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0USb-0004hL-LF
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:59:01 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0USU-0002Tg-2o
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:58:56 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-39ac9aea656so1284996f8f.3
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:58:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0USZ-0002Um-RO
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 19:59:01 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-391342fc1f6so1230499f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 16:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743724732; x=1744329532; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743724738; x=1744329538; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yHY3m/5NH5MFZKDP2KzFtiCvD+X/0rIoNr0k1W0yLjQ=;
- b=kRVhJMVWQ1PQLCYStDb9oDZmOCZOVMDDOM02AnKFDwRU8G6u8jpQ4JYY0EVqkiGOcS
- 3X4n0LDIqRwpNKSjv6Pi+j7A4ugmIKDnVmKP29sr4XcLI5Vx9A1w4EtEGjLgIXUuX661
- 7cbpmQo+CnkMXfAifzA0uKikuRpVTMrjjAndWsdUsc/FWrpHMRfMsqhFIQ/VKznwmAxI
- 6MyhKgFsHk2exim8o9XaI4Iih7BewbwQ6UwG688dnztuWfqxOHvlporgjhLwLgxYV9QK
- s9jA0IQMrqQ9HR+DI0PJGzZVZ9NN1QWLysO50qbCnnA0KLctar0/P1iQAft2b/gjjrq1
- BTmQ==
+ bh=FbGR6HcarXZRF0Z/seWcmwBS3azqrrXZgIvCxgRC+K8=;
+ b=ulhtnlz5B+hUUHUvKkFZYMIMGunjXE5R1bd7V69YEKgw+H0yCrl48XvEzM7sas0vjc
+ CCvhi6AtY6hSnblRWMpOTeShEzylGrvioQoxL8CSBIUPjOXUewsfNIvl0rQ9ZEyZ7w2O
+ vS6IsUuhsKiWjUS68nktC3bPRMDPlkUAbnM34DXcQcZ0nBB+eX5iF5nCeI2z4XSaLhCr
+ bj5ah+iuXtgAvDlX8qsVpRbPvrod3tx2v8yQJirZ6FxtoxGuEicYr6YkEfU17fO2nNkc
+ Q5Gy9p6n5yDYutkW51bG5EL3I2fOlAhaLgvOfTV9KpzSgzD5g1OSkD4jKnmgGD8YPMEO
+ BTmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743724732; x=1744329532;
+ d=1e100.net; s=20230601; t=1743724738; x=1744329538;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yHY3m/5NH5MFZKDP2KzFtiCvD+X/0rIoNr0k1W0yLjQ=;
- b=g/bkindPJDKw/eci0Iyd5YX1Brq4YuhNAE5AjGDx6HgWQOct1UWc345KPqV2lyFbxF
- zeQxkHz/5V+2NtQYLJVqJo1lL5f2uMfi7qMqjR0A47+k+MIpWpuumejGWgSHKuep9vUY
- O785fzM/lSs2S35YxwaIqixl1vZFmRz8nXFNbzfKfFr92Kb9hktUsjFe3+9nNbEgTJtc
- s+vpvJ0MwS2/YN22fGGEE5teXgH59mSQaWpeQV7IGU9ql1bvQZGUqYEbCSzHUapM2/il
- 2Ii/oQAgm3wAyYqBOuIGlhG6gCKKpIV4jFSG6PgH0zG+sdOWf6F66dMmb6ERvlFEH5+c
- oDzg==
-X-Gm-Message-State: AOJu0YxuASOTDZ637XruhE+/f4VTs1uk3Cgyj7hNf7ynaq4MFCPWZ+AX
- YgLZwHIj+eroTCwiC2uQl8EZ0OJuWeeBWxzXkIc5tNGGUzIsD2Oqm/LUmcfXBpyKUgMZeD5sopq
- B
-X-Gm-Gg: ASbGncuixb4jRL2M9mvJ8SxHBUdYx/Z+N8nHRR9tmaeVbtQC2qxvChbdLLu+1L/qKKG
- eZnhfh8nt6kkNFCJuBdDBQi3/Nk0GnzCzWoaVu5R21hkWoA60xDuwa6UW98ThXblLF2mhob30GK
- IoCxhZw1rJ5adRIQVd3vcwPFxdD1K7YrrNbPR+kAezC41fq0I66qufw8y+sysx0Cp1akDLJH7ga
- hFoZS4skq8MF7/5qRtUCMw2BbxXoZGUg6TyEpnFw11lvxIg2M/FZHgzTUYJPX4tRiLZZsbAD1vg
- mGHyqFyatdqm7KBGVkeHGV1uvYG75Y+LBYOinSq+wjFCvICFnZWpZVIiwCONCEUKNyre1zEjsqz
- y3sIHB564SYo4UkypXxA=
-X-Google-Smtp-Source: AGHT+IEnAQvNvviTrIzjNCRUtCxL8YUO4afUTpUEZAztEetCzEZZiGDhHgPK9pg4B0cXv0Vg9HhS8A==
-X-Received: by 2002:a5d:64a9:0:b0:391:4bcb:828f with SMTP id
- ffacd0b85a97d-39d0de1233emr464307f8f.14.1743724732148; 
- Thu, 03 Apr 2025 16:58:52 -0700 (PDT)
+ bh=FbGR6HcarXZRF0Z/seWcmwBS3azqrrXZgIvCxgRC+K8=;
+ b=Zil7Q9fP8a6+s+TlygBSJczVd537SjciS4cJGHZzveW1KAn8kPmi57maHaNQve7jD6
+ 1lKwhaeNLlWbsgLLkmzoAKQpl3gC/zcYmOU010G4WQ5neV0AH9qpowOp6TuGNl4UXhwQ
+ oLUQf45UkAkkVrlF5R0iCjmwizA3p6I5e5JFtns2TH4hE8T0+RIjJxGrOv5o6t/rM3Jw
+ KtymKJzT54juVEhyfSgU3bAGox8QeFCtEXt5XUXcY2gySpibVM+cfATPIUqDjcZX9ksN
+ 26nYQxsLpBn8Hw8hJQPXLJk9z0wkr1CGjXSNCw1pEdkaGsyT/IaC9dAxrZ8Zx0b0Z2BW
+ +TaA==
+X-Gm-Message-State: AOJu0YwSfA+g8+KMio5FWH4o6TAmCkBCRrcgmp8q92ngUY901n24JOB6
+ EdnrAYzYfa9mPMpR7q2w9ywITBxXM5RCE7L+uHJcsc3Mrcs4pDSvXkLeh+ecrPhauB95MRWPPyl
+ a
+X-Gm-Gg: ASbGncuGXf42QIC3P12rmZGs/5xE0TFodD3xuKNOfro9VDJVGTol2m+mxyGSjwVEKS3
+ xamg2hLh7HkiMrRzddprrZ4obFX3heJyIuKmVXSG46lEBlEVdUWou47Q6iqi5cD01oJP8SsKeWY
+ th1H6me0BDGvrir732tGtHK75e7sCQWFYc8RdHtCCYm+JtpMinoG1usq0QfMi8yWAcW0PDK6DJI
+ vLRsCnSQEgEAuh9Jyq1rYyOfbsFuA6I2jyyyrhLgmm0OMMLGzfnyc2HfsQEcf5yRKWqXTjsqyS+
+ skk2rOnTr7W68T+u7K+iMqOZnke16Ef676A/Rjw8RaFEeOJdmq58LP1rN1PcFu9cPklSZ71doMK
+ EhaggOqOD0NUgTZJXBjo=
+X-Google-Smtp-Source: AGHT+IFL45YPDGoMNvraZBwQTgptHO1WOGmB2si4AjCL21K1t862Wxp9ToUiQ2nBLW7aKP1g2JM4jA==
+X-Received: by 2002:a05:6000:1a87:b0:398:fd9b:b935 with SMTP id
+ ffacd0b85a97d-39d1475794amr493496f8f.53.1743724737999; 
+ Thu, 03 Apr 2025 16:58:57 -0700 (PDT)
 Received: from localhost.localdomain (184.170.88.92.rev.sfr.net.
  [92.88.170.184]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301a6608sm2949903f8f.23.2025.04.03.16.58.50
+ ffacd0b85a97d-39c30226bbfsm3029928f8f.90.2025.04.03.16.58.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Apr 2025 16:58:51 -0700 (PDT)
+ Thu, 03 Apr 2025 16:58:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH-for-10.1 04/39] hw/arm: Filter machine types for binary
-Date: Fri,  4 Apr 2025 01:57:46 +0200
-Message-ID: <20250403235821.9909-5-philmd@linaro.org>
+Subject: [RFC PATCH-for-10.1 05/39] hw/arm/aspeed: Filter machine types for
+ binary
+Date: Fri,  4 Apr 2025 01:57:47 +0200
+Message-ID: <20250403235821.9909-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250403235821.9909-1-philmd@linaro.org>
 References: <20250403235821.9909-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,368 +103,159 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/b-l475e-iot01a.c   | 1 +
- hw/arm/collie.c           | 1 +
- hw/arm/exynos4_boards.c   | 1 +
- hw/arm/fby35.c            | 1 +
- hw/arm/highbank.c         | 2 ++
- hw/arm/microbit.c         | 1 +
- hw/arm/mps2-tz.c          | 4 ++++
- hw/arm/mps2.c             | 4 ++++
- hw/arm/mps3r.c            | 1 +
- hw/arm/musca.c            | 2 ++
- hw/arm/omap_sx1.c         | 2 ++
- hw/arm/realview.c         | 4 ++++
- hw/arm/sbsa-ref.c         | 1 +
- hw/arm/stellaris.c        | 3 +++
- hw/arm/versatilepb.c      | 1 +
- hw/arm/vexpress.c         | 2 ++
- hw/arm/xilinx_zynq.c      | 1 +
- hw/arm/xlnx-versal-virt.c | 1 +
- hw/arm/xlnx-zcu102.c      | 1 +
- 19 files changed, 34 insertions(+)
+ hw/arm/aspeed.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/hw/arm/b-l475e-iot01a.c b/hw/arm/b-l475e-iot01a.c
-index c9a5209216c..f7fb6c54395 100644
---- a/hw/arm/b-l475e-iot01a.c
-+++ b/hw/arm/b-l475e-iot01a.c
-@@ -131,6 +131,7 @@ static const TypeInfo bl475e_machine_type[] = {
-         .parent         = TYPE_MACHINE,
-         .instance_size  = sizeof(Bl475eMachineState),
-         .class_init     = bl475e_machine_init,
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 82f42582fa3..245f961a868 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -179,13 +179,11 @@ struct AspeedMachineState {
+ #define AST2600_EVB_HW_STRAP1 0x000000C0
+ #define AST2600_EVB_HW_STRAP2 0x00000003
+ 
+-#ifdef TARGET_AARCH64
+ /* AST2700 evb hardware value */
+ /* SCU HW Strap1 */
+ #define AST2700_EVB_HW_STRAP1 0x00000800
+ /* SCUIO HW Strap1 */
+ #define AST2700_EVB_HW_STRAP2 0x00000700
+-#endif
+ 
+ /* Rainier hardware value: (QEMU prototype) */
+ #define RAINIER_BMC_HW_STRAP1 (0x00422016 | SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC)
+@@ -1663,7 +1661,6 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+ 
+-#ifdef TARGET_AARCH64
+ static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
+ {
+     AspeedSoCState *soc = bmc->soc;
+@@ -1713,7 +1710,6 @@ static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc, void *data)
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+ }
+-#endif
+ 
+ static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
+                                                      void *data)
+@@ -1760,92 +1756,112 @@ static const TypeInfo aspeed_machine_types[] = {
+         .name          = MACHINE_TYPE_NAME("palmetto-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_palmetto_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("supermicrox11-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_supermicrox11_bmc_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("supermicro-x11spi-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_supermicro_x11spi_bmc_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("ast2500-evb"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_ast2500_evb_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("romulus-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_romulus_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("sonorapass-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_sonorapass_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("witherspoon-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_witherspoon_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("ast2600-evb"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_ast2600_evb_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("yosemitev2-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_yosemitev2_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("tiogapass-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_tiogapass_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("g220a-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_g220a_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("qcom-dc-scm-v1-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_qcom_dc_scm_v1_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("qcom-firework-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_qcom_firework_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("fp5280g2-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_fp5280g2_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("quanta-q71l-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_quanta_q71l_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("rainier-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_rainier_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("fuji-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_fuji_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_bletchley_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name          = MACHINE_TYPE_NAME("fby35-bmc"),
+         .parent        = MACHINE_TYPE_NAME("ast2600-evb"),
+         .class_init    = aspeed_machine_fby35_class_init,
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
+     }, {
+         .name           = MACHINE_TYPE_NAME("ast1030-evb"),
+         .parent         = TYPE_ASPEED_MACHINE,
+         .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
+-#ifdef TARGET_AARCH64
 +        .interfaces     = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
-     }
- };
- 
-diff --git a/hw/arm/collie.c b/hw/arm/collie.c
-index e83aee58c6b..c5bed6c7006 100644
---- a/hw/arm/collie.c
-+++ b/hw/arm/collie.c
-@@ -86,6 +86,7 @@ static const TypeInfo collie_machine_typeinfo = {
-     .parent = TYPE_MACHINE,
-     .class_init = collie_machine_class_init,
-     .instance_size = sizeof(CollieMachineState),
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void collie_machine_register_types(void)
-diff --git a/hw/arm/exynos4_boards.c b/hw/arm/exynos4_boards.c
-index 2d8f2d73265..53b79b893d8 100644
---- a/hw/arm/exynos4_boards.c
-+++ b/hw/arm/exynos4_boards.c
-@@ -192,6 +192,7 @@ static const TypeInfo smdkc210_type = {
-     .name = MACHINE_TYPE_NAME("smdkc210"),
-     .parent = TYPE_MACHINE,
-     .class_init = smdkc210_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void exynos4_machines_init(void)
-diff --git a/hw/arm/fby35.c b/hw/arm/fby35.c
-index 6d3663f14a1..d4cc596fb67 100644
---- a/hw/arm/fby35.c
-+++ b/hw/arm/fby35.c
-@@ -187,6 +187,7 @@ static const TypeInfo fby35_types[] = {
-         .class_init = fby35_class_init,
-         .instance_size = sizeof(Fby35State),
-         .instance_init = fby35_instance_init,
-+        .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
-     },
- };
- 
-diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
-index 0f3c207d548..ea3621e4f87 100644
---- a/hw/arm/highbank.c
-+++ b/hw/arm/highbank.c
-@@ -363,6 +363,7 @@ static const TypeInfo highbank_type = {
-     .name = MACHINE_TYPE_NAME("highbank"),
-     .parent = TYPE_MACHINE,
-     .class_init = highbank_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void midway_class_init(ObjectClass *oc, void *data)
-@@ -387,6 +388,7 @@ static const TypeInfo midway_type = {
-     .name = MACHINE_TYPE_NAME("midway"),
-     .parent = TYPE_MACHINE,
-     .class_init = midway_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void calxeda_machines_init(void)
-diff --git a/hw/arm/microbit.c b/hw/arm/microbit.c
-index ade363daaa4..dd265d8cfb3 100644
---- a/hw/arm/microbit.c
-+++ b/hw/arm/microbit.c
-@@ -74,6 +74,7 @@ static const TypeInfo microbit_info = {
-     .parent = TYPE_MACHINE,
-     .instance_size = sizeof(MicrobitMachineState),
-     .class_init = microbit_machine_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void microbit_machine_init(void)
-diff --git a/hw/arm/mps2-tz.c b/hw/arm/mps2-tz.c
-index b0633a5a69e..1f0a431adc8 100644
---- a/hw/arm/mps2-tz.c
-+++ b/hw/arm/mps2-tz.c
-@@ -1463,24 +1463,28 @@ static const TypeInfo mps2tz_an505_info = {
-     .name = TYPE_MPS2TZ_AN505_MACHINE,
-     .parent = TYPE_MPS2TZ_MACHINE,
-     .class_init = mps2tz_an505_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static const TypeInfo mps2tz_an521_info = {
-     .name = TYPE_MPS2TZ_AN521_MACHINE,
-     .parent = TYPE_MPS2TZ_MACHINE,
-     .class_init = mps2tz_an521_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static const TypeInfo mps3tz_an524_info = {
-     .name = TYPE_MPS3TZ_AN524_MACHINE,
-     .parent = TYPE_MPS2TZ_MACHINE,
-     .class_init = mps3tz_an524_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static const TypeInfo mps3tz_an547_info = {
-     .name = TYPE_MPS3TZ_AN547_MACHINE,
-     .parent = TYPE_MPS2TZ_MACHINE,
-     .class_init = mps3tz_an547_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void mps2tz_machine_init(void)
-diff --git a/hw/arm/mps2.c b/hw/arm/mps2.c
-index 6958485a668..e4763add3db 100644
---- a/hw/arm/mps2.c
-+++ b/hw/arm/mps2.c
-@@ -563,24 +563,28 @@ static const TypeInfo mps2_an385_info = {
-     .name = TYPE_MPS2_AN385_MACHINE,
-     .parent = TYPE_MPS2_MACHINE,
-     .class_init = mps2_an385_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static const TypeInfo mps2_an386_info = {
-     .name = TYPE_MPS2_AN386_MACHINE,
-     .parent = TYPE_MPS2_MACHINE,
-     .class_init = mps2_an386_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static const TypeInfo mps2_an500_info = {
-     .name = TYPE_MPS2_AN500_MACHINE,
-     .parent = TYPE_MPS2_MACHINE,
-     .class_init = mps2_an500_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static const TypeInfo mps2_an511_info = {
-     .name = TYPE_MPS2_AN511_MACHINE,
-     .parent = TYPE_MPS2_MACHINE,
-     .class_init = mps2_an511_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void mps2_machine_init(void)
-diff --git a/hw/arm/mps3r.c b/hw/arm/mps3r.c
-index 4dd1e8a7180..e9abbf00b43 100644
---- a/hw/arm/mps3r.c
-+++ b/hw/arm/mps3r.c
-@@ -634,6 +634,7 @@ static const TypeInfo mps3r_machine_types[] = {
-         .name = TYPE_MPS3R_AN536_MACHINE,
-         .parent = TYPE_MPS3R_MACHINE,
-         .class_init = mps3r_an536_class_init,
-+        .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
-     },
- };
- 
-diff --git a/hw/arm/musca.c b/hw/arm/musca.c
-index a4f43f1992b..5d63a4e9ec7 100644
---- a/hw/arm/musca.c
-+++ b/hw/arm/musca.c
-@@ -657,12 +657,14 @@ static const TypeInfo musca_a_info = {
-     .name = TYPE_MUSCA_A_MACHINE,
-     .parent = TYPE_MUSCA_MACHINE,
-     .class_init = musca_a_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static const TypeInfo musca_b1_info = {
-     .name = TYPE_MUSCA_B1_MACHINE,
-     .parent = TYPE_MUSCA_MACHINE,
-     .class_init = musca_b1_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void musca_machine_init(void)
-diff --git a/hw/arm/omap_sx1.c b/hw/arm/omap_sx1.c
-index aa1e96b3ad7..bb676f63eb5 100644
---- a/hw/arm/omap_sx1.c
-+++ b/hw/arm/omap_sx1.c
-@@ -219,6 +219,7 @@ static const TypeInfo sx1_machine_v2_type = {
-     .name = MACHINE_TYPE_NAME("sx1"),
-     .parent = TYPE_MACHINE,
-     .class_init = sx1_machine_v2_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void sx1_machine_v1_class_init(ObjectClass *oc, void *data)
-@@ -238,6 +239,7 @@ static const TypeInfo sx1_machine_v1_type = {
-     .name = MACHINE_TYPE_NAME("sx1-v1"),
-     .parent = TYPE_MACHINE,
-     .class_init = sx1_machine_v1_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void sx1_machine_init(void)
-diff --git a/hw/arm/realview.c b/hw/arm/realview.c
-index 008eeaf049a..f81d084eb80 100644
---- a/hw/arm/realview.c
-+++ b/hw/arm/realview.c
-@@ -431,6 +431,7 @@ static const TypeInfo realview_eb_type = {
-     .name = MACHINE_TYPE_NAME("realview-eb"),
-     .parent = TYPE_MACHINE,
-     .class_init = realview_eb_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void realview_eb_mpcore_class_init(ObjectClass *oc, void *data)
-@@ -452,6 +453,7 @@ static const TypeInfo realview_eb_mpcore_type = {
-     .name = MACHINE_TYPE_NAME("realview-eb-mpcore"),
-     .parent = TYPE_MACHINE,
-     .class_init = realview_eb_mpcore_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void realview_pb_a8_class_init(ObjectClass *oc, void *data)
-@@ -471,6 +473,7 @@ static const TypeInfo realview_pb_a8_type = {
-     .name = MACHINE_TYPE_NAME("realview-pb-a8"),
-     .parent = TYPE_MACHINE,
-     .class_init = realview_pb_a8_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void realview_pbx_a9_class_init(ObjectClass *oc, void *data)
-@@ -491,6 +494,7 @@ static const TypeInfo realview_pbx_a9_type = {
-     .name = MACHINE_TYPE_NAME("realview-pbx-a9"),
-     .parent = TYPE_MACHINE,
-     .class_init = realview_pbx_a9_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void realview_machine_init(void)
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index aa09d7a0917..112cbbf29e6 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -920,6 +920,7 @@ static const TypeInfo sbsa_ref_info = {
-     .instance_init = sbsa_ref_instance_init,
-     .class_init    = sbsa_ref_class_init,
-     .instance_size = sizeof(SBSAMachineState),
-+    .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void sbsa_ref_machine_init(void)
-diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index cbe914c93e9..b901683f78a 100644
---- a/hw/arm/stellaris.c
-+++ b/hw/arm/stellaris.c
-@@ -1475,6 +1475,7 @@ static const TypeInfo stellaris_i2c_info = {
-     .instance_size = sizeof(stellaris_i2c_state),
-     .instance_init = stellaris_i2c_init,
-     .class_init    = stellaris_i2c_class_init,
-+    .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void stellaris_adc_class_init(ObjectClass *klass, void *data)
-@@ -1492,6 +1493,7 @@ static const TypeInfo stellaris_adc_info = {
-     .instance_size = sizeof(StellarisADCState),
-     .instance_init = stellaris_adc_init,
-     .class_init    = stellaris_adc_class_init,
-+    .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void stellaris_sys_class_init(ObjectClass *klass, void *data)
-@@ -1512,6 +1514,7 @@ static const TypeInfo stellaris_sys_info = {
-     .instance_size = sizeof(ssys_state),
-     .instance_init = stellaris_sys_instance_init,
-     .class_init = stellaris_sys_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void stellaris_register_types(void)
-diff --git a/hw/arm/versatilepb.c b/hw/arm/versatilepb.c
-index 35766445fa4..3cfcd56f06b 100644
---- a/hw/arm/versatilepb.c
-+++ b/hw/arm/versatilepb.c
-@@ -452,6 +452,7 @@ static const TypeInfo versatileab_type = {
-     .name = MACHINE_TYPE_NAME("versatileab"),
-     .parent = TYPE_MACHINE,
-     .class_init = versatileab_class_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void versatile_machine_init(void)
-diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
-index 76c6107766c..6cd8c42925b 100644
---- a/hw/arm/vexpress.c
-+++ b/hw/arm/vexpress.c
-@@ -850,6 +850,7 @@ static const TypeInfo vexpress_a9_info = {
-     .parent = TYPE_VEXPRESS_MACHINE,
-     .class_init = vexpress_a9_class_init,
-     .instance_init = vexpress_a9_instance_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static const TypeInfo vexpress_a15_info = {
-@@ -857,6 +858,7 @@ static const TypeInfo vexpress_a15_info = {
-     .parent = TYPE_VEXPRESS_MACHINE,
-     .class_init = vexpress_a15_class_init,
-     .instance_init = vexpress_a15_instance_init,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void vexpress_machine_init(void)
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index b8916665ed6..8f2f0f35ff3 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -480,6 +480,7 @@ static const TypeInfo zynq_machine_type = {
-     .parent = TYPE_MACHINE,
-     .class_init = zynq_machine_class_init,
-     .instance_size = sizeof(ZynqMachineState),
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void zynq_machine_register_types(void)
-diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-index 0c6f0359e3d..e19c4d9ef58 100644
---- a/hw/arm/xlnx-versal-virt.c
-+++ b/hw/arm/xlnx-versal-virt.c
-@@ -833,6 +833,7 @@ static const TypeInfo versal_virt_machine_init_typeinfo = {
-     .instance_init = versal_virt_machine_instance_init,
-     .instance_size = sizeof(VersalVirt),
-     .instance_finalize = versal_virt_machine_finalize,
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void versal_virt_machine_init_register_types(void)
-diff --git a/hw/arm/xlnx-zcu102.c b/hw/arm/xlnx-zcu102.c
-index 4fdb153e4d8..88b1eafab4d 100644
---- a/hw/arm/xlnx-zcu102.c
-+++ b/hw/arm/xlnx-zcu102.c
-@@ -303,6 +303,7 @@ static const TypeInfo xlnx_zcu102_machine_init_typeinfo = {
-     .class_init = xlnx_zcu102_machine_class_init,
-     .instance_init = xlnx_zcu102_machine_instance_init,
-     .instance_size = sizeof(XlnxZCU102),
-+    .interfaces = LEGACY_BINARY_QEMU_SYSTEM_ARM_INTERFACE,
- };
- 
- static void xlnx_zcu102_machine_init_register_types(void)
+     }, {
+         .name          = MACHINE_TYPE_NAME("ast2700a0-evb"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_ast2700a0_evb_class_init,
+-        }, {
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_AARCH64_INTERFACE,
++    }, {
+         .name          = MACHINE_TYPE_NAME("ast2700a1-evb"),
+         .parent        = TYPE_ASPEED_MACHINE,
+         .class_init    = aspeed_machine_ast2700a1_evb_class_init,
+-#endif
++        .interfaces    = LEGACY_BINARY_QEMU_SYSTEM_AARCH64_INTERFACE,
+     }, {
+         .name          = TYPE_ASPEED_MACHINE,
+         .parent        = TYPE_MACHINE,
 -- 
 2.47.1
 
