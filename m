@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6256A7BC74
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 14:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4919DA7BC6B
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 14:15:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0fwj-0005yl-1p; Fri, 04 Apr 2025 08:14:53 -0400
+	id 1u0fwe-0005uw-DH; Fri, 04 Apr 2025 08:14:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u0fwK-0005qh-Fj
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 08:14:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u0fwL-0005rg-PE
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 08:14:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u0fwG-0005qT-Vk
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 08:14:28 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u0fwI-0005qn-2U
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 08:14:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743768864;
+ s=mimecast20190719; t=1743768865;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OGz2Trd3J3eebcx0QBdUVwvGNT0slZ7erjafWGrzzwU=;
- b=fxZFFdpM59VcYxgTjuwsVW/glIAfRngLCdP1yP7VuyRL0PVO49poX1+/tLiGhte8YxgThn
- ff8qo83bzOiyF4742Rq90045byRJtU2UGP9gMk+JZ8ExBqpeoBtOpHyvubZ18bFYiq0UXV
- 6/inPpB1LHP3CLX310uLtQLXIBwIIzE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=JXFnKJMNYKMSFA9doJlGysHAAmio8OIcedRbeus1bfw=;
+ b=aYnTONlgj2AXtgk6/kdsy9uJbMCD88vec7lxK5v7+tN5BbFmRi5jZW30YyfScxSvvvKwuE
+ QPARnf4gBRw6ZtWplgmW95pbtleQStXZRxVl6omAfUstrkgfs/5yL9e3rwRhTf+RZQ873Z
+ sjmUVGDO3QKkbfOTXqmu0MMQJARCtYI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-182-95h9bhbdMm-f3E912L8plA-1; Fri,
- 04 Apr 2025 08:14:20 -0400
-X-MC-Unique: 95h9bhbdMm-f3E912L8plA-1
-X-Mimecast-MFC-AGG-ID: 95h9bhbdMm-f3E912L8plA_1743768859
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-jYdV9sLpNyCI6hhEdmlqUQ-1; Fri,
+ 04 Apr 2025 08:14:22 -0400
+X-MC-Unique: jYdV9sLpNyCI6hhEdmlqUQ-1
+X-Mimecast-MFC-AGG-ID: jYdV9sLpNyCI6hhEdmlqUQ_1743768861
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0F3FD19560B8; Fri,  4 Apr 2025 12:14:19 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1EEA2180AF56; Fri,  4 Apr 2025 12:14:21 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE17319560AD; Fri,  4 Apr 2025 12:14:16 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7E1241809B6C; Fri,  4 Apr 2025 12:14:20 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7186321E66E9; Fri, 04 Apr 2025 14:14:13 +0200 (CEST)
+ id 7589D21E66EF; Fri, 04 Apr 2025 14:14:13 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, kkostiuk@redhat.com, kwolf@redhat.com,
  jsnow@redhat.com, peter.maydell@linaro.org, eblake@redhat.com,
  jiri@resnulli.us, qemu-block@nongnu.org
-Subject: [PATCH 04/11] docs/interop: Sanitize QMP reference manuals TOC
-Date: Fri,  4 Apr 2025 14:14:06 +0200
-Message-ID: <20250404121413.1743790-5-armbru@redhat.com>
+Subject: [PATCH 05/11] docs/devel/qapi-code-gen: Improve the part on
+ qmp-example directive
+Date: Fri,  4 Apr 2025 14:14:07 +0200
+Message-ID: <20250404121413.1743790-6-armbru@redhat.com>
 In-Reply-To: <20250404121413.1743790-1-armbru@redhat.com>
 References: <20250404121413.1743790-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -83,56 +84,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "QEMU QMP Reference Manual" and the "QEMU Storage Daemon QMP
-Reference Manual" start with a table of contents that looks like this:
-
-    Contents
-
-    * Title of the manual
-      * Title of first first-level section
-        * Title of its first second-level section
-        * Title of its second second-level section
-        ...
-      * Title of second first-level section
-      ...
-
-The first level is useless.  Drop it.
-
-While there, delete the option that limits the TOC to depth 3.  Its
-actual depth was 3 before the patch, and is now 2.
-
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/interop/qemu-qmp-ref.rst                | 2 +-
- docs/interop/qemu-storage-daemon-qmp-ref.rst | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ docs/devel/qapi-code-gen.rst | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/docs/interop/qemu-qmp-ref.rst b/docs/interop/qemu-qmp-ref.rst
-index ef8792b53f..3bc1ca12b1 100644
---- a/docs/interop/qemu-qmp-ref.rst
-+++ b/docs/interop/qemu-qmp-ref.rst
-@@ -4,7 +4,7 @@ QEMU QMP Reference Manual
- =========================
+diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
+index ad517349fc..25a46fafb6 100644
+--- a/docs/devel/qapi-code-gen.rst
++++ b/docs/devel/qapi-code-gen.rst
+@@ -1038,20 +1038,15 @@ default to "Example:".
+ A simple QMP example::
  
- .. contents::
--   :depth: 3
-+   :local:
+   # .. qmp-example::
+-  #    :title: Using query-block
+   #
+-  #    -> { "execute": "query-block" }
+-  #    <- { ... }
++  #     -> { "execute": "query-name" }
++  #     <- { "return": { "name": "Fred" } }
  
- .. qapi-doc:: qapi/qapi-schema.json
-    :transmogrify:
-diff --git a/docs/interop/qemu-storage-daemon-qmp-ref.rst b/docs/interop/qemu-storage-daemon-qmp-ref.rst
-index d0228d63b8..dc7bde262a 100644
---- a/docs/interop/qemu-storage-daemon-qmp-ref.rst
-+++ b/docs/interop/qemu-storage-daemon-qmp-ref.rst
-@@ -2,7 +2,7 @@ QEMU Storage Daemon QMP Reference Manual
- ========================================
+ More complex or multi-step examples where exposition is needed before
+ or between QMP code blocks can be created by using the ``:annotated:``
+ directive option.  When using this option, nested QMP code blocks must
+ be entered explicitly with rST's ``::`` syntax.
  
- .. contents::
--   :depth: 3
-+   :local:
+-Highlighting in non-QMP languages can be accomplished by using the
+-``.. code-block:: lang`` directive, and non-highlighted text can be
+-achieved by omitting the language argument.
+-
+ For example::
  
- .. qapi-doc:: storage-daemon/qapi/qapi-schema.json
-    :transmogrify:
+   # .. qmp-example::
+@@ -1061,11 +1056,21 @@ For example::
+   #    This is a more complex example that can use
+   #    ``arbitrary rST syntax`` in its exposition::
+   #
+-  #      -> { "execute": "query-block" }
+-  #      <- { ... }
++  #     -> { "execute": "query-block" }
++  #     <- { "return": [
++  #             {
++  #               "device": "ide0-hd0",
++  #               ...
++  #             }
++  #             ...
++  #          ] }
+   #
+   #    Above, lengthy output has been omitted for brevity.
+ 
++Highlighting in non-QMP languages can be accomplished by using the
++``.. code-block:: lang`` directive, and non-highlighted text can be
++achieved by omitting the language argument.
++
+ 
+ Examples of complete definition documentation::
+ 
 -- 
 2.48.1
 
