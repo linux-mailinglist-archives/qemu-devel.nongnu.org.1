@@ -2,72 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6A7A7C221
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 19:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1510EA7C15A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 18:14:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0kWT-0007bE-Jc; Fri, 04 Apr 2025 13:08:05 -0400
+	id 1u0jfc-0004rb-4C; Fri, 04 Apr 2025 12:13:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u0kWQ-0007aL-Pn
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 13:08:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u0kWO-0005Bu-Iu
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 13:08:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743786479;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9v8AXBiz2VbGbNqr98/RiYkEp9OyLy9b8FlbC12ViHI=;
- b=C+RUzVYiPW+Y44dbN9377xuJ+srRFN6sYuilba/GhROL5PSOL/WYULP+5Ufb8/DecvXS1L
- OHhAh2JQtjIyMG7ykOx1qhToEx8uEi8CI2Nhn5jJoV34iT7rDdyt3L+eGbnWTIruXnCWLx
- Hctf/4obZaKULyiFhO5HdeOnv2aHgtc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-K5xrAB1QMkWYsNRb8F_ySg-1; Fri,
- 04 Apr 2025 13:07:55 -0400
-X-MC-Unique: K5xrAB1QMkWYsNRb8F_ySg-1
-X-Mimecast-MFC-AGG-ID: K5xrAB1QMkWYsNRb8F_ySg_1743786474
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B41C51800361; Fri,  4 Apr 2025 17:07:54 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.156])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 291331801766; Fri,  4 Apr 2025 17:07:52 +0000 (UTC)
-Date: Fri, 4 Apr 2025 11:05:09 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Pinku Deb Nath <prantoran@gmail.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-devel@nongnu.org, qemu-block@nongnu.org
-Subject: Re: [PATCH v4] block/file-posix.c: Use pwritev2() with RWF_DSYNC for
- FUA
-Message-ID: <20250404150509.GA374072@fedora>
-References: <20250404074233.133365-1-prantoran@gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0jfW-0004rJ-H8
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 12:13:22 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0jfU-0003yh-1F
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 12:13:22 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43cf0d787eeso23674405e9.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 09:13:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1743783195; x=1744387995; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:cc:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=9a12gCA/6Kq1t+NCdJQVFsLrQlxLsLT75310yiUowq8=;
+ b=MocOfPfjXBotTlIxEDa43COaWagaxpirPwPRjwW0EGOEMMaqVm7S9VIIbkb+hnXg7H
+ a8lXpSr/r2q/UQCc/bNLGiAcTJU9aMtVd7gfLpBrAeSwvfJlQNnM7So75hWIec8pfp2+
+ TyK1yMOBy7dBBz5bmjiEu2Tv6saL1Q3A7vqefX57XK5pNjQxTDsm833//zi2K5H4uxus
+ Qukc/Evx12Jpi16gbxKtbRjQHq/ZzA/Lo1E0rGiGiYXVl2nSd4U4OP3f5UXbRtD0JeDB
+ DIoQd1U0LrjFbVHJt9wNOmWAYh9GP8fSikV79lmuoZutpRFuj185mAijiWicNsKZWzuM
+ Rftg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1743783195; x=1744387995;
+ h=content-transfer-encoding:in-reply-to:from:cc:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9a12gCA/6Kq1t+NCdJQVFsLrQlxLsLT75310yiUowq8=;
+ b=PhjQh/51m2fu59DBZClVaVeRpag7NU9qZVeH+wDsGy81EBRteyrGZxUOnSfamUxMXw
+ VTFQbqaphQ4FYE0JyZWgJVMF23TdK+KFC5heIRfHwK+F8bvgSh9E3hPaOnDnVz/mwoSL
+ xv50OEVif4GJ8XFVCRwMEjlnZnWKMGbNZJ39wVvmp8Tqmu7gaj4ZA0yEQeu5i9k9IrjB
+ cIs9HDsabLONoWk3q0zJTuN3wHGdZ9Z28RZUdKt10O2YSxacozVD95aaWIV3aNoJhCLe
+ R1SPps27/SUHOCEmfP7V9lysWlgm3W7FPAD2JpylvfBejYfMz+kaCs1MBZ1XS8T3HRLN
+ i4Sg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWxQvNPrJOr0ADvBjsmu/3i7+udEPL/Bcd8jbPOA7p9Ms5sbbfxlHcPbJ29Qnyi6SDcWjeomLokRR/p@nongnu.org
+X-Gm-Message-State: AOJu0Yxui3DHRvmgaEmn6tmy4dS7Y5Dj9YKPBYkp8gM9kNaHPi5xZ+/7
+ xZyKHYHHIx2Ki9pb+Zo7TrVONVX7eLBF01tLO6y1Bs1N4yjxxW0ZiZAG86iC438=
+X-Gm-Gg: ASbGnctavOiuGB7tG2hHFruxD8XiJNUMoZdzCJjH3vrmxuIjBmPT2MKG5YHP5+IOUZJ
+ UwoXAbcC1/Rdku5g5XWBOC2OPbguL4Oa4Ka8RTBenX5Fgi8IaDichwaDz152EbpLyeJNQab5HyW
+ M/mPOnh68XPcJsNZp3Op5oTwDgSF7mSW9/8P1mZEUuwGF6TRsIDUe5FFW0C07chqN6o9/YWDkQh
+ TyhQvocPcdusChODoxIg0shgWMbPi6lLoPAk4AcwxrP25YN44TnhV7Rd3I5+1Sug1vg3fjIORlC
+ 4FGrzxWQ1eK2Aifoxrt8aXhCg+BLGcxLx10GVFJd1O5C4+/ywTrw/ud1ybSQ4SjxM8DRanPLg0W
+ eoZ0IvZUNzVXF2Gup3w==
+X-Google-Smtp-Source: AGHT+IHHAI/7/xMesCgwPa8GED5kHVXHEhHWqENfIxIL8Xbj8orHhfrpG07HxfPJFj6gMmlqBzAMDQ==
+X-Received: by 2002:a05:600c:3b9f:b0:43c:fdbe:4398 with SMTP id
+ 5b1f17b1804b1-43ed0b80b25mr28855785e9.6.1743783194791; 
+ Fri, 04 Apr 2025 09:13:14 -0700 (PDT)
+Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-39c3020da22sm4800374f8f.68.2025.04.04.09.13.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 04 Apr 2025 09:13:14 -0700 (PDT)
+Message-ID: <fffd6cf6-16f7-4b93-9b81-cf1ab6c35435@linaro.org>
+Date: Fri, 4 Apr 2025 18:13:13 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="+g98o3/GyoR6TEqM"
-Content-Disposition: inline
-In-Reply-To: <20250404074233.133365-1-prantoran@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.028,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/ipmi: Move vmsd registration to device class
+To: corey@minyard.net, qemu-devel@nongnu.org
+References: <Z_AAPdpBWQjXq6fJ@mail.minyard.net>
+Content-Language: en-US
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <Z_AAPdpBWQjXq6fJ@mail.minyard.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,230 +99,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Cc'ing migration maintainers
 
---+g98o3/GyoR6TEqM
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Apr 04, 2025 at 12:42:33AM -0700, Pinku Deb Nath wrote:
-> Full Unit Access (FUA) is an optimization where a disk write with the
-> flag set will be persisted to disk immediately instead of potentially
-> remaining in the disk's write cache. This commit address the todo task
-> for using pwritev2() with RWF_DSYNC in the thread pool section of
-> raw_co_prw(), if pwritev2 with RWF_DSYNC is available in the host,
-> which is alway for Linux kernel >=3D 4.7. The intent for FUA is indicated
-> with the BDRV_REQ_FUA flag. The old code paths are preserved in case
-> BDRV_REQ_FUA is off or pwritev2() with RWF_DSYNC is not available.
->=20
-> During testing, I observed that the BDRV_REQ_FUA is always turned on
-> when blk->enable_write_cache is not set in block/block-backend.c, so
-> I commented this section off during testing:
-> https://gitlab.com/qemu-project/qemu/-/blob/master/block/block-backend.c?=
-ref_type=3Dheads#L1432-1434
->=20
-> Signed-off-by: Pinku Deb Nath <prantoran@gmail.com>
->=20
-> Update 1:
->=20
-> The testing with "-t writeback" works for turning on enable_write_cache.
-> I renamed the function to qemu_pwritev_fua() and fixed any typos.
->=20
-> I moved the handle_aiocb_flush() into the qemu_pwritev_fua() and
-> removed from the previously todo seciont. Initially I thought
-> of only passing aiocb, but then I was not sure whethe I could
-> derive buf from aiocb, so I added arguments for iovec and iovcnt
-> into qemu_pwritev_fua().
->=20
-> For handling buf in handle_aiocb_rw_linear(), I created iovec
-> and passed its reference. I assumed that there will be only one
-> buffer/iovec, so I passed 1 for iovcnt.
->=20
-> Signed-off-by: Pinku Deb Nath <prantoran@gmail.com>
->=20
-> Update 2:
->=20
-> For non-Linux hosts, I am returning -ENOSYS in the same way for
-> pwritev.
->=20
-> I changed the signature to add fd, iov, nr_iov, offset separately,
-> with the aiocb pointer at the end. I thought of reconstructing
-> aiocb inside the function but the handle_aiocb_flush() uses
-> (BDRVRawState)aiocb->bs->opaque which I was not sure whether it
-> was used to pass return values upstream.
-> So I decided on passing aiocb pointer as an input argument.
->=20
-> I was not sure about how git rebase worked with patches, I hope
-> it worked, finger-crossed =F0=9F=98=85
->=20
-> Signed-off-by: Pinku Deb Nath <prantoran@gmail.com>
+On 4/4/25 17:52, Corey Minyard wrote:
+> It's the right way to do it now, and it handles multiple instances
+> properly.  I need multiple instances for some testing I'm doing so this
+> is the right thing to do.
+> 
+> Tested by doing:
+> 
+>     (qemu) migrate -d exec:cat>filen.mig
+> 
+> before and after the fix, then:
+> 
+>     scripts/analyze-migration.py -d desc -f file1.mig >file1.json
+>     scripts/analyze-migration.py -d desc -f file2.mig >file2.json
+>     diff file1.json file2.json
+> 
+> with no differences.
+> 
+> Signed-off-by: Corey Minyard <corey@minyard.net>
 > ---
->  block/file-posix.c | 59 ++++++++++++++++++++++++++++++++++++----------
->  1 file changed, 47 insertions(+), 12 deletions(-)
+>   hw/ipmi/ipmi_bmc_extern.c |  3 +--
+>   hw/ipmi/ipmi_bmc_sim.c    |  3 +--
+>   hw/ipmi/isa_ipmi_bt.c     |  3 +--
+>   hw/ipmi/isa_ipmi_kcs.c    | 12 +++++-------
+>   4 files changed, 8 insertions(+), 13 deletions(-)
+> 
+> diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
+> index d015500254..3e9f8c5a50 100644
+> --- a/hw/ipmi/ipmi_bmc_extern.c
+> +++ b/hw/ipmi/ipmi_bmc_extern.c
+> @@ -497,8 +497,6 @@ static void ipmi_bmc_extern_realize(DeviceState *dev, Error **errp)
+>   
+>       qemu_chr_fe_set_handlers(&ibe->chr, can_receive, receive,
+>                                chr_event, NULL, ibe, NULL, true);
+> -
+> -    vmstate_register(NULL, 0, &vmstate_ipmi_bmc_extern, ibe);
+>   }
+>   
+>   static void ipmi_bmc_extern_init(Object *obj)
+> @@ -528,6 +526,7 @@ static void ipmi_bmc_extern_class_init(ObjectClass *oc, void *data)
+>       bk->handle_reset = ipmi_bmc_extern_handle_reset;
+>       dc->hotpluggable = false;
+>       dc->realize = ipmi_bmc_extern_realize;
+> +    dc->vmsd = &vmstate_ipmi_bmc_extern;
+>       device_class_set_props(dc, ipmi_bmc_extern_properties);
+>   }
+>   
+> diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
+> index 6157ac7120..bc0ddc52a9 100644
+> --- a/hw/ipmi/ipmi_bmc_sim.c
+> +++ b/hw/ipmi/ipmi_bmc_sim.c
+> @@ -2187,8 +2187,6 @@ static void ipmi_sim_realize(DeviceState *dev, Error **errp)
+>       register_cmds(ibs);
+>   
+>       ibs->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, ipmi_timeout, ibs);
+> -
+> -    vmstate_register(NULL, 0, &vmstate_ipmi_sim, ibs);
+>   }
+>   
+>   static const Property ipmi_sim_properties[] = {
+> @@ -2212,6 +2210,7 @@ static void ipmi_sim_class_init(ObjectClass *oc, void *data)
+>   
+>       dc->hotpluggable = false;
+>       dc->realize = ipmi_sim_realize;
+> +    dc->vmsd = &vmstate_ipmi_sim;
+>       device_class_set_props(dc, ipmi_sim_properties);
+>       bk->handle_command = ipmi_sim_handle_command;
+>   }
+> diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
+> index a1b66d5ee8..474a792c9a 100644
+> --- a/hw/ipmi/isa_ipmi_bt.c
+> +++ b/hw/ipmi/isa_ipmi_bt.c
+> @@ -117,8 +117,6 @@ static void isa_ipmi_bt_realize(DeviceState *dev, Error **errp)
+>       qdev_set_legacy_instance_id(dev, iib->bt.io_base, iib->bt.io_length);
+>   
+>       isa_register_ioport(isadev, &iib->bt.io, iib->bt.io_base);
+> -
+> -    vmstate_register(NULL, 0, &vmstate_ISAIPMIBTDevice, dev);
+>   }
+>   
+>   static void isa_ipmi_bt_init(Object *obj)
+> @@ -147,6 +145,7 @@ static void isa_ipmi_bt_class_init(ObjectClass *oc, void *data)
+>       AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(oc);
+>   
+>       dc->realize = isa_ipmi_bt_realize;
+> +    dc->vmsd = &vmstate_ISAIPMIBTDevice;
+>       device_class_set_props(dc, ipmi_isa_properties);
+>   
+>       iic->get_backend_data = isa_ipmi_bt_get_backend_data;
+> diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
+> index d9ebdd5371..94bbe45d35 100644
+> --- a/hw/ipmi/isa_ipmi_kcs.c
+> +++ b/hw/ipmi/isa_ipmi_kcs.c
+> @@ -72,6 +72,10 @@ static bool vmstate_kcs_before_version2(void *opaque, int version)
+>       return version <= 1;
+>   }
+>   
+> +/*
+> + * Version 1 had an incorrect name, it clashed with the BT IPMI
+> + * device, so receive it, but transmit a different version.
+> + */
+>   static const VMStateDescription vmstate_ISAIPMIKCSDevice = {
+>       .name = TYPE_IPMI_INTERFACE,
+>       .version_id = 2,
+> @@ -119,13 +123,6 @@ static void ipmi_isa_realize(DeviceState *dev, Error **errp)
+>       qdev_set_legacy_instance_id(dev, iik->kcs.io_base, iik->kcs.io_length);
+>   
+>       isa_register_ioport(isadev, &iik->kcs.io, iik->kcs.io_base);
+> -
+> -    /*
+> -     * Version 1 had an incorrect name, it clashed with the BT
+> -     * IPMI device, so receive it, but transmit a different
+> -     * version.
+> -     */
+> -    vmstate_register(NULL, 0, &vmstate_ISAIPMIKCSDevice, iik);
+>   }
+>   
+>   static void isa_ipmi_kcs_init(Object *obj)
+> @@ -154,6 +151,7 @@ static void isa_ipmi_kcs_class_init(ObjectClass *oc, void *data)
+>       AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(oc);
+>   
+>       dc->realize = ipmi_isa_realize;
+> +    dc->vmsd = &vmstate_ISAIPMIKCSDevice;
+>       device_class_set_props(dc, ipmi_isa_properties);
+>   
+>       iic->get_backend_data = isa_ipmi_kcs_get_backend_data;
 
-The commit description becomes part of the git log when the commit is
-merged. For the same reasons why changes to patches should be squashed,
-the commit description should also be updated to reflect the latest
-state instead of appending incremental descriptions.
+LGTM!
 
-In order to indicate what changed since the previous version, you can
-add a changelog below the '---' line. Anything below the '---' line is
-discarded when git-am(1) applies a commit email. For example:
-
----
-v3:
-- Changed signature to add fd, iov, nr_iov, ...
-
-v2:
-- Moved handle_aiocb_flush() into qemu_pwritev_fua().
-
-By doing these things you make it easy for reviewers to see what has
-changed while keeping the git log clean.
-
->=20
-> diff --git a/block/file-posix.c b/block/file-posix.c
-> index 56d1972d15..16e32acedd 100644
-> --- a/block/file-posix.c
-> +++ b/block/file-posix.c
-> @@ -229,6 +229,7 @@ typedef struct RawPosixAIOData {
->              unsigned long op;
->          } zone_mgmt;
->      };
-> +    BdrvRequestFlags flags;
->  } RawPosixAIOData;
-> =20
->  #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-> @@ -1674,6 +1675,20 @@ qemu_pwritev(int fd, const struct iovec *iov, int =
-nr_iov, off_t offset)
->      return pwritev(fd, iov, nr_iov, offset);
->  }
-> =20
-> +static ssize_t
-> +qemu_pwritev_fua(int fd, struct iovec *iov, int nr_iov, off_t offset, co=
-nst RawPosixAIOData *aiocb)
-> +{
-> +#ifdef RWF_DSYNC
-> +    return pwritev2(fd, iov, nr_iov, offset, RWF_DSYNC);
-> +#else
-> +    ssize_t len =3D pwritev2(fd, iov, nr_iov, offset, 0);
-> +    if (len =3D=3D 0) {
-> +        len =3D handle_aiocb_flush(aiocb);
-> +    }
-> +    return len;
-> +#endif
-> +}
-> +
->  #else
-> =20
->  static bool preadv_present =3D false;
-> @@ -1690,6 +1705,11 @@ qemu_pwritev(int fd, const struct iovec *iov, int =
-nr_iov, off_t offset)
->      return -ENOSYS;
->  }
-> =20
-> +static ssize_t
-> +qemu_pwritev_fua(int fd, struct iovec *iov, int nr_iov, off_t offset, co=
-nst RawPosixAIOData *aiocb)
-> +{
-> +    return -ENOSYS;
-> +}
->  #endif
-> =20
->  static ssize_t handle_aiocb_rw_vector(RawPosixAIOData *aiocb)
-> @@ -1698,10 +1718,16 @@ static ssize_t handle_aiocb_rw_vector(RawPosixAIO=
-Data *aiocb)
-> =20
->      len =3D RETRY_ON_EINTR(
->          (aiocb->aio_type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) ?
-> -            qemu_pwritev(aiocb->aio_fildes,
-> -                           aiocb->io.iov,
-> -                           aiocb->io.niov,
-> -                           aiocb->aio_offset) :
-> +            (aiocb->flags &  BDRV_REQ_FUA) ?
-> +                qemu_pwritev_fua(aiocb->aio_fildes,
-> +                                aiocb->io.iov,
-> +                                aiocb->io.niov,
-> +                                aiocb->aio_offset,
-> +                                aiocb) :
-> +                qemu_pwritev(aiocb->aio_fildes,
-> +                            aiocb->io.iov,
-> +                            aiocb->io.niov,
-> +                            aiocb->aio_offset) :
->              qemu_preadv(aiocb->aio_fildes,
->                            aiocb->io.iov,
->                            aiocb->io.niov,
-> @@ -1727,10 +1753,22 @@ static ssize_t handle_aiocb_rw_linear(RawPosixAIO=
-Data *aiocb, char *buf)
-> =20
->      while (offset < aiocb->aio_nbytes) {
->          if (aiocb->aio_type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
-> -            len =3D pwrite(aiocb->aio_fildes,
-> -                         (const char *)buf + offset,
-> -                         aiocb->aio_nbytes - offset,
-> -                         aiocb->aio_offset + offset);
-> +            if (aiocb->flags & BDRV_REQ_FUA) {
-> +                struct iovec iov =3D {
-> +                    .iov_base =3D buf,
-
-This should be buf + offset (the same as below)?
-
-> +                    .iov_len =3D aiocb->aio_nbytes - offset,
-> +                };
-> +                len =3D qemu_pwritev_fua(aiocb->aio_fildes,
-> +                                    &iov,
-> +                                    1,
-> +                                    aiocb->aio_offset + offset,
-> +                                    aiocb);
-
-When !CONFIG_PREADV then linear FUA writes will fail because there is no
--ENOSYS fallback here. Please add a fallback to pwrite() +
-handle_aiocb_flush().
-
-> +            } else {
-> +                len =3D pwrite(aiocb->aio_fildes,
-> +                            (const char *)buf + offset,
-> +                            aiocb->aio_nbytes - offset,
-> +                            aiocb->aio_offset + offset);
-> +            }
->          } else {
->              len =3D pread(aiocb->aio_fildes,
->                          buf + offset,
-> @@ -2539,14 +2577,11 @@ static int coroutine_fn raw_co_prw(BlockDriverSta=
-te *bs, int64_t *offset_ptr,
->              .iov            =3D qiov->iov,
->              .niov           =3D qiov->niov,
->          },
-> +        .flags          =3D flags,
->      };
-> =20
->      assert(qiov->size =3D=3D bytes);
->      ret =3D raw_thread_pool_submit(handle_aiocb_rw, &acb);
-> -    if (ret =3D=3D 0 && (flags & BDRV_REQ_FUA)) {
-> -        /* TODO Use pwritev2() instead if it's available */
-> -        ret =3D raw_co_flush_to_disk(bs);
-> -    }
->      goto out; /* Avoid the compiler err of unused label */
-> =20
->  out:
-> --=20
-> 2.43.0
->=20
-
---+g98o3/GyoR6TEqM
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEyBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmfv9SUACgkQnKSrs4Gr
-c8gQdwf2KO7neAbqlphZrJ38i37xDum10OylHVwfVh76KIbrpU1+IgqUkJL/66T/
-fXPIONlQnJp57+0G9cUKkoCxZJLQuKzHJzIp+9Mf8TBwQSspF2ho7zRLv1Q1M09X
-i11g/d8PNlgQelmPE73m4JeZSZwnGk1eb+O2lemGugN2Xah1jXx6+qq7j0H7pKY2
-T20h/Vn2I6JDDxbwZc11WmgcYcm7xfomLJD6iKBkW5sEBZSM/irkWiaSpqHWIciZ
-O4ERXiu/cj/3bGjiSXeXZxpIXbeyOqYC0sYvWjXWd5NU4pviWmnbC3w9mCnoyNje
-9f1w1fQnymyWB3hfWyJ6Dk83RC1R
-=3Jsm
------END PGP SIGNATURE-----
-
---+g98o3/GyoR6TEqM--
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
