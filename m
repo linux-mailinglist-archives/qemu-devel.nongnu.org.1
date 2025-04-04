@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF09FA7C65F
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 00:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 057D2A7C65D
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 00:37:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0pdr-0000iV-Vr; Fri, 04 Apr 2025 18:36:04 -0400
+	id 1u0pdt-0000l4-Ji; Fri, 04 Apr 2025 18:36:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0pdW-0000gN-Op
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 18:35:45 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0pda-0000go-Ih
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 18:35:47 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0pdT-0007xw-Es
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 18:35:41 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43cec5cd73bso14039165e9.3
- for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 15:35:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0pdW-0007yX-LN
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 18:35:45 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43cebe06e9eso16345105e9.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 15:35:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743806135; x=1744410935; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743806140; x=1744410940; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rq6ukSPz6i3qBiz15byBnMynpVR9qpwTm75W75QCRYE=;
- b=EW10laci9slrRsXuCmaiaE2apnM5TjP/bRpx6oknJp3mqRS3EVeChLYWSJl4bCpNyv
- 5Z+y5JfWeFci77yylU8gqcXhHzaU86lIKDiB9GEEiukT/QElp+nwKzHxC6lZKB6DmeOo
- mwiqkmf6vYLN9XiQzp3I0H16Ok9/XiUI2l5HchdQlnjuIe73N8/ex6ZKFniWzkUqCLds
- wDe5VUBGhVHzL738E5ng9jy35cOL0tb3CnNDNmuYaxga0DUPCGI3Va67mbiWf/hAmJnD
- XG4QzTBcOV7TgmuE4HUfJ/nnD3S3wbpifpZypOJKfZDIflx94gH8ZuZcHtMm5ScP3WoF
- e+rw==
+ bh=7aHt9/+1RoqryMMLez5mxrSk/pFneV/cWior93LSBnc=;
+ b=AzT2wzdkO3qmlEvkELkkuN4+Kumj6cWg8vPgCyPIX7Io6k3AdqzuuVFSeMHwj1hQPe
+ yVu4sQ7E2Le4twErr3CmCvabzKMcuh8l/I1L8Xz3CGLUCnwRWeD4BWqGKXstNMsY3eaM
+ lsJ/es98ZuQkUQwcStlLNhHi+Cfj8Rr/ksE9czUngnvfPwlFr+f47cz3xVj1YaXCMxEp
+ f7p+B+RUzPpwarE+oZsG9hIzbcJ8KK2ssDEI7ukspzeI+KA6a5xBJALeJguius3aVNY1
+ WxXI77B1hrADh1BDb0Mzu284CgWwEPTyeavYWsLaeofKaxcy/x1jUoE6R+SXowo5GmTD
+ Dkfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743806135; x=1744410935;
+ d=1e100.net; s=20230601; t=1743806140; x=1744410940;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rq6ukSPz6i3qBiz15byBnMynpVR9qpwTm75W75QCRYE=;
- b=Z5mDgtV6Dc1l97NmuhXVH8p3L1ll32eJ5w0SPHZHc/g++EjQHWk2hlCC83no+oNESk
- 8yP0sDpYqnturh/PfFZna9D8kd9PB2K0rpB/fKkfSTxRdXPgVABsOt6cyMy9V0hHenT8
- fWVh3F39RlHNC/gm2n+rLUh3/7nUIHzI1EgC5q3SjKVYYh8+nZXQ8spZwKESgAmCCXNG
- W3/RVdIaF4DVKRB6zPMs3LlON2/XbsTkYV2Gl5uvyEXehXeFuVJtog/jEnRcAgLqBa8J
- Zl8XFLM6kR1InYHbhZ0WmOEaVofAvc1yfJo10g5JFXYwMVWhoUCGxCU72gUN/A7MRKtw
- fngA==
-X-Gm-Message-State: AOJu0Ywe7kKsBO5X7O3yNikRF+/Dyqig51HSS4BnKfljyYE0Au8em7+A
- 6v/u5yBhVK189IJcmkMwPyev1TUm5qZdYdH1ky7B4a61VzY9KrF7wDKASWlthFkcpQjLK+yERP+
- M
-X-Gm-Gg: ASbGncsSa8zDNQt5qF5gwYC8CvkAUIV6mCCCi8woOlwjQZuetI2ptSPZP6Te8G1HKQx
- jYiuug2ZuPclHiRrci5XCJ52wTPDpLG0EePSO5PsNDBpTlkXuSHiPd8XcL39XGJPGJ0DKMlh3sM
- u8r4MIHTMC68eVDmMp8bq8vdkVvq+CENGJR6GzOyGPAphcRReQqjgz9IinbWqBNNNJ3qaO/Wmhp
- 4ulF7wIOGBrbcc32hzcnxwtC+b/7JRoRxllWuB5d5O2x+MHYFlYzEAxI6nBTJ6NGBCL10Gbsm85
- j/INabNx9P+AAt2UIxf9Mae1HIiNMLpI8qLe6JoCqVAifoUYpYT+Cm0uIg9gFFVryYiPWa6tY1E
- 4xn1FP/nnZq2YOeSdPIdS6sAf
-X-Google-Smtp-Source: AGHT+IEMSL61JPkT0XeVJ40GVionwl/pYjYgi7F0pD9PxlljrW0JC+Cjy++q3jco8uIlJSEnpFn+Qg==
-X-Received: by 2002:a05:600c:a013:b0:43c:f8fc:f686 with SMTP id
- 5b1f17b1804b1-43ee0616fedmr13051525e9.3.1743806134772; 
- Fri, 04 Apr 2025 15:35:34 -0700 (PDT)
+ bh=7aHt9/+1RoqryMMLez5mxrSk/pFneV/cWior93LSBnc=;
+ b=Dk2lr3Gi863/kaNx810tVH0ltII5ABXQPgSV3aXtfaJ/qShHhxiyf+2GKco8kzYJmB
+ +lHw6QFqGCAN/2HznD461Zj+Oe/LfBrFH0lE/e/NUfNpBCsDzN9D8az8hOLsXoPRTNv9
+ QW+B2ktmgBocHt22Oi0v+s1t4mXb6rbC6L4x8SzJt1RMajxahuAc6OQo89F5LeXf/lzH
+ IptEYu0awNMg7rklFDtcQcQ5EgZOv2OONm7A7h5iS0DoHy+LFHrkR3Uo6/vP/TsBKeo+
+ 1ZMZNRskREzFRM/Zboe6pMcL2QAJ4Rs+2/5w7bRji48p3dUpaquiifNGDta+nodvRpGd
+ Qwhg==
+X-Gm-Message-State: AOJu0YwnGZLL2N+fIj/eDiqNVDRNik3BU1JTrve6KPaodCfrMfvL/zpA
+ 6uogSGP+XfbH0qgCz08/DyCs3igv1OuhQWjXeZrVpXoVy7hD0eDBEPy4B63S+rAv5FicIJwDwDz
+ n
+X-Gm-Gg: ASbGncuNsxCm2Z3D0F1aM3YyUwfuM48VU1gC1Wkgh3hg6PFNjnoMy34nffx9n2iAWuO
+ JjjtRqKCom3Lr/5gUK4YUEp1HnAq1BHLFdzQjrnREb7j8czylC0y1fyyP5vHvYQtQBr4ARtnkRm
+ ppCpFc2RJqWE1zFjGE+bN5jp0O3cRQgYMNkN79qTF2M+ZCjPF1CF+rQoACDrAjN+GaJp2WmbumH
+ KmU3z+JHysrek/KwFolYZxtCMEVDWqGNJrsYH01+d2xl13KE0X4/YgXtepfJOSGMoiTsV4BpGv5
+ ibKp12iIlUuUd7zSgKvH82YqUfBkBFnOEchL6BxaZdEC7DNLLYNpy13QCOtDy8X7xDzK8WgARGb
+ yQCYY01rDTkj20FdU94Ziartl
+X-Google-Smtp-Source: AGHT+IGY5N3blidZWq1yLJ/x7LLJTJQ8O9dacZzGNjQpzlIco5pH3CCHtEorFuricFu0h1ERBe/M9Q==
+X-Received: by 2002:a05:600c:3b07:b0:43d:563:6fef with SMTP id
+ 5b1f17b1804b1-43ecf9fec44mr37994195e9.21.1743806139405; 
+ Fri, 04 Apr 2025 15:35:39 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec16ba978sm60231765e9.23.2025.04.04.15.35.33
+ 5b1f17b1804b1-43ec16313edsm60101395e9.6.2025.04.04.15.35.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Apr 2025 15:35:33 -0700 (PDT)
+ Fri, 04 Apr 2025 15:35:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
@@ -68,25 +68,25 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Gustavo Romero <gustavo.romero@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 2/9] target/arm: Remove use of TARGET_AARCH64 in
- dump.c
-Date: Sat,  5 Apr 2025 00:35:14 +0200
-Message-ID: <20250404223521.38781-3-philmd@linaro.org>
+Subject: [PATCH-for-10.1 3/9] target/arm: Remove use of TARGET_AARCH64 in
+ arm_cpu_initfn()
+Date: Sat,  5 Apr 2025 00:35:15 +0200
+Message-ID: <20250404223521.38781-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250404223521.38781-1-philmd@linaro.org>
 References: <20250404223521.38781-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,44 +102,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is safe to remove TARGET_AARCH64 #ifdef'ry for code
-guarded by runtime check on aa64_sve ISA feature, which
-is only available for Aarch64 CPUs.
+Introduce the QOM arm_cpu_is_64bit() helper, which checks
+whether a vCPU parent class is TYPE_AARCH64_CPU. Use it in
+arm_cpu_initfn() to remove a TARGET_AARCH64 definition use.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/cpu.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ target/arm/cpu.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 377791c84dd..95afa9b72f1 100644
+index 95afa9b72f1..ef95f31f249 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -1213,8 +1213,6 @@ static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
- #endif
+@@ -1471,6 +1471,13 @@ uint64_t arm_cpu_mp_affinity(ARMCPU *cpu)
+     return cpu->mp_affinity;
  }
  
--#ifdef TARGET_AARCH64
--
- static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
++#ifdef CONFIG_USER_ONLY
++static bool arm_cpu_is_64bit(ARMCPU *cpu)
++{
++    return !!object_dynamic_cast(OBJECT(cpu), TYPE_AARCH64_CPU);
++}
++#endif
++
+ static void arm_cpu_initfn(Object *obj)
  {
-     ARMCPU *cpu = ARM_CPU(cs);
-@@ -1372,15 +1370,6 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-     }
- }
+     ARMCPU *cpu = ARM_CPU(obj);
+@@ -1482,16 +1489,16 @@ static void arm_cpu_initfn(Object *obj)
+     QLIST_INIT(&cpu->el_change_hooks);
  
--#else
--
--static inline void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
--{
--    g_assert_not_reached();
--}
--
--#endif
--
- static void arm_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
+ #ifdef CONFIG_USER_ONLY
+-# ifdef TARGET_AARCH64
+-    /*
+-     * The linux kernel defaults to 512-bit for SVE, and 256-bit for SME.
+-     * These values were chosen to fit within the default signal frame.
+-     * See documentation for /proc/sys/abi/{sve,sme}_default_vector_length,
+-     * and our corresponding cpu property.
+-     */
+-    cpu->sve_default_vq = 4;
+-    cpu->sme_default_vq = 2;
+-# endif
++    if (arm_cpu_is_64bit(cpu)) {
++        /*
++         * The linux kernel defaults to 512-bit for SVE, and 256-bit for SME.
++         * These values were chosen to fit within the default signal frame.
++         * See documentation for /proc/sys/abi/{sve,sme}_default_vector_length,
++         * and our corresponding cpu property.
++         */
++        cpu->sve_default_vq = 4;
++        cpu->sme_default_vq = 2;
++    }
+ #else
+     /* Our inbound IRQ and FIQ lines */
+     if (kvm_enabled()) {
 -- 
 2.47.1
 
