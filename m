@@ -2,82 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5511A7B5E8
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 04:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF5FA7B5FE
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 04:54:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0WsI-0003DK-JN; Thu, 03 Apr 2025 22:33:42 -0400
+	id 1u0XAZ-0005vH-IQ; Thu, 03 Apr 2025 22:52:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u0WsH-0003D7-Ei; Thu, 03 Apr 2025 22:33:41 -0400
-Received: from mail-ua1-x933.google.com ([2607:f8b0:4864:20::933])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u0WsF-00048G-S0; Thu, 03 Apr 2025 22:33:41 -0400
-Received: by mail-ua1-x933.google.com with SMTP id
- a1e0cc1a2514c-86dde90e7a3so698240241.1; 
- Thu, 03 Apr 2025 19:33:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743734018; x=1744338818; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4bwOuelpGM1Yba2R3/XOOIlbsmMz76TTHXdCfw0UXaU=;
- b=HWCUhom5EqMbuC2/ZgjO3tYA2SUCYNIp0VfwL/InM7tgMxgRPvlIO7w2A9nvwUb96F
- GyDginKDhnWXMLhRsM3IT7fXdzmXcGsYkLYxMQ3504ApdQDNdu1bLozgzkaMRu9s9FoC
- yTxB0zoT2c0KSX3LzlWSKzPsBE+0nyKwUGT0dVUCOqwwLO8/FOwX1cMygFz2JfmfMuS1
- JWaLDzWNxnx9tFqnHi8l8106fdaYIwNWzNGbkMK07MwYC5o7d8GgvDGkm2b76myUMv1Y
- iEcA9ue3kpJr8owut0SBep2f1ahOcMFXrRF9sUm44LZmcAWEGAM84EGj0/pS+B93+aBB
- jXgw==
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1u0XAW-0005uU-6C
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 22:52:32 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1u0XAR-0006lF-04
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 22:52:31 -0400
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5341OBZG012942
+ for <qemu-devel@nongnu.org>; Fri, 4 Apr 2025 02:52:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=qcppdkim1; bh=Gstu/tBqXRTw6kzgDYlTuH
+ sTlQMsY3iKtjphp97K9WI=; b=PIfThtAvQ2ODFrZq78vqDw2fBj3iil/sePilqg
+ g/vZVGkMgxTTqEcS5lBRdFZuwxDLEiFAPKnEcDfTvWu3fZ7NJc7/4EaJbHC5G3ca
+ JpNLICGshrU8PBFkXhGUxL0S90JaZa5Xt8VZ/VrkBLfOWrF8NtrNNv127y5PsFmy
+ Httv+IOZ5LmEO/4cioDKYIgkHnhBTmOdKiCEnSHwf9VRW11NOHqb9W4maLeFj/Ex
+ YeG+HtyB5dBAGDMDficpCyr9G1sCi8PtIG7C4or1QmicdbZTXFqLSupfa1rBiVzm
+ 3hz1Kv/DfwnaGr8iYitl036zrK4FzSznYIvHr6n9+I7VhyJQ==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45t2d88fxd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 02:52:23 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-2241e7e3addso14040725ad.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 19:52:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743734018; x=1744338818;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4bwOuelpGM1Yba2R3/XOOIlbsmMz76TTHXdCfw0UXaU=;
- b=WbcG9LLFUy0YC+Eomy7KYRqT1DGyLOSSUV1/aZvKqJ6794oYepr+nxvcC2slhlk9VC
- 3hScQ3u4zgLYbosBwifuUCIUtnx9hHHkWWVD7iSwnVO8BKVgOD3m3jC8FTOQl0mzW6Pw
- JV9nwsANmEawRsQrP2nY199t+dxdbjSI0Amj7LdXuuvuwmsXv7pzmZAP6kgFNWUUW7xN
- XNdRHzLrnAb1+jUNg7ET0DkDCsH5hLVB8Bl5Tel21SSP9RqlOYxPHJw60Q5xzlGzdcef
- OK2LArtvdzG2fVTYloVL/bA8D1bSwfGUvCKcvZeGzSe1asECU3ltFlX7RwzNWL55+pEX
- Qgcw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWNoW0Csok/DRBfovpXaX9bwtaqWK9vc+IovXPOJHBR5b70jcxX2pH3YZTaxgFeWzPv/mcko9NaRcab@nongnu.org
-X-Gm-Message-State: AOJu0Yy6Ic4jEHNt1Ty7GD0pTG9vFDrPtsDQaB4zt0AadaxI8hYSa83h
- HOzS9gdMpn5Q/qUy6hypYyCZS9hu6A/ZUvcJa5WB/p3xi99f8x10SH3xj23qRY+uwhjQpmxEm7m
- cOt/TbZFdlk7dxE6X2bwX6EvVQd8=
-X-Gm-Gg: ASbGncsoXwY0Yze/BdvmZOcvhApKuMxGHYhoel3Thzov4Jayho50JzmUA67phCBIHH/
- E/tZGxbYc9ComwF/wfwBE1+abqMeneK227Gss2FOhkZmWMlHpNJgR1DeIWDgsit9MikEu8L/f8A
- DVAWnfdl1LwL/HOz0SiDhk4V8ToAph/Y8JfEFr0q5GkTciQamiHpdyTxLI
-X-Google-Smtp-Source: AGHT+IEamexak7DohjTooAObEop+vYcg2t3UDkHKUFyRwyJQM7gallaysukT3ub/sElSavqeJb9QaYnceA0fMVJGIiU=
-X-Received: by 2002:a67:e7c7:0:b0:4c5:1c02:5b46 with SMTP id
- ada2fe7eead31-4c8554b8217mr1347698137.25.1743734018094; Thu, 03 Apr 2025
- 19:33:38 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1743735142; x=1744339942;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Gstu/tBqXRTw6kzgDYlTuHsTlQMsY3iKtjphp97K9WI=;
+ b=oJPomkMf4cjjdTBEst6zip5ndyDoSqCHhjc1822uCMK/ZeHiGoQPus2cbuB2SzZhwc
+ IqhA4slZAVZWeg0wos5/duG0di8LxIlHaQyzhn3lhPbQ/POf/bRsBVJVCpD9WUMZDXWy
+ VSW5yBuU/RQ0QpyYOqXWtwr2f4FrJhivWjJ97m4o9Moh9H7UhuBM17VE1+qtFJUNEoiR
+ rghNIIACqjGHKlE3QfeuPEVgj0PhkFtXsDfe9RWQBgJcQh5swQosSEM8wJ+2DTPZQMNQ
+ u4TegIzqqpHgkG0ksmCBFnazjnnK0JWLvXTFNjwGDjxCKAKOv7Ks7cn8g2x6KqT5oENZ
+ nmrA==
+X-Gm-Message-State: AOJu0Yy2rXwcETPrGgnB9F7GEJhbGqzACVRIPKOVcvl7M2sfNMj2QFY/
+ jkKvosoQ9+ZhofebLpAdx0a0yXtkx+td243CujXYRcCyJ5OjTs/6H+YiYfiFQx8c6bPH8lyRjzx
+ qUvK9B6i5vQIfXtmJadZXwh6ga/dmonlTExiYy6NhqQNrnHQrVFeLDV7Rrc0UuQ==
+X-Gm-Gg: ASbGnctPvNwbsmJBw0xBu0KdZWGD+aNJDcqp44xHcmTqK4dFAnfiGwRTYSfrRWjjot3
+ daJlaVmaNfKENfzWNgiNOtD25A29ZZ3D3eLZfrMdMPoHRGjz+KpolImEqN924kMJFHYzGVrfX5y
+ zDhh8KtKcKfIW8d4rQBdyTfOjc1kxftAeZF/VApnR8IUZWPTpMPB/IoxeOPcFrKibVpupexBFRG
+ jrQ8icZU4VwqCWQ4vTq+0KJs5nWBp40bNaZtbcO5F2xzxcT9e14rl8wqluzCeChQuXnj8gsYWE9
+ fVQpNozPjGHBKLyZJ9c2OdC7Z2ffbbupTBsO3/IFU4QErbYB12/dMAzigF1K3KBT
+X-Received: by 2002:a17:902:7049:b0:224:1c41:a4cd with SMTP id
+ d9443c01a7336-22a8a04a7admr14007745ad.3.1743735142246; 
+ Thu, 03 Apr 2025 19:52:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4lRXUBF5/VqyifTqTQz5CjR020VG20L/EQhCcib4Xl8o6/Y+2faPykN8f3YFycSuRNScmWA==
+X-Received: by 2002:a17:902:7049:b0:224:1c41:a4cd with SMTP id
+ d9443c01a7336-22a8a04a7admr14007455ad.3.1743735141795; 
+ Thu, 03 Apr 2025 19:52:21 -0700 (PDT)
+Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
+ [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-229785ea16bsm22014865ad.106.2025.04.03.19.52.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Apr 2025 19:52:21 -0700 (PDT)
+From: Brian Cain <brian.cain@oss.qualcomm.com>
+To: qemu-devel@nongnu.org
+Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
+ philmd@linaro.org, matheus.bernardino@oss.qualcomm.com, ale@rev.ng,
+ anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
+ alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com
+Subject: [PATCH 0/6] misc hexagon patches
+Date: Thu,  3 Apr 2025 19:51:57 -0700
+Message-Id: <20250404025203.335025-1-brian.cain@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20250319061342.26435-1-sebastian.huber@embedded-brains.de>
-In-Reply-To: <20250319061342.26435-1-sebastian.huber@embedded-brains.de>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 4 Apr 2025 12:33:11 +1000
-X-Gm-Features: ATxdqUEpEJoXBYy4uz3xzmyDbljNtphMerFXIORqX0eIitov9VhojoLw6PFio5c
-Message-ID: <CAKmqyKN3sjM1k=QMO9R3MtzSP1dy8ReJk81Kwi8Eq0G5F-j-dA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] Improve Microchip Polarfire SoC customization
-To: Sebastian Huber <sebastian.huber@embedded-brains.de>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::933;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x933.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+X-Authority-Analysis: v=2.4 cv=PqmTbxM3 c=1 sm=1 tr=0 ts=67ef4967 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=I1QJYFklsTE04U9Y_lgA:9
+ a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-ORIG-GUID: pLSnUXEwnGcaJagk-qxbbc0hLMMFPNc0
+X-Proofpoint-GUID: pLSnUXEwnGcaJagk-qxbbc0hLMMFPNc0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-04_01,2025-04-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 impostorscore=0 mlxlogscore=903 mlxscore=0
+ clxscore=1015 suspectscore=0 adultscore=0 lowpriorityscore=0 phishscore=0
+ malwarescore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504040019
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,60 +123,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 19, 2025 at 4:13=E2=80=AFPM Sebastian Huber
-<sebastian.huber@embedded-brains.de> wrote:
->
-> Booting the microchip-icicle-kit machine using the latest PolarFire SoC
-> Hart Software Services (HSS) no longer works since Qemu lacks support
-> for several registers (clocks, DRAM controller). Also reading from the
-> SDCard does not work currently.
->
-> In order to allow tests runs for real-time kernels such as RTEMS and
-> Zephyr, improve the boot customization. This patch set enables a direct
-> run of kernel executables, for example:
->
-> qemu-system-riscv64 -no-reboot -nographic \
->   -serial null -serial mon:stdio \
->   -smp 2 \
->   -bios none \
->   -machine microchip-icicle-kit,clint-timebase-frequency=3D10000000 \
->   -kernel rtos.elf
->
-> v2:
->
-> * Add documentation update.
->
-> * In patch 3, warn if no device tree is specified.
->
-> * In patch 4, use riscv_find_firmware() to locate the firmware shipped wi=
-th Qemu.
->
-> v3:
->
-> * In patch 4, add support for Qemu test runs.
->
-> Sebastian Huber (6):
->   hw/misc: Add MPFS system reset support
->   hw/riscv: More flexible FDT placement for MPFS
->   hw/riscv: Make FDT optional for MPFS
->   hw/riscv: Allow direct start of kernel for MPFS
->   hw/riscv: Configurable MPFS CLINT timebase freq
->   hw/riscv: microchip_pfsoc: Rework documentation
-
-Thanks!
-
-Applied to riscv-to-apply.next
-
-Alistair
-
->
->  docs/system/riscv/microchip-icicle-kit.rst | 124 ++++++-----------
->  hw/misc/mchp_pfsoc_sysreg.c                |   7 +
->  hw/riscv/microchip_pfsoc.c                 | 153 +++++++++++++++------
->  include/hw/riscv/microchip_pfsoc.h         |   1 +
->  4 files changed, 164 insertions(+), 121 deletions(-)
->
-> --
-> 2.43.0
->
+V2hpbGUgcHJlcGFyaW5nIHRoZSBzeXN0ZW0gZW11bGF0aW9uIHBhdGNoZXMsIHRoZXNlIG9uZXMg
+c3R1Y2sgb3V0IGFzCm5vdC1zdHJpY3RseS1yZWxhdGVkIHRvIHN5c2VtdS4gIFdlIGNhbiByZXZp
+ZXcgYW5kIGFwcGx5IHRoZW0gaW5kZXBlbmRlbnRseQpvZiB0aG9zZS4KCkJyaWFuIENhaW4gKDYp
+OgogIHRhcmdldC9oZXhhZ29uOiBoYW5kbGUgLm5ldyB2YWx1ZXMKICB0YXJnZXQvaGV4YWdvbjog
+Rml4IGJhZHZhIHJlZmVyZW5jZSwgZGVsZXRlIENBVVNFCiAgdGFyZ2V0L2hleGFnb246IEFkZCBt
+aXNzaW5nIEFfQ0FMTCBhdHRyLCBoaW50anVtcHIgdG8gbXVsdGlfY29mCiAgdGFyZ2V0L2hleGFn
+b246IHMvcGt0X2hhc19zdG9yZS9wa3RfaGFzX3NjYWxhcl9zdG9yZQogIHRhcmdldC9oZXhhZ29u
+OiBSZW1vdmUgdW5yZWFjaGFibGUKICB0YXJnZXQvaGV4YWdvbjogQWRkIG1lbW9yeSBvcmRlciBk
+ZWZpbml0aW9uCgogdGFyZ2V0L2hleGFnb24vaWRlZi1wYXJzZXIvUkVBRE1FLnJzdCAgICAgICB8
+ICAyICstCiB0YXJnZXQvaGV4YWdvbi9jcHUtcGFyYW0uaCAgICAgICAgICAgICAgICAgIHwgIDUg
+KysrCiB0YXJnZXQvaGV4YWdvbi9pbnNuLmggICAgICAgICAgICAgICAgICAgICAgIHwgIDQgKy0t
+CiB0YXJnZXQvaGV4YWdvbi9tYWNyb3MuaCAgICAgICAgICAgICAgICAgICAgIHwgIDggKystLS0K
+IHRhcmdldC9oZXhhZ29uL2NwdS5jICAgICAgICAgICAgICAgICAgICAgICAgfCAgMyArLQogdGFy
+Z2V0L2hleGFnb24vZGVjb2RlLmMgICAgICAgICAgICAgICAgICAgICB8IDEwICsrKystLQogdGFy
+Z2V0L2hleGFnb24vZ2VucHRyLmMgICAgICAgICAgICAgICAgICAgICB8ICAzICstCiB0YXJnZXQv
+aGV4YWdvbi9pZGVmLXBhcnNlci9wYXJzZXItaGVscGVycy5jIHwgIDQgKy0tCiB0YXJnZXQvaGV4
+YWdvbi9vcF9oZWxwZXIuYyAgICAgICAgICAgICAgICAgIHwgIDQgKy0tCiB0YXJnZXQvaGV4YWdv
+bi90cmFuc2xhdGUuYyAgICAgICAgICAgICAgICAgIHwgIDkgKysrLS0tCiB0YXJnZXQvaGV4YWdv
+bi9nZW5faGVscGVyX2Z1bmNzLnB5ICAgICAgICAgIHwgIDIgKy0KIHRhcmdldC9oZXhhZ29uL2hl
+eF9jb21tb24ucHkgICAgICAgICAgICAgICAgfCAzNCArKysrKysrKysrKysrKysrLS0tLS0KIDEy
+IGZpbGVzIGNoYW5nZWQsIDU5IGluc2VydGlvbnMoKyksIDI5IGRlbGV0aW9ucygtKQoKLS0gCjIu
+MzQuMQoK
 
