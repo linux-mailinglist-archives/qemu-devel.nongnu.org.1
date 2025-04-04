@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B600A7C6C1
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 01:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAFFA7C6C6
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 01:58:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0qmH-0008FM-Q0; Fri, 04 Apr 2025 19:48:49 -0400
+	id 1u0qu0-00014P-Rw; Fri, 04 Apr 2025 19:56:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0qmF-0008FD-Eu
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 19:48:47 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0qtp-00012i-BQ
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 19:56:38 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0qmD-0007fL-Fg
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 19:48:47 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-39ac8e7688aso1934922f8f.2
- for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 16:48:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0qth-0008W6-Ov
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 19:56:35 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43cef035a3bso17464025e9.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 16:56:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743810523; x=1744415323; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Z5Gfb9kc+yhQghP0WWjULJ+Vj02i4BuHgZhJg4h0t44=;
- b=bt6KM4NaKZSzvCQJLT/SxF7bBJRzKkRl/tzuoi913D63zlmLhphR/xUJb794Guh3px
- fpIrl+BKlJUQ54SvtyEsUrjd6Pk30LchmsAPSEwUVeCYp2/EEgkFvOpVjzU+qdkJwr/c
- hYW5bwdIkTYzcBWy0ZCzmle2cu5PMXznWEt65ceiNbUO9vVtM9iH9cBU75HccR56/5Sx
- d4sGh73LwB6zIgMTPIshWMZtd4jUXZEfmpydWS1esTbSeJcTogxcPslZ5p4MrD6doMg+
- 8w0Q49dpQWiTzPSjRUtRDOCWHUsO14BDstFQDkaMeGanPifIS/wLvyQ5bC4O1YORNJfE
- 6CRQ==
+ d=linaro.org; s=google; t=1743810986; x=1744415786; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=aI6/QNHO+U64TvOyvKD5h8vG87B2DRjyXKveSfZqwJY=;
+ b=U3k2IdXl/eJFqY6P1dWHRxiUAzZWx4tp9Y2iYqb2+8SPP4XS6jHPVPGD3a5qEO6vmd
+ HSJJu+B/NbXNT8F8jOtjpnKHuSljIdmC/ToqF5fD5s2LyctN5Oe4PxLCybKDOKcSX4Yi
+ OQy7mauJUCZpaPJiOUzAv7kgjZ4uEOwtJwNdEvyHI4Q+Dme6okcLo5t/M1mdGk43tDGn
+ JcDoisG/dqdVznW4gt42w32Yul89KfwDXe2C1MJJvL8x9hvaPaWGetCOcplKVO/yqaJ+
+ DrEFkjwq2yhqgoHdd0Em7TvZ5D6aJQZsaeYMQp/XkckY5gKI12e1Xe98wDYuXuqZY0C+
+ LmQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743810523; x=1744415323;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Z5Gfb9kc+yhQghP0WWjULJ+Vj02i4BuHgZhJg4h0t44=;
- b=ToWA9eDsv3YzgFsPeKknvhmgMKNThke/PBtuQmDLDn+9TkJRVFELc2+YFW1rSx9FAq
- YrtIW4et0lmOAl4v1gA7ugmrJR74l+Y7i7PkQ3po6IjbsaSD6AbDjdRbW+auIiA5Y6cU
- RJDxEYG/wvvU/FdoWQ2DxmToyB4XYaTvyEdRPTYqbdPCwBnM7VmZ1o4PXj5zBqSmKlvk
- 11yywkDfKWcwBXjjIQvBwD6bImSjZXwy/oRGqkzd9JzBwxojQufhjW5H8akmiBSmqeCp
- QsmnAQfiG/8oL455AfqPS9oI+DRItbsdn4OujV5uNyYfGgP9QmSX/uMi41aoPjJoWSXs
- bOqg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU8o+wJlFE4HsCP7oaiZi9uM3vca4sVfWtj95ygQbLvPhzfWQMxpuB/g93AktlCDVRjtWl6uZtrC5EG@nongnu.org
-X-Gm-Message-State: AOJu0YzM6ViAB/rKVR0PbfYqn2O7Ku0Ssp0e+qrvrGeMhoPYpwzZiAuG
- VdK1teUTgnIuwH7bqMjNAxat4JJ2ZKElMJhg/pSWnrQlKCDw/aTDC82WnZX38JY=
-X-Gm-Gg: ASbGnctzINMi/4vMNtYnVVW27RFZgj1v+Y4VlHJ1gCu6C5nLV0sth+8FsDZ23jHQOD2
- ElBCZEkc3pp03xfhd9N/dLoWC0fPUDedWnfo6V1fdUYg5wGoucplCV/3jzOBJUmFSZWsmFJ6iFq
- ekfntrSc/pTBYNQAFTWN1NqKxyonaOeC7HrUcuOSINSCUgH1GDJ3apIytTYb41ojkHjSEQJAW5p
- CeejhccGj43qrqnmLyxGF6eyUhPEwM4gfmN5l7iZxZ+58mSn01MF9jEG9qV0X2IPdH2eAM/ZK5v
- syA6qEikUxhSOgVp7S52g2DRJ/jh64S0PIHRDDxUi41B2horq1NtGgn3O0MpxGRZx9mnqWH5l78
- amd+dW5XOLlHDZ2dV0Q==
-X-Google-Smtp-Source: AGHT+IEbuiCTrKzWSCQCunH69102MBK2CKTjiA44CD2XalNOZy2PnczpjMdDwhMoQvJxL/IbRYm/bg==
-X-Received: by 2002:a5d:584c:0:b0:391:ab2:9e71 with SMTP id
- ffacd0b85a97d-39d6fc29654mr784904f8f.20.1743810522885; 
- Fri, 04 Apr 2025 16:48:42 -0700 (PDT)
-Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1743810986; x=1744415786;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aI6/QNHO+U64TvOyvKD5h8vG87B2DRjyXKveSfZqwJY=;
+ b=GPa4/k1z1QDTImOaaX0G/iMVktoL7Gsfpv90ucL+ZSTOIDdDMEW+g9SF9rpRtKm+Cs
+ p4KsHjXmlpoyAC9gEhrcaK7Yy7VeDdXQROAI6q5AWHF6h4z0UCVGQRDGyWbyuNRmyfvz
+ EM86YMGJnS+8r8vF7d2RmanFcM+0rq4vS7SH2hW3AFTjiohwVKjzF4Ah5TPCWelcOxot
+ c9vZ1ey20MSG5AQDUtJK68PJ0+/iZ5IinFkFjWv2hhqx1gzFkHesPlMJrPtB1zF8alma
+ jdQIH1yDAeRxYq11kRs1y9Q0ZtOY4+b0CQKspcSciwGagYz/oJo2ALGcrXk95uKndmP+
+ 0w8Q==
+X-Gm-Message-State: AOJu0YwbE4cecRegJ4IKmH2/urdXhKTchKBlOfd1tG7YL1L0rpnTZJbc
+ gnow7n2Qipa/vYXNuQAxCLZkR7cPpGFGCVnL+enkqDHSeV6CncaJANHZVtDcVvXFU0v/rxm8Tj3
+ F
+X-Gm-Gg: ASbGncuA2yuFKcVA9PhMEXnUZMNiB3RywIzCoLK68A4M8kYtjnqxE+34mDTHZbWMmzl
+ iN6CF8eObGuydgh5lDtSMLA5uUU2fQuB8cYsmm2g0RDcJT69q29iXaQKemvAtBKHJOneeYt8ljF
+ i4SB0EPBbX+RQw++Fj3QzdQXDVF2zN5+nOIIMjVmt7BpFHVu3pmJYizGlJfVypPBbH22ZeXtvpY
+ NICftzscWStVm1Y+11N9Ils9Ck6p0BIvSAjx69JPVPZ5MgCLBP2a15RDQ74fM0qfNMUFAYjVSH0
+ Vai96I9oh0XpaSw7bPdHn1dRkEgXJTj9zvG5bUem/lIjqZSmFIMZHYKmk09nlvmTYN+ivbf9pOV
+ haK25sV9S+0uLAJdG0mDOenySvSP2evic1KY=
+X-Google-Smtp-Source: AGHT+IHqUl4lj1tr4poG4B1ruTa9wX7cUYwExMOmzO366Z8RtOLsq/LmJ3TFG2vDCjpkT5HlZgFzLg==
+X-Received: by 2002:a05:600c:3587:b0:43d:9d5:474d with SMTP id
+ 5b1f17b1804b1-43ecf57d332mr44738535e9.0.1743810986524; 
+ Fri, 04 Apr 2025 16:56:26 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301ba2dfsm5516899f8f.60.2025.04.04.16.48.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Apr 2025 16:48:41 -0700 (PDT)
-Message-ID: <99187f31-f55d-4c39-bd9c-13dbbef321dc@linaro.org>
-Date: Sat, 5 Apr 2025 01:48:40 +0200
+ 5b1f17b1804b1-43ec1663060sm62271955e9.14.2025.04.04.16.56.25
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 04 Apr 2025 16:56:26 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>, qemu-s390x@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Anton Johansson <anjo@rev.ng>, Paolo Bonzini <pbonzini@redhat.com>,
+ Riku Voipio <riku.voipio@iki.fi>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.1 0/2] tcg: Convert TARGET_HAS_PRECISE_SMC to
+ TCGCPUOps::has_precise_smc field
+Date: Sat,  5 Apr 2025 01:56:22 +0200
+Message-ID: <20250404235624.67816-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 v3 14/19] tcg: Remove the TCG_GUEST_DEFAULT_MO
- definition globally
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-References: <20250403220420.78937-1-philmd@linaro.org>
- <20250403220420.78937-15-philmd@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250403220420.78937-15-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,76 +102,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+This series is similar to the TARGET_SUPPORTS_MTTCG replacement
+to a 'mttcg_supported' field in TCGCPUOps, but doing it for
+TARGET_HAS_PRECISE_SMC, adding the 'has_precise_smc' field.
 
-On 4/4/25 00:04, Philippe Mathieu-Daudé wrote:
-> By directly using TCGCPUOps::guest_default_memory_order,
-> we don't need the TCG_GUEST_DEFAULT_MO definition anymore.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Anton Johansson <anjo@rev.ng>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   docs/devel/multi-thread-tcg.rst |  4 ++--
->   target/alpha/cpu-param.h        |  3 ---
->   target/arm/cpu-param.h          |  3 ---
->   target/avr/cpu-param.h          |  2 --
->   target/hexagon/cpu-param.h      |  3 ---
->   target/hppa/cpu-param.h         |  8 --------
->   target/i386/cpu-param.h         |  3 ---
->   target/loongarch/cpu-param.h    |  2 --
->   target/m68k/cpu-param.h         |  3 ---
->   target/microblaze/cpu-param.h   |  3 ---
->   target/mips/cpu-param.h         |  2 --
->   target/openrisc/cpu-param.h     |  2 --
->   target/ppc/cpu-param.h          |  2 --
->   target/riscv/cpu-param.h        |  2 --
->   target/rx/cpu-param.h           |  3 ---
->   target/s390x/cpu-param.h        |  6 ------
->   target/sh4/cpu-param.h          |  3 ---
->   target/sparc/cpu-param.h        | 23 -----------------------
->   target/tricore/cpu-param.h      |  3 ---
->   target/xtensa/cpu-param.h       |  3 ---
->   target/alpha/cpu.c              |  3 ++-
->   target/arm/cpu.c                |  3 ++-
->   target/arm/tcg/cpu-v7m.c        |  3 ++-
->   target/avr/cpu.c                |  2 +-
->   target/hexagon/cpu.c            |  3 ++-
->   target/hppa/cpu.c               |  8 +++++++-
->   target/i386/tcg/tcg-cpu.c       |  5 ++++-
->   target/loongarch/cpu.c          |  2 +-
->   target/m68k/cpu.c               |  3 ++-
->   target/microblaze/cpu.c         |  3 ++-
->   target/mips/cpu.c               |  2 +-
->   target/openrisc/cpu.c           |  2 +-
->   target/ppc/cpu_init.c           |  2 +-
->   target/riscv/tcg/tcg-cpu.c      |  2 +-
->   target/rx/cpu.c                 |  3 ++-
->   target/s390x/cpu.c              |  6 +++++-
->   target/sh4/cpu.c                |  3 ++-
->   target/sparc/cpu.c              | 23 ++++++++++++++++++++++-
->   target/tricore/cpu.c            |  3 ++-
->   target/xtensa/cpu.c             |  3 ++-
->   40 files changed, 66 insertions(+), 101 deletions(-)
+Based on tcg-next tree.
 
-I forgot this:
+Philippe Mathieu-Daudé (2):
+  tcg: Introduce and use target_has_precise_smc() runtime helper
+  tcg: Convert TARGET_HAS_PRECISE_SMC to TCGCPUOps::has_precise_smc
+    field
 
--- >8 --
-diff --git a/include/exec/poison.h b/include/exec/poison.h
-index bc422719d80..413dfd16f24 100644
---- a/include/exec/poison.h
-+++ b/include/exec/poison.h
-@@ -38,3 +38,2 @@
-  #pragma GCC poison TARGET_BIG_ENDIAN
--#pragma GCC poison TCG_GUEST_DEFAULT_MO
-  #pragma GCC poison TARGET_HAS_PRECISE_SMC
+ accel/tcg/tb-internal.h     |  3 +++
+ include/accel/tcg/cpu-ops.h |  8 ++++++++
+ include/exec/poison.h       |  1 -
+ target/i386/cpu.h           |  4 ----
+ target/s390x/cpu.h          |  2 --
+ accel/tcg/cpu-exec.c        | 12 ++++++++++--
+ accel/tcg/tb-maint.c        | 18 +++++-------------
+ accel/tcg/user-exec.c       | 10 +++++-----
+ target/i386/tcg/tcg-cpu.c   |  1 +
+ target/s390x/cpu.c          |  1 +
+ 10 files changed, 33 insertions(+), 27 deletions(-)
 
----
+-- 
+2.47.1
 
-Could you squash it in your tcg-next tree?
-
-Thanks,
-
-Phil.
 
