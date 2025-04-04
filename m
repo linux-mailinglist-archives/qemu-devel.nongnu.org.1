@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1510EA7C15A
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 18:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F15A7C224
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 19:11:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0jfc-0004rb-4C; Fri, 04 Apr 2025 12:13:28 -0400
+	id 1u0kZE-0002J9-9O; Fri, 04 Apr 2025 13:10:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0jfW-0004rJ-H8
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 12:13:22 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u0kZ6-0002IP-2w
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 13:10:48 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0jfU-0003yh-1F
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 12:13:22 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43cf0d787eeso23674405e9.3
- for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 09:13:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u0kZ3-0005l3-C1
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 13:10:47 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-22401f4d35aso25573385ad.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 10:10:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743783195; x=1744387995; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:cc:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=9a12gCA/6Kq1t+NCdJQVFsLrQlxLsLT75310yiUowq8=;
- b=MocOfPfjXBotTlIxEDa43COaWagaxpirPwPRjwW0EGOEMMaqVm7S9VIIbkb+hnXg7H
- a8lXpSr/r2q/UQCc/bNLGiAcTJU9aMtVd7gfLpBrAeSwvfJlQNnM7So75hWIec8pfp2+
- TyK1yMOBy7dBBz5bmjiEu2Tv6saL1Q3A7vqefX57XK5pNjQxTDsm833//zi2K5H4uxus
- Qukc/Evx12Jpi16gbxKtbRjQHq/ZzA/Lo1E0rGiGiYXVl2nSd4U4OP3f5UXbRtD0JeDB
- DIoQd1U0LrjFbVHJt9wNOmWAYh9GP8fSikV79lmuoZutpRFuj185mAijiWicNsKZWzuM
- Rftg==
+ d=linaro.org; s=google; t=1743786642; x=1744391442; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=U+8T2AuROtUNoXWnmSDgUdqPeHUYpxBzwCuXUuCN060=;
+ b=UKo0auB1MiPkDibsMV2jqa7uMt+N57fIeWIevJN8t176tq3w6CD2JfbGoRxaOJX7r1
+ O2LjfnSS9FetqYJIU3pqK6sKw2wTlbaoPtVSnbMWUi0TSZEKm6EIzcVD3Sh/KffeRMXd
+ 32PSO2L/bFiRsOT+X7iUvLSzqovB2e59x4NC0Y8m1CtFMNMxlvCoDwL4dZp5QRawhRJt
+ uNzxixU+SICgXPwyfI66cGCyk3xfZYsKKc5lwtHIpupFTSY803YeENEtJEVpWhCqTohn
+ rdL0HZz91ng+UqFvjDOGtGi9QUsPieYx9fzlOMoGjH0fFIXjEFq6DVfU4WC/sGOrNf9e
+ MXUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743783195; x=1744387995;
- h=content-transfer-encoding:in-reply-to:from:cc:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1743786642; x=1744391442;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9a12gCA/6Kq1t+NCdJQVFsLrQlxLsLT75310yiUowq8=;
- b=PhjQh/51m2fu59DBZClVaVeRpag7NU9qZVeH+wDsGy81EBRteyrGZxUOnSfamUxMXw
- VTFQbqaphQ4FYE0JyZWgJVMF23TdK+KFC5heIRfHwK+F8bvgSh9E3hPaOnDnVz/mwoSL
- xv50OEVif4GJ8XFVCRwMEjlnZnWKMGbNZJ39wVvmp8Tqmu7gaj4ZA0yEQeu5i9k9IrjB
- cIs9HDsabLONoWk3q0zJTuN3wHGdZ9Z28RZUdKt10O2YSxacozVD95aaWIV3aNoJhCLe
- R1SPps27/SUHOCEmfP7V9lysWlgm3W7FPAD2JpylvfBejYfMz+kaCs1MBZ1XS8T3HRLN
- i4Sg==
+ bh=U+8T2AuROtUNoXWnmSDgUdqPeHUYpxBzwCuXUuCN060=;
+ b=qM6yRTeC8X6Y0SodMRkSif0Yd1Y77pFyLsGK4RMHD5soNPsryuxyaNWfPtDKwekmAZ
+ dDScqAo7klNykFTzrLVYkB2B2XDHhC9j4g5S/qx5cN0UML6XplpjHIWuiJ76VLhqk+PN
+ 6u2qAddewROYtc7DhCI8camlMYZy8Z6zpJRfapdqcGDua3l2BJ8eK0R1jP1DmaLL/4Z4
+ aTJ4UPhaE1X5itN0hlyHnQVcDvqdBMrn8wXXqGvIcj4E9lCZ6198KkIeuxC3KgIjav9x
+ fML8+HwnZyCGAJ3I48JFaIV+t9w5ciG+lp6oOE3HaNXiwoqU/ZZUUcXRyhCDFgwg9iqq
+ 9V6Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWxQvNPrJOr0ADvBjsmu/3i7+udEPL/Bcd8jbPOA7p9Ms5sbbfxlHcPbJ29Qnyi6SDcWjeomLokRR/p@nongnu.org
-X-Gm-Message-State: AOJu0Yxui3DHRvmgaEmn6tmy4dS7Y5Dj9YKPBYkp8gM9kNaHPi5xZ+/7
- xZyKHYHHIx2Ki9pb+Zo7TrVONVX7eLBF01tLO6y1Bs1N4yjxxW0ZiZAG86iC438=
-X-Gm-Gg: ASbGnctavOiuGB7tG2hHFruxD8XiJNUMoZdzCJjH3vrmxuIjBmPT2MKG5YHP5+IOUZJ
- UwoXAbcC1/Rdku5g5XWBOC2OPbguL4Oa4Ka8RTBenX5Fgi8IaDichwaDz152EbpLyeJNQab5HyW
- M/mPOnh68XPcJsNZp3Op5oTwDgSF7mSW9/8P1mZEUuwGF6TRsIDUe5FFW0C07chqN6o9/YWDkQh
- TyhQvocPcdusChODoxIg0shgWMbPi6lLoPAk4AcwxrP25YN44TnhV7Rd3I5+1Sug1vg3fjIORlC
- 4FGrzxWQ1eK2Aifoxrt8aXhCg+BLGcxLx10GVFJd1O5C4+/ywTrw/ud1ybSQ4SjxM8DRanPLg0W
- eoZ0IvZUNzVXF2Gup3w==
-X-Google-Smtp-Source: AGHT+IHHAI/7/xMesCgwPa8GED5kHVXHEhHWqENfIxIL8Xbj8orHhfrpG07HxfPJFj6gMmlqBzAMDQ==
-X-Received: by 2002:a05:600c:3b9f:b0:43c:fdbe:4398 with SMTP id
- 5b1f17b1804b1-43ed0b80b25mr28855785e9.6.1743783194791; 
- Fri, 04 Apr 2025 09:13:14 -0700 (PDT)
-Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c3020da22sm4800374f8f.68.2025.04.04.09.13.13
+ AJvYcCUdkJwOt1r+sPN1wynX/FW1fbNMS32Kd6lsUVm7TkCWY6/4MTCbY7Ful4Bn0DJnLt9lZdrA0PP0rbWQ@nongnu.org
+X-Gm-Message-State: AOJu0YwZYBHov6MoEZUMJRL5kk12E/qaVJLMNx7+zfNly7PwHpJ0w1f4
+ 6aQKLVS0m7/lU+9jkRW3ICPdCIhyIJVy/auCIrqauVRK+gzurqYPt8btZdCtQDo=
+X-Gm-Gg: ASbGncsuIs6tgnt8diz2JjZBan+J9W488g8nsyOgSRuPtEbjFT/NNKYqGNihjXXTxI2
+ 7kzymFrvHgb1df/Iwf56okyI5ubCR55c8Lb5aFYSiOiBqm9HGLcJ5WB+/dBJUfGPhJehkV2eOru
+ k+gNnPhGwI4Y70c4PndTglhJl66fs0r80LGjhbPN+UpoV8cPLnKG2q5KenL/Qaosu8h9uBdHt81
+ L5wb9hoFw4xtdcKhqrqRAo6y4tZkuvLB8TSFDRH5b8eB2mvGvOC4r9njqHkPb/eQAC+e/oJ/d/A
+ NJvtKzyR5GB47tB/9e8tTzPxEesEzsRQgQLsko7fnJ9QX/rPwRvV/Uewyg==
+X-Google-Smtp-Source: AGHT+IGv1ocUdU2nJXILvo3WV9NncPGeJ1Yi4PlnQcQpOvzuDMe9PSsMmoQGVmTPIl7Y8zMJBcYtuA==
+X-Received: by 2002:a17:902:cf4b:b0:224:1220:7f40 with SMTP id
+ d9443c01a7336-22a9551417fmr4052075ad.3.1743786642104; 
+ Fri, 04 Apr 2025 10:10:42 -0700 (PDT)
+Received: from [192.168.1.87] ([38.39.164.180])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-229785c0153sm34730435ad.65.2025.04.04.10.10.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Apr 2025 09:13:14 -0700 (PDT)
-Message-ID: <fffd6cf6-16f7-4b93-9b81-cf1ab6c35435@linaro.org>
-Date: Fri, 4 Apr 2025 18:13:13 +0200
+ Fri, 04 Apr 2025 10:10:41 -0700 (PDT)
+Message-ID: <0723c40c-e21e-455b-b99d-5f814a1bd2d9@linaro.org>
+Date: Fri, 4 Apr 2025 09:41:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ipmi: Move vmsd registration to device class
-To: corey@minyard.net, qemu-devel@nongnu.org
-References: <Z_AAPdpBWQjXq6fJ@mail.minyard.net>
+Subject: Re: [RFC PATCH-for-10.1 01/19] qemu: Introduce TargetInfo API in
+ 'target_info.h'
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20250403234914.9154-1-philmd@linaro.org>
+ <20250403234914.9154-2-philmd@linaro.org>
 Content-Language: en-US
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <Z_AAPdpBWQjXq6fJ@mail.minyard.net>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250403234914.9154-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,136 +105,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc'ing migration maintainers
-
-On 4/4/25 17:52, Corey Minyard wrote:
-> It's the right way to do it now, and it handles multiple instances
-> properly.  I need multiple instances for some testing I'm doing so this
-> is the right thing to do.
-> 
-> Tested by doing:
-> 
->     (qemu) migrate -d exec:cat>filen.mig
-> 
-> before and after the fix, then:
-> 
->     scripts/analyze-migration.py -d desc -f file1.mig >file1.json
->     scripts/analyze-migration.py -d desc -f file2.mig >file2.json
->     diff file1.json file2.json
-> 
-> with no differences.
-> 
-> Signed-off-by: Corey Minyard <corey@minyard.net>
-> ---
->   hw/ipmi/ipmi_bmc_extern.c |  3 +--
->   hw/ipmi/ipmi_bmc_sim.c    |  3 +--
->   hw/ipmi/isa_ipmi_bt.c     |  3 +--
->   hw/ipmi/isa_ipmi_kcs.c    | 12 +++++-------
->   4 files changed, 8 insertions(+), 13 deletions(-)
-> 
-> diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
-> index d015500254..3e9f8c5a50 100644
-> --- a/hw/ipmi/ipmi_bmc_extern.c
-> +++ b/hw/ipmi/ipmi_bmc_extern.c
-> @@ -497,8 +497,6 @@ static void ipmi_bmc_extern_realize(DeviceState *dev, Error **errp)
->   
->       qemu_chr_fe_set_handlers(&ibe->chr, can_receive, receive,
->                                chr_event, NULL, ibe, NULL, true);
-> -
-> -    vmstate_register(NULL, 0, &vmstate_ipmi_bmc_extern, ibe);
->   }
->   
->   static void ipmi_bmc_extern_init(Object *obj)
-> @@ -528,6 +526,7 @@ static void ipmi_bmc_extern_class_init(ObjectClass *oc, void *data)
->       bk->handle_reset = ipmi_bmc_extern_handle_reset;
->       dc->hotpluggable = false;
->       dc->realize = ipmi_bmc_extern_realize;
-> +    dc->vmsd = &vmstate_ipmi_bmc_extern;
->       device_class_set_props(dc, ipmi_bmc_extern_properties);
->   }
->   
-> diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
-> index 6157ac7120..bc0ddc52a9 100644
-> --- a/hw/ipmi/ipmi_bmc_sim.c
-> +++ b/hw/ipmi/ipmi_bmc_sim.c
-> @@ -2187,8 +2187,6 @@ static void ipmi_sim_realize(DeviceState *dev, Error **errp)
->       register_cmds(ibs);
->   
->       ibs->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, ipmi_timeout, ibs);
-> -
-> -    vmstate_register(NULL, 0, &vmstate_ipmi_sim, ibs);
->   }
->   
->   static const Property ipmi_sim_properties[] = {
-> @@ -2212,6 +2210,7 @@ static void ipmi_sim_class_init(ObjectClass *oc, void *data)
->   
->       dc->hotpluggable = false;
->       dc->realize = ipmi_sim_realize;
-> +    dc->vmsd = &vmstate_ipmi_sim;
->       device_class_set_props(dc, ipmi_sim_properties);
->       bk->handle_command = ipmi_sim_handle_command;
->   }
-> diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
-> index a1b66d5ee8..474a792c9a 100644
-> --- a/hw/ipmi/isa_ipmi_bt.c
-> +++ b/hw/ipmi/isa_ipmi_bt.c
-> @@ -117,8 +117,6 @@ static void isa_ipmi_bt_realize(DeviceState *dev, Error **errp)
->       qdev_set_legacy_instance_id(dev, iib->bt.io_base, iib->bt.io_length);
->   
->       isa_register_ioport(isadev, &iib->bt.io, iib->bt.io_base);
-> -
-> -    vmstate_register(NULL, 0, &vmstate_ISAIPMIBTDevice, dev);
->   }
->   
->   static void isa_ipmi_bt_init(Object *obj)
-> @@ -147,6 +145,7 @@ static void isa_ipmi_bt_class_init(ObjectClass *oc, void *data)
->       AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(oc);
->   
->       dc->realize = isa_ipmi_bt_realize;
-> +    dc->vmsd = &vmstate_ISAIPMIBTDevice;
->       device_class_set_props(dc, ipmi_isa_properties);
->   
->       iic->get_backend_data = isa_ipmi_bt_get_backend_data;
-> diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
-> index d9ebdd5371..94bbe45d35 100644
-> --- a/hw/ipmi/isa_ipmi_kcs.c
-> +++ b/hw/ipmi/isa_ipmi_kcs.c
-> @@ -72,6 +72,10 @@ static bool vmstate_kcs_before_version2(void *opaque, int version)
->       return version <= 1;
->   }
->   
-> +/*
-> + * Version 1 had an incorrect name, it clashed with the BT IPMI
-> + * device, so receive it, but transmit a different version.
-> + */
->   static const VMStateDescription vmstate_ISAIPMIKCSDevice = {
->       .name = TYPE_IPMI_INTERFACE,
->       .version_id = 2,
-> @@ -119,13 +123,6 @@ static void ipmi_isa_realize(DeviceState *dev, Error **errp)
->       qdev_set_legacy_instance_id(dev, iik->kcs.io_base, iik->kcs.io_length);
->   
->       isa_register_ioport(isadev, &iik->kcs.io, iik->kcs.io_base);
-> -
-> -    /*
-> -     * Version 1 had an incorrect name, it clashed with the BT
-> -     * IPMI device, so receive it, but transmit a different
-> -     * version.
-> -     */
-> -    vmstate_register(NULL, 0, &vmstate_ISAIPMIKCSDevice, iik);
->   }
->   
->   static void isa_ipmi_kcs_init(Object *obj)
-> @@ -154,6 +151,7 @@ static void isa_ipmi_kcs_class_init(ObjectClass *oc, void *data)
->       AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(oc);
->   
->       dc->realize = ipmi_isa_realize;
-> +    dc->vmsd = &vmstate_ISAIPMIKCSDevice;
->       device_class_set_props(dc, ipmi_isa_properties);
->   
->       iic->get_backend_data = isa_ipmi_kcs_get_backend_data;
-
-LGTM!
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+T24gNC8zLzI1IDE2OjQ4LCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4gU2ln
+bmVkLW9mZi1ieTogUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgPHBoaWxtZEBsaW5hcm8ub3Jn
+Pg0KPiAtLS0NCj4gICBtZXNvbi5idWlsZCAgICAgICAgICAgICAgICAgICAgIHwgIDkgKysr
+KysrKysrDQo+ICAgaW5jbHVkZS9leGVjL3BvaXNvbi5oICAgICAgICAgICB8ICAxICsNCj4g
+ICBpbmNsdWRlL3FlbXUvdGFyZ2V0X2luZm8taW1wbC5oIHwgMjEgKysrKysrKysrKysrKysr
+KysrKysrDQo+ICAgaW5jbHVkZS9xZW11L3RhcmdldF9pbmZvLmggICAgICB8IDE4ICsrKysr
+KysrKysrKysrKysrKw0KPiAgIHRhcmdldF9pbmZvLXN0dWIuYyAgICAgICAgICAgICAgfCAy
+MyArKysrKysrKysrKysrKysrKysrKysrKw0KPiAgIHRhcmdldF9pbmZvLmMgICAgICAgICAg
+ICAgICAgICAgfCAxNiArKysrKysrKysrKysrKysrDQo+ICAgNiBmaWxlcyBjaGFuZ2VkLCA4
+OCBpbnNlcnRpb25zKCspDQo+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IGluY2x1ZGUvcWVtdS90
+YXJnZXRfaW5mby1pbXBsLmgNCj4gICBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVkZS9xZW11
+L3RhcmdldF9pbmZvLmgNCj4gICBjcmVhdGUgbW9kZSAxMDA2NDQgdGFyZ2V0X2luZm8tc3R1
+Yi5jDQo+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRhcmdldF9pbmZvLmMNCj4gDQo+IGRpZmYg
+LS1naXQgYS9tZXNvbi5idWlsZCBiL21lc29uLmJ1aWxkDQo+IGluZGV4IGJjYjlkMzlhMzg3
+Li5kZTljOWRhY2QzNSAxMDA2NDQNCj4gLS0tIGEvbWVzb24uYnVpbGQNCj4gKysrIGIvbWVz
+b24uYnVpbGQNCj4gQEAgLTMyNjIsNiArMzI2Miw5IEBAIGhvc3Rfa2NvbmZpZyA9IFwNCj4g
+ICANCj4gICBpZ25vcmVkID0gWyAnVEFSR0VUX1hNTF9GSUxFUycsICdUQVJHRVRfQUJJX0RJ
+UicsICdUQVJHRVRfQVJDSCcgXQ0KPiAgIA0KPiArdGFyZ2V0X2luZm8gPSBbDQo+ICtdDQo+
+ICsNCg0KVG8gZm9sbG93IHdoYXQgaXMgYWxyZWFkeSBpbXBsZW1lbnRlZCwgd2Ugc2hvdWxk
+IHVzZSBhIGRpY3Rpb25hcnkgcGVyIA0KdGFyZ2V0LCBwb2ludGluZyB0byB0aGUgYXNzb2Np
+YXRlZCBzb3VyY2UgZmlsZS4NClRoaXMgd2F5LCBpdCBhbGxvd3MgdG8gbW92ZSBmaWxlcyBs
+aXN0aW5nIGRpcmVjdGx5IHRvIGVhY2ggYXJjaGl0ZWN0dXJlLCANCmFuZCB0aGUgdG9wIG1l
+c29uLmJ1aWxkIG9ubHkgbmVlZHMgdG8gYWRkIHN0dWIgaWYgaXQgaXMgbm90IGRlZmluZWQu
+DQoNCj4gICBkZWZhdWx0X3RhcmdldHMgPSAnQ09ORklHX0RFRkFVTFRfVEFSR0VUUycgaW4g
+Y29uZmlnX2hvc3QNCj4gICBhY3R1YWxfdGFyZ2V0X2RpcnMgPSBbXQ0KPiAgIGZkdF9yZXF1
+aXJlZCA9IFtdDQo+IEBAIC0zMzY4LDYgKzMzNzEsOSBAQCBmb3JlYWNoIHRhcmdldCA6IHRh
+cmdldF9kaXJzDQo+ICAgICAgICAgY29uZmlnX3RhcmdldF9kYXRhLnNldChrLCB2KQ0KPiAg
+ICAgICBlbmRpZg0KPiAgICAgZW5kZm9yZWFjaA0KPiArICBpZiB0YXJnZXQgbm90IGluIHRh
+cmdldF9pbmZvDQo+ICsgICAgY29uZmlnX3RhcmdldF9kYXRhLnNldCgnVEFSR0VUX0lORk9f
+U1RVQl9ORUVERUQnLCAxKQ0KPiArICBlbmRpZg0KDQpXaXRoIHRoZSBkaWN0aW9uYXJ5LCB0
+aGlzIGlzIG5vdCBuZWVkZWQgYW55bW9yZS4NCg0KPiAgICAgY29uZmlnX3RhcmdldF9kYXRh
+LnNldCgnUUVNVV9BUkNIJywNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgJ1FFTVVf
+QVJDSF8nICsgY29uZmlnX3RhcmdldFsnVEFSR0VUX0JBU0VfQVJDSCddLnRvX3VwcGVyKCkp
+DQo+ICAgICBjb25maWdfdGFyZ2V0X2ggKz0ge3RhcmdldDogY29uZmlndXJlX2ZpbGUob3V0
+cHV0OiB0YXJnZXQgKyAnLWNvbmZpZy10YXJnZXQuaCcsDQo+IEBAIC0zODA3LDYgKzM4MTMs
+OSBAQCBlbmRpZg0KPiAgIGNvbW1vbl9zcy5hZGQocGFnZXZhcnkpDQo+ICAgc3BlY2lmaWNf
+c3MuYWRkKGZpbGVzKCdwYWdlLXRhcmdldC5jJywgJ3BhZ2UtdmFyeS10YXJnZXQuYycpKQ0K
+PiAgIA0KPiArc3BlY2lmaWNfc3MuYWRkKGZpbGVzKCd0YXJnZXRfaW5mby1zdHViLmMnKSkN
+Cj4gK2NvbW1vbl9zcy5hZGQoZmlsZXMoJ3RhcmdldF9pbmZvLmMnKSkNCj4gKw0KPiAgIHN1
+YmRpcignYmFja2VuZHMnKQ0KPiAgIHN1YmRpcignZGlzYXMnKQ0KPiAgIHN1YmRpcignbWln
+cmF0aW9uJykNCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvZXhlYy9wb2lzb24uaCBiL2luY2x1
+ZGUvZXhlYy9wb2lzb24uaA0KPiBpbmRleCBiYzQyMjcxOWQ4MC4uMDBhZWRjNDFkODIgMTAw
+NjQ0DQo+IC0tLSBhL2luY2x1ZGUvZXhlYy9wb2lzb24uaA0KPiArKysgYi9pbmNsdWRlL2V4
+ZWMvcG9pc29uLmgNCj4gQEAgLTM4LDYgKzM4LDcgQEANCj4gICAjcHJhZ21hIEdDQyBwb2lz
+b24gVEFSR0VUX0JJR19FTkRJQU4NCj4gICAjcHJhZ21hIEdDQyBwb2lzb24gVENHX0dVRVNU
+X0RFRkFVTFRfTU8NCj4gICAjcHJhZ21hIEdDQyBwb2lzb24gVEFSR0VUX0hBU19QUkVDSVNF
+X1NNQw0KPiArI3ByYWdtYSBHQ0MgcG9pc29uIFRBUkdFVF9JTkZPX1NUVUJfTkVFREVEDQo+
+ICAgDQo+ICAgI3ByYWdtYSBHQ0MgcG9pc29uIFRBUkdFVF9MT05HX0JJVFMNCj4gICAjcHJh
+Z21hIEdDQyBwb2lzb24gVEFSR0VUX0ZNVF9seA0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9x
+ZW11L3RhcmdldF9pbmZvLWltcGwuaCBiL2luY2x1ZGUvcWVtdS90YXJnZXRfaW5mby1pbXBs
+LmgNCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAwMDAwMDAuLmIzNDBl
+MTkyZmNlDQo+IC0tLSAvZGV2L251bGwNCj4gKysrIGIvaW5jbHVkZS9xZW11L3RhcmdldF9p
+bmZvLWltcGwuaA0KPiBAQCAtMCwwICsxLDIxIEBADQo+ICsvKg0KPiArICogUUVNVSBiaW5h
+cnkgaGVscGVycw0KPiArICoNCj4gKyAqICBDb3B5cmlnaHQgKGMpIExpbmFybw0KPiArICoN
+Cj4gKyAqIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyDQo+ICsg
+Ki8NCj4gKw0KPiArI2lmbmRlZiBRRU1VX1RBUkdFVF9JTkZPX0lNUExfSA0KPiArI2RlZmlu
+ZSBRRU1VX1RBUkdFVF9JTkZPX0lNUExfSA0KPiArDQo+ICsjaW5jbHVkZSAicWVtdS90YXJn
+ZXRfaW5mby5oIg0KPiArDQo+ICtzdHJ1Y3QgQmluYXJ5VGFyZ2V0SW5mbyB7DQo+ICsNCg0K
+SSB3b3VsZCBiZSBpbiBmYXZvciB0byByZW5hbWUgZXhpc2luZyBUYXJnZXRJbmZvIGluIFFN
+UFRhcmdldEluZm8sIGFuZCANCnJldXNlIHRoYXQgbmFtZSBoZXJlLg0KDQo+ICsgICAgLyog
+cnVudGltZSBlcXVpdmFsZW50IG9mIFRBUkdFVF9JTkZPX1NUVUJfTkVFREVEIGRlZmluaXRp
+b24gKi8NCj4gKyAgICBib29sIGlzX3N0dWI7DQoNCldoeSBkbyB3ZSB3YW50IHRvIGtub3cg
+aWYgaXQncyBhIHN0dWIgYXQgcnVudGltZT8NCg0KPiArDQo+ICt9Ow0KPiArDQo+ICsjZW5k
+aWYNCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvcWVtdS90YXJnZXRfaW5mby5oIGIvaW5jbHVk
+ZS9xZW11L3RhcmdldF9pbmZvLmgNCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXgg
+MDAwMDAwMDAwMDAuLmZhYjNmMzE1M2VhDQo+IC0tLSAvZGV2L251bGwNCj4gKysrIGIvaW5j
+bHVkZS9xZW11L3RhcmdldF9pbmZvLmgNCj4gQEAgLTAsMCArMSwxOCBAQA0KPiArLyoNCj4g
+KyAqIFFFTVUgYmluYXJ5IGhlbHBlcnMNCj4gKyAqDQo+ICsgKiAgQ29weXJpZ2h0IChjKSBM
+aW5hcm8NCj4gKyAqDQo+ICsgKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1v
+ci1sYXRlcg0KPiArICovDQo+ICsNCj4gKyNpZm5kZWYgUUVNVV9UQVJHRVRfSU5GT19IDQo+
+ICsjZGVmaW5lIFFFTVVfVEFSR0VUX0lORk9fSA0KPiArDQo+ICt0eXBlZGVmIHN0cnVjdCBC
+aW5hcnlUYXJnZXRJbmZvIEJpbmFyeVRhcmdldEluZm87DQo+ICsNCj4gK2NvbnN0IEJpbmFy
+eVRhcmdldEluZm8gKnRhcmdldF9pbmZvKHZvaWQpOw0KPiArDQo+ICtib29sIHRhcmdldF9p
+bmZvX2lzX3N0dWIodm9pZCk7DQo+ICsNCj4gKyNlbmRpZg0KPiBkaWZmIC0tZ2l0IGEvdGFy
+Z2V0X2luZm8tc3R1Yi5jIGIvdGFyZ2V0X2luZm8tc3R1Yi5jDQo+IG5ldyBmaWxlIG1vZGUg
+MTAwNjQ0DQo+IGluZGV4IDAwMDAwMDAwMDAwLi5kNjgzYTA1OTc3ZA0KPiAtLS0gL2Rldi9u
+dWxsDQo+ICsrKyBiL3RhcmdldF9pbmZvLXN0dWIuYw0KPiBAQCAtMCwwICsxLDIzIEBADQo+
+ICsvKg0KPiArICogUUVNVSB0YXJnZXQgaW5mbyBzdHVicw0KPiArICoNCj4gKyAqICBDb3B5
+cmlnaHQgKGMpIExpbmFybw0KPiArICoNCj4gKyAqIFNQRFgtTGljZW5zZS1JZGVudGlmaWVy
+OiBHUEwtMi4wLW9yLWxhdGVyDQo+ICsgKi8NCj4gKw0KPiArI2luY2x1ZGUgInFlbXUvb3Nk
+ZXAuaCINCj4gKyNpbmNsdWRlICJxZW11L3RhcmdldF9pbmZvLWltcGwuaCINCj4gKw0KPiAr
+I2lmZGVmIFRBUkdFVF9JTkZPX1NUVUJfTkVFREVEDQo+ICsNCj4gK3N0YXRpYyBjb25zdCBC
+aW5hcnlUYXJnZXRJbmZvIHRhcmdldF9pbmZvX3N0dWIgPSB7DQo+ICsgICAgLmlzX3N0dWIg
+PSB0cnVlLA0KPiArfTsNCj4gKw0KPiArY29uc3QgQmluYXJ5VGFyZ2V0SW5mbyAqdGFyZ2V0
+X2luZm8odm9pZCkNCj4gK3sNCj4gKyAgICByZXR1cm4gJnRhcmdldF9pbmZvX3N0dWI7DQo+
+ICt9DQo+ICsNCj4gKyNlbmRpZiAvKiBUQVJHRVRfSU5GT19TVFVCX05FRURFRCAqLw0KPiBk
+aWZmIC0tZ2l0IGEvdGFyZ2V0X2luZm8uYyBiL3RhcmdldF9pbmZvLmMNCj4gbmV3IGZpbGUg
+bW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAwMDAwMDAuLmNiMTdkMjliODZkDQo+IC0tLSAv
+ZGV2L251bGwNCj4gKysrIGIvdGFyZ2V0X2luZm8uYw0KPiBAQCAtMCwwICsxLDE2IEBADQo+
+ICsvKg0KPiArICogUUVNVSBsZWdhY3kgYmluYXJ5IGhlbHBlcnMNCj4gKyAqDQo+ICsgKiAg
+Q29weXJpZ2h0IChjKSBMaW5hcm8NCj4gKyAqDQo+ICsgKiBTUERYLUxpY2Vuc2UtSWRlbnRp
+ZmllcjogR1BMLTIuMC1vci1sYXRlcg0KPiArICovDQo+ICsNCj4gKyNpbmNsdWRlICJxZW11
+L29zZGVwLmgiDQo+ICsjaW5jbHVkZSAicWVtdS90YXJnZXRfaW5mby1pbXBsLmgiDQo+ICsj
+aW5jbHVkZSAicWVtdS90YXJnZXRfaW5mby5oIg0KPiArDQo+ICtib29sIHRhcmdldF9pbmZv
+X2lzX3N0dWIodm9pZCkNCj4gK3sNCj4gKyAgICByZXR1cm4gdGFyZ2V0X2luZm8oKS0+aXNf
+c3R1YjsNCj4gK30NCg0K
 
