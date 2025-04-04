@@ -2,106 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CAAA7B5F9
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 04:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9A7A7B602
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 04:56:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0XAc-00065B-Tv; Thu, 03 Apr 2025 22:52:38 -0400
+	id 1u0XDr-0002Lz-NO; Thu, 03 Apr 2025 22:55:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1u0XAY-0005xc-SJ
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 22:52:34 -0400
+ id 1u0XDm-0002Lc-Fo
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 22:55:54 -0400
 Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1u0XAX-0006mv-0F
- for qemu-devel@nongnu.org; Thu, 03 Apr 2025 22:52:34 -0400
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5341O8Wj016188
- for <qemu-devel@nongnu.org>; Fri, 4 Apr 2025 02:52:31 GMT
+ id 1u0XDj-0007Is-IV
+ for qemu-devel@nongnu.org; Thu, 03 Apr 2025 22:55:53 -0400
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5341O6vD012914
+ for <qemu-devel@nongnu.org>; Fri, 4 Apr 2025 02:55:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- czvdxpjQBy2FgdjvVsvcJ/pDTWya3Xl1wmwT9xVccCA=; b=dsGqbfHl1tGYC4ue
- o8biD4+KMclAc2K+qmFjWOyeD0acHUX13ZwaJLpY33iccwHohsIjLhpgIQPlCVt9
- TrYf3By8WbOk+V/DoPv7UDdVbLyVQjsxzhElO/IOobUaJfSRh5cg/prKm4sYiKll
- lRh++WTxziwq7WobCbwk3ypm1HhLdpJVlsmWCCGM4YPnaiz2r2O6pnQvQZgygiPI
- vLwnKjkaZJaCXq5kDZoMVr0hCaswaMLIgKkf19Uu595yx18rokEc0JxU7Sl4j2Ao
- apopJ/tT5L1HuomLpocRVrNdt47v6b0D60aRZpQPivFaQrsO/CklvUCUWBMNTY3t
- qRf5GQ==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45t2d8gg3a-1
+ TbU2Gnzpu4CqRvGVTxMK5UxL2w2aLjrGyIJFTXNufY8=; b=aG6k90kfzY81ZOYB
+ 4Ykl1fo7dDHU/vFY3VQF7r+G3piScwvqlQfpCOuOqRbRkEs9u0zDrQheSRgJUa/i
+ lSjan/1qyTGtetwkj3re8i07mYrZZWKAvbrP118Kkr1NyP+H1gYPcLXsemEBRjnS
+ T6nSN296dAyaTJGIUVFGD2+Oa3x8KxNHToJ+MybHiLD96+SW5Q/21sG0KMO4pjp8
+ XD0QJexgf10GPL8afAODRygirW5d8PTAqi+DSSgMV1LLw+dkllqC6Dg0emVJUbPj
+ xXCsJ60qtCrBFimxAmPqK5uBiXmhopGsOkuBAa6WVS6fpYX/dPz/nVPGGTC+8MYv
+ 0YHcyg==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45t2d88g3y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 02:52:31 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-3032ea03448so1743616a91.2
- for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 19:52:31 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 02:55:49 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-af2387f48c3so1105287a12.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Apr 2025 19:55:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743735150; x=1744339950;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=czvdxpjQBy2FgdjvVsvcJ/pDTWya3Xl1wmwT9xVccCA=;
- b=FBACGhVI3h4XgcHpnVdoSNsLPz+cnOq686m5sgqwXmaJUPQaPP7OmQe3JATLtCli/y
- rmt2vw2u9GzfeuTDRBaaseHgmGz/S7fWHZ9mWQYH1l7O0oD1Q7KG7zibsmwhAR5DbWEE
- yE6N6co/dcYx8ROcQbvHr5d8+e9YLNoEd1EmAJR/W16j8Wt+/thKWuJlC5QUua4DCgGE
- CCFgkquetxRzP6iYUCbmDpYr8jJjqJQLyBTlIhItFTgddr87MvLSz9iNaMSVo9CNHPwt
- DO/hN/MP6EqIfBUBOOwsN81NI44dEtGzETaa5A/uDoKvZFNJLqP0mp/xDAah1OfbsMvK
- ADpA==
-X-Gm-Message-State: AOJu0Yzmmp90iKwV25eunFtpndyciaYmsYZr8FLVlTqsCqHiZ/LrAajO
- OW6MQYWGpnEGxJP6JfolCwjXlRht6bLS8hQyRPmbYMtkuM9McJwBj2mDlhYeWc9YtHEFK6l8f2k
- ii5X1LH9cr+DjCw2TeCKGpuQANu0+u4nvlcTWAXe9LG5yRfIK9m4Mv6o83Ovqrw==
-X-Gm-Gg: ASbGnctk9VWKqinJZUky3zPMC4jmZPzi96jxZABuAFqn70fTVkkxQQ4P6JrabYJLd0F
- 1fkqGkAwRpakFJTLiIgcUwBPFXjXRCqDuwCjX9GBCekA2V5FH/GN7IrctBqW0VXmjtinQOUFsQZ
- nZbMjFhzy3IiElWDAEBQYOKTGG/qLXIxvmpTQND/xCu30SFncl3tn7ldMtl3zR+SucejbvVX3fT
- f2M3i8yCsQ1o/U1r19F1xczDoB5XQ1xAQzyB7ChWK+Ow3mUtbAlr57CM1mykA03BamH5ExEDkWD
- vBGBISh9nIPICaA5/Rk9YeVrsRiPTR9Dsk9vZUmHMwDrCxInaa+jhNrkFEP0gMVT
-X-Received: by 2002:a17:90b:2650:b0:2ee:e518:c1cb with SMTP id
- 98e67ed59e1d1-306a4821ce8mr2598856a91.7.1743735150365; 
- Thu, 03 Apr 2025 19:52:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEpCvuN06qhn0oo5IVtpvcYcgLV6zaRscaedoxN6rs5NB9KICtubTTD6L+HuYVRR6MEqVRlew==
-X-Received: by 2002:a17:90b:2650:b0:2ee:e518:c1cb with SMTP id
- 98e67ed59e1d1-306a4821ce8mr2598818a91.7.1743735149777; 
- Thu, 03 Apr 2025 19:52:29 -0700 (PDT)
-Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
- [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-229785ea16bsm22014865ad.106.2025.04.03.19.52.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Apr 2025 19:52:29 -0700 (PDT)
-From: Brian Cain <brian.cain@oss.qualcomm.com>
-To: qemu-devel@nongnu.org
-Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
- philmd@linaro.org, matheus.bernardino@oss.qualcomm.com, ale@rev.ng,
- anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
- alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com,
- Brian Cain <bcain@quicinc.com>
-Subject: [PATCH 6/6] target/hexagon: Add memory order definition
-Date: Thu,  3 Apr 2025 19:52:03 -0700
-Message-Id: <20250404025203.335025-7-brian.cain@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250404025203.335025-1-brian.cain@oss.qualcomm.com>
-References: <20250404025203.335025-1-brian.cain@oss.qualcomm.com>
+ d=1e100.net; s=20230601; t=1743735349; x=1744340149;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TbU2Gnzpu4CqRvGVTxMK5UxL2w2aLjrGyIJFTXNufY8=;
+ b=Ez2hmF4d6MojtCpSXCeiqiPGPwlacqM2UkZutyLCniMStKz0D/SEOqZyismRPw4K3u
+ +w0szDDfHvOpRzYgLVtrDNsJYLrBDhMJFkIvK7P1gu3EV7DUZFFfAHquHCPI2O766/P3
+ wIpSt0x2me7Zo+0ckyILOhMKGOofNiVMIZAIPpxsberpiDSDMMzshiPbwvE8PaLqJ02B
+ j9mkbKPjctWexJVnvdnCWqzGbXYYX+Z2QyBuV8f3JUpTdxpDw2qY+q7KZwSBoxeqJZy8
+ wEkUSW2grJQaw5IukIM6gRkQ2DoFekxDRGbBf0wkNdlYLJ/D6LJNbPIGJ3YlbxTlvVsA
+ sZJQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV6UgnwbV7enfTXDsUcIO8R6rhqRlffcIRXUzsJ6g6ccOpK+chKeQk5Nj+k3PmK3rVcM+4jj7IVMGT+@nongnu.org
+X-Gm-Message-State: AOJu0YznIcb+bSDCDFez0CbQdee4chqRGedv+oDz1AJRkKqC/mIgU1al
+ xPg6zp7nyQVv6ItWgzn68AhprYwMT8DeiHtfzjrDmuH/SCLOKsfWw3iOCdis9PjqEPStUQeSzV1
+ WrpnMYcLSQMpK6BKpN0+iMDyrJrDoIOcibgmjPbgE/6+ak7ShGhf0kA==
+X-Gm-Gg: ASbGnct6xfryIUq1dOmUcSSOTCejLGQ0VjgfY5rvJdWld8Uj+8WCp9kYnsO5Wy7vLTH
+ YD1K3snWT43SiRZTlgyYwnAf12YxSMLR30fxdVNftzZNSoMqHgtsL3hx6CYU3sH61NTILknvGHv
+ VTpkIy74+Hs+2JE1RRdxHMtCYyIK5Q8Aiu7DAyX9uhuCcpd1FT54vKFE1D6jCXb0ShGkS4jCbMi
+ UeuVT7SPtGlsviAUQ4Ko1nvtyfSzGAL3jEwKyzxJw63mQcvwA9widHpDaD7jI6JHH2rdWd/uN0P
+ Q3WjUm3TNSq2amg4IKP05cdEp8Ajf5rcBCejlhzt5+HALm1wOmfiAYjRqfDrXrYwknMl3VPd3xe
+ wel2CKgzjx+bYgjMF
+X-Received: by 2002:a17:903:98b:b0:223:2361:e855 with SMTP id
+ d9443c01a7336-22a8a8cec28mr17671675ad.39.1743735348968; 
+ Thu, 03 Apr 2025 19:55:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFH3X2m+McrWuPYHSb0mqHvtja7rWrk/dugEipOBhw1LlpNSXyjMutNpXEOeYvvpp5pP1luaA==
+X-Received: by 2002:a17:903:98b:b0:223:2361:e855 with SMTP id
+ d9443c01a7336-22a8a8cec28mr17671445ad.39.1743735348579; 
+ Thu, 03 Apr 2025 19:55:48 -0700 (PDT)
+Received: from [192.168.1.157] (104-54-226-75.lightspeed.austtx.sbcglobal.net.
+ [104.54.226.75]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-229785ad869sm22109035ad.26.2025.04.03.19.55.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 03 Apr 2025 19:55:48 -0700 (PDT)
+Message-ID: <6e44b39e-9c2e-4046-a9c9-987cc80d25f6@oss.qualcomm.com>
+Date: Thu, 3 Apr 2025 21:55:46 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-X-Proofpoint-GUID: teloBLVnbpkmM5ihttBuD35wgBF2DASj
-X-Proofpoint-ORIG-GUID: teloBLVnbpkmM5ihttBuD35wgBF2DASj
-X-Authority-Analysis: v=2.4 cv=N+gpF39B c=1 sm=1 tr=0 ts=67ef496f cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=SgXgUqScEDldHOCFpxoA:9 a=QEXdDO2ut3YA:10
- a=uKXjsCUrEbL0IQVhDsJ9:22 a=TjNXssC_j7lpFel5tvFf:22
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] target/hexagon: Fix macOS build
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: ale@rev.ng, ltaylorsimpson@gmail.com, philmd@linaro.org
+References: <20250402114259.21953-1-anjo@rev.ng>
+Content-Language: en-US
+From: Brian Cain <brian.cain@oss.qualcomm.com>
+In-Reply-To: <20250402114259.21953-1-anjo@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=PqmTbxM3 c=1 sm=1 tr=0 ts=67ef4a35 cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=x6rl1zRT+JsLSO7OGbGBKQ==:17
+ a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8
+ a=NEAV23lmAAAA:8 a=oupC_iOEFXF4q81Qu3IA:9
+ a=QEXdDO2ut3YA:10 a=_Vgx9l1VpLgwpw_dHYaR:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: iGWz_1LJeQLa46X_-fSl6XHvlKYOhl8o
+X-Proofpoint-GUID: iGWz_1LJeQLa46X_-fSl6XHvlKYOhl8o
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-04_01,2025-04-03_03,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 suspectscore=0 mlxlogscore=805 bulkscore=0
- malwarescore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ spamscore=0
+ priorityscore=1501 impostorscore=0 mlxlogscore=999 mlxscore=0
+ clxscore=1015 suspectscore=0 adultscore=0 lowpriorityscore=0 phishscore=0
+ malwarescore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
  definitions=main-2504040019
 Received-SPF: pass client-ip=205.220.168.131;
@@ -128,15 +128,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RnJvbTogQnJpYW4gQ2FpbiA8YmNhaW5AcXVpY2luYy5jb20+CgpTaWduZWQtb2ZmLWJ5OiBCcmlh
-biBDYWluIDxicmlhbi5jYWluQG9zcy5xdWFsY29tbS5jb20+Ci0tLQogdGFyZ2V0L2hleGFnb24v
-Y3B1LXBhcmFtLmggfCA1ICsrKysrCiAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspCgpk
-aWZmIC0tZ2l0IGEvdGFyZ2V0L2hleGFnb24vY3B1LXBhcmFtLmggYi90YXJnZXQvaGV4YWdvbi9j
-cHUtcGFyYW0uaAppbmRleCA0NWVlN2I0NjQwLi5jY2FmNmE5ZDI4IDEwMDY0NAotLS0gYS90YXJn
-ZXQvaGV4YWdvbi9jcHUtcGFyYW0uaAorKysgYi90YXJnZXQvaGV4YWdvbi9jcHUtcGFyYW0uaApA
-QCAtMjMsNCArMjMsOSBAQAogI2RlZmluZSBUQVJHRVRfUEhZU19BRERSX1NQQUNFX0JJVFMgMzYK
-ICNkZWZpbmUgVEFSR0VUX1ZJUlRfQUREUl9TUEFDRV9CSVRTIDMyCiAKKy8qCisgKiBIZXhhZ29u
-IHByb2Nlc3NvcnMgaGF2ZSBhIHN0cm9uZyBtZW1vcnkgbW9kZWwuCisgKi8KKyNkZWZpbmUgVENH
-X0dVRVNUX0RFRkFVTFRfTU8gICAgICAoVENHX01PX0FMTCkKKwogI2VuZGlmCi0tIAoyLjM0LjEK
-Cg==
+
+On 4/2/2025 6:42 AM, Anton Johansson wrote:
+> A default macOS build with xcode cli tools installed lacks the `indent`
+> program needed by the idef-parser postprocess step. If `indent` is
+> installed through homebrew it doesn't support the `-linux` flag.
+> Conditionally run `indent` only on linux hosts.
+>
+> Additionally `cpp` used by the idef-parser preprocess step expands into
+> `clang ... -traditional-cpp` and doesn't support macro concatenation
+> among other things, replace it with a meson custom_target running
+> `${compiler} -E`.
+>
+> fixes: https://lore.kernel.org/qemu-devel/d95ebf5d-c1f6-42c5-8aeb-65764fa87125@linaro.org/
+>
+> Note: default bison on macOS is still too old (v2.3 vs v3.0) and a newer
+> version needs to be installed via homebrew. I'll take a look at
+> supporting v2.3.
+>
+> Changes in v2:
+>    * Don't remove the indent step but only run on linux hosts.
+
+
+Thanks: this series is queued on the "hex-next-express" branch at 
+https://github.com/quic/qemu/
+
+> Anton Johansson (2):
+>    target/hexagon: Replace `prepare` script with meson target
+>    target/hexagon: Only indent on linux
+>
+>   target/hexagon/idef-parser/prepare | 24 ------------------------
+>   target/hexagon/meson.build         |  5 +++--
+>   2 files changed, 3 insertions(+), 26 deletions(-)
+>   delete mode 100755 target/hexagon/idef-parser/prepare
+>
 
