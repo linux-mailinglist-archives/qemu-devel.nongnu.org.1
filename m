@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A92A7BC6A
+	by mail.lfdr.de (Postfix) with ESMTPS id 443EBA7BC69
 	for <lists+qemu-devel@lfdr.de>; Fri,  4 Apr 2025 14:15:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0fwk-000620-39; Fri, 04 Apr 2025 08:14:54 -0400
+	id 1u0fwU-0005rq-LL; Fri, 04 Apr 2025 08:14:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u0fwK-0005qm-Sa
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 08:14:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u0fwJ-0005px-4V
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 08:14:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u0fwH-0005qg-Ib
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 08:14:28 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u0fwG-0005q3-GA
+ for qemu-devel@nongnu.org; Fri, 04 Apr 2025 08:14:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743768865;
+ s=mimecast20190719; t=1743768863;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iNjWoivzUTHy9W+FeBB1QQ6/pfeYGmq23CdVrIdqrY4=;
- b=W4rdk3cCJXygS9ITtH7JVwbxGm9Nnnzp4stLj6GL/ChrFR4oO2/x7arHBRsneousBXEEaF
- /0vSC4GWu0zQV5W0cJMaXYl/q3YN8Fce1kspycCam1X6bVTv1TDpawZ1n8KG4/zX2ChbCD
- cPbhRS8ykOcUL9UdWH+3Zgdn+K1bSEM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=IfohWAx7MrWs8vUk2D18jK5Clogpg7UJOIXFcAIoBFs=;
+ b=Pms6F58t2Xpku2Lkdsnb3CZIdrtgeol2JypCXFou4UMTx8cma7abgKJL4edR/LsADKzY46
+ nazisWppaDC3wg+QhmswHRJ8AQyCO/fRHEhQrJSiig8VERpg3nTYbBQtNIjcXNnXftJrxS
+ K1sF+NEN8rLNZnndsuCJbX1CUbWl4KI=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-z5X0B3EhOLSmGwvk6heRvw-1; Fri,
- 04 Apr 2025 08:14:19 -0400
-X-MC-Unique: z5X0B3EhOLSmGwvk6heRvw-1
-X-Mimecast-MFC-AGG-ID: z5X0B3EhOLSmGwvk6heRvw_1743768858
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-nSzNkYH9MGWkLn7UVN_JbA-1; Fri,
+ 04 Apr 2025 08:14:18 -0400
+X-MC-Unique: nSzNkYH9MGWkLn7UVN_JbA-1
+X-Mimecast-MFC-AGG-ID: nSzNkYH9MGWkLn7UVN_JbA_1743768857
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A8DFA19560BB; Fri,  4 Apr 2025 12:14:17 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 706761954B32; Fri,  4 Apr 2025 12:14:17 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BAF07191F254; Fri,  4 Apr 2025 12:14:16 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 847E81828A9F; Fri,  4 Apr 2025 12:14:16 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6922B21E66E4; Fri, 04 Apr 2025 14:14:13 +0200 (CEST)
+ id 6D50D21E66E5; Fri, 04 Apr 2025 14:14:13 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, kkostiuk@redhat.com, kwolf@redhat.com,
  jsnow@redhat.com, peter.maydell@linaro.org, eblake@redhat.com,
  jiri@resnulli.us, qemu-block@nongnu.org
-Subject: [PATCH 02/11] qapi/rocker: Tidy up query-rocker-of-dpa-flows example
-Date: Fri,  4 Apr 2025 14:14:04 +0200
-Message-ID: <20250404121413.1743790-3-armbru@redhat.com>
+Subject: [PATCH 03/11] docs/interop: Delete "QEMU Guest Agent Protocol
+ Reference" TOC
+Date: Fri,  4 Apr 2025 14:14:05 +0200
+Message-ID: <20250404121413.1743790-4-armbru@redhat.com>
 In-Reply-To: <20250404121413.1743790-1-armbru@redhat.com>
 References: <20250404121413.1743790-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -67,7 +68,7 @@ X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.028,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,29 +84,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The command can return any number of RockerOfDpaFlow objects.  The
-example shows it returning exactly two, with the second objecy's
-members elided.  Tweak it so it elides elements after the first
-instead.
+The "QEMU Guest Agent Protocol Reference" starts with the following
+table of contents:
+
+    Contents
+
+    * QEMU Guest Agent Protocol Reference
+
+      * QEMU guest agent protocol commands and structs
+
+This is useless.  Delete the entire TOC.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/rocker.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/interop/qemu-ga-ref.rst | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/qapi/rocker.json b/qapi/rocker.json
-index 51aa5b4930..0c7ef1f77c 100644
---- a/qapi/rocker.json
-+++ b/qapi/rocker.json
-@@ -254,7 +254,7 @@
- #                       "action": {"goto-tbl": 10},
- #                       "mask": {"in-pport": 4294901760}
- #                      },
--#                      {...},
-+#                      ...
- #        ]}
- ##
- { 'command': 'query-rocker-of-dpa-flows',
+diff --git a/docs/interop/qemu-ga-ref.rst b/docs/interop/qemu-ga-ref.rst
+index 19b5c7a549..25f6e24b03 100644
+--- a/docs/interop/qemu-ga-ref.rst
++++ b/docs/interop/qemu-ga-ref.rst
+@@ -1,9 +1,6 @@
+ QEMU Guest Agent Protocol Reference
+ ===================================
+ 
+-.. contents::
+-   :depth: 3
+-
+ .. qapi-doc:: qga/qapi-schema.json
+    :transmogrify:
+    :namespace: QGA
 -- 
 2.48.1
 
