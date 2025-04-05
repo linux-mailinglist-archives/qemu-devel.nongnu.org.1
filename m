@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF520A7CA1C
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 18:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75551A7CA1A
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 18:14:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u16A1-0000l7-U3; Sat, 05 Apr 2025 12:14:21 -0400
+	id 1u16AK-0001hJ-BW; Sat, 05 Apr 2025 12:14:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u169u-0000hZ-Df
- for qemu-devel@nongnu.org; Sat, 05 Apr 2025 12:14:15 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1u16AI-0001ZR-06
+ for qemu-devel@nongnu.org; Sat, 05 Apr 2025 12:14:38 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u169s-0005Gq-KN
- for qemu-devel@nongnu.org; Sat, 05 Apr 2025 12:14:13 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-736b0c68092so2367104b3a.0
- for <qemu-devel@nongnu.org>; Sat, 05 Apr 2025 09:14:12 -0700 (PDT)
+ id 1u16AG-0005JU-94
+ for qemu-devel@nongnu.org; Sat, 05 Apr 2025 12:14:37 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-306b6ae4fb2so180888a91.3
+ for <qemu-devel@nongnu.org>; Sat, 05 Apr 2025 09:14:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743869651; x=1744474451; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743869675; x=1744474475; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=WUvLIuT68NO5JZeX3ooW0QFo16CIijJ53LzeeHsOfaI=;
- b=bw+s/m05k0T/EEtqGJEbcjHMmKii+t5uc1hs6BemfliRFrkHmxpDDXwiIbPRV/qL6R
- sRfwjS7gCFfyogfl7zcHITMgT+WJHQE/WARnLz5kh5gXyJLP81rQqreeKAouZhv9WZY1
- x//lS0oYH09Yg4HPmpjdTxGcGD1v2QyZtiTPNcfDIpCUDYHq0cHS4gFT+9Cdw/Zjg2xG
- 74iyMbatwbcsV8jzuRKrVr/oQHSuXfEBJ6F1gNPnFZUcWGdHqDjx3AWNe5F7ym/KDv1G
- 3ClFAIrgRmXhlnL+bpl50Yx9lGGzRxAVm8WnAOb2r2YcVLtuPAVv2YW93DnXtfOux84Z
- wTzA==
+ bh=uo7eJ7uFbPjlWwA1xkqprs0pNcPaSeiczOBJaEUBbcE=;
+ b=TkhCTZ9eRNokmkKGQYYEVjnqUydLzZtzzZ2oIJmIzcWC5zYYSqamTWKdguheaEAw+l
+ Wy20ArYxwPfWICZYbY0akDvRojISSEuXNmarTio2xer25TU5WQDGf4NoD4jKjk3M2WIx
+ NR+G6+hG+I/UiFDCDPZdd96OuNEQM3Te2Ig/W9N1/Xs2Vx0A/PdFaPPVsJzeX16jRaKR
+ nOn/9r7G8lPwotwBhkEho17o6Rf3lGDUXuI85dbNejmCURIcZy1CHAp1oNir7heYURBe
+ XvpWkZwIekSa0PXWgqOnptyBLNrMn1v8qQvhqSlHLODusxpP/hZaBnRb/UP+In+boIqo
+ Cmlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743869651; x=1744474451;
+ d=1e100.net; s=20230601; t=1743869675; x=1744474475;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WUvLIuT68NO5JZeX3ooW0QFo16CIijJ53LzeeHsOfaI=;
- b=tfNBb+3f8a5qNUOKwo2F3eMqBKxlRjTa19jwVKLb34tEWVGaytNCm+r5NoL6K2DbWb
- HskAjE/bdUZWJvsHTZrIXC7G+i+Uka/Okq3pnD8Yk/FO2NwQL7BZIE4H1xT/9zsu+xgu
- Rnsx196qTbQeOlIwAeta6Xaqzz8Gu9uroAuvyPLnH/XEAXT6vaZ6Q8u5nbUTr00ytWmW
- k5mAzXprhoxrx1CAa734roZZOsMNqrHDwIQal0PXMFZee9QznKvJ5AWw9q2OK8Zk8CQZ
- CP20nmRfhPp2MD44FmZQhAxxrlGwWxGqCYC2FpgK7IDYr6fpvlxWqVXVJxs1GXYZAYDC
- y9Aw==
-X-Gm-Message-State: AOJu0YwS7J6ebfCxKyT8z1BRgyeYhiioYeOJAO8iioCnOu6Hxrq8hOQE
- BrYqo5hbAsxE5mtoYGm1dBRg8espf1dNpt9LsnMN2Hr32+9ikVlDSmtD4ivJ4oeYeBfG+lzHUki
- D
-X-Gm-Gg: ASbGncuDEqMyxzkFOLtXxFJ5L0koHd+ps6wZqPZqp+uSRIvYaf85tvAvTWcbJJjwQmF
- FlMewDF/Tg1R8yONgjrDDyG0PAa1um6xq+IKaUbUcSxzLtAQ3LKbXPxJPoQIVw/GoFNRaQiK4oQ
- AeG9OBmyJ4Bh2DOfehLBQAgmugaCOb16ixOyDNwu5eWZ0UkPlaEV3Yu1w/KhTOGRpK9MGhGuz/Y
- wyE/99bqL1OYTGklSpptFqTNDB2RW8Rk47Quobh3ON7CR9Cw1nqDGBrECWlB4KYLxoTzEVmy5kd
- kZ+2w66XwWpmsHkKNs7E64a/nxhP5kolsegGj/sBPI61xQ7F3mOQea0tC2yGskUl
-X-Google-Smtp-Source: AGHT+IGn3KtX1V4nKSTIjFV8DmzpuCo8/1ACJT/vvmU6drjS7+iF4HGOJFh1h8xzXBOh3Zk6CWdqiw==
-X-Received: by 2002:a05:6a21:9201:b0:1f3:36f7:c0d2 with SMTP id
- adf61e73a8af0-20104769bb7mr11258401637.41.1743869651286; 
- Sat, 05 Apr 2025 09:14:11 -0700 (PDT)
+ bh=uo7eJ7uFbPjlWwA1xkqprs0pNcPaSeiczOBJaEUBbcE=;
+ b=b1nRPvbDfrpCyQXQUDZ/xab1ZOdMSqIoS6yNfKX75cuFU61eZ30tg5ogvbuCdW2gQR
+ CXZX7GbHytqJMcL+GL7H6YmGdj2yh190bAcTt9MXTVdFmnfyZvcDdJ3LIJ8L0+1dcL0q
+ odB9ZLGHczy0kXlnn8bPqbDPl6vIRjP/ezlIPeBmsaRMpfe1n9YCzZnVutqODjrOUi4H
+ uDvLCgrVaMRY0n0GauRmaT/43TFQ5ZWzmDwYQwSsLEOObmEMnTrXkZttHHFAVKvYiMfl
+ cwYDByl3ABYwThow1BXH5oBnlSze3U3BCktv5luspu3V9jo/jvux+b6q1FxVnVhHde3a
+ vZKA==
+X-Gm-Message-State: AOJu0Ywtjh8YGP4lO0zoDiyvK3i2SwItxukv9F62uORfCO9Wza/wC6di
+ 1EZjaMBJTWEK2RIulxRsDeJIu/9jF1b68yL9WY3vEiYo+g7FRcWp7LCkHChbbZqkPpKNL8cyCoL
+ s
+X-Gm-Gg: ASbGncs9qbDuANLEd3HqyCKOnec2Cu6oWgSrbyc2Lk+JXn36yi6HrIKmRzMO/LCCiGN
+ sNeeyaEcCGDF51lvLEg7VDCXqxePv0/K5LKeNic31NFCefi5juu3aSm+opNOI1bN8M/moeNoK2B
+ gKALR3TP0fDUwywbjaqXTomjLQ1LYA7h/Z+qyry8uz1q40llEFpNOx0Ftw1tb7oFpcyzc4GvALe
+ ZQ9nwm1zcj23QqyJiDPtBhsK8AMrf/eYc7WJQ3SrnfoXF2kWjEJvLryqpHkJnRVT5AML700N0Fj
+ H0VirH9zRUORyAf0vSkXJfpMD6wD6lZVAhaj86DoMKZaIclG7ObdfUhUl5zVXjmptY1Dtkc2q28
+ =
+X-Google-Smtp-Source: AGHT+IHTJisTZ13gxm687OQ8gQQ6Sly850AyBlN/WrQvWIHPTNxZbBPB9IlVjBNoXRmUNs6UBfmP3A==
+X-Received: by 2002:a17:90b:3a4c:b0:2fe:dd2c:f8e7 with SMTP id
+ 98e67ed59e1d1-306a615014emr10286214a91.10.1743869674670; 
+ Sat, 05 Apr 2025 09:14:34 -0700 (PDT)
 Received: from [192.168.122.15] ([173.164.107.234])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-739d97d1b87sm5605096b3a.16.2025.04.05.09.14.10
+ 98e67ed59e1d1-3057cb5a823sm5744935a91.34.2025.04.05.09.14.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 05 Apr 2025 09:14:10 -0700 (PDT)
-Message-ID: <71f65b7b-0850-4ffe-8efe-1aa15e75ab9e@linaro.org>
-Date: Sat, 5 Apr 2025 09:14:09 -0700
+ Sat, 05 Apr 2025 09:14:34 -0700 (PDT)
+Message-ID: <e0460752-3a02-42a5-99f5-7a2634f89afd@linaro.org>
+Date: Sat, 5 Apr 2025 09:14:32 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 3/9] target/arm: Remove use of TARGET_AARCH64 in
- arm_cpu_initfn()
+Subject: Re: [PATCH-for-10.1 4/9] target/arm/mte: Include missing headers for
+ GETPC()
 To: qemu-devel@nongnu.org
 References: <20250404223521.38781-1-philmd@linaro.org>
- <20250404223521.38781-4-philmd@linaro.org>
+ <20250404223521.38781-5-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250404223521.38781-4-philmd@linaro.org>
+In-Reply-To: <20250404223521.38781-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,33 +103,41 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/4/25 15:35, Philippe Mathieu-Daudé wrote:
->   static void arm_cpu_initfn(Object *obj)
->   {
->       ARMCPU *cpu = ARM_CPU(obj);
-> @@ -1482,16 +1489,16 @@ static void arm_cpu_initfn(Object *obj)
->       QLIST_INIT(&cpu->el_change_hooks);
->   
+> Some headers are indirectly pulled in. Make their inclusion
+> explicit, otherwise next commit triggers:
+> 
+>    target/arm/tcg/mte_helper.c:188:26: error: call to undeclared function 'GETPC' [-Wimplicit-function-declaration]
+>      188 |     do_stg(env, ptr, xt, GETPC(), store_tag1);
+>          |                          ^
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/arm/tcg/mte_helper.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+> index 7dc5fb776b3..9dcdc1d91c1 100644
+> --- a/target/arm/tcg/mte_helper.c
+> +++ b/target/arm/tcg/mte_helper.c
+> @@ -22,7 +22,7 @@
+>   #include "cpu.h"
+>   #include "internals.h"
+>   #include "exec/exec-all.h"
+> -#include "exec/page-protection.h"
+> +#include "exec/target_page.h"
 >   #ifdef CONFIG_USER_ONLY
-> -# ifdef TARGET_AARCH64
-> -    /*
-> -     * The linux kernel defaults to 512-bit for SVE, and 256-bit for SME.
-> -     * These values were chosen to fit within the default signal frame.
-> -     * See documentation for /proc/sys/abi/{sve,sme}_default_vector_length,
-> -     * and our corresponding cpu property.
-> -     */
-> -    cpu->sve_default_vq = 4;
-> -    cpu->sme_default_vq = 2;
-> -# endif
-> +    if (arm_cpu_is_64bit(cpu)) {
+>   #include "user/cpu_loop.h"
+>   #include "user/page-protection.h"
+> @@ -33,6 +33,7 @@
+>   #include "exec/helper-proto.h"
+>   #include "exec/tlb-flags.h"
+>   #include "accel/tcg/cpu-ops.h"
+> +#include "accel/tcg/getpc.h"
+>   #include "qapi/error.h"
+>   #include "qemu/guest-random.h"
+>   #include "mte_helper.h"
 
-     arm_feature(&cpu->env, ARM_FEATURE_AARCH64)
-
-is a better test, but env->features is initialized by the child instance_init.
-We could move this to arm_cpu_post_init, so that features is initialized.
-
-Alternately, we could just make this unconditional, since these fields are always present 
-but only read from aarch64 code.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
