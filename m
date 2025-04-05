@@ -2,86 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD4AA7CBEC
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 23:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CD6A7CC5D
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Apr 2025 01:53:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1BOR-0003TB-AM; Sat, 05 Apr 2025 17:49:35 -0400
+	id 1u1DJe-00059A-Ex; Sat, 05 Apr 2025 19:52:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1u1BOE-0003RL-DU; Sat, 05 Apr 2025 17:49:26 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <prantoran@gmail.com>)
+ id 1u1DJb-00058K-UX; Sat, 05 Apr 2025 19:52:44 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1u1BOA-0004NW-Fm; Sat, 05 Apr 2025 17:49:21 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5e61d91a087so5135936a12.0; 
- Sat, 05 Apr 2025 14:49:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <prantoran@gmail.com>)
+ id 1u1DJa-0001yd-6n; Sat, 05 Apr 2025 19:52:43 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-30384072398so2445346a91.0; 
+ Sat, 05 Apr 2025 16:52:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1743889755; x=1744494555; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vvSf9TCswsvHlHP1HmqYppAppZQUi4irJNJ4qlnuZD8=;
- b=CJh+R3mCbFkp82qMuWiCdPkFXYr7JAJZqKeVCR5SlJ4gKPvIAApoyycWGAw3L1SU8B
- ErGwZm/LVW9RbPNOYaXRaQR0EWixVj9pSLLbU/O/ILrdS3+iJbTqDHG1UmK/aZtP43XA
- E7W8z0zlDmsDU2ni/qvS1YJMV77/XzWeqvbGBDbVSJdtjOLvSsGPtWBYyuPUy7F1ITe1
- K9ixYnyoIkrJK1VppnhWS5uEzWiM/cdwY5vL37CCeS+2c60Y+XbnHzhBMTN5rPE5Ajk8
- OG2t2ruqIzfoVkmPN2SPEldLjAwZFfuqG/dqeS18QJYWNOYZh5Q8a179vQ7WdrAufG4O
- fxKg==
+ d=gmail.com; s=20230601; t=1743897160; x=1744501960; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6FSOuURE/MX3/VXP5/K8vkozrmRKU1K9euxgsgr2Y+Q=;
+ b=EvKpbMTX3YXd0HxGyRweLCMRCvc6wR+ID0bHdy4+LXAuvIltztRMrlGyi+28uh8ap4
+ umM/BE7ybN6O+sPleYBLlXkHBiPmMA6te1U7xybsWdfP6odugJUUfbr03HKnjKtbrWxC
+ FNFD2lrW+ZIEG6Y7FZ9nlEracL0jyOrQdtwqFQmbQ5dWXAhjzbjutHI/Wr7l5biTtsf6
+ rgVAHZBNw2DhwPqc4D1GG0ZHBxEY57Ax4evHgW9bfOiKpEAsiRZfRI4KuvHGRPFt0h4N
+ 6syhcgRHbBkVJPMGVBYNq978MrvvXHKLkRLEotSU9HwvbfrRZQiHOlNgLdLsTklDyp+Q
+ wvUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743889755; x=1744494555;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vvSf9TCswsvHlHP1HmqYppAppZQUi4irJNJ4qlnuZD8=;
- b=kmHi25hHVuw5qdxIGRWYUAVZL7UdVLkmxRdqmJUDehfXE85tWtEROZv1O0cARg2B5p
- jhtaCOdO4xGnl+o+tR6Oo1P3zCXn50vu7kYm/4imzCtcvWWa2KWC3x86G1S7dJ0wBWrq
- WQKUDClbpKmlDguYPC0qColfa0XUJO0G7CdSLPXGHkR816UmNpKFXIWnl1QI6xD9mMIE
- s1t9/xxNOh8GW+HbEtUk5hIlsSXV0G2TR1Vf6AxcWqDdUOUizVqlz6UyLbgqYCXOnTiY
- fNCs6YVHbfozFsDMCgqq7YCBfgBoSIiQQ2YxGHst6D8SiwhQ0lNBnEw2htRlIoPjgLvR
- hFjA==
+ d=1e100.net; s=20230601; t=1743897160; x=1744501960;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6FSOuURE/MX3/VXP5/K8vkozrmRKU1K9euxgsgr2Y+Q=;
+ b=g0otAVLFPglqAtNzdbScWR2sN4wAX4Tz2L/ZRkw+5NXWTGViUoy33wTzixLsnltSBK
+ dlvmP8Ypy+uYRlB9qAvdg1daxK17l2iqXlu7DfxMPH6Qjoixw+E4CpTSL1hbiY/GtP/h
+ BltFiUZTRCBV42gRpYbiX8XECUh6XS18v5IpMXOoJkT/kb7d1suvaiVkd+H8lElDBV/5
+ 7y42KaFDlO8tXoFWevVPgrbwg2oIqZmI0Y6y6zZpZC2Yf6nUAFdWaeeUzW/q5TKmHH5t
+ O6t0O8BX+FZNtDdh6cyCiLykbdXY6mf2S7K2C6lV1AkhtUV8XlT/ZL1lnsnQCpeLOH+8
+ tK2A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUd7mcke1kgYSBAU+jkHhUSMiEnZVQSeWIkMRGHlsIcZ0TNHnVV4qp8k8KoLB9ZZAttqVPfD6AV6Q==@nongnu.org
-X-Gm-Message-State: AOJu0Yw1gOMQLV2Cn1sKCTS1j9GhDLuM3o16aVqhIMm5dh3ep/MqN+6X
- bGJtqcvUrf7iA0J3QKDT8K1wOQFIzjWYT7Hw7/DCgT16RLB1hVY1JiXdtg==
-X-Gm-Gg: ASbGncsxirxgK9Lf9eEczUXoW7DjkCUkLKO/ymzz7vfYSjkv/IIvcMM8RskcOVoNPcq
- Isd0QNn4hUFNBvSJ7RXfQt3mRlmZLKDEmktN/zvaVY8z253iSbGJjwycHrac13zQan4EONBuqOK
- g9AVOCIr7T14BTLrkL2PJ0k1XdQKxIdaUmDGVz2Es1kqRI1N4vcp/46XghNXaD9jIMXG2D84n6C
- Qcfy5MQR71oV/7ug5oXoAAbC4VodIwpEI3qkDdgSa+SQ2vF6iUGA6mDzSMhbqgsdffeS77ZRrrv
- QjQ8Jnm9jfQdlngMb1PuZuIjd3WXz1yr5WojrrEc+p3dmXkRB4g5UNQSH+4uF6W5DFVNk74HRtq
- B3pmfyCZEOP8EjKk3Hrg0Cv+8XlroorogQ3phcWGEcKRJSFzwBRyjLEZR0GHOtoIU
-X-Google-Smtp-Source: AGHT+IH6ybiIybyjTHTwEfDU/6Cd2anIghJD0Jbj9kTs8WAe6ShbayhUOE/DxKeK4YulFz04VoOeDQ==
-X-Received: by 2002:a05:6402:5187:b0:5e5:c847:1a56 with SMTP id
- 4fb4d7f45d1cf-5f0b3b8f022mr6647717a12.10.1743889754988; 
- Sat, 05 Apr 2025 14:49:14 -0700 (PDT)
-Received: from Provence.localdomain
- (dynamic-2a02-3100-1bf0-7700-0219-99ff-feb2-2458.310.pool.telefonica.de.
- [2a02:3100:1bf0:7700:219:99ff:feb2:2458])
+ AJvYcCW9bxRQqMlctFbzjLEs/YOt6Z19yPTVgQmqpjvbPeKn/Tgvcd1jPWwsWJ7SPe4iJgkkfY/r58wpNo8d@nongnu.org
+X-Gm-Message-State: AOJu0YylwjqyppQYdDaiB2jSPNlIuCkh8Xv1yU/aXKVrWBLMJzF6e2TC
+ zpnqbnrYGumV14z35aqr6hBF32QGsVRUvWNqnQFfVrQNH0giuU4B
+X-Gm-Gg: ASbGncsOclnvFKo6OwTOz4kq1JzOIxr0uoaw5wifccm4ooyqMMTj1hsZe5rKsprHzNG
+ q14q0y2CzzMPlCOlIjdRtbfzw0002gFbXRuhu1UJePe1aHBrUGNZet+sXQuDI9XS0YA11S58F03
+ +GNFxRYwAwIIPg7MZBUY6MdLAaPUz10aeBFUMK3i/9NrPo9CLPlkUqCArUZ2bzGyLsWsxup9uQe
+ M9Q9r9XKrhMYxa5MSkgrJw53XttmAlbTpYGQQDXwkmC9uafoojDUOawHeNhmDem5GSB8xTUcKHD
+ Dt48TUo1pJWYCoevoB7KtLMwp03ZlbfSe/oWZ1GCAN0mitieoRYg5Q==
+X-Google-Smtp-Source: AGHT+IFUaeLCR5mv7hoNh6dldAJPqYSPzN+W6bqmHYW9L25s1jeSCN+FjD6dP2AvtGJYll2Pl2KYAQ==
+X-Received: by 2002:a17:90b:51cb:b0:2fe:861b:1ae3 with SMTP id
+ 98e67ed59e1d1-306af7178cemr5903910a91.8.1743897159999; 
+ Sat, 05 Apr 2025 16:52:39 -0700 (PDT)
+Received: from queen.. ([2604:3d08:7485:e900:5b0d:511e:2265:c0aa])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5f0880a535fsm4382270a12.80.2025.04.05.14.49.13
+ 98e67ed59e1d1-3057ca1f778sm6940189a91.2.2025.04.05.16.52.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Apr 2025 14:49:14 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- qemu-arm@nongnu.org, Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH-for-10.0 3/3] hw/arm/imx8mp-evk: Remove unimplemented nxp,
- imx8mp-fspi node from devicetree
-Date: Sat,  5 Apr 2025 23:49:00 +0200
-Message-ID: <20250405214900.7114-4-shentey@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250405214900.7114-1-shentey@gmail.com>
-References: <20250405214900.7114-1-shentey@gmail.com>
+ Sat, 05 Apr 2025 16:52:39 -0700 (PDT)
+From: Pinku Deb Nath <prantoran@gmail.com>
+To: Kevin Wolf <kwolf@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ Pinku Deb Nath <prantoran@gmail.com>
+Subject: [PATCH v5] block/file-posix.c: Use pwritev2() with RWF_DSYNC for FUA
+Date: Sat,  5 Apr 2025 16:52:29 -0700
+Message-ID: <20250405235229.215582-1-prantoran@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=prantoran@gmail.com; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,49 +95,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Guenter Roeck <linux@roeck-us.net>
+Full Unit Access (FUA) is an optimization where a disk write with the
+flag set will be persisted to disk immediately instead of potentially
+remaining in the disk's write cache.
 
-The nxp,imx8mp-fspi node triggers a warning backtrace.
-Remove it from the devicetree file.
+This commit address the todo task
+for using pwritev2() with RWF_DSYNC in the thread pool section of
+raw_co_prw(), if pwritev2() with RWF_DSYNC is available in the host,
+which is always the case for Linux kernel >= 4.7.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Inspired-by: commit bf1da4b308 ("hw/arm/raspi4b: Temporarily disable
-unimplemented rpi4b devices")
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-[Bernhard: split patch, adapt commit message]
+The intent for FUA is indicated with the BDRV_REQ_FUA flag.
+The old code paths are preserved in case BDRV_REQ_FUA is off
+or pwritev2() with RWF_DSYNC is not available.
+
+Support for disk writes with FUA is handled in qemu_pwritev_fua(),
+which uses pwritev2() with RWF_DSYNC if available, otherwise falls
+back to pwritev2() with no flags followed by flush using
+handle_aiocb_flush().
+
+If pwritev2() is not implemented, then disk write in the linear FUA
+will fallback to pwrite() + handle_aiocb_flush().
+
+Signed-off-by: Pinku Deb Nath <prantoran@gmail.com>
+
 ---
- hw/arm/imx8mp-evk.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/imx8mp-evk.c b/hw/arm/imx8mp-evk.c
-index 3bbf2bfbea..b5aec06ec5 100644
---- a/hw/arm/imx8mp-evk.c
-+++ b/hw/arm/imx8mp-evk.c
-@@ -19,7 +19,22 @@
+v4:
+- Add fallback when qemu_pwritev_fua() returns ENOSYS
+- Similar fallback was not added for handle_aiocb_rw_vector()
+since there is a preadv_present check in handle_aiocb_rw()
+
+v3:
+- Changed signature to add fd, iov, nr_iov
+- Return -ENOSYS for non-Linux hosts
+
+v2:
+- Moved handle_aiocb_flush() into qemu_pwritev_fua()
+- In handle_aiocb_rw_linear(), iovec with iovcnt=1 is created
+based on the assumption that there will be only one buffer
+---
+ block/file-posix.c | 68 ++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 56 insertions(+), 12 deletions(-)
+
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 56d1972d15..59bed7866a 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -229,6 +229,7 @@ typedef struct RawPosixAIOData {
+             unsigned long op;
+         } zone_mgmt;
+     };
++    BdrvRequestFlags flags;
+ } RawPosixAIOData;
  
- static void imx8mp_evk_modify_dtb(const struct arm_boot_info *info, void *fdt)
- {
--    int offset;
-+    int i, offset;
-+
-+    /* Temporarily disable following nodes until they are implemented */
-+    const char *nodes_to_remove[] = {
-+        "nxp,imx8mp-fspi",
-+    };
-+
-+    for (i = 0; i < ARRAY_SIZE(nodes_to_remove); i++) {
-+        const char *dev_str = nodes_to_remove[i];
-+
-+        offset = fdt_node_offset_by_compatible(fdt, -1, dev_str);
-+        while (offset >= 0) {
-+            fdt_nop_node(fdt, offset);
-+            offset = fdt_node_offset_by_compatible(fdt, offset, dev_str);
-+        }
+ #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+@@ -1674,6 +1675,20 @@ qemu_pwritev(int fd, const struct iovec *iov, int nr_iov, off_t offset)
+     return pwritev(fd, iov, nr_iov, offset);
+ }
+ 
++static ssize_t
++qemu_pwritev_fua(int fd, struct iovec *iov, int nr_iov, off_t offset, const RawPosixAIOData *aiocb)
++{
++#ifdef RWF_DSYNC
++    return pwritev2(fd, iov, nr_iov, offset, RWF_DSYNC);
++#else
++    ssize_t len = pwritev2(fd, iov, nr_iov, offset, 0);
++    if (len == 0) {
++        len = handle_aiocb_flush(aiocb);
 +    }
++    return len;
++#endif
++}
++
+ #else
  
-     /* Remove cpu-idle-states property from CPU nodes */
-     offset = fdt_node_offset_by_compatible(fdt, -1, "arm,cortex-a53");
+ static bool preadv_present = false;
+@@ -1690,6 +1705,11 @@ qemu_pwritev(int fd, const struct iovec *iov, int nr_iov, off_t offset)
+     return -ENOSYS;
+ }
+ 
++static ssize_t
++qemu_pwritev_fua(int fd, struct iovec *iov, int nr_iov, off_t offset, const RawPosixAIOData *aiocb)
++{
++    return -ENOSYS;
++}
+ #endif
+ 
+ static ssize_t handle_aiocb_rw_vector(RawPosixAIOData *aiocb)
+@@ -1698,10 +1718,16 @@ static ssize_t handle_aiocb_rw_vector(RawPosixAIOData *aiocb)
+ 
+     len = RETRY_ON_EINTR(
+         (aiocb->aio_type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) ?
+-            qemu_pwritev(aiocb->aio_fildes,
+-                           aiocb->io.iov,
+-                           aiocb->io.niov,
+-                           aiocb->aio_offset) :
++            (aiocb->flags &  BDRV_REQ_FUA) ?
++                qemu_pwritev_fua(aiocb->aio_fildes,
++                                aiocb->io.iov,
++                                aiocb->io.niov,
++                                aiocb->aio_offset,
++                                aiocb) :
++                qemu_pwritev(aiocb->aio_fildes,
++                            aiocb->io.iov,
++                            aiocb->io.niov,
++                            aiocb->aio_offset) :
+             qemu_preadv(aiocb->aio_fildes,
+                           aiocb->io.iov,
+                           aiocb->io.niov,
+@@ -1727,10 +1753,31 @@ static ssize_t handle_aiocb_rw_linear(RawPosixAIOData *aiocb, char *buf)
+ 
+     while (offset < aiocb->aio_nbytes) {
+         if (aiocb->aio_type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
+-            len = pwrite(aiocb->aio_fildes,
+-                         (const char *)buf + offset,
+-                         aiocb->aio_nbytes - offset,
+-                         aiocb->aio_offset + offset);
++            if (aiocb->flags & BDRV_REQ_FUA) {
++                struct iovec iov = {
++                    .iov_base = buf + offset,
++                    .iov_len = aiocb->aio_nbytes - offset,
++                };
++                len = qemu_pwritev_fua(aiocb->aio_fildes,
++                                    &iov,
++                                    1,
++                                    aiocb->aio_offset + offset,
++                                    aiocb);
++                if (len == -ENOSYS) {
++                    len = pwrite(aiocb->aio_fildes,
++                                (const char *)buf + offset,
++                                aiocb->aio_nbytes - offset,
++                                aiocb->aio_offset + offset);
++                    if (len == 0) {
++                        len = handle_aiocb_flush(aiocb);
++                    }
++                }
++            } else {
++                len = pwrite(aiocb->aio_fildes,
++                            (const char *)buf + offset,
++                            aiocb->aio_nbytes - offset,
++                            aiocb->aio_offset + offset);
++            }
+         } else {
+             len = pread(aiocb->aio_fildes,
+                         buf + offset,
+@@ -2539,14 +2586,11 @@ static int coroutine_fn raw_co_prw(BlockDriverState *bs, int64_t *offset_ptr,
+             .iov            = qiov->iov,
+             .niov           = qiov->niov,
+         },
++        .flags          = flags,
+     };
+ 
+     assert(qiov->size == bytes);
+     ret = raw_thread_pool_submit(handle_aiocb_rw, &acb);
+-    if (ret == 0 && (flags & BDRV_REQ_FUA)) {
+-        /* TODO Use pwritev2() instead if it's available */
+-        ret = raw_co_flush_to_disk(bs);
+-    }
+     goto out; /* Avoid the compiler err of unused label */
+ 
+ out:
 -- 
-2.49.0
+2.43.0
 
 
