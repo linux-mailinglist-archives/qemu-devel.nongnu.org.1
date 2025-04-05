@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4671A7CA26
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 18:17:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97198A7CA23
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 18:16:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u16AH-0001Pw-O5; Sat, 05 Apr 2025 12:14:37 -0400
+	id 1u16AM-0001kt-Ev; Sat, 05 Apr 2025 12:14:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u16AD-0001Cc-LG
- for qemu-devel@nongnu.org; Sat, 05 Apr 2025 12:14:33 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u16AI-0001Zj-3Z
+ for qemu-devel@nongnu.org; Sat, 05 Apr 2025 12:14:38 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u16AB-0005Is-Se
- for qemu-devel@nongnu.org; Sat, 05 Apr 2025 12:14:33 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43cfe574976so20278825e9.1
- for <qemu-devel@nongnu.org>; Sat, 05 Apr 2025 09:14:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u16AG-0005JV-98
+ for qemu-devel@nongnu.org; Sat, 05 Apr 2025 12:14:37 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43d0359b1fcso19472405e9.0
+ for <qemu-devel@nongnu.org>; Sat, 05 Apr 2025 09:14:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743869670; x=1744474470; darn=nongnu.org;
+ d=linaro.org; s=google; t=1743869674; x=1744474474; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WxLf1qzYlIt55rERNGlTsLbACYfcGvHkqll/jBxBAw0=;
- b=Ez0pbWsaUQeVmAt9Uk40HXZpmgmhQvKn/9W+E3QOOzU7E85awwFswKecp8WdOe3ykF
- fimhQrxZJAjynvs9ebJfUx4VHZQt0QHj7SktMywuMPSRA31iAnX7AkjISByavi16QMbQ
- rDnyIvqyHZFtxQXzFGY77mPv59eO2VNPTfYBTrNbhn+KkxQsuF4Yo8gJ1gyo2nSXWgW9
- hngaviN7jami2TwDSWx15wUErGX73TChkgmrDGj5cm5hDN1cJLN4ZcoB31XayWtUYhzr
- iWipUEeuqc+te+idQGFfMiqjgECGHkRB1jmBRmeBjyall/SLv96lSy8uVIoHqxGkxLct
- oGXg==
+ bh=fLiC832/142ITmF1Yvgl6ilLfBOuUrOH271pHrSjNR0=;
+ b=cOWh/9oi5gi2lP38S1D3WEpwbY5U12S6BXxfQ3YOetfScTr2kaELFUSKajYJdZarJl
+ D64JPUhSL06cloWA3zhdXcMc4ab5LAD4aSZq9RPrtWMED3MR/Gv/kAjH/IzLoNwrGLw3
+ WGnFAsa5Mf1xYz9OxT5fp6kX4MTx8yleR9T/I2n31DOryismsOHPQoDyq9k4Lwy40Otn
+ 98gG8YrIaqIzL0E+k7ysOUMBUFIqA5W+VpKMqR5WRPeZWhIwzN9zx9c5DBHEOhzL4LMN
+ uZi6WW57pLDSjyurSGlsSHC2lriQXGlRK7rU21qOYn0pIZJ0MMe/bZABfbG1Z0En9azW
+ GLuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743869670; x=1744474470;
+ d=1e100.net; s=20230601; t=1743869674; x=1744474474;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WxLf1qzYlIt55rERNGlTsLbACYfcGvHkqll/jBxBAw0=;
- b=VY+Y/pMS/P+dpywdIYy/Z5SrEVBZoq9U0Mdb+hfBUvxH6CO1agv3EXRSrMZSoE8jT7
- 4NiGUaGfJGyQZgz78KzAYSPy8PUvZjonBdnqeX7mUzJECglTOkoBQ0y4vRkk5Ng7W9Tt
- EaEUfqJrQfA6WeKB9k9F70xEx2wOa0X/E2zCrzW/g3B3G11PzRSISe6m/IhEteGuowLP
- TVsvLL9kDS2iyYuElGNX9KYRW2goWR8MS8mpZ0y4Zgx0mY56m4wBTo/J2KbltmpV8kMz
- wcCzoOR2sY3H7G4hydfFwVOI+L/FeEcXqi6gYBvA+4YLOwPjNOo1dudWZvrmTv7qMwRq
- f9Iw==
-X-Gm-Message-State: AOJu0Yxdpoatl3gtJhp1oYLRtJdaVKFtMRCIkpoXIbMYW8/4uvLLy9Yo
- Bl49xqyGGga0nnxBkCzJTCrYScjbkpaPE6LcfCifr0gJT81Zm/X5hYQKUKk54PYI4Eauyf8sxDz
- W
-X-Gm-Gg: ASbGncuzyx++Tns9SFqvXNSSLS7A8OQZOl2SU7MrIktw0B+rW0yVNCT77KqIk++mA/t
- wgzHgGLXXPj1BfgQykRJ6/3TAOqAoNggwjFhjfGSCtkw8A2FHn8pMKu21MVIiQqDlsx4bPdIqzn
- kC0AE9FgWjH1VzKpmbvy2YTkjnDl8HpEJLwsB4eMjutfwxa7iLx8eDPCezKtQVRW2dwhJJgtBlx
- YNHNSJlUHTVNDGirCuKZ7GB3i9oiDYxXQR9vNmCfeTkJ48KN9iV1SBS97Cx8LUIT5TtyGvK4e4H
- NCd/BVkkHsKbvBygbf9ZYIDrSzwnSjIE0qSA57703JcbuSaIvmYO+XGDHBhLAAll98JwJtSjHsS
- 4twYYH8QYnIa8SG+K22B4TumJ
-X-Google-Smtp-Source: AGHT+IHwMl71qxKC7xyYfvRdL+hL2VXjUKCRU0Gacm10ZstFUEus151D3Ek3ipHqZmceQFGwUibwUg==
-X-Received: by 2002:a05:600c:b89:b0:43d:7413:cb3e with SMTP id
- 5b1f17b1804b1-43ecf81bb90mr61366455e9.1.1743869669840; 
- Sat, 05 Apr 2025 09:14:29 -0700 (PDT)
+ bh=fLiC832/142ITmF1Yvgl6ilLfBOuUrOH271pHrSjNR0=;
+ b=uHQtd8kO7vhGFuBfV3KAi5ATItGOFdotUqr5IH47SDEnuKOF5WNflR8pONL85IfTZG
+ IauNBknPZkiwIk9+gYWmWtjKdvyUhf7t5NuIpuUe03jaPWu7SFJ7Q0Jas02oQ2CIldUv
+ rugmyVh0lnitsK2Uh4sQiUWCvHKumaiVp+yOX/nyB2qHSFN81nfTK6xMPKVbFI6Xd9da
+ 1lpIlnB4zI9ne0rlcV9SYEYyRR5EpvbiX8s7OuCthSfPCy5CnybmRL03fA8hk3rGt6HV
+ Kw9hzUCQdGXLXaW4oZA7BNgukE9AnlHkAFu7GaJKd61Az63OXoBrUBWJ3R/zBXEY4Iy5
+ 9qUw==
+X-Gm-Message-State: AOJu0YwS6U9IMXP86aGNG5dW3uEJar6aSAQCwQFxEKNEXvEDWXLDK+Ct
+ ND3sn+dP8lq0pLC1vlyxdk9rY2AQP7Q/0T1aETF4ExzdEFSR/A6a8ivFoEIKEGe3EOOWKJRAqgV
+ Y
+X-Gm-Gg: ASbGnctdIkRyg8FtxwL6V2O7N2NAnbe+Ssds5ZMXAFRnpd1XEn8Rd4hT3WbTkxpv9Qa
+ guVmgRRwS+VQkSBRd8lrTS+B+1Cs5ItVi5xukzfcCLs85VAGQ+1GiFLaGKxJzpMx+lIS9TYpsg9
+ fepecLsNQavJR+XL1uTVtjcug/iyptRLym6CB64hsCPMI+a/MRFkx53uyqqEBPpkAdzGkdEUd0c
+ OGUh78qYmPBhbql837wqU/USF4KNFZJHmIxeKQJJRU9gE/3ZpbvLtDMQ0k5pfWlaKnbC5QMV+1x
+ HxNZHzL+XVDl/oLlz6M1NaNqPFtbdSbVLGhzfZyVueqipAHDTQK9IKJjEay4vGn60irIREp8/0b
+ efmUUnM+bf2qW6tN5usZvcZpx
+X-Google-Smtp-Source: AGHT+IGv1hVLSo1FtU1K8nbpF3tdnfp2mS5Q5F4nxhanYeUUPMoudAEgDwXRfuQ6eDdZeAdA6Cp3gw==
+X-Received: by 2002:a05:600c:6b71:b0:43b:baf7:76e4 with SMTP id
+ 5b1f17b1804b1-43ebee73fb1mr89629385e9.1.1743869674377; 
+ Sat, 05 Apr 2025 09:14:34 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec1630de9sm79905905e9.1.2025.04.05.09.14.28
+ 5b1f17b1804b1-43ec1794efesm80953835e9.28.2025.04.05.09.14.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 05 Apr 2025 09:14:28 -0700 (PDT)
+ Sat, 05 Apr 2025 09:14:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Anton Johansson <anjo@rev.ng>
-Subject: [PATCH-for-10.1 v4 14/16] tcg: Convert TCGState::mttcg_enabled to
- TriState
-Date: Sat,  5 Apr 2025 18:13:18 +0200
-Message-ID: <20250405161320.76854-15-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-10.1 v4 15/16] tcg: Factor mttcg_init() out
+Date: Sat,  5 Apr 2025 18:13:19 +0200
+Message-ID: <20250405161320.76854-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250405161320.76854-1-philmd@linaro.org>
 References: <20250405161320.76854-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,138 +98,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the OnOffAuto type as 3-state.
+Keep MTTCG initialization code out of tcg_init_machine().
 
-Since the TCGState instance is zero-initialized, the
-mttcg_enabled is initialzed as AUTO (ON_OFF_AUTO_AUTO).
-
-In tcg_init_machine(), if mttcg_enabled is still AUTO,
-set a default value (effectively inlining the
-default_mttcg_enabled() method content).
-
-In the tcg_get_thread() getter, consider AUTO / OFF states
-as "single", otherwise ON is "multi".
-
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tcg-all.c | 60 ++++++++++++++++++++++-----------------------
- 1 file changed, 29 insertions(+), 31 deletions(-)
+ accel/tcg/tcg-all.c | 50 +++++++++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 22 deletions(-)
 
 diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index b8874430d30..15d4e9232ae 100644
+index 15d4e9232ae..267830658ca 100644
 --- a/accel/tcg/tcg-all.c
 +++ b/accel/tcg/tcg-all.c
-@@ -32,6 +32,7 @@
- #include "qemu/error-report.h"
- #include "qemu/accel.h"
- #include "qemu/atomic.h"
-+#include "qapi/qapi-types-common.h"
- #include "qapi/qapi-builtin-visit.h"
- #include "qemu/units.h"
- #if defined(CONFIG_USER_ONLY)
-@@ -47,7 +48,7 @@
- struct TCGState {
-     AccelState parent_obj;
+@@ -69,29 +69,8 @@ bool qemu_tcg_mttcg_enabled(void)
+     return mttcg_enabled;
+ }
  
--    bool mttcg_enabled;
-+    OnOffAuto mttcg_enabled;
-     bool one_insn_per_tb;
-     int splitwx_enabled;
-     unsigned long tb_size;
-@@ -70,37 +71,10 @@ bool qemu_tcg_mttcg_enabled(void)
- 
- #endif /* !CONFIG_USER_ONLY */
- 
--/*
-- * We default to false if we know other options have been enabled
-- * which are currently incompatible with MTTCG. Otherwise when each
-- * guest (target) has been updated to support:
-- *   - atomic instructions
-- *   - memory ordering primitives (barriers)
-- * they can set the appropriate CONFIG flags in ${target}-softmmu.mak
-- *
-- * Once a guest architecture has been converted to the new primitives
-- * there is one remaining limitation to check:
-- *   - The guest can't be oversized (e.g. 64 bit guest on 32 bit host)
-- */
+-#endif /* !CONFIG_USER_ONLY */
 -
--static bool default_mttcg_enabled(void)
--{
--    if (icount_enabled()) {
--        return false;
--    }
--#ifdef TARGET_SUPPORTS_MTTCG
--    return true;
+-static void tcg_accel_instance_init(Object *obj)
++static void mttcg_init(TCGState *s)
+ {
+-    TCGState *s = TCG_STATE(obj);
+-
+-    /* If debugging enabled, default "auto on", otherwise off. */
+-#if defined(CONFIG_DEBUG_TCG) && !defined(CONFIG_USER_ONLY)
+-    s->splitwx_enabled = -1;
 -#else
--    return false;
+-    s->splitwx_enabled = 0;
 -#endif
 -}
 -
- static void tcg_accel_instance_init(Object *obj)
- {
-     TCGState *s = TCG_STATE(obj);
- 
--    s->mttcg_enabled = default_mttcg_enabled();
+-bool one_insn_per_tb;
 -
-     /* If debugging enabled, default "auto on", otherwise off. */
- #if defined(CONFIG_DEBUG_TCG) && !defined(CONFIG_USER_ONLY)
-     s->splitwx_enabled = -1;
-@@ -118,7 +92,31 @@ static int tcg_init_machine(MachineState *ms)
-     unsigned max_cpus = 1;
+-static int tcg_init_machine(MachineState *ms)
+-{
+-    TCGState *s = TCG_STATE(current_accel());
+-#ifdef CONFIG_USER_ONLY
+-    unsigned max_cpus = 1;
+-#else
+-    unsigned max_cpus = ms->smp.max_cpus;
+ #ifdef TARGET_SUPPORTS_MTTCG
+     bool mttcg_supported = true;
  #else
-     unsigned max_cpus = ms->smp.max_cpus;
-+#ifdef TARGET_SUPPORTS_MTTCG
-+    bool mttcg_supported = true;
-+#else
-+    bool mttcg_supported = false;
-+#endif
- 
-+    if (s->mttcg_enabled == ON_OFF_AUTO_AUTO) {
-+        /*
-+         * We default to false if we know other options have been enabled
-+         * which are currently incompatible with MTTCG. Otherwise when each
-+         * guest (target) has been updated to support:
-+         *   - atomic instructions
-+         *   - memory ordering primitives (barriers)
-+         * they can set the appropriate CONFIG flags in ${target}-softmmu.mak
-+         *
-+         * Once a guest architecture has been converted to the new primitives
-+         * there is one remaining limitation to check:
-+         *   - The guest can't be oversized (e.g. 64 bit guest on 32 bit host)
-+         */
-+        if (icount_enabled()) {
-+            s->mttcg_enabled = ON_OFF_AUTO_OFF;
-+        } else {
-+            s->mttcg_enabled = mttcg_supported;
-+        }
-+    }
-     mttcg_enabled = s->mttcg_enabled;
- #endif
- 
-@@ -147,7 +145,7 @@ static char *tcg_get_thread(Object *obj, Error **errp)
- {
-     TCGState *s = TCG_STATE(obj);
- 
--    return g_strdup(s->mttcg_enabled ? "multi" : "single");
-+    return g_strdup(s->mttcg_enabled == ON_OFF_AUTO_ON ? "multi" : "single");
- }
- 
- static void tcg_set_thread(Object *obj, const char *value, Error **errp)
-@@ -162,10 +160,10 @@ static void tcg_set_thread(Object *obj, const char *value, Error **errp)
-             warn_report("Guest not yet converted to MTTCG - "
-                         "you may get unexpected results");
- #endif
--            s->mttcg_enabled = true;
-+            s->mttcg_enabled = ON_OFF_AUTO_ON;
+@@ -118,6 +97,33 @@ static int tcg_init_machine(MachineState *ms)
          }
-     } else if (strcmp(value, "single") == 0) {
--        s->mttcg_enabled = false;
-+        s->mttcg_enabled = ON_OFF_AUTO_OFF;
-     } else {
-         error_setg(errp, "Invalid 'thread' setting %s", value);
      }
+     mttcg_enabled = s->mttcg_enabled;
++}
++
++#endif /* !CONFIG_USER_ONLY */
++
++static void tcg_accel_instance_init(Object *obj)
++{
++    TCGState *s = TCG_STATE(obj);
++
++    /* If debugging enabled, default "auto on", otherwise off. */
++#if defined(CONFIG_DEBUG_TCG) && !defined(CONFIG_USER_ONLY)
++    s->splitwx_enabled = -1;
++#else
++    s->splitwx_enabled = 0;
++#endif
++}
++
++bool one_insn_per_tb;
++
++static int tcg_init_machine(MachineState *ms)
++{
++    TCGState *s = TCG_STATE(current_accel());
++#ifdef CONFIG_USER_ONLY
++    unsigned max_cpus = 1;
++#else
++    unsigned max_cpus = ms->smp.max_cpus;
++
++    mttcg_init(s);
+ #endif
+ 
+     tcg_allowed = true;
 -- 
 2.47.1
 
