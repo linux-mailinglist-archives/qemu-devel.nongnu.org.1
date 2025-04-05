@@ -2,94 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAF3A7C6C7
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 01:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5063A7C6D6
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Apr 2025 02:12:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u0qu6-00015r-IP; Fri, 04 Apr 2025 19:56:54 -0400
+	id 1u0r7T-0004Fm-Hu; Fri, 04 Apr 2025 20:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0qtt-000134-9P
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 19:56:41 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u0qtr-000053-59
- for qemu-devel@nongnu.org; Fri, 04 Apr 2025 19:56:40 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43cfa7e7f54so16114485e9.1
- for <qemu-devel@nongnu.org>; Fri, 04 Apr 2025 16:56:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1743810997; x=1744415797; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=k0WtysXePaC6MggJt0xgGe2wh6ZQlPxmWahlUJgeA/0=;
- b=zuCvqywiT6A1BD/TJJF6zO+Rsns9Y3NQX7WRwuyrSGHmzzXg7lIaDmcgucKskETS94
- OpClxPgU6VKYH4eWcw+q1CCLVA9DwJb6hYMCLDCGlIcWl6m3Nsno5Mmd3PaoHfvhk+TQ
- 1IKk4RJEEPzmKhJsLxx/lq9zYKZ0k8GFubJNnHjtdxveRhcXY7lirkjAvwjvluVv8i3z
- 6ZvErNzNdEymJ0lQ4W7HcVbaNKgUgcZxTSdHdQLI50qKh6Gkx85A65oQmESAps5gOW9G
- dP+BjfCI7D46RiUdGNA1hcw1U/DzzfVaCBao2FyYnkijJzoS2QWhVQmoyUowq8qJ+45o
- 3Syg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743810997; x=1744415797;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=k0WtysXePaC6MggJt0xgGe2wh6ZQlPxmWahlUJgeA/0=;
- b=IypKPQ+mUOcE6yjW+bZqnCP240iRO0tttmvsVZrP5iW8DYHbhwhyErI7YJDVP8Qxfj
- 7bYS9jVqv8mWu4MkqHlnfDZuTgwgsGjAWMEV6z1WTRh4+Yk0VUnS7XAZKi1iQHUsxG5v
- 98jSCtEwFmA6SZGdkQcWpvnrg5f6Y5b02NhU1xwr8PWcy2TQ5oB46LniKjAIyGb400cE
- K/wMEOLfuW0PKhmdormZG9J28CkHWArgmHeRnsRTz1hFW4hdjOSSkGZi5RXy11iSnA2x
- lWRQOM1sij6ILWD67jUMBQQMpSoOiI8u/mwBHguKVdoVvL2XtTb76Jik0JodQxRGloko
- qYBg==
-X-Gm-Message-State: AOJu0Yz0C8X+x0zZ7PgNWvdWknMgShKt0IgW5bnQV9EM10ezlu+eISLl
- tAXQwjZqT0/NGuBBnWHDbPHjmDJ4LRBcpIokGWm2E0akoesl9oWuT2zOmOLsYZnOJ4aZI29h2nC
- G
-X-Gm-Gg: ASbGnctQwgPew19qOmMHa3j158tLYYm/2RKAb7pACbnE42k469eZVuwmcceXqBMr/Gf
- c2JXtyYVN5NuAjcbIhMUQ8QuRUdJ5v3Vu5K+a3uNlO34b7b8Z2lINDz0lnAu24ciZT8MDAz3JDW
- bNJwmH0Y8gZCORpHyG3ROL46Argxd/EuzwbCbrTqgyUgKpck6rnOHQsMun+aqj/DFrEO+Bo+tQ3
- 0VXkZKNQ7EP5Fn+3TjW2QwJnBl2Pjee5o+dSACVtzzLO6/3xaiS3cIB0wE1OYhvHN0FGY+4Y+2X
- 9CZY0tOWjD+/hrTJ34JcX2xiR//qB0c3Xe+ifUgmx0kJ27PW9Z948wQ4EWRrjqSix2O28yanABn
- kPSYkqslX48t+rYxxOUKIc4xm
-X-Google-Smtp-Source: AGHT+IEQGpuTMEFKSsAIp1EsmUrYxD+gxpKGfrEbyXwuMH6QSnLQ7Ghu6hStdtzGKVYOjv35fluXjg==
-X-Received: by 2002:a05:600c:1827:b0:43d:174:2668 with SMTP id
- 5b1f17b1804b1-43ebeda3c57mr60554575e9.0.1743810996925; 
- Fri, 04 Apr 2025 16:56:36 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec1630ddesm61448235e9.5.2025.04.04.16.56.35
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Apr 2025 16:56:36 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>, qemu-s390x@nongnu.org,
- Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>, Paolo Bonzini <pbonzini@redhat.com>,
- Riku Voipio <riku.voipio@iki.fi>, Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-10.1 2/2] tcg: Convert TARGET_HAS_PRECISE_SMC to
- TCGCPUOps::has_precise_smc field
-Date: Sat,  5 Apr 2025 01:56:24 +0200
-Message-ID: <20250404235624.67816-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250404235624.67816-1-philmd@linaro.org>
-References: <20250404235624.67816-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u0r6z-0004E3-TE; Fri, 04 Apr 2025 20:10:19 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u0r6t-0001cJ-WE; Fri, 04 Apr 2025 20:10:13 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 5170E4E6010;
+ Sat, 05 Apr 2025 02:09:59 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id vTsKuTI0HdaY; Sat,  5 Apr 2025 02:09:57 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 3EF044E6004; Sat, 05 Apr 2025 02:09:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 3AF3374577D;
+ Sat, 05 Apr 2025 02:09:57 +0200 (CEST)
+Date: Sat, 5 Apr 2025 02:09:57 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: Re: [PATCH v2] ppc/vof: Make nextprop behave more like Open Firmware
+In-Reply-To: <d8d883c3-afcd-44bd-aa71-6ca23d1dd9c3@app.fastmail.com>
+Message-ID: <e12b9999-d51a-91ec-a778-e1bdfec2404b@eik.bme.hu>
+References: <20250331142627.BAA2F4E6029@zero.eik.bme.hu>
+ <d8d883c3-afcd-44bd-aa71-6ca23d1dd9c3@app.fastmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,146 +65,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of having a compile-time TARGET_HAS_PRECISE_SMC definition,
-have targets set the 'has_precise_smc' field in the TCGCPUOps
-structure.
+On Fri, 4 Apr 2025, Alexey Kardashevskiy wrote:
+> On Tue, 1 Apr 2025, at 01:26, BALATON Zoltan wrote:
+>> The FDT does not normally store name properties but reconstructs it
+>> from path but each node in Open Firmware should at least have this
+>> property. This is correctly handled in getprop but nextprop should
+>> also return it even if not present as a property. This patch fixes
+>> that and also skips phandle which does not appear in Open Firmware
+>> and only added for internal use by VOF.
+>>
+>> Explicit name properties are still allowed because they are needed
+>> e.g. on the root node that guests expect to have specific names as
+>> seen on real machines instead of being empty so sometimes the node
+>> name may need to be overriden.
+>>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>> I've tested this with pegasos2 but don't know how to test spapr.
+>> v2:
+>> Fixed a typo in commit message
+>> Simplified loop to get next property name
+>>
+>> hw/ppc/vof.c | 51 ++++++++++++++++++++++++++++++++++-----------------
+>> 1 file changed, 34 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
+>> index 09cb77de93..790d67c096 100644
+>> --- a/hw/ppc/vof.c
+>> +++ b/hw/ppc/vof.c
+>> @@ -353,34 +353,51 @@ static uint32_t vof_nextprop(const void *fdt, uint32_t phandle,
+>> {
+>>      int offset, nodeoff = fdt_node_offset_by_phandle(fdt, phandle);
+>>      char prev[OF_PROPNAME_LEN_MAX + 1];
+>> -    const char *tmp;
+>> +    const char *tmp = NULL;
+>> +    bool match = false;
+>>
+>>      if (readstr(prevaddr, prev, sizeof(prev))) {
+>>          return PROM_ERROR;
+>>      }
+>> -
+>> -    fdt_for_each_property_offset(offset, fdt, nodeoff) {
+>> -        if (!fdt_getprop_by_offset(fdt, offset, &tmp, NULL)) {
+>> -            return 0;
+>> +    /*
+>> +     * "name" may or may not be present in fdt but we should still return it.
+>
+> yeah we should, at least, to match "getprop". I also wonder if VOF does 
+> not add "name", then what would do so, do we really expect to see such 
+> properties anywhere? Because if not, then we do not need to skip it as 
+> we won't find it.
 
-Since so far we only emulate one target architecture at a time,
-add a static 'tcg_target_has_precise_smc' variable, initialized
-just after calling TCGCPUOps::initialize() in tcg_exec_realizefn().
+I have to add it to fdt where needed. For example on pegasos MorphOS 
+checks the name of "/" and expects to find bplan,Pegasos2 which is how it 
+identifies the machine. So we need a specific name property there which is 
+one example when there will be explicit name property in the fdt. Maybe 
+it's needed on some other nodes sometimes but normally the default will be 
+sufficient but not always.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/accel/tcg/cpu-ops.h |  8 ++++++++
- include/exec/poison.h       |  1 -
- target/i386/cpu.h           |  4 ----
- target/s390x/cpu.h          |  2 --
- accel/tcg/cpu-exec.c        | 13 ++++++-------
- target/i386/tcg/tcg-cpu.c   |  1 +
- target/s390x/cpu.c          |  1 +
- 7 files changed, 16 insertions(+), 14 deletions(-)
+>> +     * Do that first and then skip it if seen later. Also skip phandle which is
+>
+> (a nit) appears to me that if handling of a missing "name" was done 
+> after the last property, the patch would look simpler, but not sure and 
+> do not insist.
 
-diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
-index 0e4352513d1..a76cfe49df8 100644
---- a/include/accel/tcg/cpu-ops.h
-+++ b/include/accel/tcg/cpu-ops.h
-@@ -28,6 +28,14 @@ struct TCGCPUOps {
-      */
-     bool mttcg_supported;
- 
-+    /**
-+     * has_precise_smc: guest CPU has precise-SMC semantics
-+     *
-+     * Guest support for precise self modifying code even if the
-+     * modified instruction is close to the modifying instruction.
-+     */
-+    bool has_precise_smc;
-+
-     /**
-      * @guest_default_memory_order: default barrier that is required
-      *                              for the guest memory ordering.
-diff --git a/include/exec/poison.h b/include/exec/poison.h
-index 413dfd16f24..011aa2378d7 100644
---- a/include/exec/poison.h
-+++ b/include/exec/poison.h
-@@ -36,7 +36,6 @@
- #pragma GCC poison TARGET_HAS_BFLT
- #pragma GCC poison TARGET_NAME
- #pragma GCC poison TARGET_BIG_ENDIAN
--#pragma GCC poison TARGET_HAS_PRECISE_SMC
- 
- #pragma GCC poison TARGET_LONG_BITS
- #pragma GCC poison TARGET_FMT_lx
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 16d76df34b2..5a2e4a8103f 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -35,10 +35,6 @@
- 
- #define XEN_NR_VIRQS 24
- 
--/* support for self modifying code even if the modified instruction is
--   close to the modifying instruction */
--#define TARGET_HAS_PRECISE_SMC
--
- #ifdef TARGET_X86_64
- #define I386_ELF_MACHINE  EM_X86_64
- #define ELF_MACHINE_UNAME "x86_64"
-diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
-index 90f64ee20cc..ee59039879b 100644
---- a/target/s390x/cpu.h
-+++ b/target/s390x/cpu.h
-@@ -35,8 +35,6 @@
- 
- #define ELF_MACHINE_UNAME "S390X"
- 
--#define TARGET_HAS_PRECISE_SMC
--
- #define MMU_USER_IDX 0
- 
- #define S390_MAX_CPUS 248
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index cfe3b93e1e3..d410a4780b3 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -1065,19 +1065,17 @@ int cpu_exec(CPUState *cpu)
-     return ret;
- }
- 
-+static bool tcg_target_initialized;
-+static bool tcg_target_has_precise_smc;
-+
- bool target_has_precise_smc(void)
- {
--#ifdef TARGET_HAS_PRECISE_SMC
--    return true;
--#else
--    return false;
--#endif
-+    assert(tcg_target_initialized);
-+    return tcg_target_has_precise_smc;
- }
- 
- bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
- {
--    static bool tcg_target_initialized;
--
-     if (!tcg_target_initialized) {
-         /* Check mandatory TCGCPUOps handlers */
-         const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-@@ -1088,6 +1086,7 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
-         assert(tcg_ops->translate_code);
-         assert(tcg_ops->mmu_index);
-         tcg_ops->initialize();
-+        tcg_target_has_precise_smc = tcg_ops->has_precise_smc;
-         tcg_target_initialized = true;
-     }
- 
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index a0258f4739e..2254fc2d739 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -130,6 +130,7 @@ static const TCGCPUOps x86_tcg_ops = {
-      * The x86 has a strong memory model with some store-after-load re-ordering
-      */
-     .guest_default_memory_order = TCG_MO_ALL & ~TCG_MO_ST_LD,
-+    .has_precise_smc = true,
-     .initialize = tcg_x86_init,
-     .translate_code = x86_translate_code,
-     .synchronize_from_tb = x86_cpu_synchronize_from_tb,
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 41cccc1e692..845b2515aeb 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -351,6 +351,7 @@ static const TCGCPUOps s390_tcg_ops = {
-      * store-after-load re-ordering.
-      */
-     .guest_default_memory_order = TCG_MO_ALL & ~TCG_MO_ST_LD,
-+    .has_precise_smc = true,
- 
-     .initialize = s390x_translate_init,
-     .translate_code = s390x_translate_code,
--- 
-2.47.1
+I put name first to match what OpenFirmware does which returns name first. 
+SLOF seems to do everything backwards (maybe a result of parsing the fdt 
+to build the device tree) and returns properties with inverted order so 
+name is last on SLOF but even then the order is matched by putting name 
+first when we return properties in the normal order otherwise it would not 
+be in same order when reversed. I don't know if it's significant, some 
+guests may expect to get a name first but most would probably look for the 
+name not its position. The order now matches OpenFirmware and pegasos2 
+SmartFirmware and SLOF backwards so I think name is now where it should be 
+so I'd leave it first. The loop may become simpler if we don't skip 
+phandle only name, the complexity is mostly from sometimes we need to skip 
+both in a row.
 
+>> +     * an internal value we added in vof_build_dt but should not appear here.
+>
+> I would not hide anything though, unless it breaks something. Thanks,
+
+I did some tests with SLOF. This is what I get from SLOF:
+
+package 0x1e64a890 /vdevice/v-scsi@71000003:
+         slof,from-fdt          0
+         reg                    71000003
+         device_type            "vscsi"
+         compatible             "IBM,v-scsi"
+         interrupts             [0x8 bytes, 2 cells]
+         [000] 00001103 00000000
+         ibm,#dma-address-cells 2
+         ibm,#dma-size-cells    2
+         ibm,my-dma-window      "q"
+         #address-cells         2
+         #size-cells            0
+         name                   "v-scsi"
+
+This is VOF before patch:
+
+package 0x00001122 /vdevice/v-scsi@71000003:
+         phandle                1122
+         #size-cells            0
+         #address-cells         2
+         ibm,my-dma-window      "q"
+         ibm,#dma-size-cells    2
+         ibm,#dma-address-cells 2
+         interrupts             [0x8 bytes, 2 cells]
+         [000] 00001103 00000000
+         compatible             "IBM,v-scsi"
+         device_type            "vscsi"
+         reg                    71000003
+
+and this is VOF after patch:
+
+package 0x00001122 /vdevice/v-scsi@71000003:
+         name                   "v-scsi"
+         #size-cells            0
+         #address-cells         2
+         ibm,my-dma-window      "q"
+         ibm,#dma-size-cells    2
+         ibm,#dma-address-cells 2
+         interrupts             [0x8 bytes, 2 cells]
+         [000] 00001103 00000000
+         compatible             "IBM,v-scsi"
+         device_type            "vscsi"
+         reg                    71000003
+
+Apart from SLOF returning properties backwards this now matches better. 
+SLOF or other Open Firmware implementations don't return phandle property 
+because that's what you pass to nextprop or getprop to get the property in 
+the first place (listed next to package above) and it is returned by 
+finddevice so not normally stored as a property. But if Linux would add it 
+and it helps Linux to have it there already we can keep it, it did not 
+break OSes on pegasos as they only parse properties they need and ignore 
+the rest. So I can skip skipping phandle and add that back if it would be 
+better for Linux but didn't removing it fixed a warning about it too?
+
+By the way, phandle is identifying the node so can't we use the fdt offset 
+for it so we don't have to add phandle properties? Or does offset change 
+when editing the fdt? I think libfdt also uses offsets to identify nodes 
+so maybe these should be somewhat stable.
+
+Regards,
+BALATON Zoltan
 
