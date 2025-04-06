@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB90A7CCEC
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Apr 2025 09:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EABFFA7CCF1
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Apr 2025 09:05:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1K2d-0002uz-HF; Sun, 06 Apr 2025 03:03:41 -0400
+	id 1u1K2d-0002v0-UG; Sun, 06 Apr 2025 03:03:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u1K2E-0002sN-WF
- for qemu-devel@nongnu.org; Sun, 06 Apr 2025 03:03:18 -0400
+ id 1u1K2K-0002st-GD
+ for qemu-devel@nongnu.org; Sun, 06 Apr 2025 03:03:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u1K2D-0001zK-1W
- for qemu-devel@nongnu.org; Sun, 06 Apr 2025 03:03:14 -0400
+ id 1u1K2H-0001zj-GO
+ for qemu-devel@nongnu.org; Sun, 06 Apr 2025 03:03:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1743922991;
+ s=mimecast20190719; t=1743922996;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iJ+3CUSclvxCiVeh/C6Z4WSuIxHYnFjeMxlkCKfRggY=;
- b=I6cWHutTF153ul2clTbu2HgUb9eFGpvUEZSDLFxXG6Rc539yror4qZ7i2EMNMnJeUbcAPr
- fvrN5SGrOQQZiWE4rFwdaF9skht/lur0MbOhbhZ7ZBETN8vjePJtZsoo3efJHsoJnAFbMe
- kjfqbuBfZX5fHW0WnPjwShcwkCzR6Is=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+WdTxFjUbX62A8mRZlfK7g0Egk03LYO9MpT2gfO3yCY=;
+ b=fnha1tnsEoGnOxMrxIfD9MDAINIpPJw2XEK2T1KbYELs1dis0jZFSAZQcvmlQuctG1PsIb
+ xoM9kPGthGSUf16VXxdM0xuw0tZRa/khB4wpi49hbxU6aLL8xbzn4MELxcfQeWlcoK1ev7
+ YkscSwv408/zsC8PXhjXjN2G1eXApt8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-3gODA7ttM5urSZf5a15YKA-1; Sun, 06 Apr 2025 03:03:10 -0400
-X-MC-Unique: 3gODA7ttM5urSZf5a15YKA-1
-X-Mimecast-MFC-AGG-ID: 3gODA7ttM5urSZf5a15YKA_1743922989
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-391315098b2so1362031f8f.2
- for <qemu-devel@nongnu.org>; Sun, 06 Apr 2025 00:03:10 -0700 (PDT)
+ us-mta-166-uxaJ0J5RPVSatU4HDQSXhA-1; Sun, 06 Apr 2025 03:03:14 -0400
+X-MC-Unique: uxaJ0J5RPVSatU4HDQSXhA-1
+X-Mimecast-MFC-AGG-ID: uxaJ0J5RPVSatU4HDQSXhA_1743922993
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-39c1b1c0969so2828584f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 06 Apr 2025 00:03:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1743922988; x=1744527788;
+ d=1e100.net; s=20230601; t=1743922992; x=1744527792;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iJ+3CUSclvxCiVeh/C6Z4WSuIxHYnFjeMxlkCKfRggY=;
- b=vhirvyJimuBB/E2cUy4KVMlJ85yUfG2qSj85+pNQjTPMJdr4J34EN4hyF42Z0pQzy+
- pwa5aE9M+AJi0Sh8gjz3TIv1+pr+XWdzafpuV2+cvkw1/NLvOXDNlkr+c4NBKBWF76gN
- VAZmIqIYy9m4WlqYweEGB/UO5GLXyLp4hFiRxk2vSTcaBeNzFe1XGH1mvxhTpTIulXOl
- kwriK3SOJaKrsLFWRBIECGKn19fPM+ftHTM/LWrQ1OovfdrzA9HyrNUCuZ7tcnG7J+cr
- Hjl4XiZUh49vEqpgBRxhgcl8fcw5vMNBmsrgm4JCS8SlURUTuXl3MnFEFWmRfQLifZnO
- u68A==
-X-Gm-Message-State: AOJu0YzQ5fxBhQbMZEvRTVs5uRXwX4wU9T3fMOLON/j6EnvA1SBwPbNw
- 41Tc1PpKT72QXZx/3oGqQL3VWBFqZHxoHnf1iaWwZn5wDk0zg+L/Wvfg1ZCchUAkqV757+qHWOJ
- S7JIP7W/So3XYW6yu1/FoDMBImn3j5Utzz/7Q7P+0F/6Y/eiO+WFw6VNriCd5ghGHdF65P4seUu
- CnyFD0x+g18g6/yFOBmi0B/5prL8qsbWaknxN1
-X-Gm-Gg: ASbGncv+2pehvFh6QbKJ37FpnyO+sQg2CNnB+ergmaZsuHcYbQDD7c2UhFcDkkpQz66
- ZlNti6aW2aCrhpq66iVFMUTQWkPVTzK9OIQbhwkbO10LA1H5Kapi0eSXmVRMKUtB7l6MGWIMoMp
- c/FJbE2e5AAClf4Ygc839gEEU0+PkS9c9f57KtxP/hpdUrXA6pEtgacRp1IFpAMG4nUNMVyRiJ9
- kT99Zdm//1DtwkwEwiRnv1mwKLAHR45cOqQR3zvWIZ2Sw2s5tfBGnJqAcQMaxn7aOE6XXgkKuF3
- ZGDDXm8wSEonVIlZJQ==
-X-Received: by 2002:a05:6000:188f:b0:39c:12ce:67e with SMTP id
- ffacd0b85a97d-39cba934e24mr6781562f8f.41.1743922988510; 
- Sun, 06 Apr 2025 00:03:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkQdslpZrml3g9ZfvlPaB/rod8nudcvGZ3L293qK1xQqW4uT1sO8M5QGl+g48vndhrDT+82Q==
-X-Received: by 2002:a05:6000:188f:b0:39c:12ce:67e with SMTP id
- ffacd0b85a97d-39cba934e24mr6781533f8f.41.1743922988014; 
- Sun, 06 Apr 2025 00:03:08 -0700 (PDT)
+ bh=+WdTxFjUbX62A8mRZlfK7g0Egk03LYO9MpT2gfO3yCY=;
+ b=e8SzFcWdUu38a6Buex2XtWaWvqY768hBhiOot/FeiJViLYZRmbj5gDCg/FXvWavBeV
+ OMaHWtJBiOG3UlMyj/F01ytpM0L0ccsaEEnXQAJAdqmD0DPTbQdhjsELSkIzno5x04NQ
+ WAzBaEp3i15DXsdFISrWKYUXcA7LBhMoU7A2L3Ryb/SI29Yqm7I0fLIFhEiCqUW/BkZh
+ 1nGQmLq7pfNymoAwEY6gIUYGLUQLLG1nF8D91OcRragfOtfuZ0erKqfsxBcq6oX4DJ66
+ Tdnq/Za34cY3aRxi5Han7HRDkucVpeWjJMC+aNEED91O9D+FFiXuwF1pg9C+tmLmgY/y
+ qE5Q==
+X-Gm-Message-State: AOJu0YyCRAvEv8xIE0AAlWRX4mtGoWvHZ7orudUVnO2jFQp/1JDEFC8m
+ Jm/kGysCn2mS3e0dfga4ZzBkHuBFBl/wn0XlYnxLZlrFewwmbpuEpeoRAbr/hQ1i7uM4x33xUcU
+ gb1ZerdVYTC104PYXigSOfczt3kVr630NKThdC6vKuTy7WQrFVtj9dbLq6UDQ0NyJENhYCrykZf
+ zuV8wM72RV2xB9nsCNT2SDYTWTQ89T5wCGQ9rm
+X-Gm-Gg: ASbGncs6LIFzWbnfaGcjNDY6mF8AYgAPhgFD6Q/Fv6JIeZilIIrNhNrKqGTsY6TenDP
+ hNO7ZUHt+FS32qU56o72LfY4A1jwBfrFWKu+GcjzJOPCW60Tr/rWNowjJV3MO3aWgv1OZ9c4kO/
+ gbf6vgFMIAt0/rnUWf+++DpTsXe9xEmn5fkeanLSgTx82DS4S0MLmzDq8OYh3PWuQwEn/RuLBdO
+ cxIE0dShB6OVEZPTBkUTg6OoMqXr6hNJzalJ3ZepppMPUv8bh85uy0v30jstu7B2XOTxmsKUBbb
+ +ZrS8EeE+6J/qvk4EQ==
+X-Received: by 2002:a05:6000:2410:b0:391:2e7:67ff with SMTP id
+ ffacd0b85a97d-39cb36b2972mr7396311f8f.10.1743922991762; 
+ Sun, 06 Apr 2025 00:03:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEXXt37PYg0YTuKjU25RAS0cAEd2Qurb1huHyZsg0uFVnQRoaO9PXN1oLdl024c2ug6Bu8DaQ==
+X-Received: by 2002:a05:6000:2410:b0:391:2e7:67ff with SMTP id
+ ffacd0b85a97d-39cb36b2972mr7396283f8f.10.1743922991327; 
+ Sun, 06 Apr 2025 00:03:11 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.96.77])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c3020d9cfsm8651683f8f.78.2025.04.06.00.03.06
+ ffacd0b85a97d-39c3020d98bsm8685703f8f.76.2025.04.06.00.03.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 06 Apr 2025 00:03:06 -0700 (PDT)
+ Sun, 06 Apr 2025 00:03:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com,
 	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 04/27] target/riscv: update max_satp_mode based on QOM
- properties
-Date: Sun,  6 Apr 2025 09:02:31 +0200
-Message-ID: <20250406070254.274797-5-pbonzini@redhat.com>
+Subject: [PATCH 05/27] target/riscv: remove supported from RISCVSATPMap
+Date: Sun,  6 Apr 2025 09:02:32 +0200
+Message-ID: <20250406070254.274797-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250406070254.274797-1-pbonzini@redhat.com>
 References: <20250406070254.274797-1-pbonzini@redhat.com>
@@ -108,201 +107,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Almost all users of cpu->cfg.satp_mode care about the "max" value
-satp_mode_max_from_map(cpu->cfg.satp_mode.map).  Convert the QOM
-properties back into it.  For TCG, deduce the bitmap of supported modes
-from valid_vm[].
+"supported" can be computed on the fly based on the max_satp_mode.
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/riscv/cpu.h         |  1 -
- hw/riscv/virt-acpi-build.c | 14 +++++---------
- hw/riscv/virt.c            |  5 ++---
- target/riscv/cpu.c         | 27 ++++++++++-----------------
- target/riscv/csr.c         |  9 +++++++--
- 5 files changed, 24 insertions(+), 32 deletions(-)
+ target/riscv/cpu_cfg.h |  4 +---
+ target/riscv/cpu.c     | 34 ++++++++++++++++++++++++----------
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 51e49e03dec..e9c46120215 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -937,7 +937,6 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
- target_ulong riscv_new_csr_seed(target_ulong new_value,
-                                 target_ulong write_mask);
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 1678a16accb..4a6f0d76522 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -29,11 +29,9 @@
+  *
+  * init is a 16-bit bitmap used to make sure the user selected a correct
+  * configuration as per the specification.
+- *
+- * supported is a 16-bit bitmap used to reflect the hw capabilities.
+  */
+ typedef struct {
+-    uint16_t map, init, supported;
++    uint16_t map, init;
+ } RISCVSATPMap;
  
--uint8_t satp_mode_max_from_map(uint32_t map);
- const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
- 
- /* Implemented in th_csr.c */
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 2b374ebacbf..1a92a84207d 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -261,7 +261,6 @@ static void build_rhct(GArray *table_data,
-     uint32_t isa_offset, num_rhct_nodes, cmo_offset = 0;
-     RISCVCPU *cpu = &s->soc[0].harts[0];
-     uint32_t mmu_offset = 0;
--    uint8_t satp_mode_max;
-     bool rv32 = riscv_cpu_is_32bit(cpu);
-     g_autofree char *isa = NULL;
- 
-@@ -282,8 +281,7 @@ static void build_rhct(GArray *table_data,
-         num_rhct_nodes++;
-     }
- 
--    if (!rv32 && cpu->cfg.satp_mode.supported != 0 &&
--        (cpu->cfg.satp_mode.map & ~(1 << VM_1_10_MBARE))) {
-+    if (!rv32 && cpu->cfg.max_satp_mode >= VM_1_10_SV39) {
-         num_rhct_nodes++;
-     }
- 
-@@ -343,20 +341,18 @@ static void build_rhct(GArray *table_data,
-     }
- 
-     /* MMU node structure */
--    if (!rv32 && cpu->cfg.satp_mode.supported != 0 &&
--        (cpu->cfg.satp_mode.map & ~(1 << VM_1_10_MBARE))) {
--        satp_mode_max = satp_mode_max_from_map(cpu->cfg.satp_mode.map);
-+    if (!rv32 && cpu->cfg.max_satp_mode >= VM_1_10_SV39) {
-         mmu_offset = table_data->len - table.table_offset;
-         build_append_int_noprefix(table_data, 2, 2);    /* Type */
-         build_append_int_noprefix(table_data, 8, 2);    /* Length */
-         build_append_int_noprefix(table_data, 0x1, 2);  /* Revision */
-         build_append_int_noprefix(table_data, 0, 1);    /* Reserved */
-         /* MMU Type */
--        if (satp_mode_max == VM_1_10_SV57) {
-+        if (cpu->cfg.max_satp_mode == VM_1_10_SV57) {
-             build_append_int_noprefix(table_data, 2, 1);    /* Sv57 */
--        } else if (satp_mode_max == VM_1_10_SV48) {
-+        } else if (cpu->cfg.max_satp_mode == VM_1_10_SV48) {
-             build_append_int_noprefix(table_data, 1, 1);    /* Sv48 */
--        } else if (satp_mode_max == VM_1_10_SV39) {
-+        } else if (cpu->cfg.max_satp_mode == VM_1_10_SV39) {
-             build_append_int_noprefix(table_data, 0, 1);    /* Sv39 */
-         } else {
-             g_assert_not_reached();
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index e517002fdfc..e643a635b72 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -237,10 +237,10 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
-     uint32_t cpu_phandle;
-     MachineState *ms = MACHINE(s);
-     bool is_32_bit = riscv_is_32bit(&s->soc[0]);
--    uint8_t satp_mode_max;
- 
-     for (cpu = s->soc[socket].num_harts - 1; cpu >= 0; cpu--) {
-         RISCVCPU *cpu_ptr = &s->soc[socket].harts[cpu];
-+        int8_t satp_mode_max = cpu_ptr->cfg.max_satp_mode;
-         g_autofree char *cpu_name = NULL;
-         g_autofree char *core_name = NULL;
-         g_autofree char *intc_name = NULL;
-@@ -252,8 +252,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
-             s->soc[socket].hartid_base + cpu);
-         qemu_fdt_add_subnode(ms->fdt, cpu_name);
- 
--        if (cpu_ptr->cfg.satp_mode.supported != 0) {
--            satp_mode_max = satp_mode_max_from_map(cpu_ptr->cfg.satp_mode.map);
-+        if (satp_mode_max != -1) {
-             sv_name = g_strdup_printf("riscv,%s",
-                                       satp_mode_str(satp_mode_max, is_32_bit));
-             qemu_fdt_setprop_string(ms->fdt, cpu_name, "mmu-type", sv_name);
+ struct RISCVCPUConfig {
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 4dcab156948..edb2509345d 100644
+index edb2509345d..7df3e8b7cd5 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -390,7 +390,7 @@ static uint8_t satp_mode_from_str(const char *satp_mode_str)
-     g_assert_not_reached();
- }
+@@ -440,14 +440,27 @@ static void set_satp_mode_max_supported(RISCVCPU *cpu,
+     bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
+     const bool *valid_vm = rv32 ? valid_vm_1_10_32 : valid_vm_1_10_64;
  
--uint8_t satp_mode_max_from_map(uint32_t map)
-+static uint8_t satp_mode_max_from_map(uint32_t map)
- {
-     /*
-      * 'map = 0' will make us return (31 - 32), which C will
-@@ -456,15 +456,13 @@ static void set_satp_mode_default_map(RISCVCPU *cpu)
-     /*
-      * Bare CPUs do not default to the max available.
-      * Users must set a valid satp_mode in the command
--     * line.
-+     * line.  Otherwise, leave the existing max_satp_mode
-+     * in place.
-      */
-     if (object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_BARE_CPU) != NULL) {
-         warn_report("No satp mode set. Defaulting to 'bare'");
--        cpu->cfg.satp_mode.map = (1 << VM_1_10_MBARE);
--        return;
-+        cpu->cfg.max_satp_mode = VM_1_10_MBARE;
+-    for (int i = 0; i <= satp_mode; ++i) {
+-        if (valid_vm[i]) {
+-            cpu->cfg.satp_mode.supported |= (1 << i);
+-        }
++    assert(valid_vm[satp_mode]);
++    cpu->cfg.max_satp_mode = satp_mode;
++}
++
++static bool get_satp_mode_supported(RISCVCPU *cpu, uint16_t *supported)
++{
++    bool rv32 = riscv_cpu_is_32bit(cpu);
++    const bool *valid_vm = rv32 ? valid_vm_1_10_32 : valid_vm_1_10_64;
++    int satp_mode = cpu->cfg.max_satp_mode;
++
++    if (satp_mode == -1) {
++        return false;
      }
--
--    cpu->cfg.satp_mode.map = cpu->cfg.satp_mode.supported;
- }
- #endif
  
-@@ -1183,8 +1181,8 @@ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
+-    assert(cpu->cfg.satp_mode.supported & (1 << satp_mode));
+-    cpu->cfg.max_satp_mode = satp_mode;
++    *supported = 0;
++    for (int i = 0; i <= satp_mode; ++i) {
++        if (valid_vm[i]) {
++            *supported |= (1 << i);
++        }
++    }
++    return true;
+ }
+ 
+ /* Set the satp mode to the max supported */
+@@ -1179,9 +1192,10 @@ static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
+ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
+ {
      bool rv32 = riscv_cpu_is_32bit(cpu);
++    uint16_t supported;
      uint8_t satp_mode_map_max;
  
--    /* The CPU wants the OS to decide which satp mode to use */
--    if (cpu->cfg.satp_mode.supported == 0) {
-+    if (cpu->cfg.max_satp_mode == -1) {
-+        /* The CPU wants the hypervisor to decide which satp mode to allow */
+-    if (cpu->cfg.max_satp_mode == -1) {
++    if (!get_satp_mode_supported(cpu, &supported)) {
+         /* The CPU wants the hypervisor to decide which satp mode to allow */
          return;
      }
- 
-@@ -1203,14 +1201,14 @@ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
-                     (cpu->cfg.satp_mode.supported & (1 << i))) {
+@@ -1198,9 +1212,9 @@ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
+              */
+             for (int i = 1; i < 16; ++i) {
+                 if ((cpu->cfg.satp_mode.init & (1 << i)) &&
+-                    (cpu->cfg.satp_mode.supported & (1 << i))) {
++                    supported & (1 << i)) {
                      for (int j = i - 1; j >= 0; --j) {
-                         if (cpu->cfg.satp_mode.supported & (1 << j)) {
--                            cpu->cfg.satp_mode.map |= (1 << j);
--                            break;
-+                            cpu->cfg.max_satp_mode = j;
-+                            return;
+-                        if (cpu->cfg.satp_mode.supported & (1 << j)) {
++                        if (supported & (1 << j)) {
+                             cpu->cfg.max_satp_mode = j;
+                             return;
                          }
-                     }
--                    break;
-                 }
-             }
-         }
-+        return;
-     }
- 
-     satp_mode_map_max = satp_mode_max_from_map(cpu->cfg.satp_mode.map);
-@@ -1240,12 +1238,7 @@ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
-         }
-     }
- 
--    /* Finally expand the map so that all valid modes are set */
--    for (int i = satp_mode_map_max - 1; i >= 0; --i) {
--        if (cpu->cfg.satp_mode.supported & (1 << i)) {
--            cpu->cfg.satp_mode.map |= (1 << i);
--        }
--    }
-+    cpu->cfg.max_satp_mode = satp_mode_map_max;
- }
- #endif
- 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 79481883565..60de716a2a5 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1906,8 +1906,13 @@ static RISCVException read_mstatus(CPURISCVState *env, int csrno,
- 
- static bool validate_vm(CPURISCVState *env, target_ulong vm)
- {
--    uint64_t mode_supported = riscv_cpu_cfg(env)->satp_mode.map;
--    return get_field(mode_supported, (1 << vm));
-+    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32;
-+    RISCVCPU *cpu = env_archcpu(env);
-+    int satp_mode_supported_max = cpu->cfg.max_satp_mode;
-+    const bool *valid_vm = rv32 ? valid_vm_1_10_32 : valid_vm_1_10_64;
-+
-+    assert(satp_mode_supported_max >= 0);
-+    return vm <= satp_mode_supported_max && valid_vm[vm];
- }
- 
- static target_ulong legalize_xatp(CPURISCVState *env, target_ulong old_xatp,
+@@ -1229,7 +1243,7 @@ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
+         for (int i = satp_mode_map_max - 1; i >= 0; --i) {
+             if (!(cpu->cfg.satp_mode.map & (1 << i)) &&
+                 (cpu->cfg.satp_mode.init & (1 << i)) &&
+-                (cpu->cfg.satp_mode.supported & (1 << i))) {
++                (supported & (1 << i))) {
+                 error_setg(errp, "cannot disable %s satp mode if %s "
+                            "is enabled", satp_mode_str(i, false),
+                            satp_mode_str(satp_mode_map_max, false));
 -- 
 2.49.0
 
