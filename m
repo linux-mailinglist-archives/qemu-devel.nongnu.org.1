@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C540A7DCFA
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 14:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C750FA7DE4D
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 14:54:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1l9B-0008JZ-1M; Mon, 07 Apr 2025 08:00:13 -0400
+	id 1u1lxy-0004wq-Lz; Mon, 07 Apr 2025 08:52:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u1l8r-0008FG-PE
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 07:59:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u1l8k-000535-KF
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 07:59:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744027184;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=53B/pAI1UlaqgYVe8Myo4QsI1lsBFxDhgn1Uj+Wy18g=;
- b=OB8ZUI1Rq3197nUgApN/rbjM1gf3OPBSUcJR33bzKQBuAWZEk2t8I3O4om8dcXDZ/y1AAq
- Zsha4FdwNHFpXyCIyJt0RIYCc5Ew4vV1imFbumtGdWdLucFbd3ejwzfLEBe96MhJABZxzY
- a9H0PLwriRjxm5HlXBBOLpy+PFnERIE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-2cK4AwSJPu2IT9zBOSRuvQ-1; Mon,
- 07 Apr 2025 07:59:40 -0400
-X-MC-Unique: 2cK4AwSJPu2IT9zBOSRuvQ-1
-X-Mimecast-MFC-AGG-ID: 2cK4AwSJPu2IT9zBOSRuvQ_1744027179
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A77FE1956050; Mon,  7 Apr 2025 11:59:39 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4E42F1828AA4; Mon,  7 Apr 2025 11:59:38 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B35F921E675E; Mon, 07 Apr 2025 13:59:35 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9?=
- <berrange@redhat.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Francesco
- Lavra <francescolavra.fl@gmail.com>,  Marcelo Tosatti
- <mtosatti@redhat.com>,  qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathie?=
- =?utf-8?Q?u-Daud=C3=A9?=
- <philmd@linaro.org>,  Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 13/55] i386/tdx: Support user configurable
- mrconfigid/mrowner/mrownerconfig
-In-Reply-To: <20250401130205.2198253-14-xiaoyao.li@intel.com> (Xiaoyao Li's
- message of "Tue, 1 Apr 2025 09:01:23 -0400")
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-14-xiaoyao.li@intel.com>
-Date: Mon, 07 Apr 2025 13:59:35 +0200
-Message-ID: <87bjt8xjvc.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <robotika157@gmail.com>)
+ id 1u1i03-0006cI-1l
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:38:38 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <robotika157@gmail.com>)
+ id 1u1hzx-0004YI-34
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:38:34 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2ff615a114bso4453049a91.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Apr 2025 01:38:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1744015105; x=1744619905; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Lf0tjV5h2YCQpiVs0aqfqoycyicodWYZaAE5AEJ+L18=;
+ b=lPpKQy7ivUMLv7X22x8RnrzH+xdoqA4YT+6vLZ6gbyMyiPG8Z3857VqJKPNdKfpB3i
+ vADDDE8YRA3Du9T+xu8zp9WR30yiQmd6U3V6SwsP6znJEtr57FiamKNHQ+caJ1Q4JTOi
+ 0r3vsHjayUs9WKSpfElBSTd9Wes2L331ZNWAO00MLxxd6ckP7LMo6GkvKauqZYbDOHhe
+ NpS4iLC2aK8r167ZmtzLOOLdyJ9zs2GZtUejWqVkNPk4gw49hHjg24fk9IinwykiOfuD
+ 4HV9EqchoKEDuC1iLp7z2g0miMadUdNYh9KrfX/2z76ggH8APdUj/PJWqujxNgqe3HDT
+ Lmeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744015105; x=1744619905;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Lf0tjV5h2YCQpiVs0aqfqoycyicodWYZaAE5AEJ+L18=;
+ b=GD9AMny8qDBLehIhSlkzgEyPK6zaJhWZQ2VJQtzNhumQc8XTPbsT3fr9AbNkR6mnTy
+ 97Tf3qVaI6kuzMVVC679+Qt7gPn2O6xdZRAJLnjcrhV2GcI8951/q8ilmYq0mQx0dB0E
+ IjogHmuaq3YjWH7+Et62aiw2XPEApPxr0j/Rvfb4pxzmq7GpUDhmb6t4nnonZyPubOuE
+ NEAoWb/ru8kM555kE0agsNJGf0qdp59dD9/nT4pFP28rq2nMPhStz/h2+F90W2pDBtA0
+ Iymnyukw1qxHSOKWeGhDZuJXflKDWD0HkINU25LvtYHiRfHEWXC0vrCUiKtDxdAa75mq
+ IA5A==
+X-Gm-Message-State: AOJu0YwCOq2bsjj5jMYOrjYFLuVjMn+pRHrp51kfoLya6aCFXlDsqWtI
+ 64vXodjD44LpZN+ANrgIXGZ4hrkuEAxpNUbp/yTQMWoZhvGOOtdZarA7mtXak613RBFfBYgEozW
+ xnNX5EzmllHn+xwN7ocUrFNyF1ZPcZQ==
+X-Gm-Gg: ASbGncubSy4Us4kHZa39egLTRzi9YPLo1UFzqhV5WEOkG9mQCnjEbItIZ0A2zkGXbVt
+ bIToF0ybu9YgyszLNyeGQ9c5CMZO1VioDxiAG0eOb1g3+OJW59CtBoY1Qn1pcMYtEE5EDWwCt5F
+ XGRlVszFnh2dMUI/SVd7AA8hcBlA==
+X-Google-Smtp-Source: AGHT+IGurO3OtIAOn6rPzobaH/8fqqCP3zIudR7Hujr4dysWCEvwwwWSBS7WKyGXYPND+9sw7eTz1b7E1VtcY4uxrz8=
+X-Received: by 2002:a17:90b:3a05:b0:2fa:1d9f:c80 with SMTP id
+ 98e67ed59e1d1-3057a68c74bmr21063671a91.17.1744015105143; Mon, 07 Apr 2025
+ 01:38:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.32,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+From: robo tika <robotika157@gmail.com>
+Date: Mon, 7 Apr 2025 10:38:14 +0200
+X-Gm-Features: ATxdqUHxFGufcBLfZaTjbVegfHCRBnUlQ7bbuNg3T-XaO94EKxfZjOlHz3_o1mg
+Message-ID: <CAApcxfJo8a7cHfauXQQ-3toeLsg3RJTzy1rPDdMYZHi=50p7Bg@mail.gmail.com>
+Subject: Tape Drive Emulation
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000d33c7f06322c2861"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=robotika157@gmail.com; helo=mail-pj1-x102b.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 07 Apr 2025 08:52:29 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,67 +87,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
+--000000000000d33c7f06322c2861
+Content-Type: text/plain; charset="UTF-8"
 
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
->
-> Three sha384 hash values, mrconfigid, mrowner and mrownerconfig, of a TD
-> can be provided for TDX attestation. Detailed meaning of them can be
-> found: https://lore.kernel.org/qemu-devel/31d6dbc1-f453-4cef-ab08-4813f4e=
-0ff92@intel.com/
->
-> Allow user to specify those values via property mrconfigid, mrowner and
-> mrownerconfig. They are all in base64 format.
->
-> example
-> -object tdx-guest, \
->   mrconfigid=3DASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRW=
-eJq83v,\
->   mrowner=3DASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq=
-83v,\
->   mrownerconfig=3DASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wE=
-jRWeJq83v
->
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Hello!
 
-[...]
+I was messing around in Windows NT 4.0 and when i tried to back it up it
+asked for a tape drive. After that i tried all sorts of stuff from
+emulating a generic SCSI drive to modifying the registry of the OS but no
+luck! I would like an easier way of emulating a tape drive without physical
+device passthrough. I admire your work on QEMU and hope you will read this
+and develop a better way of tape drive emulation!
 
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index f229bb07aaec..a8379bac1719 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -1060,11 +1060,25 @@
->  #     pages.  Some guest OS (e.g., Linux TD guest) may require this to
->  #     be set, otherwise they refuse to boot.
->  #
-> +# @mrconfigid: ID for non-owner-defined configuration of the guest TD,
-> +#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
-> +#     Defaults to all zeros.
-> +#
-> +# @mrowner: ID for the guest TD=E2=80=99s owner (base64 encoded SHA384 d=
-igest).
-> +#     Defaults to all zeros.
-> +#
-> +# @mrownerconfig: ID for owner-defined configuration of the guest TD,
-> +#     e.g., specific to the workload rather than the run-time or OS
-> +#     (base64 encoded SHA384 digest).  Defaults to all zeros.
-> +#
->  # Since: 10.1
->  ##
->  { 'struct': 'TdxGuestProperties',
->    'data': { '*attributes': 'uint64',
-> -            '*sept-ve-disable': 'bool' } }
-> +            '*sept-ve-disable': 'bool',
-> +            '*mrconfigid': 'str',
-> +            '*mrowner': 'str',
-> +            '*mrownerconfig': 'str' } }
->=20=20
->  ##
+Wish you all the best!
 
-Acked-by: Markus Armbruster <armbru@redhat.com>
+--000000000000d33c7f06322c2861
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[...]
+<div dir=3D"ltr">Hello!<div><br></div><div>I was messing around in Windows =
+NT 4.0 and when i tried to back it up it asked for a tape drive. After that=
+ i tried all sorts of stuff from emulating a generic SCSI drive to modifyin=
+g the registry of the OS but no luck! I would like an easier way of emulati=
+ng=C2=A0a tape drive without physical device passthrough. I admire your wor=
+k on QEMU and hope you will read this and develop a better way of tape driv=
+e emulation!</div><div><br></div><div>Wish you all the best!</div></div>
 
+--000000000000d33c7f06322c2861--
 
