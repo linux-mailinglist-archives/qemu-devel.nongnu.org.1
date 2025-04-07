@@ -2,84 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F019A7D7E5
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 10:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A913BA7D893
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 10:53:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1htE-0006XX-12; Mon, 07 Apr 2025 04:31:32 -0400
+	id 1u1iDN-0002kK-9M; Mon, 07 Apr 2025 04:52:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u1ht6-0006Kj-QP
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:31:25 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u1iD1-0002iD-Fb
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:52:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u1ht0-0003U8-0L
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:31:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744014678; x=1775550678;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=kZrG6A3qreL/i86/K2NTwOlUnRVT2U3MzsiWZCErg/E=;
- b=CM2kQAEtIEXBq9tQux1uG0J4oCMGhk4Vs//Sg+Fd9yuIJ/qmdNaPSbV2
- BmhX3h39Yv3X4dAljKHpXHqehodGiXxb762PEbtuNh1XDId7NccchTxU1
- PA06vOJNyQY8Nbew5l1fH6XGpsJ7KpLeZgsKAa74Z1jBUp8shcqiLdI2L
- HAoy74ofseADnQGey2OKgSTc1S8mtLxqzGwT4f+a8mg319pfX69UKNnIg
- glK6r16fQ6ePrx8k+Fdpt5fno1YvBogDhkdCx+hnwZC7AEYVbMYDKvEqN
- PtmzD/gFVpCM43eNp9JgJCifnnTfCg2cL7w/ISc9jqavfGVImm8hlez5o g==;
-X-CSE-ConnectionGUID: AhRwysDcTHCfiQ4RAt2eYg==
-X-CSE-MsgGUID: oLdqT5qGT6i28PS2woXX9A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="49179683"
-X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="49179683"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2025 01:31:15 -0700
-X-CSE-ConnectionGUID: 3UnJmUBtRACuOGFOxL2hig==
-X-CSE-MsgGUID: /fy17LQ3TmGx2BKsh8y5Lg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="158851027"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 07 Apr 2025 01:31:09 -0700
-Date: Mon, 7 Apr 2025 16:51:31 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Cc: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, pbonzini@redhat.com, mtosatti@redhat.com,
- sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
- like.xu.linux@gmail.com, zhenyuw@linux.intel.com, groug@kaod.org,
- khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
- den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai@zhaoxin.com,
- cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
- frankzhu@zhaoxin.com, silviazhao@zhaoxin.com
-Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
- VM reset
-Message-ID: <Z/OSEw+yJkN89aDG@intel.com>
-References: <20250302220112.17653-1-dongli.zhang@oracle.com>
- <20250302220112.17653-9-dongli.zhang@oracle.com>
- <8a547bf5-bdd4-4a49-883a-02b4aa0cc92c@zhaoxin.com>
- <84653627-3a20-44fd-8955-a19264bd2348@oracle.com>
- <e3a64575-ab1f-4b6f-a91d-37a862715742@zhaoxin.com>
- <a94487ab-b06d-4df4-92d8-feceeeaf5ec3@oracle.com>
- <65a6e617-8dd8-46ee-b867-931148985e79@zhaoxin.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u1iCy-0006oC-0A
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:51:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744015913;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=Y0b3+Oqvl5ZO5+8Dep8feO4PEn/X/+YX7O4etm3xkHg=;
+ b=aOyF940UHSpQp/kHnWQW+uzJdwMjS/Twsb74ybZr5nNx2lQJJl3DOPmVCdKyPhpWlYyWqK
+ rhMyY95DY0XUH6nsik6YpQ1eHfeEq0NWFRL9wkEF9Pkif2IPOLpt5Ebv2i784Pfbxd1CkT
+ ovjMAwfSTBU0JgnnwjEtWYJ2XcTmytg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-537-kucHVeQgMqGMvV962F3UEw-1; Mon, 07 Apr 2025 04:51:50 -0400
+X-MC-Unique: kucHVeQgMqGMvV962F3UEw-1
+X-Mimecast-MFC-AGG-ID: kucHVeQgMqGMvV962F3UEw_1744015909
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43d0830c3f7so34383605e9.2
+ for <qemu-devel@nongnu.org>; Mon, 07 Apr 2025 01:51:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744015908; x=1744620708;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Y0b3+Oqvl5ZO5+8Dep8feO4PEn/X/+YX7O4etm3xkHg=;
+ b=tmMvo6Iww5gHGkuV+BFBJ0suCbco656aX2cH1LI1W0l4vXSRBYNAwR2LJFBBOKB3i7
+ XPvjjhvuVkU/Cd62N8jnjtmlxh4SuMDV7LOSrE4k6fW2affse0qDahLWKm8IHRqHVvbC
+ 19+UWJ+2clCMwYuyy4rtFYtxjQb7ErusjdnwPVqbBFNckDaXlnQwHVoB0OcqYNZ0V4bV
+ g4JUDd+YrimqJz6JrNIIz4pc6L7Jfr/LkwcYDokNVzoPG+1k6iwfhPbnkLaoSVmnOu76
+ mEFNC9xkcQdLbE2xbiu+EOPAbezhyqLSpywX1AYmYkzJlmZmkijlWYUR9nXpyM0ICrGt
+ KO8g==
+X-Gm-Message-State: AOJu0YwMbpANicPH7EpPpx/aoz0XJxkwsnWQmZ0Pqcgf1c++6h7RCf1z
+ 4csf0JTJZkcCBe9Bzm0lkVs96wHxxh6LKDyqysG3f4NpxnLzpioA2VVZsQi1Ti5goSz+ebJRSug
+ piQI/B1q0/dMfgOxuSXgypqFa6F3wYBcnVQUlRdUrKtQlgNY0ttK1
+X-Gm-Gg: ASbGnculGsGOxVNbH8I1BI6pRFtX+Z2elQUArU0HcMzAPpA7M3QXXCTWGFYQF+7SSPU
+ 829XxpefQ53DwBHfumEiBw4CMy2QY0tgpiQX9n7XvqM6vQpptVYIs/KlXv4Rg4nqTAuQVULBJUC
+ JMUORN1jjMLuTdCQ1SfviREA9ydilN+7HDWl8lUpTxT3lDiL911nLKbCNAAy2fdx98p8Tc8+R1v
+ la51iJyXk6kNHzSOix729Kg+VbFjbDeYi3LxJuhg5ICc+Tn46qd/zKbyV1WKneaXRGe9HA+cipt
+ U1p1o0xAICHkgV+wkQhEnvCWk/SIwt2EUdBtIMc/ayUxe+/18N42bQ==
+X-Received: by 2002:a05:600c:698c:b0:43c:fa0e:471a with SMTP id
+ 5b1f17b1804b1-43ed6615862mr100543005e9.5.1744015908614; 
+ Mon, 07 Apr 2025 01:51:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFo53SXaoH0n1Jwm7t6rR4uwLXUlWLzu1mAeD72L391DUg+SqPHr3IMtXVep75F3KBob6HO7g==
+X-Received: by 2002:a05:600c:698c:b0:43c:fa0e:471a with SMTP id
+ 5b1f17b1804b1-43ed6615862mr100542775e9.5.1744015908242; 
+ Mon, 07 Apr 2025 01:51:48 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43ec1795081sm128581375e9.27.2025.04.07.01.51.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 07 Apr 2025 01:51:47 -0700 (PDT)
+Message-ID: <c5cc41cd-c12b-48cf-8dd1-1edc3f9df70f@redhat.com>
+Date: Mon, 7 Apr 2025 10:51:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <65a6e617-8dd8-46ee-b867-931148985e79@zhaoxin.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.659,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-10.1 v2 36/37] vfio: Rename VFIODevice related services
+To: John Levon <levon@movementarian.org>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+References: <20250326075122.1299361-1-clg@redhat.com>
+ <20250326075122.1299361-37-clg@redhat.com>
+ <Z+UfSK3/ocrrBX32@movementarian.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <Z+UfSK3/ocrrBX32@movementarian.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.659,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,45 +155,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 11:35:49AM +0800, Ewan Hai wrote:
-> Date: Tue, 1 Apr 2025 11:35:49 +0800
-> From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-> Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers
->  during VM reset
+On 3/27/25 10:50, John Levon wrote:
+> On Wed, Mar 26, 2025 at 08:51:21AM +0100, Cédric Le Goater wrote:
 > 
-> > > [2] As mentioned in [1], QEMU always sets the vCPU's vendor to match the host's
-> > > vendor
-> > > when acceleration (KVM or HVF) is enabled. Therefore, if users want to emulate a
-> > > Zhaoxin CPU on an Intel host, the vendor must be set manually.Furthermore,
-> > > should we display a warning to users who enable both vPMU and KVM acceleration
-> > > but do not manually set the guest vendor when it differs from the host vendor?
-> > 
-> > Maybe not? Sometimes I emulate AMD on Intel host, while vendor is still the
-> > default :)
+>>   /* Returns 0 on success, or a negative errno. */
+>> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+>> index 4fdb74e33c427595a9b0a4d28b2b5a70df951e4e..9000702aed960ccb69ca67ec052f1ebe11ee1919 100644
+>> --- a/hw/vfio/ap.c
+>> +++ b/hw/vfio/ap.c
+>> @@ -117,7 +117,7 @@ static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+>>       fd = event_notifier_get_fd(notifier);
+>>       qemu_set_fd_handler(fd, fd_read, NULL, vapdev);
+>>   
+>> -    if (!vfio_set_irq_signaling(vdev, irq, 0, VFIO_IRQ_SET_ACTION_TRIGGER, fd,
+>> +    if (!vfio_device_irq_set_signaling(vdev, irq, 0, VFIO_IRQ_SET_ACTION_TRIGGER, fd,
+>>                                   errp)) {
 > 
-> Okay, handling this situation can be rather complex, so let's keep it
-> simple. I have added a dedicated function to capture the intended behavior
-> for potential future reference.
+> Nit, indentation is still off on this and several other places.
+
+Yes. I fixed a few. Not all of them, as I prioritize code readability.
+
+Thanks,
+
+C.
+
+  
 > 
-> Anyway, Thanks for taking Zhaoxin's situation into account, regardless.
+> regards
+> john
 > 
-
-Thanks for your code example!!
-
-Zhaoxin implements perfmon v2, so I think checking the vendor might be
-overly complicated. If a check is needed, it seems more reasonable to
-check the perfmon version rather than the vendor, similar to how avx10
-version is checked in x86_cpu_filter_features().
-
-I understand Ewan's concern is that if an Intel guest requires a higher
-perfmon version that the Zhaoxin host doesn't support, there could be
-issues (although I think this situation doesn't currently exist in KVM-QEMU,
-one reason is QEMU uses the pmu_version in 0xa queried from KVM directly,
-which means QEMU currently doesn't support custom pmu_version).
-
-(I'll help go through Dongli's v3 soon.)
-
-Thank you both,
-Zhao
 
 
