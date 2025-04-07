@@ -2,108 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D247BA7ECFF
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 21:29:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36605A7ED8F
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 21:38:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1s90-0001qX-3g; Mon, 07 Apr 2025 15:28:31 -0400
+	id 1u1sHm-0007mI-Kr; Mon, 07 Apr 2025 15:37:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1u1s7v-0001hB-Hg
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 15:27:26 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <matheus.bernardino@oss.qualcomm.com>)
+ id 1u1sHg-0007lh-QH
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 15:37:29 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1u1s7u-0002kg-03
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 15:27:23 -0400
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 537Iev58002203
- for <qemu-devel@nongnu.org>; Mon, 7 Apr 2025 19:27:20 GMT
+ (Exim 4.90_1) (envelope-from <matheus.bernardino@oss.qualcomm.com>)
+ id 1u1sHf-0004QK-7p
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 15:37:28 -0400
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 537I2WMN022325
+ for <qemu-devel@nongnu.org>; Mon, 7 Apr 2025 19:37:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- 0JNy0H8rZ3mqJbvaSLWvLnEsqqiwOr/aprP21Ezpjjs=; b=XE/B4tm5cy/35HBX
- CoEuSEw10M6oepe21VccPYl43UJAMxJ1O0kwqkgBqfzRsOW+IF//cJcCyPOhTNBY
- iu1UZqx+gbdKiwIWcVMBQgrmLTz0SXtU7cvDHIkHTqkmS8yh3uawQSs17VR0ppoV
- CmqHAfwJUewU/UAYJVU25VCPkWPxcDaN2KDqU0Gh81gtykeYI/slSNLe+Q7CI6xJ
- SUKub3CKdraYxoU1kgTumoPirxeSl/o0otpPDVa77696stdGY0jh9i/+Y96npCKh
- IRIJ1iwLpd4vqBfsC/emqEPInfrV6jvi2yuHWn8zsWv6NtnpqtZQ+k8WL5lhhal+
- GNx+aw==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twtawbra-1
+ cc:content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=qcppdkim1; bh=NTBx8tRI9RK
+ +vLOCoxQOYWF0dQwuiP0i9JikaJ5Yasw=; b=Mh6mxSPpXRHhZs9mvj7AkzczPIg
+ ZzLAXuoiC/pSvUk4oSp6BTetN48nulPvcJgwQRY7Uf2mj7ThnbVOcfGc3y+3Lg1E
+ woPOS6VobDjQU3cIjDit8Y8DmLiygHBmTfilkFBwGTLfKF7yfKWwhBDv1RnSv1Fb
+ VS4rUNmC6i0YVUPgFQB3Gsfwr94rM21rhRyu8q6Jo1GwbnWFZG8f2nKk4v47K6WM
+ BweMOzn6G3zDXv8nWN0J/WZZfeF5qkuDyS/ctLmN4U41DKsGUhRoomIT/kn/yqgl
+ CEbKhzEpHHu2lYx4L9n0GbWQ+wuwoXKsrXi3fn40XmNzFE196iCkzSXrIBQ==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twcrdbr8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 07 Apr 2025 19:27:20 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-736cb72efd5so4134362b3a.3
- for <qemu-devel@nongnu.org>; Mon, 07 Apr 2025 12:27:20 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Mon, 07 Apr 2025 19:37:23 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-af5156fbe79so5291267a12.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Apr 2025 12:37:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744054039; x=1744658839;
+ d=1e100.net; s=20230601; t=1744054642; x=1744659442;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0JNy0H8rZ3mqJbvaSLWvLnEsqqiwOr/aprP21Ezpjjs=;
- b=JN0aTkdpSWr0WvsAtDalGtGkhub54fNaVSb5vkVuezuWtKqZQrLtZjdEV1kifdLk01
- qejk1fICY+iwbpH7o9Z7K7wc/g2D9T0cxSNqdJ7+cGYj+JLlUVkdq6imCLhTMMkuwAY7
- h5W3x96cHnu/aH77+FrnPBH1imxSjs6uINdEyfCD5OfeCM573rbTOf3NK+wHMLLmX6pJ
- JKmE3o0986//b4mi/6/VUt7gN+Q0YdSRKLxOYGoAqBKm9AGbAgUEKWPZGI9fmmE/Zetd
- s92aMxZCWR//AdyTkhwIma/CjV6A2PcLfdCVBVFLpAt+zOgg3mh+6UXUyYiA8R13q5JI
- y8wA==
-X-Gm-Message-State: AOJu0YztUNBGhH800yc/fiVHonPVYEB2bsC5vUQ6lSIj+9dVEUUqPnUt
- WFG5lSk625gQPqPqQwgoTtw6mnYKN5m9MqKswIvRgPFg94I2UUcYLyxsqdQaJAMoiEV0ZAa23mI
- ntx3SUOf1BrErFa2wrtGXWxm5bs7lziJILo68MI3bfMcYj/Mr+3e9aNBtACDviQ==
-X-Gm-Gg: ASbGncuAuri52VPjfMFlKcIfuIcPDed8oiORrAjKl0xCdQLPSP37PqTaEdab62c9t3j
- wub3mKpXZQNn3DTbwshnqn82X691LRyywfV8lsKITJ/hhn0/5yrhWSqfte+TEr6R+Df93tmGZay
- zvSD7aza/uY2LaXMJR3EUQ9u0TmsN17MWpFRDDyftt6b06rmEBOgpGkV5Vj4r06HCmxuq9vvlQO
- 9DeY1JtiO7jYWSidD10P3IPCNrMi7fUqExujKlx41AVnzJQtvh+mCE8x7X6cY+rpcF5Da1OAnoY
- 2wUed310cwzmSmnvhlS70uYPyr4lyW80abcNoNmCHm5NipHDHlaG0HGqjXdxt6kr
-X-Received: by 2002:a05:6a00:244b:b0:736:450c:fa56 with SMTP id
- d2e1a72fcca58-739e6fa9cfamr14551789b3a.5.1744054039358; 
- Mon, 07 Apr 2025 12:27:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGKt0SgA+ox6gfndudPGmsMONQJztQ01Z57Zr14sCFVS7+ZRu8K0WJldGkf8Iejw+VUaeI3pA==
-X-Received: by 2002:a05:6a00:244b:b0:736:450c:fa56 with SMTP id
- d2e1a72fcca58-739e6fa9cfamr14551768b3a.5.1744054038989; 
- Mon, 07 Apr 2025 12:27:18 -0700 (PDT)
-Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
+ bh=NTBx8tRI9RK+vLOCoxQOYWF0dQwuiP0i9JikaJ5Yasw=;
+ b=E++5IJQWgIrVD2vN0eeGsedot6+By43/zfhdARaRwhdVBu6eLPnAilwGtxHI0zqXJs
+ xM+lGkhFbF8s1vv/xKc71FN/6m+TxOVonHqUxNu4Fpz0chorF9+TzJtdSC80geB6Zy0i
+ 3ZleaAa61t5Cjvu+jakGOv8PG/1hA/qiCj1LrkrByLDXyY0GE12Qr15nJt7nAe1ihmxD
+ VUu/HZKliQ8zNTS9i22Rutf2vfhwWzjVnVRHkJLuaYmTPbKP9ODl+N/w4JNf+en0pDfc
+ RWubXMdydeha6IoB/hKLAIz8alvwPm9CIMa1lOoSLzG03neY4OSRo5RwuvilMYAOcj8w
+ p/OQ==
+X-Gm-Message-State: AOJu0Yy6/lCdMXYdczSNqbP0819J04cACo2kOByNcd1FvtayURORua3/
+ 532IjQK9XYCDkjxKkg5xJ8mj+QQMaraRclfF9mDl+jBX37/7uvP81NG2Gh6528+oNagYPNXLzFl
+ XOUpPVBaTiMBUHKRHRIOEytVpta2yWq6I/LAfpkQlZKRBnSBSCnsOjA==
+X-Gm-Gg: ASbGncvKWD5r/NJPayds4tH5QDThFJpYnJj0L3wcpCxT9QMbeNro5MbdyureYJUtBxO
+ x84XxVt67IB1d6JohslqIrVQ+gfla3m5afduFFpPKU3lj/ZZ9x9jkMM/nHUZU3g5FUtpJX+6Fdn
+ F/wSHN9Zscc1eedQzDhhADCM5C9MVQGqWbFLrGH4q50kybMk5o3dg5mrTORlLLl2xUKRDoJIXut
+ 9izo3ZA/GA0saRWs9CQfevMnTbn+JWRhmUEXMLMtuXnFbzaqj2l85Y2a2KvbUoOOVl/rbCS9qQa
+ xGNU8Q4tkEN3KfeVib+GwlOjFpD5GnEjqzayFP2cSeb7f/DLQmuBwQs/kz+rvncTrK5WDgmO9XT
+ aHy0=
+X-Received: by 2002:a05:6a21:4603:b0:1f5:5b2a:f629 with SMTP id
+ adf61e73a8af0-20104734ccdmr22434567637.30.1744054641935; 
+ Mon, 07 Apr 2025 12:37:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHenIKprimiD9FUd1ZMgJyWDXCh2p1v/1IeUyTwBtWBeK6q9k7JZdKS/m1FDSeak2hs4f8vw==
+X-Received: by 2002:a05:6a21:4603:b0:1f5:5b2a:f629 with SMTP id
+ adf61e73a8af0-20104734ccdmr22434536637.30.1744054641559; 
+ Mon, 07 Apr 2025 12:37:21 -0700 (PDT)
+Received: from hu-mathbern-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-739d97ee619sm9206559b3a.52.2025.04.07.12.27.18
+ d2e1a72fcca58-739d97d17f8sm9210727b3a.10.2025.04.07.12.37.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Apr 2025 12:27:18 -0700 (PDT)
-From: Brian Cain <brian.cain@oss.qualcomm.com>
-To: qemu-devel@nongnu.org
-Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
- philmd@linaro.org, matheus.bernardino@oss.qualcomm.com, ale@rev.ng,
- anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
+ Mon, 07 Apr 2025 12:37:21 -0700 (PDT)
+From: Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>
+To: brian.cain@oss.qualcomm.com
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, philmd@linaro.org,
+ matheus.bernardino@oss.qualcomm.com, ale@rev.ng, anjo@rev.ng,
+ marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com
-Subject: [PATCH v3 5/5] target/hexagon: Remove unreachable
-Date: Mon,  7 Apr 2025 12:27:05 -0700
-Message-Id: <20250407192705.2605614-6-brian.cain@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH v3 0/5] misc hexagon patches
+Date: Mon,  7 Apr 2025 12:37:18 -0700
+Message-Id: <20250407193718.2371076-1-matheus.bernardino@oss.qualcomm.com>
+X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20250407192705.2605614-1-brian.cain@oss.qualcomm.com>
 References: <20250407192705.2605614-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-X-Proofpoint-GUID: 6WOOfMzrVNzNTsg0WRzLyjFzTvi83AeG
-X-Authority-Analysis: v=2.4 cv=LLlmQIW9 c=1 sm=1 tr=0 ts=67f42718 cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=EUspDBNiAAAA:8 a=WeWQB0ruK5ITHrmzxTQA:9
- a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-ORIG-GUID: 6WOOfMzrVNzNTsg0WRzLyjFzTvi83AeG
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: P4NTRqLQJQ5KxeqvNt33hOeGTEZewvKa
+X-Authority-Analysis: v=2.4 cv=QuVe3Uyd c=1 sm=1 tr=0 ts=67f42973 cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=XR8D0OoHHMoA:10 a=EUspDBNiAAAA:8 a=ycicM5sW9l3-bqxbO-wA:9
+ a=_Vgx9l1VpLgwpw_dHYaR:22
+X-Proofpoint-GUID: P4NTRqLQJQ5KxeqvNt33hOeGTEZewvKa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-07_05,2025-04-07_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- clxscore=1015 mlxlogscore=706 malwarescore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ mlxscore=0 adultscore=0
+ spamscore=0 malwarescore=0 mlxlogscore=718 bulkscore=0 priorityscore=1501
+ clxscore=1015 phishscore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504070136
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+ definitions=main-2504070137
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=matheus.bernardino@oss.qualcomm.com;
+ helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -126,24 +126,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-V2Ugc2hvdWxkIHJhaXNlIGFuIGV4Y2VwdGlvbiBpbiB0aGUgZXZlbnQgdGhhdCB3ZSBlbmNvdW50
-ZXIgYSBwYWNrZXQKdGhhdCBjYW4ndCBiZSBjb3JyZWN0bHkgZGVjb2RlZCwgbm90IGZhdWx0LgoK
-U2lnbmVkLW9mZi1ieTogQnJpYW4gQ2FpbiA8YnJpYW4uY2FpbkBvc3MucXVhbGNvbW0uY29tPgot
-LS0KIHRhcmdldC9oZXhhZ29uL2RlY29kZS5jIHwgNiArKysrKy0KIDEgZmlsZSBjaGFuZ2VkLCA1
-IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS90YXJnZXQvaGV4YWdv
-bi9kZWNvZGUuYyBiL3RhcmdldC9oZXhhZ29uL2RlY29kZS5jCmluZGV4IGI1ZWNlNjA0NTAuLjFk
-YjdmMTk1MGYgMTAwNjQ0Ci0tLSBhL3RhcmdldC9oZXhhZ29uL2RlY29kZS5jCisrKyBiL3Rhcmdl
-dC9oZXhhZ29uL2RlY29kZS5jCkBAIC00ODksNyArNDg5LDYgQEAgZGVjb2RlX2luc25zKERpc2Fz
-Q29udGV4dCAqY3R4LCBJbnNuICppbnNuLCB1aW50MzJfdCBlbmNvZGluZykKICAgICAgICAgICAg
-IGluc24tPmljbGFzcyA9IGljbGFzc19iaXRzKGVuY29kaW5nKTsKICAgICAgICAgICAgIHJldHVy
-biAxOwogICAgICAgICB9Ci0gICAgICAgIGdfYXNzZXJ0X25vdF9yZWFjaGVkKCk7CiAgICAgfSBl
-bHNlIHsKICAgICAgICAgdWludDMyX3QgaWNsYXNzID0gZ2V0X2R1cGxleF9pY2xhc3MoZW5jb2Rp
-bmcpOwogICAgICAgICB1bnNpZ25lZCBpbnQgc2xvdDBfc3ViaW5zbiA9IGdldF9zbG90MF9zdWJp
-bnNuKGVuY29kaW5nKTsKQEAgLTUxMiw2ICs1MTEsMTEgQEAgZGVjb2RlX2luc25zKERpc2FzQ29u
-dGV4dCAqY3R4LCBJbnNuICppbnNuLCB1aW50MzJfdCBlbmNvZGluZykKICAgICAgICAgfQogICAg
-ICAgICBnX2Fzc2VydF9ub3RfcmVhY2hlZCgpOwogICAgIH0KKyAgICAvKgorICAgICAqIGludmFs
-aWQvdW5yZWNvZ25pemVkIG9wY29kZTsgcmV0dXJuIDEgYW5kIGxldCBnZW5faW5zbigpIHJhaXNl
-IGFuCisgICAgICogZXhjZXB0aW9uIHdoZW4gaXQgc2VlcyB0aGlzIGVtcHR5IGluc24uCisgICAg
-ICovCisgICAgcmV0dXJuIDE7CiB9CiAKIHN0YXRpYyB2b2lkIGRlY29kZV9hZGRfZW5kbG9vcF9p
-bnNuKEluc24gKmluc24sIGludCBsb29wbnVtKQotLSAKMi4zNC4xCgo=
+On Mon,  7 Apr 2025 12:27:00 -0700 Brian Cain <brian.cain@oss.qualcomm.com> wrote:
+> 
+> Brian Cain (5):
+>   target/hexagon: handle .new values
+>   target/hexagon: Fix badva reference, delete CAUSE
+>   target/hexagon: Add missing A_CALL attr, hintjumpr to multi_cof
+>   target/hexagon: s/pkt_has_store/pkt_has_scalar_store
+>   target/hexagon: Remove unreachable
+
+All patches,
+
+Reviewed-by: Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>
 
