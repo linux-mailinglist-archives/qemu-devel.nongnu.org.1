@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE54A7D6C5
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 09:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A65A7D6BF
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 09:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1hFj-0001OH-Fh; Mon, 07 Apr 2025 03:50:43 -0400
+	id 1u1hFg-0001Ms-MG; Mon, 07 Apr 2025 03:50:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1u1hFR-0001Jy-0R
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 03:50:28 -0400
+ id 1u1hFU-0001KG-Bn
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 03:50:30 -0400
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1u1hFO-0005Qw-53
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 03:50:23 -0400
+ id 1u1hFS-0005SK-Dq
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 03:50:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744012223; x=1775548223;
+ t=1744012227; x=1775548227;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VcsOtoKaXuIBJyGwmx8nSbTIs9EhvqUalOaaez7TI0A=;
- b=nfnVgqI2mguGcr+GRlKDsxRVge4sHLTL8LCCqOTmab+F4y3tbcRXM9yM
- zaXrtTZ+uyJN48D4082xll8r1NsRjlDU918e32I4oWrOYW3nZLETwSjDR
- twOvatE4ZVL9IxmxEhhoXiHAXxYsnrHLszgk0EzceekTHhzopVeikJh/l
- MP55KAnjqi2OB+fFe9OsQ527Db8KuoeS1NPQ9Xb/zUBmDYq723nBhq3yz
- IMQ4x0jCD95zRoGWk8OdksQmRgwF/GnWGJ/E3FXG9wPD21v+Rs8KdLysd
- uOpFyWV8KV2JHKlvWuO93A1cgaSX2t1OlIoNytfaFgos0Malcg5sB/ICy Q==;
-X-CSE-ConnectionGUID: /GGRnJdySGyigzpxPDE/jg==
-X-CSE-MsgGUID: 5WzDdvVGTjuKvkcfjADLUg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="67857570"
-X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="67857570"
+ bh=sVUIY4fIKGHtOSqBXZ7Rk7z5KaG5cmAGeldWUKYdfBY=;
+ b=Yg5+0gYXy5Hhw63I2r4wNzq0wa3fO/pFeBY5HK2QHLBXaQLAlC5MVBw0
+ BhEK/jsewrmR964/7kVT8gtL2G/BZaoASjBmAnkq042BW2GlvtMOl7M4A
+ RgWiWmdg/uxG+vHSK7cToVUFemLkANrB6E4NIvVEuiX7j61+Qqa4OFNys
+ 1/0LGtTytdUd8ELm4E09s755hXpO4mBXX1vSNoo1FXM5zu2skgaoQ7y5e
+ Xq3HkFk2bXgil+RBpXsnEb0plHJacb9YBEAhxOGwToPEZEwXZ6F9OOg6l
+ GdQBwnmk2QEzwiTjPOljXbtYXZty513MyXezMxMemkF6hX0aGAq6qjnYg g==;
+X-CSE-ConnectionGUID: ihGQiV/gT325HEfmbbS/gQ==
+X-CSE-MsgGUID: j+HFZ04rTdiP7jA9W8XIJQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="67857584"
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="67857584"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2025 00:50:22 -0700
-X-CSE-ConnectionGUID: 52pGxl9oQAeCJDAezIyv3w==
-X-CSE-MsgGUID: Q/C6FP9TTbaf3hipyyTGfA==
+ 07 Apr 2025 00:50:25 -0700
+X-CSE-ConnectionGUID: zVXf4v0QRxeKIUoz8K2CEQ==
+X-CSE-MsgGUID: 62JTDrV0Rx+lOH8R1pgAqw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="128405662"
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="128405674"
 Received: from emr-bkc.sh.intel.com ([10.112.230.82])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2025 00:50:18 -0700
+ 07 Apr 2025 00:50:22 -0700
 From: Chenyi Qiang <chenyi.qiang@intel.com>
 To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
  Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>,
@@ -54,10 +54,10 @@ Cc: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
  Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
  Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: [PATCH v4 09/13] memory: Attach RamBlockAttribute to
- guest_memfd-backed RAMBlocks
-Date: Mon,  7 Apr 2025 15:49:29 +0800
-Message-ID: <20250407074939.18657-10-chenyi.qiang@intel.com>
+Subject: [PATCH v4 10/13] memory: Change NotifyStateClear() definition to
+ return the result
+Date: Mon,  7 Apr 2025 15:49:30 +0800
+Message-ID: <20250407074939.18657-11-chenyi.qiang@intel.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250407074939.18657-1-chenyi.qiang@intel.com>
 References: <20250407074939.18657-1-chenyi.qiang@intel.com>
@@ -88,110 +88,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A new field, ram_block_attribute, is introduced in RAMBlock to link to a
-RamBlockAttribute object. This change centralizes all guest_memfd state
-information (such as fd and shared_bitmap) within a RAMBlock,
-simplifying management.
-
-The realize()/unrealized() helpers are used to initialize/uninitialize
-the RamBlockAttribute object. The object is registered/unregistered in
-the target RAMBlock's MemoryRegion when creating guest_memfd.
-
-Additionally, use the private_shared_manager_state_change() helper to
-notify the registered PrivateSharedListener of these changes.
+So that the caller can check the result of NotifyStateClear() handler if
+the operation fails.
 
 Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 ---
 Changes in v4:
-    - Remove the replay operations for attribute changes which will be
-      handled in a listener in following patches.
-    - Add some comment in the error path of realize() to remind the
-      future development of the unified error path.
-
-Changes in v3:
-    - Use ram_discard_manager_reply_populated/discarded() to set the
-      memory attribute and add the undo support if state_change()
-      failed.
-    - Didn't add Reviewed-by from Alexey due to the new changes in this
-      commit.
-
-Changes in v2:
-    - Introduce a new field memory_attribute_manager in RAMBlock.
-    - Move the state_change() handling during page conversion in this patch.
-    - Undo what we did if it fails to set.
-    - Change the order of close(guest_memfd) and memory_attribute_manager cleanup.
+    - Newly added.
 ---
- accel/kvm/kvm-all.c     |  9 +++++++++
- include/exec/ramblock.h |  1 +
- system/physmem.c        | 16 ++++++++++++++++
- 3 files changed, 26 insertions(+)
+ hw/vfio/common.c      | 18 ++++++++++--------
+ include/exec/memory.h |  4 ++--
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index c1fea69d58..546b58b737 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3088,6 +3088,15 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-     addr = memory_region_get_ram_ptr(mr) + section.offset_within_region;
-     rb = qemu_ram_block_from_host(addr, false, &offset);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 48468a12c3..6e49ae597d 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -335,8 +335,8 @@ out:
+     rcu_read_unlock();
+ }
  
-+    ret = private_shared_manager_state_change(PRIVATE_SHARED_MANAGER(mr->gsm),
-+                                              offset, size, to_private);
-+    if (ret) {
-+        error_report("Failed to notify the listener the state change of "
-+                     "(0x%"HWADDR_PRIx" + 0x%"HWADDR_PRIx") to %s",
-+                     start, size, to_private ? "private" : "shared");
-+        goto out_unref;
-+    }
+-static void vfio_state_change_notify_to_state_clear(VFIOContainerBase *bcontainer,
+-                                                    MemoryRegionSection *section)
++static int vfio_state_change_notify_to_state_clear(VFIOContainerBase *bcontainer,
++                                                   MemoryRegionSection *section)
+ {
+     const hwaddr size = int128_get64(section->size);
+     const hwaddr iova = section->offset_within_address_space;
+@@ -348,24 +348,26 @@ static void vfio_state_change_notify_to_state_clear(VFIOContainerBase *bcontaine
+         error_report("%s: vfio_container_dma_unmap() failed: %s", __func__,
+                      strerror(-ret));
+     }
 +
-     if (to_private) {
-         if (rb->page_size != qemu_real_host_page_size()) {
-             /*
-diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
-index b8b5469db9..78eb031819 100644
---- a/include/exec/ramblock.h
-+++ b/include/exec/ramblock.h
-@@ -46,6 +46,7 @@ struct RAMBlock {
-     int fd;
-     uint64_t fd_offset;
-     int guest_memfd;
-+    RamBlockAttribute *ram_block_attribute;
-     size_t page_size;
-     /* dirty bitmap used during migration */
-     unsigned long *bmap;
-diff --git a/system/physmem.c b/system/physmem.c
-index c76503aea8..fb74321e10 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1885,6 +1885,20 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-             qemu_mutex_unlock_ramlist();
-             goto out_free;
-         }
-+
-+        new_block->ram_block_attribute = RAM_BLOCK_ATTRIBUTE(object_new(TYPE_RAM_BLOCK_ATTRIBUTE));
-+        if (ram_block_attribute_realize(new_block->ram_block_attribute, new_block->mr)) {
-+            error_setg(errp, "Failed to realize ram block attribute");
-+            /*
-+             * The error path could be unified if the rest of ram_block_add() ever
-+             * develops a need to check for errors.
-+             */
-+            object_unref(OBJECT(new_block->ram_block_attribute));
-+            close(new_block->guest_memfd);
-+            ram_block_discard_require(false);
-+            qemu_mutex_unlock_ramlist();
-+            goto out_free;
-+        }
-     }
++    return ret;
+ }
  
-     ram_size = (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS;
-@@ -2138,6 +2152,8 @@ static void reclaim_ramblock(RAMBlock *block)
-     }
+-static void vfio_ram_discard_notify_discard(StateChangeListener *scl,
+-                                            MemoryRegionSection *section)
++static int vfio_ram_discard_notify_discard(StateChangeListener *scl,
++                                           MemoryRegionSection *section)
+ {
+     RamDiscardListener *rdl = container_of(scl, RamDiscardListener, scl);
+     VFIORamDiscardListener *vrdl = container_of(rdl, VFIORamDiscardListener,
+                                                 listener);
+-    vfio_state_change_notify_to_state_clear(vrdl->bcontainer, section);
++    return vfio_state_change_notify_to_state_clear(vrdl->bcontainer, section);
+ }
  
-     if (block->guest_memfd >= 0) {
-+        ram_block_attribute_unrealize(block->ram_block_attribute);
-+        object_unref(OBJECT(block->ram_block_attribute));
-         close(block->guest_memfd);
-         ram_block_discard_require(false);
-     }
+-static void vfio_private_shared_notify_to_private(StateChangeListener *scl,
+-                                                  MemoryRegionSection *section)
++static int vfio_private_shared_notify_to_private(StateChangeListener *scl,
++                                                 MemoryRegionSection *section)
+ {
+     PrivateSharedListener *psl = container_of(scl, PrivateSharedListener, scl);
+     VFIOPrivateSharedListener *vpsl = container_of(psl, VFIOPrivateSharedListener,
+                                                    listener);
+-    vfio_state_change_notify_to_state_clear(vpsl->bcontainer, section);
++    return vfio_state_change_notify_to_state_clear(vpsl->bcontainer, section);
+ }
+ 
+ static int vfio_state_change_notify_to_state_set(VFIOContainerBase *bcontainer,
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index a61896251c..9472d9e9b4 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -523,8 +523,8 @@ typedef int (*ReplayStateChange)(MemoryRegionSection *section, void *opaque);
+ typedef struct StateChangeListener StateChangeListener;
+ typedef int (*NotifyStateSet)(StateChangeListener *scl,
+                               MemoryRegionSection *section);
+-typedef void (*NotifyStateClear)(StateChangeListener *scl,
+-                                 MemoryRegionSection *section);
++typedef int (*NotifyStateClear)(StateChangeListener *scl,
++                                MemoryRegionSection *section);
+ 
+ struct StateChangeListener {
+     /*
 -- 
 2.43.5
 
