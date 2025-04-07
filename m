@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB15CA7D6BE
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 09:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B280A7D6C9
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 09:52:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1hFb-0001Ja-DE; Mon, 07 Apr 2025 03:50:35 -0400
+	id 1u1hFh-0001NJ-He; Mon, 07 Apr 2025 03:50:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1u1hFC-0001HG-By
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 03:50:11 -0400
+ id 1u1hFG-0001IA-Bt
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 03:50:14 -0400
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1u1hFA-0005Q2-Ag
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 03:50:10 -0400
+ id 1u1hFE-0005Qw-0R
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 03:50:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744012209; x=1775548209;
+ t=1744012212; x=1775548212;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4/NxRHGIa82bpN+zenGnUIFub5qv8ngu3vJ4kD8YLHE=;
- b=noXWiMVNqBzW93t9khdNwPsAYDrq8qvbkKYUBrvQ4f8jYzYNmzzdJxrZ
- jNrNiDC5/rNllXewgtbP3Y12z8449LC218QvoiaX3y1m7zzlWRduvZX3T
- PsBg5Z2oER9l2YL0RDzAzvVmtRrWCNOS1/CSWIoyJXHLNoAm9btvoY8qE
- NLwnv46IPlt1BU+3XvW2TYwdh9ynw+ig7DVVGcaUnKzp7qJ9RBaYvKALy
- 3FkBksmIpaC/CVQ4RkKSiGnXBvBLXBAIGRbPgPYsvld+0JIIOfNWs3/XR
- CW6MYfOw7k0J07G6bvLzRrW8jZWJIQKTjlZbWVi91rT8JSXwOvC3JIJAJ A==;
-X-CSE-ConnectionGUID: UoJxzmw9QyShIz+q/ogvnw==
-X-CSE-MsgGUID: vEopJQ3PT4Ofavpvq4lQVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="67857542"
-X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="67857542"
+ bh=jOVy7Ml6/2LDRm72chti/Lz4qTE3xrNmv1SgD04lXdk=;
+ b=mDiswFZCBELKszv8x9TGWh/yM4EGoMTuSdH33NHFcHsqn2tdwCg5OI6i
+ /L+3A6cLQa2/dzX634YW9V2DdqlpzJnVkVBQiVrHrncmcgCl1TQig6eYR
+ vatKsMJglKc/JOpVhgHFVByXcGzKJN7MFHvUYEeD5++nsLCjesA5sYa51
+ v5p1jTLNepri7a4ipT17qKPnaIqaOr/HqMhvINaQalowG6ck6EETgtYgc
+ vC/FNYoAwJUOkpj8SZk7tr+Fkkg8bTW3y4Wez3Bi7Z0dw7zEYNWxlCaca
+ ODKvvylNshKmeqdZl3bVSuLcO2WOdDNXU73SEtStikd/kaXeel5Osw9+f A==;
+X-CSE-ConnectionGUID: cuZuq8USTZalFRmhIBPRRA==
+X-CSE-MsgGUID: eRs5IpNpR9OO+BwMgnCvzA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="67857549"
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="67857549"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2025 00:50:07 -0700
-X-CSE-ConnectionGUID: yBqCn659QIiBIBvFTDzYEQ==
-X-CSE-MsgGUID: dQEPRNaGTPGDAItE1bRttw==
+ 07 Apr 2025 00:50:11 -0700
+X-CSE-ConnectionGUID: WKLDJ1FmTiejDRlLKWWZ3Q==
+X-CSE-MsgGUID: hw6BqKrnQpe7BwXSvQbjGA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="128405591"
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="128405620"
 Received: from emr-bkc.sh.intel.com ([10.112.230.82])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2025 00:50:03 -0700
+ 07 Apr 2025 00:50:07 -0700
 From: Chenyi Qiang <chenyi.qiang@intel.com>
 To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
  Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>,
@@ -54,10 +54,10 @@ Cc: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
  Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
  Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: [PATCH v4 05/13] memory: Introduce PrivateSharedManager Interface as
- child of GenericStateManager
-Date: Mon,  7 Apr 2025 15:49:25 +0800
-Message-ID: <20250407074939.18657-6-chenyi.qiang@intel.com>
+Subject: [PATCH v4 06/13] vfio: Add the support for PrivateSharedManager
+ Interface
+Date: Mon,  7 Apr 2025 15:49:26 +0800
+Message-ID: <20250407074939.18657-7-chenyi.qiang@intel.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250407074939.18657-1-chenyi.qiang@intel.com>
 References: <20250407074939.18657-1-chenyi.qiang@intel.com>
@@ -88,146 +88,249 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To manage the private and shared RAM states in confidential VMs,
-introduce a new class of PrivateShareManager as a child of
-GenericStateManager, which inherits the six interface callbacks. With a
-different interface type, it can be distinguished from the
-RamDiscardManager object and provide the flexibility for addressing
-specific requirements of confidential VMs in the future.
+Subsystems like VFIO previously disabled ram block discard and only
+allowed coordinated discarding via RamDiscardManager. However,
+guest_memfd in confidential VMs relies on discard operations for page
+conversion between private and shared memory. This can lead to stale
+IOMMU mapping issue when assigning a hardware device to a confidential
+VM via shared memory. With the introduction of PrivateSharedManager
+interface to manage private and shared states and being distinct from
+RamDiscardManager, include PrivateSharedManager in coordinated RAM
+discard and add related support in VFIO.
+
+Currently, migration support for confidential VMs is not available, so
+vfio_sync_dirty_bitmap() handling for PrivateSharedListener can be
+ignored. The register/unregister of PrivateSharedListener is necessary
+during vfio_listener_region_add/del(). The listener callbacks are
+similar between RamDiscardListener and PrivateSharedListener, allowing
+for extraction of common parts opportunisticlly.
 
 Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 ---
-Changes in v4:
+Changes in v4
     - Newly added.
 ---
- include/exec/memory.h | 44 +++++++++++++++++++++++++++++++++++++++++--
- system/memory.c       | 17 +++++++++++++++++
- 2 files changed, 59 insertions(+), 2 deletions(-)
+ hw/vfio/common.c                      | 104 +++++++++++++++++++++++---
+ hw/vfio/container-base.c              |   1 +
+ include/hw/vfio/vfio-container-base.h |  10 +++
+ 3 files changed, 105 insertions(+), 10 deletions(-)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 30e5838d02..08f25e5e84 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -55,6 +55,12 @@ typedef struct RamDiscardManager RamDiscardManager;
- DECLARE_OBJ_CHECKERS(RamDiscardManager, RamDiscardManagerClass,
-                      RAM_DISCARD_MANAGER, TYPE_RAM_DISCARD_MANAGER);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 3172d877cc..48468a12c3 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -335,13 +335,9 @@ out:
+     rcu_read_unlock();
+ }
  
-+#define TYPE_PRIVATE_SHARED_MANAGER "private-shared-manager"
-+typedef struct PrivateSharedManagerClass PrivateSharedManagerClass;
-+typedef struct PrivateSharedManager PrivateSharedManager;
-+DECLARE_OBJ_CHECKERS(PrivateSharedManager, PrivateSharedManagerClass,
-+                     PRIVATE_SHARED_MANAGER, TYPE_PRIVATE_SHARED_MANAGER)
-+
- #ifdef CONFIG_FUZZ
- void fuzz_dma_read_cb(size_t addr,
-                       size_t len,
-@@ -692,6 +698,14 @@ void generic_state_manager_register_listener(GenericStateManager *gsm,
- void generic_state_manager_unregister_listener(GenericStateManager *gsm,
-                                                StateChangeListener *scl);
- 
-+static inline void state_change_listener_init(StateChangeListener *scl,
-+                                              NotifyStateSet state_set_fn,
-+                                              NotifyStateClear state_clear_fn)
-+{
-+    scl->notify_to_state_set = state_set_fn;
-+    scl->notify_to_state_clear = state_clear_fn;
-+}
-+
- typedef struct RamDiscardListener RamDiscardListener;
- 
- struct RamDiscardListener {
-@@ -713,8 +727,7 @@ static inline void ram_discard_listener_init(RamDiscardListener *rdl,
-                                              NotifyStateClear discard_fn,
-                                              bool double_discard_supported)
+-static void vfio_ram_discard_notify_discard(StateChangeListener *scl,
+-                                            MemoryRegionSection *section)
++static void vfio_state_change_notify_to_state_clear(VFIOContainerBase *bcontainer,
++                                                    MemoryRegionSection *section)
  {
--    rdl->scl.notify_to_state_set = populate_fn;
--    rdl->scl.notify_to_state_clear = discard_fn;
-+    state_change_listener_init(&rdl->scl, populate_fn, discard_fn);
-     rdl->double_discard_supported = double_discard_supported;
+-    RamDiscardListener *rdl = container_of(scl, RamDiscardListener, scl);
+-    VFIORamDiscardListener *vrdl = container_of(rdl, VFIORamDiscardListener,
+-                                                listener);
+-    VFIOContainerBase *bcontainer = vrdl->bcontainer;
+     const hwaddr size = int128_get64(section->size);
+     const hwaddr iova = section->offset_within_address_space;
+     int ret;
+@@ -354,13 +350,28 @@ static void vfio_ram_discard_notify_discard(StateChangeListener *scl,
+     }
  }
  
-@@ -757,6 +770,25 @@ struct RamDiscardManagerClass {
-     GenericStateManagerClass parent_class;
- };
- 
-+typedef struct PrivateSharedListener PrivateSharedListener;
-+struct PrivateSharedListener {
-+    struct StateChangeListener scl;
-+
-+    QLIST_ENTRY(PrivateSharedListener) next;
-+};
-+
-+struct PrivateSharedManagerClass {
-+    /* private */
-+    GenericStateManagerClass parent_class;
-+};
-+
-+static inline void private_shared_listener_init(PrivateSharedListener *psl,
-+                                                NotifyStateSet populate_fn,
-+                                                NotifyStateClear discard_fn)
-+{
-+    state_change_listener_init(&psl->scl, populate_fn, discard_fn);
+-static int vfio_ram_discard_notify_populate(StateChangeListener *scl,
++static void vfio_ram_discard_notify_discard(StateChangeListener *scl,
+                                             MemoryRegionSection *section)
+ {
+     RamDiscardListener *rdl = container_of(scl, RamDiscardListener, scl);
+     VFIORamDiscardListener *vrdl = container_of(rdl, VFIORamDiscardListener,
+                                                 listener);
+-    VFIOContainerBase *bcontainer = vrdl->bcontainer;
++    vfio_state_change_notify_to_state_clear(vrdl->bcontainer, section);
 +}
 +
- /**
-  * memory_get_xlat_addr: Extract addresses from a TLB entry
-  *
-@@ -2521,6 +2553,14 @@ int memory_region_set_generic_state_manager(MemoryRegion *mr,
-  */
- bool memory_region_has_ram_discard_manager(MemoryRegion *mr);
- 
-+/**
-+ * memory_region_has_private_shared_manager: check whether a #MemoryRegion has a
-+ * #PrivateSharedManager assigned
-+ *
-+ * @mr: the #MemoryRegion
-+ */
-+bool memory_region_has_private_shared_manager(MemoryRegion *mr);
++static void vfio_private_shared_notify_to_private(StateChangeListener *scl,
++                                                  MemoryRegionSection *section)
++{
++    PrivateSharedListener *psl = container_of(scl, PrivateSharedListener, scl);
++    VFIOPrivateSharedListener *vpsl = container_of(psl, VFIOPrivateSharedListener,
++                                                   listener);
++    vfio_state_change_notify_to_state_clear(vpsl->bcontainer, section);
++}
 +
- /**
-  * memory_region_find: translate an address/size relative to a
-  * MemoryRegion into a #MemoryRegionSection.
-diff --git a/system/memory.c b/system/memory.c
-index 7b921c66a6..e6e944d9c0 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -2137,6 +2137,16 @@ bool memory_region_has_ram_discard_manager(MemoryRegion *mr)
-     return true;
++static int vfio_state_change_notify_to_state_set(VFIOContainerBase *bcontainer,
++                                                 MemoryRegionSection *section,
++                                                 uint64_t granularity)
++{
+     const hwaddr end = section->offset_within_region +
+                        int128_get64(section->size);
+     hwaddr start, next, iova;
+@@ -372,7 +383,7 @@ static int vfio_ram_discard_notify_populate(StateChangeListener *scl,
+      * unmap in minimum granularity later.
+      */
+     for (start = section->offset_within_region; start < end; start = next) {
+-        next = ROUND_UP(start + 1, vrdl->granularity);
++        next = ROUND_UP(start + 1, granularity);
+         next = MIN(next, end);
+ 
+         iova = start - section->offset_within_region +
+@@ -383,13 +394,33 @@ static int vfio_ram_discard_notify_populate(StateChangeListener *scl,
+                                      vaddr, section->readonly);
+         if (ret) {
+             /* Rollback */
+-            vfio_ram_discard_notify_discard(scl, section);
++            vfio_state_change_notify_to_state_clear(bcontainer, section);
+             return ret;
+         }
+     }
+     return 0;
  }
  
-+bool memory_region_has_private_shared_manager(MemoryRegion *mr)
++static int vfio_ram_discard_notify_populate(StateChangeListener *scl,
++                                            MemoryRegionSection *section)
 +{
-+    if (!memory_region_is_ram(mr) ||
-+        !object_dynamic_cast(OBJECT(mr->gsm), TYPE_PRIVATE_SHARED_MANAGER)) {
-+        return false;
++    RamDiscardListener *rdl = container_of(scl, RamDiscardListener, scl);
++    VFIORamDiscardListener *vrdl = container_of(rdl, VFIORamDiscardListener,
++                                                listener);
++    return vfio_state_change_notify_to_state_set(vrdl->bcontainer, section,
++                                                 vrdl->granularity);
++}
++
++static int vfio_private_shared_notify_to_shared(StateChangeListener *scl,
++                                                MemoryRegionSection *section)
++{
++    PrivateSharedListener *psl = container_of(scl, PrivateSharedListener, scl);
++    VFIOPrivateSharedListener *vpsl = container_of(psl, VFIOPrivateSharedListener,
++                                                   listener);
++    return vfio_state_change_notify_to_state_set(vpsl->bcontainer, section,
++                                                 vpsl->granularity);
++}
++
+ static void vfio_register_ram_discard_listener(VFIOContainerBase *bcontainer,
+                                                MemoryRegionSection *section)
+ {
+@@ -466,6 +497,27 @@ static void vfio_register_ram_discard_listener(VFIOContainerBase *bcontainer,
+     }
+ }
+ 
++static void vfio_register_private_shared_listener(VFIOContainerBase *bcontainer,
++                                                  MemoryRegionSection *section)
++{
++    GenericStateManager *gsm = memory_region_get_generic_state_manager(section->mr);
++    VFIOPrivateSharedListener *vpsl;
++    PrivateSharedListener *psl;
++
++    vpsl = g_new0(VFIOPrivateSharedListener, 1);
++    vpsl->bcontainer = bcontainer;
++    vpsl->mr = section->mr;
++    vpsl->offset_within_address_space = section->offset_within_address_space;
++    vpsl->granularity = generic_state_manager_get_min_granularity(gsm,
++                                                                  section->mr);
++
++    psl = &vpsl->listener;
++    private_shared_listener_init(psl, vfio_private_shared_notify_to_shared,
++                                 vfio_private_shared_notify_to_private);
++    generic_state_manager_register_listener(gsm, &psl->scl, section);
++    QLIST_INSERT_HEAD(&bcontainer->vpsl_list, vpsl, next);
++}
++
+ static void vfio_unregister_ram_discard_listener(VFIOContainerBase *bcontainer,
+                                                  MemoryRegionSection *section)
+ {
+@@ -491,6 +543,31 @@ static void vfio_unregister_ram_discard_listener(VFIOContainerBase *bcontainer,
+     g_free(vrdl);
+ }
+ 
++static void vfio_unregister_private_shared_listener(VFIOContainerBase *bcontainer,
++                                                    MemoryRegionSection *section)
++{
++    GenericStateManager *gsm = memory_region_get_generic_state_manager(section->mr);
++    VFIOPrivateSharedListener *vpsl = NULL;
++    PrivateSharedListener *psl;
++
++    QLIST_FOREACH(vpsl, &bcontainer->vpsl_list, next) {
++        if (vpsl->mr == section->mr &&
++            vpsl->offset_within_address_space ==
++            section->offset_within_address_space) {
++            break;
++        }
 +    }
 +
-+    return true;
++    if (!vpsl) {
++        hw_error("vfio: Trying to unregister missing RAM discard listener");
++    }
++
++    psl = &vpsl->listener;
++    generic_state_manager_unregister_listener(gsm, &psl->scl);
++    QLIST_REMOVE(vpsl, next);
++    g_free(vpsl);
 +}
 +
- uint64_t generic_state_manager_get_min_granularity(const GenericStateManager *gsm,
-                                                    const MemoryRegion *mr)
+ static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
  {
-@@ -3837,12 +3847,19 @@ static const TypeInfo ram_discard_manager_info = {
-     .class_size         = sizeof(RamDiscardManagerClass),
- };
+     MemoryRegion *mr = section->mr;
+@@ -644,6 +721,9 @@ static void vfio_listener_region_add(MemoryListener *listener,
+     if (memory_region_has_ram_discard_manager(section->mr)) {
+         vfio_register_ram_discard_listener(bcontainer, section);
+         return;
++    } else if (memory_region_has_private_shared_manager(section->mr)) {
++        vfio_register_private_shared_listener(bcontainer, section);
++        return;
+     }
  
-+static const TypeInfo private_shared_manager_info = {
-+    .parent             = TYPE_GENERIC_STATE_MANAGER,
-+    .name               = TYPE_PRIVATE_SHARED_MANAGER,
-+    .class_size         = sizeof(PrivateSharedManagerClass),
-+};
-+
- static void memory_register_types(void)
- {
-     type_register_static(&memory_region_info);
-     type_register_static(&iommu_memory_region_info);
-     type_register_static(&generic_state_manager_info);
-     type_register_static(&ram_discard_manager_info);
-+    type_register_static(&private_shared_manager_info);
+     vaddr = memory_region_get_ram_ptr(section->mr) +
+@@ -764,6 +844,10 @@ static void vfio_listener_region_del(MemoryListener *listener,
+         vfio_unregister_ram_discard_listener(bcontainer, section);
+         /* Unregistering will trigger an unmap. */
+         try_unmap = false;
++    } else if (memory_region_has_private_shared_manager(section->mr)) {
++        vfio_unregister_private_shared_listener(bcontainer, section);
++        /* Unregistering will trigger an unmap. */
++        try_unmap = false;
+     }
+ 
+     if (try_unmap) {
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index 749a3fd29d..ff5df925c2 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -135,6 +135,7 @@ static void vfio_container_instance_init(Object *obj)
+     bcontainer->iova_ranges = NULL;
+     QLIST_INIT(&bcontainer->giommu_list);
+     QLIST_INIT(&bcontainer->vrdl_list);
++    QLIST_INIT(&bcontainer->vpsl_list);
  }
  
- type_init(memory_register_types)
+ static const TypeInfo types[] = {
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 4cff9943ab..8d7c0b1179 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -47,6 +47,7 @@ typedef struct VFIOContainerBase {
+     bool dirty_pages_started; /* Protected by BQL */
+     QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
+     QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
++    QLIST_HEAD(, VFIOPrivateSharedListener) vpsl_list;
+     QLIST_ENTRY(VFIOContainerBase) next;
+     QLIST_HEAD(, VFIODevice) device_list;
+     GList *iova_ranges;
+@@ -71,6 +72,15 @@ typedef struct VFIORamDiscardListener {
+     QLIST_ENTRY(VFIORamDiscardListener) next;
+ } VFIORamDiscardListener;
+ 
++typedef struct VFIOPrivateSharedListener {
++    VFIOContainerBase *bcontainer;
++    MemoryRegion *mr;
++    hwaddr offset_within_address_space;
++    uint64_t granularity;
++    PrivateSharedListener listener;
++    QLIST_ENTRY(VFIOPrivateSharedListener) next;
++} VFIOPrivateSharedListener;
++
+ int vfio_container_dma_map(VFIOContainerBase *bcontainer,
+                            hwaddr iova, ram_addr_t size,
+                            void *vaddr, bool readonly);
 -- 
 2.43.5
 
