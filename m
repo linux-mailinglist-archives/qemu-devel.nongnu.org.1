@@ -2,116 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC563A7D869
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 10:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F019A7D7E5
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 10:32:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1i7V-0000Pf-8b; Mon, 07 Apr 2025 04:46:18 -0400
+	id 1u1htE-0006XX-12; Mon, 07 Apr 2025 04:31:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amachhiw@linux.ibm.com>)
- id 1u1i7N-0000Kp-Df; Mon, 07 Apr 2025 04:46:09 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u1ht6-0006Kj-QP
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:31:25 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amachhiw@linux.ibm.com>)
- id 1u1i7I-0005jt-IG; Mon, 07 Apr 2025 04:46:09 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 536Kdo14022054;
- Mon, 7 Apr 2025 08:45:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=4TyK0Q
- wJ85lv3M3aLjfQaoBPQgmBi3RE0FIAtvV3sq8=; b=anjVIjFlNAsYY/1LMGPXGK
- kvZJlU0MjGcQiqhFqura3A/cIUUX/dq0MnYHjQlYZTD/D4SyAINW8BO9+gD44W6/
- PEPNI6xhIpYRlWjZr3eO/nVZUPKIdMKJ7TACuEDddD1MzBpB/x3SfLB5eWbWObBZ
- aBr6LOFgOdAMSvX9Zdm701J4//JTgAhyNeAEkPH++Jo9PmVW/uBYD3cEpFaxk8wn
- 3X/gHiS+rY6xpBeG+CT9btCf9R9RrUmgcQuUMWTchphGHkEkYMWUw0waVJpOnwpt
- pPNq7yv2cQGU0VS3toAUZeuqXVj3e7klTAEj6vR4Mv7IDxfYaZdieyyBx5P0qD0Q
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45v0u0j95n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Apr 2025 08:45:58 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5378cV24001970;
- Mon, 7 Apr 2025 08:45:58 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45v0u0j95m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Apr 2025 08:45:58 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5375n4jm025510;
- Mon, 7 Apr 2025 08:45:57 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45ugbkmyjx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Apr 2025 08:45:57 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5378jraM57475360
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Apr 2025 08:45:53 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9923F2004B;
- Mon,  7 Apr 2025 08:45:53 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8462420040;
- Mon,  7 Apr 2025 08:45:51 +0000 (GMT)
-Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown
- [9.124.220.105])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Mon,  7 Apr 2025 08:45:51 +0000 (GMT)
-Date: Mon, 7 Apr 2025 14:15:49 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- Vaibhav Jain <vaibhav@linux.ibm.com>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>
-Subject: Re: [PATCH] vfio/spapr: Fix L2 crash with PCI device passthrough
- with L2 guest memory > 128G
-Message-ID: <20250407141331.a3e0c24b-fb-amachhiw@linux.ibm.com>
-Mail-Followup-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, 
- qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- Vaibhav Jain <vaibhav@linux.ibm.com>, 
- Shivaprasad G Bhat <sbhat@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Alex Williamson <alex.williamson@redhat.com>
-References: <20250404091721.2653539-1-amachhiw@linux.ibm.com>
- <1beef03c-ac75-4f25-8b39-0abf01384549@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u1ht0-0003U8-0L
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:31:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1744014678; x=1775550678;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=kZrG6A3qreL/i86/K2NTwOlUnRVT2U3MzsiWZCErg/E=;
+ b=CM2kQAEtIEXBq9tQux1uG0J4oCMGhk4Vs//Sg+Fd9yuIJ/qmdNaPSbV2
+ BmhX3h39Yv3X4dAljKHpXHqehodGiXxb762PEbtuNh1XDId7NccchTxU1
+ PA06vOJNyQY8Nbew5l1fH6XGpsJ7KpLeZgsKAa74Z1jBUp8shcqiLdI2L
+ HAoy74ofseADnQGey2OKgSTc1S8mtLxqzGwT4f+a8mg319pfX69UKNnIg
+ glK6r16fQ6ePrx8k+Fdpt5fno1YvBogDhkdCx+hnwZC7AEYVbMYDKvEqN
+ PtmzD/gFVpCM43eNp9JgJCifnnTfCg2cL7w/ISc9jqavfGVImm8hlez5o g==;
+X-CSE-ConnectionGUID: AhRwysDcTHCfiQ4RAt2eYg==
+X-CSE-MsgGUID: oLdqT5qGT6i28PS2woXX9A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="49179683"
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="49179683"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Apr 2025 01:31:15 -0700
+X-CSE-ConnectionGUID: 3UnJmUBtRACuOGFOxL2hig==
+X-CSE-MsgGUID: /fy17LQ3TmGx2BKsh8y5Lg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; d="scan'208";a="158851027"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa002.jf.intel.com with ESMTP; 07 Apr 2025 01:31:09 -0700
+Date: Mon, 7 Apr 2025 16:51:31 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Cc: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, pbonzini@redhat.com, mtosatti@redhat.com,
+ sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+ like.xu.linux@gmail.com, zhenyuw@linux.intel.com, groug@kaod.org,
+ khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
+ den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai@zhaoxin.com,
+ cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
+ frankzhu@zhaoxin.com, silviazhao@zhaoxin.com
+Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers during
+ VM reset
+Message-ID: <Z/OSEw+yJkN89aDG@intel.com>
+References: <20250302220112.17653-1-dongli.zhang@oracle.com>
+ <20250302220112.17653-9-dongli.zhang@oracle.com>
+ <8a547bf5-bdd4-4a49-883a-02b4aa0cc92c@zhaoxin.com>
+ <84653627-3a20-44fd-8955-a19264bd2348@oracle.com>
+ <e3a64575-ab1f-4b6f-a91d-37a862715742@zhaoxin.com>
+ <a94487ab-b06d-4df4-92d8-feceeeaf5ec3@oracle.com>
+ <65a6e617-8dd8-46ee-b867-931148985e79@zhaoxin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1beef03c-ac75-4f25-8b39-0abf01384549@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _sXX6R3n_4JtwZSHHehLeEPN1zskN9kt
-X-Proofpoint-GUID: SdpINmdfbP4q43w-TaKw5TjvmpYuphwQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-07_02,2025-04-03_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
- score=100 lowpriorityscore=0
- clxscore=1015 spamscore=100 priorityscore=1501 mlxscore=100
- impostorscore=0 phishscore=0 malwarescore=0 mlxlogscore=-999 bulkscore=0
- adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502280000 definitions=main-2504070056
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=amachhiw@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <65a6e617-8dd8-46ee-b867-931148985e79@zhaoxin.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.659,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,125 +95,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+On Tue, Apr 01, 2025 at 11:35:49AM +0800, Ewan Hai wrote:
+> Date: Tue, 1 Apr 2025 11:35:49 +0800
+> From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+> Subject: Re: [PATCH v2 08/10] target/i386/kvm: reset AMD PMU registers
+>  during VM reset
+> 
+> > > [2] As mentioned in [1], QEMU always sets the vCPU's vendor to match the host's
+> > > vendor
+> > > when acceleration (KVM or HVF) is enabled. Therefore, if users want to emulate a
+> > > Zhaoxin CPU on an Intel host, the vendor must be set manually.Furthermore,
+> > > should we display a warning to users who enable both vPMU and KVM acceleration
+> > > but do not manually set the guest vendor when it differs from the host vendor?
+> > 
+> > Maybe not? Sometimes I emulate AMD on Intel host, while vendor is still the
+> > default :)
+> 
+> Okay, handling this situation can be rather complex, so let's keep it
+> simple. I have added a dedicated function to capture the intended behavior
+> for potential future reference.
+> 
+> Anyway, Thanks for taking Zhaoxin's situation into account, regardless.
+> 
 
-Thanks for looking into this patch. Please find my response inline:
+Thanks for your code example!!
 
-On 2025/04/04 01:29 PM, Cédric Le Goater wrote:
-> On 4/4/25 11:17, Amit Machhiwal wrote:
-> > An L2 KVM guest fails to boot inside a pSeries LPAR when booted with a
-> > memory more than 128 GB and PCI device passthrough. The L2 guest also
-> > crashes when it is booted with a memory greater than 128 GB and a PCI
-> > device is hotplugged later.
-> > 
-> > The issue arises from a conditional check for `levels > 1` in
-> > `spapr_tce_create_table()` within L1 KVM. This check is meant to prevent
-> > multi-level TCEs, which are not supported by the PowerVM hypervisor. As
-> > a result, when QEMU makes a `VFIO_IOMMU_SPAPR_TCE_CREATE` ioctl call
-> > with `levels > 1`, it triggers the conditional check and returns
-> > `EINVAL`, causing the guest to crash with the following errors:
-> > 
-> >   2025-03-04T06:36:36.133117Z qemu-system-ppc64: Failed to create a window, ret = -1 (Invalid argument)
-> >   2025-03-04T06:36:36.133176Z qemu-system-ppc64: Failed to create SPAPR window: Invalid argument
-> >   qemu: hardware error: vfio: DMA mapping failed, unable to continue
-> > 
-> > Fix this by checking the supported DDW "levels" returned by the
-> > VFIO_IOMMU_SPAPR_TCE_GET_INFO ioctl before attempting the TCE create
-> > ioctl in KVM.
-> > 
-> > The patch has been tested on KVM guests with memory configurations of up
-> > to 390GB, and 450GB on PowerVM and bare-metal environments respectively.
-> > > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> > ---
-> >   hw/vfio/spapr.c | 35 ++++++++++++++++++++++++++---------
-> >   1 file changed, 26 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-> > index 1a5d1611f2cd..07498218fea9 100644
-> > --- a/hw/vfio/spapr.c
-> > +++ b/hw/vfio/spapr.c
-> > @@ -26,6 +26,7 @@ typedef struct VFIOSpaprContainer {
-> >       VFIOContainer container;
-> >       MemoryListener prereg_listener;
-> >       QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
-> > +    unsigned int levels;
-> >   } VFIOSpaprContainer;
-> >   OBJECT_DECLARE_SIMPLE_TYPE(VFIOSpaprContainer, VFIO_IOMMU_SPAPR);
-> > @@ -236,9 +237,11 @@ static int vfio_spapr_create_window(VFIOContainer *container,
-> >   {
-> >       int ret = 0;
-> >       VFIOContainerBase *bcontainer = &container->bcontainer;
-> > +    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
-> > +                                                  container);
-> >       IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
-> >       uint64_t pagesize = memory_region_iommu_get_min_page_size(iommu_mr), pgmask;
-> > -    unsigned entries, bits_total, bits_per_level, max_levels;
-> > +    unsigned entries, bits_total, bits_per_level, max_levels, ddw_levels;
-> >       struct vfio_iommu_spapr_tce_create create = { .argsz = sizeof(create) };
-> >       long rampagesize = qemu_minrampagesize();
-> > @@ -291,16 +294,28 @@ static int vfio_spapr_create_window(VFIOContainer *container,
-> >        */
-> >       bits_per_level = ctz64(qemu_real_host_page_size()) + 8;
-> >       create.levels = bits_total / bits_per_level;
-> > -    if (bits_total % bits_per_level) {
-> > -        ++create.levels;
-> > -    }
-> > -    max_levels = (64 - create.page_shift) / ctz64(qemu_real_host_page_size());
-> > -    for ( ; create.levels <= max_levels; ++create.levels) {
-> > -        ret = ioctl(container->fd, VFIO_IOMMU_SPAPR_TCE_CREATE, &create);
-> > -        if (!ret) {
-> > -            break;
-> > +
-> > +    ddw_levels = scontainer->levels;
-> > +    if (ddw_levels > 1) {
-> > +        if (bits_total % bits_per_level) {
-> > +            ++create.levels;
-> >           }
-> > +        max_levels = (64 - create.page_shift) / ctz64(qemu_real_host_page_size());
-> > +        for ( ; create.levels <= max_levels; ++create.levels) {
-> > +            ret = ioctl(container->fd, VFIO_IOMMU_SPAPR_TCE_CREATE, &create);
-> > +            if (!ret) {
-> > +                break;
-> > +            }
-> > +        }
-> > +    } else { /* ddw_levels == 1 */
-> > +        if (create.levels > ddw_levels) {
-> > +            error_report("Host doesn't support multi-level TCE tables. "
-> > +                         "Use larger IO page size. Supported mask is 0x%lx",
-> > +                         bcontainer->pgsizes);
-> 
-> While at it, please modify vfio_spapr_create_window(), add an 'Error **'
-> parameter to report errors to the caller with error_setg(errp ...)
+Zhaoxin implements perfmon v2, so I think checking the vendor might be
+overly complicated. If a check is needed, it seems more reasonable to
+check the perfmon version rather than the vendor, similar to how avx10
+version is checked in x86_cpu_filter_features().
 
-Sure, I'll include the suggested changes and send a v2 soon.
+I understand Ewan's concern is that if an Intel guest requires a higher
+perfmon version that the Zhaoxin host doesn't support, there could be
+issues (although I think this situation doesn't currently exist in KVM-QEMU,
+one reason is QEMU uses the pmu_version in 0xa queried from KVM directly,
+which means QEMU currently doesn't support custom pmu_version).
 
-Thanks,
-Amit
+(I'll help go through Dongli's v3 soon.)
 
-> 
-> Thanks,
-> 
-> C.
-> 
-> 
-> 
-> 
-> > +        }
-> > +        ret = ioctl(container->fd, VFIO_IOMMU_SPAPR_TCE_CREATE, &create);
-> >       }
-> > +
-> >       if (ret) {
-> >           error_report("Failed to create a window, ret = %d (%m)", ret);
-> >           return -errno;
-> > @@ -502,6 +517,8 @@ static bool vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
-> >           goto listener_unregister_exit;
-> >       }
-> > +    scontainer->levels = info.ddw.levels;
-> > +
-> >       if (v2) {
-> >           bcontainer->pgsizes = info.ddw.pgsizes;
-> >           /*
-> > 
-> > base-commit: 0adf626718bc0ca9c46550249a76047f8e45da15
-> 
+Thank you both,
+Zhao
+
 
