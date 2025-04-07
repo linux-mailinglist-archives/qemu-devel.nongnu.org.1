@@ -2,107 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53984A7E3ED
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 17:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D04A8A7E2B8
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 16:55:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1oCP-0003wm-7B; Mon, 07 Apr 2025 11:15:45 -0400
+	id 1u1nrX-00045r-Vi; Mon, 07 Apr 2025 10:54:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u1nmJ-0002LD-7X; Mon, 07 Apr 2025 10:48:47 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u1nmH-0001nZ-AS; Mon, 07 Apr 2025 10:48:46 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-aee773df955so3583430a12.1; 
- Mon, 07 Apr 2025 07:48:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744037323; x=1744642123; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lEH4N/I/i1s5vyVW9hh0H+Bl+rbHvsyMVIl7sWn6eKY=;
- b=JlbYSzSA8aBDar1D3jrtAuJQmrE+kO7C23PLBvqWso35NtvlJcwraT+eEVw/aZ8xYC
- H5E0t0+b28r1EeWm4aWbYoiBgTE2OTDDVs5RYG1gXoSwALLlRQQ2o/Q9v9mu2sZjsgYR
- hWzuvP/wfGFRCJvllr/2j69lw6IbsW4FrlU3agT8fZXprjo5NWSV4oGU9wCTzJcOtfoi
- 6Bf2+2SZ5QbML6OE1GNNj4s4mFwvW0mqjJsCiQjyO5I5Vrp+UPVkdtzF4iF6d6NVa++w
- iHa1x1ZCtq1c2vTV5SGr/m7hzIS/GUvgBtR4ZHG/9cH683QFXLgF9jJQOKg9pnI736pw
- iITg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744037323; x=1744642123;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lEH4N/I/i1s5vyVW9hh0H+Bl+rbHvsyMVIl7sWn6eKY=;
- b=lDKjNZDCHSYp2wTGuOT7K4hBFHfumn9yz/JkmYWnUkqMMB13sgZO/6EoX/aNuF82Vn
- G0b4eDZUENA/2/WRSFji2ROxbpRD/gk80X+5KePOZhuKPNFGvkvpNxTqnShRbliNomkP
- CVtP9/8WGBiVM99D+d2IKN3D1AThETw7jpO+L2bxzfsLep1gYMyKly0dck/5naylhdEq
- 2K9uPkHMboGpUGbaLRLmUnhWbSkjN8zFzwrOxwj84ZmepXC9l3Ec8tqFw/NbYoW9TYHh
- hLEs8USK89M6f4pUXkptY8pKV0F86yv7NQ8Ouku4D0Sen75tgWdbukGKAPJHJN8kCQ3i
- 9Q6w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUgJvsG1196/ARie6K22eIGZBKfMJtMLLi9ER/PR1x911/LC/yi6moo+uNV9N9ih/ipVZTsNhQLL/0Fgw==@nongnu.org,
- AJvYcCVplv/sJM5gLTxqDH+M0mRV/VP2WodJrDq8SxZuLd4j649xfguCjUQUZSXbUB53reWcn4CSapsb0TyyEw==@nongnu.org,
- AJvYcCVzsi0mpGJfYEhNzCUj3eIciQkh2Z4QV/gA0aJModv1HFG+aIC/QT87osbs9VZRBOl/Agx5XmEdHQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yyufsm+vXUbqYqHVrRwTPubN6XPlgyhfFfzXlQzN+zgggbk/7XF
- HmaUTVvO7FEQL584/9gCUkj14G21yG2Hdy6WsSgiV61oBgZcpRIqNZkPvUzS
-X-Gm-Gg: ASbGncusZLwUV9vB4WOZqh8vWaLv8sx+i0sTqfzXvcnSDkUI4jePnqm/wm1Ist2OcKK
- 0uCgaJ96rpWnroJVhig21c/GFLKMw7rxRmn0mgVL4gWVjeH5g/TEuI5HGR/V2Uy/wuEWUOcDPiZ
- lidoxGtiPRsmuo2bbUDNFIqA8HNrc6dMm54xU6orWHWs9nFU9+K7x94dr0ZkV1yOI71HLstERsb
- MKL/vh2Th6tKwNO6ilDJobWNDrifDYf+YYdBng/R7xR6mJIlle13c/PyeGqfFIMkLJbyyMwPgJT
- PfJe7jKuPMbmoAHylHyc6/Ap5ZHq4x/gmYdbchnsqNU3rlX1TpmBjUv9nnSIRA==
-X-Google-Smtp-Source: AGHT+IFVHb0USmbrtgolvVJ002qQw3Dst2XwZdUHXHObbdn3W+d22R0f9QZhrZRZ9w1sgrYEyRLgeg==
-X-Received: by 2002:a17:902:f546:b0:226:194f:48ef with SMTP id
- d9443c01a7336-229765d1ad7mr251187095ad.13.1744037322987; 
- Mon, 07 Apr 2025 07:48:42 -0700 (PDT)
-Received: from localhost.localdomain ([240d:1a:3b6:8b00:8768:486:6a8e:e855])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-739d97ef3c2sm8856960b3a.59.2025.04.07.07.48.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Apr 2025 07:48:42 -0700 (PDT)
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Kohei Tokunaga <ktokunaga.mail@gmail.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz <groug@kaod.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- qemu-riscv@nongnu.org, qemu-arm@nongnu.org
-Subject: [PATCH 10/10] MAINTAINERS: Update MAINTAINERS file for wasm-related
- files
-Date: Mon,  7 Apr 2025 23:46:01 +0900
-Message-Id: <ab804f360d7828dd281c337e897c5817410e075d.1744032780.git.ktokunaga.mail@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1744032780.git.ktokunaga.mail@gmail.com>
-References: <cover.1744032780.git.ktokunaga.mail@gmail.com>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u1nrV-00045R-3A
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 10:54:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u1nrT-00035U-6j
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 10:54:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744037645;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lEOcZacHnNQ89sYmDkvJKZF7vzDjss6LlsJpaAG0ZWs=;
+ b=MAv1LyHPX/NofpZBkGFxusI0ISXuU9MEntkK9FcqCKR2E/Inr9fh4R/0ykSk/JRCgTqLLG
+ 642G9YHGZZgEtbzBrh1q3AoStT/45b+8ODpEjQMfNxZwfBlsj6om/lSZHUg0IlEQQTLrP9
+ zw+zHSL0HW5rQPQz2t2IOD0cRe2+Rnw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-_czdHv5XPr6J0p2PFrTenA-1; Mon,
+ 07 Apr 2025 10:54:04 -0400
+X-MC-Unique: _czdHv5XPr6J0p2PFrTenA-1
+X-Mimecast-MFC-AGG-ID: _czdHv5XPr6J0p2PFrTenA_1744037642
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 285ED195608B; Mon,  7 Apr 2025 14:54:02 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.21])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B91CC19541A6; Mon,  7 Apr 2025 14:54:00 +0000 (UTC)
+Date: Mon, 7 Apr 2025 09:53:58 -0500
+From: Eric Blake <eblake@redhat.com>
+To: prashant patil <pmgpatil@gmail.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: Query on the dirty bitmap
+Message-ID: <6s2grkptds54jewlroehfvfpk4aci5ks7lkm4h4tfnvayxzi4l@2tilhng3srix>
+References: <CAFvsdYns1yO6Wsm8VKP_khbTPm09Kf5KDmBpeMSrjboyccK4Aw@mail.gmail.com>
+ <d2276vugq6wureu6zzrwci5sdtg3b6gllqskjv7hfvuulsmhyn@anl3d5htudty>
+ <CAFvsdYk0J7ybdu+dL+w70Po1bGypLopBkixPp-ZzmTA8MdTr0w@mail.gmail.com>
+ <pf24mn3twfrc2kfaszovdyj5rhh6d4r4ixawh2dyx5dbi5no3j@ryk4lzslrnye>
+ <CAFvsdYmJFDuQzk6Byu+f4HcTO1EStin3vEMC+twh8P3T2ve6qA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFvsdYmJFDuQzk6Byu+f4HcTO1EStin3vEMC+twh8P3T2ve6qA@mail.gmail.com>
+User-Agent: NeoMutt/20250113
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.32,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 07 Apr 2025 11:14:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,34 +84,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
----
- MAINTAINERS | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+On Mon, Apr 07, 2025 at 02:46:17PM +0530, prashant patil wrote:
+> Thanks Eric.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d54b5578f8..ea5fde475c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3903,6 +3903,17 @@ F: tcg/tci/
- F: tcg/tci.c
- F: disas/tci.c
- 
-+WebAssembly TCG target
-+M: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-+S: Maintained
-+F: configs/meson/emscripten.txt
-+F: hw/9pfs/9p-util-stub.c
-+F: tcg/wasm32/
-+F: tcg/wasm32.c
-+F: tcg/wasm32.h
-+F: tests/docker/dockerfiles/emsdk-wasm32-cross.docker
-+F: util/coroutine-fiber.c
-+
- Block drivers
- -------------
- VMDK
+[top-posting makes conversations harder to follow, so on this list we
+typically reply inline]
+
+> I have a few questions about the bitmap content shown by 'qemu-img map'.
+> From below sample bitmap data:
+> 1. Why only some of the extents have start and offset values? And why are
+> they the same values?
+> 2. What does the start value indicate? Is it logical offset or physical
+> offset of data into qcow2?
+
+Normally (when there is no x-dirty-bitmap in play), 'start' denotes
+the logical offset being reported on (you'd expect a map to list every
+logical offset; so the start of entry N+1 should be the sum of start +
+length of entry N), while 'offset' is where that extent begins in the
+underlying file.  For a raw source, offset and start will be
+identical; for other sources, like qcow2, start is obviously logical,
+while offset is physical.  Entries without 'offset' are places where
+the logical contents are compressed, synthesized, or otherwise have no
+1:1 correspondence to an offset in the physical file.  'present'
+indicates whether the data is synthesized or not; 'offset' is going to
+be absent if 'present' is false; although it can also be absent even
+when 'present' is true such as in the case of compression.
+
+When it comes to exposing a qcow2 file over NBD, you generally want to
+have:
+
+qemu-nbd using '-f qcow2' => raw view => qemu-img using '-f raw'
+
+to expose only the logical contents over the wire.  It is also
+possible to flip the responsibility:
+
+qemu-nbd using '-f raw' => qcow2 view => qemu-img using '-f qcow2'
+
+to expose the bare-metal qcow2 contents over the wire, but that gets
+less testing, in part because if you make the image writable, it tends
+to cause problems if the client writing to the qcow2 layer needs to
+allocate (since NBD does not have a resize command).  Having the
+server open the file as qcow2 and only serving raw contents means the
+server can resize transparently.  What's more, block status commands
+over NBD only work when the server is aware of the qcow2 nature of the
+file it is serving (if you expose qcow2 bits over the wire, the server
+treats the entire file as allocated, and there is is no dirty bitmap
+context for the client to read over NBD).
+
+Therefore, 'start' and 'offset' are going to be identical if you are
+using qemu-img map to read bitmaps from a server, since bitmaps can
+only be read when the wire has the raw view (not the qcow2 view).
+
+But when you add x-dirty-bitmap into the mix, you are asking qemu to
+DISREGARD the normal rules of backing file information and instead
+report on dirty bitmap information as if it were backing file info.
+This means that anywhere the dirty bitmap response differs from a
+normal backing file response, the output of qemu-img is reporting
+garbage data (for example, the 'present' bit is now bogus, which
+explains why the rows where qemu-img claims 'present' is false omit an
+'offset').  Only 'start', 'length', and 'data' matter when using
+x-dirty-bitmap, with 'data=false' meaning the section was reported
+dirty, and 'data=true' meaning the section was reported unchanged.
+
+And if that is confusing, well yeah. Which is why I recommend using
+libnbd's nbdinfo --map, where the output is more obvious.
+
+> 
+> root@be-proxmox1:/# qemu-img map --output=json --image-opts
+> "$IMG,x-dirty-bitmap=qemu:dirty-bitmap:bitmap1"
+>   [{ "start": 0, "length": 196608, "depth": 0, "present": true, "zero":
+> false, "data": true, "compressed": false, "offset": 0},
+
+The extent starting at logical offset 0 and lasting 196608 bytes is
+unchanged.
+
+> { "start": 196608, "length": 65536, "depth": 0, "present": false, "zero":
+> false, "data": false, "compressed": false},
+
+The extent starting at 196608 and lasting 65536 bytes is dirty
+(altered since the point in time when the bitmap was created).
+
+> > > qemu-img
+> > > map with x-dirty-bitmap image-opts.
+> >
+> > Here, this works, but feels like a hack, because it is relying on the
+> > x-dirty-bitmap feature of qemu.  The libnbd project ships with an
+> > application 'nbdinfo --map' that can read the same information as
+> > 'qemu-img map' but with a much nicer layout.  It's not going to
+> > necessarily be faster, but because it is a fully-supported feature of
+> > libnbd rather than a hack in qemu, it may prove more stable in the
+> > long run, and certainly easier to understand.
+
+
+For a worked example:
+
+# Create an image, dirty two different offsets, with a bitmap created in between
+$ qemu-img create -f qcow2 foo.qcow2 3M
+Formatting 'foo.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=3145728 lazy_refcounts=off refcount_bits=16
+$ qemu-io -f qcow2 foo.qcow2 -c 'w 1M 512'
+wrote 512/512 bytes at offset 1048576
+512 bytes, 1 ops; 00.01 sec (42.906 KiB/sec and 85.8112 ops/sec)
+$ qemu-img bitmap -f qcow2 foo.qcow2 --add b1
+$ qemu-io -f qcow2 foo.qcow2 -c 'w 2M 512'
+wrote 512/512 bytes at offset 2097152
+512 bytes, 1 ops; 00.00 sec (107.735 KiB/sec and 215.4704 ops/sec)
+
+# Now, expose the raw bytes of the image over NBD, and inspect with nbdinfo
+
+$ qemu-nbd -f qcow2 foo.qcow2 -A -Bb1 -t
+$ nbdinfo --map=qemu:dirty-bitmap:b1 nbd://localhost
+         0     2097152    0  clean
+   2097152       65536    1  dirty
+   2162688      983040    0  clean
+$ nbdinfo --map nbd://localhost
+         0     1048576    3  hole,zero
+   1048576        4096    0  data
+   1052672       61440    2  zero
+   1114112      983040    3  hole,zero
+   2097152        4096    0  data
+   2101248       61440    2  zero
+   2162688      983040    3  hole,zero
+
+Comparing those to qemu-img map --output=json should be instructive.
+
+
 -- 
-2.25.1
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
