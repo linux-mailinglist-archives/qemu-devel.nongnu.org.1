@@ -2,71 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED73A7D7C7
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 10:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E77A7D7E4
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 10:32:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1hp4-0000rY-IK; Mon, 07 Apr 2025 04:27:14 -0400
+	id 1u1hsD-0004Tf-Ad; Mon, 07 Apr 2025 04:30:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u1hol-0000qb-ND
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:26:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u1hoj-0002N8-Fy
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:26:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744014410;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5/FPCcQU2LQwNiJcNdThWSQqn4VaN8ZlgUtwJrhJ/hk=;
- b=bvVEkhnNPoYW0fLFZ1qBH3NPn0zJWO9jitbXy4yRNAWtan4W4jgrxnedQxpys8Ef0qy4Lq
- w02vqC+Zlr+R+OX9sPf+RZWh1dnSs2qDZqcoi5Fy++2769grBVnrXfNH1EX1smN8S0QsFK
- oSgUs8cMIokJzd7cWbBPKK9ia6ayMDo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-iu5oSLxUPoKrK1-h9Fj-Fw-1; Mon,
- 07 Apr 2025 04:26:47 -0400
-X-MC-Unique: iu5oSLxUPoKrK1-h9Fj-Fw-1
-X-Mimecast-MFC-AGG-ID: iu5oSLxUPoKrK1-h9Fj-Fw_1744014406
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3AAEA180025F; Mon,  7 Apr 2025 08:26:46 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CAA1419560AD; Mon,  7 Apr 2025 08:26:45 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 35B9F21E65D0; Mon, 07 Apr 2025 10:26:43 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH v2 3/3] cleanup: Drop pointless label at end of function
-Date: Mon,  7 Apr 2025 10:26:43 +0200
-Message-ID: <20250407082643.2310002-4-armbru@redhat.com>
-In-Reply-To: <20250407082643.2310002-1-armbru@redhat.com>
-References: <20250407082643.2310002-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <adamhet@scaleway.com>)
+ id 1u1hs3-0004FR-4f
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:30:19 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <adamhet@scaleway.com>)
+ id 1u1hrt-00031L-6E
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:30:16 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43cf06eabdaso37408085e9.2
+ for <qemu-devel@nongnu.org>; Mon, 07 Apr 2025 01:30:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=scaleway.com; s=google; t=1744014599; x=1744619399; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=M+UOXJWeGDngXv/nS9fMg51KMnWcSkDRnmG0t4jTSoE=;
+ b=iCPWmXbv3p+dyCSUDluMn3f2QYiPik+J6Z2I8Hn+S9c5ru9hVbFq5s7zHYSNJ+Zjsd
+ Fatgov3kMJlLr1t1urBrSYUubvp4s9ZnzF4WUiIJvKCNmcPNyxAcVm/k/BaRywA6cyi6
+ ULKFCfLKQDlnvtaXlNZ5IB1jsmWRK3mc40nnL9AAkg/ztWSXkCDoQ53iuO3tMxvPSeWz
+ ODAIcy6ePr1bMIugmMNMsi6Wr7YvyEE/Tx7eGxFDJ9rS0QMXh+di1CrkNOh49PpE0CYI
+ tCHKR0rbmsMSzG3mQ7k0sgtKMGfVxcnGZs6n8tjPeK1mztiOZhF2xGfbuTh/Koq7DSj5
+ KsCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744014599; x=1744619399;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M+UOXJWeGDngXv/nS9fMg51KMnWcSkDRnmG0t4jTSoE=;
+ b=af8eSzin8LJapCoULnAgh3FIB4FP9paSYq8cSRvP42yrBCQRkWtC+bQSdth3ghRQth
+ 5MWSAj5Y1gAqGRfgGyOhR2pVYN2hEPAOtvxI0ACN80VxG7oZFhywVUwmrw1Y5HO3btmM
+ v5vZxCZJYSplj0FMaJ18rAuWiSm61/p9aN4gGZg+3ImBNbXXKT3z7Uis+90oHhSHTVA/
+ 6A8Ks1z6xmkdlm8kIMTrnWJgaosOfSNmEiUdJRhstes7zMtzwcD8kUqvY8W4TDqtt7ei
+ rCNinAsf3aVn4T/M7Cvhbh19DN96mwdwK/LL3n4JG3tYpOxe2zEggX16qmqcMgxnRJOI
+ 2NJQ==
+X-Gm-Message-State: AOJu0YxQtViE3q5ZDfcXPGYnP7GQUH8XlCGexpcQuM/OfzsPcC0CDFIC
+ d2Y2uZVllErCuAqSA95BJlH5osnIqddnvH0dpWRgg3gc256TRgeQYI4rRoGfUFQ=
+X-Gm-Gg: ASbGncvaaMCbS/uddqgdo1M+BWGHHiSa593k5wz6GfK7hDP4lOVo3EI2i/Wgcze+mPt
+ 4bnRwkFckNdqg1aJx1h/kWEUzCogY/uZX68fVA01zFuKbiNO89uyYCAmKjUXEw7iNCTN9pwgJdn
+ Ud6FPyxOayln1XLeoqQhsmvnPrIQx4IM5KbbdOMjHQQvLGaMnAC0ThhNSXxCQIShqgQzqKYdfuR
+ K7vtwSI6ru0i9nWgjBNbdylY/1cteYxI7Unzy6VRyDzDy2wWdct9CnVGGmUR5up6COp7YjIv397
+ WSeWQ/aEdustKqRlw5zEBXojGLXVilsBuLbGo+AaAW0R
+X-Google-Smtp-Source: AGHT+IGm8dCEIIzuX4VQhgduv7yvEcuD62NCr+mf2P/R/5Iek/EQ5fythQfMF5aQ2738cVfB6lSw6w==
+X-Received: by 2002:a05:600c:1c07:b0:43d:45a:8fc1 with SMTP id
+ 5b1f17b1804b1-43ecf84287dmr109186615e9.4.1744014598655; 
+ Mon, 07 Apr 2025 01:29:58 -0700 (PDT)
+Received: from localhost ([2a01:e0a:e9e:c3d0:7a5b:f76a:6cf6:aac2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43ec17b3572sm125529435e9.39.2025.04.07.01.29.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Apr 2025 01:29:58 -0700 (PDT)
+Date: Mon, 7 Apr 2025 10:29:57 +0200
+From: Antoine Damhet <adamhet@scaleway.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, devel@daynix.com, qemu-stable@nongnu.org
+Subject: Re: [PATCH] virtio-net: Copy all for dhclient workaround
+Message-ID: <su2au5bn77cjz64dgsd4by5atjlbun54467c2srdcmgoyeefpw@xym6ucphqa2d>
+References: <20250405-mtu-v1-1-08c5910fa6fd@daynix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="pky7tesimesqfqpk"
+Content-Disposition: inline
+In-Reply-To: <20250405-mtu-v1-1-08c5910fa6fd@daynix.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=adamhet@scaleway.com; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.659,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,135 +97,200 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Corey Minyard <cminyard@mvista.com>
----
- hw/ipmi/ipmi_bmc_extern.c | 4 +---
- hw/ipmi/ipmi_bmc_sim.c    | 7 ++-----
- hw/ipmi/ipmi_bt.c         | 7 +++----
- hw/ipmi/ipmi_kcs.c        | 3 +--
- 4 files changed, 7 insertions(+), 14 deletions(-)
 
-diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
-index 73b249fb60..ab9b66274d 100644
---- a/hw/ipmi/ipmi_bmc_extern.c
-+++ b/hw/ipmi/ipmi_bmc_extern.c
-@@ -213,7 +213,7 @@ static void ipmi_bmc_extern_handle_command(IPMIBmc *b,
-         rsp[2] = err;
-         ibe->waiting_rsp = false;
-         k->handle_rsp(s, msg_id, rsp, 3);
--        goto out;
-+        return;
-     }
- 
-     addchar(ibe, msg_id);
-@@ -228,8 +228,6 @@ static void ipmi_bmc_extern_handle_command(IPMIBmc *b,
- 
-     /* Start the transmit */
-     continue_send(ibe);
--
-- out:
- }
- 
- static void handle_hw_op(IPMIBmcExtern *ibe, unsigned char hw_op)
-diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
-index faec6fefb3..f4336946ce 100644
---- a/hw/ipmi/ipmi_bmc_sim.c
-+++ b/hw/ipmi/ipmi_bmc_sim.c
-@@ -463,13 +463,12 @@ void ipmi_bmc_gen_event(IPMIBmc *b, uint8_t *evt, bool log)
-     }
- 
-     if (ibs->msg_flags & IPMI_BMC_MSG_FLAG_EVT_BUF_FULL) {
--        goto out;
-+        return;
-     }
- 
-     memcpy(ibs->evtbuf, evt, 16);
-     ibs->msg_flags |= IPMI_BMC_MSG_FLAG_EVT_BUF_FULL;
-     k->set_atn(s, 1, attn_irq_enabled(ibs));
-- out:
- }
- static void gen_event(IPMIBmcSim *ibs, unsigned int sens_num, uint8_t deassert,
-                       uint8_t evd1, uint8_t evd2, uint8_t evd3)
-@@ -979,7 +978,7 @@ static void get_msg(IPMIBmcSim *ibs,
- 
-     if (QTAILQ_EMPTY(&ibs->rcvbufs)) {
-         rsp_buffer_set_error(rsp, 0x80); /* Queue empty */
--        goto out;
-+        return;
-     }
-     rsp_buffer_push(rsp, 0); /* Channel 0 */
-     msg = QTAILQ_FIRST(&ibs->rcvbufs);
-@@ -994,8 +993,6 @@ static void get_msg(IPMIBmcSim *ibs,
-         ibs->msg_flags &= ~IPMI_BMC_MSG_FLAG_RCV_MSG_QUEUE;
-         k->set_atn(s, attn_set(ibs), attn_irq_enabled(ibs));
-     }
--
--out:
- }
- 
- static unsigned char
-diff --git a/hw/ipmi/ipmi_bt.c b/hw/ipmi/ipmi_bt.c
-index 3ef1f435e7..f769cfa243 100644
---- a/hw/ipmi/ipmi_bt.c
-+++ b/hw/ipmi/ipmi_bt.c
-@@ -98,14 +98,14 @@ static void ipmi_bt_handle_event(IPMIInterface *ii)
-     IPMIBT *ib = iic->get_backend_data(ii);
- 
-     if (ib->inlen < 4) {
--        goto out;
-+        return;
-     }
-     /* Note that overruns are handled by handle_command */
-     if (ib->inmsg[0] != (ib->inlen - 1)) {
-         /* Length mismatch, just ignore. */
-         IPMI_BT_SET_BBUSY(ib->control_reg, 1);
-         ib->inlen = 0;
--        goto out;
-+        return;
-     }
-     if ((ib->inmsg[1] == (IPMI_NETFN_APP << 2)) &&
-                         (ib->inmsg[3] == IPMI_CMD_GET_BT_INTF_CAP)) {
-@@ -136,7 +136,7 @@ static void ipmi_bt_handle_event(IPMIInterface *ii)
-             IPMI_BT_SET_B2H_IRQ(ib->mask_reg, 1);
-             ipmi_bt_raise_irq(ib);
-         }
--        goto out;
-+        return;
-     }
-     ib->waiting_seq = ib->inmsg[2];
-     ib->inmsg[2] = ib->inmsg[1];
-@@ -145,7 +145,6 @@ static void ipmi_bt_handle_event(IPMIInterface *ii)
-         bk->handle_command(ib->bmc, ib->inmsg + 2, ib->inlen - 2,
-                            sizeof(ib->inmsg), ib->waiting_rsp);
-     }
-- out:
- }
- 
- static void ipmi_bt_handle_rsp(IPMIInterface *ii, uint8_t msg_id,
-diff --git a/hw/ipmi/ipmi_kcs.c b/hw/ipmi/ipmi_kcs.c
-index f4f1523d6b..5bfc34676f 100644
---- a/hw/ipmi/ipmi_kcs.c
-+++ b/hw/ipmi/ipmi_kcs.c
-@@ -168,7 +168,7 @@ static void ipmi_kcs_handle_event(IPMIInterface *ii)
-             ik->outpos = 0;
-             bk->handle_command(ik->bmc, ik->inmsg, ik->inlen, sizeof(ik->inmsg),
-                                ik->waiting_rsp);
--            goto out_noibf;
-+            return;
-         } else if (ik->cmd_reg == IPMI_KCS_WRITE_END_CMD) {
-             ik->cmd_reg = -1;
-             ik->write_end = 1;
-@@ -197,7 +197,6 @@ static void ipmi_kcs_handle_event(IPMIInterface *ii)
-     ik->cmd_reg = -1;
-     ik->data_in_reg = -1;
-     IPMI_KCS_SET_IBF(ik->status_reg, 0);
-- out_noibf:
- }
- 
- static void ipmi_kcs_handle_rsp(IPMIInterface *ii, uint8_t msg_id,
--- 
-2.48.1
+--pky7tesimesqfqpk
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] virtio-net: Copy all for dhclient workaround
+MIME-Version: 1.0
 
+On Sat, Apr 05, 2025 at 05:04:28PM +0900, Akihiko Odaki wrote:
+> The goal of commit 7987d2be5a8b ("virtio-net: Copy received header to
+> buffer") was to remove the need to patch the (const) input buffer with a
+> recomputed UDP checksum by copying headers to a RW region and inject the
+> checksum there. The patch computed the checksum only from the header
+> fields (missing the rest of the payload) producing an invalid one
+> and making guests fail to acquire a DHCP lease.
+>=20
+> Fix the issue by copying the entire packet instead of only copying the
+> headers.
+>=20
+> Fixes: 7987d2be5a8b ("virtio-net: Copy received header to buffer")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2727
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+
+Tested-By: Antoine Damhet <adamhet@scaleway.com>
+
+> ---
+> This patch aims to resolves the issue the following one also does:
+> https://lore.kernel.org/qemu-devel/20250404151835.328368-1-adamhet@scalew=
+ay.com
+>=20
+> The difference from the mentioned patch is that this patch also
+> preserves that the original intent of regressing change, which is to
+> remove the need to patch the (const) input buffer with a recomputed UDP
+> checksum.
+>=20
+> To Antoine Damhet:
+> I confirmed that DHCP is currently not working and this patch fixes the
+> issue, but I would appreciate if you also confirm the fix as I already
+> have done testing badly for the regressing patch.
+
+Thanks for the swift response, ideally I'd like a non-regression test in
+the testsuite but a quick test showed me that I couldn't easily
+reproduce with user networking so unless someone has a great idea it
+would be a pain.
+
+> ---
+>  hw/net/virtio-net.c | 35 ++++++++++++++++-------------------
+>  1 file changed, 16 insertions(+), 19 deletions(-)
+>=20
+> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> index de87cfadffe1..a920358a89c5 100644
+> --- a/hw/net/virtio-net.c
+> +++ b/hw/net/virtio-net.c
+> @@ -1687,6 +1687,11 @@ static void virtio_net_hdr_swap(VirtIODevice *vdev=
+, struct virtio_net_hdr *hdr)
+>      virtio_tswap16s(vdev, &hdr->csum_offset);
+>  }
+> =20
+> +typedef struct Header {
+> +    struct virtio_net_hdr_v1_hash virtio_net;
+> +    uint8_t payload[1500];
+> +} Header;
+> +
+>  /* dhclient uses AF_PACKET but doesn't pass auxdata to the kernel so
+>   * it never finds out that the packets don't have valid checksums.  This
+>   * causes dhclient to get upset.  Fedora's carried a patch for ages to
+> @@ -1701,7 +1706,7 @@ static void virtio_net_hdr_swap(VirtIODevice *vdev,=
+ struct virtio_net_hdr *hdr)
+>   * we should provide a mechanism to disable it to avoid polluting the ho=
+st
+>   * cache.
+>   */
+> -static void work_around_broken_dhclient(struct virtio_net_hdr *hdr,
+> +static void work_around_broken_dhclient(struct Header *hdr,
+>                                          size_t *hdr_len, const uint8_t *=
+buf,
+>                                          size_t buf_size, size_t *buf_off=
+set)
+>  {
+> @@ -1711,20 +1716,20 @@ static void work_around_broken_dhclient(struct vi=
+rtio_net_hdr *hdr,
+>      buf +=3D *buf_offset;
+>      buf_size -=3D *buf_offset;
+> =20
+> -    if ((hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) && /* missing csum */
+> -        (buf_size >=3D csum_size && buf_size < 1500) && /* normal sized =
+MTU */
+> +    if ((hdr->virtio_net.hdr.flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) && /* =
+missing csum */
+> +        (buf_size >=3D csum_size && buf_size < sizeof(hdr->payload)) && =
+/* normal sized MTU */
+>          (buf[12] =3D=3D 0x08 && buf[13] =3D=3D 0x00) && /* ethertype =3D=
+=3D IPv4 */
+>          (buf[23] =3D=3D 17) && /* ip.protocol =3D=3D UDP */
+>          (buf[34] =3D=3D 0 && buf[35] =3D=3D 67)) { /* udp.srcport =3D=3D=
+ bootps */
+> -        memcpy((uint8_t *)hdr + *hdr_len, buf, csum_size);
+> -        net_checksum_calculate((uint8_t *)hdr + *hdr_len, csum_size, CSU=
+M_UDP);
+> -        hdr->flags &=3D ~VIRTIO_NET_HDR_F_NEEDS_CSUM;
+> -        *hdr_len +=3D csum_size;
+> -        *buf_offset +=3D csum_size;
+> +        memcpy((uint8_t *)hdr + *hdr_len, buf, buf_size);
+> +        net_checksum_calculate((uint8_t *)hdr + *hdr_len, buf_size, CSUM=
+_UDP);
+> +        hdr->virtio_net.hdr.flags &=3D ~VIRTIO_NET_HDR_F_NEEDS_CSUM;
+> +        *hdr_len +=3D buf_size;
+> +        *buf_offset +=3D buf_size;
+>      }
+>  }
+> =20
+> -static size_t receive_header(VirtIONet *n, struct virtio_net_hdr *hdr,
+> +static size_t receive_header(VirtIONet *n, Header *hdr,
+>                               const void *buf, size_t buf_size,
+>                               size_t *buf_offset)
+
+`receive_header` can now "receive" the whole packet that's kinda
+misleading. I though another approach would be to only do the
+detection/flag patching from receive_header and recompute the checksum
+directly in the final `iov`, this would also eliminate the extra payload
+copy.
+
+Cheers,
+
+--=20
+Antoine 'xdbob' Damhet
+Engineer @scaleway
+
+
+>  {
+> @@ -1736,7 +1741,7 @@ static size_t receive_header(VirtIONet *n, struct v=
+irtio_net_hdr *hdr,
+>      work_around_broken_dhclient(hdr, &hdr_len, buf, buf_size, buf_offset=
+);
+> =20
+>      if (n->needs_vnet_hdr_swap) {
+> -        virtio_net_hdr_swap(VIRTIO_DEVICE(n), hdr);
+> +        virtio_net_hdr_swap(VIRTIO_DEVICE(n), (struct virtio_net_hdr *)h=
+dr);
+>      }
+> =20
+>      return hdr_len;
+> @@ -1907,13 +1912,6 @@ static int virtio_net_process_rss(NetClientState *=
+nc, const uint8_t *buf,
+>      return (index =3D=3D new_index) ? -1 : new_index;
+>  }
+> =20
+> -typedef struct Header {
+> -    struct virtio_net_hdr_v1_hash virtio_net;
+> -    struct eth_header eth;
+> -    struct ip_header ip;
+> -    struct udp_header udp;
+> -} Header;
+> -
+>  static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t =
+*buf,
+>                                        size_t size)
+>  {
+> @@ -2002,8 +2000,7 @@ static ssize_t virtio_net_receive_rcu(NetClientStat=
+e *nc, const uint8_t *buf,
+>              }
+> =20
+>              guest_offset =3D n->has_vnet_hdr ?
+> -                           receive_header(n, (struct virtio_net_hdr *)&h=
+dr,
+> -                                          buf, size, &offset) :
+> +                           receive_header(n, &hdr, buf, size, &offset) :
+>                             n->guest_hdr_len;
+> =20
+>              iov_from_buf(sg, elem->in_num, 0, &hdr, guest_offset);
+>=20
+> ---
+> base-commit: 825b96dbcee23d134b691fc75618b59c5f53da32
+> change-id: 20250405-mtu-834d4c62c93c
+>=20
+> Best regards,
+> --=20
+> Akihiko Odaki <akihiko.odaki@daynix.com>
+
+--pky7tesimesqfqpk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEArm1WbQx2GmOsfF83AmjLzzljz4FAmfzjQIACgkQ3AmjLzzl
+jz7AEQgAp5edyhwS9dsWh9CPnmm96OCRseZEJz/HepNlm7CZJqyuV6EkAmrJwAB/
+32fxFv2nj0wzOCAVcfUvjsbWdnHAp6BJ+XEDXfCcxRTXB7fPOQnfy8kCfGjAhzah
+cMntDdXBnjsoJGWze5Ks1m1iu3RBft6zLV0zICgrjPCbeFFz3mqSVO474LpT2A/M
+KXOsi2B9fcPtZRxTqc0a1W0+jsB5RpulLByyFHl+ddVT/W3mvvgPUcW70StJnv9b
+PtIJ0hYjGpVWHVpOU2ShArXfiFt4K0HL7YzlokYiISk7g+QoZgSRBOqbBEwe3Q2x
+Ktc1ZxQ3BNPMO8sR56zaF/6Fk75Wfg==
+=7saO
+-----END PGP SIGNATURE-----
+
+--pky7tesimesqfqpk--
 
