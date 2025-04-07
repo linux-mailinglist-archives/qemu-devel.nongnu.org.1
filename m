@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A15A7D824
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 10:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F4EA7D825
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 10:38:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1hys-0004j5-Ls; Mon, 07 Apr 2025 04:37:22 -0400
+	id 1u1hzI-0004pn-G8; Mon, 07 Apr 2025 04:37:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u1hyU-0004eX-Nn
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:37:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u1hya-0004h0-24
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:37:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u1hyN-0004Ms-Ha
- for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:36:57 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u1hyV-0004Nb-JN
+ for qemu-devel@nongnu.org; Mon, 07 Apr 2025 04:37:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744015010;
+ s=mimecast20190719; t=1744015018;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=HNk8bcOKFnabe7eEIaANsBeLhVIc0LBYJ5zp5mYcZ3Y=;
- b=XeRPT6xdOWipIcBC7fOI+UDXffiF5h/DGFmWcI3zqPE7CRAGF4Aq5FSQvMEDZwfRgGKmP3
- rC8Re7l9qbZ50tTsnlUsK6njFlgO/JolH2g5J4q6RCYrnTLT5QWSPST1mzhXwcNBzGhbeP
- zxY6TRoSMiGaLKOpTPwzgAX7QxDFc0E=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8kD2xNNH0NGETMOnQ2zFhP8IrDuWt79gO8awJjUUjb4=;
+ b=AhJOtqK0s/3xmNpqBomYj/3NrdfTowbuS6/C/Q41knSEwOvu9BpwSPQIwQEJNqoKzIy7Nd
+ GwT+2DodH0NIBx5IgUmcvJEahlMUgrXlLdQNrBECdETh6iqMq1+KlcTHULq/ALFEiTYWi1
+ 0BOWE+5+j6JBGRo3fjzueUIFKQ8qy6w=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-114-EMI65gdkNVC1eokcChPo8A-1; Mon, 07 Apr 2025 04:36:48 -0400
-X-MC-Unique: EMI65gdkNVC1eokcChPo8A-1
-X-Mimecast-MFC-AGG-ID: EMI65gdkNVC1eokcChPo8A_1744015007
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3913f546dfdso2396616f8f.1
- for <qemu-devel@nongnu.org>; Mon, 07 Apr 2025 01:36:48 -0700 (PDT)
+ us-mta-587-_DcleFBdOgay5n-PkSA1pw-1; Mon, 07 Apr 2025 04:36:56 -0400
+X-MC-Unique: _DcleFBdOgay5n-PkSA1pw-1
+X-Mimecast-MFC-AGG-ID: _DcleFBdOgay5n-PkSA1pw_1744015015
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3913b2d355fso1610389f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Apr 2025 01:36:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744015007; x=1744619807;
+ d=1e100.net; s=20230601; t=1744015015; x=1744619815;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HNk8bcOKFnabe7eEIaANsBeLhVIc0LBYJ5zp5mYcZ3Y=;
- b=qxm1MmLL6VvbNihv6++mYXZFsKoraeUFxG4bl+tPkoLtNdcrv1/geEp0q2zBfeic6A
- DaQ1ucvmyiSnRBOmKGYkFApf7hmTWd7ugS76bgWNfgkgeMtDlUZSpR2ILGsY8mqHrQtJ
- depTcbO4PxPM4epFP2pZaa8jrTku2CoRtFcM0tw3+wuNkS9d77s2vPe5fCvD3QKEoB6d
- sUCMf2I63OWgtU4HrWBGgz9dCgwCbc3IXmFSWpNsNWNFSgBWN8zUG1KYjWy+aTjFkm2W
- bX7rilERco1nKNewJQnavi9JgtOo+gX4xPqYT7O7X4MKV7pwiOPXooM/IMpsX4jeosOE
- 6gnw==
-X-Gm-Message-State: AOJu0Yz2pEyLLLpyO0cG2jbW9xs/sWXn7yZpX6bqzdg2kqssjzWTEgno
- oq4omh4/Wgcc/LO9EXjPVZwkqcQtSHxui+zGK5EyDwhqevJdWg96O3rM+vkQ9cY5EjDI2Ls+PdV
- HZXArfmCC7bEggPC8WTV6axJduh3dAZSNF/POzt7za+Kh7WPmVwtF
-X-Gm-Gg: ASbGncukUSEQC1Qxeg1iSzHHbvzl9ThxJYS8vTOhHO4SLHLo2/mal9okEAGaarykji9
- C7LppflMw4t980r2pnZKsU2Nf+JZHM6SZhIC0AXRHll1Q0LgtCD7QkdiM2hhr07NkhAO/AoUu9W
- O2Esa3W4SIUmE2dCc6uY8Q/XUD8RLjFoPq3NzEXd9TfLVyYuSjKMvoIGgur4C3LtZAVJvncAnQs
- sbiJ2xHwRadO/xr2UNWi0QnUEB95HeD8g6Tdtyt3n67tmJhwTy724pGlhNR7Butei5nTQmFzdNL
- L9iZ5R0L8zNZcC9xjGnITJixHoemz6kysbFwWwPo2bFZhelprj4bTw==
-X-Received: by 2002:a5d:5c84:0:b0:39c:1258:7e19 with SMTP id
- ffacd0b85a97d-39d6fd373c6mr5341192f8f.58.1744015007419; 
- Mon, 07 Apr 2025 01:36:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHfGoNsSqOlCEFuKKOYakOk3yEAL8p8/XMiPC8WJmfHFv1t06i2Z9n3O9/ns+regfzrSqjNLg==
-X-Received: by 2002:a5d:5c84:0:b0:39c:1258:7e19 with SMTP id
- ffacd0b85a97d-39d6fd373c6mr5341171f8f.58.1744015007023; 
- Mon, 07 Apr 2025 01:36:47 -0700 (PDT)
+ bh=8kD2xNNH0NGETMOnQ2zFhP8IrDuWt79gO8awJjUUjb4=;
+ b=LqtZDoK+vghicL7EOTwswrhs1chMU+/zmDt34RZG8fugmA1WIhL1Fxw1TdMOIeMO/c
+ fgZaikS0+8X+Z+fmAwOeMfg9nI+DmBhHb0flabxG1hDwoKY0TqzrFzpV6PGBh/EHKGrs
+ OwaLqPCoF0DtPBV14y1mhhEo88VQs0OYH18qpaDns6EfxJ9AWXVcuJp7Fqaq0T69dc4N
+ x9JAWM7vWa9ADX9VY5vtXj2vuxoqKAo1RfQcDvp7tQ0CHLQsk6E/paquQQZ8vxovvFuK
+ LPQ9E6iIODX2YLsVzmpMODlYSVYOqMrNTmECswyjVIDW8Zr7hV8xyMKVrrKqjUcJz54w
+ /PAw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWZAlFjDVWbmwvOmmOhdQJqOLPFtmWJNuLe1oNe5o4ucApSjd8zAj0A9OvBeOPrd0UVLayDvC+GTjsw@nongnu.org
+X-Gm-Message-State: AOJu0YxgO9KesleKIQUrgZ+1pgdon1VxQZyvt/KGICZ/OapahLHQQgvj
+ w0+DknE9HDauTh2Jr7BPfEdLw5/Qw2EGsunMuiNndFOPatl7ZttfVgdp7hUoaax5pcxdyeFdKvt
+ WWR0hBRn2tiziduQGsPgiRN3GYRkvP2JDQB9ZPY4csTndTzd2pfWj
+X-Gm-Gg: ASbGncsh0JsVqnE/cdW/WTCig95KjEjX519nXfVuL7z8O+x6O/6ov4BZArT8z2ZBo/y
+ gRzcPxRU+Nrr4IkugDLJKeme1UckIEszWvX1Wj57DkrNQ8nRIf7kSyE3/dfeSXx3YVUZchYvgSP
+ 4fOwftFU6/K8QOsivrKjp52yvJMvBw8EeVsFLsDtRUr4YJSMiOIsWshax1gnm4POBTZppTiHJ7i
+ VCL9RB5PMAAbYs6G7lrn1MdFrkN07qzIJQBA+G+UX01AcLu/x7IXVqX4+VHx+mtiWXHmz4swXc0
+ Epy5fOb6Uwhw3hJpQqF8EHp17/++Tg2y7O26flK6udREdnEWGlq5ug==
+X-Received: by 2002:a05:6000:1787:b0:391:1806:e23f with SMTP id
+ ffacd0b85a97d-39cb3596ea9mr10028446f8f.17.1744015015454; 
+ Mon, 07 Apr 2025 01:36:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEi+VFOi9ote7eQcQilcqotzi5mPC+vQvnJUs8yc6yK2Umu1+8+wmRPBsI7bihPEZMNZeTQ+g==
+X-Received: by 2002:a05:6000:1787:b0:391:1806:e23f with SMTP id
+ ffacd0b85a97d-39cb3596ea9mr10028411f8f.17.1744015015037; 
+ Mon, 07 Apr 2025 01:36:55 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301b6a1esm11400202f8f.45.2025.04.07.01.36.46
+ ffacd0b85a97d-39c301a6608sm11252716f8f.23.2025.04.07.01.36.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Apr 2025 01:36:46 -0700 (PDT)
-Message-ID: <c8fb320f-03d0-44b8-bd03-cc8b974a665e@redhat.com>
-Date: Mon, 7 Apr 2025 10:36:45 +0200
+ Mon, 07 Apr 2025 01:36:54 -0700 (PDT)
+Message-ID: <64a35610-6d20-4f24-9312-646bb1fa40dd@redhat.com>
+Date: Mon, 7 Apr 2025 10:36:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH for-10.1 v2 33/37] vfio: Rename RAM discard related
  services
-To: John Levon <levon@movementarian.org>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
+To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org,
+ Alex Williamson <alex.williamson@redhat.com>
+Cc: Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Joao Martins <joao.m.martins@oracle.com>
+ John Levon <john.levon@nutanix.com>, Joao Martins <joao.m.martins@oracle.com>
 References: <20250326075122.1299361-1-clg@redhat.com>
  <20250326075122.1299361-34-clg@redhat.com>
- <Z+UfqXAgNGaE3rR9@movementarian.org>
+ <993a0f66-aa85-4d53-831a-0077c5c0f730@nvidia.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -128,17 +130,17 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <Z+UfqXAgNGaE3rR9@movementarian.org>
+In-Reply-To: <993a0f66-aa85-4d53-831a-0077c5c0f730@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.659,
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.659,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -156,50 +158,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/27/25 10:51, John Levon wrote:
-> On Wed, Mar 26, 2025 at 08:51:18AM +0100, Cédric Le Goater wrote:
+On 4/2/25 15:55, Avihai Horon wrote:
 > 
+> On 26/03/2025 9:51, Cédric Le Goater wrote:
+>> External email: Use caution opening links or attachments
+>>
+>>
 >> Rename some routines to better reflect the namespace they belong to.
 >>
 >> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>   hw/vfio/listener.c | 12 ++++++------
->>   1 file changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
->> index 26ced6d4fb04b0dedf399686db40acaca5d85552..07c8dc6ce343510dea20c5946e64a23a57c0f91b 100644
->> --- a/hw/vfio/listener.c
->> +++ b/hw/vfio/listener.c
->> @@ -243,7 +243,7 @@ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
->>       return 0;
->>   }
->>   
->> -static void vfio_register_ram_discard_listener(VFIOContainerBase *bcontainer,
->> +static void  vfio_ram_discard_register_listener(VFIOContainerBase *bcontainer,
->>                                                  MemoryRegionSection *section)
->>   {
->>       RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
->> @@ -318,7 +318,7 @@ static void vfio_register_ram_discard_listener(VFIOContainerBase *bcontainer,
->>       }
->>   }
->>   
->> -static void vfio_unregister_ram_discard_listener(VFIOContainerBase *bcontainer,
->> +static void  vfio_ram_discard_unregister_listener(VFIOContainerBase *bcontainer,
->>                                                    MemoryRegionSection *section)
 > 
-> Nit, unnecessary double spaces introduced here?
+> Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+> 
 
-Indeed ! The sed expression I used was bogus. Fixed
+
+Since lore didn't receive the email :
+
+Reviewed-by: Avihai Horon <avihaih@nvidia.com>
 
 
 Thanks,
 
 C.
 
-
-> 
-> regards
-> john
-> 
 
 
