@@ -2,108 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CEDA7E1A8
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 16:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20280A7E3BD
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Apr 2025 17:16:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u1nW8-0005Th-Es; Mon, 07 Apr 2025 10:32:04 -0400
+	id 1u1oBo-0002dO-Df; Mon, 07 Apr 2025 11:15:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amachhiw@linux.ibm.com>)
- id 1u1nW2-0005N4-Fm; Mon, 07 Apr 2025 10:31:58 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amachhiw@linux.ibm.com>)
- id 1u1nVx-0007Xp-PX; Mon, 07 Apr 2025 10:31:58 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 537E4dm1008419;
- Mon, 7 Apr 2025 14:31:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=j0YNjLcDk0NRiIQUZ
- xwqcNOWVPq4sBssI5WzUs3fHYc=; b=XjATUhE71YK9WNKPbdZRk5Z/4bl4jiZC8
- vI1ORkDqqqkWnrUtYEFfUMpP2mxpX8GURCEJQ1xD3dVt9klYmZHafNTSDhyhwJ7h
- 1lepnop3o0IM0mAo71KeMMG8Jar/ATv+/rtyfZU/5IvbMjQTA0mN6wnLK9tBspuX
- 7e9mSDcIJb/enmqDkxgv44BI4I110nkVJO0iZTeMfUHBffehnyGRRrNcqOLDR3ac
- JR67LL3My7Ln1D1KgaXC49DfhvYxfqhfSftabx5InkO3Tyz3zN9UBgcboXRE4pFv
- XWaGpG2ufcwI8yMTGUf14wFeXYaTCDAGwE3DVbOiXTahwqT0iDLDA==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45v739jwyb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Apr 2025 14:31:51 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 537ETCM2008908;
- Mon, 7 Apr 2025 14:31:51 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45v739jwy6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Apr 2025 14:31:51 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 537B6s1k017457;
- Mon, 7 Apr 2025 14:31:50 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45uh2ke0bw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Apr 2025 14:31:50 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 537EVkDQ35062286
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Apr 2025 14:31:46 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 405192004D;
- Mon,  7 Apr 2025 14:31:46 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C82CC20040;
- Mon,  7 Apr 2025 14:31:43 +0000 (GMT)
-Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com.com (unknown
- [9.124.220.105])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  7 Apr 2025 14:31:43 +0000 (GMT)
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Amit Machhiwal <amachhiw@linux.ibm.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 2/2] vfio/spapr: Fix L2 crash with PCI device passthrough
- with L2 guest memory > 128G
-Date: Mon,  7 Apr 2025 20:01:19 +0530
-Message-ID: <20250407143119.1304513-2-amachhiw@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250407143119.1304513-1-amachhiw@linux.ibm.com>
-References: <20250407143119.1304513-1-amachhiw@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1u1nkV-0001y0-Ro; Mon, 07 Apr 2025 10:46:55 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1u1nkT-0001We-Ll; Mon, 07 Apr 2025 10:46:55 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-7369ce5d323so3481812b3a.1; 
+ Mon, 07 Apr 2025 07:46:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1744037211; x=1744642011; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7LIdU2kK//yLHKRwtXpESmYMpQAS4hvFafVc/W+LxT4=;
+ b=hWOzyr1Gk5bTWjlHxlaJDZsd97gfpLlOzrhIjmYlQ/4g+TsPyvorR+fea7uytUbQYY
+ Auml8zIsHRZiTCkPP/LK9P/Mwtj5SZMz9F8FH7RUEwlR7XOCyCfTKbxueYp++mJZg/Kk
+ cHgCDw30VfpENid1prkHiW5qrRALD93WVwd1aMCBsf0EoceoPW80wgBVPrdXALaIdrpk
+ DRXa/vdg8WeGxIFFCkCf8n5CtyQR2DvwQJ+ABf+/fYSnNH0QINuwExUB2bVdzqFLBiqb
+ dPbMmqWTez2luP3JVyN/7FDYbB2StNdUQfU45G0kaBdgrR1zJaevgR7cYSV+lBn73tw5
+ FOPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744037211; x=1744642011;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7LIdU2kK//yLHKRwtXpESmYMpQAS4hvFafVc/W+LxT4=;
+ b=Sqy2itJTwlqUTC2LKE38cdDhfHkkvyZ3oLwQafxvd4wcMpmO8uMJM65Bieg9pC26WL
+ eWqOW5Loj1XWmk2/5GVae1SwfEOa+pWYdrVIE6nXIsSKfoTFdoV/SRiJN2R+KINsvVWg
+ 6g8PFXOtt0NSTKSsN1KoLMtfPQfeIZqU5/vc0XkincaB4HcW3heuFhxONndo7E+ccNF/
+ 1xkCTSgsnNpAX7TDAmIjaIquqwNdJWYb4bii4Towd6fbpjGeV6Mx6y+QigoaGzLqPhDp
+ RDtE6SNsn4Upm5J+hLhPCjmfaP9lIqfjpqdyGnPQuLbDjU7W5LqGn5rooLbKXPnRJSHl
+ +JHw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV+K/Xxg2CHIiaU2WyrOqmygTZ+2OUWoB2Dsq15lGiibc2H44vkIW7J/EAnG0eZuKZAX0nFnUTAZg==@nongnu.org,
+ AJvYcCVJeuekPjcnm5eSMQN04OI3IqAg4u5t0fT82bBRWjcDtixslYwt2ARBcwE/bluTzmvCZRO8NHJRr07Q8w==@nongnu.org,
+ AJvYcCXPfExvKUhOcKIrel+tpil8uRAIoGV6k5NJyJiy6grjkLEedqS5a0OJ7s87Sq3MGNJ7PntnUDY52PPydw==@nongnu.org
+X-Gm-Message-State: AOJu0YwOJ5/cxshkPo9Sx4LfJChVxW0oCnx9wDrps6mskJQek3k2X12Q
+ VGeeW/enLStwlo+bOv5tkv8N1+K8U5vuZHuPOR+80tvDj5FPSM3e8wE2zUNy
+X-Gm-Gg: ASbGncu2MQ+dTcVvexQAeC8EePrVdXp4vT4xmRie2Mc0lalQLqEB7NXnp2D9bmQGJPH
+ u1sHRYQwBFDoFt172PNQ38wrNBD/q8gBRTKeAb7418BH/7sfUqEcODy6yJ9PK2TAVkcF5Ir8iJh
+ 0Jo7vSuL3Ja5Cg8FyjZbUfOEbgJ+4JmtInGZ/6VEzbPCFB9G2eyxUu1t9FFaqJedXvSQpm7THEs
+ BMmOgZDDQnKmVH/DuHBArup0owsom72A27Uu/bp6/sPRqs40kWBQRweFB13AwK8ZjdFIh0QeL61
+ SM4womsN/zu2X1Q7lNvScCcq+v2DstGZGcf2v7W+525ICT6n8rzTqOQsheXIyg==
+X-Google-Smtp-Source: AGHT+IGOpMd+zixBjwH+ZUX9bocsp8GVd//iJoCVWf/G57iHw/hiumEIqHCi5j6XW6VB9vzy8CNMlQ==
+X-Received: by 2002:a05:6a00:18a1:b0:736:4a5b:7f08 with SMTP id
+ d2e1a72fcca58-739e716248amr14323576b3a.22.1744037210463; 
+ Mon, 07 Apr 2025 07:46:50 -0700 (PDT)
+Received: from localhost.localdomain ([240d:1a:3b6:8b00:8768:486:6a8e:e855])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-739d97ef3c2sm8856960b3a.59.2025.04.07.07.46.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Apr 2025 07:46:49 -0700 (PDT)
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Kohei Tokunaga <ktokunaga.mail@gmail.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz <groug@kaod.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-arm@nongnu.org
+Subject: [PATCH 00/10] Enable QEMU to run on browsers
+Date: Mon,  7 Apr 2025 23:45:51 +0900
+Message-Id: <cover.1744032780.git.ktokunaga.mail@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: E7dr5Tu1YWv9iWk-juZNOasrA53IEUQn
-X-Proofpoint-ORIG-GUID: KKZfPr7GptQtGJn8b-6mUuib0TsfP9Lm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-07_04,2025-04-03_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=999 phishscore=0 mlxscore=0 malwarescore=0 suspectscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502280000 definitions=main-2504070102
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=amachhiw@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 07 Apr 2025 11:14:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,108 +113,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An L2 KVM guest fails to boot inside a pSeries LPAR when booted with a
-memory more than 128 GB and PCI device passthrough. The L2 guest also
-crashes when it is booted with a memory greater than 128 GB and a PCI
-device is hotplugged later.
+This patch series enables QEMU's system emulator to run in a browser using
+Emscripten.
+It includes implementations and workarounds to address browser environment
+limitations, as shown in the following.
 
-The issue arises from a conditional check for `levels > 1` in
-`spapr_tce_create_table()` within L1 KVM. This check is meant to prevent
-multi-level TCEs, which are not supported by the PowerVM hypervisor. As
-a result, when QEMU makes a `VFIO_IOMMU_SPAPR_TCE_CREATE` ioctl call
-with `levels > 1`, it triggers the conditional check and returns
-`EINVAL`, causing the guest to crash with the following errors:
+# New TCG Backend for Browsers
 
- 2025-03-04T06:36:36.133117Z qemu-system-ppc64: Failed to create a window, ret = -1 (Invalid argument)
- 2025-03-04T06:36:36.133176Z qemu-system-ppc64: Failed to create SPAPR window: Invalid argument
- qemu: hardware error: vfio: DMA mapping failed, unable to continue
+A new TCG backend translates IR instructions into Wasm instructions and runs
+them using the browser's WebAssembly APIs (WebAssembly.Module and
+WebAssembly.instantiate). To minimize compilation overhead and avoid hitting
+the browser's limitation of the number of instances, this backend integrates
+a forked TCI. TBs run on TCI by default, with frequently executed TBs
+compiled into WebAssembly.
 
-Fix this by checking the supported DDW "levels" returned by the
-VFIO_IOMMU_SPAPR_TCE_GET_INFO ioctl before attempting the TCE create
-ioctl in KVM.
+# Workaround for Running 64-bit Guests
 
-The patch has been tested on KVM guests with memory configurations of up
-to 390GB, and 450GB on PowerVM and bare-metal environments respectively.
+The current implementation uses Wasm's 32-bit memory model, even though Wasm
+supports 64-bit variables and instructions. This patch explores implementing
+TCG 64-bit instructions while leveraging SoftMMU for address translation. To
+enable 64-bit guest support in Wasm today, it was necessary to partially
+revert recent changes that removed support for different pointer widths
+between the host and guest (e.g., commits
+a70af12addd9060fdf8f3dbd42b42e3072c3914f and
+bf455ec50b6fea15b4d2493059365bf94c706273) when compiling with
+Emscripten. While this serves as a temporary workaround, a long-term
+solution could involve adopting Wasm's 64-bit memory model once it gains
+broader support, as it is currently not widely adopted (e.g., unsupported by
+Safari and libffi). Feedback and suggestions on this approach are welcome.
 
-Link: https://lore.kernel.org/qemu-devel/20250404091721.2653539-1-amachhiw@linux.ibm.com/
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
----
- hw/vfio/spapr.c | 36 +++++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+# Emscripten-Based Coroutine Backend
 
-diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 4f2858b43f36..bcc6fe56e76e 100644
---- a/hw/vfio/spapr.c
-+++ b/hw/vfio/spapr.c
-@@ -26,6 +26,7 @@ typedef struct VFIOSpaprContainer {
-     VFIOContainer container;
-     MemoryListener prereg_listener;
-     QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
-+    unsigned int levels;
- } VFIOSpaprContainer;
- 
- OBJECT_DECLARE_SIMPLE_TYPE(VFIOSpaprContainer, VFIO_IOMMU_SPAPR);
-@@ -236,9 +237,11 @@ static int vfio_spapr_create_window(VFIOContainer *container,
- {
-     int ret = 0;
-     VFIOContainerBase *bcontainer = &container->bcontainer;
-+    VFIOSpaprContainer *scontainer = container_of(container, VFIOSpaprContainer,
-+                                                  container);
-     IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
-     uint64_t pagesize = memory_region_iommu_get_min_page_size(iommu_mr), pgmask;
--    unsigned entries, bits_total, bits_per_level, max_levels;
-+    unsigned entries, bits_total, bits_per_level, max_levels, ddw_levels;
-     struct vfio_iommu_spapr_tce_create create = { .argsz = sizeof(create) };
-     long rampagesize = qemu_minrampagesize();
- 
-@@ -291,16 +294,29 @@ static int vfio_spapr_create_window(VFIOContainer *container,
-      */
-     bits_per_level = ctz64(qemu_real_host_page_size()) + 8;
-     create.levels = bits_total / bits_per_level;
--    if (bits_total % bits_per_level) {
--        ++create.levels;
--    }
--    max_levels = (64 - create.page_shift) / ctz64(qemu_real_host_page_size());
--    for ( ; create.levels <= max_levels; ++create.levels) {
--        ret = ioctl(container->fd, VFIO_IOMMU_SPAPR_TCE_CREATE, &create);
--        if (!ret) {
--            break;
-+
-+    ddw_levels = scontainer->levels;
-+    if (ddw_levels > 1) {
-+        if (bits_total % bits_per_level) {
-+            ++create.levels;
-         }
-+        max_levels = (64 - create.page_shift) / ctz64(qemu_real_host_page_size());
-+        for ( ; create.levels <= max_levels; ++create.levels) {
-+            ret = ioctl(container->fd, VFIO_IOMMU_SPAPR_TCE_CREATE, &create);
-+            if (!ret) {
-+                break;
-+            }
-+        }
-+    } else { /* ddw_levels == 1 */
-+        if (create.levels > ddw_levels) {
-+            error_setg(errp, "Host doesn't support multi-level TCE tables"
-+                       ". Use larger IO page size. Supported mask is 0x%lx",
-+                       bcontainer->pgsizes);
-+            return -EINVAL;
-+        }
-+        ret = ioctl(container->fd, VFIO_IOMMU_SPAPR_TCE_CREATE, &create);
-     }
-+
-     if (ret) {
-         error_setg_errno(errp, -ret, "Failed to create a window, ret = %d (%m)", ret);
-         return -errno;
-@@ -503,6 +519,8 @@ static bool vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
-         goto listener_unregister_exit;
-     }
- 
-+    scontainer->levels = info.ddw.levels;
-+
-     if (v2) {
-         bcontainer->pgsizes = info.ddw.pgsizes;
-         /*
+Emscripten does not support couroutine methods currently used by QEMU but
+provides a coroutine implementation called "fiber". This patch series
+introduces a coroutine backend using fiber. However, fiber does not support
+submitting coroutines to other threads. So this patch series modifies
+hw/9pfs/coth.h to disable this behavior when compiled with Emscripten.
+
+# Overview of build process
+
+This section provides an overview of the build process for compiling QEMU
+using Emscripten. Full instructions are available in the sample
+repository[1].
+
+To compile QEMU with Emscripten, the following dependencies are required.
+The emsdk-wasm32-cross.docker environment includes all necessary components
+and can be used as the build environment:
+
+- Emscripten SDK (emsdk) v3.1.50
+- Libraries cross-compiled with Emscripten (refer to
+  emsdk-wasm32-cross.docker for build steps)
+  - GLib v2.84.0
+  - zlib v1.3.1
+  - libffi v3.4.7
+  - Pixman v0.44.2
+
+QEMU can be compiled using Emscripten's emconfigure and emmake, which
+automatically set environment variables such as CC for targeting Emscripten.
+
+emconfigure configure --static --disable-tools --target-list=x86_64-softmmu
+emmake make -j$(nproc)
+
+This process generates the following files:
+
+- qemu-system-x86_64.js
+- qemu-system-x86_64.wasm
+- qemu-system-x86_64.worker.js
+
+Guest images can be packaged using Emscripten's file_packager.py tool.
+For example, if the images are stored in a directory named "pack", the
+following command packages them, allowing QEMU to access them through
+Emscripten's virtual filesystem:
+
+/path/to/file_packager.py qemu-system-x86_64.data --preload pack > load.js
+
+This process generates the following files:
+
+- qemu-system-x86_64.data
+- load.js
+
+Emscripten allows passing arguments to the QEMU command via the Module
+object in JavaScript:
+
+Module['arguments'] = [
+    '-nographic', '-m', '512M', '-accel', 'tcg,tb-size=500',
+    '-L', 'pack/',
+    '-drive', 'if=virtio,format=raw,file=pack/rootfs.bin',
+    '-kernel', 'pack/bzImage',
+    '-append', 'earlyprintk=ttyS0 console=ttyS0 root=/dev/vda loglevel=7',
+];
+
+The sample repository[1] provides a complete setup, including an HTML file
+that implements a terminal UI.
+
+[1] https://github.com/ktock/qemu-wasm-sample
+
+# Additional references
+
+- A talk at FOSDEM 2025:
+  https://fosdem.org/2025/schedule/event/fosdem-2025-6290-running-qemu-inside-browser/
+- Demo page on GitHub Pages: https://ktock.github.io/qemu-wasm-demo/
+
+Kohei Tokunaga (10):
+  various: Fix type conflict of GLib function pointers
+  various: Define macros for dependencies on emscripten
+  util/mmap-alloc: Add qemu_ram_mmap implementation for emscripten
+  util: Add coroutine backend for emscripten
+  meson: Add wasm build in build scripts
+  include/exec: Allow using 64bit guest addresses on emscripten
+  tcg: Add a TCG backend for WebAssembly
+  hw/9pfs: Allow using hw/9pfs with emscripten
+  gitlab: Enable CI for wasm build
+  MAINTAINERS: Update MAINTAINERS file for wasm-related files
+
+ .gitlab-ci.d/buildtest-template.yml           |   27 +
+ .gitlab-ci.d/buildtest.yml                    |    9 +
+ .gitlab-ci.d/container-cross.yml              |    5 +
+ MAINTAINERS                                   |   11 +
+ accel/tcg/cputlb.c                            |    8 +-
+ block/file-posix.c                            |   18 +
+ configs/meson/emscripten.txt                  |    6 +
+ configure                                     |    7 +
+ fsdev/file-op-9p.h                            |    3 +
+ fsdev/meson.build                             |    2 +-
+ hw/9pfs/9p-util-stub.c                        |   43 +
+ hw/9pfs/9p-util.h                             |   18 +
+ hw/9pfs/9p.c                                  |    3 +
+ hw/9pfs/coth.h                                |   12 +
+ hw/9pfs/meson.build                           |    2 +
+ hw/riscv/riscv_hart.c                         |    9 +-
+ include/accel/tcg/getpc.h                     |    2 +-
+ include/exec/tlb-common.h                     |   14 +-
+ include/exec/vaddr.h                          |   11 +
+ include/qemu/atomic.h                         |    4 +
+ include/qemu/cacheflush.h                     |    3 +-
+ include/tcg/helper-info.h                     |    4 +-
+ include/tcg/tcg.h                             |    2 +-
+ meson.build                                   |   30 +-
+ meson_options.txt                             |    2 +-
+ os-posix.c                                    |    5 +
+ qom/object.c                                  |    5 +-
+ scripts/meson-buildoptions.sh                 |    2 +-
+ target/arm/helper.c                           |    4 +-
+ tcg/meson.build                               |    5 +
+ tcg/tcg.c                                     |   26 +-
+ tcg/wasm32.c                                  | 1260 +++++
+ tcg/wasm32.h                                  |   39 +
+ tcg/wasm32/tcg-target-con-set.h               |   18 +
+ tcg/wasm32/tcg-target-con-str.h               |    8 +
+ tcg/wasm32/tcg-target-has.h                   |  102 +
+ tcg/wasm32/tcg-target-mo.h                    |   12 +
+ tcg/wasm32/tcg-target-opc.h.inc               |    4 +
+ tcg/wasm32/tcg-target-reg-bits.h              |   12 +
+ tcg/wasm32/tcg-target.c.inc                   | 4484 +++++++++++++++++
+ tcg/wasm32/tcg-target.h                       |   65 +
+ .../dockerfiles/emsdk-wasm32-cross.docker     |  145 +
+ util/cacheflush.c                             |    3 +-
+ util/coroutine-fiber.c                        |  127 +
+ util/mmap-alloc.c                             |   18 +
+ 45 files changed, 6561 insertions(+), 38 deletions(-)
+ create mode 100644 configs/meson/emscripten.txt
+ create mode 100644 hw/9pfs/9p-util-stub.c
+ create mode 100644 tcg/wasm32.c
+ create mode 100644 tcg/wasm32.h
+ create mode 100644 tcg/wasm32/tcg-target-con-set.h
+ create mode 100644 tcg/wasm32/tcg-target-con-str.h
+ create mode 100644 tcg/wasm32/tcg-target-has.h
+ create mode 100644 tcg/wasm32/tcg-target-mo.h
+ create mode 100644 tcg/wasm32/tcg-target-opc.h.inc
+ create mode 100644 tcg/wasm32/tcg-target-reg-bits.h
+ create mode 100644 tcg/wasm32/tcg-target.c.inc
+ create mode 100644 tcg/wasm32/tcg-target.h
+ create mode 100644 tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+ create mode 100644 util/coroutine-fiber.c
+
 -- 
-2.49.0
+2.25.1
 
 
