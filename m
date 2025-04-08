@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50749A7F5FE
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E95F2A7F5F0
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:21:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u23Gj-0007jY-0C; Tue, 08 Apr 2025 03:21:13 -0400
+	id 1u23GE-0007H3-6q; Tue, 08 Apr 2025 03:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fy-0007EK-0L
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fp-0007DK-44
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fo-0001Ym-Ui
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fl-0001Yz-G4
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1744096810;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ey537CP9KODfgeheYfikuZH8NlyoNO4IdrjUo1g1TqY=;
- b=UDhmpgHvJIaeWoXKwUJkTWmXZwFo7EesZCt72Vmxj1eCZMikl9NfTd+/gnSpA68ln2jVHm
- wnPgm597IptLoyItRnGswu/TadWskcuOjiC9QxKKMkuKTCmUS4aX4h+qnI9qbt+l6qxD/d
- vwLnbTVXfbm8gtWVk11jQ/KceiLFSG8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Wxpqffr6DvwyJjKsnnffuPMNt7OhJCq10F8b8ZlVabw=;
+ b=hk5F7PAH5gsHGzIq+hWlVfM0FR5HWrY6FmjDr4Jtn+rAwBdRu93X26DAvbCmc8QOx3q/KT
+ ggd23FunBJzWTzQmktV8p19U12u9H9tcL6vMoq1UEArz/erUoFYtF7+iY66jhbC5t82WUd
+ 8SfLimSutcBffMBdkHtlrtFrw5hjs9U=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-2hG4nwOYMZuNHRvIJeFRmQ-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-578-rjRkZ6hKPIWbQH88WKXniA-1; Tue,
  08 Apr 2025 03:20:08 -0400
-X-MC-Unique: 2hG4nwOYMZuNHRvIJeFRmQ-1
-X-Mimecast-MFC-AGG-ID: 2hG4nwOYMZuNHRvIJeFRmQ_1744096807
+X-MC-Unique: rjRkZ6hKPIWbQH88WKXniA-1
+X-Mimecast-MFC-AGG-ID: rjRkZ6hKPIWbQH88WKXniA_1744096807
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9B3301800349
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5AF721956070
  for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:07 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 50FBF1955DCE
+ id 1795C195609D
  for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:07 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 040DD21E65DC; Tue, 08 Apr 2025 09:20:02 +0200 (CEST)
+ id 0855C21E65DF; Tue, 08 Apr 2025 09:20:02 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	Eric Blake <eblake@redhat.com>
-Subject: [PULL 05/11] docs/devel/qapi-code-gen: Improve the part on
- qmp-example directive
-Date: Tue,  8 Apr 2025 09:19:55 +0200
-Message-ID: <20250408072001.2518323-6-armbru@redhat.com>
+Subject: [PULL 06/11] docs/sphinx/qmp_lexer: Generalize elision syntax
+Date: Tue,  8 Apr 2025 09:19:56 +0200
+Message-ID: <20250408072001.2518323-7-armbru@redhat.com>
 In-Reply-To: <20250408072001.2518323-1-armbru@redhat.com>
 References: <20250408072001.2518323-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.32,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,64 +84,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Accept "... lorem ipsum ..."  in addition to "...".
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250404121413.1743790-6-armbru@redhat.com>
+Message-ID: <20250404121413.1743790-7-armbru@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- docs/devel/qapi-code-gen.rst | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ docs/devel/qapi-code-gen.rst    | 6 ++++--
+ docs/sphinx/qmp_lexer.py        | 2 +-
+ tests/qapi-schema/doc-good.json | 2 +-
+ tests/qapi-schema/doc-good.out  | 2 +-
+ tests/qapi-schema/doc-good.txt  | 2 +-
+ 5 files changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
-index ad517349fc..25a46fafb6 100644
+index 25a46fafb6..231cc0fecf 100644
 --- a/docs/devel/qapi-code-gen.rst
 +++ b/docs/devel/qapi-code-gen.rst
-@@ -1038,20 +1038,15 @@ default to "Example:".
- A simple QMP example::
+@@ -1029,7 +1029,9 @@ used.
+ QMP Examples can be added by using the ``.. qmp-example::`` directive.
+ In its simplest form, this can be used to contain a single QMP code
+ block which accepts standard JSON syntax with additional server
+-directionality indicators (``->`` and ``<-``), and elisions (``...``).
++directionality indicators (``->`` and ``<-``), and elisions.  An
++elision is commonly ``...``, but it can also be or a pair of ``...``
++with text in between.
  
-   # .. qmp-example::
--  #    :title: Using query-block
-   #
--  #    -> { "execute": "query-block" }
--  #    <- { ... }
-+  #     -> { "execute": "query-name" }
-+  #     <- { "return": { "name": "Fred" } }
- 
- More complex or multi-step examples where exposition is needed before
- or between QMP code blocks can be created by using the ``:annotated:``
- directive option.  When using this option, nested QMP code blocks must
- be entered explicitly with rST's ``::`` syntax.
- 
--Highlighting in non-QMP languages can be accomplished by using the
--``.. code-block:: lang`` directive, and non-highlighted text can be
--achieved by omitting the language argument.
--
- For example::
- 
-   # .. qmp-example::
-@@ -1061,11 +1056,21 @@ For example::
-   #    This is a more complex example that can use
-   #    ``arbitrary rST syntax`` in its exposition::
-   #
--  #      -> { "execute": "query-block" }
--  #      <- { ... }
-+  #     -> { "execute": "query-block" }
-+  #     <- { "return": [
-+  #             {
-+  #               "device": "ide0-hd0",
-+  #               ...
-+  #             }
-+  #             ...
-+  #          ] }
+ Optionally, a plaintext title may be provided by using the ``:title:``
+ directive option.  If the title is omitted, the example title will
+@@ -1062,7 +1064,7 @@ For example::
+   #               "device": "ide0-hd0",
+   #               ...
+   #             }
+-  #             ...
++  #             ... more ...
+   #          ] }
    #
    #    Above, lengthy output has been omitted for brevity.
+diff --git a/docs/sphinx/qmp_lexer.py b/docs/sphinx/qmp_lexer.py
+index a59de8a079..1bd1b81b70 100644
+--- a/docs/sphinx/qmp_lexer.py
++++ b/docs/sphinx/qmp_lexer.py
+@@ -24,7 +24,7 @@ class QMPExampleMarkersLexer(RegexLexer):
+         'root': [
+             (r'-> ', token.Generic.Prompt),
+             (r'<- ', token.Generic.Prompt),
+-            (r' ?\.{3} ?', token.Generic.Prompt),
++            (r'\.{3}( .* \.{3})?', token.Generic.Prompt),
+         ]
+     }
  
-+Highlighting in non-QMP languages can be accomplished by using the
-+``.. code-block:: lang`` directive, and non-highlighted text can be
-+achieved by omitting the language argument.
-+
+diff --git a/tests/qapi-schema/doc-good.json b/tests/qapi-schema/doc-good.json
+index 0a4f139f83..14b808f909 100644
+--- a/tests/qapi-schema/doc-good.json
++++ b/tests/qapi-schema/doc-good.json
+@@ -212,7 +212,7 @@
+ #
+ #    -> "this example"
+ #
+-#    <- "has no title"
++#    <- ... has no title ...
+ ##
+ { 'command': 'cmd-boxed', 'boxed': true,
+   'data': 'Object',
+diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
+index 5773f1dd6d..dc8352eed4 100644
+--- a/tests/qapi-schema/doc-good.out
++++ b/tests/qapi-schema/doc-good.out
+@@ -217,7 +217,7 @@ another feature
  
- Examples of complete definition documentation::
+    -> "this example"
  
+-   <- "has no title"
++   <- ... has no title ...
+ doc symbol=EVT_BOXED
+     body=
+ 
+diff --git a/tests/qapi-schema/doc-good.txt b/tests/qapi-schema/doc-good.txt
+index cb37db606a..17a1d56ef1 100644
+--- a/tests/qapi-schema/doc-good.txt
++++ b/tests/qapi-schema/doc-good.txt
+@@ -264,7 +264,7 @@ Example::
+ 
+    -> "this example"
+ 
+-   <- "has no title"
++   <- ... has no title ...
+ 
+ 
+ "EVT_BOXED" (Event)
 -- 
 2.48.1
 
