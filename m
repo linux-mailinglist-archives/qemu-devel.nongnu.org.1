@@ -2,73 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BB7A81079
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 17:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F313CA81235
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 18:25:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2B7O-0002v4-Ph; Tue, 08 Apr 2025 11:44:06 -0400
+	id 1u2Be2-0006sI-OK; Tue, 08 Apr 2025 12:17:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u2B7C-0002ro-PB
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 11:43:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
+ id 1u2BIa-0005TK-3H; Tue, 08 Apr 2025 11:55:40 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u2B7B-0004Nt-CP
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 11:43:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744127031;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HxBxRwAYyLNmXovfcW1/77YZLpfXHuziDa/t1gvt3AY=;
- b=B8v+Np2cROiprw1R+3tZQGj3AnHZg2FlBxqyB9tmkXsVyVCdBJPSy15BkJ8q2uRmDk8tTz
- adR3QDnaVT/NGFqXme9utiAUyEUoLLTT4E9/bMDe7PIygBRffutAjh5pYwzW1c4bTn0eVy
- N7rCCixKo2C8PQduJpe8ae01RrB/z4U=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-mo1TYGtUPE2GdFU7aaDg2g-1; Tue,
- 08 Apr 2025 11:43:45 -0400
-X-MC-Unique: mo1TYGtUPE2GdFU7aaDg2g-1
-X-Mimecast-MFC-AGG-ID: mo1TYGtUPE2GdFU7aaDg2g_1744127021
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 52163180AF52; Tue,  8 Apr 2025 15:43:41 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.136])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A5AC5180B487; Tue,  8 Apr 2025 15:43:39 +0000 (UTC)
-Date: Tue, 8 Apr 2025 11:43:38 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Pinku Deb Nath <prantoran@gmail.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6] block/file-posix.c: Use pwritev2() with RWF_DSYNC for
- FUA
-Message-ID: <20250408154338.GD550845@fedora>
-References: <20250407154730.23008-1-prantoran@gmail.com>
+ (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
+ id 1u2BIX-0005qS-DU; Tue, 08 Apr 2025 11:55:39 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 538CSaSw018465;
+ Tue, 8 Apr 2025 15:55:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=zu0Zyc6+VK7paPNvMy5DGu8gEpSq
+ Tt39xgVb2sKPlpA=; b=QWDKUbJt7Yhfgs4we86bhcYUu7+Z6wab9EOfFs73qFKZ
+ RU6+oTkvgIemaGTxyXly4oAyln5zILJe8NbKLXzuvOc+ysrAaquqiyB+/j5QX1Nq
+ iHAurJpso+14msT7czyKetUpJUb2RNBoJkunoQCGXMRxyeTGRfULjR7WAkpXfJzJ
+ bIG1rSY0WddNHHLTKJfWMVlN2BP599DxYdGtBDkf+BlX2VQcZMQ8VGC6rzXCBkWd
+ Wx9zhIif87wI71cLrbrR8Y6118lLb8ZP9nKaEz79C4AaZ612tSg2OF3ZK1WDyCjt
+ Ex4CcJEsG8J5IO573hkgrk/ayimOqm9bqqfcylwf8g==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45w3u3122p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Apr 2025 15:55:32 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 538C4qlB014404;
+ Tue, 8 Apr 2025 15:55:31 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45ufunkb9e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Apr 2025 15:55:31 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
+ [10.39.53.233])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 538FtUOx29295354
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Apr 2025 15:55:30 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0180F5804E;
+ Tue,  8 Apr 2025 15:55:30 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 74A5C5803F;
+ Tue,  8 Apr 2025 15:55:28 +0000 (GMT)
+Received: from fedora-workstation.ibmuc.com (unknown [9.61.125.94])
+ by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  8 Apr 2025 15:55:28 +0000 (GMT)
+From: Zhuoying Cai <zycai@linux.ibm.com>
+To: thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
+ pbonzini@redhat.com
+Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, jrossi@linux.ibm.com,
+ fiuczy@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ farman@linux.ibm.com, iii@linux.ibm.com, qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org, zycai@linux.ibm.com
+Subject: [PATCH v1 00/24] Secure IPL Support for SCSI Scheme of
+ virtio-blk/virtio-scsi Devices
+Date: Tue,  8 Apr 2025 11:55:02 -0400
+Message-ID: <20250408155527.123341-1-zycai@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="z/PUxPJMfkpIMmxa"
-Content-Disposition: inline
-In-Reply-To: <20250407154730.23008-1-prantoran@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 49-MZHEoiaq95V9jrI_kbKfIS4n0NiCO
+X-Proofpoint-ORIG-GUID: 49-MZHEoiaq95V9jrI_kbKfIS4n0NiCO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-08_06,2025-04-08_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ spamscore=0 adultscore=0 suspectscore=0 mlxlogscore=999 bulkscore=0
+ clxscore=1011 malwarescore=0 mlxscore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504080107
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=zycai@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.845,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 08 Apr 2025 12:17:32 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,75 +108,290 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+# Description
 
---z/PUxPJMfkpIMmxa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch series is an external requirement by Linux distribution
+partners to verify secure IPL process. Additional secure IPL checks are
+also included in this series to address security holes in the original
+secure IPL design to prevent malicious actors to boot modified or
+unsigned code despite secure IPL being enforced.
 
-On Mon, Apr 07, 2025 at 08:47:30AM -0700, Pinku Deb Nath wrote:
-> Full Unit Access (FUA) is an optimization where a disk write with the
-> flag set will be persisted to disk immediately instead of potentially
-> remaining in the disk's write cache.
->=20
-> This commit address the todo task
-> for using pwritev2() with RWF_DSYNC in the thread pool section of
-> raw_co_prw(), if pwritev2() with RWF_DSYNC is available in the host,
-> which is always the case for Linux kernel >=3D 4.7.
->=20
-> The intent for FUA is indicated with the BDRV_REQ_FUA flag.
-> The old code paths are preserved in case BDRV_REQ_FUA is off
-> or pwritev2() with RWF_DSYNC is not available.
->=20
-> Support for disk writes with FUA is handled in qemu_pwritev_fua(),
-> which uses pwritev2() with RWF_DSYNC if available, otherwise falls
-> back to pwritev2() with no flags followed by flush using
-> handle_aiocb_flush().
->=20
-> If pwritev2() is not implemented, then disk write in the linear FUA
-> will fallback to pwrite() + handle_aiocb_flush().
->=20
-> Signed-off-by: Pinku Deb Nath <prantoran@gmail.com>
->=20
-> ---
->=20
-> v5:
-> - Use pwritev for unsupported OSes
->=20
-> v4:
-> - Add fallback when qemu_pwritev_fua() returns ENOSYS
-> - Similar fallback was not added for handle_aiocb_rw_vector()
-> since there is a preadv_present check in handle_aiocb_rw()
->=20
-> v3:
-> - Changed signature to add fd, iov, nr_iov
-> - Return -ENOSYS for non-Linux hosts
->=20
-> v2:
-> - Moved handle_aiocb_flush() into qemu_pwritev_fua()
-> - In handle_aiocb_rw_linear(), iovec with iovcnt=3D1 is created
-> based on the assumption that there will be only one buffer
-> ---
->  block/file-posix.c | 68 ++++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 56 insertions(+), 12 deletions(-)
+Secure IPL is enabled when the QEMU options for secure IPL are specified
+in the command line.
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+During this process, additional security checks are performed to ensure
+system integrity.
 
---z/PUxPJMfkpIMmxa
-Content-Type: application/pgp-signature; name=signature.asc
+As components are loaded from disk, DIAG 508 subcode 2 performs
+signature verification if a signature entry is identified. Upon
+successful verification, DIAG 320 subcode 2 will request the
+corresponding certificate from QEMU key store to the BIOS.
 
------BEGIN PGP SIGNATURE-----
+Secure IPL will continue until all the components are loaded if no error
+occurs during True secure IPL mode or in Audit mode (see explanation below).
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmf1RCoACgkQnKSrs4Gr
-c8jIMgf/SenIgQ+5dvJ8YwwtaxYZCQg8nSQbYsT379L1OS/hSh7IJqUq9Mou2+cC
-Rn7NSwRr5kP/cY8Uo9uQWPgDRfZxT1L4L4i8pZZxR7Jb4n0fqM/1lvqK+soOwiYT
-g1Aqp3fxUEGER9MHkAY3rbYLXDqoW5EEeA3hb/HH3mRAFbV6yW5S9uw7UPNWSteI
-yiD9KSrcqGsGu9bxk17rb0ZcWvTdHopcEfx4JdS6hE8PxRMtwGysKvIr0KV2onTn
-FChck6LmwFqMk6rST6nd+3t/O5X8LuJeQRiMKWE1fdZQUGaemD9JEvpHVXC1/Jgh
-nBNO5BDm/VBfzmr9mCBrNH16QdGLsA==
-=Qh38
------END PGP SIGNATURE-----
+After that, an IPL Information report block (IIRB) is initialized
+immediately following an IPL Parameter Information Block. The IIRB is
+populated with information about the components, verification results
+and certificate data.
 
---z/PUxPJMfkpIMmxa--
+Finally, the guest system proceeds to boot.
+
+Only List-Directed-IPL contains the relevant zIPL data structures to
+perform secure IPL. This patch series only adds support for the SCSI
+scheme of virtio-blk/virtio-scsi devices. Secure IPL for other device
+types will be considered as follow-up work at a later date.
+
+** Note: “secure IPL” and “secure boot” are used interchangeably
+throughout the design. **
+
+# True Secure IPL Mode and Audit Mode
+
+## True Secure IPL Mode
+
+When secure IPL is enabled and certificates are provided, all the secure
+IPL checks will performed. The boot process will abort if any error
+occurs during the secure IPL checks.
+
+## Audit Mode
+
+When the secure IPL option is not selected and certificates are
+provided, all the secure IPL checks will still be performed. However,
+the boot process will continue if any errors occur, with messages logged
+to the console during the secure IPL checks.
+
+The audit mode is also considered as simulated secure IPL because it is
+less pervasive, and allows the guest to boot regardless of the secure
+checking results.
+
+# How to Enable Secure IPL
+
+## QEMU Build Notes
+
+When building QEMU, enable the cryptographic libraries.
+
+Run configure script in QEMU repository with either parameter:
+
+	./configure … --enable-nettle or --enable-gcrypt
+
+## Create Certificates via Openssl
+
+	openssl req -new -x509 -newkey rsa:2048 -keyout mykey.priv
+	-outform DER -out mycert.der -days 36500 -subj "/CN=My Name/"
+	-nodes
+
+Use an RSA private key for signing.
+
+It is recommended to store the certificate(s) in the /…/qemu/certs
+directory for easy identification.
+
+## Sign Kernel and Prepare zipl
+
+All actions must be performed on a KVM guest.
+
+Copy the sign-file script (located in Linux source repository),
+generated private key(s), and certificate(s) to guest’s file system.
+
+Sign guest image(s) and stage3 binary:
+
+	./sign-file sha256 mykey.priv mycert.der /boot/vmlinuz-…
+
+	./sign-file sha256 mykey.priv mycert.der /usr/lib/s390-tools/stage3.bin
+
+Run zipl with secure boot enabled.
+
+	zipl --secure 1 -V
+
+Guest image(s) are now signed, stored on disk, and can be verified.
+
+## New QEMU Command Options for Secure IPL
+
+To enable secure IPL and provide certificates for signature verification
+via QEMU command line.
+
+Enables secure IPL/boot, this option defaults to off if it is not
+provided for the command line options.
+
+	-secure-boot [on|off]
+
+Provides a path to either a directory or a single boot certificate. A
+colon may be used to delineate multiple paths.
+
+	-boot-certificates <file>
+
+Example:
+	qemu-system-s390x ... \
+	-secure-boot on \
+	-boot-certificates /.../qemu/certs:/another/path/cert.der
+
+Secure IPL command options overview:
+
+If neither the -secure-boot nor the -boot-certificates options are
+specified, the guest will boot in normal mode, and no security checks
+will be conducted.
+
+If the -secure-boot option is not specified or is set to off, and the
+-boot-certificates option is provided, the guest will boot in audit
+mode. In this mode, all security checks are performed; however, any
+errors encountered will not interrupt the boot process.
+
+If the -secure-boot option is set to on and the -boot-certificates
+option is provided, the guest will boot in true secure IPL mode. In this
+mode, all security checks are performed, and any errors encountered will
+terminate the boot process.
+  - If the -boot-certificates option is not provided in true secure IPL
+    mode, the boot process will fail for the corresponding device.
+
+## Constraints
+
+- certificates must be in X.509 DER format
+
+- only sha256 encryption is supported
+
+- only support for SCSI scheme of virtio-blk/virtio-scsi devices
+    - The boot process will terminate if secure boot is enabled without
+specifying a boot device.
+    - If enabling secure boot with multiple boot devices, any
+unsupported devices or non-eligible devices will cause the entire boot
+process terminating early with an error logged to the console.
+
+- attempting to perform secure IPL outside of these constraints will
+result in a failure.
+
+# DIAGNOSE 508 - KVM IPL Extensions
+
+Signature verification is performed during IPL via DIAG 508. Component
+address, component length, signature address and signature length are
+obtained in the BIOS and pass to DIAG 508 subcode 2 to perform signature
+verification in QEMU. If verification succeeds, DIAG 508 subcode 2
+(signature verification) will return the length and index of the
+certificate in the QemuCertificateStore that was used for verification.
+
+## Data Structures
+
+Diag508SignatureVerificationBlock (SVB) — stores addresses and
+lengths of the component and signature to be used for signature
+verification. Upon verification, an index and the length of the
+certificate used is stored.
+
+# QEMU and Libvirt Interface Discussion
+
+While libvirt provides a secure boot interface
+(https://libvirt.org/kbase/secureboot.html), it is not directly reusable
+for secure boot design on s390x.The current implementation appears to be
+designed for x86 systems, where secure boot is enabled via the
+<firmware> tag and keys can be specified using the <nvram> tag.
+
+	<os firmware='efi'>
+      	    <firmware>
+		<feature enabled='yes' name='enrolled-keys'/>
+		<feature enabled='yes' name='secure-boot'/>
+	    </firmware>
+	    <loader secure='yes' type='pflash'>...</loader>
+	    <nvram template='...'>...</nvram>
+	</os>
+
+We may be able to reuse some existing tags. However, there is no
+efficient way to provide certificates on the host file system for both
+QEMU and libvirt.
+
+Ideally, if the QEMU interface for secure IPL is acceptable, we could
+introduce new tags specifically for certificates on s390x or potentially
+add a new <secureboot> tag to enable secure boot and provide certificates.
+
+Below are my proposed designs for the secure boot interface in libvirt.
+
+Design #1
+
+	<os firmware='s390-ccw'>
+	    <type arch='s390x' machine='s390-ccw-virtio-9.2'>hvm</type>
+	    <firmware>
+		<feature enabled='yes' name='secure-boot'/>
+	    </firmware>
+	    <certificate path='path/to/cert:cert.der' />
+	    <boot dev='hd'/>
+	</os>
+
+Design #2
+
+	<os>
+	    <type arch='s390x' machine='s390-ccw-virtio-9.2'>hvm</type>
+	    <secureboot enabled='yes'>
+		<certificates path='path/to/cert:cert.der'/>
+	    </secureboot>
+	    <boot dev='hd'/>
+	</os>
+
+I would appreciate any suggestions or feedback on both QEMU and libvirt
+interface designs.
+
+Collin L. Walling (4):
+  s390x/diag: Introduce DIAG 320 for certificate store facility
+  s390x/diag: Refactor address validation check from diag308_parm_check
+  s390x/diag: Introduce DIAG 508 for secure IPL operations
+  s390x/diag: Implement DIAG 508 subcode 2 for signature verification
+
+Zhuoying Cai (20):
+  Add -boot-certificates /path/dir:/path/file option in QEMU command
+    line
+  hw/s390x/ipl: Create certificate store
+  s390x: Guest support for Certificate Store Facility (CS)
+  s390x/diag: Implement DIAG 320 subcode 1
+  s390x/diag: Implement DIAG 320 subcode 2
+  pc-bios/s390-ccw: Introduce IPL Information Report Block (IIRB)
+  pc-bios/s390-ccw: Define memory for IPLB and convert IPLB to pointers
+  hw/s390x/ipl: Add IPIB flags to IPL Parameter Block
+  hw/s390x/ipl: Set iplb->len to maximum length of IPL Parameter Block
+  s390x: Guest support for Secure-IPL Facility
+  pc-bios/s390-ccw: Refactor zipl_run()
+  pc-bios/s390-ccw: Refactor zipl_load_segment function
+  pc-bios/s390-ccw: Add signature verification for secure boot in audit
+    mode
+  s390x: Guest support for Secure-IPL Code Loading Attributes Facility
+    (SCLAF)
+  pc-bios/s390-ccw: Add additional security checks for secure boot
+  Add -secure-boot on|off option in QEMU command line
+  hw/s390x/ipl: Set IPIB flags for secure IPL
+  pc-bios/s390-ccw: Handle true secure IPL mode
+  pc-bios/s390-ccw: Handle secure boot with multiple boot devices
+  hw/s390x/ipl: Handle secure boot without specifying a boot device
+
+ hw/s390x/cert-store.c               | 249 ++++++++++
+ hw/s390x/cert-store.h               |  50 ++
+ hw/s390x/ipl.c                      |  65 ++-
+ hw/s390x/ipl.h                      |  12 +
+ hw/s390x/meson.build                |   1 +
+ hw/s390x/sclp.c                     |   2 +
+ include/hw/s390x/ipl/diag320.h      | 103 ++++
+ include/hw/s390x/ipl/diag508.h      |  42 ++
+ include/hw/s390x/ipl/qipl.h         |   9 +-
+ include/hw/s390x/sclp.h             |   4 +-
+ pc-bios/s390-ccw/bootmap.c          | 696 +++++++++++++++++++++++++++-
+ pc-bios/s390-ccw/bootmap.h          |   9 +
+ pc-bios/s390-ccw/iplb.h             | 188 +++++++-
+ pc-bios/s390-ccw/jump2ipl.c         |   6 +-
+ pc-bios/s390-ccw/main.c             | 111 ++++-
+ pc-bios/s390-ccw/netmain.c          |   8 +-
+ pc-bios/s390-ccw/s390-ccw.h         |  14 +
+ pc-bios/s390-ccw/sclp.c             |  51 ++
+ pc-bios/s390-ccw/sclp.h             |   7 +
+ qemu-options.hx                     |  19 +
+ system/vl.c                         |  43 ++
+ target/s390x/cpu_features.c         |   5 +
+ target/s390x/cpu_features.h         |   1 +
+ target/s390x/cpu_features_def.h.inc |   5 +
+ target/s390x/cpu_models.c           |   6 +
+ target/s390x/diag.c                 | 457 +++++++++++++++++-
+ target/s390x/gen-features.c         |   3 +
+ target/s390x/kvm/kvm.c              |  36 ++
+ target/s390x/s390x-internal.h       |   4 +
+ 29 files changed, 2150 insertions(+), 56 deletions(-)
+ create mode 100644 hw/s390x/cert-store.c
+ create mode 100644 hw/s390x/cert-store.h
+ create mode 100644 include/hw/s390x/ipl/diag320.h
+ create mode 100644 include/hw/s390x/ipl/diag508.h
+
+-- 
+2.49.0
 
 
