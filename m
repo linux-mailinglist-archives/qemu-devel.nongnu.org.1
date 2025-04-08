@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AED6A81529
+	by mail.lfdr.de (Postfix) with ESMTPS id 2394DA8152A
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 20:57:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2E79-0004Yp-GU; Tue, 08 Apr 2025 14:56:03 -0400
+	id 1u2E7B-0004ZI-JW; Tue, 08 Apr 2025 14:56:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E71-0004Xx-V8
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:55:57 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E74-0004Yn-MS
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:55:58 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E6x-0004Cx-Od
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:55:55 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43cebe06e9eso40398255e9.3
- for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 11:55:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E72-0004DE-7k
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:55:58 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3965c995151so3000197f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 11:55:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744138549; x=1744743349; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744138554; x=1744743354; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gHTmarhdzx/+kGuibyF5scVpYUQxoz4xhKrDhSMfcxQ=;
- b=tdE9NBVU7MaQwfuVml2H3+LQ9l/leoMiTqL7eegQLjFKHVwHlha5f0qesDdJ6/fJxn
- FtqqKNFpphYJILbX5YhMIVDTI+n37rqmZBmz/yxU+xmlFjBkylDMJNYv3fcTKk+HQfAg
- btKHgeQPhIb/g/f8lmMGvUiYkjZ/CfmbsP10Xee/U3ZRKqghspAvnMTHqeL2vsJR1qHk
- 4AG0J/5u8yyeCpy2EOIDVhbheU0himqsagt2F0CUN0UTjduJqafDqiM4c4nlRVdMJnG4
- Bl7qxRwdcZxVBpxUZ4pdYpFztCdeNoWg82/5cW5+SSKNVsw3P2DnN0s0fHJOQh0jt7cK
- FETQ==
+ bh=GGo0+5f/HLAe67bUnyFSuZNNk2QAFIW9Hf13M3Fh2as=;
+ b=CQ41GpPe57C4/TVDZA/mBMuzT8JxjzIEoTlG/fvFPVSeXVkT6pQO4KItMo3i5q9Ccj
+ LjKo/+1VtFAHU5rlhlRStkiIl+0DZ6TgayPeOQD90C8sGbQaLVuWkB6AS2MPXQSvcIqO
+ utmsvOL+wUwLkpVWVEZC8Qk+6+yiKKfXEI9n6GcNU2l0oH7vXH/LYYHar6HJdrdsiWKW
+ bBlIaYVBBq+zlIeHZL65TaFL3UGjJ3Y+kwTtKb4IpiSuzdSJlvrppa07jNUN9mGNBotd
+ hnmZDK0B1HkVKS5uJpdg7YVQHhPKjXsoKf8G24c00hICk7OxQ/OPJuUZVrkMe32M1fHq
+ uU6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744138549; x=1744743349;
+ d=1e100.net; s=20230601; t=1744138554; x=1744743354;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gHTmarhdzx/+kGuibyF5scVpYUQxoz4xhKrDhSMfcxQ=;
- b=SVWmGGlPV/efxXpR2uOe6+vpE/LtCpETYhemyc3dj8O4LXRJZZRwSuTxt5Qc5g/SYb
- 3UNpOs9k/vu1FidV6nLnxhoLQwxgTEsF9ZQqTAH8Tj6iadGBnOalh9w4hLEVuuQ8b5Js
- MesKIp1CiR+XOuH/OSny0hR41Zzj/22o+tKzSJBXg5OkUJB6GV9uIPMPgIWPENDbnpzP
- lKqfaIZDBw0yzeTmu+Xfbdh8WTB1ct5XHtsOQJlyfkRncLGGxGSzjG/2HIHDOrbIZ4Uo
- QRS5ytA4fmqv5PbiC6Ujd1MF3GpNxRJdSGRUO+BPbcK8Ew/cuAVlgRu/m8SgXRTT6opV
- VbHA==
-X-Gm-Message-State: AOJu0YzTCv3ejxHzUi7iD2pEllV+jfC1oeCytalU4kZCFjlp/yWw7QJs
- 7xOVw4jVYP5aGHc2JyjfIVH2ftc5C+z5+xAqkSicU4ar9PaQxLLaOl0i98gcAJw4J3Q34Vdp/28
- 0vno=
-X-Gm-Gg: ASbGnctVw58Hr3WrXneHtcSWdv6rPertrVQXSX08Ok7cmbvaNWT2Z5C5vEGlMxfhlQM
- iaDMxR1DNE/jGsfAwJp28J+Dxzy9E+0QFoWYlDCsI4yW+QNPRgHmraavJ6kLp1TDcElPhCvyLyu
- 2AslDKSL10WkW4L+1UU2vUJdSHbOVH2IzHo/LyfHEz09JoTcE1mZXPRy0imBiAxyC37+ZUfDi1I
- SPVSlg0jUhNkwOWA/lXp3SONIgTN7ahkD29BRUOjExyV+sEea3y572lcXS1ZwbkaUebHTsjS6YN
- pUySlAM4chN0ESre1YYhVNww56ci+0By03QvUGIzo/ZVS2E+iuYSQ0xfnqIU/1f3wu5uHWCRfad
- dUaZrTW7+sR7Vivma3i4=
-X-Google-Smtp-Source: AGHT+IFJOlxXwa9Kgu8VV1WYuWMSK2ul7z5prsya6O9gF+MlGeTbBPb7m0TCnG+TMaCEiIqTVPiASA==
-X-Received: by 2002:a05:600c:1c02:b0:43b:ca39:6c7d with SMTP id
- 5b1f17b1804b1-43f1ec7cd2dmr2584905e9.3.1744138549410; 
- Tue, 08 Apr 2025 11:55:49 -0700 (PDT)
+ bh=GGo0+5f/HLAe67bUnyFSuZNNk2QAFIW9Hf13M3Fh2as=;
+ b=Y+pN3ciFTxDk1E4UUjE8MnJED8253csgr1Zk9w4qverwTZAf7yqej65rVOYrpRlo2w
+ 2HwfHqp0BeSksUelmpDTgiS4LwIpplPNklthhTK6MI71KBCqGQYPHyCNwUFg7+hrto1z
+ Aq7r/+L/KN6BeFY77I5UMqhamouQCVfAHXUQzUj5R8Tjmeee8OAX6l8KsLEbxkAH1WaC
+ 1OWmumQPwXQ+h5jN1VrTKDqpFyNTww9d7KvTLhJEs006+emliFYjZdPe5PpNzNqmlnN2
+ EM6RPj7VsKsuzEsNY003lj/fisAcqt0ZcKIQwbTNnp/7266R16JW/+7jbOHpXlrXsQh6
+ iMGA==
+X-Gm-Message-State: AOJu0Yzk++RhquF4It8gN8vFImUgbl8a1guakQ1rdANLKNZd9zUK2vsF
+ B8o85TywD0df+O9nSmkSuI13EfoKcORWgwLlsrbNr09LrxgkTQLMBhsSLMEbAqXjQLp76B/OtGj
+ JTdI=
+X-Gm-Gg: ASbGnctyXAwNtL/Dnw9ciSX9gtOpb1/cDdaSf3pfT2OzKTEKni83axKQkZTr7m2QD2c
+ y2sHFPQxVdQ7nCMUM3GCF9qIRbr4F4eK9cXXxWwedb5FETzrn/Oj++pdAgc/qhJ20WG41NLyAxr
+ pgxyHrxoxdpFR2zn1p6GLpgD4ukZyt/SlevpNu09gOaWPVU/RkVv436hqH/HqmIxJIwRaqwW8CC
+ w9/0q4GZb2AqxKZjPaWeSCOw0RUy8RsDPvG4DLdW4LLigxYQ7dtPf5+6nnWC05yRpDDlHIOsjck
+ wWTcxYa3I0zRzFMMLjdQX1/Jen+ryDOA/HvdJ4redBbEDkzdR01CBU2erg/n+BDxLeceEPRn1d6
+ ZnMbXpWPhYcoyMpR0spffel5YD5X1XQ==
+X-Google-Smtp-Source: AGHT+IGCAtkpDt5w9hFPYZ1nAPjNJc0FSyDsi0b9c3LqV4P54gNKhipgPzy0E/9b/vZi/IDlPOonVA==
+X-Received: by 2002:a05:6000:1863:b0:39c:12ce:67d with SMTP id
+ ffacd0b85a97d-39d87aa1cc0mr292951f8f.9.1744138553973; 
+ Tue, 08 Apr 2025 11:55:53 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec1663046sm175470495e9.13.2025.04.08.11.55.48
+ 5b1f17b1804b1-43ec1f27a55sm173079115e9.2.2025.04.08.11.55.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 08 Apr 2025 11:55:48 -0700 (PDT)
+ Tue, 08 Apr 2025 11:55:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair.francis@wdc.com>,
+Cc: Zhang Chen <zhangckid@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/8] hw/core/machine: Fix -machine dumpdtb=file.dtb
-Date: Tue,  8 Apr 2025 20:55:32 +0200
-Message-ID: <20250408185538.85538-3-philmd@linaro.org>
+Subject: [PULL 3/8] docs/arm: Add apple HVF host for supported guest CPU type
+Date: Tue,  8 Apr 2025 20:55:33 +0200
+Message-ID: <20250408185538.85538-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250408185538.85538-1-philmd@linaro.org>
 References: <20250408185538.85538-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,60 +99,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joel Stanley <joel@jms.id.au>
+From: Zhang Chen <zhangckid@gmail.com>
 
-In commit 8fd2518ef2f8 ("hw: Centralize handling of -machine dumpdtb
-option") the call to dump was moved with respect to the init of the
-machine.  This resulted in the device tree missing parts of the machine
-description, depending on how they construct their device tree.
+In my test, latest QEMU already support Apple HVF for -cpu host and max.
 
-The arm virt machine is missing some PSCI nodes, while the riscv one
-is missing most of its content.
+From guest VM lscpu:
 
-Move the dump to after the notifiers have been run, allowing
-virt_machine_done to be called and the device tree to be fully
-populated.
+Architecture:             aarch64
+  CPU op-mode(s):         64-bit
+  Byte Order:             Little Endian
+CPU(s):                   11
+  On-line CPU(s) list:    0-10
+Vendor ID:                Apple
+  Model name:             -
+    Model:                0
+    Thread(s) per core:   1
+    Core(s) per socket:   11
+    Socket(s):            1
+    Stepping:             0x0
+    BogoMIPS:             48.00
+    Flags:                fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 asimddp sha512 asim
+                          dfhm dit uscat ilrcpc flagm ssbs sb paca pacg dcpodp flagm2 frint
 
-Fixes: 8fd2518ef2f8 ("hw: Centralize handling of -machine dumpdtb option")
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250401041509.719153-1-joel@jms.id.au>
+Signed-off-by: Zhang Chen <zhangckid@gmail.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20250401083102.72845-1-zhangckid@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/machine.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ docs/system/arm/virt.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index f52a4f2273b..63c6ef93d29 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1731,12 +1731,6 @@ void qdev_machine_creation_done(void)
-     phase_advance(PHASE_MACHINE_READY);
-     qdev_assert_realized_properly();
+diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
+index adf446c0a29..6a719b95863 100644
+--- a/docs/system/arm/virt.rst
++++ b/docs/system/arm/virt.rst
+@@ -70,11 +70,11 @@ Supported guest CPU types:
+ - ``cortex-a76`` (64-bit)
+ - ``cortex-a710`` (64-bit)
+ - ``a64fx`` (64-bit)
+-- ``host`` (with KVM only)
++- ``host`` (with KVM and HVF only)
+ - ``neoverse-n1`` (64-bit)
+ - ``neoverse-v1`` (64-bit)
+ - ``neoverse-n2`` (64-bit)
+-- ``max`` (same as ``host`` for KVM; best possible emulation with TCG)
++- ``max`` (same as ``host`` for KVM and HVF; best possible emulation with TCG)
  
--    /*
--     * If the user used -machine dumpdtb=file.dtb to request that we
--     * dump the DTB to a file,  do it now, and exit.
--     */
--    handle_machine_dumpdtb(current_machine);
--
-     /* TODO: once all bus devices are qdevified, this should be done
-      * when bus is created by qdev.c */
-     /*
-@@ -1750,6 +1744,12 @@ void qdev_machine_creation_done(void)
- 
-     notifier_list_notify(&machine_init_done_notifiers, NULL);
- 
-+    /*
-+     * If the user used -machine dumpdtb=file.dtb to request that we
-+     * dump the DTB to a file, do it now, and exit.
-+     */
-+    handle_machine_dumpdtb(current_machine);
-+
-     if (rom_check_and_register_reset() != 0) {
-         exit(1);
-     }
+ Note that the default is ``cortex-a15``, so for an AArch64 guest you must
+ specify a CPU type.
 -- 
 2.47.1
 
