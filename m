@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94375A81229
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 18:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB99A81238
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 18:26:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2Be3-0006sJ-03; Tue, 08 Apr 2025 12:17:51 -0400
+	id 1u2Be5-0006sL-DZ; Tue, 08 Apr 2025 12:17:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1u2BIc-0005UJ-2M; Tue, 08 Apr 2025 11:55:43 -0400
+ id 1u2BIf-0005VV-3T; Tue, 08 Apr 2025 11:55:45 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1u2BIa-0005s0-7v; Tue, 08 Apr 2025 11:55:41 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 538A6jfd029373;
- Tue, 8 Apr 2025 15:55:38 GMT
+ id 1u2BId-0005se-Fq; Tue, 08 Apr 2025 11:55:44 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 538D4iJW005761;
+ Tue, 8 Apr 2025 15:55:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=4Eb3DyixIvPG6SlUX
- tBXVlVG9B6zCRiscUROQhYTVM8=; b=AQ/xA5It5bnYspkeT0XgebsEpiiNlIzZb
- CNqJTzY+vtJ1D1fpjDzN+pIW07E7TYnZDrMOmW6WFCPpZFyopiFvHIxT9LDDzsAh
- 54PzVWPuP0Yu4gIHtGWXlgkTLkPaojZ0icCHqqaiXEz9si80aX7xN83IMOxT3bm6
- soi31zv/CAzXQb+lmJFSXL4eMQhbZLaRX+rPQONORaQscBgmAjcUOMM2hX2oQZOU
- 7Fc4fbyDIPDU29riHN2Mw2iokECvo2lLjnMnuXsl40wf+AqS7hK2/vaDh5UiIy1q
- Nz9aism6/DBVD7WWIsJP+2jgkeBOaHGv4vsoqxTwbe9D6ivmAdtkQ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45vnx0mhg1-1
+ :mime-version:references:subject:to; s=pp1; bh=y59yHsdD9HnYWIUlR
+ pBWECylzu6zQA0zTw9hn4BZD1c=; b=GRg9LPH0SCT7+rKrsPEVTpDxZib4j7whZ
+ aD029zNVCaTw8YoBQNOwbUkOvNEc4AexEqsvfcO4UvNgKyPkkiLUq2n9AB+BZtJF
+ ov68GYEvtf4on7K4XGRWdJSQSFFCj817dxqzbGnW6AVdqiGp23ivVjMbeg6B42/f
+ VwUq4QTdXj88P4cIclJvoXty6ktLakBjhuo5IDLnpBvIGRi9RXiHpr3Bh1TVrM2h
+ f+Ex1JwdUy2e9WZyKWNG91y0mf8J6cDEy6V3w+qieLFEW+EJWvH+a35C+HZvvFFp
+ zeSoNc+Fuk0n+/Wd95YF/UwBUBWgf3L91dAt4RNJu5iFu0dHEcQaA==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45vjvxnbsw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Apr 2025 15:55:38 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 538E1j8j018873;
- Tue, 8 Apr 2025 15:55:37 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45uhj2b1bh-1
+ Tue, 08 Apr 2025 15:55:40 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 538Cg1CB013858;
+ Tue, 8 Apr 2025 15:55:39 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45ufunkb9t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Apr 2025 15:55:37 +0000
+ Tue, 08 Apr 2025 15:55:39 +0000
 Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
  [10.39.53.233])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 538FtaYL21037724
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 538FtcXd23527948
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Apr 2025 15:55:36 GMT
+ Tue, 8 Apr 2025 15:55:38 GMT
 Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8A2A25804E;
+ by IMSVA (Postfix) with ESMTP id 2F72D5803F;
+ Tue,  8 Apr 2025 15:55:38 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B459458054;
  Tue,  8 Apr 2025 15:55:36 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 144275803F;
- Tue,  8 Apr 2025 15:55:35 +0000 (GMT)
 Received: from fedora-workstation.ibmuc.com (unknown [9.61.125.94])
  by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  8 Apr 2025 15:55:34 +0000 (GMT)
+ Tue,  8 Apr 2025 15:55:36 +0000 (GMT)
 From: Zhuoying Cai <zycai@linux.ibm.com>
 To: thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
  pbonzini@redhat.com
@@ -62,26 +62,26 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, jrossi@linux.ibm.com,
  fiuczy@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  farman@linux.ibm.com, iii@linux.ibm.com, qemu-s390x@nongnu.org,
  qemu-devel@nongnu.org, zycai@linux.ibm.com
-Subject: [PATCH v1 04/24] s390x/diag: Introduce DIAG 320 for certificate store
- facility
-Date: Tue,  8 Apr 2025 11:55:06 -0400
-Message-ID: <20250408155527.123341-5-zycai@linux.ibm.com>
+Subject: [PATCH v1 05/24] s390x/diag: Refactor address validation check from
+ diag308_parm_check
+Date: Tue,  8 Apr 2025 11:55:07 -0400
+Message-ID: <20250408155527.123341-6-zycai@linux.ibm.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408155527.123341-1-zycai@linux.ibm.com>
 References: <20250408155527.123341-1-zycai@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AzDDmquHJbIlmRXLUpgpi60DgWqtqbT9
-X-Proofpoint-ORIG-GUID: AzDDmquHJbIlmRXLUpgpi60DgWqtqbT9
+X-Proofpoint-ORIG-GUID: vRbSMGc1nVAZcymP9u1YnGMP9zOmJNTc
+X-Proofpoint-GUID: vRbSMGc1nVAZcymP9u1YnGMP9zOmJNTc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-08_06,2025-04-08_03,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=960 lowpriorityscore=0 phishscore=0 priorityscore=1501
- clxscore=1015 malwarescore=0 mlxscore=0 adultscore=0 spamscore=0
- bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 malwarescore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=842 impostorscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2502280000 definitions=main-2504080107
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=zycai@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -111,156 +111,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Collin Walling <walling@linux.ibm.com>
 
-DIAGNOSE 320 is introduced to support certificate store facility,
-which includes operations such as query certificate storage
-information and provide certificates in the certificate store.
+Create a function to validate the address parameter of DIAGNOSE.
 
-Currently, only subcode 0 is supported with this patch, which is
-used to query a bitmap of which subcodes are supported.
+Refactor the function for reuse in the next patch, which allows address
+validation in read or write operation of DIAGNOSE.
 
 Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
 ---
- hw/s390x/ipl.h                 |  1 +
- include/hw/s390x/ipl/diag320.h | 19 ++++++++++++++++++
- target/s390x/diag.c            | 36 ++++++++++++++++++++++++++++++++++
- target/s390x/kvm/kvm.c         | 14 +++++++++++++
- target/s390x/s390x-internal.h  |  2 ++
- 5 files changed, 72 insertions(+)
- create mode 100644 include/hw/s390x/ipl/diag320.h
+ hw/s390x/ipl.h      | 6 ++++++
+ target/s390x/diag.c | 4 +---
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
-index 8c2a442255..1bd73b4dc1 100644
+index 1bd73b4dc1..822535ad76 100644
 --- a/hw/s390x/ipl.h
 +++ b/hw/s390x/ipl.h
-@@ -17,6 +17,7 @@
- #include "cpu.h"
- #include "exec/address-spaces.h"
- #include "hw/qdev-core.h"
-+#include "hw/s390x/ipl/diag320.h"
- #include "hw/s390x/ipl/qipl.h"
- #include "qom/object.h"
+@@ -114,6 +114,12 @@ QEMU_BUILD_BUG_MSG(offsetof(S390IPLState, iplb) & 3, "alignment of iplb wrong");
+ #define S390_IPLB_MIN_FCP_LEN 384
+ #define S390_IPLB_MIN_QEMU_SCSI_LEN 200
  
-diff --git a/include/hw/s390x/ipl/diag320.h b/include/hw/s390x/ipl/diag320.h
-new file mode 100644
-index 0000000000..d6f70c65df
---- /dev/null
-+++ b/include/hw/s390x/ipl/diag320.h
-@@ -0,0 +1,19 @@
-+/*
-+ * S/390 DIAGNOSE 320 definitions and structures
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Zhuoying Cai <zycai@linux.ibm.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or (at
-+ * your option) any later version. See the COPYING file in the top-level
-+ * directory.
-+ */
++static inline bool diag_parm_addr_valid(uint64_t addr, size_t size, bool write)
++{
++    return address_space_access_valid(&address_space_memory, addr,
++                                      size, write, MEMTXATTRS_UNSPECIFIED);
++}
 +
-+#ifndef S390X_DIAG320_H
-+#define S390X_DIAG320_H
-+
-+#define DIAG_320_SUBC_QUERY_ISM     0
-+
-+#define DIAG_320_RC_OK              0x0001
-+
-+#endif
+ static inline bool iplb_valid_len(IplParameterBlock *iplb)
+ {
+     return be32_to_cpu(iplb->len) <= sizeof(IplParameterBlock);
 diff --git a/target/s390x/diag.c b/target/s390x/diag.c
-index da44b0133e..cb840e4b97 100644
+index cb840e4b97..c64b935c87 100644
 --- a/target/s390x/diag.c
 +++ b/target/s390x/diag.c
-@@ -192,3 +192,39 @@ out:
-         break;
+@@ -64,9 +64,7 @@ static int diag308_parm_check(CPUS390XState *env, uint64_t r1, uint64_t addr,
+         s390_program_interrupt(env, PGM_SPECIFICATION, ra);
+         return -1;
      }
- }
-+
-+void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
-+{
-+    S390CPU *cpu = env_archcpu(env);
-+    uint64_t subcode = env->regs[r3];
-+    uint64_t addr = env->regs[r1];
-+    int rc;
-+
-+    if (env->psw.mask & PSW_MASK_PSTATE) {
-+        s390_program_interrupt(env, PGM_PRIVILEGED, ra);
-+        return;
-+    }
-+
-+    if (r1 & 1) {
-+        s390_program_interrupt(env, PGM_SPECIFICATION, ra);
-+        return;
-+    }
-+
-+    switch (subcode) {
-+    case DIAG_320_SUBC_QUERY_ISM:
-+        uint64_t ism =  0;
-+
-+        if (s390_cpu_virt_mem_write(cpu, addr, (uint8_t)r1, &ism,
-+                                    be64_to_cpu(sizeof(ism)))) {
-+            s390_cpu_virt_mem_handle_exc(cpu, ra);
-+            return;
-+        }
-+
-+        rc = DIAG_320_RC_OK;
-+        break;
-+    default:
-+        s390_program_interrupt(env, PGM_SPECIFICATION, ra);
-+        return;
-+    }
-+    env->regs[r1 + 1] = rc;
-+}
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index d07ca879a3..b013751478 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -98,6 +98,7 @@
- #define DIAG_TIMEREVENT                 0x288
- #define DIAG_IPL                        0x308
- #define DIAG_SET_CONTROL_PROGRAM_CODES  0x318
-+#define DIAG_CERT_STORE                 0x320
- #define DIAG_KVM_HYPERCALL              0x500
- #define DIAG_KVM_BREAKPOINT             0x501
- 
-@@ -1561,6 +1562,16 @@ static void handle_diag_318(S390CPU *cpu, struct kvm_run *run)
+-    if (!address_space_access_valid(&address_space_memory, addr,
+-                                    sizeof(IplParameterBlock), write,
+-                                    MEMTXATTRS_UNSPECIFIED)) {
++    if (!diag_parm_addr_valid(addr, sizeof(IplParameterBlock), write)) {
+         s390_program_interrupt(env, PGM_ADDRESSING, ra);
+         return -1;
      }
- }
- 
-+static void kvm_handle_diag_320(S390CPU *cpu, struct kvm_run *run)
-+{
-+    uint64_t r1, r3;
-+
-+    r1 = (run->s390_sieic.ipa & 0x00f0) >> 4;
-+    r3 = run->s390_sieic.ipa & 0x000f;
-+
-+    handle_diag_320(&cpu->env, r1, r3, RA_IGNORED);
-+}
-+
- #define DIAG_KVM_CODE_MASK 0x000000000000ffff
- 
- static int handle_diag(S390CPU *cpu, struct kvm_run *run, uint32_t ipb)
-@@ -1591,6 +1602,9 @@ static int handle_diag(S390CPU *cpu, struct kvm_run *run, uint32_t ipb)
-     case DIAG_KVM_BREAKPOINT:
-         r = handle_sw_breakpoint(cpu, run);
-         break;
-+    case DIAG_CERT_STORE:
-+        kvm_handle_diag_320(cpu, run);
-+        break;
-     default:
-         trace_kvm_insn_diag(func_code);
-         kvm_s390_program_interrupt(cpu, PGM_SPECIFICATION);
-diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-index a4ba6227ab..86a652f833 100644
---- a/target/s390x/s390x-internal.h
-+++ b/target/s390x/s390x-internal.h
-@@ -400,6 +400,8 @@ int mmu_translate_real(CPUS390XState *env, target_ulong raddr, int rw,
- int handle_diag_288(CPUS390XState *env, uint64_t r1, uint64_t r3);
- void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3,
-                      uintptr_t ra);
-+void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3,
-+                     uintptr_t ra);
- 
- 
- /* translate.c */
 -- 
 2.49.0
 
