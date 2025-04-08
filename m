@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06C7A7F5EC
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E14A7F5E6
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:21:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u23GY-0007Mu-GI; Tue, 08 Apr 2025 03:21:02 -0400
+	id 1u23GJ-0007Jy-UG; Tue, 08 Apr 2025 03:20:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Ft-0007E2-VT
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:32 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fr-0007Dv-Tf
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fo-0001ZU-U8
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:20 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fo-0001Yv-U8
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744096813;
+ s=mimecast20190719; t=1744096810;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=io1drieqA9gWXN/9jVeEZrQYhhZy/UCd+JEB2fjOiH8=;
- b=Y/pWoMfmxGamow5kQWmeYDKHVYCQXepRFI2jb/2w2+lPFedKezYWoDnIWeqcrj5jRMB0VS
- mOGiT9dBf2rhlB3Z19mH5at3VpOMdA6X2d/Pu1DmC77/3UJd3RpNx81UDAsDHBy+5BQR1K
- qbCRB/NzFpQQ97RuvMYlJ5AUBbLtb1E=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=4aJho0mdOr3VPiOYT2UvwRgyLpjy+8mTEHVR1gQyGa8=;
+ b=EI7DLNqxrJ9s4Nra25x4re+LYD9IgoqX3cj5dJYDLWno8/kh3c4cVWER9zC2BLRqDGMYka
+ 9HNTBD7yIYfd5M4zgCnH7CxKeiaWhHlRkyfW/FQt+P+MUddPk16eaWrlLE9xhz4ef1/wqA
+ tikEJ6HPmy5WWvVy7E65MWfbup4IgYM=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-290-ExB8BLXqM7aRJlvJ2cpRZw-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-168-mVpYVFOTOR2r7oNkNMCWQA-1; Tue,
  08 Apr 2025 03:20:09 -0400
-X-MC-Unique: ExB8BLXqM7aRJlvJ2cpRZw-1
-X-Mimecast-MFC-AGG-ID: ExB8BLXqM7aRJlvJ2cpRZw_1744096808
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+X-MC-Unique: mVpYVFOTOR2r7oNkNMCWQA-1
+X-Mimecast-MFC-AGG-ID: mVpYVFOTOR2r7oNkNMCWQA_1744096808
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 58B42180AB19
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 72F2B195609E
  for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:08 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 16D6018009BC
- for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:07 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2ED1A180AF7C
+ for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:08 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 18B3721E65EC; Tue, 08 Apr 2025 09:20:02 +0200 (CEST)
+ id 1CDBA21E65FD; Tue, 08 Apr 2025 09:20:02 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	Eric Blake <eblake@redhat.com>
-Subject: [PULL 10/11] storage-daemon/qapi/qapi-schema: Add a proper
- introduction
-Date: Tue,  8 Apr 2025 09:20:00 +0200
-Message-ID: <20250408072001.2518323-11-armbru@redhat.com>
+Subject: [PULL 11/11] qga/qapi-schema: Add a proper introduction
+Date: Tue,  8 Apr 2025 09:20:01 +0200
+Message-ID: <20250408072001.2518323-12-armbru@redhat.com>
 In-Reply-To: <20250408072001.2518323-1-armbru@redhat.com>
 References: <20250408072001.2518323-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -88,29 +87,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Contents adapted from qapi/qapi-schema.json.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250404121413.1743790-11-armbru@redhat.com>
+Message-ID: <20250404121413.1743790-12-armbru@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- storage-daemon/qapi/qapi-schema.json | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ qga/qapi-schema.json | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/storage-daemon/qapi/qapi-schema.json b/storage-daemon/qapi/qapi-schema.json
-index 2a562ee32e..0427594c98 100644
---- a/storage-daemon/qapi/qapi-schema.json
-+++ b/storage-daemon/qapi/qapi-schema.json
-@@ -14,10 +14,26 @@
- # storage daemon.
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index 35ec0e7db3..5316bfacbf 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -2,10 +2,24 @@
+ # vim: filetype=python
  
  ##
--# = QEMU storage daemon protocol commands and structs
-+# = Introduction
+-# = QEMU guest agent protocol commands and structs
++# This manual describes the commands supported by the QEMU Guest
++# Agent Protocol.
  #
 -# For a concise listing of all commands, events, and types in the QEMU
--# storage daemon, please consult the `qapi-qsd-index`.
-+# This manual describes the commands and events supported by the QEMU
-+# storage daemon QMP.
-+#
-+# For locating a particular item, please see the `qapi-qsd-index`.
+-# guest agent, please consult the `qapi-qga-index`.
++# For locating  a particular item, please see the `qapi-qga-index`.
 +#
 +# The following notation is used in examples:
 +#
@@ -127,7 +124,7 @@ index 2a562ee32e..0427594c98 100644
 +# for the general format of commands, responses, and events.
  ##
  
- 
+ { 'pragma': { 'doc-required': true } }
 -- 
 2.48.1
 
