@@ -2,82 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623CDA8152B
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 20:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66088A8152F
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 20:57:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2E6u-0004Vw-05; Tue, 08 Apr 2025 14:55:48 -0400
+	id 1u2E73-0004Xv-Hb; Tue, 08 Apr 2025 14:55:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E6r-0004Vg-Bi
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:55:45 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E6z-0004Xc-KK
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:55:53 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E6o-0004CP-Lx
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:55:44 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-39c266c1389so4245643f8f.1
- for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 11:55:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E6t-0004Ci-GK
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:55:53 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-39c0dfad22aso3657140f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 11:55:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744138540; x=1744743340; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dnabJzaRHQGKKH4TbKJr+1PyURPIpZ9pSnZbB5bnzi4=;
- b=XaEBxuwyFxYsEYFBqai/sDLZBNM2pLa6xLxaoZH6RtpLkidckEIS5p99BXMdX7qeLq
- C9rPXutk++hOmbSQSDofnFmQ2lJ4bJ4A/hXCdPlnuU+LQ71zOQnMaXSCPb0lrSwQTAdf
- qJG20y2U30MNnI33j8uCH+90iyM/jWvmPeWMv/BYZJ1By0PQhoxHekphd+jGaigZCB+u
- 0vq9e4PwX4K4bYjhQIFdFAoofdxe4LG00ZrORjeV7PHADtE7vI4iwaIwYtf/eD5ExklD
- On04ThfirQcU+KiQie4BEqUQwYuBINIzMBi1DleUpH5knkLirfJHV6eRWmYaXGzE9hKx
- GIkg==
+ d=linaro.org; s=google; t=1744138545; x=1744743345; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8jJkudB3uEF57VonwdP4mQn1d0+k2UD0Vk/ydRhbRYA=;
+ b=FYUzL5+Bypn03HIsSzO5PgZ/0yw9ht/uSzw5fM+i/FulhGLydKcWht5/eEDUELarWh
+ 73kNmbbJSRJwIf0SGu34cWmZC7oGaPHqZS/n8/UNuQcMY0142JgIIFe/uUVZ2cROoyZR
+ t6N5lWteirmITheqYOFf4SgI2QFEgi2n8DYJuiRW0AgBaaom9Ff0mXd3B+w3KZ6uwgDb
+ duQYLjCz+AgWbJOJ1fe6XWE9D48HZczjLn+ninEBZAd8gRT2AEjQm6u3FElRQU2eXFsA
+ Z1g543Jtcbw7naTwOyp6UgLMnKT2/okcqmWAEqXLRwsd/JxGnTYVrbe5dGvC0DQte2nK
+ ueoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744138540; x=1744743340;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dnabJzaRHQGKKH4TbKJr+1PyURPIpZ9pSnZbB5bnzi4=;
- b=TENsUMoY6OfQKJ9pHRmBSSbjY98ESlOMm+g5Ks8xYeJTY2F5IwG8seOk/vOvHhGBwj
- nRIwKYYEomteJJYRAJYVc5npGgs3pAS3mxwQw4AV9UfOuMYU+DLizjt8rcpTI66dHhVK
- 2xa9P/+MQggA+EAx6emD0PSk1taIoEKdluV5Bc12liYDCffWQkAR9p40Fjw2uaFh4vxX
- 5itkyplIxSa2VV0Cf8Fd0mN+nYOymDBEoccmeprJ63jGElH0SBSETV8g5dLFIJxUcbq3
- hHst8RrYh+wLHoaWHwuzKWPD6oWa832x1u8rvX5OgCfbisg0TiUK5yQodai8OPkBkA/L
- xd4A==
-X-Gm-Message-State: AOJu0YwRRkCDu4TBwV2PrfMmjijuFVNxX+j2UISBJSSt7xSz25tZEnh7
- J1TS9uP5m5qPWeGZ96OYjMJtCjwRKaohEs1m3pIlMACLR7/egZaOw4HXAau/AG7io6EZsQTlWk+
- S8OY=
-X-Gm-Gg: ASbGnct3fQso2K/i545auLg+TbkpZCw+jlYtllbb+4neB9E2y688u2GwKo5ihnl/Uhv
- RicgcvRgBFJiFiYnjqnQjXyYNO6UUHDdAfeFjRJfF2WN+EHllHQ4xF6NAehGLjm3T54HiSZoFbn
- zs9cJtY0nBwRtkJ/dMSiku6wc+pTwPljwe5rn4pr0DSkEInj9NbgFcvhzDFRshm8JeAEQy1n1fy
- VG2pA6LuJELGa0wXG79aD5M9pyW7OuxzjT7ir/HhBF8O1PSDpZLU8sxwN0FHlvKmxqdYgqBeVfg
- IdAQigCLYm1UI2bsmDErg+BMsBhpkV7/l+YQGJPJrWy0EIOOdiQ5Viftqt+En2K+oF06ZEa+ZCx
- 8OkjYsKjLJAkt4jYrRmY=
-X-Google-Smtp-Source: AGHT+IEy8J1JKw9SQZlR6IxrOlScVpM3uZNxuka0ASKVPJ20rKWQzJcprN4Arrmqed27uKOrHv4MYQ==
-X-Received: by 2002:a5d:5984:0:b0:391:3207:2e6f with SMTP id
- ffacd0b85a97d-39d87cd3406mr242843f8f.42.1744138540120; 
- Tue, 08 Apr 2025 11:55:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1744138545; x=1744743345;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8jJkudB3uEF57VonwdP4mQn1d0+k2UD0Vk/ydRhbRYA=;
+ b=cqWzcgrbeM2zdbHJj4rW4Eh4ZKnEvykWbiHuom2jZZGjatXdzLq9XwDt9fUAp8LQS4
+ pAD4F+I1M1qVbuChmrgOPUGtWDvY5e41sW9e+a+AV1StxQC1vdNnGXMRxXrz+UyUiUjK
+ C8SJXK7S8Mo793cZHea5hG2/bUZ91I67ylZvqFXeiurx63/nAH3voy+UOQQL9il0IfDV
+ pprZwXPX/RG9Vtot8/N1HuJpiHH1S5rFs5esRtM1R5BGD1L/o78CQh2vJRI/ezvMZgmu
+ vh2MdN7fRD3SOZyau0DnuLuoSPf5hava5fEkf3YdYTTczE+lPn2jz5hTzoR+F4luc10y
+ L7Jg==
+X-Gm-Message-State: AOJu0YyNAu3ablBArjIGAiN8mXjb9tFIN5yMSaZ+OriVQxDixxhW/awc
+ A88Cu2iuv9gW6VNnmVap2wJky/wEiGVOQe6Kyna3zeXc1knrvEs9MQK50Nv5Ox2MS5gPxE4jLWE
+ 0Ap0=
+X-Gm-Gg: ASbGncvYXm9iDJp5RGQrojFYek/yFh1b6tt4Kz7r8warnslq0r/J/MInjsK4B3BDLC1
+ Zs6qZLVLpi6Pgh4YVrUeih1STMUZxRuD9Xz23ZEMEoBrGVshBgOlCjSY8rVwcIAK617JiOPfdw+
+ e0yVrfiFWoqpfneQCEFZqpYNK0IqX1w6vYs9fGo6UzsRY25ESa7H5Q1wmeelZltdCKx8MRqyC4U
+ /LEumMqoekCtXstRzMcR5dCGiCB97GBk18nWHam4tDjPYWK8nFzSSYVjimEC0n+PZhQ+RUdINTJ
+ 9xQdLC8VJA1faFtYKXgvUd0IjJTTsQvJYgnPwlyk78YMuExvC+bIa1y1hd/Pc0RiDBg6qV21EZ+
+ yklInrY/Nw7j22yujxEBXhvwHSoEvrA==
+X-Google-Smtp-Source: AGHT+IHB0J3BPaWpZkom0IG8pReMRSoSIEehPb/xArGHPUL42cUbH9n/rPrZhST/ABDvn6tWdctgBw==
+X-Received: by 2002:a05:6000:381:b0:397:3900:ef8c with SMTP id
+ ffacd0b85a97d-39d87adcb11mr255946f8f.35.1744138544792; 
+ Tue, 08 Apr 2025 11:55:44 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43ec17b0a38sm171564215e9.34.2025.04.08.11.55.39
+ 5b1f17b1804b1-43ec1794efesm173791295e9.28.2025.04.08.11.55.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 08 Apr 2025 11:55:39 -0700 (PDT)
+ Tue, 08 Apr 2025 11:55:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 0/8] Misc HW patches for 2025-04-08
-Date: Tue,  8 Apr 2025 20:55:30 +0200
-Message-ID: <20250408185538.85538-1-philmd@linaro.org>
+Cc: Daan De Meyer <daan.j.demeyer@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Valentin David <valentin.david@canonical.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 1/8] smbios: Fix buffer overrun when using path= option
+Date: Tue,  8 Apr 2025 20:55:31 +0200
+Message-ID: <20250408185538.85538-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250408185538.85538-1-philmd@linaro.org>
+References: <20250408185538.85538-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,69 +99,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit dfaecc04c46d298e9ee81bd0ca96d8754f1c27ed:
+From: Daan De Meyer <daan.j.demeyer@gmail.com>
 
-  Merge tag 'pull-riscv-to-apply-20250407-1' of https://github.com/alistair23/qemu into staging (2025-04-07 09:18:33 -0400)
+We have to make sure the array of bytes read from the path= file
+is null-terminated, otherwise we run into a buffer overrun later on.
 
-are available in the Git repository at:
+Fixes: bb99f4772f54017490e3356ecbb3df25c5d4537f ("hw/smbios: support loading OEM strings values from a file")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2879
 
-  https://github.com/philmd/qemu.git tags/hw-misc-20250408
+Signed-off-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Tested-by: Valentin David <valentin.david@canonical.com>
+Message-ID: <20250323213622.2581013-1-daan.j.demeyer@gmail.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/smbios/smbios.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-for you to fetch changes up to ae81527b431e235b7f81a400b9a6a27b798c40b3:
-
-  scripts/checkpatch: Fix typo in SPDX-License-Identifier keyword (2025-04-08 20:46:10 +0200)
-
-----------------------------------------------------------------
-Misc HW patches
-
-- Fix overrun when parsing SMBIOS OEM string (Daan)
-- Correctly call handle_machine_dumpdtb() callback (Joel)
-- List HVF as supported for virt machine (Zhang)
-- Correct UFS segment/alloc size comments (Keoseong)
-- Do not expose unimplemented devices in i.MX8mp DTB (Guenter & Bernhard)
-- Attach NVMe private namespaces to proper controller (Klaus)
-- Fix typo in SDPX license checker script (Zhao)
-
-----------------------------------------------------------------
-
-Daan De Meyer (1):
-  smbios: Fix buffer overrun when using path= option
-
-Guenter Roeck (2):
-  hw/arm/imx8mp-evk: Remove unimplemented cpu-idle-states properties
-    from devicetree
-  hw/arm/imx8mp-evk: Temporarily remove unimplemented imx8mp-fspi node
-    from devicetree
-
-Joel Stanley (1):
-  hw/core/machine: Fix -machine dumpdtb=file.dtb
-
-Keoseong Park (1):
-  hw/ufs: Fix incorrect comment for segment_size and
-    allocation_unit_size
-
-Klaus Jensen (1):
-  hw/nvme: fix attachment of private namespaces
-
-Zhang Chen (1):
-  docs/arm: Add apple HVF host for supported guest CPU type
-
-Zhao Liu (1):
-  scripts/checkpatch: Fix typo in SPDX-License-Identifier keyword
-
- docs/system/arm/imx8mp-evk.rst | 12 ++----------
- docs/system/arm/virt.rst       |  4 ++--
- hw/nvme/nvme.h                 |  3 +++
- hw/arm/imx8mp-evk.c            | 29 +++++++++++++++++++++++++++++
- hw/core/machine.c              | 12 ++++++------
- hw/nvme/ctrl.c                 |  7 ++++++-
- hw/nvme/ns.c                   |  4 ++++
- hw/nvme/subsys.c               |  9 +--------
- hw/smbios/smbios.c             |  3 +++
- hw/ufs/ufs.c                   |  4 ++--
- scripts/checkpatch.pl          |  4 ++--
- 11 files changed, 60 insertions(+), 31 deletions(-)
-
+diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+index 02a09eb9cd0..ad4cd6721e6 100644
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -1285,6 +1285,9 @@ static int save_opt_one(void *opaque,
+             g_byte_array_append(data, (guint8 *)buf, ret);
+         }
+ 
++        buf[0] = '\0';
++        g_byte_array_append(data, (guint8 *)buf, 1);
++
+         qemu_close(fd);
+ 
+         *opt->dest = g_renew(char *, *opt->dest, (*opt->ndest) + 1);
 -- 
 2.47.1
 
