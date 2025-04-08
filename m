@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEFAA8153A
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 20:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9C6A81573
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 21:08:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2E90-0002Lo-9c; Tue, 08 Apr 2025 14:57:58 -0400
+	id 1u2EIt-0005xm-Td; Tue, 08 Apr 2025 15:08:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E8w-0002DT-V1
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:57:55 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2EIr-0005xW-Hd
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 15:08:09 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E8q-0004Ng-Ot
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:57:54 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-39c266c1389so4246848f8f.1
- for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 11:57:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2EIp-0005d9-1e
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 15:08:08 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5efe8d9eb1eso22194a12.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 12:08:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744138666; x=1744743466; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744139283; x=1744744083; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=A43eN9gEJpLwzInwk73xEE63oH6QJlEJodemacKh4UY=;
- b=Jg2ch7FnkImBETgagmeKF+XJD0QhOk3l+EAWyVIJdViZOXPtRQjpJH6Oycm/O2UcYX
- l5FEkldbK0J6mQBfQjcjjuO9yQITOqiqTNZFbYJ446vleiYjBiCRIauixPHK5QziIsMk
- 3CPunG0B0ROBB5wCsnrfXJ0Fcl9szDsN6p42TK2VZ23X/a4M19mBYT8YIH/jwnOavmgA
- B6I06RFiVPjdBeSzF4kMbcAry2Db574k3tgRzM5nzhbesqLZu/8Y1PzX6swl/YcNgJeE
- Gy19TCUEKJ4v14cluYHWwL0w5+iPyOqY4dKtTWliKCf3oEH9UEfvbfgFRBdpqf56hDQN
- uP3g==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=PoR0k18zL+wCQ8uDu+6XuIQb84rncvjS7RkGXs89FUI=;
+ b=jEP2duL+MN8KWkP3xzb+RlRY06WXR67BR6r92foLorNQ3CjDJhvvGw9XmqqYZNRLPE
+ vq2HfcPjaBCmm5mr+jrjpDtSmFaXa/CC2TRn+ve5Mu36UnN47JfJGFwN5ViBeSzQjnC7
+ T4RxmEFeL8XTxayCk5UxWOOpa5FuffLQZ0XYSeuXETJ85KcfSlbSaFudkPShV0sHJKLj
+ 7MrKT07yOq9YqZ6GPL1Ilz3c4S+v3ydDaERfd/DC63Sbz4tJ246HXtnGy+iUnlkK1c5u
+ Fv+ZUVhnhRqNnnlvjWk870vsLUu8fKcKNj7HwzbpeIKaIl3nj31UTIdcsOaQfRcK7+UE
+ aLrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744138666; x=1744743466;
+ d=1e100.net; s=20230601; t=1744139283; x=1744744083;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=A43eN9gEJpLwzInwk73xEE63oH6QJlEJodemacKh4UY=;
- b=XOhm26K4MZICVmqrUDRIOCkfzVNRvtz3e1EjgDca794tnW8pVXxGi7QNivq8pBihLn
- VmMlCxcLxdBi0dvs/kp/2uLhzSGlgMA1yp84tc/li7ycgPtLoWo48YcVyXXyHviaKrAe
- 6gpP2ZIMZBoinffsjLCjzmOCY4SIC3hHEr2JLWvZcckTC1RqvtVwSp33ak2HqG17yDFC
- 0rSVvQPQUxgkYKXvWKpAOCShlLmCtmX6mdn2Lmqu2fowRGvRNQKDuSamtK7Pj7e1lwUy
- HgaJhzEcZ0hcUXkA33HL6RCm7GQSm93G3WUYQ/LIlYp9hHgeGTVPIW+TiMszBg57eEe9
- JaZw==
+ bh=PoR0k18zL+wCQ8uDu+6XuIQb84rncvjS7RkGXs89FUI=;
+ b=O4OHcC/YqyplaWQ/TreVBRYNoKZcJJL7n03q20aQGUsokn4KVLiFF835bT48KK34sz
+ bTydaJJl3qw/5+nYqPK36OsK2PxoV/HA0XX/766vsfP16K4qQTC5SJdHmgkOhH491jKx
+ apQ/QQGXKFjkr/G7v2wcPgpgpiOz0oMb57XNtlCSFlovprlQDNDBJJvRrImG53jem8Um
+ u4chf57v4NFUB3I0LKTa3hnFrjCljVAqehgrVVBQV5XHcL3EANDP9QVM5NYrXLTGqrUP
+ 92EfMl3g5Gegm/NPX3ZerxGQrYXY6iigSRtr6AYqCSjxs6aFkfsjZyUT5x8hPwjQkgmW
+ BAuA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX1b5xJlXHnvXBiclbW/l4hXaPfsHUi70HcyVbxpsdN8/KHkEki2YNhJyMTXTtjw/BSSwqmRVgbSeZ6@nongnu.org
-X-Gm-Message-State: AOJu0YzN2y5RCxHvoaAQBD0z90x9ZXaOb4xh5SfdcTwTLBysYImHEG5G
- CpiHvi3rvbNT55LUGCzeThIxdsZFZJl8phU37iLGCWEr7N4jhC23uCesQnp2YnU=
-X-Gm-Gg: ASbGncvLgUvoDAjZ5cz2FEtlj7ZmVldYlOoFbO6MGWKU0WQNbSmd1tMg5WPKaBIv/ut
- +urxAKAeQobHKtBtT8eTv5vgpstzYnfAtYNAMptuKTdSKhsVnhnZjE7rshfLfB6ElVZrLTLOPbU
- ikAlAyZk07fuLfyu7GjwiliLyPLdA6SLJBn/ck6cQT9k3X2cp4Q/6/SBNzWsw94m2pVeDzFzRzD
- f6cnEqo9b6WUdMKnHUx/kwsdGmcDbTmr0THTS/yyDhBIdNBfPf3TysA3fNmK2149d2UIsOKdTHu
- usCAWe44kNLdOTUkdvpr8AH4/yU3pd3l0JXGnqKKEJW0lOQb/K4qJjj6mIF1BU5nc2OjF8Lgp5G
- 0fwJSjJZvq8Cy
-X-Google-Smtp-Source: AGHT+IFnMThUxfH6UzIF+U3ycnj8aa+3izRsrWjoFibVKpGh58Qv/8QVtcIXzGkoGX/ngcj9N0lzRg==
-X-Received: by 2002:a5d:5f85:0:b0:38f:503a:d93f with SMTP id
- ffacd0b85a97d-39d87cd33edmr293462f8f.40.1744138666435; 
- Tue, 08 Apr 2025 11:57:46 -0700 (PDT)
+ AJvYcCUp/w/o1ZfLb+a7IgDHnyY+X4uxnf1hceugW/UlR9zQQ1PRGBpSdhxYrOhBS2Y2neVGC8MWuBbE55jk@nongnu.org
+X-Gm-Message-State: AOJu0YxYmusMyAjFKUyPmrEqL8Dvq6Apyfm1XWuCxwA/XjqRSySr1L3+
+ AjK71alkW8iuc+ctXPPwXVJ4EX6C/bfwzu5AAkYsgQxoanUu9MLjp9fLzLWviFSBYQIe0/75235
+ PBmg=
+X-Gm-Gg: ASbGncupmTgCfN7wreW/KIuIdEyhd9ujRnkZA4LDvwSGVkFR3D8bS7JF5sPfj029Xhl
+ i1xx64tf15q9sKpCJiDKLLccfeNCUZyddSUc/mzHpNc9mXHcOjUROttodmCf+5PGJFGEq6Cr7kq
+ 79YOpQOwvbuExnh42v3AAgvOVEaTGTpWMb/p4xwOZFM2stHO5uP8b7LzH1hm38oA1Hgj+wQq84S
+ Os/Up+4pKd1UCjjjMkkacziddSF1aP79E6h34mHg0W+3esJupkboqrBSVTKNoRyESNi+DA4hTvh
+ BL4D5LsANMQmlYTkpfyn1EDodvTzAegGkaL5t3XetTGokmfh8y0qUz6r3pX5aDp8/ZLGyZ/Rzl1
+ Nj7BvpltjVopU
+X-Google-Smtp-Source: AGHT+IHwTeNyn5lRzn+M3vo150Jj2X/wetmSognclJ4jMy/RIxXhhkLo+FTXKGZ5SMm2FzzS+aq6JQ==
+X-Received: by 2002:a05:600c:2151:b0:43b:bb72:1dce with SMTP id
+ 5b1f17b1804b1-43f0e55ecc4mr34997015e9.5.1744138893053; 
+ Tue, 08 Apr 2025 12:01:33 -0700 (PDT)
 Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c30226f1fsm15847037f8f.95.2025.04.08.11.57.45
+ 5b1f17b1804b1-43ec1660bcesm171596595e9.10.2025.04.08.12.01.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Apr 2025 11:57:45 -0700 (PDT)
-Message-ID: <49539ce7-d36e-42f1-9ff2-771c893e5ce3@linaro.org>
-Date: Tue, 8 Apr 2025 20:57:45 +0200
+ Tue, 08 Apr 2025 12:01:32 -0700 (PDT)
+Message-ID: <19616b23-6b86-4f64-9836-fbfda79c76b8@linaro.org>
+Date: Tue, 8 Apr 2025 21:01:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.0 0/3] More imx8mp-evk improvements
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-arm@nongnu.org,
- Guenter Roeck <linux@roeck-us.net>, Peter Maydell
- <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>
-References: <20250405214900.7114-1-shentey@gmail.com>
+Subject: Re: [PATCH] ui/curses: Fix infinite loop on windows
+To: William Hu <purplearmadillo77@proton.me>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <tSO5to8--iex6QMThG3Z8ElfnNOUahK_yitw2G2tEVRPoMKV936CBdrpyfbeNpVEpziKqeQ1ShBwPOoDkofgApM8YWwnPKJR_JrPDThV8Bc=@proton.me>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250405214900.7114-1-shentey@gmail.com>
+In-Reply-To: <tSO5to8--iex6QMThG3Z8ElfnNOUahK_yitw2G2tEVRPoMKV936CBdrpyfbeNpVEpziKqeQ1ShBwPOoDkofgApM8YWwnPKJR_JrPDThV8Bc=@proton.me>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,13 +100,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/4/25 23:48, Bernhard Beschow wrote:
+On 3/4/25 03:07, William Hu via wrote:
+>  From a42046272f0544dd18ed58661e53ea17d1584c2c Mon Sep 17 00:00:00 2001
+> From: William Hu <purplearmadillo77@proton.me>
+> Date: Wed, 2 Apr 2025 12:00:00 -0400
+> Subject: [PATCH] ui/curses: Fix infinite loop on windows
+> 
+> Replace -1 comparisons for wint_t with WEOF to fix infinite loop caused by a
+> 65535 == -1 comparison.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2905
+> Signed-off-by: William Hu <purplearmadillo77@proton.me>
+> ---
+>   ui/curses.c | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/ui/curses.c b/ui/curses.c
+> index a39aee8762..3f5c5adf78 100644
+> --- a/ui/curses.c
+> +++ b/ui/curses.c
+> @@ -265,7 +265,12 @@ static int curses2foo(const int _curses2foo[], const int _curseskey2foo[],
+>   
+>   static void curses_refresh(DisplayChangeListener *dcl)
+>   {
+> -    int chr, keysym, keycode, keycode_alt;
+> +    /*
+> +     * DO NOT MAKE chr AN INT:
+> +     * Causes silent conversion errors on Windows where wint_t is unsigned short.
+> +     */
+> +    wint_t chr = 0;
+> +    int keysym, keycode, keycode_alt;
+>       enum maybe_keycode maybe_keycode = CURSES_KEYCODE;
+>   
+>       curses_winch_check();
+> @@ -284,8 +289,9 @@ static void curses_refresh(DisplayChangeListener *dcl)
+>           /* while there are any pending key strokes to process */
+>           chr = console_getch(&maybe_keycode);
+>   
+> -        if (chr == -1)
+> +        if (chr == WEOF) {
+>               break;
+> +        }
 
-> Guenter Roeck (2):
->    hw/arm/imx8mp-evk: Remove unimplemented cpu-idle-states properties
->      from devicetree
->    hw/arm/imx8mp-evk: Remove unimplemented nxp,imx8mp-fspi node from
->      devicetree
+Correct but incomplete, also missing the same check few lines below:
 
-Patches 2 & 3 queued, thanks!
+-- >8 --
+diff --git a/ui/curses.c b/ui/curses.c
+index a39aee87623..9c33de331cd 100644
+--- a/ui/curses.c
++++ b/ui/curses.c
+@@ -304,9 +304,9 @@ static void curses_refresh(DisplayChangeListener *dcl)
+          /* alt or esc key */
+          if (keycode == 1) {
+              enum maybe_keycode next_maybe_keycode = CURSES_KEYCODE;
+-            int nextchr = console_getch(&next_maybe_keycode);
++            wint_t nextchr = console_getch(&next_maybe_keycode);
+
+-            if (nextchr != -1) {
++            if (nextchr != WEOF) {
+                  chr = nextchr;
+                  maybe_keycode = next_maybe_keycode;
+                  keycode_alt = ALT;
+---
+
+With that:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
