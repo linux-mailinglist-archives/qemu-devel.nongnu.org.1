@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E23A7F5F9
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 849E4A7F5E3
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:20:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u23Gf-0007ci-VY; Tue, 08 Apr 2025 03:21:10 -0400
+	id 1u23GE-0007Hy-7h; Tue, 08 Apr 2025 03:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fr-0007Ds-MM
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fr-0007Dr-PX
  for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fk-0001Yq-56
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fn-0001Z4-5D
  for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744096810;
+ s=mimecast20190719; t=1744096811;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZACj6+6YT2nv4Pvbd8q4PC87VD15r2GVwj1T68f5cKo=;
- b=I+HQpQ2HdOv8XpzNv0t1nYl4aVaD5r1MYgLmx6i0EzyzK6J9uSqVWmX1LJxWojdwvxgsS5
- fBRy0Lq1E7ciYRBd+l/eiv6Hv4TEvte28YOYpudnTw6dyTaWbJFk2gXSYbj+gGhiTt29ZA
- AZnt1MlvgemodENLTEJYbXFDrY+IyuU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=wNvi9gr9+Op4ShKTW6YRJUxdLLi18WIYHmGdqCYLx3o=;
+ b=BKymtuifZuYLHqIpHZgwKqIMe8JHWg2Lynxy2s+tA1MIId2qkZrgY0MnNyjbGvUYD4Lqvk
+ DVwXv6oKwk5h0WafOVqXXUhyKf76od+La+PEHroNMlwyNJ/ZiPNBHDUPW02CULDHYRA/4s
+ 5HE+lOv68LQU9j/iO/wqiST0q3fZXt0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-9-4yDp4cFyMKav-67awt5hTA-1; Tue,
- 08 Apr 2025 03:20:08 -0400
-X-MC-Unique: 4yDp4cFyMKav-67awt5hTA-1
-X-Mimecast-MFC-AGG-ID: 4yDp4cFyMKav-67awt5hTA_1744096807
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-9mcITb6bNuGxymm3Vgs52Q-1; Tue,
+ 08 Apr 2025 03:20:09 -0400
+X-MC-Unique: 9mcITb6bNuGxymm3Vgs52Q-1
+X-Mimecast-MFC-AGG-ID: 9mcITb6bNuGxymm3Vgs52Q_1744096808
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 61537195607E
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8B99B19560B2
  for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:07 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1D2A118009BC
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 443C51955D81
  for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:07 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0C1D721E65E0; Tue, 08 Apr 2025 09:20:02 +0200 (CEST)
+ id 1036A21E65E7; Tue, 08 Apr 2025 09:20:02 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	Eric Blake <eblake@redhat.com>
-Subject: [PULL 07/11] docs/sphinx/qmp_lexer: Highlight elisions like comments,
- not prompts
-Date: Tue,  8 Apr 2025 09:19:57 +0200
-Message-ID: <20250408072001.2518323-8-armbru@redhat.com>
+Subject: [PULL 08/11] qapi/qapi-schema: Update introduction for example
+ notation
+Date: Tue,  8 Apr 2025 09:19:58 +0200
+Message-ID: <20250408072001.2518323-9-armbru@redhat.com>
 In-Reply-To: <20250408072001.2518323-1-armbru@redhat.com>
 References: <20250408072001.2518323-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.32,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,26 +85,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The introduction explains example notation.  The series merged in
+merge commit e6485190f77e (in 9.1) improved how they look in generated
+docs, but neglected to update the introduction accordingly.  Do that
+now.
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250404121413.1743790-8-armbru@redhat.com>
+Message-ID: <20250404121413.1743790-9-armbru@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- docs/sphinx/qmp_lexer.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qapi/qapi-schema.json | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/docs/sphinx/qmp_lexer.py b/docs/sphinx/qmp_lexer.py
-index 1bd1b81b70..7b3b808d12 100644
---- a/docs/sphinx/qmp_lexer.py
-+++ b/docs/sphinx/qmp_lexer.py
-@@ -24,7 +24,7 @@ class QMPExampleMarkersLexer(RegexLexer):
-         'root': [
-             (r'-> ', token.Generic.Prompt),
-             (r'<- ', token.Generic.Prompt),
--            (r'\.{3}( .* \.{3})?', token.Generic.Prompt),
-+            (r'\.{3}( .* \.{3})?', token.Comment.Multiline),
-         ]
-     }
- 
+diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+index c41c01eb2a..0d027d5017 100644
+--- a/qapi/qapi-schema.json
++++ b/qapi/qapi-schema.json
+@@ -26,10 +26,10 @@
+ #
+ # Example:
+ #
+-# ::
++# .. qmp-example::
+ #
+-#   -> data issued by the Client
+-#   <- Server data response
++#   -> ... text sent by client (commands) ...
++#   <- ... text sent by server (command responses and events) ...
+ #
+ # Please refer to the
+ # :doc:`QEMU Machine Protocol Specification </interop/qmp-spec>`
 -- 
 2.48.1
 
