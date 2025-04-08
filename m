@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A395DA81891
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 00:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B950A818FB
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 00:48:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2HR7-0003Ir-Ia; Tue, 08 Apr 2025 18:28:53 -0400
+	id 1u2Hik-0006TN-89; Tue, 08 Apr 2025 18:47:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2HR0-0003Ig-G1
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 18:28:46 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2HQy-0003A9-7s
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 18:28:46 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-38f2f391864so3386122f8f.3
- for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 15:28:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744151322; x=1744756122; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FigNQri1F3pPdX1w63q6FumAX/u368o6auyRy2jVS+8=;
- b=HWevKVb8L8LP6s/A2YMZS7+O4PbsnsUsW9P5j8hKr9bVUyG3yxbXFFGhEnVl4UoLc5
- M9Dg0LKamPKEs5BBuJkIX4VQakU6htsEmArokEstfqdG0g63oh78w65PJNpXOZW54dvd
- QrKqh4irksxjaj/lsqSqNjGIhV74qeURjyXj4ATBVC7GewLchRnPtfcEdOISYPy3Dod9
- kdyMwhCMjEQqQouocCaXu5OcfHHkawCtGd2n3bTWIbUbeAR1FW72xjjqhLlqjtO/zqgf
- ZVsNSvRmizgabntTfAAitiScyjM2iEzfzzIpaRbDSQ0pKQ/tFvWiL2f1MI/1f0XobfMy
- tmfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744151322; x=1744756122;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FigNQri1F3pPdX1w63q6FumAX/u368o6auyRy2jVS+8=;
- b=qTKHYvTeoRZyz73YJlB9Vhu/6F8CH1VksqCbO3erKyXQWU0hBkKWx+k4uHuhLQD1rC
- PDtNfl1m4GVVN+qGNtTT9Ktj2fONJhSs2K+1Ew0yFDpuuYb6GswZPlwIqnakqgOFjQNF
- w0qjP8cVcWT00LFreCoN1Iw7XhYKxz/zc8T9oXMhX0GehInHfCh20eTBM1fHAzRVpUdP
- /vMZVXZBVp32QF1oXdvi40pSDJ284V85W0OaVkIE8umRxkxtqZVUq6JaXiUn51atM46l
- BisOaNi1zk2bEYR2lNefME/PaI9igkAFIkzZke4ovQ0/SZmSZTDg76Ag2VLFaueI7nO/
- vz1Q==
-X-Gm-Message-State: AOJu0Yxn/mGfs+p2Pm6Hu4ARFamrm7ONo4RXvKyLHwcnuCpfbJm6Adze
- NAUuSc7U+WwaO5h2aiG8rt+lVstrEwqwa0xDOwcSUjzBpi4NRRJvHXhyS3inCzE=
-X-Gm-Gg: ASbGncvKz1d7fZixKDr1WuUS4Y57Rfo6yFWyhnZWSwaeW0viCOdBDc+vn4+Mhu7dPzF
- J5ep4syT3kDt/nYVIcaOoE+kVeSoY36vBouEnELwWk4g0PJIxocb1fz7knW28z9xcwtI/L0FdlS
- i477OenTuBSlL1KSq7F/BB7Xx4MT8mL9bnD8Jv1v2ClosS06nrTfXFwRvdVoizbbGCSrFuHBvjr
- lRDSbnF2/AAImVq2dsNe0qZ6hXdlv03bKTcz+cfXCGPGkma27Yu1R0wFQtT4kgugSok8eQxu2/2
- W2SMxn1ysHaqXT/hioIxT4hD/JLgJl989ou3EjaSdLecifF0naRZ9FlQ2ggfcTrvcR1hNeOC+TI
- XM8gYH7drl0Fd
-X-Google-Smtp-Source: AGHT+IEmsTOD7538wFvsJGdGQesLlE0c/8fMPlHNAWnkD5yC7/9uHaX4GWesbZLxanbHhMB2AmignQ==
-X-Received: by 2002:a05:6000:2585:b0:391:2306:5131 with SMTP id
- ffacd0b85a97d-39d87cd329fmr731449f8f.45.1744151321986; 
- Tue, 08 Apr 2025 15:28:41 -0700 (PDT)
-Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301b8161sm16340542f8f.50.2025.04.08.15.28.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Apr 2025 15:28:41 -0700 (PDT)
-Message-ID: <ab3c7bc1-850a-4d58-bc2b-263b9a559d1e@linaro.org>
-Date: Wed, 9 Apr 2025 00:28:40 +0200
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1u2Hii-0006SE-68; Tue, 08 Apr 2025 18:47:04 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1u2Hif-0004y2-GI; Tue, 08 Apr 2025 18:47:03 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 538L9rjK019437;
+ Tue, 8 Apr 2025 22:46:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2023-11-20; bh=Cq5B1DF8N0G92LcSRJ+PntIDtww+0
+ 3PxRqmOmRZpy8A=; b=iNDoWoEh5LFEe5BIIjYDu2F2U4kYZl3XzJIv8ACWbcGrc
+ hpyPTBYY0V9QD2EMmwUfCI8VI7l0Hdqydr20EWgqs37XEutE2KuVBvOV6V3tkjpF
+ RreFRjG7TynHZL3THsjdugbZ8ShaDqPC7+JHwWfGHXnZqGBgIg9FIcJW85FdWXW7
+ pplU1A/g8ISBLu65bWGl/Umei5EQ9TU6nQ72r1rZZLf5MdCEdyp8V+Tb3ONP29t7
+ rnQEvjZrZquxaP1qT65o1fjAh1IVWKtKlvVEqAaaETczNEGAUgM/z4AxXxNUqfjq
+ klGeyOAFx18SmZEVTx7oySFm1A3rqZBDYqdcfT9Hg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45tu41e11d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 08 Apr 2025 22:46:54 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 538MQo6U001469; Tue, 8 Apr 2025 22:46:52 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 45ttya068h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 08 Apr 2025 22:46:52 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 538MkquA038560;
+ Tue, 8 Apr 2025 22:46:52 GMT
+Received: from ca-dev94.us.oracle.com (ca-dev94.us.oracle.com [10.129.136.30])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
+ ESMTP id 45ttya068c-1; Tue, 08 Apr 2025 22:46:52 +0000
+From: Alan Adamson <alan.adamson@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: alan.adamson@oracle.com, foss@defmacro.it, kbusch@kernel.org,
+ its@irrelevant.dk, qemu-block@nongnu.org
+Subject: [PATCH 0/1] hw/nvme: create parameter to enable/disable cmic on
+ subsystem
+Date: Tue,  8 Apr 2025 15:56:43 -0700
+Message-ID: <20250408225644.814616-1-alan.adamson@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ui/curses: Fix infinite loop on windows
-To: Stefan Hajnoczi <stefanha@redhat.com>,
- William Hu <purplearmadillo77@proton.me>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, kraxel@redhat.com,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <tSO5to8--iex6QMThG3Z8ElfnNOUahK_yitw2G2tEVRPoMKV936CBdrpyfbeNpVEpziKqeQ1ShBwPOoDkofgApM8YWwnPKJR_JrPDThV8Bc=@proton.me>
- <20250408140821.GA548630@fedora>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250408140821.GA548630@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-08_09,2025-04-08_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=999
+ suspectscore=0 adultscore=0 bulkscore=0 mlxscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502280000 definitions=main-2504080156
+X-Proofpoint-ORIG-GUID: AIJ9ReDe5_6c01aD1kzakTyblTNa7PXu
+X-Proofpoint-GUID: AIJ9ReDe5_6c01aD1kzakTyblTNa7PXu
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=alan.adamson@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,66 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/4/25 16:08, Stefan Hajnoczi wrote:
-> On Thu, Apr 03, 2025 at 01:07:56AM +0000, William Hu via wrote:
->> >From a42046272f0544dd18ed58661e53ea17d1584c2c Mon Sep 17 00:00:00 2001
->> From: William Hu <purplearmadillo77@proton.me>
->> Date: Wed, 2 Apr 2025 12:00:00 -0400
->> Subject: [PATCH] ui/curses: Fix infinite loop on windows
->>
->> Replace -1 comparisons for wint_t with WEOF to fix infinite loop caused by a
->> 65535 == -1 comparison.
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2905
->> Signed-off-by: William Hu <purplearmadillo77@proton.me>
->> ---
->>   ui/curses.c | 10 ++++++++--
->>   1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> I have CCed Gerd Hoffmann (git-shortlog(1) shows he is the most frequent
-> committer to this source file) and Marc-André Lureau (ui/ maintainer
-> according to the ./MAINTAINERS file) so they can also review your patch.
-> 
->>
->> diff --git a/ui/curses.c b/ui/curses.c
->> index a39aee8762..3f5c5adf78 100644
->> --- a/ui/curses.c
->> +++ b/ui/curses.c
->> @@ -265,7 +265,12 @@ static int curses2foo(const int _curses2foo[], const int _curseskey2foo[],
->>   
->>   static void curses_refresh(DisplayChangeListener *dcl)
->>   {
->> -    int chr, keysym, keycode, keycode_alt;
->> +    /*
->> +     * DO NOT MAKE chr AN INT:
->> +     * Causes silent conversion errors on Windows where wint_t is unsigned short.
->> +     */
->> +    wint_t chr = 0;
->> +    int keysym, keycode, keycode_alt;
->>       enum maybe_keycode maybe_keycode = CURSES_KEYCODE;
->>   
->>       curses_winch_check();
->> @@ -284,8 +289,9 @@ static void curses_refresh(DisplayChangeListener *dcl)
->>           /* while there are any pending key strokes to process */
->>           chr = console_getch(&maybe_keycode);
->>   
->> -        if (chr == -1)
->> +        if (chr == WEOF) {
->>               break;
->> +        }
-> 
-> Further below there appears to be another instance of the same bug:
-> 
->    /* alt or esc key */
->    if (keycode == 1) {
->        enum maybe_keycode next_maybe_keycode = CURSES_KEYCODE;
->        int nextchr = console_getch(&next_maybe_keycode);
-> 
->        if (nextchr != -1) {
->            ^^^^^^^^^^^^^
+While testing Linux atomic writes with qemu-nvme v10.0.0-rc1, Linux was 
+incorrectly displaying atomic_write_max_bytes
+# cat /sys/block/nvme0n1/queue/atomic_write_max_bytes
+0
+# nvme id-ctrl /dev/nvme0n1 | grep awupf
+awupf     : 15
+#
+Since AWUPF was set to 15, it was expected atomic_write_max_bytes would
+be set to 8192.
 
-Indeed.
+The commit cd59f50ab017 ("hw/nvme: always initialize a subsystem")
+introduced this behavior. The commit hardcodes the subsystem cmic bit
+to ON which caused the Linux NVMe driver to treat the namespace as
+multi-pathed which uncovered a bug with how Atomic Write Queue Limits 
+were being inherited.  This Linux issue is being addressed, but the
+question was asked of why the subsystem cmic bit was hardcoded to ON.
+Most NVMe devices today don't set cmic to ON. Shouldn't the setting of
+this bit be a settable parameter? 
 
-The changes comes from commit 459a707eccc ("curses: support wide input")
-from 2019. This isn't a blocker for the next release IMHO.
+<subsystem>,cmic=BOOLEAN (default: off)
+
+Example:
+    -device nvme-subsys,id=subsys0,cmic=on \
+    -device nvme,serial=deadbeef,id=nvme0,subsys=subsys0,atomic.dn=off,atomic.awun=31,atomic.awupf=15 \
+    -drive id=ns1,file=/dev/nullb3,if=none \
+    -device nvme-ns,drive=ns1,bus=nvme0,nsid=1,shared=false 
+
+Alan Adamson (1):
+  hw/nvme: create parameter to enable/disable cmic on subsystem
+
+ hw/nvme/ctrl.c   | 5 ++++-
+ hw/nvme/nvme.h   | 1 +
+ hw/nvme/subsys.c | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
+
+-- 
+2.43.5
+
 
