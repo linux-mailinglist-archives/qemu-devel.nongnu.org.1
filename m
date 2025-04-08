@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB94A816A3
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 22:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16892A816A7
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 22:16:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2FM7-0002h6-MJ; Tue, 08 Apr 2025 16:15:35 -0400
+	id 1u2FLy-00029p-I9; Tue, 08 Apr 2025 16:15:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.granados@kernel.org>)
- id 1u2FLf-0002G3-Rc
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 16:15:16 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ id 1u2FLa-00029f-Gw
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 16:15:02 -0400
+Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.granados@kernel.org>)
- id 1u2FLX-0004yF-Ts
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 16:15:06 -0400
+ id 1u2FLW-0004yB-CE
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 16:15:02 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 22E115C0594;
- Tue,  8 Apr 2025 20:12:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CD4E7C4CEE5;
+ by tor.source.kernel.org (Postfix) with ESMTP id 3C17D614BB;
+ Tue,  8 Apr 2025 20:14:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E87B4C4CEE9;
  Tue,  8 Apr 2025 20:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1744143293;
- bh=wsX5JeCeUenZtAXorAHzLnlv/QiMaURnQ+d3eE0sd4A=;
- h=From:Subject:Date:To:Cc:From;
- b=YMogCc8zjM8aVWVrs8/t9eMRDChRwqRcVfqyaT1BP0UiDmfj/VpN6sIu1Ql3wIKXk
- vxvTUiiRoegEYWmmvMnrTOxLdlU/MyOIA0tHqSRS/sVlAyx391MtHZvl+2m7hqSQRK
- rixCYv4PAi0zoAhUvECGq7FKASzLUUP1Gt+l8TwjTm4VGZkoLnh2mqrvLaKWn+hdvz
- xC0DaxKqnJoE/zP77YRyWH7UrxeOCBw4RobIa/goXAAgHPqonr336H2Clq0E5eRZMm
- kvxIet6xoOK62p0jP+p7ZgjSTAc+5Dq7mrz9el8bpzkiBAJtHeM/3l1nFR5MQlMFHr
- bNa9cdmRGvvTQ==
+ bh=jDZDxLJWDYW927mYZ8/+pBOhs25t9wQSY97XH11aeAA=;
+ h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+ b=Ls3e1SlEcfiwY+v0N7cOA7J0Fa2qYrqrok0PaNyBh8ib/yEce1NcePptmZ1pgFY+L
+ HG/pIIHrSgLDl4WGU130xQhIjpgu3ipli5vE0idnXcNS4I3P9nSxDFhVuS0wR73IeT
+ gsjCwLVgD+NHQskxw2TqWQy0I0V0B2vSgzmDqXbsbk+vDmNRa0/pDAG+FUBt0krjbN
+ s384Ys1048Tt9gK9IsCZWBJ/oJnTY35eVrCnyKgEPZGhqsVcpVTwBLxDLLfgVjZG+F
+ FtnwvHARZXMODKfjvfTwVfbdNQ79YiF8u0PE0IZMU1SVNOiAvE0boqyEX7Mq6jhixq
+ Ddc9NyVCyZFHw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org
  (localhost.localdomain [127.0.0.1])
- by smtp.lore.kernel.org (Postfix) with ESMTP id B4D24C36010;
+ by smtp.lore.kernel.org (Postfix) with ESMTP id CB9ECC369A1;
  Tue,  8 Apr 2025 20:14:53 +0000 (UTC)
 From: Joel Granados <joel.granados@kernel.org>
-Subject: [PATCH 0/3] scripts: Add a root dir in archve-source.sh
-Date: Tue, 08 Apr 2025 22:14:45 +0200
-Message-Id: <20250408-jag-sysctl-v1-0-3f4f38b751be@kernel.org>
+Date: Tue, 08 Apr 2025 22:14:46 +0200
+Subject: [PATCH 1/3] scripts: nixify archive-source.sh
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALWD9WcC/23MSw7CIBSF4a00dyyGR6m1I/dhOqB4oWgDBhpi0
- 7B3sWOH/0nOt0PC6DDB0OwQMbvkgq/BTg3oWXmLxD1qA6dc0pb25KksSVvS60JEp4Wcrh3VvId
- 6eEc07nNg97H27NIa4nbYmf3Wv0xmhBIjdasmJfBizO2F0eNyDtHCWEr5Aql7VZSlAAAA
-X-Change-ID: 20250408-jag-sysctl-36c35b960c28
+Message-Id: <20250408-jag-sysctl-v1-1-3f4f38b751be@kernel.org>
+References: <20250408-jag-sysctl-v1-0-3f4f38b751be@kernel.org>
+In-Reply-To: <20250408-jag-sysctl-v1-0-3f4f38b751be@kernel.org>
 To: =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Thomas Huth <thuth@redhat.com>, 
  Wainer dos Santos Moschetta <wainersm@redhat.com>
 Cc: qemu-devel@nongnu.org, Joel Granados <joel.granados@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1009;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=650;
  i=joel.granados@kernel.org; h=from:subject:message-id;
- bh=wsX5JeCeUenZtAXorAHzLnlv/QiMaURnQ+d3eE0sd4A=;
- b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGf1g7rt1DLW60zvHojJfCFHedC4h+6vXsG47
- +2ArW2O5vrD/4kBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJn9YO6AAoJELqXzVK3
- lkFPd5IL/2wml2hU6QsJcLVJNVG0qjPr2aYVKFphwndj2tG3tZBa2n/lk24D/FKZgWofIPFj7Bt
- 85u256DZOeNOvicwvPi3XbnrVaV8GodEh4yhuqIcsl8fGDlTK5H3ZjNPKPO8czqiAl+Zs9QvctV
- FfSze/mAENCidfyvELIYb/bhRqjLWufLBlL0ssfwYzCCmbQZCtvc1VgyfiOUvxzNnQoWNhWMMrn
- A4qfGgZsdoKBYhkjeEPsz8aeZq110RFZ1Y6snUV5THtoz2POG3weEqofWuiTvCk34hBEj9GpAT1
- PDfRG0uQl/IpXMTiLySWE5KrBblUylOyHx6qW2+myZ8dk7czIbOwvKTHmYADIHVvXjbYLw4VpSK
- eQXxs33Es3IzfvZ/NfFtCyXTeA3+IpFJa1AUKGMd9ntvqBbgMS60rUmdvVem+x5VNq7HXgWh1SS
- isLpeJJnDr1Che+eO+r+rxZKkJHP+s/2q1lD2Z7W4+SUsy0okCP42c2u14UEa/g8aDqcV8kdBi7
- s8=
+ bh=jDZDxLJWDYW927mYZ8/+pBOhs25t9wQSY97XH11aeAA=;
+ b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGf1g7rJbMQQkzbdZqLcZJzh0WcwjGuMQApmR
+ 33bK9Y0z2YQv4kBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJn9YO6AAoJELqXzVK3
+ lkFPlu8L/i9v4XmyqdS1lNI3HCDOjistZIit3XDMeA+Ovd83zSGGEk+kUjK4JitVQbg0Nk/3f+t
+ y3zydEuvQ5+9PAOmLbBklYA5tyJUNZzdJYTXLXtE3e9iJz00yo/mQPHp11YzwMWX40Mw7N4ZVvx
+ dzzQtmq0CY0eNDT3y67Jvo0wgX+Wpw23u6lUnqnIzo5+WkLmgn8dpr00G1FVq/7dpdfgjuwzCmJ
+ xQaTeS/eu9q0wcpWRLPrikkWZXFrPFtZrB/L1aJV9Al87qFhO/jfst42PHjtzsczfr7QUX7G9G1
+ JWD29hg2F3rlfTwfThN3kp1kyUFiqRt2bTK8I3H8hkeiUyRAHdZxkGruVJ376QgvL5flgf2iEdz
+ R2j1+Pe5EwMogmkIsSlmKo1k7Mj6BEdSQxXWUlWJch27XagCbX5Vpg5teS7GRpL4RbxIh/c4r4n
+ 1y2oybLqA4HSp8on0r4Pi9SnQsQ9ycId9RgQSF/6YQJwtUG4HnFWIFtygbQkULJZe1cn9uZsuq6
+ sI=
 X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
  fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
 X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
  auth_id=239
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=joel.granados@kernel.org; helo=dfw.source.kernel.org
+Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
+ envelope-from=joel.granados@kernel.org; helo=tor.source.kernel.org
 X-Spam_score_int: -28
 X-Spam_score: -2.9
 X-Spam_bar: --
@@ -94,37 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When creating an archive source to use in a nix overlay, it is necessary
-that all files are appended to the tar.gz file under a root dir. This
-series adds a argument (--dir) that will create a root directory and
-append all files under it.
-
-The series does not change the default behavior where all files are
-added to the tar.gz root.
-
-Comments are greatly appreciated.
-
-PS: Had initialy missed adding qemu-devel to CC. Appologies if you
-    received this twice.
+Use "#!/usr/bin/env bash" instead of "#!/bin/bash". This is necessary
+for nix environments as they only provide /usr/bin/env at the standard
+location.
 
 Signed-off-by: Joel Granados <joel.granados@kernel.org>
---
-
 ---
-Joel Granados (3):
-      scripts: nixify archive-source.sh
-      scripts: Add root dir to arguments
-      scripts: Clarify doc messages in archive-source.sh
+ scripts/archive-source.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- scripts/archive-source.sh | 92 +++++++++++++++++++++++++++++++++++------------
- 1 file changed, 69 insertions(+), 23 deletions(-)
----
-base-commit: ea35a5082a5fe81ce8fd184b0e163cd7b08b7ff7
-change-id: 20250408-jag-sysctl-36c35b960c28
+diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
+index 30677c3ec9032ea01090f74602d839d1c571d012..a469a5e2dec4b05e51474f0a1af190c1ccf23c7e 100755
+--- a/scripts/archive-source.sh
++++ b/scripts/archive-source.sh
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ #
+ # Author: Fam Zheng <famz@redhat.com>
+ #
 
-Best regards,
 -- 
-Joel Granados <joel.granados@kernel.org>
+2.44.1
 
 
 
