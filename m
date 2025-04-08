@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E52A7F602
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 175E0A7F60B
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:22:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u23Gh-0007fc-TA; Tue, 08 Apr 2025 03:21:11 -0400
+	id 1u23GZ-0007Mz-7F; Tue, 08 Apr 2025 03:21:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Ft-0007E1-Ub
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fp-0007DI-2r
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fo-0001YY-UY
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:20 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fk-0001Yl-Eb
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744096808;
+ s=mimecast20190719; t=1744096810;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Cj4xN+nOtJbGlT6/8JjUADfPwmUN55fukixaP7KBYcc=;
- b=IcWbHT1rwDPM5UZHjnO9lseGkgunVPrHEbKExUe0doWy4pBDPPRwTyUc29V4Xb22pfWH3z
- SE/ti6lDZMqdr7yLN4hFYLftYt71Omn4NynnQYUfyKCzqHAxTUttL14az2llBftl/SpJ2e
- 2lJCVRqbNoLAjHQU1F9WRWAUBCrtpAo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=OCokgCtdCSnKMwZ2vqwV6LFA5eyIRyN3DJwSie4RNi8=;
+ b=NnIewAJReKqFnNvBw+K5KS1XYaMPIaH2LhI097jCncZ1w1oSv0zP+q8DyEX5ssa5LavT1G
+ LUi/axiSe4LHkLkwaN1KJzMZLvMD+6CTnEm84aHypLkK828Yjt4grXlXy130h7RkVc/oEp
+ tpOk5QIxFFL4Yd4WeKsdsZB+a+Jg+Ac=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-nGsT7L6FOU-ngani7GtwvA-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-78-3DDjnS99P22Die8MUunhkg-1; Tue,
  08 Apr 2025 03:20:06 -0400
-X-MC-Unique: nGsT7L6FOU-ngani7GtwvA-1
-X-Mimecast-MFC-AGG-ID: nGsT7L6FOU-ngani7GtwvA_1744096805
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+X-MC-Unique: 3DDjnS99P22Die8MUunhkg-1
+X-Mimecast-MFC-AGG-ID: 3DDjnS99P22Die8MUunhkg_1744096805
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7BB701800260
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 90D0419560B6
  for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:05 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 35A9E1828A80
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 492F219560AD
  for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:04 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id EF9D721E65D0; Tue, 08 Apr 2025 09:20:01 +0200 (CEST)
+ id 0005921E65DA; Tue, 08 Apr 2025 09:20:01 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	Eric Blake <eblake@redhat.com>
-Subject: [PULL 03/11] docs/interop: Delete "QEMU Guest Agent Protocol
- Reference" TOC
-Date: Tue,  8 Apr 2025 09:19:53 +0200
-Message-ID: <20250408072001.2518323-4-armbru@redhat.com>
+Subject: [PULL 04/11] docs/interop: Sanitize QMP reference manuals TOC
+Date: Tue,  8 Apr 2025 09:19:54 +0200
+Message-ID: <20250408072001.2518323-5-armbru@redhat.com>
 In-Reply-To: <20250408072001.2518323-1-armbru@redhat.com>
 References: <20250408072001.2518323-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.32,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,38 +84,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "QEMU Guest Agent Protocol Reference" starts with the following
-table of contents:
+The "QEMU QMP Reference Manual" and the "QEMU Storage Daemon QMP
+Reference Manual" start with a table of contents that looks like this:
 
     Contents
 
-    * QEMU Guest Agent Protocol Reference
+    * Title of the manual
+      * Title of first first-level section
+        * Title of its first second-level section
+        * Title of its second second-level section
+        ...
+      * Title of second first-level section
+      ...
 
-      * QEMU guest agent protocol commands and structs
+The first level is useless.  Drop it.
 
-This is useless.  Delete the entire TOC.
+While there, delete the option that limits the TOC to depth 3.  Its
+actual depth was 3 before the patch, and is now 2.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250404121413.1743790-4-armbru@redhat.com>
+Message-ID: <20250404121413.1743790-5-armbru@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- docs/interop/qemu-ga-ref.rst | 3 ---
- 1 file changed, 3 deletions(-)
+ docs/interop/qemu-qmp-ref.rst                | 2 +-
+ docs/interop/qemu-storage-daemon-qmp-ref.rst | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/interop/qemu-ga-ref.rst b/docs/interop/qemu-ga-ref.rst
-index 19b5c7a549..25f6e24b03 100644
---- a/docs/interop/qemu-ga-ref.rst
-+++ b/docs/interop/qemu-ga-ref.rst
-@@ -1,9 +1,6 @@
- QEMU Guest Agent Protocol Reference
- ===================================
+diff --git a/docs/interop/qemu-qmp-ref.rst b/docs/interop/qemu-qmp-ref.rst
+index ef8792b53f..3bc1ca12b1 100644
+--- a/docs/interop/qemu-qmp-ref.rst
++++ b/docs/interop/qemu-qmp-ref.rst
+@@ -4,7 +4,7 @@ QEMU QMP Reference Manual
+ =========================
  
--.. contents::
+ .. contents::
 -   :depth: 3
--
- .. qapi-doc:: qga/qapi-schema.json
++   :local:
+ 
+ .. qapi-doc:: qapi/qapi-schema.json
     :transmogrify:
-    :namespace: QGA
+diff --git a/docs/interop/qemu-storage-daemon-qmp-ref.rst b/docs/interop/qemu-storage-daemon-qmp-ref.rst
+index d0228d63b8..dc7bde262a 100644
+--- a/docs/interop/qemu-storage-daemon-qmp-ref.rst
++++ b/docs/interop/qemu-storage-daemon-qmp-ref.rst
+@@ -2,7 +2,7 @@ QEMU Storage Daemon QMP Reference Manual
+ ========================================
+ 
+ .. contents::
+-   :depth: 3
++   :local:
+ 
+ .. qapi-doc:: storage-daemon/qapi/qapi-schema.json
+    :transmogrify:
 -- 
 2.48.1
 
