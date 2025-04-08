@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F605A81537
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 20:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66875A81534
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 20:57:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2E7V-0004fh-8Q; Tue, 08 Apr 2025 14:56:25 -0400
+	id 1u2E85-0006dT-G5; Tue, 08 Apr 2025 14:57:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E7S-0004f1-FI
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:56:22 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E81-0006Tw-Ig
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:56:57 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E7Q-0004Gs-JI
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:56:22 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-39c31e4c3e5so3678633f8f.0
- for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 11:56:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2E7v-0004Jr-3R
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 14:56:57 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-38f2f391864so3313756f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 11:56:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744138578; x=1744743378; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Bd4HZgu2rQoNG5y96HldgtWC5Ca0xdeHz+9r0bAk4j8=;
- b=FdutjfaxUBE/xbCXwenWfTZ4KYczFbINTS2QP6gsN+XZm+puM5DsRMZS8+eNhYTVuC
- X8gK9waFOZ1jyeXe4gxuKXaPrBVrWhUUiAPDlIF/RZK3tjNDW73V5WdomNvnN5z4X3IZ
- +rMwZmGBl6O5JfEjnvR/4v+Zz0SYr5MU3MaQTS8Ak+tOeJYw3yNP0LKj4zwcyzN2ylhc
- plzm9cdvMPle6zw3YnDNdvlte8Pap2L+f8gxvPk+00RBP63+xWq1Mq0KCI6dnOrNLUj4
- tY+iBiDlA9cLUNR3h5Hw2Yaw9oYrjPTMcoJsDwQDiRTu0qMXzkmwAyE7Dbbqjma90LMk
- Cftg==
+ d=linaro.org; s=google; t=1744138608; x=1744743408; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Aar0fJ7Vs4z1geDlA6Q01FVDg7iAx6AqY33ZS2R/YkM=;
+ b=jwNKARXBKbnXnOCJ6a99cY2TDrEywIAcxRC3yUIQGgVBHWSkNpmdO710uUzAt6REe+
+ YcUCqNkofQFlQttC18wA6IJ+gsi679Nl7ynw5+PIhqs5XIFtjIH9KWjCf+7hmJCOrK9k
+ dReLmtTLmcSVOnrRL0GploqABmhF4rY8ILsNdh1RDr4lPghs1PVm3JN/HTwN1Vg5fQXV
+ /4W4yENisUSV2lTLjuXwzPrZyIRIlPPEdxsOUoLJn/9BLXvztl3nWb3XsvBj5x+2MyqE
+ gM53rDu2ukhXB8Ox7D9tD1CE8hHkEq8BITjKDRnr7EgZ2C/QbiOQtLSewQBAV5kYeZNV
+ e3SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744138578; x=1744743378;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Bd4HZgu2rQoNG5y96HldgtWC5Ca0xdeHz+9r0bAk4j8=;
- b=emonxfZ/ag+w1KyFk/eR6relg/wyb6yAlaISkQ7LAKPGzLOrfTvb+I8m/CMbIp5pCY
- 2tc27KFclZjsTjDT2Fl+5Pbr7sBs0nhD53YwyIt/tDTzcaZoj2uIubdvDeV3YNg0gx2N
- ijg7eqz9ASYYAiJTc1TzpMnJbjPAuT9vb5eHY6BprwfYZCCv6VQb4t3dgc16IQ8xWMML
- kR8UTeoydRfOvyu0PmHWslSIzoKqx28xL7HzqerxqziOgx8El12yJ6B1qQ/xspm1wzpE
- 4HSrlQuSooWIWbn6rfJ06Pe0MzRvhyaa4flTddY4BFztkYN3NFqVmzuYLCU0ewWrlk3P
- tD0g==
-X-Gm-Message-State: AOJu0YyoajA46EydOa1lYC8kRUvEUFqWV4N4k/SCoApeGgbZoRFX5wcn
- kENlDDa/lCGF3LQa66rXscZCka3Rxmh4RXwPAZWo5KXsuvf2EZdoR5TP7RNB6LuMLpgjmC5ZhOL
- 867Q=
-X-Gm-Gg: ASbGncsD0Zf4tb9FPRah+vkly87PeW4e796106qPjux2/9zVJti3yFTZkjm7yYa5m4I
- EmwLnkvAgKj0ZqVuK8WCalRXqODR+llxYTHLWgoUyiezz3rd/v1IrAn5G2jx0Eje0PLugVpBevj
- Q73LsBs9QGAIoW6j8nHDJzFe2XUe2JLRrkbIxihEl1VMeOaU9pKiDw5OXWObNzNhl1KQqH7ufFq
- CDUf0PA0JVfuSI/vD4FLEiIg8DCHBzxmJxE4J51wiWjK3hWagM1PAl0mns+Ydv8nO2/JQ7CrS5k
- XMvjA1lRDxkJ7B8WBIt5hy33YG8GeNRj5hXDmZS16JeulV0GyzDNOYOArq9jrWboNB8uSPkiTK4
- 6MxeVSyms4laNt9hUxYg=
-X-Google-Smtp-Source: AGHT+IEoz0LHiBxJqgGDH1yn2ICFHc87F8fysBbRnTUkg7bSPDsBT+ZxPEOConiTYxc1qdVl+tPWkQ==
-X-Received: by 2002:a5d:584c:0:b0:391:2f15:c1f4 with SMTP id
- ffacd0b85a97d-39d87cddd2amr209773f8f.55.1744138578187; 
- Tue, 08 Apr 2025 11:56:18 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1744138608; x=1744743408;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Aar0fJ7Vs4z1geDlA6Q01FVDg7iAx6AqY33ZS2R/YkM=;
+ b=HHInEL2EzwWHrV6GVgK8j1ULmsU4S5MdxvreYHVMCiqed7RFE1TLJED0jmPgioWcdf
+ CmLExbvFvTquMjb33bT3tgT8qW1oWc6prXKGhW0Lcv0uMp48n3ZPJxyWxnXuzUIdsWGZ
+ 6lux7eFHMtr0kboLbldVVAelzA1p2D/zuyoZtEGE1IWJFGFBm72kTSDhv+JZmzXLXJTk
+ xR4HFUgPgyaEQM3eNaZkS/tl+h6MkparKXFelK9jEa1X6AtC5afVDGOMDXALqsfpAjGp
+ LLA86bhQiebUJ9YP1lWOtUNaF7yCJgsjmwv0IU3LA3KEWZ89pJxLNdO6zfcsr2A6iOGq
+ vyOA==
+X-Gm-Message-State: AOJu0YwQRMQNtKBti6V03W3cags+1OTzy5agd1HNpmgED4SJ0u915b6X
+ nh2ki4GoNf9tiWkxBFS7uzyZzOBoqakHS8z62kIutNvnkrMbQz8FNonSEgoktl0=
+X-Gm-Gg: ASbGncsQpzGm+s6hDOGP7xIT7p9O6Lmi/n8CMIuIUP8yHWvj8j6IgyIEbp7VthRsJia
+ ox7ISXPuyncnjcdKB29Sfo9Lkj9g5kMILyOgP5MOX2Ju5y1/y3s1YCdeK2EhWOWbQ2LZPzYPNc/
+ NtsfiRlX5652hHgjRGOlKsgizK/TSnmnGqOP+PIl1nKbltODDMznudj5Ta4IqWkhJV+0Ar6S3Tk
+ 1/HnIiuuLvxH3HTfHOJ1tr5p3IG+7mAfjjO+9YQqVwejAZYEq7aHAT3wPgYhXrJB4VQa7so4BEC
+ 0t6bV54/UoLARHhPRb0QTrXW3tv51frnO0ZZkC9nFM1DomhLCOprmoK/Jsr0b47maQqQo5qYwvJ
+ oYVGIKljKVXrt
+X-Google-Smtp-Source: AGHT+IF7r+OdHif1nTU2mBrUYmvofGlvkInl34cpcpHmVd5KfXG5VkXIRiGC4sT7Wh8qiV9M5gBm4g==
+X-Received: by 2002:a05:6000:1863:b0:39c:1424:3246 with SMTP id
+ ffacd0b85a97d-39d87aa1e43mr292400f8f.2.1744138607827; 
+ Tue, 08 Apr 2025 11:56:47 -0700 (PDT)
+Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39c301a7064sm16109823f8f.34.2025.04.08.11.56.17
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 08 Apr 2025 11:56:17 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 8/8] scripts/checkpatch: Fix typo in SPDX-License-Identifier
- keyword
-Date: Tue,  8 Apr 2025 20:55:38 +0200
-Message-ID: <20250408185538.85538-9-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250408185538.85538-1-philmd@linaro.org>
-References: <20250408185538.85538-1-philmd@linaro.org>
+ ffacd0b85a97d-39c301a732asm15876480f8f.30.2025.04.08.11.56.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Apr 2025 11:56:47 -0700 (PDT)
+Message-ID: <151210e9-1969-4e55-99d2-53dc7e9d9864@linaro.org>
+Date: Tue, 8 Apr 2025 20:56:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scripts/checkpatch: Fix typo in SPDX-License-Identifier
+ keyword
+To: Zhao Liu <zhao1.liu@intel.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+References: <20250408162702.2350565-1-zhao1.liu@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250408162702.2350565-1-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,40 +99,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+On 8/4/25 18:27, Zhao Liu wrote:
+> Fix the typo in the error message to help `grep` the example:
+> 
+> ERROR: New file '***' requires 'SPDX-License-Identifer'
+> 
+> Fixes: fa4d79c64dae ("scripts: mandate that new files have SPDX-License-Identifier")
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>   scripts/checkpatch.pl | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-Fix the typo in the error message to help `grep` the example:
-
-ERROR: New file '***' requires 'SPDX-License-Identifer'
-
-Fixes: fa4d79c64dae ("scripts: mandate that new files have SPDX-License-Identifier")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250408162702.2350565-1-zhao1.liu@intel.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- scripts/checkpatch.pl | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 6ae9d7febee..365892de042 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -1688,11 +1688,11 @@ sub process {
- 			    /\.(c|h|py|pl|sh|json|inc|Makefile)$/) {
- 			    # source code files MUST have SPDX license declared
- 			    ERROR("New file '$expect_spdx_file' requires " .
--				  "'SPDX-License-Identifer'");
-+				  "'SPDX-License-Identifier'");
- 			} else {
- 			    # Other files MAY have SPDX license if appropriate
- 			    WARN("Does new file '$expect_spdx_file' need " .
--				 "'SPDX-License-Identifer'?");
-+				 "'SPDX-License-Identifier'?");
- 			}
- 		    }
- 		    $expect_spdx = 1;
--- 
-2.47.1
-
+Patch queued, thanks!
 
