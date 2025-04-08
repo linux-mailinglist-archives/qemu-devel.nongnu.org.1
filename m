@@ -2,80 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1153EA81550
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 21:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 585C4A81604
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 21:49:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2EEX-0004RT-Th; Tue, 08 Apr 2025 15:03:41 -0400
+	id 1u2Evh-0004rr-1G; Tue, 08 Apr 2025 15:48:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prantoran@gmail.com>)
- id 1u2EET-0004QF-Q8; Tue, 08 Apr 2025 15:03:37 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1u2EvS-0004rA-4E
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 15:48:02 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <prantoran@gmail.com>)
- id 1u2EEP-00054P-5f; Tue, 08 Apr 2025 15:03:37 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7fd35b301bdso5817122a12.2; 
- Tue, 08 Apr 2025 12:03:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1u2EvL-0002NE-TQ
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 15:47:58 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5e5e1a38c1aso8030224a12.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 12:47:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744138997; x=1744743797; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=GMvT5OA9+nyz2dr2ZM0Hc+etz+J1GeGLh4IodutTSwg=;
- b=LXCLkTFjsI65OvUObmEk7QqrGSZmlu0CfrrKLpa2lE+RsF74/1A52SW2cJRT3/4zVd
- 4EwxamcLgkROndQocBrSgNbG9BeSYWkW/sN3Vk6IJWzpqYGQ7z24Fco3ddbDWJoro6nP
- mr41LAJgO9DHkLie0RICBy+Kpox8gXAOEt4YwSQTy7FdbGaWRESXbY9810jOo9DwnBQu
- wv0vmPfpUAA1uK0dFIFkGOGnLt/26E6EDY0qe7P4TFNZkGYVGRQMvPQ+OZ/ihXCjmJFN
- WTqrXvOs78aU84MQmP6jPeo0fsXu4EvbDfjt5na6Ke6UNLAiP7CxFTE0l2vz5uhJ3lku
- TYig==
+ d=gmail.com; s=20230601; t=1744141674; x=1744746474; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Cl3hCnb/MBdDHoNMjn8hPamL6iM+3kaXVMFRX39xnJI=;
+ b=XtQmt0TrtQooqJG3b9qWe21AwehXZUiEn8qOE0WJDKZumrb3DZb8Uj3RxFJHenb++a
+ B+LA07z0yJDJp70k684W/7ilNY9GZsAeX59/7PJJOkI1dHWQ4bEggQjMGy7a7RftmquO
+ jARduhrvlpS9lxg6EERzjv5HDmX+2NqH+sQ8ofZohZlabLy0ME2yu6jUhW1EPLVmMI1z
+ dUKKap7IubbN3Dm4uuTbpfrRkGjZKNQigmesJahKMNtz9kSnTUcQr+VLW5HGUZOyvH1f
+ V+FelLdpALm0smhBKxZmy9haUk71l5SYe9C6H01+3T/ApvEtppVgtOJUYC7srdzIcpqg
+ dt9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744138997; x=1744743797;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GMvT5OA9+nyz2dr2ZM0Hc+etz+J1GeGLh4IodutTSwg=;
- b=NNRWk9fDpbb+L1Pnd/JTdaxqPg33C4rTU6reI2PSWiGIu6n7mwypmDFvvVPD87wz74
- VJNBTOc5jrW12aCwoVunDGOxY/pHrhWIy+ENPuO5DPn1b2KQiiFE2S3lJkCGSY0bZJgn
- MgIXXpU5RJRdCal9cJOFiGSXjugfLTQfF3SHw/SD37Pnx+ROLmjN99DP1YEgRPL3nKd0
- wilug7qghPfVMUEGPzEFK7feamByHVf+j5+aMxKd4qNk3aN1dNyGWRW05pmyCfOYLWFO
- r75l10hd7d698wdh9AfvFwNsalcfCDGjOYGhQDpFXd9jeYulM8kYBxWgIO/TbvURuv9u
- 0zlg==
+ d=1e100.net; s=20230601; t=1744141674; x=1744746474;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Cl3hCnb/MBdDHoNMjn8hPamL6iM+3kaXVMFRX39xnJI=;
+ b=nQMFreILEhgy/HN/aJ0lNxVDRMdphl6DzPsVmX/jkmZIWwrdZyHrqlG9S1E3ehY42H
+ IbXpleY70kV/6zrRtq4v6mL3gdc+7sAAb4k8MyZ2qhZJnrx0Js0CDYiW+UCnL457xiqc
+ lcZvZ2du5XOegd/8BkMydc49cgRlvTjN5lmtEq6SJtt4P+d7O2/DT4ymTN94ixGB94DG
+ gGFA2FpNAks5Vq7hWzvKtMmGbpQdHQ3Ns0ykQsJZXmWaforIr1KpXu2qaWH7af505NKk
+ 2LvgnipgsZIhGJVJ1dKg/Vs82vTNlvcjqEzKhANOpKvJcBvvwRwjPU8yaWdjqDSTn2Fj
+ EJ7A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX+WDq8h3dq+9pb4eJ9sMyIbc1xHgZuchJ39H0VJ2THVjMfeBthiHbRKbE8Y54E7L6idCYDjspFWx0c@nongnu.org,
- AJvYcCXYMPrr6ob5+kjuXT+KFVqS5scW7oLyfLeRxVh2FxQkPagcwedlbZ81SDORr2dyqfI17IpOSHTRHLohFg==@nongnu.org
-X-Gm-Message-State: AOJu0Yz9lpLMUgroojFvs9cX7n0Dc52hr/DH8fdltcFhoBo/SPdAdU4v
- SEs67/r1iCWg34bE9qmlq5wgfz51y1dE5AbeEbowCsCExjZoG2acezDVp4V8c405SbYpLd0r8RY
- WTZr8Mv4en9G/0AfgRr6ZDEa3LJBAZizEiV+ouA==
-X-Gm-Gg: ASbGncsHa+9oFYhxHfREQoZStpvyZqqCpmeOqncz8cADgIVfy36sV8oWIzTAKHUtdKA
- wiRzqpayx287N98O11z/JcloGIELqCW655bG0ROktZkFGT74LLAwlIqGnvpaKVJ7ZK4ZNgSMdsA
- 6JNdmX+4o8fQrUcXFBq4rh4MBfon2PIy25546R
-X-Google-Smtp-Source: AGHT+IGFruX4VwL1/bpMZzXfR8KS/d/dhL2Ii8RJ8vY0wywbjMQzDeUXjXKnEaqC9ow4YDu34DqEk4xpqMD2q9RWwUc=
-X-Received: by 2002:a17:90b:3a10:b0:301:1c11:aa83 with SMTP id
- 98e67ed59e1d1-306dbc2359fmr447673a91.28.1744138996758; Tue, 08 Apr 2025
- 12:03:16 -0700 (PDT)
+ AJvYcCViDKVBypoOlnZ1Ge8fX70OpD6/f2i/CrFpyGSMXp5J5yKqPO637bzH+DkOrITN0tXr2KPRsBErSr1F@nongnu.org
+X-Gm-Message-State: AOJu0YyLu4b1kVXz8JPt6T0UOtxtd0ZlHH8V1nsOPmvpO23o7Pd+fb/v
+ E0wIFiSSY8iJHWrNZQkonLXqVm5Bu1Ka68seuxgbvVYNDyFoFOth
+X-Gm-Gg: ASbGncszDvh8gk+0DoYKUl1U+2uxEcSs9LOzABjBjfLDV5W4Onq4FqSm+NY2xn+e552
+ yFVfYFGhGSBKPSqjOwr9aubAu56oRytqvqY5bnBOaXQ27EKvYbr+tLGeNRFsKaM+GaRZM2c7zRs
+ nbprT1Pk0BiF6kvtOqo6NEGdbGOqt8JxTOgJPNFAgvu7juUdnaiXiavx9ZUbzlNzjW/WE45jmDl
+ xj+35l7wjkQ476lX54aTzbe/JBXjVOZ9DZqgDNR3nAAqdgLdY7NbTkpnIokO0bHuroJ3XlZ5WQ4
+ zxvZlv9L0KzGVUfmJRcXJr7SfYsxJaENlnFS+iQ0Ni/zUhufGlO0QwXeei3+0dSg1RzIIY9gSc9
+ mxMF9HJ4P3tK9lFztEItEW6HxhYnCkEfVcFUUb/WmaYq8gNnMKPgn
+X-Google-Smtp-Source: AGHT+IF14tyBStCeERY8VSgkrxzGdAieOQKmS6Tv87cRcF2CixZg6BCcAeRKD84zrnCL5sj5T9mBHg==
+X-Received: by 2002:a05:6402:2746:b0:5e4:92ca:34d0 with SMTP id
+ 4fb4d7f45d1cf-5f2f76e4f84mr216581a12.20.1744141673554; 
+ Tue, 08 Apr 2025 12:47:53 -0700 (PDT)
+Received: from ?IPv6:::1?
+ (dynamic-2a02-3100-291c-6e00-b87f-49d2-cee7-5562.310.pool.telefonica.de.
+ [2a02:3100:291c:6e00:b87f:49d2:cee7:5562])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5f087714e1csm8356440a12.7.2025.04.08.12.47.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Apr 2025 12:47:53 -0700 (PDT)
+Date: Tue, 08 Apr 2025 19:47:49 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Guenter Roeck <linux@roeck-us.net>, qemu-devel@nongnu.org
+CC: Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_0/2=5D_Add_property_to_supp?=
+ =?US-ASCII?Q?ort_writing_ERSTBA_in_high-low_order?=
+In-Reply-To: <20250405140002.3537411-1-linux@roeck-us.net>
+References: <20250405140002.3537411-1-linux@roeck-us.net>
+Message-ID: <975E8214-89EF-4D8C-8749-7C3FBEA253D7@gmail.com>
 MIME-Version: 1.0
-References: <20250407154730.23008-1-prantoran@gmail.com>
- <20250408154338.GD550845@fedora>
-In-Reply-To: <20250408154338.GD550845@fedora>
-From: Pinku Deb Nath <prantoran@gmail.com>
-Date: Tue, 8 Apr 2025 12:03:02 -0700
-X-Gm-Features: ATxdqUGCUDasQ8kmqP5JUiFSK4jou_I2mHU0MJpEl-6y1IxRsCLAzjsAg9jAnGE
-Message-ID: <CABqzzD6JWKpnR6Prwvna_ScYSXg3UNTLooXLZ2+nYpPO6c6VnA@mail.gmail.com>
-Subject: Re: [PATCH v6] block/file-posix.c: Use pwritev2() with RWF_DSYNC for
- FUA
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org, qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000573f8b0632490106"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=prantoran@gmail.com; helo=mail-pg1-x531.google.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,128 +102,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000573f8b0632490106
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Yay! =F0=9F=98=8A
 
-On Tue, Apr 8, 2025, 8:43 a.m. Stefan Hajnoczi <stefanha@redhat.com> wrote:
-
-> On Mon, Apr 07, 2025 at 08:47:30AM -0700, Pinku Deb Nath wrote:
-> > Full Unit Access (FUA) is an optimization where a disk write with the
-> > flag set will be persisted to disk immediately instead of potentially
-> > remaining in the disk's write cache.
-> >
-> > This commit address the todo task
-> > for using pwritev2() with RWF_DSYNC in the thread pool section of
-> > raw_co_prw(), if pwritev2() with RWF_DSYNC is available in the host,
-> > which is always the case for Linux kernel >=3D 4.7.
-> >
-> > The intent for FUA is indicated with the BDRV_REQ_FUA flag.
-> > The old code paths are preserved in case BDRV_REQ_FUA is off
-> > or pwritev2() with RWF_DSYNC is not available.
-> >
-> > Support for disk writes with FUA is handled in qemu_pwritev_fua(),
-> > which uses pwritev2() with RWF_DSYNC if available, otherwise falls
-> > back to pwritev2() with no flags followed by flush using
-> > handle_aiocb_flush().
-> >
-> > If pwritev2() is not implemented, then disk write in the linear FUA
-> > will fallback to pwrite() + handle_aiocb_flush().
-> >
-> > Signed-off-by: Pinku Deb Nath <prantoran@gmail.com>
-> >
-> > ---
-> >
-> > v5:
-> > - Use pwritev for unsupported OSes
-> >
-> > v4:
-> > - Add fallback when qemu_pwritev_fua() returns ENOSYS
-> > - Similar fallback was not added for handle_aiocb_rw_vector()
-> > since there is a preadv_present check in handle_aiocb_rw()
-> >
-> > v3:
-> > - Changed signature to add fd, iov, nr_iov
-> > - Return -ENOSYS for non-Linux hosts
-> >
-> > v2:
-> > - Moved handle_aiocb_flush() into qemu_pwritev_fua()
-> > - In handle_aiocb_rw_linear(), iovec with iovcnt=3D1 is created
-> > based on the assumption that there will be only one buffer
-> > ---
-> >  block/file-posix.c | 68 ++++++++++++++++++++++++++++++++++++++--------
-> >  1 file changed, 56 insertions(+), 12 deletions(-)
+Am 5=2E April 2025 14:00:00 UTC schrieb Guenter Roeck <linux@roeck-us=2Ene=
+t>:
+>This series is needed to support the USB interface on imx8mp-evk when
+>booting the Linux kernel=2E
 >
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+>According to the XHCI specification, ERSTBA should be written in Low-High
+>order=2E The Linux kernel writes the high word first=2E This results in a=
+n
+>initialization failure=2E
 >
-
---000000000000573f8b0632490106
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<p dir=3D"ltr">Yay! =F0=9F=98=8A</p>
-<br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=
-=3D"gmail_attr">On Tue, Apr 8, 2025, 8:43 a.m. Stefan Hajnoczi &lt;<a href=
-=3D"mailto:stefanha@redhat.com">stefanha@redhat.com</a>&gt; wrote:<br></div=
-><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1=
-px #ccc solid;padding-left:1ex">On Mon, Apr 07, 2025 at 08:47:30AM -0700, P=
-inku Deb Nath wrote:<br>
-&gt; Full Unit Access (FUA) is an optimization where a disk write with the<=
-br>
-&gt; flag set will be persisted to disk immediately instead of potentially<=
-br>
-&gt; remaining in the disk&#39;s write cache.<br>
-&gt; <br>
-&gt; This commit address the todo task<br>
-&gt; for using pwritev2() with RWF_DSYNC in the thread pool section of<br>
-&gt; raw_co_prw(), if pwritev2() with RWF_DSYNC is available in the host,<b=
-r>
-&gt; which is always the case for Linux kernel &gt;=3D 4.7.<br>
-&gt; <br>
-&gt; The intent for FUA is indicated with the BDRV_REQ_FUA flag.<br>
-&gt; The old code paths are preserved in case BDRV_REQ_FUA is off<br>
-&gt; or pwritev2() with RWF_DSYNC is not available.<br>
-&gt; <br>
-&gt; Support for disk writes with FUA is handled in qemu_pwritev_fua(),<br>
-&gt; which uses pwritev2() with RWF_DSYNC if available, otherwise falls<br>
-&gt; back to pwritev2() with no flags followed by flush using<br>
-&gt; handle_aiocb_flush().<br>
-&gt; <br>
-&gt; If pwritev2() is not implemented, then disk write in the linear FUA<br=
+>The following information is found in the Linux kernel commit log=2E
 >
-&gt; will fallback to pwrite() + handle_aiocb_flush().<br>
-&gt; <br>
-&gt; Signed-off-by: Pinku Deb Nath &lt;<a href=3D"mailto:prantoran@gmail.co=
-m" target=3D"_blank" rel=3D"noreferrer">prantoran@gmail.com</a>&gt;<br>
-&gt; <br>
-&gt; ---<br>
-&gt; <br>
-&gt; v5:<br>
-&gt; - Use pwritev for unsupported OSes<br>
-&gt; <br>
-&gt; v4:<br>
-&gt; - Add fallback when qemu_pwritev_fua() returns ENOSYS<br>
-&gt; - Similar fallback was not added for handle_aiocb_rw_vector()<br>
-&gt; since there is a preadv_present check in handle_aiocb_rw()<br>
-&gt; <br>
-&gt; v3:<br>
-&gt; - Changed signature to add fd, iov, nr_iov<br>
-&gt; - Return -ENOSYS for non-Linux hosts<br>
-&gt; <br>
-&gt; v2:<br>
-&gt; - Moved handle_aiocb_flush() into qemu_pwritev_fua()<br>
-&gt; - In handle_aiocb_rw_linear(), iovec with iovcnt=3D1 is created<br>
-&gt; based on the assumption that there will be only one buffer<br>
-&gt; ---<br>
-&gt;=C2=A0 block/file-posix.c | 68 ++++++++++++++++++++++++++++++++++++++--=
-------<br>
-&gt;=C2=A0 1 file changed, 56 insertions(+), 12 deletions(-)<br>
-<br>
-Reviewed-by: Stefan Hajnoczi &lt;<a href=3D"mailto:stefanha@redhat.com" tar=
-get=3D"_blank" rel=3D"noreferrer">stefanha@redhat.com</a>&gt;<br>
-</blockquote></div>
+>[Synopsys]- The host controller was design to support ERST setting
+>during the RUN state=2E But since there is a limitation in controller
+>in supporting separate ERSTBA_HI and ERSTBA_LO programming,
+>It is supported when the ERSTBA is programmed in 64bit,
+>or in 32 bit mode ERSTBA_HI before ERSTBA_LO
+>
+>[Synopsys]- The internal initialization of event ring fetches
+>the "Event Ring Segment Table Entry" based on the indication of
+>ERSTBA_LO written=2E
+>
+>Add property to support writing the high word first=2E Enable it
+>for dwc3=2E
+>
+>----------------------------------------------------------------
+>Guenter Roeck (2):
+>      hw: usb: xhci: Add property to support writing ERSTBA in high-low o=
+rder
+>      hw/usb/hcd-dwc3: Set erstba-hi-lo property
+>
+> hw/usb/hcd-dwc3=2Ec | 1 +
+> hw/usb/hcd-xhci=2Ec | 8 +++++++-
+> hw/usb/hcd-xhci=2Eh | 1 +
+> 3 files changed, 9 insertions(+), 1 deletion(-)
 
---000000000000573f8b0632490106--
+Series:
+Tested-by: Bernhard Beschow <shentey@gmail=2Ecom>
+
+=2E=2E=2E on imx8mp-evk board with 6=2E14 defconfig kernel=2E It indeed he=
+lps to get USB working with this kernel=2E
+
+Best regards,
+Bernhard
 
