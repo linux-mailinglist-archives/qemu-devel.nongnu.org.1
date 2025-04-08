@@ -2,50 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C253A80046
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 13:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9030DA80016
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 13:28:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u26qt-0003nc-9s; Tue, 08 Apr 2025 07:10:47 -0400
+	id 1u275Z-0007Vi-8C; Tue, 08 Apr 2025 07:25:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dietmar@proxmox.com>)
- id 1u26qp-0003mw-2S
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 07:10:43 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1u275S-0007VH-H7
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 07:25:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dietmar@proxmox.com>)
- id 1u26ql-00045n-SK
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 07:10:42 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id F11E543FC5;
- Tue,  8 Apr 2025 13:10:34 +0200 (CEST)
-Date: Tue, 8 Apr 2025 13:10:34 +0200 (CEST)
-From: Dietmar Maurer <dietmar@proxmox.com>
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org
-Message-ID: <749745338.1328.1744110634283@webmail.proxmox.com>
-In-Reply-To: <CAJ+F1CKZUWEvJ54kF4J=pPuxZoozGcjB9H5KBJY+fzBrdLVBDw@mail.gmail.com>
-References: <20250407105939.1997660-1-dietmar@proxmox.com>
- <20250407105939.1997660-2-dietmar@proxmox.com>
- <CAMxuvaxs+qM3msR-tdCXZfMZkQvHqNbHhHwhYKBPtRPLZGyuMA@mail.gmail.com>
- <1880642940.1156.1744105987725@webmail.proxmox.com>
- <CAJ+F1CKZUWEvJ54kF4J=pPuxZoozGcjB9H5KBJY+fzBrdLVBDw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] add vnc h264 encoder
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1u275Q-0006Mm-HR
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 07:25:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744111545;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=WjFPABZXILeJ78Wq6M5oMzhIXnSZu3uoZGgbnQQdzUM=;
+ b=d8aW2MOZojHcYvNGklkBfRQnCwryVtWFVw2KhtqHoPmX5pxkeFHPeeL/cOdTrr33xVUpfB
+ 7JHRmkHJEXKv+1/JDQ2+iMYjNBMN9ecKM+8csus+Cdlck6wZ8fJA+KCfkG4nt08FaOEz4a
+ owcBdpn9gnCVgEYhSQm2KnE/D64Ww5g=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-482-xueCR_dNPUGfeXrYIEEjwA-1; Tue,
+ 08 Apr 2025 07:25:41 -0400
+X-MC-Unique: xueCR_dNPUGfeXrYIEEjwA-1
+X-Mimecast-MFC-AGG-ID: xueCR_dNPUGfeXrYIEEjwA_1744111540
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A5204195608A; Tue,  8 Apr 2025 11:25:40 +0000 (UTC)
+Received: from rh-jmarcin.redhat.com (unknown [10.44.34.27])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6516B195DF82; Tue,  8 Apr 2025 11:25:37 +0000 (UTC)
+From: Juraj Marcin <jmarcin@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Juraj Marcin <jmarcin@redhat.com>, vsementsov@yandex-team.ru,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v3 0/5] util/qemu-sockets: Introduce inet socket options
+ controlling TCP keep-alive
+Date: Tue,  8 Apr 2025 13:24:59 +0200
+Message-ID: <20250408112508.1638722-1-jmarcin@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
-X-Mailer: Open-Xchange Mailer v7.10.6-Rev75
-X-Originating-Client: open-xchange-appsuite
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=dietmar@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.845,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -63,54 +81,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > > > +#include <gst/gst.h>
-> > > > +
-> > > > +static void libavcodec_destroy_encoder_context(VncState *vs)
-> > >
-> > > it's not libavcodec.
-> >
-> > I will fix that in v2.
-> 
-> What about encodebin suggestion?
+This series extends the work introduced by commit aec21d3175 ("qapi: Add
+InetSocketAddress member keep-alive"). [1]
 
-I found no way to configure codec specific option (i.e. x264 zerolatency). I there a way? It is crucial to set those option
-to get reasonable quality.
+First, the series fixes an issue in qio_dns_resolver_lookup_sync_inet(),
+where the InetSocketAddress structure is only partially copied. Next, it
+refactors setting client socket options into a separate function and the
+success and failure paths in inet_listen_saddr() in preparation for
+keep-alive support on server sockets and the addition of new TCP
+keep-alive options.
 
-Anyway, I can test a view option, for example x264, openh264, and
-maybe vah264enc (hardware support), and then simply use what is available.
+Then, the series adds support for keep-alive on server sockets and adds
+three new InetSocketAddress options for control of TCP keep-alive
+settings. By default, the value of all new settings is 0, which means no
+custom socket option value is set.
 
-I think we should also have the option to allow h264 if we detect
-HW support, but disable software encoders. Or let the user select
-the list of allowed codec?
+This is useful, for example, for live migration. In case there is no
+traffic from the destination to the source machine during postcopy, the
+destination cannot detect a failed connection due to a lack of
+non-acknowledged packets and stays in the postcopy-active state until
+paused by the management of the QEMU instance.
 
-> >
-> > > > +#ifdef CONFIG_GSTREAMER
-> > > > +        case VNC_ENCODING_H264:
-> > > > +            if (vnc_h264_encoder_init(vs) == 0) {
-> > > > +                vnc_set_feature(vs, VNC_FEATURE_H264);
-> > >
-> > > Before advertising support for the codec, it should actually check if
-> > > the encoder is present.
-> >
-> > ok.
-> >
-> > > It would also be useful to have an extra VNC
-> > > option like H264=on/off/auto.
-> >
-> > I thought it would be better to do that at the client?
-> 
-> Well, it can be worth it to prevent h264 usage from the server too. Or
-> to ensure the server is h264-capable. (this wasn't seen as much
-> necessary for other codecs that are low-resource and/or patent-free,
-> but may make sense too)
+[1]: https://lore.kernel.org/all/20190725094937.32454-1-vsementsov@virtuozzo.com/
 
-Maybe H264=on,off,codec-list
+---
+V3:
+- moved the InetSocketAddress struct copy fix and the common function
+  setting socket options into a separate commit
+- refactored inet_listen_saddr()
 
-on: automatically select the codec
-off: disable h264
-codec-list: a list of allowed codecs
+V2:
+- moved socket options setting into a common function for both server
+  and client sockets (suggested by Vladimir)
 
+Juraj Marcin (5):
+  io: Fix partial struct copy in qio_dns_resolver_lookup_sync_inet()
+  util/qemu-sockets: Refactor setting client sockopts into a separate
+    function
+  util/qemu-sockets: Refactor success and failure paths in
+    inet_listen_saddr()
+  util/qemu-sockets: Add support for keep-alive flag to passive sockets
+  utils/qemu-sockets: Introduce inet socket options controlling TCP
+    keep-alive
 
-- Dietmar
+ io/dns-resolver.c   |  21 ++----
+ meson.build         |   6 ++
+ qapi/sockets.json   |  19 ++++-
+ util/qemu-sockets.c | 177 ++++++++++++++++++++++++++++++++++----------
+ 4 files changed, 165 insertions(+), 58 deletions(-)
+
+-- 
+2.48.1
 
 
