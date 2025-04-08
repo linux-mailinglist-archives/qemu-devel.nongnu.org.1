@@ -2,37 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20BFA7F57B
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B03A7F581
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u22zc-0006ZG-KI; Tue, 08 Apr 2025 03:03:32 -0400
+	id 1u22zd-0006a6-Lr; Tue, 08 Apr 2025 03:03:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1u22za-0006Yz-CD
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:03:30 -0400
+ id 1u22zb-0006ZW-NO
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:03:31 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1u22zX-0007eg-UF
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:03:30 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1u22zY-0007eO-Tq
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:03:31 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxJHA6yvRngPe0AA--.38282S3;
- Tue, 08 Apr 2025 15:03:22 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Bxlmk1yvRncve0AA--.38828S3;
+ Tue, 08 Apr 2025 15:03:17 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMDxPcUwyvRnUlV0AA--.18375S2;
- Tue, 08 Apr 2025 15:03:12 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMDxPcUwyvRnUlV0AA--.18375S3;
+ Tue, 08 Apr 2025 15:03:16 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: stefanha@gmail.comD
-Subject: [PULL 0/2] loongarch bug fix for 10.0
-Date: Tue,  8 Apr 2025 14:41:20 +0800
-Message-Id: <20250408064122.1917691-1-gaosong@loongson.cn>
+Cc: stefanha@gmail.comD, Bibo Mao <maobibo@loongson.cn>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 1/2] hw/loongarch/virt: Fix cpuslot::cpu set at last in
+ virt_cpu_plug()
+Date: Tue,  8 Apr 2025 14:41:21 +0800
+Message-Id: <20250408064122.1917691-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20250408064122.1917691-1-gaosong@loongson.cn>
+References: <20250408064122.1917691-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMDxPcUwyvRnUlV0AA--.18375S2
+X-CM-TRANSID: qMiowMDxPcUwyvRnUlV0AA--.18375S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -60,27 +64,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit dfaecc04c46d298e9ee81bd0ca96d8754f1c27ed:
+From: Bibo Mao <maobibo@loongson.cn>
 
-  Merge tag 'pull-riscv-to-apply-20250407-1' of https://github.com/alistair23/qemu into staging (2025-04-07 09:18:33 -0400)
+In function virt_cpu_plug(), Object cpuslot::cpu is set at last
+only when there is no any error, otherwise it is problematic that
+cpuslot::cpu is set in advance however it returns because of error.
 
-are available in the Git repository at:
+Fixes: ab9935d2991e (hw/loongarch/virt: Implement cpu plug interface)
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-Id: <20250324030145.3037408-2-maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ hw/loongarch/virt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  https://github.com/gaosong715/qemu.git tags/pull-loongarch-20250408
-
-for you to fetch changes up to fa0dde12db045ddc84f69b1aa0a4c98d176c903d:
-
-  hw/loongarch/virt: Replace destination error with error_abort (2025-04-08 14:44:53 +0800)
-
-----------------------------------------------------------------
-loongarch bug fix for 10.0
-
-----------------------------------------------------------------
-Bibo Mao (2):
-      hw/loongarch/virt: Fix cpuslot::cpu set at last in virt_cpu_plug()
-      hw/loongarch/virt: Replace destination error with error_abort
-
- hw/loongarch/virt.c | 43 +++++++++----------------------------------
- 1 file changed, 9 insertions(+), 34 deletions(-)
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index e25864214f..504f8755a0 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -973,8 +973,6 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
+     LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(hotplug_dev);
+     Error *err = NULL;
+ 
+-    cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
+-    cpu_slot->cpu = CPU(dev);
+     if (lvms->ipi) {
+         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->ipi), dev, &err);
+         if (err) {
+@@ -998,6 +996,8 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
+         }
+     }
+ 
++    cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
++    cpu_slot->cpu = CPU(dev);
+     return;
+ }
+ 
+-- 
+2.34.1
 
 
