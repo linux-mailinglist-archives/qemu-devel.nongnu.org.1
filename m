@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5713FA7F604
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9760A7F605
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Apr 2025 09:22:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u23Gi-0007h2-79; Tue, 08 Apr 2025 03:21:12 -0400
+	id 1u23Gd-0007Uk-Nu; Tue, 08 Apr 2025 03:21:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fr-0007Du-TY
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:29 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fp-0007DH-1I
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fl-0001YF-G2
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:17 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u23Fj-0001YI-Rv
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 03:20:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1744096807;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3Bh1beKhXr+3bpFHooOG0Kd1sLdPBHXQ9gI3gm6aPSg=;
- b=BR8+Olmlv6zERknrt4a3E99hyoTLsrNbGBlYH2CM0aQPHIeQ2s5tofsVeYjdV4hiRDnzTs
- uwifPRJJUqMiXZwHen3HvbqurcmAguDPdvcMqGiBynSbaY4AonzvKWwXm6WnNvjhcKo5la
- xUZgMSJFrFCDNyfcjEhp26t1posr2aE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=FA2QrMRBgkWEzLpTHSPEKTKiAa4lPz6DTSVkjmIY/lc=;
+ b=XyMRpMSxXigyuHCgL7LbFaFIcJjSxdIbBGALWrGwp1a2wZjM08UC1vIrtx+bGjsAI5B7Kb
+ DRcx81MhK3MomfQhGIOFu4C74dtFYdHCHpaHslnMgemxzYwow1BGKi2T0qdAuYuD50Jwgv
+ SKjAS//+bbSPFiJH8Vncz+dnZTpDGYY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-446--V1S4aitOa6cAXai7mTnWg-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-AtvBe8JMMIOCvOHFvBQYFw-1; Tue,
  08 Apr 2025 03:20:05 -0400
-X-MC-Unique: -V1S4aitOa6cAXai7mTnWg-1
-X-Mimecast-MFC-AGG-ID: -V1S4aitOa6cAXai7mTnWg_1744096804
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+X-MC-Unique: AtvBe8JMMIOCvOHFvBQYFw-1
+X-Mimecast-MFC-AGG-ID: AtvBe8JMMIOCvOHFvBQYFw_1744096804
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 949DD19560A2
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AFE6C1956050
  for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:04 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 521381955BC0
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 62BC01801747
  for <qemu-devel@nongnu.org>; Tue,  8 Apr 2025 07:20:04 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E68B821E66C7; Tue, 08 Apr 2025 09:20:01 +0200 (CEST)
+ id EB15521E66B9; Tue, 08 Apr 2025 09:20:01 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	Eric Blake <eblake@redhat.com>
-Subject: [PULL 01/11] docs/devel/qapi-code-gen: Tidy up whitespace
-Date: Tue,  8 Apr 2025 09:19:51 +0200
-Message-ID: <20250408072001.2518323-2-armbru@redhat.com>
+Subject: [PULL 02/11] qapi/rocker: Tidy up query-rocker-of-dpa-flows example
+Date: Tue,  8 Apr 2025 09:19:52 +0200
+Message-ID: <20250408072001.2518323-3-armbru@redhat.com>
 In-Reply-To: <20250408072001.2518323-1-armbru@redhat.com>
 References: <20250408072001.2518323-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -84,85 +84,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Consistently use two spaces to separate sentences.
-
-Put "::" on a line of its own when it's preceded by whitespace.
+The command can return any number of RockerOfDpaFlow objects.  The
+example shows it returning exactly two, with the second object's
+members elided.  Tweak it so it elides elements after the first
+instead.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250404121413.1743790-2-armbru@redhat.com>
+Message-ID: <20250404121413.1743790-3-armbru@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
+[Commit message typo fixed]
 ---
- docs/devel/qapi-code-gen.rst | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ qapi/rocker.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
-index f9cfe8721f..ad517349fc 100644
---- a/docs/devel/qapi-code-gen.rst
-+++ b/docs/devel/qapi-code-gen.rst
-@@ -763,8 +763,8 @@ Names beginning with ``x-`` used to signify "experimental".  This
- convention has been replaced by special feature "unstable".
- 
- Pragmas ``command-name-exceptions`` and ``member-name-exceptions`` let
--you violate naming rules.  Use for new code is strongly discouraged. See
--`Pragma directives`_ for details.
-+you violate naming rules.  Use for new code is strongly discouraged.
-+See `Pragma directives`_ for details.
- 
- 
- Downstream extensions
-@@ -1013,7 +1013,7 @@ like this::
- document the success and the error response, respectively.
- 
- "Errors" sections should be formatted as an rST list, each entry
--detailing a relevant error condition. For example::
-+detailing a relevant error condition.  For example::
- 
-  # Errors:
-  #     - If @device does not exist, DeviceNotFound
-@@ -1026,13 +1026,13 @@ definition.
- QMP).  In other sections, the text is formatted, and rST markup can be
- used.
- 
--QMP Examples can be added by using the ``.. qmp-example::``
--directive. In its simplest form, this can be used to contain a single
--QMP code block which accepts standard JSON syntax with additional server
-+QMP Examples can be added by using the ``.. qmp-example::`` directive.
-+In its simplest form, this can be used to contain a single QMP code
-+block which accepts standard JSON syntax with additional server
- directionality indicators (``->`` and ``<-``), and elisions (``...``).
- 
- Optionally, a plaintext title may be provided by using the ``:title:``
--directive option. If the title is omitted, the example title will
-+directive option.  If the title is omitted, the example title will
- default to "Example:".
- 
- A simple QMP example::
-@@ -1043,10 +1043,10 @@ A simple QMP example::
-   #    -> { "execute": "query-block" }
-   #    <- { ... }
- 
--More complex or multi-step examples where exposition is needed before or
--between QMP code blocks can be created by using the ``:annotated:``
--directive option. When using this option, nested QMP code blocks must be
--entered explicitly with rST's ``::`` syntax.
-+More complex or multi-step examples where exposition is needed before
-+or between QMP code blocks can be created by using the ``:annotated:``
-+directive option.  When using this option, nested QMP code blocks must
-+be entered explicitly with rST's ``::`` syntax.
- 
- Highlighting in non-QMP languages can be accomplished by using the
- ``.. code-block:: lang`` directive, and non-highlighted text can be
-@@ -1466,7 +1466,9 @@ As an example, we'll use the following schema, which describes a
- single complex user-defined type, along with command which takes a
- list of that type as a parameter, and returns a single element of that
- type.  The user is responsible for writing the implementation of
--qmp_my_command(); everything else is produced by the generator. ::
-+qmp_my_command(); everything else is produced by the generator.
-+
-+::
- 
-     $ cat example-schema.json
-     { 'struct': 'UserDefOne',
+diff --git a/qapi/rocker.json b/qapi/rocker.json
+index 51aa5b4930..0c7ef1f77c 100644
+--- a/qapi/rocker.json
++++ b/qapi/rocker.json
+@@ -254,7 +254,7 @@
+ #                       "action": {"goto-tbl": 10},
+ #                       "mask": {"in-pport": 4294901760}
+ #                      },
+-#                      {...},
++#                      ...
+ #        ]}
+ ##
+ { 'command': 'query-rocker-of-dpa-flows',
 -- 
 2.48.1
 
