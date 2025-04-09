@@ -2,71 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E74A82014
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 10:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC03A8206B
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 10:44:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2QqX-0006Vo-Cd; Wed, 09 Apr 2025 04:31:45 -0400
+	id 1u2R1o-0001s2-To; Wed, 09 Apr 2025 04:43:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u2QqT-0006VG-PN
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 04:31:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1u2R1g-0001qb-7N; Wed, 09 Apr 2025 04:43:17 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u2QqQ-0003ve-Ot
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 04:31:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744187497;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PgtL/D6untLxPl/Kyv54XmEkbj0oDEaanDqyObaxMv8=;
- b=TTpxoPgHfgQDnYAiBBIBd9nov413zepO22f0qVDXL9jXSYf4LlbtFFbeNlkV6DvDg1LJvX
- 2HsCnzukC0lm0k2HzQGlZhpQ6mHATulJwwVn0LZbVITxaTMpN0IXqLv7emktgWMPYxdYL9
- 6vesIV9eLxSqn/CPmNZ5sLTQnKXmx7U=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-CVZ11Sj9M5WTo6TRCqB2Dg-1; Wed,
- 09 Apr 2025 04:31:34 -0400
-X-MC-Unique: CVZ11Sj9M5WTo6TRCqB2Dg-1
-X-Mimecast-MFC-AGG-ID: CVZ11Sj9M5WTo6TRCqB2Dg_1744187493
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7C0AB19560BB; Wed,  9 Apr 2025 08:31:33 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.136])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 02F2A19560AD; Wed,  9 Apr 2025 08:31:32 +0000 (UTC)
-Date: Wed, 9 Apr 2025 04:31:32 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, kwolf@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PULL 0/4] Block layer patches
-Message-ID: <20250409083132.GA24116@fedora>
-References: <20250408130048.283364-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1u2R1e-000595-6N; Wed, 09 Apr 2025 04:43:15 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c15:2b89:0:640:9815:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 7DF6860DBD;
+ Wed,  9 Apr 2025 11:43:06 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:7304::1:2d])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id XgZSKO0FZa60-GBzMoZKN; Wed, 09 Apr 2025 11:43:05 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1744188185;
+ bh=IQZ4g57g5jkeKoSBqyYulQwUkv+2ahQTl2r+MicUGlo=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=hVB09vgEKHF9em0Koui1/U0xgxEoEx79bPYkeBJ7sGI6UtL+ppb+bdPtoNzgnuLQa
+ XyX+qgcY7Iixg2aAufw38Leh9WN6tC9CrnbyX7fu9kB9ciAjKEsdysRBlNMU04Yx9J
+ BEIgTHm8ry9Ix1ernkn9D2agemx13K/yMl8EdO10=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ armbru@redhat.com, eblake@redhat.com, jsnow@redhat.com,
+ devel@lists.libvirt.org, pkrempa@redhat.com, michael.roth@amd.com,
+ pbonzini@redhat.com, vsementsov@yandex-team.ru
+Subject: [PATCH v3 0/2] deprecate some block-job- APIs
+Date: Wed,  9 Apr 2025 11:42:29 +0300
+Message-ID: <20250409084232.28201-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="3urHauK4u/HFYhtB"
-Content-Disposition: inline
-In-Reply-To: <20250408130048.283364-1-kwolf@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.845,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,30 +71,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is for 10.1, of course.
 
---3urHauK4u/HFYhtB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+v3: fix wording, typos
+v2: Update documentation: add patch 01
 
-Applied, thanks.
+v1 was:
+[PATCH] [for-10.1] qapi/block-core: derpecate some block-job- APIs
+Supersedes: <20250401155730.103718-1-vsementsov@yandex-team.ru>
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
+Vladimir Sementsov-Ogievskiy (2):
+  qapi: synchronize jobs and block-jobs documentation
+  qapi/block-core: deprecate some block-job- APIs
 
---3urHauK4u/HFYhtB
-Content-Type: application/pgp-signature; name=signature.asc
+ docs/about/deprecated.rst | 31 +++++++++++++
+ qapi/block-core.json      | 91 ++++++++++++++++++++++++++++-----------
+ qapi/job.json             | 30 ++++++++++++-
+ 3 files changed, 125 insertions(+), 27 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmf2MGQACgkQnKSrs4Gr
-c8j+JAf9Ek82azTzjd/RzK5ALh/wcZX02HIi22unkFVf2xlRsIvG7EdHonvV5OMV
-U9d51Ra/j0Axq0ZEQXEW4LCBCRL7r4gR9tv4KuAiufMNa2i33iNRI3Uu8jhaJrOL
-wdpHDN44arsTf3er+5HVFjmw85idANtrElXXuhQlfgi5kQO1xSQWUSwDBJJ7VMWR
-vK5lac+r4ZMZUkO6c+kuFhli7JKJBD6qBCWXAiDDRGMWwl9CLR98TEsTXA7uWiQv
-133nEa7nWNPGUGoxOyQ636DqsJ14TKVjhybfUu4x18pPFwyOblhr7InFKJWArHRy
-qsHp3sRTLcRm0P0sEA7cw8pqklGgeg==
-=cn/C
------END PGP SIGNATURE-----
-
---3urHauK4u/HFYhtB--
+-- 
+2.48.1
 
 
