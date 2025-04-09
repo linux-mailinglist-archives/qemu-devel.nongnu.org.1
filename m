@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27721A81B54
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 04:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A01A81B55
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 04:53:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2LXi-0000tO-Rc; Tue, 08 Apr 2025 22:51:58 -0400
+	id 1u2LXl-0000ue-F3; Tue, 08 Apr 2025 22:52:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1u2LXg-0000sD-P1
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:51:56 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1u2LXj-0000tn-Ml
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:51:59 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1u2LXf-00019a-1F
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:51:56 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-22401f4d35aso71642155ad.2
- for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 19:51:54 -0700 (PDT)
+ id 1u2LXi-0001AS-9G
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:51:59 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-224191d92e4so59533755ad.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 19:51:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1744167113; x=1744771913; darn=nongnu.org;
+ d=sifive.com; s=google; t=1744167116; x=1744771916; darn=nongnu.org;
  h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
  :cc:subject:date:message-id:reply-to;
- bh=34lLEwB0Gg3cwH10oPYf9tvhYdTQGgJnGI9qEibZYP8=;
- b=h5dXJeE8JN+k1C4AU4i2Wc9u+Ke2t5BWUKvsXgXXCSIfhjvpKnihS7sZx6F2YzFQcy
- KwM9Nd/I/RUwSTFSElU9lYeI4bm82yPkLX9vqmFdmWHcCN/jMVS/K0pO403/c4wC1ZaH
- FWZFpLVNLlDGFgGe2vQCrWwD6J16GbmUaUK39si3uADdtRVJgOBTR+6QNvPieYJbeeFh
- L/NvA9gLQ1jBW1IsxhhWEys8hNOyyMrVnENZk8UEGUk3y7es5ha1V0bXOhBJG/Ze5iQN
- De67tfcMocv3mFz389sh/zbMV2KV3eTnJCKFCg9jOxritceqlRMo0aBUARKeE01+GlWU
- 0yOg==
+ bh=RnrAzFeyhhVN5kCbVsK0iZFX3OvBg6SXh0USMwim+O0=;
+ b=d9N1b0AgY+5F1dC8PCFIB+G/fLe9Bmh0NWGzbCRipHjbgy520vrUKmOetjNNN9Q7le
+ OSO+cLhBVaEt3F3R546STP8e/HMuiiuU89DEYb+MHI7EjTWv7Sm2ZbxroTr3TUfPpHUX
+ 1Yne+jCKk3cDNzc3kj7onfDdU/0vgb1wpjvC4yuCd67BBkmh1GyzJ1ROtHH0WdyRy7y5
+ ikxLvlgtNxRTM4fo12+8h7dLm2Rjks09aKAkABeBZ/e6JnEpalfkQV4VzCvAePmJ2htK
+ ng5H/rHy8Hadw0xicKamxxq2ozIegGdg9wzEw7rBanbB/l/DE8FIUkrvywYzJHs/knLC
+ ap0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744167113; x=1744771913;
+ d=1e100.net; s=20230601; t=1744167116; x=1744771916;
  h=references:in-reply-to:message-id:date:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=34lLEwB0Gg3cwH10oPYf9tvhYdTQGgJnGI9qEibZYP8=;
- b=EimITTMvW0we+Q9Zf9UkmWaX2QAFf3AhQ2I+Ufo5skQgHY0LZEa9bZ/suvS6HfjfCi
- 50uygJUQqim+jd0QKoHybam5CJNOf6un9oT0iMZs91a1ajNOOYkA2jWbYA8ssEoOj3Ng
- P8HN5F71Lse4It9ZtIXYvBpZbqzqgkB6LakFZ2UBeKjXh8o3ijpQ9OG3QFHYWcnMgmu+
- 3yIfolro7kupgJqNC8dVgGQM54mOBrnLMWV+TCM90Olaoa18yCYuHvJMqd6uw7sJ/SYq
- B53MX2K8yxPwG1rX5LvXQFbyoBuNA91TSvCz7ySj1u3J7GW9EF8eu5WQUf/7u6c7N4Hb
- nB7A==
-X-Gm-Message-State: AOJu0YxtP7DA9l/4XHQTKGOJDa5Y3QTb4GRNuOhbJLVRH0HabPwZzslH
- rX57ydg3PY9AOQxXEocb3RQdi4v8F1/vGEC/f6bU3YqBHsgYbZ58kq2n5G6vVrCNPiPgyt06tZg
- WR8ddYUcsfryG4A248GsOsNqhYRXXM4vMqNN+3C6li2zn6BD5VThJQWW79fOqP3fFZq7kgCr/Cl
- ktnSKlIU34a1uPr5+KP008Kf7jTmtXiG9p/g==
-X-Gm-Gg: ASbGncu45G6If3HMYzemqoFpQrjLz0ziAUy1lY50t4M6fG14/3AupaAOXiTC/fwFUjA
- sdxZGynPuwfOxvzvpVSDr2WvAL8fdG56Rsu86IN3bQNwFSkEqRFS6w77VWPDUMrfwRvVRyPqJtO
- e/fQJllmjCXjXUHCyqBRqbhLSy99sdcC01vbo4+dyA+MiUG4m7UQalHuYmyrDpXMNiuq4gBKPH7
- vST17WQwQ2CBpfxL9NEGSuvJeNypqhLJecY8sMfGsYqVIO8sLKcjAO85/KSfH6oKMxE6Wyhyeje
- hhXszNGILVEjB4U4NyqiT4zxCu2iMOMxkFuCO3Ssd0WZpxkfB04VkltmIL7XwWMgDsXRZw+mSxH
- ppA==
-X-Google-Smtp-Source: AGHT+IHuZxg1XkNr9HdgCzep2yi5FoOs4gQYQjdn86csPg0WTyyAoPp3Pa3tlKPVjO2/r354THkDLQ==
-X-Received: by 2002:a17:902:f9c3:b0:224:78e:4ebe with SMTP id
- d9443c01a7336-22ac2a1df74mr12899575ad.33.1744167113040; 
- Tue, 08 Apr 2025 19:51:53 -0700 (PDT)
+ bh=RnrAzFeyhhVN5kCbVsK0iZFX3OvBg6SXh0USMwim+O0=;
+ b=IH6g0HiY32j0mnAboBo890mGFBAlSNV6f6PSi20N8O2f6V2AMr0Xi+x530kePgmvjF
+ CmrKek86UoNEWvCUBPabGS0Y7esSbg5RYgZZMZIbyjMnddnK/1wj9YDiE5trWZ/U2HWs
+ xU/PcJBrpCSSRzkT5VaZ3DojMWHiXg90JOB1pubn8ACn9fmrpBXUrCY5L+TrU5vUhl41
+ sONCH2p5gFbDtOJpvbX+bANHT7l0Da2x2fu909BKcofsPs2hVnJuj6KJntQzmn2DMO17
+ iFZHo5K+dlXAdcHLYQT9fmoSJhYxaRKvOqAeojako2hpQn1z3ydpO2u7/8C0JmbhkMk0
+ 2pYA==
+X-Gm-Message-State: AOJu0Yy50GL4j2EcVN/UouU1EKjIYzmw7Ftrr82y/tmUD4Wm0O46cud/
+ gslsWfRbfq+Kd+Ipw1XLCALK3Uf9Gtun5EJEKHGTcsm6RZE0Q140g+F8a0dmcXD91QklTMJVsbw
+ 8JY/ggVhSwLxWraerYyxgiGxJjRMfJV0iOqw+iH1Y1+N0xHRYgpZtbj3l3UYedpUnTZaK5dBfCb
+ I4mhsyGkiA2sih6BV9y0CKcqG++mSs//+pnA==
+X-Gm-Gg: ASbGncvrAMifqub+arrKrxWTD33ysHlCrgUcCI3h629ePvw51ScLUPjjq5KVsGEtKzz
+ ZSQ31LHqSYQRWSZt/q67SS7slW4/ZxIVR4lB6DztV0IzFoGKVgtoo4epdOuYsTiBinHaGboFJzY
+ 1LZbgpwTdqQjUNVuKyfc6GhuS2IE8x6AxfkoA4znoiL/m4OtBp05Xt5v09XiK9BWoA6k4xvwCsP
+ Wyj7sJxDfl6zkAdWcVKYkFcI0bvM4bahXwv07muQslBTtUVFubSXnEk7UrVKMEfy77mf5lo8id2
+ hIOuZ72lIZNBM3l0WYLE73ySidzepKRpTgc3DykyCLUNU3PIE3vie2aiMITipQAY0/k=
+X-Google-Smtp-Source: AGHT+IGGslaLVHdpyphTNDAohz50hEJQ7oHY0FFaQInvSilIa5TeeVkxwn7/ot1LzImsN4zpjqYVvg==
+X-Received: by 2002:a17:903:3b4e:b0:229:1717:882a with SMTP id
+ d9443c01a7336-22ac3f321e2mr12042385ad.4.1744167115812; 
+ Tue, 08 Apr 2025 19:51:55 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7cb5463sm665725ad.195.2025.04.08.19.51.51
+ d9443c01a7336-22ac7cb5463sm665725ad.195.2025.04.08.19.51.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Apr 2025 19:51:52 -0700 (PDT)
+ Tue, 08 Apr 2025 19:51:55 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -70,15 +69,14 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH v2 2/4] hw/intc: riscv_aclint: Fix mtime write for sstc
- extension
-Date: Wed,  9 Apr 2025 10:51:29 +0800
-Message-Id: <20250409025131.3670-3-jim.shu@sifive.com>
+Subject: [PATCH v2 3/4] target/riscv: Fix VSTIP bit in sstc extension.
+Date: Wed,  9 Apr 2025 10:51:30 +0800
+Message-Id: <20250409025131.3670-4-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20250409025131.3670-1-jim.shu@sifive.com>
 References: <20250409025131.3670-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=jim.shu@sifive.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=jim.shu@sifive.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,57 +99,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When changing the mtime value, the period of [s|vs]timecmp timers
-should also be updated, similar to the period of mtimecmp timer.
-
-The period of the stimecmp timer is the time until the next S-mode
-timer IRQ. The value is calculated as "stimecmp - time". [1]
-It is equal to "stimecmp - mtime" since the time CSR is a read-only
-shadow of the memory-mapped mtime register.
-Thus, changing mtime value will update the period of stimecmp timer.
-
-Similarly, the period of vstimecmp timer is calculated as "vstimecmp -
-(mtime + htimedelta)" [2], so changing mtime value will update the
-period of vstimecmp timer.
-
-[1] RISC-V Priv spec ch 9.1.1. Supervisor Timer (stimecmp) Register
-A supervisor timer interrupt becomes pending, as reflected in the STIP
-bit in the mip and sip registers whenever time contains a value
-greater than or equal to stimecmp.
-[2] RISC-V Priv spec ch19.2.1. Virtual Supervisor Timer (vstimecmp) Register
-A virtual supervisor timer interrupt becomes pending, as reflected in
-the VSTIP bit in the hip register, whenever (time + htimedelta),
-truncated to 64 bits, contains a value greater than or equal to
-vstimecmp
+VSTIP is only writable when both [mh]envcfg.STCE is enabled, or it will
+revert it's defined behavior as if sstc extension is not implemented.
 
 Signed-off-by: Jim Shu <jim.shu@sifive.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/intc/riscv_aclint.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/riscv/csr.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-index db374a7c2d..5f4a17e177 100644
---- a/hw/intc/riscv_aclint.c
-+++ b/hw/intc/riscv_aclint.c
-@@ -28,6 +28,7 @@
- #include "qemu/module.h"
- #include "hw/sysbus.h"
- #include "target/riscv/cpu.h"
-+#include "target/riscv/time_helper.h"
- #include "hw/qdev-properties.h"
- #include "hw/intc/riscv_aclint.h"
- #include "qemu/timer.h"
-@@ -240,6 +241,10 @@ static void riscv_aclint_mtimer_write(void *opaque, hwaddr addr,
-             riscv_aclint_mtimer_write_timecmp(mtimer, RISCV_CPU(cpu),
-                                               mtimer->hartid_base + i,
-                                               mtimer->timecmp[i]);
-+            riscv_timer_write_timecmp(env, env->stimer, env->stimecmp, 0, MIP_STIP);
-+            riscv_timer_write_timecmp(env, env->vstimer, env->vstimecmp,
-+                                      env->htimedelta, MIP_VSTIP);
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 7948188356..e86808fd98 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -3635,7 +3635,14 @@ static RISCVException rmw_mip64(CPURISCVState *env, int csrno,
+     if (riscv_cpu_cfg(env)->ext_sstc && (env->priv == PRV_M) &&
+         get_field(env->menvcfg, MENVCFG_STCE)) {
+         /* sstc extension forbids STIP & VSTIP to be writeable in mip */
+-        mask = mask & ~(MIP_STIP | MIP_VSTIP);
 +
-         }
-         return;
++        /* STIP is not writable when menvcfg.STCE is enabled. */
++        mask = mask & ~MIP_STIP;
++
++        /* VSTIP is not writable when both [mh]envcfg.STCE are enabled. */
++        if (get_field(env->henvcfg, HENVCFG_STCE)) {
++            mask = mask & ~MIP_VSTIP;
++        }
      }
+ 
+     if (mask) {
 -- 
 2.17.1
 
