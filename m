@@ -2,99 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2E1A82184
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 11:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B79EA82195
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 12:01:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2SCt-0003cz-1D; Wed, 09 Apr 2025 05:58:55 -0400
+	id 1u2SEd-0006KG-Ka; Wed, 09 Apr 2025 06:00:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u2SCd-0003RE-3q
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 05:58:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u2SEG-0006Fl-UY
+ for qemu-devel@nongnu.org; Wed, 09 Apr 2025 06:00:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u2SCb-0006K1-Ae
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 05:58:38 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u2SEF-0006ge-5v
+ for qemu-devel@nongnu.org; Wed, 09 Apr 2025 06:00:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744192713;
+ s=mimecast20190719; t=1744192817;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=bJjTxSLryGUpm7YdqWZ9Ki1bXxQUhRgUe5Z4s4xcRys=;
- b=BdMVVb92HwiCZ/BSDWPSadS6dUYoaRg7LbG2VV6j015WLxmr1WFryKrDDhJko2wawTY3wg
- EjPM/CVAhTmlr45LI4L8rLye2E6I502B4n1csN+6PZEl/ucDO3NXem4i/xbkjZmdIm5KZR
- cXBGMcMB5od5CtIGTdEMpWUOF524DFo=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+8K25wJgJHHtlJtW5Yj3Pd1vYrtyjlDbeaG7EZHhLz0=;
+ b=Raj9cPahFcsIdMY0m0nMe6AfCBzlV4x4ANHQCPfzaEF7R+dtzt7AgTtd8uq2lhk61jjPyG
+ wDZOtgLOQuOZA0DVEY4UHN6Dcqx03TNt3vAE2l0VNewdhuN/JID+B4IpsHZtu4EW0mgD4/
+ yLMtcbqP8sVMqoIf7/tmi2yPeikLrYg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-wyZF1AoKPEayFnPIl1Gw1Q-1; Wed, 09 Apr 2025 05:58:32 -0400
-X-MC-Unique: wyZF1AoKPEayFnPIl1Gw1Q-1
-X-Mimecast-MFC-AGG-ID: wyZF1AoKPEayFnPIl1Gw1Q_1744192712
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3914bc0cc4aso3348670f8f.3
- for <qemu-devel@nongnu.org>; Wed, 09 Apr 2025 02:58:32 -0700 (PDT)
+ us-mta-224-IA47JFFRPembAJ_pf45EXA-1; Wed, 09 Apr 2025 06:00:16 -0400
+X-MC-Unique: IA47JFFRPembAJ_pf45EXA-1
+X-Mimecast-MFC-AGG-ID: IA47JFFRPembAJ_pf45EXA_1744192815
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3913f97d115so310912f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Apr 2025 03:00:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744192711; x=1744797511;
+ d=1e100.net; s=20230601; t=1744192815; x=1744797615;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bJjTxSLryGUpm7YdqWZ9Ki1bXxQUhRgUe5Z4s4xcRys=;
- b=vsxDjXH8mh9iaW2orQu2bj+RUBF5tnDoGRMnSNTouMXKXlsKGaP0x/q9jwhRprF0jT
- DJsxpyMejiou3YbH0rzU77mGNS0eH1CnBiGNdCr+63MBsqh1DuMZiY9HyetfsJBeweDL
- dMq0c01rCosr6YpPLHemhAHab0nfWNvCgiZr8vRL1wzskz039UOmaUP7ymm4mArtvR7A
- 5V5R1pikIz9WwDwOcIuezFr8zpmSry9F4ih8d3dBQXvsZWpJBGsUfjCPSW6iKAcqHcsa
- Hr4BhQPY70jpTFSIfE2x1wkAxrzCC8gzI5V7o19NuY7+fw6HT9b3p/kdn2D/zXHD+5cf
- 2QLg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUoJD/RV8kzB4p9pE74jHhY72CPai1iNp4A/oxjWu1R99wQNsQQeoQaD978ZN57z8Qcik5/6zgfs+iy@nongnu.org
-X-Gm-Message-State: AOJu0YysVuJxQGEc9PloYUPKIOmumvvt4MbQ768nNH7jLEH8oJyfcxDR
- h4l0YWhP/mpK91z+SBUwtD7ylJoGkpT6IOQHHqa5Yw78fkOYLTit5vXtFx/XEBCQmgQAR0MWy53
- +6yW6qr+vPMKGTpMimX6cuqv8t5S9AxXIAzu3anbCnK9AieWIMcfO
-X-Gm-Gg: ASbGncteL2NRCFw5nDMiylKKEjLaa58ZjxMkKa7AQLJiETrEf4m/3Vhdrow00Foxk4W
- RfCMnaF0tXJpP0lpDFkamFZmGn1pQ59K903I6X0lxGhBhuQlurHUawqP7w8IuihgR48BWZX+4IE
- moonxbvV9mX2/GltZneD4WcRlBeC1TrPuKE4hJ8Lzf67rpnUx7kKplBAPqQoXfZ+IZNpUc2r8yN
- kY3lJToZcWcd/z6Fi2kwBIV6w6XIdR9p9OJqK5EqGMhS/M+Fc3+xdQ4hMxdv/Gsx56WM3T9mD7G
- CfmQewU4f3j5iZsQXIylSX2TJhD8VSCdKxLxmHU8PG6xegusVg==
-X-Received: by 2002:a05:6000:40df:b0:391:4559:876a with SMTP id
- ffacd0b85a97d-39d87cd02f5mr2090975f8f.46.1744192711621; 
- Wed, 09 Apr 2025 02:58:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFiTo47Xtcs3k4BQC7hfsL8zpPup3F+n0eV9Xo3IV6qGI6eAAaNOVOBnIc9fZw9UIcZCd0hAw==
-X-Received: by 2002:a05:6000:40df:b0:391:4559:876a with SMTP id
- ffacd0b85a97d-39d87cd02f5mr2090950f8f.46.1744192711238; 
- Wed, 09 Apr 2025 02:58:31 -0700 (PDT)
+ bh=+8K25wJgJHHtlJtW5Yj3Pd1vYrtyjlDbeaG7EZHhLz0=;
+ b=BVQMGkGp6K2zupkrdDPgTyO+aJfbYvvbd0WQWRYmYB+9ZR0LN6rd0IYKVVq+uiiH38
+ P1QozimkhaRCS1LBraEnX6G9mxHkHdT9Ar0jAkAdRQ9NZIfojqf3nMr/+wg32UcY+ukJ
+ KQ3JkIyyoYntpZwUPVgKsgQeuBehy4XeG2eLcsY8WUGgsEEXiXJoVgcQgL0wnTcU+8D2
+ mQqbluaOiSjYI+DdndNeaDVmnO8BWJikVTzDbETCB6liJ9e1QZnvhNCyq0VQ/e70j0Oq
+ MJo3d64edgB/ZeOsdyhJu8ikDpEsB5ozRkxcjmMX6w8ab97hmX+CbJuTIDcmbdoC+9mD
+ vEOw==
+X-Gm-Message-State: AOJu0YydnTt2yTBTjGH9W4NqyuQcu30TX62V3U7BjcKzkWFyfFfg6Zeo
+ WXb6rFLfAJ3IkA/Pqmq93yARXsQjMY+1J1iPlA9knDuAjm2ShGg0VS+JX1dNH+ywFdj98BDYIbw
+ VyhJjunO+7tgUiFVrkZwXKRkKhV2bvC2CzA1X+MhjJt07o/YNtjNvjy8BN6zf
+X-Gm-Gg: ASbGncu8J6+/LTpUB06to7YJTrWGGh7zZDL+G5xE6DjFalxFvnaqFQg1fNItQUsgvBm
+ wqbglmJsq77HYkm+2W4GCRnLDTbeOg2Uh2cd/nrsWDCNQ5m+T1yYDKRCH2Kt1IMZxwnB3i5Oq6l
+ l3OZVUggZScjnCPWRlhe0jhlCt82/H+z/88llFiUYAUGbYSa7R8Iu2YHaYZgb3GpyIpGrGqBKGp
+ gl2ui50FAhfTBJ8CaxPa+sgYH+DoPLOnpIDdoyyxKvrCr1oyztXnPALo4XO4f/qB1nj/PRFDFXk
+ w2j5Z3ptAQ+jPxQnxEAnlif9SqwC8wvlf0kTaBs0Nvcl8puOsA==
+X-Received: by 2002:a05:6000:22c3:b0:39c:12ce:105c with SMTP id
+ ffacd0b85a97d-39d87e84c05mr2034766f8f.6.1744192814827; 
+ Wed, 09 Apr 2025 03:00:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGda+c82lPWrwI06EshfslAKrSXLiLZzqTMa9qvJhZjgE1XSdm3+/DPU/HftejJU3xjGcV9iw==
+X-Received: by 2002:a05:6000:22c3:b0:39c:12ce:105c with SMTP id
+ ffacd0b85a97d-39d87e84c05mr2034739f8f.6.1744192814478; 
+ Wed, 09 Apr 2025 03:00:14 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43f233a273fsm10864335e9.9.2025.04.09.02.58.30
+ ffacd0b85a97d-39d893774aasm1181692f8f.30.2025.04.09.03.00.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Apr 2025 02:58:30 -0700 (PDT)
-Message-ID: <00adc783-723a-4d5b-b3f9-d3b8d191b07a@redhat.com>
-Date: Wed, 9 Apr 2025 11:58:29 +0200
+ Wed, 09 Apr 2025 03:00:14 -0700 (PDT)
+Message-ID: <ba6aeb84-b567-4536-bd4d-84e666b66160@redhat.com>
+Date: Wed, 9 Apr 2025 12:00:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfcv2 03/20] HostIOMMUDevice: Introduce realize_late
- callback
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
- <jasowang@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "shameerali.kolothum.thodi@huawei.com"
- <shameerali.kolothum.thodi@huawei.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>
-References: <20250219082228.3303163-1-zhenzhong.duan@intel.com>
- <20250219082228.3303163-4-zhenzhong.duan@intel.com>
- <084cbb65-f3c3-4f18-ae3a-88f20480d2ff@redhat.com>
- <16fc9fa0-2b88-4029-ad0b-cedc279c956c@redhat.com>
- <SJ0PR11MB674476F80FEFA6A5AD1DAA0A92B42@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Subject: Re: [PATCH v3 0/2] vfio/spapr: Fix L2 crash with PCI device
+ passthrough
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, Vaibhav Jain <vaibhav@linux.ibm.com>,
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>
+References: <20250408124042.2695955-1-amachhiw@linux.ibm.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -140,19 +128,19 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <SJ0PR11MB674476F80FEFA6A5AD1DAA0A92B42@SJ0PR11MB6744.namprd11.prod.outlook.com>
+In-Reply-To: <20250408124042.2695955-1-amachhiw@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
 X-Spam_bar: --
 X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.845,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -168,90 +156,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/9/25 10:27, Duan, Zhenzhong wrote:
+On 4/8/25 14:40, Amit Machhiwal wrote:
+> Hi,
+> 
+> This patch series addresses two aspects in vfio_spapr_create_window() that
+> includes the enhancement in error handling in this function and also fixes an
+> issue with KVM guests (L2) inside a pSeries logical partition (LPAR) with larger
+> memory configurations and PCI device passthrough.
+> 
+> The structure of the patch series is as below:
+> 
+> 1. The first patch introduces structured error reporting in
+>     `vfio_spapr_create_window()` by adding an `Error **` parameter. This allows
+>     better propagation of failure details to the caller.
+> 
+> 2. The second patch fixes a crash observed when booting an L2 KVM guest inside a
+>     pSeries LPAR with memory more than 128 GB and PCI device passthrough. The
+>     crash occurs due a check in KVM preventing multi-level TCEs because of not
+>     being supported by PowerVM hypervisor. This patch ensures that such
+>     configurations are avoided by first checking the supported number of levels
+>     returned by the `VFIO_IOMMU_SPAPR_TCE_GET_INFO` ioctl.
+> 
+> The fix has been tested with KVM guests on PowerVM and bare-metal enviroments
+> with memory sizes up to 390 GB and 450 GB respectively.
+> 
+> Thanks,
+> Amit
+> 
+> Changes in v3:
+>    * Change vfio_spapr_create_window() to return bool
+>    * Replace error_setg() with error_setg_errono() in vfio_spapr_create_window()
+>    * Pass errp instead of local Error object in vfio_spapr_create_window()
+>      while calling from vfio_spapr_add_section_window()
+>    * Modified patch #2 subject
+> 
+> Changes in v2:
+>    * Link: https://lore.kernel.org/all/20250407143119.1304513-1-amachhiw@linux.ibm.com/
+>    * Added Error ** parameter in vfio_spapr_create_window() for enhanced error
+>      handling with error_setg() and friends
+> 
+> v1: https://lore.kernel.org/all/20250404091721.2653539-1-amachhiw@linux.ibm.com/
+> 
+> Amit Machhiwal (2):
+>    vfio/spapr: Enhance error handling in vfio_spapr_create_window()
+>    vfio/spapr: Fix L2 crash with PCI device passthrough and memory > 128G
+> 
+>   hw/vfio/spapr.c | 69 ++++++++++++++++++++++++++++++-------------------
+>   1 file changed, 43 insertions(+), 26 deletions(-)
 > 
 > 
->> -----Original Message-----
->> From: Cédric Le Goater <clg@redhat.com>
->> Subject: Re: [PATCH rfcv2 03/20] HostIOMMUDevice: Introduce realize_late
->> callback
->>
->> On 4/7/25 13:19, Cédric Le Goater wrote:
->>> On 2/19/25 09:22, Zhenzhong Duan wrote:
->>>> Currently we have realize() callback which is called before attachment.
->>>> But there are still some elements e.g., hwpt_id is not ready before
->>>> attachment. So we need a realize_late() callback to further initialize
->>>> them.
->>>
->>> The relation between objects HostIOMMUDevice and VFIOIOMMU is starting
->>> to look too complex for me.
-> 
-> Agree.
-> 
->>>
->>> I think it makes sense to realize HostIOMMUDevice after the device
->>> is attached. Can't we move :
->>>
->>>           hiod = HOST_IOMMU_DEVICE(object_new(ops->hiod_typename));
->>>           vbasedev->hiod = hiod;
->>>
->>> under ->attach_device() and also the call :
->>>
->>>       if (!vfio_device_hiod_realize(vbasedev, errp)) {
->>>
->>> later in the ->attach_device() patch ?
->>>
->>> hiod_legacy_vfio_realize() doesn't do much. We might need to rework
->>> hiod_iommufd_vfio_realize() which queries the iommufd hw caps, later
->>> used by intel-iommu.
->>
->> The only dependency I see on the IOMMUFD HostIOMMUDevice when attaching
->> the device to the container is in iommufd_cdev_autodomains_get(). The
->> flags for IOMMU_HWPT_ALLOC depends on the HW capability of the IOMMFD
->> backend and we rely on hiod_iommufd_vfio_realize() to have done the
->> query on the iommufd kernel device before.
->>
->> Since this is not a hot path, I don't think it is a problem to add
->> a redundant call to iommufd_backend_get_device_info() in
->> iommufd_cdev_autodomains_get() and avoid the IOMMUFD HostIOMMUDevice
->> dependency. With that we can move the HostIOMMUDevice creation and
->> realize sequence at the end of the device attach sequence.
-> 
-> Yes.
-> 
->>
->> I think this makes the code cleaner when it comes to using the
->> vbasedev->hiod pointer too.
->>
->>> Anyway, it is good time to cleanup our interfaces before adding more.
-> 
-> OK, let me think about this further and write some patches to move .realize() after .attach_device().
-> will be based on vfio-next.
+> base-commit: dfaecc04c46d298e9ee81bd0ca96d8754f1c27ed
 
-I just updated the vfio-next branch with what should be in the next PR
-for QEMU 10.1.
 
-> 
->>
->> On that topic, I think
->>
->>     iommufd_cdev_attach_ioas_hwpt
->>     iommufd_cdev_detach_ioas_hwpt
->>
->> belong to IOMMUFD backend.
-> 
-> They are operation on VFIODevice, backends/iommufd.c are for operation on IOMMUFDBackend,
-> Do we need to move iommufd_cdev_attach/detach_ioas_hwpt to backends/iommufd.c which is VFIODevice agnostic?
-
-My mistake. I was confused with
-
-   int iommufd = vbasedev->iommufd->fd
-
-and thought we could simply replace 'VFIODevice *' parameter with a
-'IOMMUFDBackend *be' parameter but this is not the case.
+Applied to vfio-next.
 
 Thanks,
 
 C.
+
 
 
