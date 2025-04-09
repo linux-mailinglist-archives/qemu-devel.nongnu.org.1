@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D765EA81F53
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 10:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68889A81F3D
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 10:07:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2QSn-0005Fw-75; Wed, 09 Apr 2025 04:07:13 -0400
+	id 1u2QSu-0005Ol-1P; Wed, 09 Apr 2025 04:07:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u2QSN-00058O-4j; Wed, 09 Apr 2025 04:06:47 -0400
+ id 1u2QSN-00058P-5i; Wed, 09 Apr 2025 04:06:47 -0400
 Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u2QSJ-0000T8-ER; Wed, 09 Apr 2025 04:06:46 -0400
+ id 1u2QSJ-0000UF-KA; Wed, 09 Apr 2025 04:06:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1744186003; x=1775722003;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=UPJeKBU9B6lL8PCAg4txtntOoPDJJfc8C5kkR9P+OTA=;
- b=VuGAkkc9p7m54LplHpPH/D4hmmY6UAFnJozgrieF8lCug/IPwe2gyAex
- Xy/2UC/sfeaeW2GI5EEeKfIToy1ewZal1m2/0tvHTDvBlPYGdVRSlPxmX
- V2B/40XKo6jySOB5ikABZYNlGCeyTgA6FWPdXyQ0WhDb7i4l4Ndcu1+Fm
- ryH2YA84ltewOJyDoq3EZ8/wPMhc/5DYP211VcAMsPgdNRqvG4qn5bydb
- PRcMr7o+A6pnGMSEiO75RO5gzu7Ova6F5mRWF3Kpx0vhS0x8RaWpXwOny
- BdaHM0O90t9wewwjWjMH7AidRzdGgMnS48x9g/zd9uxPiNNFOBXY6jAlk g==;
-X-CSE-ConnectionGUID: YmfKM5SJQ+ysn1FAJOhPcg==
-X-CSE-MsgGUID: xdsE+KW5RCeRWHCqSGlTEQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45810048"
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="45810048"
+ bh=gPWi6WAm1QJcGhcg000exTZdLrq/PcWVzv1PHwkLj9U=;
+ b=VS9mDCmMe9ZwKjyxI/a8V8Hji+r8+pags/SkYEDS+nZGs60N8gO/UPGu
+ fypkvWWLHfzMBW7FN4XSYZ3/mWRfaS2FjSZs9kOHH6PeLgrHG+pM1CW5H
+ R5EF1BoyP0JeH4gaz8Iw3rwPlZ5HZYWhQYwfou9nXGEW5Nm1ftCfIgvpu
+ zPhRy9Fk7rcEW/W87HTvbZjDX7rpsVilx6JdhefoaP/B76Ljy5nTxHedu
+ imHqu7vqsaOMxWYoC+b91pQ1/1MHfcFJFIyjbAPjxm7R0kSxpGfaeZfV8
+ iYmJLZkDhX0aV3jWLbjw2eEYZPxlYvZTpZMAZK0+Gelo/AzIjShV9zcLw Q==;
+X-CSE-ConnectionGUID: iFH9g3FHRIC7gbSXx+uTgA==
+X-CSE-MsgGUID: oSIUVPqETu2AO55cuSbshw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45810055"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="45810055"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  09 Apr 2025 01:06:41 -0700
-X-CSE-ConnectionGUID: pKtH7y0SQuKiBQWP5t4yMQ==
-X-CSE-MsgGUID: p6nLUmssSDqxwyFWnFhd/g==
+X-CSE-ConnectionGUID: cFIbbdPkQxO2qtm/wJUIkw==
+X-CSE-MsgGUID: PWZY0nrHTyWDhy+kTpVPfg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="151702631"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="151702666"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 09 Apr 2025 01:06:29 -0700
+ by fmviesa002.fm.intel.com with ESMTP; 09 Apr 2025 01:06:34 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
@@ -53,10 +53,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
  Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 3/5] i386/kvm: Support event with select & umask format in KVM
+Subject: [PATCH 4/5] i386/kvm: Support event with masked entry format in KVM
  PMU filter
-Date: Wed,  9 Apr 2025 16:26:47 +0800
-Message-Id: <20250409082649.14733-4-zhao1.liu@intel.com>
+Date: Wed,  9 Apr 2025 16:26:48 +0800
+Message-Id: <20250409082649.14733-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250409082649.14733-1-zhao1.liu@intel.com>
 References: <20250409082649.14733-1-zhao1.liu@intel.com>
@@ -87,9 +87,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The select&umask is the common way for x86 to identify the PMU event,
-so support this way as the "x86-default" format in kvm-pmu-filter
-object.
+KVM_SET_PMU_EVENT_FILTER of x86 KVM supports masked events mode, which
+accepts masked entry format event to flexibly represent a group of PMU
+events.
+
+Support masked entry format in kvm-pmu-filter object and handle this in
+i386 kvm codes.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Tested-by: Yi Lai <yi1.lai@intel.com>
@@ -97,7 +100,6 @@ Tested-by: Yi Lai <yi1.lai@intel.com>
 Changes since RFC v2:
  * Drop hexadecimal variants and support numeric version in QAPI
    directly. (Daniel)
- * Rename "x86-default" format to "x86-select-umask". (Markus)
  * Add Tested-by from Yi.
  * Add documentation in qemu-options.hx.
  * QAPI style fix:
@@ -107,168 +109,198 @@ Changes since RFC v2:
 Changes since RFC v1:
  * Bump up the supported QAPI version to v10.0.
 ---
- accel/kvm/kvm-pmu.c      | 20 +++++++++++++++++++-
- include/system/kvm-pmu.h | 13 +++++++++++++
- qapi/kvm.json            | 21 +++++++++++++++++++--
- qemu-options.hx          |  3 +++
- target/i386/kvm/kvm.c    |  5 +++++
- 5 files changed, 59 insertions(+), 3 deletions(-)
+ accel/kvm/kvm-pmu.c   | 14 ++++++++++++++
+ qapi/kvm.json         | 29 +++++++++++++++++++++++++++--
+ qemu-options.hx       | 13 +++++++++++++
+ target/i386/kvm/kvm.c | 35 +++++++++++++++++++++++++++++++++++
+ 4 files changed, 89 insertions(+), 2 deletions(-)
 
 diff --git a/accel/kvm/kvm-pmu.c b/accel/kvm/kvm-pmu.c
-index 22f749bf9183..fa73ef428e59 100644
+index fa73ef428e59..9205907d1779 100644
 --- a/accel/kvm/kvm-pmu.c
 +++ b/accel/kvm/kvm-pmu.c
-@@ -16,6 +16,8 @@
- #include "qom/object_interfaces.h"
- #include "system/kvm-pmu.h"
- 
-+#define UINT12_MAX (4095)
-+
- static void kvm_pmu_filter_set_action(Object *obj, int value,
-                                       Error **errp G_GNUC_UNUSED)
- {
-@@ -53,9 +55,22 @@ static void kvm_pmu_filter_set_event(Object *obj, Visitor *v, const char *name,
-     }
- 
-     for (node = head; node; node = node->next) {
--        switch (node->value->format) {
-+        KvmPmuFilterEvent *event = node->value;
-+
-+        switch (event->format) {
-         case KVM_PMU_EVENT_FORMAT_RAW:
+@@ -71,6 +71,20 @@ static void kvm_pmu_filter_set_event(Object *obj, Visitor *v, const char *name,
+             /* No need to check the range of umask since it's uint8_t. */
              break;
-+        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK: {
-+            if (event->u.x86_select_umask.select > UINT12_MAX) {
+         }
++        case KVM_PMU_EVENT_FORMAT_X86_MASKED_ENTRY: {
++            if (event->u.x86_masked_entry.select > UINT12_MAX) {
 +                error_setg(errp,
 +                           "Parameter 'select' out of range (%d).",
 +                           UINT12_MAX);
 +                goto fail;
 +            }
 +
-+            /* No need to check the range of umask since it's uint8_t. */
++            /*
++             * No need to check the range of match or mask fields since
++             * they're both uint8_t.
++             */
 +            break;
 +        }
          default:
              g_assert_not_reached();
          }
-@@ -67,6 +82,9 @@ static void kvm_pmu_filter_set_event(Object *obj, Visitor *v, const char *name,
-     filter->events = head;
-     qapi_free_KvmPmuFilterEventList(old_head);
-     return;
-+
-+fail:
-+    qapi_free_KvmPmuFilterEventList(head);
- }
- 
- static void kvm_pmu_filter_class_init(ObjectClass *oc, void *data)
-diff --git a/include/system/kvm-pmu.h b/include/system/kvm-pmu.h
-index 818fa309c191..6abc0d037aee 100644
---- a/include/system/kvm-pmu.h
-+++ b/include/system/kvm-pmu.h
-@@ -32,4 +32,17 @@ struct KVMPMUFilter {
-     KvmPmuFilterEventList *events;
- };
- 
-+/*
-+ * Stolen from Linux kernel (RAW_EVENT at tools/testing/selftests/kvm/include/
-+ * x86_64/pmu.h).
-+ *
-+ * Encode an eventsel+umask pair into event-select MSR format.  Note, this is
-+ * technically AMD's format, as Intel's format only supports 8 bits for the
-+ * event selector, i.e. doesn't use bits 24:16 for the selector.  But, OR-ing
-+ * in '0' is a nop and won't clobber the CMASK.
-+ */
-+#define X86_PMU_RAW_EVENT(eventsel, umask) (((eventsel & 0xf00UL) << 24) | \
-+                                            ((eventsel) & 0xff) | \
-+                                            ((umask) & 0xff) << 8)
-+
- #endif /* KVM_PMU_H */
 diff --git a/qapi/kvm.json b/qapi/kvm.json
-index 1861d86a9726..cb151ca82e5c 100644
+index cb151ca82e5c..1b523e058731 100644
 --- a/qapi/kvm.json
 +++ b/qapi/kvm.json
-@@ -36,10 +36,12 @@
+@@ -38,10 +38,13 @@
  #
- # @raw: the encoded event code that KVM can directly consume.
+ # @x86-select-umask: standard x86 encoding format with select and umask.
  #
-+# @x86-select-umask: standard x86 encoding format with select and umask.
++# @x86-masked-entry: KVM's masked entry format for x86, which could
++#     mask bunch of events.
 +#
  # Since 10.1
  ##
  { 'enum': 'KvmPmuEventFormat',
--  'data': ['raw'] }
-+  'data': ['raw', 'x86-select-umask'] }
+-  'data': ['raw', 'x86-select-umask'] }
++  'data': ['raw', 'x86-select-umask', 'x86-masked-entry'] }
  
  ##
  # @KvmPmuRawEvent:
-@@ -54,6 +56,20 @@
- { 'struct': 'KvmPmuRawEvent',
-   'data': { 'code': 'uint64' } }
+@@ -70,6 +73,27 @@
+   'data': { 'select': 'uint16',
+             'umask': 'uint8' } }
  
 +##
-+# @KvmPmuX86SelectUmaskEvent:
++# @KvmPmuX86MaskedEntry:
 +#
-+# @select: x86 PMU event select field, which is a 12-bit unsigned
-+#     number.
++# x86 PMU events encoding in KVM masked entry format.
 +#
-+# @umask: x86 PMU event umask field.
++# @select: x86 PMU event select, which is a 12-bit unsigned number.
++#
++# @match: umask match.
++#
++# @mask: umask mask.
++#
++# @exclude: whether the matched events are excluded.
 +#
 +# Since 10.1
 +##
-+{ 'struct': 'KvmPmuX86SelectUmaskEvent',
++{ 'struct': 'KvmPmuX86MaskedEntry',
 +  'data': { 'select': 'uint16',
-+            'umask': 'uint8' } }
++            'match': 'uint8',
++            'mask': 'uint8',
++            'exclude': 'bool' } }
 +
  ##
  # @KvmPmuFilterEvent:
  #
-@@ -66,7 +82,8 @@
- { 'union': 'KvmPmuFilterEvent',
+@@ -83,7 +107,8 @@
    'base': { 'format': 'KvmPmuEventFormat' },
    'discriminator': 'format',
--  'data': { 'raw': 'KvmPmuRawEvent' } }
-+  'data': { 'raw': 'KvmPmuRawEvent',
-+            'x86-select-umask': 'KvmPmuX86SelectUmaskEvent' } }
+   'data': { 'raw': 'KvmPmuRawEvent',
+-            'x86-select-umask': 'KvmPmuX86SelectUmaskEvent' } }
++            'x86-select-umask': 'KvmPmuX86SelectUmaskEvent',
++            'x86-masked-entry': 'KvmPmuX86MaskedEntry' } }
  
  ##
  # @KvmPmuFilterProperties:
 diff --git a/qemu-options.hx b/qemu-options.hx
-index 51a7c61ce0b0..5dcce067d8dd 100644
+index 5dcce067d8dd..bb89198971e0 100644
 --- a/qemu-options.hx
 +++ b/qemu-options.hx
-@@ -6180,6 +6180,9 @@ SRST
-              ((select) & 0xff) | \
-              ((umask) & 0xff) << 8)
+@@ -6183,6 +6183,19 @@ SRST
+         ``{"format":"x86-select-umask","select":event_select,"umask":event_umask}``
+             Specify the single x86 PMU event with select and umask fields.
  
-+        ``{"format":"x86-select-umask","select":event_select,"umask":event_umask}``
-+            Specify the single x86 PMU event with select and umask fields.
++        ``{"format":"x86-masked-entry","select":event_select,"mask":entry_mask,"match":entry_match,"exclude":exclude}``
++            Configure a set of x86 PMU events that share the same
++            ``select`` field. The events are determined by a formula
++            that checks if an event's umask is included:
++
++        ::
++
++            event_umask & entry_mask == entry_match
++
++            The "exclude" parameter controls whether to exclude the
++            events selected based on the above formula, under the given
++            "select" field.
 +
          An example KVM PMU filter object would look like:
  
          .. parsed-literal::
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index fa3a696654cb..0d36ccf250ed 100644
+index 0d36ccf250ed..8786501e9c7e 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -5974,6 +5974,10 @@ static bool kvm_config_pmu_event(KVMPMUFilter *filter,
-         case KVM_PMU_EVENT_FORMAT_RAW:
-             code = event->u.raw.code;
+@@ -5978,6 +5978,13 @@ static bool kvm_config_pmu_event(KVMPMUFilter *filter,
+             code = X86_PMU_RAW_EVENT(event->u.x86_select_umask.select,
+                                      event->u.x86_select_umask.umask);
              break;
-+        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK:
-+            code = X86_PMU_RAW_EVENT(event->u.x86_select_umask.select,
-+                                     event->u.x86_select_umask.umask);
++        case KVM_PMU_EVENT_FORMAT_X86_MASKED_ENTRY:
++            code = KVM_PMU_ENCODE_MASKED_ENTRY(
++                       event->u.x86_masked_entry.select,
++                       event->u.x86_masked_entry.mask,
++                       event->u.x86_masked_entry.match,
++                       event->u.x86_masked_entry.exclude ? 1 : 0);
 +            break;
          default:
              g_assert_not_reached();
          }
-@@ -6644,6 +6648,7 @@ static void kvm_arch_check_pmu_filter(const Object *obj, const char *name,
+@@ -6009,6 +6016,17 @@ static int kvm_install_pmu_event_filter(KVMState *s)
+         g_assert_not_reached();
+     }
+ 
++    kvm_filter->flags = filter->events->value->format ==
++                        KVM_PMU_EVENT_FORMAT_X86_MASKED_ENTRY ?
++                        KVM_PMU_EVENT_FLAG_MASKED_EVENTS : 0;
++
++    if (kvm_filter->flags == KVM_PMU_EVENT_FLAG_MASKED_EVENTS &&
++        !kvm_vm_check_extension(s, KVM_CAP_PMU_EVENT_MASKED_EVENTS)) {
++        error_report("Masked entry format of PMU event "
++                     "is not supported by Host.");
++        goto fail;
++    }
++
+     if (!kvm_config_pmu_event(filter, kvm_filter)) {
+         goto fail;
+     }
+@@ -6636,6 +6654,7 @@ static void kvm_arch_check_pmu_filter(const Object *obj, const char *name,
+ {
+     KVMPMUFilter *filter = KVM_PMU_FILTER(child);
+     KvmPmuFilterEventList *events = filter->events;
++    uint32_t base_flag;
+ 
+     if (!filter->nevents) {
+         error_setg(errp,
+@@ -6643,12 +6662,21 @@ static void kvm_arch_check_pmu_filter(const Object *obj, const char *name,
+         return;
+     }
+ 
++    /* Pick the first event's flag as the base one. */
++    base_flag = events->value->format ==
++                KVM_PMU_EVENT_FORMAT_X86_MASKED_ENTRY ?
++                KVM_PMU_EVENT_FLAG_MASKED_EVENTS : 0;
+     while (events) {
+         KvmPmuFilterEvent *event = events->value;
++        uint32_t flag;
  
          switch (event->format) {
          case KVM_PMU_EVENT_FORMAT_RAW:
-+        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK:
+         case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK:
++            flag = 0;
++            break;
++        case KVM_PMU_EVENT_FORMAT_X86_MASKED_ENTRY:
++            flag = KVM_PMU_EVENT_FLAG_MASKED_EVENTS;
              break;
          default:
              error_setg(errp,
+@@ -6657,6 +6685,13 @@ static void kvm_arch_check_pmu_filter(const Object *obj, const char *name,
+             return;
+         }
+ 
++        if (flag != base_flag) {
++            error_setg(errp,
++                       "Masked entry format cannot be mixed with "
++                       "other formats.");
++            return;
++        }
++
+         events = events->next;
+     }
+ }
 -- 
 2.34.1
 
