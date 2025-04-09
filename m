@@ -2,45 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D0CBA81B28
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 04:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B94BFA81B25
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 04:39:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2LJn-0006XV-AV; Tue, 08 Apr 2025 22:37:35 -0400
+	id 1u2LJk-0006Vt-6A; Tue, 08 Apr 2025 22:37:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1u2LJl-0006WW-3F
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:37:33 -0400
+ id 1u2LJh-0006Ui-FR
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:37:29 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1u2LJc-0007n7-H4
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:37:32 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1u2LJc-0007nB-KS
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:37:29 -0400
 Received: from loongson.cn (unknown [10.2.10.34])
- by gateway (Coremail) with SMTP id _____8BxrOJa3fVnEa+1AA--.1206S3;
+ by gateway (Coremail) with SMTP id _____8AxTWta3fVnE6+1AA--.39486S3;
  Wed, 09 Apr 2025 10:37:14 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.10.34])
- by front1 (Coremail) with SMTP id qMiowMBxLsdY3fVnnsR1AA--.28294S4;
- Wed, 09 Apr 2025 10:37:13 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMBxLsdY3fVnnsR1AA--.28294S5;
+ Wed, 09 Apr 2025 10:37:14 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v3 02/16] hw/intc/loongarch_pch: Modify register name
- PCH_PIC_xxx_OFFSET with PCH_PIC_xxx
-Date: Wed,  9 Apr 2025 10:36:57 +0800
-Message-Id: <20250409023711.2960618-3-maobibo@loongson.cn>
+Subject: [PATCH v3 03/16] hw/intc/loongarch_pch: Remove some duplicate macro
+Date: Wed,  9 Apr 2025 10:36:58 +0800
+Message-Id: <20250409023711.2960618-4-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250409023711.2960618-1-maobibo@loongson.cn>
 References: <20250409023711.2960618-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxLsdY3fVnnsR1AA--.28294S4
+X-CM-TRANSID: qMiowMBxLsdY3fVnnsR1AA--.28294S5
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxGry5uw13Xr1fArW7AF4UKFX_yoWrWry8pF
- 9xAFy2yr47JFZ7Wrn7J3yDZw1xWFn2k342g39I9FyxAFW5XrykXa40y34DGa4UK34kA3y5
- XFs8Gw4Y9a17WwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoWxCr48Cw15Cw18Xw4kGF4fCrX_yoW5Wr4fpF
+ 9xAFsIgrsrGry7XFn2ya45Zr1DJFnrur9F9anIkryF9Fs8Zry8X3WkJ3y5WF1UK3y5Jryq
+ grsxua1av3WUWrcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
  sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
  0xBIdaVrnRJUUUyEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
  IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
@@ -51,7 +50,7 @@ X-Coremail-Antispam: 1Uk129KBj93XoWxGry5uw13Xr1fArW7AF4UKFX_yoWrWry8pF
  6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x0EwI
  xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
  Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7
- IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k2
+ IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k2
  6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
  AFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU82g43UUUUU==
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
@@ -77,99 +76,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Macro PCH_PIC_HTMSI_VEC_OFFSET and PCH_PIC_ROUTE_ENTRY_OFFSET is renamed
-as PCH_PIC_HTMSI_VEC and PCH_PIC_ROUTE_ENTRY separately, it is easier to
-understand.
+The meaning of macro definition STATUS_LO_START is simliar with
+PCH_PIC_INT_STATUS, only that offset is different, the same for
+macro POL_LO_START. Now remove these duplicated macro definitions.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
  hw/intc/loongarch_pch_pic.c            | 20 ++++++++++----------
- hw/loongarch/virt.c                    |  2 +-
- include/hw/intc/loongarch_pic_common.h |  4 ++--
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ include/hw/intc/loongarch_pic_common.h |  5 -----
+ 2 files changed, 10 insertions(+), 15 deletions(-)
 
 diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-index 2b90ccd1ff..4c845ba5e9 100644
+index 4c845ba5e9..a2d9930ac9 100644
 --- a/hw/intc/loongarch_pch_pic.c
 +++ b/hw/intc/loongarch_pch_pic.c
-@@ -263,18 +263,18 @@ static uint64_t loongarch_pch_pic_readb(void *opaque, hwaddr addr,
+@@ -208,19 +208,19 @@ static uint64_t loongarch_pch_pic_high_readw(void *opaque, hwaddr addr,
  {
      LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
      uint64_t val = 0;
--    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY_OFFSET;
-+    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY;
-     int64_t offset_tmp;
+-    uint32_t offset = addr & 0xfff;
++    uint32_t offset = addr + PCH_PIC_INT_STATUS;
  
      switch (offset) {
--    case PCH_PIC_HTMSI_VEC_OFFSET ... PCH_PIC_HTMSI_VEC_END:
--        offset_tmp = offset - PCH_PIC_HTMSI_VEC_OFFSET;
-+    case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
-+        offset_tmp = offset - PCH_PIC_HTMSI_VEC;
-         if (offset_tmp >= 0 && offset_tmp < 64) {
-             val = s->htmsi_vector[offset_tmp];
-         }
+-    case STATUS_LO_START:
++    case PCH_PIC_INT_STATUS:
+         val = (uint32_t)(s->intisr & (~s->int_mask));
          break;
--    case PCH_PIC_ROUTE_ENTRY_OFFSET ... PCH_PIC_ROUTE_ENTRY_END:
--        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY_OFFSET;
-+    case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
-+        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY;
-         if (offset_tmp >= 0 && offset_tmp < 64) {
-             val = s->route_entry[offset_tmp];
-         }
-@@ -292,19 +292,19 @@ static void loongarch_pch_pic_writeb(void *opaque, hwaddr addr,
+-    case STATUS_HI_START:
++    case PCH_PIC_INT_STATUS + 4:
+         val = (s->intisr & (~s->int_mask)) >> 32;
+         break;
+-    case POL_LO_START:
++    case PCH_PIC_INT_POL:
+         val = (uint32_t)s->int_polarity;
+         break;
+-    case POL_HI_START:
++    case PCH_PIC_INT_POL + 4:
+         val = s->int_polarity >> 32;
+         break;
+     default:
+@@ -236,21 +236,21 @@ static void loongarch_pch_pic_high_writew(void *opaque, hwaddr addr,
  {
      LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
-     int32_t offset_tmp;
--    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY_OFFSET;
-+    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY;
+     uint32_t offset, data = (uint32_t)value;
+-    offset = addr & 0xfff;
++    offset = addr + PCH_PIC_INT_STATUS;
  
-     trace_loongarch_pch_pic_writeb(size, addr, data);
+     trace_loongarch_pch_pic_high_writew(size, addr, data);
  
      switch (offset) {
--    case PCH_PIC_HTMSI_VEC_OFFSET ... PCH_PIC_HTMSI_VEC_END:
--        offset_tmp = offset - PCH_PIC_HTMSI_VEC_OFFSET;
-+    case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
-+        offset_tmp = offset - PCH_PIC_HTMSI_VEC;
-         if (offset_tmp >= 0 && offset_tmp < 64) {
-             s->htmsi_vector[offset_tmp] = (uint8_t)(data & 0xff);
-         }
+-    case STATUS_LO_START:
++    case PCH_PIC_INT_STATUS:
+         s->intisr = get_writew_val(s->intisr, data, 0);
          break;
--    case PCH_PIC_ROUTE_ENTRY_OFFSET ... PCH_PIC_ROUTE_ENTRY_END:
--        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY_OFFSET;
-+    case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
-+        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY;
-         if (offset_tmp >= 0 && offset_tmp < 64) {
-             s->route_entry[offset_tmp] = (uint8_t)(data & 0xff);
-         }
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 8c0cc98c72..1f1cca667e 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -429,7 +429,7 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-     memory_region_add_subregion(get_system_memory(), VIRT_IOAPIC_REG_BASE,
-                             sysbus_mmio_get_region(d, 0));
-     memory_region_add_subregion(get_system_memory(),
--                            VIRT_IOAPIC_REG_BASE + PCH_PIC_ROUTE_ENTRY_OFFSET,
-+                            VIRT_IOAPIC_REG_BASE + PCH_PIC_ROUTE_ENTRY,
-                             sysbus_mmio_get_region(d, 1));
-     memory_region_add_subregion(get_system_memory(),
-                             VIRT_IOAPIC_REG_BASE + PCH_PIC_INT_STATUS,
+-    case STATUS_HI_START:
++    case PCH_PIC_INT_STATUS + 4:
+         s->intisr = get_writew_val(s->intisr, data, 1);
+         break;
+-    case POL_LO_START:
++    case PCH_PIC_INT_POL:
+         s->int_polarity = get_writew_val(s->int_polarity, data, 0);
+         break;
+-    case POL_HI_START:
++    case PCH_PIC_INT_POL + 4:
+         s->int_polarity = get_writew_val(s->int_polarity, data, 1);
+         break;
+     default:
 diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
-index c04471b08d..b33bebb129 100644
+index b33bebb129..ef6edc15bf 100644
 --- a/include/hw/intc/loongarch_pic_common.h
 +++ b/include/hw/intc/loongarch_pic_common.h
-@@ -19,9 +19,9 @@
- #define PCH_PIC_INT_CLEAR               0x80
- #define PCH_PIC_AUTO_CTRL0              0xc0
- #define PCH_PIC_AUTO_CTRL1              0xe0
--#define PCH_PIC_ROUTE_ENTRY_OFFSET      0x100
-+#define PCH_PIC_ROUTE_ENTRY             0x100
- #define PCH_PIC_ROUTE_ENTRY_END         0x13f
--#define PCH_PIC_HTMSI_VEC_OFFSET        0x200
-+#define PCH_PIC_HTMSI_VEC               0x200
- #define PCH_PIC_HTMSI_VEC_END           0x23f
+@@ -26,11 +26,6 @@
  #define PCH_PIC_INT_STATUS              0x3a0
  #define PCH_PIC_INT_POL                 0x3e0
+ 
+-#define STATUS_LO_START                 0
+-#define STATUS_HI_START                 0x4
+-#define POL_LO_START                    0x40
+-#define POL_HI_START                    0x44
+-
+ #define TYPE_LOONGARCH_PIC_COMMON "loongarch_pic_common"
+ OBJECT_DECLARE_TYPE(LoongArchPICCommonState,
+                     LoongArchPICCommonClass, LOONGARCH_PIC_COMMON)
 -- 
 2.39.3
 
