@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6F8A82E03
+	by mail.lfdr.de (Postfix) with ESMTPS id DE641A82E04
 	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 19:51:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2ZaC-0007IB-Dq; Wed, 09 Apr 2025 13:51:28 -0400
+	id 1u2ZaD-0007MY-NI; Wed, 09 Apr 2025 13:51:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1u2Za5-00076b-Nl
+ id 1u2Za5-00076a-N8
  for qemu-devel@nongnu.org; Wed, 09 Apr 2025 13:51:23 -0400
 Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1u2Za1-00058L-K1
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 13:51:20 -0400
+ id 1u2Za1-00059j-MP
+ for qemu-devel@nongnu.org; Wed, 09 Apr 2025 13:51:21 -0400
 Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 4318844D77
- for <qemu-devel@nongnu.org>; Wed,  9 Apr 2025 17:50:59 +0000 (UTC)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id D2DD644D8F
+ for <qemu-devel@nongnu.org>; Wed,  9 Apr 2025 17:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1744221059;
- bh=8n4QMiw+hYe805t9lwmTuDiTcQTPJosZqKpGzH3UeRU=;
+ s=20210803; t=1744221065;
+ bh=2pgFbxLS6bnFSH6XlkgTRWFEwha/pzB4KCj2FwgVvLQ=;
  h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
  Message-Id:Subject;
- b=QkBtt7c5W19yQYH/zjggQ3WKeLlDNsMYe1KNqtWx84dgbd74aOP9emHeUwwOV4PLm
- yv/5cQgGTseq2R2jFBIRPfk9uWxQ+GEY6EHPR+nsqrFxbdl5Ta49nW+43/e4bJ8IyL
- 21Yj9/4yI0VMzcdmKNHHfKypctWttQ1gJsDLP2qwz8z2hDsrKsM1eWif93sevY83Xd
- iD0jtdRdlNNMFJlgItrCiMbtz8xxs2fzhduFALW9IRIRjoeXFjATV7n9JxUnNp+Asm
- d2Xrt2Mpwb+XMqaJeiFgT/y17CFrwGOYz7Tgt81s5fCiiRcNZfDjClDt2zVjdMgV8D
- r9OhTV/i3jyjQ==
+ b=TdrEwYG1zbEQgtrborApQuV9uRapDl3YS+20/nTsuZ7fkeTKHT0ulHhclPLeFM0vI
+ tgdS5jUMfwSRuSKDitTXTpqxCR3aVlUyE9RppohQguu0CZICYyC0vQsoXn9P6DbUEk
+ 5VqVHShwR0Dh9FtlAf61iFCRsIHJhqjapWqRGzIVOX57KI6H9bDn28MDTS+l5+sCKH
+ xuV0zGzCZsuCL1buPQh7GCaeHMKkNOsA5jEITIgqMA+MaD9vhqgd2f5BU7aUfMJZUM
+ GTTY4nZqceJLwjBxm61quQ42h3cUQUrCcd08ASJ1CeD4T73jl4SLiz8kfk6oII6NDj
+ V75+u1T2S2/XA==
 Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 2B0F67E15A
- for <qemu-devel@nongnu.org>; Wed,  9 Apr 2025 17:50:59 +0000 (UTC)
+ by scripts.lp.internal (Postfix) with ESMTP id BB59E7E148
+ for <qemu-devel@nongnu.org>; Wed,  9 Apr 2025 17:51:05 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 09 Apr 2025 17:37:49 -0000
+Date: Wed, 09 Apr 2025 17:40:14 -0000
 From: Andreas Hasenack <2072564@bugs.launchpad.net>
 To: qemu-devel@nongnu.org
 X-Launchpad-Notification-Type: bug
@@ -66,16 +66,15 @@ X-Launchpad-Bug-Commenters: ahasenack crichton dimitry.unified-streaming.com
 X-Launchpad-Bug-Reporter: Dimitry Andric (dimitry.unified-streaming.com)
 X-Launchpad-Bug-Modifier: Andreas Hasenack (ahasenack)
 References: <172053137048.3332067.13534832802726064667.malonedeb@juju-98d295-prod-launchpad-7>
-Message-Id: <174422026918.3176405.8970686480278062595.malone@juju-98d295-prod-launchpad-3>
-Subject: [Bug 2072564] Re: qemu-aarch64-static segfaults running ldconfig.real
- (amd64 host)
+Message-Id: <174422041427.3299966.17935107661250509384.malone@juju-98d295-prod-launchpad-2>
+Subject: [Bug 2072564] Please test proposed package
 X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
 X-Launchpad-Message-For: qemu-devel-ml
 Precedence: bulk
 X-Generated-By: Launchpad (canonical.com);
  Revision="e76edd883483c71c468bb038e98836435de44530";
  Instance="launchpad-scripts"
-X-Launchpad-Hash: 2b59ac0bb90746e5440f906d06b8ab4ac8c27fde
+X-Launchpad-Hash: 8a7f6fb4585d59d18e626e0a7b8d501b99dea656
 Received-SPF: pass client-ip=185.125.188.251;
  envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
 X-Spam_score_int: -42
@@ -101,21 +100,38 @@ Reply-To: Bug 2072564 <2072564@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Given this possible regression:
+Hello Dimitry, or anyone else affected,
 
-   * This changes the alignment of sections in the ELF binary via QEMUs elf=
-loader, if something goes wrong=20
-     with this change, it could lead to all kind of crashes (segfault) of a=
-ny emulated binaries.
+Accepted qemu into oracular-proposed. The package will build now and be
+available at
+https://launchpad.net/ubuntu/+source/qemu/1:9.0.2+ds-4ubuntu5.3 in a few
+hours, and then in the -proposed repository.
 
-Is there something we could do to mitigate it? Perhaps a quick similar
-ldconfig test in other emulated scenarios?
+Please help us by testing this new package.  See
+https://wiki.ubuntu.com/Testing/EnableProposed for documentation on how
+to enable and use -proposed.  Your feedback will aid us getting this
+update out to other Ubuntu users.
 
+If this package fixes the bug for you, please add a comment to this bug,
+mentioning the version of the package you tested, what testing has been
+performed on the package and change the tag from verification-needed-
+oracular to verification-done-oracular. If it does not fix the bug for
+you, please add a comment stating that, and change the tag to
+verification-failed-oracular. In either case, without details of your
+testing we will not be able to proceed.
 
-** Changed in: qemu (Ubuntu Oracular)
+Further information regarding the verification process can be found at
+https://wiki.ubuntu.com/QATeam/PerformingSRUVerification .  Thank you in
+advance for helping!
+
+N.B. The updated package will be released to -updates after the bug(s)
+fixed by this package have been verified and the package has been in
+-proposed for a minimum of 7 days.
+
+** Changed in: qemu (Ubuntu Noble)
        Status: In Progress =3D> Fix Committed
 
-** Tags added: verification-needed verification-needed-oracular
+** Tags added: verification-needed-noble
 
 --=20
 You received this bug notification because you are a member of qemu-
