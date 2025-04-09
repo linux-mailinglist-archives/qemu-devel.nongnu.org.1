@@ -2,69 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A562A82861
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 16:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8629FA8289A
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 16:48:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2WgC-0001gu-SL; Wed, 09 Apr 2025 10:45:28 -0400
+	id 1u2WjH-0000bY-An; Wed, 09 Apr 2025 10:48:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u2Wfp-00011X-F1
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 10:45:08 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u2Wir-0000MK-TH
+ for qemu-devel@nongnu.org; Wed, 09 Apr 2025 10:48:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u2Wfn-0006TS-FN
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 10:45:05 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u2Wiq-0006w8-7H
+ for qemu-devel@nongnu.org; Wed, 09 Apr 2025 10:48:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744209902;
+ s=mimecast20190719; t=1744210090;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=3/Sy2XOVtSG9wgDDx1WNYIe3CmQ2Y5jiN3HOB995Suk=;
- b=jPMB4EKYWUqMIRuXEHaxCzudZLZiWya7XomDxhfEZmxjuri9mnfhy8uVgvMS1UjoCKluvX
- LmfQNWszB5YhpVJ1xsK3BHkaIQQQ+F+QAGwe/o6XeopPmcmUCD7q2w/jNzRuuvFfME5vrE
- LexYCWYtaNt6TIiaHDXOxMqCz8atwKE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=HC9D5jMLOekyJpmVbLEL8XSl99hum9JYY5zwwG6Bf6U=;
+ b=WU2i1IVqE52aHNRX26wrE5CxvXi/8o3B1QLUnBSC4UHAeqoh2eUteA8Gx+Y1mzKxIupd8S
+ gVRPbX+459u2wALLheuSH3FeNISme0aQD0tNXqNM7Tm8oVHSN9kDR3wuEgwD71PLweOQSl
+ 5mf7OPEfjCQKSn/QWd9ptEXsKoBgvdk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-lqB53At0NkiM7DyvHCVWRA-1; Wed,
- 09 Apr 2025 10:45:00 -0400
-X-MC-Unique: lqB53At0NkiM7DyvHCVWRA-1
-X-Mimecast-MFC-AGG-ID: lqB53At0NkiM7DyvHCVWRA_1744209899
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-204-biEY0xTEPjmvgUwkaJ7Etg-1; Wed,
+ 09 Apr 2025 10:48:06 -0400
+X-MC-Unique: biEY0xTEPjmvgUwkaJ7Etg-1
+X-Mimecast-MFC-AGG-ID: biEY0xTEPjmvgUwkaJ7Etg_1744210085
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 203751800259; Wed,  9 Apr 2025 14:44:59 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6D471180AF56; Wed,  9 Apr 2025 14:48:05 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5CFF13001D0E; Wed,  9 Apr 2025 14:44:58 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C78E8180B486; Wed,  9 Apr 2025 14:48:04 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 89DB721E675E; Wed, 09 Apr 2025 16:44:55 +0200 (CEST)
+ id 30F1221E66C5; Wed, 09 Apr 2025 16:48:02 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Cleber Rosa
- <crosa@redhat.com>,  Eric Blake <eblake@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,  Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>,  devel@lists.libvirt.org
-Subject: Re: [PATCH V1 0/6] fast qom tree get
-In-Reply-To: <507cd943-5922-44b2-a0cb-1b85f0cfd074@oracle.com> (Steven
- Sistare's message of "Wed, 9 Apr 2025 10:06:00 -0400")
-References: <1741036202-265696-1-git-send-email-steven.sistare@oracle.com>
- <87friheqcp.fsf@pond.sub.org>
- <86bb6d0f-63a1-4643-b58a-1186a73e3b17@oracle.com>
- <87mscp8nlu.fsf@pond.sub.org>
- <507cd943-5922-44b2-a0cb-1b85f0cfd074@oracle.com>
-Date: Wed, 09 Apr 2025 16:44:55 +0200
-Message-ID: <87iknd75so.fsf@pond.sub.org>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org,  mst@redhat.com,  eblake@redhat.com,
+ eduardo@habkost.net,  berrange@redhat.com,  pbonzini@redhat.com,
+ dave@treblig.org,  sgarzare@redhat.com,  den-plotnikov@yandex-team.ru
+Subject: Re: [PATCH v6] [for-10.1] virtio: add VIRTQUEUE_ERROR QAPI event
+In-Reply-To: <556a58ac-7a71-47ef-8f00-312b027955bf@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Wed, 9 Apr 2025 17:04:01 +0300")
+References: <20250409094758.58232-1-vsementsov@yandex-team.ru>
+ <87plhlbofl.fsf@pond.sub.org>
+ <556a58ac-7a71-47ef-8f00-312b027955bf@yandex-team.ru>
+Date: Wed, 09 Apr 2025 16:48:02 +0200
+Message-ID: <87a58p75nh.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -90,117 +86,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steven Sistare <steven.sistare@oracle.com> writes:
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-> On 4/9/2025 9:34 AM, Markus Armbruster wrote:
->> Steven Sistare <steven.sistare@oracle.com> writes:
->>> On 4/9/2025 3:39 AM, Markus Armbruster wrote:
->>>> Hi Steve, I apologize for the slow response.
->>>>
->>>> Steve Sistare <steven.sistare@oracle.com> writes:
->>>>
->>>>> Using qom-list and qom-get to get all the nodes and property values in a
->>>>> QOM tree can take multiple seconds because it requires 1000's of individual
->>>>> QOM requests.  Some managers fetch the entire tree or a large subset
->>>>> of it when starting a new VM, and this cost is a substantial fraction of
->>>>> start up time.
->>>>
->>>> "Some managers"... could you name one?
+> On 09.04.25 13:48, Markus Armbruster wrote:
+>> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+>> 
+>>> For now we only log the vhost device error, when virtqueue is actually
+>>> stopped. Let's add a QAPI event, which makes possible:
 >>>
->>> My personal experience is with Oracle's OCI, but likely others could benefit.
->> 
->> Peter Krempa tells us libvirt would benefit.
->> 
->>>>> To reduce this cost, consider QAPI calls that fetch more information in
->>>>> each call:
->>>>>     * qom-list-get: given a path, return a list of properties and values.
->>>>>     * qom-list-getv: given a list of paths, return a list of properties and
->>>>>       values for each path.
->>>>>     * qom-tree-get: given a path, return all descendant nodes rooted at that
->>>>>       path, with properties and values for each.
->>>>
->>>> Libvirt developers, would you be interested in any of these?
->>>>
->>>>> In all cases, a returned property is represented by ObjectPropertyValue,
->>>>> with fields name, type, value, and error.  If an error occurs when reading
->>>>> a value, the value field is omitted, and the error message is returned in the
->>>>> the error field.  Thus an error for one property will not cause a bulk fetch
->>>>> operation to fail.
->>>>
->>>> Returning errors this way is highly unusual.  Observation; I'm not
->>>> rejecting this out of hand.  Can you elaborate a bit on why it's useful?
+>>>   - collect statistics of such errors
+>>>   - make immediate actions: take core dumps or do some other debugging
+>>>   - inform the user through a management API or UI, so that (s)he can
+>>>    react somehow, e.g. reset the device driver in the guest or even
+>>>    build up some automation to do so
 >>>
->>> It is considered an error to read some properties if they are not valid for
->>> the configuration.  And some properties are write-only and return an error
->>> if they are read.  Examples:
+>>> Note that basically every inconsistency discovered during virtqueue
+>>> processing results in a silent virtqueue stop.  The guest then just
+>>> sees the requests getting stuck somewhere in the device for no visible
+>>> reason.  This event provides a means to inform the management layer of
+>>> this situation in a timely fashion.
 >>>
->>>     legacy-i8042: <EXCEPTION: Property 'vmmouse.legacy-i8042' is not readable> (str)
->>>     legacy-memory: <EXCEPTION: Property 'qemu64-x86_64-cpu.legacy-memory' is not readable> (str)
->>>     crash-information: <EXCEPTION: No crash occurred> (GuestPanicInformation)
+>>> The event could be reused for some other virtqueue problems (not only
+>>> for vhost devices) in future. For this it gets a generic name and
+>>> structure.
 >>>
->>> With conventional error handling, if any of these poison pills falls in the
->>> scope of a bulk get operation, the entire operation fails.
+>>> We keep original VHOST_OPS_DEBUG(), to keep original debug output as is
+>>> here, it's not the only call to VHOST_OPS_DEBUG in the file.
 >> 
->> I suspect many of these poison pills are design mistakes.
+>> Likely should be tracepoints.  Not this patch's problem, though.
 >> 
->> If a property is not valid for the configuration, why does it exist?
->> QOM is by design dynamic.  I wish it wasn't, but as long as it is
->> dynamic, I can't see why we should create properties we know to be
->> unusable.
->> 
->> Why is reading crash-information an error when no crash occured?  This
->> is the *normal* case.  Errors are for the abnormal.
->> 
->> Anyway, asking you to fix design mistakes all over the place wouldn't be
->> fair.  So I'm asking you something else instead: do you actually need
->> the error information?
+>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>> ---
+>>>
+>>> v6: rename path to qom-path, and improve throttling of the event
+>>>      improve wording
+>>>
 >
-> I don't need the specific error message.
+> [..]
 >
-> I could return a boolean meaning "property not available" instead of returning
-> the exact error message, as long as folks are OK with the output of the qom-tree
-> script changing for these properties.
+>>> @@ -527,6 +534,13 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
+>>>                          qdict_get_str(evb->data, "qom-path"));
+>>>       }
+>>>   
+>>> +    if (eva->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
+>>> +        return !strcmp(qdict_get_str(eva->data, "qom-path"),
+>>> +                       qdict_get_str(evb->data, "qom-path")) &&
+>>> +            (qdict_get_int(eva->data, "virtqueue") ==
+>>> +             qdict_get_int(evb->data, "virtqueue"));
+>>> +    }
+>>> +
+>>>       return TRUE;
+>>>   }
+>>>   
+>> 
+>> Rate-limiting is now per virt queue.  It was per device in previous
+>> revisions.  Worth it?
+>> 
+>
+> Hmm. Probably not. If we have 2 virtqueue, seems good to see both event
+> (or only one, if only one virtqueue failed).
+> If we have 256 virtqueues, 256 immediate events seems too much.
+> So, better is to drop virtqueue here and consider only qom-path for throttling.
+>
+>>> diff --git a/qapi/qdev.json b/qapi/qdev.json
+>>> index 25cbcf977b..ddfae18761 100644
+>>> --- a/qapi/qdev.json
+>>> +++ b/qapi/qdev.json
+>>> @@ -187,3 +187,35 @@
+>>>   { 'command': 'device-sync-config',
+>>>     'features': [ 'unstable' ],
+>>>     'data': {'id': 'str'} }
+>>> +
+>>> +##
+>>> +# @VirtqueueError:
+>>> +#
+>>> +# @vhost-vring-error: the vhost device has communicated failure via
+>>> +#     the vring error file descriptor
+>>> +#
+>>> +# Since: 10.1
+>>> +##
+>>> +{ 'enum': 'VirtqueueError',
+>>> +  'data': [ 'vhost-vring-error' ] }
+>>> +
+>>> +##
+>>> +# @VIRTQUEUE_ERROR:
+>>> +#
+>>> +# Emitted when a device virtqueue fails at runtime.
+>>> +#
+>>> +# @device: the device's ID if it has one
+>>> +#
+>>> +# @qom-path: the device's QOM path
+>>> +#
+>>> +# @virtqueue: the index of the virtqueue that failed
+>>> +#
+>>> +# @error: error identifier
+>>> +#
+>>> +# @description: human readable description
+>>> +#
+>>> +# Since: 10.1
+>>> +##
+>>> +{ 'event': 'VIRTQUEUE_ERROR',
+>>> + 'data': { '*device': 'str', 'qom-path': 'str', 'virtqueue': 'int',
+>>> +            'error': 'VirtqueueError', 'description': 'str'} }
+>> 
+>> Standard question for events: can a management application poll for the
+>> information as well?
+>
+> Oh. that's a good shot.
+>
+> I'm afraid it can't. And this makes me to dig into history of this patch
+> - no, we didn't discussed it before.
+>
+> And before trying to implement something new here (a way to get a kind of
+> virtqueues status by a new QMP command), I check that:
+> - our mgmt tool still doesn't use VIRTQUEUE_ERROR event (which we've
+> merged to downstream QEMU long ago, of course)
+> - the original problem that led us to introducing such event doesn't
+> bother us for a long time
+>
+> It seems wiser to stop here for now. I should have considered these aspects
+> before beginning the process of reviving this series. Sorry for your time.
 
-Let's put aside the qom-tree script for a moment.
+Well, *I* could've remembered the standard question at the beginning!
+So, sorry for your time, too :)
 
-In your patches, the queries return an object's properties as a list of
-ObjectPropertyValue, defined as
+> Still, if we (or someone other) need such event in future - good, we have
+> a modern patch in mailing list to start from.
 
-    { 'struct': 'ObjectPropertyValue',
-      'data': { 'name': 'str',
-                'type': 'str',
-                '*value': 'any',
-                '*error': 'str' } }
+Yes.  Thank you!
 
-As far as I understand, exactly one of @value and @error are present.
-
-The list has no duplicates, i.e. no two elements have the same value of
-"name".
-
-Say we're interested in property "foo".  Three cases:
-
-* The list has an element with "name": "foo", and the element has member
-  "value": the property exists and "value" has its value.
-
-* The list has an element with "name": "foo", and the element does not
-  have member "value": the property exists, but its value cannot be
-  gotten; member "error" has the error message.
-
-* The list has no element with "name": "foo": the property does not
-  exist.
-
-If we simply drop ObjectPropertyValue member @error, we lose 'member
-"error" has the error message'.  That's all.
-
-If a need for more error information should arise later, we could add
-member @error.  Or something else entirely.  Or tell people to qom-get
-any properties qom-tree-get couldn't get for error information.  My
-point is: dropping @error now does not tie our hands as far as I can
-tell.
-
-Back to qom-tree.  I believe this script is a development aid that
-exists because qom-get is painful to use for humans.  Your qom-tree
-command would completely obsolete it.  I wouldn't worry about it.
-If you think I'm wrong there, please speak up!
+>> I might have asked this before, I don't remember.  If you already
+>> answered it, feel free to point me to your answer.
+>> 
+>> Why is this a standard question for events?  Say, a management
+>> application wants to track the state of X.  Two ways: poll the state
+>> with a query command that returns it, listen for events that report a
+>> change of X.
+>> 
+>> Listening for an event is more efficient.
+>> 
+>> However, if the management application connects to a QEMU instance, X
+>> could be anything, so it needs to poll once.
+>> 
+>> Special case: the management application restarts for some reason.
 
 
