@@ -2,87 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73250A818FA
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 00:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB16CA81B1C
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 04:38:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2Hii-0006SG-NI; Tue, 08 Apr 2025 18:47:04 -0400
+	id 1u2LJj-0006Vi-FA; Tue, 08 Apr 2025 22:37:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
- id 1u2Hig-0006R7-Rx; Tue, 08 Apr 2025 18:47:02 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
- id 1u2Hif-0004y5-Az; Tue, 08 Apr 2025 18:47:02 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 538L9r77004065;
- Tue, 8 Apr 2025 22:46:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2023-11-20; bh=3zst8
- +GEy5gnvVUBHLwCLCMvDyTpb5nVCArMMoNYXXI=; b=R1btvoZzGIzOEPWrv9TUl
- KSC5KgBTTf7h2tOrRhmczTZc6DDjV+UGvbaS+/FBmvfyllv4j5k+DWGot7euc+Hf
- zTpYjS/5WYpYKfdKCEnAKkYrYivTx9WaKrPSvh6LmLiVd4gttHFt8jd2aw0i8ouL
- FVWIWSvK7Go7V63AFEUwJIHlPeYnSR8IPHTn+J4s/mR7JYDnxgwzzS7J2I9P8N6S
- TcLRKwuX+dC1TG1svFPL2rWBASy/HIC4bO53Vy3iqrMGEPcOnYRZAhJq5NmUJ5L8
- 2AU08rvDIBSX8MgQ6DGbJQWrXpX7FplKDwWmfiungfpW4gXWk70ZtE/5VagkB+EP
- Q==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45tw2tnyvg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 08 Apr 2025 22:46:54 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 538MDiXX001297; Tue, 8 Apr 2025 22:46:53 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 45ttya068u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 08 Apr 2025 22:46:53 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 538MkquC038560;
- Tue, 8 Apr 2025 22:46:53 GMT
-Received: from ca-dev94.us.oracle.com (ca-dev94.us.oracle.com [10.129.136.30])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 45ttya068c-2; Tue, 08 Apr 2025 22:46:53 +0000
-From: Alan Adamson <alan.adamson@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: alan.adamson@oracle.com, foss@defmacro.it, kbusch@kernel.org,
- its@irrelevant.dk, qemu-block@nongnu.org
-Subject: [PATCH 1/1] hw/nvme: create parameter to enable/disable cmic on
- subsystem
-Date: Tue,  8 Apr 2025 15:56:44 -0700
-Message-ID: <20250408225644.814616-2-alan.adamson@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250408225644.814616-1-alan.adamson@oracle.com>
-References: <20250408225644.814616-1-alan.adamson@oracle.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1u2LJh-0006UO-4W
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:37:29 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1u2LJc-0007nA-UI
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:37:28 -0400
+Received: from loongson.cn (unknown [10.2.10.34])
+ by gateway (Coremail) with SMTP id _____8CxyuBY3fVnDK+1AA--.40299S3;
+ Wed, 09 Apr 2025 10:37:12 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.10.34])
+ by front1 (Coremail) with SMTP id qMiowMBxLsdY3fVnnsR1AA--.28294S2;
+ Wed, 09 Apr 2025 10:37:12 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH v3 00/16] hw/intc/loongarch_pch: Cleanup with memory region ops
+Date: Wed,  9 Apr 2025 10:36:55 +0800
+Message-Id: <20250409023711.2960618-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-08_09,2025-04-08_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxlogscore=999
- suspectscore=0 adultscore=0 bulkscore=0 mlxscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2502280000 definitions=main-2504080156
-X-Proofpoint-ORIG-GUID: lm6o3QA-e_-vkgq_chKnRkH_Yv4QKqxU
-X-Proofpoint-GUID: lm6o3QA-e_-vkgq_chKnRkH_Yv4QKqxU
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=alan.adamson@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowMBxLsdY3fVnnsR1AA--.28294S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxCw47Cw47Cw45ZF48JFyfKrX_yoW5Gry5p3
+ 93uw1Ykrn7JrsrXFWkZa4rWFZ093Z3u3429FsIyrWIkr13CF1UZrW8Z34jqFyUG34xJryq
+ qa18G347XF4UAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUyEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x0EwI
+ xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+ Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7
+ IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k2
+ 6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+ AFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8czVUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,60 +74,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the value of CMIC to to be set via a new subsystem specific parameter.
-This removes the requirement that all subsystems must have the CMIC bit enabled.
+This series patchset is to clean up with memory regions of loongarch pch
+pic interrupt controller. Originally there are three iomem regions:
+iomem32_low, iomem8, iomem32_highm. Since these regions only support
+4 bytes/1 byte/4 bytes access, it is divided into three regions.
 
-New NVMe Subsystem QEMU Parameter (See NVMe Specification for details):
-        <subsystem>,cmic=BOOLEAN (default: off)
+Now it is merged into one region, this regions supports 1/2/4/8 bytes
+access.
 
-Signed-off-by: Alan Adamson <alan.adamson@oracle.com>
+Patch 1-6 is to replace register name, no function change.
+Patch 7-16 is to use unifed memory region iomem, and supports 1/2/4/8
+bytes access with read/write ops for this region, and merge three
+regions above into one.
+
 ---
- hw/nvme/ctrl.c   | 5 ++++-
- hw/nvme/nvme.h   | 1 +
- hw/nvme/subsys.c | 1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
+  v2 ... v3:
+    1. Set address aligned with 8 bytes in memory region function
+       pch_pic_read() and pch_pic_write(), and only compare register
+       base address with 8 bytes aligned one.
+    2. Replace 0xff/0xffff with UCHAR_MAX/USHRT_MAX.
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 518d02dc6670..ddd3ec15d131 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8876,7 +8876,10 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
-     id->psd[0].enlat = cpu_to_le32(0x10);
-     id->psd[0].exlat = cpu_to_le32(0x4);
- 
--    id->cmic |= NVME_CMIC_MULTI_CTRL;
-+    if (n->subsys->params.cmic) {
-+        id->cmic |= NVME_CMIC_MULTI_CTRL;
-+    }
-+
-     ctratt |= NVME_CTRATT_ENDGRPS;
- 
-     id->endgidmax = cpu_to_le16(0x1);
-diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index 6f782ba18826..437b3e64fcfb 100644
---- a/hw/nvme/nvme.h
-+++ b/hw/nvme/nvme.h
-@@ -116,6 +116,7 @@ typedef struct NvmeSubsystem {
-             uint16_t nruh;
-             uint32_t nrg;
-         } fdp;
-+        bool         cmic;
-     } params;
- } NvmeSubsystem;
- 
-diff --git a/hw/nvme/subsys.c b/hw/nvme/subsys.c
-index 2ae56f12a596..ea6687c7ee6c 100644
---- a/hw/nvme/subsys.c
-+++ b/hw/nvme/subsys.c
-@@ -223,6 +223,7 @@ static const Property nvme_subsystem_props[] = {
-                      NVME_DEFAULT_RU_SIZE),
-     DEFINE_PROP_UINT32("fdp.nrg", NvmeSubsystem, params.fdp.nrg, 1),
-     DEFINE_PROP_UINT16("fdp.nruh", NvmeSubsystem, params.fdp.nruh, 0),
-+    DEFINE_PROP_BOOL("cmic", NvmeSubsystem, params.cmic, false),
- };
- 
- static void nvme_subsys_class_init(ObjectClass *oc, void *data)
+  v1 ... v2:
+    1. Add 1/2/4/8 bytes access support with memory region read and
+       write ops.
+    2. Merge three memory regions iomem32_low, iomem8 and iomem32_high
+       into one region iomem.
+    3. Merge trace functions for ops in above three memory regions into
+       one trace function
+---
+
+Bibo Mao (16):
+  hw/intc/loongarch_pch: Modify name of some registers
+  hw/intc/loongarch_pch: Modify register name PCH_PIC_xxx_OFFSET with
+    PCH_PIC_xxx
+  hw/intc/loongarch_pch: Remove some duplicate macro
+  hw/intc/loongarch_pch: Set version information at initial stage
+  hw/intc/loongarch_pch: Use relative address in MemoryRegionOps
+  hw/intc/loongarch_pch: Discard write operation with ISR register
+  hw/intc/loongarch_pch: Use generic read callback for iomem32_low
+    region
+  hw/intc/loongarch_pch: Use generic read callback for iomem32_high
+    region
+  hw/intc/loongarch_pch: Use generic read callback for iomem8 region
+  hw/intc/loongarch_pch: Use generic write callback for iomem32_low
+    region
+  hw/intc/loongarch_pch: Use generic write callback for iomem32_high
+    region
+  hw/intc/loongarch_pch: Use generic write callback for iomem8 region
+  hw/intc/loongarch_pch: Use unified trace event for memory region ops
+  hw/intc/loongarch_pch: Rename memory region iomem32_low with iomem
+  hw/intc/loongarch_pch: Set flexible memory access size with iomem
+    region
+  hw/intc/loongarch_pch: Merge three memory region into one
+
+ hw/intc/loongarch_pch_pic.c            | 344 +++++++++----------------
+ hw/intc/trace-events                   |   8 +-
+ hw/loongarch/virt.c                    |   6 -
+ include/hw/intc/loongarch_pic_common.h |  57 ++--
+ 4 files changed, 152 insertions(+), 263 deletions(-)
+
+
+base-commit: dfaecc04c46d298e9ee81bd0ca96d8754f1c27ed
 -- 
-2.43.5
+2.39.3
 
 
