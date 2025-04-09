@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47ECA82618
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 15:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA85A82619
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 15:21:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2VLO-0003qB-CA; Wed, 09 Apr 2025 09:19:54 -0400
+	id 1u2VLP-0003qa-Vb; Wed, 09 Apr 2025 09:19:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1u2VLJ-0003pH-EP
+ id 1u2VLI-0003pF-6Y
  for qemu-devel@nongnu.org; Wed, 09 Apr 2025 09:19:51 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1u2VLG-0001OH-FS
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 09:19:49 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43cf257158fso47655045e9.2
+ id 1u2VLG-0001OK-F9
+ for qemu-devel@nongnu.org; Wed, 09 Apr 2025 09:19:47 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-39c0dfba946so4317000f8f.3
  for <qemu-devel@nongnu.org>; Wed, 09 Apr 2025 06:19:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1744204784; x=1744809584; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SXmh4Pz+JdKMkMoqi+bpTEVJj0ToleTDtvfkr+bT2oU=;
- b=zXm1MRXO1FdSGbBHjVkjn48Pw87aG7ZvY1wYcev3hrdWlSpSyOH5RSVVtbgSWja7HB
- Z1HmAtiTlKDBIzYTZZpOgshsYU+JrXjjgLBesCrMfqUypJ8Wi6VXAtvtKm2DBRzwGjiC
- lCACcq3fk0pIeIrqGtlz5Ye5ih7QxbeQEGmmOvDYHey4dhOKIkz+YCabOJVDi9iX8Uv7
- gQQB3Dw1b7dQpoKo0xTg4OGJ6nQ09Y5KvDidaFLxxieFZ5VY3VefGWtRo0hwV0jkKlVy
- brWQcx8jiWZviAdWhYGIAswxaalGWjk0IxKjVROxwrEKLK+iZGmPb30ncXPg2v+gJjAM
- SdUQ==
+ bh=GgHci5TdeWB9Jnt/+CYG1K2MnKTxniGuWHN5F+y5RDQ=;
+ b=iLyAwMoXtXXSEVbNprhkeumXRGhMgA3xlmFQuZyr3YXvGcJAyu5+Cm/HEDs9mSAaRi
+ dZGP/TwLeEdF3gnD1HdPuR4NLbbT0XcyxvIaQOebdcJeWDlVdAv7ghGR+bNJVi4qc54q
+ kWvHXEzRMyRhGUmgLjcyP1yS1uWuCW7m4bpPE7TMOh38yWQuUn4ehoLoFnQdr7Uli1ta
+ bYymgSJmrsKre+l0lBSmZk6eUiaNINR+cOU7mHeG7O7ZHTIGbV17Ofx670T9Vg1Ldd2M
+ KKFDGWqCqmvnGKiCrrFHyWGSAIkfIij7n4ImJEq2mKGLrxPQOcHvhUX2KhcdgNFDeIu9
+ 8WKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1744204784; x=1744809584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SXmh4Pz+JdKMkMoqi+bpTEVJj0ToleTDtvfkr+bT2oU=;
- b=XWznjHc8ExehPBF4kXcYlfcPu7XtbrdHsQXx6dzePEAR4Qm3mNa33AceN3pOO0+qsD
- I79TwhHpLRCTefuodu0/uhCc208CKCOR1MB04j06TKCphNtowlkEhH7L20abOQhr8mCr
- EagwouRa0BNHyE5Chf3BblCFwTJWk6SgDGKF3S/uV8isJ3Z+giZGjfrAoVgATKZl7786
- Y6wzre95tIW0R+JJ2vEigHiOmqstKblIOWPBd5TgxpBrB8+inIR8I4m6faOE4szF0bvH
- fBRyx2sgsJH3L5oFfjssJRfsvQXpIqYQqpu3U49MjqK7Jes/7QqyIRiha7lTYytMIySV
- HJHQ==
-X-Gm-Message-State: AOJu0YzMnL+9MgQugOZt7Y+V6IKfoI3VUkmM05h7/NqmVnv0yl+LbWgx
- 8IECYpA1jDfcdplPPTMr9W5YVOvcwlmj0PSeDg6H7bcJtcjkAqW3/RSvFNmtEhA=
-X-Gm-Gg: ASbGncvBdEDw/x70cHwCLeKMIFtpKVXz/ffVcmZFCOkKHXR4mPuukZr63ULQ+meOIoA
- GiJo5fPhOsoPMWypBCu8PcFIMQ2T7IMjGM/xmayxDcBtfj04+LDJZkKvFNVY0DtphIJ+liRVe1o
- 7uyzlw9XLKQzYqx7lO5kIFz8NQxc+rLWUWuDeiaAhirAq4YzQjhN2ke/VaensES5doaoScZqSwJ
- 2Qo397Fe0VNUy2P+vMMenZ6ezinc3H4pj+gvr5QDY1T8ZUHQtY9AnCSmzUN3A9hrCrZbWcVrkkr
- XvVJHq8xH6Cdyh++nHXaTSYVMpR2pcQ+3b8PfEV/lT0=
-X-Google-Smtp-Source: AGHT+IHYpgKexWRdwsFyKGnraCSE8mga5rua+aPA1nHwnn17ot5chqURInbbVaP5X+nvu4/I5cz65g==
-X-Received: by 2002:a05:6000:430c:b0:39c:1257:c96f with SMTP id
- ffacd0b85a97d-39d885652a9mr2349953f8f.59.1744204783833; 
- Wed, 09 Apr 2025 06:19:43 -0700 (PDT)
+ bh=GgHci5TdeWB9Jnt/+CYG1K2MnKTxniGuWHN5F+y5RDQ=;
+ b=K4QkrV6mCBsUgydUj+W4XRxqSH/GLO5Rvwy6f8S2aO4KlVpmmfH0VwomZtwtWY09gs
+ ty7QcrhdyEK7Jovjmnxf0uuRt7iyhwQp6N/Bwexl8kStcF/9TCYMNPq9JKXN0I6/TSzQ
+ 1Gl02ydUNPjRfZ41EJ9OVmfo9KsPB5mHeFCv6pMcdC3/FW7zpiLvG3HOf3EQVVhTsYK8
+ QGHRMtahQIYVMqs4j9JzhgH/ykdwm2NG0EYd6dIuYhfV0DSTtCOUJYE7yWfJQonLK0iB
+ y8hFzm99oaGIOxKm30qt4pQcD1e8U2pMpLXIb4XFNpt329L0nMgKYXQ13fs2+nNq2y1p
+ 0Q2Q==
+X-Gm-Message-State: AOJu0YyNLcg8UKRG7X8dKMg7as8fx9xB2oYDChBMQNXxbA7WzQunWjwq
+ e0HeWisRf46xPROfMwhrx8Je1VrxmpJWTcvI7mhQCND6MqB4V8/Zz/Ho8aMWEpY=
+X-Gm-Gg: ASbGncuGbo+bZtqnCwCz/9gwCsnNLtC7F5Ftj6llUP1wAMOJq3JUsX+4chIygVQrIW3
+ ZDrbpPPfW4oh4m1J0vmqx5t4RYSNxvcIxeU7iA3yXFX+5zmybXNaZekYh107l63HYXryoiqx++y
+ WzA9PM5+VVPiREjm5+wql5nXKSUbMkrUG3RgvTSKPfhU7Zb0dWqghX/zO3GGqbtQxKyfL85A4OY
+ XDZagKbscf51qz6MNPOUNk73ufXezZIjjiEI3BTjmce6yy+aozQBhqYdAkvKvSBS9gbi94orsyg
+ LVKINF+7xMaBbYkJvwtkcGfEGhfkrfJOEFmAyqCzwhbZmLHSVSMMMw==
+X-Google-Smtp-Source: AGHT+IGn9rx5/KUUNL8CkgqvjYLC2lH0ye+ydSVMbj827edbwDuHbC/pV9tOl4VF8MXq4YtRsdULfA==
+X-Received: by 2002:a5d:64eb:0:b0:39c:3107:d68d with SMTP id
+ ffacd0b85a97d-39d885626a2mr2229181f8f.49.1744204784141; 
+ Wed, 09 Apr 2025 06:19:44 -0700 (PDT)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39d8938b5e7sm1659443f8f.55.2025.04.09.06.19.43
+ ffacd0b85a97d-39d893f0b82sm1626392f8f.66.2025.04.09.06.19.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 09 Apr 2025 06:19:43 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 84A0B5F8FE;
+ by draig.lan (Postfix) with ESMTP id 9C4D05F9E3;
  Wed,  9 Apr 2025 14:19:42 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PULL 1/3] tests/tcg: fix semihosting SYS_EXIT for aarch64 in boot.S
-Date: Wed,  9 Apr 2025 14:19:40 +0100
-Message-Id: <20250409131942.1706923-2-alex.bennee@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PULL 2/3] plugins/loader: fix deadlock when resetting/uninstalling a
+ plugin
+Date: Wed,  9 Apr 2025 14:19:41 +0100
+Message-Id: <20250409131942.1706923-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250409131942.1706923-1-alex.bennee@linaro.org>
 References: <20250409131942.1706923-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -102,32 +104,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't expect to hit exceptions in our testing so currently all the
-vectors report an un-expected exception and then attempt to exit.
-However for aarch64 we should always use the extended information
-block as we do in _exit. Rather than duplicate the code on the error
-handler just branch to the _exit handler with a failing status code.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+Reported and fixed by Dmitry Kurakin.
+
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2901
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20250404032027.430575-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250404115641.258048-1-alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-diff --git a/tests/tcg/aarch64/system/boot.S b/tests/tcg/aarch64/system/boot.S
-index 4eb1b35b88..a5df9c173d 100644
---- a/tests/tcg/aarch64/system/boot.S
-+++ b/tests/tcg/aarch64/system/boot.S
-@@ -73,9 +73,8 @@ lower_a32_serror:
- 	mov	x0, SYS_WRITE0
- 	adr	x1, .error
- 	semihosting_call
--	mov	x0, SYS_EXIT
--	mov	x1, 1
--	semihosting_call
-+	mov	x0, 1 /* EXIT_FAILURE */
-+	bl 	_exit
- 	/* never returns */
+diff --git a/plugins/loader.c b/plugins/loader.c
+index 7523d554f0..0d6e082e17 100644
+--- a/plugins/loader.c
++++ b/plugins/loader.c
+@@ -370,7 +370,7 @@ static void plugin_reset_destroy(struct qemu_plugin_reset_data *data)
+ {
+     qemu_rec_mutex_lock(&plugin.lock);
+     plugin_reset_destroy__locked(data);
+-    qemu_rec_mutex_lock(&plugin.lock);
++    qemu_rec_mutex_unlock(&plugin.lock);
+ }
  
- 	.section .rodata
+ static void plugin_flush_destroy(CPUState *cpu, run_on_cpu_data arg)
 -- 
 2.39.5
 
