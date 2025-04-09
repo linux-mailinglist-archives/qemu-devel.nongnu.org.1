@@ -2,67 +2,175 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7CFEA81B37
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 04:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8EAA81B52
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 04:53:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2LPr-0007Js-72; Tue, 08 Apr 2025 22:43:51 -0400
+	id 1u2LYG-0001BU-8Z; Tue, 08 Apr 2025 22:52:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1u2LPp-0007JY-Rj
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:43:49 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1u2LPn-0000IE-M6
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:43:49 -0400
-Received: from loongson.cn (unknown [10.2.10.34])
- by gateway (Coremail) with SMTP id _____8DxvnPg3vVn1rC1AA--.7744S3;
- Wed, 09 Apr 2025 10:43:44 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.10.34])
- by front1 (Coremail) with SMTP id qMiowMDxu8Tf3vVn1sZ1AA--.22064S3;
- Wed, 09 Apr 2025 10:43:44 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v3 16/16] hw/intc/loongarch_pch: Merge three memory region
- into one
-Date: Wed,  9 Apr 2025 10:43:43 +0800
-Message-Id: <20250409024343.2960757-2-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250409024343.2960757-1-maobibo@loongson.cn>
-References: <20250409023711.2960618-1-maobibo@loongson.cn>
- <20250409024343.2960757-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <Alexey.Kardashevskiy@amd.com>)
+ id 1u2LY9-00019W-23
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:52:27 -0400
+Received: from mail-co1nam11on2089.outbound.protection.outlook.com
+ ([40.107.220.89] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Alexey.Kardashevskiy@amd.com>)
+ id 1u2LY6-0001BV-BE
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:52:24 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z9LTj7sMhM1+Tm0PmtyV6rgklTtL7gkJ8DFVExsstVoSmpGUQsgy1k18BmIXF+ovi+J7TJNYVy3wBU6mTtKb4fmYpboZg2j2myfoaQTo8tONrYhxssGMMhTYeqGbaF1jwARikmwjLVWfQemIeCDhWwuGoos6z8E+Ag4cq70xZsCk/UfvsOmRaXGc1vP0w7zF2vzJNM4f8ewJiPUkiahseVJarZjwr2oMarVgp8ncxoZFWWn+HH1UkVwAN+qo/XZCTLl1oLt4MMRdlIw3eymaOt5pX/tVkBw5M1eF60vidG6dJ7kwhEJfDOBQNv6kW8XgBqoypsBjZVmYzsTDgRRhaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rQg9fNNUHQCsVyLVCyujJeQHObnUM4Dxvztuw1pyeHQ=;
+ b=nx2zxf5YDBeZQcnLa30U7Zjy7RsEv+TQedQXcaNupdzb7cFWweSqGnvgCW3PicegrHXjD+vuTGU8n+AnG37y9+gCPJ13ObT1JX/Rnp32m2NfYVQS6oABQJU3sMM+u9SoxY3WErU/mf63aOVmF8ieyzseYZUUlE+0FSRps0sd6yMt/esxpBi/PXGkKhMK4rwR4Bfijh+dILbMNm6sYZ7vzpxxrnBfnIwGNSmBdjmrpUWHRlkSQMvC9kRzePZnAigRFlYmY0ya9rfi2PtajXjERTai0PVvIB9NgVdk6kuIXgPvrGRCIzKSEj/Txx0QWbnzZnWfno7wK099cOEmrS+SDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rQg9fNNUHQCsVyLVCyujJeQHObnUM4Dxvztuw1pyeHQ=;
+ b=f9Ttj3Dcdh1oDBT0fwKUdKlzrjIBE8KyDIh13d7qo1fWeIycR/84mMu9EcpuCbxHU7Gx9cb76VfGIZPMQrwvPL6yQOqOwJh727j0HxESNHbgnWcpt7K3C7h4kxi3e3kd51u0DpQ1Tuyrz58bykY7n0CuqXee48yzmStFMmJS4Hg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by CY8PR12MB7707.namprd12.prod.outlook.com (2603:10b6:930:86::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.21; Wed, 9 Apr
+ 2025 02:47:17 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%4]) with mapi id 15.20.8606.029; Wed, 9 Apr 2025
+ 02:47:16 +0000
+Message-ID: <90152e8d-0af2-4735-b39a-8100cfb16d16@amd.com>
+Date: Wed, 9 Apr 2025 12:47:08 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v4 01/13] memory: Export a helper to get intersection of a
+ MemoryRegionSection with a given range
+To: Chenyi Qiang <chenyi.qiang@intel.com>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Gupta Pankaj <pankaj.gupta@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Williams Dan J <dan.j.williams@intel.com>,
+ Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
+References: <20250407074939.18657-1-chenyi.qiang@intel.com>
+ <20250407074939.18657-2-chenyi.qiang@intel.com>
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20250407074939.18657-2-chenyi.qiang@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ME0P300CA0078.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:220:234::29) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMDxu8Tf3vVn1sZ1AA--.22064S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxWF1UtrWrWFy7uw4rtrWkGrX_yoWrtr43pr
- ZxZrn3KF4kJFnrXryvy343XF1kGwn2934293ZIkryIkrnrAr15ZF1kJ34qqFyjk3yDWr1q
- qF4rGa4Yqa1UJagCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26rWY6Fy7McIj6I8E87Iv67AK
- xVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64
- vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
- jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0xvE2I
- x0cI8IcVAFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
- 8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I
- 0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUsdb1UUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|CY8PR12MB7707:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4bba1deb-5a24-400e-8beb-08dd7710d692
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|7416014|366016|1800799024|376014|7053199007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Skd6Q0w3MTN0Y1NRdVVkZVZmcXd6SmlIMHZqQ1FDWTZzUmZjQTBVdUgrcGdu?=
+ =?utf-8?B?Q2Rwa2dEazlvdGtzTFkyZzBqVGxjSjBKVW5icUk1eUpjZTJrT0I2U0FkRm02?=
+ =?utf-8?B?QU9TZ2NPcjRLdjhTZVRNZUJDdXN1OU5pdzNWS1E4dUYySjZwQWFMODJPSVhh?=
+ =?utf-8?B?SGRYZW9qWFk3UFNJWU5ORzh3ZFR6cjk5UUtqQWo0UVRRNTVYTmh5VmVpeVRQ?=
+ =?utf-8?B?OVVPZHZ6cHRVSFdpeEdxaVpXa3c3K292WWxRQUo0aGkvZUxmczJoaFM2Zldm?=
+ =?utf-8?B?WW8zYlZBSGU5bS9zUU1aNkxObWRXL3ltek42dzRzUXR0SWhha0hhK0wwMDlO?=
+ =?utf-8?B?TEF5eXV6L1dTNmJHMXgrd2Z0cEE0R2NnbUNRb2RQbWdOUlpuWjVhMjMreFV1?=
+ =?utf-8?B?emdOeDQ5UzVSbGJYT3BRdGcxOXVaTGZNK1drRWZFM2NXTkZkMW9iMVNuVTFP?=
+ =?utf-8?B?Q3FVdGhKWDJpOG1pR1FqVHFhQjhZWDgveUFmSGRBOWs0WURQU2I2VEw4RS9H?=
+ =?utf-8?B?VW9ySERIV3NJVVFMLzdoaThZVGRRN1d4YWxydmxoamg4TENIQkhYZmVGQ2FL?=
+ =?utf-8?B?d3ExcWI2emNQbURTNWdBaTg4aEtNakh5KzFMTjc4L3p3bXFzUGxjamFDMnA5?=
+ =?utf-8?B?T095Wi9wY3ZIUnZrSm1keXlocjBHcmJHeWV1ZWl0MzNDVTB3enJYa28wcnBo?=
+ =?utf-8?B?TWkwYW9RcXR4VkI3V2Jsbm1MVlZnWjkvSm04NzFqTlpKQkpEdk1Qd3VnaDdR?=
+ =?utf-8?B?RDMvcXdqTFYvaVhRdjBGL2p4SUU5NGl2Q21mc1cxS2ZtdEN3OFhXY0RmK2Jh?=
+ =?utf-8?B?NEx1NFJTekV3dHFRaHBpMDRSeXk5aTBLWk9SUUV6d004dU1oYlN3VU1za3hw?=
+ =?utf-8?B?SXl4WlBHZm1Vc0Q5dXNEbFJ1ZStGUy9uN0ZpallTYTdDVHo0d0syRVRKS0Yv?=
+ =?utf-8?B?ZWFOcHlFb1dQcE10SUlDeVZMdWx3c01lU1Y1Ym81ZjRLQW84QmF6N2xoMklw?=
+ =?utf-8?B?WmdOUGxxK0kvNUh5aCtuREhXUVdrTVF4WlZ2TGFGUjJpM3FQVEthdjk4OEEr?=
+ =?utf-8?B?OVlzdEV1cHhlaXlPNHQ2S1hBWFNHaDdVZGN0dUlxZjBXbXIyM0RuaGRZMmRI?=
+ =?utf-8?B?ZkpLc0RoWmkwcEJQYkR4VmdQY1JPU3B4MG9JSGVjTTQxUW1ZTUd0MmMxUTNX?=
+ =?utf-8?B?Q2dFODNqQW9PenVidk5NVUxGbENHNElxMDlwWFNZTTkrdEN6djJZS2Mzd29q?=
+ =?utf-8?B?aXZmTlo2UFBVbnBBbE9VamI0V3R4WVd3QnBhSnBjWCtjdTRsMitQZDlYUU9m?=
+ =?utf-8?B?ZHBsVTR2MmtnaFdPOW11OUFJV2NER2x4SFB0OVp3OWN6dTgyODl4VnFJTVhp?=
+ =?utf-8?B?VzAvT3ZHOVdobG1kRzJKenRXUTlMTUI2eDAzUlloM1hzOGdqenU2MFRlMVRN?=
+ =?utf-8?B?WnJzY3pCRVRCYmpNVGFzcVB5N0hBT0hjbHdKeC9ZTUdGdUVnbGhCaEZoVHNT?=
+ =?utf-8?B?MjZnZ090RXRQa1hWd2c5UUIyRURwb2xrWW5CNURVRUsrNFBmOE1oRUtsNkhw?=
+ =?utf-8?B?R2lGZXdPM1FOd2dZRk1veDVydFJIenY5RW55bUhaVjQ4N1prNlJMWU9wSjJB?=
+ =?utf-8?B?RTU4S0pwWFg4ZWhrMGZiSnEvZWVpMVk4OTZzcnQ1bXFrWmpraUJjK0lDMlVt?=
+ =?utf-8?B?L05zUWh2eEFadDJtcmMzbmdsQ0Q1KytidXg3WmhlS283bUpjWDdwcHhHd1dJ?=
+ =?utf-8?B?NzhGTU1nUGh0QVkzUit6QnA0V2QvNklGZENuZmNQQkRnMTYxVVEwV1JVQm9I?=
+ =?utf-8?B?aXNxOEV6dm5IN1NPczJkSzVjbEY3eCtYakF6dVFkQVNiMkRsZE5uQkxKR0tS?=
+ =?utf-8?B?ZTNabTh4OE5NVXdRYlNWUWc0N3pVYklTUHFXTlY5MUdVdGRjSHl2Lzl1NHRm?=
+ =?utf-8?Q?fC/psOyBryo=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR12MB9194.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(7416014)(366016)(1800799024)(376014)(7053199007); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bTNMM3hiT2Y5ZnczaFV0SGNlTXZZSHFXVUVvSWMwSXd5eW1iUVBTR2w3UG43?=
+ =?utf-8?B?L1BBNTFKb1NGSW5WTW94QURZSkxjYzJ2SDdVZ0lWd04vRmRBZk1UQWlpSmg4?=
+ =?utf-8?B?NlNQZWhWbjFhdVk0dlJmS2RPOWR1clJQQnhHN05WUkhFQ3Bmb29rMk5tQUI0?=
+ =?utf-8?B?VCs1REVRWGFicENrTE4yUkFkbjF5aDRRdEtCMXFpMGZJSDllREtXTzR3c2FI?=
+ =?utf-8?B?RGIvS09rMytERm5JZ0lXWUQrSitwdnhYLzBEa09rMVcvSmNiOTZYTWNEVVU4?=
+ =?utf-8?B?cnI3Z1l5WUcrQkQ1YVMwUDU5NXdSbzZrUWROenlmYTdzcXFLNUpxTEFnT1dO?=
+ =?utf-8?B?bG93c2Y0Z25VUDFYdUFZQzV4QnBsSk0wazZITXpHQnVqOXRGLzl3QjBGN3p6?=
+ =?utf-8?B?MXEvR1R0ZSs0LzkrVFRuUVBiRlBvcTNGb3Qwek5TTjVaNVhHVUNwYTNqQ1VB?=
+ =?utf-8?B?Zm1Ub2IwQUhqU2Ntb0xFVUFwV0NmaUkvSWZ0ZUowb3RmUWN4R0RJR2hyVk9F?=
+ =?utf-8?B?aklUM3l5T3FBTWVWb1pzWllHOVdLUmRrMG05SzZsMlBVSGFhNlBHTHJyTGlS?=
+ =?utf-8?B?N3BMUEZkVGx6MWV2cWI5L1BuT1dPQS85VHlHV0hiMHhKdUp1WUI0bGZySzNP?=
+ =?utf-8?B?Z0dMS3lOUVNmUndPZTVPZ2h3RWJEL1QrNnpRZ2pXOVVxWWNTb1hUMkNQM0No?=
+ =?utf-8?B?bXBUbkh6eExIWk5QYlRtMDNZT2w4VnMvRHNWNmF1Ukp6US9tVWo3cG1oN0ZR?=
+ =?utf-8?B?STVhZWErUTg4aW5ueTdicjVqK0VtS2p6M1ZMRmZ0NnlCeDNrZTVVSGhEdUFn?=
+ =?utf-8?B?UVQ3bVI1N01DS092YkVzTXdlWm81TFNscGU4TGNJamFJS3FBNEVSUXVXaDhl?=
+ =?utf-8?B?WjVGUldWbHhWdFVYSFZKbTcxRDlCUmVnWjJyaEN0dVpicDlZMTFvT0RxUzBv?=
+ =?utf-8?B?MUw1ZUlIOXhNVEpBb1Q3OHFieXJRbW4wVGVCT0ROaS9HTWxLVm5TQnR4WEh0?=
+ =?utf-8?B?T0lzejYyYXlPYmx6NDZ5ZFJsNGJNUUt4d3JQVUdNL0F1MXpUV08wenFSSDhE?=
+ =?utf-8?B?TzlCdzhQKzB3YVdLUW5IbXp5aHF4bmJITjV1VjFNbEpCNWFMemNNVVFPSjZL?=
+ =?utf-8?B?Y1NXdDU3R3VJN3BSVkNKRHJRZWhHRXFSSTlrL3JFSFk2QzdSVFZxbjFqMHdl?=
+ =?utf-8?B?dXM4T0IvS2xmU3VWd3ZhczZ1bUlPNEhnS1dWZWswaEdVbk80MTh4MFpMNjFj?=
+ =?utf-8?B?Y3dRbU0zTEQ1bVRqWEhrcUQzUXdhbXdtN250RjgyZ2VXM2RaN3ovOWdIcXo5?=
+ =?utf-8?B?b1VYdFR6SkpqYWY4cFRYTlg2ejZEUTZEd2xKK2NuZU1jdFRSTE96Sjl1ejVk?=
+ =?utf-8?B?Z0N3YVhIQjFPZFVMSFdKbkptRVZzbXpXMkJBTk5LSU53WThVM1JaQkdxcVRu?=
+ =?utf-8?B?V0t4TjNiMCtaSTA1NXdiTmxZemMvejV5TGF1Y2RCQldrQ3FFNk54d0tMdFUr?=
+ =?utf-8?B?MXp3MStFTFlEWnF0SjFLcjdCKytDOUNtek9QYzAwcXl2VHQrZWVzWjlXMmNX?=
+ =?utf-8?B?cnFXZ1lvV0hWaU03ZDBGSTBjNEpiSHNQd292YktOcTNmblBMK05CcTVDcURx?=
+ =?utf-8?B?azIrTWJVTFc3dU5GYi8xZ2ZsTFhKZXozbjVJN0lSVkhkZHhDWER4akZEM2Zh?=
+ =?utf-8?B?NkxBVTVVSEswZUVQYkg0Q1M2TitQem4waVZSVWlad3JrY2l4YXVJQ1dQTk4r?=
+ =?utf-8?B?UVVxckVaUXJHSytseFB0WWxNaXA3NHpnNmlFTEhXQnByM0JGWEZPUGZyTlNw?=
+ =?utf-8?B?c0dZUC85V1VWRnZLR0t4eTZVQnkvZnlpanB2czB0Ni9WWldGWE9Kcm16TnZS?=
+ =?utf-8?B?S0lZWXBmaTYzZkNFc043RTE3SXBNN0gxNUdCUnFsdEF6THpIb2pOaWpCa2ti?=
+ =?utf-8?B?MGRucDJvN2RDVmVzTGQ3NStZMHJva2NPQU5WN2k3OVQyVWM3Z0p4dSttaHhO?=
+ =?utf-8?B?ZkJsWktvRlZFUFJTQWtyckNjWWRoS2FPbDE4bWdNQkRzcy80Sng0c0w5eHFS?=
+ =?utf-8?B?STg2bE1xNmRRcFJFSm5KT0l2d1d6dGxJcGwwUEVISU43bytYSjlpUm8zbXpi?=
+ =?utf-8?Q?9w/Zqh5VePJaoBAZ6TJ7cWSUa?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4bba1deb-5a24-400e-8beb-08dd7710d692
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 02:47:16.4475 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zcRsOvLByJJvLpgpp1r8izyIIdGVAdbrKGZHVB/JyPL2yQ8P47CCJmu1+0yvjZ7xf+hyeeU8t5lmMGrYI7QPaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7707
+Received-SPF: permerror client-ip=40.107.220.89;
+ envelope-from=Alexey.Kardashevskiy@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.845,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,140 +186,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since memory region iomem supports memory access size with 1/2/4/8,
-it can be used for memory region iomem8 and iomem32_high. Now remove
-memory region iomem8 and iomem32_high, merge them into iomem together.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- hw/intc/loongarch_pch_pic.c            | 66 +-------------------------
- hw/loongarch/virt.c                    |  6 ---
- include/hw/intc/loongarch_pic_common.h |  2 -
- 3 files changed, 1 insertion(+), 73 deletions(-)
+On 7/4/25 17:49, Chenyi Qiang wrote:
+> Rename the helper to memory_region_section_intersect_range() to make it
+> more generic. Meanwhile, define the @end as Int128 and replace the
+> related operations with Int128_* format since the helper is exported as
+> a wider API.
+> 
+> Suggested-by: Alexey Kardashevskiy <aik@amd.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 
-diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-index 903dd4abd7..be248dda48 100644
---- a/hw/intc/loongarch_pch_pic.c
-+++ b/hw/intc/loongarch_pch_pic.c
-@@ -230,34 +230,6 @@ static void loongarch_pch_pic_write(void *opaque, hwaddr addr,
-     }
- }
- 
--static uint64_t loongarch_pch_pic_high_readw(void *opaque, hwaddr addr,
--                                        unsigned size)
--{
--    addr += PCH_PIC_INT_STATUS;
--    return loongarch_pch_pic_read(opaque, addr, size);
--}
--
--static void loongarch_pch_pic_high_writew(void *opaque, hwaddr addr,
--                                     uint64_t value, unsigned size)
--{
--    addr += PCH_PIC_INT_STATUS;
--    loongarch_pch_pic_write(opaque, addr, value, size);
--}
--
--static uint64_t loongarch_pch_pic_readb(void *opaque, hwaddr addr,
--                                        unsigned size)
--{
--    addr += PCH_PIC_ROUTE_ENTRY;
--    return loongarch_pch_pic_read(opaque, addr, size);
--}
--
--static void loongarch_pch_pic_writeb(void *opaque, hwaddr addr,
--                                     uint64_t data, unsigned size)
--{
--    addr += PCH_PIC_ROUTE_ENTRY;
--    loongarch_pch_pic_write(opaque, addr, data, size);
--}
--
- static const MemoryRegionOps loongarch_pch_pic_ops = {
-     .read = loongarch_pch_pic_read,
-     .write = loongarch_pch_pic_write,
-@@ -279,34 +251,6 @@ static const MemoryRegionOps loongarch_pch_pic_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
--static const MemoryRegionOps loongarch_pch_pic_reg32_high_ops = {
--    .read = loongarch_pch_pic_high_readw,
--    .write = loongarch_pch_pic_high_writew,
--    .valid = {
--        .min_access_size = 4,
--        .max_access_size = 8,
--    },
--    .impl = {
--        .min_access_size = 4,
--        .max_access_size = 4,
--    },
--    .endianness = DEVICE_LITTLE_ENDIAN,
--};
--
--static const MemoryRegionOps loongarch_pch_pic_reg8_ops = {
--    .read = loongarch_pch_pic_readb,
--    .write = loongarch_pch_pic_writeb,
--    .valid = {
--        .min_access_size = 1,
--        .max_access_size = 1,
--    },
--    .impl = {
--        .min_access_size = 1,
--        .max_access_size = 1,
--    },
--    .endianness = DEVICE_LITTLE_ENDIAN,
--};
--
- static void loongarch_pch_pic_reset(DeviceState *d)
- {
-     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(d);
-@@ -358,16 +302,8 @@ static void loongarch_pic_realize(DeviceState *dev, Error **errp)
-     qdev_init_gpio_in(dev, pch_pic_irq_handler, s->irq_num);
-     memory_region_init_io(&s->iomem, OBJECT(dev),
-                           &loongarch_pch_pic_ops,
--                          s, TYPE_LOONGARCH_PIC, 0x100);
--    memory_region_init_io(&s->iomem8, OBJECT(dev), &loongarch_pch_pic_reg8_ops,
--                          s, PCH_PIC_NAME(.reg8), 0x2a0);
--    memory_region_init_io(&s->iomem32_high, OBJECT(dev),
--                          &loongarch_pch_pic_reg32_high_ops,
--                          s, PCH_PIC_NAME(.reg32_part2), 0xc60);
-+                          s, TYPE_LOONGARCH_PIC, VIRT_PCH_REG_SIZE);
-     sysbus_init_mmio(sbd, &s->iomem);
--    sysbus_init_mmio(sbd, &s->iomem8);
--    sysbus_init_mmio(sbd, &s->iomem32_high);
--
- }
- 
- static void loongarch_pic_class_init(ObjectClass *klass, void *data)
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 1f1cca667e..8988d557bc 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -428,12 +428,6 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-     sysbus_realize_and_unref(d, &error_fatal);
-     memory_region_add_subregion(get_system_memory(), VIRT_IOAPIC_REG_BASE,
-                             sysbus_mmio_get_region(d, 0));
--    memory_region_add_subregion(get_system_memory(),
--                            VIRT_IOAPIC_REG_BASE + PCH_PIC_ROUTE_ENTRY,
--                            sysbus_mmio_get_region(d, 1));
--    memory_region_add_subregion(get_system_memory(),
--                            VIRT_IOAPIC_REG_BASE + PCH_PIC_INT_STATUS,
--                            sysbus_mmio_get_region(d, 2));
- 
-     /* Connect pch_pic irqs to extioi */
-     for (i = 0; i < num; i++) {
-diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
-index ab8ffff780..892c1828b1 100644
---- a/include/hw/intc/loongarch_pic_common.h
-+++ b/include/hw/intc/loongarch_pic_common.h
-@@ -66,8 +66,6 @@ struct LoongArchPICCommonState {
-     uint8_t htmsi_vector[64]; /* 0x200 - 0x238 */
- 
-     MemoryRegion iomem;
--    MemoryRegion iomem32_high;
--    MemoryRegion iomem8;
-     unsigned int irq_num;
- };
- 
+./scripts/checkpatch.pl complains "WARNING: line over 80 characters"
+
+with that fixed,
+
+Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
+
+> ---
+> Changes in v4:
+>      - No change.
+> 
+> Changes in v3:
+>      - No change
+> 
+> Changes in v2:
+>      - Make memory_region_section_intersect_range() an inline function.
+>      - Add Reviewed-by from David
+>      - Define the @end as Int128 and use the related Int128_* ops as a wilder
+>        API (Alexey)
+> ---
+>   hw/virtio/virtio-mem.c | 32 +++++---------------------------
+>   include/exec/memory.h  | 27 +++++++++++++++++++++++++++
+>   2 files changed, 32 insertions(+), 27 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+> index b1a003736b..21f16e4912 100644
+> --- a/hw/virtio/virtio-mem.c
+> +++ b/hw/virtio/virtio-mem.c
+> @@ -244,28 +244,6 @@ static int virtio_mem_for_each_plugged_range(VirtIOMEM *vmem, void *arg,
+>       return ret;
+>   }
+>   
+> -/*
+> - * Adjust the memory section to cover the intersection with the given range.
+> - *
+> - * Returns false if the intersection is empty, otherwise returns true.
+> - */
+> -static bool virtio_mem_intersect_memory_section(MemoryRegionSection *s,
+> -                                                uint64_t offset, uint64_t size)
+> -{
+> -    uint64_t start = MAX(s->offset_within_region, offset);
+> -    uint64_t end = MIN(s->offset_within_region + int128_get64(s->size),
+> -                       offset + size);
+> -
+> -    if (end <= start) {
+> -        return false;
+> -    }
+> -
+> -    s->offset_within_address_space += start - s->offset_within_region;
+> -    s->offset_within_region = start;
+> -    s->size = int128_make64(end - start);
+> -    return true;
+> -}
+> -
+>   typedef int (*virtio_mem_section_cb)(MemoryRegionSection *s, void *arg);
+>   
+>   static int virtio_mem_for_each_plugged_section(const VirtIOMEM *vmem,
+> @@ -287,7 +265,7 @@ static int virtio_mem_for_each_plugged_section(const VirtIOMEM *vmem,
+>                                         first_bit + 1) - 1;
+>           size = (last_bit - first_bit + 1) * vmem->block_size;
+>   
+> -        if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
+> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+>               break;
+>           }
+>           ret = cb(&tmp, arg);
+> @@ -319,7 +297,7 @@ static int virtio_mem_for_each_unplugged_section(const VirtIOMEM *vmem,
+>                                    first_bit + 1) - 1;
+>           size = (last_bit - first_bit + 1) * vmem->block_size;
+>   
+> -        if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
+> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+>               break;
+>           }
+>           ret = cb(&tmp, arg);
+> @@ -355,7 +333,7 @@ static void virtio_mem_notify_unplug(VirtIOMEM *vmem, uint64_t offset,
+>       QLIST_FOREACH(rdl, &vmem->rdl_list, next) {
+>           MemoryRegionSection tmp = *rdl->section;
+>   
+> -        if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
+> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+>               continue;
+>           }
+>           rdl->notify_discard(rdl, &tmp);
+> @@ -371,7 +349,7 @@ static int virtio_mem_notify_plug(VirtIOMEM *vmem, uint64_t offset,
+>       QLIST_FOREACH(rdl, &vmem->rdl_list, next) {
+>           MemoryRegionSection tmp = *rdl->section;
+>   
+> -        if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
+> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+>               continue;
+>           }
+>           ret = rdl->notify_populate(rdl, &tmp);
+> @@ -388,7 +366,7 @@ static int virtio_mem_notify_plug(VirtIOMEM *vmem, uint64_t offset,
+>               if (rdl2 == rdl) {
+>                   break;
+>               }
+> -            if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
+> +            if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+>                   continue;
+>               }
+>               rdl2->notify_discard(rdl2, &tmp);
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 3ee1901b52..3bebc43d59 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -1202,6 +1202,33 @@ MemoryRegionSection *memory_region_section_new_copy(MemoryRegionSection *s);
+>    */
+>   void memory_region_section_free_copy(MemoryRegionSection *s);
+>   
+> +/**
+> + * memory_region_section_intersect_range: Adjust the memory section to cover
+> + * the intersection with the given range.
+> + *
+> + * @s: the #MemoryRegionSection to be adjusted
+> + * @offset: the offset of the given range in the memory region
+> + * @size: the size of the given range
+> + *
+> + * Returns false if the intersection is empty, otherwise returns true.
+> + */
+> +static inline bool memory_region_section_intersect_range(MemoryRegionSection *s,
+> +                                                         uint64_t offset, uint64_t size)
+> +{
+> +    uint64_t start = MAX(s->offset_within_region, offset);
+> +    Int128 end = int128_min(int128_add(int128_make64(s->offset_within_region), s->size),
+> +                            int128_add(int128_make64(offset), int128_make64(size)));
+> +
+> +    if (int128_le(end, int128_make64(start))) {
+> +        return false;
+> +    }
+> +
+> +    s->offset_within_address_space += start - s->offset_within_region;
+> +    s->offset_within_region = start;
+> +    s->size = int128_sub(end, int128_make64(start));
+> +    return true;
+> +}
+> +
+>   /**
+>    * memory_region_init: Initialize a memory region
+>    *
+
 -- 
-2.39.3
+Alexey
 
 
