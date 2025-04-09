@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D91BA8219F
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 12:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B26A821A1
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 12:03:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2SEy-0006by-F5; Wed, 09 Apr 2025 06:01:04 -0400
+	id 1u2SF2-0006oQ-D2; Wed, 09 Apr 2025 06:01:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u2SEt-0006Tk-IF; Wed, 09 Apr 2025 06:01:00 -0400
+ id 1u2SEw-0006Xm-8k; Wed, 09 Apr 2025 06:01:02 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u2SEr-0006jO-VC; Wed, 09 Apr 2025 06:00:59 -0400
+ id 1u2SEu-0006jO-GD; Wed, 09 Apr 2025 06:01:01 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 9 Apr
@@ -30,9 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <nabihestefan@google.com>
-Subject: [PATCH v1 3/9] hw/arm/aspeed_ast27x0 Introduce vbootrom memory region
-Date: Wed, 9 Apr 2025 18:00:31 +0800
-Message-ID: <20250409100039.2391847-4-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 4/9] hw/arm/aspeed: Enable vbootrom support by default on
+ AST2700 EVB machines
+Date: Wed, 9 Apr 2025 18:00:32 +0800
+Message-ID: <20250409100039.2391847-5-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250409100039.2391847-1-jamin_lin@aspeedtech.com>
 References: <20250409100039.2391847-1-jamin_lin@aspeedtech.com>
@@ -64,60 +65,50 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new vbootrom memory region. The region is mapped at address
-"0x00000000" and has a size of 128KB, identical to the SRAM region size.
-This memory region is intended for loading a vbootrom image file as part of the
-boot process.
+Introduce a new "vbootrom" field in the AspeedMachineClass to indicate whether
+a machine supports the virtual boot ROM region.
 
-The vbootrom region is initialized as ROM and registered in the SoC's address
-space using the ASPEED_DEV_VBOOTROM index.
+Set this field to true by default for the AST2700-A0 and AST2700-A1 EVB
+machines.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- include/hw/arm/aspeed_soc.h |  1 +
- hw/arm/aspeed_ast27x0.c     | 10 ++++++++++
- 2 files changed, 11 insertions(+)
+ include/hw/arm/aspeed.h | 1 +
+ hw/arm/aspeed.c         | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index 432f6178ac..9af8cfbc3e 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -59,6 +59,7 @@ struct AspeedSoCState {
-     MemoryRegion sram;
-     MemoryRegion spi_boot_container;
-     MemoryRegion spi_boot;
-+    MemoryRegion vbootrom;
-     AddressSpace dram_as;
-     AspeedRtcState rtc;
-     AspeedTimerCtrlState timerctrl;
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index c7188ae5f1..0982e63639 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -24,6 +24,7 @@
- #include "qemu/log.h"
+diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
+index 9cae45a1c9..973277bea6 100644
+--- a/include/hw/arm/aspeed.h
++++ b/include/hw/arm/aspeed.h
+@@ -40,6 +40,7 @@ struct AspeedMachineClass {
+     void (*i2c_init)(AspeedMachineState *bmc);
+     uint32_t uart_default;
+     bool sdhci_wp_inverted;
++    bool vbootrom;
+ };
  
- static const hwaddr aspeed_soc_ast2700_memmap[] = {
-+    [ASPEED_DEV_VBOOTROM]  =  0x00000000,
-     [ASPEED_DEV_SRAM]      =  0x10000000,
-     [ASPEED_DEV_HACE]      =  0x12070000,
-     [ASPEED_DEV_EMMC]      =  0x12090000,
-@@ -657,6 +658,15 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(s->memory,
-                                 sc->memmap[ASPEED_DEV_SRAM], &s->sram);
  
-+    /* VBOOTROM */
-+    name = g_strdup_printf("aspeed.vbootrom.%d", CPU(&a->cpu[0])->cpu_index);
-+    if (!memory_region_init_rom(&s->vbootrom, OBJECT(s), name,
-+                                sc->vbootrom_size, errp)) {
-+        return;
-+    }
-+    memory_region_add_subregion(s->memory,
-+                                sc->memmap[ASPEED_DEV_VBOOTROM], &s->vbootrom);
-+
-     /* SCU */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->scu), errp)) {
-         return;
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 82f42582fa..e852bbc4cb 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -1689,6 +1689,7 @@ static void aspeed_machine_ast2700a0_evb_class_init(ObjectClass *oc, void *data)
+     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
+     amc->uart_default = ASPEED_DEV_UART12;
+     amc->i2c_init  = ast2700_evb_i2c_init;
++    amc->vbootrom = true;
+     mc->auto_create_sdcard = true;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
+@@ -1709,6 +1710,7 @@ static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc, void *data)
+     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
+     amc->uart_default = ASPEED_DEV_UART12;
+     amc->i2c_init  = ast2700_evb_i2c_init;
++    amc->vbootrom = true;
+     mc->auto_create_sdcard = true;
+     mc->default_ram_size = 1 * GiB;
+     aspeed_machine_class_init_cpus_defaults(mc);
 -- 
 2.43.0
 
