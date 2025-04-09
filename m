@@ -2,91 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2608A8261B
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 15:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E54A8265C
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 15:36:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2VLY-0003r4-4L; Wed, 09 Apr 2025 09:20:06 -0400
+	id 1u2VaQ-00012F-Sr; Wed, 09 Apr 2025 09:35:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1u2VLM-0003pi-0E
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 09:19:52 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1u2VLG-0001OM-FC
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 09:19:49 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-39ac56756f6so5678112f8f.2
- for <qemu-devel@nongnu.org>; Wed, 09 Apr 2025 06:19:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744204784; x=1744809584; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LPim0OCZ4SdNm+PdrMyC88tt/xq9iIkHytGr1uhNXmY=;
- b=HH7BmVS9c+xGd0Ju8AlYwu1FzGs0/HQ8/yl8Qw7ArbRj7AYyepWVi47RuoKKXduws5
- Ny9fl2CkaU0CrS1EebDT3vpDbvyCKxplm5n0uloyPii4SgiQZU+8bWCSgybURMwXdiVW
- Wh+B6JBgORby+aCHlRP56iFAWmECOmLNUr7h3mJNXKZB6UF4ZfsRH9IUg3VUSLdaIddo
- z3imM1EOPw1q1T+TQB4KX6yplhG0Mzsyydq7ZJj+2qF4r0GKO+G5YG6Hnagy374cmW5X
- RDgYcwl0+DMLVZ/Y0S44j53Oh4H0KKvH41aiy8i+Fzv33sV+tgts7OqkpAU/tyGf/4K5
- yc+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744204784; x=1744809584;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LPim0OCZ4SdNm+PdrMyC88tt/xq9iIkHytGr1uhNXmY=;
- b=QAF4/74bQQpIXxXG6z4ufY2uLsi/F1g5z1MHLYNOPEWQpzNhBiQbC+ZewI80RmRagJ
- Mizp1nnVXZjYcPiNfwP8C7aXV9gfYAmaXnGmXZW9xiyo49q6PhsnLu/o1A1ol0t+pjmW
- gzJz7cxHSsueBg5Oc5lib+5B1jtnFXtgQ7njlYjljf5Jk0xjfDvdqLv9UHb32TsmBZHC
- TDlUl0kThWSJOb8um2OLANYF8f5gcUVijOomgBpZBfCJ1CMfEdHRy9Zgc78/9M4ax8Yw
- wVIfWzxjey0LvAc+TvGneld/fC4PIzPd6QnZNz7ZYELxybpIIiT+fshnfiSFHXkC2csT
- TtJQ==
-X-Gm-Message-State: AOJu0YylxKtkBLK9s/s/kIu59Tgg9fcvLs42lxbtEaX7PGiOfdcZWRSV
- oGoO+9bVS8LSibzV+ttE5HAeco/EtwD0Hox6OPVT1maKxj4NU2P5O8/6vtkqESc=
-X-Gm-Gg: ASbGncvxyLW0joEo+isvytclgudcsoQZqqJR6bj6SMiZvQBYMUpsTHn7JJVtjJKlUdA
- sx8qs9jK0OmL1mRuf5ci5Bvaqwb0WJp6NmfLiEAc2SC+kxGhA+0U8Eo64P5TVl6HmOqzTOOVYn3
- FmX4K4rmfTRSISjC6UBvW4HUx//zJZRC3ydnb4cn7bFcLofz3JUSIT6LRS+FNUFr/YishT5GIPq
- 4x/SR9iUVRn4etkuwKo50Zk/fYDvz2tLsLZ9wyqTLdjMnXDw8oAJq0KmKSdsrGO0NoECGX2/HuJ
- M5+4WzWreiCZq2MvSn2c7LazO+TVTuqqXfjblII55Qs=
-X-Google-Smtp-Source: AGHT+IEARGnNAxxnnuzeewKTYHrS044Q6VjpWNYmCyPnR8TT45LX9p/qiLKUx1gyPPRLxBupx+Nxwg==
-X-Received: by 2002:a05:6000:2913:b0:399:6dd9:9f40 with SMTP id
- ffacd0b85a97d-39d88524404mr2322897f8f.9.1744204784436; 
- Wed, 09 Apr 2025 06:19:44 -0700 (PDT)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43f207cb692sm21103135e9.40.2025.04.09.06.19.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Apr 2025 06:19:43 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B335E5FA4B;
- Wed,  9 Apr 2025 14:19:42 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PULL 3/3] tests/tcg/plugins: add plugin to test reset and uninstall
-Date: Wed,  9 Apr 2025 14:19:42 +0100
-Message-Id: <20250409131942.1706923-4-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250409131942.1706923-1-alex.bennee@linaro.org>
-References: <20250409131942.1706923-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u2Va8-0000zi-7U
+ for qemu-devel@nongnu.org; Wed, 09 Apr 2025 09:35:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u2Va4-0003ar-No
+ for qemu-devel@nongnu.org; Wed, 09 Apr 2025 09:35:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744205701;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zbuGGWMLOlOVvAsuaE+OglBNpJSXgLU8wnEqaqbkVGw=;
+ b=LWWPPMnAZpO3Ym3qGPUc1Wc8y73dKR7Zf1Rv8pMVqNWn01VURG+BcsHa1kJpsks/z4bTJI
+ n/Yv/4yxiwNA/Krx6m8Xp/3XIMMCZlTXpaHPUc8FWlranY5BwjFdUtqpzyx30ma6GSdin5
+ F38pN+BW1CbnN1UZLOSYJgfMAoII1/U=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-203-y0cZlRNBNTGJQLxarQImTw-1; Wed,
+ 09 Apr 2025 09:34:57 -0400
+X-MC-Unique: y0cZlRNBNTGJQLxarQImTw-1
+X-Mimecast-MFC-AGG-ID: y0cZlRNBNTGJQLxarQImTw_1744205696
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 51A0A195608B; Wed,  9 Apr 2025 13:34:56 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.7])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C4EA619560AD; Wed,  9 Apr 2025 13:34:55 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 5449721E675E; Wed, 09 Apr 2025 15:34:53 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Cleber Rosa
+ <crosa@redhat.com>,  Eric Blake <eblake@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,  Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>,  devel@lists.libvirt.org
+Subject: Re: [PATCH V1 0/6] fast qom tree get
+In-Reply-To: <86bb6d0f-63a1-4643-b58a-1186a73e3b17@oracle.com> (Steven
+ Sistare's message of "Wed, 9 Apr 2025 08:42:11 -0400")
+References: <1741036202-265696-1-git-send-email-steven.sistare@oracle.com>
+ <87friheqcp.fsf@pond.sub.org>
+ <86bb6d0f-63a1-4643-b58a-1186a73e3b17@oracle.com>
+Date: Wed, 09 Apr 2025 15:34:53 +0200
+Message-ID: <87mscp8nlu.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.505,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,107 +88,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Steven Sistare <steven.sistare@oracle.com> writes:
 
-We perform a plugin reset, uninstall, and make sure we went through
-those steps.
+> On 4/9/2025 3:39 AM, Markus Armbruster wrote:
+>> Hi Steve, I apologize for the slow response.
+>> 
+>> Steve Sistare <steven.sistare@oracle.com> writes:
+>> 
+>>> Using qom-list and qom-get to get all the nodes and property values in a
+>>> QOM tree can take multiple seconds because it requires 1000's of individual
+>>> QOM requests.  Some managers fetch the entire tree or a large subset
+>>> of it when starting a new VM, and this cost is a substantial fraction of
+>>> start up time.
+>> 
+>> "Some managers"... could you name one?
+>
+> My personal experience is with Oracle's OCI, but likely others could benefit.
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20250404032027.430575-3-pierrick.bouvier@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Peter Krempa tells us libvirt would benefit.
 
-diff --git a/tests/tcg/plugins/reset.c b/tests/tcg/plugins/reset.c
-new file mode 100644
-index 0000000000..1be8be2a4b
---- /dev/null
-+++ b/tests/tcg/plugins/reset.c
-@@ -0,0 +1,73 @@
-+/*
-+ * Copyright (c) 2025 Linaro Ltd
-+ *
-+ * Test the reset/uninstall cycle of a plugin.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <glib.h>
-+
-+#include <qemu-plugin.h>
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
-+static qemu_plugin_id_t plugin_id;
-+static bool was_reset;
-+static bool was_uninstalled;
-+
-+static void after_uninstall(qemu_plugin_id_t id)
-+{
-+    g_assert(was_reset && !was_uninstalled);
-+    qemu_plugin_outs("uninstall done\n");
-+    was_uninstalled = true;
-+}
-+
-+static void tb_exec_after_reset(unsigned int vcpu_index, void *userdata)
-+{
-+    g_assert(was_reset && !was_uninstalled);
-+    qemu_plugin_uninstall(plugin_id, after_uninstall);
-+}
-+
-+static void tb_trans_after_reset(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-+{
-+    g_assert(was_reset && !was_uninstalled);
-+    qemu_plugin_register_vcpu_tb_exec_cb(tb, tb_exec_after_reset,
-+                                         QEMU_PLUGIN_CB_NO_REGS, NULL);
-+}
-+
-+static void after_reset(qemu_plugin_id_t id)
-+{
-+    g_assert(!was_reset && !was_uninstalled);
-+    qemu_plugin_outs("reset done\n");
-+    was_reset = true;
-+    qemu_plugin_register_vcpu_tb_trans_cb(id, tb_trans_after_reset);
-+}
-+
-+static void tb_exec_before_reset(unsigned int vcpu_index, void *userdata)
-+{
-+    g_assert(!was_reset && !was_uninstalled);
-+    qemu_plugin_reset(plugin_id, after_reset);
-+}
-+
-+static void tb_trans_before_reset(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-+{
-+    g_assert(!was_reset && !was_uninstalled);
-+    qemu_plugin_register_vcpu_tb_exec_cb(tb, tb_exec_before_reset,
-+                                         QEMU_PLUGIN_CB_NO_REGS, NULL);
-+}
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-+                                           const qemu_info_t *info,
-+                                           int argc, char **argv)
-+{
-+    plugin_id = id;
-+    qemu_plugin_register_vcpu_tb_trans_cb(id, tb_trans_before_reset);
-+    return 0;
-+}
-+
-+/* Since we uninstall the plugin, we can't use qemu_plugin_register_atexit_cb,
-+ * so we use destructor attribute instead. */
-+static void __attribute__((destructor)) on_plugin_exit(void)
-+{
-+    g_assert(was_reset && was_uninstalled);
-+    qemu_plugin_outs("plugin exit\n");
-+}
-diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
-index c8cb0626a6..41f02f2c7f 100644
---- a/tests/tcg/plugins/meson.build
-+++ b/tests/tcg/plugins/meson.build
-@@ -1,6 +1,6 @@
- t = []
- if get_option('plugins')
--  foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'syscall']
-+  foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall']
-     if host_os == 'windows'
-       t += shared_module(i, files(i + '.c') + '../../../contrib/plugins/win32_linker.c',
-                         include_directories: '../../../include/qemu',
--- 
-2.39.5
+>>> To reduce this cost, consider QAPI calls that fetch more information in
+>>> each call:
+>>>    * qom-list-get: given a path, return a list of properties and values.
+>>>    * qom-list-getv: given a list of paths, return a list of properties and
+>>>      values for each path.
+>>>    * qom-tree-get: given a path, return all descendant nodes rooted at that
+>>>      path, with properties and values for each.
+>> 
+>> Libvirt developers, would you be interested in any of these?
+>> 
+>>> In all cases, a returned property is represented by ObjectPropertyValue,
+>>> with fields name, type, value, and error.  If an error occurs when reading
+>>> a value, the value field is omitted, and the error message is returned in the
+>>> the error field.  Thus an error for one property will not cause a bulk fetch
+>>> operation to fail.
+>> 
+>> Returning errors this way is highly unusual.  Observation; I'm not
+>> rejecting this out of hand.  Can you elaborate a bit on why it's useful?
+>
+> It is considered an error to read some properties if they are not valid for
+> the configuration.  And some properties are write-only and return an error
+> if they are read.  Examples:
+>
+>    legacy-i8042: <EXCEPTION: Property 'vmmouse.legacy-i8042' is not readable> (str)
+>    legacy-memory: <EXCEPTION: Property 'qemu64-x86_64-cpu.legacy-memory' is not readable> (str)
+>    crash-information: <EXCEPTION: No crash occurred> (GuestPanicInformation)
+>
+> With conventional error handling, if any of these poison pills falls in the
+> scope of a bulk get operation, the entire operation fails.
+
+I suspect many of these poison pills are design mistakes.
+
+If a property is not valid for the configuration, why does it exist?
+QOM is by design dynamic.  I wish it wasn't, but as long as it is
+dynamic, I can't see why we should create properties we know to be
+unusable.
+
+Why is reading crash-information an error when no crash occured?  This
+is the *normal* case.  Errors are for the abnormal.
+
+Anyway, asking you to fix design mistakes all over the place wouldn't be
+fair.  So I'm asking you something else instead: do you actually need
+the error information?
+
+[...]
 
 
