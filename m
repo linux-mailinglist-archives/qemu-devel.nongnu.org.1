@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A01A81B55
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 04:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C76A4A81B50
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Apr 2025 04:52:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2LXl-0000ue-F3; Tue, 08 Apr 2025 22:52:01 -0400
+	id 1u2LXo-0000vu-S5; Tue, 08 Apr 2025 22:52:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1u2LXj-0000tn-Ml
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:51:59 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1u2LXn-0000vA-0T
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:52:03 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1u2LXi-0001AS-9G
- for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:51:59 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-224191d92e4so59533755ad.3
- for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 19:51:57 -0700 (PDT)
+ id 1u2LXl-0001An-6x
+ for qemu-devel@nongnu.org; Tue, 08 Apr 2025 22:52:02 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-22435603572so61039815ad.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Apr 2025 19:52:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1744167116; x=1744771916; darn=nongnu.org;
+ d=sifive.com; s=google; t=1744167119; x=1744771919; darn=nongnu.org;
  h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
  :cc:subject:date:message-id:reply-to;
- bh=RnrAzFeyhhVN5kCbVsK0iZFX3OvBg6SXh0USMwim+O0=;
- b=d9N1b0AgY+5F1dC8PCFIB+G/fLe9Bmh0NWGzbCRipHjbgy520vrUKmOetjNNN9Q7le
- OSO+cLhBVaEt3F3R546STP8e/HMuiiuU89DEYb+MHI7EjTWv7Sm2ZbxroTr3TUfPpHUX
- 1Yne+jCKk3cDNzc3kj7onfDdU/0vgb1wpjvC4yuCd67BBkmh1GyzJ1ROtHH0WdyRy7y5
- ikxLvlgtNxRTM4fo12+8h7dLm2Rjks09aKAkABeBZ/e6JnEpalfkQV4VzCvAePmJ2htK
- ng5H/rHy8Hadw0xicKamxxq2ozIegGdg9wzEw7rBanbB/l/DE8FIUkrvywYzJHs/knLC
- ap0Q==
+ bh=O1yC7t4bFmshXR5zuXWZMZ4iZ+UYQDfScvC8lHg5VFY=;
+ b=WpEYtVkuXEEQw4XJkZwQ7I0+TpvRnUsS10/XUP4TnCZVqlmKteim/3Y/7V1xrvGqu6
+ 4us1shdhyEFxFUVv4JJC7Qd7c4J3PT4vl/Sr+fyKg6KYzgAm7l2OGV+dj4AATVWZBCiq
+ JGqW7nzpQ7TB0SaUqiNvcjs+4sQMdeB2UxOsmED4+e27VgfE7HKSuIKY9lZM7k7jKzfg
+ gol+VwT03rC4a26br0BA7z6o2iVzYNinBE5a/sh3bsbsFK3toRmpsVzBPS65/X4D2NhE
+ WICJI3J4DcvupJMM6ADUhk7j3T5FLvSHULutD1rE9Ie6YE5WTmXu0r2nozjMXVi8DgyO
+ wHpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744167116; x=1744771916;
+ d=1e100.net; s=20230601; t=1744167119; x=1744771919;
  h=references:in-reply-to:message-id:date:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RnrAzFeyhhVN5kCbVsK0iZFX3OvBg6SXh0USMwim+O0=;
- b=IH6g0HiY32j0mnAboBo890mGFBAlSNV6f6PSi20N8O2f6V2AMr0Xi+x530kePgmvjF
- CmrKek86UoNEWvCUBPabGS0Y7esSbg5RYgZZMZIbyjMnddnK/1wj9YDiE5trWZ/U2HWs
- xU/PcJBrpCSSRzkT5VaZ3DojMWHiXg90JOB1pubn8ACn9fmrpBXUrCY5L+TrU5vUhl41
- sONCH2p5gFbDtOJpvbX+bANHT7l0Da2x2fu909BKcofsPs2hVnJuj6KJntQzmn2DMO17
- iFZHo5K+dlXAdcHLYQT9fmoSJhYxaRKvOqAeojako2hpQn1z3ydpO2u7/8C0JmbhkMk0
- 2pYA==
-X-Gm-Message-State: AOJu0Yy50GL4j2EcVN/UouU1EKjIYzmw7Ftrr82y/tmUD4Wm0O46cud/
- gslsWfRbfq+Kd+Ipw1XLCALK3Uf9Gtun5EJEKHGTcsm6RZE0Q140g+F8a0dmcXD91QklTMJVsbw
- 8JY/ggVhSwLxWraerYyxgiGxJjRMfJV0iOqw+iH1Y1+N0xHRYgpZtbj3l3UYedpUnTZaK5dBfCb
- I4mhsyGkiA2sih6BV9y0CKcqG++mSs//+pnA==
-X-Gm-Gg: ASbGncvrAMifqub+arrKrxWTD33ysHlCrgUcCI3h629ePvw51ScLUPjjq5KVsGEtKzz
- ZSQ31LHqSYQRWSZt/q67SS7slW4/ZxIVR4lB6DztV0IzFoGKVgtoo4epdOuYsTiBinHaGboFJzY
- 1LZbgpwTdqQjUNVuKyfc6GhuS2IE8x6AxfkoA4znoiL/m4OtBp05Xt5v09XiK9BWoA6k4xvwCsP
- Wyj7sJxDfl6zkAdWcVKYkFcI0bvM4bahXwv07muQslBTtUVFubSXnEk7UrVKMEfy77mf5lo8id2
- hIOuZ72lIZNBM3l0WYLE73ySidzepKRpTgc3DykyCLUNU3PIE3vie2aiMITipQAY0/k=
-X-Google-Smtp-Source: AGHT+IGGslaLVHdpyphTNDAohz50hEJQ7oHY0FFaQInvSilIa5TeeVkxwn7/ot1LzImsN4zpjqYVvg==
-X-Received: by 2002:a17:903:3b4e:b0:229:1717:882a with SMTP id
- d9443c01a7336-22ac3f321e2mr12042385ad.4.1744167115812; 
- Tue, 08 Apr 2025 19:51:55 -0700 (PDT)
+ bh=O1yC7t4bFmshXR5zuXWZMZ4iZ+UYQDfScvC8lHg5VFY=;
+ b=egm65Q+FSCSCVSEfT9FZrOX8cQYeo0WyYZJFgBwj5UFHEuidz2Z5Xy+/p8PrGGaqqq
+ tc+hIeage6IkDBvOdmbz9GXC+L9TTFJ/MWdOm371xNVnsgZoO3OgHmgh1sXcxhrK8JXt
+ 3sUGS0kI+eecq0PNk2UNwNZp+qPuV3ac8XaSR6fwbicqSZo3LluOE5aWb3l1eG3eR05Y
+ 5tpqep4phVQyA1LpUIHo4ydAYygGLopbYjwINSxAk2uJNUzo0ElYL8OwbFBgYyfBjRz3
+ QBYG955LnF2O7qnQvLJEUjC31sfrA2kWcW8QQzMC1MaS8vzI1pzc2KE+3aEy92RmoCKM
+ WR+A==
+X-Gm-Message-State: AOJu0Yx4FzTsssLDMB85J6LXWXJj1UKnyjSojtcgTwg3ojBWc4j2uxi0
+ U1cVLhVflmu8GYJtVxsn1JIxZIPDqjglD8ERjtrDC2lmwe+PdD3ZvsdE42QNZMGKQc+WRHrhSea
+ R2/O2sW17NO6RLzUG4bxUwuI1Jlz4DO6ErOtIkmltZspUoZg+7F87oo+Rn4FiikjYDeB1notpy2
+ rCmoPlc48CdK7CGSobe+C2SAYL+QYqAnNDrg==
+X-Gm-Gg: ASbGncvYOdivO7Gz5TogN77bqVQow2K7FFUeS5gSVlqHiXUS1cgcSbm/p+FdwbdwUXP
+ 3UoXIYbv1YLwAlxpB++R4pTKVM2J4L6M+RA1h1gkC7/Cf6iGu1w6YIMD34WbxJFedGHTtjSQN+H
+ KNwtDh7bVre+57vkEvKop59Is3BtvdJvMlzQ5GKSr4P6+6dLxBNrmm2n2mqfI1wWUvcWt+KXACO
+ GHqglvcsBuQNrkYMJqOF5DT7KcGnrFGgxicG1ZMJY7S0ydeV3b3n47goNI2Q7l44X+lZUA9ZVlx
+ rRI3O+Xj8WC+Shx3TpYFTzfAN7iUE4ZqBeq+AVoA9iv7GIDulNMdyEezwfQNVFN3uwE=
+X-Google-Smtp-Source: AGHT+IE1HPHnR4Mun/8Z2/lb5Ju5lCeHrQwUsf6KjTDAz6zsmWOoRoPxdePnqCVqe+Kn1GPDlxa9Ww==
+X-Received: by 2002:a17:903:a06:b0:224:3c9:19ae with SMTP id
+ d9443c01a7336-22ac2a1a5damr17161965ad.34.1744167118876; 
+ Tue, 08 Apr 2025 19:51:58 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7cb5463sm665725ad.195.2025.04.08.19.51.54
+ d9443c01a7336-22ac7cb5463sm665725ad.195.2025.04.08.19.51.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Apr 2025 19:51:55 -0700 (PDT)
+ Tue, 08 Apr 2025 19:51:58 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -69,14 +69,15 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH v2 3/4] target/riscv: Fix VSTIP bit in sstc extension.
-Date: Wed,  9 Apr 2025 10:51:30 +0800
-Message-Id: <20250409025131.3670-4-jim.shu@sifive.com>
+Subject: [PATCH v2 4/4] target/riscv: Enable/Disable S/VS-mode Timer when STCE
+ bit is changed
+Date: Wed,  9 Apr 2025 10:51:31 +0800
+Message-Id: <20250409025131.3670-5-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20250409025131.3670-1-jim.shu@sifive.com>
 References: <20250409025131.3670-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=jim.shu@sifive.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=jim.shu@sifive.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,35 +100,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VSTIP is only writable when both [mh]envcfg.STCE is enabled, or it will
-revert it's defined behavior as if sstc extension is not implemented.
+Updating STCE will enable/disable SSTC in S-mode or/and VS-mode, so we
+also need to update S/VS-mode Timer and S/VSTIP bits in $mip CSR.
 
 Signed-off-by: Jim Shu <jim.shu@sifive.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/csr.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ target/riscv/csr.c         | 44 ++++++++++++++++++++++++++++++++++++
+ target/riscv/time_helper.c | 46 ++++++++++++++++++++++++++++++++++++++
+ target/riscv/time_helper.h |  1 +
+ 3 files changed, 91 insertions(+)
 
 diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 7948188356..e86808fd98 100644
+index e86808fd98..548daf6a7a 100644
 --- a/target/riscv/csr.c
 +++ b/target/riscv/csr.c
-@@ -3635,7 +3635,14 @@ static RISCVException rmw_mip64(CPURISCVState *env, int csrno,
-     if (riscv_cpu_cfg(env)->ext_sstc && (env->priv == PRV_M) &&
-         get_field(env->menvcfg, MENVCFG_STCE)) {
-         /* sstc extension forbids STIP & VSTIP to be writeable in mip */
--        mask = mask & ~(MIP_STIP | MIP_VSTIP);
+@@ -3161,6 +3161,7 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
+     const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
+     uint64_t mask = MENVCFG_FIOM | MENVCFG_CBIE | MENVCFG_CBCFE |
+                     MENVCFG_CBZE | MENVCFG_CDE;
++    bool stce_changed = false;
+ 
+     if (riscv_cpu_mxl(env) == MXL_RV64) {
+         mask |= (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
+@@ -3186,10 +3187,19 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
+         if ((val & MENVCFG_DTE) == 0) {
+             env->mstatus &= ~MSTATUS_SDT;
+         }
 +
-+        /* STIP is not writable when menvcfg.STCE is enabled. */
-+        mask = mask & ~MIP_STIP;
++        if (cfg->ext_sstc &&
++            ((env->menvcfg & MENVCFG_STCE) != (val & MENVCFG_STCE))) {
++            stce_changed = true;
++        }
+     }
+     env->menvcfg = (env->menvcfg & ~mask) | (val & mask);
+     write_henvcfg(env, CSR_HENVCFG, env->henvcfg);
+ 
++    if (stce_changed) {
++        riscv_timer_stce_changed(env, true, !!(val & MENVCFG_STCE));
++    }
 +
-+        /* VSTIP is not writable when both [mh]envcfg.STCE are enabled. */
-+        if (get_field(env->henvcfg, HENVCFG_STCE)) {
-+            mask = mask & ~MIP_VSTIP;
+     return RISCV_EXCP_NONE;
+ }
+ 
+@@ -3212,6 +3222,12 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
+                     (cfg->ext_smcdeleg ? MENVCFG_CDE : 0) |
+                     (cfg->ext_ssdbltrp ? MENVCFG_DTE : 0);
+     uint64_t valh = (uint64_t)val << 32;
++    bool stce_changed = false;
++
++    if (cfg->ext_sstc &&
++        ((env->menvcfg & MENVCFG_STCE) != (valh & MENVCFG_STCE))) {
++        stce_changed = true;
++    }
+ 
+     if ((valh & MENVCFG_DTE) == 0) {
+         env->mstatus &= ~MSTATUS_SDT;
+@@ -3220,6 +3236,10 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
+     env->menvcfg = (env->menvcfg & ~mask) | (valh & mask);
+     write_henvcfgh(env, CSR_HENVCFGH, env->henvcfg >> 32);
+ 
++    if (stce_changed) {
++        riscv_timer_stce_changed(env, true, !!(valh & MENVCFG_STCE));
++    }
++
+     return RISCV_EXCP_NONE;
+ }
+ 
+@@ -3297,8 +3317,10 @@ static RISCVException read_henvcfg(CPURISCVState *env, int csrno,
+ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
+                                     target_ulong val)
+ {
++    const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
+     uint64_t mask = HENVCFG_FIOM | HENVCFG_CBIE | HENVCFG_CBCFE | HENVCFG_CBZE;
+     RISCVException ret;
++    bool stce_changed = false;
+ 
+     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
+     if (ret != RISCV_EXCP_NONE) {
+@@ -3324,6 +3346,11 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
+             get_field(val, HENVCFG_PMM) != PMM_FIELD_RESERVED) {
+             mask |= HENVCFG_PMM;
+         }
++
++        if (cfg->ext_sstc &&
++            ((env->henvcfg & HENVCFG_STCE) != (val & HENVCFG_STCE))) {
++            stce_changed = true;
 +        }
      }
  
-     if (mask) {
+     env->henvcfg = val & mask;
+@@ -3331,6 +3358,10 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
+         env->vsstatus &= ~MSTATUS_SDT;
+     }
+ 
++    if (stce_changed) {
++        riscv_timer_stce_changed(env, false, !!(val & HENVCFG_STCE));
++    }
++
+     return RISCV_EXCP_NONE;
+ }
+ 
+@@ -3352,19 +3383,32 @@ static RISCVException read_henvcfgh(CPURISCVState *env, int csrno,
+ static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
+                                      target_ulong val)
+ {
++    const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
+     uint64_t mask = env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE |
+                                     HENVCFG_ADUE | HENVCFG_DTE);
+     uint64_t valh = (uint64_t)val << 32;
+     RISCVException ret;
++    bool stce_changed = false;
+ 
+     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
+     if (ret != RISCV_EXCP_NONE) {
+         return ret;
+     }
++
++    if (cfg->ext_sstc &&
++        ((env->henvcfg & HENVCFG_STCE) != (valh & HENVCFG_STCE))) {
++        stce_changed = true;
++    }
++
+     env->henvcfg = (env->henvcfg & 0xFFFFFFFF) | (valh & mask);
+     if ((env->henvcfg & HENVCFG_DTE) == 0) {
+         env->vsstatus &= ~MSTATUS_SDT;
+     }
++
++    if (stce_changed) {
++        riscv_timer_stce_changed(env, false, !!(val & HENVCFG_STCE));
++    }
++
+     return RISCV_EXCP_NONE;
+ }
+ 
+diff --git a/target/riscv/time_helper.c b/target/riscv/time_helper.c
+index aebf0798d0..400e917354 100644
+--- a/target/riscv/time_helper.c
++++ b/target/riscv/time_helper.c
+@@ -140,6 +140,52 @@ void riscv_timer_write_timecmp(CPURISCVState *env, QEMUTimer *timer,
+     timer_mod(timer, next);
+ }
+ 
++/*
++ * When disabling xenvcfg.STCE, the S/VS Timer may be disabled at the same time.
++ * It is safe to call this function regardless of whether the timer has been
++ * deleted or not. timer_del() will do nothing if the timer has already
++ * been deleted.
++ */
++static void riscv_timer_disable_timecmp(CPURISCVState *env, QEMUTimer *timer,
++                                 uint32_t timer_irq)
++{
++    /* Disable S-mode Timer IRQ and HW-based STIP */
++    if ((timer_irq == MIP_STIP) && !get_field(env->menvcfg, MENVCFG_STCE)) {
++        riscv_cpu_update_mip(env, timer_irq, BOOL_TO_MASK(0));
++        timer_del(timer);
++        return;
++    }
++
++    /* Disable VS-mode Timer IRQ and HW-based VSTIP */
++    if ((timer_irq == MIP_VSTIP) &&
++        (!get_field(env->menvcfg, MENVCFG_STCE) ||
++         !get_field(env->henvcfg, HENVCFG_STCE))) {
++        env->vstime_irq = 0;
++        riscv_cpu_update_mip(env, 0, BOOL_TO_MASK(0));
++        timer_del(timer);
++        return;
++    }
++}
++
++/* Enable or disable S/VS-mode Timer when xenvcfg.STCE is changed */
++void riscv_timer_stce_changed(CPURISCVState *env, bool is_m_mode, bool enable)
++{
++    if (enable) {
++        riscv_timer_write_timecmp(env, env->vstimer, env->vstimecmp,
++                                  env->htimedelta, MIP_VSTIP);
++    } else {
++        riscv_timer_disable_timecmp(env, env->vstimer, MIP_VSTIP);
++    }
++
++    if (is_m_mode) {
++        if (enable) {
++            riscv_timer_write_timecmp(env, env->stimer, env->stimecmp, 0, MIP_STIP);
++        } else {
++            riscv_timer_disable_timecmp(env, env->stimer, MIP_STIP);
++        }
++    }
++}
++
+ void riscv_timer_init(RISCVCPU *cpu)
+ {
+     CPURISCVState *env;
+diff --git a/target/riscv/time_helper.h b/target/riscv/time_helper.h
+index cacd79b80c..af1f634f89 100644
+--- a/target/riscv/time_helper.h
++++ b/target/riscv/time_helper.h
+@@ -25,6 +25,7 @@
+ void riscv_timer_write_timecmp(CPURISCVState *env, QEMUTimer *timer,
+                                uint64_t timecmp, uint64_t delta,
+                                uint32_t timer_irq);
++void riscv_timer_stce_changed(CPURISCVState *env, bool is_m_mode, bool enable);
+ void riscv_timer_init(RISCVCPU *cpu);
+ 
+ #endif
 -- 
 2.17.1
 
