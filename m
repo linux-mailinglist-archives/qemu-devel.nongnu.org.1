@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78845A83AF5
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 09:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4BDA83BA6
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 09:50:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2mG4-0002a3-Os; Thu, 10 Apr 2025 03:23:35 -0400
+	id 1u2mel-00028K-4M; Thu, 10 Apr 2025 03:49:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u2mFv-0002ZA-98; Thu, 10 Apr 2025 03:23:25 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1u2mej-000282-Id
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 03:49:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u2mFr-0001d0-Ee; Thu, 10 Apr 2025 03:23:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744269799; x=1775805799;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Lh9jXEP9tgVr78Y+bjPvBpsrVvBVBSu8yVPe3X6/PBk=;
- b=nRSb0qd0mPvsnCA8UggK+s4HYDYYQqiZHFFKu2AgqgRgHa5OErudp0kh
- dPSwh8QqCcAJzjAZEsnMMCnieQhOcVkL7ACndmJPk/WpbHJQhGBrDR7sN
- Lysqx2d25eDSWh3e1Odxb/56DgVXlReueZ1Pg0v5Be7d9xtvp4MOPEJEG
- Qsuo9TFSxOaYOmsezbLCMlPJUqGt28hi7VFvu6fmhmuzzNIKZVRx5hPmU
- ZigwN8HYEdRwAxsQHegTcV+XcF7S1o03cSxSSZ5fHm1ZOim03DgidL94y
- c74j86YTvk7wyg3UJbIoIelKTCqebbc9mxwqZtBYRfKHO0zEKxYN7L57+ Q==;
-X-CSE-ConnectionGUID: NOrZ43W/SsKlMPxVOpa4XA==
-X-CSE-MsgGUID: o8wDdkHJQ6+PtL+MBLCRVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="48477565"
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="48477565"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2025 00:23:14 -0700
-X-CSE-ConnectionGUID: XUminAD6T0GYkRlVFemdzg==
-X-CSE-MsgGUID: pctWMc5OS/GsMX0hxH8+og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="128681029"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 10 Apr 2025 00:23:05 -0700
-Date: Thu, 10 Apr 2025 15:43:53 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
- babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
- groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
- peter.maydell@linaro.org, gaosong@loongson.cn,
- chenhuacai@kernel.org, philmd@linaro.org, aurelien@aurel32.net,
- jiaxun.yang@flygoat.com, arikalo@gmail.com, npiggin@gmail.com,
- danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- thuth@redhat.com, flavra@baylibre.com, ewanhai-oc@zhaoxin.com,
- ewanhai@zhaoxin.com, cobechen@zhaoxin.com, louisqi@zhaoxin.com,
- liamni@zhaoxin.com, frankzhu@zhaoxin.com, silviazhao@zhaoxin.com
-Subject: Re: [PATCH v3 08/10] target/i386/kvm: reset AMD PMU registers during
- VM reset
-Message-ID: <Z/d2ucu6Y5xlNh6S@intel.com>
-References: <20250331013307.11937-1-dongli.zhang@oracle.com>
- <20250331013307.11937-9-dongli.zhang@oracle.com>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1u2meh-0005Ui-Ml
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 03:49:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744271338;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8RHHLMcejXh0BkxISROtMPsAYzslFIfFWOjQfC3ZAXo=;
+ b=evfjaTjy6bUmkccmku5Jmwq2Rha0Eyr5EvgfCVomy9G2RPlT1zybpKiXxrHPgz8o1KpaMx
+ BYVExFiJb+J7lN2Mn8UaP13Mk7VUSYzEfQwNI58lLBOWn5uWy6IELbDLy14AlhPeO4WlWV
+ d9UYZSceG0w7ykA2/84NJGYVr7jup4A=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-98-SEhK-m6KPXO5c7VEBolHyw-1; Thu, 10 Apr 2025 03:48:55 -0400
+X-MC-Unique: SEhK-m6KPXO5c7VEBolHyw-1
+X-Mimecast-MFC-AGG-ID: SEhK-m6KPXO5c7VEBolHyw_1744271335
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43d733063cdso4609185e9.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 00:48:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744271334; x=1744876134;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8RHHLMcejXh0BkxISROtMPsAYzslFIfFWOjQfC3ZAXo=;
+ b=RKRhVlbdd1uqxgZkHlAAh1bzH4OIOqR/Qnp5kkC9vlbSHmVNyKANOrJcYxBpFpGK/n
+ qmBikWOGDkbxQtkm44xI+RLIIvwiDp9sPTR8sV0ZKyRhNayyU5JEwYeX3XRac2d4flTa
+ cFLB3sHrD0ieqeU6awNfnBn309tPjNNFvKDyNE3I092SDyFmpOScKzTVZMklnClsF6sf
+ Y56ic9bM49QVhNcLtAw8ppl+LbMWT4qr0BXeHl3PW4gp9vS11hKjagk6zCDIAYPoYJ/M
+ 6Pl8V3zJmSF66Dj4/kHTW9ywUNPHhGEkJ23osAduzVvubKXGeaCYASeUP83oTQbNlNOA
+ cEsQ==
+X-Gm-Message-State: AOJu0Yy95APKZtGd0YL2pPoowNs/jLXlJqzZ5YB67yW+JtSN4kGdsKw7
+ qLa0jwa4UOgcUTsSVaMUCmzBwZHazw45UxD/E0KfDZ/Qfj0SZarTyFp8eWPP0hxwIbkUqQmiT72
+ T0InBnRJD+qh6wbeieTY1TICckgZjBw4N9H/5HnUCXcEDDAd2o1ARVkVZlHZI
+X-Gm-Gg: ASbGncu5OyLJ30aFwyAHXiOfSSB1rYPqr6Y4sSf+Wz1uSCVVHdLAXe/BbPFXH6eXLL5
+ S45eYh5A5ScddJOq9uGApG3WFAlAfA10/DqVX2jJXRSF7li7iZ2Kka/Wkz/OmlikEjRHpAjynKb
+ /ElMPPP0YqhxwgZCTAwLmz6Pw8M2oq/zm92QhcFtsbmZ19l2UP2NwW7w0ERlkgQhRBG/tKmQWpb
+ L1s3aBNszRNJc7N4ubp4ZRdvbHRdRzlQpk8qwW8yaUL26hK0y+1NcVh254t8zk6KK+FGC8N7GW5
+ RYUWyg==
+X-Received: by 2002:a05:600c:5114:b0:43d:7bfa:2739 with SMTP id
+ 5b1f17b1804b1-43f2d952382mr15677125e9.23.1744271333974; 
+ Thu, 10 Apr 2025 00:48:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG86w9TLAcUJPw0lMLUS5O5Ur4AhRHXOWME8t3xpqllS0kIGrlkUkj5FTY9VVsg/ehTyU+Gow==
+X-Received: by 2002:a05:600c:5114:b0:43d:7bfa:2739 with SMTP id
+ 5b1f17b1804b1-43f2d952382mr15676995e9.23.1744271333598; 
+ Thu, 10 Apr 2025 00:48:53 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43f2066d109sm46166975e9.20.2025.04.10.00.48.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Apr 2025 00:48:52 -0700 (PDT)
+Date: Thu, 10 Apr 2025 03:48:50 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, devel@daynix.com, qemu-stable@nongnu.org
+Subject: Re: [PATCH] virtio: Call set_features during reset
+Message-ID: <20250410034550-mutt-send-email-mst@kernel.org>
+References: <20250410-reset-v1-1-751cd0064395@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250331013307.11937-9-dongli.zhang@oracle.com>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.505,
+In-Reply-To: <20250410-reset-v1-1-751cd0064395@daynix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.505,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,99 +102,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-...
+On Thu, Apr 10, 2025 at 04:42:06PM +0900, Akihiko Odaki wrote:
+> virtio-net expects set_features() will be called when the feature set
+> used by the guest changes to update the number of virtqueues. Call it
+> during reset as reset clears all features and the queues added for
+> VIRTIO_NET_F_MQ or VIRTIO_NET_F_RSS will need to be removed.
+> 
+> Fixes: f9d6dbf0bf6e ("virtio-net: remove virtio queues if the guest doesn't support multiqueue")
+> Buglink: https://issues.redhat.com/browse/RHEL-73842
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-> TODO:
->   - This patch adds is_host_compat_vendor(), while there are something
->     like is_host_cpu_intel() from target/i386/kvm/vmsr_energy.c. A rework
->     may help move those helpers to target/i386/cpu*.
+The issue seems specific to virtio net: rset is reset,
+it is distict from set features.
+Why not just call the necessary functionality from virtio_net_reset?
 
-vmsr_energy emulates RAPL in user space...but RAPL is not architectural
-(no CPUID), so this case doesn't need to consider "compat" vendor.
 
->  target/i386/cpu.h     |   8 ++
->  target/i386/kvm/kvm.c | 176 +++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 180 insertions(+), 4 deletions(-)
-
-...
-
-> +static bool is_host_compat_vendor(CPUX86State *env)
+> ---
+>  hw/virtio/virtio.c | 86 +++++++++++++++++++++++++++---------------------------
+>  1 file changed, 43 insertions(+), 43 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+> index 85110bce3744..033e87cdd3b9 100644
+> --- a/hw/virtio/virtio.c
+> +++ b/hw/virtio/virtio.c
+> @@ -2316,49 +2316,6 @@ void virtio_queue_enable(VirtIODevice *vdev, uint32_t queue_index)
+>      }
+>  }
+>  
+> -void virtio_reset(void *opaque)
+> -{
+> -    VirtIODevice *vdev = opaque;
+> -    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
+> -    int i;
+> -
+> -    virtio_set_status(vdev, 0);
+> -    if (current_cpu) {
+> -        /* Guest initiated reset */
+> -        vdev->device_endian = virtio_current_cpu_endian();
+> -    } else {
+> -        /* System reset */
+> -        vdev->device_endian = virtio_default_endian();
+> -    }
+> -
+> -    if (k->get_vhost) {
+> -        struct vhost_dev *hdev = k->get_vhost(vdev);
+> -        /* Only reset when vhost back-end is connected */
+> -        if (hdev && hdev->vhost_ops) {
+> -            vhost_reset_device(hdev);
+> -        }
+> -    }
+> -
+> -    if (k->reset) {
+> -        k->reset(vdev);
+> -    }
+> -
+> -    vdev->start_on_kick = false;
+> -    vdev->started = false;
+> -    vdev->broken = false;
+> -    vdev->guest_features = 0;
+> -    vdev->queue_sel = 0;
+> -    vdev->status = 0;
+> -    vdev->disabled = false;
+> -    qatomic_set(&vdev->isr, 0);
+> -    vdev->config_vector = VIRTIO_NO_VECTOR;
+> -    virtio_notify_vector(vdev, vdev->config_vector);
+> -
+> -    for(i = 0; i < VIRTIO_QUEUE_MAX; i++) {
+> -        __virtio_queue_reset(vdev, i);
+> -    }
+> -}
+> -
+>  void virtio_queue_set_addr(VirtIODevice *vdev, int n, hwaddr addr)
+>  {
+>      if (!vdev->vq[n].vring.num) {
+> @@ -3169,6 +3126,49 @@ int virtio_set_features(VirtIODevice *vdev, uint64_t val)
+>      return ret;
+>  }
+>  
+> +void virtio_reset(void *opaque)
 > +{
-> +    char host_vendor[CPUID_VENDOR_SZ + 1];
-> +    uint32_t host_cpuid_vendor1;
-> +    uint32_t host_cpuid_vendor2;
-> +    uint32_t host_cpuid_vendor3;
->
-> +    host_cpuid(0x0, 0, NULL, &host_cpuid_vendor1, &host_cpuid_vendor3,
-> +               &host_cpuid_vendor2);
+> +    VirtIODevice *vdev = opaque;
+> +    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
+> +    int i;
 > +
-> +    x86_cpu_vendor_words2str(host_vendor, host_cpuid_vendor1,
-> +                             host_cpuid_vendor2, host_cpuid_vendor3);
-
-We can use host_cpu_vendor_fms() (with a little change). If you like
-this idea, pls feel free to pick my cleanup patch into your series.
-
-> +    /*
-> +     * Intel and Zhaoxin are compatible.
-> +     */
-> +    if ((g_str_equal(host_vendor, CPUID_VENDOR_INTEL) ||
-> +         g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN1) ||
-> +         g_str_equal(host_vendor, CPUID_VENDOR_ZHAOXIN2)) &&
-> +        (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-> +        return true;
+> +    virtio_set_status(vdev, 0);
+> +    if (current_cpu) {
+> +        /* Guest initiated reset */
+> +        vdev->device_endian = virtio_current_cpu_endian();
+> +    } else {
+> +        /* System reset */
+> +        vdev->device_endian = virtio_default_endian();
 > +    }
 > +
-> +    return env->cpuid_vendor1 == host_cpuid_vendor1 &&
-> +           env->cpuid_vendor2 == host_cpuid_vendor2 &&
-> +           env->cpuid_vendor3 == host_cpuid_vendor3;
-
-Checking AMD directly makes the "compat" rule clear:
-
-    return g_str_equal(host_vendor, CPUID_VENDOR_AMD) &&
-           IS_AMD_CPU(env);
-
+> +    if (k->get_vhost) {
+> +        struct vhost_dev *hdev = k->get_vhost(vdev);
+> +        /* Only reset when vhost back-end is connected */
+> +        if (hdev && hdev->vhost_ops) {
+> +            vhost_reset_device(hdev);
+> +        }
+> +    }
+> +
+> +    if (k->reset) {
+> +        k->reset(vdev);
+> +    }
+> +
+> +    vdev->start_on_kick = false;
+> +    vdev->started = false;
+> +    vdev->broken = false;
+> +    virtio_set_features_nocheck(vdev, 0);
+> +    vdev->queue_sel = 0;
+> +    vdev->status = 0;
+> +    vdev->disabled = false;
+> +    qatomic_set(&vdev->isr, 0);
+> +    vdev->config_vector = VIRTIO_NO_VECTOR;
+> +    virtio_notify_vector(vdev, vdev->config_vector);
+> +
+> +    for (i = 0; i < VIRTIO_QUEUE_MAX; i++) {
+> +        __virtio_queue_reset(vdev, i);
+> +    }
 > +}
-
-...
-
->      if (env->mcg_cap) {
->          kvm_msr_entry_add(cpu, MSR_MCG_STATUS, 0);
->          kvm_msr_entry_add(cpu, MSR_MCG_CTL, 0);
-> @@ -4871,6 +5024,21 @@ static int kvm_get_msrs(X86CPU *cpu)
->          case MSR_P6_EVNTSEL0 ... MSR_P6_EVNTSEL0 + MAX_GP_COUNTERS - 1:
->              env->msr_gp_evtsel[index - MSR_P6_EVNTSEL0] = msrs[i].data;
->              break;
-> +        case MSR_K7_EVNTSEL0 ... MSR_K7_EVNTSEL0 + AMD64_NUM_COUNTERS - 1:
-> +            env->msr_gp_evtsel[index - MSR_K7_EVNTSEL0] = msrs[i].data;
-> +            break;
-> +        case MSR_K7_PERFCTR0 ... MSR_K7_PERFCTR0 + AMD64_NUM_COUNTERS - 1:
-> +            env->msr_gp_counters[index - MSR_K7_PERFCTR0] = msrs[i].data;
-> +            break;
-> +        case MSR_F15H_PERF_CTL0 ...
-> +             MSR_F15H_PERF_CTL0 + AMD64_NUM_COUNTERS_CORE * 2 - 1:
-> +            index = index - MSR_F15H_PERF_CTL0;
-> +            if (index & 0x1) {
-> +                env->msr_gp_counters[index] = msrs[i].data;
-> +            } else {
-> +                env->msr_gp_evtsel[index] = msrs[i].data;
-
-This msr_gp_evtsel[] array's size is 18:
-
-#define MAX_GP_COUNTERS    (MSR_IA32_PERF_STATUS - MSR_P6_EVNTSEL0)
-
-This formula is based on Intel's MSR, it's best to add a note that the
-current size also meets AMD's needs. (No need to adjust the size, as
-it will affect migration).
-
-> +            }
-> +            break;
->          case HV_X64_MSR_HYPERCALL:
->              env->msr_hv_hypercall = msrs[i].data;
->              break;
-
-Others LGTM!
-
-Thanks,
-Zhao
+> +
+>  static void virtio_device_check_notification_compatibility(VirtIODevice *vdev,
+>                                                             Error **errp)
+>  {
+> 
+> ---
+> base-commit: 825b96dbcee23d134b691fc75618b59c5f53da32
+> change-id: 20250406-reset-5ed5248ee3c1
+> 
+> Best regards,
+> -- 
+> Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
