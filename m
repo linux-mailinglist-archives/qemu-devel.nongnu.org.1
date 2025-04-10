@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C097EA83ECF
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 11:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B64F4A83E8F
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 11:26:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2oHh-0002a6-Lk; Thu, 10 Apr 2025 05:33:23 -0400
+	id 1u2o9v-0006xx-4p; Thu, 10 Apr 2025 05:25:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2oH0-0002K7-77
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 05:32:38 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u2oGx-0003dH-CK
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 05:32:37 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3914aba1ce4so416383f8f.2
- for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 02:32:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744277553; x=1744882353; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=y/3uNvEhSiUtMrMIDAyTCVGfurS1FjC7H0G6McwxFKA=;
- b=R66U7V83DfcGZQ1cZiwXurKo23DTuVfxBO3Jh1KccTXMznKzAGtyYfcM9V7TzL9BTV
- xY36Lu2B+Iy0kC0EIZd+5+k8mUTaj8Q2Z52r7TcoBMTCcAMmJW+JVGkXZOSN2E/I7rws
- vuoWtlSxO9ToIbp7D5UUZQiMMSa1S3lNtwEBUUi/TUDJIV3dYSndPH7FuXBbxlEYOSPG
- 5kQh72z+660M/gQxIUMuYVunPg7L8qCVsn2qmiIBkhr9x+pgaMPTwsbmLU2vWuENkoqs
- cPhUR3mzNbuQXxl3OeZazi4Yh3x6VQ8QKei9VOf2qTa77hgRBwXN1NL6kxEfhgHs8hrA
- RyXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744277553; x=1744882353;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y/3uNvEhSiUtMrMIDAyTCVGfurS1FjC7H0G6McwxFKA=;
- b=eKw5xXj+aZx1v+FNI2/hjj/Udio+vhE+P7prwsKmYDOaymOJmyfZU7fVSvVF5k0srq
- DWBV/Ls94gPBkFpTw7Xa9Hwx3Mce9jbimDKVV1DpOIs/f6R1yACuoGn/U4YpqSY+squC
- pwtof6ddaM+MpZzQ8/oFfhCmz3okEWr44g4pN1w0nmqt/+6Z2ZZ73P8bM6DA8/3UXvcN
- eRe9lD9OC4Oo57Mre0+eJmjtdGV8vCyij73sMi7fGsEYmT5Cemovrdt2Btmg1Zz0NMlu
- sUGh+tOSGnUhmdt0JzEFhx7rAwrWwnC2PxvXUXJTLujJjOBtlWP0HunFvR1G3LFq5396
- BNCQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWfqcp2mLSi0Ho8OKzL7SWwvp2sMaonQcH+b9DA954HE+wfMyOX6nWYSLt6byoBuJaRceixEGZmAH9A@nongnu.org
-X-Gm-Message-State: AOJu0Yzu8FJTzXjxrwFSTaf2qWq3M61SwCfQwS8re5XoN3JbIgntoJXg
- 7yXvcoPrdjh0LkwUFJp9CeAS81GcxD49/48lFcbmeAJ3gLzM2dyJhL6ieTv8aFRYFkHd/cVfBkt
- KI5s=
-X-Gm-Gg: ASbGnctORhMCayoZSXR5nHHcUDohSElkM7xvLTNEhPAbhhAwZMqSJ/pT5Eq0jArRQmX
- 1YUnC9F7/6Cv1J9IFVXUPlg7rAz/s47IMIlujddLER751R4zs1LarQ0n+HFeZnjzPxHXd0ibCSd
- yo7KtnZbzqKznRDy+EEz+QfDfGkZQYON79JBj9ZslGjpilEhWLaGj6JJ1FR8Y5R++ShalN1Poe8
- opqQfX7rSGRZKVGzUHl24zdpiwNSoRV8uafxS+ipv083M7OCfoIog5xkJyi0QH9/x9Srr2kztl9
- xf8TGAW5f2iMYGNihHg8iY1RTvJ03im8RrHU1OyPF+Eb8fL6nrTa/xK2PaVaNqNga5Tp/3Q8EUB
- Vq0x/ehKREQ7vjoGx8uY9sqo0oSIqKg==
-X-Google-Smtp-Source: AGHT+IHW0Vip4Hn4gIrcEUlOfx2f5op5CPMcqQqYMMqIW68O96eIaLqJHyie/mdDgWNFMne5S840Uw==
-X-Received: by 2002:a5d:64ed:0:b0:391:41c9:7a8d with SMTP id
- ffacd0b85a97d-39d8fdebf24mr1268856f8f.54.1744277553020; 
- Thu, 10 Apr 2025 02:32:33 -0700 (PDT)
-Received: from [10.155.70.213] (224.red-88-28-18.dynamicip.rima-tde.net.
- [88.28.18.224]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39d89389ed6sm4128482f8f.41.2025.04.10.02.32.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Apr 2025 02:32:32 -0700 (PDT)
-Message-ID: <59239d14-e50a-4a39-81dd-03580b025dc9@linaro.org>
-Date: Thu, 10 Apr 2025 11:32:29 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u2o9l-0006si-UX; Thu, 10 Apr 2025 05:25:10 -0400
+Received: from mgamail.intel.com ([192.198.163.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u2o9j-00026A-9F; Thu, 10 Apr 2025 05:25:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1744277107; x=1775813107;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=vWFTCAHyc4ZZSNblinRf0t8BBfuIQYEI8cO6hq8NbrA=;
+ b=CAGLPQl78R5F/0eb8DNCrhKsax4H8oLxcWT2JI5YQkfjoPvE6V3ZsJZs
+ z6DogORdau5iKKoShp6lla52jwJmoJPjtQ7uqxf+1nPyxt3JNrHHEzdP7
+ OIkum8zy1tUayGCMXP/NY6axmXrwUjjHoBhxooKmShKeatvnl5hzegPUG
+ F3katX1LpNIjL8ETP0+30y+R/SLTxC0OSxqZh0qlORH9BwUH3p/lMBl9U
+ n3vMKzwlJMmIbUmphPOQrtEKDYCtYTETaKAPTJGWC4MWJLq1eJiR/99jr
+ 8QIq0jIjVJa0ITghG3jyOYj5mX86KDQIvyydEc+VwrbOG+pG323l7xoIo A==;
+X-CSE-ConnectionGUID: Xx6nNb4dTQGIrOXlLCgZuA==
+X-CSE-MsgGUID: hE6bzLpVRNKkM6EHcckQPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="49625375"
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="49625375"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2025 02:25:00 -0700
+X-CSE-ConnectionGUID: 7EFLD+8sQoiP2fdPZgk4+Q==
+X-CSE-MsgGUID: aiCRLBNDQsqVw5PNhNlRAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="129685784"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 10 Apr 2025 02:24:51 -0700
+Date: Thu, 10 Apr 2025 17:45:41 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
+ babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
+ groug@kaod.org, khorenko@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
+ peter.maydell@linaro.org, gaosong@loongson.cn,
+ chenhuacai@kernel.org, philmd@linaro.org, aurelien@aurel32.net,
+ jiaxun.yang@flygoat.com, arikalo@gmail.com, npiggin@gmail.com,
+ danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ thuth@redhat.com, flavra@baylibre.com, ewanhai-oc@zhaoxin.com,
+ ewanhai@zhaoxin.com, cobechen@zhaoxin.com, louisqi@zhaoxin.com,
+ liamni@zhaoxin.com, frankzhu@zhaoxin.com, silviazhao@zhaoxin.com
+Subject: Re: [PATCH v3 10/10] target/i386/kvm: don't stop Intel PMU counters
+Message-ID: <Z/eTRVSveNMwZBaa@intel.com>
+References: <20250331013307.11937-1-dongli.zhang@oracle.com>
+ <20250331013307.11937-11-dongli.zhang@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] virtio: Call set_features during reset
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, devel@daynix.com,
- qemu-stable@nongnu.org
-References: <20250410-reset-v1-1-751cd0064395@daynix.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250410-reset-v1-1-751cd0064395@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250331013307.11937-11-dongli.zhang@oracle.com>
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.505,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,137 +96,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Akihiko,
-
-On 10/4/25 09:42, Akihiko Odaki wrote:
-> virtio-net expects set_features() will be called when the feature set
-> used by the guest changes to update the number of virtqueues. Call it
-> during reset as reset clears all features and the queues added for
-> VIRTIO_NET_F_MQ or VIRTIO_NET_F_RSS will need to be removed.
+On Sun, Mar 30, 2025 at 06:32:29PM -0700, Dongli Zhang wrote:
+> Date: Sun, 30 Mar 2025 18:32:29 -0700
+> From: Dongli Zhang <dongli.zhang@oracle.com>
+> Subject: [PATCH v3 10/10] target/i386/kvm: don't stop Intel PMU counters
+> X-Mailer: git-send-email 2.43.5
 > 
-> Fixes: f9d6dbf0bf6e ("virtio-net: remove virtio queues if the guest doesn't support multiqueue")
-> Buglink: https://issues.redhat.com/browse/RHEL-73842
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> The kvm_put_msrs() sets the MSRs using KVM_SET_MSRS. The x86 KVM processes
+> these MSRs one by one in a loop, only saving the config and triggering the
+> KVM_REQ_PMU request. This approach does not immediately stop the event
+> before updating PMC.
+
+This is ture after KVM's 68fb4757e867 (v6.2). QEMU even supports v4.5
+(docs/system/target-i386.rst)... I'm not sure whether it is outdated,
+but it's better to mention the Linux version.
+
+> In additional, PMU MSRs are set only at levels >= KVM_PUT_RESET_STATE,
+> excluding runtime. Therefore, updating these MSRs without stopping events
+> should be acceptable.
+
+I agree.
+
+> Finally, KVM creates kernel perf events with host mode excluded
+> (exclude_host = 1). While the events remain active, they don't increment
+> the counter during QEMU vCPU userspace mode.
+> 
+> No Fixed tag is going to be added for the commit 0d89436786b0 ("kvm:
+> migrate vPMU state"), because this isn't a bugfix.
+> 
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
 > ---
->   hw/virtio/virtio.c | 86 +++++++++++++++++++++++++++---------------------------
->   1 file changed, 43 insertions(+), 43 deletions(-)
-> 
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index 85110bce3744..033e87cdd3b9 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -2316,49 +2316,6 @@ void virtio_queue_enable(VirtIODevice *vdev, uint32_t queue_index)
->       }
->   }
->   
-> -void virtio_reset(void *opaque)
-> -{
-> -    VirtIODevice *vdev = opaque;
-> -    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
-> -    int i;
-> -
-> -    virtio_set_status(vdev, 0);
-> -    if (current_cpu) {
-> -        /* Guest initiated reset */
-> -        vdev->device_endian = virtio_current_cpu_endian();
-> -    } else {
-> -        /* System reset */
-> -        vdev->device_endian = virtio_default_endian();
-> -    }
-> -
-> -    if (k->get_vhost) {
-> -        struct vhost_dev *hdev = k->get_vhost(vdev);
-> -        /* Only reset when vhost back-end is connected */
-> -        if (hdev && hdev->vhost_ops) {
-> -            vhost_reset_device(hdev);
-> -        }
-> -    }
-> -
-> -    if (k->reset) {
-> -        k->reset(vdev);
-> -    }
-> -
-> -    vdev->start_on_kick = false;
-> -    vdev->started = false;
-> -    vdev->broken = false;
-> -    vdev->guest_features = 0;
-> -    vdev->queue_sel = 0;
-> -    vdev->status = 0;
-> -    vdev->disabled = false;
-> -    qatomic_set(&vdev->isr, 0);
-> -    vdev->config_vector = VIRTIO_NO_VECTOR;
-> -    virtio_notify_vector(vdev, vdev->config_vector);
-> -
-> -    for(i = 0; i < VIRTIO_QUEUE_MAX; i++) {
-> -        __virtio_queue_reset(vdev, i);
-> -    }
-> -}
-> -
->   void virtio_queue_set_addr(VirtIODevice *vdev, int n, hwaddr addr)
->   {
->       if (!vdev->vq[n].vring.num) {
-> @@ -3169,6 +3126,49 @@ int virtio_set_features(VirtIODevice *vdev, uint64_t val)
->       return ret;
->   }
->   
-> +void virtio_reset(void *opaque)
-> +{
-> +    VirtIODevice *vdev = opaque;
-> +    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
-> +    int i;
-> +
-> +    virtio_set_status(vdev, 0);
-> +    if (current_cpu) {
-> +        /* Guest initiated reset */
-> +        vdev->device_endian = virtio_current_cpu_endian();
-> +    } else {
-> +        /* System reset */
-> +        vdev->device_endian = virtio_default_endian();
-> +    }
-> +
-> +    if (k->get_vhost) {
-> +        struct vhost_dev *hdev = k->get_vhost(vdev);
-> +        /* Only reset when vhost back-end is connected */
-> +        if (hdev && hdev->vhost_ops) {
-> +            vhost_reset_device(hdev);
-> +        }
-> +    }
-> +
-> +    if (k->reset) {
-> +        k->reset(vdev);
-> +    }
-> +
-> +    vdev->start_on_kick = false;
-> +    vdev->started = false;
-> +    vdev->broken = false;
-> +    virtio_set_features_nocheck(vdev, 0);
+>  target/i386/kvm/kvm.c | 9 ---------
+>  1 file changed, 9 deletions(-)
 
-It would be simpler to review having a first patch doing code
-movement, then a second one with the addition.
+Fine for me,
 
-For my own education, are feature sets modifiable at runtime?
-
-> +    vdev->queue_sel = 0;
-> +    vdev->status = 0;
-> +    vdev->disabled = false;
-> +    qatomic_set(&vdev->isr, 0);
-> +    vdev->config_vector = VIRTIO_NO_VECTOR;
-> +    virtio_notify_vector(vdev, vdev->config_vector);
-> +
-> +    for (i = 0; i < VIRTIO_QUEUE_MAX; i++) {
-> +        __virtio_queue_reset(vdev, i);
-> +    }
-> +}
-> +
->   static void virtio_device_check_notification_compatibility(VirtIODevice *vdev,
->                                                              Error **errp)
->   {
-> 
-> ---
-> base-commit: 825b96dbcee23d134b691fc75618b59c5f53da32
-> change-id: 20250406-reset-5ed5248ee3c1
-> 
-> Best regards,
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
