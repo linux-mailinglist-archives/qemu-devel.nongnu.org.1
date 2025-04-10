@@ -2,112 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307A6A84D91
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 21:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4D8A84DD0
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 22:06:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2xxD-0003fi-Ds; Thu, 10 Apr 2025 15:52:51 -0400
+	id 1u2y8i-0000f9-Ja; Thu, 10 Apr 2025 16:04:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u2xxB-0003fT-3c
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 15:52:49 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u2xx9-0006vS-47
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 15:52:48 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2D2982116A;
- Thu, 10 Apr 2025 19:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744314765; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5d2G4DBeuxDoXFNOhHrKGl+xmEH0uvr9hvSPkQvYZZU=;
- b=Zva2LSt/4EFC63ieeT4Dk+G2SHqBZfiBe4j5yTkT6EjrHzKB8ytVnSEfib8wlmgpyTC7Su
- Pu0B53h8hL1XE811j0PFgOvklGzlAAF+lPZNlhsrY8r/nWE70DAYW83UtZcN0leFF4P0GF
- hpZ4L/UvHxmQa/H6rjbFCQfgmmHhqKc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744314765;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5d2G4DBeuxDoXFNOhHrKGl+xmEH0uvr9hvSPkQvYZZU=;
- b=ulBcRe8C/K30vTgYnOnPxU6Rqsf7BNHJMjqjfw/L/sQkBuWwZzffA5r/detI4sW1hQ5eUY
- eg7xUfIguiLt41DQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Zva2LSt/";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ulBcRe8C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744314765; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5d2G4DBeuxDoXFNOhHrKGl+xmEH0uvr9hvSPkQvYZZU=;
- b=Zva2LSt/4EFC63ieeT4Dk+G2SHqBZfiBe4j5yTkT6EjrHzKB8ytVnSEfib8wlmgpyTC7Su
- Pu0B53h8hL1XE811j0PFgOvklGzlAAF+lPZNlhsrY8r/nWE70DAYW83UtZcN0leFF4P0GF
- hpZ4L/UvHxmQa/H6rjbFCQfgmmHhqKc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744314765;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5d2G4DBeuxDoXFNOhHrKGl+xmEH0uvr9hvSPkQvYZZU=;
- b=ulBcRe8C/K30vTgYnOnPxU6Rqsf7BNHJMjqjfw/L/sQkBuWwZzffA5r/detI4sW1hQ5eUY
- eg7xUfIguiLt41DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 99439132D8;
- Thu, 10 Apr 2025 19:52:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 4tWiFYwh+GfPWwAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 10 Apr 2025 19:52:44 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Marco Cavenati <Marco.Cavenati@eurecom.fr>, Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Marco Cavenati <Marco.Cavenati@eurecom.fr>,
- Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>, Prasad Pandit
- <ppandit@redhat.com>
-Subject: Re: [PATCH] migration: add FEATURE_SEEKABLE to QIOChannelBlock
-In-Reply-To: <20250327141451.163744-3-Marco.Cavenati@eurecom.fr>
-References: <20250327141451.163744-3-Marco.Cavenati@eurecom.fr>
-Date: Thu, 10 Apr 2025 16:52:41 -0300
-Message-ID: <87jz7rhjzq.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1u2sk7-00029z-UR
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 10:18:59 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1u2sk5-0005Ve-8N
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 10:18:59 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c15:2b89:0:640:9815:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 3035C60B21;
+ Thu, 10 Apr 2025 17:18:47 +0300 (MSK)
+Received: from dtalexundeer-nx.yandex.net (unknown
+ [2a02:6bf:8011:f00:aa58:26d7:246e:b27d])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id eIggH90FZiE0-2FT6qaP7; Thu, 10 Apr 2025 17:18:46 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1744294726;
+ bh=KQZximoWw8x5dlbSTsPnqBe/kHVFyYSKfFPQbU8R1qE=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=H4At/nvpdwJTorT3Ej+rnyg6NYD9R4nSD1NVD9SeEQjdRU76T9OJNEmSOg5d8IVgo
+ 5YM5NK1JKpVpq4x0mC+aywPQikNYunI4suqCOeYtCSWTrNo7uxy6KgnAPDSC78o+jb
+ F2UQP6/MIdAIBpZALrSPChCZ+le3Ee1DEMOTFhuU=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+To: qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>,
+ Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Subject: [PATCH] tests/avocado: add memlock tests
+Date: Thu, 10 Apr 2025 19:17:53 +0500
+Message-Id: <20250410141752.275935-1-dtalexundeer@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 2D2982116A
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 10 Apr 2025 16:04:37 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -122,116 +73,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Marco Cavenati <Marco.Cavenati@eurecom.fr> writes:
+Add new tests to check the correctness of the `-overcommit memlock`
+option (possible values: off, on, on-fault) by using
+`/proc/{qemu_pid}/smaps` file to check in Size, Rss and Locked fields of
+anonymous segments:
 
-> Enable the use of the mapped-ram migration feature with savevm/loadvm
-> snapshots by adding the QIO_CHANNEL_FEATURE_SEEKABLE feature to
-> QIOChannelBlock. Implement io_preadv and io_pwritev methods to provide
-> positioned I/O capabilities that don't modify the channel's position
-> pointer.
+* if `memlock=off`, then Locked = 0 on every anonymous smaps;
+* if `memlock=on`, then Size, Rss and Locked values must be equal for
+every anon smaps where Rss is not 0;
+* if `memlock=on-fault`, then Rss and Locked must be equal on every anon
+smaps and anonymous segment with Rss < Size must exists.
 
-We'll need to add the infrastructure to reject multifd and direct-io
-before this. The rest of the capabilities should not affect mapped-ram,
-so it's fine (for now) if we don't honor them.
+Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+---
+ tests/avocado/memlock.py | 100 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
+ create mode 100644 tests/avocado/memlock.py
 
-What about zero page handling? Mapped-ram doesn't send zero pages
-because the file will always have zeroes in it and the migration
-destination is guaranteed to not have been running previously. I believe
-loading a snapshot in a VM that's already been running would leave stale
-data in the guest's memory.
+diff --git a/tests/avocado/memlock.py b/tests/avocado/memlock.py
+new file mode 100644
+index 0000000000..e3e98d9524
+--- /dev/null
++++ b/tests/avocado/memlock.py
+@@ -0,0 +1,100 @@
++# Functional test that check overcommit memlock options
++#
++# Copyright (c) Yandex Technologies LLC, 2025
++#
++# Author:
++#  Alexandr Moshkov <dtalexundeer@yandex-team.ru>
++#
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
++
++import re
++
++from typing import List, Dict
++
++from avocado_qemu.linuxtest import LinuxTest
++
++
++SMAPS_HEADER_PATTERN = re.compile(r'^\w+-\w+', re.MULTILINE)
++SMAPS_VALUE_PATTERN = re.compile(r'^(\w+):\s+(\d+) kB', re.MULTILINE)
++
++
++class Memlock(LinuxTest):
++    """
++    :avocado: tags=memlock
++
++    Boots a Linux system with memlock options.
++    Then verify, that this options is working correctly
++    by checking the smaps of the QEMU proccess.
++    """
++
++    def common_vm_setup_with_memlock(self, memlock):
++        self.vm.add_args('-overcommit', f'mem-lock={memlock}')
++        self.launch_and_wait(set_up_ssh_connection=False)
++
++    def get_anon_smaps_by_pid(self, pid):
++        smaps_raw = self._get_raw_smaps_by_pid(pid)
++        return self._parse_anonymous_smaps(smaps_raw)
++
++
++    def test_memlock_off(self):
++        self.common_vm_setup_with_memlock('off')
++
++        anon_smaps = self.get_anon_smaps_by_pid(self.vm.get_pid())
++
++        # locked = 0 on every smap
++        for smap in anon_smaps:
++            self.assertEqual(smap['Locked'], 0)
++
++    def test_memlock_on(self):
++        self.common_vm_setup_with_memlock('on')
++
++        anon_smaps = self.get_anon_smaps_by_pid(self.vm.get_pid())
++
++        # size = rss = locked on every smap where rss not 0
++        for smap in anon_smaps:
++            if smap['Rss'] == 0:
++                continue
++            self.assertTrue(smap['Size'] == smap['Rss'] == smap['Locked'])
++
++    def test_memlock_onfault(self):
++        self.common_vm_setup_with_memlock('on-fault')
++
++        anon_smaps = self.get_anon_smaps_by_pid(self.vm.get_pid())
++
++        # rss = locked on every smap and segment with rss < size exists
++        exists = False
++        for smap in anon_smaps:
++            self.assertTrue(smap['Rss'] == smap['Locked'])
++            if smap['Rss'] < smap['Size']:
++                exists = True
++        self.assertTrue(exists)
++
++
++    def _parse_anonymous_smaps(self, smaps_raw: str) -> List[Dict[str, int]]:
++        result_segments = []
++        current_segment = {}
++        is_anonymous = False
++
++        for line in smaps_raw.split('\n'):
++            if SMAPS_HEADER_PATTERN.match(line):
++                if current_segment and is_anonymous:
++                    result_segments.append(current_segment)
++                current_segment = {}
++                # anonymous segment header looks like this:
++                # 7f3b8d3f0000-7f3b8d3f3000 rw-s 00000000 00:0f 1052
++                # and non anonymous header looks like this:
++                # 7f3b8d3f0000-7f3b8d3f3000 rw-s 00000000 00:0f 1052   [stack]
++                is_anonymous = len(line.split()) == 5
++            elif m := SMAPS_VALUE_PATTERN.match(line):
++                current_segment[m.group(1)] = int(m.group(2))
++
++        if current_segment and is_anonymous:
++            result_segments.append(current_segment)
++
++        return result_segments
++
++    def _get_raw_smaps_by_pid(self, pid: int) -> str:
++        with open(f'/proc/{pid}/smaps', 'r') as f:
++            return f.read()
+-- 
+2.34.1
 
->
-> Signed-off-by: Marco Cavenati <Marco.Cavenati@eurecom.fr>
-> ---
-> Hello, 
-> Please note that this depends on my previous fix [0] (which has already
-> been reviewed) in order to work.
->
-> The code in this patch is inspired by commit
-> 0478b030fa2530cbbfc4d6432e8e39a16d06865b that adds the same feature to
-> QIOChannelFile.
->
-> Thank you,
-> Regards
-> Marco
->
-> [0] [PATCH] migration: fix SEEK_CUR offset calculation in
-> qio_channel_block_seek https://lore.kernel.org/all/20250326162230.3323199-1-Marco.Cavenati@eurecom.fr/t/#u
-> ---
->  migration/channel-block.c | 48 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 48 insertions(+)
->
-> diff --git a/migration/channel-block.c b/migration/channel-block.c
-> index fff8d87094..741cf6f31b 100644
-> --- a/migration/channel-block.c
-> +++ b/migration/channel-block.c
-> @@ -30,6 +30,7 @@ qio_channel_block_new(BlockDriverState *bs)
->      QIOChannelBlock *ioc;
->  
->      ioc = QIO_CHANNEL_BLOCK(object_new(TYPE_QIO_CHANNEL_BLOCK));
-> +    qio_channel_set_feature(QIO_CHANNEL(ioc), QIO_CHANNEL_FEATURE_SEEKABLE);
->  
->      bdrv_ref(bs);
->      ioc->bs = bs;
-> @@ -96,6 +97,49 @@ qio_channel_block_writev(QIOChannel *ioc,
->      return qiov.size;
->  }
->  
-> +#ifdef CONFIG_PREADV
-> +static ssize_t
-> +qio_channel_block_preadv(QIOChannel *ioc,
-> +                         const struct iovec *iov,
-> +                         size_t niov,
-> +                         off_t offset,
-> +                         Error **errp)
-> +{
-> +    QIOChannelBlock *bioc = QIO_CHANNEL_BLOCK(ioc);
-> +    QEMUIOVector qiov;
-> +    int ret;
-> +
-> +    qemu_iovec_init_external(&qiov, (struct iovec *)iov, niov);
-> +    ret = bdrv_readv_vmstate(bioc->bs, &qiov, offset);
-> +    if (ret < 0) {
-> +        error_setg_errno(errp, -ret, "bdrv_readv_vmstate failed");
-> +        return -1;
-> +    }
-> +
-> +    return qiov.size;
-> +}
-> +
-> +static ssize_t
-> +qio_channel_block_pwritev(QIOChannel *ioc,
-> +                          const struct iovec *iov,
-> +                          size_t niov,
-> +                          off_t offset,
-> +                          Error **errp)
-> +{
-> +    QIOChannelBlock *bioc = QIO_CHANNEL_BLOCK(ioc);
-> +    QEMUIOVector qiov;
-> +    int ret;
-> +
-> +    qemu_iovec_init_external(&qiov, (struct iovec *)iov, niov);
-> +    ret = bdrv_writev_vmstate(bioc->bs, &qiov, offset);
-> +    if (ret < 0) {
-> +        error_setg_errno(errp, -ret, "bdrv_writev_vmstate failed");
-> +        return -1;
-> +    }
-> +
-> +    return qiov.size;
-> +}
-> +#endif /* CONFIG_PREADV */
->  
->  static int
->  qio_channel_block_set_blocking(QIOChannel *ioc,
-> @@ -177,6 +221,10 @@ qio_channel_block_class_init(ObjectClass *klass,
->      ioc_klass->io_writev = qio_channel_block_writev;
->      ioc_klass->io_readv = qio_channel_block_readv;
->      ioc_klass->io_set_blocking = qio_channel_block_set_blocking;
-> +#ifdef CONFIG_PREADV
-> +    ioc_klass->io_preadv = qio_channel_block_preadv;
-> +    ioc_klass->io_pwritev = qio_channel_block_pwritev;
-> +#endif
->      ioc_klass->io_seek = qio_channel_block_seek;
->      ioc_klass->io_close = qio_channel_block_close;
->      ioc_klass->io_set_aio_fd_handler = qio_channel_block_set_aio_fd_handler;
 
