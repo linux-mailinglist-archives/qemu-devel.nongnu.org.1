@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6A7A836A0
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 04:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11464A836AA
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 04:40:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2hpN-0001iU-79; Wed, 09 Apr 2025 22:39:41 -0400
+	id 1u2hpO-0001md-WF; Wed, 09 Apr 2025 22:39:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u2hp6-0001cM-Vp; Wed, 09 Apr 2025 22:39:26 -0400
+ id 1u2hpE-0001fU-3J; Wed, 09 Apr 2025 22:39:33 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u2hp5-00033O-8x; Wed, 09 Apr 2025 22:39:24 -0400
+ id 1u2hp7-00033O-UH; Wed, 09 Apr 2025 22:39:30 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 10 Apr
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <nabihestefan@google.com>
-Subject: [PATCH v2 06/10] hw/arm/aspeed: Reuse rom_size variable for vbootrom
- setup
-Date: Thu, 10 Apr 2025 10:38:50 +0800
-Message-ID: <20250410023856.500258-7-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 07/10] hw/arm/aspeed: Add support for loading vbootrom
+ image via "-bios"
+Date: Thu, 10 Apr 2025 10:38:51 +0800
+Message-ID: <20250410023856.500258-8-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250410023856.500258-1-jamin_lin@aspeedtech.com>
 References: <20250410023856.500258-1-jamin_lin@aspeedtech.com>
@@ -65,38 +65,71 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the declaration of `rom_size` to an outer scope in aspeed_machine_init()
-so it can be reused for setting up the vbootrom region as well.
-
-This avoids introducing a redundant local variable and ensures consistent
-ROM sizing logic when both SPI boot and vbootrom are used.
+Introduce "aspeed_load_vbootrom()" to support loading a virtual boot ROM image
+into the vbootrom memory region, using the "-bios" command-line option.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/arm/aspeed.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index e852bbc4cb..b70a120e62 100644
+index b70a120e62..2811868c1a 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -381,6 +381,7 @@ static void aspeed_machine_init(MachineState *machine)
-     AspeedSoCClass *sc;
-     int i;
-     DriveInfo *emmc0 = NULL;
-+    uint64_t rom_size;
-     bool boot_emmc;
+@@ -27,6 +27,7 @@
+ #include "system/reset.h"
+ #include "hw/loader.h"
+ #include "qemu/error-report.h"
++#include "qemu/datadir.h"
+ #include "qemu/units.h"
+ #include "hw/qdev-clock.h"
+ #include "system/system.h"
+@@ -305,6 +306,32 @@ static void aspeed_install_boot_rom(AspeedMachineState *bmc, BlockBackend *blk,
+                    rom_size, &error_abort);
+ }
  
-     bmc->soc = ASPEED_SOC(object_new(amc->soc_name));
-@@ -475,7 +476,7 @@ static void aspeed_machine_init(MachineState *machine)
-         BlockBackend *fmc0 = dev ? m25p80_get_blk(dev) : NULL;
++/*
++ * This function locates the vbootrom image file specified via the command line
++ * using the -bios option. It loads the specified image into the vbootrom
++ * memory region and handles errors if the file cannot be found or loaded.
++ */
++static void aspeed_load_vbootrom(MachineState *machine, uint64_t rom_size)
++{
++    AspeedMachineState *bmc = ASPEED_MACHINE(machine);
++    const char *bios_name = machine->firmware;
++    g_autofree char *filename = NULL;
++    AspeedSoCState *soc = bmc->soc;
++    int ret;
++
++    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, bios_name);
++    if (!filename) {
++        error_report("Could not find vbootrom image '%s'", bios_name);
++        exit(1);
++    }
++
++    ret = load_image_mr(filename, &soc->vbootrom);
++    if (ret < 0) {
++        error_report("Failed to load vbootrom image '%s'", filename);
++        exit(1);
++    }
++}
++
+ void aspeed_board_init_flashes(AspeedSMCState *s, const char *flashtype,
+                                       unsigned int count, int unit0)
+ {
+@@ -483,6 +510,11 @@ static void aspeed_machine_init(MachineState *machine)
+         }
+     }
  
-         if (fmc0 && !boot_emmc) {
--            uint64_t rom_size = memory_region_size(&bmc->soc->spi_boot);
-+            rom_size = memory_region_size(&bmc->soc->spi_boot);
-             aspeed_install_boot_rom(bmc, fmc0, rom_size);
-         } else if (emmc0) {
-             aspeed_install_boot_rom(bmc, blk_by_legacy_dinfo(emmc0), 64 * KiB);
++    if (amc->vbootrom) {
++        rom_size = memory_region_size(&bmc->soc->vbootrom);
++        aspeed_load_vbootrom(machine, rom_size);
++    }
++
+     arm_load_kernel(ARM_CPU(first_cpu), machine, &aspeed_board_binfo);
+ }
+ 
 -- 
 2.43.0
 
