@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9CAA8369F
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 04:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B1DA836B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 04:41:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2hou-0001Xh-LF; Wed, 09 Apr 2025 22:39:12 -0400
+	id 1u2hov-0001Yj-M9; Wed, 09 Apr 2025 22:39:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u2hop-0001XQ-Fn; Wed, 09 Apr 2025 22:39:07 -0400
+ id 1u2hos-0001Y8-Lw; Wed, 09 Apr 2025 22:39:10 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u2hom-00033O-Pu; Wed, 09 Apr 2025 22:39:07 -0400
+ id 1u2hoq-00033O-J9; Wed, 09 Apr 2025 22:39:10 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 10 Apr
- 2025 10:38:56 +0800
+ 2025 10:38:57 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Thu, 10 Apr 2025 10:38:56 +0800
+ Transport; Thu, 10 Apr 2025 10:38:57 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
@@ -30,10 +30,13 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <nabihestefan@google.com>
-Subject: [PATCH v2 00/10] Support vbootrom for AST2700
-Date: Thu, 10 Apr 2025 10:38:44 +0800
-Message-ID: <20250410023856.500258-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 01/10] hw/arm/aspeed: Introduced ASPEED_DEV_VBOOTROM in the
+ device enumeration
+Date: Thu, 10 Apr 2025 10:38:45 +0800
+Message-ID: <20250410023856.500258-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250410023856.500258-1-jamin_lin@aspeedtech.com>
+References: <20250410023856.500258-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -62,50 +65,26 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1: 
-  Add initial support for AST27x0
-  The purpose of vbootrom here is to simulate the work of BootMCU SPL (riscv)
-  in AST2700, because QEMU doesn't support heterogenous architecture yet.
+Introduced ASPEED_DEV_VBOOTROM into the ASPEED device enumeration to support a
+virtual boot ROM.
 
-  ast27x0_bootrom.bin is a simplified, free (Apache 2.0) boot ROM for
-  ASPEED AST27x0 BMC SOC. It currently implements the bare minimum to
-  load, parse, initialize and run boot images stored in SPI flash, but may grow
-  more features over time as needed. The source code is available at:
-  https://github.com/google/vbootrom
-  
-v2:
-  Add "Introduced ASPEED_DEV_VBOOTROM in the device enumeration" patch to fix
-  build failed.
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ include/hw/arm/aspeed_soc.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-Jamin Lin (10):
-  hw/arm/aspeed: Introduced ASPEED_DEV_VBOOTROM in the device
-    enumeration
-  hw/arm/aspeed_ast27x0: Add "vbootrom_size" field to AspeedSoCClass
-  hw/arm/aspeed_ast27x0: Rename variable sram_name to name in ast2700
-    realize
-  hw/arm/aspeed_ast27x0 Introduce vbootrom memory region
-  hw/arm/aspeed: Enable vbootrom support by default on AST2700 EVB
-    machines
-  hw/arm/aspeed: Reuse rom_size variable for vbootrom setup
-  hw/arm/aspeed: Add support for loading vbootrom image via "-bios"
-  pc-bios: Add AST27x0 vBootrom
-  tests/functional/aspeed: Update AST2700 functional test to use
-    vbootrom
-  docs/system/arm/aspeed: Support vbootrom for AST2700
-
- MAINTAINERS                             |   1 +
- docs/system/arm/aspeed.rst              |  18 +++--------
- include/hw/arm/aspeed.h                 |   1 +
- include/hw/arm/aspeed_soc.h             |   3 ++
- hw/arm/aspeed.c                         |  37 ++++++++++++++++++++++-
- hw/arm/aspeed_ast27x0.c                 |  20 ++++++++++---
- pc-bios/README                          |   6 ++++
- pc-bios/ast27x0_bootrom.bin             | Bin 0 -> 15464 bytes
- pc-bios/meson.build                     |   1 +
- tests/functional/test_aarch64_aspeed.py |  38 +-----------------------
- 10 files changed, 69 insertions(+), 56 deletions(-)
- create mode 100644 pc-bios/ast27x0_bootrom.bin
-
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index f069d17d16..37cd7cd793 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -169,6 +169,7 @@ struct AspeedSoCClass {
+ const char *aspeed_soc_cpu_type(AspeedSoCClass *sc);
+ 
+ enum {
++    ASPEED_DEV_VBOOTROM,
+     ASPEED_DEV_SPI_BOOT,
+     ASPEED_DEV_IOMEM,
+     ASPEED_DEV_UART0,
 -- 
 2.43.0
 
