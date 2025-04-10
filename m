@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF56A84EED
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB41A84EF0
 	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 23:02:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2z0s-0005wd-Ku; Thu, 10 Apr 2025 17:00:42 -0400
+	id 1u2z0u-0005yc-A2; Thu, 10 Apr 2025 17:00:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u2z0o-0005vb-OO
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 17:00:38 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1u2z0r-0005x9-DO
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 17:00:42 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u2z0m-0001kz-TC
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 17:00:38 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-22423adf751so13311145ad.2
- for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 14:00:36 -0700 (PDT)
+ id 1u2z0o-0001l7-R9
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 17:00:41 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-736b350a22cso1102742b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 14:00:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744318835; x=1744923635; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Crgd4oJW950tiGNM6qh+Yr/oflVQVrvIxSMd9pKsNKo=;
- b=KlB01A7MovZs2WFLoy6a/iqh6MjgM3imb/YFXvhL6fYLrx4Be7zVDhBglVrUCzWLH0
- 75kX/hUP9vGFxLHs49NY5KNylkFxRW0iLx9puYjjxMFLX4/bkUzqCs3W2FGWFxqF/po0
- aIArRGqm8mA+Lm0LR5h7gRCgbFwj4386tGbmqrfCuU0qhsZ6C+t8Lr1hMQuKsHf6rrNG
- qH+zjAnw+GnZGlM0ErJVWr9/FSOBp6lY+MsValUJpH063dDbeAOkPVxfYIA6qYr2saW4
- MPwIHy3tSWNRJp2NhTSseWr7Ldh/MgeHnQvsPDvbz0vBPhCcLO+M0unAl5uLeLNkLQuq
- 2/dg==
+ d=linaro.org; s=google; t=1744318837; x=1744923637; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3O+ATcLarMi7TZZVeImu0PwvfcFGKqqf7QjA5Mk9PLE=;
+ b=CGIxL26AA10ZS4wXmRj5Z150a1ynIzeTelyFyJQgdj8hvo6OIgsFiaJhPijSCQ/rXE
+ QUdWhmsLmMeRRU/1M5Wof9Aqg+Vawn26kusVLQY2fSv/6gulf7c7Im4b2T2/Ga+Asqzy
+ T3tLSKFHSv45wxDJRUuITTbpN9tndBbUnUXcx1JtWN9bFtPSuqcA7QG4VjeflwVC0dB/
+ /T6KKzLpNZU/EQJH66PWxV3iseXFBzog8PUrNmY62x47LTmZOdsJtwQoiEYD5F/Co2s4
+ oyE6KzoJIfjM9QGAwh6i+9ZGmvuJCak6WHY75Y1Z7jES2+xNbw9cr1FEkK9M32aidode
+ HP9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744318835; x=1744923635;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Crgd4oJW950tiGNM6qh+Yr/oflVQVrvIxSMd9pKsNKo=;
- b=bR0mRj+mqbM+Ere42LVpyEinjinhaUjRpq1Xre/qkTJTaSfJL2teoLNVl6/Gc678di
- oHvUkg+FSNbEVKl1rBRaQnkcdmxp4PuIR9JMMaQ3NFXEmsko9kXmy7xGb86vQZEQWNb+
- HvA3oMh1c+rRcBHJ0q4gOyxqUIe+fSHKR18vo6XO6NLSrX9glR1BY0kPjq6MFmon7sfw
- 61D+YmyN59sViy+SaBDifHISASyDap7eRwIdI3OQhMczWI7PPTu6qCAsE7IwfI4okik8
- 4Trd5R3ZDgYNyU35dno88+MvZPHZOjkdA19U/MS5fnmKi1vLVFock3+qS9A9lVE800cY
- YKmw==
-X-Gm-Message-State: AOJu0YwMOM6Ou8I1l1fWoFQJQmJ37rmEEZ2y4kre86LyrNhijarIUaxt
- q3Oj8G+Osz0KMBrbXYhLurR1Guz7EtiTXfXnn6azvo6AJr4UBDwp6gVoIstkMOQjhyyEW8UBvCn
- 9
-X-Gm-Gg: ASbGncu1HwyJwugPnlS4pPMN9NJq+dICZxVT+THXZaSA/XTBLS3/YIm/UkG8lCle2Vx
- 4czgaFq0sZk6iUaqMpCTTKsHzuJUUm7spQPwzjwcHBuss9XMrLbJUPwhlDlRnb1TXj0YUeSi2Xp
- 1n/7f88ONNaroVZ66rgQy5IaXkMrRyNB3y/I9/qlNsro3vPBSSPwM0x1PPQX2tp3+lRpxh3I6C0
- aCbrYwwT7wxt5e6d7zvL98yXGfly2EOFZahrHWc9e1u6P36yF9dt7TpBGdDz+MLxgIXT8VIVBdl
- 3ahDi2vQyEfn2dI/h2ErtMEYEClg8u3KoSkDesQN
-X-Google-Smtp-Source: AGHT+IHimRX9HA5HKHfBTzf3Kyyl80jp2tp137GOOhu4Q2Osxefxa80FYYbOjVJ346zWo8FY1vD98g==
-X-Received: by 2002:a17:902:e84e:b0:223:5c77:7ef1 with SMTP id
- d9443c01a7336-22bea4abb22mr2916755ad.21.1744318835308; 
- Thu, 10 Apr 2025 14:00:35 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1744318837; x=1744923637;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3O+ATcLarMi7TZZVeImu0PwvfcFGKqqf7QjA5Mk9PLE=;
+ b=g1LFCdjiqA5yLNjkEL2JUcAdFcpocNmVyMvVS7Qyn5T6OuD6Q3AvIMyedVYuazKZSv
+ nMJRuFRllP/CXRMTf9I+4ZyC3h52ksXCYjyVKjrzCqFC3SJ8MAeFxWVhy0zygu3aBidx
+ XF0SK8oIy+u+9xDiK+J3a0wmmarnCZpAY/S26AgScYh6RUDxd2ttA+hvPt4YZKO4NlRX
+ PfGGUF+g7bPNGcDUqXjwyRjExr6e+ibTjDI0gfKTDoDYCSoc9ozra6IttH++TTO1sBgT
+ KqwN/1njh4nlW/3wEEBMgQZQrrzhFwobNTYNUrg58zwjm5E42QIUjEjuh4FAxM9HBg+a
+ +83A==
+X-Gm-Message-State: AOJu0Yzcpgp3PM/ozGlJ6XRNn0cVkz720RmPgzJjei9OKZKQo+J88Fc1
+ ZymZTusnfGBk4JP0boJLKYfA2wVm5KPK99YDSj906i9nIJmJ6JgfZDP3ZYUpPGjd9Y8IWwzrqgv
+ g
+X-Gm-Gg: ASbGncuIxQCBFqsWOWaaBf14iPSe+tbmWzWWFLTsIumqMDjww+3ttgf4XV2GG6hsuMS
+ xV7fgLcZmuqZ4YDXNiwt4+vJmLDaz9MeFL2WL8pE2TdsaVBKwmPrSpNpxgVX849mHUtMVYbyZNx
+ K6A1qSZYURAHZGFD3sb3ZJXYOzmbAOuW/JABY+I4I7SQTs78RZ1pD25jDDPc7MDsjg3s8yQ8S/E
+ 8v5nLhBWF9QuOGXVAdGEw6oSTDog+1zuPvK9CH8zl/RWAEZ8YCfj0kgIkxpwDpLQVklNdcWa2M9
+ iJpjc+NpWkqhL3/edpjlj2XRWix+a+Jo3GoUBOPa
+X-Google-Smtp-Source: AGHT+IHYmNsR4rzKKdqHaVRrwg0X9ECfGeohZSUpsRRprGst6uEADC8CnJXXG71yiK/pVkD2wl2tgA==
+X-Received: by 2002:a05:6a00:4644:b0:736:9e40:13b1 with SMTP id
+ d2e1a72fcca58-73bd12b1315mr371116b3a.23.1744318836380; 
+ Thu, 10 Apr 2025 14:00:36 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73bd22f82a3sm12431b3a.90.2025.04.10.14.00.34
+ d2e1a72fcca58-73bd22f82a3sm12431b3a.90.2025.04.10.14.00.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Apr 2025 14:00:34 -0700 (PDT)
+ Thu, 10 Apr 2025 14:00:35 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,22 +69,23 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  alex.bennee@linaro.org, qemu-arm@nongnu.org,
  Yannis Bolliger <yannis.bolliger@protonmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 0/4] target/arm: fix arm_cpu_get_phys_page_attrs_debug
-Date: Thu, 10 Apr 2025 14:00:18 -0700
-Message-Id: <20250410210022.809905-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH 1/4] target/arm/ptw: extract arm_mmu_idx_to_security_space
+Date: Thu, 10 Apr 2025 14:00:19 -0700
+Message-Id: <20250410210022.809905-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250410210022.809905-1-pierrick.bouvier@linaro.org>
+References: <20250410210022.809905-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,59 +101,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It was reported that QEMU monitor command gva2gpa was reporting unmapped
-memory for a valid access (qemu-system-aarch64), during a copy from
-kernel to user space (__arch_copy_to_user symbol in Linux) [1].
-This was affecting cpu_memory_rw_debug also, which
-is used in numerous places in our codebase. After investigating, the
-problem was specific to arm_cpu_get_phys_page_attrs_debug.
+We'll reuse this function later.
 
-[1] https://lists.nongnu.org/archive/html/qemu-discuss/2025-04/msg00013.html
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ target/arm/ptw.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-When performing user access from a privileged space, we need to do a
-second lookup for user mmu idx, following what get_a64_user_mem_index is
-doing at translation time.
-
-This series first extract some functions, and then perform the second lookup
-expected using extracted functions.
-
-Besides running all QEMU tests, it was explicitely checked that during a linux
-boot sequence, accesses now report a valid physical address inconditionnally
-using this (non sent) patch:
-
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -997,9 +997,7 @@ static inline void tlb_set_compare(CPUTLBEntryFull *full, CPUTLBEntry *ent,
-     if (enable) {
-         address |= flags & TLB_FLAGS_MASK;
-         flags &= TLB_SLOW_FLAGS_MASK;
--        if (flags) {
-             address |= TLB_FORCE_SLOW;
--        }
-     } else {
-         address = -1;
-         flags = 0;
-@@ -1658,6 +1656,10 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data, MemOp memop,
-         tlb_addr = tlb_read_idx(entry, access_type) & ~TLB_INVALID_MASK;
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 8d4e9e07a94..5e196cfa955 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -3550,13 +3550,9 @@ bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
+                                memop, result, fi);
+ }
+ 
+-bool get_phys_addr(CPUARMState *env, vaddr address,
+-                   MMUAccessType access_type, MemOp memop, ARMMMUIdx mmu_idx,
+-                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
++static ARMSecuritySpace arm_mmu_idx_to_security_space
++(CPUARMState *env, ARMMMUIdx mmu_idx)
+ {
+-    S1Translate ptw = {
+-        .in_mmu_idx = mmu_idx,
+-    };
+     ARMSecuritySpace ss;
+ 
+     switch (mmu_idx) {
+@@ -3617,7 +3613,18 @@ bool get_phys_addr(CPUARMState *env, vaddr address,
+         g_assert_not_reached();
      }
-
-+    vaddr page = addr & TARGET_PAGE_MASK;
-+    hwaddr physaddr = cpu_get_phys_page_debug(cpu, page);
-+    g_assert(physaddr != -1);
+ 
+-    ptw.in_space = ss;
++    return ss;
++}
 +
-     full = &cpu->neg.tlb.d[mmu_idx].fulltlb[index];
-     flags = tlb_addr & (TLB_FLAGS_MASK & ~TLB_FORCE_SLOW);
-     flags |= full->slow_flags[access_type];
-
-Pierrick Bouvier (4):
-  target/arm/ptw: extract arm_mmu_idx_to_security_space
-  target/arm/ptw: get current security_space for current mmu_idx
-  target/arm/ptw: extract arm_cpu_get_phys_page
-  target/arm/ptw: fix arm_cpu_get_phys_page_attrs_debug
-
- target/arm/ptw.c | 65 +++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 48 insertions(+), 17 deletions(-)
-
++bool get_phys_addr(CPUARMState *env, vaddr address,
++                   MMUAccessType access_type, MemOp memop, ARMMMUIdx mmu_idx,
++                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
++{
++    S1Translate ptw = {
++        .in_mmu_idx = mmu_idx,
++        .in_space = arm_mmu_idx_to_security_space(env, mmu_idx),
++    };
++
+     return get_phys_addr_gpc(env, &ptw, address, access_type,
+                              memop, result, fi);
+ }
 -- 
 2.39.5
 
