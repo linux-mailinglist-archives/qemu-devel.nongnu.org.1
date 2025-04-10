@@ -2,77 +2,198 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2F4A837F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 06:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EABA838BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 07:56:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2jmi-00029r-Ob; Thu, 10 Apr 2025 00:45:04 -0400
+	id 1u2ksO-0005uY-9v; Thu, 10 Apr 2025 01:55:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u2jmQ-00027g-8T; Thu, 10 Apr 2025 00:44:47 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1u2ksG-0005uE-C9
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 01:54:52 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u2jmL-0002My-8h; Thu, 10 Apr 2025 00:44:44 -0400
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1u2ksD-0000LK-EX
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 01:54:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744260282; x=1775796282;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=aTdHpc5rDqraycZTf4nOde0tkf7843YMHFrARQ0hu2s=;
- b=l15hMNxjUwQ3vRLclCDGaU9h1fRcMCyNTRMm0GruP4BpQBKFEA2yZGNs
- 2fpy6Dv5/d19tmEkaEutUkHWiok19w+GDO0ybSuZsEDf2GllRfGJRqrzu
- 5Ok4NyPWKPFhpp5vLLGvPfhkoyVF+YjWP8WzMwgTnClzVs3tLbezWz5yB
- fC+yEzZ1KFF5tAGgD6cMBlNvRNYteHVW6VfwYkAJ7EwCFSDqJn3UmOGbx
- neTymY2is79vzzzuthPdeH0bRH1U6vmH5FS06JRewJAXwVI3fyd2JXBSs
- kU/6ZazWFjkJxx5UnWcGDkJQMQTM69+vGV/0Ke5k7XGXhu5hMSyLLUHzJ A==;
-X-CSE-ConnectionGUID: 4brudUYCQlm5sIBfwohjkQ==
-X-CSE-MsgGUID: HT+NLh19RYq6nyrYBMk3Qg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="68245487"
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="68245487"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2025 21:44:36 -0700
-X-CSE-ConnectionGUID: qcSZQYFES12pOlD3NIbIBQ==
-X-CSE-MsgGUID: RIwOMItmTjud9lN6+3ArRQ==
+ t=1744264489; x=1775800489;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=1ijlZW/xyUvd7bpjVxaQNoqR/8wPtc51Z26YNDhy/wU=;
+ b=QjS1SRUjCoWC3zl3b0qP4IAfMZOIQUjjD1n5nUad2iQg+L75PQCe3Lix
+ bnMDNZF7Y02rV+aPPoCMS2QRqbsSNVMGahi9Y206nl9WBF+qS6Ov9anKa
+ vE+pmYFnvDFhksP5WQ12vBxtn0W1NWQwGNHRiMeoz3zkl/c2m992eRuBJ
+ VkqXq0VDjUwSB0lGleZNRfAWF+YzpReO+qtfFItSEeNE9zrvQlU4zjBr7
+ NV7h+TnewgmmTBCpy5K8lgPkviioWfA9Wu/7XMIdmDDb7rBPIXwK79eoj
+ SzzamETKEL4I1IgD0fK2oQ98Qv6vqDoyZBPcLBWdMTQlQ/95S5uBaGkT5 A==;
+X-CSE-ConnectionGUID: kEYb9bYuQaWtwIUOsku/AA==
+X-CSE-MsgGUID: ZwllwY7BQDSDm9OGLgaApw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="56404745"
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="56404745"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2025 22:54:44 -0700
+X-CSE-ConnectionGUID: ixWtLmEFRkig36+rPZLRjA==
+X-CSE-MsgGUID: bRee88tcS2iyi1eZL7eyzQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="129620583"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa009.fm.intel.com with ESMTP; 09 Apr 2025 21:44:26 -0700
-Date: Thu, 10 Apr 2025 13:05:15 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
- babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
- groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
- peter.maydell@linaro.org, gaosong@loongson.cn,
- chenhuacai@kernel.org, philmd@linaro.org, aurelien@aurel32.net,
- jiaxun.yang@flygoat.com, arikalo@gmail.com, npiggin@gmail.com,
- danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- thuth@redhat.com, flavra@baylibre.com, ewanhai-oc@zhaoxin.com,
- ewanhai@zhaoxin.com, cobechen@zhaoxin.com, louisqi@zhaoxin.com,
- liamni@zhaoxin.com, frankzhu@zhaoxin.com, silviazhao@zhaoxin.com
-Subject: Re: [PATCH v3 07/10] target/i386/kvm: query kvm.enable_pmu parameter
-Message-ID: <Z/dRiyGTxb8JBE8v@intel.com>
-References: <20250331013307.11937-1-dongli.zhang@oracle.com>
- <20250331013307.11937-8-dongli.zhang@oracle.com>
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="129146040"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2025 22:54:44 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 9 Apr 2025 22:54:23 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Wed, 9 Apr 2025 22:54:23 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.46) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 9 Apr 2025 22:54:23 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fP9RZC7ed38rp+txsp49ZhTzAhC4HFxpkDaINPpikKceVVTqZquk/OZi7GzinKI/cP8pP0JX2XklHRaYGGf+0JdzT8PogPg+0Zp7XEcojQ6AHPWg1QsAQZQO69A1cZIlzeQX2l2faF/6N6qNGbOdc4Y5cGJcG/lQZ1T5XI0F7JOhbkOE9RZCRnOxNXTkcns69SxJxIYULZe8rCl5ZlaBGxK6TvUBuKUZSkv/GODT+BgHS50lKX97pjhUN2Z+O/LtVEVFYAGO4J04O1ZnVn8NgD84HY8dPnwsbv91W3zhtT1UuLXgvZEV8qxST2m8E3CxSpN3H83XdkBTZvxz10bljw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qniPMybsznQm0sZtykegMeMxSEt4U1U2vga06KztmwQ=;
+ b=fR8TBzFBbbMWeSeSeHTIpZMqE5bfHH3+GUTv1sAsq+u1Hm/7Xx2a9p6EsKpbJDeDGMvbs8XSianXoL6YfISnR8wrcR8jiOcP92d5wbh8AQkxRyqCQkCW/xOQdc/GC4Vvaf74DfakcqBaxf3JBHHr0mGeXDrfR3Uqz46XkdTyNA4JNZOOx/FRO4QTI/YOUBmYgmkTGwX8qT/ERRPU2g9xf3HH9QNj5iS+CE69mBrVDwQmtIB0m+iqFMSfErp/RB6BMSZKXcLrO/ZBzUbmKxWr8NYTrYY7RjOvli4hPHVC6n/5Hw05z+dqW0T67t6NLMAXQx/ZBOhnYnnd9CL59vcwcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com (2603:10b6:0:4b::20) by
+ PH7PR11MB6427.namprd11.prod.outlook.com (2603:10b6:510:1f5::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.21; Thu, 10 Apr
+ 2025 05:54:06 +0000
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::3225:d39b:ca64:ab95]) by DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::3225:d39b:ca64:ab95%4]) with mapi id 15.20.8632.021; Thu, 10 Apr 2025
+ 05:54:06 +0000
+Message-ID: <53c87919-6836-4052-b87b-c8948304ff16@intel.com>
+Date: Thu, 10 Apr 2025 13:53:57 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 06/13] vfio: Add the support for PrivateSharedManager
+ Interface
+To: Alexey Kardashevskiy <aik@amd.com>, David Hildenbrand <david@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Michael Roth <michael.roth@amd.com>
+CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Williams Dan J
+ <dan.j.williams@intel.com>, Peng Chao P <chao.p.peng@intel.com>, Gao Chao
+ <chao.gao@intel.com>, Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao
+ <xiaoyao.li@intel.com>
+References: <20250407074939.18657-1-chenyi.qiang@intel.com>
+ <20250407074939.18657-7-chenyi.qiang@intel.com>
+ <5d35d719-4640-4c11-9691-689d5ef38887@amd.com>
+Content-Language: en-US
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+In-Reply-To: <5d35d719-4640-4c11-9691-689d5ef38887@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI1PR02CA0043.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::19) To DM3PR11MB8735.namprd11.prod.outlook.com
+ (2603:10b6:0:4b::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250331013307.11937-8-dongli.zhang@oracle.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR11MB8735:EE_|PH7PR11MB6427:EE_
+X-MS-Office365-Filtering-Correlation-Id: 473852d8-abf7-4096-320f-08dd77f41a83
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ckNxdXlyS3hIZCtnbGtNV2FsaTFiZVN1L0EwODlQSzlIL3hWVkVsWU9qMVV5?=
+ =?utf-8?B?Zy9lTHd2ZnA5TlV4UnkrRFROY0F1dHZqbHNWUVArZmhXWUlpTTh4bVVadkdE?=
+ =?utf-8?B?NUl5YUZWN1JxOFhFUmZMMWV5bDJRQWJhZFRZVWlVTE5GSzlBZVAxYitBT3hR?=
+ =?utf-8?B?ZTJOdVdyQXN6UHNEaEdpUGxmbStXNkhmcC83cnFiMW5jZVFLd3UyUmxQdTJa?=
+ =?utf-8?B?VmxZU0d0Vkozczc3bW9DOHN6VU9Bd1Bqc0IySGlIejFnZE5qck9uRjN0c2sx?=
+ =?utf-8?B?NGZXcEoweUpBREhZNnZIemdSUjF5TzVQeWUxamV1T0lZdmpvOEJIVjdlMTBv?=
+ =?utf-8?B?VnZSN1lDelhWanR1VlgvaUhrdXRqNm1MYUJFbE5QKzVUbmVDbk9kK1ppQ2wv?=
+ =?utf-8?B?d0c0d3FJaFVWbmtNWmI1amRVODF3OUFhd0h1c1FXUzJ5akcwT2VvR0RycDlv?=
+ =?utf-8?B?WEVJZllDaWNXNlFWdXRaWjF2QUF2TG5mWVUzcUI4eGlPM3FCcEZVemFzS3ZR?=
+ =?utf-8?B?czhsUlZNc0R6QVJhMFB6S0FDZXRoTkdad0xVV3hBNXgvYWJKb0EybkM4UkZL?=
+ =?utf-8?B?WjA4dWxGRzRZSk1PZ1NlblErRy9wOXpkU0VOUlhidWVkaUZuSDR2Qjc1NDNn?=
+ =?utf-8?B?aE5rUTRBb2M5MTJTNk8zZ1VwQlJKamFGUTRBdnQ1cUIwVmR2WHNzUW5Ic0pr?=
+ =?utf-8?B?SWxBMVY5UjdoZWhmWlVQQk1LUFl3QWpLMDk1d3ZOdUg4QThFOG01TFlIaytC?=
+ =?utf-8?B?M2E0Zng5QkE0bkNSam5tVXBQT0xEVEt1TjNNMVF0eTF4dTFJbC9qZmFMYU0y?=
+ =?utf-8?B?UytGeHZJbm1YTjllbldLcWQwdkYrL3U3QzFDWTZzcm1QY3VueWQ4WmpPWXZx?=
+ =?utf-8?B?Um81d281UHE1dlc1b2RhVlBMeVB0QzJnUld4NHkwSDhvK2ZBTVlxUU1UeEc4?=
+ =?utf-8?B?bmpVdlowUHBMTm1qbk8vT3Z1ZjczQ2d4cmpxODErdnRNNC9JOWhhcnV3eWZz?=
+ =?utf-8?B?OHVYYW4xbFdSWDdnNGVHaTR2VklPMHFRQXo1UUgrNEl1d1VhaUhEbkZRSGly?=
+ =?utf-8?B?WlhzTlNYSktZR3JnK1Q1MnY3Skw0WlBlazVlSTE4N1Q2OVNrRW00K2pHbHFo?=
+ =?utf-8?B?aCs2bW9QS2JuVThFbGFJU3l6a2pTbDZrelFscEJ3b0UreTlsKytRZHRSMlRL?=
+ =?utf-8?B?Z1lTTXJWeFRGQXJaMWY0V3pjaEVENXdrL2lCRlA4ZXhSUmJ6YlZUcEtnQ1p5?=
+ =?utf-8?B?V1cvMnlOcHlGNzlMSkN5YnRqakc2dFdicDJ0MTgwNm5LNkVOamVod2RPVTNR?=
+ =?utf-8?B?eExSWmNqQk9jTG51R2hVSENTVnY0eWdON3lkUHBlTzJVM3MzN1UwVWFFS1k1?=
+ =?utf-8?B?NzZ5K2hPZEMrck50dlkrWEpkM2Q1QkJUSnVHZTRsalRNbU9NR1NWWDlmdllV?=
+ =?utf-8?B?c0ZjZVNpZjFpT3VMdkNISlp1c1BBVzY1b2lxWk1aNDR4MTIrRlZHc2RxZWh6?=
+ =?utf-8?B?a29xdVZ6TVFFTkdRSWxSM1NlVTBVOUZYUkxNNzJKL1NJek9SWC9uR2prSUpr?=
+ =?utf-8?B?bURUNWJ2VVlxVWswMStWclFGMzF0eUJpeWNtTmN6Yk5lREFqY2tuRzVTTkR2?=
+ =?utf-8?B?R0RRakEwcDJjR082d2VydmZkVndDWmVidHNhaERvTTJOd0pZTzRGUFc4QTZE?=
+ =?utf-8?B?SzlEOXJQNmIvdkFVaHA2TWlKVVh2OHZGQnR2TnFCemxqVDZraDJqSmhZbjdz?=
+ =?utf-8?B?bUZQbUJMZzhESDYzUm1BbnI1SnhJNXNLcTdXaTNVU08yQUZ0TmZlaFM5N3pM?=
+ =?utf-8?B?ZFFhajA0eFZWbXAwSEViaFlBK3hhZ1V3YmVIWUIzeldDOWZidUNCYVM4Q3Vl?=
+ =?utf-8?B?SWtvT2tBaDZlZ0JUdUxDa1JackVLK3VlY1JtelZlZGdIekw3SHFKcjA5bW9x?=
+ =?utf-8?Q?9OQ7vqHF1ME=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM3PR11MB8735.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VFF2emhWam5MVEQ0Z2NLZWNMdFFYRXorT0NTVXdwYUwrV2ZxSkI1UGxWaHE4?=
+ =?utf-8?B?aE5YMU5LOE9xdzNlb0N1b3M4cWF5YTBQajY4SHlzZVVxeURabmF2dHZOdGc1?=
+ =?utf-8?B?YVVhcmJYY250alVaM0pMSzA5a09sTWRNZDBINmJXRTZ3blRjekVNd2NQdDlN?=
+ =?utf-8?B?VWp2OElLVWs5YnNGYnV4Zkx4bjFXa0hDRmFHTW15SzFpd0hkVmlJUzJxYm9T?=
+ =?utf-8?B?SEtpV25WdFR6ZTIzVXU4NkxmSVRmUzFMY0VUc1RxdW02eDE0cEhiYkt3NTRD?=
+ =?utf-8?B?MHJSbkV2NVVRazVCOFZBY2R2Wkc0Ti90TklxVWVKRU5STGRUQW8vTXJCV1pT?=
+ =?utf-8?B?M09HMG5ZNUhkaXhRVmZnWjhXM2tnUGJvbTU0emxNaHFVWUJqOENwcklHZXJX?=
+ =?utf-8?B?WHJuQ1Jha0x1UzZ4TDNZeHc0LzdReGZaSGR5OC8rSDJmMmx0TjE0d3NlcW1N?=
+ =?utf-8?B?S3pqU1pPY1d6ZnRzM3FhclJuY0E2Vm5hN2JSaGg1YmFzV1Q3c2VaOTVqd0lq?=
+ =?utf-8?B?WnJ3RDhDOGU5UjBjSTllUHc1WnRNdVR6V3FkYTNjWlFlcU1yT0Nla01hSjNQ?=
+ =?utf-8?B?QXVHbzB6QnR4SlNKQVJEcW5rM2xrWlkvZ1kzSUNaTytIdkcybC9pNWFQbnk4?=
+ =?utf-8?B?K3BVeWViM1ZvaWxGeC9kQ2FRamhMZ042c0k2U1Y0djFQdXExUTQ2cVM3eGcw?=
+ =?utf-8?B?QnZnZktLYTFsZXQxR0tyQ1JKMFJWWXNRVlplVmM2Z1NjREpibkt5ay81WkEw?=
+ =?utf-8?B?RE8xUFpXT01ucUxvWUM5MG1zUHVhajBwc214bEZYa2t3ZFd3SWxwS2ZTYnpM?=
+ =?utf-8?B?YXUrcEtqSDJUVVFvUzZCYzlGZjJqaE9ZYUgyaWVjREZLNkdJVnNwNEwwL28z?=
+ =?utf-8?B?K0RMclFsS1RCRHh0R083ZGJ5YUd3NDQ0MWhyOENwM3drSXlBQmVOc0JvTm5i?=
+ =?utf-8?B?STlFYWY5RXgyMUtiZ2RFMDdwbUNyNmtZUlR2dXNGTTgzWkxwMVdWanNOTDJJ?=
+ =?utf-8?B?eS8zZXc3TUptQklKcXVBL0xJT3VRS0R2U2lqeWpmbkI1WG5PUS9jREkvMHk2?=
+ =?utf-8?B?dkc1RFZFQUJUNTVOTFpEbGc0dlRWckFIMDJtVXlDZkhMK0JLWmVvUWVlYjF1?=
+ =?utf-8?B?QW45WHFVekhaa0xTc3NVMUE1ZDM2eGlKMlJFaEZYTFVkcFU5VngwZlg1MWhI?=
+ =?utf-8?B?aDRLc3Nabk12Y1NNYTBvYWM2N3NpbEJXUUwxbXQ3NXJpQVNuK2RHVVNSZU5k?=
+ =?utf-8?B?K2I5MnM1blB6ZEVVR3ZwazI1S2s3UTY4dDRoUzNmV0paN0NpeFVCVDVBQ3ZI?=
+ =?utf-8?B?djI3OS9KZjlXWktlWW9Fd21uMUg2OXdoaTV1YjlSS3VuR09NYnI4bG9wM1Vn?=
+ =?utf-8?B?K2ZPckVmTzZpb1VFdjhzeE5IYVBtYVROTTU5bTh1KzB5a1NuQkU3UWpWVHBQ?=
+ =?utf-8?B?dTQ1ZE50Zm5Naytwa2c0YXdkcUxDR1ltaXdCaG5wUzhKUnBSZ2dOc2ZNcGgr?=
+ =?utf-8?B?MHozbUVFL1hteVA5NVRGbEEwcEJiUXZmYTArQm5RWjd4RXdrOFdpazhGcURq?=
+ =?utf-8?B?SGhycHNUeXkwTUZsZGhwQjE0VGVrVmpFMGlDdmtaQkZiNU9YNnMxanpFaUo2?=
+ =?utf-8?B?QzRHQk85elc0RmJQZGNOTm52K1VwejRTeEpaVVBjRzBGQlpyN2hLbG5Nc0Fq?=
+ =?utf-8?B?MGgvbVJBMjUyY2VFNGVvYytJZFpEUGdGRGpqbTFlS1dUcjV1RXNIcGZWZUpQ?=
+ =?utf-8?B?bmNqVDVUK2FSc1ErTzNGUWJGSFFxdjlCWG5xOUNqTjdZRWN3ZDhFTlhIcmNI?=
+ =?utf-8?B?TGk2eVFOYy9wTW1hb04wV0pYdGRYd3F0SXBxTXo5OFJ3bEZQZlpKMTBXVURu?=
+ =?utf-8?B?dWo4UTRHU0NwVzU2N3V6clY5bUpWNVBZSm5KL3lRVzY2aDNyUC9ETXh6SjE4?=
+ =?utf-8?B?UkRsVlk2RWlMVkpJcGJCcExHUFVocnc0T3ZpZnpDeVVMYXdtcHdUOFQyTnhs?=
+ =?utf-8?B?K3pEOHd5SElUT3NRWGZaOXZDRGxteS94TlBzRm1qV0NRYVZsc1FtTlpVT3ZQ?=
+ =?utf-8?B?bkZPRTJJemlQbUNUQjYrN21rZTZpWFhVMXpiUmVrRjZ2VU9hTXZnYm5MSk1L?=
+ =?utf-8?B?WmlpdHpFdU5GQU50dWRSNFI5ZWloUmJSd0EyS3czcmNEdWVZdWRxOXJnWUIx?=
+ =?utf-8?B?bEE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 473852d8-abf7-4096-320f-08dd77f41a83
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR11MB8735.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 05:54:06.0497 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Xs53+IvOtSqgioE3x4bmdD0wzHsPok0kiLsejXCkzov23c0NX+bjFptykYrJKH2aZ6LgR0G6PMsJyHjDTlMhRg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6427
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.9;
+ envelope-from=chenyi.qiang@intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -48
 X-Spam_score: -4.9
 X-Spam_bar: ----
@@ -96,136 +217,305 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Dongli,
-
-The logic is fine for me :-) And thank you to take my previous
-suggestion. When I revisit here after these few weeks, I have some
-thoughts:
-
-> +        if (pmu_cap) {
-> +            if ((pmu_cap & KVM_PMU_CAP_DISABLE) &&
-> +                !X86_CPU(cpu)->enable_pmu) {
-> +                ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
-> +                                        KVM_PMU_CAP_DISABLE);
-> +                if (ret < 0) {
-> +                    error_setg_errno(errp, -ret,
-> +                                     "Failed to set KVM_PMU_CAP_DISABLE");
-> +                    return ret;
-> +                }
-> +            }
-
-This case enhances vPMU disablement.
-
-> +        } else {
-> +            /*
-> +             * KVM_CAP_PMU_CAPABILITY is introduced in Linux v5.18. For old
-> +             * linux, we have to check enable_pmu parameter for vPMU support.
-> +             */
-> +            g_autofree char *kvm_enable_pmu;
-> +
-> +            /*
-> +             * The kvm.enable_pmu's permission is 0444. It does not change until
-> +             * a reload of the KVM module.
-> +             */
-> +            if (g_file_get_contents("/sys/module/kvm/parameters/enable_pmu",
-> +                                    &kvm_enable_pmu, NULL, NULL)) {
-> +                if (*kvm_enable_pmu == 'N' && X86_CPU(cpu)->enable_pmu) {
-> +                    error_setg(errp, "Failed to enable PMU since "
-> +                               "KVM's enable_pmu parameter is disabled");
-> +                    return -EPERM;
-> +                }
-
-And this case checks if vPMU could enable.
-
->              }
->          }
->      }
-
-So I feel it's not good enough to check based on pmu_cap, we can
-re-split it into these two cases: enable_pmu and !enable_pmu. Then we
-can make the code path more clear!
-
-Just like:
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index f68d5a057882..d728fb5eaec6 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2041,44 +2041,42 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
-     if (first) {
-         first = false;
-
--        /*
--         * Since Linux v5.18, KVM provides a VM-level capability to easily
--         * disable PMUs; however, QEMU has been providing PMU property per
--         * CPU since v1.6. In order to accommodate both, have to configure
--         * the VM-level capability here.
--         *
--         * KVM_PMU_CAP_DISABLE doesn't change the PMU
--         * behavior on Intel platform because current "pmu" property works
--         * as expected.
--         */
--        if (pmu_cap) {
--            if ((pmu_cap & KVM_PMU_CAP_DISABLE) &&
--                !X86_CPU(cpu)->enable_pmu) {
--                ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
--                                        KVM_PMU_CAP_DISABLE);
--                if (ret < 0) {
--                    error_setg_errno(errp, -ret,
--                                     "Failed to set KVM_PMU_CAP_DISABLE");
--                    return ret;
--                }
--            }
--        } else {
--            /*
--             * KVM_CAP_PMU_CAPABILITY is introduced in Linux v5.18. For old
--             * linux, we have to check enable_pmu parameter for vPMU support.
--             */
-+        if (X86_CPU(cpu)->enable_pmu) {
-             g_autofree char *kvm_enable_pmu;
-
-             /*
--             * The kvm.enable_pmu's permission is 0444. It does not change until
--             * a reload of the KVM module.
-+             * The enable_pmu parameter is introduced since Linux v5.17,
-+             * give a chance to provide more information about vPMU
-+             * enablement.
-+             *
-+             * The kvm.enable_pmu's permission is 0444. It does not change
-+             * until a reload of the KVM module.
-              */
-             if (g_file_get_contents("/sys/module/kvm/parameters/enable_pmu",
-                                     &kvm_enable_pmu, NULL, NULL)) {
--                if (*kvm_enable_pmu == 'N' && X86_CPU(cpu)->enable_pmu) {
--                    error_setg(errp, "Failed to enable PMU since "
-+                if (*kvm_enable_pmu == 'N') {
-+                    warn_report("Failed to enable PMU since "
-                                "KVM's enable_pmu parameter is disabled");
--                    return -EPERM;
-+                }
-+            }
-+        } else {
-+            /*
-+             * Since Linux v5.18, KVM provides a VM-level capability to easily
-+             * disable PMUs; however, QEMU has been providing PMU property per
-+             * CPU since v1.6. In order to accommodate both, have to configure
-+             * the VM-level capability here.
-+             *
-+             * KVM_PMU_CAP_DISABLE doesn't change the PMU
-+             * behavior on Intel platform because current "pmu" property works
-+             * as expected.
-+             */
-+            if ((pmu_cap & KVM_PMU_CAP_DISABLE)) {
-+                ret = kvm_vm_enable_cap(kvm_state, KVM_CAP_PMU_CAPABILITY, 0,
-+                                        KVM_PMU_CAP_DISABLE);
-+                if (ret < 0) {
-+                    error_setg_errno(errp, -ret,
-+                                     "Failed to set KVM_PMU_CAP_DISABLE");
-+                    return ret;
-                 }
-             }
-         }
 
 
+On 4/9/2025 5:58 PM, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 7/4/25 17:49, Chenyi Qiang wrote:
+>> Subsystems like VFIO previously disabled ram block discard and only
+>> allowed coordinated discarding via RamDiscardManager. However,
+>> guest_memfd in confidential VMs relies on discard operations for page
+>> conversion between private and shared memory. This can lead to stale
+>> IOMMU mapping issue when assigning a hardware device to a confidential
+>> VM via shared memory. With the introduction of PrivateSharedManager
+>> interface to manage private and shared states and being distinct from
+>> RamDiscardManager, include PrivateSharedManager in coordinated RAM
+>> discard and add related support in VFIO.
+> 
+> How does the new behavior differ from what
+> vfio_register_ram_discard_listener() does? Thanks,
+
+Strictly speaking, there is no particular difference except the embedded
+PrivateSharedListener and RamDiscardListener in VFIOXXXListener.
+
+It is possible to extract some common part between
+VFIOPrivateSharedListener and VFIORamDiscardListener and some common
+part of vfio_register/unregister_xxx_listener(). But I'm not sure if it
+can become more concise.
+
+> 
+> 
+>> Currently, migration support for confidential VMs is not available, so
+>> vfio_sync_dirty_bitmap() handling for PrivateSharedListener can be
+>> ignored. The register/unregister of PrivateSharedListener is necessary
+>> during vfio_listener_region_add/del(). The listener callbacks are
+>> similar between RamDiscardListener and PrivateSharedListener, allowing
+>> for extraction of common parts opportunisticlly.
+>>
+>> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+>> ---
+>> Changes in v4
+>>      - Newly added.
+>> ---
+>>   hw/vfio/common.c                      | 104 +++++++++++++++++++++++---
+>>   hw/vfio/container-base.c              |   1 +
+>>   include/hw/vfio/vfio-container-base.h |  10 +++
+>>   3 files changed, 105 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index 3172d877cc..48468a12c3 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -335,13 +335,9 @@ out:
+>>       rcu_read_unlock();
+>>   }
+>>   -static void vfio_ram_discard_notify_discard(StateChangeListener *scl,
+>> -                                            MemoryRegionSection
+>> *section)
+>> +static void vfio_state_change_notify_to_state_clear(VFIOContainerBase
+>> *bcontainer,
+>> +                                                   
+>> MemoryRegionSection *section)
+>>   {
+>> -    RamDiscardListener *rdl = container_of(scl, RamDiscardListener,
+>> scl);
+>> -    VFIORamDiscardListener *vrdl = container_of(rdl,
+>> VFIORamDiscardListener,
+>> -                                                listener);
+>> -    VFIOContainerBase *bcontainer = vrdl->bcontainer;
+>>       const hwaddr size = int128_get64(section->size);
+>>       const hwaddr iova = section->offset_within_address_space;
+>>       int ret;
+>> @@ -354,13 +350,28 @@ static void
+>> vfio_ram_discard_notify_discard(StateChangeListener *scl,
+>>       }
+>>   }
+>>   -static int vfio_ram_discard_notify_populate(StateChangeListener *scl,
+>> +static void vfio_ram_discard_notify_discard(StateChangeListener *scl,
+>>                                               MemoryRegionSection
+>> *section)
+>>   {
+>>       RamDiscardListener *rdl = container_of(scl, RamDiscardListener,
+>> scl);
+>>       VFIORamDiscardListener *vrdl = container_of(rdl,
+>> VFIORamDiscardListener,
+>>                                                   listener);
+>> -    VFIOContainerBase *bcontainer = vrdl->bcontainer;
+>> +    vfio_state_change_notify_to_state_clear(vrdl->bcontainer, section);
+>> +}
+>> +
+>> +static void vfio_private_shared_notify_to_private(StateChangeListener
+>> *scl,
+>> +                                                  MemoryRegionSection
+>> *section)
+>> +{
+>> +    PrivateSharedListener *psl = container_of(scl,
+>> PrivateSharedListener, scl);
+>> +    VFIOPrivateSharedListener *vpsl = container_of(psl,
+>> VFIOPrivateSharedListener,
+>> +                                                   listener);
+>> +    vfio_state_change_notify_to_state_clear(vpsl->bcontainer, section);
+>> +}
+>> +
+>> +static int vfio_state_change_notify_to_state_set(VFIOContainerBase
+>> *bcontainer,
+>> +                                                 MemoryRegionSection
+>> *section,
+>> +                                                 uint64_t granularity)
+>> +{
+>>       const hwaddr end = section->offset_within_region +
+>>                          int128_get64(section->size);
+>>       hwaddr start, next, iova;
+>> @@ -372,7 +383,7 @@ static int
+>> vfio_ram_discard_notify_populate(StateChangeListener *scl,
+>>        * unmap in minimum granularity later.
+>>        */
+>>       for (start = section->offset_within_region; start < end; start =
+>> next) {
+>> -        next = ROUND_UP(start + 1, vrdl->granularity);
+>> +        next = ROUND_UP(start + 1, granularity);
+>>           next = MIN(next, end);
+>>             iova = start - section->offset_within_region +
+>> @@ -383,13 +394,33 @@ static int
+>> vfio_ram_discard_notify_populate(StateChangeListener *scl,
+>>                                        vaddr, section->readonly);
+>>           if (ret) {
+>>               /* Rollback */
+>> -            vfio_ram_discard_notify_discard(scl, section);
+>> +            vfio_state_change_notify_to_state_clear(bcontainer,
+>> section);
+>>               return ret;
+>>           }
+>>       }
+>>       return 0;
+>>   }
+>>   +static int vfio_ram_discard_notify_populate(StateChangeListener *scl,
+>> +                                            MemoryRegionSection
+>> *section)
+>> +{
+>> +    RamDiscardListener *rdl = container_of(scl, RamDiscardListener,
+>> scl);
+>> +    VFIORamDiscardListener *vrdl = container_of(rdl,
+>> VFIORamDiscardListener,
+>> +                                                listener);
+>> +    return vfio_state_change_notify_to_state_set(vrdl->bcontainer,
+>> section,
+>> +                                                 vrdl->granularity);
+>> +}
+>> +
+>> +static int vfio_private_shared_notify_to_shared(StateChangeListener
+>> *scl,
+>> +                                                MemoryRegionSection
+>> *section)
+>> +{
+>> +    PrivateSharedListener *psl = container_of(scl,
+>> PrivateSharedListener, scl);
+>> +    VFIOPrivateSharedListener *vpsl = container_of(psl,
+>> VFIOPrivateSharedListener,
+>> +                                                   listener);
+>> +    return vfio_state_change_notify_to_state_set(vpsl->bcontainer,
+>> section,
+>> +                                                 vpsl->granularity);
+>> +}
+>> +
+>>   static void vfio_register_ram_discard_listener(VFIOContainerBase
+>> *bcontainer,
+>>                                                  MemoryRegionSection
+>> *section)
+>>   {
+>> @@ -466,6 +497,27 @@ static void
+>> vfio_register_ram_discard_listener(VFIOContainerBase *bcontainer,
+>>       }
+>>   }
+>>   +static void vfio_register_private_shared_listener(VFIOContainerBase
+>> *bcontainer,
+>> +                                                  MemoryRegionSection
+>> *section)
+>> +{
+>> +    GenericStateManager *gsm =
+>> memory_region_get_generic_state_manager(section->mr);
+>> +    VFIOPrivateSharedListener *vpsl;
+>> +    PrivateSharedListener *psl;
+>> +
+>> +    vpsl = g_new0(VFIOPrivateSharedListener, 1);
+>> +    vpsl->bcontainer = bcontainer;
+>> +    vpsl->mr = section->mr;
+>> +    vpsl->offset_within_address_space = section-
+>> >offset_within_address_space;
+>> +    vpsl->granularity = generic_state_manager_get_min_granularity(gsm,
+>> +                                                                 
+>> section->mr);
+>> +
+>> +    psl = &vpsl->listener;
+>> +    private_shared_listener_init(psl,
+>> vfio_private_shared_notify_to_shared,
+>> +                                 vfio_private_shared_notify_to_private);
+>> +    generic_state_manager_register_listener(gsm, &psl->scl, section);
+>> +    QLIST_INSERT_HEAD(&bcontainer->vpsl_list, vpsl, next);
+>> +}
+>> +
+>>   static void vfio_unregister_ram_discard_listener(VFIOContainerBase
+>> *bcontainer,
+>>                                                    MemoryRegionSection
+>> *section)
+>>   {
+>> @@ -491,6 +543,31 @@ static void
+>> vfio_unregister_ram_discard_listener(VFIOContainerBase *bcontainer,
+>>       g_free(vrdl);
+>>   }
+>>   +static void
+>> vfio_unregister_private_shared_listener(VFIOContainerBase *bcontainer,
+>> +                                                   
+>> MemoryRegionSection *section)
+>> +{
+>> +    GenericStateManager *gsm =
+>> memory_region_get_generic_state_manager(section->mr);
+>> +    VFIOPrivateSharedListener *vpsl = NULL;
+>> +    PrivateSharedListener *psl;
+>> +
+>> +    QLIST_FOREACH(vpsl, &bcontainer->vpsl_list, next) {
+>> +        if (vpsl->mr == section->mr &&
+>> +            vpsl->offset_within_address_space ==
+>> +            section->offset_within_address_space) {
+>> +            break;
+>> +        }
+>> +    }
+>> +
+>> +    if (!vpsl) {
+>> +        hw_error("vfio: Trying to unregister missing RAM discard
+>> listener");
+>> +    }
+>> +
+>> +    psl = &vpsl->listener;
+>> +    generic_state_manager_unregister_listener(gsm, &psl->scl);
+>> +    QLIST_REMOVE(vpsl, next);
+>> +    g_free(vpsl);
+>> +}
+>> +
+>>   static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
+>>   {
+>>       MemoryRegion *mr = section->mr;
+>> @@ -644,6 +721,9 @@ static void
+>> vfio_listener_region_add(MemoryListener *listener,
+>>       if (memory_region_has_ram_discard_manager(section->mr)) {
+>>           vfio_register_ram_discard_listener(bcontainer, section);
+>>           return;
+>> +    } else if (memory_region_has_private_shared_manager(section->mr)) {
+>> +        vfio_register_private_shared_listener(bcontainer, section);
+>> +        return;
+>>       }
+>>         vaddr = memory_region_get_ram_ptr(section->mr) +
+>> @@ -764,6 +844,10 @@ static void
+>> vfio_listener_region_del(MemoryListener *listener,
+>>           vfio_unregister_ram_discard_listener(bcontainer, section);
+>>           /* Unregistering will trigger an unmap. */
+>>           try_unmap = false;
+>> +    } else if (memory_region_has_private_shared_manager(section->mr)) {
+>> +        vfio_unregister_private_shared_listener(bcontainer, section);
+>> +        /* Unregistering will trigger an unmap. */
+>> +        try_unmap = false;
+>>       }
+>>         if (try_unmap) {
+>> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+>> index 749a3fd29d..ff5df925c2 100644
+>> --- a/hw/vfio/container-base.c
+>> +++ b/hw/vfio/container-base.c
+>> @@ -135,6 +135,7 @@ static void vfio_container_instance_init(Object *obj)
+>>       bcontainer->iova_ranges = NULL;
+>>       QLIST_INIT(&bcontainer->giommu_list);
+>>       QLIST_INIT(&bcontainer->vrdl_list);
+>> +    QLIST_INIT(&bcontainer->vpsl_list);
+>>   }
+>>     static const TypeInfo types[] = {
+>> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/
+>> vfio-container-base.h
+>> index 4cff9943ab..8d7c0b1179 100644
+>> --- a/include/hw/vfio/vfio-container-base.h
+>> +++ b/include/hw/vfio/vfio-container-base.h
+>> @@ -47,6 +47,7 @@ typedef struct VFIOContainerBase {
+>>       bool dirty_pages_started; /* Protected by BQL */
+>>       QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
+>>       QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
+>> +    QLIST_HEAD(, VFIOPrivateSharedListener) vpsl_list;
+>>       QLIST_ENTRY(VFIOContainerBase) next;
+>>       QLIST_HEAD(, VFIODevice) device_list;
+>>       GList *iova_ranges;
+>> @@ -71,6 +72,15 @@ typedef struct VFIORamDiscardListener {
+>>       QLIST_ENTRY(VFIORamDiscardListener) next;
+>>   } VFIORamDiscardListener;
+>>   +typedef struct VFIOPrivateSharedListener {
+>> +    VFIOContainerBase *bcontainer;
+>> +    MemoryRegion *mr;
+>> +    hwaddr offset_within_address_space;
+>> +    uint64_t granularity;
+>> +    PrivateSharedListener listener;
+>> +    QLIST_ENTRY(VFIOPrivateSharedListener) next;
+>> +} VFIOPrivateSharedListener;
+>> +
+>>   int vfio_container_dma_map(VFIOContainerBase *bcontainer,
+>>                              hwaddr iova, ram_addr_t size,
+>>                              void *vaddr, bool readonly);
+> 
 
 
