@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D976A84318
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 14:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C20A84315
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 14:27:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2qzh-0008Mz-L8; Thu, 10 Apr 2025 08:26:57 -0400
+	id 1u2qzi-0008OC-Gt; Thu, 10 Apr 2025 08:26:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1u2qzc-0008Hg-V1
+ id 1u2qzc-0008Hf-UP
  for qemu-devel@nongnu.org; Thu, 10 Apr 2025 08:26:53 -0400
 Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1u2qza-0000cA-Ji
+ id 1u2qzb-0000cH-AP
  for qemu-devel@nongnu.org; Thu, 10 Apr 2025 08:26:52 -0400
 Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-ac29fd22163so127923966b.3
+ a640c23a62f3a-ac34257295dso152882266b.2
  for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 05:26:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744288008; x=1744892808; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744288009; x=1744892809; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8fwtPVaNJ5K53jGTJmVbhavIXJpRTSlA72tE2QPYneE=;
- b=j9yoOYj/wrwHkVlpzQGgrDQq4o2yBxEM+FaOxtd+kur4W4qfWwlqhYfKqDdduvrV8D
- ScjH+epuQM1Sjkpz63qfEkH6yP+IJMgFVX5vh2TVHR4pHhkxT7q3PBRMuI+JFxcDyp4Z
- X0TSG5RHGEAQxV01zZ+600glplSnEL5r5FyV/8e/LCmoZE2QeNvt3McPCsO2LsX+I70k
- tIaE3oNVgMfv2R5CqCLv4oqw6Q4zkzT8/d+oUXjtPXXetJK9fDVqo/3N3uL52l8fUb9o
- WmCToJr1KrO3IiOH2Bau0kLY1i3IJ0nR6GHoOXZS5ulT/lYMIYGSWOS+L727cqF3sRUM
- w+wg==
+ bh=ftCtUt1wCvnmyqMw25U33WH4HwFTYT545yQfYplCULc=;
+ b=TLOOmga0nniB9cgjdWwWnV1GM7XAU/qev5WwmUA9+U0D4cuK8xG05gBVgIhu5Tb7Kj
+ RKUslUnBFcGqhRTnSzf7SztyAwBJcNuJUktR7MMmp7DuEm5x3niv8qiSt8hfWxzdP5o2
+ ZCgyHGWO4XMFNb20KZZu4k/G42qIeLbkMVrUr44m7/IoaiH+jqHCAUyVOQR+nOcvhBeA
+ clM95Q8pGhftXa0vaTK7i9si6agWZ2kr+H4WJGvlsGKdg1xR0CpKg/WE5Tyhu2fR3tLV
+ rbemvnAr8t2m9Dqy1MHJBVQkXklHHyxpUptzR2MH0cvQs3AD4p+kjJW8Hasj/MYE/8eA
+ +vig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744288008; x=1744892808;
+ d=1e100.net; s=20230601; t=1744288009; x=1744892809;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8fwtPVaNJ5K53jGTJmVbhavIXJpRTSlA72tE2QPYneE=;
- b=frMBoPW+Ut3josbHRegMKQKQEkbtXAfKustPqWe6F1pSeV8pkYVp3fLOi5oLepQsx/
- 1ob06eEFoM191uUcPLOUW1zx6JNVCv/kSlPebLyWstVpd3FWYj7EA38zSXE1Fx45ksgk
- zgPAAeCK3ECPzOTzxg5+rcwF23RTX1HhF7Y85GCpd7rckWG5VcC6VkpTLHywB1ct8Djq
- 2nrL6X5APg0MplZsFNeFkCUligwnMA3YZ3/i8scm1k+pC/qQwdfQ2M1vx0WVRUvUbwC1
- c+LCU3vKejYxIkCI2mSnt2ExYxVffg3vzo3B95e1EhSu5TJmGbXQxnSpj+w6/j2dxoim
- QarA==
-X-Gm-Message-State: AOJu0YwS2g/51qPSUHW4c40FlKmOklNQXQSPkvVVimDYizMH3ICnAx7b
- q5BYfUoHgqiDsHlQqKBcjpCg82Gy4eaBbiq33sHqnCgj8VLsh0FMFS8HVRDvNTlkwbkU8AFrmDm
- Jv14=
-X-Gm-Gg: ASbGncsBSKSzB2emov5UOoubzG/hwo6mcf/NkLEh3oVI/OkCnkNBNTI0MvcD4WbIcaE
- qAOJSA9KCizkcQRhlvXPYpOlw7Dkdz1gbpWLY1PnG2nheExuXxt1DDZq8Lt6pR8t78ANeTmubok
- fYJly0CPwDDLSbeHLT/wyZBS+M714lSS7/MGPLY50pIdcrnv0GWMLZshuVl5uXjDMV+o2d+SuGq
- TtEtMHvoaeARVdIcLJz4e+iSuaquUYQ7Od9PsAZLxWOWivhxbtA8Ghd2hhDUnNIYnLkyQTkdfAk
- MsR6UY9sMMVoCXZGqshWcT99JY1OlZQZtA9VjV8BIhDIXA/qe+HCgfbZZ3qfbkY1hKhkYXZOBLM
- mjTlp2WGO6l47CL3/0zQxedkTGDzmtl7p2g==
-X-Google-Smtp-Source: AGHT+IEVWrtIGiywGQebG8b0rIOOx5SzFQLqHRJoqjEdDXBzCQcKWDaktUk790mJ6ScBMU3aAVa6vg==
-X-Received: by 2002:a17:907:a05:b0:ac7:3912:5ea8 with SMTP id
- a640c23a62f3a-acac036336bmr155940966b.61.1744288008453; 
- Thu, 10 Apr 2025 05:26:48 -0700 (PDT)
+ bh=ftCtUt1wCvnmyqMw25U33WH4HwFTYT545yQfYplCULc=;
+ b=PtYwEPRAULKz6NO0XG3DAj5h2nj+SLm/ZSZFHYkr64AirzC6/ygZa4yiDI85ai7m/A
+ R74vcuv9GwviyNid7Q3tqD7pj9Eb5k8X09C5ztbpXx+KoTTJdibqZbBXnUc4vonQAmBu
+ AkMQYclxNf9Ygj+8mUFI9pLJJ7ezWmXgF3JVG7PhzY/6pVzv7XOAdh2y8gAyLeVmPZrD
+ yd2PE4FvvRjzBwgXh0HsSWXqCKZJmNV0Z9Kun62CegG/5NvRd3xQ9yXQLbyzPamO3dKU
+ JOnCDaqa1aLvAxFjskcR/DRk75K0cFz8nPazeuR2pwtVNaUmFjYKuEb4MJe0mvR3tp3z
+ LbYA==
+X-Gm-Message-State: AOJu0YyvRDVyGiQDtQXo5HzZodMw92zCpzZ00eYg7YyZ9W9nucXxoMpo
+ c1XPRWwIs+tSlJHHSe4AzT2aY0h61f9JgP+SZfAeiMzfHc3hrCMpldmPriHxsHUe04MMzI8TUIu
+ P8Vg=
+X-Gm-Gg: ASbGncvIr33mWOLRi+M2Fiv62CPLfTGnOpmRtHZLQ489CAZfAumtSKo0AJs74YAXWqC
+ QD9UrrtyxxA0J6Cligu0Y7BJ/+z+Hxwx+6YRvnTY/M6n2AqlPetsdGramHbXesjTfckgt+Ie0Ug
+ bsYpV76JNHp7gJ1TIZU6/nlaTWoE/WI+kXIGhinVyDWcEKSeWAfaAImXcJbmdJPlpfVATIuJ6yo
+ OfH3iFMD4FlL1ULAl4T7eob5fWXYulZgt2ElZCdLZ59fgLKz7ZemsReegA9wBRyIyTFlx7jfE9+
+ UJ7xvOp8e1ILZKNasNq75wgOuJsQXL4F3CZEHdVMMVBnXHSguTT4P+l9T3ldoHNViOS5G8+aF4G
+ SPv23+V7yTZvW1tyC+GUmnaA=
+X-Google-Smtp-Source: AGHT+IGFjwq9jI7WER0Hx+152+JJI9LZ0+hRNUsXn88cVFDrD/l3Jtc088pVv4dthafChAQT4xLS4Q==
+X-Received: by 2002:a17:906:c14e:b0:ac7:cfd4:76c6 with SMTP id
+ a640c23a62f3a-acac0064410mr189145666b.3.1744288009515; 
+ Thu, 10 Apr 2025 05:26:49 -0700 (PDT)
 Received: from localhost.localdomain (adsl-194.109.242.94.tellas.gr.
  [109.242.94.194]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-acaa1be98c9sm271794866b.65.2025.04.10.05.26.47
+ a640c23a62f3a-acaa1be98c9sm271794866b.65.2025.04.10.05.26.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Apr 2025 05:26:48 -0700 (PDT)
+ Thu, 10 Apr 2025 05:26:49 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v2 2/3] virtio-gpu: fix hang under TCG when unmapping blob
-Date: Thu, 10 Apr 2025 15:26:37 +0300
-Message-ID: <20250410122643.1747913-3-manos.pitsidianakis@linaro.org>
+Subject: [PATCH v2 3/3] virtio-gpu: refactor async blob unmapping
+Date: Thu, 10 Apr 2025 15:26:38 +0300
+Message-ID: <20250410122643.1747913-4-manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250410122643.1747913-1-manos.pitsidianakis@linaro.org>
 References: <20250410122643.1747913-1-manos.pitsidianakis@linaro.org>
@@ -104,77 +104,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-This commit fixes an indefinite hang when using VIRTIO GPU blob objects
-under TCG in certain conditions.
+Change the 3 part async cleanup of a blob memory mapping to check if the
+unmapping has finished already after deleting the subregion; this
+condition allows us to skip suspending the command and responding to the
+guest right away.
 
-The VIRTIO_GPU_CMD_RESOURCE_MAP_BLOB VIRTIO command creates a
-MemoryRegion and attaches it to an offset on a PCI BAR of the
-VirtIOGPUdevice. The VIRTIO_GPU_CMD_RESOURCE_UNMAP_BLOB command unmaps
-it.
-
-Because virglrenderer commands are not thread-safe they are only
-called on the main context and QEMU performs the cleanup in three steps
-to prevent a use-after-free scenario where the guest can access the
-region after it’s unmapped:
-
-1. From the main context, the region’s field finish_unmapping is false
-   by default, so it sets a variable cmd_suspended, increases the
-   renderer_blocked variable, deletes the blob subregion, and unparents
-   the blob subregion causing its reference count to decrement.
-
-2. From an RCU context, the MemoryView gets freed, the FlatView gets
-   recalculated, the free callback of the blob region
-   virtio_gpu_virgl_hostmem_region_free is called which sets the
-   region’s field finish_unmapping to true, allowing the main thread
-   context to finish replying to the command
-
-3. From the main context, the command is processed again, but this time
-   finish_unmapping is true, so virgl_renderer_resource_unmap can be
-   called and a response is sent to the guest.
-
-It happens so that under TCG, if the guest has no timers configured (and
-thus no interrupt will cause the CPU to exit), the RCU thread does not
-have enough time to grab the locks and recalculate the FlatView.
-
-That’s not a big problem in practice since most guests will assume a
-response will happen later in time and go on to do different things,
-potentially triggering interrupts and allowing the RCU context to run.
-If the guest waits for the unmap command to complete though, it blocks
-indefinitely. Attaching to the QEMU monitor and force quitting the guest
-allows the cleanup to continue.
-
-There's no reason why the FlatView recalculation can't occur right away
-when we delete the blob subregion, however. It does not, because when we
-create the subregion we set the object as its own parent:
-
-    memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
-
-The extra reference is what prevents freeing the memory region object in
-the memory transaction of deleting the subregion.
-
-This commit changes the owner object to the device, which removes the
-extra owner reference in the memory region and causes the MR to be
-freed right away in the main context.
-
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/display/virtio-gpu-virgl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/display/virtio-gpu-virgl.c | 35 +++++++++++++++++++++++++----------
+ 1 file changed, 25 insertions(+), 10 deletions(-)
 
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 71a7500de9..8fbe4e70cc 100644
+index 8fbe4e70cc..32a32879f7 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -112,7 +112,7 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
-     vmr->g = g;
-     mr = g_new0(MemoryRegion, 1);
+@@ -155,7 +155,32 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
+      *    asynchronously by virtio_gpu_virgl_hostmem_region_free().
+      * 3. Finish the unmapping with final virgl_renderer_resource_unmap().
+      */
++
++    /* 1. Check if we should start unmapping now */
++    if (!vmr->finish_unmapping) {
++        /* begin async unmapping. render will be unblocked once MR is freed */
++        b->renderer_blocked++;
++
++        memory_region_set_enabled(mr, false);
++        memory_region_del_subregion(&b->hostmem, mr);
++        object_unparent(OBJECT(mr));
++        /*
++         * The unmapping might have already finished at this point if no one
++         * else held a reference to the MR; if yes, we can skip suspending the
++         * command and unmap the resource right away.
++         */
++        *cmd_suspended = !vmr->finish_unmapping;
++    }
++
++    /*
++     * 2. if virtio_gpu_virgl_hostmem_region_free hasn't been executed yet, we
++     * have marked the command to be re-processed later by setting
++     * cmd_suspended to true. The freeing callback will be called from RCU
++     * context later.
++     */
++
+     if (vmr->finish_unmapping) {
++        /* 3. MemoryRegion has been freed, so finish unmapping */
+         res->mr = NULL;
+         g_free(vmr);
  
--    memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
-+    memory_region_init_ram_ptr(mr, OBJECT(g), "blob", size, data);
-     memory_region_add_subregion(&b->hostmem, offset, mr);
-     memory_region_set_enabled(mr, true);
+@@ -166,16 +191,6 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
+                           __func__, strerror(-ret));
+             return ret;
+         }
+-    } else {
+-        *cmd_suspended = true;
+-
+-        /* render will be unblocked once MR is freed */
+-        b->renderer_blocked++;
+-
+-        /* memory region owns self res->mr object and frees it by itself */
+-        memory_region_set_enabled(mr, false);
+-        memory_region_del_subregion(&b->hostmem, mr);
+-        object_unparent(OBJECT(mr));
+     }
  
+     return 0;
 -- 
 γαῖα πυρί μιχθήτω
 
