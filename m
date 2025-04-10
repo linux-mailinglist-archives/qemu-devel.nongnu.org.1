@@ -2,109 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E58A843C7
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 14:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1876A84418
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 15:07:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2rRV-0001q9-1C; Thu, 10 Apr 2025 08:55:41 -0400
+	id 1u2rc8-0007Dh-Cv; Thu, 10 Apr 2025 09:06:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u2rRM-0001pL-KJ
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 08:55:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u2rc6-0007DK-ET
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 09:06:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u2rRI-0004DR-6A
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 08:55:30 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u2rc4-0005Jh-Oi
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 09:06:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744289726;
+ s=mimecast20190719; t=1744290394;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uY+GXIRcFHjEMDAwApDq5u+dpMv+32eCMLTfB4Go5sE=;
- b=BgPDnAtxBn5JnWbR/HmrPPp69vhj+NtCRd+Z4AaiYA18Am8Z1v7jVQ4THDNAS/JzksggTJ
- 3o6nomsAuSiX+XQOpnTnjmtBmpiVXdYwIpz/fjRiqlOfh+3K0Siqu4W363KTtf80nrpAC8
- q98GuCoZQs2T3XQJDek4Ms+HakhFHkg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-133-ue-yKNEqPOmurWAZK6CeQg-1; Thu, 10 Apr 2025 08:55:24 -0400
-X-MC-Unique: ue-yKNEqPOmurWAZK6CeQg-1
-X-Mimecast-MFC-AGG-ID: ue-yKNEqPOmurWAZK6CeQg_1744289723
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43941ad86d4so4611885e9.2
- for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 05:55:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744289722; x=1744894522;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uY+GXIRcFHjEMDAwApDq5u+dpMv+32eCMLTfB4Go5sE=;
- b=fnuaT6ZwURaNBD1+heTKPqFsTUz+PgletHDdB1Bl+G24iR9Pxl2T+AjhvXdO8whz83
- v6Px7KPN1dHAxKdibYZ61wH16mGmD8bDOQpqk0TJaQIAXE8fDwB6GsQuU3ZJ8tjTBQ8i
- TekC+5bc3qlUTnL64PtUzvTbHwVoGu5M7xkq6zx9yFfZbmJB6p5v/QTN/+BVYb7GTLgW
- pI76wD5DK6VRbqzPNM3CBa6og7QPJZx21T0tKnz3h1BUBQ9W9IS9tx54UEJVEvWAIYjx
- jtZl5/WtxpMarwls3yZKyDJ0o1/smHMmT34DIVGKfbSdIAwGWVz1KGUxNoBWhRL+CKBO
- oL/Q==
-X-Gm-Message-State: AOJu0YwVZAhd8qm0GmRoSgzCOS+UPS+s7JZJRkq8IFAwGIYXSkHxRW4l
- 6NZ/IGnwOWaoFr6RoEv+X0zPdIMuzOTzl4kGn9bXmV3yaUI7r+usoszndToK1LJR1vkRpk8vIoJ
- LUAtzPizb+XVou/VWhv2vCAUkbhUGNGoCIMN2OjdCGwgmjd4gOpZR+13hupGCzFHbh6GqcI6XMd
- kQmaVhnXkLlQaTp7CoLrz69pmQQSa6jUHNWWixwA==
-X-Gm-Gg: ASbGncvIsYiUfpkHCCzKGtdoamd30ea5P7ihPC63uz6Yk8la7GWT/HW/OHWTry+cFnZ
- e7s6aAmbPelaX54RYW4pmBTUOj5Hf5GAEajD9TSIJ+a/mu8St87whVClvMVMlGkSpaTzWqCE=
-X-Received: by 2002:a05:600c:444f:b0:43c:ec28:d301 with SMTP id
- 5b1f17b1804b1-43f2d95a8cemr20170415e9.26.1744289721791; 
- Thu, 10 Apr 2025 05:55:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGW/oI6PJ2sPXRseyY0hIx68eNKE/Q8Rq3HCpYvGRDu8u/qXQI7NkJgh7YcxTWBGAQGR7S5ei7TJG0O7JjER24=
-X-Received: by 2002:a05:600c:444f:b0:43c:ec28:d301 with SMTP id
- 5b1f17b1804b1-43f2d95a8cemr20170155e9.26.1744289721389; Thu, 10 Apr 2025
- 05:55:21 -0700 (PDT)
+ bh=w+EoEHuflXqCaeEY8G+qo4fPJ189er5U5VS5u2Y4Gts=;
+ b=gXendQvAnOwcrmDugwJEHeNzb8W89RXU/KhFO0UtrW69go6iFsq9zOB09R5N/SlaziVUuu
+ KxpQYeq3+0mV5UzDOxCAVCX8cbD6UJZlnZhHGeV/DDQHZDLy18azJPF5Mq9eRuf3MrZr2k
+ mB9cYUxdpbIpX0gFMjsqEVOgd/H4G28=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-uBkt-LFYNjiVen0Trztp1w-1; Thu,
+ 10 Apr 2025 09:06:29 -0400
+X-MC-Unique: uBkt-LFYNjiVen0Trztp1w-1
+X-Mimecast-MFC-AGG-ID: uBkt-LFYNjiVen0Trztp1w_1744290388
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1014C180AF6E; Thu, 10 Apr 2025 13:06:28 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.107])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 859191801A69; Thu, 10 Apr 2025 13:06:27 +0000 (UTC)
+Date: Thu, 10 Apr 2025 09:06:26 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
+Subject: Re: Note improvements to QAPI-generated manuals in ChangeLog/10.0?
+Message-ID: <20250410130626.GA33720@fedora>
+References: <87h62x8n6b.fsf@pond.sub.org>
+ <CAJSP0QUyZfV8UQmhR5ADgC5Cr9zVrJ53fcWLvY0GUUSKfj8iyw@mail.gmail.com>
+ <87v7rc4nxa.fsf@pond.sub.org>
 MIME-Version: 1.0
-References: <cover.1744032780.git.ktokunaga.mail@gmail.com>
- <04b7137a464e0925e2ae533bbde4fcdfe0dfe069.1744032780.git.ktokunaga.mail@gmail.com>
- <e0dcc4e6-1e8e-468f-83e5-36ffb014eeef@linaro.org>
- <671805c9-f802-412b-998e-ba83719f1e72@redhat.com>
- <CAEDrbUbnAzXpmNSNi11j7+a0DCYHy7d_MCY=TMqHUoxmo_ZHGw@mail.gmail.com>
-In-Reply-To: <CAEDrbUbnAzXpmNSNi11j7+a0DCYHy7d_MCY=TMqHUoxmo_ZHGw@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 10 Apr 2025 14:55:07 +0200
-X-Gm-Features: ATxdqUGKmzOKJOybqP1sPUXX_2b_QdTs7865rXacRygnAG-Afji3ov0U768K7SU
-Message-ID: <CABgObfaL3f3BD56ajE=Dv+VKidjpW=FRuwTyFHr_Fpu5uAqmpg@mail.gmail.com>
-Subject: Re: [PATCH 05/10] meson: Add wasm build in build scripts
-To: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz <groug@kaod.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- qemu-riscv@nongnu.org, 
- qemu-arm@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="zsGT6pZXBM+zZKMt"
+Content-Disposition: inline
+In-Reply-To: <87v7rc4nxa.fsf@pond.sub.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.593,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,90 +85,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 10, 2025 at 2:24=E2=80=AFPM Kohei Tokunaga <ktokunaga.mail@gmai=
-l.com> wrote:
-> > >> has_int128_type is set to false on emscripten as of now to avoid err=
-ors by
-> > >> libffi.
+
+--zsGT6pZXBM+zZKMt
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Apr 10, 2025 at 06:53:53AM +0200, Markus Armbruster wrote:
+> Stefan Hajnoczi <stefanha@gmail.com> writes:
+>=20
+> > On Wed, Apr 9, 2025 at 9:44=E2=80=AFAM Markus Armbruster <armbru@redhat=
+=2Ecom> wrote:
+> >>
+> >> John improved looks and usabilibity of the QAPI-generated manuals quite
+> >> a bit.  These are
+> >>
+> >>     QEMU QMP Reference Manual
+> >>     QEMU Storage Daemon QMP Reference Manual
+> >>     QEMU Guest Agent Protocol Reference
+> >>
+> >> Where should it go?  https://wiki.qemu.org/ChangeLog/10.0 has no secti=
+on
+> >> dedicated to the manuals.  We could mention it under System Emulation /
+> >> Monitor / QMP, and again under Guest Agent.  Thoughts?
 > >
-> > What is the error here?  How hard would it be to test for it?
->
-> When has_int128_type=3Dtrue, I encountered a runtime error from libffi. T=
-o
-> reproduce this, we need to actually execute a libffi call with 128-bit
-> arguments.
->
-> > Uncaught TypeError: Cannot convert 1079505232 to a BigInt
-> >     at ffi_call_js (out.js:702:37)
-> >     at qemu-system-x86_64.wasm.ffi_call (qemu-system-x86_64.wasm:0xa377=
-12)
-> >     at qemu-system-x86_64.wasm.tcg_qemu_tb_exec_tci (qemu-system-x86_64=
-.wasm:0x65f440)
-> >     at qemu-system-x86_64.wasm.tcg_qemu_tb_exec (qemu-system-x86_64.was=
-m:0x65edff)
-> >     at qemu-system-x86_64.wasm.cpu_tb_exec (qemu-system-x86_64.wasm:0x6=
-762c0)
-> >     at qemu-system-x86_64.wasm.cpu_exec_loop (qemu-system-x86_64.wasm:0=
-x677c84)
-> >     at qemu-system-x86_64.wasm.dynCall_iii (qemu-system-x86_64.wasm:0xa=
-b9014)
-> >     at ret.<computed> (out.js:6016:24)
-> >     at invoke_iii (out.js:7574:10)
-> >     at qemu-system-x86_64.wasm.cpu_exec_setjmp (qemu-system-x86_64.wasm=
-:0x676db8)
+> > I would add a separate Documentation section for changes like this.
+> > That's also where major docs infrastructure items like changes to
+> > formats (rST), tooling (Sphinx), etc could be announced.
+>=20
+> Insert a "Documentation" section between "Guest agent" and "Build
+> Information"?
 
-Ok, I guess a comment mentioning that it's a libffi limitation is enough.
+Sounds good to me.
 
-> > At least -g -O3 -pthread should not be necessary.
->
-> Thank you for the suggestion. -sPROXY_TO_PTHREAD flag used in c_link_args
-> always requires -pthread, even during configuration. Otherwise, emcc retu=
-rns
-> an error like:
->
-> > emcc: error: -sPROXY_TO_PTHREAD requires -pthread to work!
->
-> So I think -pthread needs to be included in c_link_args at minimum. I'll =
-try
-> to remove other flags in the next version of the series.
+Stefan
 
-Reading more about -sPROXY_TO_PTHREAD it seems that you need it for
-all calls to emcc, even when compiling, so it's better to leave it in
-everywhere.
+--zsGT6pZXBM+zZKMt
+Content-Type: application/pgp-signature; name=signature.asc
 
-> > For -Wno-unused-command-line-argument what are the warnings/errors that
-> > you are getting?
->
-> I encountered the following error when compiling QEMU:
->
-> > clang: error: argument unused during compilation: '-no-pie' [-Werror,-W=
-unused-command-line-argument]
->
-> It seems Emscripten doesn't support the -no-pie flag, and this wasn't cau=
-ght
-> during the configure phase. It seems that removing
-> -Wno-unused-command-line-argument would require the following change in
-> meson.build, but I'm open to better approaches.
->
-> > -if not get_option('b_pie')
-> > +if not get_option('b_pie') and host_os !=3D 'emscripten'
-> >    qemu_common_flags +=3D cc.get_supported_arguments('-fno-pie', '-no-p=
-ie')
-> >  endif
+-----BEGIN PGP SIGNATURE-----
 
-Meson should have passed the -Werror=3Dunused-command-line-argument flag
-when doing the above test (CLikeCompiler._has_multi_arguments ->
-has_arguments -> Compiler.compiles -> _build_wrapper ->
-build_wrapper_args -> ClangCompiler.get_compiler_check_args). It would
-be great if you can check what's wrong in this theory so perhaps meson
-can be fixed, or at least send here a meson-log.txt.
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmf3wlIACgkQnKSrs4Gr
+c8jJVQf+JbclF3Bq7c7pM3WkGhCXdCZVclNFVJJuIlGIJ55U+hof1Zc4+WZ+BfjE
+33xdnOZ6klvMi7yH+C6DewZbu/y1ux6TH/oOHaxH64mzCCiTBDx1Lpoe89lf52BT
+Xbw3oOrxt1NNYx/itwbjRpn8egA05QmNASmPD8nssKbQtVpRbPzWm68QtUPfAfxt
+Gbq576n/xhF1pyqN7vAVfv4/+zuiXzSz0hkm0i33TnvbCim4btLBpSMeSUp+3p7O
+IuScAl8lIUyq9Cvr1PG9pHj8pJ+5IwsLoXhQCPFiyyf5TAgFuJoBj9YjtEp0BZQh
+Knl6UjhpXvTSKoOFdmnNQ2rk4GAY8Q==
+=ODu+
+-----END PGP SIGNATURE-----
 
-My suggestion is (if possible) to split out the parts of this series
-that are enough to run QEMU under TCI, and get those in as quickly as
-possible. The TCG backend can come second.
-
-Thanks,
-
-Paolo
+--zsGT6pZXBM+zZKMt--
 
 
