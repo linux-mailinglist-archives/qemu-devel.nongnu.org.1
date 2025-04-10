@@ -2,206 +2,155 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958E2A835E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 03:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2638A83687
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 04:33:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2gyf-0007Zj-LQ; Wed, 09 Apr 2025 21:45:13 -0400
+	id 1u2hiW-0000O7-QB; Wed, 09 Apr 2025 22:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1u2gyc-0007Z4-Te
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 21:45:11 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1u2hiT-0000Nq-8U; Wed, 09 Apr 2025 22:32:33 -0400
+Received: from mail-psaapc01on2072c.outbound.protection.outlook.com
+ ([2a01:111:f403:200e::72c]
+ helo=APC01-PSA-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1u2gyZ-0005Jb-Tu
- for qemu-devel@nongnu.org; Wed, 09 Apr 2025 21:45:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744249508; x=1775785508;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=/KB8z8hOWBRYbvUOO8tiJKcmD1yNGF8GQRhmYoE9Wk4=;
- b=aok9KD6DZ+cfGrTruJ38ynPOpscS5gPCzhexgin79b+I5Wofbs6t04DW
- F0OWhuLj09sMEjpH3aQDYafki2e1VV8xeTZMOdhC6oNcdiO690RogE6ni
- Oxy/R6XvsNqG1fvG953Z3QEo8bF6ZxXUUFl6L+sIa5U7N8fMomPHAwWMx
- sxF3BqG3dpcj4p6AD0kzZ8L+B5eztCBbJuRLggpJilbH2JtjcTT78RQWs
- EMDom+0dzf6zRZImDzI313gyqTx4tCogP1FLdVU6rkcxd+zb2I0C6ocby
- DnfRqVzj7A6/eRILxwy2EYDTG3OPGBCBjD4FthwaSfYao88P49E87D9ez w==;
-X-CSE-ConnectionGUID: O0P/52nHSLK/2mZLOwarOw==
-X-CSE-MsgGUID: pMG3d9dYTSKleSuWQ2yf2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="49411731"
-X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; d="scan'208";a="49411731"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2025 18:45:04 -0700
-X-CSE-ConnectionGUID: 11lffiwuR4yupNPakRgMQg==
-X-CSE-MsgGUID: +xrPA8ELROOLKQ5ZY1E1qA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; d="scan'208";a="151930053"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2025 18:45:04 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Wed, 9 Apr 2025 18:45:03 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Wed, 9 Apr 2025 18:45:03 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.170)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 9 Apr 2025 18:45:02 -0700
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1u2hiP-0002O7-Jx; Wed, 09 Apr 2025 22:32:32 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DDJzDvILBE4tfLHenP9FSPgKh7oMoRHnSDDALd6P7b81Cfw3kwhxJhUexE0tApYulZKaHe6boqPWnKtBCWzhZqWrk7P3E0GVPvPt4YA7EBdnqek0PqAF+q0k2NRAogJc0cR+E8SzMCehvWk7sXi225eYUWDZQuWKJEUJ/6V16mOXLL2NqKms04b1xsdfMubx1knfTj/LFOYbtvRR6G0YgCwOjbe2gOSaQrKnKoZskxOpSg9TXBo9k4cKhZwIc4/R4Fi5KUzx82KqngX1Y5hBSy1T5X38jJ19pPa/J0Akl59a/2LJL9AFxD0AJosVObEsXCY0AdlbCR/zHMRQn0WaiA==
+ b=NvPHhh4WhXBQTmXCsWOFUBAF0aTw5R41UIOQZyj7amCjd/oRsJDNol+8eQnMsW02y/RtfcfCr1WtxZ4xxgPwpmaAVPyoW56Wi2HFQyZxKz9NdctMIfdMxGlou0wraxNIYRiSIVfyl3+Z/te/D3c9rV0HcCbK7cjSVdStLRCIQxuq9DOg0t2B05cpJlrqjbOgsdQfOJ/UYKTWoLvLk8llXpM9UcKgWkgem3wGg++TaifQtNZLhtyaB2CERPJQwWx5w+Rrl/4Fk6aI9c5YB5S4eTYDxllMRrqWgYZW7tYBdXUwi8dG/obVK6gw5+J8LgdZoULXhr3u0MjTG8rRpQSxqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1lHFHrJY/j9eA5lpiZDtg8uq2jz09wrUptQ81zhJZVg=;
- b=TfkPwQwX+PD1hi+XZuPI36+dFABqPnKHMQD0FKsPaCQ058bdAkRJuPfjl6KLVDRqRfV1SCVS3UgwPqveO4Lt6S5ViBH7mUHCdPLUZO2v1OAZDci81OYJVNPf3odK4UN9aOf9KCPcvLqYZjoDxmTFJE72Voy/1isobaHkXC1kxumQHigsKCldVnnYkGpIXlhMQaqk8HXZXtxDt5/Y6WInd846UtkDsNoY0gFtjMhcm/Sm/UB1IDg/44Zc42qJXEdrBWj8mkY4gGSORHUra2SLrge0nUha1JqCjct4bfIHksZmqscz+HX43hu5hKqKDkXfH6NkWnPLXHqv1Kalc+7XFw==
+ bh=x4hwuxSTgGxuFLH4y304fnmomGBgs/Va1mIpvjzRYyU=;
+ b=GjmTWOnLHJQPGXwCmW2qWnFTfA5h2aGBlSEzZmrxaGLAfTNzTz3VO0MH8iUS/iQwcax6aq/tix6yxUTKqs8uQfe45JAvv2TO1T0v57L3f6bxaKumetyOKQap6Xmgozs41hn9fGWu94Rg/46JjeaFW9nxYrC3r5MWjhEQIqLnQOfjc/iNSYn78EjjD0cMu3eX1XKTJU6iABXtLtdBJ4W1tQevcQbGayatJ6SeBYr5TnthX+jq3RBa4z3J9pE1FICYpMdxdlW7Ge2sKIEE7Viyko+zzPwNwMnw/KYGlKpNPv5+n6JKbRatbiqgacSX2QElvaOyVC1mEz+G5d6jkGqlKQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM3PR11MB8735.namprd11.prod.outlook.com (2603:10b6:0:4b::20) by
- CO1PR11MB4930.namprd11.prod.outlook.com (2603:10b6:303:9b::11) with
+ smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
+ header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x4hwuxSTgGxuFLH4y304fnmomGBgs/Va1mIpvjzRYyU=;
+ b=Wa/NOS98sTDE/g0vMmN37waOfWRY9kf5HbTFACjWyaOL+KpCPCcwUeBgdynI+tr8trq17wiYkFzMHb2w8BgU7+36uoFKnxOeoKjhhItGa0N9J4FAfoOBu6P7ugwFwCTv1+8ZYYMUrjXm4RqdMShVdXgO/6tlpZyLwGelk8ifkBoAkpqgajJi2Q1kJKc3PeOnX2lUlli6JpJtcwj/ozaXgTlA/ijiyKMMYy6eV916SLwusTMS57Ul19S19vNgp7tCc0y254y9zUTDFKznRtkYso8udVCSiy2R0QqYtgjECqHA4joqECBcNC/QDem60kBEnmpISmK7ty1vGtfDJKgevg==
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com (2603:1096:4:1a4::6) by
+ JH0PR06MB7030.apcprd06.prod.outlook.com (2603:1096:990:6d::9) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8632.21; Thu, 10 Apr 2025 01:44:55 +0000
-Received: from DM3PR11MB8735.namprd11.prod.outlook.com
- ([fe80::3225:d39b:ca64:ab95]) by DM3PR11MB8735.namprd11.prod.outlook.com
- ([fe80::3225:d39b:ca64:ab95%4]) with mapi id 15.20.8632.021; Thu, 10 Apr 2025
- 01:44:55 +0000
-Message-ID: <cfffa220-60f8-424c-ab67-e112953109c6@intel.com>
-Date: Thu, 10 Apr 2025 09:44:46 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/13] memory: Introduce generic state change parent
- class for RamDiscardManager
-To: Alexey Kardashevskiy <aik@amd.com>, David Hildenbrand <david@redhat.com>, 
- Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Michael Roth <michael.roth@amd.com>
-CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Williams Dan J
- <dan.j.williams@intel.com>, Peng Chao P <chao.p.peng@intel.com>, Gao Chao
- <chao.gao@intel.com>, Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao
- <xiaoyao.li@intel.com>
-References: <20250407074939.18657-1-chenyi.qiang@intel.com>
- <20250407074939.18657-5-chenyi.qiang@intel.com>
- <402e0db2-b1af-4629-a651-79d71feffeec@amd.com>
- <04e6ce1f-1159-4bf3-b078-fd338a669647@intel.com>
- <25f8159e-638d-446f-8f87-a14647b3eb7b@amd.com>
-Content-Language: en-US
-From: Chenyi Qiang <chenyi.qiang@intel.com>
-In-Reply-To: <25f8159e-638d-446f-8f87-a14647b3eb7b@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR06CA0235.apcprd06.prod.outlook.com
- (2603:1096:4:ac::19) To DM3PR11MB8735.namprd11.prod.outlook.com
- (2603:10b6:0:4b::20)
+ 15.20.8606.31; Thu, 10 Apr 2025 02:32:20 +0000
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56]) by SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56%4]) with mapi id 15.20.8632.021; Thu, 10 Apr 2025
+ 02:32:20 +0000
+From: Jamin Lin <jamin_lin@aspeedtech.com>
+To: Jamin Lin <jamin_lin@aspeedtech.com>, =?iso-8859-1?Q?C=E9dric_Le_Goater?=
+ <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>, Steven Lee
+ <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open list:All
+ patches CC here" <qemu-devel@nongnu.org>, "open list:ASPEED BMCs"
+ <qemu-arm@nongnu.org>
+CC: Troy Lee <troy_lee@aspeedtech.com>, "nabihestefan@google.com"
+ <nabihestefan@google.com>
+Subject: RE: [PATCH v1 0/9] Support vbootrom for AST2700
+Thread-Topic: [PATCH v1 0/9] Support vbootrom for AST2700
+Thread-Index: AQHbqTaymNAGMPVtbUWMF2kInkR/tLOcLo3g
+Date: Thu, 10 Apr 2025 02:32:20 +0000
+Message-ID: <SI2PR06MB50410ED73D611FD1A669713BFCB72@SI2PR06MB5041.apcprd06.prod.outlook.com>
+References: <20250409100039.2391847-1-jamin_lin@aspeedtech.com>
+In-Reply-To: <20250409100039.2391847-1-jamin_lin@aspeedtech.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=aspeedtech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SI2PR06MB5041:EE_|JH0PR06MB7030:EE_
+x-ms-office365-filtering-correlation-id: 10f88f31-3c51-4815-6d1c-08dd77d7eb07
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?cGb31Yc23d3CSoen9H9GlqXzPaMtINJnK0ajFvrScZYwDHOgFwxP0DF8gG?=
+ =?iso-8859-1?Q?fuXgNrADhhgxz2vqoIdjt+x7Aj+BREbjyCJZiHkasfyjX7aSNgBFoa2oko?=
+ =?iso-8859-1?Q?oz7EJhw5XJ7/QBuRIoeZXWDiDOTH3QarCqWjcLOjPdCxFIegtOanRF/0QX?=
+ =?iso-8859-1?Q?1mrrn7j61jyG5ziWuZF1ZHK+ntZy8UWtLmizdfzcfSITnEywu97Nk2mawU?=
+ =?iso-8859-1?Q?vPl1Wbo1JMilGD7Ygu7kp/PordQyGAaC8i1UBm99aKn0KyOaQ2D50BIPM2?=
+ =?iso-8859-1?Q?IaHylWnJrx6M2TISxeZ5hx70c1VJDT+Tgp0jAGIyuwaa0ILCNzv9KOEUyN?=
+ =?iso-8859-1?Q?hSEKD8vV7oMrlewcXdi/4TIvoduB5QSaUsRBVfw6kyTROYgr0KCHgirNDJ?=
+ =?iso-8859-1?Q?WGT0NhvzM2LQ2tbnc0yHoYs8M8vx6G5rlrsUSGDhu5YPtowkXmbTvtWtyU?=
+ =?iso-8859-1?Q?x6o8qfzwnROuAdlFoF5Ong0OS+t2/qd88N/NrvF7wgrBY3vGdwEXa4La0U?=
+ =?iso-8859-1?Q?I6ZYX0mD6TyaZBg4JTQ05KZGrfHzxBc3taIIWD5Q1yakdXguSPH9TVzHbQ?=
+ =?iso-8859-1?Q?+uXtgyh6y2ZQS+nhSxyD+RvG08hIKygQtC1YRjDJ+Y7d2B3zKfccbzA5lZ?=
+ =?iso-8859-1?Q?2RoT//W/DBYb8+NNEMkRZcWPEnDr1dS7V+ylnNJadTSGPMTmHFzW+dvEZ8?=
+ =?iso-8859-1?Q?TjAh8WfAWQ/HGpN8AXvNax71QNrNe456ppyR7XXWrpOWnIBtLuAslkTonS?=
+ =?iso-8859-1?Q?gdOJDBKjAoB9Rn0pzIdXFRxjsiprpqb0NG3t082SyEKDwXgROMHqo9thYk?=
+ =?iso-8859-1?Q?0JiOfURbPawVLP1RfuB9QXp3k8nTT8AJ6pq3dyMcpckDIj/48rehZBJJgr?=
+ =?iso-8859-1?Q?5/yNReKQZU4+USiE/0+iWYyfRrmAsBc0hndPUvXxPkKt9jCEe6FhLI1yi7?=
+ =?iso-8859-1?Q?66YWTRueb29052Oudtrba9BwNxAfKD85EmbrqyC9WggS7VnH/ymoGZbvSx?=
+ =?iso-8859-1?Q?r5zXd+zFjIaS6Jq9b7ylAntpl6WVIOtyEyMi9NApC15QfVPCn64XVASeJO?=
+ =?iso-8859-1?Q?p6OAjaMiccQaWUgEI6/lZ53Ti9Vadkol9xUO2bphgGHpKvYhQQIWRpqGwr?=
+ =?iso-8859-1?Q?QuQd/H0kuO6epwkpFKp4nZJ/6E0MWQZYqCJ1VEtwTB7E7gZ+F2yLCS7c5l?=
+ =?iso-8859-1?Q?pB9IOgC15hW2jvuN2808rYvCxgloCaO6tBq/2wGEno8FtyeR28fCd6RcRK?=
+ =?iso-8859-1?Q?Wb/zpnZcknK9427TJ4wcjcEKTUVemAbcI/u3yUhOu6p1Ms/2e2ep/Q68y8?=
+ =?iso-8859-1?Q?yorbKfNHoMELvUDE0U5etVbiUgmr9nhG4q8MDuy2Av7PpZjz4+VCvAQMkQ?=
+ =?iso-8859-1?Q?T9GEBy+cHxDIshIKPYivgkr+8yrOcQZ1zYFWQ4SIKuPFR869I0GpbnvEqf?=
+ =?iso-8859-1?Q?PvYJBNLpWtMYqXHQ+PLEl4vh48lbGcLlMUoqWbLusX12KL+1Gv/l8EYxeY?=
+ =?iso-8859-1?Q?04r2jE/U92XXuXrwU4cs93VSgBZmZZsXM/N1e7HdMLsaLM6TP5cDjwIP82?=
+ =?iso-8859-1?Q?hd+bnHw=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-tw; SCL:1;
+ SRV:; IPV:NLI; SFV:NSPM; H:SI2PR06MB5041.apcprd06.prod.outlook.com; PTR:;
+ CAT:NONE; SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT;
+ SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?UXq7XZkri5vPDdR0jxgn3xIi+XyMXHBrqG6dsgB92zZ/jySdg4EsajBrOY?=
+ =?iso-8859-1?Q?NF7yVuTezS5Vnhv986WtatJDkji+SWoImlAiVKkPtqNiPcZRHm6n6pIj4B?=
+ =?iso-8859-1?Q?Rk9xjNLRjDdi5zqLNlhj1JoaJYiiH4OcyxsOYzwWNaCnAZ/A/APp9y7Wza?=
+ =?iso-8859-1?Q?5B6yFHjnaSzgOP5996Clb0nHoFrLYSJGgfvcqAJGJlDtjP5H3oVxID5sQh?=
+ =?iso-8859-1?Q?WE+HRnDQtVeuVe77pUlivsYfuycuhevMZRB3cGONH0RT4KZJ33zKFJhPzR?=
+ =?iso-8859-1?Q?zYDRUYM3og5cIUmzpjpwAZ/awJ9dDrghcKVoWBg/7HvSeShMIi9zhmyLBt?=
+ =?iso-8859-1?Q?ApdqzaHvqbHuTn3w3LyXYHo5zpPVBXFfYpBzEpFbi3jvoaqvtfUBOqElVu?=
+ =?iso-8859-1?Q?5QHwC2MWoriDGnBOmFwcNP2B8ZSPCOF9ezeetZ8KSyBuvxhSgTddIgxjs2?=
+ =?iso-8859-1?Q?2rg7UL+9kHKqoJZofBIQ0VazfrLGRwYNcVAcekfhSGlTdNjZWIpquVgvaM?=
+ =?iso-8859-1?Q?68BbPNwX7/pD16gv7zCA+p7XNcYtmJjZZXsq+4kCzKLKu78ApWTJpNRXnk?=
+ =?iso-8859-1?Q?QpuNXNbRqL1SbQ5r+tky8A+67JlG9y8x5XOpsfAOHYBxOvrW0xjxwDdNdQ?=
+ =?iso-8859-1?Q?6UBmDiwpDbfj4JdAH4n7hM+Cm/oBWdTUPBvBWL1/M3imp9f0N8GX3pJb4f?=
+ =?iso-8859-1?Q?jhUDGED705FwYf0LyoL+pUpPoFt6HpF2GL3vuSrS58eEcQ952aO57i0bOK?=
+ =?iso-8859-1?Q?LRdabRADQEO+0XvOriZoJfGLFkFZ9oh6CR9XIyo3YPR5dqKqJjmwq8nEC8?=
+ =?iso-8859-1?Q?Bw6iF7JcDg6EfJf+iqWj952gjopPyXMdRgkqT5Iez2kSE3wCzjJcOYOchb?=
+ =?iso-8859-1?Q?phT5ubwMfjgYMyiwf+cQbAsvT/hZqKsAIMfS9iPecn62ldrA7OPxNtstfj?=
+ =?iso-8859-1?Q?8yOifHtCL2DEuuHLylT74L+wM7JxCj5ZaZRAEeuXll+rQ0DWa/BjKVe360?=
+ =?iso-8859-1?Q?MkV5JEybsWdlVqz0omduM1IUYTnAgcm/mV0kMi/h0JXEzyFY0HMhElxeN7?=
+ =?iso-8859-1?Q?NTQpkkxXhlF/Fphl8ybMEAyAEPXmtV2OB+Tv9F4dF0MYJXUHzgPLIxbQ4i?=
+ =?iso-8859-1?Q?AUKPPXLsbXdhAnkWssX5oj/JJrzdXWFkwRvUzNQOA0w3xfrni8xlLosl1F?=
+ =?iso-8859-1?Q?UgUSfff3bGwlubyUP80hmSAAIAzDDtOoBuJJLABNkK7/QArCrm7gOwDw6Q?=
+ =?iso-8859-1?Q?E0jPbT1vVAOXk9CtLm8SBgF51HL3LyN0CoX3x19dbcapGYEr5BWJns2XXm?=
+ =?iso-8859-1?Q?9uX9XcMoZgujPjLzVlJWzZrjpOKKdsx8m8xppySiepGU7QhsMc/m99FYFu?=
+ =?iso-8859-1?Q?WblbcgD5PNiWSoNOO2LEcWzNmHEECbuJwreCcy9nmyqVi5wSGpRuliW087?=
+ =?iso-8859-1?Q?GmJ/jOPi/mQhei/lqHlqZyffXW5quVqU6O85YLVkzeZPIpFlSFpwQUypRj?=
+ =?iso-8859-1?Q?0UMDHmsC/NOiLTZYN+W0v2kvKAgyUKIevpaEDeRoJQyNk1065nma6cQnpc?=
+ =?iso-8859-1?Q?fRV2GwcZILQNeHMjtFFvNif5QTRpR61nv9WyATOkmru0sqen/JKmgdniEt?=
+ =?iso-8859-1?Q?5dvo7CEGP435XT0sEAeV2SBBJxxPZnBDy7?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR11MB8735:EE_|CO1PR11MB4930:EE_
-X-MS-Office365-Filtering-Correlation-Id: d52cba3c-8625-4e91-eafc-08dd77d14b3b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?dUVYUlZLcERkQ05oYk8vS0tiMWhsRXBPb3Vsb0ZkdVh2QnB5Tkp0RTc0TTBO?=
- =?utf-8?B?V0xHL3dYWWgxdHVLMXVlZFNXa1dqSHhscFpvRUdUc0l5YlZMMmZRdGtuV09Z?=
- =?utf-8?B?WEVlYTlla1NZd1dnWUQvQXIyM1VHUzVkbUo4RHBlQTJYaFVMOTBSQ1lrdnF1?=
- =?utf-8?B?WWo0T0JDL2c1MHpRMzYwOWJ0RUZoZGlUK1hCMkUzNEwrZTlFSWVRc0pla3hM?=
- =?utf-8?B?aDhNeG4ycTkxWkVZNjNqM1pGMW5RM09DaDJRTFdjaXhwc2N0bXUzNTlCeWF2?=
- =?utf-8?B?QW1nL1RqMUhzL3paaU80YnpzWlNhNDlKbGxQdGtIMU9SSFZXZm1WRVM5MUdy?=
- =?utf-8?B?WnhoNGpQK0g1YldMZWFtTFk4bjk2Tm00dUJ5ZWNQWGRWTDN1d3gvelBrZG45?=
- =?utf-8?B?N3JRT2lVZTViRGVDRko3bCtiUHV5WFJQdzFrd3ZMVWhpSmY5Y2ZvSHMzWEZz?=
- =?utf-8?B?TytNMk1EZ0ZiajlWYkQraFhLYmo4UW9CalNySzRSYVc2WEg1Qmx4c0Y5Zm05?=
- =?utf-8?B?TlJydzhVSkZnSWFaUVhURmtIVWExaStpaHJicmtWaThuSkRTZUEzeEpYRHhY?=
- =?utf-8?B?bGd6eEVBWmhvR2k3bXM5SUF4OThhUnYwWmJzT280SlVpbnp3dzRKemF2R2Vw?=
- =?utf-8?B?ZHJZSWhMMThLUk13elNsY0EraXdDaXpNNXhPaVFuTC95S1VIMEhvTDQ5cmJl?=
- =?utf-8?B?enptUzBpdkpjNVRaSUFWVzZOWmVFYXVlZ1R4TlhJNWM3enM5YmU5VFgvYXVl?=
- =?utf-8?B?QytmTnJQV1FvUW1iWVQremVpd0xXVTZTNzV3dXA3UHZ5NUpsNGxOeElXVjY2?=
- =?utf-8?B?clZUanllZEdWRVIzUGRhMlZLbUtZNFRRSEVuTGZGdjBhSnpUWExPNFVKTS9p?=
- =?utf-8?B?TmtvcVozLzJrTFhPenpFR3JhdHBQRGlWZ2F2NzlOa1l0eGpBNGR3MUNaelND?=
- =?utf-8?B?WmRtdEdoclpvQmNuVEFWakNyQkV1QUNFTXJZZis3TVNHejYzRnJRMzF3bWlI?=
- =?utf-8?B?YnlUT1BrSTE0QU45ZmQ5UmFJSXFRUVNnTWhCMCt5Y0VSTlpuR1RaU0hseW1U?=
- =?utf-8?B?d3c0Y0xtdzhnY3VKc01BOHEwQ3YvZ0Y5czQ5aWJmZERuUmlRVWY5Qk9La05W?=
- =?utf-8?B?QWJwZUtJKytKVytvSFFkeEdyWDR3RFlCUGVLaGh0VWNvcUpvWVE1U3FBM0VK?=
- =?utf-8?B?OUVOMGVoNTNGc1B4bzNadWM3dXFoOFNQclhyUkxqQUpXVmlGdFp6akhUUnRt?=
- =?utf-8?B?K2ZTaFQ1UWVYVlovY2VDWCtUKzJyMFZTbkdtcjBqS1htR05IV28rOEplOHNh?=
- =?utf-8?B?TGN1NXNpdVA4YUMvNlVZS0NaQ20wdFZJdVJnWmtSd2hZZWYwc2c4RnZZbXQw?=
- =?utf-8?B?Mk1LVThoSkFtcmNlNlFOV25SSURONUF3V2IwNGlMaHpjTFpaTUZVT1VkVTNE?=
- =?utf-8?B?RXZsRkZMWnJVR1I3djcxbmViem9oNVdHQURwbnZkdXhmR05abnNNWFQxeUNs?=
- =?utf-8?B?TS83bkQ4WXFFNFRmUVd6REw4amphUHhtN2h5ak1EZ0JxVTVmKzE3bVViRWNt?=
- =?utf-8?B?NVJXb1Z0K2FJRU5OVHVvSGtuenVrczFsUkJva05IZ0xVaFFwK2tpK1pZSEdi?=
- =?utf-8?B?aTdUMVlDU2JkdmloS0RMeHBMQmErMDdGTi9lWVNEdnJLcTdZaTA5dDRFK3Fy?=
- =?utf-8?B?V09ScE1iMzJaZXdRVS9kSTUzcXJ6QTBYNUg1S25EemYvTlFMVG9iaDg4dzFI?=
- =?utf-8?B?TUVvYTlycjlqdHQ4eENzejBQUmJoeVhhUmRPekd2Unc2UWhjUUkwd3B6OWRx?=
- =?utf-8?B?N3B3dDNmWTVuWWVMLzJzZ1pnTk9aSkdjc2kraGkrc0NXS3lLMXRySElHTVM3?=
- =?utf-8?Q?KmMsm3scJp+pT?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM3PR11MB8735.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TGFxd0hQYjFLR0VmUmlFWU1IR1lyZjJVNGJXVVFZcVAxVTlLQmwxSnFlcFVX?=
- =?utf-8?B?VGRUQ1V4bUdEVlVvWi9oL253SU8wQVZuM01xK0hjQnI2OFk0N3RXU3h6ejYx?=
- =?utf-8?B?VVFuekwxVGNtQmMrK0ZIUkRxa0dNaS83dE1BeTJBRkdOQlF3RnZnWTdsdE1L?=
- =?utf-8?B?OG1iTVlmdCs5M0h1VjkrQmcvWDBMT0Z2STFvQUJQQkU5MmJVblNFNXFLS2VE?=
- =?utf-8?B?RFJTbHFqVVdhbm82WnlScFJyZk1FRjV1UHpiZDVsaWNVSDdQNDFyRkRSajNN?=
- =?utf-8?B?cHJDNm1XN2lkc01qcDB0OFU3UTFkcFNyaExIMWovZVZ3ai80T3kvbHNIcVEz?=
- =?utf-8?B?Vkh5cEI5ZjZFSncreFlOM2l3cllqS0NKY0pqU0lLd0J5NFg2Skw4NTQ1QjYx?=
- =?utf-8?B?N0svemErNk8wbC9QTXlSQWlaUURrRjlTUlYvK0g0UjI2c0FBdUppUitFMTFB?=
- =?utf-8?B?S1lEK3BYZU5rWnFrNVpSVDVTbE1UblQrZ1h0MFlUM3JucmNCZ0o5cWRVNmo3?=
- =?utf-8?B?VUVpMDFYTU5pL3N1L3NjRS85WkxLaG1JK1BFLytuVG9IWkZUQUNaRXBZVkh6?=
- =?utf-8?B?WGJpQ2xzVWdHSndENEh2QlAzWG9pOUJHODUvbmpWYUtrM20wRUZCRndjMHBw?=
- =?utf-8?B?TEFGaGhiWHRNdGxPWm12WHhtck1HYTJkTlc3NFlKQXQ0OGw1K0NIcy9sR2Ey?=
- =?utf-8?B?a0t3eG5MdDMxZi9ISjM1YWhGUVhKdXhMQldWSzJuQlNkUVR2MFBiU05GZXZB?=
- =?utf-8?B?dUtVZS9GK1o2WG9kSldSQkFsVnNXTGN0T2lxa1o4UXJtbU5ibGFDY2xYdTEz?=
- =?utf-8?B?VFlLU213YTFiR0FUQjJBbTdkUHBWd2d0SmZtcXpRN2tXZ2NLQXIySmIvaHpF?=
- =?utf-8?B?U3pQeUlTdnFPemZWT1RRZmZWY1FReGVqUkZQMnMvZGtSaWZCUW5FUmVTdGE5?=
- =?utf-8?B?YkpDcENKZjJLZGtoWU4vT2pWYUhMcUtnWFEzck5TVTl0NkpIbmcxN2M0V2lR?=
- =?utf-8?B?NTJkc24xMjM2Rkthc3oxYlpPdTQ1azhGd1Z0UFJZR1FxclRXRm56Qk5OUWR6?=
- =?utf-8?B?TEZJaUlucU84bHhCVlErdUtSeHB6SWRkT2JBQWdMZkNES1Z1eTUxalowUnFs?=
- =?utf-8?B?Vm1jQVBCZTVFYnBMMlhJcjZoVVgzNHJCYnRHckh4THFsR1M5MnBUd2Y4Sndn?=
- =?utf-8?B?Rk5takQzbkpvOUNub1lsaitTeEI5QUI4cDVXR0MrZDNYVGVCZFJBdXV2bzky?=
- =?utf-8?B?K0M5N1ZuaU5JcmxTNkFyQUlqSGdqUkMycU1SRTdTUEltUm9wRU9HSVZ6WVZi?=
- =?utf-8?B?aWpkckhSN2ViRllEZXRlUlF3REl3RktxZmZvK1p3T3JKbVJpc1lBalgxL1ZI?=
- =?utf-8?B?aTNiYjVUaWFISlJwUU54TGMrbEIxZVRzMkQ3YTJ6SERxWmF0VWRDQStWSVpP?=
- =?utf-8?B?VHdjU1lWek55WEF4QVRDTnlxbkM3NzF0bWFMdlc0YmJnL1c2QVVpNVJOSWJW?=
- =?utf-8?B?VzllVFFSQzY1K1ZsdHpKZ3VEQUMyS0MxOGRGU3k1NG8xalVFSTlLMTRic3hi?=
- =?utf-8?B?VjhiU2V0TXppTjdVd2xSZkoyRFRxK3BwOTZPLzRGN1ZhNFcyMGc2TFk3a3Zz?=
- =?utf-8?B?RFU5bk53a3ROV3VTS3pDYkk0V0lpMTlXM2s5UmRqQlFkdjdhYjBDUWhnQ3F6?=
- =?utf-8?B?clZBRVI5dmcva1gzTE5lQThsRHRkZGptN2VIbEFaMjhka2F0emRYaGVKVThW?=
- =?utf-8?B?Y1pxeGkwSHlpMkovK3pFZDJrbHpVN25qVld1aG9WYlBRR3ZuODdUcG1XRnlV?=
- =?utf-8?B?TGFkZFd2VmlHSDNNR1VVNXlUN2pRZjJxOFllTW0xdy9MSlFTcFFVQU1LdFhX?=
- =?utf-8?B?dzAvVC81NkR4WHlOamJGZ2c4TFFFVks4eGcrRGl3ZWpjQWtLdkFxd3Q0bmZr?=
- =?utf-8?B?bUEzOGRuYnFoVEt1SUg0Z2ZwbVBhZGE1VlBaVy9NU3JDQUFDSS9HQ2N3Ynlu?=
- =?utf-8?B?YkN2Q1BXMUgwaWdid2hQQUdwak5CaklUcUgvTmEwbFJKWkNyRnNlV3M4clpE?=
- =?utf-8?B?NTZWNVNab0NjWUNlZnBLSms4UnphQ2laa2RySzVtY2ZsR1lyOVA5SldnMHRX?=
- =?utf-8?B?MG1PbDhJNnNNTzQ2ckRWL3h3K3pWSGRxbjk1THV2aC8vZ1dEN3ZWcFg3ei9a?=
- =?utf-8?B?b1E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d52cba3c-8625-4e91-eafc-08dd77d14b3b
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR11MB8735.namprd11.prod.outlook.com
+X-OriginatorOrg: aspeedtech.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 01:44:55.4056 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K20JgZLbvK66dMT4VX7pQwiGtULPIwrx+rKOU3J5Oi9q06LHxBuLJ19CsvwEEt0ga7OAEIqKP4AcRqu+b43GAA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4930
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.15;
- envelope-from=chenyi.qiang@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.505,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5041.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10f88f31-3c51-4815-6d1c-08dd77d7eb07
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Apr 2025 02:32:20.1210 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: L/ANmKP6vQo7tBWx3OQJ2pJar69wW6UnnCYKixPDJNhWg+A2zzX0u7diEb0k75EL38DwS2NIBg4XitVoQiqjjuLq1YuHtlaD3FsKqFdj+w8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: JH0PR06MB7030
+Received-SPF: pass client-ip=2a01:111:f403:200e::72c;
+ envelope-from=jamin_lin@aspeedtech.com;
+ helo=APC01-PSA-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -218,231 +167,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi all,=20
 
+> Subject: [PATCH v1 0/9] Support vbootrom for AST2700
+>=20
+> v1:
+>   Add initial support for AST27x0
+>   The purpose of vbootrom here is to simulate the work of BootMCU SPL
+> (riscv)
+>   in AST2700, because QEMU doesn't support heterogenous architecture yet.
+>=20
+>   ast27x0_bootrom.bin is a simplified, free (Apache 2.0) boot ROM for
+>   ASPEED AST27x0 BMC SOC. It currently implements the bare minimum to
+>   load, parse, initialize and run boot images stored in SPI flash, but ma=
+y grow
+>   more features over time as needed. The source code is available at:
+>   https://github.com/google/vbootrom
+>=20
 
-On 4/10/2025 8:11 AM, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 9/4/25 22:57, Chenyi Qiang wrote:
->>
->>
->> On 4/9/2025 5:56 PM, Alexey Kardashevskiy wrote:
->>>
->>>
->>> On 7/4/25 17:49, Chenyi Qiang wrote:
->>>> RamDiscardManager is an interface used by virtio-mem to adjust VFIO
->>>> mappings in relation to VM page assignment. It manages the state of
->>>> populated and discard for the RAM. To accommodate future scnarios for
->>>> managing RAM states, such as private and shared states in confidential
->>>> VMs, the existing RamDiscardManager interface needs to be generalized.
->>>>
->>>> Introduce a parent class, GenericStateManager, to manage a pair of
->>>
->>> "GenericState" is the same as "State" really. Call it RamStateManager.
->>
->> OK to me.
-> 
-> Sorry, nah. "Generic" would mean "machine" in QEMU.
+This patch series failed to build because I missed including one patch.
+I will resend the series as v2.
+Sorry for the inconvenience.
 
-OK, anyway, I can rename to RamStateManager if we follow this direction.
+Jamin
 
-> 
-> 
->>>
->>>
->>>> opposite states with RamDiscardManager as its child. The changes
->>>> include
->>>> - Define a new abstract class GenericStateChange.
->>>> - Extract six callbacks into GenericStateChangeClass and allow the
->>>> child
->>>>     classes to inherit them.
->>>> - Modify RamDiscardManager-related helpers to use GenericStateManager
->>>>     ones.
->>>> - Define a generic StatChangeListener to extract fields from
->>>
->>> "e" missing in StateChangeListener.
->>
->> Fixed. Thanks.
->>
->>>
->>>>     RamDiscardManager listener which allows future listeners to
->>>> embed it
->>>>     and avoid duplication.
->>>> - Change the users of RamDiscardManager (virtio-mem, migration,
->>>> etc.) to
->>>>     switch to use GenericStateChange helpers.
->>>>
->>>> It can provide a more flexible and resuable framework for RAM state
->>>> management, facilitating future enhancements and use cases.
->>>
->>> I fail to see how new interface helps with this. RamDiscardManager
->>> manipulates populated/discarded. It would make sense may be if the new
->>> class had more bits per page, say private/shared/discarded but it does
->>> not. And PrivateSharedManager cannot coexist with RamDiscard. imho this
->>> is going in a wrong direction.
->>
->> I think we have two questions here:
->>
->> 1. whether we should define an abstract parent class and distinguish the
->> RamDiscardManager and PrivateSharedManager?
-> 
-> If it is 1 bit per page with the meaning "1 == populated == shared",
-> then no, one class will do.
-
-Not restrict to 1 bit per page. As mentioned in questions 2, the parent
-class can be more generic, e.g. only including
-register/unregister_listener().
-
-Like in this way:
-
-The parent class:
-
-struct StateChangeListener {
-    MemoryRegionSection *section;
-}
-
-struct RamStateManagerClass {
-    void (*register_listener)();
-    void (*unregister_listener)();
-}
-
-The child class:
-
-1. RamDiscardManager
-
-struct RamDiscardListener {
-    StateChangeListener scl;
-    NotifyPopulate notify_populate;
-    NotifyDiscard notify_discard;
-    bool double_discard_supported;
-
-    QLIST_ENTRY(RamDiscardListener) next;
-}
-
-struct RamDiscardManagerClass {
-    RamStateManagerClass parent_class;
-    uint64_t (*get_min_granularity)();
-    bool (*is_populate)();
-    bool (*replay_populate)();
-    bool (*replay_discard)();
-}
-
-2. PrivateSharedManager (or other name like ConfidentialRamManager?)
-
-struct PrivateSharedListener {
-    StateChangeListener scl;
-    NotifyShared notify_shared;
-    NotifyPrivate notify_private;
-    int priority;
-
-    QLIST_ENTRY(PrivateSharedListener) next;
-}
-
-struct PrivateSharedManagerClass {
-    RamStateManagerClass parent_class;
-    uint64_t (*get_min_granularity)();
-    bool (*is_shared)();
-    // No need to define replay_private/replay_shared as no use case at
-present.
-}
-
-In the future, if we want to manage three states, we can only extend
-PrivateSharedManagerClass/PrivateSharedListener.
-
-> 
-> 
->> I vote for this. First, After making the distinction, the
->> PrivateSharedManager won't go into the RamDiscardManager path which
->> PrivateSharedManager may have not supported yet. e.g. the migration
->> related path. In addtional, we can extend the PrivateSharedManager for
->> specific handling, e.g. the priority listener, state_change() callback.
->>
->> 2. How we should abstract the parent class?
->>
->> I think this is the problem. My current implementation extracts all the
->> callbacks in RamDiscardManager into the parent class and call them
->> state_set and state_clear, which can only manage a pair of opposite
->> states. As you mentioned, there could be private/shared/discarded three
->> states in the future, which is not compatible with current design. Maybe
->> we can make the parent class more generic, e.g. only extract the
->> register/unregister_listener() into it.
-> 
-> Or we could rename RamDiscardManager to RamStateManager, implement 2bit
-> per page (0 = discarded, 1 = populated+shared, 2 = populated+private).
-> Eventually we will have to deal with the mix of private and shared
-> mappings for the same device, how 1 bit per page is going to work? Thanks,
-
-Only renaming RamDiscardManager seems not sufficient. Current
-RamDiscardManagerClass can only manage two states. For example, its
-callback functions only have the name of xxx_populate and xxx_discard.
-If we want to extend it to manage three states, we have to modify those
-callbacks, e.g. add some new argument like is_populate(bool is_private),
-or define some new callbacks like is_populate_private(). It will make
-this class more complicated, but actually not necessary in legacy VMs
-without the concept of private/shared.
-
-> 
-> 
->>
->>>
->>>
->>>>
->>>> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
->>>> ---
->>>> Changes in v4:
->>>>       - Newly added.
->>>> ---
->>>>    hw/vfio/common.c        |  30 ++--
->>>>    hw/virtio/virtio-mem.c  |  95 ++++++------
->>>>    include/exec/memory.h   | 313 +++++++++++++++++++++
->>>> +------------------
->>>>    migration/ram.c         |  16 +-
->>>>    system/memory.c         | 106 ++++++++------
->>>>    system/memory_mapping.c |   6 +-
->>>>    6 files changed, 310 insertions(+), 256 deletions(-)
->>>>
->>>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->>>> index f7499a9b74..3172d877cc 100644
->>>> --- a/hw/vfio/common.c
->>>> +++ b/hw/vfio/common.c
->>>> @@ -335,9 +335,10 @@ out:
->>>>        rcu_read_unlock();
->>>>    }
->>>>    -static void vfio_ram_discard_notify_discard(RamDiscardListener
->>>> *rdl,
->>>> +static void vfio_ram_discard_notify_discard(StateChangeListener *scl,
->>>>                                                MemoryRegionSection
->>>> *section)
->>>>    {
->>>> +    RamDiscardListener *rdl = container_of(scl, RamDiscardListener,
->>>> scl);
->>>>        VFIORamDiscardListener *vrdl = container_of(rdl,
->>>> VFIORamDiscardListener,
->>>>                                                    listener);
->>>>        VFIOContainerBase *bcontainer = vrdl->bcontainer;
->>>> @@ -353,9 +354,10 @@ static void
->>>> vfio_ram_discard_notify_discard(RamDiscardListener *rdl,
->>>>        }
->>>>    }
->>>>    -static int vfio_ram_discard_notify_populate(RamDiscardListener
->>>> *rdl,
->>>> +static int vfio_ram_discard_notify_populate(StateChangeListener *scl,
->>>>                                                MemoryRegionSection
->>>> *section)
->>>>    {
->>>> +    RamDiscardListener *rdl = container_of(scl, RamDiscardListener,
->>>> scl);
->>>>        VFIORamDiscardListener *vrdl = container_of(rdl,
->>>> VFIORamDiscardListener,
->>>>                                                    listener);
->>>
->>> VFIORamDiscardListener *vrdl = container_of(scl, VFIORamDiscardListener,
->>> listener.scl) and drop @ rdl? Thanks,
->>
->> Modified. Thanks!
->>
->>>
->>>
-> 
+> Jamin Lin (9):
+>   hw/arm/aspeed_ast27x0: Add "vbootrom_size" field to AspeedSoCClass
+>   hw/arm/aspeed_ast27x0: Rename variable sram_name to name in ast2700
+>     realize
+>   hw/arm/aspeed_ast27x0 Introduce vbootrom memory region
+>   hw/arm/aspeed: Enable vbootrom support by default on AST2700 EVB
+>     machines
+>   hw/arm/aspeed: Reuse rom_size variable for vbootrom setup
+>   hw/arm/aspeed: Add support for loading vbootrom image via "-bios"
+>   pc-bios: Add AST27x0 vBootrom
+>   tests/functional/aspeed: Update AST2700 functional test to use
+>     vbootrom
+>   docs/system/arm/aspeed: Support vbootrom for AST2700
+>=20
+>  MAINTAINERS                             |   1 +
+>  docs/system/arm/aspeed.rst              |  18 +++--------
+>  include/hw/arm/aspeed.h                 |   1 +
+>  include/hw/arm/aspeed_soc.h             |   2 ++
+>  hw/arm/aspeed.c                         |  37
+> ++++++++++++++++++++++-
+>  hw/arm/aspeed_ast27x0.c                 |  20 ++++++++++---
+>  pc-bios/README                          |   6 ++++
+>  pc-bios/ast27x0_bootrom.bin             | Bin 0 -> 15464 bytes
+>  pc-bios/meson.build                     |   1 +
+>  tests/functional/test_aarch64_aspeed.py |  38 +-----------------------
+>  10 files changed, 68 insertions(+), 56 deletions(-)  create mode 100644
+> pc-bios/ast27x0_bootrom.bin
+>=20
+> --
+> 2.43.0
+>=20
 
 
