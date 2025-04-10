@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C20A84315
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 14:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 827D0A8435D
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 14:39:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2qzi-0008OC-Gt; Thu, 10 Apr 2025 08:26:58 -0400
+	id 1u2rAo-000643-UM; Thu, 10 Apr 2025 08:38:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1u2qzc-0008Hf-UP
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 08:26:53 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1u2qzb-0000cH-AP
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 08:26:52 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-ac34257295dso152882266b.2
- for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 05:26:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744288009; x=1744892809; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ftCtUt1wCvnmyqMw25U33WH4HwFTYT545yQfYplCULc=;
- b=TLOOmga0nniB9cgjdWwWnV1GM7XAU/qev5WwmUA9+U0D4cuK8xG05gBVgIhu5Tb7Kj
- RKUslUnBFcGqhRTnSzf7SztyAwBJcNuJUktR7MMmp7DuEm5x3niv8qiSt8hfWxzdP5o2
- ZCgyHGWO4XMFNb20KZZu4k/G42qIeLbkMVrUr44m7/IoaiH+jqHCAUyVOQR+nOcvhBeA
- clM95Q8pGhftXa0vaTK7i9si6agWZ2kr+H4WJGvlsGKdg1xR0CpKg/WE5Tyhu2fR3tLV
- rbemvnAr8t2m9Dqy1MHJBVQkXklHHyxpUptzR2MH0cvQs3AD4p+kjJW8Hasj/MYE/8eA
- +vig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744288009; x=1744892809;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ftCtUt1wCvnmyqMw25U33WH4HwFTYT545yQfYplCULc=;
- b=PtYwEPRAULKz6NO0XG3DAj5h2nj+SLm/ZSZFHYkr64AirzC6/ygZa4yiDI85ai7m/A
- R74vcuv9GwviyNid7Q3tqD7pj9Eb5k8X09C5ztbpXx+KoTTJdibqZbBXnUc4vonQAmBu
- AkMQYclxNf9Ygj+8mUFI9pLJJ7ezWmXgF3JVG7PhzY/6pVzv7XOAdh2y8gAyLeVmPZrD
- yd2PE4FvvRjzBwgXh0HsSWXqCKZJmNV0Z9Kun62CegG/5NvRd3xQ9yXQLbyzPamO3dKU
- JOnCDaqa1aLvAxFjskcR/DRk75K0cFz8nPazeuR2pwtVNaUmFjYKuEb4MJe0mvR3tp3z
- LbYA==
-X-Gm-Message-State: AOJu0YyvRDVyGiQDtQXo5HzZodMw92zCpzZ00eYg7YyZ9W9nucXxoMpo
- c1XPRWwIs+tSlJHHSe4AzT2aY0h61f9JgP+SZfAeiMzfHc3hrCMpldmPriHxsHUe04MMzI8TUIu
- P8Vg=
-X-Gm-Gg: ASbGncvIr33mWOLRi+M2Fiv62CPLfTGnOpmRtHZLQ489CAZfAumtSKo0AJs74YAXWqC
- QD9UrrtyxxA0J6Cligu0Y7BJ/+z+Hxwx+6YRvnTY/M6n2AqlPetsdGramHbXesjTfckgt+Ie0Ug
- bsYpV76JNHp7gJ1TIZU6/nlaTWoE/WI+kXIGhinVyDWcEKSeWAfaAImXcJbmdJPlpfVATIuJ6yo
- OfH3iFMD4FlL1ULAl4T7eob5fWXYulZgt2ElZCdLZ59fgLKz7ZemsReegA9wBRyIyTFlx7jfE9+
- UJ7xvOp8e1ILZKNasNq75wgOuJsQXL4F3CZEHdVMMVBnXHSguTT4P+l9T3ldoHNViOS5G8+aF4G
- SPv23+V7yTZvW1tyC+GUmnaA=
-X-Google-Smtp-Source: AGHT+IGFjwq9jI7WER0Hx+152+JJI9LZ0+hRNUsXn88cVFDrD/l3Jtc088pVv4dthafChAQT4xLS4Q==
-X-Received: by 2002:a17:906:c14e:b0:ac7:cfd4:76c6 with SMTP id
- a640c23a62f3a-acac0064410mr189145666b.3.1744288009515; 
- Thu, 10 Apr 2025 05:26:49 -0700 (PDT)
-Received: from localhost.localdomain (adsl-194.109.242.94.tellas.gr.
- [109.242.94.194]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-acaa1be98c9sm271794866b.65.2025.04.10.05.26.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Apr 2025 05:26:49 -0700 (PDT)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v2 3/3] virtio-gpu: refactor async blob unmapping
-Date: Thu, 10 Apr 2025 15:26:38 +0300
-Message-ID: <20250410122643.1747913-4-manos.pitsidianakis@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250410122643.1747913-1-manos.pitsidianakis@linaro.org>
-References: <20250410122643.1747913-1-manos.pitsidianakis@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1u2rAc-00063r-Dg; Thu, 10 Apr 2025 08:38:15 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1u2rAa-00021P-C2; Thu, 10 Apr 2025 08:38:14 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id E9B0311446A;
+ Thu, 10 Apr 2025 15:36:12 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7A1EE1EC727;
+ Thu, 10 Apr 2025 15:37:48 +0300 (MSK)
+Message-ID: <76bc1c49-43cb-445e-98e2-2f75c53623b8@tls.msk.ru>
+Date: Thu, 10 Apr 2025 15:37:48 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-10.0] scsi-disk: Apply error policy for host_status
+ errors again
+To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
+Cc: hreitz@redhat.com, pbonzini@redhat.com, stefanha@redhat.com,
+ qemu-devel@nongnu.org, qemu-stable@nongnu.org
+References: <20250407155949.44736-1-kwolf@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <20250407155949.44736-1-kwolf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x635.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,73 +103,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+07.04.2025 18:59, Kevin Wolf пишет:
+> Originally, all failed SG_IO requests called scsi_handle_rw_error() to
+> apply the configured error policy. However, commit f3126d65, which was
+> supposed to be a mere refactoring for scsi-disk.c, broke this and
+> accidentally completed the SCSI request without considering the error
+> policy any more if the error was signalled in the host_status field.
+> 
+> Apart from the commit message not describing the chance as intended,
+> errors indicated in host_status are also obviously backend errors and
+> not something the guest must deal with indepdently of the error policy.
+> 
+> This behaviour means that some recoverable errors (such as a path error
+> in multipath configurations) were reported to the guest anyway, which
+> might not expect it and might consider its disk broken.
+> 
+> Make sure that we apply the error policy again for host_status errors,
+> too. This addresses an existing FIXME comment and allows us to remove
+> some comments warning that callbacks weren't always called. With this
+> fix, they are called in all cases again.
+> 
+> The return value passed to the request callback doesn't have more free
+> values that could be used to indicate host_status errors as well as SAM
+> status codes and negative errno. Store the value in the host_status
+> field of the SCSIRequest instead and use -ENODEV as the return value (if
+> a path hasn't been reachable for a while, blk_aio_ioctl() will return
+> -ENODEV instead of just setting host_status, so just reuse it here -
+> it's not necessarily entirely accurate, but it's as good as any errno).
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: f3126d65b393 ('scsi: move host_status handling into SCSI drivers')
 
-Change the 3 part async cleanup of a blob memory mapping to check if the
-unmapping has finished already after deleting the subregion; this
-condition allows us to skip suspending the command and responding to the
-guest right away.
+Hi!
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- hw/display/virtio-gpu-virgl.c | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+Does it make sense to apply this one for older stable qemu series?
+In particular, in 8.2, we lack cfe0880835cd3
+"scsi-disk: Use positive return value for status in dma_readv/writev",
+which seems to be relevant here.  Or should I pick up cfe0880835cd3 too,
+maybe together with 8a0495624f (a no-op, just to make this patch to apply
+cleanly) and probably 9da6bd39f924?
 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 8fbe4e70cc..32a32879f7 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -155,7 +155,32 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
-      *    asynchronously by virtio_gpu_virgl_hostmem_region_free().
-      * 3. Finish the unmapping with final virgl_renderer_resource_unmap().
-      */
-+
-+    /* 1. Check if we should start unmapping now */
-+    if (!vmr->finish_unmapping) {
-+        /* begin async unmapping. render will be unblocked once MR is freed */
-+        b->renderer_blocked++;
-+
-+        memory_region_set_enabled(mr, false);
-+        memory_region_del_subregion(&b->hostmem, mr);
-+        object_unparent(OBJECT(mr));
-+        /*
-+         * The unmapping might have already finished at this point if no one
-+         * else held a reference to the MR; if yes, we can skip suspending the
-+         * command and unmap the resource right away.
-+         */
-+        *cmd_suspended = !vmr->finish_unmapping;
-+    }
-+
-+    /*
-+     * 2. if virtio_gpu_virgl_hostmem_region_free hasn't been executed yet, we
-+     * have marked the command to be re-processed later by setting
-+     * cmd_suspended to true. The freeing callback will be called from RCU
-+     * context later.
-+     */
-+
-     if (vmr->finish_unmapping) {
-+        /* 3. MemoryRegion has been freed, so finish unmapping */
-         res->mr = NULL;
-         g_free(vmr);
- 
-@@ -166,16 +191,6 @@ virtio_gpu_virgl_unmap_resource_blob(VirtIOGPU *g,
-                           __func__, strerror(-ret));
-             return ret;
-         }
--    } else {
--        *cmd_suspended = true;
--
--        /* render will be unblocked once MR is freed */
--        b->renderer_blocked++;
--
--        /* memory region owns self res->mr object and frees it by itself */
--        memory_region_set_enabled(mr, false);
--        memory_region_del_subregion(&b->hostmem, mr);
--        object_unparent(OBJECT(mr));
-     }
- 
-     return 0;
--- 
-γαῖα πυρί μιχθήτω
+Thanks,
+
+/mjt
+
 
 
