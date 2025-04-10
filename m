@@ -2,93 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A55A8496E
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 18:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C341A84976
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 18:22:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2ubX-0005rP-W4; Thu, 10 Apr 2025 12:18:16 -0400
+	id 1u2ufU-0007NE-1c; Thu, 10 Apr 2025 12:22:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u2ubQ-0005qe-Ka
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 12:18:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u2ubN-0004Qp-5G
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 12:18:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744301883;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=PGaRO9Gso5IOJbzbhgahH7LW5DO1lAZOAyvH8PRaixU=;
- b=UZJ7UsqKWsJpSJdebJd/7dLu6ohxJcSLCRXIttEQuE1QgG4GIngwIF9elDmJNIj+pcXSdb
- JrFL742XB9edxsSUnnCbOt4udS2E/LbnBe5G12YV1Snb3L2lhbZsEVjTGBzmBdTfsNUEPH
- rxDW2m9/7pelHam2BmfXA1QxFpwmvzM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-KAzQLlI1MLmp__D5_kYB4A-1; Thu, 10 Apr 2025 12:17:55 -0400
-X-MC-Unique: KAzQLlI1MLmp__D5_kYB4A-1
-X-Mimecast-MFC-AGG-ID: KAzQLlI1MLmp__D5_kYB4A_1744301874
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ac737973d03so76394866b.1
- for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 09:17:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1u2ufQ-0007Kl-4i
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 12:22:16 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1u2ufO-00055j-38
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 12:22:15 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-736dd9c4b40so1931607b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 09:22:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1744302131; x=1744906931; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/t/zE7tz7oNJ0G7xkwZxsIaDEUKu53O69xjhAFfo1as=;
+ b=eiuBB3QPTU/psx7V5pT9tTakY6gDudYFP/3WqK6C5wVsFwZqAaEcKbGxLtUC75/sMg
+ rGQfQPeinJJAtLUxghgjiL/qQcbxEpXgQd9sHIHv447Cw6yd/g3rjlR8WEialUKcYhfu
+ +IABvzf+Be4ZvJ4gJ8jBmrsIbHPwel3M7VUOypdiBJROWKnVb/a/3W9yx55LEQ10u/nO
+ NNNVyhN6EhArHmBgTrBJ4EbIXmm/fd/h8v+qMfzVvuaBtzTnCq0xasf3wGpbqE0tNFnp
+ 6peq0V+Lp5c12lf26+WcCkgXHu691Kj4jVPonYSVD3x1Y6pfCNnC0xgv+2nFiLfK20QS
+ yeLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744301873; x=1744906673;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=PGaRO9Gso5IOJbzbhgahH7LW5DO1lAZOAyvH8PRaixU=;
- b=CcmSb9AmXC5cZQ+xUHbvBRVpgJECS3GcN41UhHp1EIeFEmNMQ5jheG9HXMM1FmjULx
- dtbgC8Zeb2+V/VRLAuqf9KVw6pfo5ezHe7X0hkvGvs87qwDgWUZ73hAUyxovnFUlq+1s
- tuLI6krcKovGyjd9gvFVl1Bedtx5Ikoujwvvv7ciR2d2IsAkQQkWS8iuraJ/DJpmRvxm
- J3g61SG5Dp0qr0Z7rL5mjtuppnvPr4bqF9aVGSPXglUHD0eLP+CUyQsuuECdd5GynYIr
- VLxDLVIqaXRzUXcmAEDYhSrxp8Gq3lpTrNkX0O3Rblmx3EKx9fGwSpsKVYHHmjmpoNZb
- TTNQ==
-X-Gm-Message-State: AOJu0YxZx7vgD6GdX+a8jWM2HK1UX9mKWIB6FdyRBdRGwHB7QNKurhMO
- U6+EHn/CJ73GlIkyK5xNR7Twzjc1ixRyLGF8p7VDexXUirGw25S9nwTBkw5NrUIDLFsdq6a56sf
- HqnRi0o/ERSK9nczs++Ytmqd3khgjVYh+RYVZzpABrkBfzCebKUP2UXyOWyx8bbe93Ugvf9bMQC
- Qwlp1ibtikdOnbLZvQmAuPMf+STo80OcGxUzN/
-X-Gm-Gg: ASbGncuMCrxH0ud/DtUW4IdOlZx5COjCBHi/LAkF5Z2XFyp7EhnAZS1yI1Iuf/mxHCT
- lyldohKCzN4aOYKXTejbEQ1soLrGhoPSpm0Q5S2IvhDjAUPa2whFhVRuEFvFgk6BrtQ18JMiLnU
- XKkM05bsliwPN75mD7ZOYIGuTMn383WiskVClW6Q0xBA2nYr3BTITp3t2DliKDLNBxOphhtzsyn
- 3V2t6uwjp82kbbQl9c6PEk2TidKkkvXkHy9ay9btMGDibuPJuHSs3OvZEc+pRvFI0az+adS2sC+
- skQY/EoF5iiAGHhVizAvgRBYQ914z8LDGcEl63nX4Ov2bxA=
-X-Received: by 2002:a17:906:810:b0:aca:cac7:28e2 with SMTP id
- a640c23a62f3a-acacac730eemr64168166b.40.1744301873355; 
- Thu, 10 Apr 2025 09:17:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFuy+hmNY0hAj1kZ4fphrFraCC87pbQ/rA9UohsR0Ctza6IfAwBH2xIjesdM1h+xDkIm5dOvw==
-X-Received: by 2002:a17:906:810:b0:aca:cac7:28e2 with SMTP id
- a640c23a62f3a-acacac730eemr64164966b.40.1744301872825; 
- Thu, 10 Apr 2025 09:17:52 -0700 (PDT)
-Received: from [192.168.122.1] (93-33-70-196.ip43.fastwebnet.it.
- [93.33.70.196]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-acaa1ccd1c4sm300863066b.148.2025.04.10.09.17.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Apr 2025 09:17:52 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org,
-	Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Subject: [PATCH] hw/riscv: Fix type conflict of GLib function pointers
-Date: Thu, 10 Apr 2025 18:17:22 +0200
-Message-ID: <20250410161722.595634-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
+ d=1e100.net; s=20230601; t=1744302131; x=1744906931;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/t/zE7tz7oNJ0G7xkwZxsIaDEUKu53O69xjhAFfo1as=;
+ b=oPIAYTUuvVNCwGi4gTVMF7tMiVALBfgN078gbI4QONva10FGn5UFh+vxX4VFZRb6gf
+ N8lvpR2LXAOKY83qmuzacJ1Y9M1C2FcJMHse2/mhFDxcNW1/F7AbmVxswSoe8sKs2CvQ
+ iI58YO7/cP6uF/4ecXznl9Lo98D1q2Sf8KGzPVRiXv7Y1gSC92BxYm462Up3eH+Xv22T
+ 1gMmQA3jlpAGFWebGcZhGG3y0bFc9NFVgEbuOYEwjbczsZjbEvyTcFyv8dn6jpczg3Gm
+ tDK/yJpwGzS00bTHv6AJf/7hIGzWmCysRPT0RF41Vg6QZFQX82cNvPKQaYTDm8n6MMHz
+ ZPpw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXXw1uXBNPyIXYvQwfqjtXOSyUA2AK729f0b63VG40KjENPc3+EyWd4fQaWLzcmexxfmMdyuCcu2JBn@nongnu.org
+X-Gm-Message-State: AOJu0YxKC9yukcIsvBJ+zHZ8YZEk19NcP3FBX/8MOIQBufaqhNYAo/00
+ dXmp7lW4nk1NH2I8/070fT9A1hSKIvLDj+ATnvw6oAWezmreR8EWyOlwDdoPx3Cp7qeYJ67m2ZM
+ 3
+X-Gm-Gg: ASbGncv5XshvfiCF1q3XfBcJ+KkfLIDuGpVh/nqVRHJXy8t/9aVk7MEYmcThDt9NtUL
+ 1uQXY8FVhGpIJStAmzrZalWtqoIFXlM8S7otXXJWb3Eltdp8MSZIoPdbNtYoq7a8pr/WQXrTeAs
+ GOJFW6MQvdHBm20y3ORNXikEoETgL0Lp2mXJ9VLdAHlScsWvW1vtT/m1fiDw8ubohoxzJ2sm0pH
+ VQpHS6OPlm5ircQoWU4AqMm2v7AHLh4CcjOxrZekj9DmCl9CYdcMho3JBcSSCB5oVHb3C2eCN12
+ 8u6GXzUDtYjkSvHbBPBk6decypNnQmNCNUFRVcgKyQzKqg0qJryo
+X-Google-Smtp-Source: AGHT+IEfExYtqW55wAPTke0HUDqx0JPkstK9uVbVx/cXpb7V6qOpbTfb276SnWQ7Jm2yLNBzHirUgA==
+X-Received: by 2002:a05:6a21:b82:b0:1fe:61a4:7210 with SMTP id
+ adf61e73a8af0-2016a177367mr5163674637.2.1744302131511; 
+ Thu, 10 Apr 2025 09:22:11 -0700 (PDT)
+Received: from [192.168.0.102] ([152.250.123.8])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b02a0817e08sm3238732a12.12.2025.04.10.09.22.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Apr 2025 09:22:11 -0700 (PDT)
+Message-ID: <ec5cec94-4d02-442e-94e6-c0c2e79f3684@linaro.org>
+Date: Thu, 10 Apr 2025 13:22:06 -0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-10.1 v3 6/9] qtest/bios-tables-test: Whitelist
+ aarch64/virt 'its_off' variant blobs
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-arm@nongnu.org,
+ Udo Steinberg <udo@hypervisor.org>, Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Ani Sinha <anisinha@redhat.com>
+References: <20250403204029.47958-1-philmd@linaro.org>
+ <20250403204029.47958-7-philmd@linaro.org>
+ <671a6c82-ae10-4f3b-9d83-cecc32755206@linaro.org>
+ <20250409160531.341c205e@imammedo.users.ipa.redhat.com>
+ <98b2676d-ad21-4c05-a165-12ae5e1b9c64@linaro.org>
+ <20250410085042.6aa5593d@imammedo.users.ipa.redhat.com>
+Content-Language: en-US
+From: Gustavo Romero <gustavo.romero@linaro.org>
+In-Reply-To: <20250410085042.6aa5593d@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.593,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,36 +112,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qtest_set_command_cb passed to g_once should match GThreadFunc,
-which it does not.  But using g_once is actually unnecessary,
-because the function is called by riscv_harts_realize() under
-the Big QEMU Lock.
+Hi Igor,
 
-Reported-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- hw/riscv/riscv_hart.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+On 4/10/25 03:50, Igor Mammedov wrote:
+> On Wed, 9 Apr 2025 12:49:36 -0300
+> Gustavo Romero <gustavo.romero@linaro.org> wrote:
+> 
+>> Hi Igor,
+>>
+>> On 4/9/25 11:05, Igor Mammedov wrote:
+>>> On Fri, 4 Apr 2025 00:01:22 -0300
+>>> Gustavo Romero <gustavo.romero@linaro.org> wrote:
+>>>    
+>>>> Hi Phil,
+>>>>
+>>>> On 4/3/25 17:40, Philippe Mathieu-Daudé wrote:
+>>>>> We are going to fix the test_acpi_aarch64_virt_tcg_its_off()
+>>>>> test. In preparation, copy the ACPI tables which will be
+>>>>> altered as 'its_off' variants, and whitelist them.
+>>>>>
+>>>>> Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>> ---
+>>>>>     tests/qtest/bios-tables-test-allowed-diff.h |   3 +++
+>>>>>     tests/qtest/bios-tables-test.c              |   1 +
+>>>>>     tests/data/acpi/aarch64/virt/APIC.its_off   | Bin 0 -> 184 bytes
+>>>>>     tests/data/acpi/aarch64/virt/FACP.its_off   | Bin 0 -> 276 bytes
+>>>>>     tests/data/acpi/aarch64/virt/IORT.its_off   | Bin 0 -> 236 bytes
+>>>>>     5 files changed, 4 insertions(+)
+>>>>>     create mode 100644 tests/data/acpi/aarch64/virt/APIC.its_off
+>>>>>     create mode 100644 tests/data/acpi/aarch64/virt/FACP.its_off
+>>>>>     create mode 100644 tests/data/acpi/aarch64/virt/IORT.its_off
+>>>>>
+>>>>> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+>>>>> index dfb8523c8bf..3421dd5adf3 100644
+>>>>> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+>>>>> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+>>>>> @@ -1 +1,4 @@
+>>>>>     /* List of comma-separated changed AML files to ignore */
+>>>>> +"tests/data/acpi/aarch64/virt/APIC.its_off",
+>>>>> +"tests/data/acpi/aarch64/virt/FACP.its_off",
+>>>>> +"tests/data/acpi/aarch64/virt/IORT.its_off",
+>>>>
+>>>> I think your first approach is the correct one: you add the blobs
+>>>> when adding the new test, so they would go into patch 5/9 in this series,
+>>>> making the test pass without adding anything to bios-tables-test-allowed-diff.h.
+>>>> Then in this patch only add the APIC.its_off table to the bios-tables-test-allowed-diff.h
+>>>> since that's the table that changes when the fix is in place, as you did in:
+>>>
+>>> if APIC.its_off is the only one that's changing, but FACP/IORT blobs are the same
+>>> as suffix-less blobs, one can omit copying FACP/IORT as test harness will fallback
+>>> to suffix-less blob if the one with suffix isn't found.
+>>
+>> OK. Just clarifying and for the records, this is not the case for this series
+>>
+>>
+>>> if blobs are different from defaults then create empty blobs and whitelist them in the same patch
+>>> then do your changes and then update blobs & wipeout withe list.
+>>
+>> Thanks for confirming it. That's what I suggested to Phil in my first review and what
+>> I understood from the prescription in bios-tables-test.c.
+>>
+>> However, on second thoughts, for this particular series, isn't it better to have the following commit sequence instead:
+>>
+>> 1) Add the new test and the new blobs that make the test pass, i.e. APIC.suffix, FACP.suffix, and IORT.suffix (they are different than the default suffix-less blobs)
+> 
+> blobs should be a separate commit (that way it's easier for maintainer to rebase them,
+> if they clash during merge with some other change.
 
-diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
-index a55d1566687..bb9104bae0b 100644
---- a/hw/riscv/riscv_hart.c
-+++ b/hw/riscv/riscv_hart.c
-@@ -104,8 +104,11 @@ static bool csr_qtest_callback(CharBackend *chr, gchar **words)
- 
- static void riscv_cpu_register_csr_qtest_callback(void)
- {
--    static GOnce once;
--    g_once(&once, (GThreadFunc)qtest_set_command_cb, csr_qtest_callback);
-+    static bool first = true;
-+    if (first) {
-+        first = false;
-+        qtest_set_command_cb(csr_qtest_callback);
-+    }
- }
- #endif
- 
--- 
-2.49.0
+I see. What is a bit confusing here is that the series consists in
+one blob addition act (for the new test) and one blob update/removal act (after the fix).
 
+
+>> 2) Whitelist only the APIC.suffix since that's the table that will change with the fix
+>> 3) Add the fix (which changes the APIC table so a new APIC.suffix blob is needed and also stops generating the IORT table, so no more IORT.suffix blob is necessary)
+>> 4) Finally, update only the APIC.suffix blob and remove the IORT.suffix blob and wipe out the whitelist
+>>
+>> This way:
+>>
+>> A) It's clear that only ACPI blob changed with the fix, because there is no addition of a FACP.suffix blob in 4) (it remains the same)
+>> B) It's clear that the IORT table is removed with the fix and is not relevant anymore for the test
+> 
+> I'd just mention it in commit log so  that later no one would wonder why we are adding and then removing tables
+> 
+> As for the rest of suggestions, it looks fine to me.
+
+Well, 2) won't make sense anymore since APIC.suffix would be already in the
+whitelist in the previous patch that added the empty blobs. Since there won't
+be a commit that adds _only_ the APIC.suffix to the whitelist, in preparation
+for the fix, this info is "lost" in the series, even tho it's possible to
+mention in the commit message.
+
+Hence, what I think is not ideal from a maintainer's/reviewer's perspective,
+is that in one commit all the blobs are updated/removed at once, which is
+confusing because the fix did not touch the FACP table (for instance) and
+this table is updated with APIC and with the removal of IORT, altogether,
+in the last commit.
+
+So, for this series, which adds new blobs and _also_ updates and removes some
+of them, how about the following organization:
+
+- Patch 1     : Add the new test, add the empty blobs *.suffix files, whitelist such a blobs
+- Patch 2     : Update the blobs in Patch 1 with the ones that make the new test pass and remove them from the whitelist
+
+- Patch 3     : Add the APIC.suffix blob to the whitelist (the table that changes due to the fix)
+- Patch 4 - n : Fix(es)
+- Patch (n+1) : Update the APIC.suffix blob, remove IORT.suffix blob, and remove the APIC.suffix blob from the whitelist
+               * Add the APIC diff to the commit log
+               * Mention in the commit log that IORT.suffix is removed because IORT table is no long generated after the fix
+
+This way: a) no commit fails the test and b) blobs are added/updated/removed in separate commits
+
+What do you think?
+
+
+Cheers,
+Gustavo
 
