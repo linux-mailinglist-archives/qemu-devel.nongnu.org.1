@@ -2,150 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BDEA8491C
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 18:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53408A84971
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 18:22:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2uIx-0005m9-JE; Thu, 10 Apr 2025 11:59:03 -0400
+	id 1u2ueX-0006mS-50; Thu, 10 Apr 2025 12:21:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u2uIq-0005dP-PL
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 11:58:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1u2ueO-0006m6-RI
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 12:21:12 -0400
+Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u2uIo-0001qn-Vb
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 11:58:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744300733;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=y7YNPVvDGegBMftMugeCjfwZ2qjrwxZyvKO7qoUnSKE=;
- b=iC83Y6+ru48rPkkD9byGOLKn3gRLX6li75pMltxm1XOVEokEbFlAwsx96cjwLiQFGjPjNY
- vLGCNlhPA3JddAKoLPW6MUtFMzV/G91PGBFFLYWROfPp7h9Zl8Uitm+uyeR0sd8cIp4v2C
- aGdo5x3h0eSHyJQl8KymYgsKhgQ9JgQ=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-8znDjs6KO8OsDfyptLjA9w-1; Thu, 10 Apr 2025 11:58:51 -0400
-X-MC-Unique: 8znDjs6KO8OsDfyptLjA9w-1
-X-Mimecast-MFC-AGG-ID: 8znDjs6KO8OsDfyptLjA9w_1744300730
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5e82390b87fso965915a12.3
- for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 08:58:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744300730; x=1744905530;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=y7YNPVvDGegBMftMugeCjfwZ2qjrwxZyvKO7qoUnSKE=;
- b=QytL5XGGB1So1aYiHUT6TMtbGdbpFrl5q4HQW6mh4Jg7teJmQyFXCsTGQvfJrtErJn
- 3p4PgRu++JVLo2wDW6lvM8wXLgO/QFlFV8qpcogQp1Enon/o/K+o+TlQSZolTsBJa6d+
- 1W730eFgZV8AMMoBNYtT1tW13ZO5T15jHh4gl73DNugyAFtbk3TTi2F+CvrK25PITKH9
- zTN7iGNNTVlqy5uXa2otjBzR5U9LFzknL40c9xLLdcc+nJfk9Ucgkeo2mE4RJomq1pRv
- F8ENCWrXg3e/1X5u7AYlLxWALiSFKfs45DlKvdP2wRqdOE8RZN3+xaEHPV4LXDqUFPAM
- SYBA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXOGBNF8Atecqg3QZLKpsx5pKxgs4pQ5E3SCTpZh19HVvdp30PZoXy5O0teidN2qWUpTIZ6klflGBm2@nongnu.org
-X-Gm-Message-State: AOJu0YwF1I2epy5izl0jeHUNOgK2Qn9USbXU+VPYTNGovkygK3lBki+4
- yj3ZMRQou+hd4zwTPd1ZZ2nmTEPfC5+z9UpIMCUdv6hPutgvirr8ibseA3KlyV9THLI8leOaL/z
- XMdeeOVTsg0QAvKY9VztPrAqmJuDq0aL3HXZjtHOH8LfseXXmIK5u
-X-Gm-Gg: ASbGncuMPK7SDbLfTGl9/g0tnfRqqTd1MiV7bFboxEEaz+hCJREFaa8/d9b4CG/0hE5
- q+baJHWZoHErI3XN4evsRKPEradpw5C9O/UeTIPY5CtnEqE3Ej8LXQ1Tef9YadcYc1ro3ag3u7n
- KEhh3nRFpCrjUBptyaytVbLLYOCtgf87IxmpNSxHWND1qwypg8GfaWSkb7YW8AokY7iAoPve6do
- 7slVQ6YXEFBEJD9+Uba5QVbZaMW0b1VD5H/xzB6vXWPEdjC6sHbnsoTTCrWyY3nv2ZTOCc5w74v
- UHpVcpxVvJfJ3YLt/xUkSkmzb2K2JjnmZoeB3Jy54R2hedDU4A==
-X-Received: by 2002:a05:6402:35c9:b0:5ed:c188:8e7e with SMTP id
- 4fb4d7f45d1cf-5f32930f5eemr2740188a12.27.1744300729814; 
- Thu, 10 Apr 2025 08:58:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFMjsYG4/orstB6BJBOAvCttKbWfA7npz4IEQdeqW9BNdRixHionFsRHi9LRtsDSwfojMVNQ==
-X-Received: by 2002:a05:6402:35c9:b0:5ed:c188:8e7e with SMTP id
- 4fb4d7f45d1cf-5f32930f5eemr2740156a12.27.1744300729357; 
- Thu, 10 Apr 2025 08:58:49 -0700 (PDT)
-Received: from [192.168.213.163] (93-33-70-196.ip43.fastwebnet.it.
- [93.33.70.196]) by smtp.googlemail.com with ESMTPSA id
- 4fb4d7f45d1cf-5f2fbd3d9e1sm2461618a12.76.2025.04.10.08.58.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Apr 2025 08:58:48 -0700 (PDT)
-Message-ID: <65a63820-e59d-47d4-883a-4affe40f9b38@redhat.com>
-Date: Thu, 10 Apr 2025 17:58:45 +0200
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1u2ueH-0004zY-2J
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 12:21:10 -0400
+Received: from MUA
+ by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+ (Exim 4.98.1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1u2uHG-00000001OzE-2qfY; Thu, 10 Apr 2025 17:57:18 +0200
+Message-ID: <afff3782-08ab-42cd-a32d-33c307c5d9b7@maciej.szmigiero.name>
+Date: Thu, 10 Apr 2025 17:57:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] various: Fix type conflict of GLib function pointers
-To: Kohei Tokunaga <ktokunaga.mail@gmail.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz <groug@kaod.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- qemu-riscv@nongnu.org, qemu-arm@nongnu.org
-References: <cover.1744032780.git.ktokunaga.mail@gmail.com>
- <2be81d2f86704662c9fa33ceb46077804e34ac77.1744032780.git.ktokunaga.mail@gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <2be81d2f86704662c9fa33ceb46077804e34ac77.1744032780.git.ktokunaga.mail@gmail.com>
+Subject: Re: [PATCH] target/i386: Reset parked vCPUs together with the online
+ ones
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org
+References: <e8b85a5915f79aa177ca49eccf0e9b534470c1cd.1743099810.git.maciej.szmigiero@oracle.com>
+Content-Language: en-US, pl-PL
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <e8b85a5915f79aa177ca49eccf0e9b534470c1cd.1743099810.git.maciej.szmigiero@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.593,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=145.239.82.108;
+ envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -161,99 +101,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/7/25 16:45, Kohei Tokunaga wrote:
-> On emscripten, function pointer casts can cause function call failure.
-> This commit fixes the function definition to match to the type of the
-> function call.
+On 27.03.2025 19:24, Maciej S. Szmigiero wrote:
+> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 > 
-> - qtest_set_command_cb passed to g_once should match to GThreadFunc
-
-Sending an alternative patch that doesn't use GOnce, this code runs in 
-the main thread.
-
-> - object_class_cmp and cpreg_key_compare are passed to g_list_sort as
->    GCopmareFunc but GLib cast them to GCompareDataFunc.
-
-Please use g_list_sort_with_data instead, and poison 
-g_slist_sort/g_list_sort in include/glib-compat.h, with a comment 
-explaining that it's done this way because of Emscripten.
-
-Paolo
-
-> Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+> Commit 3f2a05b31ee9 ("target/i386: Reset TSCs of parked vCPUs too on VM
+> reset") introduced a way to reset TSCs of parked vCPUs during VM reset to
+> prevent them getting desynchronized with the online vCPUs and therefore
+> causing the KVM PV clock to lose PVCLOCK_TSC_STABLE_BIT.
+> 
+> The way this was done was by registering a parked vCPU-specific QEMU reset
+> callback via qemu_register_reset().
+> 
+> However, it turns out that on particularly device-rich VMs QEMU reset
+> callbacks can take a long time to execute (which isn't surprising,
+> considering that they involve resetting all of VM devices).
+> 
+> In particular, their total runtime can exceed the 1-second TSC
+> synchronization window introduced in KVM commit 5d3cb0f6a8e3 ("KVM:
+> Improve TSC offset matching").
+> Since the TSCs of online vCPUs are only reset from "synchronize_post_reset"
+> AccelOps handler (which runs after all qemu_register_reset() handlers) this
+> essentially makes that fix ineffective on these VMs.
+> 
+> The easiest way to guarantee that these parked vCPUs are reset at the same
+> time as the online ones (regardless how long it takes for VM devices to
+> reset) is to piggyback on post-reset vCPU synchronization handler for one
+> of online vCPUs - as there is no generic post-reset AccelOps handler that
+> isn't per-vCPU.
+> 
+> The first online vCPU was selected for that since it is easily available
+> under "first_cpu" define.
+> This does not create an ordering issue since the order of vCPU TSC resets
+> does not matter.
+> 
+> Fixes: 3f2a05b31ee9 ("target/i386: Reset TSCs of parked vCPUs too on VM reset")
+> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 > ---
->   hw/riscv/riscv_hart.c | 9 ++++++++-
->   qom/object.c          | 5 +++--
->   target/arm/helper.c   | 4 ++--
->   3 files changed, 13 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
-> index a55d156668..e37317dcbd 100644
-> --- a/hw/riscv/riscv_hart.c
-> +++ b/hw/riscv/riscv_hart.c
-> @@ -102,10 +102,17 @@ static bool csr_qtest_callback(CharBackend *chr, gchar **words)
->       return false;
->   }
->   
-> +static gpointer g_qtest_set_command_cb(
-> +    bool (*pc_cb)(CharBackend *chr, gchar **words))
-> +{
-> +    qtest_set_command_cb(pc_cb);
-> +    return NULL;
-> +}
-> +
->   static void riscv_cpu_register_csr_qtest_callback(void)
->   {
->       static GOnce once;
-> -    g_once(&once, (GThreadFunc)qtest_set_command_cb, csr_qtest_callback);
-> +    g_once(&once, (GThreadFunc)g_qtest_set_command_cb, csr_qtest_callback);
->   }
->   #endif
->   
-> diff --git a/qom/object.c b/qom/object.c
-> index 01618d06bd..19698aae4c 100644
-> --- a/qom/object.c
-> +++ b/qom/object.c
-> @@ -1191,7 +1191,8 @@ GSList *object_class_get_list(const char *implements_type,
->       return list;
->   }
->   
-> -static gint object_class_cmp(gconstpointer a, gconstpointer b)
-> +static gint object_class_cmp(gconstpointer a, gconstpointer b,
-> +                             gpointer user_data)
->   {
->       return strcasecmp(object_class_get_name((ObjectClass *)a),
->                         object_class_get_name((ObjectClass *)b));
-> @@ -1201,7 +1202,7 @@ GSList *object_class_get_list_sorted(const char *implements_type,
->                                        bool include_abstract)
->   {
->       return g_slist_sort(object_class_get_list(implements_type, include_abstract),
-> -                        object_class_cmp);
-> +                        (GCompareFunc)object_class_cmp);
->   }
->   
->   Object *object_ref(void *objptr)
-> diff --git a/target/arm/helper.c b/target/arm/helper.c
-> index bb445e30cd..68f81fadfc 100644
-> --- a/target/arm/helper.c
-> +++ b/target/arm/helper.c
-> @@ -220,7 +220,7 @@ static void count_cpreg(gpointer key, gpointer opaque)
->       }
->   }
->   
-> -static gint cpreg_key_compare(gconstpointer a, gconstpointer b)
-> +static gint cpreg_key_compare(gconstpointer a, gconstpointer b, void *d)
->   {
->       uint64_t aidx = cpreg_to_kvm_id((uintptr_t)a);
->       uint64_t bidx = cpreg_to_kvm_id((uintptr_t)b);
-> @@ -244,7 +244,7 @@ void init_cpreg_list(ARMCPU *cpu)
->       int arraylen;
->   
->       keys = g_hash_table_get_keys(cpu->cp_regs);
-> -    keys = g_list_sort(keys, cpreg_key_compare);
-> +    keys = g_list_sort(keys, (GCompareFunc)cpreg_key_compare);
->   
->       cpu->cpreg_array_len = 0;
->   
+
+Friendly ping?
+
+Thanks,
+Maciej
 
 
