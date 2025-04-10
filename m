@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A568AA84FE9
+	by mail.lfdr.de (Postfix) with ESMTPS id A189CA84FE8
 	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 00:57:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u30p0-0004DQ-Te; Thu, 10 Apr 2025 18:56:34 -0400
+	id 1u30pA-0004Dp-V2; Thu, 10 Apr 2025 18:56:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u30od-0004Bp-Js
- for qemu-devel@nongnu.org; Thu, 10 Apr 2025 18:56:14 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1u30od-0004Bq-LQ
+ for qemu-devel@nongnu.org; Thu, 10 Apr 2025 18:56:16 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u30oa-0002ZK-JS
+ id 1u30ob-0002Zs-Nm
  for qemu-devel@nongnu.org; Thu, 10 Apr 2025 18:56:11 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-22435603572so13836055ad.1
- for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 15:56:08 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-3054ef26da3so1121797a91.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 15:56:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744325767; x=1744930567; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744325768; x=1744930568; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/+C5+b1a8mySGOnXpO+yRnlPSMlppK5ZlK3cVTr23jo=;
- b=akpNfIYu3iBkedpLWkyIF6Kqy5U6zrRhldChiIEYj17SmLvgwX2gyKXgqT+N6zDBY3
- 41ptre0RbbJ4eQGTO8yBLIpu2JPkVSp3cz4xKNRAWKGhR0/RXdlksQNsPA1SN+j0yD40
- bfrXCwVM4AYIVYwSGxCAxx+ROxsHAddDKTeRKmqSMX70hCt6lzXnn67Zbg9JLgUsTVqQ
- HR82dB5BAVNW3D3dvFJqF+VmbUWUtTlVsMpKdPdl5DrOMOisMweJ7OTbWais846cP8Yt
- mBH4M90SvLEbfXreVGsuODfs35y+Ez0SbJMOyhJ6LzGBs6+zhU1teKtpEuGMyI11MuBd
- luMA==
+ bh=ngzxySh83zpFGyW3pjy22+MdVTCG52OkuHe8t+5ldxE=;
+ b=NyxIL4mNQPUxLlrZdPhHDsgHqgqRc54U48+I94Vr2CY4mpfXq4Gs07b7w490eX+uD4
+ hPYksw5pu7u0rK8PIJPun36JtdDDTHe0Q69soxc5ONY8Dqt1BlL+nJ3A1HR58/CgEElR
+ pZguZgjW9eY3mCpc688LygyL14t51rF9RDhUbm+aAQkmoQjilajeOdVB40DeY0NiH3Oh
+ WFMa10cMAEgDdmrVDOM5jslOyXKG8UeeoSLk9RBTLTgaQno9kv5P7TMnerVkLnxpAjhj
+ u6WZKFhZPruH7h1N+7uF77YE9HCuMjBxAG+n2pmrRWjcjxQgAKJW0qlj3e5Qh825/ySo
+ iwsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744325767; x=1744930567;
+ d=1e100.net; s=20230601; t=1744325768; x=1744930568;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/+C5+b1a8mySGOnXpO+yRnlPSMlppK5ZlK3cVTr23jo=;
- b=U98QrVpbcOrC1TbcPQPYb8Ohig8sBnfJJ4maBaWEjUPPOzzUnhIcm9YktUGOeBejNG
- NINYBJeOS0Z3AbPjAvq27XbYrqczrnh4y+9UlQTMosyEwADUQScLbNCVpCI6C+6YR23y
- oj8YMZKM/5z8/oiQBhRBy/75E1NXZrkYvGk+nScdy2wqQxEqUp3XS6wxM/CbvNXN2JKG
- bnsLoWFNoJdUjgeu9MSZ2XebE2R4Rp+IgIi7s/0oLqJB6/UFW3lqbmFOFAObZcyDCcQW
- xhogx2Pq4POwjckNiy8ZbblHT5tudg0Hum0+nzP7vz9eyGBLqzXCNgKJ/jTaJT+6eruB
- MyUw==
-X-Gm-Message-State: AOJu0YzPgHh44XezB6DOeTYVQZ4snX4uR8xrwPeT1bckDCEo71dsaqD1
- ivOGdmLnwfFYdzbQlsVPvjy8afTwJ4DVWD8FS74LBLczj9RkaDQ9V8I+3HFzL3gWXxko3VMvgcA
- p2Yo=
-X-Gm-Gg: ASbGncseH93nEfIP0zK4t/mW2L+akHAtRS2i4TdnKl4BzezX5n1ozClzaPMpPC/Elab
- Ng43e94Xpa/3ZUxhd1ZTI9V+cXUwthTBU4CLXZVLjZwIlPveqb5KaD0J27GB3g4aCNXbZRzTKt1
- p9rZFP0qplabJNM9EuD78Pw2RY2Qi+tWSm0WM6cgwud7gL34wJ3uepK//45uXF5leGnCa6v38J3
- POB/iOtSGXWAB03nqpmeur8npQ8EQomvkpI7ykzRrChnk/2n8FVZCkt1rFUZjRnRqx/dPy5Q2o+
- o/9Y4JF+zHVXWvcvCOfn+gbNeD3tkJ85bLvgTQgW
-X-Google-Smtp-Source: AGHT+IHs9D25qgiDbzI8gGKggg0wrOwdpCaenWVZo1nGJW0XNt6jI+YS4VfDHah/7c/Dul9P8K3bgQ==
-X-Received: by 2002:a17:903:2bce:b0:224:ab0:9b00 with SMTP id
- d9443c01a7336-22bea4bcc57mr8155805ad.27.1744325767220; 
- Thu, 10 Apr 2025 15:56:07 -0700 (PDT)
+ bh=ngzxySh83zpFGyW3pjy22+MdVTCG52OkuHe8t+5ldxE=;
+ b=unMs3yrDjKxkuGXUMeKHbYeqIthUV6K+33lIyIt9Koq3i+2pO7msO6Tb451V0veOQ3
+ kQPqJn/k5ehNk0kfBgpuewJpB8z/Ee3Ny0rynxFgH6wezO0LZTuqMix0XRVWvlXxbKG6
+ KZ9QPPtkEGCCK+ci/IzaIGnktGyJNzuquKVANDrdlh7knbWMdCnT3JjemKnDwyHUtGhS
+ 0PCIy1INH4ETgQvHVLmDYbDHx5yYmxUoAzlsCnJ44DssaLpE8bBrzzi8G706u6HKIFLx
+ AmmOHherHbMHCy6YGNEDme5lNPO09jcb3yVQFcAttwQORQL9dnB50W+QVbK8pZkG4oxP
+ 6A1w==
+X-Gm-Message-State: AOJu0YxsYzsgDC55sKTywUIQdhjubjk9XrS8aKUtT7bdOBuLm45Uo4AX
+ 2GOZjgy+BaEns6ijWVyeRd1gubsQHnJHOsCZfQwd2xA6YVkF/NwdwbagQFAcov6KEw5w6X5ul52
+ KotY=
+X-Gm-Gg: ASbGnctib15MHel2yGa2ws5rT1pcp9mcaHTjA9qBLXIenJa1Vnq9PBe+Qtr+qBepQk6
+ 228r4HzKwKtQ9nSNXwBeW2OgmmWp+EGiJkt/8YzMWk+Zo6XCi2HXf16TMlRyANDJ4xT0UOZKUIP
+ P2IoMkgyfyHaajgbK2axhNyBx2agG5z9p6inikPlx3E9cTUf/abV0rrlz2uMDUd0bPQ4c9epOUP
+ SlGpPbiYTPqodfMyvTaolUXt41CB3dRzjl+0XKiOO9PffPhwXqKGAwKXZEUCrrVKysCGLia0uSz
+ s3H2QGrrVGiivgVUpYcftFNYaN/fy7k94+ErHiir
+X-Google-Smtp-Source: AGHT+IHUlPRqrszEK/wBZZA5sipykQdx+eszCKvxdc3OYqBcONiY6hwrfDcV8Y9GGWaFXCKKBOgT5Q==
+X-Received: by 2002:a17:90b:4ecf:b0:2fc:3264:3666 with SMTP id
+ 98e67ed59e1d1-308237ce142mr887982a91.30.1744325768075; 
+ Thu, 10 Apr 2025 15:56:08 -0700 (PDT)
 Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7c97228sm36249225ad.128.2025.04.10.15.56.06
+ d9443c01a7336-22ac7c97228sm36249225ad.128.2025.04.10.15.56.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Apr 2025 15:56:06 -0700 (PDT)
+ Thu, 10 Apr 2025 15:56:07 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -68,24 +68,23 @@ Cc: philmd@linaro.org, Stefan Hajnoczi <stefanha@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 1/2] system/main: transfer replay mutex ownership from main
- thread to main loop thread
-Date: Thu, 10 Apr 2025 15:55:49 -0700
-Message-Id: <20250410225550.46807-2-pierrick.bouvier@linaro.org>
+Subject: [PATCH 2/2] tests/functional/test_aarch64_replay: reenable on macos
+Date: Thu, 10 Apr 2025 15:55:50 -0700
+Message-Id: <20250410225550.46807-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250410225550.46807-1-pierrick.bouvier@linaro.org>
 References: <20250410225550.46807-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_SPACE_RATIO=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,65 +100,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On MacOS, UI event loop has to be ran in the main thread of a process.
-Because of that restriction, on this platform, qemu main event loop is
-ran on another thread [1].
-
-This breaks record/replay feature, which expects thread running qemu_init
-to initialize hold this lock, breaking associated functional tests on
-MacOS.
-
-Thus, as a generalization, and similar to how BQL is handled, we release
-it after init, and reacquire the lock before entering main event loop,
-avoiding a special case if a separate thread is used.
-
-Tested on MacOS with:
-$ meson test -C build --setup thorough --print-errorlogs \
-func-x86_64-x86_64_replay func-arm-arm_replay func-aarch64-aarch64_replay
-$ ./build/qemu-system-x86_64 -nographic -icount shift=auto,rr=record,rrfile=replay.log
-$ ./build/qemu-system-x86_64 -nographic -icount shift=auto,rr=replay,rrfile=replay.log
-
-[1] https://gitlab.com/qemu-project/qemu/-/commit/f5ab12caba4f1656479c1feb5248beac1c833243
-
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2907
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- system/main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/functional/test_aarch64_replay.py | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/system/main.c b/system/main.c
-index ecb12fd397c..1c022067349 100644
---- a/system/main.c
-+++ b/system/main.c
-@@ -25,6 +25,7 @@
- #include "qemu/osdep.h"
- #include "qemu-main.h"
- #include "qemu/main-loop.h"
-+#include "system/replay.h"
- #include "system/system.h"
+diff --git a/tests/functional/test_aarch64_replay.py b/tests/functional/test_aarch64_replay.py
+index 029fef3cbf8..bd6609d9149 100755
+--- a/tests/functional/test_aarch64_replay.py
++++ b/tests/functional/test_aarch64_replay.py
+@@ -16,8 +16,6 @@ class Aarch64Replay(ReplayKernelBase):
+          'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
+         '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
  
- #ifdef CONFIG_SDL
-@@ -44,10 +45,12 @@ static void *qemu_default_main(void *opaque)
- {
-     int status;
- 
-+    replay_mutex_lock();
-     bql_lock();
-     status = qemu_main_loop();
-     qemu_cleanup(status);
-     bql_unlock();
-+    replay_mutex_unlock();
- 
-     exit(status);
- }
-@@ -67,6 +70,7 @@ int main(int argc, char **argv)
- {
-     qemu_init(argc, argv);
-     bql_unlock();
-+    replay_mutex_unlock();
-     if (qemu_main) {
-         QemuThread main_loop_thread;
-         qemu_thread_create(&main_loop_thread, "qemu_main",
+-    # Failing on Darwin: https://gitlab.com/qemu-project/qemu/-/issues/2907
+-    @skipIfOperatingSystem('Darwin')
+     def test_aarch64_virt(self):
+         self.set_machine('virt')
+         self.cpu = 'cortex-a53'
 -- 
 2.39.5
 
