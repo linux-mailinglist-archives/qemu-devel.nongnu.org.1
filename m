@@ -2,51 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A52FA836A1
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 04:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D00BDA8366C
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Apr 2025 04:24:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u2hpT-0001rJ-UX; Wed, 09 Apr 2025 22:39:47 -0400
+	id 1u2hXI-0005J3-4O; Wed, 09 Apr 2025 22:21:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u2hpR-0001qY-Gb; Wed, 09 Apr 2025 22:39:45 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u2hXD-0005HY-Jy; Wed, 09 Apr 2025 22:20:57 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u2hpN-0003Ay-0K; Wed, 09 Apr 2025 22:39:45 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 10 Apr
- 2025 10:38:59 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Thu, 10 Apr 2025 10:38:59 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <nabihestefan@google.com>
-Subject: [PATCH v2 10/10] docs/system/arm/aspeed: Support vbootrom for AST2700
-Date: Thu, 10 Apr 2025 10:38:54 +0800
-Message-ID: <20250410023856.500258-11-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250410023856.500258-1-jamin_lin@aspeedtech.com>
-References: <20250410023856.500258-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u2hXB-0000qw-Ha; Wed, 09 Apr 2025 22:20:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1744251654; x=1775787654;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=N/CZ9fUsPlUSKuyUXcdSU3b8XXzkRmBDT3dSqkO2yL0=;
+ b=MtF6geJ5YKqC4Bph5o/C9+cZdZiVEQikmIDcyLYXvNBJVPlvPG5gYXIK
+ olYIMHpgWGjhBja1f7O0THiqg6mxhyru5Ua+6SgWu2/w0BYowOcvqUQOy
+ +wNx4Lod59UgXa6TIV/KrV/OtYtCfuQBkFO43CBzDZjkaLlvA0TrveTnY
+ CPevpZnCTAKtVqwZ9w/LZcyOXFBZluGvJobZhffdqrVUbb8RnpmlT+jtC
+ BvpmHQFnnIuajrALnvy3HU/LZ/O1riR3oy7IGZvBRWVUEJV69GqXIOJZV
+ 5q1wWhYmdKFsDVaRkIM4rRRESbpemEdG+xFVtWo9VIb3CQoHbVzupPVok w==;
+X-CSE-ConnectionGUID: KB05lRf6SB+CSEpoCJLf4w==
+X-CSE-MsgGUID: +Ff0PVmDSEag9e5juLTrWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="56418582"
+X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; d="scan'208";a="56418582"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2025 19:20:47 -0700
+X-CSE-ConnectionGUID: bKFIMmGZTHaJskCfi9AWxQ==
+X-CSE-MsgGUID: 2Y5avAX7QIGpzHaRBG2jdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; d="scan'208";a="151936000"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa002.fm.intel.com with ESMTP; 09 Apr 2025 19:20:38 -0700
+Date: Thu, 10 Apr 2025 10:41:27 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
+ babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
+ groug@kaod.org, khorenko@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
+ peter.maydell@linaro.org, gaosong@loongson.cn,
+ chenhuacai@kernel.org, philmd@linaro.org, aurelien@aurel32.net,
+ jiaxun.yang@flygoat.com, arikalo@gmail.com, npiggin@gmail.com,
+ danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ thuth@redhat.com, flavra@baylibre.com, ewanhai-oc@zhaoxin.com,
+ ewanhai@zhaoxin.com, cobechen@zhaoxin.com, louisqi@zhaoxin.com,
+ liamni@zhaoxin.com, frankzhu@zhaoxin.com, silviazhao@zhaoxin.com
+Subject: Re: [PATCH v3 05/10] target/i386/kvm: extract unrelated code out of
+ kvm_x86_build_cpuid()
+Message-ID: <Z/cv155eTgVSW0rm@intel.com>
+References: <20250331013307.11937-1-dongli.zhang@oracle.com>
+ <20250331013307.11937-6-dongli.zhang@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250331013307.11937-6-dongli.zhang@oracle.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.505,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,54 +94,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using the vbootrom image instead of manually loading boot components with
--device loader. The boot ROM binary is now passed via the -bios option,
-using the image located in pc-bios/ast27x0_bootrom.bin.
+On Sun, Mar 30, 2025 at 06:32:24PM -0700, Dongli Zhang wrote:
+> Date: Sun, 30 Mar 2025 18:32:24 -0700
+> From: Dongli Zhang <dongli.zhang@oracle.com>
+> Subject: [PATCH v3 05/10] target/i386/kvm: extract unrelated code out of
+>  kvm_x86_build_cpuid()
+> X-Mailer: git-send-email 2.43.5
+> 
+> The initialization of 'has_architectural_pmu_version',
+> 'num_architectural_pmu_gp_counters', and
+> 'num_architectural_pmu_fixed_counters' is unrelated to the process of
+> building the CPUID.
+> 
+> Extract them out of kvm_x86_build_cpuid().
+> 
+> In addition, use cpuid_find_entry() instead of cpu_x86_cpuid(), because
+> CPUID has already been filled at this stage.
+> 
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+> ---
+> Changed since v1:
+>   - Still extract the code, but call them for all CPUs.
+> Changed since v2:
+>   - Use cpuid_find_entry() instead of cpu_x86_cpuid().
+>   - Didn't add Reviewed-by from Dapeng as the change isn't minor.
+> 
+>  target/i386/kvm/kvm.c | 62 ++++++++++++++++++++++++-------------------
+>  1 file changed, 35 insertions(+), 27 deletions(-)
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- docs/system/arm/aspeed.rst | 18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
-
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 97fd6a0e7f..dfa8e6b4c6 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -250,24 +250,14 @@ under Linux), use :
- Booting the ast2700-evb machine
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
--Boot the AST2700 machine from the flash image, use an MTD drive :
-+Boot the AST2700 machine using a flash image, with an MTD drive and
-+the virtual boot ROM :
- 
- .. code-block:: bash
- 
--  IMGDIR=ast2700-default
--  UBOOT_SIZE=$(stat --format=%s -L ${IMGDIR}/u-boot-nodtb.bin)
--
-   $ qemu-system-aarch64 -M ast2700-evb \
--       -device loader,force-raw=on,addr=0x400000000,file=${IMGDIR}/u-boot-nodtb.bin \
--       -device loader,force-raw=on,addr=$((0x400000000 + ${UBOOT_SIZE})),file=${IMGDIR}/u-boot.dtb \
--       -device loader,force-raw=on,addr=0x430000000,file=${IMGDIR}/bl31.bin \
--       -device loader,force-raw=on,addr=0x430080000,file=${IMGDIR}/optee/tee-raw.bin \
--       -device loader,cpu-num=0,addr=0x430000000 \
--       -device loader,cpu-num=1,addr=0x430000000 \
--       -device loader,cpu-num=2,addr=0x430000000 \
--       -device loader,cpu-num=3,addr=0x430000000 \
--       -smp 4 \
--       -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd \
-+       -bios ast27x0_bootrom.bin \
-+       -drive file=image-bmc,format=raw,if=mtd \
-        -nographic
- 
- Aspeed minibmc family boards (``ast1030-evb``)
--- 
-2.43.0
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
