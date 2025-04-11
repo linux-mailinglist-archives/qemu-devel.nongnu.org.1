@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CE0A852B8
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 06:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27323A852B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 06:42:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u36DM-0003PK-DE; Fri, 11 Apr 2025 00:42:04 -0400
+	id 1u36DW-0003RI-P7; Fri, 11 Apr 2025 00:42:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1u36DJ-0003KC-Uv; Fri, 11 Apr 2025 00:42:01 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1u36DP-0003QV-0g; Fri, 11 Apr 2025 00:42:07 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1u36DI-0001eP-5P; Fri, 11 Apr 2025 00:42:01 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2279915e06eso16770205ad.1; 
- Thu, 10 Apr 2025 21:41:59 -0700 (PDT)
+ id 1u36DN-0001fU-B9; Fri, 11 Apr 2025 00:42:06 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-22928d629faso15956525ad.3; 
+ Thu, 10 Apr 2025 21:42:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744346518; x=1744951318; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1744346523; x=1744951323; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6Rm33TSnC22jP6DTQXcfoa4b7xZArhvwABkl1UW9Q7U=;
- b=EnjrPqv701Fxhy8G32sSkANOXpJ9sm0DtRaVJEkrMr/o73JK3pkjiPuP2gRDMRWlNh
- ZnefD8QadFmwsJbhn0ZfMbyD3BpEhqBYVN9lmVQeW0IZc5Dzg/BnPmmTjKAwfR9cp346
- HSXG4oISblqT+hLOLv8QMgPNGC8fBbkQNOeAFghG6PU/0+yCxzQs/U1/b2lfe8LB0yRd
- BhJy4bL+lTl1+sySBTXHF+l+8SeTMZyl28zBZeuWH5xpF5B9+MxssUE/f2nhleCKMfXK
- v+UpDGhHort5Ia7e2poMOElMqwGxWynTrjVIz8hvDszUlI08lP8QWuKkSnLr7rW5LcDM
- tvGQ==
+ bh=xDeAZLdMZEZbIzS8jBS1ynoCpqyQ1zcOuidUzgg27yA=;
+ b=XAml7ngNIDV8shbkq1wpZvWnVMoJHiOFTdfT7f/hH41w0yB9QS3ZyZ8RNR9YC+IROa
+ dYdiV9zp/BfOVodGJLFbEbPSLtYKWoB+3Ng89u8DZm046QQ/N6EZM0MaZ+8SS9a8xjm0
+ 8Cu9HBqe3q/eXGc4C0Jo5cvhz3e8HZF/aqShIFgnBk5eiJUYuE6ash7/Wlr5a+RH4Pvk
+ 7iPFTj95tTbCGCDs5V6J02fofwTaFrhsH/JjsK1guquP0z+V4LWy66ILvNTjwG+8Fw7e
+ 0eMZ/g9BrtGn3Px0RCzm9Y+ypNBrQrt50oNc3zPRJpLr4r+f32Nlghq4hoSfu3qcabE2
+ M9Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744346518; x=1744951318;
+ d=1e100.net; s=20230601; t=1744346523; x=1744951323;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6Rm33TSnC22jP6DTQXcfoa4b7xZArhvwABkl1UW9Q7U=;
- b=ssMepefkY3hjZFOJHBAQ86l5BGEse983zRsGb8yPWVTBCYC2PxBE3LB5its/HKvWe9
- 6mPSxsM3yi+UfwHNMqGYW+rem/B/g9lntcmFFn++9fqRRiaAub/3r2HKuksFrWqeMuwi
- 1jyT3mygc8VuELEUtSFkykD7THv0HH/M4+/QyBKbmyVZm3bH/WIELCrGPDNMupht8Vls
- XayyW1I/NrN4ICCXJPD7MHvSJB/roayWmTqPvPTntKMhi8ganmzfQhY0e7gB+Y/R/dhv
- HY9qnPsL5scwywV7GkO+muLk5tcL0GEioUB7DG3veuAeVQo1vsNHeShojBG7cHmuv5ZW
- +88Q==
+ bh=xDeAZLdMZEZbIzS8jBS1ynoCpqyQ1zcOuidUzgg27yA=;
+ b=fF8dLT3UT6sjcD3Nbb5V1DOsYqcyDueRhPUtlNv+Zw02zRiHDX/KQm9TEnomsvERpp
+ DB+w7XjwYqYGx7ppZraSICdZPaI4dDLaD1+sexqm3r2MG5KfFOLHuOYOTEgzgbLcbd3p
+ vtbCIYbk8XankoAr8y+FfjN4kB7OLr43RncZwo8+66X6Lz7nJGjbB2yujWwDMKLArmts
+ VOe5wn13bxfbExdzOMH50+FVUTQ3naqS1A4O4unHgIv99ftykbBnyyILUp/os13sSiKl
+ qpd+hBa/XU9IOJBO591Ab0RlwRdrvWe+jfuA3fomAEX0jVUanjT//IzfDD/l+C5dK2Mf
+ 8+GQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV6WDb0+1prVq9JJRyCzzSnjHxOmPYLTymdGm6xDlJIlEfXzavRDBpWEVd3LSt+Hbx73U9jUDm6pu3d@nongnu.org
-X-Gm-Message-State: AOJu0YwBjUZvfugJrk/c8TtHHbYOdm1coeZkscJVNYt9j4+TL7l/aUGT
- eCpJ603VJ1Sr5O/UNaxWL6UlAZryk63RakImbGq4DtPxpeTHdUau70Bhjg==
-X-Gm-Gg: ASbGncszLRhop5zu1owEn5ayDne4VXMOjrQE1lfEQBgtfLqNex3Aigjgv9ikRsCsdbP
- VcMrd1xkxh7NHdpJ5+o8C4JO/kH4vjFXFrRG7wTph8qHhTibJhrCbenBzsEoZCSs1FyKRLR5NIT
- nL7ojsQvnETC/dPo3MuWOU6kqJiNckEnnOwoTjvzpdkQntrELXF+fSW/cLwT9ZKRSqo7cF13Ib0
- K0iYQFg8pwmHcsCpNESSOgzzzCY/k8fZU/t4kh0d2/svOH/3CbzpeIcQwLU6g76Ln/E9s3TO7eC
- WoBNqIt5DRSCc7UcFSvcI1yaDC8+dhSxUOuX7H1C+amf
-X-Google-Smtp-Source: AGHT+IHdaSVvqODpivLgLLZowwJQUWVs5cNTCHezD3lkJIv78SBBnb8CAf63yepUCJzAWOHdqZnhzg==
-X-Received: by 2002:a17:902:ef03:b0:21f:2ded:76ea with SMTP id
- d9443c01a7336-22bea4effefmr21097465ad.36.1744346518250; 
- Thu, 10 Apr 2025 21:41:58 -0700 (PDT)
+ AJvYcCVHlAy2OkGgNe8/DLHYx9CBFw6xZgRuCk1BgCWvheQA9AnFy1eXSaQE1E1cAKPwbf/EebUB3RZr7T7E@nongnu.org
+X-Gm-Message-State: AOJu0YzfJzNpu9q6uMh6IPP3nRht7+FLQck1zCG36vmyZVVWuAspq/bt
+ K59I6raIpwJ8olvAwLjRjTEIB3+bwl7iGlBvhA3mnlnI2XVcy8niusm+nw==
+X-Gm-Gg: ASbGncsx+xTIuyEpJ1N3tibs9+DtuNye+iW5LwV+GR3ax/Ywcl3ssgbnwVgeS0maGR/
+ G3Eyf06z5/ufdJvAKLspTg6UWWBOIm4XlCn4JVfi6Zzg/Uf6K6Z8OnoqhSaHNksKb51Og4bdDRK
+ Zdlr5vKAR/DTNrcPUQO+uYdQwFGXSIlf2ip13YmVmx2Wxm5LpYP6Jo4s/XVPef7pV5ymxFCYzx3
+ TNoH/1BwR+LW2nzdiRBQamJkpMNS6wIwMiMN+uulUN1dyqpqZUg5uUHqbgwDii1boTHv+SpWbvo
+ BEBNUAREAoib6w7qUCx87G1J0847ZgD/jHC7ESmw0uwZSlUJ/HFP+xs=
+X-Google-Smtp-Source: AGHT+IGO2MMSl5/kghcY/caUEPyovyxUPFpIUbSaX/elFVTmpTaa2oE/6N1x1RwKI8JMJ89Ar2q0JA==
+X-Received: by 2002:a17:902:e54a:b0:225:b718:4dff with SMTP id
+ d9443c01a7336-22bea4fdd91mr22322215ad.53.1744346522989; 
+ Thu, 10 Apr 2025 21:42:02 -0700 (PDT)
 Received: from wheely.local0.net ([220.253.99.94])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7c971e4sm39672745ad.136.2025.04.10.21.41.53
+ d9443c01a7336-22ac7c971e4sm39672745ad.136.2025.04.10.21.41.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Apr 2025 21:41:57 -0700 (PDT)
+ Thu, 10 Apr 2025 21:42:02 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -71,17 +71,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-block@nongnu.org
-Subject: [PATCH v4 4/7] tests/qtest/libquos/pci: Add migration fixup helper
- for pci devices
-Date: Fri, 11 Apr 2025 14:41:26 +1000
-Message-ID: <20250411044130.201724-5-npiggin@gmail.com>
+Subject: [PATCH v4 5/7] qtest/libqos/pci: Enforce balanced iomap/unmap
+Date: Fri, 11 Apr 2025 14:41:27 +1000
+Message-ID: <20250411044130.201724-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250411044130.201724-1-npiggin@gmail.com>
 References: <20250411044130.201724-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,59 +103,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration tests can create new QPCI devices for the destination
-machine which may need to take on some state of the source machine
-after destination is complete.
+Add assertions to ensure a BAR is not mapped twice, and that only
+previously mapped BARs are unmapped. This can help catch bugs and
+fragile coding.
 
-Add a migration fixup helper and call it from ahci migration tests.
-This is currently a noop and will be used subsequently.
-
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/qtest/libqos/pci.h | 1 +
- tests/qtest/ahci-test.c  | 1 +
- tests/qtest/libqos/pci.c | 4 ++++
- 3 files changed, 6 insertions(+)
+ tests/qtest/libqos/pci.h |  9 +++++++
+ tests/qtest/libqos/pci.c | 51 ++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 55 insertions(+), 5 deletions(-)
 
 diff --git a/tests/qtest/libqos/pci.h b/tests/qtest/libqos/pci.h
-index 83896145235..fd195ac4e6f 100644
+index fd195ac4e6f..5c7ebad4270 100644
 --- a/tests/qtest/libqos/pci.h
 +++ b/tests/qtest/libqos/pci.h
-@@ -122,6 +122,7 @@ void qpci_memwrite(QPCIDevice *bus, QPCIBar token, uint64_t off,
-                    const void *buf, size_t len);
- QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr);
- void qpci_iounmap(QPCIDevice *dev, QPCIBar addr);
-+void qpci_migrate_fixup(QPCIDevice *to, QPCIDevice *from);
- QPCIBar qpci_legacy_iomap(QPCIDevice *dev, uint16_t addr);
+@@ -61,10 +61,19 @@ struct QPCIBar {
+     bool is_io;
+ };
  
- void qpci_unplug_acpi_device_test(QTestState *qs, const char *id, uint8_t slot);
-diff --git a/tests/qtest/ahci-test.c b/tests/qtest/ahci-test.c
-index 02c9d54f898..6fd6063b971 100644
---- a/tests/qtest/ahci-test.c
-+++ b/tests/qtest/ahci-test.c
-@@ -137,6 +137,7 @@ static void ahci_migrate(AHCIQState *from, AHCIQState *to, const char *uri)
-     memcpy(to, from, sizeof(AHCIQState));
-     to->parent = tmp;
-     to->dev = dev;
-+    qpci_migrate_fixup(to->dev, from->dev);
- 
-     tmp = from->parent;
-     dev = from->dev;
++/*
++ * hw/pci permits 7 (PCI_NUM_REGIONS) regions, the last for PCI_ROM_SLOT.
++ * libqos does not implement PCI_ROM_SLOT at the moment, and as such it
++ * permits 6.
++ */
++#define QPCI_NUM_REGIONS 6
++
+ struct QPCIDevice
+ {
+     QPCIBus *bus;
+     int devfn;
++    bool bars_mapped[QPCI_NUM_REGIONS];
++    QPCIBar bars[QPCI_NUM_REGIONS];
+     bool msix_enabled;
+     QPCIBar msix_table_bar, msix_pba_bar;
+     uint64_t msix_table_off, msix_pba_off;
 diff --git a/tests/qtest/libqos/pci.c b/tests/qtest/libqos/pci.c
-index a59197b9922..14581178c79 100644
+index 14581178c79..02d88acd500 100644
 --- a/tests/qtest/libqos/pci.c
 +++ b/tests/qtest/libqos/pci.c
-@@ -586,6 +586,10 @@ QPCIBar qpci_legacy_iomap(QPCIDevice *dev, uint16_t addr)
+@@ -93,12 +93,17 @@ QPCIDevice *qpci_device_find(QPCIBus *bus, int devfn)
+ void qpci_device_init(QPCIDevice *dev, QPCIBus *bus, QPCIAddress *addr)
+ {
+     uint16_t vendor_id, device_id;
++    int i;
+ 
+     qpci_device_set(dev, bus, addr->devfn);
+     vendor_id = qpci_config_readw(dev, PCI_VENDOR_ID);
+     device_id = qpci_config_readw(dev, PCI_DEVICE_ID);
+     g_assert(!addr->vendor_id || vendor_id == addr->vendor_id);
+     g_assert(!addr->device_id || device_id == addr->device_id);
++
++    for (i = 0; i < QPCI_NUM_REGIONS; i++) {
++        g_assert(!dev->bars_mapped[i]);
++    }
+ }
+ 
+ static uint8_t qpci_find_resource_reserve_capability(QPCIDevice *dev)
+@@ -515,21 +520,31 @@ void qpci_memwrite(QPCIDevice *dev, QPCIBar token, uint64_t off,
+     dev->bus->memwrite(dev->bus, token.addr + off, buf, len);
+ }
+ 
+-QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
++static uint8_t qpci_bar_reg(int barno)
+ {
+-    QPCIBus *bus = dev->bus;
+     static const int bar_reg_map[] = {
+         PCI_BASE_ADDRESS_0, PCI_BASE_ADDRESS_1, PCI_BASE_ADDRESS_2,
+         PCI_BASE_ADDRESS_3, PCI_BASE_ADDRESS_4, PCI_BASE_ADDRESS_5,
+     };
++
++    g_assert(barno >= 0 && barno <= QPCI_NUM_REGIONS);
++
++    return bar_reg_map[barno];
++}
++
++QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
++{
++    QPCIBus *bus = dev->bus;
+     QPCIBar bar;
+     int bar_reg;
+     uint32_t addr, size;
+     uint32_t io_type;
+     uint64_t loc;
+ 
+-    g_assert(barno >= 0 && barno <= 5);
+-    bar_reg = bar_reg_map[barno];
++    g_assert(barno >= 0 && barno <= QPCI_NUM_REGIONS);
++    g_assert(!dev->bars_mapped[barno]);
++
++    bar_reg = qpci_bar_reg(barno);
+ 
+     qpci_config_writel(dev, bar_reg, 0xFFFFFFFF);
+     addr = qpci_config_readl(dev, bar_reg);
+@@ -572,12 +587,34 @@ QPCIBar qpci_iomap(QPCIDevice *dev, int barno, uint64_t *sizeptr)
+     }
+ 
+     bar.addr = loc;
++
++    dev->bars_mapped[barno] = true;
++    dev->bars[barno] = bar;
++
      return bar;
  }
  
-+void qpci_migrate_fixup(QPCIDevice *to, QPCIDevice *from)
-+{
-+}
-+
- void add_qpci_address(QOSGraphEdgeOptions *opts, QPCIAddress *addr)
+ void qpci_iounmap(QPCIDevice *dev, QPCIBar bar)
  {
-     g_assert(addr);
+-    /* FIXME */
++    int bar_reg;
++    int i;
++
++    g_assert(bar.addr);
++
++    for (i = 0; i < QPCI_NUM_REGIONS; i++) {
++        if (!dev->bars_mapped[i]) {
++            continue;
++        }
++        if (dev->bars[i].addr == bar.addr) {
++            dev->bars_mapped[i] = false;
++            memset(&dev->bars_mapped[i], 0, sizeof(dev->bars_mapped[i]));
++            bar_reg = qpci_bar_reg(i);
++            qpci_config_writel(dev, bar_reg, 0xFFFFFFFF);
++            /* FIXME: the address space is leaked */
++            return;
++        }
++    }
++    g_assert_not_reached(); /* device was not iomap()ed */
+ }
+ 
+ QPCIBar qpci_legacy_iomap(QPCIDevice *dev, uint16_t addr)
+@@ -588,6 +625,10 @@ QPCIBar qpci_legacy_iomap(QPCIDevice *dev, uint16_t addr)
+ 
+ void qpci_migrate_fixup(QPCIDevice *to, QPCIDevice *from)
+ {
++    memcpy(to->bars_mapped, from->bars_mapped, sizeof(from->bars_mapped));
++    memset(from->bars_mapped, 0, sizeof(from->bars_mapped));
++    memcpy(to->bars, from->bars, sizeof(from->bars));
++    memset(from->bars, 0, sizeof(from->bars));
+ }
+ 
+ void add_qpci_address(QOSGraphEdgeOptions *opts, QPCIAddress *addr)
 -- 
 2.47.1
 
