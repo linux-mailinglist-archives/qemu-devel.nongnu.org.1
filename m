@@ -2,100 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2048A865FB
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 21:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16906A86612
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 21:17:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u3JoS-00037I-KW; Fri, 11 Apr 2025 15:13:16 -0400
+	id 1u3Jq5-0003uw-Tp; Fri, 11 Apr 2025 15:14:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1u3JoP-00036l-Ll; Fri, 11 Apr 2025 15:13:13 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1u3JoN-0005lF-NT; Fri, 11 Apr 2025 15:13:13 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53BII4wU015164;
- Fri, 11 Apr 2025 19:13:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-type:date:from:in-reply-to:message-id:mime-version
- :references:subject:to; s=pp1; bh=gRyB2AyA86f6u3Ww1LHnAXelXV6aBH
- uzGS/2U0Xq3js=; b=qlB5gLTTaakQr9WKdQSjrhOD0rnLejypAqJFFClqsAlohh
- EGSoJRnD9s+En2WdT9Jbky5IDlyJ19AmSi6Dxj7Z0gL2aK95gXhhgCGJnT10N8mh
- UeDSc5zCPm6fNDz+3oYi739O8KukfWzFiS+O6pthLBev802dDUNkrTXkmZ5L6tjc
- av2DHoSystfNXLjo/1ZU2v6y/+XjzlnQQYLkY92SC1WNfJXOSkuMxKguXAz0948+
- v+yTp7m4QAPouWclRARakt6SpbcJOTyhw6uhCxSZBZYTpVaNTNbse4kN1pB38oiF
- tRNhB1UsZMSIAb342AHgp9jkvXqkIs9/O4uieA3A==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45y4gqhjr5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Apr 2025 19:13:07 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53BIdcVL018432;
- Fri, 11 Apr 2025 19:13:06 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45uh2m4a4g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Apr 2025 19:13:06 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53BJD5wT31589028
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 11 Apr 2025 19:13:06 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4BC85803F;
- Fri, 11 Apr 2025 19:13:05 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A8F8558060;
- Fri, 11 Apr 2025 19:13:04 +0000 (GMT)
-Received: from [9.61.251.143] (unknown [9.61.251.143])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 11 Apr 2025 19:13:04 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------6gDuyVAED8xb2bbyIIt5W3bq"
-Message-ID: <6ed74cd8-63c3-43f9-9f7b-7b8d8047cff1@linux.ibm.com>
-Date: Fri, 11 Apr 2025 12:13:02 -0700
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3Jq2-0003u7-Nm
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:14:54 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3Jpz-0005x5-Io
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:14:53 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id F186221195;
+ Fri, 11 Apr 2025 19:14:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1744398888; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=pgMWrBxWHqCwnayEwE/uhH62nltucUBQGKFVIP5ZajQ=;
+ b=zqzgAEZKibzCkhugqIrh3wDcgutA0/TpbeKJmwUU8LXMs7cluhh+tsFq3aSWhKTq4W2cY6
+ /yW5XSEfhLTheZfZ2koppj98cy732wcDckmrfa3/zBAmsKHDU5s2Do+yo3WWOR7KkKNoNW
+ /HOgjzIZZNFsQq/3sEzPmPD+fEwY2eg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1744398888;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=pgMWrBxWHqCwnayEwE/uhH62nltucUBQGKFVIP5ZajQ=;
+ b=BXIAAKdADn4cLU2cjt/Fdvy6WYlC/6jOAUvDL2jZwYhjftPPsY9RNjxMRj4UhFOsWSIapz
+ 8LR90gz1ttgvE2AA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zqzgAEZK;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=BXIAAKdA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1744398888; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=pgMWrBxWHqCwnayEwE/uhH62nltucUBQGKFVIP5ZajQ=;
+ b=zqzgAEZKibzCkhugqIrh3wDcgutA0/TpbeKJmwUU8LXMs7cluhh+tsFq3aSWhKTq4W2cY6
+ /yW5XSEfhLTheZfZ2koppj98cy732wcDckmrfa3/zBAmsKHDU5s2Do+yo3WWOR7KkKNoNW
+ /HOgjzIZZNFsQq/3sEzPmPD+fEwY2eg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1744398888;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=pgMWrBxWHqCwnayEwE/uhH62nltucUBQGKFVIP5ZajQ=;
+ b=BXIAAKdADn4cLU2cjt/Fdvy6WYlC/6jOAUvDL2jZwYhjftPPsY9RNjxMRj4UhFOsWSIapz
+ 8LR90gz1ttgvE2AA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7070813886;
+ Fri, 11 Apr 2025 19:14:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id hEcWDCZq+We5WQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 11 Apr 2025 19:14:46 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [RFC PATCH 00/13] migration: Unify capabilities and parameters
+Date: Fri, 11 Apr 2025 16:14:30 -0300
+Message-Id: <20250411191443.22565-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 12/24] hw/s390x/ipl: Add IPIB flags to IPL Parameter
- Block
-To: Zhuoying Cai <zycai@linux.ibm.com>, thuth@redhat.com,
- richard.henderson@linaro.org, david@redhat.com, pbonzini@redhat.com
-Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, jrossi@linux.ibm.com,
- fiuczy@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- farman@linux.ibm.com, iii@linux.ibm.com, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org
-References: <20250408155527.123341-1-zycai@linux.ibm.com>
- <20250408155527.123341-13-zycai@linux.ibm.com>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20250408155527.123341-13-zycai@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: klCyiOK0HI5ercMbCXo8mE6R1VQAiQsT
-X-Proofpoint-ORIG-GUID: klCyiOK0HI5ercMbCXo8mE6R1VQAiQsT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-11_07,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=982 bulkscore=0
- adultscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015
- suspectscore=0 mlxscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504110122
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=alifm@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F186221195
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCVD_TLS_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCPT_COUNT_THREE(0.00)[4]; DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,99 +114,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------6gDuyVAED8xb2bbyIIt5W3bq
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi everyone, I did a cleanup (if it can be called that) of the user
+input validation for capabilities and parameters and turned the two
+concepts into a single 'options' to be stored in a MigrationConfig
+object.
 
+RFC mostly because this idea exposes (pre-existing) issues around how
+to validate capabilities that are mutually excludent and options that
+need to be enabled together.
 
-...snip...
->   
-> diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
-> index b8e7d1da71..2355fcecbb 100644
-> --- a/include/hw/s390x/ipl/qipl.h
-> +++ b/include/hw/s390x/ipl/qipl.h
-> @@ -23,6 +23,9 @@
->   #define MAX_CERTIFICATES 64
->   #define CERT_MAX_SIZE     (1024 * 8)
->   
-> +#define DIAG308_IPIB_FLAGS_SIPL 0x40
-> +#define DIAG308_IPIB_FLAGS_IPLIR 0x20
-> +
+I'd also like some feedback on what approach to take regarding
+compatibility.
 
-nit: We have a diag308 flag defined here 
-https://github.com/qemu/qemu/blob/master/hw/s390x/ipl.h#L22. It would be 
-easier if we had the flags defined in one place.
+Let me know what you think. I know it's a lot to look at, any comments
+are welcomed and don't worry on trying to cover everything. This is
+long-term work. Thank you.
 
->   /*
->    * The QEMU IPL Parameters will be stored at absolute address
->    * 204 (0xcc) which means it is 32-bit word aligned but not
-> @@ -104,7 +107,8 @@ typedef struct IplBlockQemuScsi IplBlockQemuScsi;
->   union IplParameterBlock {
->       struct {
->           uint32_t len;
-> -        uint8_t  reserved0[3];
-> +        uint8_t  hdr_flags;
-> +        uint8_t  reserved0[2];
->           uint8_t  version;
->           uint32_t blk0_len;
->           uint8_t  pbt;
---------------6gDuyVAED8xb2bbyIIt5W3bq
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+The reasons for this work are:
+------------------------------
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix"><font face="monospace">...snip...</font><br>
-    </div>
-    <div class="moz-cite-prefix"><span style="white-space: pre-wrap">
-</span></div>
-    <blockquote type="cite"
-      cite="mid:20250408155527.123341-13-zycai@linux.ibm.com">
-      <pre wrap="" class="moz-quote-pre"> 
-diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
-index b8e7d1da71..2355fcecbb 100644
---- a/include/hw/s390x/ipl/qipl.h
-+++ b/include/hw/s390x/ipl/qipl.h
-@@ -23,6 +23,9 @@
- #define MAX_CERTIFICATES 64
- #define CERT_MAX_SIZE     (1024 * 8)
- 
-+#define DIAG308_IPIB_FLAGS_SIPL 0x40
-+#define DIAG308_IPIB_FLAGS_IPLIR 0x20
-+</pre>
-    </blockquote>
-    <p><font face="monospace">nit: We have a diag308 flag defined here
-        <a class="moz-txt-link-freetext" href="https://github.com/qemu/qemu/blob/master/hw/s390x/ipl.h#L22">https://github.com/qemu/qemu/blob/master/hw/s390x/ipl.h#L22</a>. It
-        would be easier if we had the flags defined in one place. </font><br>
-    </p>
-    <blockquote type="cite"
-      cite="mid:20250408155527.123341-13-zycai@linux.ibm.com">
-      <pre wrap="" class="moz-quote-pre">
- /*
-  * The QEMU IPL Parameters will be stored at absolute address
-  * 204 (0xcc) which means it is 32-bit word aligned but not
-@@ -104,7 +107,8 @@ typedef struct IplBlockQemuScsi IplBlockQemuScsi;
- union IplParameterBlock {
-     struct {
-         uint32_t len;
--        uint8_t  reserved0[3];
-+        uint8_t  hdr_flags;
-+        uint8_t  reserved0[2];
-         uint8_t  version;
-         uint32_t blk0_len;
-         uint8_t  pbt;
-</pre>
-    </blockquote>
-  </body>
-</html>
+Capabilities are just boolean parameters that can only be set before
+migration. For the majority of the code there's no distinction between
+the two.
 
---------------6gDuyVAED8xb2bbyIIt5W3bq--
+Having a single structure allows the qmp_migrate command to receive
+the migration configuration all at once:
+
+{ 'command': 'migrate',
+  'data': {'*uri': 'str',
+           '*channels': [ 'MigrationChannel' ],
++	   '*config': 'MigrationConfig',
+           '*detach': 'bool', '*resume': 'bool' } }
+
++{ 'struct': 'MigrationConfig',
++  'data': { '*announce-initial': 'size',
++            '*announce-max': 'size',
++	     ...   <-- all parameters and capabilities as optional
++} }
+
+(optionally fold 'detach' and 'resume' into MigrationConfig)
+
+Other benefits of a single configuration struct:
+
+- allows the removal of two commands:
+  migrate-set-capabilities/query-capabilities which simplifies the
+  user interface (migrate-set-parameters, or similar, is still
+  required for options that need to be adjusted during migration);
+
+- removes (some of) the triplication in migration.json;
+
+- simplifies the (future) work of implementing a handshake feature for
+  migration: only one structure to negotiate over and less reliance on
+  commands other than 'migrate'.
+
+The major changes in this series are:
+-------------------------------------
+
+- Add a (QAPI) type hierarchy:
+
+                               MigrationConfigBase
+                              (most config options)
+                                       |
+             +-------------------------|-------------------------+
+             |                         |                         |
+    MigrationConfig          MigrationParameters        MigrateSetParameters
+ (internal use, s->config,   (compat with               (compat with
+ new query/set-config)       query-migrate-parameters)  migrate-set-parameters)
+
+- Remove migrate_params_test_apply. This function duplicates a lot of code;
+
+- Add compatibility routines to convert from the existing QMP user
+  input into the new MigrationConfig for internal use;
+
+- Merge capabilities and parameters validation into one function;
+
+- Convert qmp_migrate and qmp_migrate_incoming to use the new structure.
+
+Open questions:
+---------------
+
+- Deprecations/compat?
+
+I think we should deprecate migrate-set/query-capabilities and everything to do
+with capabilities (specifically the validation in the JSON at the end of the
+stream).
+
+For migrate-set/query-parameters, we could probably keep it around indefinitely,
+but it'd be convenient to introduce new commands so we can give them new
+semantics.
+
+- How to restrict the options that should not be set when the migration is in
+progress?
+
+i.e.:
+  all options can be set before migration (initial config)
+  some options can be set during migration (runtime)
+
+I thought of adding another type at the top of the hierarchy, with
+just the options allowed to change at runtime, but that doesn't really
+stop the others being also set at runtime. I'd need a way to have a
+set of options that are rejected 'if migration_is_running()', without
+adding more duplication all around.
+
+- What about savevm?
+
+None of this solves the issue of random caps/params being set before
+calling savevm. We still need to special-case savevm and reject
+everything. Unless we entirely deprecate setting initial options via
+set-parameters (or set-config) and require all options to be set as
+savevm (and migrate) arguments.
+
+- HMP?
+
+Can we convert the strings passed via hmp_set_parameters without
+having an enum of parameters? Duplication problem again.
+
+- incoming defer?
+
+It seems we cannot do the final step of removing
+migrate-set-capabilites before we have a form of handshake
+implemented. That would take the config from qmp_migrate on source and
+send it to the destination for negotiation.
+
+- last but definitely not least:
+
+Changing caps from a list of bools into struct members complicates the
+validation because some caps must be checked against every other cap
+already set. And the user could be playing games with switching caps
+on and off, so there's a lot of redundant checking the must be
+made. The current code already has a bunch of gaps in that regard.
+
+For this series I opted to not check has_* fields for capabilities,
+i.e. to validate them all every time migrate_config_check() is called.
+
+Fabiano Rosas (12):
+  migration: Normalize tls arguments
+  migration: Run a post update routine after setting parameters
+  migration: Fix parameter validation
+  migration: Reduce a bit of duplication in migration.json
+  migration: Remove the parameters copy during validation
+  migration: Introduce new MigrationConfig structure
+  migration: Replace s->parameters with s->config
+  migration: Do away with usage of QERR_INVALID_PARAMETER_VALUE
+  migration: Replace s->capabilities with s->config
+  migration: Merge parameters and capability checks
+  [PoC] migration: Add query/set commands for MigrationConfig
+  [PoC] migration: Allow migrate commands to provide the migration
+    config
+
+Markus Armbruster (1):
+  migration: Fix latent bug in migrate_params_test_apply()
+
+ migration/migration-hmp-cmds.c |    5 +-
+ migration/migration.c          |   52 +-
+ migration/migration.h          |    5 +-
+ migration/options.c            | 1386 ++++++++++++++++----------------
+ migration/options.h            |   25 +-
+ migration/page_cache.c         |    6 +-
+ migration/ram.c                |    9 +-
+ migration/savevm.c             |    8 +-
+ migration/tls.c                |    2 +-
+ qapi/migration.json            |  571 +++++++------
+ system/vl.c                    |    3 +-
+ 11 files changed, 1079 insertions(+), 993 deletions(-)
+
+-- 
+2.35.3
 
 
