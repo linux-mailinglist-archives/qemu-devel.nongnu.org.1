@@ -2,95 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16906A86612
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 21:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DC1A865FF
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 21:15:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u3Jq5-0003uw-Tp; Fri, 11 Apr 2025 15:14:57 -0400
+	id 1u3Jq9-0003vc-UK; Fri, 11 Apr 2025 15:15:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3Jq2-0003u7-Nm
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:14:54 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3Jq6-0003v7-T3
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:14:58 -0400
 Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3Jpz-0005x5-Io
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:14:53 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3Jq5-0005xm-3n
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:14:58 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id F186221195;
- Fri, 11 Apr 2025 19:14:47 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id E678121196;
+ Fri, 11 Apr 2025 19:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744398888; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=pgMWrBxWHqCwnayEwE/uhH62nltucUBQGKFVIP5ZajQ=;
- b=zqzgAEZKibzCkhugqIrh3wDcgutA0/TpbeKJmwUU8LXMs7cluhh+tsFq3aSWhKTq4W2cY6
- /yW5XSEfhLTheZfZ2koppj98cy732wcDckmrfa3/zBAmsKHDU5s2Do+yo3WWOR7KkKNoNW
- /HOgjzIZZNFsQq/3sEzPmPD+fEwY2eg=
+ t=1744398890; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XeUdd4OZZmhyTvc1eokp8pIfAly+LfyHHMrzqrr7cdM=;
+ b=CcTiyHCgG6pzT27e/AGFgw8qhRyKmqtUDXbgOAf2oGeccLl+JJ9ja/Daoe97SQIbM6+7qL
+ AEZX8pCXLDeOMd2IUrWKDo9NJGiIXAHL+DXeQ3Kz/404/f92HeJBGgP184JcErQJ7RNjMl
+ NJavNsJ3qQ45ZqsM3OQj+1qL9U8X2YU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744398888;
+ s=susede2_ed25519; t=1744398890;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=pgMWrBxWHqCwnayEwE/uhH62nltucUBQGKFVIP5ZajQ=;
- b=BXIAAKdADn4cLU2cjt/Fdvy6WYlC/6jOAUvDL2jZwYhjftPPsY9RNjxMRj4UhFOsWSIapz
- 8LR90gz1ttgvE2AA==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XeUdd4OZZmhyTvc1eokp8pIfAly+LfyHHMrzqrr7cdM=;
+ b=P+K5es7mM0UnduNCglLhwAdzlchZWk4VRJt1mnl7CYBLXcCTcAVfKfEmVjhKzZouWsmth/
+ HCEagLx3ojRGdGCg==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zqzgAEZK;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=BXIAAKdA
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744398888; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=pgMWrBxWHqCwnayEwE/uhH62nltucUBQGKFVIP5ZajQ=;
- b=zqzgAEZKibzCkhugqIrh3wDcgutA0/TpbeKJmwUU8LXMs7cluhh+tsFq3aSWhKTq4W2cY6
- /yW5XSEfhLTheZfZ2koppj98cy732wcDckmrfa3/zBAmsKHDU5s2Do+yo3WWOR7KkKNoNW
- /HOgjzIZZNFsQq/3sEzPmPD+fEwY2eg=
+ t=1744398889; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XeUdd4OZZmhyTvc1eokp8pIfAly+LfyHHMrzqrr7cdM=;
+ b=ADnqfvVygfp7NajDkSK7LxebjvZUd9u0KnHqri3kqy+NGba1p3M1scwp+eykToN+l79S6k
+ gSmxjPK5LUMRexY5Sdb8A358y9Lav7WGCREc7xwIMH3zYCy74qw5nL7sy1rRfOsZ4V16+s
+ m6KktpW0f6UubYdVhWwEg5o2jof7Xj0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744398888;
+ s=susede2_ed25519; t=1744398889;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=pgMWrBxWHqCwnayEwE/uhH62nltucUBQGKFVIP5ZajQ=;
- b=BXIAAKdADn4cLU2cjt/Fdvy6WYlC/6jOAUvDL2jZwYhjftPPsY9RNjxMRj4UhFOsWSIapz
- 8LR90gz1ttgvE2AA==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XeUdd4OZZmhyTvc1eokp8pIfAly+LfyHHMrzqrr7cdM=;
+ b=Xy9c4fXgJKVnWT0tCvhlrJeCjRWLHxWpP5+n26pL82vkbISqUZl/56L8I8tOQvz+ZCk0+F
+ RXcIeDAZEN+cYFDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7070813886;
- Fri, 11 Apr 2025 19:14:46 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6BDC613886;
+ Fri, 11 Apr 2025 19:14:48 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id hEcWDCZq+We5WQAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 11 Apr 2025 19:14:46 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 0NKrCyhq+We5WQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 11 Apr 2025 19:14:48 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [RFC PATCH 00/13] migration: Unify capabilities and parameters
-Date: Fri, 11 Apr 2025 16:14:30 -0300
-Message-Id: <20250411191443.22565-1-farosas@suse.de>
+Subject: [RFC PATCH 01/13] migration: Fix latent bug in
+ migrate_params_test_apply()
+Date: Fri, 11 Apr 2025 16:14:31 -0300
+Message-Id: <20250411191443.22565-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20250411191443.22565-1-farosas@suse.de>
+References: <20250411191443.22565-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F186221195
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- RCVD_TLS_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_THREE(0.00)[4]; DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
+ RCVD_TLS_ALL(0.00)[]
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
  envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
@@ -114,170 +117,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi everyone, I did a cleanup (if it can be called that) of the user
-input validation for capabilities and parameters and turned the two
-concepts into a single 'options' to be stored in a MigrationConfig
-object.
+From: Markus Armbruster <armbru@redhat.com>
 
-RFC mostly because this idea exposes (pre-existing) issues around how
-to validate capabilities that are mutually excludent and options that
-need to be enabled together.
+migrate_params_test_apply() neglects to apply tls_authz.  Currently
+harmless, because migrate_params_check() doesn't care.  Fix it anyway.
 
-I'd also like some feedback on what approach to take regarding
-compatibility.
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-ID: <20250407072833.2118928-1-armbru@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/options.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Let me know what you think. I know it's a lot to look at, any comments
-are welcomed and don't worry on trying to cover everything. This is
-long-term work. Thank you.
-
-The reasons for this work are:
-------------------------------
-
-Capabilities are just boolean parameters that can only be set before
-migration. For the majority of the code there's no distinction between
-the two.
-
-Having a single structure allows the qmp_migrate command to receive
-the migration configuration all at once:
-
-{ 'command': 'migrate',
-  'data': {'*uri': 'str',
-           '*channels': [ 'MigrationChannel' ],
-+	   '*config': 'MigrationConfig',
-           '*detach': 'bool', '*resume': 'bool' } }
-
-+{ 'struct': 'MigrationConfig',
-+  'data': { '*announce-initial': 'size',
-+            '*announce-max': 'size',
-+	     ...   <-- all parameters and capabilities as optional
-+} }
-
-(optionally fold 'detach' and 'resume' into MigrationConfig)
-
-Other benefits of a single configuration struct:
-
-- allows the removal of two commands:
-  migrate-set-capabilities/query-capabilities which simplifies the
-  user interface (migrate-set-parameters, or similar, is still
-  required for options that need to be adjusted during migration);
-
-- removes (some of) the triplication in migration.json;
-
-- simplifies the (future) work of implementing a handshake feature for
-  migration: only one structure to negotiate over and less reliance on
-  commands other than 'migrate'.
-
-The major changes in this series are:
--------------------------------------
-
-- Add a (QAPI) type hierarchy:
-
-                               MigrationConfigBase
-                              (most config options)
-                                       |
-             +-------------------------|-------------------------+
-             |                         |                         |
-    MigrationConfig          MigrationParameters        MigrateSetParameters
- (internal use, s->config,   (compat with               (compat with
- new query/set-config)       query-migrate-parameters)  migrate-set-parameters)
-
-- Remove migrate_params_test_apply. This function duplicates a lot of code;
-
-- Add compatibility routines to convert from the existing QMP user
-  input into the new MigrationConfig for internal use;
-
-- Merge capabilities and parameters validation into one function;
-
-- Convert qmp_migrate and qmp_migrate_incoming to use the new structure.
-
-Open questions:
----------------
-
-- Deprecations/compat?
-
-I think we should deprecate migrate-set/query-capabilities and everything to do
-with capabilities (specifically the validation in the JSON at the end of the
-stream).
-
-For migrate-set/query-parameters, we could probably keep it around indefinitely,
-but it'd be convenient to introduce new commands so we can give them new
-semantics.
-
-- How to restrict the options that should not be set when the migration is in
-progress?
-
-i.e.:
-  all options can be set before migration (initial config)
-  some options can be set during migration (runtime)
-
-I thought of adding another type at the top of the hierarchy, with
-just the options allowed to change at runtime, but that doesn't really
-stop the others being also set at runtime. I'd need a way to have a
-set of options that are rejected 'if migration_is_running()', without
-adding more duplication all around.
-
-- What about savevm?
-
-None of this solves the issue of random caps/params being set before
-calling savevm. We still need to special-case savevm and reject
-everything. Unless we entirely deprecate setting initial options via
-set-parameters (or set-config) and require all options to be set as
-savevm (and migrate) arguments.
-
-- HMP?
-
-Can we convert the strings passed via hmp_set_parameters without
-having an enum of parameters? Duplication problem again.
-
-- incoming defer?
-
-It seems we cannot do the final step of removing
-migrate-set-capabilites before we have a form of handshake
-implemented. That would take the config from qmp_migrate on source and
-send it to the destination for negotiation.
-
-- last but definitely not least:
-
-Changing caps from a list of bools into struct members complicates the
-validation because some caps must be checked against every other cap
-already set. And the user could be playing games with switching caps
-on and off, so there's a lot of redundant checking the must be
-made. The current code already has a bunch of gaps in that regard.
-
-For this series I opted to not check has_* fields for capabilities,
-i.e. to validate them all every time migrate_config_check() is called.
-
-Fabiano Rosas (12):
-  migration: Normalize tls arguments
-  migration: Run a post update routine after setting parameters
-  migration: Fix parameter validation
-  migration: Reduce a bit of duplication in migration.json
-  migration: Remove the parameters copy during validation
-  migration: Introduce new MigrationConfig structure
-  migration: Replace s->parameters with s->config
-  migration: Do away with usage of QERR_INVALID_PARAMETER_VALUE
-  migration: Replace s->capabilities with s->config
-  migration: Merge parameters and capability checks
-  [PoC] migration: Add query/set commands for MigrationConfig
-  [PoC] migration: Allow migrate commands to provide the migration
-    config
-
-Markus Armbruster (1):
-  migration: Fix latent bug in migrate_params_test_apply()
-
- migration/migration-hmp-cmds.c |    5 +-
- migration/migration.c          |   52 +-
- migration/migration.h          |    5 +-
- migration/options.c            | 1386 ++++++++++++++++----------------
- migration/options.h            |   25 +-
- migration/page_cache.c         |    6 +-
- migration/ram.c                |    9 +-
- migration/savevm.c             |    8 +-
- migration/tls.c                |    2 +-
- qapi/migration.json            |  571 +++++++------
- system/vl.c                    |    3 +-
- 11 files changed, 1079 insertions(+), 993 deletions(-)
-
+diff --git a/migration/options.c b/migration/options.c
+index b0ac2ea408..cb8eec218f 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -1193,6 +1193,11 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+         dest->tls_hostname = params->tls_hostname->u.s;
+     }
+ 
++    if (params->tls_authz) {
++        assert(params->tls_authz->type == QTYPE_QSTRING);
++        dest->tls_authz = params->tls_authz->u.s;
++    }
++
+     if (params->has_max_bandwidth) {
+         dest->max_bandwidth = params->max_bandwidth;
+     }
 -- 
 2.35.3
 
