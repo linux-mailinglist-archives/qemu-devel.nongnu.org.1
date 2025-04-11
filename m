@@ -2,95 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB7CA85976
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 12:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7497A85980
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 12:22:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u3BVm-0002eb-Te; Fri, 11 Apr 2025 06:21:27 -0400
+	id 1u3BVt-0002ut-2Z; Fri, 11 Apr 2025 06:21:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u3BVV-0002YR-6N
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u3BVN-0005OG-ET
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744366851;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=opVVaSGkm+v7J0L+i2NLNRTPU8jBN6OrZqKj37UOzRo=;
- b=gLYpyKcK2ZDx1I6DKuxikgEdvU/WEvIWgdDKtIz14bX7bYHGQRIXrbTNsp6btILYmLXIbX
- rCGTfM836AbwjQ8xp2iL6Ov/cdvqox4zVGv63vxIzbg8gWiz/irLcxqHLXae2yTMMAExv0
- QeFLMf9++S6GpAta9sLOXaSDnitZGLE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-3va141w2OY2_q4R8uvrIYw-1; Fri, 11 Apr 2025 06:20:50 -0400
-X-MC-Unique: 3va141w2OY2_q4R8uvrIYw-1
-X-Mimecast-MFC-AGG-ID: 3va141w2OY2_q4R8uvrIYw_1744366849
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3912fe32a30so782920f8f.1
- for <qemu-devel@nongnu.org>; Fri, 11 Apr 2025 03:20:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u3BVf-0002dk-KR
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:20 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u3BVd-0005QA-KV
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:19 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43ce71582e9so14704675e9.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Apr 2025 03:21:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1744366871; x=1744971671; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=m2OHFG/wuMESVdiY/brern+bOe9wGDZGr7SfTt8104c=;
+ b=T8IgfIxvyBalU/pe1C62ENAdBwYh0fq5vWRoN+gnZ1OxbEre9C3Qr9AIvIxzi8UrMm
+ e6kxIkbyhTmwmtcVTmB9FOouKTPj++3dWB26kbBaOvFlzZKYjDtcWGbxn3dGfshZTt78
+ urw9mXjkbvYM6WDglT0ok0Uupw/YArFg2SvQ3XhUh7tb0MhV925ilTPcevTbPbJ4Qqva
+ sCGaRA5iQ9roxy9SkPU0kB5O/rXnA7zmub6sZR6D516lFikhJeZP0pUyuD6WTTa7HVJk
+ ZcmNYXCkR3CxizbmW3ayAQpI7y4P/Jg4efBBvUF7lV51rM45tGckImlsvDg2wgD8KayH
+ NkaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744366849; x=1744971649;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=opVVaSGkm+v7J0L+i2NLNRTPU8jBN6OrZqKj37UOzRo=;
- b=a/nw2mWvplYEB5/gZK7JCJPVOEBtBvIqMnNY+aE4y8CoQsodS31SznNr8oBdLYjhfy
- T3xIVrQGuPBJqAaTj64QK/G9cchfljNhvHH27sx4vWsW3/Gf9AxbxO/LBrlO6H6C9cuN
- Bzwx7nXocJEQtQ7Vwqv7dw/ib8jy1Aiv447MqilLRVZa0Jv5sOI4Gk5YmA9TKOPK6Yt0
- MjrkIvH6rw56Ug3SY2ibOqTA7ewyAkNqrm8NB1jfWcNkyumfAKmfJ8H/9X/ROvAzfwBY
- BpYyjhAC4tDBJHvOVG8oFXrOLaQQM1Mc2FOBej1psiBEGlZg6uXzbMPBzHNP0KtfwPda
- OCJQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUJON/LYTHMn8v0ohnVn6fgOa7mqXiYqkD8zJm1buFkXS6kS6mBOySUYcb7JEOhqr3Qs1zglJWinpof@nongnu.org
-X-Gm-Message-State: AOJu0Yx+9y3SvoP8Pq+QygcTEfZ0ChQMkrayEGNfyOFFpyV5hCTJlbez
- exi/+dFzNl+ZGplphsDVcKJs7dNoyGdHVMMHYC1ZkgHmuGet2BcM91Vy+HcMP+p3uu1VjbJqBVH
- HiR2slqX3jYdzwxrgamGPqWRXA5HMqYpbqdvHaodYrGH4gsyjhTFqDICaOjuP7F/5DrF5wk3WJE
- FcMcRounpb/ViBD3iQ9WbI4Ivj09Q=
-X-Gm-Gg: ASbGncvJSTR+hlnSpgPOdTvFhMQfR9foMc9nBHkCJvfjtV489ba1/l4RCEdg58JeP6T
- HIh5k2t4wl5pbFXIwGtxsKlkwAIoO7BND76hiQoYP1Z7EFnu37gJcDJBs5Lc8wb1Ah939aNE=
-X-Received: by 2002:a5d:648a:0:b0:399:737f:4de3 with SMTP id
- ffacd0b85a97d-39ea521f9f5mr1558765f8f.29.1744366849129; 
- Fri, 11 Apr 2025 03:20:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKf6v7/YUjj6H+zE31+d4Bgpyg2EV4H0QfV3OvylyN8w+4ryM3GuN6Pxz+rP7171mpanTm1tqgG06kmMTGvok=
-X-Received: by 2002:a5d:648a:0:b0:399:737f:4de3 with SMTP id
- ffacd0b85a97d-39ea521f9f5mr1558749f8f.29.1744366848792; Fri, 11 Apr 2025
- 03:20:48 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1744366871; x=1744971671;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=m2OHFG/wuMESVdiY/brern+bOe9wGDZGr7SfTt8104c=;
+ b=qQq7ADLn/0l296ZgjtmO7jpKWLenykoxshKkP/Cxhxny398rJUD3+pNVWnmlHTLueo
+ CNFMOfsCSGkp8Pf2ENKbla1FMuGmnknfs5qruwrxLRB8Ndc7ObYF1BzQSx+jxpmVrsMr
+ km6JwAHSdd2x+izRd+5hCubt2okSmXtxaTnPnAbBMYhdjk7JB7oQR+DIiSw7y5wH5k0V
+ aaECKTQ/MqRpOdChhHoCCAYLC6+vP7VDbHwwTh3Bil9FPzR53/dmUqeQ5CWiev8aDAUR
+ eWCMJZmUJ3ivnOWZAOO6ykYr4m5JxScNPLhhcNoBrZtfdlg/pLM+n3p5xug92Sn9dGY+
+ UZ5g==
+X-Gm-Message-State: AOJu0YwZiAJ3KoPWEfeg4OSTxcmn415ihbMH7BXAAfzErP38qeMiOh7a
+ AV3DgiFDiGhRAF82AIXrUX5hQ152H/oeSyMv4caiktu+fgZAlUr+DN6KWhOpW2U5SYcAMaD7tla
+ a
+X-Gm-Gg: ASbGnct+kP6XER16VUkQgqkJRM/l1wfgLEfEaNS++kJK1n/tZaH806AKGzPVJnt7g4o
+ rc1V+IyLQKjMx5IkJJKUWLiRHiOueDPkesQEmx4CUjtKC4x5Bl/thvycly1U6ztt2a9klbRNHm+
+ Gw1NjJIvfSx4Ms1ZCpmouTdMIb7QgN8ZZREa9TBg7R4SQZTLdQyG7XzBaCV9rtoTYdNzwDUCpyl
+ SqB8n/OeMUuT1pYiAI1B3knM45H8GM6iCyiO/J9KrWUy5VtlKdhQehrMY39NceHPQQg/IRCOZO3
+ TxJnIB8AELpknnXDtNLgEDcjO4Y7ZTuKwZ+MWt5YQBeriR1nhl2xl1U71nLgrFl92iM8umIHj9V
+ UFw3l+Rge
+X-Google-Smtp-Source: AGHT+IFefUarty8q+Lk6bHjuo9tRQ117ztA+FsdMK1IQUNIW1TTbwAUMsiORe055fM4Ffg5CsRPE0w==
+X-Received: by 2002:a05:600c:3591:b0:43d:54a:221c with SMTP id
+ 5b1f17b1804b1-43f3a959e43mr18141795e9.18.1744366871349; 
+ Fri, 11 Apr 2025 03:21:11 -0700 (PDT)
+Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43f205ec97csm85181655e9.6.2025.04.11.03.21.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Apr 2025 03:21:10 -0700 (PDT)
+Message-ID: <88ac3951-bac9-48d5-bee7-6ca2e465fe0f@linaro.org>
+Date: Fri, 11 Apr 2025 12:21:09 +0200
 MIME-Version: 1.0
-References: <20250407155949.44736-1-kwolf@redhat.com>
- <bf72ef35-289c-4ec7-962b-414e3487c176@redhat.com>
- <CABgObfaJw1VSE6pbs2o1oTTGi6nXLtFQG90RG3J9DY1sukZpMA@mail.gmail.com>
- <Z_jsWQElOJyblb91@redhat.com>
-In-Reply-To: <Z_jsWQElOJyblb91@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 11 Apr 2025 12:20:36 +0200
-X-Gm-Features: ATxdqUHh1AZv40sVVg_vtMblYw7OiK4kHMhUCyGpG8efABL6Iw94QReE4ghIvjI
-Message-ID: <CABgObfa7Vp949NA-7Yu6QK8phKy2GwNSZ=ncWebYr=Gz6xP3Dw@mail.gmail.com>
-Subject: Re: [PATCH for-10.0] scsi-disk: Apply error policy for host_status
- errors again
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, stefanha@redhat.com, 
- qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/10] usb/msd: Ensure packet structure layout is
+ correct
+To: Nicholas Piggin <npiggin@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>
+References: <20250411080431.207579-1-npiggin@gmail.com>
+ <20250411080431.207579-3-npiggin@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250411080431.207579-3-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.593,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,23 +100,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 11, 2025 at 12:18=E2=80=AFPM Kevin Wolf <kwolf@redhat.com> wrot=
-e:
-> > Okay, going down the scsi_sense_from_errno() path is more or less
-> > harmless because status and sense end up unused; even though ENODEV is
-> > not something that the function handles, that can be added as a
-> > cleanup in 10.1.
->
-> Yes, it could be handled more explicitly. I considered adding a special
-> if branch in scsi_handle_rw_error() for host_status !=3D -1 before
-> checking ret < 0, but didn't do it in the end because the existing code
-> already handles it fine. If you prefer it to be there for readability, I
-> can send a cleanup patch.
+On 11/4/25 10:04, Nicholas Piggin wrote:
+> These structures are hardware interfaces, ensure the layout is
+> correct.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   hw/usb/dev-storage.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
+> index 2d7306b0572..87c22476f6b 100644
+> --- a/hw/usb/dev-storage.c
+> +++ b/hw/usb/dev-storage.c
+> @@ -27,7 +27,7 @@
+>   #define MassStorageReset  0xff
+>   #define GetMaxLun         0xfe
+>   
+> -struct usb_msd_cbw {
+> +struct QEMU_PACKED usb_msd_cbw {
+>       uint32_t sig;
+>       uint32_t tag;
+>       uint32_t data_len;
+> @@ -636,6 +636,9 @@ static const TypeInfo usb_storage_dev_type_info = {
+>   
+>   static void usb_msd_register_types(void)
+>   {
+> +    qemu_build_assert(sizeof(struct usb_msd_cbw) == 31);
+> +    qemu_build_assert(sizeof(struct usb_msd_csw) == 13);
 
-Don't worry, I tried when I thought it was a bug but came to the same
-conclusion.  I have sent a patch to handle ENODEV, which makes the
-code a bit less mysterious, but that's it.
+Can we add definitions for these 13/31 magic values? Then
+we can use them in try_get_valid_cbw().
 
-Paolo
+> +
+>       type_register_static(&usb_storage_dev_type_info);
+>   }
+>   
 
 
