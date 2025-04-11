@@ -2,57 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F981A85983
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 12:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6B0A8597F
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 12:22:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u3BVp-0002kF-WF; Fri, 11 Apr 2025 06:21:30 -0400
+	id 1u3BVr-0002qv-Qv; Fri, 11 Apr 2025 06:21:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1u3BVe-0002ba-18
+ id 1u3BVe-0002bX-0e
  for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:18 -0400
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1u3BVT-0005Nr-4m
+ id 1u3BVT-0005O8-Nx
  for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1744366867; x=1775902867;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1F7a1sjUDngnN5oBLAUAUwgEDgDAboQux7dnCudMDgI=;
- b=hZgWI7L6Q/0p/HvvnMQleogswwiGyd8QyTazLNzPuwV56oiLWZrfAGji
- kDsMbiwwjHa5Cca7eirmn8FILvIRwiJqCv05Eu6Xyo4d1mwVcfHkAOWUc
- xpLcTo2jYL3w8lYJ4m6EuZSPHhLT+EdZ2C9r6b+rEZkmpbvGi2Kc9jKub
- ccMf3Wii43p2Fj8fzKo38VIEX1TXalVQztakbxHmlKi0Aetxb14m33fqD
- cDdGDCSwRLHi+Zx5DKzBYuz7GpBC5vmrwXl51ztB4hYCbAXOm+a518yCg
- zinUzdcZDlQEUwRtC63J/tIUMP1vgh/7Uw9hTbcfarFwRePinOUPDcXhG w==;
-X-CSE-ConnectionGUID: 92ZFZwgMSsyuzlPb9C4msA==
-X-CSE-MsgGUID: RwdnyvwGRGeMuIPcUyG/aw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="49566775"
-X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; d="scan'208";a="49566775"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=HDSjhWoNRiRif3N3R0QiTa26vrCzPQDa4qlgutcJNyQ=;
+ b=Q51r4nunu81ybHsElx2jIXb98WCN7EIMUyG2Pzxb34btKYXuYJDtHGJI
+ ArYQhgQ1NbaSmO3a0pvjsvKbpr/h+yLxYiDIEdt1MXV3BBDzyZCxGRtNe
+ 9MderpwozUuabmgbPj6s9V9MzYWB9+HSfXuM2uD8uq0TUPdsq2M8VGZGr
+ f954SZkTi/McFHkSWytp6YlHtNwUN3vwJpr/i7KvAmKYoqPc1ypX/bJtE
+ jar8DAwucEWuYwI1pOxPsfFiaXiggQSh/oDI7nmv5aVPC0ZlIs3NJ90dz
+ AH+vFdqAfJQ5QTyJgtV9P2hw2xxeglaHohtI7j1k3tf7HQ3OmYlWvDIIr w==;
+X-CSE-ConnectionGUID: zyO75PytTuqzTPKOy1+L9g==
+X-CSE-MsgGUID: BtSLvZ8BSaOsoR37dok+gg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="49566779"
+X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; d="scan'208";a="49566779"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2025 03:20:46 -0700
-X-CSE-ConnectionGUID: +qcDf0G7Qq2eUJazeBmj3w==
-X-CSE-MsgGUID: 4gPhNCWtTNGrjv6WwsxbcA==
+ 11 Apr 2025 03:20:48 -0700
+X-CSE-ConnectionGUID: rLx+R/RrSjyBmrwGrbDKDg==
+X-CSE-MsgGUID: b+/cmEqZSj6QjggpoAxlEA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; d="scan'208";a="133917406"
+X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; d="scan'208";a="133917410"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2025 03:20:44 -0700
+ 11 Apr 2025 03:20:47 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 0/5] cleanup interfaces
-Date: Fri, 11 Apr 2025 18:17:02 +0800
-Message-Id: <20250411101707.3460429-1-zhenzhong.duan@intel.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, Yi Liu <yi.l.liu@intel.com>
+Subject: [PATCH 1/5] vfio/iommufd: Save host iommu capabilities in
+ VFIODevice.caps
+Date: Fri, 11 Apr 2025 18:17:03 +0800
+Message-Id: <20250411101707.3460429-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250411101707.3460429-1-zhenzhong.duan@intel.com>
+References: <20250411101707.3460429-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -81,45 +84,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The saved caps copy can be used to check dirty tracking capability.
 
-This series addresses Cédric's suggestion[1] and Donald's suggestion[2] to
-move realize() call after attach_device().
+The capabilities is gotten through IOMMUFD interface, so define a
+new structure HostIOMMUDeviceIOMMUFDCaps which contains vendor
+caps raw data in "include/system/iommufd.h".
 
-Also addresses Eric and Nicolin's suggestion[3] to use a union to hold different
-vendor capabilities.
+This is a prepare work for moving .realize() after .attach_device().
 
-[1] https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg01211.html
-[2] https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg00898.html
-[3] https://lists.gnu.org/archive/html/qemu-devel/2025-03/msg01552.html
+Suggested-by: Cédric Le Goater <clg@redhat.com>
+Suggested-by: Eric Auger <eric.auger@redhat.com>
+Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ include/hw/vfio/vfio-device.h |  1 +
+ include/system/iommufd.h      | 22 ++++++++++++++++++++++
+ hw/vfio/iommufd.c             | 10 +++++++++-
+ 3 files changed, 32 insertions(+), 1 deletion(-)
 
-Test:
-net card passthrough and ping test
-hotplug/unplug
-
-Based on vfio-next(b9d42a878b).
-
-Thanks
-Zhenzhong
-
-
-Zhenzhong Duan (5):
-  vfio/iommufd: Save host iommu capabilities in VFIODevice.caps
-  vfio: Move realize() after attach_device()
-  vfio/iommufd: Implement .get_cap() in
-    TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO sub-class
-  backends/iommufd: Drop hiod_iommufd_get_cap()
-  vfio/iommufd: Drop HostIOMMUDeviceCaps from HostIOMMUDevice
-
- include/hw/vfio/vfio-device.h      |  2 +-
- include/system/host_iommu_device.h | 14 -------
- include/system/iommufd.h           | 26 ++++++++++++
- backends/iommufd.c                 | 63 +++++++++++++++++++-----------
- hw/vfio/container.c                |  4 --
- hw/vfio/device.c                   | 28 ++++++-------
- hw/vfio/iommufd.c                  | 39 ++++++++++--------
- 7 files changed, 100 insertions(+), 76 deletions(-)
-
+diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+index 66797b4c92..09a7af891a 100644
+--- a/include/hw/vfio/vfio-device.h
++++ b/include/hw/vfio/vfio-device.h
+@@ -77,6 +77,7 @@ typedef struct VFIODevice {
+     bool dirty_tracking; /* Protected by BQL */
+     bool iommu_dirty_tracking;
+     HostIOMMUDevice *hiod;
++    HostIOMMUDeviceIOMMUFDCaps caps;
+     int devid;
+     IOMMUFDBackend *iommufd;
+     VFIOIOASHwpt *hwpt;
+diff --git a/include/system/iommufd.h b/include/system/iommufd.h
+index cbab75bfbf..0f337585c9 100644
+--- a/include/system/iommufd.h
++++ b/include/system/iommufd.h
+@@ -18,6 +18,9 @@
+ #include "exec/hwaddr.h"
+ #include "exec/cpu-common.h"
+ #include "system/host_iommu_device.h"
++#ifdef CONFIG_LINUX
++#include <linux/iommufd.h>
++#endif
+ 
+ #define TYPE_IOMMUFD_BACKEND "iommufd"
+ OBJECT_DECLARE_TYPE(IOMMUFDBackend, IOMMUFDBackendClass, IOMMUFD_BACKEND)
+@@ -63,4 +66,23 @@ bool iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
+                                       Error **errp);
+ 
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
++
++typedef union VendorCaps {
++    struct iommu_hw_info_vtd vtd;
++    struct iommu_hw_info_arm_smmuv3 smmuv3;
++} VendorCaps;
++
++/**
++ * struct HostIOMMUDeviceIOMMUFDCaps - Define host IOMMU device capabilities.
++ *
++ * @type: host platform IOMMU type.
++ *
++ * @hw_caps: host platform IOMMU capabilities (e.g. on IOMMUFD this represents
++ *           the @out_capabilities value returned from IOMMU_GET_HW_INFO ioctl)
++ */
++typedef struct HostIOMMUDeviceIOMMUFDCaps {
++    uint32_t type;
++    uint64_t hw_caps;
++    VendorCaps vendor_caps;
++} HostIOMMUDeviceIOMMUFDCaps;
+ #endif
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 48db105422..530cde6740 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -324,7 +324,7 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+      * vfio_migration_realize() may decide to use VF dirty tracking
+      * instead.
+      */
+-    if (vbasedev->hiod->caps.hw_caps & IOMMU_HW_CAP_DIRTY_TRACKING) {
++    if (vbasedev->caps.hw_caps & IOMMU_HW_CAP_DIRTY_TRACKING) {
+         flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
+     }
+ 
+@@ -475,6 +475,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+     int ret, devfd;
+     uint32_t ioas_id;
+     Error *err = NULL;
++    HostIOMMUDeviceIOMMUFDCaps *caps = &vbasedev->caps;
+     const VFIOIOMMUClass *iommufd_vioc =
+         VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
+ 
+@@ -505,6 +506,13 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+         goto err_alloc_ioas;
+     }
+ 
++    if (!iommufd_backend_get_device_info(vbasedev->iommufd, vbasedev->devid,
++                                         &caps->type, &caps->vendor_caps,
++                                         sizeof(VendorCaps), &caps->hw_caps,
++                                         errp)) {
++        goto err_alloc_ioas;
++    }
++
+     /* try to attach to an existing container in this space */
+     QLIST_FOREACH(bcontainer, &space->containers, next) {
+         container = container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
 -- 
 2.34.1
 
