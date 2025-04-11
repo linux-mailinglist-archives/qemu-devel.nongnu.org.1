@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC99A852B5
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 06:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE02A852B9
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 06:43:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u36DA-0003De-R4; Fri, 11 Apr 2025 00:41:52 -0400
+	id 1u36DD-0003Ep-8u; Fri, 11 Apr 2025 00:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1u36D5-0003DB-Et; Fri, 11 Apr 2025 00:41:47 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1u36DA-0003EO-DO; Fri, 11 Apr 2025 00:41:52 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1u36D3-0001ah-VA; Fri, 11 Apr 2025 00:41:47 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-22403cbb47fso16550725ad.0; 
- Thu, 10 Apr 2025 21:41:45 -0700 (PDT)
+ id 1u36D8-0001c1-Kr; Fri, 11 Apr 2025 00:41:52 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-224341bbc1dso14994355ad.3; 
+ Thu, 10 Apr 2025 21:41:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744346504; x=1744951304; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1744346508; x=1744951308; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=npWwzJvQM/483RZnV/1gsYUruF9uzp3Jiju7pOepVLE=;
- b=L/SePEEPNsJEwFTyq+zeH6z0pUaUmmDnOi+e5R+GP6QHM+BcV2hiqsYTNN1U9HDEK/
- 2TFmU+f3Jbcbr2Cnz/pAl3i1vigNQB3Ec7cTachz1H4P5kxMgw6jQkFqNGO9mCp/5SwA
- 7L6/nZVuexCIodfiTgZzv9ca5RQvJp/Au6CEcbaSeVJMkvsv2ksb/mHUK55pV4f+Vbmg
- sbricojPOoA7WitX1cWgXFfyXb+7ptdoCuEiITgHCqamB25KI3j309g/F03LOKzw1M4T
- PSOEkbpak6FbY2igkrJTwkOJaKFQxYre0BlX46Dkkra3iPLzIjCNfrxDb3b9UxpUnUcS
- f2Tg==
+ bh=2lYQSLH9OUcacfFWWtc6NBDhhW0SrOAqjv9niMxwZuU=;
+ b=cAXoeze4C5TBqiXG+X9SXBseHPjSU9ZEd05d5dj4+A6P3WegCmJPVEpfC8q7GMEDxW
+ AHCUM0ByK06iKuYRWW6zuo0M4aY5WaIPgi3UEhNRdj5L9h61Z9Kqn9twTxHcnqoxaE9Z
+ XXKagrCy7ICu/uV/gHsIsyaOduk32iBSCu3gt/0IxOMsWGyopFIyazUdVNSpfa6oK0BA
+ kKtQ8HRKmFPEKznHLAYn/RvFdj5J96JVNIaHTsQbSgjeVHRw7g38K/XeiWZJIgOdYcom
+ gEaaG4Zh9fXc7pVHpel9HG1onmG/pU7DfGf0VxjGADnzAPW2Z2bZgv6K9Ok8Z6Wl149/
+ y9Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744346504; x=1744951304;
+ d=1e100.net; s=20230601; t=1744346508; x=1744951308;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=npWwzJvQM/483RZnV/1gsYUruF9uzp3Jiju7pOepVLE=;
- b=IH4DpPIXokLRDcPRZtw1bUqtjoHgBYobI67C3ny4f70XNlzIxGhz15MQAerYKf1d+D
- bJXRb4vqkZ8iEkslXY2ztE+pLAYCa8k91HClr3QvWmOi+Vf0Yl3Z2jz9OnOdhS+pItMl
- PGmq7HnQBrNMF2ggq4SLNS8tAijkNTA/fAwczY5sLGLxUGoIZhS5XGTCD+CJAYC+ZXEw
- hIkrvFWgNIU9hdJt+tMGBPb++RCDREVmKuVgiSFDWX+FNwYWMR6QILStpXwqzIj11Ju7
- YkcVUAKKEpC87KAEtZHZqkukvMakdvwJ7w3j+97F1fPUkcX1AYjVHnytaQQk63Ckperm
- cvyw==
+ bh=2lYQSLH9OUcacfFWWtc6NBDhhW0SrOAqjv9niMxwZuU=;
+ b=LgaymSZpmbLHJialy7cr+Wz5CbojOfyazVqpPacaVJ+KjVHXMAUIcADqQEMGZRAoAA
+ TZZ/EHw1QeNEhhDaM8TxE3wIbTCB+iaJ+HIi+E5VEnnemnR2f5Qc3fyAcxBcECv6AUp1
+ Bz+l4wW/ZYLDFC7ptrLEnrEZdw+kz78n2Ik0RIK1YFxoNtfUx+RN4CdIxAXyT/f3FRJl
+ mbGJgECz0a8v3OYNz/KXpBwaG3g9NPWjLyxHhK9AuczwQAVDOc7egkYyV77FTcI9GSju
+ /z7GOxEiLA5ebkmUaOZwSjE2trXTwVQtxJLTljbetvmUGeSB6FHAx/lppSWLm4EHXNxU
+ mz5A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXIN+tULdOcG+Me5DA6MAUTMNnqwjRJid8TpI3NWNkOR3j7ddhtQq2lzGrYUCtvl5LLj4KFuCu0jsiA@nongnu.org
-X-Gm-Message-State: AOJu0YyDYbLq+VWeSUcQp8vjpFGdg1N5VIhdcSzKuL4VUT40VSNsYolY
- Uz8opDekifSap0IPd58EreWjyO+G2V5On2mZ2QLrkN960SFrvTf9a24JfQ==
-X-Gm-Gg: ASbGncsiKLuUdE/NdhIVZvh2qKl2SJOCh0T9I1i7g6bmKp4JnsVxp7P5aOfwbDAOrgW
- yq+0/pNR4SiHkHvL1uHsrg7ehyYgE0MGZLlOcZ0uH3icnqER0zL3CXycPjOgnwltKaQxY3KB2JP
- gVDfFqTbf0TkHy86/gYcOz7Q7D5iuoP7Lmrf3YS96V1xAWhfsOqP05eEfKTtg97AYmzUOulUl2q
- TQUDR4my797qbEawQOkvTsrBzbmUZqBDISJ9QB/4NMhZht5YJd9ajS5WmnU/kil4AB+5i8JBEbg
- tvZK2yFGDtDqPJWDJiprIIjbBEj/wPQL6kAbik72I+Zo
-X-Google-Smtp-Source: AGHT+IF584UzOZV0bcCk+SeJdeQms0zTSZ1QIuDLi1EJGiTB8qRjZRqHp2A1WvnJ9swlKW5QOkVPbg==
-X-Received: by 2002:a17:903:22c4:b0:224:a74:28d2 with SMTP id
- d9443c01a7336-22bea4c6cbcmr19602515ad.26.1744346503775; 
- Thu, 10 Apr 2025 21:41:43 -0700 (PDT)
+ AJvYcCXQI9Pn5bIX5ayFItU55U5N5ADJU6ALGvHs73jjQD2PheAvH8Jgb9TF/Axj2PqxxLX2ueau06EdTQ6c@nongnu.org
+X-Gm-Message-State: AOJu0Yxp1hxnVsoWbF/1QtEairv4D6fOZvY8oBf3x5Jflcq0kPc8purA
+ JWKplxAl2web5sGi8aOOzBIe30ttfy9qytx1iUaGBl4lUL6TqfBk31xr6g==
+X-Gm-Gg: ASbGncsyY6FPkHKhzRft/CnjDSmvBPEQqzgR51FSc9frgxmkmNBN2BjGuetyWrI0vZ9
+ BuoIKOUjtZmS+5IlXiky6wx/KDucaIIFjrjHdg1iPG1Gzjzlza7rWt64GhctAv4meTeuKcx38zs
+ xdcdoyz7sJaohBCojCRnU/F10pyjbVFnMkPognwy1yG5WhBPKghIS+UBWY3JXXsd36xARweDlV8
+ CtO8aY4JXW93pl67Us+oprk0C9o1M+H5gEQMOz47D3hZTl4heob078dUmV5m9T/4d6xo04+cw6W
+ 5+7r98X5uyDN7SHPByFK6CaYRisX/zIUA+k1YV3lx85R
+X-Google-Smtp-Source: AGHT+IFst1buBogpUZRva6fTa9aq7I3/mso8A+T7Vpigl3nZioJ+nx/encnx+PQrQW3IRWOCi2BHSA==
+X-Received: by 2002:a17:903:1c5:b0:223:5ada:88ff with SMTP id
+ d9443c01a7336-22bea4bcf30mr23126625ad.24.1744346508543; 
+ Thu, 10 Apr 2025 21:41:48 -0700 (PDT)
 Received: from wheely.local0.net ([220.253.99.94])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7c971e4sm39672745ad.136.2025.04.10.21.41.39
+ d9443c01a7336-22ac7c971e4sm39672745ad.136.2025.04.10.21.41.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Apr 2025 21:41:43 -0700 (PDT)
+ Thu, 10 Apr 2025 21:41:48 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -71,16 +71,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-block@nongnu.org
-Subject: [PATCH v4 1/7] tests/qtest/ahci: unmap pci bar before reusing device
-Date: Fri, 11 Apr 2025 14:41:23 +1000
-Message-ID: <20250411044130.201724-2-npiggin@gmail.com>
+Subject: [PATCH v4 2/7] tests/qtest/ahci: don't unmap pci bar if it wasn't
+ mapped
+Date: Fri, 11 Apr 2025 14:41:24 +1000
+Message-ID: <20250411044130.201724-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250411044130.201724-1-npiggin@gmail.com>
 References: <20250411044130.201724-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,100 +104,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ahci-test double-maps the hba bar in the pending_callback test.
-Unmap it first, to keep iomaps balanced.
+ahci-test has a bunch of tests where the pci bar was not mapped. Avoid
+unmapping it in these cases, to keep iomaps balanced.
 
 Cc: Michael S. Tsirkin <mst@redhat.com>
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/qtest/libqos/ahci.h |  2 ++
- tests/qtest/ahci-test.c   |  4 ++++
- tests/qtest/libqos/ahci.c | 11 +++++++++++
- 3 files changed, 17 insertions(+)
+ tests/qtest/ahci-test.c | 35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/tests/qtest/libqos/ahci.h b/tests/qtest/libqos/ahci.h
-index a0487a1557d..f610bd32a5f 100644
---- a/tests/qtest/libqos/ahci.h
-+++ b/tests/qtest/libqos/ahci.h
-@@ -574,7 +574,9 @@ void ahci_clean_mem(AHCIQState *ahci);
- QPCIDevice *get_ahci_device(QTestState *qts, uint32_t *fingerprint);
- void free_ahci_device(QPCIDevice *dev);
- void ahci_pci_enable(AHCIQState *ahci);
-+void ahci_pci_disable(AHCIQState *ahci);
- void start_ahci_device(AHCIQState *ahci);
-+void stop_ahci_device(AHCIQState *ahci);
- void ahci_hba_enable(AHCIQState *ahci);
- 
- /* Port Management */
 diff --git a/tests/qtest/ahci-test.c b/tests/qtest/ahci-test.c
-index 88ac6c66ce3..7cae6b58e0c 100644
+index 7cae6b58e0c..02c9d54f898 100644
 --- a/tests/qtest/ahci-test.c
 +++ b/tests/qtest/ahci-test.c
-@@ -198,6 +198,7 @@ static void ahci_shutdown(AHCIQState *ahci)
+@@ -85,6 +85,8 @@ static void verify_state(AHCIQState *ahci, uint64_t hba_old)
+     uint64_t hba_base;
+     AHCICommandHeader cmd;
+ 
++    g_assert_cmphex(ahci->hba_bar.addr, ==, hba_old);
++
+     ahci_fingerprint = qpci_config_readl(ahci->dev, PCI_VENDOR_ID);
+     g_assert_cmphex(ahci_fingerprint, ==, ahci->fingerprint);
+ 
+@@ -193,18 +195,28 @@ static AHCIQState *ahci_boot(const char *cli, ...)
+ 
+ /**
+  * Clean up the PCI device, then terminate the QEMU instance.
++ * Should be called if ahci_pci_enable (or ahci_boot_and_enable)
++ * was not used, or device/pci was disabled later.
+  */
+-static void ahci_shutdown(AHCIQState *ahci)
++static void ahci_shutdown_pci_disabled(AHCIQState *ahci)
  {
      QOSState *qs = ahci->parent;
  
-+    ahci_pci_disable(ahci);
+-    ahci_pci_disable(ahci);
      ahci_clean_mem(ahci);
      free_ahci_device(ahci->dev);
      g_free(ahci);
-@@ -1418,6 +1419,7 @@ static void test_reset(void)
-                                CMD_READ_DMA_EXT,
-                                CMD_WRITE_DMA_EXT);
+     qtest_shutdown(qs);
+ }
+ 
++/**
++ * Clean up the PCI device, then terminate the QEMU instance.
++ */
++static void ahci_shutdown(AHCIQState *ahci)
++{
++    ahci_pci_disable(ahci);
++    ahci_shutdown_pci_disabled(ahci);
++}
++
+ /**
+  * Boot and fully enable the HBA device.
+  * @see ahci_boot, ahci_pci_enable and ahci_hba_enable.
+@@ -945,7 +957,7 @@ static void test_sanity(void)
+ {
+     AHCIQState *ahci;
+     ahci = ahci_boot(NULL);
+-    ahci_shutdown(ahci);
++    ahci_shutdown_pci_disabled(ahci);
+ }
+ 
+ /**
+@@ -957,7 +969,7 @@ static void test_pci_spec(void)
+     AHCIQState *ahci;
+     ahci = ahci_boot(NULL);
+     ahci_test_pci_spec(ahci);
+-    ahci_shutdown(ahci);
++    ahci_shutdown_pci_disabled(ahci);
+ }
+ 
+ /**
+@@ -1143,8 +1155,8 @@ static void test_migrate_sanity(void)
+ 
+     ahci_migrate(src, dst, uri);
+ 
+-    ahci_shutdown(src);
+-    ahci_shutdown(dst);
++    ahci_shutdown_pci_disabled(src);
++    ahci_shutdown_pci_disabled(dst);
+     g_free(uri);
+ }
+ 
+@@ -1182,7 +1194,7 @@ static void ahci_migrate_simple(uint8_t cmd_read, uint8_t cmd_write)
+     /* Verify pattern */
+     g_assert_cmphex(memcmp(tx, rx, bufsize), ==, 0);
+ 
+-    ahci_shutdown(src);
++    ahci_shutdown_pci_disabled(src);
+     ahci_shutdown(dst);
+     g_free(rx);
+     g_free(tx);
+@@ -1324,7 +1336,7 @@ static void ahci_migrate_halted_io(uint8_t cmd_read, uint8_t cmd_write)
+     g_assert_cmphex(memcmp(tx, rx, bufsize), ==, 0);
+ 
+     /* Cleanup and go home. */
+-    ahci_shutdown(src);
++    ahci_shutdown_pci_disabled(src);
+     ahci_shutdown(dst);
+     g_free(rx);
+     g_free(tx);
+@@ -1388,8 +1400,8 @@ static void test_flush_migrate(void)
+     ahci_command_verify(dst, cmd);
+ 
+     ahci_command_free(cmd);
+-    ahci_shutdown(src);
+-    ahci_shutdown(dst);
++    ahci_shutdown_pci_disabled(src);
++    ahci_shutdown_pci_disabled(dst);
+     g_free(uri);
+ }
+ 
+@@ -1421,6 +1433,7 @@ static void test_reset(void)
          ahci_set(ahci, AHCI_GHC, AHCI_GHC_HR);
-+        stop_ahci_device(ahci);
+         stop_ahci_device(ahci);
          ahci_clean_mem(ahci);
++        start_ahci_device(ahci);
      }
  
-@@ -1484,6 +1486,7 @@ static void test_reset_pending_callback(void)
-     sleep(1);
- 
-     /* Start again. */
-+    stop_ahci_device(ahci);
-     ahci_clean_mem(ahci);
-     ahci_pci_enable(ahci);
-     ahci_hba_enable(ahci);
-@@ -1502,6 +1505,7 @@ static void test_reset_pending_callback(void)
-     ahci_free(ahci, ptr1);
-     ahci_free(ahci, ptr2);
- 
-+    stop_ahci_device(ahci);
-     ahci_clean_mem(ahci);
- 
      ahci_shutdown(ahci);
-diff --git a/tests/qtest/libqos/ahci.c b/tests/qtest/libqos/ahci.c
-index 34a75b7f43b..bd1994a9208 100644
---- a/tests/qtest/libqos/ahci.c
-+++ b/tests/qtest/libqos/ahci.c
-@@ -205,6 +205,11 @@ void ahci_pci_enable(AHCIQState *ahci)
+@@ -1508,7 +1521,7 @@ static void test_reset_pending_callback(void)
+     stop_ahci_device(ahci);
+     ahci_clean_mem(ahci);
  
+-    ahci_shutdown(ahci);
++    ahci_shutdown_pci_disabled(ahci);
  }
  
-+void ahci_pci_disable(AHCIQState *ahci)
-+{
-+    stop_ahci_device(ahci);
-+}
-+
- /**
-  * Map BAR5/ABAR, and engage the PCI device.
-  */
-@@ -217,6 +222,12 @@ void start_ahci_device(AHCIQState *ahci)
-     qpci_device_enable(ahci->dev);
- }
- 
-+void stop_ahci_device(AHCIQState *ahci)
-+{
-+    /* Unmap AHCI's ABAR */
-+    qpci_iounmap(ahci->dev, ahci->hba_bar);
-+}
-+
- /**
-  * Test and initialize the AHCI's HBA memory areas.
-  * Initialize and start any ports with devices attached.
+ static void test_ncq_simple(void)
 -- 
 2.47.1
 
