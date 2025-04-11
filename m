@@ -2,115 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60F4A86610
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 21:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06131A8663B
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 21:24:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u3Jrh-0005o6-I2; Fri, 11 Apr 2025 15:16:37 -0400
+	id 1u3JyX-0005XX-GA; Fri, 11 Apr 2025 15:23:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3Jr5-00050W-Jt
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:16:04 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3JyP-0005XF-2g
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:23:33 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3Jr3-0006LF-N8
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:15:59 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u3JyN-0007Eb-49
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 15:23:32 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 15E6B21195;
- Fri, 11 Apr 2025 19:15:14 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 5639721195;
+ Fri, 11 Apr 2025 19:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744398914; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1744399409; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wMSYZrglyZ0bVCrbEJjpGUCI3SzYAtQY0LUNx1m5Tfc=;
- b=P58p2MLKytH/D+lg/4KMLQr5vFmc7Q2ufi8oIYKKotcMH6b+M/2UVXs+/pscQfWEaGfPZg
- tl9D9pX0UFPEvQgjvY8Lyv5MukLDdbZvUBNvlsQ/wIDqZKO+uz6F2ZBxoPdcq4POkd+cfT
- 9b0KS//2NN/JetAyxD9Or7Epka5eeY8=
+ bh=n4C6dkqUBXSZvGCPsTpMLEIVIrzGG+2g29i4qftKVgI=;
+ b=0KTvIKW5kJCUMw+VxtRAzTMWEbXCYnOVU/7yzk3Fg8WHH2dCbu9NQU4nH6FJ4omCVlOMLZ
+ tM6Btqy4EtoZiZNg1qr0Pzheft0rkCTjTndv0tn/RlGtxQs0ua1Msp/qaSKylbXNScm645
+ 9ZjbJAs49TqMnOcCzM+VRYQyWoR6qBA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744398914;
+ s=susede2_ed25519; t=1744399409;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wMSYZrglyZ0bVCrbEJjpGUCI3SzYAtQY0LUNx1m5Tfc=;
- b=7JsoBV/7E18D+oPbkw4ZEjR7wUE3AM38g/4Sl3frk3uHK00oj5GF4xP3tL9nWvKEzWFf7w
- CV3/HiJf7g5Q4tAg==
+ bh=n4C6dkqUBXSZvGCPsTpMLEIVIrzGG+2g29i4qftKVgI=;
+ b=gcFmjU/fiAWFC2lV8lhz9UiRbzeww7GSVL+xlokLonwVUWkzJ8yF01lM84ux2i9GS3DwR7
+ taTPIGVIG4zaw8BQ==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=P58p2MLK;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="7JsoBV/7"
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744398914; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1744399409; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wMSYZrglyZ0bVCrbEJjpGUCI3SzYAtQY0LUNx1m5Tfc=;
- b=P58p2MLKytH/D+lg/4KMLQr5vFmc7Q2ufi8oIYKKotcMH6b+M/2UVXs+/pscQfWEaGfPZg
- tl9D9pX0UFPEvQgjvY8Lyv5MukLDdbZvUBNvlsQ/wIDqZKO+uz6F2ZBxoPdcq4POkd+cfT
- 9b0KS//2NN/JetAyxD9Or7Epka5eeY8=
+ bh=n4C6dkqUBXSZvGCPsTpMLEIVIrzGG+2g29i4qftKVgI=;
+ b=0KTvIKW5kJCUMw+VxtRAzTMWEbXCYnOVU/7yzk3Fg8WHH2dCbu9NQU4nH6FJ4omCVlOMLZ
+ tM6Btqy4EtoZiZNg1qr0Pzheft0rkCTjTndv0tn/RlGtxQs0ua1Msp/qaSKylbXNScm645
+ 9ZjbJAs49TqMnOcCzM+VRYQyWoR6qBA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744398914;
+ s=susede2_ed25519; t=1744399409;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wMSYZrglyZ0bVCrbEJjpGUCI3SzYAtQY0LUNx1m5Tfc=;
- b=7JsoBV/7E18D+oPbkw4ZEjR7wUE3AM38g/4Sl3frk3uHK00oj5GF4xP3tL9nWvKEzWFf7w
- CV3/HiJf7g5Q4tAg==
+ bh=n4C6dkqUBXSZvGCPsTpMLEIVIrzGG+2g29i4qftKVgI=;
+ b=gcFmjU/fiAWFC2lV8lhz9UiRbzeww7GSVL+xlokLonwVUWkzJ8yF01lM84ux2i9GS3DwR7
+ taTPIGVIG4zaw8BQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8F2FD13886;
- Fri, 11 Apr 2025 19:15:12 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3EFE13886;
+ Fri, 11 Apr 2025 19:23:28 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id ID7eE0Bq+We5WQAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 11 Apr 2025 19:15:12 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id nXLZIDBs+WfaWwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 11 Apr 2025 19:23:28 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [RFC PATCH 13/13] [PoC] migration: Allow migrate commands to provide
- the migration config
-Date: Fri, 11 Apr 2025 16:14:43 -0300
-Message-Id: <20250411191443.22565-14-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250411191443.22565-1-farosas@suse.de>
-References: <20250411191443.22565-1-farosas@suse.de>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Prasad Pandit
+ <ppandit@redhat.com>, Juraj Marcin <jmarcin@redhat.com>, Marco Cavenati
+ <Marco.Cavenati@eurecom.fr>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH 1/4] migration/savevm: Add a compatibility check for
+ capabilities
+In-Reply-To: <87mscsjhhe.fsf@suse.de>
+References: <20250327143934.7935-1-farosas@suse.de>
+ <20250327143934.7935-2-farosas@suse.de> <Z-Vms2l4jZ_eV-aa@redhat.com>
+ <875xjua4pe.fsf@suse.de> <87semnk713.fsf@suse.de> <87mscsjhhe.fsf@suse.de>
+Date: Fri, 11 Apr 2025 16:23:26 -0300
+Message-ID: <87a58mh58x.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 15E6B21195
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid];
  ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- RCVD_TLS_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCPT_COUNT_SEVEN(0.00)[7]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_THREE(0.00)[4]; DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -127,132 +121,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the migrate and migrate_incoming commands to pass the migration
-configuration options all at once, dispensing the use of
-migrate-set-parameters and migrate-set-capabilities.
+Fabiano Rosas <farosas@suse.de> writes:
 
-The motivation of this is to simplify the interface with the
-management layer and avoid the usage of several command invocations to
-configure a migration. It also avoids stale parameters from a previous
-migration to influence the current migration.
+> Fabiano Rosas <farosas@suse.de> writes:
+>
+> +Cc Markus
+>
+> context:
+> This series was trying to stop savevm from crashing when arbitrary
+> migration capabilities are enabled. Daniel brought up the previous
+> discussion around unifying capabilities + parameters and passing it all
+> via the migrate (or snapshot in this case) command arguments. I'm
+> looking into that now.
+>
+>> Fabiano Rosas <farosas@suse.de> writes:
+>>
+>>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>>>
+>>>> On Thu, Mar 27, 2025 at 11:39:31AM -0300, Fabiano Rosas wrote:
+>>>>> It has always been possible to enable arbitrary migration capabilities
+>>>>> and attempt to take a snapshot of the VM with the savevm/loadvm
+>>>>> commands as well as their QMP counterparts
+>>>>> snapshot-save/snapshot-load.
+>>>>>=20
+>>>>> Most migration capabilities are not meant to be used with snapshots
+>>>>> and there's a risk of crashing QEMU or producing incorrect
+>>>>> behavior. Ideally, every migration capability would either be
+>>>>> implemented for savevm or explicitly rejected.
+>>>>
+>>>> IMHO, this a prime example of why migration config shouldn't be held
+>>>> as global state, and instead passed as parameters to the commands
+>>>> that need them.  The snapshot-save/load commands would then only
+>>>> be able to accept what few settings are actually relevant, instead
+>>>> of inheriting any/all global migration state.
+>>>>
+>>>
+>>> Right, I remember we got caught around the fact that some migration
+>>> options are needed during runtime as well... but I don't remember the
+>>> details, let try to find that thread.
+>>>
+>>
+>> Found it: https://lore.kernel.org/r/ZVM5xmsaE41WJYgb@redhat.com
+>>
+>> I don't think it's *too* hard to start passing the configuration to
+>> qmp_migrate & friends. We just need to figure out a path for the
+>> compatibility.
+>>
+>> I'm thiking of:
+>>
+>> 1) Unifying capabilities and parameters in a MigrationConfig
+>> structure. We take the opportunity to fix the tls options to 'str'
+>> instead of StrOrNull.
+>>
+>> 2) Deprecate migrate-set-capabilities. There are no capabilities
+>> anymore.
+>>
+>> 3) Deprecate migate-set-parameters. There are no parameters
+>> anymore. Alternatively, reuse the existing command, but have it take the
+>> additional capabilities as optional (everything else is already
+>> optional).
+>>
+>> 4) Depending on what we do on (3), add a new migrate-set-config command
+>> that sets every option. All as optional. This would be nice because we
+>> wouldn't need to worry about breaking compat on the tls options, we just
+>> define the new command in the correct way.
+>>
+>> 5) Add a {'*config': MigrationConfig} entry to qmp_migrate and
+>> migrate_set_{config|parameters}. Here is where I have questions, because
+>> ideally we'd have a way to limit the migrate_set_config command to only
+>> the options that can be set at runtime. But I can't see a way of doing
+>> that without the duplication of the options in the QAPI .json file. I'm
+>> inclined to allow the whole set of options and do some tracking on the
+>> side in options.c in the migration code.
+>>
+>> (same issue for savevm really. To allow it to (say) work with
+>> mapped-ram, we'd need a duplicate mapped-ram entry in migration.json)
+>>
+>> About (2) and (3). If we use this unified MigrationConfig, I can keep
+>> the old commands working (along with the query_* variants), by defining
+>> a compat function that converts from those commands specific format into
+>> the new format. But then there's the question of what do we do when a
+>> new capability/parameter comes along? Can we declare that the old
+>> commands will not see the new data and that's it? If there's no
+>> distinction between caps and params anymore, there isn't even a way to
+>> decide which command to use.
+>>
 
-The options that are changed during the migration can still be set
-with the existing commands.
+Hi all, please disregard my messages on this thread. I've posted a
+series which has a cover letter that explains the situation better:
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/migration-hmp-cmds.c |  5 +++--
- migration/migration.c          |  8 ++++----
- qapi/migration.json            | 10 ++++++++++
- system/vl.c                    |  3 ++-
- 4 files changed, 19 insertions(+), 7 deletions(-)
-
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 49c26daed3..44d2265002 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -429,7 +429,7 @@ void hmp_migrate_incoming(Monitor *mon, const QDict *qdict)
-     }
-     QAPI_LIST_PREPEND(caps, g_steal_pointer(&channel));
- 
--    qmp_migrate_incoming(NULL, true, caps, true, false, &err);
-+    qmp_migrate_incoming(NULL, true, caps, NULL, true, false, &err);
-     qapi_free_MigrationChannelList(caps);
- 
- end:
-@@ -715,7 +715,8 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
-     }
-     QAPI_LIST_PREPEND(caps, g_steal_pointer(&channel));
- 
--    qmp_migrate(NULL, true, caps, false, false, true, resume, &err);
-+    qmp_migrate(NULL, true, caps, NULL, false, false, true, resume,
-+                &err);
-     if (hmp_handle_error(mon, err)) {
-         return;
-     }
-diff --git a/migration/migration.c b/migration/migration.c
-index 55d839abd0..a1f04cef32 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1894,8 +1894,8 @@ void migrate_del_blocker(Error **reasonp)
- 
- void qmp_migrate_incoming(const char *uri, bool has_channels,
-                           MigrationChannelList *channels,
--                          bool has_exit_on_error, bool exit_on_error,
--                          Error **errp)
-+                          MigrationConfig *config, bool has_exit_on_error,
-+                          bool exit_on_error, Error **errp)
- {
-     Error *local_err = NULL;
-     static bool once = true;
-@@ -2159,8 +2159,8 @@ static gboolean qmp_migrate_finish_cb(QIOChannel *channel,
-     return G_SOURCE_REMOVE;
- }
- 
--void qmp_migrate(const char *uri, bool has_channels,
--                 MigrationChannelList *channels, bool has_detach, bool detach,
-+void qmp_migrate(const char *uri, bool has_channels, MigrationChannelList *channels,
-+                 MigrationConfig *config, bool has_detach, bool detach,
-                  bool has_resume, bool resume, Error **errp)
- {
-     bool resume_requested;
-diff --git a/qapi/migration.json b/qapi/migration.json
-index bb2487dbc6..5bd8f0f1b2 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1638,6 +1638,10 @@
- #
- # @resume: resume one paused migration, default "off".  (since 3.0)
- #
-+# @config: migration configuration options, previously set via
-+#     @migrate-set-parameters and @migrate-set-capabilities.  (since
-+#     10.1)
-+#
- # Since: 0.14
- #
- # .. admonition:: Notes
-@@ -1702,6 +1706,7 @@
- { 'command': 'migrate',
-   'data': {'*uri': 'str',
-            '*channels': [ 'MigrationChannel' ],
-+           '*config': 'MigrationConfig',
-            '*detach': 'bool', '*resume': 'bool' } }
- 
- ##
-@@ -1721,6 +1726,10 @@
- #     error details could be retrieved with query-migrate.
- #     (since 9.1)
- #
-+# @config: migration configuration options, previously set via
-+#     @migrate-set-parameters and @migrate-set-capabilities.  (since
-+#     10.1)
-+#
- # Since: 2.3
- #
- # .. admonition:: Notes
-@@ -1774,6 +1783,7 @@
- { 'command': 'migrate-incoming',
-              'data': {'*uri': 'str',
-                       '*channels': [ 'MigrationChannel' ],
-+                      '*config': 'MigrationConfig',
-                       '*exit-on-error': 'bool' } }
- 
- ##
-diff --git a/system/vl.c b/system/vl.c
-index ec93988a03..ea7040ef8d 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2826,7 +2826,8 @@ void qmp_x_exit_preconfig(Error **errp)
-                 g_new0(MigrationChannelList, 1);
- 
-             channels->value = incoming_channels[MIGRATION_CHANNEL_TYPE_MAIN];
--            qmp_migrate_incoming(NULL, true, channels, true, true, &local_err);
-+            qmp_migrate_incoming(NULL, true, channels, NULL, true, true,
-+                                 &local_err);
-             if (local_err) {
-                 error_reportf_err(local_err, "-incoming %s: ", incoming);
-                 exit(1);
--- 
-2.35.3
-
+[RFC PATCH 00/13] migration: Unify capabilities and parameters
+https://lore.kernel.org/r/20250411191443.22565-1-farosas@suse.de
 
