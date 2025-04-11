@@ -2,102 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6697BA8593C
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 12:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F981A85983
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 12:22:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u3BQM-0007EY-4T; Fri, 11 Apr 2025 06:15:50 -0400
+	id 1u3BVp-0002kF-WF; Fri, 11 Apr 2025 06:21:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u3BPx-0007Dj-Cs
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:15:25 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u3BPv-0004V7-2U
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:15:25 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4394a823036so18078685e9.0
- for <qemu-devel@nongnu.org>; Fri, 11 Apr 2025 03:15:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744366519; x=1744971319; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=X81x+fX7ctUUUErMmUxwg1vgYhVwKbczeIUuxvWcibA=;
- b=s4uBi3vzwjIDuzS5/BhM4/saP5VYEvlDvB+IlPOvqEmBz2ivQej4Me5ZlguTEvH01I
- k5n9SKx/DAEaaQvtlYPAl6IjS35JQQJ8uAmSYWnIUvUVjY8njjAEbXFYZ01cW7JGMMG0
- 87RzkQZUBJQHa1CFAPK27e/b0rGTYCvNel/58yYwYczFDYo6pJeWNFqijGJb3lzg/Bvl
- yPnKOcxvB5BHZnGrzmIe9CsX5saeriQ7MJO+S5raRfuLXB8D/YWk/O8axaWas9ULW90U
- 83oQKrzpHnYNiPmPQ5lqlGbI3T81xQul81dO3aHEpqu42dk1KzBMqheWYcZB6Tk5/8B1
- IBGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744366519; x=1744971319;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=X81x+fX7ctUUUErMmUxwg1vgYhVwKbczeIUuxvWcibA=;
- b=dCCYI5NAjLETm5KZkZzasXZKIKygYifJfgdrdnF2oAjQ6NyjbUSoYyt1pE4ZGOCuhy
- LDRhQOAz7KZTCj3WPeC9akYDzgp1msRSbqywwsmI0Ufd6A+c2IchLzM/Mt/KNqicwmzQ
- wndvX7NMWwBOs/BAtxFuNcec0BqBt6bR/iMuh/iWNXQ8Przk9UwbpiU+Xrc8Za3kiBP2
- Vhz3rAKjJ//UVRnOg3QaUaj9bxsBTjzH2BubdPk4ZtK1lZcRE7xXdiQNdZ0lyTj9crvX
- BDb7LMr132PnoHAAg7k8CgZkMm7RV+TM2GaAvbOwRVwz7X2bCdePR+DRftXzMXY2Kcl5
- 4Y2w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXb/MZGv3KnJ3ABtw/npmVpLuNFoEpnqqMhEpADQRoHsRM9VAKfDWbZ0cb6HT9+w2ROrNKLCYSQbGQl@nongnu.org
-X-Gm-Message-State: AOJu0Ywvvo5VapEZxAZCit/tLvS5jwmNfWBunDINtW+YIuw4S08ioHBG
- cRlzwtvolRC/eD5QqkS4nZEj0s+BhR8f1BHWCW/3Lcar2rA1gr216px5zbSuBaI=
-X-Gm-Gg: ASbGncvusNMt1RGukS4ETL7n3BQ5dgv83wIGEVX+L66x3HaK/OPvR2xRAQ5fVQqQIMQ
- ziyRsF8MslNqoGptg6tIFyDSRHf1WHavFs/loE5SByN84Dkpo5NlWSLq4zifWR/To/I46Oo2UBo
- L4RtHLeRHRzt6yYsZQ8QT2CUWjzbGZaINZOS5t8RWUW8vd9+I+8yUkbcmlSUxzBaOGTYiPzJVHt
- KX2ztKzoEdPGG1KLelxTYU1AwHMp/UT1Z06epLuw+Ke0wss2cUb0qMyqEuiWB7Kzr/oaTk619Vd
- IZDsvodBYL0saubSGnxhmXyjR1Lma/ICHVt2Ce3TSw2v3NIuBH2eHauh9/fm2lQz0JKTRz9R3Tc
- 6VXY/YvtZoUTxgDgW/KE=
-X-Google-Smtp-Source: AGHT+IF9VQVJZxgHP5AZITiRj7zSzGzyYKmkRuoTavC56NbKQqG4yfTq/kUznmxEtrQp9ELJcjriKA==
-X-Received: by 2002:a05:600c:4e13:b0:43d:4686:5cfb with SMTP id
- 5b1f17b1804b1-43f3a9add63mr19675875e9.27.1744366519571; 
- Fri, 11 Apr 2025 03:15:19 -0700 (PDT)
-Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43f233a2f71sm78563125e9.15.2025.04.11.03.15.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Apr 2025 03:15:19 -0700 (PDT)
-Message-ID: <316898c8-20a6-499d-b0f4-437cf8e05d0b@linaro.org>
-Date: Fri, 11 Apr 2025 12:15:17 +0200
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1u3BVe-0002ba-18
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:18 -0400
+Received: from mgamail.intel.com ([198.175.65.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1u3BVT-0005Nr-4m
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1744366867; x=1775902867;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1F7a1sjUDngnN5oBLAUAUwgEDgDAboQux7dnCudMDgI=;
+ b=hZgWI7L6Q/0p/HvvnMQleogswwiGyd8QyTazLNzPuwV56oiLWZrfAGji
+ kDsMbiwwjHa5Cca7eirmn8FILvIRwiJqCv05Eu6Xyo4d1mwVcfHkAOWUc
+ xpLcTo2jYL3w8lYJ4m6EuZSPHhLT+EdZ2C9r6b+rEZkmpbvGi2Kc9jKub
+ ccMf3Wii43p2Fj8fzKo38VIEX1TXalVQztakbxHmlKi0Aetxb14m33fqD
+ cDdGDCSwRLHi+Zx5DKzBYuz7GpBC5vmrwXl51ztB4hYCbAXOm+a518yCg
+ zinUzdcZDlQEUwRtC63J/tIUMP1vgh/7Uw9hTbcfarFwRePinOUPDcXhG w==;
+X-CSE-ConnectionGUID: 92ZFZwgMSsyuzlPb9C4msA==
+X-CSE-MsgGUID: RwdnyvwGRGeMuIPcUyG/aw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="49566775"
+X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; d="scan'208";a="49566775"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2025 03:20:46 -0700
+X-CSE-ConnectionGUID: +qcDf0G7Qq2eUJazeBmj3w==
+X-CSE-MsgGUID: 4gPhNCWtTNGrjv6WwsxbcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; d="scan'208";a="133917406"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Apr 2025 03:20:44 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH 0/5] cleanup interfaces
+Date: Fri, 11 Apr 2025 18:17:02 +0800
+Message-Id: <20250411101707.3460429-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-8.0 09/10] hw/virtio: Extract
- vhost_user_ram_slots_max() to vhost-user-target.c
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org,
- Thomas Huth <thuth@redhat.com>
-Cc: Greg Kurz <groug@kaod.org>, Stefan Hajnoczi <stefanha@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Hanna Reitz <hreitz@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20221212230517.28872-1-philmd@linaro.org>
- <20221212230517.28872-10-philmd@linaro.org>
- <84b2bcf7-9df7-43e2-83d8-cae9d34ca541@linaro.org>
- <d4ecd6c2-73db-4c28-828c-bfa84ca90084@linaro.org>
- <0edf086b-18f1-4c75-a794-1c957b20bf19@linaro.org>
- <2336ff13-f329-46f5-95b6-e847b012328e@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <2336ff13-f329-46f5-95b6-e847b012328e@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=198.175.65.15;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.593,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,145 +81,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/4/25 19:29, Pierrick Bouvier wrote:
-> On 4/10/25 10:21, Philippe Mathieu-Daudé wrote:
->> On 10/4/25 16:36, Pierrick Bouvier wrote:
->>> On 4/10/25 05:14, Philippe Mathieu-Daudé wrote:
->>>> Hi Pierrick,
->>>>
->>>> On 13/12/22 00:05, Philippe Mathieu-Daudé wrote:
->>>>> The current definition of VHOST_USER_MAX_RAM_SLOTS is
->>>>> target specific. By converting this definition to a runtime
->>>>> vhost_user_ram_slots_max() helper declared in a target
->>>>> specific unit, we can have the rest of vhost-user.c target
->>>>> independent.
->>>>>
->>>>> To avoid variable length array or using the heap to store
->>>>> arrays of vhost_user_ram_slots_max() elements, we simply
->>>>> declare an array of the biggest VHOST_USER_MAX_RAM_SLOTS,
->>>>> and each target uses up to vhost_user_ram_slots_max()
->>>>> elements of it. Ensure arrays are big enough by adding an
->>>>> assertion in vhost_user_init().
->>>>>
->>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>> ---
->>>>> RFC: Should I add VHOST_USER_MAX_RAM_SLOTS to vhost-user.h
->>>>>         or create an internal header for it?
->>>>> ---
->>>>>     hw/virtio/meson.build          |  1 +
->>>>>     hw/virtio/vhost-user-target.c  | 29 +++++++++++++++++++++++++++++
->>>>>     hw/virtio/vhost-user.c         | 26 +++++---------------------
->>>>>     include/hw/virtio/vhost-user.h |  7 +++++++
->>>>>     4 files changed, 42 insertions(+), 21 deletions(-)
->>>>>     create mode 100644 hw/virtio/vhost-user-target.c
->>>>>
->>>>> diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
->>>>> index eb7ee8ea92..bf7e35fa8a 100644
->>>>> --- a/hw/virtio/meson.build
->>>>> +++ b/hw/virtio/meson.build
->>>>> @@ -11,6 +11,7 @@ if have_vhost
->>>>>       specific_virtio_ss.add(files('vhost.c', 'vhost-backend.c',
->>>>> 'vhost-iova-tree.c'))
->>>>>       if have_vhost_user
->>>>>         specific_virtio_ss.add(files('vhost-user.c'))
->>>>> +    specific_virtio_ss.add(files('vhost-user-target.c'))
->>>>>       endif
->>>>>       if have_vhost_vdpa
->>>>>         specific_virtio_ss.add(files('vhost-vdpa.c', 'vhost-shadow-
->>>>> virtqueue.c'))
->>>>> diff --git a/hw/virtio/vhost-user-target.c b/hw/virtio/vhost-user-
->>>>> target.c
->>>>> new file mode 100644
->>>>> index 0000000000..6a0d0f53d0
->>>>> --- /dev/null
->>>>> +++ b/hw/virtio/vhost-user-target.c
->>>>> @@ -0,0 +1,29 @@
->>>>> +/*
->>>>> + * vhost-user target-specific helpers
->>>>> + *
->>>>> + * Copyright (c) 2013 Virtual Open Systems Sarl.
->>>>> + *
->>>>> + * SPDX-License-Identifier: GPL-2.0-or-later
->>>>> + */
->>>>> +
->>>>> +#include "qemu/osdep.h"
->>>>> +#include "hw/virtio/vhost-user.h"
->>>>> +
->>>>> +#if defined(TARGET_X86) || defined(TARGET_X86_64) || \
->>>>> +    defined(TARGET_ARM) || defined(TARGET_ARM_64)
->>>>> +#include "hw/acpi/acpi.h"
->>>>> +#elif defined(TARGET_PPC) || defined(TARGET_PPC64)
->>>>> +#include "hw/ppc/spapr.h"
->>>>> +#endif
->>>>> +
->>>>> +unsigned int vhost_user_ram_slots_max(void)
->>>>> +{
->>>>> +#if defined(TARGET_X86) || defined(TARGET_X86_64) || \
->>>>> +    defined(TARGET_ARM) || defined(TARGET_ARM_64)
->>>>> +    return ACPI_MAX_RAM_SLOTS;
->>>>> +#elif defined(TARGET_PPC) || defined(TARGET_PPC64)
->>>>> +    return SPAPR_MAX_RAM_SLOTS;
->>>>> +#else
->>>>> +    return 512;
->>>>
->>>> Should vhost_user_ram_slots_max be another TargetInfo field?
->>>>
->>>
->>> I don't think so, it would be better to transform the existing function
->>> in something like:
->>>
->>> switch (target_current()) {
->>> case TARGET_X86:
->>> case TARGET_ARM:
->>> case TARGET_X86_64:
->>> case TARGET_ARM_64:
->>>       return ACPI_MAX_RAM_SLOTS;
->>> case TARGET PPC:
->>> case TARGET PPC64:
->>>       return SPAPR_MAX_RAM_SLOTS;
->>> default:
->>>       return 512;
->>> }
->>
->> Clever, I like it, thanks!
-> 
-> It's a pattern we can reuse in all places where it'll be needed.
-> It's better if we keep in TargetInfo only global information, that is 
-> used through all the codebase, and not specifics about a given 
-> subsystem/device/file.
-> 
-> By the way, TARGET_ARM_64 is probably TARGET_AARCH64.
+Hi,
 
-Correct, it has been fixed by Akihiko:
+This series addresses Cédric's suggestion[1] and Donald's suggestion[2] to
+move realize() call after attach_device().
 
-commit 744734ccc9eff28394a453de462b2a155f364118
-Author: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date:   Mon Jan 9 15:31:30 2023 +0900
+Also addresses Eric and Nicolin's suggestion[3] to use a union to hold different
+vendor capabilities.
 
-     vhost-user: Correct a reference of TARGET_AARCH64
+[1] https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg01211.html
+[2] https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg00898.html
+[3] https://lists.gnu.org/archive/html/qemu-devel/2025-03/msg01552.html
 
-     Presumably TARGET_ARM_64 should be a mistake of TARGET_AARCH64.
+Test:
+net card passthrough and ping test
+hotplug/unplug
 
-     Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-     Message-Id: <20230109063130.81296-1-akihiko.odaki@daynix.com>
-     Fixes: 27598393a2 ("Lift max memory slots limit imposed by vhost-user")
-     Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-     Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-     Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-     Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Based on vfio-next(b9d42a878b).
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index d9ce0501b2c..6c79da953b3 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -48,7 +48,7 @@
-   * hardware plaform.
-   */
-  #if defined(TARGET_X86) || defined(TARGET_X86_64) || \
--    defined(TARGET_ARM) || defined(TARGET_ARM_64)
-+    defined(TARGET_ARM) || defined(TARGET_AARCH64)
-  #include "hw/acpi/acpi.h"
-  #define VHOST_USER_MAX_RAM_SLOTS ACPI_MAX_RAM_SLOTS
+Thanks
+Zhenzhong
 
+
+Zhenzhong Duan (5):
+  vfio/iommufd: Save host iommu capabilities in VFIODevice.caps
+  vfio: Move realize() after attach_device()
+  vfio/iommufd: Implement .get_cap() in
+    TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO sub-class
+  backends/iommufd: Drop hiod_iommufd_get_cap()
+  vfio/iommufd: Drop HostIOMMUDeviceCaps from HostIOMMUDevice
+
+ include/hw/vfio/vfio-device.h      |  2 +-
+ include/system/host_iommu_device.h | 14 -------
+ include/system/iommufd.h           | 26 ++++++++++++
+ backends/iommufd.c                 | 63 +++++++++++++++++++-----------
+ hw/vfio/container.c                |  4 --
+ hw/vfio/device.c                   | 28 ++++++-------
+ hw/vfio/iommufd.c                  | 39 ++++++++++--------
+ 7 files changed, 100 insertions(+), 76 deletions(-)
+
+-- 
+2.34.1
 
 
