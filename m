@@ -2,90 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7398FA852A9
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 06:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C92A852B2
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 06:39:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u363v-0004qh-AV; Fri, 11 Apr 2025 00:32:19 -0400
+	id 1u36AJ-00027c-42; Fri, 11 Apr 2025 00:38:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u363t-0004qO-4l
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 00:32:17 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u363r-0007cE-LG
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 00:32:16 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2264aefc45dso22669095ad.0
- for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 21:32:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744345934; x=1744950734; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mcgWH2x0gAyjXMufV1B2NOlfCFMvX5UXpeLLJX0H558=;
- b=OJgh/AbCjYG+1umPSDll0VldZN9yoH8SnANkxyQhGughfBDbL5aCGBHRy0xLMYoekj
- 9vPW6+4oqkXYS9/yh4tZV8M6qj1S2GAbTVTx0TaRSRzPqQuAjQs2cW6jxyWtEIqhLoC3
- zcGU6tlZ1FdLjt/Lw8DQvXw6H+9Fxl28SdcCZnI1nVGw9pPgCszo373YxyGqgTajnEln
- WJICMJKXwHWptPetbXFFMxgYCP681ZNWJ7M7amu21WTtS02Q4u1awLjO/tJh/zzREdbe
- rGRr+Eul95JOAQdWwgdu7s1jJeWj9ssl210dZF8U+DtoN0ExGVfkSEpgWiT+jm/mKrOF
- XErw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744345934; x=1744950734;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mcgWH2x0gAyjXMufV1B2NOlfCFMvX5UXpeLLJX0H558=;
- b=dT2HEekLK1seOz1sb45cRCMzZUMCAsTGXj964tkLOh9x8HxMmKQP4dAG+EImZFyYA0
- zODpVaBquwI3Q141C8IPWA8F1C09LFniWI1eDMULs4+PlagQb47qAS0Y5eaFTIjOouGz
- ZpRWujw0csmX/iaDhj0wXvDvU2XOQqE6AEUVxiUTr5Qbo712AreLswx9eJ5/FjaixIUy
- 0Xk0Z4bPMVYpbOhtVc8nxPzhFvHPAwa5T46wWvDaBwK6BYcX4J0U/Jh6ZMCmWXWUqwPy
- RfJSXJBBFnep4gQ9OfqZMFWq/Y3T177H0nrdH50Y1YlubQhT4Bf+P7s/7ZAIrw3V7bfH
- M0GA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXSRmRxJw2h9mwjiaf6qMjl9xqz1sohMzvsdoFF1itOQaW3GRTcAn8aGxTqbvAkexZjR0Y8EH3fy1ib@nongnu.org
-X-Gm-Message-State: AOJu0Yx2Lu3krg0vCocUX/IL93/ngEdTDrJmCbzeczHXHzOIzmUD+/nI
- Zsv1z55MvhP/5YxnKF9gT0jFFNRYB1ckWPUW55zlB0JIue1jlAnd
-X-Gm-Gg: ASbGnct8aWOcxzyVA9yOzLAGZksNnU+YooX+JoJyCgZKV2w8IX7kSDv+mrNcRr/nHoB
- 0d33DAYepqR+3/R1PJKWCD6J9Ah7f/Ekm8SA+CcsKUdZezdPWNyYqoZwZ3R19SYhWnqfheDTfMT
- soXAk4p2+co0l7/oh9/tszBLzRiTx1775su8FdhkrywiyZCQS7ZsXFDEn4jYxvnEP3JVFYJtDHJ
- VBONAGukUe6kiDUi48qKmgFnT6WjLGCEPkcbsz6+96udDu3UL74BNAk9sUw6OFqw7tI9WxrlXQ4
- PdYvNjST7tLCnV6FT6BXfmY9ueoCg0FIJf/1MbA2RldT+PCLpnXca8M=
-X-Google-Smtp-Source: AGHT+IHq/k0DRaOYU1Gs2Ofnj69VHaktdTpevJkZUvSXAlauomL2AgIkD9W05Tu9oe/R09tiecI9rg==
-X-Received: by 2002:a17:903:1c7:b0:220:e5be:29c7 with SMTP id
- d9443c01a7336-22bea4f180fmr22059705ad.39.1744345933977; 
- Thu, 10 Apr 2025 21:32:13 -0700 (PDT)
-Received: from wheely.local0.net ([220.253.99.94])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7b64906sm39361625ad.48.2025.04.10.21.32.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Apr 2025 21:32:13 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 8/8] qtest/e1000e|igb: Test interrupt throttling in
- multiple_transfers test
-Date: Fri, 11 Apr 2025 14:31:28 +1000
-Message-ID: <20250411043128.201289-9-npiggin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250411043128.201289-1-npiggin@gmail.com>
-References: <20250411043128.201289-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u36AE-000279-Iy
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 00:38:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u36AA-0000fQ-Qo
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 00:38:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744346324;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PTzIILfn+BEwNwtW56J6lhs9IhbQAvx+RqJINSsKWq4=;
+ b=VkBtyULFCgAsYmU80ax7PDTkk3TnET+/FfMyaqSCelzJXx9GzIREXC4GGWKgnmdzAx471Z
+ 6uQ8UhyyKu8rID9iyqYzLLAlcdWU7DSjQ8JcI8FjcY0J1dEz0azuKT1T0uYLzy5T67BzvZ
+ jTCCgX3SpZofZpAZxhqXJXEUeNdO//Q=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-36oH1RziO8KYTsgfbNR7zw-1; Fri,
+ 11 Apr 2025 00:38:41 -0400
+X-MC-Unique: 36oH1RziO8KYTsgfbNR7zw-1
+X-Mimecast-MFC-AGG-ID: 36oH1RziO8KYTsgfbNR7zw_1744346319
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2F0521801A12; Fri, 11 Apr 2025 04:38:39 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4676A1828A9F; Fri, 11 Apr 2025 04:38:38 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C6AB821E6773; Fri, 11 Apr 2025 06:38:35 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcelo
+ Tosatti <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric
+ Auger <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
+In-Reply-To: <Z/iUiEXZj52CbduB@intel.com> (Zhao Liu's message of "Fri, 11 Apr
+ 2025 12:03:20 +0800")
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <20250409082649.14733-2-zhao1.liu@intel.com>
+ <878qo8yu5u.fsf@pond.sub.org> <Z/iUiEXZj52CbduB@intel.com>
+Date: Fri, 11 Apr 2025 06:38:35 +0200
+Message-ID: <87frifxqgk.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.593,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,58 +92,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable interrupt throtling on one of the two queue interrupts used
-in the multiple_transfers test, to improve coverage. The number of
-interrupts for the e1000e test is reduced because it has a long minimum
-throttling delay so without reducing iterations throttling adds about
-40s to the test runtime.
+Zhao Liu <zhao1.liu@intel.com> writes:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/qtest/e1000e-test.c | 6 +++---
- tests/qtest/igb-test.c    | 4 ++++
- 2 files changed, 7 insertions(+), 3 deletions(-)
+> Hi Markus
+>
+> On Thu, Apr 10, 2025 at 04:21:01PM +0200, Markus Armbruster wrote:
+>> Date: Thu, 10 Apr 2025 16:21:01 +0200
+>> From: Markus Armbruster <armbru@redhat.com>
+>> Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
+>> 
+>> Zhao Liu <zhao1.liu@intel.com> writes:
+>> 
+>> > Introduce the kvm-pmu-filter object and support the PMU event with raw
+>> > format.
+>> 
+>> Remind me, what does the kvm-pmu-filter object do, and why would we
+>> want to use it?
+>
+> KVM PMU filter allows user space to set PMU event whitelist / blacklist
+> for Guest. Both ARM and x86's KVMs accept a list of PMU events, and x86
+> also accpets other formats & fixed counter field.
 
-diff --git a/tests/qtest/e1000e-test.c b/tests/qtest/e1000e-test.c
-index a538c72cc84..645b31127f0 100644
---- a/tests/qtest/e1000e-test.c
-+++ b/tests/qtest/e1000e-test.c
-@@ -181,7 +181,7 @@ static void test_e1000e_rx(void *obj, void *data, QGuestAllocator * alloc)
- static void test_e1000e_multiple_transfers(void *obj, void *data,
-                                            QGuestAllocator *alloc)
- {
--    static const long iterations = 4 * 1024;
-+    static const long iterations = 1 * 1024;
-     long i;
- 
-     QE1000E_PCI *e1000e = obj;
-@@ -194,8 +194,8 @@ static void test_e1000e_multiple_transfers(void *obj, void *data,
-         return;
-     }
- 
--    /* Clear EITR because buggy QEMU throttle timer causes superfluous irqs */
--    e1000e_macreg_write(d, E1000_EITR + E1000E_RX0_MSG_ID * 4, 0);
-+    /* Use EITR for one irq and disable it for the other, for testing */
-+    e1000e_macreg_write(d, E1000_EITR + E1000E_RX0_MSG_ID * 4, 500);
-     e1000e_macreg_write(d, E1000_EITR + E1000E_TX0_MSG_ID * 4, 0);
- 
-     for (i = 0; i < iterations; i++) {
-diff --git a/tests/qtest/igb-test.c b/tests/qtest/igb-test.c
-index 12cdd8b498a..c1877a77be4 100644
---- a/tests/qtest/igb-test.c
-+++ b/tests/qtest/igb-test.c
-@@ -198,6 +198,10 @@ static void test_igb_multiple_transfers(void *obj, void *data,
-         return;
-     }
- 
-+    /* Use EITR for one irq and disable it for the other, for testing */
-+    e1000e_macreg_write(d, E1000_EITR(E1000E_RX0_MSG_ID), 0);
-+    e1000e_macreg_write(d, E1000_EITR(E1000E_TX0_MSG_ID), 10 << 2); /* 10us */
-+
-     for (i = 0; i < iterations; i++) {
-         igb_send_verify(d, data, alloc);
-         igb_receive_verify(d, data, alloc);
--- 
-2.47.1
+But what does the system *do* with these event lists?
+
+> The earliest version uses custom parsing rules, which is not flexible
+> enough to scale. So to support such complex configuration in cli, it's
+> best to define and parse it via QAPI, and it's best to support the JSON
+> way.
+>
+> Based on these considerations, I found "object" to be a suitable enough
+> choice.
+>
+> Thus kvm-pmu-filter object handles all the complexity of parsing values
+> from cli, and it can include some checks that QAPI cannot include (such
+> as the 12-bit limit).
+>
+> Thanks,
+> Zhao
 
 
