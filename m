@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8606A85220
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 05:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B31F9A852A6
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 06:32:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u35IC-0001WP-0F; Thu, 10 Apr 2025 23:43:00 -0400
+	id 1u363L-0004XF-5p; Fri, 11 Apr 2025 00:31:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u35Hs-0001US-RW; Thu, 10 Apr 2025 23:42:40 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u35Hq-0000Q8-Aw; Thu, 10 Apr 2025 23:42:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744342958; x=1775878958;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Unn0HrY1GqhIzLNRhYl27mv1Bs3adfSbtXgW1AwiTPM=;
- b=lfe9MmTl/bUaNMdYXtqQTql/RZ6KHfnUhpsm7fFkCGzJ1GtILFvHdAhp
- UanvYavVfbWH6ArFO41T2bxLRFDS15/0uUtaIobvviNVrp48FO2quq4r/
- /fdlH66e+czUZQZz0CJqY51SSgWXh2OL2zNgSBmD1IdxKehS+E3iOsSeu
- cIGUjrcWaRR7lw5EAc3kvz2x8Vky3zmMUmIwmQSTvP1vHg5wi+fUlCIeB
- WMEcx7z2mWlZIxJE5M+QZyB/mnEm0Jk8078r1z+RU8pZu453hUYt0ssFb
- HqH0ruvQ2VKsYt7MLz2ok1rn5cRgcqbmWcRm9nwD5Riw4P2SnRJDRJINI A==;
-X-CSE-ConnectionGUID: /ZXzQEmBRwOALe5Y4QE5fA==
-X-CSE-MsgGUID: +8jhTM3pTCKwI9kORgeQ+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="57267122"
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="57267122"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2025 20:42:34 -0700
-X-CSE-ConnectionGUID: w7dsJle3QNShfhjz9E7PMQ==
-X-CSE-MsgGUID: QRKgM4I6QYGyCZcOaNygPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="152270786"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 10 Apr 2025 20:42:31 -0700
-Date: Fri, 11 Apr 2025 12:03:20 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
-Message-ID: <Z/iUiEXZj52CbduB@intel.com>
-References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-2-zhao1.liu@intel.com>
- <878qo8yu5u.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u363J-0004Ww-Hb
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 00:31:41 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u363H-0007Uv-RS
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 00:31:41 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-af50f56b862so1162620a12.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Apr 2025 21:31:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1744345898; x=1744950698; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XdgmfDnMc5WnKUBrgdWxYmUENuANPmGBScuZHPp2x2Y=;
+ b=f1rWb35OBe6XxJTcC8ueNZsMt3IXTA1p/MKdOMurVoVBrVvodjUfa0rtaipb40NdF8
+ ALF/HnLnAaePQDJiL8X2p3JApKzYraMzbKU0AhjdBQPCbMQ18KlMiKsL51pSxfnHuQlc
+ hXdDMO1qht05Rv3T+HTucM1ip75Scu23UgueU0LeTcjeBldv+9oeUFcbaHgdIMvIZsOO
+ f38+JjrNh7YTr6z/keLDH69+vAqZXeX7IMa9isAhDZb0vMsEeYOXghq+IMG9i6vJgemq
+ y6t1E+t6NV1QYYL6Cd19dU30vIqawrwF3lI0wVE/YTyTgkY7FpWQyS+jTUwM1O/jRiLd
+ crbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744345898; x=1744950698;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XdgmfDnMc5WnKUBrgdWxYmUENuANPmGBScuZHPp2x2Y=;
+ b=LD7IVjRloVn3NHbFDJwcfLbGAIps2HuqA9knaUowPBC5SRjwIyarfSv3q6Ai0TykyD
+ 7EE3rCwRuLDiiBAn1JsaQaDa2HkJZ61jndy8pySSpTFrbrRCCh2fS4+JDwiqGcUnvyCM
+ VVt4dgFxugXiooHNDPBLhtGNbVqg2AqU8k6ufadpex2INrN6km0+qfwNFC5llqO6+pFX
+ 1g7C68YExLfdRGAs2SpHWPfKuRsOgd0jFrV60CfbW2Nx6p3P5ngJjnrwuHfM3Ik4thGR
+ xZePPpHDWxkhEaywB2gwYE7t95ybgrBhDJC0A3G8p8611bf12ys0f69OjPris8bfi7Hv
+ Qbpw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVHaVb1x1NE9CtTbtyyG69DBw44VpiiPsFXSG2KvHZGbZLZAUD9rVwqqwRgO0tZNBkKAHu05i418y2j@nongnu.org
+X-Gm-Message-State: AOJu0Yxjled7DPy022IXGUB/cUnE0B4XQ151z49NC6fIGXBfXbEVuXKn
+ xt1je4rYbb2dOu5Rq8NwM1X1UXqLFPrm97H0HTYwrzNFO+sqjgok
+X-Gm-Gg: ASbGncts/JKLmFBpRipcevirIJzkgc6cDRreZfpjjKtOXLhIKrCSJ84XAhrt/td8r4r
+ +6VGLfO2Bv826c9UFq/EO62+NvKjCemqjS3YAr6ymrneU3r3pqYlBo+UOUcMmX4m2UL8wz+LoXS
+ P78fhHNVylYrM+9yKIvm0NufyUnxqOvZMS1GnqMNleNqsupItS/zGE1yyYeffUgYJdzqSrqlyCS
+ uuDakOZprg7xjG3bQ0OySw8JVmmaJqsT8PKNLo5MKFAKtGNy19qmbcIGOjTUikVEM/F6VZ8mFgA
+ 2ETHpPzyPbFB4D8bWkvfEkjgG1pWxEvNDGaiagcPxJWE
+X-Google-Smtp-Source: AGHT+IEEVJCsex/9S+r5X1nxq2UQnVpHXNjZVoUd3fJkcdL7/MfZXmSBt14B9id3EEZhCJfHrLWymQ==
+X-Received: by 2002:a17:90b:5211:b0:2ff:5714:6a with SMTP id
+ 98e67ed59e1d1-30823643fd3mr2411375a91.19.1744345897623; 
+ Thu, 10 Apr 2025 21:31:37 -0700 (PDT)
+Received: from wheely.local0.net ([220.253.99.94])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22ac7b64906sm39361625ad.48.2025.04.10.21.31.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Apr 2025 21:31:36 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 0/8] hw/e1000e|igb: interrupts and qtests fixes
+Date: Fri, 11 Apr 2025 14:31:20 +1000
+Message-ID: <20250411043128.201289-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <878qo8yu5u.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.593,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,38 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus
+Changes since v1:
 
-On Thu, Apr 10, 2025 at 04:21:01PM +0200, Markus Armbruster wrote:
-> Date: Thu, 10 Apr 2025 16:21:01 +0200
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
-> 
-> Zhao Liu <zhao1.liu@intel.com> writes:
-> 
-> > Introduce the kvm-pmu-filter object and support the PMU event with raw
-> > format.
-> 
-> Remind me, what does the kvm-pmu-filter object do, and why would we
-> want to use it?
+https://lore.kernel.org/qemu-devel/20250115150112.346497-1-npiggin@gmail.com/
 
-KVM PMU filter allows user space to set PMU event whitelist / blacklist
-for Guest. Both ARM and x86's KVMs accept a list of PMU events, and x86
-also accpets other formats & fixed counter field.
-
-The earliest version uses custom parsing rules, which is not flexible
-enough to scale. So to support such complex configuration in cli, it's
-best to define and parse it via QAPI, and it's best to support the JSON
-way.
-
-Based on these considerations, I found "object" to be a suitable enough
-choice.
-
-Thus kvm-pmu-filter object handles all the complexity of parsing values
-from cli, and it can include some checks that QAPI cannot include (such
-as the 12-bit limit).
+- Made changes as suggested by Odaki san in v1. Renamed some
+  functions and changed some comments, added a Fixes: tag.
+- Bug fix in "net/e1000e|igb: Fix interrupt throttling logic"
+  patch to notify only causes that were not masked.
+- Squashed patch 8 into patch 2 and improved changelog and comments,
+  retained the 7813 interrupts/sec limit for e1000e mitigation.
+- Reordered patches in the series.
+- Improved the changelog for "net/e1000e|igb: Fix interrupt throttling
+  logic" to be clearer about the problems and fixes.
+- In that patch, made the delayed irq timer rearming path a bit clearer.
+- Reduced test iterations to avoid increasing qtest time too much
+  for e1000e interrupt throttling test.
 
 Thanks,
-Zhao
+Nick
+
+Nicholas Piggin (8):
+  qtest/e1000e|igb: Clear interrupt-cause and msix pending bits after
+    irq
+  net/e1000e: Permit disabling interrupt throttling
+  hw/net/e1000e|igb: Remove xitr_guest_value logic
+  qtest/e1000e|igb: assert irqs are clear before triggering an irq
+  net/igb: Fix interrupt throttling interval calculation
+  net/igb: Implement EITR Moderation Counter
+  net/e1000e|igb: Fix interrupt throttling logic
+  qtest/e1000e|igb: Test interrupt throttling in multiple_transfers test
+
+ hw/net/igb_regs.h           |  11 +++-
+ tests/qtest/libqos/e1000e.h |   1 +
+ hw/net/e1000e_core.c        | 115 ++++++++++++++++++++++++++----------
+ hw/net/igb_core.c           | 109 +++++++++++++++++++++++++++-------
+ tests/qtest/e1000e-test.c   |  21 ++++++-
+ tests/qtest/igb-test.c      |  18 ++++++
+ tests/qtest/libqos/e1000e.c |   9 ++-
+ 7 files changed, 227 insertions(+), 57 deletions(-)
+
+-- 
+2.47.1
 
 
