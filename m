@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3145DA8597D
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 12:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5310A85962
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Apr 2025 12:19:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u3BVu-0002zY-9B; Fri, 11 Apr 2025 06:21:34 -0400
+	id 1u3BSo-000879-Jf; Fri, 11 Apr 2025 06:18:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1u3BVh-0002fF-JS
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:21 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u3BSg-00085z-C7
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:18:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1u3BVe-0005Nr-Fb
- for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:21:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744366878; x=1775902878;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=a1rqJgngFJ3/FyQqDL1AmQI5pB8InAlZ+NX9kWvKC+w=;
- b=FJOtqGhZO1eP1jM2G8DjupddGiZTWMKq5/uXM6Jmxfql2pNtkbUKDzD2
- AfZa+9ZUk1OC1uHCa6Blr2uy8BCndy3lDcTGPyzQnL3u5HLyHlFuS1uQ/
- i24RUF+hAm6TH0WABknkz+6b+dxXG48L0L3pv5g/8WBAK1XsZjI9o4pyu
- ERcB1tL8JIh8HID+8WSIbcD5elg28YFsIziS5Sjsu7OXGGYFZVoMsGsAE
- SfmP1Izfizn3zGBtaWHpW5XQuaBqQLku9UMAw3bX/Zh3VweA3V8K3/8dd
- DhRCXjIMgWu2FEvzqB0xArk0rvoHLQVru7bB88v94s7lR4fYLwKzjT5yo g==;
-X-CSE-ConnectionGUID: YM9D1xBhRzKu7Ls317bVtw==
-X-CSE-MsgGUID: QaYg1I8XQ0S676d/EJsRfg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="49566820"
-X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; d="scan'208";a="49566820"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2025 03:20:58 -0700
-X-CSE-ConnectionGUID: 9/SwKHS4R6S3cgX0EKKMHQ==
-X-CSE-MsgGUID: oq4zwjX/S1+O/UgIkox3UA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; d="scan'208";a="133917424"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2025 03:20:57 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, Yi Liu <yi.l.liu@intel.com>
-Subject: [PATCH 5/5] vfio/iommufd: Drop HostIOMMUDeviceCaps from
- HostIOMMUDevice
-Date: Fri, 11 Apr 2025 18:17:07 +0800
-Message-Id: <20250411101707.3460429-6-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250411101707.3460429-1-zhenzhong.duan@intel.com>
-References: <20250411101707.3460429-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u3BSe-0004tR-Do
+ for qemu-devel@nongnu.org; Fri, 11 Apr 2025 06:18:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744366691;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TC1GazO+Tx15ziDQ42Lqp+RD4ZnOsCR1FjJglwXfgJI=;
+ b=NVbdyARqctRTHwVKjzuc8DhVdJNRs70h3DmjF6c4AJv5pylUCt6ZM4ECAza/3yFeqePq2h
+ Bysa2XhoXSuiZG0vq0g7r6QwV6K9alER9zqnzjXTI4BL4FIpmiGgRKcP527JSrmYJnzsXz
+ EMPIlsOW30T4sv5WdpnpKOnuAX+4EhE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-492-eBVZvZSpMyK63EQioNnBCA-1; Fri,
+ 11 Apr 2025 06:18:08 -0400
+X-MC-Unique: eBVZvZSpMyK63EQioNnBCA-1
+X-Mimecast-MFC-AGG-ID: eBVZvZSpMyK63EQioNnBCA_1744366687
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D49881800257; Fri, 11 Apr 2025 10:18:06 +0000 (UTC)
+Received: from redhat.com (unknown [10.44.34.24])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3C6943001D0E; Fri, 11 Apr 2025 10:18:03 +0000 (UTC)
+Date: Fri, 11 Apr 2025 12:18:01 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-block@nongnu.org, hreitz@redhat.com, stefanha@redhat.com,
+ qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Subject: Re: [PATCH for-10.0] scsi-disk: Apply error policy for host_status
+ errors again
+Message-ID: <Z_jsWQElOJyblb91@redhat.com>
+References: <20250407155949.44736-1-kwolf@redhat.com>
+ <bf72ef35-289c-4ec7-962b-414e3487c176@redhat.com>
+ <CABgObfaJw1VSE6pbs2o1oTTGi6nXLtFQG90RG3J9DY1sukZpMA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.15;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.593,
+In-Reply-To: <CABgObfaJw1VSE6pbs2o1oTTGi6nXLtFQG90RG3J9DY1sukZpMA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.593,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,81 +85,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because hiod_iommufd_get_cap() was dropped, HostIOMMUDeviceCaps is not
-useful any more, drop it.
+Am 10.04.2025 um 17:28 hat Paolo Bonzini geschrieben:
+> On Thu, Apr 10, 2025 at 4:25 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
+> > You should set ret = 0 here to avoid going down the
+> > scsi_sense_from_errno() path.
+> >
+> > Otherwise,
+> >
+> > Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+> 
+> Okay, going down the scsi_sense_from_errno() path is more or less
+> harmless because status and sense end up unused; even though ENODEV is
+> not something that the function handles, that can be added as a
+> cleanup in 10.1.
 
-This also hides HostIOMMUDeviceCaps from vIOMMU so the only way to check
-cap is through .get_cap() interface. This makes HostIOMMUDevice exposing
-data to vIOMMU as small as possible.
+Yes, it could be handled more explicitly. I considered adding a special
+if branch in scsi_handle_rw_error() for host_status != -1 before
+checking ret < 0, but didn't do it in the end because the existing code
+already handles it fine. If you prefer it to be there for readability, I
+can send a cleanup patch.
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- include/system/host_iommu_device.h | 14 --------------
- hw/vfio/iommufd.c                  | 15 ---------------
- 2 files changed, 29 deletions(-)
-
-diff --git a/include/system/host_iommu_device.h b/include/system/host_iommu_device.h
-index 809cced4ba..6f10bea25f 100644
---- a/include/system/host_iommu_device.h
-+++ b/include/system/host_iommu_device.h
-@@ -15,19 +15,6 @@
- #include "qom/object.h"
- #include "qapi/error.h"
- 
--/**
-- * struct HostIOMMUDeviceCaps - Define host IOMMU device capabilities.
-- *
-- * @type: host platform IOMMU type.
-- *
-- * @hw_caps: host platform IOMMU capabilities (e.g. on IOMMUFD this represents
-- *           the @out_capabilities value returned from IOMMU_GET_HW_INFO ioctl)
-- */
--typedef struct HostIOMMUDeviceCaps {
--    uint32_t type;
--    uint64_t hw_caps;
--} HostIOMMUDeviceCaps;
--
- #define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
- OBJECT_DECLARE_TYPE(HostIOMMUDevice, HostIOMMUDeviceClass, HOST_IOMMU_DEVICE)
- 
-@@ -38,7 +25,6 @@ struct HostIOMMUDevice {
-     void *agent; /* pointer to agent device, ie. VFIO or VDPA device */
-     PCIBus *aliased_bus;
-     int aliased_devfn;
--    HostIOMMUDeviceCaps caps;
- };
- 
- /**
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index e7ca92f81f..947c5456d8 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -811,24 +811,9 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
-                                       Error **errp)
- {
-     VFIODevice *vdev = opaque;
--    HostIOMMUDeviceCaps *caps = &hiod->caps;
--    enum iommu_hw_info_type type;
--    union {
--        struct iommu_hw_info_vtd vtd;
--    } data;
--    uint64_t hw_caps;
- 
-     hiod->agent = opaque;
--
--    if (!iommufd_backend_get_device_info(vdev->iommufd, vdev->devid,
--                                         &type, &data, sizeof(data),
--                                         &hw_caps, errp)) {
--        return false;
--    }
--
-     hiod->name = g_strdup(vdev->name);
--    caps->type = type;
--    caps->hw_caps = hw_caps;
- 
-     return true;
- }
--- 
-2.34.1
+Kevin
 
 
