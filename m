@@ -2,87 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A52A86B0F
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Apr 2025 07:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF07A86BD4
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Apr 2025 10:23:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u3TUp-0002M6-C5; Sat, 12 Apr 2025 01:33:39 -0400
+	id 1u3W7s-00050L-N8; Sat, 12 Apr 2025 04:22:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u3TUm-0002JB-Mr
- for qemu-devel@nongnu.org; Sat, 12 Apr 2025 01:33:36 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u3TUk-0003ya-Vr
- for qemu-devel@nongnu.org; Sat, 12 Apr 2025 01:33:36 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-22401f4d35aso31917995ad.2
- for <qemu-devel@nongnu.org>; Fri, 11 Apr 2025 22:33:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744436013; x=1745040813; darn=nongnu.org;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=R+j4F8IDHdMaSGZ3+lVzOTYxn0VceKglRxG6ZXkxCyc=;
- b=WvrEhvXei0EQxOn7Gbxo0xLySJDkb/vHuzFiKit5+6Qv47LhvaEoIoTpoDSSItg4rF
- QaUojhJ1ySJwnvm+pK16IpIOhdKop0vPiEVbiViVpR5pEojPdJNEiP7O1QIZahLUao00
- jOSVTn51XX0CIMLH41TF4IRAicQZP9La5eI8skYwRvs+4ggi+PGGWFa6QjWBkRgKaAwd
- ceBG/Sz1IL8/WSAbVCRQkcur+bpFI3z74+YczkksAMQVDqVDIp6wxqUD44wpbjgQ5e2P
- fZTPFPC8ToqeVAwk5gaiQ9lx0mk6voyhU13xFyPhIl49CkcsgOstTbV7Uwk5sbd21zJf
- yA7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744436013; x=1745040813;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=R+j4F8IDHdMaSGZ3+lVzOTYxn0VceKglRxG6ZXkxCyc=;
- b=ZzN18RdSItzFO0xXRqPRIv5lEM4S5W5Qpb+7VUFLgz4y5eUETI4oAau6U+r5hzsoqr
- R5jl9BIB9a1eOg2AUNAHkdMuSEaGJF025CJkKpJ/+JHjofqE7//EvwZgC3XtzDPcmpQE
- WN0LGs1nzmSWLePIQORzmh/dOAsVUorLsTbe0Bt+UH50iP7nkkjJmNtir5qRkAZ15loR
- TlsNIcS7H0vT46RA0vG3ujBmkX1mCnnwCxS2Dzq0P7tlCnI3Ym6KI4N2jSVzXjMNeHwM
- GpBhIJsbuj3I1hywsWEHhqFZMPbGg/boqNwMhxDeVq/SqplNObAdceJep/xBpMlm2Qjq
- tOpg==
-X-Gm-Message-State: AOJu0YwrciDlJES/T7Ru9oCNprNIZ2LeJYQreEKoQp0AwTQLbAW5Bp0a
- KRi5hiQRlP/xaetAPiCEAPdDHAAFonfT1BqRjmlsc5geZsdPyZNG
-X-Gm-Gg: ASbGnct5dstT3cVqAD2Sb3gZvzlBqiS1FDMKoVCCzyxvjk6QNRZb17nySCLhjWxxaD+
- Zwc+c8TqPVDH1CUF/ygfTGRg5J/uqXNvAK4SPevIRtgp6T8Jj1oj7RmvU7pt9Mk4ujrRj26lEeE
- cnRE+RlRHSCp7yljEnYNte+lQ2sAmomnvikyjyNfXnHNJkTNaLaulqzTpIhyA4dcb4Lv1taQSlD
- Nbgcsp9Ju+txxYfcxOffSILcC6ps7PvfzoWS1QDCP4GPFnEPlXK25DmeRg8QbsFF7xwQC4+pFUa
- Mw/4cucrcM3kuh/eNrjlsH8l+EgTQZZh2A==
-X-Google-Smtp-Source: AGHT+IG7sfqMghvFyc4o0QJfegIQffBVEk5bo37yt1LRALO0BU6+Pr50Phf8ZkXbVVX1kl/u0Vbq7A==
-X-Received: by 2002:a17:902:d4c5:b0:220:c63b:d93c with SMTP id
- d9443c01a7336-22bea4fee9amr73141905ad.44.1744436013347; 
- Fri, 11 Apr 2025 22:33:33 -0700 (PDT)
-Received: from localhost ([220.253.99.94]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7c95cdcsm60252935ad.118.2025.04.11.22.33.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Apr 2025 22:33:32 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 12 Apr 2025 15:33:28 +1000
-Message-Id: <D94EYEYWM728.2K81YKH9JOHYL@gmail.com>
-To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Gerd
- Hoffmann" <kraxel@redhat.com>
-Cc: <qemu-devel@nongnu.org>, "Kevin Wolf" <kwolf@redhat.com>
-Subject: Re: [PATCH v2 08/10] usb/msd: Rename mode to cbw_state, and tweak
- names
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.19.0
-References: <20250411080431.207579-1-npiggin@gmail.com>
- <20250411080431.207579-9-npiggin@gmail.com>
- <104dc731-10bf-4e79-91fd-7b58e6033bca@linaro.org>
-In-Reply-To: <104dc731-10bf-4e79-91fd-7b58e6033bca@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1u3W7q-0004zt-9c; Sat, 12 Apr 2025 04:22:06 -0400
+Received: from kylie.crudebyte.com ([5.189.157.229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1u3W7o-0002ZX-Ai; Sat, 12 Apr 2025 04:22:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Content-ID:Content-Description;
+ bh=EyyvU26WyWKZPrjnU2aSEB0k5vWB94xWPRhX4O3z5BM=; b=X0PHKkwiOKMRj4NvkXHZOEICQO
+ IU5nERcHuk3T6uPDUcXFOLwOe/xgDoCzBUOxX7dy8d45+2GoR//cYecZfgMsMvdkNsrR1shm9oI8D
+ 7bteA0D/SK+GkQ7tgk0bTKMWzRv9VEr1f1Et+A0/E/VeHN/LxSxExgEGBBuNR8Mms8TBG8oK2xbtE
+ fxCXSHc7zT0oyUMRHbLuWCpSDt0TjeNXl7CSWeURF89WHAHV4CqJVfS/Y18RhT/qhF/ryo5kuXHGS
+ VgYNHtyHkvVY0CedsT5xcnfXgrEJfg/pp3Arz2lNS6g1+8xVjVcoMY7bnzw2ztHxALuUp+iXhdyoi
+ 6yar6q4XNB/+5p0jX1uAUIVq9GHa0bLmnOVp2+gJyMWstLdxs9YnRT2AlwdQx5IudXstbXJF5XIpm
+ NZqeFMhD6S8gyWePDtW7HH8CQz6xy9PtkYc/jHsqpIoOjh4e0Unbt10Ik2SzdaFa3nG2F8DVnsGYr
+ xxBfVOGzIu00yzh0xdDuyuRY2iE9FxM8DMzrNYabg+xddQufqR8Tyj6f+bOwazAGS0xV9se4nSI0K
+ rlnHXzomHa4xGaauyAF7qpChLB58HEHrmmGtm4kK3arxnhbJGm0RKCB3pvVPw2d9BbHPtt/gFc8RU
+ fO9C8Gbo2j2hj0D+3ce6dVeuYuPA9mIJOZtr9ckAk=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+To: qemu-devel@nongnu.org
+Cc: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Philippe =?ISO-8859-1?Q?Mathieu=2DDaud=E9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Greg Kurz <groug@kaod.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?ISO-8859-1?Q?Marc=2DAndr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel P =?ISO-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Subject: Re: [PATCH 08/10] hw/9pfs: Allow using hw/9pfs with emscripten
+Date: Sat, 12 Apr 2025 10:21:47 +0200
+Message-ID: <2441396.svyq9LpYvz@silver>
+In-Reply-To: <CAEDrbUakVwwn228nSb0rD1C9qiZ-tpcHBzLRDVyGRNsim97=JQ@mail.gmail.com>
+References: <cover.1744032780.git.ktokunaga.mail@gmail.com>
+ <2533109.DitPQcejgS@silver>
+ <CAEDrbUakVwwn228nSb0rD1C9qiZ-tpcHBzLRDVyGRNsim97=JQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,72 +83,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Apr 11, 2025 at 8:37 PM AEST, Philippe Mathieu-Daud=C3=A9 wrote:
-> On 11/4/25 10:04, Nicholas Piggin wrote:
->> This reflects a little better what it does, particularly with a
->> subsequent change to relax the order packets are seen in. This
->> field is not the general state of the MSD state machine, rather
->> it follows packets that are completed as part of a CBW command.
->>=20
->> The difference is a bit subtle, so for a concrete example, the
->> next change will permit the host to send a CSW packet before it
->> sends the associated CBW packet. In that case the CSW packet
->> will be tracked and the MSD state machine will move, but this
->> mode / cbw_state field would remain unchanged (in the "expecting
->> CBW" state), until the CBW packet arrives.
->>=20
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>   include/hw/usb/msd.h | 12 +++++------
->>   hw/usb/dev-storage.c | 50 +++++++++++++++++++++++---------------------
->>   2 files changed, 32 insertions(+), 30 deletions(-)
->>=20
->> diff --git a/include/hw/usb/msd.h b/include/hw/usb/msd.h
->> index a40d15f5def..c109544f632 100644
->> --- a/include/hw/usb/msd.h
->> +++ b/include/hw/usb/msd.h
->> @@ -10,11 +10,11 @@
->>   #include "hw/usb.h"
->>   #include "hw/scsi/scsi.h"
->>  =20
->> -enum USBMSDMode {
->> -    USB_MSDM_CBW, /* Command Block.  */
->> -    USB_MSDM_DATAOUT, /* Transfer data to device.  */
->> -    USB_MSDM_DATAIN, /* Transfer data from device.  */
->> -    USB_MSDM_CSW /* Command Status.  */
->
-> Since modifying this, please add
->
->    typedef
+On Friday, April 11, 2025 12:47:29 PM CEST Kohei Tokunaga wrote:
+> Hi Christian,
+> 
+> > > Emscripten's fiber does not support submitting coroutines to other
+> > > threads. So this commit modifies hw/9pfs/coth.h to disable this behavior
+> > > when compiled with Emscripten.
+> >
+> > The lack of being able to dispatch a coroutine to a worker thread is one
+> > thing, however it would probably still make sense to use fibers in 9pfs as
+> > replacement of its coroutines mechanism.
+> >
+> > In 9pfs coroutines are used to dispatch blocking fs I/O syscalls from main
+> > thread to worker thread(s):
+> >
+> > https://wiki.qemu.org/Documentation/9p#Control_Flow
+> >
+> > If you just remove the coroutine code entirely, 9p server might hang for
+> good,
+> > and with it QEMU's main thread.
+> >
+> > By using fibers instead, it would not hang, as it seems as if I/O
+> syscalls are
+> > emulated in Emscripten, right?
+> 
+> Thank you for the feedback. Yes, it would be great if Emscripten's fiber
+> could be used to address this limitation. Since Emscripten's fiber is
+> cooperative, I believe a blocking code_block can still block the 9pfs server
+> unless an explicit yield occurs within it. I'll continue exploring better
+> solutions for this. Please let me know if I'm missing anything.
 
-Done.
+As far as I understand it, the I/O syscalls are emulated, and when being
+called by fibers, blocking syscalls would imply to yield under the hood,
+without explicit yield by application that is.
 
-Thanks,
-Nick
+If that's true, it would only require little code changes for this to work.
 
->
->> +enum USBMSDCBWState {
->> +    USB_MSD_CBW_NONE,    /* Ready, waiting for CBW packet. */
->> +    USB_MSD_CBW_DATAOUT, /* Expecting DATA-OUT (to device) packet */
->> +    USB_MSD_CBW_DATAIN,  /* Expecting DATA-IN (from device) packet */
->> +    USB_MSD_CBW_CSW      /* No more data, expecting CSW packet.  */
->>   }
->
->        USBMSDCBWState;
->
->>  =20
->>   struct QEMU_PACKED usb_msd_csw {
->> @@ -26,7 +26,7 @@ struct QEMU_PACKED usb_msd_csw {
->>  =20
->>   struct MSDState {
->>       USBDevice dev;
->> -    enum USBMSDMode mode;
->> +    enum USBMSDCBWState cbw_state;
->
->         USBMSDCBWState cbw_state;
->
->>       uint32_t scsi_off;
->>       uint32_t scsi_len;
->>       uint32_t data_len;
+> > Missing
+> >
+> >     errno = ENOTSUP;
+> 
+> Sure, I'll fix this in the next version of the series.
+> 
+> > Looks like you just copied the macOS errno translation code. That probably
+> > doesn't make sense.
+> 
+> Errno values differ between Emscripten and Linux, so conversion is required
+> here. I've used the same mappings as macOS for now, but I'm happy to add
+> more conversions if needed.
+
+OK, but why have you chosen macOS errno mapping exactly? Are you testing on a
+macOS host machine? Are errno values of emscripten machine dependent?
+
+The errno mapping must be correct, otherwise funny things will happen on guest
+side if 9p2000.L client is used, as it blindly expects errno numbers sent by
+9p server to be in native Linux errno number presentation.
+
+Alternatively 9p2000.u protocol variant could be used for Emscripten. Not
+ideal, as this 9p protocol version is somewhat a legacy protocol from QEMU
+perspective, reduced performance, less reliable, but it transmits error
+strings to client which it can map to correct errno values by itself. Linux 9p
+client uses a hash map for this errno translation of 9p2000.u error strings.
+
+/Christian
+
 
 
