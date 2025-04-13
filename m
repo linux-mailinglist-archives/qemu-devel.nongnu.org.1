@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B36A87209
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Apr 2025 15:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD467A8720B
+	for <lists+qemu-devel@lfdr.de>; Sun, 13 Apr 2025 15:01:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u3wwY-0000z2-1F; Sun, 13 Apr 2025 09:00:14 -0400
+	id 1u3wwR-0000vf-1E; Sun, 13 Apr 2025 09:00:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1u3wwB-0000sA-OE; Sun, 13 Apr 2025 08:59:52 -0400
+ id 1u3wwB-0000ry-BW; Sun, 13 Apr 2025 08:59:51 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1u3ww9-0007v0-GC; Sun, 13 Apr 2025 08:59:51 -0400
+ id 1u3ww9-0007v3-MB; Sun, 13 Apr 2025 08:59:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5826E116A4E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5BFD7116A4F;
  Sun, 13 Apr 2025 15:57:57 +0300 (MSK)
 Received: from gandalf.tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E5F821EEE7B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E9D451EEE7C;
  Sun, 13 Apr 2025 15:59:37 +0300 (MSK)
 Received: by gandalf.tls.msk.ru (Postfix, from userid 1000)
- id D2B1D58525; Sun, 13 Apr 2025 15:59:37 +0300 (MSK)
+ id D4EF858527; Sun, 13 Apr 2025 15:59:37 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Arthur Sengileyev <arthur.sengileyev@gmail.com>, qemu-trivial@nongnu.org,
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 2/3] Fix objdump output parser in "nsis.py"
-Date: Sun, 13 Apr 2025 15:59:36 +0300
-Message-Id: <20250413125937.2448971-3-mjt@tls.msk.ru>
+Subject: [PULL 3/3] docs: Document removal of 64-bit on 32-bit emulation
+Date: Sun, 13 Apr 2025 15:59:37 +0300
+Message-Id: <20250413125937.2448971-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250413125937.2448971-1-mjt@tls.msk.ru>
 References: <20250413125937.2448971-1-mjt@tls.msk.ru>
@@ -59,37 +59,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Arthur Sengileyev <arthur.sengileyev@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-In msys2 distribution objdump from gcc is using single tab character
-prefix, but objdump from clang is using 4 white space characters instead.
-The script will not identify any dll dependencies for a QEMU build
-generated with clang. This in turn will fail the build, because there
-will be no files inside dlldir and no setup file will be created.
-Instead of checking for whitespace in prefix use lstrip to accommodate
-for differences in outputs.
+With acce728cbc6c we disallowed configuring 64-bit guests on
+32-bit hosts, but forgot to document that in removed-features.
 
-Signed-off-by: Arthur Sengileyev <arthur.sengileyev@gmail.com>
-Reviewed-by: Stefan Weil <sw@weilnetz.de>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- scripts/nsis.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/about/removed-features.rst | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/scripts/nsis.py b/scripts/nsis.py
-index af4e064819..8f469634eb 100644
---- a/scripts/nsis.py
-+++ b/scripts/nsis.py
-@@ -23,7 +23,7 @@ def find_deps(exe_or_dll, search_path, analyzed_deps):
-     output = subprocess.check_output(["objdump", "-p", exe_or_dll], text=True)
-     output = output.split("\n")
-     for line in output:
--        if not line.startswith("\tDLL Name: "):
-+        if not line.lstrip().startswith("DLL Name: "):
-             continue
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 2527a91795..790a5e481c 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -858,6 +858,15 @@ QEMU.  Since all recent x86 hardware from the past >10 years is
+ capable of the 64-bit x86 extensions, a corresponding 64-bit OS should
+ be used instead.
  
-         dep = line.split("DLL Name: ")[1].strip()
++32-bit hosts for 64-bit guests (removed in 10.0)
++''''''''''''''''''''''''''''''''''''''''''''''''
++
++In general, 32-bit hosts cannot support the memory space or atomicity
++requirements of 64-bit guests.  Prior to 10.0, QEMU attempted to
++work around the atomicity issues in system mode by running all vCPUs
++in a single thread context; in user mode atomicity was simply broken.
++From 10.0, QEMU has disabled configuration of 64-bit guests on 32-bit hosts.
++
+ Guest Emulator ISAs
+ -------------------
+ 
 -- 
 2.39.5
 
