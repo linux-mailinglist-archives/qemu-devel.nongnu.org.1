@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C362A875BB
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 04:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7B8A875B8
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 04:06:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u49B7-0007ML-U2; Sun, 13 Apr 2025 22:04:05 -0400
+	id 1u49BE-0007Oe-5f; Sun, 13 Apr 2025 22:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1u49Am-0007G4-Hb
- for qemu-devel@nongnu.org; Sun, 13 Apr 2025 22:03:44 -0400
+ id 1u49Ao-0007Gc-SR
+ for qemu-devel@nongnu.org; Sun, 13 Apr 2025 22:03:48 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1u49Ak-0007TX-O0
- for qemu-devel@nongnu.org; Sun, 13 Apr 2025 22:03:44 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53E1r5tg030617;
- Mon, 14 Apr 2025 02:03:37 GMT
+ id 1u49Am-0007UJ-US
+ for qemu-devel@nongnu.org; Sun, 13 Apr 2025 22:03:46 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53E0qECW023750;
+ Mon, 14 Apr 2025 02:03:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2023-11-20; bh=j30fF
- IkU7Sds0tsPNOs/tFyYJc49D1NNGzumNrG+mh0=; b=c2DTOdqW3Qm8MraOziO5l
- SpXPkGv0V1dFFPoVv919QVHcVzwlm4X0Dj6dmlYvDeBT7sGEf7UjEJeJ/6W3ZmMj
- ZmreAOGBluROTk4x37caDs3b2+wmFUcwnr9t3rdYaPlm5RiqytpNQ8Zz4xuipomx
- mwfd5o3dnS/Z36VgC4EeAx89h6TakFjVabh+yT+nQOsl5Pe+9XjIDdAjjnB1gwdS
- Z5e3dBCNGtbQmcH5kB93/0Ayv1D3yfCljcl6sNVeJjjhDVGYNj3lFbzaLb31cLOG
- 2Z5jJk60Y2/5biq6UWKtFtEH/DePbTZZvMVm64zLkNveeZm7P/6TRrUX1KMgMrNx
- A==
+ :mime-version:references:subject:to; s=corp-2023-11-20; bh=oQaVH
+ C0XxeZdAHTxf/QdS0CQmPN0iCKScxcStswVJ8w=; b=Tblk3Z45B5Krml5ZSabYx
+ NYfK84lqI/TKG5mcj+McNRkjbqhKHRRjzB5uacazHM8FcpRYYr/yBwk2ZxP6ek99
+ sBwZVOJG78Qreh4KLELKscdqGT9sKgQst1mX4GK3RAkcyGc/oEL1iuKAtvS99+ZB
+ EgWx76Iuo074IjLyuEr3ZraevrLWCfvEtiVdGcoguYL4V1qGduSZSu8ng/cMCvEU
+ mM5U8Y3rrvN38GDqGpEkaWx38tauDhaflW/cfeuHsteo2vhHIAl6OJnD2ZEG2SqD
+ 26IW2K5uT2o8lyhbIGQJoXW3RGETe/2Hz4PzCToteBL2V482yEIvE2LJo1J3OfKH
+ Q==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 460s2u007m-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 460r6qg1tt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Apr 2025 02:03:37 +0000 (GMT)
+ Mon, 14 Apr 2025 02:03:39 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 53DMMsqK009161; Mon, 14 Apr 2025 02:03:36 GMT
+ with ESMTP id 53DN0R6H009188; Mon, 14 Apr 2025 02:03:38 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 460d3fvqst-1
+ 460d3fvqt0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Apr 2025 02:03:36 +0000
+ Mon, 14 Apr 2025 02:03:38 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53E22tYc035550;
- Mon, 14 Apr 2025 02:03:36 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53E22tYe035550;
+ Mon, 14 Apr 2025 02:03:38 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 460d3fvqg0-9; Mon, 14 Apr 2025 02:03:35 +0000
+ 460d3fvqg0-10; Mon, 14 Apr 2025 02:03:37 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
@@ -63,10 +63,9 @@ Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  santosh.shukla@amd.com, sarunkod@amd.com, Wei.Huang2@amd.com,
  joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  alejandro.j.jimenez@oracle.com
-Subject: [PATCH 08/18] amd_iommu: Helper to decode size of page invalidation
- command
-Date: Mon, 14 Apr 2025 02:02:43 +0000
-Message-ID: <20250414020253.443831-9-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH 09/18] amd_iommu: Add helpers to walk AMD v1 Page Table format
+Date: Mon, 14 Apr 2025 02:02:44 +0000
+Message-ID: <20250414020253.443831-10-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250414020253.443831-1-alejandro.j.jimenez@oracle.com>
 References: <20250414020253.443831-1-alejandro.j.jimenez@oracle.com>
@@ -80,8 +79,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  mlxlogscore=999 phishscore=0 suspectscore=0 spamscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
  definitions=main-2504140014
-X-Proofpoint-GUID: voUDfiuXqmqOTCWP43fcSZU6gqrCGnAf
-X-Proofpoint-ORIG-GUID: voUDfiuXqmqOTCWP43fcSZU6gqrCGnAf
+X-Proofpoint-GUID: 0mPBRl5jJKwpp-oDW43lMiCdSbb9DPEr
+X-Proofpoint-ORIG-GUID: 0mPBRl5jJKwpp-oDW43lMiCdSbb9DPEr
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -40
@@ -107,76 +106,212 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The size of the region to invalidate depends on the S bit and address
-encoded in the command. Add a helper to extract this information, which
-will be used to sync shadow page tables in upcoming changes.
+The current amdvi_page_walk() is designed to be called by the replay()
+method. Rather than drastically altering it, introduce helpers to fetch
+guest PTEs that will be used by a page walker implementation.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 ---
- hw/i386/amd_iommu.c | 34 ++++++++++++++++++++++++++++++++++
- hw/i386/amd_iommu.h |  4 ++++
- 2 files changed, 38 insertions(+)
+ hw/i386/amd_iommu.c | 125 ++++++++++++++++++++++++++++++++++++++++++++
+ hw/i386/amd_iommu.h |  42 +++++++++++++++
+ 2 files changed, 167 insertions(+)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 5f55be1f4d36..0af873b66a31 100644
+index 0af873b66a31..d089fdc28ef1 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -481,6 +481,40 @@ static gboolean amdvi_iotlb_remove_by_domid(gpointer key, gpointer value,
-     return entry->domid == domid;
- }
+@@ -1563,6 +1563,131 @@ static const MemoryRegionOps amdvi_ir_ops = {
+     }
+ };
  
 +/*
-+ * Helper to decode the size of the range to invalidate encoded in the
-+ * INVALIDATE_IOMMU_PAGES Command format.
-+ * The size of the region to invalidate depends on the S bit and address.
-+ * S bit value:
-+ * 0 :  Invalidation size is 4 Kbytes.
-+ * 1 :  Invalidation size is determined by first zero bit in the address
-+ *      starting from Address[12].
-+ *
-+ * In the AMD IOMMU Linux driver, an invalidation command with address
-+ * ((1 << 63) - 1) is sent when intending to clear the entire cache.
-+ * However, Table 14: Example Page Size Encodings shows that an address of
-+ * ((1ULL << 51) - 1) encodes the entire cache, so effectively any address with
-+ * first zero at bit 51 or larger is a request to invalidate the entire address
-+ * space.
++ * For a PTE encoding a large page, return the page size it encodes as described
++ * by the AMD IOMMU Specification Table 14: Example Page Size Encodings.
++ * No need to adjust the value of the PTE to point to the first PTE in the large
++ * page since the encoding guarantees all "base" PTEs in the large page are the
++ * same.
 + */
-+static uint64_t __attribute__((unused))
-+amdvi_decode_invalidation_size(hwaddr addr, uint16_t flags)
++static uint64_t large_pte_page_size(uint64_t pte)
 +{
-+    uint64_t size = AMDVI_PAGE_SIZE;
-+    uint8_t fzbit = 0;
++    assert(PTE_NEXT_LEVEL(pte) == 7);
 +
-+    if (flags & AMDVI_CMD_INVAL_IOMMU_PAGES_S) {
-+        fzbit = cto64(addr | 0xFFF);
-+
-+        if (fzbit >= 51 || !addr) {
-+            size = AMDVI_INV_ALL_PAGES;
-+        } else {
-+            size = 1ULL << (fzbit + 1);
-+        }
-+    }
-+    return size;
++    /* Determine size of the large/contiguous page encoded in the PTE */
++    return PTE_LARGE_PAGE_SIZE(pte);
 +}
 +
- /* we don't have devid - we can't remove pages by address */
- static void amdvi_inval_pages(AMDVIState *s, uint64_t *cmd)
- {
++/*
++ * Helper function to fetch a PTE using AMD v1 pgtable format.
++ * Returns:
++ * -2:  The Page Table Root could not be read from DTE, or IOVA is larger than
++ *      supported by current page table level encodedin DTE[Mode].
++ * -1:  PTE could not be read from guest memory during a page table walk.
++ *      This means that the DTE has valid data, and one of the lower level
++ *      entries in the Page Table could not be read.
++ *  0:  PTE is marked not present, or entry is 0.
++ * >0:  Leaf PTE value resolved from walking Guest IO Page Table.
++ */
++static uint64_t __attribute__((unused))
++fetch_pte(AMDVIAddressSpace *as, const hwaddr address, uint64_t dte,
++          hwaddr *page_size)
++{
++    IOMMUAccessFlags perms = amdvi_get_perms(dte);
++
++    uint8_t level, mode;
++    uint64_t pte = dte, pte_addr;
++
++    *page_size = 0;
++
++    if (perms == IOMMU_NONE) {
++        return (uint64_t)-2;
++    }
++
++    /*
++     * The Linux kernel driver initializes the default mode to 3, corresponding
++     * to a 39-bit GPA space, where each entry in the pagetable translates to a
++     * 1GB (2^30) page size.
++     */
++    level = mode = get_pte_translation_mode(dte);
++    assert(mode > 0 && mode < 7);
++
++    /*
++     * If IOVA is larger than the max supported by the current pgtable level,
++     * there is nothing to do. This signals that the pagetable level should be
++     * increased, or is an address meant to have special behavior like
++     * invalidating the entire cache.
++     */
++    if (address > PT_LEVEL_MAX_ADDR(mode - 1)) {
++        /* IOVA too large for the current DTE */
++        return (uint64_t)-2;
++    }
++
++    do {
++        level -= 1;
++
++        /* Update the page_size */
++        *page_size = PTE_LEVEL_PAGE_SIZE(level);
++
++        /* Permission bits are ANDed at every level, including the DTE */
++        perms &= amdvi_get_perms(pte);
++        if (perms == IOMMU_NONE) {
++            return pte;
++        }
++
++        /* Not Present */
++        if (!IOMMU_PTE_PRESENT(pte)) {
++            return 0;
++        }
++
++        /* Large or Leaf PTE found */
++        if (PTE_NEXT_LEVEL(pte) == 7 || PTE_NEXT_LEVEL(pte) == 0) {
++            /* Leaf PTE found */
++            break;
++        }
++
++        /*
++         * Index the pgtable using the IOVA bits corresponding to current level
++         * and walk down to the lower level.
++         */
++        pte_addr = NEXT_PTE_ADDR(pte, level, address);
++        pte = amdvi_get_pte_entry(as->iommu_state, pte_addr, as->devfn);
++
++        if (pte == (uint64_t)-1) {
++            /*
++             * A returned PTE of -1 indicates a failure to read the page table
++             * entry from guest memory.
++             */
++            if (level == mode - 1) {
++                /* Failure to retrieve the Page Table from Root Pointer */
++                *page_size = 0;
++                return (uint64_t)-2;
++            } else {
++                /* Failure to read PTE. Page walk skips a page_size chunk */
++                return pte;
++            }
++        }
++    } while (level > 0);
++
++    /*
++     * Page walk ends when Next Level field on PTE shows that either a leaf PTE
++     * or a series of large PTEs have been reached. In the latter case, return
++     * the pointer to the first PTE of the series.
++     */
++    assert(level == 0 || PTE_NEXT_LEVEL(pte) == 0 || PTE_NEXT_LEVEL(pte) == 7);
++
++    /*
++     * In case the range starts in the middle of a contiguous page, need to
++     * return the first PTE
++     */
++    if (PTE_NEXT_LEVEL(pte) == 7) {
++        /* Update page_size with the large PTE page size */
++        *page_size = large_pte_page_size(pte);
++    }
++
++    return pte;
++}
++
+ /*
+  * Toggle between address translation and passthrough modes by enabling the
+  * corresponding memory regions.
 diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index e12ecade4baa..c89e7dc9947d 100644
+index c89e7dc9947d..fc4d2f7a4575 100644
 --- a/hw/i386/amd_iommu.h
 +++ b/hw/i386/amd_iommu.h
-@@ -123,6 +123,10 @@
- #define AMDVI_CMD_COMPLETE_PPR_REQUEST    0x07
- #define AMDVI_CMD_INVAL_AMDVI_ALL         0x08
+@@ -25,6 +25,8 @@
+ #include "hw/i386/x86-iommu.h"
+ #include "qom/object.h"
  
++#define GENMASK64(h, l)  (((~0ULL) >> (63 - (h) + (l))) << (l))
 +
-+#define AMDVI_CMD_INVAL_IOMMU_PAGES_S   (1ULL << 0)
-+#define AMDVI_INV_ALL_PAGES             (1ULL << 52)
-+
- #define AMDVI_DEVTAB_ENTRY_SIZE           32
+ /* Capability registers */
+ #define AMDVI_CAPAB_BAR_LOW           0x04
+ #define AMDVI_CAPAB_BAR_HIGH          0x08
+@@ -174,6 +176,46 @@
+ #define AMDVI_GATS_MODE                 (2ULL <<  12)
+ #define AMDVI_HATS_MODE                 (2ULL <<  10)
  
- /* Device table entry bits 0:63 */
++/* Page Table format */
++
++#define AMDVI_PTE_PR                    (1ULL << 0)
++#define AMDVI_PTE_NEXT_LEVEL_MASK       GENMASK64(11, 9)
++
++#define IOMMU_PTE_PRESENT(pte)          ((pte) & AMDVI_PTE_PR)
++
++/* Using level=0 for leaf PTE at 4K page size */
++#define PT_LEVEL_SHIFT(level)           (12 + ((level) * 9))
++
++/* Return IOVA bit group used to index the Page Table at specific level */
++#define PT_LEVEL_INDEX(level, iova)     (((iova) >> PT_LEVEL_SHIFT(level)) & \
++                                        GENMASK64(8, 0))
++
++/* Return the max address for a specified level i.e. max_oaddr */
++#define PT_LEVEL_MAX_ADDR(x)    (((x) < 5) ? \
++                                ((1ULL << PT_LEVEL_SHIFT((x + 1))) - 1) : \
++                                (~(0ULL)))
++
++/* Extract the NextLevel field from PTE/PDE */
++#define PTE_NEXT_LEVEL(pte)     (((pte) & AMDVI_PTE_NEXT_LEVEL_MASK) >> 9)
++
++/* Take page table level and return default pagetable size for level */
++#define PTE_LEVEL_PAGE_SIZE(level)      (1ULL << (PT_LEVEL_SHIFT(level)))
++
++/*
++ * Return address of lower level page table encoded in PTE and specified by
++ * current level and corresponding IOVA bit group at such level.
++ */
++#define NEXT_PTE_ADDR(pte, level, iova) (((pte) & AMDVI_DEV_PT_ROOT_MASK) + \
++                                        (PT_LEVEL_INDEX(level, iova) * 8))
++
++/*
++ * Take a PTE value with mode=0x07 and return the page size it encodes.
++ */
++#define PTE_LARGE_PAGE_SIZE(pte)    (1ULL << (1 + cto64(((pte) | 0xfffULL))))
++
++/* Return number of PTEs to use for a given page size (expected power of 2) */
++#define PAGE_SIZE_PTE_COUNT(pgsz)       (1ULL << ((ctz64(pgsz) - 12) % 9))
++
+ /* IOTLB */
+ #define AMDVI_IOTLB_MAX_SIZE 1024
+ #define AMDVI_DEVID_SHIFT    36
 -- 
 2.43.5
 
