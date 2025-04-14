@@ -2,105 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0DFA88600
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 16:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 059D0A88584
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 16:45:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4LFM-0002Lf-HK; Mon, 14 Apr 2025 10:57:16 -0400
+	id 1u4L3m-00055v-74; Mon, 14 Apr 2025 10:45:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1u4LFF-00027l-D4; Mon, 14 Apr 2025 10:57:11 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u4L39-0004sC-TF
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 10:44:47 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1u4LFD-0003lB-KP; Mon, 14 Apr 2025 10:57:09 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EA0iGx029640;
- Mon, 14 Apr 2025 14:57:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=QLpS12
- OraT+tsit7J5qQhcmzABPOSNM47zb3bBraFHE=; b=MCx5hnuUscmQSDF5ZzQ7F2
- 5vf6KRTXAt65I9XglbonCX2TfFMJkh4rpyGAy48yrDRrOx7/n/PGEMcBVY+zHLpn
- 1YiNm2Nd8jgItkdbZ0akT5A3B/tqdEkggQeeh1clmodaQnVvN12/wFyOuqtOvQT1
- j8le5uUP1EQ1i2aLHgOADy52aknInMlHz6OVrP8/GjAOASpxTc9qtUvD6lbmcZH5
- MxMOJ4Fonw/WMpDg253iWbr/K1ShVnStRh3oUzNAU/VvyX/7JkFir7bAkpskZn96
- xhKy7+/xcDQ42uJb+/bV7S/5K8DMhsv/1DKeiSoKpZ3EgD0JudUpMNO2U/i9zsFw
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 460ndsuu13-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Apr 2025 14:57:05 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53EDx6Jm016746;
- Mon, 14 Apr 2025 14:57:05 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 460571xc89-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Apr 2025 14:57:05 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53EEv35C25887048
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Apr 2025 14:57:03 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8656658059;
- Mon, 14 Apr 2025 14:57:03 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 479F95805E;
- Mon, 14 Apr 2025 14:57:02 +0000 (GMT)
-Received: from [9.61.250.58] (unknown [9.61.250.58])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 14 Apr 2025 14:57:02 +0000 (GMT)
-Message-ID: <1ba623ee-187a-4713-9ebc-6e491efba1c7@linux.ibm.com>
-Date: Mon, 14 Apr 2025 10:57:01 -0400
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u4L35-0000ZG-TI
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 10:44:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1744641876; x=1776177876;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ZAr8EsbMKA6cIbAMNsxRH2W6hWWQ2ihzIYx1hJtcuFI=;
+ b=RaTh837/0gr9xesRvf3dkPQs8L/aYdLrJVDGl2VvfhZbAtxBt1Xry6ih
+ RRQzLNbhJE3plDp3j3zzn4gNEbzYqP0aVhfvVKGtTTw7L8GOvpmLLbq43
+ HtEnZvUcmnSXbQEqQiANbIKVGdK8GC14lZMHX4zTGMiokogK/HCKBqbLH
+ syxGapLprH0UFc4F96aWCXvwV6DZSjucwAbkhFrLi/K2UmkTf/YWHt6uF
+ HedvkyJEHhonaNzJoGCd4iyCFyEIyqBQqQNU4HIyL/huPemP4o1Molvfs
+ dgCOlmNOoKPFBS45BlE/PbI0uqTItqicYWkx6Txapm92f0iPgJS39iAYx Q==;
+X-CSE-ConnectionGUID: zKsi/drPTz+zyE3xnJxF2g==
+X-CSE-MsgGUID: 856pgPHhS7ae3hE+7ualoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="45251650"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="45251650"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2025 07:44:33 -0700
+X-CSE-ConnectionGUID: m5pQgL8ITKunepr4l3ULyQ==
+X-CSE-MsgGUID: XauUsH3zSVOIWR1q0c2tAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="130823355"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa008.jf.intel.com with ESMTP; 14 Apr 2025 07:44:31 -0700
+Date: Mon, 14 Apr 2025 23:05:22 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, ewanhai@zhaoxin.com,
+ cobechen@zhaoxin.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v3] target/i386: Fix model number of Zhaoxin YongFeng
+ vCPU template
+Message-ID: <Z/0kMumrF4XCo/C/@intel.com>
+References: <20250414075342.411626-1-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 5/5] s390: implementing CHSC SEI for AP config
- change
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, clg@redhat.com, akrowiak@linux.ibm.com
-References: <20250311151616.98244-1-rreyes@linux.ibm.com>
- <20250311151616.98244-6-rreyes@linux.ibm.com>
- <f2168937-5252-4e91-80d6-2ad344f443fa@redhat.com>
- <ed45e437-5534-4ace-8a7e-196860b43cde@linux.ibm.com>
- <ce83485a-7575-49df-a3eb-7feac3cfd675@redhat.com>
- <9c837758-c45b-4e08-8cd9-918e25fb1063@linux.ibm.com>
- <9ee2d05c-cb62-4685-88b0-7f2f6ea2a006@redhat.com>
-Content-Language: en-US
-From: Rorie Reyes <rreyes@linux.ibm.com>
-In-Reply-To: <9ee2d05c-cb62-4685-88b0-7f2f6ea2a006@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Y_dezpgN4X0oUAAMxeAv2zhW3V-t5IZy
-X-Proofpoint-ORIG-GUID: Y_dezpgN4X0oUAAMxeAv2zhW3V-t5IZy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-14_05,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015
- mlxscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
- mlxlogscore=999 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504140105
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=rreyes@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250414075342.411626-1-ewanhai-oc@zhaoxin.com>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,40 +82,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Apr 14, 2025 at 03:53:42AM -0400, Ewan Hai wrote:
+> Date: Mon, 14 Apr 2025 03:53:42 -0400
+> From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+> Subject: [PATCH v3] target/i386: Fix model number of Zhaoxin YongFeng vCPU
+>  template
+> X-Mailer: git-send-email 2.34.1
+> 
+> The model number was mistakenly set to 0x0b (11) in commit ff04bc1ac4.
+> The correct value is 0x5b. This mistake occurred because the extended
+> model bits in cpuid[eax=0x1].eax were overlooked, and only the base
+> model was used.
+> 
+> Using the wrong model number can affect guest behavior. One known issue
+> is that vPMU (which relies on the model number) may fail to operate
+> correctly.
+> 
+> This patch corrects the model field by introducing a new vCPU version.
+> 
+> Fixes: ff04bc1ac4 ("target/i386: Introduce Zhaoxin Yongfeng CPU model")
+> Signed-off-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
+> ---
+>  target/i386/cpu.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 
-On 4/14/25 10:54 AM, Thomas Huth wrote:
-> On 14/04/2025 16.37, Rorie Reyes wrote:
->> On 4/11/25 2:45 AM, Thomas Huth wrote:
->>
->>> #include CONFIG_DEVICES
->>>
->>> at the beginning of the ioinst.c file. Then you should be able to do:
->>>
->>> #ifdef CONFIG_VFIO_AP
->>>     if (s390_has_feat(S390_FEAT_AP)) {
->>>        return ap_chsc_sei_nt0_get_event(res);
->>>     }
->>> #endif
->> This worked
->>>
->>> (or whatever the code should look like).
->>>
->>> Alternatively, and this might even be the nicer variant, add a file 
->>> hw/ vfio/ap-stub.c and include a dummy ap_chsc_sei_nt0_get_event() 
->>> function there. Then in hw/vfio/meson.build add this line:
->>>
->>> vfio_ss.add(when: 'CONFIG_VFIO_AP', if_false: files('ap-stub.c'))
->> This worked as well. Since you mentioned that this is a nicer 
->> variant, I'll go with this change. What do you recommend I do for my 
->> patches? Should I do an interactive rebase to add the new file 
->> hw/vfio/ap-stub.c and updating hw/ vfio/meson.build? Or should I make 
->> two new commits for each file (ap-stub.c and meson.build)
->
-> Please do a "git rebase -i ..." to fix up the corresponding patch 
-> (that's what we're doing in the QEMU development workflow).
->
->  Thanks
->   Thomas
->
-Thank you. I'll make those changes and send my patches later today
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+BTW, if you want to add more notes or explaination to strongly ask users
+to use v2, you can add a section "Preferred CPU models for Zhaoxin x86
+hosts" in docs/system/cpu-models-x86.rst.inc.
+
+Thanks,
+Zhao
+
 
