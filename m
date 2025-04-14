@@ -2,88 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC1BA88734
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 17:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 246AEA88759
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 17:36:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4Llv-0000gZ-Fh; Mon, 14 Apr 2025 11:30:55 -0400
+	id 1u4LqF-0005n9-Qz; Mon, 14 Apr 2025 11:35:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u4Llr-0000e6-Km
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 11:30:51 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u4Lln-0005Xn-EF
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 11:30:50 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-22a976f3131so46250605ad.3
- for <qemu-devel@nongnu.org>; Mon, 14 Apr 2025 08:30:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744644640; x=1745249440; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=c4v87EGjTuaQERVq3RVHNWa3GtHDbP3djfUZXGNYCVw=;
- b=M6HZr1FzQcGRtOMMrtRblHUGSJ2c/X0+YX7iaYopFIg+SgmUBgPyAwSwyuqeSJcSqP
- 6vwHmA6LCnfmG7cDsji29aEamHBKNvPJf7s1770g59V6ykY0K+uADtnOJVWZ+qXikWjH
- pr8R2GGfKOxHDLS88wzG1ae1nPEWpJTMjZBnmbtM/+dlTiL61Rw3nP0Qfywdvq+skF3V
- BbqF8L1ciK3Z9gO4vtxiullCTnPY20Js29YeDZwUBdyA4jo/y24zszRAOKdOIJxmTM1J
- 0Mru0m7xunI9UagP2UNuJdWq67kXybBS6uyX0o5vcMiDH0dls2fXOZWaNVJyHck7bCpJ
- Yffw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744644640; x=1745249440;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=c4v87EGjTuaQERVq3RVHNWa3GtHDbP3djfUZXGNYCVw=;
- b=MKbG5XAm27MqB7Unf4NS2V9KM6srcG1jo5wvPhL2mcLGL/5L7gsPdv0GNB+NVKP4Id
- x3zNPmJWj1HgqG591I3FDOGPP+QrLOw7PXYmGPq5cllVcXKCqB4dObH0O0G03Vl3N51/
- hos3UUcL4IlhimUFlKDVN2zT2F/UiKSKHWAIQ9tH+9BAamBCDGLs4P5hklH5akkEsTde
- 6wZ3I2xtff6jw032zVtebfnE235G/GDO93XlBt1758/a3KbKegA96TwO2DVW40t3iJI5
- CjLJDy57ScXZzUkBFtw8oFJL/2AHqcbAHVuD+CxHOE0p+Sm2ViYNVtD+c4o4/u1X8y1R
- mktw==
-X-Gm-Message-State: AOJu0YyE26CsYtWyd0JWSQarLpcYtQoc5ci/hu0uAJ3f6sFe6dScCWqF
- EfAdLxUWnz8S1xUK56OREn6l+Mnnmtr/62jp4QVs3GqEkKtSuwnGORj8Bc+4lhieq6BUisshHBn
- O
-X-Gm-Gg: ASbGnctGcOSvcZYQBeYxLCZP8GRdZBL/YmdrV57bKs6uf4ip6IIXKl045rqAuyPTPOB
- rpW5OXZ138DL8MiI/QrwESMedZ/AKL4PJrSxiKHmwUmSDoed7P+N23gtc+MmvzlsTa9rS+gxzw/
- uwNt+6LyZ5bGkMS3iQl8buvq08lLwFae1VAFoA4r9yva/HDhCiGkJ8+noy1h9RIS0NljrP59EMS
- MnSiytm75zU8GaJFNNNIPJWOqj3O/RqzqA1wtLOurbg/0iz7PZrCYCSIQMzZfGoJ1pQMBQEARo/
- 73CCPWzAuHRpWe3KOyQiEKxyy9qAp6qKxBeaRAJKgdfpSgUx0Ic=
-X-Google-Smtp-Source: AGHT+IErOMe/2SumgHtLOhL72nnzAQPEXbOu62JvPMBkg7DycAM+FmSMWOFseN/zpAk5e4qGNnlOvg==
-X-Received: by 2002:a17:902:f64e:b0:223:f9a4:3f99 with SMTP id
- d9443c01a7336-22bea4c76acmr193097885ad.29.1744644639773; 
- Mon, 14 Apr 2025 08:30:39 -0700 (PDT)
-Received: from pc.. ([38.39.164.180]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7ccbd5esm100735235ad.248.2025.04.14.08.30.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Apr 2025 08:30:39 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, Richard Henderson <richard.henderson@linaro.org>,
- Yannis Bolliger <yannis.bolliger@protonmail.com>, qemu-arm@nongnu.org,
- alex.bennee@linaro.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 4/4] target/arm/ptw: fix arm_cpu_get_phys_page_attrs_debug
-Date: Mon, 14 Apr 2025 08:30:27 -0700
-Message-Id: <20250414153027.1486719-5-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250414153027.1486719-1-pierrick.bouvier@linaro.org>
-References: <20250414153027.1486719-1-pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u4Lq1-0005ih-Hr
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 11:35:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u4Lpz-0006ru-6j
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 11:35:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744644904;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pTtdttDpMRCIR7RfY29Gl2AoWEWL6IbplTk10NoHapc=;
+ b=ZHX09ltNl6K8uceai+coCjYTi5VTQibGtNIHWZDkC5d0Qk1Fu/APp/6cG1H0zfnWnFvxNl
+ u2cPwevncJc4NRGJMUGzPo2Gn/uaqhd9mHsRNzUJUIDdPKY7PI6hdN3IwMD1v2MrY8Du8N
+ LNvgnS1x6lltgIL+fTYMfWJEWzuTJyA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-237-rvIazJjVOxOkS6crMzGRuw-1; Mon,
+ 14 Apr 2025 11:34:56 -0400
+X-MC-Unique: rvIazJjVOxOkS6crMzGRuw-1
+X-Mimecast-MFC-AGG-ID: rvIazJjVOxOkS6crMzGRuw_1744644895
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E899F1954B36; Mon, 14 Apr 2025 15:34:53 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.100])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 03AA91828AAA; Mon, 14 Apr 2025 15:34:52 +0000 (UTC)
+Date: Mon, 14 Apr 2025 11:34:51 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org
+Subject: Re: [PATCH v2 1/2] file-posix: probe discard alignment on Linux
+ block devices
+Message-ID: <20250414153451.GC117758@fedora>
+References: <20250410184103.23385-1-stefanha@redhat.com>
+ <20250410184103.23385-2-stefanha@redhat.com>
+ <c7b9ddb4-10de-4c66-9f2f-c964d77275e0@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="cFhVdxoYEyX1w5mf"
+Content-Disposition: inline
+In-Reply-To: <c7b9ddb4-10de-4c66-9f2f-c964d77275e0@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,57 +86,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It was reported that QEMU monitor command gva2gpa was reporting unmapped
-memory for a valid access (qemu-system-aarch64), during a copy from
-kernel to user space (__arch_copy_to_user symbol in Linux) [1].
-This was affecting cpu_memory_rw_debug also, which
-is used in numerous places in our codebase. After investigating, the
-problem was specific to arm_cpu_get_phys_page_attrs_debug.
 
-When performing user access from a privileged space, we need to do a
-second lookup for user mmu idx, following what get_a64_user_mem_index is
-doing at translation time.
+--cFhVdxoYEyX1w5mf
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[1] https://lists.nongnu.org/archive/html/qemu-discuss/2025-04/msg00013.html
+On Fri, Apr 11, 2025 at 10:15:13AM +0200, Hanna Czenczek wrote:
+> On 10.04.25 20:41, Stefan Hajnoczi wrote:
+> > Populate the pdiscard_alignment block limit so the block layer is able
+> > align discard requests correctly.
+> >=20
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > ---
+> >   block/file-posix.c | 56 +++++++++++++++++++++++++++++++++++++++++++++-
+> >   1 file changed, 55 insertions(+), 1 deletion(-)
+>=20
+> Ah, I didn=E2=80=99t know sysfs is actually fair game.=C2=A0 Should we no=
+t also get the
+> maximum discard length then, too?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- target/arm/ptw.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+The maximum discard length behaves differently: the Linux block layer
+splits requests according to the maximum discard length. If the guest
+submits a discard request that is too large for the host, the host block
+layer will split it and the request succeeds. That is why I didn't make
+any changes to the maximum discard length in this series.
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index bf92c165175..cdcb6a49fa5 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -3655,5 +3655,25 @@ hwaddr arm_cpu_get_phys_page_attrs_debug(CPUState *cs, vaddr addr,
-     CPUARMState *env = &cpu->env;
-     ARMMMUIdx mmu_idx = arm_mmu_idx(env);
- 
--    return arm_cpu_get_phys_page(env, addr, attrs, mmu_idx);
-+    hwaddr res = arm_cpu_get_phys_page(env, addr, attrs, mmu_idx);
-+
-+    if (res != -1) {
-+        return res;
-+    }
-+
-+    /*
-+     * Memory may be accessible for an "unprivileged load/store" variant.
-+     * In this case, get_a64_user_mem_index function generates an op using an
-+     * unprivileged mmu idx, so we need to try with it.
-+     */
-+    switch (mmu_idx) {
-+    case ARMMMUIdx_E10_1:
-+    case ARMMMUIdx_E10_1_PAN:
-+        return arm_cpu_get_phys_page(env, addr, attrs, ARMMMUIdx_E10_0);
-+    case ARMMMUIdx_E20_2:
-+    case ARMMMUIdx_E20_2_PAN:
-+        return arm_cpu_get_phys_page(env, addr, attrs, ARMMMUIdx_E20_0);
-+    default:
-+        return -1;
-+    }
- }
--- 
-2.39.5
+>=20
+> > diff --git a/block/file-posix.c b/block/file-posix.c
+> > index 56d1972d15..2a1e1f48c0 100644
+> > --- a/block/file-posix.c
+> > +++ b/block/file-posix.c
+> > @@ -1276,10 +1276,10 @@ static int get_sysfs_zoned_model(struct stat *s=
+t, BlockZoneModel *zoned)
+> >   }
+> >   #endif /* defined(CONFIG_BLKZONED) */
+> > +#ifdef CONFIG_LINUX
+> >   /*
+> >    * Get a sysfs attribute value as a long integer.
+> >    */
+> > -#ifdef CONFIG_LINUX
+> >   static long get_sysfs_long_val(struct stat *st, const char *attribute)
+> >   {
+> >       g_autofree char *str =3D NULL;
+> > @@ -1299,6 +1299,30 @@ static long get_sysfs_long_val(struct stat *st, =
+const char *attribute)
+> >       }
+> >       return ret;
+> >   }
+> > +
+> > +/*
+> > + * Get a sysfs attribute value as a uint32_t.
+> > + */
+> > +static int get_sysfs_u32_val(struct stat *st, const char *attribute,
+> > +                             uint32_t *u32)
+> > +{
+> > +    g_autofree char *str =3D NULL;
+> > +    const char *end;
+> > +    unsigned int val;
+> > +    int ret;
+> > +
+> > +    ret =3D get_sysfs_str_val(st, attribute, &str);
+> > +    if (ret < 0) {
+> > +        return ret;
+> > +    }
+> > +
+> > +    /* The file is ended with '\n', pass 'end' to accept that. */
+> > +    ret =3D qemu_strtoui(str, &end, 10, &val);
+> > +    if (ret =3D=3D 0 && end && *end =3D=3D '\0') {
+> > +        *u32 =3D val;
+> > +    }
+> > +    return ret;
+> > +}
+> >   #endif
+> >   static int hdev_get_max_segments(int fd, struct stat *st)
+> > @@ -1318,6 +1342,23 @@ static int hdev_get_max_segments(int fd, struct =
+stat *st)
+> >   #endif
+> >   }
+> > +/*
+> > + * Fills in *dalign with the discard alignment and returns 0 on succes=
+s,
+> > + * -errno otherwise.
+> > + */
+> > +static int hdev_get_pdiscard_alignment(struct stat *st, uint32_t *dali=
+gn)
+> > +{
+> > +#ifdef CONFIG_LINUX
+> > +    /*
+> > +     * Note that Linux "discard_granularity" is QEMU "discard_alignmen=
+t". Linux
+> > +     * "discard_alignment" is something else.
+> > +     */
+> > +    return get_sysfs_u32_val(st, "discard_granularity", dalign);
+> > +#else
+> > +    return -ENOTSUP;
+> > +#endif
+> > +}
+> > +
+> >   #if defined(CONFIG_BLKZONED)
+> >   /*
+> >    * If the reset_all flag is true, then the wps of zone whose state is
+> > @@ -1527,6 +1568,19 @@ static void raw_refresh_limits(BlockDriverState =
+*bs, Error **errp)
+> >           }
+> >       }
+> > +    if (S_ISBLK(st.st_mode)) {
+> > +        uint32_t dalign =3D 0;
+> > +        int ret;
+> > +
+> > +        ret =3D hdev_get_pdiscard_alignment(&st, &dalign);
+> > +        if (ret =3D=3D 0) {
+> > +            /* Must be a multiple of request_alignment */
+> > +            assert(dalign % bs->bl.request_alignment =3D=3D 0);
+>=20
+> Is it fair to crash qemu if the kernel reports a value that is not a
+> multiple of request_alignment?=C2=A0 Wouldn=E2=80=99t it make more sense =
+to take the
+> maximum, and if that still isn=E2=80=99t a multiple, return an error here?
+
+I'll replace the assertion with an error.
+
+The Linux block layer sysfs documentation says:
+
+  [RO] Devices that support discard functionality may internally
+  allocate space using units that are bigger than the logical
+  block size.
+
+I don't expect dalign to be smaller than request_alignment, but it
+doesn't hurt the check if request_alignment would work.
+
+>=20
+> Hanna
+>=20
+> > +
+> > +            bs->bl.pdiscard_alignment =3D dalign;
+> > +        }
+> > +    }
+> > +
+> >       raw_refresh_zoned_limits(bs, &st, errp);
+> >   }
+>=20
+
+--cFhVdxoYEyX1w5mf
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmf9KxsACgkQnKSrs4Gr
+c8jPnQf8D1+1twXgXGCJABQ3O0xx3wX4AE1mK/MZwqCaece9Re1CHKo++NahrrjK
+wY9wAwTrL6kzJpE/nyRoH/2zJvsx23w0vCKoqaOtyFuGUzLF8SFTkfHs01t2ezSv
+iQaQz4l6H7K3cgRyD5uw72z/kqDEcDWKLGnGkWIOI/Exag8h8VDvOiP4tk7cNezi
+bGvvHCjyUnQYxsKvAyRpZx46X8HtyvK+jRWbJ++JvuvlOnysUxR2lMfqmEZfV03g
+vT0NDt0xIDdcfLxRltEBOrFeLjzXtOAFC21EWv1WwUv41jMU7jI4r7ywXJW9+hz1
+DKO71EE8m7/22mDkOXCCHjOKhvQlDQ==
+=QbKK
+-----END PGP SIGNATURE-----
+
+--cFhVdxoYEyX1w5mf--
 
 
