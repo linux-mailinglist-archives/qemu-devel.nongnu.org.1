@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D3CA875AF
+	by mail.lfdr.de (Postfix) with ESMTPS id ED895A875B0
 	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 04:05:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u49B9-0007Md-Mj; Sun, 13 Apr 2025 22:04:07 -0400
+	id 1u49BF-0007P8-Oh; Sun, 13 Apr 2025 22:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1u49Aj-0007Dv-Kf
- for qemu-devel@nongnu.org; Sun, 13 Apr 2025 22:03:42 -0400
+ id 1u49Al-0007Ec-0F
+ for qemu-devel@nongnu.org; Sun, 13 Apr 2025 22:03:44 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1u49Ah-0007T8-SI
- for qemu-devel@nongnu.org; Sun, 13 Apr 2025 22:03:41 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53E17Mqn023470;
- Mon, 14 Apr 2025 02:03:33 GMT
+ id 1u49Ai-0007TB-8t
+ for qemu-devel@nongnu.org; Sun, 13 Apr 2025 22:03:42 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53E0rb6a025830;
+ Mon, 14 Apr 2025 02:03:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2023-11-20; bh=QtWzE
- 2qz3k9i1WVNgzsmCHeokzAu03u+0ILqSg4ZPo8=; b=iLuQ0Qt271bDe4/IJBrAm
- lcwpEYnBCZwRHpPvnwbNaZXLYQBGv1bf8SOwSeXtg9LwTfjPYtXHzhHLjsIE8Qn6
- fTKwXlPfF4yeP+zIPg3DW1nqIfC31VpS7WoJBPSoi25L9BYq5gdFZL0u8vb+Clk4
- r6XUE7mNGwAr57ExD+slZ05IWhERuggCrvMRcjd65aPjVeOFd6p1fo7J0wnC4DVI
- 5j4jg00YNSPzkFycaHikq38sYt2UojlDZXcqFSMVDGhkTk8oe7W8t+Qd6bByhlAR
- LqLPm7QgpZbSCBS5vVTNYRTMq0LRn6M++C4l4W5E4FdXCGV7FRoQpdvMOc3CANsg
- A==
+ :mime-version:references:subject:to; s=corp-2023-11-20; bh=eTcNV
+ KmWHdPsjqKauoNhUlfALDn/d7yBptZFsHfEalQ=; b=REcSOhOS2UAxbsg7/y1OS
+ eSdqfHRXkvNfDlIKFNLyhtlBrriraQd0jyucEDnb1dvWjrReGbyd6U3zqX85Y3pb
+ +OBNDcGqrK3eduKrszYskxo2J+0tXu+IbjPTMYrUYyfSXZ7trXSbgG++froKHeD7
+ zy6Qh4/RYTzPV9of1J0Cdm2jlEszGdC/1sUscFBOJfmyCKP199Fn8+q30RJGeKDJ
+ 8B6IM122A489B48++G2gREWktKuLj9M+TebzLrLnZvk5gTmWjnMUC7IwQMCcewJp
+ 0VE3Y8+RSmuKazotFv/tI0piLEu7c7n3aTSZPtw6w9pRKgeaNftzYq7q423hxmFj
+ g==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 460rdr01fe-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 460r6qg1tr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Apr 2025 02:03:33 +0000 (GMT)
+ Mon, 14 Apr 2025 02:03:35 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 53DNFDKQ009267; Mon, 14 Apr 2025 02:03:32 GMT
+ with ESMTP id 53DMo8Mn009250; Mon, 14 Apr 2025 02:03:34 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 460d3fvqs6-1
+ 460d3fvqsf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Apr 2025 02:03:32 +0000
+ Mon, 14 Apr 2025 02:03:34 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53E22tYY035550;
- Mon, 14 Apr 2025 02:03:32 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53E22tYa035550;
+ Mon, 14 Apr 2025 02:03:34 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 460d3fvqg0-7; Mon, 14 Apr 2025 02:03:31 +0000
+ 460d3fvqg0-8; Mon, 14 Apr 2025 02:03:33 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
@@ -63,10 +63,10 @@ Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  santosh.shukla@amd.com, sarunkod@amd.com, Wei.Huang2@amd.com,
  joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  alejandro.j.jimenez@oracle.com
-Subject: [PATCH 06/18] amd_iommu: Set all address spaces to default
- translation mode on reset
-Date: Mon, 14 Apr 2025 02:02:41 +0000
-Message-ID: <20250414020253.443831-7-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH 07/18] amd_iommu: Return an error when unable to read PTE from
+ guest memory
+Date: Mon, 14 Apr 2025 02:02:42 +0000
+Message-ID: <20250414020253.443831-8-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250414020253.443831-1-alejandro.j.jimenez@oracle.com>
 References: <20250414020253.443831-1-alejandro.j.jimenez@oracle.com>
@@ -80,8 +80,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  mlxlogscore=999 phishscore=0 suspectscore=0 spamscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
  definitions=main-2504140014
-X-Proofpoint-GUID: qiDQKSgKjHkDdxONWhhxr7C2qTxq8lAJ
-X-Proofpoint-ORIG-GUID: qiDQKSgKjHkDdxONWhhxr7C2qTxq8lAJ
+X-Proofpoint-GUID: xEwHI2Zyih0aqRvZoLHwBkUFANQbczIQ
+X-Proofpoint-ORIG-GUID: xEwHI2Zyih0aqRvZoLHwBkUFANQbczIQ
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -40
@@ -107,60 +107,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On reset, restore the default address translation mode for all the
-address spaces managed by the vIOMMU.
+Make amdvi_get_pte_entry() return an error value (-1) in cases where the
+memory read fails, versus the current return of 0 to indicate failure.
+The reason is that 0 is also a valid PTE value, and it is useful to know
+when a PTE points to memory that is zero i.e. the guest unmapped the
+page.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 ---
- hw/i386/amd_iommu.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ hw/i386/amd_iommu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 3f9aa2cc8d31..0df658712ec0 100644
+index 0df658712ec0..5f55be1f4d36 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -1548,6 +1548,33 @@ static void amdvi_switch_address_space(AMDVIAddressSpace *amdvi_as)
+@@ -958,7 +958,7 @@ static inline uint64_t amdvi_get_pte_entry(AMDVIState *s, uint64_t pte_addr,
+                         &pte, sizeof(pte), MEMTXATTRS_UNSPECIFIED)) {
+         trace_amdvi_get_pte_hwerror(pte_addr);
+         amdvi_log_pagetab_error(s, devid, pte_addr, 0);
+-        pte = 0;
++        pte = (uint64_t)-1;
+         return pte;
      }
- }
  
-+/*
-+ * For all existing address spaces managed by the IOMMU, enable/disable the
-+ * corresponding memory regions depending on the address translation mode
-+ * as determined by the global and individual address space settings.
-+ */
-+static void amdvi_switch_address_space_all(AMDVIState *s)
-+{
-+    AMDVIAddressSpace **iommu_as;
-+
-+    for (int bus_num = 0; bus_num < PCI_BUS_MAX; bus_num++) {
-+
-+        /* Nothing to do if there are no devices on the current bus */
-+        if (!s->address_spaces[bus_num]) {
-+            continue;
-+        }
-+        iommu_as = s->address_spaces[bus_num];
-+
-+        for (int devfn = 0; devfn < PCI_DEVFN_MAX; devfn++) {
-+
-+            if (!iommu_as[devfn]) {
-+                continue;
-+            }
-+            amdvi_switch_address_space(iommu_as[devfn]);
-+        }
-+    }
-+}
-+
- static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
- {
-     char name[128];
-@@ -1745,6 +1772,7 @@ static void amdvi_sysbus_reset(DeviceState *dev)
- 
-     /* Discard all mappings on device reset */
-     amdvi_address_space_unmap_all(s);
-+    amdvi_switch_address_space_all(s);
- }
- 
- static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+@@ -999,7 +999,7 @@ static void amdvi_page_walk(AMDVIAddressSpace *as, uint64_t *dte,
+             /* add offset and load pte */
+             pte_addr += ((addr >> (3 + 9 * level)) & 0x1FF) << 3;
+             pte = amdvi_get_pte_entry(as->iommu_state, pte_addr, as->devfn);
+-            if (!pte) {
++            if (!pte || (pte == (uint64_t)-1)) {
+                 return;
+             }
+             oldlevel = level;
 -- 
 2.43.5
 
