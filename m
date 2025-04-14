@@ -2,93 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975A7A88C4D
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 21:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA621A88BF2
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 21:08:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4PWI-0005vS-2T; Mon, 14 Apr 2025 15:31:02 -0400
+	id 1u4P8v-0006kg-Rt; Mon, 14 Apr 2025 15:06:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1u4Owr-00027j-RA
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 14:54:25 -0400
-Received: from mail-qv1-xf32.google.com ([2607:f8b0:4864:20::f32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1u4Owp-0006mq-9r
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 14:54:25 -0400
-Received: by mail-qv1-xf32.google.com with SMTP id
- 6a1803df08f44-6f0c30a1cf8so51004136d6.2
- for <qemu-devel@nongnu.org>; Mon, 14 Apr 2025 11:54:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744656860; x=1745261660; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lnPw6CQC/Rs6Gnzgq2fiqjMDcByg2P+791cufmNvCio=;
- b=jDZPpvQXVha9OPUscNn67A2pEPUDiVqWzvV+Grn17vFrtChhVFVw96Gsb88ArbJpHu
- 35a8FgMM/AmVNgUt63uvj+pip8SDu+3PPp7vlUm2z8VEWNO4hDwrYYP25JZye5FedacS
- 56q5CP5zVyq50AjuT251eAQlLrET32ThVB1u8OhHQptyE3vcXrweW12lcMCfrO+9pfhJ
- vdMsntKaat0t+VqnY+Hg8yJQCVZfggmgRZSb0R0Urn8kKQle3/dLKpuJFW9kQtbISTaO
- cQmNGOiTltyVk++SBJdGh0h2lmX7UEj7mO592sJotcSlS8K5MeHVi5h/NxxRR2P89DmO
- Yl2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744656860; x=1745261660;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lnPw6CQC/Rs6Gnzgq2fiqjMDcByg2P+791cufmNvCio=;
- b=oMQ2p2HH2alN3vgUQeji1nufnbDo+iReCZtfLCqWsoRG7F/xaTN0WgopqaIjf6M07Y
- ZLJXKrommnEDAO1wTV6f3wd2vsvZPhCI/0c1tJCVAIDCAhshtmtV4LJDlH46+VXrwRo+
- pU32c/hRqLXMHqbQjRwYIhTW62JfCcJuq837AMMCCoFvkx8+ZDM2LqtnvUxMqvd9Yv25
- pJdBYf6UHaCy42mWfnBj8x18iaNKLhoq0fsoM2ltcNPw5wcCanOflsw8Vd4cScVbwBay
- Y/gF2yID0uCbzSk+DDzaNiRBSTk/ambTp0SXYEtRPGqd003u8ULV9bporUxDSpnGfsEj
- +n5A==
-X-Gm-Message-State: AOJu0YxjlUUqZ2CTXRb7C2fxUHD7n9kt+PFBClVPpVX1x1OlUh3Vbt+v
- wj3//noKNkEWbDrGR6zxF+CdF7yiXVCGLjnR784tVlhcVQz54kRte+FLug==
-X-Gm-Gg: ASbGncu40KxkKRW0vv3Kv/5cWWUET6m8XgOweO7lEXpWULzEhR68O0NDu3Kg1P3e4cJ
- Lbm8HMX4xWxBO8A06JFq88llVNxuZtjZ2J5cPAT1uBTWq2WuYeK4Pvz4KZ85Ydr/0byWyNxrXWV
- cJYs9bb0PvNdPMrQyK3lfJY6DuwhKvrxL2fZd5EEZBTuy9JuexOjexHy/C2qWOKa39AKiv02LoS
- 9DFj/wKWHymLXil3wBF1KiaahSATdeUplhtRz038U95/Roqiclc2feusaQ6UMvQHTTyr7tyehgf
- QDNE4D4yuE+vQB6nSvBhWonUdXBGLJBDFKt0kklK21Z3j7iY3uFk7CgwJCAZqxUZfKp+ALTRyna
- Epd57tLbHKVwnmWXr+38F3Gb3hj+jRrWZj59itZI=
-X-Google-Smtp-Source: AGHT+IEUMRqwVOY1CeQxwvy0hy3bUAbhKim9/3Aj4Mg6L1b7y8FcscmBIplA7xK9XilG6y7V8Ne5fg==
-X-Received: by 2002:a05:6214:2601:b0:6e8:fabd:ddd with SMTP id
- 6a1803df08f44-6f230cc1354mr173178486d6.1.1744656859713; 
- Mon, 14 Apr 2025 11:54:19 -0700 (PDT)
-Received: from paper101.paper-domain.cs.uwaterloo.ca
- (paper-base.cs.uwaterloo.ca. [129.97.152.163])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6f0dea101aasm86688676d6.96.2025.04.14.11.54.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Apr 2025 11:54:19 -0700 (PDT)
-From: Brian Song <hibriansong@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: kwolf@redhat.com, stefanha@redhat.com, Brian Song <hibriansong@gmail.com>
-Subject: [RFC PATCH 1/1] This work adds support for registering block file
- descriptors to the io_uring instance and uses IOSQE_FIXED_FILE in I/O
- requests (SQEs) to avoid the cost of fdget() in the kernel. It is a basic
- implementation for testing,
- and does not yet handle cases where block devices are removed.
-Date: Mon, 14 Apr 2025 18:54:12 +0000
-Message-ID: <20250414185414.2922845-2-hibriansong@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250414185414.2922845-1-hibriansong@gmail.com>
-References: <20250414185414.2922845-1-hibriansong@gmail.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1u4P8n-0006jd-VI
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 15:06:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1u4P8l-0001Mz-I5
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 15:06:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744657601;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lFVGNK6PC5etabM/CPSVbyT5/vC3txZXLKiRBb0gmvQ=;
+ b=UbASHOZ+xmXOivH+XCNfrQEvmvbz8Qg0qcC1/bo4hPrZzFj/kLMzr2AXxm6SGr5Er1Sh9N
+ l9VPlA94aNpLlu145Eq/MovIg/Dya5gpCHBKLj/f4f3CByIa1RksJtq4TUMU+X/TsMUEPt
+ Uc6+zT6R65/jH16aQ6vc7HxcdYc6CL4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-226-o3txNScePcOEQuhoUiE1PA-1; Mon,
+ 14 Apr 2025 15:06:37 -0400
+X-MC-Unique: o3txNScePcOEQuhoUiE1PA-1
+X-Mimecast-MFC-AGG-ID: o3txNScePcOEQuhoUiE1PA_1744657594
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 83638180AF55; Mon, 14 Apr 2025 19:06:34 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.99])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 77A821955BF2; Mon, 14 Apr 2025 19:06:32 +0000 (UTC)
+Date: Mon, 14 Apr 2025 20:06:29 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [RFC PATCH 00/13] migration: Unify capabilities and parameters
+Message-ID: <Z_1ctS3wfmMCZ23r@redhat.com>
+References: <20250411191443.22565-1-farosas@suse.de>
+ <Z_07dfI4rFRpvZA1@redhat.com> <87v7r6fz0c.fsf@suse.de>
+ <Z_1DzDB8v6FOT9TG@redhat.com> <87semafxpy.fsf@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f32;
- envelope-from=hibriansong@gmail.com; helo=mail-qv1-xf32.google.com
+In-Reply-To: <87semafxpy.fsf@suse.de>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 14 Apr 2025 15:30:33 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,116 +85,134 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Brian Song <hibriansong@gmail.com>
----
- block/io_uring.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+On Mon, Apr 14, 2025 at 02:40:25PM -0300, Fabiano Rosas wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Mon, Apr 14, 2025 at 02:12:35PM -0300, Fabiano Rosas wrote:
+> >> Daniel P. Berrangé <berrange@redhat.com> writes:
+> >> 
+> >> > On Fri, Apr 11, 2025 at 04:14:30PM -0300, Fabiano Rosas wrote:
+> >> >> Open questions:
+> >> >> ---------------
+> >> >> 
+> >> >> - Deprecations/compat?
+> >> >> 
+> >> >> I think we should deprecate migrate-set/query-capabilities and everything to do
+> >> >> with capabilities (specifically the validation in the JSON at the end of the
+> >> >> stream).
+> >> >> 
+> >> >> For migrate-set/query-parameters, we could probably keep it around indefinitely,
+> >> >> but it'd be convenient to introduce new commands so we can give them new
+> >> >> semantics.
+> >> >> 
+> >> >> - How to restrict the options that should not be set when the migration is in
+> >> >> progress?
+> >> >> 
+> >> >> i.e.:
+> >> >>   all options can be set before migration (initial config)
+> >> >>   some options can be set during migration (runtime)
+> >> >> 
+> >> >> I thought of adding another type at the top of the hierarchy, with
+> >> >> just the options allowed to change at runtime, but that doesn't really
+> >> >> stop the others being also set at runtime. I'd need a way to have a
+> >> >> set of options that are rejected 'if migration_is_running()', without
+> >> >> adding more duplication all around.
+> >> >> 
+> >> >> - What about savevm?
+> >> >> 
+> >> >> None of this solves the issue of random caps/params being set before
+> >> >> calling savevm. We still need to special-case savevm and reject
+> >> >> everything. Unless we entirely deprecate setting initial options via
+> >> >> set-parameters (or set-config) and require all options to be set as
+> >> >> savevm (and migrate) arguments.
+> >> >
+> >> > I'd suggest we aim for a world where the commands take all options
+> >> > as direct args and try to remove the global state eventually.
+> >> >
+> >> 
+> >> Well, except the options that are adjusted during migration. But yes, I
+> >> agree. It all depends on how we proceed with keeping the old commands
+> >> around and for how long. If they're still around we can't stop people
+> >> from using them and later invoking "savevm" for instance.
+> >> 
+> >> > For savevm/loadvm in particular it is very much a foot-gun that
+> >> > 'migrate-set-*' will affect them, because savevm/loadvm aren't
+> >> > obviously connected to 'migrate-*' commands unless you're aware
+> >> > of how QEMU implements savevm internally.
+> >> >
+> >> 
+> >> Yes, I could perhaps reset all options once savevm is called, maybe that
+> >> would be acceptable, then we don't need to check and block every single
+> >> one. Once we add support to migration options to savevm, then they'd be
+> >> set in the savevm command-line from day 1 and those wouldn't be
+> >> reset. We could also keep HMP restricted to savevm without any migration
+> >> options. That's be easy to enforce. If the user wants fancy savevm, they
+> >> can invoke via QMP.
+> >
+> > Can we make the two approaches mutually exclusive ? Taking your
+> > 'migrate' command example addition:
+> >
+> >   { 'command': 'migrate',
+> >     'data': {'*uri': 'str',
+> >              '*channels': [ 'MigrationChannel' ],
+> >   +          '*config': 'MigrationConfig',
+> >              '*detach': 'bool', '*resume': 'bool' } }
+> >
+> > if 'migrate' is invoked with the '*config' data being non-nil,
+> > then we should ignore *all* global state previously set with
+> > migrate-set-XXXX, and exclusively use '*config'.
+> >
+> > That gives a clean semantic break between old and new approaches,
+> > without us having to worry about removing the existing commands
+> > quickly.
+> >
+> 
+> Good idea. I will need to do something about the -global options because
+> they also set the defaults for the various options. But we should be
+> able to decouple setting defaults from -global. Or I could just apply
+> -global again on top of what came in '*config'.
+> 
+> >
+> >> >> - incoming defer?
+> >> >> 
+> >> >> It seems we cannot do the final step of removing
+> >> >> migrate-set-capabilites before we have a form of handshake
+> >> >> implemented. That would take the config from qmp_migrate on source and
+> >> >> send it to the destination for negotiation.
+> >> >
+> >> > I'm not sure I understand why the QAPI design changes are tied
+> >> > to the new protocol handshake ? I guess you're wanting to avoid
+> >> > updating 'migrate_incoming' to accept the new parameters directly ?
+> >> >
+> >> 
+> >> Yes, without migrate-set-capabilities, we'd need to pass an enormous
+> >> command line to -incoming defer to be able to enable capabilities on the
+> >> destination. With the handshake, we could transfer them over the wire
+> >> somehow. Does that make sense?
+> >
+> > '-incoming defer' still gets paired with 'migrate-incoming' on the
+> > target, so no matter what, there's no reason to ever pass parameters
+> > on the CLI with '-incoming defer'.
+> >
+> 
+> Oops, I misread the strcmp in vl.c. I mean -incoming uri is the one
+> that'll need a huge cmdline.
+> 
+> But if we follow your suggestion above we could just tie -incoming URI
+> to the existing commands and make the new format require defer.
 
-diff --git a/block/io_uring.c b/block/io_uring.c
-index dd4f304910..94a875fbae 100644
---- a/block/io_uring.c
-+++ b/block/io_uring.c
-@@ -58,6 +58,11 @@ struct LuringState {
-     LuringQueue io_q;
- 
-     QEMUBH *completion_bh;
-+
-+    /* fixed file support */
-+    int *registered_fds;
-+    int nr_registered_fds;
-+    int max_registered_fds; /* size of registered_fds */
- };
- 
- /**
-@@ -323,6 +328,41 @@ static void luring_deferred_fn(void *opaque)
-     }
- }
- 
-+static int luring_register_fd(LuringState *s, int fd)
-+{
-+    int idx;
-+    int *new_fds;
-+    int ret;
-+
-+    for (idx = 0; idx < s->nr_registered_fds; idx++) {
-+        if (s->registered_fds[idx] == fd) {
-+            return idx;
-+        }
-+    }
-+
-+    /* Grow the array if needed */
-+    if (s->nr_registered_fds >= s->max_registered_fds) {
-+        int new_max = s->max_registered_fds * 2;
-+        new_fds = g_realloc(s->registered_fds, sizeof(int) * new_max);
-+        if (!new_fds) {
-+            return -ENOMEM;
-+        }
-+        s->registered_fds = new_fds;
-+        s->max_registered_fds = new_max;
-+    }
-+
-+    idx = s->nr_registered_fds++;
-+    s->registered_fds[idx] = fd;
-+   
-+    ret = io_uring_register_files(&s->ring, s->registered_fds, s->nr_registered_fds);
-+    if (ret < 0) {
-+        s->nr_registered_fds--;
-+        return ret;
-+    }
-+
-+    return idx;
-+}
-+
- /**
-  * luring_do_submit:
-  * @fd: file descriptor for I/O
-@@ -339,6 +379,15 @@ static int luring_do_submit(int fd, LuringAIOCB *luringcb, LuringState *s,
- {
-     int ret;
-     struct io_uring_sqe *sqes = &luringcb->sqeq;
-+    int fixed_fd_idx;
-+   
-+    fixed_fd_idx = luring_register_fd(s, fd);
-+    if (fixed_fd_idx < 0) {
-+        return fixed_fd_idx;
-+    }
-+   
-+    sqes->flags |= IOSQE_FIXED_FILE;
-+    sqes->fd = fixed_fd_idx;
- 
-     switch (type) {
-     case QEMU_AIO_WRITE:
-@@ -447,6 +496,11 @@ LuringState *luring_init(Error **errp)
-         return NULL;
-     }
- 
-+    /* Initialize fixed file support */
-+    s->max_registered_fds = 1024;
-+    s->registered_fds = g_new0(int, s->max_registered_fds);
-+    s->nr_registered_fds = 0;
-+
-     ioq_init(&s->io_q);
-     return s;
- 
-@@ -454,6 +508,12 @@ LuringState *luring_init(Error **errp)
- 
- void luring_cleanup(LuringState *s)
- {
-+    if (s->registered_fds) {
-+        if (s->nr_registered_fds > 0) {
-+            io_uring_unregister_files(&s->ring);
-+        }
-+        g_free(s->registered_fds);
-+    }
-     io_uring_queue_exit(&s->ring);
-     trace_luring_cleanup_state(s);
-     g_free(s);
+Yes,  modern approach should require 'defer'.
+
+
+With regards,
+Daniel
 -- 
-2.43.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
