@@ -2,74 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDABA88ACC
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 20:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71867A88C50
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 21:32:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4OIU-0005xj-Ea; Mon, 14 Apr 2025 14:12:42 -0400
+	id 1u4PWH-0005or-JR; Mon, 14 Apr 2025 15:31:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u4OIN-0005wp-N9
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 14:12:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u4OIL-0006Da-Ct
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 14:12:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744654350;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sbQwDfZgfQw4MhHZU7o3GcdzF0PtsfhG8wCSLcCVIVU=;
- b=UBDClQHOiq2dMvcD6AjAjOzRwjgQMSZ9UOdNMuf2FJ3HqMYlB3tGsUcON9zfhFi/F/jKlz
- W6tdFf0po3oJ48qiQutIB3ZKHQ5hUkxQtWKoJ5Uz+929mCRqYDHjZ0i12Mkq3JNyd+Cgx/
- QZIan2hoJXgXL0Gtxr4RAdLEAawtcH0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-cS_Qri5lMlShTMpnYleqYA-1; Mon,
- 14 Apr 2025 14:12:26 -0400
-X-MC-Unique: cS_Qri5lMlShTMpnYleqYA-1
-X-Mimecast-MFC-AGG-ID: cS_Qri5lMlShTMpnYleqYA_1744654345
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1BA9E195605E; Mon, 14 Apr 2025 18:12:24 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.12])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DB555180175D; Mon, 14 Apr 2025 18:12:21 +0000 (UTC)
-Date: Mon, 14 Apr 2025 13:12:17 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, "open list:raw" <qemu-block@nongnu.org>, 
- "Denis V. Lunev" <den@openvz.org>
-Subject: Re: [PATCH 2/6] file-posix: Allow lseek at offset 0 when !want_zero
-Message-ID: <6dn2vursoidmgeba4jtdrpy76b4o6ktkvh6l22bykm7cllmahw@hchia4nkjv2s>
-References: <20250411010732.358817-8-eblake@redhat.com>
- <20250411010732.358817-10-eblake@redhat.com>
- <2d17f631-40b0-40bc-a4ba-0b507cd39c71@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
+ id 1u4Owp-00027Z-R5
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 14:54:23 -0400
+Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
+ id 1u4Own-0006mc-7H
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 14:54:22 -0400
+Received: by mail-qv1-xf30.google.com with SMTP id
+ 6a1803df08f44-6e8f6970326so45918066d6.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Apr 2025 11:54:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1744656858; x=1745261658; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CgqqsODAgD3pRTGB/PJZ9SHxqElfGdh8WYhsgBJhLPg=;
+ b=fz2FeBA2TDEzNfm7Iq44vjO44GsPghmtEh1H+hT5sQ4ze3HtigmdB/gEzHMol8jzhG
+ LyEM8gOF7iNVahRJ8diUaUGZJRkwlajReBx0a99u2VF7KvH8gNgY1DQgZK4Bf+GVEtpJ
+ MOYR1744yip7oCrknMQlGX6LXcaC0a/wYN3wUUbRzwlVgU7uTjLFnmQlCVvtm/mAOY5K
+ swazwa1LoQg6G5v/cqJBR7LtTPKOuk8a4ziEivgKivqZdRrjYleDKiXtX5owcDuXxHcC
+ iLtKeR5uqVscxr7UGAygwwEmH1boi1020JmbjcXt4HvdTepaUHfuT+KP6qjFViIdbwq8
+ JgxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744656858; x=1745261658;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CgqqsODAgD3pRTGB/PJZ9SHxqElfGdh8WYhsgBJhLPg=;
+ b=Fw5G6QMA6YBHWgcPcM+vjZHonAlDT8zG/SuECetj/eQ9LYsARVmBOrf6E2dUZlGQz4
+ /c0UKdJnZd0WAhqXPTa7uP40UHQPYs/oGNEaymFiaeVdlF0ut+WQTlsAKr7IZQFtQki5
+ GordG12/MzqMqXlmkVmHffJItJAHVEwyFQ2ROwsX/z4XMVhHdhm1ewWjDn8uhN3iPTqN
+ OMvhSoVdWDo92nW+ObVAOgByZjSnX4fMLPlaETAhvFYLNZsM/sJ2/qmXKmWLoKwxyOdH
+ 5m5K+qzzSdN3QIeNTMdhDDJqXXl3NfdMZNvOZQYTl7qwRmAxvJquOqJCbre5ISELoNUT
+ nxOg==
+X-Gm-Message-State: AOJu0Yzzzc3XaVIaQQ3yhJbt5eTcpKMdl/OOzYxfTKEufpx4CF6FFmHm
+ ojexkBOwRLyEqE8+KI6M4ol2bddhpAnl+lzklAaUhEyMP9gBv8Dcubgz6g==
+X-Gm-Gg: ASbGncunlTScLYo2kYVwm6ub6y1oy17XTDK4UI46aDy9RQhUM1IjRZhikrdfOAJicxy
+ GFsPtdQbXbPV06NMYlt3/jEHFqp4vyS5lQ/XKLUp946dwx7i4+GBS2N4TK1lRB9kZZDhR5OQEmG
+ 9wRtS3KKMCbzdr+MhuLxRswrw2lTcV7jkQGmIpSKHoWcuWPsY31DKO93kWf/TA2tavUYPIZuKhz
+ Wt25JyyHhfOKFOJNfrBNYRSd4n/Glk3FxD3WLXWWwgXHeg1Np/SoVQvuJXVmUD3MhdAIwCVyCQR
+ ZH1x4nXff+tyRhuWZjHqE80AdhsWEt/+XJjT1h5cWN2CL62Pm2WJ1tV7oSU6ORi2wdZ3M1Ezkrl
+ UzLYjaEg+SLhzwLaCEC99L1zTwJPUzohR9BZEt5U=
+X-Google-Smtp-Source: AGHT+IHBrerrMP6XMxFNsZXC5XUFgRuPp+3AVmMsUfZNGBHbQVQKVQMlZGSeVC2g/oseLbdgv9uGww==
+X-Received: by 2002:a05:6214:410d:b0:6e8:fb44:5be2 with SMTP id
+ 6a1803df08f44-6f230d73ea1mr205518256d6.23.1744656857631; 
+ Mon, 14 Apr 2025 11:54:17 -0700 (PDT)
+Received: from paper101.paper-domain.cs.uwaterloo.ca
+ (paper-base.cs.uwaterloo.ca. [129.97.152.163])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6f0dea101aasm86688676d6.96.2025.04.14.11.54.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Apr 2025 11:54:17 -0700 (PDT)
+From: Brian Song <hibriansong@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, stefanha@redhat.com, Brian Song <hibriansong@gmail.com>
+Subject: [RFC PATCH 0/1] add fixed file table support
+Date: Mon, 14 Apr 2025 18:54:11 +0000
+Message-ID: <20250414185414.2922845-1-hibriansong@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d17f631-40b0-40bc-a4ba-0b507cd39c71@yandex-team.ru>
-User-Agent: NeoMutt/20250113
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
+ envelope-from=hibriansong@gmail.com; helo=mail-qv1-xf30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 14 Apr 2025 15:30:31 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,76 +97,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 14, 2025 at 08:05:21PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 11.04.25 04:04, Eric Blake wrote:
-> > The 'want_zero' parameter to raw_co_block_status() was added so that
-> > we can avoid potentially time-consuming lseek(SEEK_DATA) calls
-> > throughout the file (working around poor filesystems that have O(n)
-> > rather than O(1) extent probing).  But when it comes to learning if a
-> > file is completely sparse (for example, it was just created), always
-> > claiming that a file is all data without even checking offset 0 breaks
-> > what would otherwise be attempts at useful optimizations for a
-> > known-zero mirror destination.
-> > 
-> > Note that this allows file-posix to report a file as completely zero
-> > if it was externally created (such as via 'truncate --size=$n file')
-> > as entirely sparse; however, it does NOT work for files created
-> > internally by blockdev-create.  That's because blockdev-create
-> > intentionally does a sequence of truncate(0), truncate(size),
-> > allocate_first_block(), in order to make it possible for gluster on
-> > XFS to probe the sector size for direct I/O (which doesn't work if the
-> > first block is sparse).  That will be addressed in a later patch.
-> > 
-> > Signed-off-by: Eric Blake <eblake@redhat.com>
-> > ---
-> >   block/file-posix.c | 9 ++++++++-
-> >   1 file changed, 8 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/block/file-posix.c b/block/file-posix.c
-> > index 56d1972d156..67e83528cf5 100644
-> > --- a/block/file-posix.c
-> > +++ b/block/file-posix.c
-> > @@ -3217,7 +3217,14 @@ static int coroutine_fn raw_co_block_status(BlockDriverState *bs,
-> >           return ret;
-> >       }
-> > 
-> > -    if (!want_zero) {
-> > +    /*
-> > +     * If want_zero is clear, then the caller wants speed over
-> > +     * accuracy, and the only place where SEEK_DATA should be
-> > +     * attempted is at the start of the file to learn if the file has
-> > +     * any data at all (anywhere else, just blindly claim the entire
-> > +     * file is data).
-> > +     */
-> > +    if (!want_zero && offset) {
-> >           *pnum = bytes;
-> >           *map = offset;
-> >           *file = bs;
-> 
-> Looks like a hack. So we have bdrv_co_is_zero_fast() which do pass want_zero=false to block-status. But in case of mirror, which want to check the whole disk, we actually want want_zero=true, and detect it by offset=0..
-> 
-> Isn't it better to add a kind of bdrv_is_zero_middle_speed() (which means, don't try to read the data to check, but be free to use suboptimal lseek call or something like this), which will pass want_zero=true, and use it from mirror? Mirror case differs from usage in qcow2 exactly by the fact that we call it only once.
+Hi everyone,
 
-Which is exactly why I wrote patch 4/6 turning the want_zero bool into
-an enum so that we are being more explicit in WHY block status is
-being requested.
+I am a GSoC QEMU community applicant this year, and I have just
+completed this contribution task suggested by the project mentors
+Kevin and Stefan. This task requires registering the file descriptor
+of a block file that currently uses io_uring as the AIO method to an
+io_uring instance, so that when the kernel processes I/O requests, it
+can directly use the index to find the file information and avoid
+frequent file lookups (fdget()) in the kernel. This is expected to
+improve I/O performance.
 
-> 
-> 
-> Another doubt (really weak): can this one extra lseek be so slow, that mirror becomes worse?
-> Den, is it right, that problems about slow lseek (that we experienced several years ago) were about qcow2-internals, and nothing related to mirror itself? May one lseek call on mirror target break something?
+Note that since this is currently just a proof-of-concept that enables
+benchmarking, handling scenarios like block file removal is not yet
+implemented. Testing was conducted using fio for random read operations,
+and based on the results, there doesn’t seem to be a significant I/O
+performance improvement.
 
-I'm not worried about one or even two lseek on the destination; what
-I'm trying to avoid is an lseek on the destination for every chunk
-where the source is doing a write-zeroes request (we're already doing
-an lseek on the source as part of the background task of the mirror,
-but foreground writes being split into the original and the mirror are
-where it really matters that we aren't going slower just because of
-the mirror).
+Please feel free to share any thoughts!
+
+Thanks,
+Brian
+
+The specific testing method and results are as follows:
+
+guest $ sudo fio --filename=/dev/vda \
+                 --runtime=120 \
+                 --ioengine=io_uring \
+                 --direct=1 \
+                 --ramp_time=5 \
+                 --name=randread \
+                 --readwrite=randread \
+                 --iodepth=64 \
+                 --numjobs=1 \
+                 --blocksize=4k \
+                 --runtime=30 \
+                 --time_based=1
+
+** Guest with fixed file table support: **
+
+**vda (guest.img)**
+
+randread: (g=0): rw=randread, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=io_uring, iodepth=64
+fio-3.39
+Starting 1 process
+Jobs: 1 (f=1): [r(1)][100.0%][r=502MiB/s][r=128k IOPS][eta 00m:00s]
+randread: (groupid=0, jobs=1): err= 0: pid=1208: Fri Apr 11 23:18:26 2025
+  read: IOPS=127k, BW=496MiB/s (520MB/s)(14.5GiB/30001msec)
+    slat (usec): min=2, max=3541, avg= 5.89, stdev= 3.71
+    clat (usec): min=8, max=24149, avg=496.40, stdev=149.85
+     lat (usec): min=11, max=24161, avg=502.29, stdev=149.89
+    clat percentiles (usec):
+     |  1.00th=[  375],  5.00th=[  433], 10.00th=[  449], 20.00th=[  461],
+     | 30.00th=[  469], 40.00th=[  474], 50.00th=[  482], 60.00th=[  486],
+     | 70.00th=[  494], 80.00th=[  502], 90.00th=[  515], 95.00th=[  537],
+     | 99.00th=[ 1287], 99.50th=[ 1516], 99.90th=[ 1827], 99.95th=[ 1958],
+     | 99.99th=[ 2573]
+   bw (  KiB/s): min=484856, max=530928, per=100.00%, avg=508499.90, stdev=8880.33, samples=60
+   iops        : min=121214, max=132732, avg=127124.98, stdev=2220.10, samples=60
+  lat (usec)   : 10=0.01%, 20=0.01%, 50=0.01%, 100=0.01%, 250=0.05%
+  lat (usec)   : 500=79.75%, 750=18.05%, 1000=0.44%
+  lat (msec)   : 2=1.66%, 4=0.04%, 10=0.01%, 20=0.01%, 50=0.01%
+  cpu          : usr=44.52%, sys=55.43%, ctx=199, majf=0, minf=36
+  IO depths    : 1=0.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, >=64=100.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued rwts: total=3810630,0,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: bw=496MiB/s (520MB/s), 496MiB/s-496MiB/s (520MB/s-520MB/s), io=14.5GiB (15.6GB), run=30001-30001msec
+
+Disk stats (read/write):
+  vda: ios=4422643/234, sectors=35381152/14793, merge=0/20, ticks=120202/328, in_queue=120535, util=95.02%
+
+
+
+** Guest without fixed file table support**
+
+** vda **
+randread: (g=0): rw=randread, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=io_uring, iodepth=64
+fio-3.39
+Starting 1 process
+Jobs: 1 (f=1): [r(1)][100.0%][r=459MiB/s][r=118k IOPS][eta 00m:00s]
+randread: (groupid=0, jobs=1): err= 0: pid=1217: Fri Apr 11 23:16:24 2025
+  read: IOPS=127k, BW=498MiB/s (522MB/s)(14.6GiB/30001msec)
+    slat (usec): min=2, max=246, avg= 5.91, stdev= 3.19
+    clat (usec): min=10, max=21817, avg=494.55, stdev=149.50
+     lat (usec): min=17, max=21827, avg=500.46, stdev=149.59
+    clat percentiles (usec):
+     |  1.00th=[  318],  5.00th=[  392], 10.00th=[  433], 20.00th=[  457],
+     | 30.00th=[  469], 40.00th=[  478], 50.00th=[  482], 60.00th=[  490],
+     | 70.00th=[  494], 80.00th=[  502], 90.00th=[  529], 95.00th=[  562],
+     | 99.00th=[ 1270], 99.50th=[ 1516], 99.90th=[ 1827], 99.95th=[ 1958],
+     | 99.99th=[ 2376]
+   bw (  KiB/s): min=441768, max=568144, per=100.00%, avg=510363.83, stdev=23076.31, samples=60
+   iops        : min=110442, max=142036, avg=127590.88, stdev=5769.07, samples=60
+  lat (usec)   : 20=0.01%, 50=0.01%, 100=0.02%, 250=0.10%, 500=76.37%
+  lat (usec)   : 750=21.30%, 1000=0.52%
+  lat (msec)   : 2=1.65%, 4=0.04%, 10=0.01%, 20=0.01%, 50=0.01%
+  cpu          : usr=43.71%, sys=56.26%, ctx=133, majf=0, minf=36
+  IO depths    : 1=0.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, >=64=100.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued rwts: total=3824929,0,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: bw=498MiB/s (522MB/s), 498MiB/s-498MiB/s (522MB/s-522MB/s), io=14.6GiB (15.7GB), run=30001-30001msec
+
+Disk stats (read/write):
+  vda: ios=4468557/140, sectors=35748456/8817, merge=0/18, ticks=129894/244, in_queue=130143, util=95.00%
+
+
+Brian Song (1):
+  This work adds support for registering block file descriptors to the
+    io_uring instance and uses IOSQE_FIXED_FILE in I/O requests (SQEs)
+    to avoid the cost of fdget() in the kernel. It is a basic
+    implementation for testing, and does not yet handle cases where
+    block devices are removed.
+
+ block/io_uring.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.43.0
 
 
