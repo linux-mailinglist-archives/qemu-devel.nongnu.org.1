@@ -2,90 +2,172 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957F3A87534
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 03:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72733A8753D
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 03:26:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u48Sx-0001oZ-3x; Sun, 13 Apr 2025 21:18:27 -0400
+	id 1u48Zx-0003rR-FX; Sun, 13 Apr 2025 21:25:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <raman.dzehtsiar@gmail.com>)
- id 1u48Sv-0001oI-6h; Sun, 13 Apr 2025 21:18:25 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <raman.dzehtsiar@gmail.com>)
- id 1u48Ss-0001wD-SP; Sun, 13 Apr 2025 21:18:24 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43cfe63c592so42185185e9.2; 
- Sun, 13 Apr 2025 18:18:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744593500; x=1745198300; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=AFu5qTvL8qDGLhfVf2cgq04HLl4krLoPHAgJSXoIUZQ=;
- b=NJAHw47JqrNGymE73pZib6loQpOkzTFTeAVsUVG8qkXEK6OB3bCyhWj9eppzju6lWS
- xMa/zFWRfVoUSP6WD0PR5S9h6HrGOu6JF88wOhHfVEAic/tKWbKJyu4ufEByfDMDSzP6
- w+nrVhtS6z780nc3XvxStakp27FAqP3IdueGfV6s3WrwBHL6Un5xLeGqouU3hS8wyrWV
- Rb/kDWxGCI+04JUxX8HQgP5hI6KdaIUFDqLdZHRGSIS1Hgw3g0xUV2R7TCHzEoQKxAlx
- sWLHqMD98kKTc1CNXsncn6AF9R7aVwY+RMJ2uOHiT7P9qlIlX0a7U5BoAxUE1m2sCYhO
- esyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744593500; x=1745198300;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=AFu5qTvL8qDGLhfVf2cgq04HLl4krLoPHAgJSXoIUZQ=;
- b=ULB/xFQa4+12mgMx3jTVcQrzs5mGvUJLKqIfMVhG3nihZSxFGu4E/1g+2S1RJ6qDbi
- hpjqBokyiEmpJzKYcN+NFQNpM2RQw9rwVo6R8LhzIh4DQYEJMltNqVQ/E6dNUjkNaJEq
- 0GdHalRxpA4u0zjIWkTtQ+lDh3k4yDUaykvr55GGRGSy9yFJ6tl2DrEj9mIXixxn5BfE
- Py8Nph3Zz7buC0WItUcjjXsEfVnrGFUMY8curx76QRXm+2D47dYfnNpSLP/6nbttQlKw
- o8SuEf7r3cpC9xYRsnn7xMGYC7gBf02MTKUyMHxjJlSa4Oe6kMSJa/J+Z8nZa2cc4WPg
- 1a6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVwmw1pF30rhUV7UlRc86DpaeSmeimQOWZExgIbYJS8g6izqLoarxAQy+HNGWOmYNvFB8Go6xFINGlR@nongnu.org
-X-Gm-Message-State: AOJu0YwhunBIfCTO83ktLamx/yp+CgmGsawzhCgvjdm7TvoAbnVJE7ik
- Hv0FgLfvC6eN8AE+yvaCXNAOhcQlQg/oMXOJjPRhjOofCtyzqbYxisGhfUk6
-X-Gm-Gg: ASbGncuVHVKaPnQ+qrydxnIpCVyzotoGcZwBnwArLQ2VO5KcN33XJXbtRTUz6B7NuKo
- a26B17zsZEk8e2sg2fce7ooJZE1H1UwOsqQIeCWxOtFtTwvcLdCA5vigiFaW26JF/+GdwDhk8jM
- jSBY8sINKFpmla2k/lz/WNyNWldi95UjpkEN43Qztg1+eejxpk2qAYdPQ9oR1TfdzlcHeLWPCLu
- b9XQVEcaLxovtyMaCteaM0MS3Grnc9VG2gnAkGGoNfa1QWkCkVXvtArREqQh8R7OFjfdPMncdpD
- zRtcNoxuEOQy3hNF62waxnR74Gpt5PxPLEPUN9Q9fjC0w42yUgjO4j2oW1uT/nlI5e1O/xmRi1v
- zkW7GNu4i/F4buO8Jxw==
-X-Google-Smtp-Source: AGHT+IFhgzmCw79GbwGChd0kOPnZXBmqjaIxwsgRzVoogVuu81Xveo1vjKEpVJQaiXDwh10a2j+4Ow==
-X-Received: by 2002:a05:600c:3b0d:b0:43c:f689:88ce with SMTP id
- 5b1f17b1804b1-43f3a9ab46cmr70453855e9.20.1744593500072; 
- Sun, 13 Apr 2025 18:18:20 -0700 (PDT)
-Received: from localhost.localdomain (ip-86-49-227-248.bb.vodafone.cz.
- [86.49.227.248]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43f235a5e9dsm163629885e9.36.2025.04.13.18.18.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Apr 2025 18:18:19 -0700 (PDT)
-From: Raman Dzehtsiar <raman.dzehtsiar@gmail.com>
-X-Google-Original-From: Raman Dzehtsiar <Raman.Dzehtsiar@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Wen Congyang <wencongyang2@huawei.com>, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- John Snow <jsnow@redhat.com>, Xie Changlong <xiechanglong.d@gmail.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- qemu-block@nongnu.org, Raman Dzehtsiar <Raman.Dzehtsiar@gmail.com>
-Subject: [PATCH v3] blockdev-backup: Add error handling option for
- copy-before-write jobs
-Date: Mon, 14 Apr 2025 03:18:17 +0200
-Message-ID: <20250414011817.671328-1-Raman.Dzehtsiar@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1u48Zb-0003qa-33; Sun, 13 Apr 2025 21:25:19 -0400
+Received: from mail-psaapc01on2108.outbound.protection.outlook.com
+ ([40.107.255.108] helo=APC01-PSA-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1u48ZZ-00033j-8W; Sun, 13 Apr 2025 21:25:18 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xpjfyH1Sc+jfn/H8iIzjaU3HfAwIky0svRvwefquWaNhbk0D75JOhHMr8IOI3GhtQknWqD/fIeBOgIgv5w5W2hWed0PkXp+fzkWJizfSsDaZ7677zUfmQo4ydxsi98bwbwfikUWPBRTXTe8D3eaS7y41dATzNfNn+8hUV6kw8mXC92uJ2nGC0vGZ2FlavxUJybjj8oJ8y70x4Pqu7uRivlt3B7ha2SIAimyGVsF7gAaajADIi2Qc3279C8WXh1mA5M8m85JgjbAIX2HIt4mJk0ErzryMUOC1jnQSMTAdQ7jRQRQrAlHSt+x4IjVAVsbbRDAqe+wfXkJ19K4GonVUqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=157oRdO02CClYq1a+SOlSkg+xVJgW09E0Mo0bv2rciw=;
+ b=ZgQ6vydnY7AqI8wzlTBviPBqAbFyLREx0dYbUfxIkgaHZmGtYac5Pk9/kOe2SlUKpSN9nDIFkySAb3Icj3jQkgdw+fLy/YoozfAfvMWgj2mJSYwfjAgoEnb+gk455TpBADAGeXmN9E3drySpK7eZAYcdRDY9HnSAGLIIR8+goHtJfrzfEUbH2ahGfaZ43Nxes/DPeE0zOcDBGmr/i5bA8cGHe9M+Et1uOuWEaMPqMK8C6RlZB61Z8sVEB1Xd5aPzvyBE3nUQh++ADQdiHzTKfBO7H5w6a2B1K4APrsZucWn+m149IjMT7tmOzZPnSOhyw5sinZqh2NTI28nmbQtHbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
+ header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=157oRdO02CClYq1a+SOlSkg+xVJgW09E0Mo0bv2rciw=;
+ b=JU52yj9oZ12JGORlR0HEYjn3EJS9T1iWgh21g2K2QV0+x1PvCDOO65Pg1T78N3QDWJ48V7yGuQXc+/Gu9EN6QrgexwvJzNzI7+teeCxDmRlVllFBNmjKBRqPm4IvppfUE5lPfeK683s4HQN6BORmZc4lleAehUhmBXwYXhLAmajp6ysyAfU0A0aE7h9EJOn7jNlsFXSAxpdn4wAlYlLA/FJfR0tCJcuQ70vdXV5N5o0je3b2lf29bxfFufHnr6bf4LSvz2/x0iaC9wliQD07ayZ782forgkrpqlKTnGrMu7bmbYrHBTNBxWsjeBJzD1TwLmn7SKZStr/QC9Qwd04iA==
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com (2603:1096:4:1a4::6) by
+ TYSPR06MB6716.apcprd06.prod.outlook.com (2603:1096:400:470::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.31; Mon, 14 Apr
+ 2025 01:20:02 +0000
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56]) by SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56%4]) with mapi id 15.20.8632.025; Mon, 14 Apr 2025
+ 01:20:02 +0000
+From: Jamin Lin <jamin_lin@aspeedtech.com>
+To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
+CC: Troy Lee <troy_lee@aspeedtech.com>, "nabihestefan@google.com"
+ <nabihestefan@google.com>
+Subject: RE: [PATCH v2 00/10] Support vbootrom for AST2700
+Thread-Topic: [PATCH v2 00/10] Support vbootrom for AST2700
+Thread-Index: AQHbqcG4bE7I0lawpUCeffP2o9lbIbOensyAgAPDteA=
+Date: Mon, 14 Apr 2025 01:20:02 +0000
+Message-ID: <SI2PR06MB504170C096123632C5C87B06FCB32@SI2PR06MB5041.apcprd06.prod.outlook.com>
+References: <20250410023856.500258-1-jamin_lin@aspeedtech.com>
+ <d44e6583-c9af-4216-b715-aa4aa8968048@kaod.org>
+In-Reply-To: <d44e6583-c9af-4216-b715-aa4aa8968048@kaod.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=aspeedtech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SI2PR06MB5041:EE_|TYSPR06MB6716:EE_
+x-ms-office365-filtering-correlation-id: 0f309468-970b-4afb-ee7a-08dd7af27b11
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|366016|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?ajREVlZQd0NuZ3dDZ3NGcGtnWmtCeEJjRUZ3YW14Ym00YlZFMmVkdVRsbDF5?=
+ =?utf-8?B?VjA3a1hTWmZxMUNCRU8wSmNHVmEwMGpoa0laaU1rdENiYmQ3MUIzM3BoeUp4?=
+ =?utf-8?B?VmlKaW1uQUpkSC9hcnRDUEFleXNFNDMwSHlLdCtqaVBUQlEvVUtVZ0ROSk5o?=
+ =?utf-8?B?TkFuMGFCRTlGQTBxZHNldVh1bU9Tc3Q1Zkdvai9qbEZHQUhleGVFNGtVcmIv?=
+ =?utf-8?B?SHB3Wm1YOEZHM0Vxa1dVMkN1akQ3ZnplaWR2Q251a2x0OXQ4TW9MTWdiYzN4?=
+ =?utf-8?B?YVVyQVh1RVRpY3F2VUV5Z3ZYWmNRQkRiS1JPVU5mdGFjY0tEK1ZzOE5wSkt3?=
+ =?utf-8?B?TXNwS05nbHprR25uaUV5NGxCM3RPN3VobWhnN3dJdjVJT01OblNZVnY3M0Vx?=
+ =?utf-8?B?R0ZYaDBMRURNUytJeUM5SU5vRk5sVFBkUlFBRjdQSlNFd01jRXYyUE1aSm1K?=
+ =?utf-8?B?TnZjVHNEcFRiN0tvcGtvUlVoWksxVmc0RmtJbjVHc3ZPN0kwY21qa3d1ODF3?=
+ =?utf-8?B?Tkg4M2Vxb2FscHBuaDJXeURDQ29mVmpwWlZDaTNUNVpSN0xEdk5NTEZZVDNG?=
+ =?utf-8?B?ejdaWW8xMUFISTcvOVRCc2gyVmpnNk9nZjdFV1lOSTRkYzVTOWhGSXdEYnlP?=
+ =?utf-8?B?T1JNNUZCZGtBSm9LcnNTdkdNbWdoSkpNdU1oZnorbENIVmxMYkhLWndDQUFv?=
+ =?utf-8?B?UExFMUdxU1RiMk5MMkxhMVFuRkl0TW1mdVh3Tysvd080U1RFZjRmVkNMOUJz?=
+ =?utf-8?B?QjlLaTJFK2VmWWxDWFh1eVBneW5TUEtHZ2JmVDUrWU1vWEtiSFpVVERjWk81?=
+ =?utf-8?B?dDl1MDhlNzNIb1dkN1pHejNBNXM3NUgxNUk3NDlaWS9waXNWVEhneXE3eHpB?=
+ =?utf-8?B?WTNkei9SVER3VXhZdDh2dThUK1pOS2NoNjNTRnUzeTVrUlIxVDc5dGZGMG1w?=
+ =?utf-8?B?c1pyNzYvK1dZallabW1IWlFRRGN6czlmVy8rcFh2RFNNNDk5TCs0dmtmYjJZ?=
+ =?utf-8?B?R0JDck1PUzhxb1laRFhmbFZzZm5TRUorWGppeGVSTWU5NzMwSzFqY1IzUzJO?=
+ =?utf-8?B?N0tMd3J4OENkUFB1VWFVMTBrQ2c3Q20yWWpiTnBPeTRrZ3B5OFY0Q1NPVmZL?=
+ =?utf-8?B?N2J0WFhlV0xtakIyK2s3eFNnTlpmQVoyTEJLSW1jWjRHbmQ2ZDZzSktJZm56?=
+ =?utf-8?B?RkN1dHJIVWUvRVhaQXhKMmtlZGRFSXVwa2dVUVk0ZERuNi84a0lqTVdsM29i?=
+ =?utf-8?B?MXZQSXRjcHVLZTBDWEd1SDBrYlVGZVZtQlpGRFMzSUxzQXBYSnoycVVSYkNn?=
+ =?utf-8?B?SC9wTldtek9TUzlCdlFTa1ZDWWUxcHFkR2pqaGR3cTVRWTZHSjJLVVVmb2J2?=
+ =?utf-8?B?OElBT2NkcHdwUVpLcERueFh0dG13RmEwT3Izb3czc1JBdmFUYXhxOWNTbERE?=
+ =?utf-8?B?L2E0UkozaWZhaXlmenVXODZxWkV6VDYycHoxNmFoM3FmUjZrTHlzWXphZVA4?=
+ =?utf-8?B?c0FUOWE0cGs3ZXQ4aUd6Z3VrVXg1TEJOQ1FRM293MEZCYjgxQk1WYU82cDh2?=
+ =?utf-8?B?QU8vREdpNG5PcDlIY0krR3NJTnZnTitBT3dFaUU1Tkd2ZCtFL1hQSjFuTFhw?=
+ =?utf-8?B?aUlVcm81THFHczgrU0dsNmYzNzRjelF0U3UvcjRrM0Vpdmh1THFtZU9kdlMw?=
+ =?utf-8?B?dHd4c2NDYlFpWjJuYUUxUURUL3czeHFwbGVFY2p3UmlHTWFsWWUvUnhlTFV5?=
+ =?utf-8?B?Ym5wT2VDWDR0VjRFek50cUtEQWErbldLckRTRGp3SFFLV0sweVJvTzFZRVdR?=
+ =?utf-8?B?Uy9TQ2xZRHp6LzZEREx3YW95L2ZWemtBNnZoNzNaYS9VWk5sRTgzcG9GZk9m?=
+ =?utf-8?B?c0U0T3NLN2VuTjFOVjZQRjQ5bi93Ky9WTk9Od0J1SEpkNEZvMkZpeTdGc3FK?=
+ =?utf-8?B?RWJRcWw3MXVxYnFnY0tTYVFvc2tobXh4Y3UwbjZTN2VwK2JHbnVlcjhTdHFP?=
+ =?utf-8?Q?AD/xaYPdXLX33cLj1fxJRkLLHsdqJQ=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-tw; SCL:1;
+ SRV:; IPV:NLI; SFV:NSPM; H:SI2PR06MB5041.apcprd06.prod.outlook.com; PTR:;
+ CAT:NONE; SFS:(13230040)(366016)(376014)(1800799024)(38070700018); DIR:OUT;
+ SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?M3JIZ21JSDVRYzRVN09sNkI2dE1pNzJCclR0aGRSUzQ5ejdWWFkyVTdVQlVm?=
+ =?utf-8?B?enh5S0hhdzhCVEJxQ1NsSmxmcGl1azR4eHJjUUVCWGtVWS8ybXpldGZXaEMy?=
+ =?utf-8?B?OStaaWhKalRsVnFadkEvRFA1UlFMaG92R0lBRzlKMDdZMGMzNzdkclVHQXdQ?=
+ =?utf-8?B?MXkveXp4elYza1dxNmtYbzJQRDYyb0xrVXBlRjJMQlhTTzBudmh0dkxrVkxB?=
+ =?utf-8?B?WmsrVExMa253RDBIWGhEcGVuQjBuU1ovelFCSDVnYTB2eDNSZkVLdEdpWm0z?=
+ =?utf-8?B?RjIzK24xSU1OSkxEQ1dxMTJ6OGt4K1BlTk44Z3BzcGZBRmtqYSt2K2ZRWk9D?=
+ =?utf-8?B?MUtFTHhTMHVxdE1mUjhvSkxVeVp3N3FzVUZGc3c0MjRJa2ZuektWTWlqemNx?=
+ =?utf-8?B?V1dQNWxOMmhkVmNER2V0REx6U1NlR3dQRmVNdjJESzlVWmQwck05YWdTTTVR?=
+ =?utf-8?B?UXlpaU53ckJTTHRGazFMQkU4ck1SVEliRGw0OGRpajh1WTVNNVFLUlVzcFUx?=
+ =?utf-8?B?SHljcmoyWW84RHdYTGRWZkxYSXpFQXc1cEVUdzIvTjcrNG5zYzNMbWhGV0hz?=
+ =?utf-8?B?N1V2bVVNYlBBV05aRStYN29FbldmQkRSV1k4OG9lQVIvN2xWVEdYTFN4ZWlP?=
+ =?utf-8?B?NStZdHRDTlQyYWE1ZUt5OVBYai9XSnZ0TTJwSzZVSDlXcCtqM3NidXhiWTht?=
+ =?utf-8?B?d045M0drVXMzRDJHc04yWFhMbTJBWko2RjZiU08xOHpETUgrR0trWVRseklx?=
+ =?utf-8?B?S3E2TWtoTjdscHc4aHZ4WEpMRW9DNysrOW1rdDVnR1U2R216VGVEaUVZVnBC?=
+ =?utf-8?B?RzdMOXFlK25GSHM5NjVJQUhIeGlndG9XWENvUHRydFo0RUxJVUNua2tnS1U1?=
+ =?utf-8?B?SnU4WkdvbGNuOWM3bGd2dFZIcVJxNngvZUlEL25admQzQS9xNHYwUXRBak1P?=
+ =?utf-8?B?ckxpY3NhRXhTVmx5dlJDRTNqZTZwaThEa0xMQ3p1WGtETW04L0FsZzVXYXlN?=
+ =?utf-8?B?cGsvcUU5Q0ZsaGNaSGg2dTdkLzNUQWJzQkZ4Q1FsUDZPV1R1WDdwMFJndjlE?=
+ =?utf-8?B?TS95dlNQZkpxcWRGYSswVCtxUkJRbE1mQ0djOHdvSXlxeExXRXdvcU5EMS9G?=
+ =?utf-8?B?cFhSYXY3MzI2MWUweXFqajJ5V1IrQkx4WnZNZzU5WlZIZTIydDlMaHFMMW9n?=
+ =?utf-8?B?UDZXT05sNUlWNUpOUVllbHE1N0tVZFNYMG50dy9IYkJQR05FOG1XdmJXTHBQ?=
+ =?utf-8?B?NHlNamVTZzBndkxHYWpFVFh2aVhkdXVmWDk1elBXS3JHVVdTbnpRUUtadW1u?=
+ =?utf-8?B?VmFQZC9sZk5RNDFHdnczTy90V0MwOWVhTEUvYzZzQmRnRVQwQ0d4YW1LZk5R?=
+ =?utf-8?B?NHFFRE0xM0ZkK2dtNXBlUG5zYzMyaWdxNm43RTlmbUs3QzdMWTJydEFrc2J5?=
+ =?utf-8?B?TExxMndTWWU5S0FYZ1ZCZm9hR09hVW5KL1pUNjF5dCs3aGVQbjhGMEhCVGhz?=
+ =?utf-8?B?VmpvaytRc2VJUWU5TTlFTWg4UG9wWlk0MXV3NXRuSnk0QWVlenV3RFRrTUMv?=
+ =?utf-8?B?TU96VHdNSFNMYk0xVUMxcUN6cUx1S0JnQy9UTXQ3UGUrTEgwWkx3TG5iZ1Rt?=
+ =?utf-8?B?VjNKOWNnRnZobUFBZDR6VHphbmEzUlQ1K2JSdllodktUU2ZRcm12dGFtZUxX?=
+ =?utf-8?B?eTlVOEsrczVYYVFjTWpNWlhFY1FwUGU4NWFFdWJyMEQ2bFkvek5qNFlCR094?=
+ =?utf-8?B?TXBwNzQzeTlrU0ZQdmErSFoxZkNxaU1DRFVJRThZNVNQRitRZWFic1VVekg1?=
+ =?utf-8?B?bXdoQWlSYjBrTEJZYUw2emtIS0taakJSaWRKQjA0UzJYNzNZZDN3VFhjdkFW?=
+ =?utf-8?B?Y2VWbFRBWmwzb05HdGxIdzdBajh4L2ZsV0RmdkgvS2k0UWhzOE5vb3N1KzRP?=
+ =?utf-8?B?N2tjL0VqdXJ2MmdWRDBmYm9HS3dyeDVwVkEvZXAwemxiajBWRFgrMUNqaTZT?=
+ =?utf-8?B?d29MK05wWWRxRzA5cmFSTzIyZGxOSmt2UnhFRXNHeE4yckNILzFheXlkWDFH?=
+ =?utf-8?B?Um9yNDdJb3E0R1hpM3RQMkFZaXdRNGxlTEhVOVNhVVA2bDV6SlY1bHVpTnAx?=
+ =?utf-8?Q?RgT4MmyJk3QZ10DvZc33evMeh?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=raman.dzehtsiar@gmail.com; helo=mail-wm1-x331.google.com
+X-OriginatorOrg: aspeedtech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5041.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0f309468-970b-4afb-ee7a-08dd7af27b11
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Apr 2025 01:20:02.1426 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SqnPnOGfBiic/EkdGjqx9/w8kbeFZ2XavX6syJ29h38YXrl5GfBEjg87OTGB3vCiQPTIqoWnVtxZXCtJ+LWCt8L/XjxpAB8r/l6r7r/2MHE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYSPR06MB6716
+Received-SPF: pass client-ip=40.107.255.108;
+ envelope-from=jamin_lin@aspeedtech.com;
+ helo=APC01-PSA-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,299 +183,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch extends the blockdev-backup QMP command to allow users to specify
-how to behave when IO errors occur during copy-before-write operations.
-Previously, the behavior was fixed and could not be controlled by the user.
-
-The new 'on-cbw-error' option can be set to one of two values:
-- 'break-guest-write': Forwards the IO error to the guest and triggers
-  the on-source-error policy. This preserves snapshot integrity at the
-  expense of guest IO operations.
-- 'break-snapshot': Allows the guest OS to continue running normally,
-  but invalidates the snapshot and aborts related jobs. This prioritizes
-  guest operation over backup consistency.
-
-This enhancement provides more flexibility for backup operations in different
-environments where requirements for guest availability versus backup
-consistency may vary.
-
-The default behavior remains unchanged to maintain backward compatibility.
-
-Signed-off-by: Raman Dzehtsiar <Raman.Dzehtsiar@gmail.com>
----
- block/backup.c                                |  3 +-
- block/copy-before-write.c                     |  2 +
- block/copy-before-write.h                     |  1 +
- block/replication.c                           |  4 +-
- blockdev.c                                    |  6 ++
- include/block/block_int-global-state.h        |  2 +
- qapi/block-core.json                          |  4 +
- tests/qemu-iotests/tests/copy-before-write    | 90 +++++++++++++++++++
- .../qemu-iotests/tests/copy-before-write.out  |  4 +-
- 9 files changed, 112 insertions(+), 4 deletions(-)
-
-diff --git a/block/backup.c b/block/backup.c
-index 79652bf57b..0151e84395 100644
---- a/block/backup.c
-+++ b/block/backup.c
-@@ -361,6 +361,7 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
-                   BackupPerf *perf,
-                   BlockdevOnError on_source_error,
-                   BlockdevOnError on_target_error,
-+                  OnCbwError on_cbw_error,
-                   int creation_flags,
-                   BlockCompletionFunc *cb, void *opaque,
-                   JobTxn *txn, Error **errp)
-@@ -458,7 +459,7 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
-     }
- 
-     cbw = bdrv_cbw_append(bs, target, filter_node_name, discard_source,
--                          perf->min_cluster_size, &bcs, errp);
-+                          perf->min_cluster_size, &bcs, on_cbw_error, errp);
-     if (!cbw) {
-         goto error;
-     }
-diff --git a/block/copy-before-write.c b/block/copy-before-write.c
-index fd470f5f92..00af0b18ac 100644
---- a/block/copy-before-write.c
-+++ b/block/copy-before-write.c
-@@ -551,6 +551,7 @@ BlockDriverState *bdrv_cbw_append(BlockDriverState *source,
-                                   bool discard_source,
-                                   uint64_t min_cluster_size,
-                                   BlockCopyState **bcs,
-+                                  OnCbwError on_cbw_error,
-                                   Error **errp)
- {
-     BDRVCopyBeforeWriteState *state;
-@@ -568,6 +569,7 @@ BlockDriverState *bdrv_cbw_append(BlockDriverState *source,
-     }
-     qdict_put_str(opts, "file", bdrv_get_node_name(source));
-     qdict_put_str(opts, "target", bdrv_get_node_name(target));
-+    qdict_put_str(opts, "on-cbw-error", OnCbwError_str(on_cbw_error));
- 
-     if (min_cluster_size > INT64_MAX) {
-         error_setg(errp, "min-cluster-size too large: %" PRIu64 " > %" PRIi64,
-diff --git a/block/copy-before-write.h b/block/copy-before-write.h
-index 2a5d4ba693..eb93364e85 100644
---- a/block/copy-before-write.h
-+++ b/block/copy-before-write.h
-@@ -42,6 +42,7 @@ BlockDriverState *bdrv_cbw_append(BlockDriverState *source,
-                                   bool discard_source,
-                                   uint64_t min_cluster_size,
-                                   BlockCopyState **bcs,
-+                                  OnCbwError on_cbw_error,
-                                   Error **errp);
- void bdrv_cbw_drop(BlockDriverState *bs);
- 
-diff --git a/block/replication.c b/block/replication.c
-index 0020f33843..748cf648ec 100644
---- a/block/replication.c
-+++ b/block/replication.c
-@@ -584,7 +584,9 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-                                 0, MIRROR_SYNC_MODE_NONE, NULL, 0, false, false,
-                                 NULL, &perf,
-                                 BLOCKDEV_ON_ERROR_REPORT,
--                                BLOCKDEV_ON_ERROR_REPORT, JOB_INTERNAL,
-+                                BLOCKDEV_ON_ERROR_REPORT,
-+                                ON_CBW_ERROR_BREAK_GUEST_WRITE,
-+                                JOB_INTERNAL,
-                                 backup_job_completed, bs, NULL, &local_err);
-         if (local_err) {
-             error_propagate(errp, local_err);
-diff --git a/blockdev.c b/blockdev.c
-index 1d1f27cfff..818ec42511 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -2641,6 +2641,7 @@ static BlockJob *do_backup_common(BackupCommon *backup,
-     BdrvDirtyBitmap *bmap = NULL;
-     BackupPerf perf = { .max_workers = 64 };
-     int job_flags = JOB_DEFAULT;
-+    OnCbwError on_cbw_error = ON_CBW_ERROR_BREAK_GUEST_WRITE;
- 
-     if (!backup->has_speed) {
-         backup->speed = 0;
-@@ -2745,6 +2746,10 @@ static BlockJob *do_backup_common(BackupCommon *backup,
-         job_flags |= JOB_MANUAL_DISMISS;
-     }
- 
-+    if (backup->has_on_cbw_error) {
-+        on_cbw_error = backup->on_cbw_error;
-+    }
-+
-     job = backup_job_create(backup->job_id, bs, target_bs, backup->speed,
-                             backup->sync, bmap, backup->bitmap_mode,
-                             backup->compress, backup->discard_source,
-@@ -2752,6 +2757,7 @@ static BlockJob *do_backup_common(BackupCommon *backup,
-                             &perf,
-                             backup->on_source_error,
-                             backup->on_target_error,
-+                            on_cbw_error,
-                             job_flags, NULL, NULL, txn, errp);
-     return job;
- }
-diff --git a/include/block/block_int-global-state.h b/include/block/block_int-global-state.h
-index eb2d92a226..0d93783763 100644
---- a/include/block/block_int-global-state.h
-+++ b/include/block/block_int-global-state.h
-@@ -179,6 +179,7 @@ void mirror_start(const char *job_id, BlockDriverState *bs,
-  *        all ".has_*" fields are ignored.
-  * @on_source_error: The action to take upon error reading from the source.
-  * @on_target_error: The action to take upon error writing to the target.
-+ * @on_cbw_error: The action to take upon error in copy-before-write operations.
-  * @creation_flags: Flags that control the behavior of the Job lifetime.
-  *                  See @BlockJobCreateFlags
-  * @cb: Completion function for the job.
-@@ -198,6 +199,7 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
-                             BackupPerf *perf,
-                             BlockdevOnError on_source_error,
-                             BlockdevOnError on_target_error,
-+                            OnCbwError on_cbw_error,
-                             int creation_flags,
-                             BlockCompletionFunc *cb, void *opaque,
-                             JobTxn *txn, Error **errp);
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index b1937780e1..d35326167d 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -1622,6 +1622,9 @@
- # @discard-source: Discard blocks on source which have already been
- #     copied to the target.  (Since 9.1)
- #
-+# @on-cbw-error: optional policy defining behavior on I/O errors in
-+#     copy-before-write jobs; defaults to break-guest-write.  (Since 10.0)
-+#
- # @x-perf: Performance options.  (Since 6.0)
- #
- # Features:
-@@ -1641,6 +1644,7 @@
-             '*compress': 'bool',
-             '*on-source-error': 'BlockdevOnError',
-             '*on-target-error': 'BlockdevOnError',
-+            '*on-cbw-error': 'OnCbwError',
-             '*auto-finalize': 'bool', '*auto-dismiss': 'bool',
-             '*filter-node-name': 'str',
-             '*discard-source': 'bool',
-diff --git a/tests/qemu-iotests/tests/copy-before-write b/tests/qemu-iotests/tests/copy-before-write
-index 498c558008..23d70c7fe7 100755
---- a/tests/qemu-iotests/tests/copy-before-write
-+++ b/tests/qemu-iotests/tests/copy-before-write
-@@ -99,6 +99,66 @@ class TestCbwError(iotests.QMPTestCase):
-         log = iotests.filter_qemu_io(log)
-         return log
- 
-+    def do_cbw_error_via_blockdev_backup(self, on_cbw_error=None):
-+        self.vm.cmd('blockdev-add', {
-+            'node-name': 'source',
-+            'driver': iotests.imgfmt,
-+            'file': {
-+                'driver': 'file',
-+                'filename': source_img
-+            }
-+        })
-+
-+        self.vm.cmd('blockdev-add', {
-+            'node-name': 'target',
-+            'driver': iotests.imgfmt,
-+            'file': {
-+                'driver': 'blkdebug',
-+                'image': {
-+                    'driver': 'file',
-+                    'filename': temp_img
-+                },
-+                'inject-error': [
-+                    {
-+                        'event': 'write_aio',
-+                        'errno': 5,
-+                        'immediately': False,
-+                        'once': True
-+                    }
-+                ]
-+            }
-+        })
-+
-+        blockdev_backup_options = {
-+            'device': 'source',
-+            'target': 'target',
-+            'sync': 'none',
-+            'job-id': 'job-id',
-+            'filter-node-name': 'cbw'
-+        }
-+
-+        if on_cbw_error:
-+            blockdev_backup_options['on-cbw-error'] = on_cbw_error
-+
-+        self.vm.cmd('blockdev-backup', blockdev_backup_options)
-+
-+        self.vm.cmd('blockdev-add', {
-+            'node-name': 'access',
-+            'driver': 'snapshot-access',
-+            'file': 'cbw'
-+        })
-+
-+        result = self.vm.qmp('human-monitor-command', command_line='qemu-io cbw "write 0 1M"')
-+        self.assert_qmp(result, 'return', '')
-+
-+        result = self.vm.qmp('human-monitor-command', command_line='qemu-io access "read 0 1M"')
-+        self.assert_qmp(result, 'return', '')
-+
-+        self.vm.shutdown()
-+        log = self.vm.get_log()
-+        log = iotests.filter_qemu_io(log)
-+        return log
-+
-     def test_break_snapshot_on_cbw_error(self):
-         """break-snapshot behavior:
-         Guest write succeed, but further snapshot-read fails, as snapshot is
-@@ -123,6 +183,36 @@ read failed: Permission denied
- write failed: Input/output error
- read 1048576/1048576 bytes at offset 0
- 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+""")
-+
-+    def test_break_snapshot_policy_forwarding(self):
-+        """Ensure CBW filter accepts break-snapshot policy specified in blockdev-backup QMP command.
-+        """
-+        log = self.do_cbw_error_via_blockdev_backup('break-snapshot')
-+        self.assertEqual(log, """\
-+wrote 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read failed: Permission denied
-+""")
-+
-+    def test_break_guest_write_policy_forwarding(self):
-+        """Ensure CBW filter accepts break-guest-write policy specified in blockdev-backup QMP command.
-+        """
-+        log = self.do_cbw_error_via_blockdev_backup('break-guest-write')
-+        self.assertEqual(log, """\
-+write failed: Input/output error
-+read 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+""")
-+
-+    def test_default_on_cbw_error_policy_forwarding(self):
-+        """Ensure break-guest-write policy is used by default when on-cbw-error is not explicitly specified.
-+        """
-+        log = self.do_cbw_error_via_blockdev_backup()
-+        self.assertEqual(log, """\
-+write failed: Input/output error
-+read 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
- """)
- 
-     def do_cbw_timeout(self, on_cbw_error):
-diff --git a/tests/qemu-iotests/tests/copy-before-write.out b/tests/qemu-iotests/tests/copy-before-write.out
-index 89968f35d7..2f7d3902f2 100644
---- a/tests/qemu-iotests/tests/copy-before-write.out
-+++ b/tests/qemu-iotests/tests/copy-before-write.out
-@@ -1,5 +1,5 @@
--....
-+.......
- ----------------------------------------------------------------------
--Ran 4 tests
-+Ran 7 tests
- 
- OK
--- 
-2.43.0
-
+SGkgQ2VkcmljLCANCg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDAwLzEwXSBTdXBwb3J0IHZi
+b290cm9tIGZvciBBU1QyNzAwDQo+IA0KPiBIZWxsbyBKYW1pbg0KPiANCj4gT24gNC8xMC8yNSAw
+NDozOCwgSmFtaW4gTGluIHdyb3RlOg0KPiA+IHYxOg0KPiA+ICAgIEFkZCBpbml0aWFsIHN1cHBv
+cnQgZm9yIEFTVDI3eDANCj4gPiAgICBUaGUgcHVycG9zZSBvZiB2Ym9vdHJvbSBoZXJlIGlzIHRv
+IHNpbXVsYXRlIHRoZSB3b3JrIG9mIEJvb3RNQ1UgU1BMDQo+IChyaXNjdikNCj4gPiAgICBpbiBB
+U1QyNzAwLCBiZWNhdXNlIFFFTVUgZG9lc24ndCBzdXBwb3J0IGhldGVyb2dlbm91cyBhcmNoaXRl
+Y3R1cmUNCj4geWV0Lg0KPiA+DQo+ID4gICAgYXN0Mjd4MF9ib290cm9tLmJpbiBpcyBhIHNpbXBs
+aWZpZWQsIGZyZWUgKEFwYWNoZSAyLjApIGJvb3QgUk9NIGZvcg0KPiA+ICAgIEFTUEVFRCBBU1Qy
+N3gwIEJNQyBTT0MuIEl0IGN1cnJlbnRseSBpbXBsZW1lbnRzIHRoZSBiYXJlIG1pbmltdW0NCj4g
+dG8NCj4gPiAgICBsb2FkLCBwYXJzZSwgaW5pdGlhbGl6ZSBhbmQgcnVuIGJvb3QgaW1hZ2VzIHN0
+b3JlZCBpbiBTUEkgZmxhc2gsIGJ1dCBtYXkNCj4gZ3Jvdw0KPiA+ICAgIG1vcmUgZmVhdHVyZXMg
+b3ZlciB0aW1lIGFzIG5lZWRlZC4gVGhlIHNvdXJjZSBjb2RlIGlzIGF2YWlsYWJsZSBhdDoNCj4g
+PiAgICBodHRwczovL2dpdGh1Yi5jb20vZ29vZ2xlL3Zib290cm9tDQo+IA0KPiBJIGRvbid0IHNl
+ZSBhbnkgdXBkYXRlcyBvbiB0aGUgdmJvb3Ryb20gZ2l0aHViIHJlcG8gZm9yIEFzcGVlZCBTb0Nz
+LiBJcyB0aGUNCj4gdmJvb3Ryb20gY29tcGF0aWJsZSB3aXRoIHRoZSBOdXZvdG9uIFNvQyA/DQo+
+IA0KSSBhbSB1cHN0cmVhbWluZyBnb29nbGUvdmJvb3Ryb20gdG8gc3VwcG9ydCBBU1QyN1gwIGFu
+ZCBjb2RlIGNoYW5nZXMgaW4gdGhpcw0KcHVsbCByZXF1ZXN0LCAgaHR0cHM6Ly9naXRodWIuY29t
+L2dvb2dsZS92Ym9vdHJvbS9wdWxsLzUNCg0KVGhhbmtzLUphbWluDQoNCj4gDQo+IFRoYW5rcywN
+Cj4gDQo+IEMuDQo+IA0KPiANCj4gDQo+IA0KPiA+IHYyOg0KPiA+ICAgIEFkZCAiSW50cm9kdWNl
+ZCBBU1BFRURfREVWX1ZCT09UUk9NIGluIHRoZSBkZXZpY2UgZW51bWVyYXRpb24iDQo+IHBhdGNo
+IHRvIGZpeA0KPiA+ICAgIGJ1aWxkIGZhaWxlZC4NCj4gPg0KPiA+IEphbWluIExpbiAoMTApOg0K
+PiA+ICAgIGh3L2FybS9hc3BlZWQ6IEludHJvZHVjZWQgQVNQRUVEX0RFVl9WQk9PVFJPTSBpbiB0
+aGUgZGV2aWNlDQo+ID4gICAgICBlbnVtZXJhdGlvbg0KPiA+ICAgIGh3L2FybS9hc3BlZWRfYXN0
+Mjd4MDogQWRkICJ2Ym9vdHJvbV9zaXplIiBmaWVsZCB0byBBc3BlZWRTb0NDbGFzcw0KPiA+ICAg
+IGh3L2FybS9hc3BlZWRfYXN0Mjd4MDogUmVuYW1lIHZhcmlhYmxlIHNyYW1fbmFtZSB0byBuYW1l
+IGluDQo+IGFzdDI3MDANCj4gPiAgICAgIHJlYWxpemUNCj4gPiAgICBody9hcm0vYXNwZWVkX2Fz
+dDI3eDAgSW50cm9kdWNlIHZib290cm9tIG1lbW9yeSByZWdpb24NCj4gPiAgICBody9hcm0vYXNw
+ZWVkOiBFbmFibGUgdmJvb3Ryb20gc3VwcG9ydCBieSBkZWZhdWx0IG9uIEFTVDI3MDAgRVZCDQo+
+ID4gICAgICBtYWNoaW5lcw0KPiA+ICAgIGh3L2FybS9hc3BlZWQ6IFJldXNlIHJvbV9zaXplIHZh
+cmlhYmxlIGZvciB2Ym9vdHJvbSBzZXR1cA0KPiA+ICAgIGh3L2FybS9hc3BlZWQ6IEFkZCBzdXBw
+b3J0IGZvciBsb2FkaW5nIHZib290cm9tIGltYWdlIHZpYSAiLWJpb3MiDQo+ID4gICAgcGMtYmlv
+czogQWRkIEFTVDI3eDAgdkJvb3Ryb20NCj4gPiAgICB0ZXN0cy9mdW5jdGlvbmFsL2FzcGVlZDog
+VXBkYXRlIEFTVDI3MDAgZnVuY3Rpb25hbCB0ZXN0IHRvIHVzZQ0KPiA+ICAgICAgdmJvb3Ryb20N
+Cj4gPiAgICBkb2NzL3N5c3RlbS9hcm0vYXNwZWVkOiBTdXBwb3J0IHZib290cm9tIGZvciBBU1Qy
+NzAwDQo+ID4NCj4gPiAgIE1BSU5UQUlORVJTICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+ICAgMSArDQo+ID4gICBkb2NzL3N5c3RlbS9hcm0vYXNwZWVkLnJzdCAgICAgICAgICAgICAgfCAg
+MTggKysrLS0tLS0tLS0NCj4gPiAgIGluY2x1ZGUvaHcvYXJtL2FzcGVlZC5oICAgICAgICAgICAg
+ICAgICB8ICAgMSArDQo+ID4gICBpbmNsdWRlL2h3L2FybS9hc3BlZWRfc29jLmggICAgICAgICAg
+ICAgfCAgIDMgKysNCj4gPiAgIGh3L2FybS9hc3BlZWQuYyAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAzNw0KPiArKysrKysrKysrKysrKysrKysrKysrLQ0KPiA+ICAgaHcvYXJtL2FzcGVlZF9h
+c3QyN3gwLmMgICAgICAgICAgICAgICAgIHwgIDIwICsrKysrKysrKystLS0NCj4gPiAgIHBjLWJp
+b3MvUkVBRE1FICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNiArKysrDQo+ID4gICBwYy1i
+aW9zL2FzdDI3eDBfYm9vdHJvbS5iaW4gICAgICAgICAgICAgfCBCaW4gMCAtPiAxNTQ2NCBieXRl
+cw0KPiA+ICAgcGMtYmlvcy9tZXNvbi5idWlsZCAgICAgICAgICAgICAgICAgICAgIHwgICAxICsN
+Cj4gPiAgIHRlc3RzL2Z1bmN0aW9uYWwvdGVzdF9hYXJjaDY0X2FzcGVlZC5weSB8ICAzOCArLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPiAgIDEwIGZpbGVzIGNoYW5nZWQsIDY5IGluc2VydGlv
+bnMoKyksIDU2IGRlbGV0aW9ucygtKQ0KPiA+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IHBjLWJpb3Mv
+YXN0Mjd4MF9ib290cm9tLmJpbg0KPiA+DQoNCg==
 
