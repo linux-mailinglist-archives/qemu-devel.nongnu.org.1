@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20B5A884F2
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 16:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3A4A884E0
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 16:29:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4KoI-0003IF-B3; Mon, 14 Apr 2025 10:29:18 -0400
+	id 1u4KoH-0003Hl-96; Mon, 14 Apr 2025 10:29:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u4KoA-0003Db-Gu; Mon, 14 Apr 2025 10:29:10 -0400
+ id 1u4KoC-0003EC-4a; Mon, 14 Apr 2025 10:29:14 -0400
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u4Ko8-00064c-Up; Mon, 14 Apr 2025 10:29:10 -0400
+ id 1u4KoA-00066W-HA; Mon, 14 Apr 2025 10:29:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744640949; x=1776176949;
+ t=1744640951; x=1776176951;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=aHKZirzvZLm5HMaaF4zs6cIuJscdkK9KXJGrwuOgCto=;
- b=doU1NpLFAhNARvzzDp9ySMszwOZLjjpD8GffkRVcHKSoWBwWogqxyNcx
- PYDzI80jV8cBaE36Cz4cZVC2xVxZs4We/5x6ldGIjKmgOADq2LHx0iIOW
- Wm/PKNocN1A8ERUOWChqtn3oga5FgWVBfS1WTGvdQlGMGaM+f5ZQ4AXVV
- pVHmBP37GghsyiQ58rKqjgbopTn3Mex3l2/ml27/RIOodWx6ZkQ1PEUk7
- 25KidhdPC7Hf06Hm0OeJ2nAqO9isVkegSWzMdTSbJqAVxb/6nf+F6RTSA
- P7Cw1vU8BHH/AqYJnddJf4JizwxVJmJAFMxhP16A6Tbd5w3L2FFY44zS+ Q==;
-X-CSE-ConnectionGUID: XVUGEOo+T8CmpCXsJhzlHQ==
-X-CSE-MsgGUID: 823HrQg7Ts6Yyx3DEAydqA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="71501838"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="71501838"
+ bh=GYLXl6z0NzXsCEMB9cH1u8o2NEOag8csYLmTuoyZnLM=;
+ b=XQW+G9Yf+x/cdVvnEz62paW6BSTX/qP/xVHkZvFPXkwQ52/3mFIJFR4j
+ fGhMM1w7x3HjfE2lwCcd+mVb7+Dq2J6A4BfTkOhJ2Cdwuu4NsWctIT/Vu
+ fbIwVwnynhSZSoEBH842UYcLfW0QdRlAMo58qZ/vPPmp6VSUq/ghd6jYJ
+ 1oicg5ReJjSBVswWeZPAah/JAelOKzpsDSOAb+7levyusPgm/h98Mzn+y
+ frxJCLS683ce0mNtt8FKuspNTJ+u0BTMPCiJdykXwuqxQ4cpYC3lAxuWf
+ gL19UVYjiKk/0duYwlQ2j2k39wrcXRs+aR9nBixTyGBz/Sg0d8Mz/Qi6k g==;
+X-CSE-ConnectionGUID: qN5GQ3Y5TReJV51/0SDj6Q==
+X-CSE-MsgGUID: +1SiSsHPQu+DpVUcKH5FDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="71501845"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="71501845"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 07:29:04 -0700
-X-CSE-ConnectionGUID: WTmntqLIQQiakBGoPxZPuw==
-X-CSE-MsgGUID: u50bFtodSAeeyM81GojwRQ==
+ 14 Apr 2025 07:29:05 -0700
+X-CSE-ConnectionGUID: bGxuCsRLTyWU3CAbjPOCtg==
+X-CSE-MsgGUID: RUlzdQk3SxC2SUDKM+Hg7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="134606072"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="134606078"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 14 Apr 2025 07:29:02 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 14 Apr 2025 07:29:04 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
  Dapeng Mi <dapeng1.mi@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 4/9] rust/vmstate_test: Fix typo in
- test_vmstate_macro_array_of_pointer_wrapped()
-Date: Mon, 14 Apr 2025 22:49:38 +0800
-Message-Id: <20250414144943.1112885-5-zhao1.liu@intel.com>
+Subject: [PATCH 5/9] rust/timer: Define NANOSECONDS_PER_SECOND binding as u64
+Date: Mon, 14 Apr 2025 22:49:39 +0800
+Message-Id: <20250414144943.1112885-6-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250414144943.1112885-1-zhao1.liu@intel.com>
 References: <20250414144943.1112885-1-zhao1.liu@intel.com>
@@ -79,33 +78,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-test_vmstate_macro_array_of_pointer_wrapped() tests the 3rd element, so
-fix the index.
+NANOSECONDS_PER_SECOND is often used in operations with get_ns(), which
+currently returns a u64.
+
+Therefore, define a new NANOSECONDS_PER_SECOND binding is with u64 type
+to eliminate unnecessary type conversions (from u32 to u64).
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-api/tests/vmstate_tests.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/qemu-api/src/timer.rs | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/rust/qemu-api/tests/vmstate_tests.rs b/rust/qemu-api/tests/vmstate_tests.rs
-index d1e37c45eea4..f7a93117e1a0 100644
---- a/rust/qemu-api/tests/vmstate_tests.rs
-+++ b/rust/qemu-api/tests/vmstate_tests.rs
-@@ -408,12 +408,12 @@ fn test_vmstate_macro_array_of_pointer_wrapped() {
-     );
-     assert_eq!(foo_fields[3].offset, (FOO_ARRAY_MAX + 2) * PTR_SIZE);
-     assert_eq!(foo_fields[3].num_offset, 0);
--    assert_eq!(foo_fields[2].info, unsafe { &vmstate_info_uint8 });
-+    assert_eq!(foo_fields[3].info, unsafe { &vmstate_info_uint8 });
-     assert_eq!(foo_fields[3].version_id, 0);
-     assert_eq!(foo_fields[3].size, PTR_SIZE);
-     assert_eq!(foo_fields[3].num, FOO_ARRAY_MAX as i32);
-     assert_eq!(
--        foo_fields[2].flags.0,
-+        foo_fields[3].flags.0,
-         VMStateFlags::VMS_ARRAY.0 | VMStateFlags::VMS_ARRAY_OF_POINTER.0
-     );
-     assert!(foo_fields[3].vmsd.is_null());
+diff --git a/rust/qemu-api/src/timer.rs b/rust/qemu-api/src/timer.rs
+index f0b04ef95d7e..e769f8bc910d 100644
+--- a/rust/qemu-api/src/timer.rs
++++ b/rust/qemu-api/src/timer.rs
+@@ -121,3 +121,5 @@ pub fn get_ns(&self) -> u64 {
+ pub const CLOCK_VIRTUAL: ClockType = ClockType {
+     id: QEMUClockType::QEMU_CLOCK_VIRTUAL,
+ };
++
++pub const NANOSECONDS_PER_SECOND: u64 = 1000000000;
 -- 
 2.34.1
 
