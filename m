@@ -2,76 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A06AA885A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 16:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E03A884E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 16:29:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4L6L-0006kt-AF; Mon, 14 Apr 2025 10:47:57 -0400
+	id 1u4KoF-0003E6-ST; Mon, 14 Apr 2025 10:29:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1u4L64-0006jz-A3
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 10:47:42 -0400
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u4Ko5-0003Ch-H4; Mon, 14 Apr 2025 10:29:06 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1u4L61-0001KJ-Oa
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 10:47:39 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1744642034; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=E0FC9Nc0zb040YHBPfdYvsoHHPYnpIM3b7n5MOhH/yIXlWqLINsfMdxA0iZdb3QtGO1tziakHR6cF9XBfKFagddIkuYGr9AqbvmwJ5bfj1rAzjowd0z6e6gVqEkgIpIdT1TVUNicd3HhEP/wb7qbCMKbzykuMqBcxo2zLhqZSyI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1744642034;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=K4TAWU93SxcHR0bz4xFsv0c9lMbZZvlnvYLfJohOjl8=; 
- b=clg6pbfhpPCCfoycI+x24pQZGh4AzvkQdqQKNCQTJBwUCf6mCUF6rcnAD87Ae7ZfukKGRamUtlSKQ+Cd8Z3WLLT4Kz6zsg+BP1u00s6IL+pAFytZhDpsV3eHA85lqh/BSZ3f2QnfWHwZpHuX5c4hq+81pUeuVc0ZSa4kLoE2Wzw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1744642034; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=K4TAWU93SxcHR0bz4xFsv0c9lMbZZvlnvYLfJohOjl8=;
- b=in4tuCB23D+1Ml/nxSLVaE3zYZbQbWR15/RWVFrvTuIoyzOnByuXtHeYe94sJLup
- qdOaTsgIJrB34XOJxHCTQ7ehpVKj8WuC7x92kAJPQJl/loabyrwhZk1gPH9WSotAf+G
- fLFqrbFQtsotefGGM6ZiiTv3dVcxVnV4HKg6G/pM=
-Received: by mx.zohomail.com with SMTPS id 1744642032677107.94954364045145;
- Mon, 14 Apr 2025 07:47:12 -0700 (PDT)
-Message-ID: <425ebb80-4348-46f3-878b-054800a8fe85@collabora.com>
-Date: Mon, 14 Apr 2025 17:47:05 +0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u4Ko3-00064c-DK; Mon, 14 Apr 2025 10:29:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1744640943; x=1776176943;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Tkq5C7A+TylEhKr7ELqlYoPD6JH68FRFSyOsxjwL5Ak=;
+ b=EBGkphLZYaFrwWl2OqMR3vaE5IM1Y6AX/LjuPJ8+TimhTLKrsU8FSS0N
+ 2ri+hB3ZuwgTO97WYxkA9VP44J03BkQmOyG86xNstJjuNt1hLd1g8MoOZ
+ R68sjTfz2W65hSN6ClayHbMjGI8nriER+Fni+lErLl7yHNSD0x3vYfS8e
+ h4+op06ltlLRaB32HYNTvFS4YVFeVHARkF3fG06tOUcDAOvxqTNgNVptr
+ ZaLIFaUY4VyLopgmzXlO9zxKhqaXqm/Xht2UhnsdsIa/pLkIP4EwttNMY
+ Rv9TyJH4/ITlfYNgL2mHlSc9swIXzvml8lsBoj2CHwC3dqV9z2aAcbnZn g==;
+X-CSE-ConnectionGUID: 7A1R2LjeS4C5T8Fp0STTiQ==
+X-CSE-MsgGUID: gLEzc4EXR56v0mxsbon7qQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="71501824"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="71501824"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2025 07:28:57 -0700
+X-CSE-ConnectionGUID: /KE91WqwSdCqk2EbMpfOxg==
+X-CSE-MsgGUID: /x52C4R8Rw6IiGqTM7Pdiw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="134606050"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by fmviesa005.fm.intel.com with ESMTP; 14 Apr 2025 07:28:56 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 0/9] rust/hpet: Initial support for migration
+Date: Mon, 14 Apr 2025 22:49:34 +0800
+Message-Id: <20250414144943.1112885-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 04/10] virtio-gpu: Support asynchronous fencing
-To: =?UTF-8?B?5YiY6IGq?= <liucong2565@phytium.com.cn>
-Cc: Jiqian.Chen@amd.com, akihiko.odaki@daynix.com, alex.bennee@linaro.org,
- alexander.deucher@amd.com, christian.koenig@amd.com,
- gert.wollny@collabora.com, gurchetansingh@chromium.org, hi@alyssa.is,
- honglei1.huang@amd.com, julia.zhang@amd.com, kraxel@redhat.com,
- marcandre.lureau@redhat.com, mst@redhat.com, pbonzini@redhat.com,
- philmd@linaro.org, pierre-eric.pelloux-prayer@amd.com,
- qemu-devel@nongnu.org, ray.huang@amd.com, robdclark@gmail.com,
- roger.pau@citrix.com, slp@redhat.com, stefano.stabellini@amd.com,
- xenia.ragiadakou@amd.com, zzyiwei@chromium.org
-References: <20250310120555.150077-5-dmitry.osipenko@collabora.com>
- <20250410095454.188105-1-liucong2565@phytium.com.cn>
- <d0e9e72a-02bf-4f1e-abe0-6e8d0d089b29@collabora.com>
- <5514d916.6d34.19622831b11.Coremail.liucong2565@phytium.com.cn>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <5514d916.6d34.19622831b11.Coremail.liucong2565@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,98 +76,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/11/25 04:42, 刘聪 wrote:
-> 
-> 
-> 
->> -----Original Messages-----
->> From: "Dmitry Osipenko" <dmitry.osipenko@collabora.com>
->> Send time:Friday, 04/11/2025 05:59:11
->> To: "Cong Liu" <liucong2565@phytium.com.cn>
->> Cc: Jiqian.Chen@amd.com, akihiko.odaki@daynix.com, alex.bennee@linaro.org, alexander.deucher@amd.com, christian.koenig@amd.com, gert.wollny@collabora.com, gurchetansingh@chromium.org, hi@alyssa.is, honglei1.huang@amd.com, julia.zhang@amd.com, kraxel@redhat.com, marcandre.lureau@redhat.com, mst@redhat.com, pbonzini@redhat.com, philmd@linaro.org, pierre-eric.pelloux-prayer@amd.com, qemu-devel@nongnu.org, ray.huang@amd.com, robdclark@gmail.com, roger.pau@citrix.com, slp@redhat.com, stefano.stabellini@amd.com, xenia.ragiadakou@amd.com, zzyiwei@chromium.org
->> Subject: Re: [PATCH v11 04/10] virtio-gpu: Support asynchronous fencing
->>
->> 10.04.2025 12:54, Cong Liu пишет:
->>> I discovered that on an ARM64 environment, the 'virtio-gpu: Support asynchronous fencing' patch causes the virtual machine GUI to fail to display. Rolling back this patch and using virgl allows the virtual machine to start normally. When the VM screen is black, I can see some errors in QEMU. I used QEMU's -serial stdio to enter the virtual machine's command line console but didn't see any errors inside the VM - the graphical interface seems to be stuck. I would greatly appreciate any suggestions regarding effective troubleshooting methods or specific areas I should investigate to resolve this issue.
->>>
->>> Here's my software and hardware environment:
->>> - host and guest are ubuntu 24.04
->>> - QEMU: https://gitlab.freedesktop.org/digetx/qemu.git native-context-v11 branch
->>> - virglrender: latest main branch 08eb12d00711370002e8f8fa6d620df9b79f9e27
->>> - Mesa: Mesa 25.0~git2504031308.ff386e~oibaf~n (git-ff386eb 2025-04-03 noble-oibaf-ppa)
->>> - Kernel: Linux d3000 6.14.1-061401-generic #202504071048
->>> - GPU: Radeon RX 6600/6600 XT/6600M
->>> - CPU: phytium D3000 aarch64
->>>
->>> Here's the command I'm using to run the virtual machine, which displays a black frame with "Display output is not active" and fails to start the graphical interface normally:
->>>
->>>     phytium@d3000:~/working/qemu$ /usr/local/bin/qemu-system-aarch64 --machine virt,accel=kvm -cpu host -smp 4 -m 4G -drive file=/home/phytium/working/ubuntu24.04-aarch64-native-context,format=raw,if=virtio -bios /usr/share/AAVMF/AAVMF_CODE.ms.fd -netdev user,id=net0 -device virtio-net-pci,netdev=net0 -device virtio-gpu-gl -display gtk,gl=on,show-cursor=on -device usb-ehci,id=usb -device usb-mouse,bus=usb.0 -device usb-kbd,bus=usb.0
->>>
->>>     (qemu:46029): Gdk-WARNING **: 16:43:53.715: eglMakeCurrent failed
->>>     (qemu:46029): Gdk-WARNING **: 16:43:53.715: eglMakeCurrent failed
->>>     (qemu:46029): Gdk-WARNING **: 16:43:53.715: eglMakeCurrent failed
->>>     (qemu:46029): Gdk-WARNING **: 16:43:53.715: eglMakeCurrent failed
->>>     (qemu:46029): Gdk-WARNING **: 16:43:53.716: eglMakeCurrent failed
->>>
->>> When using SDL, the error messages are slightly different:
->>>
->>>     phytium@d3000:~/working/qemu$ /usr/local/bin/qemu-system-aarch64 --machine virt,accel=kvm -cpu host -smp 4 -m 4G -drive file=/home/phytium/working/ubuntu24.04-aarch64-native-context,format=raw,if=virtio -bios /usr/share/AAVMF/AAVMF_CODE.ms.fd -netdev user,id=net0 -device virtio-net-pci,netdev=net0 -device virtio-gpu-gl -display sdl,gl=on,show-cursor=on -device usb-ehci,id=usb -device usb-mouse,bus=usb.0 -device usb-kbd,bus=usb.0
->>>
->>>     vrend_renderer_fill_caps: Entering with stale GL error: 1286
->>>
->>
->> Hi,
->>
->> 1. Please make sure that you're not only building QEMU against your
->> virglrenderer version, but also setting LD_LIBRARY_PATH properly at
->> runtime. Best to remove system version of virglrenderer if unsure,
-> 
-> I built and installed virglrenderer with the --prefix=/usr option, so
->  it replaces the system version as expected.
-> 
->>
->> 2. Can you reproduce this problem using tcg instead of kvm?
->>
-> 
->  yes, change qemu command '--machine virt,accel=kvm -cpu host' to
-> '--machine virt -cpu max' can reproduce this problem. 
->> -- 
->> Best regards,
->> Dmitry
-> 
-> diff --git a/src/vrend_renderer.c b/src/vrend_renderer.c
-> index f6df9dcb..f6e06842 100644
-> --- a/src/vrend_renderer.c
-> +++ b/src/vrend_renderer.c
-> @@ -12808,7 +12808,7 @@ void vrend_renderer_fill_caps(uint32_t set, uint32_t version,
->                                union virgl_caps *caps)
->  {
->     int gl_ver, gles_ver;
-> -   GLenum err;
-> +   GLenum err = GL_NO_ERROR;
->     bool fill_capset2 = false;
->  
->     if (!caps)
-> 
-> phytium@d3000:~/working/qemu$ git log --oneline  -n 10
-> e0286f56c8 (HEAD -> native-context-v11, origin/native-context-v11) Revert "amd_iommu: Add support for pass though mode"
-> d6e9eb0f0d docs/system: virtio-gpu: Document host/guest requirements
-> 55db821ea5 docs/system: virtio-gpu: Update Venus link
-> 003940db9a docs/system: virtio-gpu: Add link to Mesa VirGL doc
-> 7674e82755 ui/gtk: Don't disable scanout when display is refreshed
-> 712fd024e3 ui/sdl2: Don't disable scanout when display is refreshed
-> 9003da356f virtio-gpu: Support DRM native context
-> e2ff4f4a48 virtio-gpu: Support asynchronous fencing
-> 25458c7625 virtio-gpu: Handle virgl fence creation errors
-> 
-> I tried initializing GLenum err = GL_NO_ERROR in vrend_renderer_fill_caps, but it doesn’t seem to resolve the “Entering with stale GL error: 1286” message. However, this error might not be directly related to the VM black screen issue. I noticed that even when the VM was working correctly—specifically when I reset to commit 25458c7625—the same GL error still appeared.
+Hi all,
 
-Thanks for the report. I confirm that something is wrong with virgl when
-async fencing is used. Don't have this GL 1286 error, but getting a
-lockup on ARM VM and with one of my new x64 VM setups. Will investigate
-further and report back here.
+This series add the *initial* support for HPET migration.
+
+This is *initial* because the current migration implementation
+introduces multiple *unsafe* callbacks (please refer Patch 8).
+
+Before the vmstate builder, one possible cleanup approach is to wrap
+callbacks in the vmstate binding using a method similar to the
+vmstate_exist_fn macro.
+
+However, this approach would also create a lot of repetitive code (since
+vmstate has so many callbacks: pre_load, post_load, pre_save, post_save,
+needed and dev_unplug_pending). Although it would be cleaner, it would
+somewhat deviate from the path of the vmstate builder.
+
+Therefore, firstly focus on completing the functionality of HPET, and
+those current unsafe callbacks can at least clearly indicate the needed
+functionality of vmstate. The next step is to consider refactoring
+vmstate to move towards the vmstate builder direction.
+
+Test this series with 3 migration cases:
+ * q35 (Rust HPET) -> q35 (Rust HPET)
+ * q35 (Rust HPET) -> q35 (C HPET)
+ * q35 (C HPET) -> q35 (Rust HPET)
+
+Thanks and Best Regards,
+Zhao
+---
+Zhao Liu (9):
+  rust/vmstate: Support field_exists check in vmstate_struct macro
+  rust/vmstate: Support varray's num field wrapped in BqlCell
+  rust/vmstate_test: Test varray with num field wrapped in BqlCell
+  rust/vmstate_test: Fix typo in
+    test_vmstate_macro_array_of_pointer_wrapped()
+  rust/timer: Define NANOSECONDS_PER_SECOND binding as u64
+  rust/hpet: convert num_timers to u8 type
+  rust/hpet: convert HPETTimer index to u8 type
+  rust/hpet: Support migration
+  rust/hpet: Fix a clippy error
+
+ docs/devel/rust.rst                  |   3 +-
+ rust/hw/timer/hpet/src/hpet.rs       | 189 ++++++++++++++++++++++++---
+ rust/qemu-api/src/assertions.rs      |  30 ++++-
+ rust/qemu-api/src/cell.rs            |  23 ++++
+ rust/qemu-api/src/timer.rs           |   2 +
+ rust/qemu-api/src/vmstate.rs         |  67 +++++-----
+ rust/qemu-api/tests/vmstate_tests.rs |  45 +++++--
+ 7 files changed, 294 insertions(+), 65 deletions(-)
 
 -- 
-Best regards,
-Dmitry
+2.34.1
+
 
