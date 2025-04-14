@@ -2,69 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129B2A87859
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 09:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C83ECA878A0
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 09:23:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4DqR-0006qT-5D; Mon, 14 Apr 2025 03:03:05 -0400
+	id 1u4E8J-0003IX-Ci; Mon, 14 Apr 2025 03:21:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1u4Dq5-0006q1-Gt; Mon, 14 Apr 2025 03:02:41 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ id 1u4E7y-0003Hn-7k; Mon, 14 Apr 2025 03:21:12 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1u4Dq1-0005GT-Us; Mon, 14 Apr 2025 03:02:41 -0400
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:471f:0:640:4191:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 8C3F160AC5;
- Mon, 14 Apr 2025 10:02:30 +0300 (MSK)
+ id 1u4E7s-0000ql-Oq; Mon, 14 Apr 2025 03:21:09 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c15:2b89:0:640:9815:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 58CDC60A77;
+ Mon, 14 Apr 2025 10:20:57 +0300 (MSK)
 Received: from [IPV6:2a02:6b8:b081:b4ae::1:27] (unknown
  [2a02:6b8:b081:b4ae::1:27])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id T2Apg56FbCg0-lztRIasS; Mon, 14 Apr 2025 10:02:29 +0300
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id uKA8g36FYqM0-0RPFbvn6; Mon, 14 Apr 2025 10:20:56 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1744614149;
- bh=sn/b7/evmzcYPY5TJkMoa6sA1Ov+pseQUwd0sdgfp54=;
+ s=default; t=1744615256;
+ bh=L3XwvKo1oF/uEzjL7KIQJhvyJm6RW2nNUnZYPv0P2Vc=;
  h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=BXax2ipTtX1GjKHlQ0EYxkVMDy7xmQ3ZbDa/xmvpSlHtgFc3oAQeamPPbqajsOjRu
- 3vLvBUwXHIIp2RndYSJv9GAaGBrt+C0KNfemFP8DTBx2D+CKRQ8doXxXOsBCiNjPzd
- h6R1l+JDYBvYSZivneOsKlepeFoHRNg0oIGHu5Z0=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ b=zyJX3lkeUZJaCKt/1fskA+77QlTet619wQu+o9a/nyDju53oSAl4Ozwhg8R93dUzh
+ FM67lsjvLumxQMPuVy1/N1cFWI+rSBG02CALrTCgMM/yVqeABAOAFRmeI2MjJJVX7X
+ fn2DwKK9ULGpPg11/C7pNHoyrEHp3wA+3QGR/3gI=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <5e9f5824-984b-4a6f-b26b-614be0460c2a@yandex-team.ru>
-Date: Mon, 14 Apr 2025 10:02:29 +0300
+Message-ID: <a5eed68b-a9fa-45c0-a17e-276fee240840@yandex-team.ru>
+Date: Mon, 14 Apr 2025 10:20:56 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] blockdev-backup: Add error handling option for
- copy-before-write jobs
-To: Raman Dzehtsiar <raman.dzehtsiar@gmail.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>,
- Wen Congyang <wencongyang2@huawei.com>, Markus Armbruster
- <armbru@redhat.com>, Xie Changlong <xiechanglong.d@gmail.com>,
- Eric Blake <eblake@redhat.com>, qemu-block@nongnu.org
-References: <20250304091703.462342-1-Raman.Dzehtsiar@gmail.com>
- <3806d9f0-c689-47fa-a0cb-37b9c33685b2@yandex-team.ru>
- <CA+uc5a0wB54KixsKqF10njhfcZd9xkwWiPQoofZFjQ8+LsDBLA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] deprecate some block-job- APIs
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ armbru@redhat.com, eblake@redhat.com, jsnow@redhat.com,
+ devel@lists.libvirt.org, pkrempa@redhat.com, michael.roth@amd.com,
+ pbonzini@redhat.com
+References: <20250409084232.28201-1-vsementsov@yandex-team.ru>
 Content-Language: en-US
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <CA+uc5a0wB54KixsKqF10njhfcZd9xkwWiPQoofZFjQ8+LsDBLA@mail.gmail.com>
+In-Reply-To: <20250409084232.28201-1-vsementsov@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,25 +75,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14.04.25 04:30, Raman Dzehtsiar wrote:
-> Hi Vladimir,
-> Thank you for your review.
+On 09.04.25 11:42, Vladimir Sementsov-Ogievskiy wrote:
+> This is for 10.1, of course.
 > 
->> The patch looks good to me. Still, could you also provide a test for a new option?
->> Probably the simplest would be add a test-case to `tests/qemu-iotests/tests/copy-before-write`, where existing on-cbw-error option is tested. Or you can make a separate test.
+> v3: fix wording, typos
+> v2: Update documentation: add patch 01
 > 
-> I've added test cases to the `copy-before-write` test to cover the new
-> option. The changes are included in v3 of the patch.
-> Would appreciate it if you could take another look.
-
-Will do
-
-> Still hoping it
-> can make it into v10.
+> v1 was:
+> [PATCH] [for-10.1] qapi/block-core: derpecate some block-job- APIs
+> Supersedes: <20250401155730.103718-1-vsementsov@yandex-team.ru>
+> 
+> Vladimir Sementsov-Ogievskiy (2):
+>    qapi: synchronize jobs and block-jobs documentation
+>    qapi/block-core: deprecate some block-job- APIs
+> 
+>   docs/about/deprecated.rst | 31 +++++++++++++
+>   qapi/block-core.json      | 91 ++++++++++++++++++++++++++++-----------
+>   qapi/job.json             | 30 ++++++++++++-
+>   3 files changed, 125 insertions(+), 27 deletions(-)
 > 
 
-10.0 - unfortunately, impossible. It's frozen (for new features) since March 11, and should be released tomorrow or a week later. See planning here: https://wiki.qemu.org/Planning/10.0
-10.1 is a target for the series.
+Thanks for review, applied to my block branch.
 
 -- 
 Best regards,
