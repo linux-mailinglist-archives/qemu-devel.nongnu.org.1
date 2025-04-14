@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED2FA8826A
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 15:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05645A88297
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 15:39:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4JxQ-0003VZ-Ip; Mon, 14 Apr 2025 09:34:40 -0400
+	id 1u4K1a-0005Fw-Ar; Mon, 14 Apr 2025 09:38:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1u4JxL-0003VI-Jp; Mon, 14 Apr 2025 09:34:36 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1u4K1X-0005FT-KZ; Mon, 14 Apr 2025 09:38:55 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1u4JxI-00060l-67; Mon, 14 Apr 2025 09:34:35 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EAvjVR011560;
- Mon, 14 Apr 2025 13:34:29 GMT
+ id 1u4K1V-0006le-SY; Mon, 14 Apr 2025 09:38:55 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EAej5d012665;
+ Mon, 14 Apr 2025 13:38:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-type:date:from:in-reply-to:message-id:mime-version
- :references:subject:to; s=pp1; bh=SBMcRSpilNqcPQGH2zilpy5yZW1iZ8
- O/0pT68SJ9RFU=; b=gq55Bm5ZzW0v87OkSfm5IZHvsmbCAoWKZ1EYQXIJbme9Pg
- z6sQ32D7zLO1avFwGT7RRh1s5/4/hdkBCYvn+dxg+muroUL0/n9vJ473UM5Dw44Q
- xJdXj4rAS7YYdPPHiLqtcJ+G0jlPKLT68tW7Hk7gvfU2nEP9IMceAbbYiuCx8V2V
- pchqMTrEkkuACfAjEqd/ECJqMuIGdDhjd2g7JUDbKALxbshureeIChEFanS64Qm+
- gOSGpqRtldD5ra9ce76wrP3L/ZE5nnoRIp+7U7Smz0olB6q6JozSQgQbJUHxuN6n
- 93OP42f5oNsF/rYgMy5R+loQ+9edV12otm05xt8g==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 460mufunjv-1
+ :references:subject:to; s=pp1; bh=l+sTelu54ZhzAs/roq+p/KbRP9WCWR
+ IBpGRnrMxrcuE=; b=ThEoOXiLP1GVLwSet1jCWWPY6Dv9HP/OemiLmmWTOmv5RN
+ 1DL7hyNyJtHl6gVmQI7b/GlHeuXQEr/D3a7r6WuuUkO92rWuPehjSfCJbYsCWD3X
+ qLGPEX74tBw3ptP5LDJEQhUhvxG22F6dyO+MMSmDUccc/Y83ByGVP6QE4reKWa1H
+ Jlju1O3ELtg8AZLV51fa9lOneXso5jIod5vghMNVLbut9LO569hUmcTDg3A02mgb
+ 6+84avpknqbXvQbc+1orGpxXzzl+bxHlJSgJ+/yjIRiyF3/J0YhnONktfkm0/2Zm
+ 9smqAikt6ARfaaRd2MP06uEhmtvXkC+iMz+m6E0w==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4610tp8tbn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Apr 2025 13:34:29 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53E9ZpvV010392;
- Mon, 14 Apr 2025 13:34:28 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4604qjx4ca-1
+ Mon, 14 Apr 2025 13:38:51 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53EAgQxg024900;
+ Mon, 14 Apr 2025 13:38:51 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4602gt6qrg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Apr 2025 13:34:28 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53EDYOTd41419130
+ Mon, 14 Apr 2025 13:38:50 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 53EDclbP29098700
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Apr 2025 13:34:24 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 85AA62004B;
- Mon, 14 Apr 2025 13:34:24 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6249020043;
- Mon, 14 Apr 2025 13:34:24 +0000 (GMT)
+ Mon, 14 Apr 2025 13:38:47 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 45C6220049;
+ Mon, 14 Apr 2025 13:38:47 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1E93020040;
+ Mon, 14 Apr 2025 13:38:47 +0000 (GMT)
 Received: from osiris (unknown [9.155.199.163])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 14 Apr 2025 13:34:24 +0000 (GMT)
-Date: Mon, 14 Apr 2025 15:34:23 +0200
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon, 14 Apr 2025 13:38:47 +0000 (GMT)
+Date: Mon, 14 Apr 2025 15:38:45 +0200
 From: Steffen Eiden <seiden@linux.ibm.com>
 To: Gautam Gala <ggala@linux.ibm.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v1 1/3] target/s390x: Introduce constant when checking if
- PV header couldn't be decrypted
-Message-ID: <20250414133423.61624-C-seiden@linux.ibm.com>
+Subject: Re: [PATCH v1 2/3] target/s390x: introduce function when exiting PV
+Message-ID: <20250414133845.61624-D-seiden@linux.ibm.com>
 References: <20250411092233.418164-1-ggala@linux.ibm.com>
- <20250411092233.418164-2-ggala@linux.ibm.com>
+ <20250411092233.418164-3-ggala@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250411092233.418164-2-ggala@linux.ibm.com>
+In-Reply-To: <20250411092233.418164-3-ggala@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: wvJZa0LzFiV9fBEs1yAFn5xw54afOuHi
-X-Proofpoint-ORIG-GUID: wvJZa0LzFiV9fBEs1yAFn5xw54afOuHi
+X-Proofpoint-GUID: kqOBNv9efvZJ3su1jFU7mBGwtpkO7Lki
+X-Proofpoint-ORIG-GUID: kqOBNv9efvZJ3su1jFU7mBGwtpkO7Lki
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-14_04,2025-04-10_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1011 malwarescore=0
- spamscore=0 impostorscore=0 priorityscore=1501 mlxlogscore=760 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504140098
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=seiden@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ priorityscore=1501
+ phishscore=0 clxscore=1015 mlxlogscore=794 adultscore=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504140098
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=seiden@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,13 +106,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 11, 2025 at 11:22:31AM +0200, Gautam Gala wrote:
-> Introduce a named constant when checking the Set Secure Configuration parameters
-> UV call return code for the case where no valid host key was found and therefore
-> the PV header couldn't be decrypted (0x108).
+On Fri, Apr 11, 2025 at 11:22:32AM +0200, Gautam Gala wrote:
+> introduce a static function when exiting PV. The function replaces an
+> existing macro (s390_pv_cmd_exit).
 > 
 > Signed-off-by: Gautam Gala <ggala@linux.ibm.com>
+> ---
+>  target/s390x/kvm/pv.c | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
+> 
+> diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
+> index 3a0a971f0b..b4abda2cef 100644
+> --- a/target/s390x/kvm/pv.c
+> +++ b/target/s390x/kvm/pv.c
+> @@ -59,14 +59,15 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
+>   */
+>  #define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data, NULL)
+>  #define s390_pv_cmd_pvrc(cmd, data, pvrc) __s390_pv_cmd(cmd, #cmd, data, pvrc)
+> -#define s390_pv_cmd_exit(cmd, data)    \
+> -{                                      \
+> -    int rc;                            \
+> -                                       \
+> -    rc = __s390_pv_cmd(cmd, #cmd, data, NULL); \
+> -    if (rc) {                          \
+> -        exit(1);                       \
+> -    }                                  \
+> +
+> +static void s390_pv_cmd_exit(uint32_t cmd, void *data)
+> +{
+> +    int rc;
+> +
+> +    rc = s390_pv_cmd(cmd, data);
+> +    if (rc) {
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+I am not sure if that violates Qemu coding style but you could inline the rc
+variable here to reduce LoC.
 
+> +        exit(1);
+> +    }
+>  }
+>  
+>  int s390_pv_query_info(void)
+> -- 
+> 2.49.0
+> 
+> 
 
