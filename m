@@ -2,103 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7828A884C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 16:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E67A8853E
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 16:38:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4KlU-0001JH-4q; Mon, 14 Apr 2025 10:26:24 -0400
+	id 1u4Kx5-0002c2-KT; Mon, 14 Apr 2025 10:38:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u4KlP-0001Ip-JB
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 10:26:19 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u4KlN-0005fr-L9
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 10:26:19 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 292941F7BA;
- Mon, 14 Apr 2025 14:26:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744640773; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=h4n6TExYb6nr1oIQh1rjmXfz6rcu8QDUd2lwE+0ubK0=;
- b=Oq9QXuGTxX8V7oa5ky6ue5898Gk0LRUuISZbartV26dK/F0S0MRkawmhk8wH9WCXPgqb/I
- NW5xKTqmw7RzXMXVKwkduyLpqRugRWI577C81jKr1WJlaYz2glDYI7SEO1EsVSTfrdLYLW
- hDdetPH59zTA2Wr3d5tIUPzVGycJil0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744640773;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=h4n6TExYb6nr1oIQh1rjmXfz6rcu8QDUd2lwE+0ubK0=;
- b=cbo3qbClpTe/3Iqyrs207phkCCM7IZ65uBAex6kgVwoXREcSjNXecljuIcgYtkws0w8dfR
- gQY3bA0a956HyeAQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744640773; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=h4n6TExYb6nr1oIQh1rjmXfz6rcu8QDUd2lwE+0ubK0=;
- b=Oq9QXuGTxX8V7oa5ky6ue5898Gk0LRUuISZbartV26dK/F0S0MRkawmhk8wH9WCXPgqb/I
- NW5xKTqmw7RzXMXVKwkduyLpqRugRWI577C81jKr1WJlaYz2glDYI7SEO1EsVSTfrdLYLW
- hDdetPH59zTA2Wr3d5tIUPzVGycJil0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744640773;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=h4n6TExYb6nr1oIQh1rjmXfz6rcu8QDUd2lwE+0ubK0=;
- b=cbo3qbClpTe/3Iqyrs207phkCCM7IZ65uBAex6kgVwoXREcSjNXecljuIcgYtkws0w8dfR
- gQY3bA0a956HyeAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 99FD41336F;
- Mon, 14 Apr 2025 14:26:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id pVasFgQb/WfhEAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 14 Apr 2025 14:26:12 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Manish Mishra <manish.mishra@nutanix.com>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com, peterx@redhat.com, leobras@redhat.com, Manish
- Mishra <manish.mishra@nutanix.com>
-Subject: Re: [PATCH v4] QIOChannelSocket: Flush zerocopy socket error queue
- on sendmsg failure due to ENOBUF
-In-Reply-To: <20250403082121.366851-1-manish.mishra@nutanix.com>
-References: <20250403082121.366851-1-manish.mishra@nutanix.com>
-Date: Mon, 14 Apr 2025 11:26:09 -0300
-Message-ID: <871ptuhla6.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1u4KwB-0002Kj-Fu; Mon, 14 Apr 2025 10:37:27 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1u4Kw9-0007in-F7; Mon, 14 Apr 2025 10:37:27 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EAtPMx029154;
+ Mon, 14 Apr 2025 14:37:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=uUF/92
+ 0Gy1eB3qHc8WfUoiozLHC74HB0y+ucYfNvofI=; b=Dt5V6hfw4bcVJKbo74NtJa
+ sGOStjZuV85OjVxFPlFyaiaD/ScUzGK4p7xV4iI5YiZOzuN7Xjm47ZDU+F/VjbdX
+ QNgaKa4pWUoxWRkpdrUeK7KwhJXp2dBhKbpdsMSYklNclmU4ZwuJhKnAObvCofJo
+ +6Dbs+UfDJvAxk7a9TwdTKv3nxDEFUdgyGeMHXdGrHjWklmY5OcbVmc/m4hAj+XU
+ 7m7nKKUs050Kz+MBRO2+bT82DAByRWX+veavhp5VeIM9zlyuHNntmxQOF4Io4zgP
+ Ej+yYmsyF+PD8qbDXIVnyi4E67XRSOziRVMXhX6OFZcmYa4IwNo0sKmwd6JHi4JQ
+ ==
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 460ndsuqma-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Apr 2025 14:37:21 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53EBLDn0000901;
+ Mon, 14 Apr 2025 14:37:21 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4602vyptfu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Apr 2025 14:37:21 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 53EEbKZc22610508
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 14 Apr 2025 14:37:20 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E1F3058059;
+ Mon, 14 Apr 2025 14:37:19 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E22AF58058;
+ Mon, 14 Apr 2025 14:37:18 +0000 (GMT)
+Received: from [9.61.250.58] (unknown [9.61.250.58])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 14 Apr 2025 14:37:18 +0000 (GMT)
+Message-ID: <9c837758-c45b-4e08-8cd9-918e25fb1063@linux.ibm.com>
+Date: Mon, 14 Apr 2025 10:37:18 -0400
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 5/5] s390: implementing CHSC SEI for AP config
+ change
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, akrowiak@linux.ibm.com
+References: <20250311151616.98244-1-rreyes@linux.ibm.com>
+ <20250311151616.98244-6-rreyes@linux.ibm.com>
+ <f2168937-5252-4e91-80d6-2ad344f443fa@redhat.com>
+ <ed45e437-5534-4ace-8a7e-196860b43cde@linux.ibm.com>
+ <ce83485a-7575-49df-a3eb-7feac3cfd675@redhat.com>
+Content-Language: en-US
+From: Rorie Reyes <rreyes@linux.ibm.com>
+In-Reply-To: <ce83485a-7575-49df-a3eb-7feac3cfd675@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oB-HxwcyNKRy-nhYZ9vjvrG89FegVMJa
+X-Proofpoint-ORIG-GUID: oB-HxwcyNKRy-nhYZ9vjvrG89FegVMJa
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-14_05,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015
+ mlxscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ mlxlogscore=976 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504140105
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=rreyes@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,206 +114,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Manish Mishra <manish.mishra@nutanix.com> writes:
+On 4/11/25 2:45 AM, Thomas Huth wrote:
 
-> We allocate extra metadata SKBs in case of a zerocopy send. This metadata
-> memory is accounted for in the OPTMEM limit. If there is any error while
-> sending zerocopy packets or if zerocopy is skipped, these metadata SKBs are
-> queued in the socket error queue. This error queue is freed when userspace
-> reads it.
+> #include CONFIG_DEVICES
 >
-> Usually, if there are continuous failures, we merge the metadata into a single
-> SKB and free another one. As a result, it never exceeds the OPTMEM limit.
-> However, if there is any out-of-order processing or intermittent zerocopy
-> failures, this error chain can grow significantly, exhausting the OPTMEM limit.
-> As a result, all new sendmsg requests fail to allocate any new SKB, leading to
-> an ENOBUF error. Depending on the amount of data queued before the flush
-> (i.e., large live migration iterations), even large OPTMEM limits are prone to
-> failure.
+> at the beginning of the ioinst.c file. Then you should be able to do:
 >
-> To work around this, if we encounter an ENOBUF error with a zerocopy sendmsg,
-> we flush the error queue and retry once more.
+> #ifdef CONFIG_VFIO_AP
+>     if (s390_has_feat(S390_FEAT_AP)) {
+>        return ap_chsc_sei_nt0_get_event(res);
+>     }
+> #endif
+This worked
 >
-> Signed-off-by: Manish Mishra <manish.mishra@nutanix.com>
-> ---
->  include/io/channel-socket.h |  5 +++
->  io/channel-socket.c         | 74 ++++++++++++++++++++++++++++++-------
->  2 files changed, 65 insertions(+), 14 deletions(-)
+> (or whatever the code should look like).
 >
-> V2:
->   1. Removed the dirty_sync_missed_zero_copy migration stat.
->   2. Made the call to qio_channel_socket_flush_internal() from
->      qio_channel_socket_writev() non-blocking.
+> Alternatively, and this might even be the nicer variant, add a file 
+> hw/vfio/ap-stub.c and include a dummy ap_chsc_sei_nt0_get_event() 
+> function there. Then in hw/vfio/meson.build add this line:
 >
-> V3:
->   1. Add the dirty_sync_missed_zero_copy migration stat again.
->
-> V4:
->   1. Minor nit to rename s/zero_copy_flush_pending/zerocopy_flushed_once.
->
-> diff --git a/include/io/channel-socket.h b/include/io/channel-socket.h
-> index ab15577d38..2c48b972e8 100644
-> --- a/include/io/channel-socket.h
-> +++ b/include/io/channel-socket.h
-> @@ -49,6 +49,11 @@ struct QIOChannelSocket {
->      socklen_t remoteAddrLen;
->      ssize_t zero_copy_queued;
->      ssize_t zero_copy_sent;
-> +    /**
-> +     * This flag indicates whether any new data was successfully sent with
-> +     * zerocopy since the last qio_channel_socket_flush() call.
-> +     */
-> +    bool new_zero_copy_sent_success;
->  };
->  
->  
-> diff --git a/io/channel-socket.c b/io/channel-socket.c
-> index 608bcf066e..d5882c16fe 100644
-> --- a/io/channel-socket.c
-> +++ b/io/channel-socket.c
-> @@ -37,6 +37,12 @@
->  
->  #define SOCKET_MAX_FDS 16
->  
-> +#ifdef QEMU_MSG_ZEROCOPY
-> +static int qio_channel_socket_flush_internal(QIOChannel *ioc,
-> +                                             bool block,
-> +                                             Error **errp);
-> +#endif
-> +
->  SocketAddress *
->  qio_channel_socket_get_local_address(QIOChannelSocket *ioc,
->                                       Error **errp)
-> @@ -65,6 +71,7 @@ qio_channel_socket_new(void)
->      sioc->fd = -1;
->      sioc->zero_copy_queued = 0;
->      sioc->zero_copy_sent = 0;
-> +    sioc->new_zero_copy_sent_success = FALSE;
->  
->      ioc = QIO_CHANNEL(sioc);
->      qio_channel_set_feature(ioc, QIO_CHANNEL_FEATURE_SHUTDOWN);
-> @@ -566,6 +573,7 @@ static ssize_t qio_channel_socket_writev(QIOChannel *ioc,
->      size_t fdsize = sizeof(int) * nfds;
->      struct cmsghdr *cmsg;
->      int sflags = 0;
-> +    bool zerocopy_flushed_once = FALSE;
->  
->      memset(control, 0, CMSG_SPACE(sizeof(int) * SOCKET_MAX_FDS));
->  
-> @@ -612,9 +620,25 @@ static ssize_t qio_channel_socket_writev(QIOChannel *ioc,
->              goto retry;
->          case ENOBUFS:
->              if (flags & QIO_CHANNEL_WRITE_FLAG_ZERO_COPY) {
-> -                error_setg_errno(errp, errno,
-> -                                 "Process can't lock enough memory for using MSG_ZEROCOPY");
-> -                return -1;
-> +                /**
-> +                 * Socket error queueing may exhaust the OPTMEM limit. Try
-> +                 * flushing the error queue once.
-> +                 */
-> +                if (!zerocopy_flushed_once) {
-> +                    ret = qio_channel_socket_flush_internal(ioc, false, errp);
-
-I'm not following this closely so I might have missed some disussion,
-but let me point out that the previous version had a comment regarding
-hardcoding 'false' here that I don't see addressed nor any comments
-explaining why it wasn't addressed.
-
-> +                    if (ret < 0) {
-> +                        error_setg_errno(errp, errno,
-> +                                         "Zerocopy flush failed");
-> +                        return -1;
-> +                    }
-> +                    zerocopy_flushed_once = TRUE;
-> +                    goto retry;
-> +                } else {
-> +                    error_setg_errno(errp, errno,
-> +                                     "Process can't lock enough memory for "
-> +                                     "using MSG_ZEROCOPY");
-> +                    return -1;
-> +                }
->              }
->              break;
->          }
-> @@ -725,8 +749,9 @@ static ssize_t qio_channel_socket_writev(QIOChannel *ioc,
->  
->  
->  #ifdef QEMU_MSG_ZEROCOPY
-> -static int qio_channel_socket_flush(QIOChannel *ioc,
-> -                                    Error **errp)
-> +static int qio_channel_socket_flush_internal(QIOChannel *ioc,
-> +                                             bool block,
-> +                                             Error **errp)
->  {
->      QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(ioc);
->      struct msghdr msg = {};
-> @@ -734,7 +759,6 @@ static int qio_channel_socket_flush(QIOChannel *ioc,
->      struct cmsghdr *cm;
->      char control[CMSG_SPACE(sizeof(*serr))];
->      int received;
-> -    int ret;
->  
->      if (sioc->zero_copy_queued == sioc->zero_copy_sent) {
->          return 0;
-> @@ -744,16 +768,19 @@ static int qio_channel_socket_flush(QIOChannel *ioc,
->      msg.msg_controllen = sizeof(control);
->      memset(control, 0, sizeof(control));
->  
-> -    ret = 1;
-> -
->      while (sioc->zero_copy_sent < sioc->zero_copy_queued) {
->          received = recvmsg(sioc->fd, &msg, MSG_ERRQUEUE);
->          if (received < 0) {
->              switch (errno) {
->              case EAGAIN:
-> -                /* Nothing on errqueue, wait until something is available */
-> -                qio_channel_wait(ioc, G_IO_ERR);
-> -                continue;
-> +                if (block) {
-> +                    /* Nothing on errqueue, wait until something is
-> +                     * available.
-> +                     */
-> +                    qio_channel_wait(ioc, G_IO_ERR);
-> +                    continue;
-> +                }
-> +                return 0;
->              case EINTR:
->                  continue;
->              default:
-> @@ -791,13 +818,32 @@ static int qio_channel_socket_flush(QIOChannel *ioc,
->          /* No errors, count successfully finished sendmsg()*/
->          sioc->zero_copy_sent += serr->ee_data - serr->ee_info + 1;
->  
-> -        /* If any sendmsg() succeeded using zero copy, return 0 at the end */
-> +        /* If any sendmsg() succeeded using zero copy, mark zerocopy success */
->          if (serr->ee_code != SO_EE_CODE_ZEROCOPY_COPIED) {
-> -            ret = 0;
-> +            sioc->new_zero_copy_sent_success = TRUE;
->          }
->      }
->  
-> -    return ret;
-> +    return 0;
-> +}
-> +
-> +static int qio_channel_socket_flush(QIOChannel *ioc,
-> +                                    Error **errp)
-> +{
-> +    QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(ioc);
-> +    int ret;
-> +
-> +    ret = qio_channel_socket_flush_internal(ioc, true, errp);
-> +    if (ret < 0) {
-> +        return ret;
-> +    }
-> +
-> +    if (sioc->new_zero_copy_sent_success) {
-> +        sioc->new_zero_copy_sent_success = FALSE;
-> +        return 0;
-> +    }
-> +
-> +    return 1;
->  }
->  
->  #endif /* QEMU_MSG_ZEROCOPY */
+> vfio_ss.add(when: 'CONFIG_VFIO_AP', if_false: files('ap-stub.c'))
+This worked as well. Since you mentioned that this is a nicer variant, 
+I'll go with this change. What do you recommend I do for my patches? 
+Should I do an interactive rebase to add the new file hw/vfio/ap-stub.c 
+and updating hw/vfio/meson.build? Or should I make two new commits for 
+each file (ap-stub.c and meson.build)
 
