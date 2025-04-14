@@ -2,90 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335C2A8786E
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 09:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F2BA8784F
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Apr 2025 09:02:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4Duv-0001fp-0a; Mon, 14 Apr 2025 03:07:41 -0400
+	id 1u4DoL-00067T-LK; Mon, 14 Apr 2025 03:00:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1u4Dur-0001fJ-GP
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 03:07:37 -0400
-Received: from mx1.zhaoxin.com ([210.0.225.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1u4Duo-0006TH-4i
- for qemu-devel@nongnu.org; Mon, 14 Apr 2025 03:07:37 -0400
-X-ASG-Debug-ID: 1744614440-086e2365b8bbdb0001-jgbH7p
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by
- mx1.zhaoxin.com with ESMTP id qUJKHu3mzJBDo1CJ (version=TLSv1.2
- cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Mon, 14 Apr 2025 15:07:20 +0800 (CST)
-X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from ZXSHMBX3.zhaoxin.com (10.28.252.165) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Mon, 14 Apr
- 2025 15:07:20 +0800
-Received: from ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2]) by
- ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2%6]) with mapi id
- 15.01.2507.044; Mon, 14 Apr 2025 15:07:20 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from [192.168.31.91] (10.28.66.62) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Mon, 14 Apr
- 2025 14:56:01 +0800
-Message-ID: <a0d83b72-2b19-4209-856d-3a358e1f6b27@zhaoxin.com>
-Date: Mon, 14 Apr 2025 14:55:59 +0800
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1u4DoE-000671-JN
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 03:00:47 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1u4DoC-00051m-Au
+ for qemu-devel@nongnu.org; Mon, 14 Apr 2025 03:00:46 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5e6167d0536so7395394a12.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Apr 2025 00:00:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1744614041; x=1745218841; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SsprGB0p78/ZOMCi5ouYqfNYnUmPeBUAiryS/OH5eBo=;
+ b=GT07cs7c2gWeCYViZ532X2fubY1NOrmOM/SFzQhdAurxRVe/XAvaKniKrIJaWLJYzl
+ Q9wzG54IPTNi2LDDketASn71QdgfHCPjYZykCi7o460C8Rc0B6NoyOPJJoeBv62786Mq
+ 7/Ch3FzA84yiDVAttGuM4FcGWwCbsEkVWQOplDIc/v9ku0+gvXAFLTPzX/I8fHtQ9LE4
+ csD9zhn4ldnOwQ2709O5jhGRdKcRRPPO9BdGsQ56z3Tu4gtct7SZ8xtHvsH75JhzQbeh
+ cc56hYumuN4ZmHLbudR4GSQo5SitNSUsoUQb5Ny0dAr3v6VS5BB3EQYbbV/q2nL9RYzO
+ XMyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744614041; x=1745218841;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SsprGB0p78/ZOMCi5ouYqfNYnUmPeBUAiryS/OH5eBo=;
+ b=t+dUGhkJhFTkK18OR1ApqheeuLv5PG77bc0lmYDAmipjyU5G4vXTI4BzsnAwgGoQSF
+ G7Bv6zYoVvtTAoNAac6Qhn/XWl0KQLSfggb6EPewzPaHB6m89ctLGd6Fshdu/+BqHrWB
+ dNHPHKR2+GmXRiq5JqfVdxCxRKK5dzl/ihlqTQZKIH1n0FMNMY+JksEUflvH0vLnYkSF
+ hTRBsiO7KIIfgOY4POvDTc9/BfpJU9TP+JP0ZH2RYJwsTZimC07J+SVTQQt6WoMPRaRh
+ MrD28BLfT3HCV/mKVEqsULn91/XzxSfdBLU+JIdMDlh0HkK6sqfqdG/sp1Pkc+v1CRue
+ iB6w==
+X-Gm-Message-State: AOJu0Yw8xcHKh26zFGei0fmcJtY1HsCT3sukFefKCYNZYLLcgLyan8uv
+ Gtz7sHSI7WwRkFwdUbmKTpWa+zVPu1W/L5shSj86v34j/QRdKyqnlS9L9EB65Yv/UZBU+vx4oNg
+ tiPYwNipyYhNEBZzmGOltmxqTRs168n0BoS2ZvA==
+X-Gm-Gg: ASbGncsi6XMpoAmYQiRiQjDjHc4ozijfwCAREq8haL9MrvL2mfO3yBwqta71uPPRGaw
+ NV7cZ8mvD7NWZNMtcVju4ofv3/dcByIKQKnUc1vywxEl6RTmUcmJFxzTKQioAcoLv502BHPtgEv
+ mXJz7r0eteIj/mlGXi0V8OWHfFMMUBQ+tW+to=
+X-Google-Smtp-Source: AGHT+IGdjp+et4tLvvPclGjBRg4xt2XDbvBrRaa/vzl4dGgDnihRGN7S+EhkvokwN2FgC/MPmGTo+ZLdGgKwq41Sq1o=
+X-Received: by 2002:a17:907:972a:b0:ac6:f4c1:b797 with SMTP id
+ a640c23a62f3a-acad349c39cmr899407266b.19.1744614040363; Mon, 14 Apr 2025
+ 00:00:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/i386: Fix model number of Zhaoxin YongFeng vCPU
- template
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-X-ASG-Orig-Subj: Re: [PATCH v2] target/i386: Fix model number of Zhaoxin
- YongFeng vCPU template
-CC: Paolo Bonzini <pbonzini@redhat.com>, <qemu-devel@nongnu.org>,
- <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>
-References: <20250407020704.2580294-1-ewanhai-oc@zhaoxin.com>
- <a0ca7d33-5551-41a7-be18-7fdb3b32a36a@redhat.com>
- <a8750eb8-63ad-4ed8-a80d-f4568c4bc778@zhaoxin.com>
- <Z/iK4wVFWTjhEa32@intel.com>
- <d69d169a-9401-4a19-a942-44d540f050d2@zhaoxin.com>
- <c8a0db98-893a-4fb2-836e-becd49375c89@intel.com>
-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-In-Reply-To: <c8a0db98-893a-4fb2-836e-becd49375c89@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+References: <20240607101403.1109-1-jim.shu@sifive.com>
+ <CAKmqyKN4EwPHP0d=kBnk8DL9oZcr6gx_+VBveno947+2z6Cj=A@mail.gmail.com>
+In-Reply-To: <CAKmqyKN4EwPHP0d=kBnk8DL9oZcr6gx_+VBveno947+2z6Cj=A@mail.gmail.com>
+From: Jim Shu <jim.shu@sifive.com>
+Date: Mon, 14 Apr 2025 15:00:33 +0800
+X-Gm-Features: ATxdqUFIfvXg_W7vCJcwb8XJ0H4mewdS6depOw8Knnr98-eedlpqWDbxGSODNo8
+Message-ID: <CALw707qY064+iTVZ+gzvtZuiQDBnKsMRN3WPzbhx+=mddKaFMg@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv: support atomic instruction fetch (Ziccif)
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.28.66.62]
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Moderation-Data: 4/14/2025 3:07:18 PM
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1744614440
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 4987
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No,
- SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
- QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.139939
- Rule breakdown below
- pts rule name              description
- ---- ---------------------- --------------------------------------------------
-Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
- helo=mx1.zhaoxin.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=jim.shu@sifive.com; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,143 +98,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Richard,
+Thank you very much for adding atomic support to translator_ld(). It
+has been a big help.
+
+Hi Alistair,
+I can rebase the Ziccif patch when Richard's patch has been merged.
 
 
-On 4/14/25 2:44 PM, Xiaoyao Li wrote:
->=20
-> On 4/11/2025 3:42 PM, Ewan Hai wrote:
->>
->>
->> On 4/11/25 11:22 AM, Zhao Liu wrote:
->>>
->>> On Thu, Apr 10, 2025 at 10:07:15PM +0800, Ewan Hai wrote:
->>>> Date: Thu, 10 Apr 2025 22:07:15 +0800
->>>> From: Ewan Hai <ewanhai-oc@zhaoxin.com>
->>>> Subject: Re: [PATCH v2] target/i386: Fix model number of Zhaoxin
->>>> YongFeng
->>>> =C2=A0 vCPU template
->>>>
->>>> On 4/10/25 8:22 PM, Paolo Bonzini wrote:
->>>>>
->>>>> On 4/7/25 04:07, Ewan Hai wrote:
->>>>>> The model number was mistakenly set to 0x0b (11) in commit ff04bc1ac=
-4.
->>>>>> The correct value is 0x5b. This mistake occurred because the extende=
-d
->>>>>> model bits in cpuid[eax=3D0x1].eax were overlooked, and only the bas=
-e
->>>>>> model was used.
->>>>>>
->>>>>> This patch corrects the model field.
->>>>>
->>>>> Hi, please follow commit e0013791b9326945ccd09b5b602437beb322cab8 to
->>>>> define a new version of the CPU.
->>>>
->>>> I=E2=80=99ve noticed that in the QEMU repository at commit
->>>> e0013791b9326945ccd09b5b602437beb322cab8 (as HEAD), the following
->>>> patches I
->>>> previously submitted (which the Zhaoxin YongFeng vCPU model depends
->>>> on) are
->>>> not included:
->>>
->>> :-) e0013791b9326945ccd09b5b602437beb322cab8 is an example case to show
->>> how to fix model id.
->>>
->>>> - 5d20aa540b6991c0dbeef933d2055e5372f52e0e: "target/i386: Add support
->>>> for
->>>> Zhaoxin CPU vendor identification"
->>>> - c0799e8b003713e07b546faba600363eccd179ee: "target/i386: Add CPUID le=
-af
->>>> 0xC000_0001 EDX definitions"
->>>> - ff04bc1ac478656e5d6a255bf4069edb3f55bc58: "target/i386: Introduce
->>>> Zhaoxin
->>>> Yongfeng CPU model" (this is the main patch that needs to be fixed)
->>>> - a4e749780bd20593c0c386612a51bf4d64a80132: "target/i386: Mask
->>>> CMPLegacy bit
->>>> in CPUID[0x80000001].ECX for Zhaoxin CPUs"
->>>>
->>>> Should I resend the entire patchset, or would it be sufficient to
->>>> just send
->>>> a revised version of the =E2=80=9Ctarget/i386: Introduce Zhaoxin Yongf=
-eng CPU
->>>> model=E2=80=9D
->>>> patch?
->>>
->>> IIUC, because this fix is planning to land in v10.1 (next release
->>> cycle), current CPU model (will be released in v10.0) can't be modified
->>> directly. It is only possible to directly modify an unreleased CPU mode=
+Jim Shu
+
+On Fri, Apr 4, 2025 at 12:41=E2=80=AFPM Alistair Francis <alistair23@gmail.=
+com> wrote:
+>
+> On Fri, Jun 7, 2024 at 8:15=E2=80=AFPM Jim Shu <jim.shu@sifive.com> wrote=
+:
+> >
+> > Support 4-byte atomic instruction fetch when instruction is natural
+> > aligned.
+> >
+> > Current implementation is not atomic because it loads instruction twice
+> > for first and last 2 bytes. We load 4 bytes at once to keep the
+> > atomicity. This instruction preload method only applys when instruction
+> > is 4-byte aligned. If instruction is unaligned, it could be across page=
+s
+> > so that preload will trigger additional page fault.
+> >
+> > We encounter this issue when doing pressure test of enabling & disablin=
+g
+> > Linux kernel ftrace. Ftrace with kernel preemption requires concurrent
+> > modification and execution of instruction, so non-atomic instruction
+> > fetch will cause the race condition. We may fetch the wrong instruction
+> > which is the mixing of 2 instructions.
+> >
+> > Also, RISC-V Profile wants to provide this feature by HW. RVA20U64
+> > Ziccif protects the atomicity of instruction fetch when it is
+> > natural aligned.
+> >
+> > Signed-off-by: Jim Shu <jim.shu@sifive.com>
+> > Reviewed-by: Frank Chang <frank.chang@sifive.com>
+>
+> Once https://patchwork.kernel.org/project/qemu-devel/list/?series=3D94533=
+3
+> (specifically https://patchwork.kernel.org/project/qemu-devel/patch/20250=
+318213209.2579218-12-richard.henderson@linaro.org/)
+> is merged this should be good to go in as well.
+>
+> Alistair
+>
+> > ---
+> >  target/riscv/translate.c | 45 ++++++++++++++++++++++++++++++----------
+> >  1 file changed, 34 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> > index 0569224e53..2be8ef63e6 100644
+> > --- a/target/riscv/translate.c
+> > +++ b/target/riscv/translate.c
+> > @@ -1133,13 +1133,37 @@ const RISCVDecoder decoder_table[] =3D {
+> >
+> >  const size_t decoder_table_size =3D ARRAY_SIZE(decoder_table);
+> >
+> > -static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t=
+ opcode)
+> > +static void decode_opc(CPURISCVState *env, DisasContext *ctx)
+> >  {
+> >      ctx->virt_inst_excp =3D false;
+> > +
+> > +    uint32_t opcode;
+> > +    bool is_4byte_align =3D false;
+> > +
+> > +    if ((ctx->base.pc_next % 4) =3D=3D 0) {
+> > +        /*
+> > +         * Load 4 bytes at once to make instruction fetch atomically.
+> > +         *
+> > +         * Note: When pc is 4-byte aligned, 4-byte instruction wouldn'=
+t be
+> > +         * across pages. We could preload 4 bytes instruction no matte=
+r
+> > +         * real one is 2 or 4 bytes. Instruction preload wouldn't trig=
+ger
+> > +         * additional page fault.
+> > +         */
+> > +        opcode =3D translator_ldl(env, &ctx->base, ctx->base.pc_next);
+> > +        is_4byte_align =3D true;
+> > +    } else {
+> > +        /*
+> > +         * For unaligned pc, instruction preload may trigger additiona=
 l
->>> during the same release cycle.
->>>
->>> Thus it's enough to just introduce a v2 and correct your model id like
->>> this:
->>>
->>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->>> index 1b64ceaaba46..1ca1c3a729e8 100644
->>> --- a/target/i386/cpu.c
->>> +++ b/target/i386/cpu.c
->>> @@ -5621,6 +5621,17 @@ static const X86CPUDefinition
->>> builtin_x86_defs[] =3D {
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .features[FEAT_V=
-MX_VMFUNC] =3D MSR_VMX_VMFUNC_EPT_SWITCHING,
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .xlevel =3D 0x80=
-000008,
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .model_id =3D "Z=
-haoxin YongFeng Processor",
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .versions =3D (X86CPUVersio=
-nDefinition[]) {
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { .=
-version =3D 1 },
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 {
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 .version =3D 2,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 .props =3D (PropValue[]) {
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { "model", "0x5b" },
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { /* end of list */ }
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 }
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 },
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { /=
-* end of list */ }
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 },
->>> =C2=A0 };
->>>
->>
->> Thanks again for your patience and explanation.
->>
->> I'm not entirely sure if this is the best approach. I have one thought,
->> and I'd like your help to confirm whether I'm on the right track or not.
->> From what I can tell, most other vCPU definitions that use the .versions
->> mechanism do so incrementally: for instance, they add new features in
->> v2, v3, etc., but each of those versions (v1, v2, v3) remains valid for
->> practical use.
->>
->> However, in our specific case, the v1 version of the Zhaoxin vCPU
->> definition has an incorrect .model value, which breaks the Linux guest's
->> vPMU functionality. That makes me uncertain whether using new version
->> definitions to fix this issue is really the best solution. After all, v1
->> itself would remain problematic.
->>
->> Do you have any thoughts on whether it might be better to correct the
->> existing definition, or do you think the versioned approach is still the
->> recommended path? I appreciate any input or guidance you can provide.
->>
->=20
-> If changing the @model value directly, it will introduce user visible
-> change. E.g., live migrating from old QEMU to new QEMU, the guest will
-> find the model number changes.
->=20
-> That's why versioned CPU model was introduced. It becomes the fact
-> already that YongFeng-v1 has model id 11 and broken vpmu. If user create
-> vcpu with YongFeng-v1, user has to accept it. If user wants a working
-> vpmu, go and use YongFeng-v2
->=20
-
-Got it. Thanks for the explanation.
-I'll send a new fix patch as soon as possible.
-
+> > +         * page fault so we only load 2 bytes here.
+> > +         */
+> > +        opcode =3D (uint32_t) translator_lduw(env, &ctx->base, ctx->ba=
+se.pc_next);
+> > +    }
+> > +    ctx->ol =3D ctx->xl;
+> > +
+> >      ctx->cur_insn_len =3D insn_len(opcode);
+> >      /* Check for compressed insn */
+> >      if (ctx->cur_insn_len =3D=3D 2) {
+> > -        ctx->opcode =3D opcode;
+> > +        ctx->opcode =3D (uint16_t)opcode;
+> >          /*
+> >           * The Zca extension is added as way to refer to instructions =
+in the C
+> >           * extension that do not include the floating-point loads and =
+stores
+> > @@ -1149,15 +1173,16 @@ static void decode_opc(CPURISCVState *env, Disa=
+sContext *ctx, uint16_t opcode)
+> >              return;
+> >          }
+> >      } else {
+> > -        uint32_t opcode32 =3D opcode;
+> > -        opcode32 =3D deposit32(opcode32, 16, 16,
+> > -                             translator_lduw(env, &ctx->base,
+> > -                                             ctx->base.pc_next + 2));
+> > -        ctx->opcode =3D opcode32;
+> > +        if (!is_4byte_align) {
+> > +            /* Load last 2 bytes of instruction here */
+> > +            opcode =3D deposit32(opcode, 16, 16,
+> > +                               translator_lduw(env, &ctx->base,
+> > +                                               ctx->base.pc_next + 2))=
+;
+> > +        }
+> >
+> >          for (guint i =3D 0; i < ctx->decoders->len; ++i) {
+> >              riscv_cpu_decode_fn func =3D g_ptr_array_index(ctx->decode=
+rs, i);
+> > -            if (func(ctx, opcode32)) {
+> > +            if (func(ctx, opcode)) {
+> >                  return;
+> >              }
+> >          }
+> > @@ -1226,10 +1251,8 @@ static void riscv_tr_translate_insn(DisasContext=
+Base *dcbase, CPUState *cpu)
+> >  {
+> >      DisasContext *ctx =3D container_of(dcbase, DisasContext, base);
+> >      CPURISCVState *env =3D cpu_env(cpu);
+> > -    uint16_t opcode16 =3D translator_lduw(env, &ctx->base, ctx->base.p=
+c_next);
+> >
+> > -    ctx->ol =3D ctx->xl;
+> > -    decode_opc(env, ctx, opcode16);
+> > +    decode_opc(env, ctx);
+> >      ctx->base.pc_next +=3D ctx->cur_insn_len;
+> >
+> >      /* Only the first insn within a TB is allowed to cross a page boun=
+dary. */
+> > --
+> > 2.17.1
+> >
+> >
 
