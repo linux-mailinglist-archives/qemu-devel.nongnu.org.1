@@ -2,93 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65EEFA8A715
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 20:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9A7A8A8C2
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 22:03:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4lIl-0005an-Ia; Tue, 15 Apr 2025 14:46:31 -0400
+	id 1u4mOI-0003mL-1S; Tue, 15 Apr 2025 15:56:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1u4lIb-0005aH-TG
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 14:46:22 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <suchitrashankar07@gmail.com>)
+ id 1u4lLk-0006QB-W0
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 14:49:37 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1u4lIX-0002Iv-I6
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 14:46:19 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5e66407963fso10943328a12.2
- for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 11:46:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <suchitrashankar07@gmail.com>)
+ id 1u4lLj-0002Zg-3D
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 14:49:36 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43cfebc343dso46164885e9.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 11:49:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744742776; x=1745347576; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xvmk5p8vBgoOpLDZoarJqbTicElefr6kQ2wo9+Jy26w=;
- b=bbTZy7OrIQ1W+8MUAwqJeakIOnU3nw0Q7zm0G384/0jS8ot3nFbUNbJT1VqYekEqxK
- 2iPVlG8VJH2lM/mP18MopPYDSoC3SpVbxb46dWpc+L0MEt8ren5gyLVZZc84V2gcFPWP
- lSl7E/A4/DreyE23o5VpbrEaXYgPUPp8uf3v0y4wIDpaVBQZBZNj962Te6RJczpSzEvO
- 4DQnuElh9fVW9/RQP/448Mi40L18a+HGGty2tbEuRYZXl8ydXLFYI59Mk2sWL3QgfRhn
- 1vbCdwtfwG9/0oR7yU4nG7Z28EAXZ4IAjJlr08rpLBlmb4/zHzWEn+nJdtfNbOG/ZwFv
- XT4Q==
+ d=gmail.com; s=20230601; t=1744742967; x=1745347767; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Uvie6TwrseJP+NZ3SXZ7VgtCFNbgpWKYrB58DfuAYtY=;
+ b=Bvde6qIRv02N3nSeq59haAEmu2oDki7R8Qm6TizFHCBQdm6C7f89NJu0h3S3Y8n371
+ OJWfbA+Cdh5w8Jf9w4yvHAlAIRYSb360VXdgeSSjDLHUu70cUT69CRCHOYeDyZIRUcPF
+ wS++DV+SEBuRaOPBli3IilSRatNXw1U1mPxag0c52/w8NWyRfkS/tGsW8e4FyhZq+WvM
+ QobvUaT0BkmQsB9E2LLW3hsAqqxKoXfvD+eSKBubUA0rQp6h8O7pRPtccZkMdaGceEjA
+ Md8gGqd5OY+dUSuDD38NhHgWng445YNC4vX3WBAO5pRGtIyiqvfat9xI3AYSeAYRKoNB
+ I5Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744742776; x=1745347576;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=xvmk5p8vBgoOpLDZoarJqbTicElefr6kQ2wo9+Jy26w=;
- b=TtJ0hOSg782AYinbnhvvRtjhbrvuUWjc3hB3I3ixJjDWM1TSYv7P0tEMj1MDmQSEsF
- brlYkgwo3RpLNJn468Tnr7AB3UFGCqDyseD8syycZqbDZEtteWAAPjfFhycHQ0X3PwD+
- j1LVVcXrPBkhCBtaqyUI8zR16lVh+ep6k8fXIfhNJ8yxK0/mbkOsocng+O3bPQL5Hd9i
- coP1qScGMIh/kvn2oXF/yvbHs6uAmpAfnGXsuTAN/USOb4SgdpkcSDHJ+mckwP19r739
- TlVLtGZ+bkwnTngzgjtoc/X7sIWgfSY/araZImnqxrFjvTrdSVZh1BOl0hXW2LARw4dK
- K7ZQ==
-X-Gm-Message-State: AOJu0YwZIOQv9Nby/BW7x68vZmWbz+bFEjN2ZBibp1cZ4D7WmrqJp8Un
- qXuzmqfZPbJ46WYzw4bpsf3qS6JqopwXXJrYLNshwxLbX2ii0CpWO6dvZ9KNQQA=
-X-Gm-Gg: ASbGncscVZqjcEzuyTkfMW5KDGHGX79wOI6+CMJtauCHdlZCHwjUs/LEkfW9JWnOYfF
- UHVvcMw72QcIVsRSBKo3LMr48qYrG75EfP5OBFinRukjjZg+VTvR4ZV3Row5ZCJRyC85KMxjSjr
- y8kdvWOpFop2j2eYWZE4z5CxtyngH6LJQT4AEQsLIQEvIXhWzxQltxl1pK5ouGUjawboX2tWAlo
- xuQMvPB6Haxb28IjOa23RJsx8fP9BJ6JWfrWElL18j0sn5GawgzcBzaIHe/wUvWFWeI6VOXnDdG
- Zv3YSDZqslbyowvNWaIXvZAC8KIye7VkbMvWCihRev+dezyU8GBquQ==
-X-Google-Smtp-Source: AGHT+IHkHcMMA86OT6hGORHrda18ioULEo8x9RCrrRZODWXkh6KNjppVdK2vn136Caa4q0J82Y5xbA==
-X-Received: by 2002:a17:906:6a1a:b0:acb:34a4:b15c with SMTP id
- a640c23a62f3a-acb3831e7a0mr12399966b.32.1744742775751; 
- Tue, 15 Apr 2025 11:46:15 -0700 (PDT)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-acaa1cb42casm1124821666b.88.2025.04.15.11.46.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Apr 2025 11:46:15 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5467C5F915;
- Tue, 15 Apr 2025 19:46:14 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, Stefan Hajnoczi
- <stefanha@redhat.com>, Michael S. Tsirkin <mst@redhat.com>
-Subject: Re: [PATCH v2 0/3] virtio-gpu: fix blob unmapping sequence
-In-Reply-To: <20250410122643.1747913-1-manos.pitsidianakis@linaro.org> (Manos
- Pitsidianakis's message of "Thu, 10 Apr 2025 15:26:35 +0300")
-References: <20250410122643.1747913-1-manos.pitsidianakis@linaro.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 15 Apr 2025 19:46:14 +0100
-Message-ID: <87v7r5clft.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1744742967; x=1745347767;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Uvie6TwrseJP+NZ3SXZ7VgtCFNbgpWKYrB58DfuAYtY=;
+ b=bKT3UbsqLOpuo7zLW+uFmvhBgqDy2YwcQMG/EQ2CH3pXsMhKw0kPU8wK9sNkG+fVqm
+ jLcu0GPejOhyiUl+ZH4jKNKB1GiFHJ2GOoofSyQIf3JTZHGErFBJ+XnksZbFrxC81hsO
+ yARhqyBBXTRlCWQ0Vremuwe991z/wj+Woalor/rtrEARKxYFX/V/6PmiO4SIe3ExSxsn
+ biCiONjsJqbMkoNo7sjsDb7mXNG8mKYmMPTAfIIzRrAPwPSx/wjXjypmBZkByOhXJF8B
+ BwPiHIZA7uzFYbvZgvNmozMRGowco5kHDA2o5Z4NRZk7h8HkNvhKizL2xXPf9lCEAeGd
+ l9Sg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVPvjQQZiHrNy9rbgII8J7WvCZEn9Rg5H2ClIjfBqahT7id2nQmFq8TbASUFVrfOKdWNQruRBdRfLGq@nongnu.org
+X-Gm-Message-State: AOJu0YzQgsaXXJ9r8VYaNadfHTLBB13laiiLYtKD9K1bpcAZlRJrDGp2
+ 4hysmtssCi8s1O+05oHEsZLj5lsmtkM3nm8705mZhl+IK48Ywo/OPWFY2OKhPPWSe5DgjXKfrbO
+ 9+GJX27YBiBsLexyt7o6ulnzrPEb7k/inCp8=
+X-Gm-Gg: ASbGnctLj9lTQ3mm6Pd5ChTxbYwOWV6x7WrsqahMxjxDoTdVCzsqyCjdDaOzV715iWG
+ nb+pP5vnw3yuIc2K4ELeIiHzeDbsdnFVCbpSp47jOk99Wt6qxDMjZZGsqg8Knx5oTSFOJdYkXYI
+ o7YbE9kjEnEU/RkgSO1Tmh
+X-Google-Smtp-Source: AGHT+IFH//akahVSnb66GMb9bF0y8QqQEnU0+WvUNRmz8iGEIgl5TxuXZVrohfGz7zc3lQKqCscGwLHHLvznv62IA8c=
+X-Received: by 2002:a05:6000:22c4:b0:39c:1257:feb9 with SMTP id
+ ffacd0b85a97d-39ee27694c2mr486647f8f.57.1744742967297; Tue, 15 Apr 2025
+ 11:49:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+From: Suchitra Shankar <suchitrashankar07@gmail.com>
+Date: Wed, 16 Apr 2025 00:19:15 +0530
+X-Gm-Features: ATxdqUEQQX3TD4pC30XrsirnbZIwrL5B9s_ruMIiO0WNOvxei5dfNIod9_rmZbQ
+Message-ID: <CABru571BjFa_SX5xHXbJwxRjKOOm-eo_dBTuaZx+KHOJBNVR=g@mail.gmail.com>
+Subject: [PATCH] Converting aio_set_event_notifier to use io_uring methods
+To: Stefan Hajnoczi <stefanha@redhat.com>, kwolf@redhat.com,
+ qemu-devel@nongnu.org
+Content-Type: multipart/mixed; boundary="000000000000cb06680632d5a022"
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=suchitrashankar07@gmail.com; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 15 Apr 2025 15:56:05 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,53 +90,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+--000000000000cb06680632d5a022
+Content-Type: multipart/alternative; boundary="000000000000cb06670632d5a020"
 
-> A hang was observed when running a small kernel that exercised VIRTIO=20
-> GPU under TCG. This is an edge-case and won't happen under typical=20
-> conditions.
+--000000000000cb06670632d5a020
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Should I (or MST?) pull these into a tree for 10.0 or should they be
-grabbed for when the tree opens with a Cc qemu-stable?
+Hi Stefan,
 
->
-> When unmapping a blob object, its MemoryRegion's freeing is deferred to=20
-> the RCU thread. The hang's cause was determined to be a busy main loop=20
-> not allowing for the RCU thread to run because the kernel did not setup=20
-> any timers or had any interrupts on the way. While fixing the RCU thread=
-=20
-> to run even if the guest CPU spins is a solution, it's easier to fix the=
-=20
-> reason why the MemoryRegion isn't freed from the main loop instead.
->
-> While at it, also restructure the 3 stage cleanup to immediately respond=
-=20
-> to the guest if the MR happened to have had no other reference.
->
-> PS: The hang can be reproduced by running this unikernel with TCG=20
->
-> https://git.codelinaro.org/manos.pitsidianakis/virtio-tests/-/tree/8c0ebe=
-9395827e24aa5711186d499bf5de87cf63/virtio-test-suite
->
-> v1 to v2:
->   - Add patch by Alex to prevent double-free when FlatView is destroyed=20
->     from RCU thread.
->
-> Alex Benn=C3=A9e (1):
->   hw/display: re-arrange memory region tracking
->
-> Manos Pitsidianakis (2):
->   virtio-gpu: fix hang under TCG when unmapping blob
->   virtio-gpu: refactor async blob unmapping
->
->  include/exec/memory.h         |  1 +
->  hw/display/virtio-gpu-virgl.c | 60 ++++++++++++++++++++---------------
->  2 files changed, 35 insertions(+), 26 deletions(-)
->
->
-> base-commit: 56c6e249b6988c1b6edc2dd34ebb0f1e570a1365
+Apologies for not using git send-email for submitting the patch =E2=80=94 I=
+ had
+some issues setting up my SMTP configuration, so I=E2=80=99m sending it man=
+ually
+for now. I hope that=E2=80=99s alright.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Thanks again for the guidance and for reviewing my contribution!
+----
+This patch updates aio_set_event_notifier to use IORING_OP_READ via
+aio_add_sqe()
+when CONFIG_LINUX_IO_URING is defined, in order to reduce the overhead of
+reactor-based file descriptor monitoring. This switches the mechanism from
+polling with eventfd to the more efficient io_uring proactor pattern.
+When io_uring is not available, the existing behavior is preserved.
+
+Signed-off-by: Suchitra Shankar <suchitrashankar07@gmail.com>
+
+--000000000000cb06670632d5a020
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><p class=3D"gmail-">Hi Stefan,</p>
+<p class=3D"gmail-">Apologies for not using <code>git send-email</code> for=
+ submitting the patch =E2=80=94 I had some issues setting up my SMTP config=
+uration, so I=E2=80=99m sending it manually for now. I hope that=E2=80=99s =
+alright.</p>
+<p class=3D"gmail-">Thanks again for the guidance and for reviewing my cont=
+ribution!<br>----</p>This patch updates aio_set_event_notifier to use IORIN=
+G_OP_READ via aio_add_sqe()<br>when CONFIG_LINUX_IO_URING is defined, in or=
+der to reduce the overhead of<br>reactor-based file descriptor monitoring. =
+This switches the mechanism from<br>polling with eventfd to the more effici=
+ent io_uring proactor pattern.<br>When io_uring is not available, the exist=
+ing behavior is preserved.<br><br>Signed-off-by: Suchitra Shankar &lt;<a hr=
+ef=3D"mailto:suchitrashankar07@gmail.com">suchitrashankar07@gmail.com</a>&g=
+t;<br><br><br><br></div>
+
+--000000000000cb06670632d5a020--
+
+--000000000000cb06680632d5a022
+Content-Type: text/x-patch; charset="UTF-8"; name="contribution-task.patch"
+Content-Disposition: attachment; filename="contribution-task.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_m9iuwl8k0>
+X-Attachment-Id: f_m9iuwl8k0
+
+RnJvbSA2NmIzNDg1ODY3YzU0MzI1NzU2ZTMwNjkxNWUwNDFmNWVmNDcwNWQxIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBTdWNoaXRyYSBTaGFua2FyIDxzdWNoaXRyYXNoYW5rYXIwN0Bn
+bWFpbC5jb20+CkRhdGU6IFR1ZSwgMTUgQXByIDIwMjUgMjM6MjU6NDggKzA1MzAKU3ViamVjdDog
+W1BBVENIXSBjaG9yZTogYWRoZXJlIHRvIHFlbXUgY29kaW5nIHN0ZHMKClNpZ25lZC1vZmYtYnk6
+IFN1Y2hpdHJhIFNoYW5rYXIgPHN1Y2hpdHJhc2hhbmthcjA3QGdtYWlsLmNvbT4KLS0tCiB1dGls
+L2Fpby1wb3NpeC5jIHwgMTQgKysrKysrKy0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2Vy
+dGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdXRpbC9haW8tcG9zaXguYyBi
+L3V0aWwvYWlvLXBvc2l4LmMKaW5kZXggZDFjNmE0NmEyNS4uNzdhZjZjODliMCAxMDA2NDQKLS0t
+IGEvdXRpbC9haW8tcG9zaXguYworKysgYi91dGlsL2Fpby1wb3NpeC5jCkBAIC04MjksMTIgKzgy
+OSwxMiBAQCB2b2lkIGFpb19hZGRfc3FlX3dpdGhfY3R4KEFpb0NvbnRleHQgKmN0eCwKICAgICB2
+b2lkICgqcHJlcF9zcWUpKHN0cnVjdCBpb191cmluZ19zcWUgKnNxZSwgdm9pZCAqb3BhcXVlKSwK
+ICAgICB2b2lkICpvcGFxdWUsIENxZUhhbmRsZXIgKmNxZV9oYW5kbGVyKQogewotIGlmICghY3R4
+IHx8ICFjdHgtPmZkbW9uX29wcyB8fCAhY3R4LT5mZG1vbl9vcHMtPmFkZF9zcWUpIHsKLSBmcHJp
+bnRmKHN0ZGVyciwgImN0eCBvciBmZG1vbl9vcHMgaXMgTlVMTCEgQ2Fubm90IGFkZCBTUUVcbiIp
+OwotIGFib3J0KCk7CisgICAgaWYgKCFjdHggfHwgIWN0eC0+ZmRtb25fb3BzIHx8ICFjdHgtPmZk
+bW9uX29wcy0+YWRkX3NxZSkgeworICAgICAgICBmcHJpbnRmKHN0ZGVyciwgImN0eCBvciBmZG1v
+bl9vcHMgaXMgTlVMTCEgQ2Fubm90IGFkZCBTUUVcbiIpOworICAgICAgICBhYm9ydCgpOwogIH0K
+LS8vCi0vL2ZwcmludGYoc3RkZXJyLCAiPj4+IGFpb19hZGRfc3FlX3dpdGhfY3R4IGNhbGxlZCEg
+PDw8XG4iKTsKKworLypmcHJpbnRmKHN0ZGVyciwgIj4+PiBhaW9fYWRkX3NxZV93aXRoX2N0eCBj
+YWxsZWQhIDw8PFxuIik7Ki8KIGN0eC0+ZmRtb25fb3BzLT5hZGRfc3FlKGN0eCwgcHJlcF9zcWUs
+IG9wYXF1ZSwgY3FlX2hhbmRsZXIpOwogfQogCkBAIC04NDIsOCArODQyLDggQEAgdm9pZCBhaW9f
+YWRkX3NxZSh2b2lkICgqcHJlcF9zcWUpKHN0cnVjdCBpb191cmluZ19zcWUgKnNxZSwgdm9pZCAq
+b3BhcXVlKSwKICAgICAgICAgICAgICAgICAgdm9pZCAqb3BhcXVlLCBDcWVIYW5kbGVyICpjcWVf
+aGFuZGxlcikKIHsKICAgICBBaW9Db250ZXh0ICpjdHggPSBxZW11X2dldF9jdXJyZW50X2Fpb19j
+b250ZXh0KCk7ICAvLyDihpAgdGhpcyBpcyB0aGUgbWFnaWMKLQotICAgICBpZiAoIWN0eCB8fCAh
+Y3R4LT5mZG1vbl9vcHMgfHwgIWN0eC0+ZmRtb25fb3BzLT5hZGRfc3FlKSB7CisgICAgaWYgKCFj
+dHggfHwgIWN0eC0+ZmRtb25fb3BzIHx8ICFjdHgtPmZkbW9uX29wcy0+YWRkX3NxZSkgCisgICAg
+IHsKICAgICAgICAgIGZwcmludGYoc3RkZXJyLCAiY3R4IG9yIGZkbW9uX29wcyBpcyBOVUxMISBD
+YW5ub3QgYWRkIFNRRVxuIik7CiAgICAgICAgICBhYm9ydCgpOwogICAgICB9Ci0tIAoyLjQ5LjAK
+Cg==
+--000000000000cb06680632d5a022--
 
