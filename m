@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791A2A8A09D
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 16:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405EDA8A0A7
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 16:07:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4gul-0006sn-Ra; Tue, 15 Apr 2025 10:05:27 -0400
+	id 1u4guo-0006yl-9s; Tue, 15 Apr 2025 10:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1u4gub-0006gt-7C; Tue, 15 Apr 2025 10:05:18 -0400
+ id 1u4guc-0006hu-Gq; Tue, 15 Apr 2025 10:05:18 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1u4guX-0003RU-De; Tue, 15 Apr 2025 10:05:16 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53FAfNDC021892;
- Tue, 15 Apr 2025 14:05:11 GMT
+ id 1u4guZ-0003Rg-BJ; Tue, 15 Apr 2025 10:05:17 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53FB8NS1000660;
+ Tue, 15 Apr 2025 14:05:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=vGKanFs/llgf5AvvC
- KwDpFDL2TMYbQ4sUcJ+mfE1oNg=; b=tme+vUqLqBr7+R6wqB2oJMmp0mSc7x7oA
- UNs1OoduyJz4qlncMp6fyqSXU59WNqOiR9CBEIdqsZaV0FXhRw3surG3ldQ6+Ayp
- 48V1kKD2dW600wCU9uXNPyl6VzP+4uspBHNF0KipM9kc5bpSYzH+tggGvfpMilmv
- e5n+KAqgh59n6MAhHSU+SDOhFOBrY+pvpYD3mubARNL+ogs41OPThf/9DVYD66j2
- xUSie+wI8L6t2+ubi2AGQjDJmg89iJsqEeA1L+/dC80ck9Ob8+L41oV4462Bt1r1
- yFkpjCcCbGwZaD3mz1xzy0+H1iFYyqJq9ZpeiJmjWQP2NE7TdCn9g==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 461nwq1033-1
+ :mime-version:references:subject:to; s=pp1; bh=DbGe6NBfmik512jP0
+ vpRGSQqkwwS4t6t23BBrq4fQ2Q=; b=UEgjPFzpoLDF+cXvy0+sIPLlW78LehhDB
+ YmAwVHf3FXsMWG+llAtbypc4PAzs3Fql+pkTL3pyAVb6dP1y8PYBe42r4aDRHR5s
+ Uo8fqjiuV4N8kHAaG++L3Jb4gM28l4zPmnilNrhpa72E9ko9m5isl7Uc0tJPf8Re
+ x1zAfEtiq/FzDJprbtNdshNH0PhikFv6hUiix9/UG/piw2GavGLHJPUIx61ecxm8
+ sqKZn4H53t3flhrZD7MG1hBjQqJKMAc8wEgPskOmY336aZfVovqxBH3+LGNYbve8
+ afT9EuQPNa6RELLJzt+yYEK9BcfwdLGmbhykFEXZhPVQ6fGrFAiDw==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 461cax3f5p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Apr 2025 14:05:11 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53FD2uEZ000901;
- Tue, 15 Apr 2025 14:05:10 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4602vyumdg-1
+ Tue, 15 Apr 2025 14:05:12 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53FBHEiv010387;
+ Tue, 15 Apr 2025 14:05:12 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4604qk35rp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Apr 2025 14:05:10 +0000
+ Tue, 15 Apr 2025 14:05:12 +0000
 Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
  [10.39.53.229])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53FE59mc53150160
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 53FE5A3L21299880
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Apr 2025 14:05:09 GMT
+ Tue, 15 Apr 2025 14:05:11 GMT
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 729C55805B;
+ by IMSVA (Postfix) with ESMTP id D6E9958058;
+ Tue, 15 Apr 2025 14:05:10 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9CE675806A;
  Tue, 15 Apr 2025 14:05:09 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2B8735805C;
- Tue, 15 Apr 2025 14:05:08 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.248.247])
  by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 15 Apr 2025 14:05:08 +0000 (GMT)
+ Tue, 15 Apr 2025 14:05:09 +0000 (GMT)
 From: Rorie Reyes <rreyes@linux.ibm.com>
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
 Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
  jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
  alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
  akrowiak@linux.ibm.com, rreyes@linux.ibm.com
-Subject: [RFC PATCH v5 1/5] linux-headers: NOTFORMERGE - placeholder uapi
- updates for AP config change
-Date: Tue, 15 Apr 2025 10:05:02 -0400
-Message-ID: <20250415140506.1516-2-rreyes@linux.ibm.com>
+Subject: [RFC PATCH v5 2/5] hw/vfio/ap: notification handler for AP config
+ changed event
+Date: Tue, 15 Apr 2025 10:05:03 -0400
+Message-ID: <20250415140506.1516-3-rreyes@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250415140506.1516-1-rreyes@linux.ibm.com>
 References: <20250415140506.1516-1-rreyes@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Lc_P0H-wkzFEFfGC5BW9fJNf5S-NBFIY
-X-Proofpoint-GUID: Lc_P0H-wkzFEFfGC5BW9fJNf5S-NBFIY
+X-Proofpoint-ORIG-GUID: E8deRSpccBL-Ef-xogDgY6oGZFrSSh7n
+X-Proofpoint-GUID: E8deRSpccBL-Ef-xogDgY6oGZFrSSh7n
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-15_06,2025-04-15_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 clxscore=1015 bulkscore=0 priorityscore=1501 mlxscore=0
- spamscore=0 malwarescore=0 mlxlogscore=954 impostorscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504150099
+ malwarescore=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 mlxscore=0
+ bulkscore=0 clxscore=1015 spamscore=0 adultscore=0 mlxlogscore=999
+ phishscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2504150099
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=rreyes@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -107,30 +107,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds enumeration constant VFIO_AP_CFG_CHG_IRQ_INDEX to specify
-an IRQ index for signaling that a change has been made to the guest's AP
-configuration. This is a placeholder for QEMU patches that use this value
-since it is a linux-headers update which includes changes that aren't
-merged into the kernel. Linux-headers patches should be generated using
-scripts/update-linux-headers.sh.
+Register an event notifier handler to process AP configuration
+change events by queuing the event and generating a CRW to let
+the guest know its AP configuration has changed
 
 Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
+Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 ---
- linux-headers/linux/vfio.h | 1 +
- 1 file changed, 1 insertion(+)
+ hw/vfio/ap.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
-index 1b5e254d6a..d0426b5ec0 100644
---- a/linux-headers/linux/vfio.h
-+++ b/linux-headers/linux/vfio.h
-@@ -671,6 +671,7 @@ enum {
-  */
- enum {
- 	VFIO_AP_REQ_IRQ_INDEX,
-+	VFIO_AP_CFG_CHG_IRQ_INDEX,
- 	VFIO_AP_NUM_IRQS
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index c7ab4ff57a..3614657218 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -18,6 +18,7 @@
+ #include "hw/vfio/vfio-common.h"
+ #include "system/iommufd.h"
+ #include "hw/s390x/ap-device.h"
++#include "hw/s390x/css.h"
+ #include "qemu/error-report.h"
+ #include "qemu/event_notifier.h"
+ #include "qemu/main-loop.h"
+@@ -37,6 +38,7 @@ struct VFIOAPDevice {
+     APDevice apdev;
+     VFIODevice vdev;
+     EventNotifier req_notifier;
++    EventNotifier cfg_notifier;
  };
  
+ OBJECT_DECLARE_SIMPLE_TYPE(VFIOAPDevice, VFIO_AP_DEVICE)
+@@ -70,6 +72,18 @@ static void vfio_ap_req_notifier_handler(void *opaque)
+     }
+ }
+ 
++static void vfio_ap_cfg_chg_notifier_handler(void *opaque)
++{
++    VFIOAPDevice *vapdev = opaque;
++
++    if (!event_notifier_test_and_clear(&vapdev->cfg_notifier)) {
++        return;
++    }
++
++    css_generate_css_crws(0);
++
++}
++
+ static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+                                           unsigned int irq, Error **errp)
+ {
+@@ -85,6 +99,10 @@ static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+         notifier = &vapdev->req_notifier;
+         fd_read = vfio_ap_req_notifier_handler;
+         break;
++    case VFIO_AP_CFG_CHG_IRQ_INDEX:
++        notifier = &vapdev->cfg_notifier;
++        fd_read = vfio_ap_cfg_chg_notifier_handler;
++        break;
+     default:
+         error_setg(errp, "vfio: Unsupported device irq(%d)", irq);
+         return false;
+@@ -136,6 +154,9 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
+     case VFIO_AP_REQ_IRQ_INDEX:
+         notifier = &vapdev->req_notifier;
+         break;
++    case VFIO_AP_CFG_CHG_IRQ_INDEX:
++        notifier = &vapdev->cfg_notifier;
++        break;
+     default:
+         error_report("vfio: Unsupported device irq(%d)", irq);
+         return;
+@@ -175,6 +196,15 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+         warn_report_err(err);
+     }
+ 
++    if (!vfio_ap_register_irq_notifier(vapdev, VFIO_AP_CFG_CHG_IRQ_INDEX, &err))
++    {
++        /*
++         * Report this error, but do not make it a failing condition.
++         * Lack of this IRQ in the host does not prevent normal operation.
++         */
++        warn_report_err(err);
++    }
++
+     return;
+ 
+ error:
+@@ -187,6 +217,7 @@ static void vfio_ap_unrealize(DeviceState *dev)
+     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
+ 
+     vfio_ap_unregister_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX);
++    vfio_ap_unregister_irq_notifier(vapdev, VFIO_AP_CFG_CHG_IRQ_INDEX);
+     vfio_detach_device(&vapdev->vdev);
+     g_free(vapdev->vdev.name);
+ }
 -- 
 2.48.1
 
