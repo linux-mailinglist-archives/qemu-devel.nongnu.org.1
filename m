@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC45A89C84
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 13:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F8BA89CB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 13:42:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4eYS-0004mY-Sf; Tue, 15 Apr 2025 07:34:16 -0400
+	id 1u4ef3-0006TS-VC; Tue, 15 Apr 2025 07:41:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jdenemar@redhat.com>)
- id 1u4eYI-0004m7-Of
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 07:34:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jdenemar@redhat.com>)
- id 1u4eYG-0000NZ-JT
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 07:34:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744716841;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=l3s3eXsYR5oJDQYDO+0VyKF4fyILD/scwmC0ehY1fck=;
- b=hOTyyDfu5C9vC6Yj0WQz7PxVpO9sE6NrkLEq4NUoO7HlV4vMEHX8S64D0lz78pNubb16L4
- 7rw2V1s6UmndWK8nrQNrW8gHe6+va1R0XZ07veTLtY6CRT9R0G1XvwOjdgImyFy9sQo+Cp
- cMI4Yfyn4gdxZgzWS35K5ThlJX1RGuY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-500-C_2NzCRAO_GxdegTY_I85g-1; Tue,
- 15 Apr 2025 07:33:57 -0400
-X-MC-Unique: C_2NzCRAO_GxdegTY_I85g-1
-X-Mimecast-MFC-AGG-ID: C_2NzCRAO_GxdegTY_I85g_1744716836
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3B6C81956048; Tue, 15 Apr 2025 11:33:56 +0000 (UTC)
-Received: from orkuz (unknown [10.43.3.115])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5993B1955BC0; Tue, 15 Apr 2025 11:33:55 +0000 (UTC)
-Date: Tue, 15 Apr 2025 13:33:54 +0200
-From: =?utf-8?B?SmnFmcOt?= Denemark <jdenemar@redhat.com>
-To: Cornelia Huck <cohuck@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Peter Krempa <pkrempa@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, devel@lists.libvirt.org,
- David Hildenbrand <david@redhat.com>
-Subject: Re: Management applications and CPU feature flags
-Message-ID: <Z_5EItOvC7auIXIm@orkuz.int.mamuti.net>
-References: <1741036202-265696-1-git-send-email-steven.sistare@oracle.com>
- <87friheqcp.fsf@pond.sub.org> <Z_YolW1Nw6Q_tsz6@angien.pipo.sk>
- <Z_jq5drO_25w0bC6@redhat.com> <87lds77zgx.fsf_-_@pond.sub.org>
- <Z_jyVQMfRbWaM66y@redhat.com> <8734ee9b4k.fsf@pond.sub.org>
- <Z_kXuy9N4wiHU-qE@orkuz.int.mamuti.net> <875xjakdep.fsf@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u4eeo-0006Km-3u
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 07:40:55 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u4eej-0001F3-Kj
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 07:40:49 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43ea40a6e98so47388965e9.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 04:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1744717243; x=1745322043; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zjaojkGvC9yxwmVWToRlyYoPKTlrQiiUVCbY+47rixA=;
+ b=tDxWesA40XpaJVK/Ow/ohk5wQmm04QgGjk9ZJ33lQxEg27Bwe/6CK6H/fB4Qn3CrTb
+ HLDe7MtJTGv9TU4ESjRHuk7NfKQV8HT+a5mHxVHuti5MynyrfDNntU3J06n8+T9Y4FRB
+ WFr3U4EXwGtV6MzzdDmgyVP5F259lo2mCZ8bTctZuXI1ivgymf+31JLEJJDkAaBHD4Be
+ BrVCoZE13lOCaDDsuE0FUD3UEOyP7jclaI7HTFTGlzRG/Eg6HsLuxzF+9yNLBXOyvWny
+ 1XP/gHytv3w7V1Y+kI7Qco7BmxA9WwwBnT58bqN2atvf8MQDQKcaXNwGVdJIMpt/1kju
+ 8tJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744717243; x=1745322043;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zjaojkGvC9yxwmVWToRlyYoPKTlrQiiUVCbY+47rixA=;
+ b=DBgXAHI18l/YLHX8COchxj9X67gejbUdtwmaTqoeAkQOHYZbywHC/msyneFUVCIRRv
+ /UqkCUczaof/D9qIaekoongoxz79t6OqiOWPjcuoqRr6vkX1g+2chWSE3TNO4vm0sMoA
+ cysu+im57OSiRe1z/B+pZ9CmCNu6T9PoHaG0CsCVdSOgtrk2Z+Y4lbw8SBQ9GBU1hG6+
+ rM6AR1qr8Ay858UQB/NQ1Fyd2HOjtMfu80gRnL2AzKahOymfX27NM75b4LBM5eXOuNpM
+ X8EM+VJzKXKme5b/ogYI+5O5+83Ub4/c8fHJFTiedEAtZDab2ffaU8N50d8SllkvBiU3
+ oRxQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUBJt8N3tKIpZZxWzKnjA4VCrbTGmBgVlnrlvRRCu522XuTorvnnxSo7JeVVI2CIBbw8gr0kUn23fZS@nongnu.org
+X-Gm-Message-State: AOJu0YzM360nevfmmZeIRB40+pR9iVEmnU1Tf3N3fT0kZ/pSr1sGkTUC
+ YNJ094ZsreCulWsfLa8kY5jMxD3xMOQVrCR/P+lwMW8HjzEyYtaKxuAzt94GqCA=
+X-Gm-Gg: ASbGncsgNDSEVUjYNU/t4I2O+ORMQC+QIMtYVNFas+RWgoNnyOUEg92J6In4XiTRMWT
+ KwCJn6ffbL5oYA5RCS0C0G117Roj9+fpUHwEaXpakOaNZqLCsCu6IsdPw3Rl6h7tH5S7MLhEZ/j
+ XMJ7+RvouGfjgetJ/q66CQNAdhe4DkJ679r+di3P88cEMKyhdTwYuLmQA6CmOVq9VAIwkgwwoM1
+ BE51QiSDLsr2cyzDaukbUZKRrUDewlaOBAuBoqAPKnn6ufQdDKyGvX9Rs+0Hk0iYuQxt8AHwTE/
+ DlsPD5jk085h3RR2myt4JJGfSpxH/1A0EIUy6P9vj71NblQ+GXmLM7a4O/nm/wcRg9hL3hziCUJ
+ 6Ch7d2pmf0OXMuQ==
+X-Google-Smtp-Source: AGHT+IFJdETXZ7NGwE5rlOlEQG3xjEKxz8lg8GeNuu4UHoC6FPuS6Rq0ajw9Zhf9lWhL6BOpm3YJ6A==
+X-Received: by 2002:a05:600c:4fc8:b0:43d:745a:5a50 with SMTP id
+ 5b1f17b1804b1-43f3a959ed2mr141295545e9.19.1744717243418; 
+ Tue, 15 Apr 2025 04:40:43 -0700 (PDT)
+Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-43f205ecf30sm208279585e9.1.2025.04.15.04.40.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Apr 2025 04:40:42 -0700 (PDT)
+Message-ID: <416e68f4-bf12-4218-ae2d-0246cc8ea8ec@linaro.org>
+Date: Tue, 15 Apr 2025 13:40:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <875xjakdep.fsf@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jdenemar@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] hw/riscv: fix PLIC hart topology configuration
+ string when not getting CPUState correctly
+To: Chao Liu <lc00631@tecorigin.com>, alistair23@gmail.com, palmer@dabbelt.com
+Cc: alistair.francis@wdc.com, dbarboza@ventanamicro.com, liwei1518@gmail.com, 
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
+ zqz00548@tecorigin.com
+References: <cover.1744709888.git.lc00631@tecorigin.com>
+ <07a97219e3f7e342c668d6772acc4c0a8eb4d4f3.1744709888.git.lc00631@tecorigin.com>
+ <20250415111459.1443-1-lc00631@tecorigin.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250415111459.1443-1-lc00631@tecorigin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,88 +104,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 11, 2025 at 15:58:54 +0200, Cornelia Huck wrote:
-> On Fri, Apr 11 2025, Jiri Denemark <jdenemar@redhat.com> wrote:
->=20
-> > On Fri, Apr 11, 2025 at 13:43:39 +0200, Markus Armbruster wrote:
-> >> Daniel P. Berrang=E9 <berrange@redhat.com> writes:
-> >> > On Fri, Apr 11, 2025 at 12:40:46PM +0200, Markus Armbruster wrote:
-> >> >> Daniel P. Berrang=E9 <berrange@redhat.com> writes:
-> >> >> > Considering the bigger picture QMP design, when libvirt is trying=
- to
-> >> >> > understand QEMU's CPU feature flag expansion, I would ask why we =
-don't
-> >> >> > have something like a "query-cpu" command to tell us the current =
-CPU
-> >> >> > expansion, avoiding the need for poking at QOM properties directl=
-y.
-> >> >>=20
-> >> >> How do the existing query-cpu-FOO fall short of what management
-> >> >> applications such as libvirt needs?
-> >> >
-> >> > It has been along while since I looked at them, but IIRC they were
-> >> > returning static info about CPU models, whereas libvirt wanted info
-> >> > on the currently requested '-cpu ARGS'
-> >>=20
-> >> Libvirt developers, please work with us on design of new commands or
-> >> improvements to existing ones to better meet libvirt's needs in this
-> >> area.
-> >
-> > The existing commands (query-cpu-definitions, query-cpu-model-expansion)
-> > are useful for probing before starting a domain. But what we use qom-get
-> > for is to get a view of the currently instantiated virtual CPU created
-> > by QEMU according to -cpu when we're starting a domain. In other words,
-> > we start QEMU with -S and before starting vCPUs we need to know exactly
-> > what features were enabled and if any feature we requested was disabled
-> > by QEMU. Currently we query QOM for CPU properties as that's what we
-> > were advised to use ages ago.
-> >
-> > The reason behind querying such info is ensuring stable guest ABI during
-> > migration. Asking QEMU for a specific CPU model and features does not
-> > mean we'll get exactly what we asked for (this is not a bug) so we need
-> > to record the differences so that we can start QEMU for incoming
-> > migration with a CPU matching exactly the one provided on the source.
-> >
-> > As Peter said, the current way is terribly inefficient as it requires
-> > several hundreds of QMP commands so the goal is to have a single QMP
-> > command that would tell us all we need to know about the virtual CPU.
-> > That is all enabled features and all features that could not be enabled
-> > even though we asked for them.
->=20
-> Wandering in here from the still-very-much-in-progress Arm perspective
-> (current but not yet posted QEMU code at
-> https://gitlab.com/cohuck/qemu/-/tree/arm-cpu-model-rfcv3?ref_type=3Dhead=
-s):
->=20
-> We're currently operating at the "writable ID register fields" level
-> with the idea of providing features (FEAT_xxx) as an extra layer on top
-> (as they model a subset of what we actually need) and have yet to come
-> up with a good way to do named models for KVM. The
-> query-cpu-model-expansion command will yield a list of all writable ID
-> register fields and their values (as for now, for the 'host' model.) IIUC
-> you want to query (a) what is actually available for configuration
-> (before starting a domain) and (b) what you actually got (when starting
-> a domain).
+On 15/4/25 13:14, Chao Liu wrote:
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+>> Hi,
+>>
+>> On 15/4/25 12:05, Chao Liu wrote:
+>> > riscv_plic_hart_config_string() when getting CPUState via 
+>> qemu_get_cpu()
+>> > should be consistent with keeping sifive_plic_realize() by
+>> > hartid_base + cpu_index.
+>> > > For non-numa or single-cluster machines, hartid_base should be 0.
+>> > > Also, to ensure that CPUState->cpu_index is set correctly, we need to
+>> > update it with the value of mhartid during riscv_hart_realize().
+>> > > Signed-off-by: Chao Liu <lc00631@tecorigin.com>
+>> > Reviewed-by: zhaoqingze <zqz00548@tecorigin.com>
+>> > ---
+>> >   hw/riscv/boot.c            | 4 ++--
+>> >   hw/riscv/microchip_pfsoc.c | 2 +-
+>> >   hw/riscv/riscv_hart.c      | 1 +
+>> >   hw/riscv/sifive_u.c        | 5 +++--
+>> >   hw/riscv/virt.c            | 2 +-
+>> >   include/hw/riscv/boot.h    | 2 +-
+>> >   6 files changed, 9 insertions(+), 7 deletions(-)
+>> > > diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+>> > index 765b9e2b1a..d4c06e7530 100644
+>> > --- a/hw/riscv/boot.c
+>> > +++ b/hw/riscv/boot.c
+>> > @@ -44,13 +44,13 @@ bool riscv_is_32bit(RISCVHartArrayState *harts)
+>> >    * Return the per-socket PLIC hart topology configuration string
+>> >    * (caller must free with g_free())
+>> >    */
+>> > -char *riscv_plic_hart_config_string(int hart_count)
+>> > +char *riscv_plic_hart_config_string(int hart_base, int hart_count)
+>> >   {
+>> >       g_autofree const char **vals = g_new(const char *, hart_count 
+>> + 1);
+>> >       int i;
+>> > >       for (i = 0; i < hart_count; i++) {
+>> > -        CPUState *cs = qemu_get_cpu(i);
+>> > +        CPUState *cs = qemu_get_cpu(hart_base + i);
+>> >           CPURISCVState *env = &RISCV_CPU(cs)->env;
+>> > >           if (kvm_enabled()) {
+>> > diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+>> > index 9c846f9b5b..5269336346 100644
+>> > --- a/hw/riscv/microchip_pfsoc.c
+>> > +++ b/hw/riscv/microchip_pfsoc.c
+>> > @@ -275,7 +275,7 @@ static void 
+>> microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
+>> >                                   l2lim_mem);
+>> > >       /* create PLIC hart topology configuration string */
+>> > -    plic_hart_config = riscv_plic_hart_config_string(ms->smp.cpus);
+>> > +    plic_hart_config = riscv_plic_hart_config_string(0, ms->smp.cpus);
+>> > >       /* PLIC */
+>> >       s->plic = sifive_plic_create(memmap[MICROCHIP_PFSOC_PLIC].base,
+>> > diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
+>> > index a55d156668..522e795033 100644
+>> > --- a/hw/riscv/riscv_hart.c
+>> > +++ b/hw/riscv/riscv_hart.c
+>> > @@ -138,6 +138,7 @@ static bool 
+>> riscv_hart_realize(RISCVHartArrayState *s, int idx,
+>> >       }
+>> > >       s->harts[idx].env.mhartid = s->hartid_base + idx;
+>> > +    CPU(&s->harts[idx])->cpu_index = s->harts[idx].env.mhartid;
+>>
+>> Why do we need this particular change? CPUState::cpu_index isn't related
+>> to RISC-V HART index, it is meant for the accelerators (KVM, TCG, ...),
+>> and shouldn't be used by hw/ code.
+>>
+>> Otherwise the rest LGTM.
+>>
+>> Regards,
+>>
+>> Phil.
+> 
+> Thanks for the reply, here is an update to cpu_index, mainly for 
+> consistency
+> with the following:
+> 
+> static void sifive_plic_realize(DeviceState *dev, Error **errp)
+> {
+>     ...
+> 
+>     for (i = 0; i < s->num_harts; i++) {
+>         /* this get cpu with hartid_base + i */        RISCVCPU *cpu = 
+> RISCV_CPU(qemu_get_cpu(s->hartid_base + i));
 
-I guess it will be possible for QEMU to actually set something different
-=66rom what we tell it to do (for example dependency of a specific
-settings on something else which was not set, etc)? If so, we indeed
-need both (a) and (b).
+OK I see. Pre-existing design issue, qemu_get_cpu() shouldn't exist.
+Not your fault. Normally indexed cores belong to some array / cluster.
 
-> Would a dump of the current state of the ID register fields before
-> starting the vcpus work for (b)?
+I'd assume PLIC to be wired to a fixed set of CPUs, not to some
+unrelated random index. I'd expect the PLIC model to take either
+an CPUCluster as link property, or a set of HART link properties,
+then iterates over these internal references. Not to fish it out
+elsewhere.
 
-I guess so. Originally for x86_64 we got a dump of CPUID data, but that
-changed when some features started to be described by MSRs.
+Again, pre-existing and not related to what you try to achieve.
 
-> Or is that too different from what other archs need/want?
 
-Each arch has some specifics in CPU configuration and the way we talk
-with QEMU about it. So having the same QMP interface is not a
-requirement. It depends how well the existing interface maps to details
-that need to be expressed. That said a common interface is better if it
-makes sense.
+Please add a /* Set CPU index for i.e. sifive_plic_realize() */
+before the assignment in riscv_hart_realize(). With that:
 
-Jirka
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Regards,
+
+Phil.
+
+>         if (riscv_cpu_claim_interrupts(cpu, MIP_SEIP) < 0) {
+>             error_setg(errp, "SEIP already claimed");
+>             return;
+>         }
+>     }
+> 
+>     msi_nonbroken = true;
+> }
+> 
+> But when adding the cpu to the global chain table, the cpu_index starts 
+> at 0.
+> 
+> Maybe there is a better way to handle this here?
+> 
+> For example:
+> 
+> 1. When updating the cpu_index in the upper level, we can set a base id, 
+> and by
+> setting this base id, we can update the cpu_index indirectly.
+> 
+> or
+> 
+> 2. Modify sifive_plic_realize() to iterate over cpu's to avoid getting them
+> by id.
+> 
+> I haven't thought of a better way to handle this at the moment,
+> so we can discuss it further
+> 
+> -- 
+> Regards,
+> Chao
 
 
