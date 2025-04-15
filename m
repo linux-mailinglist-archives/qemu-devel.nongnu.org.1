@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29591A8A85B
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 21:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B00A0A8A840
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 21:40:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4lzQ-00009R-D8; Tue, 15 Apr 2025 15:30:37 -0400
+	id 1u4m36-0005X6-4L; Tue, 15 Apr 2025 15:34:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u4lyL-0005SB-Qv
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:29:30 -0400
+ id 1u4lzQ-0000b5-36
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:30:36 -0400
 Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u4lyD-0000wJ-9l
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:29:27 -0400
+ id 1u4lyE-0000we-86
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:30:34 -0400
 Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-2ff799d99dcso5577535a91.1
- for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 12:29:20 -0700 (PDT)
+ 98e67ed59e1d1-2ff784dc055so5989794a91.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 12:29:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1744745360; x=1745350160; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sof/uzW5h2Ec1uqsF0LsdHyWvNflLyyFXYvZsx9e2cg=;
- b=TqzLSJ5qCswwmnqpPzFVgmftx3sgGOKJKB2Oeq+zXsYJ143uDBjct8MJPlnBsVSM1G
- WiEmUyRxX8arehg4mnMRfal7D1lRobOjgGOM1W40ZexBPIGMIsgWOfS06VFgQxTlFjkE
- hC2PzvAgjDc2wzVTnAN04XyxlypEfOGRHxk/nC7B+6PqrTEvtusGOaOz2J3KIoIQww+N
- Y62A+muJeyQdL/mhmESMV+SYE9WoFmDG5oFcJ9DafLTDJIh9oc7YZdwAHL/DFnlLaTql
- DvQ/rNEq1f4b3DWPHPLAyK2TWTmir1aPrVdmEEAZx+Ht65mrtQdIZG9cbuK8huVIIl5R
- hceA==
+ :reply-to; bh=x1papk+XkTCTsSw55wC1wigbvGuIUoWjIZDUOAjz8HA=;
+ b=XCvq5g01Q4PFaD9RXyOUKa1gnfaSiPhtVlb0OZuObr0RQqOM86mkW2o5YMtbIjhps6
+ c0ulkfXKmELEM8/oSP9ung9uqWgpwBuuar7EavCASVbMZCYjaxA+32pQeBReGAs6RZwC
+ nqNIv5vGBWWczRkpAaR6FKsTeWFXgmBTIpEoJ1qe3CD7OROBiyphKgz2J7TxjkrPV6TT
+ l6WwCsYL6iI2ZL8zswsBNTZYjU3GSygQ52BcYmyT5+kGQzbw0JDob08NdrQE00lRpqFr
+ COYJvqhFy8a2gcJh+5r/DN53BzJ7HidVfXflBRmV0IObqmS51rMcHFZkHbmKBbW4fbK9
+ kRdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1744745360; x=1745350160;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sof/uzW5h2Ec1uqsF0LsdHyWvNflLyyFXYvZsx9e2cg=;
- b=E2NcVzdo21qe/H9SpET/dp2whpWZaK+jF+sunBK0DQ/P3bmNYzmW2t1V7smj7rwHql
- pdVT6NIIS2M5UFHD7OBdHmNNmxeVBOv+6IksJtHK1HKmhkWZWpF/YtI5uWTu5OTTLShS
- ZG/YQaj8+ruXXFwcIDLdVc5joptqPiSp/IWLOfRGrkSWbE2JweMebvMsYYt2ZWzz5pdS
- /Wu3kzQmS0QqeZDrjU9ppoQbdoAWMd/Z0H+hBjCWcc790khG6UZCfzD8zQm6yyBLcHL9
- F8PEmaZxLsL2nY+ESUNQaP0KLvR1I/Lg2pQcJ/OUOqOPQburtpe4slQr6y3Dhu3AITui
- KNWw==
-X-Gm-Message-State: AOJu0YxeNZPTsBA+EGbhA7SnVQmCT49Avn/ZZeOzxY2wS8opSqhFg8bp
- m8AXy/khyABlMYD7bq+HA+C1tO9xGj5YXwMIDmUVsI/ntQcdm4aYwUA8Ij5gO6xfWnbYfM9fSn/
- u
-X-Gm-Gg: ASbGncsOs680ruHsFT7b4fn/Wy/8nqj/F81PKzqNtmGBpcA7edh5OXAyiWBU0gCnN+K
- IeCQDdInoLsB8l6BmbhcDAOzmBoltiSubdNTGJ+MMsaz49nJxSjhJr8Y8LqOXQFJQf7PLog0Q6A
- usuBKh5aD5QP9TpU7BmNK81nrK3W5tgvsnCItpJdplBiqMMW+Cqwd90WSma6bhnzkbWZUmJ8quV
- oP+AQHV/j7HWU+lxtX23+kTOaCRW+fzbYeXhFuoRaGJF2L+F+K4JEpDBi7X8ce2CpRFhuBIz6B8
- bH6K1ftrOgxXWxb1FaneFveJRQcxZp9Tf5sD+wisjmxFUnU/aFD8oiu0HhfTQskIko2kAE1Nhwt
- K2P2Nsfy8ag==
-X-Google-Smtp-Source: AGHT+IE6sEobAT4rILSh+hOLnr5ib3Rw4OezB6Zw/pb7XljXvaznzaZR682GaDs4Edvdhj62Y/T08Q==
-X-Received: by 2002:a17:90b:28ce:b0:2fc:3264:3657 with SMTP id
- 98e67ed59e1d1-3085ed76ffcmr801426a91.0.1744745359667; 
- Tue, 15 Apr 2025 12:29:19 -0700 (PDT)
+ bh=x1papk+XkTCTsSw55wC1wigbvGuIUoWjIZDUOAjz8HA=;
+ b=eGjcWVet2AEwJQEI9X7Yr2tIULC6sYoLDKA0N8ee9uvcasvwEZE7d1VSNdf5RQFDPd
+ aKTGgIuSfLmB24mSHWjMLGdVSq3NO5ftBHdVYvIQKILrtVSWH7Y9iT2Y95dT96nE88iL
+ /nj6hgrrB5VImmvqXsvC3+t5syij7COmVVNCSuvfYxNBjOFZxCYY2bPaPBc+D8nq98Kj
+ QPJlU6k9P6SDDRNYuSkrjiTnrX9Sg8csP2UTflw1gJURiN4qJeMhj5CIL+rmk2Thd9uF
+ +nBs5uvFYXRkPFjfgIQylPwBS3wehBktX6rhuEYDbvziwHiCYJE/mLPr8/aE1KYJnpS4
+ LEWA==
+X-Gm-Message-State: AOJu0YwbjnMZbnJMLNXxroYLkheob9iv1Z9nD5HckAIvAoJsVOimzhpA
+ yocK4FTkqfWUw5yR7BVOKlx2MYp6+yAaxpSAT/lIwNWq4IvvMLZ/nCEYbQuUcOkDhfivhrb0oI4
+ d
+X-Gm-Gg: ASbGncsxKI64IxkUc3EgOZWjXQxdxjc7N2NbNuuFdC2hv2EjxloWMO6f78OC9vcHHgK
+ q44C1F+KHh7rztvEGsgJ66tCwUQXlCX9Nu6ggRM63RW+rldyywvD121DijubbBNblT1PkLoWuJH
+ S9DhDCM+qn4Ff3mb6amoh/a7UFs2KI3kfezhxtEcbhtDxd1mJXP3E49M4JJS9cSqCpcIgJ0LTmN
+ YH5Lco7wgi9DbZpCuHPu+No6eTQS0kb7dgK2d7eFVBHJFkuDGLOiuZkmdjlbQFe3D8gw5pA/948
+ WMrcDUERcveN9y975q33ykBLkqFuXDmejiZCnW0osmCJe7VjhJ429ySM60X8zg4PjDY1f35uXfc
+ =
+X-Google-Smtp-Source: AGHT+IFa1reXJqZC3wrXG08Ump1UsL214BX7H7vlyNYa7RGpXtlbkgIREbXFN4MUwl6vuFrihe1K7A==
+X-Received: by 2002:a17:90b:3cc6:b0:2ff:4e90:3c55 with SMTP id
+ 98e67ed59e1d1-3085efc54abmr467517a91.27.1744745360313; 
+ Tue, 15 Apr 2025 12:29:20 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-306df06a165sm13534812a91.4.2025.04.15.12.29.19
@@ -65,9 +65,9 @@ Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  Tue, 15 Apr 2025 12:29:19 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v4 074/163] tcg/tci: Support negsetcond
-Date: Tue, 15 Apr 2025 12:23:45 -0700
-Message-ID: <20250415192515.232910-75-richard.henderson@linaro.org>
+Subject: [PATCH v4 075/163] tcg: Remove TCG_TARGET_HAS_negsetcond_{i32,i64}
+Date: Tue, 15 Apr 2025 12:23:46 -0700
+Message-ID: <20250415192515.232910-76-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250415192515.232910-1-richard.henderson@linaro.org>
 References: <20250415192515.232910-1-richard.henderson@linaro.org>
@@ -75,6 +75,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
  envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,65 +97,357 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+All targets now provide negsetcond, so remove the conditional.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tci/tcg-target-has.h |  4 ++--
- tcg/tci/tcg-target.c.inc | 13 +++++++++++++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ tcg/aarch64/tcg-target-has.h     |  2 --
+ tcg/arm/tcg-target-has.h         |  1 -
+ tcg/i386/tcg-target-has.h        |  2 --
+ tcg/loongarch64/tcg-target-has.h |  2 --
+ tcg/mips/tcg-target-has.h        |  2 --
+ tcg/ppc/tcg-target-has.h         |  2 --
+ tcg/riscv/tcg-target-has.h       |  2 --
+ tcg/s390x/tcg-target-has.h       |  2 --
+ tcg/sparc64/tcg-target-has.h     |  2 --
+ tcg/tcg-has.h                    |  1 -
+ tcg/tci/tcg-target-has.h         |  2 --
+ tcg/optimize.c                   | 24 +++++++++---------------
+ tcg/tcg-op.c                     | 12 +++---------
+ tcg/tcg.c                        |  6 ++----
+ 14 files changed, 14 insertions(+), 48 deletions(-)
 
-diff --git a/tcg/tci/tcg-target-has.h b/tcg/tci/tcg-target-has.h
-index 2402889bec..7787347e05 100644
---- a/tcg/tci/tcg-target-has.h
-+++ b/tcg/tci/tcg-target-has.h
-@@ -10,7 +10,7 @@
+diff --git a/tcg/aarch64/tcg-target-has.h b/tcg/aarch64/tcg-target-has.h
+index 0c370d7dda..22a574e703 100644
+--- a/tcg/aarch64/tcg-target-has.h
++++ b/tcg/aarch64/tcg-target-has.h
+@@ -16,7 +16,6 @@
+ #define TCG_TARGET_HAS_bswap16_i32      1
+ #define TCG_TARGET_HAS_bswap32_i32      1
+ #define TCG_TARGET_HAS_extract2_i32     1
+-#define TCG_TARGET_HAS_negsetcond_i32   1
+ #define TCG_TARGET_HAS_add2_i32         1
+ #define TCG_TARGET_HAS_sub2_i32         1
+ #define TCG_TARGET_HAS_extr_i64_i32     0
+@@ -26,7 +25,6 @@
+ #define TCG_TARGET_HAS_bswap32_i64      1
+ #define TCG_TARGET_HAS_bswap64_i64      1
+ #define TCG_TARGET_HAS_extract2_i64     1
+-#define TCG_TARGET_HAS_negsetcond_i64   1
+ #define TCG_TARGET_HAS_add2_i64         1
+ #define TCG_TARGET_HAS_sub2_i64         1
+ 
+diff --git a/tcg/arm/tcg-target-has.h b/tcg/arm/tcg-target-has.h
+index ccbc39a23e..bfa3be8028 100644
+--- a/tcg/arm/tcg-target-has.h
++++ b/tcg/arm/tcg-target-has.h
+@@ -27,7 +27,6 @@ extern bool use_neon_instructions;
+ #define TCG_TARGET_HAS_bswap16_i32      1
+ #define TCG_TARGET_HAS_bswap32_i32      1
+ #define TCG_TARGET_HAS_extract2_i32     1
+-#define TCG_TARGET_HAS_negsetcond_i32   1
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+ 
+ #define TCG_TARGET_HAS_qemu_ldst_i128   0
+diff --git a/tcg/i386/tcg-target-has.h b/tcg/i386/tcg-target-has.h
+index c92a049fd7..aaf8764cc9 100644
+--- a/tcg/i386/tcg-target-has.h
++++ b/tcg/i386/tcg-target-has.h
+@@ -29,7 +29,6 @@
+ #define TCG_TARGET_HAS_bswap16_i32      1
+ #define TCG_TARGET_HAS_bswap32_i32      1
+ #define TCG_TARGET_HAS_extract2_i32     1
+-#define TCG_TARGET_HAS_negsetcond_i32   1
+ #define TCG_TARGET_HAS_add2_i32         1
+ #define TCG_TARGET_HAS_sub2_i32         1
+ 
+@@ -40,7 +39,6 @@
+ #define TCG_TARGET_HAS_bswap32_i64      1
+ #define TCG_TARGET_HAS_bswap64_i64      1
+ #define TCG_TARGET_HAS_extract2_i64     1
+-#define TCG_TARGET_HAS_negsetcond_i64   1
+ #define TCG_TARGET_HAS_add2_i64         1
+ #define TCG_TARGET_HAS_sub2_i64         1
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+diff --git a/tcg/loongarch64/tcg-target-has.h b/tcg/loongarch64/tcg-target-has.h
+index e9bb913961..90f0a131ae 100644
+--- a/tcg/loongarch64/tcg-target-has.h
++++ b/tcg/loongarch64/tcg-target-has.h
+@@ -10,7 +10,6 @@
+ #include "host/cpuinfo.h"
+ 
+ /* optional instructions */
+-#define TCG_TARGET_HAS_negsetcond_i32   1
+ #define TCG_TARGET_HAS_extract2_i32     0
+ #define TCG_TARGET_HAS_add2_i32         0
+ #define TCG_TARGET_HAS_sub2_i32         0
+@@ -19,7 +18,6 @@
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+ 
+ /* 64-bit operations */
+-#define TCG_TARGET_HAS_negsetcond_i64   1
+ #define TCG_TARGET_HAS_extract2_i64     0
+ #define TCG_TARGET_HAS_extr_i64_i32     1
+ #define TCG_TARGET_HAS_bswap16_i64      1
+diff --git a/tcg/mips/tcg-target-has.h b/tcg/mips/tcg-target-has.h
+index c77d4296cf..c6cecba28b 100644
+--- a/tcg/mips/tcg-target-has.h
++++ b/tcg/mips/tcg-target-has.h
+@@ -41,7 +41,6 @@ extern bool use_mips32r2_instructions;
+ /* optional instructions */
+ #define TCG_TARGET_HAS_bswap16_i32      1
+ #define TCG_TARGET_HAS_bswap32_i32      1
+-#define TCG_TARGET_HAS_negsetcond_i32   1
+ 
+ #if TCG_TARGET_REG_BITS == 64
+ #define TCG_TARGET_HAS_add2_i32         0
+@@ -51,7 +50,6 @@ extern bool use_mips32r2_instructions;
+ #define TCG_TARGET_HAS_sub2_i64         0
+ #define TCG_TARGET_HAS_ext32s_i64       1
+ #define TCG_TARGET_HAS_ext32u_i64       1
+-#define TCG_TARGET_HAS_negsetcond_i64   1
+ #endif
+ 
+ /* optional instructions detected at runtime */
+diff --git a/tcg/ppc/tcg-target-has.h b/tcg/ppc/tcg-target-has.h
+index 5cc059fe9a..5c4fc2bc34 100644
+--- a/tcg/ppc/tcg-target-has.h
++++ b/tcg/ppc/tcg-target-has.h
+@@ -20,7 +20,6 @@
  #define TCG_TARGET_HAS_bswap16_i32      1
  #define TCG_TARGET_HAS_bswap32_i32      1
  #define TCG_TARGET_HAS_extract2_i32     0
--#define TCG_TARGET_HAS_negsetcond_i32   0
-+#define TCG_TARGET_HAS_negsetcond_i32   1
+-#define TCG_TARGET_HAS_negsetcond_i32   1
  #define TCG_TARGET_HAS_qemu_st8_i32     0
  
  #if TCG_TARGET_REG_BITS == 64
-@@ -19,7 +19,7 @@
+@@ -31,7 +30,6 @@
  #define TCG_TARGET_HAS_bswap32_i64      1
  #define TCG_TARGET_HAS_bswap64_i64      1
  #define TCG_TARGET_HAS_extract2_i64     0
+-#define TCG_TARGET_HAS_negsetcond_i64   1
+ #define TCG_TARGET_HAS_add2_i64         1
+ #define TCG_TARGET_HAS_sub2_i64         1
+ #endif
+diff --git a/tcg/riscv/tcg-target-has.h b/tcg/riscv/tcg-target-has.h
+index 9b86b8bf48..e18b5cb8ec 100644
+--- a/tcg/riscv/tcg-target-has.h
++++ b/tcg/riscv/tcg-target-has.h
+@@ -10,7 +10,6 @@
+ #include "host/cpuinfo.h"
+ 
+ /* optional instructions */
+-#define TCG_TARGET_HAS_negsetcond_i32   1
+ #define TCG_TARGET_HAS_extract2_i32     0
+ #define TCG_TARGET_HAS_add2_i32         1
+ #define TCG_TARGET_HAS_sub2_i32         1
+@@ -18,7 +17,6 @@
+ #define TCG_TARGET_HAS_bswap32_i32      (cpuinfo & CPUINFO_ZBB)
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+ 
+-#define TCG_TARGET_HAS_negsetcond_i64   1
+ #define TCG_TARGET_HAS_extract2_i64     0
+ #define TCG_TARGET_HAS_extr_i64_i32     1
+ #define TCG_TARGET_HAS_bswap16_i64      (cpuinfo & CPUINFO_ZBB)
+diff --git a/tcg/s390x/tcg-target-has.h b/tcg/s390x/tcg-target-has.h
+index 894a9f64e0..41cd8a1d0d 100644
+--- a/tcg/s390x/tcg-target-has.h
++++ b/tcg/s390x/tcg-target-has.h
+@@ -32,7 +32,6 @@ extern uint64_t s390_facilities[3];
+ #define TCG_TARGET_HAS_bswap16_i32    1
+ #define TCG_TARGET_HAS_bswap32_i32    1
+ #define TCG_TARGET_HAS_extract2_i32   0
+-#define TCG_TARGET_HAS_negsetcond_i32 1
+ #define TCG_TARGET_HAS_add2_i32       1
+ #define TCG_TARGET_HAS_sub2_i32       1
+ #define TCG_TARGET_HAS_extr_i64_i32   0
+@@ -42,7 +41,6 @@ extern uint64_t s390_facilities[3];
+ #define TCG_TARGET_HAS_bswap32_i64    1
+ #define TCG_TARGET_HAS_bswap64_i64    1
+ #define TCG_TARGET_HAS_extract2_i64   0
+-#define TCG_TARGET_HAS_negsetcond_i64 1
+ #define TCG_TARGET_HAS_add2_i64       1
+ #define TCG_TARGET_HAS_sub2_i64       1
+ 
+diff --git a/tcg/sparc64/tcg-target-has.h b/tcg/sparc64/tcg-target-has.h
+index 258c978b5e..6ed27b8fcc 100644
+--- a/tcg/sparc64/tcg-target-has.h
++++ b/tcg/sparc64/tcg-target-has.h
+@@ -17,7 +17,6 @@ extern bool use_vis3_instructions;
+ #define TCG_TARGET_HAS_bswap16_i32      0
+ #define TCG_TARGET_HAS_bswap32_i32      0
+ #define TCG_TARGET_HAS_extract2_i32     0
+-#define TCG_TARGET_HAS_negsetcond_i32   1
+ #define TCG_TARGET_HAS_add2_i32         1
+ #define TCG_TARGET_HAS_sub2_i32         1
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+@@ -27,7 +26,6 @@ extern bool use_vis3_instructions;
+ #define TCG_TARGET_HAS_bswap32_i64      0
+ #define TCG_TARGET_HAS_bswap64_i64      0
+ #define TCG_TARGET_HAS_extract2_i64     0
+-#define TCG_TARGET_HAS_negsetcond_i64   1
+ #define TCG_TARGET_HAS_add2_i64         1
+ #define TCG_TARGET_HAS_sub2_i64         1
+ 
+diff --git a/tcg/tcg-has.h b/tcg/tcg-has.h
+index d4fc7148b4..315dfd05aa 100644
+--- a/tcg/tcg-has.h
++++ b/tcg/tcg-has.h
+@@ -16,7 +16,6 @@
+ #define TCG_TARGET_HAS_bswap32_i64      0
+ #define TCG_TARGET_HAS_bswap64_i64      0
+ #define TCG_TARGET_HAS_extract2_i64     0
 -#define TCG_TARGET_HAS_negsetcond_i64   0
-+#define TCG_TARGET_HAS_negsetcond_i64   1
+ #define TCG_TARGET_HAS_add2_i64         0
+ #define TCG_TARGET_HAS_sub2_i64         0
+ /* Turn some undef macros into true macros.  */
+diff --git a/tcg/tci/tcg-target-has.h b/tcg/tci/tcg-target-has.h
+index 7787347e05..f45a0688f9 100644
+--- a/tcg/tci/tcg-target-has.h
++++ b/tcg/tci/tcg-target-has.h
+@@ -10,7 +10,6 @@
+ #define TCG_TARGET_HAS_bswap16_i32      1
+ #define TCG_TARGET_HAS_bswap32_i32      1
+ #define TCG_TARGET_HAS_extract2_i32     0
+-#define TCG_TARGET_HAS_negsetcond_i32   1
+ #define TCG_TARGET_HAS_qemu_st8_i32     0
+ 
+ #if TCG_TARGET_REG_BITS == 64
+@@ -19,7 +18,6 @@
+ #define TCG_TARGET_HAS_bswap32_i64      1
+ #define TCG_TARGET_HAS_bswap64_i64      1
+ #define TCG_TARGET_HAS_extract2_i64     0
+-#define TCG_TARGET_HAS_negsetcond_i64   1
  #define TCG_TARGET_HAS_add2_i32         1
  #define TCG_TARGET_HAS_sub2_i32         1
  #define TCG_TARGET_HAS_add2_i64         1
-diff --git a/tcg/tci/tcg-target.c.inc b/tcg/tci/tcg-target.c.inc
-index 563529e055..2eb323b5c5 100644
---- a/tcg/tci/tcg-target.c.inc
-+++ b/tcg/tci/tcg-target.c.inc
-@@ -79,6 +79,8 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index a4b9e5dec0..9acf63e4cd 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -1984,23 +1984,19 @@ static bool fold_movcond(OptContext *ctx, TCGOp *op)
+     if (ti_is_const(tt) && ti_is_const(ft)) {
+         uint64_t tv = ti_const_val(tt);
+         uint64_t fv = ti_const_val(ft);
+-        TCGOpcode opc, negopc = 0;
++        TCGOpcode opc, negopc;
+         TCGCond cond = op->args[5];
+ 
+         switch (ctx->type) {
+         case TCG_TYPE_I32:
+             opc = INDEX_op_setcond_i32;
+-            if (TCG_TARGET_HAS_negsetcond_i32) {
+-                negopc = INDEX_op_negsetcond_i32;
+-            }
++            negopc = INDEX_op_negsetcond_i32;
+             tv = (int32_t)tv;
+             fv = (int32_t)fv;
+             break;
+         case TCG_TYPE_I64:
+             opc = INDEX_op_setcond_i64;
+-            if (TCG_TARGET_HAS_negsetcond_i64) {
+-                negopc = INDEX_op_negsetcond_i64;
+-            }
++            negopc = INDEX_op_negsetcond_i64;
+             break;
+         default:
+             g_assert_not_reached();
+@@ -2012,14 +2008,12 @@ static bool fold_movcond(OptContext *ctx, TCGOp *op)
+         } else if (fv == 1 && tv == 0) {
+             op->opc = opc;
+             op->args[3] = tcg_invert_cond(cond);
+-        } else if (negopc) {
+-            if (tv == -1 && fv == 0) {
+-                op->opc = negopc;
+-                op->args[3] = cond;
+-            } else if (fv == -1 && tv == 0) {
+-                op->opc = negopc;
+-                op->args[3] = tcg_invert_cond(cond);
+-            }
++        } else if (tv == -1 && fv == 0) {
++            op->opc = negopc;
++            op->args[3] = cond;
++        } else if (fv == -1 && tv == 0) {
++            op->opc = negopc;
++            op->args[3] = tcg_invert_cond(cond);
+         }
+     }
+ 
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index 22af3b12bc..413b68352d 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -569,11 +569,8 @@ void tcg_gen_negsetcond_i32(TCGCond cond, TCGv_i32 ret,
+         tcg_gen_movi_i32(ret, -1);
+     } else if (cond == TCG_COND_NEVER) {
+         tcg_gen_movi_i32(ret, 0);
+-    } else if (TCG_TARGET_HAS_negsetcond_i32) {
+-        tcg_gen_op4i_i32(INDEX_op_negsetcond_i32, ret, arg1, arg2, cond);
+     } else {
+-        tcg_gen_setcond_i32(cond, ret, arg1, arg2);
+-        tcg_gen_neg_i32(ret, ret);
++        tcg_gen_op4i_i32(INDEX_op_negsetcond_i32, ret, arg1, arg2, cond);
+     }
+ }
+ 
+@@ -1950,17 +1947,14 @@ void tcg_gen_negsetcond_i64(TCGCond cond, TCGv_i64 ret,
+         tcg_gen_movi_i64(ret, -1);
+     } else if (cond == TCG_COND_NEVER) {
+         tcg_gen_movi_i64(ret, 0);
+-    } else if (TCG_TARGET_HAS_negsetcond_i64) {
++    } else if (TCG_TARGET_REG_BITS == 64) {
+         tcg_gen_op4i_i64(INDEX_op_negsetcond_i64, ret, arg1, arg2, cond);
+-    } else if (TCG_TARGET_REG_BITS == 32) {
++    } else {
+         tcg_gen_op6i_i32(INDEX_op_setcond2_i32, TCGV_LOW(ret),
+                          TCGV_LOW(arg1), TCGV_HIGH(arg1),
+                          TCGV_LOW(arg2), TCGV_HIGH(arg2), cond);
+         tcg_gen_neg_i32(TCGV_LOW(ret), TCGV_LOW(ret));
+         tcg_gen_mov_i32(TCGV_HIGH(ret), TCGV_LOW(ret));
+-    } else {
+-        tcg_gen_setcond_i64(cond, ret, arg1, arg2);
+-        tcg_gen_neg_i64(ret, ret);
+     }
+ }
+ 
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 356c935894..e300a5a329 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -2268,6 +2268,7 @@ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
+         return has_type;
  
      case INDEX_op_setcond_i32:
-     case INDEX_op_setcond_i64:
 +    case INDEX_op_negsetcond_i32:
-+    case INDEX_op_negsetcond_i64:
+     case INDEX_op_brcond_i32:
+     case INDEX_op_movcond_i32:
+     case INDEX_op_ld8u_i32:
+@@ -2283,8 +2284,6 @@ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
      case INDEX_op_deposit_i32:
-     case INDEX_op_deposit_i64:
-         return C_O1_I2(r, r, r);
-@@ -966,6 +968,17 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc, TCGType type,
-                           args[3], args[4], args[5]);
-         break;
+         return true;
  
-+    case INDEX_op_negsetcond_i32:
-+        tcg_out_op_rrrc(s, INDEX_op_setcond_i32,
-+                        args[0], args[1], args[2], args[3]);
-+        tcg_out_op_rr(s, INDEX_op_neg, args[0], args[0]);
-+        break;
+-    case INDEX_op_negsetcond_i32:
+-        return TCG_TARGET_HAS_negsetcond_i32;
+     case INDEX_op_extract2_i32:
+         return TCG_TARGET_HAS_extract2_i32;
+     case INDEX_op_add2_i32:
+@@ -2301,6 +2300,7 @@ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
+         return TCG_TARGET_REG_BITS == 32;
+ 
+     case INDEX_op_setcond_i64:
 +    case INDEX_op_negsetcond_i64:
-+        tcg_out_op_rrrc(s, INDEX_op_setcond_i64,
-+                        args[0], args[1], args[2], args[3]);
-+        tcg_out_op_rr(s, INDEX_op_neg, args[0], args[0]);
-+        break;
-+
-     CASE_32_64(ld8u)
-     CASE_32_64(ld8s)
-     CASE_32_64(ld16u)
+     case INDEX_op_brcond_i64:
+     case INDEX_op_movcond_i64:
+     case INDEX_op_ld8u_i64:
+@@ -2321,8 +2321,6 @@ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
+     case INDEX_op_deposit_i64:
+         return TCG_TARGET_REG_BITS == 64;
+ 
+-    case INDEX_op_negsetcond_i64:
+-        return TCG_TARGET_HAS_negsetcond_i64;
+     case INDEX_op_extract2_i64:
+         return TCG_TARGET_HAS_extract2_i64;
+     case INDEX_op_extrl_i64_i32:
 -- 
 2.43.0
 
