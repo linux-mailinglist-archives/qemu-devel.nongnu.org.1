@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE7AA89661
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 10:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B43A89660
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 10:21:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4bWx-0000RE-F8; Tue, 15 Apr 2025 04:20:34 -0400
+	id 1u4bXJ-0001Q3-SG; Tue, 15 Apr 2025 04:20:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1u4bW7-0006wx-Vv; Tue, 15 Apr 2025 04:19:42 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1u4bWN-0007jg-1z; Tue, 15 Apr 2025 04:19:55 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1u4bW6-0002gK-0m; Tue, 15 Apr 2025 04:19:39 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-301918a4e1bso4091852a91.1; 
- Tue, 15 Apr 2025 01:19:36 -0700 (PDT)
+ id 1u4bWL-0002hZ-2y; Tue, 15 Apr 2025 04:19:54 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-22423adf751so47819705ad.2; 
+ Tue, 15 Apr 2025 01:19:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744705175; x=1745309975; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=XrDiOYjsuFKr2Zw5X/tf1rgIMsS7YJEeIOntY/YtLzQ=;
- b=WxtVu91ia6wihIEodp9mV/2hN57Md+E2qo1ZJ95/k0RTjlYXfE5UxyzqXelFDxlABq
- Zm9r3S5wVqlcn4tGdWleLONpGtgzug8YLHg9K9TuZY1/MgOzJoD73DCuEcJ8LHQsvtU6
- vLC6HmYXN1XC09DrfN9vQhskqultkFh8TZzIJws+N8mOQW5mdkxyU2hMi1h/W1mJdDmG
- ml8R6I+eg1rmsdwThGEQlPMVj9yu+s5IbOkaiUIqVI5Z0S7xHQeEFFH3cHDg0ZI1nLui
- +H6z8UOUakgwD0XoohZWqxyfacPoWRrnXTsX+pLDJFK9mC4aiJWzuDVeCOu9/H3gIMJs
- s4Yg==
+ d=gmail.com; s=20230601; t=1744705190; x=1745309990; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0JJKI5JSSPG9HV9ebWkOQYWwmgSY1J55Hh8hs1+6Djw=;
+ b=Pivd/6xcMZiAiMPI1kfK+5tMFoToOi702WrXKT1T15ELwxUYJtCWOwTwefs3YU1d1J
+ Jd0vsRgRCotfPQy0pSc8vMalQyITkrQrtP/uS35U1lKS4SdOCvdSI5Zq0LGYJe7UqCCH
+ 5avh2hwOXWAKpmmzFQP9j79/g2+UjxGlVyG9djEEfQYTW5Uj0WXglPQKDkmMzKObsgrJ
+ Cok/72hsIlPTC7oXHq0Dc/h2BSfLC/j8D+UJI8UG384yzhRDl/wPyy2fXwfbxCYy16PM
+ Lu7zIPpNFGuOegAolADY5MFOcuUTZmp0I40tE0ORHheFSZpIFPrTMv/h7n9GIjdT8zuZ
+ OnJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744705175; x=1745309975;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XrDiOYjsuFKr2Zw5X/tf1rgIMsS7YJEeIOntY/YtLzQ=;
- b=ap1hk1andNaCsHrh3vrVnpJeCQAjSoCvuZq5XB3OaLNx+kgzF3MVYPrWw/exCoC5es
- n1366Or686X92zgmTlT/pg7x9/cpqo3DjY/ZqeqG2fp/OetSFwbcE08Er8ZkiuQHMdqF
- kq0U3VSO3KucujfzsR2FUmZLB+Boos4GSxcDLRwbysaDqrbPKZ/qcJKKiCdo0MajxdFc
- WMjoMqCu1pybMBwnn+SQXLPVj0D5piRzwDVcuLVn4GGMitql5OTtCS0QxvwmhxkTzhYR
- rUUoq2bmun6+MrXE/LIaHU2oheSqHsTxzZORbUssnc4J+Xwqg2jE2HVcudEfUrcjk1Rp
- wRqA==
+ d=1e100.net; s=20230601; t=1744705190; x=1745309990;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0JJKI5JSSPG9HV9ebWkOQYWwmgSY1J55Hh8hs1+6Djw=;
+ b=h4wV3Id9FWM40g5yX2s9pN/6FHUrpbfZwofag9SwTSzQVN08eYd2hQsgrqZpR7tpIp
+ iiAltf/HQg4oVWxilpqMphO/3lPGuDfMNo3hUxYrQ88Mk4d2tFjNr6Na7aON7CIaBr6p
+ yGRSbTegulvaYetTEqAvBtNdm74OCL2iO/OJkQU+u/OSgUGFgRKm7OjZxf9kaG08VpK8
+ 4vqQX8jgvQWF7npAD0kmaPe9BgCNUgbYSECwiqX+ahkU3mehc9DGC5apH08cCgSh5gxR
+ omtdXT4ArJbI2AU2a9Mzn2aIyiyvRpMEP36IRkNBv+2cO+dkJmUYWeWPKyQXHix1fVfh
+ LrIw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVvSn4FcHK1UHaVam7cLIyzEkyZOtesJxjvCkQ4nVfDsJEAp8kkQYTNheCcU04XA3ZBTBRTnce9/CbXsQ==@nongnu.org,
- AJvYcCW6onh/0ITTc+bnH3ParA1ueA0GfJqP0XleTzBogM4zNLwjVjCxBvbqrF+gRUbyvSJXR5NvQJWu3RV6@nongnu.org
-X-Gm-Message-State: AOJu0YwI9C2rdvR5ue3g4RXs0wZ3ZOH3Qye0JEEuy/7b5+ln+0e0USXg
- YF2RkWcrLBpycZ5hqRfTUzh1W4zZwiuDP8ArZkUJ7qHNK5xH1MfHmiJKCA==
-X-Gm-Gg: ASbGnctLyzSqH9Buv9eDHWym6jQl5lce3FByhbXrcG2iM1rdAKw6Xy+lLlK005o0gRf
- 5I6mLPi/+oVTPFDWeG9q/LwhiEtOpIr5W2Mwe35R/X9fOUdYD9mJlzoqFDmXxX0FU2twOzeanO9
- zLScRwcWrXOj9GIFeW4Qcv/CUBwVyhIA/U64GtCfeT3/RQW73DCP4HBkgWddn06sdH10SIbj0Zs
- FooLUa8zaWuWvqRPtZ6FKykdXJVwe3JbrSMl9h5FN8BLyZRBHyC0HtDkdQOg07YXDQg9dyInoJL
- h2Jzj9Nhfbgoa+RNcAzWVyrjKezkF9V63yWlR/pBfajlnI4F5wCjw+lFxQSKaWldoQiXqAAVbpv
- 4KR/5k0iFVM0vPGmNhTX1GprRVeLOBmg9qnzTBEHH
-X-Google-Smtp-Source: AGHT+IFcGP2dFZiCMWuuGvpaIzTMhsxrLRNSBrpGHVVniy2h6MSPQ6SBV2/bd9yj4YXpqQP3XK4SRg==
-X-Received: by 2002:a17:90b:6ce:b0:2ee:7c65:ae8e with SMTP id
- 98e67ed59e1d1-30823670b82mr24718444a91.11.1744705175318; 
- Tue, 15 Apr 2025 01:19:35 -0700 (PDT)
+ AJvYcCVKzIHyrM9N+19puovurwzeQfvuNbBcnnoHbO+n6Er0cGltHdIYw/2fArhm2G1neNreidywSxH0RlBL@nongnu.org,
+ AJvYcCW6ecJim3GYLYmuLxu0yVRzzBWGSCA5pwqdLkDG8uuskOBnCchm05OY3W3jrr57h+EF1zq0rkchW8xNCg==@nongnu.org
+X-Gm-Message-State: AOJu0Ywbkwnc3w+qyUxCG03ukVib1K4Kakg1+NeDPJa9Mv6gi381vMLi
+ gv6WGu6U9Jic2hRqTbxmbkPMiusdw/pludmw6iRN0/o/9nmX4jM7IxqrgQ==
+X-Gm-Gg: ASbGnct+uibOJPMBjq2z8ANoum/mkk89eOj8+MxruaHyW7lE9bVkGzkAP/lcyPP4shS
+ aoM8oQYqLGW9agC9P4i2AqBXsz37LVhvFXprZ2WuQjnZ18rWuCumh9iVzkl9dn6y5GorxdcF4JD
+ WCk8FXTcI+ono5aRMTaY4RfFG8/lkjZxp4rHhAvEZU/PNgrDFz3YBxexdZy5kwwr+PfER5qst7r
+ 0J1QnKamC+vdqoVPvdEmUOf3D7BrXukiLGbiPvlPd2EWwDvlg+YIZY9+1BBBFeUB6EZUX9Icl02
+ bBOratLeQiDtCL0HIY9H0kxekKpRinVF6yxz+GLXnjxLqmwwEedAFHpJZGo3rdN1UpRlQhSmZRI
+ PZzHVhALiquCum+MP/tRgNZUetAAW64AfJ44lcBwP7GGmjULTWv8=
+X-Google-Smtp-Source: AGHT+IEQ+D4qE9ZfSFqFzBDcSa/5wZD0VEovtzCIV58kFU1SVyGk3s/w8ZrxVv1hrYiXB3w86uSgFQ==
+X-Received: by 2002:a17:90b:2dd2:b0:2fe:afa7:eaf8 with SMTP id
+ 98e67ed59e1d1-30823670affmr23192680a91.13.1744705190472; 
+ Tue, 15 Apr 2025 01:19:50 -0700 (PDT)
 Received: from wheely.local0.net
  (ppp118-208-164-196.cbr-trn-nor-bras39.tpg.internode.on.net.
  [118.208.164.196]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-306df08f63bsm12543098a91.24.2025.04.15.01.19.23
+ 98e67ed59e1d1-306df08f63bsm12543098a91.24.2025.04.15.01.19.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Apr 2025 01:19:34 -0700 (PDT)
+ Tue, 15 Apr 2025 01:19:50 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -73,14 +74,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Emanuele Giuseppe Esposito <e.emanuelegiuseppe@gmail.com>,
  qemu-devel@nongnu.org, qemu-block@nongnu.org
-Subject: [RFC PATCH 0/2] tests/qtest: Enable spapr dma tests
-Date: Tue, 15 Apr 2025 18:19:12 +1000
-Message-ID: <20250415081914.378236-1-npiggin@gmail.com>
+Subject: [RFC PATCH 1/2] tests/qtest: Fix virtio msix message endianness
+Date: Tue, 15 Apr 2025 18:19:13 +1000
+Message-ID: <20250415081914.378236-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250415081914.378236-1-npiggin@gmail.com>
+References: <20250415081914.378236-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,33 +106,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I took a look at the spapr buggy msix fixme in qtests... AFAIKS
-it turns out to be DMA entirely broken due to iommu not set up.
-Adding a quick workaround for spapr gets everything working
-properly other than exposing bugs in msi message endianness
-conversions.
+msix messages are written to memory in little-endian order, so they
+should not be byteswapped depending on target endianness, but read
+as le and converted to host endian by the qtest.
 
-Thanks,
-Nick
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ tests/qtest/libqos/virtio-pci-modern.c | 9 +++++++--
+ tests/qtest/libqos/virtio-pci.c        | 7 +++++--
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
-Nicholas Piggin (2):
-  tests/qtest: Fix virtio msix message endianness
-  tests/qtest: Enable spapr dma with linear iommu map
-
- tests/qtest/libqos/pci.h               |  4 ----
- hw/ppc/spapr_iommu.c                   |  9 ++++++++-
- tests/qtest/e1000e-test.c              | 23 +++--------------------
- tests/qtest/igb-test.c                 | 21 ---------------------
- tests/qtest/libqos/generic-pcihost.c   |  1 -
- tests/qtest/libqos/pci-pc.c            |  3 ---
- tests/qtest/libqos/pci-spapr.c         |  7 ++++---
- tests/qtest/libqos/pci.c               | 14 --------------
- tests/qtest/libqos/virtio-pci-modern.c |  9 +++++++--
- tests/qtest/libqos/virtio-pci.c        |  7 +++++--
- tests/qtest/vhost-user-blk-test.c      |  6 ------
- tests/qtest/virtio-blk-test.c          | 12 ------------
- 12 files changed, 27 insertions(+), 89 deletions(-)
-
+diff --git a/tests/qtest/libqos/virtio-pci-modern.c b/tests/qtest/libqos/virtio-pci-modern.c
+index 4e67fcbd5d3..67aa2af0bd7 100644
+--- a/tests/qtest/libqos/virtio-pci-modern.c
++++ b/tests/qtest/libqos/virtio-pci-modern.c
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/bswap.h"
+ #include "standard-headers/linux/pci_regs.h"
+ #include "standard-headers/linux/virtio_pci.h"
+ #include "standard-headers/linux/virtio_config.h"
+@@ -136,12 +137,16 @@ static bool get_msix_status(QVirtioPCIDevice *dev, uint32_t msix_entry,
+         return qpci_msix_pending(dev->pdev, msix_entry);
+     }
+ 
+-    data = qtest_readl(dev->pdev->bus->qts, msix_addr);
++    qtest_memread(dev->pdev->bus->qts, msix_addr, &data, 4);
++    data = le32_to_cpu(data);
+     if (data == msix_data) {
+         qtest_writel(dev->pdev->bus->qts, msix_addr, 0);
+         return true;
+-    } else {
++    } else if (data == 0) {
+         return false;
++    } else {
++        /* Must only be either 0 (no interrupt) or the msix data. */
++        g_assert_not_reached();
+     }
+ }
+ 
+diff --git a/tests/qtest/libqos/virtio-pci.c b/tests/qtest/libqos/virtio-pci.c
+index 002bf8b8c2d..6b421a4d859 100644
+--- a/tests/qtest/libqos/virtio-pci.c
++++ b/tests/qtest/libqos/virtio-pci.c
+@@ -131,12 +131,15 @@ static bool qvirtio_pci_get_queue_isr_status(QVirtioDevice *d, QVirtQueue *vq)
+             /* No ISR checking should be done if masked, but read anyway */
+             return qpci_msix_pending(dev->pdev, vqpci->msix_entry);
+         } else {
+-            data = qtest_readl(dev->pdev->bus->qts, vqpci->msix_addr);
++            qtest_memread(dev->pdev->bus->qts, vqpci->msix_addr, &data, 4);
++            data = le32_to_cpu(data);
+             if (data == vqpci->msix_data) {
+                 qtest_writel(dev->pdev->bus->qts, vqpci->msix_addr, 0);
+                 return true;
+-            } else {
++            } else if (data == 0) {
+                 return false;
++            } else {
++                g_assert_not_reached();
+             }
+         }
+     } else {
 -- 
 2.47.1
 
