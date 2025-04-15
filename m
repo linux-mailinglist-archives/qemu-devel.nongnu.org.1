@@ -2,80 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9A7A8A8C2
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 22:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A482A8A768
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 21:06:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4mOI-0003mL-1S; Tue, 15 Apr 2025 15:56:19 -0400
+	id 1u4laI-0002ZK-A6; Tue, 15 Apr 2025 15:04:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <suchitrashankar07@gmail.com>)
- id 1u4lLk-0006QB-W0
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 14:49:37 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <suchitrashankar07@gmail.com>)
- id 1u4lLj-0002Zg-3D
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 14:49:36 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43cfebc343dso46164885e9.2
- for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 11:49:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744742967; x=1745347767; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Uvie6TwrseJP+NZ3SXZ7VgtCFNbgpWKYrB58DfuAYtY=;
- b=Bvde6qIRv02N3nSeq59haAEmu2oDki7R8Qm6TizFHCBQdm6C7f89NJu0h3S3Y8n371
- OJWfbA+Cdh5w8Jf9w4yvHAlAIRYSb360VXdgeSSjDLHUu70cUT69CRCHOYeDyZIRUcPF
- wS++DV+SEBuRaOPBli3IilSRatNXw1U1mPxag0c52/w8NWyRfkS/tGsW8e4FyhZq+WvM
- QobvUaT0BkmQsB9E2LLW3hsAqqxKoXfvD+eSKBubUA0rQp6h8O7pRPtccZkMdaGceEjA
- Md8gGqd5OY+dUSuDD38NhHgWng445YNC4vX3WBAO5pRGtIyiqvfat9xI3AYSeAYRKoNB
- I5Rw==
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1u4laG-0002Yv-4y
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:04:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1u4laD-0004Ua-1y
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:04:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744743871;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=EzXDgfmoEE16AzU6BesaT4Cb+OJzYViF3u0J7+24sZA=;
+ b=IpndAK5Djot0GT3ZItMwKUWTy1fBFyivkPKeOmEJnFnt3q560VZcntvZM5erHmYlwQdjT7
+ iKjFh/LKsm5Mn1gtYooLBAD/WepQzja4FTJIAOTPdCr9gGVSEvZdDUj1x/MPWp2TrCUpCR
+ Zx6pdRmL6ZAccIMDzLhZjuSNDL3EOYM=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-426-SMsgjs6DNo-B1OFrIdNy0A-1; Tue, 15 Apr 2025 15:04:29 -0400
+X-MC-Unique: SMsgjs6DNo-B1OFrIdNy0A-1
+X-Mimecast-MFC-AGG-ID: SMsgjs6DNo-B1OFrIdNy0A_1744743869
+Received: by mail-io1-f72.google.com with SMTP id
+ ca18e2360f4ac-85b5ea50d28so62575839f.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 12:04:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744742967; x=1745347767;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Uvie6TwrseJP+NZ3SXZ7VgtCFNbgpWKYrB58DfuAYtY=;
- b=bKT3UbsqLOpuo7zLW+uFmvhBgqDy2YwcQMG/EQ2CH3pXsMhKw0kPU8wK9sNkG+fVqm
- jLcu0GPejOhyiUl+ZH4jKNKB1GiFHJ2GOoofSyQIf3JTZHGErFBJ+XnksZbFrxC81hsO
- yARhqyBBXTRlCWQ0Vremuwe991z/wj+Woalor/rtrEARKxYFX/V/6PmiO4SIe3ExSxsn
- biCiONjsJqbMkoNo7sjsDb7mXNG8mKYmMPTAfIIzRrAPwPSx/wjXjypmBZkByOhXJF8B
- BwPiHIZA7uzFYbvZgvNmozMRGowco5kHDA2o5Z4NRZk7h8HkNvhKizL2xXPf9lCEAeGd
- l9Sg==
+ d=1e100.net; s=20230601; t=1744743869; x=1745348669;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EzXDgfmoEE16AzU6BesaT4Cb+OJzYViF3u0J7+24sZA=;
+ b=HnPIUEzMKjB6jSxiAQJS7lH8L1tjGgY7cNWhDuFaCDvESMx/M6gAf4e4ZPhhmf8rLI
+ xIYLFS81FFw57xF/ZtCZAdoDoQV95fU4U+4PXeZlYuQT4PsjD1sfLofwFUO8cmi/YRQA
+ oSs7KiyShgnxkCvhcFYPb3NNNjsArDTA6yt2YnaVq/0uTpEbapbhuuDOVy31im/L6fwC
+ wcGfDp6Epa2kBIJECG9/26edilnNZMzMwZMAapyYef/AtcT68CqSrBb9cyclFla2f9pt
+ hpTjx5rdxP4rv33IO5WsqLLTQks9pMsnGPKRNW4xpY/HPQSKU4vWjbdQHXGnvKeIkN04
+ yMxQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVPvjQQZiHrNy9rbgII8J7WvCZEn9Rg5H2ClIjfBqahT7id2nQmFq8TbASUFVrfOKdWNQruRBdRfLGq@nongnu.org
-X-Gm-Message-State: AOJu0YzQgsaXXJ9r8VYaNadfHTLBB13laiiLYtKD9K1bpcAZlRJrDGp2
- 4hysmtssCi8s1O+05oHEsZLj5lsmtkM3nm8705mZhl+IK48Ywo/OPWFY2OKhPPWSe5DgjXKfrbO
- 9+GJX27YBiBsLexyt7o6ulnzrPEb7k/inCp8=
-X-Gm-Gg: ASbGnctLj9lTQ3mm6Pd5ChTxbYwOWV6x7WrsqahMxjxDoTdVCzsqyCjdDaOzV715iWG
- nb+pP5vnw3yuIc2K4ELeIiHzeDbsdnFVCbpSp47jOk99Wt6qxDMjZZGsqg8Knx5oTSFOJdYkXYI
- o7YbE9kjEnEU/RkgSO1Tmh
-X-Google-Smtp-Source: AGHT+IFH//akahVSnb66GMb9bF0y8QqQEnU0+WvUNRmz8iGEIgl5TxuXZVrohfGz7zc3lQKqCscGwLHHLvznv62IA8c=
-X-Received: by 2002:a05:6000:22c4:b0:39c:1257:feb9 with SMTP id
- ffacd0b85a97d-39ee27694c2mr486647f8f.57.1744742967297; Tue, 15 Apr 2025
- 11:49:27 -0700 (PDT)
+ AJvYcCXX8yDU8NB+W+oNtV/XkrYpinesUisercadeyqObh1QvxrfbvNIVwpCBtMVPQKZ8LNOf222UiEaqNfW@nongnu.org
+X-Gm-Message-State: AOJu0Yzdn0uAwD4Z7+6NwMajzHOEyJW8Na1yDyjc4WXCtyJRDO1oqQmW
+ 6KFQvq7yilo49DfihknZsx1VxLWNZ6SbHCDO83Jp/AKraHq/tvaPiDT7ftGbUtYybEkl6vg9CW8
+ jbO4foAY18DdNQx7uLbz+iRjJExFouZhpRtW0UN0DeM7h8ZJ5mNZO
+X-Gm-Gg: ASbGncuJORrNyRMDgUVBPA8lnM30VD8Kx0r/aBJ9Jqds5PWnPFFlE5Lmq0AXm/AkI3M
+ ehD9qwoovSOg0XdqJAi4gDKsGJGgM3FR04OZI87jCajk4hhxVDvw8QJcmEl0lmXCRk9od/+ctgs
+ J0IibnsjefLGHISMqC17xc4kniPyWnq6kf4t1+5IaxMyTEytxBxUsmCfL9F41svujFLYVDA91yU
+ GqxfqyJlheRLRV+HcgSFqJCHJlXMFWP9ZSDYMjEhpPdndG+3c6KTxV3Uhswv6c5LTIIlMB/6DId
+ 0vT9OmgeLpGKpko=
+X-Received: by 2002:a05:6e02:1606:b0:3d3:dba6:794b with SMTP id
+ e9e14a558f8ab-3d8123d2cd6mr1930045ab.0.1744743868970; 
+ Tue, 15 Apr 2025 12:04:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE44NGPSSEq6itRpizEEVszZCIg16IT0R0uO5d2m8Mv7xnwX9y5sRLeJFUJl4Jl2jhveQpWYQ==
+X-Received: by 2002:a05:6e02:1606:b0:3d3:dba6:794b with SMTP id
+ e9e14a558f8ab-3d8123d2cd6mr1929845ab.0.1744743868467; 
+ Tue, 15 Apr 2025 12:04:28 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ e9e14a558f8ab-3d7dc5827e1sm34286795ab.46.2025.04.15.12.04.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 15 Apr 2025 12:04:27 -0700 (PDT)
+Date: Tue, 15 Apr 2025 13:04:25 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Tomita Moeko <tomitamoeko@gmail.com>
+Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>,
+ qemu-devel@nongnu.org, Corvin =?UTF-8?B?S8O2aG5l?= <c.koehne@beckhoff.com>
+Subject: Re: [PATCH] vfio/igd: Check host PCI address when probing
+Message-ID: <20250415130425.601e1902.alex.williamson@redhat.com>
+In-Reply-To: <e529bf00-bd58-4151-9bce-dad74c88fa6d@gmail.com>
+References: <20250325172239.27926-1-tomitamoeko@gmail.com>
+ <20250409111801.4c97022f.alex.williamson@redhat.com>
+ <046a2961-23b1-4ef2-8673-9b9deedbbbdf@redhat.com>
+ <3e9743ab-bf81-4d92-8ea0-e01ac58a234b@gmail.com>
+ <20250414160530.5d86aaf2.alex.williamson@redhat.com>
+ <e529bf00-bd58-4151-9bce-dad74c88fa6d@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-From: Suchitra Shankar <suchitrashankar07@gmail.com>
-Date: Wed, 16 Apr 2025 00:19:15 +0530
-X-Gm-Features: ATxdqUEQQX3TD4pC30XrsirnbZIwrL5B9s_ruMIiO0WNOvxei5dfNIod9_rmZbQ
-Message-ID: <CABru571BjFa_SX5xHXbJwxRjKOOm-eo_dBTuaZx+KHOJBNVR=g@mail.gmail.com>
-Subject: [PATCH] Converting aio_set_event_notifier to use io_uring methods
-To: Stefan Hajnoczi <stefanha@redhat.com>, kwolf@redhat.com,
- qemu-devel@nongnu.org
-Content-Type: multipart/mixed; boundary="000000000000cb06680632d5a022"
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=suchitrashankar07@gmail.com; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 15 Apr 2025 15:56:05 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,89 +114,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000cb06680632d5a022
-Content-Type: multipart/alternative; boundary="000000000000cb06670632d5a020"
+On Wed, 16 Apr 2025 01:36:15 +0800
+Tomita Moeko <tomitamoeko@gmail.com> wrote:
+> 
+> The generation register also exists on discrete GPUs. In the new xe
+> driver [1], the Battlemage discrete GPU shares the same logic reading
+> GMD_ID_DISPLAY register. The driver itself uses is_dgfx bit mapped to
+> device id. In QEMU, we need to know whether the device is a supported
+> IGD device first before applying the IGD-specific quirk, especially
+> for legacy mode.
+> 
+> The most feasible way is to check if kernel exposes VFIO_REGION_SUBTYPE_
+> INTEL_IGD_OPREGION on that device I think, as only IGD has OpRegion.
+> 
+> i915 driver [2] and Arrow Lake datasheet [3] shows that Intel has
+> removed the BDSM register by making the DSM range part of BAR2 since
+> Meteor Lake and onwards. QEMU only need to quirk on the register for
+> IGD devices until Raptor Lake, meaning that the device list is fixed
+> for now.
+> 
+> By the way, for legacy mode, I think we should only support it until
+> Gen 9, as Intel only provide VBIOS or CSM support until that generation,
+> and seabios cannot handle 64 bit BDSM register. I'm also wondering if
+> VGA really works on newer generations.
 
---000000000000cb06670632d5a020
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+If it's a VGA class device, it really should, but without CSM I could
+see why you have doubts.
+ 
+> Maybe we can continue with current igd_gen, but implement a logic like:
+>     if (!intel graphics)
+>         return;
+>     if (!has VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION)
+>         return;
+>     setup_opregion();  // make x-igd-opregion automatically enabled?
+>     if (gen <= 9)
+>         setup_legacy_mode();
+>     if (gen >= 6 && gen <=9)
+>         setup_32bit_bdsm():
+>     else if (gen >= 9 && gen <= 12)
+>         setup_64bit_bdsm();
+>     // ...
+>     // optional quirks like lpc bridge id
+> 
+> A table can also be used to precisely track all the gen 6-12 devices.
 
-Hi Stefan,
+This seems reasonable to me.
 
-Apologies for not using git send-email for submitting the patch =E2=80=94 I=
- had
-some issues setting up my SMTP configuration, so I=E2=80=99m sending it man=
-ually
-for now. I hope that=E2=80=99s alright.
+> Attached a config space dump of Intel A770 discrete GPU for reference
+> 
+> 03:00.0 VGA compatible controller: Intel Corporation DG2 [Arc A770] (rev 08) (prog-if 00 [VGA controller])
+> 	Subsystem: Intel Corporation Device 1020
+> 	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+> 	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+> 	Latency: 0, Cache Line Size: 64 bytes
+> 	Interrupt: pin ? routed to IRQ 181
+> 	IOMMU group: 19
+> 	Region 0: Memory at 81000000 (64-bit, non-prefetchable) [size=16M]
+> 	Region 2: Memory at 6000000000 (64-bit, prefetchable) [size=16G]
+> 	Expansion ROM at 82000000 [disabled] [size=2M]
+> 	Capabilities: [40] Vendor Specific Information: Len=0c <?>
+> 	Capabilities: [70] Express (v2) Endpoint, IntMsgNum 0
+> 		DevCap:	MaxPayload 128 bytes, PhantFunc 0, Latency L0s <64ns, L1 <1us
+> 			ExtTag+ AttnBtn- AttnInd- PwrInd- RBE+ FLReset+ SlotPowerLimit 0W TEE-IO-
+> 		DevCtl:	CorrErr- NonFatalErr- FatalErr- UnsupReq-
+> 			RlxdOrd+ ExtTag+ PhantFunc- AuxPwr- NoSnoop+ FLReset-
+> 			MaxPayload 128 bytes, MaxReadReq 128 bytes
+> 		DevSta:	CorrErr- NonFatalErr- FatalErr- UnsupReq+ AuxPwr- TransPend-
+> 		LnkCap:	Port #0, Speed 2.5GT/s, Width x1, ASPM L0s L1, Exit Latency L0s <64ns, L1 <1us
 
-Thanks again for the guidance and for reviewing my contribution!
-----
-This patch updates aio_set_event_notifier to use IORING_OP_READ via
-aio_add_sqe()
-when CONFIG_LINUX_IO_URING is defined, in order to reduce the overhead of
-reactor-based file descriptor monitoring. This switches the mechanism from
-polling with eventfd to the more efficient io_uring proactor pattern.
-When io_uring is not available, the existing behavior is preserved.
+Hmm, hardware bug?  Surely the A770 is not a Gen1, x1 device.
+Something is going on with the interrupt pin above too.  At least it
+claims FLReset+ above, does it work reliably though?  Seems like there
+are various reports of Arc GPUs not working well with assignment due to
+reset issues.  Thanks,
 
-Signed-off-by: Suchitra Shankar <suchitrashankar07@gmail.com>
+Alex
 
---000000000000cb06670632d5a020
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> 			ClockPM- Surprise- LLActRep- BwNot- ASPMOptComp+
+> 		LnkCtl:	ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
+> 			ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+> 		LnkSta:	Speed 2.5GT/s, Width x1
+> 			TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
+> 		DevCap2: Completion Timeout: Range B, TimeoutDis+ NROPrPrP- LTR+
+> 			 10BitTagComp+ 10BitTagReq+ OBFF Not Supported, ExtFmt+ EETLPPrefix-
+> 			 EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
+> 			 FRS- TPHComp- ExtTPHComp-
+> 			 AtomicOpsCap: 32bit- 64bit- 128bitCAS-
+> 		DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
+> 			 AtomicOpsCtl: ReqEn-
+> 			 IDOReq- IDOCompl- LTR+ EmergencyPowerReductionReq-
+> 			 10BitTagReq- OBFF Disabled, EETLPPrefixBlk-
+> 		LnkCap2: Supported Link Speeds: 2.5GT/s, Crosslink- Retimer- 2Retimers- DRS-
+> 		LnkCtl2: Target Link Speed: 2.5GT/s, EnterCompliance- SpeedDis-
+> 			 Transmit Margin: Normal Operating Range, EnterModifiedCompliance- ComplianceSOS-
+> 			 Compliance Preset/De-emphasis: -6dB de-emphasis, 0dB preshoot
+> 		LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete- EqualizationPhase1-
+> 			 EqualizationPhase2- EqualizationPhase3- LinkEqualizationRequest-
+> 			 Retimer- 2Retimers- CrosslinkRes: unsupported
+> 	Capabilities: [ac] MSI: Enable+ Count=1/1 Maskable+ 64bit+
+> 		Address: 00000000fee008b8  Data: 0000
+> 		Masking: 00000000  Pending: 00000000
+> 	Capabilities: [d0] Power Management version 3
+> 		Flags: PMEClk- DSI- D1- D2- AuxCurrent=0mA PME(D0+,D1-,D2-,D3hot+,D3cold-)
+> 		Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
+> 	Capabilities: [100 v1] Alternative Routing-ID Interpretation (ARI)
+> 		ARICap:	MFVC- ACS-, Next Function: 0
+> 		ARICtl:	MFVC- ACS-, Function Group: 0
+> 	Capabilities: [420 v1] Physical Resizable BAR
+> 		BAR 2: current size: 16GB, supported: 256MB 512MB 1GB 2GB 4GB 8GB 16GB
+> 	Capabilities: [400 v1] Latency Tolerance Reporting
+> 		Max snoop latency: 15728640ns
+> 		Max no snoop latency: 15728640ns
+> 	Kernel driver in use: i915
+> 	Kernel modules: i915, xe
 
-<div dir=3D"ltr"><p class=3D"gmail-">Hi Stefan,</p>
-<p class=3D"gmail-">Apologies for not using <code>git send-email</code> for=
- submitting the patch =E2=80=94 I had some issues setting up my SMTP config=
-uration, so I=E2=80=99m sending it manually for now. I hope that=E2=80=99s =
-alright.</p>
-<p class=3D"gmail-">Thanks again for the guidance and for reviewing my cont=
-ribution!<br>----</p>This patch updates aio_set_event_notifier to use IORIN=
-G_OP_READ via aio_add_sqe()<br>when CONFIG_LINUX_IO_URING is defined, in or=
-der to reduce the overhead of<br>reactor-based file descriptor monitoring. =
-This switches the mechanism from<br>polling with eventfd to the more effici=
-ent io_uring proactor pattern.<br>When io_uring is not available, the exist=
-ing behavior is preserved.<br><br>Signed-off-by: Suchitra Shankar &lt;<a hr=
-ef=3D"mailto:suchitrashankar07@gmail.com">suchitrashankar07@gmail.com</a>&g=
-t;<br><br><br><br></div>
-
---000000000000cb06670632d5a020--
-
---000000000000cb06680632d5a022
-Content-Type: text/x-patch; charset="UTF-8"; name="contribution-task.patch"
-Content-Disposition: attachment; filename="contribution-task.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_m9iuwl8k0>
-X-Attachment-Id: f_m9iuwl8k0
-
-RnJvbSA2NmIzNDg1ODY3YzU0MzI1NzU2ZTMwNjkxNWUwNDFmNWVmNDcwNWQxIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBTdWNoaXRyYSBTaGFua2FyIDxzdWNoaXRyYXNoYW5rYXIwN0Bn
-bWFpbC5jb20+CkRhdGU6IFR1ZSwgMTUgQXByIDIwMjUgMjM6MjU6NDggKzA1MzAKU3ViamVjdDog
-W1BBVENIXSBjaG9yZTogYWRoZXJlIHRvIHFlbXUgY29kaW5nIHN0ZHMKClNpZ25lZC1vZmYtYnk6
-IFN1Y2hpdHJhIFNoYW5rYXIgPHN1Y2hpdHJhc2hhbmthcjA3QGdtYWlsLmNvbT4KLS0tCiB1dGls
-L2Fpby1wb3NpeC5jIHwgMTQgKysrKysrKy0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2Vy
-dGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdXRpbC9haW8tcG9zaXguYyBi
-L3V0aWwvYWlvLXBvc2l4LmMKaW5kZXggZDFjNmE0NmEyNS4uNzdhZjZjODliMCAxMDA2NDQKLS0t
-IGEvdXRpbC9haW8tcG9zaXguYworKysgYi91dGlsL2Fpby1wb3NpeC5jCkBAIC04MjksMTIgKzgy
-OSwxMiBAQCB2b2lkIGFpb19hZGRfc3FlX3dpdGhfY3R4KEFpb0NvbnRleHQgKmN0eCwKICAgICB2
-b2lkICgqcHJlcF9zcWUpKHN0cnVjdCBpb191cmluZ19zcWUgKnNxZSwgdm9pZCAqb3BhcXVlKSwK
-ICAgICB2b2lkICpvcGFxdWUsIENxZUhhbmRsZXIgKmNxZV9oYW5kbGVyKQogewotIGlmICghY3R4
-IHx8ICFjdHgtPmZkbW9uX29wcyB8fCAhY3R4LT5mZG1vbl9vcHMtPmFkZF9zcWUpIHsKLSBmcHJp
-bnRmKHN0ZGVyciwgImN0eCBvciBmZG1vbl9vcHMgaXMgTlVMTCEgQ2Fubm90IGFkZCBTUUVcbiIp
-OwotIGFib3J0KCk7CisgICAgaWYgKCFjdHggfHwgIWN0eC0+ZmRtb25fb3BzIHx8ICFjdHgtPmZk
-bW9uX29wcy0+YWRkX3NxZSkgeworICAgICAgICBmcHJpbnRmKHN0ZGVyciwgImN0eCBvciBmZG1v
-bl9vcHMgaXMgTlVMTCEgQ2Fubm90IGFkZCBTUUVcbiIpOworICAgICAgICBhYm9ydCgpOwogIH0K
-LS8vCi0vL2ZwcmludGYoc3RkZXJyLCAiPj4+IGFpb19hZGRfc3FlX3dpdGhfY3R4IGNhbGxlZCEg
-PDw8XG4iKTsKKworLypmcHJpbnRmKHN0ZGVyciwgIj4+PiBhaW9fYWRkX3NxZV93aXRoX2N0eCBj
-YWxsZWQhIDw8PFxuIik7Ki8KIGN0eC0+ZmRtb25fb3BzLT5hZGRfc3FlKGN0eCwgcHJlcF9zcWUs
-IG9wYXF1ZSwgY3FlX2hhbmRsZXIpOwogfQogCkBAIC04NDIsOCArODQyLDggQEAgdm9pZCBhaW9f
-YWRkX3NxZSh2b2lkICgqcHJlcF9zcWUpKHN0cnVjdCBpb191cmluZ19zcWUgKnNxZSwgdm9pZCAq
-b3BhcXVlKSwKICAgICAgICAgICAgICAgICAgdm9pZCAqb3BhcXVlLCBDcWVIYW5kbGVyICpjcWVf
-aGFuZGxlcikKIHsKICAgICBBaW9Db250ZXh0ICpjdHggPSBxZW11X2dldF9jdXJyZW50X2Fpb19j
-b250ZXh0KCk7ICAvLyDihpAgdGhpcyBpcyB0aGUgbWFnaWMKLQotICAgICBpZiAoIWN0eCB8fCAh
-Y3R4LT5mZG1vbl9vcHMgfHwgIWN0eC0+ZmRtb25fb3BzLT5hZGRfc3FlKSB7CisgICAgaWYgKCFj
-dHggfHwgIWN0eC0+ZmRtb25fb3BzIHx8ICFjdHgtPmZkbW9uX29wcy0+YWRkX3NxZSkgCisgICAg
-IHsKICAgICAgICAgIGZwcmludGYoc3RkZXJyLCAiY3R4IG9yIGZkbW9uX29wcyBpcyBOVUxMISBD
-YW5ub3QgYWRkIFNRRVxuIik7CiAgICAgICAgICBhYm9ydCgpOwogICAgICB9Ci0tIAoyLjQ5LjAK
-Cg==
---000000000000cb06680632d5a022--
 
