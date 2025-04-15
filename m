@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E6EA8A554
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC6AA8A555
 	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 19:24:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4jzz-0000CE-Cl; Tue, 15 Apr 2025 13:23:03 -0400
+	id 1u4k03-0000DO-Mp; Tue, 15 Apr 2025 13:23:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u4jzx-0000Be-Em
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 13:23:01 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u4k01-0000Cd-Gr
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 13:23:05 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u4jzv-0006v5-Gk
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 13:23:01 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43cebe06e9eso44404835e9.3
- for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 10:22:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u4jzz-0006vs-NO
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 13:23:05 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43cf257158fso42056705e9.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 10:23:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744737777; x=1745342577; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744737782; x=1745342582; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jGss4Nxm8QOt9jRxbySq3QwZ6ueqeO46lfbRBfyFEcU=;
- b=dTUBzPUOAajl7JnH26f8DaTzY07/UPbrbadhQ9BTz2N1AfzG7AgEq/yVCv3ymb8mgi
- OwrRITy+O5pjTjZ9FrV7oCdlgtiUXjyP7+Vof4gq1PZKGNYAoSGdggPpVJqq8rfpLL2n
- ZUWgI7AAWijW+vwFsGYZ/OzWxN1oXSM1Nbc9CFGXNHuv90vuxyF58Mn5wAqUGsaG9ZaB
- nUEGOym9HQ2xXAe/4d9OgFcjhNJ1xxOXqfCuIy4Tr5xDGa4qpQScSS2F7O6vHEX5nZKz
- 6vytjbklmrdK8dZYnwdcImx1V9JWWa6/Nc663qZIHnvPcq9jzkMNYbCR8Ujfm+r1fRQD
- PW4g==
+ bh=PeByU0jwFO7MH0hprr6LSgGx+kuJBq/jNjVmMX1KbGo=;
+ b=LQW3pQ8gCiu/uJhNAoYXzSwFLB+9K+k1XV9UrhVjS3DrP0aPzj5wiQEAu+qmHClTlg
+ mn5x8bX4Fib+Yj1RhY7636Cb/PdQIyQQHRUSuNFr0CpU6PuljMU/+kZrSuDJLd1SeG4S
+ MM2Ab4A1Xm/A6ZIrwMI4BPZGvXVuDbXjiIBUu77ZeR05PTXvRyIwYNoejxxf0QiRZJvl
+ sCVHX037ALe+c871YmCx6i2lh99Rfm+XHHWiLOoLPe533ZS05ae88enGmNzdp9kcYy/m
+ 7NEZHGVaVicP8yvWK91DuleBHlpMh4aFJl3m2BBU3LyjQVXL0+ekfubMlzrnMdgCeGSl
+ /CMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744737777; x=1745342577;
+ d=1e100.net; s=20230601; t=1744737782; x=1745342582;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jGss4Nxm8QOt9jRxbySq3QwZ6ueqeO46lfbRBfyFEcU=;
- b=TloLQZejL2DjUzTLJfya/3i4N8pLiFAkbwe9gDz1fJO+LwFrYCEYXKmaF3yeBwgBZB
- dIp5v8uQzWIh3pvoBjgTLmkqMT2cBq6+QJWLpZMCCe03Us2x94e2U+kpG6Uinh+T6pD7
- l7XZAfBYlOKyilfBYHFqnoAPI0hoT146mo6Vd/lC4Rx6SglhEDRQbwbQaHsAhgbV/l5o
- 2nuAsRNOQNrrwupM0/3IwvC9A3y+DAGCzrNbgfcw81bmg2h7FDN5WAn38bc4iYO+GFsi
- D2nBLw/P1hnIzV/VuzucVwNprPQ3GwCYIfJXSIjrcRJp9S0Igv8oXe1tzKqC7NU5J0W3
- IP5w==
-X-Gm-Message-State: AOJu0YzRXkM3Z2MXOmXRChxl7lpIpge0gTUCGxpNLTRKSDqRbL9HUbx5
- Re7HZBXGT3PKrPFEhSaUJuPsyUJm8YQqbzwBjm+RNyXdBobGNIhJJiaS5sfY/wIzrve5PVTY3Ih
- 3
-X-Gm-Gg: ASbGncsMATCDyCf6XtiDbcMfGp7+fiGyQt73M1EoDqnv6at7CZxW/Swn9H3ZYfoww8s
- aXwZiBhRI+CKTQfYxg6xQG4UzAD7FPsJ8O8nwvdd1flNba06up51VfAAQySa2WGktUpuw84wBO6
- mQybsZNXaKB1FnWD4XK7SE5OFPNmuxC8oMmjUDne+V3BZsj0XhHkT6leQjVq0ZuwHcJ1XuXamZC
- JAqD/vVZASnSc/b2ObQU6mhUdwfNZh+7LLCZ/WxmQ+/a2Bxv5003GrPEvjnz2L4opqOYlh6oAJM
- AbRcMtMg3Xp0nZbrYo56Z3SOQ/wlKsDFBq2N4tnxutio+9jDibSUlvVgPPOD1Z7wTqcV2LMO8b6
- /gN6f+A2Gf4roLVcroDmnXdJ4gClfyFI=
-X-Google-Smtp-Source: AGHT+IHJHIV5E3i8nsF9GkgKghJyzCLpyUEmo+KayvUrk6FBUeQEZGV8v3CUg6uMEJTbJwjlD3+KjQ==
-X-Received: by 2002:a05:600c:190e:b0:43c:f513:9591 with SMTP id
- 5b1f17b1804b1-43f3a93fa76mr150829335e9.14.1744737777429; 
- Tue, 15 Apr 2025 10:22:57 -0700 (PDT)
+ bh=PeByU0jwFO7MH0hprr6LSgGx+kuJBq/jNjVmMX1KbGo=;
+ b=L1Xc0otffBsM7dNTWse8pFEeYJF2+RO7Va+tsJOrj1bxfwxmHjl4lOodAhPVPlDhsl
+ qkecc8dBg18SkupPlnOGcoBurm2o2JQDTINJ5WmKkto+O0wptRhdqM6leTJ8xGeaLwau
+ Ivq9bZqVRrcJtkN8W29/X29Zl4U+ox5pE/xUaxaJIAjpyL3Xa1ZkFr78TiF1gybQ44tv
+ N2bkiACzjHC3tDM/QPaUPt6L05wgCrBHF7ONI48VlL0ykO4Ge4tC/jAugQQbX29WtzEf
+ c8kOXnUAgilel4C1JYsDA1vKo+LjM4SMLXj5fB+XHHRtrUJHPWGSP5AH7d83ZvTRAf7b
+ z/rw==
+X-Gm-Message-State: AOJu0Yyl4Lcuow3/qrga72BF2Qv4BcQLMKQxwq99uqbPYJWgyb8JjPD/
+ l2jkvup6RaAnIghuMGJxWjM3HaTpE+gL2tWn0e9ruPsQeHqKg5lZJ7MO3NxbS0Kx8j+eAbp6v/c
+ i
+X-Gm-Gg: ASbGncv0uRrfyQIukp2TRfUVKu4JXZbMvp8f4rUdVIW2ZW39NR+wVuaAEcNdMz6PhAY
+ +S1Mn2QvRw9XIS3793IbonFbd5JQd2r4PN5macAOGTn7J5hqYFpAWBZg0IcMt6GXBdOjuGy489P
+ YYNQaqQa+LUfF6+3PIBndMuGzcf3kzc0ArzYFFsBNmZ1qCwxwlH9r/eiTjCtSTZGcT92H+xmTKG
+ HXmVuiGpvvZJV46nu7uK5yXnTlV6/EkUTccsxkZTa44TzExjB2nfIEGj7Egf3ZS1J3LeXm/FAKx
+ tj+z/UJVgMrRRmdmH1Hq9I/4QyznNPyIGW9gwsl5v1B8LkqCAUbbDn/smFXogxd7jldvwVn5RzR
+ 0CbvASwho4w31JS9rI+t9
+X-Google-Smtp-Source: AGHT+IGO9OI6cKEACIXOk1Fm1kYRKEzmVHjbsFFdLphNtTssejs5mnc8tSlwyzl3bI42wesr955Egw==
+X-Received: by 2002:a05:600c:500e:b0:43d:7588:667b with SMTP id
+ 5b1f17b1804b1-43f3a93ca20mr185678855e9.10.1744737781985; 
+ Tue, 15 Apr 2025 10:23:01 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-43f20625eeesm217223645e9.11.2025.04.15.10.22.56
+ 5b1f17b1804b1-43f233a2f71sm214675675e9.15.2025.04.15.10.23.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 15 Apr 2025 10:22:56 -0700 (PDT)
+ Tue, 15 Apr 2025 10:23:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 2/3] target/arm: Replace target_ulong -> uint64_t for
- HWBreakpoint
-Date: Tue, 15 Apr 2025 19:22:45 +0200
-Message-ID: <20250415172246.79470-3-philmd@linaro.org>
+Subject: [RFC PATCH 3/3] target/arm: Replace target_ulong -> vaddr for
+ CPUWatchpoint
+Date: Tue, 15 Apr 2025 19:22:46 +0200
+Message-ID: <20250415172246.79470-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250415172246.79470-1-philmd@linaro.org>
 References: <20250415172246.79470-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,59 +101,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUARMState::pc is of type uint64_t.
+CPUWatchpoint::vaddr/len are of type vaddr.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/internals.h   | 6 +++---
- target/arm/hyp_gdbstub.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ target/arm/internals.h   | 9 +++++----
+ target/arm/hyp_gdbstub.c | 8 ++++----
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 175fb792375..05ceb9bcf5d 100644
+index 05ceb9bcf5d..a19c805af45 100644
 --- a/target/arm/internals.h
 +++ b/target/arm/internals.h
-@@ -1942,9 +1942,9 @@ extern GArray *hw_breakpoints, *hw_watchpoints;
- #define get_hw_bp(i)    (&g_array_index(hw_breakpoints, HWBreakpoint, i))
- #define get_hw_wp(i)    (&g_array_index(hw_watchpoints, HWWatchpoint, i))
+@@ -26,6 +26,7 @@
+ #define TARGET_ARM_INTERNALS_H
  
--bool find_hw_breakpoint(CPUState *cpu, target_ulong pc);
--int insert_hw_breakpoint(target_ulong pc);
--int delete_hw_breakpoint(target_ulong pc);
-+bool find_hw_breakpoint(CPUState *cpu, uint64_t pc);
-+int insert_hw_breakpoint(uint64_t pc);
-+int delete_hw_breakpoint(uint64_t pc);
+ #include "exec/hwaddr.h"
++#include "exec/vaddr.h"
+ #include "exec/breakpoint.h"
+ #include "hw/registerfields.h"
+ #include "tcg/tcg-gvec-desc.h"
+@@ -1946,10 +1947,10 @@ bool find_hw_breakpoint(CPUState *cpu, uint64_t pc);
+ int insert_hw_breakpoint(uint64_t pc);
+ int delete_hw_breakpoint(uint64_t pc);
  
- bool check_watchpoint_in_range(int i, target_ulong addr);
- CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, target_ulong addr);
+-bool check_watchpoint_in_range(int i, target_ulong addr);
+-CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, target_ulong addr);
+-int insert_hw_watchpoint(target_ulong addr, target_ulong len, int type);
+-int delete_hw_watchpoint(target_ulong addr, target_ulong len, int type);
++bool check_watchpoint_in_range(int i, vaddr addr);
++CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, vaddr addr);
++int insert_hw_watchpoint(vaddr addr, vaddr len, int type);
++int delete_hw_watchpoint(vaddr addr, vaddr len, int type);
+ 
+ /* Return the current value of the system counter in ticks */
+ uint64_t gt_get_countervalue(CPUARMState *env);
 diff --git a/target/arm/hyp_gdbstub.c b/target/arm/hyp_gdbstub.c
-index 1e861263b3d..4e52d37ed80 100644
+index 4e52d37ed80..4d8fd933868 100644
 --- a/target/arm/hyp_gdbstub.c
 +++ b/target/arm/hyp_gdbstub.c
-@@ -54,7 +54,7 @@ GArray *hw_breakpoints, *hw_watchpoints;
-  * here so future PC comparisons will work properly.
+@@ -125,7 +125,7 @@ int delete_hw_breakpoint(uint64_t pc)
+  * need to ensure you mask the address as required and set BAS=0xff
   */
  
--int insert_hw_breakpoint(target_ulong addr)
-+int insert_hw_breakpoint(uint64_t addr)
+-int insert_hw_watchpoint(target_ulong addr, target_ulong len, int type)
++int insert_hw_watchpoint(vaddr addr, vaddr len, int type)
  {
-     HWBreakpoint brk = {
-         .bcr = 0x1,                             /* BCR E=1, enable */
-@@ -80,7 +80,7 @@ int insert_hw_breakpoint(target_ulong addr)
+     HWWatchpoint wp = {
+         .wcr = R_DBGWCR_E_MASK, /* E=1, enable */
+@@ -182,7 +182,7 @@ int insert_hw_watchpoint(target_ulong addr, target_ulong len, int type)
+     return 0;
+ }
+ 
+-bool check_watchpoint_in_range(int i, target_ulong addr)
++bool check_watchpoint_in_range(int i, vaddr addr)
+ {
+     HWWatchpoint *wp = get_hw_wp(i);
+     uint64_t addr_top, addr_bottom = wp->wvr;
+@@ -214,7 +214,7 @@ bool check_watchpoint_in_range(int i, target_ulong addr)
   * Delete a breakpoint and shuffle any above down
   */
  
--int delete_hw_breakpoint(target_ulong pc)
-+int delete_hw_breakpoint(uint64_t pc)
+-int delete_hw_watchpoint(target_ulong addr, target_ulong len, int type)
++int delete_hw_watchpoint(vaddr addr, vaddr len, int type)
  {
      int i;
-     for (i = 0; i < hw_breakpoints->len; i++) {
-@@ -226,7 +226,7 @@ int delete_hw_watchpoint(target_ulong addr, target_ulong len, int type)
-     return -ENOENT;
+     for (i = 0; i < cur_hw_wps; i++) {
+@@ -239,7 +239,7 @@ bool find_hw_breakpoint(CPUState *cpu, uint64_t pc)
+     return false;
  }
  
--bool find_hw_breakpoint(CPUState *cpu, target_ulong pc)
-+bool find_hw_breakpoint(CPUState *cpu, uint64_t pc)
+-CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, target_ulong addr)
++CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, vaddr addr)
  {
      int i;
  
