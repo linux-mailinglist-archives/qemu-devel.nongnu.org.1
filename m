@@ -2,87 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DED7A8A89C
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 21:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F28A8A8C3
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 22:03:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4mID-0004XX-01; Tue, 15 Apr 2025 15:50:01 -0400
+	id 1u4mHU-0003GK-2A; Tue, 15 Apr 2025 15:49:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u4mAT-0006Tz-7U
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:42:20 -0400
-Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
+ id 1u4m9d-0005e9-0J
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:41:32 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u4m9D-0006xf-8g
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:41:40 -0400
-Received: by mail-qk1-x72b.google.com with SMTP id
- af79cd13be357-7c592764e54so705427385a.3
- for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 12:40:42 -0700 (PDT)
+ id 1u4m94-0006oL-Td
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:40:41 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-2240b4de12bso81525425ad.2
+ for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 12:40:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744746041; x=1745350841; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744746031; x=1745350831; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uqOQIJsBHJXoPWpkGP4ciUd9Xg8vcP1M8atlfwqtORo=;
- b=aSf4r2og2lIV6ivv/P+03RlwZvT1M+U/afr+vvRW3USD6nda0kW0H2eARh+QSt0mX8
- mdKD2ZwntVcoC/zBEZExInbeQ81AZHuC0eNfTeCqUYe4y2WxwmYlLDdr+tcTBM+wyxJ8
- hiDSiyMqtbKT4LI5M5bh9i6gp2AG+hWzfvfpjml7+RA1ajuXzsaEzmyaSkMRipsRonID
- hZBPWdilLR1lFBhnnjLY/dspAZIrO6f/fOkfS/bEaGdHCMOCK+KPTA/m5eq4Oo31b2tL
- aPsrHnCLKieUqJVRp22dyyTFh17qeI/b+hQCRQeDalL0P3ifkeGRnxqnfB9wxhKIvrXA
- 1v/g==
+ :reply-to; bh=g2aEMv6VWYiRAak841rTooQ/oVOB//HHfLEvL0eFv/M=;
+ b=f2HyIJ2Mi4/ZoXoEvvK0x2LF7zVKBvCW6oR3IvcMYF7qiIuBp3gtAUkRKjhZ/a47P5
+ VzXhXnr2t80Jv42pj8ABKs3Zi8+bX+TiIj+H6v0f1oiNX++izAMnZ6iE1dKENSPLr2pR
+ 5m5dRH94H+jfDclA7LKu0BORGRkYCTx7XAW4KdHr1LPEb3zAGo1q7ugSLEf7Gu7wqu3E
+ Fp+/L2OK1aXoa/pLGgWiGEHYvgDv/3CfT1B1lGewuTFiY5RdyYBDX18wXDpXCA6913P8
+ oXRwNZS0vLfTDK0f0Rj8jGguP/nm/cz+G4GXpx11okTw6LcFZ2azsHY6F5rE9xHc9GWY
+ wSkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744746041; x=1745350841;
+ d=1e100.net; s=20230601; t=1744746031; x=1745350831;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uqOQIJsBHJXoPWpkGP4ciUd9Xg8vcP1M8atlfwqtORo=;
- b=fMqPXG7F6JRHyC2MiMzFmCD3VuuZFDlDGCtERM3B1IZeZsS5a1v9lxGna/b18l0q1X
- xbasnUp4cpNp32i0alwAWnhxrYfVNK+3IpZ8TrEWUI3O+pmbhpJbczqT6k2PAAB2iQQV
- uCrejHaLS+ZINrie1UZJN7ksb+eRTI6b3/SeTipSllNYDb/1ayVDC0CFb0p3CKmgibcc
- Z75E1ZkO7YmOAk5XHgDy74qmStMwcWTLhoiYc8sNsmIpHc3MiV8REzqI2Ejea3LUuJtx
- E+iaKoKoE+xt17EOqixvaaGPKLOOcaD4pnrBt9L/wvV4GQDmFYq60U6xNwjHYiy7nLXY
- skjw==
-X-Gm-Message-State: AOJu0YzAhC0ex9d+BP5CJbfl+k06AWzpZCe7bV+pdg3zWtj79hb+5G+b
- /UalCobbkJ6+KhSOQiypszqjdPR/QHSeCJGkQRd219eLoy8/78Hfo9+BlZr7u2jGBGRoOnnQTHg
- p
-X-Gm-Gg: ASbGncvVyfaUgFp4cLN6BhlbVwW56CI9dZgtpinQqOzdm/8qDsz3PTDH0eXa1xtlH3f
- RqNicOzHbcdzsxXb6EN77BLMlwCYAXbJ5ikzUUdb2RU6YUL3BPZA4f0FM8+mq8fqoli5+W8/I8J
- igN4fcoUYnmx3Nli2LQuHq1pqZaPf53GKvo+UKNu/odmIn9gRGJVid94povw5wqEc6OXJdYrUYz
- OyrgTth2IwyGCOGgMAwz2vY+1aWJon5HOIt1PHPtF54PGxfL1XfFWLf09pjQIEGVvGkD+SpebNy
- avsm3SmOmtZDW7nXkPtcZ3jcphuAu2ZleWR4PNmfZGbEAtqkRitQw/W9eck0W4z98i3dLn+Tohk
+ bh=g2aEMv6VWYiRAak841rTooQ/oVOB//HHfLEvL0eFv/M=;
+ b=vLqLDLrwmzZZ/ngTHngIy0cLoHgz60At1JzRj0DF8gJ4ycynhEGf2tWniXVojeNqN1
+ rHJKEWBYU7/paS+ulJaSnf1ttIhJAnAEYC4NXvcmZeApcFgZHkfOcXxV5vo/FPYa306t
+ FLVOvhyhxibgL+R0NTAT0tffvPcA55ryXJqyQbTPBoalPwQszwMWpv09cHy3sGa4DFpZ
+ +U/Yn+igQX4LMf32ILu0fZO/RCKigor9L73Awb5BCzRokIoSR3UzLQiOW22RQjqK/lYl
+ Jp6m45839johoy/qSFX8NQ+TmD7uduxYTQdDJjFQuXC5g1/AULoctzQ50ZqTEI1p9Lky
+ MFtQ==
+X-Gm-Message-State: AOJu0YwHqG5L2r/9pM66ARGt0JncdkpEw6ihwHg/pbg+T2XqyXDp0X4q
+ thav63iwUHwLYa9VIToTjhdmslRqJ5CJ++WL2TZ1vHEmPuTmk8pCz5DeTokNNPn7gNsLws0hw1X
+ t
+X-Gm-Gg: ASbGncstopj5qxZLfcLO+83gSOlnD4VJv818AnOjl450OAn1WdWV3fR987ta5oj6fvC
+ xkkmE1fOLNY3zMmbmsRGmLoh5TiV8yVSBI6DhU1q6MRNjz+03jVtAkHfx+e1wdleZAYiavEckhX
+ H60ribI7IhzQwsopxdN+QyI6c1J6DGwXU2Vekq/5frH1Smm6qkQmot/1ZJpLK/aDhkxNJPr7yNN
+ Hwn/9f9gDisaEw7kHJZBoa8IGetyPOCbgT3uXm+CP3iKp9yhGpqJ+/jc9Hrm+I695wiZkUijrWE
+ 5X8T/JYqm22qMWCgYNeaiJ4c5mPxzVumWHSjp5aM89okeJOiv+JH0SJ3Sck8mami139aKgO6j7w
  =
-X-Google-Smtp-Source: AGHT+IGeWPAaAJaEsWEMhFs25ZuIyUl+ZmfaU57uwEfTPlpwkaLd4Sf3bd4bZn6vcphE+XgML2M6Wg==
-X-Received: by 2002:a17:903:903:b0:220:d79f:60f1 with SMTP id
- d9443c01a7336-22c31a7ad8amr5657905ad.42.1744745572949; 
- Tue, 15 Apr 2025 12:32:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7atQUvO/3REGWhD7cxztyHl5ixa4C0rn55emmAKC+e6WR2sF6Jayymxkkavjy6YaFyRCIUg==
+X-Received: by 2002:a17:903:1a26:b0:223:37ec:63d5 with SMTP id
+ d9443c01a7336-22c319f683amr6756645ad.28.1744745573568; 
+ Tue, 15 Apr 2025 12:32:53 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7ccbd5esm122062355ad.248.2025.04.15.12.32.52
+ d9443c01a7336-22ac7ccbd5esm122062355ad.248.2025.04.15.12.32.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Apr 2025 12:32:52 -0700 (PDT)
+ Tue, 15 Apr 2025 12:32:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v4 115/163] tcg/optimize: Handle add/sub with carry opcodes
-Date: Tue, 15 Apr 2025 12:24:26 -0700
-Message-ID: <20250415192515.232910-116-richard.henderson@linaro.org>
+Subject: [PATCH v4 116/163] tcg/optimize: With two const operands,
+ prefer 0 in arg1
+Date: Tue, 15 Apr 2025 12:24:27 -0700
+Message-ID: <20250415192515.232910-117-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250415192515.232910-1-richard.henderson@linaro.org>
 References: <20250415192515.232910-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
-X-Spam_action: no action
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,385 +90,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Propagate known carry when possible, and simplify the opcodes
-to not require carry-in when known.  The result will be cleaned
-up further by the subsequent liveness analysis pass.
+For most binary operands, two const operands fold.
+However, the add/sub carry opcodes have a third input.
+Prefer "reg, zero, const" since many risc hosts have a
+zero register that can fit a "reg, reg, const" insn format.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 319 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 316 insertions(+), 3 deletions(-)
+ tcg/optimize.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 5a21f8bfd9..1b3d0b5b5d 100644
+index 1b3d0b5b5d..442f5b75e6 100644
 --- a/tcg/optimize.c
 +++ b/tcg/optimize.c
-@@ -66,6 +66,7 @@ typedef struct OptContext {
+@@ -725,12 +725,18 @@ static int do_constant_folding_cond(TCGType type, TCGArg x,
  
-     /* In flight values from optimization. */
-     TCGType type;
-+    int carry_state;  /* -1 = non-constant, {0,1} = constant carry-in */
- } OptContext;
+ #define NO_DEST  temp_arg(NULL)
  
- static inline TempOptInfo *ts_info(TCGTemp *ts)
-@@ -1191,8 +1192,10 @@ static bool fold_xx_to_x(OptContext *ctx, TCGOp *op)
-  *   3) those that produce information about the result value.
-  */
- 
-+static bool fold_addco(OptContext *ctx, TCGOp *op);
- static bool fold_or(OptContext *ctx, TCGOp *op);
- static bool fold_orc(OptContext *ctx, TCGOp *op);
-+static bool fold_subbo(OptContext *ctx, TCGOp *op);
- static bool fold_xor(OptContext *ctx, TCGOp *op);
- 
- static bool fold_add(OptContext *ctx, TCGOp *op)
-@@ -1214,9 +1217,167 @@ static bool fold_add_vec(OptContext *ctx, TCGOp *op)
-     return finish_folding(ctx, op);
- }
- 
--static bool fold_add_carry(OptContext *ctx, TCGOp *op)
-+static void squash_prev_carryout(OptContext *ctx, TCGOp *op)
++static int pref_commutative(TempOptInfo *ti)
 +{
-+    TempOptInfo *t2;
-+
-+    op = QTAILQ_PREV(op, link);
-+    switch (op->opc) {
-+    case INDEX_op_addco:
-+        op->opc = INDEX_op_add;
-+        fold_add(ctx, op);
-+        break;
-+    case INDEX_op_addcio:
-+        op->opc = INDEX_op_addci;
-+        break;
-+    case INDEX_op_addc1o:
-+        op->opc = INDEX_op_add;
-+        t2 = arg_info(op->args[2]);
-+        if (ti_is_const(t2)) {
-+            op->args[2] = arg_new_constant(ctx, ti_const_val(t2) + 1);
-+            /* Perform other constant folding, if needed. */
-+            fold_add(ctx, op);
-+        } else {
-+            TCGArg ret = op->args[0];
-+            op = tcg_op_insert_after(ctx->tcg, op, INDEX_op_add, 3);
-+            op->args[0] = ret;
-+            op->args[1] = ret;
-+            op->args[2] = arg_new_constant(ctx, 1);
-+        }
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
++    /* Slight preference for non-zero constants second. */
++    return !ti_is_const(ti) ? 0 : ti_const_val(ti) ? 3 : 2;
 +}
 +
-+static bool fold_addci(OptContext *ctx, TCGOp *op)
+ static bool swap_commutative(TCGArg dest, TCGArg *p1, TCGArg *p2)
  {
-     fold_commutative(ctx, op);
-+
-+    if (ctx->carry_state < 0) {
-+        return finish_folding(ctx, op);
-+    }
-+
-+    squash_prev_carryout(ctx, op);
-+    op->opc = INDEX_op_add;
-+
-+    if (ctx->carry_state > 0) {
-+        TempOptInfo *t2 = arg_info(op->args[2]);
-+
-+        /*
-+         * Propagate the known carry-in into a constant, if possible.
-+         * Otherwise emit a second add +1.
-+         */
-+        if (ti_is_const(t2)) {
-+            op->args[2] = arg_new_constant(ctx, ti_const_val(t2) + 1);
-+        } else {
-+            TCGOp *op2 = tcg_op_insert_before(ctx->tcg, op, INDEX_op_add, 3);
-+
-+            op2->args[0] = op->args[0];
-+            op2->args[1] = op->args[1];
-+            op2->args[2] = op->args[2];
-+            fold_add(ctx, op2);
-+
-+            op->args[1] = op->args[0];
-+            op->args[2] = arg_new_constant(ctx, 1);
-+        }
-+    }
-+
-+    ctx->carry_state = -1;
-+    return fold_add(ctx, op);
-+}
-+
-+static bool fold_addcio(OptContext *ctx, TCGOp *op)
-+{
-+    TempOptInfo *t1, *t2;
-+    int carry_out = -1;
-+    uint64_t sum, max;
-+
-+    fold_commutative(ctx, op);
-+    t1 = arg_info(op->args[1]);
-+    t2 = arg_info(op->args[2]);
-+
-+    /*
-+     * The z_mask value is >= the maximum value that can be represented
-+     * with the known zero bits.  So adding the z_mask values will not
-+     * overflow if and only if the true values cannot overflow.
-+     */
-+    if (!uadd64_overflow(t1->z_mask, t2->z_mask, &sum) &&
-+        !uadd64_overflow(sum, ctx->carry_state != 0, &sum)) {
-+        carry_out = 0;
-+    }
-+
-+    if (ctx->carry_state < 0) {
-+        ctx->carry_state = carry_out;
-+        return finish_folding(ctx, op);
-+    }
-+
-+    squash_prev_carryout(ctx, op);
-+    if (ctx->carry_state == 0) {
-+        goto do_addco;
-+    }
-+
-+    /* Propagate the known carry-in into a constant, if possible. */
-+    max = ctx->type == TCG_TYPE_I32 ? UINT32_MAX : UINT64_MAX;
-+    if (ti_is_const(t2)) {
-+        uint64_t v = ti_const_val(t2) & max;
-+        if (v < max) {
-+            op->args[2] = arg_new_constant(ctx, v + 1);
-+            goto do_addco;
-+        }
-+        /* max + known carry in produces known carry out. */
-+        carry_out = 1;
-+    }
-+    if (ti_is_const(t1)) {
-+        uint64_t v = ti_const_val(t1) & max;
-+        if (v < max) {
-+            op->args[1] = arg_new_constant(ctx, v + 1);
-+            goto do_addco;
-+        }
-+        carry_out = 1;
-+    }
-+
-+    /* Adjust the opcode to remember the known carry-in. */
-+    op->opc = INDEX_op_addc1o;
-+    ctx->carry_state = carry_out;
-+    return finish_folding(ctx, op);
-+
-+ do_addco:
-+    op->opc = INDEX_op_addco;
-+    return fold_addco(ctx, op);
-+}
-+
-+static bool fold_addco(OptContext *ctx, TCGOp *op)
-+{
-+    TempOptInfo *t1, *t2;
-+    int carry_out = -1;
-+    uint64_t ign;
-+
-+    fold_commutative(ctx, op);
-+    t1 = arg_info(op->args[1]);
-+    t2 = arg_info(op->args[2]);
-+
-+    if (ti_is_const(t2)) {
-+        uint64_t v2 = ti_const_val(t2);
-+
-+        if (ti_is_const(t1)) {
-+            uint64_t v1 = ti_const_val(t1);
-+            /* Given sign-extension of z_mask for I32, we need not truncate. */
-+            carry_out = uadd64_overflow(v1, v2, &ign);
-+        } else if (v2 == 0) {
-+            carry_out = 0;
-+        }
-+    } else {
-+        /*
-+         * The z_mask value is >= the maximum value that can be represented
-+         * with the known zero bits.  So adding the z_mask values will not
-+         * overflow if and only if the true values cannot overflow.
-+         */
-+        if (!uadd64_overflow(t1->z_mask, t2->z_mask, &ign)) {
-+            carry_out = 0;
-+        }
-+    }
-+    ctx->carry_state = carry_out;
-     return finish_folding(ctx, op);
- }
+     TCGArg a1 = *p1, a2 = *p2;
+     int sum = 0;
+-    sum += arg_is_const(a1);
+-    sum -= arg_is_const(a2);
++    sum += pref_commutative(arg_info(a1));
++    sum -= pref_commutative(arg_info(a2));
  
-@@ -2637,6 +2798,145 @@ static bool fold_sub2(OptContext *ctx, TCGOp *op)
-     return fold_addsub2(ctx, op, false);
- }
- 
-+static void squash_prev_borrowout(OptContext *ctx, TCGOp *op)
-+{
-+    TempOptInfo *t2;
-+
-+    op = QTAILQ_PREV(op, link);
-+    switch (op->opc) {
-+    case INDEX_op_subbo:
-+        op->opc = INDEX_op_sub;
-+        fold_sub(ctx, op);
-+        break;
-+    case INDEX_op_subbio:
-+        op->opc = INDEX_op_subbi;
-+        break;
-+    case INDEX_op_subb1o:
-+        t2 = arg_info(op->args[2]);
-+        if (ti_is_const(t2)) {
-+            op->opc = INDEX_op_add;
-+            op->args[2] = arg_new_constant(ctx, -(ti_const_val(t2) + 1));
-+            /* Perform other constant folding, if needed. */
-+            fold_add(ctx, op);
-+        } else {
-+            TCGArg ret = op->args[0];
-+            op->opc = INDEX_op_sub;
-+            op = tcg_op_insert_after(ctx->tcg, op, INDEX_op_add, 3);
-+            op->args[0] = ret;
-+            op->args[1] = ret;
-+            op->args[2] = arg_new_constant(ctx, -1);
-+        }
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+static bool fold_subbi(OptContext *ctx, TCGOp *op)
-+{
-+    TempOptInfo *t2;
-+    int borrow_in = ctx->carry_state;
-+
-+    if (borrow_in < 0) {
-+        return finish_folding(ctx, op);
-+    }
-+    ctx->carry_state = -1;
-+
-+    squash_prev_borrowout(ctx, op);
-+    if (borrow_in == 0) {
-+        op->opc = INDEX_op_sub;
-+        return fold_sub(ctx, op);
-+    }
-+
-+    /*
-+     * Propagate the known carry-in into any constant, then negate to
-+     * transform from sub to add.  If there is no constant, emit a
-+     * separate add -1.
-+     */
-+    t2 = arg_info(op->args[2]);
-+    if (ti_is_const(t2)) {
-+        op->args[2] = arg_new_constant(ctx, -(ti_const_val(t2) + 1));
-+    } else {
-+        TCGOp *op2 = tcg_op_insert_before(ctx->tcg, op, INDEX_op_sub, 3);
-+
-+        op2->args[0] = op->args[0];
-+        op2->args[1] = op->args[1];
-+        op2->args[2] = op->args[2];
-+        fold_sub(ctx, op2);
-+
-+        op->args[1] = op->args[0];
-+        op->args[2] = arg_new_constant(ctx, -1);
-+    }
-+    op->opc = INDEX_op_add;
-+    return fold_add(ctx, op);
-+}
-+
-+static bool fold_subbio(OptContext *ctx, TCGOp *op)
-+{
-+    TempOptInfo *t1, *t2;
-+    int borrow_out = -1;
-+
-+    if (ctx->carry_state < 0) {
-+        return finish_folding(ctx, op);
-+    }
-+
-+    squash_prev_borrowout(ctx, op);
-+    if (ctx->carry_state == 0) {
-+        goto do_subbo;
-+    }
-+
-+    t1 = arg_info(op->args[1]);
-+    t2 = arg_info(op->args[2]);
-+
-+    /* Propagate the known borrow-in into a constant, if possible. */
-+    if (ti_is_const(t2)) {
-+        uint64_t max = ctx->type == TCG_TYPE_I32 ? UINT32_MAX : UINT64_MAX;
-+        uint64_t v = ti_const_val(t2) & max;
-+
-+        if (v < max) {
-+            op->args[2] = arg_new_constant(ctx, v + 1);
-+            goto do_subbo;
-+        }
-+        /* subtracting max + 1 produces known borrow out. */
-+        borrow_out = 1;
-+    }
-+    if (ti_is_const(t1)) {
-+        uint64_t v = ti_const_val(t1);
-+        if (v != 0) {
-+            op->args[2] = arg_new_constant(ctx, v - 1);
-+            goto do_subbo;
-+        }
-+    }
-+
-+    /* Adjust the opcode to remember the known carry-in. */
-+    op->opc = INDEX_op_subb1o;
-+    ctx->carry_state = borrow_out;
-+    return finish_folding(ctx, op);
-+
-+ do_subbo:
-+    op->opc = INDEX_op_subbo;
-+    return fold_subbo(ctx, op);
-+}
-+
-+static bool fold_subbo(OptContext *ctx, TCGOp *op)
-+{
-+    TempOptInfo *t1 = arg_info(op->args[1]);
-+    TempOptInfo *t2 = arg_info(op->args[2]);
-+    int borrow_out = -1;
-+
-+    if (ti_is_const(t2)) {
-+        uint64_t v2 = ti_const_val(t2);
-+        if (v2 == 0) {
-+            borrow_out = 0;
-+        } else if (ti_is_const(t1)) {
-+            uint64_t v1 = ti_const_val(t1);
-+            borrow_out = v1 < v2;
-+        }
-+    }
-+    ctx->carry_state = borrow_out;
-+    return finish_folding(ctx, op);
-+}
-+
- static bool fold_tcg_ld(OptContext *ctx, TCGOp *op)
+     /* Prefer the constant in second argument, and then the form
+        op a, a, b, which is better handled on non-RISC hosts. */
+@@ -745,10 +751,10 @@ static bool swap_commutative(TCGArg dest, TCGArg *p1, TCGArg *p2)
+ static bool swap_commutative2(TCGArg *p1, TCGArg *p2)
  {
-     uint64_t z_mask = -1, s_mask = 0;
-@@ -2824,9 +3124,13 @@ void tcg_optimize(TCGContext *s)
-             done = fold_add_vec(&ctx, op);
-             break;
-         case INDEX_op_addci:
--        case INDEX_op_addco:
-+            done = fold_addci(&ctx, op);
-+            break;
-         case INDEX_op_addcio:
--            done = fold_add_carry(&ctx, op);
-+            done = fold_addcio(&ctx, op);
-+            break;
-+        case INDEX_op_addco:
-+            done = fold_addco(&ctx, op);
-             break;
-         CASE_OP_32_64(add2):
-             done = fold_add2(&ctx, op);
-@@ -3008,6 +3312,15 @@ void tcg_optimize(TCGContext *s)
-         case INDEX_op_sub:
-             done = fold_sub(&ctx, op);
-             break;
-+        case INDEX_op_subbi:
-+            done = fold_subbi(&ctx, op);
-+            break;
-+        case INDEX_op_subbio:
-+            done = fold_subbio(&ctx, op);
-+            break;
-+        case INDEX_op_subbo:
-+            done = fold_subbo(&ctx, op);
-+            break;
-         case INDEX_op_sub_vec:
-             done = fold_sub_vec(&ctx, op);
-             break;
+     int sum = 0;
+-    sum += arg_is_const(p1[0]);
+-    sum += arg_is_const(p1[1]);
+-    sum -= arg_is_const(p2[0]);
+-    sum -= arg_is_const(p2[1]);
++    sum += pref_commutative(arg_info(p1[0]));
++    sum += pref_commutative(arg_info(p1[1]));
++    sum -= pref_commutative(arg_info(p2[0]));
++    sum -= pref_commutative(arg_info(p2[1]));
+     if (sum > 0) {
+         TCGArg t;
+         t = p1[0], p1[0] = p2[0], p2[0] = t;
 -- 
 2.43.0
 
