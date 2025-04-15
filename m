@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C1AA8A898
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 21:56:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B31BA8A8FB
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 22:14:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4mHa-0003iI-4l; Tue, 15 Apr 2025 15:49:22 -0400
+	id 1u4mGj-0001Rn-EM; Tue, 15 Apr 2025 15:48:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u4m8x-0005I9-MC
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:40:31 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ id 1u4m9I-0005Xd-PR
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:40:49 -0400
+Received: from mail-qv1-xf29.google.com ([2607:f8b0:4864:20::f29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u4m7o-0005w3-Hx
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:40:26 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3f8d2f8d890so3210758b6e.0
- for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 12:39:15 -0700 (PDT)
+ id 1u4m80-0005xg-0u
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 15:40:33 -0400
+Received: by mail-qv1-xf29.google.com with SMTP id
+ 6a1803df08f44-6e8fb83e137so44435666d6.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 12:39:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744745954; x=1745350754; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744745961; x=1745350761; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ZWOTLh+v7Qvy+QAWebFNxhuSAQgbLlmVC9g8h/0PkG0=;
- b=Lg+mxUd8Z60ddHLx1j7pDBbSP+Gzwa7HNHW+bdCuWDRFhm79/PoZV2NU0duYxlHc5/
- QCukqCpVJD6W9v6n+LNc/83RUkvP+1540FqmYBhFpwhPSwjFqYOttegMV1i+BAC1izk2
- RCIttJ9NvwvU1IijLE33onvzazfJm2qAZOxec5YkTBrLFQlDEueNvNX1RpoJ2qDLzLb+
- xP2W4Jx6zSFXYv+qpatLD0GYz+Ey6McekQmR8TsHKlVJz5RbKv+5iXATANKe4lIqHJ0L
- IlV+4s6EApqR/ZclIYfPtCBfd8s6UJNMqaSQ4OgxZ4eZg/XM+mUAR40bkZmFj7BkdWP7
- ouXg==
+ :reply-to; bh=l107O4frPXf7npC/NfnXs9QCdXTaqtWm/ZvOPbpalB8=;
+ b=W16d7Z/xvv0b+KfTS8di0RmEDaiNt7TkcBZzYGHnTcxqqcl/5HJfPLai0KCjYMniKz
+ to6n1oafag8Zeb5dXv1OxDohV7jC/ls3Al/p4rVzdPhVydQQIdWhtaF7jyEtPUkvTi7R
+ s3G8oNytgn9stQVVGI0CGAnQf3+tZrpUD+Dxhqb8Y9GjpODCft7adrXneFh2EBfGGnX/
+ 68oCuoHccKQa9+Br53Df+t2c+8I8Tt+n95NhjA7RkND3aEF1HpcCnk4lw9gXb5n3M3EV
+ SMthcSLvl2Q8YcCfKYuR/UKy9cLk61M6HrvazXfQqvng0GIsJzYy643urF2Va1i9TUQe
+ tKtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744745954; x=1745350754;
+ d=1e100.net; s=20230601; t=1744745961; x=1745350761;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZWOTLh+v7Qvy+QAWebFNxhuSAQgbLlmVC9g8h/0PkG0=;
- b=ZbvkMh2xVX9UBXUpJ9S0kZuoEk7MVWQXlQv8p/tsh8FweD/k2aef+AQKKZiThWor4H
- A8zNOujBUM+XABO7lwfwfC2vM/EWlVMBhsIsBg3UCkhB+7q1m9TsIxJ4HNdZf7rSutHi
- rCEpu2it77qnICQoRwR60bUEIel3N3s2W6EmWI/yxBqazOpme3JxVf+/IJfMKOm/n/fi
- ib0O+2doy6H57Gr26L2U4eZBxuSrEagxMLcBd96zjxhAvreiU3CzfG4XnqnjVZzhai+c
- Cvjx+GjNnblJQWdOLAYTyj0XmwnpgXE5cbmIT3A11DpoBI8Hd3+Ykjw1hm/O7YBjL/OZ
- r71g==
-X-Gm-Message-State: AOJu0YyYIZEANAYVGIQTefCG/bV85k17rBhgEkLEafrH58cnMtEcvuA8
- AWNk4DUtAQO/PyZa8OSK+N4qwkBmFXiv/umtV/KxxgZYTCPSsPvjQBpoDFkRl2/YEq0scg7fYNY
- +
-X-Gm-Gg: ASbGncvgE9z47QxJsZq9yPvCEbLW3Zo0MeAEfpXnqZfS8V4RluNRF4f2kYJ50P+nI+3
- 2ZI7b2Bkd0/oHKTPor6zNWu9u+zwCgRIYeNqhrkxeFIaISOcZ2OUsp4hrL0JGSYzpMZ/xInX2pi
- dP+MDIS983lWhhFydh5OfriWCu0rzTu00a6Gk3jSmZPbu0gPw5Xh90In6seSbhWMrnQNMGYbi/U
- gWmFoddHuWV5ADNQarUlxNkextf69/DBqDuGy/Pnzy1j2N8EAJmh+VVm19cR/OxctEpc8ApFGKe
- e41EzG3icse7E6EILxh6Z4HOtVgeTRfjls7Gn2rrlLSliMRgQ+7yVTsfaVzxWlTuKg0BCNc0AOE
+ bh=l107O4frPXf7npC/NfnXs9QCdXTaqtWm/ZvOPbpalB8=;
+ b=AEm6F/rlMrTBqJ32+h32OWihCXHi5UYm/MCLrvgcpXhPpzyInGJhNotK5F6vHDWz40
+ dwNbCLuN+N+dKveSTkjrpWcdoFzcE3LZPvGjjT5t60QgcsQoQ/qy2x4WsbssjLVPtAif
+ QVKS/BG7oje6Tqe3w5e33ojpZi9074s0RVtXt5P04M7Jov2/DGUzkWfHqLQeRzH5k8Zg
+ TXBfq66B/smbLWuuULWoxASpM+xdJFPwsQ98FFE5eZ4FHgyPasVxVGeguL1nwdjaiACZ
+ pdcVuHe8C1hjx1LT1qxXkjlK8CfONPZju05wo7CeSmqEka+TCKqEoNLpgk2T+VWNsviD
+ zfxQ==
+X-Gm-Message-State: AOJu0YxrHUj7RI4ItI8b7CQGg4YPScfwmo+WG/aB/Vz1PIG8/HD1LYEQ
+ AbFJ8/ZFv3ogqcgqp/rWvUoNB/ZAui8otJwoOq5RPklXtJ5i1HxANuJ//f7xkVrby14nx8cx6xi
+ W
+X-Gm-Gg: ASbGncsaMXZeufl+pfJLpFDO6701Lg6MsIiKYXaSDRNf+8E+8Sk/9KVuhaeJVfDSYtt
+ en15hez5hIzg0kqpPL0iw180SGSzzZBjBvAOwZrnytGx4Qspk5boMCf926TfJPFL7C/SkSyX+/c
+ VFuaREYcsnW75SWDusNikWpL3D0m7jG+j0/S6W0tSnlV5WgemEEjdwFlMtAAja53e8w7GBQbGNd
+ xkI5pQC9Xcgah0ClUctUHYkQfxnkcDuivBpX+lMHsC3NeD245nZf5tjjBE9Fds3vbFACetSvbm+
+ KcYpckv1Iq6A/dtG4ES8h46d7vHtEI3J0BlHQijZO2h1lF040L9wKRAlqqNkWGVvUtJ1XhuMu8c
  =
-X-Google-Smtp-Source: AGHT+IGVc8qviAqrm3nMl71I2LOVJi37TNlknH7ghMM6U1FlKvWygVzQMQnihvnlFt2hIbtMwS4h5g==
-X-Received: by 2002:a17:902:daca:b0:21f:6546:9af0 with SMTP id
- d9443c01a7336-22c31ab2c14mr6442195ad.44.1744745575141; 
+X-Google-Smtp-Source: AGHT+IHCZ4JcO8ahpsH947gPO4QN73L3ygkjZJB/3Il1+7Vg+78Isl9Tt01Vwua1EW3tOjHJAunTlw==
+X-Received: by 2002:a17:903:41c3:b0:227:e74a:a057 with SMTP id
+ d9443c01a7336-22c31ab0f8emr5536005ad.44.1744745575782; 
  Tue, 15 Apr 2025 12:32:55 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7ccbd5esm122062355ad.248.2025.04.15.12.32.54
+ d9443c01a7336-22ac7ccbd5esm122062355ad.248.2025.04.15.12.32.55
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Apr 2025 12:32:54 -0700 (PDT)
+ Tue, 15 Apr 2025 12:32:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v4 118/163] tcg: Use sub carry opcodes to expand sub2
-Date: Tue, 15 Apr 2025 12:24:29 -0700
-Message-ID: <20250415192515.232910-119-richard.henderson@linaro.org>
+Subject: [PATCH v4 119/163] tcg/i386: Honor carry_live in tcg_out_movi
+Date: Tue, 15 Apr 2025 12:24:30 -0700
+Message-ID: <20250415192515.232910-120-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250415192515.232910-1-richard.henderson@linaro.org>
 References: <20250415192515.232910-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f29;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,58 +97,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Do not clobber flags if they're live.  Required in order
+to perform register allocation on add/sub carry opcodes.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg-op.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ tcg/i386/tcg-target.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index f17ec658fb..447b0ebacd 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -1126,7 +1126,13 @@ void tcg_gen_add2_i32(TCGv_i32 rl, TCGv_i32 rh, TCGv_i32 al,
- void tcg_gen_sub2_i32(TCGv_i32 rl, TCGv_i32 rh, TCGv_i32 al,
-                       TCGv_i32 ah, TCGv_i32 bl, TCGv_i32 bh)
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index 04e31cae12..8e0ccbc722 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -1092,7 +1092,7 @@ static void tcg_out_movi_int(TCGContext *s, TCGType type,
  {
--    if (TCG_TARGET_HAS_sub2_i32) {
-+    if (tcg_op_supported(INDEX_op_subbi, TCG_TYPE_I32, 0)) {
-+        TCGv_i32 t0 = tcg_temp_ebb_new_i32();
-+        tcg_gen_op3_i32(INDEX_op_subbo, t0, al, bl);
-+        tcg_gen_op3_i32(INDEX_op_subbi, rh, ah, bh);
-+        tcg_gen_mov_i32(rl, t0);
-+        tcg_temp_free_i32(t0);
-+    } else if (TCG_TARGET_HAS_sub2_i32) {
-         tcg_gen_op6_i32(INDEX_op_sub2_i32, rl, rh, al, ah, bl, bh);
-     } else {
-         TCGv_i32 t0 = tcg_temp_ebb_new_i32();
-@@ -2865,7 +2871,26 @@ void tcg_gen_add2_i64(TCGv_i64 rl, TCGv_i64 rh, TCGv_i64 al,
- void tcg_gen_sub2_i64(TCGv_i64 rl, TCGv_i64 rh, TCGv_i64 al,
-                       TCGv_i64 ah, TCGv_i64 bl, TCGv_i64 bh)
- {
--    if (TCG_TARGET_HAS_sub2_i64) {
-+    if (tcg_op_supported(INDEX_op_subbi, TCG_TYPE_REG, 0)) {
-+        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
-+
-+        if (TCG_TARGET_REG_BITS == 32) {
-+            tcg_gen_op3_i32(INDEX_op_subbo, TCGV_LOW(t0),
-+                            TCGV_LOW(al), TCGV_LOW(bl));
-+            tcg_gen_op3_i32(INDEX_op_subbio, TCGV_HIGH(t0),
-+                            TCGV_HIGH(al), TCGV_HIGH(bl));
-+            tcg_gen_op3_i32(INDEX_op_subbio, TCGV_LOW(rh),
-+                            TCGV_LOW(ah), TCGV_LOW(bh));
-+            tcg_gen_op3_i32(INDEX_op_subbi, TCGV_HIGH(rh),
-+                            TCGV_HIGH(ah), TCGV_HIGH(bh));
-+        } else {
-+            tcg_gen_op3_i64(INDEX_op_subbo, t0, al, bl);
-+            tcg_gen_op3_i64(INDEX_op_subbi, rh, ah, bh);
-+        }
-+
-+        tcg_gen_mov_i64(rl, t0);
-+        tcg_temp_free_i64(t0);
-+    } else if (TCG_TARGET_HAS_sub2_i64) {
-         tcg_gen_op6_i64(INDEX_op_sub2_i64, rl, rh, al, ah, bl, bh);
-     } else {
-         TCGv_i64 t0 = tcg_temp_ebb_new_i64();
+     tcg_target_long diff;
+ 
+-    if (arg == 0) {
++    if (arg == 0 && !s->carry_live) {
+         tgen_arithr(s, ARITH_XOR, ret, ret);
+         return;
+     }
 -- 
 2.43.0
 
