@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A61A89650
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 10:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4068A89636
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 10:14:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4bPb-0005XR-QI; Tue, 15 Apr 2025 04:12:56 -0400
+	id 1u4bPh-0006Be-T9; Tue, 15 Apr 2025 04:13:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1u4bPX-0005FM-U9
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 04:12:52 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1u4bPe-0005uE-8N
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 04:12:58 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1u4bPV-0001sd-LP
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 04:12:51 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-22928d629faso50532325ad.3
- for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 01:12:49 -0700 (PDT)
+ id 1u4bPb-0001tf-BA
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 04:12:57 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-22928d629faso50533045ad.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 01:12:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1744704768; x=1745309568; darn=nongnu.org;
- h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=27hFcsvMzgL0iuJXFP0FZSxmWFSUoHGEnflpa/ixsnI=;
- b=L0snujSnqA1GlsLsBoz4t07EvWidIfQATjAwEOrQvrxQkqiJOjtavy9dXQ6J1sehSx
- 2ZWhXXELP2MiJcxTY5m4LyDB4QccIvVD0cBHWBUkzEJ/C8ilWOL6NMz84Y9R3YJiCnVz
- vRyfVHyaPASoaujekQhiqBIZ8Aj1GM2o+7BYtyBavMraSTkHs7z08zFCSjCmmPB2qr68
- wQLJEhLHjm1HATgLALUdb8rmivBgsUF7+82MDR35DH0ivn2AWCW9Ky0+j+nVwLQvHyfj
- wSVP53jPa4GZEXucXjEv6oEdnO1tP4KYi09sLKGKQWEywZ87MmG7NB0nUzNHCNgUZV47
- 00ag==
+ d=sifive.com; s=google; t=1744704773; x=1745309573; darn=nongnu.org;
+ h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=GR/8z++2aqI3yyfjoa8U9+bhg7JVoM1t0POSqDl+R9E=;
+ b=WZGa/14odk++z1oyT4MLm1/+TBg1NCJDNJo7msXWcbo9ZIJpSc0+RZ20ZDUI+JSUW4
+ PW8/7cdvwSUFJtCDgS5H1MMNz6c5vXcq91vpHSfVo++gDXlRAzsjCOnK+3UNirtN9c7s
+ hvrmGYOxDtQTsi8vtXrTTLWNXtD7O542WoDOUrDFOy3JSHWwiF5pJ5VXxxiilJ7XfOMg
+ R9VFVnA7O7HoA1wK4V5ncv/ScEh9lVXe3LlZnL36Hh2dt1Y+EHCMBgS2Tl9oJ49qKqKK
+ w7at9pLVNql5uBLa1AipPZ6dZuSSQCjzxqcH6yrJng9SO5wMFr8n+n3RfyJCNBd8OiFA
+ qBfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744704768; x=1745309568;
- h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=27hFcsvMzgL0iuJXFP0FZSxmWFSUoHGEnflpa/ixsnI=;
- b=uL30rC423i8TOpmqdSeah0BIw+WTQDL41196td7zQtbFCm9lu1jBoQMi34I9Ygw4RM
- BQBNjayn1Np3FsJxfYkAZM4QI8ld/+Q2oNLnloTWJ/vn9uLUHZDudkVVMWIVUg+duo26
- VovZ/sibfQpDHXbJOxhQ9p4k4ffswaB1FdmqQgdeoW4twLBvX+D+rBYGgoE0JMJ5Ae8z
- /JFsalsk+oRTr3W0OK/16AEMMFHwoXA18MGVyPeh13IUcimqOmxytvzrB/lepE1zgyMV
- S8VWyp13pIoRI3+Fy65+gyf7eia2y8C1lBH5kGyWZk+7E/XWttO2XaXtLE+Ai+YW2LA+
- DG7Q==
-X-Gm-Message-State: AOJu0Yy+nhJLmOKCZJ8vYLhdJ6IAiBL6yBl7uQGNqVlsejSsKdyRO2YK
- eG7eCyjgsx4HlRVO0k7mZSW7yUKEibofiHXnRkZCckzUi4XZuVWxZjLUq/KftxpHxp5jWId72cq
- TMrxUJsyRrWp71YTkKmLAxFzfC+//WVlTPXN2xH3LUL4a7I5IHE/XOUC0Fs5rqp7taoF5OZl1vk
- CM9b3kG6WxnxClRyxgpz7I8JNiET+6LVJImMVJ
-X-Gm-Gg: ASbGncvv5Gbupnio23Ny5dBV+tcodi2VTUCYxzpGRT4TXhmZyFI8MJ1L1x8MK37AJcG
- OtjLOk5YMH9xauLAG1xsh3r4Cmo76qJKLP6YFAHpVZOtT1O+BV6LuQBJDisXzLAGSUlcqoOH5Nt
- pMvTpeh3us6eYimmODdXx9B0krckygAKsYGaxdHgV0W1jacNQ6zXwLW3uczau/j1IEZwMCEm6Vz
- eesSX6td8+tpMTZGrxRcBYTlqXkIGiNakBgTuYBiuj3sye1+t3PG0EZdbNRXvuj3JQfsH2yh3eb
- lgtms2qy6vW/aVw/XkSOTUKFCgNkAqYi0qhAD/nCUMESshUMB4611WAJAMuFddo=
-X-Google-Smtp-Source: AGHT+IEO6Hg8e1tjs94HjZgWAxO2S3kqEfSzKzfMlBv4rxd65BJezi5Ed6VZP2ySIzRkvUY3x288Aw==
-X-Received: by 2002:a17:903:1b0b:b0:21f:4649:fd49 with SMTP id
- d9443c01a7336-22bea4fd04emr224348365ad.49.1744704767114; 
- Tue, 15 Apr 2025 01:12:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1744704773; x=1745309573;
+ h=references:in-reply-to:message-id:date:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GR/8z++2aqI3yyfjoa8U9+bhg7JVoM1t0POSqDl+R9E=;
+ b=m4rSp3eI31yOHje2+jv9/nSzBWgMn2Web7HZojSjTj2tmdPQ8bGhtwnNza3+nN/6uI
+ B0vjX5XbYmV2hdEanwx4pkMe7egDpDGDXFI6QcnqXRRYbJB1sMI1U9iF27haak4qcJ0c
+ B8N5jtnJhhiKRmRXZu+yNrcL1xfJ4XaGKPxSmh810RoK/slwpU2216zVr/ssJVgFHqOw
+ 8k/l+8hCB0Q6VFEWlLZaCvQjbdWeycIXDzBMPjOYRNn+Hh0B50b9DdAeOJhjFYBJ2cw9
+ EQsvncI0/ZzTYfBumIkobjRqIVCLJCBFdv4cmYYwAegEIxA6Tugt/iWqyRweftHTsXgP
+ Bxbg==
+X-Gm-Message-State: AOJu0Yx7Q9FxiMCfAi20KObWHUcUzejx02oUEvT5PW0Qfh4cUDRUKewD
+ 9Lonsnr1sGtPI2Re32ka9IUZbvMgqdRHDvZWzIn08IirikUHMZP62c+rLOT5/X/Yt9o6GPbmUio
+ tKzb/PSjX9g81jbHFvzmzv7cu4xEPv2fLAELu3W/gCWAZnGvz9l0rVE5LJyx9BKMvd7/Cwdj9Me
+ Ot+E7Jroisxf0qi/SzfUXy1UI8iL92utR6/3Tb
+X-Gm-Gg: ASbGncvokJ63H5Pqcy5au6/2YrpbIw61nU93aP20TU3186N7M90piHlnAI470DPNiDp
+ kVlcdBCingyVBidgoFXwnHgERWh/4lwsWvcrwYhWJyN1ZO8XLWwjbtZwxRZaTP+NKwb/uQAqO7L
+ aJzPb0WrOZdyJvt8oiQSAlejftankCnJEYNrVn59B1P4QSBQWTubBGGxaJWjje+XXxclNBj2f4k
+ AaqxlRUM2wvlGRveA7ajuu0TyhCHoJJib+lq/ONHmX4Y0I4hpXsBOQSykdecXozkbxZOaVaQxlr
+ pfkI7prn9aQb0vx/Mk4ms0TobMyUG4N8HHZIdF5VLo9hhvdP33gpZu7IPIXlTLM=
+X-Google-Smtp-Source: AGHT+IEvywpEavvmyOduEwwU9z9a/qrP8uMTOrmGOQ25BCjKptwcRQBPtDLlsB4i+g1TFvGzFaNUAA==
+X-Received: by 2002:a17:903:1a10:b0:220:c4e8:3b9d with SMTP id
+ d9443c01a7336-22bea4efeefmr219540275ad.37.1744704772795; 
+ Tue, 15 Apr 2025 01:12:52 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22ac7c95cd1sm111082335ad.150.2025.04.15.01.12.41
+ d9443c01a7336-22ac7c95cd1sm111082335ad.150.2025.04.15.01.12.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Apr 2025 01:12:46 -0700 (PDT)
+ Tue, 15 Apr 2025 01:12:52 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -91,12 +91,14 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
  qemu-s390x@nongnu.org (open list:S390 TCG CPUs),
  Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH 00/17] Implements RISC-V WorldGuard extension v0.4
-Date: Tue, 15 Apr 2025 16:12:14 +0800
-Message-Id: <20250415081231.21186-1-jim.shu@sifive.com>
+Subject: [PATCH 01/17] accel/tcg: Store section pointer in CPUTLBEntryFull
+Date: Tue, 15 Apr 2025 16:12:15 +0800
+Message-Id: <20250415081231.21186-2-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.17.1
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=jim.shu@sifive.com; helo=mail-pl1-x631.google.com
+In-Reply-To: <20250415081231.21186-1-jim.shu@sifive.com>
+References: <20250415081231.21186-1-jim.shu@sifive.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=jim.shu@sifive.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -119,101 +121,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset implements Smwg/Smwgd/Sswg CPU extension and wgChecker
-device defined in WorldGuard spec v0.4.
+'CPUTLBEntryFull.xlat_section' stores section_index in last 12 bits to
+find the correct section when CPU access the IO region over the IOTLB
+(iotlb_to_section()).
 
-The WG v0.4 spec could be found here:
-https://lists.riscv.org/g/security/attachment/711/0/worldguard_rvia_spec-v0.4.pdf
+However, section_index is only unique inside single AddressSpace. If
+address space translation is over IOMMUMemoryRegion, it could return
+section from other AddressSpace. 'iotlb_to_section()' API only finds the
+sections from CPU's AddressSpace so that it couldn't find section in
+other AddressSpace. Thus, using 'iotlb_to_section()' API will find the
+wrong section and QEMU will have wrong load/store access.
 
-To enable WG in QEMU, pass "wg=on" as machine parameter to virt machine.
-It enables both WG CPU CSRs to apply WID of CPU and wgCheckers on
-the DRAM, FLASH, and UART to protect these resources.
+To fix this bug, store complete MemoryRegionSection pointer in
+CPUTLBEntryFull instead of section_index.
 
-This patchset contains 5 parts:
+This bug occurs only when
+(1) IOMMUMemoryRegion is in the path of CPU access.
+(2) IOMMUMemoryRegion returns different target_as and the section is in
+the IO region.
 
-1. Commit  1: Bugfix of IOMMUMemoryRegion
-2. Commit  2 ~ 3: Extend IOMMUMemoryRegion and MemTxAttr for WG support
-3. Commit  4 ~ 12: Add WG global device and CPU extensions
-4. Commit 13 ~ 16: Add WG checker device
-5. Commit 17: Add WG support to the virt machine
+Common IOMMU devices don't have this issue since they are only in the
+path of DMA access. Currently, the bug only occurs when ARM MPC device
+(hw/misc/tz-mpc.c) returns 'blocked_io_as' to emulate blocked access
+handling. Upcoming RISC-V wgChecker device is also affected by this bug.
 
-QEMU code can be found at [1]
+Signed-off-by: Jim Shu <jim.shu@sifive.com>
+---
+ accel/tcg/cputlb.c    | 19 +++++++++----------
+ include/hw/core/cpu.h |  3 +++
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-[1] https://github.com/cwshu/qemu/tree/riscv-wg-v1
-
---
-
-Changed since RFCv1:
-- Rebase to latest QEMU (v10.0.0-rc3)
-- Add the description of HW config and CPU option of WG in the
-  virt machine documentation
-- Expose CPU options of WG after WG CPU code has been implemented
-- Change 'mwid' and 'mwidlist' options to experimental options
-- Change 'world_id' to unsigned int type + bit field.
-
-Jim Shu (17):
-  accel/tcg: Store section pointer in CPUTLBEntryFull
-  accel/tcg: memory access from CPU will pass access_type to IOMMU
-  exec: Add RISC-V WorldGuard WID to MemTxAttrs
-  hw/misc: riscv_worldguard: Add RISC-V WorldGuard global config
-  target/riscv: Add CPU options of WorldGuard CPU extension
-  target/riscv: Add hard-coded CPU state of WG extension
-  target/riscv: Add defines for WorldGuard CSRs
-  target/riscv: Allow global WG config to set WG CPU callbacks
-  target/riscv: Implement WorldGuard CSRs
-  target/riscv: Add WID to MemTxAttrs of CPU memory transactions
-  target/riscv: Expose CPU options of WorldGuard
-  hw/misc: riscv_worldguard: Add API to enable WG extension of CPU
-  hw/misc: riscv_wgchecker: Implement RISC-V WorldGuard Checker
-  hw/misc: riscv_wgchecker: Implement wgchecker slot registers
-  hw/misc: riscv_wgchecker: Implement correct block-access behavior
-  hw/misc: riscv_wgchecker: Check the slot settings in translate
-  hw/riscv: virt: Add WorldGuard support
-
- accel/tcg/cputlb.c                   |   36 +-
- docs/system/riscv/virt.rst           |   20 +
- hw/misc/Kconfig                      |    3 +
- hw/misc/meson.build                  |    1 +
- hw/misc/riscv_wgchecker.c            | 1160 ++++++++++++++++++++++++++
- hw/misc/riscv_worldguard.c           |  272 ++++++
- hw/misc/trace-events                 |    9 +
- hw/riscv/Kconfig                     |    1 +
- hw/riscv/virt.c                      |  163 +++-
- include/exec/cputlb.h                |   11 +-
- include/exec/exec-all.h              |    3 +-
- include/exec/memattrs.h              |    8 +-
- include/hw/core/cpu.h                |    3 +
- include/hw/misc/riscv_worldguard.h   |  123 +++
- include/hw/riscv/virt.h              |   15 +-
- system/physmem.c                     |   16 +-
- target/alpha/helper.c                |    2 +-
- target/avr/helper.c                  |    2 +-
- target/hppa/mem_helper.c             |    1 -
- target/i386/tcg/system/excp_helper.c |    3 +-
- target/loongarch/tcg/tlb_helper.c    |    2 +-
- target/m68k/helper.c                 |   10 +-
- target/microblaze/helper.c           |    8 +-
- target/mips/tcg/system/tlb_helper.c  |    4 +-
- target/openrisc/mmu.c                |    2 +-
- target/ppc/mmu_helper.c              |    2 +-
- target/riscv/cpu.c                   |   17 +-
- target/riscv/cpu.h                   |   12 +
- target/riscv/cpu_bits.h              |    5 +
- target/riscv/cpu_cfg.h               |    5 +
- target/riscv/cpu_helper.c            |   69 +-
- target/riscv/csr.c                   |  107 +++
- target/riscv/tcg/tcg-cpu.c           |   11 +
- target/rx/cpu.c                      |    3 +-
- target/s390x/tcg/excp_helper.c       |    2 +-
- target/sh4/helper.c                  |    2 +-
- target/sparc/mmu_helper.c            |    6 +-
- target/tricore/helper.c              |    2 +-
- target/xtensa/helper.c               |    3 +-
- 39 files changed, 2063 insertions(+), 61 deletions(-)
- create mode 100644 hw/misc/riscv_wgchecker.c
- create mode 100644 hw/misc/riscv_worldguard.c
- create mode 100644 include/hw/misc/riscv_worldguard.h
-
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index fb22048876..581611d82d 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1150,6 +1150,7 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+     desc->fulltlb[index] = *full;
+     full = &desc->fulltlb[index];
+     full->xlat_section = iotlb - addr_page;
++    full->section = section;
+     full->phys_addr = paddr_page;
+ 
+     /* Now calculate the new entry */
+@@ -1265,14 +1266,14 @@ static inline void cpu_unaligned_access(CPUState *cpu, vaddr addr,
+ }
+ 
+ static MemoryRegionSection *
+-io_prepare(hwaddr *out_offset, CPUState *cpu, hwaddr xlat,
++io_prepare(hwaddr *out_offset, CPUState *cpu, CPUTLBEntryFull *full,
+            MemTxAttrs attrs, vaddr addr, uintptr_t retaddr)
+ {
+     MemoryRegionSection *section;
+     hwaddr mr_offset;
+ 
+-    section = iotlb_to_section(cpu, xlat, attrs);
+-    mr_offset = (xlat & TARGET_PAGE_MASK) + addr;
++    section = full->section;
++    mr_offset = (full->xlat_section & TARGET_PAGE_MASK) + addr;
+     cpu->mem_io_pc = retaddr;
+     if (!cpu->neg.can_do_io) {
+         cpu_io_recompile(cpu, retaddr);
+@@ -1588,9 +1589,7 @@ bool tlb_plugin_lookup(CPUState *cpu, vaddr addr, int mmu_idx,
+ 
+     /* We must have an iotlb entry for MMIO */
+     if (tlb_addr & TLB_MMIO) {
+-        MemoryRegionSection *section =
+-            iotlb_to_section(cpu, full->xlat_section & ~TARGET_PAGE_MASK,
+-                             full->attrs);
++        MemoryRegionSection *section = full->section;
+         data->is_io = true;
+         data->mr = section->mr;
+     } else {
+@@ -1980,7 +1979,7 @@ static uint64_t do_ld_mmio_beN(CPUState *cpu, CPUTLBEntryFull *full,
+     tcg_debug_assert(size > 0 && size <= 8);
+ 
+     attrs = full->attrs;
+-    section = io_prepare(&mr_offset, cpu, full->xlat_section, attrs, addr, ra);
++    section = io_prepare(&mr_offset, cpu, full, attrs, addr, ra);
+     mr = section->mr;
+ 
+     BQL_LOCK_GUARD();
+@@ -2001,7 +2000,7 @@ static Int128 do_ld16_mmio_beN(CPUState *cpu, CPUTLBEntryFull *full,
+     tcg_debug_assert(size > 8 && size <= 16);
+ 
+     attrs = full->attrs;
+-    section = io_prepare(&mr_offset, cpu, full->xlat_section, attrs, addr, ra);
++    section = io_prepare(&mr_offset, cpu, full, attrs, addr, ra);
+     mr = section->mr;
+ 
+     BQL_LOCK_GUARD();
+@@ -2521,7 +2520,7 @@ static uint64_t do_st_mmio_leN(CPUState *cpu, CPUTLBEntryFull *full,
+     tcg_debug_assert(size > 0 && size <= 8);
+ 
+     attrs = full->attrs;
+-    section = io_prepare(&mr_offset, cpu, full->xlat_section, attrs, addr, ra);
++    section = io_prepare(&mr_offset, cpu, full, attrs, addr, ra);
+     mr = section->mr;
+ 
+     BQL_LOCK_GUARD();
+@@ -2541,7 +2540,7 @@ static uint64_t do_st16_mmio_leN(CPUState *cpu, CPUTLBEntryFull *full,
+     tcg_debug_assert(size > 8 && size <= 16);
+ 
+     attrs = full->attrs;
+-    section = io_prepare(&mr_offset, cpu, full->xlat_section, attrs, addr, ra);
++    section = io_prepare(&mr_offset, cpu, full, attrs, addr, ra);
+     mr = section->mr;
+ 
+     BQL_LOCK_GUARD();
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index abd8764e83..8759e30fcc 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -218,6 +218,9 @@ struct CPUTLBEntryFull {
+      */
+     hwaddr xlat_section;
+ 
++    /* @section contains physical section. */
++    MemoryRegionSection *section;
++
+     /*
+      * @phys_addr contains the physical address in the address space
+      * given by cpu_asidx_from_attrs(cpu, @attrs).
 -- 
 2.17.1
 
