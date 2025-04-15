@@ -2,59 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E4BA89604
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 10:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE2EA89638
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Apr 2025 10:15:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4bJo-0002Z0-1Q; Tue, 15 Apr 2025 04:06:56 -0400
+	id 1u4bOy-0003a0-Ay; Tue, 15 Apr 2025 04:12:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
- id 1u4bJi-0002YH-Fq
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 04:06:50 -0400
-Received: from bm.lauterbach.com ([62.154.241.218])
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1u4bOq-0003Hn-Un; Tue, 15 Apr 2025 04:12:08 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mario.fleischmann@lauterbach.com>)
- id 1u4bJg-0001CE-9t
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 04:06:50 -0400
-Received: from [10.2.13.100] (unknown [10.2.13.100])
- (Authenticated sender: mario.fleischmann@lauterbach.com)
- by bm.lauterbach.com (Postfix) with ESMTPSA id D742D1508CED8;
- Tue, 15 Apr 2025 10:06:29 +0200 (CEST)
-Message-ID: <56d61e87-ed3e-4bcf-8334-e3d3ffb714a7@lauterbach.com>
-Date: Tue, 15 Apr 2025 10:06:30 +0200
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1u4bOl-0001o4-Po; Tue, 15 Apr 2025 04:12:07 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZcGwq52Ssz6K9S3;
+ Tue, 15 Apr 2025 16:07:39 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 83189140593;
+ Tue, 15 Apr 2025 16:11:50 +0800 (CST)
+Received: from A2303104131.china.huawei.com (10.203.177.241) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 15 Apr 2025 10:11:43 +0200
+To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
+ <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
+ <nathanc@nvidia.com>, <mochs@nvidia.com>, <smostafa@google.com>,
+ <linuxarm@huawei.com>, <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
+ <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>
+Subject: [PATCH 0/5] Add support for user creatable SMMUv3 device 
+Date: Tue, 15 Apr 2025 09:10:59 +0100
+Message-ID: <20250415081104.71708-1-shameerali.kolothum.thodi@huawei.com>
+X-Mailer: git-send-email 2.12.0.windows.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/16] Add Multi-Core Debug (MCD) API support
-To: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, christian.boenig@lauterbach.com
-References: <20250310150510.200607-1-mario.fleischmann@lauterbach.com>
- <87semkw3qx.fsf@pond.sub.org>
- <ea767dfa-d52b-44fc-baec-deea0223094f@lauterbach.com>
- <87semjp286.fsf@pond.sub.org>
- <0736943f-443b-4bfc-8d69-f30f42029d07@lauterbach.com>
- <87r023m422.fsf@pond.sub.org> <87a58qj3ay.fsf@draig.linaro.org>
- <87ldsakgp9.fsf@pond.sub.org> <87y0wahh65.fsf@draig.linaro.org>
- <87mscqiut6.fsf@pond.sub.org>
- <b610c46f-3137-4fc9-a80a-6855e5884c6c@lauterbach.com>
- <875xjdheaj.fsf@draig.linaro.org> <8734ehbm71.fsf@pond.sub.org>
-Content-Language: en-US
-From: Mario Fleischmann <mario.fleischmann@lauterbach.com>
-In-Reply-To: <8734ehbm71.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Bm-Milter-Handled: 166a2dfb-2e12-4590-8fa5-72e30323519f
-X-Bm-Transport-Timestamp: 1744704389887
-Received-SPF: pass client-ip=62.154.241.218;
- envelope-from=mario.fleischmann@lauterbach.com; helo=bm.lauterbach.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+X-Originating-IP: [10.203.177.241]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-Spam_report: (-1.7 / 5.0 requ) AC_FROM_MANY_DOTS=2.499, BAYES_00=-1.9,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,133 +64,78 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.04.2025 13:37, Markus Armbruster wrote:
+Hi All,
 
-> Alex Bennée <alex.bennee@linaro.org> writes:
-> 
->> Mario Fleischmann <mario.fleischmann@lauterbach.com> writes:
->>
->>> On 08.04.2025 16:37, Markus Armbruster wrote:
-> 
-> [...]
-> 
->>>> Use of QAPI/QMP does not imply use of the QMP monitor.  We can keep the
->>>> monitor and the debugging interface separate even though both are based
->>>> on QAPI/QMP.
->>>>
->>>> The monitor code is gnarly, I'm afraid.  It supports multiple monitors,
->>>> but they are not fully independent for historical reasons, chiefly
->>>> implied mutual exclusion for commands.  Adding a QAPI/QMP-based
->>>> debugging interface without undue coupling to monitors may pose a few
->>>> technical problems.  One way to find out.
->>>
->>> If I understand you correctly, when QAPI-MCD runs on a separate socket
->>> without using a monitor, it's still coupled to the monitor code
->>> internally? Does this have an influence on the either the usage of a
->>> monitor or the MCD interface or is it rather an implementation detail?
->>
->> An implementation detail - we should try and avoid needless coupling if
->> we can though.
->>
->> AFAIK not all monitor commands map to QMP equivalents but I'm not sure
->> if that's true the other way around - can you do everything you can over
->> QMP under HMP? If you don't have to then that implies we can over a
->> separate schema on a debug socket that doesn't need monitor bits tied
->> in.
-> 
-> Ideally, HMP commands are human-friendly wrappers around QMP commands.
-> Such commands can't do anything that could be done with QMP.
-> 
-> Not all the functionality of QMP needs to be exposed in HMP.  Some
-> functionality might only exist in QMP.  How much to expose is a
-> pragmatic "is it worth the bother?" decision.
-> 
-> Certain HMP commands make no sense in QMP.  Examples:
-> 
-> * HMP cpu sets the default CPU.  The concept doesn't exist in QMP.
-> 
-> * Ad hoc debugging commands that are used only by humans, such as
->   sync-profile.
-> 
-> * The desk calculator[*]
-> 
-> My abstract mental model of MCD has it completely separate from monitors
-> (HMP and QMP).  Just like gdbstub.
-> 
-> We're considering to use QAPI/QMP as interface definition and transport
-> infrastructure.
-> 
-> Mario's patches do that in a simple way: by "embedding" MCD in the QMP
-> monitor.  This creates a coupling that doesn't exist in my abstract
-> mental model.
-> 
-> We could have a separate QAPI schema for interface definition, and a
-> separate socket for transport.  This avoids coupling.
-> 
-> Obviously, we'd still want to reuse existing QMP infrastructure as much
-> as practical.  Some of that that code is gnarly.  If we're not careful,
-> we get some subtle coupling deep under the hood.
-> 
-> Here's one possible complication.  While we can have any number of QMP
-> monitors, we still funnel most[**] commands to the main loop thread,
-> where they run one after the other.  If we reuse all that machinery for
-> MCD, we end up forcing MCD commands through the same funnel to the main
-> loop thread.  This coupling could be undesirable.
+This patch series introduces support for a user-creatable SMMUv3 device
+(-device arm-smmuv3-dev) in QEMU.
 
-I think now we understand each other. Let me try to rephrase: We're
-trying to add a QEMU "debug" monitor which is used to debug the emulated
-system. The debug monitor is built on the MCD API as the debug protocol
-and QMP as the transport protocol and runs in parallel to the QEMU
-monitor which is used to control the emulator. Since the QEMU monitor is
-also built on QMP, we can reuse as much as possible from its QMP code
-but have to be careful not to add any coupling that goes beyond the
-transport layer.
+The implementation is based on feedback received from the RFCv2[0]:
+"hw/arm/virt: Add support for user-creatable accelerated SMMUv3"
 
-If I understood you correctly, I would feel prepared to go to work and
-try it out. If problems come up, I would get back to you.
+Currently, QEMU's SMMUv3 emulation (iommu=smmuv3) is tied to the machine
+and does not support instantiating multiple SMMUv3 devices—each associated
+with a separate PCIe root complex. In contrast, real-world ARM systems
+often include multiple SMMUv3 instances, each bound to a different PCIe
+root complex.
 
-> Before we contemplate how to press the existing QMP infrastructure into
-> service for MCD, we should first figure out how we'd want MCD to operate
-> if we started on a green field.  Can we have more than one MCD
-> connection?
+This also lays the groundwork for supporting accelerated SMMUv3, as
+proposed in the aforementioned RFC. Please note, the accelerated SMMUv3
+support is not part of this series and will be sent out as a separate
+series later on top of this one.
 
-There are two types of connections in MCD. mcd_open_server_f opens the
-connection to the MCD implementation, i.e. mcdserver, and initializes
-mcdserver's core database. The actual debugging is performed over core
-connections opened by mcd_open_core_f. Each core connection will be
-identified by a pointer to a mcd_core_st object in the MCD API and by an
-uint32_t holding a unique identifier over the RPC protocol.
+Summary of changes:
 
-In homogeneous multi-core systems, we can get away with one server
-connection and multiple core connections. In heterogeneous systems, we
-need multiple server connections since most likely multiple debuggers
-have to be connected to QEMU simultaneously.
+ -Introduces support for multiple -device arm-smmuv3-dev,bus=pcie.x
+  instances.
 
-While there are use-cases to opening multiple connections to the same
-core at once, I would propose to keep this is as a future option but not
-to include this in the initial commits since it considerably complicates
-things.
+  Example usage:
 
-> Which thread should execute MCD commands?
+  -device arm-smmuv3-dev,bus=pcie.0
+  -device virtio-net-pci,bus=pcie.0
+  -device pxb-pcie,id=pcie.1,bus_nr=2
+  -device arm-smmuv3-dev,bus=pcie.1
+  -device pcie-root-port,id=pcie.port1,bus=pcie.1
+  -device virtio-net-pci,bus=pcie.port1
 
-Since both gdbserver and QMP monitor run in the main thread, I don't see
-a reason why not to run the mcdserver in there as well.
+  -Supports either the legacy iommu=smmuv3 option or the new
+  "-device arm-smmuv3-dev" model.
 
-> Any locking requirements?
+  -Adds device tree bindings for the new SMMUv3 device on the arm/virt
+   machine only, and only for the default pcie.0 root complex.
+   (Note: pxb-pcie root complexes are currently not supported with the
+    device tree due to known limitations[1].)
+  -Restricts usage of the new SMMUv3 device to virt machine versions > 9.2.
+   This is to avoid creating new smmuv3 device for old virt machine versions
+   and accidently breaking the migration support.
 
-As there are no explicit locks in gdbstub.c, I assume they are enforced
-by QEMU's infrastructure.
+Please take a look and let me know your feedback.
 
-> Any need for asynchronous commands?
+Thanks,
+Shameer
+[0]:https://lore.kernel.org/qemu-devel/20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com/
+[1]:https://lore.kernel.org/qemu-devel/20230421165037.2506-1-Jonathan.Cameron@huawei.com/
 
-No, none that I'm aware of.
+Shameer Kolothum (5):
+  hw/arm/smmuv3: Introduce SMMUv3 device
+  hw/arm/virt-acpi-build: Update IORT for multiple smmuv3 devices
+  hw/arm/virt: Factor out common SMMUV3 dt bindings code
+  hw/arm/virt: Add support for smmuv3 device
+  hw/arm/smmuv3: Enable smmuv3 device creation
 
-> [*] Which arguably makes no sense in HMP either.
-> 
-> [**] Not out-of-band commands.  You probably don't want to know more.
+ hw/arm/smmuv3.c          |  55 ++++++++++++++++++
+ hw/arm/virt-acpi-build.c | 119 +++++++++++++++++++++++++++++++++++----
+ hw/arm/virt.c            | 109 ++++++++++++++++++++++++++---------
+ hw/core/sysbus-fdt.c     |   3 +
+ include/hw/arm/smmuv3.h  |  16 ++++++
+ include/hw/arm/virt.h    |   2 +
+ 6 files changed, 266 insertions(+), 38 deletions(-)
 
+-- 
+2.34.1
 
 
