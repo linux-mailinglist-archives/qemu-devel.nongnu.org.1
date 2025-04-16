@@ -2,74 +2,152 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F51A8B712
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 12:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 600D3A8B7D0
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 13:42:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u50Ex-0004r3-7L; Wed, 16 Apr 2025 06:43:35 -0400
+	id 1u519V-0005yD-KN; Wed, 16 Apr 2025 07:42:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u50Em-0004pY-8T
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 06:43:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1u519I-0005xu-J5
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 07:41:48 -0400
+Received: from mail-bn8nam11on2076.outbound.protection.outlook.com
+ ([40.107.236.76] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u50Ei-0003V1-7U
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 06:43:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744800198;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=I1SNf4k1vkbPSdFHGZM7Talbjfhoph3u3m0MzlCZPjs=;
- b=WSSf/qQGpqOICbvJQB9TOhctC+/qUUGRVQyCnRUHPbHaJk0TOrsB+E3z3orrrwcPHVmL8F
- JAfrv6hqBqe/P2GxAyZ/2APO8mcQUDGCQpeY2rY3fxfjOrRIiJtARuE9Xg9S9HD1EJXhRn
- xtr4FGlgatQkskzKSm1JGI+5FkrssTk=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-388-UCMIg48JOcqnPxJO4C3TDA-1; Wed,
- 16 Apr 2025 06:43:14 -0400
-X-MC-Unique: UCMIg48JOcqnPxJO4C3TDA-1
-X-Mimecast-MFC-AGG-ID: UCMIg48JOcqnPxJO4C3TDA_1744800193
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C538F1956096; Wed, 16 Apr 2025 10:43:12 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.33.31])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4152B19560A3; Wed, 16 Apr 2025 10:43:09 +0000 (UTC)
-Date: Wed, 16 Apr 2025 12:43:07 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org,
- Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org
-Subject: Re: [PATCH v2 1/2] file-posix: probe discard alignment on Linux
- block devices
-Message-ID: <Z_-JuzabVntIfGgm@redhat.com>
-References: <20250410184103.23385-1-stefanha@redhat.com>
- <20250410184103.23385-2-stefanha@redhat.com>
- <c7b9ddb4-10de-4c66-9f2f-c964d77275e0@redhat.com>
- <20250414153451.GC117758@fedora>
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1u519C-0004d5-1U
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 07:41:48 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GYUBXoizg2842rkC5vrlYs8bZ9Anlh5aHUEOYYnuqjFQHrPhoxKVhzzuhaIg2Iy7HkFBepgEp0zWFGcaeS2GowcSJ8/pTpp60B53ACGHibWxBUgjKLHA1xEr9/Uv3MXzsVUDUM+Prt2rBHyF/M1s/n7Y7H2jSyD2EJ+eIg6E8qqRdGioiiZe6H+5DS8Hpke6ZgCkGmrUcHpruL48zLULaSVCoyGpg0ozNjYrpJW4Y6V74ATiUszHI3V4nF/u4RiLH5+ALtCrNrjYMEz9Ig4gq+FNHCWi+cYVbO8X/JDbDHn6YD7LJMFfNEpCc+LmyunxLzUw97jYuW0rklmXUXcF9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R0jdL/OMQ24hQ6eX/yJK+gebGw5lrSZqoif5mko08xc=;
+ b=PGjoyYyDIx48jnjle/OPEG+xstbdl4WGVImXx7RM4PSQ4mC3nKpbMx+4geJlzwapWlN0PGT67WwB+rHENsEmM0vkC00OL9nBf0N777wkXCt8ywbhVeCqL34hWOh0EaSBuuT7SPD05X+UDsQPmzPQ2poCWMK52OzsC05J9snzyIva4Uz11lHMtLFNu1OF176W8+R4OMfi8BAh7uU7RsfFaoO8PWD2+cUfzL059ejshuWGFJkQfG+reXJdTFvYQaDMhFaAlL6qLAP1ULFYzBUMixauRn88CbwZHHsmgELSNATORllH1LzZNtZFMPzMNOlIxYK/SRjCiVR5VaM8hj/wJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=oracle.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R0jdL/OMQ24hQ6eX/yJK+gebGw5lrSZqoif5mko08xc=;
+ b=bTTbcCCJvdBFXCh4B3yBEQ3r4uYXSi8OTlJWS4ZhLrBWs6jzYWCgqopgzDTdf2feYREhtpnhc3ePHeDvsb+dg6SIYkOBL9V5OVpJWyVY6YfHndNkMtnJt/TCh156P7FQkNcGs5wj88Cz6d9B0PU948M1ozPJy0jbD8B+nEyBf/8=
+Received: from CH2PR11CA0021.namprd11.prod.outlook.com (2603:10b6:610:54::31)
+ by SA3PR12MB9158.namprd12.prod.outlook.com (2603:10b6:806:380::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.35; Wed, 16 Apr
+ 2025 11:36:31 +0000
+Received: from CH2PEPF0000013E.namprd02.prod.outlook.com
+ (2603:10b6:610:54:cafe::e4) by CH2PR11CA0021.outlook.office365.com
+ (2603:10b6:610:54::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.34 via Frontend Transport; Wed,
+ 16 Apr 2025 11:36:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF0000013E.mail.protection.outlook.com (10.167.244.70) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8655.12 via Frontend Transport; Wed, 16 Apr 2025 11:36:31 +0000
+Received: from [10.85.32.54] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 16 Apr
+ 2025 06:36:26 -0500
+Message-ID: <4a7a8eff-dd21-49b7-9d2a-449ae0424eb2@amd.com>
+Date: Wed, 16 Apr 2025 17:06:24 +0530
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="5UgUjOQKq5WOGByV"
-Content-Disposition: inline
-In-Reply-To: <20250414153451.GC117758@fedora>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/18] amd_iommu: Add helper function to extract the DTE
+To: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, <qemu-devel@nongnu.org>
+CC: <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
+ <eduardo@habkost.net>, <peterx@redhat.com>, <david@redhat.com>,
+ <philmd@linaro.org>, <mst@redhat.com>, <marcel.apfelbaum@gmail.com>,
+ <alex.williamson@redhat.com>, <vasant.hegde@amd.com>,
+ <suravee.suthikulpanit@amd.com>, <santosh.shukla@amd.com>,
+ <Wei.Huang2@amd.com>, <joao.m.martins@oracle.com>,
+ <boris.ostrovsky@oracle.com>
+References: <20250414020253.443831-1-alejandro.j.jimenez@oracle.com>
+ <20250414020253.443831-3-alejandro.j.jimenez@oracle.com>
+Content-Language: en-US
+From: Sairaj Kodilkar <sarunkod@amd.com>
+In-Reply-To: <20250414020253.443831-3-alejandro.j.jimenez@oracle.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000013E:EE_|SA3PR12MB9158:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7023f881-3c40-4546-2d46-08dd7cdaef1e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|36860700013|1800799024|376014|7416014|7053199007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZkZYYkwrZFhzK2c5dHJGSVJuQ3JveTBLckF0b0RVVDl0S0JEbzhMZmJLRXBD?=
+ =?utf-8?B?eE93cUh6ODE1cEFZYnRMTHBxM3ZmZXFtWW14QWFGT3hZMVZRS3Z4bDNpYld3?=
+ =?utf-8?B?L0xNOU5xTDV3UlgzZGREWDRVS3hoQVhSbUhoVzMxanRlMDcySFJvN1FpdzY4?=
+ =?utf-8?B?WkdwQjRJZGEraENCZkt6S2NndlorY3g5NGxrWnY0bHlaeTUwd1VHREJpYU9D?=
+ =?utf-8?B?cTU3K0Myd3pZMTVwMzJHZUVPaXBCUTM5NnVsMUJuMWNNYVJPSDdkb28zbkhL?=
+ =?utf-8?B?d3VXbjZ1ZCtKRFN4NFlxOTdyY0dMMWF6akQxS3k2R1VSZHhuaWNvU29zRE9m?=
+ =?utf-8?B?WEpsb1pxOFhOVXlhL2YrQ0dlK0kxaTByR2MwT3N0UllENTBnUEF1VGZ6ejZ0?=
+ =?utf-8?B?OGZ3ejF4MXZYTEs2a3hhT3JnazFQWkdBZzdtMFR6eEh4V09wczk3SVhKNE9q?=
+ =?utf-8?B?R2gyNmlCZm8xY3lxbEM1Q1JSOHZvOWZYMVBDY3JrS2lKdVZZUGVKVm5ia0d6?=
+ =?utf-8?B?WXZZL05BUFIrMVJhS1ZON2o5MkhCMG4rdkh4am1TSGkvYU5mdzY2Z0pFZ1U3?=
+ =?utf-8?B?MG5qbTFMOGNWbjRhdzQ5NFgvZmFSTFIzZWZQL1V2YnR4ZENGRHFMZHhHSDhL?=
+ =?utf-8?B?WmNaVkNGU0hKME5ORjhsQjJFUHQyR043TjF4SUZRd3EyWlRVbGhhMGNHWnVw?=
+ =?utf-8?B?TGVjOEQrSGZFdVJVRXJTVWVHNUd6RWNZWVcrWTRuWWhHNTNQQUFHZTFEdTlN?=
+ =?utf-8?B?RWt3OXYzV3V3MFdWL250NDU5L2dWZnNHelQ0eTkyV0hhZDJMa1NaMllmVUhj?=
+ =?utf-8?B?TXVZMnBDVFRIRkFRV3MvMFYyYWoxWGprM2F5TVdORHI1aHgySjdhb2puTW96?=
+ =?utf-8?B?Rm9tUVpPZDlYUnVqQ0FhbElqSUdtN1VyeHJrL0ZKZkdjT3dFSE1HaWpjRjdT?=
+ =?utf-8?B?QnA0cjdUTHU5QkxpWTRabEhPWlZYOER6M0IvdmNVYThhSHhCUzVudUxBVzNX?=
+ =?utf-8?B?Q0V4aTVtQ2ZpV1lackZBN2lNcHhGbTBacUdyV0pKRjFEcTFkdGI3SU5iQjIx?=
+ =?utf-8?B?UGo1K3ljWExZaUZRM25rKzNBZDdFb0c5ejk5akJPSFN0cXB6TE1CNERZQldy?=
+ =?utf-8?B?SVNrRU5oREdVQlBIWk5YejE0Q3ZSZU1BdkRVMG5oY1E3V3VSWUUrYVJnRmRn?=
+ =?utf-8?B?MHNOYzVpSjhmWXZyYW5qbWxOMHJCSTRIUFRaSEY3bS92QTVIc1NLVGY2QWkv?=
+ =?utf-8?B?MmtvMitvUW9HSUhudjZabC9VUVdYRUw5RVpCaGlQaHJ4MXZtd1JmYWZydlY3?=
+ =?utf-8?B?MU5CRzVYcVN6UG5hcjhXQnhlMDZFczdYaDQvL2dBendLK2NXMkZldUN5ajY5?=
+ =?utf-8?B?MW84aHFvb1M2eElDQVlVL0NSWGVWeVpSZlNKOHZsbG5ET0lxdGF6dXpSOWlT?=
+ =?utf-8?B?Kyt3dmdCaktoK1pWT1g3V21JaEVmWjFsOVQ1c3hBOGhQUjV1WE15S2svMVhk?=
+ =?utf-8?B?YUxzSEFGSVRHUTV6aXRZR005eVJXQU9ERExrMlBkY2h3b2NQdW5xV0kxUmx6?=
+ =?utf-8?B?dFplSnluNE5FaTVUTHpLZHhnTERzRUlxQko4TU83SUtHRTBLN2RZOWFGZ2Fq?=
+ =?utf-8?B?S1VSaGFWcVM0VG1KTzVveG9SVmpyQkU3ZUp3RHQvZEZLZm1VbDV3ZkFrZTRj?=
+ =?utf-8?B?TGNxOXI0dHdqSGw0bnVJTmRyeG51VnhMcklrdmRzN3ZRQTZ6REFEQmZTRnc0?=
+ =?utf-8?B?VXNUMUZCN1VERWUwSjBiNGFXNFdpSTI1TGt4RGNHSXpEdXRRMkxldnVYM0RG?=
+ =?utf-8?B?ZFlJNDlXLzB1d0ZNNWsxclZBWWZLb0JVYm9vbWNUekhPdnFpUVB3SnFOU2ZH?=
+ =?utf-8?B?UmVtbWdYQk9pbXZ2SHl5dzlqYklQY0ZxY09Kb29UMkh6aHVPWnBHOHBvVWUy?=
+ =?utf-8?B?K2Zrd2d0SURueXhKNXRIOWZmakYyQm1YMmZsZXdRUUpyVHlnazRDaHNJSC96?=
+ =?utf-8?B?ZVI0a2xJaWVPY2RvbnQ2TUd3S1ZhVTAwOFg4biswWWtrQXAzcEhmU3Qra1Qy?=
+ =?utf-8?Q?0k3KVP?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014)(7416014)(7053199007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 11:36:31.2300 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7023f881-3c40-4546-2d46-08dd7cdaef1e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF0000013E.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9158
+Received-SPF: permerror client-ip=40.107.236.76;
+ envelope-from=Sairaj.ArunKodilkar@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,58 +164,104 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---5UgUjOQKq5WOGByV
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Am 14.04.2025 um 17:34 hat Stefan Hajnoczi geschrieben:
-> On Fri, Apr 11, 2025 at 10:15:13AM +0200, Hanna Czenczek wrote:
-> > On 10.04.25 20:41, Stefan Hajnoczi wrote:
-> > > Populate the pdiscard_alignment block limit so the block layer is able
-> > > align discard requests correctly.
-> > >=20
-> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > > ---
-> > >   block/file-posix.c | 56 +++++++++++++++++++++++++++++++++++++++++++=
-++-
-> > >   1 file changed, 55 insertions(+), 1 deletion(-)
-> >=20
-> > Ah, I didn=E2=80=99t know sysfs is actually fair game.=C2=A0 Should we =
-not also get the
-> > maximum discard length then, too?
->=20
-> The maximum discard length behaves differently: the Linux block layer
-> splits requests according to the maximum discard length. If the guest
-> submits a discard request that is too large for the host, the host block
-> layer will split it and the request succeeds. That is why I didn't make
-> any changes to the maximum discard length in this series.
+On 4/14/2025 7:32 AM, Alejandro Jimenez wrote:
+Hi Alejandro,
 
-Do we need to do something with it for SCSI passthrough? Similar to how
-we expose bs->bl.max_hw_transfer/iov in the block limits VPD page?
+> Extracting the DTE from a given AMDVIAddressSpace pointer structure is a
+> common operation required for syncing the shadow page tables. Implement a
+> helper to do it and check for common error conditions.
+> 
+> Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+> ---
+>   hw/i386/amd_iommu.c | 47 ++++++++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 42 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+> index 5f9b95279997..22d648c2e0e3 100644
+> --- a/hw/i386/amd_iommu.c
+> +++ b/hw/i386/amd_iommu.c
+> @@ -77,6 +77,20 @@ typedef struct AMDVIIOTLBEntry {
+>       uint64_t page_mask;         /* physical page size  */
+>   } AMDVIIOTLBEntry;
+>   
+> +/*
+> + * These 'fault' reasons have an overloaded meaning since they are not only
+> + * intended for describing reasons that generate an IO_PAGE_FAULT as per the AMD
+> + * IOMMU specification, but are also used to signal internal errors in the
+> + * emulation code.
+> + */
+> +typedef enum AMDVIFaultReason {
+> +    AMDVI_FR_DTE_RTR_ERR = 1,           /* Failure to retrieve DTE */
+> +    AMDVI_FR_DTE_V,                     /* DTE[V] = 0 */
+> +    AMDVI_FR_DTE_TV,                    /* DTE[TV] = 0 */
+> +} AMDVIFaultReason;
+> +
+> +static int amdvi_as_to_dte(AMDVIAddressSpace *as, uint64_t *dte);
+> +
 
-Kevin
+No need to have this function declaration as it is a static function.
 
---5UgUjOQKq5WOGByV
-Content-Type: application/pgp-signature; name=signature.asc
+>   uint64_t amdvi_extended_feature_register(AMDVIState *s)
+>   {
+>       uint64_t feature = AMDVI_DEFAULT_EXT_FEATURES;
+> @@ -882,6 +896,28 @@ static bool amdvi_get_dte(AMDVIState *s, int devid, uint64_t *entry)
+>       return true;
+>   }
+>   
+> +static int amdvi_as_to_dte(AMDVIAddressSpace *as, uint64_t *dte)
+> +{
+> +    uint16_t devid = PCI_BUILD_BDF(as->bus_num, as->devfn);
+> +    AMDVIState *s = as->iommu_state;
+> +
+> +    if (!amdvi_get_dte(s, devid, dte)) {
+> +        /* Unable to retrieve DTE for devid */
+> +        return -AMDVI_FR_DTE_RTR_ERR;
+> +    }
+> +
+> +    if (!(dte[0] & AMDVI_DEV_VALID)) {
+> +        /* DTE[V] not set, address is passed untranslated for devid */
+> +        return -AMDVI_FR_DTE_V;
+> +    }
+> +
+> +    if (!(dte[0] & AMDVI_DEV_TRANSLATION_VALID)) {
+> +        /* DTE[TV] not set, host page table not valid for devid */
+> +        return -AMDVI_FR_DTE_TV;
+> +    }
+> +    return 0;
+> +}
+> +
+>   /* get pte translation mode */
+>   static inline uint8_t get_pte_translation_mode(uint64_t pte)
+>   {
+> @@ -990,6 +1026,7 @@ static void amdvi_do_translate(AMDVIAddressSpace *as, hwaddr addr,
+>       uint16_t devid = PCI_BUILD_BDF(as->bus_num, as->devfn);
+>       AMDVIIOTLBEntry *iotlb_entry = amdvi_iotlb_lookup(s, addr, devid);
+>       uint64_t entry[4];
+> +    int dte_ret;
+>   
+>       if (iotlb_entry) {
+>           trace_amdvi_iotlb_hit(PCI_BUS_NUM(devid), PCI_SLOT(devid),
+> @@ -1001,13 +1038,13 @@ static void amdvi_do_translate(AMDVIAddressSpace *as, hwaddr addr,
+>           return;
+>       }
+>   
+> -    if (!amdvi_get_dte(s, devid, entry)) {
+> -        return;
+> -    }
+> +    dte_ret = amdvi_as_to_dte(as, entry);
+>   
+> -    /* devices with V = 0 are not translated */
+> -    if (!(entry[0] & AMDVI_DEV_VALID)) {
+> +    if (dte_ret == -AMDVI_FR_DTE_V) {
+> +        /* DTE[V]=0, address is passed untranslated */
+>           goto out;
+> +    } else if (dte_ret == -AMDVI_FR_DTE_TV) {
+> +        return;
+>       }
+>   
+>       amdvi_page_walk(as, entry, ret,
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmf/iboACgkQfwmycsiP
-L9ap9RAAr7XW58GMMYNJLUaWfYIMiqV9q1tSgkPy/SWTIw/W/lvfkNZuthUV6YyU
-KQV7wlrsxd9+aC7Tj9hZ0TeHviL2iD/7aApquHVnyKNzEBTCIbBupyP29CrYSwFk
-n/xSAqrqM9TkfKRkgpDFXZDvfkRYZV9ZfOPViuafxLPci6E4FTU/WdiD1LttNUyt
-Nqh2xLqCsSsK4EDfzrGwF6+Er2QLaIKVupyVbd2FENRLgn1uvnzNg77pFfjWAe1Z
-sUkZKzeD8eRqb6Rfd+0Z84fvomoY0aJJln6tlzU0H55icfQSFLM6upkFX6XuCc50
-K1bg5421XZuj338TyKseFcDnpE4qmB5YvwKH0f1fv2tEZ6aoNV2WlhrjRpjH2r6u
-VA2O1FZWti3jqCAQJMKvtoLs1I/c6xVG8OQ0KifrcNWybvK1rM/xew4TUlQaZSY0
-ujDt9ovv1/52SQ+Hp2pbCA6+9EKuIO711HRfY8SgScgRZRKOrg+Iw85JSsTs6ivA
-w4PoOGD1ovGYbuZQxtCMYofpNBeR/nB65Hs7MpXZgmNssSWZ8fvIuWMW0HDuNPij
-6+mTI/jMyt/d4OW9n+l396YBNt/skol2zAOdbbZsXcXenWJrgSkz7FKzFe3fW0Di
-VQNeOVj1WyDakV3KjT1bDxzmm5JxOdMIZ+xq2+LJYO5LVoO3x5c=
-=oq3m
------END PGP SIGNATURE-----
-
---5UgUjOQKq5WOGByV--
-
+Regards
+Sairaj Kodilkar
 
