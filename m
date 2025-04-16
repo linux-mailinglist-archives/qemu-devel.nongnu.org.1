@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65A0A8B355
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 10:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6D2A8B39D
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 10:25:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4y0O-000636-Nw; Wed, 16 Apr 2025 04:20:26 -0400
+	id 1u4y1F-00070v-7k; Wed, 16 Apr 2025 04:21:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u4xwu-00025k-W6; Wed, 16 Apr 2025 04:16:56 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1u4xx7-0002Js-EZ; Wed, 16 Apr 2025 04:17:02 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u4xws-0005v0-J1; Wed, 16 Apr 2025 04:16:48 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-736c062b1f5so5499966b3a.0; 
- Wed, 16 Apr 2025 01:16:44 -0700 (PDT)
+ id 1u4xx1-0005wK-S6; Wed, 16 Apr 2025 04:17:01 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-7399838db7fso484460b3a.0; 
+ Wed, 16 Apr 2025 01:16:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744791404; x=1745396204; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1744791411; x=1745396211; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ccz4kSlOllk0cHThqsViRN91zI+kCPXhAybNKVHZI0w=;
- b=AfgbLcJQXBmGT0/CqE5COVr+lhjQskB/Vw08wG+Myv5ksWu5TEEDz8ey2ZOJvvsgYb
- JnYixP5JdvbmWXevjAtEQchtxl7C+JKoULvWLLKhT51UxhPML1bJpfKVF3pptggZgKGN
- bf9FYmER7KKUS84LPu0J4f3psT+OGVe6vb73E4dMHnVstwSOsuNjDKZu+1vARwYtBoN3
- ZW+q7+iP+/WTcakAte9IRn4pR4ssa3CBCn861XIxEwt/cqKC7Fgs+cKFrB30BMx0bBu5
- 5+wpBFtnS4rzV1GkdLmvOMJoctmc+gNc4FbXEalVLcxvitn1KorfANyckaoWEXR0MrDU
- Gn1g==
+ bh=c4klZ5LCWvRR7sigiHEe5f8QPHEXneqpNeiJtQ0wxIk=;
+ b=Vt1MsfsSiqn7OeeZeGcghlg5iFcfNExSuooTExmpfL4G6tghpW42VryrIVRQPydTbi
+ CbaggBvuyrY8+OtH3II1IewBfukvKrRqGJLwDwIUqdfBFa632pL4QIdHd3OLi1O1HulD
+ Behirpad3911/WC5f4yF8LrGLeCPB7PnHvOEtgvqJRZH43MbI1/b4ppI1gdVM9U41Sg7
+ US44jg+nLE0whze9gj1H5EKX82uKwnIMl3P+prpDVvoIiZYcv8UaXDqvvr0sglT2sguU
+ /pr6GwTL6n3qQVBfE8BEXX9h6lwovbMaf09UDliqEJOgMsNyi6hu+T2ae/kMZ2DESUJU
+ miMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744791404; x=1745396204;
+ d=1e100.net; s=20230601; t=1744791411; x=1745396211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ccz4kSlOllk0cHThqsViRN91zI+kCPXhAybNKVHZI0w=;
- b=Clf8H5lrjVBQ4cm4bcoQRo++2MVAIGQYiI8PUTWh232dxLJJYphWBhWoYz5keb/jvC
- sfagj4rpqWmRmw36otp0uW9A3IdbvHNKPpQ6MmhK+UvUDlHrfPRWayZuXswSvdRTWc7K
- oBzIo9qP8pd1nnn/JTziz4Wr/iYfN1ajNQpPOCzMPearkrj30DBLpmbUyXKMn2TS/6my
- 6i0zT57hKhqBQphUKFKVThWT+SbqbNd2EwI0ejXmvxlWQp56iieXW+/POqrqhPeTiOOl
- wDKVQX4Yyde/UNpKrTk9vErMaSMvBqArLtZXQczuhSQ786o0Ax1bnUlKbEulPiwdYSyr
- keNw==
+ bh=c4klZ5LCWvRR7sigiHEe5f8QPHEXneqpNeiJtQ0wxIk=;
+ b=UcScMRt6jM3pEQ3gsrEVsV3fY2t5ruKETzcean2hmBRSaYwN6ggxkopyZe1AXZeWsI
+ bCQeJg7R9fh5n2HQtUX67owOx6YhjWtI+V9vNAHo7pMjNBgCG7tHCsWEr9C4wnrCpMNW
+ W0nZkV93CU6/DX+PHU1vbER6s9G8OwUdwC36uE7ubuo1SXpH2YFiAE8YTduUVjHu1sTm
+ PMGsuXM/60IQ289VyupkRxKGXaMO+VaIBPCtRUyjOXEwvDm5ZBzhbSknBUWAiWMEQd26
+ /22q8qgg/ErYoqsqpT+V0fNSiMUrCmN9VJeAgr5zU2GAFREncejOyg3jA5XjtTUwUsVB
+ 7VzQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCURiaNlxT0laODNkPpTQsQBSV2NrsiVpyH84GlmybWBmOyaa5Dk3ABSepzbs5Vi5C8nSFMRI3k2ZxHvlg==@nongnu.org,
- AJvYcCUpn0k1d1cZMZPfTD8oHBKv+x+IsxNrPHF0J7XvTqXI+5qmSAadSrkOO736ENNillc8boTHMNU9LdXM7Q==@nongnu.org,
- AJvYcCWhSGJ7z1r1ZL0V6yLPMfGmYDu4CYMCu8nz/ioAW4XEcpeX5Q/iJgIdcn8A6BKCWT6uw8ZZgU5UqWU=@nongnu.org,
- AJvYcCXug7fqCpIXghWFy1zsngr/lVCMs39+S9H2y8qQA6/y4ExYvCnWD9WwrsoRudikhKjKbJxR9x4moA==@nongnu.org
-X-Gm-Message-State: AOJu0YyoqWSp8eDAgiWKa48hgqBuk7lAN5DK+0RagzydC/8//8T8D4sC
- zVXCTBSrBH+WMZQuHzk2Z3OJEtk1AevjKFLGUXAV+sigO8AbKCsJrU+n+cqb
-X-Gm-Gg: ASbGnctguwD0o33hd9YmcB5BbAwGdW6q17SzBFzBKlPA02LEbnhvpJ7yIKHyVQMQfSE
- Ig6Y6++PWYqsoJMtG3KcSvzbJaeIjtId7bOIh218ApFTYLvuWb/HExcaUMb76IoIgFKgCeptBa4
- 7ge+YB9fv7QIifUOAtVChiU5acS/wnU1T2Vay+LNY4fFilghQoePIZlCoURyjZ5PEXzw5aWP3Hr
- YWbOY1G9WLXHn0KIJvsxb1SErzc/TkX5lcaZjYKaVrJ7b/8xJw2OYEEvMQjkGFONZzlsPatlmOA
- Y8uLIAOh/WxNl1Pk87RPPKKUvsLFnIrjJE8TRoPAlulQWIKcFUAyyU5XSA==
-X-Google-Smtp-Source: AGHT+IH7FmqWppk3JQIuvW4w32pZOoVj/pSA/IO3rWgKznIiLqDu3RFZw5/AmwOBaT1ZsrARHCFbIg==
-X-Received: by 2002:a05:6a00:3d09:b0:739:b288:13e7 with SMTP id
- d2e1a72fcca58-73c267d3801mr1274214b3a.15.1744791403571; 
- Wed, 16 Apr 2025 01:16:43 -0700 (PDT)
+ AJvYcCU4qSsAn15G8UlrR+JoonAg4HXHRCOGdlYwJHs5W+hKed+lbf3+SZs4Wf3zvC8UJ+B1/G5RUYU7dFqFow==@nongnu.org,
+ AJvYcCUNedkIWrxd+dwM/RdEYxBtQ8i3DGBGNffYOv7uJSmA2xHq2soGRqrwdHUVFxMmwWPRyFgeQojXF+E=@nongnu.org,
+ AJvYcCVK1yCHLqG5Vsu7cURfrJXZMt6NAa4oVCBqZEjaVXgCIo7qGDDimR3LmJ3UHoIjJs6hn+bssF8wPA==@nongnu.org,
+ AJvYcCX8IJcFsBWG2HboP9pRrsIuCGm+6rVQpog9P1jwMy/UzrMJNui3KhjqCeWJe05jJ2/jSJgXaGdJAZryjA==@nongnu.org
+X-Gm-Message-State: AOJu0Yzew0J+5YdYokH63u5Q4n+9r7ARqfGoZL9yD+wzI+IeuJrVT8gk
+ GEC/7cQv1RPmRShvPH5M/PbMRYf1wNPfeoDStdniimn+8ux+URTvV3eNI1EL
+X-Gm-Gg: ASbGncskroP4MTsU3Wu4oF4C7r1QhR1XBdzOKsq0o4FZzX4IB30W47v5MZa/LbM0uXS
+ DfFCnPdVoaFoDWmqZScFRKMs+izT8Vl0isy+pSU5kG+324G/dNtHS0VN6gO8ofVTn+uX2+b4CVD
+ J8OoUCsj6nKQpw76m3LO0kAadDivlN52Y/svwEzYbm8XFdNJGSjxijZXXKewcwV2eF1zyyqAccc
+ IQ4GpVHxqhIB+PulfBCBSaDq/Ic8QFlQmup4SlDH2fXTfdtQvhmp5FtDfe8iZl2n8Yw52GoMcLQ
+ e+KeFhiUp0rDAfGcNb3p7nqitb6ARdcniTElY5bwlxg6FmkYvNsu6OnYng==
+X-Google-Smtp-Source: AGHT+IFhoIl7I56S7fT7c23WuBVz8x479Hd++Aam1yHes86eL19L43Zv+85HiEDav9c321yeBTTcSA==
+X-Received: by 2002:a05:6a00:2985:b0:736:4c3d:2cba with SMTP id
+ d2e1a72fcca58-73c26dffd2cmr1421139b3a.9.1744791411149; 
+ Wed, 16 Apr 2025 01:16:51 -0700 (PDT)
 Received: from localhost.localdomain ([240d:1a:3b6:8b00:ee5a:e672:7d4c:d43])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73bd21c3263sm9839445b3a.38.2025.04.16.01.16.36
+ d2e1a72fcca58-73bd21c3263sm9839445b3a.38.2025.04.16.01.16.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Apr 2025 01:16:42 -0700 (PDT)
+ Wed, 16 Apr 2025 01:16:50 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -88,17 +88,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH 13/19] include/qemu/osdep.h: Add Emscripten-specific OS
- dependencies
-Date: Wed, 16 Apr 2025 17:14:18 +0900
-Message-Id: <58863961cf88a72b76a90279da09ea332943924d.1744787186.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH 14/19] Disable options unsupported on Emscripten
+Date: Wed, 16 Apr 2025 17:14:19 +0900
+Message-Id: <c2e3a58825c39678fcde361b685d1bd69d2fb1dd.1744787186.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1744787186.git.ktokunaga.mail@gmail.com>
 References: <cover.1744787186.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,298 +120,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On emscripten, some implementations in os-posix.c can't be used such as
-daemonizing and changing user. This commit introduces os-wasm.c and
-os-wasm.h which are forked from os-posix.c and os-posix.h and patched for
-targetting Emscripten.
+Daemonizing and run-with aren't supported on Emscripten so disable these
+flags.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- include/qemu/osdep.h      |   8 ++-
- include/system/os-posix.h |   3 +-
- include/system/os-wasm.h  | 105 +++++++++++++++++++++++++++++++++
- os-wasm.c                 | 119 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 232 insertions(+), 3 deletions(-)
- create mode 100644 include/system/os-wasm.h
- create mode 100644 os-wasm.c
+ qemu-options.hx | 4 +++-
+ system/vl.c     | 4 ++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 4397a90680..96fe51bc39 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -8,7 +8,7 @@
-  * To avoid getting into possible circular include dependencies, this
-  * file should not include any other QEMU headers, with the exceptions
-  * of config-host.h, config-target.h, qemu/compiler.h,
-- * system/os-posix.h, system/os-win32.h, glib-compat.h and
-+ * system/os-posix.h, system/os-win32.h, system/os-wasm.h, glib-compat.h and
-  * qemu/typedefs.h, all of which are doing a similar job to this file
-  * and are under similar constraints.
-  *
-@@ -164,10 +164,14 @@ QEMU_EXTERN_C int daemon(int, int);
- #include "system/os-win32.h"
+diff --git a/qemu-options.hx b/qemu-options.hx
+index dc694a99a3..20ed22afe2 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4863,9 +4863,11 @@ SRST
+ ERST
+ 
+ #ifndef _WIN32
++#ifndef EMSCRIPTEN
+ DEF("daemonize", 0, QEMU_OPTION_daemonize, \
+     "-daemonize      daemonize QEMU after initializing\n", QEMU_ARCH_ALL)
  #endif
++#endif
+ SRST
+ ``-daemonize``
+     Daemonize the QEMU process after initialization. QEMU will not
+@@ -5249,7 +5251,7 @@ HXCOMM Internal use
+ DEF("qtest", HAS_ARG, QEMU_OPTION_qtest, "", QEMU_ARCH_ALL)
+ DEF("qtest-log", HAS_ARG, QEMU_OPTION_qtest_log, "", QEMU_ARCH_ALL)
  
 -#ifdef CONFIG_POSIX
 +#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
- #include "system/os-posix.h"
- #endif
+ DEF("run-with", HAS_ARG, QEMU_OPTION_run_with,
+     "-run-with [async-teardown=on|off][,chroot=dir][user=username|uid:gid]\n"
+     "                Set miscellaneous QEMU process lifecycle options:\n"
+diff --git a/system/vl.c b/system/vl.c
+index 8d89394b45..255ea3be6b 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -766,7 +766,7 @@ static QemuOptsList qemu_smp_opts = {
+     },
+ };
  
-+#if defined(EMSCRIPTEN)
-+#include "system/os-wasm.h"
-+#endif
-+
- #ifdef __cplusplus
- extern "C" {
- #endif
-diff --git a/include/system/os-posix.h b/include/system/os-posix.h
-index ce5b3bccf8..e87cc36a3a 100644
---- a/include/system/os-posix.h
-+++ b/include/system/os-posix.h
-@@ -1,5 +1,6 @@
- /*
-- * posix specific declarations
-+ * posix specific declarations forked from os-posix.c, removing functions not
-+ * working on Emscripten
-  *
-  * Copyright (c) 2003-2008 Fabrice Bellard
-  * Copyright (c) 2010 Jes Sorensen <Jes.Sorensen@redhat.com>
-diff --git a/include/system/os-wasm.h b/include/system/os-wasm.h
-new file mode 100644
-index 0000000000..061c123c6f
---- /dev/null
-+++ b/include/system/os-wasm.h
-@@ -0,0 +1,105 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * posix specific declarations
-+ *
-+ * Copyright (c) 2003-2008 Fabrice Bellard
-+ * Copyright (c) 2010 Jes Sorensen <Jes.Sorensen@redhat.com>
-+ *
-+ * Forked from os-posix.h, removing functions not working on Emscripten
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#ifndef QEMU_OS_WASM_H
-+#define QEMU_OS_WASM_H
-+
-+#include <sys/mman.h>
-+#include <sys/socket.h>
-+#include <netinet/in.h>
-+#include <netinet/tcp.h>
-+#include <arpa/inet.h>
-+#include <netdb.h>
-+#include <sys/un.h>
-+
-+#ifdef CONFIG_SYSMACROS
-+#include <sys/sysmacros.h>
-+#endif
-+
-+#ifdef __cplusplus
-+extern "C" {
-+#endif
-+
-+void os_set_line_buffering(void);
-+void os_setup_early_signal_handling(void);
-+void os_set_proc_name(const char *s);
-+void os_setup_signal_handling(void);
-+void os_setup_limits(void);
-+void os_setup_post(void);
-+int os_mlock(bool on_fault);
-+static inline int os_set_daemonize(bool d)
-+{
-+    return -1;
-+};
-+bool is_daemonized(void);
-+static inline void os_daemonize(void) {}
-+
-+/**
-+ * qemu_alloc_stack:
-+ * @sz: pointer to a size_t holding the requested usable stack size
-+ *
-+ * Allocate memory that can be used as a stack, for instance for
-+ * coroutines. If the memory cannot be allocated, this function
-+ * will abort (like g_malloc()). This function also inserts an
-+ * additional guard page to catch a potential stack overflow.
-+ * Note that the memory required for the guard page and alignment
-+ * and minimal stack size restrictions will increase the value of sz.
-+ *
-+ * The allocated stack must be freed with qemu_free_stack().
-+ *
-+ * Returns: pointer to (the lowest address of) the stack memory.
-+ */
-+void *qemu_alloc_stack(size_t *sz);
-+
-+/**
-+ * qemu_free_stack:
-+ * @stack: stack to free
-+ * @sz: size of stack in bytes
-+ *
-+ * Free a stack allocated via qemu_alloc_stack(). Note that sz must
-+ * be exactly the adjusted stack size returned by qemu_alloc_stack.
-+ */
-+void qemu_free_stack(void *stack, size_t sz);
-+
-+/* POSIX and Mingw32 differ in the name of the stdio lock functions.  */
-+
-+static inline void qemu_flockfile(FILE *f)
-+{
-+    flockfile(f);
-+}
-+
-+static inline void qemu_funlockfile(FILE *f)
-+{
-+    funlockfile(f);
-+}
-+
-+#ifdef __cplusplus
-+}
-+#endif
-+
-+#endif
-diff --git a/os-wasm.c b/os-wasm.c
-new file mode 100644
-index 0000000000..d240c180c5
---- /dev/null
-+++ b/os-wasm.c
-@@ -0,0 +1,119 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * os-wasm.c
-+ * Forked from os-posix.c, removing functions not working on Emscripten
-+ *
-+ * Copyright (c) 2003-2008 Fabrice Bellard
-+ * Copyright (c) 2010 Red Hat, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include <sys/resource.h>
-+#include <sys/wait.h>
-+#include <pwd.h>
-+#include <grp.h>
-+#include <libgen.h>
-+
-+#include "qemu/error-report.h"
-+#include "qemu/log.h"
-+#include "system/runstate.h"
-+#include "qemu/cutils.h"
-+
-+void os_setup_post(void){}
-+void os_set_line_buffering(void)
-+{
-+    setvbuf(stdout, NULL, _IOLBF, 0);
-+}
-+void os_setup_early_signal_handling(void)
-+{
-+    struct sigaction act;
-+    sigfillset(&act.sa_mask);
-+    act.sa_flags = 0;
-+    act.sa_handler = SIG_IGN;
-+    sigaction(SIGPIPE, &act, NULL);
-+}
-+void os_set_proc_name(const char *s)
-+{
-+    error_report("Change of process name not supported by your OS");
-+    exit(1);
-+}
-+static void termsig_handler(int signal, siginfo_t *info, void *c)
-+{
-+    qemu_system_killed(info->si_signo, info->si_pid);
-+}
-+
-+void os_setup_signal_handling(void)
-+{
-+    struct sigaction act;
-+
-+    memset(&act, 0, sizeof(act));
-+    act.sa_sigaction = termsig_handler;
-+    act.sa_flags = SA_SIGINFO;
-+    sigaction(SIGINT,  &act, NULL);
-+    sigaction(SIGHUP,  &act, NULL);
-+    sigaction(SIGTERM, &act, NULL);
-+}
-+void os_setup_limits(void)
-+{
-+    struct rlimit nofile;
-+
-+    if (getrlimit(RLIMIT_NOFILE, &nofile) < 0) {
-+        warn_report("unable to query NOFILE limit: %s", strerror(errno));
-+        return;
-+    }
-+
-+    if (nofile.rlim_cur == nofile.rlim_max) {
-+        return;
-+    }
-+
-+    nofile.rlim_cur = nofile.rlim_max;
-+
-+    if (setrlimit(RLIMIT_NOFILE, &nofile) < 0) {
-+        warn_report("unable to set NOFILE limit: %s", strerror(errno));
-+        return;
-+    }
-+}
-+int os_mlock(bool on_fault)
-+{
-+#ifdef HAVE_MLOCKALL
-+    int ret = 0;
-+    int flags = MCL_CURRENT | MCL_FUTURE;
-+
-+    if (on_fault) {
-+#ifdef HAVE_MLOCK_ONFAULT
-+        flags |= MCL_ONFAULT;
-+#else
-+        error_report("mlockall: on_fault not supported");
-+        return -EINVAL;
-+#endif
-+    }
-+
-+    ret = mlockall(flags);
-+    if (ret < 0) {
-+        error_report("mlockall: %s", strerror(errno));
-+    }
-+
-+    return ret;
-+#else
-+    (void)on_fault;
-+    return -ENOSYS;
-+#endif
-+}
+-#if defined(CONFIG_POSIX)
++#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
+ static QemuOptsList qemu_run_with_opts = {
+     .name = "run-with",
+     .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
+@@ -3677,7 +3677,7 @@ void qemu_init(int argc, char **argv)
+             case QEMU_OPTION_nouserconfig:
+                 /* Nothing to be parsed here. Especially, do not error out below. */
+                 break;
+-#if defined(CONFIG_POSIX)
++#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
+             case QEMU_OPTION_daemonize:
+                 os_set_daemonize(true);
+                 break;
 -- 
 2.25.1
 
