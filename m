@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9FEDA8B687
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 12:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F51A8B712
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 12:45:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4zlZ-0001W5-33; Wed, 16 Apr 2025 06:13:13 -0400
+	id 1u50Ex-0004r3-7L; Wed, 16 Apr 2025 06:43:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u4zlT-0001Ve-U3; Wed, 16 Apr 2025 06:13:08 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u50Em-0004pY-8T
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 06:43:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u4zlQ-0004ph-OY; Wed, 16 Apr 2025 06:13:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744798384; x=1776334384;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=V1tD4762zIW5vFUKrm/TKIOsDhWgGz05D4XIQjZH/0c=;
- b=hUroMVy+dvPuxYJiGRHS9d17aru5cOC2DWJJefLU5MSCScUZeLIp2YaS
- Sdo9V+c/TVTJeK94ayIcK0awTfMnil9J2OOHC9ecIsaxcANn0Od13N0ft
- SmSNftIpa+OJs6HiGjDMpxXapqNIljaIFvXtgSYTqwgayj0tiBndP3BGA
- FnXERwNP35rNWkKQwPAReyNn+QcTd8Prcq6B0s8vcu35ATtfSqoq0F5aL
- fSlB4GESwcICMaBhdPMrAd6y8O+zUbvfpd8YQ5F4oY8Tl+kBSYpgIeqbN
- Vm5U/TUd+nok8QlVVkX1CEYSjx7kqF8gsilKHNFUZlfjrh2b+KUpEemqv w==;
-X-CSE-ConnectionGUID: 28JHLWudScmamrCrazLgvg==
-X-CSE-MsgGUID: 4kOb7LiLT3KIub3S4gBGNQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="57331871"
-X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; d="scan'208";a="57331871"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2025 03:13:01 -0700
-X-CSE-ConnectionGUID: UcsXT1GbTF2S+ZxYC37epw==
-X-CSE-MsgGUID: 1jBxpUaUSoSkimnvpdpfqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; d="scan'208";a="130372260"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 16 Apr 2025 03:12:59 -0700
-Date: Wed, 16 Apr 2025 18:33:52 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>
-Subject: Re: [PATCH 8/9] rust/hpet: Support migration
-Message-ID: <Z/+HkId2+ORzERJN@intel.com>
-References: <20250414144943.1112885-1-zhao1.liu@intel.com>
- <20250414144943.1112885-9-zhao1.liu@intel.com>
- <Z/5KlfQgC65g6Kid@intel.com>
- <78fdfdaf-7c94-4d79-be39-8215c033b423@redhat.com>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u50Ei-0003V1-7U
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 06:43:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744800198;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=I1SNf4k1vkbPSdFHGZM7Talbjfhoph3u3m0MzlCZPjs=;
+ b=WSSf/qQGpqOICbvJQB9TOhctC+/qUUGRVQyCnRUHPbHaJk0TOrsB+E3z3orrrwcPHVmL8F
+ JAfrv6hqBqe/P2GxAyZ/2APO8mcQUDGCQpeY2rY3fxfjOrRIiJtARuE9Xg9S9HD1EJXhRn
+ xtr4FGlgatQkskzKSm1JGI+5FkrssTk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-388-UCMIg48JOcqnPxJO4C3TDA-1; Wed,
+ 16 Apr 2025 06:43:14 -0400
+X-MC-Unique: UCMIg48JOcqnPxJO4C3TDA-1
+X-Mimecast-MFC-AGG-ID: UCMIg48JOcqnPxJO4C3TDA_1744800193
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C538F1956096; Wed, 16 Apr 2025 10:43:12 +0000 (UTC)
+Received: from redhat.com (unknown [10.44.33.31])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4152B19560A3; Wed, 16 Apr 2025 10:43:09 +0000 (UTC)
+Date: Wed, 16 Apr 2025 12:43:07 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org,
+ Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org
+Subject: Re: [PATCH v2 1/2] file-posix: probe discard alignment on Linux
+ block devices
+Message-ID: <Z_-JuzabVntIfGgm@redhat.com>
+References: <20250410184103.23385-1-stefanha@redhat.com>
+ <20250410184103.23385-2-stefanha@redhat.com>
+ <c7b9ddb4-10de-4c66-9f2f-c964d77275e0@redhat.com>
+ <20250414153451.GC117758@fedora>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="5UgUjOQKq5WOGByV"
 Content-Disposition: inline
-In-Reply-To: <78fdfdaf-7c94-4d79-be39-8215c033b423@redhat.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20250414153451.GC117758@fedora>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,77 +85,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > Although it can handle callbacks well, I found that the difficulty still
-> > lies in the fact that the vmstate_fields and vmstate_subsections macros
-> > cannot be eliminated, because any dynamic creation of arrays is not
-> > allowed in a static context!
-> 
-> Yes, this makes sense.  Array size must be known inside a const function and
-> the extra terminator at the end of fields and subsections cannot be added by
-> the builder itself.  c_str! has the same issue for the name, if I understand
-> correctly.
 
-Yes, I have to use c_str! in name().
+--5UgUjOQKq5WOGByV
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > In any case, it's definitely still rough, but hope it helps and
-> > takes a small step forward.
-> 
-> Yes, of course---this:
-> 
-> +static VMSTATE_HPET_RTC_IRQ_LEVEL: VMStateDescription<HPETState> =
-> +    VMStateDescriptionBuilder::<HPETState>::new()
-> +        .name(c_str!("hpet/rtc_irq_level"))
-> +        .version_id(1)
-> +        .minimum_version_id(1)
-> +        .needed(&HPETState::is_rtc_irq_level_needed)
-> +        .fields(vmstate_fields! {
-> +            vmstate_of!(HPETState, rtc_irq_level),
-> +        })
-> +        .build();
-> +
-> 
-> is readable, not foreign (it's similar to the MemoryRegionOps) and provides
-> an easy way to insert FFI wrappers.
-> 
-> Right now it's now fully typesafe, because the VMStateField returned by
-> vmstate_of! (as well as the arrays returned by vmstate_fields! and
-> vmstate_subsections!) does not track that it's for an HPETState; but that's
-> a small thing overall and getting the basic builder right is more important.
+Am 14.04.2025 um 17:34 hat Stefan Hajnoczi geschrieben:
+> On Fri, Apr 11, 2025 at 10:15:13AM +0200, Hanna Czenczek wrote:
+> > On 10.04.25 20:41, Stefan Hajnoczi wrote:
+> > > Populate the pdiscard_alignment block limit so the block layer is able
+> > > align discard requests correctly.
+> > >=20
+> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > > ---
+> > >   block/file-posix.c | 56 +++++++++++++++++++++++++++++++++++++++++++=
+++-
+> > >   1 file changed, 55 insertions(+), 1 deletion(-)
+> >=20
+> > Ah, I didn=E2=80=99t know sysfs is actually fair game.=C2=A0 Should we =
+not also get the
+> > maximum discard length then, too?
+>=20
+> The maximum discard length behaves differently: the Linux block layer
+> splits requests according to the maximum discard length. If the guest
+> submits a discard request that is too large for the host, the host block
+> layer will split it and the request succeeds. That is why I didn't make
+> any changes to the maximum discard length in this series.
 
-I agree, additional consideration is needed here. Currently it is
-vmstate_fields! that limits changes to vmstate_of!.
+Do we need to do something with it for SCSI passthrough? Similar to how
+we expose bs->bl.max_hw_transfer/iov in the block limits VPD page?
 
-> I also made a note to check which callbacks could have a Result<> as the
-> return type, possibly reusing the Errno module (Result<(), ()> looks a bit
-> silly); but that is also not needed for this early stage.
-> 
-> Just a couple notes:
-> 
-> > +    bindings::{VMStateDescription as RawVMStateDescription, VMStateFlags},
-> 
-> I would use bindings::VMStateDescription throughout, similar to how
-> it's done in memory.rs.
+Kevin
 
-Sure, will fix.
+--5UgUjOQKq5WOGByV
+Content-Type: application/pgp-signature; name=signature.asc
 
-> > +    pub const fn name(mut self, name_str: &CStr) -> Self {
-> > +        self.0.name = ::std::ffi::CStr::as_ptr(name_str);
-> 
-> 
-> This can use "name_str.as_ptr()" because the type of name_str is known
-> (unlike in macros, such as define_property! or vmstate_validate!).
+-----BEGIN PGP SIGNATURE-----
 
-I see and will fix.
+iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmf/iboACgkQfwmycsiP
+L9ap9RAAr7XW58GMMYNJLUaWfYIMiqV9q1tSgkPy/SWTIw/W/lvfkNZuthUV6YyU
+KQV7wlrsxd9+aC7Tj9hZ0TeHviL2iD/7aApquHVnyKNzEBTCIbBupyP29CrYSwFk
+n/xSAqrqM9TkfKRkgpDFXZDvfkRYZV9ZfOPViuafxLPci6E4FTU/WdiD1LttNUyt
+Nqh2xLqCsSsK4EDfzrGwF6+Er2QLaIKVupyVbd2FENRLgn1uvnzNg77pFfjWAe1Z
+sUkZKzeD8eRqb6Rfd+0Z84fvomoY0aJJln6tlzU0H55icfQSFLM6upkFX6XuCc50
+K1bg5421XZuj338TyKseFcDnpE4qmB5YvwKH0f1fv2tEZ6aoNV2WlhrjRpjH2r6u
+VA2O1FZWti3jqCAQJMKvtoLs1I/c6xVG8OQ0KifrcNWybvK1rM/xew4TUlQaZSY0
+ujDt9ovv1/52SQ+Hp2pbCA6+9EKuIO711HRfY8SgScgRZRKOrg+Iw85JSsTs6ivA
+w4PoOGD1ovGYbuZQxtCMYofpNBeR/nB65Hs7MpXZgmNssSWZ8fvIuWMW0HDuNPij
+6+mTI/jMyt/d4OW9n+l396YBNt/skol2zAOdbbZsXcXenWJrgSkz7FKzFe3fW0Di
+VQNeOVj1WyDakV3KjT1bDxzmm5JxOdMIZ+xq2+LJYO5LVoO3x5c=
+=oq3m
+-----END PGP SIGNATURE-----
 
-> (By the way, talking about macros, I have just stumbled on the attrs crate,
-> which is something to keep an eye on for when QOM/qdev bindings are extended
-> along the lines of https://lore.kernel.org/qemu-devel/e8e55772-906b-42cb-a744-031e6ae65f16@redhat.com/T/.
-> But I don't think procedural macros are a good match for VMState).
-
-I didn't have a deep understanding of this previously :-(. I'll take a
-closer look at this.
-
-Thanks,
-Zhao
+--5UgUjOQKq5WOGByV--
 
 
