@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C115A90D21
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 22:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E33A90D1A
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 22:26:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u59JA-00070H-JM; Wed, 16 Apr 2025 16:24:32 -0400
+	id 1u59JB-00070p-0P; Wed, 16 Apr 2025 16:24:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
- id 1u59J5-0006yd-Vm
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 16:24:28 -0400
-Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
+ id 1u59J7-0006zS-HA
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 16:24:29 -0400
+Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
- id 1u59J4-0002F8-A0
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 16:24:27 -0400
-Received: by mail-qt1-x836.google.com with SMTP id
- d75a77b69052e-4769e30af66so20961cf.1
- for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 13:24:25 -0700 (PDT)
+ id 1u59J5-0002Ft-8e
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 16:24:29 -0400
+Received: by mail-qt1-x835.google.com with SMTP id
+ d75a77b69052e-47666573242so114241cf.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 13:24:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1744835065; x=1745439865; darn=nongnu.org;
+ d=google.com; s=20230601; t=1744835066; x=1745439866; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vrL3XtudSocKq0wooSnmOfM6V32+vXg7VAsA0PUIkm8=;
- b=Hirt6xxChwL3qwhBX9M+amJyroD/a2ZlHk3rlKSeP6Zkq9K6ws39OfRUCDw3j03o9d
- MHi9QhtPb+S2Zf2/gW/rX5uPYuVsnXyCRqWAnkJ0So9nXcr9tXfiMRkz8Uto3pxEDldr
- 8dJERFZOHT5NWnIzL//KgN66Ch1Wn8QsKzlsPk2knIy4psz5duFMBteFWQ3LRyxxS1Up
- ettm0Q5VbLaY4nlU0sZEUY0g55SIGATPiSOyLZRhyIva0HcCFbhV9F3/bqmzO9JGwCdn
- 4QHogeWdlkLT45VccOrqOdGVKyXrfReCZ4nZau5Lr+NiM5sSvTZj/lapYAu2kjEb+hR8
- oQAw==
+ bh=QdImBUd8+Y3gUuU+siH992oEhjyYPvebA76p06tGW50=;
+ b=JYnUvT7dGOTMMibG4KWnCv11a1vTCp8Vb5xGo6QhpmCSQrTGcitnu5IdKSI+Bd4hPo
+ qGP+2A53NajPPKPANW5yD9PHCL5rjd2Wnrn03kS1jcU9qJjdGcalQpF2l5E+ge48b/ql
+ 3V3gRUc2BJAuvPL9Go7GU6+4pTE9VFg1bwaUrgOxjJ7jTNTYBA3HjvEre7jX0wddanXD
+ tYFa+JazaXLhOINHUomtfR9AFxO0qbFSx3bQpj6pZE89FxxKnxxfBby15VO2Rt3cxN8Q
+ 9sXaQIPhMNtYt67OCzhzywDO87VI3HFkOW9vgDkBUiXBWvi7BKy0t/cPFVx7A1+TtxU0
+ KqKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744835065; x=1745439865;
+ d=1e100.net; s=20230601; t=1744835066; x=1745439866;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vrL3XtudSocKq0wooSnmOfM6V32+vXg7VAsA0PUIkm8=;
- b=XvyXSeGl8t2clmTmmdg7pI3UTk9dQA0K1cn4OonF9FHXbZBa5BB/Na4hzCIZ/aQgBR
- sZ5d3JDUmKGPow7VixBRtzsZgGtxWrjzZdOM2n828tIrWAuxyy2R19Hz6DHaJL8/MeFH
- 4JP9ASUJovWNCc4QgTPYplVKkdzPorE4STZV1aMUbeL1xXkkCVYz+H1K1yf+FABZiGfR
- wcvjOlGcgETKHxxvugl8ErUuX2eArVHVPy8ad/M0zszjHfkN56MwMx/h9woMJLUId3Qe
- esTE0h05fpnt1Bso0+dpdcII6u3POAsOQ9PniKjSs0yWHg5xqE8KRodThmryIVH2lgFe
- FjXg==
+ bh=QdImBUd8+Y3gUuU+siH992oEhjyYPvebA76p06tGW50=;
+ b=xSY/x6+ibk8ce8yI8pUw53vAGxY01l9Jv0HiutJq2bVZqP55fY6IZgwiOeOI9wG7gw
+ PdT7LfGqQlUK0HjwppUIZKZY9T0wt1Ghp+BceND1H5r2T8YBufVNt4ZQtENOkn2HmaRk
+ b4cfn8SrBYpqliVqlH/k1cP4oGyaI+1vG87WilRFxZPb8oXO70rp0yCmv7Q/roMJZbvP
+ F2DSbMuxjmGDYQu+8OOWKVT/bicVHjfXH/DOlB0/mP/mzDPZue+IwkDOtbzV79gF4sTy
+ i8UrZpPIZ//mBwWSRwC5RMM71jcuHQdgcBipDNBDRVIcX5g/8g+VotEbE+papShTmvOK
+ hEuA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXMBlhoQLL23am7OMNQmGXeJ21wmIEO32P+O1XdxfMzpPAqVrW5OUXo63tlPmRBHG1iB5pY9WZZSaZK@nongnu.org
-X-Gm-Message-State: AOJu0Yy9nKtW4VZ6xBOX+UGMq03t/dtvPx1DtKJlmuQSXAJrfP/a/3OM
- RximM6t7d/2N841Ms7jH2qZ/dp29HXCY9v56YW0wsvt/Pyyft8faZ349+jmhLeTEbia3gAeabjo
- 3OySngL5ZaVRrXycrCY9wkPdBEVaPZNm8IYv6
-X-Gm-Gg: ASbGncun3PzI47TFm1OIBed0W8WgqWwj+/R54XWVMiPPUiCO6UvEEj3DSMSdw2nsckB
- zm1zbj8ZZPgurapOmAgn6cNZ0EOE9joBLNx3kkM7h3iDPpWBw250FM4H6KZcpiAAtkClA53Usuy
- BHbh3ED9zkZJHDGnsvgkotMOjdCW9QpCbMV+y+CXTg1sIwYSMO0Gii
-X-Google-Smtp-Source: AGHT+IH/Hjl4IRfBsN9685++vkiO+T/617qj+0fpaMiu7EOJnSiloKUef4JkssCwUPlUAvvW/Tlbg7JxmBekBEbLSHg=
-X-Received: by 2002:ac8:7d05:0:b0:477:2c1e:d252 with SMTP id
- d75a77b69052e-47ade6aa718mr814611cf.20.1744835064721; Wed, 16 Apr 2025
- 13:24:24 -0700 (PDT)
+ AJvYcCXaSjoyzpm9khpWHHUXmUwB3REVMWbFSOoE+EgsKtQTbMwbipAguh1uJnc94SS54+e2SrxZR/I4J4ak@nongnu.org
+X-Gm-Message-State: AOJu0YyKBLScqGlUWRhIywiIbazAnmtbKq0lceSy6vrV6jkn2hcQtUwe
+ dDGuXE4OZwo9T8d+2WnfBb3Nl7yNkHbRXYmKp6V7LjSONzg8+MWgd4hMxyg/1kDlKK67xuvIZ4i
+ qtaVZx6Px74Xg2ccKkwao6RpjBfHClRDX349Q
+X-Gm-Gg: ASbGncv3GHXOHI3/mINalettrmcKituHnQV5nx727C4fcOxmbOwhcvoeEYuh1uZHH0O
+ RGdmg6rojXPyFO7Rjq3VlAIXd/7pS44Jz4/qavMu91nLJXGN6+Sc0OpraWvg384vjKciOASGIeJ
+ mg5Ez4YMGtP2uOZuwN1jjrR9l462tLcbby3DmonoOeKVetN+RSoi2E
+X-Google-Smtp-Source: AGHT+IHis1hkPkK5GQc85mCFUcrzBQMyjijV+24aog/SdHeRoj6TwGhtf3CTO7767mwB5Co/frbx5OOG3OIEx67fOJc=
+X-Received: by 2002:a05:622a:1903:b0:479:1958:d81a with SMTP id
+ d75a77b69052e-47ade6170eemr806031cf.6.1744835066112; Wed, 16 Apr 2025
+ 13:24:26 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250416034327.315714-1-jamin_lin@aspeedtech.com>
- <20250416034327.315714-5-jamin_lin@aspeedtech.com>
-In-Reply-To: <20250416034327.315714-5-jamin_lin@aspeedtech.com>
+ <20250416034327.315714-2-jamin_lin@aspeedtech.com>
+In-Reply-To: <20250416034327.315714-2-jamin_lin@aspeedtech.com>
 From: Nabih Estefan <nabihestefan@google.com>
-Date: Wed, 16 Apr 2025 13:24:12 -0700
-X-Gm-Features: ATxdqUHQJLb0d7VjvwjPePztUybeLQnb7sB6snG84yYEU9uFNl0kURntxWFyG8M
-Message-ID: <CA+QoejWhbdbEu-F=SXk_yTVabk4QjK0A47DngamXguEK-xPVcA@mail.gmail.com>
-Subject: Re: [PATCH v3 04/10] hw/arm/aspeed: Reuse rom_size variable for
- vbootrom setup
+Date: Wed, 16 Apr 2025 13:24:14 -0700
+X-Gm-Features: ATxdqUGkYVhDuwFt_ty5X90dDFxcR_vIYlceIt9E0absZVr1ZmxwBQEz8giN328
+Message-ID: <CA+QoejXTjwpR_tW4JzD6=FoUhm3_Rftdr-8M4xDbRKGX_H4k2Q@mail.gmail.com>
+Subject: Re: [PATCH v3 01/10] hw/arm/aspeed_ast27x0: Rename variable sram_name
+ to name in ast2700 realize
 To: Jamin Lin <jamin_lin@aspeedtech.com>
 Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
  Peter Maydell <peter.maydell@linaro.org>,
@@ -78,8 +78,8 @@ Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
  =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
- envelope-from=nabihestefan@google.com; helo=mail-qt1-x836.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
+ envelope-from=nabihestefan@google.com; helo=mail-qt1-x835.google.com
 X-Spam_score_int: -178
 X-Spam_score: -17.9
 X-Spam_bar: -----------------
@@ -87,7 +87,7 @@ X-Spam_report: (-17.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.268,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=unavailable autolearn_force=no
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,46 +106,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Tue, Apr 15, 2025 at 8:43=E2=80=AFPM Jamin Lin <jamin_lin@aspeedtech.com=
 > wrote:
 >
-> Move the declaration of `rom_size` to an outer scope in aspeed_machine_in=
-it()
-> so it can be reused for setting up the vbootrom region as well.
->
-> This avoids introducing a redundant local variable and ensures consistent
-> ROM sizing logic when both SPI boot and vbootrom are used.
+> The variable "sram_name" was only used for naming the SRAM memory region.
+> Rename it to "name" for consistency with similar code and avoid unnecessa=
+ry
+> new local variable declarations.
 >
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 > Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
 Tested-by: Nabih Estefan <nabihestefan@google.com>
 
 > ---
->  hw/arm/aspeed.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  hw/arm/aspeed_ast27x0.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 >
-> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-> index e852bbc4cb..b70a120e62 100644
-> --- a/hw/arm/aspeed.c
-> +++ b/hw/arm/aspeed.c
-> @@ -381,6 +381,7 @@ static void aspeed_machine_init(MachineState *machine=
-)
->      AspeedSoCClass *sc;
->      int i;
->      DriveInfo *emmc0 =3D NULL;
-> +    uint64_t rom_size;
->      bool boot_emmc;
+> diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+> index dce7255a2c..b05ed75ff4 100644
+> --- a/hw/arm/aspeed_ast27x0.c
+> +++ b/hw/arm/aspeed_ast27x0.c
+> @@ -577,7 +577,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *d=
+ev, Error **errp)
+>      AspeedSoCClass *sc =3D ASPEED_SOC_GET_CLASS(s);
+>      AspeedINTCClass *ic =3D ASPEED_INTC_GET_CLASS(&a->intc[0]);
+>      AspeedINTCClass *icio =3D ASPEED_INTC_GET_CLASS(&a->intc[1]);
+> -    g_autofree char *sram_name =3D NULL;
+> +    g_autofree char *name =3D NULL;
+>      qemu_irq irq;
 >
->      bmc->soc =3D ASPEED_SOC(object_new(amc->soc_name));
-> @@ -475,7 +476,7 @@ static void aspeed_machine_init(MachineState *machine=
-)
->          BlockBackend *fmc0 =3D dev ? m25p80_get_blk(dev) : NULL;
+>      /* Default boot region (SPI memory or ROMs) */
+> @@ -649,9 +649,9 @@ static void aspeed_soc_ast2700_realize(DeviceState *d=
+ev, Error **errp)
+>      }
 >
->          if (fmc0 && !boot_emmc) {
-> -            uint64_t rom_size =3D memory_region_size(&bmc->soc->spi_boot=
-);
-> +            rom_size =3D memory_region_size(&bmc->soc->spi_boot);
->              aspeed_install_boot_rom(bmc, fmc0, rom_size);
->          } else if (emmc0) {
->              aspeed_install_boot_rom(bmc, blk_by_legacy_dinfo(emmc0), 64 =
-* KiB);
+>      /* SRAM */
+> -    sram_name =3D g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu=
+_index);
+> -    if (!memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram=
+_size,
+> -                                 errp)) {
+> +    name =3D g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_inde=
+x);
+> +    if (!memory_region_init_ram(&s->sram, OBJECT(s), name, sc->sram_size=
+,
+> +                                errp)) {
+>          return;
+>      }
+>      memory_region_add_subregion(s->memory,
 > --
 > 2.43.0
 >
