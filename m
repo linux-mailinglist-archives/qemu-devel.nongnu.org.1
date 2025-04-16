@@ -2,104 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26437A8AE48
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 04:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91823A8AE63
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 05:17:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4sol-0002AG-KP; Tue, 15 Apr 2025 22:48:03 -0400
+	id 1u4tGQ-0002Vk-RA; Tue, 15 Apr 2025 23:16:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <haoqian.he@smartx.com>)
- id 1u4soj-00029i-OD
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 22:48:01 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u4tGO-0002VT-VD
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 23:16:37 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <haoqian.he@smartx.com>)
- id 1u4sog-0000ZA-Bo
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 22:48:01 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-736aa9d0f2aso6987723b3a.0
- for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 19:47:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u4tGM-0003oO-UB
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 23:16:36 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-73bf5aa95e7so2829954b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 20:16:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1744771677; x=1745376477;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1744773392; x=1745378192; darn=nongnu.org;
+ h=in-reply-to:references:from:subject:cc:to:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Svbe8C7MZFQZn033Mx0+HwG9i+0FM4pj9NwimCPH7vw=;
- b=1FGXYj2k6QVdexFbA6/A6Z5PSJ73gAcsLinEzK+kVBl3eB+p4xCWC7hr6skCDz8a6l
- IrDhLsEhPa/FR8jd7Ehh4XF2yRnyeGfMaM05Hxmn+sbNGli8i+3KDIL2WPC3K7ZZo06A
- eAZM90NZrJfU85SaG1/hyLriZkqAQW3ODN2gHP/lgdlu4W017eXOPSWmwQ4RA8cwpVEG
- rC7Tl7o4N8csttELcGYg8L5LXbGbQghteSbhURqfKvrK42vYUlM8aZjKtpzFfDhOCLve
- TO1A+u2TtWNKcfG3UAeHLRPNHm0jIAURiw9pzcMQvI8JSDH780a39PAC2GJI+mw6VMyE
- x4Hw==
+ bh=kFUPBZRAfipWI2IhgFTKirKDKIIaY6khLK6b2Z4CfVg=;
+ b=i/zYM7c4Jw0X263YZLyFtYCv+HRMXADVxNG7huqF7G+o9Cpa5VBq2F+fAKOyO83IYT
+ OfljZUp1HsjMKxqFCaV9Mkw9F3qqvH3RFR+W22uFf5QwYF2X2lbjAlDc2elh8xWPcCpT
+ hNzYxSyTFCUKswGJi19M+Vm07g7UAsWIZBb0xX7B6MAzC/TsEU3XqDvabvseNImMWdez
+ qRGHiwhBSr4IkLauEuNI0M0HVI1lp+K7KfzwVlrB0edUdZunPqZMNcDbtwPFl58/hCsY
+ 12fEjFmKayo6FxLJi+X34mAMVcz8X62mok2It2BlTS78vqL7fRGpFfIF8wBCKA8aZ0IJ
+ rL5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744771677; x=1745376477;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Svbe8C7MZFQZn033Mx0+HwG9i+0FM4pj9NwimCPH7vw=;
- b=v/gFR4stMPyuAr/JpYAE8ggfjo1fL6c3Rkh17iN6K9aHCqUxECH+bEvv8WLayry20B
- ZQDTHAPYzqapW80fkC1+gNCtjjNkTwxn19mn/JkkqzZBm48rwqPHFVU43gf6p8NuQvf7
- iDQIGnGd7ye5j7FDGN8ACmjqCBAQB4fOSQgh72zTMZ7zAq+lM0WFW7CelY6m9xiIKRV0
- Dkhcg5TCXYSaP2L62JWZuT5d2jGmSBLLD1isIxR7qCgpNHkJzt1w+Q2nRFbAp+W+Iijf
- F+GmPT2IqngV0rwC2JMTRwfHiOZB4LIQkCtByx3zPklGmgw9SOAZZEu0JhRGWLVA1iM4
- isIA==
-X-Gm-Message-State: AOJu0YyQntxTBNBaiowMHoLfjogvkUy+y+YY823AZ/OFVmt+2nzBh0gJ
- w6e2iYdQXjJCA/EIJIUZPqm2zGprOI5F5wIRe3+GKvCeWpjGObLvvvrG5574mEl4PxhJJ38JZ7r
- bXmMSWRKl
-X-Gm-Gg: ASbGncvbqGmpMY9C1OV+NyhrZuGtDnqplzXfHQsx4ySd4voK3B3j4lPGnW5559dg2Qe
- BgcbCgivM3XldCCbK2TYNsRJDQIbmX/nlIQQpiZXXDWrRlClc9QiAkWkWSJY5kM2J1OpUNDxmTe
- 1htG1RhMxnQtv/ztNsVX0dsPcBHZj+PyOjjhvmm1epdvka9N5AsG1CK1/rM/TVWt9tDQSpW/+D8
- WCWd+z4NXE9N/6mrtA84vu6R9IGlXAzFLErG9fD6hx8HdvKEo6Zml2BseOBFQcEKFFeXC0GkJM9
- KuEi16U1HodAIUtzt83IjIxGzxsh
-X-Google-Smtp-Source: AGHT+IH44RB0tTdXDy3WWUq+zNK+d39FIgqu4RHDqECUyhAZ6by3oNp9MXFr+U3pAQzTEhtQuGCxeQ==
-X-Received: by 2002:a05:6a00:8c12:b0:736:6202:3530 with SMTP id
- d2e1a72fcca58-73c267fe0dbmr198544b3a.22.1744771676358; 
- Tue, 15 Apr 2025 19:47:56 -0700 (PDT)
-Received: from fedora.smartx.com ([2001:df0:a640:1::4])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73bd230e305sm9624958b3a.140.2025.04.15.19.47.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Apr 2025 19:47:55 -0700 (PDT)
-From: Haoqian He <haoqian.he@smartx.com>
-To: qemu-devel@nongnu.org, mst@redhat.com, sgarzare@redhat.com,
- raphael@enfabrica.net
-Cc: fengli@smartx.com, yuhua@smartx.com, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Fam Zheng <fam@euphon.net>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- mzamazal@redhat.com (reviewer:vhost-user-scmi),
- David Hildenbrand <david@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Eric Auger <eric.auger@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-block@nongnu.org (open list:Block layer core),
- virtio-fs@lists.linux.dev (open list:virtiofs)
-Subject: [PATCH v5 3/3] vhost-user: return failure if backend crash when live
- migration
-Date: Tue, 15 Apr 2025 22:47:28 -0400
-Message-ID: <20250416024729.3289157-4-haoqian.he@smartx.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20250416024729.3289157-1-haoqian.he@smartx.com>
-References: <20250401151819.1526461-1-haoqian.he@smartx.com>
- <20250416024729.3289157-1-haoqian.he@smartx.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=haoqian.he@smartx.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ d=1e100.net; s=20230601; t=1744773392; x=1745378192;
+ h=in-reply-to:references:from:subject:cc:to:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=kFUPBZRAfipWI2IhgFTKirKDKIIaY6khLK6b2Z4CfVg=;
+ b=YIXPAQDk3KmAWYLJCWdDunDbXz8yXus+VbKRouklaU94lHWb+8aDJ8dgvQzj3D7I05
+ m0P4AWCffMGOPHX/FowsyyBDXb0UNLBj4gdXfl+yV9gER9ucFHuY4sEpAfWge1Aj3FMV
+ xlWDH9kC9xye0Z0rufbAu+Vr4i+YPXW4i/tmLnCdj4Rwkfu8f6lBev/u1zAgMc9Bvj70
+ oHDfcUBGh7NJGrv4CXWi5uGgBLHqKEIIBaaKWPJxstYdj66JLX10iVNafpw58NgVj3iK
+ twr6swxmlX3IUAMnxUMWL0j+g1+fwc/H9ZJD00UHx17tcafFHH0LC1NFPSQTYLGHwXaJ
+ eiaA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVv7oekDNGdUlLRwUdee/G7vptFGw2/G4BcX5qyn+a0ccpIwrzwrEPD1J2ypVAtyRFE1dXQ0tWHOyMz@nongnu.org
+X-Gm-Message-State: AOJu0Yy1QdM84R0HFEAZRlPEdLmEHq4khGMBXC4U4jGtY6imJDjsCNcG
+ fy9sN2IkQEeWDklv6oKxUr7eGc+9lOdL86jm51/iSzZVSJ6/BLer
+X-Gm-Gg: ASbGncuxlhlSrg0Qj9sClvgwVb2yNMQZLg7sdCw7bSZzMoBPWpQ0WU6lXDY0UO4qxXD
+ ZPKW3gBXwCGONpER/M3Qu0SIjIo1eTEr8DChZA5pHgngb3wYJRPD5WtgRSW5kbZIIdMxkFYUQA0
+ 0hqYh6Zdrs2FRTsDgGpmCvV6fi6PEyGEqLGthO9OYaMb45QT6KBBAwO4UJ5DFpA+iom+odbwiFR
+ vd/gy7MhzXriiZp9MgLxFJaekwete1l1te2a5W3JgV8PcA3U53iur83JEJfBQjgxjjqUWA4z8hc
+ 5QGBGycxfazwWB6fTELPT9yneMR0DHc=
+X-Google-Smtp-Source: AGHT+IEk509I+8vInsGMWf+RbWnb0s6+nobMCaEFeszILo0fXkklbwyiGJYF1Ln2QUXGWTXke7L0+w==
+X-Received: by 2002:a05:6a00:1da6:b0:739:3f55:b23f with SMTP id
+ d2e1a72fcca58-73c2671803fmr317949b3a.14.1744773392165; 
+ Tue, 15 Apr 2025 20:16:32 -0700 (PDT)
+Received: from localhost ([1.145.6.120]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b0b2221eb8bsm286011a12.75.2025.04.15.20.16.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Apr 2025 20:16:31 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 16 Apr 2025 13:16:25 +1000
+Message-Id: <D97QJO5Z909K.368VVIBFA17TA@gmail.com>
+To: "Pierrick Bouvier" <pierrick.bouvier@linaro.org>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ <qemu-devel@nongnu.org>
+Cc: "Stefan Hajnoczi" <stefanha@redhat.com>, =?utf-8?q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, "Paolo Bonzini" <pbonzini@redhat.com>, "Phil
+ Dennis-Jordan" <phil@philjordan.eu>
+Subject: Re: [PATCH 1/2] system/main: transfer replay mutex ownership from
+ main thread to main loop thread
+From: "Nicholas Piggin" <npiggin@gmail.com>
+X-Mailer: aerc 0.19.0
+References: <20250410225550.46807-1-pierrick.bouvier@linaro.org>
+ <20250410225550.46807-2-pierrick.bouvier@linaro.org>
+ <D94EWG4QRMFP.123EPDW889YVC@gmail.com>
+ <7e760e04-0571-48f3-9aa7-e71c631dcaff@linaro.org>
+ <dee088aa-436f-48dc-8a28-f675de42767b@linaro.org>
+ <5cac93d4-e5a6-42b0-8f7b-5a273168a450@linaro.org>
+ <D96V6HTTNOF1.3DDO2NQ0AUEA0@gmail.com>
+ <f8a90e7b-daa7-4c87-9702-e80e9d5b162e@linaro.org>
+In-Reply-To: <f8a90e7b-daa7-4c87-9702-e80e9d5b162e@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,981 +108,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Live migration should be terminated if the vhost-user backend crashes
-before the migration completes.
+On Wed Apr 16, 2025 at 4:31 AM AEST, Pierrick Bouvier wrote:
+> On 4/14/25 19:41, Nicholas Piggin wrote:
+>> On Tue Apr 15, 2025 at 1:24 AM AEST, Pierrick Bouvier wrote:
+>>> On 4/14/25 03:25, Philippe Mathieu-Daud=C3=A9 wrote:
+>>>> On 12/4/25 19:24, Pierrick Bouvier wrote:
+>>>>> On 4/11/25 22:30, Nicholas Piggin wrote:
+>>>>>> On Fri Apr 11, 2025 at 8:55 AM AEST, Pierrick Bouvier wrote:
+>>>>>>> On MacOS, UI event loop has to be ran in the main thread of a proce=
+ss.
+>>>>>>> Because of that restriction, on this platform, qemu main event loop=
+ is
+>>>>>>> ran on another thread [1].
+>>>>>>>
+>>>>>>> This breaks record/replay feature, which expects thread running
+>>>>>>> qemu_init
+>>>>>>> to initialize hold this lock, breaking associated functional tests =
+on
+>>>>>>> MacOS.
+>>>>>>>
+>>>>>>> Thus, as a generalization, and similar to how BQL is handled, we re=
+lease
+>>>>>>> it after init, and reacquire the lock before entering main event lo=
+op,
+>>>>>>> avoiding a special case if a separate thread is used.
+>>>>>>>
+>>>>>>> Tested on MacOS with:
+>>>>>>> $ meson test -C build --setup thorough --print-errorlogs \
+>>>>>>> func-x86_64-x86_64_replay func-arm-arm_replay func-aarch64-
+>>>>>>> aarch64_replay
+>>>>>>> $ ./build/qemu-system-x86_64 -nographic -icount
+>>>>>>> shift=3Dauto,rr=3Drecord,rrfile=3Dreplay.log
+>>>>>>> $ ./build/qemu-system-x86_64 -nographic -icount
+>>>>>>> shift=3Dauto,rr=3Dreplay,rrfile=3Dreplay.log
+>>>>>>>
+>>>>>>> [1] https://gitlab.com/qemu-project/qemu/-/commit/
+>>>>>>> f5ab12caba4f1656479c1feb5248beac1c833243
+>>>>>>>
+>>>>>>> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2907
+>>>>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>>>>>> ---
+>>>>>>>   =C2=A0 system/main.c | 4 ++++
+>>>>>>>   =C2=A0 1 file changed, 4 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/system/main.c b/system/main.c
+>>>>>>> index ecb12fd397c..1c022067349 100644
+>>>>>>> --- a/system/main.c
+>>>>>>> +++ b/system/main.c
+>>>>>>> @@ -25,6 +25,7 @@
+>>>>>>>   =C2=A0 #include "qemu/osdep.h"
+>>>>>>>   =C2=A0 #include "qemu-main.h"
+>>>>>>>   =C2=A0 #include "qemu/main-loop.h"
+>>>>>>> +#include "system/replay.h"
+>>>>>>>   =C2=A0 #include "system/system.h"
+>>>>>>>   =C2=A0 #ifdef CONFIG_SDL
+>>>>>>> @@ -44,10 +45,12 @@ static void *qemu_default_main(void *opaque)
+>>>>>>>   =C2=A0 {
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int status;
+>>>>>>> +=C2=A0=C2=A0=C2=A0 replay_mutex_lock();
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bql_lock();
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 status =3D qemu_main_loop();
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_cleanup(status);
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bql_unlock();
+>>>>>>> +=C2=A0=C2=A0=C2=A0 replay_mutex_unlock();
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 exit(status);
+>>>>>>>   =C2=A0 }
+>>>>>>> @@ -67,6 +70,7 @@ int main(int argc, char **argv)
+>>>>>>>   =C2=A0 {
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_init(argc, argv);
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bql_unlock();
+>>>>>>> +=C2=A0=C2=A0=C2=A0 replay_mutex_unlock();
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (qemu_main) {
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 QemuThread=
+ main_loop_thread;
+>>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_threa=
+d_create(&main_loop_thread, "qemu_main",
+>>>>>>
+>>>>>> Do we actually need to hold replay mutex (or even bql) over qemu_ini=
+t()?
+>>>>>> Both should get dropped before we return here. But as a simple fix, =
+I
+>>>>>> guess this is okay.
+>>>>>>
+>>>>>
+>>>>> For the bql, I don't know the exact reason.
+>>>>> For replay lock, we need to hold it as clock gets saved as soon as th=
+e
+>>>>> devices are initialized, which happens before end of qemu_init.
+>>>>
+>>>> Could be worth adding a comment with that information.
+>>>>
+>>>
+>>> In case someone is curious about it, changing default state of lock can
+>>> answer why it's needed, as it crashes immediately on an assert.
+>>=20
+>> That all sounds reasonable enough and good info. I'm not suggesting to
+>> remove the lock from qemu_init() by assuming we are in init and init is
+>> single threaded (I agree it's good practice to keep locking consistent).
+>>=20
+>> My question was more that we should move the locks tighter around
+>> the operations that require them. Move the unlock into qemu_init().
+>>=20
+>> Commit f5ab12caba4f1 didn't introduce this problem, cocoa_main()
+>> already immediatey called bql_unlock() so effectively the issue is
+>> still there. The original design before cocoa I guess was that qemu_init
+>> would init things under the same critical section as qemu_main_loop() is
+>> then called, which is reasonable and conservative. It would have been
+>> good to see this bql split get a specific patch to epxlain why it's not
+>> needed across qemu_init and qemu_main_loop, but no big deal now.
+>>=20
+>
+> Looking more closely, bql_lock ensure vcpus don't start executing=20
+> anything before init is completed. So we really want to hold the lock=20
+> through all qemu_init().
+>
+> Concerning replay_lock, during init, icount_configure calls=20
+> qemu_clock_get_ns, that calls replay_save_clock, which expects to have=20
+> the lock. Thus, we should hold the lock, at least during icount=20
+> configuration.
 
-Specifically, since the vhost device will be stopped when VM is stopped
-before the end of the live migration, in current implementation if the
-backend crashes, vhost-user device set_status() won't return failure,
-live migration won't perceive the disconnection between QEMU and the
-backend.
+Sounds reasonable.
 
-When the VM is migrated to the destination, the inflight IO will be
-resubmitted, and if the IO was completed out of order before, it will
-cause IO error.
+>> The patch is fine for a fix, could I suggest another patch that
+>> moves the lock narrower and perhaps adds a few words of comment?
+>>=20
+>
+> We would still need to acquire locks in qemu_default_main() anyway.
+>
+> For bql, we definitely want to hold it anytime through init, so the=20
+> scope is end of init.
+> For replay_lock, it could be moved around parts that expect it during=20
+> initialization, but what would be the benefit, considering only one=20
+> thread is running during init?
+>
+> Moving locks narrower is usually made to allow more concurrency, at the=
+=20
+> price of increased complexity. In init phase, only one thread runs=20
+> anyway, so there is no benefit to do anything around here.
+>
+> What we could eventually do is move those unlock at the end of=20
+> qemu_init, but IMHO, it's more readable to see the lock/unlock scheme in=
+=20
+> a single place, in system/main.c.
+> As well, I think it's better to have a single code path for lock/unlock,=
+=20
+> whether we use a background thread or not (vs adding a bool parameter to=
+=20
+> qemu_default_main() saying if we are in the same thread, or a different=
+=20
+> one).
 
-To fix this issue:
-1. Add the return value to set_status() for VirtioDeviceClass.
-  a. For the vhost-user device, return failure when the backend crashes.
-  b. For other virtio devices, always return 0.
-2. Return failure if vhost_dev_stop() failed for vhost-user device.
+I think the benefit is just code clarity. I think a function returning
+with a different lock state that it is called with generally is not
+desirable if it can be avoided.
 
-If QEMU loses connection with the vhost-user backend, virtio set_status()
-can return failure to the upper layer, migration_completion() can handle
-the error, terminate the live migration, and restore the VM, so that
-inflight IO can be completed normally.
+qemu_init() caller just releasing locks immediately doesn't really serve
+a benefit. A comment can be added to say that when qemu_init() returns,
+bql is not held and CPUs may be running. This would be the same for any
+configuration of background thread or not.
 
-Signed-off-by: Haoqian He <haoqian.he@smartx.com>
----
- backends/vhost-user.c                  | 20 +++++++++----------
- hw/block/vhost-user-blk.c              | 27 ++++++++++++++------------
- hw/block/virtio-blk.c                  |  5 +++--
- hw/char/virtio-serial-bus.c            |  3 ++-
- hw/display/vhost-user-gpu.c            | 12 +++++++++---
- hw/input/virtio-input.c                |  3 ++-
- hw/net/virtio-net.c                    |  3 ++-
- hw/scsi/vhost-scsi-common.c            | 13 +++++++------
- hw/scsi/vhost-scsi.c                   |  5 +++--
- hw/scsi/vhost-user-scsi.c              | 18 ++++++++++-------
- hw/virtio/vdpa-dev.c                   |  5 +++--
- hw/virtio/vhost-user-base.c            | 23 +++++++++++++---------
- hw/virtio/vhost-user-fs.c              | 23 +++++++++++++---------
- hw/virtio/vhost-user-scmi.c            | 27 +++++++++++++++-----------
- hw/virtio/vhost-user-vsock.c           | 15 +++++++++-----
- hw/virtio/vhost-vsock-common.c         | 12 ++++++------
- hw/virtio/vhost-vsock.c                | 11 ++++++-----
- hw/virtio/virtio-balloon.c             |  3 ++-
- hw/virtio/virtio-crypto.c              |  3 ++-
- hw/virtio/virtio-iommu.c               |  3 ++-
- hw/virtio/virtio-rng.c                 |  5 +++--
- hw/virtio/virtio.c                     | 22 ++++++++++++++-------
- include/hw/virtio/vhost-scsi-common.h  |  2 +-
- include/hw/virtio/vhost-vsock-common.h |  2 +-
- include/hw/virtio/virtio.h             |  2 +-
- include/system/vhost-user-backend.h    |  2 +-
- 26 files changed, 160 insertions(+), 109 deletions(-)
+I don't want to bikeshed it too much, if you prefer not to move it. It is
+nly one specialized case. Adding some comments about the purpose of the
+locks is more important than if you release them here or in the callee.
 
-diff --git a/backends/vhost-user.c b/backends/vhost-user.c
-index d0e4d71a63..956063cd18 100644
---- a/backends/vhost-user.c
-+++ b/backends/vhost-user.c
-@@ -97,30 +97,28 @@ err_host_notifiers:
-     vhost_dev_disable_notifiers(&b->dev, b->vdev);
- }
- 
--void
-+int
- vhost_user_backend_stop(VhostUserBackend *b)
- {
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(b->vdev)));
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
--    int ret = 0;
-+    int ret;
- 
-     if (!b->started) {
--        return;
-+        return 0;
-     }
- 
--    vhost_dev_stop(&b->dev, b->vdev, true);
-+    ret = vhost_dev_stop(&b->dev, b->vdev, true);
- 
--    if (k->set_guest_notifiers) {
--        ret = k->set_guest_notifiers(qbus->parent,
--                                     b->dev.nvqs, false);
--        if (ret < 0) {
--            error_report("vhost guest notifier cleanup failed: %d", ret);
--        }
-+    if (k->set_guest_notifiers &&
-+        k->set_guest_notifiers(qbus->parent, b->dev.nvqs, false) < 0) {
-+        error_report("vhost guest notifier cleanup failed: %d", ret);
-+        return -1;
-     }
--    assert(ret >= 0);
- 
-     vhost_dev_disable_notifiers(&b->dev, b->vdev);
-     b->started = false;
-+    return ret;
- }
- 
- static void set_chardev(Object *obj, const char *value, Error **errp)
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index ae42327cf8..f355459123 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -204,7 +204,7 @@ err_host_notifiers:
-     return ret;
- }
- 
--static void vhost_user_blk_stop(VirtIODevice *vdev)
-+static int vhost_user_blk_stop(VirtIODevice *vdev)
- {
-     VHostUserBlk *s = VHOST_USER_BLK(vdev);
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-@@ -212,26 +212,26 @@ static void vhost_user_blk_stop(VirtIODevice *vdev)
-     int ret;
- 
-     if (!s->started_vu) {
--        return;
-+        return 0;
-     }
-     s->started_vu = false;
- 
-     if (!k->set_guest_notifiers) {
--        return;
-+        return 0;
-     }
- 
--    vhost_dev_stop(&s->dev, vdev, true);
-+    ret = vhost_dev_stop(&s->dev, vdev, true);
- 
--    ret = k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false);
--    if (ret < 0) {
-+    if (k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false) < 0) {
-         error_report("vhost guest notifier cleanup failed: %d", ret);
--        return;
-+        return -1;
-     }
- 
-     vhost_dev_disable_notifiers(&s->dev, vdev);
-+    return ret;
- }
- 
--static void vhost_user_blk_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vhost_user_blk_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserBlk *s = VHOST_USER_BLK(vdev);
-     bool should_start = virtio_device_should_start(vdev, status);
-@@ -239,11 +239,11 @@ static void vhost_user_blk_set_status(VirtIODevice *vdev, uint8_t status)
-     int ret;
- 
-     if (!s->connected) {
--        return;
-+        return -1;
-     }
- 
-     if (vhost_dev_is_started(&s->dev) == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
-@@ -253,9 +253,12 @@ static void vhost_user_blk_set_status(VirtIODevice *vdev, uint8_t status)
-             qemu_chr_fe_disconnect(&s->chardev);
-         }
-     } else {
--        vhost_user_blk_stop(vdev);
-+        ret = vhost_user_blk_stop(vdev);
-+        if (ret < 0) {
-+            return ret;
-+        }
-     }
--
-+    return 0;
- }
- 
- static uint64_t vhost_user_blk_get_features(VirtIODevice *vdev,
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 458871ea2b..caf8042cd5 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -1270,7 +1270,7 @@ static uint64_t virtio_blk_get_features(VirtIODevice *vdev, uint64_t features,
-     return features;
- }
- 
--static void virtio_blk_set_status(VirtIODevice *vdev, uint8_t status)
-+static int virtio_blk_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VirtIOBlock *s = VIRTIO_BLK(vdev);
- 
-@@ -1279,7 +1279,7 @@ static void virtio_blk_set_status(VirtIODevice *vdev, uint8_t status)
-     }
- 
-     if (!(status & VIRTIO_CONFIG_S_DRIVER_OK)) {
--        return;
-+        return 0;
-     }
- 
-     /* A guest that supports VIRTIO_BLK_F_CONFIG_WCE must be able to send
-@@ -1302,6 +1302,7 @@ static void virtio_blk_set_status(VirtIODevice *vdev, uint8_t status)
-                                    virtio_vdev_has_feature(vdev,
-                                                            VIRTIO_BLK_F_WCE));
-     }
-+    return 0;
- }
- 
- static void virtio_blk_save_device(VirtIODevice *vdev, QEMUFile *f)
-diff --git a/hw/char/virtio-serial-bus.c b/hw/char/virtio-serial-bus.c
-index b6d2743a9c..22accfd8e4 100644
---- a/hw/char/virtio-serial-bus.c
-+++ b/hw/char/virtio-serial-bus.c
-@@ -622,7 +622,7 @@ static void guest_reset(VirtIOSerial *vser)
-     }
- }
- 
--static void set_status(VirtIODevice *vdev, uint8_t status)
-+static int set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VirtIOSerial *vser;
-     VirtIOSerialPort *port;
-@@ -650,6 +650,7 @@ static void set_status(VirtIODevice *vdev, uint8_t status)
-             vsc->enable_backend(port, vdev->vm_running);
-         }
-     }
-+    return 0;
- }
- 
- static void vser_reset(VirtIODevice *vdev)
-diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-index 2aed6243f6..d7d159ecd9 100644
---- a/hw/display/vhost-user-gpu.c
-+++ b/hw/display/vhost-user-gpu.c
-@@ -513,7 +513,7 @@ vhost_user_gpu_set_config(VirtIODevice *vdev,
-     }
- }
- 
--static void
-+static int
- vhost_user_gpu_set_status(VirtIODevice *vdev, uint8_t val)
- {
-     VhostUserGPU *g = VHOST_USER_GPU(vdev);
-@@ -522,18 +522,24 @@ vhost_user_gpu_set_status(VirtIODevice *vdev, uint8_t val)
-     if (val & VIRTIO_CONFIG_S_DRIVER_OK && vdev->vm_running) {
-         if (!vhost_user_gpu_do_set_socket(g, &err)) {
-             error_report_err(err);
--            return;
-+            return 0;
-         }
-         vhost_user_backend_start(g->vhost);
-     } else {
-+        int ret;
-+
-         /* unblock any wait and stop processing */
-         if (g->vhost_gpu_fd != -1) {
-             vhost_user_gpu_update_blocked(g, true);
-             qemu_chr_fe_deinit(&g->vhost_chr, true);
-             g->vhost_gpu_fd = -1;
-         }
--        vhost_user_backend_stop(g->vhost);
-+        ret = vhost_user_backend_stop(g->vhost);
-+        if (ret < 0) {
-+            return ret;
-+        }
-     }
-+    return 0;
- }
- 
- static bool
-diff --git a/hw/input/virtio-input.c b/hw/input/virtio-input.c
-index 1394d99c6b..7ce53b7449 100644
---- a/hw/input/virtio-input.c
-+++ b/hw/input/virtio-input.c
-@@ -189,7 +189,7 @@ static uint64_t virtio_input_get_features(VirtIODevice *vdev, uint64_t f,
-     return f;
- }
- 
--static void virtio_input_set_status(VirtIODevice *vdev, uint8_t val)
-+static int virtio_input_set_status(VirtIODevice *vdev, uint8_t val)
- {
-     VirtIOInputClass *vic = VIRTIO_INPUT_GET_CLASS(vdev);
-     VirtIOInput *vinput = VIRTIO_INPUT(vdev);
-@@ -202,6 +202,7 @@ static void virtio_input_set_status(VirtIODevice *vdev, uint8_t val)
-             }
-         }
-     }
-+    return 0;
- }
- 
- static void virtio_input_reset(VirtIODevice *vdev)
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index bd37651dab..98d9e54370 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -382,7 +382,7 @@ static void virtio_net_drop_tx_queue_data(VirtIODevice *vdev, VirtQueue *vq)
-     }
- }
- 
--static void virtio_net_set_status(struct VirtIODevice *vdev, uint8_t status)
-+static int virtio_net_set_status(struct VirtIODevice *vdev, uint8_t status)
- {
-     VirtIONet *n = VIRTIO_NET(vdev);
-     VirtIONetQueue *q;
-@@ -437,6 +437,7 @@ static void virtio_net_set_status(struct VirtIODevice *vdev, uint8_t status)
-             }
-         }
-     }
-+    return 0;
- }
- 
- static void virtio_net_set_link_status(NetClientState *nc)
-diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
-index 4c8637045d..43525ba46d 100644
---- a/hw/scsi/vhost-scsi-common.c
-+++ b/hw/scsi/vhost-scsi-common.c
-@@ -101,24 +101,25 @@ err_host_notifiers:
-     return ret;
- }
- 
--void vhost_scsi_common_stop(VHostSCSICommon *vsc)
-+int vhost_scsi_common_stop(VHostSCSICommon *vsc)
- {
-     VirtIODevice *vdev = VIRTIO_DEVICE(vsc);
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
-     int ret = 0;
- 
--    vhost_dev_stop(&vsc->dev, vdev, true);
-+    ret = vhost_dev_stop(&vsc->dev, vdev, true);
- 
-     if (k->set_guest_notifiers) {
--        ret = k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
--        if (ret < 0) {
--                error_report("vhost guest notifier cleanup failed: %d", ret);
-+        int r = k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
-+        if (r < 0) {
-+            error_report("vhost guest notifier cleanup failed: %d", ret);
-+            return r;
-         }
-     }
--    assert(ret >= 0);
- 
-     vhost_dev_disable_notifiers(&vsc->dev, vdev);
-+    return ret;
- }
- 
- uint64_t vhost_scsi_common_get_features(VirtIODevice *vdev, uint64_t features,
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 8039d13fd9..19d5261019 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -114,7 +114,7 @@ static void vhost_scsi_stop(VHostSCSI *s)
-     vhost_scsi_common_stop(vsc);
- }
- 
--static void vhost_scsi_set_status(VirtIODevice *vdev, uint8_t val)
-+static int vhost_scsi_set_status(VirtIODevice *vdev, uint8_t val)
- {
-     VHostSCSI *s = VHOST_SCSI(vdev);
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-@@ -125,7 +125,7 @@ static void vhost_scsi_set_status(VirtIODevice *vdev, uint8_t val)
-     }
- 
-     if (vhost_dev_is_started(&vsc->dev) == start) {
--        return;
-+        return 0;
-     }
- 
-     if (start) {
-@@ -139,6 +139,7 @@ static void vhost_scsi_set_status(VirtIODevice *vdev, uint8_t val)
-     } else {
-         vhost_scsi_stop(s);
-     }
-+    return 0;
- }
- 
- static void vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index adb41b9816..aba9fb82d2 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -52,19 +52,19 @@ static int vhost_user_scsi_start(VHostUserSCSI *s, Error **errp)
-     return ret;
- }
- 
--static void vhost_user_scsi_stop(VHostUserSCSI *s)
-+static int vhost_user_scsi_stop(VHostUserSCSI *s)
- {
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
- 
-     if (!s->started_vu) {
--        return;
-+        return 0;
-     }
-     s->started_vu = false;
- 
--    vhost_scsi_common_stop(vsc);
-+    return vhost_scsi_common_stop(vsc);
- }
- 
--static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserSCSI *s = (VHostUserSCSI *)vdev;
-     DeviceState *dev = DEVICE(vdev);
-@@ -75,11 +75,11 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-     int ret;
- 
-     if (!s->connected) {
--        return;
-+        return -1;
-     }
- 
-     if (vhost_dev_is_started(&vsc->dev) == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
-@@ -91,8 +91,12 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-             qemu_chr_fe_disconnect(&vs->conf.chardev);
-         }
-     } else {
--        vhost_user_scsi_stop(s);
-+        ret = vhost_user_scsi_stop(s);
-+        if (ret) {
-+            return ret;
-+        }
-     }
-+    return 0;
- }
- 
- static void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
-index a7e73b1c99..d80d46baed 100644
---- a/hw/virtio/vdpa-dev.c
-+++ b/hw/virtio/vdpa-dev.c
-@@ -312,7 +312,7 @@ static void vhost_vdpa_device_stop(VirtIODevice *vdev)
-     vhost_dev_disable_notifiers(&s->dev, vdev);
- }
- 
--static void vhost_vdpa_device_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vhost_vdpa_device_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VhostVdpaDevice *s = VHOST_VDPA_DEVICE(vdev);
-     bool should_start = virtio_device_started(vdev, status);
-@@ -324,7 +324,7 @@ static void vhost_vdpa_device_set_status(VirtIODevice *vdev, uint8_t status)
-     }
- 
-     if (s->started == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
-@@ -335,6 +335,7 @@ static void vhost_vdpa_device_set_status(VirtIODevice *vdev, uint8_t status)
-     } else {
-         vhost_vdpa_device_stop(vdev);
-     }
-+    return 0;
- }
- 
- static const Property vhost_vdpa_device_properties[] = {
-diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
-index 2bc3423326..37718653bd 100644
---- a/hw/virtio/vhost-user-base.c
-+++ b/hw/virtio/vhost-user-base.c
-@@ -66,7 +66,7 @@ err_host_notifiers:
-     vhost_dev_disable_notifiers(&vub->vhost_dev, vdev);
- }
- 
--static void vub_stop(VirtIODevice *vdev)
-+static int vub_stop(VirtIODevice *vdev)
- {
-     VHostUserBase *vub = VHOST_USER_BASE(vdev);
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-@@ -74,34 +74,39 @@ static void vub_stop(VirtIODevice *vdev)
-     int ret;
- 
-     if (!k->set_guest_notifiers) {
--        return;
-+        return 0;
-     }
- 
--    vhost_dev_stop(&vub->vhost_dev, vdev, true);
-+    ret = vhost_dev_stop(&vub->vhost_dev, vdev, true);
- 
--    ret = k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, false);
--    if (ret < 0) {
-+    if (k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, false) < 0) {
-         error_report("vhost guest notifier cleanup failed: %d", ret);
--        return;
-+        return -1;
-     }
- 
-     vhost_dev_disable_notifiers(&vub->vhost_dev, vdev);
-+    return ret;
- }
- 
--static void vub_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vub_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserBase *vub = VHOST_USER_BASE(vdev);
-     bool should_start = virtio_device_should_start(vdev, status);
- 
-     if (vhost_dev_is_started(&vub->vhost_dev) == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
-         vub_start(vdev);
-     } else {
--        vub_stop(vdev);
-+        int ret;
-+        ret = vub_stop(vdev);
-+        if (ret < 0) {
-+            return ret;
-+        }
-     }
-+    return 0;
- }
- 
- /*
-diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
-index 3f00d79ed0..266c179671 100644
---- a/hw/virtio/vhost-user-fs.c
-+++ b/hw/virtio/vhost-user-fs.c
-@@ -100,7 +100,7 @@ err_host_notifiers:
-     vhost_dev_disable_notifiers(&fs->vhost_dev, vdev);
- }
- 
--static void vuf_stop(VirtIODevice *vdev)
-+static int vuf_stop(VirtIODevice *vdev)
- {
-     VHostUserFS *fs = VHOST_USER_FS(vdev);
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-@@ -108,34 +108,39 @@ static void vuf_stop(VirtIODevice *vdev)
-     int ret;
- 
-     if (!k->set_guest_notifiers) {
--        return;
-+        return 0;
-     }
- 
--    vhost_dev_stop(&fs->vhost_dev, vdev, true);
-+    ret = vhost_dev_stop(&fs->vhost_dev, vdev, true);
- 
--    ret = k->set_guest_notifiers(qbus->parent, fs->vhost_dev.nvqs, false);
--    if (ret < 0) {
-+    if (k->set_guest_notifiers(qbus->parent, fs->vhost_dev.nvqs, false) < 0) {
-         error_report("vhost guest notifier cleanup failed: %d", ret);
--        return;
-+        return -1;
-     }
- 
-     vhost_dev_disable_notifiers(&fs->vhost_dev, vdev);
-+    return ret;
- }
- 
--static void vuf_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vuf_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserFS *fs = VHOST_USER_FS(vdev);
-     bool should_start = virtio_device_should_start(vdev, status);
- 
-     if (vhost_dev_is_started(&fs->vhost_dev) == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
-         vuf_start(vdev);
-     } else {
--        vuf_stop(vdev);
-+        int ret;
-+        ret = vuf_stop(vdev);
-+        if (ret < 0) {
-+            return ret;
-+        }
-     }
-+    return 0;
- }
- 
- static uint64_t vuf_get_features(VirtIODevice *vdev,
-diff --git a/hw/virtio/vhost-user-scmi.c b/hw/virtio/vhost-user-scmi.c
-index 410a936ca7..a9778f1f4b 100644
---- a/hw/virtio/vhost-user-scmi.c
-+++ b/hw/virtio/vhost-user-scmi.c
-@@ -83,7 +83,7 @@ err_host_notifiers:
-     return ret;
- }
- 
--static void vu_scmi_stop(VirtIODevice *vdev)
-+static int vu_scmi_stop(VirtIODevice *vdev)
- {
-     VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-@@ -93,41 +93,46 @@ static void vu_scmi_stop(VirtIODevice *vdev)
- 
-     /* vhost_dev_is_started() check in the callers is not fully reliable. */
-     if (!scmi->started_vu) {
--        return;
-+        return 0;
-     }
-     scmi->started_vu = false;
- 
-     if (!k->set_guest_notifiers) {
--        return;
-+        return 0;
-     }
- 
--    vhost_dev_stop(vhost_dev, vdev, true);
-+    ret = vhost_dev_stop(vhost_dev, vdev, true);
- 
--    ret = k->set_guest_notifiers(qbus->parent, vhost_dev->nvqs, false);
--    if (ret < 0) {
-+    if (k->set_guest_notifiers(qbus->parent, vhost_dev->nvqs, false) < 0) {
-         error_report("vhost guest notifier cleanup failed: %d", ret);
--        return;
-+        return -1;
-     }
-     vhost_dev_disable_notifiers(vhost_dev, vdev);
-+    return ret;
- }
- 
--static void vu_scmi_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vu_scmi_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-     bool should_start = virtio_device_should_start(vdev, status);
- 
-     if (!scmi->connected) {
--        return;
-+        return -1;
-     }
-     if (vhost_dev_is_started(&scmi->vhost_dev) == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
-         vu_scmi_start(vdev);
-     } else {
--        vu_scmi_stop(vdev);
-+        int ret;
-+        ret = vu_scmi_stop(vdev);
-+        if (ret < 0) {
-+            return ret;
-+        }
-     }
-+    return 0;
- }
- 
- static uint64_t vu_scmi_get_features(VirtIODevice *vdev, uint64_t features,
-diff --git a/hw/virtio/vhost-user-vsock.c b/hw/virtio/vhost-user-vsock.c
-index 293273080b..7a4aec7bf4 100644
---- a/hw/virtio/vhost-user-vsock.c
-+++ b/hw/virtio/vhost-user-vsock.c
-@@ -54,23 +54,28 @@ const VhostDevConfigOps vsock_ops = {
-     .vhost_dev_config_notifier = vuv_handle_config_change,
- };
- 
--static void vuv_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vuv_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostVSockCommon *vvc = VHOST_VSOCK_COMMON(vdev);
-     bool should_start = virtio_device_should_start(vdev, status);
-+    int ret;
- 
-     if (vhost_dev_is_started(&vvc->vhost_dev) == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
--        int ret = vhost_vsock_common_start(vdev);
-+        ret = vhost_vsock_common_start(vdev);
-         if (ret < 0) {
--            return;
-+            return ret;
-         }
-     } else {
--        vhost_vsock_common_stop(vdev);
-+        ret = vhost_vsock_common_stop(vdev);
-+        if (ret < 0) {
-+            return ret;
-+        }
-     }
-+    return 0;
- }
- 
- static uint64_t vuv_get_features(VirtIODevice *vdev,
-diff --git a/hw/virtio/vhost-vsock-common.c b/hw/virtio/vhost-vsock-common.c
-index 9ac587d20c..bbfbbdb317 100644
---- a/hw/virtio/vhost-vsock-common.c
-+++ b/hw/virtio/vhost-vsock-common.c
-@@ -95,7 +95,7 @@ err_host_notifiers:
-     return ret;
- }
- 
--void vhost_vsock_common_stop(VirtIODevice *vdev)
-+int vhost_vsock_common_stop(VirtIODevice *vdev)
- {
-     VHostVSockCommon *vvc = VHOST_VSOCK_COMMON(vdev);
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-@@ -103,18 +103,18 @@ void vhost_vsock_common_stop(VirtIODevice *vdev)
-     int ret;
- 
-     if (!k->set_guest_notifiers) {
--        return;
-+        return 0;
-     }
- 
--    vhost_dev_stop(&vvc->vhost_dev, vdev, true);
-+    ret = vhost_dev_stop(&vvc->vhost_dev, vdev, true);
- 
--    ret = k->set_guest_notifiers(qbus->parent, vvc->vhost_dev.nvqs, false);
--    if (ret < 0) {
-+    if (k->set_guest_notifiers(qbus->parent, vvc->vhost_dev.nvqs, false) < 0) {
-         error_report("vhost guest notifier cleanup failed: %d", ret);
--        return;
-+        return -1;
-     }
- 
-     vhost_dev_disable_notifiers(&vvc->vhost_dev, vdev);
-+    return ret;
- }
- 
- 
-diff --git a/hw/virtio/vhost-vsock.c b/hw/virtio/vhost-vsock.c
-index 940b30fa27..62b36b28f5 100644
---- a/hw/virtio/vhost-vsock.c
-+++ b/hw/virtio/vhost-vsock.c
-@@ -67,37 +67,38 @@ static int vhost_vsock_set_running(VirtIODevice *vdev, int start)
- }
- 
- 
--static void vhost_vsock_set_status(VirtIODevice *vdev, uint8_t status)
-+static int vhost_vsock_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostVSockCommon *vvc = VHOST_VSOCK_COMMON(vdev);
-     bool should_start = virtio_device_should_start(vdev, status);
-     int ret;
- 
-     if (vhost_dev_is_started(&vvc->vhost_dev) == should_start) {
--        return;
-+        return 0;
-     }
- 
-     if (should_start) {
-         ret = vhost_vsock_common_start(vdev);
-         if (ret < 0) {
--            return;
-+            return 0;
-         }
- 
-         ret = vhost_vsock_set_running(vdev, 1);
-         if (ret < 0) {
-             vhost_vsock_common_stop(vdev);
-             error_report("Error starting vhost vsock: %d", -ret);
--            return;
-+            return 0;
-         }
-     } else {
-         ret = vhost_vsock_set_running(vdev, 0);
-         if (ret < 0) {
-             error_report("vhost vsock set running failed: %d", ret);
--            return;
-+            return 0;
-         }
- 
-         vhost_vsock_common_stop(vdev);
-     }
-+    return 0;
- }
- 
- static uint64_t vhost_vsock_get_features(VirtIODevice *vdev,
-diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
-index 2eb5a14fa2..e719c078aa 100644
---- a/hw/virtio/virtio-balloon.c
-+++ b/hw/virtio/virtio-balloon.c
-@@ -958,7 +958,7 @@ static void virtio_balloon_device_reset(VirtIODevice *vdev)
-     s->poison_val = 0;
- }
- 
--static void virtio_balloon_set_status(VirtIODevice *vdev, uint8_t status)
-+static int virtio_balloon_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VirtIOBalloon *s = VIRTIO_BALLOON(vdev);
- 
-@@ -988,6 +988,7 @@ static void virtio_balloon_set_status(VirtIODevice *vdev, uint8_t status)
-             qemu_mutex_unlock(&s->free_page_lock);
-         }
-     }
-+    return 0;
- }
- 
- static ResettableState *virtio_balloon_get_reset_state(Object *obj)
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index a1b3c90618..626279dc5b 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -1197,11 +1197,12 @@ static void virtio_crypto_vhost_status(VirtIOCrypto *c, uint8_t status)
-     }
- }
- 
--static void virtio_crypto_set_status(VirtIODevice *vdev, uint8_t status)
-+static int virtio_crypto_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VirtIOCrypto *vcrypto = VIRTIO_CRYPTO(vdev);
- 
-     virtio_crypto_vhost_status(vcrypto, status);
-+    return 0;
- }
- 
- static void virtio_crypto_guest_notifier_mask(VirtIODevice *vdev, int idx,
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index b6e7e01ef7..63ec12014f 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1522,9 +1522,10 @@ static void virtio_iommu_device_reset_exit(Object *obj, ResetType type)
-                                    NULL, NULL, virtio_iommu_put_endpoint);
- }
- 
--static void virtio_iommu_set_status(VirtIODevice *vdev, uint8_t status)
-+static int virtio_iommu_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     trace_virtio_iommu_device_status(status);
-+    return 0;
- }
- 
- static void virtio_iommu_instance_init(Object *obj)
-diff --git a/hw/virtio/virtio-rng.c b/hw/virtio/virtio-rng.c
-index a515fc5cd9..4748d039f9 100644
---- a/hw/virtio/virtio-rng.c
-+++ b/hw/virtio/virtio-rng.c
-@@ -159,17 +159,18 @@ static void check_rate_limit(void *opaque)
-     vrng->activate_timer = true;
- }
- 
--static void virtio_rng_set_status(VirtIODevice *vdev, uint8_t status)
-+static int virtio_rng_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VirtIORNG *vrng = VIRTIO_RNG(vdev);
- 
-     if (!vdev->vm_running) {
--        return;
-+        return 0;
-     }
-     vdev->status = status;
- 
-     /* Something changed, try to process buffers */
-     virtio_rng_process(vrng);
-+    return 0;
- }
- 
- static void virtio_rng_device_realize(DeviceState *dev, Error **errp)
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 202a052053..d52808ea67 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2221,12 +2221,12 @@ int virtio_set_status(VirtIODevice *vdev, uint8_t val)
- {
-     VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
-     trace_virtio_set_status(vdev, val);
-+    int ret = 0;
- 
-     if (virtio_vdev_has_feature(vdev, VIRTIO_F_VERSION_1)) {
-         if (!(vdev->status & VIRTIO_CONFIG_S_FEATURES_OK) &&
-             val & VIRTIO_CONFIG_S_FEATURES_OK) {
--            int ret = virtio_validate_features(vdev);
--
-+            ret = virtio_validate_features(vdev);
-             if (ret) {
-                 return ret;
-             }
-@@ -2239,11 +2239,15 @@ int virtio_set_status(VirtIODevice *vdev, uint8_t val)
-     }
- 
-     if (k->set_status) {
--        k->set_status(vdev, val);
-+        ret = k->set_status(vdev, val);
-+        if (ret) {
-+            qemu_log("set %s status to %d failed, old status: %d\n",
-+                     vdev->name, val, vdev->status);
-+        }
-     }
-     vdev->status = val;
- 
--    return 0;
-+    return ret;
- }
- 
- static enum virtio_device_endian virtio_default_endian(void)
-@@ -3419,7 +3423,7 @@ void virtio_cleanup(VirtIODevice *vdev)
-     qemu_del_vm_change_state_handler(vdev->vmstate);
- }
- 
--static void virtio_vmstate_change(void *opaque, bool running, RunState state)
-+static int virtio_vmstate_change(void *opaque, bool running, RunState state)
- {
-     VirtIODevice *vdev = opaque;
-     BusState *qbus = qdev_get_parent_bus(DEVICE(vdev));
-@@ -3436,8 +3440,12 @@ static void virtio_vmstate_change(void *opaque, bool running, RunState state)
-     }
- 
-     if (!backend_run) {
--        virtio_set_status(vdev, vdev->status);
-+        int ret = virtio_set_status(vdev, vdev->status);
-+        if (ret) {
-+            return ret;
-+        }
-     }
-+    return 0;
- }
- 
- void virtio_instance_init_common(Object *proxy_obj, void *data,
-@@ -3489,7 +3497,7 @@ void virtio_init(VirtIODevice *vdev, uint16_t device_id, size_t config_size)
-         vdev->config = NULL;
-     }
-     vdev->vmstate = qdev_add_vm_change_state_handler(DEVICE(vdev),
--            virtio_vmstate_change, NULL, vdev);
-+            NULL, virtio_vmstate_change, vdev);
-     vdev->device_endian = virtio_default_endian();
-     vdev->use_guest_notifier_mask = true;
- }
-diff --git a/include/hw/virtio/vhost-scsi-common.h b/include/hw/virtio/vhost-scsi-common.h
-index c5d2c09455..d54d9c916f 100644
---- a/include/hw/virtio/vhost-scsi-common.h
-+++ b/include/hw/virtio/vhost-scsi-common.h
-@@ -40,7 +40,7 @@ struct VHostSCSICommon {
- };
- 
- int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp);
--void vhost_scsi_common_stop(VHostSCSICommon *vsc);
-+int vhost_scsi_common_stop(VHostSCSICommon *vsc);
- char *vhost_scsi_common_get_fw_dev_path(FWPathProvider *p, BusState *bus,
-                                         DeviceState *dev);
- void vhost_scsi_common_set_config(VirtIODevice *vdev, const uint8_t *config);
-diff --git a/include/hw/virtio/vhost-vsock-common.h b/include/hw/virtio/vhost-vsock-common.h
-index 75a74e8a99..01bf6062af 100644
---- a/include/hw/virtio/vhost-vsock-common.h
-+++ b/include/hw/virtio/vhost-vsock-common.h
-@@ -42,7 +42,7 @@ struct VHostVSockCommon {
- };
- 
- int vhost_vsock_common_start(VirtIODevice *vdev);
--void vhost_vsock_common_stop(VirtIODevice *vdev);
-+int vhost_vsock_common_stop(VirtIODevice *vdev);
- int vhost_vsock_common_pre_save(void *opaque);
- int vhost_vsock_common_post_load(void *opaque, int version_id);
- void vhost_vsock_common_realize(VirtIODevice *vdev);
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 6386910280..a7ee9bec75 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -186,7 +186,7 @@ struct VirtioDeviceClass {
-     void (*get_config)(VirtIODevice *vdev, uint8_t *config);
-     void (*set_config)(VirtIODevice *vdev, const uint8_t *config);
-     void (*reset)(VirtIODevice *vdev);
--    void (*set_status)(VirtIODevice *vdev, uint8_t val);
-+    int (*set_status)(VirtIODevice *vdev, uint8_t val);
-     /* Device must validate queue_index.  */
-     void (*queue_reset)(VirtIODevice *vdev, uint32_t queue_index);
-     /* Device must validate queue_index.  */
-diff --git a/include/system/vhost-user-backend.h b/include/system/vhost-user-backend.h
-index 327b0b84f1..87765a1218 100644
---- a/include/system/vhost-user-backend.h
-+++ b/include/system/vhost-user-backend.h
-@@ -43,6 +43,6 @@ struct VhostUserBackend {
- int vhost_user_backend_dev_init(VhostUserBackend *b, VirtIODevice *vdev,
-                                 unsigned nvqs, Error **errp);
- void vhost_user_backend_start(VhostUserBackend *b);
--void vhost_user_backend_stop(VhostUserBackend *b);
-+int vhost_user_backend_stop(VhostUserBackend *b);
- 
- #endif
--- 
-2.44.0
-
+Thanks,
+Nick
 
