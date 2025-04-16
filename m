@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E2AA90E29
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 23:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B55C1A90E59
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 00:01:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5AlU-000309-Dp; Wed, 16 Apr 2025 17:57:52 -0400
+	id 1u5AlV-00032v-Lh; Wed, 16 Apr 2025 17:57:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1u5AlO-0002xM-Rq; Wed, 16 Apr 2025 17:57:47 -0400
+ id 1u5AlO-0002xL-NC; Wed, 16 Apr 2025 17:57:47 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1u5AlM-000831-Lu; Wed, 16 Apr 2025 17:57:46 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLNCqs025168;
- Wed, 16 Apr 2025 21:57:06 GMT
+ id 1u5AlM-00083B-Lz; Wed, 16 Apr 2025 17:57:46 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLN0Ax019727;
+ Wed, 16 Apr 2025 21:57:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2023-11-20; bh=rTtC5
- HX+LFK2aqM+GF1UaLiudQLeAADMm0hU7G6YEPw=; b=WQYFbBtHSlbhwZhRQeXsy
- lnNuL2mijQ8eJ5ggW7z+4WfYekgtuIWLuuOK/7Rl8oOzRvjbX/Tx9kAk9UMVAxFs
- 2pMzNNStF4Z34GlKGpLbGnx006/LVtnEuubDsStynES7rXpEvjErDt4ON3Q8MIgi
- XkSj1qL0E1mvV1XLcNVJFwGpZg1etoWU2EILMyJNbu8Wdx39JlyKJH95pOV5nv+S
- WVSSC/ky6WWmRVnLMTCq9C5pmwMcBcBGog/nmC04SqnAlaG9bKwlSo81fNbhA05u
- Kkv8w/yoPxT9J0GpuXgE+rVjw7f2cDdY/XPqyqwj/bPV1NclaMlqas3jEFIxSkT0
- Q==
+ :mime-version:references:subject:to; s=corp-2023-11-20; bh=26biS
+ eKyClnKK7tVS05KxYECIm8bQH64xTAw4ai6yEU=; b=a1cV1UhsWqAzYj8Yu5rsO
+ 2mmDkS7CTJm6PUF0t9K0XDOftBVvByHhvaUvPXcvjBYeYmWtPcQoRaWZv8TaKXT1
+ pIMX60mG3yWsZX8WbLXl1az7Tetu5FqpmIXe43PvjQuK0Fivfz2eHDiJWr/H1HA3
+ a6OLAsU+g5wBOhzeb/R63/8epPDKoRQGPkRF3749MylE5xawob22v6mc8Y0XbEki
+ MsER0h6HadmTdqmpIiDsDhs8gdbWcUEZPt9bVNsEV7QyzSmSU8Ko8/HgUpsBmZPQ
+ CZZeK2a703uNbKOD3WhSSBSrgIuSMhizNb+RAmFaUO4N30tEP8mOomzwoN/X5Y1d
+ g==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4616uf5acv-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4619444xq6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Apr 2025 21:57:06 +0000 (GMT)
+ Wed, 16 Apr 2025 21:57:08 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 53GK1BOt005662; Wed, 16 Apr 2025 21:57:05 GMT
+ with ESMTP id 53GKwS07005672; Wed, 16 Apr 2025 21:57:07 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 460d5xhvf0-1
+ 460d5xhvg6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Apr 2025 21:57:05 +0000
+ Wed, 16 Apr 2025 21:57:07 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53GLv1qQ036583;
- Wed, 16 Apr 2025 21:57:03 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53GLv1qS036583;
+ Wed, 16 Apr 2025 21:57:06 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 460d5xhvcp-2; Wed, 16 Apr 2025 21:57:03 +0000
+ 460d5xhvcp-3; Wed, 16 Apr 2025 21:57:06 +0000
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
@@ -70,10 +70,10 @@ Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
  cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
  frankzhu@zhaoxin.com, silviazhao@zhaoxin.com, kraxel@redhat.com,
  berrange@redhat.com
-Subject: [PATCH v4 01/11] [DO NOT MERGE] i386/cpu: Consolidate the helper to
- get Host's vendor
-Date: Wed, 16 Apr 2025 14:52:26 -0700
-Message-ID: <20250416215306.32426-2-dongli.zhang@oracle.com>
+Subject: [PATCH v4 02/11] target/i386: disable PerfMonV2 when PERFCORE
+ unavailable
+Date: Wed, 16 Apr 2025 14:52:27 -0700
+Message-ID: <20250416215306.32426-3-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250416215306.32426-1-dongli.zhang@oracle.com>
 References: <20250416215306.32426-1-dongli.zhang@oracle.com>
@@ -87,8 +87,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 adultscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2502280000 definitions=main-2504160177
-X-Proofpoint-GUID: PtTCavTn841i6Bel1apKzzDvO2A0KHHl
-X-Proofpoint-ORIG-GUID: PtTCavTn841i6Bel1apKzzDvO2A0KHHl
+X-Proofpoint-GUID: 1ZX-wEgbeIX-zrphKb9xK-enwtl1Thwj
+X-Proofpoint-ORIG-GUID: 1ZX-wEgbeIX-zrphKb9xK-enwtl1Thwj
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=dongli.zhang@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -30
@@ -114,70 +114,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+When the PERFCORE is disabled with "-cpu host,-perfctr-core", it is
+reflected in in guest dmesg.
 
-Extend host_cpu_vendor_fms() to help more cases to get Host's vendor
-information.
+[    0.285136] Performance Events: AMD PMU driver.
 
-Cc: Dongli Zhang <dongli.zhang@oracle.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+However, the guest CPUID indicates the PerfMonV2 is still available.
+
+CPU:
+   Extended Performance Monitoring and Debugging (0x80000022):
+      AMD performance monitoring V2         = true
+      AMD LBR V2                            = false
+      AMD LBR stack & PMC freezing          = false
+      number of core perf ctrs              = 0x6 (6)
+      number of LBR stack entries           = 0x0 (0)
+      number of avail Northbridge perf ctrs = 0x0 (0)
+      number of available UMC PMCs          = 0x0 (0)
+      active UMCs bitmask                   = 0x0
+
+Disable PerfMonV2 in CPUID when PERFCORE is disabled.
+
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Fixes: 209b0ac12074 ("target/i386: Add PerfMonV2 feature bit")
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Sandipan Das <sandipan.das@amd.com>
 ---
-This patch is already queued by Paolo.
-https://lore.kernel.org/all/20250410075619.145792-1-zhao1.liu@intel.com/
-I don't need to add my Signed-off-by.
+Changed since v1:
+  - Use feature_dependencies (suggested by Zhao Liu).
+Changed since v2:
+  - Nothing. Zhao and Xiaoyao may move it to x86_cpu_expand_features()
+    later.
 
- target/i386/host-cpu.c        | 10 ++++++----
- target/i386/kvm/vmsr_energy.c |  3 +--
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ target/i386/cpu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
-index 3e4e85e729..072731a4dd 100644
---- a/target/i386/host-cpu.c
-+++ b/target/i386/host-cpu.c
-@@ -109,9 +109,13 @@ void host_cpu_vendor_fms(char *vendor, int *family, int *model, int *stepping)
- {
-     uint32_t eax, ebx, ecx, edx;
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1b64ceaaba..2b87331be5 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1808,6 +1808,10 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
+         .to = { FEAT_24_0_EBX,              ~0ull },
+     },
++    {
++        .from = { FEAT_8000_0001_ECX,       CPUID_EXT3_PERFCORE },
++        .to = { FEAT_8000_0022_EAX,         CPUID_8000_0022_EAX_PERFMON_V2 },
++    },
+ };
  
--    host_cpuid(0x0, 0, &eax, &ebx, &ecx, &edx);
-+    host_cpuid(0x0, 0, NULL, &ebx, &ecx, &edx);
-     x86_cpu_vendor_words2str(vendor, ebx, edx, ecx);
- 
-+    if (!family && !model && !stepping) {
-+        return;
-+    }
-+
-     host_cpuid(0x1, 0, &eax, &ebx, &ecx, &edx);
-     if (family) {
-         *family = ((eax >> 8) & 0x0F) + ((eax >> 20) & 0xFF);
-@@ -129,11 +133,9 @@ void host_cpu_instance_init(X86CPU *cpu)
-     X86CPUClass *xcc = X86_CPU_GET_CLASS(cpu);
- 
-     if (xcc->model) {
--        uint32_t ebx = 0, ecx = 0, edx = 0;
-         char vendor[CPUID_VENDOR_SZ + 1];
- 
--        host_cpuid(0, 0, NULL, &ebx, &ecx, &edx);
--        x86_cpu_vendor_words2str(vendor, ebx, edx, ecx);
-+        host_cpu_vendor_fms(vendor, NULL, NULL, NULL);
-         object_property_set_str(OBJECT(cpu), "vendor", vendor, &error_abort);
-     }
- }
-diff --git a/target/i386/kvm/vmsr_energy.c b/target/i386/kvm/vmsr_energy.c
-index 31508d4e77..f499ec6e8b 100644
---- a/target/i386/kvm/vmsr_energy.c
-+++ b/target/i386/kvm/vmsr_energy.c
-@@ -29,10 +29,9 @@ char *vmsr_compute_default_paths(void)
- 
- bool is_host_cpu_intel(void)
- {
--    int family, model, stepping;
-     char vendor[CPUID_VENDOR_SZ + 1];
- 
--    host_cpu_vendor_fms(vendor, &family, &model, &stepping);
-+    host_cpu_vendor_fms(vendor, NULL, NULL, NULL);
- 
-     return g_str_equal(vendor, CPUID_VENDOR_INTEL);
- }
+ typedef struct X86RegisterInfo32 {
 -- 
 2.39.3
 
