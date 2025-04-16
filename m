@@ -2,51 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FE8A8AE83
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 05:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F8DA8AF14
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 06:35:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4thk-00029A-50; Tue, 15 Apr 2025 23:44:52 -0400
+	id 1u4uTI-0003ex-TM; Wed, 16 Apr 2025 00:34:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u4thQ-00026p-FT; Tue, 15 Apr 2025 23:44:32 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u4thO-00071l-BM; Tue, 15 Apr 2025 23:44:31 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 16 Apr
- 2025 11:43:30 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Wed, 16 Apr 2025 11:43:30 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <nabihestefan@google.com>
-Subject: [PATCH v3 10/10] docs/system/arm/aspeed: Support vbootrom for AST2700
-Date: Wed, 16 Apr 2025 11:43:25 +0800
-Message-ID: <20250416034327.315714-11-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250416034327.315714-1-jamin_lin@aspeedtech.com>
-References: <20250416034327.315714-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1u4uTD-0003eY-Df; Wed, 16 Apr 2025 00:33:56 -0400
+Received: from mail-vk1-xa29.google.com ([2607:f8b0:4864:20::a29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1u4uTB-0004tq-Fq; Wed, 16 Apr 2025 00:33:55 -0400
+Received: by mail-vk1-xa29.google.com with SMTP id
+ 71dfb90a1353d-5242f137a1eso2509078e0c.1; 
+ Tue, 15 Apr 2025 21:33:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1744778031; x=1745382831; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TLKUQy5gYABgjaBL4u4hjmZvkq+rI+6O1nGmkPD98LM=;
+ b=DQRNjlOI7Xfr1FXgGGwp/Qc1VcUVyhP/PvwOYd6pZKiJ31jjHAeV4YJ0ShU7755kYF
+ ngTr4BwwhoS10XlUl6QRD+VFjXKcIJFnDw45jMGJGwSawN9MNQIUnQlsnRfRpFp1EhVf
+ wP2ziH3AGMJkAtMkepndc/BSnz8v0PkvkMbA9g6/vTMch4ekDPHmFZiMrQ3vHOQy/LKm
+ GUz7PvwHjwiYvO+KSMoU3jUxKN/pH9dSCo33wf8EaMoV/qw+xR62QrZzjQSr/Y7kXF1l
+ uvB3kXLya7aaFwUfltgj6bt38uZGKgRJZJDkp9rVtC7eyFjZKyWC72BUDdODrPy5HTHu
+ vR/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744778031; x=1745382831;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TLKUQy5gYABgjaBL4u4hjmZvkq+rI+6O1nGmkPD98LM=;
+ b=lKxf2BOhP8B0rdzEaLkV5DOxmeM8YIT1hmildrkUKQ62jRoFpQ9YQsGTREF0tdqzb+
+ va1gT2i5blxnmT35Uq7xtQf6fWmA//uJ7PmludZ+wTKFZjdhIdcsJmV8lRkIleC+xnye
+ HEsAdBMf61R2S1D/KYZXkvBD6nhelj3ciGTH7BdJkvM8mvoOrWoMEBvdoqqGE9qU3I4M
+ FxF7f+V9N3151kXlZVFvXmOpIjoXtjXDHIkN4rafIbNzZKDVOLxwMC3jmPW11njr7sMa
+ SnDV/N1SFOvSjME9lVM1g115yVa9jBl1YIvYTiP2U0SV1RdTVbSgVJ2QjsIlQRYTYb2p
+ snNQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVyOP1F8+lOZBo7xO9own6jcocelEqovC4g7QmtHitZyuHM2Qus/u7bxAiWg17tNWsm1YF3r0Y07aiB8l8=@nongnu.org
+X-Gm-Message-State: AOJu0YyY8A56+mBySARd6wbaZTMUF8nRy9i66bpDNRwJEXQ8UTasQqBU
+ UzCrkCn+TGpO0lzRKEMAYel76rYnDWbLwR7Ogarog6fsxGwP4XxBUvRT1fxzJ2Ui0nzt7zStKoO
+ oEWiFfBSUJKsefbyBOLM+3+U2ATQ=
+X-Gm-Gg: ASbGncvIMBvI5TZMWzJMrOpsnbORhlp/WfpxIezKSiogRidnMs9m0YwvXDT/HfpJulw
+ BzTDd+nbEQZyEt+JTy1U/g52A5fVO82G7cL4Vb4+eW/J2D+P7GRywpli+JVUL9W/9IXlABo8Skg
+ tCSZmCVfDEyn8F+huM55W2gCREZETbMCOLnufYFc9tRiRAjVeBj8vcbnVhaOlA5kI=
+X-Google-Smtp-Source: AGHT+IE/dY+bxQnCNah1uLfNqkpzxP9++maw29Xbx/usraZBNU7jquMrzOxGv1X/8orzPQ7naMIL8p0BoYLqAxRIhBY=
+X-Received: by 2002:a05:6102:53cc:b0:4c1:86bc:f959 with SMTP id
+ ada2fe7eead31-4cb591e0f5bmr69533137.8.1744778031522; Tue, 15 Apr 2025
+ 21:33:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <20250415080254.3667878-1-ziqiaokong@gmail.com>
+ <20250415080254.3667878-2-ziqiaokong@gmail.com>
+In-Reply-To: <20250415080254.3667878-2-ziqiaokong@gmail.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 16 Apr 2025 14:33:25 +1000
+X-Gm-Features: ATxdqUHQNpityw54OZ5D6s0DwH98W5i1bCXjjWqUDto6QZgf_5_1uAD856GwlXo
+Message-ID: <CAKmqyKOyBb9wkkvjeVg76Qs+c-D4R13hJuQKQa2RRnw5rP3ZJw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] target/riscv: fix endless translation loop on big
+ endian systems
+To: Ziqiao Kong <ziqiaokong@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, alistair.francis@wdc.com, 
+ richard.henderson@linaro.org, philmd@linaro.org, pbonzini@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a29;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa29.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,68 +92,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using the vbootrom image support and the boot ROM binary is
-now passed via the -bios option, using the image located in
-pc-bios/ast27x0_bootrom.bin.
+On Tue, Apr 15, 2025 at 6:06=E2=80=AFPM Ziqiao Kong <ziqiaokong@gmail.com> =
+wrote:
+>
+> On big endian systems, pte and updated_pte hold big endian host data
+> while pte_pa points to little endian target data. This means the branch
+> at cpu_helper.c:1669 will be always satisfied and restart translation,
+> causing an endless translation loop.
+>
+> The correctness of this patch can be deduced by:
+>
+> old_pte will hold value either from cpu_to_le32/64(pte) or
+> cpu_to_le32/64(updated_pte), both of wich is litte endian. After that,
+> an in-place conversion by le32/64_to_cpu(old_pte) ensures that old_pte
+> now is in native endian, same with pte. Therefore, the endianness of the
+> both side of if (old_pte !=3D pte) is correct.
+>
+> Signed-off-by: Ziqiao Kong <ziqiaokong@gmail.com>
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- docs/system/arm/aspeed.rst | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 97fd6a0e7f..c87a2cf796 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -250,7 +250,14 @@ under Linux), use :
- Booting the ast2700-evb machine
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
--Boot the AST2700 machine from the flash image, use an MTD drive :
-+Boot the AST2700 machine from the flash image.
-+
-+There are two supported methods for booting the AST2700 machine with a flash image:
-+
-+Manual boot using ``-device loader``:
-+
-+It causes all 4 CPU cores to start execution from address ``0x430000000``, which
-+corresponds to the BL31 image load address.
- 
- .. code-block:: bash
- 
-@@ -270,6 +277,26 @@ Boot the AST2700 machine from the flash image, use an MTD drive :
-        -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd \
-        -nographic
- 
-+Boot using a virtual boot ROM (``-bios``):
-+
-+If users do not specify the ``-bios option``, QEMU will attempt to load the
-+default vbootrom image ``ast27x0_bootrom.bin`` from either the current working
-+directory or the ``pc-bios`` directory within the QEMU source tree.
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-aarch64 -M ast2700-evb \
-+      -drive file=image-bmc,format=raw,if=mtd \
-+      -nographic
-+
-+The ``-bios`` option allows users to specify a custom path for the vbootrom
-+image to be loaded during boot. This will load the vbootrom image from the
-+specified path in the ${HOME} directory.
-+
-+.. code-block:: bash
-+
-+  -bios ${HOME}/ast27x0_bootrom.bin
-+
- Aspeed minibmc family boards (``ast1030-evb``)
- ==================================================================
- 
--- 
-2.43.0
+Alistair
 
+> ---
+>  target/riscv/cpu_helper.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> index 6c4391d96b..3233b66e7e 100644
+> --- a/target/riscv/cpu_helper.c
+> +++ b/target/riscv/cpu_helper.c
+> @@ -1662,9 +1662,11 @@ static int get_physical_address(CPURISCVState *env=
+, hwaddr *physical,
+>              target_ulong *pte_pa =3D qemu_map_ram_ptr(mr->ram_block, add=
+r1);
+>              target_ulong old_pte;
+>              if (riscv_cpu_sxl(env) =3D=3D MXL_RV32) {
+> -                old_pte =3D qatomic_cmpxchg((uint32_t *)pte_pa, pte, upd=
+ated_pte);
+> +                old_pte =3D qatomic_cmpxchg((uint32_t *)pte_pa, cpu_to_l=
+e32(pte), cpu_to_le32(updated_pte));
+> +                old_pte =3D le32_to_cpu(old_pte);
+>              } else {
+> -                old_pte =3D qatomic_cmpxchg(pte_pa, pte, updated_pte);
+> +                old_pte =3D qatomic_cmpxchg(pte_pa, cpu_to_le64(pte), cp=
+u_to_le64(updated_pte));
+> +                old_pte =3D le64_to_cpu(old_pte);
+>              }
+>              if (old_pte !=3D pte) {
+>                  goto restart;
+> --
+> 2.34.1
+>
+>
 
