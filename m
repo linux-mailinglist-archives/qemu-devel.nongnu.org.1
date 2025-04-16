@@ -2,71 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE83A8B900
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 14:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E36A8B9C0
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 15:02:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u51qk-0000qs-7M; Wed, 16 Apr 2025 08:26:42 -0400
+	id 1u52Nj-0000wn-4s; Wed, 16 Apr 2025 09:00:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u51eO-0001BP-Sy; Wed, 16 Apr 2025 08:13:58 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u51eI-0002PE-F6; Wed, 16 Apr 2025 08:13:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744805631; x=1776341631;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=BCu7uGJI12d9kaGwBw0mVPWM82NUyxixbN4TgRX2RPg=;
- b=anKSQWkiJ9D/hV3QWVziZmgX5M9F0K5RjgvtaJ/U/F99HthqFoy+k//b
- l5dKOWeLNPlCG41CiBBDB6uil7RMsbxwEweoWehtY7qJeSivuJuUMMze/
- 6c7O6zP6qO+vcNt6Wq1G8pkpuKSWbpb+9Up0GsGp0zbB1I3qKyhBQ/cXP
- 2wV6TDXEClq3E4992yveatXUyUvCzzEi12Ctmr751jEMJjw5MyNA2XR4v
- Cje7wRQJpbzl06UGiAN6H5dRaZw03Bpw8QCGwDxihFkCVKI9xOV8JQpZZ
- B5k5xhohmZLtLvYfQIOTBeqr/XPsPw3sRUnu0v/5s+NwbEhcFw/qYEnHe g==;
-X-CSE-ConnectionGUID: ZPKjDVq/Q4GMEKGQuymDbQ==
-X-CSE-MsgGUID: uj3/TbR7S16AHVjUi4glTg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="56984908"
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="56984908"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2025 05:13:47 -0700
-X-CSE-ConnectionGUID: XmmKXVy8SqWwE1vkTlRKig==
-X-CSE-MsgGUID: oS8JfjvrT6qst16OYfIHZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="167626400"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 16 Apr 2025 05:13:46 -0700
-Date: Wed, 16 Apr 2025 20:34:37 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>
-Subject: Re: [PATCH 2/9] rust/vmstate: Support varray's num field wrapped in
- BqlCell
-Message-ID: <Z/+j3be+ZT7G1ToL@intel.com>
-References: <20250414144943.1112885-1-zhao1.liu@intel.com>
- <20250414144943.1112885-3-zhao1.liu@intel.com>
- <c44eebb9-1252-447e-9262-e2946f90f01c@redhat.com>
- <Z/97xG5VONqmlK+7@intel.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u52Mn-0000sj-M2
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 08:59:49 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u52Ml-00043s-51
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 08:59:49 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D4A9921175;
+ Wed, 16 Apr 2025 12:59:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1744808383; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rKkkEe73aBeiVA1HuV99dUfe+Zfq97nQHFEUkAsUd9k=;
+ b=ig13IakO37FbRyjc29DFvPgALbXcBpAC7aEZx+zEa0k8WRfIA5GtBFYIq72muw9Q6WrM5Y
+ RDzugJzQ3z5qBQtHa0Q5zK/p2ZlpRtsmZTVk9r1KWb1DcQENLbMQ9LTRBBfxuczFCHK2Dm
+ NbHCEbqCQRNGkarsLx60JlLelRMWlAE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1744808383;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rKkkEe73aBeiVA1HuV99dUfe+Zfq97nQHFEUkAsUd9k=;
+ b=HSXvlFLG19sCAyoyYcUQUTm3Dg1fzl0dy91D4p+RauvRLTzGm56syk6oh6Awtp8Am1re29
+ yaTvV+V4SC9jBSAw==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zpsVmT6o;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oeb524OP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1744808382; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rKkkEe73aBeiVA1HuV99dUfe+Zfq97nQHFEUkAsUd9k=;
+ b=zpsVmT6oa0bTaInNT4BBkj0GLV7iajpW5rd56kb3+WMuxqgP4vYd3Sr5rHYAElEmawiGQn
+ jfTRw0pD+t9AazAOQ1so1YgA1tpWKXbPQan1FjzD4rQnGYhBOkkAFFah11rVMargqm9y1F
+ JE5NvmGXtKWtW1lfj745pEqjI6k35IM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1744808382;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rKkkEe73aBeiVA1HuV99dUfe+Zfq97nQHFEUkAsUd9k=;
+ b=oeb524OPCb63Mx/rC1N9qt7LH9WrL8vqo5/zSxZeEfcQg/GXltovwuGpHmOb4BY8ogK+Sv
+ Io1Abf898/6NDoAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 495A413976;
+ Wed, 16 Apr 2025 12:59:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id BRrTAb6p/2fLMgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 16 Apr 2025 12:59:42 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, berrange@redhat.com, Prasad Pandit
+ <pjp@fedoraproject.org>
+Subject: Re: [PATCH v9 0/7] Allow to enable multifd and postcopy migration
+ together
+In-Reply-To: <87ecxteym0.fsf@suse.de>
+References: <20250411114534.3370816-1-ppandit@redhat.com>
+ <87ecxteym0.fsf@suse.de>
+Date: Wed, 16 Apr 2025 09:59:39 -0300
+Message-ID: <87bjswfeis.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z/97xG5VONqmlK+7@intel.com>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+X-Rspamd-Queue-Id: D4A9921175
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MISSING_XM_UA(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,77 +126,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > #[macro_export]
-> > macro_rules! if_present {
-> >      ([$($cond:tt)*]: $($result:tt)*) => { $($result)* };
-> > }
-> > 
-> > to expand the array part of the access:
-> > 
-> > assert_field_type!(...
-> >     $($crate::if_present!([$num]: [0]))?;
-> 
-> This example remind me that I introduced a bug into array part:
-> 
->     let index: usize = v.$num.try_into().unwrap();
->     types_must_be_equal::<_, &$ti>(&v.$i[index]);
-> 
-> In the current code, actually it accesses v[num], but when num
-> stores the length of the whole array, it will cause index out of bounds.
-> 
-> So for current code, at least it should access `v.i[num - 1]`:
-> 
->     let index: usize = v.$num.try_into().unwrap() - 1; // access the last element.
->     types_must_be_equal::<_, &$ti>(&v.$i[index]);
+Fabiano Rosas <farosas@suse.de> writes:
 
-I realize that my thinking was wrong here! The `v` (with specific type)
-isn't a valid instance, and the variable `num` being passed isn't
-correctly initialized. Therefore, checking `num`'s value here is
-meaningless; it's enough to just check if the type matches!
+> Prasad Pandit <ppandit@redhat.com> writes:
+>
+>> From: Prasad Pandit <pjp@fedoraproject.org>
+>>
+>>  Hello,
+>>
+>>
+>> * This series (v9) does minor refactoring and reordering changes as
+>>   suggested in the review of earlier series (v8). Also tried to
+>>   reproduce/debug a qtest hang issue, but it could not be reproduced.
+>>   From the shared stack traces it looked like Postcopy thread was
+>>   preparing to finish before migrating all the pages.
+>
+> The issue is that a zero page is being migrated by multifd but there's
+> an optimization in place that skips faulting the page in on the
+> destination. Later during postcopy when the page is found to be missing,
+> postcopy (@migrate_send_rp_req_pages) believes the page is already
+> present due to the receivedmap for that pfn being set and thus the code
+> accessing the guest memory just sits there waiting for the page.
+>
+> It seems your series has a logical conflict with this work that was done
+> a while back:
+>
+> https://lore.kernel.org/all/20240401154110.2028453-1-yuan1.liu@intel.com/
+>
+> The usage of receivedmap for multifd was supposed to be mutually
+> exclusive with postcopy. Take a look at the description of that series
+> and at postcopy_place_page_zero(). We need to figure out what needs to
+> change and how to do that compatibly. It might just be the case of
+> memsetting the zero page always for postcopy, but I havent't thought too
+> much about it.
+>
+> There's also other issues with the series:
+>
+> https://gitlab.com/farosas/qemu/-/pipelines/1770488059
+>
+> The CI workers don't support userfaultfd so the tests need to check for
+> that properly. We have MigrationTestEnv::has_uffd for that.
+>
+> Lastly, I have seem some weirdness with TLS channels disconnections
+> leading to asserts in qio_channel_shutdown() in my testing. I'll get a
+> better look at those tomorrow.
 
-> > );
-> > 
-> > With this change, assert_field_type! is nicer and at least the trait you're
-> > introducing in assertions.rs goes away...
-> 
-> Yes! Great idea.
-> 
-> Then with your help, we could integrate the array part like:
-> 
-> #[macro_export]
-> macro_rules! if_present {
->     ([$($cond:tt)*]: $($result:tt)*) => { $($result)* };
-> }
-> 
-> ...
-> 
-> #[macro_export]
-> macro_rules! assert_field_type {
->     ($t:ty, $i:tt, $ti:ty $(, $num:ident)?) => {
->         const _: () = {
->             #[allow(unused)]
->             fn assert_field_type(v: $t) {
->                 fn types_must_be_equal<T, U>(_: T)
->                 where
->                     T: $crate::assertions::EqType<Itself = U>,
->                 {
->                 }
-> 
->                 let access = v.$i$($crate::if_present!([$num]: [v.$num - 1])])?;
-
-So, the correct code should just check array[0] as you said:
-
-let access = v.$i$($crate::if_present!([$num]: [0])])?;
-
-Based on this, there's no need for anything else such as `Into`.
-
->                 types_must_be_equal::<_, $ti>(access);
->             }
->         };
->     };
-> }
-
-Thanks,
-Zhao
-
+Ok, you can ignore this last paragraph. I was seeing the postcopy
+recovery test disconnect messages, those are benign.
 
