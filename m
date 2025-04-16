@@ -2,102 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6EEA90E47
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 00:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90785A90E60
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 00:02:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Am2-0003YI-Un; Wed, 16 Apr 2025 17:58:26 -0400
+	id 1u5Api-00051R-OZ; Wed, 16 Apr 2025 18:02:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1u5Ala-000396-3W; Wed, 16 Apr 2025 17:57:58 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1u5AlY-000887-Ha; Wed, 16 Apr 2025 17:57:57 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLN3Hh005812;
- Wed, 16 Apr 2025 21:57:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2023-11-20; bh=AmHd+
- 36j7GM9/O3fepi/uZSTy9/vxZxSBCu5TR/Esus=; b=bd+q6BirGegue/mjtvdnw
- aHdEUNL4PXHsKoWw6GQlxs43tisPHDT7KRT2RExB0+Wg/oA5sGqwzmgACAEZEgOC
- /vVyLfzVbRYM2+0YpamjD4HtBxZ3R8hPO03Q7jf1x9SAxNynZ73cNHPSh0CpM7lL
- /Uttr7EcBWRrcZPrArx0HjXOvu2jmSeo3z1ejl/mC/9EQWKqI6wMVuIL8Lil8tBJ
- 8OHTFhCWiGX2j6nLxJwb7peepJz/wFfaKrwD7qoSMDwBLxo2mcKz6lbsrCBv9g07
- Jnu5UzNZg25AT7ztD2AKsBn7oVJE6KVQOkk4xoGuaDiD3lZNd+IsxrgO+L0r0iGC
- Q==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46187xw3pw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Apr 2025 21:57:30 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 53GL07kI005731; Wed, 16 Apr 2025 21:57:29 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 460d5xhvvq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Apr 2025 21:57:29 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53GLv1qk036583;
- Wed, 16 Apr 2025 21:57:28 GMT
-Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 460d5xhvcp-12; Wed, 16 Apr 2025 21:57:28 +0000
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
- sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
- like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
- peter.maydell@linaro.org, gaosong@loongson.cn, chenhuacai@kernel.org,
- philmd@linaro.org, aurelien@aurel32.net, jiaxun.yang@flygoat.com,
- arikalo@gmail.com, npiggin@gmail.com, danielhb413@gmail.com,
- palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, richard.henderson@linaro.org,
- david@redhat.com, iii@linux.ibm.com, thuth@redhat.com,
- flavra@baylibre.com, ewanhai-oc@zhaoxin.com, ewanhai@zhaoxin.com,
- cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
- frankzhu@zhaoxin.com, silviazhao@zhaoxin.com, kraxel@redhat.com,
- berrange@redhat.com
-Subject: [PATCH v4 11/11] target/i386/kvm: don't stop Intel PMU counters
-Date: Wed, 16 Apr 2025 14:52:36 -0700
-Message-ID: <20250416215306.32426-12-dongli.zhang@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250416215306.32426-1-dongli.zhang@oracle.com>
-References: <20250416215306.32426-1-dongli.zhang@oracle.com>
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1u5Apg-0004zE-7k
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 18:02:12 -0400
+Received: from mail-io1-xd2f.google.com ([2607:f8b0:4864:20::d2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1u5Ape-0000eq-2O
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 18:02:11 -0400
+Received: by mail-io1-xd2f.google.com with SMTP id
+ ca18e2360f4ac-85e15dc801aso7896739f.2
+ for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 15:02:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1744840928; x=1745445728; darn=nongnu.org;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=h688ODngyyW/J+95F2p58lsO8Y8SOTF7MIcOece253M=;
+ b=Zoocin1DGQzOVPGZ6ugSLDWHU7D+nytbGcUQew8cRZQ4kfnP+2MG1bg4Dqdm8UWmy0
+ 4+YgcbCAt2is+O1rH0wSZekaTOqHrHFqZatsYXZyfbWboVgwbYKJBq4Ch5KPHNNMGJhr
+ NSqXFq/QxVUFmZy2BZkuk7JkMkj73ogwu21tk+tH3QLETWyqriViqerRMR7FDpCPJqtk
+ QWUTORX69Jf1JqURveJ6Nkx33eKOQTDN9Zxc4BlfNFzF1GqD9uGelHFsf7LoE6sfC4Bh
+ Zk4ScOn3Wl0SZBC7Ue5ykfe3BGQ47YIhNuTXQSrJ4jeqFuLb0v+xrxRGcL0EcDm42DLH
+ XC5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744840928; x=1745445728;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=h688ODngyyW/J+95F2p58lsO8Y8SOTF7MIcOece253M=;
+ b=RD/QjO28rKBvaP5R4hVqC0UegV8ypkLKo2Vq2Jf7ip5QrJAmHAMB0l9NAIpojqugA9
+ 6TumBnOcHSJI0r2tY5C8i77E6ZP0xYhA+Xo3DVzkk6p9qwZpJvMmfhWPufIFcWWxf9yA
+ seiDALZqlaV7YsZYGGheNy7lEj7YnwtRkgkVSzuwkZOhKULprqb8xePd5X+dHNNswfkr
+ 6rtIaWezFhxYFfeWJ8FP421q3AXi+WS82CHH9R5e8THYdBfajop8d1DLhc/YKtoaTm/O
+ 44HHru0ZWa2qWLzDrygr8wjRdfoezbqkuNXRCyc5Hu5AAfDe+IfyopJmwPe4q4WPK3i8
+ 3Z0w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWah9t20DlfMz621KYrinEW5KNADTynHdAiU0dfcC8ardKjRJL0IN/QCBif+kwZBF5GmMytrd69I1iu@nongnu.org
+X-Gm-Message-State: AOJu0Yxu/RdsMgXeIiusDKzbdN058IwcDwI2z0IM6gBwFTw/G1dxgSlq
+ UUA+oat7sMZ0wOEExqg/xW8dD25UhvbXhtMqPoC8jX1p61P8fH+J
+X-Gm-Gg: ASbGncsm1HAPjal+lfg7Rnv1g3gnKg1flU8Lj6yM1CUeZ6viT4qs9t4lwrfwc8k8WYo
+ S+osiT8b9JaiqTTwefvKCWcS3YqgFpIbf3NDmW9PBfHChlZSJV/6muOIq1Y8/JgadekoresCUkp
+ /EjUfbvTyB7IU4EiSBReyxW1k6ziIXcQaWVwj13kEWHssnrnsF1qd6RmUvF8aB7DfcXNDRkIH1j
+ UFyopfQL5dIWHUAXsqM1LfdMzAZUveLw7FFSCD6Ky9LHVMEeHEPkI9pAImpLYFGDMImhWBL95ik
+ U6zXqLwN76AoC5tbeWkbTXr0vXtx3SHvcY9+Oh1/omP46+Sj1bFTowS92WxaKlSc6ndsiqphwGc
+ =
+X-Google-Smtp-Source: AGHT+IEFGfh+VY4RpL1lpBb9onaD6MkegyGKWzMEzkO13SFQuqCx2zn/vV9oLP8ATEm+f3wt/eo9Tw==
+X-Received: by 2002:a05:6602:4c85:b0:85d:f316:fabc with SMTP id
+ ca18e2360f4ac-861c50ee04cmr382331539f.8.1744840928030; 
+ Wed, 16 Apr 2025 15:02:08 -0700 (PDT)
+Received: from DESKTOPUU50BPD (c-67-190-160-7.hsd1.co.comcast.net.
+ [67.190.160.7]) by smtp.gmail.com with ESMTPSA id
+ ca18e2360f4ac-86165428907sm313600639f.17.2025.04.16.15.02.06
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 16 Apr 2025 15:02:06 -0700 (PDT)
+From: <ltaylorsimpson@gmail.com>
+To: "'Brian Cain'" <brian.cain@oss.qualcomm.com>,
+	<qemu-devel@nongnu.org>
+Cc: <richard.henderson@linaro.org>, <philmd@linaro.org>,
+ <quic_mathbern@quicinc.com>, <ale@rev.ng>, <anjo@rev.ng>,
+ <quic_mliebel@quicinc.com>, <alex.bennee@linaro.org>,
+ <quic_mburton@quicinc.com>, <sidneym@quicinc.com>,
+ "'Brian Cain'" <bcain@quicinc.com>
+References: <20250301052628.1011210-1-brian.cain@oss.qualcomm.com>
+ <20250301052628.1011210-4-brian.cain@oss.qualcomm.com>
+ <079301dbaef8$91e8ff10$b5bafd30$@gmail.com>
+ <d9b21bcf-cf13-4a4e-b942-2a61f71bbdad@oss.qualcomm.com>
+In-Reply-To: <d9b21bcf-cf13-4a4e-b942-2a61f71bbdad@oss.qualcomm.com>
+Subject: RE: [PATCH 03/38] target/hexagon: Add System/Guest register
+ definitions
+Date: Wed, 16 Apr 2025 16:02:03 -0600
+Message-ID: <07a901dbaf1b$3160b200$94221600$@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-16_08,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxlogscore=999
- suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2502280000 definitions=main-2504160177
-X-Proofpoint-GUID: xDo9o_icqz0hlnFpR2_M0tPWOwYCN-kY
-X-Proofpoint-ORIG-GUID: xDo9o_icqz0hlnFpR2_M0tPWOwYCN-kY
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.268,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQERX/uiI+LG127bCFnOJB03IqEGrgIkiLuRAT03n/cBddyiSLUUuLkA
+Content-Language: en-us
+X-Antivirus: Norton (VPS 250416-4, 4/16/2025), Outbound message
+X-Antivirus-Status: Clean
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2f;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd2f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,63 +114,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PMU MSRs are set by QEMU only at levels >= KVM_PUT_RESET_STATE,
-excluding runtime. Therefore, updating these MSRs without stopping events
-should be acceptable.
 
-In addition, KVM creates kernel perf events with host mode excluded
-(exclude_host = 1). While the events remain active, they don't increment
-the counter during QEMU vCPU userspace mode.
 
-Finally, The kvm_put_msrs() sets the MSRs using KVM_SET_MSRS. The x86 KVM
-processes these MSRs one by one in a loop, only saving the config and
-triggering the KVM_REQ_PMU request. This approach does not immediately stop
-the event before updating PMC. This approach is true since Linux kernel
-commit 68fb4757e867 ("KVM: x86/pmu: Defer reprogram_counter() to
-kvm_pmu_handle_event"), that is, v6.2.
+> -----Original Message-----
+> From: Brian Cain <brian.cain@oss.qualcomm.com>
+> Sent: Wednesday, April 16, 2025 1:43 PM
+> To: ltaylorsimpson@gmail.com; qemu-devel@nongnu.org
+> Cc: richard.henderson@linaro.org; philmd@linaro.org;
+> quic_mathbern@quicinc.com; ale@rev.ng; anjo@rev.ng;
+> quic_mliebel@quicinc.com; alex.bennee@linaro.org;
+> quic_mburton@quicinc.com; sidneym@quicinc.com; 'Brian Cain'
+> <bcain@quicinc.com>
+> Subject: Re: [PATCH 03/38] target/hexagon: Add System/Guest register
+> definitions
+>=20
+>=20
+> On 4/16/2025 12:54 PM, ltaylorsimpson@gmail.com wrote:
+> >
+> >> -----Original Message-----
+> >> From: Brian Cain <brian.cain@oss.qualcomm.com>
+> >> Sent: Friday, February 28, 2025 10:26 PM
+> >> To: qemu-devel@nongnu.org
+> >> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
+> >> philmd@linaro.org; quic_mathbern@quicinc.com; ale@rev.ng;
+> >> anjo@rev.ng; quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
+> >> alex.bennee@linaro.org; quic_mburton@quicinc.com;
+> >> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>
+> >> Subject: [PATCH 03/38] target/hexagon: Add System/Guest register
+> >> definitions
+> >>
+> >> From: Brian Cain <bcain@quicinc.com>
+> >>
+> >> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+> >> ---
+> >>   target/hexagon/gen_analyze_funcs.py |  21 +++-
+> >>   target/hexagon/hex_common.py        | 163
+> >> ++++++++++++++++++++++++++++
+> >>   2 files changed, 181 insertions(+), 3 deletions(-) diff --git
+> >> a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
+> index
+> >> 758e5fd12d..db50defeb6 100755
+> >> --- a/target/hexagon/hex_common.py
+> >> +++ b/target/hexagon/hex_common.py
+> >> @@ -33,6 +33,41 @@
+> >>   overrides =3D {}  # tags with helper overrides  =
+idef_parser_enabled =3D
+> >> {}  # tags enabled for idef-parser
+> >>
+> >> +
+> >> +def is_sysemu_tag(tag):
+> >> +    return "A_PRIV" in attribdict[tag] or "A_GUEST" in
+> >> +attribdict[tag]
+> >> +
+> >> +
+> >> +def tag_ignore(tag):
+> >> +    tag_skips =3D (
+> >> +        "Y6_diag",
+> >> +        "Y6_diag0",
+> >> +        "Y6_diag1",
+> >> +    )
+> >> +    attr_skips =3D (
+> >> +        "A_FAKEINSN",
+> >> +        "A_MAPPING",
+> > Add A_CONDMAPPING to this list.
+>=20
+>=20
+> Will do.
 
-No Fixed tag is going to be added for the commit 0d89436786b0 ("kvm:
-migrate vPMU state"), because this isn't a bugfix.
-
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changed since v3:
-  - Re-order reasons in commit messages.
-  - Mention KVM's commit 68fb4757e867 (v6.2).
-  - Keep Zhao's review as there isn't code change.
-
- target/i386/kvm/kvm.c | 9 ---------
- 1 file changed, 9 deletions(-)
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 13ad7de690..6396f65558 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -4172,13 +4172,6 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-         }
- 
-         if ((IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env)) && pmu_version > 0) {
--            if (pmu_version > 1) {
--                /* Stop the counter.  */
--                kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
--                kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
--            }
--
--            /* Set the counter values.  */
-             for (i = 0; i < num_pmu_fixed_counters; i++) {
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i,
-                                   env->msr_fixed_counters[i]);
-@@ -4194,8 +4187,6 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-                                   env->msr_global_status);
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
-                                   env->msr_global_ovf_ctrl);
--
--                /* Now start the PMU.  */
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL,
-                                   env->msr_fixed_ctr_ctrl);
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL,
--- 
-2.39.3
+Great.  Also, make sure tag_ignore is used by all the generator scripts. =
+ Then, these won't show up any of the generated files (e.g., =
+opcodes_def_generated.h.inc).
 
 
