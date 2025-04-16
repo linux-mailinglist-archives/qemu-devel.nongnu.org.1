@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB213A8AE87
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 05:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12FE8A8AE83
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 05:45:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4thU-00026K-EM; Tue, 15 Apr 2025 23:44:36 -0400
+	id 1u4thk-00029A-50; Tue, 15 Apr 2025 23:44:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u4thK-000238-PS; Tue, 15 Apr 2025 23:44:28 -0400
+ id 1u4thQ-00026p-FT; Tue, 15 Apr 2025 23:44:32 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u4thI-0006uD-FJ; Tue, 15 Apr 2025 23:44:25 -0400
+ id 1u4thO-00071l-BM; Tue, 15 Apr 2025 23:44:31 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 16 Apr
@@ -30,10 +30,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <nabihestefan@google.com>
-Subject: [PATCH v3 09/10] tests/functional/aspeed: Add to test vbootrom for
- AST2700
-Date: Wed, 16 Apr 2025 11:43:24 +0800
-Message-ID: <20250416034327.315714-10-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 10/10] docs/system/arm/aspeed: Support vbootrom for AST2700
+Date: Wed, 16 Apr 2025 11:43:25 +0800
+Message-ID: <20250416034327.315714-11-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250416034327.315714-1-jamin_lin@aspeedtech.com>
 References: <20250416034327.315714-1-jamin_lin@aspeedtech.com>
@@ -65,48 +64,62 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the AST2700 functional test to boot using the vbootrom image
-instead of manually loading boot components with -device loader.
-The boot ROM binary is now passed via the
--bios option, using the image located in pc-bios/ast27x0_bootrom.bin.
+Using the vbootrom image support and the boot ROM binary is
+now passed via the -bios option, using the image located in
+pc-bios/ast27x0_bootrom.bin.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- tests/functional/test_aarch64_aspeed.py | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ docs/system/arm/aspeed.rst | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/tests/functional/test_aarch64_aspeed.py b/tests/functional/test_aarch64_aspeed.py
-index 337d701917..85789c1b1d 100755
---- a/tests/functional/test_aarch64_aspeed.py
-+++ b/tests/functional/test_aarch64_aspeed.py
-@@ -94,6 +94,14 @@ def start_ast2700_test(self, name):
-         exec_command_and_wait_for_pattern(self, 'root', 'Password:')
-         exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
+diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+index 97fd6a0e7f..c87a2cf796 100644
+--- a/docs/system/arm/aspeed.rst
++++ b/docs/system/arm/aspeed.rst
+@@ -250,7 +250,14 @@ under Linux), use :
+ Booting the ast2700-evb machine
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  
-+    def start_ast2700_test_vbootrom(self, name):
-+        self.vm.add_args('-bios', 'ast27x0_bootrom.bin')
-+        self.do_test_aarch64_aspeed_sdk_start(
-+                self.scratch_file(name, 'image-bmc'))
-+        wait_for_console_pattern(self, f'{name} login:')
-+        exec_command_and_wait_for_pattern(self, 'root', 'Password:')
-+        exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
+-Boot the AST2700 machine from the flash image, use an MTD drive :
++Boot the AST2700 machine from the flash image.
 +
-     def test_aarch64_ast2700_evb_sdk_v09_06(self):
-         self.set_machine('ast2700-evb')
++There are two supported methods for booting the AST2700 machine with a flash image:
++
++Manual boot using ``-device loader``:
++
++It causes all 4 CPU cores to start execution from address ``0x430000000``, which
++corresponds to the BL31 image load address.
  
-@@ -108,5 +116,12 @@ def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
-         self.start_ast2700_test('ast2700-default')
-         self.do_ast2700_i2c_test()
+ .. code-block:: bash
  
-+    def test_aarch64_ast2700a1_evb_sdk_vboottom_v09_06(self):
-+        self.set_machine('ast2700a1-evb')
+@@ -270,6 +277,26 @@ Boot the AST2700 machine from the flash image, use an MTD drive :
+        -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd \
+        -nographic
+ 
++Boot using a virtual boot ROM (``-bios``):
 +
-+        self.archive_extract(self.ASSET_SDK_V906_AST2700A1)
-+        self.start_ast2700_test_vbootrom('ast2700-default')
-+        self.do_ast2700_i2c_test()
++If users do not specify the ``-bios option``, QEMU will attempt to load the
++default vbootrom image ``ast27x0_bootrom.bin`` from either the current working
++directory or the ``pc-bios`` directory within the QEMU source tree.
 +
- if __name__ == '__main__':
-     QemuSystemTest.main()
++.. code-block:: bash
++
++  $ qemu-system-aarch64 -M ast2700-evb \
++      -drive file=image-bmc,format=raw,if=mtd \
++      -nographic
++
++The ``-bios`` option allows users to specify a custom path for the vbootrom
++image to be loaded during boot. This will load the vbootrom image from the
++specified path in the ${HOME} directory.
++
++.. code-block:: bash
++
++  -bios ${HOME}/ast27x0_bootrom.bin
++
+ Aspeed minibmc family boards (``ast1030-evb``)
+ ==================================================================
+ 
 -- 
 2.43.0
 
