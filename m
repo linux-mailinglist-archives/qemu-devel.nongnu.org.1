@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DCFA8B33E
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 10:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C00A8B354
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 10:21:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4xyi-00048m-60; Wed, 16 Apr 2025 04:18:42 -0400
+	id 1u4xyd-0003xh-7B; Wed, 16 Apr 2025 04:18:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u4xwX-0001vq-5y; Wed, 16 Apr 2025 04:16:34 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1u4xwe-0001x5-Ph; Wed, 16 Apr 2025 04:16:35 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u4xwV-0005rK-8V; Wed, 16 Apr 2025 04:16:24 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-73bf1cef6ceso3176137b3a.0; 
- Wed, 16 Apr 2025 01:16:21 -0700 (PDT)
+ id 1u4xwd-0005sg-3v; Wed, 16 Apr 2025 04:16:32 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-736e52948ebso7314475b3a.1; 
+ Wed, 16 Apr 2025 01:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744791380; x=1745396180; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1744791388; x=1745396188; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SASE3XTeg/hH1Bv2p0ymNoIDo1zAKPv9dOqsCm+H98Y=;
- b=ghWV6wmrFsmZ25MEH74EsWWmIFXkfgJMdftkvrXai/7gE6KH5cHbH7yoKL28nwyWSP
- c/xQn/28wTAJmEjCajTEKg/AKY94+bkAlcYyCUr3K4zYN3wF/dh+WfPSakzx3O7lTp57
- TToMN1F1umlGSlqK1x8CH37dcgOQke7dvEH005rhU2pWIEew6yc64/Y7Eltwbr9chTvX
- JRNlkb62XSuTG0K5wa+6iYdRTC2AiPQ1mfliG91LM6U87F9qFEkgZPCTtFZBYtD1N44F
- zavo/xsy9sBiBrjDrVU/q8rtA+y/Ao3uGw7xviyCGXV7t0Cu3xTTwLcZHXcda6tB+UtG
- xorQ==
+ bh=lYpO1k305Wtiuq/zmuKPfj735nkTtZMPOH5ZuTPK1tU=;
+ b=KUhgGu6MEinhgdxkPlV2nrVl7g1wQZTs0/pLcjQ40AVV72KlxTNDt8QnSHcQ6HbxPw
+ GgFuggZJRfPVpnWBTlAwHynSDwvuNZHAOTY5vZzLbhZgHG7r3+BRi24Lmfumv94xd++y
+ ZNWyqLyOYZlGSBpEuV2OdmWRynp2NemdeAtsAUkCBd35twRxxZQiI7q0iMV3Ys86cedi
+ LB7ieDEYYqf8QrlRf1nrC7LNxDRKjcfF3xkinxAR17OJh03xadvoSNHxJxP2fGMj4fZM
+ xl9EHhJ/TJ+RCW3XTCsPPhcbvlLMWtFhIonTpivG9BIMQHXEo3TEB8jx8ATNjkChVlMF
+ newQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744791380; x=1745396180;
+ d=1e100.net; s=20230601; t=1744791388; x=1745396188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SASE3XTeg/hH1Bv2p0ymNoIDo1zAKPv9dOqsCm+H98Y=;
- b=m+Amvye3kzJ5WV+A1Sis96kCwPmoym6m3IKet029uF3KpjToA6Eff7MfHlm0B5viHG
- /vPdoKO0FyQ4ek3VWCvWf8GXG1lH356MGqGRM9crmg+Gg7P+zgLli3oj6mC26vs6uStf
- HmOx4dpL0o6kzJcOR8LndhpHuD2ERYnvZB7OAzYhdHAO2TNw1nGKSqW1o98kFvou2e2D
- OJj8v/VDoKybxAgIj4YaIZ6/iY4SzRWoI7x1WlLSKDS+znPOHlcA2UXvWIZHX5l0+41n
- 0tohy2lzvubZUfhGJJgW5wwQxaS6MkaWx3TcOKbF+BidsBkDNPnitPFcsgylkbw/ocfY
- vu4Q==
+ bh=lYpO1k305Wtiuq/zmuKPfj735nkTtZMPOH5ZuTPK1tU=;
+ b=Z58TC7Tm/QnrrfdFi/J2KSrxKaE5zf+INE3svyOzc5KGKhOdTrL6yaq0g3ceEFlEc9
+ mDwhDX24m2J9jcOC+bJekWqs0fFmFKLOXuD1vezTP3rTuxgOPMSQyyiEnhJf6TAg1ata
+ lPU/hGrm1l19Rye7th7NJmudmafj/D4DZLT2uZG8lE9o7zhYBHBHX4WPLMoPaI6GrIbJ
+ FtDnu+5CmfMPUEQl9iQBnHKZuD/YxmWvlnC4u8e5PD68tFDJKBOsSGME+tKNcNGVuZKi
+ 88VueWYLNJeO5lILVItMFigR9TnRx8l6iBsSnCwStJUOxSSlqn0sJFV113pKFd3WxXHL
+ FELw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUH34aKJA3HxOiIMlK/SLlQLNBRxi2LDVBdungfwt36JpYxFm/o3TjnwqXyJ+KJeEb2VHzY4v3kugo=@nongnu.org,
- AJvYcCVSSYjktOWe4Bk4Lnwl9aDgPuwKJnPetX4VT6DzwmerhgnTJRIEDVbkhyGAh9u5Mme/3v+O1cxaBPm0hw==@nongnu.org,
- AJvYcCWDdRLIrmmDMOj9hsOC+t9bEnxD8wLVuXMo/1oynDwdgLtufDZfZ7mwkQn/pApI6uP7iB0KLtzVqXfmSw==@nongnu.org,
- AJvYcCX9B5BxMZcOcuOgwQL8r9L0wJg7CnGZ6r8bgh7D/G6v6q6MMIKbITLDVE9BgqN3BHSXO0h+XgkVHw==@nongnu.org
-X-Gm-Message-State: AOJu0YzzuG2piX4Pxoj/OUzN1DV95wdHhw+/Zqdw/f81+KMcMFudAbzP
- rVe1/hxw9Az0j8wGNmHrtxwuc9e6QZEby1lGwX7fjbu7GYP5hW/Tw07lvnAD
-X-Gm-Gg: ASbGncv43BaLy6gYSFUuIi719NfupainD989tOk/9ameeXVtdvMP3jqg3Hvl7ThSu8O
- SqySO/1+WPnLz9p52cypfzrtKS7RueiS7MB3YtcpUtQfpQdfsQP7tG6g/PIym5WwHBtvjoJ2C2o
- /+L/bFGwAqNGw/VuiZPMzj5Qf4u9Ob5tTGtl0BmxQW56b3oLk515hWV9qyi2SnAVupoqP1hub8Q
- gMMdoI9F9GJrzwpNj+D6oJYRf4f7L5W9jIxBzOpA1DtxiLz4EOteH60AosE6/E8x6bNz+eMZWKf
- kpgjjHcRAXekZNt8zb9G0jyS2yeFKBifTKirMSQvCSpp56HF5F9/lKb95g==
-X-Google-Smtp-Source: AGHT+IGZVnR6iExg3SaeGbXovRMHfu4V9AyLUD1Bp7HiSc7H8Bjv2sq7p9nu4P9mJ0RjhTJsAOhTYQ==
-X-Received: by 2002:a05:6a21:150b:b0:1f5:97c3:41b9 with SMTP id
- adf61e73a8af0-203b3e4ffe2mr1258840637.5.1744791380301; 
- Wed, 16 Apr 2025 01:16:20 -0700 (PDT)
+ AJvYcCUO1e3oaI2C6kIneXC95wq6NtANe91V3E8YvxkdRbbkY+OO38PV7Jy8kHyzredR5nd2XbJU2YFMLAA=@nongnu.org,
+ AJvYcCVUqcq9Ip+JUz7J4CJJGJvvn/EBFBGdSrt3YqRqjr1rSqgUaVxsXvUI9RC0tXtb1uxaDF4zLsMmDSs48g==@nongnu.org,
+ AJvYcCXe/+NvADZhdJDPzZmW1p5bXb7BNsvl7sb+u+FL3FZIaSqKrpurxn5rLcF9TUi49NthyS4drF7iUpPgEQ==@nongnu.org,
+ AJvYcCXm64hitflcZ0vbsp1A/INdfUTrBGxSq+3TfGxPpbsfwnS2UO9eeIP9kkDpOX2E2wNmbeichJN+hg==@nongnu.org
+X-Gm-Message-State: AOJu0YyUl+UDFKUYHLfjFzGuAG+e3MEavhPWbaCevq7YYonGodlOao5J
+ N3w0yOzwPIBvz5cofAdoO6TEaMHsdQY9hkRyjab0FQwj13AdC1Cm2ND0+80M
+X-Gm-Gg: ASbGnctPKZOuaAJEH8g0/hNrHvdEb1lw2fiB3Cf+jWU86WiKGC5T8UwSRc2N//s5sIe
+ kf/RYSL3pzljTwHQCWisZu5jdNNCy7z2szvKreG4Bw2u58ld+HMEgHNooxA/36f7dVdkFyBvku0
+ R50yUsVluh6Ykm3fxDaMAn3FjRUNex+cMp5UnMpaPL58vHHVKdR/NK4WBHFaXAjg3OQUXcPR/Dl
+ f/EfB0LZsRaBw+f7Ypqnrlc4CGM73ib8WCswUxovVJy3pMDq11NAQ3ux7kUf0uaRXEXEOfkUs/R
+ 2H1asOCmwE2NSawNXbcCzio6XNrH0YciUN3bC16VaSK1UauU7IWuq74xKA==
+X-Google-Smtp-Source: AGHT+IF9bDDZbwuPJU2PpdK5gj1XZbWq4WLDXyolVao4ExtH4EJUgh98Q5i9ZONRA1Uraq4j6nEIYg==
+X-Received: by 2002:a05:6a00:4c8d:b0:736:562b:9a9c with SMTP id
+ d2e1a72fcca58-73c267d2f14mr1548869b3a.18.1744791388065; 
+ Wed, 16 Apr 2025 01:16:28 -0700 (PDT)
 Received: from localhost.localdomain ([240d:1a:3b6:8b00:ee5a:e672:7d4c:d43])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73bd21c3263sm9839445b3a.38.2025.04.16.01.16.12
+ d2e1a72fcca58-73bd21c3263sm9839445b3a.38.2025.04.16.01.16.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Apr 2025 01:16:19 -0700 (PDT)
+ Wed, 16 Apr 2025 01:16:27 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -88,17 +88,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH 10/19] include/glib-compat.h: Poison g_list_sort and
- g_slist_sort
-Date: Wed, 16 Apr 2025 17:14:15 +0900
-Message-Id: <f6e0e42ae3491564478929e412991c2a16ee3539.1744787186.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH 11/19] util/cacheflush.c: Update cache flushing mechanism for
+ Emscripten
+Date: Wed, 16 Apr 2025 17:14:16 +0900
+Message-Id: <97a2164b3f428265136bb1c01615a16b516138c2.1744787186.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1744787186.git.ktokunaga.mail@gmail.com>
 References: <cover.1744787186.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,33 +121,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On emscripten, function pointer casts can cause function call
-failure. g_list_sort and g_slist_sort performs this internally so can't be
-used on Emscripten. Instead, g_list_sort_with_data and
-g_slist_sort_with_data should be used.
-
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- include/glib-compat.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/qemu/cacheflush.h | 3 ++-
+ util/cacheflush.c         | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/glib-compat.h b/include/glib-compat.h
-index 86be439ba0..e441b396ef 100644
---- a/include/glib-compat.h
-+++ b/include/glib-compat.h
-@@ -36,6 +36,12 @@
- #include <pwd.h>
- #endif
+diff --git a/include/qemu/cacheflush.h b/include/qemu/cacheflush.h
+index ae20bcda73..84969801e3 100644
+--- a/include/qemu/cacheflush.h
++++ b/include/qemu/cacheflush.h
+@@ -19,7 +19,8 @@
+  * mappings of the same physical page(s).
+  */
  
-+/* These functions perform function pointer casts which can cause function call
-+ * failure on Emscripten. Use g_slist_sort_with_data and g_list_sort_with_data
-+ * insted of these functions.
-+ */
-+#pragma GCC poison g_slist_sort g_list_sort
-+
- /*
-  * Note that because of the GLIB_VERSION_MAX_ALLOWED constant above, allowing
-  * use of functions from newer GLib via this compat header needs a little
+-#if defined(__i386__) || defined(__x86_64__) || defined(__s390__)
++#if defined(__i386__) || defined(__x86_64__) || defined(__s390__) \
++    || defined(EMSCRIPTEN)
+ 
+ static inline void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
+ {
+diff --git a/util/cacheflush.c b/util/cacheflush.c
+index 1d12899a39..e5aa256cd8 100644
+--- a/util/cacheflush.c
++++ b/util/cacheflush.c
+@@ -225,7 +225,8 @@ static void __attribute__((constructor)) init_cache_info(void)
+  * Architecture (+ OS) specific cache flushing mechanisms.
+  */
+ 
+-#if defined(__i386__) || defined(__x86_64__) || defined(__s390__)
++#if defined(__i386__) || defined(__x86_64__) || defined(__s390__) || \
++    defined(EMSCRIPTEN)
+ 
+ /* Caches are coherent and do not require flushing; symbol inline. */
+ 
 -- 
 2.25.1
 
