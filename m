@@ -2,100 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A84FA90BC8
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 20:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C370CA90BC9
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 20:58:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u57xQ-0000b5-Tp; Wed, 16 Apr 2025 14:58:01 -0400
+	id 1u57xT-0000mU-WE; Wed, 16 Apr 2025 14:58:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1u57xD-0000MB-5h
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 14:57:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1u57x7-000393-Mr
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 14:57:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744829859;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZcRZwiN6j/slUai9WeqVIDyBWThPVlYrO/NlF8t7qTA=;
- b=SczOYlkGA03JRsV21bf7hKoDCSLOuuJ23G+5TKXbAqcJOyqpO/lR0V8jpulBP3zMB5p7E0
- 1/fZL0ZQzbcpzbrr/G5BYKEmCehQ1LZetaTjvTE/A8b9MVIz78kBgXarZctYgRdKfS341n
- q3x4a967KKovMc38YE7QMrlQAGBGvqs=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-457-t1gQflfuMO2MARHaqqexEg-1; Wed, 16 Apr 2025 14:57:37 -0400
-X-MC-Unique: t1gQflfuMO2MARHaqqexEg-1
-X-Mimecast-MFC-AGG-ID: t1gQflfuMO2MARHaqqexEg_1744829856
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3912d5f6689so3973873f8f.1
- for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 11:57:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u57x8-0000Fg-KR
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 14:57:50 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u57x6-00038w-Nc
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 14:57:42 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2295d78b45cso463035ad.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 11:57:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1744829859; x=1745434659; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mOFuZMBF8eRuW5UCgGK/C1+OwKpL/E6cKEN0LBNOTD8=;
+ b=vPtf+KdTYA9LLqq8Ug/FF5bPjpGlCHgFVDfoUyY/JqAYUhxYnzqUor0x3jpB1ZUeo3
+ XPNHOrYlIVRiXqk58GmyRurMY011CRIE3a7HmnJw9URYXkC8BllL6Wt+JdW+MxF4oyis
+ udVoncB035+sKE3ZtdmzJlNezvB4J5Ibz4VfiW1Yw/au+83dMihdxTE1ZYEh3LowClFQ
+ fvYOAHD82oae3jpBeH3qdYGbsmA4e4dnRe5UnQ3iVPBeauBc7RYoRg6zjqwjeUJghgup
+ q8FXmglZhmlpF9iPsTimkLjHO+4EYn0RalqnP0vKWBR6nm48yXt3kylBOmS4GkzhmGDW
+ +u7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744829856; x=1745434656;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1744829859; x=1745434659;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZcRZwiN6j/slUai9WeqVIDyBWThPVlYrO/NlF8t7qTA=;
- b=TI9IxftfPjN4tWkJr4rfP3mMG8b036w3IZ+y+5aAxBn42y8cUseXpnJqW4dUoxi6HF
- Djc2pXv9/e30+t/Ufcux+Kd1T6c0V4qcNLc+p4ZxMGNIkujUcbbb3WjcGxy6jcyTbRxr
- anf+nB3x7fenybcI8YnYCfupJtQ03f4GJPiNxM/5SBUnvdi45PmaFP97+CHsdkCfuFR8
- dkASa94JNOn24yLzpOrACDhVj2VWDEBCbQsNBRn7SU/4GSt/tGAPhSSv2zqe5dUPIKh/
- WCb/+qV8oh0qgQZh/3eD8pQvQqdPwz+42OqjsmKVmqUGDJUuzQL2+OrzCX6RZ9nfvYGL
- 3Iow==
+ bh=mOFuZMBF8eRuW5UCgGK/C1+OwKpL/E6cKEN0LBNOTD8=;
+ b=pronRyYgUxquBDuczShOH4E+bofOJys0/Szo7qc7WZEi0UGqY/4r6fcK9y4Ul6kppz
+ 4exjoCmtLOaKm3wq0RaOe75Nd87fZM1ZpCr1p5saDAxluuzBrmQqtXAMI4PRrLAzsgDq
+ TCeB0EfcVEvnAFzSDKzuvOy0YwjRu6blgcATrcNnsWSiXgk4xbuVBoA3e1cRJz7mDviz
+ kRMKgsGK4U3Lp6nd+v2/m4+BaIRN16c6n5m9UU6wxdrUWtTMceHxGBFVRgf6MREbeGZ9
+ pkJXWCVeUBMKa57yh6m9OokF4I6t+bHBQRUKI6W1iY+ZPh+jRmPJFHRB3fb7PDanoE4S
+ 0UQQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVvzvUKsd+W1lY4DvRjD9YH2Pq8rza6KQxX+Zv8vA1GR1EE+ZtLAOCvVjeMSoebWewY1gVdHNkp1DgE@nongnu.org
-X-Gm-Message-State: AOJu0YwgeSRC3ZbXXf5Oruu7/i+izz8ZqD4Z0Y+jPeo3QRTS5CbTPgrO
- +oPQGUoLywaUWOzxfIXHtaT/Bvqz407djtZ0VMrocCucBa+Wxh4j1iPZats96CW6YL3shxu7ITA
- AA+lgbSZM8XuvTy/Ay8PFArh1g/lxzzDvMcpxNkD2RVSv9r2umuRt
-X-Gm-Gg: ASbGncsqxqHmcAaEhRimX2+nmY8+Md8Dsg2wbZ1fxw61vuAb+4eBMYQyPAEsbqf0BQl
- PXmIUO44GseFfESd65Dc3LVFI+C1lOdT/cpmS9aFEn75w9Bs09518PY+v3CYUn4ueP5xigE6C1k
- Hk0rEnOQmsCPt2zNiobXw1FbcuMEbNI13i9VNeU9+MKLEaIlAJ6LLbEM3sY3boVMtmPeSwkEZei
- tlyjSChyv5UvLQhUKF3SijT6tliBeu6ZLAojquG65UIjqONwJgfkwEit/tGloiYcSmvbNCOhTa/
- e7zdRg==
-X-Received: by 2002:a05:6000:420d:b0:39e:cbe3:17c8 with SMTP id
- ffacd0b85a97d-39ee5b13951mr2286164f8f.12.1744829856035; 
- Wed, 16 Apr 2025 11:57:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFcACzB5If9KHN35K9dcOboSe/iy/DdLor86VdvbK4EVDU1TJDT0KuBGasCo6bbYr066jigcQ==
-X-Received: by 2002:a05:6000:420d:b0:39e:cbe3:17c8 with SMTP id
- ffacd0b85a97d-39ee5b13951mr2286148f8f.12.1744829855664; 
- Wed, 16 Apr 2025 11:57:35 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+ AJvYcCX+rYNy+Uk9SGgYstJ57En9DWOMQN0nImyezU4enI0XHU131yTqUiPo735wDoomZhGcwy9vFOKH2m7+@nongnu.org
+X-Gm-Message-State: AOJu0YylJ0fYwkZ84x9YkAGBbC4s19o4zD+E8n8uu4eNHYAfJpHfpjfp
+ AbgltNhX7iXd4d/zcnyk++eY3pWKPt7m8WRrBAfzGt7tMYtCGH0PbPZuh1ffaPw=
+X-Gm-Gg: ASbGncsvqGVFOcajYuHoczglPYk1RiGIcn5l4PFA59Rzcbw23Ui7uX6oQPd0+XmEjKb
+ RHqPNuIgxdJtmqVH0hbCBRkQxIkIjQxzHt/3OEmtxmgwppZNNpFj20yIgPV84gonuVuxfh8OBN+
+ Ga6A/aOfQDlOSVV+dKraAloQcWkJHSWkFrmTVnVXBnA/UfGGkaNDJrkjARdZDEnZResuiKTWSTA
+ K6BPGuS/3Wk+H2dGtCHlJvnTK4qHUUJBUVXfNd7uQH1V7eraatD08Udsji/n25Eg1nEuygEUuip
+ aZI1l15gmtMOb50Pdc26IjdgzZhOSTbp7h0hywFJKX1/N1/2I4/q/Q==
+X-Google-Smtp-Source: AGHT+IEUGCjWbOuJ3JEMrOfbkVzfyXmcr01PcalhHxvvA2/DwjRLOXdjlZaDo/0yua7Jet1Ao5brzw==
+X-Received: by 2002:a17:902:e849:b0:220:e1e6:4472 with SMTP id
+ d9443c01a7336-22c358dc2fdmr39634445ad.13.1744829859230; 
+ Wed, 16 Apr 2025 11:57:39 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39eaf445515sm17421436f8f.89.2025.04.16.11.57.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Apr 2025 11:57:34 -0700 (PDT)
-Date: Wed, 16 Apr 2025 14:57:32 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH v2 0/3] virtio-gpu: fix blob unmapping sequence
-Message-ID: <20250416145701-mutt-send-email-mst@kernel.org>
-References: <20250410122643.1747913-1-manos.pitsidianakis@linaro.org>
- <87v7r5clft.fsf@draig.linaro.org>
+ d9443c01a7336-22c33faac7asm17847225ad.137.2025.04.16.11.57.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Apr 2025 11:57:38 -0700 (PDT)
+Message-ID: <3d11f22d-1f6a-4f42-9a1b-c713e5a2d739@linaro.org>
+Date: Wed, 16 Apr 2025 11:57:38 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87v7r5clft.fsf@draig.linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 119/163] tcg/i386: Honor carry_live in tcg_out_movi
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250415192515.232910-1-richard.henderson@linaro.org>
+ <20250415192515.232910-120-richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250415192515.232910-120-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,55 +100,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 15, 2025 at 07:46:14PM +0100, Alex Bennée wrote:
-> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+On 4/15/25 12:24, Richard Henderson wrote:
+> Do not clobber flags if they're live.  Required in order
+> to perform register allocation on add/sub carry opcodes.
 > 
-> > A hang was observed when running a small kernel that exercised VIRTIO 
-> > GPU under TCG. This is an edge-case and won't happen under typical 
-> > conditions.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/i386/tcg-target.c.inc | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Should I (or MST?) pull these into a tree for 10.0 or should they be
-> grabbed for when the tree opens with a Cc qemu-stable?
+> diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+> index 04e31cae12..8e0ccbc722 100644
+> --- a/tcg/i386/tcg-target.c.inc
+> +++ b/tcg/i386/tcg-target.c.inc
+> @@ -1092,7 +1092,7 @@ static void tcg_out_movi_int(TCGContext *s, TCGType type,
+>   {
+>       tcg_target_long diff;
+>   
+> -    if (arg == 0) {
+> +    if (arg == 0 && !s->carry_live) {
+>           tgen_arithr(s, ARITH_XOR, ret, ret);
+>           return;
+>       }
 
-
-Let's just agree who takes them, then it's up to that maintainer.
-You wanna merge them?
-
-> >
-> > When unmapping a blob object, its MemoryRegion's freeing is deferred to 
-> > the RCU thread. The hang's cause was determined to be a busy main loop 
-> > not allowing for the RCU thread to run because the kernel did not setup 
-> > any timers or had any interrupts on the way. While fixing the RCU thread 
-> > to run even if the guest CPU spins is a solution, it's easier to fix the 
-> > reason why the MemoryRegion isn't freed from the main loop instead.
-> >
-> > While at it, also restructure the 3 stage cleanup to immediately respond 
-> > to the guest if the MR happened to have had no other reference.
-> >
-> > PS: The hang can be reproduced by running this unikernel with TCG 
-> >
-> > https://git.codelinaro.org/manos.pitsidianakis/virtio-tests/-/tree/8c0ebe9395827e24aa5711186d499bf5de87cf63/virtio-test-suite
-> >
-> > v1 to v2:
-> >   - Add patch by Alex to prevent double-free when FlatView is destroyed 
-> >     from RCU thread.
-> >
-> > Alex Bennée (1):
-> >   hw/display: re-arrange memory region tracking
-> >
-> > Manos Pitsidianakis (2):
-> >   virtio-gpu: fix hang under TCG when unmapping blob
-> >   virtio-gpu: refactor async blob unmapping
-> >
-> >  include/exec/memory.h         |  1 +
-> >  hw/display/virtio-gpu-virgl.c | 60 ++++++++++++++++++++---------------
-> >  2 files changed, 35 insertions(+), 26 deletions(-)
-> >
-> >
-> > base-commit: 56c6e249b6988c1b6edc2dd34ebb0f1e570a1365
-> 
-> -- 
-> Alex Bennée
-> Virtualisation Tech Lead @ Linaro
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 
