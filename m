@@ -2,118 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F4BA90727
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 17:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8EDA90746
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 17:04:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u54G8-0007Vs-Nz; Wed, 16 Apr 2025 11:01:04 -0400
+	id 1u54Iu-0002zP-7i; Wed, 16 Apr 2025 11:03:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u54Fc-0006yF-So
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 11:00:34 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1u54Ip-0002xo-Ea
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 11:03:52 -0400
+Received: from mail-io1-xd29.google.com ([2607:f8b0:4864:20::d29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u54Fa-0003SC-JW
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 11:00:32 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 5D34F2117D;
- Wed, 16 Apr 2025 15:00:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744815628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IeB3sJiYkadl4AXl8IkBT5cyObhxo5FEso6CwCa7Lfo=;
- b=dD/D3zbKcTlVJPvIe9VaMQz43Tve/7lnLNHl2qXrfAWUX224KbjCnKDxmh5mRnQI3LEv4u
- uT0jTHlKWjIamau8gER9fr9djrbAVocqjdXRLydgVDAGCY0u2in3f3/OilRsuWQ+HPdam+
- luMHWnhZuelfewj9J7/9CVLSguS5mv4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744815628;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IeB3sJiYkadl4AXl8IkBT5cyObhxo5FEso6CwCa7Lfo=;
- b=e2wYgsjQnogSyzqr/DhI69DlyWhuN1Zrkcs3Bk0gUjfQMZroiOKYTzngUOl42Y2jsVjHce
- rck6V+mwoDu6C/BQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="dD/D3zbK";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=e2wYgsjQ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744815628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IeB3sJiYkadl4AXl8IkBT5cyObhxo5FEso6CwCa7Lfo=;
- b=dD/D3zbKcTlVJPvIe9VaMQz43Tve/7lnLNHl2qXrfAWUX224KbjCnKDxmh5mRnQI3LEv4u
- uT0jTHlKWjIamau8gER9fr9djrbAVocqjdXRLydgVDAGCY0u2in3f3/OilRsuWQ+HPdam+
- luMHWnhZuelfewj9J7/9CVLSguS5mv4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744815628;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IeB3sJiYkadl4AXl8IkBT5cyObhxo5FEso6CwCa7Lfo=;
- b=e2wYgsjQnogSyzqr/DhI69DlyWhuN1Zrkcs3Bk0gUjfQMZroiOKYTzngUOl42Y2jsVjHce
- rck6V+mwoDu6C/BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CDD4813976;
- Wed, 16 Apr 2025 15:00:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id BUD/IgvG/2fEVwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 16 Apr 2025 15:00:27 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Markus Armbruster <armbru@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang?=
- =?utf-8?Q?=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
-Subject: Re: [RFC PATCH 00/13] migration: Unify capabilities and parameters
-In-Reply-To: <874iyomdat.fsf@pond.sub.org>
-References: <20250411191443.22565-1-farosas@suse.de>
- <Z_07dfI4rFRpvZA1@redhat.com> <874iyomdat.fsf@pond.sub.org>
-Date: Wed, 16 Apr 2025 12:00:25 -0300
-Message-ID: <875xj4f8xi.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1u54In-0003zO-Bi
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 11:03:51 -0400
+Received: by mail-io1-xd29.google.com with SMTP id
+ ca18e2360f4ac-8613f456960so194005639f.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 08:03:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1744815826; x=1745420626; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DKqVxMZCHmRoM3iC5psKw2o5UbFX4mgR8YlvnOf3C6c=;
+ b=eoMz8UQbB/NztCv/MeGaHx3OzPL9/0hzIAbYnVWVmmxymEHH3hOs1LTvRUQK+ImgJV
+ UAWtJKQNWzQlg4TuJCi5m7r8zpH8KxKemKFR+pKwf2mCbSfIDZd/QOxufoq8sBCZ1G26
+ XIbse2RW08AWlipo6qwgLz55OUFjKE+bp9AerRs3saR+TdJuFVB76u1/7OYjZmtWbpu8
+ Km7TwFYKatd6FsTZXKrXBb6Wq+n2pW/0HerTppuxYKoQIxMwv7RIx0iqDrrVV0YUcjgK
+ IYGZLrDwMnv2efNUgeW/MKLNmJucq9kLLhfWS6eF8b4nqSM5lBMlEAM/ZGuhMVkSusjQ
+ aTKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744815826; x=1745420626;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DKqVxMZCHmRoM3iC5psKw2o5UbFX4mgR8YlvnOf3C6c=;
+ b=rXBhXrlQAZ0LhZrY7hgkRgjHcnChtSLM833fgqzKEcgbksGJs70pp7qIiYag1vjlOX
+ 9gmtQ4aruodFO1Ztt0zNG9mmvQPu4U0eC3Eqo0DyrnAL1AQvHkNWP0N6a705lKP6R5qM
+ OezWUfNBiPOZ7cVzzWpgro8NC4Q2zMJpYrau9y2xN4y06PUhXxU0uQt1uGRfZsCJA8BB
+ nQRV0jvNM+ckIdXeONPNl+Dt4nASutlyIqFBfsJoPbzYSDgmCjrL4d0X8t2wJBWn9Ykh
+ g1vXNdmqEXYYxsqy22GHasPzLR0VyDLBeGSwkOadI+eZU+H7VsURH44ZtRwpfQuw9IYj
+ +Amw==
+X-Gm-Message-State: AOJu0YwYgQWKwJm7AcGDTBHeizsfNtXn8Imsp/bzohCvpHyK8SdQUxmb
+ XWTUyHjSWpuczgESDOijfuP0yJG0fTLfly4Vr1QRmBdvRlQka7dqxMl001pr
+X-Gm-Gg: ASbGncvvBo58FJhbANjP9Xvb+xXvrbfjHpPkfn4oWo82f931zZIF+cEEMzBSBYXcSeG
+ Dzda/ro6sNUV/xE/+lpbfD/b7uoZcEkW1m5tC67S2ij6w4xTrHLvrN/hxp5ZP79cIgsxwc1z+/f
+ hr0iJHf6kHg0OpiWVCF5VioApwHXGnA+lxsZVVDnHgYb5SMNo33SJVTTJNZqaP3n7XA8rPkGraM
+ SCgJHyVd8sHz46mctLXkwUv/zfbG8hLJHh4h2Ppn2BcqLuTvdOyVVGyc2BeLwk7MKq9L8/mM44p
+ NvRhOLvnRj+Rie8KOBDAY1ydXNVnQSZlrNmiagNp6bM1r5zgIv1csHFP0BNUXQ8VPrivTlflOdF
+ mMAD/J69ED+Pgt/qGpyUIUdB+zA==
+X-Google-Smtp-Source: AGHT+IEqezZXzXumckV4Oet3rWpyS4D10X5qpfpOCOpQHHIA10/u7H8+SyWADW9ny+bf4sNaHo/OPA==
+X-Received: by 2002:a05:6e02:3e8b:b0:3d6:d3f7:8813 with SMTP id
+ e9e14a558f8ab-3d815b70d2dmr25442075ab.22.1744815825505; 
+ Wed, 16 Apr 2025 08:03:45 -0700 (PDT)
+Received: from taylor-ubuntu.. (c-67-190-160-7.hsd1.co.comcast.net.
+ [67.190.160.7]) by smtp.gmail.com with ESMTPSA id
+ e9e14a558f8ab-3d817b2693bsm1790975ab.42.2025.04.16.08.03.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Apr 2025 08:03:44 -0700 (PDT)
+From: Taylor Simpson <ltaylorsimpson@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: brian.cain@oss.qualcomm.com, quic_mathbern@quicinc.com,
+ sidneym@quicinc.com, quic_mliebel@quicinc.com,
+ richard.henderson@linaro.org, philmd@linaro.org, ale@rev.ng, anjo@rev.ng,
+ ltaylorsimpson@gmail.com
+Subject: [PATCH v2] Hexagon (target/hexagon) Remove gen_tcg_func_table.py
+Date: Wed, 16 Apr 2025 09:03:43 -0600
+Message-ID: <20250416150343.73444-1-ltaylorsimpson@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5D34F2117D
-X-Spam-Score: -4.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- TO_DN_SOME(0.00)[]; MISSING_XM_UA(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
- RCPT_COUNT_THREE(0.00)[4]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d29;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd29.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -130,67 +98,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+This can easily be done in C with opcodes_def_generated.h.inc
 
-> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->
->> On Fri, Apr 11, 2025 at 04:14:30PM -0300, Fabiano Rosas wrote:
->>> Open questions:
->>> ---------------
->>>=20
->>> - Deprecations/compat?
->>>=20
->>> I think we should deprecate migrate-set/query-capabilities and everythi=
-ng to do
->>> with capabilities (specifically the validation in the JSON at the end o=
-f the
->>> stream).
->>>=20
->>> For migrate-set/query-parameters, we could probably keep it around inde=
-finitely,
->>> but it'd be convenient to introduce new commands so we can give them new
->>> semantics.
->>>=20
->>> - How to restrict the options that should not be set when the migration=
- is in
->>> progress?
->>>=20
->>> i.e.:
->>>   all options can be set before migration (initial config)
->>>   some options can be set during migration (runtime)
->>>=20
->>> I thought of adding another type at the top of the hierarchy, with
->>> just the options allowed to change at runtime, but that doesn't really
->>> stop the others being also set at runtime. I'd need a way to have a
->>> set of options that are rejected 'if migration_is_running()', without
->>> adding more duplication all around.
->>>=20
->>> - What about savevm?
->>>=20
->>> None of this solves the issue of random caps/params being set before
->>> calling savevm. We still need to special-case savevm and reject
->>> everything. Unless we entirely deprecate setting initial options via
->>> set-parameters (or set-config) and require all options to be set as
->>> savevm (and migrate) arguments.
->>
->> I'd suggest we aim for a world where the commands take all options
->> as direct args and try to remove the global state eventually.
->
-> Yes.
->
-> Even better: make it a job.
->
+Note that gen_tcg_func_table.py has some logic to skip instructions.
+However, there aren't any instructions currently in the code that would
+be skipped by this logic.  So, it is safe to base the table on the
+complete opcodes table.
 
-What do we gain from that in relation to being able to pass ~50
-parameters to a command? I don't see it. I think that's the actual crux
-here, too many options and how to get them from the QAPI into the
-migration core for consumption.
+Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+---
+ target/hexagon/genptr.c              |  6 ++-
+ target/hexagon/README                |  1 -
+ target/hexagon/gen_tcg_func_table.py | 66 ----------------------------
+ target/hexagon/meson.build           | 10 -----
+ 4 files changed, 5 insertions(+), 78 deletions(-)
+ delete mode 100755 target/hexagon/gen_tcg_func_table.py
 
-The current usage of MigrationParameters as both the return type for
-query-set-parameters and the global parameter store for the migration
-state is really dissonant. What do the has_* fields even mean when
-accessed via MigrationState::parameters? This series is not doing any
-better in that regard, mind you. I'm almost tempted to ask that we
-expose the QDict from the marshaling function directly to the migration
-code, at least that's a data type that makes sense internally.
+diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c
+index 2c5e15cfcf..330170ab44 100644
+--- a/target/hexagon/genptr.c
++++ b/target/hexagon/genptr.c
+@@ -1453,4 +1453,8 @@ void gen_add_sat_i64(DisasContext *ctx, TCGv_i64 ret, TCGv_i64 a, TCGv_i64 b)
+ }
+ 
+ #include "tcg_funcs_generated.c.inc"
+-#include "tcg_func_table_generated.c.inc"
++const SemanticInsn opcode_genptr[XX_LAST_OPCODE] = {
++#define OPCODE(X)    [X] = generate_##X
++#include "opcodes_def_generated.h.inc"
++#undef OPCODE
++};
+diff --git a/target/hexagon/README b/target/hexagon/README
+index ca617e3364..5af298e3ed 100644
+--- a/target/hexagon/README
++++ b/target/hexagon/README
+@@ -47,7 +47,6 @@ header files in <BUILD_DIR>/target/hexagon
+         gen_op_attribs.py               -> op_attribs_generated.h.inc
+         gen_helper_protos.py            -> helper_protos_generated.h.inc
+         gen_tcg_funcs.py                -> tcg_funcs_generated.c.inc
+-        gen_tcg_func_table.py           -> tcg_func_table_generated.c.inc
+         gen_helper_funcs.py             -> helper_funcs_generated.c.inc
+         gen_idef_parser_funcs.py        -> idef_parser_input.h
+         gen_analyze_funcs.py            -> analyze_funcs_generated.c.inc
+diff --git a/target/hexagon/gen_tcg_func_table.py b/target/hexagon/gen_tcg_func_table.py
+deleted file mode 100755
+index 299a39b1aa..0000000000
+--- a/target/hexagon/gen_tcg_func_table.py
++++ /dev/null
+@@ -1,66 +0,0 @@
+-#!/usr/bin/env python3
+-
+-##
+-##  Copyright(c) 2019-2024 Qualcomm Innovation Center, Inc. All Rights Reserved.
+-##
+-##  This program is free software; you can redistribute it and/or modify
+-##  it under the terms of the GNU General Public License as published by
+-##  the Free Software Foundation; either version 2 of the License, or
+-##  (at your option) any later version.
+-##
+-##  This program is distributed in the hope that it will be useful,
+-##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+-##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-##  GNU General Public License for more details.
+-##
+-##  You should have received a copy of the GNU General Public License
+-##  along with this program; if not, see <http://www.gnu.org/licenses/>.
+-##
+-
+-import sys
+-import re
+-import string
+-import hex_common
+-import argparse
+-
+-
+-def main():
+-    parser = argparse.ArgumentParser(
+-        "Emit opaque macro calls with instruction semantics"
+-    )
+-    parser.add_argument("semantics", help="semantics file")
+-    parser.add_argument("out", help="output file")
+-    args = parser.parse_args()
+-    hex_common.read_semantics_file(args.semantics)
+-    hex_common.calculate_attribs()
+-    tagregs = hex_common.get_tagregs()
+-    tagimms = hex_common.get_tagimms()
+-
+-    with open(args.out, "w") as f:
+-        f.write("#ifndef HEXAGON_FUNC_TABLE_H\n")
+-        f.write("#define HEXAGON_FUNC_TABLE_H\n\n")
+-
+-        f.write("const SemanticInsn opcode_genptr[XX_LAST_OPCODE] = {\n")
+-        for tag in hex_common.tags:
+-            ## Skip the priv instructions
+-            if "A_PRIV" in hex_common.attribdict[tag]:
+-                continue
+-            ## Skip the guest instructions
+-            if "A_GUEST" in hex_common.attribdict[tag]:
+-                continue
+-            ## Skip the diag instructions
+-            if tag == "Y6_diag":
+-                continue
+-            if tag == "Y6_diag0":
+-                continue
+-            if tag == "Y6_diag1":
+-                continue
+-
+-            f.write(f"    [{tag}] = generate_{tag},\n")
+-        f.write("};\n\n")
+-
+-        f.write("#endif    /* HEXAGON_FUNC_TABLE_H */\n")
+-
+-
+-if __name__ == "__main__":
+-    main()
+diff --git a/target/hexagon/meson.build b/target/hexagon/meson.build
+index bb4ebaae81..b28aeddb85 100644
+--- a/target/hexagon/meson.build
++++ b/target/hexagon/meson.build
+@@ -41,20 +41,10 @@ hexagon_ss.add(semantics_generated)
+ #
+ # Step 2
+ # We use Python scripts to generate the following files
+-#     tcg_func_table_generated.c.inc
+ #     printinsn_generated.h.inc
+ #     op_attribs_generated.h.inc
+ #     opcodes_def_generated.h.inc
+ #
+-tcg_func_table_generated = custom_target(
+-    'tcg_func_table_generated.c.inc',
+-    output: 'tcg_func_table_generated.c.inc',
+-    depends: [semantics_generated],
+-    depend_files: [hex_common_py],
+-    command: [python, files('gen_tcg_func_table.py'), semantics_generated, '@OUTPUT@'],
+-)
+-hexagon_ss.add(tcg_func_table_generated)
+-
+ printinsn_generated = custom_target(
+     'printinsn_generated.h.inc',
+     output: 'printinsn_generated.h.inc',
+-- 
+2.43.0
+
 
