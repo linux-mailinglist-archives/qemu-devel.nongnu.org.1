@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E98CA8B1D8
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 09:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC315A8B1D6
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 09:19:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4x2O-0007Uh-Ev; Wed, 16 Apr 2025 03:18:24 -0400
+	id 1u4x2P-0007V5-7F; Wed, 16 Apr 2025 03:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1u4x2J-0007S3-Hd; Wed, 16 Apr 2025 03:18:21 -0400
-Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
+ id 1u4x2J-0007S1-HC; Wed, 16 Apr 2025 03:18:21 -0400
+Received: from apollo.dupie.be ([51.159.20.238])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1u4x2D-0001od-Lf; Wed, 16 Apr 2025 03:18:17 -0400
+ id 1u4x2D-0001oe-MA; Wed, 16 Apr 2025 03:18:19 -0400
 Received: from localhost.localdomain (unknown
  [IPv6:2a02:a03f:eafe:6901:38ac:f342:2515:2d3c])
- by apollo.dupie.be (Postfix) with ESMTPSA id C4CD61520F9C;
+ by apollo.dupie.be (Postfix) with ESMTPSA id F08141520F9F;
  Wed, 16 Apr 2025 09:18:03 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1744787883;
+ t=1744787884;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nMhXkyKs9C1vd0QyPMuiY7jcH+grkGMWCQRu0SAGVDw=;
- b=Lc8ZRlFQTNQ3jHcy93D8LLM52P0DAcU+VBYSQBhqIJ/35BIV5psl2a8w9F/fSI1uZN9+GW
- Rc3q97jDBML1qwra5fUsq+BBtA2YhuR8E8bV3nOXA8/Mt5aSgL1oQgMkF0+R4lAZBAGLNE
- Z3EiVSU+ryZS9SG5v4O01TP9OK5U4zd+BA49RzAtZYmUhCo6q05vTk6fZPufv6Qz37Mnb0
- wnlBiCNbxcJo0cTbUMyB0Vw27A1LqA2K7nF6jAiVqHGh77uWHtl65pTWSa8pkmg9WOrfeG
- CG5GPMsfUZ4gYJFOgDGt70sYFVBqrqv8lx/ANQqTCEUqmyhltwY9Hin7LMAhbw==
+ bh=4eHuFiwy8bthRIgr6VRuJkXpBxcL9KA+wWFQkjE4X98=;
+ b=L0MFfZrxpX1KtN2np+H9+tVBYTLUzpU8QRKhKzSglRvPC4svUtBHIfw+gQAxIgDXMkMwEn
+ gOrUZjl+RCu26KNWzmdr6monj0perfQLGLX/7EhWE4xk3KA0Te12CbInL3gSMOmwMrn1Fl
+ AgT42Vynu5/zmksLmMcSrilmw7QtDa5D5Afi0vEI+NNYc4oMKhRcSM8OIpf4J6dQPEaNiE
+ Lv7eligbtwbFawalt1QHlQCCvlYgrFTued7raY1+y3/pTLx+daGqIgP/oWaBcsMsknv4Qj
+ A9YfE2WGGS7U9aSvWZYkjIygUSJybN3QsCVwdhb0nayh7TZV+XYYVWDHn0Nkmw==
 From: Jean-Louis Dupond <jean-louis@dupond.be>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  qemu-block@nongnu.org, Jean-Louis Dupond <jean-louis@dupond.be>
-Subject: [PATCH 2/3] qcow2: make measure for_commit aware
-Date: Wed, 16 Apr 2025 09:16:53 +0200
-Message-ID: <20250416071654.978264-3-jean-louis@dupond.be>
+Subject: [PATCH 3/3] iotests/290: add test case for for_commit measure
+Date: Wed, 16 Apr 2025 09:16:54 +0200
+Message-ID: <20250416071654.978264-4-jean-louis@dupond.be>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250416071654.978264-1-jean-louis@dupond.be>
 References: <20250416071654.978264-1-jean-louis@dupond.be>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
- envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
+Received-SPF: pass client-ip=51.159.20.238; envelope-from=jean-louis@dupond.be;
+ helo=apollo.dupie.be
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,181 +69,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sometimes (for example when using block storage for qcow2 images), we
-want to be able to calculate the size the commit target image will have.
+We create an image, write and discard some data in it, and then create a
+snapshot. In the snapshot we write and discard again some data.
+Then we measure the images with 'for_commit' option to calculate the
+merged image size. Finally we commit the image and check it's size.
 
-This patch implements this functionality in the qemu-img command when
-the 'for_commit' option is passed.
-
-When calculating for_commit, we check the blocks of the top and base
-image, and if new blocks are needed, we increment the next_cluster_index
-until everything is allocated for all blocks in the top image.
-Then we have a new cluster_index, from where we can calculate the size
-of the target image after commit.
+This scenario is executed for discard-no-unref enabled and disabled.
 
 Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
 ---
- block/qcow2.c | 121 +++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 115 insertions(+), 6 deletions(-)
+ tests/qemu-iotests/290     | 45 ++++++++++++++++++++++++++++
+ tests/qemu-iotests/290.out | 61 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 106 insertions(+)
 
-diff --git a/block/qcow2.c b/block/qcow2.c
-index 19028e051c..f86d4f1673 100644
---- a/block/qcow2.c
-+++ b/block/qcow2.c
-@@ -5086,6 +5086,7 @@ static BlockMeasureInfo *qcow2_measure(QemuOpts *opts, BlockDriverState *in_bs,
-     bool has_backing_file;
-     bool has_luks;
-     bool extended_l2;
-+    bool for_commit;
-     size_t l2e_size;
+diff --git a/tests/qemu-iotests/290 b/tests/qemu-iotests/290
+index 776b59de1b..1d6608ad13 100755
+--- a/tests/qemu-iotests/290
++++ b/tests/qemu-iotests/290
+@@ -92,6 +92,51 @@ for qcow2_compat in 0.10 1.1; do
+     $QEMU_IMG map "$TEST_IMG" | _filter_testdir
+ done
  
-     /* Parse image creation options */
-@@ -5157,6 +5158,9 @@ static BlockMeasureInfo *qcow2_measure(QemuOpts *opts, BlockDriverState *in_bs,
-         goto err;
-     }
- 
-+    /* Check if this measure is for commit size calculation */
-+    for_commit = qemu_opt_get_bool_del(opts, BLOCK_OPT_FOR_COMMIT, false);
++echo
++echo "### Test qemu-img measure for commit differences with 'discard-no-unref' option enabled"
++echo
 +
-     /* Account for input image */
-     if (in_bs) {
-         int64_t ssize = bdrv_getlength(in_bs);
-@@ -5178,6 +5182,28 @@ static BlockMeasureInfo *qcow2_measure(QemuOpts *opts, BlockDriverState *in_bs,
-         } else {
-             int64_t offset;
-             int64_t pnum = 0;
-+            BlockDriverState *parent = NULL;
-+            BDRVQcow2State *sp = NULL;
-+            int64_t next_cluster_index = 0;
-+            int64_t last_cluster_index = 0;
-+            int64_t max_allocated_clusters = 0;
-+            int64_t freed_clusters = 0;
++for DISCARD_NO_UNREF in true false; do
++    echo "# Create a base image and fill it with data"
++    TEST_IMG="$TEST_IMG.base" _make_test_img 128M
 +
-+            if (for_commit) {
-+                int64_t psize;
++    $QEMU_IO -c 'write 0 8M' "$TEST_IMG.base" | _filter_qemu_io
++    $QEMU_IO -c 'write 10M 8M' "$TEST_IMG.base" | _filter_qemu_io
++    $QEMU_IO -c 'write 24M 32M' "$TEST_IMG.base" | _filter_qemu_io
++    $QEMU_IO -c 'write 56M 20M' "$TEST_IMG.base" | _filter_qemu_io
++    $QEMU_IO -c "reopen -o discard=unmap,discard-no-unref=$DISCARD_NO_UNREF" \
++        -c 'discard 32M 10M' "$TEST_IMG.base" | _filter_qemu_io
 +
-+                parent = bdrv_filter_or_cow_bs(in_bs);
-+                if (parent) {
-+                    sp = parent->opaque;
-+                } else {
-+                    error_setg(&local_err,
-+                        "No parent found, cannot measure for commit");
-+                    goto err;
-+                }
-+                psize = bdrv_getlength(parent);
-+                last_cluster_index = qcow2_get_last_cluster(parent, psize);
-+                max_allocated_clusters = last_cluster_index;
-+            }
- 
-             for (offset = 0; offset < ssize; offset += pnum) {
-                 int ret;
-@@ -5191,17 +5217,100 @@ static BlockMeasureInfo *qcow2_measure(QemuOpts *opts, BlockDriverState *in_bs,
-                     goto err;
-                 }
- 
--                if (ret & BDRV_BLOCK_ZERO) {
--                    /* Skip zero regions (safe with no backing file) */
--                } else if ((ret & (BDRV_BLOCK_DATA | BDRV_BLOCK_ALLOCATED)) ==
--                           (BDRV_BLOCK_DATA | BDRV_BLOCK_ALLOCATED)) {
-+                /*
-+                 * If this is a measure for_commit then we have a parent
-+                 * We check the allocation status of the parent blocks to see
-+                 * if we need to allocate new blocks or not.
-+                 * We also keep track of the number of freed clusters.
-+                 */
-+                if (for_commit) {
-+                    int retp;
-+                    int64_t pnum_parent = 0;
++    echo "# Create a top image and do some writes and discards"
++    TEST_IMG="$TEST_IMG.top" _make_test_img -b "$TEST_IMG.base" -F $IMGFMT 128M
 +
-+                    /* Check if the parent block is allocated */
-+                    retp = bdrv_block_status_above(parent, NULL, offset,
-+                                            ssize - offset, &pnum_parent, NULL,
-+                                            NULL);
++    $QEMU_IO -c "reopen -o discard=unmap,discard-no-unref=$DISCARD_NO_UNREF" -c 'write 16M 8M' \
++        -c 'discard 60M 20M' -c 'write 84M 10M' "$TEST_IMG.top" | _filter_qemu_io
 +
-+                    if (retp < 0) {
-+                        error_setg_errno(&local_err, -ret,
-+                                            "Unable to get block status for parent");
-+                        goto err;
-+                    }
-+                    /*
-+                     * If the parent continuous block is smaller, use that pnum,
-+                     * so the next iteration starts with the smallest offset.
-+                     */
-+                    if (pnum_parent < pnum) {
-+                        pnum = pnum_parent;
-+                    }
++    FILE_JSON="json:{
++        'file': {
++            'driver': 'file',
++            'filename': '$TEST_IMG.top'
++        },
++        'driver': 'qcow2',
++        'discard': 'unmap',
++        'discard-no-unref': '$DISCARD_NO_UNREF',
++        'backing': {
++            'driver': 'qcow2',
++            'discard-no-unref': '$DISCARD_NO_UNREF',
++            'file': {
++                'driver': 'file',
++                'filename': '$TEST_IMG.base'
++            },
++            'backing': null
++        }}"
++    echo "# Measure size with discard-no-unref=$DISCARD_NO_UNREF"
++    $QEMU_IMG measure --output=json -ofor_commit=on -O qcow2 "${FILE_JSON}"
++    echo "# Merging the top image into the base image"
++    $QEMU_IMG commit -t none -f qcow2 "${FILE_JSON}"
++    stat -c"base disk image file size in bytes: %s" "$TEST_IMG.base"
++done
 +
-                     /* Extend pnum to end of cluster for next iteration */
-                     pnum = ROUND_UP(offset + pnum, cluster_size) - offset;
- 
--                    /* Count clusters we've seen */
--                    required += offset % cluster_size + pnum;
-+                    uint64_t nb_clusters = size_to_clusters(sp, pnum);
+ # success, all done
+ echo "*** done"
+ rm -f $seq.full
+diff --git a/tests/qemu-iotests/290.out b/tests/qemu-iotests/290.out
+index 22b476594f..4207572118 100644
+--- a/tests/qemu-iotests/290.out
++++ b/tests/qemu-iotests/290.out
+@@ -58,4 +58,65 @@ read 131072/131072 bytes at offset 0
+ 128 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ # Output of qemu-img map
+ Offset          Length          Mapped to       File
 +
-+                    /*
-+                     * When the block has no offset and the new
-+                     * block is non-zero, we will need to
-+                     * allocate a new cluster for the commit.
-+                     */
-+                    if (~retp & BDRV_BLOCK_OFFSET_VALID &&
-+                        ~ret & BDRV_BLOCK_ZERO) {
-+                        uint64_t i, refcount = 0;
++### Test qemu-img measure for commit differences with 'discard-no-unref' option enabled
 +
-+                    retry:
-+                        for (i = 0; i < nb_clusters; i++) {
-+                            int retr;
-+                            next_cluster_index++;
-+
-+                            retr = qcow2_get_refcount(parent,
-+                                next_cluster_index, &refcount);
-+                            if (retr < 0) {
-+                                error_setg_errno(&local_err, -retr,
-+                                    "Unable to get refcount");
-+                                goto err;
-+                            }
-+                            /* No free block found, retry */
-+                            if (refcount != 0) {
-+                                goto retry;
-+                            }
-+                        }
-+                        /* Check if we have a new maximum cluster index */
-+                        if ((next_cluster_index - freed_clusters) >
-+                            last_cluster_index &&
-+                            (next_cluster_index - freed_clusters) >
-+                            max_allocated_clusters) {
-+                            max_allocated_clusters =
-+                                next_cluster_index - freed_clusters;
-+                        }
-+                    } else if (!sp->discard_no_unref &&
-+                               (ret & BDRV_BLOCK_ZERO) &&
-+                               (retp & BDRV_BLOCK_DATA)) {
-+                        /*
-+                         * Parent block is allocated but new block is zero
-+                         * we can free. Except if the parent block is zero.
-+                         */
-+                        freed_clusters += nb_clusters;
-+                    }
-+                } else {
-+                    if (ret & BDRV_BLOCK_ZERO) {
-+                        /* Skip zero regions (safe with no backing file) */
-+                    } else if (((ret &
-+                                 (BDRV_BLOCK_DATA | BDRV_BLOCK_ALLOCATED)) ==
-+                                (BDRV_BLOCK_DATA | BDRV_BLOCK_ALLOCATED))) {
-+                        /* Extend pnum to end of cluster for next iteration */
-+                        pnum = ROUND_UP(offset + pnum, cluster_size) - offset;
-+
-+                        /* Count clusters we've seen */
-+                        required += offset % cluster_size + pnum;
-+                    }
-                 }
-             }
-+            if (for_commit) {
-+                /* Then the required size is just until the last cluster */
-+                required = max_allocated_clusters << sp->cluster_bits;
-+            }
-         }
-     }
- 
++# Create a base image and fill it with data
++Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=134217728
++wrote 8388608/8388608 bytes at offset 0
++8 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 8388608/8388608 bytes at offset 10485760
++8 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 33554432/33554432 bytes at offset 25165824
++32 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 20971520/20971520 bytes at offset 58720256
++20 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++discard 10485760/10485760 bytes at offset 33554432
++10 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++# Create a top image and do some writes and discards
++Formatting 'TEST_DIR/t.IMGFMT.top', fmt=IMGFMT size=134217728 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
++wrote 8388608/8388608 bytes at offset 16777216
++8 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++discard 20971520/20971520 bytes at offset 62914560
++20 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 10485760/10485760 bytes at offset 88080384
++10 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++# Measure size with discard-no-unref=true
++{
++    "bitmaps": 0,
++    "required": 88670208,
++    "fully-allocated": 134545408
++}
++# Merging the top image into the base image
++Image committed.
++base disk image file size in bytes: 88408064
++# Create a base image and fill it with data
++Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=134217728
++wrote 8388608/8388608 bytes at offset 0
++8 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 8388608/8388608 bytes at offset 10485760
++8 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 33554432/33554432 bytes at offset 25165824
++32 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 20971520/20971520 bytes at offset 58720256
++20 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++discard 10485760/10485760 bytes at offset 33554432
++10 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++# Create a top image and do some writes and discards
++Formatting 'TEST_DIR/t.IMGFMT.top', fmt=IMGFMT size=134217728 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
++wrote 8388608/8388608 bytes at offset 16777216
++8 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++discard 20971520/20971520 bytes at offset 62914560
++20 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 10485760/10485760 bytes at offset 88080384
++10 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++# Measure size with discard-no-unref=false
++{
++    "bitmaps": 0,
++    "required": 71892992,
++    "fully-allocated": 134545408
++}
++# Merging the top image into the base image
++Image committed.
++base disk image file size in bytes: 71630848
+ *** done
 -- 
 2.49.0
 
