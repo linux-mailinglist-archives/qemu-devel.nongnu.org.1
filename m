@@ -2,109 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9E6A8B3A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 10:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A89A8B3B3
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 10:27:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4y13-0006tf-MJ; Wed, 16 Apr 2025 04:21:10 -0400
+	id 1u4y3K-00004t-8R; Wed, 16 Apr 2025 04:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u4xxg-0002hW-Qt; Wed, 16 Apr 2025 04:17:37 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u4xxf-000628-8i; Wed, 16 Apr 2025 04:17:36 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-736ab1c43c4so5949267b3a.1; 
- Wed, 16 Apr 2025 01:17:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744791450; x=1745396250; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=p61XeamrPryy5y8KZD/my/LXyq845Q2ZSQbHbgzzrSA=;
- b=DTrPu4QtspWcduqt7XhmyWRVq531YxIFdxLuwHBpufCUrulXDZPsqQkRL/Q8Tksi/I
- 4EM0CqqvzGZwe4UI+9jYDYxcqFi0mMT7LA448t2mLDI8XM52jzBQLXHE4Qwv4DnR4wME
- WhCnTNzwutifFFR/bG0UVRl7NVE6aTenYTwXOmArCpVnYT5/XcvXlUmF5PojikqwQVH3
- FqRSbl1qTf0/u5rzct8uRFXc8z5896fFHFvoLw/1s4+DPYdVnQSUDblMsnW1ZSZDvp55
- sy9pwifAelo4ISonID84V/DvG9CvoKsA2dZz2Tr1KfFeoWglO95/BgMeGucb6TFKCb+b
- zofQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744791450; x=1745396250;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=p61XeamrPryy5y8KZD/my/LXyq845Q2ZSQbHbgzzrSA=;
- b=hFk6KDIe9ada/JlV1/+0vakQXwr/DzZO7rXT8U02ezGhvRLbI3qWS26uIfKsNC0zYV
- GLlcuBbfNTxV67Qrw68qYiuH4pnJBcyBnvpGE9GwG9xwt9Kyf0Hq/iEylb6DT/6dfF0O
- Unfte71bFye6mcCrA83Dbu3Lmmk5FJmdQBUZX8Vhv19TH6146e8Z5lnnsLzyA3Qm2aYn
- Koj9wUskb/ksOl2SW+qBPrPHckCMxLm8pivFYdXwjktkpIVM4tAzglR15FOVAIYebXHB
- ClXGMbSFNuw5+mp5GnkhMEekPfPKad/F2K+zmqp1oTAPMmwUFkeSe1vq6APrB6gyIBEL
- 2Hww==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUkN+ZVenvN5LqeTDgi+Oy6Qdub+/1GicHf6FVjWqHtiz4VD03lNzIePoaUx4Hts1QN1Fq6OTt+NUN0Dw==@nongnu.org,
- AJvYcCVhHZA/6Tjy4Ih0mUSGQvpA2bK48PJadhy1NXmuReTUtTXjqwBpqXytiEFT6k7VRejmix8SCDIZvQ==@nongnu.org,
- AJvYcCW9eXbJEOE2yNiJlaTDlF8NxKiQG3Gwr0afj+6dFBvK/bImK4Ynq4W47GSpiSCIFELlS/qF803kXS4=@nongnu.org,
- AJvYcCXduc4Wqdgj4b0PCQzFM2NoasMM2CoZmzZx9bAXtaLkQKVXj1tV0ck5oZXWpHjjXqiw0ouKw4tLZ9OiEg==@nongnu.org
-X-Gm-Message-State: AOJu0YyvPyrx/nvaJfm0KU6TNR5KKuvBq5DAmTo3SDfpJd4pivtQz2rW
- gGOS68kcWNcTRwcjbuJJ/35wAZmF1C9Jem9/c6ogxrkHRKj0cWXKRZXgTfKR
-X-Gm-Gg: ASbGncvmttbatwmRfVX4eTILeXB1bK+buuv0wbn656sA2B0nm07o/CrJkqcP7QVwW1+
- Mz0TNyXa3/tV4eEmU7ph6mbuSyY4SD2yWFNYz/skAnXe3j/Iv2rQANovqzErahKE+3jlTNWQRkF
- ooYPa68SZzoH/yM5v4MLmwKr6U5h0Oz2Ys4MxfudgcuV7hSsoFH0wJjp9N36Ku9nEui0W3QpRJf
- T+iEKvUI1oJY9b75j52KVwV9qDzUurq7IrB/m0hToTWHD4b2kIqQYXw32kdMkisHSDhZggZrnps
- klWMEa3Y8wxC9iEAuMyuaiN+brg66NpLgJETF9Z0TCK6g5tNZB/kyH2WTnTZ7ffhoxvW
-X-Google-Smtp-Source: AGHT+IG+HhXY9MccZflP2IGJae4uZu0y23mzWOU0azhXj3wrV5kpmm22SzyuVnini2IXqkIH9KI0Sg==
-X-Received: by 2002:a05:6a00:2e84:b0:736:42a8:a742 with SMTP id
- d2e1a72fcca58-73c26735170mr1091929b3a.11.1744791450203; 
- Wed, 16 Apr 2025 01:17:30 -0700 (PDT)
-Received: from localhost.localdomain ([240d:1a:3b6:8b00:ee5a:e672:7d4c:d43])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73bd21c3263sm9839445b3a.38.2025.04.16.01.17.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Apr 2025 01:17:29 -0700 (PDT)
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Kohei Tokunaga <ktokunaga.mail@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Pavel Pisa <pisa@cmp.felk.cvut.cz>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Vikram Garhwal <vikram.garhwal@bytedance.com>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Hildenbrand <david@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH 19/19] MAINTAINERS: Update MAINTAINERS file for wasm-related
- files
-Date: Wed, 16 Apr 2025 17:14:24 +0900
-Message-Id: <185cfff812b952abb24e25dfcc8bab7c65da6214.1744787186.git.ktokunaga.mail@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1744787186.git.ktokunaga.mail@gmail.com>
-References: <cover.1744787186.git.ktokunaga.mail@gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u4xxW-0002aq-T6
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 04:17:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u4xxU-00060d-4s
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 04:17:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744791439;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+prEyTRWGZcBrE/AIyoW4nEtdjv1GtfBf5zu6/qquhE=;
+ b=gRE1aTffVbp9f/QYuauyLmvYwC5w4kghfZqKmmfTB9PI/skm3XcSvY44Jmr59kmGE0UnOc
+ tsiJhkTl7xFxNN6SZskLTSCOKAoxdNm13IGbNwrxLOC/m9clxjXhMQk7IPRhKX5PuA7yck
+ ulQAx6VSESSehAi19Lx7L2s2HfovyAM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-249-QmzrYM3kNo6d5vwj2mc6gQ-1; Wed,
+ 16 Apr 2025 04:17:14 -0400
+X-MC-Unique: QmzrYM3kNo6d5vwj2mc6gQ-1
+X-Mimecast-MFC-AGG-ID: QmzrYM3kNo6d5vwj2mc6gQ_1744791433
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2AD2A1800570; Wed, 16 Apr 2025 08:17:12 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4E5141800367; Wed, 16 Apr 2025 08:17:11 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D569121E66C3; Wed, 16 Apr 2025 10:17:08 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcelo
+ Tosatti <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric
+ Auger <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
+In-Reply-To: <Z/i3+l3uQ3dTjnHT@intel.com> (Zhao Liu's message of "Fri, 11 Apr
+ 2025 14:34:34 +0800")
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <20250409082649.14733-2-zhao1.liu@intel.com>
+ <878qo8yu5u.fsf@pond.sub.org> <Z/iUiEXZj52CbduB@intel.com>
+ <87frifxqgk.fsf@pond.sub.org> <Z/i3+l3uQ3dTjnHT@intel.com>
+Date: Wed, 16 Apr 2025 10:17:08 +0200
+Message-ID: <87fri8o70b.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pf1-x42d.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,33 +95,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
----
- MAINTAINERS | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Zhao Liu <zhao1.liu@intel.com> writes:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d54b5578f8..74a102c594 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3903,6 +3903,16 @@ F: tcg/tci/
- F: tcg/tci.c
- F: disas/tci.c
- 
-+WebAssembly TCG target
-+M: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-+S: Maintained
-+F: configs/meson/emscripten.txt
-+F: tests/docker/dockerfiles/emsdk-wasm32-cross.docker
-+F: util/coroutine-wasm.c
-+F: os-wasm.c
-+F: include/system/os-wasm.h
-+F: stubs/emscripten.c
-+
- Block drivers
- -------------
- VMDK
--- 
-2.25.1
+> On Fri, Apr 11, 2025 at 06:38:35AM +0200, Markus Armbruster wrote:
+>> Date: Fri, 11 Apr 2025 06:38:35 +0200
+>> From: Markus Armbruster <armbru@redhat.com>
+>> Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
+>>=20
+>> Zhao Liu <zhao1.liu@intel.com> writes:
+>>=20
+>> > Hi Markus
+>> >
+>> > On Thu, Apr 10, 2025 at 04:21:01PM +0200, Markus Armbruster wrote:
+>> >> Date: Thu, 10 Apr 2025 16:21:01 +0200
+>> >> From: Markus Armbruster <armbru@redhat.com>
+>> >> Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
+>> >>=20
+>> >> Zhao Liu <zhao1.liu@intel.com> writes:
+>> >>=20
+>> >> > Introduce the kvm-pmu-filter object and support the PMU event with =
+raw
+>> >> > format.
+>> >>=20
+>> >> Remind me, what does the kvm-pmu-filter object do, and why would we
+>> >> want to use it?
+>> >
+>> > KVM PMU filter allows user space to set PMU event whitelist / blacklist
+>> > for Guest. Both ARM and x86's KVMs accept a list of PMU events, and x86
+>> > also accpets other formats & fixed counter field.
+>>=20
+>> But what does the system *do* with these event lists?
+>
+> This is for security purposes, and can restrict Guest users from
+> accessing certain sensitive hardware information on the Host via perf or
+> PMU counter.
+>
+> When a PMU event is blocked by KVM, Guest users can't get the
+> corresponding event count via perf/PMU counter.
+>
+> EMM, if =E2=80=98system=E2=80=99 refers to the QEMU part, then QEMU is re=
+sponsible
+> for checking the format and passing the list to KVM.
+>
+> Thanks,
+> Zhao
+
+This helped some, thanks.  To make sure I got it:
+
+KVM can restrict the guest's access to the PMU.  This is either a
+whitelist (guest can access exactly what's on this list), or a blacklist
+(guest can access exactly what's not this list).
+
+QEMU's kvm-pmu-filter object provides an interface to this KVM feature.
+
+KVM takes "raw" list entries: an entry is a number, and the number's
+meaning depends on the architecture.  The kvm-pmu-filter object can take
+such entries, and passes them to straight to KVM.
+
+On x86, we commonly use two slightly higher level formats: select &
+umask, and masked.  The kvm-pmu-filter object can take entries in either
+format, and maps them to "raw".
+
+Correct?
 
 
