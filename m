@@ -2,92 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A52A9071C
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 16:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FC3A90724
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 17:01:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u54Dq-0005n2-7N; Wed, 16 Apr 2025 10:58:42 -0400
+	id 1u54FH-0006eI-Qc; Wed, 16 Apr 2025 11:00:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1u54Dm-0005mU-GE
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 10:58:38 -0400
-Received: from mail-il1-x12c.google.com ([2607:f8b0:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1u54Em-0006ZO-4r; Wed, 16 Apr 2025 10:59:40 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1u54Dk-0002wB-K9
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 10:58:38 -0400
-Received: by mail-il1-x12c.google.com with SMTP id
- e9e14a558f8ab-3d589ed2b47so21449615ab.2
- for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 07:58:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1u54Ee-00035D-A6; Wed, 16 Apr 2025 10:59:34 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-736aaeed234so5739488b3a.0; 
+ Wed, 16 Apr 2025 07:59:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744815515; x=1745420315; darn=nongnu.org;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=FjGCW5PhZQlTASC6/JHYFtFvcOGi4Ck5L5oKLVQ8brg=;
- b=b0qObDiUNDFdcRu+2Nh0vUjOXc/rVAFrm7J0Cy3WwvfsTdG34+YJMLy07mzLOS2yZR
- gWtinS/Hh0wfNrf1mE75I5eYUnQXu2fIOPChMpCVaUU6BbCJF7cxsDCEgGXlbHcE8ete
- cFWE2tye1W3hRAu30hVA+M4Ya7uFWgH0+kVnYmOOrNf83Q5QdLjmfvGU56JtMRe5Jn/h
- YMF97Jaj2Nv6pgYumDXswdkKHNt1Ah/aETgsZVd8ZUkk01qX5OLbPOHj/Q4PwmE2BDDG
- oes28v7Db2IaBdR7fyOKxOnXUNRLhFbk9hO4D77+YfdVU/8jgVSANq9321VXJ+fm9iqQ
- 2mBg==
+ d=gmail.com; s=20230601; t=1744815568; x=1745420368; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HXuQGfkXP/19tux2piI9VRUlehpzjl8OjOtBJ20HPC0=;
+ b=koRf3T8QRN3dOHwgKexVo/7Um5xO/8rfkFt6+zvAl3STFd+9M2w2KKmJMV8QmG0DXM
+ WI6S/KDjsnEUzklxICQj+a6/weXqtVRyv77NPHE9eyECUmINNSyObBhHLkx/Rk5TGCYd
+ sL490lWW0IO8X7uQPD+MqCVHHuls2At3/qkt4K2k54UHxFwgyqT2omwQx7S3m7CG8eTn
+ JmKHkwukzHWilyTCkR8OMSkLujcN2Ovr0VxIIWxn3AlEDvZA5LkYvkvfELvBbhwL+dYL
+ 28SW8kKWtc/5KL2CIoVIIscHTpG6WxUBt33/FpylB0hRteHaJOR0onegjthIpQOGuJNi
+ iaqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744815515; x=1745420315;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FjGCW5PhZQlTASC6/JHYFtFvcOGi4Ck5L5oKLVQ8brg=;
- b=qBME6TvwyxKPfNK1JbND/LZwEYr8ptWvWbG+o3+E9Iig4nPQM6es9f//Eyj8V3EKom
- Z1oVTYzxVX6ddiv+Il3RkHjitoo0Su9aVoV16DKFWZJrxqL1jpu3iGDRz23mWkYkkCS7
- 2YC07y0jKNVd3HFw5uo3WxGYGr9g4Q2mE9Dvd9Q68E3UKf+pfD0RsnoJszOqYHFa1h+z
- TWR+UBKRdPbYL/RTJPKveKJ1zJbv+sZ7poVb176eOXSl/I8KPEIndTNFQH1RqHaj+e92
- T4/Lu6mETSoKvUh28gqdxpAqwr7A4aryWwK0woTDmzEiO9LFhGZRI+unLeAzAZLcOyLn
- Jg6A==
+ d=1e100.net; s=20230601; t=1744815568; x=1745420368;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HXuQGfkXP/19tux2piI9VRUlehpzjl8OjOtBJ20HPC0=;
+ b=AMG/6dgVT4VJoq+s5ZtClFbWQNP/wsky6NsKlzx8eLWzC47tK59Xe761ExfWaDHFbc
+ Zwg6c3j/DIXMrh+kGUBKTYVX8LfsKYuN3KsIu+kCZYuJzvZdA7B30/EfECVAT8XBXlE0
+ mzAsIuOnVG4Kxx6f2MUbH1gyp1r+IPfjxRGF2TOtQxaPXSUGwP1MZE8gX6nAjaMSmcF5
+ gtfNDYnJ61bO1guevRgvOiaVt9e1Qw8nPjVMOp1CpGoKlqsyfOP6j8aIOtsFG5jKAq2d
+ RERL0emFNYL1UyPnczBAuuDDQ6jI2ODCRWQc2icMndSFcYn/UEDF52sxJIZPn26dO7Rr
+ vfpw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVJxlxoqnfrfWUWvMvIE5Zvw0sQ7UvU6Rg543/gQayQMZfa0bH/93veZhXcUp2W2blHVL2BbWZc5JhI@nongnu.org
-X-Gm-Message-State: AOJu0Yzs6oOqaQSO2Lduws0CHqidhLXizwjt2ijkWhhmv0GEL3wtRY2V
- H6V3R/N2Sxa4u1uUI3ALkXfaCGbo9ubGFRzvOjSTeyWDmd2YYR2R
-X-Gm-Gg: ASbGncsBJJrHH5QP9SsTFEs06skju6wiWCvzjrCmyeu4O7VdMHhLBLIbRekq5Vvx2cX
- rgFBdAzflbjqgNBUAqpQhExPM+Ag4fyxOvIA46Srz0pvxPo5w2HvPs1Xd4QgJSnbInWlDTmsLG+
- G3Qlvm9B6f++z1DVGqoxhLDDuGU8wWhKeOZFQ66um52NeAX2GGPyZl/60MT28wnr5RlFpDbcTo1
- m0QOVPAseJiL0CaTPrYbcdbXar2VoJdEKGuY4dyxtSa+5UJBTOSg/7cXZtTMwqfa4A7exDM6+h9
- wBfWgk0ZFYa8haccon3nvKt19Tj7NnbcZnwmT1NR8zSseSyTvvud8TquBbNn9a6qd2ojaa9e7ig
- =
-X-Google-Smtp-Source: AGHT+IGATTLQgNIPI6XCpfFWWtdYlVPdE+WOCS1ryJvCRBlDNW0RmM1pJMrcNXiguImtkDHpAU0lfQ==
-X-Received: by 2002:a05:6e02:3111:b0:3d8:975:b808 with SMTP id
- e9e14a558f8ab-3d815af7f18mr25264565ab.5.1744815514826; 
- Wed, 16 Apr 2025 07:58:34 -0700 (PDT)
-Received: from DESKTOPUU50BPD (c-67-190-160-7.hsd1.co.comcast.net.
- [67.190.160.7]) by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-3d7dc5826cfsm36315055ab.55.2025.04.16.07.58.32
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 16 Apr 2025 07:58:33 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: =?utf-8?Q?'Philippe_Mathieu-Daud=C3=A9'?= <philmd@linaro.org>,
- <qemu-devel@nongnu.org>
-Cc: <brian.cain@oss.qualcomm.com>, <quic_mathbern@quicinc.com>,
- <sidneym@quicinc.com>, <quic_mliebel@quicinc.com>,
- <richard.henderson@linaro.org>, <ale@rev.ng>, <anjo@rev.ng>
-References: <20250415235542.71703-1-ltaylorsimpson@gmail.com>
- <c7588131-2c4f-4a66-8107-cba4df904278@linaro.org>
- <074e01dbaede$2516b720$6f442560$@gmail.com>
-In-Reply-To: <074e01dbaede$2516b720$6f442560$@gmail.com>
-Subject: RE: [PATCH] Hexagon (target/hexagon) Remove gen_tcg_func_table.py
-Date: Wed, 16 Apr 2025 08:58:29 -0600
-Message-ID: <075601dbaee0$05faee40$11f0cac0$@gmail.com>
+ AJvYcCVrDMWuhC3/2MzZ9Qk3HJFt7RznpbrbtclT6EPhEECmnafvkD8Xr2XMX7MRTg6jsY1rEb7SQt0z1kSr@nongnu.org,
+ AJvYcCWznIWRSB6lUFO5c9k/49k6SQdoLf6pJ/+bp065ihLf60fB7qFXj4lZJIVQpQfSz0TXbmWfe7OMmx5yqQ==@nongnu.org
+X-Gm-Message-State: AOJu0YxaWR7alDvQf3L5bHpqdXLuwWbVuTDOcrpX1eGzoGtNlyx2C7SJ
+ lPLUlmCp1JORi/6xVi4cnDPHJ56JlzziumPIF3kYTxYQZkxFZk24OMILLQ==
+X-Gm-Gg: ASbGncuDA4GaeIvxbXY26g5O+iP6EGXqr38jBgvlHN0WT7aqwfV4pszwP+Jb9JPrgcs
+ Qu+/vg8Mo7JwwHy6MKqLwij894d5iD/QJP+rA6GaKiEa18zmslEgswxpOLJHO8dApsPWgl0TttA
+ f5biW9qSVwsitc1YwO1XmLX1KXTGfakLz2z1CpBS91fTjoimqfSlg1LdTrLb7sLvKqNKdmXx0KL
+ fb6yH0q4iRaUaVDQcd4atpje50lcE9YHHJY8YNmZ9E4re4795J2v6wXIdTGcuJJawn1CmAcq15c
+ a1gIQaH7s+EYKq/s7IdsvpaaA/RDhnKqvy0ETt5++Q==
+X-Google-Smtp-Source: AGHT+IGvsKhx50Ja+VWnGN3C82mcjVGOvOGlZGYXvkAowslG+YKQUq/1AvQsG+lbC0l5vNvb/hO4XQ==
+X-Received: by 2002:a05:6a00:3001:b0:736:d297:164 with SMTP id
+ d2e1a72fcca58-73c266b28efmr2838269b3a.1.1744815567702; 
+ Wed, 16 Apr 2025 07:59:27 -0700 (PDT)
+Received: from wheely.local0.net ([1.145.55.85])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73bd230e355sm10814506b3a.139.2025.04.16.07.59.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Apr 2025 07:59:27 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Emanuele Giuseppe Esposito <e.emanuelegiuseppe@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org
+Subject: [PATCH 0/4] tests/qtest: Enable spapr dma tests
+Date: Thu, 17 Apr 2025 00:59:14 +1000
+Message-ID: <20250416145918.415674-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQKaLHs1ylS/ArO36JsiYcELWqd62wKrQYO0Ax73lDCx+xGWEA==
-Content-Language: en-us
-X-Antivirus: Norton (VPS 250416-2, 4/16/2025), Outbound message
-X-Antivirus-Status: Clean
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12c;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x12c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,90 +102,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+I kept R-B tags from Fabiano and Phil despite a little change in
+how patch 1 looks and splitting it, hope that is okay.
 
-
-> -----Original Message-----
-> From: ltaylorsimpson@gmail.com <ltaylorsimpson@gmail.com>
-> Sent: Wednesday, April 16, 2025 8:45 AM
-> To: 'Philippe Mathieu-Daud=C3=A9' <philmd@linaro.org>; qemu-
-> devel@nongnu.org
-> Cc: brian.cain@oss.qualcomm.com; quic_mathbern@quicinc.com;
-> sidneym@quicinc.com; quic_mliebel@quicinc.com;
-> richard.henderson@linaro.org; ale@rev.ng; anjo@rev.ng
-> Subject: RE: [PATCH] Hexagon (target/hexagon) Remove
-> gen_tcg_func_table.py
->=20
->=20
->=20
-> > -----Original Message-----
-> > From: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> > Sent: Wednesday, April 16, 2025 12:18 AM
-> > To: Taylor Simpson <ltaylorsimpson@gmail.com>; qemu-
-> devel@nongnu.org
-> > Cc: brian.cain@oss.qualcomm.com; quic_mathbern@quicinc.com;
-> > sidneym@quicinc.com; quic_mliebel@quicinc.com;
-> > richard.henderson@linaro.org; ale@rev.ng; anjo@rev.ng
-> > Subject: Re: [PATCH] Hexagon (target/hexagon) Remove
-> > gen_tcg_func_table.py
-> >
-> > Hi Taylor,
-> >
-> > On 16/4/25 01:55, Taylor Simpson wrote:
-> > > This can easily be done in C with opcodes_def_generated.h.inc
-> > >
-> > > Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
-> > > ---
-> > >   target/hexagon/genptr.c              |  6 ++-
-> > >   target/hexagon/README                |  1 -
-> > >   target/hexagon/gen_tcg_func_table.py | 66 =
-----------------------------
-> > >   target/hexagon/meson.build           | 10 -----
-> > >   4 files changed, 5 insertions(+), 78 deletions(-)
-> > >   delete mode 100755 target/hexagon/gen_tcg_func_table.py
-> > >
-> > > diff --git a/target/hexagon/gen_tcg_func_table.py
-> > > b/target/hexagon/gen_tcg_func_table.py
-> > > deleted file mode 100755
-> > > index 299a39b1aa..0000000000
-> > > --- a/target/hexagon/gen_tcg_func_table.py
-> > > -        f.write("const SemanticInsn opcode_genptr[XX_LAST_OPCODE] =
-=3D
-> > {\n")
-> > > -        for tag in hex_common.tags:
-> > > -            ## Skip the priv instructions
-> > > -            if "A_PRIV" in hex_common.attribdict[tag]:
-> > > -                continue
-> > > -            ## Skip the guest instructions
-> > > -            if "A_GUEST" in hex_common.attribdict[tag]:
-> > > -                continue
-> > > -            ## Skip the diag instructions
-> > > -            if tag =3D=3D "Y6_diag":
-> > > -                continue
-> > > -            if tag =3D=3D "Y6_diag0":
-> > > -                continue
-> > > -            if tag =3D=3D "Y6_diag1":
-> > > -                continue
-> >
-> > What about all these skipped tags? IIUC gen_opcodes_def.py doesn't
-> > skip them. If it isn't necessary to skip, please mention it in the
-> > commit description for clarity.
-> >
-> > Regards,
-> >
-> > Phil.
-
-I looked into this.  There aren't any instructions currently in the code =
-that would be skipped by this logic.  Perhaps this logic was needed at =
-one point in time but is no longer needed because those instructions =
-were removed at some point.
-
-I recall that Brian consolidated the logic to decide which instructions =
-to skip into a single function in hex_common.py as part of the system =
-mode patch series.  So, I'll go ahead and add a comment to the commit =
-description as you suggest.
+Since RFC:
+- Split endian fix + invalid value assert into two paches.
+- Changed the invalid message assertion in what is now patch 1 to
+  use g_assert_cmphex so the failing value can be seen.
+- Added patch 3 to factor duplicated code we just changed. Some
+  patches I have for e1000e and xhci tests also want to use the
+  same function...
+- Fixed stray hunk from mis-rebase in the spapr patch.
 
 Thanks,
-Taylor
+Nick
 
+Nicholas Piggin (4):
+  tests/qtest: Enforce zero for the "un-fired" msix message value
+  tests/qtest: Fix virtio msix message endianness
+  tests/qtest: Add libqos function for testing msix interrupt status
+  tests/qtest: Enable spapr dma with linear iommu map
+
+ tests/qtest/libqos/pci.h               |  6 +--
+ hw/ppc/spapr_iommu.c                   |  9 +++-
+ tests/qtest/e1000e-test.c              | 21 ---------
+ tests/qtest/igb-test.c                 | 21 ---------
+ tests/qtest/libqos/generic-pcihost.c   |  1 -
+ tests/qtest/libqos/pci-pc.c            |  3 --
+ tests/qtest/libqos/pci-spapr.c         |  7 +--
+ tests/qtest/libqos/pci.c               | 62 ++++++++++++++++++++------
+ tests/qtest/libqos/virtio-pci-modern.c | 30 +++----------
+ tests/qtest/libqos/virtio-pci.c        | 38 ++++------------
+ tests/qtest/vhost-user-blk-test.c      |  6 ---
+ tests/qtest/virtio-blk-test.c          | 12 -----
+ 12 files changed, 77 insertions(+), 139 deletions(-)
+
+-- 
+2.47.1
 
 
