@@ -2,88 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3D9A8B1B0
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 09:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D447FA8B1D7
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 09:19:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4wqP-00043M-Tn; Wed, 16 Apr 2025 03:06:01 -0400
+	id 1u4x2O-0007Uv-JN; Wed, 16 Apr 2025 03:18:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u4wqN-00042i-6p
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 03:05:59 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u4wqL-0007rT-4Q
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 03:05:58 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43cf06eabdaso61730145e9.2
- for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 00:05:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744787155; x=1745391955; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=YIx/tzhNr8Jvc4YO4daHolVTKAjvMLQTjpQ39O7mwZ0=;
- b=XbQ2e1rLzq3EU3bh6pqtky4u/tvgsi7HCjzRONmTwUKrfk2BY8zyCRwYkZOwurD/d2
- 7176lkBDyP4f7ZpGnaigswyTXy4zclDramkefcwpe3FBFhaciRBnr7tm+n1GsA7hZPqG
- Aowpev6t6vNvw3qhwRSs9wtpx2caFOMfUr0uBbDLgY38wbDwfclmnJcr4N2TBKpy0Gig
- ntWca7hPOEuxl6YSLfmeK3JcDdgVYLhNN2Zs1026vCm7mt416tBdI19sMDhK9gQBSlLO
- 8+79hv0pfWvfK8wfaFspI1s7WQomk/eppo9qgBuZPu3J8nQNwczgUzitjNvHW5EuA53H
- UonA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744787155; x=1745391955;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YIx/tzhNr8Jvc4YO4daHolVTKAjvMLQTjpQ39O7mwZ0=;
- b=S7J1vKss6YFzlOZE6EInMTJChDLo4Df8qIc/YMKQXRKHawWvkzpNn6Td4TBZEpMnaq
- Q7SitlmzZfLsbhVudXbzPXYBYBnftHxVrXz3Vb0FcZqT2piAaFNNrwIqgwdk1HAlOrtV
- UTQhisNkN1rDCW8RxiFmBK9C0sS9Q5VTYOVGraki1QC9kRvFypB+SkY4w1gNVAYsHDxv
- rGK/dOL6L6uK6HZ3LwMidXMUNWUf8hqEpSTjcY2LvF+uOvX8W/UzsTJdwPpmLxX2BMZN
- NeAlCM2yCF//NKTOX1oKPURDHX8gp1UIwe7MDvNa6Wp/zFOoCticUE7GBaTKORltzA/V
- RSLw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX4fPRkLdlSvacMDRvXdRe2Ueu8jKA7rUVJEceLFvpSaFV3PSuuY2o/L1ZkNi50mD7eEqcA3vt1B+lL@nongnu.org
-X-Gm-Message-State: AOJu0Yx8CErNhmt2RytFqzYe7DyGejrZYh59IBfIYLKiTitJBo19y/9L
- AzlabcWCKgBSBBzatL8MaHSNbd+pQIIvfzVfhh+DUpwBE1dTVVGAOpvh9owtQWE=
-X-Gm-Gg: ASbGncuIK8cskt4EprIQOKU5ijXY2+eYqqIPU/IAugsRbScLbl5lfSezi1Yir4FmG2V
- QcACVGa+k0PywaVqk23ewbJBujsBJZ0uY2npabCEodlHlSXJQi9podK3sCEcmtPRNOcwC3bTTMz
- FtAE6gZvu796d9dsMHsCcvecnoYhHzq/09c8iCN4hf5Epj+wDE0+nBADvCUeRyPJT/lpr2GnAlm
- +N2giifylLwOEGM04WaKB8CCkZL4XcxtAOU2T5cPSRj5ZCHM/A4OJ/sLhH2XoCeSv1wUCxv9SLh
- SaMnJV4OH6YtBgAEi47nmnFfliOrdGGZMZtOzJPnGYFoKkBlmj7QBSFoM67lB4JkDHrsCgiEd9n
- 2O21RSpAQWEk=
-X-Google-Smtp-Source: AGHT+IFipyU0KfT7IKaCtAb8OZw7POQGbqpNxakowsqg9Um7ugEjgajp4CA1+M7In4mmzGDFM4a4cw==
-X-Received: by 2002:a05:600c:b98:b0:43d:3df:42d8 with SMTP id
- 5b1f17b1804b1-4405d5fcc9emr4950755e9.6.1744787154834; 
- Wed, 16 Apr 2025 00:05:54 -0700 (PDT)
-Received: from [192.168.1.74] (88-187-86-199.subs.proxad.net. [88.187.86.199])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4405b4d352esm12025585e9.16.2025.04.16.00.05.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Apr 2025 00:05:54 -0700 (PDT)
-Message-ID: <78701758-6eee-41e5-9fbf-c123651f44b8@linaro.org>
-Date: Wed, 16 Apr 2025 09:05:53 +0200
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1u4x2J-0007S2-Hb; Wed, 16 Apr 2025 03:18:21 -0400
+Received: from apollo.dupie.be ([51.159.20.238])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1u4x2D-0001of-Oi; Wed, 16 Apr 2025 03:18:18 -0400
+Received: from localhost.localdomain (unknown
+ [IPv6:2a02:a03f:eafe:6901:38ac:f342:2515:2d3c])
+ by apollo.dupie.be (Postfix) with ESMTPSA id 1051A1520D20;
+ Wed, 16 Apr 2025 09:18:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
+ t=1744787883;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=c5hrA3YjGEmNzSP+OFwrztwkaZbFWrtGm3Wx7E8+RFc=;
+ b=TxUWS6/Hsc8zrar4q4ckpov6pWN2ZYgdTUYSkn1Q53dXqDKyHuiEz9NlqSyzjufL/pXf2A
+ RikV47A4wQhfejXtferyg97letvpFP3wweyLU7NoOGwyIy76YfNoZLbciHRDeOIZZYT0c5
+ WoUw9rA6OFAim7u3QNn40Qft6dlK7wxHfzjWrxnJKzdVtiWAxl9mGrsYDvCoLPW7YNFDYY
+ SOTgZawGzQGowALo+JbMYO9zHpkSJenRPkvuGzRB5igpYsuTxJBGxnYl4afSWp2YPB1hsz
+ PZUe48lMnMxfK/SpKqbb3k20utMaNGS0AyRXhelqIgz8XLh/vrW2gVYO9x8H+A==
+From: Jean-Louis Dupond <jean-louis@dupond.be>
+To: qemu-devel@nongnu.org
+Cc: Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, Jean-Louis Dupond <jean-louis@dupond.be>
+Subject: [PATCH 0/3] Add a for_commit option to qemu-img measure
+Date: Wed, 16 Apr 2025 09:16:51 +0200
+Message-ID: <20250416071654.978264-1-jean-louis@dupond.be>
+X-Mailer: git-send-email 2.49.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 157/163] tcg: Merge INDEX_op_st*_{i32,i64}
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250415192515.232910-1-richard.henderson@linaro.org>
- <20250415192515.232910-158-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250415192515.232910-158-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=51.159.20.238; envelope-from=jean-louis@dupond.be;
+ helo=apollo.dupie.be
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,55 +67,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/4/25 21:25, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/tcg/tcg-opc.h    | 15 ++++----------
->   tcg/optimize.c           | 28 +++++++------------------
->   tcg/tcg-op.c             | 14 ++++++-------
->   tcg/tcg.c                | 45 +++++++++++++---------------------------
->   tcg/tci.c                | 36 +++++++++-----------------------
->   tcg/tci/tcg-target.c.inc | 20 +++++++-----------
->   6 files changed, 50 insertions(+), 108 deletions(-)
+This fixed bug #2369 [1]
 
+This patch is a new implementation for a previous (non-merged) patch to make measure useful to calculate
+the new size of the target image after commit.
+It is very useful to have this kind of calculation if you do qcow2 on block storage (like iSCSi).
+This because you need to be able to size the target volume big enough to handle the committed image.
 
-> diff --git a/tcg/optimize.c b/tcg/optimize.c
-> index 1da23755e3..cbc519624a 100644
-> --- a/tcg/optimize.c
-> +++ b/tcg/optimize.c
-> @@ -30,14 +30,6 @@
+Instead of modifying the existing measure logic, a new logic was added that really looks into the allocated
+clusters and use the (local) next_cluster_index to calculate the target image size.
+It also takes into account discards from the top into base to lower the index when a cluster is freed.
 
+New test was added to verify the code.
 
-> @@ -2926,19 +2918,16 @@ static bool fold_tcg_st(OptContext *ctx, TCGOp *op)
->       }
->   
->       switch (op->opc) {
-> -    CASE_OP_32_64(st8):
-> +    case INDEX_op_st8:
->           lm1 = 0;
->           break;
-> -    CASE_OP_32_64(st16):
-> +    case INDEX_op_st16:
->           lm1 = 1;
->           break;
-> -    case INDEX_op_st32_i64:
-> -    case INDEX_op_st_i32:
-> +    case INDEX_op_st32:
->           lm1 = 3;
->           break;
-> -    case INDEX_op_st_i64:
-> -        lm1 = 7;
-> -        break;
-> +    case INDEX_op_st:
->       case INDEX_op_st_vec:
->           lm1 = tcg_type_size(ctx->type) - 1;
->           break;
+When testing the new code on the impacted images in bug #2369 [1], this gives the following results:
 
-Unrelated nitpicking comment while looking at what lm1 is,
-I'd find clearer for tcg_type_size() to return an unsigned
-type, and lm1 be a uintptr_t one. Matter of taste I suppose.
+Start:
+<filesize>  <image>
+ 6174015488 top
+13421772800 base
 
-Regardless,
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+calculate with discard-no-unref=on:
+required -> 13624475648
+Commited image size: 13610385408
+
+When calculating with discard-no-unref=off:
+required -> 13520404480
+Commited image size: 13504806912
+
+Let me know if I made some mistakes :)
+
+[1]: https://gitlab.com/qemu-project/qemu/-/issues/2369
+
+Jean-Louis Dupond (3):
+  block: add for_commit option to measure
+  qcow2: make measure for_commit aware
+  iotests/290: add test case for for_commit measure
+
+ block/qcow2.c                    | 137 +++++++++++++++++++++++++++++--
+ include/block/block_int-common.h |   4 +
+ qapi/block-core.json             |  28 +++++++
+ qemu-img.c                       |  40 +++++++--
+ tests/qemu-iotests/290           |  45 ++++++++++
+ tests/qemu-iotests/290.out       |  61 ++++++++++++++
+ 6 files changed, 304 insertions(+), 11 deletions(-)
+
+-- 
+2.49.0
 
 
