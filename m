@@ -2,94 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C7DA8B3D2
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 10:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EAACA8B4A3
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 11:02:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4y98-0008QO-Nc; Wed, 16 Apr 2025 04:29:26 -0400
+	id 1u4ydx-000249-GH; Wed, 16 Apr 2025 05:01:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1u4y8q-000895-LP
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 04:29:11 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1u4ydu-00023n-E4
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 05:01:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1u4y8o-0008Lk-5m
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 04:29:08 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1u4ydp-0005XR-Ed
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 05:01:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744792143;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=KpK5a5N522QrVFFwZVgIKrckLxvNrQwiWNFASbDGrUE=;
- b=Gq1BWjk7A216o0UtqsthahroIKKgx2UO7BfS59E/oVyq9PLikdF6scZXQoMfCeRPkASVwl
- u89Zf7oxsiElDNsmzi40a0hFuJNlXgazsT3NCEMNX2k1H+QAjf5i2L8zxYaPVIc6d6JY/z
- wogn6M/W1oC5GqGx1lj6DOB96X9G8Mc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-500-jvrBfuqLOAW5oyi64e-xsA-1; Wed,
- 16 Apr 2025 04:28:55 -0400
-X-MC-Unique: jvrBfuqLOAW5oyi64e-xsA-1
-X-Mimecast-MFC-AGG-ID: jvrBfuqLOAW5oyi64e-xsA_1744792133
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D0EFA1955D98; Wed, 16 Apr 2025 08:28:50 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.58])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 295E3180047F; Wed, 16 Apr 2025 08:28:39 +0000 (UTC)
-Date: Wed, 16 Apr 2025 09:28:36 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Cc: qemu-devel@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Pavel Pisa <pisa@cmp.felk.cvut.cz>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Vikram Garhwal <vikram.garhwal@bytedance.com>,
- Jason Wang <jasowang@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Hildenbrand <david@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: Re: [PATCH 01/19] hw/core/loader.c: Fix type conflict of GLib
- function pointers
-Message-ID: <Z_9qIQhjsI5zOwXA@redhat.com>
+ s=mimecast20190719; t=1744794068;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=t4cUu06qS+cFN9mZzfjcJYWfoQ19aC/j63DrCIx4FSQ=;
+ b=QjqGBAGh49g9+uKVwgabGxsM/ey3qBB2lFzpj15fGe/HX5kn1QHjJx2iNyCdVUyKBJTA/4
+ keR/0vvOhicv+Sv6LsXypVCk2sTs7YcupY3kNXMeXaT/FeLw87RXTIAaKX9FRj97kVbQvK
+ S6xQk/qoC6g7TssMllsh/WTka7nlxEU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-198-CwgsROHvOleMVs-Y5vG6Ug-1; Wed, 16 Apr 2025 05:00:52 -0400
+X-MC-Unique: CwgsROHvOleMVs-Y5vG6Ug-1
+X-Mimecast-MFC-AGG-ID: CwgsROHvOleMVs-Y5vG6Ug_1744794050
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-39126c3469fso2541847f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 02:00:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744794050; x=1745398850;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=t4cUu06qS+cFN9mZzfjcJYWfoQ19aC/j63DrCIx4FSQ=;
+ b=E6njo4px+h+Oq9jr/zl+2abHrVF2Fv5Fu9LyzWXAom4p3grjEqqZ9kRmE5fC6Sn9Zx
+ S3N1vDAIwSHGt2fOC4nGXnsj0djijfVRCC7aMJYyOzzMLrI2m6hjRmQNO6YI0yQ+xsCA
+ r2X0k9wHJsBp5PpzeNIm9f1HwFklIrCpPQtkYtfJ4TmAKdYEgSMcCmq3f5qy5YqmJYav
+ az3QI+wKl9x5blgmtIHdGTQ3TQuaAEuyeQJ4PAs2CSjJA35NawYdcqGVuTWIF4wL+Z4n
+ ZmIQUosr3Bq4g3aase/6vX1E0An6YhkNJQxM8gCJxlyne+LKj2QSDg0V2q0sm8wkdPAO
+ rSew==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVXVmdie8yKqqax3+PK6JpUs6w+IzQE2tsfRKdaMSak79KI5Vl7nTsqKtfTe4j/QPdxFfE3b9L02/gq@nongnu.org
+X-Gm-Message-State: AOJu0Yx6zS+01mfv0IRQI0PO2/rY4G7d03gwlEV7OWtzSrG2MHSXULfK
+ S/1Uj7DFoU9v5L1Bw8IXCH9QfjeC2ZrUIsoMVJG4k2rLiiBkZKmpYHz79e9GC14LbSb8Uqmfq42
+ Bddy+pevGvUM5huqUu7KfHPuDBtDtgtL534HaeMzs9PH7jtbFJurc+8q2WKn569JHYR4gje4dEv
+ l4IEzRuAig+hDsdZsEk6v3fvRvYfI=
+X-Gm-Gg: ASbGncsO0TH89f5fY9XzrcvqW76RoRIqq8XoOb9TsPwzCST1diRNHTZAhVivqLkGdrF
+ ilsEFtj/73uL/deL+le/oY2iJCym5dK+hgC65dALgIQuNgGxQUgHnpoC28NOUSZieJEOZjw==
+X-Received: by 2002:a05:6000:4282:b0:391:4231:40a with SMTP id
+ ffacd0b85a97d-39ee5b35cc7mr868402f8f.33.1744794049957; 
+ Wed, 16 Apr 2025 02:00:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFj0+ccl+XK8tbzEj/nsGfAwLeEoY8WarkpDtVV3VQFp9ObdgD98L1kk0o7dIu7/JFArmGrwmn61FmlkqM67gE=
+X-Received: by 2002:a05:6000:4282:b0:391:4231:40a with SMTP id
+ ffacd0b85a97d-39ee5b35cc7mr868327f8f.33.1744794049313; Wed, 16 Apr 2025
+ 02:00:49 -0700 (PDT)
+MIME-Version: 1.0
 References: <cover.1744787186.git.ktokunaga.mail@gmail.com>
  <44e9ef95ea6e8aa33560ca8580db0033623f0e91.1744787186.git.ktokunaga.mail@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <44e9ef95ea6e8aa33560ca8580db0033623f0e91.1744787186.git.ktokunaga.mail@gmail.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ <Z_9qIQhjsI5zOwXA@redhat.com>
+In-Reply-To: <Z_9qIQhjsI5zOwXA@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 16 Apr 2025 11:00:37 +0200
+X-Gm-Features: ATxdqUF_yxp8UmiitEgBJlwXgw5fD6l4Tq_i7Q_t6dBFJg29p48TP3GllPE74hs
+Message-ID: <CABgObfaj0ycyc2jVSJEVvQJ1m+uLf=_HYiOafn2MECgU36aspw@mail.gmail.com>
+Subject: Re: [PATCH 01/19] hw/core/loader.c: Fix type conflict of GLib
+ function pointers
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Kohei Tokunaga <ktokunaga.mail@gmail.com>,
+ qemu-devel <qemu-devel@nongnu.org>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, 
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>, 
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Vikram Garhwal <vikram.garhwal@bytedance.com>, 
+ Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Peter Maydell <peter.maydell@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Hildenbrand <david@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "open list:Block layer core" <qemu-block@nongnu.org>, 
+ qemu-arm <qemu-arm@nongnu.org>, 
+ "zmta06.collab.prod.int.phx2.redhat.com, list@suse.de" <qemu-ppc@nongnu.org>,
+ qemu-s390x <qemu-s390x@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000841ee60632e185e4"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,69 +123,134 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 16, 2025 at 05:14:06PM +0900, Kohei Tokunaga wrote:
-> On emscripten, function pointer casts can cause function call failure.
-> This commit fixes the function definition to match to the type of the
-> function call using g_list_sort_with_data.
-> 
-> Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-> ---
->  hw/core/loader.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/core/loader.c b/hw/core/loader.c
-> index 2e35f0aa90..93a8b45d28 100644
-> --- a/hw/core/loader.c
-> +++ b/hw/core/loader.c
-> @@ -1410,7 +1410,7 @@ typedef struct RomSec {
->   * work, but this way saves a little work later by avoiding
->   * dealing with "gaps" of 0 length.
->   */
-> -static gint sort_secs(gconstpointer a, gconstpointer b)
-> +static gint sort_secs(gconstpointer a, gconstpointer b, gpointer d)
->  {
->      RomSec *ra = (RomSec *) a;
->      RomSec *rb = (RomSec *) b;
-> @@ -1463,7 +1463,7 @@ RomGap rom_find_largest_gap_between(hwaddr base, size_t size)
->      /* sentinel */
->      secs = add_romsec_to_list(secs, base + size, 1);
->  
-> -    secs = g_list_sort(secs, sort_secs);
-> +    secs = g_list_sort_with_data(secs, sort_secs, NULL);
+--000000000000841ee60632e185e4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I don't see what the problem is with the original code.
+Il mer 16 apr 2025, 10:29 Daniel P. Berrang=C3=A9 <berrange@redhat.com> ha
+scritto:
 
-The commit message says we have a bad function cast, but the original
-method decl is
+> > -    secs =3D g_list_sort(secs, sort_secs);
+> > +    secs =3D g_list_sort_with_data(secs, sort_secs, NULL);
+>
+> I don't see what the problem is with the original code.
+>
+> The commit message says we have a bad function cast, but the original
+> method decl is
+>
+>   GList *g_list_sort(GList*list, GCompareFunc compare_func);
+>
+> where the callback is
+>
+>    typedef gint (*GCompareFunc)(gconstpointer a, gconstpointer b);
+>
+> Our code complies with that GCompareFunc signature.
+>
 
-  GList *g_list_sort(GList*list, GCompareFunc compare_func);
+The cast is inside glib; g_list_sort casts the function pointer and calls
+g_list_sort_with_data.
 
-where the callback is
+I suggested this solution to Kohei because it's easy to check that we're
+converting all users and not introducing new ones in the future (see
+poisoning in patch 10).
 
-   typedef gint (*GCompareFunc)(gconstpointer a, gconstpointer b);
-
-Our code complies with that GCompareFunc signature.
+Paolo
 
 For comparison the new code uses:
+>
+>   GList *g_list_sort_with_data(GList *list, GCompareDataFunc
+> compare_func, gpointer user_data);
+>
+> where the callback is
+>
+>   typedef gint (*GCompareDataFunc)(gconstpointer a, gconstpointer b,
+> gpointer user_data);
+>
+> which the new code complies with, but it is undesirable since we
+> have no use for the data parameter.
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-
+> https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-
+> https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-
+> https://www.instagram.com/dberrange :|
+>
+>
 
-  GList *g_list_sort_with_data(GList *list, GCompareDataFunc  compare_func, gpointer user_data);
+--000000000000841ee60632e185e4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-where the callback is
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il mer 16 apr 2025, 10:29 Daniel=
+ P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com">berrange@redha=
+t.com</a>&gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">&gt; -=C2=A0 =C2=A0 secs =3D g_list_sort(secs, sort_secs);<br>
+&gt; +=C2=A0 =C2=A0 secs =3D g_list_sort_with_data(secs, sort_secs, NULL);<=
+br>
+<br>
+I don&#39;t see what the problem is with the original code.<br>
+<br>
+The commit message says we have a bad function cast, but the original<br>
+method decl is<br>
+<br>
+=C2=A0 GList *g_list_sort(GList*list, GCompareFunc compare_func);<br>
+<br>
+where the callback is<br>
+<br>
+=C2=A0 =C2=A0typedef gint (*GCompareFunc)(gconstpointer a, gconstpointer b)=
+;<br>
+<br>
+Our code complies with that GCompareFunc signature.<br></blockquote></div><=
+/div><div dir=3D"auto"><br></div><div dir=3D"auto">The cast is inside glib;=
+ g_list_sort casts the function pointer and calls g_list_sort_with_data.</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto">I suggested this solution =
+to Kohei because it&#39;s easy to check that we&#39;re converting all users=
+ and not introducing new ones in the future (see poisoning in patch 10).</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"aut=
+o"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_contai=
+ner"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
+rder-left:1px solid rgb(204,204,204);padding-left:1ex">
+For comparison the new code uses:<br>
+<br>
+=C2=A0 GList *g_list_sort_with_data(GList *list, GCompareDataFunc=C2=A0 com=
+pare_func, gpointer user_data);<br>
+<br>
+where the callback is<br>
+<br>
+=C2=A0 typedef gint (*GCompareDataFunc)(gconstpointer a, gconstpointer b, g=
+pointer user_data);<br>
+<br>
+which the new code complies with, but it is undesirable since we<br>
+have no use for the data parameter.<br>
+<br>
+With regards,<br>
+Daniel<br>
+-- <br>
+|: <a href=3D"https://berrange.com" rel=3D"noreferrer noreferrer" target=3D=
+"_blank">https://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a h=
+ref=3D"https://www.flickr.com/photos/dberrange" rel=3D"noreferrer noreferre=
+r" target=3D"_blank">https://www.flickr.com/photos/dberrange</a> :|<br>
+|: <a href=3D"https://libvirt.org" rel=3D"noreferrer noreferrer" target=3D"=
+_blank">https://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com=
+" rel=3D"noreferrer noreferrer" target=3D"_blank">https://fstop138.berrange=
+.com</a> :|<br>
+|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer noreferrer" tar=
+get=3D"_blank">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0=
+ <a href=3D"https://www.instagram.com/dberrange" rel=3D"noreferrer noreferr=
+er" target=3D"_blank">https://www.instagram.com/dberrange</a> :|<br>
+<br>
+</blockquote></div></div></div>
 
-  typedef gint (*GCompareDataFunc)(gconstpointer a, gconstpointer b, gpointer user_data);
-
-which the new code complies with, but it is undesirable since we
-have no use for the data parameter.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+--000000000000841ee60632e185e4--
 
 
