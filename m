@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6D2A8B39D
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 10:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C510DA8B37A
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 10:23:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4y1F-00070v-7k; Wed, 16 Apr 2025 04:21:28 -0400
+	id 1u4y2E-0007qy-HU; Wed, 16 Apr 2025 04:22:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u4xx7-0002Js-EZ; Wed, 16 Apr 2025 04:17:02 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1u4xxB-0002PP-HC; Wed, 16 Apr 2025 04:17:08 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u4xx1-0005wK-S6; Wed, 16 Apr 2025 04:17:01 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7399838db7fso484460b3a.0; 
- Wed, 16 Apr 2025 01:16:52 -0700 (PDT)
+ id 1u4xx8-0005xa-Dd; Wed, 16 Apr 2025 04:17:04 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-7399838db7fso484556b3a.0; 
+ Wed, 16 Apr 2025 01:17:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744791411; x=1745396211; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1744791419; x=1745396219; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=c4klZ5LCWvRR7sigiHEe5f8QPHEXneqpNeiJtQ0wxIk=;
- b=Vt1MsfsSiqn7OeeZeGcghlg5iFcfNExSuooTExmpfL4G6tghpW42VryrIVRQPydTbi
- CbaggBvuyrY8+OtH3II1IewBfukvKrRqGJLwDwIUqdfBFa632pL4QIdHd3OLi1O1HulD
- Behirpad3911/WC5f4yF8LrGLeCPB7PnHvOEtgvqJRZH43MbI1/b4ppI1gdVM9U41Sg7
- US44jg+nLE0whze9gj1H5EKX82uKwnIMl3P+prpDVvoIiZYcv8UaXDqvvr0sglT2sguU
- /pr6GwTL6n3qQVBfE8BEXX9h6lwovbMaf09UDliqEJOgMsNyi6hu+T2ae/kMZ2DESUJU
- miMA==
+ bh=LeWm4gdwYX7Mpk2+jTOfSOTsV04a2XRASVxxD/NFs3U=;
+ b=Cny3sFPRfUHZZ2xZylXra+7azmFn0lCk7bAJCEFJ3FG2vv7vE5hqQC6vR+27L+KIMw
+ YvSmDWMLt/ijcOWyynb9qxqX6scVlMFDK5pJRTXVMF3h0KsvO2dprP/t3R/Y6oexdW/n
+ H6AJBWwD92GAXET7tUxu/AllcXIZ2Z1lqC7WNmdccKM1LrnfzWTS53gU+GwALQYnI/w4
+ DYoejAkDXWElON7fqPwtBk6we8xpFOnSaiRoTtyGL8D76N1Xcm9VB4oAZU9oLTynP63F
+ Io0EAZ84xTsBtZsU/HmacK0Sklm2uPfeSh5k4A58DONNgZcGSnMorXawDa4q/eHnAyiW
+ aCIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744791411; x=1745396211;
+ d=1e100.net; s=20230601; t=1744791419; x=1745396219;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c4klZ5LCWvRR7sigiHEe5f8QPHEXneqpNeiJtQ0wxIk=;
- b=UcScMRt6jM3pEQ3gsrEVsV3fY2t5ruKETzcean2hmBRSaYwN6ggxkopyZe1AXZeWsI
- bCQeJg7R9fh5n2HQtUX67owOx6YhjWtI+V9vNAHo7pMjNBgCG7tHCsWEr9C4wnrCpMNW
- W0nZkV93CU6/DX+PHU1vbER6s9G8OwUdwC36uE7ubuo1SXpH2YFiAE8YTduUVjHu1sTm
- PMGsuXM/60IQ289VyupkRxKGXaMO+VaIBPCtRUyjOXEwvDm5ZBzhbSknBUWAiWMEQd26
- /22q8qgg/ErYoqsqpT+V0fNSiMUrCmN9VJeAgr5zU2GAFREncejOyg3jA5XjtTUwUsVB
- 7VzQ==
+ bh=LeWm4gdwYX7Mpk2+jTOfSOTsV04a2XRASVxxD/NFs3U=;
+ b=mo+34i5AaG/uzqEOG6dObFgEFBDkDeMY81VHt8P+/gvDXHohszAaZXbLthzX5seAdx
+ zJVyWf2BFFLxjVq5xw1EGKJLwpbHffZjWlaJhYjENCi9jSf7hq4BXN2oXdZko3P3mYts
+ kO1PSF2EJ3nG48SX/pnJobhlnfSyYHVKGDYNrUWDN4IqHsAWWeT/aTCFdSfDQ+pAMpRV
+ BD9+BveC/PN9Tx1z2tkBbcRLXh8gm2b3bGoCMVGnjc/hdUdowKA9yCpInNxa4BXufaSr
+ la1n6HpiiQTbD902Vmg+6OScq4KRZCLd6Xqcb47qBuN48gS21Ul/irRahtABMThG5axo
+ 5ecw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU4qSsAn15G8UlrR+JoonAg4HXHRCOGdlYwJHs5W+hKed+lbf3+SZs4Wf3zvC8UJ+B1/G5RUYU7dFqFow==@nongnu.org,
- AJvYcCUNedkIWrxd+dwM/RdEYxBtQ8i3DGBGNffYOv7uJSmA2xHq2soGRqrwdHUVFxMmwWPRyFgeQojXF+E=@nongnu.org,
- AJvYcCVK1yCHLqG5Vsu7cURfrJXZMt6NAa4oVCBqZEjaVXgCIo7qGDDimR3LmJ3UHoIjJs6hn+bssF8wPA==@nongnu.org,
- AJvYcCX8IJcFsBWG2HboP9pRrsIuCGm+6rVQpog9P1jwMy/UzrMJNui3KhjqCeWJe05jJ2/jSJgXaGdJAZryjA==@nongnu.org
-X-Gm-Message-State: AOJu0Yzew0J+5YdYokH63u5Q4n+9r7ARqfGoZL9yD+wzI+IeuJrVT8gk
- GEC/7cQv1RPmRShvPH5M/PbMRYf1wNPfeoDStdniimn+8ux+URTvV3eNI1EL
-X-Gm-Gg: ASbGncskroP4MTsU3Wu4oF4C7r1QhR1XBdzOKsq0o4FZzX4IB30W47v5MZa/LbM0uXS
- DfFCnPdVoaFoDWmqZScFRKMs+izT8Vl0isy+pSU5kG+324G/dNtHS0VN6gO8ofVTn+uX2+b4CVD
- J8OoUCsj6nKQpw76m3LO0kAadDivlN52Y/svwEzYbm8XFdNJGSjxijZXXKewcwV2eF1zyyqAccc
- IQ4GpVHxqhIB+PulfBCBSaDq/Ic8QFlQmup4SlDH2fXTfdtQvhmp5FtDfe8iZl2n8Yw52GoMcLQ
- e+KeFhiUp0rDAfGcNb3p7nqitb6ARdcniTElY5bwlxg6FmkYvNsu6OnYng==
-X-Google-Smtp-Source: AGHT+IFhoIl7I56S7fT7c23WuBVz8x479Hd++Aam1yHes86eL19L43Zv+85HiEDav9c321yeBTTcSA==
-X-Received: by 2002:a05:6a00:2985:b0:736:4c3d:2cba with SMTP id
- d2e1a72fcca58-73c26dffd2cmr1421139b3a.9.1744791411149; 
- Wed, 16 Apr 2025 01:16:51 -0700 (PDT)
+ AJvYcCVMCAzBuViEulcCnQCy3VOQdLeu4jrP3cxDoV6YGMOWf2aFmGluiwX0VdkH/8HtizDymgi2nFDapA==@nongnu.org,
+ AJvYcCVwhzqYp/HNgQPYKpkeY7z8BfoTLZel8Rf6JTdpUIySgbkIM/3owx25wBs60m5WTmgis4z0xO7YYuw=@nongnu.org,
+ AJvYcCXZx8Db2XxhDnzjJvTEpeDWruMtR+EuJ8ciI1plRM6HBK5nP4OZIIqcbSsfnHZndlGgEK08voPRNQ2d0g==@nongnu.org,
+ AJvYcCXrniY/wYrU/lJxx5fWwnBt0oY5dUt/ZzF/g4HQEc7XfFpQmOzDz7yO/Bchmiv+UQ7Tgtvom4403MRodQ==@nongnu.org
+X-Gm-Message-State: AOJu0Yyyi0xBoMgMWvsyzp6UW/MOalaUGWv2/EyANt3OjhsC0yOkUsNQ
+ 2yJwQT3OmHu8LfH8Dqg9alZPnnzTPOwaIuNCKN3NsqI0wyK63xtCMWZFpeva
+X-Gm-Gg: ASbGncslPhoiaFx5UYA4HNqsyNj0t1a0glzpwL27ggWB+gFhk1Q5bfMCX+teKZTxIN9
+ jJjVI+aKrMo7uqvsCcNY+Ag76CTctaxl5Wvk+mI6BjLnQBQEwNDNr4FdncJyo1J6eUVtkVryVzR
+ UNdepyuERa/IuWlEKbSKSrv0aYFkJn9ZKDteW53toCtRRR11qANhahk13eO8fYML6X3Fg6xdPZq
+ WoI5KYPfl8xal4sj6I080Nkp8cIJR/N9BG9VjpYOGBaouhUo2x7ieE3hqTt8CtqutGUSOsVzvCM
+ DWwYS40GNebnpYCHELq33cQc/Fl0QUrQbUXzJG380XWpJ0ashI9eKP+gJw==
+X-Google-Smtp-Source: AGHT+IEd5+lBFTcqmb1ye1d++AMi9QLiZpHeWhQhSUvm6Ej8uB7TB8VIvQgflEsDVgsqaenyzYpXOQ==
+X-Received: by 2002:a05:6a00:391b:b0:734:26c6:26d3 with SMTP id
+ d2e1a72fcca58-73c26d39553mr1508336b3a.5.1744791419205; 
+ Wed, 16 Apr 2025 01:16:59 -0700 (PDT)
 Received: from localhost.localdomain ([240d:1a:3b6:8b00:ee5a:e672:7d4c:d43])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73bd21c3263sm9839445b3a.38.2025.04.16.01.16.43
+ d2e1a72fcca58-73bd21c3263sm9839445b3a.38.2025.04.16.01.16.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Apr 2025 01:16:50 -0700 (PDT)
+ Wed, 16 Apr 2025 01:16:58 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -88,16 +88,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH 14/19] Disable options unsupported on Emscripten
-Date: Wed, 16 Apr 2025 17:14:19 +0900
-Message-Id: <c2e3a58825c39678fcde361b685d1bd69d2fb1dd.1744787186.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH 15/19] util/mmap-alloc: Add qemu_ram_mmap implementation for
+ emscripten
+Date: Wed, 16 Apr 2025 17:14:20 +0900
+Message-Id: <7ef485c860a0c26d2ddcf6a96430f5443deb5aee.1744787186.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1744787186.git.ktokunaga.mail@gmail.com>
 References: <cover.1744787186.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -120,62 +121,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daemonizing and run-with aren't supported on Emscripten so disable these
-flags.
-
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- qemu-options.hx | 4 +++-
- system/vl.c     | 4 ++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ util/mmap-alloc.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index dc694a99a3..20ed22afe2 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4863,9 +4863,11 @@ SRST
- ERST
+diff --git a/util/mmap-alloc.c b/util/mmap-alloc.c
+index ed14f9c64d..91f33682e8 100644
+--- a/util/mmap-alloc.c
++++ b/util/mmap-alloc.c
+@@ -145,6 +145,7 @@ static bool map_noreserve_effective(int fd, uint32_t qemu_map_flags)
+     return false;
+ }
  
- #ifndef _WIN32
 +#ifndef EMSCRIPTEN
- DEF("daemonize", 0, QEMU_OPTION_daemonize, \
-     "-daemonize      daemonize QEMU after initializing\n", QEMU_ARCH_ALL)
- #endif
+ /*
+  * Reserve a new memory region of the requested size to be used for mapping
+  * from the given fd (if any).
+@@ -176,6 +177,7 @@ static void *mmap_reserve(size_t size, int fd)
+ 
+     return mmap(0, size, PROT_NONE, flags, fd, 0);
+ }
 +#endif
- SRST
- ``-daemonize``
-     Daemonize the QEMU process after initialization. QEMU will not
-@@ -5249,7 +5251,7 @@ HXCOMM Internal use
- DEF("qtest", HAS_ARG, QEMU_OPTION_qtest, "", QEMU_ARCH_ALL)
- DEF("qtest-log", HAS_ARG, QEMU_OPTION_qtest_log, "", QEMU_ARCH_ALL)
  
--#ifdef CONFIG_POSIX
-+#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
- DEF("run-with", HAS_ARG, QEMU_OPTION_run_with,
-     "-run-with [async-teardown=on|off][,chroot=dir][user=username|uid:gid]\n"
-     "                Set miscellaneous QEMU process lifecycle options:\n"
-diff --git a/system/vl.c b/system/vl.c
-index 8d89394b45..255ea3be6b 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -766,7 +766,7 @@ static QemuOptsList qemu_smp_opts = {
-     },
- };
+ /*
+  * Activate memory in a reserved region from the given fd (if any), to make
+@@ -244,6 +246,21 @@ static inline size_t mmap_guard_pagesize(int fd)
+ #endif
+ }
  
--#if defined(CONFIG_POSIX)
-+#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
- static QemuOptsList qemu_run_with_opts = {
-     .name = "run-with",
-     .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
-@@ -3677,7 +3677,7 @@ void qemu_init(int argc, char **argv)
-             case QEMU_OPTION_nouserconfig:
-                 /* Nothing to be parsed here. Especially, do not error out below. */
-                 break;
--#if defined(CONFIG_POSIX)
-+#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
-             case QEMU_OPTION_daemonize:
-                 os_set_daemonize(true);
-                 break;
++#ifdef EMSCRIPTEN
++void *qemu_ram_mmap(int fd,
++                    size_t size,
++                    size_t align,
++                    uint32_t qemu_map_flags,
++                    off_t map_offset)
++{
++    /*
++     * emscripten doesn't support non-zero first argument for mmap so
++     * mmap a larger region without the hint and return an aligned pointer.
++     */
++    void *ptr = mmap_activate(0, size + align, fd, qemu_map_flags, map_offset);
++    return (void *)QEMU_ALIGN_UP((uintptr_t)ptr, align);
++}
++#else
+ void *qemu_ram_mmap(int fd,
+                     size_t size,
+                     size_t align,
+@@ -293,6 +310,7 @@ void *qemu_ram_mmap(int fd,
+ 
+     return ptr;
+ }
++#endif /* EMSCRIPTEN */
+ 
+ void qemu_ram_munmap(int fd, void *ptr, size_t size)
+ {
 -- 
 2.25.1
 
