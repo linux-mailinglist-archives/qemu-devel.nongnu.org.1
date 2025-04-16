@@ -2,74 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C41A90E0D
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 23:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5383CA90E49
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 00:00:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Afq-0001QD-GN; Wed, 16 Apr 2025 17:52:02 -0400
+	id 1u5AlY-00037n-JX; Wed, 16 Apr 2025 17:57:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u5Afm-0001PL-0F
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 17:51:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1u5AlS-0002z1-Fm; Wed, 16 Apr 2025 17:57:50 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u5Afh-0006Ux-OD
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 17:51:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744840312;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=a9Lm48SefjCfEzgzR1oo9Up3A2s1OIs91JXcv7iSl1M=;
- b=AVxyu4mjppCNB2k2JouWQjoZKX/l5vLTD989SMibsV0NZq/xKZbes23ZWOP1NfzMeu1kEz
- vH4vss+SwL8OY56+cMCmYUBLv7Gbh7IIWfrSJ5721lbrean7zvIteBO8BVbQMAksUO2TXI
- 6UmgMWmowy8EXb5O1muEjdkP5fPp764=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-jI_QmtDePDixYJCbkHKFfA-1; Wed,
- 16 Apr 2025 17:51:46 -0400
-X-MC-Unique: jI_QmtDePDixYJCbkHKFfA-1
-X-Mimecast-MFC-AGG-ID: jI_QmtDePDixYJCbkHKFfA_1744840306
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F075B195608C; Wed, 16 Apr 2025 21:51:45 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.17.45])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E99231800965; Wed, 16 Apr 2025 21:51:42 +0000 (UTC)
-Date: Wed, 16 Apr 2025 16:51:40 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- "open list:Block Jobs" <qemu-block@nongnu.org>
-Subject: Re: [PATCH 3/6] mirror: Skip writing zeroes when target is already
- zero
-Message-ID: <k2owyvfkfsj6kkbd2bkgk5jjepxf2gexllc7pfednxrzezlgc6@lh4ebgd7kl3a>
-References: <20250411010732.358817-8-eblake@redhat.com>
- <20250411010732.358817-11-eblake@redhat.com>
- <c3044546-b921-4cbc-959d-4f23e0e3c49e@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1u5AlQ-00084I-M0; Wed, 16 Apr 2025 17:57:50 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLNKj4006121;
+ Wed, 16 Apr 2025 21:57:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2023-11-20; bh=P+y3hXliBATUS9ugfrqFQr/NNfi77
+ W/oCWt15hw2lKs=; b=MgSaoTluoa97GbrVNP3SgMyt0b9YusOKQBM5APcmsqvmp
+ b/zUeUYCrl7inHfHBHwFRQttHAiExJNQAg0fANxu2impKTStzBuF04vinIgRDycV
+ 94aEWL7iDfFvX9TLwcTfjhyDmmH7Jdt/KRR8mPTKsYUdzQyITzwfPp799te9riUy
+ vrCNK/vWW41AvFcijRqaddcJ+IjA2FSnuxwlL+Mp43SEF8oprbmxU1h/MWYpReUs
+ t23wZuY0YJH4RWS8Fq7A2ZgERfKftDTQbc30ZiVwU48iYR1JkjEAaDCqwKbzccJF
+ gwC9eQJ1tFcsCl6tASP1yA0EzbM0ZEmdNV7AxoBRg==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46187xw3pg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Apr 2025 21:57:03 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 53GK4wuH005671; Wed, 16 Apr 2025 21:57:02 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 460d5xhvdg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Apr 2025 21:57:02 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53GLv1qO036583;
+ Wed, 16 Apr 2025 21:57:01 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 460d5xhvcp-1; Wed, 16 Apr 2025 21:57:01 +0000
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
+ like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
+ peter.maydell@linaro.org, gaosong@loongson.cn, chenhuacai@kernel.org,
+ philmd@linaro.org, aurelien@aurel32.net, jiaxun.yang@flygoat.com,
+ arikalo@gmail.com, npiggin@gmail.com, danielhb413@gmail.com,
+ palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, pasic@linux.ibm.com,
+ borntraeger@linux.ibm.com, richard.henderson@linaro.org,
+ david@redhat.com, iii@linux.ibm.com, thuth@redhat.com,
+ flavra@baylibre.com, ewanhai-oc@zhaoxin.com, ewanhai@zhaoxin.com,
+ cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
+ frankzhu@zhaoxin.com, silviazhao@zhaoxin.com, kraxel@redhat.com,
+ berrange@redhat.com
+Subject: [PATCH v4 00/11] target/i386/kvm/pmu: PMU Enhancement,
+ Bugfix and Cleanup
+Date: Wed, 16 Apr 2025 14:52:25 -0700
+Message-ID: <20250416215306.32426-1-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c3044546-b921-4cbc-959d-4f23e0e3c49e@yandex-team.ru>
-User-Agent: NeoMutt/20250113
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-16_08,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ mlxlogscore=999
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502280000 definitions=main-2504160177
+X-Proofpoint-GUID: 8mMJbOzcgPAvzedhIzqsy2EkKTwmROrC
+X-Proofpoint-ORIG-GUID: 8mMJbOzcgPAvzedhIzqsy2EkKTwmROrC
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.268,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,183 +111,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 15, 2025 at 06:59:15PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 11.04.25 04:04, Eric Blake wrote:
-> > When mirroring, the goal is to ensure that the destination reads the
-> > same as the source; this goal is met whether the destination is sparse
-> > or fully-allocated.  However, if the destination cannot efficiently
-> > write zeroes, then any time the mirror operation wants to copy zeroes
-> > from the source to the destination (either during the background over
-> > sparse regions when doing a full mirror, or in the foreground when the
-> > guest actively writes zeroes), we were causing the destination to
-> > fully allocate that portion of the disk, even if it already read as
-> > zeroes.
-> > 
-> > -    ret = blk_co_pwrite_zeroes(op->s->target, op->offset, op->bytes,
-> > -                               op->s->unmap ? BDRV_REQ_MAY_UNMAP : 0);
-> > +    if (op->s->zero_bitmap) {
-> > +        unsigned long last = (op->offset + op->bytes) / op->s->granularity;
-> 
-> Maybe, call it "end", not "last, as it's not last element of the range, but first after the range.
+This patchset addresses four bugs related to AMD PMU virtualization.
 
-Works for me.
+1. The PerfMonV2 is still available if PERCORE if disabled via
+"-cpu host,-perfctr-core".
 
-> 
-> Also, seems we need still do DIV_ROUND_UP, for ..
-> 
-> > +        assert(QEMU_IS_ALIGNED(op->offset, op->s->granularity));
-> > +        assert(QEMU_IS_ALIGNED(op->bytes, op->s->granularity) ||
-> > +               op->offset + op->bytes == op->s->bdev_length);
-> 
-> .. ^ this case, when bytes is unaligned to granularity but aligned to bdev_length.
+2. The VM 'cpuid' command still returns PERFCORE although "-pmu" is
+configured.
 
-Hmm, good point.  I'll have to revisit the logic and make sure it
-still works in the case of a final partial region.
+3. The third issue is that using "-cpu host,-pmu" does not disable AMD PMU
+virtualization. When using "-cpu EPYC" or "-cpu host,-pmu", AMD PMU
+virtualization remains enabled. On the VM's Linux side, you might still
+see:
 
-> 
-> > +        if (find_next_zero_bit(op->s->zero_bitmap, last,
-> > +                               op->offset / op->s->granularity) == last) {
-> > +            write_needed = false;
-> > +        }
-> > +    }
-> > +    if (write_needed) {
-> > +        ret = blk_co_pwrite_zeroes(op->s->target, op->offset, op->bytes,
-> > +                                   op->s->unmap ? BDRV_REQ_MAY_UNMAP : 0);
-> > +    }
-> > +    if (ret >= 0 && op->s->zero_bitmap) {
-> > +        bitmap_set(op->s->zero_bitmap, op->offset / op->s->granularity,
-> > +                   op->bytes / op->s->granularity);
-> 
-> and here we want to align up bytes, for the corner case
-> 
-> > +    }
-> 
-> Also, I'm not sure, what guarantees we have in case of write-zeroes failure. Should we clear the bitmap in this case, like we do MIRROR_METHOD_COPY and MIRROR_METHOD_DISCARD below
+[    0.510611] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
 
-My goal was to clear the bitmap before any action that (potentially)
-destroys zero regions (writes and discards), even if that action
-fails; but only set the bitmap after success on any action that
-creates zero regions (write-zero).  If the write-zero fails, and the
-bitmap was already set, it doesn't matter that we left the bitmap set
-(a write zeroes that fails AND causes the disk to no longer read as
-zero should not happen); otherwise, we are correct in leaving the
-bitmap unset on failure (even if the write-zeros partially succeeded,
-the pessimistic answer of assuming a region is non-zero is always
-correct even if sometimes slower).
+instead of:
 
-> 
-> >       mirror_write_complete(op, ret);
-> >   }
-> > 
-> > @@ -441,6 +459,9 @@ static unsigned mirror_perform(MirrorBlockJob *s, int64_t offset,
-> >       Coroutine *co;
-> >       int64_t bytes_handled = -1;
-> > 
-> > +    assert(QEMU_IS_ALIGNED(offset, s->granularity));
-> > +    assert(QEMU_IS_ALIGNED(bytes, s->granularity) ||
-> > +           offset + bytes == s->bdev_length);
-> >       op = g_new(MirrorOp, 1);
-> >       *op = (MirrorOp){
-> >           .s              = s,
-> > @@ -452,12 +473,21 @@ static unsigned mirror_perform(MirrorBlockJob *s, int64_t offset,
-> > 
-> >       switch (mirror_method) {
-> >       case MIRROR_METHOD_COPY:
-> > +        if (s->zero_bitmap) {
-> > +            bitmap_clear(s->zero_bitmap, offset / s->granularity,
-> > +                         bytes / s->granularity);
-> 
-> again, align up for corner case
-> 
-> > +        }
-> >           co = qemu_coroutine_create(mirror_co_read, op);
-> >           break;
-> >       case MIRROR_METHOD_ZERO:
-> > +        /* s->zero_bitmap handled in mirror_co_zero */
-> >           co = qemu_coroutine_create(mirror_co_zero, op);
-> >           break;
-> >       case MIRROR_METHOD_DISCARD:
-> > +        if (s->zero_bitmap) {
-> > +            bitmap_clear(s->zero_bitmap, offset / s->granularity,
-> > +                         bytes / s->granularity);
-> > +        }
-> >           co = qemu_coroutine_create(mirror_co_discard, op);
-> >           break;
-> >       default:
-> > @@ -851,10 +881,17 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
-> >       }
-> >       bdrv_graph_co_rdunlock();
-> > 
-> > -    if (s->zero_target && ret <= 0) {
-> > +    if (s->zero_target) {
-> > +        int64_t length;
-> > +
-> >           if (ret < 0) {
-> >               return ret;
-> >           }
-> > +        length = DIV_ROUND_UP(s->bdev_length, s->granularity);
-> > +        s->zero_bitmap = bitmap_new(length);
-> > +        if (ret > 0) {
-> > +            bitmap_set(s->zero_bitmap, 0, length);
-> 
-> hmm, we should not continue zeroing target in case of ret > 0.
+[    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
+[    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
 
-Correct. If ret > 0, we set zero_bitmap to record that starting state,
-and then want to proceed on with the rest of the code that populates
-only the non-zero portions of the dirty bitmap.
+To address this, KVM_CAP_PMU_CAPABILITY is used to set KVM_PMU_CAP_DISABLE
+when "-pmu" is configured.
 
-> 
-> I didn't like that we set ret in one if-block, and handle in another, but now it gets even more confusing.
-> 
-> Maybe, just move bdrv_co_is_zero_fast() call into big "if (s->zero_target) {" ?
+4. The fourth issue is that unreclaimed performance events (after a QEMU
+system_reset) in KVM may cause random, unwanted, or unknown NMIs to be
+injected into the VM.
 
-That would require grabbing another RDLOCK - but I'll try and see if
-that makes things easier to read.
+The AMD PMU registers are not reset during QEMU system_reset.
 
-...
-> > +        if (job->zero_bitmap && ret >= 0) {
-> > +            bitmap_set(job->zero_bitmap, dirty_bitmap_offset / job->granularity,
-> > +                       (dirty_bitmap_end - dirty_bitmap_offset) /
-> > +                       job->granularity);
-> > +        }
-> 
-> Same thing, probably we should clear the bitmap in case of write failure.
+(1) If the VM is reset (e.g., via QEMU system_reset or VM kdump/kexec) while
+running "perf top", the PMU registers are not disabled properly.
 
-Why? Either the bitmap was already clear, or we had a write failure on
-writing zeroes on top of zeroes but the region should still read as
-zeroes.
+(2) Despite x86_cpu_reset() resetting many registers to zero, kvm_put_msrs()
+does not handle AMD PMU registers, causing some PMU events to remain
+enabled in KVM.
 
-> 
-> >           break;
-> > 
-> >       case MIRROR_METHOD_DISCARD:
-> > +        if (job->zero_bitmap) {
-> > +            bitmap_clear(job->zero_bitmap, zero_bitmap_offset,
-> > +                         zero_bitmap_end - zero_bitmap_offset);
-> > +        }
-> >           assert(!qiov);
-> >           ret = blk_co_pdiscard(job->target, offset, bytes);
-> >           break;
-> > @@ -1436,10 +1498,10 @@ do_sync_target_write(MirrorBlockJob *job, MirrorMethod method,
-> >            * at function start, and they must be still dirty, as we've locked
-> >            * the region for in-flight op.
-> >            */
-> > -        bitmap_offset = QEMU_ALIGN_DOWN(offset, job->granularity);
-> > -        bitmap_end = QEMU_ALIGN_UP(offset + bytes, job->granularity);
-> > -        bdrv_set_dirty_bitmap(job->dirty_bitmap, bitmap_offset,
-> > -                              bitmap_end - bitmap_offset);
-> > +        dirty_bitmap_offset = QEMU_ALIGN_DOWN(offset, job->granularity);
-> > +        dirty_bitmap_end = QEMU_ALIGN_UP(offset + bytes, job->granularity);
-> > +        bdrv_set_dirty_bitmap(job->dirty_bitmap, dirty_bitmap_offset,
-> > +                              dirty_bitmap_end - dirty_bitmap_offset);
-> 
-> Not really matter, but still, renaming in a separate patch would make this one a bit simpler.
+(3) The KVM kvm_pmc_speculative_in_use() function consistently returns true,
+preventing the reclamation of these events. Consequently, the
+kvm_pmc->perf_event remains active.
 
-Okay, I'll split the variable rename.
+(4) After a reboot, the VM kernel may report the following error:
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+[    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
+[    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
+
+(5) In the worst case, the active kvm_pmc->perf_event may inject unknown
+NMIs randomly into the VM kernel:
+
+[...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
+
+To resolve these issues, we propose resetting AMD PMU registers during the
+VM reset process
+
+
+Changed since v1:
+  - Use feature_dependencies for CPUID_EXT3_PERFCORE and
+    CPUID_8000_0022_EAX_PERFMON_V2.
+  - Remove CPUID_EXT3_PERFCORE when !cpu->enable_pmu.
+  - Pick kvm_arch_pre_create_vcpu() patch from Xiaoyao Li.
+  - Use "-pmu" but not a global "pmu-cap-disabled" for KVM_PMU_CAP_DISABLE.
+  - Also use sysfs kvm.enable_pmu=N to determine if PMU is supported.
+  - Some changes to PMU register limit calculation.
+Changed since v2:
+  - Change has_pmu_cap to pmu_cap.
+  - Use cpuid_find_entry() instead of cpu_x86_cpuid().
+  - Rework the code flow of PATCH 07 related to kvm.enable_pmu=N following
+    Zhao's suggestion.
+  - Use object_property_get_int() to get CPU family.
+  - Add support to Zhaoxin.
+Changed since v3:
+  - Re-base on top of Zhao's queued patch.
+  - Use host_cpu_vendor_fms() from Zhao's patch.
+  - Pick new version of kvm_arch_pre_create_vcpu() patch from Xiaoyao.
+  - Re-split the cases into enable_pmu and !enable_pmu, following Zhao's
+    suggestion.
+  - Check AMD directly makes the "compat" rule clear.
+  - Some changes on commit message and comment.
+  - Bring back global static variable 'kvm_pmu_disabled' read from
+    /sys/module/kvm/parameters/enable_pmu.
+
+
+Zhao Liu (1):
+  i386/cpu: Consolidate the helper to get Host's vendor [Don't merge]
+
+Xiaoyao Li (1):
+  kvm: Introduce kvm_arch_pre_create_vcpu()
+
+Dongli Zhang (9):
+  target/i386: disable PerfMonV2 when PERFCORE unavailable
+  target/i386: disable PERFCORE when "-pmu" is configured
+  target/i386/kvm: set KVM_PMU_CAP_DISABLE if "-pmu" is configured
+  target/i386/kvm: extract unrelated code out of kvm_x86_build_cpuid()
+  target/i386/kvm: rename architectural PMU variables
+  target/i386/kvm: query kvm.enable_pmu parameter
+  target/i386/kvm: reset AMD PMU registers during VM reset
+  target/i386/kvm: support perfmon-v2 for reset
+  target/i386/kvm: don't stop Intel PMU counters
+
+ accel/kvm/kvm-all.c           |   5 +
+ include/system/kvm.h          |   1 +
+ target/arm/kvm.c              |   5 +
+ target/i386/cpu.c             |   8 +
+ target/i386/cpu.h             |  16 ++
+ target/i386/host-cpu.c        |  10 +-
+ target/i386/kvm/kvm.c         | 360 ++++++++++++++++++++++++++++++++-----
+ target/i386/kvm/vmsr_energy.c |   3 +-
+ target/loongarch/kvm/kvm.c    |   4 +
+ target/mips/kvm.c             |   5 +
+ target/ppc/kvm.c              |   5 +
+ target/riscv/kvm/kvm-cpu.c    |   5 +
+ target/s390x/kvm/kvm.c        |   5 +
+ 13 files changed, 379 insertions(+), 53 deletions(-)
+
+base-commit: a9cd5bc6399a80fcf233ed0fffe6067b731227d8
+
+Thank you very much!
+
+Dongli Zhang
 
 
