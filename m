@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C09A90FD6
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 02:03:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD9EA90FDC
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 02:04:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5CiJ-00042P-DA; Wed, 16 Apr 2025 20:02:43 -0400
+	id 1u5CiN-00043c-4f; Wed, 16 Apr 2025 20:02:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1u5CiH-00041j-Hz
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 20:02:41 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1u5CiK-00042v-Bo
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 20:02:44 -0400
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1u5CiF-0006PT-6I
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 20:02:41 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-2c873231e7bso87434fac.3
- for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 17:02:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1u5CiI-0006QC-Gk
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 20:02:44 -0400
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-603fd257386so36718eaf.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Apr 2025 17:02:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1744848157; x=1745452957;
+ d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1744848159; x=1745452959;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WIdhZ2B/3rXlZaDDyS0TejvZV6gKym2suKu1qn0P8JA=;
- b=DO8BhJqznondnC4X6ZJ5FiU5Yc5XakvIl4JFoN944Ke7wMyY3kEVA8XJQzSr5CJbuT
- 8lY06wUa9JnQ3ELANJUZ+SqYNMgS50rFAq1FDHI/L1c4B5pTcm3x1qUBLdXVAm7cAPoH
- P+/DJZXSQULudzEiyDwkay7TYY2z+p4nQpwnDZh8zhrkktrSpq7tg/g0GsZahWVuGeMA
- TCq/s1xmw4GppXROBlC0Bmbkpft9p9DqQN0zgSEXehbvv4KdMv8im1IO3/8MSUYq7EBL
- 9gGkMCad+9W4vgVRk4p9RtPq4EV9hXNChF4efP40P67bkpQ2zT5X34S9GD+HrzP6cjjd
- c32w==
+ bh=/AW4tnkOIpzn+hkaLSPNo53y2Z1zRYt/SZox39VKYwQ=;
+ b=dFYhTQShKnK6/K52R5SA/rna2kf7nTu4uFvWFgcf1Cya2ruN9beCfrEGzeeI/8DciV
+ DWypoptbhzO1oazB/mQZLMu+gvXRuogxdOUzp3mAk3LCqtH6F+8yeiD/cLp9R0CuToTl
+ gIh61wsI8r2Ga6G0lVnfrP4OSxCzsYthGvvmj20EFA4AC/r3iGGwj3V29AD8yAjK/2R8
+ Fs74586aNCAgbMv3/EhZrO7gjNY3oIc93a/6saC5LIWXL2K1X12IlDZ9IIh4qMG2ZgZq
+ c5zb/eQ0qHHMLBAF/MMzeMx0XTXNA26TYSZdqQld7sSzo7JOMeSs6EhdLR6pptOyLdje
+ gSew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744848157; x=1745452957;
+ d=1e100.net; s=20230601; t=1744848159; x=1745452959;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WIdhZ2B/3rXlZaDDyS0TejvZV6gKym2suKu1qn0P8JA=;
- b=j51bjMK/HgciUAqzB+5PK8UNzFWgVBo/oo+2ICzGPRusZhV+D7gRsIfgvHDMFXhV16
- ySEBh3U/3rL+wpWIv803i5NmQ+Q9/nwdExFEgvSbrgAzg6S30lQB5fsMf1GdqGthio7z
- /gxsIB87p/rZp9OaMFJnWJp9KIUuyDimjRorUspm3MXCzoECL7p0HxgJHyWXL7hV6ZhX
- bsE5R5MM+aXGAhyAYj/VcbpGtcP8urnqnntBj/sx9DQamnKrbSThwqwXSfv6V28JZ5kf
- SyStR4Leh8CHhJFylXQM7V6QT07ZYIpQvLLnqr+55Le/YUUCFDuJql1UF481qoW9I/dv
- JmZg==
-X-Gm-Message-State: AOJu0YxET8V+2lMXWEz1yh+omXFKlEc3v0j8GKs1CzjytHcsmp7a/60H
- v4L53x4/7k2uCux4WbY97VLCSfMfSfXzxIbgXtIC1NKvK2HyIJ61sb8pxUs9a0Tv1TAgbu325GA
- g
-X-Gm-Gg: ASbGnct6j5SoPsiU3elBJ5qE5/MHdK2A7vdO6FkcAXHtuB/vk95y0r+Fa3Ohf4B48d6
- BL70C2Zn8YeOKtF/XE7KO1V1iCPzIS3WbAxBGETz/C2V3JCKFNGamVURrZm7s5FCxIWbePQ8k6u
- WP8sVE/mOjfEJL6osqSN0734eFeId+OILsahi6AOKwBhNoCHri6lGQzKZvJkHyP0AuOZW6U1ONZ
- q9NWMJXOnEyzkOsl2LECuLm7IUWjnlG0RH7QJwdBWQSs4xcRCaKZi6EnJgM21I6EEThKN1Lhbvf
- 3VPnVlPx1nU5wqbnChKZLoXzIhIt5Yv4J+U=
-X-Google-Smtp-Source: AGHT+IG2cMd/BU3tAfNVeKS09RJKPMhdcxjeyIM847yQJD8CKw7fokY9PKdtm4U5oGGF+LcHezpckg==
-X-Received: by 2002:a05:6870:a691:b0:296:e491:b244 with SMTP id
- 586e51a60fabf-2d4d2d4cf78mr2309004fac.32.1744848156715; 
- Wed, 16 Apr 2025 17:02:36 -0700 (PDT)
+ bh=/AW4tnkOIpzn+hkaLSPNo53y2Z1zRYt/SZox39VKYwQ=;
+ b=xENZF7xDnG0EU4IWBw816c0PWW4Bou/7oWCbTxGo0AAz+JY6ykngg8cZuffOacmQu1
+ NOZu12LzDpeYVscAb251RKIc64KY+xUv9AzuVeAK4tM7TYAXP4dTyMp8at6bGrHM1Er8
+ 0EHMUBkXPLni7I609XIm8SgSJjnaLKrwfqmbUcWKzTPsKzs6RjKU+zYFN9kJ4/NAQT+y
+ jKm3x9d4AJhD2Xy4Q9k6ALZ6uLnf75k5ymTxyQTqRnSBKNkfg372xH8vvM6Zl3paiGVC
+ Ik+1W9YFM+zzg7gs4IBkDsRsnUqu+JNVKAvYPWgYjeviqc/5hXbIs8JV7OWF9LeGuMOh
+ GAQg==
+X-Gm-Message-State: AOJu0Ywy8JwBAEEfpmoUY9Wi6rap7iPoRhnG1n3TVFQbQeAatwXmkHeV
+ xWUkjOV48sGZtYdnSu+wmu3xJIR3kAayYnKqpGVo4NGz/uzbLE1jSVR+XQFRN/cTXZhSOlQZVrv
+ m
+X-Gm-Gg: ASbGncuJ44bfizIZos9KT7rThLVyY7wkqygCA+DXd41jd4Mn9lkGKEddntfBM8WY/x+
+ R/imYe0zHZp+7Shiwx8vUkl53iRl+Gy7NZ1geiLdnJJOqd1HGkLKK8hKYtvhe0LdSGNps229z5a
+ dfKHME/OPmTAhVcul9fLitUx1aqwig8Zkte9axABTcjl7EaVR8HS/M0CUCM8LeVxNOQj18GdD5I
+ WB7RlO8GuF5jESgn7C1pPeqMDAuE8Qw+GGOF8q5yYJ/KoHy1LeUbIhDS/KHGvRexrJ6HlkiyUff
+ bvsmbRVxfcHmYfKRKpfwpqZPjKPthASPSfs=
+X-Google-Smtp-Source: AGHT+IGf3fmN6Dftp8lWka7GnVEDjDvMNgDglg2hGJsI7Z241e3OMiamt8xvqgEcHw3195BZlNuLZA==
+X-Received: by 2002:a05:6820:509:b0:604:710b:b921 with SMTP id
+ 006d021491bc7-604a8fcacbdmr1941982eaf.0.1744848158441; 
+ Wed, 16 Apr 2025 17:02:38 -0700 (PDT)
 Received: from localhost ([2001:470:b8f6:1b:8795:e9fb:beca:ef25])
  by smtp.gmail.com with UTF8SMTPSA id
- 586e51a60fabf-2d0969589c5sm3561396fac.17.2025.04.16.17.02.34
+ 006d021491bc7-604a5b94c27sm567505eaf.13.2025.04.16.17.02.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Apr 2025 17:02:35 -0700 (PDT)
+ Wed, 16 Apr 2025 17:02:37 -0700 (PDT)
 From: Corey Minyard <corey@minyard.net>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Corey Minyard <corey@minyard.net>
-Subject: [PULL 3/6] ipmi: add fwinfo to pci ipmi devices
-Date: Wed, 16 Apr 2025 18:59:07 -0500
-Message-ID: <20250417000224.3830705-4-corey@minyard.net>
+	Corey Minyard <corey@minyard.net>
+Subject: [PULL 4/6] ipmi/bmc-sim: Add 'Get Channel Info' command
+Date: Wed, 16 Apr 2025 18:59:08 -0500
+Message-ID: <20250417000224.3830705-5-corey@minyard.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250417000224.3830705-1-corey@minyard.net>
 References: <20250417000224.3830705-1-corey@minyard.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2001:4860:4864:20::36;
- envelope-from=corey@minyard.net; helo=mail-oa1-x36.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=corey@minyard.net; helo=mail-oo1-xc2c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,156 +98,171 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-This requires some adjustments to callers to avoid possible behaviour
-changes for PCI devices.
+Linux issues this command when booting a powernv machine.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20250401140153.685523-3-npiggin@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-[Rename pci_ipmi_bt_get_fwinfo to pci_ipmi_kcs_get_fwinfo in the
- pci_ipmi_kcs.c file.]
+Message-ID: <20250401140153.685523-4-npiggin@gmail.com>
 Signed-off-by: Corey Minyard <corey@minyard.net>
 ---
- hw/acpi/ipmi.c             |  3 ++-
- hw/ipmi/isa_ipmi_bt.c      |  1 +
- hw/ipmi/isa_ipmi_kcs.c     |  1 +
- hw/ipmi/pci_ipmi_bt.c      | 12 ++++++++++++
- hw/ipmi/pci_ipmi_kcs.c     | 11 +++++++++++
- hw/smbios/smbios_type_38.c |  7 ++++++-
- include/hw/ipmi/ipmi.h     |  5 +++++
- 7 files changed, 38 insertions(+), 2 deletions(-)
+ hw/ipmi/ipmi_bmc_sim.c | 68 ++++++++++++++++++++++++++++++++++++++++--
+ hw/ipmi/ipmi_bt.c      |  2 ++
+ hw/ipmi/ipmi_kcs.c     |  1 +
+ include/hw/ipmi/ipmi.h | 10 +++++++
+ 4 files changed, 79 insertions(+), 2 deletions(-)
 
-diff --git a/hw/acpi/ipmi.c b/hw/acpi/ipmi.c
-index a20e57d465..39f8f2f6d6 100644
---- a/hw/acpi/ipmi.c
-+++ b/hw/acpi/ipmi.c
-@@ -55,7 +55,8 @@ static Aml *aml_ipmi_crs(IPMIFwInfo *info)
-         abort();
-     }
+diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
+index bc0ddc52a9..03e58d283e 100644
+--- a/hw/ipmi/ipmi_bmc_sim.c
++++ b/hw/ipmi/ipmi_bmc_sim.c
+@@ -70,6 +70,7 @@
+ #define IPMI_CMD_GET_MSG                  0x33
+ #define IPMI_CMD_SEND_MSG                 0x34
+ #define IPMI_CMD_READ_EVT_MSG_BUF         0x35
++#define IPMI_CMD_GET_CHANNEL_INFO         0x42
  
--    if (info->interrupt_number) {
-+    /* Should PCI interrupts also be appended? */
-+    if (info->irq_source == IPMI_ISA_IRQ && info->interrupt_number) {
-         aml_append(crs, aml_irq_no_flags(info->interrupt_number));
-     }
+ #define IPMI_NETFN_STORAGE            0x0a
  
-diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
-index 474a792c9a..76585e786e 100644
---- a/hw/ipmi/isa_ipmi_bt.c
-+++ b/hw/ipmi/isa_ipmi_bt.c
-@@ -49,6 +49,7 @@ static void isa_ipmi_bt_get_fwinfo(struct IPMIInterface *ii, IPMIFwInfo *info)
-     ISAIPMIBTDevice *iib = ISA_IPMI_BT(ii);
+@@ -1020,8 +1021,8 @@ static void send_msg(IPMIBmcSim *ibs,
+     uint8_t *buf;
+     uint8_t netfn, rqLun, rsLun, rqSeq;
  
-     ipmi_bt_get_fwinfo(&iib->bt, info);
-+    info->irq_source = IPMI_ISA_IRQ;
-     info->interrupt_number = iib->isairq;
-     info->i2c_slave_address = iib->bt.bmc->slave_addr;
-     info->uuid = iib->uuid;
-diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
-index 94bbe45d35..ba3ae208b2 100644
---- a/hw/ipmi/isa_ipmi_kcs.c
-+++ b/hw/ipmi/isa_ipmi_kcs.c
-@@ -49,6 +49,7 @@ static void isa_ipmi_kcs_get_fwinfo(IPMIInterface *ii, IPMIFwInfo *info)
-     ISAIPMIKCSDevice *iik = ISA_IPMI_KCS(ii);
- 
-     ipmi_kcs_get_fwinfo(&iik->kcs, info);
-+    info->irq_source = IPMI_ISA_IRQ;
-     info->interrupt_number = iik->isairq;
-     info->uuid = iik->uuid;
- }
-diff --git a/hw/ipmi/pci_ipmi_bt.c b/hw/ipmi/pci_ipmi_bt.c
-index a3b742d22c..7ba8b3ab96 100644
---- a/hw/ipmi/pci_ipmi_bt.c
-+++ b/hw/ipmi/pci_ipmi_bt.c
-@@ -38,6 +38,17 @@ struct PCIIPMIBTDevice {
-     uint32_t uuid;
- };
- 
-+static void pci_ipmi_bt_get_fwinfo(struct IPMIInterface *ii, IPMIFwInfo *info)
-+{
-+    PCIIPMIBTDevice *pib = PCI_IPMI_BT(ii);
-+
-+    ipmi_bt_get_fwinfo(&pib->bt, info);
-+    info->irq_source = IPMI_PCI_IRQ;
-+    info->interrupt_number = pci_intx(&pib->dev);
-+    info->i2c_slave_address = pib->bt.bmc->slave_addr;
-+    info->uuid = pib->uuid;
-+}
-+
- static void pci_ipmi_raise_irq(IPMIBT *ib)
- {
-     PCIIPMIBTDevice *pib = ib->opaque;
-@@ -125,6 +136,7 @@ static void pci_ipmi_bt_class_init(ObjectClass *oc, void *data)
- 
-     iic->get_backend_data = pci_ipmi_bt_get_backend_data;
-     ipmi_bt_class_init(iic);
-+    iic->get_fwinfo = pci_ipmi_bt_get_fwinfo;
- }
- 
- static const TypeInfo pci_ipmi_bt_info = {
-diff --git a/hw/ipmi/pci_ipmi_kcs.c b/hw/ipmi/pci_ipmi_kcs.c
-index 05ba97ec58..0aa35143e9 100644
---- a/hw/ipmi/pci_ipmi_kcs.c
-+++ b/hw/ipmi/pci_ipmi_kcs.c
-@@ -38,6 +38,16 @@ struct PCIIPMIKCSDevice {
-     uint32_t uuid;
- };
- 
-+static void pci_ipmi_kcs_get_fwinfo(struct IPMIInterface *ii, IPMIFwInfo *info)
-+{
-+    PCIIPMIKCSDevice *pik = PCI_IPMI_KCS(ii);
-+
-+    ipmi_kcs_get_fwinfo(&pik->kcs, info);
-+    info->irq_source = IPMI_PCI_IRQ;
-+    info->interrupt_number = pci_intx(&pik->dev);
-+    info->uuid = pik->uuid;
-+}
-+
- static void pci_ipmi_raise_irq(IPMIKCS *ik)
- {
-     PCIIPMIKCSDevice *pik = ik->opaque;
-@@ -125,6 +135,7 @@ static void pci_ipmi_kcs_class_init(ObjectClass *oc, void *data)
- 
-     iic->get_backend_data = pci_ipmi_kcs_get_backend_data;
-     ipmi_kcs_class_init(iic);
-+    iic->get_fwinfo = pci_ipmi_kcs_get_fwinfo;
- }
- 
- static const TypeInfo pci_ipmi_kcs_info = {
-diff --git a/hw/smbios/smbios_type_38.c b/hw/smbios/smbios_type_38.c
-index 168b886647..e9b856fcd9 100644
---- a/hw/smbios/smbios_type_38.c
-+++ b/hw/smbios/smbios_type_38.c
-@@ -72,7 +72,12 @@ static void smbios_build_one_type_38(IPMIFwInfo *info)
-                      " SMBIOS, ignoring this entry.", info->register_spacing);
+-    if (cmd[2] != 0) {
+-        /* We only handle channel 0 with no options */
++    if (cmd[2] != IPMI_CHANNEL_IPMB) {
++        /* We only handle channel 0h (IPMB) with no options */
+         rsp_buffer_set_error(rsp, IPMI_CC_INVALID_DATA_FIELD);
          return;
      }
--    t->interrupt_number = info->interrupt_number;
-+    if (info->irq_source == IPMI_ISA_IRQ) {
-+        t->interrupt_number = info->interrupt_number;
-+    } else {
-+        /* TODO: How to handle PCI? */
-+        t->interrupt_number = 0;
-+    }
- 
-     SMBIOS_BUILD_TABLE_POST;
+@@ -1219,6 +1220,68 @@ static void get_watchdog_timer(IPMIBmcSim *ibs,
+     }
  }
+ 
++static void get_channel_info(IPMIBmcSim *ibs,
++                             uint8_t *cmd, unsigned int cmd_len,
++                             RspBuffer *rsp)
++{
++    IPMIInterface *s = ibs->parent.intf;
++    IPMIInterfaceClass *k = IPMI_INTERFACE_GET_CLASS(s);
++    IPMIFwInfo info = {};
++    uint8_t ch = cmd[2] & 0x0f;
++
++    /* Only define channel 0h (IPMB) and Fh (system interface) */
++
++    if (ch == 0x0e) { /* "This channel" */
++        ch = IPMI_CHANNEL_SYSTEM;
++    }
++    rsp_buffer_push(rsp, ch);
++
++    if (ch != IPMI_CHANNEL_IPMB && ch != IPMI_CHANNEL_SYSTEM) {
++        /* Not a supported channel */
++        rsp_buffer_set_error(rsp, IPMI_CC_INVALID_DATA_FIELD);
++        return;
++    }
++
++    if (k->get_fwinfo) {
++        k->get_fwinfo(s, &info);
++    }
++
++    if (ch == IPMI_CHANNEL_IPMB) {
++        rsp_buffer_push(rsp, IPMI_CHANNEL_MEDIUM_IPMB);
++        rsp_buffer_push(rsp, IPMI_CHANNEL_PROTOCOL_IPMB);
++    } else { /* IPMI_CHANNEL_SYSTEM */
++        rsp_buffer_push(rsp, IPMI_CHANNEL_MEDIUM_SYSTEM);
++        rsp_buffer_push(rsp, info.ipmi_channel_protocol);
++    }
++
++    rsp_buffer_push(rsp, 0x00); /* Session-less */
++
++    /* IPMI Enterprise Number for Vendor ID */
++    rsp_buffer_push(rsp, 0xf2);
++    rsp_buffer_push(rsp, 0x1b);
++    rsp_buffer_push(rsp, 0x00);
++
++    if (ch == IPMI_CHANNEL_SYSTEM) {
++        uint8_t irq;
++
++        if (info.irq_source == IPMI_ISA_IRQ) {
++            irq = info.interrupt_number;
++        } else if (info.irq_source == IPMI_PCI_IRQ) {
++            irq = 0x10 + info.interrupt_number;
++        } else {
++            irq = 0xff; /* no interrupt / unspecified */
++        }
++
++        /* Both interrupts use the same irq number */
++        rsp_buffer_push(rsp, irq);
++        rsp_buffer_push(rsp, irq);
++    } else {
++        /* Reserved */
++        rsp_buffer_push(rsp, 0x00);
++        rsp_buffer_push(rsp, 0x00);
++    }
++}
++
+ static void get_sdr_rep_info(IPMIBmcSim *ibs,
+                              uint8_t *cmd, unsigned int cmd_len,
+                              RspBuffer *rsp)
+@@ -2015,6 +2078,7 @@ static const IPMICmdHandler app_cmds[] = {
+     [IPMI_CMD_RESET_WATCHDOG_TIMER] = { reset_watchdog_timer },
+     [IPMI_CMD_SET_WATCHDOG_TIMER] = { set_watchdog_timer, 8 },
+     [IPMI_CMD_GET_WATCHDOG_TIMER] = { get_watchdog_timer },
++    [IPMI_CMD_GET_CHANNEL_INFO] = { get_channel_info, 3 },
+ };
+ static const IPMINetfn app_netfn = {
+     .cmd_nums = ARRAY_SIZE(app_cmds),
+diff --git a/hw/ipmi/ipmi_bt.c b/hw/ipmi/ipmi_bt.c
+index 583fc64730..28cf6ab218 100644
+--- a/hw/ipmi/ipmi_bt.c
++++ b/hw/ipmi/ipmi_bt.c
+@@ -419,6 +419,8 @@ void ipmi_bt_get_fwinfo(struct IPMIBT *ib, IPMIFwInfo *info)
+     info->interface_type = IPMI_SMBIOS_BT;
+     info->ipmi_spec_major_revision = 2;
+     info->ipmi_spec_minor_revision = 0;
++    /* BT System Interface Format, IPMI v1.5 */
++    info->ipmi_channel_protocol = IPMI_CHANNEL_PROTOCOL_BT_15;
+     info->base_address = ib->io_base;
+     info->register_length = ib->io_length;
+     info->register_spacing = 1;
+diff --git a/hw/ipmi/ipmi_kcs.c b/hw/ipmi/ipmi_kcs.c
+index c15977cab4..578dd7cef3 100644
+--- a/hw/ipmi/ipmi_kcs.c
++++ b/hw/ipmi/ipmi_kcs.c
+@@ -405,6 +405,7 @@ void ipmi_kcs_get_fwinfo(IPMIKCS *ik, IPMIFwInfo *info)
+     info->interface_type = IPMI_SMBIOS_KCS;
+     info->ipmi_spec_major_revision = 2;
+     info->ipmi_spec_minor_revision = 0;
++    info->ipmi_channel_protocol = IPMI_CHANNEL_PROTOCOL_KCS;
+     info->base_address = ik->io_base;
+     info->i2c_slave_address = ik->bmc->slave_addr;
+     info->register_length = ik->io_length;
 diff --git a/include/hw/ipmi/ipmi.h b/include/hw/ipmi/ipmi.h
-index 77a7213ed9..c8ef04856e 100644
+index c8ef04856e..802a2febb0 100644
 --- a/include/hw/ipmi/ipmi.h
 +++ b/include/hw/ipmi/ipmi.h
-@@ -90,6 +90,11 @@ typedef struct IPMIFwInfo {
-     } memspace;
+@@ -41,6 +41,15 @@ enum ipmi_op {
+     IPMI_SEND_NMI
+ };
  
-     int interrupt_number;
-+    enum {
-+        IPMI_NO_IRQ = 0,
-+        IPMI_ISA_IRQ,
-+        IPMI_PCI_IRQ,
-+    } irq_source;
-     enum {
-         IPMI_LEVEL_IRQ,
-         IPMI_EDGE_IRQ
++/* Channel properties */
++#define IPMI_CHANNEL_IPMB                0x00
++#define IPMI_CHANNEL_SYSTEM              0x0f
++#define IPMI_CHANNEL_MEDIUM_IPMB         0x01
++#define IPMI_CHANNEL_MEDIUM_SYSTEM       0x0c
++#define IPMI_CHANNEL_PROTOCOL_IPMB       0x01
++#define IPMI_CHANNEL_PROTOCOL_KCS        0x05
++#define IPMI_CHANNEL_PROTOCOL_BT_15      0x08
++
+ #define IPMI_CC_INVALID_CMD                              0xc1
+ #define IPMI_CC_COMMAND_INVALID_FOR_LUN                  0xc2
+ #define IPMI_CC_TIMEOUT                                  0xc3
+@@ -76,6 +85,7 @@ typedef struct IPMIFwInfo {
+     int interface_type;
+     uint8_t ipmi_spec_major_revision;
+     uint8_t ipmi_spec_minor_revision;
++    uint8_t ipmi_channel_protocol;
+     uint8_t i2c_slave_address;
+     uint32_t uuid;
+ 
 -- 
 2.43.0
 
