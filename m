@@ -2,97 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91823A8AE63
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 05:17:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BC6A8AE70
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 05:34:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u4tGQ-0002Vk-RA; Tue, 15 Apr 2025 23:16:38 -0400
+	id 1u4tWi-0007Ot-6H; Tue, 15 Apr 2025 23:33:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u4tGO-0002VT-VD
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 23:16:37 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1u4tGM-0003oO-UB
- for qemu-devel@nongnu.org; Tue, 15 Apr 2025 23:16:36 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-73bf5aa95e7so2829954b3a.1
- for <qemu-devel@nongnu.org>; Tue, 15 Apr 2025 20:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1744773392; x=1745378192; darn=nongnu.org;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kFUPBZRAfipWI2IhgFTKirKDKIIaY6khLK6b2Z4CfVg=;
- b=i/zYM7c4Jw0X263YZLyFtYCv+HRMXADVxNG7huqF7G+o9Cpa5VBq2F+fAKOyO83IYT
- OfljZUp1HsjMKxqFCaV9Mkw9F3qqvH3RFR+W22uFf5QwYF2X2lbjAlDc2elh8xWPcCpT
- hNzYxSyTFCUKswGJi19M+Vm07g7UAsWIZBb0xX7B6MAzC/TsEU3XqDvabvseNImMWdez
- qRGHiwhBSr4IkLauEuNI0M0HVI1lp+K7KfzwVlrB0edUdZunPqZMNcDbtwPFl58/hCsY
- 12fEjFmKayo6FxLJi+X34mAMVcz8X62mok2It2BlTS78vqL7fRGpFfIF8wBCKA8aZ0IJ
- rL5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744773392; x=1745378192;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=kFUPBZRAfipWI2IhgFTKirKDKIIaY6khLK6b2Z4CfVg=;
- b=YIXPAQDk3KmAWYLJCWdDunDbXz8yXus+VbKRouklaU94lHWb+8aDJ8dgvQzj3D7I05
- m0P4AWCffMGOPHX/FowsyyBDXb0UNLBj4gdXfl+yV9gER9ucFHuY4sEpAfWge1Aj3FMV
- xlWDH9kC9xye0Z0rufbAu+Vr4i+YPXW4i/tmLnCdj4Rwkfu8f6lBev/u1zAgMc9Bvj70
- oHDfcUBGh7NJGrv4CXWi5uGgBLHqKEIIBaaKWPJxstYdj66JLX10iVNafpw58NgVj3iK
- twr6swxmlX3IUAMnxUMWL0j+g1+fwc/H9ZJD00UHx17tcafFHH0LC1NFPSQTYLGHwXaJ
- eiaA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVv7oekDNGdUlLRwUdee/G7vptFGw2/G4BcX5qyn+a0ccpIwrzwrEPD1J2ypVAtyRFE1dXQ0tWHOyMz@nongnu.org
-X-Gm-Message-State: AOJu0Yy1QdM84R0HFEAZRlPEdLmEHq4khGMBXC4U4jGtY6imJDjsCNcG
- fy9sN2IkQEeWDklv6oKxUr7eGc+9lOdL86jm51/iSzZVSJ6/BLer
-X-Gm-Gg: ASbGncuxlhlSrg0Qj9sClvgwVb2yNMQZLg7sdCw7bSZzMoBPWpQ0WU6lXDY0UO4qxXD
- ZPKW3gBXwCGONpER/M3Qu0SIjIo1eTEr8DChZA5pHgngb3wYJRPD5WtgRSW5kbZIIdMxkFYUQA0
- 0hqYh6Zdrs2FRTsDgGpmCvV6fi6PEyGEqLGthO9OYaMb45QT6KBBAwO4UJ5DFpA+iom+odbwiFR
- vd/gy7MhzXriiZp9MgLxFJaekwete1l1te2a5W3JgV8PcA3U53iur83JEJfBQjgxjjqUWA4z8hc
- 5QGBGycxfazwWB6fTELPT9yneMR0DHc=
-X-Google-Smtp-Source: AGHT+IEk509I+8vInsGMWf+RbWnb0s6+nobMCaEFeszILo0fXkklbwyiGJYF1Ln2QUXGWTXke7L0+w==
-X-Received: by 2002:a05:6a00:1da6:b0:739:3f55:b23f with SMTP id
- d2e1a72fcca58-73c2671803fmr317949b3a.14.1744773392165; 
- Tue, 15 Apr 2025 20:16:32 -0700 (PDT)
-Received: from localhost ([1.145.6.120]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b0b2221eb8bsm286011a12.75.2025.04.15.20.16.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Apr 2025 20:16:31 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Apr 2025 13:16:25 +1000
-Message-Id: <D97QJO5Z909K.368VVIBFA17TA@gmail.com>
-To: "Pierrick Bouvier" <pierrick.bouvier@linaro.org>,
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- <qemu-devel@nongnu.org>
-Cc: "Stefan Hajnoczi" <stefanha@redhat.com>, =?utf-8?q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "Paolo Bonzini" <pbonzini@redhat.com>, "Phil
- Dennis-Jordan" <phil@philjordan.eu>
-Subject: Re: [PATCH 1/2] system/main: transfer replay mutex ownership from
- main thread to main loop thread
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.19.0
-References: <20250410225550.46807-1-pierrick.bouvier@linaro.org>
- <20250410225550.46807-2-pierrick.bouvier@linaro.org>
- <D94EWG4QRMFP.123EPDW889YVC@gmail.com>
- <7e760e04-0571-48f3-9aa7-e71c631dcaff@linaro.org>
- <dee088aa-436f-48dc-8a28-f675de42767b@linaro.org>
- <5cac93d4-e5a6-42b0-8f7b-5a273168a450@linaro.org>
- <D96V6HTTNOF1.3DDO2NQ0AUEA0@gmail.com>
- <f8a90e7b-daa7-4c87-9702-e80e9d5b162e@linaro.org>
-In-Reply-To: <f8a90e7b-daa7-4c87-9702-e80e9d5b162e@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1u4tWg-0007Ko-6y
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 23:33:26 -0400
+Received: from [2607:7c80:54:3::138] (helo=mail.zytor.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1u4tWd-0005rB-3e
+ for qemu-devel@nongnu.org; Tue, 15 Apr 2025 23:33:25 -0400
+Received: from [192.168.7.202] ([71.202.166.45]) (authenticated bits=0)
+ by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53G3Pn5F3166370
+ (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+ Tue, 15 Apr 2025 20:25:50 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53G3Pn5F3166370
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+ s=2025032001; t=1744773951;
+ bh=xWKxhv0+y1+XzvSRf4ffKgCnIw44r8CyUdkQqqYQ2Xw=;
+ h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+ b=YIUPMi4lE9uP+75+HT8wKIVcS2RzUUAmzSFtYGEc12O0koEAm3nPKsLNPR70QE+Ib
+ nafV36ybApu21cXfP8QWxha42svYiCEtYj6ECKBw147EdHYnElWYwEmhZ2KEYSpwo9
+ p69Z4e7nDiXE5enmO+I5C8w/YbKhj/zG6ILiFtlqiLKgAdqZk0+RsI19Yx81MqQUCJ
+ cRr99foVDNisYVd1ELh+BP02cwghKoR2/pesvMyxz7KcDQ1XHob7r38/L8ZnvQvtOc
+ vhp8rxsEwv7jJoaAjM+LLCVsFGEagQXuzd+bRBSA+ZudYOAEgLXanmpuzPxEZ94qNz
+ bAe5+V7rJ53zg==
+Message-ID: <b336cc75-8a48-4ebe-96a1-089eb85646c8@zytor.com>
+Date: Tue, 15 Apr 2025 20:25:49 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/3] target/i386: Add the immediate form MSR access
+ instruction support
+From: Xin Li <xin@zytor.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, xin3.li@intel.com
+References: <20250103084827.1820007-1-xin@zytor.com>
+Content-Language: en-US
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <20250103084827.1820007-1-xin@zytor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:7c80:54:3::138
+ (failed)
+Received-SPF: pass client-ip=2607:7c80:54:3::138; envelope-from=xin@zytor.com;
+ helo=mail.zytor.com
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RDNS_NONE=0.793,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,169 +104,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Apr 16, 2025 at 4:31 AM AEST, Pierrick Bouvier wrote:
-> On 4/14/25 19:41, Nicholas Piggin wrote:
->> On Tue Apr 15, 2025 at 1:24 AM AEST, Pierrick Bouvier wrote:
->>> On 4/14/25 03:25, Philippe Mathieu-Daud=C3=A9 wrote:
->>>> On 12/4/25 19:24, Pierrick Bouvier wrote:
->>>>> On 4/11/25 22:30, Nicholas Piggin wrote:
->>>>>> On Fri Apr 11, 2025 at 8:55 AM AEST, Pierrick Bouvier wrote:
->>>>>>> On MacOS, UI event loop has to be ran in the main thread of a proce=
-ss.
->>>>>>> Because of that restriction, on this platform, qemu main event loop=
- is
->>>>>>> ran on another thread [1].
->>>>>>>
->>>>>>> This breaks record/replay feature, which expects thread running
->>>>>>> qemu_init
->>>>>>> to initialize hold this lock, breaking associated functional tests =
-on
->>>>>>> MacOS.
->>>>>>>
->>>>>>> Thus, as a generalization, and similar to how BQL is handled, we re=
-lease
->>>>>>> it after init, and reacquire the lock before entering main event lo=
-op,
->>>>>>> avoiding a special case if a separate thread is used.
->>>>>>>
->>>>>>> Tested on MacOS with:
->>>>>>> $ meson test -C build --setup thorough --print-errorlogs \
->>>>>>> func-x86_64-x86_64_replay func-arm-arm_replay func-aarch64-
->>>>>>> aarch64_replay
->>>>>>> $ ./build/qemu-system-x86_64 -nographic -icount
->>>>>>> shift=3Dauto,rr=3Drecord,rrfile=3Dreplay.log
->>>>>>> $ ./build/qemu-system-x86_64 -nographic -icount
->>>>>>> shift=3Dauto,rr=3Dreplay,rrfile=3Dreplay.log
->>>>>>>
->>>>>>> [1] https://gitlab.com/qemu-project/qemu/-/commit/
->>>>>>> f5ab12caba4f1656479c1feb5248beac1c833243
->>>>>>>
->>>>>>> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2907
->>>>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>>>>>> ---
->>>>>>>   =C2=A0 system/main.c | 4 ++++
->>>>>>>   =C2=A0 1 file changed, 4 insertions(+)
->>>>>>>
->>>>>>> diff --git a/system/main.c b/system/main.c
->>>>>>> index ecb12fd397c..1c022067349 100644
->>>>>>> --- a/system/main.c
->>>>>>> +++ b/system/main.c
->>>>>>> @@ -25,6 +25,7 @@
->>>>>>>   =C2=A0 #include "qemu/osdep.h"
->>>>>>>   =C2=A0 #include "qemu-main.h"
->>>>>>>   =C2=A0 #include "qemu/main-loop.h"
->>>>>>> +#include "system/replay.h"
->>>>>>>   =C2=A0 #include "system/system.h"
->>>>>>>   =C2=A0 #ifdef CONFIG_SDL
->>>>>>> @@ -44,10 +45,12 @@ static void *qemu_default_main(void *opaque)
->>>>>>>   =C2=A0 {
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int status;
->>>>>>> +=C2=A0=C2=A0=C2=A0 replay_mutex_lock();
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bql_lock();
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 status =3D qemu_main_loop();
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_cleanup(status);
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bql_unlock();
->>>>>>> +=C2=A0=C2=A0=C2=A0 replay_mutex_unlock();
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 exit(status);
->>>>>>>   =C2=A0 }
->>>>>>> @@ -67,6 +70,7 @@ int main(int argc, char **argv)
->>>>>>>   =C2=A0 {
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_init(argc, argv);
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bql_unlock();
->>>>>>> +=C2=A0=C2=A0=C2=A0 replay_mutex_unlock();
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (qemu_main) {
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 QemuThread=
- main_loop_thread;
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_threa=
-d_create(&main_loop_thread, "qemu_main",
->>>>>>
->>>>>> Do we actually need to hold replay mutex (or even bql) over qemu_ini=
-t()?
->>>>>> Both should get dropped before we return here. But as a simple fix, =
-I
->>>>>> guess this is okay.
->>>>>>
->>>>>
->>>>> For the bql, I don't know the exact reason.
->>>>> For replay lock, we need to hold it as clock gets saved as soon as th=
-e
->>>>> devices are initialized, which happens before end of qemu_init.
->>>>
->>>> Could be worth adding a comment with that information.
->>>>
->>>
->>> In case someone is curious about it, changing default state of lock can
->>> answer why it's needed, as it crashes immediately on an assert.
->>=20
->> That all sounds reasonable enough and good info. I'm not suggesting to
->> remove the lock from qemu_init() by assuming we are in init and init is
->> single threaded (I agree it's good practice to keep locking consistent).
->>=20
->> My question was more that we should move the locks tighter around
->> the operations that require them. Move the unlock into qemu_init().
->>=20
->> Commit f5ab12caba4f1 didn't introduce this problem, cocoa_main()
->> already immediatey called bql_unlock() so effectively the issue is
->> still there. The original design before cocoa I guess was that qemu_init
->> would init things under the same critical section as qemu_main_loop() is
->> then called, which is reasonable and conservative. It would have been
->> good to see this bql split get a specific patch to epxlain why it's not
->> needed across qemu_init and qemu_main_loop, but no big deal now.
->>=20
->
-> Looking more closely, bql_lock ensure vcpus don't start executing=20
-> anything before init is completed. So we really want to hold the lock=20
-> through all qemu_init().
->
-> Concerning replay_lock, during init, icount_configure calls=20
-> qemu_clock_get_ns, that calls replay_save_clock, which expects to have=20
-> the lock. Thus, we should hold the lock, at least during icount=20
-> configuration.
+On 1/3/2025 12:48 AM, Xin Li (Intel) wrote:
+> The immediate form of MSR access instructions are primarily motivated by
+> performance, not code size: by having the MSR number in an immediate, it
+> is available *much* earlier in the pipeline, which allows the hardware
+> much more leeway about how a particular MSR is handled.
+> 
+> This new CPU feature is advertised through bit 5 of CPUID.7.1.ECX, which
+> needs to be added as a new CPU feature word.
 
-Sounds reasonable.
+gentle ping!
 
->> The patch is fine for a fix, could I suggest another patch that
->> moves the lock narrower and perhaps adds a few words of comment?
->>=20
->
-> We would still need to acquire locks in qemu_default_main() anyway.
->
-> For bql, we definitely want to hold it anytime through init, so the=20
-> scope is end of init.
-> For replay_lock, it could be moved around parts that expect it during=20
-> initialization, but what would be the benefit, considering only one=20
-> thread is running during init?
->
-> Moving locks narrower is usually made to allow more concurrency, at the=
-=20
-> price of increased complexity. In init phase, only one thread runs=20
-> anyway, so there is no benefit to do anything around here.
->
-> What we could eventually do is move those unlock at the end of=20
-> qemu_init, but IMHO, it's more readable to see the lock/unlock scheme in=
-=20
-> a single place, in system/main.c.
-> As well, I think it's better to have a single code path for lock/unlock,=
-=20
-> whether we use a background thread or not (vs adding a bool parameter to=
-=20
-> qemu_default_main() saying if we are in the same thread, or a different=
-=20
-> one).
+> 
+> WRMSRNS doesn't become a required feature for FERD, and Linux has removed
+> the dependency, as such remove the dependency from Qemu.
+> 
 
-I think the benefit is just code clarity. I think a function returning
-with a different lock state that it is called with generally is not
-desirable if it can be avoided.
+Maybe this should be sent out as a separate patch?
 
-qemu_init() caller just releasing locks immediately doesn't really serve
-a benefit. A comment can be added to say that when qemu_init() returns,
-bql is not held and CPUs may be running. This would be the same for any
-configuration of background thread or not.
+> 
+> Xin Li (Intel) (3):
+>    target/i386: Remove FRED dependency on WRMSRNS
+>    target/i386: Add a new CPU feature word for CPUID.7.1.ECX
+>    target/i386: Add the immediate form MSR access instruction support
+> 
+>   target/i386/cpu.c | 27 ++++++++++++++++++++++-----
+>   target/i386/cpu.h |  4 ++++
+>   2 files changed, 26 insertions(+), 5 deletions(-)
+> 
+> 
+> base-commit: 1ada452efc7d8f8bf42cd5e8a2af1b4ac9167a1f
 
-I don't want to bikeshed it too much, if you prefer not to move it. It is
-nly one specialized case. Adding some comments about the purpose of the
-locks is more important than if you release them here or in the callee.
-
-Thanks,
-Nick
 
