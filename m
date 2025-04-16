@@ -2,104 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B8FA904A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 15:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9966A904A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Apr 2025 15:45:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u533z-0005Dd-Pn; Wed, 16 Apr 2025 09:44:27 -0400
+	id 1u5344-0005Fd-68; Wed, 16 Apr 2025 09:44:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u533i-0005CL-1P
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 09:44:11 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u533f-00068q-TP
- for qemu-devel@nongnu.org; Wed, 16 Apr 2025 09:44:09 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u533u-0005Dv-A8
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 09:44:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u533r-0006Ba-Kp
+ for qemu-devel@nongnu.org; Wed, 16 Apr 2025 09:44:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744811057;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=HdcalDUGtnqtaaV0ke2ZB8ueVUbROh4idsld6IxSnIs=;
+ b=Lk96d6oFt3dK+xLpAmo3dOfn43V5Vyl+IncPSue1n9KrT9CnmK9ldZ3MQhKz9vjl4kEXM5
+ KGzsc2I1mdr/QJvMi1aBJZfTMwJ8LLSYtZjdYMoWFK4V3p3gdDA1fF7N7iEqLGhWHTwN+k
+ iufppFaH74kDq+0Tk7C5GUB9lMEr4Dc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-3OHU3fizMnmD4VLUhFlcZw-1; Wed,
+ 16 Apr 2025 09:44:14 -0400
+X-MC-Unique: 3OHU3fizMnmD4VLUhFlcZw-1
+X-Mimecast-MFC-AGG-ID: 3OHU3fizMnmD4VLUhFlcZw_1744811053
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 7059C2118E;
- Wed, 16 Apr 2025 13:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744811046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jxlfOf6Lg8XKT/rYFTB01aW6q7bFd3J6Ggpw2jHwpmg=;
- b=mIlPSKeIP5g9T4i5MaFBHMgvn1slEnLc04/ZovOdTOhAxSYAoZwRKe+Y2WiMnuea9Yh+hu
- I3HI/oF+YGqz6e6zqhqgGkLZMaKMs5ibkzRX3itYRMCp05aGMSh6Ktz0N2nvA3j7js60lp
- GsNJgRGsmyJHAdFe0/PhIpUAk8eenPE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744811046;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jxlfOf6Lg8XKT/rYFTB01aW6q7bFd3J6Ggpw2jHwpmg=;
- b=nkd+y5/8s8zHr6XLOh4Qq4XKbke6MhNEKilhdELaowXExjRidR/fSAXo3M80jvD9KcVgVr
- S7dCnYGpQXxNb6CQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1744811046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jxlfOf6Lg8XKT/rYFTB01aW6q7bFd3J6Ggpw2jHwpmg=;
- b=mIlPSKeIP5g9T4i5MaFBHMgvn1slEnLc04/ZovOdTOhAxSYAoZwRKe+Y2WiMnuea9Yh+hu
- I3HI/oF+YGqz6e6zqhqgGkLZMaKMs5ibkzRX3itYRMCp05aGMSh6Ktz0N2nvA3j7js60lp
- GsNJgRGsmyJHAdFe0/PhIpUAk8eenPE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1744811046;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jxlfOf6Lg8XKT/rYFTB01aW6q7bFd3J6Ggpw2jHwpmg=;
- b=nkd+y5/8s8zHr6XLOh4Qq4XKbke6MhNEKilhdELaowXExjRidR/fSAXo3M80jvD9KcVgVr
- S7dCnYGpQXxNb6CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5D04C13976;
- Wed, 16 Apr 2025 13:44:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id oHgDByW0/2czQQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 16 Apr 2025 13:44:05 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>
-Subject: [PATCH 2/2] migration: Trivial cleanups for postcopy
-Date: Wed, 16 Apr 2025 10:43:56 -0300
-Message-Id: <20250416134356.29879-3-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250416134356.29879-1-farosas@suse.de>
-References: <20250416134356.29879-1-farosas@suse.de>
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 715B5180056F; Wed, 16 Apr 2025 13:44:13 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.3])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2256A180045C; Wed, 16 Apr 2025 13:44:13 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 739AC21E6766; Wed, 16 Apr 2025 15:44:10 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>,  qemu-devel@nongnu.org,  Peter Xu
+ <peterx@redhat.com>
+Subject: Re: [RFC PATCH 00/13] migration: Unify capabilities and parameters
+In-Reply-To: <Z_07dfI4rFRpvZA1@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Mon, 14 Apr 2025 17:44:37 +0100")
+References: <20250411191443.22565-1-farosas@suse.de>
+ <Z_07dfI4rFRpvZA1@redhat.com>
+Date: Wed, 16 Apr 2025 15:44:10 +0200
+Message-ID: <874iyomdat.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
- RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,73 +87,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some general cleanups of silly things that were left behind when
-refactoring code.
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/migration.c | 28 ++++++++++------------------
- 1 file changed, 10 insertions(+), 18 deletions(-)
+> On Fri, Apr 11, 2025 at 04:14:30PM -0300, Fabiano Rosas wrote:
+>> Open questions:
+>> ---------------
+>>=20
+>> - Deprecations/compat?
+>>=20
+>> I think we should deprecate migrate-set/query-capabilities and everythin=
+g to do
+>> with capabilities (specifically the validation in the JSON at the end of=
+ the
+>> stream).
+>>=20
+>> For migrate-set/query-parameters, we could probably keep it around indef=
+initely,
+>> but it'd be convenient to introduce new commands so we can give them new
+>> semantics.
+>>=20
+>> - How to restrict the options that should not be set when the migration =
+is in
+>> progress?
+>>=20
+>> i.e.:
+>>   all options can be set before migration (initial config)
+>>   some options can be set during migration (runtime)
+>>=20
+>> I thought of adding another type at the top of the hierarchy, with
+>> just the options allowed to change at runtime, but that doesn't really
+>> stop the others being also set at runtime. I'd need a way to have a
+>> set of options that are rejected 'if migration_is_running()', without
+>> adding more duplication all around.
+>>=20
+>> - What about savevm?
+>>=20
+>> None of this solves the issue of random caps/params being set before
+>> calling savevm. We still need to special-case savevm and reject
+>> everything. Unless we entirely deprecate setting initial options via
+>> set-parameters (or set-config) and require all options to be set as
+>> savevm (and migrate) arguments.
+>
+> I'd suggest we aim for a world where the commands take all options
+> as direct args and try to remove the global state eventually.
 
-diff --git a/migration/migration.c b/migration/migration.c
-index d46e776e24..89b1de0ab5 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2732,19 +2732,15 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     }
- 
-     /*
--     * in Finish migrate and with the io-lock held everything should
-+     * in FINISH_MIGRATE and with the BQL held everything should
-      * be quiet, but we've potentially still got dirty pages and we
-      * need to tell the destination to throw any pages it's already received
-      * that are dirty
-      */
--    if (migrate_postcopy_ram()) {
--        ram_postcopy_send_discard_bitmap(ms);
--    }
-+    ram_postcopy_send_discard_bitmap(ms);
- 
--    if (migrate_postcopy_ram()) {
--        /* Ping just for debugging, helps line traces up */
--        qemu_savevm_send_ping(ms->to_dst_file, 2);
--    }
-+    /* Ping just for debugging, helps line traces up */
-+    qemu_savevm_send_ping(ms->to_dst_file, 2);
- 
-     /*
-      * While loading the device state we may trigger page transfer
-@@ -2774,9 +2770,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-         goto fail_closefb;
-     }
- 
--    if (migrate_postcopy_ram()) {
--        qemu_savevm_send_ping(fb, 3);
--    }
-+    qemu_savevm_send_ping(fb, 3);
- 
-     qemu_savevm_send_postcopy_run(fb);
- 
-@@ -2807,13 +2801,11 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- 
-     migration_downtime_end(ms);
- 
--    if (migrate_postcopy_ram()) {
--        /*
--         * Although this ping is just for debug, it could potentially be
--         * used for getting a better measurement of downtime at the source.
--         */
--        qemu_savevm_send_ping(ms->to_dst_file, 4);
--    }
-+    /*
-+     * Although this ping is just for debug, it could potentially be
-+     * used for getting a better measurement of downtime at the source.
-+     */
-+    qemu_savevm_send_ping(ms->to_dst_file, 4);
- 
-     if (migrate_release_ram()) {
-         ram_postcopy_migrated_memory_release(ms);
--- 
-2.35.3
+Yes.
+
+Even better: make it a job.
+
+[...]
 
 
