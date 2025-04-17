@@ -2,69 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4213A91513
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 09:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9F8A9157B
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 09:42:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Jat-0005d7-6D; Thu, 17 Apr 2025 03:23:31 -0400
+	id 1u5JsZ-0005Wp-De; Thu, 17 Apr 2025 03:41:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1u5Jaq-0005cg-I3
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 03:23:28 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <ggala@linux.ibm.com>)
+ id 1u5JsO-0005Ud-2h; Thu, 17 Apr 2025 03:41:36 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1u5Jan-0000Nn-Sm
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 03:23:27 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c15:2b89:0:640:9815:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 947A860A85;
- Thu, 17 Apr 2025 10:23:24 +0300 (MSK)
-Received: from dtalexundeer-nx.yandex-team.ru (unknown
- [2a02:6b8:b081:b4a7::1:15])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id mMDENE2FXmI0-dC5Lms3r; Thu, 17 Apr 2025 10:23:23 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1744874603;
- bh=Mg42Zg1ZyEgQAtkcUl6Dccx4cbgucQhpYSocIFJlCM0=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=xcHWsZBNcmkhFsWyVXCk0WOatVG00QEP07nz3CoeQPUNO/VnrSXlxk1LMYJCOh2M3
- 9LHszihs8T3EzZ3Bgqm7hwfpjx9z0CTDCBiQCE6SIVCAhcGVWdL75K7KYZGgL1Tb2t
- BO/LR7xJlyRAGj37UJu+anB4Joc4ujCCQmCUwvPk=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>,
- "yc-core @ yandex-team . ru" <yc-core@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-Subject: [PATCH v4 2/2] tests/functional: add memlock tests
-Date: Thu, 17 Apr 2025 12:22:47 +0500
-Message-Id: <20250417072244.147510-3-dtalexundeer@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250417072244.147510-1-dtalexundeer@yandex-team.ru>
-References: <20250417072244.147510-1-dtalexundeer@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <ggala@linux.ibm.com>)
+ id 1u5JsM-0004Qu-8q; Thu, 17 Apr 2025 03:41:35 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GNkdfK018802;
+ Thu, 17 Apr 2025 07:40:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=Dd0pbhRwsw2I5Xsw52a1Y3ZbH7oGsSwlIlpKqh3Lr
+ RY=; b=nfhVlX77CUHN0yLBlySSIX/q1atmFMwlHco9tBRbhYs3iKEtjlhXMUsVb
+ yVzTcYccHcLKaT/MK8gZP5W5bqn9Jr9tPAmJPpMphuD8hM7fyLnqRgtAd4SD7iyN
+ 8DAlvhotDIPuMR1sNxwa1/S+yoeOJKzKenSHJrrg08Qt8dhcVE20DljfNSjUMnNy
+ xZSxtZduIA+J2wm0VxMXq/H3Un+M5/iKfhaLhymC40TkJtA1vbu8wfsBWAdFVi/M
+ RqPNIVyIj7/E3ctSGZCmGv0Gr9WUv82fzNeo9IzihOea9ztG3OwsVoY8Hhmjk9Hf
+ EX15NVevu2vD/3C+s14bNE2Lg+p7Q==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462ph09p6v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Apr 2025 07:40:31 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53H7EUiN017195;
+ Thu, 17 Apr 2025 07:40:30 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46040m4frr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Apr 2025 07:40:30 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 53H7eTp222413916
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Apr 2025 07:40:29 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 87039580F9;
+ Thu, 17 Apr 2025 07:40:29 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 70ACD58232;
+ Thu, 17 Apr 2025 07:40:28 +0000 (GMT)
+Received: from t83lp65.lnxne.boe (unknown [9.152.108.100])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 17 Apr 2025 07:40:28 +0000 (GMT)
+From: Gautam Gala <ggala@linux.ibm.com>
+To: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Steffen Eiden <seiden@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>
+Subject: [PATCH v3 0/3] DIAG 308: extend subcode 10 to return UVC cmd id,
+ RC and RRC values upon failure to enter secure mode
+Date: Thu, 17 Apr 2025 09:40:24 +0200
+Message-ID: <20250417074027.711076-1-ggala@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=QJdoRhLL c=1 sm=1 tr=0 ts=6800b06f cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=XR8D0OoHHMoA:10 a=20KFwNOVAAAA:8 a=9lonpTW9IpegU1W_ekgA:9
+X-Proofpoint-GUID: uhfEBGIsZuyiToYen8Iwdb1sQ5YZvTAw
+X-Proofpoint-ORIG-GUID: uhfEBGIsZuyiToYen8Iwdb1sQ5YZvTAw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-17_01,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0
+ adultscore=0 mlxlogscore=921 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2504170057
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=ggala@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -76,145 +107,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add new tests to check the correctness of the `-overcommit memlock`
-option (possible values: off, on, on-fault) by using
-`/proc/{qemu_pid}/smaps` file to check in Size, Rss and Locked fields of
-anonymous segments:
+DIAG 308 (subcode 10 - performing secure execution unpack) response
+code when the configuration is unable to enter secure mode has limited
+usability as it is a fixed value (0xa02) for variety of different
+reasons. The aim is to extend this DIAG to return UVC command ID, RC
+and RRC values in addition to the diag response code. This feature can
+be used by the stage3a bootloader (s390-tools/rust/pvimg/boot) to read
+these new values from the corresponding register and print an
+appropriate error message to help pin point the cause.
 
-* if `memlock=off`, then Locked = 0 on every anonymous smaps;
-* if `memlock=on`, then Size, Rss and Locked values must be equal for
-every anon smaps where Rss is not 0;
-* if `memlock=on-fault`, then Rss and Locked must be equal on every anon
-smaps and anonymous segment with Rss < Size must exists.
+The response code, UVC RC, RRC, and command ID are returned in bit
+positions 48-63, 32-47, 16-31, and 0-15 of register R1 + 1 if the
+function does not complete successfully (Previously, only the
+response code was returned in bits 48-63).
 
-Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
----
- tests/functional/meson.build     |   1 +
- tests/functional/test_memlock.py | 102 +++++++++++++++++++++++++++++++
- 2 files changed, 103 insertions(+)
- create mode 100755 tests/functional/test_memlock.py
+This patch version contains updates based on feedback from Thomas Huth 
+in Message-ID: <88084780-38b2-4ca9-a2ff-ecd70d62c361@redhat.com>.
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 0f8be30fe2..339af7835f 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -61,6 +61,7 @@ tests_generic_system = [
-   'empty_cpu_model',
-   'info_usernet',
-   'version',
-+  'memlock',
- ]
- 
- tests_generic_linuxuser = [
-diff --git a/tests/functional/test_memlock.py b/tests/functional/test_memlock.py
-new file mode 100755
-index 0000000000..b62f12a715
---- /dev/null
-+++ b/tests/functional/test_memlock.py
-@@ -0,0 +1,102 @@
-+# Functional test that check overcommit memlock options
-+#
-+# Copyright (c) Yandex Technologies LLC, 2025
-+#
-+# Author:
-+#  Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-+#
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+import re
-+
-+from typing import List, Dict
-+
-+from qemu_test import QemuSystemTest
-+from qemu_test import skipLockedMemoryTest
-+
-+
-+SMAPS_HEADER_PATTERN = re.compile(r'^\w+-\w+', re.MULTILINE)
-+SMAPS_VALUE_PATTERN = re.compile(r'^(\w+):\s+(\d+) kB', re.MULTILINE)
-+
-+
-+@skipLockedMemoryTest(2_097_152)  # 2GB
-+class MemlockTest(QemuSystemTest):
-+    """
-+    Boots a Linux system with memlock options.
-+    Then verify, that this options is working correctly
-+    by checking the smaps of the QEMU proccess.
-+    """
-+
-+    def common_vm_setup_with_memlock(self, memlock):
-+        self.vm.add_args('-overcommit', f'mem-lock={memlock}')
-+        self.vm.launch()
-+
-+    def get_anon_smaps_by_pid(self, pid):
-+        smaps_raw = self._get_raw_smaps_by_pid(pid)
-+        return self._parse_anonymous_smaps(smaps_raw)
-+
-+    def test_memlock_off(self):
-+        self.common_vm_setup_with_memlock('off')
-+
-+        anon_smaps = self.get_anon_smaps_by_pid(self.vm.get_pid())
-+
-+        # locked = 0 on every smap
-+        for smap in anon_smaps:
-+            self.assertEqual(smap['Locked'], 0)
-+
-+    def test_memlock_on(self):
-+        self.common_vm_setup_with_memlock('on')
-+
-+        anon_smaps = self.get_anon_smaps_by_pid(self.vm.get_pid())
-+
-+        # size = rss = locked on every smap where rss not 0
-+        for smap in anon_smaps:
-+            if smap['Rss'] == 0:
-+                continue
-+            self.assertTrue(smap['Size'] == smap['Rss'] == smap['Locked'])
-+
-+    def test_memlock_onfault(self):
-+        self.common_vm_setup_with_memlock('on-fault')
-+
-+        anon_smaps = self.get_anon_smaps_by_pid(self.vm.get_pid())
-+
-+        # rss = locked on every smap and segment with rss < size exists
-+        exists = False
-+        for smap in anon_smaps:
-+            self.assertTrue(smap['Rss'] == smap['Locked'])
-+            if smap['Rss'] < smap['Size']:
-+                exists = True
-+        self.assertTrue(exists)
-+
-+    def _parse_anonymous_smaps(self, smaps_raw: str) -> List[Dict[str, int]]:
-+        result_segments = []
-+        current_segment = {}
-+        is_anonymous = False
-+
-+        for line in smaps_raw.split('\n'):
-+            if SMAPS_HEADER_PATTERN.match(line):
-+                if current_segment and is_anonymous:
-+                    result_segments.append(current_segment)
-+                current_segment = {}
-+                # anonymous segment header looks like this:
-+                # 7f3b8d3f0000-7f3b8d3f3000 rw-s 00000000 00:0f 1052
-+                # and non anonymous header looks like this:
-+                # 7f3b8d3f0000-7f3b8d3f3000 rw-s 00000000 00:0f 1052   [stack]
-+                is_anonymous = len(line.split()) == 5
-+            elif m := SMAPS_VALUE_PATTERN.match(line):
-+                current_segment[m.group(1)] = int(m.group(2))
-+
-+        if current_segment and is_anonymous:
-+            result_segments.append(current_segment)
-+
-+        return result_segments
-+
-+    def _get_raw_smaps_by_pid(self, pid: int) -> str:
-+        with open(f'/proc/{pid}/smaps', 'r') as f:
-+            return f.read()
-+
-+
-+if __name__ == '__main__':
-+    MemlockTest.main()
+Gautam Gala (3):
+  target/s390x: Introduce constant when checking if PV header couldn't
+    be decrypted
+  target/s390x: Introduce function when exiting PV
+  target/s390x: Return UVC cmd code, RC and RRC value when DIAG 308
+    Subcode 10 fails to enter secure mode
+
+ hw/s390x/ipl.c             | 11 +++++----
+ hw/s390x/ipl.h             |  6 +++--
+ hw/s390x/s390-virtio-ccw.c | 23 +++++++++++++-----
+ target/s390x/kvm/pv.c      | 50 ++++++++++++++++++++------------------
+ target/s390x/kvm/pv.h      | 24 ++++++++++++------
+ 5 files changed, 71 insertions(+), 43 deletions(-)
+
 -- 
-2.34.1
+2.49.0
 
 
