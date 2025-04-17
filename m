@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5C7A91C85
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 14:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 899D6A91C87
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 14:40:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5OX6-0001wS-2E; Thu, 17 Apr 2025 08:39:56 -0400
+	id 1u5OX8-0002U4-PD; Thu, 17 Apr 2025 08:39:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ggala@linux.ibm.com>)
- id 1u5OVM-0001Nx-F6; Thu, 17 Apr 2025 08:38:09 -0400
+ id 1u5OVR-0001Ra-6m; Thu, 17 Apr 2025 08:38:14 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ggala@linux.ibm.com>)
- id 1u5OVK-00039H-Bf; Thu, 17 Apr 2025 08:38:07 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53H9Zrfu014932;
- Thu, 17 Apr 2025 12:38:04 GMT
+ id 1u5OVK-00039S-Uu; Thu, 17 Apr 2025 08:38:11 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53H9RlPl018687;
+ Thu, 17 Apr 2025 12:38:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=sCCSf9R+vWDhK7Hl5
- gwg2YW6AI3FtJLiS8RPAVgQBqA=; b=LCe0YcgfFYsW1cs1yvotEFRJPBu80cnXv
- 9YH2/jEIft26xkkj8gMkIfAt0yItc09LkrvbvP/VDezInaMpkFumzkpTtm1FIrC1
- x7yX6uyPPkIEhmCGMVgl+ottO/gRFkRXqU6/q7xdhWgiTjTHCG7pOwFWUVzLa8Rb
- q1Zp28U6OYEN/UY9JEj85/CzqrRTltKohn7DYeGKnl64jL5MT5fkP0CZJGES+Otu
- mlM0cFByP+91Q6qZBOIxy4CAcVn0vWpgeTFkMBzl+UmXPIDrIvy+fUr/H3NegP0b
- YSH65HdDzF3piyg00QltZkuEmPaEfKqe8D816WELsqOaDK86G+wJA==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mn7ugks-1
+ :mime-version:references:subject:to; s=pp1; bh=cCmRv9Mxiz74pvmBt
+ +ce99FNfZ2kXRrR6DnBkaaXKPU=; b=DMk0K4eyEMbRG4ZlG9t9Md7LOHXAu+rHj
+ EFoFMfwceAldlJ/waFVUUXHUocxC/78zxP4VOpOgWXOmYUImpFjRSA0c5FDVPN+s
+ QzB9gwFbMK0jDKP2kTSYVpyvCjPL4VLeVy0Tbw+9kGLwfNAddQA5ajhg8dsMTnzd
+ bNsBn3hYs4bK5m47RgKyh7pNkS1QSVP3GpVY4C4ptZBm1BruR0o/o9BsIpV/PsNg
+ 0uGDja9Q+LIFXGQhrGuQ/W1xo56v+dPsFtNTC5SvPRB02ovPifzv+B91bQjSgOiI
+ wwmXp07ZAH+PjN8yAkDOmjYlmebM38JSSA03f3SXn20yx6sx5OVcA==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mhu3hst-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Apr 2025 12:38:03 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53HBiAaW010438;
+ Thu, 17 Apr 2025 12:38:04 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53HAjCmN017204;
  Thu, 17 Apr 2025 12:38:03 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4604qkdck2-1
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46040m5gve-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 17 Apr 2025 12:38:03 +0000
 Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
  [10.241.53.103])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53HCc0HM28967590
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 53HCc2Cv43254122
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Apr 2025 12:38:01 GMT
+ Thu, 17 Apr 2025 12:38:02 GMT
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D6F7058052;
- Thu, 17 Apr 2025 12:38:00 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 43BD458056;
+ Thu, 17 Apr 2025 12:38:02 +0000 (GMT)
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE47558066;
- Thu, 17 Apr 2025 12:37:59 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 253955805A;
+ Thu, 17 Apr 2025 12:38:01 +0000 (GMT)
 Received: from t83lp65.lnxne.boe (unknown [9.152.108.100])
  by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 17 Apr 2025 12:37:59 +0000 (GMT)
+ Thu, 17 Apr 2025 12:38:00 +0000 (GMT)
 From: Gautam Gala <ggala@linux.ibm.com>
 To: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
 Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  Thomas Huth <thuth@redhat.com>, Steffen Eiden <seiden@linux.ibm.com>,
  Janosch Frank <frankja@linux.ibm.com>
-Subject: [PATCH v4 2/3] target/s390x: Introduce function when exiting PV
-Date: Thu, 17 Apr 2025 14:37:55 +0200
-Message-ID: <20250417123756.729132-3-ggala@linux.ibm.com>
+Subject: [PATCH v4 3/3] target/s390x: Return UVC cmd code,
+ RC and RRC value when DIAG 308 Subcode 10 fails to enter secure mode
+Date: Thu, 17 Apr 2025 14:37:56 +0200
+Message-ID: <20250417123756.729132-4-ggala@linux.ibm.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417123756.729132-1-ggala@linux.ibm.com>
 References: <20250417123756.729132-1-ggala@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=ANnAolku c=1 sm=1 tr=0 ts=6800f62b cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=wThvhrd033kK1bniQ4UA:9
-X-Proofpoint-GUID: s3wWMjOORkPRLGqItgnDxcBhi1pR2K7M
-X-Proofpoint-ORIG-GUID: s3wWMjOORkPRLGqItgnDxcBhi1pR2K7M
+X-Authority-Analysis: v=2.4 cv=Hvd2G1TS c=1 sm=1 tr=0 ts=6800f62d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=LV91gym9Rfd1-J3rwfEA:9
+X-Proofpoint-ORIG-GUID: NToluF6SQ_v9T3cs2sNP7QKdFOZ9mdKL
+X-Proofpoint-GUID: NToluF6SQ_v9T3cs2sNP7QKdFOZ9mdKL
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-17_03,2025-04-17_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=791 adultscore=0 spamscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 phishscore=0 clxscore=1015 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 classifier=spam authscore=0 adjust=0
+ adultscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
+ malwarescore=0 bulkscore=0 clxscore=1015 impostorscore=0 mlxscore=0
+ phishscore=0 priorityscore=1501 classifier=spam authscore=0 adjust=0
  reason=mlx scancount=1 engine=8.19.0-2502280000
  definitions=main-2504170094
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=ggala@linux.ibm.com;
@@ -109,41 +110,326 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace an existing macro (s390_pv_cmd_exit) that looks like
-a function with an actual function. The function will be used
-when exiting PV instead of the macro.
+Extend DIAG308 subcode 10 to return the UVC RC, RRC and command code
+in bit positions 32-47, 16-31, and 0-15 of register R1 + 1 if the
+function does not complete successfully (in addition to the
+previously returned diag response code in bit position 47-63).
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
 Signed-off-by: Gautam Gala <ggala@linux.ibm.com>
 ---
- target/s390x/kvm/pv.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ hw/s390x/ipl.c             | 11 +++++----
+ hw/s390x/ipl.h             |  6 +++--
+ hw/s390x/s390-virtio-ccw.c | 14 ++++++-----
+ target/s390x/kvm/pv.c      | 49 ++++++++++++++++++++++++++------------
+ target/s390x/kvm/pv.h      | 26 ++++++++++++++------
+ 5 files changed, 71 insertions(+), 35 deletions(-)
 
-diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
-index 3a0a971f0b..66194caaae 100644
---- a/target/s390x/kvm/pv.c
-+++ b/target/s390x/kvm/pv.c
-@@ -59,14 +59,12 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
-  */
- #define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data, NULL)
- #define s390_pv_cmd_pvrc(cmd, data, pvrc) __s390_pv_cmd(cmd, #cmd, data, pvrc)
--#define s390_pv_cmd_exit(cmd, data)    \
--{                                      \
--    int rc;                            \
--                                       \
--    rc = __s390_pv_cmd(cmd, #cmd, data, NULL); \
--    if (rc) {                          \
--        exit(1);                       \
--    }                                  \
-+
-+static void s390_pv_cmd_exit(uint32_t cmd, void *data)
-+{
-+    if (s390_pv_cmd(cmd, data)) {
-+        exit(1);
-+    }
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index ce6f6078d7..7829a39483 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -26,7 +26,6 @@
+ #include "hw/s390x/vfio-ccw.h"
+ #include "hw/s390x/css.h"
+ #include "hw/s390x/ebcdic.h"
+-#include "target/s390x/kvm/pv.h"
+ #include "hw/scsi/scsi.h"
+ #include "hw/virtio/virtio-net.h"
+ #include "ipl.h"
+@@ -676,7 +675,7 @@ static void s390_ipl_prepare_qipl(S390CPU *cpu)
+     cpu_physical_memory_unmap(addr, len, 1, len);
  }
  
- int s390_pv_query_info(void)
+-int s390_ipl_prepare_pv_header(Error **errp)
++int s390_ipl_prepare_pv_header(struct S390PVResponse *pv_resp, Error **errp)
+ {
+     IplParameterBlock *ipib = s390_ipl_get_iplb_pv();
+     IPLBlockPV *ipib_pv = &ipib->pv;
+@@ -685,12 +684,13 @@ int s390_ipl_prepare_pv_header(Error **errp)
+ 
+     cpu_physical_memory_read(ipib_pv->pv_header_addr, hdr,
+                              ipib_pv->pv_header_len);
+-    rc = s390_pv_set_sec_parms((uintptr_t)hdr, ipib_pv->pv_header_len, errp);
++    rc = s390_pv_set_sec_parms((uintptr_t)hdr, ipib_pv->pv_header_len,
++                               pv_resp, errp);
+     g_free(hdr);
+     return rc;
+ }
+ 
+-int s390_ipl_pv_unpack(void)
++int s390_ipl_pv_unpack(struct S390PVResponse *pv_resp)
+ {
+     IplParameterBlock *ipib = s390_ipl_get_iplb_pv();
+     IPLBlockPV *ipib_pv = &ipib->pv;
+@@ -699,7 +699,8 @@ int s390_ipl_pv_unpack(void)
+     for (i = 0; i < ipib_pv->num_comp; i++) {
+         rc = s390_pv_unpack(ipib_pv->components[i].addr,
+                             TARGET_PAGE_ALIGN(ipib_pv->components[i].size),
+-                            ipib_pv->components[i].tweak_pref);
++                            ipib_pv->components[i].tweak_pref,
++                            pv_resp);
+         if (rc) {
+             break;
+         }
+diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
+index 8e3882d506..e108aca369 100644
+--- a/hw/s390x/ipl.h
++++ b/hw/s390x/ipl.h
+@@ -18,6 +18,7 @@
+ #include "hw/qdev-core.h"
+ #include "hw/s390x/ipl/qipl.h"
+ #include "qom/object.h"
++#include "target/s390x/kvm/pv.h"
+ 
+ #define DIAG308_FLAGS_LP_VALID 0x80
+ #define MAX_BOOT_DEVS 8 /* Max number of devices that may have a bootindex */
+@@ -26,8 +27,9 @@ void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp);
+ void s390_ipl_fmt_loadparm(uint8_t *loadparm, char *str, Error **errp);
+ void s390_rebuild_iplb(uint16_t index, IplParameterBlock *iplb);
+ void s390_ipl_update_diag308(IplParameterBlock *iplb);
+-int s390_ipl_prepare_pv_header(Error **errp);
+-int s390_ipl_pv_unpack(void);
++int s390_ipl_prepare_pv_header(struct S390PVResponse *pv_resp,
++                               Error **errp);
++int s390_ipl_pv_unpack(struct S390PVResponse *pv_resp);
+ void s390_ipl_prepare_cpu(S390CPU *cpu);
+ IplParameterBlock *s390_ipl_get_iplb(void);
+ IplParameterBlock *s390_ipl_get_iplb_pv(void);
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index d9e683c5b4..942ebde94a 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -364,7 +364,8 @@ static void s390_machine_unprotect(S390CcwMachineState *ms)
+     ram_block_discard_disable(false);
+ }
+ 
+-static int s390_machine_protect(S390CcwMachineState *ms)
++static int s390_machine_protect(S390CcwMachineState *ms,
++                                struct S390PVResponse *pv_resp)
+ {
+     Error *local_err = NULL;
+     int rc;
+@@ -407,19 +408,19 @@ static int s390_machine_protect(S390CcwMachineState *ms)
+     }
+ 
+     /* Set SE header and unpack */
+-    rc = s390_ipl_prepare_pv_header(&local_err);
++    rc = s390_ipl_prepare_pv_header(pv_resp, &local_err);
+     if (rc) {
+         goto out_err;
+     }
+ 
+     /* Decrypt image */
+-    rc = s390_ipl_pv_unpack();
++    rc = s390_ipl_pv_unpack(pv_resp);
+     if (rc) {
+         goto out_err;
+     }
+ 
+     /* Verify integrity */
+-    rc = s390_pv_verify();
++    rc = s390_pv_verify(pv_resp);
+     if (rc) {
+         goto out_err;
+     }
+@@ -451,6 +452,7 @@ static void s390_pv_prepare_reset(S390CcwMachineState *ms)
+ static void s390_machine_reset(MachineState *machine, ResetType type)
+ {
+     S390CcwMachineState *ms = S390_CCW_MACHINE(machine);
++    struct S390PVResponse pv_resp;
+     enum s390_reset reset_type;
+     CPUState *cs, *t;
+     S390CPU *cpu;
+@@ -539,8 +541,8 @@ static void s390_machine_reset(MachineState *machine, ResetType type)
+         }
+         run_on_cpu(cs, s390_do_cpu_reset, RUN_ON_CPU_NULL);
+ 
+-        if (s390_machine_protect(ms)) {
+-            s390_pv_inject_reset_error(cs);
++        if (s390_machine_protect(ms, &pv_resp)) {
++            s390_pv_inject_reset_error(cs, pv_resp);
+             /*
+              * Continue after the diag308 so the guest knows something
+              * went wrong.
+diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
+index 66194caaae..ccecfe28a3 100644
+--- a/target/s390x/kvm/pv.c
++++ b/target/s390x/kvm/pv.c
+@@ -30,7 +30,7 @@ static struct kvm_s390_pv_info_vm info_vm;
+ static struct kvm_s390_pv_info_dump info_dump;
+ 
+ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
+-                         int *pvrc)
++                         struct S390PVResponse *pv_resp)
+ {
+     struct kvm_pv_cmd pv_cmd = {
+         .cmd = cmd,
+@@ -47,8 +47,10 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
+                      "IOCTL rc: %d", cmd, cmdname, pv_cmd.rc, pv_cmd.rrc,
+                      rc);
+     }
+-    if (pvrc) {
+-        *pvrc = pv_cmd.rc;
++    if (pv_resp) {
++        pv_resp->cmd = cmd;
++        pv_resp->rc = pv_cmd.rc;
++        pv_resp->rrc = pv_cmd.rrc;
+     }
+     return rc;
+ }
+@@ -57,8 +59,9 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
+  * This macro lets us pass the command as a string to the function so
+  * we can print it on an error.
+  */
+-#define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data, NULL)
+-#define s390_pv_cmd_pvrc(cmd, data, pvrc) __s390_pv_cmd(cmd, #cmd, data, pvrc)
++#define s390_pv_cmd(cmd, data)  __s390_pv_cmd(cmd, #cmd, data, NULL)
++#define s390_pv_cmd_pv_resp(cmd, data, pv_resp) \
++                                __s390_pv_cmd(cmd, #cmd, data, pv_resp)
+ 
+ static void s390_pv_cmd_exit(uint32_t cmd, void *data)
+ {
+@@ -146,18 +149,19 @@ bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms)
+ }
+ 
+ #define DIAG_308_UV_RC_INVAL_HOSTKEY    0x0108
+-int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp)
++int s390_pv_set_sec_parms(uint64_t origin, uint64_t length,
++                          struct S390PVResponse *pv_resp, Error **errp)
+ {
+-    int ret, pvrc;
++    int ret;
+     struct kvm_s390_pv_sec_parm args = {
+         .origin = origin,
+         .length = length,
+     };
+ 
+-    ret = s390_pv_cmd_pvrc(KVM_PV_SET_SEC_PARMS, &args, &pvrc);
++    ret = s390_pv_cmd_pv_resp(KVM_PV_SET_SEC_PARMS, &args, pv_resp);
+     if (ret) {
+         error_setg(errp, "Failed to set secure execution parameters");
+-        if (pvrc == DIAG_308_UV_RC_INVAL_HOSTKEY) {
++        if (pv_resp->rc == DIAG_308_UV_RC_INVAL_HOSTKEY) {
+             error_append_hint(errp, "Please check whether the image is "
+                                     "correctly encrypted for this host\n");
+         }
+@@ -169,7 +173,8 @@ int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp)
+ /*
+  * Called for each component in the SE type IPL parameter block 0.
+  */
+-int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak)
++int s390_pv_unpack(uint64_t addr, uint64_t size,
++                   uint64_t tweak, struct S390PVResponse *pv_resp)
+ {
+     struct kvm_s390_pv_unp args = {
+         .addr = addr,
+@@ -177,7 +182,7 @@ int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak)
+         .tweak = tweak,
+     };
+ 
+-    return s390_pv_cmd(KVM_PV_UNPACK, &args);
++    return s390_pv_cmd_pv_resp(KVM_PV_UNPACK, &args, pv_resp);
+ }
+ 
+ void s390_pv_prep_reset(void)
+@@ -185,9 +190,9 @@ void s390_pv_prep_reset(void)
+     s390_pv_cmd_exit(KVM_PV_PREP_RESET, NULL);
+ }
+ 
+-int s390_pv_verify(void)
++int s390_pv_verify(struct S390PVResponse *pv_resp)
+ {
+-    return s390_pv_cmd(KVM_PV_VERIFY, NULL);
++    return s390_pv_cmd_pv_resp(KVM_PV_VERIFY, NULL, pv_resp);
+ }
+ 
+ void s390_pv_unshare(void)
+@@ -195,13 +200,27 @@ void s390_pv_unshare(void)
+     s390_pv_cmd_exit(KVM_PV_UNSHARE_ALL, NULL);
+ }
+ 
+-void s390_pv_inject_reset_error(CPUState *cs)
++void s390_pv_inject_reset_error(CPUState *cs,
++                                struct S390PVResponse pv_resp)
+ {
+     int r1 = (cs->kvm_run->s390_sieic.ipa & 0x00f0) >> 4;
+     CPUS390XState *env = &S390_CPU(cs)->env;
+ 
++    union {
++        struct {
++            uint16_t pv_cmd;
++            uint16_t pv_rrc;
++            uint16_t pv_rc;
++            uint16_t diag_rc;
++        };
++        uint64_t regs;
++    } resp = {.pv_cmd = pv_resp.cmd,
++              .pv_rrc = pv_resp.rrc,
++              .pv_rc = pv_resp.rc,
++              .diag_rc = DIAG_308_RC_INVAL_FOR_PV};
++
+     /* Report that we are unable to enter protected mode */
+-    env->regs[r1 + 1] = DIAG_308_RC_INVAL_FOR_PV;
++    env->regs[r1 + 1] = resp.regs;
+ }
+ 
+ uint64_t kvm_s390_pv_dmp_get_size_cpu(void)
+diff --git a/target/s390x/kvm/pv.h b/target/s390x/kvm/pv.h
+index 5e9c8bd351..94e885e933 100644
+--- a/target/s390x/kvm/pv.h
++++ b/target/s390x/kvm/pv.h
+@@ -16,6 +16,12 @@
+ #include "system/kvm.h"
+ #include "hw/s390x/s390-virtio-ccw.h"
+ 
++struct S390PVResponse {
++    uint16_t cmd;
++    uint16_t rrc;
++    uint16_t rc;
++};
++
+ #ifdef CONFIG_KVM
+ #include "cpu.h"
+ 
+@@ -42,12 +48,15 @@ int s390_pv_query_info(void);
+ int s390_pv_vm_enable(void);
+ void s390_pv_vm_disable(void);
+ bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms);
+-int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp);
+-int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak);
++int s390_pv_set_sec_parms(uint64_t origin, uint64_t length,
++                          struct S390PVResponse *pv_resp, Error **errp);
++int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak,
++                   struct S390PVResponse *pv_resp);
+ void s390_pv_prep_reset(void);
+-int s390_pv_verify(void);
++int s390_pv_verify(struct S390PVResponse *pv_resp);
+ void s390_pv_unshare(void);
+-void s390_pv_inject_reset_error(CPUState *cs);
++void s390_pv_inject_reset_error(CPUState *cs,
++                                struct S390PVResponse pv_resp);
+ uint64_t kvm_s390_pv_dmp_get_size_cpu(void);
+ uint64_t kvm_s390_pv_dmp_get_size_mem_state(void);
+ uint64_t kvm_s390_pv_dmp_get_size_completion_data(void);
+@@ -63,12 +72,15 @@ static inline int s390_pv_vm_enable(void) { return 0; }
+ static inline void s390_pv_vm_disable(void) {}
+ static inline bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms) { return false; }
+ static inline int s390_pv_set_sec_parms(uint64_t origin, uint64_t length,
++                                        struct S390PVResponse *pv_resp,
+                                         Error **errp) { return 0; }
+-static inline int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak) { return 0; }
++static inline int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak,
++                                 struct S390PVResponse *pv_resp) { return 0; }
+ static inline void s390_pv_prep_reset(void) {}
+-static inline int s390_pv_verify(void) { return 0; }
++static inline int s390_pv_verify(struct S390PVResponse *pv_resp) { return 0; }
+ static inline void s390_pv_unshare(void) {}
+-static inline void s390_pv_inject_reset_error(CPUState *cs) {};
++static inline void s390_pv_inject_reset_error(CPUState *cs,
++                                              struct S390PVResponse pv_resp) {};
+ static inline uint64_t kvm_s390_pv_dmp_get_size_cpu(void) { return 0; }
+ static inline uint64_t kvm_s390_pv_dmp_get_size_mem_state(void) { return 0; }
+ static inline uint64_t kvm_s390_pv_dmp_get_size_completion_data(void) { return 0; }
 -- 
 2.49.0
 
