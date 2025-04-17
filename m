@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BA0A92327
+	by mail.lfdr.de (Postfix) with ESMTPS id 0281EA92326
 	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 18:55:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5SVh-0008Oc-Ua; Thu, 17 Apr 2025 12:54:45 -0400
+	id 1u5SVk-0008PR-MP; Thu, 17 Apr 2025 12:54:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5SVc-0008Nu-RB
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:54:42 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5SVi-0008Oy-Fr
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:54:46 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5SVb-0003dC-3B
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:54:40 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43d0359b1fcso7578345e9.0
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 09:54:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5SVg-0003e0-HF
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:54:46 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43ede096d73so7692385e9.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 09:54:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744908877; x=1745513677; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744908882; x=1745513682; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Wez4umbocj85ws3VgRVP4buafat+cNbKBCFumho8H2w=;
- b=JLyjSvIUzOCFqVCpN8Cu/Id2DFhkXqjF7Z9uXwKZEnDplzMDChjD4cHf5/4TMeeL+B
- JuHpC9TOymNkwr9w3uUKJPbgP7di70g0tlNqwPFywaDDiAybkurLhM97/BFKKjGuKvV6
- ue6w1acRnuK7EpnCSZT0gR1XIIrgcSf0yqcjEV1OXbZ2SVbivFb4vfnAL/UYLBJa29l+
- QPs11tD+S6qTnfBo7Mk9sc3l+s83Lzf281uwrMxucuYcujTQ0fqTuBLUxXrGAc6fS0R2
- L8Mc0yOiYhTQ/6FPScjcw58VtPLdOSa9JOCIEAz2kismFspGHj5Kt2jFsH9osE0YB4J/
- ktoQ==
+ bh=CCtxW/YXYxc5X52XHJaBnnxo+Dcm7u6ycMuvffFjq6Q=;
+ b=QmvNRD/N+JpL/dH6fDdu00QPtmpcJnEE8cVPYHoNxV0nk9HDqdYPzEOpaMDxdtRi37
+ w36nalcq2zt16dh2boTPFaqwi9W5zpBW0ZVw2ift9CRpj/PzMXtJarCSOv/y31vrYeL0
+ CuRysbHss2l7I2uLsQHCrbsvVXoUwbAOE9zOReVoyT94BliDFKT1GN+yfhQeymAv2rBH
+ yCMsFosXjZcxweyzv5BkoxQ2LDoEaLBo8HVqafOsltL7UXKNGUzyo+gSF29WO49QTnyY
+ QjEutopQ2g1mewBel/wUh8SEoebfIr/c/MwQ2bwO2oVWUtbsrqbWKxIClbbQ+wLGgx3T
+ xMVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744908877; x=1745513677;
+ d=1e100.net; s=20230601; t=1744908882; x=1745513682;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Wez4umbocj85ws3VgRVP4buafat+cNbKBCFumho8H2w=;
- b=BOKhhxDC2UbtZBCzE379thgHs0qKS0OJKb852vikdtIoM1hV/cBjoT30gKlXXf34O4
- F3ei4WmFqGoeqpaa9CziY6m6qsXTCgvEVzsOaR2PTuK9wR3sYN9oYHFO56Nd8Q+ynnox
- 9bRIpnDdV1aAvf8n6cQya4JoKmzNffN3JK7Y+OWIWcPnr5TZ2inu9T7cH+qw4cQEs5dQ
- sdtKEZ6kFYgu4et9UbfbmZKuAIf+J0QULqFYsNlLDzi8OlBRPxwTGc7eXbt42oOW+FjP
- 9EXL1mECyt8jPFaV0ARo0xJIjRSO9JoY+FFNwIpPfoRUZdFE94Nqj3mq+spYuqz8LlpL
- qfbQ==
-X-Gm-Message-State: AOJu0YwhX7P+LArSysmIFRuh8wTFi6/ZoegqcVFXg/avKRNi5UBQpK4W
- srlFpybziJx23I8zciQzyy0GAp1gAfL0n+HO5w1YDYOC+EB9Wn0HOpSXsbnd3TTTM2zAA/Tz6hb
- z
-X-Gm-Gg: ASbGncvV0H9FHSKZgps9voEPis/aeT7S72UMEqkuNx5Yufa3x0+9LQdLpx0QF28Mppn
- M/+c68wCCf2Z8Xy7U9NF7+4iBPv0JErGFfDK0N2CuTlDu1qwcPRIKoQReIX2CCHAiJaAS9/YRoK
- ER1OUp52TjWkG6lQ8322ATgR+lNG5PqEeFnES0dzdxrcMRZXo0aHo3vjLqWY0fnUb0QEm7EauKw
- swKGMH2cuYwyf33U5uFu4QgdBNH3x9OXDG9BdbXA2S3/UXAsNocjTLxn2Q78LkT1qpuIeHB5ETw
- cIpIxzCCqLwNzA/IPUo6f8Oqgqq3iQ4Jw+tLSvPJAIYOQw/VAqiIDDF+msbigku7v38V7uCCxO2
- S13NpzmG4x65/owE=
-X-Google-Smtp-Source: AGHT+IEqfu+0sWJDtPcXapmXKZXf2qJ5RoCTeoiTMfIjxq9bwB3mGv6bTsPStpPbdPpNoNVZG1jPOA==
-X-Received: by 2002:a05:600c:4f90:b0:439:5f04:4f8d with SMTP id
- 5b1f17b1804b1-44069971915mr4254335e9.12.1744908877252; 
- Thu, 17 Apr 2025 09:54:37 -0700 (PDT)
+ bh=CCtxW/YXYxc5X52XHJaBnnxo+Dcm7u6ycMuvffFjq6Q=;
+ b=EabJOEhVblsccmRFwuI8fCtPFbCKL0G+LajNH2cZiYlRt2Q7CNiGXXM+atalUeyU5B
+ wgT6OeU0/NXJJ6RqTTvEYYxwiAH+CUo3qvzqR8VQ663G9saElVrubW1LMwklFM2dG0Vs
+ Nu0w4knVSw46Ql0TuZJW+hcxSnUH+oHI3w/01uo0jjZNaSIIb4ymkrJTJlZuJK6Ho1Fm
+ 9mV9aANEJvhhI+JWRkSNEOWwvxE6F5A51iWA3XPMyXjaqKR65fILx0bJlAz0yIEKNJFi
+ C9jy89BDECZIwmzdSyJiXAFiLKGDQWX4QciCUkDAHIDUW1TARKcXXbKSFX02J7g5WEAV
+ lGgg==
+X-Gm-Message-State: AOJu0YyibvMwj+F64wS35KxlAdtYGNjwzsEeMvjO1ZOHwCq080UugOrD
+ HRASYAdSdNjCWGXHYEtKtp5SnGHnfhewVWo0DGsLGreO7507ggR7h2c/qzSnlyRKolgCUDXJYL5
+ p
+X-Gm-Gg: ASbGnctRAWwMMQa2/CoFoWNbUL+N7czAm13kpZIyZMhK26lQRMlOybhW1sobzttrAYk
+ cadY3m/yUNHNGrFg0OJ/j/wKF1su8603Zd2niKXuYwFcyVhtav31UkahgBmss74Bjv9nHPO8h4D
+ CddAOsIMca4A+X6r43i031bASaR1S4HiER6t8IPx1f11bZ7GeqDgLVlf7nKhiuto+RCHRfpN3E3
+ BHjDs6Y7BN9oMA9I32iH3+Xsj4X3sXM/SxmwUGm7VRzcsrszFX3BsHTcv3gLjnea0UnIb4vzTZg
+ QcbX/TolmbS9jrfIHge52uLgarGu4STO1pY2hJvHeo2FJm7HUd/7M8VIXqMKRMP9J0N2QABxAPB
+ IvhbNNHZqh/2BCF+BwzCgdH3JkQ==
+X-Google-Smtp-Source: AGHT+IE4UBhPopG4WQc59aqnLzyCa1drhRnj9u1vZ2FUwj8PimAVToHbLRkLqhsfmKv+8/4bzoFVew==
+X-Received: by 2002:a05:600c:450d:b0:43d:82c:2b11 with SMTP id
+ 5b1f17b1804b1-4405d69b537mr51236785e9.23.1744908882053; 
+ Thu, 17 Apr 2025 09:54:42 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4405b4f3df8sm61241055e9.24.2025.04.17.09.54.36
+ ffacd0b85a97d-39efa4931e7sm119904f8f.67.2025.04.17.09.54.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 17 Apr 2025 09:54:36 -0700 (PDT)
+ Thu, 17 Apr 2025 09:54:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
@@ -72,17 +72,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 1/7] qemu: Introduce target_cpu_type()
-Date: Thu, 17 Apr 2025 18:54:24 +0200
-Message-ID: <20250417165430.58213-2-philmd@linaro.org>
+Subject: [PATCH 2/7] cpus: Replace CPU_RESOLVING_TYPE -> target_cpu_type()
+Date: Thu, 17 Apr 2025 18:54:25 +0200
+Message-ID: <20250417165430.58213-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250417165430.58213-1-philmd@linaro.org>
 References: <20250417165430.58213-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,101 +105,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce the target_cpu_type() helper to access the
-CPU_RESOLVING_TYPE target-specific definition from
-target-agnostic code.
+Replace the target-specific CPU_RESOLVING_TYPE definition
+by a call to the target-agnostic target_cpu_type() runtime
+helper.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Since the big "cpu.h" is not required anymore in tcg-all.c,
+remove it, using the tinier "cpu-param.h" header.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- MAINTAINERS                |  2 ++
- meson.build                |  2 ++
- include/qemu/target_info.h | 19 +++++++++++++++++++
- target_info-defs.c         | 16 ++++++++++++++++
- 4 files changed, 39 insertions(+)
- create mode 100644 include/qemu/target_info.h
- create mode 100644 target_info-defs.c
+ accel/accel-target.c | 6 ++++--
+ accel/tcg/tcg-all.c  | 5 +++--
+ cpu-target.c         | 7 ++++---
+ 3 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c7083ab1d93..07ca088f7e8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -495,6 +495,7 @@ F: include/exec/cpu*.h
- F: include/exec/exec-all.h
- F: include/exec/target_long.h
- F: include/qemu/accel.h
-+F: include/qemu/target_info.h
- F: include/system/accel-*.h
- F: include/system/cpus.h
- F: include/accel/accel-cpu-target.h
-@@ -503,6 +504,7 @@ F: accel/Makefile.objs
- F: accel/stubs/Makefile.objs
- F: cpu-common.c
- F: cpu-target.c
-+F: target_info-defs.c
- F: system/cpus.c
+diff --git a/accel/accel-target.c b/accel/accel-target.c
+index 33a539b4cbb..9e9e70be876 100644
+--- a/accel/accel-target.c
++++ b/accel/accel-target.c
+@@ -25,6 +25,7 @@
  
- Apple Silicon HVF CPUs
-diff --git a/meson.build b/meson.build
-index bcb9d39a387..ad324d46428 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3807,6 +3807,8 @@ endif
- common_ss.add(pagevary)
- specific_ss.add(files('page-target.c', 'page-vary-target.c'))
- 
-+specific_ss.add(files('target_info-defs.c'))
-+
- subdir('backends')
- subdir('disas')
- subdir('migration')
-diff --git a/include/qemu/target_info.h b/include/qemu/target_info.h
-new file mode 100644
-index 00000000000..a53e632e735
---- /dev/null
-+++ b/include/qemu/target_info.h
-@@ -0,0 +1,19 @@
-+/*
-+ * QEMU binary/target helpers
-+ *
-+ *  Copyright (c) Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef QEMU_TARGET_INFO_H
-+#define QEMU_TARGET_INFO_H
-+
-+/**
-+ * target_cpu_type:
-+ *
-+ * Returns: target CPU base QOM type name (i.e. TYPE_X86_CPU).
-+ */
-+const char *target_cpu_type(void);
-+
-+#endif
-diff --git a/target_info-defs.c b/target_info-defs.c
-new file mode 100644
-index 00000000000..3ee89469855
---- /dev/null
-+++ b/target_info-defs.c
-@@ -0,0 +1,16 @@
-+/*
-+ * QEMU binary/target helpers (target specific)
-+ *
-+ *  Copyright (c) Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
+ #include "qemu/osdep.h"
+ #include "qemu/accel.h"
 +#include "qemu/target_info.h"
-+#include "cpu.h"
-+
-+const char *target_cpu_type(void)
-+{
-+    return CPU_RESOLVING_TYPE;
-+}
+ 
+ #include "cpu.h"
+ #include "accel/accel-cpu-target.h"
+@@ -88,17 +89,18 @@ static void accel_init_cpu_interfaces(AccelClass *ac)
+     const char *ac_name; /* AccelClass name */
+     char *acc_name;      /* AccelCPUClass name */
+     ObjectClass *acc;    /* AccelCPUClass */
++    const char *cpu_resolving_type = target_cpu_type();
+ 
+     ac_name = object_class_get_name(OBJECT_CLASS(ac));
+     g_assert(ac_name != NULL);
+ 
+-    acc_name = g_strdup_printf("%s-%s", ac_name, CPU_RESOLVING_TYPE);
++    acc_name = g_strdup_printf("%s-%s", ac_name, cpu_resolving_type);
+     acc = object_class_by_name(acc_name);
+     g_free(acc_name);
+ 
+     if (acc) {
+         object_class_foreach(accel_init_cpu_int_aux,
+-                             CPU_RESOLVING_TYPE, false, acc);
++                             cpu_resolving_type, false, acc);
+     }
+ }
+ 
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index b0d4e3e1362..25df7db5026 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -35,6 +35,7 @@
+ #include "qapi/qapi-types-common.h"
+ #include "qapi/qapi-builtin-visit.h"
+ #include "qemu/units.h"
++#include "qemu/target_info.h"
+ #if defined(CONFIG_USER_ONLY)
+ #include "hw/qdev-core.h"
+ #else
+@@ -43,7 +44,7 @@
+ #endif
+ #include "accel/tcg/cpu-ops.h"
+ #include "internal-common.h"
+-#include "cpu.h"
++#include "cpu-param.h"
+ 
+ 
+ struct TCGState {
+@@ -89,7 +90,7 @@ static int tcg_init_machine(MachineState *ms)
+     unsigned max_threads = 1;
+ 
+ #ifndef CONFIG_USER_ONLY
+-    CPUClass *cc = CPU_CLASS(object_class_by_name(CPU_RESOLVING_TYPE));
++    CPUClass *cc = CPU_CLASS(object_class_by_name(target_cpu_type()));
+     bool mttcg_supported = cc->tcg_ops->mttcg_supported;
+ 
+     switch (s->mttcg_enabled) {
+diff --git a/cpu-target.c b/cpu-target.c
+index c99d208a7c4..1779bb5337d 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -22,6 +22,7 @@
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "qemu/qemu-print.h"
++#include "qemu/target_info.h"
+ #include "system/accel-ops.h"
+ #include "system/cpus.h"
+ #include "exec/cpu-common.h"
+@@ -37,7 +38,7 @@ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
+ 
+ char *cpu_model_from_type(const char *typename)
+ {
+-    const char *suffix = "-" CPU_RESOLVING_TYPE;
++    g_autofree char *suffix = g_strdup_printf("-%s", target_cpu_type());
+ 
+     if (!object_class_by_name(typename)) {
+         return NULL;
+@@ -63,7 +64,7 @@ const char *parse_cpu_option(const char *cpu_option)
+         exit(1);
+     }
+ 
+-    oc = cpu_class_by_name(CPU_RESOLVING_TYPE, model_pieces[0]);
++    oc = cpu_class_by_name(target_cpu_type(), model_pieces[0]);
+     if (oc == NULL) {
+         error_report("unable to find CPU model '%s'", model_pieces[0]);
+         g_strfreev(model_pieces);
+@@ -92,7 +93,7 @@ static void cpu_list_entry(gpointer data, gpointer user_data)
+ 
+ void list_cpus(void)
+ {
+-    CPUClass *cc = CPU_CLASS(object_class_by_name(CPU_RESOLVING_TYPE));
++    CPUClass *cc = CPU_CLASS(object_class_by_name(target_cpu_type()));
+ 
+     if (cc->list_cpus) {
+         cc->list_cpus();
 -- 
 2.47.1
 
