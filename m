@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0281EA92326
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 18:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F035BA92330
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 18:56:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5SVk-0008PR-MP; Thu, 17 Apr 2025 12:54:48 -0400
+	id 1u5SVp-0008Q8-Dk; Thu, 17 Apr 2025 12:54:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5SVi-0008Oy-Fr
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:54:46 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5SVm-0008Pq-Pp
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:54:50 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5SVg-0003e0-HF
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:54:46 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43ede096d73so7692385e9.2
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 09:54:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5SVk-0003ea-Nf
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:54:50 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43cfa7e7f54so7523865e9.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 09:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744908882; x=1745513682; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744908887; x=1745513687; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CCtxW/YXYxc5X52XHJaBnnxo+Dcm7u6ycMuvffFjq6Q=;
- b=QmvNRD/N+JpL/dH6fDdu00QPtmpcJnEE8cVPYHoNxV0nk9HDqdYPzEOpaMDxdtRi37
- w36nalcq2zt16dh2boTPFaqwi9W5zpBW0ZVw2ift9CRpj/PzMXtJarCSOv/y31vrYeL0
- CuRysbHss2l7I2uLsQHCrbsvVXoUwbAOE9zOReVoyT94BliDFKT1GN+yfhQeymAv2rBH
- yCMsFosXjZcxweyzv5BkoxQ2LDoEaLBo8HVqafOsltL7UXKNGUzyo+gSF29WO49QTnyY
- QjEutopQ2g1mewBel/wUh8SEoebfIr/c/MwQ2bwO2oVWUtbsrqbWKxIClbbQ+wLGgx3T
- xMVQ==
+ bh=/gV7lZ9LvpVHHnLSxUzbfdoyaXXwA7dhZN1N6bxGXYI=;
+ b=gSgxSsRgo9UUji3B+hUL/4Q6ogRmW5YHsL0PuRjFvRfbQo7eAhYHeUzHiTkWlzBrpS
+ ZYEt1XUODu8her62Bzf95XYMpD0dP7LSLKNaDIuhLOMi6nZxrTbHqBP8Hy9ZrPl736Of
+ 1JQf0lFE6FIGnQUOAIBBAiunHHKTaoghA7qoO110M6JCYj4ZtROEE3ZuqX1q5UmAu4yc
+ KVY8lBv0jX4mM0+2SarF1iSr2a92EoWJJSqbycFqrHRdDpswHXDFWSVkJxrzRzKyyiJR
+ 4HmZwl4pf2umL9i7z3XQfPnRY1d8LQlQ9nSFgOc2zVYuFOh4eYKxPTvcg+FIAoBPCwOi
+ aidQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744908882; x=1745513682;
+ d=1e100.net; s=20230601; t=1744908887; x=1745513687;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CCtxW/YXYxc5X52XHJaBnnxo+Dcm7u6ycMuvffFjq6Q=;
- b=EabJOEhVblsccmRFwuI8fCtPFbCKL0G+LajNH2cZiYlRt2Q7CNiGXXM+atalUeyU5B
- wgT6OeU0/NXJJ6RqTTvEYYxwiAH+CUo3qvzqR8VQ663G9saElVrubW1LMwklFM2dG0Vs
- Nu0w4knVSw46Ql0TuZJW+hcxSnUH+oHI3w/01uo0jjZNaSIIb4ymkrJTJlZuJK6Ho1Fm
- 9mV9aANEJvhhI+JWRkSNEOWwvxE6F5A51iWA3XPMyXjaqKR65fILx0bJlAz0yIEKNJFi
- C9jy89BDECZIwmzdSyJiXAFiLKGDQWX4QciCUkDAHIDUW1TARKcXXbKSFX02J7g5WEAV
- lGgg==
-X-Gm-Message-State: AOJu0YyibvMwj+F64wS35KxlAdtYGNjwzsEeMvjO1ZOHwCq080UugOrD
- HRASYAdSdNjCWGXHYEtKtp5SnGHnfhewVWo0DGsLGreO7507ggR7h2c/qzSnlyRKolgCUDXJYL5
- p
-X-Gm-Gg: ASbGnctRAWwMMQa2/CoFoWNbUL+N7czAm13kpZIyZMhK26lQRMlOybhW1sobzttrAYk
- cadY3m/yUNHNGrFg0OJ/j/wKF1su8603Zd2niKXuYwFcyVhtav31UkahgBmss74Bjv9nHPO8h4D
- CddAOsIMca4A+X6r43i031bASaR1S4HiER6t8IPx1f11bZ7GeqDgLVlf7nKhiuto+RCHRfpN3E3
- BHjDs6Y7BN9oMA9I32iH3+Xsj4X3sXM/SxmwUGm7VRzcsrszFX3BsHTcv3gLjnea0UnIb4vzTZg
- QcbX/TolmbS9jrfIHge52uLgarGu4STO1pY2hJvHeo2FJm7HUd/7M8VIXqMKRMP9J0N2QABxAPB
- IvhbNNHZqh/2BCF+BwzCgdH3JkQ==
-X-Google-Smtp-Source: AGHT+IE4UBhPopG4WQc59aqnLzyCa1drhRnj9u1vZ2FUwj8PimAVToHbLRkLqhsfmKv+8/4bzoFVew==
-X-Received: by 2002:a05:600c:450d:b0:43d:82c:2b11 with SMTP id
- 5b1f17b1804b1-4405d69b537mr51236785e9.23.1744908882053; 
- Thu, 17 Apr 2025 09:54:42 -0700 (PDT)
+ bh=/gV7lZ9LvpVHHnLSxUzbfdoyaXXwA7dhZN1N6bxGXYI=;
+ b=Hrfrt4fcvt1HsBZkaEtT2DHgsUhDmPz+hxHWEq7d9r2WLQVZEE3OOAK0TVGlOJlyys
+ ahVtGfAIMxs6zf/tp6g9Pqd/BN/TbeYimNurnkE1XNEPFEQhYqc5HDWKkcL42LSPmr8o
+ RaXBtiAVCsNdTcQTazBRUutWHTezW9jWV+4iotoMQtZMIyg8Sis34zU3HJS8b2U0Rx9k
+ /wARRy9v1+3ovE9tyyimeZpngYcW19SNrqaV8bSyACJbBy0Ucqeq7DvwWBwsPePYpsqJ
+ ZSSOZyHDK+TU8Zevfnwu+QZdLaHxza62qjfYhp9cxRBBWmk0QFl4rkIlULiYPYrH+ZY9
+ pq/Q==
+X-Gm-Message-State: AOJu0YymyUZRM5imMs2VUvdw8NZeG2HJhWdYJ1Dt3W+WWqCD4Nub5C8v
+ HhlE/kTYGHP9wsLsCYKX/FUEndb+cCZGYxbjgbiO4g2iVoah4BD+ERupVl3clh5k7Pf8YIbuD5G
+ a
+X-Gm-Gg: ASbGncsl5gm7yoLrdOOpODLnCxc8xopDW7fzTjj1dh/hNc9QLRw7JeQDbVxuGW33rhT
+ KqsH744xk6y3Jj9hknRQ89flvGD08PAyfDmkGVChF1F+0ITTWhlZZJ3zUQUFVE8GJ3aa9Cv9yKD
+ Ul7FGC27mREeacu+LeLLuM5KCl20AzihBN8q5eTnrQDxtuEjgKezkMvRvZ0wWjkOvKGgdhCBr7j
+ MJHeoQcovmPIZeZcn4fLKctdRf35/t/FCyd9mVndy2DASsDpb26uA1rt2ARfvLL+UktqXuvdFiU
+ JxMOJ1C2FRVKPomV5P+pg4gdd12YFVjx532XaMqgu7cOlS/shJBDKmtJE/aQOB7dE7V3d5KYxK9
+ FjgbEnNh5dtxCiTA=
+X-Google-Smtp-Source: AGHT+IE+KUaTsN3G+W80LGQijplCT/PigNz6TIjDqS2ugf1OiPwus0CKx8JXZUCrJksU4WFELDl2mQ==
+X-Received: by 2002:a05:600c:4fd0:b0:43d:174:2668 with SMTP id
+ 5b1f17b1804b1-44069640aa3mr6464695e9.0.1744908886724; 
+ Thu, 17 Apr 2025 09:54:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39efa4931e7sm119904f8f.67.2025.04.17.09.54.41
+ 5b1f17b1804b1-4406994a362sm4801995e9.16.2025.04.17.09.54.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 17 Apr 2025 09:54:41 -0700 (PDT)
+ Thu, 17 Apr 2025 09:54:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
@@ -72,17 +72,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 2/7] cpus: Replace CPU_RESOLVING_TYPE -> target_cpu_type()
-Date: Thu, 17 Apr 2025 18:54:25 +0200
-Message-ID: <20250417165430.58213-3-philmd@linaro.org>
+Subject: [PATCH 3/7] cpus: Move target-agnostic methods out of cpu-target.c
+Date: Thu, 17 Apr 2025 18:54:26 +0200
+Message-ID: <20250417165430.58213-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250417165430.58213-1-philmd@linaro.org>
 References: <20250417165430.58213-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,123 +105,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the target-specific CPU_RESOLVING_TYPE definition
-by a call to the target-agnostic target_cpu_type() runtime
-helper.
+Various methods of cpu-target.c don't use any target-specific
+knowledge at all and can be built once in the target-agnostic
+cpu-common.c file.
 
-Since the big "cpu.h" is not required anymore in tcg-all.c,
-remove it, using the tinier "cpu-param.h" header.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/accel-target.c | 6 ++++--
- accel/tcg/tcg-all.c  | 5 +++--
- cpu-target.c         | 7 ++++---
- 3 files changed, 11 insertions(+), 7 deletions(-)
+ cpu-target.c         | 77 +-------------------------------------------
+ hw/core/cpu-common.c | 74 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 75 insertions(+), 76 deletions(-)
 
-diff --git a/accel/accel-target.c b/accel/accel-target.c
-index 33a539b4cbb..9e9e70be876 100644
---- a/accel/accel-target.c
-+++ b/accel/accel-target.c
-@@ -25,6 +25,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/accel.h"
-+#include "qemu/target_info.h"
- 
- #include "cpu.h"
- #include "accel/accel-cpu-target.h"
-@@ -88,17 +89,18 @@ static void accel_init_cpu_interfaces(AccelClass *ac)
-     const char *ac_name; /* AccelClass name */
-     char *acc_name;      /* AccelCPUClass name */
-     ObjectClass *acc;    /* AccelCPUClass */
-+    const char *cpu_resolving_type = target_cpu_type();
- 
-     ac_name = object_class_get_name(OBJECT_CLASS(ac));
-     g_assert(ac_name != NULL);
- 
--    acc_name = g_strdup_printf("%s-%s", ac_name, CPU_RESOLVING_TYPE);
-+    acc_name = g_strdup_printf("%s-%s", ac_name, cpu_resolving_type);
-     acc = object_class_by_name(acc_name);
-     g_free(acc_name);
- 
-     if (acc) {
-         object_class_foreach(accel_init_cpu_int_aux,
--                             CPU_RESOLVING_TYPE, false, acc);
-+                             cpu_resolving_type, false, acc);
-     }
- }
- 
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index b0d4e3e1362..25df7db5026 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -35,6 +35,7 @@
- #include "qapi/qapi-types-common.h"
- #include "qapi/qapi-builtin-visit.h"
- #include "qemu/units.h"
-+#include "qemu/target_info.h"
- #if defined(CONFIG_USER_ONLY)
- #include "hw/qdev-core.h"
- #else
-@@ -43,7 +44,7 @@
- #endif
- #include "accel/tcg/cpu-ops.h"
- #include "internal-common.h"
--#include "cpu.h"
-+#include "cpu-param.h"
- 
- 
- struct TCGState {
-@@ -89,7 +90,7 @@ static int tcg_init_machine(MachineState *ms)
-     unsigned max_threads = 1;
- 
- #ifndef CONFIG_USER_ONLY
--    CPUClass *cc = CPU_CLASS(object_class_by_name(CPU_RESOLVING_TYPE));
-+    CPUClass *cc = CPU_CLASS(object_class_by_name(target_cpu_type()));
-     bool mttcg_supported = cc->tcg_ops->mttcg_supported;
- 
-     switch (s->mttcg_enabled) {
 diff --git a/cpu-target.c b/cpu-target.c
-index c99d208a7c4..1779bb5337d 100644
+index 1779bb5337d..e018acbf71a 100644
 --- a/cpu-target.c
 +++ b/cpu-target.c
-@@ -22,6 +22,7 @@
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qemu/qemu-print.h"
-+#include "qemu/target_info.h"
+@@ -19,94 +19,19 @@
+ 
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+-#include "qapi/error.h"
+-#include "qemu/error-report.h"
+-#include "qemu/qemu-print.h"
+-#include "qemu/target_info.h"
  #include "system/accel-ops.h"
  #include "system/cpus.h"
  #include "exec/cpu-common.h"
-@@ -37,7 +38,7 @@ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
+ #include "exec/tswap.h"
+ #include "exec/replay-core.h"
+ #include "exec/log.h"
+-#include "accel/accel-cpu-target.h"
++#include "hw/core/cpu.h"
+ #include "trace/trace-root.h"
  
- char *cpu_model_from_type(const char *typename)
- {
--    const char *suffix = "-" CPU_RESOLVING_TYPE;
+ /* Validate correct placement of CPUArchState. */
+ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
+ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
+ 
+-char *cpu_model_from_type(const char *typename)
+-{
+-    g_autofree char *suffix = g_strdup_printf("-%s", target_cpu_type());
+-
+-    if (!object_class_by_name(typename)) {
+-        return NULL;
+-    }
+-
+-    if (g_str_has_suffix(typename, suffix)) {
+-        return g_strndup(typename, strlen(typename) - strlen(suffix));
+-    }
+-
+-    return g_strdup(typename);
+-}
+-
+-const char *parse_cpu_option(const char *cpu_option)
+-{
+-    ObjectClass *oc;
+-    CPUClass *cc;
+-    gchar **model_pieces;
+-    const char *cpu_type;
+-
+-    model_pieces = g_strsplit(cpu_option, ",", 2);
+-    if (!model_pieces[0]) {
+-        error_report("-cpu option cannot be empty");
+-        exit(1);
+-    }
+-
+-    oc = cpu_class_by_name(target_cpu_type(), model_pieces[0]);
+-    if (oc == NULL) {
+-        error_report("unable to find CPU model '%s'", model_pieces[0]);
+-        g_strfreev(model_pieces);
+-        exit(EXIT_FAILURE);
+-    }
+-
+-    cpu_type = object_class_get_name(oc);
+-    cc = CPU_CLASS(oc);
+-    cc->parse_features(cpu_type, model_pieces[1], &error_fatal);
+-    g_strfreev(model_pieces);
+-    return cpu_type;
+-}
+-
+-static void cpu_list_entry(gpointer data, gpointer user_data)
+-{
+-    CPUClass *cc = CPU_CLASS(OBJECT_CLASS(data));
+-    const char *typename = object_class_get_name(OBJECT_CLASS(data));
+-    g_autofree char *model = cpu_model_from_type(typename);
+-
+-    if (cc->deprecation_note) {
+-        qemu_printf("  %s (deprecated)\n", model);
+-    } else {
+-        qemu_printf("  %s\n", model);
+-    }
+-}
+-
+-void list_cpus(void)
+-{
+-    CPUClass *cc = CPU_CLASS(object_class_by_name(target_cpu_type()));
+-
+-    if (cc->list_cpus) {
+-        cc->list_cpus();
+-    } else {
+-        GSList *list;
+-
+-        list = object_class_get_list_sorted(TYPE_CPU, false);
+-        qemu_printf("Available CPUs:\n");
+-        g_slist_foreach(list, cpu_list_entry, NULL);
+-        g_slist_free(list);
+-    }
+-}
+-
+ /* enable or disable single step mode. EXCP_DEBUG is returned by the
+    CPU loop after each instruction */
+ void cpu_single_step(CPUState *cpu, int enabled)
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 9064dd24f82..6d0788331c7 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -25,6 +25,9 @@
+ #include "qemu/log.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/lockcnt.h"
++#include "qemu/error-report.h"
++#include "qemu/qemu-print.h"
++#include "qemu/target_info.h"
+ #include "exec/log.h"
+ #include "exec/gdbstub.h"
+ #include "system/tcg.h"
+@@ -152,6 +155,21 @@ ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model)
+     return NULL;
+ }
+ 
++char *cpu_model_from_type(const char *typename)
++{
 +    g_autofree char *suffix = g_strdup_printf("-%s", target_cpu_type());
- 
-     if (!object_class_by_name(typename)) {
-         return NULL;
-@@ -63,7 +64,7 @@ const char *parse_cpu_option(const char *cpu_option)
-         exit(1);
-     }
- 
--    oc = cpu_class_by_name(CPU_RESOLVING_TYPE, model_pieces[0]);
-+    oc = cpu_class_by_name(target_cpu_type(), model_pieces[0]);
-     if (oc == NULL) {
-         error_report("unable to find CPU model '%s'", model_pieces[0]);
-         g_strfreev(model_pieces);
-@@ -92,7 +93,7 @@ static void cpu_list_entry(gpointer data, gpointer user_data)
- 
- void list_cpus(void)
++
++    if (!object_class_by_name(typename)) {
++        return NULL;
++    }
++
++    if (g_str_has_suffix(typename, suffix)) {
++        return g_strndup(typename, strlen(typename) - strlen(suffix));
++    }
++
++    return g_strdup(typename);
++}
++
+ static void cpu_common_parse_features(const char *typename, char *features,
+                                       Error **errp)
  {
--    CPUClass *cc = CPU_CLASS(object_class_by_name(CPU_RESOLVING_TYPE));
-+    CPUClass *cc = CPU_CLASS(object_class_by_name(target_cpu_type()));
+@@ -183,6 +201,33 @@ static void cpu_common_parse_features(const char *typename, char *features,
+     }
+ }
  
-     if (cc->list_cpus) {
-         cc->list_cpus();
++const char *parse_cpu_option(const char *cpu_option)
++{
++    ObjectClass *oc;
++    CPUClass *cc;
++    gchar **model_pieces;
++    const char *cpu_type;
++
++    model_pieces = g_strsplit(cpu_option, ",", 2);
++    if (!model_pieces[0]) {
++        error_report("-cpu option cannot be empty");
++        exit(1);
++    }
++
++    oc = cpu_class_by_name(target_cpu_type(), model_pieces[0]);
++    if (oc == NULL) {
++        error_report("unable to find CPU model '%s'", model_pieces[0]);
++        g_strfreev(model_pieces);
++        exit(EXIT_FAILURE);
++    }
++
++    cpu_type = object_class_get_name(oc);
++    cc = CPU_CLASS(oc);
++    cc->parse_features(cpu_type, model_pieces[1], &error_fatal);
++    g_strfreev(model_pieces);
++    return cpu_type;
++}
++
+ bool cpu_exec_realizefn(CPUState *cpu, Error **errp)
+ {
+     if (!accel_cpu_common_realize(cpu, errp)) {
+@@ -359,3 +404,32 @@ static void cpu_register_types(void)
+ }
+ 
+ type_init(cpu_register_types)
++
++static void cpu_list_entry(gpointer data, gpointer user_data)
++{
++    CPUClass *cc = CPU_CLASS(OBJECT_CLASS(data));
++    const char *typename = object_class_get_name(OBJECT_CLASS(data));
++    g_autofree char *model = cpu_model_from_type(typename);
++
++    if (cc->deprecation_note) {
++        qemu_printf("  %s (deprecated)\n", model);
++    } else {
++        qemu_printf("  %s\n", model);
++    }
++}
++
++void list_cpus(void)
++{
++    CPUClass *cc = CPU_CLASS(object_class_by_name(target_cpu_type()));
++
++    if (cc->list_cpus) {
++        cc->list_cpus();
++    } else {
++        GSList *list;
++
++        list = object_class_get_list_sorted(TYPE_CPU, false);
++        qemu_printf("Available CPUs:\n");
++        g_slist_foreach(list, cpu_list_entry, NULL);
++        g_slist_free(list);
++    }
++}
 -- 
 2.47.1
 
