@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4043A91D61
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 15:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AFEA91D65
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 15:11:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5P1B-0005hV-Vh; Thu, 17 Apr 2025 09:11:05 -0400
+	id 1u5P1M-0005k7-EL; Thu, 17 Apr 2025 09:11:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5P0b-0005Ve-FL
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 09:10:25 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5P0g-0005Xu-Q5
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 09:10:31 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5P0Y-0007vJ-TD
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 09:10:24 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43cfebc343dso5970675e9.2
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 06:10:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5P0d-0007w2-Kh
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 09:10:29 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3914aba1ce4so544983f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 06:10:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744895420; x=1745500220; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744895425; x=1745500225; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=guXhwwIF4sCNRuBen3+R6Ruwzx2W7ttUqiq/qsuOdWE=;
- b=Y9w0hIK6dEnfiUVnIUJRbYzUf+xrqNolML5w8fwhBQRmLCrK9yaFvBPsjZVYLqRWji
- 8SDnsShxdOyupBET/Cn4VXL9FuGr2uV3B/NL0CVbgmG3DeDs5dKZ+WVaVISgN7+ZD0+d
- tGHE6sJdAxse6d9PXMStKQoFW6ajXx0HlldF5Kd702UklDR0m5rGwV6++njCYZInR/8/
- ouniAPSij972cvqzTCHLRQ8/8MyyiYwC2u2lA75ji6eKVDfDlnoEdg9W9S49UfRXZosc
- aeQ2LAeZw6viufT2W15I25/p185ifxRpr3D6a4aW86RNy1ifxBiWV4B8LWRiMz01Sh62
- mXiw==
+ bh=PXZTsvplbDk/j8Hq5OCc8Z4OLE0QxnnIYztC0n6Y2e8=;
+ b=fHpY5MwLdE931IqqQvYrR+Fre+zvKqtHg5fQjnq8INE62vA79rBMYg63bVtpzt1Z7d
+ gCmXnCldGy+0AEgA5EudAY1LuEE19f++4nCnF+uDH/e0d2tQUngSmJTMLOk68K6w+YNL
+ Zcg4Z629XjN4Xnbkbj47/pHn4wIHDacXgx+a88tCxXsPB3EzM+sbigHfZXA/6i320rfh
+ 6XTq8NL990D70MZ7UhX+rAPbkM+rPLtFgfXNw/Zh+ESD2WbsxW/52a4LJJCGthlLie31
+ /atZprsR9VcqjSM5NvbQy3ydRGvGiu/B4Zmwe5AQAub2aYTtJsasKYIbOD96sjfPAf4x
+ Z2EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744895420; x=1745500220;
+ d=1e100.net; s=20230601; t=1744895425; x=1745500225;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=guXhwwIF4sCNRuBen3+R6Ruwzx2W7ttUqiq/qsuOdWE=;
- b=s9HT/Af+zwz5DS5hwNGt64BAolg6krlmYzLOAyvyWdWDOKRcs1bc/MJYoTj+D8RlQx
- vpyKHdtzzbHAdEi9rXnDrwtIxa437A3JOh8cMJnkNRFXXW1jQRC5utNDej/WQoi1J4AB
- 4L3Q4H+N670czpS5ywxZnP6LbkxlC8dxQepeNC5Yh27iidrVN0nsslwOln5XSTLN8Uu7
- itVd/9DXCV/lUTgZijaoWGb4TWPFXoZAzLbN3t8cM3ZupwlnnqysBNtSD3qOkSr0gV6P
- l0klsUGDzHPFzKh0enbBvlIyURNOJO9kJx0o0pOHlI2sFGIOEwWQCthM+A0GwA/1ttcT
- 29eA==
-X-Gm-Message-State: AOJu0YwejLsY1zIZlS0WXc7zsb+7eP3iMcirNjhsD7J2vll9mfXiWAF8
- 55uzxxDoZyZPEycRW2iMQuEFLTcTmSP8LqCpKN1GKQ+A83/6hTXW4GCfXD4ygZw7fFevAZRFp3H
- L
-X-Gm-Gg: ASbGnctyEhEnIig/y9dqI3wchauFPBlFiOVapwE0M4Fkqk/Wg8n0B3ccPfM3DZG6mTI
- ECdegJJwQPRfe9MGCxWYFxtHSkBWCX3vsevfOG3jv7enEkyMjhCNttlBWTZuSnjJM1RxnHbSrKC
- yT4MrjvYLzhDPdRa8aaauGDvg18ZpIBGH1BSnN2Q5GUlyEL+wIZPDYFpkeT5t9cd3s1AX/U9Bbz
- pfMNSzLZCU1pCQlzaVwkubTUf45+OzTnu95ONG13uKaUNy6UPkXFCwAJFhPg7FUKh7TqxIaX/HJ
- 5FGlQWljq+ZrjhulJ3U4fgdFuk5xr3GcKZQaqM69yFG5TQTOtr4VtfcVgdbpA7drxXiWBjAIzKX
- Wmg2jCZW8NfflwhM=
-X-Google-Smtp-Source: AGHT+IECld7MWA0uW1gF79OR5VGep+LqKRWn7Ky0/ged6z43ljtt3WSy7D+knfcsqpOn13y2rZjuuQ==
-X-Received: by 2002:a05:6000:22c1:b0:391:47d8:de3a with SMTP id
- ffacd0b85a97d-39ee5bb103dmr5246169f8f.53.1744895419956; 
- Thu, 17 Apr 2025 06:10:19 -0700 (PDT)
+ bh=PXZTsvplbDk/j8Hq5OCc8Z4OLE0QxnnIYztC0n6Y2e8=;
+ b=F3FnpyqD08szY2Suw0TGoYgo31bwmoyZW8BAKzvn0WdYAmYgygZx+kCfkazoGimzV8
+ d6+++xh8IK0hvotmUKQSVdgBjnmmVKR9HGnmLMlZ/Squ1xZJks4+r8+roi2xzbEfpajg
+ qHwXYFt/0qGU7w58WVpESzgBwRSGFB+cjOPK+ll0lFP4TrlvPEzT6LxvqljJEQFEHMDE
+ UKehL8g7pSZrlGnOww17xxEMG6H+dfiTtIAOdLWFWdNCFh8stEz8tkjRbh0t1DG4tKgz
+ kzCsm7tCJNQlp+LTuQ9jcMOQ66RzXkStXI6NRwSTooqumdnsiHBVnqlm1jJrNa38JO+A
+ JGBQ==
+X-Gm-Message-State: AOJu0YzJWNylPAC8EiHWo8qj3dDiP5/BoziN3uFxJUKuhEcnfVtzRDIi
+ wOzCJXOrpLmO5kuWaD7tJ83n4xR6a2U2OoYy/qddBzer1RdqyXRUlkW+lrX140IegWdHV4MNgic
+ s
+X-Gm-Gg: ASbGncs9opRa2fFosCl2UieaGUsAsHBdK5BIo75vk0J/hXpXowOqAsrQnixqZgvixqr
+ Bq14MtG6lJNQfPkkTQdQx+bIVUvs8dDLiAN6yCGW3nWlb4xIXjToXINiU09vzytdaFcKGkefnRP
+ zPjd//Xk0XvIiTuGBZjWg0HWIAItX6DZjdsnbBR6px0qjzJe8eHmoK31dMY8Fq+m42c4aXoQkTx
+ GCEB7ah2+jSog3mVSVuy6sHFApel8P+29llnRDsQNbem7M034nyCrHXJ80fuNN7Td/65H+3E6fi
+ yb28ctDIpYn9NtiUqXLrLDC3FSTG5rd9YWvrDCUX0QRzpTkq+ZGl0xSCBT0hy7B07XJZz3z6aPU
+ th81whPup+cfZG7I=
+X-Google-Smtp-Source: AGHT+IEBo1UY+AOQjFpXVhJW8TDLLMkzTWfvqwX4eO97AJYDZrdTS5N3fuEGqSHZ/wLBUnAjVJfNew==
+X-Received: by 2002:a5d:64e2:0:b0:39d:724f:a8a0 with SMTP id
+ ffacd0b85a97d-39ee5ba03e4mr4945023f8f.58.1744895424613; 
+ Thu, 17 Apr 2025 06:10:24 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39eaf445270sm19831668f8f.81.2025.04.17.06.10.19
+ 5b1f17b1804b1-4405b50b897sm53357105e9.26.2025.04.17.06.10.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 17 Apr 2025 06:10:19 -0700 (PDT)
+ Thu, 17 Apr 2025 06:10:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/8] target/mips: Check CPU endianness at runtime using
- env_is_bigendian()
-Date: Thu, 17 Apr 2025 15:09:59 +0200
-Message-ID: <20250417131004.47205-4-philmd@linaro.org>
+Subject: [PATCH 4/8] target/ppc: Evaluate TARGET_BIG_ENDIAN at compile time
+Date: Thu, 17 Apr 2025 15:10:00 +0200
+Message-ID: <20250417131004.47205-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250417131004.47205-1-philmd@linaro.org>
 References: <20250417131004.47205-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,96 +98,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since CPU endianness can be toggled at runtime before resetting,
-checking the endianness at build time preprocessing the
-TARGET_BIG_ENDIAN definition isn't correct. We have to call
-mips_env_is_bigendian() to get the CPU endianness at runtime.
+Rather than evaluating TARGET_BIG_ENDIAN at preprocessing
+time via #ifdef'ry, do it in C at compile time
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/msa_helper.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ target/ppc/cpu_init.c   | 12 ++++++------
+ target/ppc/mem_helper.c |  6 +-----
+ target/ppc/translate.c  |  6 +-----
+ 3 files changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/target/mips/tcg/msa_helper.c b/target/mips/tcg/msa_helper.c
-index 14de4a71ff6..e349344647c 100644
---- a/target/mips/tcg/msa_helper.c
-+++ b/target/mips/tcg/msa_helper.c
-@@ -8212,7 +8212,6 @@ void helper_msa_ffint_u_df(CPUMIPSState *env, uint32_t df, uint32_t wd,
- /* Element-by-element access macros */
- #define DF_ELEMENTS(df) (MSA_WRLEN / DF_BITS(df))
- 
--#if TARGET_BIG_ENDIAN
- static inline uint64_t bswap16x4(uint64_t x)
- {
-     uint64_t m = 0x00ff00ff00ff00ffull;
-@@ -8223,7 +8222,6 @@ static inline uint64_t bswap32x2(uint64_t x)
- {
-     return ror64(bswap64(x), 32);
- }
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 077991ed535..bbab411a07c 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7262,14 +7262,14 @@ static void ppc_cpu_reset_hold(Object *obj, ResetType type)
+ #if defined(TARGET_PPC64)
+     msr |= (target_ulong)1 << MSR_TM; /* Transactional memory */
+ #endif
+-#if !TARGET_BIG_ENDIAN
+-    msr |= (target_ulong)1 << MSR_LE; /* Little-endian user mode */
+-    if (!((env->msr_mask >> MSR_LE) & 1)) {
+-        fprintf(stderr, "Selected CPU does not support little-endian.\n");
+-        exit(1);
++    if (!TARGET_BIG_ENDIAN) {
++        msr |= (target_ulong)1 << MSR_LE; /* Little-endian user mode */
++        if (!((env->msr_mask >> MSR_LE) & 1)) {
++            fprintf(stderr, "Selected CPU does not support little-endian.\n");
++            exit(1);
++        }
+     }
+ #endif
 -#endif
  
- void helper_msa_ld_b(CPUMIPSState *env, uint32_t wd,
-                      target_ulong addr)
-@@ -8252,10 +8250,10 @@ void helper_msa_ld_h(CPUMIPSState *env, uint32_t wd,
-      */
-     d0 = cpu_ldq_le_data_ra(env, addr + 0, ra);
-     d1 = cpu_ldq_le_data_ra(env, addr + 8, ra);
+ #if defined(TARGET_PPC64)
+     if (mmu_is_64bit(env->mmu_model)) {
+diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
+index d7e8d678f4b..cc3ed29a35b 100644
+--- a/target/ppc/mem_helper.c
++++ b/target/ppc/mem_helper.c
+@@ -32,11 +32,7 @@
+ 
+ static inline bool needs_byteswap(const CPUPPCState *env)
+ {
 -#if TARGET_BIG_ENDIAN
--    d0 = bswap16x4(d0);
--    d1 = bswap16x4(d1);
+-  return FIELD_EX64(env->msr, MSR, LE);
+-#else
+-  return !FIELD_EX64(env->msr, MSR, LE);
 -#endif
-+    if (mips_env_is_bigendian(env)) {
-+        d0 = bswap16x4(d0);
-+        d1 = bswap16x4(d1);
-+    }
-     pwd->d[0] = d0;
-     pwd->d[1] = d1;
++  return TARGET_BIG_ENDIAN ^ FIELD_EX64(env->msr, MSR, LE);
  }
-@@ -8273,10 +8271,10 @@ void helper_msa_ld_w(CPUMIPSState *env, uint32_t wd,
-      */
-     d0 = cpu_ldq_le_data_ra(env, addr + 0, ra);
-     d1 = cpu_ldq_le_data_ra(env, addr + 8, ra);
+ 
+ /*****************************************************************************/
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 399107d319a..828b850b40e 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -213,11 +213,7 @@ struct DisasContext {
+ /* Return true iff byteswap is needed in a scalar memop */
+ static inline bool need_byteswap(const DisasContext *ctx)
+ {
 -#if TARGET_BIG_ENDIAN
--    d0 = bswap32x2(d0);
--    d1 = bswap32x2(d1);
+-     return ctx->le_mode;
+-#else
+-     return !ctx->le_mode;
 -#endif
-+    if (mips_env_is_bigendian(env)) {
-+        d0 = bswap32x2(d0);
-+        d1 = bswap32x2(d1);
-+    }
-     pwd->d[0] = d0;
-     pwd->d[1] = d1;
++     return TARGET_BIG_ENDIAN ^ ctx->le_mode;
  }
-@@ -8339,10 +8337,10 @@ void helper_msa_st_h(CPUMIPSState *env, uint32_t wd,
-     /* Store 8 bytes at a time.  See helper_msa_ld_h. */
-     d0 = pwd->d[0];
-     d1 = pwd->d[1];
--#if TARGET_BIG_ENDIAN
--    d0 = bswap16x4(d0);
--    d1 = bswap16x4(d1);
--#endif
-+    if (mips_env_is_bigendian(env)) {
-+        d0 = bswap16x4(d0);
-+        d1 = bswap16x4(d1);
-+    }
-     cpu_stq_le_data_ra(env, addr + 0, d0, ra);
-     cpu_stq_le_data_ra(env, addr + 8, d1, ra);
- }
-@@ -8360,10 +8358,10 @@ void helper_msa_st_w(CPUMIPSState *env, uint32_t wd,
-     /* Store 8 bytes at a time.  See helper_msa_ld_w. */
-     d0 = pwd->d[0];
-     d1 = pwd->d[1];
--#if TARGET_BIG_ENDIAN
--    d0 = bswap32x2(d0);
--    d1 = bswap32x2(d1);
--#endif
-+    if (mips_env_is_bigendian(env)) {
-+        d0 = bswap32x2(d0);
-+        d1 = bswap32x2(d1);
-+    }
-     cpu_stq_le_data_ra(env, addr + 0, d0, ra);
-     cpu_stq_le_data_ra(env, addr + 8, d1, ra);
- }
+ 
+ /* True when active word size < size of target_long.  */
 -- 
 2.47.1
 
