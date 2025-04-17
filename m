@@ -2,114 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1C7A919EB
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 12:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6FDA91A55
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 13:14:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5MtO-0000hp-A5; Thu, 17 Apr 2025 06:54:50 -0400
+	id 1u5NBc-0003WP-QB; Thu, 17 Apr 2025 07:13:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1u5MtL-0000fm-Fh
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 06:54:47 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1u5MtH-0003rS-MP
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 06:54:47 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-736bfa487c3so468530b3a.1
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 03:54:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1744887281; x=1745492081; darn=nongnu.org;
- h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
- :cc:subject:date:message-id:reply-to;
- bh=blq7hMk0Njvz2l144/h84muIi7pqw4eOWM3fFtNPamQ=;
- b=eltds1CYVnX+9rsymdxuecPW0pvFrpGxa1OURAfp58bTluYNvm+YRhH8kwdrtiiBh9
- 0DpogkASeSyh4LCKbyRaOsM98X1WlG5vbX/0ZfvzHN6FWgBps+VOMHjmarUVgCKJ5zHG
- 6FKp6y1LOi+TRhNaAh1yutOY6anM3osjxMLuuxrIcCPvPYF2Nf0PLwm3HKCPIYveNAHK
- Ht0s8iKu1614mP1p5FYHK1U/7D7+f5pSK/wPqnKR2QlQBPVlK9KBbdxyjncdNUDnfMq/
- Sxo8p97ZCQ8+zP+DmckzVkNFp1UsqGrJJQIc8rgtpToMOy2X1tCfZLEzyYBhhEDWTbST
- FOCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744887281; x=1745492081;
- h=references:in-reply-to:message-id:date:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=blq7hMk0Njvz2l144/h84muIi7pqw4eOWM3fFtNPamQ=;
- b=ardeabn4u+LDlhQTV+nKHPMrS7Lo/U0So6bmh9SpfhpvncjEdGdP/HGaxW6TwGscFp
- DVHk2kbCLyvqFpYfb6eJ0gfSCcKoyAbchQGEAYGm5Rh2F2D0h3BFD5Vxnj6r6HMRPMUc
- ApAqCDVOiaBZQEQBt/HqvFkWkIMnQd1qIpvkxqAvUebcc67xTj9DoyXZIIaCRvv31PH1
- t2n18mAW3Lt7vpdQslpjEb6Dj7anyj+wj9DnGJ8Hf5bzGHAfjExUZ3EpBxOKOXBPIQtg
- sRJVMjo5HSFA50zCqyYecuyJcw44gWrjt2371riHuzPDRd6TwW0+jqxqTQJufEly/Cnm
- eScA==
-X-Gm-Message-State: AOJu0YwzUnpNeFgE9DyFOcQAY1ULYMTHOA7gktq7XjOIBcMWxg6NKoyE
- 0cOM692/HiqDYgqsP5fFSf7mA6HGqqftXKn6Y5M7WwSjwZs7yDi6/tP+kJZfdlGA+jMjceikh3K
- /XNxTVg5EQNCKN151VKJGrSipI1RVkEK4JrRCyt2kqRPqHJl89wztw42+x22R/Mw9fieKxzj+N5
- CFk1SwTZ3rOaxJcjK0KWQA9PL20HSPoHfiNA==
-X-Gm-Gg: ASbGnctqvZEiVIgWKQv4gfJJV9BpGzSgdJWHeixu5tL8ISUdYXIjgjmOS9qgyCgwAVI
- gmM/y4A2TQUcC6xtYw9bR5FqTDlNiNr3E+S2tDAlOK+itteQ1xuFKn1h7FAxp8MKMMJtXtR+0yS
- sBeWBglj7NwQXqcESa8a4TCEdbsdMpuh0S8wl8Q7C+tKvBUEHHhbaSPVqW/AHg+9TPPpehUcfP5
- jOspcNCWWEVGoNW9PiBwMerUTLBabs/HcPD684R20ro3Y7ilmMZWjMl9wQpS9Nta5M34ywsWWQk
- FAQWDDYKE9bMfYrHhQ7ESujTVuRIeI/sTD+iyNO+OUa98EODE3NORqOYc64OJpEt3yW9Mit1Yg=
- =
-X-Google-Smtp-Source: AGHT+IHdTF5ohfBbRKWRzDzcXt1tTlqP04POyexqyc8brw0bW86CIUg/06AuS+AcpAWq8f/WkYHvEw==
-X-Received: by 2002:a05:6a00:1d81:b0:736:a682:deb8 with SMTP id
- d2e1a72fcca58-73c266f94aemr9882782b3a.8.1744887281192; 
- Thu, 17 Apr 2025 03:54:41 -0700 (PDT)
-Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73bd230ddaasm12366251b3a.138.2025.04.17.03.54.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Apr 2025 03:54:40 -0700 (PDT)
-From: Jim Shu <jim.shu@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Michael Rolnik <mrolnik@gmail.com>, Helge Deller <deller@gmx.de>,
- Song Gao <gaosong@loongson.cn>, Laurent Vivier <laurent@vivier.eu>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Max Filippov <jcmvbkbc@gmail.com>,
- qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
- qemu-s390x@nongnu.org (open list:S390 TCG CPUs),
- Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH v2 18/18] hw/riscv: virt: Add WorldGuard support
-Date: Thu, 17 Apr 2025 18:52:49 +0800
-Message-Id: <20250417105249.18232-19-jim.shu@sifive.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250417105249.18232-1-jim.shu@sifive.com>
-References: <20250417105249.18232-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=jim.shu@sifive.com; helo=mail-pf1-x436.google.com
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1u5NBa-0003W3-AW
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 07:13:38 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1u5NBX-0007AS-63
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 07:13:38 -0400
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c15:381b:0:640:f69d:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 4013B60B35;
+ Thu, 17 Apr 2025 14:13:30 +0300 (MSK)
+Received: from dtalexundeer-nx.yandex-team.ru (unknown
+ [2a02:6b8:b081:8014::1:10])
+ by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id MDH9PZ2FiKo0-AHJjbN2n; Thu, 17 Apr 2025 14:13:29 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1744888409;
+ bh=Bc/I49KSX8JnXBCAEI2F/UX7VCBimoPPuqLyRiHaCWc=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=YMnk76EerjEwCP2N9C2mx2Nvui8dr7SbEx5phSLqKmMSrv/N+jvfd9Xm5GKR11tRO
+ Mw66k7MjxlBTQpEvwZDLBI8SAKvsPGnt7P2iV7SHAz3joeL9tAUnVjg97TWyhMN/l3
+ Thl+snUY8pD63zgIkS/a+jMq5cC2bUXhEO6JO7I0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+To: qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>,
+ "yc-core @ yandex-team . ru" <yc-core@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Subject: [PATCH v5 0/2] tests/functional: add memlock tests
+Date: Thu, 17 Apr 2025 16:13:19 +0500
+Message-Id: <20250417111321.167008-1-dtalexundeer@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -121,377 +75,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Add 'wg=on' option to enable RISC-V WorldGuard
-* Add wgChecker to protect several resources:
-  DRAM, FLASH, UART.
+Add new tests to check the correctness of the `-overcommit memlock`
+option (possible values: off, on, on-fault) by using
+`/proc/{qemu_pid}/smaps` file to check in Size, Rss and Locked fields of
+anonymous segments:
 
-Signed-off-by: Jim Shu <jim.shu@sifive.com>
+* if `memlock=off`, then Locked = 0 on every anonymous smaps;
+* if `memlock=on`, then Size, Rss and Locked values must be equal for
+every anon smaps where Rss is not 0;
+* if `memlock=on-fault`, then Rss and Locked must be equal on every anon
+smaps and anonymous segment with Rss < Size must exists.
+
 ---
- docs/system/riscv/virt.rst |  20 +++++
- hw/riscv/Kconfig           |   1 +
- hw/riscv/virt.c            | 163 ++++++++++++++++++++++++++++++++++++-
- include/hw/riscv/virt.h    |  15 +++-
- 4 files changed, 195 insertions(+), 4 deletions(-)
 
-diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-index 60850970ce..eef1233350 100644
---- a/docs/system/riscv/virt.rst
-+++ b/docs/system/riscv/virt.rst
-@@ -146,6 +146,26 @@ The following machine-specific options are supported:
- 
-   Enables the riscv-iommu-sys platform device. Defaults to 'off'.
- 
-+- wg=[on|off]
-+
-+  When this option is "on", RISC-V WorldGuard will be enabled in the system
-+  to provide the isolation of multiple worlds. RISC-V HARTs will enable WG
-+  extensions to have WID in memory transaction. wgCheckers in front of RAMs
-+  and device MMIO will be enabled to provide the access control of resources
-+  if the transaction contains WID. When not specified, this option is assumed
-+  to be "off".
-+
-+  The WG configuration of virt machine includes 4 worlds. For WG configuration
-+  of CPUs, the M-mode WID of CPU (``mwid``) is set to the largest WID number,
-+  and the authorized WID list of CPU (``mwidlist``) includes all WIDs. We can
-+  modify the configuration of all CPUs via ``x-mwid`` and ``x-mwidlist``
-+  CPU options. There are 3 wgCheckers in the virt machine, which separately
-+  protects DRAM, FLASH, and UART. Default WG configuration on the virt machine
-+  is enough to run the demo of dual OSes in the different worlds. For example,
-+  running both Linux kernel and Secure OS (e.g. OP-TEE) in it's own world.
-+
-+  This option is restricted to the TCG accelerator.
-+
- Running Linux kernel
- --------------------
- 
-diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-index e6a0ac1fa1..5c3e7b3479 100644
---- a/hw/riscv/Kconfig
-+++ b/hw/riscv/Kconfig
-@@ -68,6 +68,7 @@ config RISCV_VIRT
-     select PLATFORM_BUS
-     select ACPI
-     select ACPI_PCI
-+    select RISCV_WORLDGUARD
- 
- config SHAKTI_C
-     bool
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index e517002fdf..da873bc8b8 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -58,6 +58,7 @@
- #include "qapi/qapi-visit-common.h"
- #include "hw/virtio/virtio-iommu.h"
- #include "hw/uefi/var-service-api.h"
-+#include "hw/misc/riscv_worldguard.h"
- 
- /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
- static bool virt_use_kvm_aia_aplic_imsic(RISCVVirtAIAType aia_type)
-@@ -89,6 +90,9 @@ static const MemMapEntry virt_memmap[] = {
-     [VIRT_PCIE_PIO] =     {  0x3000000,       0x10000 },
-     [VIRT_IOMMU_SYS] =    {  0x3010000,        0x1000 },
-     [VIRT_PLATFORM_BUS] = {  0x4000000,     0x2000000 },
-+    [VIRT_WGC_DRAM] =     {  0x6000000,        0x1000 },
-+    [VIRT_WGC_FLASH] =    {  0x6001000,        0x1000 },
-+    [VIRT_WGC_UART] =     {  0x6002000,        0x1000 },
-     [VIRT_PLIC] =         {  0xc000000, VIRT_PLIC_SIZE(VIRT_CPUS_MAX * 2) },
-     [VIRT_APLIC_M] =      {  0xc000000, APLIC_SIZE(VIRT_CPUS_MAX) },
-     [VIRT_APLIC_S] =      {  0xd000000, APLIC_SIZE(VIRT_CPUS_MAX) },
-@@ -114,6 +118,38 @@ static MemMapEntry virt_high_pcie_memmap;
- 
- #define VIRT_FLASH_SECTOR_SIZE (256 * KiB)
- 
-+/* wgChecker helpers */
-+typedef struct WGCInfo {
-+    int memmap_idx;
-+    uint32_t irq_num;
-+    uint32_t slot_count;
-+
-+    int num_of_child;
-+    MemoryRegion *c_region[WGC_NUM_REGIONS];
-+    uint64_t c_offset[WGC_NUM_REGIONS];
-+} WGCInfo;
-+
-+enum {
-+    WGC_DRAM,
-+    WGC_FLASH,
-+    WGC_UART,
-+    WGC_NUM,
-+};
-+
-+static WGCInfo virt_wgcinfo[] = {
-+    [WGC_DRAM]  = { VIRT_WGC_DRAM, WGC_DRAM_IRQ, 16 },
-+    [WGC_FLASH] = { VIRT_WGC_FLASH, WGC_FLASH_IRQ, 16 },
-+    [WGC_UART]  = { VIRT_WGC_UART, WGC_UART_IRQ, 1 },
-+};
-+
-+static void wgc_append_child(WGCInfo *info, MemoryRegion *region,
-+                             uint64_t offset)
-+{
-+    info->c_region[info->num_of_child] = region;
-+    info->c_offset[info->num_of_child] = offset;
-+    info->num_of_child += 1;
-+}
-+
- static PFlashCFI01 *virt_flash_create1(RISCVVirtState *s,
-                                        const char *name,
-                                        const char *alias_prop_name)
-@@ -164,7 +200,8 @@ static void virt_flash_map1(PFlashCFI01 *flash,
- }
- 
- static void virt_flash_map(RISCVVirtState *s,
--                           MemoryRegion *sysmem)
-+                           MemoryRegion *sysmem,
-+                           WGCInfo *info)
- {
-     hwaddr flashsize = virt_memmap[VIRT_FLASH].size / 2;
-     hwaddr flashbase = virt_memmap[VIRT_FLASH].base;
-@@ -173,6 +210,15 @@ static void virt_flash_map(RISCVVirtState *s,
-                     sysmem);
-     virt_flash_map1(s->flash[1], flashbase + flashsize, flashsize,
-                     sysmem);
-+
-+    if (info) {
-+        wgc_append_child(info,
-+                         sysbus_mmio_get_region(SYS_BUS_DEVICE(s->flash[0]), 0),
-+                         flashbase);
-+        wgc_append_child(info,
-+                         sysbus_mmio_get_region(SYS_BUS_DEVICE(s->flash[1]), 0),
-+                         flashbase + flashsize);
-+    }
- }
- 
- static void create_pcie_irq_map(RISCVVirtState *s, void *fdt, char *nodename,
-@@ -1426,6 +1472,71 @@ static void virt_build_smbios(RISCVVirtState *s)
-     }
- }
- 
-+static DeviceState *create_wgc(WGCInfo *info, DeviceState *irqchip)
-+{
-+    MemoryRegion *system_memory = get_system_memory();
-+    DeviceState *wgc;
-+    MemoryRegion *upstream_mr, *downstream_mr;
-+    qemu_irq irq = qdev_get_gpio_in(irqchip, info->irq_num);
-+    hwaddr base, size;
-+
-+    /* Unmap downstream_mr from system_memory if it is already mapped. */
-+    for (int i=0; i<info->num_of_child; i++) {
-+        downstream_mr = info->c_region[i];
-+
-+        g_assert(downstream_mr);
-+        if (downstream_mr->container == system_memory) {
-+            memory_region_del_subregion(system_memory, downstream_mr);
-+        }
-+
-+        /*
-+         * Clear the offset of downstream_mr, so we could correctly do
-+         * address_space_init() to it in wgchecker.
-+         */
-+        memory_region_set_address(downstream_mr, 0);
-+    }
-+
-+    base = virt_memmap[info->memmap_idx].base;
-+    size = virt_memmap[info->memmap_idx].size;
-+
-+    wgc = riscv_wgchecker_create(
-+        base, size, irq, info->slot_count, 0, 0,
-+        info->num_of_child, info->c_region, info->c_offset, 0, NULL);
-+
-+    /* Map upstream_mr to system_memory */
-+    for (int i=0; i<info->num_of_child; i++) {
-+        upstream_mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(wgc), i+1);
-+        g_assert(upstream_mr);
-+        memory_region_add_subregion(system_memory, info->c_offset[i], upstream_mr);
-+    }
-+
-+    return wgc;
-+}
-+
-+static void virt_create_worldguard(WGCInfo *wgcinfo, int wgc_num,
-+                                   DeviceState *irqchip)
-+{
-+    CPUState *cpu;
-+
-+    /* Global WG config */
-+    riscv_worldguard_create(VIRT_WG_NWORLDS,
-+                            VIRT_WG_TRUSTEDWID,
-+                            VIRT_WG_HWBYPASS,
-+                            VIRT_WG_TZCOMPAT);
-+
-+    /* Enable WG extension of each CPU */
-+    CPU_FOREACH(cpu) {
-+        CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-+
-+        riscv_worldguard_apply_cpu(env->mhartid);
-+    }
-+
-+    /* Create all wgChecker devices */
-+    for (int i=0; i<wgc_num; i++) {
-+        create_wgc(&wgcinfo[i], DEVICE(irqchip));
-+    }
-+}
-+
- static void virt_machine_done(Notifier *notifier, void *data)
- {
-     RISCVVirtState *s = container_of(notifier, RISCVVirtState,
-@@ -1527,10 +1638,12 @@ static void virt_machine_done(Notifier *notifier, void *data)
- static void virt_machine_init(MachineState *machine)
- {
-     const MemMapEntry *memmap = virt_memmap;
-+    WGCInfo *wgcinfo = virt_wgcinfo;
-     RISCVVirtState *s = RISCV_VIRT_MACHINE(machine);
-     MemoryRegion *system_memory = get_system_memory();
-     MemoryRegion *mask_rom = g_new(MemoryRegion, 1);
-     DeviceState *mmio_irqchip, *virtio_irqchip, *pcie_irqchip;
-+    SerialMM *uart;
-     int i, base_hartid, hart_count;
-     int socket_count = riscv_socket_count(machine);
- 
-@@ -1546,6 +1659,11 @@ static void virt_machine_init(MachineState *machine)
-         exit(1);
-     }
- 
-+    if (!tcg_enabled() && s->have_wg) {
-+        error_report("'wg' is only available with TCG acceleration");
-+        exit(1);
-+    }
-+
-     /* Initialize sockets */
-     mmio_irqchip = virtio_irqchip = pcie_irqchip = NULL;
-     for (i = 0; i < socket_count; i++) {
-@@ -1673,6 +1791,10 @@ static void virt_machine_init(MachineState *machine)
-     memory_region_add_subregion(system_memory, memmap[VIRT_DRAM].base,
-         machine->ram);
- 
-+    if (tcg_enabled() && s->have_wg) {
-+        wgc_append_child(&wgcinfo[WGC_DRAM], machine->ram, memmap[VIRT_DRAM].base);
-+    }
-+
-     /* boot rom */
-     memory_region_init_rom(mask_rom, NULL, "riscv_virt_board.mrom",
-                            memmap[VIRT_MROM].size, &error_fatal);
-@@ -1700,10 +1822,16 @@ static void virt_machine_init(MachineState *machine)
- 
-     create_platform_bus(s, mmio_irqchip);
- 
--    serial_mm_init(system_memory, memmap[VIRT_UART0].base,
-+    uart = serial_mm_init(system_memory, memmap[VIRT_UART0].base,
-         0, qdev_get_gpio_in(mmio_irqchip, UART0_IRQ), 399193,
-         serial_hd(0), DEVICE_LITTLE_ENDIAN);
- 
-+    if (tcg_enabled() && s->have_wg) {
-+        wgc_append_child(&wgcinfo[WGC_UART],
-+                         sysbus_mmio_get_region(SYS_BUS_DEVICE(uart), 0),
-+                         memmap[VIRT_UART0].base);
-+    }
-+
-     sysbus_create_simple("goldfish_rtc", memmap[VIRT_RTC].base,
-         qdev_get_gpio_in(mmio_irqchip, RTC_IRQ));
- 
-@@ -1712,7 +1840,16 @@ static void virt_machine_init(MachineState *machine)
-         pflash_cfi01_legacy_drive(s->flash[i],
-                                   drive_get(IF_PFLASH, 0, i));
-     }
--    virt_flash_map(s, system_memory);
-+
-+    if (tcg_enabled() && s->have_wg) {
-+        virt_flash_map(s, system_memory, &wgcinfo[WGC_FLASH]);
-+    } else {
-+        virt_flash_map(s, system_memory, NULL);
-+    }
-+
-+    if (tcg_enabled() && s->have_wg) {
-+        virt_create_worldguard(wgcinfo, WGC_NUM, mmio_irqchip);
-+    }
- 
-     /* load/create device tree */
-     if (machine->dtb) {
-@@ -1757,6 +1894,20 @@ static void virt_machine_instance_init(Object *obj)
-     s->iommu_sys = ON_OFF_AUTO_AUTO;
- }
- 
-+static bool virt_get_wg(Object *obj, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    return s->have_wg;
-+}
-+
-+static void virt_set_wg(Object *obj, bool value, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    s->have_wg = value;
-+}
-+
- static char *virt_get_aia_guests(Object *obj, Error **errp)
- {
-     RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-@@ -1977,6 +2128,12 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-                               NULL, NULL);
-     object_class_property_set_description(oc, "iommu-sys",
-                                           "Enable IOMMU platform device");
-+
-+    object_class_property_add_bool(oc, "wg", virt_get_wg,
-+                                   virt_set_wg);
-+    object_class_property_set_description(oc, "wg",
-+                                              "Set on/off to enable/disable the "
-+                                              "RISC-V WorldGuard.");
- }
- 
- static const TypeInfo virt_machine_typeinfo = {
-diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-index 48a14bea2e..3a631a6a23 100644
---- a/include/hw/riscv/virt.h
-+++ b/include/hw/riscv/virt.h
-@@ -57,6 +57,7 @@ struct RISCVVirtState {
-     bool have_aclint;
-     RISCVVirtAIAType aia_type;
-     int aia_guests;
-+    bool have_wg;
-     char *oem_id;
-     char *oem_table_id;
-     OnOffAuto acpi;
-@@ -87,11 +88,17 @@ enum {
-     VIRT_PLATFORM_BUS,
-     VIRT_PCIE_ECAM,
-     VIRT_IOMMU_SYS,
-+    VIRT_WGC_DRAM,
-+    VIRT_WGC_FLASH,
-+    VIRT_WGC_UART
- };
- 
- enum {
-     UART0_IRQ = 10,
-     RTC_IRQ = 11,
-+    WGC_DRAM_IRQ = 15,
-+    WGC_FLASH_IRQ = 16,
-+    WGC_UART_IRQ = 17,
-     VIRTIO_IRQ = 1, /* 1 to 8 */
-     VIRTIO_COUNT = 8,
-     PCIE_IRQ = 0x20, /* 32 to 35 */
-@@ -102,7 +109,7 @@ enum {
- #define VIRT_PLATFORM_BUS_NUM_IRQS 32
- 
- #define VIRT_IRQCHIP_NUM_MSIS 255
--#define VIRT_IRQCHIP_NUM_SOURCES 96
-+#define VIRT_IRQCHIP_NUM_SOURCES 128
- #define VIRT_IRQCHIP_NUM_PRIO_BITS 3
- #define VIRT_IRQCHIP_MAX_GUESTS_BITS 3
- #define VIRT_IRQCHIP_MAX_GUESTS ((1U << VIRT_IRQCHIP_MAX_GUESTS_BITS) - 1U)
-@@ -158,4 +165,10 @@ uint32_t imsic_num_bits(uint32_t count);
- #error "Can't accommodate all IMSIC groups in address space"
- #endif
- 
-+/* WorldGuard */
-+#define VIRT_WG_NWORLDS         4
-+#define VIRT_WG_TRUSTEDWID      3
-+#define VIRT_WG_HWBYPASS        true
-+#define VIRT_WG_TZCOMPAT        false
-+
- #endif
+v4 -> v5:
+* refactor skipLockedMemoryTest decorator: using resource.getrlimit()
+  function instead of spawning a process
+
+v3 -> v4:
+* add skipLockedMemoryTest decorator to skip test if system's locked
+  memory limit is below the required threashold;
+* add to MemlockTest skipLockedMemoryTest decorator with 2 GB limit.
+
+v2 -> v3:
+Move tests to tests/functional dir, as the tests/avocado dir is being phased out.
+v2 was [PATCH v2] tests/avocado: add memlock tests.
+Supersedes: <20250414075702.9248-1-dtalexundeer@yandex-team.ru>
+
+v1 -> v2:
+In the previous send, i forgot to specify new patch version (v2)
+So i resend previous patch with version specified.
+
+
+Alexandr Moshkov (2):
+  tests/functional: add skipLockedMemoryTest decorator
+  tests/functional: add memlock tests
+
+ tests/functional/meson.build             |   1 +
+ tests/functional/qemu_test/__init__.py   |   2 +-
+ tests/functional/qemu_test/decorators.py |  18 ++++
+ tests/functional/test_memlock.py         | 102 +++++++++++++++++++++++
+ 4 files changed, 122 insertions(+), 1 deletion(-)
+ create mode 100755 tests/functional/test_memlock.py
+
 -- 
-2.17.1
+2.34.1
 
 
