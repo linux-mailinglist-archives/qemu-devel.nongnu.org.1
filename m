@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954AFA92E8B
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 02:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3ABA92E8F
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 02:02:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Z8H-0007Ab-2d; Thu, 17 Apr 2025 19:59:01 -0400
+	id 1u5Z8M-0007D5-Mw; Thu, 17 Apr 2025 19:59:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8E-00079z-7N
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:58:58 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8K-0007BZ-Ef
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:04 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8C-0003wI-J1
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:58:57 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43edecbfb94so13869775e9.1
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 16:58:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8I-0003zM-4d
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:04 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-39c266c1389so981902f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 16:59:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744934334; x=1745539134; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744934340; x=1745539140; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nXmcwYVTU4L9Er4BkpjqN8dz0sYT7bRQoVVZQuGVa5c=;
- b=eWW/rGz7gyAkjB9n4/xM/0D7bALy2i6b0ODl1zy/Z9l9cECg4JsfisZy6igp02nWSv
- InSCfAwmQgLLrrVT/UL4S8MRM2w7Ao3wdIvMs4hTYCIKkt5XcnFi4rza2609Gmh6UwBY
- kKjvHQx3Wvrt62orsxLDXEhscx62iKp5rHD7TlUI81h6Tknt1tRwlUqkvEF7VaKsTl03
- NBSTmBB5dnjTxgdi9RE4tLlgqLXgDBkYB9b+156IOK0UWoPN+Pq+47x4+LyBuqAv5EsI
- hPDX0nnD9VDhf0ziM7B2sNFZYmo8OG4hPINj+PoZMB9mLCbx4jZG3SWshExpmkMUk9TM
- G3Pg==
+ bh=Q1BCsGCYDAReQc5VOE8gGZJI4mqG04gHq5Y6jpZDaC4=;
+ b=uRC+/DsV7tbpXnAKDE2x41GqefzqPl4ARvYG4g/7xzZDWQij1hV90ryYOlOnnrQEAD
+ j398wwUwcVMtjEkhsHSFZBj7sfAl6uqr2/3+TreWxjnlYzCn/+pOjzRzwjSkg8KWjdML
+ 8RgcSj3IvnmgcjQ+Xh4wXTVvspykrIpl1Pob1LEPPmnjBU2+6K7j/Ci74+PPM0ETP/XP
+ SqDCDyvpNWVfQPJj9tDIRYejHoxyHzLuMkbrdV8EI5zvAHP7QWeAj0xp42Yn0APEJW9T
+ d875Qi5CSq8RDjRb78o6BYn354d94F/RBN8ACF3jbPAl74FQWo78iM/oBkSGHnTTuBGr
+ hdgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744934334; x=1745539134;
+ d=1e100.net; s=20230601; t=1744934340; x=1745539140;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nXmcwYVTU4L9Er4BkpjqN8dz0sYT7bRQoVVZQuGVa5c=;
- b=nqaf4KrBOn0P54KFF6izUtJ48Km08HoExdJ65t/NywjGb0khmuvtp5OpJN3lPSim9A
- /br2V9ztABb4PeJm2lp+RAMZeFFMiCnRuNU71RB32dLwUCkPBVvTKoI0Hy2D/qyr7WP4
- RLbej4VYnFry5KDeD2Dzfp5iKTVvL901vW/m+033XkUoysuFp3rUabdH9D/aaLvNRTs1
- n3uDO4nzqBtob19igVBv9dA+pGV1W6HT88flGWS9D0jHsbrHwNd259GrhR7CwjXCLRCq
- WDCbvDLab0gvR1Wm/UQI5crrhUqozrIyrAFc/9RXZgwO86xqyTZgMPgoUfbV/kkXk8kw
- rQYA==
-X-Gm-Message-State: AOJu0YwRQzW+5IW6F1446giPf1whQ3dQDQICat0GhgzN/fx6G7WVrolh
- GGS7HszoNLmQCBiXGSOdlouy+cz7kux9kqH8UQdpVe/UZZ+MAM0sxtvilOwJstN2+82WDq6vIR8
- v
-X-Gm-Gg: ASbGncuOvgHKI1DG67nn7UswzlrYiLJaehoH+fBfXFC0posorCh4jW89gJpqpRhCBV5
- NoLsWVkoP4PA6UBqEfLS4Ts35GI4xoxRFRfrybDxQgm4+FJhj2UdHmoeMHVKwWeVdI85UdpeXq7
- 6IbO/PhHYOk1+8y1UcH3q64Wd3qNK6kFq8uUJKPQaBLfJO1g1j3wBLytk4nL4BzWoPkinXbhObN
- PLEB/WuwfhWf9MQXEbglfInPxxICLPvEKaaVkasRiP0atR9F7aKeb3X8rOql9qHCvOpL3u4Sa6h
- ZfvN7UTEtyQCUbPReuxhtk3zXgzfuc5q/bnA5TSEr1Ktn2OqdQaO7Vjx1P0Bgx/LXWuezntStoC
- Gx8zRRJYr293xZWiAxVaS
-X-Google-Smtp-Source: AGHT+IEa4QsL8kYXIznZeaN0S6Qu4A+ZT7KgnZdEO66l6OAZ1zUuPKR7teizmiImXLqmM8swOrPVsw==
-X-Received: by 2002:a05:6000:1acb:b0:39c:268e:ae04 with SMTP id
- ffacd0b85a97d-39efb947474mr596531f8f.0.1744934334502; 
- Thu, 17 Apr 2025 16:58:54 -0700 (PDT)
+ bh=Q1BCsGCYDAReQc5VOE8gGZJI4mqG04gHq5Y6jpZDaC4=;
+ b=pEzkwojPuggxF3FWoG7cpRfVill2YhxgxruJgUtXX/M2Aml+yJ1tCoj4+EAbfnBEAA
+ w0tTxtsd+suUerkO/oLUy3O4Ne60tVP0G/nKz59KKnr8lEQqRMF2W19oBxBnLvTSCn0o
+ AlGnjE7Ay5WJ/KSTe/yDnYentJxcRNanXJ8I2Z8rraYJc7CMRuPE9tzu4tUzY67HO3ZY
+ gkdcHrhs+1qzI38vjx29LQEGN5M7YbERvqbMxtEgZHHkHwTIH0thQ0CFobzEHVnM33QP
+ nJqZXwa6MK3OT6eDKIZ4SEIao/I6CmGDlhTV+9+D4ykzhcAMg0JE7RwxgKLZW63FDwVQ
+ mINQ==
+X-Gm-Message-State: AOJu0YxVG3A0szVGYSRFsgULAKtioo5cVoVMbIBSLvpXe2Z9KUPmBCqb
+ DXrWbRHyw98x7TjT2kKYzrLdK9BWboeHKeIehmAKpjxd7PFVvBYFFM4JKw9r0xzhClpFkbVa47b
+ U
+X-Gm-Gg: ASbGnctdzg4rHjuB9UY9nODit+H55Z7gbQJNfkAlo4mMJWpUi2oVs+mFWLGaOorEIwB
+ VUTSL8S/z05ZC6qgeSbFXZL14OrlyBu/60PUiT2ASwW5KjbCydqnlIEKpo6/YVu2Yv9JroxT985
+ 9WUG0wM5SEh5CxHs/u8yMoen2PTCqrrbzd6af9yGzXGqFbvSJPGXHgV8v6gwDKfRaELX3zWLQrX
+ 2cb8Ii9n8cRQFHPkuA26y8EnpYOy4Jsrkfv74ZENPypz5k1gFGABEmMJpZ12U+EhnLjZAbKWWe+
+ Mo2Gq3NekNc7iqBx9Xjdys7JaU1cQ3Y8woe2NWYfnWWuUzJpvgjFeTe6fJstClfnReeNGxn6SPZ
+ 1ksyrNFCAe2N2w/f7SYZRN1t/I4wucLA=
+X-Google-Smtp-Source: AGHT+IEDpTMUX0uRQZSemp7qi19GY7B28O8lb3sq7waZh3jz3/xEgNL/nlTlZyOckM/lmaBr/nEviQ==
+X-Received: by 2002:a05:6000:1ac9:b0:391:253b:405d with SMTP id
+ ffacd0b85a97d-39efbac60femr501344f8f.41.1744934340449; 
+ Thu, 17 Apr 2025 16:59:00 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4406d6e034csm800435e9.39.2025.04.17.16.58.53
+ ffacd0b85a97d-39efa49312fsm1045843f8f.70.2025.04.17.16.58.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 17 Apr 2025 16:58:54 -0700 (PDT)
+ Thu, 17 Apr 2025 16:58:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>,
@@ -79,17 +79,17 @@ Cc: Andrey Smirnov <andrew.smirnov@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH 07/11] hw/arm/kzm: Define machine as generic QOM type
-Date: Fri, 18 Apr 2025 01:58:10 +0200
-Message-ID: <20250417235814.98677-8-philmd@linaro.org>
+Subject: [PATCH 08/11] hw/arm/msf2: Define machine as generic QOM type
+Date: Fri, 18 Apr 2025 01:58:11 +0200
+Message-ID: <20250417235814.98677-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250417235814.98677-1-philmd@linaro.org>
 References: <20250417235814.98677-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -119,38 +119,41 @@ register interfaces.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/kzm.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ hw/arm/msf2-som.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/kzm.c b/hw/arm/kzm.c
-index 362c1454099..b56cabe9f94 100644
---- a/hw/arm/kzm.c
-+++ b/hw/arm/kzm.c
-@@ -131,12 +131,22 @@ static void kzm_init(MachineState *machine)
-     }
+diff --git a/hw/arm/msf2-som.c b/hw/arm/msf2-som.c
+index 29c76c68605..6ce47eaa27a 100644
+--- a/hw/arm/msf2-som.c
++++ b/hw/arm/msf2-som.c
+@@ -96,16 +96,25 @@ static void emcraft_sf2_s2s010_init(MachineState *machine)
+                        0, soc->envm_size);
  }
  
--static void kzm_machine_init(MachineClass *mc)
-+static void kzm_machine_class_init(ObjectClass *oc, void *data)
+-static void emcraft_sf2_machine_init(MachineClass *mc)
++static void emcraft_sf2_machine_class_init(ObjectClass *oc, void *data)
  {
+     static const char * const valid_cpu_types[] = {
+         ARM_CPU_TYPE_NAME("cortex-m3"),
+         NULL
+     };
 +    MachineClass *mc = MACHINE_CLASS(oc);
-+
-     mc->desc = "ARM KZM Emulation Baseboard (ARM1136)";
-     mc->init = kzm_init;
-     mc->ignore_memory_transaction_failures = true;
-     mc->default_ram_id = "kzm.ram";
+ 
+     mc->desc = "SmartFusion2 SOM kit from Emcraft (M2S010)";
+     mc->init = emcraft_sf2_s2s010_init;
+     mc->valid_cpu_types = valid_cpu_types;
  }
  
--DEFINE_MACHINE("kzm", kzm_machine_init)
-+static const TypeInfo kzm_machine_types[] = {
+-DEFINE_MACHINE("emcraft-sf2", emcraft_sf2_machine_init)
++static const TypeInfo msf2_machine_types[] = {
 +    {
-+        .name           = MACHINE_TYPE_NAME("kzm"),
++        .name           = MACHINE_TYPE_NAME("emcraft-sf2"),
 +        .parent         = TYPE_MACHINE,
-+        .class_init     = kzm_machine_class_init,
++        .class_init     = emcraft_sf2_machine_class_init,
 +    },
 +};
 +
-+DEFINE_TYPES(kzm_machine_types)
++DEFINE_TYPES(msf2_machine_types)
 -- 
 2.47.1
 
