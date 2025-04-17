@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B998BA92E83
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 02:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3027A92E86
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 02:00:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Z8R-0007Fm-No; Thu, 17 Apr 2025 19:59:11 -0400
+	id 1u5Z8l-0007TC-Or; Thu, 17 Apr 2025 19:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8Q-0007FO-BP
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:10 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8V-0007Me-BA
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:15 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8O-00041z-3Q
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:10 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43edecbfb46so10226125e9.0
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 16:59:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8T-00042o-2V
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:14 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43cf05f0c3eso10390545e9.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 16:59:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744934346; x=1745539146; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744934351; x=1745539151; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yYW2b9J9rpRFJ7QVGZ2mZ7NVt+Xm7Wy9C2Beg149RFE=;
- b=Gwv5TRxm12t5Dg9LE9AnVS0VhVvj0SimlvsP37r1Fgjn9Ce1az2xyoECgV2aiu4TXp
- KvpM7Lpjk3uyjbnCk2n7RSBWI+Rzea5yG1yeGE/HyOnKBCWU9tGIF8Tbz3P2Bdl/FCyk
- GCeL2I2xzgVGAFesX9zh7ZI8fmeM23HJQppBCLpLwIcI5+p9GQ9SKG5VGijYHW+fc6dB
- Fm90vGlNM1Gmq7A/njg17S/z3W50ccByINopmBHa7+dIgY6/Bbm8VsCkMEZ/iEZFFBU6
- L+EvLR/4RGnuJFao6lMzqtAxy4wScXjIw1LwDMDKdZu7obXLWT3zEJgN5zx7AYIVzMLR
- o30w==
+ bh=6spRcSY1vluyMm8JkI6J8jm+JdzV06eHRFB0YKd4AUg=;
+ b=d33UQDQU0v1l+Saya3wMYH1Mlf6YsXqvVdHFI6Ls3w6OGSM1c+JA4nckl0r7vx/jn4
+ Df0kAQg7oQKop89NoYXVGY50XQEIoQnKHWzW1ap7E4LPhqAeWTRhOrgQrX0m7xFX4ZFO
+ hf1tKrltAX/Nk8Kd8eS39HBRBvXeBv7ADXjEyDfCKFvPIa1apUiUlNAA3d9cNicwVlyT
+ qY+3sXakWOEvZtS4rYnJxfbdKQt3lPfxCbILcrEX7MYNyV2IaKXvOu+RtOxrUgIBf5gM
+ k1oboIZjsRWaN/8ZyXprW5gBHIoDoBzMTKSvpyYLbUhP9ZhtzDiU8+NAgGnAAxwAMPzk
+ joVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744934346; x=1745539146;
+ d=1e100.net; s=20230601; t=1744934351; x=1745539151;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yYW2b9J9rpRFJ7QVGZ2mZ7NVt+Xm7Wy9C2Beg149RFE=;
- b=nA0xNWngWk4rTk+bNst0vzajik7wlF1OikVFC9eqyHR/hewJJWfoipJ1Yq0FtpqwSm
- SLB2ZQjjmhsjcCLE8wBE+oo/CBbfBYNr64O4LcK+U0EZHZlgDln8XPEs5UNfxwBwOz/Z
- 5f3JCi5+HnuwobdjqO+c2uk+k0FWeSowNdUbTowd8KAeoW93tnKh/q3Bd/RnP4hLMF6w
- KVEWIrHB3IPIE7/d0EN2/NMH0su9Z2FWbBGWDvnr3iEIAFZ5bsMz3Ri7+K/tl/sotNm0
- uNGTxxhmg0IpkApugOtYIsI/FciZG0UmNmjsAZy+md8/j4UYqJF5zG7F7hbOeoCLghZH
- 1wZg==
-X-Gm-Message-State: AOJu0YxCCcXHs4aC0vL6Jt8aw0yt5kj/aY2j6wg1LcRTE8RWnpAIEV4T
- 1gmbQBdF9p3+xjQDICb5xcPE9p60UabSMAbdaLyzqWY1G9VP2RhWwTX9Slr5Ibeb/plM883czUF
- l
-X-Gm-Gg: ASbGncubsSTAQdQ2M21WnJQDWlbUPZ0Kcu8TkkOD/+B/oapkVLLWqxaWNQeQ5RhNYB4
- wPd93RAkmCjSNSkwRvXVSjx46IvCYbYtvor931HoGjmcM7F+HShCsFVHScLIy2p95koC7wL1VNK
- DWrlZR7zbTs3gxBbx5bXESe41YzjIf+4Ps+UDQOcvdzRCoEYUzw6mru5/yJLTO6AESry9WauS/O
- nGgni5KhB8WDqYTKSGTVH9c+IgEkl8alfSWJbLkqjWa0b+C7VKIE5OOg+0f6CH6MlIsRhb0LKxN
- RuVLtIl8PERuTfaxmYpQ0M+ijTJ7yoGnNz9d4WzySXXZlphOSuDIUiU0xwEaUOOgkooj1V9OBTR
- UkUcS2EH87wNdfteNAzoe
-X-Google-Smtp-Source: AGHT+IG4glvgl098p3Kgp4m4MXxyBDyLul4G2KiAvdRKcT0sJ2LpC7CI4bSln0+AoYiWTf6dF3guRA==
-X-Received: by 2002:a05:6000:400d:b0:39c:1f19:f0c3 with SMTP id
- ffacd0b85a97d-39efbad3dffmr512039f8f.46.1744934346291; 
- Thu, 17 Apr 2025 16:59:06 -0700 (PDT)
+ bh=6spRcSY1vluyMm8JkI6J8jm+JdzV06eHRFB0YKd4AUg=;
+ b=cW2WCDNioZq7lDW61jVhdZrbr1NQlZV9ed+6dkauHExMzoyKNxMZrMRr4vIVubfaqd
+ Ch+mn4qo0pRCchu+6/7ECOBA0WEyZydzxMXkin2qW5+kFEguYauhjmXF9hNFpIHdZcUA
+ hrpqA/jLYGfgJdx4ult98wEEanACiiWDHJ/nHdtCKvpbhE8XPikGH/rdlrUxmGJp0hVk
+ Fs1upuqiy62xFg1aJSGe1/j4LKGR1UpJVb4ZnEu8jYAwkC2pL5CvC5AyA0uqYrT6R0Wj
+ hThT3MVEMq49jHxdFw2/O3AUCCv9Q5cNuHZxLFMDuS8Abk9yncJaJ7jlKknvFve8wSm+
+ XCqg==
+X-Gm-Message-State: AOJu0YzDiUCkIIO2JnCKlzZGCIZtitPH5VsWi8TrPpuXtQfg3KiQnWo2
+ ADFRE76lZCTtfOXFT/pn4aIQ8lQLkGIjORy+SXerIB+WuFYK7qxyNBj4Dbf9b5lx2J7R9SJzk6f
+ 2
+X-Gm-Gg: ASbGnctHL/UYgZNYLyw3PE5/DBgbHQYr7Uk7scyGrPMHQ8hDj8YvGhyVrB5dBzLZJ4U
+ 5zo36bD1oM1SyvDbSQlLmANKcQ5TKzNwr8cr7e265/YpozMSToHVN1Vn4aWCtY+MGtML+o/TW+T
+ l1bhjFqw5lWSpzR8r48H/ydvR2LyamWr2/HNJX80JSVcP9uSITl2RsfhMETf6zzfWpv7Ka4U77a
+ 7i/yTRGE+xbH9+E4JPj2mpGCqoVUo5qPJbZiAo6Q08NF0JtA6Fyvqmn+OKZi0UxE2nSHnWKe5yj
+ PSf/WdX5Pn1YD3BZdfP5crpyqW0xu0Ns/yxZwJfjcfbGnPkz3eHpjQDmzKz7jfMvhY+l2zgv++f
+ QdQ6ffcd/11NiRpivzTIG
+X-Google-Smtp-Source: AGHT+IGJeRSpkTsSNEDUftBbkBg4fMh73cBtzlZDtJDGc8SWPjwMCT5TM8xa4tl4Jz3a4gv0QwhstA==
+X-Received: by 2002:a05:600c:4688:b0:434:fa55:eb56 with SMTP id
+ 5b1f17b1804b1-4406ab7fa86mr4705495e9.7.1744934351390; 
+ Thu, 17 Apr 2025 16:59:11 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39efa43c018sm1058365f8f.43.2025.04.17.16.59.04
+ ffacd0b85a97d-39efa493145sm1047120f8f.71.2025.04.17.16.59.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 17 Apr 2025 16:59:05 -0700 (PDT)
+ Thu, 17 Apr 2025 16:59:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>,
@@ -79,17 +79,17 @@ Cc: Andrey Smirnov <andrew.smirnov@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH 09/11] hw/arm/musicpal: Define machine as generic QOM type
-Date: Fri, 18 Apr 2025 01:58:12 +0200
-Message-ID: <20250417235814.98677-10-philmd@linaro.org>
+Subject: [PATCH 10/11] hw/arm/orangepi: Define machine as generic QOM type
+Date: Fri, 18 Apr 2025 01:58:13 +0200
+Message-ID: <20250417235814.98677-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250417235814.98677-1-philmd@linaro.org>
 References: <20250417235814.98677-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -119,48 +119,42 @@ register interfaces.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/musicpal.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ hw/arm/orangepi.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/musicpal.c b/hw/arm/musicpal.c
-index 48a32c24079..f7c488cd1d6 100644
---- a/hw/arm/musicpal.c
-+++ b/hw/arm/musicpal.c
-@@ -1334,8 +1334,10 @@ static void musicpal_init(MachineState *machine)
-     arm_load_kernel(cpu, machine, &musicpal_binfo);
+diff --git a/hw/arm/orangepi.c b/hw/arm/orangepi.c
+index e0956880d11..6821033bfd7 100644
+--- a/hw/arm/orangepi.c
++++ b/hw/arm/orangepi.c
+@@ -103,12 +103,13 @@ static void orangepi_init(MachineState *machine)
+     arm_load_kernel(&h3->cpus[0], machine, &orangepi_binfo);
  }
  
--static void musicpal_machine_init(MachineClass *mc)
-+static void musicpal_machine_class_init(ObjectClass *oc, void *data)
+-static void orangepi_machine_init(MachineClass *mc)
++static void orangepi_machine_class_init(ObjectClass *oc, void *data)
  {
+     static const char * const valid_cpu_types[] = {
+         ARM_CPU_TYPE_NAME("cortex-a7"),
+         NULL
+     };
 +    MachineClass *mc = MACHINE_CLASS(oc);
-+
-     mc->desc = "Marvell 88w8618 / MusicPal (ARM926EJ-S)";
-     mc->init = musicpal_init;
-     mc->ignore_memory_transaction_failures = true;
-@@ -1346,8 +1348,6 @@ static void musicpal_machine_init(MachineClass *mc)
-     machine_add_audiodev_property(mc);
+ 
+     mc->desc = "Orange Pi PC (Cortex-A7)";
+     mc->init = orangepi_init;
+@@ -124,4 +125,12 @@ static void orangepi_machine_init(MachineClass *mc)
+     mc->auto_create_sdcard = true;
  }
  
--DEFINE_MACHINE("musicpal", musicpal_machine_init)
--
- static void mv88w8618_wlan_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -1375,3 +1375,13 @@ static void musicpal_register_types(void)
- }
- 
- type_init(musicpal_register_types)
-+
-+static const TypeInfo musicpal_types[] = {
+-DEFINE_MACHINE("orangepi-pc", orangepi_machine_init)
++static const TypeInfo orangepi_machine_types[] = {
 +    {
-+        .name           = MACHINE_TYPE_NAME("musicpal"),
++        .name           = MACHINE_TYPE_NAME("orangepi-pc"),
 +        .parent         = TYPE_MACHINE,
-+        .class_init     = musicpal_machine_class_init,
++        .class_init     = orangepi_machine_class_init,
 +    },
 +};
 +
-+DEFINE_TYPES(musicpal_types)
++DEFINE_TYPES(orangepi_machine_types)
 -- 
 2.47.1
 
