@@ -2,74 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6CEAA91510
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 09:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B783BA91511
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 09:24:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5JaK-0005X7-H3; Thu, 17 Apr 2025 03:22:56 -0400
+	id 1u5JaV-0005Z8-SF; Thu, 17 Apr 2025 03:23:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@icenowy.me>)
- id 1u5JaG-0005Wi-I5; Thu, 17 Apr 2025 03:22:52 -0400
-Received: from sender4-op-o15.zoho.com ([136.143.188.15])
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1u5JaT-0005Yq-Ek
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 03:23:05 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <uwu@icenowy.me>)
- id 1u5JaD-0000IO-Vn; Thu, 17 Apr 2025 03:22:52 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1744874541; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=etC8tz+N8jpqIabFPp0WtZQxw9N/+xszbsiRzYqDFylrXe0wz1Xlo/v29NZwUen7Lid1rc1Q4Z3Q3T3mK+qu7SCf5YnxnKHt9cULw8P97qIELDVBqCB/X46yGJYNNXTdL+5Qx2hxLnyX6Dok8ALnxp0OrXJIDeOsLHz58aYoOgk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1744874541;
- h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=xKsO1uho/0nTL/EI6evKCLfwRNYH8HmHj6cAJA8H24w=; 
- b=GN5GHIdLpWJ/YG+RF+rCvd+SX3e0Q7FJoVYJPWzOhOGwiBPze3joLvzI52TichJUlVUHnVWuhfvEnpSY7n3TojbZsh6VccmbGgPERxWenF+Rq4CnGYmozrt+S5zvts8WcREaDBJHWJ8WC1Gg2HQoLV8jU9U6gZ72/AZDK4SPLUs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=icenowy.me;
- spf=pass  smtp.mailfrom=uwu@icenowy.me;
- dmarc=pass header.from=<uwu@icenowy.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1744874541; 
- s=zmail2; d=icenowy.me; i=uwu@icenowy.me;
- h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=xKsO1uho/0nTL/EI6evKCLfwRNYH8HmHj6cAJA8H24w=;
- b=ZKgPlvc3UGzOsGUxej+8N/VIP2v5twszjIprFtndw2lq94GEMD+iYmIs1SwYwwr7
- qPtGCxAKP68+ES7Qab/npTxWBYWoNV5hAbdpV8E8izkADLaufvMsL5y01LnIqTbkcK+
- tbdkybaqkzW02TyQWCfDsckHcSvksaYZPCt8bByPM1f3Ct+XlmH/ykZ4KDEGiwwur9e
- 1diimrx3F7bnQK1uaLQFWWdLW515KSspf86QJDWfkqgPC3D29yJ/sIGqxQmY4Kt1aF7
- ESui+wTyoqHbv/+odvlZGEewnTz3U7QAUj4Jh5wNagjo5LY5hZOCFYkevogWoQzyLeY
- rSUsIUQE/Q==
-Received: by mx.zohomail.com with SMTPS id 174487453811922.435879893512833;
- Thu, 17 Apr 2025 00:22:18 -0700 (PDT)
-From: Icenowy Zheng <uwu@icenowy.me>
-To: Riku Voipio <riku.voipio@iki.fi>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- Icenowy Zheng <uwu@icenowy.me>
-Subject: [PATCH] common-user/host/riscv: use tail pseudoinstruction for
- calling tail
-Date: Thu, 17 Apr 2025 15:22:06 +0800
-Message-ID: <20250417072206.364008-1-uwu@icenowy.me>
-X-Mailer: git-send-email 2.49.0
+ (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
+ id 1u5JaP-0000KR-Vs
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 03:23:04 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c15:2b89:0:640:9815:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 8B82660BA5;
+ Thu, 17 Apr 2025 10:22:54 +0300 (MSK)
+Received: from dtalexundeer-nx.yandex-team.ru (unknown
+ [2a02:6b8:b081:b4a7::1:15])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id mMDENE2FXmI0-QU85yTm0; Thu, 17 Apr 2025 10:22:53 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1744874573;
+ bh=6vkcrufMD9Fan0ZZ7J+fwJE90F7HwL5Ni7txLgFp6/k=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=chxLdQUIHPt8VPx6aW1Jca/wcAieb9IsSmlg8M4UWGm5pkMyv0L8glb+WgOhlKMyh
+ 7E/VQ9wZts6yXOpXCiljHY1qd5W9uiKbVJVkDC7K406h238KgDLCeyvIHyY2GYcKp5
+ 8Xzli23fNqcHIxGo2qqots9jho7VPMAnKgRAFgy0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+To: qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>,
+ "yc-core @ yandex-team . ru" <yc-core@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Subject: [PATCH v4 0/2] tests/functional: add memlock tests
+Date: Thu, 17 Apr 2025 12:22:43 +0500
+Message-Id: <20250417072244.147510-1-dtalexundeer@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.15; envelope-from=uwu@icenowy.me;
- helo=sender4-op-o15.zoho.com
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -81,44 +74,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The j pseudoinstruction maps to a JAL instruction, which can only handle
-a jump to somewhere with a signed 20-bit destination. In case of static
-linking and LTO'ing this easily leads to "relocation truncated to fit"
-error.
+Add new tests to check the correctness of the `-overcommit memlock`
+option (possible values: off, on, on-fault) by using
+`/proc/{qemu_pid}/smaps` file to check in Size, Rss and Locked fields of
+anonymous segments:
 
-Switch to use tail pseudoinstruction, which is the standard way to
-tail-call a function in medium code model (emits AUIPC+JALR).
+* if `memlock=off`, then Locked = 0 on every anonymous smaps;
+* if `memlock=on`, then Size, Rss and Locked values must be equal for
+every anon smaps where Rss is not 0;
+* if `memlock=on-fault`, then Rss and Locked must be equal on every anon
+smaps and anonymous segment with Rss < Size must exists.
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
 ---
-P.S.
-It seems that moving it to common-user/ makes the file out of the
-MAINTAINERS section of "RISC-V TCG CPUS". I Manually added the
-maintainers there, but the MAINTAINERS file seems to need a change on
-this.
 
- common-user/host/riscv/safe-syscall.inc.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v3 -> v4:
+* add skipLockedMemoryTest decorator to skip test if system's locked
+  memory limit is below the required threashold;
+* add to MemlockTest skipLockedMemoryTest decorator with 2 GB limit.
 
-diff --git a/common-user/host/riscv/safe-syscall.inc.S b/common-user/host/riscv/safe-syscall.inc.S
-index dfe83c300e..c8b81e33d0 100644
---- a/common-user/host/riscv/safe-syscall.inc.S
-+++ b/common-user/host/riscv/safe-syscall.inc.S
-@@ -69,11 +69,11 @@ safe_syscall_end:
- 
-         /* code path setting errno */
- 0:      neg     a0, a0
--        j       safe_syscall_set_errno_tail
-+        tail    safe_syscall_set_errno_tail
- 
-         /* code path when we didn't execute the syscall */
- 2:      li      a0, QEMU_ERESTARTSYS
--        j       safe_syscall_set_errno_tail
-+        tail    safe_syscall_set_errno_tail
- 
-         .cfi_endproc
-         .size   safe_syscall_base, .-safe_syscall_base
+v2 -> v3:
+Move tests to tests/functional dir, as the tests/avocado dir is being phased out.
+v2 was [PATCH v2] tests/avocado: add memlock tests.
+Supersedes: <20250414075702.9248-1-dtalexundeer@yandex-team.ru>
+
+v1 -> v2:
+In the previous send, i forgot to specify new patch version (v2)
+So i resend previous patch with version specified.
+
+
+Alexandr Moshkov (2):
+  tests/functional: add skipLockedMemoryTest decorator
+  tests/functional: add memlock tests
+
+ tests/functional/meson.build             |   1 +
+ tests/functional/qemu_test/__init__.py   |   2 +-
+ tests/functional/qemu_test/decorators.py |  19 +++++
+ tests/functional/test_memlock.py         | 102 +++++++++++++++++++++++
+ 4 files changed, 123 insertions(+), 1 deletion(-)
+ create mode 100644 tests/functional/test_memlock.py
+
 -- 
-2.49.0
+2.34.1
 
 
