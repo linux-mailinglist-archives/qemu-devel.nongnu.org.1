@@ -2,99 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166E7A9157C
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 09:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6CBA91609
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 10:02:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Jrg-0005FC-OZ; Thu, 17 Apr 2025 03:40:52 -0400
+	id 1u5KBB-0004Ho-Sq; Thu, 17 Apr 2025 04:01:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ggala@linux.ibm.com>)
- id 1u5JrV-0005BL-6u; Thu, 17 Apr 2025 03:40:42 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ggala@linux.ibm.com>)
- id 1u5JrS-0004UQ-M3; Thu, 17 Apr 2025 03:40:40 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLdDMX016610;
- Thu, 17 Apr 2025 07:40:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=6BWkql7ZE/OPhVafq
- E5mSba3kezPZ5igPRuVmi4u31I=; b=cDgJXNL7iHSBF0lhEQWGaWSU5LAaqTUz8
- zf2r94WxdJ0oROa47fo8Nl55PCTdCSiB82GJr2jO5sBNIzNyzJ5EBGjnKOVRaaBe
- 2Mej74r+Gb4p8vC9oOTCgQbT1JJyfAzpYiZsZMv5RqVVUN4QO9/dyqlrRIIEqM82
- UNMEbhzYfeuDyQHj8NK09yY2+Jdry2VNWqMPuVw5w23ycVPyrv+ZeFPBnYdhnTut
- 83SLK0nDgqa511uo7e13SXfoy60q7aCAYYtRUU2vhEldzHkbXhtBuKl+hBdMhzRa
- qL5UI9KYGBi3rBAIxmn8EUQ57WbUBmzVQ8uS4G3KsKv5GZzzv+paQ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mn7t5y4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Apr 2025 07:40:36 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53H59ks1001255;
- Thu, 17 Apr 2025 07:40:35 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4602w04te7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Apr 2025 07:40:35 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53H7eX9Q17892026
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Apr 2025 07:40:34 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A943B58233;
- Thu, 17 Apr 2025 07:40:33 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 92EBE58232;
- Thu, 17 Apr 2025 07:40:32 +0000 (GMT)
-Received: from t83lp65.lnxne.boe (unknown [9.152.108.100])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 17 Apr 2025 07:40:32 +0000 (GMT)
-From: Gautam Gala <ggala@linux.ibm.com>
-To: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Steffen Eiden <seiden@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>
-Subject: [PATCH v3 3/3] target/s390x: Return UVC cmd code,
- RC and RRC value when DIAG 308 Subcode 10 fails to enter secure mode
-Date: Thu, 17 Apr 2025 09:40:27 +0200
-Message-ID: <20250417074027.711076-4-ggala@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417074027.711076-1-ggala@linux.ibm.com>
-References: <20250417074027.711076-1-ggala@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1u5KAx-0004Gw-Qj
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 04:00:50 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1u5KAv-0007Yv-Mu
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 04:00:47 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-39ee623fe64so424566f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 01:00:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1744876842; x=1745481642; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PbO9RPjualoYCm0gLCXj1guSu2ZhGAMd21Xk3hfmXaA=;
+ b=U//2XYzQrNJkNZcKjFF00VO5slZk6UX/v4BYkCFzwbdf0pQyFPtk0HXSOsMsSFXCi1
+ xPz064TtukxOK0eZpCJ7rPRT/RBta3F8IuQI13BtAcr95ysiJvzGxnYCrMFz2fOytlBp
+ Dis7+KEE9l6CfNy0qhfyr7OAYKQMxcDwVDyHBR0iqheL6IUPbcmi52i1iM60qjDpi8Rx
+ WVCNyevpDu6poZHfghuawyaGKmCfm5Zfa1BqPfrViY7O5TOX6Y8t6RmEbxKA1NvU9MOu
+ RpFKOncvVPuksrT6vRcCoAXFYvJfsrfqdD7d0ggVXXem1tAAO77K26VUJiMqW8UdQQ+G
+ N1OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744876842; x=1745481642;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=PbO9RPjualoYCm0gLCXj1guSu2ZhGAMd21Xk3hfmXaA=;
+ b=F1iSrZmtfwUVVygwNUicv1yZvoYU14P82KdZso44QvdAMfS4wAwhInXEnZFvepQiUh
+ D5M/XSXVQW8xbD6PXZuK/OYm1whyb1iD8GaC1sCemQo4EDkGlrnLukGbdZVZIVmilVfS
+ cHTzM7PWGZCfuImjPAxGwGYABOSNGFf484GczuXuREhyDbY5jyBY5txTAekVeDBCiNmn
+ 0A/pCb1lrbuJMvlsH/DBxcoI2h0lzBNd7X7IVRGtLHL9kX8Lbbhv0B9150qtQJPi1hos
+ yqBOGOXzRCKBlbw3P8icAQQiuTkdzoz3N7p+iDDggiPR0vmocOt6RQ6pn7lLBTK0trVJ
+ ZJrw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVohUsXmh+RJ3mFuPmUfF16fVdbA+1UnHIucOyjPTJfBivz/Z+h17SJIR3QxiB8+Rh37J7dIeLoEXOg@nongnu.org
+X-Gm-Message-State: AOJu0YyRCrNL2jmxZmsc+58tqsDIu480Sl1s8rj8rluqycy8x2fLm0tz
+ AX0bqg2zemYdIMnsnLO1c24u2k56FEvRd30cjz3IF94iCEbfuQvgdjvHUQjb13Y=
+X-Gm-Gg: ASbGncs4GnN1UYq63OJFa7STkxonX0kJ13wfJ7fi8+3oUwd4dJIeyvl7s9UcbxA6hwv
+ ksbLiw/pLudAV2GLtPPiBx09fU3SlZ4J8UZmPvnFHq1Ata/tqWGV6LNlBDXZo4IBDveSh6sgCra
+ 9Tv6nPY+XK+9w1tBO9Ur1F7ZcetTKPWJf88HxfitnQLYRKoYkySJ/INSHIQfU1VfeBH3dFQqu/B
+ 6zVrFaCWABlHCFgIBstwRO3jcAEKdSMz+NgIK1ZXbQSh9/xTxmycVj0FUAoNtwh488zBYxYEizy
+ JH867IGEnjQOlNwe2f2XvOkVAlkuPvhnYDSQ0Bsyqi8=
+X-Google-Smtp-Source: AGHT+IGFlihEBVT4ClppGZBY2WpMuuPKHBaYjZj4Hy3uariDX8j6rVdwBa18P1glssi+7C49ecTxLw==
+X-Received: by 2002:a5d:59ae:0:b0:39e:dbee:f644 with SMTP id
+ ffacd0b85a97d-39ee5b8954amr4206925f8f.46.1744876842300; 
+ Thu, 17 Apr 2025 01:00:42 -0700 (PDT)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-39eaf445742sm19501440f8f.95.2025.04.17.01.00.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Apr 2025 01:00:41 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id ADBB05F889;
+ Thu, 17 Apr 2025 09:00:40 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,  Stefan Hajnoczi
+ <stefanha@redhat.com>
+Subject: Re: [PATCH v2 0/3] virtio-gpu: fix blob unmapping sequence
+In-Reply-To: <20250416145701-mutt-send-email-mst@kernel.org> (Michael S.
+ Tsirkin's message of "Wed, 16 Apr 2025 14:57:32 -0400")
+References: <20250410122643.1747913-1-manos.pitsidianakis@linaro.org>
+ <87v7r5clft.fsf@draig.linaro.org>
+ <20250416145701-mutt-send-email-mst@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Thu, 17 Apr 2025 09:00:40 +0100
+Message-ID: <87jz7jcj4n.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=ANnAolku c=1 sm=1 tr=0 ts=6800b074 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=u5oHm6gD1yHHKBPRsp8A:9
-X-Proofpoint-GUID: HSK_c8shJAjt3tzWpNV55YavDP6y_w-f
-X-Proofpoint-ORIG-GUID: HSK_c8shJAjt3tzWpNV55YavDP6y_w-f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-17_01,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=999 adultscore=0 spamscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 phishscore=0 clxscore=1015 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504170057
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=ggala@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,322 +108,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend DIAG308 subcode 10 to return the UVC RC, RRC and command code
-in bit positions 32-47, 16-31, and 0-15 of register R1 + 1 if the
-function does not complete successfully (in addition to the
-previously returned diag response code in bit position 47-63).
+"Michael S. Tsirkin" <mst@redhat.com> writes:
 
-Signed-off-by: Gautam Gala <ggala@linux.ibm.com>
----
- hw/s390x/ipl.c             | 11 ++++++-----
- hw/s390x/ipl.h             |  6 ++++--
- hw/s390x/s390-virtio-ccw.c | 23 +++++++++++++++++------
- target/s390x/kvm/pv.c      | 35 ++++++++++++++++++++---------------
- target/s390x/kvm/pv.h      | 24 +++++++++++++++++-------
- 5 files changed, 64 insertions(+), 35 deletions(-)
+> On Tue, Apr 15, 2025 at 07:46:14PM +0100, Alex Benn=C3=A9e wrote:
+>> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+>>=20
+>> > A hang was observed when running a small kernel that exercised VIRTIO=
+=20
+>> > GPU under TCG. This is an edge-case and won't happen under typical=20
+>> > conditions.
+>>=20
+>> Should I (or MST?) pull these into a tree for 10.0 or should they be
+>> grabbed for when the tree opens with a Cc qemu-stable?
+>
+>
+> Let's just agree who takes them, then it's up to that maintainer.
+> You wanna merge them?
 
-diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-index ce6f6078d7..69e43396d3 100644
---- a/hw/s390x/ipl.c
-+++ b/hw/s390x/ipl.c
-@@ -26,7 +26,6 @@
- #include "hw/s390x/vfio-ccw.h"
- #include "hw/s390x/css.h"
- #include "hw/s390x/ebcdic.h"
--#include "target/s390x/kvm/pv.h"
- #include "hw/scsi/scsi.h"
- #include "hw/virtio/virtio-net.h"
- #include "ipl.h"
-@@ -676,7 +675,7 @@ static void s390_ipl_prepare_qipl(S390CPU *cpu)
-     cpu_physical_memory_unmap(addr, len, 1, len);
- }
- 
--int s390_ipl_prepare_pv_header(Error **errp)
-+int s390_ipl_prepare_pv_header(struct S390PvResponse *pv_resp, Error **errp)
- {
-     IplParameterBlock *ipib = s390_ipl_get_iplb_pv();
-     IPLBlockPV *ipib_pv = &ipib->pv;
-@@ -685,12 +684,13 @@ int s390_ipl_prepare_pv_header(Error **errp)
- 
-     cpu_physical_memory_read(ipib_pv->pv_header_addr, hdr,
-                              ipib_pv->pv_header_len);
--    rc = s390_pv_set_sec_parms((uintptr_t)hdr, ipib_pv->pv_header_len, errp);
-+    rc = s390_pv_set_sec_parms((uintptr_t)hdr, ipib_pv->pv_header_len,
-+                               pv_resp, errp);
-     g_free(hdr);
-     return rc;
- }
- 
--int s390_ipl_pv_unpack(void)
-+int s390_ipl_pv_unpack(struct S390PvResponse *pv_resp)
- {
-     IplParameterBlock *ipib = s390_ipl_get_iplb_pv();
-     IPLBlockPV *ipib_pv = &ipib->pv;
-@@ -699,7 +699,8 @@ int s390_ipl_pv_unpack(void)
-     for (i = 0; i < ipib_pv->num_comp; i++) {
-         rc = s390_pv_unpack(ipib_pv->components[i].addr,
-                             TARGET_PAGE_ALIGN(ipib_pv->components[i].size),
--                            ipib_pv->components[i].tweak_pref);
-+                            ipib_pv->components[i].tweak_pref,
-+                            pv_resp);
-         if (rc) {
-             break;
-         }
-diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
-index 8e3882d506..f4bc155103 100644
---- a/hw/s390x/ipl.h
-+++ b/hw/s390x/ipl.h
-@@ -18,6 +18,7 @@
- #include "hw/qdev-core.h"
- #include "hw/s390x/ipl/qipl.h"
- #include "qom/object.h"
-+#include "target/s390x/kvm/pv.h"
- 
- #define DIAG308_FLAGS_LP_VALID 0x80
- #define MAX_BOOT_DEVS 8 /* Max number of devices that may have a bootindex */
-@@ -26,8 +27,9 @@ void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp);
- void s390_ipl_fmt_loadparm(uint8_t *loadparm, char *str, Error **errp);
- void s390_rebuild_iplb(uint16_t index, IplParameterBlock *iplb);
- void s390_ipl_update_diag308(IplParameterBlock *iplb);
--int s390_ipl_prepare_pv_header(Error **errp);
--int s390_ipl_pv_unpack(void);
-+int s390_ipl_prepare_pv_header(struct S390PvResponse *pv_resp,
-+                               Error **errp);
-+int s390_ipl_pv_unpack(struct S390PvResponse *pv_resp);
- void s390_ipl_prepare_cpu(S390CPU *cpu);
- IplParameterBlock *s390_ipl_get_iplb(void);
- IplParameterBlock *s390_ipl_get_iplb_pv(void);
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index d9e683c5b4..0ca21621cc 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -364,7 +364,8 @@ static void s390_machine_unprotect(S390CcwMachineState *ms)
-     ram_block_discard_disable(false);
- }
- 
--static int s390_machine_protect(S390CcwMachineState *ms)
-+static int s390_machine_protect(S390CcwMachineState *ms,
-+                                struct S390PvResponse *pv_resp)
- {
-     Error *local_err = NULL;
-     int rc;
-@@ -407,19 +408,19 @@ static int s390_machine_protect(S390CcwMachineState *ms)
-     }
- 
-     /* Set SE header and unpack */
--    rc = s390_ipl_prepare_pv_header(&local_err);
-+    rc = s390_ipl_prepare_pv_header(pv_resp, &local_err);
-     if (rc) {
-         goto out_err;
-     }
- 
-     /* Decrypt image */
--    rc = s390_ipl_pv_unpack();
-+    rc = s390_ipl_pv_unpack(pv_resp);
-     if (rc) {
-         goto out_err;
-     }
- 
-     /* Verify integrity */
--    rc = s390_pv_verify();
-+    rc = s390_pv_verify(pv_resp);
-     if (rc) {
-         goto out_err;
-     }
-@@ -450,8 +451,17 @@ static void s390_pv_prepare_reset(S390CcwMachineState *ms)
- 
- static void s390_machine_reset(MachineState *machine, ResetType type)
- {
-+    union Diag308Response {
-+        struct {
-+            struct S390PvResponse pv_resp;
-+            uint16_t diag_rc;
-+        };
-+        uint64_t regs;
-+    };
-+
-     S390CcwMachineState *ms = S390_CCW_MACHINE(machine);
-     enum s390_reset reset_type;
-+    union Diag308Response resp;
-     CPUState *cs, *t;
-     S390CPU *cpu;
- 
-@@ -539,8 +549,9 @@ static void s390_machine_reset(MachineState *machine, ResetType type)
-         }
-         run_on_cpu(cs, s390_do_cpu_reset, RUN_ON_CPU_NULL);
- 
--        if (s390_machine_protect(ms)) {
--            s390_pv_inject_reset_error(cs);
-+        if (s390_machine_protect(ms, &resp.pv_resp)) {
-+            resp.diag_rc = DIAG_308_RC_INVAL_FOR_PV;
-+            s390_pv_inject_reset_error(cs, resp.regs);
-             /*
-              * Continue after the diag308 so the guest knows something
-              * went wrong.
-diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
-index 66194caaae..3483603811 100644
---- a/target/s390x/kvm/pv.c
-+++ b/target/s390x/kvm/pv.c
-@@ -30,7 +30,7 @@ static struct kvm_s390_pv_info_vm info_vm;
- static struct kvm_s390_pv_info_dump info_dump;
- 
- static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
--                         int *pvrc)
-+                         struct S390PvResponse *pv_resp)
- {
-     struct kvm_pv_cmd pv_cmd = {
-         .cmd = cmd,
-@@ -47,8 +47,10 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
-                      "IOCTL rc: %d", cmd, cmdname, pv_cmd.rc, pv_cmd.rrc,
-                      rc);
-     }
--    if (pvrc) {
--        *pvrc = pv_cmd.rc;
-+    if (pv_resp) {
-+        pv_resp->cmd = cmd;
-+        pv_resp->rc = pv_cmd.rc;
-+        pv_resp->rrc = pv_cmd.rrc;
-     }
-     return rc;
- }
-@@ -57,8 +59,9 @@ static int __s390_pv_cmd(uint32_t cmd, const char *cmdname, void *data,
-  * This macro lets us pass the command as a string to the function so
-  * we can print it on an error.
-  */
--#define s390_pv_cmd(cmd, data) __s390_pv_cmd(cmd, #cmd, data, NULL)
--#define s390_pv_cmd_pvrc(cmd, data, pvrc) __s390_pv_cmd(cmd, #cmd, data, pvrc)
-+#define s390_pv_cmd(cmd, data)  __s390_pv_cmd(cmd, #cmd, data, NULL)
-+#define s390_pv_cmd_pv_resp(cmd, data, pv_resp) \
-+                                __s390_pv_cmd(cmd, #cmd, data, pv_resp)
- 
- static void s390_pv_cmd_exit(uint32_t cmd, void *data)
- {
-@@ -146,18 +149,19 @@ bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms)
- }
- 
- #define DIAG_308_UV_RC_INVAL_HOSTKEY    0x0108
--int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp)
-+int s390_pv_set_sec_parms(uint64_t origin, uint64_t length,
-+                          struct S390PvResponse *pv_resp, Error **errp)
- {
--    int ret, pvrc;
-+    int ret;
-     struct kvm_s390_pv_sec_parm args = {
-         .origin = origin,
-         .length = length,
-     };
- 
--    ret = s390_pv_cmd_pvrc(KVM_PV_SET_SEC_PARMS, &args, &pvrc);
-+    ret = s390_pv_cmd_pv_resp(KVM_PV_SET_SEC_PARMS, &args, pv_resp);
-     if (ret) {
-         error_setg(errp, "Failed to set secure execution parameters");
--        if (pvrc == DIAG_308_UV_RC_INVAL_HOSTKEY) {
-+        if (pv_resp->rc == DIAG_308_UV_RC_INVAL_HOSTKEY) {
-             error_append_hint(errp, "Please check whether the image is "
-                                     "correctly encrypted for this host\n");
-         }
-@@ -169,7 +173,8 @@ int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp)
- /*
-  * Called for each component in the SE type IPL parameter block 0.
-  */
--int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak)
-+int s390_pv_unpack(uint64_t addr, uint64_t size,
-+                   uint64_t tweak, struct S390PvResponse *pv_resp)
- {
-     struct kvm_s390_pv_unp args = {
-         .addr = addr,
-@@ -177,7 +182,7 @@ int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak)
-         .tweak = tweak,
-     };
- 
--    return s390_pv_cmd(KVM_PV_UNPACK, &args);
-+    return s390_pv_cmd_pv_resp(KVM_PV_UNPACK, &args, pv_resp);
- }
- 
- void s390_pv_prep_reset(void)
-@@ -185,9 +190,9 @@ void s390_pv_prep_reset(void)
-     s390_pv_cmd_exit(KVM_PV_PREP_RESET, NULL);
- }
- 
--int s390_pv_verify(void)
-+int s390_pv_verify(struct S390PvResponse *pv_resp)
- {
--    return s390_pv_cmd(KVM_PV_VERIFY, NULL);
-+    return s390_pv_cmd_pv_resp(KVM_PV_VERIFY, NULL, pv_resp);
- }
- 
- void s390_pv_unshare(void)
-@@ -195,13 +200,13 @@ void s390_pv_unshare(void)
-     s390_pv_cmd_exit(KVM_PV_UNSHARE_ALL, NULL);
- }
- 
--void s390_pv_inject_reset_error(CPUState *cs)
-+void s390_pv_inject_reset_error(CPUState *cs, uint64_t resp)
- {
-     int r1 = (cs->kvm_run->s390_sieic.ipa & 0x00f0) >> 4;
-     CPUS390XState *env = &S390_CPU(cs)->env;
- 
-     /* Report that we are unable to enter protected mode */
--    env->regs[r1 + 1] = DIAG_308_RC_INVAL_FOR_PV;
-+    env->regs[r1 + 1] = resp;
- }
- 
- uint64_t kvm_s390_pv_dmp_get_size_cpu(void)
-diff --git a/target/s390x/kvm/pv.h b/target/s390x/kvm/pv.h
-index 5e9c8bd351..57bdd558dd 100644
---- a/target/s390x/kvm/pv.h
-+++ b/target/s390x/kvm/pv.h
-@@ -16,6 +16,12 @@
- #include "system/kvm.h"
- #include "hw/s390x/s390-virtio-ccw.h"
- 
-+struct S390PvResponse {
-+    uint16_t cmd;
-+    uint16_t rrc;
-+    uint16_t rc;
-+};
-+
- #ifdef CONFIG_KVM
- #include "cpu.h"
- 
-@@ -42,12 +48,14 @@ int s390_pv_query_info(void);
- int s390_pv_vm_enable(void);
- void s390_pv_vm_disable(void);
- bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms);
--int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp);
--int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak);
-+int s390_pv_set_sec_parms(uint64_t origin, uint64_t length,
-+                          struct S390PvResponse *pv_resp, Error **errp);
-+int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak,
-+                   struct S390PvResponse *pv_resp);
- void s390_pv_prep_reset(void);
--int s390_pv_verify(void);
-+int s390_pv_verify(struct S390PvResponse *pv_resp);
- void s390_pv_unshare(void);
--void s390_pv_inject_reset_error(CPUState *cs);
-+void s390_pv_inject_reset_error(CPUState *cs, uint64_t resp);
- uint64_t kvm_s390_pv_dmp_get_size_cpu(void);
- uint64_t kvm_s390_pv_dmp_get_size_mem_state(void);
- uint64_t kvm_s390_pv_dmp_get_size_completion_data(void);
-@@ -63,12 +71,14 @@ static inline int s390_pv_vm_enable(void) { return 0; }
- static inline void s390_pv_vm_disable(void) {}
- static inline bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms) { return false; }
- static inline int s390_pv_set_sec_parms(uint64_t origin, uint64_t length,
-+                                        struct S390PvResponse *pv_resp,
-                                         Error **errp) { return 0; }
--static inline int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak) { return 0; }
-+static inline int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak,
-+                                 struct S390PvResponse *pv_resp) { return 0; }
- static inline void s390_pv_prep_reset(void) {}
--static inline int s390_pv_verify(void) { return 0; }
-+static inline int s390_pv_verify(struct S390PvResponse *pv_resp) { return 0; }
- static inline void s390_pv_unshare(void) {}
--static inline void s390_pv_inject_reset_error(CPUState *cs) {};
-+static inline void s390_pv_inject_reset_error(CPUState *cs, uint64_t resp) {};
- static inline uint64_t kvm_s390_pv_dmp_get_size_cpu(void) { return 0; }
- static inline uint64_t kvm_s390_pv_dmp_get_size_mem_state(void) { return 0; }
- static inline uint64_t kvm_s390_pv_dmp_get_size_completion_data(void) { return 0; }
--- 
-2.49.0
+I'm happy to take them, I'll cc stable when the tree opens up again.
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
