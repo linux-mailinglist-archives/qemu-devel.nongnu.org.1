@@ -2,72 +2,203 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865ECA929A1
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 20:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F04A9295B
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 20:41:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5UCB-0004jz-CQ; Thu, 17 Apr 2025 14:42:43 -0400
+	id 1u5UAi-0003Fc-3H; Thu, 17 Apr 2025 14:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u5UBr-0004E3-L7
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 14:42:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
+ id 1u5UAf-0003Cg-Vq
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 14:41:10 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u5UBp-00030l-NE
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 14:42:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744915340;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9TSvZOan1GP0VtSPKXM3CrFSicyuh3mnQKzM0bDOKOE=;
- b=IOzIGX23uYZeouvqSfKL9z7OlxsxxKhw3US8vRIK2W4hfe/q8HCEGQTLTynXRppA5gloPT
- kjHgdaSzPZ4NFqtDvLfv6zMqsNvmJn10zxqUDNczXj3UUp1P1wouC0Sk6rcM6Tx8oFTL5W
- AYFq3iZqz3llJOG3J5VVqDchDoAhN1g=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-12-TpUChdHxOAGvLvui-XKwrw-1; Thu,
- 17 Apr 2025 14:42:14 -0400
-X-MC-Unique: TpUChdHxOAGvLvui-XKwrw-1
-X-Mimecast-MFC-AGG-ID: TpUChdHxOAGvLvui-XKwrw_1744915333
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9DF7119560AB; Thu, 17 Apr 2025 18:42:13 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.121])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F3F9C1956095; Thu, 17 Apr 2025 18:42:11 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, vsementsov@yandex-team.ru,
- John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 11/11] mirror: Allow QMP override to declare target already
- zero
-Date: Thu, 17 Apr 2025 13:39:16 -0500
-Message-ID: <20250417184133.105746-24-eblake@redhat.com>
-In-Reply-To: <20250417184133.105746-13-eblake@redhat.com>
-References: <20250417184133.105746-13-eblake@redhat.com>
-MIME-Version: 1.0
-Content-type: text/plain
+ (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
+ id 1u5UAb-0002ff-5N
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 14:41:09 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53HGMvZO009922;
+ Thu, 17 Apr 2025 18:40:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2023-11-20; bh=X06yxKXPjP+4qdAboiSD9Xz/FZI1GsT18SUJ49DR12k=; b=
+ JMP7m4fYxi5Hu/m0LfnwANcfDumOiNIuBh4zSBqXvBOViT6nIMYhbgycXUbxUOrS
+ CvG2jr/6+ApwRXFZw0LGVDRpKmjoKSZmoxKJYPxbm8l2AyWm0UUj96hqD7qqW+ab
+ gkahsg7AAOz9BWCbv1HLozkpFMblohRatFkSsztzplAO8hk4NH8r4IWYDGdpkGy1
+ 6U91ROocOOX/5vMV1jpo4m7pJsoIPXLXESTcsGeFPq98BLuu4G93C+SKJhHK5G+Y
+ AstOayzwGKyXJIjNuIHsZfWBobaOnLOqBMT3JA2ENCQ5VHWHszzGMlKaNI2TtwvA
+ fzCTGSPUB1c0ah9H3Ic/RQ==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46187xy3gt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Apr 2025 18:40:42 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 53HGqIPQ008541; Thu, 17 Apr 2025 18:40:41 GMT
+Received: from byapr05cu005.outbound.protection.outlook.com
+ (mail-westusazlp17010006.outbound.protection.outlook.com [40.93.1.6])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 460d2tp0m0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Apr 2025 18:40:41 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QR2FtHdUyoowddd4IgD7/o52ArAVuRJra9AkgMret1xGpWh3+kJ4s5BbskXw314VpEmaJVT/pKZ+rdqgfsSVW66DlID7QxwHNMi6IYEjilZmgDoiZneqG0ZP8NeYjgIFpHk2AYAjfSNrVPNLFmpDsOo2B8dRxCM39VWpy0EIbJpRN5BvxeALSxQL5OfRkfLQqP85aGEHxQzbzmwKTW8mcRkoFl/zi8UJcifpyXbGNLnVTGMIP+1Uv2Ciw/6MD7Bz3TuS0TCT1Id99GYgQQyalNCYjRMWYxWCHM2fjO7DyEv2aTfYTEob4DCRd1WTmaUpVmSzYLIZrttvkU1J832KnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X06yxKXPjP+4qdAboiSD9Xz/FZI1GsT18SUJ49DR12k=;
+ b=eI99sB5WU3Xv+35QDomI+iXJ9VvazyMH82OowfUNTM0NYR/3XCMIORCMCf3GY5obtOBi/X/4CbcqdX1bR7HbHOMZAzVIfa6UZs4ugRfaBBGi5Hp4qknyu1LtRaSWnP6rCvylsySezpRrKEgR9QcqLtkVnFJGUU8B+4Ur3Bl1PRZnVCIKz1SrgyJVpicfqdsM2/3y3xLsnjp6jmFe5MHT0au1/vLoWWisTaffP2pRuLG683DT+WbIWhwwJJKpX4nced3t2EBd0wGKKQPqPK6wB94wA6Q8zrP/n2tONjsQX8dZAIvnkZoRJ0yk2Ew93CgVY0+5n/0R4PsnsuQzlGZA0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X06yxKXPjP+4qdAboiSD9Xz/FZI1GsT18SUJ49DR12k=;
+ b=K7anvbnzkd4p4jmoVOh1fKh5ezs+vB04Q1zW1pzAo4RMxOOcmj4ntWrxUEhnt8rkbqW9LpdHcfcnsGZ9U6WJHzuZ0rdMOejsJuJrS5Zlv8IJNB3l54aftIA8PW4laSQBLqFYROSvfSPmLiuCqD6ofHymVQyCtEQoEjpkW3fqjgg=
+Received: from CY8PR10MB6851.namprd10.prod.outlook.com (2603:10b6:930:9f::11)
+ by IA1PR10MB6169.namprd10.prod.outlook.com (2603:10b6:208:3a7::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.34; Thu, 17 Apr
+ 2025 18:40:37 +0000
+Received: from CY8PR10MB6851.namprd10.prod.outlook.com
+ ([fe80::a218:72a4:83b2:56dc]) by CY8PR10MB6851.namprd10.prod.outlook.com
+ ([fe80::a218:72a4:83b2:56dc%4]) with mapi id 15.20.8655.022; Thu, 17 Apr 2025
+ 18:40:37 +0000
+Message-ID: <d1c656c3-c278-4509-bbcb-115b59178c14@oracle.com>
+Date: Thu, 17 Apr 2025 14:40:34 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V3 PATCH 01/13] acpi: Implement control method sleep button
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org
+Cc: mst@redhat.com, paul@xen.org, Jonathan.Cameron@huawei.com, git@dprinz.de, 
+ imammedo@redhat.com, miguel.luis@oracle.com
+References: <20250411201912.2872-1-annie.li@oracle.com>
+ <20250411202827.2904-1-annie.li@oracle.com>
+ <75bfdfcc-d030-4a59-bece-49f422799869@linaro.org>
+Content-Language: en-US
+From: Annie Li <annie.li@oracle.com>
+In-Reply-To: <75bfdfcc-d030-4a59-bece-49f422799869@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-ClientProxiedBy: BY5PR16CA0027.namprd16.prod.outlook.com
+ (2603:10b6:a03:1a0::40) To CY8PR10MB6851.namprd10.prod.outlook.com
+ (2603:10b6:930:9f::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR10MB6851:EE_|IA1PR10MB6169:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8711670e-3849-492f-dc67-08dd7ddf5852
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bFIwVkJJRTRFcHowMjM1OWZndWtqeDk2UkRUaHRkalNObk1OVVhvMWJLQ1Ju?=
+ =?utf-8?B?L3pLaEVPamN0SXhsdDh1dEM3OXBodEhQb1ZSRTV1b3NZZlk0REhsN0ozcldE?=
+ =?utf-8?B?MmxBMXVMTTRiVDNuZUNMMG9hdHhYSGZRV21lUzd1d3dtRUlwNVd4OWNUeUFT?=
+ =?utf-8?B?TlJ0Ty9jcEhSVWdYSlpoY0R2TTl3K3ErcmtUelh6VEoxNnZuMWNsKzRaSUNQ?=
+ =?utf-8?B?RUZHbi9yOTNlZmI4N2t5dTVTejk1VlpSakp5cXd3WHU3SkZVY21MN1Q5aDVq?=
+ =?utf-8?B?TE5Kb0FrdEpwZHdIQVQ3UnFScldJenFSWDNLVWo4K1JscUNSNzVoYzRjbVJN?=
+ =?utf-8?B?a1BwaytkUmFnQ1RmemxJODFrakZZeXo1VHg2d2E1bzF1QUVocHJzM3lHMVdy?=
+ =?utf-8?B?WnpVQjZtOFFJZ0hHN0ZoRmZoVnJqSmpDQjNGcWtaMW0wZXZPenVsRzhZaGVu?=
+ =?utf-8?B?SVVKVVh4R29yRXhBMGJGREpuVFo2ZXBSSW91NFdBNkp2OTR4ZlVyYjlhTEJa?=
+ =?utf-8?B?NnBFbFNNcTRRM1FBSXh4aXl5ZE1pOU5KemhTeElGUy9TK25WcU1pcTFiYlE1?=
+ =?utf-8?B?YVBEc3o4RnY4cGwvMDdTNjdOd2tuRTFmRktqYUpBMGx3aWlFSDJIUW54K3V3?=
+ =?utf-8?B?d2xhblAyWTJPdzhubEdPTXRyUGRJUFY2OGpJVmM0Sm9WV1ZSMFROdURWdUVs?=
+ =?utf-8?B?aE5yYUYzNE5DcXZ6eURGZ3JXRTZURGFTQWNYTGVEQTBVeDBYSGMyTUNNZEE4?=
+ =?utf-8?B?YUVnN0xFNGlrRGlnbU1KRWlIVERhOEVUUFNRTW1mTWhkOU1VOHdrODd0RW9r?=
+ =?utf-8?B?Qk1OUUFndDJ1TzhJL1FtU3RlZFFHNjNnSlRlZnBoK3ZOY1pXUFJaME9jTGZT?=
+ =?utf-8?B?bVg3aWR4b2ljT0dOcjVWd2VBNHlmYXpWWFpKK294TnYydUNtb2JWNlNNMWpZ?=
+ =?utf-8?B?b2Ivd25LbGQ4NHVMYko2WFJGU0lFTVhETVU4bWJ2ZmhyblY2SXJEVlR5OU0x?=
+ =?utf-8?B?eTFSdUptZ0RQcmpIMWhIWStOOTNORFRwL1ZySWdCWUpmbUZwcVhRcSthaTJW?=
+ =?utf-8?B?R1owZTNwMWpoR2lEVFZUdnIzSUJiSkxuaUFKSmJVRk94ZHc4UVptV0lHNzFt?=
+ =?utf-8?B?d2dORHFZQ20xVVdJS0I3OFpBb1ZjVjc4enlJK3BZME55dlk0Lzl4VFlTZkhh?=
+ =?utf-8?B?Q25EQ3NraGhkT1FBSG1ZSk02R3NDMGRmREJjNG5ZclhQcjgxcXAremF2ME5V?=
+ =?utf-8?B?b3EwdHF5RVpaeDgyS2syYk1rQ242OE9xSXhEeXlaZDQydmxYWG1wUXI5NGNI?=
+ =?utf-8?B?eGMzTEljSE1LbTJHSTJjMHN1RGY0N3ZScUdIbE1jZksweTlQYWZzTmVXZTZG?=
+ =?utf-8?B?ZW1XQjNMRGtaNnJwN2NNaXI2ZzlobmNpTEE0enVXMVpEQ3JlTTBoTktJbUFH?=
+ =?utf-8?B?cld3Rk9lVVZjSGNRK3g4ZnNWdFNFNGdscGdCNEFUc1JoM2lRZWZnZjRGdXZp?=
+ =?utf-8?B?MUtHT2JpWmhxNitxa0R2VHFhWVpZdTlsSUhLL211ZzFKekVlWHZmemZ4VDRT?=
+ =?utf-8?B?NWpXNjVXQVFWU05La0NzaVhEZWk1T3VGMFVHY3Rram5kMDBKd0kzMXczTXI2?=
+ =?utf-8?B?Nld0ZEhWMld0K0pXNnV1UTNlKzFFYU1tV0xWK0lwaWNObGVuZ1k0blRWV0p0?=
+ =?utf-8?B?QjQvck9na05udHV4QmpkQmRwYWRkbDRRNllwTFp5UG93V3FUSlZRQzd3ODBV?=
+ =?utf-8?B?bmg5ZFkzc3pXZjFoRXpWcjlMNlpmei9Qd2ZRaUZneU1sRFpveU5wMnVPYkFh?=
+ =?utf-8?B?bURpTStYcFovZ0NwMXc1Q1lFOS95Q1pGQ1hySmxQa0V1QnZRTlNXZ0ZwTVcy?=
+ =?utf-8?B?QkpRaWRFUlNya0hDYlVNNWtVUFJsUjVCYlBuOXhjNlBBTmc9PQ==?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY8PR10MB6851.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VWl5b1NaNFRnQjQ4S29XQ2xYajlVak9ncENUdkNvaUhTeityei9idEN0QlVG?=
+ =?utf-8?B?VUJDT3U1VlhsUVZmWmxTc0txSGxiZ1JsTEFiOHV0OGZXUFBWSWYxblFraVJO?=
+ =?utf-8?B?eHZYTnc4UmZCMFFLdm1OM0hxTUJlM08xdHE2NUZ1Sm9rdHhlcUFjNTc3NFJI?=
+ =?utf-8?B?Qm9HS1NXSCtMc29zL0JTekVJbktKRDFKcDB5M3BYbndnL3UwUVZ5SUJjVXBu?=
+ =?utf-8?B?Y3c1d2lrOUN2OXJMQXB3a2dtM3M3aHhKYjVPVk5PeUZGa0VxQVNMWmtaejho?=
+ =?utf-8?B?OGFIbFNRcWxvaVdxTkp2TjBtazl5aFRuODhMZHFpOHJJVk5zNlg4MDFNalYx?=
+ =?utf-8?B?eFdFdCswQ29aREN6OHNrYXNoSWh5cDU4dmdSUG40cW5RcGljK0VHWTg1R1hm?=
+ =?utf-8?B?UUgvRktzdzdLQ015cWdGWHdLaC9jKzBzbkh4d0R4L1M2bUtMWlNEUGlOSnEy?=
+ =?utf-8?B?dDlPNXhpamp6N0VnVHFpWUVJc0FvU1N1TFk0S3M0K1MxU3dNWkZFTWZsYkd3?=
+ =?utf-8?B?YmVadzRYQ3dzNHhiVW1YMHF4Ym11eDd5L2JPdEtWMjUvSmhXVGdRbFJLeGlR?=
+ =?utf-8?B?QTFYQjJTUE53akJoRXoxajNKNlZQVUQ2SjhFM2tqUDRHUklyamc3R2RySVlo?=
+ =?utf-8?B?cnVRMGFCc01pdzRmWVdqdWZmSk8rMFZCbmtwMmJqcXN2Nzh4UkswVkQyOVpT?=
+ =?utf-8?B?MDFOT092MkVwZkVjVXMzbURMaTdMUFpxNEw0SFFtcDhORFYreld6aUlDK3RD?=
+ =?utf-8?B?Q2p2eTJvLy83RnFmSmRGSkZPTFVVSXRvVWs3T0J5d0Z1c0NHQXRyZGhrSVJL?=
+ =?utf-8?B?VlduY3JlekUwSW5kQlhoUTh2QWFmb1UxSXY3Snp5VWRYT0VGcFpweFRqa21F?=
+ =?utf-8?B?dEV5WUVMZ0lOd3lRL3NZYzNnOGJ0QldxcllLd1l0M3dJd3d6cEZJcnBMNXRO?=
+ =?utf-8?B?bHd0ODFLUHBpa2FQMXVvYkxIa0lNYW9jYlhSZWZWdWp2dHZaUWJaNkdNUFdZ?=
+ =?utf-8?B?SzY1eVJoV3U5QWJ1NVJnUk5ENlZmUWo5N2YwZmd0OWE1bXIxNXJSSW9hTWVP?=
+ =?utf-8?B?WFNsTjlWN1V4OWZZSzZNQ3g0SmplQXVPVWExdnBqMTBRSlVJb1drRFA5QTV6?=
+ =?utf-8?B?MmZqTitnWE53MXA1WVB0Z3JpKy84RkhxUVNiemFIM1o3ZDJNSWNwZW9lWFpG?=
+ =?utf-8?B?dXhLTkY0VEZVdXE4TzZqS0NrcjZCY1BZQzdNcVNSbnZqR3JyTnpXVlhWNFlI?=
+ =?utf-8?B?cTZjUVUvL0d4STBwaVdEWG51R1VnZVZ0UEpnT0JSUDF4T0ljWnY3VEtRRjUz?=
+ =?utf-8?B?aFUxWTNWbk1EL21tK3NDNVR6TUFtUVgycCtid1B2SFZmaGNYYTNDRnZnNDFZ?=
+ =?utf-8?B?OWNYRXNmcXdKck5HdHlZa3JWSXYrRWlUdXRtVlpHNUxJM1d3eXRLTy9qMFdk?=
+ =?utf-8?B?azVhckt1RmNwTkNWMFNnTVdsUnl3MS9qdGplUUNsdGlIU0F5MGw5NkFTa2sy?=
+ =?utf-8?B?VE8zK2VUeW1TTm5zNm5McUUyeXdWcVRjcmhkZXRMclFOM01xZDMxTDlCZDVW?=
+ =?utf-8?B?d3gwRUwza21qTjlxNWZ1MGVKZm8vcUVDWVh5cjdzWjhOajNzS1hsdVdMQXVi?=
+ =?utf-8?B?dTJQcXRwbWZlMDF6WThBdzBVelhmb0Jxc0pvYnZQbHh3dy9Gd2c2UjgrbStD?=
+ =?utf-8?B?MlF1R2ZQVmlzZXVKMlZRSmZHRUJaVHhQR09PYkwwRWpKVEtYamx4K2llbElQ?=
+ =?utf-8?B?eDBpQUo5UCtpckt3TkV6SG5aL1dWYU8xTkRRVUw0V0t2OUdFUnR3aVNJUlMx?=
+ =?utf-8?B?a0hqblJxTnBKY05HUytzcFpNemJNblFVR0JxTms5c3VIVUw0R2o2Q0tES2hP?=
+ =?utf-8?B?SGJkZ1h5WHhhZjR4NVB2cjJQSk05empIK01HKzZkbVRzTmlNbmVadVI1MHl3?=
+ =?utf-8?B?OFcwSWNMcmRzSnhuNmlFdlJKVTE0T25RSWNXNW9Odm5uYy9WRE04eHNUTnBx?=
+ =?utf-8?B?YmpxbzNzZ2F4Zm1qWkhyQjBJNTFYMkJEZUM5ekQxd3hIYmpHcE9QZXl1WlBW?=
+ =?utf-8?B?TTk1c0NNSzJMcjI5by95aFNOYlBVejFiemRHLzV1OEt1MTF2b2NvU3N6b1pE?=
+ =?utf-8?Q?O9VDei9tjEgUKEpyygs0D707X?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: u8FZq5AuErjDnHBOuycihAVp6xL2dumGwTMCl3mrKmeIpPkN0u+J3PmRT44COLlS7p9GCWdpbBPqSSTDa9NF4edDRQox6okv7jT1CollMXb6Tx7TqEJtIYK7Zrei5zg+oVnZC3JHJ5rB289jtyTbk5AFmpHShikFqgAHgGngaiZIN4UWHzf1mXcw2DVu4kZ6Y7eCA1FtrVG4tHeTdO6IQsvOwt6mfbGoKMr0diM0rxgq3q1rOYzd7ONQReyhTrabhe/VcavjA2LgQRxR4EEgo4Xd5FLXbiKw2tB2efagA2xZ6gJ0ntALRjjg3xOuUSs5JBTcjxHQVSXj7EbhCWQg3Y42WdWaIyk3sxAfqoqXj3yr7z17bNn3oZisk4uSwpGV1TMp/oLsskhXz1y+yCUdN/kg8DP+hjWlFVwj0jyV8fcrBHdt/bHtM8qJ65YKrWH0eJ+DiXuDLC2tLkk2uP2QUUu7yfwBOue5ZSWBULTOYGUNA73f03i6R6lwno3PZasdXQ3DSEUQJKB3ZnHp6+BDkT7UFVurH3bw7oFGV/Gl/GpGX1sfLEiDLs6KNe9qFqWKNwsTVnWUfNT0z0dC/CnHWnw7bTy4Dq0YQMd62gYlzAM=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8711670e-3849-492f-dc67-08dd7ddf5852
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR10MB6851.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2025 18:40:37.3055 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: V+Y8kBPQ/GJKiPwepz9yk2sZEQ8T/DTrESnpKFAdN1ByTzx3Zh7+KOYGg4oDbOXxUr0PNslSH3yYdXPFE2flOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6169
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-17_06,2025-04-17_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ adultscore=0
+ phishscore=0 bulkscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502280000 definitions=main-2504170137
+X-Proofpoint-GUID: cB-JVf1UiInQIWdcR_mv71oMM8-7NWx0
+X-Proofpoint-ORIG-GUID: cB-JVf1UiInQIWdcR_mv71oMM8-7NWx0
+Received-SPF: pass client-ip=205.220.177.32; envelope-from=annie.li@oracle.com;
+ helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,232 +214,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU's attempts to learn whether a destination file starts life with
-all zero contents are just a heuristic.  There may be cases where the
-caller is aware of information that QEMU cannot learn quickly, in
-which case telling QEMU what to assume about the destination can make
-the mirror operation faster.  Given our existing example of "qemu-img
-convert --target-is-zero", it is time to expose this override in QMP
-for blockdev-mirror as well.
+Hi Gustavo,
 
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
- qapi/block-core.json                   |  8 +++++++-
- include/block/block_int-global-state.h |  3 ++-
- block/mirror.c                         | 23 +++++++++++++++--------
- blockdev.c                             | 18 +++++++++++-------
- tests/unit/test-block-iothread.c       |  2 +-
- 5 files changed, 36 insertions(+), 18 deletions(-)
+On 4/17/2025 1:28 PM, Gustavo Romero wrote:
+> Hi Annie,
+>
+> On 4/11/25 17:28, Annie Li wrote:
+>> The fixed hardware sleep button isn't appropriate for hardware
+>> reduced platform. This patch implements the control method sleep
+>> button in a separate source file so that the button can be added
+>> for various platforms.
+>>
+>> Co-developed-by: Miguel Luis <miguel.luis@oracle.com>
+>> Signed-off-by: Annie Li <annie.li@oracle.com>
+>> ---
+>>   hw/acpi/control_method_device.c         | 33 +++++++++++++++++++++++++
+>>   hw/acpi/meson.build                     |  1 +
+>>   include/hw/acpi/control_method_device.h | 21 ++++++++++++++++
+>>   3 files changed, 55 insertions(+)
+>>
+>> diff --git a/hw/acpi/control_method_device.c 
+>> b/hw/acpi/control_method_device.c
+>> new file mode 100644
+>> index 0000000000..c3b1d484c4
+>> --- /dev/null
+>> +++ b/hw/acpi/control_method_device.c
+>> @@ -0,0 +1,33 @@
+>> +/*
+>> + * Control Method Device
+>> + *
+>> + * Copyright (c) 2023 Oracle and/or its affiliates.
+>> + *
+>> + *
+>> + * Authors:
+>> + *     Annie Li <annie.li@oracle.com>
+>> + *
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "hw/acpi/control_method_device.h"
+>> +#include "hw/mem/nvdimm.h"
+>
+> NVDIMM is out of context here, please use:
+>
+> #include "hw/acpi/aml-build.h"
+>
+> instead for the aml_* symbols.
+Nod
+>
+>
+>> +/*
+>> + * The control method sleep button[ACPI v6.5 Section 4.8.2.2.2.2]
+>> + * resides in generic hardware address spaces. The sleep button
+>> + * is defined as _HID("PNP0C0E") that associates with device "SLPB".
+>> + */
+>> +void acpi_dsdt_add_sleep_button(Aml *scope)
+>> +{
+>> +    Aml *dev = aml_device(ACPI_SLEEP_BUTTON_DEVICE);
+>> +    aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0C0E")));
+>
+> I see that since GPE event handler L07 will be tied to the sleep button
+> device there is no _PRW variable defined here. Do you mind adding a 
+> comment
+> here about it? Something like:
+>
+> /* No _PRW, the sleeping button device is always tied to GPE L07 event 
+> handler. */
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index b1937780e19..7f70ec6d3cb 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -2538,6 +2538,11 @@
- #     disappear from the query list without user intervention.
- #     Defaults to true.  (Since 3.1)
- #
-+# @target-is-zero: Assume the destination reads as all zeroes before
-+#     the mirror started.  Setting this to true can speed up the
-+#     mirror.  Setting this to true when the destination is not
-+#     actually all zero can corrupt the destination.  (Since 10.1)
-+#
- # Since: 2.6
- #
- # .. qmp-example::
-@@ -2557,7 +2562,8 @@
-             '*on-target-error': 'BlockdevOnError',
-             '*filter-node-name': 'str',
-             '*copy-mode': 'MirrorCopyMode',
--            '*auto-finalize': 'bool', '*auto-dismiss': 'bool' },
-+            '*auto-finalize': 'bool', '*auto-dismiss': 'bool',
-+            '*target-is-zero': 'bool'},
-   'allow-preconfig': true }
+Will add comments about it.
 
- ##
-diff --git a/include/block/block_int-global-state.h b/include/block/block_int-global-state.h
-index eb2d92a2261..a2b96f90d44 100644
---- a/include/block/block_int-global-state.h
-+++ b/include/block/block_int-global-state.h
-@@ -140,6 +140,7 @@ BlockJob *commit_active_start(const char *job_id, BlockDriverState *bs,
-  * @mode: Whether to collapse all images in the chain to the target.
-  * @backing_mode: How to establish the target's backing chain after completion.
-  * @zero_target: Whether the target should be explicitly zero-initialized
-+ * @target_is_zero: Whether the target already is zero-initialized
-  * @on_source_error: The action to take upon error reading from the source.
-  * @on_target_error: The action to take upon error writing to the target.
-  * @unmap: Whether to unmap target where source sectors only contain zeroes.
-@@ -159,7 +160,7 @@ void mirror_start(const char *job_id, BlockDriverState *bs,
-                   int creation_flags, int64_t speed,
-                   uint32_t granularity, int64_t buf_size,
-                   MirrorSyncMode mode, BlockMirrorBackingMode backing_mode,
--                  bool zero_target,
-+                  bool zero_target, bool target_is_zero,
-                   BlockdevOnError on_source_error,
-                   BlockdevOnError on_target_error,
-                   bool unmap, const char *filter_node_name,
-diff --git a/block/mirror.c b/block/mirror.c
-index 4770d87abf6..22cca5d22aa 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -55,6 +55,8 @@ typedef struct MirrorBlockJob {
-     BlockMirrorBackingMode backing_mode;
-     /* Whether the target image requires explicit zero-initialization */
-     bool zero_target;
-+    /* Whether the target should be assumed to be already zero initialized */
-+    bool target_is_zero;
-     /*
-      * To be accesssed with atomics. Written only under the BQL (required by the
-      * current implementation of mirror_change()).
-@@ -883,9 +885,13 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
-         int64_t bitmap_length = DIV_ROUND_UP(s->bdev_length, s->granularity);
+Thanks
 
-         offset = 0;
--        bdrv_graph_co_rdlock();
--        ret = bdrv_co_is_all_zeroes(target_bs);
--        bdrv_graph_co_rdunlock();
-+        if (s->target_is_zero) {
-+            ret = 1;
-+        } else {
-+            bdrv_graph_co_rdlock();
-+            ret = bdrv_co_is_all_zeroes(target_bs);
-+            bdrv_graph_co_rdunlock();
-+        }
-         if (ret < 0) {
-             return ret;
-         }
-@@ -1782,7 +1788,7 @@ static BlockJob *mirror_start_job(
-                              const char *replaces, int64_t speed,
-                              uint32_t granularity, int64_t buf_size,
-                              BlockMirrorBackingMode backing_mode,
--                             bool zero_target,
-+                             bool zero_target, bool target_is_zero,
-                              BlockdevOnError on_source_error,
-                              BlockdevOnError on_target_error,
-                              bool unmap,
-@@ -1951,6 +1957,7 @@ static BlockJob *mirror_start_job(
-     s->is_none_mode = is_none_mode;
-     s->backing_mode = backing_mode;
-     s->zero_target = zero_target;
-+    s->target_is_zero = target_is_zero;
-     qatomic_set(&s->copy_mode, copy_mode);
-     s->base = base;
-     s->base_overlay = bdrv_find_overlay(bs, base);
-@@ -2079,7 +2086,7 @@ void mirror_start(const char *job_id, BlockDriverState *bs,
-                   int creation_flags, int64_t speed,
-                   uint32_t granularity, int64_t buf_size,
-                   MirrorSyncMode mode, BlockMirrorBackingMode backing_mode,
--                  bool zero_target,
-+                  bool zero_target, bool target_is_zero,
-                   BlockdevOnError on_source_error,
-                   BlockdevOnError on_target_error,
-                   bool unmap, const char *filter_node_name,
-@@ -2104,8 +2111,8 @@ void mirror_start(const char *job_id, BlockDriverState *bs,
+Annie
 
-     mirror_start_job(job_id, bs, creation_flags, target, replaces,
-                      speed, granularity, buf_size, backing_mode, zero_target,
--                     on_source_error, on_target_error, unmap, NULL, NULL,
--                     &mirror_job_driver, is_none_mode, base, false,
-+                     target_is_zero, on_source_error, on_target_error, unmap,
-+                     NULL, NULL, &mirror_job_driver, is_none_mode, base, false,
-                      filter_node_name, true, copy_mode, false, errp);
- }
-
-@@ -2131,7 +2138,7 @@ BlockJob *commit_active_start(const char *job_id, BlockDriverState *bs,
-
-     job = mirror_start_job(
-                      job_id, bs, creation_flags, base, NULL, speed, 0, 0,
--                     MIRROR_LEAVE_BACKING_CHAIN, false,
-+                     MIRROR_LEAVE_BACKING_CHAIN, false, false,
-                      on_error, on_error, true, cb, opaque,
-                      &commit_active_job_driver, false, base, auto_complete,
-                      filter_node_name, false, MIRROR_COPY_MODE_BACKGROUND,
-diff --git a/blockdev.c b/blockdev.c
-index 1d1f27cfff6..6f5373991c8 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -2798,7 +2798,7 @@ static void blockdev_mirror_common(const char *job_id, BlockDriverState *bs,
-                                    const char *replaces,
-                                    enum MirrorSyncMode sync,
-                                    BlockMirrorBackingMode backing_mode,
--                                   bool zero_target,
-+                                   bool zero_target, bool target_is_zero,
-                                    bool has_speed, int64_t speed,
-                                    bool has_granularity, uint32_t granularity,
-                                    bool has_buf_size, int64_t buf_size,
-@@ -2909,11 +2909,10 @@ static void blockdev_mirror_common(const char *job_id, BlockDriverState *bs,
-     /* pass the node name to replace to mirror start since it's loose coupling
-      * and will allow to check whether the node still exist at mirror completion
-      */
--    mirror_start(job_id, bs, target,
--                 replaces, job_flags,
-+    mirror_start(job_id, bs, target, replaces, job_flags,
-                  speed, granularity, buf_size, sync, backing_mode, zero_target,
--                 on_source_error, on_target_error, unmap, filter_node_name,
--                 copy_mode, errp);
-+                 target_is_zero, on_source_error, on_target_error, unmap,
-+                 filter_node_name, copy_mode, errp);
- }
-
- void qmp_drive_mirror(DriveMirror *arg, Error **errp)
-@@ -2928,6 +2927,7 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
-     int64_t size;
-     const char *format = arg->format;
-     bool zero_target;
-+    bool target_is_zero;
-     int ret;
-
-     bs = qmp_get_root_bs(arg->device, errp);
-@@ -3044,6 +3044,8 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
-     zero_target = (arg->sync == MIRROR_SYNC_MODE_FULL &&
-                    (arg->mode == NEW_IMAGE_MODE_EXISTING ||
-                     !bdrv_has_zero_init(target_bs)));
-+    target_is_zero = (arg->mode == NEW_IMAGE_MODE_ABSOLUTE_PATHS &&
-+                      bdrv_has_zero_init(target_bs));
-     bdrv_graph_rdunlock_main_loop();
-
-
-@@ -3055,7 +3057,7 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
-
-     blockdev_mirror_common(arg->job_id, bs, target_bs,
-                            arg->replaces, arg->sync,
--                           backing_mode, zero_target,
-+                           backing_mode, zero_target, target_is_zero,
-                            arg->has_speed, arg->speed,
-                            arg->has_granularity, arg->granularity,
-                            arg->has_buf_size, arg->buf_size,
-@@ -3085,6 +3087,7 @@ void qmp_blockdev_mirror(const char *job_id,
-                          bool has_copy_mode, MirrorCopyMode copy_mode,
-                          bool has_auto_finalize, bool auto_finalize,
-                          bool has_auto_dismiss, bool auto_dismiss,
-+                         bool has_target_is_zero, bool target_is_zero,
-                          Error **errp)
- {
-     BlockDriverState *bs;
-@@ -3115,7 +3118,8 @@ void qmp_blockdev_mirror(const char *job_id,
-
-     blockdev_mirror_common(job_id, bs, target_bs,
-                            replaces, sync, backing_mode,
--                           zero_target, has_speed, speed,
-+                           zero_target, has_target_is_zero && target_is_zero,
-+                           has_speed, speed,
-                            has_granularity, granularity,
-                            has_buf_size, buf_size,
-                            has_on_source_error, on_source_error,
-diff --git a/tests/unit/test-block-iothread.c b/tests/unit/test-block-iothread.c
-index 8189b32fd52..ffc878d401e 100644
---- a/tests/unit/test-block-iothread.c
-+++ b/tests/unit/test-block-iothread.c
-@@ -755,7 +755,7 @@ static void test_propagate_mirror(void)
-
-     /* Start a mirror job */
-     mirror_start("job0", src, target, NULL, JOB_DEFAULT, 0, 0, 0,
--                 MIRROR_SYNC_MODE_NONE, MIRROR_OPEN_BACKING_CHAIN, false,
-+                 MIRROR_SYNC_MODE_NONE, MIRROR_OPEN_BACKING_CHAIN, false, false,
-                  BLOCKDEV_ON_ERROR_REPORT, BLOCKDEV_ON_ERROR_REPORT,
-                  false, "filter_node", MIRROR_COPY_MODE_BACKGROUND,
-                  &error_abort);
--- 
-2.49.0
-
+>
+>
+> Cheers,
+> Gustavo
+>
+>> +    aml_append(dev, aml_operation_region("\\SLP", AML_SYSTEM_IO,
+>> +                                         aml_int(0x201), 0x1));
+>> +    Aml *field = aml_field("\\SLP", AML_BYTE_ACC, AML_NOLOCK,
+>> +                           AML_WRITE_AS_ZEROS);
+>> +    aml_append(field, aml_named_field("SBP", 1));
+>> +    aml_append(dev, field);
+>> +    aml_append(scope, dev);
+>> +}
+>> diff --git a/hw/acpi/meson.build b/hw/acpi/meson.build
+>> index 73f02b9691..a62e625cef 100644
+>> --- a/hw/acpi/meson.build
+>> +++ b/hw/acpi/meson.build
+>> @@ -17,6 +17,7 @@ acpi_ss.add(when: 'CONFIG_ACPI_CXL', if_true: 
+>> files('cxl.c'), if_false: files('c
+>>   acpi_ss.add(when: 'CONFIG_ACPI_VMGENID', if_true: files('vmgenid.c'))
+>>   acpi_ss.add(when: 'CONFIG_ACPI_VMCLOCK', if_true: files('vmclock.c'))
+>>   acpi_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: 
+>> files('generic_event_device.c'))
+>> +acpi_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: 
+>> files('control_method_device.c'))
+>>   acpi_ss.add(when: 'CONFIG_ACPI_HMAT', if_true: files('hmat.c'))
+>>   acpi_ss.add(when: 'CONFIG_ACPI_APEI', if_true: files('ghes.c'), 
+>> if_false: files('ghes-stub.c'))
+>>   acpi_ss.add(when: 'CONFIG_ACPI_PIIX4', if_true: files('piix4.c'))
+>> diff --git a/include/hw/acpi/control_method_device.h 
+>> b/include/hw/acpi/control_method_device.h
+>> new file mode 100644
+>> index 0000000000..079f1a74dd
+>> --- /dev/null
+>> +++ b/include/hw/acpi/control_method_device.h
+>> @@ -0,0 +1,21 @@
+>> +/*
+>> + * Control Method Device
+>> + *
+>> + * Copyright (c) 2023 Oracle and/or its affiliates.
+>> + *
+>> + *
+>> + * Authors:
+>> + *     Annie Li <annie.li@oracle.com>
+>> + *
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + */
+>> +
+>> +
+>> +#ifndef HW_ACPI_CONTROL_METHOD_DEVICE_H
+>> +#define HW_ACPI_CONTROL_NETHOD_DEVICE_H
+>> +
+>> +#define ACPI_SLEEP_BUTTON_DEVICE "SLPB"
+>> +
+>> +void acpi_dsdt_add_sleep_button(Aml *scope);
+>> +
+>> +#endif
+>
 
