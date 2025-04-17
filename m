@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3027A92E86
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 02:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDD5A92E85
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 02:00:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Z8l-0007TC-Or; Thu, 17 Apr 2025 19:59:33 -0400
+	id 1u5Z8u-0007jM-Ow; Thu, 17 Apr 2025 19:59:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8V-0007Me-BA
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:15 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8b-0007Wu-GB
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:23 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8T-00042o-2V
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:14 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43cf05f0c3eso10390545e9.0
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 16:59:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Z8Y-00043y-Hj
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 19:59:21 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43d2d952eb1so9672565e9.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 16:59:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744934351; x=1745539151; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744934356; x=1745539156; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6spRcSY1vluyMm8JkI6J8jm+JdzV06eHRFB0YKd4AUg=;
- b=d33UQDQU0v1l+Saya3wMYH1Mlf6YsXqvVdHFI6Ls3w6OGSM1c+JA4nckl0r7vx/jn4
- Df0kAQg7oQKop89NoYXVGY50XQEIoQnKHWzW1ap7E4LPhqAeWTRhOrgQrX0m7xFX4ZFO
- hf1tKrltAX/Nk8Kd8eS39HBRBvXeBv7ADXjEyDfCKFvPIa1apUiUlNAA3d9cNicwVlyT
- qY+3sXakWOEvZtS4rYnJxfbdKQt3lPfxCbILcrEX7MYNyV2IaKXvOu+RtOxrUgIBf5gM
- k1oboIZjsRWaN/8ZyXprW5gBHIoDoBzMTKSvpyYLbUhP9ZhtzDiU8+NAgGnAAxwAMPzk
- joVw==
+ bh=PYqZLGf8zmbZFL30Ike2RIyikST1A7pLxDDWpbB2TD0=;
+ b=SaKp7EjgfIqzFtkuNxD4GGT/ezwJwqluK5E621OGUovQ9fmgQH3YHb6U2kP3VEgp37
+ O+MibXr86Dw0cUU6oTZfobPECTsVTm8OftyhJCvqBRgQyv26DVCs59NGYd/fkRczWtR1
+ qCGajpb6y2+bedcxWTMda73UuvVPSvCxPMn5Inl69QKXwup8h1DGvHxuHgdoY6uUC+tH
+ otc4LNxdm56xrBsUPu2F5yKd2u4C3/uQAQUEpaZMMtvNT6e12vOL4Q7PVs4lkdCWpEkM
+ mZz6UUXrZGehZvgA1RMKZPBoFZieqTpfKH4WxIzoy2krBJY+eRyN51PdWZOUu8bjiOzu
+ LyBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744934351; x=1745539151;
+ d=1e100.net; s=20230601; t=1744934356; x=1745539156;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6spRcSY1vluyMm8JkI6J8jm+JdzV06eHRFB0YKd4AUg=;
- b=cW2WCDNioZq7lDW61jVhdZrbr1NQlZV9ed+6dkauHExMzoyKNxMZrMRr4vIVubfaqd
- Ch+mn4qo0pRCchu+6/7ECOBA0WEyZydzxMXkin2qW5+kFEguYauhjmXF9hNFpIHdZcUA
- hrpqA/jLYGfgJdx4ult98wEEanACiiWDHJ/nHdtCKvpbhE8XPikGH/rdlrUxmGJp0hVk
- Fs1upuqiy62xFg1aJSGe1/j4LKGR1UpJVb4ZnEu8jYAwkC2pL5CvC5AyA0uqYrT6R0Wj
- hThT3MVEMq49jHxdFw2/O3AUCCv9Q5cNuHZxLFMDuS8Abk9yncJaJ7jlKknvFve8wSm+
- XCqg==
-X-Gm-Message-State: AOJu0YzDiUCkIIO2JnCKlzZGCIZtitPH5VsWi8TrPpuXtQfg3KiQnWo2
- ADFRE76lZCTtfOXFT/pn4aIQ8lQLkGIjORy+SXerIB+WuFYK7qxyNBj4Dbf9b5lx2J7R9SJzk6f
- 2
-X-Gm-Gg: ASbGnctHL/UYgZNYLyw3PE5/DBgbHQYr7Uk7scyGrPMHQ8hDj8YvGhyVrB5dBzLZJ4U
- 5zo36bD1oM1SyvDbSQlLmANKcQ5TKzNwr8cr7e265/YpozMSToHVN1Vn4aWCtY+MGtML+o/TW+T
- l1bhjFqw5lWSpzR8r48H/ydvR2LyamWr2/HNJX80JSVcP9uSITl2RsfhMETf6zzfWpv7Ka4U77a
- 7i/yTRGE+xbH9+E4JPj2mpGCqoVUo5qPJbZiAo6Q08NF0JtA6Fyvqmn+OKZi0UxE2nSHnWKe5yj
- PSf/WdX5Pn1YD3BZdfP5crpyqW0xu0Ns/yxZwJfjcfbGnPkz3eHpjQDmzKz7jfMvhY+l2zgv++f
- QdQ6ffcd/11NiRpivzTIG
-X-Google-Smtp-Source: AGHT+IGJeRSpkTsSNEDUftBbkBg4fMh73cBtzlZDtJDGc8SWPjwMCT5TM8xa4tl4Jz3a4gv0QwhstA==
-X-Received: by 2002:a05:600c:4688:b0:434:fa55:eb56 with SMTP id
- 5b1f17b1804b1-4406ab7fa86mr4705495e9.7.1744934351390; 
- Thu, 17 Apr 2025 16:59:11 -0700 (PDT)
+ bh=PYqZLGf8zmbZFL30Ike2RIyikST1A7pLxDDWpbB2TD0=;
+ b=MFeCOemOxcrOCVAoEoxmm5ZpiwrDhpYBWp+C2d+3wxvzrQv21/nhV4ZZ3Scc4YQBZg
+ tc+Sfq1zXT9yKlPRjhMmqysoL7Dnk9H9imsRByZOFza84+pyTE/xo9IrQjefkqzOYJfG
+ OuhcveiwkFCOTL3w7TOJVmxSlT3fbGY3aef4rR9JpJ8lEuLMFyDHEvPkUFl1l1zqMAwy
+ UrkE1XMdBtXjv1lKEsemnve9+dx/Ob73C3EJjOED13msVzdmRSfa7xtYVOwn7nGlPg3X
+ YYlOn5hLlxTvBv67+MPbfB+P5HucMzbZUPeHhvVS0p/mH/aEVHfmr5TkSEwVd6zsWHte
+ VaPQ==
+X-Gm-Message-State: AOJu0YwTz1xje2i56NkEegsWaedWsfS87JQHOzxe+1qiTqojI8EftiXT
+ tB0K3pybypj3fwes4SD6vUh+seRaLb4yW+LkDZTzj5SCPVB7yh5ODFWErVZTDPB7/ewXugOF6sn
+ G
+X-Gm-Gg: ASbGncvvBfvy8y/lJxovftQ9vWVi/8l++lFYcjqkH49YWzqdE3xlckR1EfTBNQfeJyj
+ BU268GF7FvsIHDVfdKAUbFKig7tKbyWuuoxRKIXwSmudjxvljtsSJLEKQL6PfwPVPxU7V7vsGJK
+ G2Sdibr28l0xqyZUo19Kn98PhyRGhhk9fDSsZsKrx4eCxl2yJUL/ToHjHuhmyNW9wWEAo95sUNz
+ gnNoE//icjmtWtZVLMAveo4uj1HT5BwnW4RPCIyJZNeKvjqe/w0TvKFpjbwC7HStHVKPi7+zSkS
+ iFUo6xQGJUIW18kK5bMBckv66+E5w9//CS/FvDptO6fgThqYaJFUijuvgFUM+PnGNN9RewVu5GR
+ p40whffGZc+f0MBNPyP0c
+X-Google-Smtp-Source: AGHT+IGJABW0k2ibqMWO8ATcPJ9WqgOvVCj4YT/TVrnnqufMHLDDeO47A8u6MkWDWebqXbUjFD8LsA==
+X-Received: by 2002:a05:600c:3107:b0:43d:24d:bbe2 with SMTP id
+ 5b1f17b1804b1-4406ac1ff5bmr3586335e9.28.1744934356424; 
+ Thu, 17 Apr 2025 16:59:16 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39efa493145sm1047120f8f.71.2025.04.17.16.59.10
+ 5b1f17b1804b1-4406d6dfe4esm808665e9.33.2025.04.17.16.59.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 17 Apr 2025 16:59:10 -0700 (PDT)
+ Thu, 17 Apr 2025 16:59:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>,
@@ -79,17 +79,17 @@ Cc: Andrey Smirnov <andrew.smirnov@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH 10/11] hw/arm/orangepi: Define machine as generic QOM type
-Date: Fri, 18 Apr 2025 01:58:13 +0200
-Message-ID: <20250417235814.98677-11-philmd@linaro.org>
+Subject: [PATCH 11/11] hw/arm/stm32: Define machines as generic QOM types
+Date: Fri, 18 Apr 2025 01:58:14 +0200
+Message-ID: <20250417235814.98677-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250417235814.98677-1-philmd@linaro.org>
 References: <20250417235814.98677-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -119,42 +119,142 @@ register interfaces.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/orangepi.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ hw/arm/netduino2.c         | 13 +++++++++++--
+ hw/arm/netduinoplus2.c     | 13 +++++++++++--
+ hw/arm/olimex-stm32-h405.c | 13 +++++++++++--
+ hw/arm/stm32vldiscovery.c  | 13 +++++++++++--
+ 4 files changed, 44 insertions(+), 8 deletions(-)
 
-diff --git a/hw/arm/orangepi.c b/hw/arm/orangepi.c
-index e0956880d11..6821033bfd7 100644
---- a/hw/arm/orangepi.c
-+++ b/hw/arm/orangepi.c
-@@ -103,12 +103,13 @@ static void orangepi_init(MachineState *machine)
-     arm_load_kernel(&h3->cpus[0], machine, &orangepi_binfo);
+diff --git a/hw/arm/netduino2.c b/hw/arm/netduino2.c
+index df793c77fe1..52c30055d44 100644
+--- a/hw/arm/netduino2.c
++++ b/hw/arm/netduino2.c
+@@ -52,12 +52,13 @@ static void netduino2_init(MachineState *machine)
+                        0, FLASH_SIZE);
  }
  
--static void orangepi_machine_init(MachineClass *mc)
-+static void orangepi_machine_class_init(ObjectClass *oc, void *data)
+-static void netduino2_machine_init(MachineClass *mc)
++static void netduino2_machine_class_init(ObjectClass *oc, void *data)
  {
      static const char * const valid_cpu_types[] = {
-         ARM_CPU_TYPE_NAME("cortex-a7"),
+         ARM_CPU_TYPE_NAME("cortex-m3"),
          NULL
      };
 +    MachineClass *mc = MACHINE_CLASS(oc);
  
-     mc->desc = "Orange Pi PC (Cortex-A7)";
-     mc->init = orangepi_init;
-@@ -124,4 +125,12 @@ static void orangepi_machine_init(MachineClass *mc)
-     mc->auto_create_sdcard = true;
+     mc->desc = "Netduino 2 Machine (Cortex-M3)";
+     mc->init = netduino2_init;
+@@ -65,4 +66,12 @@ static void netduino2_machine_init(MachineClass *mc)
+     mc->ignore_memory_transaction_failures = true;
  }
  
--DEFINE_MACHINE("orangepi-pc", orangepi_machine_init)
-+static const TypeInfo orangepi_machine_types[] = {
+-DEFINE_MACHINE("netduino2", netduino2_machine_init)
++static const TypeInfo netduino_machine_types[] = {
 +    {
-+        .name           = MACHINE_TYPE_NAME("orangepi-pc"),
++        .name           = MACHINE_TYPE_NAME("netduino2"),
 +        .parent         = TYPE_MACHINE,
-+        .class_init     = orangepi_machine_class_init,
++        .class_init     = netduino2_machine_class_init,
 +    },
 +};
 +
-+DEFINE_TYPES(orangepi_machine_types)
++DEFINE_TYPES(netduino_machine_types)
+diff --git a/hw/arm/netduinoplus2.c b/hw/arm/netduinoplus2.c
+index 81b6334cf72..2735d3a0e2b 100644
+--- a/hw/arm/netduinoplus2.c
++++ b/hw/arm/netduinoplus2.c
+@@ -53,16 +53,25 @@ static void netduinoplus2_init(MachineState *machine)
+                        0, FLASH_SIZE);
+ }
+ 
+-static void netduinoplus2_machine_init(MachineClass *mc)
++static void netduinoplus2_machine_class_init(ObjectClass *oc, void *data)
+ {
+     static const char * const valid_cpu_types[] = {
+         ARM_CPU_TYPE_NAME("cortex-m4"),
+         NULL
+     };
++    MachineClass *mc = MACHINE_CLASS(oc);
+ 
+     mc->desc = "Netduino Plus 2 Machine (Cortex-M4)";
+     mc->init = netduinoplus2_init;
+     mc->valid_cpu_types = valid_cpu_types;
+ }
+ 
+-DEFINE_MACHINE("netduinoplus2", netduinoplus2_machine_init)
++static const TypeInfo netduino_machine_types[] = {
++    {
++        .name           = MACHINE_TYPE_NAME("netduinoplus2"),
++        .parent         = TYPE_MACHINE,
++        .class_init     = netduinoplus2_machine_class_init,
++    },
++};
++
++DEFINE_TYPES(netduino_machine_types)
+diff --git a/hw/arm/olimex-stm32-h405.c b/hw/arm/olimex-stm32-h405.c
+index 1f15620f9fd..795218c93cf 100644
+--- a/hw/arm/olimex-stm32-h405.c
++++ b/hw/arm/olimex-stm32-h405.c
+@@ -56,12 +56,13 @@ static void olimex_stm32_h405_init(MachineState *machine)
+                        0, FLASH_SIZE);
+ }
+ 
+-static void olimex_stm32_h405_machine_init(MachineClass *mc)
++static void olimex_stm32_machine_class_init(ObjectClass *oc, void *data)
+ {
+     static const char * const valid_cpu_types[] = {
+         ARM_CPU_TYPE_NAME("cortex-m4"),
+         NULL
+     };
++    MachineClass *mc = MACHINE_CLASS(oc);
+ 
+     mc->desc = "Olimex STM32-H405 (Cortex-M4)";
+     mc->init = olimex_stm32_h405_init;
+@@ -71,4 +72,12 @@ static void olimex_stm32_h405_machine_init(MachineClass *mc)
+     mc->default_ram_size = 0;
+ }
+ 
+-DEFINE_MACHINE("olimex-stm32-h405", olimex_stm32_h405_machine_init)
++static const TypeInfo olimex_stm32_machine_types[] = {
++    {
++        .name           = MACHINE_TYPE_NAME("olimex-stm32-h405"),
++        .parent         = TYPE_MACHINE,
++        .class_init     = olimex_stm32_machine_class_init,
++    },
++};
++
++DEFINE_TYPES(olimex_stm32_machine_types)
+diff --git a/hw/arm/stm32vldiscovery.c b/hw/arm/stm32vldiscovery.c
+index e6c1f5b8d7d..3a9728ca719 100644
+--- a/hw/arm/stm32vldiscovery.c
++++ b/hw/arm/stm32vldiscovery.c
+@@ -56,16 +56,25 @@ static void stm32vldiscovery_init(MachineState *machine)
+                        0, FLASH_SIZE);
+ }
+ 
+-static void stm32vldiscovery_machine_init(MachineClass *mc)
++static void stm32vldiscovery_machine_class_init(ObjectClass *oc, void *data)
+ {
+     static const char * const valid_cpu_types[] = {
+         ARM_CPU_TYPE_NAME("cortex-m3"),
+         NULL
+     };
++    MachineClass *mc = MACHINE_CLASS(oc);
+ 
+     mc->desc = "ST STM32VLDISCOVERY (Cortex-M3)";
+     mc->init = stm32vldiscovery_init;
+     mc->valid_cpu_types = valid_cpu_types;
+ }
+ 
+-DEFINE_MACHINE("stm32vldiscovery", stm32vldiscovery_machine_init)
++static const TypeInfo stm32vldiscovery_machine_types[] = {
++    {
++        .name           = MACHINE_TYPE_NAME("stm32vldiscovery"),
++        .parent         = TYPE_MACHINE,
++        .class_init     = stm32vldiscovery_machine_class_init,
++    },
++};
++
++DEFINE_TYPES(stm32vldiscovery_machine_types)
 -- 
 2.47.1
 
