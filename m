@@ -2,52 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2328A91945
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 12:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5E8A91946
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 12:26:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5MRD-00064u-Iz; Thu, 17 Apr 2025 06:25:43 -0400
+	id 1u5MRG-00065c-0A; Thu, 17 Apr 2025 06:25:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1u5MRA-00064V-FC
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 06:25:40 -0400
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1u5MRB-00064l-AJ
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 06:25:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1u5MR8-00074e-0q
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 06:25:40 -0400
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1u5MR8-000751-4E
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 06:25:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744885532;
+ s=mimecast20190719; t=1744885534;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=MI5NgmsiZ+W0z1QyNOF9gCIoLi9EptTem0xn+ToDAxQ=;
- b=ZmEvgqnB64RzJTNNr5rXDdt03OL3Yo9EdgRAbZlhSTGMZwvC1lRpqs4QitI/It5VFZ/IdZ
- NhyrJ8wYzYOFN8tLb0bVt77LuJd2hicY0yESbUnSG9JuUf4iD0ztXt/12JfsDifvlGfG7z
- 1+XXsfHyZNrcY/joY6Gkl3SIH+3QlNY=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bQTfnMByU8MnkTwicEltHqnzuHODFDc3zPKI3tdjsME=;
+ b=bXNtHm/TBu7Vr6yr8NQdV82+Of3fFFyfyP0Q3sLZS/2zb7+KDZsbFOQZ6x0Odl1hbOrxEN
+ Ce7kYJlhMpk/02EA8VVtZS59GPXN6mFuFpEfn3hoNLmRPEJ2oE3BSjO+OtTfKynBN0fNl5
+ UZ7XzQ5RMvfUmUE1zuDXL8q7m2r+k1g=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-sXioDS2DOzaADh6oygl_rg-1; Thu,
- 17 Apr 2025 06:25:30 -0400
-X-MC-Unique: sXioDS2DOzaADh6oygl_rg-1
-X-Mimecast-MFC-AGG-ID: sXioDS2DOzaADh6oygl_rg_1744885529
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-278-R1egKHK2M2StLf-5ebdLIg-1; Thu,
+ 17 Apr 2025 06:25:33 -0400
+X-MC-Unique: R1egKHK2M2StLf-5ebdLIg-1
+X-Mimecast-MFC-AGG-ID: R1egKHK2M2StLf-5ebdLIg_1744885532
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7C85F1800875
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 10:25:29 +0000 (UTC)
+ id BC0C018004A7
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 10:25:32 +0000 (UTC)
 Received: from server.redhat.com (unknown [10.72.112.10])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2246E1800352; Thu, 17 Apr 2025 10:25:25 +0000 (UTC)
+ id 3D9161800965; Thu, 17 Apr 2025 10:25:29 +0000 (UTC)
 From: Cindy Lu <lulu@redhat.com>
 To: lulu@redhat.com, mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH v7 0/4] virtio_net: Add the check for vdpa's mac address
-Date: Thu, 17 Apr 2025 18:24:14 +0800
-Message-ID: <20250417102522.4125379-1-lulu@redhat.com>
+Subject: [PATCH v7 1/4] vhost_vdpa : Add a new parameter to enable check mac
+ address
+Date: Thu, 17 Apr 2025 18:24:15 +0800
+Message-ID: <20250417102522.4125379-2-lulu@redhat.com>
+In-Reply-To: <20250417102522.4125379-1-lulu@redhat.com>
+References: <20250417102522.4125379-1-lulu@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
@@ -76,51 +80,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When using a VDPA device, it is important to ensure that the MAC address
-is correctly set. We add a new parameter to enable this check in this
-patch series.
-Only three MAC configurations are acceptable; any others will fail to boot
+When using a VDPA device, it's important to ensure that the MAC
+address is correctly set.
+This patch adds a new QEMU command line parameter to enable MAC
+address verification,  which is enabled by default.
 
-The usage is:
+Usage example:
 ....
 -netdev type=vhost-vdpa,vhostdev=/dev/vhost-vdpa-0,id=vhost-vdpa0,check-mac=true\
 -device virtio-net-pci,netdev=vhost-vdpa0\
 ....
+To disable this check:
+....
+-netdev type=vhost-vdpa,vhostdev=/dev/vhost-vdpa-0,id=vhost-vdpa0,check-mac=false\
+-device virtio-net-pci,netdev=vhost-vdpa0\
+....
 
-tested by ConnectX-6 Dx/vdpa_sim device
+Signed-off-by: Cindy Lu <lulu@redhat.com>
+---
+ include/net/net.h | 1 +
+ net/vhost-vdpa.c  | 5 +++++
+ qapi/net.json     | 5 +++++
+ 3 files changed, 11 insertions(+)
 
-change in v3
-1. Add a new parameter to enable the check and keep the old behavior
-2. Adjust the comment and make it clearer
-
-change in v4
-1. Change the new parameter's name to check-mac
-2. Change the comment and make it clearer
-
-change in v5
-1. These patches haven't been merged for a while, so I rebased
-  them with the latest code and resubmitted
-
-change in v6
-1. Address comments
-2. Rebase with the latest QEMU
-
-change in v7
-1. Enable this check by default
-2. Address comments and rebase with the latest QEMU
-
-Cindy Lu (4):
-  vhost_vdpa : Add a new parameter to enable check mac address
-  virtio_net: Add the check for vdpa's mac address
-  virtio_net: Add second acceptable configuration for MAC setup
-  virtio_net: Add third acceptable configuration for MAC setup.
-
- hw/net/virtio-net.c | 65 ++++++++++++++++++++++++++++++++++++++++++++-
- include/net/net.h   |  1 +
- net/vhost-vdpa.c    |  5 ++++
- qapi/net.json       |  5 ++++
- 4 files changed, 75 insertions(+), 1 deletion(-)
-
+diff --git a/include/net/net.h b/include/net/net.h
+index cdd5b109b0..fac1951b6e 100644
+--- a/include/net/net.h
++++ b/include/net/net.h
+@@ -112,6 +112,7 @@ struct NetClientState {
+     bool is_netdev;
+     bool do_not_pad; /* do not pad to the minimum ethernet frame length */
+     bool is_datapath;
++    bool check_mac;
+     QTAILQ_HEAD(, NetFilterState) filters;
+ };
+ 
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 7ca8b46eee..7dbe6cf65c 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -1871,6 +1871,11 @@ int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
+         if (!ncs[i])
+             goto err;
+     }
++    /* Enable the mac check by default */
++    if (opts->has_check_mac)
++        ncs[0]->check_mac = opts->check_mac;
++    else
++        ncs[0]->check_mac = true;
+ 
+     if (has_cvq) {
+         VhostVDPAState *s0 = DO_UPCAST(VhostVDPAState, nc, ncs[0]);
+diff --git a/qapi/net.json b/qapi/net.json
+index 310cc4fd19..0607c83833 100644
+--- a/qapi/net.json
++++ b/qapi/net.json
+@@ -510,6 +510,10 @@
+ # @queues: number of queues to be created for multiqueue vhost-vdpa
+ #     (default: 1)
+ #
++# @check-mac: Enable the check for whether the device's MAC address
++#     and the MAC in QEMU command line are acceptable for booting.
++#     (default: true)
++#
+ # @x-svq: Start device with (experimental) shadow virtqueue.  (Since
+ #     7.1) (default: false)
+ #
+@@ -524,6 +528,7 @@
+     '*vhostdev':     'str',
+     '*vhostfd':      'str',
+     '*queues':       'int',
++    '*check-mac':    'bool',
+     '*x-svq':        {'type': 'bool', 'features' : [ 'unstable'] } } }
+ 
+ ##
 -- 
 2.45.0
 
