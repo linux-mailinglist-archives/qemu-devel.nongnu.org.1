@@ -2,55 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80998A9243B
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 19:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D723CA92238
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 18:07:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5TDx-0002We-1Z; Thu, 17 Apr 2025 13:40:29 -0400
+	id 1u5RkN-0005RM-VA; Thu, 17 Apr 2025 12:05:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1u5T8J-00052D-NQ
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 13:34:40 -0400
-Received: from mail-a.sr.ht ([46.23.81.152])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1u5T8G-0001oM-SM
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 13:34:39 -0400
-DKIM-Signature: a=rsa-sha256; bh=fpS5hvuprs6AKLIPdLybYQh+eDUT6/HtuHF3AIBEoH8=; 
- c=simple/simple; d=git.sr.ht;
- h=From:Date:Subject:Reply-to:In-Reply-To:To:Cc; q=dns/txt; s=20240113;
- t=1744911270; v=1;
- b=VK3SRtTMmd5ApJXhJNusJAx9PZE4YmkQ6hnZlQwVFkuIHU1rj/u7Fm2PIg/p5QVPYXfWh5YM
- 5xiigY8dDbfPOqxl5ZyI1IRTXNDYEXxAgdY/7i/8Re/F7t/UQyf1sghzq5xGFocyNniUEDoMfHU
- CTLaXKIx1RUAW0JUGUd83y7BsAdtRX9gqwky7dZqp/laG4tK8AbyabFZGHromLnGOC77rA+B3Nz
- UXweSYcvuNWvB/G5sYDzPckxwpRWfwfiNp+YiXHGsf8ierMWWH5W00PO9Hds8skIDdmD9KWOKAs
- mCQ0etgQ+HZc0mZUMPae+MpI9a7vr0tlSOIY/STikxnrA==
-Received: from git.sr.ht (unknown [46.23.81.155])
- by mail-a.sr.ht (Postfix) with ESMTPSA id 88CE62121F;
- Thu, 17 Apr 2025 17:34:30 +0000 (UTC)
-From: ~percival_foss <percival_foss@git.sr.ht>
-Date: Wed, 16 Apr 2025 15:22:29 -0400
-Subject: [PATCH qemu 2/2] Added TCG cross-page overflow test
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u5RkI-0005RA-M1
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:05:46 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u5RkE-00028x-Vu
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 12:05:45 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A7C441F391;
+ Thu, 17 Apr 2025 16:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1744905940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Aq/R5FECjLRK3/ZFP1SwZE5j4Cp3GhTcl69BgN8anFc=;
+ b=msFhv7WOBYcjxHhF2Jp11FGFRLP6mwVRkcCEVoCUON/x0205vIwOHkzj7mII+Qt9javUxG
+ vw/Gnrejf+TtqYBzw8nMqj8iH7zEwbHJpjd63qJg0HqW0v0X3uJx3nzp6IY8d/9TE/dsTJ
+ Gs8iqbsomSLYLnJIjzySVqi3Y0JlIBg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1744905940;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Aq/R5FECjLRK3/ZFP1SwZE5j4Cp3GhTcl69BgN8anFc=;
+ b=XzJW0o+IIEL5Pr3/ygvdLOLs6g2fLBniXVDffqho0+bE8Aw2Gry9WQWviby3JJhqTmp1Eo
+ Jse5FyWi/OZwUuAg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1744905940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Aq/R5FECjLRK3/ZFP1SwZE5j4Cp3GhTcl69BgN8anFc=;
+ b=msFhv7WOBYcjxHhF2Jp11FGFRLP6mwVRkcCEVoCUON/x0205vIwOHkzj7mII+Qt9javUxG
+ vw/Gnrejf+TtqYBzw8nMqj8iH7zEwbHJpjd63qJg0HqW0v0X3uJx3nzp6IY8d/9TE/dsTJ
+ Gs8iqbsomSLYLnJIjzySVqi3Y0JlIBg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1744905940;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Aq/R5FECjLRK3/ZFP1SwZE5j4Cp3GhTcl69BgN8anFc=;
+ b=XzJW0o+IIEL5Pr3/ygvdLOLs6g2fLBniXVDffqho0+bE8Aw2Gry9WQWviby3JJhqTmp1Eo
+ Jse5FyWi/OZwUuAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 16F1E1388F;
+ Thu, 17 Apr 2025 16:05:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id nE2BMdMmAWhacQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 17 Apr 2025 16:05:39 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, berrange@redhat.com, Prasad
+ Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH v9 0/7] Allow to enable multifd and postcopy migration
+ together
+In-Reply-To: <CAE8KmOzzn7g1=pd2J325gAf4ffmGALKoHdgL17So4KawxkZdbg@mail.gmail.com>
+References: <20250411114534.3370816-1-ppandit@redhat.com>
+ <87ecxteym0.fsf@suse.de> <87bjswfeis.fsf@suse.de>
+ <CAE8KmOzzn7g1=pd2J325gAf4ffmGALKoHdgL17So4KawxkZdbg@mail.gmail.com>
+Date: Thu, 17 Apr 2025 13:05:37 -0300
+Message-ID: <87y0vyepta.fsf@suse.de>
 MIME-Version: 1.0
-Message-ID: <174491127002.20547.8069526486864738611-2@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <174491127002.20547.8069526486864738611-0@git.sr.ht>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
- helo=mail-a.sr.ht
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIM_INVALID=0.1, DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- URIBL_SBL_A=0.1 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.29 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.19)[-0.941]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:mid,
+ imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.29
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 17 Apr 2025 13:39:10 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,112 +115,132 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~percival_foss <foss@percivaleng.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: foss@percivaleng.com <sean.stultz@percivaleng.com>
+Prasad Pandit <ppandit@redhat.com> writes:
 
----
- tests/functional/meson.build          |  1 +
- tests/functional/test_ppc_pegasos2.py | 69 +++++++++++++++++++++++++++
- 2 files changed, 70 insertions(+)
- create mode 100755 tests/functional/test_ppc_pegasos2.py
+> Hi,
+>
+> On Wed, 16 Apr 2025 at 18:29, Fabiano Rosas <farosas@suse.de> wrote:
+>> > The issue is that a zero page is being migrated by multifd but there's
+>> > an optimization in place that skips faulting the page in on the
+>> > destination. Later during postcopy when the page is found to be missing,
+>> > postcopy (@migrate_send_rp_req_pages) believes the page is already
+>> > present due to the receivedmap for that pfn being set and thus the code
+>> > accessing the guest memory just sits there waiting for the page.
+>> >
+>> > It seems your series has a logical conflict with this work that was done
+>> > a while back:
+>> >
+>> > https://lore.kernel.org/all/20240401154110.2028453-1-yuan1.liu@intel.com/
+>> >
+>> > The usage of receivedmap for multifd was supposed to be mutually
+>> > exclusive with postcopy. Take a look at the description of that series
+>> > and at postcopy_place_page_zero(). We need to figure out what needs to
+>> > change and how to do that compatibly. It might just be the case of
+>> > memsetting the zero page always for postcopy, but I havent't thought too
+>> > much about it.
+>
+> ===
+> $ grep -i avx /proc/cpuinfo
+> flags        : avx avx2 avx512f avx512dq avx512ifma avx512cd avx512bw
+> avx512vl avx512vbmi avx512_vbmi2 avx512_vnni avx512_bitalg
+> avx512_vpopcntdq avx512_vp2intersect
+> $
+> $ ./configure --enable-kvm --enable-avx512bw --enable-avx2
+> --disable-docs --target-list='x86_64-softmmu'
+> $ make -sj10 check-qtest
+> 67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test
+>      OK             193.80s   81 subtests passed
+> ===
+>
+> * One of my machines does seem to support 'avx*' instructions. QEMU is
+> configured and built with the 'avx2' and 'avx512bw' support. Still
+> migration-tests run fine, without any hang issue observed. Not sure
+> why the hang issue is not reproducing on my side. How do you generally
+> build QEMU to run these tests?  Does this issue require some specific
+> h/w setup/support?
+>
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 0f8be30fe2..6641b878c3 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -213,6 +213,7 @@ tests_ppc_system_thorough =3D [
-   'ppc_bamboo',
-   'ppc_mac',
-   'ppc_mpc8544ds',
-+  'ppc_pegasos2',
-   'ppc_replay',
-   'ppc_sam460ex',
-   'ppc_tuxrun',
-diff --git a/tests/functional/test_ppc_pegasos2.py b/tests/functional/test_pp=
-c_pegasos2.py
-new file mode 100755
-index 0000000000..ef76745068
---- /dev/null
-+++ b/tests/functional/test_ppc_pegasos2.py
-@@ -0,0 +1,69 @@
-+#!/usr/bin/env python3
-+#
-+# Test AmigaNG boards
-+#
-+# Copyright (c) 2023 BALATON Zoltan
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+import subprocess
-+
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import wait_for_console_pattern
-+from zipfile import ZipFile
-+
-+class Pegasos2Machine(QemuSystemTest):
-+
-+    timeout =3D 90
-+
-+    ASSET_IMAGE =3D Asset(
-+        ('https://web.archive.org/web/20071021223056if_/http://www.bplan-gmb=
-h.de/up050404/up050404'),
-+        '0b4ff042b293033e094b47ac7051824fc45f83adb340d455a17db1674b0150b0c60=
-ffc624ac766f5369cd79f0447214d468baa182c1f18c5e04cd23a50f0b9a2')
-+
-+    def test_ppc_pegasos2(self):
-+        self.require_accelerator("tcg")
-+        self.set_machine('pegasos2')
-+        file_path =3D self.ASSET_IMAGE.fetch()
-+        bios_fh =3D open(self.workdir + "/pegasos2.rom", "wb")
-+        subprocess.run(['tail', '-c','+85581', file_path], stdout=3Dbios_fh)
-+        bios_fh.close()
-+        subprocess.run(['truncate', '-s', '524288', self.workdir + "/pegasos=
-2.rom"], )
-+
-+        self.vm.set_console()
-+        self.vm.add_args('-bios', self.workdir + '/pegasos2.rom')
-+        self.vm.launch()
-+        wait_for_console_pattern(self, 'SmartFirmware:')
-+
-+    def test_ppc_pegasos2_test_tcg_crosspage_overflow_bug(self):
-+        self.require_accelerator("tcg")
-+        self.set_machine('pegasos2')
-+        file_path =3D self.ASSET_IMAGE.fetch()
-+        bios_fh =3D open(self.workdir + "/pegasos2.rom", "wb")
-+        subprocess.run(['tail', '-c','+85581', file_path], stdout=3Dbios_fh)
-+        bios_fh.close()
-+        subprocess.run(['truncate', '-s', '524288', self.workdir + "/pegasos=
-2.rom"], )
-+
-+        with open(self.workdir + "/pegasos2.rom", "rb") as bios_fh:
-+            bios_data =3D bios_fh.read()
-+       =20
-+        # Patch the firmware image with the following instructions that will=
- cause tcg to crash for 32-bit guests on 64-bit platforms:
-+        #   li r3, 0
-+        #   li r4, -1
-+        #   lwz r5, 0x0(r4)
-+        #   lwz r5, 0x0(r3)
-+
-+        bios_data_new =3D bios_data[:0x6c10] + b'\x38\x60\x00\x00' + b'\x38\=
-x80\xff\xff' + b'\x80\xa4\x00\x00' + b'\x80\xa3\x00\x00' + bios_data[0x6c20:]
-+        with open(self.workdir + "/pegasos2_new.rom", "wb") as bios_new_fh:
-+            bios_new_fh.write(bios_data_new)
-+
-+        self.vm.set_console()
-+        self.vm.add_args('-bios', self.workdir + '/pegasos2_new.rom')
-+        self.vm.launch()
-+        wait_for_console_pattern(self, 'Releasing IDE reset')
-+
-+        # set $pc =3D 0 and expect crash
-+
-+
-+if __name__ =3D=3D '__main__':
-+    QemuSystemTest.main()
---=20
-2.45.3
+There's nothing unusual here that I know of. Configure line is just
+--target-list=x86_64-softmmu --enable-debug --disable-docs --disable-plugins.
+
+> * Not sure how/why page faults happen during the Multifd phase when
+> the guest on the destination is not running. If 'receivedmap' says
+> that page is present, code accessing guest memory should just access
+> whatever is available/present in that space, without waiting. I'll try
+> to see what zero pages do, how page-faults occur during postcopy and
+> how they are serviced. Let's see..
+
+It's not that page faults happen during multifd. The page was already
+sent during precopy, but multifd-recv didn't write to it, it just marked
+the receivedmap. When postcopy starts, the page gets accessed and
+faults. Since postcopy is on, the migration wants to request the page
+from the source, but it's present in the receivedmap, so it doesn't
+ask. No page ever comes and the code hangs waiting for the page fault to
+be serviced (or potentially faults continuously? I'm not sure on the
+details).
+
+>
+> * Another suggestion is, maybe we should review and pull at least the
+> refactoring patches so that in the next revisions we don't have to
+> redo them. We can hold back the "enable multifd and postcopy together"
+> patch that causes this guest hang issue to surface.
+>
+
+That's reasonable. But I won't be available for the next two
+weeks. Peter is going to be back in the meantime, let's hear what he has
+to say about this postcopy issue. I'll provide my r-bs.
+
+>> > There's also other issues with the series:
+>> >
+>> > https://gitlab.com/farosas/qemu/-/pipelines/1770488059
+>> >
+>> > The CI workers don't support userfaultfd so the tests need to check for
+>> > that properly. We have MigrationTestEnv::has_uffd for that.
+>> >
+>> > Lastly, I have seem some weirdness with TLS channels disconnections
+>> > leading to asserts in qio_channel_shutdown() in my testing. I'll get a
+>> > better look at those tomorrow.
+>>
+>> Ok, you can ignore this last paragraph. I was seeing the postcopy
+>> recovery test disconnect messages, those are benign.
+>
+> * ie. ignore everything after - "There's also other issues with this
+> series: " ?  OR just the last one " ...with TLS channels..." ??
+> Postcopy tests are added only if (env->has_uffd) check returns true.
+>
+
+Only the TLS part. The CI is failing with just this series. I didn't
+change anything there. Maybe there's a bug in the userfaultfd detection?
+I'll leave it to you, here's the error:
+
+# Running /ppc64/migration/multifd+postcopy/tcp/plain/cancel
+# Using machine type: pseries-10.0
+# starting QEMU: exec ./qemu-system-ppc64 -qtest
+#  unix:/tmp/qtest-1305.sock -qtest-log /dev/null -chardev
+#  socket,path=/tmp/qtest-1305.qmp,id=char0 -mon
+#  chardev=char0,mode=control -display none -audio none -accel kvm -accel
+#  tcg -machine pseries-10.0,vsmt=8 -name source,debug-threads=on -m 256M
+#  -serial file:/tmp/migration-test-X0SO42/src_serial -nodefaults
+#  -machine
+#  cap-cfpc=broken,cap-sbbc=broken,cap-ibs=broken,cap-ccf-assist=off,
+#  -bios /tmp/migration-test-X0SO42/bootsect 2>/dev/null -accel qtest
+# starting QEMU: exec ./qemu-system-ppc64 -qtest
+#  unix:/tmp/qtest-1305.sock -qtest-log /dev/null -chardev
+#  socket,path=/tmp/qtest-1305.qmp,id=char0 -mon
+#  chardev=char0,mode=control -display none -audio none -accel kvm -accel
+#  tcg -machine pseries-10.0,vsmt=8 -name target,debug-threads=on -m 256M
+#  -serial file:/tmp/migration-test-X0SO42/dest_serial -incoming defer
+#  -nodefaults -machine
+#  cap-cfpc=broken,cap-sbbc=broken,cap-ibs=broken,cap-ccf-assist=off,
+#  -bios /tmp/migration-test-X0SO42/bootsect 2>/dev/null -accel qtest
+# {
+#     "error": {
+#         "class": "GenericError",
+#         "desc": "Postcopy is not supported: Userfaultfd not available: Function not implemented"
+#     }
+# }
+
 
