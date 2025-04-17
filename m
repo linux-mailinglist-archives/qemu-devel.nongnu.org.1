@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4557EA91D5C
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 15:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BDFA91D5F
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 15:11:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5P0o-0005Xs-80; Thu, 17 Apr 2025 09:10:38 -0400
+	id 1u5P0z-0005ft-HS; Thu, 17 Apr 2025 09:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5P0U-0005Pp-Kb
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 09:10:20 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5P0Z-0005TW-81
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 09:10:24 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5P0R-0007rr-Ea
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 09:10:18 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-391342fc0b5so625230f8f.3
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 06:10:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5P0V-0007tx-ON
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 09:10:22 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43cf848528aso5880675e9.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 06:10:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744895411; x=1745500211; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744895415; x=1745500215; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3LSiEResFhtBUnjPfL11WGVWKJwbPc3LTYNgceKSoZ8=;
- b=mwrBI/cN7MVV7Z8nK/fKEWDEmZjNED0OTZ/MMqNrfKmeO9Rnm6+1w/7MAFIXC7hFqs
- Fm4ZVTkO/l04gVWQ9LXHtMczo55IeUDn+5aIi1gVNNK/FX3uX8xBL7sLKCYy20OFdMzE
- psUHtW0m2QWpgDwHacRVmoZT2PllQ7k4Q70pqxySJzT/uua/OztyxxDGRTdvM9pT5WC9
- 7qk8i7dQrUVIH/mLRXcNeJZRnHYqNtnPhKTnd5i+BTYtMHnb8p+/Xei82PYT1oh4SAUw
- 4MrwdIytzqGWbnOe1LkdlLylrzFs7Ol1cAUT4zGKuHsvLJS4i/Kd0ZxfuurxdTHlKODR
- at8A==
+ bh=Uw5NN7Xo5UOrJyhClnps6dKALo3bScAPHLwVEEE8AFY=;
+ b=bVN3uCWA6o/P4xnhLY/AI6/kxPGoRfRi3wl03rh7l1mfJ4/VW8x1qd7wjRHkL6uGWj
+ perX4v51F6E6grVda2KgshTRE/xWQrh6KT2Fj9ymkNSnuOAWG46IaTE0NvZjTHXS0Ljt
+ 1pCv2nkdUm+ynnCMQXQDnTtPdJIBzO+7m+6itnoDo1ltbyvihsSz0MQmhWZvM1OV+JxY
+ VHyfAmhng0SjMTq7haMn1DznqrUOKjDJRig9MRDZVRtH6dJZJJfPfnPhEmVOimHYh/vG
+ HaHAfNsoC4wMrOwM1R4H1PiBL0s5T7xcDcT5Gz5wl7VegLMF3fj72ONVJNtBYrmyBjRX
+ n3gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744895411; x=1745500211;
+ d=1e100.net; s=20230601; t=1744895415; x=1745500215;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3LSiEResFhtBUnjPfL11WGVWKJwbPc3LTYNgceKSoZ8=;
- b=V+TP96WBRACY/zUl8EiXMC2cBbBtXcIM5IYA32dfwZHEGk+sY/M8egheSGlNbFKXte
- WJekHjzO8bd3zelT1z405iJVdC0bWMOlYLmEsr2TZel4D+ufJrMHmog1hZkkdCZUZIWT
- qWE/mNEM6oVFGrYkPTRPfsMw37Ja3P23oBKTohUgIQhO7HIzh4PhLquaBcv+zyw1eKoZ
- pEu4uSI5krEP/BCq/oW+e/p0B57AShqjBOhVWagYyiMbe77NjOhSvk83nyZH3qiaPExI
- rS8qaaokHV38Oio+eCZqqGiZfx+9tqRADk9Sk8n7LQJ9lpwsZRTfXF04uEUKOa2LBKhU
- A2ug==
-X-Gm-Message-State: AOJu0YwXdd4uZEc4eOTmStEKn3iSdg6WFxXKtMotOxbXYsf1sLRcMW4U
- IKplj19DSSwqlgjQrjf61AF5s1iopyyBFO1+T8pJm4hcE5mwcr1m2PqyWmFszXkNnQ/wOne7EG9
- R
-X-Gm-Gg: ASbGncvp7GB9wF4Ka91ULNDaSL3TCIYznZE+/SYZ0foDALlfnWtsz0VoCaANHUIQKL2
- 3Y6mkwW+Dm20MAJpXLbfDZ/av64RbVh7IL9efkRD1G8uJeNenKT8wxzQZ6PYQv2H2vuOToivLe6
- 1yM9IDOaT0e1UaZXnttYM0QrAx2W2+CJOe4SGgsY+AJH8GBfIAoVaTVxXtWxpzms5z3LeTq9rnY
- gY0dOOaLC5pi6rVPF0z0EzqXDVXKW3ZbOJu3OrUsFMpZJKKuuSF58Bc45wIQRDeWaZxaizfdMjo
- BIiHM8eDA/de9wAvodbX7mFRh6DPHcwCnTb+AyFz0dgF0Vv12rmxa2HRxuqNxwRdG8+N+56wcnb
- Xt5/+B/ySrkg9p8E=
-X-Google-Smtp-Source: AGHT+IFzAaJCfyug7bRIPjdKMtiHUl2rcE5+qLVlLbkg0GDUUj+lZIvqV0ernpglZVRU9+0cW3jrZA==
-X-Received: by 2002:a5d:64c8:0:b0:39c:16a0:feef with SMTP id
- ffacd0b85a97d-39ee5b98dc2mr5610586f8f.38.1744895410868; 
- Thu, 17 Apr 2025 06:10:10 -0700 (PDT)
+ bh=Uw5NN7Xo5UOrJyhClnps6dKALo3bScAPHLwVEEE8AFY=;
+ b=JWUGE99Oo9X/06iB9adg7sajrI+D7mp1FXpqNB6nsrD3YOH1NgwPyVkTGateAhn3Mo
+ q4Yw3Qj3mMGcY431Z9AkvyP32e9+ltZrbbJUdWBaehMtr8b21hBRSbLit+qg3GLdTfwh
+ 4T6C12Zh1J/P3zq3tb3T97XdYAJLS/MtiRTYUedXstN1fNH4ALU8hxFLv1WjKYzqv7oo
+ f3niXeZ1lq15NzHLcziWEAbVdfJyj0FOHCf+rbBwDPeALSWhbDAPjBL+liPg4z3QrjWf
+ mTqNDEgGhma81+yQTsx5wgyubN/xfiXQHWACm4HIZyadtIPfzaPsRw3/b7b95MMuTOOM
+ njsg==
+X-Gm-Message-State: AOJu0YxqS1cLvjVx4qIvWF1caVlnN23ty8O/ZujOBy4vNj7mJLmZaGog
+ 0BH8qe/RiZSVes6yZS52oQjr4prC1lW7ubNa+pjZuqa866tSavCanJjXncvpi25/TmlJoINlLNt
+ X
+X-Gm-Gg: ASbGncuLt0AL9v2dkXk6QE6zHhDzBQ8BLnpt8sMhugV8YqhtHKU6t2jOMiObI4DzRuf
+ BYVgNdVUxBKEWx5eUgTjyRy58lnEU1DRIa8bElH2igWJWlc14sFBnGB2/q3HpIGJTPJgFnWxsiT
+ p0nPp6IRHJO3zBZqQNhZQrXr7ysCyzD2jiWisYkzGSvL1NqK+0ync45Bn2hpVRR68qsMNKMu34j
+ JLkmxFbNYWTw3Qj2UpLxLq4ykwGEP/7OZAVOtuxT9fWGXenq3wgxf/27sN5TJBiZZvzNwRMa+J8
+ zDn9In1R83HqwgwBeHbhrFsygAPmUisbvuXcBw7W/xP+TAvuGgOTS86eOwn+X7TBCRaJK5XsPF9
+ ES3xV9F49TgKCJT8=
+X-Google-Smtp-Source: AGHT+IFNB9mzDknxD9OlmHxbJ96LDCXMMXdb0R0o74lJrExCbfJUCOkuLnEsFNrsnOiZARj5fzGKug==
+X-Received: by 2002:a05:600c:4f8e:b0:43d:fa:1f9a with SMTP id
+ 5b1f17b1804b1-4405d6cea58mr56540255e9.30.1744895415445; 
+ Thu, 17 Apr 2025 06:10:15 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39eaf43ce30sm20629741f8f.62.2025.04.17.06.10.10
+ 5b1f17b1804b1-4405b4d3453sm52906815e9.16.2025.04.17.06.10.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 17 Apr 2025 06:10:10 -0700 (PDT)
+ Thu, 17 Apr 2025 06:10:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/8] linux-user/elfload: Use target_needs_bswap()
-Date: Thu, 17 Apr 2025 15:09:57 +0200
-Message-ID: <20250417131004.47205-2-philmd@linaro.org>
+Subject: [PATCH 2/8] accel/kvm: Use target_needs_bswap()
+Date: Thu, 17 Apr 2025 15:09:58 +0200
+Message-ID: <20250417131004.47205-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250417131004.47205-1-philmd@linaro.org>
 References: <20250417131004.47205-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,162 +103,57 @@ target_needs_bswap().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- linux-user/elfload.c | 63 +++++++++++++++++++++++++++-----------------
- 1 file changed, 39 insertions(+), 24 deletions(-)
+ accel/kvm/kvm-all.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 99811af5e7b..fbfdec2f17c 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -12,6 +12,7 @@
- #include "exec/page-protection.h"
- #include "exec/mmap-lock.h"
- #include "exec/translation-block.h"
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 7c5d1a98bc4..28a32afb209 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -33,6 +33,7 @@
+ #include "system/cpus.h"
+ #include "system/accel-blocker.h"
+ #include "qemu/bswap.h"
 +#include "exec/tswap.h"
- #include "user/guest-base.h"
- #include "user-internals.h"
- #include "signal-common.h"
-@@ -2122,9 +2123,12 @@ static inline void memcpy_fromfs(void * to, const void * from, unsigned long n)
-     memcpy(to, from, n);
- }
+ #include "system/memory.h"
+ #include "system/ram_addr.h"
+ #include "qemu/event_notifier.h"
+@@ -1319,21 +1320,21 @@ bool kvm_hwpoisoned_mem(void)
  
+ static uint32_t adjust_ioeventfd_endianness(uint32_t val, uint32_t size)
+ {
 -#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
- static void bswap_ehdr(struct elfhdr *ehdr)
- {
-+    if (!target_needs_bswap()) {
-+        return;
-+    }
-+
-     bswap16s(&ehdr->e_type);            /* Object file type */
-     bswap16s(&ehdr->e_machine);         /* Architecture */
-     bswap32s(&ehdr->e_version);         /* Object file version */
-@@ -2142,8 +2146,11 @@ static void bswap_ehdr(struct elfhdr *ehdr)
- 
- static void bswap_phdr(struct elf_phdr *phdr, int phnum)
- {
--    int i;
--    for (i = 0; i < phnum; ++i, ++phdr) {
-+    if (!target_needs_bswap()) {
-+        return;
-+    }
-+
-+    for (int i = 0; i < phnum; ++i, ++phdr) {
-         bswap32s(&phdr->p_type);        /* Segment type */
-         bswap32s(&phdr->p_flags);       /* Segment flags */
-         bswaptls(&phdr->p_offset);      /* Segment file offset */
-@@ -2157,8 +2164,11 @@ static void bswap_phdr(struct elf_phdr *phdr, int phnum)
- 
- static void bswap_shdr(struct elf_shdr *shdr, int shnum)
- {
--    int i;
--    for (i = 0; i < shnum; ++i, ++shdr) {
-+    if (!target_needs_bswap()) {
-+        return;
-+    }
-+
-+    for (int i = 0; i < shnum; ++i, ++shdr) {
-         bswap32s(&shdr->sh_name);
-         bswap32s(&shdr->sh_type);
-         bswaptls(&shdr->sh_flags);
-@@ -2174,6 +2184,10 @@ static void bswap_shdr(struct elf_shdr *shdr, int shnum)
- 
- static void bswap_sym(struct elf_sym *sym)
- {
-+    if (!target_needs_bswap()) {
-+        return;
-+    }
-+
-     bswap32s(&sym->st_name);
-     bswaptls(&sym->st_value);
-     bswaptls(&sym->st_size);
-@@ -2183,6 +2197,10 @@ static void bswap_sym(struct elf_sym *sym)
- #ifdef TARGET_MIPS
- static void bswap_mips_abiflags(Mips_elf_abiflags_v0 *abiflags)
- {
-+    if (!target_needs_bswap()) {
-+        return;
-+    }
-+
-     bswap16s(&abiflags->version);
-     bswap32s(&abiflags->ases);
-     bswap32s(&abiflags->isa_ext);
-@@ -2190,15 +2208,6 @@ static void bswap_mips_abiflags(Mips_elf_abiflags_v0 *abiflags)
-     bswap32s(&abiflags->flags2);
- }
- #endif
--#else
--static inline void bswap_ehdr(struct elfhdr *ehdr) { }
--static inline void bswap_phdr(struct elf_phdr *phdr, int phnum) { }
--static inline void bswap_shdr(struct elf_shdr *shdr, int shnum) { }
--static inline void bswap_sym(struct elf_sym *sym) { }
--#ifdef TARGET_MIPS
--static inline void bswap_mips_abiflags(Mips_elf_abiflags_v0 *abiflags) { }
--#endif
--#endif
- 
- #ifdef USE_ELF_CORE_DUMP
- static int elf_core_dump(int, const CPUArchState *);
-@@ -3144,11 +3153,11 @@ static bool parse_elf_properties(const ImageSource *src,
-      * The contents of a valid PT_GNU_PROPERTY is a sequence of uint32_t.
-      * Swap most of them now, beyond the header and namesz.
-      */
--#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
--    for (int i = 4; i < n / 4; i++) {
--        bswap32s(note.data + i);
+-    /* The kernel expects ioeventfd values in HOST_BIG_ENDIAN
+-     * endianness, but the memory core hands them in target endianness.
+-     * For example, PPC is always treated as big-endian even if running
+-     * on KVM and on PPC64LE.  Correct here.
+-     */
+-    switch (size) {
+-    case 2:
+-        val = bswap16(val);
+-        break;
+-    case 4:
+-        val = bswap32(val);
+-        break;
 +    if (target_needs_bswap()) {
-+        for (int i = 4; i < n / 4; i++) {
-+            bswap32s(note.data + i);
++        /* The kernel expects ioeventfd values in HOST_BIG_ENDIAN
++         * endianness, but the memory core hands them in target endianness.
++         * For example, PPC is always treated as big-endian even if running
++         * on KVM and on PPC64LE.  Correct here, swapping back.
++         */
++        switch (size) {
++        case 2:
++            val = bswap16(val);
++            break;
++        case 4:
++            val = bswap32(val);
++            break;
 +        }
      }
 -#endif
- 
-     /*
-      * Note that nhdr is 3 words, and that the "name" described by namesz
-@@ -4000,9 +4009,12 @@ struct target_elf_prpsinfo {
-     char    pr_psargs[ELF_PRARGSZ]; /* initial part of arg list */
- };
- 
--#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
- static void bswap_prstatus(struct target_elf_prstatus *prstatus)
- {
-+    if (!target_needs_bswap()) {
-+        return;
-+    }
-+
-     prstatus->pr_info.si_signo = tswap32(prstatus->pr_info.si_signo);
-     prstatus->pr_info.si_code = tswap32(prstatus->pr_info.si_code);
-     prstatus->pr_info.si_errno = tswap32(prstatus->pr_info.si_errno);
-@@ -4020,6 +4032,10 @@ static void bswap_prstatus(struct target_elf_prstatus *prstatus)
- 
- static void bswap_psinfo(struct target_elf_prpsinfo *psinfo)
- {
-+    if (!target_needs_bswap()) {
-+        return;
-+    }
-+
-     psinfo->pr_flag = tswapal(psinfo->pr_flag);
-     psinfo->pr_uid = tswap16(psinfo->pr_uid);
-     psinfo->pr_gid = tswap16(psinfo->pr_gid);
-@@ -4031,15 +4047,14 @@ static void bswap_psinfo(struct target_elf_prpsinfo *psinfo)
- 
- static void bswap_note(struct elf_note *en)
- {
-+    if (!target_needs_bswap()) {
-+        return;
-+    }
-+
-     bswap32s(&en->n_namesz);
-     bswap32s(&en->n_descsz);
-     bswap32s(&en->n_type);
+     return val;
  }
--#else
--static inline void bswap_prstatus(struct target_elf_prstatus *p) { }
--static inline void bswap_psinfo(struct target_elf_prpsinfo *p) {}
--static inline void bswap_note(struct elf_note *en) { }
--#endif /* HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN */
  
- /*
-  * Calculate file (dump) size of given memory region.
 -- 
 2.47.1
 
