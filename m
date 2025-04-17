@@ -2,46 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D12A911E3
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 05:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D97DDA911E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 05:12:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Fdz-0006Cw-KD; Wed, 16 Apr 2025 23:10:27 -0400
+	id 1u5Ffo-0000m9-97; Wed, 16 Apr 2025 23:12:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1u5Fdx-0006C6-E2; Wed, 16 Apr 2025 23:10:25 -0400
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1u5Ffj-0000lb-Po; Wed, 16 Apr 2025 23:12:15 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1u5Fdv-0000B0-Hc; Wed, 16 Apr 2025 23:10:25 -0400
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1u5Ffh-0000cO-MV; Wed, 16 Apr 2025 23:12:15 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 17 Apr
- 2025 11:09:58 +0800
+ 2025 11:12:09 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Thu, 17 Apr 2025 11:09:58 +0800
+ Transport; Thu, 17 Apr 2025 11:12:09 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
- list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v2 3/3] hw/arm: Integrate Aspeed OTP memory into AST10x0 and
- AST2600 SoCs
-Date: Thu, 17 Apr 2025 11:09:55 +0800
-Message-ID: <20250417030957.2586802-4-kane_chen@aspeedtech.com>
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ <nabihestefan@google.com>
+Subject: [PATCH v4 00/10] Support vbootrom for AST2700
+Date: Thu, 17 Apr 2025 11:11:57 +0800
+Message-ID: <20250417031209.2647703-1-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250417030957.2586802-1-kane_chen@aspeedtech.com>
-References: <20250417030957.2586802-1-kane_chen@aspeedtech.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=kane_chen@aspeedtech.com; helo=TWMBX01.aspeed.com
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -60,165 +57,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Kane Chen <kane_chen@aspeedtech.com>
-From:  Kane Chen via <qemu-devel@nongnu.org>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+v1:
+  Add initial support for AST27x0
+  The purpose of vbootrom here is to simulate the work of BootMCU SPL (riscv)
+  in AST2700, because QEMU doesn't support heterogenous architecture yet.
 
-This patch wires up the OTP memory device (`aspeed.otpmem`) into the
-AST1030 and AST2600 SoC models. The device is initialized, attached
-to a backing block drive (`-drive id=otpmem`) and linked to the SBC
-controller via a QOM link.
+  ast27x0_bootrom.bin is a simplified, free (Apache 2.0) boot ROM for
+  ASPEED AST27x0 BMC SOC. It currently implements the bare minimum to
+  load, parse, initialize and run boot images stored in SPI flash, but may grow
+  more features over time as needed. The source code is available at:
+  https://github.com/google/vbootrom
 
-The default OTP memory image can be generated using the following
-command.
-```bash
-for i in $(seq 1 2048); do
-  printf '\x00\x00\x00\x00\xff\xff\xff\xff'
-done > otpmem.img
-```
+v2:
+  Add "Introduced ASPEED_DEV_VBOOTROM in the device enumeration" patch to fix
+  build failed.
 
-To load the OTP memory image into the guest, use:
-```bash
-./qemu-system-arm \
-  -drive id=otpmem,file=otpmem.img,if=none,format=raw \
-  ...
-```
+v3:
+  1. Supports both vbootrom and device loader boot methods, with vbootrom used as
+  the default.
+  2. Fix review and QTEST test failed issues. 
 
-Note: Do not use the -snapshot option, or OTP data writes will not
-persist to the image file.
+v4: 
+  Adjust the patch order.
 
-Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
----
- hw/arm/aspeed_ast10x0.c     | 19 +++++++++++++++++++
- hw/arm/aspeed_ast2600.c     | 19 +++++++++++++++++++
- include/hw/arm/aspeed_soc.h |  2 ++
- 3 files changed, 40 insertions(+)
+Jamin Lin (10):
+  hw/arm/aspeed_ast27x0: Rename variable sram_name to name in ast2700
+    realize
+  hw/arm/aspeed_ast27x0 Introduce vbootrom memory region
+  hw/arm/aspeed: Add vbootrom support on AST2700 EVB machines
+  hw/arm/aspeed: Reuse rom_size variable for vbootrom setup
+  pc-bios: Add AST27x0 vBootrom
+  hw/arm/aspeed: Add support for loading vbootrom image via "-bios"
+  tests/functional/aspeed: Move I2C test into shared helper for AST2700
+    reuse
+  tests/functional/aspeed: Update test ASPEED SDK v09.06
+  tests/functional/aspeed: Add to test vbootrom for AST2700
+  docs/system/arm/aspeed: Support vbootrom for AST2700
 
-diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
-index ec329f4991..eaa70feb9f 100644
---- a/hw/arm/aspeed_ast10x0.c
-+++ b/hw/arm/aspeed_ast10x0.c
-@@ -15,6 +15,7 @@
- #include "system/system.h"
- #include "hw/qdev-clock.h"
- #include "hw/misc/unimp.h"
-+#include "system/block-backend-global-state.h"
- #include "hw/arm/aspeed_soc.h"
- 
- #define ASPEED_SOC_IOMEM_SIZE 0x00200000
-@@ -156,6 +157,8 @@ static void aspeed_soc_ast1030_init(Object *obj)
- 
-     object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_SBC);
- 
-+    object_initialize_child(obj, "otpmem", &s->otpmem, TYPE_ASPEED_OTPMEM);
-+
-     for (i = 0; i < sc->wdts_num; i++) {
-         snprintf(typename, sizeof(typename), "aspeed.wdt-%s", socname);
-         object_initialize_child(obj, "wdt[*]", &s->wdt[i], typename);
-@@ -194,6 +197,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
-     Error *err = NULL;
-     int i;
-     g_autofree char *sram_name = NULL;
-+    BlockBackend *blk;
- 
-     if (!clock_has_source(s->sysclk)) {
-         error_setg(errp, "sysclk clock must be wired up by the board code");
-@@ -359,6 +363,21 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
-                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
-     }
- 
-+    /* OTP memory */
-+    blk = blk_by_name(ASPEED_OTPMEM_DRIVE);
-+    if (blk) {
-+        blk_set_perm(blk, BLK_PERM_CONSISTENT_READ | BLK_PERM_WRITE,
-+                     0, &error_fatal);
-+        qdev_prop_set_drive(DEVICE(&s->otpmem), "drive", blk);
-+
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->otpmem), errp)) {
-+            return;
-+        }
-+        /* Assign OTP memory to SBC */
-+        object_property_set_link(OBJECT(&s->sbc), "otpmem",
-+                                 OBJECT(&s->otpmem), &error_abort);
-+    }
-+
-     /* Secure Boot Controller */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->sbc), errp)) {
-         return;
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index 1f994ba26c..9fe3eeeb0e 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -10,6 +10,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/misc/unimp.h"
-+#include "system/block-backend-global-state.h"
- #include "hw/arm/aspeed_soc.h"
- #include "qemu/module.h"
- #include "qemu/error-report.h"
-@@ -263,6 +264,8 @@ static void aspeed_soc_ast2600_init(Object *obj)
- 
-     object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_SBC);
- 
-+    object_initialize_child(obj, "otpmem", &s->otpmem, TYPE_ASPEED_OTPMEM);
-+
-     object_initialize_child(obj, "iomem", &s->iomem, TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "video", &s->video, TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "dpmcu", &s->dpmcu, TYPE_UNIMPLEMENTED_DEVICE);
-@@ -293,6 +296,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
-     qemu_irq irq;
-     g_autofree char *sram_name = NULL;
-+    BlockBackend *blk;
- 
-     /* Default boot region (SPI memory or ROMs) */
-     memory_region_init(&s->spi_boot_container, OBJECT(s),
-@@ -628,6 +632,21 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i3c.devices[i]), 0, irq);
-     }
- 
-+    /* OTP memory */
-+    blk = blk_by_name(ASPEED_OTPMEM_DRIVE);
-+    if (blk) {
-+        blk_set_perm(blk, BLK_PERM_CONSISTENT_READ | BLK_PERM_WRITE,
-+                     0, &error_fatal);
-+        qdev_prop_set_drive(DEVICE(&s->otpmem), "drive", blk);
-+
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->otpmem), errp)) {
-+            return;
-+        }
-+        /* Assign OTP memory to SBC */
-+        object_property_set_link(OBJECT(&s->sbc), "otpmem",
-+                                 OBJECT(&s->otpmem), &error_abort);
-+    }
-+
-     /* Secure Boot Controller */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->sbc), errp)) {
-         return;
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index f069d17d16..2d15c6047a 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -36,6 +36,7 @@
- #include "hw/usb/hcd-ehci.h"
- #include "qom/object.h"
- #include "hw/misc/aspeed_lpc.h"
-+#include "hw/misc/aspeed_otpmem.h"
- #include "hw/misc/unimp.h"
- #include "hw/misc/aspeed_peci.h"
- #include "hw/fsi/aspeed_apb2opb.h"
-@@ -73,6 +74,7 @@ struct AspeedSoCState {
-     AspeedSMCState spi[ASPEED_SPIS_NUM];
-     EHCISysBusState ehci[ASPEED_EHCIS_NUM];
-     AspeedSBCState sbc;
-+    AspeedOTPMemState otpmem;
-     AspeedSLIState sli;
-     AspeedSLIState sliio;
-     MemoryRegion secsram;
+ MAINTAINERS                             |   1 +
+ docs/system/arm/aspeed.rst              |  29 +++++++++++-
+ include/hw/arm/aspeed.h                 |   2 +
+ include/hw/arm/aspeed_soc.h             |   3 ++
+ hw/arm/aspeed.c                         |  41 +++++++++++++++-
+ hw/arm/aspeed_ast27x0.c                 |  20 ++++++--
+ pc-bios/README                          |   6 +++
+ pc-bios/ast27x0_bootrom.bin             | Bin 0 -> 15464 bytes
+ pc-bios/meson.build                     |   1 +
+ tests/functional/test_aarch64_aspeed.py |  59 +++++++++++++++---------
+ 10 files changed, 135 insertions(+), 27 deletions(-)
+ create mode 100644 pc-bios/ast27x0_bootrom.bin
+
 -- 
 2.43.0
 
