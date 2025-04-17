@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB39A92CB5
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 23:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7F1A92CBA
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Apr 2025 23:32:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Wpu-0007PB-73; Thu, 17 Apr 2025 17:31:54 -0400
+	id 1u5Wqo-0001Fy-S3; Thu, 17 Apr 2025 17:32:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1u5Wpc-0007N3-Vd
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 17:31:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1u5Wql-00019a-Vy
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 17:32:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1u5Wpb-0000XH-6u
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 17:31:36 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1u5Wqj-0000pP-Ec
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 17:32:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1744925494;
+ s=mimecast20190719; t=1744925564;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a7KDP7cJJ7YwUFLjBcHPdXdi/y3nSKSycoGJYh7h388=;
- b=Djf745yExVY40NWJUfTp4WwSqISmIfxwDSvX5rGZFEp9Ia0FdYgaOHPxmTuXaFIPUcnb/N
- XGJss9rZkUD1uUiXb025k8Nqk7bky7Id7VQkPzdKAJuFcaA8jndeTtnLHYS0+X3fY2JTSK
- CO+Zb4K8qGP8dbatZNgTPnyyLyDmGnE=
+ bh=+dgoh+NS8S0h4ByAboSYbLNvpCNVG0+AnsWqLjcpAC8=;
+ b=XpiIRPSZMJ2awxYcdKcUce2NmTxJHJeol0l8/Q+ri2J3vtKbM2dyh8iPlyP9jtShalaYkV
+ TIc1ow1990IoNMYVUmnrpKgSRlTLnWODERrjnRMthEY65ZGILh0fcRT4vRXpaEXLicD8CG
+ jO7jEJuWNMn9Q5TJ+YSdA4RRvoVQb+I=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-HqyY-5z2OMS8vaJmxypUtw-1; Thu,
- 17 Apr 2025 17:31:30 -0400
-X-MC-Unique: HqyY-5z2OMS8vaJmxypUtw-1
-X-Mimecast-MFC-AGG-ID: HqyY-5z2OMS8vaJmxypUtw_1744925489
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-PpOSsEC7MVOVQOpWxc94tQ-1; Thu,
+ 17 Apr 2025 17:31:31 -0400
+X-MC-Unique: PpOSsEC7MVOVQOpWxc94tQ-1
+X-Mimecast-MFC-AGG-ID: PpOSsEC7MVOVQOpWxc94tQ_1744925490
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AB34E1800263; Thu, 17 Apr 2025 21:31:28 +0000 (UTC)
+ id 73D0718001D5; Thu, 17 Apr 2025 21:31:30 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.220])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EFD8F19560A3; Thu, 17 Apr 2025 21:31:26 +0000 (UTC)
+ id 144F41954B00; Thu, 17 Apr 2025 21:31:28 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Michael Roth <michael.roth@amd.com>
-Subject: [PATCH v2 4/5] python: add qapi static analysis tests
-Date: Thu, 17 Apr 2025 17:31:13 -0400
-Message-ID: <20250417213114.2336239-5-jsnow@redhat.com>
+Subject: [PATCH v2 5/5] qapi: delete un-needed python static analysis configs
+Date: Thu, 17 Apr 2025 17:31:14 -0400
+Message-ID: <20250417213114.2336239-6-jsnow@redhat.com>
 In-Reply-To: <20250417213114.2336239-1-jsnow@redhat.com>
 References: <20250417213114.2336239-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,174 +82,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the python tests to also check QAPI and the QAPI Sphinx
-extensions. The docs/sphinx/qapidoc_legacy.py file is not included in
-these checks, as it is destined for removal soon. mypy is also not
-called on the QAPI Sphinx extensions, owing to difficulties supporting
-Sphinx 3.x - 8.x while maintaining static type checking support. mypy
-*is* called on all of the QAPI tools themselves, though.
+Since the previous commit, python/setup.cfg applies to scripts/qapi/ as
+well.  Configuration files in scripts/qapi/ override python/setup.cfg.
 
-flake8, isort and mypy use the tool configuration from the existing
-python directory (in setup.cfg). pylint continues to use the special
-configuration located in scripts/qapi/ - that configuration is more
-permissive. If we wish to unify the two configurations, that's a
-separate series and a discussion for a later date.
+scripts/qapi/.flake8 and scripts/qapi/.isort.cfg actually match
+python/setup.cfg exactly, and can go.
 
-The list of pylint ignores is also updated, owing again to the wide
-window of pylint version support: newer versions require pragmas to
-occasionally silence the "too many positional arguments" warning, but
-older versions do not have such a warning category and will instead yelp
-about an unrecognized option. Silence that warning, too.
+The differences between scripts/qapi/mypy.ini and python/setup.cfg are
+harmless: warn_unused_configs is actually the default for strict, so
+this is vestigial. namespace_packages being set to True is a requirement
+for the PEP420 nested package structure of QEMU but not for
+scripts/qapi, but has no effect on type checking the QAPI
+code. warn_unused_ignores is used in python/ to be able to target a wide
+variety of mypy versions; some of which that have added new ignore
+categories that are not present in older versions.
 
-As a result of this patch, one would be able to run any of the following
-tests locally from the qemu.git/python directory and have it cover the
-QAPI tooling as well. All of the following options run the python tests,
-static analysis tests, and linter checks; but with different
-combinations of dependencies and interpreters.
+Ultimately, scripts/qapi/mypy.ini can be removed without any real change
+in behavior to how mypy enforces type safety there.
 
-- "make check-minreqs" Run tests specifically under our oldest supported
-  Python and our oldest supported dependencies. This is the test that
-  runs on GitLab as "check-python-minreqs". This helps ensure we do not
-  regress support on older platforms accidentally.
-
-- "make check-tox" Runs the tests under the newest supported
-  dependencies, but under each supported version of Python in turn. At
-  time of writing, this is Python 3.8 to 3.13 inclusive. This test helps
-  catch bleeding-edge problems before they become problems for developer
-  workstations. This is the GitLab test "check-python-tox" and is an
-  optionally run, may-fail test due to the unpredictable nature of new
-  dependencies being released into the ecosystem that may cause
-  regressions.
-
-- "make check-dev" Runs the tests under the newest supported
-  dependencies using whatever version of Python the user happens to have
-  installed. This is a quick convenience check that does not map to any
-  particular GitLab test.
-
-  (Note! check-dev may be busted on Fedora 41 and bleeding edge versions
-  of setuptools. That's unrelated to this patch and I'll address it
-  separately and soon. Thank you for your patience, --mgmt)
-
-Finally, finally, finally: this means that QAPI tooling will be linted
-and type-checked from the GitLab pipelines.
+The pylint config is being left in place because the settings differ
+enough from the python/ directory settings that we need a chit-chat on
+how to merge them O:-)
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/setup.cfg            |  1 +
- python/tests/minreqs.txt    | 21 +++++++++++++++++++++
- python/tests/qapi-flake8.sh |  4 ++++
- python/tests/qapi-isort.sh  |  6 ++++++
- python/tests/qapi-mypy.sh   |  2 ++
- python/tests/qapi-pylint.sh |  6 ++++++
- scripts/qapi/pylintrc       |  1 +
- 7 files changed, 41 insertions(+)
- create mode 100755 python/tests/qapi-flake8.sh
- create mode 100755 python/tests/qapi-isort.sh
- create mode 100755 python/tests/qapi-mypy.sh
- create mode 100755 python/tests/qapi-pylint.sh
+ scripts/qapi/.flake8    | 3 ---
+ scripts/qapi/.isort.cfg | 7 -------
+ scripts/qapi/mypy.ini   | 4 ----
+ 3 files changed, 14 deletions(-)
+ delete mode 100644 scripts/qapi/.flake8
+ delete mode 100644 scripts/qapi/.isort.cfg
+ delete mode 100644 scripts/qapi/mypy.ini
 
-diff --git a/python/setup.cfg b/python/setup.cfg
-index cf5af7e6641..84d8a1fd30d 100644
---- a/python/setup.cfg
-+++ b/python/setup.cfg
-@@ -47,6 +47,7 @@ devel =
-     urwid >= 2.1.2
-     urwid-readline >= 0.13
-     Pygments >= 2.9.0
-+    sphinx >= 3.4.3
- 
- # Provides qom-fuse functionality
- fuse =
-diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
-index 19c0f5e4c50..94928936d44 100644
---- a/python/tests/minreqs.txt
-+++ b/python/tests/minreqs.txt
-@@ -11,6 +11,9 @@
- # When adding new dependencies, pin the very oldest non-yanked version
- # on PyPI that allows the test suite to pass.
- 
-+# Dependencies for qapidoc/qapi_domain et al
-+sphinx==3.4.3
-+
- # Dependencies for the TUI addon (Required for successful linting)
- urwid==2.1.2
- urwid-readline==0.13
-@@ -49,3 +52,21 @@ platformdirs==2.2.0
- toml==0.10.0
- tomlkit==0.10.1
- wrapt==1.14.0
-+
-+# Transitive sphinx dependencies
-+Jinja2==2.7
-+MarkupSafe==1.1.0
-+alabaster==0.7.1
-+babel==1.3
-+docutils==0.12
-+imagesize==0.5.0
-+packaging==14.0
-+pytz==2011b0
-+requests==2.5.0
-+snowballstemmer==1.1
-+sphinxcontrib-applehelp==1.0.0
-+sphinxcontrib-devhelp==1.0.0
-+sphinxcontrib-htmlhelp==1.0.0
-+sphinxcontrib-jsmath==1.0.0
-+sphinxcontrib-qthelp==1.0.0
-+sphinxcontrib-serializinghtml==1.0.0
-diff --git a/python/tests/qapi-flake8.sh b/python/tests/qapi-flake8.sh
-new file mode 100755
-index 00000000000..7b5983d64a9
---- /dev/null
-+++ b/python/tests/qapi-flake8.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+python3 -m flake8 ../scripts/qapi/ \
-+        ../docs/sphinx/qapidoc.py \
-+        ../docs/sphinx/qapi_domain.py
-diff --git a/python/tests/qapi-isort.sh b/python/tests/qapi-isort.sh
-new file mode 100755
-index 00000000000..f31f12d3425
---- /dev/null
-+++ b/python/tests/qapi-isort.sh
-@@ -0,0 +1,6 @@
-+#!/bin/sh -e
-+python3 -m isort --sp . -c ../scripts/qapi/
-+# Force isort to recognize "compat" as a local module and not third-party
-+python3 -m isort --sp . -c -p compat -p qapidoc_legacy \
-+        ../docs/sphinx/qapi_domain.py \
-+        ../docs/sphinx/qapidoc.py
-diff --git a/python/tests/qapi-mypy.sh b/python/tests/qapi-mypy.sh
-new file mode 100755
-index 00000000000..377b29b873b
---- /dev/null
-+++ b/python/tests/qapi-mypy.sh
-@@ -0,0 +1,2 @@
-+#!/bin/sh -e
-+python3 -m mypy ../scripts/qapi
-diff --git a/python/tests/qapi-pylint.sh b/python/tests/qapi-pylint.sh
-new file mode 100755
-index 00000000000..f4bb7a5a795
---- /dev/null
-+++ b/python/tests/qapi-pylint.sh
-@@ -0,0 +1,6 @@
-+#!/bin/sh -e
-+SETUPTOOLS_USE_DISTUTILS=stdlib python3 -m pylint \
-+                                --rcfile=../scripts/qapi/pylintrc \
-+                                ../scripts/qapi/ \
-+                                ../docs/sphinx/qapidoc.py \
-+                                ../docs/sphinx/qapi_domain.py
-diff --git a/scripts/qapi/pylintrc b/scripts/qapi/pylintrc
-index d24eece7411..e16283ada3d 100644
---- a/scripts/qapi/pylintrc
-+++ b/scripts/qapi/pylintrc
-@@ -19,6 +19,7 @@ disable=consider-using-f-string,
-         too-many-instance-attributes,
-         too-many-positional-arguments,
-         too-many-statements,
-+        unknown-option-value,
-         useless-option-value,
- 
- [REPORTS]
+diff --git a/scripts/qapi/.flake8 b/scripts/qapi/.flake8
+deleted file mode 100644
+index a873ff67309..00000000000
+--- a/scripts/qapi/.flake8
++++ /dev/null
+@@ -1,3 +0,0 @@
+-[flake8]
+-# Prefer pylint's bare-except checks to flake8's
+-extend-ignore = E722
+diff --git a/scripts/qapi/.isort.cfg b/scripts/qapi/.isort.cfg
+deleted file mode 100644
+index 643caa1fbd6..00000000000
+--- a/scripts/qapi/.isort.cfg
++++ /dev/null
+@@ -1,7 +0,0 @@
+-[settings]
+-force_grid_wrap=4
+-force_sort_within_sections=True
+-include_trailing_comma=True
+-line_length=72
+-lines_after_imports=2
+-multi_line_output=3
+diff --git a/scripts/qapi/mypy.ini b/scripts/qapi/mypy.ini
+deleted file mode 100644
+index 8109470a031..00000000000
+--- a/scripts/qapi/mypy.ini
++++ /dev/null
+@@ -1,4 +0,0 @@
+-[mypy]
+-strict = True
+-disallow_untyped_calls = False
+-python_version = 3.8
 -- 
 2.48.1
 
