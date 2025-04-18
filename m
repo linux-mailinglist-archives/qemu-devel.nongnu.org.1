@@ -2,71 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B763A93F97
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 23:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5A1A93F99
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 23:56:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5tfV-0003ID-A2; Fri, 18 Apr 2025 17:54:41 -0400
+	id 1u5tgy-0004eh-G2; Fri, 18 Apr 2025 17:56:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u5tfR-0003HN-VD
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 17:54:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u5tgv-0004cc-S9
+ for qemu-devel@nongnu.org; Fri, 18 Apr 2025 17:56:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u5tfP-00037n-T1
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 17:54:37 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u5tgu-0003V6-4X
+ for qemu-devel@nongnu.org; Fri, 18 Apr 2025 17:56:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745013275;
+ s=mimecast20190719; t=1745013367;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RON3PBfsdVHaCf7GmDRygCtskeQId7e9NvEEkLDC1UU=;
- b=ZxZxAD106Dw6zvM5CQ+9IaSoVrD1wqMm5ZEyEA8Xy/M/1xfIWUrFDatkcr6I0sMrqe5dxN
- Ig+j+X3wrj1bKCZyzACY8Ntt37tjnhnl5m75wYJtm1baqoR/QBgOgGuRCaEO+NlvmBr/Sv
- DXt6so27Ao8+/MJfrqgE7jdDFEZPmMo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=NWKrXYhmnZnUpNcfjhNHK83IiG3OukURVcoYETdJZTU=;
+ b=EZrh6sNpAvZxmceVseDPJx0rw/i8wz79E2rb2viK5F065P1lGZOnrvop8tCEaXWbYgi9D2
+ eDbr7CQkzjGjAWedjbBgVCGDTIFdfnfw2DyVhSBTXXId5Et4Uib+A0NTX/G3HZ0Edsl80Z
+ xDsPXUuFfzQPSw1HPBLlk47ZbP2PaPI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-uB3GW1SWNkmuVvDGMloBPg-1; Fri,
- 18 Apr 2025 17:54:31 -0400
-X-MC-Unique: uB3GW1SWNkmuVvDGMloBPg-1
-X-Mimecast-MFC-AGG-ID: uB3GW1SWNkmuVvDGMloBPg_1745013270
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-FLX9wX9oMEynInLEkBauBQ-1; Fri,
+ 18 Apr 2025 17:56:04 -0400
+X-MC-Unique: FLX9wX9oMEynInLEkBauBQ-1
+X-Mimecast-MFC-AGG-ID: FLX9wX9oMEynInLEkBauBQ_1745013362
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0FBE01800368; Fri, 18 Apr 2025 21:54:30 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.121])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8888D1801944; Fri, 18 Apr 2025 21:54:28 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D5B611956094; Fri, 18 Apr 2025 21:56:01 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.121])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E5B9E19560A3; Fri, 18 Apr 2025 21:55:56 +0000 (UTC)
+Date: Fri, 18 Apr 2025 16:55:53 -0500
 From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- integration@gluster.org (open list:GLUSTER)
-Subject: [PATCH v2.5 02/11] file-posix,
- gluster: Handle zero block status hint better
-Date: Fri, 18 Apr 2025 16:52:47 -0500
-Message-ID: <20250418215412.404558-4-eblake@redhat.com>
-In-Reply-To: <20250418215412.404558-3-eblake@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ vsementsov@yandex-team.ru, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, 
+ John Snow <jsnow@redhat.com>, Fam Zheng <fam@euphon.net>, 
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Lieven <pl@dlhnet.de>, 
+ "Denis V. Lunev" <den@openvz.org>, Alberto Garcia <berto@igalia.com>, 
+ Ilya Dryomov <idryomov@gmail.com>, Stefan Weil <sw@weilnetz.de>, 
+ "open list:GLUSTER" <integration@gluster.org>
+Subject: Re: [PATCH v2 01/11] block: Expand block status mode from bool to enum
+Message-ID: <ox4bzfbcwkuaea6cwoj5egddmdwtxqizt4hz5mxtl4r3wca5g5@fcgtihdnrrnc>
 References: <20250417184133.105746-13-eblake@redhat.com>
- <20250418215412.404558-3-eblake@redhat.com>
+ <20250417184133.105746-14-eblake@redhat.com>
+ <20250417201755.GA85491@fedora>
+ <gbu62ipbe2qsqham2stapswrhyv3s2fbpqrbqninmuuznllj2n@gk2cje7zon2m>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <gbu62ipbe2qsqham2stapswrhyv3s2fbpqrbqninmuuznllj2n@gk2cje7zon2m>
+User-Agent: NeoMutt/20250404
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -84,52 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Although the previous patch to change 'bool want_zero' into a bitmask
-made no semantic change, it is now time to differentiate.  When the
-caller specifically wants to know what parts of the file read as zero,
-we need to use lseek and actually reporting holes, rather than
-short-circuiting and advertising full allocation.
+On Fri, Apr 18, 2025 at 02:02:20PM -0500, Eric Blake wrote:
+> > I have trouble understanding what the exact semantics are of these modes
+> > are. Would it be possible to pass flags to block status calls that can
+> > be ORed together instead: WANT_OFFSET_VALID, WANT_ZERO, etc? The flags
+> > would be orthogonal and easier to understand than modes that seem to
+> > combine multiple flag behaviors.
+> 
+> I can give that a try.  If I'm understanding the request correctly, I
+> would map it as follows:
+> 
+> BDRV_BSTAT_PRECISE => WANT_ZERO | WANT_OFFSET_VALID | WANT_ALLOCATED
+> BDRV_BSTAT_ALLOCATED => WANT_ALLOCATED
+> BDRV_BSTAT_ZERO => WANT_ZERO
+> 
+> while still trying to keep it a mechanical conversion in this patch.
 
-This change will be utilized in later patches to let mirroring
-optimize for the case when the destination already reads as zeroes.
+I've done that as a v2.5 reply to patch 1 and 2 of this series (the
+rest of the series is unchanged except for one obvious word change in
+the addition of bdrv_co_is_all_zeroes).  If we like it better, I can
+resend the full series as v3.
 
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
-
-Compared to v2, also adjust the gluster driver which copies file-posix.
-
- block/file-posix.c | 3 ++-
- block/gluster.c    | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 91deb5bf5af..575cbfba07d 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -3217,7 +3217,8 @@ static int coroutine_fn raw_co_block_status(BlockDriverState *bs,
-         return ret;
-     }
-
--    if (mode != BDRV_WANT_PRECISE) {
-+    if (!(mode & BDRV_WANT_ZERO)) {
-+        /* There is no backing file - all bytes are allocated in this file.  */
-         *pnum = bytes;
-         *map = offset;
-         *file = bs;
-diff --git a/block/gluster.c b/block/gluster.c
-index 8197b0ecefa..e702666cbce 100644
---- a/block/gluster.c
-+++ b/block/gluster.c
-@@ -1482,7 +1482,7 @@ static int coroutine_fn qemu_gluster_co_block_status(BlockDriverState *bs,
-         return ret;
-     }
-
--    if (mode != BDRV_WANT_PRECISE) {
-+    if (!(mode & BDRV_WANT_ZERO)) {
-         *pnum = bytes;
-         *map = offset;
-         *file = bs;
 -- 
-2.49.0
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
