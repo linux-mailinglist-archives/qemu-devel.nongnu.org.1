@@ -2,96 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C350A9437E
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Apr 2025 14:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F16A943D4
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Apr 2025 16:50:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u67iJ-0008Iv-Bo; Sat, 19 Apr 2025 08:54:31 -0400
+	id 1u69VF-0000PW-70; Sat, 19 Apr 2025 10:49:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u67iH-0008Ik-Le
- for qemu-devel@nongnu.org; Sat, 19 Apr 2025 08:54:29 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u67iF-00017k-Cw
- for qemu-devel@nongnu.org; Sat, 19 Apr 2025 08:54:29 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-39c0e0bc733so2343876f8f.1
- for <qemu-devel@nongnu.org>; Sat, 19 Apr 2025 05:54:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745067265; x=1745672065; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GUw8ScwyaGOHRb10VFP5Ct3zsmPYxEPSdahF4+2SvAw=;
- b=XfutjI1nHWGDEkp7XKkNgNQz4i386dFq4jmjyVWdpt053YI/P5E4HPFd6Tf4K6Dz7m
- wAuhXcjexLCgVp4PXV6Kbd5LaMRG9wpqcdS0hhJWVfbxsQkQ3kBTxNggrlO+ajyxqRe9
- nGGWKY4j5/j54zcMHJf+/fCpvmDjp11wJLGnygGy2SFX0HQVFzbInK0f8dHAXIfPuC2q
- tmruDRlDYT2glTGBITjbc28WsZ6NvL7gEhXjYY4mKYXVQvwKcIJCViWoYStPw1AZcsFH
- MQBsin9lVKMJuGwYUdmidsVm5lVyx0BRMS/eB+z91EpUrE+JztJMDGtpmqA0du17/L0S
- jPpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745067265; x=1745672065;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GUw8ScwyaGOHRb10VFP5Ct3zsmPYxEPSdahF4+2SvAw=;
- b=HMsYXAat+icb0kLxfR1eKMaifhmUP5drYJPhHytU3sC6v1NX6KqjkZEqccQy3+ztZS
- HzUW7+GQ6zfVCMtNnuqfKVWQjTZILFMbiBMFrqGOQqIhYZxfp2Q+UeHehbKNZBY9FQPi
- 3BYKVUWm4B9kITCRV6sAV7Bspim3aIIQl6X27BSMJoAuDyvYYHZKBTrDcC38ChXEYA2t
- X6PqyfcygUlyZvdWw7OkK8HQv9RIzxh3jbLprnbCKjB8wld39hAaSg6lbRSzltDKja71
- EzEekqEmEDkZkw3+pe5aDN+gqp6xoWXQ7Tafk0i2XvyMkIpe3Tf6V7t7z14lcePvwVK2
- oLpQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWeZSiG6fygqGw6JAckGEHbZQ84HE05QC+YGnjE5Yrc/COqhVQBjLMX9eUNh2Tuum+I6wIv5o0JsPdv@nongnu.org
-X-Gm-Message-State: AOJu0Yzvgmq/0nD1ofayDdIS2eZZF9KvVK7P4kOyEql9j4ZbRPVQkWGU
- UIeWus0N7irJYRPDvsG4ibM4J+c+SfM6kGWPsw0wl6g4qSBfCsIj60B9hTHEI7c=
-X-Gm-Gg: ASbGnctYNzyNy2v6PHp2SJRUyIZBosC5M1VBB43rebaMUHoKqomAjBehwoKuQpJ4CWP
- WZuTEWJx5aNBnWSvnzVkib6XkTKMCcUT9EUANuE5BC95wu03ud8Y7CrUqXp7a2sW0epHzkzWgaJ
- DRGU/ClzQnYmuP4YUXJve73soXG7zxjYMnHLt810O6h942lbUlqSRVIOHTLx3utENOq1jH40Fbr
- JwJ23+TNJNVb342VJzuXvcvH58m5Ssn7Lda5mVzvsbJqmEqR1pdpdmqlZmEoGur+y3fEGvaVb9d
- OdNidT7u3f8U0QQ/wB93ade+AACLIbxn13wO7vpQnp6l2KsWbQt6F0NQQliSzAC9VokkCO6X/Lz
- EN3ogTf/x
-X-Google-Smtp-Source: AGHT+IG647P7TgbAJ4UnMEP8/iBFuHCuY/b3X0Cb61GboCjdTCXP7D5yPqnw3QyQ9q/1jwvR4ttmZw==
-X-Received: by 2002:a05:6000:184c:b0:391:212:459a with SMTP id
- ffacd0b85a97d-39efba51004mr4830602f8f.22.1745067264881; 
- Sat, 19 Apr 2025 05:54:24 -0700 (PDT)
-Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39efa43315esm5673286f8f.26.2025.04.19.05.54.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 19 Apr 2025 05:54:24 -0700 (PDT)
-Message-ID: <ff7cdc09-f11c-43ae-b1e4-668c39db3efe@linaro.org>
-Date: Sat, 19 Apr 2025 14:54:23 +0200
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1u69VC-0000Ol-9P
+ for qemu-devel@nongnu.org; Sat, 19 Apr 2025 10:49:06 -0400
+Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1u69V8-0000Oj-61
+ for qemu-devel@nongnu.org; Sat, 19 Apr 2025 10:49:06 -0400
+Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id 08CA2504EC
+ for <qemu-devel@nongnu.org>; Sat, 19 Apr 2025 14:48:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1745074137;
+ bh=eU3pFUNZ/wz9+29WfeIfLytvETMWXlQ4gFh2TwWIwhM=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=Nsd5ddrAOq1z5O9s/exIPO5/pBBNfQpDk2cayyGm4JYTtsSEDF4KMwVD9bUZPpv24
+ nmL5q0VU+6jnN30rsWNjMyq/U1H1CVeeBmhs0kMmPAJAgXSpJBNtF27qrcm4trEAcU
+ 9EnYU9ZrV3ExnvDhQHl2CsgxnFzyX5JcBeKBmXl2uwPB6Dp48kzN854HEwV2abHagT
+ aIfAj2fP7eg/OjqUP+KQsAf2kaPDk8uMMNWjMlBNE/ye0gGoOv/6CgoZ/1SU29IeK1
+ 8t2vlq0O8Sk4fRPdb7Z8LHX/b74up5R6Z+tk3ZNH25iHUaEGeycJ+hqZly/kVXpGQG
+ 2tyyyUKyFa/yw==
+Received: from scripts.lp.internal (localhost [127.0.0.1])
+ by scripts.lp.internal (Postfix) with ESMTP id EE4C47E66F
+ for <qemu-devel@nongnu.org>; Sat, 19 Apr 2025 14:48:56 +0000 (UTC)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 13/14] qemu/target_info: Add target_aarch64() helper
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <20250418172908.25147-1-philmd@linaro.org>
- <20250418172908.25147-14-philmd@linaro.org>
- <41c9061f-ffd8-47a8-b2e8-7c4b2a2c2fcf@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <41c9061f-ffd8-47a8-b2e8-7c4b2a2c2fcf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 18 Apr 2025 20:53:11 -0000
+From: =?utf-8?b?SsO8cmcgSMOkZmxpZ2Vy?= <1915063@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Undecided;
+ assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=linux; component=main;
+ status=Confirmed; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=linux-oem-5.10;
+ component=main; status=Fix Released; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=linux-oem-5.6;
+ component=main; status=Confirmed; importance=Undecided; assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
+ status=Invalid; importance=Undecided; assignee=None; 
+X-Launchpad-Bug-Tags: apport-collected focal kernel-daily-bug
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: apw babumoger dober60 imammedo markrhpearson
+ paelzer sergiodj th-huth ubuntu-kernel-bot
+X-Launchpad-Bug-Reporter: David Ober (dober60)
+X-Launchpad-Bug-Modifier: =?utf-8?b?SsO8cmcgSMOkZmxpZ2VyIChqdWVyZ2gp?=
+References: <161281335451.16853.7070328699645987751.malonedeb@wampee.canonical.com>
+Message-Id: <174500959546.1166699.14980063233819448042.launchpad@juju-98d295-prod-launchpad-2>
+Subject: [Bug 1915063] Re: Windows 10 wil not install using qemu-system-x86_64
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="e76edd883483c71c468bb038e98836435de44530";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: aeaaae46663f6b0513aacd6ae2c9568f1d611120
+Received-SPF: pass client-ip=185.125.188.250;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -100,181 +93,109 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Bug 1915063 <1915063@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/4/25 03:09, Pierrick Bouvier wrote:
-> On 4/18/25 10:29, Philippe Mathieu-Daudé wrote:
->> Add a helper to distinct the binary is targetting
->> Aarch64 or not.
->>
->> Start with a dump strcmp() implementation, leaving
->> room for future optimizations.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   include/qemu/target_info.h | 7 +++++++
->>   target_info.c              | 5 +++++
->>   2 files changed, 12 insertions(+)
->>
->> diff --git a/include/qemu/target_info.h b/include/qemu/target_info.h
->> index c67b97d66f3..9b7575ce632 100644
->> --- a/include/qemu/target_info.h
->> +++ b/include/qemu/target_info.h
->> @@ -24,4 +24,11 @@ const char *target_name(void);
->>    */
->>   const char *target_machine_typename(void);
->> +/**
->> + * target_aarch64:
->> + *
->> + * Returns whether the target architecture is Aarch64.
->> + */
->> +bool target_aarch64(void);
->> +
->>   #endif
->> diff --git a/target_info.c b/target_info.c
->> index 1de4334ecc5..87dd1d51778 100644
->> --- a/target_info.c
->> +++ b/target_info.c
->> @@ -19,3 +19,8 @@ const char *target_machine_typename(void)
->>   {
->>       return target_info()->machine_typename;
->>   }
->> +
->> +bool target_aarch64(void)
->> +{
->> +    return !strcmp(target_name(), "aarch64");
-> 
-> I don't think doing strcmp is a good move here, even temporarily.
-> 
-> A short term solution is making target_info.c target specific, and use:
-> return TARGET_AARCH64;
+** Tags added: kernel-daily-bug
 
-IIUC as 
-https://lore.kernel.org/qemu-devel/20231122183048.17150-3-philmd@linaro.org/?
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/1915063
 
-> The long term solution, is to have a create target_current() that 
-> returns an enum, and target_aarch64() would become:
-> return target_current() == {ENUM}_AARCH64. We just need to find a good 
-> name for {enum} which is not Target, since it's a poisoned identifier.
-> 
-> This way, we can easily convert the simple
-> #ifdef TARGET_AARCH64 by if target_aarch64(),
-> and more complicated combinations by a switch on target_current().
+Title:
+  Windows 10 wil not install using qemu-system-x86_64
 
-This was 
-https://lore.kernel.org/qemu-devel/20250403234914.9154-4-philmd@linaro.org/, 
-which was useful for the virtio-mem patch:
+Status in QEMU:
+  Fix Released
+Status in linux package in Ubuntu:
+  Confirmed
+Status in linux-oem-5.10 package in Ubuntu:
+  Fix Released
+Status in linux-oem-5.6 package in Ubuntu:
+  Confirmed
+Status in qemu package in Ubuntu:
+  Invalid
 
--- >8 --
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index c7968ee0c61..b5d62411b3e 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -17,2 +17,3 @@
-  #include "qemu/units.h"
-+#include "qemu/target_info.h"
-  #include "system/numa.h"
-@@ -35,9 +36,17 @@ static const VMStateDescription 
-vmstate_virtio_mem_device_early;
+Bug description:
+  Steps to reproduce
+  install virt-manager and ovmf if nopt already there
+  copy windows and virtio iso files to /var/lib/libvirt/images
 
--/*
-- * We only had legacy x86 guests that did not support
-- * VIRTIO_MEM_F_UNPLUGGED_INACCESSIBLE. Other targets don't have legacy 
-guests.
-- */
--#if defined(TARGET_X86_64) || defined(TARGET_I386)
--#define VIRTIO_MEM_HAS_LEGACY_GUESTS
--#endif
-+static bool virtio_mem_has_legacy_guests(void)
-+{
-+    /*
-+     * We only had legacy x86 guests that did not support
-+     * VIRTIO_MEM_F_UNPLUGGED_INACCESSIBLE. Other targets don't have
-+     * legacy guests.
-+     */
-+    switch (target_system_arch()) {
-+    case SYS_EMU_TARGET_I386:
-+    case SYS_EMU_TARGET_X86_64:
-+        return true;
-+    default:
-+        return false;
-+    }
-+}
+  Use virt-manager from local machine to create your VMs with the disk, CPU=
+s and memory required
+      Select customize configuration then select OVMF(UEFI) instead of seab=
+ios
+      set first CDROM to the windows installation iso (enable in boot optio=
+ns)
+      add a second CDROM and load with the virtio iso
+  	change spice display to VNC
 
-@@ -145,3 +154,2 @@ static uint64_t 
-virtio_mem_default_block_size(RAMBlock *rb)
+    Always get a security error from windows and it fails to launch the ins=
+taller (works on RHEL and Fedora)
+  I tried updating the qemu version from Focals 4.2 to Groovy 5.0 which was=
+ of no help
+  ---=20
+  ProblemType: Bug
+  ApportVersion: 2.20.11-0ubuntu27.14
+  Architecture: amd64
+  CasperMD5CheckResult: skip
+  CurrentDesktop: ubuntu:GNOME
+  DistributionChannelDescriptor:
+   # This is the distribution channel descriptor for the OEM CDs
+   # For more information see http://wiki.ubuntu.com/DistributionChannelDes=
+criptor
+   canonical-oem-sutton-focal-amd64-20201030-422+pc-sutton-bachman-focal-am=
+d64+X00
+  DistroRelease: Ubuntu 20.04
+  InstallationDate: Installed on 2021-01-20 (19 days ago)
+  InstallationMedia: Ubuntu 20.04 "Focal" - Build amd64 LIVE Binary 2020103=
+0-14:39
+  MachineType: LENOVO 30E102Z
+  NonfreeKernelModules: nvidia_modeset nvidia
+  Package: linux (not installed)
+  ProcEnviron:
+   TERM=3Dxterm-256color
+   PATH=3D(custom, no user)
+   XDG_RUNTIME_DIR=3D<set>
+   LANG=3Den_US.UTF-8
+   SHELL=3D/bin/bash
+  ProcFB: 0 EFI VGA
+  ProcKernelCmdLine: BOOT_IMAGE=3D/boot/vmlinuz-5.6.0-1042-oem root=3DUUID=
+=3D389cd165-fc52-4814-b837-a1090b9c2387 ro locale=3Den_US quiet splash vt.h=
+andoff=3D7
+  ProcVersionSignature: Ubuntu 5.6.0-1042.46-oem 5.6.19
+  RelatedPackageVersions:
+   linux-restricted-modules-5.6.0-1042-oem N/A
+   linux-backports-modules-5.6.0-1042-oem  N/A
+   linux-firmware                          1.187.8
+  RfKill:
+  =20
+  Tags:  focal
+  Uname: Linux 5.6.0-1042-oem x86_64
+  UpgradeStatus: No upgrade log present (probably fresh install)
+  UserGroups: adm cdrom dip docker kvm libvirt lpadmin plugdev sambashare s=
+udo
+  _MarkForUpload: True
+  dmi.bios.date: 07/29/2020
+  dmi.bios.vendor: LENOVO
+  dmi.bios.version: S07KT08A
+  dmi.board.name: 1046
+  dmi.board.vendor: LENOVO
+  dmi.board.version: Not Defined
+  dmi.chassis.type: 3
+  dmi.chassis.vendor: LENOVO
+  dmi.chassis.version: None
+  dmi.modalias: dmi:bvnLENOVO:bvrS07KT08A:bd07/29/2020:svnLENOVO:pn30E102Z:=
+pvrThinkStationP620:rvnLENOVO:rn1046:rvrNotDefined:cvnLENOVO:ct3:cvrNone:
+  dmi.product.family: INVALID
+  dmi.product.name: 30E102Z
+  dmi.product.sku: LENOVO_MT_30E1_BU_Think_FM_ThinkStation P620
+  dmi.product.version: ThinkStation P620
+  dmi.sys.vendor: LENOVO
 
--#if defined(VIRTIO_MEM_HAS_LEGACY_GUESTS)
-  static bool virtio_mem_has_shared_zeropage(RAMBlock *rb)
-@@ -156,3 +164,2 @@ static bool virtio_mem_has_shared_zeropage(RAMBlock *rb)
-  }
--#endif /* VIRTIO_MEM_HAS_LEGACY_GUESTS */
-
-@@ -999,24 +1006,26 @@ static void virtio_mem_device_realize(DeviceState 
-*dev, Error **errp)
-
--#if defined(VIRTIO_MEM_HAS_LEGACY_GUESTS)
--    switch (vmem->unplugged_inaccessible) {
--    case ON_OFF_AUTO_AUTO:
--        if (virtio_mem_has_shared_zeropage(rb)) {
--            vmem->unplugged_inaccessible = ON_OFF_AUTO_OFF;
--        } else {
--            vmem->unplugged_inaccessible = ON_OFF_AUTO_ON;
-+    if (virtio_mem_has_legacy_guests()) {
-+        switch (vmem->unplugged_inaccessible) {
-+        case ON_OFF_AUTO_AUTO:
-+            if (virtio_mem_has_shared_zeropage(rb)) {
-+                vmem->unplugged_inaccessible = ON_OFF_AUTO_OFF;
-+            } else {
-+                vmem->unplugged_inaccessible = ON_OFF_AUTO_ON;
-+            }
-+            break;
-+        case ON_OFF_AUTO_OFF:
-+            if (!virtio_mem_has_shared_zeropage(rb)) {
-+                warn_report("'%s' property set to 'off' with a memdev 
-that does"
-+                            " not support the shared zeropage.",
-+                            VIRTIO_MEM_UNPLUGGED_INACCESSIBLE_PROP);
-+            }
-+            break;
-+        default:
-+            break;
-          }
--        break;
--    case ON_OFF_AUTO_OFF:
--        if (!virtio_mem_has_shared_zeropage(rb)) {
--            warn_report("'%s' property set to 'off' with a memdev that 
-does"
--                        " not support the shared zeropage.",
--                        VIRTIO_MEM_UNPLUGGED_INACCESSIBLE_PROP);
--        }
--        break;
--    default:
--        break;
-+    } else if (vmem->unplugged_inaccessible != ON_OFF_AUTO_ON) {
-+        error_setg(errp, "guest requires property '%s' to be 'on'",
-+                   VIRTIO_MEM_UNPLUGGED_INACCESSIBLE_PROP);
-+        return;
-      }
--#else /* VIRTIO_MEM_HAS_LEGACY_GUESTS */
--    vmem->unplugged_inaccessible = ON_OFF_AUTO_ON;
--#endif /* VIRTIO_MEM_HAS_LEGACY_GUESTS */
-
-@@ -1713,6 +1722,4 @@ static const Property virtio_mem_properties[] = {
-                       TYPE_MEMORY_BACKEND, HostMemoryBackend *),
--#if defined(VIRTIO_MEM_HAS_LEGACY_GUESTS)
-      DEFINE_PROP_ON_OFF_AUTO(VIRTIO_MEM_UNPLUGGED_INACCESSIBLE_PROP, 
-VirtIOMEM,
-                              unplugged_inaccessible, ON_OFF_AUTO_ON),
--#endif
-      DEFINE_PROP_BOOL(VIRTIO_MEM_EARLY_MIGRATION_PROP, VirtIOMEM,
----
-
-but I thought either you didn't like the approach or it was too early
-to propose for the API, so I went back to strcmp.
-
-> 
-> For a first version, I think that the first solution is enough.
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/1915063/+subscriptions
 
 
