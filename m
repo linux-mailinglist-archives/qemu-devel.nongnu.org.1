@@ -2,96 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17994A93C7D
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 20:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E584FA93E52
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 21:35:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5q24-0006ft-Ad; Fri, 18 Apr 2025 14:01:44 -0400
+	id 1u5rTQ-00016L-Cr; Fri, 18 Apr 2025 15:34:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u5q1k-0006aK-Nj
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 14:01:29 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u5q1i-0004GY-IK
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 14:01:23 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-736ad42dfd6so1840783b3a.3
- for <qemu-devel@nongnu.org>; Fri, 18 Apr 2025 11:01:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744999279; x=1745604079; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=M4zY/Ds5LfB7OiX/gC1AZ7I3FvReIcgKuD6RX9w7QxI=;
- b=NnY2YT953pBAYz3LdUS9gVlBYB9yfokuglqVLpGu8etz6Fuu6i8rkyQLb3tdYTfyRP
- 0xvftAY7BNmcVAbUc1x5XhPUEeDLpZClSld2wkwPIRB9rc4z2MDOVd+/HSwgPfUPtknM
- CtyW65eqzr8HBySyj4eLZG534Iu89GjXH+Ceii4bF6N301thXPu/lQ7oDBiZwe4vvzPM
- eUL1Nk0d6cQUYVTYKtImxQI7uaTIH5VGoTOs+m4uV+wtFPbm5ryYbTQaofkzynoRHuoc
- E6QYYLrCbkkaV1/sZfSLT8Unx2hfVENWs4e7gtenn3tHSi/qAB7nx+fcUhy2Q3ulXVIB
- rmyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744999279; x=1745604079;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=M4zY/Ds5LfB7OiX/gC1AZ7I3FvReIcgKuD6RX9w7QxI=;
- b=ULmhyA4UcFZD+dukcpN6NiboTk0MCrqnoFlA26QzSnfPJ42UdGFcamm6e/YlTOR8ro
- PvEpEaC+zmR41JWs8IubxUBW4VCx2Tpa3o9vd+EKTDJilVpU3mGhzZLMrxyIdBYyHtR/
- b9zWQ1+q37YtyxtlZuvKhtWKu60h8xp/uhIKgpvU4QmdIpVXwiA9RIUehntpfFvmAYdS
- f4pZ6+SeQifj2KOpHPc52y0+rCzUDU94VHimYXof+12GzGVT7YBpszGe/PDFNRaZ2rya
- LsMz2oG1HgylnDa/nzwjJtrvv4B6eZe+5PpFZh3Gexbxk4B6Oq0h79wpTv4BKmnH6CxD
- RBnA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWyX4m3/+gtedCB5VOl+GIvng4SM6Ygop7BwwtSzT2LzQD091fc0UZk4liK7EzUEqWpiYWIXjaC1V4v@nongnu.org
-X-Gm-Message-State: AOJu0YySLEuc/xIS4zEnrienvr3ulYm9yYIH4haP4aP5H6z3+o/PhjZo
- d3kk9x6JoxeATtlAKkb2EcygyOcsBvAdPdTkIwztLOk6Bn0Pusiw3PFzA0jZ0ZY=
-X-Gm-Gg: ASbGncuuWSCkwMKc1iM8bO7z5pqmOD7707d/a+8AXtrjFtuXzQGIWl4GvkHePsH6Z9w
- 9Aineo6fIkq5JakTLtx7S9q0R+yjcZJtM6j/5HuMwmFxihKt5bPOgvQNkdmm60q+TM2ms3IAWhW
- NJY0u9w7txKFs7HsWGbad5xxwNo9CK7mSj1vfhhMffdkgWx/y0mSrdnFp+2Ctx7boY1rnRQWUFx
- zY1Wh1tKHnPMAatjPdej5uRPmBUdcszUikTtKJYAYYXN1NDlPvF9mHGiZhxEgAVKGbdUX63skOC
- nM16PGGEzYlf/+HWt7jnQbFGTyun48jDd/M1+JMQ8+kqkLlz/ck2UXb7NfJszh8DfukUM4eAN1O
- 3Y1ulG14=
-X-Google-Smtp-Source: AGHT+IEhXP5NhLDU3JpUQPgCqbyvr3kR++u6PwlhtVfRqrIXpYbcSbcZpsijRe2+xPeuj/VUJO2OqQ==
-X-Received: by 2002:a05:6a21:318c:b0:1f3:194b:30b0 with SMTP id
- adf61e73a8af0-203cbc252femr5237381637.5.1744999279436; 
- Fri, 18 Apr 2025 11:01:19 -0700 (PDT)
-Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b0db148137esm1638471a12.65.2025.04.18.11.01.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 18 Apr 2025 11:01:18 -0700 (PDT)
-Message-ID: <3cb8d51b-ed9c-4faf-8cb1-05125c8a025b@linaro.org>
-Date: Fri, 18 Apr 2025 11:01:17 -0700
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1u5rTG-00015u-1t
+ for qemu-devel@nongnu.org; Fri, 18 Apr 2025 15:33:54 -0400
+Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1u5rTC-0007Ja-8G
+ for qemu-devel@nongnu.org; Fri, 18 Apr 2025 15:33:52 -0400
+Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 003D04BEA6
+ for <qemu-devel@nongnu.org>; Fri, 18 Apr 2025 19:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1745004825;
+ bh=2V9TZmPm7il7PPKOcuz5esbgLb3CuKGeo0vuj2c5rbg=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=HWFggwcCBeOB655gzHneyE2pjo2p4874br5mEXh/Xy0qpjhP2BJImzeVBgowKgqi1
+ LVfj0LVaGjAR4yyUzC8HcnjOd7SuTJCytjt7V/faCY/27Se9fLBx8QYIfmPx8AlT52
+ 3vL0b5Z/5swx4a4iyVaag6Wua68YlIgn2qhS+tGkr1gBBkN53R6fszdizr9o5taqu+
+ FpO1QEXJ6D0pxXvqTLEr/zlDtGQD1zGT0LrNyzMKacmvQebj1BEWQ7cIAWGixSyboU
+ XBCAc1A+Tr6na9EX+19vfvxyVu8+WsyPcFfJu8m7KPV7Nh0nzhR+Unh/sAdolI75Nu
+ sRnYiI2AVgaFg==
+Received: from scripts.lp.internal (localhost [127.0.0.1])
+ by scripts.lp.internal (Postfix) with ESMTP id DC0D67E69F
+ for <qemu-devel@nongnu.org>; Fri, 18 Apr 2025 19:33:44 +0000 (UTC)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] gdbstub/helpers: Evaluate TARGET_BIG_ENDIAN at
- compile time
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20250417131004.47205-1-philmd@linaro.org>
- <20250417131004.47205-9-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250417131004.47205-9-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 18 Apr 2025 11:44:10 -0000
+From: =?utf-8?b?SsO8cmcgSMOkZmxpZ2Vy?= <1037606@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=linux; status=Confirmed; importance=Medium;
+ assignee=None; 
+X-Launchpad-Bug: product=qemu; status=Won't Fix; importance=Undecided;
+ assignee=None; 
+X-Launchpad-Bug: distribution=ubuntu; sourcepackage=linux; component=main;
+ status=Triaged; importance=Medium; assignee=None; 
+X-Launchpad-Bug-Tags: apport-collected kernel-bug-exists-upstream
+ kernel-daily-bug precise quantal running-unity
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: brad-figg hramrach jsalisbury leaf-node th-huth
+X-Launchpad-Bug-Reporter: Michal Suchanek (hramrach)
+X-Launchpad-Bug-Modifier: =?utf-8?b?SsO8cmcgSMOkZmxpZ2VyIChqdWVyZ2gp?=
+References: <20120816144502.14385.65707.malonedeb@soybean.canonical.com>
+Message-Id: <174497665205.628138.10645069617337964977.launchpad@juju-98d295-prod-launchpad-4>
+Subject: [Bug 1037606] Re: vmwgfx does not work with kvm vmware vga
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="e76edd883483c71c468bb038e98836435de44530";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: 07419316ae33dab5b15794b6a4fe14ddcace8a35
+Received-SPF: pass client-ip=185.125.188.251;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -100,58 +89,109 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Bug 1037606 <1037606@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/17/25 06:10, Philippe Mathieu-Daudé wrote:
-> Rather than evaluating TARGET_BIG_ENDIAN at preprocessing
-> time via #ifdef'ry, do it in C at compile time
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/gdbstub/helpers.h | 11 ++---------
->   1 file changed, 2 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
-> index 6f7cc48adcb..c33d5dfca3e 100644
-> --- a/include/gdbstub/helpers.h
-> +++ b/include/gdbstub/helpers.h
-> @@ -56,17 +56,10 @@ static inline int gdb_get_reg128(GByteArray *buf, uint64_t val_hi,
->                                    uint64_t val_lo)
->   {
->       uint64_t to_quad;
-> -#if TARGET_BIG_ENDIAN
-> -    to_quad = tswap64(val_hi);
-> +    to_quad = tswap64(TARGET_BIG_ENDIAN ? val_hi : val_lo);
->       g_byte_array_append(buf, (uint8_t *) &to_quad, 8);
-> -    to_quad = tswap64(val_lo);
-> +    to_quad = tswap64(TARGET_BIG_ENDIAN ? val_lo : val_hi);
->       g_byte_array_append(buf, (uint8_t *) &to_quad, 8);
-> -#else
-> -    to_quad = tswap64(val_lo);
-> -    g_byte_array_append(buf, (uint8_t *) &to_quad, 8);
-> -    to_quad = tswap64(val_hi);
-> -    g_byte_array_append(buf, (uint8_t *) &to_quad, 8);
-> -#endif
->       return 16;
->   }
->   
+** Tags added: kernel-daily-bug
 
-I'm not keen on using both TARGET_BIG_ENDIAN and tswap.
-I think this ought to be
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/1037606
 
-     uint64_t v0, v1;
+Title:
+  vmwgfx does not work with kvm vmware vga
 
-     if (TARGET_BIG_ENDIAN) {
-         v0 = cpu_to_be64(val_hi);
-         v1 = cpu_to_be64(val_lo);
-     } else {
-         v0 = cpu_to_le64(val_lo);
-         v1 = cpu_to_le64(val_hi);
-     }
-     g_byte_array_append(buf, (uint8_t *)&v0, 8);
-     g_byte_array_append(buf, (uint8_t *)&v1, 8);
+Status in Linux:
+  Confirmed
+Status in QEMU:
+  Won't Fix
+Status in linux package in Ubuntu:
+  Triaged
 
+Bug description:
+  vmwgfx driver fails to initialize inside kvm.
 
-r~
+  tried: kvm -m 2048 -vga vmware -cdrom RebeccaBlackLinux.iso (Ubuntu
+  based, any Ubuntu live CD would do)
+
+  Apport data collected with qantal alpha live CD (somewhat older
+  kernel).
+
+  The error is shjown in CurrentDmesg.txt
+  https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1037606/+attachment/=
+3265235/+files/CurrentDmesg.txt
+
+  ---
+  ApportVersion: 2.4-0ubuntu8
+  Architecture: amd64
+  AudioDevicesInUse: Error: command ['fuser', '-v', '/dev/snd/seq', '/dev/s=
+nd/timer'] failed with exit code 1:
+  CRDA: Error: command ['iw', 'reg', 'get'] failed with exit code 1: nl8021=
+1 not found.
+  CasperVersion: 1.320
+  DistroRelease: Ubuntu 12.10
+  IwConfig:
+  =C2=A0eth0      no wireless extensions.
+
+  =C2=A0lo        no wireless extensions.
+  LiveMediaBuild: Ubuntu 12.10 "Quantal Quetzal" - Alpha amd64 (20120724.2)
+  Lsusb: Error: command ['lsusb'] failed with exit code 1: unable to initia=
+lize libusb: -99
+  MachineType: Bochs Bochs
+  Package: linux (not installed)
+  ProcEnviron:
+  =C2=A0TERM=3Dlinux
+  =C2=A0PATH=3D(custom, no user)
+  =C2=A0LANG=3Den_US.UTF-8
+  =C2=A0SHELL=3D/bin/bash
+  ProcFB:
+
+  ProcKernelCmdLine: file=3D/cdrom/preseed/hostname.seed boot=3Dcasper init=
+rd=3D/casper/initrd.lz quiet splash -- maybe-ubiquity
+  ProcVersionSignature: Ubuntu 3.5.0-6.6-generic 3.5.0
+  PulseList: Error: command ['pacmd', 'list'] failed with exit code 1: No P=
+ulseAudio daemon running, or not running as session daemon.
+  RelatedPackageVersions:
+  =C2=A0linux-restricted-modules-3.5.0-6-generic N/A
+  =C2=A0linux-backports-modules-3.5.0-6-generic  N/A
+  =C2=A0linux-firmware                           1.85
+  RfKill:
+
+  Tags:  quantal
+  Uname: Linux 3.5.0-6-generic x86_64
+  UpgradeStatus: No upgrade log present (probably fresh install)
+  UserGroups:
+
+  dmi.bios.date: 01/01/2007
+  dmi.bios.vendor: Bochs
+  dmi.bios.version: Bochs
+  dmi.chassis.type: 1
+  dmi.chassis.vendor: Bochs
+  dmi.modalias: dmi:bvnBochs:bvrBochs:bd01/01/2007:svnBochs:pnBochs:pvr:cvn=
+Bochs:ct1:cvr:
+  dmi.product.name: Bochs
+  dmi.sys.vendor: Bochs
+  ---=20
+  ApportVersion: 2.0.1-0ubuntu12
+  Architecture: i386
+  DistroRelease: Ubuntu 12.04
+  InstallationMedia: Ubuntu 10.10 "Maverick Meerkat" - Release i386 (201010=
+07)
+  Package: linux (not installed)
+  ProcEnviron:
+   TERM=3Dxterm
+   PATH=3D(custom, no user)
+   LANG=3Den_US.UTF-8
+   SHELL=3D/bin/bash
+  Tags:  precise running-unity
+  Uname: Linux 3.6.0-030600rc3-generic i686
+  UnreportableReason: The running kernel is not an Ubuntu kernel
+  UpgradeStatus: Upgraded to precise on 2012-08-30 (0 days ago)
+  UserGroups: adm admin cdrom dialout lpadmin plugdev sambashare
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/linux/+bug/1037606/+subscriptions
+
 
