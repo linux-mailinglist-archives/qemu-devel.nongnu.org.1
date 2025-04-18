@@ -2,89 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4A0A92EFB
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 02:53:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8333DA92FE7
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 04:26:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Zxv-0002dd-FB; Thu, 17 Apr 2025 20:52:23 -0400
+	id 1u5bPK-0007aw-23; Thu, 17 Apr 2025 22:24:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Zxb-0002P5-LY
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 20:52:03 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5ZxZ-00069L-Np
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 20:52:03 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43d2d952eb1so9837085e9.1
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 17:52:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744937519; x=1745542319; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Rc46lD7Ko7XfwPKQsqzz7EgBw+3K3PZcRoY06dDD1t0=;
- b=S6H7MOy1K3zDU1lbjzvXeFBpKwcx3AjGw4IcS100NmOWQnsMw3jePhoe6IWibIfytj
- 07q9YDVS0b79m6qQ1uyCmUY9MXS6NHs40Whk9LWKrscZauqadftO1YwxOIPKcsFOYlpO
- QGihTk6CRDIIqcG+j8jC4RUc7Ye0rPoSrN4fc8OcyhGqdjSlVQTlsZiNfb6SQRumBJpJ
- o+q8xV2aYcTJXJNOciGcZROeOF2PNngmRbEQ8Cx/nCULv3XnhQCpz31lQG9b026UGMql
- 4BWmzfEp2ebhd8iBzLs+iNSpGeZPZqmwoMrZXVDXVDQLTQXexVLmdnlkkMQ3TQc6Aj8O
- 9KjA==
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1u5bPH-0007ae-JW
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 22:24:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1u5bPF-00031f-Mo
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 22:24:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1744943077;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Us/yCe+81fX4Hye8bzeb4M6/0RizDVqyKIAjZe1L68E=;
+ b=Dri0icKqY1J0xixEVDXRlv8r4ObAsnd7Rzogg3Mvx30zJnFE1f7gqSAmHrG5uzzvMy7ZBI
+ +Vg2vkPujZByMr+VZuZSkKSi7uHWPuN/Z8R9EPB7isQR4AzyG2qcx2FiifQTNVpRzM6Qet
+ 4D87FFnnoQDhtKLBey8Q8OvLd8VYYcI=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-udOOe_urO0Wokhf-pEr6cQ-1; Thu, 17 Apr 2025 22:24:34 -0400
+X-MC-Unique: udOOe_urO0Wokhf-pEr6cQ-1
+X-Mimecast-MFC-AGG-ID: udOOe_urO0Wokhf-pEr6cQ_1744943073
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5e5c808e777so1226723a12.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 19:24:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744937519; x=1745542319;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1744943073; x=1745547873;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rc46lD7Ko7XfwPKQsqzz7EgBw+3K3PZcRoY06dDD1t0=;
- b=mm/tKw7mg2h85+1adK/4Cy4OahdhYQJyTUen0SxidZa5gytAUc3QRSACUjnMol0zux
- CB8ym2Rf+myojMdK47yUePgaWyV2u9RMwpA2RON13XC+JvhzF/e4HQEol7OuuvbZQQ9G
- PJFeMOhUFZW/erGMP094btEx0Ux7sdoL7zkkb5vqA1ywXwiufAthnmWHKFE8Rd7FucXE
- eXymW44Rvcnzo6982cNGBaDLrNemKhp2A6OKsYqSjEPaIqnd1VlPwg1F2c6PEt9SjoTn
- k3W/Ct/uqvgnvc/kjiWvLyafHrpogm5IYMzdSxocE4Fdg5RxuhuNZ6wzqu/dLkACL6h7
- caAg==
+ bh=Us/yCe+81fX4Hye8bzeb4M6/0RizDVqyKIAjZe1L68E=;
+ b=BO72vYxJGJ+H9u5PIyzr3uVuIZik7amHgWfNSLdpWEKgWGhftOFdZlYMlOQ6iZU4qW
+ TsMjhZlsmXAAerCd2x6YyFayVSbQpsRlFiQWuk5I/TkcKzCsI1C8aBjTuIyoX3Nk9KlU
+ 7ixL9P8O0KVALYhgYP5z1N3fQ+oKOtWCrd9k5xLmLXOaLSYSROI2Az5w1cn4jBJEyANu
+ DN8oSNYiuNX/wJX1L8ghe3fky0bD7TdlGaNCgeDX/2EeJmUStW+k43+Ke1/wp17gYoHi
+ AUn2OU5aQiyWrlHx2xg7XUkVyucaZgH0pteuUwfnRyusWpfIsMSfOqa/2UsCUeUhod65
+ FsJA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVW/djwf8VUnXXZovIa+Q/+8X8rzeN4ezo0m/VetLaH3k23sMCvPCjRus3MxuE65AKy3DiizndXMjpy@nongnu.org
-X-Gm-Message-State: AOJu0YzU8qSkNKCffXnvdisjMMWAEqXEtcfsbq70Eu31sXbpS8clhfD3
- 8H99tn4oPr8nrmJIv6U2OnReZnOSF7awWRhl/ivzVw4f8+HSn6GvIbViuIwYepk=
-X-Gm-Gg: ASbGncvcLa4TyI+KJduqSjyKnkaL5cu2q0XNijq+qGmAGK3ZlLT+4n7qdCkm9/vW+a6
- kpO0rkCe6qgYu3YhYVV7oQKI3baNqp4zNbMD+f2ET6JdHv5g5qSErioiogSDNbOeicaj569mS2b
- V9h4B9z9tHRoH+dFmpbTWNXkor/2Bh3wgYY6vfp22X4VS1POdw4WIT8b+fK5DBZZRlS72mXX5xb
- N+ByNaLFTiZ6l8iNTwaM9hCsYbmu8xNu9BQhSS2Y1eEnMo8YCqJ0Of171I+WjMVUvgPvaZM6Wr9
- +dNIXMzRWUgfH1Ltn0T3+kBLii8HScBWJ8dZUeYb4NFRcB2njHSd8CPjdx70hjm/Oh31Wp1uwIh
- Wfi5L2H4C8w7D/KfFAHk2
-X-Google-Smtp-Source: AGHT+IGuVnDN9W10lwGQgK434ZVDA0zrGtmi8qZ+dh2N8VXoW10w4Eryi3bYUzD4Vji5HWFr94a4jw==
-X-Received: by 2002:a5d:6da1:0:b0:39a:ca0c:fc90 with SMTP id
- ffacd0b85a97d-39efba3c6e4mr609303f8f.14.1744937519048; 
- Thu, 17 Apr 2025 17:51:59 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4406d6dfe4esm1984585e9.33.2025.04.17.17.51.57
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 17 Apr 2025 17:51:57 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [RFC PATCH v2 11/11] hw/arm/raspi: Build objects once
-Date: Fri, 18 Apr 2025 02:50:59 +0200
-Message-ID: <20250418005059.4436-12-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250418005059.4436-1-philmd@linaro.org>
-References: <20250418005059.4436-1-philmd@linaro.org>
+ AJvYcCUl+AQnUyJyGH50PsP4r6lZCMmqGL7UDRDMqtUDl4tX7z+f3KaZ0j5c9iwTE9r1JNWlxWhMolIzd6ml@nongnu.org
+X-Gm-Message-State: AOJu0Yw2H0NYuPyT7XfQcr55R1EJyP+gUd6bUDiDtwwER8fCE+pXM04G
+ cTz6etZhcjzmM19P5vUIhTiddEa197PDqKHp6B1fIUKoT0yM7QiFequGHt/EziTKBVfCYXQmW0U
+ giDMUppTeYYMGgARY2/rtylZWlzLkb+uvZryvrJmXlCtqlV3yk06YouMCMKUx1Z+OIJJr1o6NdN
+ xZMjkSB/JG12uDWSwUmL/xcuRHHjg=
+X-Gm-Gg: ASbGnct8k5RH1RHgokgZWNNatj1OGsjk76oIKxHNz2SIpjupYKabBmb1sI6DfsUpING
+ IAw9Q1fFtMDqsjfeN1DmcQa5mML+KazKsbH9qMQVEOkiHDh0Ga5ejTk1kE210TcXEvdB8WQ==
+X-Received: by 2002:a05:6402:354a:b0:5f4:d605:7f5c with SMTP id
+ 4fb4d7f45d1cf-5f6285e88ecmr881377a12.22.1744943072844; 
+ Thu, 17 Apr 2025 19:24:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1CpsIg7LrRiAA9nzFBazqKT0BVVCl6a7edJf7jwhFu8f/ugdLwhLO3vAFl8rO3pCp2UP7lCX0N0MTE69G9f4=
+X-Received: by 2002:a05:6402:354a:b0:5f4:d605:7f5c with SMTP id
+ 4fb4d7f45d1cf-5f6285e88ecmr881363a12.22.1744943072426; Thu, 17 Apr 2025
+ 19:24:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_XBL=0.375, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20250417102522.4125379-1-lulu@redhat.com>
+ <20250417102522.4125379-2-lulu@redhat.com>
+In-Reply-To: <20250417102522.4125379-2-lulu@redhat.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Fri, 18 Apr 2025 10:23:55 +0800
+X-Gm-Features: ATxdqUHcm1yWStJc_oFdZQg9C3NrwHFALQuSce0__djCGrQmIvtfYgdcyBgrIzI
+Message-ID: <CAPpAL=wN5Kjk4=FzyucWjrK4QZHdEy4NUVyvZY_kqkybBzgccw@mail.gmail.com>
+Subject: Re: [PATCH v7 1/4] vhost_vdpa : Add a new parameter to enable check
+ mac address
+To: Cindy Lu <lulu@redhat.com>
+Cc: mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,110 +103,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now than Raspi machines can be filtered when running a
-qemu-system-arm or qemu-system-aarch64 binary, we can
-remove the TARGET_AARCH64 #ifdef'ry and compile the
-aspeed.c file once, moving it from arm_ss[] source set
-to arm_common_ss[]. Note, we expose the TYPE_BCM2837
-type to qemu-system-arm, but it is not user-creatable,
-so not an issue.
+I tested this series of patches v7 with virtio-net regression tests,
+everything works fine.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/arm/bcm2836.c   | 4 ----
- hw/arm/raspi.c     | 4 ----
- hw/arm/meson.build | 8 ++++++--
- 3 files changed, 6 insertions(+), 10 deletions(-)
+Tested-by: Lei Yang <leiyang@redhat.com>
 
-diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
-index 95e16806fa1..7dd81e8e0f9 100644
---- a/hw/arm/bcm2836.c
-+++ b/hw/arm/bcm2836.c
-@@ -195,7 +195,6 @@ static void bcm2836_class_init(ObjectClass *oc, void *data)
-     dc->realize = bcm2836_realize;
- };
- 
--#ifdef TARGET_AARCH64
- static void bcm2837_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
-@@ -208,7 +207,6 @@ static void bcm2837_class_init(ObjectClass *oc, void *data)
-     bc->clusterid = 0x0;
-     dc->realize = bcm2836_realize;
- };
--#endif
- 
- static const TypeInfo bcm283x_types[] = {
-     {
-@@ -219,12 +217,10 @@ static const TypeInfo bcm283x_types[] = {
-         .name           = TYPE_BCM2836,
-         .parent         = TYPE_BCM283X,
-         .class_init     = bcm2836_class_init,
--#ifdef TARGET_AARCH64
-     }, {
-         .name           = TYPE_BCM2837,
-         .parent         = TYPE_BCM283X,
-         .class_init     = bcm2837_class_init,
--#endif
-     }, {
-         .name           = TYPE_BCM283X,
-         .parent         = TYPE_BCM283X_BASE,
-diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
-index 8a2da650087..980e4a14793 100644
---- a/hw/arm/raspi.c
-+++ b/hw/arm/raspi.c
-@@ -367,7 +367,6 @@ static void raspi2b_machine_class_init(ObjectClass *oc, void *data)
-     raspi_machine_class_init(mc, rmc->board_rev);
- };
- 
--#ifdef TARGET_AARCH64
- static void raspi3ap_machine_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -387,7 +386,6 @@ static void raspi3b_machine_class_init(ObjectClass *oc, void *data)
-     rmc->board_rev = 0xa02082;
-     raspi_machine_class_init(mc, rmc->board_rev);
- };
--#endif /* TARGET_AARCH64 */
- 
- static const TypeInfo raspi_machine_types[] = {
-     {
-@@ -417,7 +415,6 @@ static const TypeInfo raspi_machine_types[] = {
-             { TYPE_TARGET_AARCH64_MACHINE },
-             { },
-         },
--#ifdef TARGET_AARCH64
-     }, {
-         .name           = MACHINE_TYPE_NAME("raspi3ap"),
-         .parent         = TYPE_RASPI_MACHINE,
-@@ -434,7 +431,6 @@ static const TypeInfo raspi_machine_types[] = {
-             { TYPE_TARGET_AARCH64_MACHINE },
-             { },
-         },
--#endif
-     }, {
-         .name           = TYPE_RASPI_MACHINE,
-         .parent         = TYPE_RASPI_BASE_MACHINE,
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index f76e7fb229f..f52034ff6a2 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -27,8 +27,12 @@ arm_common_ss.add(when: 'CONFIG_OMAP', if_true: files('omap1.c'))
- arm_common_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('allwinner-a10.c', 'cubieboard.c'))
- arm_common_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3.c', 'orangepi.c'))
- arm_common_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40.c', 'bananapi_m2u.c'))
--arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c', 'raspi.c'))
--arm_common_ss.add(when: ['CONFIG_RASPI', 'TARGET_AARCH64'], if_true: files('bcm2838.c', 'raspi4b.c'))
-+arm_common_ss.add(when: 'CONFIG_RASPI', if_true: files(
-+  'bcm2836.c',
-+  'bcm2838.c',
-+  'raspi.c',
-+  'raspi4b.c',
-+))
- arm_common_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
- arm_common_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
- arm_common_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
--- 
-2.47.1
+On Thu, Apr 17, 2025 at 6:26=E2=80=AFPM Cindy Lu <lulu@redhat.com> wrote:
+>
+> When using a VDPA device, it's important to ensure that the MAC
+> address is correctly set.
+> This patch adds a new QEMU command line parameter to enable MAC
+> address verification,  which is enabled by default.
+>
+> Usage example:
+> ....
+> -netdev type=3Dvhost-vdpa,vhostdev=3D/dev/vhost-vdpa-0,id=3Dvhost-vdpa0,c=
+heck-mac=3Dtrue\
+> -device virtio-net-pci,netdev=3Dvhost-vdpa0\
+> ....
+> To disable this check:
+> ....
+> -netdev type=3Dvhost-vdpa,vhostdev=3D/dev/vhost-vdpa-0,id=3Dvhost-vdpa0,c=
+heck-mac=3Dfalse\
+> -device virtio-net-pci,netdev=3Dvhost-vdpa0\
+> ....
+>
+> Signed-off-by: Cindy Lu <lulu@redhat.com>
+> ---
+>  include/net/net.h | 1 +
+>  net/vhost-vdpa.c  | 5 +++++
+>  qapi/net.json     | 5 +++++
+>  3 files changed, 11 insertions(+)
+>
+> diff --git a/include/net/net.h b/include/net/net.h
+> index cdd5b109b0..fac1951b6e 100644
+> --- a/include/net/net.h
+> +++ b/include/net/net.h
+> @@ -112,6 +112,7 @@ struct NetClientState {
+>      bool is_netdev;
+>      bool do_not_pad; /* do not pad to the minimum ethernet frame length =
+*/
+>      bool is_datapath;
+> +    bool check_mac;
+>      QTAILQ_HEAD(, NetFilterState) filters;
+>  };
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 7ca8b46eee..7dbe6cf65c 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -1871,6 +1871,11 @@ int net_init_vhost_vdpa(const Netdev *netdev, cons=
+t char *name,
+>          if (!ncs[i])
+>              goto err;
+>      }
+> +    /* Enable the mac check by default */
+> +    if (opts->has_check_mac)
+> +        ncs[0]->check_mac =3D opts->check_mac;
+> +    else
+> +        ncs[0]->check_mac =3D true;
+>
+>      if (has_cvq) {
+>          VhostVDPAState *s0 =3D DO_UPCAST(VhostVDPAState, nc, ncs[0]);
+> diff --git a/qapi/net.json b/qapi/net.json
+> index 310cc4fd19..0607c83833 100644
+> --- a/qapi/net.json
+> +++ b/qapi/net.json
+> @@ -510,6 +510,10 @@
+>  # @queues: number of queues to be created for multiqueue vhost-vdpa
+>  #     (default: 1)
+>  #
+> +# @check-mac: Enable the check for whether the device's MAC address
+> +#     and the MAC in QEMU command line are acceptable for booting.
+> +#     (default: true)
+> +#
+>  # @x-svq: Start device with (experimental) shadow virtqueue.  (Since
+>  #     7.1) (default: false)
+>  #
+> @@ -524,6 +528,7 @@
+>      '*vhostdev':     'str',
+>      '*vhostfd':      'str',
+>      '*queues':       'int',
+> +    '*check-mac':    'bool',
+>      '*x-svq':        {'type': 'bool', 'features' : [ 'unstable'] } } }
+>
+>  ##
+> --
+> 2.45.0
+>
+>
 
 
