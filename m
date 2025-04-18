@@ -2,30 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD933A93694
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 13:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBADA93692
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 13:33:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5jvc-0005Y9-3x; Fri, 18 Apr 2025 07:30:40 -0400
+	id 1u5jvY-0005Wq-Rg; Fri, 18 Apr 2025 07:30:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dietmar@zilli.proxmox.com>)
- id 1u5jvT-0005Vq-FI
+ id 1u5jvT-0005Vo-DO
  for qemu-devel@nongnu.org; Fri, 18 Apr 2025 07:30:31 -0400
 Received: from [94.136.29.99] (helo=zilli.proxmox.com)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <dietmar@zilli.proxmox.com>) id 1u5jvE-0005nc-Kb
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 07:30:29 -0400
+ (envelope-from <dietmar@zilli.proxmox.com>) id 1u5jvI-0005nx-Dk
+ for qemu-devel@nongnu.org; Fri, 18 Apr 2025 07:30:28 -0400
 Received: by zilli.proxmox.com (Postfix, from userid 1000)
- id 382811C1685; Fri, 18 Apr 2025 13:29:58 +0200 (CEST)
+ id 396D01C1687; Fri, 18 Apr 2025 13:29:58 +0200 (CEST)
 From: Dietmar Maurer <dietmar@proxmox.com>
 To: marcandre.lureau@redhat.com,
 	qemu-devel@nongnu.org
 Cc: Dietmar Maurer <dietmar@proxmox.com>
-Subject: [PATCH v3 6/9] h264: add hardware encoders
-Date: Fri, 18 Apr 2025 13:29:50 +0200
-Message-Id: <20250418112953.1744442-7-dietmar@proxmox.com>
+Subject: [PATCH v3 7/9] h264: do not reduce vnc update speed while we have an
+ active h264 stream
+Date: Fri, 18 Apr 2025 13:29:51 +0200
+Message-Id: <20250418112953.1744442-8-dietmar@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250418112953.1744442-1-dietmar@proxmox.com>
 References: <20250418112953.1744442-1-dietmar@proxmox.com>
@@ -58,55 +59,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Dietmar Maurer <dietmar@proxmox.com>
 ---
- ui/vnc-enc-h264.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ ui/vnc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/ui/vnc-enc-h264.c b/ui/vnc-enc-h264.c
-index 0f89cafbf6..840674dbdb 100644
---- a/ui/vnc-enc-h264.c
-+++ b/ui/vnc-enc-h264.c
-@@ -29,15 +29,17 @@
+diff --git a/ui/vnc.c b/ui/vnc.c
+index feab4c0043..6db03a1550 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -3222,6 +3222,7 @@ static void vnc_refresh(DisplayChangeListener *dcl)
+     VncDisplay *vd = container_of(dcl, VncDisplay, dcl);
+     VncState *vs, *vn;
+     int has_dirty, rects = 0;
++    bool keep_dirty = false;
  
- static char *get_available_encoder(const char *encoder_list)
- {
-+    char *ret = NULL;
-+    char **encoder_array = NULL;
-+
-     g_assert(encoder_list != NULL);
+     if (QTAILQ_EMPTY(&vd->clients)) {
+         update_displaychangelistener(&vd->dcl, VNC_REFRESH_INTERVAL_MAX);
+@@ -3249,6 +3250,9 @@ static void vnc_refresh(DisplayChangeListener *dcl)
+                     vs->h264->keep_dirty--;
+                 }
+             }
++            if (vs->h264->keep_dirty > 0) {
++                keep_dirty = true;
++            }
+         }
  
-     if (!strcmp(encoder_list, "")) {
-         /* use default list */
--        encoder_list = "x264enc openh264enc";
-+        encoder_list = "nvh264enc vaapih264enc x264enc openh264enc";
+         int count = vnc_update_client(vs, client_dirty);
+@@ -3266,7 +3270,7 @@ static void vnc_refresh(DisplayChangeListener *dcl)
+         /* vs might be free()ed here */
      }
  
--    char *ret = NULL;
--    char **encoder_array = g_strsplit(encoder_list, " ", -1);
-+    encoder_array = g_strsplit(encoder_list, " ", -1);
- 
-     int i = 0;
-     do {
-@@ -69,7 +71,19 @@ static GstElement *create_encoder(const char *encoder_name)
-         return NULL;
-     }
- 
--    if (!strcmp(encoder_name, "x264enc")) {
-+    if (!strcmp(encoder_name, "nvh264enc")) {
-+        g_object_set(
-+            encoder,
-+            "preset", 8,         /* p1 - fastest */
-+            "multi-pass", 1,     /* multipass disabled */
-+            "tune", 2,           /* low latency */
-+            "zerolatency", true, /* low latency */
-+            /* avoid access unit delimiters (Nal Unit Type 9) - not required */
-+            "aud", false,
-+            NULL);
-+    } else if (!strcmp(encoder_name, "vaapih264enc")) {
-+        g_object_set(encoder, "tune", 1, NULL); /* high compression */
-+    } else if (!strcmp(encoder_name, "x264enc")) {
-         g_object_set(
-             encoder,
-             "tune", 4, /* zerolatency */
+-    if (has_dirty && rects) {
++    if ((has_dirty && rects) || keep_dirty) {
+         vd->dcl.update_interval /= 2;
+         if (vd->dcl.update_interval < VNC_REFRESH_INTERVAL_BASE) {
+             vd->dcl.update_interval = VNC_REFRESH_INTERVAL_BASE;
 -- 
 2.39.5
 
