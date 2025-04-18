@@ -2,45 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28C9A93A14
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 17:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4F6A939F5
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 17:41:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5jvX-0005Vg-AC; Fri, 18 Apr 2025 07:30:35 -0400
+	id 1u5mIi-0006Nz-Sy; Fri, 18 Apr 2025 10:02:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dietmar@zilli.proxmox.com>)
- id 1u5jvM-0005SB-12
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 07:30:28 -0400
-Received: from [94.136.29.99] (helo=zilli.proxmox.com)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <dietmar@zilli.proxmox.com>) id 1u5jv5-0005cv-7C
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 07:30:23 -0400
-Received: by zilli.proxmox.com (Postfix, from userid 1000)
- id 34DAF1C167F; Fri, 18 Apr 2025 13:29:58 +0200 (CEST)
-From: Dietmar Maurer <dietmar@proxmox.com>
-To: marcandre.lureau@redhat.com,
-	qemu-devel@nongnu.org
-Cc: Dietmar Maurer <dietmar@proxmox.com>
-Subject: [PATCH v3 4/9] h264: search for available h264 encoder
-Date: Fri, 18 Apr 2025 13:29:48 +0200
-Message-Id: <20250418112953.1744442-5-dietmar@proxmox.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250418112953.1744442-1-dietmar@proxmox.com>
-References: <20250418112953.1744442-1-dietmar@proxmox.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5mIb-0006M9-RU
+ for qemu-devel@nongnu.org; Fri, 18 Apr 2025 10:02:34 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5mIR-0005RQ-N0
+ for qemu-devel@nongnu.org; Fri, 18 Apr 2025 10:02:33 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3914bc3e01aso1173859f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 18 Apr 2025 07:02:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1744984932; x=1745589732; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FfgZmhPZmXUXa+NlkWNx4ezzsBssUFnC9b5WmjsqYZs=;
+ b=p0eWzJSBZNCpEJpLaXy7wrbT77Nrv41NY/UsB5lnIlBHQf+gFWvBExqViRUtf933wC
+ RRWrbmjif2/0Dxx3/ri/zpjqN9JQITkZBSP5fcLexEG+zgGHf9w1b08CDgVkx/um/LHP
+ esxV5Odjg2eHRRRbhDcu1yMKDqPOsoGMorY9QYnXIKiKSH8alSaYX/D7tLcGeAYtWpgq
+ MKU/CiFZjLrSPZgy4DPBHFPub2GCY8ucolcYU8a9wmx939Uff7uqff0BmRH1S9pG3HqC
+ HWZHeDyZF9cW98roYBYZ25SqjohcLy0fuu36PYbCD6s6ZhLbdlburLVqcQ3PIvbQMu4Z
+ lNjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1744984932; x=1745589732;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FfgZmhPZmXUXa+NlkWNx4ezzsBssUFnC9b5WmjsqYZs=;
+ b=WUHdneWPb1Xmbkwkudvs0lIT41KjKpgquI8UJ/jbRzO/6sGoLxfNyKF9tIwENwzIvk
+ YWYohkr19o/tQyInwAN/JKAaPUM87jpFrgZFtFUbezL2UtDCAeCFIMn2YXpa754kDOs8
+ 1+p8SZXmRutpBJeURyhupehb/niUiRFPrU5T90Y8paIRqaTokIX7EMRFffuIHS4hp7O0
+ 2yZQ05eDEyGfgI/cvov5oNr/YYARpdLk/RCQHvntxLMwR8ID0UaQdtruk40q/kszMYsT
+ zO8Yet32yRmxp/eXw/0A54rBs0MU/4lIqMoxH4lQsgzLt5HZYstOVBEnsi7DGkNexP3c
+ 92jg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU3uKE6ToAUPZyUzxTmLPWEQeTXxdRnHjNbkA+9YkTVU0FbNcsRk1ss+4zMi/AQj6jlBWprq7jxdLJS@nongnu.org
+X-Gm-Message-State: AOJu0YzgaBjEThgPNDM2FSLL8oWSQ7q9/sLiyU8Rvc1tJWqMdwMI249k
+ av0GDPmrEpQYQqSvftELnJeAFDFQgy2UIVbbjkxjfAN7t+vG7FvP7+PKqzCDXN8=
+X-Gm-Gg: ASbGncv01red8GhPrKcaagA7YkY4My66wV3MJ6mf4lUCuQBgPMhFR3CiJ2kLJ9JvBNN
+ zMqNZuvZqaAtgW8LKMU2RPzK8dPYSg6TwK1XdAPtrA1Sl3LFlbvfxJ/LntTt/jeI8hue1pzaxZA
+ FssyLBOwR8A0sOEIrf4qMFd48iJ4vlAqz09/N0w/0BhrbdSEz7jlBu8ZX2YZCrT0jbVo6qivhzQ
+ RKpo/6hHN4NMZNXljZKXFxj6RblH9JQMHHKwPO/hEuJgCq9do+xjpWuASzKN78PCNIIOACKc59r
+ 2+zKZp+AcS+uXOKXCRT1ov1TkMOaWRE7+uUXpusXktDrrrloTGqrHEhi41Mgaa+n78OcQR01aGX
+ 8P4RjY+w5
+X-Google-Smtp-Source: AGHT+IFRRHdneRSeRZZfoteyTYUSQq+sarGiSl3hSuEjYoqZZQTiBkAyhUNboI4vrVc5u7FSULLosg==
+X-Received: by 2002:a05:6000:438a:b0:39e:cbd2:9ad2 with SMTP id
+ ffacd0b85a97d-39efba2aa44mr1941243f8f.4.1744984931559; 
+ Fri, 18 Apr 2025 07:02:11 -0700 (PDT)
+Received: from [192.168.69.175] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-39efa43bef1sm2806079f8f.49.2025.04.18.07.02.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 18 Apr 2025 07:02:11 -0700 (PDT)
+Message-ID: <3fc281a5-3a6b-47d6-bead-3a93f331a258@linaro.org>
+Date: Fri, 18 Apr 2025 16:02:10 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 02/11] qemu: Convert target_name() to TargetInfo API
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20250418005059.4436-1-philmd@linaro.org>
+ <20250418005059.4436-3-philmd@linaro.org>
+ <cff3276a-0a17-406d-a7d2-0c932d1fb1f4@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <cff3276a-0a17-406d-a7d2-0c932d1fb1f4@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 94.136.29.99 (failed)
-Received-SPF: none client-ip=94.136.29.99;
- envelope-from=dietmar@zilli.proxmox.com; helo=zilli.proxmox.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, NO_DNS_FOR_FROM=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,155 +102,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The search list is currently hardcoded to: ["x264enc", "openh264enc"]
+On 18/4/25 05:01, Pierrick Bouvier wrote:
+> On 4/17/25 17:50, Philippe Mathieu-Daudé wrote:
+>> Have target_name() be a target-agnostic method, dispatching
+>> to a per-target TargetInfo singleton structure.
+>> By default a stub singleton is used. No logical change
+>> expected.
+>>
+>> Inspired-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> ---
+>>   meson.build                     |  3 +++
+>>   include/hw/core/cpu.h           |  2 --
+>>   include/qemu/target_info-impl.h | 23 +++++++++++++++++++++++
+>>   include/qemu/target_info.h      | 19 +++++++++++++++++++
+>>   cpu-target.c                    |  5 -----
+>>   hw/core/machine-qmp-cmds.c      |  1 +
+>>   plugins/loader.c                |  2 +-
+>>   system/vl.c                     |  2 +-
+>>   target_info-stub.c              | 19 +++++++++++++++++++
+>>   target_info.c                   | 16 ++++++++++++++++
+>>   10 files changed, 83 insertions(+), 9 deletions(-)
+>>   create mode 100644 include/qemu/target_info-impl.h
+>>   create mode 100644 include/qemu/target_info.h
+>>   create mode 100644 target_info-stub.c
+>>   create mode 100644 target_info.c
 
-x264enc: is probably the best available software encoder
-openh264enc: lower quality, but available on more systems.
 
-We restrict encoders to a known list because each encoder requires
-fine tuning to get reasonable/usable results.
+>> diff --git a/target_info-stub.c b/target_info-stub.c
+>> new file mode 100644
+>> index 00000000000..1e44bb6f6fb
+>> --- /dev/null
+>> +++ b/target_info-stub.c
+>> @@ -0,0 +1,19 @@
+>> +/*
+>> + * QEMU target info stubs
+>> + *
+>> + *  Copyright (c) Linaro
+>> + *
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "qemu/target_info-impl.h"
+>> +
+>> +static const TargetInfo target_info_stub = {
+>> +    .name = TARGET_NAME,
+>> +};
+>> +
+>> +const TargetInfo *target_info(void)
+>> +{
+>> +    return &target_info_stub;
+>> +}
+>> diff --git a/target_info.c b/target_info.c
+>> new file mode 100644
+>> index 00000000000..877a6a15014
+>> --- /dev/null
+>> +++ b/target_info.c
+>> @@ -0,0 +1,16 @@
+>> +/*
+>> + * QEMU binary/target helpers
+>> + *
+>> + *  Copyright (c) Linaro
+>> + *
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "qemu/target_info-impl.h"
+>> +#include "qemu/target_info.h"
+>> +
+>> +const char *target_name(void)
+>> +{
+>> +    return target_info()->name;
+>> +}
+> 
+> What is the benefit to have two different files (common and specific)?
+> target_name() can be inline in the same header, returning the matching 
+> field in existing target_info, which does not need any specialization 
+> per target.
 
-Signed-off-by: Dietmar Maurer <dietmar@proxmox.com>
----
- ui/vnc-enc-h264.c | 89 +++++++++++++++++++++++++++++++++++++++--------
- ui/vnc.h          |  1 +
- 2 files changed, 75 insertions(+), 15 deletions(-)
+common interface exposed target-agnostic, dispatching to target-specific
+implementation (providing a stub we'll remove once all targets converted).
 
-diff --git a/ui/vnc-enc-h264.c b/ui/vnc-enc-h264.c
-index 3abe6a1528..047f4a3128 100644
---- a/ui/vnc-enc-h264.c
-+++ b/ui/vnc-enc-h264.c
-@@ -27,6 +27,68 @@
- 
- #include <gst/gst.h>
- 
-+const char *encoder_list[] = { "x264enc", "openh264enc", NULL };
-+
-+static const char *get_available_encoder(void)
-+{
-+    int i = 0;
-+    do {
-+        const char *encoder_name = encoder_list[i];
-+        if (encoder_name == NULL) {
-+            break;
-+        }
-+        GstElement *element = gst_element_factory_make(
-+            encoder_name, "video-encoder");
-+        if (element != NULL) {
-+            gst_object_unref(element);
-+            return encoder_name;
-+        }
-+        i = i + 1;
-+    } while (true);
-+
-+    return NULL;
-+}
-+
-+static GstElement *create_encoder(const char *encoder_name)
-+{
-+    GstElement *encoder = gst_element_factory_make(
-+        encoder_name, "video-encoder");
-+    if (!encoder) {
-+        VNC_DEBUG("Could not create gst '%s' video encoder\n", encoder_name);
-+        return NULL;
-+    }
-+
-+    if (!strcmp(encoder_name, "x264enc")) {
-+        g_object_set(
-+            encoder,
-+            "tune", 4, /* zerolatency */
-+            /*
-+             * fix for zerolatency with novnc (without,
-+             * noVNC displays green stripes)
-+             */
-+            "threads", 1,
-+            "pass", 5, /* Constant Quality */
-+            "quantizer", 26,
-+            /* avoid access unit delimiters (Nal Unit Type 9) - not required */
-+            "aud", false,
-+            NULL);
-+    } else if (!strcmp(encoder_name, "openh264enc")) {
-+        g_object_set(
-+            encoder,
-+            "usage-type", 1, /* screen content */
-+            "complexity", 0, /* low, high speed */
-+            "rate-control", 0, /* quality mode */
-+            "qp-min", 20,
-+            "qp-max", 27,
-+            NULL);
-+    } else {
-+        VNC_DEBUG("Unknown H264 encoder name '%s' - not setting any properties",
-+            encoder_name);
-+    }
-+
-+    return encoder;
-+}
-+
- static void destroy_encoder_context(VncState *vs)
- {
-     gst_clear_object(&vs->h264->source);
-@@ -68,26 +130,12 @@ static bool create_encoder_context(VncState *vs, int w, int h)
-         goto error;
-     }
- 
--    vs->h264->gst_encoder = gst_element_factory_make("x264enc", "gst-encoder");
-+    vs->h264->gst_encoder = create_encoder(vs->h264->encoder_name);
-     if (!vs->h264->gst_encoder) {
-         VNC_DEBUG("Could not create gst x264 encoder\n");
-         goto error;
-     }
- 
--    g_object_set(
--        vs->h264->gst_encoder,
--        "tune", 4, /* zerolatency */
--        /*
--         * fix for zerolatency with novnc (without, noVNC displays
--         * green stripes)
--         */
--        "threads", 1,
--        "pass", 5, /* Constant Quality */
--        "quantizer", 26,
--        /* avoid access unit delimiters (Nal Unit Type 9) - not required */
--        "aud", false,
--        NULL);
--
-     vs->h264->sink = gst_element_factory_make("appsink", "sink");
-     if (!vs->h264->sink) {
-         VNC_DEBUG("Could not create gst sink\n");
-@@ -172,9 +220,20 @@ static bool create_encoder_context(VncState *vs, int w, int h)
- 
- bool vnc_h264_encoder_init(VncState *vs)
- {
-+    const char *encoder_name;
-+
-     g_assert(vs->h264 == NULL);
- 
-+    encoder_name = get_available_encoder();
-+    if (encoder_name == NULL) {
-+        VNC_DEBUG("No H264 encoder available.\n");
-+        return -1;
-+    }
-+
-     vs->h264 = g_new0(VncH264, 1);
-+    vs->h264->encoder_name = encoder_name;
-+
-+    VNC_DEBUG("Allow H264 using encoder '%s`\n", encoder_name);
- 
-     return true;
- }
-diff --git a/ui/vnc.h b/ui/vnc.h
-index a5ea134de8..e97276349e 100644
---- a/ui/vnc.h
-+++ b/ui/vnc.h
-@@ -239,6 +239,7 @@ typedef struct VncZywrle {
- /* Number of frames we send after the display is clean. */
- #define VNC_H264_KEEP_DIRTY 10
- typedef struct VncH264 {
-+    const char *encoder_name;
-     GstElement *pipeline, *source, *gst_encoder, *sink, *convert;
-     size_t width;
-     size_t height;
--- 
-2.39.5
-
+What would you suggest?
 
