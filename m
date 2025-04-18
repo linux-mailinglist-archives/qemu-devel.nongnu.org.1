@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC5BA92EF9
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 02:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4A0A92EFB
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 02:53:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5Zxx-0002j2-4T; Thu, 17 Apr 2025 20:52:30 -0400
+	id 1u5Zxv-0002dd-FB; Thu, 17 Apr 2025 20:52:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5ZxV-0002II-1L
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 20:51:59 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5Zxb-0002P5-LY
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 20:52:03 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5ZxT-000688-5l
- for qemu-devel@nongnu.org; Thu, 17 Apr 2025 20:51:56 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-39c0dfad22aso925287f8f.2
- for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 17:51:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u5ZxZ-00069L-Np
+ for qemu-devel@nongnu.org; Thu, 17 Apr 2025 20:52:03 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43d2d952eb1so9837085e9.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Apr 2025 17:52:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1744937513; x=1745542313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1744937519; x=1745542319; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QUftrT9mw1sdbt1Cgea3mziIB2FdIW29aFiLhpIfymM=;
- b=r2gyQ5xLQO1UCl446GZLr/c+UooTdmoGo967hSSQqFTG2EtOIwYLvpOJh7qlGTuxze
- 8c3aG+SnWCrjy++qbuDryIVf4r22ct+EaVD0kS8amBqCRuiyMWYfdHE72JIGvJHR37jf
- BZBaUL9Px/wkZZyofbbfsiHT7xxxYxFUPBqF+exhUnVcMGWUYCJM3kP1pPtiriZAU4Uq
- X6Pms+rO6Ttl/lPaEXDWEp45kqhLPWgWhhhYyLWa/njrca75jIgcNLhUQAZNyYdM2B2j
- qPxZyBPgZfUu5DLPCcsdnC4Bc0I4hh+/BFcRbSKCttZXjBJZD1Gm4J9C5uRKwFNswC4d
- iLPw==
+ bh=Rc46lD7Ko7XfwPKQsqzz7EgBw+3K3PZcRoY06dDD1t0=;
+ b=S6H7MOy1K3zDU1lbjzvXeFBpKwcx3AjGw4IcS100NmOWQnsMw3jePhoe6IWibIfytj
+ 07q9YDVS0b79m6qQ1uyCmUY9MXS6NHs40Whk9LWKrscZauqadftO1YwxOIPKcsFOYlpO
+ QGihTk6CRDIIqcG+j8jC4RUc7Ye0rPoSrN4fc8OcyhGqdjSlVQTlsZiNfb6SQRumBJpJ
+ o+q8xV2aYcTJXJNOciGcZROeOF2PNngmRbEQ8Cx/nCULv3XnhQCpz31lQG9b026UGMql
+ 4BWmzfEp2ebhd8iBzLs+iNSpGeZPZqmwoMrZXVDXVDQLTQXexVLmdnlkkMQ3TQc6Aj8O
+ 9KjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1744937513; x=1745542313;
+ d=1e100.net; s=20230601; t=1744937519; x=1745542319;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QUftrT9mw1sdbt1Cgea3mziIB2FdIW29aFiLhpIfymM=;
- b=qGQSOCZxBwBejF4KRMJ61QsrBS5+XCO6VV5q/dvWn6zq1ymfRvgKlOGrPu4nHlH/OZ
- fspNnF77eC6o3kKKGQup4rBv4Yn0CEECPuC0bzbTI+eSqf4JiV9p08p4+n4pQWYJFho1
- aA0z32M3lWs7eIv2PN4SBD5HJDFXIvfpnPgXxCliI9uBIGBSb/Shm4YKFvE2IcYtMeor
- 534XnGrEuIdZB7YhAPtvF1Nmdb9id6Zzc9aZbtg3wDT/nAXAoIDCUREAcxREhm/26/yo
- /rALEiJlLswdqvFs/dlV4CCD6AAhLF/nXGzy9JOKQNg8TlzqAIecsk1t9qjbEmhkbn4q
- y01Q==
+ bh=Rc46lD7Ko7XfwPKQsqzz7EgBw+3K3PZcRoY06dDD1t0=;
+ b=mm/tKw7mg2h85+1adK/4Cy4OahdhYQJyTUen0SxidZa5gytAUc3QRSACUjnMol0zux
+ CB8ym2Rf+myojMdK47yUePgaWyV2u9RMwpA2RON13XC+JvhzF/e4HQEol7OuuvbZQQ9G
+ PJFeMOhUFZW/erGMP094btEx0Ux7sdoL7zkkb5vqA1ywXwiufAthnmWHKFE8Rd7FucXE
+ eXymW44Rvcnzo6982cNGBaDLrNemKhp2A6OKsYqSjEPaIqnd1VlPwg1F2c6PEt9SjoTn
+ k3W/Ct/uqvgnvc/kjiWvLyafHrpogm5IYMzdSxocE4Fdg5RxuhuNZ6wzqu/dLkACL6h7
+ caAg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVh/3bPXX7T3aPIS3uqJVB2rGJkzi1gXyI2AOePdtNmD/zs0J7NAs20nrWMsKzpbmHfEw65FYnm4AYd@nongnu.org
-X-Gm-Message-State: AOJu0YyaDCxljqwmHebYjc2iGtje2dKDACsqU+SNFWLjkmiAGekGPyUQ
- gpFW+Lf/H8Qh2rtkGS7NBmDwmclsLjTHowB4FcTtgradODFhpbyPAexDcDqBc3w=
-X-Gm-Gg: ASbGncsu/UJsBmN8OFbeMlovSU/0ZSvA/ly6unxKEAs41gZfxsM1hWwPldV2t6TY+Mu
- /ZqukjzizC/rSOw1TQ3s0o8YSOGoQMSYKvAXW3DD9oT20+p04hZZDbwmkMxU5aYicMb70R0mVxc
- DufLCw7PTn0STA+OG9DJVwS6rUBgKiZaCuMJG6I6A2nLGmIPaisDT5TGFMiWNgYcYZ/6wzWbhTY
- X2xInnkiAzj33THV8i24SW9kBhaG75KKucrZtPta9eLDUfeRY82sqzlY/BDUYLk8fhE4V4SjtWI
- xsKPRIG+AVGWHX1QnhKcRQk4jXoud9BuQbjoZ6vb5RdWo/th/wDHovr+yZcov3239yyedEJAweb
- VPdYcfcN/G8l7OQEXUGrm
-X-Google-Smtp-Source: AGHT+IGymwmjgGz/Oothgof8/UtKJpBKKJxQ0Ep9UmNCVkvR4uwKpbGwfVwYWLOACFL1tWfuDt7Qmg==
-X-Received: by 2002:a5d:588c:0:b0:38f:2b77:a9f3 with SMTP id
- ffacd0b85a97d-39efbae064fmr531643f8f.43.1744937513590; 
- Thu, 17 Apr 2025 17:51:53 -0700 (PDT)
+ AJvYcCVW/djwf8VUnXXZovIa+Q/+8X8rzeN4ezo0m/VetLaH3k23sMCvPCjRus3MxuE65AKy3DiizndXMjpy@nongnu.org
+X-Gm-Message-State: AOJu0YzU8qSkNKCffXnvdisjMMWAEqXEtcfsbq70Eu31sXbpS8clhfD3
+ 8H99tn4oPr8nrmJIv6U2OnReZnOSF7awWRhl/ivzVw4f8+HSn6GvIbViuIwYepk=
+X-Gm-Gg: ASbGncvcLa4TyI+KJduqSjyKnkaL5cu2q0XNijq+qGmAGK3ZlLT+4n7qdCkm9/vW+a6
+ kpO0rkCe6qgYu3YhYVV7oQKI3baNqp4zNbMD+f2ET6JdHv5g5qSErioiogSDNbOeicaj569mS2b
+ V9h4B9z9tHRoH+dFmpbTWNXkor/2Bh3wgYY6vfp22X4VS1POdw4WIT8b+fK5DBZZRlS72mXX5xb
+ N+ByNaLFTiZ6l8iNTwaM9hCsYbmu8xNu9BQhSS2Y1eEnMo8YCqJ0Of171I+WjMVUvgPvaZM6Wr9
+ +dNIXMzRWUgfH1Ltn0T3+kBLii8HScBWJ8dZUeYb4NFRcB2njHSd8CPjdx70hjm/Oh31Wp1uwIh
+ Wfi5L2H4C8w7D/KfFAHk2
+X-Google-Smtp-Source: AGHT+IGuVnDN9W10lwGQgK434ZVDA0zrGtmi8qZ+dh2N8VXoW10w4Eryi3bYUzD4Vji5HWFr94a4jw==
+X-Received: by 2002:a5d:6da1:0:b0:39a:ca0c:fc90 with SMTP id
+ ffacd0b85a97d-39efba3c6e4mr609303f8f.14.1744937519048; 
+ Thu, 17 Apr 2025 17:51:59 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39efa4a4c8fsm1109311f8f.89.2025.04.17.17.51.52
+ 5b1f17b1804b1-4406d6dfe4esm1984585e9.33.2025.04.17.17.51.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 17 Apr 2025 17:51:53 -0700 (PDT)
+ Thu, 17 Apr 2025 17:51:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [RFC PATCH v2 10/11] hw/arm/aspeed: Build objects once
-Date: Fri, 18 Apr 2025 02:50:58 +0200
-Message-ID: <20250418005059.4436-11-philmd@linaro.org>
+Subject: [RFC PATCH v2 11/11] hw/arm/raspi: Build objects once
+Date: Fri, 18 Apr 2025 02:50:59 +0200
+Message-ID: <20250418005059.4436-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250418005059.4436-1-philmd@linaro.org>
 References: <20250418005059.4436-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -100,90 +100,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now than Aspeed machines can be filtered when running a
+Now than Raspi machines can be filtered when running a
 qemu-system-arm or qemu-system-aarch64 binary, we can
 remove the TARGET_AARCH64 #ifdef'ry and compile the
 aspeed.c file once, moving it from arm_ss[] source set
-to arm_common_ss[].
+to arm_common_ss[]. Note, we expose the TYPE_BCM2837
+type to qemu-system-arm, but it is not user-creatable,
+so not an issue.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/aspeed.c    | 6 ------
- hw/arm/meson.build | 4 ++--
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ hw/arm/bcm2836.c   | 4 ----
+ hw/arm/raspi.c     | 4 ----
+ hw/arm/meson.build | 8 ++++++--
+ 3 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index d54ee2d4b53..363be2daf60 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -179,13 +179,11 @@ struct AspeedMachineState {
- #define AST2600_EVB_HW_STRAP1 0x000000C0
- #define AST2600_EVB_HW_STRAP2 0x00000003
+diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
+index 95e16806fa1..7dd81e8e0f9 100644
+--- a/hw/arm/bcm2836.c
++++ b/hw/arm/bcm2836.c
+@@ -195,7 +195,6 @@ static void bcm2836_class_init(ObjectClass *oc, void *data)
+     dc->realize = bcm2836_realize;
+ };
  
 -#ifdef TARGET_AARCH64
- /* AST2700 evb hardware value */
- /* SCU HW Strap1 */
- #define AST2700_EVB_HW_STRAP1 0x00000800
- /* SCUIO HW Strap1 */
- #define AST2700_EVB_HW_STRAP2 0x00000700
--#endif
- 
- /* Rainier hardware value: (QEMU prototype) */
- #define RAINIER_BMC_HW_STRAP1 (0x00422016 | SCU_AST2600_HW_STRAP_BOOT_SRC_EMMC)
-@@ -1663,7 +1661,6 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
-     aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
--#ifdef TARGET_AARCH64
- static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
+ static void bcm2837_class_init(ObjectClass *oc, void *data)
  {
-     AspeedSoCState *soc = bmc->soc;
-@@ -1713,7 +1710,6 @@ static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc, void *data)
-     mc->default_ram_size = 1 * GiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
- }
+     DeviceClass *dc = DEVICE_CLASS(oc);
+@@ -208,7 +207,6 @@ static void bcm2837_class_init(ObjectClass *oc, void *data)
+     bc->clusterid = 0x0;
+     dc->realize = bcm2836_realize;
+ };
 -#endif
  
- static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
-                                                      void *data)
-@@ -1936,7 +1932,6 @@ static const TypeInfo aspeed_machine_types[] = {
+ static const TypeInfo bcm283x_types[] = {
+     {
+@@ -219,12 +217,10 @@ static const TypeInfo bcm283x_types[] = {
+         .name           = TYPE_BCM2836,
+         .parent         = TYPE_BCM283X,
+         .class_init     = bcm2836_class_init,
+-#ifdef TARGET_AARCH64
+     }, {
+         .name           = TYPE_BCM2837,
+         .parent         = TYPE_BCM283X,
+         .class_init     = bcm2837_class_init,
+-#endif
+     }, {
+         .name           = TYPE_BCM283X,
+         .parent         = TYPE_BCM283X_BASE,
+diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
+index 8a2da650087..980e4a14793 100644
+--- a/hw/arm/raspi.c
++++ b/hw/arm/raspi.c
+@@ -367,7 +367,6 @@ static void raspi2b_machine_class_init(ObjectClass *oc, void *data)
+     raspi_machine_class_init(mc, rmc->board_rev);
+ };
+ 
+-#ifdef TARGET_AARCH64
+ static void raspi3ap_machine_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+@@ -387,7 +386,6 @@ static void raspi3b_machine_class_init(ObjectClass *oc, void *data)
+     rmc->board_rev = 0xa02082;
+     raspi_machine_class_init(mc, rmc->board_rev);
+ };
+-#endif /* TARGET_AARCH64 */
+ 
+ static const TypeInfo raspi_machine_types[] = {
+     {
+@@ -417,7 +415,6 @@ static const TypeInfo raspi_machine_types[] = {
              { TYPE_TARGET_AARCH64_MACHINE },
              { },
          },
 -#ifdef TARGET_AARCH64
      }, {
-         .name          = MACHINE_TYPE_NAME("ast2700a0-evb"),
-         .parent        = TYPE_ASPEED_MACHINE,
-@@ -1953,7 +1948,6 @@ static const TypeInfo aspeed_machine_types[] = {
+         .name           = MACHINE_TYPE_NAME("raspi3ap"),
+         .parent         = TYPE_RASPI_MACHINE,
+@@ -434,7 +431,6 @@ static const TypeInfo raspi_machine_types[] = {
              { TYPE_TARGET_AARCH64_MACHINE },
              { },
          },
 -#endif
      }, {
-         .name          = TYPE_ASPEED_MACHINE,
-         .parent        = TYPE_MACHINE,
+         .name           = TYPE_RASPI_MACHINE,
+         .parent         = TYPE_RASPI_BASE_MACHINE,
 diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 09b1cfe5b57..f76e7fb229f 100644
+index f76e7fb229f..f52034ff6a2 100644
 --- a/hw/arm/meson.build
 +++ b/hw/arm/meson.build
-@@ -39,15 +39,15 @@ arm_common_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', 'x
- arm_common_ss.add(when: 'CONFIG_FSL_IMX25', if_true: files('fsl-imx25.c', 'imx25_pdk.c'))
- arm_common_ss.add(when: 'CONFIG_FSL_IMX31', if_true: files('fsl-imx31.c', 'kzm.c'))
- arm_common_ss.add(when: 'CONFIG_FSL_IMX6', if_true: files('fsl-imx6.c'))
--arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-+arm_common_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed.c',
-   'aspeed_soc_common.c',
-   'aspeed_ast2400.c',
-   'aspeed_ast2600.c',
-   'aspeed_ast10x0.c',
-+  'aspeed_ast27x0.c',
-   'aspeed_eeprom.c',
-   'fby35.c'))
--arm_common_ss.add(when: ['CONFIG_ASPEED_SOC', 'TARGET_AARCH64'], if_true: files('aspeed_ast27x0.c'))
- arm_common_ss.add(when: 'CONFIG_MPS2', if_true: files('mps2.c'))
- arm_common_ss.add(when: 'CONFIG_MPS2', if_true: files('mps2-tz.c'))
- arm_common_ss.add(when: 'CONFIG_MSF2', if_true: files('msf2-soc.c'))
+@@ -27,8 +27,12 @@ arm_common_ss.add(when: 'CONFIG_OMAP', if_true: files('omap1.c'))
+ arm_common_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('allwinner-a10.c', 'cubieboard.c'))
+ arm_common_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3.c', 'orangepi.c'))
+ arm_common_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40.c', 'bananapi_m2u.c'))
+-arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c', 'raspi.c'))
+-arm_common_ss.add(when: ['CONFIG_RASPI', 'TARGET_AARCH64'], if_true: files('bcm2838.c', 'raspi4b.c'))
++arm_common_ss.add(when: 'CONFIG_RASPI', if_true: files(
++  'bcm2836.c',
++  'bcm2838.c',
++  'raspi.c',
++  'raspi4b.c',
++))
+ arm_common_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
+ arm_common_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
+ arm_common_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
 -- 
 2.47.1
 
