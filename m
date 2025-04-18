@@ -2,31 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBADA93692
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 13:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0D2A9369A
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 13:33:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5jvY-0005Wq-Rg; Fri, 18 Apr 2025 07:30:36 -0400
+	id 1u5jva-0005Xa-3T; Fri, 18 Apr 2025 07:30:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dietmar@zilli.proxmox.com>)
- id 1u5jvT-0005Vo-DO
+ id 1u5jvT-0005Vp-EK
  for qemu-devel@nongnu.org; Fri, 18 Apr 2025 07:30:31 -0400
 Received: from [94.136.29.99] (helo=zilli.proxmox.com)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <dietmar@zilli.proxmox.com>) id 1u5jvI-0005nx-Dk
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 07:30:28 -0400
+ (envelope-from <dietmar@zilli.proxmox.com>) id 1u5jvI-0005nw-Fa
+ for qemu-devel@nongnu.org; Fri, 18 Apr 2025 07:30:30 -0400
 Received: by zilli.proxmox.com (Postfix, from userid 1000)
- id 396D01C1687; Fri, 18 Apr 2025 13:29:58 +0200 (CEST)
+ id 3AAC31C1689; Fri, 18 Apr 2025 13:29:58 +0200 (CEST)
 From: Dietmar Maurer <dietmar@proxmox.com>
 To: marcandre.lureau@redhat.com,
 	qemu-devel@nongnu.org
 Cc: Dietmar Maurer <dietmar@proxmox.com>
-Subject: [PATCH v3 7/9] h264: do not reduce vnc update speed while we have an
- active h264 stream
-Date: Fri, 18 Apr 2025 13:29:51 +0200
-Message-Id: <20250418112953.1744442-8-dietmar@proxmox.com>
+Subject: [PATCH v3 8/9] vnc: initialize gst during argument processing
+Date: Fri, 18 Apr 2025 13:29:52 +0200
+Message-Id: <20250418112953.1744442-9-dietmar@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250418112953.1744442-1-dietmar@proxmox.com>
 References: <20250418112953.1744442-1-dietmar@proxmox.com>
@@ -57,42 +56,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+So that we can set --gst- options on the qemu command line.
+
 Signed-off-by: Dietmar Maurer <dietmar@proxmox.com>
 ---
- ui/vnc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ system/vl.c | 8 ++++++++
+ ui/vnc.c    | 4 ----
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
+diff --git a/system/vl.c b/system/vl.c
+index ec93988a03..c7fff02da2 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -140,6 +140,10 @@
+ #include "qemu/guest-random.h"
+ #include "qemu/keyval.h"
+ 
++#ifdef CONFIG_GSTREAMER
++#include <gst/gst.h>
++#endif
++
+ #define MAX_VIRTIO_CONSOLES 1
+ 
+ typedef struct BlockdevOptionsQueueEntry {
+@@ -2848,6 +2852,10 @@ void qemu_init(int argc, char **argv)
+     bool userconfig = true;
+     FILE *vmstate_dump_file = NULL;
+ 
++#ifdef CONFIG_GSTREAMER
++    gst_init(&argc, &argv);
++#endif
++
+     qemu_add_opts(&qemu_drive_opts);
+     qemu_add_drive_opts(&qemu_legacy_drive_opts);
+     qemu_add_drive_opts(&qemu_common_drive_opts);
 diff --git a/ui/vnc.c b/ui/vnc.c
-index feab4c0043..6db03a1550 100644
+index 6db03a1550..8f6287e2e6 100644
 --- a/ui/vnc.c
 +++ b/ui/vnc.c
-@@ -3222,6 +3222,7 @@ static void vnc_refresh(DisplayChangeListener *dcl)
-     VncDisplay *vd = container_of(dcl, VncDisplay, dcl);
-     VncState *vs, *vn;
-     int has_dirty, rects = 0;
-+    bool keep_dirty = false;
+@@ -4350,10 +4350,6 @@ int vnc_init_func(void *opaque, QemuOpts *opts, Error **errp)
+     Error *local_err = NULL;
+     char *id = (char *)qemu_opts_id(opts);
  
-     if (QTAILQ_EMPTY(&vd->clients)) {
-         update_displaychangelistener(&vd->dcl, VNC_REFRESH_INTERVAL_MAX);
-@@ -3249,6 +3250,9 @@ static void vnc_refresh(DisplayChangeListener *dcl)
-                     vs->h264->keep_dirty--;
-                 }
-             }
-+            if (vs->h264->keep_dirty > 0) {
-+                keep_dirty = true;
-+            }
-         }
- 
-         int count = vnc_update_client(vs, client_dirty);
-@@ -3266,7 +3270,7 @@ static void vnc_refresh(DisplayChangeListener *dcl)
-         /* vs might be free()ed here */
-     }
- 
--    if (has_dirty && rects) {
-+    if ((has_dirty && rects) || keep_dirty) {
-         vd->dcl.update_interval /= 2;
-         if (vd->dcl.update_interval < VNC_REFRESH_INTERVAL_BASE) {
-             vd->dcl.update_interval = VNC_REFRESH_INTERVAL_BASE;
+-#ifdef CONFIG_GSTREAMER
+-    gst_init(NULL, NULL);
+-#endif
+-
+     assert(id);
+     vnc_display_init(id, &local_err);
+     if (local_err) {
 -- 
 2.39.5
 
