@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46AC2A93E74
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F59CA93E73
 	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 21:57:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5ror-0008Ic-41; Fri, 18 Apr 2025 15:56:13 -0400
+	id 1u5ror-0008Nr-HL; Fri, 18 Apr 2025 15:56:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nirsof@gmail.com>) id 1u5roG-0008CX-AS
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 15:55:42 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <nirsof@gmail.com>) id 1u5roL-0008DH-07
+ for qemu-devel@nongnu.org; Fri, 18 Apr 2025 15:55:43 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nirsof@gmail.com>) id 1u5roC-00024L-4u
+ (Exim 4.90_1) (envelope-from <nirsof@gmail.com>) id 1u5roC-00024R-5k
  for qemu-devel@nongnu.org; Fri, 18 Apr 2025 15:55:36 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43d2d952eb1so15453485e9.1
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43d2d952eb1so15453525e9.1
  for <qemu-devel@nongnu.org>; Fri, 18 Apr 2025 12:55:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1745006130; x=1745610930; darn=nongnu.org;
@@ -37,27 +37,27 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=58Fr5Jc3+gbOo6HFHWawNhIv6PlRPPR0lUnnIxKjYwM=;
- b=MdH6tDsyip8mA4xTokrxeDABMGbs56Q8mXWnMouT0pNDSb8y+yqIquIiYYj80BPu9Z
- wHxoYuwsDbvS9TvQjnQARRbc5SgByHaQytRunAfZagN7amp7pAEUhu13J8B9/MCmiLZ5
- XY+MbY8EA/FsDTnApvR3Z++7Dd9sBt85qWqpH7BR6ut8aUHq5Q1Wc1wUg3wT6sR+GfxH
- qcDCa8KAlVCWoN4wj5RB+8TFg+PTbLdRmKYCCr3sbVUpJQ9hxy1/12uE6tI0LkvmaMNE
- 5p//PI/eSCbOPIN8DdZKhjQalH8DTENfE9VYnPXLp4sia6FCvaxDvuACE4/jxtF68uWL
- ucRw==
-X-Gm-Message-State: AOJu0YwfwnM92z7r8eDWWP/u+wRNNRCHx9D//YX5thpVnM3bSW+t5cvH
- v7Z5HadX3bCESKm1FTCOXc3mZ0SqUaZNBSF1M/sFz/arzlDBD9CE
-X-Gm-Gg: ASbGncujP1pOJIyJ+SvZKXpzfC3u3QxZ0a6AGki/leIGviM9ZXMSM+TSj3g96wtJ2RR
- QjYxOAU7ny4uVX148sCsbzhmpTIfTjxUWMXnZCGyKfCcDeqXmpTFTsx6aoMn/C2oUtC4lWoxYNc
- 8Y7n5+xyueulKCZOBSW4Az8Nk+6kZSVZ8FF+4dCgDT1wZIugfiEotkSbhDvxLlL82hQlr++mxeL
- h3IHqwP9+rKhXJbjohj9AUvuNY9DOoKGTm3VB4/+xqTMQQbHPjxxl/REYZHbCrh38SdUfpCRI09
- C9KAHMUrSxvmQ1Ts15p5rYDUGKutTbUxxLxNfwIa/Z+ZHprZReESz/t4fzYOv6zY3uiwsWga3sI
- mmZ69w+3DIBZIXB9t
-X-Google-Smtp-Source: AGHT+IF5agytv14Ci3l8nsK4Dzj3eS/MQ9Q83aQFY/CkhgJgbZ1yWt4wM3pPUwtVQWpkFs+nGXzr1A==
-X-Received: by 2002:a05:600c:4fcd:b0:43d:5ec:b2f4 with SMTP id
- 5b1f17b1804b1-440711cca44mr20502545e9.10.1745006129675; 
- Fri, 18 Apr 2025 12:55:29 -0700 (PDT)
+ b=Ks5K/4KqMcBv4xnZK0Gm4ilYPR8LfRF9C6E3iQsaNEbANg5tpM8zZUH7TqmXaNZoHR
+ u+47ahTpxhVgPBizBndbLiVMORs94HJlXvuTfg6tmSmXrZzK/T4YWmrv1mlgkd0hwlZA
+ i5Dg85+pJV7Rd6byORIkQUXnLEdMfX33sP+h80Qaqd2bc0pEAX4mDpIWOThYYS9hKVKA
+ /in/LwaOz0GxXtxLE2QzgqTK2/ije2bUthfTV49Vvp3OqPY1Af3W3217IxNk2QE6e2h5
+ G0239BV0EJ+y8UE8YNNzAYmaKp270FxvXeRWJHLYNmxZQcdp8MvshBF/Kiaja6ON7QQ/
+ pMrw==
+X-Gm-Message-State: AOJu0YzPslBZKZS/e2H3dVzJw6J00sLsq3855zy+gd6unsJmFdLpQeHt
+ r8f2S82YXaXtKJ4hiO9DZuY1E4zdwSPnt6BcjddHXf/vd2/Spy5z
+X-Gm-Gg: ASbGncsZOKwVBrjTtb/shvNqKpr6dF7MUr9v3pEzU5HyeDvHi35A+X0waVnxQdMq/Hw
+ AzIdIOYtnthsWYws6xPZwM7i92HxWWuP46t1gkQLxDXYKtAZrQGU+DHt74tcWh3AUqd3TlJ1g+6
+ gh+1Gb0gH/ZgSDfqRpDwDtts4KJC0oDzR13wAL0jZdpvlIZ96zFKHDl5AJwXsalavBFOGwr6FmO
+ 66k+zZHOjl60wQnDI6tDAeBc/vLWYjx2nnQheH0MHOcR+Zckg2hI6t2T88l2kEBxUDMq/QFXStc
+ M+HVtj688IGuiSS4UFJmVmu0cdJ8ALrgb+mxg4bviedpiiaJOTPB4e0I8You+CFgx0Z7RnJrJqD
+ Nn2VTOFaKFASDnz3U
+X-Google-Smtp-Source: AGHT+IHq6BzOUSKrYfpye5WSeHUXZJxneC2cRI5F2lZrznTFsItGGs+qXKqTo23PjZ9gDgaw4oPSOw==
+X-Received: by 2002:a05:600c:4706:b0:43d:79:ae1b with SMTP id
+ 5b1f17b1804b1-4406ab96b35mr33947095e9.14.1745006130171; 
+ Fri, 18 Apr 2025 12:55:30 -0700 (PDT)
 Received: from smtpclient.apple (89-138-169-5.bb.netvision.net.il.
  [89.138.169.5]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4406d563297sm33854395e9.0.2025.04.18.12.55.28
+ ffacd0b85a97d-39efa4931acsm3635663f8f.72.2025.04.18.12.55.29
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
  Fri, 18 Apr 2025 12:55:29 -0700 (PDT)
 Content-Type: text/plain;
@@ -76,15 +76,15 @@ References: <20250418142436.6121-1-nirsof@gmail.com>
  <918f450d-a5fe-4e3d-9320-950485352b86@linaro.org>
 To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 X-Mailer: Apple Mail (2.3826.500.181.1.5)
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=nirsof@gmail.com; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=nirsof@gmail.com; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
