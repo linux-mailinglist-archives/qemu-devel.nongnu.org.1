@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E584FA93E52
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 21:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC479A93DE8
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Apr 2025 20:50:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u5rTQ-00016L-Cr; Fri, 18 Apr 2025 15:34:04 -0400
+	id 1u5qlh-0003u5-DB; Fri, 18 Apr 2025 14:48:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1u5rTG-00015u-1t
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 15:33:54 -0400
-Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u5qlW-0003rX-9O; Fri, 18 Apr 2025 14:48:43 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1u5rTC-0007Ja-8G
- for qemu-devel@nongnu.org; Fri, 18 Apr 2025 15:33:52 -0400
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 003D04BEA6
- for <qemu-devel@nongnu.org>; Fri, 18 Apr 2025 19:33:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1745004825;
- bh=2V9TZmPm7il7PPKOcuz5esbgLb3CuKGeo0vuj2c5rbg=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=HWFggwcCBeOB655gzHneyE2pjo2p4874br5mEXh/Xy0qpjhP2BJImzeVBgowKgqi1
- LVfj0LVaGjAR4yyUzC8HcnjOd7SuTJCytjt7V/faCY/27Se9fLBx8QYIfmPx8AlT52
- 3vL0b5Z/5swx4a4iyVaag6Wua68YlIgn2qhS+tGkr1gBBkN53R6fszdizr9o5taqu+
- FpO1QEXJ6D0pxXvqTLEr/zlDtGQD1zGT0LrNyzMKacmvQebj1BEWQ7cIAWGixSyboU
- XBCAc1A+Tr6na9EX+19vfvxyVu8+WsyPcFfJu8m7KPV7Nh0nzhR+Unh/sAdolI75Nu
- sRnYiI2AVgaFg==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id DC0D67E69F
- for <qemu-devel@nongnu.org>; Fri, 18 Apr 2025 19:33:44 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u5qlT-0001mw-Se; Fri, 18 Apr 2025 14:48:42 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id AC99755D22A;
+ Fri, 18 Apr 2025 20:48:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id m-6VrXyoGHbY; Fri, 18 Apr 2025 20:48:30 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A326F55C592; Fri, 18 Apr 2025 20:48:30 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9EF40745682;
+ Fri, 18 Apr 2025 20:48:30 +0200 (CEST)
+Date: Fri, 18 Apr 2025 20:48:30 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org, 
+ Andrey Smirnov <andrew.smirnov@gmail.com>, 
+ Antony Pavlov <antonynpavlov@gmail.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Beniamino Galvani <b.galvani@gmail.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Niek Linnenbank <nieklinnenbank@gmail.com>, qemu-arm@nongnu.org, 
+ Jean-Christophe Dubois <jcd@tribudubois.net>, 
+ Felipe Balbi <balbi@kernel.org>, Bernhard Beschow <shentey@gmail.com>, 
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, 
+ Jan Kiszka <jan.kiszka@web.de>, Alistair Francis <alistair@alistair23.me>, 
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>, 
+ Alexandre Iooss <erdnaxe@crans.org>, 
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: Re: [PATCH 00/11] hw/arm: Define machines as generic QOM types
+In-Reply-To: <26c2b844-dc96-448e-8978-e536ed1e61f6@linaro.org>
+Message-ID: <401c58d2-adda-81ec-eeec-0ddbcf3e4926@eik.bme.hu>
+References: <20250417235814.98677-1-philmd@linaro.org>
+ <a302fb91-e2d8-ef36-ac53-5e460476c2d0@eik.bme.hu>
+ <25a82a76-cd63-4a42-bb68-5dcf826bd948@linaro.org>
+ <26c2b844-dc96-448e-8978-e536ed1e61f6@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Apr 2025 11:44:10 -0000
-From: =?utf-8?b?SsO8cmcgSMOkZmxpZ2Vy?= <1037606@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=linux; status=Confirmed; importance=Medium;
- assignee=None; 
-X-Launchpad-Bug: product=qemu; status=Won't Fix; importance=Undecided;
- assignee=None; 
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=linux; component=main;
- status=Triaged; importance=Medium; assignee=None; 
-X-Launchpad-Bug-Tags: apport-collected kernel-bug-exists-upstream
- kernel-daily-bug precise quantal running-unity
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: brad-figg hramrach jsalisbury leaf-node th-huth
-X-Launchpad-Bug-Reporter: Michal Suchanek (hramrach)
-X-Launchpad-Bug-Modifier: =?utf-8?b?SsO8cmcgSMOkZmxpZ2VyIChqdWVyZ2gp?=
-References: <20120816144502.14385.65707.malonedeb@soybean.canonical.com>
-Message-Id: <174497665205.628138.10645069617337964977.launchpad@juju-98d295-prod-launchpad-4>
-Subject: [Bug 1037606] Re: vmwgfx does not work with kvm vmware vga
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="e76edd883483c71c468bb038e98836435de44530";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: 07419316ae33dab5b15794b6a4fe14ddcace8a35
-Received-SPF: pass client-ip=185.125.188.251;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1779484340-1745002110=:55441"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -89,109 +75,89 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 1037606 <1037606@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-** Tags added: kernel-daily-bug
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/1037606
+--3866299591-1779484340-1745002110=:55441
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Title:
-  vmwgfx does not work with kvm vmware vga
+On Fri, 18 Apr 2025, Philippe Mathieu-Daudé wrote:
+> On 18/4/25 18:33, Pierrick Bouvier wrote:
+>> On 4/18/25 01:53, BALATON Zoltan wrote:
+>>> On Fri, 18 Apr 2025, Philippe Mathieu-Daudé wrote:
+>>>> While DEFINE_MACHINE() is a succinct macro, it doesn't
+>>>> allow registering QOM interfaces to the defined machine.
+>>>> Convert to the generic DEFINE_TYPES() in preparation to
+>>>> register interfaces.
+>>>> 
+>>>> Philippe Mathieu-Daudé (11):
+>>>>   hw/core/null-machine: Define machine as generic QOM type
+>>>>   hw/arm/bananapi: Define machine as generic QOM type
+>>>>   hw/arm/cubieboard: Define machine as generic QOM type
+>>>>   hw/arm/digic: Define machine as generic QOM type
+>>>>   hw/arm/imx: Define machines as generic QOM types
+>>>>   hw/arm/integratorcp: Define machine as generic QOM type
+>>>>   hw/arm/kzm: Define machine as generic QOM type
+>>>>   hw/arm/msf2: Define machine as generic QOM type
+>>>>   hw/arm/musicpal: Define machine as generic QOM type
+>>>>   hw/arm/orangepi: Define machine as generic QOM type
+>>>>   hw/arm/stm32: Define machines as generic QOM types
+>>>> 
+>>>> hw/arm/bananapi_m2u.c      | 13 +++++++++++--
+>>>> hw/arm/cubieboard.c        | 13 +++++++++++--
+>>>> hw/arm/digic_boards.c      | 14 ++++++++++++--
+>>>> hw/arm/imx25_pdk.c         | 14 ++++++++++++--
+>>>> hw/arm/imx8mp-evk.c        | 15 +++++++++++++--
+>>>> hw/arm/integratorcp.c      | 16 +++++++++++++---
+>>>> hw/arm/kzm.c               | 14 ++++++++++++--
+>>>> hw/arm/mcimx6ul-evk.c      | 15 +++++++++++++--
+>>>> hw/arm/mcimx7d-sabre.c     | 15 +++++++++++++--
+>>>> hw/arm/msf2-som.c          | 13 +++++++++++--
+>>>> hw/arm/musicpal.c          | 16 +++++++++++++---
+>>>> hw/arm/netduino2.c         | 13 +++++++++++--
+>>>> hw/arm/netduinoplus2.c     | 13 +++++++++++--
+>>>> hw/arm/olimex-stm32-h405.c | 13 +++++++++++--
+>>>> hw/arm/orangepi.c          | 13 +++++++++++--
+>>>> hw/arm/sabrelite.c         | 14 ++++++++++++--
+>>>> hw/arm/stm32vldiscovery.c  | 13 +++++++++++--
+>>>> hw/core/null-machine.c     | 14 ++++++++++++--
+>>>> 18 files changed, 213 insertions(+), 38 deletions(-)
+>>> 
+>>> This is much longer and exposing boiler plate code. Is it possible instead
+>>> to change DEFINE_MACHINE or add another similar macro that allows
+>>> specifying more details such as class state type and interfaces like we
+>>> already have for OBJECT_DEFINE macros to keep the boiler plate code hidden
+>>> and not bring it back?
+>>> 
+>> 
+>> We can eventually modify DEFINE_MACHINES, to take an additional interfaces 
+>> parameter, and replace all call sites, with an empty list for all boards 
+>> out of hw/arm.
+>> 
+>> As long as we avoid something like:
+>> DEFINE_MACHINES_WITH_INTERFACE_1(...)
+>> DEFINE_MACHINES_WITH_INTERFACE_2(...)
+>> DEFINE_MACHINES_WITH_INTERFACE_3(...)
+>> I'm ok with keeping the macro.
+>> 
+>> Would that work for you folks?
+>
+> But then we'll want DEFINE_PPC32_MACHINE() -> 
+> DEFINE_MACHINES_WITH_INTERFACE_1() etc...
+>
+> We want to eventually use declarative file to structure most of the
+> machine boiler plate code. Maybe being momentarily verbose is
+> acceptable...
 
-Status in Linux:
-  Confirmed
-Status in QEMU:
-  Won't Fix
-Status in linux package in Ubuntu:
-  Triaged
+Moments in QEMU can last years... I was thinking about similar to 
+OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES. Would something like that be 
+possible for DEFINE_MACHINE too?
 
-Bug description:
-  vmwgfx driver fails to initialize inside kvm.
-
-  tried: kvm -m 2048 -vga vmware -cdrom RebeccaBlackLinux.iso (Ubuntu
-  based, any Ubuntu live CD would do)
-
-  Apport data collected with qantal alpha live CD (somewhat older
-  kernel).
-
-  The error is shjown in CurrentDmesg.txt
-  https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1037606/+attachment/=
-3265235/+files/CurrentDmesg.txt
-
-  ---
-  ApportVersion: 2.4-0ubuntu8
-  Architecture: amd64
-  AudioDevicesInUse: Error: command ['fuser', '-v', '/dev/snd/seq', '/dev/s=
-nd/timer'] failed with exit code 1:
-  CRDA: Error: command ['iw', 'reg', 'get'] failed with exit code 1: nl8021=
-1 not found.
-  CasperVersion: 1.320
-  DistroRelease: Ubuntu 12.10
-  IwConfig:
-  =C2=A0eth0      no wireless extensions.
-
-  =C2=A0lo        no wireless extensions.
-  LiveMediaBuild: Ubuntu 12.10 "Quantal Quetzal" - Alpha amd64 (20120724.2)
-  Lsusb: Error: command ['lsusb'] failed with exit code 1: unable to initia=
-lize libusb: -99
-  MachineType: Bochs Bochs
-  Package: linux (not installed)
-  ProcEnviron:
-  =C2=A0TERM=3Dlinux
-  =C2=A0PATH=3D(custom, no user)
-  =C2=A0LANG=3Den_US.UTF-8
-  =C2=A0SHELL=3D/bin/bash
-  ProcFB:
-
-  ProcKernelCmdLine: file=3D/cdrom/preseed/hostname.seed boot=3Dcasper init=
-rd=3D/casper/initrd.lz quiet splash -- maybe-ubiquity
-  ProcVersionSignature: Ubuntu 3.5.0-6.6-generic 3.5.0
-  PulseList: Error: command ['pacmd', 'list'] failed with exit code 1: No P=
-ulseAudio daemon running, or not running as session daemon.
-  RelatedPackageVersions:
-  =C2=A0linux-restricted-modules-3.5.0-6-generic N/A
-  =C2=A0linux-backports-modules-3.5.0-6-generic  N/A
-  =C2=A0linux-firmware                           1.85
-  RfKill:
-
-  Tags:  quantal
-  Uname: Linux 3.5.0-6-generic x86_64
-  UpgradeStatus: No upgrade log present (probably fresh install)
-  UserGroups:
-
-  dmi.bios.date: 01/01/2007
-  dmi.bios.vendor: Bochs
-  dmi.bios.version: Bochs
-  dmi.chassis.type: 1
-  dmi.chassis.vendor: Bochs
-  dmi.modalias: dmi:bvnBochs:bvrBochs:bd01/01/2007:svnBochs:pnBochs:pvr:cvn=
-Bochs:ct1:cvr:
-  dmi.product.name: Bochs
-  dmi.sys.vendor: Bochs
-  ---=20
-  ApportVersion: 2.0.1-0ubuntu12
-  Architecture: i386
-  DistroRelease: Ubuntu 12.04
-  InstallationMedia: Ubuntu 10.10 "Maverick Meerkat" - Release i386 (201010=
-07)
-  Package: linux (not installed)
-  ProcEnviron:
-   TERM=3Dxterm
-   PATH=3D(custom, no user)
-   LANG=3Den_US.UTF-8
-   SHELL=3D/bin/bash
-  Tags:  precise running-unity
-  Uname: Linux 3.6.0-030600rc3-generic i686
-  UnreportableReason: The running kernel is not an Ubuntu kernel
-  UpgradeStatus: Upgraded to precise on 2012-08-30 (0 days ago)
-  UserGroups: adm admin cdrom dialout lpadmin plugdev sambashare
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/linux/+bug/1037606/+subscriptions
-
+Regards,
+BALATON Zoltan
+--3866299591-1779484340-1745002110=:55441--
 
