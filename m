@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F9AA942AF
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Apr 2025 11:52:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1362AA94383
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Apr 2025 15:06:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u64qh-00019F-31; Sat, 19 Apr 2025 05:50:59 -0400
+	id 1u67sz-0003qY-T4; Sat, 19 Apr 2025 09:05:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1u64qa-00018x-MC
- for qemu-devel@nongnu.org; Sat, 19 Apr 2025 05:50:52 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <ajmalsadath243@gmail.com>)
+ id 1u62kZ-00086w-Nh
+ for qemu-devel@nongnu.org; Sat, 19 Apr 2025 03:36:31 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1u64qZ-0007Rd-15
- for qemu-devel@nongnu.org; Sat, 19 Apr 2025 05:50:52 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-227cf12df27so22207085ad.0
- for <qemu-devel@nongnu.org>; Sat, 19 Apr 2025 02:50:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajmalsadath243@gmail.com>)
+ id 1u62kY-0005tA-Ac
+ for qemu-devel@nongnu.org; Sat, 19 Apr 2025 03:36:31 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-aca99fc253bso376961866b.0
+ for <qemu-devel@nongnu.org>; Sat, 19 Apr 2025 00:36:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745056248; x=1745661048; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=5BQAo8K2RwE4MbpagvSvoYPieHxR7+KEEFsonadnuo4=;
- b=ec/3byAjdvPYDMarBqfADUdKtP/0QHQ3fnenwlkyakgeK+EfyRRdl1KPxqIkkcCb2n
- VzFXw/kcupFD+Z5lxUSyISPDxVEYqG7FS6LAWQlJ9yV8GCMGDPITy12MTSGbugiqEpFP
- Pjz9A0aHRDOliOXDQP9DD7uQzo9T+xyqwWUAX17FaXtbCumLP6pOi3oEeu62rsUtDMw8
- 2or/8uUXclVe5eVdYf7Tsg2/4Y3gzS493lsZHiQDs1rjHxVnyqtyniYY5Y2NnMv0eBCP
- P9LhHpKFf92Ux172JrGLNszuWOrsDRcLIU/OeQx1LbEvo0Xz0x+d4XS5DFjpmnr5KnCM
- 00tQ==
+ d=gmail.com; s=20230601; t=1745048188; x=1745652988; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=CVvF8XGG+iCQEYIOPrd/TOM8q0cBJv3iJExH4zzVHvs=;
+ b=KLUrGdNZXl75pcBSNKPVG/zBMFdRAhuRnSbfk50eIjXOEyWYIstH+pbjo4Wg7uwBJf
+ nXZmKvpG60F7Qzqvun6ClATkqfREnKqNdsqaH+u3XRsVibWTwx8ZMHVozgAeCjs/QJje
+ H+lZpPC++sCDX8Ha1PD9aDoVEC0mD0rQ1TnWBj3a7IHFvCqS3oAupdpya7eLeRZDTPUV
+ 1YLPBkJShEj31R22S7Eum0FJrp/YGFA2rrNz5kpUAifKR4jCgn3a5paV96bm2HKHENtZ
+ kLxdAhOHSeDckFj/8KcNrwfX0OE1/I/p5FgAp7pViAJ89naSZzx8G+9NVnv4Ke5hxO3A
+ 5HkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745056248; x=1745661048;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5BQAo8K2RwE4MbpagvSvoYPieHxR7+KEEFsonadnuo4=;
- b=H5uTZpJ4wayYh69f/iHQMeT7kUq8pD6aEy//ijC5/1QD++AAHDSar9yx4iPCyyeTrW
- gZzCfZsdHKi6LMil79aGMv77g49BcTar7FtZVzx0sThmDccAxcBZtKGZ3taKNn/7qKz/
- Q9lrKoURZNhZsims23FN0WDPL9rpv3ctj85AwiaW0nm72/xgVg70gndDYqj5yKRuRro+
- laPjwnhLpxLFGf04NALwtudsGhILS+UDFpN5xqj8Geu1nZbPABXYh4wz/3m+AL/Pbyt0
- UqMzGFYtS/YzMgMnyFGeej8uRMDL3ihWavxV9YMZp97S6Tyk6SUvBPOv08kx1saoos7G
- 1LUA==
-X-Gm-Message-State: AOJu0YwFU78r9MN2u2pzodZLrut8opi7WiV0MgpOdbvgyn3+SCphIt7y
- 7DDw2BJZj8CZjmiTsqDuZkZy5X8ztrTGeLU16YIPQsLVzSin4Oaxwo5WPnVX
-X-Gm-Gg: ASbGncuZCFYXcz0aWf8Cxt6ZhhyBokESm9DXPEzE4dghkJjs4oOZjCj9yYhcL5O5am5
- HesvVLSYtpQlstwKCwon1bbEVsHkA2tr0f6/woz7tk6LUey5kmNnDIqSrVcLL5LmmzBL+XupJ53
- h8yHvEihYbRq7amYgW+nIy5fx57JYy1e2htqxVlwBUymvUmBTBJHj9dxQ4AgQqBDgjfR+if0yLs
- o+QU69PcfL7M+BzZ0fjaRI5vPIQhXKqGc1ci8+8Y6xRXSK/mhKg99Q9rT+Q0WZfrn+LeXlS/4v5
- +PnACmnbXJd0v9TKf3Md4CAbq0Fd/b2NHp82MvxPOQf0
-X-Google-Smtp-Source: AGHT+IHnIJ0Qv20Lqds6ft3wAubCYhUzXRBw+SSPDV1uAClaNneCvqCf7ypw4Ks4mggDCcFP+5xLwA==
-X-Received: by 2002:a17:903:3d0c:b0:220:ff82:1c60 with SMTP id
- d9443c01a7336-22c50cfa84fmr99580135ad.14.1745056248216; 
- Sat, 19 Apr 2025 02:50:48 -0700 (PDT)
-Received: from localhost ([103.192.227.29]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73dbf8c04afsm2956908b3a.23.2025.04.19.02.50.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 19 Apr 2025 02:50:47 -0700 (PDT)
-From: Weifeng Liu <weifeng.liu.z@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Weifeng Liu <weifeng.liu.z@gmail.com>, hikalium <hikalium@hikalium.com>,
- Alexander Orzechowski <orzechowski.alexander@gmail.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH] ui/gtk: Properly apply x/y scale when rendering GL area
-Date: Sat, 19 Apr 2025 17:48:41 +0800
-Message-ID: <20250419094959.224954-1-weifeng.liu.z@gmail.com>
-X-Mailer: git-send-email 2.49.0
+ d=1e100.net; s=20230601; t=1745048188; x=1745652988;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CVvF8XGG+iCQEYIOPrd/TOM8q0cBJv3iJExH4zzVHvs=;
+ b=fZwy0Q8IF0C6WS1vhDOSkbsw8HG4wXePaRp2TXXVZjDt1HMsA9K7YIsbbxsmU788G8
+ 9XE0WVeguzkhjuz4cBuzFNP18ayhgu3+G5W64Yrkz5VGqnBdokffseXIaOtrURTJ0PDm
+ QNo3sPWTbrHZcUEEDMxPw1KyhTLebleGkanjWMrTmhJaxhrRQn/+xW3jWXWvFkL5P6tB
+ qwUL8mb4EurGyM2LTU4eeEMD3rjFitHlGK63aIl6jVSm1AbBGtCm7mcJDkCQUslBPDp7
+ TFuaMGnFcyH+7tdo0XTBt/s7EROukSPeRoZb1a9J+J2Yc7SHcSniczflFeCxVOlC7/00
+ oBOQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVUAMWYpbw5Z11ia+VmttV2Wp8rVxjoTc8IChG746hsMzRQH3qBpq48WWTXiuZpjEPLP3wKAuB6nMYS@nongnu.org
+X-Gm-Message-State: AOJu0Yz3bTcLspv5pwOSbrZdM8+G5CWyCXHbmFsEuGIgCMuvBGJfXuAj
+ LdzXtrOIU0kj+Kwk/ijvPruPHL5YmwF25fRZVmwCA3rdL1V0SDpJTwuDYw63ZRUSktCZCxt/bzx
+ fADvQ4AzAc1DeUpf7F2htChhxKQ==
+X-Gm-Gg: ASbGncuvy4EUtip7APkz1D+z2pHngDah5NDtYZxkWbh62ZD6VcSgj3i7Xtn50EzhoZr
+ PWL6Hxw1mQaPLoaBVNSr6znk2tsaokvPYNBnntm/TzpUuAPsm6ZlG4OP3LpHH6pEVhQ7YDhvRth
+ 0EsIB3bJ3yqVzNfxV0+3w=
+X-Google-Smtp-Source: AGHT+IFcV1EijPZvKW3frVvIVAcMuqzlL+ulQSyDnq1x1FMlwubtThr63v0tlomPkr7qwOJTNJqzm6YQX6LIN/EMaSI=
+X-Received: by 2002:a17:907:2cc7:b0:ac7:82b3:7ad with SMTP id
+ a640c23a62f3a-acb74dd54acmr438817166b.46.1745048188030; Sat, 19 Apr 2025
+ 00:36:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=weifeng.liu.z@gmail.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+From: Ajmal K <ajmalsadath243@gmail.com>
+Date: Sat, 19 Apr 2025 13:06:16 +0530
+X-Gm-Features: ATxdqUH8aqZoi9hLULvDr4PvIA2yw6065NT-wgJ_Fcjq0n1a2D1wpFwqflgML18
+Message-ID: <CALz97HabXuukgtvT2ba-tpVpANHsvUpOujtftttLXxgYUuUhFA@mail.gmail.com>
+Subject: Re: [PATCH v3] timer: Fix a race condition between timer's callback
+ and destroying code
+To: venture@google.com
+Cc: jansene@google.com, jpcottin@google.com, mett@google.com, 
+ pbonzini@redhat.com, qemu-devel@nongnu.org, rkir@google.com
+Content-Type: multipart/alternative; boundary="0000000000005d19b306331cb1c6"
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=ajmalsadath243@gmail.com; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sat, 19 Apr 2025 09:05:31 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,44 +92,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On startup, scale_x and scale_y were set to 1 that didn't reflect the
-real situation of the scan-out, resulting in incorrect cursor
-coordinates to be sent when moving the mouse pointer. Simply updating
-the scales before rendering the image fixes this issue.
+--0000000000005d19b306331cb1c6
+Content-Type: text/plain; charset="UTF-8"
 
-Cc: hikalium <hikalium@hikalium.com>
-Cc: Alexander Orzechowski <orzechowski.alexander@gmail.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
----
- ui/gtk-gl-area.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Good
 
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index 2c9a0db425..01235f876a 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -42,6 +42,7 @@ void gd_gl_area_draw(VirtualConsole *vc)
- #ifdef CONFIG_GBM
-     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
- #endif
-+    int fbw, fbh;
-     int ww, wh, ws, y1, y2;
- 
-     if (!vc->gfx.gls) {
-@@ -53,6 +54,11 @@ void gd_gl_area_draw(VirtualConsole *vc)
-     ww = gtk_widget_get_allocated_width(vc->gfx.drawing_area) * ws;
-     wh = gtk_widget_get_allocated_height(vc->gfx.drawing_area) * ws;
- 
-+    fbw = surface_width(vc->gfx.ds);
-+    fbh = surface_height(vc->gfx.ds);
-+    vc->gfx.scale_x = (double)ww / fbw / ws;
-+    vc->gfx.scale_y = (double)wh / fbh / ws;
-+
-     if (vc->gfx.scanout_mode) {
-         if (!vc->gfx.guest_fb.framebuffer) {
-             return;
--- 
-2.49.0
+Ajuz
 
+--0000000000005d19b306331cb1c6
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="auto"><div><br></div><div dir="auto"><br></div><div dir="auto">Good</div><div><br></div><div data-smartmail="gmail_signature">Ajuz</div></div>
+
+--0000000000005d19b306331cb1c6--
 
