@@ -2,46 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF88A95418
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C1AA954EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:48:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u6u44-0007rw-Fk; Mon, 21 Apr 2025 12:32:12 -0400
+	id 1u6uJ9-0002l2-Oy; Mon, 21 Apr 2025 12:47:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=X3PK=XH=kaod.org=clg@ozlabs.org>)
- id 1u6u40-0007q7-MV; Mon, 21 Apr 2025 12:32:08 -0400
+ id 1u6uIp-0002kf-E8; Mon, 21 Apr 2025 12:47:27 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=X3PK=XH=kaod.org=clg@ozlabs.org>)
- id 1u6u3x-0003GQ-Nu; Mon, 21 Apr 2025 12:32:08 -0400
+ id 1u6uIm-0005F7-M0; Mon, 21 Apr 2025 12:47:27 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Zh9r03fkNz4wcx;
- Tue, 22 Apr 2025 02:32:00 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZhB9g6fvgz4wj2;
+ Tue, 22 Apr 2025 02:47:19 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Zh9qw6ZP2z4wcQ;
- Tue, 22 Apr 2025 02:31:56 +1000 (AEST)
-Message-ID: <5d3ec373-7c4b-4189-b845-87b61eac1561@kaod.org>
-Date: Mon, 21 Apr 2025 18:31:54 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZhB9c2rj1z4wcQ;
+ Tue, 22 Apr 2025 02:47:16 +1000 (AEST)
+Message-ID: <062830ef-b6ec-42ba-be68-547d4d569802@kaod.org>
+Date: Mon, 21 Apr 2025 18:47:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/10] pc-bios: Add AST27x0 vBootrom
+Subject: Re: [PATCH v4 02/10] hw/arm/aspeed_ast27x0 Introduce vbootrom memory
+ region
 To: Jamin Lin <jamin_lin@aspeedtech.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>,
  "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-Cc: Troy Lee <troy_lee@aspeedtech.com>,
- "nabihestefan@google.com" <nabihestefan@google.com>
-References: <20250410023856.500258-1-jamin_lin@aspeedtech.com>
- <20250410023856.500258-9-jamin_lin@aspeedtech.com>
- <e002b471-4250-4803-a038-17ffe63e0cca@kaod.org>
- <SI2PR06MB504106612EBE333154EDB953FCB32@SI2PR06MB5041.apcprd06.prod.outlook.com>
+Cc: troy_lee@aspeedtech.com, nabihestefan@google.com
+References: <20250417031209.2647703-1-jamin_lin@aspeedtech.com>
+ <20250417031209.2647703-3-jamin_lin@aspeedtech.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -86,7 +84,7 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <SI2PR06MB504106612EBE333154EDB953FCB32@SI2PR06MB5041.apcprd06.prod.outlook.com>
+In-Reply-To: <20250417031209.2647703-3-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -113,43 +111,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jamin,
-
-On 4/14/25 08:50, Jamin Lin wrote:
-> Hi Cedric and all,
+On 4/17/25 05:11, Jamin Lin wrote:
+> Introduce a new vbootrom memory region. The region is mapped at address
+> "0x00000000" and has a size of 128KB, identical to the SRAM region size.
+> This memory region is intended for loading a vbootrom image file as part of the
+> boot process.
 > 
->> Subject: Re: [PATCH v2 08/10] pc-bios: Add AST27x0 vBootrom
->>
->> On 4/10/25 04:38, Jamin Lin wrote:
->>> The boot ROM is a minimal implementation designed to load an AST27x0
->> boot image.
->>> Its source code is available at:
->>> https://github.com/google/vbootrom
->>
->> See commit d1cb5eda67a0 ("roms: Add virtual Boot ROM for NPCM7xx SoCs")
->> for an example adding a ROM file.
->>
->> Also, we need to be able to rebuild from source the provided vbootrom blob,
->> which means we need access to the code. I don't see any support for Aspeed
->> under https://github.com/google/vbootrom. Is that expected ?
->>
+> The vbootrom registered in the SoC's address space using the ASPEED_DEV_VBOOTROM
+> index.
 > 
-> I have a question regarding the maintenance of the vbootrom submodule. According to the commit log, it was initially added from "google/vbootrom", but the latest version appears to be hosted at https://gitlab.com/qemu-project/vbootrom.git.
-> https://github.com/qemu/qemu/blob/master/.gitmodules#L40
-> I'm currently upstreaming changes from google/vbootrom, which is maintained by Google.
-> https://github.com/google/vbootrom/pull/5
-> Should I upstream to the qemu-project/vbootrom repository on GitLab or is it acceptable to continue updating the submodule from google/vbootrom?
+> Introduced a "vbootrom_size" attribute in "AspeedSoCClass" to define virtual
+> boot ROM size.
 
+Could you please explain why we need a class attribute to size the
+vbootrom region ? The rest looks good.
 
-https://gitlab.com/qemu-project/vbootrom.git is a mirror.
-
-
-Please upstreamto google/vbootrom and qemu-project/vbootrom should
-be quickly be updated.
 
 Thanks,
 
 C.
 
+
+
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> Reviewed-by: Nabih Estefan <nabihestefan@google.com>
+> Tested-by: Nabih Estefan <nabihestefan@google.com>
+> ---
+>   include/hw/arm/aspeed_soc.h |  3 +++
+>   hw/arm/aspeed_ast27x0.c     | 12 ++++++++++++
+>   2 files changed, 15 insertions(+)
+> 
+> diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+> index f069d17d16..9af8cfbc3e 100644
+> --- a/include/hw/arm/aspeed_soc.h
+> +++ b/include/hw/arm/aspeed_soc.h
+> @@ -59,6 +59,7 @@ struct AspeedSoCState {
+>       MemoryRegion sram;
+>       MemoryRegion spi_boot_container;
+>       MemoryRegion spi_boot;
+> +    MemoryRegion vbootrom;
+>       AddressSpace dram_as;
+>       AspeedRtcState rtc;
+>       AspeedTimerCtrlState timerctrl;
+> @@ -152,6 +153,7 @@ struct AspeedSoCClass {
+>       const char * const *valid_cpu_types;
+>       uint32_t silicon_rev;
+>       uint64_t sram_size;
+> +    uint64_t vbootrom_size;
+>       uint64_t secsram_size;
+>       int spis_num;
+>       int ehcis_num;
+> @@ -169,6 +171,7 @@ struct AspeedSoCClass {
+>   const char *aspeed_soc_cpu_type(AspeedSoCClass *sc);
+>   
+>   enum {
+> +    ASPEED_DEV_VBOOTROM,
+>       ASPEED_DEV_SPI_BOOT,
+>       ASPEED_DEV_IOMEM,
+>       ASPEED_DEV_UART0,
+> diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+> index b05ed75ff4..7eece8e286 100644
+> --- a/hw/arm/aspeed_ast27x0.c
+> +++ b/hw/arm/aspeed_ast27x0.c
+> @@ -24,6 +24,7 @@
+>   #include "qemu/log.h"
+>   
+>   static const hwaddr aspeed_soc_ast2700_memmap[] = {
+> +    [ASPEED_DEV_VBOOTROM]  =  0x00000000,
+>       [ASPEED_DEV_SRAM]      =  0x10000000,
+>       [ASPEED_DEV_HACE]      =  0x12070000,
+>       [ASPEED_DEV_EMMC]      =  0x12090000,
+> @@ -657,6 +658,15 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+>       memory_region_add_subregion(s->memory,
+>                                   sc->memmap[ASPEED_DEV_SRAM], &s->sram);
+>   
+> +    /* VBOOTROM */
+> +    name = g_strdup_printf("aspeed.vbootrom.%d", CPU(&a->cpu[0])->cpu_index);
+> +    if (!memory_region_init_ram(&s->vbootrom, OBJECT(s), name,
+> +                                sc->vbootrom_size, errp)) {
+> +        return;
+> +    }
+> +    memory_region_add_subregion(s->memory,
+> +                                sc->memmap[ASPEED_DEV_VBOOTROM], &s->vbootrom);
+> +
+>       /* SCU */
+>       if (!sysbus_realize(SYS_BUS_DEVICE(&s->scu), errp)) {
+>           return;
+> @@ -898,6 +908,7 @@ static void aspeed_soc_ast2700a0_class_init(ObjectClass *oc, void *data)
+>   
+>       sc->valid_cpu_types = valid_cpu_types;
+>       sc->silicon_rev  = AST2700_A0_SILICON_REV;
+> +    sc->vbootrom_size = 0x20000;
+>       sc->sram_size    = 0x20000;
+>       sc->spis_num     = 3;
+>       sc->wdts_num     = 8;
+> @@ -925,6 +936,7 @@ static void aspeed_soc_ast2700a1_class_init(ObjectClass *oc, void *data)
+>   
+>       sc->valid_cpu_types = valid_cpu_types;
+>       sc->silicon_rev  = AST2700_A1_SILICON_REV;
+> +    sc->vbootrom_size = 0x20000;
+>       sc->sram_size    = 0x20000;
+>       sc->spis_num     = 3;
+>       sc->wdts_num     = 8;
 
 
