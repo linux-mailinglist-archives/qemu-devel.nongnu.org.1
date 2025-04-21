@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA25AA95417
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F05BA95425
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:34:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u6u4M-0007xH-Pz; Mon, 21 Apr 2025 12:32:32 -0400
+	id 1u6u4P-00084j-HC; Mon, 21 Apr 2025 12:32:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1u6u42-0007rS-By
- for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:10 -0400
+ id 1u6u45-0007vK-7S
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:14 -0400
 Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1u6u40-0003HQ-HG
- for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:10 -0400
+ id 1u6u43-0003I0-EU
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:12 -0400
 Received: by mail-pl1-x641.google.com with SMTP id
- d9443c01a7336-227b828de00so42870385ad.1
- for <qemu-devel@nongnu.org>; Mon, 21 Apr 2025 09:32:08 -0700 (PDT)
+ d9443c01a7336-2264aefc45dso68032855ad.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Apr 2025 09:32:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745253127; x=1745857927; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1745253130; x=1745857930; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jvtzbswQ9vJhzuX+aoZ5HpUPq7ZF3b4Ei7MsH336AFY=;
- b=aGDIzpzq7HdOQ1L44n8RWXRWTfBkYV+m11MVufZhUNI7k1CN42qhdFDZ/lXZ9JibiF
- mzqf57x8MWtGZ0FFosyfdweIJXBqF0mHRzFPLGuS25WUR0mXYUjyQtgqprs9yO/aFK2H
- 5n4EAMpM7/KQyExNRYEP6etPTrY8gPrn2vSPmAfAEsX+t8Ez5KMhDEkbfSslf4iSmdL9
- nw4zIRBYeFvZq4ak8MDFr2spy+m6THdW0j2GI2UjpNpjTf4Q0BFFKWrMD47XHwWGt+lm
- w7bwBXk7KSmZBCX6YARsbzbxVhMX3mdgsHhDhFAKkUROArGI3xaolz93EK5lAmpD9Scg
- 3c6Q==
+ bh=5HXze5phW81QOl9x8fGNAdSteA5vpfVCVmxMuwczLAM=;
+ b=ApFWjYke3HgNJH+3JcPqVhSfJRxRfz7q+51YZeEbOUHd1bPkknD9QMwLeYYlNfa93M
+ mPxtetTuxETLDXcSCjOzva8pu4I7zoI8hGHD1eRL2XjY3q/obRy97yzdJHSacJZwvbdM
+ /JnOSmkGwrQvIiuwnn4tglrItQ4hM6+dHmN9uRsoQdBLJyBElNE5K4Q0URu8UWV0QCqW
+ 63N8scI6PZJ6Xitzqov13tC3FANF/nXvo5pMR4EL1HEAAE5Ar/k+YdSJXTlZW8qe4/CV
+ kNg+iq1B+UbUIiUkG6Ij7d10ciBQYDE9GoNmQfQ/4LltYGoi1w0zktEoha5tbmKRcLrC
+ SGLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745253127; x=1745857927;
+ d=1e100.net; s=20230601; t=1745253130; x=1745857930;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jvtzbswQ9vJhzuX+aoZ5HpUPq7ZF3b4Ei7MsH336AFY=;
- b=K7wlmUvyURVOZUwuYMX5RxWRg8ZNzyS7LYrPVH9dsxec/DJxdXm+hH79CZzmKYhJmj
- ZJZQOmn2siyeYPKikAIMVC5dWUaDU9xPxZlUOtVBtMcEK3/1S06yIWBP6pwQu4I+Hnkv
- IssYkr49HYKTLJUgYnIUwhySyzsoAV2hZTrveFQXHnU5B00nenRJHtYvElzFQExqiwUr
- lBBDFTR7OlZlkxwaqM0LmONIUbguZqWIgOYuhgcm3lzRJKivaPY2FrOFCaFE9mFdaeJk
- hc+PRa1ZAiazNcYuyuijqh0jv7gZZHdxet0w2z0IzfS8FZEbdrj2s3F0YlOCFMJlzl3l
- D5FA==
-X-Gm-Message-State: AOJu0YwSHwIedJUOSwgCPnRXqMLWi7UXddJoq2Yv2dAiRetvyfaMqS0q
- DinyMhXmjB1nSuedMcgI1BJiJ/oppfxtsDJo1CkL0+wsr8CE7fs=
-X-Gm-Gg: ASbGncsYi99TyEw4GCQdGTYtE3rjBJAGIh4bLGh5h7o+DsZKzwEDyYwnlSf/xS6wRF6
- 2FdS77kQnKF/etYqWh5bAUcXyvGeNgoYhx7XSTp0RbxmnV/BhKa4l1YiyjmoSBnxtU0+uCU9MLf
- VgC/9Fe3/xr9akl5a0PUWgxFV85BWZ9xdcrxpc9n0372xusq1+dTKZUI9c3gLN0yvnus9+BJK2O
- 2azTm8S+1C9+mtuHZ7AnpQFN3rDeLYL2MPjWyWbe89HMe3KcdfMpXR2HVQgMFX4/0fU07IE0HCs
- IavAPGcMiOxnaqe/1WTI7c4/c0+6HvkIsVbdtosCnFsgDw/ibdChYg==
-X-Google-Smtp-Source: AGHT+IGfkjOm0yu2R+ftV+RM65XsM/COimANJtspwxcQQlgYjRwTD4+6/RuL96LQRefj7XiBqBA+6Q==
-X-Received: by 2002:a17:903:3c6f:b0:223:f408:c3cf with SMTP id
- d9443c01a7336-22c535831e2mr188050085ad.21.1745253126973; 
- Mon, 21 Apr 2025 09:32:06 -0700 (PDT)
+ bh=5HXze5phW81QOl9x8fGNAdSteA5vpfVCVmxMuwczLAM=;
+ b=SsO+kvaX+wtGGUCeSwyyrqWIZbRCUHMp1mmlm+/V85VARz6uvHXcn9+ATJpxM0zOmR
+ pfl6Aa0f2sUfArQLShzKhhcMTYWkhchzZfAABGnQ5AtvamGZ0Rmd9yDrP5xcxKo2Z0k0
+ 2m/3FwdnVfW3wZzcAECpdAEKoNDXaEO0HoK4J6Mr6mSgV6gq0M5HBYrYWm6+XZE//yMY
+ fnUyER3GnJb4jirNIrr/NuTcjw+XRO1mWx5r6pDHWL8IsMxZOAcT073Ebom8K4S/ybFy
+ m430NC9iyXt+SEpnP1MhL7z7LekOogQzXtFeVDanP9ZZ/IDiWLG+oop03JcDpWOC90wu
+ zSfw==
+X-Gm-Message-State: AOJu0Ywsy30alX65hxXWfLs4FWYnIcq/CCl5DfYaCwrTBRO2hvYlDGFo
+ EiceEA3itnn7HhqQ3eMS27yxpQ1IAviC7HBljR581GQ/RSzh2zg=
+X-Gm-Gg: ASbGncvwRi+Ham+emrRpwpcGrhxY5we35dbmO42wR+fI/LFr8zKQkItP90mmSHIz5ij
+ ysgOgZTdNMtj/YMY3AOiIFx4WN9GEcsXbsLfyIrTY6luCZc4mB21mJmPjbXf1Cyf1Lju99Bavuk
+ +JFF7IY5n8dERyOP37+T7uHylQRGJ88FiFrqyASbiC+G7dr2cpxVi8D+oV6B/ORaujdsKcj/zkq
+ 623Xd2hZu6oO95df7Gw3CKzzBOdBB8wcqfO4F3VcbiFaXq0Nq8y8qSCqvA8JqiQPDQV3znwJ0mq
+ YaB0xKGTLHxzIGO41Zxbjq0k9rmnGVgVEqfbhQV79KL2Pg7d7IEk3A==
+X-Google-Smtp-Source: AGHT+IHrIUvw5zKgpI1ltJvc5Y0bpuWcYo8OEwOVm585pQrDvZ2CblINB6ojDwq565NZp33Wgwn0YA==
+X-Received: by 2002:a17:902:e743:b0:225:ac99:ae0f with SMTP id
+ d9443c01a7336-22c5356866cmr189206325ad.1.1745253130044; 
+ Mon, 21 Apr 2025 09:32:10 -0700 (PDT)
 Received: from localhost.localdomain ([139.227.17.39])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50ed1997sm67778725ad.201.2025.04.21.09.32.03
+ d9443c01a7336-22c50ed1997sm67778725ad.201.2025.04.21.09.32.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Apr 2025 09:32:06 -0700 (PDT)
+ Mon, 21 Apr 2025 09:32:09 -0700 (PDT)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-Subject: [PATCH 02/11] vfio/igd: Always emulate ASLS (OpRegion) register
-Date: Tue, 22 Apr 2025 00:31:02 +0800
-Message-ID: <20250421163112.21316-3-tomitamoeko@gmail.com>
+Subject: [PATCH 03/11] vfio/igd: Detect IGD device by OpRegion
+Date: Tue, 22 Apr 2025 00:31:03 +0800
+Message-ID: <20250421163112.21316-4-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250421163112.21316-1-tomitamoeko@gmail.com>
 References: <20250421163112.21316-1-tomitamoeko@gmail.com>
@@ -99,53 +99,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ASLS register represents the base address of OpRegion, and it is
-programmed with HPA. In IGD passthrough scenario, it needs to be
-reprogrammed with GPA by guest firmware. To prevent guest accessing
-wrong memory range, ASLS should always be emulated and cleared.
-
-In GVT-g scenario, emulating ASLS is unnecessary as access is handled
-by kvmgt backend [1].
-
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/i915/gvt/cfg_space.c?h=v6.14#n295
+There is currently no straightforward way to distinguish if a Intel
+graphics device is IGD or discrete GPU. However, only IGD devices expose
+OpRegion. Use the presence of VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION
+to identify IGD devices.
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ hw/vfio/igd.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 01826acf10..36316e50ea 100644
+index 36316e50ea..7a7c7735c1 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -182,10 +182,6 @@ static bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+@@ -479,6 +479,7 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
  
-     trace_vfio_pci_igd_opregion_enabled(vdev->vbasedev.name);
+ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+ {
++    g_autofree struct vfio_region_info *opregion = NULL;
+     int ret, gen;
+     uint64_t gms_size;
+     uint64_t *bdsm_size;
+@@ -486,16 +487,20 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+     bool legacy_mode_enabled = false;
+     Error *err = NULL;
  
--    pci_set_long(vdev->pdev.config + IGD_ASLS, 0);
--    pci_set_long(vdev->pdev.wmask + IGD_ASLS, ~0);
--    pci_set_long(vdev->emulated_config_bits + IGD_ASLS, ~0);
--
-     return true;
- }
+-    /*
+-     * This must be an Intel VGA device at address 00:02.0 for us to even
+-     * consider enabling legacy mode.  The vBIOS has dependencies on the
+-     * PCI bus address.
+-     */
+     if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_ANY_ID) ||
+         !vfio_is_vga(vdev)) {
+         return true;
+     }
  
-@@ -583,7 +579,15 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-     if ((vdev->features & VFIO_FEATURE_ENABLE_IGD_LPC) &&
-         !vfio_pci_igd_setup_lpc_bridge(vdev, errp)) {
-         goto error;
--     }
++    /* IGD device always comes with OpRegion */
++    ret = vfio_device_get_region_info_type(&vdev->vbasedev,
++                    VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
++                    VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION, &opregion);
++    if (ret) {
++        return true;
 +    }
++    info_report("OpRegion detected on Intel display %x.", vdev->device_id);
 +
-+    /*
-+     * ASLS (OpRegion address) is read-only, emulated
-+     * It contains HPA, guest firmware need to reprogram it with GPA.
-+     */
-+    pci_set_long(vdev->pdev.config + IGD_ASLS, 0);
-+    pci_set_long(vdev->pdev.wmask + IGD_ASLS, ~0);
-+    pci_set_long(vdev->emulated_config_bits + IGD_ASLS, ~0);
- 
      /*
-      * Allow user to override dsm size using x-igd-gms option, in multiples of
+      * IGD is not a standard, they like to change their specs often.  We
+      * only attempt to support back to SandBridge and we hope that newer
+@@ -570,9 +575,14 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+     }
+ 
+     /* Setup OpRegion access */
+-    if ((vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION) &&
+-        !vfio_pci_igd_setup_opregion(vdev, errp)) {
+-        goto error;
++    if ((vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION)) {
++        if (vdev->pdev.qdev.hotplugged) {
++            error_setg(errp, "OpRegion is not supported on hotplugged device");
++            goto error;
++        }
++        if (!vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
++            goto error;
++        }
+     }
+ 
+     /* Setup LPC bridge / Host bridge PCI IDs */
 -- 
 2.47.2
 
