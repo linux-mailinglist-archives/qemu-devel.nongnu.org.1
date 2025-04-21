@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22641A95426
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 618EAA95447
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:36:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u6u5R-0000EN-QC; Mon, 21 Apr 2025 12:33:44 -0400
+	id 1u6u5p-0000Wz-Oy; Mon, 21 Apr 2025 12:34:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1u6u4A-0007yg-73
- for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:25 -0400
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+ id 1u6u4C-0007z4-EC
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:26 -0400
+Received: from mail-pl1-x641.google.com ([2607:f8b0:4864:20::641])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1u6u47-0003IH-38
- for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:16 -0400
-Received: by mail-pl1-x644.google.com with SMTP id
- d9443c01a7336-22409077c06so56939785ad.1
- for <qemu-devel@nongnu.org>; Mon, 21 Apr 2025 09:32:14 -0700 (PDT)
+ id 1u6u4A-0003IQ-1I
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:19 -0400
+Received: by mail-pl1-x641.google.com with SMTP id
+ d9443c01a7336-2240b4de12bso60691035ad.2
+ for <qemu-devel@nongnu.org>; Mon, 21 Apr 2025 09:32:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745253133; x=1745857933; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1745253136; x=1745857936; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3318dEN5yphn2eGZq8qF6y5ncWXLMOk5ZMejbsDVdQk=;
- b=mWAnldTtUKT+e5jKJB1Ln9/6CN9JiT4HR94gWrA5j3Gw87MAqMkpEiGMiF2QIUV1KE
- hDCttS0FvbAUh/MkQX3jubLKPeXk/zLD5WXozDhI22AObjuBW7CgYcG0BU00Gp8flAHs
- 77H8w28MKcrLsFzBC0mFhOARSmztBMKJCreJcbVgR+wj1vSZqec5qyDGRD8DUfN1K0DN
- MbKFClaeA71hslhF+uZ+rzG0qpUWijQvfWoqVyefAGAa/jgbO8zR/uDLOI/fenr/p8qH
- JbS/o15XIIkO9bY9gUKvUKQH9ma8LPyoWiNql0bEnvqZ6rgL4KZGPzm2hnVQAUVeJ+dB
- RyVA==
+ bh=TRJ4J7IpcJlya+RhRcVzGp5oPkbToRhD/e6mfIMJDDc=;
+ b=QABRCgrFNLT15BzCV0gc9CDnhsh+zUpxIcqY8ZbtxnBlT5tgDBhP0SR2ObPCdH/sds
+ ZHqR+NmLRE842dU05KGTdtXJiudvRVt6YGWk+6Wv6Su2humkcKbzCwFZjP3jcbOuqQI+
+ JsV5ux6LUVuXb+iOQGrQAgSMNyXl2dH62qgKBoWmC70G2A8q4GEew8gcs9LGgNuvsOqs
+ D1hkpE5OGxeLu44azxoWJBq5myEmcAUHzEdZWt+JF/hp6DV7sqIGP1tKhcV0vIpQVtMN
+ pDeiDdlIq/2RRI1qCf6rWvNQRiDjw9+jBKwUy5yCppfc73lUL6CjglZrYN1bQQ9Jioik
+ v6Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745253133; x=1745857933;
+ d=1e100.net; s=20230601; t=1745253136; x=1745857936;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3318dEN5yphn2eGZq8qF6y5ncWXLMOk5ZMejbsDVdQk=;
- b=X9ql1l25LH8mtFke6s2HOZA5l/eD0lqlygqftr1B3QEKXph0YnveEH9Ay2w82koOfi
- 898UGw+r41C4E4rh5sUkMwu45FGTyCF+q/zPWYbNttv1fAmRohj8GjWZz/rprQqt4CHA
- SkQRf0AqyiDt0H6CHjLHq5ZkbW2PxQuLLnJZhs3dWsZoKJXAY0n6TuBgI4WXtkDmjOBr
- LZfHXsHguO8pOpYEkC8nlf0UP5RTuwdz3RAQARSlaEyj9gohFGE24qjuZIuAt0OuZPf5
- ES9T/IrjeIIzsZtRPSGRHzTqdyGDq9FPC7jwTMrLdzG4PNQ294Pl/tr1d7vJMnxwRjvS
- mS0Q==
-X-Gm-Message-State: AOJu0YwfXQicwmytW0UBbkGqVzWmyKSEhZuAXhIohCvCOX3EgxMXI1Ay
- 7RJ/rqTaUlDhbM0Acyb4XpquiKnL/apPIUdp2ZYikZsiZWwrxRE=
-X-Gm-Gg: ASbGncsPz2bFjxWdlbrea0XpoD4m7j/y15oC5iCkqwCY48Hd7kXB+L3P7ieReGppwy9
- //IoTHdUmnHQiqn39pEExXqhrtfY7yLXGp+xQKhyCz5deKoP7Wp1eF7F9MbWwBsjIe35Jf9VslV
- 9ywK0+0g7m8wbLNyyLQ9igc7SWfCiNSy/FHBBwhWn7m8PmIRQqBRGBONAwqGLWmcdUpoRFqS+AN
- YbJ2lCRy+F7zxYtbZu2Ctd/857pJlR+wWEQTPNT4GGTbgdk5P9FKjYPMITSqFKfBXV4yOqpO3gq
- rw57NheQus1xlutL9/UQmljtc1JATu01AFVlqnIR3oMaxqV/2/ggJw==
-X-Google-Smtp-Source: AGHT+IHUNAU7ZiC7RQMVPSBbSy61NbMAPFEfzxejCErgV0gdk/K7Fk3VkNoFYwS1jq87jgf7DqOjxg==
-X-Received: by 2002:a17:903:2344:b0:224:23be:c569 with SMTP id
- d9443c01a7336-22c53583780mr198484455ad.22.1745253133123; 
- Mon, 21 Apr 2025 09:32:13 -0700 (PDT)
+ bh=TRJ4J7IpcJlya+RhRcVzGp5oPkbToRhD/e6mfIMJDDc=;
+ b=HopCvG2cNTuU3+xompUZpsY/iCeUTDX04FZy8Bc4gnSVJwTuepSvKyF2OVxSkTM3QP
+ 3rL3e6gX7paeNl7ie2YN/xGEmyd8a3iKrSoagx51Hv88vFwHT1Jf6vCJ/MGnJWohVdBD
+ 0XUdTh6n8yOAofPi4il0cqM9SqO31n1X6sgbvAoAIPmQKYntvhvJ9bLPcjJWJqAKH+P0
+ BjECPdZI9S2OXj6O8Vpo/AoW0czDGroSbSd5CEQQ9NxqsJGz8WBnk9Fw+7Vr8I91AGsX
+ C+bEApZzWBkxfV88tMn4m+88KLqE+SsaKfWbCswXXAq1/UuVXSpOduht16sc0R2FC1NT
+ ro4A==
+X-Gm-Message-State: AOJu0YwGZtU3dpMprzR4NHcfMiRzLHTYAyTRjfRvxmbVd9SYDzCX+ab+
+ 2iDGVdaHZIZxP9lUazeG1ZnyOTleO4Els6osN1CHnuV2ULu0LhRSyBfF5LD4cQ==
+X-Gm-Gg: ASbGncsyTRMJ/dMssfXEYcaWNTTE2JElDN4ddaFMf+IgRqUx9iRACExqTvuU/CgZu9T
+ L32uD+t7Z+YXegQ64cPvMixLrDWwRfVJRvxZmqVa/rRnOizFZZuexx+qrfke8ytR97I45KadFcp
+ PxYWT2MJlfY3bjLaCFdB6wfVBL7uhiY8JvKgiUfsrS4L3iLMVrbwU+Nt70VCM29lDY+dzj8m/mz
+ 2bSsSfK0CCRWCPHLjM0E/Q1dLLcQ0U6IfLP4h6wf8PSSJ4SwbzG2GUVTS1mY2/rP74w7higrUQ1
+ /iU5vLv85jW0IOxaJd2HfOlwgni4nzolOtWtpEJnvoJcaFRtnI8o3eVMRbg+cgWo
+X-Google-Smtp-Source: AGHT+IFOuJmmxzA+ReiRbRwypgKWzdA6gCQrhqdrcIm7Sa8UPoBwrHR0OJYs/WH39AmSpYnch5aLdQ==
+X-Received: by 2002:a17:902:ef0a:b0:21f:85ee:f2df with SMTP id
+ d9443c01a7336-22c5357f28dmr180645165ad.15.1745253136160; 
+ Mon, 21 Apr 2025 09:32:16 -0700 (PDT)
 Received: from localhost.localdomain ([139.227.17.39])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50ed1997sm67778725ad.201.2025.04.21.09.32.10
+ d9443c01a7336-22c50ed1997sm67778725ad.201.2025.04.21.09.32.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Apr 2025 09:32:12 -0700 (PDT)
+ Mon, 21 Apr 2025 09:32:15 -0700 (PDT)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-Subject: [PATCH 04/11] vfio/igd: Remove vfio_pci_igd_setup_opregion
-Date: Tue, 22 Apr 2025 00:31:04 +0800
-Message-ID: <20250421163112.21316-5-tomitamoeko@gmail.com>
+Subject: [PATCH 05/11] vfio/igd: Check vendor and device ID on GVT-g mdev
+Date: Tue, 22 Apr 2025 00:31:05 +0800
+Message-ID: <20250421163112.21316-6-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250421163112.21316-1-tomitamoeko@gmail.com>
 References: <20250421163112.21316-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::644;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x644.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::641;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x641.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,90 +99,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the last commit, vfio_pci_igd_setup_opregion is only called
-in GVT-g mode. Move its functionality into vfio_pci_kvmgt_config_quirk
-for more GVT-g-specific error logging.
+Check the vendor and device ID on GVT-g mdev to ensure it is a supported
+device [1]. This extra check is required for automatically enabling
+OpRegion access later.
 
-Also, hotplugging GVT-g vGPU is now always disallowed regardless of
-OpRegion to prevent potential issues. Intel has never claimed support
-for GVT-g hotplugging.
+Note that Cherryview and Gemini Lake are marked as supported here since
+current code cannot distinguish them with other Gen8 and Gen9 devices.
+Since mdev cannot be created on these devices, this has no functional
+impact.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/i915/intel_gvt.c?h=v6.14#n52
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 50 +++++++++++++++++++++-----------------------------
- 1 file changed, 21 insertions(+), 29 deletions(-)
+ hw/vfio/igd.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 7a7c7735c1..cc397f8829 100644
+index cc397f8829..e94ed7029a 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -185,33 +185,6 @@ static bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
-     return true;
- }
- 
--static bool vfio_pci_igd_setup_opregion(VFIOPCIDevice *vdev, Error **errp)
--{
--    g_autofree struct vfio_region_info *opregion = NULL;
--    int ret;
--
--    /* Hotplugging is not supported for opregion access */
--    if (vdev->pdev.qdev.hotplugged) {
--        error_setg(errp, "IGD OpRegion is not supported on hotplugged device");
--        return false;
--    }
--
--    ret = vfio_device_get_region_info_type(&vdev->vbasedev,
--                    VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
--                    VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION, &opregion);
--    if (ret) {
--        error_setg_errno(errp, -ret,
--                         "Device does not supports IGD OpRegion feature");
--        return false;
--    }
--
--    if (!vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
--        return false;
--    }
--
--    return true;
--}
--
- /*
-  * The rather short list of registers that we copy from the host devices.
-  * The LPC/ISA bridge values are definitely needed to support the vBIOS, the
-@@ -681,11 +654,30 @@ error:
+@@ -654,6 +654,19 @@ error:
   */
  static bool vfio_pci_kvmgt_config_quirk(VFIOPCIDevice *vdev, Error **errp)
  {
--    if ((vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION) &&
--        !vfio_pci_igd_setup_opregion(vdev, errp)) {
-+    /* Hotplugging is not supported for opregion access */
-+    if (vdev->pdev.qdev.hotplugged) {
-+        error_setg(errp, "Hotplugging Intel GVT-g vGPU is not supported.");
-         return false;
-     }
- 
-+    if (vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION) {
-+        g_autofree struct vfio_region_info *opregion = NULL;
-+        int ret;
++    int gen;
 +
-+        ret = vfio_device_get_region_info_type(&vdev->vbasedev,
-+                        VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
-+                        VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION, &opregion);
-+        if (ret) {
-+            /* Should never reach here, KVMGT always emulates OpRegion */
-+            error_setg(errp, "No OpRegion on Intel GVT-g vGPU.");
-+            return false;
-+        }
-+
-+        if (!vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
-+            return false;
-+        }
++    if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_ANY_ID) ||
++        !vfio_is_vga(vdev)) {
++        return true;
 +    }
 +
-     return true;
- }
- 
++    /* FIXME: Cherryview is Gen8, but don't support GVT-g */
++    gen = igd_gen(vdev);
++    if (gen != 8 && gen != 9) {
++        return true;
++    }
++
+     /* Hotplugging is not supported for opregion access */
+     if (vdev->pdev.qdev.hotplugged) {
+         error_setg(errp, "Hotplugging Intel GVT-g vGPU is not supported.");
 -- 
 2.47.2
 
