@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF33A95450
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EF5A95439
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:35:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u6u5u-0000uw-1W; Mon, 21 Apr 2025 12:34:06 -0400
+	id 1u6u6w-0001EA-3r; Mon, 21 Apr 2025 12:35:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1u6u4T-0008Di-RS
- for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:40 -0400
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
+ id 1u6u4W-0008EO-8p
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:42 -0400
+Received: from mail-pj1-x1042.google.com ([2607:f8b0:4864:20::1042])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1u6u4R-0003Kg-Kt
- for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:37 -0400
-Received: by mail-pg1-x541.google.com with SMTP id
- 41be03b00d2f7-af590aea813so4859162a12.0
- for <qemu-devel@nongnu.org>; Mon, 21 Apr 2025 09:32:35 -0700 (PDT)
+ id 1u6u4U-0003L8-Ht
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:39 -0400
+Received: by mail-pj1-x1042.google.com with SMTP id
+ 98e67ed59e1d1-2ff784dc055so3842477a91.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Apr 2025 09:32:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745253154; x=1745857954; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1745253157; x=1745857957; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J1vNRoqzehudYEI0Q2G8mTJwn1LELvD7FXG1VA4lp34=;
- b=Umpz73WN17a1NsWzoPLlMuRhfcMEpLAqshlBoWyueQJPBnQxdpAaWXtgEfj7UzEghz
- e9xDkaWNyNYvbA1Ct0zVRJnF5bOi94wjcuLbJAi7VlV/dJxMQVpdBHiL4KkwBgN5o8cC
- 1KComj68dnF0AZ30IxvSnHoK5rQ1CErB2z6ccRUJbjCSVWNhqENvklGLrkPMG3NSdl0d
- cCYkaJr0Kx4PVmDmC+maMGzSxmUJfhstlALnEcS5KzyerOCKGBc2zR5olktsBba2qCfk
- wEwcvT+WR1o3SOE2Tae3AKa4Te2IL8KjQGqEa5O1/lG4/ayeo9scyZ0+Wi2fCmg51zeG
- mULw==
+ bh=dawidxz5JOBtoT8mh7yE8JxkLIKJJsZ8Tuvx/W3HyYY=;
+ b=Ex2JAm9LZK+j/CK5EAa6xzR39dSfFD8y/jPVeVV0U5GA6IjpFoEySnmkfheoakIq+0
+ rt+E/VycggWmGbBGGWbBlptLJQBn1sjrowRg0TgyeE6/0PBVvmRrn48A5FCXgAJtdbgf
+ cK0QJ7CjUpSmWCM5k0oHVNsejaPTPCagekNExRF4g3PT826GETufvPlNuLEw31ElA9fI
+ esHr7yxKjhqy4XIY7z4fwwLKe3nE0tnLkeJZYvZ7TX22RUvhRxGVpMd/8DdIarJeJOIU
+ xwUWKE/aETssYD+lq8HHMJqmEWqlQlNFJrmSVYX/dEvCrnBLaS+wtopZDEY295SlQo7K
+ ws3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745253154; x=1745857954;
+ d=1e100.net; s=20230601; t=1745253157; x=1745857957;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J1vNRoqzehudYEI0Q2G8mTJwn1LELvD7FXG1VA4lp34=;
- b=iOBVfZAYRizkRQEzisvv/iyIiVdA3cukIz2S48mvcix3e8nlBVpg5jMKgaJpEngd5t
- hRA60Gg+drGaZUMIe/L2htWAViKg/CFxefc/D6RK4xbg5av5oENvRDkCl9+YEbVVf1jC
- PFdtOv3xg1OmhTQ0q2+jxC3ddbOzcAD4j5gQxfC51ujH84RkBsCkxlft1CwUGDvpaV5m
- Kt8PYKSgdb4R14qamnD2Lqe69Q53Z6uhLkshCt3UkWfnZJqV3Bw+lQlBz0Fq4sFWsxz7
- S+6FdTCiGuNE1c5gqePeX+BEMu+mAYxlLa+RTEv8cfEfOK3gPDHmxIPvyJkInhm12zgF
- SlhQ==
-X-Gm-Message-State: AOJu0YzW/oAuhb9VbFOy68KVnXe26AmJRxnGII97WDbkBN3anawb79WY
- wjRXfLYZLLIGycPhUrgqATSzpzQbb9a0CKGc4A5qmGE2H6xowhgRPJZcCJJUdw==
-X-Gm-Gg: ASbGncv2b12kHzVtxUz99tW85rabmXmIomQ0BXTd0veasOIWsF4ouvEV7L8hWF3XGjp
- TD5JRqwSyfb19rYHgysNMoIYRdHW0wB8muc+8vEZ16IfkHWo9fJ2LF2Kg/vluKOS3grrd3ChO0u
- Bb367BJzRGM9VoXaY6daOb97Y/FnkK4uWkH6z/ILfobWdQ1KvBIqwOmKFMX/jQoGtYt8VTz9c0i
- wq6uX6eN7Wo0Okc0LnHmqHAcyNA4CbWMClRL6AV6UpjDvP3lsIKP6jed3DPsTbLeBcYoEboC/ER
- 6QjWCrQ8XLVyLLq6zA1IFW6kr/oQa1lhOndlDiUYMlPXmAVAL8fiOw==
-X-Google-Smtp-Source: AGHT+IGSEVKkBuEueWU7f5Vj1M05pw0lJFM2nSDbbzrlrbrW9A5r1Ii2+1m4doUKBMdM83DNMqXIaA==
-X-Received: by 2002:a17:90a:fc46:b0:302:fc48:4f0a with SMTP id
- 98e67ed59e1d1-3087c1c120dmr18123052a91.0.1745253153757; 
- Mon, 21 Apr 2025 09:32:33 -0700 (PDT)
+ bh=dawidxz5JOBtoT8mh7yE8JxkLIKJJsZ8Tuvx/W3HyYY=;
+ b=Inw0KaZfqf8zj42qwA64H2BA1/CAHbc1K2bfc6Duf6ZS6+nR10IAIF87nJQMoVwFPe
+ sYqbtUUZ2C8NJmmQoIE3vSjA4M/YSWPfUTH2sld2bdnjoCmjhbd/ehhkcTQQ1w2cUkq/
+ wqOwJqf50H4uYV+AvlFOz90L6jrVcScwR2H3xlK8rlp69XBsejcy7S2OK7lwk3uDjYWA
+ p+hVIePfk85rqfdg9h5IVy+0EJKQpvRxJ9xN01DC98ha6TVKmslhKihzxzgM0eM7LjdF
+ P16Z7HzSaLRsL8xSfpmWBMlYKitZC5JxmqJC0KhmTb1nTePTK+qds1cBmto6SUrfodYA
+ JwBg==
+X-Gm-Message-State: AOJu0Yy/fawGM6wUVs8w/nSmAirA4JTBKhpDVcc4MJCo3aTLOeav/IzN
+ P+HYfJLNtdGtnQXDnMQDC76oYFlFh4iKLgf58uW/a/VbnkqQa5We5JSC4alSpQ==
+X-Gm-Gg: ASbGncv12KQdrSEWHAf7YGWxBYpCHqWE+DowZ16hMS4DWlqF4rdcPEVpdYOnREF6ohL
+ KsHcYn87jKvK/w2eU5YFVI/99K3i6NiTqe9RI7q7cvlwAOgNp+ipI9Y+exMpp5D0o4n8s7j/73V
+ fRQGkvM5rTEP73JMhDyy37JR+IIhbGawQDhAen4bBjxvlG/+Af4+L3grOQEuM3Er9xLY1TamTAS
+ /FY3/xroWOj+d9YCsSDI34GOaJ6oQTUnctA8cYPVSDx8aP7DbCAQsfP/eqNuDgBQVH4WXEIJJr3
+ b7Mqq0qcYj8NjzWhXrR+XB4ULx/u+aeIhKG1JO1vBTpLsyUz+Xg8hfMPK2IRQ8gB
+X-Google-Smtp-Source: AGHT+IHw9g2Y7sjwEzZUw4WOY1k7Uu/+E3UELtlX+ZkqOwVQ6vdhZVbtzl6Jhi7BuHGW5vk/nGph5A==
+X-Received: by 2002:a17:90b:520f:b0:2ff:4a8d:74f8 with SMTP id
+ 98e67ed59e1d1-3087bb3e870mr15918226a91.6.1745253156980; 
+ Mon, 21 Apr 2025 09:32:36 -0700 (PDT)
 Received: from localhost.localdomain ([139.227.17.39])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50ed1997sm67778725ad.201.2025.04.21.09.32.30
+ d9443c01a7336-22c50ed1997sm67778725ad.201.2025.04.21.09.32.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Apr 2025 09:32:33 -0700 (PDT)
+ Mon, 21 Apr 2025 09:32:36 -0700 (PDT)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-Subject: [PATCH 10/11] vfio/igd: Remove generation limitation for IGD
- passthrough
-Date: Tue, 22 Apr 2025 00:31:10 +0800
-Message-ID: <20250421163112.21316-11-tomitamoeko@gmail.com>
+Subject: [PATCH 11/11] vfio/igd: Update IGD passthrough documentation
+Date: Tue, 22 Apr 2025 00:31:11 +0800
+Message-ID: <20250421163112.21316-12-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250421163112.21316-1-tomitamoeko@gmail.com>
 References: <20250421163112.21316-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::541;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pg1-x541.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1042;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pj1-x1042.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,135 +100,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Starting from Intel Core Ultra Series (Meteor Lake), Data Stolen Memory
-has became a part of LMEMBAR (MMIO BAR2) [1][2], meaning that BDSM and
-GGC register quirks are no longer needed on these platforms.
-
-To support Meteor/Arrow/Lunar Lake and future IGD devices, remove the
-generation limitation in IGD passthrough, and apply BDSM and GGC quirks
-only to known Gen6-12 devices.
-
-[1] https://edc.intel.com/content/www/us/en/design/publications/14th-generation-core-processors-cfg-and-mem-registers/d2-f0-processor-graphics-registers/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/i915/gem/i915_gem_stolen.c?h=v6.14#n142
+In previous commits, several changes were made to IGD passthrough:
+* Legacy mode now requires the IGD to be Gen6–Gen9.
+* OpRegion quirk is enabled by default.
+* "etc/igd-bdsm-size" is set to 0 when guest firmware does not need to
+  allocate Data Stolen Memory and write BDSM register.
+Update the documentation to reflect these changes.
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- hw/vfio/igd.c | 58 +++++++++++++++++++--------------------------------
- 1 file changed, 21 insertions(+), 37 deletions(-)
+ docs/igd-assign.txt | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index bc4c79837d..5b888616f0 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -103,6 +103,7 @@ static int igd_gen(VFIOPCIDevice *vdev)
-     /*
-      * Unfortunately, Intel changes it's specification quite often. This makes
-      * it impossible to use a suitable default value for unknown devices.
-+     * Return -1 for not applying any generation-specific quirks.
-      */
-     return -1;
- }
-@@ -434,20 +435,12 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-     VFIOConfigMirrorQuirk *ggc_mirror, *bdsm_mirror;
-     int gen;
+diff --git a/docs/igd-assign.txt b/docs/igd-assign.txt
+index 3aed7956d5..eac31ea3dd 100644
+--- a/docs/igd-assign.txt
++++ b/docs/igd-assign.txt
+@@ -47,6 +47,7 @@ Intel document [1] shows how to dump VBIOS to file. For UEFI Option ROM, see
  
--    /*
--     * This must be an Intel VGA device at address 00:02.0 for us to even
--     * consider enabling legacy mode. Some driver have dependencies on the PCI
--     * bus address.
--     */
-     if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_ANY_ID) ||
-         !vfio_is_vga(vdev) || nr != 0) {
-         return;
-     }
+ QEMU also provides a "Legacy" mode that implicitly enables full functionality
+ on IGD, it is automatically enabled when
++* IGD generation is 6 to 9 (Sandy Bridge to Comet Lake) 
+ * Machine type is i440fx
+ * IGD is assigned to guest BDF 00:02.0
+ * ROM BAR or romfile is present
+@@ -101,7 +102,7 @@ digital formats work well.
  
--    /*
--     * Only on IGD devices of gen 11 and above, the BDSM register is mirrored
--     * into MMIO space and read from MMIO space by the Windows driver.
--     */
-+    /* Only on IGD Gen6-12 device needs quirks in BAR 0 */
-     gen = igd_gen(vdev);
-     if (gen < 6) {
-         return;
-@@ -494,7 +487,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
- {
-     g_autofree struct vfio_region_info *opregion = NULL;
-     int ret, gen;
--    uint64_t gms_size;
-+    uint64_t gms_size = 0;
-     uint64_t *bdsm_size;
-     uint32_t gmch;
-     bool legacy_mode_enabled = false;
-@@ -514,18 +507,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-     }
-     info_report("OpRegion detected on Intel display %x.", vdev->device_id);
+ Options
+ =======
+-* x-igd-opregion=[on|*off*]
++* x-igd-opregion=[*on*|off]
+   Copy host IGD OpRegion and expose it to guest with fw_cfg
  
--    /*
--     * IGD is not a standard, they like to change their specs often.  We
--     * only attempt to support back to SandBridge and we hope that newer
--     * devices maintain compatibility with generation 8.
--     */
-     gen = igd_gen(vdev);
--    if (gen == -1) {
--        error_report("IGD device %s is unsupported in legacy mode, "
--                     "try SandyBridge or newer", vdev->vbasedev.name);
--        return true;
--    }
--
-     gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, 4);
+ * x-igd-lpc=[on|*off*]
+@@ -123,7 +124,7 @@ Examples
  
-     /*
-@@ -624,32 +606,34 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-         }
-     }
+ * Adding IGD with OpRegion and LPC ID hack, but without VGA ranges
+   (For UEFI guests)
+-  -device vfio-pci,host=00:02.0,id=hostdev0,addr=2.0,x-igd-legacy-mode=off,x-igd-opregion=on,x-igd-lpc=on,romfile=efi_oprom.rom
++  -device vfio-pci,host=00:02.0,id=hostdev0,addr=2.0,x-igd-legacy-mode=off,x-igd-lpc=on,romfile=efi_oprom.rom
  
--    gms_size = igd_stolen_memory_size(gen, gmch);
-+    if (gen > 0) {
-+        gms_size = igd_stolen_memory_size(gen, gmch);
+ 
+ Guest firmware
+@@ -156,6 +157,12 @@ fw_cfg requirements on the VM firmware:
+    it's expected that this fw_cfg file is only relevant to a single PCI
+    class VGA device with Intel vendor ID, appearing at PCI bus address 00:02.0.
+ 
++   Starting from Meteor Lake, IGD devices access stolen memory via its MMIO
++   BAR2 (LMEMBAR) and removed the BDSM register in config space. There is
++   no need for guest firmware to allocate data stolen memory in guest address
++   space and write it to BDSM register. Value of this fw_cfg file is 0 in
++   such case.
 +
-+        /* BDSM is read-write, emulated. BIOS needs to be able to write it */
-+        if (gen < 11) {
-+            pci_set_long(vdev->pdev.config + IGD_BDSM, 0);
-+            pci_set_long(vdev->pdev.wmask + IGD_BDSM, ~0);
-+            pci_set_long(vdev->emulated_config_bits + IGD_BDSM, ~0);
-+        } else {
-+            pci_set_quad(vdev->pdev.config + IGD_BDSM_GEN11, 0);
-+            pci_set_quad(vdev->pdev.wmask + IGD_BDSM_GEN11, ~0);
-+            pci_set_quad(vdev->emulated_config_bits + IGD_BDSM_GEN11, ~0);
-+        }
-+    }
- 
-     /*
-      * Request reserved memory for stolen memory via fw_cfg.  VM firmware
-      * must allocate a 1MB aligned reserved memory region below 4GB with
--     * the requested size (in bytes) for use by the Intel PCI class VGA
--     * device at VM address 00:02.0.  The base address of this reserved
--     * memory region must be written to the device BDSM register at PCI
--     * config offset 0x5C.
-+     * the requested size (in bytes) for use by the IGD device. The base
-+     * address of this reserved memory region must be written to the
-+     * device BDSM register.
-+     * For newer device without BDSM register, this fw_cfg item is 0.
-      */
-     bdsm_size = g_malloc(sizeof(*bdsm_size));
-     *bdsm_size = cpu_to_le64(gms_size);
-     fw_cfg_add_file(fw_cfg_find(), "etc/igd-bdsm-size",
-                     bdsm_size, sizeof(*bdsm_size));
- 
--    /* BDSM is read-write, emulated.  The BIOS needs to be able to write it */
--    if (gen < 11) {
--        pci_set_long(vdev->pdev.config + IGD_BDSM, 0);
--        pci_set_long(vdev->pdev.wmask + IGD_BDSM, ~0);
--        pci_set_long(vdev->emulated_config_bits + IGD_BDSM, ~0);
--    } else {
--        pci_set_quad(vdev->pdev.config + IGD_BDSM_GEN11, 0);
--        pci_set_quad(vdev->pdev.wmask + IGD_BDSM_GEN11, ~0);
--        pci_set_quad(vdev->emulated_config_bits + IGD_BDSM_GEN11, ~0);
--    }
--
-     trace_vfio_pci_igd_bdsm_enabled(vdev->vbasedev.name, (gms_size / MiB));
- 
-     return true;
+ Upstream Seabios has OpRegion and BDSM (pre-Gen11 device only) support.
+ However, the support is not accepted by upstream EDK2/OVMF. A recommended
+ solution is to create a virtual OpRom with following DXE drivers:
 -- 
 2.47.2
 
