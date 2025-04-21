@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1DEA95403
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B786A95416
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Apr 2025 18:32:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u6u0R-0005vg-WF; Mon, 21 Apr 2025 12:28:28 -0400
+	id 1u6u3y-0007ph-UY; Mon, 21 Apr 2025 12:32:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u6u0P-0005vH-4G
- for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:28:25 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1u6u3v-0007p8-Hz
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:03 -0400
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u6u0N-0002hk-65
- for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:28:24 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b061a775ac3so3736210a12.0
- for <qemu-devel@nongnu.org>; Mon, 21 Apr 2025 09:28:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1u6u3t-0003GH-DI
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 12:32:03 -0400
+Received: by mail-pl1-x643.google.com with SMTP id
+ d9443c01a7336-2255003f4c6so46922235ad.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Apr 2025 09:32:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745252901; x=1745857701; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=d73NQ5qgH+EYWH6oChRJBaXBQPB3TuMOIVeA4r9fsQ8=;
- b=mWE967lDmtsHQxwncVngcYL8XC3aVru4niEGJkruLQYnF5hKcUukSEj5npz+TXXtVT
- Hgb0VjMD9RMHJE1YIkIt53bGbNUIQt6iC3JKBhz8f6Izg3ujut2DMFWKDWrcEkMY/Mbj
- WkS8tafEyry/9siGhswDszl9G2iuni7LojG5NU7maZ0JI1Tm2AJ8gza1i15aTx/HoZr+
- MXwbLfkhEC1R2cX9T5zJwEiR4oIKM57dJIqOCs2nfUI+HR+tJNDMmLUni6UFqGwTa0up
- b7OzKiKrl/NZtSNKrYkUC2ZGuKDk0rkxfT5FEkSIRsx58IOrhovsPBc1fR2iImRnCLk3
- 5LvQ==
+ d=gmail.com; s=20230601; t=1745253119; x=1745857919; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qnlmOE4B78MGjrUjFe3AZSg2QY5RPesYv4t6F2DHU/w=;
+ b=nszlT05752fSffZgUlrlFYzYEcV/oh6t8pYODyZ1CWqje67ZB7wCds77qH/PHEM7dw
+ Zg9hg2sP0xQYJ0mi9ZNMX5IINXsWnoRQNVY3/jHFTXHewRF70V4S8TnDtmdvWflSq23x
+ TdvaiClLyBTKtHx6oUO8y0gJxyGktpg2xuvL+65CS1x2oaEPNZXBSNS5G3rOXv+W6Tw9
+ JDGEAc0wTv5AXXLYdDmuR6lnytfNTdGUZuL4BECkfWdreJdb3dPiYJudqKd2H3QxMLAd
+ Y5fHz+lmIP8ZCHVwmyqbq2UoeJT8hESdvGWG2BRs67h0/O59gPj3aj3wvSjBR0vizrWj
+ 0AqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745252901; x=1745857701;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d73NQ5qgH+EYWH6oChRJBaXBQPB3TuMOIVeA4r9fsQ8=;
- b=LcFWvWJmMmrH5Qu2EZ80QwRRk+JEQXI9fBJ5QRN2dkXeiVCLpPt/E4X+U4thS+FnIh
- Gcqe4K1Sp5M941Le3dDablFUTiuWOids5+xTo4OmZ+/tGQ7J1xA98T1eW4HfanEBAyHk
- +xG8v4GoSSwkvUvwpQqkDqV+wdSo0Ik/7rxM0FSHK4OJISYur9MMyc+KvSaiMD6iHicP
- sGdoPvEXrud7SvfzJLlAwJA+EYYS+7wUZ82VaDLTOFQ8z0Wo3XaCR5+NoKwtwyvQwdmP
- 5R7uA0Z4cTG458TXyijmzOhl4DRah9nXT7U6u8jaRaj3ky5SfxwED3PMyBSqkY3flc/t
- rz/Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXjyFwRCDUnbaAfTUpkiQIZPSe6bMNcvrogJ2estsLNd+AduGkyuPmqtH5Kbp1gFC6gPPKzS6y4KooC@nongnu.org
-X-Gm-Message-State: AOJu0YzrxDqEnNvr26Ea4wImpmraXSdKmflJK8nil2EDvyZlkAR1k1E/
- IiZP7WsvSCfHiQG/Szab2vmJHtbhypv/Ei/NXuLOfnAJHayh61UwPPRN1wLTZ1M=
-X-Gm-Gg: ASbGnctFJ0F98FJutPhOzFxToByG//eSf8EMuCozPtMvqvn9RpyniRybNrv2vqZqgkU
- qvcLR73XRIoyc3Qk6i3lxH+VjD0IWO0ihyhSMTCcRPM0vCGOvITpVU4QG1s1BxBBTxee23KyggF
- /5FyBM7B9lMAJ56q90E3/ZOehj7UkL0MwfWSp3KJqiYVu3OCQcqEHLR+0J5WJAxAmfEEH1zV2kM
- ObOBNzQtuiDw9XTjkgVuWbZgQf4gttTz6JPb4eVW29kAf+mYwjjH2NC7U63+U6h49zlKMnPAoq8
- xQysHl5SkpbLdIBpbWfr2Hd2IJ0WTWSs+iEHlH4BJ+t7GLaBBJ37HRijp1KJ0p539bmV7WRMDuy
- HSYB9M3g=
-X-Google-Smtp-Source: AGHT+IGe4e7W3i4/cBt0q2EqqKuPCW/9KZc475adHsiZA42O8OBBLcTRonW1+SAv7mRWX9A2KQU5iA==
-X-Received: by 2002:a17:90a:c2d0:b0:2ee:b8ac:73b0 with SMTP id
- 98e67ed59e1d1-3087bb3f2cemr18351532a91.2.1745252901371; 
- Mon, 21 Apr 2025 09:28:21 -0700 (PDT)
-Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ d=1e100.net; s=20230601; t=1745253119; x=1745857919;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qnlmOE4B78MGjrUjFe3AZSg2QY5RPesYv4t6F2DHU/w=;
+ b=k4NE/rNP/E/Vq+vnLr4VNPntAS756memjq/uaFX2gFmvN2c+Bxqa4XsBE34GbQgeTW
+ Z7pLmgj4+e5vsisZ1kI6AmemWXkBCW/oSQQTTaG+0K6TN40VuXcfBFY5joC93654iWnE
+ 376vu2xAQlwzcIqtErml4HSGUy2Xk4ltV10fVwiMqcVmhI1zni1p9eoYytmFqaPEl8M4
+ 7nyGAP+sBRlDoTry0TK+lsCD7/VZCcbeYNuSptjA4dnZ0AZWbdexh6NPNa4mzsfuj17A
+ CK6/1qIcgFwntb5JZ3sVE0/fBhZ2B78JbtwihnJoVw0/qrPTro/1xsJHKy5dKRAu0XyK
+ sCUQ==
+X-Gm-Message-State: AOJu0YyywgVdHUF5e+NDhe69BjgNdQsZJ+w0TaKHq6ZBpRcJNZ0M/RXL
+ n2eoKdERBG9CM4KDdrnjZ2eHqyR0h+hW3ScW2MmxdI0HTCiEnjs=
+X-Gm-Gg: ASbGncu2gEXKeuUFJM1S3Y+HEnFez0cJxk/x1mftsIMDvG/XC2D8kNKuHq45NYj7GUE
+ OH5aWHjwO/6vDi2l8s/DPUJ7gpRN+HuxdY68e257Qn+HYOo6XBoAWLxmSSttYHJlO884ff3qD+V
+ 0Vc/ShxFHTv9/p6DWvtFoWUVPjXb0lla9rlTffhcpsOwPhGKjKPquKfmZWPvpee42/pRYPBZqlZ
+ OG5qL3jIN6MKk1XLTYOvQOfh49WqmWXKR/jVO4xk95EIsItyLImBjxupfu5L9zDjgsgp4klBCVa
+ 4VkyJlL9eaY/d64EEXyJ752mljhDdaBT34+/oYnyQ4KHu+wUAJPnQA==
+X-Google-Smtp-Source: AGHT+IHztwTX8pOlY/L2S4CQvJhB1AiAQfxvWj7WNQSGG++8YdKTELj4peactvV/GaHHxv08cWt9TA==
+X-Received: by 2002:a17:902:ec90:b0:229:1717:8826 with SMTP id
+ d9443c01a7336-22c535b4a1cmr183429215ad.28.1745253119429; 
+ Mon, 21 Apr 2025 09:31:59 -0700 (PDT)
+Received: from localhost.localdomain ([139.227.17.39])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3087e8b6236sm5821232a91.1.2025.04.21.09.28.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Apr 2025 09:28:20 -0700 (PDT)
-Message-ID: <ba6d0343-98bb-4464-b805-8b74a85a5552@linaro.org>
-Date: Mon, 21 Apr 2025 09:28:19 -0700
+ d9443c01a7336-22c50ed1997sm67778725ad.201.2025.04.21.09.31.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Apr 2025 09:31:59 -0700 (PDT)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH 00/11] vfio/igd: Detect IGD by OpRegion and enable OpRegion
+ automatically
+Date: Tue, 22 Apr 2025 00:31:00 +0800
+Message-ID: <20250421163112.21316-1-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 153/163] tcg: Assign TCGOP_TYPE in liveness_pass_2
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-References: <20250415192515.232910-1-richard.henderson@linaro.org>
- <20250415192515.232910-154-richard.henderson@linaro.org>
- <D99PDOQBOJL0.2MX82UOFOJ9FK@gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <D99PDOQBOJL0.2MX82UOFOJ9FK@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::643;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x643.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,37 +98,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/18/25 03:46, Nicholas Piggin wrote:
-> On Wed Apr 16, 2025 at 5:25 AM AEST, Richard Henderson wrote:
->> Here we cannot rely on the default copied from
->> tcg_op_insert_{after,before}, because the relevant
->> op could be typeless, such as INDEX_op_call.
->>
->> Fixes: ...
-> 
-> Missing ^
+As proposed in a previous discussion [1], detect IGD devices based on
+whether it has VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION exposed by kernel
+and enables OpRegion access by default. This enables out-of-the-box
+display output support for IGD passthrough without having to manually
+set x-igd-opregion=on, which probably saves effort for libvirt users.
 
-Yeah, I filled in that blank just recently:
-Fixes: fb744ece3a78 ("tcg: Copy TCGOP_TYPE in tcg_op_insert_{after,before}")
+This patchset also limits legacy mode to Gen6-9 devices, as Intel no
+longer provides CSM support and VBIOS on newer IGD, and Seabios does not
+support setting up the 64 bit BDSM register on Gen 11+ devices. Exposing
+VGA ranges to guests by default on platforms without VGA mode support is
+undesirable.
 
->> @@ -4408,6 +4408,7 @@ liveness_pass_2(TCGContext *s)
->>                                     : INDEX_op_ld_i64);
->>                   TCGOp *lop = tcg_op_insert_before(s, op, lopc, 3);
->>   
->> +                TCGOP_TYPE(lop) = arg_ts->type;
-> 
-> tcg_op_insert_before/after I think are only called in these 3 places?
+Additionally, as we enables OpRegion on IGD devices by default, and
+Intel removes the BDSM register from Meteor Lake [2]. There seems to be
+no extra register quirks rather than OpRegion required on newer devices.
+To support them (and probably future devices), the generation limit is
+removed, with BDSM quirk only applied to known Gen 6-12 devices. 
 
-No, it's used quite a bit more in tcg/optimize.c.
-
-> So after this patch, the type assignment in those functions looks
-> redundant. Maybe you could pass in the type as an argument.
-
-During development I had that, but it turned out to be unwieldy.  But perhaps that could 
-be fixed with a local wrapper within optimize.c, taking the type from OptContext.
-
-I'll experiment and get back to you.
+Note: I have not been able to test this on Meteor Lake or newer
+platforms due to lack of hardware.
 
 
-r~
+[1] https://lore.kernel.org/qemu-devel/20250325172239.27926-1-tomitamoeko@gmail.com/T/
+[2] https://edc.intel.com/content/www/us/en/design/publications/14th-generation-core-processors-cfg-and-mem-registers/d2-f0-processor-graphics-registers/
+
+Tomita Moeko (11):
+  vfio/igd: Restrict legacy mode to Gen6-9 devices
+  vfio/igd: Always emulate ASLS (OpRegion) register
+  vfio/igd: Detect IGD device by OpRegion
+  vfio/igd: Remove vfio_pci_igd_setup_opregion
+  vfio/igd: Check vendor and device ID on GVT-g mdev
+  vfio/igd: Enable OpRegion by default
+  vfio/igd: Allow hotplugging with OpRegion enabled
+  vfio/igd: Allow overriding GMS with 0xf0 to 0xfe on Gen9+
+  vfio/igd: Only emulate GGC register when x-igd-gms is set
+  vfio/igd: Remove generation limitation for IGD passthrough
+  vfio/igd: Update IGD passthrough documentation
+
+ docs/igd-assign.txt |  11 +-
+ hw/vfio/igd.c       | 257 ++++++++++++++++++++++++--------------------
+ hw/vfio/pci.c       |   2 +-
+ 3 files changed, 153 insertions(+), 117 deletions(-)
+
+-- 
+2.47.2
+
 
