@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA01BA975BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D93A97669
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 22:02:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JOW-0003sp-BX; Tue, 22 Apr 2025 15:35:02 -0400
+	id 1u7JPd-0006fs-6h; Tue, 22 Apr 2025 15:36:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLm-0000q8-68
+ id 1u7JLm-0000px-37
  for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:11 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLh-0006eX-7U
+ id 1u7JLh-0006eb-9l
  for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:09 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-2243803b776so87046905ad.0
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-225477548e1so56981595ad.0
  for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:32:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745350323; x=1745955123; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745350324; x=1745955124; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IIU1fG3v2ti6ddjpGI+Ep7ZP7ka1a1iDtVAhhJuSr6o=;
- b=Pgct6mzGy7n4/vNCtUPaLEVVsX6V3iTGvIzoYfiXmX+6/oTiNA+skT4ev0KMOW6YdO
- EppwNM8uxz9fdQ/dz24Y2ydDIPf9CBrICjkgcv+tmYHk9jXbXMvTpJtGt3hwtOa/bMfc
- 5onf8PRWT6SZTfo/5pFmPC5cWXDygTgzl8f9eUcdwPuLwThIt/ehFYMRZawibGN40yMF
- rQuliQojlxvVIkJyFij7fnlZweFi+bQXMGU4IkCeED3+J+DViZnrT5et5Sq7qhGYQp8E
- IyzdSRKrkUAcmvEqP/4+4SZdRR/hTUludh8p7W89tRvhAegqCQRqreGlIOS6sscgVLhr
- /HGw==
+ :reply-to; bh=Qcu//0jyv2Qr1qgAsqv3VCUMABiA/lbrLzTg9MZVJM8=;
+ b=J9jIEFZLGUE05wOPugN/O+RcLybABgTewAFHojtpbze+lBOaGBcAni7jGV/Im5Q9Ea
+ 0f68hPyOm+Bfy4rFL2ljUgG6mfjMAtoJJuvrmx/1jqBB+ms2faWZ5sTFb+MYW/piPw/a
+ 6TNcj5jfltU0kQvF/AUM95Dll4VHaw7e4MyyQK9X33ctB2PXF27gV5ty5Idrq2yjTF5q
+ uXUhtnW/k0PGJ2kras8R1QqDAWwrvqIqJ/cAK9M/KPCdxta7KVbQuPcAd2TDhWJYlL2h
+ nJdYgrLZSVJl7saWjZ42sXZdlC0S5esVzB3Zp5xcesIQk7o7yawAdGYtirMGBUBR4q8r
+ 1wFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745350323; x=1745955123;
+ d=1e100.net; s=20230601; t=1745350324; x=1745955124;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IIU1fG3v2ti6ddjpGI+Ep7ZP7ka1a1iDtVAhhJuSr6o=;
- b=m5xqeda00oa+fKRylUoSUmLX0NNv3W1kYzW95vtZscvxz+Kqm29FdNwGGdqGh7apKE
- vqO55xe+6HmPni5yprVBYYwnoMaBrRFS/+LkN/voMRFXZ7mIfU9eZPvVrCkPPJ3Tphce
- sJSi3st1EapHBtQRNdRijPmuKEID7OnFOuqpZDm+EQYGus4Bkt0jvnrAB0QRAVIA2HUm
- Vqamubvm3yJGHAdJS7YtkksNyc5seBldqI8CIyinzxujoKEstdd69BwQlyY3NE63au7H
- y5hDig2VyASPx4QUZ77zRHwJTjAjVUtoH/BOUpLqT1jNUO5MQHmgXdkIiIXIPoTTbLRD
- ARWA==
-X-Gm-Message-State: AOJu0YwUA73xk9Yf3sH6Vqkq8Nm3EcCiUe+S1w72q9X+6EyxIIhwaBrY
- mnbSVcyhX6PQcCWxiMRHjfw4rJLpMdgMxHfOdFNJwupYxZiRLpMYuC21eZ3cVVKzkDWXDyuWKrv
- x
-X-Gm-Gg: ASbGnctyHP6VLfElPivrqkFDYAm90jpeIK7EtgaOdOVWiZhBkoVnW+TKiO2wQxqjsDW
- VJGepzndqflvv0ZvZlOvfZxkEEq+kGAsDk8zrzSxm+ZTlapGgwPmPgPLU20csXpVIG8O9iBjZo1
- oSuFXzsht1C2ARWXPB5cl7n8a0FTdxzW/2EXJ7swqUklWdyStK9qcRIBusnDS8gXL/S6OsOAFrb
- M/74+5drk75TQDf7Q8Q9nTre/FjKiqcWjBY1GQl40IXg8brBcKMJgT324lj6ZNxBSh5PcpAwFTK
- 6gSuxAMcBfWFwBk3R9Y5t820E4BA3pD3UTDechl69Zy4LBHttAX+FwvLoYPr+CarOtx0wXDBGws
+ bh=Qcu//0jyv2Qr1qgAsqv3VCUMABiA/lbrLzTg9MZVJM8=;
+ b=XEPtux623av8x5V32N0DeXfX8X0yrefoxrgQUy86Q7zfkmJyIMN5Dk6loUk+NUOa+O
+ /ZunV8hfA1Pn41uKJ7mdFDLdlq12CFkPbaQJG775a2IB8Dn3yjB+NjwUzD9BFNuQ9zje
+ JyHqRGUHVKWJS8zCbz2WGX8WVI/AbCPEPOtTIbTx+1atmO4XHYiDu1ZcmEIroUCXnOFm
+ ZGPEsB37dvVhApD9iejPPZ31ci17eeHxZG/6q1SKwhitzmHN9DK0mkCz+dNfdJnNI4sk
+ hK7mFHhCueBOUfGpLNMF+1Ekkd8zZOughqrjeMInn33WYWCiKd+MtEiLe/IXDZKOr4tT
+ 27BQ==
+X-Gm-Message-State: AOJu0Yw4VTh7EVj1nwf8E0aFc5nXHD82oMNNSek5aOxteutQEHT0MhdA
+ hQzvHpfqf0cz0wWfTZDDFq7tusAGtkw5dX4O8WANS/cF7+k6ixlWuWqahaHkCLVv5Gv0dgQBqt7
+ z
+X-Gm-Gg: ASbGncuj6l9oVdpIthwR5yvVsNEsQt2ESqEbmh03rLr1Xgcr2BDmk401ZzUj1sonQyM
+ 2OWsetLBCsA4rr+uVUtbOEgSnmhigb+M1u29cdrGRJ3on0RSu0a8bOhmbTCwdX+P+vmTcJCbocN
+ ZuqaNURiSLSihXGHx4yZMaaBCjWz2lXhFrCpyAgoZFmNKchp9fsGm7ypvWp9Zzs+YFT+ScULppJ
+ gyGdJKeq9A4Ri+3IS9oWpl2qDVt/hVUqPbrFT7MybC2Id/dNaF9c8knDskHcvfEIQXMEgescmd8
+ Ez3RR1LssRIF+iNJjJ6nbS/xYwjD7P9XgzhNN8ji6p5wzyT4x1EW0LXpKKItYT/5ljrHtIAFSyY
  =
-X-Google-Smtp-Source: AGHT+IEXIjwxRcCLel6K3nCgtqqDsI4237rjSZpO9q0mzhlkMkRcFQYLY4l+WROpKm3Xtf9dO5MZ2A==
-X-Received: by 2002:a17:902:d4cd:b0:224:910:23f0 with SMTP id
- d9443c01a7336-22c53642323mr214658235ad.49.1745350323431; 
+X-Google-Smtp-Source: AGHT+IHlH0OsaiT6N+otkf5NVhKPfosNhoHWqhsvLNMUobIIfYLUrWUi7DO2HvmZ+aoNCObZI7r66Q==
+X-Received: by 2002:a17:902:d58e:b0:223:2aab:462c with SMTP id
+ d9443c01a7336-22c53580c26mr251616435ad.15.1745350323972; 
  Tue, 22 Apr 2025 12:32:03 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
@@ -65,17 +65,17 @@ Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  Tue, 22 Apr 2025 12:32:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 065/147] accel/tcg: Rebuild full flags in
- tlb_reset_dirty_range_locked
-Date: Tue, 22 Apr 2025 12:26:54 -0700
-Message-ID: <20250422192819.302784-66-richard.henderson@linaro.org>
+Subject: [PATCH 066/147] include/exec: Move TLB_MMIO,
+ TLB_DISCARD_WRITE to slow flags
+Date: Tue, 22 Apr 2025 12:26:55 -0700
+Message-ID: <20250422192819.302784-67-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,30 +98,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Undo the split between inline and slow flags before masking.
+Recover two bits from the inline flags.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/exec/tlb-flags.h | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 5df98d93d0..28c47d4872 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -886,9 +886,10 @@ static void tlb_reset_dirty_range_locked(CPUTLBEntryFull *full, CPUTLBEntry *ent
-                                          uintptr_t start, uintptr_t length)
- {
-     const uintptr_t addr = ent->addr_write;
-+    int flags = addr | full->slow_flags[MMU_DATA_STORE];
+diff --git a/include/exec/tlb-flags.h b/include/exec/tlb-flags.h
+index a0e51a4b37..54a6bae768 100644
+--- a/include/exec/tlb-flags.h
++++ b/include/exec/tlb-flags.h
+@@ -53,20 +53,15 @@
+  * contain the page physical address.
+  */
+ #define TLB_NOTDIRTY        (1 << (TARGET_PAGE_BITS_MIN - 2))
+-/* Set if TLB entry is an IO callback.  */
+-#define TLB_MMIO            (1 << (TARGET_PAGE_BITS_MIN - 3))
+-/* Set if TLB entry writes ignored.  */
+-#define TLB_DISCARD_WRITE   (1 << (TARGET_PAGE_BITS_MIN - 4))
+ /* Set if the slow path must be used; more flags in CPUTLBEntryFull. */
+-#define TLB_FORCE_SLOW      (1 << (TARGET_PAGE_BITS_MIN - 5))
++#define TLB_FORCE_SLOW      (1 << (TARGET_PAGE_BITS_MIN - 3))
  
--    if ((addr & (TLB_INVALID_MASK | TLB_MMIO |
--                 TLB_DISCARD_WRITE | TLB_NOTDIRTY)) == 0) {
-+    flags &= TLB_INVALID_MASK | TLB_MMIO | TLB_DISCARD_WRITE | TLB_NOTDIRTY;
-+    if (flags == 0) {
-         uintptr_t host = (addr & TARGET_PAGE_MASK) + ent->addend;
-         if ((host - start) < length) {
-             qatomic_set(&ent->addr_write, addr | TLB_NOTDIRTY);
+ /*
+  * Use this mask to check interception with an alignment mask
+  * in a TCG backend.
+  */
+ #define TLB_FLAGS_MASK \
+-    (TLB_INVALID_MASK | TLB_NOTDIRTY | TLB_MMIO \
+-    | TLB_FORCE_SLOW | TLB_DISCARD_WRITE)
++    (TLB_INVALID_MASK | TLB_NOTDIRTY | TLB_FORCE_SLOW)
+ 
+ /*
+  * Flags stored in CPUTLBEntryFull.slow_flags[x].
+@@ -78,8 +73,14 @@
+ #define TLB_WATCHPOINT       (1 << 1)
+ /* Set if TLB entry requires aligned accesses.  */
+ #define TLB_CHECK_ALIGNED    (1 << 2)
++/* Set if TLB entry writes ignored.  */
++#define TLB_DISCARD_WRITE    (1 << 3)
++/* Set if TLB entry is an IO callback.  */
++#define TLB_MMIO             (1 << 4)
+ 
+-#define TLB_SLOW_FLAGS_MASK  (TLB_BSWAP | TLB_WATCHPOINT | TLB_CHECK_ALIGNED)
++#define TLB_SLOW_FLAGS_MASK \
++    (TLB_BSWAP | TLB_WATCHPOINT | TLB_CHECK_ALIGNED | \
++     TLB_DISCARD_WRITE | TLB_MMIO)
+ 
+ /* The two sets of flags must not overlap. */
+ QEMU_BUILD_BUG_ON(TLB_FLAGS_MASK & TLB_SLOW_FLAGS_MASK);
 -- 
 2.43.0
 
