@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B939A96F80
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 16:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 262DCA96F06
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 16:36:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7F3L-0000a8-AF; Tue, 22 Apr 2025 10:56:51 -0400
+	id 1u7EjK-0005Qq-3D; Tue, 22 Apr 2025 10:36:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7F36-0008EZ-0v
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:56:36 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7F34-0005I2-1r
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:56:35 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43ea40a6e98so48016455e9.1
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 07:56:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745333792; x=1745938592; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oZGQgvHwQWyT1UXG05e/L40v1r7rbpXm4CP7YDA65nc=;
- b=IGIH7LQtc+HVAqEBnbPS9VOyPF17gKel2VLFAZwhjnsroT5EQq4+COzuq42bc1EjYv
- 40DmQf3FkIAxIot5BIfTcmBnfOeeHxt7LWeNzRavMQ5hNXCRmg145flnPv4b2ofLBkij
- ipk4LayLN8HiEGEQWv9M4rWlh4ua0CpEGbFQPrNi8+cl/5val2x2EZI2abR8lOVHy7UE
- BzaoAmEgqp+Ba5wnKOGLqSAfwdq/VpscFxaqMnrLDXCoLh8X3IRgVRYmI7+kJvMChLRF
- VFNfFftp45rOqRuQ41SXUvhU6t4//Pzh6pLNBEAO9RrctpMGApoA5YXVj3P6ycAvNsaH
- lrkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745333792; x=1745938592;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oZGQgvHwQWyT1UXG05e/L40v1r7rbpXm4CP7YDA65nc=;
- b=idhfmSY3hOUJnx0K0mi6ZVLFVgrI8XtGPhmyGxk/mAJAy/5T8VL6/dSgC2HOXYtSQj
- zujKRfoXtdg+7U3gVGA6Hl17OKWeuSZyXPaPped6UkrfybPTZoNor1qOPCdS5Lp/PTwm
- nQrzXJieIVOJ6q7CvlViyLwb5MqUKtLGXSOC5MGnVz5beSUWn4cVSA6Q0kSPRrZ58w2p
- jCeyd/iSmCJtwEjLb5CFX2lXYB2wgMafIEkA9sGkO8uGz5sNPkCJtN0HtG0I0tm4cNTe
- fEHMjuMR8XJUNR91N2BiRqXGoL+4x8cIjdOUDod7K4KmFo+3ndhkK5Otow0KWKtIS57n
- C0fw==
-X-Gm-Message-State: AOJu0YwoA8Am3ISZGJRgeF2I02ahPJ6pPKL+tjPy1soLIGxkCKoiswuZ
- uiEdybgS8lOiMIEZ2nXWht5Ci4hDpTKjunpc+w/UKSqtNW+pfh6bSOre6klgtiohbfkEGyETWZS
- y
-X-Gm-Gg: ASbGnctysRJnXuLMuMzGxJuenXtIqQFXQoTNYjyY9sMLv2xPPMfkokBGAxeMwi5N5A7
- EgJMqaYvNCwo1Ro8wa2Zhsp28jLKij6n20uKguwqB2BDuX+wIThPqqCYNd64KJsh74cSbs6ecYq
- 3wNeGv78wQzRabQ7xpFWspFe1RZNv4A65ImHI0zZG/j04hW20KJJfinww/c1buqU8Z7b53TcAfK
- FyvT4/IqQC9rQD1SqPKdHcVRwHDavC7+q59ym/tZmK2FnBgfLxJF4ZJIbx/hVGGQAzIQHKxyKtt
- ba8jM502rLlPUItxldKSmeZkraadFxSVvjmJZQDHkDAss/PPuvMGnfhFDdjEuNXhfcgRW1P5Mc0
- bd8m2gB6SZ4VsWhY=
-X-Google-Smtp-Source: AGHT+IHlKhq7bTV/w/YkvEK+/CC8LEH+1P+r2wRxaxdVIz2qU2NX/p4+eMr8El0rldtuRRVviGG5hw==
-X-Received: by 2002:a05:600c:4e4c:b0:43c:f470:7605 with SMTP id
- 5b1f17b1804b1-4406ab99615mr151313955e9.12.1745333791869; 
- Tue, 22 Apr 2025 07:56:31 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4406d5ace47sm175128875e9.15.2025.04.22.07.56.31
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Apr 2025 07:56:31 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>
-Subject: [RFC PATCH v4 19/19] hw/arm/virt: Get default CPU type at runtime
-Date: Tue, 22 Apr 2025 16:55:01 +0200
-Message-ID: <20250422145502.70770-20-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250422145502.70770-1-philmd@linaro.org>
-References: <20250422145502.70770-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7Eiy-0005OC-Rd
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:35:49 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7Eiw-0002k9-VY
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:35:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745332548; x=1776868548;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=rockSBm6e8LPWsjb0m0J68AhC1lgm0+HhnaCQDNSUAc=;
+ b=A5Q/U2fTIZlTGhe8tZx3REvlCtoCFYbcQ1yLAX4U/zzFTnejJVq+64AU
+ w7lN5tK7vUBxCgk0AvfTVnRE71rOGvGkZdopDxiKASS91WlaleF0pIg4n
+ rqcKIp896P5kGBIFXM1aKl75rlzycnTQURBGd+eUoOkyLqLX5bgi2XfkB
+ WfLew35MCW0iRWK4rc+2SWZbFBvTkeOvsuHwbfju2PrY4Shz2fBBmtvpv
+ /Z/Bf8M87O/PuROszGmRG3HODsdvQqwK0aWTD/I5VLx4Nzlbmgx9q8pPd
+ 6suW5VaOyOmx+zjIzfbmGyK8hqLZmZG8jjVZo2rDrrHVrLZaJZtbcm6uf w==;
+X-CSE-ConnectionGUID: HzfiSn4TSdavs7rwKc6H/w==
+X-CSE-MsgGUID: wQt+TV4USRmuSjGYVS4teQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="46598558"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="46598558"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2025 07:35:46 -0700
+X-CSE-ConnectionGUID: DOTabLMJQVSkxy9bsX47Hw==
+X-CSE-MsgGUID: V8YMdCIIQ3m8v9BrYnlrog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="131981827"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa006.jf.intel.com with ESMTP; 22 Apr 2025 07:35:42 -0700
+Date: Tue, 22 Apr 2025 22:56:37 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v8 09/55] i386/tdx: Add property sept-ve-disable for
+ tdx-guest object
+Message-ID: <aAeuJeCuEQO3mv27@intel.com>
+References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ <20250401130205.2198253-10-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401130205.2198253-10-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,49 +89,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer MachineClass::get_default_cpu_type() over
-MachineClass::default_cpu_type to get CPU type,
-evaluating TCG availability at runtime calling
-tcg_enabled().
+On Tue, Apr 01, 2025 at 09:01:19AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:19 -0400
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH v8 09/55] i386/tdx: Add property sept-ve-disable for
+>  tdx-guest object
+> X-Mailer: git-send-email 2.34.1
+> 
+> Bit 28 of TD attribute, named SEPT_VE_DISABLE. When set to 1, it disables
+> EPT violation conversion to #VE on guest TD access of PENDING pages.
+> 
+> Some guest OS (e.g., Linux TD guest) may require this bit as 1.
+> Otherwise refuse to boot.
+> 
+> Add sept-ve-disable property for tdx-guest object, for user to configure
+> this bit.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
+> ---
+> Changes in v4:
+> - collect Acked-by from Markus
+> 
+> Changes in v3:
+> - update the comment of property @sept-ve-disable to make it more
+>   descriptive and use new format. (Daniel and Markus)
+> ---
+>  qapi/qom.json         |  8 +++++++-
+>  target/i386/kvm/tdx.c | 23 +++++++++++++++++++++++
+>  2 files changed, 30 insertions(+), 1 deletion(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-This removes the last use of CONFIG_TCG in hw/arm/.
----
- hw/arm/virt.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 4e11272a3ac..df8dda812cc 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3131,6 +3131,12 @@ static int virt_hvf_get_physical_address_range(MachineState *ms)
-     return requested_ipa_size;
- }
- 
-+static const char *virt_get_default_cpu_type(const MachineState *ms)
-+{
-+    return tcg_enabled() ? ARM_CPU_TYPE_NAME("cortex-a15")
-+                         : ARM_CPU_TYPE_NAME("max");
-+}
-+
- static GSList *virt_get_valid_cpu_types(const MachineState *ms)
- {
-     GSList *vct = NULL;
-@@ -3188,11 +3194,7 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-     mc->minimum_page_bits = 12;
-     mc->possible_cpu_arch_ids = virt_possible_cpu_arch_ids;
-     mc->cpu_index_to_instance_props = virt_cpu_index_to_props;
--#ifdef CONFIG_TCG
--    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a15");
--#else
--    mc->default_cpu_type = ARM_CPU_TYPE_NAME("max");
--#endif
-+    mc->get_default_cpu_type = virt_get_default_cpu_type;
-     mc->get_valid_cpu_types = virt_get_valid_cpu_types;
-     mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
-     mc->kvm_type = virt_kvm_type;
--- 
-2.47.1
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
