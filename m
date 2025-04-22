@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA43A97605
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C232AA9760C
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:51:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JPG-0005G8-DW; Tue, 22 Apr 2025 15:35:47 -0400
+	id 1u7JPf-0006rh-L3; Tue, 22 Apr 2025 15:36:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLf-0000fg-8k
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:06 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1u7JLf-0000fh-Bx
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:07 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLc-0006dI-Na
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:02 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2243803b776so87045375ad.0
+ id 1u7JLd-0006dT-6X
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:03 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-227b828de00so60223265ad.1
  for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:32:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745350319; x=1745955119; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nr7dQ2xZvL2F3PC/UuWtMxSETtioG4RgNm5kcrKHZNI=;
- b=iIJTy9b8QIq1Dd0gBUdmRi1nlhnEWTYjEI3gEb5MY4ZeuqOURxloTYiQgMeQRSxWzB
- q+NpHzDhNfTiiF9UHi2yqYLZC+slwXyUzGd6bjQ5yDxvMQhA4I0a7Xx2MClOo9rtfOEs
- O4mLQobgQ5Bd9CFP8Novh0RmXWUk5dsP0b9be1fPtgybRUfq0RO5YQRitGIXwWI/Grb9
- fFs5Dzwy8UFnkSoHakgyYimyJxMVyDvCVzg7CvhJJ+VuRKpvEKdD/9RHLQ1Mw8AhNLG/
- clPKbB1QnwgAPMkGYdqekQkuwIcyyeFilylD6i3/rZ5Bb8BhJeMnOBTvixPcN8FWBn2I
- AODQ==
+ bh=Z/d4Opsx2QmpRYGlTe7zbsmEBVXLmlU0lp+CJtYfxNc=;
+ b=qArbqv9qhealEbU49rmICwASJDtX0nzy3OVOGPTGpKcmAfrN2cWYyVIm6vX3L5m2JM
+ ZuN74IKRMkSUP6ECKihZ2R9D5dVflnfxejR+XSoFeBBbHC8BZB4Zci5NkBYQ6UGZ1Nto
+ efmU/KLq1SyAjjeT/GIv7bHl+3T71SaOb9TM2xI56bdgvUgLObtQ9ZXf8Qen4Uh0Xv6H
+ /0E0iwTijiPA5IMLwMhdbawGZdCaxrPHGKqdGag3VRZRW2cjxxgdEpgJ8/yKCK1fTq/W
+ E2/zhEY8ajhP4QZzZQOZr2DQv18O4nX2OWfvm1l8hoyJKqGBkdXxhCj3Slw+vmTWiZD9
+ L7Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745350319; x=1745955119;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nr7dQ2xZvL2F3PC/UuWtMxSETtioG4RgNm5kcrKHZNI=;
- b=dXfP2FBdIaxqpxIfWMG9M7bLwzJD6fw7WjQsTvfbEco8vvykpoR5rTfh2d2Pldk3Dq
- AQQefIM1Q8w9qj8lxR9GVaIY/U0iFYIOC7pvVXoR61W2gtK8RRujRDpn5aJ/x0aiAlk0
- HDi94RFKRHsKx5OwLzrn+7yyzjHcF2joizP1xpjeGCeJxu51wJqHqwHzFb8konZLilr/
- r3PDRwEen7bKzVGI1fHvpUvcFWEEgD0ejL4mh2dOdH0DYdF8QSc1Os8AZDgUgFUqu9mf
- Z8OTPLz8Jp+kkdD7BYRnKgVjm+5vbAPRyU0xqTj35z+WG+vBSL6fmtuuQHxBY6j662ER
- 8LDw==
-X-Gm-Message-State: AOJu0YyeSUzn8rgCBrifZbbmkAcljhlL2Rb/22GocPZAXcHZU5JfhRYw
- pSFtRsy3z+HtFRnt5FCjS1Rm2B0+4toQ0ZVDyE7k9rDBy4NYdf4F5lqw6HWdAKq5w+pHTXc9Wy8
- v
-X-Gm-Gg: ASbGnctqXQCRX9IhRmAHJVbnzwgjYbrTN7kl3Oz7kVJXxsehoXrlZqbeqtuCab8GDHz
- tEXiulgVOuiblKkzK82thaSz0Y8visjzXzqFc70Ffhca+jaJPX2Q+G1DykJIMkCPmrupKfmngnb
- 7KR+EA8FHG6tuDWZ7oMPkZEZ1dhUFQo4waT9HQW3+c6znkCyRg3ryFkeMCniyAiUjUX171Ca1it
- bqhRc99+pD10XruDPJEuVzLEnmYzlP5GTJ5w5B5UgkXdOIBR73Qf4fJcnP98y8u8/yrEMfZi4a5
- YEmkR2+48lMIxTiDqySXQ77pNhWr6iLlxQ+YvmlgYmbvvWDz3pwFIVdXQzD0fknVCmYdP3PDwGE
+ bh=Z/d4Opsx2QmpRYGlTe7zbsmEBVXLmlU0lp+CJtYfxNc=;
+ b=dvqFqUMLBWsysns3FZss/pEwKBC6/84qpcTeXo8orKncCDqZPxHADyvHUrrcIUC0FP
+ jUJ/EfPmuJa6mtr/b4UxztHT/KKBKOwqZRpHrHS8qwguLlBgHVPxeQOdxlGUnRkJObAM
+ NmUpj88RGTR2+2Hp6eq/VtdTW8KTELhC3P6ZNKbn2TiuQsilTb3F3EOiyzZTsbMDN6BL
+ NHgWc8qlhMSGXUAIXCAXl20FPMaRbIWHismim0PH8X7yqC+KAeCpkLOe9OVvBCOOw3e7
+ ZXWtJofXRBi3rDe4zYtawvg5pOeRpOKv3cb1oxjT4h15gg/oUHml0Z1xf+/vN7PJfp8p
+ 30+g==
+X-Gm-Message-State: AOJu0YwFhrDMOvhery9yUQCEKWQXKZq8//Xhr/m2dGPYwql6G+3lXDhi
+ CcDafjihDLKt6jZONElaD0KfV0/xWjJXe2Xbdxuh7wtz6TayIhiPdjXgS7AZ1eW4Mjo1zLGQGs0
+ j
+X-Gm-Gg: ASbGncvQEg5WhJmGu0Lg2qbXG5WpxCM/XrBC2UIc0gAtOetI/AbU6T1Xt3Fo/y5DkID
+ nmcJvwlN4O4rN1ME499IE8cm2wnqZrhmTMoBB8HjNwJL5mnHwsbfZTZEnNZzaeiiOfYYBRoRLiz
+ 9sElTqw8nZyVyzoguxm4x2NSDxqB0bLIlMrkctw0C5UXM3dYNSu3lFnq6ML8mZ10Ngo1I94WrVE
+ vgiZ6LkARr/ZmIrVzdYq7jUkg4H68w7bRNdbwjtTqOpX3EqQtLA/OBGnZx0Kzl5sPqm/ZsUUiQ/
+ vKgbomUMesuDkN2+trdZuMKG5C+Y3nFlJlz9s/cLZ0hDn/CRqhdD9A9c1ZzHq878dKEGutHTaec
  =
-X-Google-Smtp-Source: AGHT+IFLHwDdGKiedBK564XrP5c4CLhdhBGocIBxbmisAwAMdaZPsqMS4K0Q+pTG2B3RcfNFrP9UEg==
-X-Received: by 2002:a17:902:f548:b0:223:635d:3e38 with SMTP id
- d9443c01a7336-22c535a4a89mr253599885ad.15.1745350318965; 
- Tue, 22 Apr 2025 12:31:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHjnKRLmZUR+58ST303qB5aoXrghQNSd03NpNk6U2n/d5xrHPVsbrPkY1+RO/oXdbW4TkBUCw==
+X-Received: by 2002:a17:903:2344:b0:223:3396:15e8 with SMTP id
+ d9443c01a7336-22c535834bfmr267115525ad.22.1745350319573; 
+ Tue, 22 Apr 2025 12:31:59 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50bdda3bsm89312635ad.27.2025.04.22.12.31.58
+ d9443c01a7336-22c50bdda3bsm89312635ad.27.2025.04.22.12.31.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:31:58 -0700 (PDT)
+ Tue, 22 Apr 2025 12:31:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 058/147] include/system: Remove ifndef CONFIG_USER_ONLY in
- qtest.h
-Date: Tue, 22 Apr 2025 12:26:47 -0700
-Message-ID: <20250422192819.302784-59-richard.henderson@linaro.org>
+Subject: [PATCH 059/147] include/qemu: Remove ifndef CONFIG_USER_ONLY from
+ accel.h
+Date: Tue, 22 Apr 2025 12:26:48 -0700
+Message-ID: <20250422192819.302784-60-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,33 +99,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is include/system, so CONFIG_USER_ONLY will never be true.
+While setup_post and has_memory will not be used for
+CONFIG_USER_ONLY, let the struct have constant layout.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/system/qtest.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/qemu/accel.h | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/include/system/qtest.h b/include/system/qtest.h
-index 6ddddc501b..84b1f8c6ee 100644
---- a/include/system/qtest.h
-+++ b/include/system/qtest.h
-@@ -23,7 +23,6 @@ static inline bool qtest_enabled(void)
-     return qtest_allowed;
- }
+diff --git a/include/qemu/accel.h b/include/qemu/accel.h
+index 972a849a2b..fbd3d897fe 100644
+--- a/include/qemu/accel.h
++++ b/include/qemu/accel.h
+@@ -38,13 +38,13 @@ typedef struct AccelClass {
+ 
+     const char *name;
+     int (*init_machine)(MachineState *ms);
+-#ifndef CONFIG_USER_ONLY
++    bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
++    void (*cpu_common_unrealize)(CPUState *cpu);
++
++    /* system related hooks */
+     void (*setup_post)(MachineState *ms, AccelState *accel);
+     bool (*has_memory)(MachineState *ms, AddressSpace *as,
+                        hwaddr start_addr, hwaddr size);
+-#endif
+-    bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
+-    void (*cpu_common_unrealize)(CPUState *cpu);
+ 
+     /* gdbstub related hooks */
+     int (*gdbstub_supported_sstep_flags)(void);
+@@ -78,12 +78,10 @@ const char *current_accel_name(void);
+ 
+ void accel_init_interfaces(AccelClass *ac);
  
 -#ifndef CONFIG_USER_ONLY
- void G_GNUC_PRINTF(2, 3) qtest_sendf(CharBackend *chr, const char *fmt, ...);
- void qtest_set_command_cb(bool (*pc_cb)(CharBackend *chr, gchar **words));
- bool qtest_driver(void);
-@@ -33,6 +32,5 @@ void qtest_server_init(const char *qtest_chrdev, const char *qtest_log, Error **
- void qtest_server_set_send_handler(void (*send)(void *, const char *),
-                                  void *opaque);
- void qtest_server_inproc_recv(void *opaque, const char *buf);
--#endif
+ int accel_init_machine(AccelState *accel, MachineState *ms);
  
- #endif
+ /* Called just before os_setup_post (ie just before drop OS privs) */
+ void accel_setup_post(MachineState *ms);
+-#endif /* !CONFIG_USER_ONLY */
+ 
+ /**
+  * accel_cpu_instance_init:
 -- 
 2.43.0
 
