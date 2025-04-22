@@ -2,95 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE40A96D14
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 15:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BCBA96DB8
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 16:01:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Dpf-00064O-H7; Tue, 22 Apr 2025 09:38:39 -0400
+	id 1u7EAb-0005nP-CE; Tue, 22 Apr 2025 10:00:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=h5bN=XI=kaod.org=clg@ozlabs.org>)
- id 1u7Dpb-00063E-O1; Tue, 22 Apr 2025 09:38:35 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u7EAL-0005er-8b
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:00:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=h5bN=XI=kaod.org=clg@ozlabs.org>)
- id 1u7DpZ-0004F5-32; Tue, 22 Apr 2025 09:38:35 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZhjxH4fqtz4xG4;
- Tue, 22 Apr 2025 23:38:27 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u7EAG-0006JU-5B
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:00:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745330393;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=OMtwXvaheTlkiqC0k82+nnlb5B0oIlbejhg9K2ePGgM=;
+ b=b1+fQID91lyi3n0CD0nUOLk+di6Yo7PXe+0E9CZXhu18JN8wKHS/ZsXs5B2EUgHl10V2pc
+ ixOe7EUUz45Am6WRj9RWk73GytsibpW0hKrkIBVJibWtK4sz12VFuydzC0t6VPaAtpGCMl
+ 6NwR/MeP4OdSEtB+/Qvdpp2UaI703Lk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-X05eMDwIPniIGH4XwKwm2g-1; Tue,
+ 22 Apr 2025 09:59:49 -0400
+X-MC-Unique: X05eMDwIPniIGH4XwKwm2g-1
+X-Mimecast-MFC-AGG-ID: X05eMDwIPniIGH4XwKwm2g_1745330386
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZhjxC275Pz4x8Z;
- Tue, 22 Apr 2025 23:38:22 +1000 (AEST)
-Message-ID: <4ac9f7d7-e22f-4197-bbac-1435ca2c0926@kaod.org>
-Date: Tue, 22 Apr 2025 15:38:15 +0200
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C709E19560A5; Tue, 22 Apr 2025 13:59:43 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.110])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 39459180010A; Tue, 22 Apr 2025 13:59:39 +0000 (UTC)
+Date: Tue, 22 Apr 2025 09:59:38 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Cc: qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Vikram Garhwal <vikram.garhwal@bytedance.com>,
+ Jason Wang <jasowang@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
+Subject: Re: [PATCH v2 17/20] util: Add coroutine backend for emscripten
+Message-ID: <20250422135938.GB301197@fedora>
+References: <cover.1745295397.git.ktokunaga.mail@gmail.com>
+ <82afa4d287a16f89fa59f08cba14fb06e017ea83.1745295397.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ssi/aspeed_smc: Allow 64-bit wide flash accesses
-To: Joe Komlodi <komlodi@google.com>, qemu-devel@nongnu.org
-Cc: venture@google.com, alistair@alistair23.me, peter.maydell@linaro.org,
- steven_lee@aspeedtech.com, leetroy@gmail.com, jamin_lin@aspeedtech.com,
- joel@jms.id.au, andrew@codeconstruct.com.au, qemu-arm@nongnu.org
-References: <20250422002747.2593465-1-komlodi@google.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20250422002747.2593465-1-komlodi@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=h5bN=XI=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="DltiIdaNA3nWqmR9"
+Content-Disposition: inline
+In-Reply-To: <82afa4d287a16f89fa59f08cba14fb06e017ea83.1745295397.git.ktokunaga.mail@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,51 +104,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/22/25 02:27, Joe Komlodi wrote:
-> cde3247651dc998da5dc1005148302a90d72f21f fixed atomicity for LDRD, which
-> ends up making accesses 64-bits wide. However, the AST2600 bootloader
-> can sometimes compile with LDRD instructions, which causes the acceses
-> to fail when accessing the memory-mapped SPI flash.
-> 
-> To fix this, increase the MMIO region valid access size to allow for
-> 64-bit accesses.
-> 
-> Signed-off-by: Joe Komlodi <komlodi@google.com>
 
-To backport on stable-10.0 when merged.
+--DltiIdaNA3nWqmR9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
+On Tue, Apr 22, 2025 at 02:27:21PM +0900, Kohei Tokunaga wrote:
+> Emscripten does not support couroutine methods currently used by QEMU but
+> provides a coroutine implementation called "fiber". This commit introduce=
+s a
+> coroutine backend using fiber. Note that fiber does not support submitting
+> coroutines to other threads.
+>=20
+> Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 > ---
->   hw/ssi/aspeed_smc.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
-> index faef1a8e5b..a1160187a4 100644
-> --- a/hw/ssi/aspeed_smc.c
-> +++ b/hw/ssi/aspeed_smc.c
-> @@ -359,7 +359,7 @@ static const MemoryRegionOps aspeed_smc_flash_default_ops = {
->       .endianness = DEVICE_LITTLE_ENDIAN,
->       .valid = {
->           .min_access_size = 1,
-> -        .max_access_size = 4,
-> +        .max_access_size = 8,
->       },
->   };
->   
-> @@ -670,7 +670,7 @@ static const MemoryRegionOps aspeed_smc_flash_ops = {
->       .endianness = DEVICE_LITTLE_ENDIAN,
->       .valid = {
->           .min_access_size = 1,
-> -        .max_access_size = 4,
-> +        .max_access_size = 8,
->       },
->   };
->   
+>  MAINTAINERS           |   1 +
+>  util/coroutine-wasm.c | 127 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 128 insertions(+)
+>  create mode 100644 util/coroutine-wasm.c
+>=20
+> V2:
+> - Split the MAINTAINERS file change that adds coroutine-wasm.c from the
+>   previous 19th patch into this commit.
+
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--DltiIdaNA3nWqmR9
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgHoMoACgkQnKSrs4Gr
+c8gBeQgAkKJs5uspGEuKmK1DsHRilGp+8iPwo09eOxS9265IAygkr6XEk0f6JQbQ
+ATJgJFl7qVMhPDalRx+jsRrIbfrvQ/RzTbqszy1pCLXuBOLkWYEgXXClGHtBTZtn
+dAKpesc0EaoV/3r70TgNHVDsRGZeeALaJ8oksWtC3dj3lX2CRJUdf6wDFxL8R39x
++at+I4lXSmXKVS5lSDYl0D/+RjWncJzwv9X8WK1gCXGWzSdjm6ZvC3d5rqWV2jfL
+m0PMcwq99AX3ohiE1f6F8Cxn3roPqeM5vmvF7586JAe7/X4U0dvtS0B6hhyfWB8C
+SGDpKDSpoos4LUj2MQ0otrEBfH+EgA==
+=1x7V
+-----END PGP SIGNATURE-----
+
+--DltiIdaNA3nWqmR9--
 
 
