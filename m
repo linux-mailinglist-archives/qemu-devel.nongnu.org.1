@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1F8A9765B
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D059BA97587
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:35:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JPl-00075w-MJ; Tue, 22 Apr 2025 15:36:18 -0400
+	id 1u7JNh-0002UF-Bm; Tue, 22 Apr 2025 15:34:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLr-00016L-Qd
+ id 1u7JLs-00016n-7o
  for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:16 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLp-0006gY-Hi
+ id 1u7JLq-0006gn-7l
  for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:15 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-224100e9a5cso66545125ad.2
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:32:12 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2279915e06eso58612715ad.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:32:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745350332; x=1745955132; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YwX79sAas1p4NfMgvATwyqCc393tpLGILDciw+NSDio=;
- b=ukDBbp0v8H7k/OYeSns6jMTKXHvUyd7oHY+n7gxr9/cPrUvYxDUgEYnyQ7gzrxvkL4
- d3bCadTyWHo5J5XPu7o0DR4LJW51WePhFooG0OergRS2hNufddk57Xuj8dC77THMOBlJ
- UMALB0tneUeQKdhQCXwwTDOvGrxIj+/r3J8bQEMh+e/az3K+NRO2F6qfQY9xYKdzyKFQ
- XNJNp9xSg/cg55TZNyic7NrAwuzhf4A2ro2ErJzjfIwiW4MsLyvEEhj23aCdoxZj+RSn
- FMriebaS2CT6FPO7Qx99PBbKlMdyqYJ2LsIdClf4+Q5x9lb0rAt8/f+uEvYjZbAdRggX
- ETNg==
+ bh=XHzIFD1toGdj6HYrHyt+UU2Mbk/NX+AyaF0biHg+m+k=;
+ b=fXB0kVn/aVd24jiOX+rs4Ly8P0Pl2bcvxN+uLwtzJTI5kLLSlXZAr9tGqmUPm7bDwf
+ qhx/1DPeXgk+/WT3fbUU6jYzQgk/MjMsi4enw0j0Xrn1SapwhPmWAw9KgE3A572k2ebE
+ bYHwp3EK/qJcnqlxekGKWTPphQR9c22dWlfE6d9zbcEzhJy5EEp0MwJkq4jgmZYJUqZo
+ trGIVSIIrHeUnLFFc7g9JBtGFcq1MOSJB4eE2bFYffXN5vK1nLVuqfFy7/rZEGvErxeH
+ 2Q4bPhNYJWsT+N2UhcIiKJd3SaP8IlpuJjd1rIxYyorARqynTc9B6QShcKYCcyK7RwQQ
+ yFbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745350332; x=1745955132;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YwX79sAas1p4NfMgvATwyqCc393tpLGILDciw+NSDio=;
- b=c5W1jr7dQsF0L/Isi0nyJatKMKwBrdogkQQpcYXN1qVbrbARcvqgs2/4M68cOsADfq
- R+m2nBVxTWHkdJvp1DyYK5jD12rhDt8fAPL6Ktb4HqyCT/sVIlA2Z+SwTT5tprnlAWrO
- 8wZBUl32tbMZox+7AHFLsg0YKj4MA18QYX52Gd5dpg/HoxtfRv0EI7wzcS2jLHla6pdZ
- zr+pwBlzw7n2IHnaHp3xWeya+BwOQG0XD2k5omjSIyLhL5U4UvSv6425Ac5pgdNCmcg7
- kP0Fs/0xJYU9EHHhGENpG7elXZ3OncSKnrwz5/Jz8d1N7vSFRPtg6h3nov7KIAzI+G7Y
- KQxg==
-X-Gm-Message-State: AOJu0YwyK+m4ximhPdPdlpmk66FYq8g2AkGPBelPyOFd0NYiy9sw2eeY
- OrHkWjHnUYnePWzoC0Bf56tmW3em96lnTTP67xSSdlt2/3bQvxIHkosBWDBsGlUB1SzrIEGj0l1
- S
-X-Gm-Gg: ASbGncu2azR/nyoQLzUI7xLHGIGiltNmBmHKULmYXubFKlxTAVz9FWoAkHTOaIE4Vvc
- wqI+MZr8q8L3d5g54MxiXk++4+sKKg+mYj4oq4EEmpqk8nbllwiihGXWqOgYZhJoZLr2KyOZw53
- 4pROQ9+BpH+jHJ5xbzmXYxvzb/HBvUqXVgKdqu5cJjDegH8Cu83C66q2rmJaZUJSShG1eqVSxfX
- 7mWJS96dd1dI0J4y7UXnNk5R1Stv2rhuVv7lvFFIK0XC6Ef9Kdt2n0Z5vyBZNdQxz8Obtw5mSkc
- K/ZYEGm3//h/cW/ylYVEdMNiiL/elde7iLfmqCnwhzOUfPiAVDrcM211aZ8FLaWmZvoESdyxhcE
- 1EqlB2ykDsQ==
-X-Google-Smtp-Source: AGHT+IG0RF2vsO8bH3i7lZXB4mZrCCIlQN1eS7tpZxKzFh6qQUjui7lnKj9wbeJ4t7Ds7sGKN6lspg==
-X-Received: by 2002:a17:903:244a:b0:21f:988d:5758 with SMTP id
- d9443c01a7336-22c536011bemr283625955ad.35.1745350331768; 
- Tue, 22 Apr 2025 12:32:11 -0700 (PDT)
+ bh=XHzIFD1toGdj6HYrHyt+UU2Mbk/NX+AyaF0biHg+m+k=;
+ b=m9Zu3h3DBAEg54X5hY+59F+wB8loI5vcmJ7+CqXQbCWpORhQNTG+7Tg0jCRBuF1tLN
+ E/rG2H9Nyid4OL7rGnVtS2z9XMftHe1Y541rrDkAt6xpWJANWXDJyWB7BHUKwaQ6+So+
+ yoRyw168iopIidgIWuxocb4kbmvzfGCYf9MRxNcqEAL8dKTNtkm9Ir9pT3qK/idhl0CB
+ bHLq0Hnboh+/08NQ8/0m0Yg2soNL0Kqcq761yFBH9tMrXGPmuQ7+0et504WYfbxRAoma
+ FIZFHhmHwAue5UcsP8shM8z1jetIxfGYQJ448FByDSWIleXXWorey4bNydagqebGBd17
+ JzDw==
+X-Gm-Message-State: AOJu0Yxlvige+TffcRtaWrn2PD/YnjDRAKKoNhka7mnOSGNEI2EIfidk
+ uJO39baQ17cd8WSPBT0y3RezbVP+PqrIvcqyHoGUWKCxlpc9mSZE6zTF9nvD9l41axjGdVpE+1v
+ m
+X-Gm-Gg: ASbGncvqpcQvhUwQe+9qMuOu0Hb8qVHCHQRZ0vGrFXEsJxdr5pewkY56dd6/Hdtqxi2
+ uhuoXDWDhGjg54yUlZXEqIAmEKzl+2AlZejMtqCpwBwHKKER81hw1f6QjUYuSEJMXyuUPxOmWPu
+ xA+GmSxExZFEnoPG4Xy96YUIzAzL5esTfl/tQWIHHb5uG/ROq1l4SjnhWE8IcXevCtSkaxRIUCp
+ W2QsRVFnFJTI9qEDznDJTdcYmgvGNUon4dVGqqN88Jm8kT18lP1glJLlIkqpr1CzbHG0XinmV8V
+ 49geyZW/ehvUKwGPPnRV1EDQZqn2QGJU25FUHCPXsrjcrX5zsrkOnER6UY7lJGjUpeGkIm3lqlU
+ =
+X-Google-Smtp-Source: AGHT+IG1jfX66ZydW0eiqvrfGJTshjrTNE4+dTZTUx285nMH2wIIaYZcnI4EMBxQeZAgZSCsa83NnQ==
+X-Received: by 2002:a17:902:f60a:b0:223:60ce:2451 with SMTP id
+ d9443c01a7336-22c5359c344mr234896925ad.15.1745350332479; 
+ Tue, 22 Apr 2025 12:32:12 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50bdda3bsm89312635ad.27.2025.04.22.12.32.11
+ d9443c01a7336-22c50bdda3bsm89312635ad.27.2025.04.22.12.32.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:32:11 -0700 (PDT)
+ Tue, 22 Apr 2025 12:32:12 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 078/147] target/i386: Remove unused cpu_(ldub,
- stb)_kernel macros
-Date: Tue, 22 Apr 2025 12:27:07 -0700
-Message-ID: <20250422192819.302784-79-richard.henderson@linaro.org>
+Subject: [PATCH 079/147] target/i386: Restrict cpu_mmu_index_kernel() to TCG
+Date: Tue, 22 Apr 2025 12:27:08 -0700
+Message-ID: <20250422192819.302784-80-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,49 +101,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+Move cpu_mmu_index_kernel() to seg_helper.c.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250401080938.32278-8-philmd@linaro.org>
+Message-ID: <20250401080938.32278-9-philmd@linaro.org>
 ---
- target/i386/tcg/seg_helper.h | 6 ------
- 1 file changed, 6 deletions(-)
+ target/i386/cpu.h            |  1 -
+ target/i386/tcg/seg_helper.h |  4 ++++
+ target/i386/cpu.c            | 16 ----------------
+ target/i386/tcg/seg_helper.c | 16 ++++++++++++++++
+ 4 files changed, 20 insertions(+), 17 deletions(-)
 
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 76f24446a5..db9f01a11b 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2598,7 +2598,6 @@ static inline bool is_mmu_index_32(int mmu_index)
+ }
+ 
+ int x86_mmu_index_pl(CPUX86State *env, unsigned pl);
+-int cpu_mmu_index_kernel(CPUX86State *env);
+ 
+ #define CC_DST  (env->cc_dst)
+ #define CC_SRC  (env->cc_src)
 diff --git a/target/i386/tcg/seg_helper.h b/target/i386/tcg/seg_helper.h
-index ebf1035277..6b8606cd6d 100644
+index 6b8606cd6d..ea98e1a98e 100644
 --- a/target/i386/tcg/seg_helper.h
 +++ b/target/i386/tcg/seg_helper.h
-@@ -35,8 +35,6 @@
+@@ -20,6 +20,8 @@
+ #ifndef SEG_HELPER_H
+ #define SEG_HELPER_H
+ 
++#include "cpu.h"
++
+ //#define DEBUG_PCALL
+ 
+ #ifdef DEBUG_PCALL
+@@ -31,6 +33,8 @@
+ # define LOG_PCALL_STATE(cpu) do { } while (0)
+ #endif
+ 
++int cpu_mmu_index_kernel(CPUX86State *env);
++
+ /*
   * TODO: Convert callers to compute cpu_mmu_index_kernel once
   * and use *_mmuidx_ra directly.
-  */
--#define cpu_ldub_kernel_ra(e, p, r) \
--    cpu_ldub_mmuidx_ra(e, p, cpu_mmu_index_kernel(e), r)
- #define cpu_lduw_kernel_ra(e, p, r) \
-     cpu_lduw_mmuidx_ra(e, p, cpu_mmu_index_kernel(e), r)
- #define cpu_ldl_kernel_ra(e, p, r) \
-@@ -44,8 +42,6 @@
- #define cpu_ldq_kernel_ra(e, p, r) \
-     cpu_ldq_mmuidx_ra(e, p, cpu_mmu_index_kernel(e), r)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index af46c7a392..0b74b9a375 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -8669,22 +8669,6 @@ static int x86_cpu_mmu_index(CPUState *cs, bool ifetch)
+     return x86_mmu_index_pl(env, env->hflags & HF_CPL_MASK);
+ }
  
--#define cpu_stb_kernel_ra(e, p, v, r) \
--    cpu_stb_mmuidx_ra(e, p, v, cpu_mmu_index_kernel(e), r)
- #define cpu_stw_kernel_ra(e, p, v, r) \
-     cpu_stw_mmuidx_ra(e, p, v, cpu_mmu_index_kernel(e), r)
- #define cpu_stl_kernel_ra(e, p, v, r) \
-@@ -53,12 +49,10 @@
- #define cpu_stq_kernel_ra(e, p, v, r) \
-     cpu_stq_mmuidx_ra(e, p, v, cpu_mmu_index_kernel(e), r)
+-static int x86_mmu_index_kernel_pl(CPUX86State *env, unsigned pl)
+-{
+-    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 0 : 1;
+-    int mmu_index_base =
+-        !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
+-        (pl < 3 && (env->eflags & AC_MASK)
+-         ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX);
+-
+-    return mmu_index_base + mmu_index_32;
+-}
+-
+-int cpu_mmu_index_kernel(CPUX86State *env)
+-{
+-    return x86_mmu_index_kernel_pl(env, env->hflags & HF_CPL_MASK);
+-}
+-
+ static void x86_disas_set_info(CPUState *cs, disassemble_info *info)
+ {
+     X86CPU *cpu = X86_CPU(cs);
+diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
+index 71962113fb..f4370202fe 100644
+--- a/target/i386/tcg/seg_helper.c
++++ b/target/i386/tcg/seg_helper.c
+@@ -128,6 +128,22 @@ int get_pg_mode(CPUX86State *env)
+     return pg_mode;
+ }
  
--#define cpu_ldub_kernel(e, p)    cpu_ldub_kernel_ra(e, p, 0)
- #define cpu_lduw_kernel(e, p)    cpu_lduw_kernel_ra(e, p, 0)
- #define cpu_ldl_kernel(e, p)     cpu_ldl_kernel_ra(e, p, 0)
- #define cpu_ldq_kernel(e, p)     cpu_ldq_kernel_ra(e, p, 0)
- 
--#define cpu_stb_kernel(e, p, v)  cpu_stb_kernel_ra(e, p, v, 0)
- #define cpu_stw_kernel(e, p, v)  cpu_stw_kernel_ra(e, p, v, 0)
- #define cpu_stl_kernel(e, p, v)  cpu_stl_kernel_ra(e, p, v, 0)
- #define cpu_stq_kernel(e, p, v)  cpu_stq_kernel_ra(e, p, v, 0)
++static int x86_mmu_index_kernel_pl(CPUX86State *env, unsigned pl)
++{
++    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 0 : 1;
++    int mmu_index_base =
++        !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
++        (pl < 3 && (env->eflags & AC_MASK)
++         ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX);
++
++    return mmu_index_base + mmu_index_32;
++}
++
++int cpu_mmu_index_kernel(CPUX86State *env)
++{
++    return x86_mmu_index_kernel_pl(env, env->hflags & HF_CPL_MASK);
++}
++
+ /* return non zero if error */
+ static inline int load_segment_ra(CPUX86State *env, uint32_t *e1_ptr,
+                                uint32_t *e2_ptr, int selector,
 -- 
 2.43.0
 
