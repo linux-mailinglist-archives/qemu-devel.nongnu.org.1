@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9420A97073
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 17:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3011A97081
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 17:24:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7FRn-0003Nk-Bg; Tue, 22 Apr 2025 11:22:08 -0400
+	id 1u7FTZ-0004nQ-RW; Tue, 22 Apr 2025 11:23:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7FRh-0003Me-LE
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:22:02 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
+ id 1u7FTW-0004mx-MI
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:23:54 -0400
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7FRc-0000Iz-VX
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:22:01 -0400
+ id 1u7FTU-0000Tw-QQ
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:23:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745335317; x=1776871317;
+ t=1745335433; x=1776871433;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=sTE8M4Y2S4Pb9ckTIDo7DkjKh+sAIl66MjnAQIrYd9o=;
- b=WrJBsmzYewCloiFp04p/ewJkEnUk+PyHTJN2MMQ06hn47M/hgcm5GeGz
- q1Z8W5+bDV5VFj95JyZCrET09j360iev5m5H+grXysknkV2XIQzIPBoOt
- 8hqZFzNIShRh4aI58PmeQO/TX1vuvKo4FXVAaOsK9cq9WbVg7VMjWNYre
- AJSt/E9cvnIKipou3M8/FjRYOEbvScniQyK8vPeIa8qnCkh0Mn8enpC2o
- C46T/Prb7lB56kn/Rbfz47OQcKCu7qYtO8oaWSCoL8TXW74PN3vMWxI7I
- VtnSpO6XWpCGA2X80PuzgybQBqIJ3bVORV4DvbG+wbYbF1gFZl92X97HK Q==;
-X-CSE-ConnectionGUID: 9znbkgjKTXCY+Shs7LzFnw==
-X-CSE-MsgGUID: JW/sRSmYTgWM1kxfGry/Kg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="46018204"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="46018204"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 08:21:53 -0700
-X-CSE-ConnectionGUID: t3oCLPuRT+aPS23a8JAk4w==
-X-CSE-MsgGUID: S8AjcWI0RMaLqo4fsxQ8Lg==
+ mime-version:in-reply-to;
+ bh=vcD9XM6pIPWcWw3WVTyBu1OKcV7oulRP7epPfihOBs4=;
+ b=RiJqc2N4a/i6+vrGF8CdTnX+qJxyrcsQHIxc+CNIZlbJePpSz/NrapMo
+ /Pk9myCJ0n/6EMiRlNrXy4RW4OqdCoH8TT4TsoUXD1+eJmeKl9VfOqhkE
+ ZMbJwYUxCnGgNpLO+SYG+nDYDYWthPqnFetprLTP0oPHXOo7v7/BADGwb
+ qqnkaqMznoDP6IC5e720ntewaZI0leR81j0W0JM3x4AcNyjdY3k8wxbl9
+ t7XGVSotN23VQFIWv5ea5Abfh/02tN/IZSwdTKzIGK/2gcdrv0+QEh2fs
+ 98kO1jsh4sTw9mztBeyNOpR9fIvovAmXiMsK5INKbEgxcZKYDIGWioQS3 g==;
+X-CSE-ConnectionGUID: WG47mOrCSneiZ6YNEBPohQ==
+X-CSE-MsgGUID: 9jQY/Ga5S7Ss6r5F6Xf0+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="49563220"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="49563220"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2025 08:23:49 -0700
+X-CSE-ConnectionGUID: FdYEQUCpQCSeIzk8eTLqAA==
+X-CSE-MsgGUID: eSOiVsngRyWYu+dgaC2uLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="132997944"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="163095463"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa008.jf.intel.com with ESMTP; 22 Apr 2025 08:21:51 -0700
-Date: Tue, 22 Apr 2025 23:42:46 +0800
+ by fmviesa001.fm.intel.com with ESMTP; 22 Apr 2025 08:23:46 -0700
+Date: Tue, 22 Apr 2025 23:44:41 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -55,17 +55,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 13/55] i386/tdx: Support user configurable
- mrconfigid/mrowner/mrownerconfig
-Message-ID: <aAe49odpsz108aZb@intel.com>
+Subject: Re: [PATCH v8 14/55] i386/tdx: Set APIC bus rate to match with what
+ TDX module enforces
+Message-ID: <aAe5aQ1C8+jzMtr7@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-14-xiaoyao.li@intel.com>
+ <20250401130205.2198253-15-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250401130205.2198253-14-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250401130205.2198253-15-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
@@ -90,45 +89,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index f229bb07aaec..a8379bac1719 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -1060,11 +1060,25 @@
->  #     pages.  Some guest OS (e.g., Linux TD guest) may require this to
->  #     be set, otherwise they refuse to boot.
->  #
-> +# @mrconfigid: ID for non-owner-defined configuration of the guest TD,
-> +#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
-> +#     Defaults to all zeros.
-
-Maybe a typo? s/Defaults/Default/
-
-> +#
-> +# @mrowner: ID for the guest TD¡¯s owner (base64 encoded SHA384 digest).
-> +#     Defaults to all zeros.
-
-Ditto.
-
-> +#
-> +# @mrownerconfig: ID for owner-defined configuration of the guest TD,
-> +#     e.g., specific to the workload rather than the run-time or OS
-> +#     (base64 encoded SHA384 digest).  Defaults to all zeros.
-> +#
->  # Since: 10.1
->  ##
->  { 'struct': 'TdxGuestProperties',
->    'data': { '*attributes': 'uint64',
-> -            '*sept-ve-disable': 'bool' } }
-> +            '*sept-ve-disable': 'bool',
-> +            '*mrconfigid': 'str',
-> +            '*mrowner': 'str',
-> +            '*mrownerconfig': 'str' } }
->  
-
-Overall LGTM, (with Daniel's comment fixed,)
+On Tue, Apr 01, 2025 at 09:01:24AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:24 -0400
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH v8 14/55] i386/tdx: Set APIC bus rate to match with what
+>  TDX module enforces
+> X-Mailer: git-send-email 2.34.1
+> 
+> TDX advertises core crystal clock with cpuid[0x15] as 25MHz for TD
+> guests and it's unchangeable from VMM. As a result, TDX guest reads
+> the APIC timer as the same frequency, 25MHz.
+> 
+> While KVM's default emulated frequency for APIC bus is 1GHz, set the
+> APIC bus rate to match with TDX explicitly to ensure KVM provide correct
+> emulated APIC timer for TD guest.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+> Changes in v6:
+>  - new patch;
+> ---
+>  target/i386/kvm/tdx.c | 13 +++++++++++++
+>  target/i386/kvm/tdx.h |  3 +++
+>  2 files changed, 16 insertions(+)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
 
 
