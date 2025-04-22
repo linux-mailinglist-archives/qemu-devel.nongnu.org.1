@@ -2,81 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47021A98901
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 13:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4947A98A7B
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 15:07:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Yjp-0000hq-Pj; Wed, 23 Apr 2025 07:58:01 -0400
+	id 1u7ZoC-0004Wd-1O; Wed, 23 Apr 2025 09:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YjW-0000cf-MG
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:57:44 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1u7UwW-0007bv-Id; Wed, 23 Apr 2025 03:54:52 -0400
+Received: from mail-a.sr.ht ([46.23.81.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YjT-0007Kx-Ji
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:57:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745409460; x=1776945460;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=xEnO712NCweBry5O2/wXnH8yKP+dLPLUx43ztiaVR1M=;
- b=lsQ2oZf6lhlXWSZq2fwoPSnM6iZ/JslxGekb8C/ZnAnAY/E0NPTfh2mI
- YbB2vZlc+ma0235vvvENqH11M2CfDzubnuPyMvSeAwsE/NfuHKsZHRQWw
- wqXfJSU/EFzaO7IYgA93GRYQBtBqtdDbpvC6m5W7XvsgiAhJdeexONRY2
- 3bIzFsAYOQUKBiWYkUVL5rbXZVcUG0goVHNbK28vXDmbE3RE1327W95jW
- o5D5/hqCVxeyicSs+Z0zjiuD8Ts7ypgXFsZKG6fBPgzAikGrQktqfMqE4
- vBoZ9V2WJimkonP5Uo3ViWul/TZAKMa+7fjSMk/dk1T5RqcvO/RA4ktC0 g==;
-X-CSE-ConnectionGUID: nGE8HQImQK21GtYGKT8S4g==
-X-CSE-MsgGUID: 7GeEKg1bTKmcE2soy/tmwA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50828238"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="50828238"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 04:57:34 -0700
-X-CSE-ConnectionGUID: iI7r3u/9TfWv8trn+yvcSw==
-X-CSE-MsgGUID: VjgZGu3sTZ+1vpYuxidefA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="169511083"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 23 Apr 2025 04:57:31 -0700
-Date: Wed, 23 Apr 2025 20:18:26 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 08/55] i386/tdx: Initialize TDX before creating TD vcpus
-Message-ID: <aAjakhEqjAi5feMy@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-9-xiaoyao.li@intel.com>
- <Z-0iV-xIeu0hoaaC@redhat.com>
- <54c19255-0b05-4f50-83a5-256567724df4@intel.com>
- <aAe27bMcwIwpDB6m@intel.com>
- <dd516742-ceae-44a4-8f80-23f7c73e596f@intel.com>
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1u7UwR-0004yE-SZ; Wed, 23 Apr 2025 03:54:52 -0400
+DKIM-Signature: a=rsa-sha256; bh=JK3oAK8L/MMlxU8luzMFG3Munc7mTZPKsq7E4Di/6Lk=; 
+ c=simple/simple; d=git.sr.ht;
+ h=From:Date:Subject:Reply-to:To:Cc; 
+ q=dns/txt; s=20240113; t=1745394883; v=1;
+ b=E6/Igbz/UKitnx6UoL0zG0UgoIXAEcmtAvxR0TJ1QQgfUqhqOQ/B4Bcl8XHfzBL7Pc1tXYmP
+ PX/1WAVgoBXXkqT/t3ebZ6mC10dxJ2axcg2s0iin8MFKFeZFMOjg9nAOr4wa7bciDI8fy/VQV/X
+ CiSykSPCDkxKy7J4FQEzfTilIvz51+3MdJGW5hv3Wob6nCGC5HBJBSsFNPtTlHC0pmRdqDGZqcD
+ jpkJgEgWwgGf7bBVWbcxSjmNgb8U9J8SJsJnh9leutmCZo3/5l0/f9hnUK/fsZZ38Jdbb0YrJ+w
+ 1vZnhQu87XGX6lrtOMSKoq64ln9q3q2KNXWVbRjIOchIA==
+Received: from git.sr.ht (unknown [46.23.81.155])
+ by mail-a.sr.ht (Postfix) with ESMTPSA id 1AC0F21391;
+ Wed, 23 Apr 2025 07:54:43 +0000 (UTC)
+From: ~liushuyu <liushuyu@git.sr.ht>
+Date: Tue, 22 Apr 2025 10:35:00 +0800
+Subject: [PATCH qemu] linux-user/syscall.c: add translation logic for
+ epoll_pwait2 syscall
+Message-ID: <174539488306.23673.10433396305045773139-0@git.sr.ht>
+X-Mailer: git.sr.ht
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, liushuyu@aosc.io
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dd516742-ceae-44a4-8f80-23f7c73e596f@intel.com>
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
+ helo=mail-a.sr.ht
+X-Spam_score_int: 20
+X-Spam_score: 2.0
+X-Spam_bar: ++
+X-Spam_report: (2.0 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
+ DKIM_INVALID=0.1, DKIM_SIGNED=0.1, FREEMAIL_FORGED_REPLYTO=2.095,
+ FREEMAIL_REPLYTO_END_DIGIT=0.25, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 23 Apr 2025 09:06:04 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,19 +62,105 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~liushuyu <liushuyu011@gmail.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > A little suggestion:
-> > 
-> > With error_append_hint(local_err, ...), you can add "ERRP_GUARD()" at
-> > the beginning of tdx_pre_create_vcpu(), just like the commit 95e9053a34ca.
-> 
-> I don't think ERRP_GUARD() is needed.
-> 
-> ERRP_GUARD() is used to guard @errp, while here error_append_hint() is used
-> on @local_err.
+From: Zixing Liu <liushuyu@aosc.io>
 
-Yes, you're right. My bad and thanks for correction!
+Signed-off-by: Zixing Liu <liushuyu@aosc.io>
+---
+ linux-user/syscall.c | 36 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 8bfe4912e1..6906e7ba38 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -711,6 +711,11 @@ safe_syscall5(int, ppoll, struct pollfd *, ufds, unsigne=
+d int, nfds,
+ safe_syscall6(int, epoll_pwait, int, epfd, struct epoll_event *, events,
+               int, maxevents, int, timeout, const sigset_t *, sigmask,
+               size_t, sigsetsize)
++#if defined(__NR_epoll_pwait2)
++safe_syscall6(int, epoll_pwait2, int, epfd, struct epoll_event *, events,
++              int, maxevents, struct timespec *, timeout, const sigset_t *, =
+sigmask,
++              size_t, sigsetsize)
++#endif
+ #if defined(__NR_futex)
+ safe_syscall6(int,futex,int *,uaddr,int,op,int,val, \
+               const struct timespec *,timeout,int *,uaddr2,int,val3)
+@@ -13363,19 +13368,22 @@ static abi_long do_syscall1(CPUArchState *cpu_env, =
+int num, abi_long arg1,
+     }
+ #endif
+=20
+-#if defined(TARGET_NR_epoll_wait) || defined(TARGET_NR_epoll_pwait)
++#if defined(TARGET_NR_epoll_wait) || defined(TARGET_NR_epoll_pwait) || defin=
+ed(TARGET_NR_epoll_pwait2)
+ #if defined(TARGET_NR_epoll_wait)
+     case TARGET_NR_epoll_wait:
+ #endif
+ #if defined(TARGET_NR_epoll_pwait)
+     case TARGET_NR_epoll_pwait:
++#endif
++#if defined(TARGET_NR_epoll_pwait2)
++    case TARGET_NR_epoll_pwait2:
+ #endif
+     {
+         struct target_epoll_event *target_ep;
+         struct epoll_event *ep;
+         int epfd =3D arg1;
+         int maxevents =3D arg3;
+-        int timeout =3D arg4;
++        abi_long timeout =3D arg4;
+=20
+         if (maxevents <=3D 0 || maxevents > TARGET_EP_MAX_EVENTS) {
+             return -TARGET_EINVAL;
+@@ -13396,6 +13404,9 @@ static abi_long do_syscall1(CPUArchState *cpu_env, in=
+t num, abi_long arg1,
+         switch (num) {
+ #if defined(TARGET_NR_epoll_pwait)
+         case TARGET_NR_epoll_pwait:
++#if defined(TARGET_NR_epoll_pwait2)
++        case TARGET_NR_epoll_pwait2:
++#endif
+         {
+             sigset_t *set =3D NULL;
+=20
+@@ -13406,8 +13417,25 @@ static abi_long do_syscall1(CPUArchState *cpu_env, i=
+nt num, abi_long arg1,
+                 }
+             }
+=20
+-            ret =3D get_errno(safe_epoll_pwait(epfd, ep, maxevents, timeout,
+-                                             set, SIGSET_T_SIZE));
++            if (num =3D=3D TARGET_NR_epoll_pwait) {
++                ret =3D get_errno(safe_epoll_pwait(epfd, ep, maxevents, (int=
+)timeout,
++                                                 set, SIGSET_T_SIZE));
++            } else {
++#if defined(TARGET_NR_epoll_pwait2)
++                struct timespec hspec;
++                struct timespec *ts_arg =3D NULL;
++                if (timeout) {
++                    if (target_to_host_timespec(&hspec, (abi_ulong)timeout))=
+ {
++                        return -TARGET_EFAULT;
++                    }
++                    ts_arg =3D &hspec;
++                }
++                ret =3D get_errno(safe_epoll_pwait2(epfd, ep, maxevents, ts_=
+arg,
++                                              set, SIGSET_T_SIZE));
++#else
++                return -TARGET_ENOSYS;
++#endif
++            }
+=20
+             if (set) {
+                 finish_sigsuspend_mask(ret);
+--=20
+2.45.3
 
