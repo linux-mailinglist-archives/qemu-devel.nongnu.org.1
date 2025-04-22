@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D059BA97587
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD648A9761A
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:51:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JNh-0002UF-Bm; Tue, 22 Apr 2025 15:34:09 -0400
+	id 1u7JRB-0001Sz-W8; Tue, 22 Apr 2025 15:37:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLs-00016n-7o
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:16 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1u7JOp-00053t-Mw
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:35:25 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLq-0006gn-7l
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:15 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2279915e06eso58612715ad.1
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:32:13 -0700 (PDT)
+ id 1u7JOm-000717-7f
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:35:18 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2255003f4c6so63586215ad.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:35:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745350332; x=1745955132; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745350513; x=1745955313; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XHzIFD1toGdj6HYrHyt+UU2Mbk/NX+AyaF0biHg+m+k=;
- b=fXB0kVn/aVd24jiOX+rs4Ly8P0Pl2bcvxN+uLwtzJTI5kLLSlXZAr9tGqmUPm7bDwf
- qhx/1DPeXgk+/WT3fbUU6jYzQgk/MjMsi4enw0j0Xrn1SapwhPmWAw9KgE3A572k2ebE
- bYHwp3EK/qJcnqlxekGKWTPphQR9c22dWlfE6d9zbcEzhJy5EEp0MwJkq4jgmZYJUqZo
- trGIVSIIrHeUnLFFc7g9JBtGFcq1MOSJB4eE2bFYffXN5vK1nLVuqfFy7/rZEGvErxeH
- 2Q4bPhNYJWsT+N2UhcIiKJd3SaP8IlpuJjd1rIxYyorARqynTc9B6QShcKYCcyK7RwQQ
- yFbw==
+ bh=dSsKhIFR7U782mMw16oJTtddZogsTKruKpBxDjg9WE0=;
+ b=oerO1tZVaMf34yX/J7eiwa1OYPWlnpVr7aKctDtEt+QhNFZvMqma0f15/h62wi5+XX
+ ajGy/VSflvKNkNXTtIn4vNXHBYlgyyN8IIrnkIeEysRGubRMJXyh+hqZmq20bx+aS/hf
+ h5OlWnAU/QIkz3bkS7IHrJgV27Qhe6HjlLJOlbvwz4QfJUSD+WfSIX/HT7MKFxVn09t9
+ l9lTujPD80LBr231DeIz28c/SwcV62kbHdwnHhE2Raf1bkoGrbhNkVVcffnVHzbobOZN
+ zXMVD8Zh1berJbhA9ngrnFO5KNTRfzf89DtTZUkY3Eeuj2pt89ESKR6XThTa6mIwBJ4j
+ EFWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745350332; x=1745955132;
+ d=1e100.net; s=20230601; t=1745350513; x=1745955313;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XHzIFD1toGdj6HYrHyt+UU2Mbk/NX+AyaF0biHg+m+k=;
- b=m9Zu3h3DBAEg54X5hY+59F+wB8loI5vcmJ7+CqXQbCWpORhQNTG+7Tg0jCRBuF1tLN
- E/rG2H9Nyid4OL7rGnVtS2z9XMftHe1Y541rrDkAt6xpWJANWXDJyWB7BHUKwaQ6+So+
- yoRyw168iopIidgIWuxocb4kbmvzfGCYf9MRxNcqEAL8dKTNtkm9Ir9pT3qK/idhl0CB
- bHLq0Hnboh+/08NQ8/0m0Yg2soNL0Kqcq761yFBH9tMrXGPmuQ7+0et504WYfbxRAoma
- FIZFHhmHwAue5UcsP8shM8z1jetIxfGYQJ448FByDSWIleXXWorey4bNydagqebGBd17
- JzDw==
-X-Gm-Message-State: AOJu0Yxlvige+TffcRtaWrn2PD/YnjDRAKKoNhka7mnOSGNEI2EIfidk
- uJO39baQ17cd8WSPBT0y3RezbVP+PqrIvcqyHoGUWKCxlpc9mSZE6zTF9nvD9l41axjGdVpE+1v
- m
-X-Gm-Gg: ASbGncvqpcQvhUwQe+9qMuOu0Hb8qVHCHQRZ0vGrFXEsJxdr5pewkY56dd6/Hdtqxi2
- uhuoXDWDhGjg54yUlZXEqIAmEKzl+2AlZejMtqCpwBwHKKER81hw1f6QjUYuSEJMXyuUPxOmWPu
- xA+GmSxExZFEnoPG4Xy96YUIzAzL5esTfl/tQWIHHb5uG/ROq1l4SjnhWE8IcXevCtSkaxRIUCp
- W2QsRVFnFJTI9qEDznDJTdcYmgvGNUon4dVGqqN88Jm8kT18lP1glJLlIkqpr1CzbHG0XinmV8V
- 49geyZW/ehvUKwGPPnRV1EDQZqn2QGJU25FUHCPXsrjcrX5zsrkOnER6UY7lJGjUpeGkIm3lqlU
- =
-X-Google-Smtp-Source: AGHT+IG1jfX66ZydW0eiqvrfGJTshjrTNE4+dTZTUx285nMH2wIIaYZcnI4EMBxQeZAgZSCsa83NnQ==
-X-Received: by 2002:a17:902:f60a:b0:223:60ce:2451 with SMTP id
- d9443c01a7336-22c5359c344mr234896925ad.15.1745350332479; 
- Tue, 22 Apr 2025 12:32:12 -0700 (PDT)
+ bh=dSsKhIFR7U782mMw16oJTtddZogsTKruKpBxDjg9WE0=;
+ b=pl/byG9PzwvSMRipdkXcgVug/OwLza98nZl6j7w0J+TAmil9jYvUkfsvWw8Ntk16U8
+ uVkV7Y6M/9DgiQ7vGf3WuUFPxbh0cbvayTHpvy7GSxH1SFF5c4uy0bIDTX9fd9oUCe+3
+ wEjRpBKgzJznnPr37lEcTjDHzWMstS1V8E/tWjbsA7rKwZdCnqQpcQ8IQ5pjZs85HL8J
+ 1FXxF0ZaAvgYtvuxA1CcyXvqGlCavAtluROT3ZTRTn4Uhjf1oe5i04WX+RB6DsN80X9d
+ F2jLyyCdlBXdThuQpYF68orOPkytWwSXfHHyNu247ouxFufxEvmcOq+hOlPW2jPY/8ns
+ MO1w==
+X-Gm-Message-State: AOJu0YyAwpKHh/0rcA+CXRQ7yFyI07/TxUn+JkVJ490T0rAQ+ut63t2c
+ iaDAl3yQDdRHSE7wad2pWhYhPj7A1yg22DrTk/TOFrLMMKMuMDdfwz24H1385Z7BsZfBbm2teMf
+ t
+X-Gm-Gg: ASbGncvwjeRbBiDPJTjw4POwZOitYnWsoBg33Xye+CqWJtgcfkWZgnV4uDxGyZvP8Ue
+ PCWw7U6aDRkicl2FJNPUBkxIJNIj/KeX0MMNw+ccwkzoGPhYJIp095jxpfl10SuMn6gvgmiKIxZ
+ U8xjsR8vT+mPexxyValoXykv3bbCfca83gBbSxnm3OJNbuSOL72fDiGLqAXqqjydVSpuy15ilBV
+ rWKugpnOdJPk/WluupTRHRQE8ivqr+RpYgZL1Ut7q69I/locel+E2T5/2hxQXvKALAlDdRO3Jfi
+ XHMjmxE1PE2FKcM32CzlHZ2cCWhrS+UEP2chUpe3fptoQ6JfyaT+aQ8IJW+GpeAX0VP91AFSfTD
+ tJ2OGuG72yw==
+X-Google-Smtp-Source: AGHT+IGjQm0GKWw570XVulBwAzB6pftW75kzjSpnZQPFipm06E/R/8PY+CYJUd7pLEG2A/lIExx4+g==
+X-Received: by 2002:a17:902:d58c:b0:224:1579:5e8e with SMTP id
+ d9443c01a7336-22c5356e19fmr281295735ad.1.1745350513441; 
+ Tue, 22 Apr 2025 12:35:13 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50bdda3bsm89312635ad.27.2025.04.22.12.32.12
+ d9443c01a7336-22c50fdf1f1sm88996795ad.237.2025.04.22.12.35.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:32:12 -0700 (PDT)
+ Tue, 22 Apr 2025 12:35:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 079/147] target/i386: Restrict cpu_mmu_index_kernel() to TCG
-Date: Tue, 22 Apr 2025 12:27:08 -0700
-Message-ID: <20250422192819.302784-80-richard.henderson@linaro.org>
+Subject: [PATCH 080/147] target/i386: Restrict SoftMMU mmu_index() to TCG
+Date: Tue, 22 Apr 2025 12:27:09 -0700
+Message-ID: <20250422192819.302784-81-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,107 +101,129 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Move cpu_mmu_index_kernel() to seg_helper.c.
+Move x86_cpu_mmu_index() to tcg-cpu.c, convert
+CPUClass::mmu_index() to TCGCPUOps::mmu_index().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250401080938.32278-9-philmd@linaro.org>
+Message-ID: <20250401080938.32278-10-philmd@linaro.org>
 ---
- target/i386/cpu.h            |  1 -
- target/i386/tcg/seg_helper.h |  4 ++++
- target/i386/cpu.c            | 16 ----------------
- target/i386/tcg/seg_helper.c | 16 ++++++++++++++++
- 4 files changed, 20 insertions(+), 17 deletions(-)
+ target/i386/cpu.h            |  2 --
+ target/i386/tcg/tcg-cpu.h    |  2 ++
+ target/i386/cpu.c            | 18 ------------------
+ target/i386/tcg/seg_helper.c |  1 +
+ target/i386/tcg/tcg-cpu.c    | 18 ++++++++++++++++++
+ 5 files changed, 21 insertions(+), 20 deletions(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 76f24446a5..db9f01a11b 100644
+index db9f01a11b..9b8b962e0a 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -2598,7 +2598,6 @@ static inline bool is_mmu_index_32(int mmu_index)
+@@ -2597,8 +2597,6 @@ static inline bool is_mmu_index_32(int mmu_index)
+     return mmu_index & 1;
  }
  
- int x86_mmu_index_pl(CPUX86State *env, unsigned pl);
--int cpu_mmu_index_kernel(CPUX86State *env);
- 
+-int x86_mmu_index_pl(CPUX86State *env, unsigned pl);
+-
  #define CC_DST  (env->cc_dst)
  #define CC_SRC  (env->cc_src)
-diff --git a/target/i386/tcg/seg_helper.h b/target/i386/tcg/seg_helper.h
-index 6b8606cd6d..ea98e1a98e 100644
---- a/target/i386/tcg/seg_helper.h
-+++ b/target/i386/tcg/seg_helper.h
-@@ -20,6 +20,8 @@
- #ifndef SEG_HELPER_H
- #define SEG_HELPER_H
+ #define CC_SRC2 (env->cc_src2)
+diff --git a/target/i386/tcg/tcg-cpu.h b/target/i386/tcg/tcg-cpu.h
+index 53a8494455..7580f8afb4 100644
+--- a/target/i386/tcg/tcg-cpu.h
++++ b/target/i386/tcg/tcg-cpu.h
+@@ -78,4 +78,6 @@ QEMU_BUILD_BUG_ON(offsetof(X86XSaveArea, pkru_state) != XSAVE_PKRU_OFFSET);
  
-+#include "cpu.h"
+ bool tcg_cpu_realizefn(CPUState *cs, Error **errp);
+ 
++int x86_mmu_index_pl(CPUX86State *env, unsigned pl);
 +
- //#define DEBUG_PCALL
- 
- #ifdef DEBUG_PCALL
-@@ -31,6 +33,8 @@
- # define LOG_PCALL_STATE(cpu) do { } while (0)
- #endif
- 
-+int cpu_mmu_index_kernel(CPUX86State *env);
-+
- /*
-  * TODO: Convert callers to compute cpu_mmu_index_kernel once
-  * and use *_mmuidx_ra directly.
+ #endif /* TCG_CPU_H */
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index af46c7a392..0b74b9a375 100644
+index 0b74b9a375..d930ebd262 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -8669,22 +8669,6 @@ static int x86_cpu_mmu_index(CPUState *cs, bool ifetch)
-     return x86_mmu_index_pl(env, env->hflags & HF_CPL_MASK);
+@@ -8652,23 +8652,6 @@ static bool x86_cpu_has_work(CPUState *cs)
  }
+ #endif /* !CONFIG_USER_ONLY */
  
--static int x86_mmu_index_kernel_pl(CPUX86State *env, unsigned pl)
+-int x86_mmu_index_pl(CPUX86State *env, unsigned pl)
 -{
--    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 0 : 1;
+-    int mmu_index_32 = (env->hflags & HF_CS64_MASK) ? 0 : 1;
 -    int mmu_index_base =
+-        pl == 3 ? MMU_USER64_IDX :
 -        !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
--        (pl < 3 && (env->eflags & AC_MASK)
--         ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX);
+-        (env->eflags & AC_MASK) ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX;
 -
 -    return mmu_index_base + mmu_index_32;
 -}
 -
--int cpu_mmu_index_kernel(CPUX86State *env)
+-static int x86_cpu_mmu_index(CPUState *cs, bool ifetch)
 -{
--    return x86_mmu_index_kernel_pl(env, env->hflags & HF_CPL_MASK);
+-    CPUX86State *env = cpu_env(cs);
+-    return x86_mmu_index_pl(env, env->hflags & HF_CPL_MASK);
 -}
 -
  static void x86_disas_set_info(CPUState *cs, disassemble_info *info)
  {
      X86CPU *cpu = X86_CPU(cs);
+@@ -8910,7 +8893,6 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
+ 
+     cc->class_by_name = x86_cpu_class_by_name;
+     cc->parse_features = x86_cpu_parse_featurestr;
+-    cc->mmu_index = x86_cpu_mmu_index;
+     cc->dump_state = x86_cpu_dump_state;
+     cc->set_pc = x86_cpu_set_pc;
+     cc->get_pc = x86_cpu_get_pc;
 diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 71962113fb..f4370202fe 100644
+index f4370202fe..9dfbc4208c 100644
 --- a/target/i386/tcg/seg_helper.c
 +++ b/target/i386/tcg/seg_helper.c
-@@ -128,6 +128,22 @@ int get_pg_mode(CPUX86State *env)
-     return pg_mode;
+@@ -28,6 +28,7 @@
+ #include "helper-tcg.h"
+ #include "seg_helper.h"
+ #include "access.h"
++#include "tcg-cpu.h"
+ 
+ #ifdef TARGET_X86_64
+ #define SET_ESP(val, sp_mask)                                   \
+diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+index b8aff825ee..818653ee6d 100644
+--- a/target/i386/tcg/tcg-cpu.c
++++ b/target/i386/tcg/tcg-cpu.c
+@@ -94,6 +94,23 @@ static void x86_restore_state_to_opc(CPUState *cs,
+     }
  }
  
-+static int x86_mmu_index_kernel_pl(CPUX86State *env, unsigned pl)
++int x86_mmu_index_pl(CPUX86State *env, unsigned pl)
 +{
-+    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 0 : 1;
++    int mmu_index_32 = (env->hflags & HF_CS64_MASK) ? 0 : 1;
 +    int mmu_index_base =
++        pl == 3 ? MMU_USER64_IDX :
 +        !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
-+        (pl < 3 && (env->eflags & AC_MASK)
-+         ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX);
++        (env->eflags & AC_MASK) ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX;
 +
 +    return mmu_index_base + mmu_index_32;
 +}
 +
-+int cpu_mmu_index_kernel(CPUX86State *env)
++static int x86_cpu_mmu_index(CPUState *cs, bool ifetch)
 +{
-+    return x86_mmu_index_kernel_pl(env, env->hflags & HF_CPL_MASK);
++    CPUX86State *env = cpu_env(cs);
++    return x86_mmu_index_pl(env, env->hflags & HF_CPL_MASK);
 +}
 +
- /* return non zero if error */
- static inline int load_segment_ra(CPUX86State *env, uint32_t *e1_ptr,
-                                uint32_t *e2_ptr, int selector,
+ #ifndef CONFIG_USER_ONLY
+ static bool x86_debug_check_breakpoint(CPUState *cs)
+ {
+@@ -112,6 +129,7 @@ static const TCGCPUOps x86_tcg_ops = {
+     .translate_code = x86_translate_code,
+     .synchronize_from_tb = x86_cpu_synchronize_from_tb,
+     .restore_state_to_opc = x86_restore_state_to_opc,
++    .mmu_index = x86_cpu_mmu_index,
+     .cpu_exec_enter = x86_cpu_exec_enter,
+     .cpu_exec_exit = x86_cpu_exec_exit,
+ #ifdef CONFIG_USER_ONLY
 -- 
 2.43.0
 
