@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9CAEA97566
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 479F4A9756B
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:30:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JII-0002Pz-QL; Tue, 22 Apr 2025 15:28:34 -0400
+	id 1u7JII-0002Pe-CJ; Tue, 22 Apr 2025 15:28:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JIB-0002Mr-VJ
+ id 1u7JIC-0002ND-M4
  for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:28 -0400
 Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JI9-00069J-8j
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:27 -0400
+ id 1u7JIA-00069Z-Ei
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:28 -0400
 Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-301918a4e3bso6026951a91.3
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:28:24 -0700 (PDT)
+ 98e67ed59e1d1-2ff784dc055so5238682a91.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:28:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745350104; x=1745954904; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VmB2RGOlub2fPYdxrxTTavElj/U2fFDKgCMPXIFHMg4=;
- b=c0bOymHvbf75YEH7RSFbXbJ9DSrjdnwr16BbyYqoOcYaMtcZPL9SEiFLTpEouLeacv
- yGZLRoHXmYsuIIad0ytQQlic88e9YJnT3zdAxJcMLEE/UxSeV2fOf97NwC+g9uEga3Ra
- wxFsWuuRiyu0jUJrblMnMblMnxhhzUcXteEJJWBd6krddh5ZKvNhLVpFlYOHTKCSqMPy
- EcYBKTOsuaVhLqsUru6zvHZOOioqp3JPzpTkBNQNCumbec+1HsSFLA3DQ3s/z4gKYT2f
- lvL8R1P9rs3tgk3CydmX5RIh81Wx7PeFLoUHSDv9eTuOq4X1NW137GMJVkQA3yydFmmS
- nseA==
+ bh=e1yx9YkYhatf0BqQ0DpUnwACHStmKGMnjqmqyTQwR00=;
+ b=p/EsYfY3V81DGtCHyKkkbZji7mh3lSxIpj4/vODa93umWwVvoOYVOfwriUw0hwoVh+
+ Jg1W1AroSEcyNRnj5eBuKBQN52UhSWL/BEeY4lp0DGxsTjRv/QeK7YaPd/SvbAFyJVnD
+ /V3nFEtPkxpNf9aWkDi7e6nsT46VXdfUvJIto/Kzd5DKGEJBSYWGv9sWF0UK5+LaUOwC
+ tLX5sMizzHertLnjtZg7SjKveFKimj/na3I8H7sCs9B8P5yoqXj9P+zWVj63EfN3bQzY
+ hSZ0qx8s1FHx4CyppMgZMWQGRknv7ITaUE3bqbfbpty1l23o1EfXvDhC9SX/uAxcK4lM
+ AQhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745350104; x=1745954904;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VmB2RGOlub2fPYdxrxTTavElj/U2fFDKgCMPXIFHMg4=;
- b=NLIf3kG3rgCxO/pqDJuZE2dS8+RCicfC+XRRn5pHi0GJ3kTQ6HYIsS7qPurDjsPh4s
- FImx1eNBp5zcC/hp/i1G74TR5zZ4cizxJi5VAFe9SPtHepG7wzUlb/EP1ZSw5rAFRk3K
- IyL490yvCgPCJeefWpL4f0Y52oJCHloIKYsyKlF6He34E3hF8ZShCwhvODtjgpHPt22D
- gS4ScDWOQ5dl0ijvY/Aa+GbBULsqt6KygRIfuKlXLlVRWmvz2lDNh/LEefkT2u3jGwms
- Qiv2G2n2Wwxe0W/7D/nk4s/yjmClR3VpAXFH84ZLMi/aiA97wzI3gxUBaMElKmSu9cuZ
- sdTQ==
-X-Gm-Message-State: AOJu0YxvM/ZNcw6xnDBN0hPCmi+iY681yFbY3hpgwNRI73JwyTj7L+iK
- GOyuDpEyoU+wh9rg4y+XxyHZn0OQwcnVLwCtBaQg+OHoOYxTuJBRO5oqqLYcIhSlEMpPWJHU5m6
- q
-X-Gm-Gg: ASbGnctrhQi4eVboXHPLjNul3dTHrKAzZvzSBT08vdzgSyf93xUsy4tssy3RuRyyR9I
- ss/72DXbjI96osnxHTlmbBDlE84BIxGzm80jALQsQMPtZg68XH33Qa0GYhIqJQwvP3o5ewcyAOR
- LIdWht4tVHUxAoNtnDPdGbThYNMQlasJcV5cXpVgygiNKzhHZLn3BnsKinxKTq4kznQyxumvchu
- 9XhiAUQip2yUmCO0JlRw0fMDkzvXB/cUyiapUMPQ0vlJxBprQoeSzSTfTF+rc1zuf4C6gMAif8H
- C6THkjlrfRP+RiHps+DU7m/+z9S8cjOIWs9Rjof8jPzyayhw6dYFdjmaAqy5ozi3qi/bblnfglM
- =
-X-Google-Smtp-Source: AGHT+IEGtCa8No7gOZqUzSBnqKtLDYNYb3K08bWkrpXcoxABJB/+Xh1p4xseWjHoeORnzyRzudtEXQ==
-X-Received: by 2002:a17:90b:4ecf:b0:2ff:62f3:5b31 with SMTP id
- 98e67ed59e1d1-3087bcc8b16mr22971780a91.29.1745350103934; 
- Tue, 22 Apr 2025 12:28:23 -0700 (PDT)
+ bh=e1yx9YkYhatf0BqQ0DpUnwACHStmKGMnjqmqyTQwR00=;
+ b=CzERWVB5qDWcbXrOsgvOTxJc4JsOeD2t/gLAGVi3aqS3Fw93hOvbiamglNYCSNx5t0
+ 1aaHtxHPiUKfb78W1Q7ZHIiL5ouXmWTDwzJ0S8FLZS37KbbNTSbjjLshSmppZf5JrgbM
+ 2tm/sZEE2RQvBAJZyNhH7z7q4It318jbmByzYZy4zEHXv8P8VVORTlE4EV3tycr2W/Iw
+ JnDKRLkFnraDaID/KQWd+aGYZ2OsfDny+LHFot6ul3rtsTwWtJBizP5G8ajI+ZBf0hv5
+ Ro+zOe1ljh0h4TusjP3If/zB1efbd7zBpZYvK0s9QELKOlhN9N0pIwXEi+oIYTSljrsx
+ 11jg==
+X-Gm-Message-State: AOJu0YxXv0wWV7bU7mlhsOc/jnEGxIFfaQDvwNuZbYOo+h8R7Zk8HF+0
+ 0W3F7UHZCjpAejtLnBBgxmj8OaVVLyysWvMEEsG1vzQeNBUfAXJXaLldeXBuLI9GhDcDTyTXw8J
+ 9
+X-Gm-Gg: ASbGncsLROXPrZKv2YtKIjPQ45sm9c5vjzo786AU/uKKyGSigtvpXtT4jRo1pC03xE2
+ 4NnXMSRqku+stdWxguvCesFZA4hFgdPKHD+6/C4Whq4heUOBc3CKicao3ShixGPvRKGl6FiSp/t
+ HWI58BrC/gEBIgjTZIJeI5sTvlULqyPLyiTcPn6ChgBg+AeRoeAf0kUX1IhjCzQnNbsilwCk4AM
+ vH7uJdoV9azqevTM3QyoZvF9mqPshduyx7yfdoNkIhisTQP1GyKkOdTIM1p4X98XxFCrHc9UcZa
+ xWPt7kosedRbiSsVuY6WFBBwoxE/s5xkpywCLJKih8zR+UPz4/rAlUa2gdDFslqz2H8iVOqNfan
+ vszmLQ3ikaA==
+X-Google-Smtp-Source: AGHT+IFH4ijhVzDfLpoNMxKVJLcdgCKkca5HAeGWLy+fn6mpy1i0lksLHjt+Ol25VYPtRrPZ7cwI5Q==
+X-Received: by 2002:a17:90b:5748:b0:2ff:7ad4:77af with SMTP id
+ 98e67ed59e1d1-3087bb6e9dbmr24385547a91.20.1745350104595; 
+ Tue, 22 Apr 2025 12:28:24 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3087df21278sm9146865a91.29.2025.04.22.12.28.23
+ 98e67ed59e1d1-3087df21278sm9146865a91.29.2025.04.22.12.28.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:28:23 -0700 (PDT)
+ Tue, 22 Apr 2025 12:28:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 005/147] exec/memory.h: make devend_memop "target defines"
- agnostic
-Date: Tue, 22 Apr 2025 12:25:54 -0700
-Message-ID: <20250422192819.302784-6-richard.henderson@linaro.org>
+Subject: [PATCH 006/147] codebase: prepare to remove cpu.h from exec/exec-all.h
+Date: Tue, 22 Apr 2025 12:25:55 -0700
+Message-ID: <20250422192819.302784-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
@@ -101,50 +100,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Will allow to make system/memory.c common later.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250317183417.285700-6-pierrick.bouvier@linaro.org>
+Message-ID: <20250317183417.285700-7-pierrick.bouvier@linaro.org>
 ---
- include/exec/memory.h | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ include/tcg/tcg-op.h           | 1 +
+ target/ppc/helper_regs.h       | 2 ++
+ hw/ppc/spapr_nested.c          | 1 +
+ hw/sh4/sh7750.c                | 1 +
+ page-vary-target.c             | 2 +-
+ target/ppc/tcg-excp_helper.c   | 1 +
+ target/riscv/bitmanip_helper.c | 2 +-
+ 7 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index cc5915033c..577f473446 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -3138,25 +3138,17 @@ address_space_write_cached(MemoryRegionCache *cache, hwaddr addr,
- MemTxResult address_space_set(AddressSpace *as, hwaddr addr,
-                               uint8_t c, hwaddr len, MemTxAttrs attrs);
+diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
+index a02850583b..bc46b5570c 100644
+--- a/include/tcg/tcg-op.h
++++ b/include/tcg/tcg-op.h
+@@ -9,6 +9,7 @@
+ #define TCG_TCG_OP_H
  
--#ifdef COMPILING_PER_TARGET
- /* enum device_endian to MemOp.  */
- static inline MemOp devend_memop(enum device_endian end)
+ #include "tcg/tcg-op-common.h"
++#include "exec/target_long.h"
+ 
+ #ifndef TARGET_LONG_BITS
+ #error must include QEMU headers
+diff --git a/target/ppc/helper_regs.h b/target/ppc/helper_regs.h
+index 8196c1346d..b928c2c452 100644
+--- a/target/ppc/helper_regs.h
++++ b/target/ppc/helper_regs.h
+@@ -20,6 +20,8 @@
+ #ifndef HELPER_REGS_H
+ #define HELPER_REGS_H
+ 
++#include "target/ppc/cpu.h"
++
+ void hreg_swap_gpr_tgpr(CPUPPCState *env);
+ void hreg_compute_hflags(CPUPPCState *env);
+ void hreg_update_pmu_hflags(CPUPPCState *env);
+diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+index 201f629203..a79e398c13 100644
+--- a/hw/ppc/spapr_nested.c
++++ b/hw/ppc/spapr_nested.c
+@@ -2,6 +2,7 @@
+ #include "qemu/cutils.h"
+ #include "exec/exec-all.h"
+ #include "exec/cputlb.h"
++#include "exec/target_long.h"
+ #include "helper_regs.h"
+ #include "hw/ppc/ppc.h"
+ #include "hw/ppc/spapr.h"
+diff --git a/hw/sh4/sh7750.c b/hw/sh4/sh7750.c
+index 6faf0e3ca8..41306fb600 100644
+--- a/hw/sh4/sh7750.c
++++ b/hw/sh4/sh7750.c
+@@ -29,6 +29,7 @@
+ #include "hw/irq.h"
+ #include "hw/sh4/sh.h"
+ #include "system/system.h"
++#include "target/sh4/cpu.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
+ #include "sh7750_regs.h"
+diff --git a/page-vary-target.c b/page-vary-target.c
+index 3f81144cda..84ddeb7c26 100644
+--- a/page-vary-target.c
++++ b/page-vary-target.c
+@@ -21,7 +21,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "exec/page-vary.h"
+-#include "exec/exec-all.h"
++#include "exec/target_page.h"
+ 
+ bool set_preferred_target_page_bits(int bits)
  {
-     QEMU_BUILD_BUG_ON(DEVICE_HOST_ENDIAN != DEVICE_LITTLE_ENDIAN &&
-                       DEVICE_HOST_ENDIAN != DEVICE_BIG_ENDIAN);
+diff --git a/target/ppc/tcg-excp_helper.c b/target/ppc/tcg-excp_helper.c
+index 5a189dc3d7..c422648cfd 100644
+--- a/target/ppc/tcg-excp_helper.c
++++ b/target/ppc/tcg-excp_helper.c
+@@ -19,6 +19,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/log.h"
++#include "target/ppc/cpu.h"
+ #include "exec/cpu_ldst.h"
+ #include "exec/exec-all.h"
+ #include "exec/helper-proto.h"
+diff --git a/target/riscv/bitmanip_helper.c b/target/riscv/bitmanip_helper.c
+index b99c4a39a1..e9c8d7f778 100644
+--- a/target/riscv/bitmanip_helper.c
++++ b/target/riscv/bitmanip_helper.c
+@@ -20,7 +20,7 @@
  
--#if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
--    /* Swap if non-host endianness or native (target) endianness */
--    return (end == DEVICE_HOST_ENDIAN) ? 0 : MO_BSWAP;
--#else
--    const int non_host_endianness =
--        DEVICE_LITTLE_ENDIAN ^ DEVICE_BIG_ENDIAN ^ DEVICE_HOST_ENDIAN;
--
--    /* In this case, native (target) endianness needs no swap.  */
--    return (end == non_host_endianness) ? MO_BSWAP : 0;
--#endif
-+    bool big_endian = (end == DEVICE_NATIVE_ENDIAN
-+                       ? target_words_bigendian()
-+                       : end == DEVICE_BIG_ENDIAN);
-+    return big_endian ? MO_BE : MO_LE;
- }
--#endif /* COMPILING_PER_TARGET */
+ #include "qemu/osdep.h"
+ #include "qemu/host-utils.h"
+-#include "exec/exec-all.h"
++#include "exec/target_long.h"
+ #include "exec/helper-proto.h"
+ #include "tcg/tcg.h"
  
- /*
-  * Inhibit technologies that require discarding of pages in RAM blocks, e.g.,
 -- 
 2.43.0
 
