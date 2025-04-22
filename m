@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72FEA971E2
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 18:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C23A97213
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 18:11:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7G6N-00084R-1X; Tue, 22 Apr 2025 12:04:03 -0400
+	id 1u7GD4-0001kE-TT; Tue, 22 Apr 2025 12:10:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5O-0006xe-Me
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5R-0006z8-CK
  for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:03:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5M-00050V-2q
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:03:01 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5P-00050y-By
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:03:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745337779;
+ s=mimecast20190719; t=1745337782;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=v5JGVgtKIUaw/DkWsoMd+n6V+bRqClQ/UHBtlJt4R8g=;
- b=PcA7cBRAfdEtXGJp3wonVLTMZFWDpGrxyCqhMeVQhffcp8bGOHY8vazzGFg870FtmUZ/u6
- PQQmpK6lIPL9tiwEkvwHQTv4Zq3fBa3cpcAUXrEzmiDkbB3qorRjYYQBnmlIkxiuNhnaZ1
- zGQlFf4rDz/KXYVjuHqCchQfm1jomyQ=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=rHNZCsw1uWGMR28+HDC6qbgFG58F9c6HDCdZdBAGlfY=;
+ b=JbUwTMdMxteL6ulinJA7xLPOAKAXIjAAEkCbK1zqJlko9/Ta9Dg7YPd/0pguVfqRZNJEVm
+ V1lWEPE4x9II6C9F/xSTwlzXbRMreG1ikAkKhVNLWnYnYVuAL6LsRxUW4qS5NtpKlbj5+1
+ aHlNVvIdIF3vp2N3PU1OPm+o+XiGb+k=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-391-jcsK2ZbOPEeu0L0rTjIO4g-1; Tue,
- 22 Apr 2025 12:02:57 -0400
-X-MC-Unique: jcsK2ZbOPEeu0L0rTjIO4g-1
-X-Mimecast-MFC-AGG-ID: jcsK2ZbOPEeu0L0rTjIO4g_1745337776
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-511-UclP9_52M_uSnwhmOr4khw-1; Tue,
+ 22 Apr 2025 12:03:01 -0400
+X-MC-Unique: UclP9_52M_uSnwhmOr4khw-1
+X-Mimecast-MFC-AGG-ID: UclP9_52M_uSnwhmOr4khw_1745337780
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9B1331956048; Tue, 22 Apr 2025 16:02:56 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E45D0195608C; Tue, 22 Apr 2025 16:02:59 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.105])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9EA44180097D; Tue, 22 Apr 2025 16:02:53 +0000 (UTC)
+ id 20A6118001DA; Tue, 22 Apr 2025 16:02:56 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	Alex Williamson <alex.williamson@redhat.com>
@@ -50,12 +50,11 @@ Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  John Levon <john.levon@nutanix.com>,
  Joao Martins <joao.m.martins@oracle.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH v3 07/37] vfio: Move vfio_device_state_is_running/precopy()
- into migration.c
-Date: Tue, 22 Apr 2025 18:01:54 +0200
-Message-ID: <20250422160224.199714-8-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v3 08/37] vfio: Introduce a new header file for VFIOdisplay
+ declarations
+Date: Tue, 22 Apr 2025 18:01:55 +0200
+Message-ID: <20250422160224.199714-9-clg@redhat.com>
 In-Reply-To: <20250422160224.199714-1-clg@redhat.com>
 References: <20250422160224.199714-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -87,98 +86,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These routines are migration related. Move their declaration and
-implementation under the migration files.
+Gather all VFIOdisplay related declarations into "vfio-display.h" to
+reduce exposure of VFIO internals in "hw/vfio/vfio-common.h".
 
-Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 Reviewed-by: John Levon <john.levon@nutanix.com>
-Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-8-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-8-clg@redhat.com
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-9-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/vfio-migration-internal.h |  2 ++
- include/hw/vfio/vfio-common.h     |  3 ---
- hw/vfio/common.c                  | 16 ----------------
- hw/vfio/migration.c               | 16 ++++++++++++++++
- 4 files changed, 18 insertions(+), 19 deletions(-)
+ hw/vfio/pci.h                 |  1 +
+ hw/vfio/vfio-display.h        | 41 +++++++++++++++++++++++++++++++++++
+ include/hw/vfio/vfio-common.h | 28 ------------------------
+ hw/vfio/display.c             |  2 +-
+ 4 files changed, 43 insertions(+), 29 deletions(-)
+ create mode 100644 hw/vfio/vfio-display.h
 
-diff --git a/hw/vfio/vfio-migration-internal.h b/hw/vfio/vfio-migration-internal.h
-index ab6a1bad9b513aa61557905e72e5c6b264372276..a8b456b239df8a54ab96daf56b5f778b3ffbfa5e 100644
---- a/hw/vfio/vfio-migration-internal.h
-+++ b/hw/vfio/vfio-migration-internal.h
-@@ -57,6 +57,8 @@ typedef struct VFIOMigration {
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index d94ecaba689c4681687c0a6796ffbcda522ae179..2071b725ea5236a971964750fde81485eb8b10a9 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -20,6 +20,7 @@
+ #include "qemu/timer.h"
+ #include "qom/object.h"
+ #include "system/kvm.h"
++#include "vfio-display.h"
  
- bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
- void vfio_migration_exit(VFIODevice *vbasedev);
-+bool vfio_device_state_is_running(VFIODevice *vbasedev);
-+bool vfio_device_state_is_precopy(VFIODevice *vbasedev);
- int vfio_save_device_config_state(QEMUFile *f, void *opaque, Error **errp);
- int vfio_load_device_config_state(QEMUFile *f, void *opaque);
+ #define PCI_ANY_ID (~0)
  
+diff --git a/hw/vfio/vfio-display.h b/hw/vfio/vfio-display.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..99b8cb67ef7558d3eefe3105a831e3fcb30afc4d
+--- /dev/null
++++ b/hw/vfio/vfio-display.h
+@@ -0,0 +1,41 @@
++/*
++ * VFIO display
++ *
++ * Copyright Red Hat, Inc. 2025
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_VFIO_VFIO_DISPLAY_H
++#define HW_VFIO_VFIO_DISPLAY_H
++
++#include "ui/console.h"
++#include "hw/display/ramfb.h"
++
++typedef struct VFIODMABuf {
++    QemuDmaBuf *buf;
++    uint32_t pos_x, pos_y, pos_updates;
++    uint32_t hot_x, hot_y, hot_updates;
++    int dmabuf_id;
++    QTAILQ_ENTRY(VFIODMABuf) next;
++} VFIODMABuf;
++
++typedef struct VFIODisplay {
++    QemuConsole *con;
++    RAMFBState *ramfb;
++    struct vfio_region_info *edid_info;
++    struct vfio_region_gfx_edid *edid_regs;
++    uint8_t *edid_blob;
++    QEMUTimer *edid_link_timer;
++    struct {
++        VFIORegion buffer;
++        DisplaySurface *surface;
++    } region;
++    struct {
++        QTAILQ_HEAD(, VFIODMABuf) bufs;
++        VFIODMABuf *primary;
++        VFIODMABuf *cursor;
++    } dmabuf;
++} VFIODisplay;
++
++#endif /* HW_VFIO_VFIO_DISPLAY_H */
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 920ad154b4f82b9c244b5b9e8da44f7583e5ead0..799e12d43747addbf444c15052f629b65978322f 100644
+index 799e12d43747addbf444c15052f629b65978322f..288c2fb3d0e792427c0e7655002248829b4d189a 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -252,9 +252,6 @@ extern VFIODeviceList vfio_device_list;
- extern const MemoryListener vfio_memory_listener;
- extern int vfio_kvm_device_fd;
+@@ -23,8 +23,6 @@
  
--bool vfio_device_state_is_running(VFIODevice *vbasedev);
--bool vfio_device_state_is_precopy(VFIODevice *vbasedev);
--
+ #include "exec/memory.h"
+ #include "qemu/queue.h"
+-#include "ui/console.h"
+-#include "hw/display/ramfb.h"
  #ifdef CONFIG_LINUX
- int vfio_get_region_info(VFIODevice *vbasedev, int index,
-                          struct vfio_region_info **info);
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 9bbd798e3e9e0b7a7620d4b1f34f1ef5e8ac42c1..33f7191c7fec76bb3f46b96e25dc1872808ccc8c 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -67,22 +67,6 @@ int vfio_kvm_device_fd = -1;
-  */
+ #include <linux/vfio.h>
+ #endif
+@@ -182,32 +180,6 @@ typedef struct VFIOGroup {
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO \
+             TYPE_HOST_IOMMU_DEVICE_IOMMUFD "-vfio"
  
+-typedef struct VFIODMABuf {
+-    QemuDmaBuf *buf;
+-    uint32_t pos_x, pos_y, pos_updates;
+-    uint32_t hot_x, hot_y, hot_updates;
+-    int dmabuf_id;
+-    QTAILQ_ENTRY(VFIODMABuf) next;
+-} VFIODMABuf;
+-
+-typedef struct VFIODisplay {
+-    QemuConsole *con;
+-    RAMFBState *ramfb;
+-    struct vfio_region_info *edid_info;
+-    struct vfio_region_gfx_edid *edid_regs;
+-    uint8_t *edid_blob;
+-    QEMUTimer *edid_link_timer;
+-    struct {
+-        VFIORegion buffer;
+-        DisplaySurface *surface;
+-    } region;
+-    struct {
+-        QTAILQ_HEAD(, VFIODMABuf) bufs;
+-        VFIODMABuf *primary;
+-        VFIODMABuf *cursor;
+-    } dmabuf;
+-} VFIODisplay;
+-
+ VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
+ void vfio_put_address_space(VFIOAddressSpace *space);
+ void vfio_address_space_insert(VFIOAddressSpace *space,
+diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+index ea87830fe0d5fc66f3f27a16bde5d75b7b6280c0..8317917203d5e2713fff551ff4a122befba55cc2 100644
+--- a/hw/vfio/display.c
++++ b/hw/vfio/display.c
+@@ -16,9 +16,9 @@
  
--bool vfio_device_state_is_running(VFIODevice *vbasedev)
--{
--    VFIOMigration *migration = vbasedev->migration;
--
--    return migration->device_state == VFIO_DEVICE_STATE_RUNNING ||
--           migration->device_state == VFIO_DEVICE_STATE_RUNNING_P2P;
--}
--
--bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
--{
--    VFIOMigration *migration = vbasedev->migration;
--
--    return migration->device_state == VFIO_DEVICE_STATE_PRE_COPY ||
--           migration->device_state == VFIO_DEVICE_STATE_PRE_COPY_P2P;
--}
--
- static bool vfio_devices_all_device_dirty_tracking_started(
-     const VFIOContainerBase *bcontainer)
- {
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 2a72a8e07542096276cc7c386359ad375e7d24c8..8d69de3c80eaedf9bf4b8bc9b25f6d722ae619b2 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1223,3 +1223,19 @@ void vfio_migration_exit(VFIODevice *vbasedev)
+ #include "qemu/error-report.h"
+ #include "hw/display/edid.h"
+-#include "ui/console.h"
+ #include "qapi/error.h"
+ #include "pci.h"
++#include "vfio-display.h"
+ #include "trace.h"
  
-     migrate_del_blocker(&vbasedev->migration_blocker);
- }
-+
-+bool vfio_device_state_is_running(VFIODevice *vbasedev)
-+{
-+    VFIOMigration *migration = vbasedev->migration;
-+
-+    return migration->device_state == VFIO_DEVICE_STATE_RUNNING ||
-+           migration->device_state == VFIO_DEVICE_STATE_RUNNING_P2P;
-+}
-+
-+bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
-+{
-+    VFIOMigration *migration = vbasedev->migration;
-+
-+    return migration->device_state == VFIO_DEVICE_STATE_PRE_COPY ||
-+           migration->device_state == VFIO_DEVICE_STATE_PRE_COPY_P2P;
-+}
+ #ifndef DRM_PLANE_TYPE_PRIMARY
 -- 
 2.49.0
 
