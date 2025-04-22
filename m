@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8A8A9756C
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B294EA97569
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:30:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JID-0002NB-KK; Tue, 22 Apr 2025 15:28:29 -0400
+	id 1u7JID-0002NW-I9; Tue, 22 Apr 2025 15:28:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JIA-0002MJ-ED
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:26 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1u7JIA-0002MU-OU
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:27 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JI7-000694-93
+ id 1u7JI8-000698-DW
  for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:26 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-af59c920d32so3797969a12.0
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:28:22 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2ff85fec403so219927a91.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:28:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745350102; x=1745954902; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7uAMrxInIp+C0jH/wHKgggSAeCetsGjpX7/pWD8kiro=;
- b=y9D5gy0dDTn+N2sI5/VTQFDkq2Hf9UuEf45+Cxe8ZUCQwPIGZBUKHeEsJ/0/bpVZ7b
- cR2GkLcyu/uznmkMILGwCqByqzfzEiLcs8Y/ReV5LxdN9+7CTdwSRPsIfVJeeUtoLuOG
- DcA2ciL5M9Phuls+7Vy2qKTche4KelmgOfMFWPPnRa+IaeK+35An2iZ6Gg3TGU019V33
- z8UEgocmKQStHB9I9eMoz0DN+Sdt6K3Jjl6EDgBJ8lPS80fTtPYHuNO8+J12bDqy59aG
- G9q60XczcKcoelMztPfetC5UEoVb4eKj/l3NqI+P6V361KrvD5POUPfVaIB8D7GUaayl
- xaNA==
+ bh=a3Pmx2FLEZ9kjbt+cSL6Q/1nXndHvzQCpATDx6amJMg=;
+ b=s7ZfK3hwLZl+LA55jW4RO4i8KWsGOnotfmEWADQovEvXcj1hiV7utepQGjsl7Ue01o
+ FPMSMVXD8PgvKvc3hlnhTRmzizscK2g+X988WuL2kqniwYRU/rwoHFVgAFJfdyHOjHF4
+ vccCWKo971b9IafxmAzHnxb3X33mItfKtNj5SnOxUcN5+S42obo5qbnJhtUnrwfwL5p6
+ ST3nf2j5F2v3hbR8HXQo5mCl+iWHWCt5njWRz5/UrwvDqY1T7pp286GtkhfYpBDD3Qen
+ aA8Os7pS840i4pF94nIAblmutO56wGuwvO/nO75IGahgtMlHLfcj4MMEbbqL4Hp2Lnum
+ r6oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745350102; x=1745954902;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7uAMrxInIp+C0jH/wHKgggSAeCetsGjpX7/pWD8kiro=;
- b=EHyQIEL7YB3AqpSQi/oR8MOs6r+TCaeVej6lwOukQq0YNMa7s7fJxa+uJg2LSud3kr
- S4uO1OGQX8NcqIgMq2ILC6yPXAupXJsyoycpgGHkF8MGSDn0tr86i0nIE0nPQyRCyD9L
- peD/HP2PZyoK623Edufq7E2BlzSEupMv/eHLLhGmhzIQUY70eduC0mJgql2CrQkGxKw6
- IUtjmmqA/dJbuVtNN/D+TnXakqS7zRgCp+UlSu9X3HEgk5qR/JhobPVSyFSTvwwRvFew
- kX9L9+I9DaqMYqvsWMjYuc3mheAxQCnR1h1maov4aaIZ++gwv9k67C40m01N6vBY+0Ul
- OE/g==
-X-Gm-Message-State: AOJu0YwsRf04g4CIOZzRgZk+h3q/DNUPqNxN+52rA0CMb/9uTCLvmuDv
- EFz5AUzD6x/UEECtC4ac2YqQEuG1YEcFWB7ZbZg2DvoI7KcNIzoFKtZiSZsDLzrDZApu28ZcqGC
- t
-X-Gm-Gg: ASbGncs1SS3pDdqFHI49NwZi+AstSjsNHya2om7AhH54cfZAFKGs5+rTB3UKJkr57hf
- S79QjOuImUoQLlq9nytRQg6tv/Evd+KEYlsPmMODWRcWzpy+WLTCC+VAYgqYVjFA2GOBDE+ngLW
- PhTSjEpEIMOSc2F9ikZOb04ikYJL7/LLaSEDJtGH/MOGKprfU2hLdqUh5UoCDLfa/n7bNVSZWe5
- IYwOS78sjX6IkSBRSBsQjUAIfquxWOkqqZGXCYWbGhYTnIPe8WXU0ObGhTg/5eI8x81gDDwh2Pi
- LGnNwz51QyeiihTzNU/h4rZdRfhsDkp9KCM+18eMbUc++dJxUeRhNKordldstUjlmy/pWQU0zwo
+ bh=a3Pmx2FLEZ9kjbt+cSL6Q/1nXndHvzQCpATDx6amJMg=;
+ b=vNetFSFXcc+CFS3q0y5O8D+qhXGZG8grje757S01ZGTUuQKwOW3VCRaka6nge6pvcP
+ aRoS2Kl50L40J1HDOq8Dgl0Ag8aMHvrM5mCMLgOw1QGBHnd/cZMTgUMxWV80CUpip2Bx
+ cTlZpR2RoH0ziUwG//SAsRcxbB7iEopBouEQwUXjg9B/DrtzTNfVEn3tTpesdEj0BaFT
+ nKNn4gkcSjHWtz4tnJFwQ1LFQbRGlyyt5dCGDXrcoYsWPz5/AdLFSN17HUE4wtJb6yrG
+ h3BJz2bsLINrb4pMSWsYTeCMrAEqqzLS2gDLHxG+PdhN/C4On4TfKAkY6s+2ng4dLFO0
+ 9KnA==
+X-Gm-Message-State: AOJu0YzWi4RZe5PNDabECKlfLTpkW1u6w9sqUnxyP/E22GqH6KsjHNL7
+ 88zS8FsDYFp2uFe/wOWAyTpWFijq6LfjXhgOM8DIy/p6elJxkgyfHKWtYHZGyjGjGv8uyAL8kbx
+ o
+X-Gm-Gg: ASbGncspKEEqgcg+bn2DsEKgYM5Yj9DEL0yFuXzEaWuC/qi48s469alf4NI9s5JLVL2
+ JuCuoCVbHXnOXGS3WTi46xU2NeBetQX+y9ZgxTBzMWe2YtMmr0P9PkwgbjMz7K+fcfsV25/crb0
+ 2Lu628Oja33IgMPOShlipZb83kUPpliQWCjaF0TV02BMJKqWzW2iaNP3dmQIgaVtcfUeMdhO8/n
+ NYmb0HstTSOU6qFKMPo+R/Et2MRX5Q83gXNBEm2Nrxv9OclFcl3jSXsYRW5pTXI3MUBgylbvzDk
+ PGtCB5TMFd0FFTI7y8bT/4IKATjF/jiJWX0UPQJiA2WzHdVFMz/6SiPuqm5eUto2E7Bp2X4pc08
  =
-X-Google-Smtp-Source: AGHT+IFZ1QdC+BGWztzMsPshQ6NV1rtCruXr5mh/Sc/PPv499dYasfpvM5NOWL6Yw5SGPw4CNvr9yA==
-X-Received: by 2002:a17:90b:2807:b0:2ee:ee5e:42fb with SMTP id
- 98e67ed59e1d1-3087bb4d0bbmr26115087a91.13.1745350101704; 
- Tue, 22 Apr 2025 12:28:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHyiBOi3NRLf4QBAXSg4pfZlKe1+JGNmVfHG6XvMzJGDIYOKIBKWl64Z+qaWVw8z+0NF8NV6A==
+X-Received: by 2002:a17:90b:3a44:b0:2fa:1c09:3cee with SMTP id
+ 98e67ed59e1d1-309df0f2f8fmr255863a91.9.1745350102502; 
+ Tue, 22 Apr 2025 12:28:22 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3087df21278sm9146865a91.29.2025.04.22.12.28.21
+ 98e67ed59e1d1-3087df21278sm9146865a91.29.2025.04.22.12.28.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:28:21 -0700 (PDT)
+ Tue, 22 Apr 2025 12:28:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 002/147] exec/tswap: implement {ld,
- st}.*_p as functions instead of macros
-Date: Tue, 22 Apr 2025 12:25:51 -0700
-Message-ID: <20250422192819.302784-3-richard.henderson@linaro.org>
+Subject: [PATCH 003/147] exec/memory_ldst: extract memory_ldst declarations
+ from cpu-all.h
+Date: Tue, 22 Apr 2025 12:25:52 -0700
+Message-ID: <20250422192819.302784-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,136 +101,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Defining functions allows to use them from common code, by not depending
-on TARGET_BIG_ENDIAN.
-Remove previous macros from exec/cpu-all.h.
-By moving them out of cpu-all.h, we'll be able to break dependency on
-cpu.h for memory related functions coming in next commits.
+They are now accessible through exec/memory.h instead, and we make sure
+all variants are available for common or target dependent code.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250317183417.285700-3-pierrick.bouvier@linaro.org>
+Message-ID: <20250317183417.285700-4-pierrick.bouvier@linaro.org>
 ---
- include/exec/cpu-all.h | 25 ---------------
- include/exec/tswap.h   | 70 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 70 insertions(+), 25 deletions(-)
+ include/exec/cpu-all.h         | 12 ------------
+ include/exec/memory_ldst.h.inc |  4 ----
+ 2 files changed, 16 deletions(-)
 
 diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 47b14446b8..d000fe4871 100644
+index d000fe4871..7e8d66de31 100644
 --- a/include/exec/cpu-all.h
 +++ b/include/exec/cpu-all.h
-@@ -26,31 +26,6 @@
- #include "exec/tswap.h"
- #include "hw/core/cpu.h"
+@@ -32,18 +32,6 @@
  
--/* Target-endianness CPU memory access functions. These fit into the
-- * {ld,st}{type}{sign}{size}{endian}_p naming scheme described in bswap.h.
-- */
--#if TARGET_BIG_ENDIAN
--#define lduw_p(p) lduw_be_p(p)
--#define ldsw_p(p) ldsw_be_p(p)
--#define ldl_p(p) ldl_be_p(p)
--#define ldq_p(p) ldq_be_p(p)
--#define stw_p(p, v) stw_be_p(p, v)
--#define stl_p(p, v) stl_be_p(p, v)
--#define stq_p(p, v) stq_be_p(p, v)
--#define ldn_p(p, sz) ldn_be_p(p, sz)
--#define stn_p(p, sz, v) stn_be_p(p, sz, v)
--#else
--#define lduw_p(p) lduw_le_p(p)
--#define ldsw_p(p) ldsw_le_p(p)
--#define ldl_p(p) ldl_le_p(p)
--#define ldq_p(p) ldq_le_p(p)
--#define stw_p(p, v) stw_le_p(p, v)
--#define stl_p(p, v) stl_le_p(p, v)
--#define stq_p(p, v) stq_le_p(p, v)
--#define ldn_p(p, sz) ldn_le_p(p, sz)
--#define stn_p(p, sz, v) stn_le_p(p, sz, v)
--#endif
+ #include "exec/hwaddr.h"
+ 
+-#define SUFFIX
+-#define ARG1         as
+-#define ARG1_DECL    AddressSpace *as
+-#define TARGET_ENDIANNESS
+-#include "exec/memory_ldst.h.inc"
 -
- /* MMU memory access macros */
+-#define SUFFIX       _cached_slow
+-#define ARG1         cache
+-#define ARG1_DECL    MemoryRegionCache *cache
+-#define TARGET_ENDIANNESS
+-#include "exec/memory_ldst.h.inc"
+-
+ static inline void stl_phys_notdirty(AddressSpace *as, hwaddr addr, uint32_t val)
+ {
+     address_space_stl_notdirty(as, addr, val,
+diff --git a/include/exec/memory_ldst.h.inc b/include/exec/memory_ldst.h.inc
+index 92ad74e956..7270235c60 100644
+--- a/include/exec/memory_ldst.h.inc
++++ b/include/exec/memory_ldst.h.inc
+@@ -19,7 +19,6 @@
+  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+  */
  
- #if !defined(CONFIG_USER_ONLY)
-diff --git a/include/exec/tswap.h b/include/exec/tswap.h
-index 2683da0adb..84060a4999 100644
---- a/include/exec/tswap.h
-+++ b/include/exec/tswap.h
-@@ -80,4 +80,74 @@ static inline void tswap64s(uint64_t *s)
-     }
- }
+-#ifdef TARGET_ENDIANNESS
+ uint16_t glue(address_space_lduw, SUFFIX)(ARG1_DECL,
+     hwaddr addr, MemTxAttrs attrs, MemTxResult *result);
+ uint32_t glue(address_space_ldl, SUFFIX)(ARG1_DECL,
+@@ -34,7 +33,6 @@ void glue(address_space_stl, SUFFIX)(ARG1_DECL,
+     hwaddr addr, uint32_t val, MemTxAttrs attrs, MemTxResult *result);
+ void glue(address_space_stq, SUFFIX)(ARG1_DECL,
+     hwaddr addr, uint64_t val, MemTxAttrs attrs, MemTxResult *result);
+-#else
+ uint8_t glue(address_space_ldub, SUFFIX)(ARG1_DECL,
+     hwaddr addr, MemTxAttrs attrs, MemTxResult *result);
+ uint16_t glue(address_space_lduw_le, SUFFIX)(ARG1_DECL,
+@@ -63,9 +61,7 @@ void glue(address_space_stq_le, SUFFIX)(ARG1_DECL,
+     hwaddr addr, uint64_t val, MemTxAttrs attrs, MemTxResult *result);
+ void glue(address_space_stq_be, SUFFIX)(ARG1_DECL,
+     hwaddr addr, uint64_t val, MemTxAttrs attrs, MemTxResult *result);
+-#endif
  
-+/* Return ld{word}_{le,be}_p following target endianness. */
-+#define LOAD_IMPL(word, args...)                    \
-+do {                                                \
-+    if (target_words_bigendian()) {                 \
-+        return glue(glue(ld, word), _be_p)(args);   \
-+    } else {                                        \
-+        return glue(glue(ld, word), _le_p)(args);   \
-+    }                                               \
-+} while (0)
-+
-+static inline int lduw_p(const void *ptr)
-+{
-+    LOAD_IMPL(uw, ptr);
-+}
-+
-+static inline int ldsw_p(const void *ptr)
-+{
-+    LOAD_IMPL(sw, ptr);
-+}
-+
-+static inline int ldl_p(const void *ptr)
-+{
-+    LOAD_IMPL(l, ptr);
-+}
-+
-+static inline uint64_t ldq_p(const void *ptr)
-+{
-+    LOAD_IMPL(q, ptr);
-+}
-+
-+static inline uint64_t ldn_p(const void *ptr, int sz)
-+{
-+    LOAD_IMPL(n, ptr, sz);
-+}
-+
-+#undef LOAD_IMPL
-+
-+/* Call st{word}_{le,be}_p following target endianness. */
-+#define STORE_IMPL(word, args...)           \
-+do {                                        \
-+    if (target_words_bigendian()) {         \
-+        glue(glue(st, word), _be_p)(args);  \
-+    } else {                                \
-+        glue(glue(st, word), _le_p)(args);  \
-+    }                                       \
-+} while (0)
-+
-+
-+static inline void stw_p(void *ptr, uint16_t v)
-+{
-+    STORE_IMPL(w, ptr, v);
-+}
-+
-+static inline void stl_p(void *ptr, uint32_t v)
-+{
-+    STORE_IMPL(l, ptr, v);
-+}
-+
-+static inline void stq_p(void *ptr, uint64_t v)
-+{
-+    STORE_IMPL(q, ptr, v);
-+}
-+
-+static inline void stn_p(void *ptr, int sz, uint64_t v)
-+{
-+    STORE_IMPL(n, ptr, sz, v);
-+}
-+
-+#undef STORE_IMPL
-+
- #endif  /* TSWAP_H */
+ #undef ARG1_DECL
+ #undef ARG1
+ #undef SUFFIX
+-#undef TARGET_ENDIANNESS
 -- 
 2.43.0
 
