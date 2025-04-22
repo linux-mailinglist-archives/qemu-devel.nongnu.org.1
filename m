@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A91A97847
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 23:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA0FA97A8D
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 00:37:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7KuB-00019p-7E; Tue, 22 Apr 2025 17:11:47 -0400
+	id 1u7MDG-0004UM-6R; Tue, 22 Apr 2025 18:35:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7Ku5-00013C-4j
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 17:11:41 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1u7MD5-0004Sz-H1
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 18:35:28 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7Ktx-0000Qd-4P
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 17:11:35 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-736ab1c43c4so5956035b3a.1
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 14:11:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1u7MD2-00024a-Mo
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 18:35:23 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2295d78b433so67738505ad.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 15:35:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745356291; x=1745961091; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=E4x0j7WHmS5PoiJFKXF/CXQYHRcuf16x9CbNw0mWO8Y=;
- b=gfBJvrFJ4d3TyZeSofUAzwSD7Mdna1/+Vow4oVuezXtYOxHYAbW74haUsbwjwWv5Kj
- grAJXq5yK+I3Y66aox9jXGAFOU1H1jG8cSJAS4q0zIjxEFLOxaeUlCdxVLR8yPdN54Et
- ECAlYdsHIAi6i4PwkJh7/rXQWkDz3VwszSeIDdnG+21pcXyTkw2r66IdtXGKr9pfn+88
- qked+9+3wFGWKJDF6Fn4o6+H+rXIcNOcznc3usqA6FdnigpatJ4wBSOXXA6PwSAr2Pnf
- nSI/0kpwrSYroWUf7mXmOclbD+g4aEVi/TAJ2BjFtWLUSO+c8gZ3UGESruZD74+N3x0P
- hrjw==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1745361317; x=1745966117;
+ darn=nongnu.org; 
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=Nm9FPhOGujzcuwc0fqA5mk8oSCUhAkJUmvwSiBQ8E6k=;
+ b=wLmuMwsXHs7t/s754vJMbMxv3/4kWqyDR3oPwkQje7voZerbTl9k5gxzadZEcXrssL
+ Y2bAoFn9BcM8zcqQVnvAmWzDVCzxhTQVEfiBX2/AiJNqeVk/3Be3/MqfP1ns2a94A/ms
+ yNzigb34aAUqyBiMnkMTk8oVnPYQk+pqjbE/eypToKLacSqjHG3oL/Rs/OJbNvdryFFj
+ 5gsjNMg/DGok7jzQN0woYYckiJ3BXM7OSBI6LIMnrG3AEXtEZkYpFbrblfB551KdO219
+ l7HJQP5X3vTBbN0DsKE2Oj3hOyFwAz+bJzrMcgOQq+xaDHds+Q14PUcn/YYcm9JgiZdd
+ FaAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745356291; x=1745961091;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E4x0j7WHmS5PoiJFKXF/CXQYHRcuf16x9CbNw0mWO8Y=;
- b=SML7KotKShkAIWffEv6zWUdwcFD6XqcdkD3febPZICfk5dF/aZWTrAOWN5bbC5ZKLA
- CuLiG9BLIh+27FmBa5ii1XQi4LzRoDr4N6FVtT2KUAgS/JnMXSMRG/e/VhCdkOKzeQsr
- bXCwsRYGA3sp818mG1R1YBKTHitJE5AJolLy33BB6qtTEKwBHE2mRjwbggS8ipDHuEoN
- px2VwxP/Jh+fSuBUE6VCv7IqNmkjDFhvdZTGtA+NwrY0mWxpL7wqmaJCRWZ6BtlJ3eFQ
- 6mcjdRBcfGUWoikWXRABNDzlryS52FqXBUvXQf4F7tAetSEICIaQPbqQ1LZn2JaZ7oth
- C34w==
-X-Gm-Message-State: AOJu0Yx1RQM7MPcmMXMJIPXpYkm43jsDkPR7hChXD5A/YgO7Z7T4T4n4
- 2kw03FhEYoniOc1S5uRKrZL6PaDO0NDcE5pyeodrDQeJ7SUPC4Q+KTrqLYLkmQB831tg+ipHIYp
- p
-X-Gm-Gg: ASbGncs+7p5FBBkTyAkHF5i1D+RKJhbPmYCCXt0i+fl2x7gknAddJJ1chLZ/wftZqEB
- 11zxvf0s4Qg3pP0weLil8FXe/DX/euq7e5tddduofRaFf+YSTR8OLGD0JgzuCeVwYFLW6eQhS9J
- 6NGp16c4MXf1vOE/bBvWu5hQmaBi01RAtSOtqU9CqCz6XhWtrUdX4p6CIxA0MoEfpB1m9t/e9Qx
- Y9+PaF7SH5UuHx5wTVoTokUZ5NWstbxTr4rwgHAX3h9NPgg0Xe9gx/uVRINk0mherq3iWJkD31T
- SfuZuTOhaIXUgguNRHzEsVzNDOmmRDTJWxLXobkoAla/atluto6nDUMV8xCRENpKDKJvqQ3qx2M
- =
-X-Google-Smtp-Source: AGHT+IGYnyUFNSdjvJkc0VIW3yuJtg5aiz0NyZ+LALBqUDcckNurq4l2e7uGpiJrXW6vpO/DZ00KKA==
-X-Received: by 2002:a05:6a21:3305:b0:1f5:8e94:2e7f with SMTP id
- adf61e73a8af0-203cbd0bba0mr25055381637.33.1745356291350; 
- Tue, 22 Apr 2025 14:11:31 -0700 (PDT)
-Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ d=1e100.net; s=20230601; t=1745361317; x=1745966117;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Nm9FPhOGujzcuwc0fqA5mk8oSCUhAkJUmvwSiBQ8E6k=;
+ b=kEbaKVwBn0Kcv6/+kIsorEFrPGWU3nTDXKxh3ER3cskllt9ArBO3uEw29rvZtXNx+m
+ /VFrst5JTX/NWsAYhW/nirkAfnNQfmtdllzTlXl6QezrN/mrrLsRMNWnuJEQ3KJnVMed
+ DtVVcoLsaPRE+7L9eZUnWnGk1IipMD3PWrfCTO4EI8ttJHO+R7At4HwXDa3bpn/b+lLa
+ u0wRx+/ih9T/5CnpiMNmX3kU03kiMBaTLV6TQGjWUBifTQz7EMnlxnGf7W9IG2UQw1xU
+ gYFMFmYuuHAFOM9wgnTrjCXJA0LQ2oMAoYXox9Y8yw+7dxtUe/v7kb5sGTwE4H20nV7e
+ 9yCw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUNgzvqYAQ+H80cpgORsZL8hAYAGRr1VDkU+DSyn10wJbSigO2dWN88h2uiaDwYNkNNqFwEVYS+GGYP@nongnu.org
+X-Gm-Message-State: AOJu0YzNP/PJl+2+h8ZQJbM9PjKJIxYJ+LoCfkNfNNEUjiY8l9lBe92q
+ qi31owQO7VnQcyWBH36kJlHDYqSSc2kPnqG5v5tk6AfPv+AkwPlm1L4Df+176wI=
+X-Gm-Gg: ASbGncv5O5SjujOeZLFVxwcNSZWyRcxEzGw+SyPsyMj1Vrdg94TMAeKLGzEDT7LtwZB
+ hTn7al5hh+hi+8dc/JSWKsM1Q416vpItLswYVIPkchpKG2aScsGcmrGp7pLqdH/l3bfBQAZCs7+
+ AlVMLKM2mtCSVxi/y++32oDXafZNxe7Lg+xPY1T/+WDFqFKJKglwb4OU4w/3F4A2BKvzB4JqaW+
+ 3uZ0D3R/EYknRuv84CX91OVF4JqEKOtT7pGDXmvYyU8DXPGH4FJx0gz1B/SEex4D5aXLk+j4pmd
+ UrCJSZx4+2hD2wllFfMjWb5yhU/4z6D/uYH4OTmb2Owga7SdVaQ2B7Q9PVCAMw==
+X-Google-Smtp-Source: AGHT+IGRtNpcl084SxWJilu3P0E37ULqbnojQ/fPwBeTCEGXrb+sfYtrDiO3cdjyXzbI3RkIBLZUPQ==
+X-Received: by 2002:a17:902:f681:b0:224:18bb:44c2 with SMTP id
+ d9443c01a7336-22c53472982mr209857705ad.6.1745361317619; 
+ Tue, 22 Apr 2025 15:35:17 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73dbf8e4932sm9448160b3a.55.2025.04.22.14.11.30
+ d9443c01a7336-22c50eb491asm90813795ad.116.2025.04.22.15.35.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 14:11:31 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 9/9] target/avr: Increase TARGET_PAGE_BITS to 10
-Date: Tue, 22 Apr 2025 14:11:24 -0700
-Message-ID: <20250422211124.305724-10-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250422211124.305724-1-richard.henderson@linaro.org>
-References: <20250422211124.305724-1-richard.henderson@linaro.org>
+ Tue, 22 Apr 2025 15:35:17 -0700 (PDT)
+Date: Tue, 22 Apr 2025 15:35:15 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH RFC] target: riscv: Add Svrsw60b59b extension support
+Message-ID: <aAgZo68nLYdm186S@debug.ba.rivosinc.com>
+References: <20250314104833.369365-1-alexghiti@rivosinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250314104833.369365-1-alexghiti@rivosinc.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=debug@rivosinc.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,36 +102,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we can handle the MCU allocating only a portion of the
-first page to i/o, increase the page size.  Choose 10 as larger
-than the i/o on every MCU, just so that this path is tested.
+On Fri, Mar 14, 2025 at 11:48:33AM +0100, Alexandre Ghiti wrote:
+>The Svrsw60b59b extension allows to free the PTE reserved bits 60 and 59
+>for software to use.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/avr/cpu-param.h | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+Apart from what you already caught.
+Extension is dependnet on Sv39. So it should be validated somewhere.
+Perhaps in `riscv_cpu_validate_set_extensions` (target/riscv/tcg/tcg-cpu.c).
 
-diff --git a/target/avr/cpu-param.h b/target/avr/cpu-param.h
-index 81f3f49ee1..f5248ce9e7 100644
---- a/target/avr/cpu-param.h
-+++ b/target/avr/cpu-param.h
-@@ -21,13 +21,7 @@
- #ifndef AVR_CPU_PARAM_H
- #define AVR_CPU_PARAM_H
- 
--/*
-- * TARGET_PAGE_BITS cannot be more than 8 bits because
-- * 1.  all IO registers occupy [0x0000 .. 0x00ff] address range, and they
-- *     should be implemented as a device and not memory
-- * 2.  SRAM starts at the address 0x0100
-- */
--#define TARGET_PAGE_BITS 8
-+#define TARGET_PAGE_BITS 10
- #define TARGET_PHYS_ADDR_SPACE_BITS 24
- #define TARGET_VIRT_ADDR_SPACE_BITS 24
- 
--- 
-2.43.0
-
+>
+>Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+>---
+>
+>I tested it by always setting the bits 60 and 59 in Linux which booted
+>fine.
+>
+> target/riscv/cpu.c        | 2 ++
+> target/riscv/cpu_bits.h   | 3 ++-
+> target/riscv/cpu_cfg.h    | 1 +
+> target/riscv/cpu_helper.c | 3 ++-
+> 4 files changed, 7 insertions(+), 2 deletions(-)
+>
+>diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>index 3d4bd157d2..ee89cdef46 100644
+>--- a/target/riscv/cpu.c
+>+++ b/target/riscv/cpu.c
+>@@ -219,6 +219,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+>     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+>     ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
+>     ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
+>+    ISA_EXT_DATA_ENTRY(svrsw60b59b, PRIV_VERSION_1_13_0, ext_svrsw60b59b),
+>     ISA_EXT_DATA_ENTRY(svukte, PRIV_VERSION_1_13_0, ext_svukte),
+>     ISA_EXT_DATA_ENTRY(svvptc, PRIV_VERSION_1_13_0, ext_svvptc),
+>     ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+>@@ -1644,6 +1645,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+>     MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
+>     MULTI_EXT_CFG_BOOL("svnapot", ext_svnapot, false),
+>     MULTI_EXT_CFG_BOOL("svpbmt", ext_svpbmt, false),
+>+    MULTI_EXT_CFG_BOOL("svrsw60b59b", ext_svrsw60b59b, false),
+>     MULTI_EXT_CFG_BOOL("svvptc", ext_svvptc, true),
+>
+>     MULTI_EXT_CFG_BOOL("zicntr", ext_zicntr, true),
+>diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+>index f97c48a394..71f9e603c5 100644
+>--- a/target/riscv/cpu_bits.h
+>+++ b/target/riscv/cpu_bits.h
+>@@ -663,7 +663,8 @@ typedef enum {
+> #define PTE_SOFT            0x300 /* Reserved for Software */
+> #define PTE_PBMT            0x6000000000000000ULL /* Page-based memory types */
+> #define PTE_N               0x8000000000000000ULL /* NAPOT translation */
+>-#define PTE_RESERVED        0x1FC0000000000000ULL /* Reserved bits */
+>+#define PTE_RESERVED(svrsw60b59b)		\
+>+		(svrsw60b59b ? 0x07C0000000000000ULL : 0x1FC0000000000000ULL) /* Reserved bits */
+> #define PTE_ATTR            (PTE_N | PTE_PBMT) /* All attributes bits */
+>
+> /* Page table PPN shift amount */
+>diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+>index b410b1e603..f6e4b0068a 100644
+>--- a/target/riscv/cpu_cfg.h
+>+++ b/target/riscv/cpu_cfg.h
+>@@ -89,6 +89,7 @@ struct RISCVCPUConfig {
+>     bool ext_svinval;
+>     bool ext_svnapot;
+>     bool ext_svpbmt;
+>+    bool ext_svrsw60b59b;
+>     bool ext_svvptc;
+>     bool ext_svukte;
+>     bool ext_zdinx;
+>diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+>index e1dfc4ecbf..6546cea403 100644
+>--- a/target/riscv/cpu_helper.c
+>+++ b/target/riscv/cpu_helper.c
+>@@ -1156,6 +1156,7 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
+>     bool svade = riscv_cpu_cfg(env)->ext_svade;
+>     bool svadu = riscv_cpu_cfg(env)->ext_svadu;
+>     bool adue = svadu ? env->menvcfg & MENVCFG_ADUE : !svade;
+>+    bool svrsw60b59b = riscv_cpu_cfg(env)->ext_svrsw60b59b;
+>
+>     if (first_stage && two_stage && env->virt_enabled) {
+>         pbmte = pbmte && (env->henvcfg & HENVCFG_PBMTE);
+>@@ -1225,7 +1226,7 @@ restart:
+>         if (riscv_cpu_sxl(env) == MXL_RV32) {
+>             ppn = pte >> PTE_PPN_SHIFT;
+>         } else {
+>-            if (pte & PTE_RESERVED) {
+>+            if (pte & PTE_RESERVED(svrsw60b59b)) {
+>                 return TRANSLATE_FAIL;
+>             }
+>
+>-- 
+>2.39.2
+>
+>
 
