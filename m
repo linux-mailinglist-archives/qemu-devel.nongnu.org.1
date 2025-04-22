@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99DDA97080
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 17:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54990A97098
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 17:26:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7FTT-0004jl-Nq; Tue, 22 Apr 2025 11:23:51 -0400
+	id 1u7FVe-0007ds-VN; Tue, 22 Apr 2025 11:26:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7FTQ-0004j5-Mu
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:23:48 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7FTO-0000TA-WD
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:23:48 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-3014678689aso4150479a91.0
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 08:23:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745335425; x=1745940225; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=HcYjd2IYzi9WfeHOcm4gyHmdk9tbn6fXnkTqkTM2vMI=;
- b=FPhjeg50qjji78+BFHM6ZWtOuCW2Vgv1cMmtt+7b21gS101r10L8pA9TQTS5LWvrgY
- pd4Se84G8C8M0gA2ur3lL/pyLDgO4vrpowDMlx2zWeuyiT8wlQcTZbPbFH8k3EBpxyaL
- h8zC8dXF7XqBSVdCeaaHZ1Y9WEbiTIv8VCMqxkex2Grs/LAfDixt/vIM7Xe8PqiBKpdA
- AbdGiScDJW+Fls1jiTWO8hTIVP2a+lvooxCy3gaDITIphc6qv6fgXHY3oHqM8hfoCqoi
- b47FDtwK5AsMNs5o1gBL0f1sISZe4Fp1OBmfFq+ECvNXsWe4OSz21XyWY+ytN0PdTWPS
- uzaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745335425; x=1745940225;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HcYjd2IYzi9WfeHOcm4gyHmdk9tbn6fXnkTqkTM2vMI=;
- b=PCp3iLGgtpL4bMnKHWrwnO39lPzT4kpj4aTHA+MfMxlGnEMH10lXz30uvPHvyG0x39
- MzCuKxTQ+VV/1HlhyXZo8/0s5Lv5md/aaB6kcXYCZURwcDaCtQmJiHX5cxNGedtp3XbJ
- jaW2FAp6MMX0t0e+BX+Yt7SM3lSF7iim+3MFpx5wGKrW1p5dhnu8sfAmuFXpuuVwLb8P
- VTdoK/K9CvRFn1BZ5jU8rOhrXCjxwVXRpo97oo9MLzu/nB6qJujS+CEYea8iq69B9U/4
- JR31JAH2l2E6qiTLvX5rhG/tHLNE73AdKhtjfqr6qmNw7sLJQnfuaA+nPBbs1zq13LSB
- dGnQ==
-X-Gm-Message-State: AOJu0YwVKOtNz8qsnRkMbAO7V82Ece7SuOahgYxJFq3gxl8AnPatRqk8
- k5AML7bSiQvUjbkZE+0XY/vgmbdloiuqIHU25ZDFP6ofo1tu16mOw50vCgYVKVVsLjTizMoWcsj
- 7
-X-Gm-Gg: ASbGnct57R9BPG4VwQIn/yEIWaoVqOtrIrPTHU0Jgv3v3apUD/fvIaeQXBwJ2N+l5qr
- d88yXeD8N/yLNR/tOZZ+0kR8/4Pl0BISuU8KjGAlHW4K2J5XnAjfAjhGmtbrWjjNi4X2HJpthSH
- /bI0BJcTHYh1QL/R71efocGpLvEYOZwxBL7CJRyC8T5FXo38q2Cq7D/GzdQxVQkArKIu5ivmuZc
- XW3wlNu0NHwJM7DQzRuU1OZP+gPSuml4b7iZKyiR5W+az4vxhX+9Td9+JkpuJkHf8aVEUViJNZU
- isKzExsKW7eWTa7sEFFJPJi9HAXssVfb1yoGEGQF6jiRo1R0t/kSI9xjV0GiCKA35YL5Nd0LraI
- +ASnPqhE=
-X-Google-Smtp-Source: AGHT+IFelQ7zHBjinq6vArOUstwxQL34xSEcO+Z9ngjoOi14vlHmFaDJMAPsHDvMkauNBvuD5EOjmQ==
-X-Received: by 2002:a17:90b:540e:b0:2ff:4bac:6fbf with SMTP id
- 98e67ed59e1d1-3087bb3e7bemr24572351a91.7.1745335425125; 
- Tue, 22 Apr 2025 08:23:45 -0700 (PDT)
-Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3087dee3279sm8758810a91.7.2025.04.22.08.23.44
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Apr 2025 08:23:44 -0700 (PDT)
-Message-ID: <09f3eaeb-f610-42e6-8b64-905513c11c18@linaro.org>
-Date: Tue, 22 Apr 2025 08:23:43 -0700
+ (Exim 4.90_1) (envelope-from <me@linux.beauty>)
+ id 1u7FVT-0007cS-Fu; Tue, 22 Apr 2025 11:25:58 -0400
+Received: from sender4-op-o12.zoho.com ([136.143.188.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <me@linux.beauty>)
+ id 1u7FVR-0000rj-42; Tue, 22 Apr 2025 11:25:54 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1745335519; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=JVWoWIJfxZjZI3v/+vk0fOJ5JBn689G3Z/mFyadR8aQ5Uc7TUan2YPp9kG0q96Tkv0I6zv7TpWTf0ZN2W27jGKLgPpNDfsAsGNOMCRTnyojN5RYZBBfSzFFzzFbBn8RoT7yYgXjBuA4Bjtb9dpYZWzsQaaq9E5Z4tIlUmiwC8Oo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1745335519;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=8TUOAK4dfw6psyhRy6BzmcaE9jy5HibvFtdX8sbr7os=; 
+ b=I5OzcM/Tv3BxrZ5rpTJfKYny6Z+3DKJ0MHSDxsQ/WoNYEJO2sHAe9Dv1viDLQpELLujlXPWkyw3lLYaJUjZvGVKhFW4LTWylsWfD3BFNO+/AgC+FqJYoXDhfzKRevzOc6UUN7HtCJvzjpMkzUmfEN20HPAy5GJW5IwtDD34kk0E=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=linux.beauty;
+ spf=pass  smtp.mailfrom=me@linux.beauty;
+ dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1745335519; 
+ s=zmail; d=linux.beauty; i=me@linux.beauty;
+ h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=8TUOAK4dfw6psyhRy6BzmcaE9jy5HibvFtdX8sbr7os=;
+ b=EcRIdbZf06OSmwXgSDT1vEHTaY5ETM/lz1xw2LaCLIaLIeavhp0j9tHH1/hBvAXG
+ ZJOlWOczRwJRVmcCUVpFXF/oMiAlTzGMisy53ZqsqMbIaRqGlagyO12GI9Yrhp7jJ7B
+ gRtI74imOtjfdgALrXOZKyy7IHwoaefC0Z4ucAVc=
+Received: from mail.zoho.com by mx.zohomail.com
+ with SMTP id 1745335518281881.1837526050226;
+ Tue, 22 Apr 2025 08:25:18 -0700 (PDT)
+Date: Tue, 22 Apr 2025 23:25:18 +0800
+From: Li Chen <me@linux.beauty>
+To: =?UTF-8?Q?=22Philippe_Mathieu-Daud=C3=A9=22?= <philmd@linaro.org>
+Cc: "Peter Maydell" <peter.maydell@linaro.org>,
+ "Shannon Zhao" <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ "Igor Mammedov" <imammedo@redhat.com>, "Ani Sinha" <anisinha@redhat.com>,
+ "Eduardo Habkost" <eduardo@habkost.net>,
+ "Marcel Apfelbaum" <marcel.apfelbaum@gmail.com>,
+ "Yanan Wang" <wangyanan55@huawei.com>,
+ "Zhao Liu" <zhao1.liu@intel.com>, "Song Gao" <gaosong@loongson.cn>,
+ "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+ "Sunil V L" <sunilvl@ventanamicro.com>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>,
+ "Alistair Francis" <alistair.francis@wdc.com>,
+ "Weiwei Li" <liwei1518@gmail.com>, "qemu-arm" <qemu-arm@nongnu.org>,
+ "qemu-devel" <qemu-devel@nongnu.org>, "qemu-riscv" <qemu-riscv@nongnu.org>
+Message-ID: <1965e1a8431.cb206d1e1037721.7771287202770929929@linux.beauty>
+In-Reply-To: <c67391b9-297f-478b-aea5-c27b0dba6cfd@linaro.org>
+References: <1965d621e25.fafa759e911037.825810937022699867@linux.beauty>
+ <1965d6357a1.dfa9d35b911644.778874035603636753@linux.beauty>
+ <c67391b9-297f-478b-aea5-c27b0dba6cfd@linaro.org>
+Subject: Re: [PATCH V2 1/3] acpi: Add machine option to disable SPCR table
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] target/i386: special case ADC/SBB x,0 and SBB x,x
-To: qemu-devel@nongnu.org
-References: <20250403092251.54441-1-pbonzini@redhat.com>
- <20250403092251.54441-2-pbonzini@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250403092251.54441-2-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+Received-SPF: pass client-ip=136.143.188.12; envelope-from=me@linux.beauty;
+ helo=sender4-op-o12.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,17 +92,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/3/25 02:22, Paolo Bonzini wrote:
-> Avoid the three-operand CC_OP_ADD and CC_OP_ADC in these relatively
-> common cases.
-> 
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
-> ---
->   target/i386/tcg/translate.c | 20 ++++++++++++
->   target/i386/tcg/emit.c.inc  | 65 ++++++++++++++++++++++++++++++++++---
->   2 files changed, 80 insertions(+), 5 deletions(-)
+Hi Philippe Mathieu-Daud=C3=A9,
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Thanks for your review!
 
-r~
+ ---- On Tue, 22 Apr 2025 21:18:46 +0800  Philippe Mathieu-Daud=C3=A9 <phil=
+md@linaro.org> wrote ---=20
+ > Hi,
+ >=20
+ > On 22/4/25 14:05, Li Chen wrote:
+ > > diff --git a/include/hw/boards.h b/include/hw/boards.h
+ > > index f22b2e7fc7..cdf2791a50 100644
+ > > --- a/include/hw/boards.h
+ > > +++ b/include/hw/boards.h
+ > > @@ -444,6 +444,7 @@ struct MachineState {
+ > >       SmpCache smp_cache;
+ > >       struct NVDIMMState *nvdimms_state;
+ > >       struct NumaState *numa_state;
+ > > +    bool enable_spcr;
+ >=20
+ > I'm a bit reluctant to add a field used by 3 virt machines as
+ > generic in MachineState. Shouldn't it be for each machine state?
+
+I looked for alternative locations for this field before submitting v1 but =
+couldn't find any.
+I re-evaluated potential locations, like struct AcpiBuildState, but ARM, Lo=
+ongArch, and RISC-V=20
+just use their own AcpiBuildState.
+
+BTW, ACPI-supporting virtual machines may eventually adopt SPCR. Although c=
+urrent there=20
+are just three users, future adoption is probable, making it a suitable fie=
+ld for each machine state.
+
+Feel free to tell me if you have any other suggestions.
+
+ >=20
+ > Also I'm surprised we announce the SPCR table regardless a virt
+ > serial exists. Shouldn't we have a disabled default and only
+ > enable on virt machines, preferably checking the serial port
+ > availability?
+
+So you mean we should avoid building SPCR for cases like "-serial none"? If=
+ so, I can add a patch to check serial
+device availability before doing spcr_setup in  ARM/RISC-V/LoongArch codes.=
+=20
+Should this change be the first patch in this series, or just a separate se=
+ries?
+
+Regards,
+Li
 
