@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE670A97038
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 17:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DDCA9712C
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 17:38:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7FL3-00081y-8A; Tue, 22 Apr 2025 11:15:09 -0400
+	id 1u7Fgo-00074z-03; Tue, 22 Apr 2025 11:37:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7FKr-0007zO-QP
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:15:00 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7FKp-0007hJ-VS
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:14:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745334896; x=1776870896;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Hu4lrMHy2xrhs9qCtCUfRn9WydvvwgOphy3WYHeYGKY=;
- b=HeZMZaCyh41nwULcUzWqnKfxT1Oag6tbwrZJx/e/s74Y76YXuQLTc0sd
- i94Ogr0/IA1brwzMGTk6+2JGYb0szvrrcmrG51nVDRI+PSQ6y+sxg/qEt
- faKW92QhBZrSMGqMKgmubxRbKJHbPlriTOWeSpT/PbePm3/ycMGb7spYB
- mdL6XVTCqZDFcBYPJ9p2aspL6hxEoeVY4GS1FVYa5KxeVeH21GUx/EzXJ
- f3xV1V2677dgm2A8ADr8FIgTwvVyAavQOrBcKhvqpS69kdKAOuUQBY0yl
- C/BDaacS8esLbuEgqX5A86VkuWaQbLSZPQdJwiACByRxhHIdhcz21xhca A==;
-X-CSE-ConnectionGUID: p3TV30uYQXOHq0lNzIKeqQ==
-X-CSE-MsgGUID: AAoybQZhSbKvIkyVF57ibg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="47079772"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="47079772"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 08:14:54 -0700
-X-CSE-ConnectionGUID: 6p6grq8RT4eItLbGWZ3a+g==
-X-CSE-MsgGUID: SX0rmRcQQ+qpWOq+iqt8yQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="132582006"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 22 Apr 2025 08:14:51 -0700
-Date: Tue, 22 Apr 2025 23:35:46 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 12/55] i386/tdx: Validate TD attributes
-Message-ID: <aAe3UoY4ERZUhrKs@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-13-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7Fgl-00074F-CE
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:37:35 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7Fgj-0002Fi-IM
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:37:35 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-39d83782ef6so4495986f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 08:37:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745336251; x=1745941051; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=y/ir8a0mO9VupBKppoo9HMeK2zCRJpMhWNhJitudq0c=;
+ b=eSJritjmOCryn7NheRZWDOqFonDYgB9bg8ZIZIPWxPpV3vT1pHnfnLL+DHVK0adlFI
+ Z3TdAYCY+m6DNUETWBitYbDIXuePitBhW4z8sCBCq3UjOgbvdkszid/my/UU0822D+rJ
+ S5nF0dfcWa9wOPmojeC4z7emNSKjVPNhkHhrwfky8l9V1AWwrOWyZtVnKOa+gC7KNKPn
+ uOECdOqs0Gdm51aeu/Xd9Dxvm4ZtEhvPx3tNOvPqaRdirlmZXkjiS/H0J3tAB/cGIX2y
+ 7mZvmg6s0GWmlSXXgoSa7UKlP2QFtH1oFQUDy9+jkkJ1rlOAl1x6HfnRsfBu5XT99vN8
+ sw4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745336251; x=1745941051;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y/ir8a0mO9VupBKppoo9HMeK2zCRJpMhWNhJitudq0c=;
+ b=l55R1zoPP09q0wGIH1lyvGJPtTZOgQyq1OrEvgI4D6PFGd09f92+7OxM4OHt6/kWpj
+ uQeEwollN6IGUCBDHTSAkosvAwomPHdZ+2JordE6MpxenbZklfIB1SsyRfij0OTgFaBh
+ QJFcsLu8Wqj4Lmu4IP3Z/Gf30K1o2VnZNmXAF7gSr23ekMgqlbu0e/ClNJ81Tw6iDBcy
+ OG3OSWHZqGF6xLLPWfSWehN9ERAADMbepBEKoknf73chqoCa0YMNYkKDZOvLZiy8KfMn
+ Vjodxb3AY+am4HBVuBGpIm4YsdVWw3LlvNxJC7r+A/pEDx0Kpn7jyURI0PK1AE+GmGpo
+ bbiQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWqwKAOHRF9XO1/NNB4lqAJolgS9iYlh32LoADr22FdvgNg6BTp/xL0vufz6eeMcERlsazU2VAqb02U@nongnu.org
+X-Gm-Message-State: AOJu0YwILyrVk2Pnpa4ImJpouQFLU1H4JdPOFRNmpdJ/1fZcNcoBNJwg
+ /3lbvYnuFWl4o0ayHHK4kiNX+rbiXQbLNKWudkRNoYUmUGeYhoW3Hwe4bWaee79ghOLJ+vgrFEb
+ Z
+X-Gm-Gg: ASbGncsq10c/ciEGREF11ZfFAL3cTtvKr0Wn6i7DB7zk4nlN/PnYFbGacQhNsAaCD6V
+ NFoWajK1LcovCB18BIPisvGMdrZQcY4XMPtKoRx1CXZBmkkLMRrTStGhDRNF3vg0U3KP3NmMyHJ
+ S8FssUxKsTtBZilg/I9VJPt74Wex54gFS0Zdf9FK4hSJiBRpiIQOGuRfahsO44FpzspuBKJiztX
+ J0lBYFQOyQ2yqZo6kgOd0d4mUWwqRj+/o/qikM+KCYqOZuN0IgIRIeJBBAa4yQcDcJf9nkeAlJu
+ vywFR4A8LTDB7Hxv7PhAiN8XqmKMy/d8FGlEiKF4f3t/fdo4a/sivdGr51MpGRLPNM32aR/N3DW
+ LdUsO+o/K
+X-Google-Smtp-Source: AGHT+IF2VuxtBpysDIUDxjJOPzXIgs4JvJyBQzuloJ1DSzELifBlGd8C1LmdnYVrqPsv4+R5FOuKYg==
+X-Received: by 2002:a05:6000:4211:b0:39c:2673:4f10 with SMTP id
+ ffacd0b85a97d-39ef9091616mr16060327f8f.23.1745336250685; 
+ Tue, 22 Apr 2025 08:37:30 -0700 (PDT)
+Received: from [192.168.69.175] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4406d5bbd12sm176126895e9.20.2025.04.22.08.37.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Apr 2025 08:37:30 -0700 (PDT)
+Message-ID: <ce48f90c-862f-4887-9a03-dd08e864b9ef@linaro.org>
+Date: Tue, 22 Apr 2025 17:37:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-13-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 083/163] tcg/arm: Expand arguments to tcg_out_cmp2
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250415192515.232910-1-richard.henderson@linaro.org>
+ <20250415192515.232910-84-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250415192515.232910-84-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,40 +100,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:22AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:22 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 12/55] i386/tdx: Validate TD attributes
-> X-Mailer: git-send-email 2.34.1
+On 15/4/25 21:23, Richard Henderson wrote:
+> Pass explicit arguments instead of arrays.
 > 
-> Validate TD attributes with tdx_caps that only supported bits are
-> allowed by KVM.
-> 
-> Besides, sanity check the attribute bits that have not been supported by
-> QEMU yet. e.g., debug bit, it will be allowed in the future when debug
-> TD support lands in QEMU.
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> Changes in v8:
-> - Split the mrconfigid/mrowner/mrownerconfig part into a seperate next
->   patch;
-> 
-> Changes in v7:
-> - Define TDX_SUPPORTED_TD_ATTRS as QEMU supported mask, to validates
->   user's request. (Rick)
-> 
-> Changes in v3:
-> - using error_setg() for error report; (Daniel)
-> ---
->  target/i386/kvm/tdx.c | 32 ++++++++++++++++++++++++++++++--
->  1 file changed, 30 insertions(+), 2 deletions(-)
+>   tcg/arm/tcg-target.c.inc | 18 ++++++------------
+>   1 file changed, 6 insertions(+), 12 deletions(-)
 
-Overall LGTM,
-
-(with Daniel's comment fixed)
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
