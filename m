@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4A2A970C2
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 17:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C0FA97026
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 17:13:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7FYI-00020O-RI; Tue, 22 Apr 2025 11:28:50 -0400
+	id 1u7FJL-0006dA-MN; Tue, 22 Apr 2025 11:13:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7FYE-0001zx-Vn
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:28:47 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7FYD-00015W-4O
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:28:46 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-39c1ef4ae3aso3217071f8f.1
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 08:28:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745335723; x=1745940523; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=sIT336GswfUUGGDWn/u3yXAGX5oRZi2o9Ol9Vf7QGAk=;
- b=WSRck1kBWUX17p0RwgSWGUWDdY7JfNKZ7Lu5oHQY/F1dzR6CoZD+p3NB2WEMkVL3Ba
- 9tcelZHEHLsbMXkgsLDAFe78bmgoDzfOf0cRomN2+o7J73+IwmaUsT8093NWKRHNsgjc
- mrCcNizYqL1Glnn9sRgSDc6+YF5+M/17kuY1gG8jLifkNBT/bXfPDjgj8dV7n6T5xrKm
- RubmFL0zno2HmBcKQU7ZhoFYxIzaMfwcYYwMFiLYiQKYLn3Y6+zAC/TRTmND9OvIen6Q
- gqQAY7fgqd+MgN9OLWGU92Oha8zj7q3eCWkZPXmaJ85XZg+E9JBGwmvIgs7/js4oc/rZ
- ZMsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745335723; x=1745940523;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sIT336GswfUUGGDWn/u3yXAGX5oRZi2o9Ol9Vf7QGAk=;
- b=qIp0k6KkDPVvZGzP/W3XMJ6TbsfyzINmMCoS2CFm/QKGsPQdSll4zj5SL1IFXss9Fl
- tH6h/5JbsFB0EtRHfh6IcHkCv5BTgt0A93AJHioSzkYP7vxWXj/m0vlvdMUD9SRgFCCp
- WU4VniLiiOhmJvtqgJq9inwV+eDkVUA1ib00e7tnwzD0fdLvG3XbbMYF1xtXFd31nS5E
- d9Gg1XeOtpn5NoBLPGElRPXdf89AtgQETHYdweG5GyNNPegJ1STj1Yo0QIhQQcbRw/Zq
- HsCeYsOYNjwXcUrxfOysAh9E6dwqzhzkuDDgQhSe0RoroD5+2CMV1SUA9N5URQo5V41t
- +ANg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUOSIQCHrbM32q4/jKSBR81f57oBDlNIJHr57yfi7ibZcsAgVVpYq3AhVscoB7RgqtgHdyIV+qkNq/F@nongnu.org
-X-Gm-Message-State: AOJu0YxMAwL24V62OvZBReBQ3gFUniWCoaMbf/idsUEy6ju8Tnqj8bPI
- ltcssG6VGFgYtdYUJJSpaJPTf9X17yDz2zE9QrEFeQ/chdDDf7L4gLwUdxt/zBZAcfzkWuh9Cjb
- c
-X-Gm-Gg: ASbGncur0oPuYzXwxcMI4BD+oFW0BgvwF2fLGC1s4hm2UppLEcyKtVrOqAIA6GsTOEQ
- jWP2wR8cZfA98UVuC/Tz+a/f1rmUGFdM3AoCEv4EV3AahMp61BI+fL29eb/DQROePvc7JO5ALxh
- 75i896MTe2teomWrE0wVEz0R8o75oLiuAmD6MvvIjpqohdtZaTynNKyxeY791fPZ+BBdoXGYHsN
- T2pmUmhc/a8lD7boa+S1o47IjGTY61ZZ42iLDkOns63tkJVuDeq3JmxN/FPIWAX2JcZiT3eUK2N
- w1j142vkRiOfxKcs9c4plZYU+z+5uon3dPpNjkYUqW8hvqCucC0t2D66MJbbYv2FCHaJzG3BGrO
- lAjqYkUrS
-X-Google-Smtp-Source: AGHT+IFj35Lomh4JmR9+EiZDfpa2ZsbZp7WquZF2o6/WNJe5fVLQdfVJGSDSFUzPM0YMnPA5ujbzFg==
-X-Received: by 2002:a05:6000:4008:b0:38d:ba8e:7327 with SMTP id
- ffacd0b85a97d-39efbd60d51mr13448341f8f.8.1745335723170; 
- Tue, 22 Apr 2025 08:28:43 -0700 (PDT)
-Received: from [192.168.69.175] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39efa4a4e93sm15802399f8f.99.2025.04.22.08.28.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Apr 2025 08:28:42 -0700 (PDT)
-Message-ID: <7458e422-a343-41db-990c-14080db84a60@linaro.org>
-Date: Tue, 22 Apr 2025 17:28:41 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7FJJ-0006cu-PP
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:13:21 -0400
+Received: from mgamail.intel.com ([192.198.163.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7FJG-0007Xj-5f
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:13:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745334798; x=1776870798;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1drrdCAmwb3narJADwcS2D25pameaxuO+A5f3IqyxOE=;
+ b=Su/t/oZk5QmsVWDJccXKmGNCh9e2/aGztD69HalNQylmxcbfGKBtE+M+
+ yWB78m0PLwyjCj357PGUfjQQtxHWWuDANZ52fA9+B9DSFqmMwYGBv2W4o
+ Qg3TQsW2P8UaQqFYHGmSzj3FNVqy6dAXZp+/AqdCMJvMRrZBCtiuivl2z
+ vs/kel6yFeKUXc5id10YP/BlDr73KXZrAQIJghuPqnllRmwEdgeFOVtH5
+ u3ijZfSFDDmMhDfZXJaX3WsPE+ymWpywuoysm7yhj3zsrBuoiBHIczLvr
+ ZzlcTyv9HMn4rL5C9NU1JqyY5WOjJWH+eqYAvmnz8+LEDCPOTUUlRyim9 g==;
+X-CSE-ConnectionGUID: xcKJ+hFsRDyjzdDfi9hSeg==
+X-CSE-MsgGUID: bzG/h1VaSF2pPv2KnH/Tuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50728047"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="50728047"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2025 08:13:13 -0700
+X-CSE-ConnectionGUID: C6s88iQGQcWCqViOgSPMqw==
+X-CSE-MsgGUID: cX8h6PdXSmSvgiANRMUkAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="155237267"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa002.fm.intel.com with ESMTP; 22 Apr 2025 08:13:10 -0700
+Date: Tue, 22 Apr 2025 23:34:05 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v8 08/55] i386/tdx: Initialize TDX before creating TD vcpus
+Message-ID: <aAe27bMcwIwpDB6m@intel.com>
+References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ <20250401130205.2198253-9-xiaoyao.li@intel.com>
+ <Z-0iV-xIeu0hoaaC@redhat.com>
+ <54c19255-0b05-4f50-83a5-256567724df4@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 074/163] tcg/tci: Support negsetcond
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250415192515.232910-1-richard.henderson@linaro.org>
- <20250415192515.232910-75-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250415192515.232910-75-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54c19255-0b05-4f50-83a5-256567724df4@intel.com>
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,13 +89,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/4/25 21:23, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/tci/tcg-target-has.h |  4 ++--
->   tcg/tci/tcg-target.c.inc | 13 +++++++++++++
->   2 files changed, 15 insertions(+), 2 deletions(-)
+> > > +int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+> > > +{
+> > > +    X86CPU *x86cpu = X86_CPU(cpu);
+> > > +    CPUX86State *env = &x86cpu->env;
+> > > +    g_autofree struct kvm_tdx_init_vm *init_vm = NULL;
+> > > +    Error *local_err = NULL;
+> > > +    int retry = 10000;
+> > > +    int r = 0;
+> > > +
+> > > +    QEMU_LOCK_GUARD(&tdx_guest->lock);
+> > > +    if (tdx_guest->initialized) {
+> > > +        return r;
+> > > +    }
+> > > +
+> > > +    init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
+> > > +                        sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
+> > > +
+> > > +    r = setup_td_xfam(x86cpu, errp);
+> > > +    if (r) {
+> > > +        return r;
+> > > +    }
+> > > +
+> > > +    init_vm->cpuid.nent = kvm_x86_build_cpuid(env, init_vm->cpuid.entries, 0);
+> > > +    tdx_filter_cpuid(&init_vm->cpuid);
+> > > +
+> > > +    init_vm->attributes = tdx_guest->attributes;
+> > > +    init_vm->xfam = tdx_guest->xfam;
+> > > +
+> > > +    /*
+> > > +     * KVM_TDX_INIT_VM gets -EAGAIN when KVM side SEAMCALL(TDH_MNG_CREATE)
+> > > +     * gets TDX_RND_NO_ENTROPY due to Random number generation (e.g., RDRAND or
+> > > +     * RDSEED) is busy.
+> > > +     *
+> > > +     * Retry for the case.
+> > > +     */
+> > > +    do {
+> > > +        error_free(local_err);
+> > > +        local_err = NULL;
+> > > +        r = tdx_vm_ioctl(KVM_TDX_INIT_VM, 0, init_vm, &local_err);
+> > > +    } while (r == -EAGAIN && --retry);
+> > > +
+> > > +    if (r < 0) {
+> > > +        if (!retry) {
+> > > +            error_report("Hardware RNG (Random Number Generator) is busy "
+> > > +                         "occupied by someone (via RDRAND/RDSEED) maliciously, "
+> > > +                         "which leads to KVM_TDX_INIT_VM keeping failure "
+> > > +                         "due to lack of entropy.");
+> > 
+> > This needs to be
+> > 
+> >       error_append_hint(local_err, ....);
+> > 
+> > so that this message gets associated with the error object that
+> > is propagated, and the top level will print it all at once.
+> 
+> Good suggestion! Will change to it in the next version.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+A little suggestion:
+
+With error_append_hint(local_err, ...), you can add "ERRP_GUARD()" at
+the beginning of tdx_pre_create_vcpu(), just like the commit 95e9053a34ca.
+
 
 
