@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64321A975E9
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5190CA9758C
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:36:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JId-0002aM-KP; Tue, 22 Apr 2025 15:28:55 -0400
+	id 1u7JIf-0002aw-C9; Tue, 22 Apr 2025 15:28:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JIP-0002Ue-LG
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:43 -0400
+ id 1u7JIT-0002Vg-6n
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:45 -0400
 Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JIJ-0006CI-06
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:40 -0400
+ id 1u7JIP-0006Cd-5D
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:28:44 -0400
 Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2ff6e91cff5so5299808a91.2
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:28:34 -0700 (PDT)
+ 98e67ed59e1d1-308702998fbso5010904a91.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:28:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745350113; x=1745954913; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745350114; x=1745954914; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jprqwHHwWojdGfQ1QgUvwGwX1dYcnH5RZgYMJfPxUv8=;
- b=mQGACf9dhegM/COoRNRFK/Fbn96R+tb8J+wRYPiJgnOd0TFIpMcnu/jELbOTetI+jv
- PAI5OiGe5YZ8XH1zHaRH80yG74H8bERRcMcXPzhlvK8K7KSyWznb2QgSuRj/P/jHJmIA
- Q2LIW1VjKYLG5m3yQac5UWJRgR6dfzfp0eCY1J992PQUiINghAoTRDU+XDKe4vUZFr1N
- Od92hZRJ/p89oRi550dSA/J78h3e4OtA4PmhVhNu+KLyPiZvDAcC7hTbUkhQuBTPXHtF
- eICE/SuCdbyYVc2sIBoQmg4dvo+krvzQFwbFXsFla70v8nZ2nGSENG5yp0R7hAFsxuiu
- iEbg==
+ bh=lVaQ8uivr0ZSIFp6lnsLbuP1aUnA44gVuobbLqVlt/s=;
+ b=SPZlSHPiFamSHNBsL2ksaFIsvWyj1SnRypY2hG02lpArYy0VfGwOXV8MmAPxyMky40
+ naol++jgbj7wJAfADNC53vfywseLURvnG5KMXxilb8QJm9EOHiiLzBRI2NMsA35MsP1Y
+ hTLDukRajS4jMXgsCycOmrothu5C0vWXNdBYIzTnL6SJlNpRrrD8oIS4nknGCTfi8CDI
+ dJVpZezCzNjZw6HTnbsz8Spf/YY5Q4FpGlhqlTrKvdVukSHoCsQYGYRZquvc7XdUSeHm
+ uBM+aF+rf/1H76TAq/vj+kLvU7/BM7915/ZQ70lNjt8M/cAvDBACHECiCLDY9WRqDNOB
+ mJwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745350113; x=1745954913;
+ d=1e100.net; s=20230601; t=1745350114; x=1745954914;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jprqwHHwWojdGfQ1QgUvwGwX1dYcnH5RZgYMJfPxUv8=;
- b=Z6JamqI17gFCR5Yu4q1LCaWL/NuFTEhRrA5lQu7t0G2U+GtNkVp+HiiHegBmBSyIVf
- qkE9mmzg7jLxJV6ZAlBeKnFyh5JGcjxmuhCKGdyw0itMNv0+mc5GAIEYTeAohzWGwneT
- q9U4V9f7woEG41euikHdqOGB60ud/Mnln9cqz+iGznefNbVBJ+3FEFE1xZEKdcPiZsev
- dVosjXbr2BFLbqz0E8ro18aLyM/UlQ1P/VSoZVJx+kCA7XvvDpNTBLOuNaoTplfr7z6a
- wtLxjSYzA1qRAiHixpYPfIJtB9nA+wZqrhSEupuHBdFvtvzsvJkus0f7AFr+tqtLs5vN
- GWsw==
-X-Gm-Message-State: AOJu0YxnziAGAoyJY7XqG/AiNTZJ0tuUZGHGAHkBPYD/L6577dJoblix
- 9/vbyVBI+1n0M4Pc7loCwckJTe+yLHT5wq6k6sDzVqATG+mLIRgxBKilmLhceYzkpSSRiTSi0X+
- y
-X-Gm-Gg: ASbGncvUVWWWTVIoQZTkIiOZzSOQp8aCNdtYp4jrukXHdrOGr3SIkHdkFWsbkabcFDe
- /T/yGXU1B4u1XeQsQXYO32OxlcixLtIxsRnn25kAL3V9Hftfynbw4VOjvWBA48QePO0PXsT0936
- 07QgE72faIOHRSTuA91qmrWvnzY8/tCUthUvkNeZkDxbdzK63YsKNSn3U+fA/alNvHqQuPF8Lmr
- 6KzfxCSJiXvN50wzaAuH5CKFGE+fbhmyyHtl0tYoUsBPLZmtOJ3SF8xjoHiOmMKq/NZa8e2gLdP
- jTtAgpbW4/ZF502KCkkdNZisphZzrbduKyerpisWcgYyj9oqRP8FfVCHtTDqsPxub78MQg8LRiA
+ bh=lVaQ8uivr0ZSIFp6lnsLbuP1aUnA44gVuobbLqVlt/s=;
+ b=jMNS6gwfflGUf60Vlzr1VG8tAxF4yPj4CZl0LvJ+7YvbuXis8LSBheXPKJeLKhzCv5
+ kvI6tw1ASlc2R+Zto6Y5ebREAgowL4fKBht6gEwkfWtithnv2IbIiBzTsu95ARY6lWHO
+ 8GQgoyfnxmcE5uMiTQDCL7f2TBr7cDPRJ/JpNblnBCT1yjNQ9COMOaBgSiI064OYopw3
+ xFjCaM/RtgGPxQO3sysmCiBWOPLH/2gjc8GAK7lVBWFKBdhX5nY3uPtwfLYSt61P2R88
+ lAHrpJKsAszp8eipFrVBEwGxdGdgnOQ0itVP7N7aSMEPI5LhyNduweEYSTnoj2hzuxM1
+ ZZJQ==
+X-Gm-Message-State: AOJu0YxiSIL6LFvoMSrvqD34gGuTMPw6MkWuH+GFqt4viktir7j273YA
+ bOcahr9D6NZiPzLuCFYRRsAjT7MCwNt6WQ/1zmThfjEsapM2LhwG1w6YlqCSrUS3eE/ahkwNjna
+ U
+X-Gm-Gg: ASbGnctfG70GsM4hkrNEzgRlhrpcr0RrFANyOx1NI1atL/SRc1SpK4qmO9HS8mh7MBA
+ /TTUP+EjjxlS0gkSHySg/DwOlJxIfGzRhs/oYYdHrHWK+CowB25Yag2kN3K+Qu3H8fKYRTYbkYS
+ eFmQ2zgxtkrhsOVZuqIVTJ739wcaoOqTR/WKPUN7drVMDXk4p9hE0hVIxR+IKFy2rDqLGNEn6cR
+ SuSTU6GwhZvPRzU2Chc50hVNX3Nmqs+ZwJJ5oNjWwc/E6rkTFTSRqt5rf/8obkWy1TfMQdmascr
+ c1GssL2FQCEtypX9DjOHqGJKyTS10l0N+JPjy/THIvbt8pwwlveAGaRQYYYQVf9Ul/WB6VaAvps
  =
-X-Google-Smtp-Source: AGHT+IEDIfI3INze8eWIOIADXSblh/NNFwPGO+YNXLb6Fk61tZEsuFBXN3l9b5kekOFsJObT101koQ==
-X-Received: by 2002:a17:90b:582b:b0:2ee:c04a:4276 with SMTP id
- 98e67ed59e1d1-3087bb36bd4mr24228876a91.5.1745350113569; 
- Tue, 22 Apr 2025 12:28:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHeIN9/7OF7X0azbbbfAD73V7MTV5FfetqOkT+DBbiHv1+pdnmDjoQtREkvSnfDTwUmkUGGZA==
+X-Received: by 2002:a17:90b:4ecf:b0:2ee:693e:ed7a with SMTP id
+ 98e67ed59e1d1-3087bccc3a5mr23409251a91.35.1745350114420; 
+ Tue, 22 Apr 2025 12:28:34 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-3087df21278sm9146865a91.29.2025.04.22.12.28.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:28:33 -0700 (PDT)
+ Tue, 22 Apr 2025 12:28:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 020/147] accel/tcg: Build plugin-gen.c once
-Date: Tue, 22 Apr 2025 12:26:09 -0700
-Message-ID: <20250422192819.302784-21-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 021/147] accel/tcg: Fix cpu_ld*_code_mmu for user mode
+Date: Tue, 22 Apr 2025 12:26:10 -0700
+Message-ID: <20250422192819.302784-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
  envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
@@ -100,90 +98,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We assert that env immediately follows CPUState in cpu-all.h.
-Change the offsetof expressions to be based on CPUState instead
-of ArchCPU.
+These routines are buggy in multiple ways:
+  - Use of target-endian loads, then a bswap that
+    depends on the host endiannness.
+  - A non-unwinding code load must set_helper_retaddr 1,
+    which is magic within adjust_signal_pc.
+  - cpu_ldq_code_mmu used MMU_DATA_LOAD
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+The bugs are hidden because all current uses of cpu_ld*_code_mmu
+are from system mode.
+
+Fixes: 2899062614a ("accel/tcg: Add cpu_ld*_code_mmu")
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/plugin-gen.c | 13 +++++--------
- accel/tcg/meson.build  |  7 ++++---
- 2 files changed, 9 insertions(+), 11 deletions(-)
+ accel/tcg/user-exec.c | 41 ++++-------------------------------------
+ 1 file changed, 4 insertions(+), 37 deletions(-)
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 7e5f040bf7..c1da753894 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -22,13 +22,12 @@
- #include "qemu/osdep.h"
- #include "qemu/plugin.h"
- #include "qemu/log.h"
--#include "cpu.h"
- #include "tcg/tcg.h"
- #include "tcg/tcg-temp-internal.h"
--#include "tcg/tcg-op.h"
--#include "exec/exec-all.h"
-+#include "tcg/tcg-op-common.h"
- #include "exec/plugin-gen.h"
- #include "exec/translator.h"
-+#include "exec/translation-block.h"
- 
- enum plugin_gen_from {
-     PLUGIN_GEN_FROM_TB,
-@@ -89,15 +88,13 @@ static void gen_enable_mem_helper(struct qemu_plugin_tb *ptb,
-     qemu_plugin_add_dyn_cb_arr(arr);
- 
-     tcg_gen_st_ptr(tcg_constant_ptr((intptr_t)arr), tcg_env,
--                   offsetof(CPUState, neg.plugin_mem_cbs) -
--                   offsetof(ArchCPU, env));
-+                   offsetof(CPUState, neg.plugin_mem_cbs) - sizeof(CPUState));
- }
- 
- static void gen_disable_mem_helper(void)
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 2322181b15..629a1c9ce6 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -1257,58 +1257,25 @@ uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr ptr)
+ uint8_t cpu_ldb_code_mmu(CPUArchState *env, abi_ptr addr,
+                          MemOpIdx oi, uintptr_t ra)
  {
-     tcg_gen_st_ptr(tcg_constant_ptr(0), tcg_env,
--                   offsetof(CPUState, neg.plugin_mem_cbs) -
--                   offsetof(ArchCPU, env));
-+                   offsetof(CPUState, neg.plugin_mem_cbs) - sizeof(CPUState));
+-    void *haddr;
+-    uint8_t ret;
+-
+-    haddr = cpu_mmu_lookup(env_cpu(env), addr, oi, ra, MMU_INST_FETCH);
+-    ret = ldub_p(haddr);
+-    clear_helper_retaddr();
+-    return ret;
++    return do_ld1_mmu(env_cpu(env), addr, oi, ra ? ra : 1, MMU_INST_FETCH);
  }
  
- static TCGv_i32 gen_cpu_index(void)
-@@ -113,7 +110,7 @@ static TCGv_i32 gen_cpu_index(void)
-     }
-     TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
-     tcg_gen_ld_i32(cpu_index, tcg_env,
--                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
-+                   offsetof(CPUState, cpu_index) - sizeof(CPUState));
-     return cpu_index;
+ uint16_t cpu_ldw_code_mmu(CPUArchState *env, abi_ptr addr,
+                           MemOpIdx oi, uintptr_t ra)
+ {
+-    void *haddr;
+-    uint16_t ret;
+-
+-    haddr = cpu_mmu_lookup(env_cpu(env), addr, oi, ra, MMU_INST_FETCH);
+-    ret = lduw_p(haddr);
+-    clear_helper_retaddr();
+-    if (get_memop(oi) & MO_BSWAP) {
+-        ret = bswap16(ret);
+-    }
+-    return ret;
++    return do_ld2_mmu(env_cpu(env), addr, oi, ra ? ra : 1, MMU_INST_FETCH);
  }
  
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 14bf797fda..185830d0f5 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -3,6 +3,10 @@ common_ss.add(when: 'CONFIG_TCG', if_true: files(
-   'tcg-runtime.c',
-   'tcg-runtime-gvec.c',
- ))
-+if get_option('plugins')
-+  common_ss.add(when: 'CONFIG_TCG', if_true: files('plugin-gen.c'))
-+endif
-+
- tcg_specific_ss = ss.source_set()
- tcg_specific_ss.add(files(
-   'tcg-all.c',
-@@ -12,9 +16,6 @@ tcg_specific_ss.add(files(
-   'translator.c',
- ))
- tcg_specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
--if get_option('plugins')
--  tcg_specific_ss.add(files('plugin-gen.c'))
--endif
- specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
+ uint32_t cpu_ldl_code_mmu(CPUArchState *env, abi_ptr addr,
+                           MemOpIdx oi, uintptr_t ra)
+ {
+-    void *haddr;
+-    uint32_t ret;
+-
+-    haddr = cpu_mmu_lookup(env_cpu(env), addr, oi, ra, MMU_INST_FETCH);
+-    ret = ldl_p(haddr);
+-    clear_helper_retaddr();
+-    if (get_memop(oi) & MO_BSWAP) {
+-        ret = bswap32(ret);
+-    }
+-    return ret;
++    return do_ld4_mmu(env_cpu(env), addr, oi, ra ? ra : 1, MMU_INST_FETCH);
+ }
  
- specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
+ uint64_t cpu_ldq_code_mmu(CPUArchState *env, abi_ptr addr,
+                           MemOpIdx oi, uintptr_t ra)
+ {
+-    void *haddr;
+-    uint64_t ret;
+-
+-    haddr = cpu_mmu_lookup(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
+-    ret = ldq_p(haddr);
+-    clear_helper_retaddr();
+-    if (get_memop(oi) & MO_BSWAP) {
+-        ret = bswap64(ret);
+-    }
+-    return ret;
++    return do_ld8_mmu(env_cpu(env), addr, oi, ra ? ra : 1, MMU_INST_FETCH);
+ }
+ 
+ #include "ldst_common.c.inc"
 -- 
 2.43.0
 
