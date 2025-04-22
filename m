@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6041A97641
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0BDA97655
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:59:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JSe-0004jl-KL; Tue, 22 Apr 2025 15:39:16 -0400
+	id 1u7JSY-0004UB-12; Tue, 22 Apr 2025 15:39:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JS9-0003wm-8A
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:38:47 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1u7JSD-00042t-1h
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:38:49 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JS6-0007JZ-Bs
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:38:44 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-22409077c06so78136705ad.1
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:38:41 -0700 (PDT)
+ id 1u7JS6-0007Jc-V4
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:38:48 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-227b828de00so60307375ad.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:38:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745350721; x=1745955521; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kFuKs0ZRdu886zC1P1vHTVTWrvjMTKNkcxWEm3BTBV0=;
- b=F1Pd1ancVunOF2XYDd3v235sDXU4GEDmoLD2cs5Zmi5tMKqkRFfOYrdFEuUtIFFXSV
- 8Q31664zbWjQkiDy1A3ORhuMfe9AF6oVDikFv4kBeMXB7H0CPntgktVJGLeZpvL+krcC
- xW9I88JYvaw/cMGkPi3JS0twG+vAdENi9APWiaEFV48vVA62BikqJaylEheShYYaN7mW
- 1sl1roL8AQBKrx57YM1O20m5l311JI8JEert/mEVtF4j11RgLs6BpDM6lNd29zPtsH3D
- x6go7V6Apm7NXCD+puskcX9IY2P1//sKZtcgymU+1L/aGHx5S6fbKSYav9g8xLaaMiiQ
- ZF3g==
+ bh=IzxhDXQ8yhw3qgxUo2QDT1zA0vlXRiIUxtrypSczyWI=;
+ b=FUYF+AXhJORIGnVcv7zRf6y1qlZZrf2eMN04pIsY/TmqbkwQhm6q0MLgaYd3HYCLUe
+ GVhSOrc28TlWBFDqTjq10X4Tvb7r9Oei8wZW0R8k0lR21Hy9SiOpRnvk7iTdTzjZB2fa
+ BRRP1pXBA1y53EmZmjiyibKp57GCPbta5T2hV1FrM9uOfRsqHLdeoGfuF01DudUXia1K
+ F3dQlxxRsmgYXyEOVsV3Fc8gChwsK1RYDrYZWdxmZTqffAIX/8VEPUfxoE7V+xmj4r0L
+ 4a4laMAqu09cqnaYM/OWK4sFSZo4M1qMjTegm6V5N0YLU6AHIb/eSdKixnq63jvWpBDz
+ ev8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745350721; x=1745955521;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kFuKs0ZRdu886zC1P1vHTVTWrvjMTKNkcxWEm3BTBV0=;
- b=I6tZi16i1QTz4vGK1Avv2E1jRuUYC85vM9l82IxPkZF11rOffdL00vc6/mGKZwVA0M
- 0VgTHS8+iAG+0VudD0qCWaZo/kZQHmJlT24p0hQTW1infEfps/5EQUsGv50pCdS4wbi4
- 5gyszCcqxN3w7QvpBgkaDLYuHFvSexAOmzNhwHRtu8DrzvobYViD7koiasF2DkTzkrvq
- k09ylxlWHXa1z56oE7SHhmKK0zg+rLpJuli4ZaFUUvP7+HirlBSADWWHXnHt7C4WZePy
- 5vP9jVzxaRAgCILcsqMoqugtoTXL/n4v49NByn+0qycY7vCAm0Q3O2JBvJWXpM5ClVWF
- V4Ww==
-X-Gm-Message-State: AOJu0YzSMS8iGqDWo8/AFUmJ/6+6UBE9Y/70Drkq1njRNm02A89abJXx
- w5Qx0u83yLZ+vOL46VF1H3145RavZZTg+f4n1uLD1wNb4Y+kZ/02LnscLmhj8aLZRBreG9YNGQN
- R
-X-Gm-Gg: ASbGncsOXRJhET8BCJ9v+TBzInTOf6DEnJcKw8ksbn4cO7Tp6tHSIGS6Pv4Dr1dIJio
- 7bPbGEbPWN3TTRlamGktbUhbgaW3DFFdbqDCeGBzrIEKrKrT0RILRyq/5YJotAH/7dc536+Xlnm
- N3VGR3xWp2qg/oOM1Yxa+IWfeycgeR7Ihl9bLINu2fjAQDpFyh4hDhXdU4dYR5I5y6ZLKPXY9Xq
- Sg7ADOqSEc4ossbpdxBTLSm305KFqlyUMdI47JxjXOcdxtR6mMeWiLXveybwqYpXM/8bIj3EshO
- l7HLSYH5MXpfSQQLZz01jJ/ianFHDBaICS7Qk0H3hw572YqTJLRMPki2jUApXAL6vq3uU5sxV7k
+ bh=IzxhDXQ8yhw3qgxUo2QDT1zA0vlXRiIUxtrypSczyWI=;
+ b=rzqiUPg41vR5D+7AqF9LkNJQ1llaGoVgsYkHoNm7JZIafJoF36O9klpDEGrbmdFiIG
+ GARaScyQ9gxHlCpxW2xCn/VtmrXN5kmTgPHmbi/QtMMALHHZI+n+S7QYfVTA0xxcE3CC
+ pqGn+UEzF334zxpograv8AgTsabxLa+0pakyxFYX16onqBg8azlpfCHf9qZe61GsXrHY
+ dUksszGITRIvlJBo4GWOHKe+l6edcViQpdN6u2M9LOvSKcTSPpGxN0NWBn+KFFXfJLE6
+ 97fsSYugLj+KqYIfmlwm5ySlkd1nwmndmqehrw8KX3ZTrmQqkmz8ZBeIDNYB18EiL1Yz
+ D/pw==
+X-Gm-Message-State: AOJu0YxVpx4jQTnKRKex24YvOpYASEPigJrD60OzazsMbyhSoxO8y9tp
+ M22qEwouPG1/re7D+xlbrmhh/JMcllsyymR/rPSy9yF7fzrLr4W5sMtwrz4w8gk7BNu8mlFJGt9
+ C
+X-Gm-Gg: ASbGnctUsapdpxgmK97X659d5hwbsCt6P7+ftW3KuBSMpgB6bMbJJZUBNaZQY6fXMFw
+ VFn9BTajAXnSqX6YQSpKhQZiCzE4MNxFlP90zIIP0WmMFE3AEyJaIuTtW23EVJuAz80/NylLLkM
+ nZwCRqmh6qwXag5eW5lWXPP81RwH4lSQC1HNQFv8GDUKbvyGiHzkjtS434Du6/zHrO6YMjiz+UK
+ 48oNbOmFOsj7XeHPN/XteG0XhS8vaAFcuzM63fXVCkK98ugxaaxsH9yGOOc4FRgoH329Dktlcs5
+ gnusep9iwlO54nzTXAYE5sqXfnGW+ydBSeDnyUkGjI6nwcsObRKUQEVDUBvohzlafcwXzTqmMiQ
  =
-X-Google-Smtp-Source: AGHT+IGg8e1fsPPryl+2CyFkZiTKv+ndwX4lQS5km2B8ytNem9NFRhhXUB1KkYkFAVz52PhuQpUwpw==
-X-Received: by 2002:a17:903:1110:b0:223:f408:c3f7 with SMTP id
- d9443c01a7336-22c535831f2mr245926495ad.16.1745350720775; 
- Tue, 22 Apr 2025 12:38:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbtiicSLiPj/cD3gtYnscBp0+vVys6yrQTwSEKVHdD87NXX0KuKpIJ7tRabBFiM81u4PsCDQ==
+X-Received: by 2002:a17:902:cec7:b0:224:584:6f07 with SMTP id
+ d9443c01a7336-22c5360772dmr221935605ad.37.1745350721373; 
+ Tue, 22 Apr 2025 12:38:41 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-22c50eb484dsm88951765ad.148.2025.04.22.12.38.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:38:40 -0700 (PDT)
+ Tue, 22 Apr 2025 12:38:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 122/147] hw/arm/xlnx-zynqmp: prepare compilation unit to be
+Subject: [PATCH 123/147] hw/arm/xlnx-versal: prepare compilation unit to be
  common
-Date: Tue, 22 Apr 2025 12:27:51 -0700
-Message-ID: <20250422192819.302784-123-richard.henderson@linaro.org>
+Date: Tue, 22 Apr 2025 12:27:52 -0700
+Message-ID: <20250422192819.302784-124-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,25 +106,25 @@ Remove kvm unused headers.
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250325045915.994760-28-pierrick.bouvier@linaro.org>
+Message-ID: <20250325045915.994760-29-pierrick.bouvier@linaro.org>
 ---
- hw/arm/xlnx-zynqmp.c | 2 --
+ hw/arm/xlnx-versal.c | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
-index d6022ff2d3..ec2b3a41ed 100644
---- a/hw/arm/xlnx-zynqmp.c
-+++ b/hw/arm/xlnx-zynqmp.c
-@@ -22,9 +22,7 @@
- #include "hw/intc/arm_gic_common.h"
- #include "hw/misc/unimp.h"
- #include "hw/boards.h"
--#include "system/kvm.h"
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index 278545a3f7..f0b383b29e 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -17,9 +17,7 @@
+ #include "hw/sysbus.h"
+ #include "net/net.h"
  #include "system/system.h"
+-#include "system/kvm.h"
+ #include "hw/arm/boot.h"
 -#include "kvm_arm.h"
- #include "target/arm/cpu-qom.h"
- #include "target/arm/gtimer.h"
- 
+ #include "hw/misc/unimp.h"
+ #include "hw/arm/xlnx-versal.h"
+ #include "qemu/log.h"
 -- 
 2.43.0
 
