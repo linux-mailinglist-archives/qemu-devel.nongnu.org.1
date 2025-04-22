@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A90A96EFF
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 16:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85ECBA96F61
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 16:56:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Eh6-0004N9-3C; Tue, 22 Apr 2025 10:33:52 -0400
+	id 1u7F1j-0006lR-Um; Tue, 22 Apr 2025 10:55:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7Eh3-0004Mv-K5
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:33:49 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7Eh0-0002NT-Pl
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:33:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745332426; x=1776868426;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=p7s1My4NKygGrdOUrBRFtw5eXLITEiMGyiUbmIhV8Gk=;
- b=SUwVrrUoFOR8i1WhvNAcWyJGj73HoB/ATv3m95ABRQlUYozcpy/AglS8
- 6j1S8r5d7YkK7svoJgioGzWVgjt341cr6sqOIUhorcbPHjE5jIX3Tnfte
- KfStmhC/ilWQRVLq/ggzulaGhGnlzI3iAhuXSqaNUIhj8o6GhHZ/Qt99l
- OQ5XAmgh+sWVDkhlMPQVTUkH/EWOnisWCQXcxGU8GoPUG/63sObAvSjAv
- njFsgr9fyD9iAzpBTQv7kNuCLB4QAoPFj2/SA14QmALRfmKD5dcY66hMx
- W/LyV4p93A0heIyL1P8ayiDhsM+SVzeMNTMpNNHBYVlRwx4NjiOxSnRQT w==;
-X-CSE-ConnectionGUID: /ozmmTNJRGC6Yn1hQDj3cQ==
-X-CSE-MsgGUID: QSq5uY4vQYSxWy44akugBQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="57083890"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="57083890"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 07:33:43 -0700
-X-CSE-ConnectionGUID: P0yWJhoASN+PklBJIKvyDA==
-X-CSE-MsgGUID: xfSBkJY9TeaKK9Ngwj4qVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="131873962"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 22 Apr 2025 07:33:40 -0700
-Date: Tue, 22 Apr 2025 22:54:35 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 08/55] i386/tdx: Initialize TDX before creating TD vcpus
-Message-ID: <aAetq2ZgqaRHmdPm@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-9-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7F1h-0006jZ-2O
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:55:09 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7F1e-00056Y-KB
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:55:08 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3914bc3e01aso3266802f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 07:55:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745333704; x=1745938504; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Yxl4aJx9kDFtBdy1ZVBDbGRwT7YOukchD6kWnStUhFg=;
+ b=t9UVZ/wKkxCkf/p9cOjNRSv255yCjVv5Y8ATlub55cqCG7yghxK4oCCp4mzo6q2uKg
+ UOWFuu79qkHE/6YyUiIZ72vDSsYmx5SYfFdxmVMBg9eLuQGTmX8Xw7olYT+WpPfiktA+
+ wjLLKJI4/aFhTAv/N/aHAHIMFL70aYAC5AxRs+auJPBii+TEDvfIcHNJyjFUmXMlduN/
+ a057mVBzakcOP8XQ4CYso1rnWqDOQutdeWunkdBxO9YSaiqf60M2p8uEkwoiZqme5Oub
+ PohaoDRLX7iIznwG5XKIBTvZbsBAvIQsYKChfWoE2el7AazProvmo8evSEHyV37uniHG
+ iK4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745333704; x=1745938504;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Yxl4aJx9kDFtBdy1ZVBDbGRwT7YOukchD6kWnStUhFg=;
+ b=UItI12V5wlLRXPGLASSKTsHO7HOwRCXYXZsFw6gJfyBQLLl1HMnNXbVC7Zz7Yt8fnr
+ ZJgrAX02ig84zW/GX7RKZFON1pdjDLVC0JwW4HXqv+icYhqXuPqgEYM7FVdANkXtN2Xo
+ 55ilMF0HR4PAomASt3pVg0wpvVEtyh1lgLOTAU5p6pENTbt3vhjvlmco1W+lmtOKoOxV
+ MjUBrwA4ZhV59oSo3AwLpN9XKt8AYVHT9bA5wTnVVN9iIqYWgsn3Zk2/gG6+rPkOEOPV
+ KrQAkJpjwkIFKXGfhSsK3gMIo3XvM1m01LSevyAufn57OuVFYAt3FyJcuD0SuhbRDBI7
+ 7cQQ==
+X-Gm-Message-State: AOJu0Yyg1dS0geI4/y+kKbMg7asN/ksv3K+t8Hrm46OXCKHSiEtYO1ZU
+ ewGRXETwFYEFlP16N64PLekrWNLyh0oWh/zg4ipLk5JvdFMNKYAOGMbxuCetl1eI0K/V4PVwmRA
+ j
+X-Gm-Gg: ASbGncvC9uUDPMU4TPIGdDTMRPkHIQGF2bavpaJjGrJa1BA+AgUVZNU63kUI6TKpBCA
+ jkGkIE5PYAkx45AQUytMtoCpF3pg3R7G78vNC9KHkcQY1T0G6I15U8jiN/Au+ASxFV8AKnWYq/3
+ rjqdUUskrUBRXDsc+x0IdGHOT4+0MlZB8lvAAIDXqw9tjM6CUDd14Dx6zC+tGRWg5/Ybsv7uB9P
+ WJdM5IL12jPw5b+PU3HIqdiRCD0415Kxwl4KqaEjbZlbCDokFLH9tFL7vy6QvL/pK/paMxV/S7b
+ DkwRiaEKzukq04ARC7EmVjRAAY0d8SZKaKFPxXot0wNEAZDTy7x7x7VzosHo8xiFJ+moXNZLmLH
+ Lwhl1twchPTE+yiQ=
+X-Google-Smtp-Source: AGHT+IGaLHXcIYnQviW//SVgN6V9DTUyhKhUJwD8FlynwkGc6P/+RC3WO6kCiszK9Oh1orsxON70EA==
+X-Received: by 2002:a5d:6488:0:b0:391:3207:2e6f with SMTP id
+ ffacd0b85a97d-39efbace3e3mr10913621f8f.42.1745333703702; 
+ Tue, 22 Apr 2025 07:55:03 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-39efa493207sm15562711f8f.79.2025.04.22.07.55.02
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 22 Apr 2025 07:55:03 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Anton Johansson <anjo@rev.ng>
+Subject: [RFC PATCH v4 00/19] single-binary: Make hw/arm/ common
+Date: Tue, 22 Apr 2025 16:54:42 +0200
+Message-ID: <20250422145502.70770-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-9-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,54 +96,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:18AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:18 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 08/55] i386/tdx: Initialize TDX before creating TD vcpus
-> X-Mailer: git-send-email 2.34.1
-> 
-> Invoke KVM_TDX_INIT_VM in kvm_arch_pre_create_vcpu() that
-> KVM_TDX_INIT_VM configures global TD configurations, e.g. the canonical
-> CPUID config, and must be executed prior to creating vCPUs.
-> 
-> Use kvm_x86_arch_cpuid() to setup the CPUID settings for TDX VM.
-> 
-> Note, this doesn't address the fact that QEMU may change the CPUID
-> configuration when creating vCPUs, i.e. punts on refactoring QEMU to
-> provide a stable CPUID config prior to kvm_arch_init().
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-> Acked-by: Markus Armbruster <armbru@redhat.com>
-> ---
-> Changes in v8:
-> - Drop the code that initializes cpu->kvm_state before
->   kvm_arch_pre_create_vcpu() because it's not needed anymore.
-> 
-> Changes in v7:
-> - Add comments to explain why KVM_TDX_INIT_VM should retry on -EAGAIN;
-> - Add retry limit of 10000 times for -EAGAIN on KVM_TDX_INIT_VM;
-> 
-> Changes in v6:
-> - setup xfam explicitly to fit with new uapi;
-> - use tdx_caps->cpuid to filter the input of cpuids because now KVM only
->   allows the leafs that reported via KVM_TDX_GET_CAPABILITIES;
-> 
-> Changes in v4:
-> - mark init_vm with g_autofree() and use QEMU_LOCK_GUARD() to eliminate
->   the goto labels; (Daniel)
-> Changes in v3:
-> - Pass @errp in tdx_pre_create_vcpu() and pass error info to it. (Daniel)
-> ---
->  target/i386/kvm/kvm.c       |  16 +++---
->  target/i386/kvm/kvm_i386.h  |   5 ++
->  target/i386/kvm/meson.build |   2 +-
->  target/i386/kvm/tdx-stub.c  |  10 ++++
->  target/i386/kvm/tdx.c       | 105 ++++++++++++++++++++++++++++++++++++
->  target/i386/kvm/tdx.h       |   6 +++
->  6 files changed, 137 insertions(+), 7 deletions(-)
->  create mode 100644 target/i386/kvm/tdx-stub.c
+Since v3
+- QAPI structure renamed as QemuTargetInfo
+- MachineClass::get_valid_cpu_types() runtime
+- target_aarch64() checking SysEmuTarget value
+- Remove CONFIG_TCG #ifdef'ry in hw/arm/
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Since v2:
+- More comments from Pierrick addressed
+- Use GList to register valid CPUs list
+- Remove all TARGET_AARCH64 uses in hw/arm/
+
+Since v1:
+- Dropped unrelated / irrelevant patches
+- Addressed Pierrick comments
+- Added R-b tag
+- Only considering machines, not CPUs.
+
+Hi,
+
+At this point this series is mostly a draft for Pierrick.
+
+After introducing the generic TargetInfo API [*], we implement
+the ARM variants, then use the API to remove target-specific code,
+allowing to eventually remove the target-specific arm_ss[] source
+set in meson.build, having all objects in arm_common_ss[].
+
+Regards,
+
+Phil.
+
+Available here, based on tcg-next:
+https://gitlab.com/philmd/qemu/-/tags/single-binary-hw-arm-rfc-v4
+
+Philippe Mathieu-Daudé (19):
+  qapi: Rename TargetInfo structure as QemuTargetInfo
+  qemu: Convert target_name() to TargetInfo API
+  system/vl: Filter machine list available for a particular target
+    binary
+  hw/arm: Register TYPE_TARGET_ARM/AARCH64_MACHINE QOM interfaces
+  hw/core: Allow ARM/Aarch64 binaries to use the 'none' machine
+  hw/arm: Filter machine types for qemu-system-arm/aarch64 binaries
+  meson: Prepare to accept per-binary TargetInfo structure
+    implementation
+  config/target: Implement per-binary TargetInfo structure (ARM,
+    AARCH64)
+  hw/arm/aspeed: Build objects once
+  hw/arm/raspi: Build objects once
+  hw/core/machine: Allow dynamic registration of valid CPU types
+  hw/arm/virt: Register valid CPU types dynamically
+  hw/arm/virt: Check accelerator availability at runtime
+  qemu/target_info: Add %target_arch field to TargetInfo
+  qemu/target_info: Add target_aarch64() helper
+  hw/arm/virt: Replace TARGET_AARCH64 -> target_aarch64()
+  hw/core: Get default_cpu_type calling machine_class_default_cpu_type()
+  hw/core: Introduce MachineClass::get_default_cpu_type() helper
+  hw/arm/virt: Get default CPU type at runtime
+
+ MAINTAINERS                       |   8 +++
+ meson.build                       |  11 +++
+ qapi/machine.json                 |  10 +--
+ include/hw/arm/machines-qom.h     |  18 +++++
+ include/hw/boards.h               |  10 +++
+ include/hw/core/cpu.h             |   2 -
+ include/qemu/target-info-impl.h   |  35 +++++++++
+ include/qemu/target-info.h        |  34 +++++++++
+ configs/targets/aarch64-softmmu.c |  23 ++++++
+ configs/targets/arm-softmmu.c     |  23 ++++++
+ cpu-target.c                      |   5 --
+ hw/arm/aspeed.c                   | 115 ++++++++++++++++++++++++++++--
+ hw/arm/b-l475e-iot01a.c           |   6 ++
+ hw/arm/bananapi_m2u.c             |   6 ++
+ hw/arm/bcm2836.c                  |   5 +-
+ hw/arm/collie.c                   |   6 ++
+ hw/arm/cubieboard.c               |   6 ++
+ hw/arm/digic_boards.c             |   6 ++
+ hw/arm/exynos4_boards.c           |  11 +++
+ hw/arm/fby35.c                    |   6 ++
+ hw/arm/highbank.c                 |  11 +++
+ hw/arm/imx25_pdk.c                |   6 ++
+ hw/arm/imx8mp-evk.c               |   5 ++
+ hw/arm/integratorcp.c             |   6 ++
+ hw/arm/kzm.c                      |   6 ++
+ hw/arm/mcimx6ul-evk.c             |   6 ++
+ hw/arm/mcimx7d-sabre.c            |   6 ++
+ hw/arm/microbit.c                 |   6 ++
+ hw/arm/mps2-tz.c                  |  21 ++++++
+ hw/arm/mps2.c                     |  21 ++++++
+ hw/arm/mps3r.c                    |   6 ++
+ hw/arm/msf2-som.c                 |   6 ++
+ hw/arm/musca.c                    |  11 +++
+ hw/arm/musicpal.c                 |   6 ++
+ hw/arm/netduino2.c                |   6 ++
+ hw/arm/netduinoplus2.c            |   6 ++
+ hw/arm/npcm7xx_boards.c           |  26 +++++++
+ hw/arm/npcm8xx_boards.c           |   5 ++
+ hw/arm/olimex-stm32-h405.c        |   6 ++
+ hw/arm/omap_sx1.c                 |  11 +++
+ hw/arm/orangepi.c                 |   6 ++
+ hw/arm/raspi.c                    |  28 ++++++--
+ hw/arm/raspi4b.c                  |   5 ++
+ hw/arm/realview.c                 |  21 ++++++
+ hw/arm/sabrelite.c                |   6 ++
+ hw/arm/sbsa-ref.c                 |   5 ++
+ hw/arm/stellaris.c                |  11 +++
+ hw/arm/stm32vldiscovery.c         |   6 ++
+ hw/arm/versatilepb.c              |  11 +++
+ hw/arm/vexpress.c                 |  11 +++
+ hw/arm/virt.c                     |  78 +++++++++++---------
+ hw/arm/xilinx_zynq.c              |   6 ++
+ hw/arm/xlnx-versal-virt.c         |   5 ++
+ hw/arm/xlnx-zcu102.c              |   5 ++
+ hw/core/machine-qmp-cmds.c        |  10 +--
+ hw/core/machine.c                 |  37 ++++++++++
+ hw/core/null-machine.c            |   6 ++
+ plugins/loader.c                  |   2 +-
+ system/vl.c                       |   7 +-
+ target-info-qom.c                 |  24 +++++++
+ target-info-stub.c                |  22 ++++++
+ target-info.c                     |  26 +++++++
+ target/ppc/cpu_init.c             |   2 +-
+ configs/targets/meson.build       |   3 +
+ hw/arm/meson.build                |  12 ++--
+ 65 files changed, 813 insertions(+), 71 deletions(-)
+ create mode 100644 include/hw/arm/machines-qom.h
+ create mode 100644 include/qemu/target-info-impl.h
+ create mode 100644 include/qemu/target-info.h
+ create mode 100644 configs/targets/aarch64-softmmu.c
+ create mode 100644 configs/targets/arm-softmmu.c
+ create mode 100644 target-info-qom.c
+ create mode 100644 target-info-stub.c
+ create mode 100644 target-info.c
+ create mode 100644 configs/targets/meson.build
+
+-- 
+2.47.1
 
 
