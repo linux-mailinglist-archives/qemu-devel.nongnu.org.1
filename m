@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F715A971DB
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 18:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DFBA971DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 18:04:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7G6N-00083x-1C; Tue, 22 Apr 2025 12:04:03 -0400
+	id 1u7G6V-0008Sn-4v; Tue, 22 Apr 2025 12:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5I-0006pZ-An
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:02:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5c-00076P-2b
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:03:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5G-0004zx-9x
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:02:55 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5Z-00051k-VT
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:03:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745337773;
+ s=mimecast20190719; t=1745337791;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6Q0Z0CL8QF5QlkxY7j++h4LnzFHI7LHtzWuUVvrkmqE=;
- b=dBxB5p0BM4/HgMAVWlxjJy4ZW3RmGsL9MOiQ/djFg9NU2Y3FuZ51ZuZcu4X9FMzlxLyBuR
- fh9XZIR+DvVwqYuY9gFDjJyDRDi73ZOYK2uP/G46tQknQSEwBRbwJVXoU1HH+a7LZV/hX1
- TFiUPrcRGT6NnnjTuMz2k6iKv1/HDtQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=PJEV7YbZmqoA/+z3AqVso1logyHlHQ/amn4WRaMTyNk=;
+ b=cvPr/hGJlGq4VqI0nLCxEiWJ1JcM4dXtupt9ksoyt8cadj5J/frQfr2lccNyobM7cuxw/G
+ lqiSVPG8+63+guA+P+WEl3NOg6GwViCzFuuExUhLMITXT2DOOXfpTt1urQ/Gj+k7YH554b
+ mnCi652xJSvEmV3pS84go819GKyt3ZU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-iF3inhvoOP-I_o7TCeThPw-1; Tue,
- 22 Apr 2025 12:02:50 -0400
-X-MC-Unique: iF3inhvoOP-I_o7TCeThPw-1
-X-Mimecast-MFC-AGG-ID: iF3inhvoOP-I_o7TCeThPw_1745337769
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-241-_ai7hhQOM3-Ztc2LPQ_CFw-1; Tue,
+ 22 Apr 2025 12:03:08 -0400
+X-MC-Unique: _ai7hhQOM3-Ztc2LPQ_CFw-1
+X-Mimecast-MFC-AGG-ID: _ai7hhQOM3-Ztc2LPQ_CFw_1745337787
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5E162180087B; Tue, 22 Apr 2025 16:02:49 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5C27E1955DD0; Tue, 22 Apr 2025 16:03:07 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.105])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D798618001DD; Tue, 22 Apr 2025 16:02:45 +0000 (UTC)
+ id B048818001DD; Tue, 22 Apr 2025 16:03:03 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	Alex Williamson <alex.williamson@redhat.com>
@@ -50,17 +50,19 @@ Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  John Levon <john.levon@nutanix.com>,
  Joao Martins <joao.m.martins@oracle.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 05/37] vfio: Make vfio_viommu_preset() static
-Date: Tue, 22 Apr 2025 18:01:52 +0200
-Message-ID: <20250422160224.199714-6-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Yi Liu <yi.l.liu@intel.com>
+Subject: [PATCH v3 10/37] vfio: Introduce a new header file for VFIOIOMMUFD
+ declarations
+Date: Tue, 22 Apr 2025 18:01:57 +0200
+Message-ID: <20250422160224.199714-11-clg@redhat.com>
 In-Reply-To: <20250422160224.199714-1-clg@redhat.com>
 References: <20250422160224.199714-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -85,63 +87,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This routine is only used in file "migration.c". Move it there.
+Gather all VFIOIOMMUFD related declarations introduced by commits
+5ee3dc7af785 ("vfio/iommufd: Implement the iommufd backend") and
+5b1e96e65403 ("vfio/iommufd: Introduce auto domain creation") into
+"vfio-iommufd.h". This to reduce exposure of VFIO internals in
+"hw/vfio/vfio-common.h".
 
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Yi Liu <yi.l.liu@intel.com>
 Reviewed-by: John Levon <john.levon@nutanix.com>
+Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-10-clg@redhat.com
 Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-6-clg@redhat.com
-Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-6-clg@redhat.com
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-11-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h | 1 -
- hw/vfio/common.c              | 5 -----
- hw/vfio/migration.c           | 5 +++++
- 3 files changed, 5 insertions(+), 6 deletions(-)
+ hw/vfio/vfio-iommufd.h        | 34 ++++++++++++++++++++++++++++++++++
+ include/hw/vfio/vfio-common.h | 21 +++------------------
+ hw/vfio/iommufd.c             |  1 +
+ 3 files changed, 38 insertions(+), 18 deletions(-)
+ create mode 100644 hw/vfio/vfio-iommufd.h
 
+diff --git a/hw/vfio/vfio-iommufd.h b/hw/vfio/vfio-iommufd.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..07ea0f43049645a5f3782048117fd9bf22083053
+--- /dev/null
++++ b/hw/vfio/vfio-iommufd.h
+@@ -0,0 +1,34 @@
++/*
++ * VFIO iommufd
++ *
++ * Copyright Red Hat, Inc. 2025
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_VFIO_VFIO_IOMMUFD_H
++#define HW_VFIO_VFIO_IOMMUFD_H
++
++#include "hw/vfio/vfio-container-base.h"
++
++typedef struct VFIODevice VFIODevice;
++
++typedef struct VFIOIOASHwpt {
++    uint32_t hwpt_id;
++    uint32_t hwpt_flags;
++    QLIST_HEAD(, VFIODevice) device_list;
++    QLIST_ENTRY(VFIOIOASHwpt) next;
++} VFIOIOASHwpt;
++
++typedef struct IOMMUFDBackend IOMMUFDBackend;
++
++typedef struct VFIOIOMMUFDContainer {
++    VFIOContainerBase bcontainer;
++    IOMMUFDBackend *be;
++    uint32_t ioas_id;
++    QLIST_HEAD(, VFIOIOASHwpt) hwpt_list;
++} VFIOIOMMUFDContainer;
++
++OBJECT_DECLARE_SIMPLE_TYPE(VFIOIOMMUFDContainer, VFIO_IOMMU_IOMMUFD);
++
++#endif /* HW_VFIO_VFIO_IOMMUFD_H */
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 32b816fa122aee00840c70d2e208310a845ad831..8bb206d755adab4efee32a173c920d9aa4833685 100644
+index 3355c2d4e57569d7bb01b4d9378fb49a807335e8..8d48f5300a791d8858fe29d1bb905f814ef11990 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -290,7 +290,6 @@ extern VFIODeviceList vfio_device_list;
- extern const MemoryListener vfio_memory_listener;
- extern int vfio_kvm_device_fd;
+@@ -69,27 +69,12 @@ typedef struct VFIOContainer {
  
--bool vfio_viommu_preset(VFIODevice *vbasedev);
- void vfio_migration_add_bytes_transferred(unsigned long val);
- bool vfio_device_state_is_running(VFIODevice *vbasedev);
- bool vfio_device_state_is_precopy(VFIODevice *vbasedev);
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index f78fff41639b83b82eeadf4e40b7ca2cf6bd64dd..a4ec60e018df7dc9bbbeac27120907b0f7bf2f83 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -66,11 +66,6 @@ int vfio_kvm_device_fd = -1;
-  */
+ OBJECT_DECLARE_SIMPLE_TYPE(VFIOContainer, VFIO_IOMMU_LEGACY);
  
- 
--bool vfio_viommu_preset(VFIODevice *vbasedev)
--{
--    return vbasedev->bcontainer->space->as != &address_space_memory;
--}
+-typedef struct IOMMUFDBackend IOMMUFDBackend;
 -
- bool vfio_device_state_is_running(VFIODevice *vbasedev)
- {
-     VFIOMigration *migration = vbasedev->migration;
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index db2525fcb926bd228ae2d4dca5eeb2de28041660..96d294794bc3056baa3b0b4e23488402db5de797 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -1141,6 +1141,11 @@ bool vfio_migration_active(void)
-     return true;
- }
+-typedef struct VFIOIOASHwpt {
+-    uint32_t hwpt_id;
+-    uint32_t hwpt_flags;
+-    QLIST_HEAD(, VFIODevice) device_list;
+-    QLIST_ENTRY(VFIOIOASHwpt) next;
+-} VFIOIOASHwpt;
+-
+-typedef struct VFIOIOMMUFDContainer {
+-    VFIOContainerBase bcontainer;
+-    IOMMUFDBackend *be;
+-    uint32_t ioas_id;
+-    QLIST_HEAD(, VFIOIOASHwpt) hwpt_list;
+-} VFIOIOMMUFDContainer;
+-
+-OBJECT_DECLARE_SIMPLE_TYPE(VFIOIOMMUFDContainer, VFIO_IOMMU_IOMMUFD);
+-
+ typedef struct VFIODeviceOps VFIODeviceOps;
+ typedef struct VFIOMigration VFIOMigration;
  
-+static bool vfio_viommu_preset(VFIODevice *vbasedev)
-+{
-+    return vbasedev->bcontainer->space->as != &address_space_memory;
-+}
++typedef struct IOMMUFDBackend IOMMUFDBackend;
++typedef struct VFIOIOASHwpt VFIOIOASHwpt;
 +
- /*
-  * Return true when either migration initialized or blocker registered.
-  * Currently only return false when adding blocker fails which will
+ typedef struct VFIODevice {
+     QLIST_ENTRY(VFIODevice) next;
+     QLIST_ENTRY(VFIODevice) container_next;
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 42c8412bbf50724dddb43f9b19a3aa40c8bc311d..7196c4080125674ec58b1ebf02dad84b4387c355 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -25,6 +25,7 @@
+ #include "qemu/cutils.h"
+ #include "qemu/chardev_open.h"
+ #include "pci.h"
++#include "vfio-iommufd.h"
+ 
+ static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                             ram_addr_t size, void *vaddr, bool readonly)
 -- 
 2.49.0
 
