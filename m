@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7DBA97685
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 22:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C98A9768E
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 22:12:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JPh-0006t2-Mn; Tue, 22 Apr 2025 15:36:14 -0400
+	id 1u7JO5-0003Dl-Vn; Tue, 22 Apr 2025 15:34:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLk-0000mB-B1
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:09 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1u7JLo-0000sR-0i
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:12 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JLg-0006eK-8l
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:06 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-224019ad9edso79385985ad.1
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:32:03 -0700 (PDT)
+ id 1u7JLj-0006f6-Uv
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:32:10 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-225df540edcso2861915ad.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:32:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745350323; x=1745955123; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745350326; x=1745955126; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7VCm6mlHRL+Ejn4ewBmyxmL8FXzxR8z3K0tghqh0r4s=;
- b=NGPlTD7hrYGOuG4Allx3iBhaoCJDTKDzTE3Tojee9v3iqigxw34G1IdbBhNnPnmszz
- mT3QwkGHNiK4v3QNR5lGunHkr5u5bQaq+nBA8uXOY2IZFWeNg5pxXkquLsiVKObR5Ict
- 2SolhP1kfzsEvpryNNTF4caPqrU4Mb0LxJ95TmvXQxFUxgdJ5olqmfOtMyD7l/brsNXB
- 0qOyikPaAoL2VMQX+gpDG47d7tk1yEFWJVNcHuusx2yxUIAh38s5BNr6LzQ2vfNq8JY3
- WEJ1dQvZTbsIq3g7QsC9UUUhHgVb3Pn8iqe58vEwhI/mRK8Q6iKugAHzPzY8CF8tmKmg
- sWCg==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZSAf1+HedmWB7UB003Jb743ifjZ0UvEme3TNs+0ZvNA=;
+ b=SOy5jfIydsv5bnXRjxMaCR/GwPFG9lH46AniRisHWJOgbSHGwx4GgZgnPv32Oa0KZo
+ kb0Af9aUmE+n2p904Jhj78U/imsNHY+j7+2Wz3SRrjx5ZRbYAqU+VYV1FS2MxDF7QIKT
+ tqSyzndpd8xFDJw1Hc865h/YyUgUY37tVL6qmslcqzoWgU3uLkIjmglC9YqXmBgWPCsK
+ tUNKB7V8Vsn6O8jLyosbAeKZuXtrSXgnWsUJoKvhD5uFZytQwlQchvXsZ5h9IpbMpEwF
+ 7sCdppfEKHOgZuWrqBVqh2zCaxfRysldRuONdLohDiYfTsYkhu9aJcxPeE5K01QsgKOq
+ gD0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745350323; x=1745955123;
+ d=1e100.net; s=20230601; t=1745350326; x=1745955126;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7VCm6mlHRL+Ejn4ewBmyxmL8FXzxR8z3K0tghqh0r4s=;
- b=ksoIibSlhfWM9a1QvlTL/qwAcFDcQHR3QgEEcUfCnXkFn3Nro7xlEMmjVnuXFmEEHF
- pxn3ckZ/V+62ikTW97R5UJL5j3tTmeUhRSs451v1RjZg7nJ6JFH1lh3noNFQwHpomnqW
- cbAKNI/r5k0DcIMjhD+O6D0eZkUKdhMDGK4RW5+RehrzhwZ45NXYEOzIn0VzqrvBzSLz
- PsQHg5AmHPvSBttuNMrJnqMMI51JHtCWE7qwyilXnYZ5yeIUtPJuBAnMuATHCjSekPJh
- /4MwbAUwIu3Lu5qqCk6TVwaQ861xgFY+3P6V4RjrD0Y8lCir9fuWbk8fQ4CyyBkZ9Oot
- hBsQ==
-X-Gm-Message-State: AOJu0YwEMftQckHcKjDl0j+By5NjO+jI6ycnseF8333nHYEC8jekPtH8
- LGoKMypWftF9rpER0kMEe59Ll+Lp1OlwDu+GWa7sV2ZPJ4EpvcXG6IGTwipbEVa/zyAj4OGAmfK
- 0
-X-Gm-Gg: ASbGncuJOADx/STXgC/eFrHNkAZ+K842QORbFPLmd/LJhOpZT2Z2XTv7jKDmRbCKjsa
- 9B7eqUt09VL5+cBsFo5udWpgkadkLjHuPkIu1FlrvvZqv9fWkZ1MtQ41MbUuJV/EQ2lwDqd8rNL
- s2K1hqjeK518bfaoHtsApGjjjiCzygfNDruaiMo3xK7xsEjYJ3bsry+o2JXKOpuIcNYxiO6XlEu
- c6HwPbFFGQchlQ1Sh87wtD/j2cNB6rBJNwcZF2jsx7YWLYjAGH8dTKptbz8Za/6hU6uHiKfkkyO
- OW6JyLI6zL6xTORyjZtpO3XPt+8RyTeqZKTIttbVmwadZhwDw/bCec8AEzNf0hOrEXTE/A2i6lU
+ bh=ZSAf1+HedmWB7UB003Jb743ifjZ0UvEme3TNs+0ZvNA=;
+ b=PlB/TaGIxjpQNqPpSxxFqVxwVxcQ+QLxy00PaGPBCahhTsQ4XGVMXtZwrZMDpeM29A
+ BkKdZ5J93gWxlknfiAvGoa7/iJFKlwuYrIVjuHdwTvvTCA2ZnyuT4PGwEMT8RswxNYoE
+ hjOhVkEde0PzJo5D7t32Qnzr3O0FMJDipibza1l2eA7uwbsM9cudx2vC5Y5XpJE7RtaD
+ iw55lR56QzV+iStsEeWfDtubYW65auLkC80EwgZCnQWetj2Q1bxA/ZJqmfRwS2tZj/t6
+ M6FHI1lwwDsch/pBv+VU0WbV2OPVUelaEds2JAXUAoJ3sBL1KSOxVLa0SOZgOEqGm4Tk
+ yCCw==
+X-Gm-Message-State: AOJu0YwzFKjkNiO1wiE1Ygo3YcQ6OP5W5Ipk1yu3nF/kRmCg5G/nssX1
+ MSGgctG3wH0HMCGV8VqCFVQM9vBAZ3iv1JsZJzppIKw3wA5m3Qum0HrjJfH3kjhTm5m/uLMZNqb
+ w
+X-Gm-Gg: ASbGnct/op5KcH3kjS/qwv1UGeTC9U8S+aWIsZOdbU7FoLsRGhEa1tEM4kWqWp3rdQh
+ s2n9vYO7oubTVXY3rVoiRq7zBdH3Rk2m2pEr13Qn5h6iLzQDqmZNKxZ/O+Hae9A+9OP3taM3Xuj
+ WbaHN4whaPyBrmS7N4dDq+rNjbMMQ650KbSEk2rpObvxeJ3NvSgr3j+Dv3OEaItTNrBZw0hWmSv
+ 8TTz9t3ioR9SoB/dz/or0bMgrhqe0ZP8rt7JEvtidUZYr0uV5GwCTx2St8EeaHpLzCo2+FeSwW+
+ 7QIB0/2djmU+voL2t2fCaKbgCM+VHY5gA5gpG+JKcLKi91A0rdPbmvFK+uqR/fzobadiuCw/X4s
  =
-X-Google-Smtp-Source: AGHT+IGItKZjDl+HJUif+XBUeE3HHp6dQITkPixJIERk2XYFs7tYuznvoKa0CE9SaioY7sI755yrrQ==
-X-Received: by 2002:a17:903:166f:b0:223:397f:46be with SMTP id
- d9443c01a7336-22c536423f9mr234234805ad.47.1745350322832; 
- Tue, 22 Apr 2025 12:32:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH2Z2pF4fOoUkVEctNzQnT8DhdXcokGsj4N5z6LOy0X3ZhTNUmQ++7Ke0NI/AySXFHznrRb+g==
+X-Received: by 2002:a17:903:904:b0:216:271d:e06c with SMTP id
+ d9443c01a7336-22da3183acdmr2420475ad.4.1745350326552; 
+ Tue, 22 Apr 2025 12:32:06 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50bdda3bsm89312635ad.27.2025.04.22.12.32.02
- for <qemu-devel@nongnu.org>
+ d9443c01a7336-22c50bdda3bsm89312635ad.27.2025.04.22.12.32.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:32:02 -0700 (PDT)
+ Tue, 22 Apr 2025 12:32:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 064/147] accel/tcg: Pass CPUTLBEntryFull to
- tlb_reset_dirty_range_locked
-Date: Tue, 22 Apr 2025 12:26:53 -0700
-Message-ID: <20250422192819.302784-65-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 070/147] accel/tcg: Remove cpu-all.h,
+ exec-all.h from tb-internal.h
+Date: Tue, 22 Apr 2025 12:26:59 -0700
+Message-ID: <20250422192819.302784-71-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,65 +99,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we're renaming things, don't modify addr; save it for
-reuse in the qatomic_set.  Compute the host address into a
-new local variable.
+Not used by tb-internal.h, but add an include for
+target_page.h in tb-maint.c.
 
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ accel/tcg/tb-internal.h | 2 --
+ accel/tcg/tb-maint.c    | 1 +
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 10090067f7..5df98d93d0 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -882,18 +882,16 @@ void tlb_unprotect_code(ram_addr_t ram_addr)
-  *
-  * Called with tlb_c.lock held.
-  */
--static void tlb_reset_dirty_range_locked(CPUTLBEntry *tlb_entry,
-+static void tlb_reset_dirty_range_locked(CPUTLBEntryFull *full, CPUTLBEntry *ent,
-                                          uintptr_t start, uintptr_t length)
- {
--    uintptr_t addr = tlb_entry->addr_write;
-+    const uintptr_t addr = ent->addr_write;
+diff --git a/accel/tcg/tb-internal.h b/accel/tcg/tb-internal.h
+index f7c2073e29..f9a06bcbab 100644
+--- a/accel/tcg/tb-internal.h
++++ b/accel/tcg/tb-internal.h
+@@ -9,8 +9,6 @@
+ #ifndef ACCEL_TCG_TB_INTERNAL_TARGET_H
+ #define ACCEL_TCG_TB_INTERNAL_TARGET_H
  
-     if ((addr & (TLB_INVALID_MASK | TLB_MMIO |
-                  TLB_DISCARD_WRITE | TLB_NOTDIRTY)) == 0) {
--        addr &= TARGET_PAGE_MASK;
--        addr += tlb_entry->addend;
--        if ((addr - start) < length) {
--            qatomic_set(&tlb_entry->addr_write,
--                        tlb_entry->addr_write | TLB_NOTDIRTY);
-+        uintptr_t host = (addr & TARGET_PAGE_MASK) + ent->addend;
-+        if ((host - start) < length) {
-+            qatomic_set(&ent->addr_write, addr | TLB_NOTDIRTY);
-         }
-     }
- }
-@@ -918,16 +916,18 @@ void tlb_reset_dirty(CPUState *cpu, uintptr_t start, uintptr_t length)
+-#include "exec/cpu-all.h"
+-#include "exec/exec-all.h"
+ #include "exec/translation-block.h"
  
-     qemu_spin_lock(&cpu->neg.tlb.c.lock);
-     for (mmu_idx = 0; mmu_idx < NB_MMU_MODES; mmu_idx++) {
-+        CPUTLBDesc *desc = &cpu->neg.tlb.d[mmu_idx];
-+        CPUTLBDescFast *fast = &cpu->neg.tlb.f[mmu_idx];
-+        unsigned int n = tlb_n_entries(fast);
-         unsigned int i;
--        unsigned int n = tlb_n_entries(&cpu->neg.tlb.f[mmu_idx]);
- 
-         for (i = 0; i < n; i++) {
--            tlb_reset_dirty_range_locked(&cpu->neg.tlb.f[mmu_idx].table[i],
-+            tlb_reset_dirty_range_locked(&desc->fulltlb[i], &fast->table[i],
-                                          start, length);
-         }
- 
-         for (i = 0; i < CPU_VTLB_SIZE; i++) {
--            tlb_reset_dirty_range_locked(&cpu->neg.tlb.d[mmu_idx].vtable[i],
-+            tlb_reset_dirty_range_locked(&desc->vfulltlb[i], &desc->vtable[i],
-                                          start, length);
-         }
-     }
+ /*
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index d5899ad047..df3438e190 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -26,6 +26,7 @@
+ #include "exec/page-protection.h"
+ #include "exec/mmap-lock.h"
+ #include "exec/tb-flush.h"
++#include "exec/target_page.h"
+ #include "tb-internal.h"
+ #include "system/tcg.h"
+ #include "tcg/tcg.h"
 -- 
 2.43.0
 
