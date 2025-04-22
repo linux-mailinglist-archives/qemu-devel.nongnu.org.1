@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96ABCA95D5D
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFAAA95D5C
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:34:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u76BA-0001Ey-R6; Tue, 22 Apr 2025 01:28:21 -0400
+	id 1u76BA-0001FJ-TT; Tue, 22 Apr 2025 01:28:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76B5-0001EO-Gg; Tue, 22 Apr 2025 01:28:15 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1u76B6-0001Ed-Pq; Tue, 22 Apr 2025 01:28:17 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76B2-0007mf-PZ; Tue, 22 Apr 2025 01:28:14 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-227c7e57da2so41052585ad.0; 
- Mon, 21 Apr 2025 22:28:04 -0700 (PDT)
+ id 1u76B5-0007n8-3f; Tue, 22 Apr 2025 01:28:16 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-223fb0f619dso52997455ad.1; 
+ Mon, 21 Apr 2025 22:28:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745299684; x=1745904484; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=LlssLeV8PwZvAQFxPCo+Tq04KcXHAkZ9FCrXDlrN+HU=;
- b=WrLgwMBtr7sCcv5+3SlpnaxClXjQvQRd2iqi25yrhrs2qgdAGYkkz6Ahkf/MBZuEY3
- sxcKyVn25qdXaQbMcu5YPlAiTLKBuetY5Ou5O3RJAAFB6U+VdUE9hoFmcU3Pi33EGG62
- Qu7zykKgItzmnKgBQd4yQ8v5J2FuFCFQaPOiq1P8kjUSp4HA0SySUL0781MmOO/odjuq
- 1JjLsQ4YZUBP6LsLqX6gPPGu/39rvdrd6L+QvHsHD/5f0Cc65BB4kFfpyZUrNqxa5E5u
- rnjjkutt2rtY7ll9rxE0p0t0qdzm4A1oDnB94RpHkzq3SfpbC2ybikUYqHqZOKbwlSjZ
- xQLw==
+ d=gmail.com; s=20230601; t=1745299691; x=1745904491; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9NQ7+0cp0B4BZ+F+1DEhH1LfKFVn/DFHA6zpy9bi3Vg=;
+ b=OKGZb1tGCjl1neV+k4kKlNonOETqQ118aBaIpxqd4qPo682z6vOFsRpzigwPnfTByP
+ r3w97z2gKIA1J7D7Hyl0w5Dcsw6FGxPWIedu4/KK+LG8YaZadu8g98iDS3hYTYI8o9eF
+ crPFU4OPKPPzCfNFbgiAVKZJoFu6eRlTenXAyP7KkT07qzQXUy+7NJkSNcB64NKjuTPw
+ r/8s/troXnlhgoaqdNy8ZabTnnmnnALH2BRkmsF2jOu/DTFg1BmNiVhSz17OMMLFw9lm
+ ZCV63p8iYW6y0U6ZTdBeFoBt9S60yH8CkqcnLtwZRbxxxyZgqANdiU3g9MT31nxWMIxU
+ IKAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745299684; x=1745904484;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LlssLeV8PwZvAQFxPCo+Tq04KcXHAkZ9FCrXDlrN+HU=;
- b=RvKmMTm/Pf4XPPw5wgw10RroRt/qvTwDemydu6+A7Rf6N8HoKxqqfFC5Zfv4Tpee8d
- Fv3t6aZsMuwx8R9dnhzoAu/4mXgBgvQclAlyLWuTdui1lyzMk/9ifiSgg1wCOEzX/ADP
- aM8w6fy2bZlewAYkGJzvxVGlOSj4sh+RQsrFf42VIye6SkugsQTt4iMSJijSmx+aamqC
- QZ9Z8woqiGegi8akt7JX92uRGxUH1snqrD7fco0sgkxBWONLS4Bh5DFMr+u1U15t79CP
- +ee+1zSKY2H+mN0VUjSEkPmTQHaeGvf+Ox63GEL6aXm9oWxJfjJwiAgfgJVmqaEX5yJx
- J2hg==
+ d=1e100.net; s=20230601; t=1745299691; x=1745904491;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9NQ7+0cp0B4BZ+F+1DEhH1LfKFVn/DFHA6zpy9bi3Vg=;
+ b=MzO6jtgGnTscYRqb0OOO2s8FHUt6v+FZ7TnyeZ/3+msm5ifdDqx1jYzNPaUc3+vEGH
+ boka7uqyivYSEAY1vT+lS4+CkJmKQWwePncZCbNRHmObm7+MyLBNCTFv4Vu8EJb0XzaZ
+ LT9i5yKyJQYdhvLF5dGN5CQxYWFX/ev/z1krdWZE+ssnCxW6+5Q1jKE1Zk24crG8GW7H
+ /vCNSz/nZK/xQVjaRtXkW8+AsdxKZju/Iz6fE4ltiEMtGwkB8h5oDwl1j1k+hkV8/FxR
+ 8Y66hEtJRMqKd7iygQouL3iiEYcJ05mfuHOvCp/sYkIIwE549v1tXMmD38fPS6WHg8A7
+ T5cA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU2OlYV6CMl0TKNKrXg9cx3ODiq0ttXmoO3wQ1Q4MxlG5Lo87kqH9r2cs45+nJ5iDYPtYVuW7rly8v0gg==@nongnu.org,
- AJvYcCXOder6gwOik2m8fmEsCoEmpPzdWWuA6RMEUYibeF6OtG6lOQ+KGXgtbbIhmK0loot6/2yh3h0SvA==@nongnu.org,
- AJvYcCXq04xao1bJy9cSIYl4jyYZGYXYlcejSQzLWEGTvzoQp9lp4X+J2BZU1q+kgUr5BzMWuo0NPP/WCBg=@nongnu.org,
- AJvYcCXu/On7HBht/6Ypjp1TMS433oTwPEdDonZnv+zNTBYlSFEZHvp0oWaDUL6EnhL/bfJG5HJxzi1GUPA/wA==@nongnu.org
-X-Gm-Message-State: AOJu0YxOeySIT/n8aPlFM85Sit8cfS5f8ZZCwwf4bAh1BfYNJDiK0UT4
- hFPU/Oew6qh1q0G+UqcjKUx2nBs/utNQbpG+RNAkE03RmIml2jOaiU2fZfmv
-X-Gm-Gg: ASbGncsXGt1pf7A6n6ZngDUnsd4TsLcZJuWvQiR76ECrUifxwEpaBeOLrBUW3Aj0Ew7
- HnALOgX/pj8nMLNWoMpEFQk6fLWxnL7FoIFLCdPsey6y45KvlGWapLgvhgdWDSK3DghwmO5OFpj
- 1phl7w84y+tOyYzI7vJZwUBtx8bhlSXLi4mcVEpqa1+lqh8f9hPdmfPuRjyRwSc38sTC6EoKVq4
- tVDrqSUaleIZfJUfi3UE1Ha8XQh7ku/RS7Yn7a696LdQwqCHGXoUKwL6ycL1+x5sDyba9LuI8du
- UuzF0ne72KNaO+4/nhPOhm+BvuK2uaofSqQzfY4cQF1b2DnBT9jHWy/Ed/k=
-X-Google-Smtp-Source: AGHT+IHud7/aqNVHqUlvMR9p9zobEuKDbwSSH92PhK7xD8g7kXzvl6OyVxAU7dXMRh4D5ulA2ZsBwg==
-X-Received: by 2002:a17:903:320e:b0:22c:33b2:e410 with SMTP id
- d9443c01a7336-22c53379f1emr210419905ad.2.1745299683567; 
- Mon, 21 Apr 2025 22:28:03 -0700 (PDT)
+ AJvYcCU4RF8pBp1JZb5mDFpQ1j0GcfiKoDhrf6XeLW4CEI2z3p/5CkwypDQr79TLpV9aGP8TXKR0b/W6cg==@nongnu.org,
+ AJvYcCU5GtzUSubiR/JdGsGBj6t7zGbC4KaAhF3r313ihXAGLdVJL1BwaYDIiK9zjd2QBH7MydKaaS22KXNR0w==@nongnu.org,
+ AJvYcCUDYG+81o/3WruZzjZaDl7zvmDiz3QM9TmTzWFq2fQgXL6k9BDH/CyCYcgkWk8uvtTqr7DQv9UljNY=@nongnu.org,
+ AJvYcCUUljhEHIWBOwSxM/csCtbgY029ccj7f8aCWWCiP2Oozs2HQC9EEmImMkbqr7jucsb5teBJMewcD5e6tQ==@nongnu.org
+X-Gm-Message-State: AOJu0YxwgMeZkGA3tfaQWME8ARJMDh6dLriyO/E7qym47R89xPErOCwX
+ sWDZP7JETuQMWj7/rwXJ70KOIJJ5k3SxBZYLnBM8Kk5FLev83BIOvNgQeHs9
+X-Gm-Gg: ASbGncsVkqt/r+OD9LVm3PHNQcnHO6yVNnYie4LZkVybBc/JvDY53WAP2WPJzM7/rhG
+ U25ruZVfM4TjPCVJqteXzqZfYDImTwddMyP4HfdBd9sNHniBmYLumuu5x0g5H/IQONz9zyeiS+B
+ eh090vBgWSyQHKj2mR3NwWqs5/PSJLmzuzWITHIMpStDFlK6l9QwSsTzu050PvvvWF+nS/Wp4G5
+ 9bSI+uOe8lzhxDdzvTpyH+fRHWR1U8njo2ypMudPwDblwHYaPvryw2mA/efhDw1zK2hrlYgS9RE
+ kJsgH9F3w/4OEt/dugvjMhuoCHZ7WRHMgjkPEXq5QnaqHxyeAo8ThXOtmDE=
+X-Google-Smtp-Source: AGHT+IFQZuSA5UEEZIfqmUdfgADL4wO5YWoqm3vdhDf1L+aFr2jGRlrpu12P1/0vzKEaAX8X39f6sA==
+X-Received: by 2002:a17:902:d4c2:b0:224:de2:7fd0 with SMTP id
+ d9443c01a7336-22c535b2b3bmr201215225ad.25.1745299691273; 
+ Mon, 21 Apr 2025 22:28:11 -0700 (PDT)
 Received: from localhost.localdomain ([240d:1a:3b6:8b00:e142:4a4f:1ebb:3ca4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50eb4483sm75692085ad.118.2025.04.21.22.27.56
+ d9443c01a7336-22c50eb4483sm75692085ad.118.2025.04.21.22.28.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Apr 2025 22:28:02 -0700 (PDT)
+ Mon, 21 Apr 2025 22:28:10 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -87,14 +88,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH v2 00/20] Enable QEMU TCI to run 32bit guests on browsers
-Date: Tue, 22 Apr 2025 14:27:04 +0900
-Message-Id: <cover.1745295397.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH v2 01/20] hw/core/loader.c: Fix type conflict of GLib function
+ pointers
+Date: Tue, 22 Apr 2025 14:27:05 +0900
+Message-Id: <26dfe9191154ca65dca6ef51ce768ad2a0c30d5f.1745295397.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1745295397.git.ktokunaga.mail@gmail.com>
+References: <cover.1745295397.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,189 +121,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-V2:
+On Emscripten, function pointer casts can result in runtime failures due to
+strict function signature checks. This affects the use of g_list_sort and
+g_slist_sort, which internally perform function pointer casts that are not
+supported by Emscripten. To avoid these issues, g_list_sort_with_data and
+g_slist_sort_with_data should be used instead, as they do not rely on
+function pointer casting.
 
+Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+---
+ hw/core/loader.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+V2:
 - Updated the commit message to explicitly explain that function pointer
   casts are performed internally by GLib.
-- Fixed typo in the comment in include/glib-compat.h: s/insted/instead/
-- In util/cacheflush.c patch, added an explanation for the change to both
-  the code comment and the commit message.
-- Split the block/file-posix.c hunk that adds "#include <sys/ioctl.h>" into
-  a separate commit and revised the commit message to clarify the purpose of
-  the patch.
-- Removed the Emscripten-specific stub of copy_file_range in
-  stubs/emscripten.c. Instead, updated the type of the existing
-  copy_file_range stub in block/file-posix.c to match the declaration in the
-  Emscripten headers and avoid a compilation error.
-- Moved the change that was incorrectly applied to os-posix.h into os-wasm.h
-- Split MAINTAINERS file change to each commit that adds new files.
-- Unified two consecutive #ifndef macros into a single condition in
-  qemu-options.hx.
-- Instead of porting mmap-alloc.c to Emscripten, this version excludes the
-  file entirely. The rationale is described in the commit message.
-- In meson.build, added a check to ensure TCI is enabled for the wasm build.
-- Split the Dockerfile addition from the previous 18th patch into a separate
-  commit.
 
-V1:
-
-This patch series is split from the original "Enable QEMU to run on
-browsers" series, focusing solely on the essential code changes needed to
-compile QEMU TCI with Emscripten. It also inclues fixes based on feedback
-received in the original series, thank you for the comments.
-
-# Supported features in this series
-
-This patch series enables TCI interpreter mode with 32bit guest
-support. While the original series included the non-TCI backend and 9pfs
-patches, those components are not included here. They will be reintroduced
-in follow-up series after the foundational patches have been merged.
-
-# Emscripten-Based Coroutine Backend
-
-Emscripten does not support couroutine methods currently used by QEMU but
-provides a coroutine implementation called "fiber". This patch series
-introduces a coroutine backend using fiber. However, fiber does not support
-submitting coroutines to other threads. As a result, this patch series
-doesn't support components like hw/9pfs, which rely on that behavior.
-
-# Overview of build process
-
-This section provides an overview of the build process for compiling QEMU
-using Emscripten. Full instructions are available in the sample
-repository[1].
-
-To compile QEMU with Emscripten, the following dependencies are required.
-The emsdk-wasm32-cross.docker environment includes all necessary components
-and can be used as the build environment:
-
-- Emscripten SDK (emsdk) v3.1.50
-- Libraries cross-compiled with Emscripten (refer to
-  emsdk-wasm32-cross.docker for build steps)
-  - GLib v2.84.0
-  - zlib v1.3.1
-  - libffi v3.4.7
-  - Pixman v0.44.2
-
-QEMU can be compiled using Emscripten's emconfigure and emmake, which
-automatically set environment variables such as CC for targeting Emscripten.
-
-emconfigure configure --static --disable-tools \
-                      --target-list=arm-softmmu --enable-tcg-interpreter
-emmake make -j$(nproc)
-
-This process generates the following files:
-
-- qemu-system-arm.js
-- qemu-system-arm.wasm
-- qemu-system-arm.worker.js
-
-Guest images can be packaged using Emscripten's file_packager.py tool.
-For example, if the images are stored in a directory named "pack", the
-following command packages them, allowing QEMU to access them through
-Emscripten's virtual filesystem:
-
-/path/to/file_packager.py qemu-system-arm.data --preload pack > load.js
-
-This process generates the following files:
-
-- qemu-system-arm.data
-- load.js
-
-Emscripten allows passing arguments to the QEMU command via the Module
-object in JavaScript:
-
-Module['arguments'] = [
-    '-nographic', '-m', '512M', '-machine', 'virt',
-    '-L', 'pack/',
-    '-global', 'virtio-mmio.force-legacy=false',
-    '-device', 'virtio-blk-device,drive=d0',
-    '-drive', 'file=pack/rootfs.bin,if=none,format=raw,id=d0',
-    '-kernel', 'pack/kernel.img',
-    '-append', 'console=ttyAMA0 root=/dev/vda loglevel=7',
-];
-
-The sample repository[1] provides a complete setup, including an HTML file
-that implements a terminal UI.
-
-[1] https://github.com/ktock/qemu-wasm-sample/tree/tcidev
-
-# Additional references
-
-- Original patch series "Enable QEMU to run on browsers":
-  https://patchew.org/QEMU/cover.1744032780.git.ktokunaga.mail@gmail.com/
-- A talk at FOSDEM 2025:
-  https://fosdem.org/2025/schedule/event/fosdem-2025-6290-running-qemu-inside-browser/
-
-Kohei Tokunaga (20):
-  hw/core/loader.c: Fix type conflict of GLib function pointers
-  qom/object.c: Fix type conflict of GLib function pointers
-  system/vl.c: Fix type conflict of GLib function pointers
-  target/arm/helper.c: Fix type conflict of GLib function pointers
-  target/i386/cpu.c: Fix type conflict of GLib function pointers
-  contrib/plugins: Fix type conflict of GLib function pointers
-  hw/net/can: Fix type conflict of GLib function pointers
-  target/ppc: Fix type conflict of GLib function pointers
-  target/s390x: Fix type conflict of GLib function pointers
-  include/glib-compat.h: Poison g_list_sort and g_slist_sort
-  util/cacheflush.c: Update cache flushing mechanism for Emscripten
-  block: Add including of ioctl header for Emscripten build
-  block: Fix type confict of the copy_file_range stub
-  include/qemu/osdep.h: Add Emscripten-specific OS dependencies
-  Disable options unsupported on Emscripten
-  util: exclude mmap-alloc.c from compilation target on Emscripten
-  util: Add coroutine backend for emscripten
-  meson: Add wasm build in build scripts
-  tests: Add Dockerfile containing dependencies for Emscripten build
-  gitlab: Enable CI for wasm build
-
- .gitlab-ci.d/buildtest-template.yml           |  27 ++++
- .gitlab-ci.d/buildtest.yml                    |   9 ++
- .gitlab-ci.d/container-cross.yml              |   5 +
- MAINTAINERS                                   |   9 ++
- backends/meson.build                          |   6 +-
- block/file-posix.c                            |   8 +-
- configs/meson/emscripten.txt                  |   8 +
- configure                                     |   7 +
- contrib/plugins/cache.c                       |  12 +-
- contrib/plugins/cflow.c                       |  10 +-
- contrib/plugins/hotblocks.c                   |   4 +-
- contrib/plugins/hotpages.c                    |   4 +-
- contrib/plugins/howvec.c                      |   4 +-
- contrib/plugins/hwprofile.c                   |   8 +-
- hw/core/loader.c                              |   4 +-
- hw/net/can/xlnx-versal-canfd.c                |   4 +-
- include/glib-compat.h                         |   6 +
- include/qemu/cacheflush.h                     |   7 +
- include/qemu/osdep.h                          |   8 +-
- include/system/os-wasm.h                      | 104 +++++++++++++
- meson.build                                   |  29 +++-
- meson_options.txt                             |   2 +-
- os-wasm.c                                     | 119 ++++++++++++++
- qemu-options.hx                               |   4 +-
- qom/object.c                                  |   7 +-
- scripts/meson-buildoptions.sh                 |   2 +-
- system/memory.c                               |   2 +-
- system/physmem.c                              |   9 +-
- system/vl.c                                   |   8 +-
- target/arm/helper.c                           |   4 +-
- target/i386/cpu.c                             |  11 +-
- target/ppc/cpu_init.c                         |   4 +-
- target/s390x/cpu_models.c                     |   4 +-
- .../dockerfiles/emsdk-wasm32-cross.docker     | 145 ++++++++++++++++++
- tests/tcg/plugins/mem.c                       |   4 +-
- tests/tcg/plugins/syscall.c                   |   4 +-
- util/cacheflush.c                             |   4 +
- util/coroutine-wasm.c                         | 127 +++++++++++++++
- util/meson.build                              |   4 +-
- util/oslib-posix.c                            |  28 ++++
- 40 files changed, 709 insertions(+), 66 deletions(-)
- create mode 100644 configs/meson/emscripten.txt
- create mode 100644 include/system/os-wasm.h
- create mode 100644 os-wasm.c
- create mode 100644 tests/docker/dockerfiles/emsdk-wasm32-cross.docker
- create mode 100644 util/coroutine-wasm.c
-
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index 2e35f0aa90..93a8b45d28 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -1410,7 +1410,7 @@ typedef struct RomSec {
+  * work, but this way saves a little work later by avoiding
+  * dealing with "gaps" of 0 length.
+  */
+-static gint sort_secs(gconstpointer a, gconstpointer b)
++static gint sort_secs(gconstpointer a, gconstpointer b, gpointer d)
+ {
+     RomSec *ra = (RomSec *) a;
+     RomSec *rb = (RomSec *) b;
+@@ -1463,7 +1463,7 @@ RomGap rom_find_largest_gap_between(hwaddr base, size_t size)
+     /* sentinel */
+     secs = add_romsec_to_list(secs, base + size, 1);
+ 
+-    secs = g_list_sort(secs, sort_secs);
++    secs = g_list_sort_with_data(secs, sort_secs, NULL);
+ 
+     for (it = g_list_first(secs); it; it = g_list_next(it)) {
+         cand = (RomSec *) it->data;
 -- 
 2.25.1
 
