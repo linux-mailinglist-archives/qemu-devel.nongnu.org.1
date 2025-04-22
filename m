@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F79A9761C
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 289D5A97606
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:50:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JQM-0008Ci-V8; Tue, 22 Apr 2025 15:36:56 -0400
+	id 1u7JQf-0000S1-TJ; Tue, 22 Apr 2025 15:37:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JOx-0005AK-Cy
+ id 1u7JOy-0005AO-LU
  for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:35:31 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JOv-00073w-GL
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:35:27 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-22435603572so60089515ad.1
+ id 1u7JOw-000744-5C
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:35:28 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-223fd89d036so69454475ad.1
  for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:35:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745350524; x=1745955324; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745350525; x=1745955325; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ggbOR76BAcyXgvavB4mZvfqZnt/5CtPguoo3NLh6PJU=;
- b=u8hmPKYT7fvzpSHlZTbaVudiOODJC42ahyABcxxpK0rq/oI5nlqopFAaHbofMNoYlb
- LRhZr0jtRd5y9LF6/bTP8ioGxNneB3NXwV3VedpHUufATYHGqz4WLSOU14vV0sKzlcUl
- oAliFNz2tG93Cqz4l2+Z6oQQZ7Z0w8yO6Yvd1BZqfrf5e/mt/omrR+Pj1m7bmZlF2TEb
- bXgWyPp8zai08POShSZuFHWqQ4MyJiDX6I4lykslSou+keGkAKcEOHAqKEK/RxTzijUH
- hpGJABdiLNVJx5obEnnZSV5WLDe84cawha+uXF7b6x/ula3PnKQh4Dci2JWOMiIZ15Dm
- 7ReA==
+ bh=F+jTPRxzefHutS8rakDU7HuiolaxKbTM9MImwBgIvjk=;
+ b=qjxfzInsVCRSEyrhhf0fZx+hXJg4VP6RVkVJbQ6+DtEziTQNwCpatSEdZfNmtu1+cy
+ 6rY0Fz3UxA1BsE42ddzkj6iqx9WRA4de3i2ZI1O9PQ4UgakD8vEbYiyMNLNkF5Qvmq5C
+ WItH1pfWXvC0c3yJrX35lChBPVMfllcys590TpEDASSRtFyYpzmemawpA5S8VYGKCLRl
+ v4p3x4j7Z9LLIPK3yMRmo7N55rejfN5pHiybYjExaMwJx0ctJ/5ERCvljSJriUf/NJgk
+ bnyKi/ajxo89FO9rLXchEgVLWzTWOuCfv9eLL2VNK4FY+7m6hKZk1m+0GFKQJM/6gwBT
+ Z0Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745350524; x=1745955324;
+ d=1e100.net; s=20230601; t=1745350525; x=1745955325;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ggbOR76BAcyXgvavB4mZvfqZnt/5CtPguoo3NLh6PJU=;
- b=MFP39QIocS3r8jLPtrPTy5OUM83jhAm0f3QAeQjLIQA/Fwo44wBdvtJQWKVinskG0K
- LGiMI3twC+rk9RuZ2NvBt4nhH3PgC1q9qXU8p8M2UN48/bPzBGwGvec9j1Q9XWZJKEBR
- UNM7GQllT3xbRFdN3XVo2g4sMA0bfhcwALzrMOKmnb3MZ2PXwLd0MjcoEzJPzAcEnZCW
- FILX4o3GkjDTY2zBKxQudk+Xg3C7GcwIxdYT0mByQW8lUX825443Eq+9sXO5vOKHuwU7
- AvxQyHrjmI0nSPk08u2IgaqzQToCoKApZUBQ0qgb6Iz9kZocR3RklqWEXf9/dixaw4ze
- 62dw==
-X-Gm-Message-State: AOJu0YzV55uAzZB6XAA8qtEBLpDoqm1Cb0MBxSwfzRQ9J8X+q2sONAxC
- OsfELt/rOImbFsF2+Y9yd8Ungh5M+UxRFHICU8hiOuwelr6tTod/mOHojPNUvvndZL224+4yhga
- f
-X-Gm-Gg: ASbGncs6l6gW0P1+a7TnclUbAJ81y/XVBX19hYzSh3g3bpFAsJk5a73lE9Au7JC5Qlg
- 7NgLZDk/Rv51+As94PaBbK1wquqcrHuTF1+i7zs59TFH2LpZiS6y+Rv9dTNyjdAA/8d27d7BkUV
- D8r8JmAbuHHK1zpgXULrBjHXgN2TGRk3gBv2c8xfRnjOICGoXVpPy9A2edsAdPQviWz46VDOCU+
- WSr7o609ae/NzPIHo0iQ/wo/iHZQor5RHIpzhm6Zo5LRv/rh99ozJew6e1vtaGsUGLCU8OYbuxW
- j8hY1TkOpHCGPWepuQPdcvs4myMl9PQy3/xhZH8OgGnApL5zKINY+8vinWAbDI9XQe5LZTr2OcY
+ bh=F+jTPRxzefHutS8rakDU7HuiolaxKbTM9MImwBgIvjk=;
+ b=H/4rdhXMlt6b0ux1jrXq2E+TcRSs3tzjk7GUNF9JT8nCbMbnWlqYpR3n7hbnhOqUXl
+ pBoICZv1+zPh3NilbHsxe8vW4r7peJ+hRpY1XmVL4cYj3aWh0kACHLHpS607UjQPetU0
+ odnSXXydnsvs6tJaUYN0R9CDpEorlJn7B3faWJ5G04cQsDdbFBR+555Y0hasgg3IV4m5
+ JrSQfDzs+2aT6yr0u2Wa3YeTgEhQr2JZ5s7lOVmR/FfoyBKPy1QfJJ+sDbj2Qi/smHBx
+ QHfzvbMzc8FSQWzLKG3q79e3dRZ0h8DuMI4t05P4egakwQnIx87W3J+3arQLiaLdOcwG
+ cX3Q==
+X-Gm-Message-State: AOJu0YxuJNO/8awk1dPnf+jhxFv5Jjvk4WrXhPJzIDqGniGEMj/lfqhU
+ jaeCiy6OBilSCSrsI0YhuRVsdI0rprf9JUrMBe2M4ptkyIZWU6BtCl0eaV1YBUPW+P4YxbFj3VL
+ a
+X-Gm-Gg: ASbGnctweIHgNJufIqG3axqqgH4h29U4u8f1s/+5IJI1R/PlHQJsQoRgZKLM9UBebv1
+ o9hAsxKOtAItRJTxE2NUnuKslJWeDMK4HXfefXYBPZtrpbYfHn7OoKsljHwv4+Pzi6snb2J2eW8
+ qNEUb5GcswlRMr7NZ/XBnlpSn2MPNim00ichkx/A0XXicPl5Hhk7XWoJfHkh5lZHxAt/tDmiJVy
+ wkiTrmoWWBQSiJH05JT1u1TTWOUwK4yGPsjWXMGFUPJvHD5vg82IB02SgZf/r0Vr26JSQgMpE4x
+ F/6uZcS4A6KkPhib646dLAmwzTpAtaeOBq6W9c/dBMYdIoEME8RvvPtmLFhmKeOGqobbDTwxkjk
  =
-X-Google-Smtp-Source: AGHT+IHQ5G/Uz3gsObG6PveHqWI147CwQFLiTqGfqBTYuOHqLAAHEQ4et/oHp3TnjcFHck56UV4HUw==
-X-Received: by 2002:a17:903:40cc:b0:223:39ae:a98 with SMTP id
- d9443c01a7336-22c53581510mr278314625ad.22.1745350524180; 
+X-Google-Smtp-Source: AGHT+IHNQAIqC/9clq17SVx904+csE/jL0cA+lGCrwDPaPh4vKO1sgGSBAK9cpmroGLrDMmtKzuv9g==
+X-Received: by 2002:a17:902:cf0d:b0:21f:2a2:3c8b with SMTP id
+ d9443c01a7336-22c5337ce31mr257595055ad.11.1745350524788; 
  Tue, 22 Apr 2025 12:35:24 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50fdf1f1sm88996795ad.237.2025.04.22.12.35.23
+ d9443c01a7336-22c50fdf1f1sm88996795ad.237.2025.04.22.12.35.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:35:23 -0700 (PDT)
+ Tue, 22 Apr 2025 12:35:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 097/147] accel/tcg: Split out tlb-bounds.h
-Date: Tue, 22 Apr 2025 12:27:26 -0700
-Message-ID: <20250422192819.302784-98-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 098/147] include/exec: Redefine tlb-flags with absolute values
+Date: Tue, 22 Apr 2025 12:27:27 -0700
+Message-ID: <20250422192819.302784-99-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,120 +98,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CPU_TLB_DYN_{MIN,MAX}_BITS definitions are not required
-outside of cputlb.c and translate-all.c.
+Don't base the values on TARGET_PAGE_BITS_MIN, but do verify
+that TLB_FLAGS_MASK does not overlap minimum page size.
+All targets now have the same placement for these flags,
+simplifying mmu management when we enable heterogenus systems.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-internal.h   | 27 ---------------------------
- accel/tcg/tlb-bounds.h    | 32 ++++++++++++++++++++++++++++++++
- accel/tcg/cputlb.c        |  1 +
- accel/tcg/translate-all.c |  1 +
- 4 files changed, 34 insertions(+), 27 deletions(-)
- create mode 100644 accel/tcg/tlb-bounds.h
+ include/exec/tlb-flags.h | 68 +++++++++++++++++++---------------------
+ accel/tcg/cputlb.c       |  2 ++
+ 2 files changed, 34 insertions(+), 36 deletions(-)
 
-diff --git a/accel/tcg/tb-internal.h b/accel/tcg/tb-internal.h
-index f9a06bcbab..08538e2896 100644
---- a/accel/tcg/tb-internal.h
-+++ b/accel/tcg/tb-internal.h
-@@ -22,33 +22,6 @@
-  */
- #define GETPC_ADJ   2
+diff --git a/include/exec/tlb-flags.h b/include/exec/tlb-flags.h
+index 54a6bae768..357e79095c 100644
+--- a/include/exec/tlb-flags.h
++++ b/include/exec/tlb-flags.h
+@@ -19,54 +19,29 @@
+ #ifndef TLB_FLAGS_H
+ #define TLB_FLAGS_H
  
--#ifdef CONFIG_SOFTMMU
--
--#define CPU_TLB_DYN_MIN_BITS 6
--#define CPU_TLB_DYN_DEFAULT_BITS 8
--
--# if HOST_LONG_BITS == 32
--/* Make sure we do not require a double-word shift for the TLB load */
--#  define CPU_TLB_DYN_MAX_BITS (32 - TARGET_PAGE_BITS)
--# else /* HOST_LONG_BITS == 64 */
--/*
-- * Assuming TARGET_PAGE_BITS==12, with 2**22 entries we can cover 2**(22+12) ==
-- * 2**34 == 16G of address space. This is roughly what one would expect a
-- * TLB to cover in a modern (as of 2018) x86_64 CPU. For instance, Intel
-- * Skylake's Level-2 STLB has 16 1G entries.
-- * Also, make sure we do not size the TLB past the guest's address space.
-- */
--#  ifdef TARGET_PAGE_BITS_VARY
--#   define CPU_TLB_DYN_MAX_BITS                                  \
--    MIN(22, TARGET_VIRT_ADDR_SPACE_BITS - TARGET_PAGE_BITS)
--#  else
--#   define CPU_TLB_DYN_MAX_BITS                                  \
--    MIN_CONST(22, TARGET_VIRT_ADDR_SPACE_BITS - TARGET_PAGE_BITS)
--#  endif
--# endif
--
--#endif /* CONFIG_SOFTMMU */
--
- void tb_lock_page0(tb_page_addr_t);
+-#include "exec/cpu-defs.h"
++/*
++ * Flags returned for lookup of a TLB virtual address.
++ */
  
  #ifdef CONFIG_USER_ONLY
-diff --git a/accel/tcg/tlb-bounds.h b/accel/tcg/tlb-bounds.h
-new file mode 100644
-index 0000000000..efd34d4793
---- /dev/null
-+++ b/accel/tcg/tlb-bounds.h
-@@ -0,0 +1,32 @@
+ 
+ /*
+- * Allow some level of source compatibility with softmmu.  We do not
+- * support any of the more exotic features, so only invalid pages may
+- * be signaled by probe_access_flags().
++ * Allow some level of source compatibility with softmmu.
++ * Invalid is set when the page does not have requested permissions.
++ * MMIO is set when we want the target helper to use the functional
++ * interface for load/store so that plugins see the access.
+  */
+-#define TLB_INVALID_MASK    (1 << (TARGET_PAGE_BITS_MIN - 1))
+-#define TLB_MMIO            (1 << (TARGET_PAGE_BITS_MIN - 2))
+-#define TLB_WATCHPOINT      0
++#define TLB_INVALID_MASK     (1 << 0)
++#define TLB_MMIO             (1 << 1)
++#define TLB_WATCHPOINT       0
+ 
+ #else
+ 
+-/*
+- * Flags stored in the low bits of the TLB virtual address.
+- * These are defined so that fast path ram access is all zeros.
+- * The flags all must be between TARGET_PAGE_BITS and
+- * maximum address alignment bit.
+- *
+- * Use TARGET_PAGE_BITS_MIN so that these bits are constant
+- * when TARGET_PAGE_BITS_VARY is in effect.
+- *
+- * The count, if not the placement of these bits is known
+- * to tcg/tcg-op-ldst.c, check_max_alignment().
+- */
+-/* Zero if TLB entry is valid.  */
+-#define TLB_INVALID_MASK    (1 << (TARGET_PAGE_BITS_MIN - 1))
+-/*
+- * Set if TLB entry references a clean RAM page.  The iotlb entry will
+- * contain the page physical address.
+- */
+-#define TLB_NOTDIRTY        (1 << (TARGET_PAGE_BITS_MIN - 2))
+-/* Set if the slow path must be used; more flags in CPUTLBEntryFull. */
+-#define TLB_FORCE_SLOW      (1 << (TARGET_PAGE_BITS_MIN - 3))
+-
+-/*
+- * Use this mask to check interception with an alignment mask
+- * in a TCG backend.
+- */
+-#define TLB_FLAGS_MASK \
+-    (TLB_INVALID_MASK | TLB_NOTDIRTY | TLB_FORCE_SLOW)
+-
+ /*
+  * Flags stored in CPUTLBEntryFull.slow_flags[x].
+  * TLB_FORCE_SLOW must be set in CPUTLBEntry.addr_idx[x].
+  */
++
+ /* Set if TLB entry requires byte swap.  */
+ #define TLB_BSWAP            (1 << 0)
+ /* Set if TLB entry contains a watchpoint.  */
+@@ -82,6 +57,27 @@
+     (TLB_BSWAP | TLB_WATCHPOINT | TLB_CHECK_ALIGNED | \
+      TLB_DISCARD_WRITE | TLB_MMIO)
+ 
 +/*
-+ * softmmu size bounds
-+ * SPDX-License-Identifier: LGPL-2.1-or-later
++ * Flags stored in CPUTLBEntry.addr_idx[x].
++ * These must be above the largest alignment (64 bytes),
++ * and below the smallest page size (1024 bytes).
++ * This leaves bits [9:6] available for use.
 + */
 +
-+#ifndef ACCEL_TCG_TLB_BOUNDS_H
-+#define ACCEL_TCG_TLB_BOUNDS_H
++/* Zero if TLB entry is valid.  */
++#define TLB_INVALID_MASK     (1 << 6)
++/* Set if TLB entry references a clean RAM page.  */
++#define TLB_NOTDIRTY         (1 << 7)
++/* Set if the slow path must be used; more flags in CPUTLBEntryFull. */
++#define TLB_FORCE_SLOW       (1 << 8)
 +
-+#define CPU_TLB_DYN_MIN_BITS 6
-+#define CPU_TLB_DYN_DEFAULT_BITS 8
-+
-+# if HOST_LONG_BITS == 32
-+/* Make sure we do not require a double-word shift for the TLB load */
-+#  define CPU_TLB_DYN_MAX_BITS (32 - TARGET_PAGE_BITS)
-+# else /* HOST_LONG_BITS == 64 */
 +/*
-+ * Assuming TARGET_PAGE_BITS==12, with 2**22 entries we can cover 2**(22+12) ==
-+ * 2**34 == 16G of address space. This is roughly what one would expect a
-+ * TLB to cover in a modern (as of 2018) x86_64 CPU. For instance, Intel
-+ * Skylake's Level-2 STLB has 16 1G entries.
-+ * Also, make sure we do not size the TLB past the guest's address space.
++ * Use this mask to check interception with an alignment mask
++ * in a TCG backend.
 + */
-+#  ifdef TARGET_PAGE_BITS_VARY
-+#   define CPU_TLB_DYN_MAX_BITS                                  \
-+    MIN(22, TARGET_VIRT_ADDR_SPACE_BITS - TARGET_PAGE_BITS)
-+#  else
-+#   define CPU_TLB_DYN_MAX_BITS                                  \
-+    MIN_CONST(22, TARGET_VIRT_ADDR_SPACE_BITS - TARGET_PAGE_BITS)
-+#  endif
-+# endif
++#define TLB_FLAGS_MASK \
++    (TLB_INVALID_MASK | TLB_NOTDIRTY | TLB_FORCE_SLOW)
 +
-+#endif /* ACCEL_TCG_TLB_BOUNDS_H */
+ /* The two sets of flags must not overlap. */
+ QEMU_BUILD_BUG_ON(TLB_FLAGS_MASK & TLB_SLOW_FLAGS_MASK);
+ 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 28c47d4872..a717f357d5 100644
+index a717f357d5..39314e86f3 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -41,6 +41,7 @@
- #include "trace.h"
- #include "tb-hash.h"
- #include "tb-internal.h"
-+#include "tlb-bounds.h"
- #include "internal-common.h"
- #include "internal-target.h"
- #ifdef CONFIG_PLUGIN
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index bb161ae61a..87fb6c51d3 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -47,6 +47,7 @@
- #include "exec/page-protection.h"
- #include "exec/mmap-lock.h"
- #include "tb-internal.h"
-+#include "tlb-bounds.h"
- #include "exec/translator.h"
- #include "exec/tb-flush.h"
- #include "qemu/bitmap.h"
+@@ -49,6 +49,8 @@
+ #endif
+ #include "tcg/tcg-ldst.h"
+ 
++QEMU_BUILD_BUG_ON(TLB_FLAGS_MASK & ((1u < TARGET_PAGE_BITS_MIN) - 1));
++
+ /* DEBUG defines, enable DEBUG_TLB_LOG to log to the CPU_LOG_MMU target */
+ /* #define DEBUG_TLB */
+ /* #define DEBUG_TLB_LOG */
 -- 
 2.43.0
 
