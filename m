@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975BFA975F3
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41231A9760E
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 21:51:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JRH-0001Yy-8i; Tue, 22 Apr 2025 15:37:51 -0400
+	id 1u7JSV-0004DL-94; Tue, 22 Apr 2025 15:39:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JPB-0005iP-FK
+ id 1u7JPB-0005iO-F6
  for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:35:43 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JP8-000787-Lh
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:35:40 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-22401f4d35aso62185215ad.2
+ id 1u7JP9-00078H-Di
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:35:41 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-22c336fcdaaso62424675ad.3
  for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:35:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745350537; x=1745955337; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745350538; x=1745955338; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=msXtfBhGOXcEDb7wOAfBlBKK4V40wttZa0c5PZCnz/Y=;
- b=vpoSbFEPG55rxWwIYe8EdNQgj/nvc8QY+PEJS+4X5HMc6X58+hYAz3/SV96Jf3FcKl
- 56KBoh6PcTJ+fpPf6qKTX47AZXOxPnCKo5rwCTS9zNoUlLzJYk+imxfXtEzMc3HFcJcl
- VKpx3HsIW2PcctS8hXMdcC7/XSEYuImHTKWrs7Yw+yNK8QcUAwztVC3lM7szi10H0pbg
- sQXg2G7nSvKyjo5ZFeKXj9KnMVVa2JhjSQI5Vlr8qavkYlauswKLQei3mQf6nF+duOg/
- AheqJfVygmYM4nq3S/RE/Z0+WsgFl8rN5kfdB6QFw+E6nOVvmRGmEYuqxGVFW0yNog04
- CLPg==
+ bh=hyzHc3eX2pZAMrT5P/TXvsGD8d5rYU2E84wns2dz+CQ=;
+ b=Wo9Z+aNj68uKrR/B0VwBKHzABTPBmT8t+MkqDzm2xxpeON70ZmDtbnGuSttKcovXIB
+ ELyH9s+n7iTnpjzbC+1MmiNuaD/lpMCVty8uiWapA6Ldv3zdyWPjtGOYnX+8VINo4lPt
+ 4uAZfyCfwW1/St2Jzv5HG52M4N6YinCl71DsZ5z0KobjyrrtiUTKHxlhqhIxQYBSU6Vj
+ FdUq0MYOlIJ7HKL2cudgFtzksqDIYlOz4heKP9r4wamjDeaNt8lPTWed03esFeXsxwmD
+ DSn9+xSotKrmcseQ6BWKnNVvHxwZWQukS3KVdpFL3CJkgUS2A4a17wAUIYe9dE8m2/Uh
+ jsNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745350537; x=1745955337;
+ d=1e100.net; s=20230601; t=1745350538; x=1745955338;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=msXtfBhGOXcEDb7wOAfBlBKK4V40wttZa0c5PZCnz/Y=;
- b=FJzEetTDGi03n8Q4anEZo9faFr7t7G1gNmp5lh5oEt0XuG4GZnJE3ZiEAfBM5gz+mj
- b0wIHNQ1uNL5DL+V4yaJyiArKJ5JkMU6VJ+MGFXYOq3OoSc3adVmMsxNyW8/YQpks/aa
- 8Rgw39d66oDKcpYJU/cT7kEFlpRzk4TlJFHt5N9L2wO071GUSPQ5eWQaJtljtK1KnUb+
- rRLfxkmFa1Q8C9QHssOXp/HUpWNnVkVbk9L15nsXDb3wS3HyukCcIwGCI4oQjUed4ECa
- 9DmcXHzPBqtPbg+PnlCcl2TA2YJsELavNDdf+8ySPJcx3PGwe+25zBbrNFUeZz5GrGJ9
- FxFg==
-X-Gm-Message-State: AOJu0Yx9GS83Xy0zVJ4vuSm3gz9tFlCI+BgI+K6Ey+e12B3RIrXFX/Ui
- qIcRzruyHhW9Zr8pEnqJnHvUhw6VuCxs7pR0EncuGJC5bp6/qcAAfL+As2TlfzFjeGNxnrWB82R
- j
-X-Gm-Gg: ASbGnctPi7a+p7a3RTSR+NR5zJqpqIm9QRQxPFkWoNlM0t36ruJJ49jgsc1OlqyKPu9
- y0UEYf12ijFmppfrBOH+J+D+a9r07W3zFx9dOLLaE4XNo9jofp3e4a0Z2CRGzhdgUFU2npref9O
- aWuTAjVemApiFimcQ4Z2N+i0ZxDLXEkVPvRtkj31UYCRd+iK/pdJ66226aKX9b5ZHjfmPozpvBt
- Ua4J+LaXgbC/USgiDayTG8LH+gWtUzL5DWMagzY0zCfpf2SNCPiNWMOLjy4k0ro/1hSdme0B/KK
- C87LbEfG0N3pEuJvYFOAhMmzr3VKJuUo1mukWZuZY3pB8TMdBYs1Wt0Elpp9g99sWKZXXFKZ6fN
- zl2o52doW1A==
-X-Google-Smtp-Source: AGHT+IHXE9Pe1KyHz7cYQ/Ez4M/DZxZF4rJkNUgdz2Hv872uK4WTvoI2G9BcwhZnRF70DKP/Q27seQ==
-X-Received: by 2002:a17:902:ecc7:b0:224:1c1:4aba with SMTP id
- d9443c01a7336-22c53620d32mr232597175ad.50.1745350537291; 
+ bh=hyzHc3eX2pZAMrT5P/TXvsGD8d5rYU2E84wns2dz+CQ=;
+ b=iwfcjh4urvt3U+wESuaYbSN0Z1Y2qTOC5JVxqzGMQ10i2F3Q2M8fS1y+UAlxZMbd1d
+ yklaCbAtRJ4CZ5i+sqML4wsyfYLmgqegQlMD3/5SnURCyOoHJcweyCUupzVp8+I+PBSf
+ HgyvdFpNoIrryjeD7aNF9WLqr5vh95dfp6j/IkmntLlhptLpifZpgw6AXPpv2ywciAwJ
+ FV7GwA6URxi9P7yfJH/1xbd+g79AD6wTr8mg2qoRh60dfYPogFGlMWpfyTtOdaZIIdCp
+ mkSxCRAt7glgqHPI8YfJdCeKN/26YX21JC3u3NC1QJjGl+kh/j9fWnUEVnsBiQ2uVU98
+ DxRg==
+X-Gm-Message-State: AOJu0YyX6taS0LQhYuj+rf3wNBF0rgGwP3ojr5PXtuVuH7XGJ8tOlMFJ
+ sCIRphQ01/Exr6W+vsswS09mMeBkLsdUgqy0J/eZc/dOh1v9GzEELgp+BZuA3ycZ8ATVYBf8n0A
+ c
+X-Gm-Gg: ASbGncvec4Lu7mKn/OoSNNE0OSyVTbMBS2pnwwJ9JpZHonfdAmav6GnxchUBAokm4Ap
+ FED0F/C8ZyDAJ4I2h60qpGc0XdSdu7CnkJO+0rdRt0zziY4+U4iezKsDdd02QNqVMmWEgV+LJVW
+ 3O8Bq3xYFf1otf1Htua4+pFz8W7ypJ92BeUcP3kDPwyMIPXT6eLDvZQzSJLqPVbgc2ql8H4xHJM
+ e5LhQhR7Gm7c7PCURbk4Prcp04ZfnLK5wKq4cCdqWyW6bVbp7nDZPElrx15MEVd2upGe+ahCZf2
+ 0qQgHNgT2vICsxK8HLPFhxFwuSLaD1fAtGCPX4CBJ057a/1eC5z5dZBpFL5eyPauCK07k7WlDC0
+ =
+X-Google-Smtp-Source: AGHT+IHyjz34D/p+lGTiMsm8mtZUPTaTQW0WhL3c3tCwHq71zhz3KgIrUF0n9nFmAyF1bh+JwRFTtQ==
+X-Received: by 2002:a17:902:ea07:b0:227:e6b2:d989 with SMTP id
+ d9443c01a7336-22c5362e557mr248884745ad.44.1745350537912; 
  Tue, 22 Apr 2025 12:35:37 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50fdf1f1sm88996795ad.237.2025.04.22.12.35.36
+ d9443c01a7336-22c50fdf1f1sm88996795ad.237.2025.04.22.12.35.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:35:36 -0700 (PDT)
+ Tue, 22 Apr 2025 12:35:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 117/147] target/arm/cpu: define same set of registers for
- aarch32 and aarch64
-Date: Tue, 22 Apr 2025 12:27:46 -0700
-Message-ID: <20250422192819.302784-118-richard.henderson@linaro.org>
+Subject: [PATCH 118/147] target/arm/cpu: remove inline stubs for aarch32
+ emulation
+Date: Tue, 22 Apr 2025 12:27:47 -0700
+Message-ID: <20250422192819.302784-119-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,99 +101,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-To eliminate TARGET_AARCH64, we need to make various definitions common
-between 32 and 64 bit Arm targets.
-Added registers are used only by aarch64 code, and the only impact is on
-the size of CPUARMState, and added zarray
-(ARMVectorReg zarray[ARM_MAX_VQ * 16]) member (+64KB)
-
-It could be eventually possible to allocate this array only for aarch64
-emulation, but I'm not sure it's worth the hassle to save a few KB per
-vcpu. Running qemu-system takes already several hundreds of MB of
-(resident) memory, and qemu-user takes dozens of MB of (resident) memory
-anyway.
-
-As part of this, we define ARM_MAX_VQ once for aarch32 and aarch64,
-which will affect zregs field for aarch32.
-This field is used for MVE and SVE implementations. MVE implementation
-is clipping index value to 0 or 1 for zregs[*].d[],
-so we should not touch the rest of data in this case anyway.
-
-This change is safe regarding migration, because aarch64 registers still
-have the same size, and for aarch32, only zregs is modified.
-Migration code explicitly specify a size of 2 for env.vfp.zregs[0].d,
-VMSTATE_UINT64_SUB_ARRAY(env.vfp.zregs[0].d, ARMCPU, 0, 2). So extending
-the storage size has no impact.
+Directly condition associated calls in target/arm/helper.c for now.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250325045915.994760-22-pierrick.bouvier@linaro.org>
+Message-ID: <20250325045915.994760-23-pierrick.bouvier@linaro.org>
 ---
- target/arm/cpu.h | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ target/arm/cpu.h    | 8 --------
+ target/arm/helper.c | 6 ++++++
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index cc975175c6..b1c3e46326 100644
+index b1c3e46326..c1a0faed3a 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -169,17 +169,12 @@ typedef struct ARMGenericTimer {
-  * Align the data for use with TCG host vector operations.
+@@ -1222,7 +1222,6 @@ int arm_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
   */
+ void arm_emulate_firmware_reset(CPUState *cpustate, int target_el);
  
 -#ifdef TARGET_AARCH64
--# define ARM_MAX_VQ    16
+ int aarch64_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ int aarch64_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq);
+@@ -1254,13 +1253,6 @@ static inline uint64_t *sve_bswap64(uint64_t *dst, uint64_t *src, int nr)
+ #endif
+ }
+ 
 -#else
--# define ARM_MAX_VQ    1
+-static inline void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq) { }
+-static inline void aarch64_sve_change_el(CPUARMState *env, int o,
+-                                         int n, bool a)
+-{ }
 -#endif
-+#define ARM_MAX_VQ    16
+-
+ void aarch64_sync_32_to_64(CPUARMState *env);
+ void aarch64_sync_64_to_32(CPUARMState *env);
  
- typedef struct ARMVectorReg {
-     uint64_t d[2 * ARM_MAX_VQ] QEMU_ALIGNED(16);
- } ARMVectorReg;
- 
--#ifdef TARGET_AARCH64
- /* In AArch32 mode, predicate registers do not exist at all.  */
- typedef struct ARMPredicateReg {
-     uint64_t p[DIV_ROUND_UP(2 * ARM_MAX_VQ, 8)] QEMU_ALIGNED(16);
-@@ -189,7 +184,6 @@ typedef struct ARMPredicateReg {
- typedef struct ARMPACKey {
-     uint64_t lo, hi;
- } ARMPACKey;
--#endif
- 
- /* See the commentary above the TBFLAG field definitions.  */
- typedef struct CPUARMTBFlags {
-@@ -660,13 +654,11 @@ typedef struct CPUArchState {
-     struct {
-         ARMVectorReg zregs[32];
- 
--#ifdef TARGET_AARCH64
-         /* Store FFR as pregs[16] to make it easier to treat as any other.  */
- #define FFR_PRED_NUM 16
-         ARMPredicateReg pregs[17];
-         /* Scratch space for aa64 sve predicate temporary.  */
-         ARMPredicateReg preg_tmp;
--#endif
- 
-         /* We store these fpcsr fields separately for convenience.  */
-         uint32_t qc[4] QEMU_ALIGNED(16);
-@@ -711,7 +703,6 @@ typedef struct CPUArchState {
-         uint32_t cregs[16];
-     } iwmmxt;
- 
--#ifdef TARGET_AARCH64
-     struct {
-         ARMPACKey apia;
-         ARMPACKey apib;
-@@ -743,7 +734,6 @@ typedef struct CPUArchState {
-      * to keep the offsets into the rest of the structure smaller.
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index becbbbd0d8..7fb6e88630 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6563,7 +6563,9 @@ static void zcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
       */
-     ARMVectorReg zarray[ARM_MAX_VQ * 16];
--#endif
+     new_len = sve_vqm1_for_el(env, cur_el);
+     if (new_len < old_len) {
++#ifdef TARGET_AARCH64
+         aarch64_sve_narrow_vq(env, new_len + 1);
++#endif
+     }
+ }
  
-     struct CPUBreakpoint *cpu_breakpoint[16];
-     struct CPUWatchpoint *cpu_watchpoint[16];
+@@ -10628,7 +10630,9 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+          * Note that new_el can never be 0.  If cur_el is 0, then
+          * el0_a64 is is_a64(), else el0_a64 is ignored.
+          */
++#ifdef TARGET_AARCH64
+         aarch64_sve_change_el(env, cur_el, new_el, is_a64(env));
++#endif
+     }
+ 
+     if (cur_el < new_el) {
+@@ -11640,7 +11644,9 @@ void aarch64_sve_change_el(CPUARMState *env, int old_el,
+ 
+     /* When changing vector length, clear inaccessible state.  */
+     if (new_len < old_len) {
++#ifdef TARGET_AARCH64
+         aarch64_sve_narrow_vq(env, new_len + 1);
++#endif
+     }
+ }
+ #endif
 -- 
 2.43.0
 
