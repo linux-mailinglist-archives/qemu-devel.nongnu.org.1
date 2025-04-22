@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74535A95D5F
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5188AA95D63
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:36:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u76Gx-0001IC-Je; Tue, 22 Apr 2025 01:34:27 -0400
+	id 1u76Hh-0002V9-TX; Tue, 22 Apr 2025 01:35:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76DK-0003O1-1i; Tue, 22 Apr 2025 01:30:35 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1u76DR-0003hP-Mm; Tue, 22 Apr 2025 01:30:42 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76DH-0008D4-Qq; Tue, 22 Apr 2025 01:30:33 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-2264aefc45dso76093815ad.0; 
- Mon, 21 Apr 2025 22:30:30 -0700 (PDT)
+ id 1u76DP-0008Dn-Ke; Tue, 22 Apr 2025 01:30:41 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-226185948ffso52644125ad.0; 
+ Mon, 21 Apr 2025 22:30:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745299829; x=1745904629; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1745299837; x=1745904637; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EyswPERNVPUmMfuIfE21udR+zks7HJrFsl2VmGBeB2w=;
- b=mqIYYFO1nEMVbMPYxFLnPYMeMTiGMiy7HLjGj4vv4YnOuYUUfEIhhZ6tlHEmbcukca
- zW0vNlPfX1d2ZktAYY78W9z7ZvKEKpkkp17aUkhDoH3SQw53G4PKq9Hvm8kFU3UGczcP
- /l+97Yjkq3uUZJ+IvqDQiiV0LHe4l6TnmXLoX8aMnhD+l+29uNiu0RVRmFc+TQPONwf3
- P8wAvSvJs033m+75J31VT4HFdZANOzR/XkEvWi8lEe3+qYKObgU/jUcbS7JDg2U+/GM1
- uvMiTeLZZh4lbeBUMMiwmnm3iS878RJ6DFjC8Ky8SPHe3RwL4oclPbI0ES8ag87yL6i9
- t5cA==
+ bh=239sog6AsGRpOuiETXgLR1hsZQlcMmDhDGFK29CX7lo=;
+ b=Nm14sWB+0ElN92Tt/rcIVbC5IdeubZ5zskez8sBibMdZc1MYuQWRU6HffS2EhIYGWx
+ qor/fBG2KqibUimyUoYOqF+grewuWbPGokv98mKwRKY7bLYsH05fojreX0kQfjoL1PcA
+ MJVxFDkhMVwgo7+aIdUe27AIw1wFl/sIoKu0wYd9aWzPsIeQEBQxZDuWSGNTMRMXZSY+
+ xH6KH0fTNGJaq9V9YeVM8cOjIGgsJAbozTOGLUZsx4qbCJXPsDqDGvL/bafYE002FMTk
+ 2rQloAN1LT32OJDKKWq4x5Sj14G0FQAArjU+13uPRKVtAprps/VPyBkxHZJOvheS/e5k
+ jQTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745299829; x=1745904629;
+ d=1e100.net; s=20230601; t=1745299837; x=1745904637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EyswPERNVPUmMfuIfE21udR+zks7HJrFsl2VmGBeB2w=;
- b=Zi/vTXrUW0jw8VDQarXPe0BDiWPQBZih3jHTZNgzxsUBBPTMQ4gtZXlh3CPnf1eC2m
- 0Hgz/fw8tqRHZLJOkRqWhiJkDD6VLfAAKLdZVX6gxBH0rzN1cn87VADahqstybGw+kAs
- kZVau60qZutr79OXJ0utJszkDLz6thRxE6E3MF1BDC32q/3C5/cda94UQmrgR2o7vlPt
- 10j572Ako8mDoqG35IhRjYTJJMYqFFT3oHUkfWi+BbgZpCXlD5rFokqLhfaSVsMPJLlC
- d064YyFeErZvM7zY4iwSvnxs5wicxFlcNAP/ka+6SJOIoQf4o3i7GSDKms9dnXfr1Snb
- 2jag==
+ bh=239sog6AsGRpOuiETXgLR1hsZQlcMmDhDGFK29CX7lo=;
+ b=aPJPr355TUpmtcCXsWlO/HgKu1JQky0l23/JeK1W+G8HHhBk389aRsKflOsE8UB+XW
+ 5oyIW8Zepf6Pd8ZmAt+Fop2Q0egxO6iwLLVB/99H6gchj6Zyk9Y54jrd2gixzAkV/P73
+ 3nBDH8CkDweP0iYVYjXgeHtMtS/ZqAH1/HPEPpmqw032XjULxdo263znGsslyanKt9rn
+ uPxF8aSuFUECgK+mNVOpl/NALs4442DC2oiasp2OHtleamjls0MaDJtZDiHHY1VmTQA7
+ 07G9amHNxIvQaf76X7BSjXyB67SXRe4Halk8IBRQ2O8xmk2A2kX2ZPuS3Meszr4xS7Ty
+ 5Iyg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVDKgDAooc4yp4sZNj9soREzXbQPc+7j50cddob42E7+FH9Qm7bRa2fqIrE8sIgxGs85zHs7I1em4j3tw==@nongnu.org,
- AJvYcCVeFK9HtStEqkDMItB6dqROQQaIGGKj6rQKzXIpMPFFdjr07lrLYEE+7+HsnimiLTB635dJRpbaf9qYAA==@nongnu.org,
- AJvYcCWL/aigH2FHpjGhexBRBQ8Z+zD/cpnnh1aJw3NgJn+ANJm3L/Bq1V53ZZmVkZczxcCOxu8WivebCA==@nongnu.org,
- AJvYcCXs2bVI8sDsWJfZqYZmYMeH9RDTcb9FZZXRotk827kTdPm2O7w8yZEU4IgVSCxlCgnCOdPpBoG0N4c=@nongnu.org
-X-Gm-Message-State: AOJu0YxZOpgTDJ4hu+mO0RDt+EyffBZpbCibqf/l9r57rjCcoKAHTOOE
- ewvkTGrIPzEbS8xJZmh/WyfQliX+FQnJpPibjJty3xAlDASDpm0YWvu9VtmF
-X-Gm-Gg: ASbGnct9/Dwzxc/1fsHNreXfDqTNZbm0MOxyr1YV5UXHUl008fqLwfHDOn6kPqOUMTg
- Kb5I2dKXox11VavjUZmshjZy+sr0Vs3zbwfY3G35BLLOF0QLzmu3UZfMYrYZoH+SAGNeWf7UR/m
- AWW2/T1Qvp6os5BmAorKmz938tMBsmk+GgbgZmeIjGhJhws9WyOG0J7lN++LXDA0S20b5g5ZVhi
- w4yyz7flMEdbS8SwMp7eL3+Qf6OPctxgIr2JI7L/C368jF67WPCJrv+lmNtDqfrMN2BeAORirtM
- Ao3QDScTRE53KRJfOmWF64vQ25oG5Tib2/9S+OfwreZIgOY3A/5ROTJajlg=
-X-Google-Smtp-Source: AGHT+IF866eeRMlWTJ5okWrqXs+r8BGchJhPURBo/iH1ZtCGUA/9C/H97nfcbV0T9/pDqgYGWsEh/w==
-X-Received: by 2002:a17:902:f54c:b0:224:1074:63a2 with SMTP id
- d9443c01a7336-22c5361c436mr224374235ad.43.1745299829232; 
- Mon, 21 Apr 2025 22:30:29 -0700 (PDT)
+ AJvYcCU13+eHHqKnM4HB5XEfUNuA+0Y3O2zSmSYgA5ITcMafNQu6vds9oDJ0EwiaJ63SafyoiQp+RaxYrJzMmA==@nongnu.org,
+ AJvYcCVPPzhQLj/lFqcV8XHTpfBHJnkCgt6mimRvx2DJAMJ+qmuy5l6KDwm4HidLB+DJTMRfCXynY+N79Q==@nongnu.org,
+ AJvYcCVYR/0qlsWYwIMsRLFgnuqw1ejIoxtNwgTWdLxFxa6yX1IH2NhEg1uGA6I4sqAp8oIsumPFM1dqBwI=@nongnu.org,
+ AJvYcCXCQEdF+DufTuwP6Zg/k/s3oLhHRITiKlhROvkxLTSs+L4iU0Oj7Krb9hx0qv+6ARvuglLJJrBhxDw3Pw==@nongnu.org
+X-Gm-Message-State: AOJu0YzARfbdlKppOsmJ+3uTAgjirYjQK1WD1Oz4UUudJ3C/kWqSK/+a
+ 6KttR49YbiHKO9ZxQkhoG7iEd9i8b2xGeVsjj35giNQ5IG0iP8p2mYbxWd2b
+X-Gm-Gg: ASbGncu5XYkKV/7EQriyk2lhYzxoL9/SfVXJGXtrRY+RRgsnSIYqabOD7YeML7ELKZ7
+ xq2DG7j91l07EM3jyM5CnNJZHEy2pn17Y5XaCKqBz9pAzDx0d+NOx8Sv4nQ7WPQBWoQ5GEyajHz
+ +TASo3lYpfhOlO9ZPWe1zNfR7l8GYvjX4M/EWF2j+QDtNeMFwNWvRs7/J77atILmgkj10j7P6Vq
+ eT/uPDuoy0R/04+P/hhHKyOJj/2/EoVrUTtiytakXVE5WsJj/h4aPLijIU0+LJij5QPiWxut/Zc
+ CwRr0CGx1ui7ymyNq/IMCPqWFGtTSx5EaBooxw7P+n1xYu2AhfrkuQQ7uR+CMmv/KhiETw==
+X-Google-Smtp-Source: AGHT+IGGRtHx5fim4xGmJq6v8vkziresfB5+BAuQyo6/891rk0skJGXxaEivPZeVzgS3/6wX99cASQ==
+X-Received: by 2002:a17:903:22c9:b0:220:ff3f:6cc0 with SMTP id
+ d9443c01a7336-22c536080bemr230986565ad.38.1745299836831; 
+ Mon, 21 Apr 2025 22:30:36 -0700 (PDT)
 Received: from localhost.localdomain ([240d:1a:3b6:8b00:e142:4a4f:1ebb:3ca4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50eb4483sm75692085ad.118.2025.04.21.22.30.21
+ d9443c01a7336-22c50eb4483sm75692085ad.118.2025.04.21.22.30.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Apr 2025 22:30:28 -0700 (PDT)
+ Mon, 21 Apr 2025 22:30:36 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -88,17 +88,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH v2 19/20] tests: Add Dockerfile containing dependencies for
- Emscripten build
-Date: Tue, 22 Apr 2025 14:27:23 +0900
-Message-Id: <2c76c1bdc27786d54a267b52a861debb64f067f8.1745295397.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH v2 20/20] gitlab: Enable CI for wasm build
+Date: Tue, 22 Apr 2025 14:27:24 +0900
+Message-Id: <a9ae4d0fbcde4d837e55c07715a169bcde495895.1745295397.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1745295397.git.ktokunaga.mail@gmail.com>
 References: <cover.1745295397.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,186 +120,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The added Dockerfile is based on the emsdk image, which includes the
-Emscripten toolchain. It also cross-compiles the necessary dependencies
-(glib, libffi, pixman, and zlib) for the Emscripten target environment.
+Add GitLab CI job that builds QEMU using emscripten. The build runs in the
+container defined in tests/docker/dockerfiles/emsdk-wasm32-cross.docker.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- MAINTAINERS                                   |   1 +
- .../dockerfiles/emsdk-wasm32-cross.docker     | 145 ++++++++++++++++++
- 2 files changed, 146 insertions(+)
- create mode 100644 tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+ .gitlab-ci.d/buildtest-template.yml | 27 +++++++++++++++++++++++++++
+ .gitlab-ci.d/buildtest.yml          |  9 +++++++++
+ .gitlab-ci.d/container-cross.yml    |  5 +++++
+ 3 files changed, 41 insertions(+)
 
 V2:
 - Split the Dockerfile addition from the previous 18th patch into a separate
   commit.
-- Split the MAINTAINERS file change that adds emsdk-wasm32-cross.docker from
-  the previous 19th patch into this commit.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0fb7fd79b6..58e4bdedba 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -626,6 +626,7 @@ F: include/system/os-wasm.h
- F: os-wasm.c
- F: util/coroutine-wasm.c
- F: configs/meson/emscripten.txt
-+F: tests/docker/dockerfiles/emsdk-wasm32-cross.docker
- 
- Alpha Machines
- --------------
-diff --git a/tests/docker/dockerfiles/emsdk-wasm32-cross.docker b/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
-new file mode 100644
-index 0000000000..60a7d02f56
---- /dev/null
-+++ b/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
-@@ -0,0 +1,145 @@
-+# syntax = docker/dockerfile:1.5
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 39da7698b0..67167d68a5 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -126,3 +126,30 @@
+     - du -chs ${CI_PROJECT_DIR}/*-cache
+   variables:
+     QEMU_JOB_AVOCADO: 1
 +
-+ARG EMSDK_VERSION_QEMU=3.1.50
-+ARG ZLIB_VERSION=1.3.1
-+ARG GLIB_MINOR_VERSION=2.84
-+ARG GLIB_VERSION=${GLIB_MINOR_VERSION}.0
-+ARG PIXMAN_VERSION=0.44.2
-+ARG FFI_VERSION=v3.4.7
-+ARG MESON_VERSION=1.5.0
++.wasm_build_job_template:
++  extends: .base_job_template
++  stage: build
++  image: $CI_REGISTRY_IMAGE/qemu/$IMAGE:$QEMU_CI_CONTAINER_TAG
++  before_script:
++    - source scripts/ci/gitlab-ci-section
++    - section_start setup "Pre-script setup"
++    - JOBS=$(expr $(nproc) + 1)
++    - section_end setup
++  script:
++    - du -sh .git
++    - mkdir build
++    - cd build
++    - section_start configure "Running configure"
++    - emconfigure ../configure --disable-docs
++          ${TARGETS:+--target-list="$TARGETS"}
++          $CONFIGURE_ARGS ||
++      { cat config.log meson-logs/meson-log.txt && exit 1; }
++    - if test -n "$LD_JOBS";
++      then
++        pyvenv/bin/meson configure . -Dbackend_max_links="$LD_JOBS" ;
++      fi || exit 1;
++    - section_end configure
++    - section_start build "Building QEMU"
++    - emmake make -j"$JOBS"
++    - section_end build
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 00f4bfcd9f..0f92d5313a 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -801,3 +801,12 @@ coverity:
+       when: never
+     # Always manual on forks even if $QEMU_CI == "2"
+     - when: manual
 +
-+FROM emscripten/emsdk:$EMSDK_VERSION_QEMU AS build-base
-+ARG MESON_VERSION
-+ENV TARGET=/builddeps/target
-+ENV CPATH="$TARGET/include"
-+ENV PKG_CONFIG_PATH="$TARGET/lib/pkgconfig"
-+ENV EM_PKG_CONFIG_PATH="$PKG_CONFIG_PATH"
-+ENV CFLAGS="-O3 -pthread -DWASM_BIGINT"
-+ENV CXXFLAGS="$CFLAGS"
-+ENV LDFLAGS="-sWASM_BIGINT -sASYNCIFY=1 -L$TARGET/lib"
-+RUN apt-get update && apt-get install -y \
-+    autoconf \
-+    build-essential \
-+    libglib2.0-dev \
-+    libtool \
-+    pkgconf \
-+    ninja-build \
-+    python3-pip
-+RUN pip3 install meson==${MESON_VERSION} tomli
-+RUN mkdir /build
-+WORKDIR /build
-+RUN mkdir -p $TARGET
-+RUN <<EOF
-+cat <<EOT > /cross.meson
-+[host_machine]
-+system = 'emscripten'
-+cpu_family = 'wasm32'
-+cpu = 'wasm32'
-+endian = 'little'
++build-wasm:
++  extends: .wasm_build_job_template
++  timeout: 2h
++  needs:
++    job: wasm-emsdk-cross-container
++  variables:
++    IMAGE: emsdk-wasm32-cross
++    CONFIGURE_ARGS: --static --disable-tools --enable-debug --enable-tcg-interpreter
+diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
+index 34c0e729ad..3ea4971950 100644
+--- a/.gitlab-ci.d/container-cross.yml
++++ b/.gitlab-ci.d/container-cross.yml
+@@ -94,3 +94,8 @@ win64-fedora-cross-container:
+   extends: .container_job_template
+   variables:
+     NAME: fedora-win64-cross
 +
-+[binaries]
-+c = 'emcc'
-+cpp = 'em++'
-+ar = 'emar'
-+ranlib = 'emranlib'
-+pkgconfig = ['pkg-config', '--static']
-+EOT
-+EOF
-+
-+FROM build-base AS zlib-dev
-+ARG ZLIB_VERSION
-+RUN mkdir -p /zlib
-+RUN curl -Ls https://zlib.net/zlib-$ZLIB_VERSION.tar.xz | \
-+    tar xJC /zlib --strip-components=1
-+WORKDIR /zlib
-+RUN emconfigure ./configure --prefix=$TARGET --static
-+RUN emmake make install -j$(nproc)
-+
-+FROM build-base AS libffi-dev
-+ARG FFI_VERSION
-+RUN mkdir -p /libffi
-+RUN git clone https://github.com/libffi/libffi /libffi
-+WORKDIR /libffi
-+RUN git checkout $FFI_VERSION
-+RUN autoreconf -fiv
-+RUN emconfigure ./configure --host=wasm32-unknown-linux \
-+    --prefix=$TARGET --enable-static \
-+    --disable-shared --disable-dependency-tracking \
-+    --disable-builddir --disable-multi-os-directory \
-+    --disable-raw-api --disable-docs
-+RUN emmake make install SUBDIRS='include' -j$(nproc)
-+
-+FROM build-base AS pixman-dev
-+ARG PIXMAN_VERSION
-+RUN mkdir /pixman/
-+RUN git clone  https://gitlab.freedesktop.org/pixman/pixman /pixman/
-+WORKDIR /pixman
-+RUN git checkout pixman-$PIXMAN_VERSION
-+RUN <<EOF
-+cat <<EOT >> /cross.meson
-+[built-in options]
-+c_args = [$(printf "'%s', " $CFLAGS | sed 's/, $//')]
-+cpp_args = [$(printf "'%s', " $CFLAGS | sed 's/, $//')]
-+objc_args = [$(printf "'%s', " $CFLAGS | sed 's/, $//')]
-+c_link_args = [$(printf "'%s', " $LDFLAGS | sed 's/, $//')]
-+cpp_link_args = [$(printf "'%s', " $LDFLAGS | sed 's/, $//')]
-+EOT
-+EOF
-+RUN meson setup _build --prefix=$TARGET --cross-file=/cross.meson \
-+    --default-library=static \
-+    --buildtype=release -Dtests=disabled -Ddemos=disabled
-+RUN meson install -C _build
-+
-+FROM build-base AS glib-dev
-+ARG GLIB_VERSION
-+ARG GLIB_MINOR_VERSION
-+RUN mkdir -p /stub
-+WORKDIR /stub
-+RUN <<EOF
-+cat <<'EOT' > res_query.c
-+#include <netdb.h>
-+int res_query(const char *name, int class,
-+              int type, unsigned char *dest, int len)
-+{
-+    h_errno = HOST_NOT_FOUND;
-+    return -1;
-+}
-+EOT
-+EOF
-+RUN emcc ${CFLAGS} -c res_query.c -fPIC -o libresolv.o
-+RUN ar rcs libresolv.a libresolv.o
-+RUN mkdir -p $TARGET/lib/
-+RUN cp libresolv.a $TARGET/lib/
-+
-+RUN mkdir -p /glib
-+RUN curl -Lks https://download.gnome.org/sources/glib/${GLIB_MINOR_VERSION}/glib-$GLIB_VERSION.tar.xz | \
-+    tar xJC /glib --strip-components=1
-+
-+COPY --link --from=zlib-dev /builddeps/ /builddeps/
-+COPY --link --from=libffi-dev /builddeps/ /builddeps/
-+
-+WORKDIR /glib
-+RUN <<EOF
-+CFLAGS="$CFLAGS -Wno-incompatible-function-pointer-types" ;
-+cat <<EOT >> /cross.meson
-+[built-in options]
-+c_args = [$(printf "'%s', " $CFLAGS | sed 's/, $//')]
-+cpp_args = [$(printf "'%s', " $CFLAGS | sed 's/, $//')]
-+objc_args = [$(printf "'%s', " $CFLAGS | sed 's/, $//')]
-+c_link_args = [$(printf "'%s', " $LDFLAGS | sed 's/, $//')]
-+cpp_link_args = [$(printf "'%s', " $LDFLAGS | sed 's/, $//')]
-+EOT
-+EOF
-+RUN meson setup _build --prefix=$TARGET --cross-file=/cross.meson \
-+    --default-library=static --buildtype=release --force-fallback-for=pcre2 \
-+    -Dselinux=disabled -Dxattr=false -Dlibmount=disabled -Dnls=disabled \
-+    -Dtests=false -Dglib_debug=disabled -Dglib_assert=false -Dglib_checks=false
-+# FIXME: emscripten doesn't provide some pthread functions in the final link,
-+#        which isn't detected during meson setup.
-+RUN sed -i -E "/#define HAVE_POSIX_SPAWN 1/d" ./_build/config.h
-+RUN sed -i -E "/#define HAVE_PTHREAD_GETNAME_NP 1/d" ./_build/config.h
-+RUN meson install -C _build
-+
-+FROM build-base
-+COPY --link --from=glib-dev /builddeps/ /builddeps/
-+COPY --link --from=pixman-dev /builddeps/ /builddeps/
++wasm-emsdk-cross-container:
++  extends: .container_job_template
++  variables:
++    NAME: emsdk-wasm32-cross
 -- 
 2.25.1
 
