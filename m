@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8597FA95D56
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ADA2A95D5B
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:33:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u76Cd-00025Q-Jz; Tue, 22 Apr 2025 01:29:59 -0400
+	id 1u76Dh-0003iC-QY; Tue, 22 Apr 2025 01:31:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76Bz-0001pE-Qj; Tue, 22 Apr 2025 01:29:20 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1u76C7-0001rl-H2; Tue, 22 Apr 2025 01:29:20 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76Bw-0007rg-9h; Tue, 22 Apr 2025 01:29:10 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-b06e9bcc986so3296274a12.0; 
- Mon, 21 Apr 2025 22:29:06 -0700 (PDT)
+ id 1u76C4-0007sU-Et; Tue, 22 Apr 2025 01:29:18 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-22c33677183so53726225ad.2; 
+ Mon, 21 Apr 2025 22:29:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745299745; x=1745904545; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1745299753; x=1745904553; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XLyDJb6zuVf07S+Oux/CEamJxltd1syyWyqOmnLXnEw=;
- b=gvhecGrOPzAJliflpm2tfVmJrK0ME/N+zC24q6qsKmLjqMP2DiSv3/qFNZYo9lXYKE
- A72wOolIihpK9Lmuys1o4JduASXSP3sDfNGMn+epTkWne33rbUXzZ+AV63eKpWmf4S7J
- /MQXDzwczBPrPCT9aLgqSIubfRKOYNIMSl6JJ/GGctJ+cx5gq3JukXDPxyBKXkRiXYSm
- igb6MJsGZpleRiUQKrTHVUrUaetge4xlYlIFB+PNWVBoZkx0P53QsyfWiOq8tdtVmjRl
- v8UsOK5583x2cr5H+wVGbORR1i3eo9E8ARfuqg7TOgKsQ+Py74DWQB7wWPYgxVpmxcrZ
- OXzg==
+ bh=9vwsMBWLqSru1XC5tGa2owIx78df+Ne2sGVF0WVxroM=;
+ b=C0qlR00wT0McfFt1GyudLiRowyymSbL5c2/I91V7yqL6XAxTWbsH9xDGmnVHqczJ/a
+ mX6chp1t2l6RJqOm4yXKRGWy8AZAzgGu7dg/GNzezjDLJMAR2y3cQFKCTP4fNQtQitZ2
+ EQhh+ieVMjFZidzWgKt6xsu7nBZFBBcoe+geHrStI5RuvY/ce0GZyubswcnbWRzj+r2v
+ sVX/Zas6mJBdjGP/l1EPeXt/Jk5CLewZTlJ0bRFxeH64IsXZ6/cTBuNHlH89UTAdzlGp
+ Ry5kJsm+Oe4Z8AeVtP8BY85nF6j9FNoOjnTCiU04pSUzKjUPgyW5tXNk6VDyfbh2PVJF
+ 78dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745299745; x=1745904545;
+ d=1e100.net; s=20230601; t=1745299753; x=1745904553;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XLyDJb6zuVf07S+Oux/CEamJxltd1syyWyqOmnLXnEw=;
- b=GUG/iA8i0abA79hwrNqqJyJZEXzAzMdcVVX6uEZKzO7U08bXoeqBtG+krs6vdeamaY
- Myq5oVj0Qz0aeTEOTYf0OmOjMsUSv2c3IiVQV/jS0I5uC9oAIMCqqNvNM/xjBSu18XmC
- aDMSmqZEg6DbZbRLW+ykc4ykHlSDHB6XhV+mn5Eo3skvTtAK1V8Nnvt2yL5TgBAAj2hs
- B6dqbsxkfjI49+OJ9Q+pBw5n7ZK8HexxSCmvdw9q4z0tL8qlymE4sg7FMlXIYFvEI7JZ
- Db8+G5/TV9T2NhE8KC7mSloAc1UIcJKpiW5T2SjuqnT940DAooxfdroe3ULm3OyJuUQE
- 6yyw==
+ bh=9vwsMBWLqSru1XC5tGa2owIx78df+Ne2sGVF0WVxroM=;
+ b=LdR7jd7InyezlFiAPma4BS7EIKZr7X10c7Hkovn7gYF6TUfgZksuUqfofD+wmcWkSk
+ xI2arOuMdrMap7Uj/7P2Kg7w5BaCo0SlHX4b7/nV/EKmCPvhO4Da4wQE1A50gtDDa/3U
+ xJaKmQ4+Qn5uBTLt6oKc9XtTdO3VPzbS8l/iNNih9j2vh73Y679ru9gk205JaCGlPu0w
+ YgYW1BHS9nEKmIDuA0iVo/GlyMvKSgQRA8MgsVLZKWPcu8ORs2stq33X1+zp4/PlFLnJ
+ fKq4VhLNXvGCW67+60dTwxTqiCoDzmUv0wpWaTgn2VkITB+26SNp+t9GtSIL6ZYhwwEI
+ zpGA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU4wbPnA7ATsejZSajK900q51Lfn0xP6LjnnxOPMx6e7itkBRZiQn5L94yjaGmFfrv9/tOhVivOuNUfyw==@nongnu.org,
- AJvYcCVHdYTlhs3tMWb1/ZpAQZpmNIXuth7T7DoOE3gU60nbPvP4GIQOriLQAhjPoY48d3lpbjJ7eDjjTf0=@nongnu.org,
- AJvYcCVTdq6QRpw/il/HjeEpn+EqJjrS8WFeE8R/+L58d/dqinfmcfI+q3FLUah4yT34vq3udAVZDV5se/9kHQ==@nongnu.org,
- AJvYcCWVT3C+IllJpG1wWBiBusRLfgvnfEE1OPqoWr9xYoVHeZMCCQwJGEssMWyXiTTZpdQWrQi712aU7g==@nongnu.org
-X-Gm-Message-State: AOJu0Yw0FrQhdGE/0O5xhWg7a2NX+TKZ5XrXTkKXuK8ShkRgZ6fXLt4h
- 9QvTsH2NrMlwm+NrtmK5weFcNPa5guJEGjRAs1W5gerjwlerX2ioZOsX6PMH
-X-Gm-Gg: ASbGncsk7yEu4UhyGJzUooiiTfwVuhHRx6IaYatorwpINFzVCliwBz7/l30G6P8/HTB
- VYx9IN2rxrIIYsFnetyuZBuAvm/vtnNUjFBC0MXsL9DgR4s4W4wdm6yCOnvk8kk7H9ZiiHLTPHX
- t2mEOLluRFylbYGXl/HblwVks6KxAxOmjVk0vvzaL5IK7TW57raB8zGWZDAgkj2gDCrqKeg6KKz
- kXMZ8rQfhBU10wFwcU1uVnmNA1uloNawqxDvEefxhTUzgAF5qc226QADyBrWnKjDF6FT4dlcWxI
- xz48v+FRiWiPMbl2mrc21lYQ+IlmY/lmezviEuwVE02KWi6RRze93ao4rQM=
-X-Google-Smtp-Source: AGHT+IGli9pUmcY3KyTzbFBRjFgDu1JXXm31EwPT7XYV1PhrrsboM1x/7sb3HIGZTZeVLj7SCvEwRg==
-X-Received: by 2002:a17:902:ef11:b0:224:2384:5b40 with SMTP id
- d9443c01a7336-22c535a7e46mr256405075ad.24.1745299745436; 
- Mon, 21 Apr 2025 22:29:05 -0700 (PDT)
+ AJvYcCW4P/FhHVsWHOQsOEAtivYn7eStl3hdrAIX/GQ0sSW8xvNVsxsdwDC92UWhfb8a6YqB9hvZvvboDQ==@nongnu.org,
+ AJvYcCWXp22JdS42h1Hiuydlaz+jTN6uYcYYNkyXYDLETIc73Zm9iGU3x1qj0lCa9WZKemE2e32rqrdg24k6lg==@nongnu.org,
+ AJvYcCWgPMI450FAlydQlfoyfs2X6r/JBmmLevdikhpztJgqiJnUK5SUaYh5A8ce36Ef2LtAUveC8+3kMLzczg==@nongnu.org,
+ AJvYcCXCmbxtVEL0Qzkt3qYOyNluXiqKqW6SdeUj1JZHa7zfjyaQgpErPWfijAaaiXtgMYBBEFf4NLtOBR8=@nongnu.org
+X-Gm-Message-State: AOJu0Yz4PjGmypT2X0QqejxkNNdiPQ31m4fc5T59VqonW3MfM/xGfU3i
+ i9Y7YIGdFdjKAqDZc9YYqOhMqNFVUgWGbNtWh4m19UgJ8MpS1EjA/N4RNgBy
+X-Gm-Gg: ASbGncubleX8FST4fuhrhaDkHa/uKlEMWblpMmFSbQub5cGcCnL9NB0ZCUPKk25jlrT
+ UJ+AkIBtBb8CV7O9O19o2rZnnLzHWtxw0CcXrYWfotM+xjv8IO3XzZ6Z2hUj5xdEARtQZ7j3f/r
+ JCpc9hUD/5K47Tc12cGbI3AEKOMVbCOAG5UjEWy3758r+ZS/pDBZfnzZDogSe3OrLhwHEKqm3PY
+ BWRy3CxsrrhLfpuc9mfopBUkqXJlXLoLt7mLUA5yoi6Wd8AP0kuzg6Ig7/23XUnth9GKB2HzVmE
+ QhTxDPmgu/0VbDWp9NgkXQ/KwUTtMvGh0CmyF0JHzrcRWiD52eISHllIamI=
+X-Google-Smtp-Source: AGHT+IGcgLfvr8Wdb5riVcTXWYTEKyRMiKMNTuqyUTz74/+a7cYyYkhgkYkaogzfi9swQMO3/AnoyQ==
+X-Received: by 2002:a17:902:f682:b0:224:912:153 with SMTP id
+ d9443c01a7336-22c53573d25mr231402555ad.5.1745299753393; 
+ Mon, 21 Apr 2025 22:29:13 -0700 (PDT)
 Received: from localhost.localdomain ([240d:1a:3b6:8b00:e142:4a4f:1ebb:3ca4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50eb4483sm75692085ad.118.2025.04.21.22.28.58
+ d9443c01a7336-22c50eb4483sm75692085ad.118.2025.04.21.22.29.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Apr 2025 22:29:04 -0700 (PDT)
+ Mon, 21 Apr 2025 22:29:12 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -88,17 +88,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH v2 08/20] target/ppc: Fix type conflict of GLib function
+Subject: [PATCH v2 09/20] target/s390x: Fix type conflict of GLib function
  pointers
-Date: Tue, 22 Apr 2025 14:27:12 +0900
-Message-Id: <255824200579431ecaebd32006bdf7a89d48ffd4.1745295397.git.ktokunaga.mail@gmail.com>
+Date: Tue, 22 Apr 2025 14:27:13 +0900
+Message-Id: <1e55b633d50567e8b145c98f626af5ecd93001f9.1745295397.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1745295397.git.ktokunaga.mail@gmail.com>
 References: <cover.1745295397.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -130,33 +130,33 @@ function pointer casting.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- target/ppc/cpu_init.c | 4 ++--
+ target/s390x/cpu_models.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 V2:
 - Updated the commit message to explicitly explain that function pointer
   casts are performed internally by GLib.
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index f81cb680fc..f03e48ba31 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7115,7 +7115,7 @@ PowerPCCPUClass *ppc_cpu_get_family_class(PowerPCCPUClass *pcc)
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index 93a05e43d7..48cdef285d 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -373,7 +373,7 @@ static void s390_print_cpu_model_list_entry(gpointer data, gpointer user_data)
+     g_free(name);
  }
  
- /* Sort by PVR, ordering special case "host" last. */
--static gint ppc_cpu_list_compare(gconstpointer a, gconstpointer b)
-+static gint ppc_cpu_list_compare(gconstpointer a, gconstpointer b, gpointer d)
+-static gint s390_cpu_list_compare(gconstpointer a, gconstpointer b)
++static gint s390_cpu_list_compare(gconstpointer a, gconstpointer b, gpointer d)
  {
-     ObjectClass *oc_a = (ObjectClass *)a;
-     ObjectClass *oc_b = (ObjectClass *)b;
-@@ -7183,7 +7183,7 @@ void ppc_cpu_list(void)
+     const S390CPUClass *cc_a = S390_CPU_CLASS((ObjectClass *)a);
+     const S390CPUClass *cc_b = S390_CPU_CLASS((ObjectClass *)b);
+@@ -415,7 +415,7 @@ void s390_cpu_list(void)
  
      qemu_printf("Available CPUs:\n");
-     list = object_class_get_list(TYPE_POWERPC_CPU, false);
--    list = g_slist_sort(list, ppc_cpu_list_compare);
-+    list = g_slist_sort_with_data(list, ppc_cpu_list_compare, NULL);
-     g_slist_foreach(list, ppc_cpu_list_entry, NULL);
+     list = object_class_get_list(TYPE_S390_CPU, false);
+-    list = g_slist_sort(list, s390_cpu_list_compare);
++    list = g_slist_sort_with_data(list, s390_cpu_list_compare, NULL);
+     g_slist_foreach(list, s390_print_cpu_model_list_entry, NULL);
      g_slist_free(list);
  
 -- 
