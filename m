@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEFAAA95D5C
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A03A95D55
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:30:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u76BA-0001FJ-TT; Tue, 22 Apr 2025 01:28:21 -0400
+	id 1u76BG-0001Ii-8I; Tue, 22 Apr 2025 01:28:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76B6-0001Ed-Pq; Tue, 22 Apr 2025 01:28:17 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1u76BD-0001IK-Oj; Tue, 22 Apr 2025 01:28:23 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76B5-0007n8-3f; Tue, 22 Apr 2025 01:28:16 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-223fb0f619dso52997455ad.1; 
- Mon, 21 Apr 2025 22:28:12 -0700 (PDT)
+ id 1u76BB-0007o3-RU; Tue, 22 Apr 2025 01:28:23 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-aee79a0f192so2950956a12.3; 
+ Mon, 21 Apr 2025 22:28:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745299691; x=1745904491; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1745299699; x=1745904499; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9NQ7+0cp0B4BZ+F+1DEhH1LfKFVn/DFHA6zpy9bi3Vg=;
- b=OKGZb1tGCjl1neV+k4kKlNonOETqQ118aBaIpxqd4qPo682z6vOFsRpzigwPnfTByP
- r3w97z2gKIA1J7D7Hyl0w5Dcsw6FGxPWIedu4/KK+LG8YaZadu8g98iDS3hYTYI8o9eF
- crPFU4OPKPPzCfNFbgiAVKZJoFu6eRlTenXAyP7KkT07qzQXUy+7NJkSNcB64NKjuTPw
- r/8s/troXnlhgoaqdNy8ZabTnnmnnALH2BRkmsF2jOu/DTFg1BmNiVhSz17OMMLFw9lm
- ZCV63p8iYW6y0U6ZTdBeFoBt9S60yH8CkqcnLtwZRbxxxyZgqANdiU3g9MT31nxWMIxU
- IKAw==
+ bh=c9YjZLFky15fQ25eN+PsZB2kxxrFQ2yvjf7JgWdhp2A=;
+ b=IRy/TvwRS3/jMLUElwUY4X8zgo/cBp6iStbIEyaIot5CFfS7Sa4e2qf6k0UwXrpD4h
+ AdUxagGCMtDlxKt2MI3ibOhdehSciL3v9GJv3A2sfgzf+SXD1Q0YUsfCY3pjDek3y7Yp
+ Mmxg/TTlWtVWpcTUqR+esq5XriewL6ic4YJxISJj/Noj1nqXxDQlJA2LJ1ndeS/Ri40N
+ dkrGN6WI/GjdClkoQzh+V51ZB4cTBOfE/a1rRSZtOQYhAOlwI0UvYHqd0eWscmZqfh5H
+ y1l9McH0NBxee/6IHQn7M5FeIy85JTLfHxkaNyKx2lyisj4oiqEGdEwLsoj4pnYOhL8U
+ kbsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745299691; x=1745904491;
+ d=1e100.net; s=20230601; t=1745299699; x=1745904499;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9NQ7+0cp0B4BZ+F+1DEhH1LfKFVn/DFHA6zpy9bi3Vg=;
- b=MzO6jtgGnTscYRqb0OOO2s8FHUt6v+FZ7TnyeZ/3+msm5ifdDqx1jYzNPaUc3+vEGH
- boka7uqyivYSEAY1vT+lS4+CkJmKQWwePncZCbNRHmObm7+MyLBNCTFv4Vu8EJb0XzaZ
- LT9i5yKyJQYdhvLF5dGN5CQxYWFX/ev/z1krdWZE+ssnCxW6+5Q1jKE1Zk24crG8GW7H
- /vCNSz/nZK/xQVjaRtXkW8+AsdxKZju/Iz6fE4ltiEMtGwkB8h5oDwl1j1k+hkV8/FxR
- 8Y66hEtJRMqKd7iygQouL3iiEYcJ05mfuHOvCp/sYkIIwE549v1tXMmD38fPS6WHg8A7
- T5cA==
+ bh=c9YjZLFky15fQ25eN+PsZB2kxxrFQ2yvjf7JgWdhp2A=;
+ b=MExIBJkQBgRmcLBaXSpE6Yg8dL3afaGeb9zpEXlPS8aBTCCvANJxMXA6tyECDxhYlL
+ gijCJangA8NoQs9XURNFyHmQEB4jmanIr/QndwAgvWZXGNgUgaWD2Js/SP9wyQgTGcQp
+ au7lNvLO93GzZoa1jOiKSDQSuA/s6h1SCWzZfhM8xmUo/gnydX9W/La3nX+3kNnbzhKw
+ mt1p+A+ZQ/1+51ftE1kpMizju9wIzz7xEbFF2MqHggdAjoUnIojQqkOmv4NgEhhT79mf
+ vCmxRbKdTowe36kTAz4Ka8F81nHOU3BIEvQiJ4ZFJ4/aYoWz2WjBdPkewIYHepP5/AAu
+ uc2w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU4RF8pBp1JZb5mDFpQ1j0GcfiKoDhrf6XeLW4CEI2z3p/5CkwypDQr79TLpV9aGP8TXKR0b/W6cg==@nongnu.org,
- AJvYcCU5GtzUSubiR/JdGsGBj6t7zGbC4KaAhF3r313ihXAGLdVJL1BwaYDIiK9zjd2QBH7MydKaaS22KXNR0w==@nongnu.org,
- AJvYcCUDYG+81o/3WruZzjZaDl7zvmDiz3QM9TmTzWFq2fQgXL6k9BDH/CyCYcgkWk8uvtTqr7DQv9UljNY=@nongnu.org,
- AJvYcCUUljhEHIWBOwSxM/csCtbgY029ccj7f8aCWWCiP2Oozs2HQC9EEmImMkbqr7jucsb5teBJMewcD5e6tQ==@nongnu.org
-X-Gm-Message-State: AOJu0YxwgMeZkGA3tfaQWME8ARJMDh6dLriyO/E7qym47R89xPErOCwX
- sWDZP7JETuQMWj7/rwXJ70KOIJJ5k3SxBZYLnBM8Kk5FLev83BIOvNgQeHs9
-X-Gm-Gg: ASbGncsVkqt/r+OD9LVm3PHNQcnHO6yVNnYie4LZkVybBc/JvDY53WAP2WPJzM7/rhG
- U25ruZVfM4TjPCVJqteXzqZfYDImTwddMyP4HfdBd9sNHniBmYLumuu5x0g5H/IQONz9zyeiS+B
- eh090vBgWSyQHKj2mR3NwWqs5/PSJLmzuzWITHIMpStDFlK6l9QwSsTzu050PvvvWF+nS/Wp4G5
- 9bSI+uOe8lzhxDdzvTpyH+fRHWR1U8njo2ypMudPwDblwHYaPvryw2mA/efhDw1zK2hrlYgS9RE
- kJsgH9F3w/4OEt/dugvjMhuoCHZ7WRHMgjkPEXq5QnaqHxyeAo8ThXOtmDE=
-X-Google-Smtp-Source: AGHT+IFQZuSA5UEEZIfqmUdfgADL4wO5YWoqm3vdhDf1L+aFr2jGRlrpu12P1/0vzKEaAX8X39f6sA==
-X-Received: by 2002:a17:902:d4c2:b0:224:de2:7fd0 with SMTP id
- d9443c01a7336-22c535b2b3bmr201215225ad.25.1745299691273; 
- Mon, 21 Apr 2025 22:28:11 -0700 (PDT)
+ AJvYcCUcwbzzQoagV7RDxYlOMI9hI8cHFEIFg3e6haQCpJt08u4//GF+R6XmqTV9a52uDrzFk0f2LoGgwtaU+Q==@nongnu.org,
+ AJvYcCVS54wOXYveWgDdX7vTyCroR9mq7l8QfEHJ6JZArH8Cvk4ieV8POOUP8pavlKC89mQqkWhptPTtHCA=@nongnu.org,
+ AJvYcCWDxEH3qvD4upRuejp4DJc1JF/xP9vtNIX5Zbjem6vazPGwrXjqdfuc7sbY5fCftiwyvbccxG/4zw==@nongnu.org,
+ AJvYcCWv7tP2JJyMEt3IhL2X0G6QQIsEZ2+Rlj73fs378LbsVzefob4/LxUwyfD/EvqeQwEcKXNI/nvcn//V3w==@nongnu.org
+X-Gm-Message-State: AOJu0YxjGAipEsN83P8q+LPXDxAOGiq9Mp3XLZ84kJU0WYJ5VoRGnY/M
+ g8FfUg4Fba0/aSGKpycLvAg7C1g53mPZWgr0VTEmNonlLyS8hpOXJx4C6qXV
+X-Gm-Gg: ASbGncuqtnNfYLua2i1L/keUmoxK7gVkLxB9XeF2EsEmZLsWF5OcMvuMuC7CGqFADJy
+ 8lE9K2EcgRycmlqilzTdqauCeTSQszx3sA2cTlDMZ6JOXcHd7rlpjFMiohdoEs+nItrdAUWJBm7
+ WQJRxQ7SZmbFLzg8/6q2Lj3r6BKBjc+d+cuQQf4IffPoi+IMiMH+zFJ0YJYqTSTub8mot3YeGAP
+ lUwd7Oxe3XvAtXI08YstHeoPpaf/bPzU4fRGDRVQSTQttS8UELqEEb3Llfc/ghc9TYAY29zQqT0
+ T/cJdoFzUNXwwnK3VF4f6rdSsR5NtjPl9k5KHCtOnCAutaC1YvbfRVh8iSw=
+X-Google-Smtp-Source: AGHT+IEclO4OoJigEUfTejjyH3NIpSNJXpyhl1ePgWwzpOp+ffb6EGFjIA5uyx5Tw2/HzCaV2+Jtpw==
+X-Received: by 2002:a17:90b:2e48:b0:2ff:698d:ef7c with SMTP id
+ 98e67ed59e1d1-3087bbc9349mr19070468a91.29.1745299698887; 
+ Mon, 21 Apr 2025 22:28:18 -0700 (PDT)
 Received: from localhost.localdomain ([240d:1a:3b6:8b00:e142:4a4f:1ebb:3ca4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50eb4483sm75692085ad.118.2025.04.21.22.28.03
+ d9443c01a7336-22c50eb4483sm75692085ad.118.2025.04.21.22.28.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Apr 2025 22:28:10 -0700 (PDT)
+ Mon, 21 Apr 2025 22:28:18 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -88,17 +88,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH v2 01/20] hw/core/loader.c: Fix type conflict of GLib function
+Subject: [PATCH v2 02/20] qom/object.c: Fix type conflict of GLib function
  pointers
-Date: Tue, 22 Apr 2025 14:27:05 +0900
-Message-Id: <26dfe9191154ca65dca6ef51ce768ad2a0c30d5f.1745295397.git.ktokunaga.mail@gmail.com>
+Date: Tue, 22 Apr 2025 14:27:06 +0900
+Message-Id: <8ca13f4e2b9eba9d1f6030b0afb442a24330e463.1745295397.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1745295397.git.ktokunaga.mail@gmail.com>
 References: <cover.1745295397.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -130,35 +130,38 @@ function pointer casting.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- hw/core/loader.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ qom/object.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 V2:
 - Updated the commit message to explicitly explain that function pointer
   casts are performed internally by GLib.
 
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 2e35f0aa90..93a8b45d28 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -1410,7 +1410,7 @@ typedef struct RomSec {
-  * work, but this way saves a little work later by avoiding
-  * dealing with "gaps" of 0 length.
-  */
--static gint sort_secs(gconstpointer a, gconstpointer b)
-+static gint sort_secs(gconstpointer a, gconstpointer b, gpointer d)
+diff --git a/qom/object.c b/qom/object.c
+index 01618d06bd..87f84bac41 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -1191,7 +1191,7 @@ GSList *object_class_get_list(const char *implements_type,
+     return list;
+ }
+ 
+-static gint object_class_cmp(gconstpointer a, gconstpointer b)
++static gint object_class_cmp(gconstpointer a, gconstpointer b, gpointer d)
  {
-     RomSec *ra = (RomSec *) a;
-     RomSec *rb = (RomSec *) b;
-@@ -1463,7 +1463,7 @@ RomGap rom_find_largest_gap_between(hwaddr base, size_t size)
-     /* sentinel */
-     secs = add_romsec_to_list(secs, base + size, 1);
+     return strcasecmp(object_class_get_name((ObjectClass *)a),
+                       object_class_get_name((ObjectClass *)b));
+@@ -1200,8 +1200,9 @@ static gint object_class_cmp(gconstpointer a, gconstpointer b)
+ GSList *object_class_get_list_sorted(const char *implements_type,
+                                      bool include_abstract)
+ {
+-    return g_slist_sort(object_class_get_list(implements_type, include_abstract),
+-                        object_class_cmp);
++    return g_slist_sort_with_data(
++        object_class_get_list(implements_type, include_abstract),
++        object_class_cmp, NULL);
+ }
  
--    secs = g_list_sort(secs, sort_secs);
-+    secs = g_list_sort_with_data(secs, sort_secs, NULL);
- 
-     for (it = g_list_first(secs); it; it = g_list_next(it)) {
-         cand = (RomSec *) it->data;
+ Object *object_ref(void *objptr)
 -- 
 2.25.1
 
