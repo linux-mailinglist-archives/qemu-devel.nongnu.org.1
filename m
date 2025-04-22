@@ -2,109 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5188AA95D63
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D372A95D8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 07:52:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u76Hh-0002V9-TX; Tue, 22 Apr 2025 01:35:06 -0400
+	id 1u76Wl-00057I-6f; Tue, 22 Apr 2025 01:50:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76DR-0003hP-Mm; Tue, 22 Apr 2025 01:30:42 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1u76DP-0008Dn-Ke; Tue, 22 Apr 2025 01:30:41 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-226185948ffso52644125ad.0; 
- Mon, 21 Apr 2025 22:30:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745299837; x=1745904637; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=239sog6AsGRpOuiETXgLR1hsZQlcMmDhDGFK29CX7lo=;
- b=Nm14sWB+0ElN92Tt/rcIVbC5IdeubZ5zskez8sBibMdZc1MYuQWRU6HffS2EhIYGWx
- qor/fBG2KqibUimyUoYOqF+grewuWbPGokv98mKwRKY7bLYsH05fojreX0kQfjoL1PcA
- MJVxFDkhMVwgo7+aIdUe27AIw1wFl/sIoKu0wYd9aWzPsIeQEBQxZDuWSGNTMRMXZSY+
- xH6KH0fTNGJaq9V9YeVM8cOjIGgsJAbozTOGLUZsx4qbCJXPsDqDGvL/bafYE002FMTk
- 2rQloAN1LT32OJDKKWq4x5Sj14G0FQAArjU+13uPRKVtAprps/VPyBkxHZJOvheS/e5k
- jQTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745299837; x=1745904637;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=239sog6AsGRpOuiETXgLR1hsZQlcMmDhDGFK29CX7lo=;
- b=aPJPr355TUpmtcCXsWlO/HgKu1JQky0l23/JeK1W+G8HHhBk389aRsKflOsE8UB+XW
- 5oyIW8Zepf6Pd8ZmAt+Fop2Q0egxO6iwLLVB/99H6gchj6Zyk9Y54jrd2gixzAkV/P73
- 3nBDH8CkDweP0iYVYjXgeHtMtS/ZqAH1/HPEPpmqw032XjULxdo263znGsslyanKt9rn
- uPxF8aSuFUECgK+mNVOpl/NALs4442DC2oiasp2OHtleamjls0MaDJtZDiHHY1VmTQA7
- 07G9amHNxIvQaf76X7BSjXyB67SXRe4Halk8IBRQ2O8xmk2A2kX2ZPuS3Meszr4xS7Ty
- 5Iyg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU13+eHHqKnM4HB5XEfUNuA+0Y3O2zSmSYgA5ITcMafNQu6vds9oDJ0EwiaJ63SafyoiQp+RaxYrJzMmA==@nongnu.org,
- AJvYcCVPPzhQLj/lFqcV8XHTpfBHJnkCgt6mimRvx2DJAMJ+qmuy5l6KDwm4HidLB+DJTMRfCXynY+N79Q==@nongnu.org,
- AJvYcCVYR/0qlsWYwIMsRLFgnuqw1ejIoxtNwgTWdLxFxa6yX1IH2NhEg1uGA6I4sqAp8oIsumPFM1dqBwI=@nongnu.org,
- AJvYcCXCQEdF+DufTuwP6Zg/k/s3oLhHRITiKlhROvkxLTSs+L4iU0Oj7Krb9hx0qv+6ARvuglLJJrBhxDw3Pw==@nongnu.org
-X-Gm-Message-State: AOJu0YzARfbdlKppOsmJ+3uTAgjirYjQK1WD1Oz4UUudJ3C/kWqSK/+a
- 6KttR49YbiHKO9ZxQkhoG7iEd9i8b2xGeVsjj35giNQ5IG0iP8p2mYbxWd2b
-X-Gm-Gg: ASbGncu5XYkKV/7EQriyk2lhYzxoL9/SfVXJGXtrRY+RRgsnSIYqabOD7YeML7ELKZ7
- xq2DG7j91l07EM3jyM5CnNJZHEy2pn17Y5XaCKqBz9pAzDx0d+NOx8Sv4nQ7WPQBWoQ5GEyajHz
- +TASo3lYpfhOlO9ZPWe1zNfR7l8GYvjX4M/EWF2j+QDtNeMFwNWvRs7/J77atILmgkj10j7P6Vq
- eT/uPDuoy0R/04+P/hhHKyOJj/2/EoVrUTtiytakXVE5WsJj/h4aPLijIU0+LJij5QPiWxut/Zc
- CwRr0CGx1ui7ymyNq/IMCPqWFGtTSx5EaBooxw7P+n1xYu2AhfrkuQQ7uR+CMmv/KhiETw==
-X-Google-Smtp-Source: AGHT+IGGRtHx5fim4xGmJq6v8vkziresfB5+BAuQyo6/891rk0skJGXxaEivPZeVzgS3/6wX99cASQ==
-X-Received: by 2002:a17:903:22c9:b0:220:ff3f:6cc0 with SMTP id
- d9443c01a7336-22c536080bemr230986565ad.38.1745299836831; 
- Mon, 21 Apr 2025 22:30:36 -0700 (PDT)
-Received: from localhost.localdomain ([240d:1a:3b6:8b00:e142:4a4f:1ebb:3ca4])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50eb4483sm75692085ad.118.2025.04.21.22.30.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Apr 2025 22:30:36 -0700 (PDT)
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Kohei Tokunaga <ktokunaga.mail@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Pavel Pisa <pisa@cmp.felk.cvut.cz>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Vikram Garhwal <vikram.garhwal@bytedance.com>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: [PATCH v2 20/20] gitlab: Enable CI for wasm build
-Date: Tue, 22 Apr 2025 14:27:24 +0900
-Message-Id: <a9ae4d0fbcde4d837e55c07715a169bcde495895.1745295397.git.ktokunaga.mail@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1745295397.git.ktokunaga.mail@gmail.com>
-References: <cover.1745295397.git.ktokunaga.mail@gmail.com>
+ (Exim 4.90_1) (envelope-from <SRS0=h5bN=XI=kaod.org=clg@ozlabs.org>)
+ id 1u76Wf-00056F-Qp; Tue, 22 Apr 2025 01:50:33 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=h5bN=XI=kaod.org=clg@ozlabs.org>)
+ id 1u76Wd-00029D-3B; Tue, 22 Apr 2025 01:50:33 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZhWY95zztz4x8Z;
+ Tue, 22 Apr 2025 15:50:21 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZhWY6399xz4w2J;
+ Tue, 22 Apr 2025 15:50:15 +1000 (AEST)
+Message-ID: <04db9a1e-4eb6-4ece-9143-1a4bec51eb47@kaod.org>
+Date: Tue, 22 Apr 2025 07:50:12 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/10] hw/arm/aspeed_ast27x0 Introduce vbootrom memory
+ region
+To: Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
+Cc: Troy Lee <troy_lee@aspeedtech.com>,
+ "nabihestefan@google.com" <nabihestefan@google.com>
+References: <20250417031209.2647703-1-jamin_lin@aspeedtech.com>
+ <20250417031209.2647703-3-jamin_lin@aspeedtech.com>
+ <062830ef-b6ec-42ba-be68-547d4d569802@kaod.org>
+ <SI2PR06MB50411BBCDE73A9D1ABDD5CD1FCBB2@SI2PR06MB5041.apcprd06.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <SI2PR06MB50411BBCDE73A9D1ABDD5CD1FCBB2@SI2PR06MB5041.apcprd06.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=h5bN=XI=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,86 +114,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add GitLab CI job that builds QEMU using emscripten. The build runs in the
-container defined in tests/docker/dockerfiles/emsdk-wasm32-cross.docker.
+On 4/22/25 03:59, Jamin Lin wrote:
+> Hi Cedric,
+> 
+>> Subject: Re: [PATCH v4 02/10] hw/arm/aspeed_ast27x0 Introduce vbootrom
+>> memory region
+>>
+>> On 4/17/25 05:11, Jamin Lin wrote:
+>>> Introduce a new vbootrom memory region. The region is mapped at
+>>> address "0x00000000" and has a size of 128KB, identical to the SRAM region
+>> size.
+>>> This memory region is intended for loading a vbootrom image file as
+>>> part of the boot process.
+>>>
+>>> The vbootrom registered in the SoC's address space using the
+>>> ASPEED_DEV_VBOOTROM index.
+>>>
+>>> Introduced a "vbootrom_size" attribute in "AspeedSoCClass" to define
+>>> virtual boot ROM size.
+>>
+>> Could you please explain why we need a class attribute to size the vbootrom
+>> region ? The rest looks good.
+>>
+> 
+> I've reviewed the SRAM design and used it as a reference to create a new class attribute for setting the size of the vbootrom memory region.
+> Currently, I don't plan to support different vbootrom images for the AST27x0. My understanding is that a single vbootrom image should be sufficient to support all AST27x0 variants.
+> If you agree, I will remove this class attribute and instead hardcode the vbootrom size to 128KB.
 
-Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
----
- .gitlab-ci.d/buildtest-template.yml | 27 +++++++++++++++++++++++++++
- .gitlab-ci.d/buildtest.yml          |  9 +++++++++
- .gitlab-ci.d/container-cross.yml    |  5 +++++
- 3 files changed, 41 insertions(+)
+Looks good to me.
 
-V2:
-- Split the Dockerfile addition from the previous 18th patch into a separate
-  commit.
+Thanks,
 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 39da7698b0..67167d68a5 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -126,3 +126,30 @@
-     - du -chs ${CI_PROJECT_DIR}/*-cache
-   variables:
-     QEMU_JOB_AVOCADO: 1
-+
-+.wasm_build_job_template:
-+  extends: .base_job_template
-+  stage: build
-+  image: $CI_REGISTRY_IMAGE/qemu/$IMAGE:$QEMU_CI_CONTAINER_TAG
-+  before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Pre-script setup"
-+    - JOBS=$(expr $(nproc) + 1)
-+    - section_end setup
-+  script:
-+    - du -sh .git
-+    - mkdir build
-+    - cd build
-+    - section_start configure "Running configure"
-+    - emconfigure ../configure --disable-docs
-+          ${TARGETS:+--target-list="$TARGETS"}
-+          $CONFIGURE_ARGS ||
-+      { cat config.log meson-logs/meson-log.txt && exit 1; }
-+    - if test -n "$LD_JOBS";
-+      then
-+        pyvenv/bin/meson configure . -Dbackend_max_links="$LD_JOBS" ;
-+      fi || exit 1;
-+    - section_end configure
-+    - section_start build "Building QEMU"
-+    - emmake make -j"$JOBS"
-+    - section_end build
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 00f4bfcd9f..0f92d5313a 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -801,3 +801,12 @@ coverity:
-       when: never
-     # Always manual on forks even if $QEMU_CI == "2"
-     - when: manual
-+
-+build-wasm:
-+  extends: .wasm_build_job_template
-+  timeout: 2h
-+  needs:
-+    job: wasm-emsdk-cross-container
-+  variables:
-+    IMAGE: emsdk-wasm32-cross
-+    CONFIGURE_ARGS: --static --disable-tools --enable-debug --enable-tcg-interpreter
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index 34c0e729ad..3ea4971950 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -94,3 +94,8 @@ win64-fedora-cross-container:
-   extends: .container_job_template
-   variables:
-     NAME: fedora-win64-cross
-+
-+wasm-emsdk-cross-container:
-+  extends: .container_job_template
-+  variables:
-+    NAME: emsdk-wasm32-cross
--- 
-2.25.1
-
+C.
 
