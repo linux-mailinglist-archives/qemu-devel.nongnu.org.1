@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E059A9767F
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 22:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29033A977AD
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 22:33:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7JTA-0006N7-AX; Tue, 22 Apr 2025 15:39:48 -0400
+	id 1u7KHn-0004Gs-Sy; Tue, 22 Apr 2025 16:32:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JSQ-0004MB-1n
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:39:02 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u7KHj-0004Cb-HX
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 16:32:03 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7JSN-0007Nw-73
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 15:39:01 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-22c33677183so65874685ad.2
- for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 12:38:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u7KHh-0004ry-ID
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 16:32:03 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2260c91576aso49237095ad.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 13:32:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745350737; x=1745955537; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TW4N3ReYmKveN3DtkTRFhUmPoxz9JDSNytNFvFcor3s=;
- b=ltj6Rp4PuGgS1vYQe7Q1ica0xDvbxsNvFGUjeYwi59ukvKceSaNefi59UHP9agYH/V
- /qdy4jsHi+hdaXyVDIEweBsGbMuOmdxoqe7yXHlJWPc7912360tV8Q2lD3L/eo3wOUIC
- XI2wQp+XIHoUx63FdLdBbPH85q0MoFRkuqB+IeeZj9TUTTIJXDIo+Shu5tGvz8sZYAzS
- MlnDEYaQJWTI7fKfJltXZuvwwaEPZ3RtC6Yw13y6tSHktUdx+Zz0C4VbcKngcwuoh3uh
- 6mC1sj6WO/S9qlY9zt/QfoFkxp4Rk8Za5yzjfyc/KRTwkmqIus3vG0rhWSZQGdOFeEIz
- TRoA==
+ d=linaro.org; s=google; t=1745353920; x=1745958720; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=V3QrtJKrNuWUOlIY6aVS4Af5l6Rw05lMs1vEb1nhXY8=;
+ b=Qc6YCMgjLbiBvnKtt12CZllGikWZc609utdz9CKbRmbkArVHsPavhrB/2Z8yoS89g3
+ OEKTcTXB+jRGAD8ZHRD0Y+bj1M9M4Nj3AXV84LPIHVwGAtLg4GhG7BOHrjSyPRd3WUJy
+ oQcbqMwTCzCTfUjmX+795P5PnuC56e9qLzXxXCuUyUhPVG9erv71KJJ3Z0E4eDFBED7A
+ rCtR4NWDMHA9pd7g+4FjPP9KIZsxljIFw3foHaH5mEEHYuDB/nLa9iZRYfDuHI3hskdR
+ 6KE+bEN1MjaVtEXllzen9m9RXUutVPf4+fltd3NwSYfxo5/FbG/saZJ7mLiVB0vFa2ZD
+ 2eAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745350737; x=1745955537;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TW4N3ReYmKveN3DtkTRFhUmPoxz9JDSNytNFvFcor3s=;
- b=FrsZprrkcfdMjF+WajURaKV4EWEYg6qrBv9JWubq0tTQOyXLiLQzRfFUwLEH2UEsDJ
- 41Pw7+R6wb4KEHKksdSKzUA8pV8o+2LdDgr6Oi64BKDInYfI0kYhfrRZuSQAHS9UdC4E
- DVvpUsYwbiIJqRuVSJRuwcPW7QMHq9sqppWPILAiQUlGdZ6rr0q4MrqCRCwCIxm+kCK9
- A15k1VzKJYDIub1C7sACy5UIgnvSJnpLmK6pIU5acNo3Gkkf6i2Feu2NaYUZNC3eISqj
- TzjASLIve2q6exxbjYZyk8Y/185KV88rcYGWSyGVLyKP/tMODULGBltfdyah3hcB+rTo
- Dsjw==
-X-Gm-Message-State: AOJu0YyvSpZ93aev7F7oTWnWepNVMHBLH4Q90bKDynbWxN0bEdIaGytY
- RhrFSHpV6NjSACtTyrMF1iROGRDLVpf4fIuTKWdM3MBgf7hQ/EdX+IUQsh9r8mtnrP8IEhwjev6
- X
-X-Gm-Gg: ASbGncuhSS3Elk4nwExYYOkqzgV2Qpila3acvB/61+BEOCvYCSKabNXrMBJXCIYbycI
- RAGx088/vCfagEk7nLSdwl8pbGSya04uWK8GpLxxu6RZa06tK+XFks7+YluQeii193W/LKJ0Ifv
- Nj4e1Cr+WyXiKcEVC2wrUWy5GlC89z100LgWr/iY66GBV7vB+JiMmFSm3ssTBxWRp6C/5NSYCoA
- +nSsZ5btVmhBkdfxFYjdCcir9ZoxPQUkOr86BGQyM31VueXaI9gF0DtoSt7YqCkk0pOhRh9rFjm
- i0mbVinVvXoxZloA0e0nzZyqQLITH1wlSM9Dqtf2VMR13D1WDDt6eAsVHfI14LoEgUhIYBGnbXb
- 1kwOC51xgTw==
-X-Google-Smtp-Source: AGHT+IFBP8BXSno0ocNf5zHGzoEvSQ8K01g8QYaLPu6p5KMfevvtuWHn+qmG3jzCGBcThPldjCz1jg==
-X-Received: by 2002:a17:903:11c5:b0:221:85:f384 with SMTP id
- d9443c01a7336-22c5359c36cmr229258785ad.16.1745350737383; 
- Tue, 22 Apr 2025 12:38:57 -0700 (PDT)
-Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ d=1e100.net; s=20230601; t=1745353920; x=1745958720;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=V3QrtJKrNuWUOlIY6aVS4Af5l6Rw05lMs1vEb1nhXY8=;
+ b=vzpqVFr78qady/zmzYxcNXkAxyT9N9/hfv1tdrIbHLZe8zSFe4Ra3eDOOBsVZIw5ab
+ M+fhGWRF5lgQpmgkoIi/vAQyBZkGbU5AcnrOLiLOd6e2DBwu0ZKJq0Fpedy3OF3oL58Z
+ 2Ba77y1O772a5tlzyLglmIiRKeVMNnDXvtQffW6y5tJ10in+nYahop4ySnHl7ZQOIkuL
+ +NizAWpIaE3tAZt5nOzlLpYthlQl5VUZZ6TeNsMN5JgXUFVRMaGA8QQOoE2Lk1HQQo9Z
+ 5fb8Y2Gx3DI2BaNhMYt1BU1TGmdzrlBLAMru6ITO3Q8epDeQN2apzEPfyFKS6Hughp9S
+ mErg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWShZDx2fS5UC530MewJEU0qFjUygb2TRldeS/W/C6tPyU+UPebCoR14XtM0rr6i5+w/jq6FutReIwg@nongnu.org
+X-Gm-Message-State: AOJu0Yz5biT6fccn7VycVhhRNwEm/W5KEBrgxlnRZah2b1PfdhwelSTM
+ KQl4k/hUOoDWRFhqdb1IqZl8G0izazJeotAYQKm6tVqrD0n7+gbkfICVuG/Lauw=
+X-Gm-Gg: ASbGncvbqxq8d5aY9xgYxTZr6jK1K9sS40rEeeRzNtZRs/9d4OoUP4+LCouy8pgsJMl
+ 2s3nFTNNnQ583jM1t+cWGlY8AlVrGAROLcNOi1p9sUoC6Vi71BMwX5ywOUYm15LOuwZBCptRvJb
+ im2fC8gCeeJflQUrb0tbOghJD007z2fBJtlAoXphl/rtMfrqD0aIaoIH49XbXRWmgBXmDw0MrzN
+ vvyEm1iHz8m5J3bDdwoQo60pII/lNwQKEMlgvQsRduICUXK5AZyN7HiUBwMOgLrQy8vHhAgktPu
+ Hyi5xsa9XuceWLfIYYfACEgyki0FKMxkNyaGGvQrFPY2JzyF/z4o3A==
+X-Google-Smtp-Source: AGHT+IFyXAldoBPHtb/bThb0DZHU1iG1QgbwUyPBUQEKHs8aZXU6PxGnsRCuzvOXQrxl1ogw6FTO7w==
+X-Received: by 2002:a17:903:2304:b0:22c:3294:f038 with SMTP id
+ d9443c01a7336-22c5359e53cmr231638245ad.18.1745353919800; 
+ Tue, 22 Apr 2025 13:31:59 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50eb484dsm88951765ad.148.2025.04.22.12.38.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Apr 2025 12:38:57 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 146/147] target/i386: Remove AccelCPUClass::cpu_class_init need
-Date: Tue, 22 Apr 2025 12:28:15 -0700
-Message-ID: <20250422192819.302784-147-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250422192819.302784-1-richard.henderson@linaro.org>
-References: <20250422192819.302784-1-richard.henderson@linaro.org>
+ d9443c01a7336-22c50eb4613sm89808945ad.135.2025.04.22.13.31.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Apr 2025 13:31:59 -0700 (PDT)
+Message-ID: <64d0d267-aa1f-4f61-b902-dcbbd89420d6@linaro.org>
+Date: Tue, 22 Apr 2025 13:31:58 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] buildsys: Disable 'unguarded-availability-new'
+ warnings
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Eric Blake <eblake@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <20250422171955.11791-1-philmd@linaro.org>
+ <7de6ad37-d62f-4e66-b660-034b69fb5938@linaro.org>
+ <94dabfd0-e104-432d-9793-2f44d361ddc9@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <94dabfd0-e104-432d-9793-2f44d361ddc9@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,107 +107,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Expose x86_tcg_ops symbol, then directly set it as
-CPUClass::tcg_ops in TYPE_X86_CPU's class_init(),
-using CONFIG_TCG #ifdef'ry. No need for the
-AccelCPUClass::cpu_class_init() handler anymore.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250405161320.76854-3-philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/i386/tcg/tcg-cpu.h |  4 ++++
- target/i386/cpu.c         |  4 ++++
- target/i386/tcg/tcg-cpu.c | 14 +-------------
- 3 files changed, 9 insertions(+), 13 deletions(-)
-
-diff --git a/target/i386/tcg/tcg-cpu.h b/target/i386/tcg/tcg-cpu.h
-index 7580f8afb4..85bcd61678 100644
---- a/target/i386/tcg/tcg-cpu.h
-+++ b/target/i386/tcg/tcg-cpu.h
-@@ -19,6 +19,8 @@
- #ifndef TCG_CPU_H
- #define TCG_CPU_H
- 
-+#include "cpu.h"
-+
- #define XSAVE_FCW_FSW_OFFSET    0x000
- #define XSAVE_FTW_FOP_OFFSET    0x004
- #define XSAVE_CWD_RIP_OFFSET    0x008
-@@ -76,6 +78,8 @@ QEMU_BUILD_BUG_ON(offsetof(X86XSaveArea, zmm_hi256_state) != XSAVE_ZMM_HI256_OFF
- QEMU_BUILD_BUG_ON(offsetof(X86XSaveArea, hi16_zmm_state) != XSAVE_HI16_ZMM_OFFSET);
- QEMU_BUILD_BUG_ON(offsetof(X86XSaveArea, pkru_state) != XSAVE_PKRU_OFFSET);
- 
-+extern const TCGCPUOps x86_tcg_ops;
-+
- bool tcg_cpu_realizefn(CPUState *cs, Error **errp);
- 
- int x86_mmu_index_pl(CPUX86State *env, unsigned pl);
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index d930ebd262..31487f4b28 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -43,6 +43,7 @@
- #include "hw/boards.h"
- #include "hw/i386/sgx-epc.h"
- #endif
-+#include "tcg/tcg-cpu.h"
- 
- #include "disas/capstone.h"
- #include "cpu-internal.h"
-@@ -8903,6 +8904,9 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
- #ifndef CONFIG_USER_ONLY
-     cc->sysemu_ops = &i386_sysemu_ops;
- #endif /* !CONFIG_USER_ONLY */
-+#ifdef CONFIG_TCG
-+    cc->tcg_ops = &x86_tcg_ops;
-+#endif /* CONFIG_TCG */
- 
-     cc->gdb_arch_name = x86_gdb_arch_name;
- #ifdef TARGET_X86_64
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index d941df0956..e13d0f6f86 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -124,7 +124,7 @@ static bool x86_debug_check_breakpoint(CPUState *cs)
- 
- #include "accel/tcg/cpu-ops.h"
- 
--static const TCGCPUOps x86_tcg_ops = {
-+const TCGCPUOps x86_tcg_ops = {
-     /*
-      * The x86 has a strong memory model with some store-after-load re-ordering
-      */
-@@ -152,17 +152,6 @@ static const TCGCPUOps x86_tcg_ops = {
- #endif /* !CONFIG_USER_ONLY */
- };
- 
--static void x86_tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
--{
--    /* for x86, all cpus use the same set of operations */
--    cc->tcg_ops = &x86_tcg_ops;
--}
--
--static void x86_tcg_cpu_class_init(CPUClass *cc)
--{
--    cc->init_accel_cpu = x86_tcg_cpu_init_ops;
--}
--
- static void x86_tcg_cpu_xsave_init(void)
- {
- #define XO(bit, field) \
-@@ -211,7 +200,6 @@ static void x86_tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
-     acc->cpu_target_realize = tcg_cpu_realizefn;
- #endif /* CONFIG_USER_ONLY */
- 
--    acc->cpu_class_init = x86_tcg_cpu_class_init;
-     acc->cpu_instance_init = x86_tcg_cpu_instance_init;
- }
- static const TypeInfo x86_tcg_cpu_accel_type_info = {
--- 
-2.43.0
-
+T24gNC8yMi8yNSAxMjo0NSwgUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgd3JvdGU6DQo+IE9u
+IDIyLzQvMjUgMjA6MzYsIFBpZXJyaWNrIEJvdXZpZXIgd3JvdGU6DQo+PiBPbiA0LzIyLzI1
+IDEwOjE5LCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4+PiBXaGVuIHVzaW5n
+IFZpc3VhbCBTdHVkaW8gQ29kZSAodjEuOTkuMykgYW5kIEFwcGxlIGNsYW5nZCB2MTcuMC4w
+DQo+Pj4gSSBnZXQ6DQo+Pj4NCj4+PiAgwqDCoCBJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi4v
+Li4vcWFwaS9zdHJpbmctb3V0cHV0LXZpc2l0b3IuYzoxNDoNCj4+PiAgwqDCoCBxZW11L2lu
+Y2x1ZGUvcWVtdS9jdXRpbHMuaDoxNDQ6MTI6IGVycm9yOiAnc3RyY2hybnVsJyBpcyBvbmx5
+DQo+Pj4gYXZhaWxhYmxlIG9uIG1hY09TIDE1LjQgb3IgbmV3ZXIgWy1XZXJyb3IsLVd1bmd1
+YXJkZWQtYXZhaWxhYmlsaXR5LW5ld10NCj4+PiAgwqDCoMKgwqAgMTQ0IHzCoMKgwqDCoCBy
+ZXR1cm4gc3RyY2hybnVsKHMsIGMpOw0KPj4+ICDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIF5+fn5+fn5+fg0KPj4+ICDCoMKgIC9MaWJyYXJ5L0RldmVsb3Bl
+ci9Db21tYW5kTGluZVRvb2xzL1NES3MvTWFjT1NYLnNkay91c3IvaW5jbHVkZS8NCj4+PiBf
+c3RyaW5nLmg6MTk4Ojk6IG5vdGU6ICdzdHJjaHJudWwnIGhhcyBiZWVuIG1hcmtlZCBhcyBi
+ZWluZyBpbnRyb2R1Y2VkDQo+Pj4gaW4gbWFjT1MgMTUuNCBoZXJlLCBidXQgdGhlIGRlcGxv
+eW1lbnQgdGFyZ2V0IGlzIG1hY09TIDE1LjAuMA0KPj4+ICDCoMKgwqDCoCAxOTggfMKgwqDC
+oMKgwqDCoMKgwqAgc3RyY2hybnVsKGNvbnN0IGNoYXIgKl9fcywgaW50IF9fYyk7DQo+Pj4g
+IMKgwqDCoMKgwqDCoMKgwqAgfMKgwqDCoMKgwqDCoMKgwqAgXg0KPj4+ICDCoMKgIHFlbXUv
+aW5jbHVkZS9xZW11L2N1dGlscy5oOjE0NDoxMjogbm90ZTogZW5jbG9zZSAnc3RyY2hybnVs
+JyBpbiBhDQo+Pj4gX19idWlsdGluX2F2YWlsYWJsZSBjaGVjayB0byBzaWxlbmNlIHRoaXMg
+d2FybmluZw0KPj4+ICDCoMKgwqDCoCAxNDQgfMKgwqDCoMKgIHJldHVybiBzdHJjaHJudWwo
+cywgYyk7DQo+Pj4gIMKgwqDCoMKgwqDCoMKgwqAgfMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+Xn5+fn5+fn5+DQo+Pj4gIMKgwqAgMSBlcnJvciBnZW5lcmF0ZWQuDQo+Pj4NCj4+PiBEaXNh
+YmxlIHRoaXMgLVd1bmd1YXJkZWQtYXZhaWxhYmlsaXR5LW5ldyB3YXJuaW5nIGFzIGENCj4+
+PiBzaG9ydCB0ZXJtIGJhbmQtYWlkIGZpeC4NCj4+Pg0KPj4+IFNpZ25lZC1vZmYtYnk6IFBo
+aWxpcHBlIE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGluYXJvLm9yZz4NCj4+PiAtLS0NCj4+
+PiAgwqAgbWVzb24uYnVpbGQgfCAyICsrDQo+Pj4gIMKgIDEgZmlsZSBjaGFuZ2VkLCAyIGlu
+c2VydGlvbnMoKykNCj4+Pg0KPj4+IGRpZmYgLS1naXQgYS9tZXNvbi5idWlsZCBiL21lc29u
+LmJ1aWxkDQo+Pj4gaW5kZXggNDFmNjhkMzgwNjkuLjUzOTM2OGY4MmIxIDEwMDY0NA0KPj4+
+IC0tLSBhL21lc29uLmJ1aWxkDQo+Pj4gKysrIGIvbWVzb24uYnVpbGQNCj4+PiBAQCAtNzM1
+LDYgKzczNSw3IEBAIHdhcm5fZmxhZ3MgPSBbDQo+Pj4gIMKgwqDCoCAnLVdzdHJpY3QtcHJv
+dG90eXBlcycsDQo+Pj4gIMKgwqDCoCAnLVd0eXBlLWxpbWl0cycsDQo+Pj4gIMKgwqDCoCAn
+LVd1bmRlZicsDQo+Pj4gK8KgICctV3VuZ3VhcmRlZC1hdmFpbGFiaWxpdHknLA0KPj4+ICDC
+oMKgwqAgJy1XdmxhJywNCj4+PiAgwqDCoMKgICctV3dyaXRlLXN0cmluZ3MnLA0KPj4+IEBA
+IC03NDcsNiArNzQ4LDcgQEAgd2Fybl9mbGFncyA9IFsNCj4+PiAgwqDCoMKgICctV25vLXN0
+cmluZy1wbHVzLWludCcsDQo+Pj4gIMKgwqDCoCAnLVduby10YXV0b2xvZ2ljYWwtdHlwZS1s
+aW1pdC1jb21wYXJlJywNCj4+PiAgwqDCoMKgICctV25vLXR5cGVkZWYtcmVkZWZpbml0aW9u
+JywNCj4+PiArwqAgJy1Xbm8tdW5ndWFyZGVkLWF2YWlsYWJpbGl0eS1uZXcnLA0KPj4+ICDC
+oCBdDQo+Pj4gIMKgIGlmIGhvc3Rfb3MgIT0gJ2RhcndpbicNCj4+DQo+PiBJIHNvbHZlZCBp
+dCB0aGUgc2FtZSB3YXkgbG9jYWxseSwgYnV0IGRpZG4ndCBzZW5kIGEgcGF0Y2ggYmVjYXVz
+ZSBJJ20NCj4+IG5vdCBzdXJlIHdoYXQgaGFwcGVucyBpZiB0aGUgY29kZSBydW5zIG9uIE1h
+Y09TIDwgMTUuNCwNCj4gDQo+IEknZCBleHBlY3QgbWVzb24gdG8gRG8gVGhlIFJpZ2h0IFRo
+aW5nIGFuZCBub3QgZGVmaW5lIEhBVkVfU1RSQ0hSTlVMLg0KPiANCg0KVGhlIHRyaWNrIGlz
+IHRoYXQgaXQgY29tcGlsZXMgd2l0aCBhIHdhcm5pbmcsIGJ1dCBtZXNvbiB0ZXN0cyBhcmUg
+bm90IA0KZG9uZSB3aXRoIC1XZXJyb3IgZW5hYmxlZC4NClRoaXMgbWlnaHQgYmUgdGhlIHBy
+b3BlciBmaXggYXQgdGhlIG1vbWVudCwgaWYgd2UgaWRlbnRpZnkgdGhhdCBhIGNyYXNoIA0K
+aGFwcGVuIG9uIE1hY09TIDwgMTUuNC4gRWxzZSwgdGhlIHdhcm5pbmcgY2FuIHNhZmVseSBi
+ZSBzaWxlbmNlZCBhcyB5b3UgZGlkLg0KDQo+PiBhbmQgSSBkb24ndCBoYXZlDQo+PiBzdWNo
+IGEgbWFjaGluZSBhdmFpbGFibGUuDQo+Pg0KPj4gSXMgdGhlIHN5bWJvbCBhbHJlYWR5IHRo
+ZXJlPw0KPj4gRG9lcyBpdCBjcmFzaD8NCj4+IEkgZ3Vlc3MgdGhlIHdhcm5pbmcgaXMgaGVy
+ZSBmb3IgYSBnb29kIHJlYXNvbi4NCj4+DQo+PiBZb3UgY2FuIGZpbmQgYSBsb3Qgb2YgaXNz
+dWVzIG9wZW4gaW4gdmFyaW91cyBvcGVuIHNvdXJjZSBwcm9qZWN0cyB3aXRoDQo+PiB0aGlz
+IHdhcm5pbmcgKHdpdGggdmFyaW91cyBmaXhlcykgc2luY2UgdGhpcyB1cGRhdGUgd2FzIHJl
+bGVhc2VkLg0KPiANCg0K
 
