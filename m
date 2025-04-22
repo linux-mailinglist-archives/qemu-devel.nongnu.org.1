@@ -2,87 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC339A95C53
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 04:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B64EA95C6B
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 04:59:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u73h4-0000Jv-SK; Mon, 21 Apr 2025 22:49:07 -0400
+	id 1u73pi-0003sq-U9; Mon, 21 Apr 2025 22:58:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u73gm-0000CS-GN; Mon, 21 Apr 2025 22:48:54 -0400
-Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u73gj-0000Zg-AC; Mon, 21 Apr 2025 22:48:46 -0400
-Received: by mail-vk1-xa32.google.com with SMTP id
- 71dfb90a1353d-5259331b31eso2029941e0c.0; 
- Mon, 21 Apr 2025 19:48:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745290123; x=1745894923; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8DecP5VoIJKYQG1Aebro80pfPsNAz8hbO54IgzeGN8Q=;
- b=bQjmYM958HQrC90jdiDIWxv7GUHz6U1zVN/OW7OmDjn48G9CB1F5RaS9URm6kYLP1r
- zUsK1YMIU5lQt0opRLr+9oVjFW5+15hj2gOGO/O1Ci5YtyC8u2au8CfyC77rd/rhjyK+
- 4GNGeZMhTLdsBo487Q3da29PnIrQwdeQKkEhGrqFs2yUXIJs2UCyWtBsqoKK5R9Mlemc
- Ipc7b1aUOomltW+R4j3xZHn8eJ0Ic1SbzRABlPICPlprVYr2/cs5qt6DHZwUqz72Fz85
- GslWTGxwZWIAVoMK6GHj9aDnZJArvqh5lFa2EQZiLc3C2z6Hqtrn0DhFB+OpJJBC0ZES
- ygtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745290123; x=1745894923;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8DecP5VoIJKYQG1Aebro80pfPsNAz8hbO54IgzeGN8Q=;
- b=MKFAno16twC4d5mPNfqQt+PHcEXKfaIimWwY9j4QYnazAoghzohhd3D7KCgOJQ6BmC
- Iut3dynMdP7N/BsaKPn2Mupsi9+Bu01YeZ4Wb65Gy5LOeHMEpJY/0cc7FbmHmzCxQAbr
- oIa0gJohnqkCAbp3Olpw0uL2z6ccgHK/INYoCP//xGlNwfxzoFS5B0SZhYwR6aIGZ32q
- QWEsn3ygz4eOoCdY6W4F/ElKhyCjHc50p480Gs2J3hzsDENuW0pDg20NNRr1kKMPdkQu
- 8VOuYCJi0HxPFspRbNhfvGMLk0ymGE00gOoTD+uf1a3ZzfuXuu1xOqbvjqauT/x/lYy3
- 8Ijw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVAh33v0ns0WfeA2O0vnY7eX1IspV7s/NWkibU0IUPwQZ+O/pBxRByWzlcu3Ys1OEJ9womLCzzaOOtDxQ==@nongnu.org,
- AJvYcCXVMZIOWg6ylSAnesJC47kR7BAucXWHh6qbEb2mCxd0ovAQwaHl9kfL+gqpXyKshoX8Wr+LP3kAVzDY@nongnu.org
-X-Gm-Message-State: AOJu0YyTmO/qmM5mu0c/P8a9jyGFnzjGPzej31y6LfFAR0CCjXT5e9WO
- 0QDyYrK7pFZ6DZH14zdNfK4zXsoPl9bA6FSqorBbOSiNG4SLjoX0py4vcdAghSkwKsTruIN+jbA
- bfuv/dwVo3yzGco/VyeDOcksDqk0=
-X-Gm-Gg: ASbGnctDzg6h7ftOrzSV1DsTj/cTftavYRernyZchfoiyizEd6eTpYNCAFoKLEtZP2K
- iTD+NTju5+b5tb1xIH7wyBnzrQ3V7bUbAeaWhhKkVEHp/HoeENZWKPq0mjN2IoLD0KEHcgblV+s
- iNAV66OCKXWP2llreMOkRe6loyhwLT2P1kKhz87gYe92HGkzX0kVam
-X-Google-Smtp-Source: AGHT+IHvuR+PSz4TsD8EAHWWTIT+KmALHYMJsNZymRCNbUHULZYslxT09FfV46BbEquzJORaf5CBmVlQv/QqzAJOyeg=
-X-Received: by 2002:a05:6102:5617:b0:4af:c519:4e7f with SMTP id
- ada2fe7eead31-4cb801f61bamr8033685137.18.1745290123516; Mon, 21 Apr 2025
- 19:48:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1u73pc-0003qJ-RK
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 22:57:57 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1u73pZ-0001YO-VS
+ for qemu-devel@nongnu.org; Mon, 21 Apr 2025 22:57:56 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8BxYa+nBQdomcPDAA--.21151S3;
+ Tue, 22 Apr 2025 10:57:43 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMAxzMSmBQdo7VWPAA--.29039S2;
+ Tue, 22 Apr 2025 10:57:43 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: [PATCH v3 0/9] target/loongarch: Code cleanup with function
+ loongarch_map_address
+Date: Tue, 22 Apr 2025 10:57:33 +0800
+Message-Id: <20250422025742.2693096-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20250417072206.364008-1-uwu@icenowy.me>
-In-Reply-To: <20250417072206.364008-1-uwu@icenowy.me>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 22 Apr 2025 12:48:17 +1000
-X-Gm-Features: ATxdqUHG4cq2MeU08EMxo4-4e4bOjd2M30GBb0ZJI_-KaYMAr9bsnpIHIjJMJzs
-Message-ID: <CAKmqyKP8gSY7J0ArKjnKWzcv7UOUjZ57UApW+6EVRM+P_5gfKg@mail.gmail.com>
-Subject: Re: [PATCH] common-user/host/riscv: use tail pseudoinstruction for
- calling tail
-To: Icenowy Zheng <uwu@icenowy.me>
-Cc: Riku Voipio <riku.voipio@iki.fi>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa32.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMAxzMSmBQdo7VWPAA--.29039S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,56 +63,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 17, 2025 at 5:24=E2=80=AFPM Icenowy Zheng <uwu@icenowy.me> wrot=
-e:
->
-> The j pseudoinstruction maps to a JAL instruction, which can only handle
-> a jump to somewhere with a signed 20-bit destination. In case of static
-> linking and LTO'ing this easily leads to "relocation truncated to fit"
-> error.
->
-> Switch to use tail pseudoinstruction, which is the standard way to
-> tail-call a function in medium code model (emits AUIPC+JALR).
->
-> Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Get physical address from virtual address is important for qmp command to
+dump memory content. In TCG mode, it searches TLB tables firstly and
+then do page table walker. In KVM mode, there are no TLB tables and page
+table walker is used directly.
 
-Thanks!
+Here TLB tables searching is moved to directory tcg, and code about page
+table walker is put in the common part so that it can be used in KVM mode
+also.
 
-Applied to riscv-to-apply.next
+---
+v2 ... v3:
+  1. Split patch 6 into two three small patches
+  2. Define tcg specified function from header file internals.h to
+     tcg/tcg_loongarch.h
 
-Alistair
+v1 ... v2:
+  1. Remove CONFIG_TCG macro with file helper.h in patch 1
+  2. Refresh spelling issues in patch 5
+  3. Split original patch 4 into existing patch 4 and patch 5
+  4. Add !kvm_enabled() in function loongarch_map_address(), tlb entries
+     will not be searched in kvm mode
+---
+Bibo Mao (9):
+  target/loongarch: Move header file helper.h to directory tcg
+  target/loongarch: Add function loongarch_get_addr_from_tlb
+  target/loongarch: Move function get_dir_base_width to common directory
+  target/loongarch: Add stub function loongarch_get_addr_from_tlb
+  target/loongarch: Set function loongarch_map_address() with common
+    code
+  target/loongarch: Define function loongarch_get_addr_from_tlb()
+    non-static
+  target/loongarch: Move function loongarch_tlb_search to directory tcg
+  target/loongarch: Add static definition with function
+    loongarch_tlb_search()
+  target/loongarch: Move definition of TCG specified function to tcg
+    directory
 
-> ---
-> P.S.
-> It seems that moving it to common-user/ makes the file out of the
-> MAINTAINERS section of "RISC-V TCG CPUS". I Manually added the
-> maintainers there, but the MAINTAINERS file seems to need a change on
-> this.
->
->  common-user/host/riscv/safe-syscall.inc.S | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/common-user/host/riscv/safe-syscall.inc.S b/common-user/host=
-/riscv/safe-syscall.inc.S
-> index dfe83c300e..c8b81e33d0 100644
-> --- a/common-user/host/riscv/safe-syscall.inc.S
-> +++ b/common-user/host/riscv/safe-syscall.inc.S
-> @@ -69,11 +69,11 @@ safe_syscall_end:
->
->          /* code path setting errno */
->  0:      neg     a0, a0
-> -        j       safe_syscall_set_errno_tail
-> +        tail    safe_syscall_set_errno_tail
->
->          /* code path when we didn't execute the syscall */
->  2:      li      a0, QEMU_ERESTARTSYS
-> -        j       safe_syscall_set_errno_tail
-> +        tail    safe_syscall_set_errno_tail
->
->          .cfi_endproc
->          .size   safe_syscall_base, .-safe_syscall_base
-> --
-> 2.49.0
->
->
+ target/loongarch/cpu.c               |   1 +
+ target/loongarch/cpu_helper.c        | 177 ++-----
+ target/loongarch/helper.h            | 720 +-------------------------
+ target/loongarch/internals.h         |   7 -
+ target/loongarch/tcg/helper.h        | 722 +++++++++++++++++++++++++++
+ target/loongarch/tcg/tcg_loongarch.h |  20 +
+ target/loongarch/tcg/tlb_helper.c    | 173 +++++--
+ 7 files changed, 926 insertions(+), 894 deletions(-)
+ create mode 100644 target/loongarch/tcg/helper.h
+
+
+base-commit: a9cd5bc6399a80fcf233ed0fffe6067b731227d8
+-- 
+2.39.3
+
 
