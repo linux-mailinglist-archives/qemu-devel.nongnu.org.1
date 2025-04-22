@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597AFA96DB7
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 16:01:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D13BA96DE2
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 16:05:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7EA1-0005VQ-IN; Tue, 22 Apr 2025 09:59:41 -0400
+	id 1u7EFT-0002tt-2M; Tue, 22 Apr 2025 10:05:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7E9z-0005Uy-6I
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 09:59:39 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ id 1u7EFJ-0002p7-H2
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:05:09 -0400
+Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7E9v-0006Hl-P3
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 09:59:38 -0400
+ id 1u7EFG-0007M4-6O
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 10:05:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745330376; x=1776866376;
+ t=1745330706; x=1776866706;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=WtmWnebD8AB2nDZRGnvV5l5+j1oRf8uBgW1ZPekGEXo=;
- b=dF4775DNiSUZnh/RsTA9+YO2jXvljhuoBpkwSyzt4eKNsQow/M0HNUij
- MXNMUirZNZGvCt1pLfOYhGlL6nuV6X7BG0NCdEOG6JWhjx5NDCGAXISav
- WqFrXR7CtWSC8d2I1fIJhLfHb33kT/m9OYDYfjZVk2n+D9f5iJlDIfyF/
- ZQ2AgF3BmNz6l/LiyhLtCxAy8Txs9tO6gsNg+Iqdts3ssA/aFSVQqGq5V
- wIXFCQA3WU7h0PxvY7gj6QTlUD06P5p8hiq87K6CMS3ECwtJugpYS0g/d
- 2//aw8/aB/NKsk5U4/gbspp5rQ2O0OtynO0u7M03D10R0RC7AG18oci0s Q==;
-X-CSE-ConnectionGUID: 1Cdgf0FeRnSAZxqzU71y0w==
-X-CSE-MsgGUID: eQjam/4LQZehH+fiVvDHYA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="49552378"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="49552378"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 06:59:32 -0700
-X-CSE-ConnectionGUID: xmYhynjBRjStBhdh6T/T0Q==
-X-CSE-MsgGUID: pTo0aIktSrOhNbt448+5ZA==
+ bh=eD3/9iW0ld81eZPY/Axle2N7wEZSpRcFe9aQKrt1bj0=;
+ b=Z6G184j6I5EEPXofmwA6itGIXz64rIi9tUOh9GkaRGdp3moaGBGHFLvm
+ wP7VDZpUElvOcnC71Gb6McNLK9DNsMTG55MQkJoBsDFuEZQt3j2+Cm5EQ
+ khYPzLbsBNxjqyqSBEX89wAhmnOim17AIGw7AqzCcP4dJPBy6o6uQ+pZS
+ YNEU9jsb3evOwI1/lVrhCZB0fEkn9tUansTABQs01pRMdT33E2yq7IesF
+ 1aaxGlKQt1IUdu2qSKGjtSd6Fc6GcL++mrqfctJj2Wv9wZtmJ0KoCClaJ
+ cltYjXIq+0e8skqouMTuu50gIrrWr5mV7uD39iti1hLeD4cTi/rN7Dxv+ Q==;
+X-CSE-ConnectionGUID: bY0Weo1eSA+VNkw5S4bPwQ==
+X-CSE-MsgGUID: bGXD8WzSRS2PYPt14+TeIQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50719801"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="50719801"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2025 07:05:02 -0700
+X-CSE-ConnectionGUID: m3xQIYq/T5S5o/blpmfaAQ==
+X-CSE-MsgGUID: mbixgD6VSnSBpriUInJfxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="131869035"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="132976086"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 22 Apr 2025 06:59:29 -0700
-Date: Tue, 22 Apr 2025 22:20:24 +0800
+ by orviesa008.jf.intel.com with ESMTP; 22 Apr 2025 07:05:00 -0700
+Date: Tue, 22 Apr 2025 22:25:54 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Francesco Lavra <francescolavra.fl@gmail.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 06/55] i386/tdx: Introduce is_tdx_vm() helper and
- cache tdx_guest object
-Message-ID: <aAelqKOePQ9gplDm@intel.com>
+Subject: Re: [PATCH v8 02/55] i386: Introduce tdx-guest object
+Message-ID: <aAem8k1hY3P8Nchg@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-7-xiaoyao.li@intel.com>
- <aAIfL0jS0lWSpvZE@intel.com>
- <12ec4e5c-33af-47a0-817f-b1fd0420f8f5@intel.com>
+ <20250401130205.2198253-3-xiaoyao.li@intel.com>
+ <aAIYjpetyP9LKW6L@intel.com> <aAdSMExEAy45NIeB@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <12ec4e5c-33af-47a0-817f-b1fd0420f8f5@intel.com>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <aAdSMExEAy45NIeB@redhat.com>
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
@@ -91,42 +88,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > > +#ifdef CONFIG_TDX
-> > > +bool is_tdx_vm(void);
-> > > +#else
-> > > +#define is_tdx_vm() 0
-> > > +#endif /* CONFIG_TDX */
+> > > index 000000000000..f3b725336161
+> > > --- /dev/null
+> > > +++ b/target/i386/kvm/tdx.h
+> > > @@ -0,0 +1,21 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0-or-later */
 > > > +
-> > a little nit: could we rename it as "tdx_enabled"?
+> > > +#ifndef QEMU_I386_TDX_H
+> > > +#define QEMU_I386_TDX_H
 > > 
-> > Then the cases like these would be neater?
+> > I386_TDX_H is enough... the QEMU prefix is rarely seen in the whole
+> > project.
 > 
-> When sev support was added, it was seen as a feature for the VMs that are
-> created on AMD platform. I think that's why it got called sev_enabled().
+> IMHO having a QEMU_ prefix here is "best practice", so don't remove it.
 > 
-> But for TDX, it is introduced as a different type of VM in contrast to the
-> legacy/normal VMX VMs. We need to pass specific TDX vm type to
-> KVM_CREATE_VM. Based on this, is_tdx_vm() was chosen.
+> That lots of other QEMU code doesn't follow best practice is unfortunate.
 
-But isn't AMD's SEV also defined as the VM type?
-
-static const char *vm_type_name[] = {
-    [KVM_X86_DEFAULT_VM] = "default",
-    [KVM_X86_SEV_VM] = "SEV",
-    [KVM_X86_SEV_ES_VM] = "SEV-ES",
-    [KVM_X86_SNP_VM] = "SEV-SNP",
-    [KVM_X86_TDX_VM] = "TDX",
-};
-
-Functionally, they are part of the coco functionality provided by
-different vendors, so it's better thatt both could be in the same place
-as much as possible, including file location, naming style. Of course,
-it's not a big deal, and it can be cleaned up after merge if needed.
-
-> I don't think the different name is a big issue, as nobody mentions it from
-> the initial RFC to current v8 until you.
-
-The Chinese saying: There are a thousand Hamlets in a thousand people's
-eyes :-).
+Thanks, now I see!
 
 
