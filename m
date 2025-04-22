@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37195A9720B
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 18:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F74A9721B
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 18:12:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7G63-0007Fg-21; Tue, 22 Apr 2025 12:03:43 -0400
+	id 1u7G71-0000ZV-Nq; Tue, 22 Apr 2025 12:04:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5B-0006jG-Ly
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:02:50 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5G-0006o9-Ds
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:02:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G57-0004yr-Kd
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:02:49 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G5E-0004zh-Dg
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:02:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745337764;
+ s=mimecast20190719; t=1745337771;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=hGgr59EECP7kKm2lsZDGpwKOKbUMfMl1zkg1vN7sO3I=;
- b=jARYrv0tTIoVYinBt2ZCXvBCBZ2u/KvGQuM1YbcJadesqOPTb8YX8BKs8xfT90WpYC0XOD
- Dp/zQCeFl/KXGAe3truABqLcTw/PjAA4aEAPdR/whUz+V7keLlv9ZMgHynqwiWm6am2/Cx
- IHGkG/lVB9h4ky9JsnF5ptK6ikNU8To=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LVxpEwbfR8RMN8GIA+Wvc7hhT66GXAhM3XxBljXCbMM=;
+ b=IZ2rBq5ZxsnLRHKv+dy7QgSPDYgcuMfevCApIdJXn4iUGm/NlQXDbUTJwO9dz4FrvGRypi
+ MoqMZYe+xBxHGEC8WubvPj4h3pX9lkDDbY5nDB08QorLUOepVHPEwVdXHzdD0NHP1ZltU5
+ 2+IeQkEvkYkuDLk4MWcyQUnjDTymIX8=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-552-4BycErpuNamI79eDRqC4Aw-1; Tue,
- 22 Apr 2025 12:02:32 -0400
-X-MC-Unique: 4BycErpuNamI79eDRqC4Aw-1
-X-Mimecast-MFC-AGG-ID: 4BycErpuNamI79eDRqC4Aw_1745337751
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-308-UxmO-HDJP0amcROuYstIdQ-1; Tue,
+ 22 Apr 2025 12:02:46 -0400
+X-MC-Unique: UxmO-HDJP0amcROuYstIdQ-1
+X-Mimecast-MFC-AGG-ID: UxmO-HDJP0amcROuYstIdQ_1745337765
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6C9F0180087A; Tue, 22 Apr 2025 16:02:31 +0000 (UTC)
+ id 5BA82180010A; Tue, 22 Apr 2025 16:02:45 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.105])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 84414180010A; Tue, 22 Apr 2025 16:02:26 +0000 (UTC)
+ id AE1B218001DA; Tue, 22 Apr 2025 16:02:42 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org,
 	Alex Williamson <alex.williamson@redhat.com>
@@ -50,9 +51,12 @@ Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
  John Levon <john.levon@nutanix.com>,
  Joao Martins <joao.m.martins@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 00/37] vfio: Spring cleanup
-Date: Tue, 22 Apr 2025 18:01:47 +0200
-Message-ID: <20250422160224.199714-1-clg@redhat.com>
+Subject: [PATCH v3 04/37] vfio: Make
+ vfio_un/block_multiple_devices_migration() static
+Date: Tue, 22 Apr 2025 18:01:51 +0200
+Message-ID: <20250422160224.199714-5-clg@redhat.com>
+In-Reply-To: <20250422160224.199714-1-clg@redhat.com>
+References: <20250422160224.199714-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -82,206 +86,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+Both of these routines are only used in file "migration.c". Move them
+there.
 
-Several large extensions were merged in VFIO recently: migration
-support with dirty tracking, support for different host IOMMU backend
-devices, multifd support, etc. This adds up to the previous
-extensions: vfio-platform, AP, CCW. The result is that VFIO is now a
-subsystem of over +16,000 lines of code :
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-5-clg@redhat.com
+Reviewed-by: John Levon <john.levon@nutanix.com>
+Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-5-clg@redhat.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/hw/vfio/vfio-common.h |  2 --
+ hw/vfio/common.c              | 62 -----------------------------------
+ hw/vfio/migration.c           | 62 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 62 insertions(+), 64 deletions(-)
 
-  QEMU 2.0  :   3988 total
-                 ...
-  QEMU 10.0 :  16607 total
-
-Organization is weak, naming inconsistent, the vfio-common.h header
-file and common.c are quite messy. It's time to address the technical
-debt before adding new features.
-
-This proposal reorganizes some of the VFIO files to isolate features,
-introduces new files and renames services to better reflect the
-namespace they belong to. This is code reshuffling and there are no
-intentional functional changes. If more could be done, please propose !
-Timing seems right.
-
-
-I have taken care to preserve all existing copyright notices in the
-file headers. I have added one on behalf of my current employer for
-newly created files. However, original authors may wish to include
-their own notices as well. If so, please respond to the patch, and I
-will update the patch in the next spin or before applying.
-
-Here is a (short) list requiring your attention :
-  
-  * include/hw/vfio/vfio-migration.h
-  * hw/vfio/vfio-migration-internal.h
-    Kirti Wankhede and Avihai Horon, NVIDIA
-  
-  * hw/vfio/vfio-iommufd.h
-    Joao Martins and Yi Liu, Oracle and Intel
-  
-  * include/hw/vfio/vfio-region.h
-  * hw/vfio/region.c
-    Eric Auger, may be we could reduce the list ? 
-
-I think the remaining new files are correctly covered but I am human,
-so please review and let me know.
-
-I hope we can merge this when the QEMU 10.1 cycle starts and then
-address the two large series waiting : live update and vfio-user.
-
-
-What next in terms of cleanups :
-
- - container.c is quite messy
- - the pci* files need some love too (add vfio- prefix ?)
- - improve overall documentation, structs and routines documentation
-   would be great
- - isolate all the low level routines (kvm ioctls) into helpers.c
-   to improve build ?
- - improve build to reduce the number of files built per target
-   https://lore.kernel.org/qemu-devel/20250308230917.18907-1-philmd@linaro.org
- - continue the never ending quest of adding 'Error **' parameters,
-   Look for migration_file_set_error, in MemoryListener handlers :
-      vfio_listener_region_add
-      vfio_listener_log_global_stop
-      vfio_listener_log_sync
-   and in callback routines for IOMMU notifiers :
-      vfio_iommu_map_notify
-      vfio_iommu_map_dirty_notify
-   memory_region_iommu_replay() would be a start.
- - remove vfio-platform (start of QEMU 10.2 cycle ~ September 2025)
-
-Thanks,
-
-C. 
-
-
-Changes in v3:
-
- - Fixed commit log typos 
- - Removed hw/vfio/vfio-migration.h include from
-   hw/vfio/migration-multifd.c
- - Added hw/vfio/vfio-region.h include in hw/vfio/pci.h
- - Adjusted Copyright in hw/vfio/vfio-cpr.h
- - Renamed vfio_container_vioc_query_dirty_bitmap() to
-   vfio_container_iommu_query_dirty_bitmap()
- - Improved hw/vfio/vfio-device.h header description
- - Fixed code alignment when renaming VFIODevice related services
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index fd424a4a3d40132e940f457f9250458e50ea0b71..32b816fa122aee00840c70d2e208310a845ad831 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -290,8 +290,6 @@ extern VFIODeviceList vfio_device_list;
+ extern const MemoryListener vfio_memory_listener;
+ extern int vfio_kvm_device_fd;
  
-Changes in v2:
-
- - Dropped vfio_migration_set_error()
-   https://lore.kernel.org/qemu-devel/20250324123315.637827-1-clg@redhat.com/
- - Dropped R-b trailers on patches which were modified too much 
-   (context changes are ok) 
- - Improved commit logs of patches adding new files
- - Fixed top comment in header files
- - Used a 'vfio_migration_' prefix instead of 'vfio_mig_'
- - Made vfio_migration_add_bytes_transferred() internal
- - Added extra patch for vfio_device_state_is_running/precopy() 
- - Moved vfio_reset_handler() in device.c 
- - Moved "dirty tracking" related services into container-base.c and
-   improved naming   
- - Introduced listener.* files instead of dirty-tracking.*
- - Introduced vfio_listener_un/register() routines
-
-
-Cédric Le Goater (37):
-  vfio: Move vfio_mig_active() into migration.c
-  vfio: Rename vfio_reset_bytes_transferred()
-  vfio: Introduce a new header file for external migration services
-  vfio: Make vfio_un/block_multiple_devices_migration() static
-  vfio: Make vfio_viommu_preset() static
-  vfio: Introduce a new header file for internal migration services
-  vfio: Move vfio_device_state_is_running/precopy() into migration.c
-  vfio: Introduce a new header file for VFIOdisplay declarations
-  vfio: Move VFIOHostDMAWindow definition into spapr.c
-  vfio: Introduce a new header file for VFIOIOMMUFD declarations
-  vfio: Introduce new files for VFIORegion definitions and declarations
-  vfio: Introduce a new header file for VFIOcontainer declarations
-  vfio: Make vfio_group_list static
-  vfio: Move VFIOAddressSpace helpers into container-base.c
-  vfio: Move Host IOMMU type declarations into their respective files
-  vfio: Introduce a new header file for helper services
-  vfio: Move vfio_get_info_dma_avail() into helpers.c
-  vfio: Move vfio_kvm_device_add/del_fd() to helpers.c
-  vfio: Move vfio_get_device_info() to helpers.c
-  vfio: Introduce a new file for VFIODevice definitions
-  vfio: Introduce new files for CPR definitions and declarations
-  vfio: Move vfio_kvm_device_fd() into helpers.c
-  vfio: Move vfio_device_list into device.c
-  vfio: Move vfio_de/attach_device() into device.c
-  vfio: Move vfio_reset_handler() into device.c
-  vfio: Move dirty tracking related services into container-base.c
-  vfio: Make vfio_devices_query_dirty_bitmap() static
-  vfio: Make vfio_container_query_dirty_bitmap() static
-  vfio: Rename vfio_devices_all_dirty_tracking_started()
-  vfio: Rename vfio_devices_all_device_dirty_tracking()
-  vfio: Rename vfio_get_dirty_bitmap()
-  vfio: Introduce new files for VFIO MemoryListener
-  vfio: Rename RAM discard related services
-  vfio: Introduce vfio_listener_un/register() routines
-  vfio: Rename vfio-common.h to vfio-device.h
-  vfio: Rename VFIODevice related services
-  vfio: Rename VFIOContainer related services
-
- hw/vfio/migration-multifd.h           |   2 +-
- hw/vfio/pci.h                         |   4 +-
- hw/vfio/vfio-cpr.h                    |  15 +
- hw/vfio/vfio-display.h                |  42 ++
- hw/vfio/vfio-helpers.h                |  35 ++
- hw/vfio/vfio-iommufd.h                |  34 ++
- hw/vfio/vfio-listener.h               |  15 +
- hw/vfio/vfio-migration-internal.h     |  74 +++
- include/hw/s390x/vfio-ccw.h           |   2 +-
- include/hw/vfio/vfio-common.h         | 346 -------------
- include/hw/vfio/vfio-container-base.h |  12 +-
- include/hw/vfio/vfio-container.h      |  36 ++
- include/hw/vfio/vfio-device.h         | 149 ++++++
- include/hw/vfio/vfio-migration.h      |  16 +
- include/hw/vfio/vfio-platform.h       |   4 +-
- include/hw/vfio/vfio-region.h         |  47 ++
- backends/iommufd.c                    |   2 +-
- hw/core/sysbus-fdt.c                  |   1 +
- hw/ppc/spapr_pci_vfio.c               |   6 +-
- hw/s390x/s390-pci-vfio.c              |   3 +-
- hw/vfio/ap.c                          |  14 +-
- hw/vfio/ccw.c                         |  30 +-
- hw/vfio/container-base.c              | 192 ++++++-
- hw/vfio/container.c                   | 123 ++---
- hw/vfio/cpr.c                         |   3 +-
- hw/vfio/device.c                      | 405 +++++++++++++++
- hw/vfio/display.c                     |  10 +-
- hw/vfio/helpers.c                     | 702 +++-----------------------
- hw/vfio/igd.c                         |  10 +-
- hw/vfio/iommufd.c                     |  24 +-
- hw/vfio/{common.c => listener.c}      | 455 +----------------
- hw/vfio/migration-multifd.c           |   7 +-
- hw/vfio/migration.c                   | 111 +++-
- hw/vfio/pci.c                         |  70 +--
- hw/vfio/platform.c                    |  15 +-
- hw/vfio/region.c                      | 395 +++++++++++++++
- hw/vfio/spapr.c                       |  10 +-
- migration/target.c                    |   8 +-
- hw/vfio/meson.build                   |  10 +-
- hw/vfio/trace-events                  |  36 +-
- 40 files changed, 1875 insertions(+), 1600 deletions(-)
- create mode 100644 hw/vfio/vfio-cpr.h
- create mode 100644 hw/vfio/vfio-display.h
- create mode 100644 hw/vfio/vfio-helpers.h
- create mode 100644 hw/vfio/vfio-iommufd.h
- create mode 100644 hw/vfio/vfio-listener.h
- create mode 100644 hw/vfio/vfio-migration-internal.h
- delete mode 100644 include/hw/vfio/vfio-common.h
- create mode 100644 include/hw/vfio/vfio-container.h
- create mode 100644 include/hw/vfio/vfio-device.h
- create mode 100644 include/hw/vfio/vfio-migration.h
- create mode 100644 include/hw/vfio/vfio-region.h
- create mode 100644 hw/vfio/device.c
- rename hw/vfio/{common.c => listener.c} (76%)
- create mode 100644 hw/vfio/region.c
-
+-int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp);
+-void vfio_unblock_multiple_devices_migration(void);
+ bool vfio_viommu_preset(VFIODevice *vbasedev);
+ void vfio_migration_add_bytes_transferred(unsigned long val);
+ bool vfio_device_state_is_running(VFIODevice *vbasedev);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index e0482a796ff89afae2f017ae4e87f6f4056328fe..f78fff41639b83b82eeadf4e40b7ca2cf6bd64dd 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -41,7 +41,6 @@
+ #include "trace.h"
+ #include "qapi/error.h"
+ #include "migration/misc.h"
+-#include "migration/blocker.h"
+ #include "migration/qemu-file.h"
+ #include "system/tcg.h"
+ #include "system/tpm.h"
+@@ -66,67 +65,6 @@ int vfio_kvm_device_fd = -1;
+  * Device state interfaces
+  */
+ 
+-static Error *multiple_devices_migration_blocker;
+-
+-/*
+- * Multiple devices migration is allowed only if all devices support P2P
+- * migration. Single device migration is allowed regardless of P2P migration
+- * support.
+- */
+-static bool vfio_multiple_devices_migration_is_supported(void)
+-{
+-    VFIODevice *vbasedev;
+-    unsigned int device_num = 0;
+-    bool all_support_p2p = true;
+-
+-    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+-        if (vbasedev->migration) {
+-            device_num++;
+-
+-            if (!(vbasedev->migration->mig_flags & VFIO_MIGRATION_P2P)) {
+-                all_support_p2p = false;
+-            }
+-        }
+-    }
+-
+-    return all_support_p2p || device_num <= 1;
+-}
+-
+-int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
+-{
+-    int ret;
+-
+-    if (vfio_multiple_devices_migration_is_supported()) {
+-        return 0;
+-    }
+-
+-    if (vbasedev->enable_migration == ON_OFF_AUTO_ON) {
+-        error_setg(errp, "Multiple VFIO devices migration is supported only if "
+-                         "all of them support P2P migration");
+-        return -EINVAL;
+-    }
+-
+-    if (multiple_devices_migration_blocker) {
+-        return 0;
+-    }
+-
+-    error_setg(&multiple_devices_migration_blocker,
+-               "Multiple VFIO devices migration is supported only if all of "
+-               "them support P2P migration");
+-    ret = migrate_add_blocker_normal(&multiple_devices_migration_blocker, errp);
+-
+-    return ret;
+-}
+-
+-void vfio_unblock_multiple_devices_migration(void)
+-{
+-    if (!multiple_devices_migration_blocker ||
+-        !vfio_multiple_devices_migration_is_supported()) {
+-        return;
+-    }
+-
+-    migrate_del_blocker(&multiple_devices_migration_blocker);
+-}
+ 
+ bool vfio_viommu_preset(VFIODevice *vbasedev)
+ {
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 582d65932a6c590eaecd8bf0b765f27d93896c72..db2525fcb926bd228ae2d4dca5eeb2de28041660 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -1022,6 +1022,68 @@ static int vfio_migration_init(VFIODevice *vbasedev)
+     return 0;
+ }
+ 
++static Error *multiple_devices_migration_blocker;
++
++/*
++ * Multiple devices migration is allowed only if all devices support P2P
++ * migration. Single device migration is allowed regardless of P2P migration
++ * support.
++ */
++static bool vfio_multiple_devices_migration_is_supported(void)
++{
++    VFIODevice *vbasedev;
++    unsigned int device_num = 0;
++    bool all_support_p2p = true;
++
++    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
++        if (vbasedev->migration) {
++            device_num++;
++
++            if (!(vbasedev->migration->mig_flags & VFIO_MIGRATION_P2P)) {
++                all_support_p2p = false;
++            }
++        }
++    }
++
++    return all_support_p2p || device_num <= 1;
++}
++
++static int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
++{
++    int ret;
++
++    if (vfio_multiple_devices_migration_is_supported()) {
++        return 0;
++    }
++
++    if (vbasedev->enable_migration == ON_OFF_AUTO_ON) {
++        error_setg(errp, "Multiple VFIO devices migration is supported only if "
++                         "all of them support P2P migration");
++        return -EINVAL;
++    }
++
++    if (multiple_devices_migration_blocker) {
++        return 0;
++    }
++
++    error_setg(&multiple_devices_migration_blocker,
++               "Multiple VFIO devices migration is supported only if all of "
++               "them support P2P migration");
++    ret = migrate_add_blocker_normal(&multiple_devices_migration_blocker, errp);
++
++    return ret;
++}
++
++static void vfio_unblock_multiple_devices_migration(void)
++{
++    if (!multiple_devices_migration_blocker ||
++        !vfio_multiple_devices_migration_is_supported()) {
++        return;
++    }
++
++    migrate_del_blocker(&multiple_devices_migration_blocker);
++}
++
+ static void vfio_migration_deinit(VFIODevice *vbasedev)
+ {
+     VFIOMigration *migration = vbasedev->migration;
 -- 
 2.49.0
 
