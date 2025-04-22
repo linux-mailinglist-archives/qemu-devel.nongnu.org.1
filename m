@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3011A97081
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 17:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF98A971DD
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Apr 2025 18:04:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7FTZ-0004nQ-RW; Tue, 22 Apr 2025 11:23:57 -0400
+	id 1u7G64-0007JW-1M; Tue, 22 Apr 2025 12:03:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7FTW-0004mx-MI
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:23:54 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G59-0006hT-BK
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:02:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7FTU-0000Tw-QQ
- for qemu-devel@nongnu.org; Tue, 22 Apr 2025 11:23:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745335433; x=1776871433;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=vcD9XM6pIPWcWw3WVTyBu1OKcV7oulRP7epPfihOBs4=;
- b=RiJqc2N4a/i6+vrGF8CdTnX+qJxyrcsQHIxc+CNIZlbJePpSz/NrapMo
- /Pk9myCJ0n/6EMiRlNrXy4RW4OqdCoH8TT4TsoUXD1+eJmeKl9VfOqhkE
- ZMbJwYUxCnGgNpLO+SYG+nDYDYWthPqnFetprLTP0oPHXOo7v7/BADGwb
- qqnkaqMznoDP6IC5e720ntewaZI0leR81j0W0JM3x4AcNyjdY3k8wxbl9
- t7XGVSotN23VQFIWv5ea5Abfh/02tN/IZSwdTKzIGK/2gcdrv0+QEh2fs
- 98kO1jsh4sTw9mztBeyNOpR9fIvovAmXiMsK5INKbEgxcZKYDIGWioQS3 g==;
-X-CSE-ConnectionGUID: WG47mOrCSneiZ6YNEBPohQ==
-X-CSE-MsgGUID: 9jQY/Ga5S7Ss6r5F6Xf0+A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="49563220"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="49563220"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 08:23:49 -0700
-X-CSE-ConnectionGUID: FdYEQUCpQCSeIzk8eTLqAA==
-X-CSE-MsgGUID: eSOiVsngRyWYu+dgaC2uLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="163095463"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 22 Apr 2025 08:23:46 -0700
-Date: Tue, 22 Apr 2025 23:44:41 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 14/55] i386/tdx: Set APIC bus rate to match with what
- TDX module enforces
-Message-ID: <aAe5aQ1C8+jzMtr7@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-15-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u7G56-0004yi-5w
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 12:02:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745337761;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qDIEsKmP9mFPEjs+M92SCWVMUEYou2w4kL6FSaKnWAI=;
+ b=jGW1jJosVqDzH3ahHk39sggUBqnsuatrQHYeQMEe7hsFvXfqXYz/XyQZVi99YR6MOpqjOJ
+ pxrgI2pBGxdTvemDrZupdpdKZoUf50eQIIGxkI0CTwTDAZtc2CqCY+i5ZvPM1zrmtkdG1M
+ 9QxKwK2V3Jcx6Gugo0zupfaj7SaGbg4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-eW05Eq8gNJGh4-sMIeJx7w-1; Tue,
+ 22 Apr 2025 12:02:36 -0400
+X-MC-Unique: eW05Eq8gNJGh4-sMIeJx7w-1
+X-Mimecast-MFC-AGG-ID: eW05Eq8gNJGh4-sMIeJx7w_1745337755
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D388E1955D86; Tue, 22 Apr 2025 16:02:34 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.32.105])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 0D12E18001DD; Tue, 22 Apr 2025 16:02:31 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org,
+	Alex Williamson <alex.williamson@redhat.com>
+Cc: Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ John Levon <john.levon@nutanix.com>,
+ Joao Martins <joao.m.martins@oracle.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v3 01/37] vfio: Move vfio_mig_active() into migration.c
+Date: Tue, 22 Apr 2025 18:01:48 +0200
+Message-ID: <20250422160224.199714-2-clg@redhat.com>
+In-Reply-To: <20250422160224.199714-1-clg@redhat.com>
+References: <20250422160224.199714-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-15-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,30 +85,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:24AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:24 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 14/55] i386/tdx: Set APIC bus rate to match with what
->  TDX module enforces
-> X-Mailer: git-send-email 2.34.1
-> 
-> TDX advertises core crystal clock with cpuid[0x15] as 25MHz for TD
-> guests and it's unchangeable from VMM. As a result, TDX guest reads
-> the APIC timer as the same frequency, 25MHz.
-> 
-> While KVM's default emulated frequency for APIC bus is 1GHz, set the
-> APIC bus rate to match with TDX explicitly to ensure KVM provide correct
-> emulated APIC timer for TD guest.
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
-> Changes in v6:
->  - new patch;
-> ---
->  target/i386/kvm/tdx.c | 13 +++++++++++++
->  target/i386/kvm/tdx.h |  3 +++
->  2 files changed, 16 insertions(+)
+vfio_mig_active() is part of the VFIO migration API. Move the
+definitions where VFIO migration is implemented.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: John Levon <john.levon@nutanix.com>
+Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-2-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-2-clg@redhat.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/vfio/common.c    | 16 ----------------
+ hw/vfio/migration.c | 16 ++++++++++++++++
+ 2 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index a591ce5b97ff41cdc8249e9eeafc8dc347d45fac..e0482a796ff89afae2f017ae4e87f6f4056328fe 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -66,22 +66,6 @@ int vfio_kvm_device_fd = -1;
+  * Device state interfaces
+  */
+ 
+-bool vfio_mig_active(void)
+-{
+-    VFIODevice *vbasedev;
+-
+-    if (QLIST_EMPTY(&vfio_device_list)) {
+-        return false;
+-    }
+-
+-    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
+-        if (vbasedev->migration_blocker) {
+-            return false;
+-        }
+-    }
+-    return true;
+-}
+-
+ static Error *multiple_devices_migration_blocker;
+ 
+ /*
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index fbff46cfc35e0ee69e9599c9f8efc7437bbe3370..b5fb0d218808d010d8210612d3182dde8f33514b 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -1062,6 +1062,22 @@ void vfio_mig_add_bytes_transferred(unsigned long val)
+     qatomic_add(&bytes_transferred, val);
+ }
+ 
++bool vfio_mig_active(void)
++{
++    VFIODevice *vbasedev;
++
++    if (QLIST_EMPTY(&vfio_device_list)) {
++        return false;
++    }
++
++    QLIST_FOREACH(vbasedev, &vfio_device_list, global_next) {
++        if (vbasedev->migration_blocker) {
++            return false;
++        }
++    }
++    return true;
++}
++
+ /*
+  * Return true when either migration initialized or blocker registered.
+  * Currently only return false when adding blocker fails which will
+-- 
+2.49.0
 
 
