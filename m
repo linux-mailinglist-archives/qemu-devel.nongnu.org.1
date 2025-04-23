@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3E8A9804D
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F246A980D7
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:28:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7UJe-0000F6-M3; Wed, 23 Apr 2025 03:14:42 -0400
+	id 1u7UXM-0000x8-5V; Wed, 23 Apr 2025 03:28:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1u7UJc-0000Es-Qf
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:14:40 -0400
-Received: from internet2.beckhoff.com ([194.25.186.210])
+ id 1u7UX3-0000fU-TX
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:28:35 -0400
+Received: from netsrv01.beckhoff.com ([62.159.14.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1u7UJa-00006U-IP
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:14:40 -0400
+ id 1u7UX1-000230-C7
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:28:33 -0400
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022e; 
- t=1745392476; bh=AAH7DjyCyhC+wUnkICBjmUoHJWlzmBV4zr3dynBv7KA=; h=
+ t=1745392989; bh=yKAeqy1oKhouQhqxFgnAHACHkexvqQO1W2iEHXZH+Tc=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=ed25519-sha256; b=
- rFKJCngjEXFgn6V8nmCIFRQMcstHwXjQNfKwC4B3pv46KMxYZT5kvs17rJ0sM9A2sXmWkDT1kBRLuqaoKEFVBg==
+ YT+i9HO4UBQnYhDhQ43FA4zyOdWg4QZN6nPxzIUcXb7FbCiJ+dRx4kb512mxA7h9dCLd6ioRlOiHeawxkEL4CA==
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022r; 
- t=1745392476; bh=AAH7DjyCyhC+wUnkICBjmUoHJWlzmBV4zr3dynBv7KA=; h=
+ t=1745392989; bh=yKAeqy1oKhouQhqxFgnAHACHkexvqQO1W2iEHXZH+Tc=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=rsa-sha256; b=
- Ee96tdOTZdpltizSNp/Bs6e+ICfU82BCRhdkxzmcJfnqZo6d5OWBBVZpR/mcbj2j4ADtajrAkLeUAydS4sFvbZUBd4vD0bl9kYCRYiY0QAvjRnh1RikZxlTsq/j3qtAemP9GrV7mXgj0nF4Caa30BO+Cpzc1NiJZ/UnUCmWmXwDlq8MuBOaESqLTBNGN9J3R8P4bPlB8OWzjjA6Ku5cxawxoOgV9/B4oUk57FjNeqoYZme3uQOJUwc+Xm+mvvjsDP3LaW68/XHTpW8ZHdnJT3khVzAN7asjYv3EezbSsX53ezMcL7BYwOfv84raXkaAlYN0qSfS4bjs2NQIBptwHsA==
-Received: from 172.17.2.111 by INTERNET2.beckhoff.com
- (TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384); Wed, 23 Apr 2025 07:14:35 GMT
-Received: from ex06.beckhoff.com (172.17.5.171) by ex10.beckhoff.com
- (172.17.2.111) with Microsoft SMTP Server (version=TLS1_2,
+ eLMbrcyH4Ip0BmtL/rlDFGyQMZxX+y+vLaP8Ly0YE8vJTduiZYWGCI+IUtvK+UyCGWLbVBv0HDOYs2UdcmcAg9XSs8/yTImxRqTNKtT1oQ+IDrwxKja+UwgM6775AsohF5UH/CcRgMKck8yfvepg5a7Wpwy3AWPiPQttlatFmfQbzMsPXkjiZzCC8KTFt1vO9E8y5HyzWI1vdXeK+B5AUK7EhgzmorzBoqhmNm+lmOfxiSsVNlspVgyrzfvr6ympTweUU7svtWSl3+tVhuqv1FJ7PoZTjUd0+RgTk/8SBbvATxcwDWjWMqGGn2lDgCoDeoQX8eOMy6Cth9taNPx7JQ==
+Received: from 172.17.6.19 by netsrv01.beckhoff.com
+ (TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384); Wed, 23 Apr 2025 07:23:07 GMT
+Received: from ex07.beckhoff.com (172.17.5.172) by ex13.beckhoff.com
+ (172.17.6.19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 23 Apr
- 2025 09:13:23 +0200
-Received: from ex04.beckhoff.com (172.17.5.170) by ex06.beckhoff.com
- (172.17.5.171) with Microsoft SMTP Server (version=TLS1_2,
+ 2025 09:19:37 +0200
+Received: from ex04.beckhoff.com (172.17.5.170) by ex07.beckhoff.com
+ (172.17.5.172) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 23 Apr
- 2025 09:13:22 +0200
+ 2025 09:19:36 +0200
 Received: from ex04.beckhoff.com ([fe80::d02e:4c24:89d8:a7a3]) by
  ex04.beckhoff.com ([fe80::d02e:4c24:89d8:a7a3%6]) with mapi id
- 15.01.2507.039; Wed, 23 Apr 2025 09:13:22 +0200
+ 15.01.2507.039; Wed, 23 Apr 2025 09:19:36 +0200
 From: =?utf-8?B?Q29ydmluIEvDtmhuZQ==?= <C.Koehne@beckhoff.com>
 To: "tomitamoeko@gmail.com" <tomitamoeko@gmail.com>, "clg@redhat.com"
  <clg@redhat.com>, "alex.williamson@redhat.com" <alex.williamson@redhat.com>
 CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 08/11] vfio/igd: Allow overriding GMS with 0xf0 to 0xfe on
- Gen9+
-Thread-Topic: [PATCH 08/11] vfio/igd: Allow overriding GMS with 0xf0 to 0xfe
- on Gen9+
-Thread-Index: AQHbstr7nrKyPzAiq0WfOU7KUJj0orOwtyUA
-Date: Wed, 23 Apr 2025 07:13:22 +0000
-Message-ID: <80e220ac7819902dcc1bb6a1974016a1d791346f.camel@beckhoff.com>
+Subject: Re: [PATCH 10/11] vfio/igd: Remove generation limitation for IGD
+ passthrough
+Thread-Topic: [PATCH 10/11] vfio/igd: Remove generation limitation for IGD
+ passthrough
+Thread-Index: AQHbstr/+QVCHUP7tk+H4lN4aCkOz7OwuOMA
+Date: Wed, 23 Apr 2025 07:19:36 +0000
+Message-ID: <b0aacab43cc76ef559a704b3066e52484bb901c4.camel@beckhoff.com>
 References: <20250421163112.21316-1-tomitamoeko@gmail.com>
- <20250421163112.21316-9-tomitamoeko@gmail.com>
-In-Reply-To: <20250421163112.21316-9-tomitamoeko@gmail.com>
+ <20250421163112.21316-11-tomitamoeko@gmail.com>
+In-Reply-To: <20250421163112.21316-11-tomitamoeko@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: yes
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.17.62.149]
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="=-RqVFcOe6OLf8JSWp8PNQ"
+ protocol="application/pgp-signature"; boundary="=-6TSNo/pxZrPKc3Nt+iUr"
 MIME-Version: 1.0
-Received-SPF: pass client-ip=194.25.186.210;
- envelope-from=C.Koehne@beckhoff.com; helo=INTERNET2.beckhoff.com
+Received-SPF: pass client-ip=62.159.14.10; envelope-from=C.Koehne@beckhoff.com;
+ helo=netsrv01.beckhoff.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -88,105 +88,252 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-RqVFcOe6OLf8JSWp8PNQ
+--=-6TSNo/pxZrPKc3Nt+iUr
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
 
-T24gVHVlLCAyMDI1LTA0LTIyIGF0IDAwOjMxICswODAwLCBUb21pdGEgTW9la28gd3JvdGU6Cj4g
-77u/Q0FVVElPTjogRXh0ZXJuYWwgRW1haWwhIQo+IE9uIEdlbjkgYW5kIGxhdGVyIElHRCBkZXZp
-Y2VzLCBHTVMgMHhmMCB0byAweGZlIHJlcHJlc2VudHMgNE1CIHRvIDYwTUIKPiBwcmUtYWxsb2Nh
-dGVkIG1lbW9yeSBzaXplIGluIDRNQiBpbmNyZW1lbnRzLiBBbGxvdyB1c2VycyBvdmVycmlkaW5n
-Cj4gR01TIHdpdGggdGhlc2UgdmFsdWVzLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFRvbWl0YSBNb2Vr
-byA8dG9taXRhbW9la29AZ21haWwuY29tPgo+IC0tLQo+IMKgaHcvdmZpby9pZ2QuYyB8IDU5ICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLQo+IMKgMSBm
-aWxlIGNoYW5nZWQsIDQxIGluc2VydGlvbnMoKyksIDE4IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYg
-LS1naXQgYS9ody92ZmlvL2lnZC5jIGIvaHcvdmZpby9pZ2QuYwo+IGluZGV4IGUzZmY4NmQwZTYu
-LmI3NDdmZGZhZWIgMTAwNjQ0Cj4gLS0tIGEvaHcvdmZpby9pZ2QuYwo+ICsrKyBiL2h3L3ZmaW8v
-aWdkLmMKPiBAQCAtMzg3LDYgKzM4Nyw0NCBAQCBzdGF0aWMgYm9vbCB2ZmlvX3BjaV9pZ2Rfc2V0
-dXBfbHBjX2JyaWRnZShWRklPUENJRGV2aWNlCj4gKnZkZXYsIEVycm9yICoqZXJycCkKPiDCoMKg
-wqDCoCByZXR1cm4gdHJ1ZTsKPiDCoH0KPiDCoAo+ICtzdGF0aWMgYm9vbCB2ZmlvX3BjaV9pZ2Rf
-b3ZlcnJpZGVfZ21zKGludCBnZW4sIHVpbnQzMl90IGdtcywgdWludDMyX3QgKmdtY2gpCj4gK3sK
-PiArwqDCoMKgIGJvb2wgcmV0ID0gZmFsc2U7Cj4gKwo+ICvCoMKgwqAgaWYgKGdlbiA9PSAtMSkg
-ewo+ICvCoMKgwqDCoMKgwqDCoCBlcnJvcl9yZXBvcnQoIngtaWdkLWdtcyBpcyBub3Qgc3VwcG9y
-dGVkIG9uIHRoaXMgZGV2aWNlIik7Cj4gK8KgwqDCoCB9IGVsc2UgaWYgKGdlbiA8IDgpIHsKPiAr
-wqDCoMKgwqDCoMKgwqAgaWYgKGdtcyA8PSAweDEwKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgKmdtY2ggJj0gfihJR0RfR01DSF9HRU42X0dNU19NQVNLIDw8IElHRF9HTUNIX0dFTjZfR01T
-X1NISUZUKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqZ21jaCB8PSBnbXMgPDwgSUdEX0dN
-Q0hfR0VONl9HTVNfU0hJRlQ7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0ID0gdHJ1ZTsK
-PiArwqDCoMKgwqDCoMKgwqAgfSBlbHNlIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBlcnJv
-cl9yZXBvcnQoUUVSUl9JTlZBTElEX1BBUkFNRVRFUl9WQUxVRSwgIngtaWdkLWdtcyIsCj4gIjB+
-MHgxMCIpOwo+ICvCoMKgwqDCoMKgwqDCoCB9Cj4gK8KgwqDCoCB9IGVsc2UgaWYgKGdlbiA9PSA4
-KSB7Cj4gK8KgwqDCoMKgwqDCoMKgIGlmICgoZ21zIDw9IDB4NDApKSB7CgpuaXQ6IHlvdSBjYW4g
-cmVtb3ZlIGEgcGFyYW50aGVzZXMgcGFpci4KCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKmdt
-Y2ggJj0gfihJR0RfR01DSF9HRU44X0dNU19NQVNLIDw8IElHRF9HTUNIX0dFTjhfR01TX1NISUZU
-KTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqZ21jaCB8PSBnbXMgPDwgSUdEX0dNQ0hfR0VO
-OF9HTVNfU0hJRlQ7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0ID0gdHJ1ZTsKPiArwqDC
-oMKgwqDCoMKgwqAgfSBlbHNlIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBlcnJvcl9yZXBv
-cnQoUUVSUl9JTlZBTElEX1BBUkFNRVRFUl9WQUxVRSwgIngtaWdkLWdtcyIsCj4gIjB+MHg0MCIp
-Owo+ICvCoMKgwqDCoMKgwqDCoCB9Cj4gK8KgwqDCoCB9IGVsc2Ugewo+ICvCoMKgwqDCoMKgwqDC
-oCAvKiAweDDCoCB0byAweDQwOiAzMk1CIGluY3JlbWVudHMgc3RhcnRpbmcgYXQgME1CICovCj4g
-K8KgwqDCoMKgwqDCoMKgIC8qIDB4ZjAgdG8gMHhmZTogNE1CIGluY3JlbWVudHMgc3RhcnRpbmcg
-YXQgNE1CICovCj4gK8KgwqDCoMKgwqDCoMKgIGlmICgoZ21zIDw9IDB4NDApIHx8IChnbXMgPj0g
-MHhmMCAmJiBnbXMgPD0gMHhmZSkpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqZ21jaCAm
-PSB+KElHRF9HTUNIX0dFTjhfR01TX01BU0sgPDwgSUdEX0dNQ0hfR0VOOF9HTVNfU0hJRlQpOwo+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICpnbWNoIHw9IGdtcyA8PCBJR0RfR01DSF9HRU44X0dN
-U19TSElGVDsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXQgPSB0cnVlOwo+ICvCoMKgwqDC
-oMKgwqDCoCB9IGVsc2Ugewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGVycm9yX3JlcG9ydChR
-RVJSX0lOVkFMSURfUEFSQU1FVEVSX1ZBTFVFLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIngtaWdkLWdtcyIsICIwfjB4NDAgb3IgMHhmMH4weGZl
-Iik7Cj4gK8KgwqDCoMKgwqDCoMKgIH0KPiArwqDCoMKgIH0KPiArCj4gK8KgwqDCoCByZXR1cm4g
-cmV0Owo+ICt9Cj4gKwo+IMKgI2RlZmluZSBJR0RfR0dDX01NSU9fT0ZGU0VUwqDCoMKgwqAgMHgx
-MDgwNDAKPiDCoCNkZWZpbmUgSUdEX0JEU01fTU1JT19PRkZTRVTCoMKgwqAgMHgxMDgwQzAKPiDC
-oAo+IEBAIC01NzMsMjQgKzYxMSw5IEBAIHN0YXRpYyBib29sIHZmaW9fcGNpX2lnZF9jb25maWdf
-cXVpcmsoVkZJT1BDSURldmljZQo+ICp2ZGV2LCBFcnJvciAqKmVycnApCj4gwqDCoMKgwqDCoCAq
-IDMyTWlCLiBUaGlzIG9wdGlvbiBzaG91bGQgb25seSBiZSB1c2VkIHdoZW4gdGhlIGRlc2lyZWQg
-c2l6ZSBjYW5ub3QgYmUKPiDCoMKgwqDCoMKgICogc2V0IGZyb20gRFZNVCBQcmUtQWxsb2NhdGVk
-IG9wdGlvbiBpbiBob3N0IEJJT1MuCj4gwqDCoMKgwqDCoCAqLwo+IC3CoMKgwqAgaWYgKHZkZXYt
-PmlnZF9nbXMpIHsKPiAtwqDCoMKgwqDCoMKgwqAgaWYgKGdlbiA8IDgpIHsKPiAtwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBpZiAodmRldi0+aWdkX2dtcyA8PSAweDEwKSB7Cj4gLcKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBnbWNoICY9IH4oSUdEX0dNQ0hfR0VONl9HTVNfTUFTSyA8PCBJ
-R0RfR01DSF9HRU42X0dNU19TSElGVCk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBnbWNoIHw9IHZkZXYtPmlnZF9nbXMgPDwgSUdEX0dNQ0hfR0VONl9HTVNfU0hJRlQ7Cj4gLcKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgfSBlbHNlIHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIGVycm9yX3JlcG9ydChRRVJSX0lOVkFMSURfUEFSQU1FVEVSX1ZBTFVFLAo+IC3CoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAieC1p
-Z2QtZ21zIiwgIjB+MHgxMCIpOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0KPiAtwqDCoMKg
-wqDCoMKgwqAgfSBlbHNlIHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAodmRldi0+aWdk
-X2dtcyA8PSAweDQwKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBnbWNoICY9
-IH4oSUdEX0dNQ0hfR0VOOF9HTVNfTUFTSyA8PCBJR0RfR01DSF9HRU44X0dNU19TSElGVCk7Cj4g
-LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBnbWNoIHw9IHZkZXYtPmlnZF9nbXMgPDwg
-SUdEX0dNQ0hfR0VOOF9HTVNfU0hJRlQ7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfSBlbHNl
-IHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGVycm9yX3JlcG9ydChRRVJSX0lO
-VkFMSURfUEFSQU1FVEVSX1ZBTFVFLAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAieC1pZ2QtZ21zIiwgIjB+MHg0MCIpOwo+IC3CoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIH0KPiAtwqDCoMKgwqDCoMKgwqAgfQo+ICvCoMKgwqAgaWYgKHZk
-ZXYtPmlnZF9nbXMgJiYKPiArwqDCoMKgwqDCoMKgwqAgIXZmaW9fcGNpX2lnZF9vdmVycmlkZV9n
-bXMoZ2VuLCB2ZGV2LT5pZ2RfZ21zLCAmZ21jaCkpIHsKPiArwqDCoMKgwqDCoMKgwqAgcmV0dXJu
-IGZhbHNlOwo+IMKgwqDCoMKgIH0KPiDCoAo+IMKgwqDCoMKgIGdtc19zaXplID0gaWdkX3N0b2xl
-bl9tZW1vcnlfc2l6ZShnZW4sIGdtY2gpOwoKLS0gCktpbmQgcmVnYXJkcywKQ29ydmluCg==
+On Tue, 2025-04-22 at 00:31 +0800, Tomita Moeko wrote:
+> =EF=BB=BFCAUTION: External Email!!
+> Starting from Intel Core Ultra Series (Meteor Lake), Data Stolen Memory
+> has became a part of LMEMBAR (MMIO BAR2) [1][2], meaning that BDSM and
+> GGC register quirks are no longer needed on these platforms.
+>=20
+> To support Meteor/Arrow/Lunar Lake and future IGD devices, remove the
+> generation limitation in IGD passthrough, and apply BDSM and GGC quirks
+> only to known Gen6-12 devices.
+>=20
+> [1]
+> https://nospamproxywebp.beckhoff.com/enQsig/link?id=3DBAgAAABHhgBhwX01GO0=
+AAACNi-GgHiUI4sV0qRTHkaBvP5PrY5DqqTz9YhuTNO_iXQUZlCVu442aEFUtFJIN9H4QuJJwNJ=
+h5ry3XO19WptfEahlpGX9F7Nq8Xpv-GQ9_LZd6niU0I-kMcs9DxxlKk8E802ILvUeF86QyZP4D7=
+A7AEaoUDo15UvzlwHlTOoUj4fzKJYvykniL_MlVr8H8FS2ySMcVqfE6IFb5Aiwhkq7hrpL53XHU=
+YCVoK_y89PCzSWC-Y0fS5-Xo-SxRDOtI140aTd7KpmA39tf447LtBR1YQP8ccM8PjukqvroMpZt=
+V3cDQcgya3EsmP0Fgrmc1
+> =C2=A0
+> [2]
+> https://nospamproxywebp.beckhoff.com/enQsig/link?id=3DBAgAAABHhgBhwX01GNY=
+AAAAtMYPOda9hw4SLBezXYKaYHKRl05pN8tzXcVl9njzCJlE1HkXUG-mljVszTJQKhcQYQTJNcu=
+CekCys_GWgxsVTyOaS_NHFmHSUCZG_K4lK67xtRF6gmeuH6VTzSH0evGV976t_N2r5ADGfofxEA=
+3bNt0iJmL1IzjhRilkRiNe-EmvdQ7DLMn1nAV9ZQCkPM5bCjIyd7MIjXMAlwhK4CraFMv1xw33w=
+-ZnR0YrP4VIGHwKE7vUKp7-BjGZzyrgtwQ5m2SKD0zkEOs3dls5l351dSvNfqp740
+> =C2=A0
+>=20
+> Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+> ---
+> =C2=A0hw/vfio/igd.c | 58 +++++++++++++++++++-----------------------------=
+---
+> =C2=A01 file changed, 21 insertions(+), 37 deletions(-)
+>=20
+> diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+> index bc4c79837d..5b888616f0 100644
+> --- a/hw/vfio/igd.c
+> +++ b/hw/vfio/igd.c
+> @@ -103,6 +103,7 @@ static int igd_gen(VFIOPCIDevice *vdev)
+> =C2=A0=C2=A0=C2=A0=C2=A0 /*
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Unfortunately, Intel changes it's specif=
+ication quite often. This
+> makes
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * it impossible to use a suitable default =
+value for unknown devices.
+> +=C2=A0=C2=A0=C2=A0=C2=A0 * Return -1 for not applying any generation-spe=
+cific quirks.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> =C2=A0=C2=A0=C2=A0=C2=A0 return -1;
+> =C2=A0}
+> @@ -434,20 +435,12 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev,=
+ int
+> nr)
+> =C2=A0=C2=A0=C2=A0=C2=A0 VFIOConfigMirrorQuirk *ggc_mirror, *bdsm_mirror;
+> =C2=A0=C2=A0=C2=A0=C2=A0 int gen;
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0 /*
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * This must be an Intel VGA device at address 0=
+0:02.0 for us to even
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * consider enabling legacy mode. Some driver ha=
+ve dependencies on the
+> PCI
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * bus address.
+> -=C2=A0=C2=A0=C2=A0=C2=A0 */
 
+Same goes for this comment. It's not really correct as UEFI GOP and OS driv=
+er
+depend on address 0:2.0 too but I'd keep and improve it to make it more cle=
+ar
+for future reader.
 
---=-RqVFcOe6OLf8JSWp8PNQ
+> =C2=A0=C2=A0=C2=A0=C2=A0 if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_=
+ANY_ID) ||
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !vfio_is_vga(vdev) || nr=
+ !=3D 0) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0 /*
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * Only on IGD devices of gen 11 and above, the =
+BDSM register is mirrored
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * into MMIO space and read from MMIO space by t=
+he Windows driver.
+> -=C2=A0=C2=A0=C2=A0=C2=A0 */
+> +=C2=A0=C2=A0=C2=A0 /* Only on IGD Gen6-12 device needs quirks in BAR 0 *=
+/
+> =C2=A0=C2=A0=C2=A0=C2=A0 gen =3D igd_gen(vdev);
+> =C2=A0=C2=A0=C2=A0=C2=A0 if (gen < 6) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> @@ -494,7 +487,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *=
+vdev,
+> Error **errp)
+> =C2=A0{
+> =C2=A0=C2=A0=C2=A0=C2=A0 g_autofree struct vfio_region_info *opregion =3D=
+ NULL;
+> =C2=A0=C2=A0=C2=A0=C2=A0 int ret, gen;
+> -=C2=A0=C2=A0=C2=A0 uint64_t gms_size;
+> +=C2=A0=C2=A0=C2=A0 uint64_t gms_size =3D 0;
+> =C2=A0=C2=A0=C2=A0=C2=A0 uint64_t *bdsm_size;
+> =C2=A0=C2=A0=C2=A0=C2=A0 uint32_t gmch;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool legacy_mode_enabled =3D false;
+> @@ -514,18 +507,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice
+> *vdev, Error **errp)
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0=C2=A0=C2=A0=C2=A0 info_report("OpRegion detected on Intel display =
+%x.", vdev->device_id);
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0 /*
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * IGD is not a standard, they like to change th=
+eir specs often.=C2=A0 We
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * only attempt to support back to SandBridge an=
+d we hope that newer
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * devices maintain compatibility with generatio=
+n 8.
+> -=C2=A0=C2=A0=C2=A0=C2=A0 */
+> =C2=A0=C2=A0=C2=A0=C2=A0 gen =3D igd_gen(vdev);
+> -=C2=A0=C2=A0=C2=A0 if (gen =3D=3D -1) {
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_report("IGD device %s i=
+s unsupported in legacy mode, "
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "try SandyBridge or newer"=
+, vdev-
+> >https://nospamproxywebp.beckhoff.com/enQsig/link?id=3DBAgAAABHhgBhwX01GG=
+wAAADNE
+> nn7fAHvEAN3EJV6Ng4dOzKc7MR7f3e317FXOTfRW-ZxuzGFRyquEjUjSeP-
+> 6ByDI2TtwvI3jwlJBjQdXL-V9t40AFbX3wSV_K-
+> M0j4dDCcdYxjOhLKhEroDvVJ0XE20BM2QEteRk67iEFo1=C2=A0);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return true;
+> -=C2=A0=C2=A0=C2=A0 }
+> -
+> =C2=A0=C2=A0=C2=A0=C2=A0 gmch =3D vfio_pci_read_config(&vdev->pdev, IGD_G=
+MCH, 4);
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0 /*
+> @@ -624,32 +606,34 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice
+> *vdev, Error **errp)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0 gms_size =3D igd_stolen_memory_size(gen, gmch);
+> +=C2=A0=C2=A0=C2=A0 if (gen > 0) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gms_size =3D igd_stolen_memor=
+y_size(gen, gmch);
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* BDSM is read-write, emulat=
+ed. BIOS needs to be able to write it */
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (gen < 11) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_s=
+et_long(vdev->pdev.config + IGD_BDSM, 0);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_s=
+et_long(vdev->pdev.wmask + IGD_BDSM, ~0);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_s=
+et_long(vdev->emulated_config_bits + IGD_BDSM, ~0);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_s=
+et_quad(vdev->pdev.config + IGD_BDSM_GEN11, 0);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_s=
+et_quad(vdev->pdev.wmask + IGD_BDSM_GEN11, ~0);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_s=
+et_quad(vdev->emulated_config_bits + IGD_BDSM_GEN11, ~0);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> +=C2=A0=C2=A0=C2=A0 }
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0 /*
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Request reserved memory for stolen memor=
+y via fw_cfg.=C2=A0 VM firmware
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * must allocate a 1MB aligned reserved mem=
+ory region below 4GB with
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * the requested size (in bytes) for use by the =
+Intel PCI class VGA
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * device at VM address 00:02.0.=C2=A0 The base =
+address of this reserved
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * memory region must be written to the device B=
+DSM register at PCI
+> -=C2=A0=C2=A0=C2=A0=C2=A0 * config offset 0x5C.
+> +=C2=A0=C2=A0=C2=A0=C2=A0 * the requested size (in bytes) for use by the =
+IGD device. The base
+> +=C2=A0=C2=A0=C2=A0=C2=A0 * address of this reserved memory region must b=
+e written to the
+> +=C2=A0=C2=A0=C2=A0=C2=A0 * device BDSM register.
+> +=C2=A0=C2=A0=C2=A0=C2=A0 * For newer device without BDSM register, this =
+fw_cfg item is 0.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> =C2=A0=C2=A0=C2=A0=C2=A0 bdsm_size =3D g_malloc(sizeof(*bdsm_size));
+> =C2=A0=C2=A0=C2=A0=C2=A0 *bdsm_size =3D cpu_to_le64(gms_size);
+> =C2=A0=C2=A0=C2=A0=C2=A0 fw_cfg_add_file(fw_cfg_find(), "etc/igd-bdsm-siz=
+e",
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bdsm_size, sizeof(*bdsm_si=
+ze));
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0 /* BDSM is read-write, emulated.=C2=A0 The BIOS needs=
+ to be able to write it
+> */
+> -=C2=A0=C2=A0=C2=A0 if (gen < 11) {
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_set_long(vdev->pdev.confi=
+g + IGD_BDSM, 0);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_set_long(vdev->pdev.wmask=
+ + IGD_BDSM, ~0);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_set_long(vdev->emulated_c=
+onfig_bits + IGD_BDSM, ~0);
+> -=C2=A0=C2=A0=C2=A0 } else {
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_set_quad(vdev->pdev.confi=
+g + IGD_BDSM_GEN11, 0);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_set_quad(vdev->pdev.wmask=
+ + IGD_BDSM_GEN11, ~0);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pci_set_quad(vdev->emulated_c=
+onfig_bits + IGD_BDSM_GEN11, ~0);
+> -=C2=A0=C2=A0=C2=A0 }
+> -
+> =C2=A0=C2=A0=C2=A0=C2=A0 trace_vfio_pci_igd_bdsm_enabled(vdev-
+> >https://nospamproxywebp.beckhoff.com/enQsig/link?id=3DBAgAAABHhgBhwX01GG=
+wAAADNE
+> nn7fAHvEAN3EJV6Ng4dOzKc7MR7f3e317FXOTfRW-ZxuzGFRyquEjUjSeP-
+> 6ByDI2TtwvI3jwlJBjQdXL-V9t40AFbX3wSV_K-
+> M0j4dDCcdYxjOhLKhEroDvVJ0XE20BM2QEteRk67iEFo1=C2=A0, (gms_size / MiB));
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0 return true;
+
+--=20
+Kind regards,
+Corvin
+
+--=-6TSNo/pxZrPKc3Nt+iUr
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEgvRSla3m2t/H2U9G2FTaVjFeAmoFAmgIkxAACgkQ2FTaVjFe
-AmqTXBAArGEnAZ7OO63Vjoy7nF7hdT60FG1AeBXNM950xNokrPiN9isblXwL4eoG
-2JvUh2ddPnG4/xlnEPNNol3zYFNdJy4fa1I5F8t1t2g18nabYzjNUQdoROe36cOv
-R5w+gQ3YYIGBidHETb0BB5/t5NLJIHysmY2PU6brIjUo7K8rIjT0Lv9nqe4PsPX7
-IkUYBqsOl/k3i5xTOn//EiN6CPfDr9kbC9cjCu6TYZqGliaIdNMf7dcYhuhhNtBW
-R5L5v3yNZOB+a60xrWT2W4mqY9613EiEUxlU/qZI1DJrOaypbDhU1r7BAngGPmnb
-tUFDnkF8r5kzFk3PlQxYyCL6j9Tr1RfwR/IbL8yVw+ax1nfagahraV4g41ZqRrMr
-pYnRCwAz+TSpQ51asBqo11lIh9lhwxBzUM91AQbI2qIYhoPmcaAMyyRp6QzxOv1H
-WoL+W3OasW53bzgQwop0+Piqwe6lsoO62Z8FjSMZkSBw0FEKT6PiPJBhUc/NYp9v
-yTk+JjBsJ/z2bZuABvzFx/19LeeFb7wNX0K8IoiVEUMiCMYOKzdM0XXme8M3iOVs
-mVyTKzc1Kk+YwUoPlYm9i8CcTFhkFqT1hHPaaOq1pMMchI3UqTEPtoHpjL36OyRn
-jkCB6yKvaZBg3oEvu+K3fjAKULjKUKbnwty0F1A3r9Hem87NEG0=
-=xm0T
+iQIzBAABCAAdFiEEgvRSla3m2t/H2U9G2FTaVjFeAmoFAmgIlIYACgkQ2FTaVjFe
+AmoLdg/9Efg2141C1NQZQmzUS0BbWoCl1y4COv06YFbdwEQfJAxukfoQYdorlJPn
+YYB8M2HWNEwBut6l0T1Xet7mr6CCDHbA2MBn1q+ZCP8IDp90o5SWn4wsRLBIY3vZ
+8Ralcg+Ai7VjSmQDliYwatYxBlhwKRYcHkrw+gUyNCKaWVpI0sL9Zo74k+SCvpj2
+F10TSlmjHGLVM3a0DidzA32tOD1nBWV45mQ4+ldgjkJqr8c22muHQOZ61KQFQogk
+giiETbZyxCwOiOqvXYB9E1p8uFsHTkjKNsgW3K3Ue4qOFumuFRGQoVqejeq7SA9s
+NcBJJkAVWGTtFobVa8kb/73ARrk5sxcSdNZsJXAQFKRdkDha2QKBc4YaYLHgZzWy
+469DPMQYW26haLEHVU+H6mBSR9xx6gOccWbqTJA9EV7o3JXisCJFWP6417Sk5rBJ
+EBMbGysU5NWyXqyD+aA/ajfGDvXcMVk++/ZRy5PbC6AeZ4ODDFq66RkBRsVuKeOZ
+09Po1CPJqqaF7k21q0tFJtkSP2XHBl9zSKZPOPUVfSnU+ZhsbQ3jVwtLfn758p5g
+b7umbQ+z0OnyN+d/AJdeucCU0DR19dTTz8BMTTgTiPuIpgB4Cv3WUoUBnTR1KQjg
+aib4F0kEaZPBhBdqZKIykKHkppj7W2f3bYH04BVFIPpJ46Yn9GM=
+=r7YN
 -----END PGP SIGNATURE-----
 
---=-RqVFcOe6OLf8JSWp8PNQ--
+--=-6TSNo/pxZrPKc3Nt+iUr--
 
 
