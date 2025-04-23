@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26443A9864D
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:46:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E66A98658
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:47:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wd0-0007qD-Rr; Wed, 23 Apr 2025 05:42:51 -0400
+	id 1u7Wd1-0007wO-E7; Wed, 23 Apr 2025 05:42:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7WcI-0005g2-Ix
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:06 -0400
+ id 1u7WcL-0005tT-NB
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7WcG-0008PE-9B
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:05 -0400
+ id 1u7WcJ-0008PX-B1
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401323;
+ s=mimecast20190719; t=1745401326;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YveATmqR4bi/32CuQ7nwLHBxXPQoI2PI/rY8EiGJUug=;
- b=JEEk6Y2EDBO89ao2i7AOGRFpzlgYNFJwKN4g/NuTf1PRDSRy6VBEF5N08OGr7lyo9TkOh1
- /IRaTsEfPoJBbenMWkAVGNymgInIa//m8lASBSVrqSKs/LFHaVYMBwQ51MmYcU/oaGkEUh
- 6GiJJ8wpKbh03QRPKa5Eew0Fdw/3Gbo=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=g5ZZDK1xtBvzs1i5YSsys1Z/LypJHoXPwiGBorvIHkE=;
+ b=MNTEH/I4t2rT7wBOjfeJdjIwqxHsSvcbeveJNmfXPOhwy4V9p9lPHikjRq/qC7TCs5cKC/
+ g3ajOdqHfHT2LhXVrRBdtyJM9U95ZeeeeeTf0l7i5l0PEhgwGXvaZ55utCaycCVUXl1iWJ
+ BAgJKyGXMFjFfogN8yDe/hEXqCgaQTY=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-rxuLX8uiPUWSYYkdcSOl1w-1; Wed, 23 Apr 2025 05:42:00 -0400
-X-MC-Unique: rxuLX8uiPUWSYYkdcSOl1w-1
-X-Mimecast-MFC-AGG-ID: rxuLX8uiPUWSYYkdcSOl1w_1745401320
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ab68fbe53a4so490885166b.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:42:00 -0700 (PDT)
+ us-mta-456-h-vwT6C3PVGZiL9IkVbHoQ-1; Wed, 23 Apr 2025 05:42:03 -0400
+X-MC-Unique: h-vwT6C3PVGZiL9IkVbHoQ-1
+X-Mimecast-MFC-AGG-ID: h-vwT6C3PVGZiL9IkVbHoQ_1745401322
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5f62d10edbcso5294194a12.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:42:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401319; x=1746006119;
+ d=1e100.net; s=20230601; t=1745401321; x=1746006121;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YveATmqR4bi/32CuQ7nwLHBxXPQoI2PI/rY8EiGJUug=;
- b=hB9ru7Uvo/oj46UdzDi/dP0H+5vXYMKT3xGGgoTNS6ouz2ksxSVInBn8+YoIZkDqR7
- iGAwwJHrhhi9YcUL76K1YLwHZn7TmjYoTRhhz+EJ4HmIEPfOOBjKPwGfr9ZGDaD2c0Gf
- ZHwGSl2sSe/XOKz6tNDJe5ao24pXHdJPwChUxHLfpFGqRb/NFwdan7E8Vo8sWMbyKUmn
- 9Q/liJgSAr+gkeKoCVNoPcD9eNiftwpWQSSS1rLdIOU8gXaX1m2o0s86ZAFji2yd7CzV
- BbiIHs27s2MYSvQp8wAqt6mJERCyYgqnHJDGlCPJrAZ6oOtvB+ns85mVlzIMEEYxUTRD
- Owmw==
-X-Gm-Message-State: AOJu0YySt59oEReHMTDaPecOcCL5WKL31Y5cMgkgmMP8MOX5mHRlzBI0
- FdTeAo1R4WgrCnrMQlrW/n91wo76V5p13JKwmmXrnNoTIQiNJAYbqNgXZVY32D2xwwokTf4JVXe
- m52jU0nu9jj2mB1Ky4rrcXk1FTDn2yS9UG9gUhzz3kW1ywKvYPVLr52n20TAOf6Xg30Rva/XBEG
- mCG3JwcMZy40KHGX0yGzUXRl32bOw/FJByTkcd
-X-Gm-Gg: ASbGncsrm3pvLRLs8mptXnjDSqw5I8q5uQiscUq+gS4vHOtrpYA7htXygpsmD4HUGV/
- B/JZwB8UYQYMCTLWfc26Gl3JERFfpDcvIAhVAq5J/MK6MPDRVHWSPDxDJLLwRwyYg6XLeIbiTQf
- sHUaejPKaN0PNJIZarA6Ugy7FGy+4rVv/bJsps471Bz9GlORGExKBII3OYj5+crl+KhQ4o85Ezx
- c8LMua6Rm+QIc5tfEex4IxtGUmUmAFbDAvyeLV/NUuQUQ2frJBN+PJSoIVlrDbJ/S9+xyaHxMmA
- ntwAPeA4NkLE+OId
-X-Received: by 2002:a17:907:7f9e:b0:ace:3c0b:1951 with SMTP id
- a640c23a62f3a-ace3c0b22efmr206353766b.46.1745401319264; 
- Wed, 23 Apr 2025 02:41:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEZFr0D8+8P1z2RLnkWofPleWTY3U2J4LLJhhmrBGB1JfbR8dYmXWirCIOFTz/Jw25/EfSdFA==
-X-Received: by 2002:a17:907:7f9e:b0:ace:3c0b:1951 with SMTP id
- a640c23a62f3a-ace3c0b22efmr206351466b.46.1745401318782; 
- Wed, 23 Apr 2025 02:41:58 -0700 (PDT)
+ bh=g5ZZDK1xtBvzs1i5YSsys1Z/LypJHoXPwiGBorvIHkE=;
+ b=iFMpaS83hQSSLiKiGFz8POZaR0/gqUHfgvSwo42Aiqh2vF3qCVVc8/WVQ32y/Mmqxk
+ RD09mG/1Oeaz5cgYn9hWmeKeGu1Ju4doc38j5wA3Asjclrhpi/WyqCJLCFd7ZPTgS1bB
+ +joYk37v/NfHGVUiIN7qFriIyOk0Iv5toCW9gZtv7RaDZ/blnuhfRfmhGMleVxtRoW4C
+ SXM52PhF/kBG0NUJSY0zAOEbqbN4Ybiqz0Ei12dIxM7T+RWKM4OSsmdavSWDRhw5lIRJ
+ MwJwKq93wLgLhkuTp5+JAZgRU1rTg/pRlJc+UNyEeX9hOwgiQZ4qAmG2cU1+sxis6wpI
+ oquw==
+X-Gm-Message-State: AOJu0YyiE8Jv79JlVZ0Duwt6fKplvFqIYtP7jUNg7SnMNe+Rnx1bnva8
+ NOqfK2IbwJGQ/v8mN8EtO/kg0EGSYZuA99moPe4dcjl025Wjkg12zwkg+mHcWvbETolqcgMGbi5
+ ECSjvC1GhHQCtn8q9WWNmRVttsY2AUWIcImWzUa4xhErwkfDe3Db09ae4UOdmfQ8bGaYIMrCrvA
+ 3E63Sd13P5ZGog14wKAQxxoIYMRttqTzHJTJ/n
+X-Gm-Gg: ASbGncuXKN2+YOquNKT0TiKWx78udiojJVkTPoszIQW3vPEHfrh3qEUv6TMhRf5Tc0z
+ qhjiEKjjGCUcAfz7FM9g4Z+fPvvFl7ZS1Hvf1W6vbmRUW8ahoCJa6WYolCe43VvenE/ZJM+ndHf
+ U+9VJF44sdFoHapGQahDyBBhUQPQpj7hhAngZgk01pTVYAdSyko9eYdZEpoP9ibLbeCw+cztv7z
+ jPEJvmVqk77wJqmAtt1520CebvYaxFp9Uh7+swS9/g2OCesoxYFoxAKlmrBDcpl1ZTKwLp6iRrO
+ T/nMuB7kD/wiqrzj
+X-Received: by 2002:a05:6402:210c:b0:5ed:c09c:10f with SMTP id
+ 4fb4d7f45d1cf-5f62854b063mr16708271a12.15.1745401321542; 
+ Wed, 23 Apr 2025 02:42:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHH7h4U2LWta3MMkiRBJEe3xr4vsq8vA8Hi5wsArE6TTO3Zt/JL1/YqnIf0WvJ3knjyqVE92Q==
+X-Received: by 2002:a05:6402:210c:b0:5ed:c09c:10f with SMTP id
+ 4fb4d7f45d1cf-5f62854b063mr16708247a12.15.1745401321100; 
+ Wed, 23 Apr 2025 02:42:01 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-acb6ef475ccsm780232266b.137.2025.04.23.02.41.56
+ 4fb4d7f45d1cf-5f62557a151sm7224747a12.32.2025.04.23.02.41.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:41:56 -0700 (PDT)
+ Wed, 23 Apr 2025 02:41:59 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Wei Liu <liuwe@linux.microsoft.com>
-Subject: [PULL 24/34] target/i386/emulate: add a panic.h
-Date: Wed, 23 Apr 2025 11:40:54 +0200
-Message-ID: <20250423094105.40692-25-pbonzini@redhat.com>
+Subject: [PULL 25/34] target/i386: move x86 instruction emulator out of hvf
+Date: Wed, 23 Apr 2025 11:40:55 +0200
+Message-ID: <20250423094105.40692-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
@@ -108,68 +108,212 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Wei Liu <liuwe@linux.microsoft.com>
 
-The macros will be used by the instruction emulator. The code is the same as
-the one under hvf.
+Move x86_decode, x86_emu, x86_flags and some headers to the new location.
+Fix up all the inclusion sites in hvf.
 
 Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1741377325-28175-13-git-send-email-liuwe@linux.microsoft.com
+Link: https://lore.kernel.org/r/1741377325-28175-14-git-send-email-liuwe@linux.microsoft.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/emulate/panic.h | 45 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
- create mode 100644 target/i386/emulate/panic.h
+ target/i386/{hvf => emulate}/x86.h        | 0
+ target/i386/{hvf => emulate}/x86_decode.h | 0
+ target/i386/{hvf => emulate}/x86_emu.h    | 0
+ target/i386/{hvf => emulate}/x86_flags.h  | 0
+ target/i386/hvf/vmx.h                     | 2 +-
+ target/i386/hvf/x86_descr.h               | 2 +-
+ target/i386/{hvf => emulate}/x86_decode.c | 0
+ target/i386/{hvf => emulate}/x86_emu.c    | 0
+ target/i386/{hvf => emulate}/x86_flags.c  | 0
+ target/i386/hvf/hvf.c                     | 8 ++++----
+ target/i386/hvf/x86.c                     | 4 ++--
+ target/i386/hvf/x86_cpuid.c               | 2 +-
+ target/i386/hvf/x86_mmu.c                 | 2 +-
+ target/i386/hvf/x86_task.c                | 6 +++---
+ target/i386/hvf/x86hvf.c                  | 2 +-
+ target/i386/emulate/meson.build           | 5 +++++
+ target/i386/hvf/meson.build               | 3 ---
+ 17 files changed, 19 insertions(+), 17 deletions(-)
+ rename target/i386/{hvf => emulate}/x86.h (100%)
+ rename target/i386/{hvf => emulate}/x86_decode.h (100%)
+ rename target/i386/{hvf => emulate}/x86_emu.h (100%)
+ rename target/i386/{hvf => emulate}/x86_flags.h (100%)
+ rename target/i386/{hvf => emulate}/x86_decode.c (100%)
+ rename target/i386/{hvf => emulate}/x86_emu.c (100%)
+ rename target/i386/{hvf => emulate}/x86_flags.c (100%)
 
-diff --git a/target/i386/emulate/panic.h b/target/i386/emulate/panic.h
-new file mode 100644
-index 00000000000..71c24874ba0
---- /dev/null
-+++ b/target/i386/emulate/panic.h
-@@ -0,0 +1,45 @@
-+/*
-+ * Copyright (C) 2016 Veertu Inc,
-+ * Copyright (C) 2017 Google Inc,
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2.1 of the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+#ifndef X86_EMU_PANIC_H
-+#define X86_EMU_PANIC_H
-+
-+#define VM_PANIC(x) {\
-+    printf("%s\n", x); \
-+    abort(); \
-+}
-+
-+#define VM_PANIC_ON(x) {\
-+    if (x) { \
-+        printf("%s\n", #x); \
-+        abort(); \
-+    } \
-+}
-+
-+#define VM_PANIC_EX(...) {\
-+    printf(__VA_ARGS__); \
-+    abort(); \
-+}
-+
-+#define VM_PANIC_ON_EX(x, ...) {\
-+    if (x) { \
-+        printf(__VA_ARGS__); \
-+        abort(); \
-+    } \
-+}
-+
-+#endif
+diff --git a/target/i386/hvf/x86.h b/target/i386/emulate/x86.h
+similarity index 100%
+rename from target/i386/hvf/x86.h
+rename to target/i386/emulate/x86.h
+diff --git a/target/i386/hvf/x86_decode.h b/target/i386/emulate/x86_decode.h
+similarity index 100%
+rename from target/i386/hvf/x86_decode.h
+rename to target/i386/emulate/x86_decode.h
+diff --git a/target/i386/hvf/x86_emu.h b/target/i386/emulate/x86_emu.h
+similarity index 100%
+rename from target/i386/hvf/x86_emu.h
+rename to target/i386/emulate/x86_emu.h
+diff --git a/target/i386/hvf/x86_flags.h b/target/i386/emulate/x86_flags.h
+similarity index 100%
+rename from target/i386/hvf/x86_flags.h
+rename to target/i386/emulate/x86_flags.h
+diff --git a/target/i386/hvf/vmx.h b/target/i386/hvf/vmx.h
+index 80ce26279bf..3c56afc9d3a 100644
+--- a/target/i386/hvf/vmx.h
++++ b/target/i386/hvf/vmx.h
+@@ -29,7 +29,7 @@
+ #include <Hypervisor/hv_vmx.h>
+ #include "vmcs.h"
+ #include "cpu.h"
+-#include "x86.h"
++#include "emulate/x86.h"
+ #include "system/hvf.h"
+ #include "system/hvf_int.h"
+ 
+diff --git a/target/i386/hvf/x86_descr.h b/target/i386/hvf/x86_descr.h
+index ce5de983497..24af4946cd4 100644
+--- a/target/i386/hvf/x86_descr.h
++++ b/target/i386/hvf/x86_descr.h
+@@ -19,7 +19,7 @@
+ #ifndef HVF_X86_DESCR_H
+ #define HVF_X86_DESCR_H
+ 
+-#include "x86.h"
++#include "emulate/x86.h"
+ 
+ typedef struct vmx_segment {
+     uint16_t sel;
+diff --git a/target/i386/hvf/x86_decode.c b/target/i386/emulate/x86_decode.c
+similarity index 100%
+rename from target/i386/hvf/x86_decode.c
+rename to target/i386/emulate/x86_decode.c
+diff --git a/target/i386/hvf/x86_emu.c b/target/i386/emulate/x86_emu.c
+similarity index 100%
+rename from target/i386/hvf/x86_emu.c
+rename to target/i386/emulate/x86_emu.c
+diff --git a/target/i386/hvf/x86_flags.c b/target/i386/emulate/x86_flags.c
+similarity index 100%
+rename from target/i386/hvf/x86_flags.c
+rename to target/i386/emulate/x86_flags.c
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 8c31d2e0cf7..23ebf2550ac 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -59,12 +59,12 @@
+ #include "hvf-i386.h"
+ #include "vmcs.h"
+ #include "vmx.h"
+-#include "x86.h"
++#include "emulate/x86.h"
+ #include "x86_descr.h"
+-#include "x86_flags.h"
++#include "emulate/x86_flags.h"
+ #include "x86_mmu.h"
+-#include "x86_decode.h"
+-#include "x86_emu.h"
++#include "emulate/x86_decode.h"
++#include "emulate/x86_emu.h"
+ #include "x86_task.h"
+ #include "x86hvf.h"
+ 
+diff --git a/target/i386/hvf/x86.c b/target/i386/hvf/x86.c
+index a0ede138865..5c75ec9a007 100644
+--- a/target/i386/hvf/x86.c
++++ b/target/i386/hvf/x86.c
+@@ -19,8 +19,8 @@
+ #include "qemu/osdep.h"
+ 
+ #include "cpu.h"
+-#include "x86_decode.h"
+-#include "x86_emu.h"
++#include "emulate/x86_decode.h"
++#include "emulate/x86_emu.h"
+ #include "vmcs.h"
+ #include "vmx.h"
+ #include "x86_mmu.h"
+diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
+index ae836f65cc9..fa131b18c6d 100644
+--- a/target/i386/hvf/x86_cpuid.c
++++ b/target/i386/hvf/x86_cpuid.c
+@@ -24,7 +24,7 @@
+ #include "qemu/cpuid.h"
+ #include "host/cpuinfo.h"
+ #include "cpu.h"
+-#include "x86.h"
++#include "emulate/x86.h"
+ #include "vmx.h"
+ #include "system/hvf.h"
+ #include "hvf-i386.h"
+diff --git a/target/i386/hvf/x86_mmu.c b/target/i386/hvf/x86_mmu.c
+index 579d0c3a4cc..afc5c17d5d5 100644
+--- a/target/i386/hvf/x86_mmu.c
++++ b/target/i386/hvf/x86_mmu.c
+@@ -19,7 +19,7 @@
+ #include "qemu/osdep.h"
+ #include "panic.h"
+ #include "cpu.h"
+-#include "x86.h"
++#include "emulate/x86.h"
+ #include "x86_mmu.h"
+ #include "vmcs.h"
+ #include "vmx.h"
+diff --git a/target/i386/hvf/x86_task.c b/target/i386/hvf/x86_task.c
+index 161217991fc..bdf8b51ae67 100644
+--- a/target/i386/hvf/x86_task.c
++++ b/target/i386/hvf/x86_task.c
+@@ -14,11 +14,11 @@
+ #include "hvf-i386.h"
+ #include "vmcs.h"
+ #include "vmx.h"
+-#include "x86.h"
++#include "emulate/x86.h"
+ #include "x86_descr.h"
+ #include "x86_mmu.h"
+-#include "x86_decode.h"
+-#include "x86_emu.h"
++#include "emulate/x86_decode.h"
++#include "emulate/x86_emu.h"
+ #include "x86_task.h"
+ #include "x86hvf.h"
+ 
+diff --git a/target/i386/hvf/x86hvf.c b/target/i386/hvf/x86hvf.c
+index 531a340b37c..2057314892a 100644
+--- a/target/i386/hvf/x86hvf.c
++++ b/target/i386/hvf/x86hvf.c
+@@ -24,7 +24,7 @@
+ #include "vmcs.h"
+ #include "cpu.h"
+ #include "x86_descr.h"
+-#include "x86_decode.h"
++#include "emulate/x86_decode.h"
+ #include "system/hw_accel.h"
+ 
+ #include "hw/i386/apic_internal.h"
+diff --git a/target/i386/emulate/meson.build b/target/i386/emulate/meson.build
+index e69de29bb2d..4edd4f462fc 100644
+--- a/target/i386/emulate/meson.build
++++ b/target/i386/emulate/meson.build
+@@ -0,0 +1,5 @@
++i386_system_ss.add(when: [hvf, 'CONFIG_HVF'], if_true: files(
++  'x86_decode.c',
++  'x86_emu.c',
++  'x86_flags.c',
++))
+diff --git a/target/i386/hvf/meson.build b/target/i386/hvf/meson.build
+index 05c3c8cf18b..519d190f0e6 100644
+--- a/target/i386/hvf/meson.build
++++ b/target/i386/hvf/meson.build
+@@ -2,10 +2,7 @@ i386_system_ss.add(when: [hvf, 'CONFIG_HVF'], if_true: files(
+   'hvf.c',
+   'x86.c',
+   'x86_cpuid.c',
+-  'x86_decode.c',
+   'x86_descr.c',
+-  'x86_emu.c',
+-  'x86_flags.c',
+   'x86_mmu.c',
+   'x86_task.c',
+   'x86hvf.c',
 -- 
 2.49.0
 
