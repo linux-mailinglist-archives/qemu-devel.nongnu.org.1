@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E70A9888E
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 13:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B30BA98895
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 13:28:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7YFf-0003xY-CQ; Wed, 23 Apr 2025 07:26:52 -0400
+	id 1u7YFq-00046r-4s; Wed, 23 Apr 2025 07:27:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YF9-0003uh-Fg
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:22 -0400
+ id 1u7YFB-0003v0-Ms
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:26 -0400
 Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YF7-0002vw-47
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:19 -0400
+ id 1u7YF9-0002vs-CV
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745407577; x=1776943577;
+ t=1745407579; x=1776943579;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hFmCDh1g6jFUGO8m7NQhmZ+M7gV0kLnTguTu4AQJhYA=;
- b=ILm2u1j2aUjNZkAGGbAGYxnkVZuTrF2q8+d/8BzGLSNdp0DblD59N/m8
- rI0RWsNCuda8YNYH8QyrrXk0Q9QcTgiPItaY0HToPFjW6qqitTAjZ8cuF
- b5AEG32qWcRswWwPmid2yI9lvhxYQBdRB5LJK5umM1z5Xc9N02qvX26tL
- UBphuCfbQaywn0ES3kuZUGKaLTmCh4V1dcCmvJZVw5w6Ux0lSCfhJUnw4
- 85k1BL2CulrN6omdJAVRViJUnAfG2oN1sDnEfzZ+kjTSD/KSEgx9nbx2c
- fLzVPE3htJQGusLs/HErcH4ybTpkjhmeZ6wjzz8E7gQYpiU8rJ53YeGCF g==;
-X-CSE-ConnectionGUID: 0tqkhLdeR6WSPtR5xXim4Q==
-X-CSE-MsgGUID: lIcY+OS6TmGZQLTEoie26w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50825254"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="50825254"
+ bh=1ySg7f0MXv81a/sh1bBBvbxV263DWqo05jeGhcaGOgU=;
+ b=hOGRjMEBAlVMpTSxyF4H0h6Enjk1PXpnAkyF450dORVBbyqYKzvo3VBV
+ 88xEeemw+Kpu0PRBISEhbWi+oszxH4hwWD6IxYe2RbroKxBmyxWH5ooyR
+ tXIiRqfKJrA9DsYsmvXfdamZ1lzF/3M20kFgXRjfdNdSVpqYuJ5QFw1e2
+ VdGHPBaF7zkgIvFKNqB2KBve9m5EJAPhq91dPwSwd4ma79i7Uzdf5PHCD
+ 1Tvdt0lsMmV+jw0SsIvEavPGPh0j4pe+zpCDwSkkXu7rwiKr37pfAK3vZ
+ cUJB6KA5TaHptTRfEUloqV1HGURbNgKOo/D5MlDVQpQbHOWlcmu9uVaU5 A==;
+X-CSE-ConnectionGUID: WFbaVZoPQzOixBMEDilUKg==
+X-CSE-MsgGUID: Kx6n0vXDRKONpr+BIEeSFg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50825262"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="50825262"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 04:26:14 -0700
-X-CSE-ConnectionGUID: tsvDa8cqR0qLIgIGbl3vlA==
-X-CSE-MsgGUID: FVISKOKWSki5mLfx20fGug==
+ 23 Apr 2025 04:26:18 -0700
+X-CSE-ConnectionGUID: J/zQ7+W7SpG7028dkKk6iw==
+X-CSE-MsgGUID: 0bwUUFdxSS+gDtdPahEu6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137150725"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137150732"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 23 Apr 2025 04:26:11 -0700
+ by orviesa003.jf.intel.com with ESMTP; 23 Apr 2025 04:26:15 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
  Jason Zeng <jason.zeng@intel.com>,
  Manish Mishra <manish.mishra@nutanix.com>, Tao Su <tao1.su@intel.com>,
  qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for Intel
-Date: Wed, 23 Apr 2025 19:46:53 +0800
-Message-Id: <20250423114702.1529340-2-zhao1.liu@intel.com>
+Subject: [RFC 02/10] i386/cpu: Fix CPUID[0x80000006] for Intel CPU
+Date: Wed, 23 Apr 2025 19:46:54 +0800
+Message-Id: <20250423114702.1529340-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250423114702.1529340-1-zhao1.liu@intel.com>
 References: <20250423114702.1529340-1-zhao1.liu@intel.com>
@@ -85,53 +85,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per SDM, 0x80000005 leaf is reserved for Intel CPU, and its current
-"assert" check blocks adding new cache model for non-AMD CPUs.
+Per SDM, Intel supports CPUID[0x80000006]. But only L2 information is
+encoded in ECX (note that L2 associativity field encodings rules
+consistent with AMD are used), all other fields are reserved.
 
-Therefore, check the vendor and encode this leaf as all-0 for Intel
-CPU. And since Zhaoxin mostly follows Intel behavior, apply the vendor
-check for Zhaoxin as well.
-
-Note, for !vendor_cpuid_only case, non-AMD CPU would get the wrong
-information, i.e., get AMD's cache model for Intel or Zhaoxin CPUs.
-For this case, there is no need to tweak for non-AMD CPUs, because
-vendor_cpuid_only has been turned on by default since PC machine v6.1.
+Therefore, make the following changes to CPUID[0x80000006]:
+ * Rename AMD_ENC_ASSOC to X86_ENC_ASSOC since Intel also uses the same
+   rules. (While there are some slight differences between the rules in
+   AMD APM v4.07 no.40332 and those in the current QEMU, generally they
+   are consistent.)
+ * Check the vendor in CPUID[0x80000006] and just encode L2 to ECX for
+   Intel.
+ * Assert L2's lines_per_tag is not 0 for AMD, and assert it is 0 for
+   Intel.
+ * Apply the encoding change of Intel for Zhaoxin as well.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ target/i386/cpu.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1b64ceaaba46..8fdafa8aedaf 100644
+index 8fdafa8aedaf..5119d7aa4150 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -7248,11 +7248,23 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         *edx = env->cpuid_model[(index - 0x80000002) * 4 + 3];
-         break;
-     case 0x80000005:
--        /* cache info (L1 cache) */
--        if (cpu->cache_info_passthrough) {
-+        /*
-+         * cache info (L1 cache)
-+         *
-+         * For !vendor_cpuid_only case, non-AMD CPU would get the wrong
-+         * information, i.e., get AMD's cache model. It doesn't matter,
-+         * vendor_cpuid_only has been turned on by default since
-+         * PC machine v6.1.
-+         */
-+        if (cpu->vendor_cpuid_only &&
-+            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-+            *eax = *ebx = *ecx = *edx = 0;
-+            break;
-+        } else if (cpu->cache_info_passthrough) {
+@@ -436,8 +436,8 @@ static uint32_t encode_cache_cpuid80000005(CPUCacheInfo *cache)
+ 
+ #define ASSOC_FULL 0xFF
+ 
+-/* AMD associativity encoding used on CPUID Leaf 0x80000006: */
+-#define AMD_ENC_ASSOC(a) (a <=   1 ? a   : \
++/* x86 associativity encoding used on CPUID Leaf 0x80000006: */
++#define X86_ENC_ASSOC(a) (a <=   1 ? a   : \
+                           a ==   2 ? 0x2 : \
+                           a ==   4 ? 0x4 : \
+                           a ==   8 ? 0x6 : \
+@@ -460,19 +460,19 @@ static void encode_cache_cpuid80000006(CPUCacheInfo *l2,
+ {
+     assert(l2->size % 1024 == 0);
+     assert(l2->associativity > 0);
+-    assert(l2->lines_per_tag > 0);
+     assert(l2->line_size > 0);
+     *ecx = ((l2->size / 1024) << 16) |
+-           (AMD_ENC_ASSOC(l2->associativity) << 12) |
++           (X86_ENC_ASSOC(l2->associativity) << 12) |
+            (l2->lines_per_tag << 8) | (l2->line_size);
+ 
++    /* For Intel, EDX is reserved. */
+     if (l3) {
+         assert(l3->size % (512 * 1024) == 0);
+         assert(l3->associativity > 0);
+         assert(l3->lines_per_tag > 0);
+         assert(l3->line_size > 0);
+         *edx = ((l3->size / (512 * 1024)) << 18) |
+-               (AMD_ENC_ASSOC(l3->associativity) << 12) |
++               (X86_ENC_ASSOC(l3->associativity) << 12) |
+                (l3->lines_per_tag << 8) | (l3->line_size);
+     } else {
+         *edx = 0;
+@@ -7277,15 +7277,25 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         if (cpu->cache_info_passthrough) {
              x86_cpu_get_cache_cpuid(index, 0, eax, ebx, ecx, edx);
              break;
++        } else if (cpu->vendor_cpuid_only &&
++            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
++            *eax = *ebx = 0;
++            assert(env->cache_info_cpuid4.l2_cache->lines_per_tag == 0);
++            encode_cache_cpuid80000006(env->cache_info_cpuid4.l2_cache,
++                                       NULL, ecx, edx);
++            break;
          }
+-        *eax = (AMD_ENC_ASSOC(L2_DTLB_2M_ASSOC) << 28) |
 +
-         *eax = (L1_DTLB_2M_ASSOC << 24) | (L1_DTLB_2M_ENTRIES << 16) |
-                (L1_ITLB_2M_ASSOC <<  8) | (L1_ITLB_2M_ENTRIES);
-         *ebx = (L1_DTLB_4K_ASSOC << 24) | (L1_DTLB_4K_ENTRIES << 16) |
++        *eax = (X86_ENC_ASSOC(L2_DTLB_2M_ASSOC) << 28) |
+                (L2_DTLB_2M_ENTRIES << 16) |
+-               (AMD_ENC_ASSOC(L2_ITLB_2M_ASSOC) << 12) |
++               (X86_ENC_ASSOC(L2_ITLB_2M_ASSOC) << 12) |
+                (L2_ITLB_2M_ENTRIES);
+-        *ebx = (AMD_ENC_ASSOC(L2_DTLB_4K_ASSOC) << 28) |
++        *ebx = (X86_ENC_ASSOC(L2_DTLB_4K_ASSOC) << 28) |
+                (L2_DTLB_4K_ENTRIES << 16) |
+-               (AMD_ENC_ASSOC(L2_ITLB_4K_ASSOC) << 12) |
++               (X86_ENC_ASSOC(L2_ITLB_4K_ASSOC) << 12) |
+                (L2_ITLB_4K_ENTRIES);
++
++        assert(env->cache_info_amd.l2_cache->lines_per_tag > 0);
+         encode_cache_cpuid80000006(env->cache_info_amd.l2_cache,
+                                    cpu->enable_l3_cache ?
+                                    env->cache_info_amd.l3_cache : NULL,
 -- 
 2.34.1
 
