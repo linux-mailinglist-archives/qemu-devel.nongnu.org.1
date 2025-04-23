@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E20EA985F4
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A43A9863C
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:45:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7WcH-0005Hd-2o; Wed, 23 Apr 2025 05:42:05 -0400
+	id 1u7WcV-0005nQ-2T; Wed, 23 Apr 2025 05:42:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wbi-0004Nn-6e
+ id 1u7Wbi-0004No-Ej
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wbg-0008Lc-MY
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:29 -0400
+ id 1u7Wbg-0008LW-J4
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401288;
+ s=mimecast20190719; t=1745401287;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bBSmWHtRLE+5d4wSOyJC5GTKnwxPIKfO6ljx7dHaimI=;
- b=F2sG6lSFym4ed/jO8UKiYIpluBsX9NpfN588mWWr0azWJuaVyfxHg+llEPdoTa4hq/0At7
- HZehadMhWoGPqyDD3ysyAwnuXwp4gVMnngchAiZZuT7T0f8Gn3NoVtEXDFA+PMnCKrBo2C
- 653VCWTupm68mFYgHyYtxvtL7ROgAmA=
+ bh=7WV/33915Cp1lyg6FaM5mC8S9fs4ugxpdjv4iZnTm4I=;
+ b=TIqCaixo+TE1CFGMdsEmphCSqASA3uooEgorH4QUPvJ80x5C+Aly1C/vMTQW12V0YnooI4
+ r5b1wbysa7rOVMMSsr41cg2g7WzgvIkftoCJN8VU+FVCtpRK/YSrrTbbr/ga/5xYPbePXs
+ XhDaOyWOCJm7edVM6KyVOEA5cxlW0qc=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-AI6yq_G5Ot-9h8M1vxEC6Q-1; Wed, 23 Apr 2025 05:41:23 -0400
-X-MC-Unique: AI6yq_G5Ot-9h8M1vxEC6Q-1
-X-Mimecast-MFC-AGG-ID: AI6yq_G5Ot-9h8M1vxEC6Q_1745401282
+ us-mta-627-jcqsGevAN12g7XDnooyOHw-1; Wed, 23 Apr 2025 05:41:25 -0400
+X-MC-Unique: jcqsGevAN12g7XDnooyOHw-1
+X-Mimecast-MFC-AGG-ID: jcqsGevAN12g7XDnooyOHw_1745401285
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ac79e4764e5so329262066b.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:23 -0700 (PDT)
+ a640c23a62f3a-ac297c7a0c2so391396066b.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401281; x=1746006081;
+ d=1e100.net; s=20230601; t=1745401284; x=1746006084;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bBSmWHtRLE+5d4wSOyJC5GTKnwxPIKfO6ljx7dHaimI=;
- b=YAsTD18JqHh/12gB6vwilT77QpE4QfAagroVhoyRzyOAcKKudXGGw6hugNaqJYOpFx
- QS0YzO5kSPBhXYn04JFOi9B8bnIFiayBzTW+xS139hlJvv/D25IZtf9DvcM04XUgpZom
- LyEsETKzIK/qUPH37641aBF4ni0kTbqaNZWBEchJK+8DnalqnYpwjhAN2LSadjtUOYr/
- sbK1/XePIHK2z1mK2KCMgnxH0aWUs30aw38ahYHT38PW2oHkisGa7/lBAeV6F6EUqFXN
- kEsfnJfic1EdBazERrwxEPkUL0VPhGWFZXJhLhrEGa+5Ulq4D4q0O0UYOzfuHvfcUN3/
- 6X7w==
-X-Gm-Message-State: AOJu0YykOA0qTwsmwFORDacueKze+KL83JDVCBJ9o1SpK5tK6rNy9ump
- CWvSJZMDGlV6WXLKA/bG2OZRMjf5vQoi6uunF+SeeYrz+oak2VsQrrT6SqSn3UxDvovBuHA03vJ
- rGbHeviFR2xUxVPwhn87b9bCe7zFWyrHyawWLLTA47OKPatVufsxLYRTOqvks7Un/K690BNXXSe
- 1xAxF4jv+lq/3jJt5UMB1e9CcwtW+5cw9Q0ABD
-X-Gm-Gg: ASbGnctSd2afNNCbdJ402EYZMZoSgDqijEfi0WPwvScuWNXYouL6ol/LIa1DG5peTh6
- efsaSDht9kBMWnBzHoCv4bVIq9+sVVDeBOg2t9ivyXKgkVOvUQgqPO7Tp+DGOjbwAj2cAVtiXzd
- RyBKQJFtoyg1al3EUrLPr6UMt/dw0Gc3Z4m7L/VS19yoafP5DZ2AWDji2xKTKytgUj4Vnqqtjl+
- qmNOxQOYqTLDkakbXiBRjzS/iwOm6n3Ws7p6TBEiMvh4+lF4TuJB6EQkSKQfkht9/fY4rphwDmH
- 9vwsVKt1EFnxEkEY
-X-Received: by 2002:a17:907:3e9c:b0:ac3:49f0:4d10 with SMTP id
- a640c23a62f3a-acb74d65b57mr1764243066b.38.1745401281001; 
- Wed, 23 Apr 2025 02:41:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGjc5MyRPCXic4HwK1xmfPdsifCCkihTC1YAzo8LOifCfS2IWWjLhopvFV72AoZGNBd47LMGg==
-X-Received: by 2002:a17:907:3e9c:b0:ac3:49f0:4d10 with SMTP id
- a640c23a62f3a-acb74d65b57mr1764241466b.38.1745401280521; 
- Wed, 23 Apr 2025 02:41:20 -0700 (PDT)
+ bh=7WV/33915Cp1lyg6FaM5mC8S9fs4ugxpdjv4iZnTm4I=;
+ b=UfkZ/GxrUMx0C17yfT41NjRXZ162GidGeyLcya6pKYsBqRCejZFHNZORn2Us/RrCEV
+ GlfIAakgm+knHnxUqh2ToNDjekyyZomHEd1bmuVWDZlKZJRHSGHoywP6EDSGMWxX5hEk
+ UZrV8JCL4+p9STMkaIPsGV+05Y0+eN9fv97CWDSKa30VywENCypL2DQ3aIuuPCQaKMqj
+ PG5gSBZIoYqc9PzHH8//pShahGeWJcIsFwgW12gJ9AYrXQjBwdsK4EcUMh1yW8eLqbnf
+ 3WJIZSNvQZCeZ6UTZIWiN6xuVeBLVw7HxMhmUw74xN8mCafc60iY2CGRrKK0ch0z3KRo
+ x/oQ==
+X-Gm-Message-State: AOJu0YxpIF8badBXwuueUa+TUKptG1piYFmWgdSVwV7ufGhwqTaUXpXI
+ M0/vmrqNYcUxX94za5d8uW2RxPQPdGXkgYJkt+ET1KokB8YBJkGKBr9ASQ24b93mSNcH3Qgl7dO
+ dZ9qNldstuaH+9AvFAkqw9fyMjtZYU6ErvMPryqS3Mtt6TdI7kIVNj41olLVI6fgi3h2AAAjxys
+ la1H/20f5JT2RzS9dv21wjSkEdOkH4i8vsh6nN
+X-Gm-Gg: ASbGncv1vJV9k3wXPAQeyiZq/RyjSKHfoTcupCk0gmGpGgS0Jgjng77cOgmdWuBNj06
+ mYPOm3ebv9SNOlaCdAXpE60Cs+OkSLDxz+Ae/gB9GfoRpNhOpAFndkd08C88Y5oDE10iwym29Sj
+ SNssT50Whl4DQax62bpveUn8sGP6l9oYvxGNMsOTP/CN5QtUTflFZdORr6Cu5BrwR7V+m2GD1iy
+ W6JU8it0GkRpwdtWeoqDwCEm5UxpLS0nmTE/30fByPD3rPE5Qzz9Vowxz84qTOMg7gubzEOBrw9
+ RQXc/ZK1L5rFzErf
+X-Received: by 2002:a17:906:c10f:b0:aca:a3a8:5560 with SMTP id
+ a640c23a62f3a-acb74e0ed71mr1351301166b.53.1745401284152; 
+ Wed, 23 Apr 2025 02:41:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEAancXXHi3BLmLaPGDNeFfwglnZZKm6QvcvbqYR1nf8TYGUP2VY1roHa8u61j2PwAgCxFFOw==
+X-Received: by 2002:a17:906:c10f:b0:aca:a3a8:5560 with SMTP id
+ a640c23a62f3a-acb74e0ed71mr1351298666b.53.1745401283633; 
+ Wed, 23 Apr 2025 02:41:23 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-acb6ec42adfsm764159066b.42.2025.04.23.02.41.19
+ a640c23a62f3a-acb6eefcf76sm789606266b.100.2025.04.23.02.41.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:41:20 -0700 (PDT)
+ Wed, 23 Apr 2025 02:41:21 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/34] target/i386: tcg: remove subf from SHLD/SHRD expansion
-Date: Wed, 23 Apr 2025 11:40:37 +0200
-Message-ID: <20250423094105.40692-8-pbonzini@redhat.com>
+Subject: [PULL 08/34] target/i386: tcg: remove tmp0
+Date: Wed, 23 Apr 2025 11:40:38 +0200
+Message-ID: <20250423094105.40692-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
@@ -106,42 +106,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is computing 33-count but 32-count had just been used, so just shift
-further by one.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ target/i386/tcg/translate.c | 27 +++++++++++++++------------
+ target/i386/tcg/emit.c.inc  | 20 ++++++++++----------
+ 2 files changed, 25 insertions(+), 22 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 5529327680d..822dbb2e9ae 100644
+index 822dbb2e9ae..5d433f8522e 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -1633,17 +1633,16 @@ static TCGv gen_shiftd_rm_T1(DisasContext *s, MemOp ot,
-         } else {
-             tcg_gen_shl_tl(cc_src, s->T0, tmp);
+@@ -134,7 +134,6 @@ typedef struct DisasContext {
+     TCGv T1;
  
--            if (ot == MO_16) {
--                /* Only needed if count > 16, for Intel behaviour.  */
--                tcg_gen_subfi_tl(tmp, 33, count);
--                tcg_gen_shr_tl(tmp, s->T1, tmp);
--                tcg_gen_or_tl(cc_src, cc_src, tmp);
--            }
--
-             /* mask + 1 - count = mask - tmp = mask ^ tmp */
-             tcg_gen_xori_tl(hishift, tmp, mask);
-             tcg_gen_shl_tl(s->T0, s->T0, count);
-             tcg_gen_shr_tl(s->T1, s->T1, hishift);
-+
-+            if (ot == MO_16) {
-+                /* Only needed if count > 16, for Intel behaviour.  */
-+                tcg_gen_shri_tl(tmp, s->T1, 1);
-+                tcg_gen_or_tl(cc_src, cc_src, tmp);
+     /* TCG local register indexes (only used inside old micro ops) */
+-    TCGv tmp0;
+     TCGv_i32 tmp2_i32;
+     TCGv_i32 tmp3_i32;
+     TCGv_i64 tmp1_i64;
+@@ -2175,14 +2174,17 @@ static void gen_enter(DisasContext *s, int esp_addend, int level)
+     level &= 31;
+     if (level != 0) {
+         int i;
++        if (level > 1) {
++            TCGv fp = tcg_temp_new();
+ 
+-        /* Copy level-1 pointers from the previous frame.  */
+-        for (i = 1; i < level; ++i) {
+-            gen_lea_ss_ofs(s, s->A0, cpu_regs[R_EBP], -size * i);
+-            gen_op_ld_v(s, d_ot, s->tmp0, s->A0);
++            /* Copy level-1 pointers from the previous frame.  */
++            for (i = 1; i < level; ++i) {
++                gen_lea_ss_ofs(s, s->A0, cpu_regs[R_EBP], -size * i);
++                gen_op_ld_v(s, d_ot, fp, s->A0);
+ 
+-            gen_lea_ss_ofs(s, s->A0, s->T1, -size * i);
+-            gen_op_st_v(s, d_ot, s->tmp0, s->A0);
++                gen_lea_ss_ofs(s, s->A0, s->T1, -size * i);
++                gen_op_st_v(s, d_ot, fp, s->A0);
 +            }
          }
-         tcg_gen_movcond_tl(TCG_COND_EQ, s->T1,
-                            count, tcg_constant_tl(0),
+ 
+         /* Push the current FrameTemp as the last level.  */
+@@ -2405,10 +2407,11 @@ static void gen_ldy_env_A0(DisasContext *s, int offset, bool align)
+     int mem_index = s->mem_index;
+     TCGv_i128 t0 = tcg_temp_new_i128();
+     TCGv_i128 t1 = tcg_temp_new_i128();
++    TCGv a0_hi = tcg_temp_new();
+ 
+     tcg_gen_qemu_ld_i128(t0, s->A0, mem_index, mop | (align ? MO_ALIGN_32 : 0));
+-    tcg_gen_addi_tl(s->tmp0, s->A0, 16);
+-    tcg_gen_qemu_ld_i128(t1, s->tmp0, mem_index, mop);
++    tcg_gen_addi_tl(a0_hi, s->A0, 16);
++    tcg_gen_qemu_ld_i128(t1, a0_hi, mem_index, mop);
+ 
+     tcg_gen_st_i128(t0, tcg_env, offset + offsetof(YMMReg, YMM_X(0)));
+     tcg_gen_st_i128(t1, tcg_env, offset + offsetof(YMMReg, YMM_X(1)));
+@@ -2419,12 +2422,13 @@ static void gen_sty_env_A0(DisasContext *s, int offset, bool align)
+     MemOp mop = MO_128 | MO_LE | MO_ATOM_IFALIGN_PAIR;
+     int mem_index = s->mem_index;
+     TCGv_i128 t = tcg_temp_new_i128();
++    TCGv a0_hi = tcg_temp_new();
+ 
+     tcg_gen_ld_i128(t, tcg_env, offset + offsetof(YMMReg, YMM_X(0)));
+     tcg_gen_qemu_st_i128(t, s->A0, mem_index, mop | (align ? MO_ALIGN_32 : 0));
+-    tcg_gen_addi_tl(s->tmp0, s->A0, 16);
++    tcg_gen_addi_tl(a0_hi, s->A0, 16);
+     tcg_gen_ld_i128(t, tcg_env, offset + offsetof(YMMReg, YMM_X(1)));
+-    tcg_gen_qemu_st_i128(t, s->tmp0, mem_index, mop);
++    tcg_gen_qemu_st_i128(t, a0_hi, mem_index, mop);
+ }
+ 
+ #include "emit.c.inc"
+@@ -3771,7 +3775,6 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
+     dc->T1 = tcg_temp_new();
+     dc->A0 = tcg_temp_new();
+ 
+-    dc->tmp0 = tcg_temp_new();
+     dc->tmp1_i64 = tcg_temp_new_i64();
+     dc->tmp2_i32 = tcg_temp_new_i32();
+     dc->tmp3_i32 = tcg_temp_new_i32();
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index a41afb7fe46..bd24438230d 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -1710,22 +1710,22 @@ static void gen_CMPccXADD(DisasContext *s, X86DecodedInsn *decode)
+     switch (jcc_op) {
+     case JCC_O:
+         /* (src1 ^ src2) & (src1 ^ dst). newv is only used here for a moment */
++        cmp_lhs = tcg_temp_new(), cmp_rhs = tcg_constant_tl(0);
+         tcg_gen_xor_tl(newv, s->cc_srcT, s->T0);
+-        tcg_gen_xor_tl(s->tmp0, s->cc_srcT, cmpv);
+-        tcg_gen_and_tl(s->tmp0, s->tmp0, newv);
+-        tcg_gen_sextract_tl(s->tmp0, s->tmp0, 0, 8 << ot);
+-        cmp_lhs = s->tmp0, cmp_rhs = tcg_constant_tl(0);
++        tcg_gen_xor_tl(cmp_lhs, s->cc_srcT, cmpv);
++        tcg_gen_and_tl(cmp_lhs, cmp_lhs, newv);
++        tcg_gen_sextract_tl(cmp_lhs, cmp_lhs, 0, 8 << ot);
+         break;
+ 
+     case JCC_P:
+-        tcg_gen_ext8u_tl(s->tmp0, s->T0);
+-        tcg_gen_ctpop_tl(s->tmp0, s->tmp0);
+-        cmp_lhs = s->tmp0, cmp_rhs = tcg_constant_tl(1);
++        cmp_lhs = tcg_temp_new(), cmp_rhs = tcg_constant_tl(1);
++        tcg_gen_ext8u_tl(cmp_lhs, s->T0);
++        tcg_gen_ctpop_tl(cmp_lhs, cmp_lhs);
+         break;
+ 
+     case JCC_S:
+-        tcg_gen_sextract_tl(s->tmp0, s->T0, 0, 8 << ot);
+-        cmp_lhs = s->tmp0, cmp_rhs = tcg_constant_tl(0);
++        cmp_lhs = tcg_temp_new(), cmp_rhs = tcg_constant_tl(0);
++        tcg_gen_sextract_tl(cmp_lhs, s->T0, 0, 8 << ot);
+         break;
+ 
+     default:
+@@ -1876,7 +1876,7 @@ static void gen_CMPXCHG8B(DisasContext *s, X86DecodedInsn *decode)
+                                       s->mem_index, MO_TEUQ);
+     }
+ 
+-    /* Set tmp0 to match the required value of Z. */
++    /* Compute the required value of Z. */
+     tcg_gen_setcond_i64(TCG_COND_EQ, cmp, old, cmp);
+     Z = tcg_temp_new();
+     tcg_gen_trunc_i64_tl(Z, cmp);
 -- 
 2.49.0
 
