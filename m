@@ -2,88 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF5EA9869F
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9A9A986AC
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 12:03:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wsv-00061l-3N; Wed, 23 Apr 2025 05:59:17 -0400
+	id 1u7Ww4-0007G7-2B; Wed, 23 Apr 2025 06:02:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7Wst-00061P-0Q
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:59:15 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7Wsr-0001mb-1v
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:59:14 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43d0618746bso47079605e9.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745402351; x=1746007151; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=b4RnAiJadDYdQbmNtoEN0s03apMluTLDVrhBOuuHr3E=;
- b=FduAT1l43zAZqKQoi7H39ZV+AE/QXhJaB5GzStpg9oeEbUs76kX4q58VPMO9VRu9po
- 4drAVMKidOIFpDBDQ5sgBjOvg0LDxjZ9qG1N+hIkv6reM//nDgbpWC1KbVAIPJIf1xw9
- gros6iEIRNWtqWxHDJEgSCmYKlUccWd+AFns88cVStzasYEVigwecjWoPgZxxKVi6em5
- iCNq0q0bJf1pQ7fno1+hnnrjy6/bY2pHsheKlSptfbiPAf6HGEbcfSUoOJegO1Ahx1rJ
- OXumESMRsGD6T7s66d8ZfU79KTn38HStWSFOWIm48d78HRlNCOok7YBTpxAFECis9sIl
- 0zxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745402351; x=1746007151;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b4RnAiJadDYdQbmNtoEN0s03apMluTLDVrhBOuuHr3E=;
- b=f9Pw8DawiiXWK3v3jTw4oa4iMh1nmpv45hmfARy3xrlPRHc6sDWeDxDNOFINudsS79
- 1IZcmuA0uH2KJKzJMRWbSQvDD7S6Jh7UYbJVbZdU2rMjtAoqoX2RLi6vO94W5irIZfWX
- gtGRniJ+mzqqI645IV27GkUvBQkI8gjnAynf46V6YuR3Lk4XLcME3ksKH+wAlLjqUkoL
- UCxCKBusewVkjI7TNCqZ/cXaTnpzuNyxMfwhTl2IP0NmDZ0AtOPHlPHGEhGL4mWFlm8h
- Nq2FW8hRnY+AbK4ib/kbhmy5BEdNMfiAp/HvQssKZT/lzapgT0giksq0PTCyTWDePTcB
- r7gw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVIYGmHIjj2H5DEivCVM+TxgnbgZR6M9ybEaGsoQQy28C7628eVuOfi7QmFTNCIdSWO6U+z6qqR5phJ@nongnu.org
-X-Gm-Message-State: AOJu0YxbaB10vj4mHsxy47xMdk5E++OhK6pokZi6Z7XKNoLGDbmYSGN0
- BYTSEsDzepH8MWtRpGMDpMcvbvaQNMMRg7FtKdUOv2dEP9wmtEek6+N0gOqFtDle8xsp0rCDrRQ
- l
-X-Gm-Gg: ASbGncuN9zW6XYoZmiMujQ0n8KhWt7+YugzwmXO3qAxblVLmZHvftmNhEHB60YUP2cr
- 5peIdTn+xniSbibmJdHC++ChTMYq2TkMxaocmy1MiAalRIM5B+rdpTc/dM8r7cedkF6v8PyYZTe
- s73JxZnre0VphqnSA2ncQ4AWQIFmoNN/3jd6VtntWO7XhlkXJy88CPccYvswY8waM2IjLggrgTq
- iFfL98klv9i2aJMEFae/C08LjsDudk1oRJp/8qBt/lCWRlDzAKNkt2NQy7Nheg/MQDIJuqP1oJj
- hFNIU+UAj7Za+g5YWF6NpNAYWTPnPQhI9hEnA7XrJby/OD56ouNnWyoTW29afUtKInGU8QiaDJk
- j3yoUnunczPBdP6fLpFk=
-X-Google-Smtp-Source: AGHT+IFapo4EaJ8ctnLR/6vimf/4rQJaN1dEVBINc7anCyMPX5MMw7brZDlDFEJnigCGF0gq9EpXUg==
-X-Received: by 2002:a05:600c:4688:b0:43c:eea9:f45d with SMTP id
- 5b1f17b1804b1-4406abb2cd0mr175385315e9.18.1745402351426; 
- Wed, 23 Apr 2025 02:59:11 -0700 (PDT)
-Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-39efa4a4cd0sm18667668f8f.90.2025.04.23.02.59.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Apr 2025 02:59:10 -0700 (PDT)
-Message-ID: <bec12bbc-2a73-4486-852d-b0c89b59e1d9@linaro.org>
-Date: Wed, 23 Apr 2025 11:59:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 063/147] accel/tcg: Fix argument types of tlb_reset_dirty
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250422192819.302784-1-richard.henderson@linaro.org>
- <20250422192819.302784-64-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250422192819.302784-64-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u7Wvz-0007FE-SU
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:02:28 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u7Wvx-0002Ay-Vc
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:02:27 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id BE5CD55D23B;
+ Wed, 23 Apr 2025 12:02:21 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id FDMiBN_Zl5Ed; Wed, 23 Apr 2025 12:02:19 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id CA0DF55C592; Wed, 23 Apr 2025 12:02:19 +0200 (CEST)
+Message-ID: <cover.1745402140.git.balaton@eik.bme.hu>
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v2 0/2] Move device tree files in a subdir in pc-bios
+To: qemu-devel@nongnu.org
+Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ philmd@linaro.org
+Date: Wed, 23 Apr 2025 12:02:19 +0200 (CEST)
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,18 +57,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/4/25 21:26, Richard Henderson wrote:
-> The arguments to tlb_reset_dirty are host pointers.
-> The conversion from ram_addr_t was done in the sole
-> caller, tlb_reset_dirty_range_all.
-> 
-> Fixes: e554861766d ("exec: prepare for splitting")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/exec/cputlb.h | 2 +-
->   accel/tcg/cputlb.c    | 6 +++---
->   2 files changed, 4 insertions(+), 4 deletions(-)
+Simple series doing what the subject says.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+v2:
+- Added changes to qemu.nsi (Philippe)
+- Changed order of enum to keep it sorted. This changes value of
+existing define but the value is not relevant, always used by name.
+
+BALATON Zoltan (2):
+  system/datadir: Add new type constant for DTB files
+  pc-bios: Move device tree files in their own subdir
+
+ MAINTAINERS                                |   2 +-
+ hw/microblaze/boot.c                       |   2 +-
+ hw/ppc/ppc440_bamboo.c                     |   2 +-
+ hw/ppc/sam460ex.c                          |   2 +-
+ hw/ppc/virtex_ml507.c                      |   2 +-
+ include/qemu/datadir.h                     |  11 +++++++---
+ pc-bios/{ => dtb}/bamboo.dtb               | Bin
+ pc-bios/{ => dtb}/bamboo.dts               |   0
+ pc-bios/{ => dtb}/canyonlands.dtb          | Bin
+ pc-bios/{ => dtb}/canyonlands.dts          |   0
+ pc-bios/dtb/meson.build                    |  23 +++++++++++++++++++++
+ pc-bios/{ => dtb}/petalogix-ml605.dtb      | Bin
+ pc-bios/{ => dtb}/petalogix-ml605.dts      |   0
+ pc-bios/{ => dtb}/petalogix-s3adsp1800.dtb | Bin
+ pc-bios/{ => dtb}/petalogix-s3adsp1800.dts |   0
+ pc-bios/meson.build                        |  23 +--------------------
+ qemu.nsi                                   |   2 +-
+ system/datadir.c                           |   5 ++++-
+ 18 files changed, 42 insertions(+), 32 deletions(-)
+ rename pc-bios/{ => dtb}/bamboo.dtb (100%)
+ rename pc-bios/{ => dtb}/bamboo.dts (100%)
+ rename pc-bios/{ => dtb}/canyonlands.dtb (100%)
+ rename pc-bios/{ => dtb}/canyonlands.dts (100%)
+ create mode 100644 pc-bios/dtb/meson.build
+ rename pc-bios/{ => dtb}/petalogix-ml605.dtb (100%)
+ rename pc-bios/{ => dtb}/petalogix-ml605.dts (100%)
+ rename pc-bios/{ => dtb}/petalogix-s3adsp1800.dtb (100%)
+ rename pc-bios/{ => dtb}/petalogix-s3adsp1800.dts (100%)
+
+-- 
+2.41.3
 
 
