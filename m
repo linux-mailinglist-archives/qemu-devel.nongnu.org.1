@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02990A98139
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3D6A98155
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:41:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Ufg-0003rv-7A; Wed, 23 Apr 2025 03:37:28 -0400
+	id 1u7Ufg-0003uT-Qu; Wed, 23 Apr 2025 03:37:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7Ufc-0003j3-Qa
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:37:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7Ufd-0003os-UB
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:37:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7UfZ-0003LK-Cg
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:37:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7Ufb-0003LY-NH
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:37:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745393840;
+ s=mimecast20190719; t=1745393843;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xzKlpAvIYSjO88pMS10A+zh2U5QacjQjItAfwpjsTYY=;
- b=VhwZGYQMwDQDVlkJtkRlWMb+CqaIi2PqVFE25DsQ5lyDyWKOM963CpnSYVSmfwdpqmo+7+
- ZeuJ6oNb5u+tiOz4aBHA6jCmRl2pxrQNqU5FRhdFZBetw9js2K9zQlQcxSVILDeD6WnKVZ
- iofR6gdLSd/NuPrr54ZWi+8zkoQphrA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=PVP+7fwcqYMkX9Lc6XcDOxujdeQNAYy5MB2fObPPJvc=;
+ b=I6Yz/NxMcJboUtMPKdwxcQpID1xF00AwnMllnHTT0AytCaxhx3k9wZ4JE3sW9b7TvgwGZJ
+ T2FXsVlN1Z/KqDioN+DEDY7/ye1uo1vmTN1j0UM/yt1VEV0wqqYfV4sGzdPuGf33onp2sJ
+ hcmalX0N9mARt27Grwwj/7Wy9qUzMzg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-292-A8qpsKX0MHmqsrMonNnsUA-1; Wed,
- 23 Apr 2025 03:37:18 -0400
-X-MC-Unique: A8qpsKX0MHmqsrMonNnsUA-1
-X-Mimecast-MFC-AGG-ID: A8qpsKX0MHmqsrMonNnsUA_1745393837
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-fwxpdfgkPVOsvt7tcAKaHQ-1; Wed,
+ 23 Apr 2025 03:37:20 -0400
+X-MC-Unique: fwxpdfgkPVOsvt7tcAKaHQ-1
+X-Mimecast-MFC-AGG-ID: fwxpdfgkPVOsvt7tcAKaHQ_1745393839
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5D92619560AA; Wed, 23 Apr 2025 07:37:17 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 44DAD19560A1; Wed, 23 Apr 2025 07:37:19 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-219.str.redhat.com
  [10.33.192.219])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A838019560A3; Wed, 23 Apr 2025 07:37:15 +0000 (UTC)
+ id AA10019560A3; Wed, 23 Apr 2025 07:37:17 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/29] tests/functional: Remove unnecessary import statements
-Date: Wed, 23 Apr 2025 09:36:08 +0200
-Message-ID: <20250423073610.271585-29-thuth@redhat.com>
+Subject: [PULL 29/29] MAINTAINERS: Add functional tests that are not covered
+ yet
+Date: Wed, 23 Apr 2025 09:36:09 +0200
+Message-ID: <20250423073610.271585-30-thuth@redhat.com>
 In-Reply-To: <20250423073610.271585-1-thuth@redhat.com>
 References: <20250423073610.271585-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,347 +87,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-pylint complains about these unnecessary import statements,
-so let's remove them.
+Some functional tests are currently not covered by the entries
+in MAINTAINERS yet, so scripts/get_maintainers.pl fails to suggest
+the right people who should be CC:-ed for related patches.
+Add the uncovered tests to the right sections to close this gap.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250414145457.261734-1-thuth@redhat.com>
+Message-ID: <20250414121520.213665-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/ports.py              | 3 +--
- tests/functional/qemu_test/tuxruntest.py         | 2 --
- tests/functional/qemu_test/uncompress.py         | 2 +-
- tests/functional/test_aarch64_rme_sbsaref.py     | 6 ++----
- tests/functional/test_aarch64_rme_virt.py        | 2 --
- tests/functional/test_aarch64_sbsaref_alpine.py  | 3 ---
- tests/functional/test_aarch64_sbsaref_freebsd.py | 2 --
- tests/functional/test_aarch64_tcg_plugins.py     | 1 -
- tests/functional/test_aarch64_virt.py            | 8 ++------
- tests/functional/test_arm_aspeed_ast2500.py      | 3 +--
- tests/functional/test_arm_cubieboard.py          | 2 --
- tests/functional/test_arm_quanta_gsj.py          | 2 --
- tests/functional/test_arm_smdkc210.py            | 2 --
- tests/functional/test_migration.py               | 3 +--
- tests/functional/test_mips64el_replay.py         | 6 +-----
- tests/functional/test_mips_replay.py             | 2 +-
- tests/functional/test_mipsel_replay.py           | 2 +-
- tests/functional/test_ppc64_hv.py                | 8 ++++----
- tests/functional/test_vnc.py                     | 4 ++--
- tests/functional/test_x86_64_kvm_xen.py          | 2 --
- 20 files changed, 17 insertions(+), 48 deletions(-)
+ MAINTAINERS | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/qemu_test/ports.py b/tests/functional/qemu_test/ports.py
-index cc39939d481..631b77abf6b 100644
---- a/tests/functional/qemu_test/ports.py
-+++ b/tests/functional/qemu_test/ports.py
-@@ -10,12 +10,11 @@
- import fcntl
- import os
- import socket
--import sys
--import tempfile
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5fd757c5ddb..c6d9b022f9d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -475,6 +475,7 @@ F: docs/system/i386/sgx.rst
+ F: target/i386/kvm/
+ F: target/i386/sev*
+ F: scripts/kvm/vmxcap
++F: tests/functional/test_x86_64_hotplug_cpu.py
  
- from .config import BUILD_DIR
- from typing import List
+ Xen emulation on X86 KVM CPUs
+ M: David Woodhouse <dwmw2@infradead.org>
+@@ -626,6 +627,7 @@ S: Maintained
+ F: hw/alpha/
+ F: hw/isa/smc37c669-superio.c
+ F: tests/tcg/alpha/system/
++F: tests/functional/test_alpha_clipper.py
  
-+
- class Ports():
+ ARM Machines
+ ------------
+@@ -950,7 +952,7 @@ F: hw/misc/sbsa_ec.c
+ F: hw/watchdog/sbsa_gwdt.c
+ F: include/hw/watchdog/sbsa_gwdt.h
+ F: docs/system/arm/sbsa.rst
+-F: tests/functional/test_aarch64_sbsaref*.py
++F: tests/functional/test_aarch64_*sbsaref*.py
  
-     PORTS_ADDR = '127.0.0.1'
-diff --git a/tests/functional/qemu_test/tuxruntest.py b/tests/functional/qemu_test/tuxruntest.py
-index c2bd5baaae9..6c442ff0dc4 100644
---- a/tests/functional/qemu_test/tuxruntest.py
-+++ b/tests/functional/qemu_test/tuxruntest.py
-@@ -10,8 +10,6 @@
- # SPDX-License-Identifier: GPL-2.0-or-later
+ Sharp SL-5500 (Collie) PDA
+ M: Peter Maydell <peter.maydell@linaro.org>
+@@ -1019,9 +1021,10 @@ S: Maintained
+ F: hw/arm/virt*
+ F: include/hw/arm/virt.h
+ F: docs/system/arm/virt.rst
+-F: tests/functional/test_aarch64_virt*.py
++F: tests/functional/test_aarch64_*virt*.py
+ F: tests/functional/test_aarch64_tuxrun.py
+ F: tests/functional/test_arm_tuxrun.py
++F: tests/functional/test_arm_virt.py
  
- import os
--import stat
--from subprocess import check_call, DEVNULL
+ Xilinx Zynq
+ M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+@@ -1262,6 +1265,7 @@ F: hw/m68k/mcf_intc.c
+ F: hw/char/mcf_uart.c
+ F: hw/net/mcf_fec.c
+ F: include/hw/m68k/mcf*.h
++F: tests/functional/test_m68k_mcf5208evb.py
  
- from qemu_test import QemuSystemTest
- from qemu_test import exec_command_and_wait_for_pattern
-diff --git a/tests/functional/qemu_test/uncompress.py b/tests/functional/qemu_test/uncompress.py
-index ce79da1b686..b7ef8f759b7 100644
---- a/tests/functional/qemu_test/uncompress.py
-+++ b/tests/functional/qemu_test/uncompress.py
-@@ -13,7 +13,7 @@
- import stat
- import shutil
- from urllib.parse import urlparse
--from subprocess import run, CalledProcessError, DEVNULL
-+from subprocess import run, CalledProcessError
+ NeXTcube
+ M: Thomas Huth <huth@tuxfamily.org>
+@@ -1406,6 +1410,7 @@ S: Maintained
+ F: docs/system/openrisc/or1k-sim.rst
+ F: hw/intc/ompic.c
+ F: hw/openrisc/openrisc_sim.c
++F: tests/functional/test_or1k_sim.py
  
- from .asset import Asset
+ PowerPC Machines
+ ----------------
+@@ -1827,6 +1832,7 @@ F: include/hw/isa/apm.h
+ F: tests/unit/test-x86-topo.c
+ F: tests/qtest/test-x86-cpuid-compat.c
+ F: tests/functional/test_i386_tuxrun.py
++F: tests/functional/test_linux_initrd.py
+ F: tests/functional/test_mem_addr_space.py
+ F: tests/functional/test_pc_cpu_hotplug_props.py
+ F: tests/functional/test_x86_64_tuxrun.py
+@@ -3150,6 +3156,7 @@ F: include/ui/
+ F: qapi/ui.json
+ F: util/drm.c
+ F: docs/devel/ui.rst
++F: tests/functional/test_vnc.py
  
-diff --git a/tests/functional/test_aarch64_rme_sbsaref.py b/tests/functional/test_aarch64_rme_sbsaref.py
-index 0f4f6103a1e..746770e776d 100755
---- a/tests/functional/test_aarch64_rme_sbsaref.py
-+++ b/tests/functional/test_aarch64_rme_sbsaref.py
-@@ -9,15 +9,13 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
+ Cocoa graphics
+ M: Peter Maydell <peter.maydell@linaro.org>
+@@ -3815,6 +3822,7 @@ F: configs/targets/*linux-user.mak
+ F: scripts/qemu-binfmt-conf.sh
+ F: scripts/update-syscalltbl.sh
+ F: scripts/update-mips-syscall-args.sh
++F: tests/functional/test_arm_bflt.py
  
--import time
- import os
--import logging
+ Tiny Code Generator (TCG)
+ -------------------------
+@@ -4187,6 +4195,7 @@ F: hw/remote/vfio-user-obj.c
+ F: include/hw/remote/vfio-user-obj.h
+ F: hw/remote/iommu.c
+ F: include/hw/remote/iommu.h
++F: tests/functional/test_multiprocess.py
  
--from qemu_test import QemuSystemTest, Asset
--from qemu_test import exec_command, wait_for_console_pattern
-+from qemu_test import QemuSystemTest, Asset, wait_for_console_pattern
- from qemu_test import exec_command_and_wait_for_pattern
- from test_aarch64_rme_virt import test_realms_guest
- 
-+
- class Aarch64RMESbsaRefMachine(QemuSystemTest):
- 
-     # Stack is built with OP-TEE build environment from those instructions:
-diff --git a/tests/functional/test_aarch64_rme_virt.py b/tests/functional/test_aarch64_rme_virt.py
-index a1abf584f0e..8452d27928f 100755
---- a/tests/functional/test_aarch64_rme_virt.py
-+++ b/tests/functional/test_aarch64_rme_virt.py
-@@ -9,9 +9,7 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--import time
- import os
--import logging
- 
- from qemu_test import QemuSystemTest, Asset
- from qemu_test import exec_command, wait_for_console_pattern
-diff --git a/tests/functional/test_aarch64_sbsaref_alpine.py b/tests/functional/test_aarch64_sbsaref_alpine.py
-index c660cc7a406..6108ec65a54 100755
---- a/tests/functional/test_aarch64_sbsaref_alpine.py
-+++ b/tests/functional/test_aarch64_sbsaref_alpine.py
-@@ -10,11 +10,8 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--import os
--
- from qemu_test import QemuSystemTest, Asset, skipSlowTest
- from qemu_test import wait_for_console_pattern
--from unittest import skipUnless
- from test_aarch64_sbsaref import fetch_firmware
- 
- 
-diff --git a/tests/functional/test_aarch64_sbsaref_freebsd.py b/tests/functional/test_aarch64_sbsaref_freebsd.py
-index bd6728dc705..26dfc5878bb 100755
---- a/tests/functional/test_aarch64_sbsaref_freebsd.py
-+++ b/tests/functional/test_aarch64_sbsaref_freebsd.py
-@@ -10,8 +10,6 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--import os
--
- from qemu_test import QemuSystemTest, Asset, skipSlowTest
- from qemu_test import wait_for_console_pattern
- from test_aarch64_sbsaref import fetch_firmware
-diff --git a/tests/functional/test_aarch64_tcg_plugins.py b/tests/functional/test_aarch64_tcg_plugins.py
-index 4ea71f5f882..cb7e9298fb8 100755
---- a/tests/functional/test_aarch64_tcg_plugins.py
-+++ b/tests/functional/test_aarch64_tcg_plugins.py
-@@ -13,7 +13,6 @@
- 
- import tempfile
- import mmap
--import os
- import re
- 
- from qemu.machine.machine import VMLaunchFailure
-diff --git a/tests/functional/test_aarch64_virt.py b/tests/functional/test_aarch64_virt.py
-index 884aad7af61..4d0ad90ff89 100755
---- a/tests/functional/test_aarch64_virt.py
-+++ b/tests/functional/test_aarch64_virt.py
-@@ -13,12 +13,8 @@
- import logging
- from subprocess import check_call, DEVNULL
- 
--from qemu.machine.machine import VMLaunchFailure
--
--from qemu_test import QemuSystemTest, Asset
--from qemu_test import exec_command, exec_command_and_wait_for_pattern
--from qemu_test import wait_for_console_pattern
--from qemu_test import skipIfMissingCommands, get_qemu_img
-+from qemu_test import QemuSystemTest, Asset, exec_command_and_wait_for_pattern
-+from qemu_test import wait_for_console_pattern, get_qemu_img
- 
- 
- class Aarch64VirtMachine(QemuSystemTest):
-diff --git a/tests/functional/test_arm_aspeed_ast2500.py b/tests/functional/test_arm_aspeed_ast2500.py
-index ddc6459f710..a3b44572fcf 100755
---- a/tests/functional/test_arm_aspeed_ast2500.py
-+++ b/tests/functional/test_arm_aspeed_ast2500.py
-@@ -4,9 +4,8 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--from qemu_test import Asset
-+from qemu_test import Asset, exec_command_and_wait_for_pattern
- from aspeed import AspeedTest
--from qemu_test import exec_command_and_wait_for_pattern
- 
- 
- class AST2500Machine(AspeedTest):
-diff --git a/tests/functional/test_arm_cubieboard.py b/tests/functional/test_arm_cubieboard.py
-index 1eaca0272bb..b536c2f77a0 100755
---- a/tests/functional/test_arm_cubieboard.py
-+++ b/tests/functional/test_arm_cubieboard.py
-@@ -4,8 +4,6 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--import os
--
- from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
- from qemu_test import interrupt_interactive_console_until_pattern
- from qemu_test import skipBigDataTest
-diff --git a/tests/functional/test_arm_quanta_gsj.py b/tests/functional/test_arm_quanta_gsj.py
-index da60aeb6595..cb0545f7bfa 100755
---- a/tests/functional/test_arm_quanta_gsj.py
-+++ b/tests/functional/test_arm_quanta_gsj.py
-@@ -4,8 +4,6 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--import os
--
- from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
- from qemu_test import interrupt_interactive_console_until_pattern, skipSlowTest
- 
-diff --git a/tests/functional/test_arm_smdkc210.py b/tests/functional/test_arm_smdkc210.py
-index 0fda45c63a8..3154e7f7322 100755
---- a/tests/functional/test_arm_smdkc210.py
-+++ b/tests/functional/test_arm_smdkc210.py
-@@ -4,8 +4,6 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--import os
--
- from qemu_test import LinuxKernelTest, Asset
- 
- 
-diff --git a/tests/functional/test_migration.py b/tests/functional/test_migration.py
-index 181223a69e3..c4393c35434 100755
---- a/tests/functional/test_migration.py
-+++ b/tests/functional/test_migration.py
-@@ -11,14 +11,13 @@
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later.  See the COPYING file in the top-level directory.
- 
--
- import tempfile
--import os
- import time
- 
- from qemu_test import QemuSystemTest, skipIfMissingCommands
- from qemu_test.ports import Ports
- 
-+
- class MigrationTest(QemuSystemTest):
- 
-     timeout = 10
-diff --git a/tests/functional/test_mips64el_replay.py b/tests/functional/test_mips64el_replay.py
-index 4f63d7fb340..26a6ccff3f7 100755
---- a/tests/functional/test_mips64el_replay.py
-+++ b/tests/functional/test_mips64el_replay.py
-@@ -4,11 +4,7 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--import os
--import logging
--
--from qemu_test import Asset, exec_command_and_wait_for_pattern
--from qemu_test import skipIfMissingImports, skipFlakyTest, skipUntrustedTest
-+from qemu_test import Asset, skipUntrustedTest
- from replay_kernel import ReplayKernelBase
- 
- 
-diff --git a/tests/functional/test_mips_replay.py b/tests/functional/test_mips_replay.py
-index eda031ccadd..4327481e35b 100755
---- a/tests/functional/test_mips_replay.py
-+++ b/tests/functional/test_mips_replay.py
-@@ -4,7 +4,7 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--from qemu_test import Asset, skipSlowTest, exec_command_and_wait_for_pattern
-+from qemu_test import Asset, skipSlowTest
- from replay_kernel import ReplayKernelBase
- 
- 
-diff --git a/tests/functional/test_mipsel_replay.py b/tests/functional/test_mipsel_replay.py
-index 0a330de43f8..5f4796cf899 100644
---- a/tests/functional/test_mipsel_replay.py
-+++ b/tests/functional/test_mipsel_replay.py
-@@ -4,7 +4,7 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--from qemu_test import Asset, wait_for_console_pattern, skipSlowTest
-+from qemu_test import Asset, skipSlowTest
- from replay_kernel import ReplayKernelBase
- 
- 
-diff --git a/tests/functional/test_ppc64_hv.py b/tests/functional/test_ppc64_hv.py
-index 1920e91f18b..d87f440fa79 100755
---- a/tests/functional/test_ppc64_hv.py
-+++ b/tests/functional/test_ppc64_hv.py
-@@ -9,14 +9,14 @@
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later.  See the COPYING file in the top-level directory.
- 
-+import os
-+import subprocess
-+
-+from datetime import datetime
- from qemu_test import QemuSystemTest, Asset
- from qemu_test import wait_for_console_pattern, exec_command
- from qemu_test import skipIfMissingCommands, skipBigDataTest
- from qemu_test import exec_command_and_wait_for_pattern
--import os
--import time
--import subprocess
--from datetime import datetime
- 
- # Alpine is a light weight distro that supports QEMU. These tests boot
- # that on the machine then run a QEMU guest inside it in KVM mode,
-diff --git a/tests/functional/test_vnc.py b/tests/functional/test_vnc.py
-index d4e9dd0279e..5c0ee5f9272 100755
---- a/tests/functional/test_vnc.py
-+++ b/tests/functional/test_vnc.py
-@@ -11,12 +11,12 @@
- # later.  See the COPYING file in the top-level directory.
- 
- import socket
--from typing import List
--from qemu.machine.machine import VMLaunchFailure
- 
-+from qemu.machine.machine import VMLaunchFailure
- from qemu_test import QemuSystemTest
- from qemu_test.ports import Ports
- 
-+
- VNC_ADDR = '127.0.0.1'
- 
- def check_connect(port: int) -> bool:
-diff --git a/tests/functional/test_x86_64_kvm_xen.py b/tests/functional/test_x86_64_kvm_xen.py
-index c6abf6bba3b..a5d445023c9 100755
---- a/tests/functional/test_x86_64_kvm_xen.py
-+++ b/tests/functional/test_x86_64_kvm_xen.py
-@@ -11,8 +11,6 @@
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--import os
--
- from qemu.machine import machine
- 
- from qemu_test import QemuSystemTest, Asset, exec_command_and_wait_for_pattern
+ EBPF:
+ M: Jason Wang <jasowang@redhat.com>
 -- 
 2.49.0
 
