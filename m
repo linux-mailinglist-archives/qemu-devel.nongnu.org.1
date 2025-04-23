@@ -2,104 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF800A995FB
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 19:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28049A99611
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 19:09:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7dUB-00012Z-2K; Wed, 23 Apr 2025 13:02:11 -0400
+	id 1u7dZk-00034L-RD; Wed, 23 Apr 2025 13:07:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u7dU9-00012H-2m
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 13:02:09 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7dZi-000347-QZ
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 13:07:54 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1u7dU6-0007BD-Rj
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 13:02:08 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id C9A47211CA;
- Wed, 23 Apr 2025 17:02:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1745427721; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zNyttTgSKhULwqzPyehDXSd8hnaHK9r85xIu+uEOG2I=;
- b=fpl/yP8v0GVzZl9IFP6HSpQHBwqBs5Pn4uqbU8xaTYX/uPqLWeKkoSq1FdO3JTNTOu64j1
- ZNURxBB7ISr5bsQI6I7lFwOPKs0ZwsV8DhpawX/O1atcQrVgSQ4+m8NpA2HcJi4pTW7laK
- 34lXDLZq58tqq/cyNrW/uE9uLN10iNk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1745427721;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zNyttTgSKhULwqzPyehDXSd8hnaHK9r85xIu+uEOG2I=;
- b=2TRY0dF2IUbQUTrdMgiSD1rTgR9/BHVVAT6AaAHDBAn0qpI0YVS0IIoNRRNmqNfcD5W6NW
- e2iyeiTti7WKjDAA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1745427721; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zNyttTgSKhULwqzPyehDXSd8hnaHK9r85xIu+uEOG2I=;
- b=fpl/yP8v0GVzZl9IFP6HSpQHBwqBs5Pn4uqbU8xaTYX/uPqLWeKkoSq1FdO3JTNTOu64j1
- ZNURxBB7ISr5bsQI6I7lFwOPKs0ZwsV8DhpawX/O1atcQrVgSQ4+m8NpA2HcJi4pTW7laK
- 34lXDLZq58tqq/cyNrW/uE9uLN10iNk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1745427721;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zNyttTgSKhULwqzPyehDXSd8hnaHK9r85xIu+uEOG2I=;
- b=2TRY0dF2IUbQUTrdMgiSD1rTgR9/BHVVAT6AaAHDBAn0qpI0YVS0IIoNRRNmqNfcD5W6NW
- e2iyeiTti7WKjDAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 466CB13A3D;
- Wed, 23 Apr 2025 17:02:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id g/1WAgkdCWhHGwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 23 Apr 2025 17:02:01 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
-Subject: Re: Migration compatibility test broken on major version releases
-In-Reply-To: <20250422154131.GA308586@fedora>
-References: <20250422154131.GA308586@fedora>
-Date: Wed, 23 Apr 2025 14:01:58 -0300
-Message-ID: <87bjsmerqx.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7dZh-0007ji-5Z
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 13:07:54 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43d0782d787so542165e9.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 10:07:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745428070; x=1746032870; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eVkn9u0Te7lFaTCglt6awhTnPI0DbxyfBHDkmx37SfI=;
+ b=M5XKX6lK1xoOZGA5QxmyKnkdlJBRdKn+wPx0iQPfchwq+mYMxkDer1fgqIpb3567dG
+ WmgqTXq/ZtdnBs+eIn8B6ZD72gfmIZ01JFjbrssIt2Gd40zABPcboESajn4ux2NRJJ5/
+ iCqOUjMxh1KUEFkvPrEPRxo5/sOevbp83dF7sBfb58XCApQ6VZ8k7aG7dlZ+mfTXcM42
+ q+X4RXYPU0jebBVYsUFhSclarxhyfS+CowsE3CZpUabJsWF9DSJPwfbwFKU3Oke8yHI0
+ b9rVubfL5picDKEp8hRx8hOZMrMIn6GN9WoWGKUzDkYxmazeZSKDSAgEvNrvZsxh5Lvu
+ +rAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745428070; x=1746032870;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eVkn9u0Te7lFaTCglt6awhTnPI0DbxyfBHDkmx37SfI=;
+ b=tfZdQSzhxqs75pq5AIJRsPyAZdlrK4/8JIrFgnWsOZ7zGtT3RAQenwL1wxAD/ARTkr
+ QxNwh9MUDyjY4CZibtQbbVc3dD71eN+UaZaCvi9TFvDBRwl9bdnVKTK7fAGoeHsgpgfZ
+ ryBUOhSzm58d6anPDzNN09q7+JxzMQGamIDlTqD769IMArQOWt5nwopO8mhC6aSFht+U
+ 02Trp/HWGbjH5LmJZults+ZNgrTs+j8CRU6mmoTuywT9277runr3X4s+zXxmF60LfSsy
+ /h58/ae9Ns8GsYhI/392HQnoDqZ5bF3vVkvw7BUXPhBn1rZNstKrEN7IZkZhmeWfqjcS
+ +3Dg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVV/TQw5KyJvcZJ0mqNI9Znx3aL18zD0ronjOQsx6K+lMW1aKnwBn972vOWxr0MY8ugEMurKBXGHAzS@nongnu.org
+X-Gm-Message-State: AOJu0YwJEIwyR7wH4v1EPHrfPqpKZ7yYtyDdMdO45n4c/8FEYOVzNIl8
+ qjiy0LMzYwPvTAQMav8K4X4kOvcezTlVIDwqxw+FhpBhOjn4phmkxgX08V/sibc=
+X-Gm-Gg: ASbGnctrd7JvGiW3UBt9uXNXVwpL3HT4XMXQRN4zAAoNrBLJLd7Gbyt8Hti5pg5VKOS
+ UJXDYdtr9K4jwvvGS6k4OQyU6IIA1k0KTVCf4Iom8SYcAo9UEEq3szBASZdkUhfrmx7cMdFFOKp
+ NKNaLVDm1PcFs6C1kCuX+Q9BS3BRU77tfRqtngOemyU1fJRAmHMn5qqABrNfKD1OUS1jB/n1ov7
+ W037M02w3KW7g4/FAHQ7TWSt2kNs+7an0p6RvHF8pkMTJ2/XmGz2hXGL4NGswRedJa6hKTs94He
+ u6iNZhMVDeZRvdsF7SZJrUBM/qvkzXPpNDffwAswmqHiRkFoc+dy9/sfk6+JoCKGmQ4QNc5kzqd
+ Rz4ZUmvMk
+X-Google-Smtp-Source: AGHT+IGhslMe7Qm+QQ1xwXLrt+p+SOkmAN0ZsJsmLoPk1PI4mY+lLgwSGzfL7dQvbQWdQOoBRjHXSA==
+X-Received: by 2002:a05:600c:4e4a:b0:43c:f689:88ce with SMTP id
+ 5b1f17b1804b1-4406abfab66mr172451655e9.20.1745428070147; 
+ Wed, 23 Apr 2025 10:07:50 -0700 (PDT)
+Received: from [192.168.69.226] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-44092d22263sm32016015e9.15.2025.04.23.10.07.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Apr 2025 10:07:49 -0700 (PDT)
+Message-ID: <e0a6f58e-caab-4317-80e7-4113319453c3@linaro.org>
+Date: Wed, 23 Apr 2025 19:07:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-0.997]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_THREE(0.00)[3]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 06/19] hw/arm: Filter machine types for
+ qemu-system-arm/aarch64 binaries
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Anton Johansson <anjo@rev.ng>
+References: <20250422145502.70770-1-philmd@linaro.org>
+ <20250422145502.70770-7-philmd@linaro.org>
+ <a4a65446-07b7-4048-993a-6d0d7848b163@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <a4a65446-07b7-4048-993a-6d0d7848b163@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,49 +103,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Hajnoczi <stefanha@redhat.com> writes:
+On 22/4/25 19:40, Richard Henderson wrote:
+> On 4/22/25 07:54, Philippe Mathieu-Daudé wrote:
 
-> Hi Fabiano,
-> The build-previous-qemu job does not work when a new major version is
-> released:
-> https://gitlab.com/qemu-project/qemu/-/jobs/9788294494
->
 
-You might be using a slightly different workflow from Peter and Richard,
-I don't think this ever happened before. But that's totally fine, I'll
-change the job to behave better in that case.
+> extern InterfaceInfo arm_aarch64_machine_interfaces[];
+> extern InterfaceInfo aarch64_machine_interfaces[];
 
-> The previous version computation produces "v10.0.0" when testing:
->
->   $ export QEMU_PREV_VERSION=3D"$(sed 's/\([0-9.]*\)\.[0-9]*/v=E2=90=81.0=
-/' VERSION)"
->   $ git remote add upstream https://gitlab.com/qemu-project/qemu
->   $ git fetch upstream refs/tags/$QEMU_PREV_VERSION:refs/tags/$QEMU_PREV_=
-VERSION
->   warning: redirecting to https://gitlab.com/qemu-project/qemu.git/
->   fatal: couldn't find remote ref refs/tags/v10.0.0
->
-> The CI job runs before the v10.0.0 tag is pushed to the repo. (The tag
-> is only pushed once tests have passed.)
->
-> Even if the tag was there and git fetch succeeded, the test would test
-> migration between v10.0.0 and v10.0.0, which doesn't seem to be the
-> purpose of the test.
->
 
-Yes, but since that one commit does not have any code anyway, we've
-decided to just let it run on the same version. The very next commit
-will be aligned again. Still, the time-of-tag issue was indeed an
-oversight.
+> As a cleanup, we really should make all of these const.
 
-> Please adjust the test to handle this situation. For now I will re-run
-> the job after pushing the final tag (since it already passed for the
-> release candidate tag).
+I'll see if I can rebase on top of
+https://lore.kernel.org/qemu-devel/20250212213249.45574-12-philmd@linaro.org/
 
-Will do, thanks!
-
->
-> Thanks!
->
-> Stefan
 
