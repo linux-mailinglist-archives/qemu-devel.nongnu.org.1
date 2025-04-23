@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 008EFA98893
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 13:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1343A98894
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 13:28:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7YFp-00046E-8K; Wed, 23 Apr 2025 07:27:01 -0400
+	id 1u7YG3-0004Qv-ET; Wed, 23 Apr 2025 07:27:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YFc-00042i-Pw
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:51 -0400
+ id 1u7YFf-000438-U5
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:53 -0400
 Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YFa-0002wd-No
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:48 -0400
+ id 1u7YFd-0002wd-TY
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745407607; x=1776943607;
+ t=1745407610; x=1776943610;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Ru8y57hh6APWX2y18YyGmRmqQ+sT6KAsNwnfHzd4IY4=;
- b=i5/HkXz1ebqTrnqg2CUdqvjVgV9F/wX3wQCeZfmUTwuKCNfuBJEtsya1
- 4OoQNQO/4hURGIHYXe8Ddc2zSrMHlIkrJycmJYNL7FUD6Z1BMfEg5dM9k
- BPWWNn7Q8j2MAHF2EFz8f13FZs3SjAYBEMxaO0ZUDxNMwzXcPdYxx6WDa
- u0I69JL6zX2qGlVrDAOIVdi/+LYbTGMoAMBC49np3sGUqVqKWRfwZNz5b
- yfZu3B3Xi6rG2+FHD6sGXPsLZL2bx1OM4K38gsPzu6vpcuD44N88/sueq
- l4Jmq+McqvTp4q3Tgyd10eNSnFt3BmX1eYi0gQj/aNzKM49pPC5EA2RUj g==;
-X-CSE-ConnectionGUID: plag3YijQmOZDKrMpKJ9nw==
-X-CSE-MsgGUID: KqPWrMKiStKFTIVSC5nWtw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50825326"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="50825326"
+ bh=dpAgjvFZpHGJGhZZSq1pgwGCVmFSsMCmYasOajOmwzE=;
+ b=l1AhIlYutXweH1Aqw2eI7iOyvkz8bjZEzukqLSI03y/zRxgtzc/inD4f
+ 7HFYmJI8tWkAs53lfv5TmdWxL6HcaYvXNI4JqQ/h1RpPTMeMGZ5o3mqZu
+ AEGTX1pb56UnJJnBWZ8kEOhhCXH3MCz+ZtiVWC/FhlwIfTPTsQfebHwno
+ DVELj5mVHMacgJxIbec3ezwaI2SiqW/894cTr4aVk0ldOoKfYFc+3Q55k
+ xrvr5XTxyIGCwMqPBdZ/d5Canrsl6FE5Vt3qCypOtrOu9Z7KI/Rx6xUCU
+ a2WH5eLlvH4Tir7xGqSB8DHXT+FfxUtj48px91kiAMSPQCvt95FJU2dsJ A==;
+X-CSE-ConnectionGUID: E/J/rI/4T5SpfKU/wCfQ+w==
+X-CSE-MsgGUID: 4NcVgJ1oQ2eNs8jwI7Ao+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50825334"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="50825334"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 04:26:45 -0700
-X-CSE-ConnectionGUID: W9p10uIKSGGYNjTOX4fqYQ==
-X-CSE-MsgGUID: b72GhZUaTw6dE7wyqdtjbQ==
+ 23 Apr 2025 04:26:49 -0700
+X-CSE-ConnectionGUID: ja6nxVJHQhOL5H5ugAyeqw==
+X-CSE-MsgGUID: +liuPxK7SUe9OSjxja4HXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137150820"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137150833"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 23 Apr 2025 04:26:42 -0700
+ by orviesa003.jf.intel.com with ESMTP; 23 Apr 2025 04:26:45 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
  Jason Zeng <jason.zeng@intel.com>,
  Manish Mishra <manish.mishra@nutanix.com>, Tao Su <tao1.su@intel.com>,
  qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 09/10] i386/cpu: Enable 0x1f leaf for GraniteRapids by default
-Date: Wed, 23 Apr 2025 19:47:01 +0800
-Message-Id: <20250423114702.1529340-10-zhao1.liu@intel.com>
+Subject: [RFC 10/10] i386/cpu: Enable 0x1f leaf for SapphireRapids by default
+Date: Wed, 23 Apr 2025 19:47:02 +0800
+Message-Id: <20250423114702.1529340-11-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250423114702.1529340-1-zhao1.liu@intel.com>
 References: <20250423114702.1529340-1-zhao1.liu@intel.com>
@@ -85,7 +85,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Host GraniteRapids CPU has 0x1f leaf by default, so that enable it for
+Host SapphireRapids CPU has 0x1f leaf by default, so that enable it for
 Guest CPU by default as well.
 
 Suggested-by: Igor Mammedov <imammedo@redhat.com>
@@ -95,22 +95,22 @@ Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 2a518b68e67a..38b330aaed4f 100644
+index 38b330aaed4f..5573a9fd6c61 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -4706,8 +4706,11 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+@@ -4548,8 +4548,11 @@ static const X86CPUDefinition builtin_x86_defs[] = {
              },
              {
-                 .version = 3,
--                .note = "with gnr-sp cache model",
-+                .note = "with gnr-sp cache model and 0x1f leaf",
-                 .cache_info = &xeon_gnr_cache_info,
+                 .version = 4,
+-                .note = "with spr-sp cache model",
++                .note = "with spr-sp cache model and 0x1f leaf",
+                 .cache_info = &xeon_spr_cache_info,
 +                .props = (PropValue[]) {
 +                    { "cpuid-0x1f", "on" },
 +                }
              },
-             { /* end of list */ },
-         },
+             { /* end of list */ }
+         }
 -- 
 2.34.1
 
