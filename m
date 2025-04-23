@@ -2,51 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0FFBA980B3
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFFBA9810C
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:33:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7UTa-0002u5-91; Wed, 23 Apr 2025 03:24:58 -0400
+	id 1u7Uao-0006jW-SW; Wed, 23 Apr 2025 03:32:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7UTV-0002si-HX; Wed, 23 Apr 2025 03:24:53 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1u7Uad-0006gn-FT
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:32:16 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7UTS-0001Ov-HW; Wed, 23 Apr 2025 03:24:52 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 23 Apr
- 2025 15:23:54 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Wed, 23 Apr 2025 15:23:54 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <nabihestefan@google.com>
-Subject: [PATCH v5 11/11] docs/system/arm/aspeed: Support vbootrom for AST2700
-Date: Wed, 23 Apr 2025 15:23:47 +0800
-Message-ID: <20250423072350.541742-12-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250423072350.541742-1-jamin_lin@aspeedtech.com>
-References: <20250423072350.541742-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1u7Uaa-0002Yx-Hv
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:32:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745393533; x=1776929533;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=XjYbvMBGW5zkX0IbKDJWhi42I1hI/WeNS8xrLVjdVpY=;
+ b=irDh+qxknyzY48GArgLUKMojEzjaCcZW/Keq5pYwhhbxj0d004s9ds8B
+ FZ1WZ1HzhKUMiqxgM0tsGdrAusSynAKMbf2H+KjOpCPQtDpWhICAiIK45
+ EEGJJk8CtfOy2oqWJagGziEBs1s+6LRLHvY8vqkIMZ0mmLIu+Dm77cmhD
+ /8hJKd2mxb48z9AH3jzvfVf7PlNNTWP5dRgb1NYCCdCLEuHvc7ECAafxy
+ dif0Dtbdeo3qF4cpcDL5AI2zlVmUAOOrU71tPO/O5Vr5CTqRA3GcZG+me
+ ScrMD/ArJV7ySNzxSUACwB0jbEv0BQGDEUTuMiMvflQPOIUq88DgUcDHO A==;
+X-CSE-ConnectionGUID: Odx6BNkiTJ6WqIAvvUTbLQ==
+X-CSE-MsgGUID: Ecs9DQYPRimLa8tUGDyFEQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="57959251"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="57959251"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 00:32:08 -0700
+X-CSE-ConnectionGUID: NfVwH7AFSiuMvLiNqVa4vg==
+X-CSE-MsgGUID: G2Squ+1kS2aq6I6y6erh7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137025331"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 00:32:05 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v2 0/5] vfio: Move realize after attach_dev
+Date: Wed, 23 Apr 2025 15:28:19 +0800
+Message-Id: <20250423072824.3647952-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=198.175.65.13;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,150 +78,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using the vbootrom image support and the boot ROM binary is
-now passed via the -bios option, using the image located in
-pc-bios/ast27x0_bootrom.bin.
+Hi,
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Nabih Estefan <nabihestefan@google.com>
----
- docs/system/arm/aspeed.rst | 96 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 90 insertions(+), 6 deletions(-)
+This series addresses Cédric's suggestion[1] and Donald's suggestion[2] to
+move realize() call after attach_device().
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 97fd6a0e7f..e15e276a48 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -1,4 +1,4 @@
--Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
-+Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
- ==================================================================================================================================================================================================================================================================================================================================================================================================================
- 
- The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
-@@ -39,10 +39,6 @@ AST2600 SoC based machines :
- - ``qcom-dc-scm-v1-bmc``   Qualcomm DC-SCM V1 BMC
- - ``qcom-firework-bmc``    Qualcomm Firework BMC
- 
--AST2700 SoC based machines :
--
--- ``ast2700-evb``          Aspeed AST2700 Evaluation board (Cortex-A35)
--
- Supported devices
- -----------------
- 
-@@ -247,10 +243,78 @@ under Linux), use :
- 
-   -M ast2500-evb,bmc-console=uart3
- 
-+Aspeed 2700 family boards (``ast2700-evb``)
-+==================================================================
-+
-+The QEMU Aspeed machines model BMCs of Aspeed evaluation boards.
-+They are based on different releases of the Aspeed SoC :
-+the AST2700 with quad cores ARM Cortex-A35 64 bits CPUs (1.6GHz)
-+
-+The SoC comes with RAM, Gigabit ethernet, USB, SD/MMC, USB, SPI, I2C,
-+etc.
-+
-+AST2700 SoC based machines :
-+
-+- ``ast2700-evb``          Aspeed AST2700 Evaluation board (Cortex-A35)
-+
-+Supported devices
-+-----------------
-+ * Interrupt Controller
-+ * Timer Controller
-+ * RTC Controller
-+ * I2C Controller
-+ * System Control Unit (SCU)
-+ * SRAM mapping
-+ * X-DMA Controller (basic interface)
-+ * Static Memory Controller (SMC or FMC) - Only SPI Flash support
-+ * SPI Memory Controller
-+ * USB 2.0 Controller
-+ * SD/MMC storage controllers
-+ * SDRAM controller (dummy interface for basic settings and training)
-+ * Watchdog Controller
-+ * GPIO Controller (Master only)
-+ * UART
-+ * Ethernet controllers
-+ * Front LEDs (PCA9552 on I2C bus)
-+ * LPC Peripheral Controller (a subset of subdevices are supported)
-+ * Hash/Crypto Engine (HACE) - Hash support only. TODO: Crypto
-+ * ADC
-+ * eMMC Boot Controller (dummy)
-+ * PECI Controller (minimal)
-+ * I3C Controller
-+ * Internal Bridge Controller (SLI dummy)
-+
-+Missing devices
-+---------------
-+ * Coprocessor support
-+ * PWM and Fan Controller
-+ * Slave GPIO Controller
-+ * Super I/O Controller
-+ * PCI-Express 1 Controller
-+ * Graphic Display Controller
-+ * MCTP Controller
-+ * Mailbox Controller
-+ * Virtual UART
-+ * eSPI Controller
-+
-+Boot options
-+------------
-+
-+Images can be downloaded from the ASPEED Forked OpenBMC GitHub release repository :
-+
-+   https://github.com/AspeedTech-BMC/openbmc/releases
-+
- Booting the ast2700-evb machine
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
--Boot the AST2700 machine from the flash image, use an MTD drive :
-+Boot the AST2700 machine from the flash image.
-+
-+There are two supported methods for booting the AST2700 machine with a flash image:
-+
-+Manual boot using ``-device loader``:
-+
-+It causes all 4 CPU cores to start execution from address ``0x430000000``, which
-+corresponds to the BL31 image load address.
- 
- .. code-block:: bash
- 
-@@ -270,6 +334,26 @@ Boot the AST2700 machine from the flash image, use an MTD drive :
-        -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd \
-        -nographic
- 
-+Boot using a virtual boot ROM (``-bios``):
-+
-+If users do not specify the ``-bios option``, QEMU will attempt to load the
-+default vbootrom image ``ast27x0_bootrom.bin`` from either the current working
-+directory or the ``pc-bios`` directory within the QEMU source tree.
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-aarch64 -M ast2700-evb \
-+      -drive file=image-bmc,format=raw,if=mtd \
-+      -nographic
-+
-+The ``-bios`` option allows users to specify a custom path for the vbootrom
-+image to be loaded during boot. This will load the vbootrom image from the
-+specified path in the ${HOME} directory.
-+
-+.. code-block:: bash
-+
-+  -bios ${HOME}/ast27x0_bootrom.bin
-+
- Aspeed minibmc family boards (``ast1030-evb``)
- ==================================================================
- 
+This way avoid the need to introduce realize_late() to further complex the
+interface in nesting series.
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg01211.html
+[2] https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg00898.html
+
+Test:
+net card passthrough and ping test
+hotplug/unplug
+
+Based on vfio-next(856f36c005).
+
+Thanks
+Zhenzhong
+
+Changelog:
+v2:
+- drop the idea to save host iommu capabilities in VFIODevice.caps
+- introduce a new function to create and realize hiod
+- remove hiod_typename property
+
+Zhenzhong Duan (5):
+  vfio/iommufd: Make a separate call to get IOMMU capabilities
+  vfio/iommufd: Move realize() after attachment
+  vfio/container: Move realize() after attachment
+  vfio: Cleanup host IOMMU device creation
+  vfio: Remove hiod_typename property
+
+ include/hw/vfio/vfio-container-base.h |  3 ---
+ include/hw/vfio/vfio-device.h         |  3 ++-
+ hw/vfio/container.c                   | 25 ++++++++++++--------
+ hw/vfio/device.c                      | 33 ++++++++++++---------------
+ hw/vfio/iommufd.c                     | 31 +++++++++++++------------
+ 5 files changed, 47 insertions(+), 48 deletions(-)
+
 -- 
-2.43.0
+2.34.1
 
 
