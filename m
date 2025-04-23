@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67F6A9865A
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AACA98628
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:44:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wcx-0007Pk-5W; Wed, 23 Apr 2025 05:42:47 -0400
+	id 1u7Wcs-00078A-Ll; Wed, 23 Apr 2025 05:42:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7WcD-0005TK-Su
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:02 -0400
+ id 1u7WcK-0005pB-CH
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7WcC-0008Ot-2y
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:01 -0400
+ id 1u7WcI-0008P1-I0
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401319;
+ s=mimecast20190719; t=1745401321;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dUmS0U1RZBw7OOfHpaWWmQndl98q1MPqId+Jw47KBuU=;
- b=OVSBOdx9YJPOaxcrH4FwyEyeLoJFgugeke9rJW21DooP2cdRG/d3Ie0q+oQtPu+VWUXPC9
- AnYYZDWfRJ62A5n+zfB/gm8m5vY7Hd2cOID7aJVFUxpE/kz9o1axNTRmldMZCFdzFjoqhq
- rRMDCm+4OdYxA1mGKyMzvJoed3dcIV8=
+ bh=HeLjFralCRqvF3RDhEB7JJDGeYLNNIolLYPhUDMNm1U=;
+ b=acmNFlhRiIHX46o213BakHtYdSUsT756NejW61/wnfWP52xgihbxmkqwpebcymKvpDFFd2
+ odSA0y7I6zBgzZ5Q7qztYqbfYwExB3kYA6hFHtqrU5puvFNKhc1M3+f10tRK4z4+KG0sXr
+ IGv58o1OZwGeN4V7fRqt5flOCQfXbg4=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-63-wRRg_KqzMkuhrVXF-rh0lw-1; Wed, 23 Apr 2025 05:41:56 -0400
-X-MC-Unique: wRRg_KqzMkuhrVXF-rh0lw-1
-X-Mimecast-MFC-AGG-ID: wRRg_KqzMkuhrVXF-rh0lw_1745401315
+ us-mta-561-kIZeN829OUKMbCqr8bWsKA-1; Wed, 23 Apr 2025 05:41:59 -0400
+X-MC-Unique: kIZeN829OUKMbCqr8bWsKA-1
+X-Mimecast-MFC-AGG-ID: kIZeN829OUKMbCqr8bWsKA_1745401317
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-ac31adc55e4so452468566b.3
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:56 -0700 (PDT)
+ a640c23a62f3a-ac293748694so458206666b.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401314; x=1746006114;
+ d=1e100.net; s=20230601; t=1745401316; x=1746006116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dUmS0U1RZBw7OOfHpaWWmQndl98q1MPqId+Jw47KBuU=;
- b=Eklp5KIsZyy7mhoDUCWgRt/UEJ27Ufbv5gvaws/BccN1yU90gh1OeI2W9k4wGEG7/G
- GxXUUgk+x74qz76Z6aMxt65CkXo3eXNk51nG3G8BJP0nNeliar1wUUH19ACJ6OLUxX+y
- qFPDyYYCI6DFi6fLJGbwonGyic5uwqNAX2VJv3h0G5FAApTx78ubMjVziJcbsxvySik3
- PNvlS8iQhVjg7+CyQ3YCGgKBIeD0tv+/BAN9sTQcB0r8NK52h57L3GOChzZARHwYlenp
- /kW2nUswIgalS5xIP/B/FC2Wt5yeuY5H0VV1r0WI2D7LFbWhTNv+UkcqUKqKG61/t5bL
- n3NA==
-X-Gm-Message-State: AOJu0Ywr2HCXJVPxdZZtPWurI/C7AtVuaLvgXJUhwavi+XFBnwfx8vTD
- FtabLgV2635Hmnt22r6FxY01cWS1xagYSP7ULmGmIH3PUR/JO5hKpdnGPUZO9dGvuX/f+z6yCod
- SXwmgV5J3FNAdMangyw0GN3TI6SjJJc86d8uL0U7jyzkhHlKdp45WS13VvQ+QjBaiM6FPPOMVKl
- UgFsGAqV6u7tgovcG3DPpbf++qW39uK4nF2ckP
-X-Gm-Gg: ASbGncvK2o80TRJRokpbZctSibyaZaTUN1EOr/Yd45k+GnGNuRNSCVyChbZJqJqvIxO
- rX8QWQGfCfuT8VtPOMQQcZ+xAZTc/m1kFS8Dt7jPWk0UYOMgvzRI+07jN/VAqRsHgfR93npijJa
- CuGjgftEWvmNd5wktudThiPikiP3HB5yNo7XhYxypOYzgo1WbY91AmEHxrgSE/IfJQosmQS+1IA
- ABf/iQs2IIqDbHiuA6/IQBv1WK5gj+ao8e31z9dN52vGujqwFF5vnWCXWzh1K2Go/qWHB2K8Kkm
- RIYTrDPNHpoizL1Z
-X-Received: by 2002:a17:906:c108:b0:ac7:ec31:deb0 with SMTP id
- a640c23a62f3a-acb74adb1b5mr1194526966b.9.1745401314569; 
- Wed, 23 Apr 2025 02:41:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEtjlw5QlM2KRMb9es3qKP/sOQwvblfB7LzIOXJOkY9aUL46c7kuvZqU2izdesV8Ft3OdayOw==
-X-Received: by 2002:a17:906:c108:b0:ac7:ec31:deb0 with SMTP id
- a640c23a62f3a-acb74adb1b5mr1194525066b.9.1745401314052; 
- Wed, 23 Apr 2025 02:41:54 -0700 (PDT)
+ bh=HeLjFralCRqvF3RDhEB7JJDGeYLNNIolLYPhUDMNm1U=;
+ b=C7IZqEsQ9w2T65vq/RQXW4jfBxCER/XGYVgDkoJMfSWS6H95a3PlD7whtZtRZkPpve
+ rernMDdflvtNobYlZmpjbQF/GxjC95raDYHaaefGpaJKPZGSBC7W/tSN7U6G7OjhOR8F
+ tm7x5B6gQOa0YcGqUKuGZ/z5pBH3Y3Nc6n9iHer4Mf1W5cytMegtL+QLg7FlEWJ31NB5
+ BjslipCy4+OCM9kY3umkd+nfGNAI9tG+X8eUjzX1Gt3DnXSapvmhLYP43TxIHsx8hLHN
+ EOpxOb+JUbpBJGBJaeP414d0aj/TXHedt+FH7b43c2LrHpbI/wbSofI7hueShZghOP4c
+ /d0w==
+X-Gm-Message-State: AOJu0Yw4x2K0yFfqz3xEQF8AcV/L2ilVB6nJb9bncsgqUazZ8Rwn6Jps
+ mtKcREp2+WOx+jfeeBqpO0kABJkTEYCEiv3a/v3H/00dHg88zSSqW1ugh4vJLgVXuExqq0IwAKE
+ qUB/kV45yy8cgjOhSQePHAqJxyb25J0hR0nZDx0qoahiMQQ4WA1EtUQF4gUO/HMO7Z03TZur9ki
+ /2IIK2UhMeGGR6hAnHjHVL7bmQYC2xkSx30m7V
+X-Gm-Gg: ASbGncsrYQj1twRCwLHAu6dH0rRDa8NhNUstNn1oZkymLLm+p0YOqqkd41ZUd8W/Kqk
+ 0ldF+UfUnSB++SUSL/Yh+1YssXUNaXpgA1sVg3NXlzjGo5JNoHIm51HKaLTCxg+kWziUUCicCc1
+ z3Sh8O5/B98hFjH7+mQwgFt+Bhy08UrLseaY+LbaSQplXaDmr1WkN7llVl2rKaiyUz1ZJb12YI6
+ lXmRXofbU36peu9vd03i+gVGq3xfaB/0A/EMdEeO3AatvSMvEEl1uBjhBY7Iy+FtABK6nM8g6Ae
+ dIhRSkZAtRrYhEw/
+X-Received: by 2002:a17:906:6a1e:b0:aca:c924:c14 with SMTP id
+ a640c23a62f3a-acb74b34dbemr1628868866b.17.1745401316284; 
+ Wed, 23 Apr 2025 02:41:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFVV5nMiYUnI3kjfAF7H6+OhvyIhIAO4OAALMFZmrBQ/oEdymLT+aUTVOIMG5gC9WYvz3/0A==
+X-Received: by 2002:a17:906:6a1e:b0:aca:c924:c14 with SMTP id
+ a640c23a62f3a-acb74b34dbemr1628866866b.17.1745401315846; 
+ Wed, 23 Apr 2025 02:41:55 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5f6255778e7sm7203796a12.29.2025.04.23.02.41.53
+ a640c23a62f3a-acbb83ca49asm300705266b.84.2025.04.23.02.41.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:41:53 -0700 (PDT)
+ Wed, 23 Apr 2025 02:41:54 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Wei Liu <liuwe@linux.microsoft.com>
-Subject: [PULL 22/34] target/i386/hvf: rename some include guards
-Date: Wed, 23 Apr 2025 11:40:52 +0200
-Message-ID: <20250423094105.40692-23-pbonzini@redhat.com>
+Subject: [PULL 23/34] target/i386: add a directory for x86 instruction emulator
+Date: Wed, 23 Apr 2025 11:40:53 +0200
+Message-ID: <20250423094105.40692-24-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
@@ -108,68 +108,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Wei Liu <liuwe@linux.microsoft.com>
 
-These headers will be moved out to its own component.
-
 Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1741377325-28175-11-git-send-email-liuwe@linux.microsoft.com
+Link: https://lore.kernel.org/r/1741377325-28175-12-git-send-email-liuwe@linux.microsoft.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/hvf/x86.h        | 4 ++--
- target/i386/hvf/x86_decode.h | 4 ++--
- target/i386/hvf/x86_flags.h  | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ target/i386/emulate/meson.build | 0
+ target/i386/meson.build         | 1 +
+ 2 files changed, 1 insertion(+)
+ create mode 100644 target/i386/emulate/meson.build
 
-diff --git a/target/i386/hvf/x86.h b/target/i386/hvf/x86.h
-index 063cd0b83ec..73edccfba00 100644
---- a/target/i386/hvf/x86.h
-+++ b/target/i386/hvf/x86.h
-@@ -16,8 +16,8 @@
-  * License along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
+diff --git a/target/i386/emulate/meson.build b/target/i386/emulate/meson.build
+new file mode 100644
+index 00000000000..e69de29bb2d
+diff --git a/target/i386/meson.build b/target/i386/meson.build
+index 2e9c472f49d..c1aacea6135 100644
+--- a/target/i386/meson.build
++++ b/target/i386/meson.build
+@@ -31,6 +31,7 @@ subdir('whpx')
+ subdir('nvmm')
+ subdir('hvf')
+ subdir('tcg')
++subdir('emulate')
  
--#ifndef HVF_X86_H
--#define HVF_X86_H
-+#ifndef X86_EMU_DEFS_H
-+#define X86_EMU_DEFS_H
- 
- typedef struct x86_register {
-     union {
-diff --git a/target/i386/hvf/x86_decode.h b/target/i386/hvf/x86_decode.h
-index a2d7a2a27b6..930d965164a 100644
---- a/target/i386/hvf/x86_decode.h
-+++ b/target/i386/hvf/x86_decode.h
-@@ -15,8 +15,8 @@
-  * License along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
- 
--#ifndef HVF_X86_DECODE_H
--#define HVF_X86_DECODE_H
-+#ifndef X86_EMU_DECODE_H
-+#define X86_EMU_DECODE_H
- 
- #include "cpu.h"
- #include "x86.h"
-diff --git a/target/i386/hvf/x86_flags.h b/target/i386/hvf/x86_flags.h
-index 75c2a7feab5..6c175007b57 100644
---- a/target/i386/hvf/x86_flags.h
-+++ b/target/i386/hvf/x86_flags.h
-@@ -21,8 +21,8 @@
-  * x86 eflags functions
-  */
- 
--#ifndef X86_FLAGS_H
--#define X86_FLAGS_H
-+#ifndef X86_EMU_FLAGS_H
-+#define X86_EMU_FLAGS_H
- 
- #include "cpu.h"
- void lflags_to_rflags(CPUX86State *env);
-@@ -78,4 +78,4 @@ void SET_FLAGS_OSZAPC_LOGIC16(CPUX86State *env, uint16_t v1, uint16_t v2,
- void SET_FLAGS_OSZAPC_LOGIC8(CPUX86State *env, uint8_t v1, uint8_t v2,
-                              uint8_t diff);
- 
--#endif /* X86_FLAGS_H */
-+#endif /* X86_EMU_FLAGS_H */
+ target_arch += {'i386': i386_ss}
+ target_system_arch += {'i386': i386_system_ss}
 -- 
 2.49.0
 
