@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C93A98602
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 265FEA9863F
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:45:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wcf-00067J-W9; Wed, 23 Apr 2025 05:42:30 -0400
+	id 1u7Wcj-0006DB-7T; Wed, 23 Apr 2025 05:42:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wbw-0004qU-P7
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:44 -0400
+ id 1u7Wc1-00052F-5h
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wbu-0008Mi-Uq
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:44 -0400
+ id 1u7Wby-0008N7-Ml
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401302;
+ s=mimecast20190719; t=1745401306;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5n9XGcKjTcNvwj+iKBT/bT9ARaFP5wS0AfAoN5tYg8E=;
- b=PgU+OmYx9LV6gnp5cMIJfs6EBBMPubYoMZTjBKIBdoTaWUMN7fN+1ee44vzA7h3S4+3CL1
- AMS4WJ5tS8YvpKvwkGgpvywtB6tHfFasZwRBo90nBHfV2IkPMrAQnff/sl336ll3YHjipO
- iaRsTzpBcIqYPwVRQnaQQR4woM3hAsg=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Y0SUlbe8R2I5US+HJHkeWwOiX0tbQlzoXs3rWkoTkwg=;
+ b=Zz2r38Rgywg/6Id4jZKxUYish+kwwhGSkUqw8sRy5AD2vSYuRdXuNU60YqOOLLAmqEQY9p
+ uZzJ2yvKTGmZPGAdaq5aEbpY+3lVK1S1qkuuRFtMQpvs8qtpOOZr35wMaY2HnGb0la8vnA
+ k8rT/eTOBWLnkfg0Q3USU5hF+ta8YpE=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-91-H_g5wmrJNoSKATLKrpKdGQ-1; Wed, 23 Apr 2025 05:41:40 -0400
-X-MC-Unique: H_g5wmrJNoSKATLKrpKdGQ-1
-X-Mimecast-MFC-AGG-ID: H_g5wmrJNoSKATLKrpKdGQ_1745401299
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-acb23361d73so76211466b.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:40 -0700 (PDT)
+ us-mta-149-Z7Xk7l3yPxaWzIT8CXo1_g-1; Wed, 23 Apr 2025 05:41:44 -0400
+X-MC-Unique: Z7Xk7l3yPxaWzIT8CXo1_g-1
+X-Mimecast-MFC-AGG-ID: Z7Xk7l3yPxaWzIT8CXo1_g_1745401303
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5e5c808e777so5167500a12.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401299; x=1746006099;
+ d=1e100.net; s=20230601; t=1745401302; x=1746006102;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5n9XGcKjTcNvwj+iKBT/bT9ARaFP5wS0AfAoN5tYg8E=;
- b=iFCpv7MbmU7l5n89NDsfAkNwP547LRHobLntYq9kcojTU2okbRhTfPiZ6YwFrLT7s4
- pZbcyE6do4/EfbEiBp022lIr0GtcQKg3w2zOIhZg3yr5vOhtmc26cbpsnAPYNWgjdNDq
- cZ8zkWcw2Nwhy9xXAKhL7BUUduQhEyczydu9fxrDm+RMFr98MV3EtAFjU52yEIeN60GV
- N+NbeeWooI1uw26MoQwahnm58j/Y60Uz+HOUo6iNPvxNNdI4xfphuyX8WMFeGhWZRCFg
- NUoISMPYWxHpAGgduoZhX5Noi6MB1Qbe4058o5S35XhvQjK1/DVYITBGEXt8cXqWfeMf
- 5EzQ==
-X-Gm-Message-State: AOJu0YziJOmXyGKuFp8dpxykTh765Ciwi+UN6rQNhcG8GFLVw7M3kxRr
- 7F2pHX4rg/wLOwnf2QRMa/MeyBlkByMb0CmI1vJDd1CMqqC1YS03yNTRJBBdiE5nYo8gP0Q9JHr
- ii/mYvRa47kUyjUr+TVhv0Ya4t0XIUjllBkGw7MjxwQlpENRgdi5/9GEnwsgX4Su2FPef5woV1L
- t+kMHcNLjwdNKQEVySfbIVyzuNvDEv1gDLwljd
-X-Gm-Gg: ASbGncsbVeNc75C5N1ujqpYHDd04asa0xZ2Zp0MVd4G4BE3UPqHOzp/iXHefspGjwLy
- NpMwNBuW10SOV2iT1770CK6BpPdYk3UzHIdjG52wo7ZaykFvXfEy2iaVQGo4+UDsBJJt330PbBh
- QcN1gGbSjYQAYwdSrT/fAuR4aTAsStuB06HryMmDmatAXJERAmG5jWM0ykmGv4IZsNZqbRgLZWG
- 3e2Ywh0laYd8WvfGoFl0YbrPEtwhCxUOsHm6rNDx9qtL8HxijGsGR7D/4oZdUj90S0Nj9OPcDWR
- OosG0g9CgStQteRO
-X-Received: by 2002:a17:907:6d1c:b0:acb:1165:9a93 with SMTP id
- a640c23a62f3a-ace3f25539fmr197794666b.3.1745401298687; 
- Wed, 23 Apr 2025 02:41:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLziW5iSa6bbKsemrihb51zXUED/Ob+icHfIsv1CqP0qK6j4urPXmrtnUsLAtmadmnh1zpLQ==
-X-Received: by 2002:a17:907:6d1c:b0:acb:1165:9a93 with SMTP id
- a640c23a62f3a-ace3f25539fmr197792566b.3.1745401298218; 
- Wed, 23 Apr 2025 02:41:38 -0700 (PDT)
+ bh=Y0SUlbe8R2I5US+HJHkeWwOiX0tbQlzoXs3rWkoTkwg=;
+ b=PzMQygcjEzkJYgGwNWR5S6OQUagU+n6D+0/AiTMLs47jUF90piyG2c2kYgGda3/HPK
+ D21XF1aScpBBYcmdJs1CcXN72G5Ii6/6dQ36gQMtaGsQZuBLB6MLKhfMwmg0gwL5I2b/
+ 82MweRCUoWnpHIzCEe2LvPi8w43rUu1TnpkNHudeqCU0FEAk4tYP5+vFUUqfQ9QBXnDv
+ oAoev3SYQ6FhNBXjZCPee1p/TjcO+/DviRpmqlxwfrMcaw3Px8iT3Rjxu0O26G5jTBN2
+ kPbDZqXmC0DGpka3t3O+G1m8krMu6ZueIz5R5EMPPmyIhpKVPH2QLr1OPLjZFiozup+j
+ 2BsQ==
+X-Gm-Message-State: AOJu0YyLrI/spa/zdnOcYgGewBhDp9bw/uUrFSc6yDxsbk2VsrY95wYh
+ K67IDf/JjbYGyw8Lzy8nv9f5CMI2ExogpwCN6m1BpLpYhZprc06Mjm6YfDLSxevbGwO62XGIasW
+ 6caZ21/FsLCuHxik7Tnrevai790BKWrJ9z95+q0NpiNevt79klfyVucfzmV/0n7vubCbBxKj4YC
+ Zyq44M0LE+toJJ4yihBtsHSbvdPKX4bhp/Fjzf
+X-Gm-Gg: ASbGncvJh0t2ICueztKyAG9Y1lr4XTDpRp7sX36AnvbqTW8mhBFzrTFU9K1xxCd4uUN
+ yG7RUNZGZ8jnkAZUwQIKhoFnxX24KuCvtFmRPuRAHkgF1nAgCe/aEeEiOFl05+lgLh03Zn6LO68
+ vNdKIb0zf6ZIZ+hUIuxb+jQtZLcmaagBHtkzvM7ucpwM3YigFEC5OOpJR3FgXv8kndBWbA2rd5J
+ j1WpAPBIXKoXGOOIpPKI1lmaXmnCTyTiyCNlxTHm+duMi4MSOQKEvHtDtApyPwB0Z+ZbCn8iQH9
+ +o7u9oZVU2zbhCyX
+X-Received: by 2002:a05:6402:1d4a:b0:5f4:9017:c6a1 with SMTP id
+ 4fb4d7f45d1cf-5f6285e8cf8mr17274965a12.25.1745401302303; 
+ Wed, 23 Apr 2025 02:41:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6//6dHMHXIDmD5wU+GcaR35UpRorXNsOPjlf96JcULWAth4gTy5Gr6kvaBwl8dHPZ/Rl9CA==
+X-Received: by 2002:a05:6402:1d4a:b0:5f4:9017:c6a1 with SMTP id
+ 4fb4d7f45d1cf-5f6285e8cf8mr17274904a12.25.1745401300859; 
+ Wed, 23 Apr 2025 02:41:40 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-acb6efaa98dsm777011366b.182.2025.04.23.02.41.36
+ 4fb4d7f45d1cf-5f625592cffsm7130750a12.35.2025.04.23.02.41.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:41:36 -0700 (PDT)
+ Wed, 23 Apr 2025 02:41:39 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Wei Liu <liuwe@linux.microsoft.com>
-Subject: [PULL 16/34] target/i386: rename hvf_mmio_buf to emu_mmio_buf
-Date: Wed, 23 Apr 2025 11:40:46 +0200
-Message-ID: <20250423094105.40692-17-pbonzini@redhat.com>
+Subject: [PULL 17/34] target/i386/hvf: use emul_ops->read_mem in x86_emu.c
+Date: Wed, 23 Apr 2025 11:40:47 +0200
+Message-ID: <20250423094105.40692-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
@@ -108,95 +108,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Wei Liu <liuwe@linux.microsoft.com>
 
-We want to refactor HVF's instruction emulator to a common component. Renaming
-hvf_mmio_buf removes the association between HVF and the instruction emulator.
-
-The definition of the field is still guarded by CONFIG_HVF for now, since it is
-the only user.
-
 No functional change.
 
 Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1741377325-28175-5-git-send-email-liuwe@linux.microsoft.com
+Link: https://lore.kernel.org/r/1741377325-28175-6-git-send-email-liuwe@linux.microsoft.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h         |  2 +-
- target/i386/hvf/hvf.c     |  4 ++--
- target/i386/hvf/x86_emu.c | 12 ++++++------
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ target/i386/hvf/x86_emu.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 7a8d695bdb1..3c5c39ce3d3 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2109,7 +2109,7 @@ typedef struct CPUArchState {
- #endif
- #if defined(CONFIG_HVF)
-     HVFX86LazyFlags hvf_lflags;
--    void *hvf_mmio_buf;
-+    void *emu_mmio_buf;
- #endif
- 
-     uint64_t mcg_cap;
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 7da03f9c081..1cecb765952 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -168,7 +168,7 @@ void hvf_arch_vcpu_destroy(CPUState *cpu)
-     X86CPU *x86_cpu = X86_CPU(cpu);
-     CPUX86State *env = &x86_cpu->env;
- 
--    g_free(env->hvf_mmio_buf);
-+    g_free(env->emu_mmio_buf);
- }
- 
- static void init_tsc_freq(CPUX86State *env)
-@@ -262,7 +262,7 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-     if (hvf_state->hvf_caps == NULL) {
-         hvf_state->hvf_caps = g_new0(struct hvf_vcpu_caps, 1);
-     }
--    env->hvf_mmio_buf = g_new(char, 4096);
-+    env->emu_mmio_buf = g_new(char, 4096);
- 
-     if (x86cpu->vmware_cpuid_freq) {
-         init_tsc_freq(env);
 diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index 7b01ccde5d3..e59a73e00d5 100644
+index e59a73e00d5..7b816b5a1da 100644
 --- a/target/i386/hvf/x86_emu.c
 +++ b/target/i386/hvf/x86_emu.c
-@@ -184,8 +184,8 @@ void write_val_ext(CPUX86State *env, target_ulong ptr, target_ulong val, int siz
+@@ -184,7 +184,7 @@ void write_val_ext(CPUX86State *env, target_ulong ptr, target_ulong val, int siz
  
  uint8_t *read_mmio(CPUX86State *env, target_ulong ptr, int bytes)
  {
--    vmx_read_mem(env_cpu(env), env->hvf_mmio_buf, ptr, bytes);
--    return env->hvf_mmio_buf;
-+    vmx_read_mem(env_cpu(env), env->emu_mmio_buf, ptr, bytes);
-+    return env->emu_mmio_buf;
+-    vmx_read_mem(env_cpu(env), env->emu_mmio_buf, ptr, bytes);
++    emul_ops->read_mem(env_cpu(env), env->emu_mmio_buf, ptr, bytes);
+     return env->emu_mmio_buf;
  }
  
- 
-@@ -487,9 +487,9 @@ static void exec_ins_single(CPUX86State *env, struct x86_decode *decode)
-     target_ulong addr = linear_addr_size(env_cpu(env), RDI(env),
-                                          decode->addressing_size, R_ES);
- 
--    emul_ops->handle_io(env_cpu(env), DX(env), env->hvf_mmio_buf, 0,
-+    emul_ops->handle_io(env_cpu(env), DX(env), env->emu_mmio_buf, 0,
-                         decode->operand_size, 1);
--    vmx_write_mem(env_cpu(env), addr, env->hvf_mmio_buf,
-+    vmx_write_mem(env_cpu(env), addr, env->emu_mmio_buf,
-                   decode->operand_size);
- 
-     string_increment_reg(env, R_EDI, decode);
-@@ -510,9 +510,9 @@ static void exec_outs_single(CPUX86State *env, struct x86_decode *decode)
+@@ -510,8 +510,8 @@ static void exec_outs_single(CPUX86State *env, struct x86_decode *decode)
  {
      target_ulong addr = decode_linear_addr(env, decode, RSI(env), R_DS);
  
--    vmx_read_mem(env_cpu(env), env->hvf_mmio_buf, addr,
-+    vmx_read_mem(env_cpu(env), env->emu_mmio_buf, addr,
-                  decode->operand_size);
--    emul_ops->handle_io(env_cpu(env), DX(env), env->hvf_mmio_buf, 1,
-+    emul_ops->handle_io(env_cpu(env), DX(env), env->emu_mmio_buf, 1,
+-    vmx_read_mem(env_cpu(env), env->emu_mmio_buf, addr,
+-                 decode->operand_size);
++    emul_ops->read_mem(env_cpu(env), env->emu_mmio_buf, addr,
++                       decode->operand_size);
+     emul_ops->handle_io(env_cpu(env), DX(env), env->emu_mmio_buf, 1,
                          decode->operand_size, 1);
+ 
+@@ -620,7 +620,7 @@ static void exec_scas_single(CPUX86State *env, struct x86_decode *decode)
+     addr = linear_addr_size(env_cpu(env), RDI(env),
+                             decode->addressing_size, R_ES);
+     decode->op[1].type = X86_VAR_IMMEDIATE;
+-    vmx_read_mem(env_cpu(env), &decode->op[1].val, addr, decode->operand_size);
++    emul_ops->read_mem(env_cpu(env), &decode->op[1].val, addr, decode->operand_size);
+ 
+     EXEC_2OP_FLAGS_CMD(env, decode, -, SET_FLAGS_OSZAPC_SUB, false);
+     string_increment_reg(env, R_EDI, decode);
+@@ -645,7 +645,7 @@ static void exec_lods_single(CPUX86State *env, struct x86_decode *decode)
+     target_ulong val = 0;
+ 
+     addr = decode_linear_addr(env, decode, RSI(env), R_DS);
+-    vmx_read_mem(env_cpu(env), &val, addr,  decode->operand_size);
++    emul_ops->read_mem(env_cpu(env), &val, addr,  decode->operand_size);
+     write_reg(env, R_EAX, val, decode->operand_size);
  
      string_increment_reg(env, R_ESI, decode);
 -- 
