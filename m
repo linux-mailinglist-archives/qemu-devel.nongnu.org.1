@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75439A9865B
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD943A9864B
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:46:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wcx-0007cS-UV; Wed, 23 Apr 2025 05:42:48 -0400
+	id 1u7WcK-0005cv-EO; Wed, 23 Apr 2025 05:42:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wc4-00059O-Ld
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1u7Wbs-0004gL-TZ
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wc2-0008NU-7i
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:52 -0400
+ id 1u7Wbq-0008MD-QM
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401309;
+ s=mimecast20190719; t=1745401297;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=k7XJMWWDWvSIPa+InJi/0rN9MTb+EzXLKE4LaJ3YTJw=;
- b=DlLwZfjcFLR1FZY5Kev9WW2Z+wJEsd0LhN7BClSj51JTWNssmlZmdoQHb3lmsRVjaA8f5u
- 9CCHeP9VkqtTODAc30ZNVbfniTEC6GQMHMgU/GTOR/rMMV8HVqGbHBhp5AKBjfx+/JKHUX
- 9ZwLXXO4qCiyWBrcriA0ShniAgdamAM=
+ bh=+MNa0JBZJFB5f+SaIpMmEEmSw19wZGPP2kb0KycL6UA=;
+ b=LKmzIyfH/M5UeHr5PVQ+nnefymo3nxuggb6dzgrtErHCyIcqf06+GraPJrbU8A2oBDq/5y
+ dQ5Y/XorYhKFFenzpLJLyuNrI8ukc8P489J/bz9he1nCxf/FP/OR9k26/s6/FPmmJpP4xf
+ wgq7jY2YVy5vJZ0hit1QUwQi75P/tn0=
 Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
  [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-350-W8QfvMI_NxK5nru9ZqDPTg-1; Wed, 23 Apr 2025 05:41:37 -0400
-X-MC-Unique: W8QfvMI_NxK5nru9ZqDPTg-1
-X-Mimecast-MFC-AGG-ID: W8QfvMI_NxK5nru9ZqDPTg_1745401293
+ us-mta-111-P97nW155P12cGvVfvF2hBQ-1; Wed, 23 Apr 2025 05:41:34 -0400
+X-MC-Unique: P97nW155P12cGvVfvF2hBQ-1
+X-Mimecast-MFC-AGG-ID: P97nW155P12cGvVfvF2hBQ_1745401294
 Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5f501ed492bso5599244a12.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:37 -0700 (PDT)
+ 4fb4d7f45d1cf-5f62cbc6d5cso4816555a12.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401292; x=1746006092;
+ d=1e100.net; s=20230601; t=1745401293; x=1746006093;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k7XJMWWDWvSIPa+InJi/0rN9MTb+EzXLKE4LaJ3YTJw=;
- b=HvYBjWwPSJeeuM9+uREuGf90cAYx7N9wsNzqt1/Zaci75ApV5loQ8Go0/ekp1KH/72
- DnUag0Gch4FlHzusZETgRSOZwmQD5RvCVf8EFEKTAODGvK2RgiU3XoSp3yXVFbULpIWk
- 1Lnq9aEjDLKPXYahwuKGQQ7imQ+fXV9FngcaWtkUi274xVA1N34d5S4B0+byQy9j4rnB
- ax9XVkCT9ZjxS7REslUALVzEXzt4G1LYpH6l1SFvzFyEM13FXfSM1Ju80ujFNIGS2DTe
- bBsPvN//LbNA6OjdosUIKK6uMDzkCmyCiNx9wWWpbinDDkZQPKE9Km/hk6EROc915zMQ
- /mzw==
-X-Gm-Message-State: AOJu0YyXcU6AqsU0xcVOZMhlarb2ZalrGc1QULz51rjfzhv9w/RUjtT1
- ryTWcgFjUpDs2UGPQfhp5dUrUejZ+rQubBNjiX2iETChOXglhn3JtvhevMG4JxU6zXc1Yoc4Q/y
- jWk53VcsTYnFCn83KRJuFNYK/7hO88O5INeY4kOnjfinzo148bnj7dezn1450fRQlOsZFFis1ew
- o9pqtrVVEaRJ7uYZcnPD38Mmx0zoj8zJ+e0oaM
-X-Gm-Gg: ASbGncthyNAOdWNRc2MAhe+L0IMFJ3oxsdZQajcX0g3X8PiTV5v9n/fmU62uWFIZp7m
- P0CBW0OKY5Cj8IA13pI+TOL+uvvp8kT9idaICFjoZSTQf0NECnt/mvS8ifsBf7yM0QpEYmwSk1e
- PhclrWX+x8yt2YdXXCkx8+JCgnGRkmqJ8s/rtQOpGE5Wuy+mIKh2kOfWAJpZbb8KIRiF3c5F7Iy
- nkH2dtV9M4giuj59oChkoMtIS8hqF+fAN7UZPJETRDsf/y1EaDPRvW0VD+C5d8QV28DjuhBb8K5
- KUr0zq/4DhxTTEVG
-X-Received: by 2002:a05:6402:4404:b0:5f3:f04b:b5d7 with SMTP id
- 4fb4d7f45d1cf-5f628578024mr17215096a12.18.1745401291698; 
- Wed, 23 Apr 2025 02:41:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7wUQBug12RPOhQ13aFEqqlFeSNGi/4y7rgvBPMbClGG1r2+1wqCcvOmaHRnymNSTpBxnyyA==
-X-Received: by 2002:a05:6402:4404:b0:5f3:f04b:b5d7 with SMTP id
- 4fb4d7f45d1cf-5f628578024mr17215062a12.18.1745401291019; 
- Wed, 23 Apr 2025 02:41:31 -0700 (PDT)
+ bh=+MNa0JBZJFB5f+SaIpMmEEmSw19wZGPP2kb0KycL6UA=;
+ b=cOCbYHAQYwIT/AQMUwK829XINm4+SPDFNX7tN7dK3bqRPs6jxCQ+QZhdPnmi9eLiw3
+ kJA4nq3PgtRqVo1iiaRpY/OsybOhrYiKZKTFz5Q31cFAyHQ2Tk3MrnoO+eihGT9l9p8k
+ R517kslH0ok84OW/m15Ggyv6POSwIPZzaBttwOca7j6Kg/6FABl8lIx9G8KZkFli2dpc
+ 3Mg3B3HKBKk4HACLA0z8pGiLddziwQ/SS3+XvSiF+nMLj526Uwn0DPkDwdvJhI48JFXm
+ xp+SQmcUNJHvJheRvSpToNXeC2nj+K3EE3gc7RkoIS72yZy+7SG1EeWxxnfs4QCgvG1R
+ Lavw==
+X-Gm-Message-State: AOJu0YycrlgJoUoUfkLKVyLXGSmskQaN85uYuz8961gsnW8wZozYFVkK
+ a3noA/VS1mlPjK9+qQftVUn6/6CNNpFuwiXW6lk9I4ShTPlNNqaH2QsUMs4Ew2azRqtQTvrNkOx
+ pE1YflBEO0mw5Q435ks+WocaxeZA17PSJkIuAwq8KMekSz67HJf45qevXMjpB+713oXzOhEmL0R
+ 3GHa5azLJrTqJJmfTW5pgWdqVE+GdQnhwc2Uen
+X-Gm-Gg: ASbGncv1Mam7U/Z00BYWzvIGpgyYGIT/fVOU4yB1NzLfoQ1NBQ+Jqls4wtyTgq7xiLQ
+ RJW+IbzpvBIfwS6/YNZiSq0/b0Orc1r4fpp6oZUx+6Cpe5CTayS1B8Zt5cd6/3e+3D8hcikTUVy
+ L3J1IEHCDQix9baOxW1h1kPqmgAki2Tff64cJSD+1DDz3NpihnOWxA9AYNNYWI1lweTN2jNi2vH
+ IEbAhBG6l54TzpNNQU4SNIb/AfB57Iycf4OpRr9zOb2WSPJteONy8lnkfwGfMq9Adc6JDH5OaNo
+ CgP7+w+0z8ZLXYSg
+X-Received: by 2002:a05:6402:2803:b0:5e7:b02b:381f with SMTP id
+ 4fb4d7f45d1cf-5f6285f43f8mr15152593a12.30.1745401292904; 
+ Wed, 23 Apr 2025 02:41:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEN4SxggOAzSMVJ84hhhC5oPJPpTkR8NCheMS3WQMooHJOJMRZVnhLJKtV3fGqUP+4mA8Nryw==
+X-Received: by 2002:a05:6402:2803:b0:5e7:b02b:381f with SMTP id
+ 4fb4d7f45d1cf-5f6285f43f8mr15152575a12.30.1745401292452; 
+ Wed, 23 Apr 2025 02:41:32 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5f625a40344sm7153671a12.77.2025.04.23.02.41.29
- for <qemu-devel@nongnu.org>
+ 4fb4d7f45d1cf-5f6258545d9sm7222316a12.67.2025.04.23.02.41.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:41:29 -0700 (PDT)
+ Wed, 23 Apr 2025 02:41:31 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/34] target/i386: tcg: use cout to commonize add/adc/sub/sbb
- cases
-Date: Wed, 23 Apr 2025 11:40:42 +0200
-Message-ID: <20250423094105.40692-13-pbonzini@redhat.com>
+Cc: Wei Liu <liuwe@linux.microsoft.com>
+Subject: [PULL 13/34] target/i386/hvf: introduce x86_emul_ops
+Date: Wed, 23 Apr 2025 11:40:43 +0200
+Message-ID: <20250423094105.40692-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -107,235 +106,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the carry-out vector as the basis to compute AF, CF and OF.  The cost
-is pretty much the same, because the carry-out is just four boolean
-operations, and the code is much smaller because add/adc/sub/sbb now
-share most of it.
+From: Wei Liu <liuwe@linux.microsoft.com>
 
-A similar algorithm to what is used in target/i386/emulate can also be
-used for APX, in order to build the result of CCMP/CTEST with a new CC_OP_*.
-CCMP needs to place into the flags from either a subtraction or a constant
-value; CTEST likewise place into the flags either an AND or a constant
-value.  The new CC_OP for CCMP and CTEST would store for a successful
-predcate:
+This will be used to remove HVF specific code from the instruction emulator.
 
-- in DST and SRC2, the result of the operation;
+For now we only introduce two hooks for x86_decode.c. More hooks will be added
+when the code is refactored.
 
-- in SRC, a carry-out vector for CCMP or zero for CTEST;
+The emulator initialization function now takes in a pointer to the ops structure.
 
-If the default flag value is used, DST/SRC/SRC2 can be filled with
-constants:
-
-- in DST the negated ZF;
-
-- in SRC's top 2 bits, a value that results in the desired OF and CF;
-
-- in SRC2 a suitable value (any of 0/1/~0/~1) that can be used
-  instead of DST to compute the desired SF and PF.
-
+Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
+Link: https://lore.kernel.org/r/1741377325-28175-2-git-send-email-liuwe@linux.microsoft.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h                        | 25 ++++++++
- target/i386/tcg/cc_helper_template.h.inc | 80 ++++++++----------------
- target/i386/hvf/x86_flags.c              | 25 --------
- 3 files changed, 52 insertions(+), 78 deletions(-)
+ target/i386/hvf/x86_emu.h | 10 +++++++++-
+ target/i386/hvf/hvf.c     | 20 +++++++++++++++++++-
+ target/i386/hvf/x86_emu.c |  5 ++++-
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 76f24446a55..7a8d695bdb1 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2843,4 +2843,29 @@ static inline bool ctl_has_irq(CPUX86State *env)
- # define TARGET_VSYSCALL_PAGE  (UINT64_C(-10) << 20)
- #endif
+diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
+index bc0fc72c761..1422d06ea18 100644
+--- a/target/i386/hvf/x86_emu.h
++++ b/target/i386/hvf/x86_emu.h
+@@ -23,7 +23,15 @@
+ #include "x86_decode.h"
+ #include "cpu.h"
  
-+/* majority(NOT a, b, c) = (a ^ b) ? b : c */
-+#define MAJ_INV1(a, b, c)  ((((a) ^ (b)) & ((b) ^ (c))) ^ (c))
+-void init_emu(void);
++struct x86_emul_ops {
++    void (*read_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
++    void (*read_segment_descriptor)(CPUState *cpu, struct x86_segment_descriptor *desc,
++                                    enum X86Seg seg);
++};
 +
-+/*
-+ * ADD_COUT_VEC(x, y) = majority((x + y) ^ x ^ y, x, y)
-+ *
-+ * If two corresponding bits in x and y are the same, that's the carry
-+ * independent of the value (x+y)^x^y.  Hence x^y can be replaced with
-+ * 1 in (x+y)^x^y, resulting in majority(NOT (x+y), x, y)
-+ */
-+#define ADD_COUT_VEC(op1, op2, result) \
-+   MAJ_INV1(result, op1, op2)
++extern const struct x86_emul_ops *emul_ops;
 +
-+/*
-+ * SUB_COUT_VEC(x, y) = NOT majority(x, NOT y, (x - y) ^ x ^ NOT y)
-+ *                    = majority(NOT x, y, (x - y) ^ x ^ y)
-+ *
-+ * Note that the carry out is actually a borrow, i.e. it is inverted.
-+ * If two corresponding bits in x and y are different, the value of the
-+ * bit in (x-y)^x^y likewise does not matter.  Hence, x^y can be replaced
-+ * with 0 in (x-y)^x^y, resulting in majority(NOT x, y, x-y)
-+ */
-+#define SUB_COUT_VEC(op1, op2, result) \
-+   MAJ_INV1(op1, op2, result)
-+
- #endif /* I386_CPU_H */
-diff --git a/target/i386/tcg/cc_helper_template.h.inc b/target/i386/tcg/cc_helper_template.h.inc
-index b821e5bca3b..d8fd976ca15 100644
---- a/target/i386/tcg/cc_helper_template.h.inc
-+++ b/target/i386/tcg/cc_helper_template.h.inc
-@@ -44,18 +44,32 @@
++void init_emu(const struct x86_emul_ops *ops);
+ bool exec_instruction(CPUX86State *env, struct x86_decode *ins);
+ void x86_emul_raise_exception(CPUX86State *env, int exception_index, int error_code);
  
- /* dynamic flags computation */
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 9ba0e04ac75..03456ffbc70 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -229,6 +229,24 @@ hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
+     return hv_vm_create(HV_VM_DEFAULT);
+ }
  
--static uint32_t glue(compute_all_add, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
-+static uint32_t glue(compute_all_cout, SUFFIX)(DATA_TYPE dst, DATA_TYPE carries)
- {
--    uint32_t cf, pf, af, zf, sf, of;
--    DATA_TYPE src2 = dst - src1;
-+    uint32_t af_cf, pf, zf, sf, of;
- 
--    cf = dst < src1;
-+    /* PF, ZF, SF computed from result.  */
-     pf = compute_pf(dst);
--    af = (dst ^ src1 ^ src2) & CC_A;
-     zf = (dst == 0) * CC_Z;
-     sf = lshift(dst, 8 - DATA_BITS) & CC_S;
--    of = lshift((src1 ^ src2 ^ -1) & (src1 ^ dst), 12 - DATA_BITS) & CC_O;
--    return cf + pf + af + zf + sf + of;
-+
-+    /*
-+     * AF, CF, OF computed from carry out vector.  To compute AF and CF, rotate it
-+     * left by one so cout(DATA_BITS - 1) is in bit 0 and cout(3) in bit 4.
-+     *
-+     * To compute OF, place the highest two carry bits into OF and the bit
-+     * immediately to the right of it; then, adding CC_O / 2 XORs them.
-+     */
-+    af_cf = ((carries << 1) | (carries >> (DATA_BITS - 1))) & (CC_A | CC_C);
-+    of = (lshift(carries, 12 - DATA_BITS) + CC_O / 2) & CC_O;
-+    return pf + zf + sf + af_cf + of;
++static void hvf_read_segment_descriptor(CPUState *s, struct x86_segment_descriptor *desc,
++                                        X86Seg seg)
++{
++    struct vmx_segment vmx_segment;
++    vmx_read_segment_descriptor(s, &vmx_segment, seg);
++    vmx_segment_to_x86_descriptor(s, &vmx_segment, desc);
 +}
 +
-+static uint32_t glue(compute_all_add, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
++static void hvf_read_mem(CPUState *cpu, void *data, target_ulong gva, int bytes)
 +{
-+    DATA_TYPE src2 = dst - src1;
-+    DATA_TYPE carries = ADD_COUT_VEC(src1, src2, dst);
-+    return glue(compute_all_cout, SUFFIX)(dst, carries);
- }
- 
- static int glue(compute_c_add, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
-@@ -66,25 +80,9 @@ static int glue(compute_c_add, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
- static uint32_t glue(compute_all_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
-                                          DATA_TYPE src3)
++    vmx_read_mem(cpu, data, gva, bytes);
++}
++
++static const struct x86_emul_ops hvf_x86_emul_ops = {
++    .read_mem = hvf_read_mem,
++    .read_segment_descriptor = hvf_read_segment_descriptor,
++};
++
+ int hvf_arch_init_vcpu(CPUState *cpu)
  {
--    uint32_t cf, pf, af, zf, sf, of;
--
--#ifdef WIDER_TYPE
--    WIDER_TYPE src13 = (WIDER_TYPE) src1 + (WIDER_TYPE) src3;
--    DATA_TYPE src2 = dst - src13;
--
--    cf = dst < src13;
--#else
-     DATA_TYPE src2 = dst - src1 - src3;
--
--    cf = (src3 ? dst <= src1 : dst < src1);
--#endif
--
--    pf = compute_pf(dst);
--    af = (dst ^ src1 ^ src2) & 0x10;
--    zf = (dst == 0) << 6;
--    sf = lshift(dst, 8 - DATA_BITS) & 0x80;
--    of = lshift((src1 ^ src2 ^ -1) & (src1 ^ dst), 12 - DATA_BITS) & CC_O;
--    return cf + pf + af + zf + sf + of;
-+    DATA_TYPE carries = ADD_COUT_VEC(src1, src2, dst);
-+    return glue(compute_all_cout, SUFFIX)(dst, carries);
- }
+     X86CPU *x86cpu = X86_CPU(cpu);
+@@ -237,7 +255,7 @@ int hvf_arch_init_vcpu(CPUState *cpu)
+     int r;
+     uint64_t reqCap;
  
- static int glue(compute_c_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
-@@ -101,16 +99,9 @@ static int glue(compute_c_adc, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1,
+-    init_emu();
++    init_emu(&hvf_x86_emul_ops);
+     init_decoder();
  
- static uint32_t glue(compute_all_sub, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2)
+     if (hvf_state->hvf_caps == NULL) {
+diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
+index ebba80a36b5..c15b5a7ca85 100644
+--- a/target/i386/hvf/x86_emu.c
++++ b/target/i386/hvf/x86_emu.c
+@@ -1231,6 +1231,8 @@ static struct cmd_handler {
+ 
+ static struct cmd_handler _cmd_handler[X86_DECODE_CMD_LAST];
+ 
++const struct x86_emul_ops *emul_ops;
++
+ static void init_cmd_handler(void)
  {
--    uint32_t cf, pf, af, zf, sf, of;
-     DATA_TYPE src1 = dst + src2;
--
--    cf = src1 < src2;
--    pf = compute_pf(dst);
--    af = (dst ^ src1 ^ src2) & CC_A;
--    zf = (dst == 0) * CC_Z;
--    sf = lshift(dst, 8 - DATA_BITS) & CC_S;
--    of = lshift((src1 ^ src2) & (src1 ^ dst), 12 - DATA_BITS) & CC_O;
--    return cf + pf + af + zf + sf + of;
-+    DATA_TYPE carries = SUB_COUT_VEC(src1, src2, dst);
-+    return glue(compute_all_cout, SUFFIX)(dst, carries);
+     int i;
+@@ -1253,7 +1255,8 @@ bool exec_instruction(CPUX86State *env, struct x86_decode *ins)
+     return true;
  }
  
- static int glue(compute_c_sub, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2)
-@@ -123,25 +114,9 @@ static int glue(compute_c_sub, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2)
- static uint32_t glue(compute_all_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
-                                          DATA_TYPE src3)
+-void init_emu(void)
++void init_emu(const struct x86_emul_ops *o)
  {
--    uint32_t cf, pf, af, zf, sf, of;
--
--#ifdef WIDER_TYPE
--    WIDER_TYPE src23 = (WIDER_TYPE) src2 + (WIDER_TYPE) src3;
--    DATA_TYPE src1 = dst + src23;
--
--    cf = src1 < src23;
--#else
-     DATA_TYPE src1 = dst + src2 + src3;
--
--    cf = (src3 ? src1 <= src2 : src1 < src2);
--#endif
--
--    pf = compute_pf(dst);
--    af = (dst ^ src1 ^ src2) & 0x10;
--    zf = (dst == 0) << 6;
--    sf = lshift(dst, 8 - DATA_BITS) & 0x80;
--    of = lshift((src1 ^ src2) & (src1 ^ dst), 12 - DATA_BITS) & CC_O;
--    return cf + pf + af + zf + sf + of;
-+    DATA_TYPE carries = SUB_COUT_VEC(src1, src2, dst);
-+    return glue(compute_all_cout, SUFFIX)(dst, carries);
++    emul_ops = o;
+     init_cmd_handler();
  }
- 
- static int glue(compute_c_sbb, SUFFIX)(DATA_TYPE dst, DATA_TYPE src2,
-@@ -286,6 +261,5 @@ static int glue(compute_c_blsi, SUFFIX)(DATA_TYPE dst, DATA_TYPE src1)
- #undef DATA_BITS
- #undef SIGN_MASK
- #undef DATA_TYPE
--#undef DATA_MASK
- #undef SUFFIX
- #undef WIDER_TYPE
-diff --git a/target/i386/hvf/x86_flags.c b/target/i386/hvf/x86_flags.c
-index 60ab4f01a20..0c75e0419c3 100644
---- a/target/i386/hvf/x86_flags.c
-+++ b/target/i386/hvf/x86_flags.c
-@@ -45,31 +45,6 @@
- #define LF_MASK_CF     (0x01 << LF_BIT_CF)
- #define LF_MASK_PO     (0x01 << LF_BIT_PO)
- 
--/* majority(NOT a, b, c) = (a ^ b) ? b : c */
--#define MAJ_INV1(a, b, c)  ((((a) ^ (b)) & ((b) ^ (c))) ^ (c))
--
--/*
-- * ADD_COUT_VEC(x, y) = majority((x + y) ^ x ^ y, x, y)
-- *
-- * If two corresponding bits in x and y are the same, that's the carry
-- * independent of the value (x+y)^x^y.  Hence x^y can be replaced with
-- * 1 in (x+y)^x^y, resulting in majority(NOT (x+y), x, y)
-- */
--#define ADD_COUT_VEC(op1, op2, result) \
--   MAJ_INV1(result, op1, op2)
--
--/*
-- * SUB_COUT_VEC(x, y) = NOT majority(x, NOT y, (x - y) ^ x ^ NOT y)
-- *                    = majority(NOT x, y, (x - y) ^ x ^ y)
-- *
-- * Note that the carry out is actually a borrow, i.e. it is inverted.
-- * If two corresponding bits in x and y are different, the value of the
-- * bit in (x-y)^x^y likewise does not matter.  Hence, x^y can be replaced
-- * with 0 in (x-y)^x^y, resulting in majority(NOT x, y, x-y)
-- */
--#define SUB_COUT_VEC(op1, op2, result) \
--   MAJ_INV1(op1, op2, result)
--
- /* ******************* */
- /* OSZAPC */
- /* ******************* */
 -- 
 2.49.0
 
