@@ -2,195 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB88BA986C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 12:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F53A987B5
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 12:40:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7X2s-0005b2-8x; Wed, 23 Apr 2025 06:09:34 -0400
+	id 1u7XWW-000441-LG; Wed, 23 Apr 2025 06:40:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1u7X2p-0005ag-BR
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:09:31 -0400
-Received: from smarthost2.eviden.com ([80.78.11.83])
+ (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
+ id 1u7XWN-00042G-MW; Wed, 23 Apr 2025 06:40:03 -0400
+Received: from imap5.colo.codethink.co.uk ([78.40.148.171])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1u7X2m-0002pf-BR
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:09:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
- t=1745402968; x=1776938968;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=A9qF9M3jRBbpbbxh4kTyCzOxdrXahi2bVhNhPib+sg8=;
- b=KsyWFH2wgEXGQIpjVj38mXtYJ03cMqBJYjfxeaRFjWnubn3wUZ9LBRJT
- 17PmpsZrnjsUg+ZMxdCPZyKd7wnJmdKJDnUnluOFXfq9tJOwf4WwNs6UD
- OiPvKNA4lWDPql4i5wrPTD1yy4BKdYSr6YWuEZH6K0CxCLUZ8bD9SD1pJ
- KAIBeJqEUFYFA0CCGHLPK01z9sISlhZtZVUDGrSbbyp6V5Dn3o+6Xj05C
- 5sFYs6ncLhbJBZMcC0aEbjTNkWTIXnGQ5OoFnuA6keCWbUThPh+CrDxfU
- iWn0Q34x2WG9e1l2zepaQuiD6IHVyyj+p9RQiKuwoLmYPGMhnaInwqMQ5 A==;
-X-CSE-ConnectionGUID: jflx27kbQ0O9yzKcUFZT0g==
-X-CSE-MsgGUID: qk3Lahf9Tr+Qi5RtnAgGmA==
-X-IronPort-AV: E=Sophos;i="6.15,233,1739833200"; d="scan'208";a="35563206"
-X-MGA-submission: =?us-ascii?q?MDGjjgkUxcFkDo4KYwO4O+su68zxofQO7DVxkt?=
- =?us-ascii?q?YnLHzZt1u7sLqNn6TuQGqXzNfqEKeJcHKxqAfEQWQvAusvNdaENvghx9?=
- =?us-ascii?q?w6IkZpe/JcfzRxYsIuvQ7k+ZIcP52cPE3XAG5M3x2ibmCCSloxFhwU58?=
- =?us-ascii?q?pCEjRAcIDCk5W1+j/BF2LqXg=3D=3D?=
-Received: from mail-db8eur05lp2113.outbound.protection.outlook.com (HELO
- EUR05-DB8-obe.outbound.protection.outlook.com) ([104.47.17.113])
- by smarthost2.eviden.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384;
- 23 Apr 2025 12:09:20 +0200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zSD2bbFKlwwaEdpBdo9IaWFznd0FnycSsxKq6bSftoskoESd4S1pgbeZcfO706fGnpy7gb3lwx8uGpRU1J42fEq9VYf9nmzzk3Zgg5j0qhVe19vYajVDoPQy2te6GI1jK2StIL0i9jxIRjyH78DXU3vTxkjfymfjKn3jKtb0K/VcCjvK7iV50K6JzJplAAxL0xczD5kh/T6umMjMghXAOUT8e/HmdUTRph1Dqm+PAnVKSgd1LQ+JkEBxumKWkaL/FaYjaTmp2gC4d5A0q4wyV3phIFB0PLySanaIAoJx7IWXz5pGUQI2Oo7VkV2V7Tl+Z6yjrdvvlanO51u31a78cQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A9qF9M3jRBbpbbxh4kTyCzOxdrXahi2bVhNhPib+sg8=;
- b=uJOhoBjqhVrhRX04hAgpV+W93J2VFTvwcI7rCDL3RAZeHNjbQ18D+burkBm9GZYOfL4z+cACDr4eUczmBgq8p+Q0zPN+gvZeFJY9pEkVw67E0uCUX38vF5Ch5CHXlhY2JUJdzGrGsiQmztC8HO7woZy1t34tBFhwFMT6OzYa1XxnGZLvMwWscR4ju5QNzZD62OaQmC7yICneYgObNA96Z6OXNOwQTc2wzHjmfJytleqy+TNFRLp4RiD/WzTMJksUrnTRPSBe4HLeFbEO2qeCGAY/30OYm6vWMDXyVBdTM3ZcwQAh7iyQELuIDuqeS8uoYqG9EbLwllHLwB/8NW0l9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
- dkim=pass header.d=eviden.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A9qF9M3jRBbpbbxh4kTyCzOxdrXahi2bVhNhPib+sg8=;
- b=cIMDFfB38zwM6PLV7XCX+U1w67rP60jtf9zRAn3Z9riYocg3Z2FOvoqHXEtMFVpAQzh8J5p8UiXC00NBJtNCvC8/cMgYbgffoWhh6LAcYoFng7q4tiBeukNnHpcui6H5R9xxszsJ3TUagA2oug0uwa4W67StaZu5n7LTXO7ohtr80yBpT22qRmHcLJPQQO0rHUDSoYq3I/n6jqlm6JI5s9q0nttPBmoSxBOZPMeg8Bl55dW+SYryF4eXbM7PGofv6v/EjMKC3lkClKAyqDi+Bl33Arndftr3yTc5zTUbZgGt9UAmB90OJHGnpe53X0t3ruj38rL3/uhUM4YDTkgHsA==
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
- by AS8PR07MB7845.eurprd07.prod.outlook.com (2603:10a6:20b:350::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.23; Wed, 23 Apr
- 2025 10:09:18 +0000
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d%6]) with mapi id 15.20.8678.021; Wed, 23 Apr 2025
- 10:09:18 +0000
-From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "jasowang@redhat.com"
- <jasowang@redhat.com>, "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>, 
- "kevin.tian@intel.com" <kevin.tian@intel.com>, "yi.l.liu@intel.com"
- <yi.l.liu@intel.com>, "peterx@redhat.com" <peterx@redhat.com>
-Subject: Re: [PATCH v3 1/2] intel_iommu: Take the bql before registering a new
- address space
-Thread-Topic: [PATCH v3 1/2] intel_iommu: Take the bql before registering a
- new address space
-Thread-Index: AQHbtBHswoqaONJjl0KQ7HZVe2CuOrOwwdeAgAA2iQCAAA4igIAAAOCA
-Date: Wed, 23 Apr 2025 10:09:18 +0000
-Message-ID: <e55ae1b6-0e05-41d5-9580-932566cd6d65@eviden.com>
-References: <20250423053742.65401-1-clement.mathieu--drif@eviden.com>
- <20250423015815-mutt-send-email-mst@kernel.org>
- <b848eddb-8c5c-4e25-a88c-36583a485d31@eviden.com>
- <20250423060502-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250423060502-mutt-send-email-mst@kernel.org>
-Accept-Language: en-GB, fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=eviden.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|AS8PR07MB7845:EE_
-x-ms-office365-filtering-correlation-id: c6ec7412-7380-42b1-23e9-08dd824ee935
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?SGMvdU9pSloyakI0VGdpWFRwMWgzWHZ4cmVpT2VjTkZ1TjR6aG5tRitLWU5L?=
- =?utf-8?B?YVBERlN2bGhNeFhDbEQ5RTRyMUlXdTdBOGdqNzU0eVJtTDhqNHRleEp3UUFX?=
- =?utf-8?B?Z1JZbFZ3TExYdU1UeVZEdzRHSjBvTjBsUW5XS1Nxcnk3VHAxVXg0cW16MWZ4?=
- =?utf-8?B?WjFhM2FtN0c4d2dXUlgvZjE2QW11aXVtbXhWcjJLZEF3ejN2UjIxVDJKSXMr?=
- =?utf-8?B?QmtPRFJiT0tzS2NMUkN1KzE1S2xKR08wOVliazJtVkJGbXpUZDVCYWdvZnVh?=
- =?utf-8?B?cFU0SFZ5SXdKa3ZwRUVOYWIwa245OGtQYW9idHBvd3JYWEpMNHY4Y2xWNkFr?=
- =?utf-8?B?d0tNbzlWT2RqcGJrQ2JYb3BjMHU4bXF0aWQ1aS9xcW1VK1ZaSml4RUgybFFG?=
- =?utf-8?B?N3ptalVQMTM0THNUQWpGZVhIajl2WHRYckwxdjh0UXo3YndXZjMvZG1PK1hN?=
- =?utf-8?B?YVhMeVBGM1hLMmY4OHVmVTFNT204aENqdDFvcys3WmhJaWwrdEFadyt4TzMr?=
- =?utf-8?B?MllzYmxIdGUvZDVub0VVcmY0TnR4VExEKzBaK2srNWJ0bFBwQ083ZitacnBj?=
- =?utf-8?B?SnlnR2s0ZjhpQlpkejNEZTRHbklnWXBEUUl2VERLYUl4QkMxSFlyb3Frd2JN?=
- =?utf-8?B?ak9JbmNKV1A0SFpJaG5XWU1JV0l1VGdyUGptbzQzU29mWVZRczM4L2ZFMWNP?=
- =?utf-8?B?WnI3M3cyZVc0VXNqVzlDelBxSW1maFlzVzc3SitCZ25KMGZCbDJpS0tRVFhH?=
- =?utf-8?B?MmN3VGZOZXFnQ1hteldXN1IrWXRDMXNWTE9uOGZFbzlwR3FSajBNSEw4aVlm?=
- =?utf-8?B?Q0U0N1JmbUFyZmFwTXBoQUU1b0ZmcHVHaVJKVDhuZjR4eGxXMzIzVW1UTnJj?=
- =?utf-8?B?ZHZQSmYwaHp3MGZrN1VMZ28zSDUxZC9PQ0Q5YkhDMXN2ejhnZ3Z5WEVaUnVj?=
- =?utf-8?B?Q0tYUTYyRnAxb2FvSGxDMDRVV3UxU3BDQWRWSDZXaXNuSkpScGY2aUtTcms1?=
- =?utf-8?B?RTJEeFhSY3RSbXB5aVM2czBWQkEzb2RyWFF0dHdhelB0M2dVNmt0YzNMUlZW?=
- =?utf-8?B?QUJOZG54emY5bHdUSVZvd2xaTkZ6TENxUVluNlRIMnkreWExbUR4cnczeERu?=
- =?utf-8?B?NkRaZjZCaVRFaGZCcnNienlJU2tTRGhBY09uNmlYTXBmakF1STd2TDB5cjIy?=
- =?utf-8?B?TmRLb3RBWjJaSFlNSS9XR1VnZEswWi9RbmR0bk84VTFwTXZDVkJ0S1pzK3Vt?=
- =?utf-8?B?WWVpWGQyN1F4RFBRQzBKeThQeU9CWUxiWUl5aFdFVHpSQUZPMHNXWU1XcUlC?=
- =?utf-8?B?d3NMcW9HeFJPNHBhOVQ0bEVxYTQyS3FuOUI1SkZSVVlvVk5IR2RMVFVhSXpK?=
- =?utf-8?B?RVI5YXFNWnpuMkNpc0s1THA4Qmx3NUovcExiTkg3NVB0dC9RN2d4bHJuZWxr?=
- =?utf-8?B?Vk5xOEczZzFsc1VoNEgxb0p0dllzKy9malFlYmNLYm1LaW14VTNlOFp3d3JV?=
- =?utf-8?B?cks0U3BQUzVOOUhKZlNFNUNTY0Y2MEhvZzJTRmxnRnpWOXBtU2hYeGEwN2ps?=
- =?utf-8?B?cjNkK21DSUNrNmFnRTdTVWtKbkF1dWFnYkh0eDVyVkRMMEFockxKVWd2bTN1?=
- =?utf-8?B?ZjlpQVZobnhrZmlNbTFvUHo2UEtrTThxMDhHbUc2RnJhdjJQaDNja2pKKzBJ?=
- =?utf-8?B?Vm9yYzZKS0pjcGQ0aW02eGIzU0twcWxKNjc0QzRPN0NadkhhZGxIazlueG9C?=
- =?utf-8?B?YzQ1YmFMNmV6TGJFbVk1T01xWVBvbSs1OUw0V0twVDRsaUFhOXZFQS9xNkda?=
- =?utf-8?B?QXhBVDJVNDQwd2dodnNrZ0JKNnFsVnEzY3BVdlkzM2tXS1pLZnFGeFVmNHhs?=
- =?utf-8?B?dzI1eUE4WDNoMkplaXJwV01pT1RybEZTMTVweWNWbVVWSzZKWkJNOXlXVVQ2?=
- =?utf-8?B?c09ZSnlxOUJxZ2JyWmFWOEQ0Mm5uMGxkbnB5aUhRbzJJZjZhUXpMRXBtODUw?=
- =?utf-8?Q?eg2aM6a1ebt4JijCcnapludSVi+t2M=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RjM2dG5URzdZWnVrU0ZWTTI3bzA5b2NiYVdSVzVVSm5sY3IzaU5yQ2pGVDY5?=
- =?utf-8?B?SmNKSUZsMDFYZ3BwRnBzeHpSb2lpUzJEeUtYbWVTNHgyVXVvU1ZRaFFVV3Vv?=
- =?utf-8?B?bi9sOXVDdUxhSUhKQjhmd1NoNUhKL0FOZURPTDJGVTF4WnhXQ3NQK2M0U3VX?=
- =?utf-8?B?bGxDSUlYSE55N0ZHQ0RNKzZxc21ncTZXdXdQelVQSE9QTWdDTDVKYmhpWXJE?=
- =?utf-8?B?YnRKOWNYa2Zld3NmZXRJa0IzeGJVOXNTQWFVNklxN204cHFGSnJYR0g5WnAr?=
- =?utf-8?B?NlRJcHhReFJ0dWFjcmJubm9xdTVxVVV6U1FYNGJ5Tk1ZRlcvTXExRTlCVFZr?=
- =?utf-8?B?YW5TZWxQYTNqajB4OEYrTVlXeGJNMnRyaUlDYlQ3WkdVNDAvYStlUXBIU3hD?=
- =?utf-8?B?M3lKWkpuZ0k2b0pBRldVWHNnbncrenBkVnI0L3hnRlZNclFJekFGa1U1bEUz?=
- =?utf-8?B?cHVOQmcvQTJscm54QkJqcEY3aUhEbWZkZGFES0pBREUzVE84amR1enRvK3V4?=
- =?utf-8?B?bFE3ekkxVE9TQ1djU3Y4b0hROXIwVUNMSmRDV1NJRjhsVzNQa2JzdXhiclc0?=
- =?utf-8?B?TjJDOVJhdGZRSm5HN3ZpOVJxZmRwTDZQanRnMjJ5YXE5SDlPTWJXSWNxMER4?=
- =?utf-8?B?ZU9ySWZEQTN0b1ovTXhxWTJZTEZRVkdOYUVHcWpENFdLT1hSa2R4cUhOSzBF?=
- =?utf-8?B?ZHdDZHVjbzBSZ0JUakh4VzlkSy9BOFo4RXp4Tm1BcUpFeldmbmpyMm9waU1v?=
- =?utf-8?B?T2FFWWxrUzdOdVhubDNoOHdXSVNDajFSL3g2ODNEaCtXaElDWHhZdFkyWXBL?=
- =?utf-8?B?SDh4dGFmdGg4cGNzcGtsWnFDSjhzYXpaOWdHUldHYmlHMmFnemJsMm9sSUo1?=
- =?utf-8?B?WmRidWMwZnVuVktGZklBTkJaMk05VUVuSFl3QmRwUE1oRVpSRGVTcXFaeDVI?=
- =?utf-8?B?MXZOcTlreGNtZlNIQ0VKdEpoOThGU3JQMTh1SjRtK3BpQ0YzbFdwNXdRSEV1?=
- =?utf-8?B?elFxaTJCVDVCYXRGZU0xQUIrSFZxbEhydTh1eEdoc1lheFRhTTFoRG5tWlVN?=
- =?utf-8?B?aEJtaUdESm9yREtyT3hLNmZYak4xbzJjRUlrMFlmRkptY0xlR1pNcmZTVkg4?=
- =?utf-8?B?MUtNNHFHbEI0VmVnRGFPUmFXYjk4ZTNYTmZWM0tSTEVoN0pUVnRWUDh6Q1BO?=
- =?utf-8?B?dWEwQ0Q2UUJYMVV2UGN6R2FTaVJHZ2syY3FnVCt2N2RPWnY5OHFsekVLRURE?=
- =?utf-8?B?RE1jVjVGYWVrdVlPSlUwVkdTTnJvWWMvNUhVMk55MnhYazdqV0UwdkphbTVr?=
- =?utf-8?B?T1l4ZnduY3kwVmNObm9ma2FyMjJSeTRKb25Lais4cWlpSUhieU1ubGcvZ2ZV?=
- =?utf-8?B?VmxTdHNvQ0k5R3NkSktKUzd6TDYrUCthUUQyS0J5SStTWFNwYkRmL0kxbEhJ?=
- =?utf-8?B?YWowQTJCWnJtUGJPZmVyZ2I1dS9IMnc2RHFvVWVBRlBJU1c4Znk4eUpXVHdS?=
- =?utf-8?B?eXV5UXV0aXAzTkRadkI3R01KL1Y5MHhQejlhTTgyMEIrV2haQ1lXOHgxZllD?=
- =?utf-8?B?UW5qVEFCMG1zZFQxQUs1cGJZMHkyb3Ztb1U3MXFXeDN3Qkp1QzFRQnF3ZGpa?=
- =?utf-8?B?Y3Fpa2hsM1dpZkYrYWlqMEsyWEg1QTNrbWdybzZsOEZ4VkxNWTk4ZDJFSDhi?=
- =?utf-8?B?ZXJ5cTNpZHhXOEV5T0VRRVZPWDAvdGdLTzF5RXFJNkJNelhwUmwwV0ZYenR6?=
- =?utf-8?B?YTBSL3dTSG9jOXZnSW56Vmg4WFc5WENBVG1XUFpmbzg5ZFhBd0NoVlNQd1ZK?=
- =?utf-8?B?T0ZwcUNNYXNvT0hoLzhqa3F5NzA4OHdYTTlYTlJKYUZPdFZoVDRVTTF3ZnAr?=
- =?utf-8?B?UitYTkY2Q1BQeVNYVzNiREdpZUNrRi8yb1NzZUh5dExFbm0xTXQ1OXNYODZy?=
- =?utf-8?B?U3h1VGN2QVFqYUcvLy92Yi9RQXRvcW82Tjg0MTB1Q002NHFDbWNDbXVKNzc4?=
- =?utf-8?B?VTBpVURoNGg5bXUwazBsZFo2ZmphejNsaytabGZzM1pidjBhazFkWHRYNWRI?=
- =?utf-8?B?bTlQcy9uRFUwQU05aVlrcVpQM1luWkFLQVN6bGdWT0RBOHRDcndPdXhPcWto?=
- =?utf-8?B?ZlRXS1ZmNG42ajFvS3BLdFNldzVQZmw1R2R2NzdNcTNVcGlNNXdRN1lPc0U5?=
- =?utf-8?Q?pU/KHxQ/tYjobUQZWi+6KQc=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <EB7F854B3FC7DD4CA50E6EB2D7A6E3BA@eurprd07.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
+ id 1u7XWK-0006Le-8n; Wed, 23 Apr 2025 06:40:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=AXkYTgLNvB2ITnefZruKnNcrIkKF8x7tCBcAQG+5aEE=; b=nJ1INe7FwbcHuae1f27R1hOgzJ
+ ZikhRA+2gtr10/hKydION2YokCmpl0A9yEjXR1E9F3dH9uTe20EX3b8jLj20m8qweir3utFk7qRsp
+ zKZ4zN42kp/ajll4Ilv33fZeVde0tsOiesd/amnflB+IbFSKkot97fbZTAaoWR8FEu0zlQu6TH4Lw
+ 8V2T1nR/Fh4Dbgl7GzAFdZz2O0gGsTlS5ZXnBN92Ij8AGEC8h6R2DjyjevUNPhLzk3jsouWv7v0XR
+ nkh4VxHAK4c36BVQuWKP+Y8rNykteBdujYrTwI+0I0XY6qsArJ1ZOIJFxb52vzEiaGdf7bilKiKOH
+ 1B+dXOqA==;
+Received: from [167.98.27.226] (helo=rainbowdash)
+ by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+ id 1u7X3A-006eze-OA; Wed, 23 Apr 2025 11:09:52 +0100
+Received: from ben by rainbowdash with local (Exim 4.98.2)
+ (envelope-from <ben@rainbowdash>) id 1u7X3A-00000008aYw-1uFj;
+ Wed, 23 Apr 2025 11:09:52 +0100
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+To: ben.dooks@codethink.co.uk, richard.henderson@linaro.org,
+ pbonzini@redhat.com, peter.maydell@linaro.org, mrolnik@gmail.com,
+ brian.cain@oss.qualcomm.com, deller@gmx.de, zhao1.liu@intel.com,
+ gaosong@loongson.cn, laurent@vivier.eu, edgar.iglesias@gmail.com,
+ philmd@linaro.org, aurelien@aurel32.net, jiaxun.yang@flygoat.com,
+ arikalo@gmail.com, shorne@gmail.com, npiggin@gmail.com,
+ danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ ysato@users.sourceforge.jp, david@redhat.com, iii@linux.ibm.com,
+ thuth@redhat.com, mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
+ kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org
+Subject: [RFC PATCH] tcg: allow tb_flags to be larger than 32bit
+Date: Wed, 23 Apr 2025 11:09:49 +0100
+Message-Id: <20250423100949.2047161-1-ben.dooks@codethink.co.uk>
+X-Mailer: git-send-email 2.37.2.352.g3c44437643
 MIME-Version: 1.0
-X-OriginatorOrg: eviden.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6ec7412-7380-42b1-23e9-08dd824ee935
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Apr 2025 10:09:18.7571 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wCFfzJxBEUgqpBFXoOpFm/UKtYp5YVBBMXrWQXwzfKOVf9JC51pM0hUxNkH8RoM4P5ArPHBTRNGD+dzvrQWGFhfP5aCSJXK8JO4xnrMgygUTURECkmdJS2xOXPN7kZkI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR07MB7845
-Received-SPF: pass client-ip=80.78.11.83;
- envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost2.eviden.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=78.40.148.171;
+ envelope-from=srv_ts003@codethink.com; helo=imap5.colo.codethink.co.uk
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -208,47 +78,445 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCk9uIDIzLzA0LzIwMjUgMTI6MDYgcG0sIE1pY2hhZWwgUy4gVHNpcmtpbiB3cm90ZToNCj4g
-Q2F1dGlvbjogRXh0ZXJuYWwgZW1haWwuIERvIG5vdCBvcGVuIGF0dGFjaG1lbnRzIG9yIGNsaWNr
-IGxpbmtzLCB1bmxlc3MgdGhpcyBlbWFpbCBjb21lcyBmcm9tIGEga25vd24gc2VuZGVyIGFuZCB5
-b3Uga25vdyB0aGUgY29udGVudCBpcyBzYWZlLg0KPg0KPg0KPiBPbiBXZWQsIEFwciAyMywgMjAy
-NSBhdCAwOToxNTozNkFNICswMDAwLCBDTEVNRU5UIE1BVEhJRVUtLURSSUYgd3JvdGU6DQo+Pg0K
-Pj4NCj4+IE9uIDIzLzA0LzIwMjUgODowMCBhbSwgTWljaGFlbCBTLiBUc2lya2luIHdyb3RlOg0K
-Pj4+IENhdXRpb246IEV4dGVybmFsIGVtYWlsLiBEbyBub3Qgb3BlbiBhdHRhY2htZW50cyBvciBj
-bGljayBsaW5rcywgdW5sZXNzIHRoaXMgZW1haWwgY29tZXMgZnJvbSBhIGtub3duIHNlbmRlciBh
-bmQgeW91IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4NCj4+Pg0KPj4+DQo+Pj4gT24gV2VkLCBB
-cHIgMjMsIDIwMjUgYXQgMDU6Mzg6MjBBTSArMDAwMCwgQ0xFTUVOVCBNQVRISUVVLS1EUklGIHdy
-b3RlOg0KPj4+PiBBZGRyZXNzIHNwYWNlIGNyZWF0aW9uIG1pZ2h0IGVuZCB1cCBiZWluZyBjYWxs
-ZWQgd2l0aG91dCBob2xkaW5nIHRoZQ0KPj4+PiBicWwgYXMgaXQgaXMgZXhwb3NlZCB0aHJvdWdo
-IHRoZSBJT01NVSBvcHMuDQo+Pj4+DQo+Pj4+IFNpZ25lZC1vZmYtYnk6IENsZW1lbnQgTWF0aGll
-dS0tRHJpZiA8Y2xlbWVudC5tYXRoaWV1LS1kcmlmQGV2aWRlbi5jb20+DQo+Pj4+IC0tLQ0KPj4+
-PiAgICBody9pMzg2L2ludGVsX2lvbW11LmMgfCA2ICsrKysrKw0KPj4+PiAgICAxIGZpbGUgY2hh
-bmdlZCwgNiBpbnNlcnRpb25zKCspDQo+Pj4+DQo+Pj4+IGRpZmYgLS1naXQgYS9ody9pMzg2L2lu
-dGVsX2lvbW11LmMgYi9ody9pMzg2L2ludGVsX2lvbW11LmMNCj4+Pj4gaW5kZXggZGZmZDdlZTg4
-NS4uY2M4Yzk4NTdlMSAxMDA2NDQNCj4+Pj4gLS0tIGEvaHcvaTM4Ni9pbnRlbF9pb21tdS5jDQo+
-Pj4+ICsrKyBiL2h3L2kzODYvaW50ZWxfaW9tbXUuYw0KPj4+PiBAQCAtNDIzOCw2ICs0MjM4LDEy
-IEBAIFZUREFkZHJlc3NTcGFjZSAqdnRkX2ZpbmRfYWRkX2FzKEludGVsSU9NTVVTdGF0ZSAqcywg
-UENJQnVzICpidXMsDQo+Pj4+ICAgICAgICAgICAgdnRkX2Rldl9hcy0+Y29udGV4dF9jYWNoZV9l
-bnRyeS5jb250ZXh0X2NhY2hlX2dlbiA9IDA7DQo+Pj4+ICAgICAgICAgICAgdnRkX2Rldl9hcy0+
-aW92YV90cmVlID0gaW92YV90cmVlX25ldygpOw0KPj4+Pg0KPj4+PiArICAgICAgICAvKg0KPj4+
-PiArICAgICAgICAgKiBtZW1vcnlfcmVnaW9uX2FkZF9zdWJyZWdpb25fb3ZlcmxhcCByZXF1aXJl
-cyB0aGUgYnFsLA0KPj4+PiArICAgICAgICAgKiBtYWtlIHN1cmUgd2Ugb3duIGl0Lg0KPj4+PiAr
-ICAgICAgICAgKi8NCj4+Pj4gKyAgICAgICAgQlFMX0xPQ0tfR1VBUkQoKTsNCj4+Pj4gKw0KPj4+
-PiAgICAgICAgICAgIG1lbW9yeV9yZWdpb25faW5pdCgmdnRkX2Rldl9hcy0+cm9vdCwgT0JKRUNU
-KHMpLCBuYW1lLCBVSU5UNjRfTUFYKTsNCj4+Pj4gICAgICAgICAgICBhZGRyZXNzX3NwYWNlX2lu
-aXQoJnZ0ZF9kZXZfYXMtPmFzLCAmdnRkX2Rldl9hcy0+cm9vdCwgInZ0ZC1yb290Iik7DQo+Pj4N
-Cj4+PiBEb2VzIG5vdCBsb29rIGxpa2UgdGhpcyBhZGRyZXNzZXMgYWxsIHJhY2VzIGhlcmU6DQo+
-Pj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzgwNjJkODY4LTQ2OWYtNGMxZC1hMDcxLTA5
-OWI4ZTE4ODU3Y0ByZWRoYXQuY29tDQo+Pj4NCj4+Pg0KPj4+IHdoaWxlIHRoaXMgY2FuIGJlIGEg
-c2VwYXJhdGUgcGF0Y2ggb24gdG9wLCBJJ2QgcmF0aGVyIHdlIGp1c3QNCj4+PiBhZGRyZXNzIGV2
-ZXJ5dGhpbmcgaW4gYSBzaW5nbGUgcGF0Y2hzZXQuDQo+Pg0KPj4gSGkgTWljaGFlbCwNCj4+DQo+
-PiBXZSBvbmx5IGFpbSB0byBmaXggdGhlIHBvdGVudGlhbCBjcmFzaCBoZXJlLg0KPj4gSSBzYXcg
-UGFvbG8ncyByZXNwb25zZSBhbmQgSSBrbm93IHRoZSByYWNlIGV4aXN0cy4gSSB3aWxsIHNlbmQg
-YSBwYXRjaA0KPj4gc2V0IHRvIGZpeCBpdCBzb29uIGJ1dCBhcmUgeW91IHN1cmUgYm90aCBmaXhl
-cyBtdXN0IGJlIGluIHRoZSBzYW1lDQo+PiBzZXJpZXM/IEkgdGhpbmsgdGhlIG5hdHVyZSBpcyBk
-aWZmZXJlbnQuDQo+Pg0KPj4gY21kDQo+DQo+IElmIHlvdSBoYXZlIHR3byByYWNlcyBpbiB0aGUg
-c2FtZSBmdW5jdGlvbiwgZml4aW5nIG9uZSBjYW4gZWFzaWx5DQo+IG1ha2UgYW5vdGhlciBvbmUg
-b2NjdXIgbW9yZS4gTGV0J3MganVzdCBmaXggaXQgYWxsIHBsZWFzZSwNCj4gSSBkb24ndCBzZWUg
-YW55IHJ1c2ggdG8gYXBwbHkgYSBwYXJ0aWFsIGZpeC4NCj4NCg0KRmluZSwgd2lsbCBkbyENCg0K
-PiAtLQ0KPiBNU1QNCj4NCg==
+In adding a new feature to the riscv target, it turns out the tb_flags
+had already got to the 32-bit limit. Everyone other target has been
+fine with uint32_t (except perhaps arm which does somethng strange to
+extend tb_flags, I think).
+
+To allow extending of tb_flags to be bigger, change the uint32_t to
+a tb_flags_t which a target can define to be bigger (and do this for
+riscv as having tb_flags_t be uint64_t somewhere is necessary to pick
+out bugs in this translation).
+
+This method of extension also stops having to go through each arch
+fixing field usage and anything else that may arise, and given this
+is currently only affecting the tcg, it can be done per target arch.
+
+Note, target/riscv does not currently use any of the other flag bits
+yet. The work is done as we would like to try the big-endian riscv
+again and someone has already taken the last bit we where using at
+(target/riscv/cpu.h#L666 adding PM_SIGNEXTEND where we had BE_DATA)
+
+Q: Do the cpu_get_tb_state calls need uint32_t changing to the
+tb_flag_t as part of this?
+
+Q: As part of this, should we also define a FLAG_DP_TB or similar
+wrapper for the relevant change?
+
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+---
+ accel/tcg/cpu-exec.c      | 10 +++++-----
+ accel/tcg/translate-all.c |  2 +-
+ target/alpha/cpu.h        |  3 ++-
+ target/arm/cpu.h          |  1 +
+ target/avr/cpu.h          |  1 +
+ target/hexagon/cpu.h      |  1 +
+ target/hppa/cpu.h         |  1 +
+ target/i386/cpu.h         |  1 +
+ target/loongarch/cpu.h    |  1 +
+ target/m68k/cpu.h         |  1 +
+ target/microblaze/cpu.h   |  1 +
+ target/mips/cpu.h         |  1 +
+ target/openrisc/cpu.h     |  1 +
+ target/ppc/cpu.h          |  1 +
+ target/riscv/cpu.h        |  3 ++-
+ target/riscv/cpu_helper.c | 40 +++++++++++++++++++--------------------
+ target/rx/cpu.h           |  1 +
+ target/s390x/cpu.h        |  1 +
+ target/sh4/cpu.h          |  1 +
+ target/sparc/cpu.h        |  1 +
+ target/tricore/cpu.h      |  1 +
+ target/xtensa/cpu.h       |  1 +
+ 22 files changed, 47 insertions(+), 28 deletions(-)
+
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index ef3d967e3a..2610ecd40e 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -302,7 +302,7 @@ static void log_cpu_exec(vaddr pc, CPUState *cpu,
+ }
+ 
+ static bool check_for_breakpoints_slow(CPUState *cpu, vaddr pc,
+-                                       uint32_t *cflags)
++                                       tb_flags_t *cflags)
+ {
+     CPUBreakpoint *bp;
+     bool match_page = false;
+@@ -368,7 +368,7 @@ static bool check_for_breakpoints_slow(CPUState *cpu, vaddr pc,
+ }
+ 
+ static inline bool check_for_breakpoints(CPUState *cpu, vaddr pc,
+-                                         uint32_t *cflags)
++                                         tb_flags_t *cflags)
+ {
+     return unlikely(!QTAILQ_EMPTY(&cpu->breakpoints)) &&
+         check_for_breakpoints_slow(cpu, pc, cflags);
+@@ -388,7 +388,7 @@ const void *HELPER(lookup_tb_ptr)(CPUArchState *env)
+     TranslationBlock *tb;
+     vaddr pc;
+     uint64_t cs_base;
+-    uint32_t flags, cflags;
++    tb_flags_t flags, cflags;
+ 
+     /*
+      * By definition we've just finished a TB, so I/O is OK.
+@@ -565,7 +565,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
+     TranslationBlock *tb;
+     vaddr pc;
+     uint64_t cs_base;
+-    uint32_t flags, cflags;
++    tb_flags_t flags, cflags;
+     int tb_exit;
+ 
+     if (sigsetjmp(cpu->jmp_env, 0) == 0) {
+@@ -956,7 +956,7 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
+             TranslationBlock *tb;
+             vaddr pc;
+             uint64_t cs_base;
+-            uint32_t flags, cflags;
++            tb_flags_t flags, cflags;
+ 
+             cpu_get_tb_cpu_state(cpu_env(cpu), &pc, &cs_base, &flags);
+ 
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 82bc16bd53..ec90a9a9b0 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -594,7 +594,7 @@ void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr)
+         vaddr pc;
+         uint64_t cs_base;
+         tb_page_addr_t addr;
+-        uint32_t flags;
++        tb_flags_t flags;
+ 
+         cpu_get_tb_cpu_state(env, &pc, &cs_base, &flags);
+         addr = get_page_addr_code(env, pc);
+diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
+index 80562adfb5..25694ede9d 100644
+--- a/target/alpha/cpu.h
++++ b/target/alpha/cpu.h
+@@ -464,8 +464,9 @@ void alpha_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+                                      MemTxResult response, uintptr_t retaddr);
+ #endif
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUAlphaState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *pflags)
++                                        uint64_t *cs_base, tb_flags_t *pflags)
+ {
+     *pc = env->pc;
+     *cs_base = 0;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index a8177c6c2e..fd32e8d22c 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -3151,6 +3151,7 @@ static inline bool bswap_code(bool sctlr_b)
+ #endif
+ }
+ 
++typedef uint32_t tb_flags_t;
+ void cpu_get_tb_cpu_state(CPUARMState *env, vaddr *pc,
+                           uint64_t *cs_base, uint32_t *flags);
+ 
+diff --git a/target/avr/cpu.h b/target/avr/cpu.h
+index 06f5ae4d1b..1a3f31b779 100644
+--- a/target/avr/cpu.h
++++ b/target/avr/cpu.h
+@@ -193,6 +193,7 @@ enum {
+     TB_FLAGS_SKIP = 2,
+ };
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUAVRState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *pflags)
+ {
+diff --git a/target/hexagon/cpu.h b/target/hexagon/cpu.h
+index f78c8f9c2a..c924aa7e91 100644
+--- a/target/hexagon/cpu.h
++++ b/target/hexagon/cpu.h
+@@ -136,6 +136,7 @@ G_NORETURN void hexagon_raise_exception_err(CPUHexagonState *env,
+                                             uint32_t exception,
+                                             uintptr_t pc);
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUHexagonState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 8b36642b59..e56f327737 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -352,6 +352,7 @@ hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr);
+ #define CS_BASE_DIFFPAGE    (1 << 12)
+ #define CS_BASE_DIFFSPACE   (1 << 13)
+ 
++typedef uint32_t tb_flags_t;
+ void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
+                           uint64_t *cs_base, uint32_t *pflags);
+ 
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 76f24446a5..4283f71d45 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2612,6 +2612,7 @@ int cpu_mmu_index_kernel(CPUX86State *env);
+ #include "hw/i386/apic.h"
+ #endif
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUX86State *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 254e4fbdcd..48252678c8 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -490,6 +490,7 @@ static inline void set_pc(CPULoongArchState *env, uint64_t value)
+ #define HW_FLAGS_VA32       0x20
+ #define HW_FLAGS_EUEN_ASXE  0x40
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index ddb0f29f4a..9787a0611a 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -607,6 +607,7 @@ void m68k_cpu_transaction_failed(CPUState *cs, hwaddr physaddr, vaddr addr,
+ #define TB_FLAGS_TRACE          16
+ #define TB_FLAGS_TRACE_BIT      (1 << TB_FLAGS_TRACE)
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUM68KState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
+index e44ddd5307..8b8e312a4f 100644
+--- a/target/microblaze/cpu.h
++++ b/target/microblaze/cpu.h
+@@ -421,6 +421,7 @@ static inline bool mb_cpu_is_big_endian(CPUState *cs)
+     return !cpu->cfg.endi;
+ }
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUMBState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/mips/cpu.h b/target/mips/cpu.h
+index f6877ece8b..e2a6b944ed 100644
+--- a/target/mips/cpu.h
++++ b/target/mips/cpu.h
+@@ -1368,6 +1368,7 @@ void cpu_mips_clock_init(MIPSCPU *cpu);
+ /* helper.c */
+ target_ulong exception_resume_pc(CPUMIPSState *env);
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUMIPSState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/openrisc/cpu.h b/target/openrisc/cpu.h
+index b97d2ffdd2..cc923629d4 100644
+--- a/target/openrisc/cpu.h
++++ b/target/openrisc/cpu.h
+@@ -351,6 +351,7 @@ static inline void cpu_set_gpr(CPUOpenRISCState *env, int i, uint32_t val)
+     env->shadow_gpr[0][i] = val;
+ }
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUOpenRISCState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 3ee83517dc..1575e8584b 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -2755,6 +2755,7 @@ void cpu_write_xer(CPUPPCState *env, target_ulong xer);
+  */
+ #define is_book3s_arch2x(ctx) (!!((ctx)->insns_flags & PPC_SEGMENT_64B))
+ 
++typedef uint32_t tb_flags_t;
+ #ifdef CONFIG_DEBUG_TCG
+ void cpu_get_tb_cpu_state(CPUPPCState *env, vaddr *pc,
+                           uint64_t *cs_base, uint32_t *flags);
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 51e49e03de..5ffa6e6f79 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -808,8 +808,9 @@ static inline uint32_t vext_get_vlmax(uint32_t vlenb, uint32_t vsew,
+     return vlen >> (vsew + 3 - lmul);
+ }
+ 
++typedef uint64_t tb_flags_t;
+ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+-                          uint64_t *cs_base, uint32_t *pflags);
++                          uint64_t *cs_base, tb_flags_t *pflags);
+ 
+ bool riscv_cpu_is_32bit(RISCVCPU *cpu);
+ 
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 6c4391d96b..7d6878fbc3 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -135,7 +135,7 @@ bool riscv_env_smode_dbltrp_enabled(CPURISCVState *env, bool virt)
+ }
+ 
+ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+-                          uint64_t *cs_base, uint32_t *pflags)
++                          uint64_t *cs_base, tb_flags_t *pflags)
+ {
+     RISCVCPU *cpu = env_archcpu(env);
+     RISCVExtStatus fs, vs;
+@@ -162,18 +162,18 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+         uint32_t maxsz = vlmax << vsew;
+         bool vl_eq_vlmax = (env->vstart == 0) && (vlmax == env->vl) &&
+                            (maxsz >= 8);
+-        flags = FIELD_DP32(flags, TB_FLAGS, VILL, env->vill);
+-        flags = FIELD_DP32(flags, TB_FLAGS, SEW, vsew);
+-        flags = FIELD_DP32(flags, TB_FLAGS, LMUL,
++        flags = FIELD_DP64(flags, TB_FLAGS, VILL, env->vill);
++        flags = FIELD_DP64(flags, TB_FLAGS, SEW, vsew);
++        flags = FIELD_DP64(flags, TB_FLAGS, LMUL,
+                            FIELD_EX64(env->vtype, VTYPE, VLMUL));
+-        flags = FIELD_DP32(flags, TB_FLAGS, VL_EQ_VLMAX, vl_eq_vlmax);
+-        flags = FIELD_DP32(flags, TB_FLAGS, VTA,
++        flags = FIELD_DP64(flags, TB_FLAGS, VL_EQ_VLMAX, vl_eq_vlmax);
++        flags = FIELD_DP64(flags, TB_FLAGS, VTA,
+                            FIELD_EX64(env->vtype, VTYPE, VTA));
+-        flags = FIELD_DP32(flags, TB_FLAGS, VMA,
++        flags = FIELD_DP64(flags, TB_FLAGS, VMA,
+                            FIELD_EX64(env->vtype, VTYPE, VMA));
+-        flags = FIELD_DP32(flags, TB_FLAGS, VSTART_EQ_ZERO, env->vstart == 0);
++        flags = FIELD_DP64(flags, TB_FLAGS, VSTART_EQ_ZERO, env->vstart == 0);
+     } else {
+-        flags = FIELD_DP32(flags, TB_FLAGS, VILL, 1);
++        flags = FIELD_DP64(flags, TB_FLAGS, VILL, 1);
+     }
+ 
+     if (cpu_get_fcfien(env)) {
+@@ -182,26 +182,26 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+          * the start of the block is tracked via env->elp. env->elp
+          * is turned on during jalr translation.
+          */
+-        flags = FIELD_DP32(flags, TB_FLAGS, FCFI_LP_EXPECTED, env->elp);
+-        flags = FIELD_DP32(flags, TB_FLAGS, FCFI_ENABLED, 1);
++        flags = FIELD_DP64(flags, TB_FLAGS, FCFI_LP_EXPECTED, env->elp);
++        flags = FIELD_DP64(flags, TB_FLAGS, FCFI_ENABLED, 1);
+     }
+ 
+     if (cpu_get_bcfien(env)) {
+-        flags = FIELD_DP32(flags, TB_FLAGS, BCFI_ENABLED, 1);
++        flags = FIELD_DP64(flags, TB_FLAGS, BCFI_ENABLED, 1);
+     }
+ 
+ #ifdef CONFIG_USER_ONLY
+     fs = EXT_STATUS_DIRTY;
+     vs = EXT_STATUS_DIRTY;
+ #else
+-    flags = FIELD_DP32(flags, TB_FLAGS, PRIV, env->priv);
++    flags = FIELD_DP64(flags, TB_FLAGS, PRIV, env->priv);
+ 
+     flags |= riscv_env_mmu_index(env, 0);
+     fs = get_field(env->mstatus, MSTATUS_FS);
+     vs = get_field(env->mstatus, MSTATUS_VS);
+ 
+     if (env->virt_enabled) {
+-        flags = FIELD_DP32(flags, TB_FLAGS, VIRT_ENABLED, 1);
++        flags = FIELD_DP64(flags, TB_FLAGS, VIRT_ENABLED, 1);
+         /*
+          * Merge DISABLED and !DIRTY states using MIN.
+          * We will set both fields when dirtying.
+@@ -221,12 +221,12 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+     }
+ #endif
+ 
+-    flags = FIELD_DP32(flags, TB_FLAGS, FS, fs);
+-    flags = FIELD_DP32(flags, TB_FLAGS, VS, vs);
+-    flags = FIELD_DP32(flags, TB_FLAGS, XL, env->xl);
+-    flags = FIELD_DP32(flags, TB_FLAGS, AXL, cpu_address_xl(env));
+-    flags = FIELD_DP32(flags, TB_FLAGS, PM_PMM, riscv_pm_get_pmm(env));
+-    flags = FIELD_DP32(flags, TB_FLAGS, PM_SIGNEXTEND, pm_signext);
++    flags = FIELD_DP64(flags, TB_FLAGS, FS, fs);
++    flags = FIELD_DP64(flags, TB_FLAGS, VS, vs);
++    flags = FIELD_DP64(flags, TB_FLAGS, XL, env->xl);
++    flags = FIELD_DP64(flags, TB_FLAGS, AXL, cpu_address_xl(env));
++    flags = FIELD_DP64(flags, TB_FLAGS, PM_PMM, riscv_pm_get_pmm(env));
++    flags = FIELD_DP64(flags, TB_FLAGS, PM_SIGNEXTEND, pm_signext);
+ 
+     *pflags = flags;
+ }
+diff --git a/target/rx/cpu.h b/target/rx/cpu.h
+index 349d61c4e4..ad4247deec 100644
+--- a/target/rx/cpu.h
++++ b/target/rx/cpu.h
+@@ -153,6 +153,7 @@ void rx_cpu_unpack_psw(CPURXState *env, uint32_t psw, int rte);
+ #define RX_CPU_IRQ 0
+ #define RX_CPU_FIR 1
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPURXState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index 5b7992deda..a42d412fe6 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -417,6 +417,7 @@ static inline int s390x_env_mmu_index(CPUS390XState *env, bool ifetch)
+ 
+ #include "tcg/tcg_s390x.h"
+ 
++typedef uint32_t tb_flags_t;
+ void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
+                           uint64_t *cs_base, uint32_t *flags);
+ 
+diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
+index d536d5d715..b10698f1a9 100644
+--- a/target/sh4/cpu.h
++++ b/target/sh4/cpu.h
+@@ -382,6 +382,7 @@ static inline void cpu_write_sr(CPUSH4State *env, target_ulong sr)
+     env->sr = sr & ~((1u << SR_M) | (1u << SR_Q) | (1u << SR_T));
+ }
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUSH4State *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index 68f8c21e7c..bc876becc9 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -745,6 +745,7 @@ trap_state* cpu_tsptr(CPUSPARCState* env);
+ #define TB_FLAG_FSR_QNE      (1 << 8)
+ #define TB_FLAG_ASI_SHIFT    24
+ 
++typedef uint32_t tb_flags_t;
+ void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
+                           uint64_t *cs_base, uint32_t *pflags);
+ 
+diff --git a/target/tricore/cpu.h b/target/tricore/cpu.h
+index cf9dbc6df8..917cd9ab5d 100644
+--- a/target/tricore/cpu.h
++++ b/target/tricore/cpu.h
+@@ -259,6 +259,7 @@ void tricore_tcg_init(void);
+ void tricore_translate_code(CPUState *cs, TranslationBlock *tb,
+                             int *max_insns, vaddr pc, void *host_pc);
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUTriCoreState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/xtensa/cpu.h b/target/xtensa/cpu.h
+index 8d70bfc0cd..856f794342 100644
+--- a/target/xtensa/cpu.h
++++ b/target/xtensa/cpu.h
+@@ -733,6 +733,7 @@ static inline uint32_t xtensa_replicate_windowstart(CPUXtensaState *env)
+ 
+ #include "exec/cpu-all.h"
+ 
++typedef uint32_t tb_flags_t;
+ static inline void cpu_get_tb_cpu_state(CPUXtensaState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+-- 
+2.37.2.352.g3c44437643
+
 
