@@ -2,77 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED49AA9A4F8
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 09:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72081A9A8EE
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 11:51:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7rQX-0006ou-7S; Thu, 24 Apr 2025 03:55:21 -0400
+	id 1u7tET-00009S-1a; Thu, 24 Apr 2025 05:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7rQR-0006mx-MH
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:55:15 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1u7tEQ-00008b-NB
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:50:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7rQQ-00079w-1r
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:55:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745481314; x=1777017314;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ChiWCOWFQYT90EDrHxtI3Sk73YKHofiCkjzg2l9zeWY=;
- b=NFL0Vj2hBS3n2BLhKPebpQ0S2ANson5k2yu/72FUT+rEkFN3wDp7HJOB
- QvUsDK9bKw/p4lARar4oXZsOgnLOscEEzpRz7hlR3cVKqh4mppKRK2mCk
- ZR8VYmUrCHjCRZ47eB3HW4jmsMlD4/ZveyVWOh7GcdxMXoNAGzYL3ouQb
- yAPTC/fU+51yr0mrdoZ/M+apyplW2X7rZRUdyhzBwrNEGbFq2RS9Km87m
- f0M1zmtwTWwUam/eQmqkwtENdQAEc5AUMinB7ohGC3Q7/MVkgFDsnOqoq
- yQpNzmiNfCrs6d6r2de7JW1WD+2oI94uFs+GCtYM8zFnz8eR0ev242eht Q==;
-X-CSE-ConnectionGUID: ZDewpKpwTnqkWAjEUTP8Jw==
-X-CSE-MsgGUID: akuGvf5wRIidrpNyz14EWA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="50761676"
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="50761676"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2025 00:55:13 -0700
-X-CSE-ConnectionGUID: KCQ2OuQ8Sl6PzTexsgnBlA==
-X-CSE-MsgGUID: UEODE1gcQNyKGWAoRxn3gQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="133510121"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa008.jf.intel.com with ESMTP; 24 Apr 2025 00:55:09 -0700
-Date: Thu, 24 Apr 2025 16:16:04 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 18/55] i386/tdx: Parse TDVF metadata for TDX VM
-Message-ID: <aAnzRDuk4gBgDFsf@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-19-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1u7tEO-0002wA-U1
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:50:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745488252;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+ references:references; bh=ctzATEo3wfKk0LkewVzzIrTODGgfX/lcFqq8uVOTXmQ=;
+ b=bMZjERpeZp2MKHbsm3O3sEFspkXioXB4hmrwo5Vj5pldR8/+uKOHh6FU7eZjsfFp+pSJuD
+ RZ0w7jgiqx8vujiKAn+CsX0+ee2EKUtmn0zGf2kyaCOn+EVLMwK7eFG+oTZwN/ctdd9wiD
+ OEDcj/Tfd0IicRWVUwR3QlVSbKnww2k=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-590-3fWzFL20Mj2LaltMFOFYjA-1; Thu, 24 Apr 2025 05:50:50 -0400
+X-MC-Unique: 3fWzFL20Mj2LaltMFOFYjA-1
+X-Mimecast-MFC-AGG-ID: 3fWzFL20Mj2LaltMFOFYjA_1745488248
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43d007b2c79so3204985e9.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 02:50:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745488248; x=1746093048;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:to:from:date:resent-to:resent-message-id:resent-date
+ :resent-from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ctzATEo3wfKk0LkewVzzIrTODGgfX/lcFqq8uVOTXmQ=;
+ b=uQ88JQtYW8ZlEPn1G05V5W8PdGPGm9p2efaCBVnd9OGrkFDA/qeGDlYLE4CFmgexa6
+ X0CwdCI+D9DerN7IV9erTejSmFhAQa2ucCi0EvUVRyFmEXJzlVbZ8OWQ7dZWz5Bg74KV
+ aWv9fC9thFxhtu54AfNPa7Vxq3+GpphIT4f6cWm0dvVzT18UHkZ7++HHwKT4S2Fqtd4L
+ W1EFmbVThJ3ftkrvrpJ+KUmZfzMIWGoS2pmtt/m5McztjOxQXMHV7Fcx7cdPahQs0ODv
+ 9c9gE+lFYACb/+GafN5esPqiaPtdxUUSur2FcaoV30Yj9EEbUoORDNdmtho9Rocc1KEh
+ Tgkw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVA67vDfX3VcIt1984EwrwTYupMN6Km5MaS0PWyxj1G094MGgmnjddQ8tRy5JCVvsfOZaDRseyIhMDg@nongnu.org
+X-Gm-Message-State: AOJu0YznKd0klvXw2aJ2SKAauJ5UZhkz2C/2LB9yPgBEbWOz9B10j19A
+ dCytFYvlZLPKBROoUJpAtjy06W57tb/XrYUNe7jZ26dbzjBpoPNsENG5XZxqBeDUCtklodyQeRM
+ BlAOEZxqnGdNMtqVm3MTig5/7tPKUaoQkotJnN4ck4NJpXOCXAtRmGP2Kq404fMfpmmZJO3rI5I
+ lhBrw4J/mshR1Pslv47FaRBs8SLeRcHHv1RJ0=
+X-Gm-Gg: ASbGncsV+YVWJ+rLl7+yWKKABcxKLrIjls5mkFpCLnfsWy7NsgIgVszqwc9GBpYUYvO
+ Kmdqju9rwqKBBVtKgR/o4sKE05A83wreL3fEw3tX1zbt22kRSqMMxvhtBmx/VTX8vghyZWxqIbp
+ FoBaHOAYJS9J4+YvqoWwslGkA1uofl3pY3T7zvQAbBHvqEI2bNvhRLZjGaga2kXNCUW8orcmtpl
+ 8AcONn98NnGBs/2dfjaPTqdzU4SGtlNh3LfqHN5K7Ttng9/JRhOaI9gU+sgqdTwCTWq0+KxyLJs
+ fvFC3999NsAhYY6NIGXCcroyedD8
+X-Received: by 2002:a05:600c:b8e:b0:43c:fa24:873e with SMTP id
+ 5b1f17b1804b1-4409bd0fd4cmr19798835e9.13.1745488248104; 
+ Thu, 24 Apr 2025 02:50:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFK/en76t9Y/Efke962Sxvdvpuh4X+SruFNN3sv2RdeD7Cyv7QT/s3q66iAMAdI8XiwG/tOQA==
+X-Received: by 2002:a05:600c:b8e:b0:43c:fa24:873e with SMTP id
+ 5b1f17b1804b1-4409bd0fd4cmr19798575e9.13.1745488247648; 
+ Thu, 24 Apr 2025 02:50:47 -0700 (PDT)
+Received: from fedora (nat-88-212-16-204.antik.sk. [88.212.16.204])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4409d29bfa6sm14250795e9.3.2025.04.24.02.50.47
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Apr 2025 02:50:47 -0700 (PDT)
+Resent-From: Juraj Marcin <jmarcin@redhat.com>
+Resent-Date: Thu, 24 Apr 2025 11:50:45 +0200
+Resent-Message-ID: <3gmcd5fups75kbewe4cxqnykmvhykglnprmi7zzdqizeim2o76@aogr7flp2355>
+Resent-To: qemu-devel@nongnu.org
+Received: from fedora (nat-88-212-16-204.antik.sk. [88.212.16.204])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5f625a3e4bbsm7286293a12.72.2025.04.23.04.02.52
+ for <farosas@suse.de>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Apr 2025 04:02:54 -0700 (PDT)
+Date: Wed, 23 Apr 2025 13:02:50 +0200
+From: Juraj Marcin <jmarcin@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH 0/2] migration: A couple of cleanups
+Message-ID: <4oydcm2b533xl2tz2uujgjrmxodhrjigm5ugijwvlwxsqr7pks@qpmvfrtlx73f>
+References: <20250416134356.29879-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-19-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
+In-Reply-To: <20250416134356.29879-1-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,23 +118,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:28AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:28 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 18/55] i386/tdx: Parse TDVF metadata for TDX VM
-> X-Mailer: git-send-email 2.34.1
-> 
-> After TDVF is loaded to bios MemoryRegion, it needs parse TDVF metadata.
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->  hw/i386/pc_sysfw.c         | 7 +++++++
->  target/i386/kvm/tdx-stub.c | 5 +++++
->  target/i386/kvm/tdx.c      | 5 +++++
->  target/i386/kvm/tdx.h      | 3 +++
->  4 files changed, 20 insertions(+)
+Hi Fabiano
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+On 2025-04-16 10:43, Fabiano Rosas wrote:
+> Postcopy code was moved and some if postcopy were left behind.
+> 
+> Multifd has an accounting issue in tracepoints.
+> 
+> Fabiano Rosas (2):
+>   migration/multifd: Fix received packets tracepoint
+>   migration: Trivial cleanups for postcopy
+> 
+>  migration/migration.c  | 28 ++++++++++------------------
+>  migration/multifd.c    |  6 +-----
+>  migration/trace-events |  4 ++--
+>  3 files changed, 13 insertions(+), 25 deletions(-)
+> 
+> -- 
+> 2.35.3
+> 
+
+Both patches look good to me.
+
+Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
 
 
