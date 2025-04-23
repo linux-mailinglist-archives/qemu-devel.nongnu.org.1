@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362ECA980B5
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB60FA980A8
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:25:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7USm-0002as-KT; Wed, 23 Apr 2025 03:24:08 -0400
+	id 1u7USp-0002ba-F9; Wed, 23 Apr 2025 03:24:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7USj-0002a9-JT; Wed, 23 Apr 2025 03:24:05 -0400
+ id 1u7USm-0002b5-HO; Wed, 23 Apr 2025 03:24:08 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7USh-0001IR-Sm; Wed, 23 Apr 2025 03:24:05 -0400
+ id 1u7USk-0001IR-Uk; Wed, 23 Apr 2025 03:24:08 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 23 Apr
@@ -29,18 +29,17 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  Stanley" <joel@jms.id.au>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <nabihestefan@google.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
- <clg@redhat.com>
-Subject: [PATCH v5 01/11] hw/arm/aspeed_ast27x0: Rename variable sram_name to
- name in ast2700 realize
-Date: Wed, 23 Apr 2025 15:23:37 +0800
-Message-ID: <20250423072350.541742-2-jamin_lin@aspeedtech.com>
+ <nabihestefan@google.com>
+Subject: [PATCH v5 02/11] hw/arm/aspeed_ast27x0 Introduce vbootrom memory
+ region
+Date: Wed, 23 Apr 2025 15:23:38 +0800
+Message-ID: <20250423072350.541742-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250423072350.541742-1-jamin_lin@aspeedtech.com>
 References: <20250423072350.541742-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -66,43 +65,69 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The variable "sram_name" was only used for naming the SRAM memory region.
-Rename it to "name" for consistency with similar code and avoid unnecessary
-new local variable declarations.
+Introduce a new vbootrom memory region. The region is mapped at address
+"0x00000000" and has a size of 128KB, identical to the SRAM region size.
+This memory region is intended for loading a vbootrom image file as part of the
+boot process.
+
+The vbootrom registered in the SoC's address space using the ASPEED_DEV_VBOOTROM
+index.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Nabih Estefan <nabihestefan@google.com>
 Tested-by: Nabih Estefan <nabihestefan@google.com>
 ---
- hw/arm/aspeed_ast27x0.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/hw/arm/aspeed_soc.h | 2 ++
+ hw/arm/aspeed_ast27x0.c     | 9 +++++++++
+ 2 files changed, 11 insertions(+)
 
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index f069d17d16..b4b23d693d 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -59,6 +59,7 @@ struct AspeedSoCState {
+     MemoryRegion sram;
+     MemoryRegion spi_boot_container;
+     MemoryRegion spi_boot;
++    MemoryRegion vbootrom;
+     AddressSpace dram_as;
+     AspeedRtcState rtc;
+     AspeedTimerCtrlState timerctrl;
+@@ -169,6 +170,7 @@ struct AspeedSoCClass {
+ const char *aspeed_soc_cpu_type(AspeedSoCClass *sc);
+ 
+ enum {
++    ASPEED_DEV_VBOOTROM,
+     ASPEED_DEV_SPI_BOOT,
+     ASPEED_DEV_IOMEM,
+     ASPEED_DEV_UART0,
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index dce7255a2c..b05ed75ff4 100644
+index b05ed75ff4..968dfa5526 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -577,7 +577,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
-     AspeedINTCClass *ic = ASPEED_INTC_GET_CLASS(&a->intc[0]);
-     AspeedINTCClass *icio = ASPEED_INTC_GET_CLASS(&a->intc[1]);
--    g_autofree char *sram_name = NULL;
-+    g_autofree char *name = NULL;
-     qemu_irq irq;
+@@ -24,6 +24,7 @@
+ #include "qemu/log.h"
  
-     /* Default boot region (SPI memory or ROMs) */
-@@ -649,9 +649,9 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     }
- 
-     /* SRAM */
--    sram_name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
--    if (!memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size,
--                                 errp)) {
-+    name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
-+    if (!memory_region_init_ram(&s->sram, OBJECT(s), name, sc->sram_size,
-+                                errp)) {
-         return;
-     }
+ static const hwaddr aspeed_soc_ast2700_memmap[] = {
++    [ASPEED_DEV_VBOOTROM]  =  0x00000000,
+     [ASPEED_DEV_SRAM]      =  0x10000000,
+     [ASPEED_DEV_HACE]      =  0x12070000,
+     [ASPEED_DEV_EMMC]      =  0x12090000,
+@@ -657,6 +658,14 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
      memory_region_add_subregion(s->memory,
+                                 sc->memmap[ASPEED_DEV_SRAM], &s->sram);
+ 
++    /* VBOOTROM */
++    if (!memory_region_init_ram(&s->vbootrom, OBJECT(s), "aspeed.vbootrom",
++                                0x20000, errp)) {
++        return;
++    }
++    memory_region_add_subregion(s->memory,
++                                sc->memmap[ASPEED_DEV_VBOOTROM], &s->vbootrom);
++
+     /* SCU */
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->scu), errp)) {
+         return;
 -- 
 2.43.0
 
