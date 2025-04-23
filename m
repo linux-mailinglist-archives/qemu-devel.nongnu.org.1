@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4F5A980B4
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3960AA980A1
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:25:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7UTX-0002qr-39; Wed, 23 Apr 2025 03:24:55 -0400
+	id 1u7UTZ-0002ti-Qs; Wed, 23 Apr 2025 03:24:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7UTN-0002nZ-Em; Wed, 23 Apr 2025 03:24:46 -0400
+ id 1u7UTQ-0002qW-2D; Wed, 23 Apr 2025 03:24:48 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7UTL-0001IR-7o; Wed, 23 Apr 2025 03:24:44 -0400
+ id 1u7UTO-0001IR-F1; Wed, 23 Apr 2025 03:24:47 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 23 Apr
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <nabihestefan@google.com>
-Subject: [PATCH v5 09/11] tests/functional/aspeed: extract boot and login
- sequence into helper function
-Date: Wed, 23 Apr 2025 15:23:45 +0800
-Message-ID: <20250423072350.541742-10-jamin_lin@aspeedtech.com>
+Subject: [PATCH v5 10/11] tests/functional/aspeed: Add to test vbootrom for
+ AST2700
+Date: Wed, 23 Apr 2025 15:23:46 +0800
+Message-ID: <20250423072350.541742-11-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250423072350.541742-1-jamin_lin@aspeedtech.com>
 References: <20250423072350.541742-1-jamin_lin@aspeedtech.com>
@@ -65,60 +65,66 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extracted repeated boot and login steps into a new helper function.
-No change in functional behavior.
+Add the AST2700 functional test to boot using the vbootrom image
+instead of manually loading boot components with -device loader.
+The boot ROM binary is now passed via the
+-bios option, using the image located in pc-bios/ast27x0_bootrom.bin.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- tests/functional/test_aarch64_aspeed.py | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tests/functional/test_aarch64_aspeed.py | 26 +++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/tests/functional/test_aarch64_aspeed.py b/tests/functional/test_aarch64_aspeed.py
-index 337d701917..2f04655b60 100755
+index 2f04655b60..34ddfa852c 100755
 --- a/tests/functional/test_aarch64_aspeed.py
 +++ b/tests/functional/test_aarch64_aspeed.py
-@@ -25,10 +25,15 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
+@@ -25,6 +25,18 @@ def do_test_aarch64_aspeed_sdk_start(self, image):
  
          self.vm.launch()
  
-+    def verify_openbmc_boot_and_login(self, name):
++    def verify_vbootrom_firmware_flow(self):
++        wait_for_console_pattern(self, 'Found valid FIT image')
++        wait_for_console_pattern(self, '[uboot] loading')
++        wait_for_console_pattern(self, 'done')
++        wait_for_console_pattern(self, '[fdt] loading')
++        wait_for_console_pattern(self, 'done')
++        wait_for_console_pattern(self, '[tee] loading')
++        wait_for_console_pattern(self, 'done')
++        wait_for_console_pattern(self, '[atf] loading')
++        wait_for_console_pattern(self, 'done')
++        wait_for_console_pattern(self, 'Jumping to BL31 (Trusted Firmware-A)')
++
+     def verify_openbmc_boot_and_login(self, name):
          wait_for_console_pattern(self, 'U-Boot 2023.10')
          wait_for_console_pattern(self, '## Loading kernel from FIT Image')
-         wait_for_console_pattern(self, 'Starting kernel ...')
- 
-+        wait_for_console_pattern(self, f'{name} login:')
-+        exec_command_and_wait_for_pattern(self, 'root', 'Password:')
-+        exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
-+
-     ASSET_SDK_V906_AST2700 = Asset(
-             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2700-a0-default-obmc.tar.gz',
-             '7247b6f19dbfb700686f8d9f723ac23f3eb229226c0589cb9b06b80d1b61f3cb')
-@@ -89,16 +94,12 @@ def start_ast2700_test(self, name):
+@@ -94,6 +106,11 @@ def start_ast2700_test(self, name):
          self.do_test_aarch64_aspeed_sdk_start(
              self.scratch_file(name, 'image-bmc'))
  
--        wait_for_console_pattern(self, f'{name} login:')
--
--        exec_command_and_wait_for_pattern(self, 'root', 'Password:')
--        exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
--
++    def start_ast2700_test_vbootrom(self, name):
++        self.vm.add_args('-bios', 'ast27x0_bootrom.bin')
++        self.do_test_aarch64_aspeed_sdk_start(
++                self.scratch_file(name, 'image-bmc'))
++
      def test_aarch64_ast2700_evb_sdk_v09_06(self):
          self.set_machine('ast2700-evb')
  
-         self.archive_extract(self.ASSET_SDK_V906_AST2700)
-         self.start_ast2700_test('ast2700-a0-default')
-+        self.verify_openbmc_boot_and_login('ast2700-a0-default')
+@@ -110,5 +127,14 @@ def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
+         self.verify_openbmc_boot_and_login('ast2700-default')
          self.do_ast2700_i2c_test()
  
-     def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
-@@ -106,6 +107,7 @@ def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
- 
-         self.archive_extract(self.ASSET_SDK_V906_AST2700A1)
-         self.start_ast2700_test('ast2700-default')
++    def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_06(self):
++        self.set_machine('ast2700a1-evb')
++
++        self.archive_extract(self.ASSET_SDK_V906_AST2700A1)
++        self.start_ast2700_test_vbootrom('ast2700-default')
++        self.verify_vbootrom_firmware_flow()
 +        self.verify_openbmc_boot_and_login('ast2700-default')
-         self.do_ast2700_i2c_test()
- 
++        self.do_ast2700_i2c_test()
++
  if __name__ == '__main__':
+     QemuSystemTest.main()
 -- 
 2.43.0
 
