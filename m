@@ -2,48 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603DFA986B2
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 12:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE9AA986B5
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 12:04:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Ww3-0007Fq-Hm; Wed, 23 Apr 2025 06:02:31 -0400
+	id 1u7WxG-0000PW-5p; Wed, 23 Apr 2025 06:03:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1u7Ww1-0007FN-0Z
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:02:29 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1u7Wx3-0000Jj-4n
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:03:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1u7Wvx-0002B5-W3
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:02:28 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 07F6F55D238;
- Wed, 23 Apr 2025 12:02:24 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id VlBrZ1H9VqFS; Wed, 23 Apr 2025 12:02:21 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id E86B255D23C; Wed, 23 Apr 2025 12:02:21 +0200 (CEST)
-Message-ID: <57f179bd3904c1f2ca062ca4d4ff9592bb4f4daa.1745402140.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1745402140.git.balaton@eik.bme.hu>
-References: <cover.1745402140.git.balaton@eik.bme.hu>
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 2/2] pc-bios: Move device tree files in their own subdir
-To: qemu-devel@nongnu.org
-Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- philmd@linaro.org
-Date: Wed, 23 Apr 2025 12:02:21 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1u7Wwx-0002Dt-9E
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:03:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745402603;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2yt4XnIaSVHhI+eFxGyBtC4Upz0I4jy4j58fjXpXHyw=;
+ b=bTkz6zmFbo+ZEr0OHSAbUyd8cnxSKpXH2fos8USvBVjlxegO5qu3MdC/LbMwrsxGhbDHGS
+ RMy9I6AJHHYTfSR4BR07gtWvHEQ+4X2kWpRqzQIls0X3bbFvbHeBskR82qE/sUE+GbAtbe
+ fntPn5LDANNIrTjuOIlL3g+0yuRylyA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-316-4x84djnmNHGEEHGa-OChhQ-1; Wed, 23 Apr 2025 06:03:22 -0400
+X-MC-Unique: 4x84djnmNHGEEHGa-OChhQ-1
+X-Mimecast-MFC-AGG-ID: 4x84djnmNHGEEHGa-OChhQ_1745402601
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43ce8f82e66so35455245e9.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 03:03:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745402601; x=1746007401;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2yt4XnIaSVHhI+eFxGyBtC4Upz0I4jy4j58fjXpXHyw=;
+ b=QfhtemIM9sbtaym8zI8BCm/UTKLbUQUI7KPQ4HwO/Zc8Te8HMWXqYdjwmY4Ty0jzWh
+ ezz0eF3iLpNH446k/NLC3tajdcgyh55CPHGODPdiZ2PYHh6uSHuWFe4zDnatr0ix4XTM
+ viWRqgs941JjqNg/XjVJ9yvuhoz/GON0+PzKDXbzPuI+AWjPgG2QDYA4Fx4J+W+sALSi
+ /Hi+3hjIlWB6wJ0+TEAgI0loN+Tg0Az2/BYMP4a5k8JQkullopo7a7syiG7edBYFGAeU
+ qB+XzTQNHCr591JpUjBjehZHkNR6Gsh5tLVxEI5FqPiPicAyh6tM32wsN8tx8ucbBfbE
+ wz2g==
+X-Gm-Message-State: AOJu0YwKadSwRgGSWPUDWJib939RYyiXRuQCV1KfcdPLEetloXJ6WKQd
+ 5ev5bxUSqbrTjcmvnoRT2m/6V3Q5Ww6Qx8sgEifZ7v4LwDLHP/0Pzuznf/iDYuCAcTrg6N+DhQZ
+ Jn+O4RriA4u9NP+UrL09x7MDjM4DxY5ZOaxGmHxEX+hqRhWk7C0WQ
+X-Gm-Gg: ASbGncs00ngsIXvsZGCm/O0ViTiaxjWb3KoqgHQygiWqdY391s7eNwVHh8XfsAegHbC
+ wcvL49GCiPYLSdDEVT15LoysbUPcL4GzDErY7685kjugleBKRyBIikHCJQsjIe9DM+Etk6bEtvM
+ u/qOvk2J3HQapZf1bwc6pfhIVYw+7/5WQ9wpFKY0NgG4M1w9SV8jLzT0wUAziXxOH2w+ht0WKLl
+ lWocUvAZXwi8wVnPOu5lP7yyy7AsiRv/YIJhI62nLabH4LLlPjd8RY/I/gUZ8AOGScpDTN/rAfb
+ DDlHdw==
+X-Received: by 2002:a05:600c:1911:b0:43c:fd72:f028 with SMTP id
+ 5b1f17b1804b1-4406ac3a9f3mr154837485e9.29.1745402600811; 
+ Wed, 23 Apr 2025 03:03:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8euMN/wVa9owSsB3+PoiIBM0iqkyb41jQRDW+a5zyolKau8WB9dkkB/xH4h/C7Y2IW+UCeg==
+X-Received: by 2002:a05:600c:1911:b0:43c:fd72:f028 with SMTP id
+ 5b1f17b1804b1-4406ac3a9f3mr154836995e9.29.1745402600397; 
+ Wed, 23 Apr 2025 03:03:20 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-39efa4a4c8fsm17856740f8f.89.2025.04.23.03.03.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Apr 2025 03:03:19 -0700 (PDT)
+Date: Wed, 23 Apr 2025 06:03:15 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Haoqian He <haoqian.he@smartx.com>
+Cc: qemu-devel@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>,
+ Raphael Norwitz <raphael@enfabrica.net>,
+ Li Feng <fengli@smartx.com>, yuhua@smartx.com,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Alex Williamson <alex.williamson@redhat.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ "reviewer:vhost-user-scmi" <mzamazal@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ "open list:virtiofs" <virtio-fs@lists.linux.dev>
+Subject: Re: [PATCH v5 3/3] vhost-user: return failure if backend crash when
+ live migration
+Message-ID: <20250423060235-mutt-send-email-mst@kernel.org>
+References: <20250401151819.1526461-1-haoqian.he@smartx.com>
+ <20250416024729.3289157-1-haoqian.he@smartx.com>
+ <20250416024729.3289157-4-haoqian.he@smartx.com>
+ <998122CC-C357-4499-831D-DC739E42A520@smartx.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <998122CC-C357-4499-831D-DC739E42A520@smartx.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,185 +124,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have several device tree files already and may have more in the
-future so add a new dtb subdirectory and move device tree files there
-so they are not mixed with ROM binaries.
+On Wed, Apr 23, 2025 at 02:45:42PM +0800, Haoqian He wrote:
+> ...
+> Gently ping. Looking forward to the review of these patches.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- MAINTAINERS                                |   2 +-
- pc-bios/{ => dtb}/bamboo.dtb               | Bin
- pc-bios/{ => dtb}/bamboo.dts               |   0
- pc-bios/{ => dtb}/canyonlands.dtb          | Bin
- pc-bios/{ => dtb}/canyonlands.dts          |   0
- pc-bios/dtb/meson.build                    |  23 +++++++++++++++++++++
- pc-bios/{ => dtb}/petalogix-ml605.dtb      | Bin
- pc-bios/{ => dtb}/petalogix-ml605.dts      |   0
- pc-bios/{ => dtb}/petalogix-s3adsp1800.dtb | Bin
- pc-bios/{ => dtb}/petalogix-s3adsp1800.dts |   0
- pc-bios/meson.build                        |  23 +--------------------
- qemu.nsi                                   |   2 +-
- system/datadir.c                           |   4 +++-
- 13 files changed, 29 insertions(+), 25 deletions(-)
- rename pc-bios/{ => dtb}/bamboo.dtb (100%)
- rename pc-bios/{ => dtb}/bamboo.dts (100%)
- rename pc-bios/{ => dtb}/canyonlands.dtb (100%)
- rename pc-bios/{ => dtb}/canyonlands.dts (100%)
- create mode 100644 pc-bios/dtb/meson.build
- rename pc-bios/{ => dtb}/petalogix-ml605.dtb (100%)
- rename pc-bios/{ => dtb}/petalogix-ml605.dts (100%)
- rename pc-bios/{ => dtb}/petalogix-s3adsp1800.dtb (100%)
- rename pc-bios/{ => dtb}/petalogix-s3adsp1800.dts (100%)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d54b5578f8..9349950527 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1569,7 +1569,7 @@ F: hw/pci-host/ppc440_pcix.c
- F: hw/display/sm501*
- F: hw/ide/sii3112.c
- F: hw/rtc/m41t80.c
--F: pc-bios/canyonlands.dt[sb]
-+F: pc-bios/dtb/canyonlands.dt[sb]
- F: pc-bios/u-boot-sam460ex-20100605.bin
- F: roms/u-boot-sam460ex
- F: docs/system/ppc/amigang.rst
-diff --git a/pc-bios/bamboo.dtb b/pc-bios/dtb/bamboo.dtb
-similarity index 100%
-rename from pc-bios/bamboo.dtb
-rename to pc-bios/dtb/bamboo.dtb
-diff --git a/pc-bios/bamboo.dts b/pc-bios/dtb/bamboo.dts
-similarity index 100%
-rename from pc-bios/bamboo.dts
-rename to pc-bios/dtb/bamboo.dts
-diff --git a/pc-bios/canyonlands.dtb b/pc-bios/dtb/canyonlands.dtb
-similarity index 100%
-rename from pc-bios/canyonlands.dtb
-rename to pc-bios/dtb/canyonlands.dtb
-diff --git a/pc-bios/canyonlands.dts b/pc-bios/dtb/canyonlands.dts
-similarity index 100%
-rename from pc-bios/canyonlands.dts
-rename to pc-bios/dtb/canyonlands.dts
-diff --git a/pc-bios/dtb/meson.build b/pc-bios/dtb/meson.build
-new file mode 100644
-index 0000000000..7a71835bca
---- /dev/null
-+++ b/pc-bios/dtb/meson.build
-@@ -0,0 +1,23 @@
-+dtbs = [
-+  'bamboo.dtb',
-+  'canyonlands.dtb',
-+  'petalogix-ml605.dtb',
-+  'petalogix-s3adsp1800.dtb',
-+]
-+
-+dtc = find_program('dtc', required: false)
-+if dtc.found()
-+  foreach out : dtbs
-+    f = fs.replace_suffix(out, '.dts')
-+    custom_target(f,
-+        build_by_default: have_system,
-+        input: files(f),
-+        output: out,
-+        install: get_option('install_blobs'),
-+        install_dir: qemu_datadir / 'dtb',
-+        command: [ dtc, '-q', '-I', 'dts', '-O', 'dtb',
-+                        '-o', '@OUTPUT@', '@INPUT0@' ])
-+  endforeach
-+else
-+    install_data(dtbs, install_dir: qemu_datadir / 'dtb')
-+endif
-diff --git a/pc-bios/petalogix-ml605.dtb b/pc-bios/dtb/petalogix-ml605.dtb
-similarity index 100%
-rename from pc-bios/petalogix-ml605.dtb
-rename to pc-bios/dtb/petalogix-ml605.dtb
-diff --git a/pc-bios/petalogix-ml605.dts b/pc-bios/dtb/petalogix-ml605.dts
-similarity index 100%
-rename from pc-bios/petalogix-ml605.dts
-rename to pc-bios/dtb/petalogix-ml605.dts
-diff --git a/pc-bios/petalogix-s3adsp1800.dtb b/pc-bios/dtb/petalogix-s3adsp1800.dtb
-similarity index 100%
-rename from pc-bios/petalogix-s3adsp1800.dtb
-rename to pc-bios/dtb/petalogix-s3adsp1800.dtb
-diff --git a/pc-bios/petalogix-s3adsp1800.dts b/pc-bios/dtb/petalogix-s3adsp1800.dts
-similarity index 100%
-rename from pc-bios/petalogix-s3adsp1800.dts
-rename to pc-bios/dtb/petalogix-s3adsp1800.dts
-diff --git a/pc-bios/meson.build b/pc-bios/meson.build
-index 34d6616c32..34d8cc4f33 100644
---- a/pc-bios/meson.build
-+++ b/pc-bios/meson.build
-@@ -86,31 +86,10 @@ blobs = [
-   'vof-nvram.bin',
- ]
- 
--dtc = find_program('dtc', required: false)
--foreach f : [
--  'bamboo.dts',
--  'canyonlands.dts',
--  'petalogix-s3adsp1800.dts',
--  'petalogix-ml605.dts',
--]
--  out = fs.replace_suffix(f, '.dtb')
--  if dtc.found()
--    custom_target(f,
--        build_by_default: have_system,
--        input: files(f),
--        output: out,
--        install: get_option('install_blobs'),
--        install_dir: qemu_datadir,
--        command: [ dtc, '-q', '-I', 'dts', '-O', 'dtb',
--                        '-o', '@OUTPUT@', '@INPUT0@' ])
--  else
--    blobs += out
--  endif
--endforeach
--
- if get_option('install_blobs')
-   install_data(blobs, install_dir: qemu_datadir)
- endif
- 
- subdir('descriptors')
-+subdir('dtb')
- subdir('keymaps')
-diff --git a/qemu.nsi b/qemu.nsi
-index b186f223e1..d419986ca0 100644
---- a/qemu.nsi
-+++ b/qemu.nsi
-@@ -204,7 +204,6 @@ Section "Uninstall"
-     Delete "$INSTDIR\*.bmp"
-     Delete "$INSTDIR\*.bin"
-     Delete "$INSTDIR\*.dll"
--    Delete "$INSTDIR\*.dtb"
-     Delete "$INSTDIR\*.fd"
-     Delete "$INSTDIR\*.img"
-     Delete "$INSTDIR\*.lid"
-@@ -215,6 +214,7 @@ Section "Uninstall"
-     Delete "$INSTDIR\qemu-io.exe"
-     Delete "$INSTDIR\qemu.exe"
-     Delete "$INSTDIR\qemu-system-*.exe"
-+    RMDir /r "$INSTDIR\dtb"
-     RMDir /r "$INSTDIR\doc"
-     RMDir /r "$INSTDIR\share"
-     ; Remove generated files
-diff --git a/system/datadir.c b/system/datadir.c
-index e450b84ce9..f96f8fc264 100644
---- a/system/datadir.c
-+++ b/system/datadir.c
-@@ -44,9 +44,11 @@ char *qemu_find_file(QemuFileType type, const char *name)
- 
-     switch (type) {
-     case QEMU_FILE_TYPE_BIOS:
--    case QEMU_FILE_TYPE_DTB:
-         subdir = "";
-         break;
-+    case QEMU_FILE_TYPE_DTB:
-+        subdir = "dtb/";
-+        break;
-     case QEMU_FILE_TYPE_KEYMAP:
-         subdir = "keymaps/";
-         break;
--- 
-2.41.3
+it's tagged for the next pull, but pls do not quote all
+of patch just to add 1 line.
+Thanks!
 
 
