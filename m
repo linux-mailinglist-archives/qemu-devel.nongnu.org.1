@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BB7A98631
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B930A9864A
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:46:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wda-0001gh-1Z; Wed, 23 Apr 2025 05:43:26 -0400
+	id 1u7WdL-0008Vc-09; Wed, 23 Apr 2025 05:43:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wca-0006BX-Sj
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1u7Wcd-0006Jd-EK
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7WcY-0008R3-J9
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:24 -0400
+ id 1u7Wcb-0008RP-C9
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401342;
+ s=mimecast20190719; t=1745401344;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bqeKYtmD/3cS14SfmlP9amKWqLAFVBdD07WL7so9K3w=;
- b=YX0hSRrXAfKyx+kuRwV0DoqbkmrF7sYNhs5YfTZnOzNj+8TJ1UlktqMw/pL6RMuXsWX+za
- gs2B/cwJMngNpLHVXLkOOLaWMlQMfKelEc8JZvoV9q0Ua2dWPea3UNVI2HZBkf3LZ8YMD0
- 5iKL7UnigCInAK2yp3b0CxMeZU/a5qY=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+glD85tLMU4Zh0YpUWT/RyU8gRb7iUdvIPG8JxMkRCI=;
+ b=J2uTnU8W1/Y3TpU+vOcQE9MgrbZFg2ZE0bYRC3fTYizB9LEm/if28qRj9MijaPMD3zRsQT
+ W624pdpVpxvM0oL9KRjPjqy4lF35NTGw+OPGoQOxIkqWwGXaDIkoR3Br5diDOWwmbEn1nM
+ fVMn7RvCp8c0TaVUihPEupCWZme7+2g=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-nLUaF0mmP123m4l4E4eOew-1; Wed, 23 Apr 2025 05:42:20 -0400
-X-MC-Unique: nLUaF0mmP123m4l4E4eOew-1
-X-Mimecast-MFC-AGG-ID: nLUaF0mmP123m4l4E4eOew_1745401339
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5e5d9682f6eso5664825a12.3
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:42:20 -0700 (PDT)
+ us-mta-576-R7yGQqZLNSiSNPQbIegP1Q-1; Wed, 23 Apr 2025 05:42:22 -0400
+X-MC-Unique: R7yGQqZLNSiSNPQbIegP1Q-1
+X-Mimecast-MFC-AGG-ID: R7yGQqZLNSiSNPQbIegP1Q_1745401342
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-ac6b047c0dcso461335666b.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:42:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401338; x=1746006138;
+ d=1e100.net; s=20230601; t=1745401341; x=1746006141;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bqeKYtmD/3cS14SfmlP9amKWqLAFVBdD07WL7so9K3w=;
- b=BPbjLPgFBpORfdJp1jdd5FkfApL4kP61P2+HwgKq8UErzumjSXt2tO87/ZEYfd8/bN
- rWgF85uSGHEt6Jcov1DQimNx7OcBc82W3XSMzvfCwmd8VxXnfXfgGDJBj1t+XnJx91VP
- vTkheoNDCTRZXbo79kX3ecL9TUbZ8so1Ta0B7wSExov4IghZ2MxByX+YSpMpvz9OaVlP
- K3pUanZj2YMe2HbG19KA8LuO4aUi1JvRGS04juqaB3qBcQkk9v7opiImNYCvn3R7+qSL
- of+dTlPhWAWe9d/RmmjL1EdUSv7a9io6B7NUbs/VGeBgACXQOLUfZRS7Glq5vB8s5By9
- t2fQ==
-X-Gm-Message-State: AOJu0YxzA1g24KSo5FVJ1+ZJd1iZbr5Qr6GD+0bKgMLFctqXa+anFVag
- wMVAuq7B7l+JS9vYcwidneg0R59WWCIYdz4VM/JMAEqTyvf9+NWwfYWFq7twfkoZEflER8x0Gn6
- ii3FUpnRemwOSMBPMDz1f6XajPrLeMDjD9z2cox0jBbqaHgNOCtS8qYRxHY0db2+oi8BFd632TJ
- Gm3orhSmsdQNwrlMpPHGCnASuxqKusbOZPGzGm
-X-Gm-Gg: ASbGncvzvto+dBCYe7N8bLeJ9TPg7F1CudvlExoz+Q6DW9lTAymOsq8kNjLrf9BfFsH
- EqV677anfnQGrrhpVEC9SXTHHTtusf5ulNasxh8f9G6DXnPg631IjlMo2VJbENzvLJCpOIddR/o
- ERA8M4f7pyjecdQGhqd9yCvh8qHybvZCCi01T+SsGvrbv/3Fkp+YV55O/ZUgXFnY2R1F61MoKqP
- dIdKGK+kUrfXFuAok3r8sScsFfe1s1y54aNmzyDj9IMm4LrcGkRp9noz/3nMfAGNndFwzG3O8f9
- 7agWFie01E3zdSeu
-X-Received: by 2002:a05:6402:4402:b0:5ed:5554:7c3b with SMTP id
- 4fb4d7f45d1cf-5f6285eca1amr16149996a12.32.1745401337929; 
- Wed, 23 Apr 2025 02:42:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGeySuAmObRK2EFser6E5KhuY1QofSvAa2LMR5gzE93aNUvKEymdXQA8Yu8v803qZIxP4U/Jg==
-X-Received: by 2002:a05:6402:4402:b0:5ed:5554:7c3b with SMTP id
- 4fb4d7f45d1cf-5f6285eca1amr16149973a12.32.1745401337481; 
- Wed, 23 Apr 2025 02:42:17 -0700 (PDT)
+ bh=+glD85tLMU4Zh0YpUWT/RyU8gRb7iUdvIPG8JxMkRCI=;
+ b=iJ+qQ3FL7oYwM0hk0vU78NXyQL/Oqt0emjO1L6Af44YCQHyHG8Fr/GVWR1FM9lwkeV
+ jVM4kCtSLzMMmLqz74IL6NZQ0A2niRkF+1181Del8VkeijWgrQP3R5vbMOCuJGKPc/CK
+ BTAoSiNOye0Cj00He4CkrvIQ3aXy1q19TzliEjJIkwVRS/aWg/8K8RhfqGLh/BBY7MY8
+ 6TalmreCgB44H163+9GkZXi0J+wJzb1A6fxp489XLBrGxpC9AkOGmKL5hFpLFY32U/eF
+ x8kalBxACkuOYqd5XNwPTazZbFglYsjvEmHe7hP51wrOUB8Z6W6hg0y3oe7LYLRV2OpJ
+ Ur2g==
+X-Gm-Message-State: AOJu0Yyg256jsl5F8kNz4dCkc/B9K7QIJ1Bf5OjCgIKmKQ9S01t7nwNd
+ fY8fTglHtbtU1rsyJXSQN2oPd09aRGOdSWAT1Lr9/QLmytq7Pb7KqD3Ybl/fAI98AGf/Hi8wimi
+ MshRO/htUjORFT8bpl0F1JVEiGwkSr7QlyVJTqC/Vdd0jIZHUQoTDuPxpQWVsxXkDz4UfHfmiVZ
+ RYzkBVa1Odz434I0E2S7Th42h0Vb73tMV0NifM
+X-Gm-Gg: ASbGncshXohVZ+q0rSCyJkuEiDqlk6hz63Mhsk5/JKF5h3c+Eb487Ow2yqxqkJO9vmP
+ GV/vlDdTQVr61iRP6zFkvzYQX3dFzOkWs0DszobE+Q8pOvtvmkqqNnGvKo8Pt7lxoJGz2RyPG/6
+ F71fxy/1J6ViexC/GRN6iFvM0lYrQD8IjnLhu6AaoI5nVzJYGB0TVq8dkHypP0FmhzHpO0B0B4A
+ bEpm6hpkf9CQUvsviPl1sFgBi+8QqxSN71w3l1vaGjwsHXNtsvZ6J7/GWQ/9kP54sRjRMjYkntk
+ 28eHndILHRc952GM
+X-Received: by 2002:a05:6402:35d0:b0:5ec:9e6e:c48f with SMTP id
+ 4fb4d7f45d1cf-5f62860dc21mr13830249a12.29.1745401340805; 
+ Wed, 23 Apr 2025 02:42:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEm0S3AUronm7c5jd0bqMm3chWH327AmKAhciuk4oM1SmeCfpU9Ws9MgTP2WsIeXtim8Ytn7Q==
+X-Received: by 2002:a05:6402:35d0:b0:5ec:9e6e:c48f with SMTP id
+ 4fb4d7f45d1cf-5f62860dc21mr13830233a12.29.1745401340406; 
+ Wed, 23 Apr 2025 02:42:20 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5f625833a6esm7224199a12.53.2025.04.23.02.42.16
+ 4fb4d7f45d1cf-5f6255778b3sm7199046a12.19.2025.04.23.02.42.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:42:16 -0700 (PDT)
+ Wed, 23 Apr 2025 02:42:18 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 32/34] rust/vmstate_test: Fix typo in
- test_vmstate_macro_array_of_pointer_wrapped()
-Date: Wed, 23 Apr 2025 11:41:02 +0200
-Message-ID: <20250423094105.40692-33-pbonzini@redhat.com>
+Cc: Rakesh Jeyasingh <rakeshjb010@gmail.com>
+Subject: [PULL 33/34] rust/hw/char/pl011: Extract extract DR read logic into
+ separate function
+Date: Wed, 23 Apr 2025 11:41:03 +0200
+Message-ID: <20250423094105.40692-34-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -107,37 +107,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Rakesh Jeyasingh <rakeshjb010@gmail.com>
 
-test_vmstate_macro_array_of_pointer_wrapped() tests the 3rd element, so
-fix the index.
+- Split `read()` DR case into `read_data_register()`
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250414144943.1112885-5-zhao1.liu@intel.com
+Signed-off-by: Rakesh Jeyasingh <rakeshjb010@gmail.com>
+Link: https://lore.kernel.org/r/20250407181327.171563-2-rakeshjb010@gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/tests/vmstate_tests.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 39 ++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/rust/qemu-api/tests/vmstate_tests.rs b/rust/qemu-api/tests/vmstate_tests.rs
-index b8d8b45b19d..8b93492a689 100644
---- a/rust/qemu-api/tests/vmstate_tests.rs
-+++ b/rust/qemu-api/tests/vmstate_tests.rs
-@@ -383,12 +383,12 @@ fn test_vmstate_macro_array_of_pointer_wrapped() {
-     );
-     assert_eq!(foo_fields[3].offset, (FOO_ARRAY_MAX + 2) * PTR_SIZE);
-     assert_eq!(foo_fields[3].num_offset, 0);
--    assert_eq!(foo_fields[2].info, unsafe { &vmstate_info_uint8 });
-+    assert_eq!(foo_fields[3].info, unsafe { &vmstate_info_uint8 });
-     assert_eq!(foo_fields[3].version_id, 0);
-     assert_eq!(foo_fields[3].size, PTR_SIZE);
-     assert_eq!(foo_fields[3].num, FOO_ARRAY_MAX as i32);
-     assert_eq!(
--        foo_fields[2].flags.0,
-+        foo_fields[3].flags.0,
-         VMStateFlags::VMS_ARRAY.0 | VMStateFlags::VMS_ARRAY_OF_POINTER.0
-     );
-     assert!(foo_fields[3].vmsd.is_null());
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index bf88e0b00a0..87153cdae13 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -190,25 +190,7 @@ pub(self) fn read(&mut self, offset: RegisterOffset) -> (bool, u32) {
+ 
+         let mut update = false;
+         let result = match offset {
+-            DR => {
+-                self.flags.set_receive_fifo_full(false);
+-                let c = self.read_fifo[self.read_pos];
+-                if self.read_count > 0 {
+-                    self.read_count -= 1;
+-                    self.read_pos = (self.read_pos + 1) & (self.fifo_depth() - 1);
+-                }
+-                if self.read_count == 0 {
+-                    self.flags.set_receive_fifo_empty(true);
+-                }
+-                if self.read_count + 1 == self.read_trigger {
+-                    self.int_level &= !Interrupt::RX.0;
+-                }
+-                // Update error bits.
+-                self.receive_status_error_clear.set_from_data(c);
+-                // Must call qemu_chr_fe_accept_input
+-                update = true;
+-                u32::from(c)
+-            }
++            DR => self.read_data_register(&mut update),
+             RSR => u32::from(self.receive_status_error_clear),
+             FR => u32::from(self.flags),
+             FBRD => self.fbrd,
+@@ -306,6 +288,25 @@ pub(self) fn write(
+         false
+     }
+ 
++    fn read_data_register(&mut self, update: &mut bool) -> u32 {
++        self.flags.set_receive_fifo_full(false);
++        let c = self.read_fifo[self.read_pos];
++
++        if self.read_count > 0 {
++            self.read_count -= 1;
++            self.read_pos = (self.read_pos + 1) & (self.fifo_depth() - 1);
++        }
++        if self.read_count == 0 {
++            self.flags.set_receive_fifo_empty(true);
++        }
++        if self.read_count + 1 == self.read_trigger {
++            self.int_level &= !Interrupt::RX.0;
++        }
++        self.receive_status_error_clear.set_from_data(c);
++        *update = true;
++        u32::from(c)
++    }
++
+     #[inline]
+     #[must_use]
+     fn loopback_tx(&mut self, value: registers::Data) -> bool {
 -- 
 2.49.0
 
