@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38701A98134
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 130FAA98149
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:40:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Uf0-00039R-GP; Wed, 23 Apr 2025 03:36:46 -0400
+	id 1u7UfL-0003CI-5I; Wed, 23 Apr 2025 03:37:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7Ueg-00031u-56
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:36:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7Ueo-00034A-Nf
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:36:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7Ued-0003AR-04
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:36:25 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7Uek-0003Bd-Dl
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:36:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745393781;
+ s=mimecast20190719; t=1745393788;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x/bk9XOQrPQKu46hMWa/9UDEo+ZO3ymqKIc1YaD6C2Y=;
- b=ARGNyKFrfHFN6iTr1rQjRc4lp44syx9DA8NzEfDdDT2T+HZm6IOgEmDAR3OSZsIYnO4jMN
- nSq+/pT6BRhCFCyoyMbgHPDlKy9T5uw8GvudxAoFDcAx4YMXKunHS+UnxVRFCW524pHujl
- 5tN4jde4IWFL8hrDpxopQwPgphRd5aQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=kHAl7mGWyVtoVdcBAu7OviotqdkJHPswlSScbOveyIk=;
+ b=agKrfrAoQQEycWPZgnmR41zwdv9MF3kuzFg11jiv3h30zyQoRXKgBYk+gjDElPsyTMYGed
+ /na6vrQDgeX7znSRBZ36NYVUzeGUnN2YKMzEKUkHuaQXEnLRLsG2z7UzXdpXSZ7QXBce27
+ ECs/NYpiWupsWoYpptOpJt7P2GBFzWs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-457-l0kHdszjOreKyAth0Mhy_g-1; Wed,
- 23 Apr 2025 03:36:19 -0400
-X-MC-Unique: l0kHdszjOreKyAth0Mhy_g-1
-X-Mimecast-MFC-AGG-ID: l0kHdszjOreKyAth0Mhy_g_1745393778
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-rx7uB6JQMMuMm_QgsycEhQ-1; Wed,
+ 23 Apr 2025 03:36:21 -0400
+X-MC-Unique: rx7uB6JQMMuMm_QgsycEhQ-1
+X-Mimecast-MFC-AGG-ID: rx7uB6JQMMuMm_QgsycEhQ_1745393780
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 39D7C1800980; Wed, 23 Apr 2025 07:36:18 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7420F19560BB; Wed, 23 Apr 2025 07:36:20 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-219.str.redhat.com
  [10.33.192.219])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 890E919560A3; Wed, 23 Apr 2025 07:36:16 +0000 (UTC)
+ id A3D0619560A3; Wed, 23 Apr 2025 07:36:18 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/29] hw/s390x/css: Remove the obsolete
- "css_migration_enabled" variable
-Date: Wed, 23 Apr 2025 09:35:42 +0200
-Message-ID: <20250423073610.271585-3-thuth@redhat.com>
+Subject: [PULL 03/29] hw/s390x/s390-stattrib: Remove the old migration_enabled
+ flag
+Date: Wed, 23 Apr 2025 09:35:43 +0200
+Message-ID: <20250423073610.271585-4-thuth@redhat.com>
 In-Reply-To: <20250423073610.271585-1-thuth@redhat.com>
 References: <20250423073610.271585-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -87,98 +87,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Now that the s390-ccw-virtio-2.9 machine type has been removed, we
-don't need the "css_migration_enabled" variable anymore and can remove
-the related code.
+Now that the machine types that set the migration_enabled flag to
+false are gone, we can remove it and the related code.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250115073819.15452-3-thuth@redhat.com>
+Message-ID: <20250115073819.15452-4-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/s390x/css.h |  6 ------
- hw/s390x/css.c         | 31 +------------------------------
- 2 files changed, 1 insertion(+), 36 deletions(-)
+ include/hw/s390x/storage-attributes.h | 1 -
+ hw/s390x/s390-stattrib-kvm.c          | 2 +-
+ hw/s390x/s390-stattrib.c              | 7 +------
+ 3 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/s390x/css.h b/include/hw/s390x/css.h
-index cd97e2b7075..dbf919bdd2e 100644
---- a/include/hw/s390x/css.h
-+++ b/include/hw/s390x/css.h
-@@ -333,10 +333,4 @@ static inline int ccw_dstream_read_buf(CcwDataStream *cds, void *buff, int len)
- #define ccw_dstream_read(cds, v) ccw_dstream_read_buf((cds), &(v), sizeof(v))
- #define ccw_dstream_write(cds, v) ccw_dstream_write_buf((cds), &(v), sizeof(v))
- 
--/**
-- * true if (vmstate based) migration of the channel subsystem
-- * is enabled, false if it is disabled.
-- */
--extern bool css_migration_enabled;
--
- #endif
-diff --git a/hw/s390x/css.c b/hw/s390x/css.c
-index 738800c98df..17afcbb2cde 100644
---- a/hw/s390x/css.c
-+++ b/hw/s390x/css.c
-@@ -23,8 +23,6 @@
- #include "hw/s390x/s390-virtio-ccw.h"
- #include "hw/s390x/s390-ccw.h"
- 
--bool css_migration_enabled = true;
--
- typedef struct CrwContainer {
-     CRW crw;
-     QTAILQ_ENTRY(CrwContainer) sibling;
-@@ -180,16 +178,10 @@ static const VMStateDescription vmstate_orb = {
-     }
+diff --git a/include/hw/s390x/storage-attributes.h b/include/hw/s390x/storage-attributes.h
+index 8921a04d514..b5c6d8fa552 100644
+--- a/include/hw/s390x/storage-attributes.h
++++ b/include/hw/s390x/storage-attributes.h
+@@ -25,7 +25,6 @@ OBJECT_DECLARE_TYPE(S390StAttribState, S390StAttribClass, S390_STATTRIB)
+ struct S390StAttribState {
+     DeviceState parent_obj;
+     uint64_t migration_cur_gfn;
+-    bool migration_enabled;
  };
  
--static bool vmstate_schdev_orb_needed(void *opaque)
--{
--    return css_migration_enabled;
--}
--
- static const VMStateDescription vmstate_schdev_orb = {
-     .name = "s390_subch_dev/orb",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .needed = vmstate_schdev_orb_needed,
-     .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(orb, SubchDev, 1, vmstate_orb, ORB),
-         VMSTATE_END_OF_LIST()
-@@ -390,33 +382,12 @@ static int subch_dev_post_load(void *opaque, int version_id)
-         css_subch_assign(s->cssid, s->ssid, s->schid, s->devno, s);
-     }
  
--    if (css_migration_enabled) {
--        /* No compat voodoo to do ;) */
--        return 0;
--    }
--    /*
--     * Hack alert. If we don't migrate the channel subsystem status
--     * we still need to find out if the guest enabled mss/mcss-e.
--     * If the subchannel is enabled, it certainly was able to access it,
--     * so adjust the max_ssid/max_cssid values for relevant ssid/cssid
--     * values. This is not watertight, but better than nothing.
--     */
--    if (s->curr_status.pmcw.flags & PMCW_FLAGS_MASK_ENA) {
--        if (s->ssid) {
--            channel_subsys.max_ssid = MAX_SSID;
--        }
--        if (s->cssid != channel_subsys.default_cssid) {
--            channel_subsys.max_cssid = MAX_CSSID;
--        }
--    }
-     return 0;
- }
+diff --git a/hw/s390x/s390-stattrib-kvm.c b/hw/s390x/s390-stattrib-kvm.c
+index 2a8e31718bf..d0ff04364d4 100644
+--- a/hw/s390x/s390-stattrib-kvm.c
++++ b/hw/s390x/s390-stattrib-kvm.c
+@@ -185,7 +185,7 @@ static long long kvm_s390_stattrib_get_dirtycount(S390StAttribState *sa)
  
- void css_register_vmstate(void)
+ static int kvm_s390_stattrib_get_active(S390StAttribState *sa)
  {
--    if (css_migration_enabled) {
--        vmstate_register(NULL, 0, &vmstate_css, &channel_subsys);
--    }
-+    vmstate_register(NULL, 0, &vmstate_css, &channel_subsys);
+-    return kvm_s390_cmma_active() && sa->migration_enabled;
++    return kvm_s390_cmma_active();
  }
  
- IndAddr *get_indicator(hwaddr ind_addr, int len)
+ static void kvm_s390_stattrib_class_init(ObjectClass *oc, void *data)
+diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
+index be07c28c6e5..35bf697ef0a 100644
+--- a/hw/s390x/s390-stattrib.c
++++ b/hw/s390x/s390-stattrib.c
+@@ -304,7 +304,7 @@ static int qemu_s390_set_migrationmode_stub(S390StAttribState *sa, bool value,
+ 
+ static int qemu_s390_get_active(S390StAttribState *sa)
+ {
+-    return sa->migration_enabled;
++    return true;
+ }
+ 
+ static void qemu_s390_stattrib_class_init(ObjectClass *oc, void *data)
+@@ -360,10 +360,6 @@ static void s390_stattrib_realize(DeviceState *dev, Error **errp)
+                          &savevm_s390_stattrib_handlers, dev);
+ }
+ 
+-static const Property s390_stattrib_props[] = {
+-    DEFINE_PROP_BOOL("migration-enabled", S390StAttribState, migration_enabled, true),
+-};
+-
+ static void s390_stattrib_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+@@ -371,7 +367,6 @@ static void s390_stattrib_class_init(ObjectClass *oc, void *data)
+     dc->hotpluggable = false;
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     dc->realize = s390_stattrib_realize;
+-    device_class_set_props(dc, s390_stattrib_props);
+ }
+ 
+ static void s390_stattrib_instance_init(Object *obj)
 -- 
 2.49.0
 
