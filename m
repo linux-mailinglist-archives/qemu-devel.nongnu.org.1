@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2473A98794
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 12:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA50DA987B4
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 12:40:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7XSQ-0002dL-FH; Wed, 23 Apr 2025 06:35:58 -0400
+	id 1u7XWY-00045V-FO; Wed, 23 Apr 2025 06:40:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7XSO-0002cz-VR
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:35:57 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7XWP-00043q-OY
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:40:06 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7XSM-0006A3-SR
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:35:56 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43cfe63c592so70719265e9.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 03:35:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7XWN-0006MH-MJ
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:40:05 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-39ee682e0ddso3619234f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 03:40:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745404552; x=1746009352; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745404801; x=1746009601; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=4Cci1q2MqOEEjR8mHsIcoWBuM8IIoi4/eXXTYv+/9LI=;
- b=nS5etkhRKH2zJ/ZFxTJ3xvFGvqSw7fub7R1glRvZj2YDw3xwZu/EQDgCedkad/vW0M
- nvPCBiL+CZINg1gg/tULUICbsscPc2Vfgm+yDWlKbE5Uo4ep8+FYswT/KLEEkPKAaXna
- YoRpZXvf7C9nWsrA8dgnpiyxPPwqbiaUiFA6c50XrGCtVCaHWPVL2kxVBYJ5+0gNw6fM
- 89JuWojLtAMHNjD/QYlmxWBsWcfe+M/XVq15A5tDDg6rKzHgMvgmHB+dTZuU3DhZUfTB
- Awa/6jRwAPCoLyxTr0Bi7dZ9kiUyW/S5bzpLBctNhU1HDvLCoTH3f6mCfgh9gByiubP5
- 4k3Q==
+ bh=cOv5Dop1xVvYicU3Mg/rP8j/YAQRFqoJsCfR1KfAny0=;
+ b=d4bR9XMUqOuHB8r1y6Oll3IuyKsFJL7616zd4N11/7FgbZTyoeTPgPbtqezeOIIcsp
+ /KybKS/M6hSAYVVjWmm3xZdiZW7EZ2wTVbkt3xX/+Eu6IJoz4qygfxhOoJECreaDdCfa
+ WOWX7cjjYpgveVl3ZOhNaJJUD8Aq6gKBLxN90iCX5T5kVoFeFszzeGgCnivg0h9xlNXs
+ L/SwFGHOw2XvVvA+wierGk8FsdR93TKvzgxM/XvFBmRl4GveRvmr0q2Iy3HUSUzYkaxA
+ gkWCj6iqMq015GxFo37S3U7A+VPOUHQEZH/xzME/GDkAaMTG1W6Ih1Rji1wlHkJm/UIy
+ DshQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745404552; x=1746009352;
+ d=1e100.net; s=20230601; t=1745404801; x=1746009601;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4Cci1q2MqOEEjR8mHsIcoWBuM8IIoi4/eXXTYv+/9LI=;
- b=Xr/AiyRrMGPHMYjz6ZxjoeECdejy2uheawF6TW64t46Os36MAk6vYjdd6sLcO7+jH6
- P5M+WqNTlvPWfgbXajYvllLq9uSojqNfknyirbCTQvugOwgAHhhkfJI7+Ig/A7xzlK3c
- FaWkH4Hsi5IUYIRgh5VayqcoZCWAeEyokCZ7kdptLnBXmP14aXYhZTsjbWVwFsQns/Kr
- /qR9CmJcjMA0XhfQvxoiOOOffv/GdtuLHMnfStUzIgyndSI3y4kB4aNs1PL17HV2G9Jg
- ic6Or4t75DKlzh+UK4j3Wy7Zt0AB8uZpj0SQCnSd327qhM+zErqdWdR9mJoriaGyowKU
- tTXA==
+ bh=cOv5Dop1xVvYicU3Mg/rP8j/YAQRFqoJsCfR1KfAny0=;
+ b=JYfV1cdDp6oJtahGsrcCkecTeZTBgNJa4AI+MpBp1VW65GEY1EuJ0ZEJrZGyZbIRsS
+ bBdCstAAchO8uVAF47ko3DXt+HA+H/ELh1e9rzUo3G/4fJ7d11utMQXfWJPKTZcmfWMD
+ bDTmICaCmD4MmRdjuX9Qgevb1ERslN6TmyvKMmmn+CYXBcg5mzju+gRRbu3jKGB0bKjM
+ rMXircFxjQMXGuISxopoT3IAx1lM216SsIbxheLv/v9n3K59h+3lCbz6LGabf4cyA12K
+ drXxI5R1el1vqF9kcxa0dK9/D7mIe5WBb5apbmqt/gCQ72fqC8RzYnjBJ3QltoTzVknB
+ YYqQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVrvDgQU0P2jlhQPDfe229a03bhGobQSuI/cGFN3iZG//iwbflLnG2vABIj0DznQdkKz7DGs4ZSRiyW@nongnu.org
-X-Gm-Message-State: AOJu0Yz9EZI2cZ36+6kmxt4caKzguvH12VOYLwZE6IgJeRyGIUaVRh3v
- tbGbF9+LlkA3geWUJjTfKr8wEh8Q5keUriitk1nbEyPKWOnLLlOBLUkdbw6ut8U=
-X-Gm-Gg: ASbGncvqua2n4OqRl3StIDuNecncd1ilCwZIw7xmFr3LUdlNLM+aFYkcSypD8w/vme8
- jZywlIzImFYjfyYeeie53PAOBnWr9C0S/D6Xt7fVrCMN2AL1b7+w1B+OVZUrlzIWOFRtkuhybgm
- UiP3HRklMPAaSklqpMOJsnw7KbTscBB2ObAjHnOxp4ahrt9R4gDTFPfDeF0oOCCpY2Uvwm6Zq7L
- 0i8AyQAmnSrtEmxmeP+D9V3THCuAt6tEasAUhIGP7H1Qb6d3hjkcndMRDpmlckG0OGL+f35ox3j
- u0gzta89AWaB7xm9IBEnGLO7yE9xMyXdGAv2gZcaCN5cS6eZKz3LnZR5/Sa2F+/RzVkK7hjB77K
- aEH9L1gBK
-X-Google-Smtp-Source: AGHT+IG4DFlN75eE7zJ+0IrN1EU1bwAvz4efPX2WBuXw30xOrR621YeDWeBwVygXN1X2R6d4KZiitA==
-X-Received: by 2002:a05:600c:5491:b0:43d:45a:8fbb with SMTP id
- 5b1f17b1804b1-4406abfa9d3mr142762065e9.22.1745404552183; 
- Wed, 23 Apr 2025 03:35:52 -0700 (PDT)
+ AJvYcCXef3RsJ1B0u/IHBn4hoy43Lly/94f9b0WYfBCBpXudcQ3Yc1ciY1UNR59CeNGxtbz5GWWALNozVXIS@nongnu.org
+X-Gm-Message-State: AOJu0YzDn3XLnU1lhj3DQW/2YirJJ8j/QGJKgYacBwzi9RKDvuvQKoIn
+ crdi+Sw9rcu+46+RZR0K7QVU7oG79LMbdaHEkcAST8eJZLfF6ZnXvtA7tFZzMJk=
+X-Gm-Gg: ASbGncve9alNEThzzpmwjzBmW0GZXq/vzSZgzW008l7mL38OLjEZqoQuAcsxBTFIU+R
+ TdYklEl/hFrougrzHT11hpYEaxW9KqYLPQksk/9VUZKQan0mn6WOavUs4L5aCmz2WHHHKMgtTLi
+ myRx7ApOXTuwZSpWKdTEqh466eOFDZn9um3207GoTaSzQFwGsCbnd2NbiUXZuMJLDPfxUCBEmIf
+ XvPp/ASRkuhqo7emjRZPAyXp4SZZ9G+YP7942T0fCTyvfbpvcNoFk+l1P1bFNiw1iwNMXvntcDt
+ H6BViUR03yz3UMVMSFwUK2K24NVcQEjU8j7mUfxB/zVx8RzvF5SBPE+RT2hmahPQN5UeCCjrpVb
+ lol5h2XUe
+X-Google-Smtp-Source: AGHT+IF3dwLhw+e/o0qfed9nEtP3xJRw+spP0XhUKsU8BuyPQHfkD7EagVCzLMFin5AoJo1xAEKChA==
+X-Received: by 2002:a05:6000:4027:b0:392:c64:9aef with SMTP id
+ ffacd0b85a97d-39efba473b3mr14285002f8f.20.1745404801166; 
+ Wed, 23 Apr 2025 03:40:01 -0700 (PDT)
 Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-44092d21720sm20904845e9.12.2025.04.23.03.35.51
+ ffacd0b85a97d-39efa4a4e9esm18717609f8f.96.2025.04.23.03.40.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Apr 2025 03:35:51 -0700 (PDT)
-Message-ID: <4a8da7b6-7773-453d-b704-0991caa3cd97@linaro.org>
-Date: Wed, 23 Apr 2025 12:35:50 +0200
+ Wed, 23 Apr 2025 03:40:00 -0700 (PDT)
+Message-ID: <16276eee-1d69-4903-a15d-25b7679dfc94@linaro.org>
+Date: Wed, 23 Apr 2025 12:39:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 118/147] target/arm/cpu: remove inline stubs for aarch32
- emulation
+Subject: Re: [PATCH 122/147] hw/arm/xlnx-zynqmp: prepare compilation unit to
+ be common
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
- <20250422192819.302784-119-richard.henderson@linaro.org>
+ <20250422192819.302784-123-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250422192819.302784-119-richard.henderson@linaro.org>
+In-Reply-To: <20250422192819.302784-123-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,106 +104,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 22/4/25 21:27, Richard Henderson wrote:
 > From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 > 
-> Directly condition associated calls in target/arm/helper.c for now.
+> Remove kvm unused headers.
 > 
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-ID: <20250325045915.994760-23-pierrick.bouvier@linaro.org>
+> Message-ID: <20250325045915.994760-28-pierrick.bouvier@linaro.org>
 > ---
->   target/arm/cpu.h    | 8 --------
->   target/arm/helper.c | 6 ++++++
->   2 files changed, 6 insertions(+), 8 deletions(-)
+>   hw/arm/xlnx-zynqmp.c | 2 --
+>   1 file changed, 2 deletions(-)
 > 
-> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> index b1c3e46326..c1a0faed3a 100644
-> --- a/target/arm/cpu.h
-> +++ b/target/arm/cpu.h
-> @@ -1222,7 +1222,6 @@ int arm_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
->    */
->   void arm_emulate_firmware_reset(CPUState *cpustate, int target_el);
->   
-> -#ifdef TARGET_AARCH64
->   int aarch64_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
->   int aarch64_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
->   void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq);
-> @@ -1254,13 +1253,6 @@ static inline uint64_t *sve_bswap64(uint64_t *dst, uint64_t *src, int nr)
->   #endif
->   }
->   
-> -#else
-> -static inline void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq) { }
-> -static inline void aarch64_sve_change_el(CPUARMState *env, int o,
-> -                                         int n, bool a)
-> -{ }
-> -#endif
-> -
->   void aarch64_sync_32_to_64(CPUARMState *env);
->   void aarch64_sync_64_to_32(CPUARMState *env);
+> diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
+> index d6022ff2d3..ec2b3a41ed 100644
+> --- a/hw/arm/xlnx-zynqmp.c
+> +++ b/hw/arm/xlnx-zynqmp.c
+> @@ -22,9 +22,7 @@
+>   #include "hw/intc/arm_gic_common.h"
+>   #include "hw/misc/unimp.h"
+>   #include "hw/boards.h"
+> -#include "system/kvm.h"
+>   #include "system/system.h"
+> -#include "kvm_arm.h"
+>   #include "target/arm/cpu-qom.h"
+>   #include "target/arm/gtimer.h"
 >   
 
-Should we complete squashing:
+Included in commit 2a0ee672c9f ("xlnx-zynqmp: Use the in kernel GIC
+model for KVM runs") for gic_class_name() declaration, but not
+necessary at all.
 
--- >8 --
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index cf4ab17bc08..f9353887415 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1810,7 +1810,6 @@ static inline uint64_t 
-pmu_counter_mask(CPUARMState *env)
-    return (1ULL << 31) | ((1ULL << pmu_num_counters(env)) - 1);
-  }
-
--#ifdef TARGET_AARCH64
-  GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cpu, int base_reg);
-  int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg);
-  int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg);
-@@ -1820,7 +1819,6 @@ int aarch64_gdb_get_pauth_reg(CPUState *cs, 
-GByteArray *buf, int reg);
-  int aarch64_gdb_set_pauth_reg(CPUState *cs, uint8_t *buf, int reg);
-  int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg);
-  int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg);
--#endif
-  void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp);
-  void arm_cpu_sme_finalize(ARMCPU *cpu, Error **errp);
-  void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp);
----
-
-?
-
-> diff --git a/target/arm/helper.c b/target/arm/helper.c
-> index becbbbd0d8..7fb6e88630 100644
-> --- a/target/arm/helper.c
-> +++ b/target/arm/helper.c
-> @@ -6563,7 +6563,9 @@ static void zcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
->        */
->       new_len = sve_vqm1_for_el(env, cur_el);
->       if (new_len < old_len) {
-> +#ifdef TARGET_AARCH64
->           aarch64_sve_narrow_vq(env, new_len + 1);
-> +#endif
->       }
->   }
->   
-> @@ -10628,7 +10630,9 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
->            * Note that new_el can never be 0.  If cur_el is 0, then
->            * el0_a64 is is_a64(), else el0_a64 is ignored.
->            */
-> +#ifdef TARGET_AARCH64
->           aarch64_sve_change_el(env, cur_el, new_el, is_a64(env));
-> +#endif
->       }
->   
->       if (cur_el < new_el) {
-> @@ -11640,7 +11644,9 @@ void aarch64_sve_change_el(CPUARMState *env, int old_el,
->   
->       /* When changing vector length, clear inaccessible state.  */
->       if (new_len < old_len) {
-> +#ifdef TARGET_AARCH64
->           aarch64_sve_narrow_vq(env, new_len + 1);
-> +#endif
->       }
->   }
->   #endif
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
